@@ -54,6 +54,7 @@ let draggedBackpackIndex = null;
 let fullscreenRequested = false;
 let selectedWeaponInfo = { source: "equip", index: 0 };
 let suppressEquipmentClick = false;
+let floatingMessageTimer = null;
 const equipmentPointerDrag = {
   active: false,
   started: false,
@@ -92,6 +93,8 @@ function makeState(levelIndex) {
     waveIndex: 0,
     waveSpawnRemaining: level.waves[0].count,
     waveBreakTimer: 0,
+    bossSpawnedForWave: -1,
+    bossMinionTimer: 2.2,
     weaponTimers: buildInitialWeaponTimers(),
     weaponCooldowns: Array.from({ length: 8 }, () => getBaseWeaponCooldown()),
     wallRegenTimer: getWallRegenInterval(),
@@ -110,8 +113,10 @@ function makeState(levelIndex) {
     },
     enemies: [],
     projectiles: [],
+    bossProjectiles: [],
     hits: [],
     damageTexts: [],
+    bossBanner: null,
   };
 }
 
@@ -141,7 +146,10 @@ function restart() {
 }
 
 function startLevel(levelIndex) {
-  if (levelIndex + 1 > highestUnlocked) return;
+  if (levelIndex + 1 > highestUnlocked) {
+    showFloatingMessage("\u95dc\u5361\u672a\u89e3\u9396");
+    return;
+  }
   requestGameFullscreen();
   state = makeState(levelIndex);
   state.running = true;
@@ -287,17 +295,28 @@ function update(dt) {
     projectile.y -= projectile.speed * dt;
     projectile.rotation += projectile.spin * dt;
   }
+  for (const projectile of state.bossProjectiles) {
+    projectile.x += projectile.vx * dt;
+    projectile.y += projectile.speed * dt;
+    projectile.rotation += projectile.spin * dt;
+  }
 
   for (const enemy of state.enemies) {
     updateEnemyAbility(enemy, dt);
     enemy.y += enemy.speed * enemy.dashBoost * dt;
+    if (enemy.isBoss) {
+      const stopY = wallY - enemy.size * 0.58;
+      enemy.y = Math.min(enemy.y, stopY);
+    }
     enemy.wobble += dt * enemy.wobbleSpeed;
   }
 
   resolveHits();
+  resolveBossProjectiles();
   damageWall();
 
   state.projectiles = state.projectiles.filter((projectile) => projectile.y > -100);
+  state.bossProjectiles = state.bossProjectiles.filter((projectile) => !projectile.used && projectile.y < wallY + 60);
   state.enemies = state.enemies.filter((enemy) => enemy.hp > 0 && enemy.y < H + 140);
   state.hits = state.hits.filter((hit) => {
     hit.life -= dt;
@@ -308,6 +327,10 @@ function update(dt) {
     text.y -= 70 * dt;
     return text.life > 0;
   });
+  if (state.bossBanner) {
+    state.bossBanner.life -= dt;
+    if (state.bossBanner.life <= 0) state.bossBanner = null;
+  }
 
   if (state.wallHp <= 0) loseLevel();
 
@@ -365,9 +388,11 @@ function shootWeaponSlot(slotIndex, entry) {
     for (let i = 0; i < projectileCount; i += 1) {
       const offset = (i - (projectileCount - 1) / 2) * spread;
       fireProjectile(entry, offset, burst * 24, 0);
-      if (state.sideShots > 0) {
-        fireProjectile(entry, offset - 18, burst * 24, -240);
-        fireProjectile(entry, offset + 18, burst * 24, 240);
+      for (let sideIndex = 0; sideIndex < state.sideShots; sideIndex += 1) {
+        const sideSpeed = 210 + sideIndex * 120;
+        const sideOffset = 18 + sideIndex * 14;
+        fireProjectile(entry, offset - sideOffset, burst * 24, -sideSpeed);
+        fireProjectile(entry, offset + sideOffset, burst * 24, sideSpeed);
       }
     }
   }
@@ -397,6 +422,10 @@ function updateWaves(dt) {
   }
 
   const wave = state.level.waves[state.waveIndex];
+  if (wave.boss && state.bossSpawnedForWave !== state.waveIndex) {
+    spawnBoss(wave);
+    state.bossSpawnedForWave = state.waveIndex;
+  }
   if (state.waveSpawnRemaining > 0) {
     state.spawnTimer -= dt;
     if (state.spawnTimer <= 0) {
@@ -405,6 +434,14 @@ function updateWaves(dt) {
       state.spawnTimer = wave.spawnInterval;
     }
     return;
+  }
+
+  if (wave.boss && hasActiveBoss()) {
+    state.bossMinionTimer -= dt;
+    if (state.bossMinionTimer <= 0) {
+      spawnBossMinions(wave);
+      state.bossMinionTimer = Math.max(1.05, wave.spawnInterval * 2.65);
+    }
   }
 
   if (state.enemies.length === 0) {
@@ -424,50 +461,132 @@ function prepareNextWave() {
   state.waveSpawnRemaining = state.level.waves[state.waveIndex].count;
   state.spawnTimer = 0.65;
   state.waveBreakTimer = 1.1;
+  state.bossMinionTimer = 2.2;
+}
+
+function hasActiveBoss() {
+  return state.enemies.some((enemy) => enemy.isBoss && enemy.hp > 0);
 }
 
 function spawnEnemy(wave) {
   const typeIndex = Math.floor(random(0, Math.min(wave.maxEnemyType + 1, ENEMY_TYPES.length)));
   const type = ENEMY_TYPES[typeIndex];
+  addEnemy(type, wave, false);
+}
+
+function spawnBoss(wave) {
+  const type = ENEMY_TYPES[Math.min(wave.bossType ?? wave.maxEnemyType, ENEMY_TYPES.length - 1)];
+  addEnemy(type, wave, true);
+  state.bossMinionTimer = 1.8;
+  state.bossBanner = { text: `${type.name} \u738b\u51fa\u73fe\uff01`, life: 2.6 };
+}
+
+function spawnBossMinions(wave) {
+  const count = state.level.id >= 20 ? 3 : state.level.id >= 10 ? 2 : 1;
+  for (let i = 0; i < count; i += 1) spawnEnemy(wave);
+}
+
+function addEnemy(type, wave, isBoss) {
   const image = enemyImages[type.imageIndex];
-  const size = random(wave.sizeMin, wave.sizeMax) * type.sizeScale;
-  const hp = Math.max(1, Math.ceil(wave.hp * type.hpScale * DIFFICULTY.enemyHp));
+  const bossScale = isBoss ? getBossScale(type) : null;
+  const size = (isBoss ? wave.sizeMax * bossScale.size : random(wave.sizeMin, wave.sizeMax)) * type.sizeScale;
+  const hp = Math.max(1, Math.ceil(wave.hp * type.hpScale * DIFFICULTY.enemyHp * (bossScale?.hp || 1) * (isBoss ? getBossLevelScale() : 1)));
   state.enemies.push({
     type,
     image,
-    x: random(size / 2 + 20, W - size / 2 - 20),
+    isBoss,
+    x: isBoss ? W / 2 : random(size / 2 + 20, W - size / 2 - 20),
     y: -size,
     baseX: 0,
     size,
     hp,
     maxHp: hp,
-    speed: random(wave.speedMin, wave.speedMax) * type.speedScale * DIFFICULTY.enemySpeed,
-    damage: Math.max(1, Math.ceil(wave.damage * type.damageScale * DIFFICULTY.enemyDamage)),
-    coinReward: Math.max(1, Math.ceil(wave.coinReward * type.coinScale)),
+    bossReduction: bossScale?.reduction || 0,
+    bossShieldHits: bossScale?.shieldHits || 0,
+    bossAttackTimer: isBoss ? random(1.4, 2.4) : 0,
+    bossAttackInterval: bossScale?.attackInterval || 2.8,
+    bossBallDamage: Math.max(1, Math.ceil(wave.damage * type.damageScale * DIFFICULTY.enemyDamage * (bossScale?.ballDamage || 1.2))),
+    speed: (isBoss ? wave.speedMin * 0.42 : random(wave.speedMin, wave.speedMax)) * type.speedScale * DIFFICULTY.enemySpeed * (bossScale?.speed || 1),
+    damage: Math.max(1, Math.ceil(wave.damage * type.damageScale * DIFFICULTY.enemyDamage * (bossScale?.damage || 1))),
+    coinReward: Math.max(1, Math.ceil(wave.coinReward * type.coinScale * (bossScale?.coin || 1))),
     armorUsed: false,
     dashTimer: random(0.8, 1.8),
     dashBoost: 1,
     wobble: random(0, Math.PI * 2),
-    wobbleSpeed: random(2, 4) * (type.ability === "zigzag" ? 1.8 : 1),
+    wobbleSpeed: random(2, 4) * (type.ability === "zigzag" ? 1.8 : 1) * (isBoss ? 0.65 : 1),
   });
   state.enemies[state.enemies.length - 1].baseX = state.enemies[state.enemies.length - 1].x;
 }
 
+function getBossScale(type) {
+  const base = { size: 2.95, hp: 46, damage: 2.5, speed: 0.46, coin: 14, reduction: 0.22, attackInterval: 3.45, ballDamage: 1.15, shieldHits: 0 };
+  if (type.role === "runner" || type.role === "sprinter") return { ...base, hp: 36, speed: 0.64, damage: 2.1, coin: 12, reduction: 0.16, attackInterval: 2.65, ballDamage: 0.98 };
+  if (type.role === "tank") return { ...base, size: 3.15, hp: 66, speed: 0.36, damage: 2.4, coin: 16, reduction: 0.34, attackInterval: 3.85, ballDamage: 1.05, shieldHits: 6 };
+  if (type.role === "breaker" || type.role === "bruiser") return { ...base, hp: 54, damage: 3.5, coin: 16, reduction: 0.26, attackInterval: 3.55, ballDamage: 1.55 };
+  if (type.role === "dasher") return { ...base, hp: 42, speed: 0.58, damage: 2.5, coin: 15, reduction: 0.2, attackInterval: 2.45, ballDamage: 1.1 };
+  if (type.role === "caster") return { ...base, hp: 50, speed: 0.42, damage: 2.8, coin: 15, reduction: 0.24, attackInterval: 2.9, ballDamage: 1.22 };
+  return base;
+}
+
+function getBossLevelScale() {
+  return 1 + Math.floor((state.level.id - 1) / 5) * 0.45;
+}
+
 function updateEnemyAbility(enemy, dt) {
   enemy.dashBoost = 1;
+  if (enemy.isBoss) updateBossAbility(enemy, dt);
 
   if (enemy.type.ability === "zigzag") {
-    enemy.x = clamp(enemy.baseX + Math.sin(enemy.wobble) * 42, enemy.size / 2 + 14, W - enemy.size / 2 - 14);
+    const range = enemy.isBoss ? 74 : 42;
+    enemy.x = clamp(enemy.baseX + Math.sin(enemy.wobble) * range, enemy.size / 2 + 14, W - enemy.size / 2 - 14);
   }
 
   if (enemy.type.ability === "dash") {
     enemy.dashTimer -= dt;
     if (enemy.dashTimer <= 0) {
-      enemy.dashBoost = 2.6;
-      enemy.dashTimer = random(1.2, 2.2);
+      enemy.dashBoost = enemy.isBoss ? 3.15 : 2.6;
+      enemy.dashTimer = enemy.isBoss ? random(0.75, 1.35) : random(1.2, 2.2);
       state.hits.push({ x: enemy.x, y: enemy.y, radius: 20, life: 0.14 });
     }
   }
+}
+
+function updateBossAbility(enemy, dt) {
+  enemy.bossAttackTimer -= dt;
+  if (enemy.bossAttackTimer > 0) return;
+  throwBossBall(enemy);
+  enemy.bossAttackTimer = enemy.bossAttackInterval;
+}
+
+function throwBossBall(enemy) {
+  const startX = enemy.x;
+  const startY = enemy.y + enemy.size * 0.22;
+  const targetX = clamp(state.hero.x + random(-65, 65), 70, W - 70);
+  const speed = 440 + state.level.id * 5;
+  const travelTime = Math.max(0.45, (wallY - startY) / speed);
+  const dx = clamp((targetX - startX) / travelTime, -520, 520);
+  const size = Math.max(34, Math.min(74, enemy.size * 0.18));
+  state.bossProjectiles.push({
+    x: startX,
+    y: startY,
+    vx: dx,
+    speed,
+    targetX,
+    size,
+    damage: enemy.bossBallDamage,
+    rotation: 0,
+    spin: 5,
+    color: getBossBallColor(enemy),
+  });
+  state.hits.push({ x: startX, y: startY, radius: size * 0.65, life: 0.18 });
+}
+
+function getBossBallColor(enemy) {
+  if (enemy.type.role === "tank") return "#7cc6ff";
+  if (enemy.type.role === "breaker" || enemy.type.role === "bruiser") return "#ff6b4a";
+  if (enemy.type.role === "dasher" || enemy.type.role === "sprinter") return "#ffdf57";
+  if (enemy.type.role === "caster") return "#b48cff";
+  return "#ff8f4e";
 }
 
 function loseLevel() {
@@ -523,12 +642,18 @@ function winLevel() {
 function rollLevelDrops() {
   const drops = [];
   if (Math.random() < WEAPON_DROP_RATE) {
-    const item = { id: "eraser", level: 1 };
+    const item = { id: getLevelDropWeaponId(state.level.id), level: 1 };
     profile.backpackItems.push(item);
     drops.push(item);
     saveProfile();
   }
   return drops;
+}
+
+function getLevelDropWeaponId(levelId) {
+  if (levelId >= 21) return "ruler";
+  if (levelId >= 11) return "pencil";
+  return "eraser";
 }
 
 function buildWinText(drops, wasChallenge) {
@@ -570,7 +695,7 @@ function renderRewardItem(item) {
   const level = Math.max(1, Number(item.level) || 1);
   return `
     <div class="reward-item ${getWeaponTierClass(level)}">
-      <img src="${weapon.icon}" alt="" />
+      <img src="${getWeaponIconSrc(weapon)}" alt="" onerror="this.onerror=null;this.src='assets/eraser.png'" />
       <span>${weapon.name}${level > 1 ? ` x${level}` : ""}</span>
     </div>
   `;
@@ -609,11 +734,39 @@ function resolveHits() {
 }
 
 function getDamageToEnemy(enemy, damage) {
+  if (enemy.isBoss && enemy.bossShieldHits > 0) {
+    enemy.bossShieldHits -= 1;
+    state.hits.push({ x: enemy.x, y: enemy.y, radius: enemy.size * 0.34, life: 0.24 });
+    return Math.max(1, Math.ceil(damage * 0.18));
+  }
+  if (enemy.isBoss) {
+    damage = Math.max(1, Math.ceil(damage * (1 - (enemy.bossReduction || 0))));
+  }
   if (enemy.type.ability === "armor" && !enemy.armorUsed) {
     enemy.armorUsed = true;
     return Math.max(1, Math.ceil(damage * 0.45));
   }
   return damage;
+}
+
+function resolveBossProjectiles() {
+  for (const projectile of state.bossProjectiles) {
+    if (projectile.used) continue;
+    if (projectile.y + projectile.size * 0.45 >= wallY) {
+      projectile.used = true;
+      projectile.x = clamp(projectile.x, 32, W - 32);
+      state.wallHp = Math.max(0, state.wallHp - Math.ceil(projectile.damage * (1 - getWallDamageReduction())));
+      state.hits.push({ x: projectile.x, y: wallY, radius: projectile.size * 0.9, life: 0.3 });
+      state.damageTexts.push({
+        x: projectile.x,
+        y: wallY - 44,
+        value: `-${Math.ceil(projectile.damage * (1 - getWallDamageReduction()))}`,
+        crit: false,
+        life: 0.7,
+        maxLife: 0.7,
+      });
+    }
+  }
 }
 
 function damageWall() {
@@ -642,9 +795,11 @@ function draw() {
   drawWallHp();
   drawEnemies();
   drawProjectiles();
+  drawBossProjectiles();
   drawHero();
   drawHits();
   drawDamageTexts();
+  drawBossUi();
   drawWeaponHud();
 }
 
@@ -694,8 +849,22 @@ function drawEnemies() {
     ctx.drawImage(enemy.image, x - enemy.size / 2, enemy.y - enemy.size / 2, enemy.size, enemy.size);
     ctx.restore();
 
-    const hpWidth = enemy.size * 0.72;
-    drawHpBar(x - hpWidth / 2, enemy.y + enemy.size * 0.48, hpWidth, 10, enemy.hp / enemy.maxHp, 3);
+    const hpWidth = enemy.isBoss ? Math.min(W * 0.76, enemy.size * 0.86) : enemy.size * 0.72;
+    const hpHeight = enemy.isBoss ? 16 : 10;
+    drawHpBar(x - hpWidth / 2, enemy.y + enemy.size * 0.48, hpWidth, hpHeight, enemy.hp / enemy.maxHp, 3);
+    if (enemy.isBoss) {
+      ctx.save();
+      ctx.font = "900 28px 'Microsoft JhengHei', system-ui, sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "bottom";
+      ctx.lineWidth = 7;
+      ctx.strokeStyle = "rgba(0, 0, 0, 0.76)";
+      ctx.fillStyle = "#ffdf57";
+      const label = `${enemy.type.name} \u738b`;
+      ctx.strokeText(label, x, enemy.y - enemy.size * 0.48);
+      ctx.fillText(label, x, enemy.y - enemy.size * 0.48);
+      ctx.restore();
+    }
     if (enemy.type.ability === "armor" && !enemy.armorUsed) {
       ctx.strokeStyle = "rgba(160, 220, 255, 0.9)";
       ctx.lineWidth = 4;
@@ -706,12 +875,71 @@ function drawEnemies() {
   }
 }
 
+function drawBossUi() {
+  const boss = state.enemies.find((enemy) => enemy.isBoss && enemy.hp > 0);
+  if (boss) {
+    const width = W * 0.72;
+    const x = (W - width) / 2;
+    const y = 156;
+    ctx.save();
+    ctx.fillStyle = "rgba(8, 10, 14, 0.72)";
+    roundRect(x - 12, y - 38, width + 24, 72, 10);
+    ctx.fill();
+    ctx.font = "900 24px 'Microsoft JhengHei', system-ui, sans-serif";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillStyle = "#ffdf57";
+    const reduction = Math.round((boss.bossReduction || 0) * 100);
+    const shieldText = boss.bossShieldHits > 0 ? `  \u76fe${boss.bossShieldHits}` : "";
+    ctx.fillText(`${boss.type.name} \u738b  -${reduction}%${shieldText}`, W / 2, y - 18);
+    drawHpBar(x, y + 2, width, 22, boss.hp / boss.maxHp, 7);
+    ctx.restore();
+  }
+
+  if (state.bossBanner) {
+    ctx.save();
+    ctx.globalAlpha = Math.min(1, state.bossBanner.life / 0.5);
+    ctx.font = "900 44px 'Microsoft JhengHei', system-ui, sans-serif";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.lineWidth = 10;
+    ctx.strokeStyle = "rgba(0, 0, 0, 0.78)";
+    ctx.fillStyle = "#ffdf57";
+    ctx.strokeText(state.bossBanner.text, W / 2, H * 0.32);
+    ctx.fillText(state.bossBanner.text, W / 2, H * 0.32);
+    ctx.restore();
+  }
+}
+
 function drawProjectiles() {
   for (const projectile of state.projectiles) {
     ctx.save();
     ctx.translate(projectile.x, projectile.y);
     ctx.rotate(projectile.rotation);
     drawImageContain(projectile.image || images.eraser, -projectile.size / 2, -projectile.size / 2, projectile.size, projectile.size);
+    ctx.restore();
+  }
+}
+
+function drawBossProjectiles() {
+  for (const projectile of state.bossProjectiles) {
+    ctx.save();
+    ctx.translate(projectile.x, projectile.y);
+    ctx.rotate(projectile.rotation);
+    const radius = projectile.size / 2;
+    const gradient = ctx.createRadialGradient(-radius * 0.25, -radius * 0.3, 3, 0, 0, radius);
+    gradient.addColorStop(0, "#fff7b8");
+    gradient.addColorStop(0.42, projectile.color);
+    gradient.addColorStop(1, "rgba(70, 24, 18, 0.9)");
+    ctx.fillStyle = gradient;
+    ctx.shadowColor = projectile.color;
+    ctx.shadowBlur = 16;
+    ctx.beginPath();
+    ctx.arc(0, 0, radius, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.lineWidth = 4;
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.45)";
+    ctx.stroke();
     ctx.restore();
   }
 }
@@ -919,13 +1147,28 @@ function renderLevelGrid() {
     const button = document.createElement("button");
     button.type = "button";
     button.dataset.level = String(level.id - 1);
-    button.textContent = level.id <= highestUnlocked ? String(level.id) : "\u9396";
-    button.disabled = level.id > highestUnlocked;
+    button.textContent = String(level.id);
     button.className = "";
+    if (level.id > highestUnlocked) button.classList.add("locked");
     if (level.id < highestUnlocked) button.classList.add("completed");
     if (level.id === highestUnlocked && level.id <= LEVELS.length) button.classList.add("challenge");
     levelGrid.append(button);
   }
+}
+
+function showFloatingMessage(text) {
+  const existing = document.querySelector(".floating-message");
+  if (existing) existing.remove();
+  if (floatingMessageTimer) clearTimeout(floatingMessageTimer);
+
+  const message = document.createElement("div");
+  message.className = "floating-message";
+  message.textContent = text;
+  document.querySelector(".game-shell").append(message);
+  floatingMessageTimer = setTimeout(() => {
+    message.remove();
+    floatingMessageTimer = null;
+  }, 1500);
 }
 
 function showUpgradeChoices() {
@@ -1074,7 +1317,7 @@ function renderEquipmentSlots() {
     .map((slot, index) => {
       const weapon = getWeapon(slot?.id);
       const level = Math.max(1, Number(slot?.level) || 1);
-      const content = weapon ? `<img src="${weapon.icon}" alt="" />${level > 1 ? `<span class="equip-level">x${level}</span>` : ""}` : "";
+      const content = weapon ? `<img src="${getWeaponIconSrc(weapon)}" alt="" onerror="this.onerror=null;this.src='assets/eraser.png'" />${level > 1 ? `<span class="equip-level">x${level}</span>` : ""}` : "";
       const selected = selectedWeaponInfo?.source === "equip" && selectedWeaponInfo.index === index ? "selected" : "";
       return `<button type="button" draggable="${weapon ? "true" : "false"}" class="equip-slot ${weapon ? getWeaponTierClass(level) : "empty"} ${selected}" data-equip-slot="${index}">${content}</button>`;
     })
@@ -1088,7 +1331,7 @@ function renderBackpackItems() {
       const level = Math.max(1, Number(item?.level) || 1);
       if (!weapon) return "";
       const selected = selectedWeaponInfo?.source === "bag" && selectedWeaponInfo.index === index ? "selected" : "";
-      return `<button type="button" class="backpack-item ${getWeaponTierClass(level)} ${selected}" draggable="true" data-backpack-index="${index}" data-backpack-weapon="${weapon.id}"><img src="${weapon.icon}" alt="" />${level > 1 ? `<span class="equip-level">x${level}</span>` : ""}</button>`;
+      return `<button type="button" class="backpack-item ${getWeaponTierClass(level)} ${selected}" draggable="true" data-backpack-index="${index}" data-backpack-weapon="${weapon.id}"><img src="${getWeaponIconSrc(weapon)}" alt="" onerror="this.onerror=null;this.src='assets/eraser.png'" />${level > 1 ? `<span class="equip-level">x${level}</span>` : ""}</button>`;
     })
     .filter(Boolean);
   while (items.length < 20) {
@@ -1117,7 +1360,7 @@ function renderSelectedWeaponInfo() {
   return `
     <div class="weapon-info-panel">
       <div class="weapon-info-head">
-        <img class="weapon-info-icon ${getWeaponTierClass(item.level)}" src="${weapon.icon}" alt="" />
+        <img class="weapon-info-icon ${getWeaponTierClass(item.level)}" src="${getWeaponIconSrc(weapon)}" alt="" onerror="this.onerror=null;this.src='assets/eraser.png'" />
         <div><strong>${weapon.name} ${item.level > 1 ? `x${item.level}` : ""}</strong><span>\u540c\u968e\u80cc\u5305\u6b66\u5668\u53ef\u5408\u6210\u5347\u7d1a</span></div>
       </div>
       <div class="weapon-info-stats">
@@ -1304,6 +1547,10 @@ function scaleCost(base, level, growth) {
 
 function getWeapon(id) {
   return WEAPONS.find((weapon) => weapon.id === id) || null;
+}
+
+function getWeaponIconSrc(weapon) {
+  return weapon?.icon || "assets/eraser.png";
 }
 
 function getWeaponDamage(entry) {

@@ -34,12 +34,4 @@ Use this style for all generated assets:
 
 | Need | File name | Used as | Size | Prompt |
 | --- | --- | --- | --- | --- |
-| Needed | `stat-damage.png` | Damage stat icon | 512x512 | cute impact sparkle icon for attack damage, transparent background, same 2D mobile game style |
-| Needed | `stat-cooldown.png` | Cooldown stat icon | 512x512 | cute stopwatch or circular timer icon, transparent background, same 2D mobile game style |
-| Needed | `stat-health.png` | Wall health stat icon | 512x512 | cute red heart with small wall shield, transparent background, same 2D mobile game style |
-| Needed | `stat-reduction.png` | Damage reduction stat icon | 512x512 | cute shield icon reducing impact, transparent background, same 2D mobile game style |
-| Needed | `button-continue.png` | Continue button icon | 512x512 | cute play arrow icon, transparent background, same 2D mobile game style |
-| Needed | `button-leave.png` | Leave battle button icon | 512x512 | cute door exit icon, friendly and non-threatening, transparent background, same 2D mobile game style |
-| Optional | `weapon-pencil.png` | Future weapon icon/projectile | 512x512 | cute flying pencil weapon, readable silhouette, transparent background, same 2D mobile game style |
-| Optional | `weapon-ruler.png` | Future weapon icon/projectile | 512x512 | cute ruler boomerang weapon, readable silhouette, transparent background, same 2D mobile game style |
 | Optional | `weapon-glue.png` | Future weapon icon/projectile | 512x512 | cute glue bottle weapon, readable silhouette, transparent background, same 2D mobile game style |

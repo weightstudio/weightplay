@@ -792,9 +792,10 @@ canvas {
   font-size: 20px;
 }
 
-.level-grid button:disabled {
+.level-grid button.locked {
   background: rgba(26, 29, 36, 0.88);
   color: rgba(255, 255, 255, 0.38);
+  border-color: rgba(255, 255, 255, 0.12);
 }
 
 .level-grid button.completed {
@@ -806,6 +807,37 @@ canvas {
   background: #ffcb3f;
   color: #202020;
   box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.22);
+}
+
+.floating-message {
+  position: absolute;
+  z-index: 30;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: rgba(8, 10, 14, 0.82);
+  color: #fff;
+  font-size: 22px;
+  font-weight: 900;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.72);
+  pointer-events: none;
+  animation: float-message-up 1.5s ease-out forwards;
+}
+
+@keyframes float-message-up {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -35%);
+  }
+  16% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -135%);
+  }
 }
 
 .upgrade-grid {
