@@ -18,6 +18,9 @@ const pausePanel = document.querySelector("#pausePanel");
 const settingsBtn = document.querySelector("#settingsBtn");
 const resumeBtn = document.querySelector("#resumeBtn");
 const leaveBtn = document.querySelector("#leaveBtn");
+const weaponModal = document.querySelector("#weaponModal");
+const weaponModalClose = document.querySelector("#weaponModalClose");
+const weaponModalContent = document.querySelector("#weaponModalContent");
 
 const W = canvas.width;
 const H = canvas.height;
@@ -36,6 +39,12 @@ const ENEMY_TYPES = DATA.enemyTypes;
 const SAVE_KEY = "wonderCrashHighestUnlocked";
 const PROFILE_KEY = "wonderCrashProfile";
 const WEAPON_COOLDOWN = 1.35;
+const WEAPON_DROP_RATE = 0.5;
+const DIFFICULTY = {
+  enemyHp: 0.82,
+  enemySpeed: 0.9,
+  enemyDamage: 0.78,
+};
 let highestUnlocked = loadHighestUnlocked();
 let profile = loadProfile();
 let activeMenuTab = "battle";
@@ -43,6 +52,8 @@ let draggedWeaponId = null;
 let draggedEquipSlot = null;
 let draggedBackpackIndex = null;
 let fullscreenRequested = false;
+let selectedWeaponInfo = { source: "equip", index: 0 };
+let suppressEquipmentClick = false;
 const equipmentPointerDrag = {
   active: false,
   started: false,
@@ -81,11 +92,14 @@ function makeState(levelIndex) {
     waveIndex: 0,
     waveSpawnRemaining: level.waves[0].count,
     waveBreakTimer: 0,
-    fireTimer: getBaseWeaponCooldown(),
-    fireCooldown: getBaseWeaponCooldown(),
+    weaponTimers: buildInitialWeaponTimers(),
+    weaponCooldowns: Array.from({ length: 8 }, () => getBaseWeaponCooldown()),
+    wallRegenTimer: getWallRegenInterval(),
     weaponCooldownMultiplier: 1,
     projectileDamage: getBaseWeaponDamage(),
     projectileCount: 1,
+    sideShots: 0,
+    burstCount: 1,
     projectileSizeMultiplier: 1,
     coinMultiplier: 1,
     hero: {
@@ -97,6 +111,7 @@ function makeState(levelIndex) {
     enemies: [],
     projectiles: [],
     hits: [],
+    damageTexts: [],
   };
 }
 
@@ -147,6 +162,10 @@ startBtn.addEventListener("click", () => {
     startLevel(state.levelIndex + 1);
     return;
   }
+  if (state.won && state.levelIndex + 1 >= LEVELS.length) {
+    showMainMenu("battle");
+    return;
+  }
   restart();
 });
 levelGrid.addEventListener("click", (event) => {
@@ -165,9 +184,24 @@ upgradeGrid.addEventListener("click", (event) => {
   chooseUpgrade(button.dataset.upgrade);
 });
 profilePanel.addEventListener("click", (event) => {
+  const settlementAction = event.target.closest("[data-settlement-action]");
+  if (settlementAction) {
+    handleSettlementAction(settlementAction.dataset.settlementAction);
+    return;
+  }
   const button = event.target.closest("button[data-profile-upgrade]");
-  if (!button) return;
-  buyProfileUpgrade(button.dataset.profileUpgrade);
+  if (button) {
+    buyProfileUpgrade(button.dataset.profileUpgrade);
+    return;
+  }
+  if (activeMenuTab !== "equipment" || suppressEquipmentClick) return;
+  const slot = event.target.closest("[data-equip-slot]");
+  const backpackItem = event.target.closest("[data-backpack-index]");
+  if (slot) {
+    selectWeaponInfo("equip", Number(slot.dataset.equipSlot));
+    return;
+  }
+  if (backpackItem) selectWeaponInfo("bag", Number(backpackItem.dataset.backpackIndex));
 });
 profilePanel.addEventListener("dragstart", (event) => {
   const item = event.target.closest("[data-backpack-weapon]");
@@ -221,6 +255,10 @@ profilePanel.addEventListener("pointercancel", cancelEquipmentPointerDrag);
 settingsBtn.addEventListener("click", showPauseMenu);
 resumeBtn.addEventListener("click", resumeBattle);
 leaveBtn.addEventListener("click", leaveBattle);
+weaponModalClose.addEventListener("click", closeWeaponModal);
+weaponModal.addEventListener("click", (event) => {
+  if (event.target === weaponModal) closeWeaponModal();
+});
 canvas.addEventListener("pointerdown", startDrag);
 canvas.addEventListener("pointermove", moveDrag);
 canvas.addEventListener("pointerup", stopDrag);
@@ -239,16 +277,13 @@ function loop(now) {
 function update(dt) {
   state.time += dt;
 
-  state.fireTimer -= dt;
-  if (state.fireTimer <= 0) {
-    shoot();
-    state.fireCooldown = getBaseWeaponCooldown() * state.weaponCooldownMultiplier;
-    state.fireTimer = state.fireCooldown;
-  }
+  updateWeaponCooldowns(dt);
+  updateWallRegen(dt);
 
   updateWaves(dt);
 
   for (const projectile of state.projectiles) {
+    projectile.x += (projectile.vx || 0) * dt;
     projectile.y -= projectile.speed * dt;
     projectile.rotation += projectile.spin * dt;
   }
@@ -268,31 +303,91 @@ function update(dt) {
     hit.life -= dt;
     return hit.life > 0;
   });
+  state.damageTexts = state.damageTexts.filter((text) => {
+    text.life -= dt;
+    text.y -= 70 * dt;
+    return text.life > 0;
+  });
 
   if (state.wallHp <= 0) loseLevel();
 
   updateHud();
 }
 
-function shoot() {
-  const spread = 42;
-  const weapons = getEquippedWeapons();
-  const projectileCount = weapons.length + state.projectileCount - 1;
-  for (let i = 0; i < projectileCount; i += 1) {
-    const entry = weapons[i % weapons.length] || { weapon: getWeapon("eraser"), level: 1 };
-    const weapon = entry.weapon;
-    const offset = (i - (projectileCount - 1) / 2) * spread;
-    state.projectiles.push({
-      x: state.hero.x + offset,
-      y: state.hero.y - 72,
-      size: weapon.size * state.projectileSizeMultiplier * (1 + (entry.level - 1) * 0.12),
-      speed: weapon.speed + getProjectileSpeedBonus(),
-      damage: Math.ceil(state.projectileDamage * weapon.damageScale * entry.level),
-      rotation: 0,
-      spin: 9,
-      image: images[weapon.projectile] || images.eraser,
-    });
+function buildInitialWeaponTimers() {
+  const seen = {};
+  return profile.equippedWeapons.map((slot) => {
+    if (!slot?.id) return 0;
+    const entry = { weapon: getWeapon(slot.id), level: Math.max(1, Number(slot.level) || 1) };
+    if (!entry.weapon) return 0;
+    const copyIndex = seen[slot.id] || 0;
+    seen[slot.id] = copyIndex + 1;
+    return getWeaponCooldown(entry) * 0.22 * copyIndex;
+  });
+}
+
+function updateWeaponCooldowns(dt) {
+  const slots = getEquippedWeaponSlots();
+  for (let index = 0; index < slots.length; index += 1) {
+    const entry = slots[index];
+    if (!entry?.weapon) {
+      state.weaponTimers[index] = 0;
+      state.weaponCooldowns[index] = 0;
+      continue;
+    }
+
+    const cooldown = getWeaponCooldown(entry) * state.weaponCooldownMultiplier;
+    state.weaponCooldowns[index] = cooldown;
+    state.weaponTimers[index] -= dt;
+    if (state.weaponTimers[index] <= 0) {
+      shootWeaponSlot(index, entry);
+      state.weaponTimers[index] += cooldown;
+      if (state.weaponTimers[index] <= 0) state.weaponTimers[index] = cooldown;
+    }
   }
+}
+
+function updateWallRegen(dt) {
+  const amount = getWallRegenAmount();
+  if (amount <= 0 || state.wallHp <= 0 || state.wallHp >= state.maxWallHp) return;
+  state.wallRegenTimer -= dt;
+  if (state.wallRegenTimer > 0) return;
+  state.wallHp = Math.min(state.maxWallHp, state.wallHp + amount);
+  state.wallRegenTimer = getWallRegenInterval();
+  state.hits.push({ x: W - 98, y: wallY - 22, radius: 22, life: 0.2 });
+}
+
+function shootWeaponSlot(slotIndex, entry) {
+  const weapon = entry.weapon;
+  const projectileCount = state.projectileCount;
+  const spread = 36;
+  for (let burst = 0; burst < state.burstCount; burst += 1) {
+    for (let i = 0; i < projectileCount; i += 1) {
+      const offset = (i - (projectileCount - 1) / 2) * spread;
+      fireProjectile(entry, offset, burst * 24, 0);
+      if (state.sideShots > 0) {
+        fireProjectile(entry, offset - 18, burst * 24, -240);
+        fireProjectile(entry, offset + 18, burst * 24, 240);
+      }
+    }
+  }
+}
+
+function fireProjectile(entry, xOffset, yOffset, vx) {
+  const weapon = entry.weapon;
+  const damageRoll = rollWeaponDamage(entry);
+  state.projectiles.push({
+    x: state.hero.x + xOffset,
+    y: state.hero.y - 72 + yOffset,
+    vx,
+    size: getWeaponSize(entry) * state.projectileSizeMultiplier,
+    speed: getWeaponSpeed(entry),
+    damage: damageRoll.damage,
+    crit: damageRoll.crit,
+    rotation: 0,
+    spin: 9,
+    image: images[weapon.projectile] || images.eraser,
+  });
 }
 
 function updateWaves(dt) {
@@ -326,9 +421,6 @@ function updateWaves(dt) {
 
 function prepareNextWave() {
   state.waveIndex += 1;
-  if (state.waveIndex > 0 && state.waveIndex % getFocusHealInterval() === 0) {
-    state.wallHp = Math.min(state.maxWallHp, state.wallHp + 15 + profile.heroFocusLevel * 3);
-  }
   state.waveSpawnRemaining = state.level.waves[state.waveIndex].count;
   state.spawnTimer = 0.65;
   state.waveBreakTimer = 1.1;
@@ -339,7 +431,7 @@ function spawnEnemy(wave) {
   const type = ENEMY_TYPES[typeIndex];
   const image = enemyImages[type.imageIndex];
   const size = random(wave.sizeMin, wave.sizeMax) * type.sizeScale;
-  const hp = Math.max(1, Math.ceil(wave.hp * type.hpScale));
+  const hp = Math.max(1, Math.ceil(wave.hp * type.hpScale * DIFFICULTY.enemyHp));
   state.enemies.push({
     type,
     image,
@@ -349,8 +441,8 @@ function spawnEnemy(wave) {
     size,
     hp,
     maxHp: hp,
-    speed: random(wave.speedMin, wave.speedMax) * type.speedScale,
-    damage: Math.max(1, Math.ceil(wave.damage * type.damageScale)),
+    speed: random(wave.speedMin, wave.speedMax) * type.speedScale * DIFFICULTY.enemySpeed,
+    damage: Math.max(1, Math.ceil(wave.damage * type.damageScale * DIFFICULTY.enemyDamage)),
     coinReward: Math.max(1, Math.ceil(wave.coinReward * type.coinScale)),
     armorUsed: false,
     dashTimer: random(0.8, 1.8),
@@ -403,6 +495,8 @@ function loseLevel() {
 function winLevel() {
   overlay.classList.remove("equipment-screen");
   bankRunCoins();
+  const wasChallenge = state.level.id === highestUnlocked;
+  const drops = rollLevelDrops();
   state.running = false;
   state.won = true;
   settingsBtn.classList.add("hidden");
@@ -411,21 +505,75 @@ function winLevel() {
   state.score += state.wallHp;
   highestUnlocked = Math.max(highestUnlocked, Math.min(LEVELS.length + 1, state.levelIndex + 2));
   saveHighestUnlocked();
-  overlay.querySelector("h1").textContent = "\u904e\u95dc";
-  overlayText.textContent = `\u95dc\u5361 ${state.level.id}  \u5b8c\u6210\uff01  \u672c\u5834\u91d1\u5e63 ${state.coins}`;
-  startBtn.textContent = state.levelIndex + 1 >= LEVELS.length ? "\u9078\u64c7\u95dc\u5361" : "\u4e0b\u4e00\u95dc";
-  startBtn.classList.toggle("hidden", state.levelIndex + 1 >= LEVELS.length);
+  overlay.querySelector("h1").textContent = wasChallenge ? "\u6311\u6230\u6210\u529f\uff01" : "\u901a\u95dc\u6210\u529f\uff01";
+  overlayText.textContent = buildWinText(drops, wasChallenge);
+  startBtn.classList.add("hidden");
   menuContent.classList.remove("hidden");
-  menuTabs.classList.remove("hidden");
+  menuTabs.classList.add("hidden");
   activeMenuTab = "battle";
-  renderMenuTabs();
-  levelGrid.classList.remove("hidden");
+  levelGrid.classList.add("hidden");
   upgradeGrid.classList.add("hidden");
-  profilePanel.classList.add("hidden");
+  profilePanel.classList.remove("hidden");
   pausePanel.classList.add("hidden");
-  renderLevelGrid();
+  profilePanel.innerHTML = renderSettlement(drops, wasChallenge);
   overlay.classList.remove("hidden");
   updateHud();
+}
+
+function rollLevelDrops() {
+  const drops = [];
+  if (Math.random() < WEAPON_DROP_RATE) {
+    const item = { id: "eraser", level: 1 };
+    profile.backpackItems.push(item);
+    drops.push(item);
+    saveProfile();
+  }
+  return drops;
+}
+
+function buildWinText(drops, wasChallenge) {
+  const unlockText = wasChallenge && state.levelIndex + 1 < LEVELS.length ? `\u89e3\u9396\u7b2c ${state.level.id + 1} \u95dc\uff01` : "";
+  return `\u95dc\u5361 ${state.level.id} \u5b8c\u6210\uff01 ${unlockText}`;
+}
+
+function renderSettlement(drops, wasChallenge) {
+  const dropItems = drops.map((item) => renderRewardItem(item)).join("");
+  return `
+    <div class="settlement-panel">
+      <div class="settlement-row">
+        <strong>\u6230\u9b25\u7d50\u7b97</strong>
+        <span>${wasChallenge ? "\u65b0\u95dc\u5361\u6311\u6230\u6210\u529f" : "\u5df2\u901a\u95dc\u95dc\u5361\u5b8c\u6210"}</span>
+      </div>
+      <div class="reward-grid">
+        <div class="reward-item coin-reward"><img src="assets/coin.png" alt="" /><span>x${state.coins}</span></div>
+        ${dropItems || `<div class="reward-empty">\u672c\u6b21\u6c92\u6709\u6389\u843d\u6b66\u5668</div>`}
+      </div>
+      <div class="settlement-actions">
+        ${state.levelIndex + 1 < LEVELS.length ? `<button type="button" data-settlement-action="next">\u4e0b\u4e00\u95dc</button>` : ""}
+        <button type="button" data-settlement-action="home">\u78ba\u8a8d\u56de\u4e3b\u9801</button>
+      </div>
+    </div>
+  `;
+}
+
+function handleSettlementAction(action) {
+  if (action === "next" && state.levelIndex + 1 < LEVELS.length) {
+    startLevel(state.levelIndex + 1);
+    return;
+  }
+  if (action === "home") showMainMenu("battle");
+}
+
+function renderRewardItem(item) {
+  const weapon = getWeapon(item.id);
+  if (!weapon) return "";
+  const level = Math.max(1, Number(item.level) || 1);
+  return `
+    <div class="reward-item ${getWeaponTierClass(level)}">
+      <img src="${weapon.icon}" alt="" />
+      <span>${weapon.name}${level > 1 ? ` x${level}` : ""}</span>
+    </div>
+  `;
 }
 
 function resolveHits() {
@@ -441,6 +589,14 @@ function resolveHits() {
         const damage = getDamageToEnemy(enemy, projectile.damage);
         enemy.hp -= damage;
         state.hits.push({ x: enemy.x, y: enemy.y, radius: 18, life: 0.18 });
+        state.damageTexts.push({
+          x: enemy.x + random(-14, 14),
+          y: enemy.y - enemy.size * 0.28,
+          value: damage,
+          crit: projectile.crit,
+          life: 0.62,
+          maxLife: 0.62,
+        });
         if (enemy.hp <= 0) {
           state.score += 10;
           state.coins += Math.ceil(enemy.coinReward * state.coinMultiplier * (1 + getHeroCoinBonus()));
@@ -488,6 +644,7 @@ function draw() {
   drawProjectiles();
   drawHero();
   drawHits();
+  drawDamageTexts();
   drawWeaponHud();
 }
 
@@ -554,13 +711,7 @@ function drawProjectiles() {
     ctx.save();
     ctx.translate(projectile.x, projectile.y);
     ctx.rotate(projectile.rotation);
-    ctx.drawImage(
-      projectile.image || images.eraser,
-      -projectile.size / 2,
-      -projectile.size / 2,
-      projectile.size,
-      projectile.size,
-    );
+    drawImageContain(projectile.image || images.eraser, -projectile.size / 2, -projectile.size / 2, projectile.size, projectile.size);
     ctx.restore();
   }
 }
@@ -573,6 +724,25 @@ function drawHits() {
     ctx.fillStyle = `rgba(255, 219, 92, ${Math.max(0, progress)})`;
     ctx.fill();
   }
+}
+
+function drawDamageTexts() {
+  ctx.save();
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  for (const text of state.damageTexts) {
+    const progress = clamp(text.life / text.maxLife, 0, 1);
+    const scale = text.crit ? 1.18 : 1;
+    ctx.globalAlpha = Math.min(1, progress * 1.4);
+    ctx.font = `${text.crit ? "900" : "800"} ${Math.round((text.crit ? 34 : 28) * scale)}px 'Microsoft JhengHei', system-ui, sans-serif`;
+    ctx.lineWidth = text.crit ? 8 : 6;
+    ctx.strokeStyle = "rgba(0, 0, 0, 0.72)";
+    ctx.fillStyle = text.crit ? "#ffdf57" : "#fff";
+    const label = text.crit ? `暴 ${text.value}` : String(text.value);
+    ctx.strokeText(label, text.x, text.y);
+    ctx.fillText(label, text.x, text.y);
+  }
+  ctx.restore();
 }
 
 function drawWeaponHud() {
@@ -596,7 +766,7 @@ function drawWeaponHud() {
 }
 
 function drawWeaponSlot(x, y, size, index) {
-  const entry = getEquippedWeapons()[index];
+  const entry = getEquippedWeaponSlots()[index];
   const weapon = entry?.weapon;
   ctx.save();
   const colors = getWeaponTierColors(entry?.level || 0);
@@ -611,7 +781,7 @@ function drawWeaponSlot(x, y, size, index) {
     const iconSize = size * 0.8;
     const iconX = x + (size - iconSize) / 2;
     const iconY = y + (size - iconSize) / 2;
-    ctx.drawImage(images[weapon.projectile] || images.eraser, iconX, iconY, iconSize, iconSize);
+    drawImageContain(images[weapon.projectile] || images.eraser, iconX, iconY, iconSize, iconSize);
     if (entry.level > 1) {
       ctx.fillStyle = "#ffcb3f";
       ctx.font = "900 18px 'Microsoft JhengHei', system-ui, sans-serif";
@@ -619,17 +789,17 @@ function drawWeaponSlot(x, y, size, index) {
       ctx.textBaseline = "bottom";
       ctx.fillText(`x${entry.level}`, x + size - 8, y + size - 7);
     }
-    if (index === 0) {
-      drawCooldownShade(x, y, size);
-      drawCooldownText(x + size / 2, y + size - 14);
-    }
+    const cooldown = state.weaponCooldowns[index] || getWeaponCooldown(entry);
+    const timer = state.weaponTimers[index] || 0;
+    drawCooldownShade(x, y, size, timer, cooldown);
+    drawCooldownText(x + size / 2, y + size - 14, timer);
   }
 
   ctx.restore();
 }
 
-function drawCooldownShade(x, y, size) {
-  const progress = 1 - clamp(state.fireTimer / state.fireCooldown, 0, 1);
+function drawCooldownShade(x, y, size, timer, cooldown) {
+  const progress = 1 - clamp(timer / cooldown, 0, 1);
   if (progress >= 1) return;
 
   const start = -Math.PI / 2;
@@ -660,8 +830,8 @@ function drawCooldownShade(x, y, size) {
   ctx.restore();
 }
 
-function drawCooldownText(x, y) {
-  if (state.fireTimer <= 0.05) return;
+function drawCooldownText(x, y, timer) {
+  if (timer <= 0.05) return;
   ctx.save();
   ctx.font = "900 24px 'Microsoft JhengHei', system-ui, sans-serif";
   ctx.textAlign = "center";
@@ -669,10 +839,21 @@ function drawCooldownText(x, y) {
   ctx.lineWidth = 7;
   ctx.strokeStyle = "rgba(0, 0, 0, 0.72)";
   ctx.fillStyle = "#fff";
-  const text = state.fireTimer.toFixed(1);
+  const text = timer.toFixed(1);
   ctx.strokeText(text, x, y);
   ctx.fillText(text, x, y);
   ctx.restore();
+}
+
+function drawImageContain(image, x, y, width, height) {
+  if (!image?.width || !image?.height) {
+    ctx.drawImage(image, x, y, width, height);
+    return;
+  }
+  const scale = Math.min(width / image.width, height / image.height);
+  const drawWidth = image.width * scale;
+  const drawHeight = image.height * scale;
+  ctx.drawImage(image, x + (width - drawWidth) / 2, y + (height - drawHeight) / 2, drawWidth, drawHeight);
 }
 
 function updateHud() {
@@ -837,9 +1018,11 @@ function renderProfilePanel(tab = activeMenuTab) {
           <img src="assets/upgrade-character.png" alt="" />
           <div><strong>\u5c0f\u52c7\u8005 Lv ${getHeroTotalLevel()}</strong><span>\u5f37\u5316\u89d2\u8272\u80fd\u529b\uff0c\u8b93\u6bcf\u4e00\u5834\u66f4\u7a69\u3001\u66f4\u6709\u6536\u7a6b\u3002</span></div>
         </div>
-        ${renderUpgradeRow("heroCoin", "assets/coin.png", "\u96f6\u7528\u9322\u904b", `\u91d1\u5e63\u7372\u5f97 +${Math.round(getHeroCoinBonus() * 100)}%`)}
-        ${renderUpgradeRow("heroSpeed", "assets/upgrade-cooldown.png", "\u5feb\u901f\u624b\u611f", `\u6b66\u5668\u98db\u884c\u901f\u5ea6 ${getProjectileSpeed()}`)}
-        ${renderUpgradeRow("heroFocus", "assets/upgrade-character.png", "\u51b7\u975c\u5224\u65b7", `\u6bcf ${getFocusHealInterval()} \u6ce2\u984d\u5916\u4fee\u5fa9\u57ce\u7246`)}
+        ${renderUpgradeRow("heroCoin", "assets/coin.png", `\u96f6\u7528\u9322\u904b Lv ${profile.heroCoinLevel}`, `\u91d1\u5e63\u7372\u5f97 +${Math.round(getHeroCoinBonus() * 100)}%`)}
+        ${renderUpgradeRow("heroAttack", "assets/upgrade-damage.png", `\u7528\u529b\u6295\u64f2 Lv ${profile.heroAttackLevel}`, `\u57fa\u790e\u653b\u64ca +${getHeroAttackBonus()}`)}
+        ${renderUpgradeRow("heroCrit", "assets/upgrade-character.png", `\u5f31\u9ede\u773c\u529b Lv ${profile.heroCritLevel}`, `\u7206\u64ca\u7387 ${Math.round(getCritChance() * 100)}%`)}
+        ${renderUpgradeRow("heroCritDamage", "assets/upgrade-size.png", `\u7206\u64ca\u529b\u9053 Lv ${profile.heroCritDamageLevel}`, `\u7206\u64ca\u50b7\u5bb3 x${getCritMultiplier().toFixed(2)}`)}
+        ${renderUpgradeRow("heroSpeed", "assets/upgrade-cooldown.png", `\u5feb\u901f\u624b\u611f Lv ${profile.heroSpeedLevel}`, `\u98db\u884c\u901f\u5ea6 +${getProjectileSpeedBonus()}`)}
       </div>
     `;
     return;
@@ -847,7 +1030,7 @@ function renderProfilePanel(tab = activeMenuTab) {
 
   if (tab === "equipment") {
     profilePanel.innerHTML = `
-      <div class="equipment-panel">
+        <div class="equipment-panel">
         <div class="section-title">\u651c\u5e36\u6b66\u5668 8</div>
         <div class="equipment-slots">${renderEquipmentSlots()}</div>
         <div class="section-title">\u80cc\u5305</div>
@@ -859,7 +1042,9 @@ function renderProfilePanel(tab = activeMenuTab) {
 
   if (tab === "wall") {
     profilePanel.innerHTML = `
-      ${renderUpgradeRow("wall", "assets/upgrade-wall.png", `\u57ce\u7246 Lv ${profile.wallLevel}`, `\u6700\u5927\u8840\u91cf ${getMaxWallHp()} / \u6e1b\u50b7 ${Math.round(getWallDamageReduction() * 100)}%`)}
+      ${renderUpgradeRow("wallHp", "assets/upgrade-wall.png", `\u57ce\u7246\u8840\u91cf Lv ${profile.wallHpLevel}`, `\u6700\u5927\u8840\u91cf ${getMaxWallHp()}`)}
+      ${renderUpgradeRow("wallGuard", "assets/upgrade-repair.png", `\u7246\u9762\u52a0\u56fa Lv ${profile.wallGuardLevel}`, `\u53d7\u5230\u50b7\u5bb3 -${Math.round(getWallDamageReduction() * 100)}%`)}
+      ${renderUpgradeRow("wallRegen", "assets/upgrade-cooldown.png", `\u81ea\u52d5\u4fee\u88dc Lv ${profile.wallRegenLevel}`, `\u6bcf ${getWallRegenInterval()} \u79d2\u56de\u5fa9 ${getWallRegenAmount()} \u8840\u91cf`)}
     `;
     return;
   }
@@ -890,7 +1075,8 @@ function renderEquipmentSlots() {
       const weapon = getWeapon(slot?.id);
       const level = Math.max(1, Number(slot?.level) || 1);
       const content = weapon ? `<img src="${weapon.icon}" alt="" />${level > 1 ? `<span class="equip-level">x${level}</span>` : ""}` : "";
-      return `<button type="button" draggable="${weapon ? "true" : "false"}" class="equip-slot ${weapon ? getWeaponTierClass(level) : "empty"}" data-equip-slot="${index}">${content}</button>`;
+      const selected = selectedWeaponInfo?.source === "equip" && selectedWeaponInfo.index === index ? "selected" : "";
+      return `<button type="button" draggable="${weapon ? "true" : "false"}" class="equip-slot ${weapon ? getWeaponTierClass(level) : "empty"} ${selected}" data-equip-slot="${index}">${content}</button>`;
     })
     .join("");
 }
@@ -901,7 +1087,8 @@ function renderBackpackItems() {
       const weapon = getWeapon(item?.id);
       const level = Math.max(1, Number(item?.level) || 1);
       if (!weapon) return "";
-      return `<button type="button" class="backpack-item ${getWeaponTierClass(level)}" draggable="true" data-backpack-index="${index}" data-backpack-weapon="${weapon.id}"><img src="${weapon.icon}" alt="" />${level > 1 ? `<span class="equip-level">x${level}</span>` : ""}</button>`;
+      const selected = selectedWeaponInfo?.source === "bag" && selectedWeaponInfo.index === index ? "selected" : "";
+      return `<button type="button" class="backpack-item ${getWeaponTierClass(level)} ${selected}" draggable="true" data-backpack-index="${index}" data-backpack-weapon="${weapon.id}"><img src="${weapon.icon}" alt="" />${level > 1 ? `<span class="equip-level">x${level}</span>` : ""}</button>`;
     })
     .filter(Boolean);
   while (items.length < 20) {
@@ -910,15 +1097,77 @@ function renderBackpackItems() {
   return items.join("");
 }
 
+function renderSelectedWeaponInfo() {
+  const item = getSelectedWeaponItem();
+  if (!item) {
+    return `
+      <div class="weapon-info-panel">
+        <div class="weapon-info-empty">\u9ede\u9078\u6b66\u5668\u67e5\u770b\u653b\u64ca\u3001\u51b7\u537b\u548c\u5408\u6210\u8b8a\u5316</div>
+      </div>
+    `;
+  }
+
+  const weapon = getWeapon(item.id);
+  const entry = { weapon, level: item.level };
+  const next = item.level < 6 ? { weapon, level: item.level + 1 } : null;
+  const nextText = next
+    ? `x${item.level} \u2192 x${next.level}\uff1a\u653b\u64ca ${getWeaponDamage(next)} / \u51b7\u537b ${getWeaponCooldown(next).toFixed(2)}s / \u5927\u5c0f ${Math.round(getWeaponSize(next))}`
+    : "\u5df2\u9054\u76ee\u524d\u6700\u9ad8\u5408\u6210\u968e\u7d1a";
+
+  return `
+    <div class="weapon-info-panel">
+      <div class="weapon-info-head">
+        <img class="weapon-info-icon ${getWeaponTierClass(item.level)}" src="${weapon.icon}" alt="" />
+        <div><strong>${weapon.name} ${item.level > 1 ? `x${item.level}` : ""}</strong><span>\u540c\u968e\u80cc\u5305\u6b66\u5668\u53ef\u5408\u6210\u5347\u7d1a</span></div>
+      </div>
+      <div class="weapon-info-stats">
+        <span>\u653b\u64ca ${getWeaponDamage(entry)}</span>
+        <span>\u51b7\u537b ${getWeaponCooldown(entry).toFixed(2)}s</span>
+        <span>\u98db\u884c ${Math.round(getWeaponSpeed(entry))}</span>
+        <span>\u5927\u5c0f ${Math.round(getWeaponSize(entry))}</span>
+      </div>
+      <div class="weapon-info-next">${nextText}</div>
+    </div>
+  `;
+}
+
+function getSelectedWeaponItem() {
+  if (!selectedWeaponInfo) return null;
+  if (selectedWeaponInfo.source === "equip") return getEquippedSlot(selectedWeaponInfo.index);
+  if (selectedWeaponInfo.source === "bag") return getBackpackItem(selectedWeaponInfo.index);
+  return null;
+}
+
+function selectWeaponInfo(source, index) {
+  selectedWeaponInfo = { source, index };
+  openWeaponModal();
+  renderProfilePanel("equipment");
+}
+
+function openWeaponModal() {
+  const item = getSelectedWeaponItem();
+  if (!item) return;
+  weaponModalContent.innerHTML = renderSelectedWeaponInfo();
+  weaponModal.classList.remove("hidden");
+}
+
+function closeWeaponModal() {
+  weaponModal.classList.add("hidden");
+}
+
 function buyProfileUpgrade(type) {
   const cost = getProfileUpgradeCost(type);
   if (profile.coins < cost) return;
   profile.coins -= cost;
   if (type === "heroCoin") profile.heroCoinLevel += 1;
+  if (type === "heroAttack") profile.heroAttackLevel += 1;
+  if (type === "heroCrit") profile.heroCritLevel += 1;
+  if (type === "heroCritDamage") profile.heroCritDamageLevel += 1;
   if (type === "heroSpeed") profile.heroSpeedLevel += 1;
-  if (type === "heroFocus") profile.heroFocusLevel += 1;
   if (type === "weapon") profile.weaponLevel += 1;
-  if (type === "wall") profile.wallLevel += 1;
+  if (type === "wallHp") profile.wallHpLevel += 1;
+  if (type === "wallGuard") profile.wallGuardLevel += 1;
+  if (type === "wallRegen") profile.wallRegenLevel += 1;
   saveProfile();
   renderProfilePanel(activeMenuTab);
   updateHud();
@@ -939,11 +1188,18 @@ function applyUpgrade(upgrade) {
   if (effect.projectileDamage) state.projectileDamage += effect.projectileDamage;
   if (effect.cooldownMultiplier) {
     state.weaponCooldownMultiplier = Math.max(effect.minCooldownMultiplier, state.weaponCooldownMultiplier * effect.cooldownMultiplier);
-    state.fireCooldown = getBaseWeaponCooldown() * state.weaponCooldownMultiplier;
-    state.fireTimer = Math.min(state.fireTimer, state.fireCooldown);
+    for (let index = 0; index < state.weaponTimers.length; index += 1) {
+      state.weaponTimers[index] = Math.min(state.weaponTimers[index], getBaseWeaponCooldown() * state.weaponCooldownMultiplier);
+    }
   }
   if (effect.projectileCount) {
-    state.projectileCount = Math.min(effect.maxProjectileCount, state.projectileCount + effect.projectileCount);
+    state.projectileCount += effect.projectileCount;
+  }
+  if (effect.sideShots) {
+    state.sideShots += effect.sideShots;
+  }
+  if (effect.burstCount) {
+    state.burstCount += effect.burstCount;
   }
   if (effect.projectileSizeMultiplier) {
     state.projectileSizeMultiplier = Math.min(
@@ -963,11 +1219,11 @@ function bankRunCoins() {
 }
 
 function getMaxWallHp() {
-  return 100 + (profile.wallLevel - 1) * 18;
+  return 100 + (profile.wallHpLevel - 1) * 20;
 }
 
 function getBaseWeaponDamage() {
-  return profile.weaponLevel;
+  return profile.weaponLevel + getHeroAttackBonus();
 }
 
 function getBaseWeaponCooldownMultiplier() {
@@ -983,44 +1239,109 @@ function getProjectileSpeed() {
 }
 
 function getProjectileSpeedBonus() {
-  return (profile.heroSpeedLevel - 1) * 34;
+  return (profile.heroSpeedLevel - 1) * 24;
 }
 
 function getHeroCoinBonus() {
-  return (profile.heroCoinLevel - 1) * 0.06;
+  return Math.min(0.6, (profile.heroCoinLevel - 1) * 0.045);
+}
+
+function getHeroAttackBonus() {
+  return Math.floor((profile.heroAttackLevel - 1) * 0.7);
+}
+
+function getCritChance() {
+  return Math.min(0.32, 0.04 + (profile.heroCritLevel - 1) * 0.018);
+}
+
+function getCritMultiplier() {
+  return Math.min(2.35, 1.45 + (profile.heroCritDamageLevel - 1) * 0.055);
 }
 
 function getHeroTotalLevel() {
-  return profile.heroCoinLevel + profile.heroSpeedLevel + profile.heroFocusLevel - 2;
+  return (
+    profile.heroCoinLevel +
+    profile.heroAttackLevel +
+    profile.heroCritLevel +
+    profile.heroCritDamageLevel +
+    profile.heroSpeedLevel -
+    4
+  );
 }
 
-function getFocusHealInterval() {
-  return Math.max(2, 5 - Math.floor((profile.heroFocusLevel - 1) / 2));
+function getWallRegenInterval() {
+  return 5;
+}
+
+function getWallRegenAmount() {
+  return 2 + (profile.wallRegenLevel - 1) * 3;
 }
 
 function getWallDamageReduction() {
-  return Math.min(0.35, (profile.wallLevel - 1) * 0.025);
+  return Math.min(0.36, (profile.wallGuardLevel - 1) * 0.025);
 }
 
 function getWeaponUpgradeCost() {
   return 35 + profile.weaponLevel * 25;
 }
 
-function getWallUpgradeCost() {
-  return 30 + profile.wallLevel * 24;
+function getProfileUpgradeCost(type) {
+  if (type === "heroCoin") return scaleCost(34, profile.heroCoinLevel, 1.28);
+  if (type === "heroAttack") return scaleCost(42, profile.heroAttackLevel, 1.32);
+  if (type === "heroCrit") return scaleCost(46, profile.heroCritLevel, 1.34);
+  if (type === "heroCritDamage") return scaleCost(48, profile.heroCritDamageLevel, 1.35);
+  if (type === "heroSpeed") return scaleCost(36, profile.heroSpeedLevel, 1.26);
+  if (type === "weapon") return getWeaponUpgradeCost();
+  if (type === "wallHp") return scaleCost(38, profile.wallHpLevel, 1.28);
+  if (type === "wallGuard") return scaleCost(44, profile.wallGuardLevel, 1.33);
+  if (type === "wallRegen") return scaleCost(36, profile.wallRegenLevel, 1.3);
+  return 999999;
 }
 
-function getProfileUpgradeCost(type) {
-  if (type === "heroCoin") return 25 + profile.heroCoinLevel * 18;
-  if (type === "heroSpeed") return 25 + profile.heroSpeedLevel * 18;
-  if (type === "heroFocus") return 30 + profile.heroFocusLevel * 20;
-  if (type === "weapon") return getWeaponUpgradeCost();
-  if (type === "wall") return getWallUpgradeCost();
-  return 999999;
+function scaleCost(base, level, growth) {
+  return Math.round(base * growth ** (level - 1));
 }
 
 function getWeapon(id) {
   return WEAPONS.find((weapon) => weapon.id === id) || null;
+}
+
+function getWeaponDamage(entry) {
+  return Math.ceil(getBaseWeaponDamage() * entry.weapon.damageScale * entry.level);
+}
+
+function getBattleWeaponDamage(entry) {
+  return Math.ceil(state.projectileDamage * entry.weapon.damageScale * entry.level);
+}
+
+function rollWeaponDamage(entry) {
+  const crit = Math.random() < getCritChance();
+  const baseDamage = getBattleWeaponDamage(entry);
+  return {
+    damage: Math.ceil(baseDamage * (crit ? getCritMultiplier() : 1)),
+    crit,
+  };
+}
+
+function getWeaponCooldown(entry) {
+  return Math.max(0.45, entry.weapon.cooldown * getBaseWeaponCooldownMultiplier() * (1 - (entry.level - 1) * 0.035));
+}
+
+function getWeaponSpeed(entry) {
+  return entry.weapon.speed + getProjectileSpeedBonus() + (entry.level - 1) * 18;
+}
+
+function getWeaponSize(entry) {
+  return entry.weapon.size * (1 + (entry.level - 1) * 0.12);
+}
+
+function getEquippedWeaponSlots() {
+  return profile.equippedWeapons.map((slot, index) => {
+    const item = getEquippedSlot(index);
+    if (!item) return null;
+    const weapon = getWeapon(item.id);
+    return weapon ? { weapon, level: item.level } : null;
+  });
 }
 
 function getEquippedWeapons() {
@@ -1176,7 +1497,16 @@ function finishEquipmentPointerDrag(event) {
   cleanupEquipmentPointerDrag(event.pointerId);
   clearEquipmentDragTargets();
 
-  if (!didDrag) return;
+  suppressEquipmentClick = true;
+  setTimeout(() => {
+    suppressEquipmentClick = false;
+  }, 0);
+
+  if (!didDrag) {
+    if (source.startsWith("slot:")) selectWeaponInfo("equip", Number(source.slice(5)));
+    if (source.startsWith("bag:")) selectWeaponInfo("bag", Number(source.slice(4)));
+    return;
+  }
 
   const target = document.elementFromPoint(event.clientX, event.clientY);
   const slot = target?.closest?.("[data-equip-slot]");
@@ -1285,13 +1615,18 @@ function loadProfile() {
   try {
     const saved = JSON.parse(localStorage.getItem(PROFILE_KEY) || "{}");
     const oldHeroLevel = Math.max(1, Number(saved.heroLevel) || 1);
+    const oldWallLevel = Math.max(1, Number(saved.wallLevel) || 1);
     return {
       coins: Math.max(0, Number(saved.coins) || 0),
       heroCoinLevel: Math.max(1, Number(saved.heroCoinLevel) || oldHeroLevel),
+      heroAttackLevel: Math.max(1, Number(saved.heroAttackLevel) || 1),
+      heroCritLevel: Math.max(1, Number(saved.heroCritLevel) || 1),
+      heroCritDamageLevel: Math.max(1, Number(saved.heroCritDamageLevel) || 1),
       heroSpeedLevel: Math.max(1, Number(saved.heroSpeedLevel) || 1),
-      heroFocusLevel: Math.max(1, Number(saved.heroFocusLevel) || 1),
       weaponLevel: Math.max(1, Number(saved.weaponLevel) || 1),
-      wallLevel: Math.max(1, Number(saved.wallLevel) || 1),
+      wallHpLevel: Math.max(1, Number(saved.wallHpLevel) || oldWallLevel),
+      wallGuardLevel: Math.max(1, Number(saved.wallGuardLevel) || 1),
+      wallRegenLevel: Math.max(1, Number(saved.wallRegenLevel) || 1),
       weaponBag: normalizeWeaponBag(saved.weaponBag),
       equippedWeapons: normalizeEquippedWeapons(saved.equippedWeapons),
       backpackItems: normalizeBackpackItems(saved.backpackItems, saved.weaponBag, saved.equippedWeapons),
@@ -1309,18 +1644,22 @@ function createDefaultProfile() {
   return {
     coins: 0,
     heroCoinLevel: 1,
+    heroAttackLevel: 1,
+    heroCritLevel: 1,
+    heroCritDamageLevel: 1,
     heroSpeedLevel: 1,
-    heroFocusLevel: 1,
     weaponLevel: 1,
-    wallLevel: 1,
-    weaponBag: { eraser: 8 },
-    backpackItems: Array.from({ length: 7 }, () => ({ id: "eraser", level: 1 })),
+    wallHpLevel: 1,
+    wallGuardLevel: 1,
+    wallRegenLevel: 1,
+    weaponBag: { eraser: 1 },
+    backpackItems: [],
     equippedWeapons: [{ id: "eraser", level: 1 }, null, null, null, null, null, null, null],
   };
 }
 
 function normalizeWeaponBag(bag) {
-  return { eraser: Math.max(8, Number(bag?.eraser) || 8) };
+  return { eraser: Math.max(1, Number(bag?.eraser) || 1) };
 }
 
 function normalizeEquippedWeapons(equipped) {
@@ -1389,11 +1728,6 @@ function roundRect(x, y, width, height, radius) {
 function startDrag(event) {
   if (!state.running) return;
   const point = canvasPoint(event);
-  const hero = state.hero;
-  const withinHeroX = Math.abs(point.x - hero.x) <= hero.width * 0.72;
-  const withinHeroY = Math.abs(point.y - hero.y) <= hero.height * 0.9;
-  if (!withinHeroX || !withinHeroY) return;
-
   event.preventDefault();
   drag.active = true;
   drag.pointerId = event.pointerId;

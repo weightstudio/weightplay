@@ -148,9 +148,23 @@ window.WONDER_DATA = {
     {
       id: "double",
       name: "\u96d9\u91cd\u6295\u64f2",
-      desc: "\u6bcf\u6b21\u591a\u4e1f 1 \u500b\uff0c\u6700\u591a 3 \u500b",
+      desc: "\u6bcf\u6b21\u591a\u4e1f 1 \u500b",
       icon: "assets/upgrade-double.png",
-      effect: { projectileCount: 1, maxProjectileCount: 3 },
+      effect: { projectileCount: 1 },
+    },
+    {
+      id: "sideShot",
+      name: "\u5de6\u53f3\u659c\u5c04",
+      desc: "\u6b63\u9762\u653b\u64ca\u6642\u984d\u5916\u5f80\u5de6\u53f3\u5404\u4e1f 1 \u500b",
+      icon: "assets/upgrade-double.png",
+      effect: { sideShots: 1 },
+    },
+    {
+      id: "burst",
+      name: "\u9023\u7e8c\u6295\u64f2",
+      desc: "\u6bcf\u6b21\u51fa\u624b\u8ffd\u52a0 1 \u6ce2\u9023\u5c04",
+      icon: "assets/upgrade-cooldown.png",
+      effect: { burstCount: 1 },
     },
     {
       id: "size",

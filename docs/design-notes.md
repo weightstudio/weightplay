@@ -43,6 +43,7 @@ The main menu uses five bottom tabs:
 
 - Prefer image icons over text labels for menu buttons, upgrades, weapons, enemies, currency, and key battle UI.
 - When a new image is needed, add it to `docs/image-requests.md` with target filename, usage, size, and a matching prompt.
+- `docs/image-requests.md` is only for unfinished image requests. When a requested image is completed and placed in `assets/`, delete that row from `docs/image-requests.md` instead of marking it as existing, because the whole file may be sent to an image AI.
 - Use existing bright toy-like 2D style prompts so new images match the current assets.
 
 ## Enemy Roles
