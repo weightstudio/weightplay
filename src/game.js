@@ -42,6 +42,16 @@ let activeMenuTab = "battle";
 let draggedWeaponId = null;
 let draggedEquipSlot = null;
 let draggedBackpackIndex = null;
+let fullscreenRequested = false;
+const equipmentPointerDrag = {
+  active: false,
+  started: false,
+  pointerId: null,
+  source: "",
+  startX: 0,
+  startY: 0,
+  ghost: null,
+};
 
 const drag = {
   active: false,
@@ -117,6 +127,7 @@ function restart() {
 
 function startLevel(levelIndex) {
   if (levelIndex + 1 > highestUnlocked) return;
+  requestGameFullscreen();
   state = makeState(levelIndex);
   state.running = true;
   settingsBtn.classList.remove("hidden");
@@ -157,11 +168,6 @@ profilePanel.addEventListener("click", (event) => {
   const button = event.target.closest("button[data-profile-upgrade]");
   if (!button) return;
   buyProfileUpgrade(button.dataset.profileUpgrade);
-});
-profilePanel.addEventListener("click", (event) => {
-  const item = event.target.closest("[data-backpack-weapon]");
-  if (!item) return;
-  equipBackpackItemInFirstSlot(Number(item.dataset.backpackIndex));
 });
 profilePanel.addEventListener("dragstart", (event) => {
   const item = event.target.closest("[data-backpack-weapon]");
@@ -208,6 +214,10 @@ profilePanel.addEventListener("drop", (event) => {
   }
   if (backpack) unequipWeapon(draggedEquipSlot);
 });
+profilePanel.addEventListener("pointerdown", startEquipmentPointerDrag);
+profilePanel.addEventListener("pointermove", moveEquipmentPointerDrag);
+profilePanel.addEventListener("pointerup", finishEquipmentPointerDrag);
+profilePanel.addEventListener("pointercancel", cancelEquipmentPointerDrag);
 settingsBtn.addEventListener("click", showPauseMenu);
 resumeBtn.addEventListener("click", resumeBattle);
 leaveBtn.addEventListener("click", leaveBattle);
@@ -215,6 +225,7 @@ canvas.addEventListener("pointerdown", startDrag);
 canvas.addEventListener("pointermove", moveDrag);
 canvas.addEventListener("pointerup", stopDrag);
 canvas.addEventListener("pointercancel", stopDrag);
+document.addEventListener("pointerdown", requestGameFullscreen, { once: true });
 
 function loop(now) {
   const dt = Math.min((now - lastTime) / 1000, 0.033);
@@ -1119,6 +1130,126 @@ function mergeOrSwapBackpackItems(fromIndex, toIndex) {
 
 function getBackpackItem(index) {
   return normalizeWeaponItem(profile.backpackItems[index]);
+}
+
+function startEquipmentPointerDrag(event) {
+  if (activeMenuTab !== "equipment" || equipmentPointerDrag.active) return;
+  const backpackItem = event.target.closest("[data-backpack-index]");
+  const equipSlot = event.target.closest("[data-equip-slot]");
+  if (!backpackItem && !equipSlot) return;
+
+  if (equipSlot && !getEquippedSlot(Number(equipSlot.dataset.equipSlot))) return;
+
+  const source = backpackItem ? `bag:${backpackItem.dataset.backpackIndex}` : `slot:${equipSlot.dataset.equipSlot}`;
+  equipmentPointerDrag.active = true;
+  equipmentPointerDrag.started = false;
+  equipmentPointerDrag.pointerId = event.pointerId;
+  equipmentPointerDrag.source = source;
+  equipmentPointerDrag.startX = event.clientX;
+  equipmentPointerDrag.startY = event.clientY;
+  equipmentPointerDrag.ghost = null;
+  profilePanel.setPointerCapture?.(event.pointerId);
+}
+
+function moveEquipmentPointerDrag(event) {
+  if (!equipmentPointerDrag.active || event.pointerId !== equipmentPointerDrag.pointerId) return;
+  const dx = event.clientX - equipmentPointerDrag.startX;
+  const dy = event.clientY - equipmentPointerDrag.startY;
+
+  if (!equipmentPointerDrag.started && Math.hypot(dx, dy) < 8) return;
+
+  if (!equipmentPointerDrag.started) {
+    equipmentPointerDrag.started = true;
+    equipmentPointerDrag.ghost = createEquipmentDragGhost(equipmentPointerDrag.source, event.clientX, event.clientY);
+  }
+
+  event.preventDefault();
+  moveEquipmentDragGhost(event.clientX, event.clientY);
+  updateEquipmentDragTarget(event.clientX, event.clientY);
+}
+
+function finishEquipmentPointerDrag(event) {
+  if (!equipmentPointerDrag.active || event.pointerId !== equipmentPointerDrag.pointerId) return;
+  const source = equipmentPointerDrag.source;
+  const didDrag = equipmentPointerDrag.started;
+
+  cleanupEquipmentPointerDrag(event.pointerId);
+  clearEquipmentDragTargets();
+
+  if (!didDrag) return;
+
+  const target = document.elementFromPoint(event.clientX, event.clientY);
+  const slot = target?.closest?.("[data-equip-slot]");
+  const backpackItem = target?.closest?.("[data-backpack-index]");
+  const backpack = target?.closest?.("[data-backpack-drop]");
+
+  if (slot) {
+    handleEquipDrop(Number(slot.dataset.equipSlot), source);
+    return;
+  }
+  if (backpackItem) {
+    handleBackpackDrop(Number(backpackItem.dataset.backpackIndex), source);
+    return;
+  }
+  if (backpack && source.startsWith("slot:")) {
+    unequipWeapon(Number(source.slice(5)));
+  }
+}
+
+function cancelEquipmentPointerDrag(event) {
+  if (!equipmentPointerDrag.active || event.pointerId !== equipmentPointerDrag.pointerId) return;
+  cleanupEquipmentPointerDrag(event.pointerId);
+  clearEquipmentDragTargets();
+}
+
+function createEquipmentDragGhost(source, x, y) {
+  const element = source.startsWith("bag:")
+    ? profilePanel.querySelector(`[data-backpack-index="${source.slice(4)}"]`)
+    : profilePanel.querySelector(`[data-equip-slot="${source.slice(5)}"]`);
+  if (!element) return null;
+  const ghost = element.cloneNode(true);
+  ghost.classList.add("drag-ghost");
+  document.body.append(ghost);
+  moveEquipmentDragGhost(x, y);
+  return ghost;
+}
+
+function moveEquipmentDragGhost(x, y) {
+  if (!equipmentPointerDrag.ghost) return;
+  equipmentPointerDrag.ghost.style.left = `${x}px`;
+  equipmentPointerDrag.ghost.style.top = `${y}px`;
+}
+
+function updateEquipmentDragTarget(x, y) {
+  clearEquipmentDragTargets();
+  const target = document.elementFromPoint(x, y);
+  const slot = target?.closest?.("[data-equip-slot]");
+  const backpackItem = target?.closest?.("[data-backpack-index]");
+  if (slot) slot.classList.add("drag-over");
+  if (backpackItem) backpackItem.classList.add("drag-over");
+}
+
+function clearEquipmentDragTargets() {
+  for (const item of profilePanel.querySelectorAll(".drag-over")) item.classList.remove("drag-over");
+}
+
+function cleanupEquipmentPointerDrag(pointerId) {
+  if (equipmentPointerDrag.ghost) equipmentPointerDrag.ghost.remove();
+  if (pointerId != null) profilePanel.releasePointerCapture?.(pointerId);
+  equipmentPointerDrag.active = false;
+  equipmentPointerDrag.started = false;
+  equipmentPointerDrag.pointerId = null;
+  equipmentPointerDrag.source = "";
+  equipmentPointerDrag.ghost = null;
+}
+
+function requestGameFullscreen() {
+  if (fullscreenRequested) return;
+  fullscreenRequested = true;
+  const target = document.documentElement;
+  if (target.requestFullscreen) {
+    target.requestFullscreen({ navigationUI: "hide" }).catch(() => {});
+  }
 }
 
 function getWeaponTierCost(level) {

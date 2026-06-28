@@ -13,9 +13,11 @@ html,
 body {
   width: 100%;
   height: 100%;
+  height: 100dvh;
   margin: 0;
   overflow: hidden;
   touch-action: none;
+  overscroll-behavior: none;
 }
 
 body {
@@ -28,8 +30,8 @@ body {
 
 .game-shell {
   position: relative;
-  width: min(100vw, 56.28vh);
-  height: min(100vh, 177.68vw);
+  width: min(100vw, 56.28dvh);
+  height: min(100dvh, 177.68vw);
   max-width: 950px;
   max-height: 1688px;
   overflow: hidden;
@@ -124,7 +126,7 @@ canvas {
   align-content: center;
   justify-items: center;
   gap: 12px;
-  padding: 18px 24px 96px;
+  padding: max(12px, env(safe-area-inset-top)) 24px calc(96px + env(safe-area-inset-bottom));
   text-align: center;
   background: rgba(8, 11, 18, 0.58);
 }
@@ -132,7 +134,7 @@ canvas {
 .overlay.equipment-screen {
   align-content: start;
   gap: 4px;
-  padding: 14px 24px 100px;
+  padding: max(10px, env(safe-area-inset-top)) 24px calc(100px + env(safe-area-inset-bottom));
 }
 
 .overlay.equipment-screen #overlayText {
@@ -163,8 +165,10 @@ canvas {
 
 .overlay button {
   justify-self: center;
+  align-self: center;
   min-width: 128px;
   min-height: 46px;
+  max-height: 58px;
   border: 0;
   border-radius: 8px;
   background: #ffcb3f;
@@ -179,7 +183,7 @@ canvas {
   justify-items: center;
   gap: 12px;
   width: min(380px, calc(100vw - 48px));
-  max-height: min(760px, calc(100vh - 245px));
+  max-height: min(760px, calc(100dvh - 245px));
   overflow-y: auto;
   padding: 2px;
 }
@@ -263,10 +267,12 @@ canvas {
 
 .backpack-grid {
   align-content: start;
-  height: 322px;
+  height: min(322px, 40dvh);
+  min-height: 190px;
   max-height: 322px;
   overflow-y: auto;
   padding-right: 4px;
+  touch-action: pan-y;
 }
 
 .equip-slot,
@@ -309,6 +315,11 @@ canvas {
   background: rgba(255, 203, 63, 0.18);
 }
 
+.backpack-item.drag-over {
+  outline: 3px solid rgba(255, 203, 63, 0.85);
+  outline-offset: -3px;
+}
+
 .backpack-item,
 .backpack-empty {
   height: 58px;
@@ -317,6 +328,13 @@ canvas {
 
 .backpack-item {
   cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+.equip-slot {
+  touch-action: none;
+  user-select: none;
 }
 
 .equipment-slots .equip-slot.tier-1,
@@ -545,6 +563,7 @@ canvas {
   width: 100%;
   min-width: 0;
   min-height: 72px;
+  max-height: none;
   padding: 10px 12px;
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 8px;
@@ -578,4 +597,56 @@ canvas {
     font-size: 14px;
     padding: 8px 10px;
   }
+
+  .overlay {
+    gap: 8px;
+    padding-right: 18px;
+    padding-left: 18px;
+  }
+
+  .overlay button {
+    min-height: 42px;
+    font-size: 16px;
+  }
+
+  .menu-tabs button {
+    min-height: 64px;
+  }
+
+  .menu-tabs img,
+  .tab-gear {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@supports not (height: 100dvh) {
+  html,
+  body {
+    height: 100vh;
+  }
+
+  .game-shell {
+    width: min(100vw, 56.28vh);
+    height: min(100vh, 177.68vw);
+  }
+
+  .menu-content {
+    max-height: min(760px, calc(100vh - 245px));
+  }
+
+  .backpack-grid {
+    height: min(322px, 40vh);
+  }
+}
+
+.drag-ghost {
+  position: fixed;
+  z-index: 20;
+  width: 58px;
+  height: 58px;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  opacity: 0.9;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.45);
 }
