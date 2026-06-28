@@ -860,7 +860,9 @@ function drawEnemies() {
       ctx.lineWidth = 7;
       ctx.strokeStyle = "rgba(0, 0, 0, 0.76)";
       ctx.fillStyle = "#ffdf57";
-      const label = `${enemy.type.name} \u738b`;
+      const reduction = Math.round((enemy.bossReduction || 0) * 100);
+      const shieldText = enemy.bossShieldHits > 0 ? ` \u76fe${enemy.bossShieldHits}` : "";
+      const label = `${enemy.type.name} \u738b -${reduction}%${shieldText}`;
       ctx.strokeText(label, x, enemy.y - enemy.size * 0.48);
       ctx.fillText(label, x, enemy.y - enemy.size * 0.48);
       ctx.restore();
@@ -876,26 +878,6 @@ function drawEnemies() {
 }
 
 function drawBossUi() {
-  const boss = state.enemies.find((enemy) => enemy.isBoss && enemy.hp > 0);
-  if (boss) {
-    const width = W * 0.72;
-    const x = (W - width) / 2;
-    const y = 156;
-    ctx.save();
-    ctx.fillStyle = "rgba(8, 10, 14, 0.72)";
-    roundRect(x - 12, y - 38, width + 24, 72, 10);
-    ctx.fill();
-    ctx.font = "900 24px 'Microsoft JhengHei', system-ui, sans-serif";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.fillStyle = "#ffdf57";
-    const reduction = Math.round((boss.bossReduction || 0) * 100);
-    const shieldText = boss.bossShieldHits > 0 ? `  \u76fe${boss.bossShieldHits}` : "";
-    ctx.fillText(`${boss.type.name} \u738b  -${reduction}%${shieldText}`, W / 2, y - 18);
-    drawHpBar(x, y + 2, width, 22, boss.hp / boss.maxHp, 7);
-    ctx.restore();
-  }
-
   if (state.bossBanner) {
     ctx.save();
     ctx.globalAlpha = Math.min(1, state.bossBanner.life / 0.5);
