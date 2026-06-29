@@ -22,6 +22,230 @@ const weaponModal = document.querySelector("#weaponModal");
 const weaponModalClose = document.querySelector("#weaponModalClose");
 const weaponModalContent = document.querySelector("#weaponModalContent");
 
+// Shared Localization Helper Functions
+function locale() {
+  return window.WonderI18n?.locale() || "en";
+}
+
+function t(key, params = {}) {
+  const table = dictionary[locale()] || dictionary.en;
+  const fallback = dictionary.en;
+  let val = table[key] || fallback[key] || key;
+  return Object.entries(params).reduce((str, [name, v]) => {
+    return str.replaceAll(`{${name}}`, String(v));
+  }, val);
+}
+
+function translateStaticUI() {
+  document.documentElement.lang = locale();
+  for (const element of document.querySelectorAll("[data-i18n]")) {
+    element.textContent = t(element.dataset.i18n);
+  }
+}
+
+// Local Localization Dictionary
+const dictionary = {
+  en: {
+    hud_stage: "Stage",
+    hud_wave: "Wave",
+    hud_coins: "Coins",
+    tab_character: "Hero",
+    tab_equipment: "Weapons",
+    tab_battle: "Stages",
+    tab_wall: "Wall",
+    tab_settings: "Settings",
+    menu_character: "Hero Stats",
+    menu_equipment: "Weapons Upgrade",
+    menu_battle: "Select Stage",
+    menu_wall: "Wall Upgrade",
+    menu_settings: "Settings",
+    hero_title: "Little Hero Lv {lvl}",
+    hero_subtitle: "Upgrade hero stats to survive longer and collect more coins.",
+    heroCoin_title: "Pocket Money Luck Lv {lvl}",
+    heroCoin_desc: "Coins Earned +{pct}%",
+    heroAttack_title: "Hard Throw Lv {lvl}",
+    heroAttack_desc: "Base Attack +{bonus}",
+    heroCrit_title: "Weak Spot Sight Lv {lvl}",
+    heroCrit_desc: "Crit Chance {pct}%",
+    heroCritDamage_title: "Crit Force Lv {lvl}",
+    heroCritDamage_desc: "Crit Damage x{mul}",
+    heroSpeed_title: "Fast Tactility Lv {lvl}",
+    heroSpeed_desc: "Projectile Speed +{bonus}",
+    equip_weapons: "Equipped Weapons 8",
+    equip_backpack: "Backpack",
+    wallHp_title: "Wall HP Lv {lvl}",
+    wallHp_desc: "Max HP {val}",
+    wallGuard_title: "Wall Fortify Lv {lvl}",
+    wallGuard_desc: "Damage Taken -{pct}%",
+    wallRegen_title: "Auto Repair Lv {lvl}",
+    wallRegen_desc: "Every {sec}s recover {val} HP",
+    settings_progress: "Progress",
+    settings_unlocked_stages: "Unlocked to Stage {count}",
+    settings_pause_question: "Resume or Leave Battle?",
+    language: "Language",
+    upgrade_panel_title: "Select Upgrade",
+    upgrade_wave_complete: "Wave {wave} Complete",
+    settlement_title: "Battle Summary",
+    settlement_new_clear: "First Clearance Challenge Complete!",
+    settlement_reclear: "Cleared Stage Complete!",
+    settlement_unlocked: "Level {id} unlocked!",
+    settlement_no_drops: "No weapon drops this time",
+    btn_next: "Next Level",
+    btn_confirm: "Back to Menu",
+    btn_resume: "Resume",
+    btn_leave: "Leave Battle",
+    btn_start: "Start",
+    btn_play_again: "Play Again",
+    weapon_modal_empty: "Select a weapon to view damage, cooldown and merge details.",
+    weapon_upgrade_tip: "Merge matching backpack items to upgrade.",
+    weapon_stats_dmg: "Damage {val}",
+    weapon_stats_cd: "Cooldown {val}s",
+    weapon_stats_spd: "Speed {val}",
+    weapon_stats_size: "Size {val}",
+    weapon_max_tier: "Already reached maximum level",
+    weapon_next_tier_preview: "x{lvl} → x{next}：Damage {dmg} / Cooldown {cd}s / Size {size}",
+    defeat_title: "Wall Destroyed",
+    defeat_desc: "Stage {lvl}  Coins earned: {coins}",
+    victory_title: "Victory!",
+    victory_challenge_success: "Challenge Complete!",
+    victory_stage_clear: "Stage Clear!",
+    loading_progress: "Loading {pct}%",
+    load_fail: "Asset Load Fail",
+    load_fail_desc: "Failed to load. Please refresh.",
+    enemy_toilet: "Charging Toilet",
+    enemy_tv: "Wobbling TV",
+    enemy_fridge: "Heavy Fridge",
+    enemy_wardrobe: "Slamming Wardrobe",
+    enemy_surveillance: "Dashing CCTV",
+    enemy_books: "Magic Bookstack",
+    enemy_clock: "Sprinting Alarm",
+    enemy_pencilbox: "Pencilcase Rammer",
+    boss_spawned: "{name} Boss Spawned!",
+    boss_label: "{name} Boss -{pct}%{shield}",
+    boss_shield: "Shield {count}",
+    weapon_eraser: "Eraser",
+    weapon_pencil: "Pencil",
+    weapon_ruler: "Ruler",
+    upgrade_damage_name: "Sharp Eraser",
+    upgrade_damage_desc: "Weapon Damage +1",
+    upgrade_cooldown_name: "Fast Hands",
+    upgrade_cooldown_desc: "Weapon Cooldown -15%",
+    upgrade_double_name: "Double Throw",
+    upgrade_double_desc: "Throws 1 extra weapon",
+    upgrade_sideShot_name: "Side Shot",
+    upgrade_sideShot_desc: "Throws 2 extra weapons diagonally",
+    upgrade_burst_name: "Burst Throw",
+    upgrade_burst_desc: "Each throw fires an extra wave",
+    upgrade_size_name: "Giant Stationary",
+    upgrade_size_desc: "Weapon Size +20%",
+    upgrade_wallHp_name: "Wall Repair",
+    upgrade_wallHp_desc: "Restore 12 Wall HP",
+    upgrade_coinMultiplier_name: "Salary Bonus",
+    upgrade_coinMultiplier_desc: "Gold Coins Earned +35%",
+    crit_label: "CRIT"
+  },
+  "zh-Hant": {
+    hud_stage: "關卡",
+    hud_wave: "波次",
+    hud_coins: "金幣",
+    tab_character: "角色",
+    tab_equipment: "裝備",
+    tab_battle: "戰鬥",
+    tab_wall: "城牆",
+    tab_settings: "設定",
+    menu_character: "角色狀態",
+    menu_equipment: "裝備強化",
+    menu_battle: "選擇關卡",
+    menu_wall: "城牆強化",
+    menu_settings: "設定",
+    hero_title: "小勇者 Lv {lvl}",
+    hero_subtitle: "強化角色能力，讓每一場更穩、更有收穫。",
+    heroCoin_title: "零用錢運 Lv {lvl}",
+    heroCoin_desc: "金幣獲得 +{pct}%",
+    heroAttack_title: "用力投擲 Lv {lvl}",
+    heroAttack_desc: "基礎攻擊 +{bonus}",
+    heroCrit_title: "弱點眼力 Lv {lvl}",
+    heroCrit_desc: "爆擊率 {pct}%",
+    heroCritDamage_title: "爆擊力道 Lv {lvl}",
+    heroCritDamage_desc: "爆擊傷害 x{mul}",
+    heroSpeed_title: "快速手感 Lv {lvl}",
+    heroSpeed_desc: "飛行速度 +{bonus}",
+    equip_weapons: "攜帶武器 8",
+    equip_backpack: "背包",
+    wallHp_title: "城牆血量 Lv {lvl}",
+    wallHp_desc: "最大血量 {val}",
+    wallGuard_title: "牆面加固 Lv {lvl}",
+    wallGuard_desc: "受到傷害 -{pct}%",
+    wallRegen_title: "自動修補 Lv {lvl}",
+    wallRegen_desc: "每 {sec} 秒回復 {val} 血量",
+    settings_progress: "進度",
+    settings_unlocked_stages: "已解鎖到第 {count} 關",
+    settings_pause_question: "要繼續或離開戰鬥？",
+    language: "語言",
+    upgrade_panel_title: "選擇強化",
+    upgrade_wave_complete: "Wave {wave} 完成",
+    settlement_title: "戰鬥結算",
+    settlement_new_clear: "新關卡挑戰成功！",
+    settlement_reclear: "已通關關卡完成！",
+    settlement_unlocked: "解鎖第 {id} 關！",
+    settlement_no_drops: "本次沒有掉落武器",
+    btn_next: "下一關",
+    btn_confirm: "確認回主頁",
+    btn_resume: "繼續",
+    btn_leave: "離開戰鬥",
+    btn_start: "開始",
+    btn_play_again: "再玩一次",
+    weapon_modal_empty: "點選武器查看攻擊、冷卻和合成變化",
+    weapon_upgrade_tip: "同階背包武器可合成升級",
+    weapon_stats_dmg: "攻擊 {val}",
+    weapon_stats_cd: "冷卻 {val}秒",
+    weapon_stats_spd: "飛行 {val}",
+    weapon_stats_size: "大小 {val}",
+    weapon_max_tier: "已達目前最高合成階級",
+    weapon_next_tier_preview: "x{lvl} → x{next}：攻擊 {dmg} / 冷卻 {cd}s / 大小 {size}",
+    defeat_title: "城牆爆了",
+    defeat_desc: "關卡 {lvl}  本場金幣 {coins}",
+    victory_title: "勝利！",
+    victory_challenge_success: "挑戰成功！",
+    victory_stage_clear: "通關成功！",
+    loading_progress: "載入中 {pct}%",
+    load_fail: "素材讀取失敗",
+    load_fail_desc: "載入失敗，請重新整理",
+    enemy_toilet: "衝鋒馬桶",
+    enemy_tv: "搖擺電視",
+    enemy_fridge: "厚重冰箱",
+    enemy_wardrobe: "重擊衣櫃",
+    enemy_surveillance: "突進監視器",
+    enemy_books: "魔法書堆",
+    enemy_clock: "急跑鬧鐘",
+    enemy_pencilbox: "鉛筆盒衝車",
+    boss_spawned: "{name} 王出現！",
+    boss_label: "{name} 王 -{pct}%{shield}",
+    boss_shield: "盾 {count}",
+    weapon_eraser: "橡皮擦",
+    weapon_pencil: "鉛筆",
+    weapon_ruler: "尺",
+    upgrade_damage_name: "銳利橡皮擦",
+    upgrade_damage_desc: "武器傷害 +1",
+    upgrade_cooldown_name: "快速出手",
+    upgrade_cooldown_desc: "武器冷卻 -15%",
+    upgrade_double_name: "雙重投擲",
+    upgrade_double_desc: "每次多丟 1 個",
+    upgrade_sideShot_name: "左右斜射",
+    upgrade_sideShot_desc: "正面攻擊時額外往左右各丟 1 個",
+    upgrade_burst_name: "連續投擲",
+    upgrade_burst_desc: "每次出手追加 1 波連射",
+    upgrade_size_name: "大型文具",
+    upgrade_size_desc: "武器變大 20%",
+    upgrade_wallHp_name: "緊急修補",
+    upgrade_wallHp_desc: "回復 12 點牆血量",
+    upgrade_coinMultiplier_name: "零用錢加倍",
+    upgrade_coinMultiplier_desc: "金幣收益提升 35%",
+    crit_label: "暴"
+  }
+};
+
+
 const W = canvas.width;
 const H = canvas.height;
 const wallY = 1200;
@@ -155,7 +379,7 @@ async function preload() {
 
 function setLoadingProgress(progress) {
   if (!overlayText) return;
-  overlayText.textContent = `載入中 ${Math.round(progress * 100)}%`;
+  overlayText.textContent = t("loading_progress", { pct: Math.round(progress * 100) });
 }
 
 function restart() {
@@ -164,7 +388,7 @@ function restart() {
 
 function startLevel(levelIndex) {
   if (levelIndex + 1 > highestUnlocked) {
-    showFloatingMessage("\u95dc\u5361\u672a\u89e3\u9396");
+    showFloatingMessage(t("locked"));
     return;
   }
   requestGameFullscreen();
@@ -495,7 +719,7 @@ function spawnBoss(wave) {
   const type = ENEMY_TYPES[Math.min(wave.bossType ?? wave.maxEnemyType, ENEMY_TYPES.length - 1)];
   addEnemy(type, wave, true);
   state.bossMinionTimer = 1.8;
-  state.bossBanner = { text: `${type.name} \u738b\u51fa\u73fe\uff01`, life: 2.6 };
+  state.bossBanner = { text: t("boss_spawned", { name: t("enemy_" + type.id) }), life: 2.6 };
 }
 
 function spawnBossMinions(wave) {
@@ -614,9 +838,9 @@ function loseLevel() {
   settingsBtn.classList.add("hidden");
   battleHud.classList.add("hidden");
   menuCoinLine.classList.add("hidden");
-  overlay.querySelector("h1").textContent = "\u57ce\u7246\u7206\u4e86";
-  overlayText.textContent = `\u95dc\u5361 ${state.level.id}  \u672c\u5834\u91d1\u5e63 ${state.coins}`;
-  startBtn.textContent = "\u518d\u73a9\u4e00\u6b21";
+  overlay.querySelector("h1").textContent = t("defeat_title");
+  overlayText.textContent = t("defeat_desc", { lvl: state.level.id, coins: state.coins });
+  startBtn.textContent = t("btn_play_again");
   startBtn.classList.remove("hidden");
   levelGrid.classList.add("hidden");
   upgradeGrid.classList.add("hidden");
@@ -641,7 +865,7 @@ function winLevel() {
   state.score += state.wallHp;
   highestUnlocked = Math.max(highestUnlocked, Math.min(LEVELS.length + 1, state.levelIndex + 2));
   saveHighestUnlocked();
-  overlay.querySelector("h1").textContent = wasChallenge ? "\u6311\u6230\u6210\u529f\uff01" : "\u901a\u95dc\u6210\u529f\uff01";
+  overlay.querySelector("h1").textContent = wasChallenge ? t("victory_challenge_success") : t("victory_stage_clear");
   overlayText.textContent = buildWinText(drops, wasChallenge);
   startBtn.classList.add("hidden");
   menuContent.classList.remove("hidden");
@@ -674,8 +898,8 @@ function getLevelDropWeaponId(levelId) {
 }
 
 function buildWinText(drops, wasChallenge) {
-  const unlockText = wasChallenge && state.levelIndex + 1 < LEVELS.length ? `\u89e3\u9396\u7b2c ${state.level.id + 1} \u95dc\uff01` : "";
-  return `\u95dc\u5361 ${state.level.id} \u5b8c\u6210\uff01 ${unlockText}`;
+  const unlockText = wasChallenge && state.levelIndex + 1 < LEVELS.length ? ` ` + t("settlement_unlocked", { id: state.level.id + 1 }) : "";
+  return t("victory_stage_clear") + ` ` + t("hud_stage") + ` ${state.level.id} ${unlockText}`;
 }
 
 function renderSettlement(drops, wasChallenge) {
@@ -683,16 +907,16 @@ function renderSettlement(drops, wasChallenge) {
   return `
     <div class="settlement-panel">
       <div class="settlement-row">
-        <strong>\u6230\u9b25\u7d50\u7b97</strong>
-        <span>${wasChallenge ? "\u65b0\u95dc\u5361\u6311\u6230\u6210\u529f" : "\u5df2\u901a\u95dc\u95dc\u5361\u5b8c\u6210"}</span>
+        <strong>${t("settlement_title")}</strong>
+        <span>${wasChallenge ? t("settlement_new_clear") : t("settlement_reclear")}</span>
       </div>
       <div class="reward-grid">
         <div class="reward-item coin-reward"><img src="assets/coin.png" alt="" /><span>x${state.coins}</span></div>
-        ${dropItems || `<div class="reward-empty">\u672c\u6b21\u6c92\u6709\u6389\u843d\u6b66\u5668</div>`}
+        ${dropItems || `<div class="reward-empty">${t("settlement_no_drops")}</div>`}
       </div>
       <div class="settlement-actions">
-        ${state.levelIndex + 1 < LEVELS.length ? `<button type="button" data-settlement-action="next">\u4e0b\u4e00\u95dc</button>` : ""}
-        <button type="button" data-settlement-action="home">\u78ba\u8a8d\u56de\u4e3b\u9801</button>
+        ${state.levelIndex + 1 < LEVELS.length ? `<button type="button" data-settlement-action="next">${t("btn_next")}</button>` : ""}
+        <button type="button" data-settlement-action="home">${t("btn_confirm")}</button>
       </div>
     </div>
   `;
@@ -878,8 +1102,8 @@ function drawEnemies() {
       ctx.strokeStyle = "rgba(0, 0, 0, 0.76)";
       ctx.fillStyle = "#ffdf57";
       const reduction = Math.round((enemy.bossReduction || 0) * 100);
-      const shieldText = enemy.bossShieldHits > 0 ? ` \u76fe${enemy.bossShieldHits}` : "";
-      const label = `${enemy.type.name} \u738b -${reduction}%${shieldText}`;
+      const shieldText = enemy.bossShieldHits > 0 ? " " + t("boss_shield", { count: enemy.bossShieldHits }) : "";
+      const label = t("boss_label", { name: t("enemy_" + enemy.type.id), pct: reduction, shield: shieldText });
       ctx.strokeText(label, x, enemy.y - enemy.size * 0.48);
       ctx.fillText(label, x, enemy.y - enemy.size * 0.48);
       ctx.restore();
@@ -965,7 +1189,7 @@ function drawDamageTexts() {
     ctx.lineWidth = text.crit ? 8 : 6;
     ctx.strokeStyle = "rgba(0, 0, 0, 0.72)";
     ctx.fillStyle = text.crit ? "#ffdf57" : "#fff";
-    const label = text.crit ? `暴 ${text.value}` : String(text.value);
+    const label = text.crit ? `${t("crit_label")} ${text.value}` : String(text.value);
     ctx.strokeText(label, text.x, text.y);
     ctx.fillText(label, text.x, text.y);
   }
@@ -1112,14 +1336,7 @@ function showMainMenu(tab = activeMenuTab) {
 }
 
 function getMenuTitle(tab) {
-  const titles = {
-    character: "\u89d2\u8272\u72c0\u614b",
-    equipment: "\u88dd\u5099\u5f37\u5316",
-    battle: "\u9078\u64c7\u95dc\u5361",
-    wall: "\u57ce\u7246\u5f37\u5316",
-    settings: "\u8a2d\u5b9a",
-  };
-  return titles[tab] || titles.battle;
+  return t("menu_" + tab);
 }
 
 function renderMenuTabs() {
@@ -1177,8 +1394,8 @@ function showUpgradeChoices() {
   battleHud.classList.add("hidden");
   menuCoinLine.classList.add("hidden");
   state.awaitingUpgrade = true;
-  overlay.querySelector("h1").textContent = "\u9078\u64c7\u5f37\u5316";
-  overlayText.textContent = `Wave ${state.waveIndex + 1} \u5b8c\u6210`;
+  overlay.querySelector("h1").textContent = t("upgrade_panel_title");
+  overlayText.textContent = t("upgrade_wave_complete", { wave: state.waveIndex + 1 });
   startBtn.classList.add("hidden");
   menuContent.classList.add("hidden");
   menuTabs.classList.add("hidden");
@@ -1196,7 +1413,7 @@ function renderUpgradeChoices() {
     const button = document.createElement("button");
     button.type = "button";
     button.dataset.upgrade = upgrade.id;
-    button.innerHTML = `<img src="${upgrade.icon}" alt="" /><span class="upgrade-copy"><strong>${upgrade.name}</strong><span>${upgrade.desc}</span></span>`;
+    button.innerHTML = `<img src="${upgrade.icon}" alt="" /><span class="upgrade-copy"><strong>${t("upgrade_" + upgrade.id + "_name")}</strong><span>${t("upgrade_" + upgrade.id + "_desc")}</span></span>`;
     upgradeGrid.append(button);
   }
 }
@@ -1223,8 +1440,8 @@ function showPauseMenu() {
   settingsBtn.classList.add("hidden");
   battleHud.classList.add("hidden");
   menuCoinLine.classList.add("hidden");
-  overlay.querySelector("h1").textContent = "\u8a2d\u5b9a";
-  overlayText.textContent = "\u8981\u7e7c\u7e8c\u6216\u96e2\u958b\u6218\u9b25\uff1f";
+  overlay.querySelector("h1").textContent = t("menu_settings");
+  overlayText.textContent = t("settings_pause_question");
   startBtn.classList.add("hidden");
   menuContent.classList.add("hidden");
   menuTabs.classList.add("hidden");
@@ -1258,13 +1475,13 @@ function renderProfilePanel(tab = activeMenuTab) {
       <div class="character-panel">
         <div class="character-card">
           <img src="assets/upgrade-character.png" alt="" />
-          <div><strong>\u5c0f\u52c7\u8005 Lv ${getHeroTotalLevel()}</strong><span>\u5f37\u5316\u89d2\u8272\u80fd\u529b\uff0c\u8b93\u6bcf\u4e00\u5834\u66f4\u7a69\u3001\u66f4\u6709\u6536\u7a6b\u3002</span></div>
+          <div><strong>${t("hero_title", { lvl: getHeroTotalLevel() })}</strong><span>${t("hero_subtitle")}</span></div>
         </div>
-        ${renderUpgradeRow("heroCoin", "assets/coin.png", `\u96f6\u7528\u9322\u904b Lv ${profile.heroCoinLevel}`, `\u91d1\u5e63\u7372\u5f97 +${Math.round(getHeroCoinBonus() * 100)}%`)}
-        ${renderUpgradeRow("heroAttack", "assets/upgrade-damage.png", `\u7528\u529b\u6295\u64f2 Lv ${profile.heroAttackLevel}`, `\u57fa\u790e\u653b\u64ca +${getHeroAttackBonus()}`)}
-        ${renderUpgradeRow("heroCrit", "assets/upgrade-character.png", `\u5f31\u9ede\u773c\u529b Lv ${profile.heroCritLevel}`, `\u7206\u64ca\u7387 ${Math.round(getCritChance() * 100)}%`)}
-        ${renderUpgradeRow("heroCritDamage", "assets/upgrade-size.png", `\u7206\u64ca\u529b\u9053 Lv ${profile.heroCritDamageLevel}`, `\u7206\u64ca\u50b7\u5bb3 x${getCritMultiplier().toFixed(2)}`)}
-        ${renderUpgradeRow("heroSpeed", "assets/upgrade-cooldown.png", `\u5feb\u901f\u624b\u611f Lv ${profile.heroSpeedLevel}`, `\u98db\u884c\u901f\u5ea6 +${getProjectileSpeedBonus()}`)}
+        ${renderUpgradeRow("heroCoin", "assets/coin.png", t("heroCoin_title", { lvl: profile.heroCoinLevel }), t("heroCoin_desc", { pct: Math.round(getHeroCoinBonus() * 100) }))}
+        ${renderUpgradeRow("heroAttack", "assets/upgrade-damage.png", t("heroAttack_title", { lvl: profile.heroAttackLevel }), t("heroAttack_desc", { bonus: getHeroAttackBonus() }))}
+        ${renderUpgradeRow("heroCrit", "assets/upgrade-character.png", t("heroCrit_title", { lvl: profile.heroCritLevel }), t("heroCrit_desc", { pct: Math.round(getCritChance() * 100) }))}
+        ${renderUpgradeRow("heroCritDamage", "assets/upgrade-size.png", t("heroCritDamage_title", { lvl: profile.heroCritDamageLevel }), t("heroCritDamage_desc", { mul: getCritMultiplier().toFixed(2) }))}
+        ${renderUpgradeRow("heroSpeed", "assets/upgrade-cooldown.png", t("heroSpeed_title", { lvl: profile.heroSpeedLevel }), t("heroSpeed_desc", { bonus: getProjectileSpeedBonus() }))}
       </div>
     `;
     return;
@@ -1273,9 +1490,9 @@ function renderProfilePanel(tab = activeMenuTab) {
   if (tab === "equipment") {
     profilePanel.innerHTML = `
         <div class="equipment-panel">
-        <div class="section-title">\u651c\u5e36\u6b66\u5668 8</div>
+        <div class="section-title">${t("equip_weapons")}</div>
         <div class="equipment-slots">${renderEquipmentSlots()}</div>
-        <div class="section-title">\u80cc\u5305</div>
+        <div class="section-title">${t("equip_backpack")}</div>
         <div class="backpack-grid" data-backpack-drop="true">${renderBackpackItems()}</div>
       </div>
     `;
@@ -1284,9 +1501,9 @@ function renderProfilePanel(tab = activeMenuTab) {
 
   if (tab === "wall") {
     profilePanel.innerHTML = `
-      ${renderUpgradeRow("wallHp", "assets/upgrade-wall.png", `\u57ce\u7246\u8840\u91cf Lv ${profile.wallHpLevel}`, `\u6700\u5927\u8840\u91cf ${getMaxWallHp()}`)}
-      ${renderUpgradeRow("wallGuard", "assets/upgrade-repair.png", `\u7246\u9762\u52a0\u56fa Lv ${profile.wallGuardLevel}`, `\u53d7\u5230\u50b7\u5bb3 -${Math.round(getWallDamageReduction() * 100)}%`)}
-      ${renderUpgradeRow("wallRegen", "assets/upgrade-cooldown.png", `\u81ea\u52d5\u4fee\u88dc Lv ${profile.wallRegenLevel}`, `\u6bcf ${getWallRegenInterval()} \u79d2\u56de\u5fa9 ${getWallRegenAmount()} \u8840\u91cf`)}
+      ${renderUpgradeRow("wallHp", "assets/upgrade-wall.png", t("wallHp_title", { lvl: profile.wallHpLevel }), t("wallHp_desc", { val: getMaxWallHp() }))}
+      ${renderUpgradeRow("wallGuard", "assets/upgrade-repair.png", t("wallGuard_title", { lvl: profile.wallGuardLevel }), t("wallGuard_desc", { pct: Math.round(getWallDamageReduction() * 100) }))}
+      ${renderUpgradeRow("wallRegen", "assets/upgrade-cooldown.png", t("wallRegen_title", { lvl: profile.wallRegenLevel }), t("wallRegen_desc", { sec: getWallRegenInterval(), val: getWallRegenAmount() }))}
     `;
     return;
   }
@@ -1294,10 +1511,32 @@ function renderProfilePanel(tab = activeMenuTab) {
   profilePanel.innerHTML = `
     <div class="profile-row">
       <img class="profile-row-icon" src="assets/menu-settings.png" alt="" />
-      <div><strong>\u9032\u5ea6</strong><span>\u5df2\u89e3\u9396\u5230\u7b2c ${Math.min(highestUnlocked, LEVELS.length)} \u95dc</span></div>
+      <div><strong>${t("settings_progress")}</strong><span>${t("settings_unlocked_stages", { count: Math.min(highestUnlocked, LEVELS.length) })}</span></div>
+    </div>
+    <div class="profile-row">
+      <label class="language-picker">
+        <span id="languageLabel">${t("language")}</span>
+        <select id="localeSelect" aria-label="Language">
+          <option value="en">English</option>
+          <option value="zh-Hant">繁體中文</option>
+        </select>
+      </label>
     </div>
     <div class="profile-row full"><div><strong>Wonder Crash</strong><span>Demo build</span></div></div>
   `;
+
+  const select = profilePanel.querySelector("#localeSelect");
+  if (select) {
+    select.value = locale();
+    select.addEventListener("change", () => {
+      window.WonderSound?.play("click");
+      window.WonderI18n?.setLocale(select.value);
+    });
+    select.addEventListener("input", () => {
+      window.WonderSound?.play("click");
+      window.WonderI18n?.setLocale(select.value);
+    });
+  }
 }
 
 function renderUpgradeRow(type, icon, title, desc) {
@@ -1344,7 +1583,7 @@ function renderSelectedWeaponInfo() {
   if (!item) {
     return `
       <div class="weapon-info-panel">
-        <div class="weapon-info-empty">\u9ede\u9078\u6b66\u5668\u67e5\u770b\u653b\u64ca\u3001\u51b7\u537b\u548c\u5408\u6210\u8b8a\u5316</div>
+        <div class="weapon-info-empty">${t("weapon_modal_empty")}</div>
       </div>
     `;
   }
@@ -1353,20 +1592,20 @@ function renderSelectedWeaponInfo() {
   const entry = { weapon, level: item.level };
   const next = item.level < 6 ? { weapon, level: item.level + 1 } : null;
   const nextText = next
-    ? `x${item.level} \u2192 x${next.level}\uff1a\u653b\u64ca ${getWeaponDamage(next)} / \u51b7\u537b ${getWeaponCooldown(next).toFixed(2)}s / \u5927\u5c0f ${Math.round(getWeaponSize(next))}`
-    : "\u5df2\u9054\u76ee\u524d\u6700\u9ad8\u5408\u6210\u968e\u7d1a";
+    ? t("weapon_next_tier_preview", { lvl: item.level, next: next.level, dmg: getWeaponDamage(next), cd: getWeaponCooldown(next).toFixed(2), size: Math.round(getWeaponSize(next)) })
+    : t("weapon_max_tier");
 
   return `
     <div class="weapon-info-panel">
       <div class="weapon-info-head">
         <img class="weapon-info-icon ${getWeaponTierClass(item.level)}" src="${getWeaponIconSrc(weapon)}" alt="" onerror="this.onerror=null;this.src='assets/eraser.png'" />
-        <div><strong>${weapon.name} ${item.level > 1 ? `x${item.level}` : ""}</strong><span>\u540c\u968e\u80cc\u5305\u6b66\u5668\u53ef\u5408\u6210\u5347\u7d1a</span></div>
+        <div><strong>${t("weapon_" + weapon.id)} ${item.level > 1 ? `x${item.level}` : ""}</strong><span>${t("weapon_upgrade_tip")}</span></div>
       </div>
       <div class="weapon-info-stats">
-        <span>\u653b\u64ca ${getWeaponDamage(entry)}</span>
-        <span>\u51b7\u537b ${getWeaponCooldown(entry).toFixed(2)}s</span>
-        <span>\u98db\u884c ${Math.round(getWeaponSpeed(entry))}</span>
-        <span>\u5927\u5c0f ${Math.round(getWeaponSize(entry))}</span>
+        <span>${t("weapon_stats_dmg", { val: getWeaponDamage(entry) })}</span>
+        <span>${t("weapon_stats_cd", { val: getWeaponCooldown(entry).toFixed(2) })}</span>
+        <span>${t("weapon_stats_spd", { val: Math.round(getWeaponSpeed(entry)) })}</span>
+        <span>${t("weapon_stats_size", { val: Math.round(getWeaponSize(entry)) })}</span>
       </div>
       <div class="weapon-info-next">${nextText}</div>
     </div>
@@ -2016,8 +2255,36 @@ function random(min, max) {
   return min + Math.random() * (max - min);
 }
 
+// Hook up global locale change listener
+window.addEventListener("wonder:locale-change", () => {
+  translateStaticUI();
+  if (!overlay.classList.contains("hidden")) {
+    if (state.awaitingUpgrade) {
+      overlay.querySelector("h1").textContent = t("upgrade_panel_title");
+      overlayText.textContent = t("upgrade_wave_complete", { wave: state.waveIndex + 1 });
+      renderUpgradeChoices();
+    } else if (state.gameOver) {
+      overlay.querySelector("h1").textContent = t("defeat_title");
+      overlayText.textContent = t("defeat_desc", { lvl: state.level.id, coins: state.coins });
+      startBtn.textContent = t("btn_play_again");
+    } else if (state.won) {
+      // In case we are on win screen, winLevel updates innerHTML of profilePanel
+      overlay.querySelector("h1").textContent = state.level.id === highestUnlocked ? t("victory_challenge_success") : t("victory_stage_clear");
+      // To prevent complex drops state replication, we can keep the text updated
+      overlayText.textContent = t("victory_stage_clear") + ` ` + t("hud_stage") + ` ${state.level.id}`;
+    } else {
+      overlay.querySelector("h1").textContent = "Wonder Crash";
+      overlayText.textContent = getMenuTitle(activeMenuTab);
+      renderMenuContent();
+    }
+  }
+});
+
+// Initialize translations
+translateStaticUI();
+
 preload().catch((error) => {
-  overlay.querySelector("h1").textContent = "\u7d20\u6750\u8b80\u53d6\u5931\u6557";
-  overlayText.textContent = "載入失敗，請重新整理";
+  overlay.querySelector("h1").textContent = t("load_fail");
+  overlayText.textContent = t("load_fail_desc");
   console.error(error);
 });
