@@ -18,15 +18,22 @@
     <main class="lobby-shell">
       <header class="lobby-hero">
         <div class="lobby-hero-copy">
-          <p class="lobby-kicker">Kids & Family Games</p>
+          <p id="lobbyKicker" class="lobby-kicker">Kids & Family Games</p>
           <h1 id="platformTitle">WeightPlay</h1>
           <p class="brand-byline">by WeightStudio</p>
           <p id="platformSubtitle" class="lobby-subtitle"></p>
         </div>
+        <label class="language-picker">
+          <span id="languageLabel">Language</span>
+          <select id="localeSelect" aria-label="Language">
+            <option value="en">English</option>
+            <option value="zh-Hant">繁體中文</option>
+          </select>
+        </label>
         <a id="featuredGame" class="lobby-feature" href="games/wonder-crash/index.html">
           <img src="assets/hero.png" alt="" />
           <div>
-            <span>Featured</span>
+            <span id="featuredLabel">Featured</span>
             <strong>Wonder Crash</strong>
           </div>
         </a>
@@ -35,26 +42,26 @@
       <section id="lobbyStats" class="lobby-stats" aria-label="Platform status"></section>
 
       <section class="age-filter" aria-label="Age filters">
-        <button class="active" type="button" data-age-filter="all">All Ages</button>
+        <button class="active" type="button" data-age-filter="all" data-i18n="filter.all_ages">All Ages</button>
         <button type="button" data-age-filter="3">3+</button>
         <button type="button" data-age-filter="5">5+</button>
         <button type="button" data-age-filter="13">13+</button>
-        <button type="button" data-age-filter="family">Family</button>
+        <button type="button" data-age-filter="family" data-i18n="filter.family">Family</button>
       </section>
 
       <section class="topic-filter" aria-label="Topic filters">
-        <button class="active" type="button" data-topic-filter="all">All Topics</button>
-        <button type="button" data-topic-filter="Featured">Featured</button>
-        <button type="button" data-topic-filter="Animal Games">Animal Games</button>
-        <button type="button" data-topic-filter="Puzzle">Puzzle</button>
-        <button type="button" data-topic-filter="Arcade">Arcade</button>
-        <button type="button" data-topic-filter="Education">Education</button>
+        <button class="active" type="button" data-topic-filter="all" data-i18n="filter.all_topics">All Topics</button>
+        <button type="button" data-topic-filter="Featured" data-i18n="topic.featured">Featured</button>
+        <button type="button" data-topic-filter="Animal Games" data-i18n="topic.animal">Animal Games</button>
+        <button type="button" data-topic-filter="Puzzle" data-i18n="topic.puzzle">Puzzle</button>
+        <button type="button" data-topic-filter="Arcade" data-i18n="topic.arcade">Arcade</button>
+        <button type="button" data-topic-filter="Education" data-i18n="topic.education">Education</button>
       </section>
 
       <section id="heroGamesSection" class="hero-games-section" aria-label="Hero Games">
         <div class="section-heading">
-          <span>Top 3</span>
-          <h2>Hero Games</h2>
+          <span id="heroRankLabel">Top 3</span>
+          <h2 id="heroGamesTitle">Hero Games</h2>
         </div>
         <div id="heroGames" class="hero-games"></div>
       </section>
@@ -68,6 +75,7 @@
     <script src="src/site-config.js"></script>
     <script src="src/analytics.js"></script>
     <script src="src/sound.js"></script>
+    <script src="src/i18n.js"></script>
     <script src="src/lobby-data.js"></script>
     <script src="src/lobby.js"></script>
   </body>

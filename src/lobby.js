@@ -10,12 +10,26 @@ const lobbyToast = document.querySelector("#lobbyToast");
 const platformTitle = document.querySelector("#platformTitle");
 const platformSubtitle = document.querySelector("#platformSubtitle");
 const filterStatus = document.querySelector("#filterStatus");
+const lobbyKicker = document.querySelector("#lobbyKicker");
+const featuredLabel = document.querySelector("#featuredLabel");
+const languageLabel = document.querySelector("#languageLabel");
+const localeSelect = document.querySelector("#localeSelect");
+const heroRankLabel = document.querySelector("#heroRankLabel");
+const heroGamesTitle = document.querySelector("#heroGamesTitle");
+const i18n = window.WonderI18n;
 let activeFilter = "all";
 let activeTopic = "all";
 let toastTimer = null;
 
+function text(value) {
+  return i18n.getLocalized(value);
+}
+
 function createGameCard(game) {
   const isPlayable = game.status === "playable";
+  const title = text(game.title);
+  const type = text(game.type);
+  const ageLabel = text(game.ageLabel);
   const card = document.createElement(isPlayable ? "a" : "article");
   card.className = `game-card ${isPlayable ? "playable" : "coming-soon"}`;
   card.dataset.age = game.ages.join(" ");
@@ -27,9 +41,10 @@ function createGameCard(game) {
       window.WonderSound?.play("click");
       window.WonderAnalytics?.track("game_open", {
         game_id: game.id,
-        game_title: game.title,
-        age_label: game.ageLabel,
+        game_title: title,
+        age_label: ageLabel,
         categories: (game.categories || []).join(","),
+        locale: i18n.locale(),
       });
     });
   } else {
@@ -44,7 +59,7 @@ function createGameCard(game) {
     });
   }
 
-  const meta = game.meta.map((item) => `<span>${item}</span>`).join("");
+  const meta = text(game.meta).map((item) => `<span>${item}</span>`).join("");
   const categoryBadges = (game.categories || []).map((item) => `<span>${item}</span>`).join("");
   const art =
     game.art.kind === "image"
@@ -55,16 +70,16 @@ function createGameCard(game) {
     ${art}
     <div class="game-card-body">
       <div class="game-card-topline">
-        <span class="age-pill">${game.ageLabel}</span>
-        <span>${game.statusText}</span>
+        <span class="age-pill">${ageLabel}</span>
+        <span>${text(game.statusText)}</span>
       </div>
-      <h2>${game.title}</h2>
-      <p>${game.description}</p>
+      <h2>${title}</h2>
+      <p>${text(game.description)}</p>
       <div class="game-card-categories">${categoryBadges}</div>
       <div class="game-card-meta">${meta}</div>
       <div class="game-card-actions">
-        <span>${isPlayable ? "開始玩" : "即將推出"}</span>
-        <span>${game.type}</span>
+        <span>${isPlayable ? i18n.t("action.play") : i18n.t("action.coming_soon")}</span>
+        <span>${type}</span>
       </div>
     </div>
   `;
@@ -73,25 +88,26 @@ function createGameCard(game) {
 }
 
 function renderLobby() {
+  applyStaticTranslations();
   platformTitle.textContent = lobby.platform.name;
-  platformSubtitle.textContent = lobby.platform.subtitle;
+  platformSubtitle.textContent = text(lobby.platform.subtitle);
 
   const playableCount = lobby.games.filter((game) => game.status === "playable").length;
   const heroCount = lobby.heroGameIds.length;
   const ageGroups = new Set(lobby.games.flatMap((game) => game.ages));
   const animalCount = lobby.games.filter((game) => (game.categories || []).includes("Animal Games")).length;
   lobbyStats.innerHTML = `
-    <div><strong>${playableCount}</strong><span>Playable</span></div>
-    <div><strong>${heroCount}</strong><span>Hero Games</span></div>
-    <div><strong>${animalCount}</strong><span>Animal Games</span></div>
-    <div><strong>${ageGroups.size}</strong><span>Age Groups</span></div>
+    <div><strong>${playableCount}</strong><span>${i18n.t("stats.playable")}</span></div>
+    <div><strong>${heroCount}</strong><span>${i18n.t("stats.hero_games")}</span></div>
+    <div><strong>${animalCount}</strong><span>${i18n.t("stats.animal_games")}</span></div>
+    <div><strong>${ageGroups.size}</strong><span>${i18n.t("stats.age_groups")}</span></div>
   `;
 
   const featured = lobby.games.find((game) => game.id === lobby.featuredGameId);
   if (featured) {
     featuredGame.href = featured.href;
     featuredGame.querySelector("img").src = featured.art.hero || "assets/hero.png";
-    featuredGame.querySelector("strong").textContent = featured.title;
+    featuredGame.querySelector("strong").textContent = text(featured.title);
   }
 
   renderHeroGames();
@@ -105,6 +121,9 @@ function renderHeroGames() {
     .filter(Boolean)
     .map((game, index) => {
       const isPlayable = game.status === "playable";
+      const title = text(game.title);
+      const type = text(game.type);
+      const ageLabel = text(game.ageLabel);
       const card = document.createElement(isPlayable ? "a" : "button");
       card.className = `hero-game-card ${isPlayable ? "playable" : "planned"}`;
       card.type = isPlayable ? undefined : "button";
@@ -115,8 +134,8 @@ function renderHeroGames() {
       }
       card.innerHTML = `
         <span>#${index + 1}</span>
-        <strong>${game.title}</strong>
-        <small>${game.type} · ${game.ageLabel}</small>
+        <strong>${title}</strong>
+        <small>${type} · ${ageLabel}</small>
       `;
       return card;
     });
@@ -141,10 +160,22 @@ function applyFilter() {
   filterStatus.classList.toggle("empty", visibleCount === 0);
   filterStatus.textContent =
     visibleCount === 0
-      ? "No games match this filter yet."
+      ? i18n.t("status.no_games")
       : isFiltered
-        ? `${visibleCount} game${visibleCount > 1 ? "s" : ""} found`
-        : "All games";
+        ? i18n.t(visibleCount > 1 ? "status.games_found_many" : "status.games_found_one", { count: visibleCount })
+        : i18n.t("status.all_games");
+}
+
+function applyStaticTranslations() {
+  lobbyKicker.textContent = i18n.t("site.kicker");
+  featuredLabel.textContent = i18n.t("site.featured");
+  languageLabel.textContent = i18n.t("language.label");
+  heroRankLabel.textContent = i18n.t("section.hero_rank");
+  heroGamesTitle.textContent = i18n.t("section.hero_games");
+  document.querySelectorAll("[data-i18n]").forEach((element) => {
+    element.textContent = i18n.t(element.dataset.i18n);
+  });
+  localeSelect.value = i18n.locale();
 }
 
 function showToast(message) {
@@ -158,11 +189,12 @@ function showPlannedGame(game) {
   window.WonderSound?.play("wrong");
   window.WonderAnalytics?.track("planned_game_click", {
     game_id: game.id,
-    game_title: game.title,
-    age_label: game.ageLabel,
+    game_title: text(game.title),
+    age_label: text(game.ageLabel),
     categories: (game.categories || []).join(","),
+    locale: i18n.locale(),
   });
-  showToast(`${game.title} is coming soon`);
+  showToast(i18n.t("toast.coming_soon", { title: text(game.title) }));
 }
 
 filterButtons.forEach((button) => {
@@ -170,7 +202,7 @@ filterButtons.forEach((button) => {
     activeFilter = button.dataset.ageFilter;
 
     window.WonderSound?.play("click");
-    window.WonderAnalytics?.track("age_filter", { age_filter: activeFilter });
+    window.WonderAnalytics?.track("age_filter", { age_filter: activeFilter, locale: i18n.locale() });
     filterButtons.forEach((item) => item.classList.toggle("active", item === button));
     applyFilter();
   });
@@ -181,15 +213,23 @@ topicButtons.forEach((button) => {
     activeTopic = button.dataset.topicFilter;
 
     window.WonderSound?.play("click");
-    window.WonderAnalytics?.track("topic_filter", { topic_filter: activeTopic });
+    window.WonderAnalytics?.track("topic_filter", { topic_filter: activeTopic, locale: i18n.locale() });
     topicButtons.forEach((item) => item.classList.toggle("active", item === button));
     applyFilter();
   });
 });
+
+localeSelect.addEventListener("change", () => {
+  window.WonderSound?.play("click");
+  i18n.setLocale(localeSelect.value);
+});
+
+window.addEventListener("wonder:locale-change", renderLobby);
 
 renderLobby();
 window.WonderAnalytics?.track("lobby_ready", {
   playable_games: lobby.games.filter((game) => game.status === "playable").length,
   total_games: lobby.games.length,
   platform: lobby.platform.name,
+  locale: i18n.locale(),
 });

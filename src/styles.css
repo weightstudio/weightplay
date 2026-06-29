@@ -48,7 +48,7 @@ body.lobby-page {
 
 .lobby-hero {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(220px, 360px);
+  grid-template-columns: minmax(0, 1fr) minmax(170px, 210px) minmax(220px, 360px);
   gap: 18px;
   align-items: end;
   min-height: clamp(260px, 42dvh, 420px);
@@ -87,6 +87,39 @@ body.lobby-page {
 
 .lobby-subtitle:empty {
   display: none;
+}
+
+.language-picker {
+  display: grid;
+  gap: 8px;
+  align-self: end;
+  min-height: 74px;
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.language-picker span {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.language-picker select {
+  width: 100%;
+  height: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 8px;
+  background: rgba(15, 20, 28, 0.96);
+  color: #fff;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.language-picker option {
+  color: #111821;
 }
 
 .lobby-feature {
@@ -536,6 +569,10 @@ body.lobby-page {
     grid-template-columns: 1fr;
     min-height: 0;
     padding-top: 22px;
+  }
+
+  .language-picker {
+    min-height: 0;
   }
 
   .lobby-feature {
