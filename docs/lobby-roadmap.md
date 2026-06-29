@@ -4,6 +4,16 @@
 
 Wonder Game Lobby is the main website. Wonder Crash is now the first playable game inside the lobby, and future games should be added as separate entries instead of replacing the lobby.
 
+## Project Manager Automation
+
+Use these files for scheduled autonomous work:
+
+- `docs/project-manager-rules.md`: global PM rules and decision logic.
+- `docs/game-production-queue.md`: queued, planned, playable, and blocked games.
+- `docs/automation-00-update-existing-games.md`: midnight existing game update run.
+- `docs/automation-03-create-new-game.md`: 03:00 new game production run.
+- `docs/automation-06-improve-lobby.md`: 06:00 lobby improvement run.
+
 ## Website Structure
 
 ```txt
