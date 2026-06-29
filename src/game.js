@@ -74,6 +74,8 @@ let state = makeState(0);
 let lastTime = performance.now();
 let loaded = false;
 
+setLoadingProgress(0);
+
 function makeState(levelIndex) {
   const level = LEVELS[levelIndex];
   return {
@@ -130,15 +132,30 @@ function loadImage(src) {
 }
 
 async function preload() {
+  let loadedCount = 0;
   const entries = Object.entries(imageSources);
-  const loadedImages = await Promise.all(entries.map(([, src]) => loadImage(src)));
+  const totalCount = entries.length + enemyFiles.length;
+  const loadWithProgress = (src) =>
+    loadImage(src).then((image) => {
+      loadedCount += 1;
+      setLoadingProgress(loadedCount / totalCount);
+      return image;
+    });
+
+  const loadedImages = await Promise.all(entries.map(([, src]) => loadWithProgress(src)));
   entries.forEach(([key], index) => {
     images[key] = loadedImages[index];
   });
-  enemyImages = await Promise.all(enemyFiles.map(loadImage));
+  enemyImages = await Promise.all(enemyFiles.map(loadWithProgress));
   loaded = true;
+  window.WonderAnalytics?.track("game_ready", { game_id: "wonder-crash" });
   showMainMenu("battle");
   requestAnimationFrame(loop);
+}
+
+function setLoadingProgress(progress) {
+  if (!overlayText) return;
+  overlayText.textContent = `載入中 ${Math.round(progress * 100)}%`;
 }
 
 function restart() {
@@ -2001,5 +2018,6 @@ function random(min, max) {
 
 preload().catch((error) => {
   overlay.querySelector("h1").textContent = "\u7d20\u6750\u8b80\u53d6\u5931\u6557";
-  overlay.querySelector("p").textContent = error.message;
+  overlayText.textContent = "載入失敗，請重新整理";
+  console.error(error);
 });

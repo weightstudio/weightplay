@@ -46,6 +46,15 @@ The main menu uses five bottom tabs:
 - `docs/image-requests.md` is only for unfinished image requests. When a requested image is completed and placed in `assets/`, delete that row from `docs/image-requests.md` instead of marking it as existing, because the whole file may be sent to an image AI.
 - Use existing bright toy-like 2D style prompts so new images match the current assets.
 
+## Loading Rule
+
+- Every playable game must show an in-game loading screen before the first interactive screen.
+- Game images, sprite sheets, audio files, and required JSON/data tables must be preloaded before gameplay starts.
+- The loading screen should show clear progress text or a progress bar. Never leave a blank screen while assets load.
+- If loading fails, show a simple retry/refresh message instead of silently hanging.
+- Do not allow gameplay input until required assets are ready.
+- Each game should fire `game_ready` through `WonderAnalytics` after its required assets are loaded.
+
 ## Enemy Roles
 
 - Toilet: runner. Low HP and low wall damage, but fast. Tests player early weapon coverage.

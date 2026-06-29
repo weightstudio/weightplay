@@ -27,6 +27,9 @@ const feedbackText = document.querySelector("#feedbackText");
 const resultPanel = document.querySelector("#resultPanel");
 const resultText = document.querySelector("#resultText");
 const againBtn = document.querySelector("#againBtn");
+const loadingPanel = document.querySelector("#loadingPanel");
+const loadingText = document.querySelector("#loadingText");
+const loadingFill = document.querySelector("#loadingFill");
 
 const state = {
   deck: [],
@@ -38,7 +41,43 @@ const state = {
   startY: 0,
   offsetX: 0,
   offsetY: 0,
+  ready: false,
 };
+
+function preloadImage(src) {
+  return new Promise((resolve, reject) => {
+    const image = new Image();
+    image.onload = () => resolve(image);
+    image.onerror = reject;
+    image.src = src;
+  });
+}
+
+async function preloadGame() {
+  const assets = foods.map((food) => food.image);
+  let loadedCount = 0;
+
+  await Promise.all(
+    assets.map((src) =>
+      preloadImage(src).then(() => {
+        loadedCount += 1;
+        updateLoading(loadedCount / assets.length);
+      }),
+    ),
+  );
+
+  state.ready = true;
+  loadingPanel.classList.add("hidden");
+  window.WonderAnalytics?.track("game_ready", { game_id: "color-lunchbox" });
+  setupBoxes();
+  startGame();
+}
+
+function updateLoading(progress) {
+  const percent = Math.round(progress * 100);
+  loadingText.textContent = `${percent}%`;
+  loadingFill.style.width = `${percent}%`;
+}
 
 function shuffle(items) {
   return [...items].sort(() => Math.random() - 0.5);
@@ -59,6 +98,7 @@ function setupBoxes() {
 }
 
 function startGame() {
+  if (!state.ready) return;
   state.deck = shuffle(foods);
   state.index = 0;
   state.score = 0;
@@ -82,6 +122,7 @@ function loadFood() {
 }
 
 function submitColor(color, target) {
+  if (!state.ready) return;
   const food = state.deck[state.index];
   state.attempts += 1;
 
@@ -154,6 +195,7 @@ function setDragPosition(x, y) {
 }
 
 function startDrag(event) {
+  if (!state.ready) return;
   const point = getPoint(event);
   state.dragging = true;
   state.startX = point.x;
@@ -191,5 +233,7 @@ againBtn.addEventListener("click", () => {
   startGame();
 });
 
-setupBoxes();
-startGame();
+preloadGame().catch((error) => {
+  console.error(error);
+  loadingText.textContent = "載入失敗";
+});
