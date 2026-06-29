@@ -118,6 +118,7 @@ a {
 }
 
 .hud {
+  grid-row: 2;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 8px;
@@ -142,6 +143,7 @@ a {
 }
 
 .stage-select {
+  grid-row: 2 / 4;
   display: grid;
   grid-template-rows: auto minmax(0, 1fr);
   gap: 12px;
@@ -210,6 +212,7 @@ a {
 }
 
 .play-area {
+  grid-row: 3;
   display: grid;
   grid-template-rows: 88px minmax(0, 1fr) 54px;
   gap: 10px;
