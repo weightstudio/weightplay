@@ -35,7 +35,7 @@ window.WONDER_LOBBY = {
       },
       art: {
         kind: "image",
-        background: "assets/battle-bg.png",
+        background: "assets/wonder-crash-cover.png",
         hero: "assets/hero.png",
       },
     },

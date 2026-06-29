@@ -848,13 +848,16 @@ canvas {
   justify-items: center;
   align-content: center;
   gap: 2px;
+  width: 100%;
   min-width: 0;
   min-height: 82px;
   padding: 4px;
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.16);
   color: #fff;
-  font-size: 12px;
+  font-size: clamp(10px, 2.8vw, 12px);
+  line-height: 1.05;
+  overflow: hidden;
 }
 
 .menu-tabs button.active {
@@ -869,6 +872,17 @@ canvas {
   object-fit: contain;
   font-size: 26px;
   line-height: 28px;
+}
+
+.menu-tabs span {
+  display: block;
+  overflow: hidden;
+  width: 100%;
+  min-width: 0;
+  line-height: 1.05;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .equipment-panel,
@@ -1545,12 +1559,17 @@ canvas {
 
   .menu-tabs button {
     min-height: 72px;
+    padding: 3px 2px;
   }
 
   .menu-tabs img,
   .tab-gear {
-    width: 48px;
-    height: 48px;
+    width: 46px;
+    height: 46px;
+  }
+
+  .menu-tabs span {
+    font-size: 10px;
   }
 }
 

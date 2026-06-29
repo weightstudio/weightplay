@@ -86,6 +86,7 @@ const dictionary = {
     settings_pause_question: "Resume or Leave Battle?",
     language: "Language",
     language_desc: "Choose display language",
+    back_lobby: "Back to Lobby",
     upgrade_panel_title: "Select Upgrade",
     upgrade_wave_complete: "Wave {wave} Complete",
     settlement_title: "Battle Summary",
@@ -188,6 +189,7 @@ const dictionary = {
     settings_pause_question: "要繼續或離開戰鬥？",
     language: "語言",
     language_desc: "選擇顯示語言",
+    back_lobby: "回大廳",
     upgrade_panel_title: "選擇強化",
     upgrade_wave_complete: "第 {wave} 波完成",
     settlement_title: "戰鬥結算",
@@ -1530,6 +1532,9 @@ function renderProfilePanel(tab = activeMenuTab) {
       </div>
     </div>
     <div class="profile-row full"><div><strong>${t("game_title")}</strong><span>WeightPlay</span></div></div>
+    <div class="settings-actions">
+      <button id="backToLobbyBtn" type="button">${t("back_lobby")}</button>
+    </div>
   `;
 
   const select = profilePanel.querySelector("#localeSelect");
@@ -1542,6 +1547,13 @@ function renderProfilePanel(tab = activeMenuTab) {
     select.addEventListener("input", () => {
       window.WonderSound?.play("click");
       window.WonderI18n?.setLocale(select.value);
+    });
+  }
+  const backToLobbyBtn = profilePanel.querySelector("#backToLobbyBtn");
+  if (backToLobbyBtn) {
+    backToLobbyBtn.addEventListener("click", () => {
+      window.WonderSound?.play("click");
+      window.location.href = "index.html";
     });
   }
 }
