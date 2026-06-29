@@ -3,11 +3,13 @@ const filterButtons = document.querySelectorAll("[data-age-filter]");
 const topicButtons = document.querySelectorAll("[data-topic-filter]");
 const gameGrid = document.querySelector("#gameGrid");
 const heroGames = document.querySelector("#heroGames");
+const heroGamesSection = document.querySelector("#heroGamesSection");
 const lobbyStats = document.querySelector("#lobbyStats");
 const featuredGame = document.querySelector("#featuredGame");
 const lobbyToast = document.querySelector("#lobbyToast");
 const platformTitle = document.querySelector("#platformTitle");
 const platformSubtitle = document.querySelector("#platformSubtitle");
+const filterStatus = document.querySelector("#filterStatus");
 let activeFilter = "all";
 let activeTopic = "all";
 let toastTimer = null;
@@ -79,10 +81,10 @@ function renderLobby() {
   const ageGroups = new Set(lobby.games.flatMap((game) => game.ages));
   const animalCount = lobby.games.filter((game) => (game.categories || []).includes("Animal Games")).length;
   lobbyStats.innerHTML = `
-    <div><strong>${playableCount}</strong><span>可玩遊戲</span></div>
+    <div><strong>${playableCount}</strong><span>Playable</span></div>
     <div><strong>${heroCount}</strong><span>Hero Games</span></div>
     <div><strong>${animalCount}</strong><span>Animal Games</span></div>
-    <div><strong>${ageGroups.size}</strong><span>年齡分類</span></div>
+    <div><strong>${ageGroups.size}</strong><span>Age Groups</span></div>
   `;
 
   const featured = lobby.games.find((game) => game.id === lobby.featuredGameId);
@@ -123,13 +125,26 @@ function renderHeroGames() {
 }
 
 function applyFilter() {
+  let visibleCount = 0;
   document.querySelectorAll("[data-age]").forEach((card) => {
     const ages = card.dataset.age.split(" ");
     const topics = card.dataset.topic ? card.dataset.topic.split("|") : [];
     const matchesAge = activeFilter === "all" || ages.includes(activeFilter);
     const matchesTopic = activeTopic === "all" || topics.includes(activeTopic);
-    card.classList.toggle("hidden", !matchesAge || !matchesTopic);
+    const isVisible = matchesAge && matchesTopic;
+    card.classList.toggle("hidden", !isVisible);
+    if (isVisible) visibleCount += 1;
   });
+
+  const isFiltered = activeFilter !== "all" || activeTopic !== "all";
+  heroGamesSection.classList.toggle("hidden", isFiltered);
+  filterStatus.classList.toggle("empty", visibleCount === 0);
+  filterStatus.textContent =
+    visibleCount === 0
+      ? "No games match this filter yet."
+      : isFiltered
+        ? `${visibleCount} game${visibleCount > 1 ? "s" : ""} found`
+        : "All games";
 }
 
 function showToast(message) {
@@ -147,7 +162,7 @@ function showPlannedGame(game) {
     age_label: game.ageLabel,
     categories: (game.categories || []).join(","),
   });
-  showToast(`${game.title} 還在準備中`);
+  showToast(`${game.title} is coming soon`);
 }
 
 filterButtons.forEach((button) => {

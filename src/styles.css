@@ -85,6 +85,10 @@ body.lobby-page {
   line-height: 1.55;
 }
 
+.lobby-subtitle:empty {
+  display: none;
+}
+
 .lobby-feature {
   position: relative;
   display: grid;
@@ -170,6 +174,17 @@ body.lobby-page {
   overflow-x: auto;
 }
 
+.topic-filter button {
+  transition:
+    background 0.15s ease,
+    color 0.15s ease,
+    transform 0.15s ease;
+}
+
+.topic-filter button.active {
+  transform: translateY(-1px);
+}
+
 .age-filter button,
 .topic-filter button {
   min-width: 64px;
@@ -198,6 +213,18 @@ body.lobby-page {
   display: grid;
   gap: 10px;
   padding: 8px 0 14px;
+}
+
+.filter-status {
+  min-height: 24px;
+  padding: 0 2px 10px;
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.filter-status.empty {
+  color: #ffcf63;
 }
 
 .section-heading {

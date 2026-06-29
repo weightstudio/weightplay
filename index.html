@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-Hant">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -18,32 +18,32 @@
     <main class="lobby-shell">
       <header class="lobby-hero">
         <div class="lobby-hero-copy">
-          <p class="lobby-kicker">Kids & Family Web Games</p>
+          <p class="lobby-kicker">Kids & Family Games</p>
           <h1 id="platformTitle">WeightPlay</h1>
           <p class="brand-byline">by WeightStudio</p>
-          <p id="platformSubtitle" class="lobby-subtitle">全球化 AI Web Game Platform，依照年齡與主題挑遊戲。</p>
+          <p id="platformSubtitle" class="lobby-subtitle"></p>
         </div>
         <a id="featuredGame" class="lobby-feature" href="games/wonder-crash/index.html">
           <img src="assets/hero.png" alt="" />
           <div>
-            <span>目前主打</span>
+            <span>Featured</span>
             <strong>Wonder Crash</strong>
           </div>
         </a>
       </header>
 
-      <section id="lobbyStats" class="lobby-stats" aria-label="網站狀態"></section>
+      <section id="lobbyStats" class="lobby-stats" aria-label="Platform status"></section>
 
-      <section class="age-filter" aria-label="年齡分類">
-        <button class="active" type="button" data-age-filter="all">全部</button>
+      <section class="age-filter" aria-label="Age filters">
+        <button class="active" type="button" data-age-filter="all">All Ages</button>
         <button type="button" data-age-filter="3">3+</button>
         <button type="button" data-age-filter="5">5+</button>
         <button type="button" data-age-filter="13">13+</button>
-        <button type="button" data-age-filter="family">親子</button>
+        <button type="button" data-age-filter="family">Family</button>
       </section>
 
-      <section class="topic-filter" aria-label="主題分類">
-        <button class="active" type="button" data-topic-filter="all">全部主題</button>
+      <section class="topic-filter" aria-label="Topic filters">
+        <button class="active" type="button" data-topic-filter="all">All Topics</button>
         <button type="button" data-topic-filter="Featured">Featured</button>
         <button type="button" data-topic-filter="Animal Games">Animal Games</button>
         <button type="button" data-topic-filter="Puzzle">Puzzle</button>
@@ -51,7 +51,7 @@
         <button type="button" data-topic-filter="Education">Education</button>
       </section>
 
-      <section class="hero-games-section" aria-label="Hero Games">
+      <section id="heroGamesSection" class="hero-games-section" aria-label="Hero Games">
         <div class="section-heading">
           <span>Top 3</span>
           <h2>Hero Games</h2>
@@ -59,7 +59,8 @@
         <div id="heroGames" class="hero-games"></div>
       </section>
 
-      <section id="gameGrid" class="lobby-grid" aria-label="遊戲列表"></section>
+      <div id="filterStatus" class="filter-status" aria-live="polite"></div>
+      <section id="gameGrid" class="lobby-grid" aria-label="Game list"></section>
     </main>
 
     <div id="lobbyToast" class="lobby-toast hidden" role="status" aria-live="polite"></div>
