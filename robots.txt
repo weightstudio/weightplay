@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /docs/
+Disallow: /PROMPTS/
+Disallow: /*.md$
+
+Sitemap:
