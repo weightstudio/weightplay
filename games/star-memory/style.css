@@ -104,7 +104,7 @@ body {
 }
 
 .language-picker select {
-  background: rgba(255, 255, 255, 0.08);
+  background: #1e293b;
   border: 1px solid var(--glass-border);
   color: var(--text-light);
   border-radius: 6px;
@@ -112,6 +112,11 @@ body {
   font-size: 12px;
   outline: none;
   cursor: pointer;
+}
+
+.language-picker select option {
+  background-color: #1e293b;
+  color: var(--text-light);
 }
 
 /* Gameplay HUD */

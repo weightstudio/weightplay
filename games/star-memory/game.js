@@ -404,6 +404,7 @@
       locale: locale()
     });
 
+    resultPanel.classList.add("hidden");
     stageSelectPanel.classList.add("hidden");
     gameHud.classList.remove("hidden");
     gameBoardPanel.classList.remove("hidden");
