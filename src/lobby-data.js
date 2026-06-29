@@ -127,12 +127,12 @@ window.WONDER_LOBBY = {
       ageLabel: { en: "Family", "zh-Hant": "親子" },
       href: "games/animal-quiz/index.html",
       description: {
-        en: "Look at the animal picture, read the clue, and clear 8 friendly levels.",
-        "zh-Hant": "看動物圖片和提示，完成 8 個親子問答關卡。",
+        en: "Look at the animal picture, read the clue, and clear 20 friendly levels.",
+        "zh-Hant": "看動物圖片和提示，完成 20 個親子問答關卡。",
       },
       meta: {
-        en: ["Animal Games", "8 Levels", "Family"],
-        "zh-Hant": ["動物遊戲", "8 關", "親子"],
+        en: ["Animal Games", "20 Levels", "Family"],
+        "zh-Hant": ["動物遊戲", "20 關", "親子"],
       },
       art: { kind: "pattern", className: "animal-quiz" },
     },
