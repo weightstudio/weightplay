@@ -1,0 +1,344 @@
+:root {
+  color-scheme: light;
+  font-family: "Microsoft JhengHei", "Noto Sans TC", system-ui, sans-serif;
+  background: #ffeaa3;
+  color: #2d2513;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+  min-height: 100dvh;
+  margin: 0;
+  overflow: hidden;
+  touch-action: none;
+  overscroll-behavior: none;
+}
+
+body {
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle at 16% 16%, rgba(255, 112, 112, 0.28), transparent 20%),
+    radial-gradient(circle at 82% 12%, rgba(84, 167, 255, 0.24), transparent 24%),
+    linear-gradient(180deg, #fff0a8 0%, #ffd58f 100%);
+}
+
+button,
+a {
+  font: inherit;
+}
+
+.lunch-game {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto auto minmax(230px, 1fr) auto auto;
+  gap: 12px;
+  width: min(100vw, 520px);
+  height: min(100dvh, 920px);
+  padding: max(12px, env(safe-area-inset-top)) 14px calc(18px + env(safe-area-inset-bottom));
+  overflow: hidden;
+}
+
+.topbar {
+  display: grid;
+  grid-template-columns: 50px 1fr 72px;
+  gap: 10px;
+  align-items: center;
+}
+
+.home-link,
+.score-box {
+  display: grid;
+  place-items: center;
+  min-height: 50px;
+  border: 3px solid #7f5a23;
+  border-radius: 8px;
+  background: #fff9dc;
+  color: #3b2a13;
+  text-decoration: none;
+  box-shadow: 0 5px 0 #c99b44;
+}
+
+.home-link {
+  font-size: 28px;
+  font-weight: 1000;
+}
+
+.topbar h1 {
+  margin: 0;
+  font-size: clamp(26px, 8vw, 42px);
+  line-height: 1;
+}
+
+.topbar p {
+  margin: 5px 0 0;
+  color: #704f1f;
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.score-box strong {
+  font-size: 23px;
+  line-height: 1;
+}
+
+.score-box span {
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.progress {
+  display: grid;
+  grid-template-columns: 58px 1fr;
+  gap: 10px;
+  align-items: center;
+  color: #5e421b;
+  font-weight: 1000;
+}
+
+.progress div {
+  height: 18px;
+  padding: 3px;
+  border: 3px solid #7f5a23;
+  border-radius: 999px;
+  background: #fff7d4;
+}
+
+.progress i {
+  display: block;
+  width: 0%;
+  height: 100%;
+  border-radius: 999px;
+  background: #57b869;
+  transition: width 0.25s ease;
+}
+
+.lunchboxes {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.lunchbox {
+  display: grid;
+  place-items: center;
+  min-height: 112px;
+  border: 4px solid rgba(63, 43, 22, 0.86);
+  border-radius: 8px;
+  color: #271b0d;
+  box-shadow: inset 0 -10px rgba(0, 0, 0, 0.12), 0 8px 0 rgba(112, 75, 28, 0.42);
+}
+
+.lunchbox span {
+  width: 52px;
+  height: 34px;
+  border: 4px solid rgba(255, 255, 255, 0.72);
+  border-radius: 999px 999px 14px 14px;
+}
+
+.lunchbox strong {
+  font-size: 24px;
+  text-shadow: 0 1px rgba(255, 255, 255, 0.55);
+}
+
+.lunchbox.red {
+  background: #ff6b6b;
+}
+
+.lunchbox.yellow {
+  background: #ffd75e;
+}
+
+.lunchbox.blue {
+  background: #62b8ff;
+}
+
+.lunchbox.green {
+  background: #78d66c;
+}
+
+.lunchbox.hit {
+  animation: box-hit 0.42s ease;
+}
+
+.lunchbox.miss {
+  animation: box-miss 0.24s ease;
+}
+
+.food-stage {
+  display: grid;
+  place-items: center;
+  min-height: 178px;
+}
+
+.food-card {
+  display: grid;
+  place-items: center;
+  width: min(48vw, 190px);
+  height: min(48vw, 190px);
+  max-width: 190px;
+  max-height: 190px;
+  min-width: 142px;
+  min-height: 142px;
+  border: 4px solid #7f5a23;
+  border-radius: 8px;
+  background: #fffdf0;
+  box-shadow: 0 12px 0 #c99b44, 0 18px 24px rgba(104, 66, 26, 0.28);
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+  transition: transform 0.12s ease;
+}
+
+.food-card.dragging {
+  z-index: 10;
+  opacity: 0.95;
+  cursor: grabbing;
+  transition: none;
+}
+
+.food-card img {
+  width: 88px;
+  height: 88px;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.food-card strong {
+  font-size: 24px;
+}
+
+.feedback {
+  display: grid;
+  place-items: center;
+  min-height: 52px;
+  color: #573d18;
+}
+
+.feedback strong {
+  padding: 10px 18px;
+  border: 3px solid #7f5a23;
+  border-radius: 999px;
+  background: #fff9dc;
+  font-size: 20px;
+}
+
+.result-panel {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(85, 55, 20, 0.34);
+}
+
+.result-card {
+  display: grid;
+  gap: 12px;
+  width: min(100%, 330px);
+  padding: 24px;
+  border: 4px solid #7f5a23;
+  border-radius: 8px;
+  background: #fff9dc;
+  color: #382611;
+  text-align: center;
+  box-shadow: 0 12px 0 #c99b44;
+}
+
+.result-card strong {
+  font-size: 40px;
+}
+
+.result-card span {
+  font-size: 22px;
+  font-weight: 900;
+}
+
+.result-card button,
+.result-card a {
+  min-height: 50px;
+  border: 3px solid #7f5a23;
+  border-radius: 8px;
+  background: #ffcf63;
+  color: #2d2513;
+  font-size: 18px;
+  font-weight: 1000;
+  text-decoration: none;
+}
+
+.result-card a {
+  display: grid;
+  place-items: center;
+  background: #ffffff;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.food-card.pop {
+  animation: food-pop 0.48s ease;
+}
+
+.food-card.shake {
+  animation: food-shake 0.28s ease;
+}
+
+@keyframes box-hit {
+  50% {
+    transform: scale(1.06);
+    filter: brightness(1.12);
+  }
+}
+
+@keyframes box-miss {
+  25% {
+    transform: translateX(-6px);
+  }
+  75% {
+    transform: translateX(6px);
+  }
+}
+
+@keyframes food-pop {
+  50% {
+    transform: scale(1.12) rotate(4deg);
+  }
+}
+
+@keyframes food-shake {
+  25% {
+    transform: translateX(-7px) rotate(-3deg);
+  }
+  75% {
+    transform: translateX(7px) rotate(3deg);
+  }
+}
+
+@media (max-height: 700px) {
+  .lunch-game {
+    gap: 8px;
+  }
+
+  .lunchbox {
+    min-height: 94px;
+  }
+
+  .food-stage {
+    min-height: 142px;
+  }
+
+  .food-card {
+    width: 138px;
+    height: 138px;
+    min-width: 132px;
+    min-height: 132px;
+  }
+}

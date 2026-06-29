@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#f4d66d" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <title>顏色便當盒</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="lunch-game">
+      <header class="topbar">
+        <a class="home-link" href="../../index.html" aria-label="回大廳">⌂</a>
+        <div>
+          <h1>顏色便當盒</h1>
+          <p>拖到一樣顏色的盒子</p>
+        </div>
+        <div class="score-box"><strong id="scoreText">0</strong><span>分數</span></div>
+      </header>
+
+      <section class="progress" aria-label="進度">
+        <span id="roundText">1 / 8</span>
+        <div><i id="progressFill"></i></div>
+      </section>
+
+      <section id="dropZone" class="lunchboxes" aria-label="便當盒"></section>
+
+      <section class="food-stage" aria-label="食物">
+        <div id="foodCard" class="food-card" role="button" aria-label="拖曳食物">
+          <img id="foodImage" src="" alt="" />
+          <strong id="foodName"></strong>
+        </div>
+      </section>
+
+      <section class="feedback" aria-live="polite">
+        <strong id="feedbackText">準備好了嗎？</strong>
+      </section>
+
+      <div id="resultPanel" class="result-panel hidden">
+        <div class="result-card">
+          <strong>完成！</strong>
+          <span id="resultText"></span>
+          <button id="againBtn" type="button">再玩一次</button>
+          <a href="../../index.html">回大廳</a>
+        </div>
+      </div>
+    </main>
+
+    <script src="game.js"></script>
+  </body>
+</html>

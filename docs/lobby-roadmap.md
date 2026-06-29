@@ -43,11 +43,16 @@ Each game should define:
 
 ## Next Website Updates
 
-1. Add a game detail page template for planned games.
-2. Add category filters besides age, such as action, puzzle, reaction, learning, and family.
+1. Add category filters besides age, such as action, puzzle, reaction, learning, and family.
+2. Add a game detail page template for planned games.
 3. Add image requests for each planned game after its MVP spec is chosen.
-4. Add one new playable MVP game before expanding monetization.
-5. Add privacy/contact/about pages before applying serious ad placement.
+4. Add privacy/contact/about pages before applying serious ad placement.
+5. Build the next MVP game: `星星翻翻牌`.
+
+## Released Games
+
+- Wonder Crash: defense and upgrade game for ages 6+.
+- 顏色便當盒: color matching game for ages 3+ and family play.
 
 ## PM Notes
 

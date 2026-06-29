@@ -21,13 +21,14 @@ window.WONDER_LOBBY = {
     {
       id: "color-lunchbox",
       title: "顏色便當盒",
-      status: "planned",
-      statusText: "企劃中",
+      status: "playable",
+      statusText: "可遊玩",
       type: "顏色配對",
       ages: ["3", "family"],
       ageLabel: "3+",
-      description: "把食物放到相同顏色的盒子裡。",
-      meta: ["單手點擊", "無時間壓力", "親子可玩"],
+      href: "games/color-lunchbox/index.html",
+      description: "把食物放到相同顏色的便當盒裡。",
+      meta: ["拖曳配對", "無失敗壓力", "親子可玩"],
       art: { kind: "pattern", className: "color-match" },
     },
     {
