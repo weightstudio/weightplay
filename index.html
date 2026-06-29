@@ -17,9 +17,9 @@
         <div class="lobby-hero-copy">
           <p class="lobby-kicker">Kids & Family Web Games</p>
           <h1>Wonder Game Lobby</h1>
-          <p class="lobby-subtitle">依照年齡選遊戲，手機和電腦都能玩。</p>
+          <p class="lobby-subtitle">依照年齡挑遊戲，手機和電腦都能玩。</p>
         </div>
-        <a class="lobby-feature" href="games/wonder-crash/index.html">
+        <a id="featuredGame" class="lobby-feature" href="games/wonder-crash/index.html">
           <img src="assets/hero.png" alt="" />
           <div>
             <span>目前主打</span>
@@ -27,6 +27,8 @@
           </div>
         </a>
       </header>
+
+      <section id="lobbyStats" class="lobby-stats" aria-label="網站狀態"></section>
 
       <section class="age-filter" aria-label="年齡分類">
         <button class="active" type="button" data-age-filter="all">全部</button>
@@ -37,64 +39,12 @@
         <button type="button" data-age-filter="family">親子</button>
       </section>
 
-      <section class="lobby-grid" aria-label="遊戲列表">
-        <a class="game-card playable" href="games/wonder-crash/index.html" data-age="6 9">
-          <div class="game-card-art">
-            <img src="assets/battle-bg.png" alt="" />
-            <img class="game-card-hero" src="assets/hero.png" alt="" />
-          </div>
-          <div class="game-card-body">
-            <div class="game-card-topline">
-              <span class="age-pill">6+</span>
-              <span>防守養成</span>
-            </div>
-            <h2>Wonder Crash</h2>
-            <p>拖曳角色、投擲文具武器、守住城牆。</p>
-            <div class="game-card-actions">
-              <span>開始玩</span>
-              <span>30 關</span>
-            </div>
-          </div>
-        </a>
-
-        <article class="game-card coming-soon" data-age="3 family">
-          <div class="game-card-art color-match"></div>
-          <div class="game-card-body">
-            <div class="game-card-topline">
-              <span class="age-pill">3+</span>
-              <span>即將推出</span>
-            </div>
-            <h2>顏色便當盒</h2>
-            <p>把食物放到相同顏色的盒子裡。</p>
-          </div>
-        </article>
-
-        <article class="game-card coming-soon" data-age="6 9">
-          <div class="game-card-art memory-flip"></div>
-          <div class="game-card-body">
-            <div class="game-card-topline">
-              <span class="age-pill">6+</span>
-              <span>即將推出</span>
-            </div>
-            <h2>星星翻翻牌</h2>
-            <p>記住位置，翻出相同圖案。</p>
-          </div>
-        </article>
-
-        <article class="game-card coming-soon" data-age="9 12">
-          <div class="game-card-art reflex-run"></div>
-          <div class="game-card-body">
-            <div class="game-card-topline">
-              <span class="age-pill">9+</span>
-              <span>即將推出</span>
-            </div>
-            <h2>校園閃電跑</h2>
-            <p>單手左右滑，收集道具挑戰高分。</p>
-          </div>
-        </article>
-      </section>
+      <section id="gameGrid" class="lobby-grid" aria-label="遊戲列表"></section>
     </main>
 
+    <div id="lobbyToast" class="lobby-toast hidden" role="status" aria-live="polite"></div>
+
+    <script src="src/lobby-data.js"></script>
     <script src="src/lobby.js"></script>
   </body>
 </html>
