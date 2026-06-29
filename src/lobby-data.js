@@ -57,7 +57,7 @@ window.WONDER_LOBBY = {
         en: ["Drag Match", "No Pressure", "Family"],
         "zh-Hant": ["拖曳配對", "無壓力", "親子"],
       },
-      art: { kind: "image", background: "assets/lunchbox-bg.png", hero: "assets/lunchbox-hero.png" },
+      art: { kind: "image", background: "assets/lunchbox-cover.png", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
     },
     {
       id: "star-memory",
@@ -77,7 +77,7 @@ window.WONDER_LOBBY = {
         en: ["Short Rounds", "Replayable", "Memory"],
         "zh-Hant": ["短局", "可重玩", "記憶"],
       },
-      art: { kind: "image", background: "assets/memory-bg.png", hero: "assets/memory-hero.png" },
+      art: { kind: "image", background: "assets/memory-cover.png", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
     },
     {
       id: "campus-dash",
@@ -135,7 +135,7 @@ window.WONDER_LOBBY = {
         en: ["Animal Games", "3 Stages", "30 Questions"],
         "zh-Hant": ["動物遊戲", "3 關", "30 題"],
       },
-      art: { kind: "image", background: "assets/quiz-bg.png", hero: "assets/quiz-hero.png" },
+      art: { kind: "image", background: "assets/quiz-cover.png", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
     },
   ],
 };
