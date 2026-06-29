@@ -397,6 +397,7 @@ function restart() {
 function startLevel(levelIndex) {
   if (levelIndex + 1 > highestUnlocked) {
     showFloatingMessage(t("locked"));
+    window.WonderSound?.play("wrong");
     return;
   }
   requestGameFullscreen();
@@ -408,6 +409,7 @@ function startLevel(levelIndex) {
   menuTabs.classList.add("hidden");
   overlay.classList.add("hidden");
   updateHud();
+  window.WonderSound?.play("start");
 }
 
 window.addEventListener("keydown", (event) => {
@@ -633,6 +635,7 @@ function shootWeaponSlot(slotIndex, entry) {
   const weapon = entry.weapon;
   const projectileCount = state.projectileCount;
   const spread = 36;
+  window.WonderSound?.play("shoot");
   for (let burst = 0; burst < state.burstCount; burst += 1) {
     for (let i = 0; i < projectileCount; i += 1) {
       const offset = (i - (projectileCount - 1) / 2) * spread;
@@ -728,6 +731,7 @@ function spawnBoss(wave) {
   addEnemy(type, wave, true);
   state.bossMinionTimer = 1.8;
   state.bossBanner = { text: t("boss_spawned", { name: t("enemy_" + type.id) }), life: 2.6 };
+  window.WonderSound?.play("boss");
 }
 
 function spawnBossMinions(wave) {
@@ -828,6 +832,7 @@ function throwBossBall(enemy) {
     color: getBossBallColor(enemy),
   });
   state.hits.push({ x: startX, y: startY, radius: size * 0.65, life: 0.18 });
+  window.WonderSound?.play("boss");
 }
 
 function getBossBallColor(enemy) {
@@ -858,6 +863,7 @@ function loseLevel() {
   menuTabs.classList.add("hidden");
   overlay.classList.remove("hidden");
   updateHud();
+  window.WonderSound?.play("wrong");
 }
 
 function winLevel() {
@@ -886,6 +892,7 @@ function winLevel() {
   profilePanel.innerHTML = renderSettlement(drops, wasChallenge);
   overlay.classList.remove("hidden");
   updateHud();
+  window.WonderSound?.play("win");
 }
 
 function rollLevelDrops() {
@@ -895,6 +902,7 @@ function rollLevelDrops() {
     profile.backpackItems.push(item);
     drops.push(item);
     saveProfile();
+    window.WonderSound?.play("coin");
   }
   return drops;
 }
@@ -974,6 +982,9 @@ function resolveHits() {
         if (enemy.hp <= 0) {
           state.score += 10;
           state.coins += Math.ceil(enemy.coinReward * state.coinMultiplier * (1 + getHeroCoinBonus()));
+          window.WonderSound?.play("enemyDown");
+        } else {
+          window.WonderSound?.play("hit");
         }
         break;
       }
@@ -1014,6 +1025,7 @@ function resolveBossProjectiles() {
         life: 0.7,
         maxLife: 0.7,
       });
+      window.WonderSound?.play("wallHit");
     }
   }
 }
@@ -1025,6 +1037,7 @@ function damageWall() {
       enemy.hp = 0;
       state.wallHp = Math.max(0, state.wallHp - Math.ceil(enemy.damage * (1 - getWallDamageReduction())));
       state.hits.push({ x: enemy.x, y: wallY, radius: enemy.type.ability === "breaker" ? 54 : 36, life: 0.28 });
+      window.WonderSound?.play("wallHit");
     }
   }
 }
@@ -1657,7 +1670,10 @@ function closeWeaponModal() {
 
 function buyProfileUpgrade(type) {
   const cost = getProfileUpgradeCost(type);
-  if (profile.coins < cost) return;
+  if (profile.coins < cost) {
+    window.WonderSound?.play("wrong");
+    return;
+  }
   profile.coins -= cost;
   if (type === "heroCoin") profile.heroCoinLevel += 1;
   if (type === "heroAttack") profile.heroAttackLevel += 1;
@@ -1671,6 +1687,7 @@ function buyProfileUpgrade(type) {
   saveProfile();
   renderProfilePanel(activeMenuTab);
   updateHud();
+  window.WonderSound?.play("upgrade");
 }
 
 function pickUpgrades(count) {
@@ -1709,6 +1726,7 @@ function applyUpgrade(upgrade) {
   }
   if (effect.wallHp) state.wallHp = Math.min(state.maxWallHp, state.wallHp + effect.wallHp);
   if (effect.coinMultiplier) state.coinMultiplier += effect.coinMultiplier;
+  window.WonderSound?.play("upgrade");
 }
 
 function bankRunCoins() {

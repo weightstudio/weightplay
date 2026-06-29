@@ -4,7 +4,9 @@ window.WONDER_DATA = {
       bg: "assets/battle-bg.png",
       hero: "assets/hero.png",
       wall: "assets/wall.png",
-      eraser: "assets/eraser.png"
+      eraser: "assets/eraser.png",
+      pencil: "assets/weapon-pencil.png",
+      ruler: "assets/weapon-ruler.png"
     },
     enemies: [
 "assets/enemy-toilet.png",
