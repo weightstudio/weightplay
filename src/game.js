@@ -83,6 +83,7 @@ const dictionary = {
     settings_unlocked_stages: "Unlocked to Stage {count}",
     settings_pause_question: "Resume or Leave Battle?",
     language: "Language",
+    language_desc: "Choose display language",
     upgrade_panel_title: "Select Upgrade",
     upgrade_wave_complete: "Wave {wave} Complete",
     settlement_title: "Battle Summary",
@@ -182,6 +183,7 @@ const dictionary = {
     settings_unlocked_stages: "已解鎖到第 {count} 關",
     settings_pause_question: "要繼續或離開戰鬥？",
     language: "語言",
+    language_desc: "選擇顯示語言",
     upgrade_panel_title: "選擇強化",
     upgrade_wave_complete: "Wave {wave} 完成",
     settlement_title: "戰鬥結算",
@@ -1513,13 +1515,15 @@ function renderProfilePanel(tab = activeMenuTab) {
       <img class="profile-row-icon" src="assets/menu-settings.png" alt="" />
       <div><strong>${t("settings_progress")}</strong><span>${t("settings_unlocked_stages", { count: Math.min(highestUnlocked, LEVELS.length) })}</span></div>
     </div>
-    <div class="profile-row">
+    <div class="profile-row setting-row">
       <img class="profile-row-icon" src="assets/menu-settings.png" alt="" style="filter: hue-rotate(140deg);" />
-      <div><strong>${t("language")}</strong><span>Select display language</span></div>
-      <select id="localeSelect" class="settings-select" aria-label="Language">
-        <option value="en">English</option>
-        <option value="zh-Hant">繁體中文</option>
-      </select>
+      <div><strong>${t("language")}</strong><span>${t("language_desc")}</span></div>
+      <div class="setting-control">
+        <select id="localeSelect" class="settings-select" aria-label="Language">
+          <option value="en">English</option>
+          <option value="zh-Hant">繁體中文</option>
+        </select>
+      </div>
     </div>
     <div class="profile-row full"><div><strong>Wonder Crash</strong><span>Demo build</span></div></div>
   `;
