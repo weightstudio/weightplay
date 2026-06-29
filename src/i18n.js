@@ -30,6 +30,12 @@
       "topic.puzzle": "Puzzle",
       "topic.arcade": "Arcade",
       "topic.education": "Education",
+      "category.Featured": "Featured",
+      "category.Animal Games": "Animal Games",
+      "category.Puzzle": "Puzzle",
+      "category.Arcade": "Arcade",
+      "category.Education": "Education",
+      "category.Family": "Family",
     },
     "zh-Hant": {
       "site.kicker": "兒童與親子遊戲",
@@ -56,6 +62,12 @@
       "topic.puzzle": "益智",
       "topic.arcade": "街機",
       "topic.education": "教育",
+      "category.Featured": "主打",
+      "category.Animal Games": "動物遊戲",
+      "category.Puzzle": "益智",
+      "category.Arcade": "街機",
+      "category.Education": "教育",
+      "category.Family": "親子",
     },
   };
 
@@ -90,6 +102,7 @@
 
   function setLocale(locale) {
     if (!supportedLocales.includes(locale)) return;
+    if (locale === currentLocale) return;
     currentLocale = locale;
     document.documentElement.lang = locale;
     try {

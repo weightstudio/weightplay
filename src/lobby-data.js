@@ -17,7 +17,7 @@ window.WONDER_LOBBY = {
   games: [
     {
       id: "wonder-crash",
-      title: { en: "Wonder Crash", "zh-Hant": "Wonder Crash" },
+      title: { en: "Wonder Crash", "zh-Hant": "奇想守城" },
       status: "playable",
       statusText: { en: "Playable", "zh-Hant": "可遊玩" },
       type: { en: "Defense", "zh-Hant": "防守養成" },

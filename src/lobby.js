@@ -25,6 +25,10 @@ function text(value) {
   return i18n.getLocalized(value);
 }
 
+function categoryText(category) {
+  return i18n.t(`category.${category}`);
+}
+
 function createGameCard(game) {
   const isPlayable = game.status === "playable";
   const title = text(game.title);
@@ -60,11 +64,11 @@ function createGameCard(game) {
   }
 
   const meta = text(game.meta).map((item) => `<span>${item}</span>`).join("");
-  const categoryBadges = (game.categories || []).map((item) => `<span>${item}</span>`).join("");
+  const categoryBadges = (game.categories || []).map((item) => `<span>${categoryText(item)}</span>`).join("");
   const art =
     game.art.kind === "image"
       ? `<div class="game-card-art"><img src="${game.art.background}" alt="" /><img class="game-card-hero" src="${game.art.hero}" alt="" /></div>`
-      : `<div class="game-card-art ${game.art.className}"><span>${game.ageLabel}</span></div>`;
+      : `<div class="game-card-art ${game.art.className}"><span>${ageLabel}</span></div>`;
 
   card.innerHTML = `
     ${art}
@@ -220,6 +224,11 @@ topicButtons.forEach((button) => {
 });
 
 localeSelect.addEventListener("change", () => {
+  window.WonderSound?.play("click");
+  i18n.setLocale(localeSelect.value);
+});
+
+localeSelect.addEventListener("input", () => {
   window.WonderSound?.play("click");
   i18n.setLocale(localeSelect.value);
 });
