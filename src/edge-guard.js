@@ -4,7 +4,19 @@
   let gesture = null;
 
   function isEditable(target) {
-    return Boolean(target?.closest?.("input, textarea, select, [contenteditable='true']"));
+    return Boolean(target?.closest?.("input, textarea, select, [contenteditable='true'], [data-allow-select='true']"));
+  }
+
+  function shouldBlockSelection(target) {
+    return !isEditable(target);
+  }
+
+  function blockSelection(event) {
+    if (shouldBlockSelection(event.target)) event.preventDefault();
+  }
+
+  function blockNativeDrag(event) {
+    if (shouldBlockSelection(event.target)) event.preventDefault();
   }
 
   function start(event) {
@@ -40,8 +52,14 @@
 
   document.documentElement.style.overscrollBehaviorX = "none";
   document.body?.style.setProperty("overscroll-behavior-x", "none");
+  document.documentElement.style.webkitUserSelect = "none";
+  document.documentElement.style.userSelect = "none";
+  document.body?.style.setProperty("-webkit-user-select", "none");
+  document.body?.style.setProperty("user-select", "none");
   window.addEventListener("touchstart", start, { passive: true, capture: true });
   window.addEventListener("touchmove", move, { passive: false, capture: true });
   window.addEventListener("touchend", end, { passive: true, capture: true });
   window.addEventListener("touchcancel", end, { passive: true, capture: true });
+  window.addEventListener("selectstart", blockSelection, { capture: true });
+  window.addEventListener("dragstart", blockNativeDrag, { capture: true });
 })();
