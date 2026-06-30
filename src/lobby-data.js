@@ -55,8 +55,8 @@ window.WONDER_LOBBY = {
         "zh-Hant": "挑戰 10 個主題關卡，把不同食物拖到變化的顏色便當盒裡。",
       },
       meta: {
-        en: ["10 Levels", "Drag Match", "Family"],
-        "zh-Hant": ["10 關", "拖曳配對", "親子"],
+        en: ["10 Levels", "Theme Stages", "Drag Match"],
+        "zh-Hant": ["10 關", "主題關卡", "拖曳配對"],
       },
       art: {
         kind: "image",
