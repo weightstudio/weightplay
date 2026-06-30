@@ -20,6 +20,7 @@ const resultText = document.querySelector("#resultText");
 const againBtn = document.querySelector("#againBtn");
 const nextStageBtn = document.querySelector("#nextStageBtn");
 const stageSelectBtn = document.querySelector("#stageSelectBtn");
+const homeLink = document.querySelector("#homeLink");
 const homeText = document.querySelector("#homeText");
 const loadingPanel = document.querySelector("#loadingPanel");
 const loadingTitle = document.querySelector("#loadingTitle");
@@ -517,6 +518,13 @@ nextStageBtn.addEventListener("click", () => {
 });
 
 stageSelectBtn.addEventListener("click", () => {
+  window.WonderSound?.play("click");
+  showStageSelect();
+});
+
+homeLink.addEventListener("click", (event) => {
+  if (!stageSelectPanel.classList.contains("hidden")) return;
+  event.preventDefault();
   window.WonderSound?.play("click");
   showStageSelect();
 });

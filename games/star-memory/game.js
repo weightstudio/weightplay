@@ -650,6 +650,13 @@
     showStageSelect();
   });
 
+  document.querySelector("#homeLink").addEventListener("click", (event) => {
+    if (!stageSelectPanel.classList.contains("hidden")) return;
+    event.preventDefault();
+    window.WonderSound?.play("click");
+    showStageSelect();
+  });
+
   // Initialization
   translateStaticUI();
   simulateLoading();
