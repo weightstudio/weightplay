@@ -369,7 +369,10 @@
     });
     nodes.backToStagesBtn.addEventListener("click", showMenu);
     nodes.resultStagesBtn.addEventListener("click", showMenu);
-    nodes.retryBtn.addEventListener("click", () => startStage(currentStage));
+    nodes.retryBtn.addEventListener("click", () => {
+      track("game_restart", { level: currentStage + 1, mistakes });
+      startStage(currentStage);
+    });
     nodes.nextStageBtn.addEventListener("click", () => startStage(Math.min(currentStage + 1, stages.length - 1)));
   }
 
