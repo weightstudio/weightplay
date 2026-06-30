@@ -232,5 +232,29 @@ window.WONDER_LOBBY = {
         hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>",
       },
     },
+    {
+      id: "tiny-weather-rescue",
+      title: { en: "Tiny Weather Rescue", "zh-Hant": "小小天氣救援" },
+      status: "playable",
+      statusText: { en: "Playable", "zh-Hant": "可遊玩" },
+      type: { en: "Route Puzzle", "zh-Hant": "路線解謎" },
+      categories: ["Animal Games", "Puzzle", "Family"],
+      ages: ["5", "family"],
+      ageLabel: { en: "5+", "zh-Hant": "5+" },
+      href: "games/tiny-weather-rescue/index.html",
+      description: {
+        en: "Guide cute animals through rain, wind, puddles, and sunshine to reach the shelter.",
+        "zh-Hant": "帶動物避開雨、風、水坑和閃電，抵達溫暖小屋。",
+      },
+      meta: {
+        en: ["6 Stages", "Weather Puzzle", "Animal Games"],
+        "zh-Hant": ["6 關", "天氣解謎", "動物遊戲"],
+      },
+      art: {
+        kind: "image",
+        background: "assets/tiny-weather-rescue-cover.png",
+        hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>",
+      },
+    },
   ],
 };
