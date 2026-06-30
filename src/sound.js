@@ -1,8 +1,10 @@
 (function () {
   const muteKey = "wonderSoundMuted";
+  const positionKey = "wonderSoundTogglePosition";
   let audioContext = null;
   let unlocked = false;
   let muted = false;
+  let dragState = null;
 
   try {
     muted = localStorage.getItem(muteKey) === "1";
@@ -138,19 +140,169 @@
     toggle.classList.toggle("locked", !unlocked);
   }
 
+  function installStyles() {
+    if (document.querySelector("[data-sound-style]")) return;
+    const style = document.createElement("style");
+    style.dataset.soundStyle = "true";
+    style.textContent = `
+      .sound-toggle {
+        position: fixed !important;
+        z-index: 80 !important;
+        left: auto !important;
+        top: auto !important;
+        right: max(12px, env(safe-area-inset-right)) !important;
+        bottom: max(12px, env(safe-area-inset-bottom)) !important;
+        display: grid !important;
+        place-items: center !important;
+        width: 42px !important;
+        height: 42px !important;
+        margin: 0 !important;
+        border: 1px solid rgba(255, 255, 255, 0.28) !important;
+        border-radius: 50% !important;
+        background: rgba(14, 18, 26, 0.66) !important;
+        color: #fff !important;
+        font: 900 18px/1 system-ui, sans-serif !important;
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.26) !important;
+        opacity: 0.72 !important;
+        backdrop-filter: blur(10px) !important;
+        cursor: grab !important;
+        touch-action: none !important;
+        user-select: none !important;
+        -webkit-user-select: none !important;
+        transition: opacity 0.15s ease, transform 0.15s ease !important;
+      }
+      .sound-toggle:hover,
+      .sound-toggle:focus-visible {
+        opacity: 1 !important;
+        transform: scale(1.06) !important;
+      }
+      .sound-toggle.dragging {
+        opacity: 1 !important;
+        cursor: grabbing !important;
+        transition: none !important;
+      }
+      .sound-toggle.muted {
+        opacity: 0.54 !important;
+      }
+    `;
+    document.head.append(style);
+  }
+
+  function clamp(value, min, max) {
+    return Math.max(min, Math.min(max, value));
+  }
+
+  function readPosition() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(positionKey) || "null");
+      if (!saved || !Number.isFinite(saved.x) || !Number.isFinite(saved.y)) return null;
+      return saved;
+    } catch {
+      return null;
+    }
+  }
+
+  function savePosition(x, y) {
+    try {
+      localStorage.setItem(positionKey, JSON.stringify({ x: Math.round(x), y: Math.round(y) }));
+    } catch {
+      // Sound button position is optional.
+    }
+  }
+
+  function placeToggle(button, x, y, persist = false) {
+    const rect = button.getBoundingClientRect();
+    const width = rect.width || 42;
+    const height = rect.height || 42;
+    const margin = 8;
+    const nextX = clamp(x, margin, window.innerWidth - width - margin);
+    const nextY = clamp(y, margin, window.innerHeight - height - margin);
+    button.style.left = `${nextX}px`;
+    button.style.top = `${nextY}px`;
+    button.style.right = "auto";
+    button.style.bottom = "auto";
+    if (persist) savePosition(nextX, nextY);
+  }
+
+  function applySavedPosition(button) {
+    const saved = readPosition();
+    if (!saved) return;
+    requestAnimationFrame(() => placeToggle(button, saved.x, saved.y, false));
+  }
+
+  function installDrag(button) {
+    button.addEventListener("pointerdown", (event) => {
+      if (event.button !== undefined && event.button !== 0) return;
+      const rect = button.getBoundingClientRect();
+      dragState = {
+        pointerId: event.pointerId,
+        startX: event.clientX,
+        startY: event.clientY,
+        offsetX: event.clientX - rect.left,
+        offsetY: event.clientY - rect.top,
+        moved: false,
+      };
+      button.setPointerCapture?.(event.pointerId);
+    });
+
+    button.addEventListener("pointermove", (event) => {
+      if (!dragState || dragState.pointerId !== event.pointerId) return;
+      const distance = Math.hypot(event.clientX - dragState.startX, event.clientY - dragState.startY);
+      if (distance > 4) {
+        dragState.moved = true;
+        button.classList.add("dragging");
+      }
+      if (!dragState.moved) return;
+      event.preventDefault();
+      placeToggle(button, event.clientX - dragState.offsetX, event.clientY - dragState.offsetY, false);
+    });
+
+    button.addEventListener("pointerup", (event) => {
+      if (!dragState || dragState.pointerId !== event.pointerId) return;
+      if (dragState.moved) {
+        event.preventDefault();
+        const rect = button.getBoundingClientRect();
+        savePosition(rect.left, rect.top);
+      }
+      button.releasePointerCapture?.(event.pointerId);
+      button.classList.remove("dragging");
+      window.setTimeout(() => {
+        dragState = null;
+      }, 0);
+    });
+
+    button.addEventListener("pointercancel", () => {
+      button.classList.remove("dragging");
+      dragState = null;
+    });
+
+    window.addEventListener("resize", () => {
+      const rect = button.getBoundingClientRect();
+      placeToggle(button, rect.left, rect.top, true);
+    });
+  }
+
   function installToggle() {
     if (document.querySelector("[data-sound-toggle]")) return;
 
+    installStyles();
     const button = document.createElement("button");
     button.type = "button";
     button.className = "sound-toggle";
     button.dataset.soundToggle = "true";
-    button.addEventListener("click", () => {
+    button.title = "Sound";
+    installDrag(button);
+    button.addEventListener("click", (event) => {
+      if (dragState?.moved) {
+        event.preventDefault();
+        return;
+      }
       unlock();
       setMuted(!muted);
       if (!muted) play("click");
     });
     document.body.append(button);
+    applySavedPosition(button);
     updateToggle();
   }
 
