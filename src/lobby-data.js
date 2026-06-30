@@ -184,5 +184,29 @@ window.WONDER_LOBBY = {
         hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>",
       },
     },
+    {
+      id: "zoo-helper-day",
+      title: { en: "Zoo Helper Day", "zh-Hant": "動物園小幫手" },
+      status: "playable",
+      statusText: { en: "Playable", "zh-Hant": "可遊玩" },
+      type: { en: "Animal Care", "zh-Hant": "動物照顧" },
+      categories: ["Animal Games", "Education", "Family"],
+      ages: ["3", "family"],
+      ageLabel: { en: "3+", "zh-Hant": "3+" },
+      href: "games/zoo-helper-day/index.html",
+      description: {
+        en: "Help cute zoo animals with food, water, cleaning, and play tasks across gentle stages.",
+        "zh-Hant": "幫可愛動物完成餵食、喝水、清潔和玩具任務。",
+      },
+      meta: {
+        en: ["6 Stages", "Animal Care", "Family"],
+        "zh-Hant": ["6 關", "動物照顧", "親子"],
+      },
+      art: {
+        kind: "image",
+        background: "assets/zoo-helper-day-cover.png",
+        hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>",
+      },
+    },
   ],
 };
