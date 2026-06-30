@@ -24,10 +24,10 @@ select {
 
 .snack-game {
   min-height: 100svh;
-  padding: max(14px, env(safe-area-inset-top)) 14px max(16px, env(safe-area-inset-bottom));
+  padding: max(12px, env(safe-area-inset-top)) 12px max(14px, env(safe-area-inset-bottom));
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
   background:
     radial-gradient(circle at 18% 14%, rgba(255, 213, 94, 0.28), transparent 24%),
     radial-gradient(circle at 86% 20%, rgba(104, 211, 145, 0.22), transparent 26%),
@@ -35,7 +35,10 @@ select {
 }
 
 .topbar,
-.hud {
+.hud,
+.menu-panel,
+.play-panel,
+.result-card {
   width: min(720px, 100%);
   margin: 0 auto;
 }
@@ -106,8 +109,9 @@ button {
   gap: 8px;
 }
 
-.hud div {
-  min-height: 58px;
+.hud div,
+.score-line {
+  min-height: 54px;
   padding: 8px;
   border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 8px;
@@ -117,21 +121,16 @@ button {
   place-items: center;
 }
 
-.hud span {
+.hud span,
+.score-line span {
   color: #f1cf8b;
   font-size: 0.72rem;
   font-weight: 800;
 }
 
-.hud strong {
+.hud strong,
+.score-line strong {
   font-size: 1.35rem;
-}
-
-.menu-panel,
-.play-panel,
-.result-card {
-  width: min(720px, 100%);
-  margin: 0 auto;
 }
 
 .menu-panel,
@@ -146,7 +145,7 @@ button {
 }
 
 .menu-panel img {
-  width: min(360px, 86%);
+  width: min(260px, 68%);
   aspect-ratio: 1;
   object-fit: cover;
   border-radius: 8px;
@@ -171,6 +170,59 @@ button {
   line-height: 1.35;
 }
 
+.stage-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.stage-card {
+  min-width: 0;
+  min-height: 88px;
+  padding: 8px;
+  display: grid;
+  gap: 2px;
+  place-items: center;
+  color: #2b1d12;
+  background: linear-gradient(180deg, #ffe899, #ffbd57);
+  box-shadow: 0 4px 0 #b56a28;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
+}
+
+.stage-card:active {
+  transform: translateY(3px) scale(0.98);
+  box-shadow: 0 1px 0 #b56a28;
+}
+
+.stage-card strong {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: #fff8e8;
+  background: #d95b51;
+  font-size: 1rem;
+}
+
+.stage-card span {
+  color: #322113;
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.stage-card em {
+  color: rgba(45, 29, 18, 0.72);
+  font-size: 0.68rem;
+  font-style: normal;
+  font-weight: 800;
+}
+
+.stage-card.locked {
+  filter: grayscale(1);
+  opacity: 0.58;
+}
+
 button {
   padding: 0 18px;
   color: #2b1d12;
@@ -186,14 +238,20 @@ button:active {
 
 .play-panel {
   flex: 1;
+  min-height: 0;
   display: grid;
-  grid-template-rows: minmax(0, 1fr) auto;
+  grid-template-rows: auto minmax(0, 1fr) auto;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
+}
+
+.score-line {
+  width: min(240px, 100%);
+  justify-self: center;
 }
 
 .board {
-  width: min(94vw, 620px);
+  width: min(94vw, 620px, 72svh);
   aspect-ratio: 1;
   margin: 0 auto;
   padding: 8px;
@@ -204,6 +262,7 @@ button:active {
   grid-template-columns: repeat(7, 1fr);
   gap: 6px;
   touch-action: none;
+  overflow: hidden;
 }
 
 .tile {
@@ -213,11 +272,17 @@ button:active {
   border-radius: 8px;
   display: grid;
   place-items: center;
-  font-size: clamp(1.25rem, 7vw, 3rem);
+  color: #fff;
+  font-size: clamp(0.95rem, 5.5vw, 2.15rem);
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
   box-shadow: inset 0 -5px rgba(0, 0, 0, 0.18), 0 4px 8px rgba(0, 0, 0, 0.16);
   transform: translateZ(0);
   transition: transform 120ms ease, filter 120ms ease, opacity 160ms ease;
-  animation: snack-tile-drop 0.24s ease both;
+  animation: snack-tile-appear 0.22s ease both;
+}
+
+.tile.dropping {
+  animation: snack-drop-move 0.28s cubic-bezier(0.2, 0.86, 0.25, 1.08) both;
 }
 
 .tile.selected {
@@ -259,28 +324,21 @@ button:active {
   background: linear-gradient(180deg, #ffd7a8, #d87a3b);
 }
 
-.leaderboard {
-  display: grid;
-  gap: 6px;
-  padding: 10px;
-  border-radius: 8px;
-  background: rgba(13, 17, 26, 0.58);
-}
-
-.leaderboard-row {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  color: #fff3ca;
-  font-weight: 800;
-}
-
 .result-card {
   padding: 18px;
   border-radius: 8px;
-  background: rgba(18, 21, 31, 0.78);
+  background: rgba(18, 21, 31, 0.86);
   border: 1px solid rgba(255, 255, 255, 0.16);
   box-shadow: 0 22px 54px rgba(0, 0, 0, 0.34);
+}
+
+.result-stars {
+  min-height: 42px;
+  color: #ffe36f;
+  font-size: 2rem;
+  letter-spacing: 4px;
+  text-align: center;
+  text-shadow: 0 0 16px rgba(255, 227, 111, 0.7);
 }
 
 .result-card a {
@@ -345,10 +403,24 @@ button:active {
   }
 }
 
-@keyframes snack-tile-drop {
+@keyframes snack-tile-appear {
   from {
     opacity: 0;
-    transform: translateY(-10px) scale(0.84);
+    transform: scale(0.82);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes snack-drop-move {
+  from {
+    opacity: 0.9;
+    transform: translateY(var(--drop)) scale(0.98);
+  }
+  78% {
+    transform: translateY(4%) scale(1.02);
   }
   to {
     opacity: 1;
@@ -382,13 +454,23 @@ button:active {
   }
 }
 
-@media (max-height: 720px) {
+@media (max-height: 760px) {
   .menu-panel img {
-    width: min(240px, 68%);
+    display: none;
   }
 
-  .menu-panel,
-  .result-card {
-    justify-content: flex-start;
+  .stage-card {
+    min-height: 74px;
+  }
+}
+
+@media (max-width: 390px) {
+  .stage-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .board {
+    gap: 4px;
+    padding: 6px;
   }
 }

@@ -123,12 +123,12 @@ window.WONDER_LOBBY = {
       ages: ["13", "family"],
       ageLabel: "13+",
       description: {
-        en: "Swap cute snack blocks, clear matches, and chase a local high score.",
-        "zh-Hant": "交換可愛零食方塊，連線消除並挑戰最高分。",
+        en: "Clear snack matching stages, beat move goals, and unlock new levels.",
+        "zh-Hant": "交換零食方塊達成目標分數，闖關解鎖新關卡。",
       },
       meta: {
-        en: ["Score Attack", "Leaderboard", "60 Sec"],
-        "zh-Hant": ["分數挑戰", "排行榜", "60 秒"],
+        en: ["8 Stages", "Move Goals", "Match Puzzle"],
+        "zh-Hant": ["8 關", "步數目標", "配對益智"],
       },
       art: {
         kind: "image",

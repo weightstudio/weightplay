@@ -1,50 +1,82 @@
 (function () {
+  const GAME_ID = "snack-blocks";
   const size = 7;
-  const types = ["🍓", "🍪", "🍬", "🍇", "🧀", "🥨"];
-  const duration = 60;
-  const scoreKey = "snackBlocksTopScores";
+  const snacks = ["ST", "CK", "JM", "GR", "CH", "PR"];
+  const snackIcon = {
+    ST: "\u{1F353}",
+    CK: "\u{1F36A}",
+    JM: "\u{1F36C}",
+    GR: "\u{1F347}",
+    CH: "\u{1F9C0}",
+    PR: "\u{1F968}",
+  };
   const localeKey = "weightplayLocale";
+  const unlockKey = "snackBlocksUnlocked";
+  const recordKey = "snackBlocksRecords";
+
+  const stages = [
+    { id: 1, target: 450, moves: 18, types: 4 },
+    { id: 2, target: 650, moves: 20, types: 4 },
+    { id: 3, target: 850, moves: 22, types: 5 },
+    { id: 4, target: 1100, moves: 24, types: 5 },
+    { id: 5, target: 1350, moves: 25, types: 6 },
+    { id: 6, target: 1650, moves: 26, types: 6 },
+    { id: 7, target: 1950, moves: 27, types: 6 },
+    { id: 8, target: 2300, moves: 28, types: 6 },
+  ];
 
   const text = {
     en: {
       brand: "WeightPlay",
       title: "Snack Blocks",
       language: "Language",
+      stage: "Stage",
+      moves: "Moves",
+      target: "Target",
       score: "Score",
-      time: "Time",
-      combo: "Combo",
-      menuTitle: "Swap snacks. Clear lines.",
-      menuText: "Make matches of 3 or more before time runs out.",
-      start: "Start",
+      menuTitle: "Choose a snack stage.",
+      menuText: "Match 3 or more snacks, hit the target, and unlock the next stage.",
+      stageName: "Stage {stage}",
+      locked: "Locked",
+      best: "Best {score}",
       hint: "Tap or drag a snack to swap with its neighbor.",
       loading: "Loading",
-      timeUp: "Time Up!",
-      result: "Score: {score}. Best: {best}.",
-      again: "Play Again",
-      menu: "Menu",
+      clear: "Stage Clear!",
+      failed: "Try Again!",
+      clearText: "Score {score} / {target}. You unlocked the next stage.",
+      finalClearText: "Score {score} / {target}. All snack stages cleared!",
+      failedText: "Score {score} / {target}. Try a bigger combo.",
+      next: "Next Stage",
+      again: "Try Again",
+      menu: "Stages",
       lobby: "Lobby",
-      empty: "No scores yet",
-      rank: "Rank {rank}",
+      unlocked: "New stage unlocked!",
     },
     "zh-Hant": {
       brand: "WeightPlay",
       title: "零食方塊",
       language: "語言",
+      stage: "關卡",
+      moves: "步數",
+      target: "目標",
       score: "分數",
-      time: "時間",
-      combo: "連擊",
-      menuTitle: "交換零食，連線消除。",
-      menuText: "時間內湊出 3 個以上相同零食，挑戰最高分。",
-      start: "開始",
+      menuTitle: "選擇零食關卡。",
+      menuText: "湊出 3 個以上相同零食，達成目標分數後解鎖下一關。",
+      stageName: "第 {stage} 關",
+      locked: "未解鎖",
+      best: "最佳 {score}",
       hint: "點一下或拖曳零食，和旁邊的格子交換。",
       loading: "載入中",
-      timeUp: "時間到！",
-      result: "分數：{score}。最佳：{best}。",
-      again: "再玩一次",
-      menu: "主選單",
+      clear: "關卡完成！",
+      failed: "再試一次！",
+      clearText: "分數 {score} / {target}，下一關已解鎖。",
+      finalClearText: "分數 {score} / {target}，全部零食關卡都完成了！",
+      failedText: "分數 {score} / {target}，試著做出更大的連鎖。",
+      next: "下一關",
+      again: "再試一次",
+      menu: "選關",
       lobby: "大廳",
-      empty: "尚無紀錄",
-      rank: "第 {rank} 名",
+      unlocked: "新關卡解鎖！",
     },
   };
 
@@ -55,24 +87,26 @@
     languageLabel: document.getElementById("languageLabel"),
     localeSelect: document.getElementById("localeSelect"),
     hud: document.getElementById("hud"),
+    stageLabel: document.getElementById("stageLabel"),
+    movesLabel: document.getElementById("movesLabel"),
+    targetLabel: document.getElementById("targetLabel"),
+    stageText: document.getElementById("stageText"),
+    movesText: document.getElementById("movesText"),
+    targetText: document.getElementById("targetText"),
     scoreLabel: document.getElementById("scoreLabel"),
-    timeLabel: document.getElementById("timeLabel"),
-    comboLabel: document.getElementById("comboLabel"),
     scoreText: document.getElementById("scoreText"),
-    timeText: document.getElementById("timeText"),
-    comboText: document.getElementById("comboText"),
     menuPanel: document.getElementById("menuPanel"),
     menuTitle: document.getElementById("menuTitle"),
     menuText: document.getElementById("menuText"),
-    startBtn: document.getElementById("startBtn"),
-    leaderboard: document.getElementById("leaderboard"),
+    stageGrid: document.getElementById("stageGrid"),
     playPanel: document.getElementById("playPanel"),
     board: document.getElementById("board"),
     hintText: document.getElementById("hintText"),
     resultPanel: document.getElementById("resultPanel"),
     resultTitle: document.getElementById("resultTitle"),
     resultText: document.getElementById("resultText"),
-    resultLeaderboard: document.getElementById("resultLeaderboard"),
+    resultStars: document.getElementById("resultStars"),
+    nextBtn: document.getElementById("nextBtn"),
     againBtn: document.getElementById("againBtn"),
     menuBtn: document.getElementById("menuBtn"),
     lobbyLink: document.getElementById("lobbyLink"),
@@ -87,11 +121,12 @@
     board: [],
     selected: null,
     score: 0,
-    time: duration,
+    moves: 0,
     combo: 1,
     running: false,
     busy: false,
-    timerId: null,
+    currentStageIndex: 0,
+    nextTileId: 1,
     dragStart: null,
     suppressClick: false,
   };
@@ -102,6 +137,46 @@
       value = value.replace(`{${name}}`, data[name]);
     });
     return value;
+  }
+
+  function activeStage() {
+    return stages[state.currentStageIndex];
+  }
+
+  function loadUnlocked() {
+    try {
+      const value = Number(localStorage.getItem(unlockKey));
+      return Number.isFinite(value) && value > 0 ? Math.min(value, stages.length) : 1;
+    } catch {
+      return 1;
+    }
+  }
+
+  function saveUnlocked(value) {
+    try {
+      localStorage.setItem(unlockKey, String(Math.min(value, stages.length)));
+    } catch {
+      // Progress persistence is optional.
+    }
+  }
+
+  function loadRecords() {
+    try {
+      return JSON.parse(localStorage.getItem(recordKey)) || {};
+    } catch {
+      return {};
+    }
+  }
+
+  function saveRecord(stageId, score) {
+    const records = loadRecords();
+    records[stageId] = Math.max(records[stageId] || 0, score);
+    try {
+      localStorage.setItem(recordKey, JSON.stringify(records));
+    } catch {
+      // Record persistence is optional.
+    }
+    return records;
   }
 
   function setLocale(locale) {
@@ -120,27 +195,30 @@
     nodes.brandText.textContent = t("brand");
     nodes.titleText.textContent = t("title");
     nodes.languageLabel.textContent = t("language");
+    nodes.stageLabel.textContent = t("stage");
+    nodes.movesLabel.textContent = t("moves");
+    nodes.targetLabel.textContent = t("target");
     nodes.scoreLabel.textContent = t("score");
-    nodes.timeLabel.textContent = t("time");
-    nodes.comboLabel.textContent = t("combo");
     nodes.menuTitle.textContent = t("menuTitle");
     nodes.menuText.textContent = t("menuText");
-    nodes.startBtn.textContent = t("start");
     nodes.hintText.textContent = t("hint");
     nodes.loadingTitle.textContent = t("loading");
-    nodes.resultTitle.textContent = t("timeUp");
+    nodes.nextBtn.textContent = t("next");
     nodes.againBtn.textContent = t("again");
     nodes.menuBtn.textContent = t("menu");
     nodes.lobbyLink.textContent = t("lobby");
-    renderLeaderboard(nodes.leaderboard);
-    if (!nodes.resultPanel.classList.contains("hidden")) {
-      renderResultText();
-      renderLeaderboard(nodes.resultLeaderboard);
-    }
+    renderStageGrid();
+    updateHud();
+  }
+
+  function makeTile(type) {
+    const tile = { id: state.nextTileId, type };
+    state.nextTileId += 1;
+    return tile;
   }
 
   function randomType() {
-    return Math.floor(Math.random() * types.length);
+    return snacks[Math.floor(Math.random() * activeStage().types)];
   }
 
   function getCell(row, col) {
@@ -153,32 +231,58 @@
 
   function buildCleanBoard() {
     state.board = [];
+    state.nextTileId = 1;
     for (let row = 0; row < size; row += 1) {
       for (let col = 0; col < size; col += 1) {
         let value = randomType();
         let guard = 0;
         while (
-          guard < 20 &&
-          ((col >= 2 && getCell(row, col - 1) === value && getCell(row, col - 2) === value) ||
-            (row >= 2 && getCell(row - 1, col) === value && getCell(row - 2, col) === value))
+          guard < 30 &&
+          ((col >= 2 && getCell(row, col - 1)?.type === value && getCell(row, col - 2)?.type === value) ||
+            (row >= 2 && getCell(row - 1, col)?.type === value && getCell(row - 2, col)?.type === value))
         ) {
           value = randomType();
           guard += 1;
         }
-        state.board.push(value);
+        state.board.push(makeTile(value));
       }
     }
   }
 
-  function renderBoard() {
+  function renderStageGrid() {
+    const unlocked = loadUnlocked();
+    const records = loadRecords();
+    nodes.stageGrid.innerHTML = "";
+    stages.forEach((stage, index) => {
+      const button = document.createElement("button");
+      const isUnlocked = index < unlocked;
+      button.type = "button";
+      button.className = `stage-card ${isUnlocked ? "" : "locked"}`;
+      button.disabled = !isUnlocked;
+      button.innerHTML = `
+        <strong>${stage.id}</strong>
+        <span>${t("stageName", { stage: stage.id })}</span>
+        <em>${isUnlocked ? t("best", { score: records[stage.id] || 0 }) : t("locked")}</em>
+      `;
+      button.addEventListener("click", () => startStage(index));
+      nodes.stageGrid.append(button);
+    });
+  }
+
+  function renderBoard(dropMap = new Map()) {
     nodes.board.innerHTML = "";
-    state.board.forEach((type, index) => {
+    state.board.forEach((tile, index) => {
       const button = document.createElement("button");
       button.type = "button";
-      button.className = `tile tile-${type}`;
-      button.textContent = types[type];
+      button.className = `tile tile-${snacks.indexOf(tile.type)}`;
+      button.textContent = snackIcon[tile.type];
       button.dataset.index = String(index);
-      button.setAttribute("aria-label", types[type]);
+      button.dataset.tileId = String(tile.id);
+      button.setAttribute("aria-label", tile.type);
+      if (dropMap.has(tile.id)) {
+        button.classList.add("dropping");
+        button.style.setProperty("--drop", `${-dropMap.get(tile.id) * 112}%`);
+      }
       if (state.selected === index) button.classList.add("selected");
       button.addEventListener("pointerdown", onPointerDown);
       button.addEventListener("pointerup", onPointerUp);
@@ -188,13 +292,13 @@
   }
 
   function updateHud() {
+    const stage = activeStage();
     const oldScore = nodes.scoreText.textContent;
-    const oldCombo = nodes.comboText.textContent;
+    nodes.stageText.textContent = String(stage.id);
+    nodes.movesText.textContent = String(state.moves);
+    nodes.targetText.textContent = String(stage.target);
     nodes.scoreText.textContent = String(state.score);
-    nodes.timeText.textContent = String(state.time);
-    nodes.comboText.textContent = `x${state.combo}`;
     if (oldScore !== nodes.scoreText.textContent) bump(nodes.scoreText);
-    if (oldCombo !== nodes.comboText.textContent) bump(nodes.comboText);
   }
 
   function bump(node) {
@@ -222,7 +326,7 @@
     for (let row = 0; row < size; row += 1) {
       let runStart = 0;
       for (let col = 1; col <= size; col += 1) {
-        const same = col < size && getCell(row, col) === getCell(row, runStart);
+        const same = col < size && getCell(row, col)?.type === getCell(row, runStart)?.type;
         if (!same) {
           if (col - runStart >= 3) {
             for (let mark = runStart; mark < col; mark += 1) matched.add(row * size + mark);
@@ -231,11 +335,10 @@
         }
       }
     }
-
     for (let col = 0; col < size; col += 1) {
       let runStart = 0;
       for (let row = 1; row <= size; row += 1) {
-        const same = row < size && getCell(row, col) === getCell(runStart, col);
+        const same = row < size && getCell(row, col)?.type === getCell(runStart, col)?.type;
         if (!same) {
           if (row - runStart >= 3) {
             for (let mark = runStart; mark < row; mark += 1) matched.add(mark * size + col);
@@ -255,44 +358,63 @@
   }
 
   function collapse(matches) {
-    matches.forEach((index) => {
-      state.board[index] = null;
-    });
+    const removed = new Set(matches);
+    const newBoard = new Array(size * size);
+    const dropMap = new Map();
 
     for (let col = 0; col < size; col += 1) {
-      const column = [];
+      const survivors = [];
       for (let row = size - 1; row >= 0; row -= 1) {
-        const value = getCell(row, col);
-        if (value !== null) column.push(value);
+        const index = row * size + col;
+        const tile = state.board[index];
+        if (!removed.has(index)) survivors.push({ tile, oldRow: row });
       }
-      while (column.length < size) column.push(randomType());
-      for (let row = size - 1; row >= 0; row -= 1) {
-        setCell(row, col, column[size - 1 - row]);
+
+      let targetRow = size - 1;
+      survivors.forEach(({ tile, oldRow }) => {
+        setInto(newBoard, targetRow, col, tile);
+        dropMap.set(tile.id, Math.max(0, targetRow - oldRow));
+        targetRow -= 1;
+      });
+
+      while (targetRow >= 0) {
+        const tile = makeTile(randomType());
+        setInto(newBoard, targetRow, col, tile);
+        dropMap.set(tile.id, targetRow + 1);
+        targetRow -= 1;
       }
     }
+
+    state.board = newBoard;
+    return dropMap;
+  }
+
+  function setInto(board, row, col, value) {
+    board[row * size + col] = value;
   }
 
   function resolveBoard() {
     const matches = findMatches();
     if (!matches.length) {
       state.combo = 1;
-      updateHud();
       state.busy = false;
+      updateHud();
       renderBoard();
+      checkEnd();
       return;
     }
 
-    state.score += matches.length * 10 * state.combo;
+    state.score += matches.length * 12 * state.combo;
     state.combo += 1;
     updateHud();
     markMatches(matches);
     window.WonderSound?.play(matches.length >= 5 ? "success" : "coin");
 
     window.setTimeout(() => {
-      collapse(matches);
-      renderBoard();
-      window.setTimeout(resolveBoard, 120);
-    }, 170);
+      const dropMap = collapse(matches);
+      renderBoard(dropMap);
+      window.setTimeout(resolveBoard, 260);
+    }, 180);
   }
 
   function trySwap(target) {
@@ -317,12 +439,14 @@
         state.busy = false;
         updateHud();
         renderBoard();
-      }, 150);
+      }, 170);
       return;
     }
 
+    state.moves -= 1;
+    updateHud();
     window.WonderSound?.play("click");
-    window.setTimeout(resolveBoard, 110);
+    window.setTimeout(resolveBoard, 120);
   }
 
   function onTileClick(event) {
@@ -366,64 +490,14 @@
     trySwap(target);
   }
 
-  function loadScores() {
-    try {
-      const parsed = JSON.parse(localStorage.getItem(scoreKey));
-      return Array.isArray(parsed) ? parsed.filter(Number.isFinite).slice(0, 5) : [];
-    } catch {
-      return [];
-    }
-  }
-
-  function saveScore(score) {
-    const scores = [...loadScores(), score].sort((a, b) => b - a).slice(0, 5);
-    try {
-      localStorage.setItem(scoreKey, JSON.stringify(scores));
-    } catch {
-      // Leaderboard persistence is optional.
-    }
-    return scores;
-  }
-
-  function renderLeaderboard(container, scores = loadScores()) {
-    container.innerHTML = "";
-    if (!scores.length) {
-      const row = document.createElement("div");
-      row.className = "leaderboard-row";
-      row.innerHTML = `<span>${t("empty")}</span><strong>0</strong>`;
-      container.append(row);
-      return;
-    }
-    scores.forEach((score, index) => {
-      const row = document.createElement("div");
-      row.className = "leaderboard-row";
-      row.innerHTML = `<span>${t("rank", { rank: index + 1 })}</span><strong>${score}</strong>`;
-      container.append(row);
-    });
-  }
-
-  function renderResultText() {
-    const best = Math.max(state.score, ...loadScores(), 0);
-    nodes.resultText.textContent = t("result", { score: state.score, best });
-  }
-
-  function showMenu() {
-    state.running = false;
-    state.busy = false;
-    window.clearInterval(state.timerId);
-    nodes.hud.classList.add("hidden");
-    nodes.playPanel.classList.add("hidden");
-    nodes.resultPanel.classList.add("hidden");
-    nodes.menuPanel.classList.remove("hidden");
-    renderLeaderboard(nodes.leaderboard);
-    window.WonderAnalytics?.track("game_menu", { game_id: "snack-blocks" });
-  }
-
-  function startGame() {
+  function startStage(index) {
+    const unlocked = loadUnlocked();
+    if (index >= unlocked) return;
     window.WonderSound?.unlock();
     window.WonderSound?.play("start");
+    state.currentStageIndex = index;
     state.score = 0;
-    state.time = duration;
+    state.moves = activeStage().moves;
     state.combo = 1;
     state.selected = null;
     state.running = true;
@@ -435,31 +509,61 @@
     nodes.resultPanel.classList.add("hidden");
     nodes.hud.classList.remove("hidden");
     nodes.playPanel.classList.remove("hidden");
-    window.clearInterval(state.timerId);
-    state.timerId = window.setInterval(() => {
-      state.time -= 1;
-      updateHud();
-      if (state.time <= 0) finishGame();
-    }, 1000);
-    window.WonderAnalytics?.track("game_start", { game_id: "snack-blocks" });
+    window.WonderAnalytics?.track("game_start", { game_id: GAME_ID, stage: activeStage().id });
   }
 
-  function finishGame() {
-    if (!state.running) return;
+  function checkEnd() {
+    if (!state.running || state.busy) return;
+    if (state.score >= activeStage().target) {
+      finishStage(true);
+      return;
+    }
+    if (state.moves <= 0) finishStage(false);
+  }
+
+  function finishStage(cleared) {
     state.running = false;
     state.busy = true;
-    window.clearInterval(state.timerId);
-    const scores = saveScore(state.score);
-    renderResultText();
-    renderLeaderboard(nodes.resultLeaderboard, scores);
+    const stage = activeStage();
+    saveRecord(stage.id, state.score);
+    if (cleared && stage.id < stages.length) {
+      saveUnlocked(Math.max(loadUnlocked(), stage.id + 1));
+    }
+
+    nodes.resultTitle.textContent = cleared ? t("clear") : t("failed");
+    nodes.resultText.textContent = cleared
+      ? t(stage.id === stages.length ? "finalClearText" : "clearText", { score: state.score, target: stage.target })
+      : t("failedText", { score: state.score, target: stage.target });
+    nodes.resultStars.textContent = cleared ? starRating() : "";
+    nodes.nextBtn.classList.toggle("hidden", !cleared || stage.id >= stages.length);
     nodes.hud.classList.add("hidden");
     nodes.playPanel.classList.add("hidden");
     nodes.resultPanel.classList.remove("hidden");
-    window.WonderSound?.play("win");
+    window.WonderSound?.play(cleared ? "win" : "wrong");
     window.WonderAnalytics?.track("game_complete", {
-      game_id: "snack-blocks",
+      game_id: GAME_ID,
+      stage: stage.id,
       score: state.score,
+      cleared,
     });
+  }
+
+  function starRating() {
+    const stage = activeStage();
+    if (state.score >= stage.target * 1.55) return "★★★";
+    if (state.score >= stage.target * 1.25) return "★★";
+    return "★";
+  }
+
+  function showMenu() {
+    state.running = false;
+    state.busy = false;
+    nodes.hud.classList.add("hidden");
+    nodes.playPanel.classList.add("hidden");
+    nodes.resultPanel.classList.add("hidden");
+    nodes.menuPanel.classList.remove("hidden");
+    renderStageGrid();
+    window.WonderAnalytics?.track("game_menu", { game_id: GAME_ID });
   }
 
   function installLoading() {
@@ -475,8 +579,8 @@
     }, 70);
   }
 
-  nodes.startBtn.addEventListener("click", startGame);
-  nodes.againBtn.addEventListener("click", startGame);
+  nodes.nextBtn.addEventListener("click", () => startStage(Math.min(state.currentStageIndex + 1, stages.length - 1)));
+  nodes.againBtn.addEventListener("click", () => startStage(state.currentStageIndex));
   nodes.menuBtn.addEventListener("click", showMenu);
   nodes.localeSelect.addEventListener("change", (event) => setLocale(event.target.value));
   nodes.homeLink.addEventListener("click", (event) => {
@@ -487,7 +591,7 @@
   });
 
   try {
-    setLocale(localStorage.getItem(localeKey) || window.WeightPlayI18n?.getLocale?.() || "en");
+    setLocale(localStorage.getItem(localeKey) || window.WonderI18n?.locale?.() || "en");
   } catch {
     setLocale("en");
   }
