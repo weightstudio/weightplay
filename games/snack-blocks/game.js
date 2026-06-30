@@ -633,13 +633,22 @@
       nodes.loadingFill.style.width = `${progress}%`;
       if (progress >= 100) {
         window.clearInterval(id);
-        window.setTimeout(() => nodes.loadingPanel.classList.add("hidden"), 120);
+        window.setTimeout(() => {
+          nodes.loadingPanel.classList.add("hidden");
+          window.WonderAnalytics?.track("game_ready", { game_id: GAME_ID });
+        }, 120);
       }
     }, 70);
   }
 
   nodes.nextBtn.addEventListener("click", () => startStage(Math.min(state.currentStageIndex + 1, stages.length - 1)));
-  nodes.againBtn.addEventListener("click", () => startStage(state.currentStageIndex));
+  nodes.againBtn.addEventListener("click", () => {
+    window.WonderAnalytics?.track("game_restart", {
+      game_id: GAME_ID,
+      stage: activeStage().id,
+    });
+    startStage(state.currentStageIndex);
+  });
   nodes.menuBtn.addEventListener("click", showMenu);
   nodes.localeSelect.addEventListener("change", (event) => setLocale(event.target.value));
   nodes.homeLink.addEventListener("click", (event) => {
