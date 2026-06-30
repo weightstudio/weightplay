@@ -1,10 +1,29 @@
 (function () {
   const muteKey = "wonderSoundMuted";
   const positionKey = "wonderSoundTogglePosition";
+  const localeKey = "weightPlayLocale";
   let audioContext = null;
   let unlocked = false;
   let muted = false;
   let dragState = null;
+
+  const labels = {
+    en: {
+      sound: "Sound",
+      enable: "Enable sound",
+      disable: "Disable sound",
+    },
+    "zh-Hant": {
+      sound: "音效",
+      enable: "開啟音效",
+      disable: "關閉音效",
+    },
+    "zh-Hans": {
+      sound: "音效",
+      enable: "开启音效",
+      disable: "关闭音效",
+    },
+  };
 
   try {
     muted = localStorage.getItem(muteKey) === "1";
@@ -130,12 +149,34 @@
     window.WonderAnalytics?.track("sound_toggle", { muted });
   }
 
+  function currentLocale() {
+    const config = window.WONDER_SITE?.localization || {};
+    const supported = config.phaseOneLocales || Object.keys(labels);
+    const fallback = config.fallbackLocale || config.defaultLocale || "en";
+
+    try {
+      const saved = localStorage.getItem(localeKey);
+      if (saved && supported.includes(saved)) return saved;
+    } catch {
+      // Locale storage is optional.
+    }
+
+    return window.WonderI18n?.locale?.() || document.documentElement.lang || fallback;
+  }
+
+  function soundLabels() {
+    const locale = currentLocale();
+    return labels[locale] || labels.en;
+  }
+
   function updateToggle() {
     const toggle = document.querySelector("[data-sound-toggle]");
     if (!toggle) return;
 
+    const text = soundLabels();
     toggle.textContent = muted ? "🔇" : "🔊";
-    toggle.setAttribute("aria-label", muted ? "開啟音效" : "關閉音效");
+    toggle.title = text.sound;
+    toggle.setAttribute("aria-label", muted ? text.enable : text.disable);
     toggle.classList.toggle("muted", muted);
     toggle.classList.toggle("locked", !unlocked);
   }
@@ -290,7 +331,6 @@
     button.type = "button";
     button.className = "sound-toggle";
     button.dataset.soundToggle = "true";
-    button.title = "Sound";
     installDrag(button);
     button.addEventListener("click", (event) => {
       if (dragState?.moved) {
@@ -308,6 +348,7 @@
 
   window.addEventListener("pointerdown", unlock, { once: true });
   window.addEventListener("keydown", unlock, { once: true });
+  window.addEventListener("wonder:locale-change", updateToggle);
 
   window.WonderSound = {
     play,
