@@ -201,20 +201,26 @@
     }, 250);
   }
 
-  function install() {
-    const gameId = gameIdFromPath();
-    if (!tutorials[gameId]) return;
+  function applyCommonLabels() {
     const lang = locale();
     document.querySelectorAll(".home-link").forEach((link) => {
       link.setAttribute("aria-label", common[lang].lobbyAria);
     });
+    document.querySelector(".wp-tutorial-button")?.setAttribute("aria-label", common[lang].aria);
+  }
+
+  function install() {
+    const gameId = gameIdFromPath();
+    if (!tutorials[gameId]) return;
+    applyCommonLabels();
     const button = document.createElement("button");
     button.type = "button";
     button.className = "wp-tutorial-button";
-    button.setAttribute("aria-label", common[lang].aria);
     button.textContent = "?";
     button.addEventListener("click", () => showTutorial(gameId, true));
     document.body.append(button);
+    applyCommonLabels();
+    window.addEventListener("wonder:locale-change", applyCommonLabels);
     if (!hasSeen(gameId)) scheduleFirstShow(gameId);
   }
 
