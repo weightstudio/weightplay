@@ -230,6 +230,7 @@
       }
     }
 
+    resolveMerges();
     for (let iteration = 0; iteration < 4; iteration += 1) {
       resolveCollisions();
     }
@@ -248,10 +249,6 @@
         const dist = Math.hypot(dx, dy) || 0.001;
         const minDist = a.radius + b.radius;
         if (dist >= minDist) continue;
-        if (a.level === b.level && a.level < fruits.length - 1) {
-          a.mergeWith = b.id;
-          b.mergeWith = a.id;
-        }
 
         const nx = dx / dist;
         const ny = dy / dist;
@@ -284,15 +281,13 @@
         const a = fruitsOnBoard[i];
         const b = fruitsOnBoard[j];
         if (removeIds.has(a.id) || removeIds.has(b.id) || a.level !== b.level || a.level >= fruits.length - 1) continue;
-        const dist = Math.hypot(b.x - a.x, b.y - a.y);
-        const touching = a.mergeWith === b.id || b.mergeWith === a.id || dist <= (a.radius + b.radius) * 1.02;
-        if (!touching) continue;
+        if (!shouldMerge(a, b)) continue;
         const next = fruits[a.level + 1];
         const merged = {
           id: fruitId++,
           level: a.level + 1,
-          x: (a.x + b.x) / 2,
-          y: (a.y + b.y) / 2,
+          x: clamp((a.x + b.x) / 2, wallLeft + next.radius, wallRight - next.radius),
+          y: Math.min((a.y + b.y) / 2, floorY - next.radius),
           vx: (a.vx + b.vx) * 0.18,
           vy: Math.min((a.vy + b.vy) * 0.18, 90),
           radius: next.radius,
@@ -307,12 +302,16 @@
         break;
       }
     }
-    for (const fruit of fruitsOnBoard) {
-      fruit.mergeWith = null;
-    }
     if (!removeIds.size) return;
     fruitsOnBoard = fruitsOnBoard.filter((fruit) => !removeIds.has(fruit.id)).concat(additions);
     updateHud();
+  }
+
+  function shouldMerge(a, b) {
+    if (a.level !== b.level || a.level >= fruits.length - 1) return false;
+    const dist = Math.hypot(b.x - a.x, b.y - a.y);
+    const mergeDistance = a.radius + b.radius + Math.max(12, Math.min(a.radius, b.radius) * 0.45);
+    return dist <= mergeDistance;
   }
 
   function checkGameOver(dt) {
