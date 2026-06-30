@@ -237,18 +237,18 @@ window.WONDER_LOBBY = {
       title: { en: "Tiny Weather Rescue", "zh-Hant": "小小天氣救援" },
       status: "playable",
       statusText: { en: "Playable", "zh-Hant": "可遊玩" },
-      type: { en: "Picture Matching", "zh-Hant": "圖示配對" },
+      type: { en: "Animal Helping", "zh-Hant": "動物救援" },
       categories: ["Animal Games", "Puzzle", "Family"],
       ages: ["5", "family"],
       ageLabel: { en: "5+", "zh-Hant": "5+" },
       href: "games/tiny-weather-rescue/index.html",
       description: {
-        en: "Match big weather pictures with rescue tool pictures for cute animals.",
-        "zh-Hant": "看大天氣圖示，替可愛動物配對救援道具圖示。",
+        en: "Tap or drag the right rescue tool to help cute animals in weather trouble.",
+        "zh-Hant": "點選或拖曳正確救援道具，幫助遇到天氣麻煩的小動物。",
       },
       meta: {
-        en: ["6 Stages", "Picture Match", "Animal Games"],
-        "zh-Hant": ["6 關", "圖示配對", "動物遊戲"],
+        en: ["6 Stages", "Tap or Drag", "Animal Games"],
+        "zh-Hant": ["6 關", "點選拖曳", "動物遊戲"],
       },
       art: {
         kind: "image",

@@ -28,11 +28,11 @@
       ],
     },
     "tiny-weather-rescue": {
-      title: { en: "Match the pictures.", "zh-Hant": "看圖配對" },
+      title: { en: "Help the animal.", "zh-Hant": "幫小動物" },
       steps: [
-        { icon: "☔", en: ["Look", "See the big weather picture."], "zh-Hant": ["看圖", "看中間的大天氣圖示。"] },
-        { icon: "☂", en: ["Tap", "Tap the matching tool picture."], "zh-Hant": ["點圖", "點相配的道具圖示。"] },
-        { icon: "★", en: ["Clear", "Match enough pictures to win."], "zh-Hant": ["過關", "配對足夠圖示就過關。"] },
+        { icon: "☔", en: ["Look", "See what is happening to the animal."], "zh-Hant": ["觀察", "看小動物遇到什麼狀況。"] },
+        { icon: "☂", en: ["Help", "Tap a tool, or drag it to the animal."], "zh-Hant": ["幫忙", "點道具，或拖到小動物身上。"] },
+        { icon: "😄", en: ["Clear", "Happy faces mean you helped correctly."], "zh-Hant": ["過關", "出現笑臉就是幫對了。"] },
       ],
     },
     "snack-blocks": {

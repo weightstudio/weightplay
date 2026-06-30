@@ -6,20 +6,20 @@
 
   const tools = {
     umbrella: { icon: "\u{2602}\u{FE0F}", className: "umbrella" },
-    towel: { icon: "\u{1F9FD}", className: "towel" },
+    sponge: { icon: "\u{1F9FD}", className: "sponge" },
     fan: { icon: "\u{1FAAD}", className: "fan" },
     lantern: { icon: "\u{1F3EE}", className: "lantern" },
-    shelter: { icon: "\u{1F3E0}", className: "shelter" },
-    snack: { icon: "\u{1F34E}", className: "snack" },
+    house: { icon: "\u{1F3E0}", className: "house" },
+    apple: { icon: "\u{1F34E}", className: "apple" },
   };
 
   const problems = {
-    rain: { icon: "\u{1F327}\u{FE0F}", tool: "umbrella" },
-    puddle: { icon: "\u{1F4A7}", tool: "towel" },
-    heat: { icon: "\u{2600}\u{FE0F}", tool: "fan" },
-    dark: { icon: "\u{1F311}", tool: "lantern" },
-    thunder: { icon: "\u{26A1}", tool: "shelter" },
-    hungry: { icon: "\u{1F924}", tool: "snack" },
+    rain: { icon: "\u{1F327}\u{FE0F}", tool: "umbrella", scene: "rain" },
+    puddle: { icon: "\u{1F4A7}", tool: "sponge", scene: "puddle" },
+    heat: { icon: "\u{2600}\u{FE0F}", tool: "fan", scene: "heat" },
+    dark: { icon: "\u{1F311}", tool: "lantern", scene: "dark" },
+    thunder: { icon: "\u{26A1}", tool: "house", scene: "thunder" },
+    hungry: { icon: "\u{1F924}", tool: "apple", scene: "hungry" },
   };
 
   const stages = [
@@ -36,7 +36,7 @@
       gameTitle: "Tiny Weather Rescue",
       language: "Language",
       chooseStage: "Choose Rescue",
-      menuHint: "Look at the big picture, then tap the matching rescue tool.",
+      menuHint: "Help the little animal. Tap or drag the right tool to it.",
       stages: "Stages",
       loading: "Loading",
       nextStage: "Next Stage",
@@ -45,33 +45,33 @@
       locked: "Stage locked",
       stage: "Stage {n}",
       progress: "{done}/{total}",
-      calm: "Calm {score}",
+      calm: "Help {score}",
       clear: "Rescue Complete!",
       failed: "Needs More Care!",
       result: "{score} rescues finished. Best: {best} stars.",
-      resultFailed: "Try again and match more picture tools.",
-      hint: "Tap the matching picture.",
-      correct: "Nice!",
-      wrong: "Try the picture that matches.",
+      resultFailed: "Try again and help more animals.",
+      hint: "Tap a tool, or drag it to the animal.",
+      correct: "Happy rescue!",
+      wrong: "That made the animal sad.",
       goal: "Goal {target}",
-      rain: "Rain",
-      puddle: "Puddle",
-      heat: "Sun",
-      dark: "Dark",
-      thunder: "Thunder",
-      hungry: "Hungry",
+      rain: "It is raining.",
+      puddle: "The ground is wet.",
+      heat: "It is too hot.",
+      dark: "It is too dark.",
+      thunder: "Thunder is nearby.",
+      hungry: "The animal is hungry.",
       umbrella: "Umbrella",
-      towel: "Towel",
+      sponge: "Sponge",
       fan: "Fan",
-      lantern: "Lantern",
-      shelter: "Shelter",
-      snack: "Snack",
+      lantern: "Lamp",
+      house: "House",
+      apple: "Apple",
     },
     "zh-Hant": {
       gameTitle: "\u5c0f\u5c0f\u5929\u6c23\u6551\u63f4",
       language: "\u8a9e\u8a00",
       chooseStage: "\u9078\u64c7\u6551\u63f4",
-      menuHint: "\u770b\u5927\u5716\u793a\uff0c\u9ede\u76f8\u914d\u7684\u6551\u63f4\u9053\u5177\u3002",
+      menuHint: "\u5e6b\u5c0f\u52d5\u7269\uff0c\u9ede\u6216\u62d6\u66f3\u6b63\u78ba\u9053\u5177\u7d66\u5b83\u3002",
       stages: "\u9078\u95dc",
       loading: "\u8f09\u5165\u4e2d",
       nextStage: "\u4e0b\u4e00\u95dc",
@@ -80,27 +80,27 @@
       locked: "\u95dc\u5361\u672a\u89e3\u9396",
       stage: "\u7b2c {n} \u95dc",
       progress: "{done}/{total}",
-      calm: "\u5b89\u5fc3 {score}",
+      calm: "\u5e6b\u5fd9 {score}",
       clear: "\u6551\u63f4\u5b8c\u6210\uff01",
       failed: "\u9084\u9700\u8981\u7167\u9867\uff01",
       result: "\u5b8c\u6210 {score} \u500b\u6551\u63f4\u3002\u6700\u4f73\uff1a{best} \u661f\u3002",
-      resultFailed: "\u518d\u8a66\u4e00\u6b21\uff0c\u627e\u51fa\u66f4\u591a\u76f8\u914d\u5716\u793a\u3002",
-      hint: "\u9ede\u76f8\u914d\u7684\u5716\u793a\u3002",
-      correct: "\u5f88\u597d\uff01",
-      wrong: "\u627e\u8ddf\u5929\u6c23\u76f8\u914d\u7684\u5716\u793a\u3002",
+      resultFailed: "\u518d\u8a66\u4e00\u6b21\uff0c\u5e6b\u52a9\u66f4\u591a\u5c0f\u52d5\u7269\u3002",
+      hint: "\u9ede\u9053\u5177\uff0c\u6216\u62d6\u5230\u5c0f\u52d5\u7269\u8eab\u4e0a\u3002",
+      correct: "\u5c0f\u52d5\u7269\u958b\u5fc3\u4e86\uff01",
+      wrong: "\u5c0f\u52d5\u7269\u96e3\u904e\u4e86\u3002",
       goal: "\u76ee\u6a19 {target}",
-      rain: "\u4e0b\u96e8",
-      puddle: "\u6c34\u5751",
-      heat: "\u592a\u967d",
-      dark: "\u5929\u9ed1",
-      thunder: "\u96f7\u96fb",
-      hungry: "\u809a\u5b50\u9913",
+      rain: "\u5916\u9762\u5728\u4e0b\u96e8\u3002",
+      puddle: "\u5730\u4e0a\u6fd5\u6fd5\u7684\u3002",
+      heat: "\u592a\u967d\u592a\u71b1\u4e86\u3002",
+      dark: "\u5929\u8272\u592a\u6697\u4e86\u3002",
+      thunder: "\u96f7\u8072\u9760\u8fd1\u4e86\u3002",
+      hungry: "\u5c0f\u52d5\u7269\u809a\u5b50\u9913\u4e86\u3002",
       umbrella: "\u96e8\u5098",
-      towel: "\u6d77\u7dbf",
+      sponge: "\u6d77\u7dbf",
       fan: "\u98a8\u6247",
       lantern: "\u5c0f\u71c8",
-      shelter: "\u5c0f\u5c4b",
-      snack: "\u9ede\u5fc3",
+      house: "\u5c0f\u5c4b",
+      apple: "\u860b\u679c",
     },
   };
 
@@ -135,6 +135,8 @@
   let roundIndex = 0;
   let score = 0;
   let running = false;
+  let busy = false;
+  let dragState = null;
 
   function clamp(value, min, max) {
     return Math.max(min, Math.min(max, value));
@@ -186,7 +188,7 @@
       const best = records[stageNo] || 0;
       const firstProblem = problems[stage.rounds[0]];
       button.innerHTML = `
-        <b>${stage.animal} ${firstProblem.icon} ?</b>
+        <b>${stage.animal} ${firstProblem.icon}</b>
         <strong>${t("stage", { n: stageNo })}</strong>
         <span>${t("goal", { target: stage.target })} · ${"\u2605".repeat(best)}${"\u2606".repeat(3 - best)}</span>
       `;
@@ -207,6 +209,7 @@
     roundIndex = 0;
     score = 0;
     running = true;
+    busy = false;
     nodes.menuPanel.classList.add("hidden");
     nodes.resultPanel.classList.add("hidden");
     nodes.playPanel.classList.remove("hidden");
@@ -228,12 +231,15 @@
     nodes.movesText.innerHTML = `<b>${t("progress", { done: roundIndex + 1, total: stage.rounds.length })}</b><i style="width:${percent}%"></i>`;
     nodes.starsText.textContent = t("calm", { score });
     nodes.board.innerHTML = `
-      <div class="weather-scene ${stage.theme}">
-        <div class="animal-badge">${stage.animal}</div>
-        <div class="picture-prompt" aria-label="${t(problemKey)}">
-          <div class="weather-icon">${problem.icon}</div>
-          <div class="match-arrow">→</div>
-          <div class="tool-shadow">?</div>
+      <div class="weather-scene ${stage.theme} ${problem.scene}">
+        <div class="rescue-scene">
+          <div class="weather-effects" aria-hidden="true">${weatherEffects(problemKey)}</div>
+          <div class="problem-bubble">${problem.icon}</div>
+          <div class="animal-zone" data-drop-zone="true">
+            <div class="animal-shadow"></div>
+            <div class="animal-face">${stage.animal}</div>
+          </div>
+          <div class="need-line">${t(problemKey)}</div>
         </div>
         <div class="tool-grid">
           ${Object.entries(tools).map(([key, tool]) => `
@@ -246,35 +252,117 @@
         ${feedback ? `<div class="event-pop">${feedback}</div>` : ""}
       </div>
     `;
-    nodes.board.querySelectorAll("[data-tool]").forEach((button) => {
-      button.addEventListener("click", () => chooseTool(button.dataset.tool, button));
+    nodes.board.querySelectorAll("[data-tool]").forEach((button) => installToolControl(button));
+  }
+
+  function weatherEffects(problemKey) {
+    if (problemKey === "rain") return "<span>💧</span><span>💧</span><span>💧</span>";
+    if (problemKey === "puddle") return "<span>💦</span><span>💧</span>";
+    if (problemKey === "heat") return "<span>☀️</span><span>〰</span>";
+    if (problemKey === "dark") return "<span>🌙</span><span>✨</span>";
+    if (problemKey === "thunder") return "<span>⚡</span><span>☁️</span>";
+    return "<span>💭</span><span>🍽️</span>";
+  }
+
+  function installToolControl(button) {
+    button.addEventListener("click", () => chooseTool(button.dataset.tool, button));
+    button.addEventListener("pointerdown", (event) => {
+      if (!running || busy) return;
+      dragState = {
+        tool: button.dataset.tool,
+        startX: event.clientX,
+        startY: event.clientY,
+        moved: false,
+        ghost: null,
+        button,
+      };
+      button.setPointerCapture?.(event.pointerId);
     });
+    button.addEventListener("pointermove", (event) => {
+      if (!dragState || dragState.tool !== button.dataset.tool) return;
+      const dx = event.clientX - dragState.startX;
+      const dy = event.clientY - dragState.startY;
+      if (Math.hypot(dx, dy) > 8) dragState.moved = true;
+      if (dragState.moved && !dragState.ghost) dragState.ghost = makeGhost(dragState.button, event.clientX, event.clientY);
+      moveGhost(event.clientX, event.clientY);
+      nodes.board.querySelector(".animal-zone")?.classList.toggle("drag-over", isOverAnimal(event.clientX, event.clientY));
+    });
+    button.addEventListener("pointerup", (event) => {
+      if (!dragState || dragState.tool !== button.dataset.tool) return;
+      const shouldDrop = dragState.moved && isOverAnimal(event.clientX, event.clientY);
+      cleanupDrag();
+      if (shouldDrop) chooseTool(button.dataset.tool, button);
+    });
+    button.addEventListener("pointercancel", cleanupDrag);
+  }
+
+  function makeGhost(button, x, y) {
+    const ghost = document.createElement("div");
+    ghost.className = "tool-drag-ghost";
+    ghost.textContent = button.querySelector("i")?.textContent || "";
+    document.body.append(ghost);
+    moveGhost(x, y, ghost);
+    return ghost;
+  }
+
+  function moveGhost(x, y, ghost = dragState?.ghost) {
+    if (!ghost) return;
+    ghost.style.left = `${x}px`;
+    ghost.style.top = `${y}px`;
+  }
+
+  function isOverAnimal(x, y) {
+    const zone = nodes.board.querySelector(".animal-zone");
+    if (!zone) return false;
+    const rect = zone.getBoundingClientRect();
+    return x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
+  }
+
+  function cleanupDrag() {
+    nodes.board.querySelector(".animal-zone")?.classList.remove("drag-over");
+    dragState?.ghost?.remove();
+    dragState = null;
   }
 
   function chooseTool(tool, button) {
-    if (!running) return;
+    if (!running || busy) return;
+    busy = true;
     const stage = stages[currentStage];
     const problemKey = stage.rounds[roundIndex];
     const correct = problems[problemKey].tool === tool;
+    const zone = nodes.board.querySelector(".animal-zone");
     if (correct) {
       score += 1;
       button.classList.add("correct");
+      zone?.classList.add("happy");
+      showFace("\u{1F604}", "happy");
       nodes.hintText.textContent = t("correct");
       playSound("success");
     } else {
       button.classList.add("wrong");
+      zone?.classList.add("sad");
+      showFace("\u{1F622}", "sad");
       nodes.hintText.textContent = t("wrong");
       playSound("wrong");
     }
     track("weather_tool", { stage: stage.id, problem: problemKey, tool, correct });
     window.setTimeout(() => {
       roundIndex += 1;
+      busy = false;
       if (roundIndex >= stage.rounds.length) {
         finishStage();
         return;
       }
       renderRound(correct ? "+1" : "");
-    }, 360);
+    }, 760);
+  }
+
+  function showFace(face, kind) {
+    const pop = document.createElement("div");
+    pop.className = `face-pop ${kind}`;
+    pop.textContent = face;
+    nodes.board.querySelector(".rescue-scene")?.append(pop);
+    window.setTimeout(() => pop.remove(), 720);
   }
 
   function starCount(stage) {
@@ -307,6 +395,8 @@
 
   function showMenu() {
     running = false;
+    busy = false;
+    cleanupDrag();
     nodes.playPanel.classList.add("hidden");
     nodes.resultPanel.classList.add("hidden");
     nodes.menuPanel.classList.remove("hidden");
