@@ -355,3 +355,20 @@ canvas {
     min-height: 48px;
   }
 }
+html,
+body,
+button,
+a,
+canvas,
+[role="button"] {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+input,
+textarea,
+select,
+[contenteditable="true"] {
+  -webkit-user-select: text;
+  user-select: text;
+}

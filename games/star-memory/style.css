@@ -623,3 +623,20 @@ body {
   70% { transform: scale(1.1); }
   100% { transform: scale(1); opacity: 1; }
 }
+html,
+body,
+button,
+a,
+canvas,
+[role="button"] {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+input,
+textarea,
+select,
+[contenteditable="true"] {
+  -webkit-user-select: text;
+  user-select: text;
+}

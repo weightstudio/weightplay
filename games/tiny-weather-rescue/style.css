@@ -709,3 +709,20 @@ select {
     transition-duration: 0.01ms !important;
   }
 }
+html,
+body,
+button,
+a,
+canvas,
+[role="button"] {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+input,
+textarea,
+select,
+[contenteditable="true"] {
+  -webkit-user-select: text;
+  user-select: text;
+}
