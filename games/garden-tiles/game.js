@@ -186,6 +186,7 @@
     renderBoard();
     showMessage(t("selectFirst"));
     updateHud();
+    window.WonderAnalytics?.track?.("game_start", { game_id: GAME_ID, level: index + 1 });
     window.WonderAnalytics?.track?.("level_start", { game_id: GAME_ID, level: index + 1 });
   }
 
@@ -283,6 +284,7 @@
     resultText.textContent = t("result", { moves, pairs: matchedPairs });
     nextBtn.classList.toggle("hidden", currentLevelIndex >= levels.length - 1);
     resultPanel.classList.remove("hidden");
+    window.WonderAnalytics?.track?.("game_complete", { game_id: GAME_ID, level: levelNumber, moves, stars: starCount, cleared: true });
     window.WonderAnalytics?.track?.("level_clear", { game_id: GAME_ID, level: levelNumber, moves, stars: starCount });
   }
 
@@ -318,7 +320,10 @@
   });
 
   nextBtn.addEventListener("click", () => startLevel(Math.min(currentLevelIndex + 1, levels.length - 1)));
-  againBtn.addEventListener("click", () => startLevel(currentLevelIndex));
+  againBtn.addEventListener("click", () => {
+    window.WonderAnalytics?.track?.("game_restart", { game_id: GAME_ID, level: currentLevelIndex + 1 });
+    startLevel(currentLevelIndex);
+  });
   levelsBtn.addEventListener("click", showLevelSelect);
   localeSelect.addEventListener("change", () => {
     window.WonderI18n?.setLocale?.(localeSelect.value);
