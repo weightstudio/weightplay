@@ -522,6 +522,26 @@ body.lobby-page {
   white-space: nowrap;
 }
 
+.hero-game-card em,
+.game-card-plays {
+  display: inline-flex;
+  align-items: center;
+  width: max-content;
+  max-width: 100%;
+  min-height: 28px;
+  padding: 5px 9px;
+  overflow: hidden;
+  border: 1px solid rgba(129, 221, 255, 0.28);
+  border-radius: 8px;
+  background: rgba(129, 221, 255, 0.12);
+  color: #9eeaff;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 1000;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .lobby-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -863,6 +883,10 @@ body.lobby-page {
   color: rgba(255, 255, 255, 0.78);
   font-size: 12px;
   font-weight: 800;
+}
+
+.game-card-plays {
+  margin-top: 2px;
 }
 
 .game-card-actions {

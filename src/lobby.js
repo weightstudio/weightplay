@@ -28,6 +28,7 @@ let activeTopic = "all";
 let activeLibrary = "all";
 let toastTimer = null;
 let favoriteGameIds = readFavorites();
+let gameStats = { source: "pending", windowDays: 7, totals: { plays7d: 0, playsTotal: 0, users7d: 0 }, games: {} };
 
 function text(value) {
   return i18n.getLocalized(value);
@@ -56,6 +57,56 @@ function saveFavorites() {
 
 function isFavorite(gameId) {
   return favoriteGameIds.includes(gameId);
+}
+
+function statFor(game) {
+  return gameStats.games?.[game.id] || { plays7d: 0, playsTotal: 0, users7d: 0, rank7d: null };
+}
+
+function hasRealStats() {
+  return gameStats.source === "ga4" && Number(gameStats.totals?.plays7d || 0) > 0;
+}
+
+function formatCount(value) {
+  return new Intl.NumberFormat(i18n.locale(), { notation: "compact", maximumFractionDigits: 1 }).format(Number(value) || 0);
+}
+
+function playCountText(game) {
+  const stats = statFor(game);
+  if (!hasRealStats()) return i18n.t("stats.collecting");
+  return i18n.t("stats.plays_7d", { count: formatCount(stats.plays7d || 0), days: gameStats.windowDays || 7 });
+}
+
+function popularGames(limit = 3) {
+  const playableGames = lobby.games.filter((game) => game.status === "playable");
+  if (!hasRealStats()) {
+    return lobby.heroGameIds.map((id) => playableGames.find((game) => game.id === id)).filter(Boolean).slice(0, limit);
+  }
+  return [...playableGames]
+    .sort((a, b) => {
+      const aStats = statFor(a);
+      const bStats = statFor(b);
+      return (bStats.plays7d || 0) - (aStats.plays7d || 0) || (bStats.playsTotal || 0) - (aStats.playsTotal || 0);
+    })
+    .slice(0, limit);
+}
+
+async function loadGameStats() {
+  try {
+    const response = await fetch("src/game-stats.json?v=20260630-stats1", { cache: "no-store" });
+    if (!response.ok) return;
+    const stats = await response.json();
+    if (!stats || typeof stats !== "object") return;
+    gameStats = {
+      source: stats.source || "pending",
+      windowDays: Number(stats.windowDays) || 7,
+      totals: stats.totals || { plays7d: 0, playsTotal: 0, users7d: 0 },
+      games: stats.games || {},
+    };
+    renderLobby();
+  } catch {
+    // Stats are optional and must never block the lobby.
+  }
 }
 
 function openGame(game, title, ageLabel) {
@@ -142,6 +193,7 @@ function createGameCard(game) {
       <p>${text(game.description)}</p>
       <div class="game-card-categories">${categoryBadges}</div>
       <div class="game-card-meta">${meta}</div>
+      <div class="game-card-plays">${playCountText(game)}</div>
       <div class="game-card-actions">
         <span>${isPlayable ? i18n.t("action.play") : i18n.t("action.coming_soon")}</span>
         <span>${type}</span>
@@ -165,12 +217,12 @@ function renderLobby() {
   renderWallet();
 
   const playableCount = lobby.games.filter((game) => game.status === "playable").length;
-  const heroCount = lobby.heroGameIds.length;
+  const topPlayCount = Number(gameStats.totals?.plays7d || 0);
   const ageGroups = new Set(lobby.games.flatMap((game) => game.ages));
   const animalCount = lobby.games.filter((game) => (game.categories || []).includes("Animal Games")).length;
   lobbyStats.innerHTML = `
     <div><strong>${playableCount}</strong><span>${i18n.t("stats.playable")}</span></div>
-    <div><strong>${heroCount}</strong><span>${i18n.t("stats.hero_games")}</span></div>
+    <div><strong>${hasRealStats() ? formatCount(topPlayCount) : "..."}</strong><span>${i18n.t("stats.plays_7d_short")}</span></div>
     <div><strong>${animalCount}</strong><span>${i18n.t("stats.animal_games")}</span></div>
     <div><strong>${ageGroups.size}</strong><span>${i18n.t("stats.age_groups")}</span></div>
   `;
@@ -299,9 +351,7 @@ function renderWallet() {
 }
 
 function renderHeroGames() {
-  const cards = lobby.heroGameIds
-    .map((id) => lobby.games.find((game) => game.id === id))
-    .filter(Boolean)
+  const cards = popularGames(3)
     .map((game, index) => {
       const isPlayable = game.status === "playable";
       const title = text(game.title);
@@ -323,6 +373,7 @@ function renderHeroGames() {
         <div class="hero-game-copy">
           <strong>${title}</strong>
           <small>${type} · ${ageLabel}</small>
+          <em>${playCountText(game)}</em>
         </div>
       `;
       return card;
@@ -440,6 +491,7 @@ localeSelect.addEventListener("input", () => {
 window.addEventListener("wonder:locale-change", renderLobby);
 
 renderLobby();
+loadGameStats();
 window.WonderAnalytics?.track("lobby_ready", {
   playable_games: lobby.games.filter((game) => game.status === "playable").length,
   total_games: lobby.games.length,
