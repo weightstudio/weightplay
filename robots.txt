@@ -3,4 +3,4 @@ Disallow: /docs/
 Disallow: /PROMPTS/
 Disallow: /*.md$
 
-Sitemap:
+Sitemap: https://weightstudio.github.io/weightplay/sitemap.xml

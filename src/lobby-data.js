@@ -4,11 +4,11 @@ window.WONDER_LOBBY = {
     company: "WeightStudio",
     tagline: {
       en: "Play small games made for every age.",
-      "zh-Hant": "為每個年齡打造的小遊戲平台。",
+      "zh-Hant": "適合各年齡的輕量小遊戲平台。",
     },
     subtitle: {
-      en: "",
-      "zh-Hant": "",
+      en: "A growing collection of mobile-first web games for kids, families, and casual players.",
+      "zh-Hant": "持續成長的手機優先網頁遊戲平台，提供兒童、親子與休閒玩家遊玩。",
     },
     defaultLocale: "en",
   },
@@ -17,21 +17,21 @@ window.WONDER_LOBBY = {
   games: [
     {
       id: "wonder-crash",
-      title: { en: "Wonder Crash", "zh-Hant": "奇想守城" },
+      title: { en: "Wonder Crash", "zh-Hant": "奇幻守城" },
       status: "playable",
       statusText: { en: "Playable", "zh-Hant": "可遊玩" },
-      type: { en: "Defense", "zh-Hant": "防守養成" },
+      type: { en: "Defense", "zh-Hant": "守城防禦" },
       categories: ["Featured", "Arcade"],
       ages: ["5", "13"],
       ageLabel: "5+",
       href: "games/wonder-crash/index.html",
       description: {
         en: "Move the hero, throw school-supply weapons, and protect the wall.",
-        "zh-Hant": "移動主角、投擲文具武器，守住城牆。",
+        "zh-Hant": "控制英雄丟出文具武器，保護城牆不被怪物攻破。",
       },
       meta: {
         en: ["Hero Game", "30 Levels", "Gear Merge", "Mobile"],
-        "zh-Hant": ["Hero Game", "30 關", "裝備合成", "手機可玩"],
+        "zh-Hant": ["主打遊戲", "30 關", "裝備合成", "手機優先"],
       },
       art: {
         kind: "image",
@@ -58,7 +58,11 @@ window.WONDER_LOBBY = {
         en: ["Drag Match", "No Pressure", "Family"],
         "zh-Hant": ["拖曳配對", "無壓力", "親子"],
       },
-      art: { kind: "image", background: "assets/lunchbox-cover.png", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
+      art: {
+        kind: "image",
+        background: "assets/lunchbox-cover.png",
+        hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>",
+      },
     },
     {
       id: "star-memory",
@@ -72,13 +76,17 @@ window.WONDER_LOBBY = {
       ageLabel: "5+",
       description: {
         en: "Remember the cards and match the same symbols.",
-        "zh-Hant": "記住卡片位置，翻出相同圖案。",
+        "zh-Hant": "記住卡牌位置，翻出相同符號完成配對。",
       },
       meta: {
         en: ["Short Rounds", "Replayable", "Memory"],
-        "zh-Hant": ["短局", "可重玩", "記憶"],
+        "zh-Hant": ["短回合", "可重玩", "記憶力"],
       },
-      art: { kind: "image", background: "assets/memory-cover.png", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
+      art: {
+        kind: "image",
+        background: "assets/memory-cover.png",
+        hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>",
+      },
     },
     {
       id: "campus-dash",
@@ -92,11 +100,11 @@ window.WONDER_LOBBY = {
       ageLabel: "13+",
       description: {
         en: "Swipe left and right, dodge obstacles, and chase a high score.",
-        "zh-Hant": "左右滑動閃避障礙，挑戰高分。",
+        "zh-Hant": "左右換線閃避障礙，收集星星挑戰高分。",
       },
       meta: {
         en: ["Score Attack", "Leaderboard", "60 Sec"],
-        "zh-Hant": ["高分挑戰", "排行榜", "60 秒"],
+        "zh-Hant": ["分數挑戰", "排行榜", "60 秒"],
       },
       art: {
         kind: "image",
@@ -108,14 +116,14 @@ window.WONDER_LOBBY = {
       id: "snack-blocks",
       title: { en: "Snack Blocks", "zh-Hant": "點心方塊" },
       status: "planned",
-      statusText: { en: "Backlog", "zh-Hant": "候補" },
+      statusText: { en: "Backlog", "zh-Hant": "規劃中" },
       type: { en: "Casual Puzzle", "zh-Hant": "休閒益智" },
       categories: ["Puzzle"],
       ages: ["13", "family"],
       ageLabel: "13+",
       description: {
         en: "Line up cute snacks and clear them for points.",
-        "zh-Hant": "把可愛點心排成一列，輕鬆消除拿分。",
+        "zh-Hant": "排列可愛點心方塊，消除並取得分數。",
       },
       meta: {
         en: ["Casual", "Short Play", "Daily"],
@@ -135,11 +143,11 @@ window.WONDER_LOBBY = {
       href: "games/animal-rescue/index.html",
       description: {
         en: "Tap gentle paths and guide cute animals back home.",
-        "zh-Hant": "點選小路，帶可愛動物一步一步回家。",
+        "zh-Hant": "選擇安全路線，引導可愛動物回到家。",
       },
       meta: {
         en: ["Animal Games", "12 Trails", "No Pressure"],
-        "zh-Hant": ["動物遊戲", "12 關", "無壓力"],
+        "zh-Hant": ["動物遊戲", "12 條路線", "無壓力"],
       },
       art: {
         kind: "image",
@@ -159,13 +167,17 @@ window.WONDER_LOBBY = {
       href: "games/animal-quiz/index.html",
       description: {
         en: "Clear 3 animal stages with 10 questions in each stage.",
-        "zh-Hant": "挑戰 3 個動物主題關卡，每關 10 題。",
+        "zh-Hant": "挑戰 3 個動物關卡，每關回答 10 題問題。",
       },
       meta: {
         en: ["Animal Games", "3 Stages", "30 Questions"],
         "zh-Hant": ["動物遊戲", "3 關", "30 題"],
       },
-      art: { kind: "image", background: "assets/quiz-cover.png", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
+      art: {
+        kind: "image",
+        background: "assets/quiz-cover.png",
+        hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>",
+      },
     },
   ],
 };
