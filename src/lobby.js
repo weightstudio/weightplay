@@ -293,11 +293,14 @@ function renderDailyReward() {
       const isPast = reward.claimedToday ? index <= reward.dayIndex : index < reward.dayIndex;
       const canClaim = isCurrent && !reward.claimedToday;
       const className = ["daily-day", isCurrent ? "current" : "", isPast ? "claimed" : "", canClaim ? "claimable" : ""].filter(Boolean).join(" ");
+      const dayLabel = i18n.t("daily.day", { day: index + 1 });
+      const statusLabel = isCurrent ? claimLabel : i18n.t(isPast ? "daily.done" : "daily.next");
+      const ariaLabel = `${dayLabel}, +${coins} ${i18n.t("wallet.diamonds")}, ${statusLabel}`;
       return `
-        <button class="${className}" type="button" ${canClaim ? 'data-daily-claim="true"' : "disabled"}>
-          <span>${i18n.t("daily.day", { day: index + 1 })}</span>
+        <button class="${className}" type="button" aria-label="${ariaLabel}" ${canClaim ? 'data-daily-claim="true"' : "disabled"}>
+          <span>${dayLabel}</span>
           <b>+${coins}</b>
-          <small>${isCurrent ? claimLabel : i18n.t(isPast ? "daily.done" : "daily.next")}</small>
+          <small>${statusLabel}</small>
         </button>
       `;
     })
