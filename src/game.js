@@ -100,6 +100,7 @@ const dictionary = {
     btn_leave: "Leave Battle",
     btn_start: "Start",
     btn_play_again: "Play Again",
+    btn_stage_select: "Stage Select",
     weapon_modal_empty: "Select a weapon to view damage, cooldown and merge details.",
     weapon_upgrade_tip: "Merge matching backpack items to upgrade.",
     weapon_stats_dmg: "Damage {val}",
@@ -198,11 +199,12 @@ const dictionary = {
     settlement_unlocked: "解鎖第 {id} 關！",
     settlement_no_drops: "本次沒有掉落武器",
     btn_next: "下一關",
-    btn_confirm: "確認回主頁",
+    btn_confirm: "回關卡選擇",
     btn_resume: "繼續",
     btn_leave: "離開戰鬥",
     btn_start: "開始",
     btn_play_again: "再玩一次",
+    btn_stage_select: "回關卡選擇",
     weapon_modal_empty: "點選武器查看攻擊、冷卻和合成變化",
     weapon_upgrade_tip: "同階背包武器可合成升級",
     weapon_stats_dmg: "攻擊 {val}",
@@ -853,13 +855,13 @@ function loseLevel() {
   menuCoinLine.classList.add("hidden");
   overlay.querySelector("h1").textContent = t("defeat_title");
   overlayText.textContent = t("defeat_desc", { lvl: state.level.id, coins: state.coins });
-  startBtn.textContent = t("btn_play_again");
-  startBtn.classList.remove("hidden");
+  startBtn.classList.add("hidden");
   levelGrid.classList.add("hidden");
   upgradeGrid.classList.add("hidden");
-  profilePanel.classList.add("hidden");
+  menuContent.classList.remove("hidden");
+  profilePanel.classList.remove("hidden");
+  profilePanel.innerHTML = renderDefeatActions();
   pausePanel.classList.add("hidden");
-  menuContent.classList.add("hidden");
   menuTabs.classList.add("hidden");
   overlay.classList.remove("hidden");
   updateHud();
@@ -939,11 +941,30 @@ function renderSettlement(drops, wasChallenge) {
 }
 
 function handleSettlementAction(action) {
+  if (action === "retry") {
+    restart();
+    return;
+  }
   if (action === "next" && state.levelIndex + 1 < LEVELS.length) {
     startLevel(state.levelIndex + 1);
     return;
   }
   if (action === "home") showMainMenu("battle");
+}
+
+function renderDefeatActions() {
+  return `
+    <div class="settlement-panel">
+      <div class="settlement-row">
+        <strong>${t("defeat_title")}</strong>
+        <span>${t("defeat_desc", { lvl: state.level.id, coins: state.coins })}</span>
+      </div>
+      <div class="settlement-actions">
+        <button type="button" data-settlement-action="retry">${t("btn_play_again")}</button>
+        <button type="button" data-settlement-action="home">${t("btn_stage_select")}</button>
+      </div>
+    </div>
+  `;
 }
 
 function renderRewardItem(item) {
