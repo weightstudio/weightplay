@@ -30,8 +30,8 @@
     "tiny-weather-rescue": {
       title: { en: "Help the animal.", "zh-Hant": "幫小動物" },
       steps: [
-        { icon: "☔", en: ["Look", "See what is happening to the animal."], "zh-Hant": ["觀察", "看小動物遇到什麼狀況。"] },
-        { icon: "☂", en: ["Help", "Tap a tool, or drag it to the animal."], "zh-Hant": ["幫忙", "點道具，或拖到小動物身上。"] },
+        { icon: "☔", en: ["Look", "See what the animal needs."], "zh-Hant": ["觀察", "先看小動物需要什麼。"] },
+        { icon: "☂", en: ["Help", "Tap a care item, or drag it to the animal."], "zh-Hant": ["幫忙", "點照顧道具，或拖到小動物身上。"] },
         { icon: "😄", en: ["Clear", "Happy faces mean you helped correctly."], "zh-Hant": ["過關", "出現笑臉就是幫對了。"] },
       ],
     },

@@ -234,21 +234,21 @@ window.WONDER_LOBBY = {
     },
     {
       id: "tiny-weather-rescue",
-      title: { en: "Tiny Weather Rescue", "zh-Hant": "小小天氣救援" },
+      title: { en: "Animal Helper Quest", "zh-Hant": "動物幫幫隊" },
       status: "playable",
       statusText: { en: "Playable", "zh-Hant": "可遊玩" },
-      type: { en: "Animal Helping", "zh-Hant": "動物救援" },
+      type: { en: "Animal Care", "zh-Hant": "動物照顧" },
       categories: ["Animal Games", "Puzzle", "Family"],
       ages: ["5", "family"],
       ageLabel: { en: "5+", "zh-Hant": "5+" },
       href: "games/tiny-weather-rescue/index.html",
       description: {
-        en: "Tap or drag the right rescue tool to help cute animals in weather trouble.",
-        "zh-Hant": "點選或拖曳正確救援道具，幫助遇到天氣麻煩的小動物。",
+        en: "Tap or drag the right care item to help cute animals through different little problems.",
+        "zh-Hant": "點選或拖曳正確照顧道具，幫小動物解決各種小麻煩。",
       },
       meta: {
-        en: ["6 Stages", "Varied Tools", "Animal Games"],
-        "zh-Hant": ["6 關", "道具變化", "動物遊戲"],
+        en: ["6 Stages", "Care Tools", "Animal Games"],
+        "zh-Hant": ["6 關", "照顧道具", "動物遊戲"],
       },
       art: {
         kind: "image",

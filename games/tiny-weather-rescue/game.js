@@ -38,10 +38,10 @@
 
   const text = {
     en: {
-      gameTitle: "Tiny Weather Rescue",
+      gameTitle: "Animal Helper Quest",
       language: "Language",
-      chooseStage: "Choose Rescue",
-      menuHint: "Help the little animal. Tap or drag the right tool to it.",
+      chooseStage: "Choose Help Mission",
+      menuHint: "Help the little animal. Tap or drag the right care item to it.",
       stages: "Stages",
       loading: "Loading",
       nextStage: "Next Stage",
@@ -51,12 +51,12 @@
       stage: "Stage {n}",
       progress: "{done}/{total}",
       calm: "Help {score}",
-      clear: "Rescue Complete!",
+      clear: "Help Complete!",
       failed: "Needs More Care!",
-      result: "{score} rescues finished. Best: {best} stars.",
+      result: "{score} helpers finished. Best: {best} stars.",
       resultFailed: "Try again and help more animals.",
-      hint: "Tap a tool, or drag it to the animal.",
-      correct: "Happy rescue!",
+      hint: "Tap a care item, or drag it to the animal.",
+      correct: "Happy helper!",
       wrong: "That made the animal sad.",
       goal: "Goal {target}",
       rain: "It is raining.",
@@ -78,10 +78,10 @@
       blanket: "Blanket",
     },
     "zh-Hant": {
-      gameTitle: "\u5c0f\u5c0f\u5929\u6c23\u6551\u63f4",
+      gameTitle: "\u52d5\u7269\u5e6b\u5e6b\u968a",
       language: "\u8a9e\u8a00",
-      chooseStage: "\u9078\u64c7\u6551\u63f4",
-      menuHint: "\u5e6b\u5c0f\u52d5\u7269\uff0c\u9ede\u6216\u62d6\u66f3\u6b63\u78ba\u9053\u5177\u7d66\u5b83\u3002",
+      chooseStage: "\u9078\u64c7\u5e6b\u5fd9\u4efb\u52d9",
+      menuHint: "\u5e6b\u5c0f\u52d5\u7269\uff0c\u9ede\u6216\u62d6\u66f3\u6b63\u78ba\u7167\u9867\u9053\u5177\u7d66\u5b83\u3002",
       stages: "\u9078\u95dc",
       loading: "\u8f09\u5165\u4e2d",
       nextStage: "\u4e0b\u4e00\u95dc",
@@ -91,11 +91,11 @@
       stage: "\u7b2c {n} \u95dc",
       progress: "{done}/{total}",
       calm: "\u5e6b\u5fd9 {score}",
-      clear: "\u6551\u63f4\u5b8c\u6210\uff01",
+      clear: "\u5e6b\u5fd9\u5b8c\u6210\uff01",
       failed: "\u9084\u9700\u8981\u7167\u9867\uff01",
-      result: "\u5b8c\u6210 {score} \u500b\u6551\u63f4\u3002\u6700\u4f73\uff1a{best} \u661f\u3002",
+      result: "\u5b8c\u6210 {score} \u500b\u5e6b\u5fd9\u4efb\u52d9\u3002\u6700\u4f73\uff1a{best} \u661f\u3002",
       resultFailed: "\u518d\u8a66\u4e00\u6b21\uff0c\u5e6b\u52a9\u66f4\u591a\u5c0f\u52d5\u7269\u3002",
-      hint: "\u9ede\u9053\u5177\uff0c\u6216\u62d6\u5230\u5c0f\u52d5\u7269\u8eab\u4e0a\u3002",
+      hint: "\u9ede\u7167\u9867\u9053\u5177\uff0c\u6216\u62d6\u5230\u5c0f\u52d5\u7269\u8eab\u4e0a\u3002",
       correct: "\u5c0f\u52d5\u7269\u958b\u5fc3\u4e86\uff01",
       wrong: "\u5c0f\u52d5\u7269\u96e3\u904e\u4e86\u3002",
       goal: "\u76ee\u6a19 {target}",
@@ -242,7 +242,7 @@
     const problemKey = stage.rounds[roundIndex];
     const problem = problems[problemKey];
     const percent = progressPercent(stage);
-    const choices = toolChoices(stage);
+    const choices = toolChoices(stage, problemKey);
     nodes.stageText.textContent = t("stage", { n: stage.id });
     nodes.movesText.innerHTML = `<b>${t("progress", { done: roundIndex + 1, total: stage.rounds.length })}</b><i style="width:${percent}%"></i>`;
     nodes.starsText.textContent = t("calm", { score });
@@ -274,10 +274,26 @@
     nodes.board.querySelectorAll("[data-tool]").forEach((button) => installToolControl(button));
   }
 
-  function toolChoices(stage) {
+  function toolChoices(stage, problemKey) {
     const choices = stage.choices || Object.keys(tools);
-    const offset = roundIndex % choices.length;
-    return [...choices.slice(offset), ...choices.slice(0, offset)];
+    const shuffled = seededShuffle(choices, stage.id * 97 + roundIndex * 31);
+    const correctTool = problems[problemKey]?.tool;
+    if (shuffled.length > 1 && shuffled[0] === correctTool) {
+      const offset = ((stage.id + roundIndex) % (shuffled.length - 1)) + 1;
+      return [...shuffled.slice(offset), ...shuffled.slice(0, offset)];
+    }
+    return shuffled;
+  }
+
+  function seededShuffle(items, seed) {
+    const output = [...items];
+    let value = seed || 1;
+    for (let index = output.length - 1; index > 0; index -= 1) {
+      value = (value * 1664525 + 1013904223) >>> 0;
+      const swapIndex = value % (index + 1);
+      [output[index], output[swapIndex]] = [output[swapIndex], output[index]];
+    }
+    return output;
   }
 
   function weatherEffects(problemKey) {
