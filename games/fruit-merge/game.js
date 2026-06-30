@@ -33,10 +33,11 @@
   const floorY = H - 42;
   const dangerY = 164;
   const dropY = 122;
-  const gravity = 2450;
-  const airFriction = 0.997;
-  const groundFriction = 0.86;
-  const sleepSpeed = 9;
+  const Matter = window.Matter;
+  const Engine = Matter?.Engine;
+  const World = Matter?.World;
+  const Bodies = Matter?.Bodies;
+  const Body = Matter?.Body;
 
   const dictionary = {
     en: {
@@ -124,6 +125,8 @@
   let canDropAt = 0;
   let lastTime = performance.now();
   let toastTimer = null;
+  let engine = null;
+  let world = null;
 
   function locale() {
     return window.WonderI18n?.locale?.() || "en";
@@ -167,6 +170,7 @@
   }
 
   function resetGame(showMenu = false) {
+    initPhysicsWorld();
     fruitsOnBoard = [];
     currentLevel = randomNextLevel();
     nextLevel = randomNextLevel();
@@ -194,7 +198,7 @@
     if (!running || gameOver || performance.now() < canDropAt) return;
     const spec = fruits[currentLevel];
     const x = clamp(aimX, wallLeft + spec.radius, wallRight - spec.radius);
-    fruitsOnBoard.push({
+    const fruit = {
       id: fruitId++,
       level: currentLevel,
       x,
@@ -202,11 +206,13 @@
       vx: 0,
       vy: 0,
       radius: spec.radius,
-      mass: fruitMass(spec.radius),
       angle: 0,
       merging: false,
       bornAt: performance.now(),
-    });
+    };
+    fruit.body = createFruitBody(fruit);
+    fruitsOnBoard.push(fruit);
+    World.add(world, fruit.body);
     currentLevel = nextLevel;
     nextLevel = randomNextLevel();
     canDropAt = performance.now() + 520;
@@ -214,88 +220,68 @@
     updateHud();
   }
 
-  function step(dt) {
-    for (const fruit of fruitsOnBoard) {
-      const previousX = fruit.x;
-      fruit.vy += gravity * dt;
-      fruit.vx *= airFriction;
-      fruit.vy *= airFriction;
-      fruit.x += fruit.vx * dt;
-      fruit.y += fruit.vy * dt;
-
-      if (fruit.x - fruit.radius < wallLeft) {
-        fruit.x = wallLeft + fruit.radius;
-        fruit.vx = Math.abs(fruit.vx) * 0.42;
-      }
-      if (fruit.x + fruit.radius > wallRight) {
-        fruit.x = wallRight - fruit.radius;
-        fruit.vx = -Math.abs(fruit.vx) * 0.42;
-      }
-      if (fruit.y + fruit.radius > floorY) {
-        fruit.y = floorY - fruit.radius;
-        fruit.vy = -Math.abs(fruit.vy) * 0.18;
-        fruit.vx *= groundFriction;
-        if (Math.abs(fruit.vy) < 28) fruit.vy = 0;
-      }
-      const rolled = fruit.x - previousX;
-      if (Math.abs(rolled) > 0.06) fruit.angle += rolled / fruit.radius;
+  function initPhysicsWorld() {
+    if (!Matter) {
+      showToast("Physics loading failed");
+      return;
     }
+    engine = Engine.create({
+      enableSleeping: true,
+      positionIterations: 12,
+      velocityIterations: 10,
+      constraintIterations: 4,
+    });
+    world = engine.world;
+    engine.gravity.y = 1.45;
 
-    resolveMerges();
-    for (let iteration = 0; iteration < 10; iteration += 1) {
-      resolveCollisions();
-      constrainFruits();
-    }
-    constrainFruits();
-    sleepStillFruits();
-    resolveMerges();
-    updateMergeBursts(dt);
-    checkGameOver(dt);
+    const wallOptions = {
+      isStatic: true,
+      restitution: 0.02,
+      friction: 1,
+      render: { visible: false },
+    };
+    World.add(world, [
+      Bodies.rectangle(wallLeft - 18, H / 2, 36, H, wallOptions),
+      Bodies.rectangle(wallRight + 18, H / 2, 36, H, wallOptions),
+      Bodies.rectangle(W / 2, floorY + 18, wallRight - wallLeft + 72, 36, wallOptions),
+    ]);
   }
 
-  function resolveCollisions() {
-    for (let i = 0; i < fruitsOnBoard.length; i += 1) {
-      for (let j = i + 1; j < fruitsOnBoard.length; j += 1) {
-        const a = fruitsOnBoard[i];
-        const b = fruitsOnBoard[j];
-        if (a.merging || b.merging) continue;
-        const dx = b.x - a.x;
-        const dy = b.y - a.y;
-        const dist = Math.hypot(dx, dy) || 0.001;
-        const minDist = a.radius + b.radius;
-        if (dist >= minDist) continue;
+  function createFruitBody(fruit, velocity = { x: 0, y: 0 }) {
+    const body = Bodies.circle(fruit.x, fruit.y, fruit.radius, {
+      label: "fruit",
+      restitution: 0.04,
+      friction: 0.96,
+      frictionStatic: 1.2,
+      frictionAir: 0.018,
+      density: 0.0012,
+      sleepThreshold: 72,
+      slop: 0.01,
+    });
+    body.fruitId = fruit.id;
+    Body.setVelocity(body, velocity);
+    return body;
+  }
 
-        const nx = dx / dist;
-        const ny = dy / dist;
-        const overlap = minDist - dist + 0.5;
-        const baseInvMassA = 1 / (a.mass || fruitMass(a.radius));
-        const baseInvMassB = 1 / (b.mass || fruitMass(b.radius));
-        const canMoveA = canApplyCorrection(a, -nx, -ny);
-        const canMoveB = canApplyCorrection(b, nx, ny);
-        const invMassA = canMoveA ? baseInvMassA : 0;
-        const invMassB = canMoveB ? baseInvMassB : 0;
-        const activeInvMassTotal = invMassA + invMassB;
-        const invMassTotal = activeInvMassTotal || baseInvMassA + baseInvMassB;
-        const pushA = activeInvMassTotal ? invMassA / activeInvMassTotal : baseInvMassA / invMassTotal;
-        const pushB = activeInvMassTotal ? invMassB / activeInvMassTotal : baseInvMassB / invMassTotal;
-        a.x -= nx * overlap * pushA;
-        a.y -= ny * overlap * pushA;
-        b.x += nx * overlap * pushB;
-        b.y += ny * overlap * pushB;
-
-        const rvx = b.vx - a.vx;
-        const rvy = b.vy - a.vy;
-        const velocityAlongNormal = rvx * nx + rvy * ny;
-        if (velocityAlongNormal > 0) continue;
-        const impulse = -(0.82 * velocityAlongNormal) / invMassTotal;
-        const ix = impulse * nx;
-        const iy = impulse * ny;
-        a.vx -= ix * invMassA;
-        a.vy -= iy * invMassA;
-        b.vx += ix * invMassB;
-        b.vy += iy * invMassB;
-      }
+  function syncFruitsFromBodies() {
+    for (const fruit of fruitsOnBoard) {
+      if (!fruit.body) continue;
+      fruit.x = fruit.body.position.x;
+      fruit.y = fruit.body.position.y;
+      fruit.vx = fruit.body.velocity.x * 60;
+      fruit.vy = fruit.body.velocity.y * 60;
+      fruit.angle = fruit.body.angle;
+      fruit.sleeping = fruit.body.isSleeping;
     }
+  }
+
+  function step(dt) {
+    Engine.update(engine, Math.min(33.33, dt * 1000));
+    syncFruitsFromBodies();
+    resolveMerges();
+    syncFruitsFromBodies();
+    updateMergeBursts(dt);
+    checkGameOver(dt);
   }
 
   function resolveMerges() {
@@ -313,24 +299,32 @@
         const dist = Math.hypot(dx, dy) || 1;
         const nx = dx / dist;
         const ny = dy / dist;
-        const relativeVx = b.vx - a.vx;
-        const relativeVy = b.vy - a.vy;
+        const velocityA = a.body?.velocity || { x: a.vx / 60, y: a.vy / 60 };
+        const velocityB = b.body?.velocity || { x: b.vx / 60, y: b.vy / 60 };
+        const relativeVx = (velocityB.x - velocityA.x) * 60;
+        const relativeVy = (velocityB.y - velocityA.y) * 60;
         const impact = Math.min(420, Math.max(90, Math.abs(relativeVx * nx + relativeVy * ny) + Math.hypot(relativeVx, relativeVy) * 0.28));
-        const mergedVx = (a.vx + b.vx) * 0.48 + nx * impact * 0.22;
-        const mergedVy = Math.min((a.vy + b.vy) * 0.42 + ny * impact * 0.12, 260);
+        const mergedVelocity = {
+          x: (velocityA.x + velocityB.x) * 0.46 + nx * impact * 0.0025,
+          y: Math.min((velocityA.y + velocityB.y) * 0.42 + ny * impact * 0.0018, 5.2),
+        };
         const merged = {
           id: fruitId++,
           level: a.level + 1,
           x: clamp((a.x + b.x) / 2, wallLeft + next.radius, wallRight - next.radius),
           y: Math.min((a.y + b.y) / 2, floorY - next.radius),
-          vx: mergedVx,
-          vy: mergedVy,
+          vx: mergedVelocity.x * 60,
+          vy: mergedVelocity.y * 60,
           radius: next.radius,
-          mass: fruitMass(next.radius),
           angle: (a.angle + b.angle) / 2,
           pop: 0.24,
           bornAt: performance.now(),
         };
+        if (a.body) World.remove(world, a.body);
+        if (b.body) World.remove(world, b.body);
+        merged.body = createFruitBody(merged, mergedVelocity);
+        Body.setAngle(merged.body, merged.angle);
+        World.add(world, merged.body);
         removeIds.add(a.id);
         removeIds.add(b.id);
         additions.push(merged);
@@ -349,7 +343,7 @@
   function shouldMerge(a, b) {
     if (a.level !== b.level || a.level >= fruits.length - 1) return false;
     const dist = Math.hypot(b.x - a.x, b.y - a.y);
-    const mergeDistance = a.radius + b.radius + Math.max(12, Math.min(a.radius, b.radius) * 0.45);
+    const mergeDistance = a.radius + b.radius + 3;
     return dist <= mergeDistance;
   }
 
@@ -366,52 +360,6 @@
       .filter((burst) => burst.life > 0);
   }
 
-  function fruitMass(radius) {
-    return Math.max(1, (radius / 28) ** 2);
-  }
-
-  function sleepStillFruits() {
-    for (const fruit of fruitsOnBoard) {
-      const grounded = fruit.y + fruit.radius >= floorY - 0.8;
-      const slow = Math.hypot(fruit.vx, fruit.vy) < sleepSpeed;
-      if (!slow || hasFruitOverlap(fruit)) continue;
-      fruit.vx = 0;
-      if (grounded || Math.abs(fruit.vy) < sleepSpeed) fruit.vy = 0;
-    }
-  }
-
-  function canApplyCorrection(fruit, dx, dy) {
-    const atLeft = fruit.x - fruit.radius <= wallLeft + 0.8;
-    const atRight = fruit.x + fruit.radius >= wallRight - 0.8;
-    const atFloor = fruit.y + fruit.radius >= floorY - 0.8;
-    return !(atLeft && dx < 0) && !(atRight && dx > 0) && !(atFloor && dy > 0);
-  }
-
-  function hasFruitOverlap(target) {
-    return fruitsOnBoard.some((fruit) => {
-      if (fruit === target || fruit.merging || target.merging) return false;
-      const minDist = fruit.radius + target.radius - 0.8;
-      return Math.hypot(fruit.x - target.x, fruit.y - target.y) < minDist;
-    });
-  }
-
-  function constrainFruits() {
-    for (const fruit of fruitsOnBoard) {
-      if (fruit.x - fruit.radius < wallLeft) {
-        fruit.x = wallLeft + fruit.radius;
-        fruit.vx = Math.max(0, fruit.vx) * 0.35;
-      }
-      if (fruit.x + fruit.radius > wallRight) {
-        fruit.x = wallRight - fruit.radius;
-        fruit.vx = Math.min(0, fruit.vx) * 0.35;
-      }
-      if (fruit.y + fruit.radius > floorY) {
-        fruit.y = floorY - fruit.radius;
-        fruit.vy = Math.min(0, fruit.vy) * 0.18;
-      }
-    }
-  }
-
   function checkGameOver(dt) {
     let dangerTime = 0;
     for (const fruit of fruitsOnBoard) {
@@ -419,7 +367,7 @@
       const age = performance.now() - fruit.bornAt;
       const topAboveLine = fruit.y - fruit.radius < dangerY;
       const notFreshDrop = age > 1800;
-      const stableEnough = Math.hypot(fruit.vx, fruit.vy) < 135 || fruit.vy < 70;
+      const stableEnough = fruit.sleeping || Math.hypot(fruit.vx, fruit.vy) < 135 || fruit.vy < 70;
       fruit.dangerTime = topAboveLine && notFreshDrop && stableEnough ? old + dt : 0;
       dangerTime = Math.max(dangerTime, fruit.dangerTime);
     }
@@ -682,6 +630,11 @@
   });
 
   applyText();
+  if (!Matter) {
+    showToast("Physics loading failed");
+    loadingPanel.classList.add("hidden");
+    return;
+  }
   resetGame(true);
   loadingPanel.classList.add("hidden");
   window.WonderAnalytics?.track?.("game_ready", { game_id: GAME_ID });
