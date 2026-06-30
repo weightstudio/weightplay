@@ -5,30 +5,30 @@
   const starKey = "weightplay_weather_stars";
 
   const tools = {
-    umbrella: { icon: "☂", className: "umbrella" },
-    towel: { icon: "▤", className: "towel" },
-    fan: { icon: "✦", className: "fan" },
-    lantern: { icon: "◆", className: "lantern" },
-    shelter: { icon: "⌂", className: "shelter" },
-    snack: { icon: "●", className: "snack" },
+    umbrella: { icon: "\u{2602}\u{FE0F}", className: "umbrella" },
+    towel: { icon: "\u{1F9FA}", className: "towel" },
+    fan: { icon: "\u{1FAAD}", className: "fan" },
+    lantern: { icon: "\u{1F3EE}", className: "lantern" },
+    shelter: { icon: "\u{1F3E0}", className: "shelter" },
+    snack: { icon: "\u{1F34E}", className: "snack" },
   };
 
   const problems = {
-    rain: { icon: "☔", tool: "umbrella" },
-    puddle: { icon: "💧", tool: "towel" },
-    heat: { icon: "☀", tool: "fan" },
-    dark: { icon: "☁", tool: "lantern" },
-    thunder: { icon: "⚡", tool: "shelter" },
-    hungry: { icon: "○", tool: "snack" },
+    rain: { icon: "\u{1F327}\u{FE0F}", tool: "umbrella" },
+    puddle: { icon: "\u{1F4A7}", tool: "towel" },
+    heat: { icon: "\u{2600}\u{FE0F}", tool: "fan" },
+    dark: { icon: "\u{1F311}", tool: "lantern" },
+    thunder: { icon: "\u{26A1}", tool: "shelter" },
+    hungry: { icon: "\u{1F924}", tool: "snack" },
   };
 
   const stages = [
-    { animal: "🐰", theme: "garden", rounds: ["rain", "puddle", "hungry", "heat"], target: 3 },
-    { animal: "🦊", theme: "forest", rounds: ["dark", "rain", "thunder", "hungry", "puddle"], target: 4 },
-    { animal: "🐼", theme: "bamboo", rounds: ["heat", "hungry", "rain", "dark", "puddle"], target: 4 },
-    { animal: "🐧", theme: "ice", rounds: ["dark", "puddle", "thunder", "rain", "hungry", "heat"], target: 5 },
-    { animal: "🦁", theme: "savanna", rounds: ["heat", "thunder", "hungry", "rain", "dark", "puddle"], target: 5 },
-    { animal: "🐨", theme: "tree", rounds: ["rain", "dark", "heat", "puddle", "thunder", "hungry"], target: 5 },
+    { animal: "\u{1F430}", theme: "garden", rounds: ["rain", "puddle", "hungry", "heat"], target: 3, hint: true },
+    { animal: "\u{1F98A}", theme: "forest", rounds: ["dark", "rain", "thunder", "hungry", "puddle"], target: 4, hint: true },
+    { animal: "\u{1F43C}", theme: "bamboo", rounds: ["heat", "hungry", "rain", "dark", "puddle"], target: 4, hint: true },
+    { animal: "\u{1F427}", theme: "ice", rounds: ["dark", "puddle", "thunder", "rain", "hungry", "heat"], target: 5 },
+    { animal: "\u{1F981}", theme: "savanna", rounds: ["heat", "thunder", "hungry", "rain", "dark", "puddle"], target: 5 },
+    { animal: "\u{1F428}", theme: "tree", rounds: ["rain", "dark", "heat", "puddle", "thunder", "hungry"], target: 5 },
   ].map((stage, index) => ({ ...stage, id: index + 1 }));
 
   const text = {
@@ -36,7 +36,7 @@
       gameTitle: "Tiny Weather Rescue",
       language: "Language",
       chooseStage: "Choose Rescue",
-      menuHint: "Watch the weather, pick the right rescue tool, and keep every animal calm.",
+      menuHint: "Look at the big picture, then tap the matching rescue tool.",
       stages: "Stages",
       loading: "Loading",
       nextStage: "Next Stage",
@@ -44,67 +44,63 @@
       lobby: "Lobby",
       locked: "Stage locked",
       stage: "Stage {n}",
-      rounds: "{done} / {total}",
+      progress: "{done}/{total}",
       calm: "Calm {score}",
-      stars: "{stars} / 3",
       clear: "Rescue Complete!",
       failed: "Needs More Care!",
-      result: "You solved {score} weather problems. Best: {best} stars.",
-      resultFailed: "Try again and match more tools before the rescue ends.",
-      hint: "Pick a rescue tool for the weather card.",
-      ready: "Ready",
-      correct: "Nice rescue!",
-      wrong: "Wrong tool. Keep going!",
+      result: "{score} rescues finished. Best: {best} stars.",
+      resultFailed: "Try again and match more picture tools.",
+      hint: "Tap the matching picture.",
+      correct: "Nice!",
+      wrong: "Try the picture that matches.",
       goal: "Goal {target}",
+      rain: "Rain",
+      puddle: "Puddle",
+      heat: "Sun",
+      dark: "Dark",
+      thunder: "Thunder",
+      hungry: "Hungry",
       umbrella: "Umbrella",
-      towel: "Dry Towel",
-      fan: "Cool Fan",
+      towel: "Towel",
+      fan: "Fan",
       lantern: "Lantern",
       shelter: "Shelter",
       snack: "Snack",
-      rain: "Rain is falling",
-      puddle: "Puddle splash",
-      heat: "Too sunny",
-      dark: "Clouds cover the trail",
-      thunder: "Thunder nearby",
-      hungry: "Animal is hungry",
     },
     "zh-Hant": {
-      gameTitle: "小小天氣救援",
-      language: "語言",
-      chooseStage: "選擇救援",
-      menuHint: "觀察天氣，選出正確道具，讓動物安心完成救援。",
-      stages: "選關",
-      loading: "載入中",
-      nextStage: "下一關",
-      retry: "再試一次",
-      lobby: "大廳",
-      locked: "關卡未解鎖",
-      stage: "第 {n} 關",
-      rounds: "{done} / {total}",
-      calm: "安心 {score}",
-      stars: "{stars} / 3",
-      clear: "救援完成！",
-      failed: "還需要照顧！",
-      result: "你處理了 {score} 個天氣狀況。最佳：{best} 星。",
-      resultFailed: "再試一次，在救援結束前配對更多正確道具。",
-      hint: "依照天氣卡，選擇正確的救援道具。",
-      ready: "準備",
-      correct: "救援成功！",
-      wrong: "道具不對，繼續加油！",
-      goal: "目標 {target}",
-      umbrella: "雨傘",
-      towel: "乾毛巾",
-      fan: "涼風扇",
-      lantern: "小燈",
-      shelter: "避難屋",
-      snack: "點心",
-      rain: "下雨了",
-      puddle: "踩到水坑",
-      heat: "太陽太熱",
-      dark: "烏雲變暗",
-      thunder: "雷聲靠近",
-      hungry: "動物肚子餓",
+      gameTitle: "\u5c0f\u5c0f\u5929\u6c23\u6551\u63f4",
+      language: "\u8a9e\u8a00",
+      chooseStage: "\u9078\u64c7\u6551\u63f4",
+      menuHint: "\u770b\u5927\u5716\u793a\uff0c\u9ede\u76f8\u914d\u7684\u6551\u63f4\u9053\u5177\u3002",
+      stages: "\u9078\u95dc",
+      loading: "\u8f09\u5165\u4e2d",
+      nextStage: "\u4e0b\u4e00\u95dc",
+      retry: "\u518d\u8a66\u4e00\u6b21",
+      lobby: "\u5927\u5ef3",
+      locked: "\u95dc\u5361\u672a\u89e3\u9396",
+      stage: "\u7b2c {n} \u95dc",
+      progress: "{done}/{total}",
+      calm: "\u5b89\u5fc3 {score}",
+      clear: "\u6551\u63f4\u5b8c\u6210\uff01",
+      failed: "\u9084\u9700\u8981\u7167\u9867\uff01",
+      result: "\u5b8c\u6210 {score} \u500b\u6551\u63f4\u3002\u6700\u4f73\uff1a{best} \u661f\u3002",
+      resultFailed: "\u518d\u8a66\u4e00\u6b21\uff0c\u627e\u51fa\u66f4\u591a\u76f8\u914d\u5716\u793a\u3002",
+      hint: "\u9ede\u76f8\u914d\u7684\u5716\u793a\u3002",
+      correct: "\u5f88\u597d\uff01",
+      wrong: "\u627e\u8ddf\u5929\u6c23\u76f8\u914d\u7684\u5716\u793a\u3002",
+      goal: "\u76ee\u6a19 {target}",
+      rain: "\u4e0b\u96e8",
+      puddle: "\u6c34\u5751",
+      heat: "\u592a\u967d",
+      dark: "\u5929\u9ed1",
+      thunder: "\u96f7\u96fb",
+      hungry: "\u809a\u5b50\u9913",
+      umbrella: "\u96e8\u5098",
+      towel: "\u6bdb\u5dfe",
+      fan: "\u98a8\u6247",
+      lantern: "\u5c0f\u71c8",
+      shelter: "\u5c0f\u5c4b",
+      snack: "\u9ede\u5fc3",
     },
   };
 
@@ -158,7 +154,8 @@
   }
 
   function t(label, data = {}) {
-    const value = (text[locale] || text.en)[label] || text.en[label] || label;
+    const table = text[locale] || text.en;
+    const value = table[label] || text.en[label] || label;
     return Object.entries(data).reduce((out, [name, item]) => out.replaceAll(`{${name}}`, String(item)), value);
   }
 
@@ -187,10 +184,11 @@
       button.className = "stage-card";
       if (stageNo > unlocked) button.classList.add("locked");
       const best = records[stageNo] || 0;
+      const firstProblem = problems[stage.rounds[0]];
       button.innerHTML = `
-        <b>${stage.animal} ${problems[stage.rounds[0]].icon}</b>
+        <b>${stage.animal} ${firstProblem.icon} ${tools[firstProblem.tool].icon}</b>
         <strong>${t("stage", { n: stageNo })}</strong>
-        <span>${t("goal", { target: stage.target })} · ${"★".repeat(best)}${"☆".repeat(3 - best)}</span>
+        <span>${t("goal", { target: stage.target })} · ${"\u2605".repeat(best)}${"\u2606".repeat(3 - best)}</span>
       `;
       button.addEventListener("click", () => {
         if (stageNo > unlocked) {
@@ -217,24 +215,30 @@
     track("game_start", { stage: currentStage + 1 });
   }
 
+  function progressPercent(stage) {
+    return Math.round((roundIndex / stage.rounds.length) * 100);
+  }
+
   function renderRound(feedback = "") {
     const stage = stages[currentStage];
     const problemKey = stage.rounds[roundIndex];
     const problem = problems[problemKey];
+    const answer = tools[problem.tool];
+    const percent = progressPercent(stage);
     nodes.stageText.textContent = t("stage", { n: stage.id });
-    nodes.movesText.textContent = t("rounds", { done: roundIndex + 1, total: stage.rounds.length });
+    nodes.movesText.innerHTML = `<b>${t("progress", { done: roundIndex + 1, total: stage.rounds.length })}</b><i style="width:${percent}%"></i>`;
     nodes.starsText.textContent = t("calm", { score });
     nodes.board.innerHTML = `
       <div class="weather-scene ${stage.theme}">
-        <div class="sky-badge">${problem.icon}</div>
         <div class="animal-badge">${stage.animal}</div>
-        <div class="weather-card ${problemKey}">
-          <span>${problem.icon}</span>
-          <strong>${t(problemKey)}</strong>
+        <div class="picture-prompt" aria-label="${t(problemKey)}">
+          <div class="weather-icon">${problem.icon}</div>
+          <div class="match-arrow">→</div>
+          <div class="tool-shadow ${stage.hint ? "" : "hidden-hint"}">${answer.icon}</div>
         </div>
         <div class="tool-grid">
           ${Object.entries(tools).map(([key, tool]) => `
-            <button class="tool-btn ${tool.className}" type="button" data-tool="${key}">
+            <button class="tool-btn ${tool.className}" type="button" data-tool="${key}" aria-label="${t(key)}">
               <i>${tool.icon}</i>
               <span>${t(key)}</span>
             </button>
@@ -292,7 +296,7 @@
     nodes.playPanel.classList.add("hidden");
     nodes.resultPanel.classList.remove("hidden");
     nodes.resultTitle.textContent = cleared ? t("clear") : t("failed");
-    nodes.starText.textContent = `${"★".repeat(stars)}${"☆".repeat(3 - stars)}`;
+    nodes.starText.textContent = `${"\u2605".repeat(stars)}${"\u2606".repeat(3 - stars)}`;
     nodes.resultText.textContent = cleared
       ? t("result", { score, best: records[stage.id] || stars })
       : t("resultFailed");

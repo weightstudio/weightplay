@@ -28,11 +28,11 @@
       ],
     },
     "tiny-weather-rescue": {
-      title: { en: "Pick the rescue tool.", "zh-Hant": "選出救援道具" },
+      title: { en: "Match the pictures.", "zh-Hant": "看圖配對" },
       steps: [
-        { icon: "☔", en: ["Watch Weather", "Look at the weather card in the middle."], "zh-Hant": ["看天氣", "先看中間出現的天氣卡。"] },
-        { icon: "☂", en: ["Choose Tool", "Tap the tool that solves that weather problem."], "zh-Hant": ["選道具", "點選能解決狀況的救援道具。"] },
-        { icon: "★", en: ["Clear", "Get enough correct answers to pass the rescue."], "zh-Hant": ["過關", "答對足夠次數就能完成救援。"] },
+        { icon: "☔", en: ["Look", "See the big weather picture."], "zh-Hant": ["看圖", "看中間的大天氣圖示。"] },
+        { icon: "☂", en: ["Tap", "Tap the matching tool picture."], "zh-Hant": ["點圖", "點相配的道具圖示。"] },
+        { icon: "★", en: ["Clear", "Match enough pictures to win."], "zh-Hant": ["過關", "配對足夠圖示就過關。"] },
       ],
     },
     "snack-blocks": {
