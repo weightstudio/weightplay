@@ -48,7 +48,7 @@ select {
   min-height: 44px;
   border: 0;
   border-radius: 14px;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.92);
   color: #17314f;
   box-shadow: 0 8px 18px rgba(38, 79, 113, 0.18);
   font-weight: 900;
@@ -73,12 +73,12 @@ select {
 }
 
 .title-block h1 {
-  font-size: clamp(1.12rem, 4.8vw, 2.1rem);
-  line-height: 1.03;
+  font-size: clamp(1.08rem, 4.4vw, 2rem);
+  line-height: 1.04;
 }
 
 .language-picker {
-  min-width: 112px;
+  min-width: 118px;
   display: grid;
   gap: 4px;
   font-size: 0.72rem;
@@ -91,7 +91,7 @@ select {
   border: 0;
   border-radius: 12px;
   padding: 8px 9px;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.92);
   color: #17314f;
   font-weight: 900;
 }
@@ -193,78 +193,170 @@ select {
 
 .board {
   width: min(94vw, 620px, 72svh);
-  aspect-ratio: 1;
+  min-height: min(84svh, 620px);
   margin: 0 auto;
-  padding: 8px;
+  padding: 12px;
   border-radius: 28px;
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 8px;
+  position: relative;
+  overflow: hidden;
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.48)),
     url("../../assets/tiny-weather-rescue-cover.png") center / cover;
   box-shadow: inset 0 0 0 1000px rgba(255, 255, 255, 0.28), 0 18px 34px rgba(38, 79, 113, 0.2);
 }
 
-.cell {
-  min-width: 0;
-  border: 3px solid rgba(255, 255, 255, 0.74);
-  border-radius: 18px;
+.weather-scene {
+  min-height: calc(min(84svh, 620px) - 24px);
+  display: grid;
+  grid-template-rows: auto auto auto 1fr;
+  gap: 14px;
+  align-items: center;
+  justify-items: center;
+  position: relative;
+}
+
+.weather-scene::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 22px;
+  background:
+    radial-gradient(circle at 24% 18%, rgba(255, 255, 255, 0.86), transparent 10rem),
+    linear-gradient(180deg, rgba(87, 185, 232, 0.3), rgba(255, 247, 210, 0.52));
+  z-index: 0;
+}
+
+.weather-scene > * {
+  position: relative;
+  z-index: 1;
+}
+
+.sky-badge {
+  width: min(30vw, 142px);
+  aspect-ratio: 1;
+  border-radius: 50%;
   display: grid;
   place-items: center;
-  background: rgba(255, 255, 255, 0.72);
+  background: rgba(255, 255, 255, 0.78);
+  font-size: clamp(2.6rem, 14vw, 5.2rem);
+  box-shadow: 0 18px 34px rgba(38, 79, 113, 0.16);
+  animation: floaty 2.2s ease-in-out infinite;
+}
+
+.animal-badge {
+  width: min(34vw, 166px);
+  aspect-ratio: 1;
+  border-radius: 36% 36% 42% 42%;
+  display: grid;
+  place-items: center;
+  background: #fffdf4;
+  border: 5px solid rgba(255, 255, 255, 0.8);
+  font-size: clamp(3.6rem, 18vw, 6.6rem);
+  box-shadow: inset 0 -8px rgba(0, 0, 0, 0.06), 0 18px 34px rgba(38, 79, 113, 0.18);
+}
+
+.weather-card {
+  width: min(100%, 420px);
+  min-height: 90px;
+  padding: 12px 16px;
+  border-radius: 22px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 12px;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.9);
   color: #17314f;
-  font-size: clamp(1.5rem, 8vw, 3.2rem);
   font-weight: 900;
-  box-shadow: inset 0 -5px rgba(0, 0, 0, 0.08), 0 8px 18px rgba(38, 79, 113, 0.14);
+  box-shadow: 0 14px 26px rgba(38, 79, 113, 0.14);
+  animation: cardIn 0.24s ease both;
+}
+
+.weather-card span {
+  font-size: 2.8rem;
+}
+
+.weather-card strong {
+  font-size: clamp(1.14rem, 4.8vw, 1.72rem);
+}
+
+.weather-card.thunder {
+  background: linear-gradient(135deg, #fff2a8, #d9d4ff);
+}
+
+.weather-card.heat {
+  background: linear-gradient(135deg, #fff0b8, #ffd4a6);
+}
+
+.weather-card.rain,
+.weather-card.puddle {
+  background: linear-gradient(135deg, #d9f4ff, #ffffff);
+}
+
+.tool-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  align-self: end;
+}
+
+.tool-btn {
+  min-width: 0;
+  min-height: 86px;
+  border: 0;
+  border-radius: 18px;
+  display: grid;
+  gap: 5px;
+  place-items: center;
+  padding: 10px 8px;
+  background: rgba(255, 255, 255, 0.9);
+  color: #17314f;
+  font-weight: 900;
+  box-shadow: inset 0 -6px rgba(0, 0, 0, 0.07), 0 10px 20px rgba(38, 79, 113, 0.14);
   transition: transform 0.16s ease, filter 0.16s ease, background 0.16s ease;
   touch-action: manipulation;
 }
 
-.cell.path {
-  background: rgba(255, 251, 222, 0.88);
+.tool-btn i {
+  width: 44px;
+  height: 44px;
+  border-radius: 15px;
+  display: grid;
+  place-items: center;
+  background: rgba(87, 185, 232, 0.16);
+  font-style: normal;
+  font-size: 2rem;
 }
 
-.cell.rain {
-  background: rgba(126, 211, 255, 0.86);
+.tool-btn span {
+  max-width: 100%;
+  font-size: clamp(0.78rem, 3.2vw, 0.96rem);
+  line-height: 1.05;
 }
 
-.cell.wind {
-  background: rgba(209, 250, 229, 0.86);
+.tool-btn.correct {
+  background: #d8ffcb;
+  animation: pop 0.32s ease;
 }
 
-.cell.puddle {
-  background: rgba(56, 189, 248, 0.86);
-}
-
-.cell.storm {
-  background: rgba(165, 180, 252, 0.88);
-}
-
-.cell.shelter {
-  background: rgba(255, 237, 173, 0.94);
-}
-
-.cell.star {
-  background: rgba(255, 244, 178, 0.94);
-}
-
-.cell.reachable {
-  outline: 4px solid rgba(255, 210, 74, 0.86);
-  transform: translateY(-2px);
-}
-
-.cell.player {
-  background: #ffffff;
-  transform: scale(1.04);
-}
-
-.cell.bad {
+.tool-btn.wrong {
+  background: #ffd6d6;
   animation: shake 0.28s ease;
 }
 
-.cell.good {
-  animation: pop 0.32s ease;
+.event-pop {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  translate: -50% -50%;
+  padding: 8px 18px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #238447;
+  font-size: 1.4rem;
+  font-weight: 900;
+  box-shadow: 0 12px 24px rgba(38, 79, 113, 0.18);
+  animation: eventPop 0.58s ease both;
 }
 
 .hint {
@@ -345,6 +437,21 @@ select {
   transition: width 0.2s ease;
 }
 
+.floating-toast {
+  position: fixed;
+  left: 50%;
+  top: 46%;
+  z-index: 40;
+  translate: -50% -50%;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.94);
+  color: #17314f;
+  font-weight: 900;
+  box-shadow: 0 18px 38px rgba(38, 79, 113, 0.22);
+  animation: toastUp 1.28s ease forwards;
+}
+
 @keyframes cardIn {
   from { transform: translateY(16px) scale(0.96); opacity: 0; }
   to { transform: translateY(0) scale(1); opacity: 1; }
@@ -359,6 +466,20 @@ select {
   75% { transform: translateX(6px); }
 }
 
+@keyframes floaty {
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes eventPop {
+  0% { transform: scale(0.72); opacity: 0; }
+  30% { transform: scale(1.08); opacity: 1; }
+  100% { transform: translateY(-22px) scale(0.96); opacity: 0; }
+}
+
+@keyframes toastUp {
+  to { transform: translateY(-44px); opacity: 0; }
+}
+
 @media (max-width: 430px) {
   .weather-game {
     padding-inline: 10px;
@@ -366,7 +487,7 @@ select {
   }
 
   .topbar {
-    grid-template-columns: 44px 1fr 104px;
+    grid-template-columns: 44px 1fr 112px;
   }
 
   .cover {
@@ -378,14 +499,24 @@ select {
   }
 
   .board {
-    gap: 6px;
-    padding: 6px;
+    min-height: min(78svh, 560px);
+    padding: 8px;
     border-radius: 22px;
   }
 
-  .cell {
-    border-width: 2px;
-    border-radius: 14px;
+  .weather-scene {
+    min-height: calc(min(78svh, 560px) - 16px);
+    gap: 10px;
+  }
+
+  .tool-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .tool-btn {
+    min-height: 74px;
+    border-radius: 15px;
   }
 
   .stats {
