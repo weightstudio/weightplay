@@ -4,11 +4,13 @@
       close: "Start Playing",
       closeAria: "Close tutorial",
       aria: "How to play",
+      lobbyAria: "Back to lobby",
     },
     "zh-Hant": {
       close: "開始玩",
       closeAria: "關閉教學",
       aria: "玩法提示",
+      lobbyAria: "回到大廳",
     },
   };
 
@@ -203,6 +205,9 @@
     const gameId = gameIdFromPath();
     if (!tutorials[gameId]) return;
     const lang = locale();
+    document.querySelectorAll(".home-link").forEach((link) => {
+      link.setAttribute("aria-label", common[lang].lobbyAria);
+    });
     const button = document.createElement("button");
     button.type = "button";
     button.className = "wp-tutorial-button";
