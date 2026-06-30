@@ -36,7 +36,6 @@
   const gravity = 2450;
   const airFriction = 0.997;
   const groundFriction = 0.86;
-  const angularFriction = 0.992;
 
   const dictionary = {
     en: {
@@ -202,8 +201,7 @@
       vx: 0,
       vy: 0,
       radius: spec.radius,
-      angle: random(-0.18, 0.18),
-      angularVelocity: random(-1.2, 1.2),
+      angle: 0,
       merging: false,
       bornAt: performance.now(),
     });
@@ -216,31 +214,28 @@
 
   function step(dt) {
     for (const fruit of fruitsOnBoard) {
+      const previousX = fruit.x;
       fruit.vy += gravity * dt;
       fruit.vx *= airFriction;
       fruit.vy *= airFriction;
-      fruit.angularVelocity *= angularFriction;
-      fruit.angle += fruit.angularVelocity * dt;
       fruit.x += fruit.vx * dt;
       fruit.y += fruit.vy * dt;
 
       if (fruit.x - fruit.radius < wallLeft) {
         fruit.x = wallLeft + fruit.radius;
         fruit.vx = Math.abs(fruit.vx) * 0.42;
-        fruit.angularVelocity += fruit.vy * 0.004;
       }
       if (fruit.x + fruit.radius > wallRight) {
         fruit.x = wallRight - fruit.radius;
         fruit.vx = -Math.abs(fruit.vx) * 0.42;
-        fruit.angularVelocity -= fruit.vy * 0.004;
       }
       if (fruit.y + fruit.radius > floorY) {
         fruit.y = floorY - fruit.radius;
         fruit.vy = -Math.abs(fruit.vy) * 0.18;
         fruit.vx *= groundFriction;
-        fruit.angularVelocity += fruit.vx * 0.009;
         if (Math.abs(fruit.vy) < 28) fruit.vy = 0;
       }
+      fruit.angle += (fruit.x - previousX) / fruit.radius;
     }
 
     resolveMerges();
@@ -283,8 +278,6 @@
         a.vy -= iy;
         b.vx += ix;
         b.vy += iy;
-        a.angularVelocity -= iy * 0.004 + ix * 0.002;
-        b.angularVelocity += iy * 0.004 + ix * 0.002;
       }
     }
   }
@@ -318,7 +311,6 @@
           vy: mergedVy,
           radius: next.radius,
           angle: (a.angle + b.angle) / 2,
-          angularVelocity: (a.angularVelocity + b.angularVelocity) * 0.45 + (relativeVx * ny - relativeVy * nx) * 0.012,
           pop: 0.24,
           bornAt: performance.now(),
         };
@@ -583,10 +575,6 @@
 
   function clamp(value, min, max) {
     return Math.max(min, Math.min(max, value));
-  }
-
-  function random(min, max) {
-    return min + Math.random() * (max - min);
   }
 
   function loop(now) {
