@@ -1,0 +1,145 @@
+.wp-tutorial-button {
+  position: fixed;
+  top: calc(72px + env(safe-area-inset-top));
+  right: calc(12px + env(safe-area-inset-right));
+  z-index: 60;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.92);
+  color: #182133;
+  font: 900 1.1rem/1 system-ui, sans-serif;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.22);
+  touch-action: manipulation;
+}
+
+.wp-tutorial-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: grid;
+  place-items: center;
+  padding: calc(18px + env(safe-area-inset-top)) calc(14px + env(safe-area-inset-right)) calc(18px + env(safe-area-inset-bottom)) calc(14px + env(safe-area-inset-left));
+  background: rgba(10, 16, 28, 0.62);
+  backdrop-filter: blur(8px);
+  animation: wp-tutorial-fade 0.2s ease both;
+}
+
+.wp-tutorial-card {
+  width: min(94vw, 430px);
+  max-height: min(86svh, 620px);
+  overflow: auto;
+  border-radius: 22px;
+  padding: 18px;
+  display: grid;
+  gap: 14px;
+  background: #fffdf5;
+  color: #182133;
+  box-shadow: 0 28px 60px rgba(0, 0, 0, 0.32);
+  animation: wp-tutorial-pop 0.24s ease both;
+}
+
+.wp-tutorial-head {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  align-items: start;
+}
+
+.wp-tutorial-head strong {
+  font: 900 clamp(1.25rem, 5vw, 1.7rem)/1.08 system-ui, sans-serif;
+}
+
+.wp-tutorial-close {
+  width: 38px;
+  height: 38px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(24, 33, 51, 0.08);
+  color: #182133;
+  font: 900 1.2rem/1 system-ui, sans-serif;
+}
+
+.wp-tutorial-steps {
+  display: grid;
+  gap: 10px;
+}
+
+.wp-tutorial-step {
+  min-height: 68px;
+  border-radius: 16px;
+  padding: 10px;
+  display: grid;
+  grid-template-columns: 46px 1fr;
+  gap: 10px;
+  align-items: center;
+  background: linear-gradient(135deg, rgba(255, 216, 102, 0.22), rgba(93, 184, 255, 0.15));
+}
+
+.wp-tutorial-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 15px;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.88);
+  font: 900 1.55rem/1 system-ui, sans-serif;
+  box-shadow: inset 0 -4px rgba(0, 0, 0, 0.06);
+}
+
+.wp-tutorial-copy {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.wp-tutorial-copy b {
+  font: 900 1rem/1.08 system-ui, sans-serif;
+}
+
+.wp-tutorial-copy span {
+  color: rgba(24, 33, 51, 0.72);
+  font: 800 0.9rem/1.26 system-ui, sans-serif;
+}
+
+.wp-tutorial-action {
+  min-height: 46px;
+  border: 0;
+  border-radius: 15px;
+  background: #ffd560;
+  color: #182133;
+  font: 900 1rem/1 system-ui, sans-serif;
+  box-shadow: inset 0 -5px rgba(0, 0, 0, 0.08);
+}
+
+@keyframes wp-tutorial-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes wp-tutorial-pop {
+  from { transform: translateY(16px) scale(0.96); opacity: 0; }
+  to { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+@media (max-width: 430px) {
+  .wp-tutorial-button {
+    top: calc(62px + env(safe-area-inset-top));
+    right: calc(10px + env(safe-area-inset-right));
+  }
+
+  .wp-tutorial-card {
+    padding: 15px;
+    border-radius: 19px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wp-tutorial-backdrop,
+  .wp-tutorial-card {
+    animation-duration: 0.01ms !important;
+  }
+}
