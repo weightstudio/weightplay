@@ -1,4 +1,5 @@
 const localeSelect = document.querySelector("#localeSelect");
+const homeLink = document.querySelector("#homeLink");
 const languageLabel = document.querySelector("#languageLabel");
 const titleText = document.querySelector("#titleText");
 const hud = document.querySelector("#hud");
@@ -444,6 +445,12 @@ localeSelect.addEventListener("input", () => {
   renderStaticText();
 });
 window.addEventListener("wonder:locale-change", renderStaticText);
+homeLink.addEventListener("click", (event) => {
+  if (!stageSelect.classList.contains("hidden")) return;
+  event.preventDefault();
+  window.WonderSound?.play("click");
+  showStageSelect();
+});
 stageGrid.addEventListener("click", (event) => {
   const card = event.target.closest("[data-stage]");
   if (!card) return;
