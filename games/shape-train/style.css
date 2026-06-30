@@ -1,0 +1,446 @@
+:root {
+  color-scheme: light;
+  font-family: "Arial Rounded MT Bold", "Noto Sans TC", system-ui, sans-serif;
+  background: #d9f2ff;
+  color: #17314f;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 14% 11%, rgba(255, 228, 111, 0.9), transparent 20rem),
+    linear-gradient(180deg, #bdeaff 0%, #f8f4ce 58%, #8bd87d 100%);
+  overflow-x: hidden;
+}
+
+button,
+select {
+  font: inherit;
+}
+
+.shape-game {
+  width: min(100%, 760px);
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: calc(14px + env(safe-area-inset-top)) 14px calc(24px + env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.topbar {
+  display: grid;
+  grid-template-columns: 48px 1fr auto;
+  gap: 10px;
+  align-items: center;
+}
+
+.home-link,
+.soft-btn,
+.result-card button,
+.result-card a {
+  min-height: 44px;
+  border: 0;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.9);
+  color: #17314f;
+  box-shadow: 0 8px 18px rgba(38, 79, 113, 0.18);
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.home-link {
+  display: grid;
+  place-items: center;
+  font-size: 1.4rem;
+}
+
+.title-block p,
+.title-block h1 {
+  margin: 0;
+}
+
+.title-block p {
+  font-size: 0.74rem;
+  font-weight: 900;
+  color: rgba(23, 49, 79, 0.68);
+}
+
+.title-block h1 {
+  font-size: clamp(1.25rem, 5vw, 2.2rem);
+  line-height: 1.02;
+}
+
+.language-picker {
+  min-width: 112px;
+  display: grid;
+  gap: 4px;
+  font-size: 0.72rem;
+  font-weight: 900;
+  color: rgba(23, 49, 79, 0.7);
+}
+
+.language-picker select {
+  width: 100%;
+  border: 0;
+  border-radius: 12px;
+  padding: 8px 9px;
+  background: rgba(255, 255, 255, 0.9);
+  color: #17314f;
+  font-weight: 900;
+}
+
+.menu-panel,
+.play-panel {
+  flex: 1;
+  display: grid;
+  align-content: start;
+  gap: 14px;
+}
+
+.cover {
+  width: 100%;
+  aspect-ratio: 1.18 / 1;
+  border-radius: 22px;
+  object-fit: cover;
+  object-position: center;
+  box-shadow: 0 18px 38px rgba(38, 79, 113, 0.22);
+}
+
+.menu-copy {
+  display: grid;
+  gap: 4px;
+}
+
+.menu-copy strong {
+  font-size: 1.35rem;
+}
+
+.menu-copy span {
+  color: rgba(23, 49, 79, 0.72);
+  font-weight: 800;
+}
+
+.stage-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.stage-card {
+  min-height: 94px;
+  border: 0;
+  border-radius: 18px;
+  padding: 12px;
+  display: grid;
+  gap: 5px;
+  text-align: left;
+  background: linear-gradient(145deg, #fff5d4, #ffffff);
+  color: #17314f;
+  box-shadow: 0 10px 22px rgba(38, 79, 113, 0.17);
+  font-weight: 900;
+}
+
+.stage-card.locked {
+  filter: grayscale(1);
+  opacity: 0.58;
+}
+
+.stage-card b {
+  font-size: 2rem;
+}
+
+.stage-card span {
+  color: rgba(23, 49, 79, 0.68);
+}
+
+.play-head {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 10px;
+  align-items: center;
+}
+
+.soft-btn {
+  padding: 0 14px;
+}
+
+.progress-line {
+  display: grid;
+  gap: 5px;
+  font-weight: 900;
+}
+
+.progress-line div,
+.loading-card div {
+  height: 12px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.68);
+}
+
+.progress-line i,
+.loading-card i {
+  display: block;
+  width: 0%;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #ffca3a, #55c7ff);
+  transition: width 0.28s ease;
+}
+
+.train-track {
+  min-height: 255px;
+  border-radius: 28px;
+  padding: 18px 12px 28px;
+  display: grid;
+  align-content: end;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.48)),
+    url("../../assets/shape-train-cover.png") center / cover;
+  box-shadow: inset 0 0 0 1000px rgba(255, 255, 255, 0.34), 0 18px 34px rgba(38, 79, 113, 0.2);
+}
+
+.car-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  align-items: end;
+}
+
+.train-car {
+  height: clamp(94px, 24vw, 132px);
+  border: 4px solid rgba(255, 255, 255, 0.85);
+  border-radius: 20px 20px 14px 14px;
+  display: grid;
+  place-items: center;
+  position: relative;
+  box-shadow: 0 12px 22px rgba(27, 75, 102, 0.2);
+  touch-action: manipulation;
+}
+
+.train-car::before,
+.train-car::after {
+  content: "";
+  position: absolute;
+  bottom: -14px;
+  width: 19px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #23364d;
+  border: 4px solid #fff;
+}
+
+.train-car::before {
+  left: 14px;
+}
+
+.train-car::after {
+  right: 14px;
+}
+
+.train-car span {
+  display: grid;
+  place-items: center;
+  width: 58px;
+  aspect-ratio: 1;
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 2.35rem;
+  filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.18));
+}
+
+.train-car.target {
+  animation: glow 0.65s ease infinite alternate;
+}
+
+.train-car.correct {
+  animation: pop 0.35s ease;
+}
+
+.passenger-area {
+  min-height: 182px;
+  border-radius: 24px;
+  padding: 14px;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.62);
+}
+
+.passenger-area p {
+  min-height: 1.35em;
+  margin: 0;
+  color: rgba(23, 49, 79, 0.76);
+  font-weight: 900;
+}
+
+.passenger {
+  width: min(42vw, 150px);
+  aspect-ratio: 1;
+  border: 6px solid rgba(255, 255, 255, 0.92);
+  border-radius: 32px;
+  display: grid;
+  place-items: center;
+  background: #fff;
+  box-shadow: 0 16px 28px rgba(38, 79, 113, 0.22);
+  touch-action: none;
+}
+
+.passenger span {
+  display: block;
+  width: 76%;
+  aspect-ratio: 1;
+}
+
+.shape-circle {
+  border-radius: 50%;
+}
+
+.shape-square {
+  border-radius: 18%;
+}
+
+.shape-triangle {
+  clip-path: polygon(50% 5%, 95% 92%, 5% 92%);
+}
+
+.shape-star {
+  clip-path: polygon(50% 0%, 62% 34%, 98% 35%, 69% 56%, 79% 91%, 50% 70%, 21% 91%, 31% 56%, 2% 35%, 38% 34%);
+}
+
+.shape-diamond {
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+}
+
+.shape-heart {
+  clip-path: path("M 50 88 C 20 64 5 48 12 28 C 18 10 40 10 50 26 C 60 10 82 10 88 28 C 95 48 80 64 50 88 Z");
+}
+
+.feedback {
+  min-height: 28px;
+  text-align: center;
+  font-weight: 900;
+  color: #17314f;
+}
+
+.wrong {
+  animation: shake 0.28s ease;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.loading-panel,
+.result-panel {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(24, 48, 72, 0.44);
+  backdrop-filter: blur(8px);
+}
+
+.loading-card,
+.result-card {
+  width: min(92vw, 420px);
+  border-radius: 24px;
+  padding: 22px;
+  display: grid;
+  gap: 12px;
+  background: #fffdf2;
+  color: #17314f;
+  text-align: center;
+  box-shadow: 0 24px 50px rgba(18, 48, 70, 0.28);
+  animation: cardIn 0.28s ease both;
+}
+
+.result-card strong {
+  font-size: 1.65rem;
+}
+
+.stars {
+  color: #ffb300;
+  font-size: 2.1rem;
+}
+
+.result-card button,
+.result-card a {
+  display: grid;
+  place-items: center;
+  padding: 10px 14px;
+  background: #ffdf70;
+}
+
+.result-card button:nth-of-type(2),
+.result-card button:nth-of-type(3) {
+  background: rgba(255, 255, 255, 0.94);
+}
+
+@keyframes cardIn {
+  from { transform: translateY(16px) scale(0.96); opacity: 0; }
+  to { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+@keyframes pop {
+  50% { transform: scale(1.06); }
+}
+
+@keyframes glow {
+  from { transform: translateY(0); }
+  to { transform: translateY(-5px); }
+}
+
+@keyframes shake {
+  25% { transform: translateX(-6px); }
+  75% { transform: translateX(6px); }
+}
+
+@media (max-width: 430px) {
+  .shape-game {
+    padding-inline: 10px;
+    gap: 10px;
+  }
+
+  .topbar {
+    grid-template-columns: 44px 1fr 104px;
+  }
+
+  .cover {
+    aspect-ratio: 1.04 / 1;
+  }
+
+  .train-track {
+    min-height: 228px;
+  }
+
+  .car-grid {
+    gap: 6px;
+  }
+
+  .train-car {
+    border-width: 3px;
+  }
+
+  .train-car span {
+    width: 46px;
+    font-size: 2rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

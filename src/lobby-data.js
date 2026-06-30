@@ -208,5 +208,29 @@ window.WONDER_LOBBY = {
         hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>",
       },
     },
+    {
+      id: "shape-train",
+      title: { en: "Shape Train", "zh-Hant": "形狀小火車" },
+      status: "playable",
+      statusText: { en: "Playable", "zh-Hant": "可遊玩" },
+      type: { en: "Shape Match", "zh-Hant": "形狀配對" },
+      categories: ["Education", "Puzzle", "Family"],
+      ages: ["3", "family"],
+      ageLabel: { en: "3+", "zh-Hant": "3+" },
+      href: "games/shape-train/index.html",
+      description: {
+        en: "Match colorful shape passengers to the right train cars across gentle preschool stages.",
+        "zh-Hant": "把彩色形狀朋友送到相同形狀的車廂。",
+      },
+      meta: {
+        en: ["6 Stages", "Shape Match", "3+"],
+        "zh-Hant": ["6 關", "形狀配對", "3+"],
+      },
+      art: {
+        kind: "image",
+        background: "assets/shape-train-cover.png",
+        hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>",
+      },
+    },
   ],
 };
