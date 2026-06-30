@@ -169,7 +169,7 @@
     return Math.floor(Math.random() * (poolMax + 1));
   }
 
-  function resetGame(showMenu = false) {
+  function resetGame(showMenu = false, source = "menu") {
     initPhysicsWorld();
     fruitsOnBoard = [];
     currentLevel = randomNextLevel();
@@ -184,6 +184,9 @@
     resultPanel.classList.add("hidden");
     menuPanel.classList.toggle("hidden", !showMenu);
     updateHud();
+    if (!showMenu) {
+      window.WonderAnalytics?.track?.("game_start", { game_id: GAME_ID, source });
+    }
   }
 
   function updateHud() {
@@ -387,6 +390,7 @@
     resultTitle.textContent = t("gameOver");
     resultText.textContent = t("result", { score, best: bestScore });
     resultPanel.classList.remove("hidden");
+    window.WonderAnalytics?.track?.("game_complete", { game_id: GAME_ID, score, best_score: bestScore, new_best: newBest, cleared: false });
     window.WonderAnalytics?.track?.("score_game_over", { game_id: GAME_ID, score, best_score: bestScore });
     updateHud();
   }
@@ -615,12 +619,18 @@
   });
 
   dropBtn.addEventListener("click", dropFruit);
-  restartBtn.addEventListener("click", () => resetGame(false));
+  restartBtn.addEventListener("click", () => {
+    window.WonderAnalytics?.track?.("game_restart", { game_id: GAME_ID, score, source: "button" });
+    resetGame(false, "restart");
+  });
   startBtn.addEventListener("click", () => {
     window.WonderSound?.play?.("start");
-    resetGame(false);
+    resetGame(false, "start");
   });
-  playAgainBtn.addEventListener("click", () => resetGame(false));
+  playAgainBtn.addEventListener("click", () => {
+    window.WonderAnalytics?.track?.("game_restart", { game_id: GAME_ID, score, source: "result" });
+    resetGame(false, "result");
+  });
 
   localeSelect.value = locale();
   localeSelect.addEventListener("change", () => setLocale(localeSelect.value));
