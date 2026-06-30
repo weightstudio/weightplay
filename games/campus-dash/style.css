@@ -278,6 +278,12 @@ canvas {
   display: none !important;
 }
 
+.hud.hidden {
+  display: grid !important;
+  visibility: hidden;
+  pointer-events: none;
+}
+
 @keyframes dash-panel-pop {
   from {
     opacity: 0;
