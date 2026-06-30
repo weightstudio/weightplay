@@ -22,7 +22,8 @@ body {
 
 body {
   display: grid;
-  place-items: center;
+  align-items: start;
+  justify-items: center;
   background:
     radial-gradient(circle at 18% 10%, rgba(254, 240, 138, 0.45), transparent 32%),
     radial-gradient(circle at 84% 18%, rgba(125, 211, 252, 0.34), transparent 34%),
@@ -38,17 +39,20 @@ a {
 .dash-game {
   position: relative;
   display: grid;
-  grid-template-rows: 62px 58px minmax(0, 1fr);
-  gap: 9px;
+  grid-template-rows: 68px 58px minmax(0, 1fr);
+  gap: 10px;
   width: min(100vw, 520px);
-  height: min(100dvh, 920px);
-  padding: max(10px, env(safe-area-inset-top)) 12px calc(12px + env(safe-area-inset-bottom));
+  height: min(100svh, 920px);
+  min-height: 100svh;
+  padding: max(28px, calc(env(safe-area-inset-top) + 18px)) 12px calc(12px + env(safe-area-inset-bottom));
   overflow: hidden;
 }
 
 .topbar {
+  position: relative;
+  z-index: 25;
   display: grid;
-  grid-template-columns: 50px 1fr 128px;
+  grid-template-columns: 52px minmax(0, 1fr) minmax(132px, 148px);
   gap: 9px;
   align-items: center;
   min-width: 0;
@@ -69,7 +73,8 @@ a {
 .home-link {
   display: grid;
   place-items: center;
-  height: 50px;
+  min-height: 52px;
+  height: 52px;
   color: #f8fafc;
   font-size: 28px;
   font-weight: 1000;
@@ -102,6 +107,7 @@ a {
 .language-picker {
   display: grid;
   gap: 4px;
+  min-height: 52px;
   padding: 7px;
 }
 
@@ -319,21 +325,27 @@ canvas {
 
 @media (max-width: 420px) {
   .dash-game {
-    grid-template-rows: 56px 52px minmax(0, 1fr);
+    grid-template-rows: 62px 52px minmax(0, 1fr);
     gap: 8px;
+    padding-top: max(30px, calc(env(safe-area-inset-top) + 20px));
     padding-right: 9px;
     padding-left: 9px;
   }
 
   .topbar {
-    grid-template-columns: 44px 1fr 112px;
+    grid-template-columns: 48px minmax(0, 1fr) 126px;
   }
 
   .home-link {
-    height: 44px;
+    min-height: 48px;
+    height: 48px;
   }
 
   .language-picker span {
     display: none;
+  }
+
+  .language-picker {
+    min-height: 48px;
   }
 }
