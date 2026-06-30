@@ -1,24 +1,24 @@
 {
-  "updatedAt": "2026-06-30T14:02:00.417Z",
+  "updatedAt": "2026-06-30T17:49:32.469Z",
   "source": "ga4",
   "windowDays": 7,
   "totals": {
-    "plays7d": 0,
-    "playsTotal": 0,
-    "users7d": 0
+    "plays7d": 13,
+    "playsTotal": 13,
+    "users7d": 6
   },
   "games": {
     "wonder-crash": {
-      "plays7d": 0,
-      "playsTotal": 0,
-      "users7d": 0,
-      "rank7d": null
+      "plays7d": 3,
+      "playsTotal": 3,
+      "users7d": 1,
+      "rank7d": 2
     },
     "color-lunchbox": {
-      "plays7d": 0,
-      "playsTotal": 0,
-      "users7d": 0,
-      "rank7d": null
+      "plays7d": 1,
+      "playsTotal": 1,
+      "users7d": 1,
+      "rank7d": 5
     },
     "star-memory": {
       "plays7d": 0,
@@ -39,16 +39,16 @@
       "rank7d": null
     },
     "fruit-merge": {
-      "plays7d": 0,
-      "playsTotal": 0,
-      "users7d": 0,
-      "rank7d": null
+      "plays7d": 5,
+      "playsTotal": 5,
+      "users7d": 2,
+      "rank7d": 1
     },
     "garden-tiles": {
-      "plays7d": 0,
-      "playsTotal": 0,
-      "users7d": 0,
-      "rank7d": null
+      "plays7d": 2,
+      "playsTotal": 2,
+      "users7d": 1,
+      "rank7d": 4
     },
     "animal-rescue": {
       "plays7d": 0,
@@ -57,10 +57,10 @@
       "rank7d": null
     },
     "animal-quiz": {
-      "plays7d": 0,
-      "playsTotal": 0,
-      "users7d": 0,
-      "rank7d": null
+      "plays7d": 2,
+      "playsTotal": 2,
+      "users7d": 1,
+      "rank7d": 3
     },
     "zoo-helper-day": {
       "plays7d": 0,
