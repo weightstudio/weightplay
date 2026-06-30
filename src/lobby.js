@@ -291,13 +291,14 @@ function renderDailyReward() {
     .map((coins, index) => {
       const isCurrent = index === reward.dayIndex;
       const isPast = reward.claimedToday ? index <= reward.dayIndex : index < reward.dayIndex;
-      const className = ["daily-day", isCurrent ? "current" : "", isPast ? "claimed" : ""].filter(Boolean).join(" ");
+      const canClaim = isCurrent && !reward.claimedToday;
+      const className = ["daily-day", isCurrent ? "current" : "", isPast ? "claimed" : "", canClaim ? "claimable" : ""].filter(Boolean).join(" ");
       return `
-        <div class="${className}">
+        <button class="${className}" type="button" ${canClaim ? 'data-daily-claim="true"' : "disabled"}>
           <span>${i18n.t("daily.day", { day: index + 1 })}</span>
           <b>+${coins}</b>
           <small>${isCurrent ? claimLabel : i18n.t(isPast ? "daily.done" : "daily.next")}</small>
-        </div>
+        </button>
       `;
     })
     .join("");
@@ -308,14 +309,8 @@ function renderDailyReward() {
       <small>${i18n.t("daily.desc", { count: reward.streak, day: reward.dayIndex + 1, diamonds: reward.reward })}</small>
     </div>
     <div class="daily-track">${rewardCards}</div>
-    ${reward.claimedToday ? "" : `
-      <button class="daily-claim" type="button">
-        <span>${claimLabel}</span>
-        <b>+${reward.reward}</b>
-      </button>
-    `}
   `;
-  dailyReward.querySelector("button")?.addEventListener("click", claimDailyReward);
+  dailyReward.querySelector("[data-daily-claim]")?.addEventListener("click", claimDailyReward);
 }
 
 function claimDailyReward() {

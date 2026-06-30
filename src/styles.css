@@ -223,7 +223,7 @@ body.lobby-page {
 
 .daily-reward {
   display: grid;
-  grid-template-columns: minmax(190px, 0.7fr) minmax(0, 1.6fr) minmax(108px, auto);
+  grid-template-columns: minmax(190px, 0.7fr) minmax(0, 1.6fr);
   gap: 10px;
   align-items: center;
   min-height: 98px;
@@ -279,7 +279,13 @@ body.lobby-page {
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 8px;
   background: rgba(10, 15, 23, 0.48);
+  color: inherit;
+  font: inherit;
   text-align: center;
+}
+
+.daily-day:not(:disabled) {
+  cursor: pointer;
 }
 
 .daily-day span,
@@ -302,38 +308,22 @@ body.lobby-page {
   box-shadow: 0 0 0 2px rgba(95, 214, 255, 0.12) inset;
 }
 
+.daily-day.claimable {
+  border-color: rgba(255, 207, 99, 0.96);
+  background: linear-gradient(180deg, rgba(255, 207, 99, 0.36), rgba(95, 214, 255, 0.16));
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.2), 0 0 0 2px rgba(255, 207, 99, 0.14) inset;
+}
+
+.daily-day.claimable:active {
+  transform: translateY(2px);
+}
+
 .daily-day.claimed:not(.current) {
   opacity: 0.72;
 }
 
 .daily-day.claimed small {
   color: #7dff8a;
-}
-
-.daily-claim {
-  display: grid;
-  place-items: center;
-  min-width: 108px;
-  min-height: 56px;
-  padding: 8px 12px;
-  border: 0;
-  border-radius: 8px;
-  background: #ffcf63;
-  color: #241a08;
-  font: inherit;
-  font-weight: 1000;
-  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.22);
-}
-
-.daily-claim b {
-  font-size: 22px;
-  line-height: 1;
-}
-
-.daily-claim:disabled {
-  background: rgba(255, 255, 255, 0.18);
-  color: rgba(255, 255, 255, 0.62);
-  box-shadow: none;
 }
 
 .age-filter {
@@ -1111,10 +1101,6 @@ body.lobby-page {
 
   .daily-day {
     min-height: 58px;
-  }
-
-  .daily-claim {
-    width: 100%;
   }
 
   .game-card {
