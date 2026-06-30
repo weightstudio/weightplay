@@ -39,8 +39,8 @@
       score: "Score",
       time: "Time",
       combo: "Combo",
-      startTitle: "Swipe. Dodge. Score.",
-      startText: "Move left and right, collect stars, and survive 60 seconds.",
+      startTitle: "Pick a lane. Dash fast.",
+      startText: "Tap the left or right side, or swipe, to dodge between the three lanes.",
       start: "Start",
       resultTitle: "Run Complete!",
       resultText: "Score {score}  Best {best}",
@@ -56,16 +56,16 @@
       score: "分數",
       time: "時間",
       combo: "連擊",
-      startTitle: "滑動、閃避、拿高分！",
-      startText: "左右移動收集星星，閃開障礙，撐過 60 秒。",
+      startTitle: "選好跑道，閃電衝刺",
+      startText: "點左邊或右邊，也可以滑動，在三條跑道間閃避障礙。",
       start: "開始",
       resultTitle: "跑完了！",
       resultText: "分數 {score}  最高 {best}",
       again: "再跑一次",
       lobby: "回大廳",
       loading: "載入中",
-      leaderboard: "本機前五名",
-      emptyRank: "還沒有紀錄",
+      leaderboard: "本機前 5 名",
+      emptyRank: "尚無紀錄",
     },
   };
 
@@ -188,8 +188,9 @@
 
   function spawnObstacle() {
     const lane = Math.floor(Math.random() * 3);
-    const kind = Math.random() > 0.5 ? "bag" : "cone";
-    state.obstacles.push({ lane, x: lanes[lane], y: -80, size: kind === "bag" ? 72 : 82, kind });
+    const kinds = ["bag", "cone", "books", "puddle"];
+    const kind = kinds[Math.floor(Math.random() * kinds.length)];
+    state.obstacles.push({ lane, x: lanes[lane], y: -90, size: 82, kind });
   }
 
   function spawnCoin() {
@@ -290,130 +291,171 @@
 
   function drawBackground() {
     const sky = ctx.createLinearGradient(0, 0, 0, H);
-    sky.addColorStop(0, "#0f172a");
-    sky.addColorStop(0.34, "#1e3a5f");
-    sky.addColorStop(0.62, "#26324a");
-    sky.addColorStop(1, "#111827");
+    sky.addColorStop(0, "#7dd3fc");
+    sky.addColorStop(0.34, "#38bdf8");
+    sky.addColorStop(0.66, "#bbf7d0");
+    sky.addColorStop(1, "#16a34a");
     ctx.fillStyle = sky;
     ctx.fillRect(0, 0, W, H);
 
-    const glow = ctx.createRadialGradient(W * 0.52, 178, 20, W * 0.52, 178, 340);
-    glow.addColorStop(0, "rgba(250, 204, 21, 0.45)");
-    glow.addColorStop(0.45, "rgba(34, 211, 238, 0.12)");
-    glow.addColorStop(1, "rgba(15, 23, 42, 0)");
-    ctx.fillStyle = glow;
-    ctx.fillRect(0, 0, W, H);
+    const sun = ctx.createRadialGradient(W * 0.78, 96, 16, W * 0.78, 96, 128);
+    sun.addColorStop(0, "rgba(254, 249, 195, 0.95)");
+    sun.addColorStop(0.48, "rgba(250, 204, 21, 0.36)");
+    sun.addColorStop(1, "rgba(250, 204, 21, 0)");
+    ctx.fillStyle = sun;
+    ctx.fillRect(0, 0, W, 260);
 
-    drawCampusBlock(36, 142, 150, 180, "#1d4ed8", "#60a5fa");
-    drawCampusBlock(506, 126, 172, 205, "#7c2d12", "#fb923c");
-    drawCampusBlock(206, 188, 90, 114, "#334155", "#94a3b8");
-    drawCampusBlock(418, 184, 86, 126, "#164e63", "#67e8f9");
+    drawCloud(98, 88, 1.05);
+    drawCloud(420, 64, 0.86);
+    drawCloud(590, 152, 0.74);
 
-    ctx.strokeStyle = "rgba(125, 211, 252, 0.3)";
-    ctx.lineWidth = 2;
-    for (let i = 0; i < 16; i += 1) {
-      const y = 60 + i * 34 + ((60 - state.timeLeft) * 10) % 34;
-      ctx.beginPath();
-      ctx.moveTo(i % 2 ? 0 : W, y);
-      ctx.lineTo(i % 2 ? 145 : W - 145, y + 58);
-      ctx.stroke();
+    drawCampusBlock(42, 164, 172, 152, "#f97316", "#fed7aa");
+    drawCampusBlock(506, 146, 164, 168, "#2563eb", "#bfdbfe");
+    drawCampusBlock(242, 128, 238, 192, "#f8fafc", "#fde68a");
+
+    ctx.fillStyle = "#14532d";
+    ctx.fillRect(0, 320, W, 90);
+
+    for (const tree of [
+      [38, 286, 0.92],
+      [164, 302, 0.74],
+      [548, 286, 0.86],
+      [662, 310, 0.7],
+    ]) {
+      drawTree(tree[0], tree[1], tree[2]);
     }
 
-    const horizon = ctx.createLinearGradient(0, 270, 0, 390);
-    horizon.addColorStop(0, "rgba(15, 23, 42, 0)");
-    horizon.addColorStop(1, "rgba(15, 23, 42, 0.86)");
-    ctx.fillStyle = horizon;
-    ctx.fillRect(0, 260, W, 150);
+    const glow = ctx.createRadialGradient(W * 0.5, H * 0.74, 30, W * 0.5, H * 0.74, 420);
+    glow.addColorStop(0, "rgba(255, 255, 255, 0.2)");
+    glow.addColorStop(1, "rgba(255, 255, 255, 0)");
+    ctx.fillStyle = glow;
+    ctx.fillRect(0, 0, W, H);
   }
 
   function drawLanes() {
-    const road = ctx.createLinearGradient(0, 280, 0, H);
-    road.addColorStop(0, "#26324a");
-    road.addColorStop(0.55, "#1f2937");
-    road.addColorStop(1, "#111827");
-    ctx.fillStyle = road;
-    ctx.beginPath();
-    ctx.moveTo(W * 0.14, H);
-    ctx.lineTo(W * 0.38, 270);
-    ctx.lineTo(W * 0.62, 270);
-    ctx.lineTo(W * 0.86, H);
-    ctx.fill();
+    const topY = 294;
+    const bottomY = H + 18;
+    const top = [W * 0.31, W * 0.44, W * 0.56, W * 0.69];
+    const bottom = [W * 0.06, W * 0.36, W * 0.64, W * 0.94];
+    const laneColors = ["#38bdf8", "#f97316", "#22c55e"];
 
-    const edge = ctx.createLinearGradient(0, 300, 0, H);
-    edge.addColorStop(0, "rgba(34, 211, 238, 0.35)");
-    edge.addColorStop(1, "rgba(250, 204, 21, 0.8)");
-    ctx.strokeStyle = edge;
-    ctx.lineWidth = 5;
-    ctx.beginPath();
-    ctx.moveTo(W * 0.14, H);
-    ctx.lineTo(W * 0.38, 270);
-    ctx.moveTo(W * 0.86, H);
-    ctx.lineTo(W * 0.62, 270);
-    ctx.stroke();
-
-    ctx.strokeStyle = "rgba(248, 250, 252, 0.72)";
-    ctx.lineWidth = 8;
-    ctx.setLineDash([32, 38]);
-    ctx.lineDashOffset = -((60 - state.timeLeft) * state.speed * 0.12);
-    for (const pair of [
-      [W * 0.42, W * 0.31],
-      [W * 0.58, W * 0.69],
-    ]) {
+    for (let lane = 0; lane < 3; lane += 1) {
+      const fill = ctx.createLinearGradient(0, topY, 0, H);
+      fill.addColorStop(0, laneColors[lane]);
+      fill.addColorStop(0.58, lane === state.targetLane ? "#fef08a" : laneColors[lane]);
+      fill.addColorStop(1, laneColors[lane]);
+      ctx.globalAlpha = lane === state.targetLane ? 0.92 : 0.68;
+      ctx.fillStyle = fill;
       ctx.beginPath();
-      ctx.moveTo(pair[0], 282);
-      ctx.lineTo(pair[1], H);
+      ctx.moveTo(top[lane], topY);
+      ctx.lineTo(top[lane + 1], topY);
+      ctx.lineTo(bottom[lane + 1], bottomY);
+      ctx.lineTo(bottom[lane], bottomY);
+      ctx.closePath();
+      ctx.fill();
+      ctx.globalAlpha = 1;
+    }
+
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.95)";
+    ctx.lineWidth = 7;
+    ctx.lineCap = "round";
+    for (let i = 0; i < 4; i += 1) {
+      ctx.beginPath();
+      ctx.moveTo(top[i], topY);
+      ctx.lineTo(bottom[i], bottomY);
+      ctx.stroke();
+    }
+
+    ctx.setLineDash([26, 34]);
+    ctx.lineDashOffset = -((60 - state.timeLeft) * state.speed * 0.16);
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.62)";
+    ctx.lineWidth = 5;
+    for (let lane = 0; lane < 3; lane += 1) {
+      ctx.beginPath();
+      ctx.moveTo((top[lane] + top[lane + 1]) / 2, topY + 22);
+      ctx.lineTo((bottom[lane] + bottom[lane + 1]) / 2, H);
       ctx.stroke();
     }
     ctx.setLineDash([]);
     ctx.lineDashOffset = 0;
 
-    ctx.strokeStyle = "rgba(34, 211, 238, 0.16)";
-    ctx.lineWidth = 2;
-    for (let y = 330; y < H; y += 78) {
-      const width = (y - 260) * 0.52;
+    for (let y = 378; y < H; y += 118) {
+      const ratio = (y - topY) / (H - topY);
+      const left = lerp(top[0], bottom[0], ratio);
+      const right = lerp(top[3], bottom[3], ratio);
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.26)";
+      ctx.lineWidth = 3;
       ctx.beginPath();
-      ctx.moveTo(W / 2 - width, y);
-      ctx.lineTo(W / 2 + width, y);
+      ctx.moveTo(left, y);
+      ctx.lineTo(right, y);
       ctx.stroke();
     }
+
+    drawLaneHint();
   }
 
   function drawHero() {
     ctx.save();
     ctx.translate(state.x, state.y);
-    ctx.shadowBlur = 24;
-    ctx.shadowColor = "rgba(34, 211, 238, 0.55)";
+    ctx.shadowBlur = 18;
+    ctx.shadowColor = "rgba(14, 165, 233, 0.42)";
 
     const lean = (state.targetLane - 1) * 0.08;
     ctx.rotate(lean);
     ctx.fillStyle = "rgba(0, 0, 0, 0.28)";
     ctx.beginPath();
-    ctx.ellipse(0, 122, 66, 16, 0, 0, Math.PI * 2);
+    ctx.ellipse(0, 125, 68, 16, 0, 0, Math.PI * 2);
     ctx.fill();
 
-    const body = ctx.createLinearGradient(-45, -30, 52, 86);
-    body.addColorStop(0, "#22d3ee");
-    body.addColorStop(0.58, "#2563eb");
-    body.addColorStop(1, "#111827");
-    ctx.fillStyle = body;
-    roundRect(-42, -20, 84, 92, 22);
-    ctx.fill();
-
-    ctx.strokeStyle = "#facc15";
-    ctx.lineWidth = 8;
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.92)";
+    ctx.lineWidth = 12;
+    ctx.lineJoin = "round";
     ctx.beginPath();
-    ctx.moveTo(-20, -8);
-    ctx.lineTo(22, 58);
+    ctx.moveTo(-31, 20);
+    ctx.lineTo(-76, 56);
+    ctx.moveTo(34, 22);
+    ctx.lineTo(82, 2);
+    ctx.moveTo(-22, 72);
+    ctx.lineTo(-56, 128);
+    ctx.moveTo(25, 72);
+    ctx.lineTo(64, 116);
+    ctx.stroke();
+
+    const body = ctx.createLinearGradient(-48, -28, 48, 82);
+    body.addColorStop(0, "#fb7185");
+    body.addColorStop(0.56, "#ef4444");
+    body.addColorStop(1, "#b91c1c");
+    ctx.fillStyle = body;
+    roundRect(-45, -18, 90, 96, 24);
+    ctx.fill();
+
+    ctx.fillStyle = "#0ea5e9";
+    roundRect(-58, -5, 28, 78, 12);
+    ctx.fill();
+    roundRect(31, -5, 28, 78, 12);
+    ctx.fill();
+
+    ctx.fillStyle = "#fef3c7";
+    roundRect(-16, -10, 32, 78, 12);
+    ctx.fill();
+    ctx.strokeStyle = "#facc15";
+    ctx.lineWidth = 5;
+    ctx.beginPath();
+    ctx.moveTo(-16, 0);
+    ctx.lineTo(20, 54);
     ctx.stroke();
 
     ctx.fillStyle = "#f2c29b";
     ctx.beginPath();
-    ctx.arc(0, -64, 38, 0, Math.PI * 2);
+    ctx.arc(0, -66, 40, 0, Math.PI * 2);
     ctx.fill();
 
-    ctx.fillStyle = "#0f172a";
+    ctx.fillStyle = "#1f2937";
     ctx.beginPath();
-    ctx.arc(-8, -78, 36, Math.PI, Math.PI * 2);
+    ctx.arc(-6, -78, 38, Math.PI, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = "#111827";
+    roundRect(-33, -88, 66, 19, 9);
     ctx.fill();
 
     ctx.fillStyle = "#111827";
@@ -422,40 +464,40 @@
     ctx.arc(16, -64, 5, 0, Math.PI * 2);
     ctx.fill();
 
-    ctx.shadowBlur = 0;
+    ctx.strokeStyle = "#1d4ed8";
+    ctx.lineWidth = 13;
+    ctx.beginPath();
+    ctx.moveTo(-31, 20);
+    ctx.lineTo(-76, 56);
+    ctx.moveTo(34, 22);
+    ctx.lineTo(82, 2);
+    ctx.stroke();
+
     ctx.strokeStyle = "#0f172a";
-    ctx.lineWidth = 14;
+    ctx.lineWidth = 16;
     ctx.beginPath();
-    ctx.moveTo(-34, 22);
-    ctx.lineTo(-78, 54);
-    ctx.moveTo(34, 24);
-    ctx.lineTo(78, 2);
+    ctx.moveTo(-22, 72);
+    ctx.lineTo(-56, 128);
+    ctx.moveTo(25, 72);
+    ctx.lineTo(64, 116);
     ctx.stroke();
 
-    ctx.strokeStyle = "#f8fafc";
-    ctx.lineWidth = 15;
+    ctx.strokeStyle = "#f97316";
+    ctx.lineWidth = 12;
     ctx.beginPath();
-    ctx.moveTo(-23, 64);
-    ctx.lineTo(-54, 126);
-    ctx.moveTo(25, 64);
-    ctx.lineTo(58, 112);
+    ctx.moveTo(-74, 132);
+    ctx.lineTo(-24, 132);
+    ctx.moveTo(48, 121);
+    ctx.lineTo(91, 121);
     ctx.stroke();
 
-    ctx.strokeStyle = "#fb923c";
-    ctx.lineWidth = 9;
-    ctx.beginPath();
-    ctx.moveTo(-72, 132);
-    ctx.lineTo(-28, 132);
-    ctx.moveTo(44, 118);
-    ctx.lineTo(84, 118);
-    ctx.stroke();
-
-    ctx.strokeStyle = "rgba(34, 211, 238, 0.42)";
+    ctx.shadowBlur = 0;
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.7)";
     ctx.lineWidth = 5;
     for (let i = 0; i < 4; i += 1) {
       ctx.beginPath();
-      ctx.moveTo(-74 - i * 22, 20 + i * 20);
-      ctx.lineTo(-138 - i * 18, 34 + i * 18);
+      ctx.moveTo(-78 - i * 21, 26 + i * 18);
+      ctx.lineTo(-134 - i * 16, 40 + i * 16);
       ctx.stroke();
     }
     ctx.restore();
@@ -466,36 +508,77 @@
     ctx.translate(item.x, item.y);
     const scale = Math.max(0.72, Math.min(1.35, 0.72 + item.y / H * 0.52));
     ctx.scale(scale, scale);
-    ctx.shadowBlur = 18;
+    ctx.shadowBlur = 16;
     ctx.shadowColor = "rgba(0, 0, 0, 0.35)";
     if (item.kind === "cone") {
-      const barrier = ctx.createLinearGradient(-58, -34, 58, 44);
-      barrier.addColorStop(0, "#f8fafc");
-      barrier.addColorStop(0.42, "#f97316");
-      barrier.addColorStop(0.7, "#f8fafc");
-      barrier.addColorStop(1, "#ef4444");
-      ctx.fillStyle = barrier;
-      roundRect(-62, -30, 124, 60, 10);
+      ctx.fillStyle = "#f97316";
+      ctx.beginPath();
+      ctx.moveTo(0, -64);
+      ctx.lineTo(54, 52);
+      ctx.lineTo(-54, 52);
+      ctx.closePath();
       ctx.fill();
-      ctx.fillStyle = "#111827";
-      roundRect(-56, 30, 24, 26, 5);
+      ctx.fillStyle = "#ffffff";
+      roundRect(-34, -18, 68, 16, 5);
       ctx.fill();
-      roundRect(32, 30, 24, 26, 5);
+      roundRect(-45, 23, 90, 17, 5);
+      ctx.fill();
+      ctx.fillStyle = "#7c2d12";
+      roundRect(-66, 50, 132, 18, 8);
       ctx.fill();
     } else {
-      const bag = ctx.createLinearGradient(-46, -54, 52, 54);
-      bag.addColorStop(0, "#a855f7");
-      bag.addColorStop(0.52, "#7c3aed");
-      bag.addColorStop(1, "#111827");
-      ctx.fillStyle = bag;
-      roundRect(-48, -38, 96, 82, 18);
-      ctx.fill();
-      ctx.strokeStyle = "#facc15";
-      ctx.lineWidth = 6;
-      ctx.strokeRect(-25, -58, 50, 28);
-      ctx.fillStyle = "rgba(248, 250, 252, 0.2)";
-      roundRect(-28, 4, 56, 26, 8);
-      ctx.fill();
+      if (item.kind === "bag") {
+        const bag = ctx.createLinearGradient(-46, -54, 52, 54);
+        bag.addColorStop(0, "#a855f7");
+        bag.addColorStop(0.52, "#7c3aed");
+        bag.addColorStop(1, "#4c1d95");
+        ctx.fillStyle = bag;
+        roundRect(-50, -38, 100, 88, 20);
+        ctx.fill();
+        ctx.strokeStyle = "#facc15";
+        ctx.lineWidth = 6;
+        ctx.beginPath();
+        ctx.arc(0, -40, 24, Math.PI, Math.PI * 2);
+        ctx.stroke();
+        ctx.fillStyle = "rgba(248, 250, 252, 0.28)";
+        roundRect(-30, 6, 60, 28, 9);
+        ctx.fill();
+      } else if (item.kind === "books") {
+        ctx.fillStyle = "#fef3c7";
+        roundRect(-54, -45, 108, 28, 8);
+        ctx.fill();
+        ctx.fillStyle = "#22c55e";
+        roundRect(-46, -18, 96, 30, 8);
+        ctx.fill();
+        ctx.fillStyle = "#ef4444";
+        roundRect(-58, 10, 110, 32, 8);
+        ctx.fill();
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.75)";
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.moveTo(-28, -30);
+        ctx.lineTo(34, -30);
+        ctx.moveTo(-22, -2);
+        ctx.lineTo(38, -2);
+        ctx.moveTo(-34, 26);
+        ctx.lineTo(28, 26);
+        ctx.stroke();
+      } else {
+        const puddle = ctx.createRadialGradient(-8, -8, 10, 0, 0, 70);
+        puddle.addColorStop(0, "#e0f2fe");
+        puddle.addColorStop(0.56, "#38bdf8");
+        puddle.addColorStop(1, "#0369a1");
+        ctx.fillStyle = puddle;
+        ctx.beginPath();
+        ctx.ellipse(0, 8, 70, 38, -0.12, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.86)";
+        ctx.lineWidth = 5;
+        ctx.beginPath();
+        ctx.arc(-24, -2, 12, 0.1, Math.PI * 1.1);
+        ctx.arc(24, 14, 14, Math.PI * 1.1, Math.PI * 1.9);
+        ctx.stroke();
+      }
     }
     ctx.shadowBlur = 0;
     ctx.restore();
@@ -546,23 +629,91 @@
   function drawCampusBlock(x, y, w, h, base, light) {
     const facade = ctx.createLinearGradient(x, y, x + w, y + h);
     facade.addColorStop(0, base);
-    facade.addColorStop(1, "#0f172a");
+    facade.addColorStop(1, light);
     ctx.fillStyle = facade;
     roundRect(x, y, w, h, 10);
     ctx.fill();
 
-      ctx.fillStyle = "rgba(248, 250, 252, 0.12)";
-      for (let row = y + 18; row < y + h - 14; row += 28) {
-        for (let col = x + 14; col < x + w - 14; col += 30) {
-          ctx.fillStyle = ((row + col) / 2) % 3 < 1.5 ? light : "rgba(148, 163, 184, 0.24)";
-          roundRect(col, row, 16, 12, 3);
-          ctx.fill();
-        }
+    ctx.fillStyle = "rgba(255, 255, 255, 0.78)";
+    for (let row = y + 24; row < y + h - 18; row += 32) {
+      for (let col = x + 18; col < x + w - 16; col += 34) {
+        roundRect(col, row, 18, 14, 4);
+        ctx.fill();
+      }
     }
 
-    ctx.strokeStyle = "rgba(248, 250, 252, 0.22)";
-    ctx.lineWidth = 2;
-    ctx.strokeRect(x + 3, y + 3, w - 6, h - 6);
+    ctx.fillStyle = "#475569";
+    roundRect(x + w * 0.42, y + h - 34, w * 0.16, 34, 5);
+    ctx.fill();
+
+    ctx.strokeStyle = "rgba(15, 23, 42, 0.2)";
+    ctx.lineWidth = 3;
+    ctx.strokeRect(x + 4, y + 4, w - 8, h - 8);
+  }
+
+  function drawCloud(x, y, scale) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.scale(scale, scale);
+    ctx.fillStyle = "rgba(255, 255, 255, 0.86)";
+    ctx.beginPath();
+    ctx.arc(-34, 10, 24, 0, Math.PI * 2);
+    ctx.arc(-5, -6, 32, 0, Math.PI * 2);
+    ctx.arc(32, 8, 26, 0, Math.PI * 2);
+    ctx.arc(58, 14, 18, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function drawTree(x, y, scale) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.scale(scale, scale);
+    ctx.fillStyle = "#92400e";
+    roundRect(-9, 28, 18, 56, 6);
+    ctx.fill();
+    ctx.fillStyle = "#16a34a";
+    ctx.beginPath();
+    ctx.arc(-24, 22, 34, 0, Math.PI * 2);
+    ctx.arc(8, 0, 38, 0, Math.PI * 2);
+    ctx.arc(34, 28, 32, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function drawLaneHint() {
+    const baseY = H - 84;
+    const pulse = 0.72 + Math.sin(performance.now() / 180) * 0.18;
+    ctx.save();
+    ctx.globalAlpha = 0.9;
+    ctx.fillStyle = "rgba(15, 23, 42, 0.62)";
+    roundRect(W * 0.16 - 48, baseY - 42, 96, 84, 24);
+    ctx.fill();
+    roundRect(W * 0.84 - 48, baseY - 42, 96, 84, 24);
+    ctx.fill();
+    ctx.strokeStyle = `rgba(255, 255, 255, ${pulse})`;
+    ctx.lineWidth = 9;
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+    ctx.beginPath();
+    ctx.moveTo(W * 0.17 + 18, baseY - 22);
+    ctx.lineTo(W * 0.13 - 18, baseY);
+    ctx.lineTo(W * 0.17 + 18, baseY + 22);
+    ctx.moveTo(W * 0.83 - 18, baseY - 22);
+    ctx.lineTo(W * 0.87 + 18, baseY);
+    ctx.lineTo(W * 0.83 - 18, baseY + 22);
+    ctx.stroke();
+    ctx.fillStyle = "rgba(255, 255, 255, 0.94)";
+    for (let i = 0; i < 3; i += 1) {
+      ctx.beginPath();
+      ctx.arc(lanes[i], H - 44, i === state.targetLane ? 11 : 7, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.restore();
+  }
+
+  function lerp(a, b, amount) {
+    return a + (b - a) * amount;
   }
 
   function roundRect(x, y, w, h, r) {
@@ -598,13 +749,18 @@
     if (event.key === "ArrowRight") moveLane(1);
   });
   canvas.addEventListener("pointerdown", (event) => {
+    event.preventDefault();
     pointerStartX = event.clientX;
   });
   canvas.addEventListener("pointerup", (event) => {
+    event.preventDefault();
     if (pointerStartX == null) return;
     const dx = event.clientX - pointerStartX;
     if (Math.abs(dx) > 24) moveLane(dx > 0 ? 1 : -1);
-    else moveLane(event.clientX < window.innerWidth / 2 ? -1 : 1);
+    else {
+      const rect = canvas.getBoundingClientRect();
+      moveLane(event.clientX < rect.left + rect.width / 2 ? -1 : 1);
+    }
     pointerStartX = null;
   });
 
