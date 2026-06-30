@@ -86,8 +86,10 @@
       wrong: "Try another box!",
       winTitle: "Level Complete!",
       winDesc: "Score {score}. You unlocked the next lunchbox.",
+      perfectDesc: "Perfect sorting! Score {score}. You unlocked the next lunchbox.",
       allClearTitle: "All Clear!",
       allClearDesc: "You completed every lunchbox level. Wonderful!",
+      perfectAllClearDesc: "Perfect sorting! You completed every lunchbox level. Wonderful!",
       nextStage: "Next Level",
       again: "Play Again",
       levels: "Levels",
@@ -164,8 +166,10 @@
       wrong: "換另一個盒子看看！",
       winTitle: "關卡完成！",
       winDesc: "分數 {score}，下一個便當盒解鎖了。",
+      perfectDesc: "完美分類！分數 {score}，下一個便當盒解鎖了。",
       allClearTitle: "全部完成！",
       allClearDesc: "你完成所有顏色便當盒關卡，太棒了！",
+      perfectAllClearDesc: "完美分類！你完成所有顏色便當盒關卡，太棒了！",
       nextStage: "下一關",
       again: "再玩一次",
       levels: "選關",
@@ -509,8 +513,11 @@
     const stage = stages[state.stageIndex];
     saveUnlockedStage(stage.id + 1);
     const isFinalStage = stage.id >= stages.length;
+    const isPerfect = state.mistakes === 0;
     resultTitle.textContent = isFinalStage ? t("allClearTitle") : t("winTitle");
-    resultText.textContent = isFinalStage ? t("allClearDesc") : t("winDesc", { score: state.score });
+    resultText.textContent = isFinalStage
+      ? t(isPerfect ? "perfectAllClearDesc" : "allClearDesc")
+      : t(isPerfect ? "perfectDesc" : "winDesc", { score: state.score });
     nextStageBtn.classList.toggle("hidden", isFinalStage);
     foodCard.style.pointerEvents = "none";
     resultPanel.classList.remove("hidden");
