@@ -21,8 +21,9 @@ const dailyReward = document.querySelector("#dailyReward");
 const i18n = window.WonderI18n;
 const favoritesKey = "weightplayFavoriteGames";
 const dailyRewardKey = "weightplayDailyReward";
-const wonderProfileKey = "wonderCrashProfile";
-const dailyRewardTrack = [30, 40, 55, 70, 90, 115, 150];
+const walletKey = "weightplayWallet";
+const walletBar = document.querySelector("#walletBar");
+const dailyRewardTrack = [5, 6, 8, 10, 12, 15, 25];
 let activeFilter = "all";
 let activeTopic = "all";
 let activeLibrary = "all";
@@ -162,6 +163,7 @@ function renderLobby() {
   applyStaticTranslations();
   platformTitle.textContent = lobby.platform.name;
   platformSubtitle.textContent = text(lobby.platform.subtitle);
+  renderWallet();
 
   const playableCount = lobby.games.filter((game) => game.status === "playable").length;
   const heroCount = lobby.heroGameIds.length;
@@ -248,7 +250,7 @@ function renderDailyReward() {
     <div class="daily-reward-copy">
       <span>${i18n.t("daily.kicker")}</span>
       <strong>${i18n.t("daily.title")}</strong>
-      <small>${i18n.t("daily.desc", { count: reward.streak, day: reward.dayIndex + 1, coins: reward.reward })}</small>
+      <small>${i18n.t("daily.desc", { count: reward.streak, day: reward.dayIndex + 1, diamonds: reward.reward })}</small>
     </div>
     <div class="daily-track">${rewardCards}</div>
     <button class="daily-claim" type="button" ${reward.claimedToday ? "disabled" : ""}>
@@ -265,7 +267,7 @@ function claimDailyReward() {
     showToast(i18n.t("daily.toast_claimed"));
     return;
   }
-  grantWonderCrashCoins(reward.reward);
+  addDiamonds(reward.reward);
   localStorage.setItem(
     dailyRewardKey,
     JSON.stringify({
@@ -276,23 +278,42 @@ function claimDailyReward() {
   );
   window.WonderSound?.play("success");
   window.WonderAnalytics?.track("daily_reward_claim", {
-    reward_type: "wonder_crash_coins",
+    reward_type: "diamonds",
     reward_amount: reward.reward,
     streak: reward.streak,
     locale: i18n.locale(),
   });
+  renderWallet();
   renderDailyReward();
-  showToast(i18n.t("daily.toast", { coins: reward.reward, count: reward.streak }));
+  showToast(i18n.t("daily.toast", { diamonds: reward.reward, count: reward.streak }));
 }
 
-function grantWonderCrashCoins(amount) {
+function readWallet() {
   try {
-    const profile = JSON.parse(localStorage.getItem(wonderProfileKey) || "{}");
-    profile.coins = Math.max(0, Number(profile.coins) || 0) + amount;
-    localStorage.setItem(wonderProfileKey, JSON.stringify(profile));
+    const wallet = JSON.parse(localStorage.getItem(walletKey) || "{}");
+    return { diamonds: Math.max(0, Number(wallet.diamonds) || 0) };
   } catch {
-    localStorage.setItem(wonderProfileKey, JSON.stringify({ coins: amount }));
+    return { diamonds: 0 };
   }
+}
+
+function saveWallet(wallet) {
+  localStorage.setItem(walletKey, JSON.stringify({ diamonds: Math.max(0, Number(wallet.diamonds) || 0) }));
+}
+
+function addDiamonds(amount) {
+  const wallet = readWallet();
+  wallet.diamonds += amount;
+  saveWallet(wallet);
+}
+
+function renderWallet() {
+  if (!walletBar) return;
+  const wallet = readWallet();
+  walletBar.innerHTML = `
+    <span>${i18n.t("wallet.diamonds")}</span>
+    <strong><i aria-hidden="true">◆</i>${wallet.diamonds}</strong>
+  `;
 }
 
 function renderHeroGames() {

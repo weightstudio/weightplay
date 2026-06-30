@@ -30,8 +30,8 @@ window.WONDER_LOBBY = {
         "zh-Hant": "控制英雄丟出文具武器，保護城牆不被怪物攻破。",
       },
       meta: {
-        en: ["Hero Game", "30 Levels", "Gear Merge", "Mobile"],
-        "zh-Hant": ["主打遊戲", "30 關", "裝備合成", "手機優先"],
+        en: ["Hero Game", "30 Levels", "Diamond Upgrades", "Mobile"],
+        "zh-Hant": ["主打遊戲", "30 關", "鑽石強化", "手機優先"],
       },
       art: {
         kind: "image",

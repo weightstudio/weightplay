@@ -122,6 +122,38 @@ body.lobby-page {
   color: #111821;
 }
 
+.lobby-wallet {
+  display: grid;
+  align-self: end;
+  min-height: 74px;
+  padding: 12px;
+  border: 1px solid rgba(129, 221, 255, 0.36);
+  border-radius: 8px;
+  background: linear-gradient(145deg, rgba(95, 214, 255, 0.18), rgba(255, 255, 255, 0.08));
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+}
+
+.lobby-wallet span {
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.lobby-wallet strong {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #9eeaff;
+  font-size: 30px;
+  line-height: 1;
+}
+
+.lobby-wallet i {
+  color: #6bdcff;
+  font-style: normal;
+  text-shadow: 0 0 14px rgba(107, 220, 255, 0.58);
+}
+
 .lobby-feature {
   position: relative;
   display: grid;
@@ -258,15 +290,15 @@ body.lobby-page {
 }
 
 .daily-day b {
-  color: #ffcf63;
+  color: #9eeaff;
   font-size: 19px;
   line-height: 1;
 }
 
 .daily-day.current {
-  border-color: rgba(255, 220, 122, 0.94);
-  background: linear-gradient(180deg, rgba(255, 207, 99, 0.32), rgba(255, 255, 255, 0.1));
-  box-shadow: 0 0 0 2px rgba(255, 207, 99, 0.12) inset;
+  border-color: rgba(129, 221, 255, 0.94);
+  background: linear-gradient(180deg, rgba(95, 214, 255, 0.3), rgba(255, 255, 255, 0.1));
+  box-shadow: 0 0 0 2px rgba(95, 214, 255, 0.12) inset;
 }
 
 .daily-day.claimed:not(.current) {
@@ -1008,6 +1040,10 @@ body.lobby-page {
     min-height: 0;
   }
 
+  .lobby-wallet {
+    min-height: 0;
+  }
+
   .lobby-feature {
     grid-template-columns: 76px 1fr;
     min-height: 96px;
@@ -1136,13 +1172,30 @@ canvas {
 .menu-coin-line {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
+  gap: 12px;
   padding: 7px 12px;
   border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 8px;
   background: rgba(12, 15, 20, 0.62);
   font-size: 20px;
   font-weight: 900;
+}
+
+.menu-wallet-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.diamond-wallet,
+.cost-diamond {
+  color: #9eeaff;
+}
+
+.diamond-wallet i,
+.cost-diamond {
+  font-style: normal;
+  text-shadow: 0 0 12px rgba(107, 220, 255, 0.55);
 }
 
 .menu-coin-line img {

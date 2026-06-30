@@ -4,6 +4,7 @@ const battleHud = document.querySelector("#battleHud");
 const coinText = document.querySelector("#coinText");
 const menuCoinLine = document.querySelector("#menuCoinLine");
 const menuCoinText = document.querySelector("#menuCoinText");
+const menuDiamondText = document.querySelector("#menuDiamondText");
 const levelText = document.querySelector("#levelText");
 const waveText = document.querySelector("#waveText");
 const overlay = document.querySelector("#overlay");
@@ -73,6 +74,8 @@ const dictionary = {
     heroCritDamage_desc: "Crit Damage x{mul}",
     heroSpeed_title: "Fast Tactility Lv {lvl}",
     heroSpeed_desc: "Projectile Speed +{bonus}",
+    diamondPower_title: "Diamond Focus Lv {lvl}",
+    diamondPower_desc: "Base Attack +{bonus}, paid with Diamonds",
     equip_weapons: "Equipped Weapons 8",
     equip_backpack: "Backpack",
     wallHp_title: "Wall HP Lv {lvl}",
@@ -183,6 +186,8 @@ const dictionary = {
     heroCritDamage_desc: "爆擊傷害 x{mul}",
     heroSpeed_title: "快速手感 Lv {lvl}",
     heroSpeed_desc: "飛行速度 +{bonus}",
+    diamondPower_title: "鑽石專注 Lv {lvl}",
+    diamondPower_desc: "基礎攻擊 +{bonus}，消耗鑽石升級",
     equip_weapons: "攜帶武器 8",
     equip_backpack: "背包",
     wallHp_title: "城牆血量 Lv {lvl}",
@@ -284,6 +289,7 @@ const WEAPONS = DATA.weapons;
 const ENEMY_TYPES = DATA.enemyTypes;
 const SAVE_KEY = "wonderCrashHighestUnlocked";
 const PROFILE_KEY = "wonderCrashProfile";
+const WALLET_KEY = "weightplayWallet";
 const WEAPON_COOLDOWN = 1.35;
 const WEAPON_DROP_RATE = 0.5;
 const DIFFICULTY = {
@@ -297,7 +303,6 @@ let activeMenuTab = "battle";
 let draggedWeaponId = null;
 let draggedEquipSlot = null;
 let draggedBackpackIndex = null;
-let fullscreenRequested = false;
 let selectedWeaponInfo = { source: "equip", index: 0 };
 let suppressEquipmentClick = false;
 let floatingMessageTimer = null;
@@ -418,7 +423,6 @@ function startLevel(levelIndex) {
     window.WonderSound?.play("wrong");
     return;
   }
-  requestGameFullscreen();
   state = makeState(levelIndex);
   state.running = true;
   settingsBtn.classList.remove("hidden");
@@ -540,7 +544,6 @@ canvas.addEventListener("pointerdown", startDrag);
 canvas.addEventListener("pointermove", moveDrag);
 canvas.addEventListener("pointerup", stopDrag);
 canvas.addEventListener("pointercancel", stopDrag);
-document.addEventListener("pointerdown", requestGameFullscreen, { once: true });
 
 function loop(now) {
   const dt = Math.min((now - lastTime) / 1000, 0.033);
@@ -1415,6 +1418,7 @@ function drawImageContain(image, x, y, width, height) {
 function updateHud() {
   coinText.textContent = state.coins;
   menuCoinText.textContent = profile.coins;
+  if (menuDiamondText) menuDiamondText.textContent = readWallet().diamonds;
   levelText.textContent = state.level.id;
   waveText.textContent = `${Math.min(state.waveIndex + 1, state.level.waves.length)}/${state.level.waves.length}`;
 }
@@ -1587,6 +1591,7 @@ function renderProfilePanel(tab = activeMenuTab) {
         ${renderUpgradeRow("heroCrit", "assets/upgrade-character.png", t("heroCrit_title", { lvl: profile.heroCritLevel }), t("heroCrit_desc", { pct: Math.round(getCritChance() * 100) }))}
         ${renderUpgradeRow("heroCritDamage", "assets/upgrade-size.png", t("heroCritDamage_title", { lvl: profile.heroCritDamageLevel }), t("heroCritDamage_desc", { mul: getCritMultiplier().toFixed(2) }))}
         ${renderUpgradeRow("heroSpeed", "assets/upgrade-cooldown.png", t("heroSpeed_title", { lvl: profile.heroSpeedLevel }), t("heroSpeed_desc", { bonus: getProjectileSpeedBonus() }))}
+        ${renderUpgradeRow("diamondPower", "assets/upgrade-damage.png", t("diamondPower_title", { lvl: profile.diamondPowerLevel }), t("diamondPower_desc", { bonus: getDiamondAttackBonus() }), "diamond")}
       </div>
     `;
     return;
@@ -1655,13 +1660,18 @@ function renderProfilePanel(tab = activeMenuTab) {
   }
 }
 
-function renderUpgradeRow(type, icon, title, desc) {
+function renderUpgradeRow(type, icon, title, desc, currency = "coin") {
   const cost = getProfileUpgradeCost(type);
+  const canBuy = currency === "diamond" ? readWallet().diamonds >= cost : profile.coins >= cost;
+  const costIcon =
+    currency === "diamond"
+      ? `<span class="cost-diamond" aria-hidden="true">&#9670;</span>`
+      : `<img class="cost-coin" src="assets/coin.png" alt="" />`;
   return `
     <div class="profile-row">
       <img class="profile-row-icon" src="${icon}" alt="" />
       <div><strong>${title}</strong><span>${desc}</span></div>
-      <button type="button" data-profile-upgrade="${type}" ${profile.coins < cost ? "disabled" : ""}><img class="cost-coin" src="assets/coin.png" alt="" /><span>${cost}</span></button>
+      <button type="button" data-profile-upgrade="${type}" ${canBuy ? "" : "disabled"}>${costIcon}<span>${cost}</span></button>
     </div>
   `;
 }
@@ -1754,16 +1764,24 @@ function closeWeaponModal() {
 
 function buyProfileUpgrade(type) {
   const cost = getProfileUpgradeCost(type);
-  if (profile.coins < cost) {
+  const isDiamondUpgrade = type === "diamondPower";
+  const wallet = readWallet();
+  if ((isDiamondUpgrade && wallet.diamonds < cost) || (!isDiamondUpgrade && profile.coins < cost)) {
     window.WonderSound?.play("wrong");
     return;
   }
-  profile.coins -= cost;
+  if (isDiamondUpgrade) {
+    wallet.diamonds -= cost;
+    saveWallet(wallet);
+  } else {
+    profile.coins -= cost;
+  }
   if (type === "heroCoin") profile.heroCoinLevel += 1;
   if (type === "heroAttack") profile.heroAttackLevel += 1;
   if (type === "heroCrit") profile.heroCritLevel += 1;
   if (type === "heroCritDamage") profile.heroCritDamageLevel += 1;
   if (type === "heroSpeed") profile.heroSpeedLevel += 1;
+  if (type === "diamondPower") profile.diamondPowerLevel += 1;
   if (type === "weapon") profile.weaponLevel += 1;
   if (type === "wallHp") profile.wallHpLevel += 1;
   if (type === "wallGuard") profile.wallGuardLevel += 1;
@@ -1855,7 +1873,11 @@ function getHeroCoinBonus() {
 }
 
 function getHeroAttackBonus() {
-  return Math.floor((profile.heroAttackLevel - 1) * 0.7);
+  return Math.floor((profile.heroAttackLevel - 1) * 0.7) + getDiamondAttackBonus();
+}
+
+function getDiamondAttackBonus() {
+  return Math.max(0, (profile.diamondPowerLevel - 1) * 2);
 }
 
 function getCritChance() {
@@ -1872,8 +1894,9 @@ function getHeroTotalLevel() {
     profile.heroAttackLevel +
     profile.heroCritLevel +
     profile.heroCritDamageLevel +
-    profile.heroSpeedLevel -
-    4
+    profile.heroSpeedLevel +
+    profile.diamondPowerLevel -
+    5
   );
 }
 
@@ -1899,6 +1922,7 @@ function getProfileUpgradeCost(type) {
   if (type === "heroCrit") return scaleCost(46, profile.heroCritLevel, 1.34);
   if (type === "heroCritDamage") return scaleCost(48, profile.heroCritDamageLevel, 1.35);
   if (type === "heroSpeed") return scaleCost(36, profile.heroSpeedLevel, 1.26);
+  if (type === "diamondPower") return scaleCost(18, profile.diamondPowerLevel, 1.55);
   if (type === "weapon") return getWeaponUpgradeCost();
   if (type === "wallHp") return scaleCost(38, profile.wallHpLevel, 1.28);
   if (type === "wallGuard") return scaleCost(44, profile.wallGuardLevel, 1.33);
@@ -2185,15 +2209,6 @@ function cleanupEquipmentPointerDrag(pointerId) {
   equipmentPointerDrag.ghost = null;
 }
 
-function requestGameFullscreen() {
-  if (fullscreenRequested) return;
-  fullscreenRequested = true;
-  const target = document.documentElement;
-  if (target.requestFullscreen) {
-    target.requestFullscreen({ navigationUI: "hide" }).catch(() => {});
-  }
-}
-
 function getWeaponTierCost(level) {
   return 2 ** (Math.max(1, Math.min(6, Number(level) || 1)) - 1);
 }
@@ -2235,6 +2250,7 @@ function loadProfile() {
       heroCritLevel: Math.max(1, Number(saved.heroCritLevel) || 1),
       heroCritDamageLevel: Math.max(1, Number(saved.heroCritDamageLevel) || 1),
       heroSpeedLevel: Math.max(1, Number(saved.heroSpeedLevel) || 1),
+      diamondPowerLevel: Math.max(1, Number(saved.diamondPowerLevel) || 1),
       weaponLevel: Math.max(1, Number(saved.weaponLevel) || 1),
       wallHpLevel: Math.max(1, Number(saved.wallHpLevel) || oldWallLevel),
       wallGuardLevel: Math.max(1, Number(saved.wallGuardLevel) || 1),
@@ -2252,6 +2268,19 @@ function saveProfile() {
   localStorage.setItem(PROFILE_KEY, JSON.stringify(profile));
 }
 
+function readWallet() {
+  try {
+    const wallet = JSON.parse(localStorage.getItem(WALLET_KEY) || "{}");
+    return { diamonds: Math.max(0, Number(wallet.diamonds) || 0) };
+  } catch {
+    return { diamonds: 0 };
+  }
+}
+
+function saveWallet(wallet) {
+  localStorage.setItem(WALLET_KEY, JSON.stringify({ diamonds: Math.max(0, Number(wallet.diamonds) || 0) }));
+}
+
 function createDefaultProfile() {
   return {
     coins: 0,
@@ -2260,6 +2289,7 @@ function createDefaultProfile() {
     heroCritLevel: 1,
     heroCritDamageLevel: 1,
     heroSpeedLevel: 1,
+    diamondPowerLevel: 1,
     weaponLevel: 1,
     wallHpLevel: 1,
     wallGuardLevel: 1,
