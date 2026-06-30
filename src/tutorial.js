@@ -2,10 +2,12 @@
   const common = {
     en: {
       close: "Start Playing",
+      closeAria: "Close tutorial",
       aria: "How to play",
     },
     "zh-Hant": {
       close: "開始玩",
+      closeAria: "關閉教學",
       aria: "玩法提示",
     },
   };
@@ -148,7 +150,7 @@
       <section class="wp-tutorial-card">
         <div class="wp-tutorial-head">
           <strong>${tutorial.title[lang] || tutorial.title.en}</strong>
-          <button class="wp-tutorial-close" type="button" aria-label="Close">×</button>
+          <button class="wp-tutorial-close" type="button" aria-label="${common[lang].closeAria}">×</button>
         </div>
         <div class="wp-tutorial-steps">
           ${tutorial.steps.map((step) => {
