@@ -43,6 +43,14 @@
         { icon: "✓", en: ["Goal", "Use all moves, then the stage checks your goal."], "zh-Hant": ["目標", "用完步數後，系統會判斷是否過關。"] },
       ],
     },
+    "fruit-merge": {
+      title: { en: "Merge bigger fruits.", "zh-Hant": "合成更大的水果" },
+      steps: [
+        { icon: "1", en: ["Aim", "Move your finger or mouse to choose where the fruit drops."], "zh-Hant": ["瞄準", "移動手指或滑鼠，選擇水果落下的位置。"] },
+        { icon: "2", en: ["Drop", "Release or tap Drop to let the fruit fall."], "zh-Hant": ["丟下", "放開手指，或按丟下讓水果掉下去。"] },
+        { icon: "3", en: ["Merge", "Two matching fruits merge into the next fruit. Do not pass the red line."], "zh-Hant": ["合成", "兩顆相同水果會合成下一級，別讓水果超過紅線。"] },
+      ],
+    },
     "campus-dash": {
       title: { en: "Dodge in three lanes.", "zh-Hant": "三條路閃避" },
       steps: [

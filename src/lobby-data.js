@@ -137,6 +137,30 @@ window.WONDER_LOBBY = {
       },
     },
     {
+      id: "fruit-merge",
+      title: { en: "Fruit Merge Tower", "zh-Hant": "水果合成塔" },
+      status: "playable",
+      statusText: { en: "Playable", "zh-Hant": "可遊玩" },
+      href: "games/fruit-merge/index.html",
+      type: { en: "Score Puzzle", "zh-Hant": "高分益智" },
+      categories: ["Puzzle", "Family"],
+      ages: ["5", "family"],
+      ageLabel: { en: "5+", "zh-Hant": "5+" },
+      description: {
+        en: "Drop fruits, merge matching pairs, and chase your best score from blueberry to watermelon.",
+        "zh-Hant": "丟下水果，讓相同水果合成下一級，從藍莓一路合到西瓜挑戰最高分。",
+      },
+      meta: {
+        en: ["Score Attack", "Fruit Merge", "Best Record"],
+        "zh-Hant": ["高分挑戰", "水果合成", "最佳紀錄"],
+      },
+      art: {
+        kind: "image",
+        background: "assets/fruit-merge-cover.svg",
+        hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>",
+      },
+    },
+    {
       id: "animal-rescue",
       title: { en: "Animal Rescue Trail", "zh-Hant": "動物回家路" },
       status: "playable",
