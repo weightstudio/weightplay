@@ -1,5 +1,5 @@
 (function () {
-  const edgeSize = 28;
+  const edgeSize = 44;
   const minSwipe = 8;
   let gesture = null;
 
@@ -17,6 +17,12 @@
 
   function blockNativeDrag(event) {
     if (shouldBlockSelection(event.target)) event.preventDefault();
+  }
+
+  function markNonDraggableMedia() {
+    document.querySelectorAll("img, svg, canvas").forEach((element) => {
+      if (!element.hasAttribute("draggable")) element.setAttribute("draggable", "false");
+    });
   }
 
   function start(event) {
@@ -52,10 +58,16 @@
 
   document.documentElement.style.overscrollBehaviorX = "none";
   document.body?.style.setProperty("overscroll-behavior-x", "none");
+  document.documentElement.style.webkitTouchCallout = "none";
+  document.documentElement.style.webkitTapHighlightColor = "transparent";
   document.documentElement.style.webkitUserSelect = "none";
   document.documentElement.style.userSelect = "none";
   document.body?.style.setProperty("-webkit-user-select", "none");
   document.body?.style.setProperty("user-select", "none");
+  markNonDraggableMedia();
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", markNonDraggableMedia, { once: true });
+  }
   window.addEventListener("touchstart", start, { passive: true, capture: true });
   window.addEventListener("touchmove", move, { passive: false, capture: true });
   window.addEventListener("touchend", end, { passive: true, capture: true });
