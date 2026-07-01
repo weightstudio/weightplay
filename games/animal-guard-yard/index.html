@@ -18,7 +18,7 @@
     <meta name="twitter:card" content="summary_large_image" />
     <title>Animal Guard Yard - WeightPlay</title>
     <link rel="canonical" href="https://weightstudio.github.io/weightplay/games/animal-guard-yard/" />
-    <link rel="stylesheet" href="style.css?v=20260701-boss1" />
+    <link rel="stylesheet" href="style.css?v=20260701-tabs1" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
     <script type="application/ld+json">
       {
@@ -55,23 +55,43 @@
       </header>
 
       <section id="menuPanel" class="menu-panel">
-        <img class="cover" src="../../assets/animal-guard-yard-cover.svg" alt="" />
-        <div class="wallet-row" aria-label="Animal Guard Yard wallet">
-          <span><i aria-hidden="true">●</i><b id="coinText">0</b></span>
-          <span><i aria-hidden="true">◆</i><b id="diamondText">0</b></span>
-        </div>
-        <div class="menu-copy">
-          <strong data-ui="chooseStage">Choose Stage</strong>
-          <span data-ui="menuHint">Place animal guards and stop the zombies.</span>
-        </div>
-        <div class="kennel-panel">
-          <div class="kennel-head">
-            <strong data-ui="kennelTitle">Animal Training</strong>
-            <span data-ui="kennelHint">Upgrade guards with coins. Unlock rare animals with diamonds.</span>
+        <div class="menu-shell">
+          <div class="wallet-row" aria-label="Animal Guard Yard wallet">
+            <span class="coin-chip"><i aria-hidden="true">●</i><b id="coinText">0</b></span>
+            <span class="diamond-chip"><i aria-hidden="true">◆</i><b id="diamondText">0</b></span>
           </div>
-          <div id="kennelGrid" class="kennel-grid" aria-label="Animal upgrades"></div>
+          <section id="stageTabPanel" class="menu-tab-panel" data-tab-panel="stages">
+            <img class="cover" src="../../assets/animal-guard-yard-cover.svg" alt="" />
+            <div class="menu-copy">
+              <strong data-ui="chooseStage">Choose Stage</strong>
+              <span data-ui="menuHint">Place animal guards and stop the zombies.</span>
+            </div>
+            <div id="stageGrid" class="stage-grid" aria-label="Stage list"></div>
+          </section>
+          <section id="animalTabPanel" class="menu-tab-panel hidden" data-tab-panel="animals">
+            <div class="kennel-panel">
+              <div class="kennel-head">
+                <strong data-ui="kennelTitle">Animal Training</strong>
+                <span data-ui="kennelHint">Upgrade guards with coins. Unlock rare animals with diamonds.</span>
+              </div>
+              <div id="kennelGrid" class="kennel-grid" aria-label="Animal upgrades"></div>
+            </div>
+          </section>
+          <section id="shopTabPanel" class="menu-tab-panel hidden" data-tab-panel="shop">
+            <div class="shop-panel">
+              <div class="kennel-head">
+                <strong data-ui="shopTitle">Rare Animal Shop</strong>
+                <span data-ui="shopHint">Spend shared WeightPlay diamonds on special animal guards.</span>
+              </div>
+              <div id="shopGrid" class="shop-grid" aria-label="Animal shop"></div>
+            </div>
+          </section>
         </div>
-        <div id="stageGrid" class="stage-grid" aria-label="Stage list"></div>
+        <nav id="menuTabs" class="menu-tabs" aria-label="Animal Guard Yard menu">
+          <button type="button" data-menu-tab="stages" class="active"><img src="../../assets/menu-battle.png" alt="" /><span data-ui="tabStages">Stages</span></button>
+          <button type="button" data-menu-tab="animals"><img src="../../assets/menu-character.png" alt="" /><span data-ui="tabAnimals">Animals</span></button>
+          <button type="button" data-menu-tab="shop"><img src="../../assets/upgrade-coin.png" alt="" /><span data-ui="tabShop">Shop</span></button>
+        </nav>
       </section>
 
       <section id="playPanel" class="play-panel hidden">
@@ -116,6 +136,6 @@
     <script src="../../src/sound.js?v=20260701-labels1"></script>
     <script src="../../src/edge-guard.js?v=20260701-edge2"></script>
     <script src="../../src/tutorial.js?v=20260701-animalguard1"></script>
-    <script src="game.js?v=20260701-boss1"></script>
+    <script src="game.js?v=20260701-tabs1"></script>
   </body>
 </html>

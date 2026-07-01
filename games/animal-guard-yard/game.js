@@ -31,6 +31,11 @@
       started: "Defend the yard!",
       kennelTitle: "Animal Training",
       kennelHint: "Upgrade guards with coins. Unlock rare animals with diamonds.",
+      shopTitle: "Rare Animal Shop",
+      shopHint: "Spend shared WeightPlay diamonds on special animal guards.",
+      tabStages: "Stages",
+      tabAnimals: "Animals",
+      tabShop: "Shop",
       level: "Lv {n}",
       upgrade: "Upgrade",
       unlock: "Unlock",
@@ -71,6 +76,11 @@
       started: "守住庭院！",
       kennelTitle: "動物訓練",
       kennelHint: "用金幣升級守衛，用鑽石解鎖稀有動物。",
+      shopTitle: "稀有動物商店",
+      shopHint: "使用 WeightPlay 共用鑽石購買特殊動物守衛。",
+      tabStages: "關卡",
+      tabAnimals: "動物",
+      tabShop: "商店",
       level: "Lv {n}",
       upgrade: "升級",
       unlock: "解鎖",
@@ -109,6 +119,8 @@
     coinText: $("coinText"),
     diamondText: $("diamondText"),
     kennelGrid: $("kennelGrid"),
+    shopGrid: $("shopGrid"),
+    menuTabs: $("menuTabs"),
     menuPanel: $("menuPanel"),
     stageGrid: $("stageGrid"),
     playPanel: $("playPanel"),
@@ -135,6 +147,7 @@
   let profile = loadProfile();
   let currentStage = 0;
   let selectedUnit = units[0].id;
+  let activeMenuTab = "stages";
   let running = false;
   let energy = 0;
   let baseHp = 3;
@@ -330,15 +343,49 @@
     });
   }
 
+  function renderShop() {
+    if (!nodes.shopGrid) return;
+    nodes.shopGrid.innerHTML = "";
+    units.filter((unit) => unit.unlockCost > 0).forEach((unit) => {
+      const owned = isOwned(unit.id);
+      const trained = trainedUnit(unit);
+      const card = document.createElement("div");
+      card.className = `shop-card ${owned ? "owned" : ""}`;
+      card.innerHTML = `
+        <div class="shop-hero">${animalSprite(unit.id)}</div>
+        <div>
+          <strong>${t(unit.nameKey)}</strong>
+          <span>⚔ ${trained.damage} · ♥ ${trained.hp} · ☀ ${trained.cost}</span>
+        </div>
+        <button type="button" data-kennel-unit="${unit.id}" ${owned || readDiamonds() < unit.unlockCost ? "disabled" : ""}>
+          ${owned ? t("owned") : `◆ ${unit.unlockCost} ${t("unlock")}`}
+        </button>
+      `;
+      nodes.shopGrid.appendChild(card);
+    });
+  }
+
+  function showMenuTab(tab) {
+    activeMenuTab = tab;
+    document.querySelectorAll("[data-tab-panel]").forEach((panel) => {
+      panel.classList.toggle("hidden", panel.dataset.tabPanel !== activeMenuTab);
+    });
+    nodes.menuTabs?.querySelectorAll("button[data-menu-tab]").forEach((button) => {
+      button.classList.toggle("active", button.dataset.menuTab === activeMenuTab);
+    });
+    renderWallet();
+    renderStageGrid();
+    renderKennel();
+    renderShop();
+  }
+
   function showMenu() {
     running = false;
     cancelAnimationFrame(raf);
     nodes.menuPanel.classList.remove("hidden");
     nodes.playPanel.classList.add("hidden");
     nodes.resultPanel.classList.add("hidden");
-    renderStageGrid();
-    renderKennel();
-    renderWallet();
+    showMenuTab(activeMenuTab);
   }
 
   function startStage(index) {
@@ -697,6 +744,7 @@
     }
     renderWallet();
     renderKennel();
+    renderShop();
     renderUnits();
   }
 
@@ -728,6 +776,17 @@
     if (!button) return;
     handleKennelAction(button.dataset.kennelUnit);
   });
+  nodes.shopGrid?.addEventListener("click", (event) => {
+    const button = event.target.closest("button[data-kennel-unit]");
+    if (!button) return;
+    handleKennelAction(button.dataset.kennelUnit);
+  });
+  nodes.menuTabs?.addEventListener("click", (event) => {
+    const button = event.target.closest("button[data-menu-tab]");
+    if (!button) return;
+    showMenuTab(button.dataset.menuTab);
+    playSound("click");
+  });
   nodes.backToStagesBtn.addEventListener("click", showMenu);
   nodes.resultStagesBtn.addEventListener("click", showMenu);
   nodes.retryBtn.addEventListener("click", () => startStage(currentStage));
@@ -738,8 +797,6 @@
   });
 
   localizeStatic();
-  renderStageGrid();
-  renderKennel();
-  renderWallet();
+  showMenuTab(activeMenuTab);
   initLoading();
 })();
