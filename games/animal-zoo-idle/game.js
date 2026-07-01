@@ -99,7 +99,7 @@
     loadingFill: $("loadingFill"),
   };
 
-  let locale = localStorage.getItem(localeKey) || "en";
+  let locale = window.WonderI18n?.locale?.() || localStorage.getItem(localeKey) || "en";
   let save = loadSave();
   let renderTick = 0;
 
@@ -401,6 +401,7 @@
 
   nodes.localeSelect.addEventListener("change", () => {
     locale = nodes.localeSelect.value;
+    window.WonderI18n?.setLocale?.(locale);
     localStorage.setItem(localeKey, locale);
     localizeStatic();
     render();

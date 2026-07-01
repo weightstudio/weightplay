@@ -152,7 +152,7 @@
   }
 
   function locale() {
-    const value = window.WonderI18n?.locale?.() || localStorage.getItem("weightplayLocale") || "en";
+    const value = window.WonderI18n?.locale?.() || localStorage.getItem("weightPlayLocale") || "en";
     return value === "zh-Hant" ? "zh-Hant" : "en";
   }
 
