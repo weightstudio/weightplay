@@ -3,6 +3,7 @@
   const localeKey = "weightplayLocale";
   const unlockKey = "weightplay_weather_unlocked";
   const starKey = "weightplay_weather_stars";
+  const progressKey = "weightplay_weather_progress";
 
   const tools = {
     umbrella: { icon: "\u{2602}\u{FE0F}", className: "umbrella" },
@@ -55,6 +56,16 @@
       failed: "Needs More Care!",
       result: "{score} helpers finished. Best: {best} stars.",
       resultFailed: "Try again and help more animals.",
+      reportTitle: "Skill Report",
+      previousBest: "Previous Best",
+      todayScore: "Today's Score",
+      improvement: "Improvement",
+      problemSolving: "Problem Solving",
+      focus: "Focus",
+      animalCare: "Animal Care",
+      reportGreat: "Great progress! Your child chose helpful items carefully and solved the care mission.",
+      reportGood: "Good effort! Try again to improve focus and choose the best care item.",
+      reportTry: "Nice practice! Look at what the animal needs, then try a helpful item.",
       hint: "Tap a care item, or drag it to the animal.",
       correct: "Happy helper!",
       wrong: "That made the animal sad.",
@@ -95,6 +106,16 @@
       failed: "\u9084\u9700\u8981\u7167\u9867\uff01",
       result: "\u5b8c\u6210 {score} \u500b\u5e6b\u5fd9\u4efb\u52d9\u3002\u6700\u4f73\uff1a{best} \u661f\u3002",
       resultFailed: "\u518d\u8a66\u4e00\u6b21\uff0c\u5e6b\u52a9\u66f4\u591a\u5c0f\u52d5\u7269\u3002",
+      reportTitle: "\u80fd\u529b\u5c0f\u5831\u544a",
+      previousBest: "\u4e4b\u524d\u6700\u4f73",
+      todayScore: "\u672c\u6b21\u5206\u6578",
+      improvement: "\u9032\u6b65",
+      problemSolving: "\u554f\u984c\u89e3\u6c7a",
+      focus: "\u5c08\u6ce8\u529b",
+      animalCare: "\u52d5\u7269\u7167\u9867",
+      reportGreat: "\u5f88\u68d2\uff01\u9019\u6b21\u6709\u4ed4\u7d30\u770b\u60c5\u5883\uff0c\u4e5f\u9078\u5230\u9069\u5408\u7684\u7167\u9867\u9053\u5177\u3002",
+      reportGood: "\u505a\u5f97\u4e0d\u932f\uff01\u518d\u8a66\u4e00\u6b21\u53ef\u4ee5\u66f4\u719f\u6089\u6bcf\u500b\u52d5\u7269\u9700\u8981\u4ec0\u9ebc\u3002",
+      reportTry: "\u597d\u52aa\u529b\uff01\u5148\u770b\u770b\u5c0f\u52d5\u7269\u9047\u5230\u4ec0\u9ebc\u554f\u984c\uff0c\u518d\u9078\u7167\u9867\u9053\u5177\u3002",
       hint: "\u9ede\u7167\u9867\u9053\u5177\uff0c\u6216\u62d6\u5230\u5c0f\u52d5\u7269\u8eab\u4e0a\u3002",
       correct: "\u5c0f\u52d5\u7269\u958b\u5fc3\u4e86\uff01",
       wrong: "\u5c0f\u52d5\u7269\u96e3\u904e\u4e86\u3002",
@@ -135,6 +156,7 @@
     resultTitle: $("resultTitle"),
     starText: $("starText"),
     resultText: $("resultText"),
+    skillReport: $("skillReport"),
     nextStageBtn: $("nextStageBtn"),
     retryBtn: $("retryBtn"),
     resultStagesBtn: $("resultStagesBtn"),
@@ -168,6 +190,20 @@
   function saveRecords() {
     localStorage.setItem(starKey, JSON.stringify(records));
     localStorage.setItem(unlockKey, String(unlocked));
+  }
+
+  function readProgress() {
+    try {
+      return JSON.parse(localStorage.getItem(progressKey) || "{}");
+    } catch {
+      return {};
+    }
+  }
+
+  function saveProgress(stageId, entry) {
+    const progress = readProgress();
+    progress[stageId] = entry;
+    localStorage.setItem(progressKey, JSON.stringify(progress));
   }
 
   function t(label, data = {}) {
@@ -205,7 +241,7 @@
       button.innerHTML = `
         <b>${stage.animal} ${firstProblem.icon}</b>
         <strong>${t("stage", { n: stageNo })}</strong>
-        <span>${t("goal", { target: stage.target })} · ${"\u2605".repeat(best)}${"\u2606".repeat(3 - best)}</span>
+        <span>${t("goal", { target: stage.target })} \u00b7 ${"\u2605".repeat(best)}${"\u2606".repeat(3 - best)}</span>
       `;
       button.addEventListener("click", () => {
         if (stageNo > unlocked) {
@@ -297,15 +333,15 @@
   }
 
   function weatherEffects(problemKey) {
-    if (problemKey === "rain") return "<span>💧</span><span>💧</span><span>💧</span>";
-    if (problemKey === "puddle") return "<span>💦</span><span>💧</span>";
-    if (problemKey === "heat") return "<span>☀️</span><span>〰</span>";
-    if (problemKey === "dark") return "<span>🌙</span><span>✨</span>";
-    if (problemKey === "thunder") return "<span>⚡</span><span>☁️</span>";
-    if (problemKey === "muddy") return "<span>🐾</span><span>🟤</span>";
-    if (problemKey === "cold") return "<span>❄️</span><span>🥶</span>";
-    if (problemKey === "windy") return "<span>🌬️</span><span>🍃</span>";
-    return "<span>💭</span><span>🍽️</span>";
+    if (problemKey === "rain") return "<span>\u{1F4A7}</span><span>\u{2602}\u{FE0F}</span><span>\u{1F4A7}</span>";
+    if (problemKey === "puddle") return "<span>\u{1F4A6}</span><span>\u{1F9FC}</span>";
+    if (problemKey === "heat") return "<span>\u{2600}\u{FE0F}</span><span>\u{1FAAD}</span>";
+    if (problemKey === "dark") return "<span>\u{1F319}</span><span>\u{1F3EE}</span>";
+    if (problemKey === "thunder") return "<span>\u{26A1}</span><span>\u{1F3E0}</span>";
+    if (problemKey === "muddy") return "<span>\u{1F43E}</span><span>\u{1F97E}</span>";
+    if (problemKey === "cold") return "<span>\u{2744}\u{FE0F}</span><span>\u{1F9E3}</span>";
+    if (problemKey === "windy") return "<span>\u{1F32C}\u{FE0F}</span><span>\u{1F3E0}</span>";
+    return "<span>\u{2764}\u{FE0F}</span><span>\u{1F34E}</span>";
   }
 
   function installToolControl(button) {
@@ -425,11 +461,57 @@
     return 0;
   }
 
+  function skillStars(value) {
+    const count = clamp(value, 1, 5);
+    return `${"\u2605".repeat(count)}${"\u2606".repeat(5 - count)}`;
+  }
+
+  function scoreStars(maxScore, offset = 0) {
+    return clamp(Math.ceil((score / maxScore) * 5) + offset, 1, 5);
+  }
+
+  function updateProgress(stage, stars) {
+    const previous = readProgress()[stage.id] || {};
+    const previousBest = Number(previous.bestScore) || 0;
+    const bestScore = Math.max(previousBest, score);
+    const improvementPercent = previousBest > 0 ? Math.round(((score - previousBest) / previousBest) * 100) : score > 0 ? 100 : 0;
+    saveProgress(stage.id, {
+      lastScore: score,
+      bestScore,
+      previousBest,
+      playCount: (Number(previous.playCount) || 0) + 1,
+      lastPlayedAt: new Date().toISOString(),
+      improvementPercent,
+      stars,
+      total: stage.rounds.length,
+    });
+  }
+
+  function renderSkillReport(stage) {
+    const progress = readProgress()[stage.id] || {};
+    const previousBest = Number(progress.previousBest) || 0;
+    const improvementPercent = Number(progress.improvementPercent) || 0;
+    const messageKey = score >= stage.target ? (score >= stage.rounds.length ? "reportGreat" : "reportGood") : "reportTry";
+    nodes.skillReport.innerHTML = `
+      <h2>${t("reportTitle")}</h2>
+      <dl>
+        <dt>${t("previousBest")}</dt><dd>${previousBest} / ${stage.rounds.length}</dd>
+        <dt>${t("todayScore")}</dt><dd>${score} / ${stage.rounds.length}</dd>
+        <dt>${t("improvement")}</dt><dd>${improvementPercent > 0 ? `+${improvementPercent}%` : "0%"}</dd>
+        <dt>${t("problemSolving")}</dt><dd class="stars">${skillStars(scoreStars(stage.rounds.length))}</dd>
+        <dt>${t("focus")}</dt><dd class="stars">${skillStars(scoreStars(stage.rounds.length, -1))}</dd>
+        <dt>${t("animalCare")}</dt><dd class="stars">${skillStars(scoreStars(stage.rounds.length))}</dd>
+      </dl>
+      <p>${t(messageKey)}</p>
+    `;
+  }
+
   function finishStage() {
     running = false;
     const stage = stages[currentStage];
     const stars = starCount(stage);
     const cleared = score >= stage.target;
+    updateProgress(stage, stars);
     records[stage.id] = Math.max(records[stage.id] || 0, stars);
     if (cleared && stage.id < stages.length) unlocked = Math.max(unlocked, stage.id + 1);
     saveRecords();
@@ -440,6 +522,7 @@
     nodes.resultText.textContent = cleared
       ? t("result", { score, best: records[stage.id] || stars })
       : t("resultFailed");
+    renderSkillReport(stage);
     nodes.nextStageBtn.classList.toggle("hidden", !cleared || stage.id >= stages.length);
     renderStageGrid();
     playSound(cleared ? "success" : "wrong");
