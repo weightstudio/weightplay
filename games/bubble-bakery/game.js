@@ -6,10 +6,10 @@
 
   const text = {
     en: {
-      gameTitle: "Bubble Bakery",
+      gameTitle: "Animal Bubble Bakery",
       language: "Language",
       chooseStage: "Choose Stage",
-      menuHint: "Tap matching bubbles to fill bakery orders.",
+      menuHint: "Tap 2 or more connected matching bubbles to fill bakery orders.",
       stages: "Stages",
       loading: "Loading",
       nextStage: "Next Stage",
@@ -20,52 +20,50 @@
       score: "Score",
       stage: "Stage {n}",
       orderDone: "Order complete!",
-      almost: "Almost baked!",
       failed: "Try this order again.",
       resultWin: "You filled every order with {moves} moves left.",
       resultLose: "Collect the needed bubbles before moves run out.",
-      smallGroup: "Tap 2 or more matching bubbles.",
+      smallGroup: "Tap 2 or more connected matching bubbles.",
       collect: "Collect {n}",
     },
     "zh-Hant": {
-      gameTitle: "泡泡烘焙坊",
+      gameTitle: "動物泡泡烘焙坊",
       language: "語言",
       chooseStage: "選擇關卡",
-      menuHint: "點擊相同泡泡，完成烘焙訂單。",
+      menuHint: "點擊 2 個以上相連的相同泡泡，完成烘焙訂單。",
       stages: "關卡",
       loading: "載入中",
       nextStage: "下一關",
-      retry: "再試一次",
+      retry: "再玩一次",
       lobby: "大廳",
-      locked: "關卡未解鎖",
+      locked: "關卡尚未解鎖",
       moves: "步數",
       score: "分數",
       stage: "第 {n} 關",
       orderDone: "訂單完成！",
-      almost: "快完成了！",
-      failed: "再挑戰這份訂單。",
+      failed: "再試一次這份訂單。",
       resultWin: "你完成所有訂單，還剩 {moves} 步。",
-      resultLose: "步數用完前，收集需要的泡泡。",
-      smallGroup: "請點 2 個以上相同泡泡。",
+      resultLose: "步數用完前，要收集訂單需要的泡泡。",
+      smallGroup: "請點擊 2 個以上相連的相同泡泡。",
       collect: "收集 {n}",
     },
   };
 
   const colors = [
-    { id: "berry", icon: "🍓", css: "linear-gradient(145deg,#ff78a9,#e94172)" },
-    { id: "sky", icon: "🫐", css: "linear-gradient(145deg,#7bd7ff,#278bd5)" },
-    { id: "lemon", icon: "🍋", css: "linear-gradient(145deg,#fff176,#f4b400)" },
-    { id: "mint", icon: "🍵", css: "linear-gradient(145deg,#9df278,#35b85b)" },
-    { id: "grape", icon: "🍇", css: "linear-gradient(145deg,#d4a5ff,#8c52d9)" },
+    { id: "berry", icon: "🐰", css: "linear-gradient(145deg,#ff78a9,#e94172)" },
+    { id: "sky", icon: "🐳", css: "linear-gradient(145deg,#7bd7ff,#278bd5)" },
+    { id: "lemon", icon: "🐥", css: "linear-gradient(145deg,#fff176,#f4b400)" },
+    { id: "mint", icon: "🐸", css: "linear-gradient(145deg,#9df278,#35b85b)" },
+    { id: "grape", icon: "🦊", css: "linear-gradient(145deg,#d4a5ff,#8c52d9)" },
   ];
 
   const stages = [
-    { moves: 16, palette: ["berry", "sky", "lemon"], orders: { berry: 8, sky: 8 }, note: "berry" },
-    { moves: 17, palette: ["berry", "sky", "lemon", "mint"], orders: { lemon: 10, mint: 8 }, note: "lemon" },
-    { moves: 18, palette: ["berry", "sky", "lemon", "mint"], orders: { sky: 12, berry: 8, mint: 8 }, note: "mix" },
-    { moves: 19, palette: ["berry", "sky", "lemon", "mint", "grape"], orders: { grape: 10, lemon: 10 }, note: "grape" },
-    { moves: 20, palette: ["berry", "sky", "lemon", "mint", "grape"], orders: { berry: 12, mint: 10, sky: 10 }, note: "rush" },
-    { moves: 22, palette: ["berry", "sky", "lemon", "mint", "grape"], orders: { grape: 12, lemon: 12, berry: 10 }, note: "party" },
+    { moves: 16, palette: ["berry", "sky", "lemon"], orders: { berry: 8, sky: 8 } },
+    { moves: 17, palette: ["berry", "sky", "lemon", "mint"], orders: { lemon: 10, mint: 8 } },
+    { moves: 18, palette: ["berry", "sky", "lemon", "mint"], orders: { sky: 12, berry: 8, mint: 8 } },
+    { moves: 19, palette: ["berry", "sky", "lemon", "mint", "grape"], orders: { grape: 10, lemon: 10 } },
+    { moves: 20, palette: ["berry", "sky", "lemon", "mint", "grape"], orders: { berry: 12, mint: 10, sky: 10 } },
+    { moves: 22, palette: ["berry", "sky", "lemon", "mint", "grape"], orders: { grape: 12, lemon: 12, berry: 10 } },
   ];
 
   const rows = 7;
@@ -120,9 +118,9 @@
     localStorage.setItem(starKey, JSON.stringify(stars));
   }
 
-  function t(key, data) {
-    let value = text[locale]?.[key] || text.en[key] || key;
-    return Object.entries(data || {}).reduce((out, [name, item]) => out.replaceAll(`{${name}}`, item), value);
+  function t(key, data = {}) {
+    const value = text[locale]?.[key] || text.en[key] || key;
+    return Object.entries(data).reduce((out, [name, item]) => out.replaceAll(`{${name}}`, String(item)), value);
   }
 
   function colorData(id) {
@@ -158,7 +156,7 @@
       button.innerHTML = `
         <b>${orderIcons}</b>
         <strong>${t("stage", { n: stageNo })}</strong>
-        <span>${"★".repeat(got)}${"☆".repeat(3 - got)}</span>
+        <span>${starIcons(got, 3)}</span>
       `;
       button.addEventListener("click", () => {
         if (stageNo > unlocked) {
@@ -197,12 +195,31 @@
   }
 
   function makeBoard(palette) {
-    return Array.from({ length: rows }, () => Array.from({ length: cols }, () => palette[Math.floor(Math.random() * palette.length)]));
+    const next = Array.from({ length: rows }, () => Array.from({ length: cols }, () => randomFrom(palette)));
+    if (!hasPlayableGroup(next)) {
+      next[0][0] = palette[0];
+      next[0][1] = palette[0];
+    }
+    return next;
   }
 
-  function renderAll(drop = false) {
+  function randomFrom(items) {
+    return items[Math.floor(Math.random() * items.length)];
+  }
+
+  function hasPlayableGroup(nextBoard) {
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        const id = nextBoard[r][c];
+        if (nextBoard[r + 1]?.[c] === id || nextBoard[r]?.[c + 1] === id) return true;
+      }
+    }
+    return false;
+  }
+
+  function renderAll(dropMap = new Map()) {
     renderOrders();
-    renderBoard(drop);
+    renderBoard(dropMap);
     updateHud();
   }
 
@@ -217,18 +234,21 @@
     });
   }
 
-  function renderBoard(drop = false) {
+  function renderBoard(dropMap = new Map()) {
     nodes.board.innerHTML = "";
     board.forEach((row, r) => {
       row.forEach((id, c) => {
         const data = colorData(id);
+        const key = `${r},${c}`;
         const button = document.createElement("button");
         button.type = "button";
-        button.className = `bubble ${drop ? "drop" : ""}`;
+        button.className = `bubble ${dropMap.has(key) ? "drop" : ""}`;
         button.style.setProperty("--bubble", data.css);
-        button.dataset.row = r;
-        button.dataset.col = c;
+        if (dropMap.has(key)) button.style.setProperty("--drop-y", `${dropMap.get(key)}px`);
+        button.dataset.row = String(r);
+        button.dataset.col = String(c);
         button.setAttribute("aria-label", id);
+        button.innerHTML = `<span>${data.icon}</span>`;
         button.addEventListener("click", () => popGroup(r, c));
         nodes.board.appendChild(button);
       });
@@ -237,6 +257,7 @@
 
   function groupFrom(startR, startC) {
     const id = board[startR]?.[startC];
+    if (!id) return { id, group: [] };
     const seen = new Set();
     const stack = [[startR, startC]];
     const group = [];
@@ -268,14 +289,17 @@
     markPopping(group);
     showFloat(`+${group.length}`, window.innerWidth / 2, window.innerHeight * 0.5);
     playSound("pop");
+
     window.setTimeout(() => {
-      group.forEach(([gr, gc]) => { board[gr][gc] = null; });
-      collapseBoard(stages[currentStage].palette);
-      renderAll(true);
+      group.forEach(([gr, gc]) => {
+        board[gr][gc] = null;
+      });
+      const dropMap = collapseBoard(stages[currentStage].palette);
+      renderAll(dropMap);
       busy = false;
       if (isComplete()) return finish(true);
       if (moves <= 0) return finish(false);
-    }, 260);
+    }, 230);
   }
 
   function markPopping(group) {
@@ -286,12 +310,27 @@
   }
 
   function collapseBoard(palette) {
+    const next = Array.from({ length: rows }, () => Array.from({ length: cols }, () => null));
+    const dropMap = new Map();
     for (let c = 0; c < cols; c++) {
-      const column = [];
-      for (let r = rows - 1; r >= 0; r--) if (board[r][c]) column.push(board[r][c]);
-      while (column.length < rows) column.push(palette[Math.floor(Math.random() * palette.length)]);
-      for (let r = rows - 1; r >= 0; r--) board[r][c] = column[rows - 1 - r];
+      const kept = [];
+      for (let r = rows - 1; r >= 0; r--) {
+        if (board[r][c]) kept.push({ id: board[r][c], from: r });
+      }
+      let target = rows - 1;
+      kept.forEach((item) => {
+        next[target][c] = item.id;
+        if (item.from !== target) dropMap.set(`${target},${c}`, -Math.max(1, target - item.from) * 72);
+        target -= 1;
+      });
+      while (target >= 0) {
+        next[target][c] = randomFrom(palette);
+        dropMap.set(`${target},${c}`, -Math.max(2, target + 2) * 72);
+        target -= 1;
+      }
     }
+    board = next;
+    return dropMap;
   }
 
   function isComplete() {
@@ -319,10 +358,14 @@
     nodes.resultPanel.classList.remove("hidden");
     nodes.resultTitle.textContent = won ? t("orderDone") : t("failed");
     nodes.resultText.textContent = won ? t("resultWin", { moves }) : t("resultLose");
-    nodes.starText.textContent = won ? `${"★".repeat(earned)}${"☆".repeat(3 - earned)}` : "☆☆☆";
+    nodes.starText.textContent = won ? starIcons(earned, 3) : "☆☆☆";
     nodes.nextStageBtn.classList.toggle("hidden", !won || currentStage >= stages.length - 1);
     playSound(won ? "success" : "error");
     track("game_complete", { level: stageNo, success: won, score, moves_left: moves });
+  }
+
+  function starIcons(count, total) {
+    return `${"★".repeat(count)}${"☆".repeat(total - count)}`;
   }
 
   function showFloat(message, x = window.innerWidth / 2, y = window.innerHeight / 2) {
@@ -364,6 +407,7 @@
     localizeStatic();
     renderStageGrid();
     if (!nodes.playPanel.classList.contains("hidden")) renderAll();
+    window.dispatchEvent(new CustomEvent("wonder:locale-change", { detail: { locale } }));
   });
   nodes.backToStagesBtn.addEventListener("click", showMenu);
   nodes.resultStagesBtn.addEventListener("click", showMenu);

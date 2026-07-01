@@ -235,9 +235,21 @@ select {
   border: 0;
   border-radius: 999px;
   position: relative;
+  display: grid;
+  place-items: center;
   background: var(--bubble);
   box-shadow: inset -8px -10px rgba(80, 31, 20, 0.17), inset 7px 7px rgba(255,255,255,.55), 0 8px 0 rgba(55, 24, 15, 0.18);
   transition: transform .18s ease, opacity .18s ease;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.bubble span {
+  position: relative;
+  z-index: 1;
+  font-size: clamp(1rem, 4.8vw, 1.85rem);
+  filter: drop-shadow(0 2px 0 rgba(255, 255, 255, 0.45));
+  pointer-events: none;
 }
 
 .bubble::after {
@@ -260,7 +272,7 @@ select {
 }
 
 .bubble.drop {
-  animation: bubble-drop .24s ease;
+  animation: bubble-drop .26s cubic-bezier(.18,.82,.3,1.08);
 }
 
 .board-float {
@@ -331,7 +343,7 @@ select {
 }
 
 @keyframes bubble-drop {
-  from { transform: translateY(-18px) scale(.94); }
+  from { transform: translateY(var(--drop-y, -72px)) scale(.94); }
   to { transform: translateY(0) scale(1); }
 }
 
