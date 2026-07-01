@@ -13,25 +13,25 @@ window.WONDER_LOBBY = {
     defaultLocale: "en",
   },
   featuredGameId: "wonder-crash",
-  heroGameIds: ["wonder-crash", "snack-blocks", "animal-rescue"],
+  heroGameIds: ["wonder-crash", "snack-blocks", "animal-guard-yard"],
   games: [
     {
       id: "wonder-crash",
-      title: { en: "Wonder Crash", "zh-Hant": "奇幻守城" },
+      title: { en: "Lion Wonder Crash", "zh-Hant": "奇幻守城" },
       status: "playable",
       statusText: { en: "Playable", "zh-Hant": "可遊玩" },
-      type: { en: "Defense", "zh-Hant": "防守" },
-      categories: ["Featured", "Arcade"],
+      type: { en: "Animal Defense", "zh-Hant": "防守" },
+      categories: ["Featured", "Animal Games", "Arcade"],
       skills: ["Reaction", "Focus", "Hand-Eye Coordination"],
       ages: ["5"],
       ageLabel: "5+",
       href: "games/wonder-crash/index.html",
       description: {
-        en: "Move the hero, throw school-supply weapons, and protect the wall.",
+        en: "Help the lion mascot guard a fantasy wall with playful school-supply weapons.",
         "zh-Hant": "移動主角，投擲學用品武器，保護城牆不被怪物攻破。",
       },
       meta: {
-        en: ["Hero Game", "30 Levels", "Diamond Upgrades", "Mobile"],
+        en: ["Lion Hero", "30 Levels", "Diamond Upgrades"],
         "zh-Hant": ["主打遊戲", "30 關", "鑽石強化", "手機友善"],
       },
       art: {
