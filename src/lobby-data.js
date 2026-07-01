@@ -249,8 +249,8 @@
       type: { en: "Hidden Object", "zh-Hant": "找找看" },
       categories: ["Animal Games", "Puzzle", "Family"],
       skills: ["Focus", "Animal Knowledge", "Problem Solving"],
-      ages: ["5", "family"],
-      ageLabel: { en: "5+", "zh-Hant": "5+" },
+      ages: ["3", "family"],
+      ageLabel: { en: "3+", "zh-Hant": "3+" },
       href: "games/animal-hidden-safari/index.html",
       description: {
         en: "Search playful safari scenes and find hidden animals, tracks, and habitat clues.",

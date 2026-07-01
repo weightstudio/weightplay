@@ -112,6 +112,59 @@
     },
   };
 
+  text["zh-Hant"] = {
+    gameTitle: "動物探險找找看",
+    language: "語言",
+    chooseStage: "選擇棲地",
+    menuHint: "找出躲在草叢、樹後與水邊的小動物線索。",
+    stages: "棲地",
+    loading: "載入中",
+    hint: "提示",
+    findList: "要找的目標",
+    nextStage: "下一個棲地",
+    retry: "再玩一次",
+    lobby: "大廳",
+    locked: "棲地尚未解鎖",
+    stage: "棲地 {n}",
+    great: "找得很好！",
+    perfect: "觀察力超棒！",
+    good: "很會找喔！",
+    keep: "很棒的練習！",
+    result: "你在 {time} 找到 {found}/{total} 個目標。",
+    skillReport: "能力報告",
+    skillMessage: "專注 {focus} / 動物知識 {animal} / 問題解決 {solve}。透過慢慢觀察，你完成了一次很棒的找找看練習。",
+    best: "最佳 {time}",
+    noHints: "沒有提示了",
+    found: "找到了！",
+    tryAgain: "再仔細看看",
+    targets: {
+      lion: "獅子",
+      elephant: "大象",
+      giraffe: "長頸鹿",
+      zebra: "斑馬",
+      monkey: "猴子",
+      hippo: "河馬",
+      rhino: "犀牛",
+      bird: "小鳥",
+      paw: "腳印",
+      banana: "香蕉",
+      feather: "羽毛",
+      leaf: "葉子",
+      shell: "貝殼",
+      frog: "青蛙",
+      butterfly: "蝴蝶",
+      acacia: "金合歡樹",
+    },
+    habitat: {
+      sunny: "陽光草原",
+      river: "河邊探險",
+      sunset: "夕陽樹林",
+      pond: "池塘觀察",
+      jungle: "叢林邊緣",
+      lookout: "瞭望小丘",
+    },
+  };
+
   const icons = {
     lion: "\u{1F981}",
     elephant: "\u{1F418}",
@@ -135,84 +188,84 @@
     {
       habitat: "sunny",
       targets: [
-        ["lion", 50, 62, 66],
-        ["elephant", 18, 72, 58],
-        ["giraffe", 82, 58, 62],
-        ["zebra", 69, 78, 54],
-        ["monkey", 28, 47, 46],
-        ["bird", 40, 26, 38],
-        ["paw", 58, 84, 34],
-        ["banana", 32, 76, 34],
+        ["lion", 50, 63, 62, "grass"],
+        ["elephant", 18, 72, 54, "leaf-left"],
+        ["giraffe", 82, 57, 58, "leaf-right"],
+        ["zebra", 69, 79, 50, "grass"],
+        ["monkey", 28, 47, 42, "leaf-top"],
+        ["bird", 40, 26, 36],
+        ["paw", 58, 84, 32, "dust"],
+        ["banana", 32, 76, 32, "grass"],
       ],
     },
     {
       habitat: "river",
       theme: "river",
       targets: [
-        ["hippo", 24, 72, 64],
-        ["elephant", 75, 67, 60],
-        ["frog", 42, 82, 36],
+        ["hippo", 24, 72, 60, "water"],
+        ["elephant", 75, 67, 56, "leaf-right"],
+        ["frog", 42, 82, 34, "water"],
         ["bird", 63, 34, 38],
-        ["shell", 18, 84, 34],
-        ["leaf", 86, 78, 34],
-        ["zebra", 52, 56, 48],
-        ["paw", 36, 62, 32],
+        ["shell", 18, 84, 32, "water"],
+        ["leaf", 86, 78, 32, "grass"],
+        ["zebra", 52, 56, 46, "leaf-top"],
+        ["paw", 36, 62, 30, "dust"],
       ],
     },
     {
       habitat: "sunset",
       theme: "sunset",
       targets: [
-        ["giraffe", 18, 54, 62],
-        ["monkey", 78, 42, 46],
-        ["lion", 64, 73, 58],
-        ["butterfly", 48, 30, 34],
-        ["feather", 28, 82, 32],
-        ["acacia", 86, 66, 54],
+        ["giraffe", 18, 54, 58, "leaf-left"],
+        ["monkey", 78, 42, 42, "leaf-top"],
+        ["lion", 64, 73, 54, "grass"],
+        ["butterfly", 48, 30, 32],
+        ["feather", 28, 82, 30, "grass"],
+        ["acacia", 86, 66, 50, "leaf-right"],
         ["bird", 38, 42, 36],
-        ["banana", 72, 82, 34],
+        ["banana", 72, 82, 32, "grass"],
       ],
     },
     {
       habitat: "pond",
       theme: "pond",
       targets: [
-        ["frog", 18, 74, 42],
-        ["hippo", 50, 72, 70],
-        ["rhino", 78, 66, 58],
+        ["frog", 18, 74, 38, "water"],
+        ["hippo", 50, 72, 64, "water"],
+        ["rhino", 78, 66, 54, "leaf-right"],
         ["bird", 84, 32, 38],
-        ["shell", 36, 84, 34],
-        ["leaf", 56, 54, 34],
+        ["shell", 36, 84, 32, "water"],
+        ["leaf", 56, 54, 32, "leaf-top"],
         ["butterfly", 24, 36, 34],
-        ["paw", 68, 84, 32],
+        ["paw", 68, 84, 30, "dust"],
       ],
     },
     {
       habitat: "jungle",
       theme: "jungle",
       targets: [
-        ["monkey", 22, 42, 50],
-        ["bird", 54, 28, 38],
+        ["monkey", 22, 42, 46, "leaf-left"],
+        ["bird", 54, 28, 36, "leaf-top"],
         ["butterfly", 76, 34, 34],
-        ["rhino", 70, 74, 60],
-        ["lion", 42, 70, 58],
-        ["banana", 34, 86, 34],
-        ["feather", 88, 60, 32],
-        ["leaf", 16, 78, 34],
+        ["rhino", 70, 74, 56, "grass"],
+        ["lion", 42, 70, 54, "leaf-left"],
+        ["banana", 34, 86, 32, "grass"],
+        ["feather", 88, 60, 30, "leaf-right"],
+        ["leaf", 16, 78, 32, "grass"],
       ],
     },
     {
       habitat: "lookout",
       theme: "lookout",
       targets: [
-        ["lion", 21, 68, 58],
-        ["elephant", 46, 72, 62],
-        ["giraffe", 78, 54, 62],
-        ["zebra", 65, 82, 52],
-        ["rhino", 34, 84, 54],
+        ["lion", 21, 68, 54, "grass"],
+        ["elephant", 46, 72, 58, "dust"],
+        ["giraffe", 78, 54, 58, "leaf-right"],
+        ["zebra", 65, 82, 48, "grass"],
+        ["rhino", 34, 84, 50, "grass"],
         ["bird", 54, 30, 38],
-        ["paw", 84, 82, 32],
-        ["acacia", 16, 48, 48],
+        ["paw", 84, 82, 30, "dust"],
+        ["acacia", 16, 48, 46, "leaf-top"],
       ],
     },
   ];
@@ -324,7 +377,7 @@
 
   function starsFor(stageNo) {
     const count = stars[stageNo]?.stars || 0;
-    return `${"*".repeat(count)}${"-".repeat(3 - count)}`;
+    return starIcons(count, 3);
   }
 
   function bestLine(stageNo) {
@@ -362,10 +415,11 @@
 
   function renderScene() {
     nodes.targetsLayer.innerHTML = "";
-    stages[currentStage].targets.forEach(([id, x, y, size], index) => {
+    stages[currentStage].targets.forEach(([id, x, y, size, cover], index) => {
       const button = document.createElement("button");
       button.type = "button";
       button.className = "target";
+      if (cover) button.classList.add(`cover-${cover}`);
       button.dataset.index = String(index);
       button.dataset.id = id;
       button.style.left = `${x}%`;
@@ -480,7 +534,7 @@
     }
     saveProgress(starCount, seconds);
     nodes.resultTitle.textContent = starCount >= 3 ? t("perfect") : starCount >= 2 ? t("good") : t("great");
-    nodes.starText.textContent = `${"*".repeat(starCount)}${"-".repeat(3 - starCount)}`;
+    nodes.starText.textContent = starIcons(starCount, 3);
     nodes.resultText.textContent = t("result", { found: total, total, time: formatTime(seconds) });
     nodes.skillText.textContent = t("skillMessage", {
       focus: starsText(starCount),
@@ -494,7 +548,11 @@
   }
 
   function starsText(count) {
-    return `${"*".repeat(count)}${"-".repeat(5 - count)}`;
+    return starIcons(count, 5);
+  }
+
+  function starIcons(count, total) {
+    return `${"★".repeat(count)}${"☆".repeat(total - count)}`;
   }
 
   function saveProgress(starCount, seconds) {

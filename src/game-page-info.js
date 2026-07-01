@@ -155,19 +155,19 @@
     },
     "animal-hidden-safari": {
       title: "Animal Hidden Safari",
-      age: "5+",
+      age: "3+",
       difficulty: "Easy",
       time: "3-5 minutes",
       skills: ["Focus", "Animal Knowledge", "Problem Solving"],
       intro:
-        "Animal Hidden Safari is a calm seek-and-find game where players search playful animal habitats for hidden animals, tracks, fruit, feathers, and other safari clues. Each stage gives a short target list and a bright scene to inspect. Players can use limited hints, replay for better stars, and unlock new habitats without harsh failure pressure. It is designed to help families practice careful looking, focus, and animal recognition through relaxed browser play.",
+        "Animal Hidden Safari is a calm seek-and-find game where players search playful animal habitats for animals, tracks, fruit, feathers, and other safari clues that may be partly tucked behind grass, leaves, water, or trees. Each stage gives a short picture-friendly target list and a bright scene to inspect. Players can use limited hints, replay for better stars, and unlock new habitats without harsh failure pressure. It is designed to help young children and families practice careful looking, focus, and animal recognition through relaxed browser play.",
       how: ["Choose a safari habitat.", "Look at the target list below the scene.", "Tap each hidden animal or object when you find it.", "Use hints if needed and clear the scene to unlock the next habitat."],
       parent:
         "This game may help children practice focus, visual scanning, animal knowledge, and simple problem solving. It is designed for short family-friendly sessions. Stars and best times are for fun and local progress only, not a formal assessment.",
       faq: [
         ["What kind of game is Animal Hidden Safari?", "It is a hidden-object and seek-and-find animal game for browser play."],
         ["Is there a time limit?", "No. The timer is only used for local best-time progress, not harsh failure."],
-        ["What age is it for?", "It is recommended for age 5+ and family play."],
+        ["What age is it for?", "It is recommended for age 3+ and family play."],
         ["What skills does it practice?", "It practices focus, animal knowledge, careful observation, and problem solving."],
       ],
     },
@@ -341,10 +341,10 @@
         title: "動物探險找找看",
         difficulty: "簡單",
         time: "3-5 分鐘",
-        intro: "動物探險找找看是一款輕鬆的動物找找看遊戲。玩家要在熱鬧的草原、河岸、叢林等棲地場景中，找出藏起來的動物、腳印、果實、羽毛與其他探險線索。每一關都有清楚的目標清單，也可以使用有限次數的提示。遊戲沒有嚴格失敗壓力，適合親子一起慢慢觀察，練習專注、視覺搜尋與動物知識。",
+        intro: "動物探險找找看是一款輕鬆的動物找找看遊戲。玩家要在熱鬧的草原、河岸、叢林等棲地場景中，找出部分躲在草叢、樹葉、水邊後面的動物、腳印、果實、羽毛與其他探險線索。每一關都有清楚的目標清單，也可以使用有限次數的提示。遊戲沒有嚴格失敗壓力，適合親子一起慢慢觀察，練習專注、視覺搜尋與動物知識。",
         how: ["選擇一個 Safari 棲地。", "查看畫面下方的尋找目標。", "在場景中找到動物或物件後點一下。", "需要時可以使用提示，完成後解鎖下一個棲地。"],
         parent: "這款遊戲可以讓孩子透過找找看的方式練習專注力、視覺觀察、動物知識與簡單問題解決。星星和最佳時間只用於遊戲樂趣與本機進度紀錄，不是正式能力評量。",
-        faq: [["這是什麼類型的遊戲？", "這是一款動物主題的 hidden object / 找找看遊戲。"], ["有時間限制嗎？", "沒有。時間只用來記錄本機最佳時間，不會造成失敗壓力。"], ["適合幾歲？", "建議 5+，也很適合親子一起玩。"], ["可以練習什麼？", "可以練習專注、觀察、動物知識與問題解決。"]],
+        faq: [["這是什麼類型的遊戲？", "這是一款動物主題的 hidden object / 找找看遊戲。"], ["有時間限制嗎？", "沒有。時間只用來記錄本機最佳時間，不會造成失敗壓力。"], ["適合幾歲？", "建議 3+，也很適合親子一起玩。"], ["可以練習什麼？", "可以練習專注、觀察、動物知識與問題解決。"]],
       },
       "animal-guard-yard": {
         title: "動物守衛庭院",
