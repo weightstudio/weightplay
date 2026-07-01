@@ -869,11 +869,11 @@
   }
 
   function laneCenterY(row, stage = stages[currentStage]) {
-    return (row + 0.5) / stage.rows;
+    return (row + 0.47) / stage.rows;
   }
 
   function laneProjectileY(row, stage = stages[currentStage]) {
-    return (row + 0.5) / stage.rows;
+    return (row + 0.47) / stage.rows;
   }
 
   function pulseClass(element, className) {
