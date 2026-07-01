@@ -160,14 +160,15 @@
       time: "5-8 minutes",
       skills: ["Logic", "Focus", "Problem Solving"],
       intro:
-        "Animal Guard Yard is a lane defense game where players place animal guards, earn coins, upgrade animals, and stop cartoon zombies. It combines simple strategy with clear stage goals and boss fights. The game is more complete than a tiny demo and can grow into a long-term Animal Games series.",
-      how: ["Choose a stage.", "Place animal guards in lanes.", "Collect energy and stop zombies.", "Upgrade animals and unlock stronger options."],
+        "Animal Guard Yard is a lane defense game where players place animal guards, earn coins, upgrade animals, and stop cartoon zombies across 8 stages. Cats and owls provide ranged attacks, dogs work as tank melee guards, and the diamond fox can shoot across nearby lanes. The game combines simple strategy, animal upgrades, role choices, and boss battles for a stronger Animal Games series foundation.",
+      how: ["Choose a stage.", "Place ranged, melee, and tank animal guards in lanes.", "Collect energy and stop each zombie wave.", "Upgrade animals and unlock the cross-lane fox with diamonds."],
       parent:
-        "This game may help children practice planning, focus, and problem solving through friendly lane-defense play. It uses cartoon fantasy enemies and avoids realistic violence.",
+        "This game may help children practice planning, focus, and problem solving through friendly lane-defense play. Different animal roles encourage simple strategy choices, while cartoon fantasy enemies avoid realistic violence.",
       faq: [
-        ["Can players upgrade animals?", "Yes. Coins and diamonds can unlock or improve animal guards."],
+        ["Can players upgrade animals?", "Yes. Coins upgrade animal guards, and shared WeightPlay diamonds can unlock the cross-lane fox."],
+        ["How many stages are included?", "Animal Guard Yard currently has 8 stages with mixed waves, shield enemies, cross-lane pressure, and boss battles."],
         ["Is it scary?", "The zombies are cartoon-style game enemies, not realistic horror."],
-        ["What does it practice?", "It practices planning, attention, and simple strategy."],
+        ["What does it practice?", "It practices planning, attention, and simple strategy through ranged, melee, tank, and cross-lane choices."],
       ],
     },
     "animal-quiz": {
@@ -372,12 +373,12 @@
       },
       "animal-guard-yard": {
         title: "動物守衛庭院",
-        difficulty: "中等",
-        time: "5-8 分鐘",
-        intro: "動物守衛庭院是一款路線防守遊戲，玩家放置動物守衛、賺取金幣、升級動物，並阻止卡通殭屍前進。遊戲結合簡單策略、清楚關卡目標與 Boss 戰，未來可以成長為 WeightPlay 的長期動物系列。",
-        how: ["選擇關卡。", "把動物守衛放在路線格子上。", "收集能量並阻止殭屍。", "升級或解鎖更強動物。"],
-        parent: "這款遊戲可能幫助孩子練習規劃、專注與簡單策略。敵人是卡通幻想風格，避免寫實暴力。",
-        faq: [["可以升級動物嗎？", "可以，金幣與鑽石可用於解鎖或強化動物守衛。"], ["會很可怕嗎？", "不會，殭屍是卡通遊戲敵人，不是寫實恐怖。"], ["會練習什麼？", "會練習規劃、注意力與簡單策略。"]],
+      difficulty: "中等",
+      time: "5-8 分鐘",
+        intro: "動物守衛庭院是一款路線防守遊戲，玩家放置動物守衛、賺取金幣、升級動物，並在 8 個關卡中阻止卡通殭屍前進。貓與貓頭鷹負責遠程攻擊，狗是坦克近戰守衛，鑽石解鎖的狐狸可以攻擊附近其他路線。遊戲結合簡單策略、動物定位、升級與 Boss 戰，是 WeightPlay 動物系列的重要基礎。",
+        how: ["選擇關卡。", "把遠程、近戰與坦克動物守衛放在路線格子上。", "收集能量並阻止每一波殭屍。", "升級動物，並用鑽石解鎖可跨線攻擊的狐狸。"],
+        parent: "這款遊戲可能幫助孩子練習規劃、專注與簡單策略。不同動物定位能引導孩子做基礎戰術選擇，敵人則維持卡通幻想風格，避免寫實暴力。",
+        faq: [["可以升級動物嗎？", "可以，金幣可強化動物守衛，WeightPlay 共用鑽石可解鎖跨線攻擊的狐狸。"], ["目前有幾關？", "目前有 8 個關卡，包含混合波次、盾牌敵人、跨線壓力與 Boss 戰。"], ["會很可怕嗎？", "不會，殭屍是卡通遊戲敵人，不是寫實恐怖。"], ["會練習什麼？", "會透過遠程、近戰、坦克與跨線選擇，練習規劃、注意力與簡單策略。"]],
       },
       "animal-quiz": {
         title: "動物小博士",
