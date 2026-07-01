@@ -34,6 +34,12 @@ function text(value) {
   return i18n.getLocalized(value);
 }
 
+function primaryArt(game) {
+  const hero = game.art?.hero || "";
+  if (hero && !hero.includes("width='1'")) return hero;
+  return game.art?.background || "assets/hero.png";
+}
+
 function categoryText(category) {
   return i18n.t(`category.${category}`);
 }
@@ -241,7 +247,7 @@ function renderLobby() {
   const featured = lobby.games.find((game) => game.id === lobby.featuredGameId);
   if (featured) {
     featuredGame.href = featured.href;
-    featuredGame.querySelector("img").src = featured.art.hero || "assets/hero.png";
+    featuredGame.querySelector("img").src = primaryArt(featured);
     featuredGame.querySelector("strong").textContent = text(featured.title);
   }
 
