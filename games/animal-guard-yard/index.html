@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#4aa866" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="robots" content="index,follow" />
+    <meta name="description" content="Place animal guards across garden lanes, stop funny zombies, and clear 3 lane-defense stages in Animal Guard Yard on WeightPlay." />
+    <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Animal Guard Yard - Animal Zombie Defense Game" />
+    <meta property="og:description" content="Place animal guards across garden lanes and stop funny zombies in a mobile-friendly lane-defense game." />
+    <meta property="og:url" content="https://weightstudio.github.io/weightplay/games/animal-guard-yard/" />
+    <meta property="og:image" content="https://weightstudio.github.io/weightplay/assets/animal-guard-yard-cover.svg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>Animal Guard Yard - WeightPlay</title>
+    <link rel="canonical" href="https://weightstudio.github.io/weightplay/games/animal-guard-yard/" />
+    <link rel="stylesheet" href="style.css?v=20260701-mvp1" />
+    <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "VideoGame",
+        "name": "Animal Guard Yard",
+        "alternateName": "動物守衛庭院",
+        "url": "https://weightstudio.github.io/weightplay/games/animal-guard-yard/",
+        "image": "https://weightstudio.github.io/weightplay/assets/animal-guard-yard-cover.svg",
+        "description": "Place animal guards across garden lanes, stop funny zombies, and clear 3 lane-defense stages.",
+        "applicationCategory": "Game",
+        "operatingSystem": "Web browser",
+        "publisher": { "@type": "Organization", "name": "WeightStudio" },
+        "inLanguage": ["en", "zh-Hant"],
+        "isAccessibleForFree": true
+      }
+    </script>
+  </head>
+  <body>
+    <main class="yard-game">
+      <header class="topbar">
+        <a class="home-link" href="../../index.html" aria-label="Back to lobby">&larr;</a>
+        <div class="title-block">
+          <p>WeightPlay</p>
+          <h1 data-ui="gameTitle">Animal Guard Yard</h1>
+        </div>
+        <label class="language-picker">
+          <span data-ui="language">Language</span>
+          <select id="localeSelect" aria-label="Language">
+            <option value="en">English</option>
+            <option value="zh-Hant">繁體中文</option>
+          </select>
+        </label>
+      </header>
+
+      <section id="menuPanel" class="menu-panel">
+        <img class="cover" src="../../assets/animal-guard-yard-cover.svg" alt="" />
+        <div class="menu-copy">
+          <strong data-ui="chooseStage">Choose Stage</strong>
+          <span data-ui="menuHint">Place animal guards and stop the zombies.</span>
+        </div>
+        <div id="stageGrid" class="stage-grid" aria-label="Stage list"></div>
+      </section>
+
+      <section id="playPanel" class="play-panel hidden">
+        <div class="play-head">
+          <button id="backToStagesBtn" class="soft-btn" type="button" data-ui="stages">Stages</button>
+          <div class="resource-pill"><span>☀</span><b id="energyText">0</b></div>
+          <div class="base-pill"><span>🏡</span><b id="baseText">3</b></div>
+        </div>
+        <div id="waveText" class="wave-text">Stage 1</div>
+        <div id="unitBar" class="unit-bar" aria-label="Animal guards"></div>
+        <div id="yardBoard" class="yard-board" aria-label="Animal defense lanes"></div>
+        <div id="hintText" class="hint-text" aria-live="polite"></div>
+      </section>
+
+      <div id="resultPanel" class="result-panel hidden">
+        <div class="result-card">
+          <strong id="resultTitle">Victory!</strong>
+          <span id="resultText"></span>
+          <button id="nextStageBtn" type="button" data-ui="nextStage">Next Stage</button>
+          <button id="retryBtn" type="button" data-ui="retry">Try Again</button>
+          <button id="resultStagesBtn" type="button" data-ui="stages">Stages</button>
+          <a href="../../index.html" data-ui="lobby">Lobby</a>
+        </div>
+      </div>
+
+      <div id="loadingPanel" class="loading-panel">
+        <div class="loading-card">
+          <strong data-ui="loading">Loading</strong>
+          <span id="loadingText">0%</span>
+          <div><i id="loadingFill"></i></div>
+        </div>
+      </div>
+    </main>
+
+    <script src="../../src/site-config.js?v=20260701-site1"></script>
+    <script src="../../src/version.js?v=20260701-version2"></script>
+    <script src="../../src/analytics.js?v=20260701-analytics2"></script>
+    <script>
+      window.WonderAnalytics?.track("game_view", { game_id: "animal-guard-yard" });
+    </script>
+    <script src="../../src/sound.js?v=20260701-labels1"></script>
+    <script src="../../src/edge-guard.js?v=20260701-edge2"></script>
+    <script src="../../src/tutorial.js?v=20260701-tutorial4"></script>
+    <script src="game.js?v=20260701-mvp1"></script>
+  </body>
+</html>

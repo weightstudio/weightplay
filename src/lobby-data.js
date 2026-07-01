@@ -209,6 +209,30 @@ window.WONDER_LOBBY = {
       },
     },
     {
+      id: "animal-guard-yard",
+      title: { en: "Animal Guard Yard", "zh-Hant": "動物守衛庭院" },
+      status: "playable",
+      statusText: { en: "Playable", "zh-Hant": "可遊玩" },
+      type: { en: "Lane Defense", "zh-Hant": "路線防守" },
+      categories: ["Animal Games", "Arcade", "Family"],
+      ages: ["5", "family"],
+      ageLabel: { en: "5+", "zh-Hant": "5+" },
+      href: "games/animal-guard-yard/index.html",
+      description: {
+        en: "Place animal guards across garden lanes, collect sun, and stop funny zombies across 3 defense stages.",
+        "zh-Hant": "在庭院路線放置動物守衛，收集太陽，通過 3 關殭屍防守挑戰。",
+      },
+      meta: {
+        en: ["3 Stages", "Animal Defense", "Zombies"],
+        "zh-Hant": ["3 關", "動物防守", "殭屍"],
+      },
+      art: {
+        kind: "image",
+        background: "assets/animal-guard-yard-cover.svg",
+        hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>",
+      },
+    },
+    {
       id: "animal-quiz",
       title: { en: "Animal Quiz", "zh-Hant": "動物小博士" },
       status: "playable",
