@@ -212,7 +212,7 @@
       },
       art: {
         kind: "image",
-        background: "assets/fruit-merge-cover.svg",
+        background: "assets/fruit-merge-cover.png",
         hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>",
       },
     },
