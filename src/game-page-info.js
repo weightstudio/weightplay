@@ -1,4 +1,4 @@
-(function () {
+﻿(function () {
   const games = {
     "wonder-crash": {
       title: "Wonder Crash",
@@ -160,15 +160,16 @@
       time: "5-8 minutes",
       skills: ["Logic", "Focus", "Problem Solving"],
       intro:
-        "Animal Guard Yard is a lane defense game where players place animal guards, earn coins, upgrade animals, and stop cartoon zombies across 8 stages. Cats and owls provide ranged attacks, dogs work as tank melee guards, and the diamond fox can shoot across nearby lanes. The game combines simple strategy, animal upgrades, role choices, and boss battles for a stronger Animal Games series foundation.",
-      how: ["Choose a stage.", "Place ranged, melee, and tank animal guards in lanes.", "Collect energy and stop each zombie wave.", "Upgrade animals and unlock the cross-lane fox with diamonds."],
+        "Animal Guard Yard is one of WeightPlay's main animal games. Players place full-body animal guards on lanes, collect sun energy, earn coins, upgrade the team, and stop cartoon zombies across 8 balanced stages. Cats provide steady ranged shots, dogs hold the front as tank melee guards, owls attack quickly with lighter damage, and the diamond fox supports nearby lanes. Recent combat polish adds clearer pacing, warning moments when zombies get close, placement effects, hit sparks, and boss battles so the yard feels active instead of static.",
+      how: ["Choose a stage from the game menu.", "Place ranged, melee, and tank animal guards in the best lanes.", "Collect sun energy and react when the warning appears.", "Earn coins, upgrade animals, and unlock the cross-lane fox with diamonds."],
       parent:
-        "This game may help children practice planning, focus, and problem solving through friendly lane-defense play. Different animal roles encourage simple strategy choices, while cartoon fantasy enemies avoid realistic violence.",
+        "This game may help children practice planning, focus, and problem solving through friendly lane-defense play. The pacing is designed to feel exciting without being overwhelming, and the cartoon fantasy enemies are not realistic horror. Scores and upgrades are for fun and local progress only.",
       faq: [
         ["Can players upgrade animals?", "Yes. Coins upgrade animal guards, and shared WeightPlay diamonds can unlock the cross-lane fox."],
-        ["How many stages are included?", "Animal Guard Yard currently has 8 stages with mixed waves, shield enemies, cross-lane pressure, and boss battles."],
+        ["How many stages are included?", "Animal Guard Yard currently has 8 stages with mixed waves, shield enemies, warning moments, and boss battles."],
         ["Is it scary?", "The zombies are cartoon-style game enemies, not realistic horror."],
         ["What does it practice?", "It practices planning, attention, and simple strategy through ranged, melee, tank, and cross-lane choices."],
+        ["Why is it a Hero Game?", "It has animal upgrades, diamonds, stage progression, and a clear series direction for future guards, enemies, and boss abilities."],
       ],
     },
     "animal-quiz": {
@@ -267,7 +268,7 @@
       parentNote: "家長說明",
       faq: "常見問題",
       relatedGames: "相關遊戲",
-      relatedIntro: "因為這款遊戲會練習「{skill}」，也可以試試這些遊戲：",
+      relatedIntro: "因為這款遊戲會練習 {skill}，也可以試試：",
       guideLabel: "{title} 遊戲資訊",
     },
   };
@@ -290,135 +291,17 @@
 
   const localizedGames = {
     "zh-Hant": {
-      "wonder-crash": {
-        title: "奇幻守城",
-        difficulty: "中等",
-        time: "5-8 分鐘",
-        intro: "奇幻守城是一款手機友善的防守遊戲，玩家左右移動主角，自動投擲學用品武器，保護城牆不被怪物攻破。遊戲有短關卡、武器冷卻、角色與城牆升級，以及清楚的勝利與重試節奏，適合練習反應、專注與手眼協調。它是一款有成長感的動作遊戲，但分數與進度只作為遊戲樂趣與本機紀錄，不作為能力測驗。",
-        how: ["左右移動主角。", "武器冷卻完成後會自動發射。", "在城牆被破壞前擊退每一波怪物。", "使用金幣與鑽石強化長期能力。"],
-        parent: "這款遊戲適合短時間動作練習，可能幫助孩子練習反應、專注與手眼協調。所有分數與進度只用於遊戲鼓勵與本機紀錄。",
-        faq: [["奇幻守城可以免費玩嗎？", "可以。奇幻守城可直接在 WeightPlay 瀏覽器中遊玩。"], ["適合幾歲？", "建議 5+，因為需要簡單走位、升級與時機判斷。"], ["這會測量孩子能力嗎？", "不會。這是遊戲與練習紀錄，不是測驗或診斷。"]],
-      },
-      "color-lunchbox": {
-        title: "顏色便當盒",
-        difficulty: "簡單",
-        time: "1-3 分鐘",
-        intro: "顏色便當盒是一款溫和的幼兒顏色配對遊戲，孩子把食物放進相同顏色的便當盒。每關使用少量清楚物件與簡單拖曳或點選操作，讓顏色練習像玩遊戲一樣自然。關卡短、回饋明確，家長可以很快看懂孩子正在練習什麼，也能放心讓孩子反覆嘗試。",
-        how: ["觀察畫面上的食物。", "找到相同顏色的便當盒。", "把食物拖曳或點到正確盒子。", "完成關卡後解鎖下一個主題。"],
-        parent: "這款遊戲可能幫助孩子練習顏色辨識、專注與手眼協調。它適合短時間輕鬆遊玩，不評量孩子發展狀況。",
-        faq: [["不會閱讀的小孩可以玩嗎？", "可以。前面關卡主要依靠顏色與圖片。"], ["會練習什麼？", "會練習顏色辨識、注意力與簡單配對。"], ["分數是正式評量嗎？", "不是。分數只用於遊戲樂趣與進步紀錄。"]],
-      },
-      "bubble-bakery": {
-        title: "泡泡烘焙坊",
-        difficulty: "簡單",
-        time: "3-5 分鐘",
-        intro: "泡泡烘焙坊是一款溫暖風格的益智遊戲，玩家點擊相同泡泡群組來完成烘焙訂單。遊戲沒有急迫時間壓力，重點是觀察哪些群組最有幫助，以及如何在有限步數內完成目標。它容易開始，但也能鼓勵孩子與家人一起思考下一步。",
-        how: ["先看烘焙訂單目標。", "點擊相同顏色或種類的泡泡群組。", "小心使用每一步。", "在步數用完前完成訂單。"],
-        parent: "這款遊戲可能幫助孩子練習邏輯、規劃與專注。它是遊戲式練習，不是正式學習評量。",
-        faq: [["泡泡烘焙坊有時間限制嗎？", "沒有。挑戰主要來自步數規劃。"], ["會練習哪些能力？", "可能練習邏輯、問題解決與專注力。"], ["適合親子一起玩嗎？", "適合，玩法容易討論，也方便重玩。"]],
-      },
-      "star-memory": {
-        title: "星星翻翻牌",
-        difficulty: "簡單",
-        time: "3-5 分鐘",
-        intro: "星星翻翻牌是一款翻牌配對遊戲，玩家記住圖案位置並找出相同配對。關卡會逐步增加卡片與主題，提供平靜的記憶與注意力練習。短關卡很適合手機或平板上的快速遊玩，也適合親子一起觀察與討論。",
-        how: ["翻開一張卡片。", "記住每個圖案的位置。", "找出相同圖案的配對。", "配對所有卡片即可完成關卡。"],
-        parent: "這款遊戲可能幫助孩子練習記憶與專注。進步回饋只用於鼓勵與本機紀錄。",
-        faq: [["星星翻翻牌適合幾歲？", "建議 5+ 或親子一起玩。"], ["需要很快反應嗎？", "不需要，重點是記住位置。"], ["可以重玩關卡嗎？", "可以，重玩能用低壓方式練習記憶。"]],
-      },
-      "campus-dash": {
-        title: "校園閃電跑",
-        difficulty: "困難",
-        time: "1-3 分鐘",
-        intro: "校園閃電跑是一款節奏較快的三路線跑酷遊戲，玩家左右移動閃避障礙並收集分數。它偏向高分挑戰，適合較大的孩子或喜歡快速反應的休閒玩家。每次遊玩時間短，本機最佳紀錄能讓玩家有明確的重玩目標。",
-        how: ["在不同路線間移動。", "避開障礙物。", "安全時收集加分物件。", "嘗試刷新自己的本機最佳分數。"],
-        parent: "這款遊戲適合較大的孩子與休閒玩家，主要練習反應、專注與手眼協調。分數只供遊戲樂趣使用。",
-        faq: [["為什麼是 12+？", "因為反應速度與分數壓力比低齡遊戲更高。"], ["有排行榜嗎？", "目前 MVP 使用本機紀錄。"], ["這是教育測驗嗎？", "不是，它是反應遊戲。"]],
-      },
-      "snack-blocks": {
-        title: "零食方塊",
-        difficulty: "中等",
-        time: "5-8 分鐘",
-        intro: "零食方塊是一款闖關式三消益智遊戲，玩家利用固定步數達成分數與收集目標。後續關卡會加入不同任務，要求玩家更仔細規劃每一步。它適合喜歡思考配對、累積分數與挑戰關卡的玩家。",
-        how: ["交換相鄰零食。", "排出三個以上相同零食。", "使用所有步數達成關卡目標。", "重玩關卡挑戰更高分。"],
-        parent: "這款遊戲可能幫助練習規劃、專注與問題解決。它比幼兒遊戲更有挑戰性，但不作為正式能力測量。",
-        faq: [["為什麼要把步數玩完？", "最終分數會被記錄，玩完整步數比較公平。"], ["會練習什麼？", "會練習規劃、圖案辨識與專注。"], ["會和其他孩子比較嗎？", "不會，回饋以本機紀錄與鼓勵為主。"]],
-      },
-      "fruit-merge": {
-        title: "合成水果塔",
-        difficulty: "中等",
-        time: "3-5 分鐘",
-        intro: "合成水果塔是一款物理合成益智遊戲，相同水果碰在一起會合成更大的水果。玩家要選擇水果落點，觀察水果堆如何移動，並盡量保留空間。玩法直覺、節奏輕鬆，適合家庭一起挑戰分數。",
-        how: ["移動盒子上方的水果。", "選擇好位置後放下。", "讓相同水果合成下一階水果。", "避免水果超過危險線。"],
-        parent: "這款遊戲可能幫助孩子練習空間判斷、規劃與手眼協調。它是休閒遊戲，不測量智力。",
-        faq: [["目標是什麼？", "合成更大的水果並在盒子滿之前取得高分。"], ["有時間限制嗎？", "沒有，玩家可以思考後再放下水果。"], ["大人也能玩嗎？", "可以，這是一款親子友善的重玩型遊戲。"]],
-      },
-      "garden-tiles": {
-        title: "花園方塊配對",
-        difficulty: "輕鬆",
-        time: "3-5 分鐘",
-        intro: "花園方塊配對是一款安靜的配對遊戲，使用大尺寸方塊且沒有時間壓力。它適合想要放鬆遊玩的家庭、長輩或休閒玩家。遊戲重點是清楚的視覺配對與舒服的操作介面。",
-        how: ["尋找相同的花園方塊。", "點選方塊進行配對。", "照自己的速度清除關卡。", "進入下一個輕鬆謎題。"],
-        parent: "這款遊戲支援放鬆的專注與記憶練習，避免時間壓力，也不比較玩家表現。",
-        faq: [["有時間限制嗎？", "沒有，設計目標是輕鬆遊玩。"], ["適合誰？", "適合家庭、長輩與休閒玩家。"], ["會排名嗎？", "不會，重點是本機進度與舒適體驗。"]],
-      },
-      "animal-rescue": {
-        title: "動物回家路",
-        difficulty: "簡單",
-        time: "3-5 分鐘",
-        intro: "動物回家路是一款溫和的路線選擇遊戲，玩家幫助動物找到安全回家的路。每個關卡都要觀察路線與情境，做出簡單判斷。它是 WeightPlay 動物主題的重要作品之一，適合親子與頻道宣傳。",
-        how: ["觀察動物與路線選項。", "選擇安全的道路。", "幫動物回到家。", "用仔細選擇獲得星星。"],
-        parent: "這款遊戲可能幫助孩子練習簡單邏輯、動物熟悉度與問題解決，適合短時間親子遊玩。",
-        faq: [["適合幾歲？", "支援 3+、5+ 與親子一起玩。"], ["需要閱讀嗎？", "遊戲盡量以圖片與選擇為主。"], ["會練習什麼？", "會練習簡單路線規劃與動物知識。"]],
-      },
       "animal-guard-yard": {
         title: "動物守衛庭院",
-      difficulty: "中等",
-      time: "5-8 分鐘",
-        intro: "動物守衛庭院是一款路線防守遊戲，玩家放置動物守衛、賺取金幣、升級動物，並在 8 個關卡中阻止卡通殭屍前進。貓與貓頭鷹負責遠程攻擊，狗是坦克近戰守衛，鑽石解鎖的狐狸可以攻擊附近其他路線。遊戲結合簡單策略、動物定位、升級與 Boss 戰，是 WeightPlay 動物系列的重要基礎。",
-        how: ["選擇關卡。", "把遠程、近戰與坦克動物守衛放在路線格子上。", "收集能量並阻止每一波殭屍。", "升級動物，並用鑽石解鎖可跨線攻擊的狐狸。"],
-        parent: "這款遊戲可能幫助孩子練習規劃、專注與簡單策略。不同動物定位能引導孩子做基礎戰術選擇，敵人則維持卡通幻想風格，避免寫實暴力。",
-        faq: [["可以升級動物嗎？", "可以，金幣可強化動物守衛，WeightPlay 共用鑽石可解鎖跨線攻擊的狐狸。"], ["目前有幾關？", "目前有 8 個關卡，包含混合波次、盾牌敵人、跨線壓力與 Boss 戰。"], ["會很可怕嗎？", "不會，殭屍是卡通遊戲敵人，不是寫實恐怖。"], ["會練習什麼？", "會透過遠程、近戰、坦克與跨線選擇，練習規劃、注意力與簡單策略。"]],
-      },
-      "animal-quiz": {
-        title: "動物小博士",
-        difficulty: "簡單",
-        time: "3-5 分鐘",
-        intro: "動物小博士是一款親子友善的動物問答遊戲，玩家透過主題關卡回答短問題並認識動物知識。遊戲結合圖片與簡單選項，適合喜歡動物的孩子與家長一起遊玩。",
-        how: ["選擇動物主題關卡。", "需要時由家長協助閱讀。", "選出最合適的答案。", "完成題目即可通過關卡。"],
-        parent: "這款遊戲可能幫助孩子練習動物知識與記憶。較小的孩子可以由家長協助閱讀。",
-        faq: [["小朋友適合玩嗎？", "適合，若還不熟閱讀可由家長陪同。"], ["會練習什麼？", "會練習動物知識、記憶與簡單閱讀。"], ["答錯會被懲罰嗎？", "不會，回饋應保持鼓勵。"]],
-      },
-      "zoo-helper-day": {
-        title: "動物園幫手日",
-        difficulty: "簡單",
-        time: "1-3 分鐘",
-        intro: "動物園幫手日是一款溫和的動物照顧遊戲，孩子幫動物完成餵食、喝水、清潔與玩耍任務。每個關卡都使用圖片式操作，讓年幼玩家不用大量閱讀也能理解目標。",
-        how: ["觀察動物需要什麼。", "選擇合適的幫手道具。", "把道具交給動物。", "完成每個友善照顧任務。"],
-        parent: "這款遊戲可能幫助孩子認識簡單動物照顧概念、專注與手眼協調，適合短時間友善遊玩。",
-        faq: [["3 歲可以玩嗎？", "設計方向是圖片式幼兒玩法，但家長陪伴會更好。"], ["會教什麼？", "介紹食物、水、清潔等簡單照顧行為。"], ["會收集孩子資料嗎？", "不需要個人資料即可遊玩。"]],
-      },
-      "shape-train": {
-        title: "形狀小火車",
-        difficulty: "簡單",
-        time: "1-3 分鐘",
-        intro: "形狀小火車是一款幼兒配對遊戲，孩子把彩色形狀乘客送到正確車廂。操作簡單、目標清楚，關卡長度也適合早期學習者短時間練習。",
-        how: ["觀察形狀乘客。", "找到相符的火車車廂。", "點選或拖曳到正確位置。", "完成火車即可過關。"],
-        parent: "這款遊戲可能幫助幼兒練習形狀配對、顏色與手眼協調。它是遊戲式練習，不是測驗。",
-        faq: [["需要閱讀嗎？", "不需要，主要玩法使用形狀與顏色。"], ["適合幾歲？", "建議 3+。"], ["會練習什麼？", "會練習配對、顏色辨識與協調。"]],
-      },
-      "tiny-weather-rescue": {
-        title: "動物幫手任務",
-        difficulty: "簡單",
-        time: "3-5 分鐘",
-        intro: "動物幫手任務是一款簡單的照顧益智遊戲，玩家根據動物遇到的狀況選擇合適道具。未來可以擴充成天氣、飢餓、泥巴、黑暗等不同任務包，讓每關有更多變化。",
-        how: ["觀察動物遇到的問題。", "選擇或拖曳有幫助的道具。", "如果不正確就換另一個試試。", "讓動物開心即可完成關卡。"],
-        parent: "這款遊戲可能幫助孩子練習問題解決與動物照顧思考。錯誤選擇會以溫和方式回饋，避免羞辱感。",
-        faq: [["小小天氣救援去哪了？", "它改成動物幫手任務，讓關卡不只侷限天氣。"], ["會練習什麼？", "會練習問題解決、動物知識與專注。"], ["會有壓力嗎？", "不會，錯了可以再試。"]],
+        difficulty: "中等",
+        time: "5-8 分鐘",
+        intro: "動物守衛庭院是 WeightPlay 目前主打的動物防衛遊戲之一。玩家要在路線上放置全身動物守衛，收集陽光、賺取金幣、升級隊伍，並在 8 個平衡關卡中擋住卡通殭屍。貓負責穩定遠程攻擊，狗在前線當坦克近戰，貓頭鷹攻速快但傷害較低，鑽石解鎖的狐狸可以支援附近路線。遊戲已加入殭屍靠近警告、放置特效、命中特效與 Boss 戰，讓戰鬥更有節奏感。",
+        how: ["從選單選擇關卡。", "把遠程、近戰與坦克動物放在合適路線。", "收集陽光，看到警告時趕快補強防線。", "賺取金幣升級動物，也可以用鑽石解鎖跨線狐狸。"],
+        parent: "這款遊戲可以讓孩子透過友善的路線防衛玩法練習規劃、專注與問題解決。節奏設計成有刺激感但不過度壓迫，敵人是卡通幻想殭屍，不是寫實恐怖內容。分數與升級只用於遊戲樂趣和本機進度紀錄。",
+        faq: [["可以升級動物嗎？", "可以。金幣可以升級動物守衛，WeightPlay 共用鑽石可以解鎖跨線狐狸。"], ["目前有幾關？", "目前有 8 個關卡，包含混合波次、盾牌敵人、靠近警告與 Boss 戰。"], ["會很恐怖嗎？", "不會。殭屍是卡通風格的遊戲敵人，不是寫實恐怖內容。"], ["可以練習什麼能力？", "可以練習規劃、專注、簡單策略，以及遠程、近戰、坦克與跨線支援的選擇。"], ["為什麼它是主打遊戲？", "它有動物升級、鑽石解鎖、關卡進度與 Boss 戰，很適合發展成 WeightPlay 的長期動物系列。"]],
       },
     },
   };
-
   function currentGameId() {
     const parts = location.pathname.split("/").filter(Boolean);
     const gameIndex = parts.lastIndexOf("games");
