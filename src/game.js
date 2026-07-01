@@ -1665,7 +1665,7 @@ function renderProfilePanel(tab = activeMenuTab) {
   if (backToLobbyBtn) {
     backToLobbyBtn.addEventListener("click", () => {
       window.WonderSound?.play("click");
-      window.location.href = "index.html";
+      window.location.href = "/";
     });
   }
 }
