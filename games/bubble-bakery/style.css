@@ -242,6 +242,7 @@ select {
   transition: transform .18s ease, opacity .18s ease;
   cursor: pointer;
   touch-action: manipulation;
+  will-change: transform, opacity;
 }
 
 .bubble span {
@@ -268,11 +269,12 @@ select {
 }
 
 .bubble.pop {
-  animation: bubble-pop .34s cubic-bezier(.18,.75,.22,1) forwards;
+  pointer-events: none;
+  animation: bubble-pop .46s cubic-bezier(.14,.78,.2,1) forwards;
 }
 
 .bubble.drop {
-  animation: bubble-drop .5s cubic-bezier(.18,.88,.22,1.18);
+  animation: bubble-drop .66s cubic-bezier(.17,.9,.2,1.22);
 }
 
 .board-float {
@@ -336,23 +338,30 @@ select {
 }
 
 @keyframes bubble-pop {
-  45% {
+  38% {
     opacity: 1;
-    transform: scale(1.18);
-    filter: brightness(1.18) saturate(1.12);
+    transform: scale(1.16);
+    filter: brightness(1.22) saturate(1.16);
   }
 
   to {
     opacity: 0;
-    transform: scale(.35) rotate(12deg);
-    filter: brightness(1.35) saturate(1.2);
+    transform: scale(.02) rotate(18deg);
+    filter: brightness(1.45) saturate(1.25);
   }
 }
 
 @keyframes bubble-drop {
-  0% { transform: translateY(calc(var(--drop-y, 1) * -112%)) scale(.96); }
-  72% { transform: translateY(5%) scale(1.02, .98); }
-  88% { transform: translateY(-2%) scale(.99, 1.01); }
+  0% {
+    opacity: .86;
+    transform: translateY(calc(var(--drop-y, 1) * -118%)) scale(.96);
+  }
+  58% {
+    opacity: 1;
+    transform: translateY(7%) scale(1.035, .965);
+  }
+  78% { transform: translateY(-3.5%) scale(.985, 1.018); }
+  91% { transform: translateY(1.5%) scale(1.01, .992); }
   100% { transform: translateY(0) scale(1); }
 }
 

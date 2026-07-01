@@ -184,6 +184,7 @@
     orders = { ...stage.orders };
     moves = stage.moves;
     score = 0;
+    busy = false;
     board = makeBoard(stage.palette);
     nodes.menuPanel.classList.add("hidden");
     nodes.playPanel.classList.remove("hidden");
@@ -300,14 +301,16 @@
         busy = false;
         if (isComplete()) return finish(true);
         if (moves <= 0) return finish(false);
-      }, 520);
-    }, 340);
+      }, 680);
+    }, 460);
   }
 
   function markPopping(group) {
     group.forEach(([r, c]) => {
       const node = nodes.board.querySelector(`[data-row="${r}"][data-col="${c}"]`);
-      node?.classList.add("pop");
+      if (!node) return;
+      node.disabled = true;
+      node.classList.add("pop");
     });
   }
 
