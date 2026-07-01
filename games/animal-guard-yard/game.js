@@ -1,4 +1,4 @@
-(() => {
+﻿(() => {
   const GAME_ID = "animal-guard-yard";
   const localeKey = "weightplayLocale";
   const unlockKey = "weightplay_animal_guard_unlocked";
@@ -53,6 +53,9 @@
       upgrade: "Upgrade",
       unlock: "Unlock",
       owned: "Owned",
+      coinToken: "coins",
+      diamondToken: "diamonds",
+      sunToken: "sun",
       reward: "Reward +{coins} coins",
       unitCat: "Cat",
       unitDog: "Dog",
@@ -117,6 +120,9 @@
       upgrade: "\u5347\u7d1a",
       unlock: "\u89e3\u9396",
       owned: "\u5df2\u64c1\u6709",
+      coinToken: "\u91d1\u5e63",
+      diamondToken: "\u947d\u77f3",
+      sunToken: "\u967d\u5149",
       reward: "\u734e\u52f5 +{coins} \u91d1\u5e63",
       unitCat: "\u8c93\u9a0e\u58eb",
       unitDog: "\u72d7\u6230\u58eb",
@@ -141,7 +147,7 @@
     { id: "cat", nameKey: "unitCat", roleKey: "roleRanged", attackStyle: "ranged", cost: 45, hp: 92, damage: 18, cooldown: 930, range: 9, unlockCost: 0 },
     { id: "dog", nameKey: "unitDog", roleKey: "roleTankMelee", attackStyle: "melee", cost: 70, hp: 235, damage: 30, cooldown: 1120, range: 1.35, unlockCost: 0 },
     { id: "owl", nameKey: "unitOwl", roleKey: "roleFastRanged", attackStyle: "ranged", cost: 95, hp: 78, damage: 15, cooldown: 660, range: 9, unlockCost: 0 },
-    { id: "fox", nameKey: "unitFox", roleKey: "roleCrossLane", attackStyle: "cross", cost: 135, hp: 112, damage: 26, cooldown: 1040, range: 9, targetRows: 1, unlockCost: 18 },
+    { id: "fox", nameKey: "unitFox", roleKey: "roleCrossLane", attackStyle: "cross", cost: 135, hp: 112, damage: 26, cooldown: 1040, range: 9, targetRows: 1, unlockCost: 5 },
   ];
 
   const spriteAssets = {
@@ -469,14 +475,17 @@
       card.className = `kennel-card ${owned ? "" : "locked"}`;
       const cost = owned ? upgradeCost(unit.id) : unit.unlockCost;
       const canBuy = owned ? profile.coins >= cost : readDiamonds() >= cost;
+      const tokenLabel = owned ? t("coinToken") : t("diamondToken");
+      const actionLabel = owned ? t("upgrade") : t("unlock");
       card.innerHTML = `
         <div class="kennel-animal">${animalSprite(unit.id)}</div>
         <div>
           <strong>${t(unit.nameKey)} <small>${t("level", { n: trained.level })}</small></strong>
-          <span>${t(trained.roleKey)} / ATK ${trained.damage} / HP ${trained.hp} / SUN ${trained.cost}</span>
+          <span>${t(trained.roleKey)} / ATK ${trained.damage} / HP ${trained.hp} / ${t("sunToken").toUpperCase()} ${trained.cost}</span>
         </div>
         <button type="button" data-kennel-unit="${unit.id}" ${canBuy ? "" : "disabled"}>
-          ${cost} ${owned ? t("upgrade") : t("unlock")}
+          <span>${actionLabel}</span>
+          <b>${cost} ${tokenLabel}</b>
         </button>
       `;
       nodes.kennelGrid.appendChild(card);
@@ -495,10 +504,10 @@
         <div class="shop-hero">${animalSprite(unit.id)}</div>
         <div>
           <strong>${t(unit.nameKey)}</strong>
-          <span>${t(trained.roleKey)} / ATK ${trained.damage} / HP ${trained.hp} / SUN ${trained.cost}</span>
+          <span>${t(trained.roleKey)} / ATK ${trained.damage} / HP ${trained.hp} / ${t("sunToken").toUpperCase()} ${trained.cost}</span>
         </div>
         <button type="button" data-kennel-unit="${unit.id}" ${owned || readDiamonds() < unit.unlockCost ? "disabled" : ""}>
-          ${owned ? t("owned") : `${unit.unlockCost} ${t("unlock")}`}
+          ${owned ? t("owned") : `<span>${t("unlock")}</span><b>${unit.unlockCost} ${t("diamondToken")}</b>`}
         </button>
       `;
       nodes.shopGrid.appendChild(card);
@@ -587,24 +596,18 @@
 
   function renderUnits() {
     nodes.unitBar.innerHTML = "";
-    units.forEach((unit) => {
-      const owned = isOwned(unit.id);
+    units.filter((unit) => isOwned(unit.id)).forEach((unit) => {
       const trained = trainedUnit(unit);
       const button = document.createElement("button");
       button.className = "unit-card";
       button.type = "button";
       if (unit.id === selectedUnit) button.classList.add("selected");
-      if (!owned || energy < trained.cost) button.classList.add("disabled");
+      if (energy < trained.cost) button.classList.add("disabled");
       button.innerHTML = `
         <span class="mini-animal">${animalSprite(unit.id)}</span>
-        <span>${t(unit.nameKey)} <em>${t("level", { n: trained.level })}</em><small>${t(trained.roleKey)} / SUN ${trained.cost} / ATK ${trained.damage}</small></span>
+        <span>${t(unit.nameKey)} <em>${t("level", { n: trained.level })}</em><small>${t(trained.roleKey)} / ${t("sunToken").toUpperCase()} ${trained.cost} / ATK ${trained.damage}</small></span>
       `;
       button.addEventListener("click", () => {
-        if (!owned) {
-          showFloatingText(t("noDiamonds"));
-          playSound("error");
-          return;
-        }
         selectedUnit = unit.id;
         playSound("click");
         renderUnits();
@@ -692,7 +695,7 @@
     const drop = document.createElement("button");
     drop.className = "energy-drop";
     drop.type = "button";
-    drop.textContent = "☀";
+    drop.textContent = "\u2600";
     drop.style.left = `${12 + Math.random() * 72}%`;
     drop.style.top = `${10 + Math.random() * 58}%`;
     drop.addEventListener("click", () => {
