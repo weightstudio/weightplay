@@ -1,6 +1,7 @@
 (() => {
   const GAME_ID = "fruit-merge";
   const BEST_KEY = "fruitMergeBestScore";
+  const PROGRESS_KEY = "weightplay_fruit_merge_progress";
   const canvas = document.querySelector("#gameCanvas");
   const ctx = canvas.getContext("2d");
   const localeSelect = document.querySelector("#localeSelect");
@@ -53,6 +54,18 @@
       start: "Start",
       gameOver: "Game Over",
       result: "Score {score}  Best {best}",
+      resultScore: "Score {score}",
+      previousBest: "Previous Best {score}",
+      todayScore: "Today's Score {score}",
+      improvement: "Improvement {value}%",
+      skillReport: "Skill Report",
+      logicSkill: "Logic",
+      problemSolvingSkill: "Problem Solving",
+      coordinationSkill: "Hand-Eye Coordination",
+      progressNewBest: "Amazing progress! You improved your best score.",
+      progressImproved: "Great progress! You improved from your last best.",
+      progressSteady: "Good effort! Try again to improve planning and placement.",
+      progressNote: "Scores are for fun and local progress tracking only.",
       playAgain: "Play Again",
       lobby: "Lobby",
       newBest: "New Best!",
@@ -81,6 +94,18 @@
       start: "開始",
       gameOver: "遊戲結束",
       result: "分數 {score}  最佳 {best}",
+      resultScore: "分數 {score}",
+      previousBest: "前次最佳 {score}",
+      todayScore: "本次分數 {score}",
+      improvement: "進步 {value}%",
+      skillReport: "能力小報告",
+      logicSkill: "邏輯",
+      problemSolvingSkill: "問題解決",
+      coordinationSkill: "手眼協調",
+      progressNewBest: "太棒了！你刷新了自己的最佳紀錄。",
+      progressImproved: "進步很好！這次比之前更好了。",
+      progressSteady: "很棒的嘗試！下次可以再練習放置位置。",
+      progressNote: "分數只用於遊戲樂趣與本機進步紀錄。",
       playAgain: "再玩一次",
       lobby: "大廳",
       newBest: "新的最佳紀錄！",
@@ -119,6 +144,7 @@
   let mergeBursts = [];
   let aimX = W / 2;
   let score = 0;
+  let mergeCount = 0;
   let bestScore = Number(localStorage.getItem(BEST_KEY) || 0);
   let running = false;
   let gameOver = false;
@@ -177,6 +203,7 @@
     mergeBursts = [];
     aimX = W / 2;
     score = 0;
+    mergeCount = 0;
     fruitId = 1;
     running = !showMenu;
     gameOver = false;
@@ -333,6 +360,7 @@
         additions.push(merged);
         spawnMergeBurst(merged.x, merged.y, next.color, impact);
         score += next.score;
+        mergeCount += 1;
         if (merged.level === fruits.length - 1) showToast(t("fruit10"));
         window.WonderSound?.play?.("success");
         break;
@@ -381,18 +409,112 @@
     if (gameOver) return;
     running = false;
     gameOver = true;
-    const newBest = score > bestScore;
+    const previousBest = bestScore;
+    const newBest = score > previousBest;
     if (newBest) {
       bestScore = score;
       localStorage.setItem(BEST_KEY, String(bestScore));
       showToast(t("newBest"));
     }
+    const progress = saveProgress(score, previousBest, bestScore);
     resultTitle.textContent = t("gameOver");
-    resultText.textContent = t("result", { score, best: bestScore });
+    renderResultReport(progress, newBest);
     resultPanel.classList.remove("hidden");
     window.WonderAnalytics?.track?.("game_complete", { game_id: GAME_ID, score, best_score: bestScore, new_best: newBest, cleared: false });
     window.WonderAnalytics?.track?.("score_game_over", { game_id: GAME_ID, score, best_score: bestScore });
     updateHud();
+  }
+
+  function readProgress() {
+    try {
+      return JSON.parse(localStorage.getItem(PROGRESS_KEY) || "{}");
+    } catch {
+      return {};
+    }
+  }
+
+  function saveProgress(finalScore, previousBest, currentBest) {
+    const old = readProgress();
+    const improvementPercent = previousBest > 0 ? Math.round(((finalScore - previousBest) / previousBest) * 100) : 0;
+    const progress = {
+      lastScore: finalScore,
+      bestScore: currentBest,
+      playCount: (Number(old.playCount) || 0) + 1,
+      lastPlayedAt: new Date().toISOString(),
+      improvementPercent,
+      skillScores: buildSkillScores(finalScore),
+    };
+    try {
+      localStorage.setItem(PROGRESS_KEY, JSON.stringify(progress));
+    } catch {
+      // Local progress is optional.
+    }
+    return { ...progress, previousBest };
+  }
+
+  function buildSkillScores(finalScore) {
+    const maxLevel = fruitsOnBoard.reduce((value, fruit) => Math.max(value, fruit.level || 0), 0);
+    return {
+      logic: clamp(1 + Math.floor(maxLevel / 2), 1, 5),
+      problemSolving: clamp(1 + Math.floor(finalScore / 220), 1, 5),
+      coordination: clamp(1 + Math.floor(mergeCount / 4), 1, 5),
+    };
+  }
+
+  function renderStars(value) {
+    return "★★★★★".slice(0, value) + "☆☆☆☆☆".slice(0, 5 - value);
+  }
+
+  function renderResultReport(progress, newBest) {
+    resultText.replaceChildren();
+
+    const summary = document.createElement("p");
+    summary.className = "result-summary";
+    summary.textContent = t("result", { score: progress.lastScore, best: progress.bestScore });
+    resultText.appendChild(summary);
+
+    const stats = document.createElement("div");
+    stats.className = "result-stats";
+    [
+      t("todayScore", { score: progress.lastScore }),
+      t("previousBest", { score: progress.previousBest }),
+      t("improvement", { value: Math.max(0, progress.improvementPercent) }),
+    ].forEach((item) => {
+      const chip = document.createElement("span");
+      chip.textContent = item;
+      stats.appendChild(chip);
+    });
+    resultText.appendChild(stats);
+
+    const report = document.createElement("section");
+    report.className = "skill-report";
+    const title = document.createElement("strong");
+    title.textContent = t("skillReport");
+    report.appendChild(title);
+    [
+      [t("logicSkill"), progress.skillScores.logic],
+      [t("problemSolvingSkill"), progress.skillScores.problemSolving],
+      [t("coordinationSkill"), progress.skillScores.coordination],
+    ].forEach(([name, value]) => {
+      const row = document.createElement("div");
+      row.className = "skill-row";
+      const label = document.createElement("span");
+      label.textContent = name;
+      const stars = document.createElement("b");
+      stars.textContent = renderStars(value);
+      row.append(label, stars);
+      report.appendChild(row);
+    });
+    resultText.appendChild(report);
+
+    const message = document.createElement("p");
+    message.className = "result-encouragement";
+    message.textContent = newBest ? t("progressNewBest") : progress.improvementPercent > 0 ? t("progressImproved") : t("progressSteady");
+    resultText.appendChild(message);
+
+    const note = document.createElement("small");
+    note.textContent = t("progressNote");
+    resultText.appendChild(note);
   }
 
   function draw() {
