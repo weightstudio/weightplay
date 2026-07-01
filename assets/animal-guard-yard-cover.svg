@@ -1,65 +1,80 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-label="Animal Guard Yard cover">
   <defs>
     <linearGradient id="sky" x1="0" x2="0" y1="0" y2="1">
-      <stop stop-color="#173957"/>
-      <stop offset=".45" stop-color="#4c7543"/>
-      <stop offset="1" stop-color="#23361f"/>
+      <stop stop-color="#1d3c62"/>
+      <stop offset=".5" stop-color="#68b66a"/>
+      <stop offset="1" stop-color="#203b2a"/>
     </linearGradient>
-    <linearGradient id="gold" x1="0" x2="1" y1="0" y2="1">
-      <stop stop-color="#fff2a8"/>
-      <stop offset=".48" stop-color="#f7b943"/>
-      <stop offset="1" stop-color="#8b4d1d"/>
+    <linearGradient id="title" x1="0" x2="0" y1="0" y2="1">
+      <stop stop-color="#fff8d4"/>
+      <stop offset=".52" stop-color="#ffc84c"/>
+      <stop offset="1" stop-color="#d7682b"/>
     </linearGradient>
-    <linearGradient id="banner" x1="0" x2="0" y1="0" y2="1">
-      <stop stop-color="#fff7d2"/>
-      <stop offset=".58" stop-color="#f1ba62"/>
-      <stop offset="1" stop-color="#9f5f2b"/>
+    <linearGradient id="panel" x1="0" x2="1" y1="0" y2="1">
+      <stop stop-color="#fff4bf"/>
+      <stop offset=".48" stop-color="#f6b14d"/>
+      <stop offset="1" stop-color="#7b4322"/>
     </linearGradient>
-    <filter id="shadow" x="-25%" y="-25%" width="150%" height="150%">
-      <feDropShadow dx="0" dy="16" stdDeviation="13" flood-color="#07100c" flood-opacity=".42"/>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="18" stdDeviation="12" flood-color="#06100b" flood-opacity=".46"/>
     </filter>
-    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur stdDeviation="18"/>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="15"/>
     </filter>
   </defs>
 
-  <rect width="1200" height="900" rx="66" fill="url(#sky)"/>
-  <circle cx="984" cy="118" r="74" fill="#ffe16d"/>
-  <circle cx="984" cy="118" r="120" fill="#ffe16d" opacity=".2" filter="url(#soft)"/>
-  <g opacity=".45" fill="#dff5ff">
-    <ellipse cx="174" cy="128" rx="130" ry="42"/>
-    <ellipse cx="286" cy="124" rx="74" ry="29"/>
-    <ellipse cx="760" cy="188" rx="124" ry="38"/>
-    <ellipse cx="872" cy="184" rx="72" ry="28"/>
+  <rect width="1200" height="900" rx="62" fill="url(#sky)"/>
+  <circle cx="1010" cy="128" r="78" fill="#ffe064"/>
+  <circle cx="1010" cy="128" r="144" fill="#ffe064" opacity=".23" filter="url(#glow)"/>
+  <g opacity=".58" fill="#e6f5ff">
+    <ellipse cx="194" cy="132" rx="136" ry="44"/>
+    <ellipse cx="310" cy="128" rx="76" ry="30"/>
+    <ellipse cx="764" cy="170" rx="126" ry="39"/>
+    <ellipse cx="884" cy="166" rx="72" ry="29"/>
   </g>
 
-  <path d="M0 418 C180 352 348 390 520 444 C710 506 882 438 1200 378 L1200 900 L0 900Z" fill="#3e8f52"/>
-  <path d="M0 554 C228 486 386 528 568 584 C760 642 936 596 1200 510 L1200 900 L0 900Z" fill="#286d42"/>
-  <path d="M106 724 C280 636 446 622 598 690 C740 752 902 748 1108 666 L1200 900 L0 900Z" fill="#c68b4a" opacity=".55"/>
-  <path d="M70 646H1130M70 770H1130M232 514V842M432 504V842M632 494V842M832 480V842M1032 456V842" stroke="#fff1b9" stroke-width="8" opacity=".18"/>
-  <path d="M70 646H1130M70 770H1130M232 514V842M432 504V842M632 494V842M832 480V842M1032 456V842" stroke="#17331f" stroke-width="3" opacity=".22"/>
+  <path d="M0 398 C174 340 342 366 520 430 C720 502 890 440 1200 370 L1200 900 L0 900Z" fill="#43a456"/>
+  <path d="M0 552 C210 492 382 532 560 596 C774 674 950 604 1200 516 L1200 900 L0 900Z" fill="#2f7a47"/>
+  <path d="M70 578H1132M70 674H1132M70 770H1132M214 500V846M350 490V846M486 480V846M622 470V846M758 460V846M894 448V846M1030 432V846" stroke="#fff2a8" stroke-width="9" opacity=".21"/>
+  <path d="M70 578H1132M70 674H1132M70 770H1132M214 500V846M350 490V846M486 480V846M622 470V846M758 460V846M894 448V846M1030 432V846" stroke="#17331f" stroke-width="3" opacity=".2"/>
 
-  <rect x="42" y="42" width="1116" height="816" rx="58" fill="none" stroke="#3c2514" stroke-width="22" opacity=".72"/>
-  <rect x="55" y="55" width="1090" height="790" rx="48" fill="none" stroke="url(#gold)" stroke-width="12"/>
+  <rect x="42" y="42" width="1116" height="816" rx="58" fill="none" stroke="#2c1d14" stroke-width="24" opacity=".72"/>
+  <rect x="58" y="58" width="1084" height="784" rx="46" fill="none" stroke="#ffd36a" stroke-width="10" opacity=".94"/>
 
   <g filter="url(#shadow)">
-    <path d="M110 72H1090C1128 72 1148 92 1148 130V214C1148 252 1128 272 1090 272H110C72 272 52 252 52 214V130C52 92 72 72 110 72Z" fill="url(#banner)" stroke="#4a2d18" stroke-width="10"/>
-    <text x="600" y="150" text-anchor="middle" font-family="Arial Rounded MT Bold, Noto Sans TC, sans-serif" font-size="64" font-weight="900" fill="#1a304b" stroke="#ffffff" stroke-width="7" paint-order="stroke">Animal Guard Yard</text>
-    <text x="600" y="210" text-anchor="middle" font-family="Arial Rounded MT Bold, Noto Sans TC, sans-serif" font-size="34" font-weight="900" fill="#5e3218">Upgrade animals. Hold the yard.</text>
+    <path d="M124 72H1076C1120 72 1144 96 1144 140V232C1144 276 1120 300 1076 300H124C80 300 56 276 56 232V140C56 96 80 72 124 72Z" fill="url(#panel)" stroke="#3a2416" stroke-width="10"/>
+    <text x="600" y="160" text-anchor="middle" font-family="Arial Rounded MT Bold, Noto Sans TC, sans-serif" font-size="72" font-weight="900" fill="#21344e" stroke="#ffffff" stroke-width="8" paint-order="stroke">Animal Guard Yard</text>
+    <text x="600" y="226" text-anchor="middle" font-family="Arial Rounded MT Bold, Noto Sans TC, sans-serif" font-size="36" font-weight="900" fill="#5a2f18">Full-body animal guards vs zombies</text>
+  </g>
+
+  <g opacity=".92">
+    <path d="M118 746 C236 708 386 720 520 760 C678 808 838 792 1048 714" fill="none" stroke="#fff0a6" stroke-width="16" stroke-linecap="round"/>
+    <path d="M118 774 C252 740 400 754 528 790 C692 836 864 822 1052 756" fill="none" stroke="#5c3a22" stroke-width="8" stroke-linecap="round" opacity=".5"/>
   </g>
 
   <g filter="url(#shadow)">
-    <image href="animal-guard-cat.png" x="62" y="410" width="292" height="292"/>
-    <image href="animal-guard-dog.png" x="268" y="560" width="284" height="284"/>
-    <image href="animal-guard-owl.png" x="468" y="392" width="292" height="292"/>
-    <image href="animal-guard-fox.png" x="634" y="548" width="284" height="284"/>
-    <path d="M790 408 C894 370 1002 374 1128 430 L1128 844 C1002 792 890 786 790 822Z" fill="#3a2a25" opacity=".22"/>
-    <image href="animal-guard-zombie-normal.png" x="820" y="412" width="254" height="254"/>
-    <image href="animal-guard-zombie-shield.png" x="964" y="598" width="250" height="250"/>
+    <image href="animal-guard-cat.png" x="72" y="342" width="360" height="360"/>
+    <image href="animal-guard-dog.png" x="320" y="486" width="324" height="324"/>
+    <image href="animal-guard-fox.png" x="524" y="356" width="310" height="310"/>
   </g>
 
-  <g opacity=".9">
-    <path d="M84 820 C246 774 416 798 584 826 C768 858 944 846 1116 792" fill="none" stroke="#fff0a6" stroke-width="13" stroke-linecap="round"/>
-    <path d="M84 842 C252 804 420 824 584 850 C768 882 948 872 1116 824" fill="none" stroke="#654025" stroke-width="7" stroke-linecap="round" opacity=".55"/>
+  <g filter="url(#shadow)">
+    <path d="M806 366 C920 326 1034 352 1140 426 L1140 842 C1004 784 898 792 794 828Z" fill="#1d1717" opacity=".28"/>
+    <image href="animal-guard-zombie-normal.png" x="806" y="354" width="306" height="306"/>
+    <image href="animal-guard-zombie-shield.png" x="928" y="560" width="286" height="286"/>
+  </g>
+
+  <g filter="url(#shadow)">
+    <path d="M448 506 C556 452 666 436 784 456" fill="none" stroke="#ffe76a" stroke-width="18" stroke-linecap="round"/>
+    <path d="M448 506 C556 452 666 436 784 456" fill="none" stroke="#ffffff" stroke-width="7" stroke-linecap="round" opacity=".72"/>
+    <circle cx="802" cy="460" r="34" fill="#ffe76a" stroke="#ffffff" stroke-width="8"/>
+    <circle cx="802" cy="460" r="14" fill="#f09a25"/>
+    <path d="M664 640 C758 598 848 596 950 628" fill="none" stroke="#9f86ff" stroke-width="15" stroke-linecap="round"/>
+    <circle cx="966" cy="632" r="28" fill="#9f86ff" stroke="#f3e9ff" stroke-width="7"/>
+  </g>
+
+  <g filter="url(#shadow)">
+    <path d="M72 752H360C388 752 404 768 404 796V830C404 858 388 874 360 874H72C44 874 28 858 28 830V796C28 768 44 752 72 752Z" fill="url(#title)" stroke="#3b2416" stroke-width="8"/>
+    <text x="216" y="828" text-anchor="middle" font-family="Arial Rounded MT Bold, Noto Sans TC, sans-serif" font-size="38" font-weight="900" fill="#3b2416">5 x 9 Yard</text>
   </g>
 </svg>

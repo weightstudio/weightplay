@@ -52,57 +52,57 @@
       basic: "First defense",
     },
     "zh-Hant": {
-      gameTitle: "動物守衛庭院",
-      language: "語系",
-      chooseStage: "選擇關卡",
-      menuHint: "放置動物守衛，擋住殭屍進攻。",
-      stages: "關卡",
-      loading: "載入中",
-      nextStage: "下一關",
-      retry: "再試一次",
-      lobby: "大廳",
-      locked: "關卡未解鎖",
-      victory: "庭院守住了！",
-      defeat: "殭屍闖進庭院了！",
-      resultWin: "你通過第 {n} 關，家園還剩 {hp} 顆心。",
-      resultLose: "試著早點放守衛，看到太陽就收集。",
-      stage: "第 {n} 關",
-      wave: "第 {n} 關 - 剩餘殭屍 {left}",
-      select: "先選動物，再點草地格子放置。",
-      noEnergy: "太陽不足。",
-      noCoins: "金幣不足。",
-      noDiamonds: "鑽石不足。",
-      occupied: "這格已經有守衛。",
-      started: "守住庭院！",
-      kennelTitle: "動物訓練",
-      kennelHint: "用金幣升級守衛，用鑽石解鎖稀有動物。",
-      shopTitle: "稀有動物商店",
-      shopHint: "使用 WeightPlay 共用鑽石購買特殊動物守衛。",
-      tabStages: "關卡",
-      tabAnimals: "動物",
-      tabShop: "商店",
+      gameTitle: "\u52d5\u7269\u5b88\u885b\u5ead\u9662",
+      language: "\u8a9e\u8a00",
+      chooseStage: "\u9078\u64c7\u95dc\u5361",
+      menuHint: "\u653e\u7f6e\u52d5\u7269\u5b88\u885b\uff0c\u64cb\u4f4f\u6bad\u5c4d\u9032\u653b\u3002",
+      stages: "\u95dc\u5361",
+      loading: "\u8f09\u5165\u4e2d",
+      nextStage: "\u4e0b\u4e00\u95dc",
+      retry: "\u518d\u8a66\u4e00\u6b21",
+      lobby: "\u5927\u5ef3",
+      locked: "\u95dc\u5361\u5c1a\u672a\u89e3\u9396",
+      victory: "\u5ead\u9662\u5b88\u4f4f\u4e86\uff01",
+      defeat: "\u6bad\u5c4d\u95d6\u9032\u5ead\u9662\u4e86\uff01",
+      resultWin: "\u4f60\u901a\u904e\u7b2c {n} \u95dc\uff0c\u5269\u4e0b {hp} \u9846\u5bb6\u5712\u611b\u5fc3\u3002",
+      resultLose: "\u8a66\u8457\u65e9\u9ede\u653e\u7f6e\u5b88\u885b\uff0c\u4e26\u6536\u96c6\u6bcf\u4e00\u9846\u967d\u5149\u3002",
+      stage: "\u7b2c {n} \u95dc",
+      wave: "\u7b2c {n} \u95dc - \u6bad\u5c4d {left}",
+      select: "\u9078\u64c7\u4e00\u96bb\u52d5\u7269\uff0c\u518d\u9ede\u8349\u5730\u683c\u5b50\u653e\u7f6e\u3002",
+      noEnergy: "\u967d\u5149\u4e0d\u8db3\u3002",
+      noCoins: "\u91d1\u5e63\u4e0d\u8db3\u3002",
+      noDiamonds: "\u947d\u77f3\u4e0d\u8db3\u3002",
+      occupied: "\u9019\u500b\u683c\u5b50\u5df2\u7d93\u6709\u5b88\u885b\u4e86\u3002",
+      started: "\u5b88\u4f4f\u5ead\u9662\uff01",
+      kennelTitle: "\u52d5\u7269\u8a13\u7df4",
+      kennelHint: "\u7528\u91d1\u5e63\u5347\u7d1a\u5b88\u885b\uff0c\u7528\u947d\u77f3\u89e3\u9396\u7a00\u6709\u52d5\u7269\u3002",
+      shopTitle: "\u7a00\u6709\u52d5\u7269\u5546\u5e97",
+      shopHint: "\u4f7f\u7528 WeightPlay \u5171\u7528\u947d\u77f3\u8cfc\u8cb7\u7279\u6b8a\u52d5\u7269\u5b88\u885b\u3002",
+      tabStages: "\u95dc\u5361",
+      tabAnimals: "\u52d5\u7269",
+      tabShop: "\u5546\u5e97",
       level: "Lv {n}",
-      upgrade: "升級",
-      unlock: "解鎖",
-      owned: "已擁有",
-      reward: "獎勵 +{coins} 金幣",
-      unitCat: "貓咪",
-      unitDog: "小狗",
-      unitOwl: "貓頭鷹",
-      unitFox: "狐狸",
-      fast: "快速殭屍",
-      shield: "盾牌殭屍",
-      swarm: "殭屍群夜襲",
-      boss: "大王殭屍來襲",
-      basic: "初次防守",
+      upgrade: "\u5347\u7d1a",
+      unlock: "\u89e3\u9396",
+      owned: "\u5df2\u64c1\u6709",
+      reward: "\u734e\u52f5 +{coins} \u91d1\u5e63",
+      unitCat: "\u8c93\u9a0e\u58eb",
+      unitDog: "\u72d7\u6230\u58eb",
+      unitOwl: "\u8c93\u982d\u9df9\u6cd5\u5e2b",
+      unitFox: "\u72d0\u72f8\u904a\u4fe0",
+      fast: "\u5feb\u901f\u6bad\u5c4d",
+      shield: "\u76fe\u724c\u6bad\u5c4d",
+      swarm: "\u591c\u665a\u7fa4\u8972",
+      boss: "Boss \u58d3\u5883",
+      basic: "\u7b2c\u4e00\u9053\u9632\u7dda",
     },
   };
 
   const units = [
-    { id: "cat", nameKey: "unitCat", cost: 50, hp: 80, damage: 18, cooldown: 820, range: 6, unlockCost: 0 },
-    { id: "dog", nameKey: "unitDog", cost: 80, hp: 120, damage: 30, cooldown: 1180, range: 5, unlockCost: 0 },
-    { id: "owl", nameKey: "unitOwl", cost: 110, hp: 70, damage: 24, cooldown: 640, range: 6, unlockCost: 0 },
-    { id: "fox", nameKey: "unitFox", cost: 140, hp: 92, damage: 42, cooldown: 980, range: 6, unlockCost: 18 },
+    { id: "cat", nameKey: "unitCat", cost: 50, hp: 80, damage: 18, cooldown: 820, range: 9, unlockCost: 0 },
+    { id: "dog", nameKey: "unitDog", cost: 80, hp: 120, damage: 30, cooldown: 1180, range: 8, unlockCost: 0 },
+    { id: "owl", nameKey: "unitOwl", cost: 110, hp: 70, damage: 24, cooldown: 640, range: 9, unlockCost: 0 },
+    { id: "fox", nameKey: "unitFox", cost: 140, hp: 92, damage: 42, cooldown: 980, range: 9, unlockCost: 18 },
   ];
 
   const spriteAssets = {
@@ -117,11 +117,11 @@
   };
 
   const stages = [
-    { titleKey: "basic", theme: "sunny", energy: 120, hp: 3, rows: 3, cols: 6, total: 8, interval: 2400, zombies: [{ type: "normal", hp: 88, speed: 13, damage: 14 }] },
-    { titleKey: "fast", theme: "sunset", energy: 130, hp: 3, rows: 3, cols: 6, total: 12, interval: 2050, zombies: [{ type: "normal", hp: 100, speed: 14, damage: 16 }, { type: "fast", hp: 74, speed: 22, damage: 12 }] },
-    { titleKey: "shield", theme: "rain", energy: 150, hp: 4, rows: 3, cols: 6, total: 15, interval: 1900, zombies: [{ type: "normal", hp: 115, speed: 15, damage: 18 }, { type: "fast", hp: 88, speed: 22, damage: 14 }, { type: "shield", hp: 180, speed: 10, damage: 24 }] },
-    { titleKey: "swarm", theme: "swamp", energy: 165, hp: 4, rows: 3, cols: 6, total: 18, interval: 1650, zombies: [{ type: "normal", hp: 125, speed: 16, damage: 18 }, { type: "fast", hp: 96, speed: 25, damage: 15 }, { type: "shield", hp: 200, speed: 11, damage: 25 }] },
-    { titleKey: "boss", theme: "boss", energy: 185, hp: 5, rows: 3, cols: 6, total: 20, interval: 1550, zombies: [{ type: "normal", hp: 135, speed: 16, damage: 19 }, { type: "fast", hp: 104, speed: 25, damage: 16 }, { type: "shield", hp: 220, speed: 11, damage: 26 }], boss: { type: "boss", hp: 520, speed: 7, damage: 38 } },
+    { titleKey: "basic", theme: "sunny", energy: 135, hp: 3, rows: 5, cols: 9, total: 10, interval: 2350, zombies: [{ type: "normal", hp: 88, speed: 13, damage: 14 }] },
+    { titleKey: "fast", theme: "sunset", energy: 150, hp: 3, rows: 5, cols: 9, total: 14, interval: 2050, zombies: [{ type: "normal", hp: 100, speed: 14, damage: 16 }, { type: "fast", hp: 74, speed: 22, damage: 12 }] },
+    { titleKey: "shield", theme: "rain", energy: 165, hp: 4, rows: 5, cols: 9, total: 17, interval: 1880, zombies: [{ type: "normal", hp: 115, speed: 15, damage: 18 }, { type: "fast", hp: 88, speed: 22, damage: 14 }, { type: "shield", hp: 180, speed: 10, damage: 24 }] },
+    { titleKey: "swarm", theme: "swamp", energy: 180, hp: 4, rows: 5, cols: 9, total: 21, interval: 1650, zombies: [{ type: "normal", hp: 125, speed: 16, damage: 18 }, { type: "fast", hp: 96, speed: 25, damage: 15 }, { type: "shield", hp: 200, speed: 11, damage: 25 }] },
+    { titleKey: "boss", theme: "boss", energy: 205, hp: 5, rows: 5, cols: 9, total: 24, interval: 1550, zombies: [{ type: "normal", hp: 135, speed: 16, damage: 19 }, { type: "fast", hp: 104, speed: 25, damage: 16 }, { type: "shield", hp: 220, speed: 11, damage: 26 }], boss: { type: "boss", hp: 620, speed: 7, damage: 38 } },
   ];
 
   const $ = (id) => document.getElementById(id);
@@ -330,10 +330,10 @@
         <div class="kennel-animal">${animalSprite(unit.id)}</div>
         <div>
           <strong>${t(unit.nameKey)} <small>${t("level", { n: trained.level })}</small></strong>
-          <span>⚔ ${trained.damage} · ♥ ${trained.hp} · ☀ ${trained.cost}</span>
+          <span>ATK ${trained.damage} / HP ${trained.hp} / SUN ${trained.cost}</span>
         </div>
         <button type="button" data-kennel-unit="${unit.id}" ${canBuy ? "" : "disabled"}>
-          ${owned ? "●" : "◆"} ${cost} ${owned ? t("upgrade") : t("unlock")}
+          ${cost} ${owned ? t("upgrade") : t("unlock")}
         </button>
       `;
       nodes.kennelGrid.appendChild(card);
@@ -352,10 +352,10 @@
         <div class="shop-hero">${animalSprite(unit.id)}</div>
         <div>
           <strong>${t(unit.nameKey)}</strong>
-          <span>⚔ ${trained.damage} · ♥ ${trained.hp} · ☀ ${trained.cost}</span>
+          <span>ATK ${trained.damage} / HP ${trained.hp} / SUN ${trained.cost}</span>
         </div>
         <button type="button" data-kennel-unit="${unit.id}" ${owned || readDiamonds() < unit.unlockCost ? "disabled" : ""}>
-          ${owned ? t("owned") : `◆ ${unit.unlockCost} ${t("unlock")}`}
+          ${owned ? t("owned") : `${unit.unlockCost} ${t("unlock")}`}
         </button>
       `;
       nodes.shopGrid.appendChild(card);
@@ -415,6 +415,8 @@
   function buildBoard(stage) {
     nodes.yardBoard.innerHTML = "";
     nodes.yardBoard.dataset.theme = stage.theme || "sunny";
+    nodes.yardBoard.style.setProperty("--grid-cols", stage.cols);
+    nodes.yardBoard.style.setProperty("--grid-rows", stage.rows);
     boardRect = nodes.yardBoard.getBoundingClientRect();
     for (let row = 0; row < stage.rows; row += 1) {
       for (let col = 0; col < stage.cols; col += 1) {
@@ -444,7 +446,7 @@
       if (!owned || energy < trained.cost) button.classList.add("disabled");
       button.innerHTML = `
         <span class="mini-animal">${animalSprite(unit.id)}</span>
-        <span>${t(unit.nameKey)} <em>${t("level", { n: trained.level })}</em><small>☀ ${trained.cost} / ⚔ ${trained.damage}</small></span>
+        <span>${t(unit.nameKey)} <em>${t("level", { n: trained.level })}</em><small>SUN ${trained.cost} / ATK ${trained.damage}</small></span>
       `;
       button.addEventListener("click", () => {
         if (!owned) {
@@ -576,8 +578,11 @@
   function updateGuards(dt) {
     entities.filter((item) => item.kind === "guard").forEach((guard) => {
       guard.cooldown -= dt;
+      const cols = stages[currentStage].cols;
+      const guardX = (guard.col + 0.5) / cols;
+      const rangeEnd = Math.min(1.08, (guard.col + guard.data.range + 0.5) / cols);
       const target = entities
-        .filter((item) => item.kind === "zombie" && item.row === guard.row && item.x > guard.col / stages[currentStage].cols)
+        .filter((item) => item.kind === "zombie" && item.row === guard.row && item.x > guardX && item.x <= rangeEnd)
         .sort((a, b) => a.x - b.x)[0];
       if (target && guard.cooldown <= 0) {
         shoot(guard, target);
@@ -589,11 +594,12 @@
 
   function shoot(guard, target) {
     pulseClass(guard.el, "is-shooting");
+    const stage = stages[currentStage];
     const projectile = {
       row: guard.row,
-      x: (guard.col + 0.72) / stages[currentStage].cols,
-      y: (guard.row + 0.5) / stages[currentStage].rows,
-      speed: 0.00115,
+      x: (guard.col + 0.76) / stage.cols,
+      y: (guard.row + 0.5) / stage.rows,
+      speed: 0.00105,
       damage: guard.data.damage,
       unitId: guard.id,
       target,
@@ -607,8 +613,14 @@
 
   function updateProjectiles(dt) {
     projectiles.forEach((shot) => {
+      const previousX = shot.x;
       shot.x += shot.speed * dt;
-      const hit = entities.find((item) => item.kind === "zombie" && item.row === shot.row && Math.abs(item.x - shot.x) < 0.045);
+      const hit = entities.find((item) => (
+        item.kind === "zombie"
+        && item.row === shot.row
+        && item.x >= previousX - 0.01
+        && item.x <= shot.x + 0.035
+      ));
       if (hit) {
         hit.hp -= shot.damage;
         pulseClass(hit.el, "is-hit");

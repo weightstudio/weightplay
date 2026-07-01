@@ -243,10 +243,10 @@ window.WONDER_LOBBY = {
     },
     {
       id: "animal-guard-yard",
-      title: { en: "Animal Guard Yard", "zh-Hant": "動物守衛庭院" },
+      title: { en: "Animal Guard Yard", "zh-Hant": "\u52d5\u7269\u5b88\u885b\u5ead\u9662" },
       status: "playable",
-      statusText: { en: "Playable", "zh-Hant": "可遊玩" },
-      type: { en: "Lane Defense", "zh-Hant": "路線防守" },
+      statusText: { en: "Playable", "zh-Hant": "\u53ef\u904a\u73a9" },
+      type: { en: "Lane Defense", "zh-Hant": "\u8def\u7dda\u9632\u5b88" },
       categories: ["Animal Games", "Arcade", "Family"],
       skills: ["Logic", "Focus", "Problem Solving"],
       ages: ["5", "family"],
@@ -254,11 +254,11 @@ window.WONDER_LOBBY = {
       href: "games/animal-guard-yard/index.html",
       description: {
         en: "Place full-body animal guards, earn coins, upgrade your team, and fight through 5 zombie stages with a boss.",
-        "zh-Hant": "放置全身動物守衛，賺金幣升級隊伍，挑戰 5 關殭屍與 Boss。",
+        "zh-Hant": "\u653e\u7f6e\u5168\u8eab\u52d5\u7269\u5b88\u885b\uff0c\u8cfa\u91d1\u5e63\u5347\u7d1a\u968a\u4f0d\uff0c\u6311\u6230 5 \u95dc\u6bad\u5c4d\u8207 Boss\u3002",
       },
       meta: {
         en: ["5 Stages", "Animal Upgrades", "Boss Fight"],
-        "zh-Hant": ["5 關", "動物升級", "Boss 戰"],
+        "zh-Hant": ["5 \u95dc", "\u52d5\u7269\u5347\u7d1a", "Boss \u6230"],
       },
       art: {
         kind: "image",
