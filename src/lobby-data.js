@@ -120,8 +120,8 @@ window.WONDER_LOBBY = {
       href: "games/campus-dash/index.html",
       type: { en: "Reaction Runner", "zh-Hant": "反應跑酷" },
       categories: ["Arcade"],
-      ages: ["13"],
-      ageLabel: "13+",
+      ages: ["12"],
+      ageLabel: "12+",
       description: {
         en: "Swipe left and right, dodge obstacles, and chase a high score.",
         "zh-Hant": "左右換線閃避障礙，收集星星挑戰高分。",
@@ -144,8 +144,8 @@ window.WONDER_LOBBY = {
       href: "games/snack-blocks/index.html",
       type: { en: "Match Puzzle", "zh-Hant": "配對益智" },
       categories: ["Puzzle", "Family"],
-      ages: ["13", "family"],
-      ageLabel: "13+",
+      ages: ["12", "family"],
+      ageLabel: "12+",
       description: {
         en: "Use every move, clear score and collection goals, and chase your best snack score.",
         "zh-Hant": "用完每一步，完成分數與收集目標，挑戰零食高分。",
