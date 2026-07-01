@@ -282,6 +282,8 @@
     en: {
       kicker: "WeightPlay Kids Game Guide",
       titleSuffix: "Free Kids Game",
+      gameplay: "Gameplay",
+      genre: "Genre",
       recommendedAge: "Recommended Age",
       difficulty: "Difficulty",
       estimatedTime: "Estimated Play Time",
@@ -304,6 +306,8 @@
     "zh-Hant": {
       kicker: "WeightPlay 兒童遊戲指南",
       titleSuffix: "免費兒童遊戲",
+      gameplay: "玩法",
+      genre: "類型",
       recommendedAge: "建議年齡",
       difficulty: "難度",
       estimatedTime: "預估遊玩時間",
@@ -339,6 +343,25 @@
       "Problem Solving": "問題解決",
       "Animal Knowledge": "動物知識",
     },
+  };
+
+  const gameplayProfiles = {
+    "wonder-crash": { gameplay: "Bullet Heaven Defense", genre: ["Action", "Defense", "Animal"] },
+    "color-lunchbox": { gameplay: "Color Sorting", genre: ["Preschool", "Education", "Animal"] },
+    "bubble-bakery": { gameplay: "Bubble Match Puzzle", genre: ["Puzzle", "Logic", "Animal"] },
+    "animal-zoo-idle": { gameplay: "Idle Zoo Care", genre: ["Idle", "Simulation", "Animal"] },
+    "star-memory": { gameplay: "Memory Match", genre: ["Memory", "Puzzle", "Animal"] },
+    "campus-dash": { gameplay: "Lane Runner", genre: ["Runner", "Reaction", "Animal"] },
+    "snack-blocks": { gameplay: "Match 3 Puzzle", genre: ["Puzzle", "Logic", "Animal"] },
+    "fruit-merge": { gameplay: "Physics Merge", genre: ["Merge", "Physics", "Animal"] },
+    "garden-tiles": { gameplay: "Tile Match", genre: ["Puzzle", "Relaxed", "Animal"] },
+    "animal-rescue": { gameplay: "Path Choice", genre: ["Puzzle", "Adventure", "Animal"] },
+    "animal-hidden-safari": { gameplay: "Hidden Object", genre: ["Puzzle", "Safari", "Animal"] },
+    "animal-guard-yard": { gameplay: "Lane Defense", genre: ["Strategy", "Tower Defense", "Animal"] },
+    "animal-quiz": { gameplay: "Animal Quiz", genre: ["Quiz", "Education", "Animal"] },
+    "zoo-helper-day": { gameplay: "Animal Care", genre: ["Preschool", "Education", "Animal"] },
+    "shape-train": { gameplay: "Shape Sorting", genre: ["Preschool", "Education", "Animal"] },
+    "tiny-weather-rescue": { gameplay: "Helper Choice", genre: ["Puzzle", "Care", "Animal"] },
   };
 
   const localizedGames = {
@@ -541,7 +564,8 @@
   function localizedGame(id) {
     const base = games[id];
     const override = localizedGames[locale()]?.[id] || {};
-    return { ...base, ...override, skills: override.skills || base.skills };
+    const profile = gameplayProfiles[id] || {};
+    return { ...base, ...profile, ...override, skills: override.skills || base.skills, genre: override.genre || profile.genre || [] };
   }
 
   function relatedGames(activeId, activeBaseGame) {
@@ -618,6 +642,8 @@
           <p>${escapeHtml(game.intro)}</p>
         </div>
         <div class="game-info-facts">
+          <div class="game-info-fact"><span>${escapeHtml(uiLabel("gameplay"))}</span><strong>${escapeHtml(game.gameplay || game.title)}</strong></div>
+          <div class="game-info-fact"><span>${escapeHtml(uiLabel("genre"))}</span><div class="game-info-tags">${(game.genre || []).map((tag) => `<span>${escapeHtml(tag)}</span>`).join("")}</div></div>
           <div class="game-info-fact"><span>${escapeHtml(uiLabel("recommendedAge"))}</span><strong>${escapeHtml(localizeAge(game.age))}</strong></div>
           <div class="game-info-fact"><span>${escapeHtml(uiLabel("difficulty"))}</span><strong>${escapeHtml(game.difficulty)}</strong></div>
           <div class="game-info-fact"><span>${escapeHtml(uiLabel("estimatedTime"))}</span><strong>${escapeHtml(game.time)}</strong></div>
@@ -701,6 +727,8 @@
         age: localized.age,
         difficulty: localized.difficulty,
         time: localized.time,
+        gameplay: localized.gameplay,
+        genre: localized.genre,
         skills: localized.skills,
       };
     },
