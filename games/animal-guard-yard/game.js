@@ -105,6 +105,17 @@
     { id: "fox", nameKey: "unitFox", cost: 140, hp: 92, damage: 42, cooldown: 980, range: 6, unlockCost: 18 },
   ];
 
+  const spriteAssets = {
+    cat: "../../assets/animal-guard-cat.svg",
+    dog: "../../assets/animal-guard-dog.svg",
+    owl: "../../assets/animal-guard-owl.svg",
+    fox: "../../assets/animal-guard-fox.svg",
+    normal: "../../assets/animal-guard-zombie-normal.svg",
+    fast: "../../assets/animal-guard-zombie-fast.svg",
+    shield: "../../assets/animal-guard-zombie-shield.svg",
+    boss: "../../assets/animal-guard-zombie-boss.svg",
+  };
+
   const stages = [
     { titleKey: "basic", theme: "sunny", energy: 120, hp: 3, rows: 3, cols: 6, total: 8, interval: 2400, zombies: [{ type: "normal", hp: 88, speed: 13, damage: 14 }] },
     { titleKey: "fast", theme: "sunset", energy: 130, hp: 3, rows: 3, cols: 6, total: 12, interval: 2050, zombies: [{ type: "normal", hp: 100, speed: 14, damage: 16 }, { type: "fast", hp: 74, speed: 22, damage: 12 }] },
@@ -292,15 +303,7 @@
   function animalSprite(unitId) {
     return `
       <span class="animal-sprite ${unitId}" aria-hidden="true">
-        <i class="tail"></i>
-        <i class="body"></i>
-        <i class="head"></i>
-        <i class="ear left"></i>
-        <i class="ear right"></i>
-        <i class="leg one"></i>
-        <i class="leg two"></i>
-        <i class="eye"></i>
-        <i class="snout"></i>
+        <img src="${spriteAssets[unitId] || spriteAssets.cat}" alt="" draggable="false" />
       </span>
     `;
   }
@@ -308,13 +311,7 @@
   function zombieSprite(type) {
     return `
       <span class="zombie-sprite ${type}" aria-hidden="true">
-        <i class="body"></i>
-        <i class="head"></i>
-        <i class="arm front"></i>
-        <i class="arm back"></i>
-        <i class="leg one"></i>
-        <i class="leg two"></i>
-        <i class="eye"></i>
+        <img src="${spriteAssets[type] || spriteAssets.normal}" alt="" draggable="false" />
       </span>
     `;
   }
@@ -750,17 +747,32 @@
   }
 
   function initLoading() {
-    let pct = 0;
-    const timer = window.setInterval(() => {
-      pct = Math.min(100, pct + 25);
+    const assets = [
+      "../../assets/animal-guard-yard-cover.svg",
+      ...Object.values(spriteAssets),
+      "../../assets/menu-battle.png",
+      "../../assets/menu-character.png",
+      "../../assets/upgrade-coin.png",
+    ];
+    let loaded = 0;
+    const update = () => {
+      const pct = Math.min(100, Math.round((loaded / assets.length) * 100));
       nodes.loadingText.textContent = `${pct}%`;
       nodes.loadingFill.style.width = `${pct}%`;
       if (pct >= 100) {
-        window.clearInterval(timer);
         nodes.loadingPanel.classList.add("hidden");
         track("game_ready");
       }
-    }, 80);
+    };
+    assets.forEach((src) => {
+      const image = new Image();
+      image.onload = image.onerror = () => {
+        loaded += 1;
+        update();
+      };
+      image.src = src;
+    });
+    update();
   }
 
   nodes.localeSelect.addEventListener("change", () => {

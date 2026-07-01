@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-label="fast zombie">
+  <defs>
+    <linearGradient id="fzSkin" x1="42" x2="126" y1="24" y2="137" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#9de5d6"/>
+      <stop offset="1" stop-color="#3d8d83"/>
+    </linearGradient>
+    <linearGradient id="fzSuit" x1="50" x2="124" y1="75" y2="132" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ffe277"/>
+      <stop offset="1" stop-color="#dc8b23"/>
+    </linearGradient>
+  </defs>
+  <ellipse cx="83" cy="143" rx="47" ry="9" fill="#102018" opacity=".2"/>
+  <path d="M42 76c-18 7-25 22-22 36 17-1 30-12 35-31z" fill="#4f9d8d" stroke="#253027" stroke-width="7" stroke-linejoin="round"/>
+  <path d="M112 74c24 2 34 13 37 29-17 5-35-2-45-21z" fill="#4f9d8d" stroke="#253027" stroke-width="7" stroke-linejoin="round"/>
+  <path d="M48 76c6-25 25-39 51-34 28 5 45 25 41 52-5 31-28 45-61 41-29-4-39-27-31-59z" fill="url(#fzSkin)" stroke="#253027" stroke-width="7" stroke-linejoin="round"/>
+  <path d="M58 80c15 9 43 9 67-3l-3 35c-5 16-17 23-34 22-17-1-28-10-31-26z" fill="url(#fzSuit)" stroke="#253027" stroke-width="6" stroke-linejoin="round"/>
+  <path d="M72 49c11-17 43-15 55 2 11 16 1 37-24 40-24 3-43-21-31-42z" fill="#98ddcf" stroke="#253027" stroke-width="7"/>
+  <circle cx="92" cy="62" r="5" fill="#1d2720"/>
+  <circle cx="118" cy="60" r="5" fill="#1d2720"/>
+  <path d="M93 75c9 4 19 3 28-4" fill="none" stroke="#253027" stroke-width="5" stroke-linecap="round"/>
+  <path d="M65 115h14l-11 25H52zm49 1h15l-2 24h-22z" fill="#336f68" stroke="#253027" stroke-width="6" stroke-linejoin="round"/>
+  <path d="M35 38h16M22 57h22M29 128h22" stroke="#fff3a7" stroke-width="7" stroke-linecap="round"/>
+</svg>

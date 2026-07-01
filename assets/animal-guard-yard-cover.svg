@@ -1,93 +1,38 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-label="Animal Guard Yard cover">
   <defs>
     <linearGradient id="sky" x1="0" x2="0" y1="0" y2="1">
-      <stop offset="0" stop-color="#8fdcff"/>
-      <stop offset=".5" stop-color="#fff1aa"/>
-      <stop offset="1" stop-color="#63bd65"/>
+      <stop stop-color="#75d8ff"/>
+      <stop offset=".48" stop-color="#fff0a3"/>
+      <stop offset="1" stop-color="#44a85f"/>
     </linearGradient>
-    <linearGradient id="grass" x1="0" x2="0" y1="0" y2="1">
-      <stop offset="0" stop-color="#88e47b"/>
-      <stop offset="1" stop-color="#3d9d5a"/>
+    <linearGradient id="frame" x1="0" x2="1" y1="0" y2="1">
+      <stop stop-color="#fff8d6"/>
+      <stop offset="1" stop-color="#ffb74b"/>
     </linearGradient>
     <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="16" stdDeviation="12" flood-color="#16331f" flood-opacity=".24"/>
+      <feDropShadow dx="0" dy="16" stdDeviation="13" flood-color="#1a2c22" flood-opacity=".3"/>
     </filter>
   </defs>
   <rect width="1200" height="900" rx="64" fill="url(#sky)"/>
-  <circle cx="1005" cy="120" r="76" fill="#ffdf57"/>
-  <g fill="#fff" opacity=".55">
-    <ellipse cx="180" cy="156" rx="126" ry="42"/>
-    <ellipse cx="285" cy="148" rx="76" ry="32"/>
-    <ellipse cx="820" cy="205" rx="138" ry="42"/>
-    <ellipse cx="930" cy="202" rx="84" ry="32"/>
+  <circle cx="1012" cy="116" r="82" fill="#ffdf57"/>
+  <g fill="#fff" opacity=".65">
+    <ellipse cx="174" cy="155" rx="124" ry="42"/>
+    <ellipse cx="284" cy="147" rx="76" ry="31"/>
+    <ellipse cx="784" cy="202" rx="138" ry="43"/>
+    <ellipse cx="898" cy="199" rx="84" ry="32"/>
   </g>
-  <path d="M0 430 C190 380 330 418 500 462 C710 515 885 458 1200 402 L1200 900 L0 900 Z" fill="url(#grass)"/>
-  <g opacity=".22" stroke="#1f7d49" stroke-width="8">
-    <path d="M92 555 H1100"/>
-    <path d="M92 690 H1100"/>
-    <path d="M235 485 V830"/>
-    <path d="M435 485 V830"/>
-    <path d="M635 485 V830"/>
-    <path d="M835 485 V830"/>
-    <path d="M1035 485 V830"/>
-  </g>
+  <path d="M0 420 C190 370 350 414 510 462 C706 520 890 456 1200 394 L1200 900 L0 900Z" fill="#5cc867"/>
+  <path d="M76 496H1124M76 626H1124M76 756H1124M226 456V848M421 456V848M616 456V848M811 456V848M1006 456V848" stroke="#257d48" stroke-width="8" opacity=".26"/>
+  <rect x="52" y="50" width="1096" height="168" rx="44" fill="url(#frame)" stroke="#5c3a1e" stroke-width="10" filter="url(#shadow)"/>
+  <text x="600" y="124" text-anchor="middle" font-family="Arial Rounded MT Bold, Noto Sans TC, sans-serif" font-size="64" font-weight="900" fill="#17314f">Animal Guard Yard</text>
+  <text x="600" y="178" text-anchor="middle" font-family="Arial Rounded MT Bold, Noto Sans TC, sans-serif" font-size="34" font-weight="900" fill="#6a3d1b">Upgrade animals. Stop the zombies.</text>
   <g filter="url(#shadow)">
-    <g transform="translate(116 546) scale(1.25)">
-      <path d="M30 98 C34 60 72 32 118 42 C157 50 178 82 168 121 C158 162 106 178 64 158 C40 146 27 126 30 98Z" fill="#d18a55"/>
-      <path d="M122 45 L144 4 L158 55Z" fill="#a95f37"/>
-      <path d="M86 42 L104 0 L118 51Z" fill="#a95f37"/>
-      <path d="M31 99 C-6 92 -16 61 22 51 C49 58 56 78 42 101Z" fill="#a95f37"/>
-      <circle cx="132" cy="78" r="7" fill="#15251b"/>
-      <ellipse cx="151" cy="95" rx="19" ry="12" fill="#ffe8bd"/>
-      <rect x="72" y="150" width="18" height="52" rx="9" fill="#a95f37"/>
-      <rect x="121" y="148" width="18" height="52" rx="9" fill="#a95f37"/>
-    </g>
-    <g transform="translate(330 654) scale(1.18)">
-      <path d="M34 98 C40 58 78 32 124 44 C166 55 184 93 166 130 C146 169 88 178 52 150 C37 138 30 119 34 98Z" fill="#c89562"/>
-      <path d="M89 39 C74 10 108 -2 116 44Z" fill="#7d5436"/>
-      <path d="M139 47 C162 12 190 28 158 67Z" fill="#7d5436"/>
-      <path d="M33 102 C-2 104 -14 76 18 58 C42 61 56 80 46 102Z" fill="#7d5436"/>
-      <circle cx="132" cy="78" r="7" fill="#15251b"/>
-      <ellipse cx="151" cy="98" rx="22" ry="13" fill="#ffe8bd"/>
-      <rect x="78" y="148" width="18" height="52" rx="9" fill="#7d5436"/>
-      <rect x="125" y="148" width="18" height="52" rx="9" fill="#7d5436"/>
-    </g>
-    <g transform="translate(545 500) scale(1.18)">
-      <ellipse cx="98" cy="112" rx="66" ry="86" fill="#8b745d"/>
-      <circle cx="98" cy="58" r="48" fill="#8b745d"/>
-      <path d="M60 29 L79 4 L91 41Z" fill="#57483c"/>
-      <path d="M136 29 L117 4 L105 41Z" fill="#57483c"/>
-      <circle cx="82" cy="57" r="17" fill="#f6e7a4"/>
-      <circle cx="114" cy="57" r="17" fill="#f6e7a4"/>
-      <circle cx="82" cy="57" r="7" fill="#15251b"/>
-      <circle cx="114" cy="57" r="7" fill="#15251b"/>
-      <path d="M98 70 L88 90 H108Z" fill="#e6a73c"/>
-      <rect x="70" y="178" width="18" height="36" rx="9" fill="#57483c"/>
-      <rect x="111" y="178" width="18" height="36" rx="9" fill="#57483c"/>
-    </g>
+    <image href="animal-guard-cat.svg" x="88" y="455" width="230" height="230"/>
+    <image href="animal-guard-dog.svg" x="294" y="575" width="230" height="230"/>
+    <image href="animal-guard-owl.svg" x="500" y="440" width="230" height="230"/>
+    <image href="animal-guard-fox.svg" x="666" y="585" width="230" height="230"/>
+    <image href="animal-guard-zombie-normal.svg" x="865" y="438" width="226" height="226"/>
+    <image href="animal-guard-zombie-shield.svg" x="985" y="612" width="238" height="238"/>
   </g>
-  <g filter="url(#shadow)">
-    <g transform="translate(840 540) scale(1.22)">
-      <path d="M52 98 C58 56 92 32 130 44 C168 56 182 91 162 132 C143 170 81 169 58 138 C49 126 48 112 52 98Z" fill="#84ab8e"/>
-      <circle cx="122" cy="54" r="44" fill="#97bd9f"/>
-      <rect x="32" y="100" width="24" height="82" rx="12" fill="#6d9278" transform="rotate(18 44 141)"/>
-      <rect x="158" y="83" width="24" height="88" rx="12" fill="#6d9278" transform="rotate(-28 170 127)"/>
-      <rect x="83" y="156" width="19" height="48" rx="9" fill="#5e8068"/>
-      <rect x="125" y="154" width="19" height="48" rx="9" fill="#5e8068"/>
-      <circle cx="108" cy="49" r="7" fill="#203027"/>
-      <circle cx="137" cy="49" r="7" fill="#203027"/>
-      <path d="M111 75 C124 86 141 86 153 73" fill="none" stroke="#203027" stroke-width="7" stroke-linecap="round"/>
-    </g>
-    <g transform="translate(986 670) scale(.95)">
-      <path d="M38 110 C45 61 82 35 128 48 C172 61 188 102 166 143 C144 184 82 185 54 150 C40 132 35 120 38 110Z" fill="#6f9876"/>
-      <circle cx="120" cy="60" r="45" fill="#8fb895"/>
-      <rect x="156" y="80" width="58" height="82" rx="28" fill="#d9f3ff" stroke="#6da1b2" stroke-width="8"/>
-      <circle cx="105" cy="55" r="7" fill="#203027"/>
-      <circle cx="135" cy="55" r="7" fill="#203027"/>
-      <rect x="78" y="166" width="20" height="48" rx="10" fill="#5e8068"/>
-      <rect x="124" y="164" width="20" height="48" rx="10" fill="#5e8068"/>
-    </g>
-  </g>
-  <rect x="88" y="72" width="1024" height="122" rx="38" fill="rgba(255,255,255,.78)"/>
-  <text x="600" y="151" text-anchor="middle" font-family="Arial Rounded MT Bold, Noto Sans TC, sans-serif" font-size="58" font-weight="900" fill="#17314f">Animal Guard Yard</text>
+  <path d="M82 820 C246 782 413 802 578 828 C756 856 950 850 1118 805" fill="none" stroke="#fff4bd" stroke-width="12" stroke-linecap="round" opacity=".65"/>
 </svg>

@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" role="img" aria-label="boss zombie">
+  <defs>
+    <linearGradient id="bzSkin" x1="40" x2="142" y1="18" y2="156" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#a4d0a1"/>
+      <stop offset="1" stop-color="#3f6447"/>
+    </linearGradient>
+    <linearGradient id="bzArmor" x1="49" x2="139" y1="81" y2="154" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ff7e67"/>
+      <stop offset="1" stop-color="#8f2d2e"/>
+    </linearGradient>
+    <linearGradient id="bzShield" x1="120" x2="174" y1="57" y2="138" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#f8fdff"/>
+      <stop offset="1" stop-color="#6c91a8"/>
+    </linearGradient>
+  </defs>
+  <ellipse cx="92" cy="162" rx="65" ry="12" fill="#102018" opacity=".24"/>
+  <path d="M50 84c-25 4-37 21-36 43 23 0 42-13 51-36z" fill="#496f4c" stroke="#202820" stroke-width="8" stroke-linejoin="round"/>
+  <path d="M123 83c28 5 42 20 43 43-24 1-43-12-53-35z" fill="#496f4c" stroke="#202820" stroke-width="8" stroke-linejoin="round"/>
+  <path d="M44 77c7-33 34-52 70-45 36 7 56 34 50 70-7 42-37 61-78 55-37-6-52-37-42-80z" fill="url(#bzSkin)" stroke="#202820" stroke-width="8" stroke-linejoin="round"/>
+  <path d="M57 88c22 13 60 14 90-3l-6 43c-7 22-24 32-48 30-24-2-39-16-43-36z" fill="url(#bzArmor)" stroke="#202820" stroke-width="7" stroke-linejoin="round"/>
+  <path d="M74 45c14-23 56-21 73 3 15 22 1 50-32 54-35 4-58-29-41-57z" fill="#92c08a" stroke="#202820" stroke-width="8"/>
+  <path d="M77 41c21 10 46 9 67-3" fill="none" stroke="#2e4d35" stroke-width="9" stroke-linecap="round"/>
+  <circle cx="101" cy="64" r="6" fill="#181f19"/>
+  <circle cx="134" cy="63" r="6" fill="#181f19"/>
+  <path d="M105 81c11 8 26 7 36-4" fill="none" stroke="#202820" stroke-width="6" stroke-linecap="round"/>
+  <path d="M70 133h18l-6 29H59zm61 1h18l10 27h-27z" fill="#304d37" stroke="#202820" stroke-width="7" stroke-linejoin="round"/>
+  <path d="M119 59c20 5 35 5 51 0 5 45-10 78-51 90-22-29-22-61 0-90z" fill="url(#bzShield)" stroke="#202820" stroke-width="8" stroke-linejoin="round"/>
+  <path d="M130 75c11 4 20 4 29 0" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity=".92"/>
+</svg>
