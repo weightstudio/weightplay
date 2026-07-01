@@ -1,4 +1,4 @@
-:root {
+﻿:root {
   color-scheme: dark;
   font-family: "Microsoft JhengHei", "Noto Sans TC", system-ui, sans-serif;
   background: #12151d;
@@ -722,12 +722,30 @@ body.lobby-page {
   line-height: 1;
   box-shadow: 0 10px 22px rgba(0, 0, 0, 0.28);
   backdrop-filter: blur(10px);
+  transition: transform 0.14s ease, background 0.14s ease, border-color 0.14s ease;
+}
+
+.favorite-icon {
+  width: 24px;
+  height: 24px;
+  display: block;
+}
+
+.favorite-icon path {
+  fill: transparent;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linejoin: round;
 }
 
 .favorite-toggle.active {
   border-color: rgba(255, 212, 106, 0.95);
   background: #ffcf63;
   color: #4b2606;
+}
+
+.favorite-toggle.active .favorite-icon path {
+  fill: currentColor;
 }
 
 .favorite-toggle:active {
@@ -967,7 +985,7 @@ body.lobby-page {
 }
 
 .game-card-art::after {
-  content: "▶";
+  content: "";
   position: absolute;
   right: 12px;
   bottom: 12px;
@@ -979,14 +997,27 @@ body.lobby-page {
   place-items: center;
   background: rgba(255, 207, 99, 0.94);
   color: #241a08;
-  font-size: 18px;
-  font-weight: 1000;
   opacity: 0;
   transform: scale(0.72);
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.28);
   transition: opacity 0.18s ease, transform 0.18s ease;
 }
 
+.game-card-art::before {
+  content: "";
+  position: absolute;
+  right: 28px;
+  bottom: 26px;
+  z-index: 4;
+  width: 0;
+  height: 0;
+  border-top: 9px solid transparent;
+  border-bottom: 9px solid transparent;
+  border-left: 14px solid #241a08;
+  opacity: 0;
+  transform: scale(0.72);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
 .lobby-feature:hover,
 .lobby-feature:focus-visible,
 .hero-game-card:hover,
@@ -1013,6 +1044,12 @@ body.lobby-page {
 
 .game-card.playable:hover .game-card-art::after,
 .game-card.playable:focus-visible .game-card-art::after {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.game-card.playable:hover .game-card-art::before,
+.game-card.playable:focus-visible .game-card-art::before {
   opacity: 1;
   transform: scale(1);
 }
