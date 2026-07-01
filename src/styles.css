@@ -49,7 +49,7 @@ body.lobby-page {
 
 .lobby-hero {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(170px, 210px) minmax(220px, 360px);
+  grid-template-columns: minmax(0, 1fr) minmax(120px, 170px) minmax(170px, 210px) minmax(220px, 360px);
   gap: 18px;
   align-items: end;
   min-height: clamp(260px, 42dvh, 420px);
@@ -88,6 +88,48 @@ body.lobby-page {
 
 .lobby-subtitle:empty {
   display: none;
+}
+
+.lobby-mascot {
+  position: relative;
+  align-self: end;
+  min-height: 188px;
+  pointer-events: none;
+}
+
+.lobby-mascot::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 4px;
+  width: 80%;
+  height: 22px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.28);
+  filter: blur(8px);
+  transform: translateX(-50%);
+}
+
+.lobby-mascot img {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: min(100%, 176px);
+  max-height: 220px;
+  margin: 0 auto;
+  object-fit: contain;
+  transform-origin: 50% 100%;
+  animation: mascot-breathe 3.6s ease-in-out infinite;
+}
+
+@keyframes mascot-breathe {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-5px) scale(1.025);
+  }
 }
 
 .language-picker {
@@ -1070,9 +1112,25 @@ body.lobby-page {
   }
 
   .lobby-hero {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr) minmax(104px, 132px);
     min-height: 0;
     padding-top: 22px;
+  }
+
+  .lobby-hero-copy {
+    grid-column: 1 / -1;
+  }
+
+  .lobby-mascot {
+    grid-column: 2;
+    grid-row: 2 / span 2;
+    align-self: end;
+    min-height: 150px;
+  }
+
+  .lobby-mascot img {
+    width: 132px;
+    max-height: 168px;
   }
 
   .language-picker {
@@ -1084,6 +1142,7 @@ body.lobby-page {
   }
 
   .lobby-feature {
+    grid-column: 1 / -1;
     grid-template-columns: 76px 1fr;
     min-height: 96px;
   }
