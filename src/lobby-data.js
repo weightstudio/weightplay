@@ -51,12 +51,12 @@ window.WONDER_LOBBY = {
       ageLabel: "3+",
       href: "games/color-lunchbox/index.html",
       description: {
-        en: "Clear 10 themed levels with 5 unique foods in each color lunchbox challenge.",
-        "zh-Hant": "挑戰 10 個主題關卡，每關 5 個不重複食物，拖到對應顏色便當盒。",
+        en: "Clear 12 themed levels with 5 unique foods in each color lunchbox challenge.",
+        "zh-Hant": "挑戰 12 個主題關卡，每關 5 個不重複食物，拖到對應顏色便當盒。",
       },
       meta: {
-        en: ["10 Levels", "5 Unique Foods", "Drag Match"],
-        "zh-Hant": ["10 關", "5 題不重複", "拖曳配對"],
+        en: ["12 Levels", "5 Unique Foods", "Drag Match"],
+        "zh-Hant": ["12 關", "5 題不重複", "拖曳配對"],
       },
       art: {
         kind: "image",

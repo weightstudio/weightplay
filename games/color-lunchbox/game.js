@@ -117,6 +117,10 @@
       stage9Desc: "Five foods from different themes are mixed together.",
       stage10Name: "Level 10: Color Party",
       stage10Desc: "The final party mixes five colorful foods.",
+      stage11Name: "Level 11: Rainbow Review",
+      stage11Desc: "Five foods with five boxes, including tricky similar colors.",
+      stage12Name: "Level 12: Expert Lunch Rush",
+      stage12Desc: "Six color boxes appear, but only five foods are served.",
       food_strawberry: "Strawberry",
       food_tomato: "Tomato",
       food_banana: "Banana",
@@ -197,6 +201,10 @@
       stage9Desc: "不同主題的五種食物混在一起。",
       stage10Name: "第 10 關：顏色派對",
       stage10Desc: "最後派對混合五種彩色食物。",
+      stage11Name: "第 11 關：彩虹複習",
+      stage11Desc: "五種食物搭配五個便當盒，加入相近顏色判斷。",
+      stage12Name: "第 12 關：專家午餐快手",
+      stage12Desc: "畫面出現六個顏色盒，但只會送上五種食物。",
       food_strawberry: "草莓",
       food_tomato: "番茄",
       food_banana: "香蕉",
@@ -247,6 +255,8 @@
     { id: 8, nameKey: "stage8Name", descKey: "stage8Desc", colors: ["green", "orange", "purple", "red"], foods: ["broccoli", "cucumber", "carrot", "purplePotato", "tomato"], rounds: 5 },
     { id: 9, nameKey: "stage9Name", descKey: "stage9Desc", colors: ["pink", "gray", "black", "yellow"], foods: ["peach", "fish", "blackSesame", "banana", "corn"], rounds: 5 },
     { id: 10, nameKey: "stage10Name", descKey: "stage10Desc", colors: ["red", "orange", "purple", "cyan"], foods: ["strawberry", "orange", "grapes", "soda", "watermelon"], rounds: 5 },
+    { id: 11, nameKey: "stage11Name", descKey: "stage11Desc", colors: ["red", "pink", "orange", "yellow", "green"], foods: ["tomato", "peach", "orange", "corn", "cucumber"], rounds: 5 },
+    { id: 12, nameKey: "stage12Name", descKey: "stage12Desc", colors: ["blue", "cyan", "white", "gray", "black", "purple"], foods: ["blueberry", "soda", "yogurt", "fish", "blackSesame"], rounds: 5 },
   ];
 
   validateStageData();
