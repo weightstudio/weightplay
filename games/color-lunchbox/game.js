@@ -30,6 +30,7 @@
 
   const GAME_ID = "color-lunchbox";
   const UNLOCK_KEY = "colorLunchboxUnlockedStage";
+  const PROGRESS_KEY = "weightplay_color_lunchbox_progress";
 
   const foodsDB = {
     strawberry: { nameKey: "food_strawberry", color: "red", image: "assets/food-strawberry.svg" },
@@ -97,6 +98,17 @@
       locked: "Locked",
       play: "Play",
       loading: "Loading",
+      resultScore: "Score {score}",
+      previousBest: "Previous Best: {score}",
+      newBest: "New best!",
+      improvement: "Improvement: {value}%",
+      skillReport: "Skill Report",
+      colorRecognition: "Color Recognition",
+      focusSkill: "Focus",
+      handEye: "Hand-Eye Coordination",
+      progressMessageNew: "Great progress! You improved your best score.",
+      progressMessageSteady: "Good effort! Try again to improve focus and color matching.",
+      progressNote: "Scores are for fun and progress tracking only.",
       stage1Name: "Level 1: Fruit Starter",
       stage1Desc: "Classic red, yellow, blue, and green foods.",
       stage2Name: "Level 2: Breakfast Box",
@@ -181,6 +193,17 @@
       locked: "未解鎖",
       play: "開始玩",
       loading: "載入中",
+      resultScore: "分數 {score}",
+      previousBest: "過去最佳：{score}",
+      newBest: "新的最佳紀錄！",
+      improvement: "進步：{value}%",
+      skillReport: "能力小報告",
+      colorRecognition: "顏色辨識",
+      focusSkill: "專注力",
+      handEye: "手眼協調",
+      progressMessageNew: "很棒的進步！這次刷新了自己的最佳紀錄。",
+      progressMessageSteady: "努力得很好！再試一次可以繼續練習專注與顏色配對。",
+      progressNote: "分數只用於遊戲樂趣與本機進步紀錄。",
       stage1Name: "第 1 關：水果入門",
       stage1Desc: "經典紅、黃、藍、綠食物。",
       stage2Name: "第 2 關：早餐便當",
@@ -405,6 +428,112 @@
     return stage.colors.map((color) => ({ color, ...colorDB[color] }));
   }
 
+  function loadProgressRecord() {
+    try {
+      return JSON.parse(localStorage.getItem(PROGRESS_KEY)) || {};
+    } catch {
+      return {};
+    }
+  }
+
+  function saveProgressRecord(stage, skillScores) {
+    const existing = loadProgressRecord();
+    const previousBest = Number(existing.bestScore) || 0;
+    const bestScore = Math.max(previousBest, state.score);
+    const improvementPercent = previousBest > 0 ? Math.round(((state.score - previousBest) / previousBest) * 100) : (state.score > 0 ? 100 : 0);
+    const record = {
+      lastScore: state.score,
+      bestScore,
+      playCount: (Number(existing.playCount) || 0) + 1,
+      lastPlayedAt: new Date().toISOString(),
+      improvementPercent,
+      skillScores,
+      stage: stage.id,
+    };
+
+    try {
+      localStorage.setItem(PROGRESS_KEY, JSON.stringify(record));
+    } catch {
+      // Local progress is optional and should never block play.
+    }
+
+    return { ...record, previousBest, improved: state.score > previousBest };
+  }
+
+  function starRating(value) {
+    const filled = Math.max(1, Math.min(5, Math.round(value)));
+    return "★".repeat(filled) + "☆".repeat(5 - filled);
+  }
+
+  function buildSkillScores() {
+    const total = Math.max(state.deck.length, 1);
+    const correctRatio = Math.max(0, (total - state.mistakes) / total);
+    const accuracyStars = 1 + correctRatio * 4;
+    const focusStars = 1 + Math.max(0, 1 - state.mistakes / Math.max(total, 3)) * 4;
+    const handEyeStars = 1 + Math.max(0, state.score / (total * 12)) * 4;
+    return {
+      colorRecognition: Math.round(accuracyStars),
+      focus: Math.round(focusStars),
+      handEyeCoordination: Math.round(handEyeStars),
+    };
+  }
+
+  function renderResultReport(message, progress) {
+    const rows = [
+      [t("colorRecognition"), progress.skillScores.colorRecognition],
+      [t("focusSkill"), progress.skillScores.focus],
+      [t("handEye"), progress.skillScores.handEyeCoordination],
+    ];
+
+    resultText.replaceChildren();
+
+    const summary = document.createElement("div");
+    summary.className = "result-summary";
+    summary.textContent = message;
+    resultText.appendChild(summary);
+
+    const stats = document.createElement("div");
+    stats.className = "result-stats";
+    const statItems = [
+      t("resultScore", { score: progress.lastScore }),
+      progress.previousBest > 0 ? t("previousBest", { score: progress.previousBest }) : t("newBest"),
+      progress.improved ? t("newBest") : t("improvement", { value: progress.improvementPercent }),
+    ];
+    statItems.forEach((text) => {
+      const item = document.createElement("span");
+      item.textContent = text;
+      stats.appendChild(item);
+    });
+    resultText.appendChild(stats);
+
+    const report = document.createElement("section");
+    report.className = "skill-report";
+    const title = document.createElement("strong");
+    title.textContent = t("skillReport");
+    report.appendChild(title);
+
+    rows.forEach(([label, stars]) => {
+      const row = document.createElement("div");
+      row.className = "skill-report-row";
+      const name = document.createElement("span");
+      name.textContent = label;
+      const value = document.createElement("b");
+      value.textContent = starRating(stars);
+      row.append(name, value);
+      report.appendChild(row);
+    });
+    resultText.appendChild(report);
+
+    const encouragement = document.createElement("p");
+    encouragement.className = "progress-message";
+    encouragement.textContent = progress.improved ? t("progressMessageNew") : t("progressMessageSteady");
+    resultText.appendChild(encouragement);
+
+    const note = document.createElement("small");
+    note.textContent = t("progressNote");
+    resultText.appendChild(note);
+  }
+
   function setupBoxes(stage) {
     dropZone.replaceChildren(
       ...getStageBoxes(stage).map((box) => {
@@ -524,10 +653,13 @@
     saveUnlockedStage(stage.id + 1);
     const isFinalStage = stage.id >= stages.length;
     const isPerfect = state.mistakes === 0;
+    const skillScores = buildSkillScores();
+    const progress = saveProgressRecord(stage, skillScores);
     resultTitle.textContent = isFinalStage ? t("allClearTitle") : t("winTitle");
-    resultText.textContent = isFinalStage
+    const message = isFinalStage
       ? t(isPerfect ? "perfectAllClearDesc" : "allClearDesc")
       : t(isPerfect ? "perfectDesc" : "winDesc", { score: state.score });
+    renderResultReport(message, progress);
     nextStageBtn.classList.toggle("hidden", isFinalStage);
     foodCard.style.pointerEvents = "none";
     resultPanel.classList.remove("hidden");
@@ -536,6 +668,8 @@
       game_id: GAME_ID,
       stage: stage.id,
       score: state.score,
+      best_score: progress.bestScore,
+      improvement_percent: progress.improvementPercent,
       total_rounds: state.deck.length,
       mistakes: state.mistakes,
       locale: locale(),
