@@ -1,116 +1,108 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-label="Animal Hidden Safari cover">
   <defs>
     <linearGradient id="sky" x1="0" x2="0" y1="0" y2="1">
-      <stop offset="0" stop-color="#47c8ff"/>
-      <stop offset="0.48" stop-color="#bff4ff"/>
-      <stop offset="1" stop-color="#ffeaa5"/>
+      <stop offset="0" stop-color="#35bfff"/>
+      <stop offset="0.48" stop-color="#a9eeff"/>
+      <stop offset="1" stop-color="#fff0a8"/>
     </linearGradient>
     <linearGradient id="grass" x1="0" x2="0" y1="0" y2="1">
-      <stop offset="0" stop-color="#9aed6f"/>
-      <stop offset="1" stop-color="#268a43"/>
+      <stop offset="0" stop-color="#7ee45c"/>
+      <stop offset="1" stop-color="#1f7f3e"/>
     </linearGradient>
-    <linearGradient id="title" x1="0" x2="1" y1="0" y2="1">
-      <stop offset="0" stop-color="#fff5a8"/>
-      <stop offset="1" stop-color="#ffbb3c"/>
+    <linearGradient id="titleGold" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#fffbd1"/>
+      <stop offset="1" stop-color="#ffc447"/>
     </linearGradient>
-    <filter id="softShadow" x="-30%" y="-30%" width="160%" height="170%">
-      <feDropShadow dx="0" dy="14" stdDeviation="12" flood-color="#17341f" flood-opacity="0.28"/>
+    <filter id="shadow" x="-25%" y="-25%" width="150%" height="160%">
+      <feDropShadow dx="0" dy="12" stdDeviation="10" flood-color="#17301f" flood-opacity="0.3"/>
     </filter>
-    <filter id="titleShadow" x="-15%" y="-15%" width="130%" height="140%">
-      <feDropShadow dx="0" dy="8" stdDeviation="5" flood-color="#17341f" flood-opacity="0.35"/>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="6" stdDeviation="5" flood-color="#17301f" flood-opacity="0.22"/>
     </filter>
   </defs>
 
   <rect width="1200" height="900" fill="url(#sky)"/>
-  <circle cx="1015" cy="135" r="86" fill="#ffe45d"/>
+  <circle cx="1038" cy="126" r="88" fill="#ffe56c"/>
   <g fill="#fff" opacity="0.9">
-    <ellipse cx="158" cy="135" rx="96" ry="38"/>
-    <ellipse cx="238" cy="128" rx="72" ry="34"/>
-    <ellipse cx="890" cy="230" rx="116" ry="42"/>
-    <ellipse cx="996" cy="224" rx="70" ry="31"/>
+    <ellipse cx="155" cy="142" rx="116" ry="44"/>
+    <ellipse cx="248" cy="134" rx="82" ry="38"/>
+    <ellipse cx="848" cy="218" rx="130" ry="46"/>
+    <ellipse cx="963" cy="212" rx="78" ry="34"/>
   </g>
 
-  <path d="M0 560 C120 505 235 570 365 520 C535 455 680 590 835 515 C980 445 1088 520 1200 470 L1200 900 L0 900Z" fill="url(#grass)"/>
-  <path d="M0 730 C135 655 292 735 430 675 C595 604 745 742 908 665 C1045 600 1120 650 1200 610 L1200 900 L0 900Z" fill="#22783f"/>
+  <path d="M0 540 C145 488 265 566 405 510 C560 448 710 590 858 512 C990 442 1080 505 1200 460 L1200 900 L0 900Z" fill="#78cf65"/>
+  <path d="M0 680 C160 612 300 702 456 636 C625 566 782 716 960 620 C1060 568 1135 608 1200 576 L1200 900 L0 900Z" fill="url(#grass)"/>
 
-  <g filter="url(#softShadow)">
-    <g transform="translate(52 435)">
-      <rect x="94" y="128" width="56" height="188" rx="26" fill="#9b642e"/>
-      <circle cx="123" cy="102" r="100" fill="#2e9d51"/>
-      <circle cx="58" cy="154" r="70" fill="#43bd61"/>
-      <circle cx="192" cy="150" r="74" fill="#58ca75"/>
+  <g filter="url(#soft)">
+    <g transform="translate(58 380)">
+      <rect x="86" y="160" width="62" height="245" rx="31" fill="#8f552b"/>
+      <circle cx="116" cy="118" r="114" fill="#258f49"/>
+      <circle cx="42" cy="180" r="78" fill="#39ae5d"/>
+      <circle cx="196" cy="180" r="86" fill="#4cc66e"/>
     </g>
-    <g transform="translate(920 395)">
-      <rect x="76" y="140" width="58" height="202" rx="26" fill="#9b642e"/>
-      <circle cx="106" cy="98" r="100" fill="#2d9650"/>
-      <circle cx="44" cy="154" r="72" fill="#49bf64"/>
-      <circle cx="176" cy="152" r="76" fill="#61d27a"/>
-    </g>
-  </g>
-
-  <g filter="url(#softShadow)">
-    <g transform="translate(400 405)">
-      <ellipse cx="205" cy="292" rx="162" ry="34" fill="#17341f" opacity="0.25"/>
-      <circle cx="198" cy="126" r="92" fill="#f6bf55"/>
-      <path d="M112 134 C42 176 62 266 144 288 C225 310 318 276 338 204 C356 136 284 102 240 124 C220 136 214 170 190 172 C160 174 140 146 112 134Z" fill="#d98b3f"/>
-      <circle cx="158" cy="91" r="20" fill="#6d4021"/>
-      <circle cx="242" cy="91" r="20" fill="#6d4021"/>
-      <circle cx="166" cy="99" r="8" fill="#fff"/>
-      <circle cx="250" cy="99" r="8" fill="#fff"/>
-      <path d="M178 146 Q202 170 226 146" fill="none" stroke="#63381f" stroke-width="10" stroke-linecap="round"/>
-      <path d="M146 42 Q126 -18 190 6" fill="#d98b3f"/>
-      <path d="M250 42 Q278 -18 206 8" fill="#d98b3f"/>
-      <path d="M66 236 C138 204 270 206 346 236 L380 342 L30 342Z" fill="#45b95d"/>
-      <path d="M82 250 Q124 214 166 252 T248 250 T330 252" fill="none" stroke="#8ee46e" stroke-width="16" stroke-linecap="round"/>
-    </g>
-
-    <g transform="translate(165 585)">
-      <ellipse cx="94" cy="138" rx="116" ry="25" fill="#17341f" opacity="0.22"/>
-      <ellipse cx="88" cy="74" rx="88" ry="56" fill="#9cadb5"/>
-      <circle cx="28" cy="70" r="30" fill="#b3c0c7"/>
-      <circle cx="146" cy="70" r="30" fill="#b3c0c7"/>
-      <circle cx="62" cy="62" r="9" fill="#172b31"/>
-      <circle cx="114" cy="62" r="9" fill="#172b31"/>
-      <path d="M78 92 Q92 106 108 92" fill="none" stroke="#172b31" stroke-width="7" stroke-linecap="round"/>
-      <path d="M0 108 C40 92 134 92 190 112 L208 166 L-18 166Z" fill="#37a955"/>
-    </g>
-
-    <g transform="translate(824 590)">
-      <ellipse cx="90" cy="132" rx="112" ry="25" fill="#17341f" opacity="0.22"/>
-      <rect x="34" y="30" width="116" height="80" rx="40" fill="#ffd45d"/>
-      <rect x="106" y="8" width="22" height="92" rx="11" fill="#7e5228"/>
-      <circle cx="68" cy="66" r="9" fill="#16251f"/>
-      <circle cx="122" cy="66" r="9" fill="#16251f"/>
-      <path d="M80 88 Q94 102 108 88" fill="none" stroke="#16251f" stroke-width="7" stroke-linecap="round"/>
-      <path d="M20 108 C70 86 128 88 176 112 L196 164 L-8 164Z" fill="#38aa55"/>
-    </g>
-
-    <g transform="translate(735 430)">
-      <ellipse cx="84" cy="158" rx="90" ry="24" fill="#17341f" opacity="0.2"/>
-      <rect x="40" y="12" width="88" height="132" rx="42" fill="#efc36a"/>
-      <path d="M70 0 L54 58 L86 60Z" fill="#8b5a2c"/>
-      <path d="M106 4 L82 58 L116 60Z" fill="#8b5a2c"/>
-      <circle cx="72" cy="54" r="8" fill="#17251e"/>
-      <circle cx="106" cy="54" r="8" fill="#17251e"/>
-      <path d="M78 78 Q88 90 100 78" fill="none" stroke="#17251e" stroke-width="6" stroke-linecap="round"/>
-      <path d="M24 116 C65 94 112 96 152 118 L166 172 L8 172Z" fill="#55c96f"/>
+    <g transform="translate(930 345)">
+      <rect x="78" y="180" width="64" height="260" rx="32" fill="#8f552b"/>
+      <circle cx="110" cy="126" r="126" fill="#268b48"/>
+      <circle cx="34" cy="204" r="88" fill="#3bb760"/>
+      <circle cx="198" cy="198" r="92" fill="#52cc73"/>
     </g>
   </g>
 
-  <g transform="translate(88 70)" filter="url(#titleShadow)">
-    <path d="M22 0 H710 Q752 0 752 42 V188 Q752 230 710 230 H22 Q-20 230 -20 188 V42 Q-20 0 22 0Z" fill="#244238" opacity="0.92"/>
-    <text x="34" y="82" font-family="Arial Rounded MT Bold, Arial, sans-serif" font-size="62" font-weight="900" fill="url(#title)">Animal Hidden Safari</text>
-    <text x="38" y="134" font-family="Arial, sans-serif" font-size="29" font-weight="900" fill="#e9fff0">Find cute animals hiding in every habitat</text>
-    <g transform="translate(38 164)">
-      <rect width="132" height="42" rx="21" fill="#fff5bd"/>
-      <text x="66" y="28" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" font-weight="900" fill="#244238">3+</text>
+  <g filter="url(#shadow)">
+    <g transform="translate(394 334)">
+      <ellipse cx="220" cy="372" rx="210" ry="42" fill="#17301f" opacity="0.22"/>
+      <circle cx="218" cy="140" r="126" fill="#f8bd55"/>
+      <circle cx="218" cy="140" r="94" fill="#e69642"/>
+      <path d="M118 150 C48 210 76 320 178 344 C282 368 384 318 398 226 C410 148 318 112 268 142 C238 160 244 200 212 204 C174 208 152 172 118 150Z" fill="#f0a64a"/>
+      <circle cx="172" cy="116" r="17" fill="#24372c"/>
+      <circle cx="258" cy="116" r="17" fill="#24372c"/>
+      <circle cx="178" cy="108" r="5" fill="#fff"/>
+      <circle cx="264" cy="108" r="5" fill="#fff"/>
+      <path d="M196 178 Q218 202 242 178" fill="none" stroke="#5d371f" stroke-width="12" stroke-linecap="round"/>
+      <path d="M160 50 Q126 -12 204 12" fill="#e69642"/>
+      <path d="M276 50 Q312 -12 232 12" fill="#e69642"/>
+      <path d="M102 282 C160 238 290 238 352 284 L396 410 L58 410Z" fill="#3aae5a"/>
+      <circle cx="136" cy="305" r="16" fill="#7be36f"/>
+      <circle cx="298" cy="302" r="18" fill="#7be36f"/>
+    </g>
+
+    <g transform="translate(240 600)">
+      <ellipse cx="112" cy="122" rx="132" ry="26" fill="#17301f" opacity="0.2"/>
+      <ellipse cx="100" cy="62" rx="95" ry="60" fill="#a8b7bd"/>
+      <circle cx="34" cy="58" r="34" fill="#bfccd1"/>
+      <circle cx="166" cy="58" r="34" fill="#bfccd1"/>
+      <circle cx="72" cy="50" r="9" fill="#193027"/>
+      <circle cx="126" cy="50" r="9" fill="#193027"/>
+      <path d="M84 82 Q100 98 116 82" fill="none" stroke="#193027" stroke-width="7" stroke-linecap="round"/>
+      <path d="M0 94 C50 70 160 72 224 96 L248 162 L-24 162Z" fill="#38aa56"/>
+    </g>
+
+    <g transform="translate(772 560)">
+      <ellipse cx="112" cy="172" rx="136" ry="26" fill="#17301f" opacity="0.2"/>
+      <rect x="54" y="28" width="116" height="134" rx="54" fill="#f1c46a"/>
+      <path d="M82 4 L58 72 L100 72Z" fill="#8f5b2d"/>
+      <path d="M146 8 L108 72 L156 72Z" fill="#8f5b2d"/>
+      <circle cx="92" cy="76" r="9" fill="#193027"/>
+      <circle cx="132" cy="76" r="9" fill="#193027"/>
+      <path d="M98 102 Q112 116 128 102" fill="none" stroke="#193027" stroke-width="7" stroke-linecap="round"/>
+      <path d="M26 132 C78 104 150 104 202 134 L230 216 L0 216Z" fill="#42b861"/>
     </g>
   </g>
 
-  <g opacity="0.95">
-    <circle cx="1038" cy="720" r="24" fill="#fff4b2"/>
-    <text x="1038" y="731" text-anchor="middle" font-family="Arial, sans-serif" font-size="28">🐾</text>
-    <circle cx="292" cy="780" r="22" fill="#fff4b2"/>
-    <text x="292" y="790" text-anchor="middle" font-family="Arial, sans-serif" font-size="25">🍌</text>
+  <g filter="url(#shadow)" transform="translate(92 66)">
+    <rect width="740" height="198" rx="38" fill="#203b34" opacity="0.94"/>
+    <text x="38" y="78" font-family="Arial Rounded MT Bold, Arial, sans-serif" font-size="62" font-weight="900" fill="url(#titleGold)">Animal Hidden Safari</text>
+    <text x="42" y="130" font-family="Arial, sans-serif" font-size="28" font-weight="900" fill="#e7fff1">Find animals hiding in the safari</text>
+    <rect x="42" y="152" width="128" height="38" rx="19" fill="#fff1a8"/>
+    <text x="106" y="178" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" font-weight="900" fill="#203b34">3+</text>
+  </g>
+
+  <g filter="url(#soft)">
+    <circle cx="1034" cy="710" r="34" fill="#fff5bd"/>
+    <circle cx="1022" cy="700" r="6" fill="#294338"/>
+    <circle cx="1048" cy="700" r="6" fill="#294338"/>
+    <path d="M1025 720 Q1036 730 1048 720" fill="none" stroke="#294338" stroke-width="5" stroke-linecap="round"/>
+    <circle cx="308" cy="776" r="26" fill="#fff5bd"/>
+    <path d="M296 768 H320 M308 756 V780" stroke="#e59d32" stroke-width="7" stroke-linecap="round"/>
   </g>
 </svg>

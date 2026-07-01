@@ -10,7 +10,7 @@
       gameTitle: "Animal Hidden Safari",
       language: "Language",
       chooseStage: "Choose Habitat",
-      menuHint: "Find every hidden animal and safari clue.",
+      menuHint: "Find animals hiding behind leaves, grass, water, and safari clues.",
       stages: "Habitats",
       loading: "Loading",
       hint: "Hint",
@@ -23,7 +23,6 @@
       great: "Great find!",
       perfect: "Sharp safari eyes!",
       good: "Nice searching!",
-      keep: "Good effort!",
       result: "You found {found}/{total} targets in {time}.",
       skillReport: "Skill Report",
       skillMessage: "Focus {focus} / Animal Knowledge {animal} / Problem Solving {solve}. Great progress through careful looking.",
@@ -47,7 +46,7 @@
         shell: "Shell",
         frog: "Frog",
         butterfly: "Butterfly",
-        acacia: "Acacia",
+        acacia: "Acacia Tree",
       },
       habitat: {
         sunny: "Sunny Grassland",
@@ -62,23 +61,22 @@
       gameTitle: "動物探險找找看",
       language: "語言",
       chooseStage: "選擇棲地",
-      menuHint: "找出藏在畫面裡的動物與探險線索。",
+      menuHint: "找出躲在樹葉、草叢、水邊和探險線索後面的動物。",
       stages: "棲地",
       loading: "載入中",
       hint: "提示",
-      findList: "尋找目標",
+      findList: "要找的目標",
       nextStage: "下一個棲地",
-      retry: "再試一次",
+      retry: "再玩一次",
       lobby: "大廳",
       locked: "棲地尚未解鎖",
       stage: "棲地 {n}",
-      great: "找得真棒！",
-      perfect: "超厲害的探險眼力！",
-      good: "觀察得很好！",
-      keep: "努力得很棒！",
+      great: "找得很好！",
+      perfect: "觀察力超棒！",
+      good: "很會找喔！",
       result: "你在 {time} 找到 {found}/{total} 個目標。",
-      skillReport: "能力小報告",
-      skillMessage: "專注力 {focus} / 動物知識 {animal} / 問題解決 {solve}。仔細觀察就是很棒的進步。",
+      skillReport: "能力報告",
+      skillMessage: "專注 {focus} / 動物知識 {animal} / 問題解決 {solve}。透過慢慢觀察，你完成了一次很棒的找找看練習。",
       best: "最佳 {time}",
       noHints: "沒有提示了",
       found: "找到了！",
@@ -103,65 +101,12 @@
       },
       habitat: {
         sunny: "陽光草原",
-        river: "河岸小路",
+        river: "河邊探險",
         sunset: "夕陽樹林",
         pond: "池塘觀察",
-        jungle: "叢林邊界",
-        lookout: "瞭望山丘",
+        jungle: "叢林邊緣",
+        lookout: "瞭望小丘",
       },
-    },
-  };
-
-  text["zh-Hant"] = {
-    gameTitle: "動物探險找找看",
-    language: "語言",
-    chooseStage: "選擇棲地",
-    menuHint: "找出躲在草叢、樹後與水邊的小動物線索。",
-    stages: "棲地",
-    loading: "載入中",
-    hint: "提示",
-    findList: "要找的目標",
-    nextStage: "下一個棲地",
-    retry: "再玩一次",
-    lobby: "大廳",
-    locked: "棲地尚未解鎖",
-    stage: "棲地 {n}",
-    great: "找得很好！",
-    perfect: "觀察力超棒！",
-    good: "很會找喔！",
-    keep: "很棒的練習！",
-    result: "你在 {time} 找到 {found}/{total} 個目標。",
-    skillReport: "能力報告",
-    skillMessage: "專注 {focus} / 動物知識 {animal} / 問題解決 {solve}。透過慢慢觀察，你完成了一次很棒的找找看練習。",
-    best: "最佳 {time}",
-    noHints: "沒有提示了",
-    found: "找到了！",
-    tryAgain: "再仔細看看",
-    targets: {
-      lion: "獅子",
-      elephant: "大象",
-      giraffe: "長頸鹿",
-      zebra: "斑馬",
-      monkey: "猴子",
-      hippo: "河馬",
-      rhino: "犀牛",
-      bird: "小鳥",
-      paw: "腳印",
-      banana: "香蕉",
-      feather: "羽毛",
-      leaf: "葉子",
-      shell: "貝殼",
-      frog: "青蛙",
-      butterfly: "蝴蝶",
-      acacia: "金合歡樹",
-    },
-    habitat: {
-      sunny: "陽光草原",
-      river: "河邊探險",
-      sunset: "夕陽樹林",
-      pond: "池塘觀察",
-      jungle: "叢林邊緣",
-      lookout: "瞭望小丘",
     },
   };
 
@@ -185,89 +130,12 @@
   };
 
   const stages = [
-    {
-      habitat: "sunny",
-      targets: [
-        ["lion", 50, 63, 62, "grass"],
-        ["elephant", 18, 72, 54, "leaf-left"],
-        ["giraffe", 82, 57, 58, "leaf-right"],
-        ["zebra", 69, 79, 50, "grass"],
-        ["monkey", 28, 47, 42, "leaf-top"],
-        ["bird", 40, 26, 36],
-        ["paw", 58, 84, 32, "dust"],
-        ["banana", 32, 76, 32, "grass"],
-      ],
-    },
-    {
-      habitat: "river",
-      theme: "river",
-      targets: [
-        ["hippo", 24, 72, 60, "water"],
-        ["elephant", 75, 67, 56, "leaf-right"],
-        ["frog", 42, 82, 34, "water"],
-        ["bird", 63, 34, 38],
-        ["shell", 18, 84, 32, "water"],
-        ["leaf", 86, 78, 32, "grass"],
-        ["zebra", 52, 56, 46, "leaf-top"],
-        ["paw", 36, 62, 30, "dust"],
-      ],
-    },
-    {
-      habitat: "sunset",
-      theme: "sunset",
-      targets: [
-        ["giraffe", 18, 54, 58, "leaf-left"],
-        ["monkey", 78, 42, 42, "leaf-top"],
-        ["lion", 64, 73, 54, "grass"],
-        ["butterfly", 48, 30, 32],
-        ["feather", 28, 82, 30, "grass"],
-        ["acacia", 86, 66, 50, "leaf-right"],
-        ["bird", 38, 42, 36],
-        ["banana", 72, 82, 32, "grass"],
-      ],
-    },
-    {
-      habitat: "pond",
-      theme: "pond",
-      targets: [
-        ["frog", 18, 74, 38, "water"],
-        ["hippo", 50, 72, 64, "water"],
-        ["rhino", 78, 66, 54, "leaf-right"],
-        ["bird", 84, 32, 38],
-        ["shell", 36, 84, 32, "water"],
-        ["leaf", 56, 54, 32, "leaf-top"],
-        ["butterfly", 24, 36, 34],
-        ["paw", 68, 84, 30, "dust"],
-      ],
-    },
-    {
-      habitat: "jungle",
-      theme: "jungle",
-      targets: [
-        ["monkey", 22, 42, 46, "leaf-left"],
-        ["bird", 54, 28, 36, "leaf-top"],
-        ["butterfly", 76, 34, 34],
-        ["rhino", 70, 74, 56, "grass"],
-        ["lion", 42, 70, 54, "leaf-left"],
-        ["banana", 34, 86, 32, "grass"],
-        ["feather", 88, 60, 30, "leaf-right"],
-        ["leaf", 16, 78, 32, "grass"],
-      ],
-    },
-    {
-      habitat: "lookout",
-      theme: "lookout",
-      targets: [
-        ["lion", 21, 68, 54, "grass"],
-        ["elephant", 46, 72, 58, "dust"],
-        ["giraffe", 78, 54, 58, "leaf-right"],
-        ["zebra", 65, 82, 48, "grass"],
-        ["rhino", 34, 84, 50, "grass"],
-        ["bird", 54, 30, 38],
-        ["paw", 84, 82, 30, "dust"],
-        ["acacia", 16, 48, 46, "leaf-top"],
-      ],
-    },
+    { habitat: "sunny", targets: [["lion", 50, 63, 62, "grass"], ["elephant", 18, 72, 54, "leaf-left"], ["giraffe", 82, 57, 58, "leaf-right"], ["zebra", 69, 79, 50, "grass"], ["monkey", 28, 47, 42, "leaf-top"], ["bird", 40, 26, 36], ["paw", 58, 84, 32, "dust"], ["banana", 32, 76, 32, "grass"]] },
+    { habitat: "river", theme: "river", targets: [["hippo", 24, 72, 60, "water"], ["elephant", 75, 67, 56, "leaf-right"], ["frog", 42, 82, 34, "water"], ["bird", 63, 34, 38], ["shell", 18, 84, 32, "water"], ["leaf", 86, 78, 32, "grass"], ["zebra", 52, 56, 46, "leaf-top"], ["paw", 36, 62, 30, "dust"]] },
+    { habitat: "sunset", theme: "sunset", targets: [["giraffe", 18, 54, 58, "leaf-left"], ["monkey", 78, 42, 42, "leaf-top"], ["lion", 64, 73, 54, "grass"], ["butterfly", 48, 30, 32], ["feather", 28, 82, 30, "grass"], ["acacia", 86, 66, 50, "leaf-right"], ["bird", 38, 42, 36], ["banana", 72, 82, 32, "grass"]] },
+    { habitat: "pond", theme: "pond", targets: [["frog", 18, 74, 38, "water"], ["hippo", 50, 72, 64, "water"], ["rhino", 78, 66, 54, "leaf-right"], ["bird", 84, 32, 38], ["shell", 36, 84, 32, "water"], ["leaf", 56, 54, 32, "leaf-top"], ["butterfly", 24, 36, 34], ["paw", 68, 84, 30, "dust"]] },
+    { habitat: "jungle", theme: "jungle", targets: [["monkey", 22, 42, 46, "leaf-left"], ["bird", 54, 28, 36, "leaf-top"], ["butterfly", 76, 34, 34], ["rhino", 70, 74, 56, "grass"], ["lion", 42, 70, 54, "leaf-left"], ["banana", 34, 86, 32, "grass"], ["feather", 88, 60, 30, "leaf-right"], ["leaf", 16, 78, 32, "grass"]] },
+    { habitat: "lookout", theme: "lookout", targets: [["lion", 21, 68, 54, "grass"], ["elephant", 46, 72, 58, "dust"], ["giraffe", 78, 54, 58, "leaf-right"], ["zebra", 65, 82, 48, "grass"], ["rhino", 34, 84, 50, "grass"], ["bird", 54, 30, 38], ["paw", 84, 82, 30, "dust"], ["acacia", 16, 48, 46, "leaf-top"]] },
   ];
 
   const $ = (id) => document.getElementById(id);
@@ -310,14 +178,6 @@
   let timerId = 0;
   let acceptingInput = false;
 
-  function t(key, data = {}) {
-    const parts = key.split(".");
-    let value = text[locale] || text.en;
-    for (const part of parts) value = value?.[part];
-    if (typeof value !== "string") value = key;
-    return Object.entries(data).reduce((out, [name, item]) => out.replaceAll(`{${name}}`, item), value);
-  }
-
   function clamp(value, min, max) {
     return Math.max(min, Math.min(max, value));
   }
@@ -332,6 +192,14 @@
 
   function writeJson(key, value) {
     localStorage.setItem(key, JSON.stringify(value));
+  }
+
+  function t(key, data = {}) {
+    const parts = key.split(".");
+    let value = text[locale] || text.en;
+    for (const part of parts) value = value?.[part];
+    if (typeof value !== "string") value = key;
+    return Object.entries(data).reduce((out, [name, item]) => out.replaceAll(`{${name}}`, String(item)), value);
   }
 
   function playSound(name) {
@@ -350,6 +218,19 @@
     nodes.localeSelect.value = locale;
   }
 
+  function starIcons(count, total) {
+    return `${"\u2605".repeat(count)}${"\u2606".repeat(total - count)}`;
+  }
+
+  function starsFor(stageNo) {
+    return starIcons(stars[stageNo]?.stars || 0, 3);
+  }
+
+  function bestLine(stageNo) {
+    const best = stars[stageNo]?.bestTime;
+    return best ? ` / ${t("best", { time: formatTime(best) })}` : "";
+  }
+
   function renderStageGrid() {
     nodes.stageGrid.innerHTML = "";
     stages.forEach((stage, index) => {
@@ -361,7 +242,7 @@
       button.innerHTML = `
         <b>${icons[stage.targets[0][0]]}</b>
         <strong>${t("stage", { n: stageNo })} - ${t(`habitat.${stage.habitat}`)}</strong>
-        <span>${starsFor(stageNo)} ${bestLine(stageNo)}</span>
+        <span>${starsFor(stageNo)}${bestLine(stageNo)}</span>
       `;
       button.addEventListener("click", () => {
         if (stageNo > unlocked) {
@@ -375,22 +256,12 @@
     });
   }
 
-  function starsFor(stageNo) {
-    const count = stars[stageNo]?.stars || 0;
-    return starIcons(count, 3);
-  }
-
-  function bestLine(stageNo) {
-    const best = stars[stageNo]?.bestTime;
-    return best ? ` / ${t("best", { time: formatTime(best) })}` : "";
-  }
-
   function showMenu() {
     stopTimer();
     acceptingInput = false;
-    nodes.menuPanel.classList.remove("hidden");
-    nodes.playPanel.classList.add("hidden");
     nodes.resultPanel.classList.add("hidden");
+    nodes.playPanel.classList.add("hidden");
+    nodes.menuPanel.classList.remove("hidden");
     renderStageGrid();
   }
 
@@ -401,9 +272,9 @@
     mistakes = 0;
     startTime = Date.now();
     acceptingInput = true;
+    nodes.resultPanel.classList.add("hidden");
     nodes.menuPanel.classList.add("hidden");
     nodes.playPanel.classList.remove("hidden");
-    nodes.resultPanel.classList.add("hidden");
     nodes.scene.dataset.theme = stages[index].theme || "sunny";
     renderScene();
     renderTargetList();
@@ -501,10 +372,6 @@
     timerId = 0;
   }
 
-  function updateTimer() {
-    nodes.timerText.textContent = formatTime(elapsedSeconds());
-  }
-
   function elapsedSeconds() {
     return Math.max(0, Math.floor((Date.now() - startTime) / 1000));
   }
@@ -513,6 +380,10 @@
     const min = Math.floor(seconds / 60);
     const sec = String(seconds % 60).padStart(2, "0");
     return `${min}:${sec}`;
+  }
+
+  function updateTimer() {
+    nodes.timerText.textContent = formatTime(elapsedSeconds());
   }
 
   function finishStage() {
@@ -537,9 +408,9 @@
     nodes.starText.textContent = starIcons(starCount, 3);
     nodes.resultText.textContent = t("result", { found: total, total, time: formatTime(seconds) });
     nodes.skillText.textContent = t("skillMessage", {
-      focus: starsText(starCount),
-      animal: starsText(3),
-      solve: starsText(hintsLeft >= 1 ? 3 : 2),
+      focus: starIcons(starCount, 5),
+      animal: starIcons(3, 5),
+      solve: starIcons(hintsLeft >= 1 ? 3 : 2, 5),
     });
     nodes.nextStageBtn.classList.toggle("hidden", currentStage >= stages.length - 1);
     nodes.resultPanel.classList.remove("hidden");
@@ -547,26 +418,16 @@
     playSound("success");
   }
 
-  function starsText(count) {
-    return starIcons(count, 5);
-  }
-
-  function starIcons(count, total) {
-    return `${"★".repeat(count)}${"☆".repeat(total - count)}`;
-  }
-
   function saveProgress(starCount, seconds) {
     const old = readJson(progressKey, { bestScore: 0, playCount: 0 });
     const score = Math.max(0, starCount * 100 - mistakes * 5 + Math.max(0, 120 - seconds));
-    const bestScore = Math.max(old.bestScore || 0, score);
     const previousBest = old.bestScore || 0;
-    const improvementPercent = previousBest ? Math.round(((score - previousBest) / previousBest) * 100) : 0;
     writeJson(progressKey, {
       lastScore: score,
-      bestScore,
+      bestScore: Math.max(previousBest, score),
       playCount: (old.playCount || 0) + 1,
       lastPlayedAt: new Date().toISOString(),
-      improvementPercent,
+      improvementPercent: previousBest ? Math.round(((score - previousBest) / previousBest) * 100) : 0,
       skillScores: {
         Focus: starCount,
         "Animal Knowledge": 3,
@@ -617,12 +478,8 @@
     nodes.hintBtn.addEventListener("click", useHint);
   }
 
-  function init() {
-    localizeStatic();
-    bind();
-    showMenu();
-    fakeLoad();
-  }
-
-  init();
+  localizeStatic();
+  bind();
+  showMenu();
+  fakeLoad();
 })();
