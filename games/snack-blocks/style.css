@@ -363,6 +363,48 @@ button:active {
   text-shadow: 0 0 16px rgba(255, 227, 111, 0.7);
 }
 
+.skill-report {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.skill-report strong {
+  font-size: 1rem;
+  text-align: left;
+}
+
+.skill-line,
+.progress-line {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: #fff1c4;
+  font-weight: 800;
+}
+
+.skill-line i,
+.progress-line i {
+  color: #ffe36f;
+  font-style: normal;
+  white-space: nowrap;
+}
+
+.progress-message,
+.progress-note {
+  color: #f7dfad;
+  font-size: 0.84rem;
+  line-height: 1.35;
+  text-align: left;
+}
+
+.progress-note {
+  opacity: 0.78;
+}
+
 .result-card a {
   min-height: 44px;
   display: grid;

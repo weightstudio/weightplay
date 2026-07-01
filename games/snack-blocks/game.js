@@ -66,6 +66,17 @@
       again: "Try Again",
       menu: "Stages",
       lobby: "Lobby",
+      skillReport: "Skill Report",
+      todayScore: "Today's Score",
+      previousBest: "Previous Best",
+      improvement: "Improvement",
+      logicSkill: "Logic",
+      problemSolvingSkill: "Problem Solving",
+      focusSkill: "Focus",
+      progressNewBest: "Great progress! You improved your best score.",
+      progressImproved: "Nice improvement! Your planning was stronger this time.",
+      progressSteady: "Good effort! Try again to improve focus and combo planning.",
+      progressNote: "Scores are for fun and local progress tracking only.",
     },
     "zh-Hant": {
       brand: "WeightPlay",
@@ -124,6 +135,7 @@
     resultTitle: document.getElementById("resultTitle"),
     resultText: document.getElementById("resultText"),
     resultStars: document.getElementById("resultStars"),
+    skillReport: document.getElementById("skillReport"),
     nextBtn: document.getElementById("nextBtn"),
     againBtn: document.getElementById("againBtn"),
     menuBtn: document.getElementById("menuBtn"),
@@ -206,13 +218,61 @@
 
   function saveRecord(stageId, score) {
     const records = loadRecords();
-    records[stageId] = Math.max(records[stageId] || 0, score);
+    const previous = records[stageId];
+    const previousBest = bestScoreFromRecord(previous);
+    const bestScore = Math.max(previousBest, score);
+    const playCount = (typeof previous === "object" && Number(previous.playCount)) || 0;
+    const improvementPercent = previousBest > 0 ? Math.round(((score - previousBest) / previousBest) * 100) : score > 0 ? 100 : 0;
+    const scoreRatio = score / Math.max(1, activeStage().target);
+    const moveBonus = Math.min(1, Math.max(0, state.moves / Math.max(1, activeStage().moves)));
+    records[stageId] = {
+      lastScore: score,
+      bestScore,
+      playCount: playCount + 1,
+      lastPlayedAt: new Date().toISOString(),
+      improvementPercent,
+      previousBest,
+      skillScores: {
+        logic: Math.min(5, Math.max(1, Math.ceil(scoreRatio * 3.2))),
+        problemSolving: Math.min(5, Math.max(1, Math.ceil((scoreRatio + moveBonus) * 2.2))),
+        focus: Math.min(5, Math.max(1, Math.ceil((goalMet() ? 3 : 2) + moveBonus * 2))),
+      },
+    };
     try {
       localStorage.setItem(recordKey, JSON.stringify(records));
     } catch {
       // Record persistence is optional.
     }
     return records;
+  }
+
+  function bestScoreFromRecord(record) {
+    return typeof record === "number" ? record : Number(record?.bestScore) || 0;
+  }
+
+  function stars(value) {
+    const filled = Math.max(1, Math.min(5, Math.round(value)));
+    return "\u2605".repeat(filled) + "\u2606".repeat(5 - filled);
+  }
+
+  function renderSkillReport(progress, cleared) {
+    const message =
+      progress.previousBest <= 0 || progress.bestScore > progress.previousBest
+        ? t("progressNewBest")
+        : progress.improvementPercent > 0
+          ? t("progressImproved")
+          : t("progressSteady");
+    nodes.skillReport.innerHTML = `
+      <strong>${t("skillReport")}</strong>
+      <div class="progress-line"><span>${t("todayScore")}</span><i>${progress.lastScore}</i></div>
+      <div class="progress-line"><span>${t("previousBest")}</span><i>${progress.previousBest || "-"}</i></div>
+      <div class="progress-line"><span>${t("improvement")}</span><i>${progress.improvementPercent > 0 ? "+" : ""}${progress.improvementPercent}%</i></div>
+      <div class="skill-line"><span>${t("logicSkill")}</span><i>${stars(progress.skillScores.logic)}</i></div>
+      <div class="skill-line"><span>${t("problemSolvingSkill")}</span><i>${stars(progress.skillScores.problemSolving)}</i></div>
+      <div class="skill-line"><span>${t("focusSkill")}</span><i>${stars(progress.skillScores.focus)}</i></div>
+      <p class="progress-message">${cleared ? message : t("progressSteady")}</p>
+      <p class="progress-note">${t("progressNote")}</p>
+    `;
   }
 
   function setLocale(locale) {
@@ -294,7 +354,7 @@
       button.innerHTML = `
         <strong>${stage.id}</strong>
         <span>${t("stageName", { stage: stage.id })}</span>
-        <em>${isUnlocked ? `${goalLabel(stage)} · ${t("best", { score: records[stage.id] || 0 })}` : t("locked")}</em>
+        <em>${isUnlocked ? `${goalLabel(stage)} · ${t("best", { score: bestScoreFromRecord(records[stage.id]) })}` : t("locked")}</em>
       `;
       button.addEventListener("click", () => startStage(index));
       nodes.stageGrid.append(button);
@@ -578,7 +638,8 @@
     state.running = false;
     state.busy = true;
     const stage = activeStage();
-    const best = saveRecord(stage.id, state.score)[stage.id] || state.score;
+    const progress = saveRecord(stage.id, state.score)[stage.id];
+    const best = progress.bestScore || state.score;
     if (cleared && stage.id < stages.length) {
       saveUnlocked(Math.max(loadUnlocked(), stage.id + 1));
     }
@@ -588,6 +649,7 @@
       ? t(stage.id === stages.length ? "finalClearText" : "clearText", { score: state.score, goal: goalLabel(stage), best })
       : t("failedText", { score: state.score, goal: goalLabel(stage) });
     nodes.resultStars.textContent = cleared ? starRating() : "";
+    renderSkillReport(progress, cleared);
     nodes.nextBtn.classList.toggle("hidden", !cleared || stage.id >= stages.length);
     nodes.hud.classList.add("hidden");
     nodes.playPanel.classList.add("hidden");
