@@ -106,14 +106,14 @@
   ];
 
   const spriteAssets = {
-    cat: "../../assets/animal-guard-cat.svg",
-    dog: "../../assets/animal-guard-dog.svg",
-    owl: "../../assets/animal-guard-owl.svg",
-    fox: "../../assets/animal-guard-fox.svg",
-    normal: "../../assets/animal-guard-zombie-normal.svg",
-    fast: "../../assets/animal-guard-zombie-fast.svg",
-    shield: "../../assets/animal-guard-zombie-shield.svg",
-    boss: "../../assets/animal-guard-zombie-boss.svg",
+    cat: "../../assets/animal-guard-cat.png",
+    dog: "../../assets/animal-guard-dog.png",
+    owl: "../../assets/animal-guard-owl.png",
+    fox: "../../assets/animal-guard-fox.png",
+    normal: "../../assets/animal-guard-zombie-normal.png",
+    fast: "../../assets/animal-guard-zombie-fast.png",
+    shield: "../../assets/animal-guard-zombie-shield.png",
+    boss: "../../assets/animal-guard-zombie-boss.png",
   };
 
   const stages = [
