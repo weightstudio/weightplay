@@ -588,16 +588,18 @@
   }
 
   function shoot(guard, target) {
+    pulseClass(guard.el, "is-shooting");
     const projectile = {
       row: guard.row,
       x: (guard.col + 0.72) / stages[currentStage].cols,
       y: (guard.row + 0.5) / stages[currentStage].rows,
       speed: 0.00115,
       damage: guard.data.damage,
+      unitId: guard.id,
       target,
       el: document.createElement("div"),
     };
-    projectile.el.className = "projectile";
+    projectile.el.className = `projectile ${guard.id}`;
     nodes.yardBoard.appendChild(projectile.el);
     projectiles.push(projectile);
     playSound("shoot");
@@ -609,6 +611,9 @@
       const hit = entities.find((item) => item.kind === "zombie" && item.row === shot.row && Math.abs(item.x - shot.x) < 0.045);
       if (hit) {
         hit.hp -= shot.damage;
+        pulseClass(hit.el, "is-hit");
+        spawnImpact(hit.x, (hit.row + 0.5) / stages[currentStage].rows, shot.unitId);
+        showBoardText(`-${shot.damage}`, hit.x, (hit.row + 0.26) / stages[currentStage].rows);
         if (hit.hp <= 0 && !hit.rewarded) {
           hit.rewarded = true;
           const coinGain = hit.type === "boss" ? 30 : hit.type === "shield" ? 8 : hit.type === "fast" ? 5 : 6;
@@ -636,6 +641,9 @@
         if (zombie.biteCooldown <= 0) {
           blocking.hp -= zombie.damage;
           zombie.biteCooldown = 760;
+          pulseClass(zombie.el, "is-biting");
+          pulseClass(blocking.el, "is-hit");
+          spawnImpact((blocking.col + 0.5) / cols, (blocking.row + 0.5) / stages[currentStage].rows, "bite");
           playSound("hit");
         }
       } else {
@@ -669,12 +677,33 @@
     if (entity.kind === "guard") {
       const x = ((entity.col + 0.5) / stage.cols) * boardRect.width;
       const y = ((entity.row + 0.5) / stage.rows) * boardRect.height;
-      entity.el.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%)`;
+      entity.el.style.setProperty("--actor-x", `${x}px`);
+      entity.el.style.setProperty("--actor-y", `${y}px`);
+      entity.el.style.transform = "translate(var(--actor-x), var(--actor-y)) translate(-50%, -50%)";
     } else {
       const y = ((entity.row + 0.5) / stage.rows) * boardRect.height;
-      entity.el.style.transform = `translate(${entity.x * boardRect.width}px, ${y}px) translate(-50%, -50%)`;
+      entity.el.style.setProperty("--actor-x", `${entity.x * boardRect.width}px`);
+      entity.el.style.setProperty("--actor-y", `${y}px`);
+      entity.el.style.transform = "translate(var(--actor-x), var(--actor-y)) translate(-50%, -50%)";
     }
     entity.el.querySelector(".hp i").style.width = `${clamp((entity.hp / entity.maxHp) * 100, 0, 100)}%`;
+  }
+
+  function pulseClass(element, className) {
+    if (!element) return;
+    element.classList.remove(className);
+    void element.offsetWidth;
+    element.classList.add(className);
+    window.setTimeout(() => element.classList.remove(className), 260);
+  }
+
+  function spawnImpact(x, y, type) {
+    const spark = document.createElement("div");
+    spark.className = `impact ${type || "hit"}`;
+    spark.style.left = `${x * 100}%`;
+    spark.style.top = `${y * 100}%`;
+    nodes.yardBoard.appendChild(spark);
+    window.setTimeout(() => spark.remove(), 420);
   }
 
   function updateHud() {
