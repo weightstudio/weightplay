@@ -478,6 +478,10 @@ select {
   opacity: var(--stage-weather-opacity, 0.55);
 }
 
+.yard-board.is-danger {
+  animation: board-danger 0.34s ease-out 2;
+}
+
 .yard-board[data-theme="sunny"] {
   --stage-sky: radial-gradient(circle at 82% 18%, rgba(255, 241, 105, 0.92), transparent 8rem);
   --stage-sky-opacity: 0.55;
@@ -530,6 +534,25 @@ select {
 
 .cell:active {
   background: rgba(255, 255, 255, 0.25);
+}
+
+.danger-alert {
+  position: absolute;
+  left: 50%;
+  top: 12px;
+  z-index: 18;
+  transform: translateX(-50%);
+  max-width: min(84%, 360px);
+  padding: 8px 14px;
+  border: 3px solid rgba(255, 255, 255, 0.78);
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(255, 238, 165, 0.96), rgba(245, 93, 63, 0.94));
+  color: #55210f;
+  font-weight: 1000;
+  text-align: center;
+  box-shadow: 0 10px 18px rgba(92, 21, 12, 0.28);
+  pointer-events: none;
+  animation: danger-alert 0.9s ease-out forwards;
 }
 
 .actor,
@@ -624,9 +647,21 @@ select {
   animation: guard-shoot 0.24s ease-out;
 }
 
+.actor.is-placed {
+  animation: guard-place 0.36s cubic-bezier(0.2, 1.45, 0.32, 1);
+}
+
 .actor.is-hit,
 .zombie.is-hit {
   animation: actor-hit 0.26s ease-out;
+}
+
+.zombie.is-entering {
+  animation: zombie-enter 0.5s ease-out;
+}
+
+.zombie.near-home {
+  filter: drop-shadow(0 10px 8px rgba(29, 50, 32, 0.32)) drop-shadow(0 0 10px rgba(255, 76, 76, 0.64));
 }
 
 .zombie.is-biting {
@@ -664,6 +699,13 @@ select {
   background:
     radial-gradient(circle, rgba(255, 255, 255, 0.98) 0 14%, transparent 15%),
     conic-gradient(from 20deg, transparent 0 9%, #ff4f5e 10% 18%, transparent 19% 32%, #6b1f2a 33% 42%, transparent 43% 55%, #ffb3b3 56% 65%, transparent 66% 100%);
+}
+
+.impact.place {
+  width: calc(var(--cell-w) * 0.72);
+  background:
+    radial-gradient(circle, rgba(255, 255, 255, 0.92) 0 18%, transparent 19%),
+    conic-gradient(from 10deg, transparent 0 8%, #b7f47b 9% 17%, transparent 18% 30%, #fff3a0 31% 39%, transparent 40% 54%, #7ee0ff 55% 65%, transparent 66% 100%);
 }
 
 .animal-sprite,
@@ -1099,6 +1141,58 @@ select {
   to {
     opacity: 0;
     transform: translate(-50%, -120%);
+  }
+}
+
+@keyframes danger-alert {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -8px) scale(0.9);
+  }
+  18% {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1.04);
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -16px) scale(0.96);
+  }
+}
+
+@keyframes board-danger {
+  50% {
+    box-shadow:
+      inset 0 0 0 4px rgba(255, 245, 190, 0.28),
+      inset 0 -18px rgba(33, 72, 42, 0.18),
+      0 20px 34px rgba(8, 16, 12, 0.34),
+      inset 0 0 0 999px rgba(255, 42, 42, 0.12);
+  }
+}
+
+@keyframes guard-place {
+  0% {
+    transform: translate(var(--actor-x, 0), var(--actor-y, 0)) translate(-50%, -50%) scale(0.45);
+    filter: drop-shadow(0 10px 8px rgba(22, 51, 31, 0.28)) brightness(1.35);
+  }
+  65% {
+    transform: translate(var(--actor-x, 0), var(--actor-y, 0)) translate(-50%, -50%) scale(1.16);
+  }
+  100% {
+    transform: translate(var(--actor-x, 0), var(--actor-y, 0)) translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes zombie-enter {
+  0% {
+    opacity: 0.45;
+    transform: translate(var(--actor-x, 0), var(--actor-y, 0)) translate(-35%, -50%) scale(0.82);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(var(--actor-x, 0), var(--actor-y, 0)) translate(-50%, -50%) scale(1);
   }
 }
 

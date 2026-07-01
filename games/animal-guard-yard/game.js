@@ -41,6 +41,7 @@
       noDiamonds: "Need more diamonds.",
       occupied: "This tile already has a guard.",
       started: "Defend the yard!",
+      danger: "\u26a0\ufe0f Zombies are close!",
       kennelTitle: "Animal Training",
       kennelHint: "Upgrade guards with coins. Unlock rare animals with diamonds.",
       shopTitle: "Rare Animal Shop",
@@ -104,6 +105,7 @@
       noDiamonds: "\u947d\u77f3\u4e0d\u8db3\u3002",
       occupied: "\u9019\u500b\u683c\u5b50\u5df2\u7d93\u6709\u5b88\u885b\u4e86\u3002",
       started: "\u5b88\u4f4f\u5ead\u9662\uff01",
+      danger: "\u26a0\ufe0f \u6bad\u5c4d\u9760\u8fd1\u5bb6\u5712\uff01",
       kennelTitle: "\u52d5\u7269\u8a13\u7df4",
       kennelHint: "\u7528\u91d1\u5e63\u5347\u7d1a\u5b88\u885b\uff0c\u7528\u947d\u77f3\u89e3\u9396\u7a00\u6709\u52d5\u7269\u3002",
       shopTitle: "\u7a00\u6709\u52d5\u7269\u5546\u5e97",
@@ -136,10 +138,10 @@
   };
 
   const units = [
-    { id: "cat", nameKey: "unitCat", roleKey: "roleRanged", attackStyle: "ranged", cost: 50, hp: 82, damage: 18, cooldown: 820, range: 9, unlockCost: 0 },
-    { id: "dog", nameKey: "unitDog", roleKey: "roleTankMelee", attackStyle: "melee", cost: 75, hp: 190, damage: 38, cooldown: 920, range: 1.25, unlockCost: 0 },
-    { id: "owl", nameKey: "unitOwl", roleKey: "roleFastRanged", attackStyle: "ranged", cost: 105, hp: 72, damage: 22, cooldown: 560, range: 9, unlockCost: 0 },
-    { id: "fox", nameKey: "unitFox", roleKey: "roleCrossLane", attackStyle: "cross", cost: 145, hp: 98, damage: 36, cooldown: 860, range: 9, targetRows: 1, unlockCost: 18 },
+    { id: "cat", nameKey: "unitCat", roleKey: "roleRanged", attackStyle: "ranged", cost: 45, hp: 92, damage: 20, cooldown: 880, range: 9, unlockCost: 0 },
+    { id: "dog", nameKey: "unitDog", roleKey: "roleTankMelee", attackStyle: "melee", cost: 70, hp: 235, damage: 34, cooldown: 1050, range: 1.35, unlockCost: 0 },
+    { id: "owl", nameKey: "unitOwl", roleKey: "roleFastRanged", attackStyle: "ranged", cost: 95, hp: 78, damage: 18, cooldown: 610, range: 9, unlockCost: 0 },
+    { id: "fox", nameKey: "unitFox", roleKey: "roleCrossLane", attackStyle: "cross", cost: 135, hp: 112, damage: 30, cooldown: 980, range: 9, targetRows: 1, unlockCost: 18 },
   ];
 
   const spriteAssets = {
@@ -154,14 +156,14 @@
   };
 
   const stages = [
-    { titleKey: "basic", theme: "sunny", energy: 135, hp: 3, rows: 5, cols: 9, total: 10, interval: 2350, zombies: [{ type: "normal", hp: 88, speed: 13, damage: 14 }] },
-    { titleKey: "fast", theme: "sunset", energy: 150, hp: 3, rows: 5, cols: 9, total: 14, interval: 2050, zombies: [{ type: "normal", hp: 100, speed: 14, damage: 16 }, { type: "fast", hp: 74, speed: 22, damage: 12 }] },
-    { titleKey: "shield", theme: "rain", energy: 165, hp: 4, rows: 5, cols: 9, total: 17, interval: 1880, zombies: [{ type: "normal", hp: 115, speed: 15, damage: 18 }, { type: "fast", hp: 88, speed: 22, damage: 14 }, { type: "shield", hp: 180, speed: 10, damage: 24 }] },
-    { titleKey: "swarm", theme: "swamp", energy: 180, hp: 4, rows: 5, cols: 9, total: 21, interval: 1650, zombies: [{ type: "normal", hp: 125, speed: 16, damage: 18 }, { type: "fast", hp: 96, speed: 25, damage: 15 }, { type: "shield", hp: 200, speed: 11, damage: 25 }] },
-    { titleKey: "boss", theme: "boss", energy: 205, hp: 5, rows: 5, cols: 9, total: 24, interval: 1550, zombies: [{ type: "normal", hp: 135, speed: 16, damage: 19 }, { type: "fast", hp: 104, speed: 25, damage: 16 }, { type: "shield", hp: 220, speed: 11, damage: 26 }], boss: { type: "boss", hp: 620, speed: 7, damage: 38 } },
-    { titleKey: "crossfire", theme: "sunset", energy: 220, hp: 5, rows: 5, cols: 9, total: 27, interval: 1450, zombies: [{ type: "normal", hp: 150, speed: 17, damage: 20 }, { type: "fast", hp: 112, speed: 28, damage: 17 }, { type: "shield", hp: 235, speed: 12, damage: 27 }] },
-    { titleKey: "tankTrial", theme: "rain", energy: 235, hp: 5, rows: 5, cols: 9, total: 30, interval: 1380, zombies: [{ type: "normal", hp: 165, speed: 17, damage: 21 }, { type: "shield", hp: 285, speed: 12, damage: 30 }, { type: "shield", hp: 310, speed: 10, damage: 34 }] },
-    { titleKey: "grandBoss", theme: "boss", energy: 255, hp: 6, rows: 5, cols: 9, total: 32, interval: 1300, zombies: [{ type: "normal", hp: 175, speed: 18, damage: 22 }, { type: "fast", hp: 128, speed: 29, damage: 18 }, { type: "shield", hp: 310, speed: 12, damage: 34 }], boss: { type: "boss", hp: 980, speed: 8, damage: 48 } },
+    { titleKey: "basic", theme: "sunny", energy: 155, hp: 4, rows: 5, cols: 9, total: 9, interval: 2700, zombies: [{ type: "normal", hp: 82, speed: 9.5, damage: 12 }] },
+    { titleKey: "fast", theme: "sunset", energy: 170, hp: 4, rows: 5, cols: 9, total: 12, interval: 2450, zombies: [{ type: "normal", hp: 95, speed: 10.5, damage: 13 }, { type: "fast", hp: 70, speed: 16.5, damage: 10 }] },
+    { titleKey: "shield", theme: "rain", energy: 185, hp: 4, rows: 5, cols: 9, total: 15, interval: 2250, zombies: [{ type: "normal", hp: 108, speed: 11, damage: 15 }, { type: "fast", hp: 82, speed: 17, damage: 12 }, { type: "shield", hp: 170, speed: 8.2, damage: 20 }] },
+    { titleKey: "swarm", theme: "swamp", energy: 205, hp: 5, rows: 5, cols: 9, total: 18, interval: 2050, zombies: [{ type: "normal", hp: 118, speed: 12, damage: 15 }, { type: "fast", hp: 90, speed: 18.5, damage: 13 }, { type: "shield", hp: 190, speed: 8.8, damage: 21 }] },
+    { titleKey: "boss", theme: "boss", energy: 230, hp: 5, rows: 5, cols: 9, total: 21, interval: 1950, zombies: [{ type: "normal", hp: 128, speed: 12, damage: 16 }, { type: "fast", hp: 98, speed: 19, damage: 14 }, { type: "shield", hp: 210, speed: 9, damage: 22 }], boss: { type: "boss", hp: 650, speed: 5.4, damage: 34 } },
+    { titleKey: "crossfire", theme: "sunset", energy: 245, hp: 5, rows: 5, cols: 9, total: 24, interval: 1840, zombies: [{ type: "normal", hp: 142, speed: 12.5, damage: 17 }, { type: "fast", hp: 108, speed: 20, damage: 15 }, { type: "shield", hp: 228, speed: 9.4, damage: 23 }] },
+    { titleKey: "tankTrial", theme: "rain", energy: 260, hp: 6, rows: 5, cols: 9, total: 26, interval: 1760, zombies: [{ type: "normal", hp: 154, speed: 13, damage: 18 }, { type: "shield", hp: 270, speed: 9.4, damage: 26 }, { type: "shield", hp: 300, speed: 8.2, damage: 29 }] },
+    { titleKey: "grandBoss", theme: "boss", energy: 285, hp: 6, rows: 5, cols: 9, total: 28, interval: 1680, zombies: [{ type: "normal", hp: 168, speed: 13.5, damage: 19 }, { type: "fast", hp: 122, speed: 21, damage: 16 }, { type: "shield", hp: 300, speed: 9.8, damage: 30 }], boss: { type: "boss", hp: 1020, speed: 5.8, damage: 42 } },
   ];
 
   const $ = (id) => document.getElementById(id);
@@ -181,6 +183,7 @@
     waveText: $("waveText"),
     unitBar: $("unitBar"),
     yardBoard: $("yardBoard"),
+    dangerAlert: $("dangerAlert"),
     hintText: $("hintText"),
     resultPanel: $("resultPanel"),
     resultTitle: $("resultTitle"),
@@ -212,6 +215,7 @@
   let raf = 0;
   let boardRect = { width: 1, height: 1 };
   let coinsEarned = 0;
+  let lastDangerAt = 0;
 
   function t(key, data) {
     const parts = key.split(".");
@@ -538,6 +542,7 @@
     projectiles = [];
     cells = [];
     coinsEarned = 0;
+    lastDangerAt = 0;
     selectedUnit = units.find((unit) => isOwned(unit.id))?.id || units[0].id;
     nodes.menuPanel.classList.add("hidden");
     nodes.playPanel.classList.remove("hidden");
@@ -554,9 +559,16 @@
   function buildBoard(stage) {
     nodes.yardBoard.innerHTML = "";
     nodes.yardBoard.dataset.theme = stage.theme || "sunny";
+    nodes.yardBoard.classList.remove("is-danger");
     nodes.yardBoard.style.setProperty("--grid-cols", stage.cols);
     nodes.yardBoard.style.setProperty("--grid-rows", stage.rows);
     boardRect = nodes.yardBoard.getBoundingClientRect();
+    nodes.dangerAlert = document.createElement("div");
+    nodes.dangerAlert.id = "dangerAlert";
+    nodes.dangerAlert.className = "danger-alert hidden";
+    nodes.dangerAlert.setAttribute("aria-live", "polite");
+    nodes.dangerAlert.textContent = t("danger");
+    nodes.yardBoard.appendChild(nodes.dangerAlert);
     for (let row = 0; row < stage.rows; row += 1) {
       for (let col = 0; col < stage.cols; col += 1) {
         const cell = document.createElement("button");
@@ -640,6 +652,8 @@
     cell.unit = guard;
     entities.push(guard);
     updateEntityElement(guard);
+    pulseClass(guard.el, "is-placed", 420);
+    spawnImpact(cellCenterX(col), laneProjectileY(row), "place");
     updateHud();
     renderUnits();
     playSound("select");
@@ -661,11 +675,15 @@
       speed: data.speed / 100000,
       damage: data.damage,
       biteCooldown: 0,
+      warned: false,
       el: document.createElement("div"),
     };
     zombie.el.className = `zombie ${data.type}`;
     zombie.el.innerHTML = `${zombieSprite(data.type)}<span class="hp"><i></i></span>`;
     nodes.yardBoard.appendChild(zombie.el);
+    updateEntityElement(zombie);
+    zombie.el.classList.add("is-entering");
+    window.setTimeout(() => zombie.el.classList.remove("is-entering"), 520);
     entities.push(zombie);
   }
 
@@ -815,7 +833,7 @@
         zombie.biteCooldown -= dt;
         if (zombie.biteCooldown <= 0) {
           blocking.hp -= zombie.damage;
-          zombie.biteCooldown = 760;
+          zombie.biteCooldown = 940;
           pulseClass(zombie.el, "is-biting");
           pulseClass(blocking.el, "is-hit");
           spawnImpact(cellCenterX(blocking.col), laneProjectileY(blocking.row), "bite");
@@ -824,9 +842,15 @@
       } else {
         zombie.x -= zombie.speed * dt;
       }
+      zombie.el.classList.toggle("near-home", zombie.x < 0.24);
+      if (!zombie.warned && zombie.x < 0.26) {
+        zombie.warned = true;
+        showDanger(zombie.row);
+      }
       if (zombie.x < -0.04) {
         zombie.dead = true;
         baseHp -= 1;
+        pulseDanger();
         playSound("error");
       }
       updateEntityElement(zombie);
@@ -869,19 +893,19 @@
   }
 
   function laneCenterY(row, stage = stages[currentStage]) {
-    return (row + 0.47) / stage.rows;
+    return (row + 0.44) / stage.rows;
   }
 
   function laneProjectileY(row, stage = stages[currentStage]) {
-    return (row + 0.47) / stage.rows;
+    return (row + 0.44) / stage.rows;
   }
 
-  function pulseClass(element, className) {
+  function pulseClass(element, className, duration = 260) {
     if (!element) return;
     element.classList.remove(className);
     void element.offsetWidth;
     element.classList.add(className);
-    window.setTimeout(() => element.classList.remove(className), 260);
+    window.setTimeout(() => element.classList.remove(className), duration);
   }
 
   function spawnImpact(x, y, type) {
@@ -891,6 +915,28 @@
     spark.style.top = `${y * 100}%`;
     nodes.yardBoard.appendChild(spark);
     window.setTimeout(() => spark.remove(), 420);
+  }
+
+  function showDanger(row) {
+    const now = performance.now();
+    pulseDanger();
+    if (now - lastDangerAt > 1100) {
+      lastDangerAt = now;
+      showBoardText(t("danger"), 0.22, Math.max(0.08, laneProjectileY(row) - 0.08));
+      playSound("error");
+    }
+  }
+
+  function pulseDanger() {
+    nodes.yardBoard.classList.add("is-danger");
+    if (nodes.dangerAlert) {
+      nodes.dangerAlert.textContent = t("danger");
+      nodes.dangerAlert.classList.remove("hidden");
+    }
+    window.setTimeout(() => {
+      nodes.yardBoard.classList.remove("is-danger");
+      nodes.dangerAlert?.classList.add("hidden");
+    }, 900);
   }
 
   function updateHud() {
