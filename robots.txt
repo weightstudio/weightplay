@@ -1,6 +1,6 @@
-User-agent: *
+﻿User-agent: *
 Disallow: /docs/
 Disallow: /PROMPTS/
 Disallow: /*.md$
 
-Sitemap: https://weightstudio.github.io/weightplay/sitemap.xml
+Sitemap: https://weightplay.com/sitemap.xml
