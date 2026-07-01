@@ -1,63 +1,93 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-label="Animal Guard Yard cover">
   <defs>
     <linearGradient id="sky" x1="0" x2="0" y1="0" y2="1">
-      <stop offset="0" stop-color="#7fd7ff"/>
-      <stop offset=".58" stop-color="#fff1a8"/>
-      <stop offset="1" stop-color="#78c96b"/>
+      <stop offset="0" stop-color="#8fdcff"/>
+      <stop offset=".5" stop-color="#fff1aa"/>
+      <stop offset="1" stop-color="#63bd65"/>
     </linearGradient>
-    <linearGradient id="yard" x1="0" x2="1" y1="0" y2="1">
-      <stop offset="0" stop-color="#7ee47c"/>
-      <stop offset="1" stop-color="#3aa85e"/>
+    <linearGradient id="grass" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#88e47b"/>
+      <stop offset="1" stop-color="#3d9d5a"/>
     </linearGradient>
     <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="18" stdDeviation="12" flood-color="#1b3c3c" flood-opacity=".25"/>
+      <feDropShadow dx="0" dy="16" stdDeviation="12" flood-color="#16331f" flood-opacity=".24"/>
     </filter>
   </defs>
   <rect width="1200" height="900" rx="64" fill="url(#sky)"/>
-  <circle cx="1006" cy="128" r="76" fill="#fff36b"/>
-  <g opacity=".55" fill="#fff">
-    <ellipse cx="164" cy="158" rx="116" ry="40"/>
-    <ellipse cx="237" cy="150" rx="82" ry="34"/>
-    <ellipse cx="896" cy="220" rx="132" ry="44"/>
-    <ellipse cx="990" cy="214" rx="88" ry="34"/>
+  <circle cx="1005" cy="120" r="76" fill="#ffdf57"/>
+  <g fill="#fff" opacity=".55">
+    <ellipse cx="180" cy="156" rx="126" ry="42"/>
+    <ellipse cx="285" cy="148" rx="76" ry="32"/>
+    <ellipse cx="820" cy="205" rx="138" ry="42"/>
+    <ellipse cx="930" cy="202" rx="84" ry="32"/>
   </g>
-  <path d="M0 454 C175 398 315 420 474 468 C675 530 852 472 1200 410 L1200 900 L0 900 Z" fill="url(#yard)"/>
-  <g opacity=".26" stroke="#1f7d49" stroke-width="8">
-    <path d="M96 572 H1098"/>
-    <path d="M96 704 H1098"/>
-    <path d="M230 492 V832"/>
-    <path d="M430 492 V832"/>
-    <path d="M630 492 V832"/>
-    <path d="M830 492 V832"/>
-    <path d="M1030 492 V832"/>
-  </g>
-  <g filter="url(#shadow)">
-    <rect x="80" y="548" width="162" height="142" rx="42" fill="#fff7d5"/>
-    <text x="161" y="648" text-anchor="middle" font-family="Arial Rounded MT Bold, sans-serif" font-size="92">🐱</text>
-    <rect x="94" y="690" width="132" height="20" rx="10" fill="#ffc857"/>
+  <path d="M0 430 C190 380 330 418 500 462 C710 515 885 458 1200 402 L1200 900 L0 900 Z" fill="url(#grass)"/>
+  <g opacity=".22" stroke="#1f7d49" stroke-width="8">
+    <path d="M92 555 H1100"/>
+    <path d="M92 690 H1100"/>
+    <path d="M235 485 V830"/>
+    <path d="M435 485 V830"/>
+    <path d="M635 485 V830"/>
+    <path d="M835 485 V830"/>
+    <path d="M1035 485 V830"/>
   </g>
   <g filter="url(#shadow)">
-    <rect x="266" y="652" width="162" height="142" rx="42" fill="#e8f5ff"/>
-    <text x="347" y="752" text-anchor="middle" font-family="Arial Rounded MT Bold, sans-serif" font-size="92">🐶</text>
-    <rect x="280" y="794" width="132" height="20" rx="10" fill="#4fb3ff"/>
+    <g transform="translate(116 546) scale(1.25)">
+      <path d="M30 98 C34 60 72 32 118 42 C157 50 178 82 168 121 C158 162 106 178 64 158 C40 146 27 126 30 98Z" fill="#d18a55"/>
+      <path d="M122 45 L144 4 L158 55Z" fill="#a95f37"/>
+      <path d="M86 42 L104 0 L118 51Z" fill="#a95f37"/>
+      <path d="M31 99 C-6 92 -16 61 22 51 C49 58 56 78 42 101Z" fill="#a95f37"/>
+      <circle cx="132" cy="78" r="7" fill="#15251b"/>
+      <ellipse cx="151" cy="95" rx="19" ry="12" fill="#ffe8bd"/>
+      <rect x="72" y="150" width="18" height="52" rx="9" fill="#a95f37"/>
+      <rect x="121" y="148" width="18" height="52" rx="9" fill="#a95f37"/>
+    </g>
+    <g transform="translate(330 654) scale(1.18)">
+      <path d="M34 98 C40 58 78 32 124 44 C166 55 184 93 166 130 C146 169 88 178 52 150 C37 138 30 119 34 98Z" fill="#c89562"/>
+      <path d="M89 39 C74 10 108 -2 116 44Z" fill="#7d5436"/>
+      <path d="M139 47 C162 12 190 28 158 67Z" fill="#7d5436"/>
+      <path d="M33 102 C-2 104 -14 76 18 58 C42 61 56 80 46 102Z" fill="#7d5436"/>
+      <circle cx="132" cy="78" r="7" fill="#15251b"/>
+      <ellipse cx="151" cy="98" rx="22" ry="13" fill="#ffe8bd"/>
+      <rect x="78" y="148" width="18" height="52" rx="9" fill="#7d5436"/>
+      <rect x="125" y="148" width="18" height="52" rx="9" fill="#7d5436"/>
+    </g>
+    <g transform="translate(545 500) scale(1.18)">
+      <ellipse cx="98" cy="112" rx="66" ry="86" fill="#8b745d"/>
+      <circle cx="98" cy="58" r="48" fill="#8b745d"/>
+      <path d="M60 29 L79 4 L91 41Z" fill="#57483c"/>
+      <path d="M136 29 L117 4 L105 41Z" fill="#57483c"/>
+      <circle cx="82" cy="57" r="17" fill="#f6e7a4"/>
+      <circle cx="114" cy="57" r="17" fill="#f6e7a4"/>
+      <circle cx="82" cy="57" r="7" fill="#15251b"/>
+      <circle cx="114" cy="57" r="7" fill="#15251b"/>
+      <path d="M98 70 L88 90 H108Z" fill="#e6a73c"/>
+      <rect x="70" y="178" width="18" height="36" rx="9" fill="#57483c"/>
+      <rect x="111" y="178" width="18" height="36" rx="9" fill="#57483c"/>
+    </g>
   </g>
   <g filter="url(#shadow)">
-    <rect x="454" y="516" width="162" height="142" rx="42" fill="#f0e8ff"/>
-    <text x="535" y="616" text-anchor="middle" font-family="Arial Rounded MT Bold, sans-serif" font-size="92">🦉</text>
-    <rect x="468" y="658" width="132" height="20" rx="10" fill="#a16bff"/>
+    <g transform="translate(840 540) scale(1.22)">
+      <path d="M52 98 C58 56 92 32 130 44 C168 56 182 91 162 132 C143 170 81 169 58 138 C49 126 48 112 52 98Z" fill="#84ab8e"/>
+      <circle cx="122" cy="54" r="44" fill="#97bd9f"/>
+      <rect x="32" y="100" width="24" height="82" rx="12" fill="#6d9278" transform="rotate(18 44 141)"/>
+      <rect x="158" y="83" width="24" height="88" rx="12" fill="#6d9278" transform="rotate(-28 170 127)"/>
+      <rect x="83" y="156" width="19" height="48" rx="9" fill="#5e8068"/>
+      <rect x="125" y="154" width="19" height="48" rx="9" fill="#5e8068"/>
+      <circle cx="108" cy="49" r="7" fill="#203027"/>
+      <circle cx="137" cy="49" r="7" fill="#203027"/>
+      <path d="M111 75 C124 86 141 86 153 73" fill="none" stroke="#203027" stroke-width="7" stroke-linecap="round"/>
+    </g>
+    <g transform="translate(986 670) scale(.95)">
+      <path d="M38 110 C45 61 82 35 128 48 C172 61 188 102 166 143 C144 184 82 185 54 150 C40 132 35 120 38 110Z" fill="#6f9876"/>
+      <circle cx="120" cy="60" r="45" fill="#8fb895"/>
+      <rect x="156" y="80" width="58" height="82" rx="28" fill="#d9f3ff" stroke="#6da1b2" stroke-width="8"/>
+      <circle cx="105" cy="55" r="7" fill="#203027"/>
+      <circle cx="135" cy="55" r="7" fill="#203027"/>
+      <rect x="78" y="166" width="20" height="48" rx="10" fill="#5e8068"/>
+      <rect x="124" y="164" width="20" height="48" rx="10" fill="#5e8068"/>
+    </g>
   </g>
-  <g filter="url(#shadow)">
-    <rect x="878" y="536" width="162" height="142" rx="42" fill="#b9d2c4"/>
-    <circle cx="930" cy="588" r="12" fill="#243536"/>
-    <circle cx="990" cy="588" r="12" fill="#243536"/>
-    <path d="M926 638 C952 658 982 658 1006 636" fill="none" stroke="#243536" stroke-width="12" stroke-linecap="round"/>
-    <text x="959" y="523" text-anchor="middle" font-family="Arial Rounded MT Bold, sans-serif" font-size="86">🧟</text>
-  </g>
-  <g filter="url(#shadow)">
-    <rect x="724" y="662" width="176" height="152" rx="44" fill="#9bc6a7"/>
-    <text x="812" y="768" text-anchor="middle" font-family="Arial Rounded MT Bold, sans-serif" font-size="96">🧟</text>
-    <circle cx="866" cy="684" r="30" fill="#d7e8ef"/>
-  </g>
-  <rect x="86" y="78" width="1028" height="116" rx="40" fill="rgba(255,255,255,.76)"/>
-  <text x="600" y="154" text-anchor="middle" font-family="Arial Rounded MT Bold, Noto Sans TC, sans-serif" font-size="58" font-weight="900" fill="#17314f">Animal Guard Yard</text>
+  <rect x="88" y="72" width="1024" height="122" rx="38" fill="rgba(255,255,255,.78)"/>
+  <text x="600" y="151" text-anchor="middle" font-family="Arial Rounded MT Bold, Noto Sans TC, sans-serif" font-size="58" font-weight="900" fill="#17314f">Animal Guard Yard</text>
 </svg>

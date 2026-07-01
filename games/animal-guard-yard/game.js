@@ -3,6 +3,7 @@
   const localeKey = "weightplayLocale";
   const unlockKey = "weightplay_animal_guard_unlocked";
   const bestKey = "weightplay_animal_guard_best";
+  const profileKey = "weightplay_animal_guard_profile";
 
   const text = {
     en: {
@@ -24,11 +25,21 @@
       wave: "Stage {n} - Zombies {left}",
       select: "Choose an animal, then tap a grass tile.",
       noEnergy: "Need more sun.",
+      noCoins: "Need more coins.",
+      noDiamonds: "Need more diamonds.",
       occupied: "This tile already has a guard.",
       started: "Defend the yard!",
+      kennelTitle: "Animal Training",
+      kennelHint: "Upgrade guards with coins. Unlock rare animals with diamonds.",
+      level: "Lv {n}",
+      upgrade: "Upgrade",
+      unlock: "Unlock",
+      owned: "Owned",
+      reward: "Reward +{coins} coins",
       unitCat: "Cat",
       unitDog: "Dog",
       unitOwl: "Owl",
+      unitFox: "Fox",
       fast: "Fast zombies",
       shield: "Shield zombies",
       basic: "First defense",
@@ -52,11 +63,21 @@
       wave: "第 {n} 關 - 剩餘殭屍 {left}",
       select: "先選動物，再點草地格子放置。",
       noEnergy: "太陽不足。",
+      noCoins: "金幣不足。",
+      noDiamonds: "鑽石不足。",
       occupied: "這格已經有守衛。",
       started: "守住庭院！",
+      kennelTitle: "動物訓練",
+      kennelHint: "用金幣升級守衛，用鑽石解鎖稀有動物。",
+      level: "Lv {n}",
+      upgrade: "升級",
+      unlock: "解鎖",
+      owned: "已擁有",
+      reward: "獎勵 +{coins} 金幣",
       unitCat: "貓咪",
       unitDog: "小狗",
       unitOwl: "貓頭鷹",
+      unitFox: "狐狸",
       fast: "快速殭屍",
       shield: "盾牌殭屍",
       basic: "初次防守",
@@ -64,9 +85,10 @@
   };
 
   const units = [
-    { id: "cat", emoji: "\u{1F431}", nameKey: "unitCat", cost: 50, hp: 80, damage: 18, cooldown: 820, range: 6 },
-    { id: "dog", emoji: "\u{1F436}", nameKey: "unitDog", cost: 80, hp: 120, damage: 30, cooldown: 1180, range: 5 },
-    { id: "owl", emoji: "\u{1F989}", nameKey: "unitOwl", cost: 110, hp: 70, damage: 24, cooldown: 640, range: 6 },
+    { id: "cat", nameKey: "unitCat", cost: 50, hp: 80, damage: 18, cooldown: 820, range: 6, unlockCost: 0 },
+    { id: "dog", nameKey: "unitDog", cost: 80, hp: 120, damage: 30, cooldown: 1180, range: 5, unlockCost: 0 },
+    { id: "owl", nameKey: "unitOwl", cost: 110, hp: 70, damage: 24, cooldown: 640, range: 6, unlockCost: 0 },
+    { id: "fox", nameKey: "unitFox", cost: 140, hp: 92, damage: 42, cooldown: 980, range: 6, unlockCost: 18 },
   ];
 
   const stages = [
@@ -78,6 +100,9 @@
   const $ = (id) => document.getElementById(id);
   const nodes = {
     localeSelect: $("localeSelect"),
+    coinText: $("coinText"),
+    diamondText: $("diamondText"),
+    kennelGrid: $("kennelGrid"),
     menuPanel: $("menuPanel"),
     stageGrid: $("stageGrid"),
     playPanel: $("playPanel"),
@@ -101,6 +126,7 @@
 
   let locale = localStorage.getItem(localeKey) || "en";
   let unlocked = clamp(Number(localStorage.getItem(unlockKey)) || 1, 1, stages.length);
+  let profile = loadProfile();
   let currentStage = 0;
   let selectedUnit = units[0].id;
   let running = false;
@@ -115,6 +141,7 @@
   let cells = [];
   let raf = 0;
   let boardRect = { width: 1, height: 1 };
+  let coinsEarned = 0;
 
   function t(key, data) {
     const parts = key.split(".");
@@ -126,6 +153,55 @@
 
   function clamp(value, min, max) {
     return Math.max(min, Math.min(max, value));
+  }
+
+  function loadProfile() {
+    const defaults = {
+      coins: 0,
+      owned: { cat: true, dog: true, owl: true, fox: false },
+      levels: { cat: 1, dog: 1, owl: 1, fox: 1 },
+    };
+    try {
+      const saved = JSON.parse(localStorage.getItem(profileKey) || "{}");
+      return {
+        coins: Math.max(0, Number(saved.coins) || 0),
+        owned: { ...defaults.owned, ...(saved.owned || {}) },
+        levels: { ...defaults.levels, ...(saved.levels || {}) },
+      };
+    } catch {
+      return defaults;
+    }
+  }
+
+  function saveProfile() {
+    localStorage.setItem(profileKey, JSON.stringify(profile));
+  }
+
+  function readDiamonds() {
+    return window.WeightPlayWallet?.read?.().diamonds || 0;
+  }
+
+  function unitLevel(unitId) {
+    return Math.max(1, Number(profile.levels[unitId]) || 1);
+  }
+
+  function isOwned(unitId) {
+    return !!profile.owned[unitId];
+  }
+
+  function trainedUnit(unit) {
+    const level = unitLevel(unit.id);
+    return {
+      ...unit,
+      level,
+      hp: Math.round(unit.hp * (1 + (level - 1) * 0.18)),
+      damage: Math.round(unit.damage * (1 + (level - 1) * 0.16)),
+      cooldown: Math.max(460, Math.round(unit.cooldown * (1 - (level - 1) * 0.025))),
+    };
+  }
+
+  function upgradeCost(unitId) {
+    return Math.round(70 * Math.pow(1.42, unitLevel(unitId) - 1));
   }
 
   function playSound(name) {
@@ -142,6 +218,7 @@
       node.textContent = t(node.dataset.ui);
     });
     nodes.localeSelect.value = locale;
+    renderWallet();
   }
 
   function showFloatingText(message) {
@@ -152,6 +229,16 @@
     window.setTimeout(() => bubble.remove(), 1200);
   }
 
+  function showBoardText(message, x, y) {
+    const bubble = document.createElement("div");
+    bubble.className = "board-pop";
+    bubble.textContent = message;
+    bubble.style.left = `${x * 100}%`;
+    bubble.style.top = `${y * 100}%`;
+    nodes.yardBoard.appendChild(bubble);
+    window.setTimeout(() => bubble.remove(), 900);
+  }
+
   function renderStageGrid() {
     nodes.stageGrid.innerHTML = "";
     stages.forEach((stage, index) => {
@@ -160,8 +247,9 @@
       button.className = "stage-card";
       button.type = "button";
       if (stageNo > unlocked) button.classList.add("locked");
+      const iconUnit = units[Math.min(index, units.length - 1)]?.id || "cat";
       button.innerHTML = `
-        <b>${stageNo === 1 ? "\u{1F431}" : stageNo === 2 ? "\u{1F436}" : "\u{1F989}"}</b>
+        <b class="stage-animal">${animalSprite(iconUnit)}</b>
         <strong>${t("stage", { n: stageNo })}</strong>
         <span>${t(stage.titleKey)}</span>
       `;
@@ -177,6 +265,65 @@
     });
   }
 
+  function renderWallet() {
+    if (nodes.coinText) nodes.coinText.textContent = profile.coins;
+    if (nodes.diamondText) nodes.diamondText.textContent = readDiamonds();
+  }
+
+  function animalSprite(unitId) {
+    return `
+      <span class="animal-sprite ${unitId}" aria-hidden="true">
+        <i class="tail"></i>
+        <i class="body"></i>
+        <i class="head"></i>
+        <i class="ear left"></i>
+        <i class="ear right"></i>
+        <i class="leg one"></i>
+        <i class="leg two"></i>
+        <i class="eye"></i>
+        <i class="snout"></i>
+      </span>
+    `;
+  }
+
+  function zombieSprite(type) {
+    return `
+      <span class="zombie-sprite ${type}" aria-hidden="true">
+        <i class="body"></i>
+        <i class="head"></i>
+        <i class="arm front"></i>
+        <i class="arm back"></i>
+        <i class="leg one"></i>
+        <i class="leg two"></i>
+        <i class="eye"></i>
+      </span>
+    `;
+  }
+
+  function renderKennel() {
+    if (!nodes.kennelGrid) return;
+    nodes.kennelGrid.innerHTML = "";
+    units.forEach((unit) => {
+      const trained = trainedUnit(unit);
+      const owned = isOwned(unit.id);
+      const card = document.createElement("div");
+      card.className = `kennel-card ${owned ? "" : "locked"}`;
+      const cost = owned ? upgradeCost(unit.id) : unit.unlockCost;
+      const canBuy = owned ? profile.coins >= cost : readDiamonds() >= cost;
+      card.innerHTML = `
+        <div class="kennel-animal">${animalSprite(unit.id)}</div>
+        <div>
+          <strong>${t(unit.nameKey)} <small>${t("level", { n: trained.level })}</small></strong>
+          <span>⚔ ${trained.damage} · ♥ ${trained.hp} · ☀ ${trained.cost}</span>
+        </div>
+        <button type="button" data-kennel-unit="${unit.id}" ${canBuy ? "" : "disabled"}>
+          ${owned ? "●" : "◆"} ${cost} ${owned ? t("upgrade") : t("unlock")}
+        </button>
+      `;
+      nodes.kennelGrid.appendChild(card);
+    });
+  }
+
   function showMenu() {
     running = false;
     cancelAnimationFrame(raf);
@@ -184,6 +331,8 @@
     nodes.playPanel.classList.add("hidden");
     nodes.resultPanel.classList.add("hidden");
     renderStageGrid();
+    renderKennel();
+    renderWallet();
   }
 
   function startStage(index) {
@@ -199,7 +348,8 @@
     entities = [];
     projectiles = [];
     cells = [];
-    selectedUnit = units[0].id;
+    coinsEarned = 0;
+    selectedUnit = units.find((unit) => isOwned(unit.id))?.id || units[0].id;
     nodes.menuPanel.classList.add("hidden");
     nodes.playPanel.classList.remove("hidden");
     nodes.resultPanel.classList.add("hidden");
@@ -234,16 +384,23 @@
   function renderUnits() {
     nodes.unitBar.innerHTML = "";
     units.forEach((unit) => {
+      const owned = isOwned(unit.id);
+      const trained = trainedUnit(unit);
       const button = document.createElement("button");
       button.className = "unit-card";
       button.type = "button";
       if (unit.id === selectedUnit) button.classList.add("selected");
-      if (energy < unit.cost) button.classList.add("disabled");
+      if (!owned || energy < trained.cost) button.classList.add("disabled");
       button.innerHTML = `
-        <span class="emoji">${unit.emoji}</span>
-        <span>${t(unit.nameKey)}<small>☀ ${unit.cost} / ⚔ ${unit.damage}</small></span>
+        <span class="mini-animal">${animalSprite(unit.id)}</span>
+        <span>${t(unit.nameKey)} <em>${t("level", { n: trained.level })}</em><small>☀ ${trained.cost} / ⚔ ${trained.damage}</small></span>
       `;
       button.addEventListener("click", () => {
+        if (!owned) {
+          showFloatingText(t("noDiamonds"));
+          playSound("error");
+          return;
+        }
         selectedUnit = unit.id;
         playSound("click");
         renderUnits();
@@ -255,8 +412,14 @@
   function placeUnit(row, col) {
     if (!running) return;
     const cell = cells.find((item) => item.row === row && item.col === col);
-    const unit = units.find((item) => item.id === selectedUnit);
-    if (!cell || !unit) return;
+    const baseUnit = units.find((item) => item.id === selectedUnit);
+    if (!cell || !baseUnit) return;
+    const unit = trainedUnit(baseUnit);
+    if (!isOwned(unit.id)) {
+      showFloatingText(t("noDiamonds"));
+      playSound("error");
+      return;
+    }
     if (cell.unit) {
       showFloatingText(t("occupied"));
       playSound("error");
@@ -280,7 +443,7 @@
       el: document.createElement("div"),
     };
     guard.el.className = "actor";
-    guard.el.innerHTML = `${unit.emoji}<span class="hp"><i></i></span>`;
+    guard.el.innerHTML = `${animalSprite(unit.id)}<span class="hp"><i></i></span>`;
     nodes.yardBoard.appendChild(guard.el);
     cell.unit = guard;
     entities.push(guard);
@@ -309,7 +472,7 @@
       el: document.createElement("div"),
     };
     zombie.el.className = `zombie ${data.type === "shield" ? "shield" : ""}`;
-    zombie.el.innerHTML = `\u{1F9DF}<span class="hp"><i></i></span>`;
+    zombie.el.innerHTML = `${zombieSprite(data.type)}<span class="hp"><i></i></span>`;
     nodes.yardBoard.appendChild(zombie.el);
     entities.push(zombie);
   }
@@ -395,6 +558,12 @@
       const hit = entities.find((item) => item.kind === "zombie" && item.row === shot.row && Math.abs(item.x - shot.x) < 0.045);
       if (hit) {
         hit.hp -= shot.damage;
+        if (hit.hp <= 0 && !hit.rewarded) {
+          hit.rewarded = true;
+          const coinGain = hit.type === "shield" ? 8 : hit.type === "fast" ? 5 : 6;
+          coinsEarned += coinGain;
+          showBoardText(`+${coinGain}`, hit.x, (hit.row + 0.36) / stages[currentStage].rows);
+        }
         shot.dead = true;
         playSound("hit");
       }
@@ -462,6 +631,7 @@
     nodes.energyText.textContent = Math.floor(energy);
     nodes.baseText.textContent = Math.max(0, baseHp);
     nodes.waveText.textContent = t("wave", { n: currentStage + 1, left });
+    renderWallet();
   }
 
   function finish(won) {
@@ -469,20 +639,59 @@
     cancelAnimationFrame(raf);
     track(won ? "game_complete" : "game_over", { level: currentStage + 1, hp: baseHp });
     if (won) {
+      const clearBonus = 18 + currentStage * 10 + Math.max(0, baseHp) * 4;
+      coinsEarned += clearBonus;
       unlocked = Math.max(unlocked, Math.min(stages.length, currentStage + 2));
       localStorage.setItem(unlockKey, String(unlocked));
       const best = Math.max(Number(localStorage.getItem(bestKey)) || 0, currentStage + 1);
       localStorage.setItem(bestKey, String(best));
       nodes.resultTitle.textContent = t("victory");
-      nodes.resultText.textContent = t("resultWin", { n: currentStage + 1, hp: Math.max(0, baseHp) });
+      nodes.resultText.textContent = `${t("resultWin", { n: currentStage + 1, hp: Math.max(0, baseHp) })} ${t("reward", { coins: coinsEarned })}`;
       playSound("win");
     } else {
       nodes.resultTitle.textContent = t("defeat");
-      nodes.resultText.textContent = t("resultLose");
+      nodes.resultText.textContent = `${t("resultLose")} ${t("reward", { coins: coinsEarned })}`;
       playSound("lose");
+    }
+    if (coinsEarned > 0) {
+      profile.coins += coinsEarned;
+      saveProfile();
     }
     nodes.nextStageBtn.classList.toggle("hidden", !won || currentStage >= stages.length - 1);
     nodes.resultPanel.classList.remove("hidden");
+    renderWallet();
+    renderKennel();
+  }
+
+  function handleKennelAction(unitId) {
+    const unit = units.find((item) => item.id === unitId);
+    if (!unit) return;
+    if (!isOwned(unitId)) {
+      if (!window.WeightPlayWallet?.spendDiamonds?.(unit.unlockCost)) {
+        showFloatingText(t("noDiamonds"));
+        playSound("error");
+        return;
+      }
+      profile.owned[unitId] = true;
+      saveProfile();
+      showFloatingText(`${t(unit.nameKey)} ${t("owned")}`);
+      playSound("win");
+    } else {
+      const cost = upgradeCost(unitId);
+      if (profile.coins < cost) {
+        showFloatingText(t("noCoins"));
+        playSound("error");
+        return;
+      }
+      profile.coins -= cost;
+      profile.levels[unitId] = unitLevel(unitId) + 1;
+      saveProfile();
+      showFloatingText(`${t(unit.nameKey)} ${t("level", { n: unitLevel(unitId) })}`);
+      playSound("coin");
+    }
+    renderWallet();
+    renderKennel();
+    renderUnits();
   }
 
   function initLoading() {
@@ -504,8 +713,14 @@
     localStorage.setItem(localeKey, locale);
     localizeStatic();
     renderStageGrid();
+    renderKennel();
     renderUnits();
     updateHud();
+  });
+  nodes.kennelGrid?.addEventListener("click", (event) => {
+    const button = event.target.closest("button[data-kennel-unit]");
+    if (!button) return;
+    handleKennelAction(button.dataset.kennelUnit);
   });
   nodes.backToStagesBtn.addEventListener("click", showMenu);
   nodes.resultStagesBtn.addEventListener("click", showMenu);
@@ -518,5 +733,7 @@
 
   localizeStatic();
   renderStageGrid();
+  renderKennel();
+  renderWallet();
   initLoading();
 })();

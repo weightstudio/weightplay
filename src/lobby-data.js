@@ -219,12 +219,12 @@ window.WONDER_LOBBY = {
       ageLabel: { en: "5+", "zh-Hant": "5+" },
       href: "games/animal-guard-yard/index.html",
       description: {
-        en: "Place animal guards across garden lanes, collect sun, and stop funny zombies across 3 defense stages.",
-        "zh-Hant": "在庭院路線放置動物守衛，收集太陽，通過 3 關殭屍防守挑戰。",
+        en: "Place full-body animal guards, earn coins, upgrade your team, and unlock a rare fox with diamonds.",
+        "zh-Hant": "放置全身動物守衛，賺金幣升級隊伍，並用鑽石解鎖稀有狐狸。",
       },
       meta: {
-        en: ["3 Stages", "Animal Defense", "Zombies"],
-        "zh-Hant": ["3 關", "動物防守", "殭屍"],
+        en: ["3 Stages", "Animal Upgrades", "Diamonds"],
+        "zh-Hant": ["3 關", "動物升級", "鑽石"],
       },
       art: {
         kind: "image",
