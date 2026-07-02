@@ -50,11 +50,11 @@
   };
 
   const colors = [
-    { id: "berry", icon: "🐰", css: "linear-gradient(145deg,#ff78a9,#e94172)" },
-    { id: "sky", icon: "🐳", css: "linear-gradient(145deg,#7bd7ff,#278bd5)" },
-    { id: "lemon", icon: "🐥", css: "linear-gradient(145deg,#fff176,#f4b400)" },
-    { id: "mint", icon: "🐸", css: "linear-gradient(145deg,#9df278,#35b85b)" },
-    { id: "grape", icon: "🦊", css: "linear-gradient(145deg,#d4a5ff,#8c52d9)" },
+    { id: "berry", label: "Bunny", asset: "../../assets/bubble-bakery-bunny.png" },
+    { id: "sky", label: "Whale", asset: "../../assets/bubble-bakery-whale.png" },
+    { id: "lemon", label: "Chick", asset: "../../assets/bubble-bakery-chick.png" },
+    { id: "mint", label: "Frog", asset: "../../assets/bubble-bakery-frog.png" },
+    { id: "grape", label: "Fox", asset: "../../assets/bubble-bakery-fox.png" },
   ];
 
   const stages = [
@@ -163,10 +163,10 @@
       button.type = "button";
       button.className = "stage-card";
       if (stageNo > unlocked) button.classList.add("locked");
-      const orderIcons = Object.keys(stage.orders).map((id) => colorData(id).icon).join(" ");
+      const orderIcons = Object.keys(stage.orders).map((id) => `<img src="${colorData(id).asset}" alt="" />`).join("");
       const got = stars[stageNo] || 0;
       button.innerHTML = `
-        <b>${orderIcons}</b>
+        <b class="stage-icons">${orderIcons}</b>
         <strong>${t("stage", { n: stageNo })}</strong>
         <span>${starIcons(got, 3)}</span>
       `;
@@ -242,7 +242,7 @@
       const data = colorData(id);
       const chip = document.createElement("div");
       chip.className = "order-chip";
-      chip.innerHTML = `<i class="order-dot" style="background:${data.css}"></i><b>${data.icon}</b><span>${t("collect", { n: Math.max(0, need) })}</span>`;
+      chip.innerHTML = `<img class="order-icon" src="${data.asset}" alt="${data.label}" /><span>${t("collect", { n: Math.max(0, need) })}</span>`;
       nodes.orderBar.appendChild(chip);
     });
   }
@@ -267,7 +267,6 @@
         const button = document.createElement("button");
         button.type = "button";
         button.className = "bubble";
-        button.style.setProperty("--bubble", data.css);
         button.style.visibility = "visible";
         button.style.opacity = "1";
         button.style.transform = "none";
@@ -277,8 +276,8 @@
         }
         button.dataset.row = String(r);
         button.dataset.col = String(c);
-        button.setAttribute("aria-label", id);
-        button.innerHTML = `<span>${data.icon}</span>`;
+        button.setAttribute("aria-label", data.label);
+        button.innerHTML = `<img src="${data.asset}" alt="" draggable="false" />`;
         button.addEventListener("click", () => popGroup(r, c));
         nodes.board.appendChild(button);
       });
@@ -466,7 +465,10 @@
   }
 
   function initLoading() {
-    const assets = ["../../assets/bubble-bakery-cover.png"];
+    const assets = [
+      "../../assets/bubble-bakery-cover.png",
+      ...colors.map((item) => item.asset),
+    ];
     let loaded = 0;
     const update = () => {
       const pct = Math.min(100, Math.round((loaded / assets.length) * 100));

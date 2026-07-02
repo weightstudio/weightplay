@@ -158,6 +158,19 @@ select {
   font-size: 1.55rem;
 }
 
+.stage-icons {
+  display: flex;
+  justify-content: flex-start;
+  gap: 0.2rem;
+}
+
+.stage-icons img {
+  width: 1.9rem;
+  height: 1.9rem;
+  object-fit: contain;
+  filter: drop-shadow(0 3px 3px rgba(76, 38, 18, 0.18));
+}
+
 .stage-card.locked {
   filter: grayscale(1);
   opacity: 0.58;
@@ -209,11 +222,11 @@ select {
   box-shadow: inset 0 -4px rgba(0,0,0,.08);
 }
 
-.order-dot {
-  width: 24px;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  border: 3px solid rgba(74, 41, 24, 0.28);
+.order-icon {
+  width: 2rem;
+  height: 2rem;
+  object-fit: contain;
+  filter: drop-shadow(0 3px 2px rgba(78, 35, 18, 0.18));
 }
 
 .bubble-board {
@@ -238,31 +251,20 @@ select {
   position: relative;
   display: grid;
   place-items: center;
-  background: var(--bubble);
-  box-shadow: inset -8px -10px rgba(80, 31, 20, 0.17), inset 7px 7px rgba(255,255,255,.55), 0 8px 0 rgba(55, 24, 15, 0.18);
+  background: transparent;
   transition: transform .18s ease, opacity .18s ease;
   cursor: pointer;
   touch-action: manipulation;
   will-change: transform, opacity;
+  padding: 0;
 }
 
-.bubble span {
-  position: relative;
-  z-index: 1;
-  font-size: clamp(1rem, 4.8vw, 1.85rem);
-  filter: drop-shadow(0 2px 0 rgba(255, 255, 255, 0.45));
+.bubble img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 0 rgba(55, 24, 15, 0.16));
   pointer-events: none;
-}
-
-.bubble::after {
-  content: "";
-  position: absolute;
-  left: 22%;
-  top: 17%;
-  width: 24%;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: rgba(255,255,255,.72);
 }
 
 .bubble:active {
