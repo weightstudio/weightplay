@@ -1,4 +1,4 @@
-(() => {
+﻿(() => {
   const GAME_ID = "bubble-bakery";
   const localeKey = "weightplayLocale";
   const unlockKey = "weightplay_bubble_bakery_unlocked";
@@ -30,7 +30,7 @@
       gameTitle: "動物泡泡烘焙坊",
       language: "語言",
       chooseStage: "選擇關卡",
-      menuHint: "點擊 2 個以上相連的相同泡泡，完成烘焙訂單。",
+      menuHint: "點擊 2 個以上相連的相同動物泡泡，完成烘焙訂單。",
       stages: "關卡",
       loading: "載入中",
       nextStage: "下一關",
@@ -41,13 +41,12 @@
       score: "分數",
       stage: "第 {n} 關",
       orderDone: "訂單完成！",
-      failed: "再試一次這份訂單。",
-      resultWin: "你完成所有訂單，還剩 {moves} 步。",
+      failed: "再挑戰一次這張訂單。",
+      resultWin: "你完成了所有訂單，還剩 {moves} 步。",
       resultLose: "步數用完前，要收集訂單需要的泡泡。",
       smallGroup: "請點擊 2 個以上相連的相同泡泡。",
       collect: "收集 {n}",
-    },
-  };
+    },  };
 
   const colors = [
     { id: "berry", label: "Bunny", asset: "../../assets/bubble-bakery-bunny.png" },
@@ -444,7 +443,7 @@
     nodes.resultPanel.classList.remove("hidden");
     nodes.resultTitle.textContent = won ? t("orderDone") : t("failed");
     nodes.resultText.textContent = won ? t("resultWin", { moves }) : t("resultLose");
-    nodes.starText.textContent = won ? starIcons(earned, 3) : "☆☆☆";
+        nodes.starText.textContent = won ? starIcons(earned, 3) : t("failed");
     nodes.nextStageBtn.classList.toggle("hidden", !won || currentStage >= stages.length - 1);
     playSound(won ? "success" : "error");
     track("game_complete", { level: stageNo, success: won, score, moves_left: moves });
