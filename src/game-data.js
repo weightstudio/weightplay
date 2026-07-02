@@ -1,9 +1,9 @@
 window.WONDER_DATA = {
   assets: {
     images: {
-      bg: "assets/battle-bg.png",
+      bg: "assets/battle-bg.webp",
       hero: "assets/hero.png",
-      wall: "assets/wall.png",
+      wall: "assets/wall.webp",
       eraser: "assets/eraser.png",
       pencil: "assets/weapon-pencil.png",
       ruler: "assets/weapon-ruler.png"
