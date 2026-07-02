@@ -393,31 +393,6 @@ window.WONDER_LOBBY = {
       },
     },
     {
-      id: "animal-rope-rescue",
-      title: { en: "Animal Rope Rescue", "zh-Hant": "動物藤蔓救援" },
-      status: "playable",
-      statusText: { en: "Playable", "zh-Hant": "可遊玩" },
-      href: "games/animal-rope-rescue/",
-      type: { en: "Physics Puzzle", "zh-Hant": "物理解謎" },
-      categories: ["Animal Games", "Puzzle", "Family"],
-      skills: ["Logic", "Problem Solving", "Focus", "Hand-Eye Coordination"],
-      ages: ["7", "family"],
-      ageLabel: { en: "7+", "zh-Hant": "7+" },
-      description: {
-        en: "Cut vines, release fruit, bounce through leaves, and help animals in short physics puzzle stages.",
-        "zh-Hant": "切斷藤蔓、釋放水果、利用葉子彈跳，完成短關卡動物救援。",
-      },
-      meta: {
-        en: ["Physics Puzzle", "Vine Cuts", "Animal Rescue"],
-        "zh-Hant": ["物理解謎", "切藤蔓", "動物救援"],
-      },
-      art: {
-        kind: "image",
-        background: "assets/animal-rope-cover.svg",
-        hero: "assets/animal-rope-monkey.svg",
-      },
-    },
-    {
       id: "tiny-weather-rescue",
       title: { en: "Animal Helper Quest", "zh-Hant": "動物幫幫隊" },
       status: "playable",

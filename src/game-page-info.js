@@ -259,29 +259,6 @@
         ["What skills does it practice?", "It practices matching, color recognition, and coordination."],
       ],
     },
-    "animal-rope-rescue": {
-      title: "Animal Rope Rescue",
-      age: "7+",
-      difficulty: "Medium",
-      time: "3-6 minutes",
-      skills: ["Logic", "Problem Solving", "Focus", "Hand-Eye Coordination"],
-      intro:
-        "Animal Rope Rescue is a short animal physics puzzle game where players cut vines, release fruit, bounce through leaf pads, and help cute animals. Each stage is built around a simple cause-and-effect puzzle that is easy to understand but still asks players to think about timing and direction.",
-      how: ["Choose a rescue stage.", "Tap a vine to cut it.", "Watch the fruit fall, bounce, and roll toward the animal.", "Clear the stage by helping the animal before the fruit drops away."],
-      strategyTips: [
-        "Look at the animal first, then imagine the fruit path before cutting.",
-        "Some stages need the fruit to bounce on a leaf pad before it reaches the animal.",
-        "Replay a stage with fewer cuts to improve your stars.",
-      ],
-      parent:
-        "This game may help children practice logic, focus, timing, and hand-eye coordination through short physics puzzles. Scores and stars are for fun and local progress only, not a formal assessment.",
-      faq: [
-        ["Is this a physics game?", "Yes. Fruit drops with gravity and can bounce from leaf pads."],
-        ["Is it suitable for phones?", "Yes. The main control is tapping vines."],
-        ["What age is it for?", "It is recommended for age 7+ and family play."],
-        ["Does it need login?", "No. Stage unlocks and stars are saved locally in the browser."],
-      ],
-    },
     "tiny-weather-rescue": {
       title: "Animal Helper Quest",
       age: "5+",
@@ -386,7 +363,6 @@
     "animal-quiz": { gameplay: "Animal Quiz", genre: ["Quiz", "Education", "Animal"] },
     "zoo-helper-day": { gameplay: "Animal Care", genre: ["Preschool", "Education", "Animal"] },
     "shape-train": { gameplay: "Shape Sorting", genre: ["Preschool", "Education", "Animal"] },
-    "animal-rope-rescue": { gameplay: "Physics Puzzle", genre: ["Puzzle", "Physics", "Animal"] },
     "tiny-weather-rescue": { gameplay: "Helper Choice", genre: ["Puzzle", "Care", "Animal"] },
   };
 
@@ -406,7 +382,6 @@
     "animal-quiz": "quiz-cover.png",
     "zoo-helper-day": "zoo-helper-day-cover.png",
     "shape-train": "shape-train-cover.png",
-    "animal-rope-rescue": "animal-rope-cover.svg",
     "tiny-weather-rescue": "tiny-weather-rescue-cover.png",
   };
 
@@ -427,7 +402,6 @@
       "animal-quiz": { gameplay: "動物問答", genre: ["問答", "教育", "動物"] },
       "zoo-helper-day": { gameplay: "動物照顧", genre: ["幼兒", "教育", "動物"] },
       "shape-train": { gameplay: "形狀分類", genre: ["幼兒", "教育", "動物"] },
-      "animal-rope-rescue": { gameplay: "物理解謎", genre: ["益智", "物理", "動物"] },
       "tiny-weather-rescue": { gameplay: "幫忙選擇", genre: ["益智", "照顧", "動物"] },
     },
   };
@@ -568,17 +542,6 @@
         how: ["觀察目前的形狀貨物。", "找到形狀或顏色相符的車廂。", "點選或拖曳到正確位置。", "完成全部貨物後讓小火車出發。"],
         parent: "這款遊戲可以讓孩子練習形狀辨識、顏色辨識、簡單邏輯與手眼協調。遊戲回饋以鼓勵為主，不做能力診斷。",
         faq: [["需要看字嗎？", "不需要。主要玩法靠形狀和顏色。"], ["適合幾歲？", "建議 3+。"], ["可以練習什麼？", "可以練習形狀、顏色、分類和協調。"]],
-      },
-      "animal-rope-rescue": {
-        title: "動物藤蔓救援",
-        age: "7+",
-        difficulty: "中等",
-        time: "3-6 分鐘",
-        intro: "動物藤蔓救援是 WeightPlay 的短關卡動物物理解謎遊戲。玩家要切斷藤蔓、釋放水果、利用葉子彈跳，讓水果送到可愛動物身邊。每一關都以清楚的因果互動為核心，容易開始，也需要觀察時機與方向。",
-        how: ["選擇救援關卡。", "點擊藤蔓把它切斷。", "觀察水果落下、彈跳或滾動。", "在水果掉走前送到動物身邊即可過關。"],
-        strategyTips: ["先看動物位置，再想像水果會怎麼落下。", "有些關卡需要利用葉子彈跳才能到達。", "重玩並用更少切割完成，可以拿到更好的星等。"],
-        parent: "這款遊戲可以讓孩子透過短時間物理解謎練習邏輯、專注、時機判斷與手眼協調。星等只用於遊戲樂趣與本機進步紀錄，不是正式能力評量。",
-        faq: [["這是物理遊戲嗎？", "是。水果會受到重力影響，也會從葉子上彈跳。"], ["手機可以玩嗎？", "可以，主要操作是點擊藤蔓。"], ["適合幾歲？", "建議 7+ 與親子一起玩。"], ["需要登入嗎？", "不需要。關卡解鎖與星等會儲存在瀏覽器本機。"]],
       },
       "tiny-weather-rescue": {
         title: "動物幫幫隊",

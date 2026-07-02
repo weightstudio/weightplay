@@ -143,14 +143,6 @@
         { icon: "?", en: ["Hint", "Use a hint if one target is hard to see."], "zh-Hant": ["提示", "找不到時可以使用提示。"] },
       ],
     },
-    "animal-rope-rescue": {
-      title: { en: "Cut vines to help animals.", "zh-Hant": "切藤蔓幫助動物。" },
-      steps: [
-        { icon: "1", en: ["Look", "Check where the animal is waiting."], "zh-Hant": ["觀察", "先看動物在什麼位置等待。"] },
-        { icon: "2", en: ["Cut", "Tap a vine to release the fruit."], "zh-Hant": ["切斷", "點擊藤蔓釋放水果。"] },
-        { icon: "3", en: ["Rescue", "Use bounces and timing to guide fruit safely."], "zh-Hant": ["救援", "利用彈跳和時機把水果送到。"] },
-      ],
-    },
   };
 
   function gameIdFromPath() {
