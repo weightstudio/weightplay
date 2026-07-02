@@ -17,6 +17,10 @@
     actionText: $("actionText"),
     scoreLabel: $("scoreLabel"),
     scoreText: $("scoreText"),
+    animalsLegend: $("animalsLegend"),
+    habitatLegend: $("habitatLegend"),
+    threatLegend: $("threatLegend"),
+    scoreHint: $("scoreHint"),
     missionSelect: $("missionSelect"),
     missionSelectTitle: $("missionSelectTitle"),
     missionGrid: $("missionGrid"),
@@ -85,6 +89,11 @@
       planning: "Planning",
       reportGreat: "Great strategy. You balanced risk, habitat, and wildlife recovery.",
       reportGood: "Good effort. Try watching high-threat habitats one turn earlier.",
+      animalsLabel: "Animals",
+      habitatLabel: "Habitat",
+      threatLabel: "Threat",
+      targetLabel: "Target",
+      scoreHint: "Keep animals and habitats high, keep threats low. Reach the target balance to clear the mission.",
       m1: "Forest Corridor",
       m1Goal: "Keep connected forest habitats safe for lions and owls.",
       m2: "Wetland Recovery",
@@ -116,25 +125,30 @@
       patrol: "巡守",
       patrolText: "降低一個棲地的威脅。",
       restore: "修復",
-      restoreText: "修復棲地並幫助動物恢復。",
+      restoreText: "修復棲地，幫助野生動物恢復。",
       research: "研究",
-      researchText: "提高動物成長與後續平衡。",
+      researchText: "提升動物成長與未來平衡。",
       endTurn: "結束回合",
       missions: "任務",
-      retry: "重試",
+      retry: "再試一次",
       nextMission: "下一個任務",
       lobby: "大廳",
       loading: "載入中",
-      selectCell: "先選一個棲地，再選擇行動。",
+      animalsLabel: "動物",
+      habitatLabel: "棲地",
+      threatLabel: "威脅",
+      targetLabel: "目標",
+      scoreHint: "讓動物與棲地越高越好，威脅越低越好。達到目標平衡即可過關。",
+      selectCell: "先選一個棲地格，再選擇行動。",
       noActions: "沒有行動點了，請結束回合。",
       actionPatrol: "巡守員降低了威脅。",
       actionRestore: "棲地品質提升了。",
-      actionResearch: "動物恢復規劃提升了。",
+      actionResearch: "動物恢復計畫提升了。",
       complete: "任務完成",
       failed: "任務失敗",
-      resultWin: "生態平衡 {score}。野生動物狀態足夠穩定，可以繼續前進。",
-      resultLose: "生態平衡 {score}。試著調整行動順序再挑戰一次。",
-      allClear: "全部任務完成。",
+      resultWin: "生態平衡 {score}。野生動物已足夠穩定，可以繼續下一個任務。",
+      resultLose: "生態平衡 {score}。試試不同的行動順序。",
+      allClear: "所有任務都完成了。",
       logic: "邏輯",
       focus: "專注",
       planning: "規劃",
@@ -149,9 +163,9 @@
       m4: "河岸通道",
       m4Goal: "在研究需求提高時，保護混合棲地。",
       m5: "夜間巡守",
-      m5Goal: "威脅擴散更快，要掌握巡守時機。",
+      m5Goal: "威脅擴散更快，請掌握巡守時機。",
       m6: "保護區總計畫",
-      m6Goal: "高難度保護區任務，需要三種巡守角色配合。",
+      m6Goal: "困難任務，需要完整運用三種巡守角色。",
       lion: "獅子巡守員",
       lionRole: "威脅控制",
       elephant: "大象巡守員",
@@ -227,6 +241,10 @@
     nodes.turnLabel.textContent = t("turn");
     nodes.actionLabel.textContent = t("actions");
     nodes.scoreLabel.textContent = t("balance");
+    nodes.animalsLegend.textContent = t("animalsLabel");
+    nodes.habitatLegend.textContent = t("habitatLabel");
+    nodes.threatLegend.textContent = t("threatLabel");
+    nodes.scoreHint.textContent = t("scoreHint");
     nodes.missionSelectTitle.textContent = t("chooseMission");
     nodes.patrolTitle.textContent = t("patrol");
     nodes.patrolText.textContent = t("patrolText");
@@ -305,7 +323,7 @@
     nodes.scoreText.textContent = state.score;
     nodes.biomeImage.src = mission.biome;
     nodes.biomeTitle.textContent = t(mission.title);
-    nodes.biomeGoal.textContent = t(mission.goal);
+    nodes.biomeGoal.textContent = `${t(mission.goal)} ${t("targetLabel")}: ${mission.target}`;
     renderGrid();
     renderRangers();
     document.querySelectorAll("[data-action]").forEach((button) => {
@@ -323,8 +341,11 @@
       button.innerHTML = `
         <img src="${biome}" alt="" />
         <div class="cell-stats">
+          <span><b>${t("animalsLabel")}</b><em>${Math.round(cell.animals)}</em></span>
           <span class="meter animals"><i style="width:${cell.animals}%"></i></span>
+          <span><b>${t("habitatLabel")}</b><em>${Math.round(cell.habitat)}</em></span>
           <span class="meter habitat"><i style="width:${cell.habitat}%"></i></span>
+          <span><b>${t("threatLabel")}</b><em>${Math.round(cell.threat)}</em></span>
           <span class="meter threat"><i style="width:${cell.threat}%"></i></span>
         </div>
       `;

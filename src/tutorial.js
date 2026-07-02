@@ -146,9 +146,9 @@
     "animal-ranger-tactics": {
       title: { en: "Balance the reserve.", "zh-Hant": "平衡保護區。" },
       steps: [
-        { icon: "1", en: ["Select", "Tap one habitat cell on the reserve map."], "zh-Hant": ["選擇", "點選保護區地圖上的一個棲地。"] },
-        { icon: "2", en: ["Act", "Use Patrol, Restore, or Research with limited actions."], "zh-Hant": ["行動", "在有限行動中使用巡守、修復或研究。"] },
-        { icon: "3", en: ["Plan", "End turns carefully and keep ecosystem balance high."], "zh-Hant": ["規劃", "謹慎結束回合，維持較高的生態平衡。"] },
+        { icon: "1", en: ["Read", "Yellow Animals and green Habitat should rise. Red Threat should fall."], "zh-Hant": ["看數值", "黃色動物與綠色棲地越高越好，紅色威脅越低越好。"] },
+        { icon: "2", en: ["Act", "Select one habitat, then use Patrol, Restore, or Research with limited actions."], "zh-Hant": ["行動", "先選一個棲地，再用有限行動選巡守、修復或研究。"] },
+        { icon: "3", en: ["Clear", "Reach the target balance before the last turn ends."], "zh-Hant": ["過關", "在最後回合結束前達到目標平衡分數。"] },
       ],
     },
   };

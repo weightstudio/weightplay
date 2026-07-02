@@ -212,6 +212,49 @@ select {
   color: #cdebc9;
 }
 
+.strategy-help {
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, .1);
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 10px;
+  border-radius: 999px;
+  color: #17382d;
+  background: #f7ffe9;
+  font-size: 12px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+}
+
+.dot.animals { background: #ffe08a; }
+.dot.habitat { background: #7ee097; }
+.dot.threat { background: #ff8276; }
+
+.strategy-help p {
+  margin: 0;
+  color: #d8f3d2;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
 .tactics-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -246,11 +289,25 @@ select {
   position: absolute;
   inset: auto 8px 8px;
   display: grid;
-  gap: 4px;
+  gap: 3px;
+}
+
+.cell-stats span:not(.meter) {
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 900;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, .7);
+}
+
+.cell-stats em {
+  font-style: normal;
 }
 
 .meter {
-  height: 8px;
+  height: 6px;
   overflow: hidden;
   border-radius: 999px;
   background: rgba(8, 30, 24, .55);
