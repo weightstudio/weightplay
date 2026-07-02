@@ -60,6 +60,7 @@
       }
     </script>
     <link rel="stylesheet" href="src/game-page-info.css?v=20260702-related-cards2" />
+    <link rel="stylesheet" href="src/loading-screen.css?v=20260702-unified1" />
   </head>
   <body>
     <main class="game-shell">
@@ -114,6 +115,14 @@
         <div class="weapon-modal-card">
           <button id="weaponModalClose" class="weapon-modal-close" type="button" aria-label="Close">&times;</button>
           <div id="weaponModalContent"></div>
+        </div>
+      </div>
+
+      <div id="loadingPanel" class="loading-panel">
+        <div class="loading-card">
+          <strong id="loadingTitle">Loading</strong>
+          <span id="loadingText">0%</span>
+          <div><i id="loadingFill"></i></div>
         </div>
       </div>
     </main>

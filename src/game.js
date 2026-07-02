@@ -9,6 +9,9 @@ const levelText = document.querySelector("#levelText");
 const waveText = document.querySelector("#waveText");
 const overlay = document.querySelector("#overlay");
 const overlayText = document.querySelector("#overlayText");
+const loadingPanel = document.querySelector("#loadingPanel");
+const loadingText = document.querySelector("#loadingText");
+const loadingFill = document.querySelector("#loadingFill");
 const startBtn = document.querySelector("#startBtn");
 const menuTabs = document.querySelector("#menuTabs");
 const menuContent = document.querySelector("#menuContent");
@@ -406,14 +409,18 @@ async function preload() {
   });
   enemyImages = await Promise.all(enemyFiles.map(loadWithProgress));
   loaded = true;
+  loadingPanel?.classList.add("hidden");
   window.WonderAnalytics?.track("game_ready", { game_id: "wonder-crash" });
   showMainMenu("battle");
   requestAnimationFrame(loop);
 }
 
 function setLoadingProgress(progress) {
+  const pct = Math.round(progress * 100);
+  if (loadingText) loadingText.textContent = `${pct}%`;
+  if (loadingFill) loadingFill.style.width = `${pct}%`;
   if (!overlayText) return;
-  overlayText.textContent = t("loading_progress", { pct: Math.round(progress * 100) });
+  overlayText.textContent = t("loading_progress", { pct });
 }
 
 function restart() {
@@ -2504,6 +2511,7 @@ window.addEventListener("wonder:locale-change", () => {
 translateStaticUI();
 
 preload().catch((error) => {
+  if (loadingText) loadingText.textContent = t("load_fail");
   overlay.querySelector("h1").textContent = t("load_fail");
   overlayText.textContent = t("load_fail_desc");
   console.error(error);
