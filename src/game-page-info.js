@@ -87,18 +87,18 @@
       ],
     },
     "campus-dash": {
-      title: "Campus Dash",
+      title: "Safari Dash",
       age: "12+",
       difficulty: "Hard",
       time: "1-3 minutes",
       skills: ["Reaction", "Focus", "Hand-Eye Coordination"],
       intro:
-        "Campus Dash is a fast lane runner where players move left and right to dodge obstacles and collect points. It is a score-attack game for older players who enjoy quick reactions and replaying to improve. The short timer makes each attempt fast, while local records give players a reason to try again.",
+        "Safari Dash is a fast animal lane runner where players move left and right to dodge safari trail obstacles and collect points. It is a score-attack game for older players who enjoy quick reactions and replaying to improve. The short timer makes each attempt fast, while local records give players a reason to try again.",
       how: ["Move between lanes.", "Avoid obstacles.", "Collect score items when it is safe.", "Try to improve your local best score."],
       parent:
         "This game is designed for older children and casual players who enjoy fast reaction challenges. It can practice focus and hand-eye coordination, but scores are only for fun.",
       faq: [
-        ["Why is Campus Dash 12+?", "It has faster reactions and score pressure than younger-child games."],
+        ["Why is Safari Dash 12+?", "It has faster reactions and score pressure than younger-child games."],
         ["Is there a leaderboard?", "The MVP uses local records for replay value."],
         ["Is it an educational test?", "No. It is a reaction game for entertainment and practice."],
       ],
@@ -121,18 +121,18 @@
       ],
     },
     "fruit-merge": {
-      title: "Fruit Merge Tower",
+      title: "Animal Merge Tower",
       age: "5+",
       difficulty: "Medium",
       time: "3-5 minutes",
       skills: ["Logic", "Problem Solving", "Hand-Eye Coordination"],
       intro:
-        "Fruit Merge Tower is a physics puzzle where matching fruits combine into larger fruits. Players choose where to drop each fruit, watch the pile shift, and try to keep space open. It is easy to understand and gives families a calm score challenge.",
-      how: ["Move the fruit above the box.", "Drop it into a good spot.", "Merge matching fruits into the next fruit.", "Keep fruits below the danger line."],
+        "Animal Merge Tower is a physics puzzle where matching animal balls combine into larger animal balls. Players choose where to drop each animal, watch the pile shift, and try to keep space open. It is easy to understand and gives families a calm score challenge.",
+      how: ["Move the animal ball above the box.", "Drop it into a good spot.", "Merge matching animals into the next animal.", "Keep the pile below the danger line."],
       parent:
         "This game may help children practice planning, spatial reasoning, and hand-eye coordination. It is a casual game and does not measure intelligence.",
       faq: [
-        ["What is the goal?", "Merge fruits and score as high as possible before the box fills."],
+        ["What is the goal?", "Merge animal balls and score as high as possible before the box fills."],
         ["Is it timed?", "No. Players can think before dropping."],
         ["Can adults enjoy it too?", "Yes. It is family-friendly and replayable."],
       ],
@@ -362,6 +362,25 @@
     "zoo-helper-day": { gameplay: "Animal Care", genre: ["Preschool", "Education", "Animal"] },
     "shape-train": { gameplay: "Shape Sorting", genre: ["Preschool", "Education", "Animal"] },
     "tiny-weather-rescue": { gameplay: "Helper Choice", genre: ["Puzzle", "Care", "Animal"] },
+  };
+
+  const coverImages = {
+    "wonder-crash": "wonder-crash-cover.png",
+    "color-lunchbox": "lunchbox-cover.png",
+    "bubble-bakery": "bubble-bakery-cover.png",
+    "animal-zoo-idle": "animal-zoo-idle-cover.png",
+    "star-memory": "memory-cover.png",
+    "campus-dash": "campus-dash-cover.png",
+    "snack-blocks": "snack-blocks-cover.png",
+    "fruit-merge": "fruit-merge-cover.png",
+    "garden-tiles": "garden-tiles-cover.png",
+    "animal-rescue": "animal-rescue-cover.png",
+    "animal-hidden-safari": "animal-hidden-safari-cover.png",
+    "animal-guard-yard": "animal-guard-yard-poster.png",
+    "animal-quiz": "quiz-cover.png",
+    "zoo-helper-day": "zoo-helper-day-cover.png",
+    "shape-train": "shape-train-cover.png",
+    "tiny-weather-rescue": "tiny-weather-rescue-cover.png",
   };
 
   const localizedGameplayProfiles = {
@@ -598,7 +617,7 @@
   }
 
   function relatedGames(activeId, activeBaseGame) {
-    return relatedGameEntries(activeId, activeBaseGame, (game) => game.skills.some((skill) => activeBaseGame.skills.includes(skill))).slice(0, 4);
+    return relatedGameEntries(activeId, activeBaseGame, (game) => game.skills.some((skill) => activeBaseGame.skills.includes(skill))).slice(0, 3);
   }
 
   function relatedGameEntries(activeId, activeBaseGame, predicate) {
@@ -640,6 +659,29 @@
     return `${base}${gameId}/`;
   }
 
+  function assetHref(fileName) {
+    const base = location.pathname.includes("/weightplay/") ? "/weightplay/assets/" : "/assets/";
+    return `${base}${fileName}`;
+  }
+
+  function shortDescription(game) {
+    const firstSentence = String(game.intro || "").split(/(?<=[.!?。！？])\s*/u)[0] || game.gameplay || game.title;
+    return firstSentence.length > 88 ? `${firstSentence.slice(0, 86)}...` : firstSentence;
+  }
+
+  function relatedCard(gameId) {
+    const game = localizedGame(gameId);
+    return `
+      <a class="game-info-related-card" href="${escapeHtml(gameHref(gameId))}">
+        <img src="${escapeHtml(assetHref(coverImages[gameId] || "weightplay-og.png"))}" alt="" />
+        <span class="game-info-related-copy">
+          <strong>${escapeHtml(game.title)}</strong>
+          <span>${escapeHtml(game.gameplay || shortDescription(game))}</span>
+        </span>
+      </a>
+    `;
+  }
+
   function rerenderAfterLocaleSelect() {
     window.requestAnimationFrame(() => {
       window.requestAnimationFrame(render);
@@ -658,7 +700,6 @@
 
     document.body.classList.add("has-game-page-info");
     const related = relatedGames(id, baseGame);
-    const groups = relatedGroups(id, baseGame);
     const scoreBands = scoreBandsFor(baseGame);
     const section = document.createElement("section");
     section.className = "game-page-info";
@@ -713,19 +754,7 @@
         <div class="game-info-section">
           <h3>${escapeHtml(uiLabel("relatedGames"))}</h3>
           <p>${escapeHtml(uiLabel("relatedIntro", { skill: localizeSkill(game.skills[0]) }))}</p>
-          <div class="game-info-related">${related.map((relatedId) => `<a href="${escapeHtml(gameHref(relatedId))}">${escapeHtml(localizedGame(relatedId).title)}</a>`).join("")}</div>
-          <div class="game-info-related-groups">
-            ${groups
-              .map(
-                (group) => `
-                  <div class="game-info-related-group">
-                    <h4>${escapeHtml(group.title)}</h4>
-                    <div class="game-info-related">${group.ids.map((relatedId) => `<a href="${escapeHtml(gameHref(relatedId))}">${escapeHtml(localizedGame(relatedId).title)}</a>`).join("")}</div>
-                  </div>
-                `
-              )
-              .join("")}
-          </div>
+          <div class="game-info-related">${related.map(relatedCard).join("")}</div>
         </div>
       </div>
     `;

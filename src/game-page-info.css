@@ -2,7 +2,21 @@ body.has-game-page-info {
   min-height: 100vh;
   overflow-x: hidden;
   overflow-y: auto;
+  display: block;
+  place-items: initial;
+  touch-action: pan-y;
   background-color: #111827;
+}
+
+html:has(body.has-game-page-info) {
+  min-height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  touch-action: pan-y;
+}
+
+body.has-game-page-info > main {
+  margin-inline: auto;
 }
 
 .game-page-info {
@@ -93,8 +107,7 @@ body.has-game-page-info {
 }
 
 .game-info-skills span,
-.game-info-tags span,
-.game-info-related a {
+.game-info-tags span {
   border-radius: 999px;
   padding: 8px 12px;
   background: #e9f2ff;
@@ -198,31 +211,54 @@ body.has-game-page-info {
 }
 
 .game-info-related {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
 }
 
-.game-info-related-groups {
-  display: grid;
-  gap: 12px;
-  margin-top: 14px;
-}
-
-.game-info-related-group {
-  display: grid;
-  gap: 8px;
-  padding: 12px;
-  border: 1px solid rgba(89, 59, 32, 0.12);
+.game-info-related-card {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid #d8e0ee;
   border-radius: 14px;
-  background: rgba(255, 255, 255, 0.48);
+  background: #f8fbff;
+  color: #172033;
+  text-decoration: none;
+  box-shadow: 0 8px 18px rgba(23, 32, 51, 0.08);
+  transition: transform 0.16s ease, box-shadow 0.16s ease;
 }
 
-.game-info-related-group h4 {
-  margin: 0;
-  color: #315062;
+.game-info-related-card:hover,
+.game-info-related-card:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(23, 32, 51, 0.14);
+}
+
+.game-info-related-card img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  background: #e6eef8;
+}
+
+.game-info-related-copy {
+  display: grid;
+  gap: 5px;
+  padding: 10px;
+}
+
+.game-info-related-copy strong {
+  color: #172033;
   font-size: 0.92rem;
-  font-weight: 1000;
+  line-height: 1.2;
+}
+
+.game-info-related-copy span {
+  color: #5a6679;
+  font-size: 0.78rem;
+  font-weight: 800;
+  line-height: 1.35;
 }
 
 @media (max-width: 720px) {
@@ -234,6 +270,10 @@ body.has-game-page-info {
 
   .game-info-facts,
   .game-info-sections {
+    grid-template-columns: 1fr;
+  }
+
+  .game-info-related {
     grid-template-columns: 1fr;
   }
 

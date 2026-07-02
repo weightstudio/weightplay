@@ -42,15 +42,15 @@
 
   const dictionary = {
     en: {
-      title: "Fruit Merge Tower",
+      title: "Animal Merge Tower",
       language: "Language",
       score: "Score",
       best: "Best",
       next: "Next",
       drop: "Drop",
       restart: "Restart",
-      menuTitle: "Merge to Watermelon",
-      menuDesc: "Drop fruits carefully. Matching fruits merge into the next fruit. Keep the tower below the red line.",
+      menuTitle: "Merge to Giraffe",
+      menuDesc: "Drop animal balls carefully. Matching animals merge into the next bigger animal. Keep the tower below the red line.",
       start: "Start",
       gameOver: "Game Over",
       result: "Score {score}  Best {best}",
@@ -69,17 +69,17 @@
       playAgain: "Play Again",
       lobby: "Lobby",
       newBest: "New Best!",
-      fruit0: "Blueberry",
-      fruit1: "Cherry",
-      fruit2: "Strawberry",
-      fruit3: "Grape",
-      fruit4: "Orange",
-      fruit5: "Apple",
-      fruit6: "Pear",
-      fruit7: "Peach",
-      fruit8: "Pineapple",
-      fruit9: "Melon",
-      fruit10: "Watermelon",
+      fruit0: "Mouse Ball",
+      fruit1: "Rabbit Ball",
+      fruit2: "Cat Ball",
+      fruit3: "Dog Ball",
+      fruit4: "Fox Ball",
+      fruit5: "Panda Ball",
+      fruit6: "Lion Ball",
+      fruit7: "Tiger Ball",
+      fruit8: "Koala Ball",
+      fruit9: "Bear Ball",
+      fruit10: "Giraffe Ball",
     },
     "zh-Hant": {
       title: "動物水果合成",
@@ -88,40 +88,46 @@
       best: "最佳",
       next: "下一顆",
       drop: "放下",
-      restart: "重玩",
-      menuTitle: "合成到西瓜",
-      menuDesc: "小心放下水果。相同水果碰在一起會合成下一種水果，別讓水果堆超過紅線。",
+      restart: "重來",
+      menuTitle: "合成動物大球",
+      menuDesc: "小心放下動物球。相同動物會合成下一種更大的動物球，別讓球堆超過紅線。",
       start: "開始",
       gameOver: "遊戲結束",
       result: "分數 {score}  最佳 {best}",
       resultScore: "分數 {score}",
-      previousBest: "前次最佳 {score}",
+      previousBest: "之前最佳 {score}",
       todayScore: "本次分數 {score}",
       improvement: "進步 {value}%",
-      skillReport: "能力小報告",
+      skillReport: "能力報告",
       logicSkill: "邏輯",
       problemSolvingSkill: "問題解決",
       coordinationSkill: "手眼協調",
       progressNewBest: "太棒了！你刷新了自己的最佳紀錄。",
-      progressImproved: "進步很好！這次比之前更好了。",
-      progressSteady: "很棒的嘗試！下次可以再練習放置位置。",
+      progressImproved: "很棒的進步！你比上次更會規劃位置了。",
+      progressSteady: "很努力！再試一次可以練習更穩的放置判斷。",
       progressNote: "分數只用於遊戲樂趣與本機進步紀錄。",
       playAgain: "再玩一次",
       lobby: "大廳",
-      newBest: "新的最佳紀錄！",
-      fruit0: "藍莓",
-      fruit1: "櫻桃",
-      fruit2: "草莓",
-      fruit3: "葡萄",
-      fruit4: "橘子",
-      fruit5: "蘋果",
-      fruit6: "梨子",
-      fruit7: "水蜜桃",
-      fruit8: "鳳梨",
-      fruit9: "哈密瓜",
-      fruit10: "西瓜",
+      newBest: "新的最佳！",
+      fruit0: "小鼠球",
+      fruit1: "兔兔球",
+      fruit2: "貓咪球",
+      fruit3: "小狗球",
+      fruit4: "狐狸球",
+      fruit5: "熊貓球",
+      fruit6: "獅子球",
+      fruit7: "老虎球",
+      fruit8: "無尾熊球",
+      fruit9: "熊熊球",
+      fruit10: "長頸鹿球",
     },
   };
+
+  function loadImage(src) {
+    const image = new Image();
+    image.src = src;
+    return image;
+  }
 
   const fruits = [
     { radius: 28, color: "#4854d9", accent: "#91a3ff", score: 2 },
@@ -136,6 +142,8 @@
     { radius: 142, color: "#8fd94f", accent: "#fff28a", score: 176 },
     { radius: 166, color: "#2fbd65", accent: "#1d8b45", score: 300 },
   ];
+
+  const tokenImages = fruits.map((_, index) => loadImage(`../../assets/animal-merge-token-${index}.svg`));
 
   let fruitId = 1;
   let fruitsOnBoard = [];
@@ -571,6 +579,7 @@
 
   function drawFruit(fruit) {
     const spec = fruits[fruit.level];
+    const image = tokenImages[fruit.level];
     ctx.save();
     ctx.globalAlpha = fruit.preview ? 0.72 : 1;
     ctx.translate(fruit.x, fruit.y);
@@ -578,57 +587,13 @@
     ctx.scale(popScale, popScale);
     ctx.rotate(fruit.angle || 0);
 
-    ctx.beginPath();
-    ctx.arc(0, 0, fruit.radius, 0, Math.PI * 2);
-    ctx.fillStyle = spec.color;
-    ctx.fill();
-
-    ctx.beginPath();
-    ctx.arc(-fruit.radius * 0.28, -fruit.radius * 0.32, fruit.radius * 0.22, 0, Math.PI * 2);
-    ctx.fillStyle = spec.accent;
-    ctx.globalAlpha *= 0.62;
-    ctx.fill();
-    ctx.globalAlpha = fruit.preview ? 0.72 : 1;
-
-    if (fruit.level >= 8) {
-      ctx.strokeStyle = fruit.level === 10 ? "#174f32" : "#b97a2c";
-      ctx.lineWidth = Math.max(4, fruit.radius * 0.08);
-      for (let x = -fruit.radius * 0.45; x <= fruit.radius * 0.45; x += fruit.radius * 0.28) {
-        ctx.beginPath();
-        ctx.moveTo(x, -fruit.radius * 0.72);
-        ctx.lineTo(x * 0.5, fruit.radius * 0.72);
-        ctx.stroke();
-      }
-    }
-
-    ctx.fillStyle = "rgba(27, 38, 54, 0.72)";
-    ctx.beginPath();
-    ctx.arc(-fruit.radius * 0.23, -fruit.radius * 0.05, Math.max(2.6, fruit.radius * 0.055), 0, Math.PI * 2);
-    ctx.arc(fruit.radius * 0.23, -fruit.radius * 0.05, Math.max(2.6, fruit.radius * 0.055), 0, Math.PI * 2);
-    ctx.fill();
-    ctx.strokeStyle = "rgba(27, 38, 54, 0.68)";
-    ctx.lineWidth = Math.max(2, fruit.radius * 0.045);
-    ctx.beginPath();
-    ctx.arc(0, fruit.radius * 0.08, fruit.radius * 0.18, 0.12 * Math.PI, 0.88 * Math.PI);
-    ctx.stroke();
-
-    if (fruit.level === 2) {
-      ctx.fillStyle = "#fff7b0";
-      for (let i = 0; i < 6; i += 1) {
-        const angle = (i / 6) * Math.PI * 2;
-        ctx.beginPath();
-        ctx.arc(Math.cos(angle) * fruit.radius * 0.45, Math.sin(angle) * fruit.radius * 0.45, 2.2, 0, Math.PI * 2);
-        ctx.fill();
-      }
-    }
-
-    if (fruit.level >= 1 && fruit.level !== 3) {
-      ctx.strokeStyle = "#28764a";
-      ctx.lineWidth = Math.max(3, fruit.radius * 0.06);
+    if (image?.complete && image.naturalWidth) {
+      ctx.drawImage(image, -fruit.radius, -fruit.radius, fruit.radius * 2, fruit.radius * 2);
+    } else {
       ctx.beginPath();
-      ctx.moveTo(0, -fruit.radius * 0.72);
-      ctx.quadraticCurveTo(fruit.radius * 0.14, -fruit.radius * 0.98, fruit.radius * 0.34, -fruit.radius * 0.88);
-      ctx.stroke();
+      ctx.arc(0, 0, fruit.radius, 0, Math.PI * 2);
+      ctx.fillStyle = spec.color;
+      ctx.fill();
     }
 
     ctx.restore();
@@ -660,32 +625,7 @@
   }
 
   function fruitSvg(level) {
-    const spec = fruits[level];
-    const stripes = level >= 8
-      ? `<g stroke="${level === 10 ? "#174f32" : "#b97a2c"}" stroke-width="7" stroke-linecap="round" opacity="0.78">
-          <path d="M40 24 L48 104" />
-          <path d="M64 18 L68 110" />
-          <path d="M88 24 L82 104" />
-        </g>`
-      : "";
-    const seeds = level === 2
-      ? `<g fill="#fff7b0"><circle cx="44" cy="48" r="3"/><circle cx="76" cy="48" r="3"/><circle cx="54" cy="76" r="3"/><circle cx="88" cy="74" r="3"/></g>`
-      : "";
-    const stem = level >= 1 && level !== 3
-      ? `<path d="M64 28 C72 8 86 8 96 16" fill="none" stroke="#28764a" stroke-width="7" stroke-linecap="round"/>`
-      : "";
-    return `
-      <svg viewBox="0 0 128 128" role="img" aria-hidden="true">
-        <circle cx="64" cy="70" r="46" fill="${spec.color}" />
-        <circle cx="50" cy="50" r="14" fill="${spec.accent}" opacity="0.62" />
-        ${stripes}
-        ${seeds}
-        <circle cx="53" cy="67" r="4" fill="rgba(27, 38, 54, 0.72)" />
-        <circle cx="75" cy="67" r="4" fill="rgba(27, 38, 54, 0.72)" />
-        <path d="M55 80 Q64 88 73 80" fill="none" stroke="rgba(27, 38, 54, 0.68)" stroke-width="4" stroke-linecap="round" />
-        ${stem}
-      </svg>
-    `;
+    return `<img src="../../assets/animal-merge-token-${level}.svg" alt="" aria-hidden="true" />`;
   }
 
   function roundRect(context, x, y, width, height, radius) {

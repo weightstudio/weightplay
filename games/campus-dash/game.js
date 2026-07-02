@@ -34,7 +34,7 @@
 
   const dictionary = {
     en: {
-      title: "Campus Dash",
+      title: "Safari Dash",
       language: "Language",
       score: "Score",
       time: "Time",
@@ -51,22 +51,37 @@
       emptyRank: "No runs yet",
     },
     "zh-Hant": {
-      title: "校園閃電跑",
+      title: "草原閃電跑",
       language: "語言",
       score: "分數",
       time: "時間",
       combo: "連擊",
-      startTitle: "選好跑道，閃電衝刺",
-      startText: "點左邊或右邊，也可以滑動，在三條跑道間閃避障礙。",
+      startTitle: "選擇路線，快速衝刺。",
+      startText: "點左邊或右邊，也可以滑動，在三條路線之間閃避障礙。",
       start: "開始",
-      resultTitle: "跑完了！",
-      resultText: "分數 {score}  最高 {best}",
+      resultTitle: "奔跑完成！",
+      resultText: "分數 {score}  最佳 {best}",
       again: "再跑一次",
-      lobby: "回大廳",
+      lobby: "大廳",
       loading: "載入中",
       leaderboard: "本機前 5 名",
-      emptyRank: "尚無紀錄",
+      emptyRank: "還沒有紀錄",
     },
+  };
+
+  function loadImage(src) {
+    const image = new Image();
+    image.src = src;
+    return image;
+  }
+
+  const sprites = {
+    hero: loadImage("../../assets/campus-dash-runner.svg"),
+    coin: loadImage("../../assets/campus-dash-coin.svg"),
+    cone: loadImage("../../assets/campus-dash-cone.svg"),
+    bag: loadImage("../../assets/campus-dash-bag.svg"),
+    books: loadImage("../../assets/campus-dash-books.svg"),
+    puddle: loadImage("../../assets/campus-dash-puddle.svg"),
   };
 
   let state = makeState();
@@ -407,108 +422,14 @@
   function drawHero() {
     ctx.save();
     ctx.translate(state.x, state.y);
-    ctx.shadowBlur = 18;
-    ctx.shadowColor = "rgba(14, 165, 233, 0.42)";
-
     const lean = (state.targetLane - 1) * 0.08;
     ctx.rotate(lean);
     ctx.fillStyle = "rgba(0, 0, 0, 0.28)";
     ctx.beginPath();
-    ctx.ellipse(0, 125, 68, 16, 0, 0, Math.PI * 2);
+    ctx.ellipse(0, 124, 62, 14, 0, 0, Math.PI * 2);
     ctx.fill();
-
-    ctx.strokeStyle = "rgba(255, 255, 255, 0.92)";
-    ctx.lineWidth = 12;
-    ctx.lineJoin = "round";
-    ctx.beginPath();
-    ctx.moveTo(-31, 20);
-    ctx.lineTo(-76, 56);
-    ctx.moveTo(34, 22);
-    ctx.lineTo(82, 2);
-    ctx.moveTo(-22, 72);
-    ctx.lineTo(-56, 128);
-    ctx.moveTo(25, 72);
-    ctx.lineTo(64, 116);
-    ctx.stroke();
-
-    const body = ctx.createLinearGradient(-48, -28, 48, 82);
-    body.addColorStop(0, "#fb7185");
-    body.addColorStop(0.56, "#ef4444");
-    body.addColorStop(1, "#b91c1c");
-    ctx.fillStyle = body;
-    roundRect(-45, -18, 90, 96, 24);
-    ctx.fill();
-
-    ctx.fillStyle = "#0ea5e9";
-    roundRect(-58, -5, 28, 78, 12);
-    ctx.fill();
-    roundRect(31, -5, 28, 78, 12);
-    ctx.fill();
-
-    ctx.fillStyle = "#fef3c7";
-    roundRect(-16, -10, 32, 78, 12);
-    ctx.fill();
-    ctx.strokeStyle = "#facc15";
-    ctx.lineWidth = 5;
-    ctx.beginPath();
-    ctx.moveTo(-16, 0);
-    ctx.lineTo(20, 54);
-    ctx.stroke();
-
-    ctx.fillStyle = "#f2c29b";
-    ctx.beginPath();
-    ctx.arc(0, -66, 40, 0, Math.PI * 2);
-    ctx.fill();
-
-    ctx.fillStyle = "#1f2937";
-    ctx.beginPath();
-    ctx.arc(-6, -78, 38, Math.PI, Math.PI * 2);
-    ctx.fill();
-    ctx.fillStyle = "#111827";
-    roundRect(-33, -88, 66, 19, 9);
-    ctx.fill();
-
-    ctx.fillStyle = "#111827";
-    ctx.beginPath();
-    ctx.arc(-13, -64, 5, 0, Math.PI * 2);
-    ctx.arc(16, -64, 5, 0, Math.PI * 2);
-    ctx.fill();
-
-    ctx.strokeStyle = "#1d4ed8";
-    ctx.lineWidth = 13;
-    ctx.beginPath();
-    ctx.moveTo(-31, 20);
-    ctx.lineTo(-76, 56);
-    ctx.moveTo(34, 22);
-    ctx.lineTo(82, 2);
-    ctx.stroke();
-
-    ctx.strokeStyle = "#0f172a";
-    ctx.lineWidth = 16;
-    ctx.beginPath();
-    ctx.moveTo(-22, 72);
-    ctx.lineTo(-56, 128);
-    ctx.moveTo(25, 72);
-    ctx.lineTo(64, 116);
-    ctx.stroke();
-
-    ctx.strokeStyle = "#f97316";
-    ctx.lineWidth = 12;
-    ctx.beginPath();
-    ctx.moveTo(-74, 132);
-    ctx.lineTo(-24, 132);
-    ctx.moveTo(48, 121);
-    ctx.lineTo(91, 121);
-    ctx.stroke();
-
-    ctx.shadowBlur = 0;
-    ctx.strokeStyle = "rgba(255, 255, 255, 0.7)";
-    ctx.lineWidth = 5;
-    for (let i = 0; i < 4; i += 1) {
-      ctx.beginPath();
-      ctx.moveTo(-78 - i * 21, 26 + i * 18);
-      ctx.lineTo(-134 - i * 16, 40 + i * 16);
-      ctx.stroke();
+    if (sprites.hero.complete && sprites.hero.naturalWidth) {
+      ctx.drawImage(sprites.hero, -86, -112, 172, 210);
     }
     ctx.restore();
   }
@@ -518,109 +439,21 @@
     ctx.translate(item.x, item.y);
     const scale = Math.max(0.72, Math.min(1.35, 0.72 + item.y / H * 0.52));
     ctx.scale(scale, scale);
-    ctx.shadowBlur = 16;
-    ctx.shadowColor = "rgba(0, 0, 0, 0.35)";
-    if (item.kind === "cone") {
-      ctx.fillStyle = "#f97316";
-      ctx.beginPath();
-      ctx.moveTo(0, -64);
-      ctx.lineTo(54, 52);
-      ctx.lineTo(-54, 52);
-      ctx.closePath();
-      ctx.fill();
-      ctx.fillStyle = "#ffffff";
-      roundRect(-34, -18, 68, 16, 5);
-      ctx.fill();
-      roundRect(-45, 23, 90, 17, 5);
-      ctx.fill();
-      ctx.fillStyle = "#7c2d12";
-      roundRect(-66, 50, 132, 18, 8);
-      ctx.fill();
-    } else {
-      if (item.kind === "bag") {
-        const bag = ctx.createLinearGradient(-46, -54, 52, 54);
-        bag.addColorStop(0, "#a855f7");
-        bag.addColorStop(0.52, "#7c3aed");
-        bag.addColorStop(1, "#4c1d95");
-        ctx.fillStyle = bag;
-        roundRect(-50, -38, 100, 88, 20);
-        ctx.fill();
-        ctx.strokeStyle = "#facc15";
-        ctx.lineWidth = 6;
-        ctx.beginPath();
-        ctx.arc(0, -40, 24, Math.PI, Math.PI * 2);
-        ctx.stroke();
-        ctx.fillStyle = "rgba(248, 250, 252, 0.28)";
-        roundRect(-30, 6, 60, 28, 9);
-        ctx.fill();
-      } else if (item.kind === "books") {
-        ctx.fillStyle = "#fef3c7";
-        roundRect(-54, -45, 108, 28, 8);
-        ctx.fill();
-        ctx.fillStyle = "#22c55e";
-        roundRect(-46, -18, 96, 30, 8);
-        ctx.fill();
-        ctx.fillStyle = "#ef4444";
-        roundRect(-58, 10, 110, 32, 8);
-        ctx.fill();
-        ctx.strokeStyle = "rgba(255, 255, 255, 0.75)";
-        ctx.lineWidth = 4;
-        ctx.beginPath();
-        ctx.moveTo(-28, -30);
-        ctx.lineTo(34, -30);
-        ctx.moveTo(-22, -2);
-        ctx.lineTo(38, -2);
-        ctx.moveTo(-34, 26);
-        ctx.lineTo(28, 26);
-        ctx.stroke();
-      } else {
-        const puddle = ctx.createRadialGradient(-8, -8, 10, 0, 0, 70);
-        puddle.addColorStop(0, "#e0f2fe");
-        puddle.addColorStop(0.56, "#38bdf8");
-        puddle.addColorStop(1, "#0369a1");
-        ctx.fillStyle = puddle;
-        ctx.beginPath();
-        ctx.ellipse(0, 8, 70, 38, -0.12, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.strokeStyle = "rgba(255, 255, 255, 0.86)";
-        ctx.lineWidth = 5;
-        ctx.beginPath();
-        ctx.arc(-24, -2, 12, 0.1, Math.PI * 1.1);
-        ctx.arc(24, 14, 14, Math.PI * 1.1, Math.PI * 1.9);
-        ctx.stroke();
-      }
+    const image = sprites[item.kind];
+    if (image?.complete && image.naturalWidth) {
+      ctx.drawImage(image, -70, -70, 140, 140);
     }
-    ctx.shadowBlur = 0;
     ctx.restore();
   }
 
   function drawCoin(item) {
     ctx.save();
     ctx.translate(item.x, item.y);
-    const pulse = 1 + Math.sin(performance.now() / 120 + item.y * 0.03) * 0.08;
-    ctx.scale(pulse, pulse);
-    ctx.shadowBlur = 24;
-    ctx.shadowColor = "rgba(250, 204, 21, 0.9)";
-    const token = ctx.createRadialGradient(-8, -10, 8, 0, 0, item.size * 0.7);
-    token.addColorStop(0, "#fff7ad");
-    token.addColorStop(0.45, "#facc15");
-    token.addColorStop(1, "#f97316");
-    ctx.fillStyle = token;
-    ctx.beginPath();
-    for (let i = 0; i < 6; i += 1) {
-      const angle = -Math.PI / 2 + i * (Math.PI / 3);
-      const r = i % 2 ? item.size * 0.38 : item.size * 0.56;
-      const x = Math.cos(angle) * r;
-      const y = Math.sin(angle) * r;
-      if (i === 0) ctx.moveTo(x, y);
-      else ctx.lineTo(x, y);
+    const scale = Math.max(0.72, Math.min(1.24, 0.72 + item.y / H * 0.48));
+    ctx.scale(scale, scale);
+    if (sprites.coin.complete && sprites.coin.naturalWidth) {
+      ctx.drawImage(sprites.coin, -34, -34, 68, 68);
     }
-    ctx.closePath();
-    ctx.fill();
-    ctx.shadowBlur = 0;
-    ctx.strokeStyle = "rgba(248, 250, 252, 0.86)";
-    ctx.lineWidth = 3;
-    ctx.stroke();
     ctx.restore();
   }
 
