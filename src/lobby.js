@@ -19,6 +19,7 @@ const localeSelect = document.querySelector("#localeSelect");
 const heroRankLabel = document.querySelector("#heroRankLabel");
 const heroGamesTitle = document.querySelector("#heroGamesTitle");
 const dailyReward = document.querySelector("#dailyReward");
+const gameSearch = document.querySelector("#gameSearch");
 const i18n = window.WonderI18n;
 const favoritesKey = "weightplayFavoriteGames";
 const recentGamesKey = "weightplayRecentGames";
@@ -29,6 +30,7 @@ let activeFilter = "all";
 let activeTopic = "all";
 let activeSkill = "all";
 let activeLibrary = "all";
+let activeSearch = "";
 let toastTimer = null;
 let favoriteGameIds = readFavorites();
 let recentGameIds = readRecentGames();
@@ -201,6 +203,14 @@ function createGameCard(game) {
   card.dataset.topic = (game.categories || []).join("|");
   card.dataset.skill = (game.skills || []).join("|");
   card.dataset.gameId = game.id;
+  card.dataset.search = [
+    title,
+    type,
+    ageLabel,
+    text(game.description),
+    ...(game.categories || []).map(categoryText),
+    ...(game.skills || []).map(skillText),
+  ].join(" ").toLowerCase();
   card.dataset.favorite = favorite ? "true" : "false";
   card.dataset.recent = isRecent(game.id) ? "true" : "false";
   card.dataset.recentIndex = String(recentGameIds.indexOf(game.id));
@@ -451,17 +461,18 @@ function applyFilter() {
     const matchesAge = activeFilter === "all" || ages.includes(activeFilter);
     const matchesTopic = activeTopic === "all" || topics.includes(activeTopic);
     const matchesSkill = activeSkill === "all" || skills.includes(activeSkill);
+    const matchesSearch = !activeSearch || card.dataset.search.includes(activeSearch);
     const matchesLibrary =
       activeLibrary === "all" ||
       (activeLibrary === "favorites" && card.dataset.favorite === "true") ||
       (activeLibrary === "recent" && card.dataset.recent === "true");
-    const isVisible = matchesAge && matchesTopic && matchesSkill && matchesLibrary;
+    const isVisible = matchesAge && matchesTopic && matchesSkill && matchesSearch && matchesLibrary;
     card.classList.toggle("hidden", !isVisible);
     card.style.order = activeLibrary === "recent" && card.dataset.recentIndex !== "-1" ? card.dataset.recentIndex : "";
     if (isVisible) visibleCount += 1;
   });
 
-  const isFiltered = activeFilter !== "all" || activeTopic !== "all" || activeSkill !== "all" || activeLibrary !== "all";
+  const isFiltered = activeFilter !== "all" || activeTopic !== "all" || activeSkill !== "all" || activeLibrary !== "all" || Boolean(activeSearch);
   heroGamesSection.classList.toggle("hidden", isFiltered);
   filterStatus.classList.toggle("empty", visibleCount === 0);
 
@@ -493,6 +504,9 @@ function applyStaticTranslations() {
   heroGamesTitle.textContent = i18n.t("section.hero_games");
   document.querySelectorAll("[data-i18n]").forEach((element) => {
     element.textContent = i18n.t(element.dataset.i18n);
+  });
+  document.querySelectorAll("[data-i18n-placeholder]").forEach((element) => {
+    element.setAttribute("placeholder", i18n.t(element.dataset.i18nPlaceholder));
   });
   localeSelect.value = i18n.locale();
 }
@@ -558,6 +572,11 @@ libraryButtons.forEach((button) => {
     libraryButtons.forEach((item) => item.classList.toggle("active", item === button));
     applyFilter();
   });
+});
+
+gameSearch?.addEventListener("input", () => {
+  activeSearch = gameSearch.value.trim().toLowerCase();
+  applyFilter();
 });
 
 localeSelect.addEventListener("change", () => {

@@ -651,21 +651,24 @@
 
   function localizedGame(id) {
     const base = games[id];
+    if (!base) return null;
     const override = localizedGames[locale()]?.[id] || {};
     const profile = gameplayProfiles[id] || {};
     const localizedProfile = localizedGameplayProfiles[locale()]?.[id] || {};
+    const skills = override.skills || localizedProfile.skills || profile.skills || base.skills || [];
     return {
       ...base,
       ...profile,
       ...localizedProfile,
       ...override,
-      skills: override.skills || base.skills,
+      skills,
       genre: override.genre || localizedProfile.genre || profile.genre || [],
     };
   }
 
   function relatedGames(activeId, activeBaseGame) {
-    return relatedGameEntries(activeId, activeBaseGame, (game) => game.skills.some((skill) => activeBaseGame.skills.includes(skill))).slice(0, 3);
+    const activeSkills = activeBaseGame.skills || [];
+    return relatedGameEntries(activeId, activeBaseGame, (game) => (game.skills || []).some((skill) => activeSkills.includes(skill))).slice(0, 3);
   }
 
   function relatedGameEntries(activeId, activeBaseGame, predicate) {
@@ -675,9 +678,9 @@
       .map(([id, game]) => ({
         id,
         game,
-        score: game.skills.filter((skill) => activeBaseGame.skills.includes(skill)).length + (game.age === activeBaseGame.age ? 1 : 0),
+        score: (game.skills || []).filter((skill) => (activeBaseGame.skills || []).includes(skill)).length + (game.age === activeBaseGame.age ? 1 : 0),
       }))
-      .sort((a, b) => b.score - a.score || localizedGame(a.id).title.localeCompare(localizedGame(b.id).title))
+      .sort((a, b) => b.score - a.score || (localizedGame(a.id)?.title || a.id).localeCompare(localizedGame(b.id)?.title || b.id))
       .map(({ id }) => id);
   }
 
@@ -686,10 +689,12 @@
   }
 
   function relatedGroups(activeId, activeBaseGame) {
+    const activeSkills = activeBaseGame.skills || [];
+    const primarySkill = activeSkills[0] || "Focus";
     return [
       {
-        title: uiLabel("relatedBySkill", { skill: localizeSkill(activeBaseGame.skills[0]) }),
-        ids: relatedGameEntries(activeId, activeBaseGame, (game) => game.skills.includes(activeBaseGame.skills[0])).slice(0, 4),
+        title: uiLabel("relatedBySkill", { skill: localizeSkill(primarySkill) }),
+        ids: relatedGameEntries(activeId, activeBaseGame, (game) => (game.skills || []).includes(primarySkill)).slice(0, 4),
       },
       {
         title: uiLabel("relatedByAge", { age: localizeAge(activeBaseGame.age) }),
@@ -719,6 +724,7 @@
 
   function relatedCard(gameId) {
     const game = localizedGame(gameId);
+    if (!game) return "";
     return `
       <a class="game-info-related-card" href="${escapeHtml(gameHref(gameId))}">
         <img src="${escapeHtml(assetHref(coverImages[gameId] || "weightplay-og.png"))}" alt="" width="320" height="320" loading="lazy" decoding="async" />
@@ -739,9 +745,11 @@
   function render() {
     const id = currentGameId();
     const baseGame = games[id];
-    const game = localizedGame(id);
     const main = document.querySelector("main");
-    if (!baseGame || !game || !main) return;
+    if (!baseGame || !main) return;
+    const game = localizedGame(id);
+    if (!game) return;
+    const gameSkills = game.skills || [];
 
     document.querySelector(".game-page-info")?.remove();
     document.querySelectorAll("script[data-game-page-info-jsonld]").forEach((node) => node.remove());
@@ -766,7 +774,7 @@
           <div class="game-info-fact"><span>${escapeHtml(uiLabel("recommendedAge"))}</span><strong>${escapeHtml(localizeAge(game.age))}</strong></div>
           <div class="game-info-fact"><span>${escapeHtml(uiLabel("difficulty"))}</span><strong>${escapeHtml(game.difficulty)}</strong></div>
           <div class="game-info-fact"><span>${escapeHtml(uiLabel("estimatedTime"))}</span><strong>${escapeHtml(game.time)}</strong></div>
-          <div class="game-info-fact"><span>${escapeHtml(uiLabel("skills"))}</span><div class="game-info-skills">${game.skills.map((skill) => `<span>${escapeHtml(localizeSkill(skill))}</span>`).join("")}</div></div>
+          <div class="game-info-fact"><span>${escapeHtml(uiLabel("skills"))}</span><div class="game-info-skills">${gameSkills.map((skill) => `<span>${escapeHtml(localizeSkill(skill))}</span>`).join("")}</div></div>
         </div>
       </div>
       <div class="game-info-sections">
@@ -812,7 +820,7 @@
         </div>
         <div class="game-info-section">
           <h3>${escapeHtml(uiLabel("relatedGames"))}</h3>
-          <p>${escapeHtml(uiLabel("relatedIntro", { skill: localizeSkill(game.skills[0]) }))}</p>
+          <p>${escapeHtml(uiLabel("relatedIntro", { skill: localizeSkill(gameSkills[0] || "Focus") }))}</p>
           <div class="game-info-related">${related.map(relatedCard).join("")}</div>
         </div>
       </div>

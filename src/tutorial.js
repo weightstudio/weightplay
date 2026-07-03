@@ -212,13 +212,16 @@
         <button class="wp-tutorial-action" type="button">${labels.close}</button>
       </section>
     `;
-    const close = () => {
+    const close = (startRequested = false) => {
       markSeen(gameId);
       backdrop.remove();
+      if (startRequested) {
+        window.dispatchEvent(new CustomEvent("weightplay:tutorial-start", { detail: { gameId } }));
+      }
       window.WonderAnalytics?.track?.("tutorial_close", { game_id: gameId, from_button: fromButton });
     };
-    backdrop.querySelector(".wp-tutorial-close").addEventListener("click", close);
-    backdrop.querySelector(".wp-tutorial-action").addEventListener("click", close);
+    backdrop.querySelector(".wp-tutorial-close").addEventListener("click", () => close(false));
+    backdrop.querySelector(".wp-tutorial-action").addEventListener("click", () => close(true));
     backdrop.addEventListener("click", (event) => {
       if (event.target === backdrop) close();
     });

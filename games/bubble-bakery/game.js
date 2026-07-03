@@ -297,6 +297,7 @@
 
   function renderBoard(dropMap = new Map()) {
     const { pitch } = boardMetrics();
+    const groupInfo = buildGroupInfo();
     nodes.board.innerHTML = "";
     board.forEach((row, r) => {
       row.forEach((id, c) => {
@@ -308,6 +309,12 @@
         button.style.visibility = "visible";
         button.style.opacity = "1";
         button.style.transform = "none";
+        const info = groupInfo.get(key);
+        if (info?.size >= 2) {
+          button.classList.add("match-ready");
+          button.dataset.groupSize = String(info.size);
+          if ((orders[id] || 0) > 0) button.classList.add("order-ready");
+        }
         if (dropMap.has(key)) {
           const rowsToFall = dropMap.get(key);
           button.dataset.dropDistance = String(Math.max(1, rowsToFall) * pitch);
@@ -320,6 +327,24 @@
         nodes.board.appendChild(button);
       });
     });
+  }
+
+  function buildGroupInfo() {
+    const info = new Map();
+    const visited = new Set();
+    for (let r = 0; r < rows; r += 1) {
+      for (let c = 0; c < cols; c += 1) {
+        const key = `${r},${c}`;
+        if (visited.has(key) || !board[r]?.[c]) continue;
+        const { group } = groupFrom(r, c);
+        group.forEach(([gr, gc]) => visited.add(`${gr},${gc}`));
+        if (group.length < 2) continue;
+        group.forEach(([gr, gc]) => {
+          info.set(`${gr},${gc}`, { size: group.length });
+        });
+      }
+    }
+    return info;
   }
 
   function groupFrom(startR, startC) {

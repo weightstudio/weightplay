@@ -29,18 +29,18 @@
   };
 
   const animals = [
-    { id: "lion", asset: ASSETS.lion, baseIncome: 3, cost: 0, care: 5, x: 21, y: 34, size: 24 },
-    { id: "giraffe", asset: ASSETS.giraffe, baseIncome: 7, cost: 650, care: 7, x: 72, y: 37, size: 29 },
-    { id: "elephant", asset: ASSETS.elephant, baseIncome: 13, cost: 2400, care: 9, x: 42, y: 23, size: 24 },
-    { id: "panda", asset: ASSETS.panda, baseIncome: 20, cost: 8200, care: 10, x: 82, y: 22, size: 18 },
-    { id: "penguin", asset: ASSETS.penguin, baseIncome: 30, cost: 24000, care: 11, x: 58, y: 15, size: 16 },
-    { id: "rabbit", asset: ASSETS.rabbit, baseIncome: 9, cost: 1400, care: 8, x: 58, y: 33, size: 15 },
-    { id: "fox", asset: ASSETS.fox, baseIncome: 17, cost: 5200, care: 10, x: 31, y: 20, size: 17 },
-    { id: "koala", asset: ASSETS.koala, baseIncome: 25, cost: 15000, care: 11, x: 72, y: 19, size: 16 },
-    { id: "tiger", asset: ASSETS.tiger, baseIncome: 42, cost: 46000, care: 12, x: 47, y: 36, size: 18 },
-    { id: "rhino", asset: ASSETS.rhino, baseIncome: 58, cost: 98000, care: 13, x: 78, y: 12, size: 23 },
-    { id: "crocodile", asset: ASSETS.crocodile, baseIncome: 76, cost: 210000, care: 14, x: 44, y: 10, size: 22 },
-    { id: "bear", asset: ASSETS.bear, baseIncome: 100, cost: 460000, care: 16, x: 18, y: 14, size: 21 },
+    { id: "lion", asset: ASSETS.lion, baseIncome: 3, cost: 0, care: 5, x: 20, y: 39, size: 23 },
+    { id: "giraffe", asset: ASSETS.giraffe, baseIncome: 6, cost: 650, care: 7, x: 74, y: 42, size: 28 },
+    { id: "elephant", asset: ASSETS.elephant, baseIncome: 11, cost: 2400, care: 9, x: 44, y: 31, size: 23 },
+    { id: "panda", asset: ASSETS.panda, baseIncome: 16, cost: 8200, care: 10, x: 84, y: 27, size: 17 },
+    { id: "penguin", asset: ASSETS.penguin, baseIncome: 23, cost: 24000, care: 11, x: 60, y: 22, size: 15 },
+    { id: "rabbit", asset: ASSETS.rabbit, baseIncome: 7, cost: 1400, care: 8, x: 59, y: 38, size: 14 },
+    { id: "fox", asset: ASSETS.fox, baseIncome: 14, cost: 5200, care: 10, x: 32, y: 26, size: 16 },
+    { id: "koala", asset: ASSETS.koala, baseIncome: 20, cost: 15000, care: 11, x: 73, y: 24, size: 15 },
+    { id: "tiger", asset: ASSETS.tiger, baseIncome: 34, cost: 46000, care: 12, x: 48, y: 42, size: 17 },
+    { id: "rhino", asset: ASSETS.rhino, baseIncome: 46, cost: 98000, care: 13, x: 78, y: 20, size: 22 },
+    { id: "crocodile", asset: ASSETS.crocodile, baseIncome: 58, cost: 210000, care: 14, x: 44, y: 19, size: 21 },
+    { id: "bear", asset: ASSETS.bear, baseIncome: 74, cost: 460000, care: 16, x: 18, y: 22, size: 20 },
   ];
 
   const maxGateLevel = 8;
@@ -223,7 +223,7 @@
       const position = data.positions[animal.id] || {};
       data.positions[animal.id] = {
         x: clamp(Number(position.x ?? animal.x), 7, 90),
-        y: clamp(Number(position.y ?? animal.y), 8, 58),
+        y: clamp(Number(position.y ?? animal.y), 18, 62),
       };
     }
     data.coins = Math.max(0, Number(data.coins || 0));
@@ -261,8 +261,8 @@
 
   function incomePerTick() {
     const animalIncome = unlockedAnimals().reduce((sum, animal) => sum + animal.baseIncome, 0);
-    const gateBonus = 1 + (save.gateLevel - 1) * 0.22;
-    const happyBonus = 0.45 + save.happiness / 180;
+    const gateBonus = 1 + (save.gateLevel - 1) * 0.16;
+    const happyBonus = 0.35 + save.happiness / 240;
     return Math.max(2, Math.round(animalIncome * gateBonus * happyBonus));
   }
 
@@ -457,7 +457,7 @@
       const move = (moveEvent) => {
         const rect = stage.getBoundingClientRect();
         const x = clamp(((moveEvent.clientX - rect.left) / rect.width) * 100, 7, 90);
-        const y = clamp(((rect.bottom - moveEvent.clientY) / rect.height) * 100, 8, 58);
+        const y = clamp(((rect.bottom - moveEvent.clientY) / rect.height) * 100, 18, 62);
         element.style.left = `${x}%`;
         element.style.bottom = `${y}%`;
         save.positions[animal.id] = { x, y };
@@ -597,6 +597,7 @@
   }
 
   function startGame() {
+    if (!nodes.gamePanel.classList.contains("hidden")) return;
     document.body.classList.add("zoo-playing");
     nodes.menuPanel.classList.add("hidden");
     nodes.gamePanel.classList.remove("hidden");
@@ -670,6 +671,9 @@
     event.preventDefault();
     event.stopPropagation();
     startGame();
+  });
+  window.addEventListener("weightplay:tutorial-start", (event) => {
+    if (event.detail?.gameId === GAME_ID) startGame();
   });
   nodes.reportBtn.addEventListener("click", showReport);
   nodes.closeReportBtn.addEventListener("click", () => nodes.resultPanel.classList.add("hidden"));
