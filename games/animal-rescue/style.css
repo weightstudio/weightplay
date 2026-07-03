@@ -187,7 +187,14 @@ a {
   height: 58px;
   border-radius: 8px;
   background: #dff7ca;
-  font-size: 34px;
+  overflow: hidden;
+}
+
+.mini-animal img {
+  width: 92%;
+  height: 92%;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 3px rgba(47, 76, 32, 0.2));
 }
 
 .stage-card strong {
@@ -233,7 +240,14 @@ a {
   height: 64px;
   border-radius: 8px;
   background: linear-gradient(180deg, #fff8c9, #daf4b7);
-  font-size: 42px;
+  overflow: hidden;
+}
+
+.animal-avatar img {
+  width: 92%;
+  height: 92%;
+  object-fit: contain;
+  filter: drop-shadow(0 5px 4px rgba(47, 76, 32, 0.18));
 }
 
 .animal-panel strong {
@@ -325,13 +339,38 @@ a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  max-width: 100%;
+  width: 86%;
+  height: 86%;
   padding: 0 2px;
-  font-size: clamp(0.58rem, 2.2vw, 0.86rem);
+  font-size: clamp(0.54rem, 2vw, 0.78rem);
   font-weight: 900;
   line-height: 1.05;
   text-align: center;
   overflow-wrap: anywhere;
+}
+
+.tile-label img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+  filter: drop-shadow(0 5px 3px rgba(62, 78, 38, 0.2));
+}
+
+.tile.water .tile-label img,
+.tile.rock .tile-label img {
+  width: 72%;
+  height: 72%;
+  opacity: 0.9;
+}
+
+.asset-fallback {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 100%;
+  color: #24351b;
 }
 
 .action-row {

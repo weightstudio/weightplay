@@ -124,22 +124,36 @@ const dictionary = {
   },
 };
 
-const animalIcons = {
-  lion: "Lion",
-  panda: "Panda",
-  elephant: "Elephant",
-  turtle: "Turtle",
-  rabbit: "Rabbit",
-  penguin: "Penguin",
-  fox: "Fox",
-  monkey: "Monkey",
-  koala: "Koala",
-  giraffe: "Giraffe",
-  dolphin: "Dolphin",
-  cow: "Cow",
+const assetBase = "../../assets/";
+
+const animalAssets = {
+  lion: { src: "tiny-weather-animal-lion.png", fallback: "Lion" },
+  panda: { src: "tiny-weather-animal-panda.png", fallback: "Panda" },
+  elephant: { src: "animal-zoo-elephant.png", fallback: "Elephant" },
+  turtle: { src: "animal-merge-token-1.png", fallback: "Turtle" },
+  rabbit: { src: "tiny-weather-animal-rabbit.png", fallback: "Rabbit" },
+  penguin: { src: "tiny-weather-animal-penguin.png", fallback: "Penguin" },
+  fox: { src: "tiny-weather-animal-fox.png", fallback: "Fox" },
+  monkey: { src: "animal-merge-token-4.png", fallback: "Monkey" },
+  koala: { src: "tiny-weather-animal-koala.png", fallback: "Koala" },
+  giraffe: { src: "animal-zoo-idle-giraffe.png", fallback: "Giraffe" },
+  dolphin: { src: "bubble-bakery-whale.png", fallback: "Dolphin" },
+  cow: { src: "animal-merge-token-5.png", fallback: "Cow" },
 };
 
-const fruitIcons = ["Apple", "Banana", "Berry", "Grape", "Orange"];
+const fruitAssets = [
+  { src: "animal-vine-fruit-apple.png", fallback: "Apple" },
+  { src: "animal-vine-fruit-banana.png", fallback: "Banana" },
+  { src: "animal-vine-fruit-berry.png", fallback: "Berry" },
+  { src: "tiny-weather-tool-apple.svg", fallback: "Fruit" },
+  { src: "animal-vine-fruit-berry.png", fallback: "Fruit" },
+];
+
+const tileAssets = {
+  home: { src: "tiny-weather-tool-house.svg", fallback: "Home" },
+  rock: { src: "shape-token-diamond.svg", fallback: "Rock" },
+  water: { src: "safari-mask-water.svg", fallback: "Water" },
+};
 
 const levels = [
   { animal: "lion", biome: "forest", start: [0, 4], home: [4, 0], blocks: [[1, 3], [2, 3], [3, 1]], fruits: [[0, 2], [3, 2]], par: 9 },
@@ -248,9 +262,10 @@ function renderStageSelect() {
     .map((level) => {
       const locked = level.id > unlocked;
       const stars = bestStars[level.id] || 0;
+      const animal = animalAssets[level.animal];
       return `
         <button class="stage-card ${locked ? "locked" : ""}" type="button" data-stage="${level.id}">
-          <span class="mini-animal">${animalIcons[level.animal]}</span>
+          <span class="mini-animal">${assetMarkup(animal, t(level.animal))}</span>
           <span>
             <strong>${level.id}. ${t(level.animal)}</strong>
             <span>${t(level.biome)} - ${locked ? t("locked") : stars ? t("complete") : t("start")}</span>
@@ -274,7 +289,7 @@ function startLevel(index) {
   resultPanel.classList.add("hidden");
   playArea.classList.remove("hidden");
   hud.classList.remove("hidden");
-  animalAvatar.textContent = animalIcons[level.animal];
+  renderAvatar(level.animal);
   animalName.textContent = t(level.animal);
   renderBoard();
   updateHud();
@@ -317,10 +332,10 @@ function renderBoard() {
       button.dataset.x = String(col);
       button.dataset.y = String(row);
       const icon = tileIcon(pos, key, blockSet, waterSet);
-      if (icon) {
+      if (icon?.asset) {
         const label = document.createElement("span");
         label.className = "tile-label";
-        label.textContent = icon;
+        label.append(makeAssetImage(icon.asset, icon.alt));
         button.append(label);
       }
       if (pathSet.has(key) && key !== current) {
@@ -329,7 +344,7 @@ function renderBoard() {
         marker.setAttribute("aria-hidden", "true");
         button.append(marker);
       }
-      button.setAttribute("aria-label", icon || "tile");
+      button.setAttribute("aria-label", icon?.alt || "tile");
       board.append(button);
     }
   }
@@ -346,12 +361,46 @@ function tileClass(key, blockSet, waterSet, pathSet, current) {
 
 function tileIcon(pos, key, blockSet, waterSet) {
   const level = state.level;
-  if (key === keyOf(state.position)) return animalIcons[level.animal];
-  if (key === keyOf(level.home)) return "Home";
-  if (state.fruits.has(key)) return fruitIcons[(level.id + pos[0] + pos[1]) % fruitIcons.length];
-  if (blockSet.has(key)) return "Rock";
-  if (waterSet.has(key)) return "Water";
-  return "";
+  if (key === keyOf(state.position)) return { asset: animalAssets[level.animal], alt: t(level.animal) };
+  if (key === keyOf(level.home)) return { asset: tileAssets.home, alt: "home" };
+  if (state.fruits.has(key)) return { asset: fruitAssets[(level.id + pos[0] + pos[1]) % fruitAssets.length], alt: "fruit" };
+  if (blockSet.has(key)) return { asset: tileAssets.rock, alt: "rock" };
+  if (waterSet.has(key)) return { asset: tileAssets.water, alt: "water" };
+  return null;
+}
+
+function assetMarkup(asset, alt) {
+  if (!asset) return "";
+  return `<img src="${assetBase}${asset.src}" alt="${escapeHtml(alt || asset.fallback || "")}" loading="lazy" decoding="async" draggable="false" />`;
+}
+
+function makeAssetImage(asset, alt) {
+  const image = document.createElement("img");
+  image.src = `${assetBase}${asset.src}`;
+  image.alt = alt || asset.fallback || "";
+  image.decoding = "async";
+  image.draggable = false;
+  image.addEventListener("error", () => {
+    const fallback = document.createElement("span");
+    fallback.className = "asset-fallback";
+    fallback.textContent = asset.fallback || alt || "";
+    image.replaceWith(fallback);
+  }, { once: true });
+  return image;
+}
+
+function renderAvatar(animalId) {
+  animalAvatar.replaceChildren(makeAssetImage(animalAssets[animalId], t(animalId)));
+}
+
+function escapeHtml(value) {
+  return String(value).replace(/[&<>"']/g, (char) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;",
+  }[char]));
 }
 
 function isNeighbor(key) {
