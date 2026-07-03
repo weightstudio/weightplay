@@ -5,7 +5,7 @@
   const oldSaveKeys = ["weightplay_animal_zoo_idle_save_v2", "weightplay_animal_zoo_idle_save_v1"];
 
   const ASSETS = {
-    cover: "../../assets/animal-zoo-idle-cover.png",
+    cover: "../../assets/animal-zoo-idle-cover.webp",
     stage: "../../assets/animal-zoo-idle-stage-bg.webp",
     lion: "../../assets/animal-zoo-idle-lion.webp",
     giraffe: "../../assets/animal-zoo-idle-giraffe.png",
@@ -306,6 +306,7 @@
   }
 
   function render() {
+    if (nodes.gamePanel.classList.contains("hidden")) return;
     nodes.coinText.textContent = formatNumber(save.coins);
     nodes.incomeText.textContent = formatNumber(save.ticketBox);
     const card = nodes.habitatGrid.querySelector(".zoo-stage-card");
@@ -629,22 +630,9 @@
       ASSETS.cover,
       ASSETS.stage,
       ASSETS.lion,
-      ASSETS.giraffe,
-      ASSETS.elephant,
-      ASSETS.panda,
-      ASSETS.penguin,
-      ASSETS.rabbit,
-      ASSETS.fox,
-      ASSETS.koala,
-      ASSETS.tiger,
-      ASSETS.rhino,
-      ASSETS.crocodile,
-      ASSETS.bear,
       ASSETS.keeper,
       ASSETS.gate1,
-      ASSETS.gate2,
-      ASSETS.gate3,
-      ...visitorAssets,
+      visitorAssets[0],
     ];
     let done = 0;
     const finish = () => {
@@ -663,6 +651,13 @@
       img.onerror = finish;
       img.src = src;
     });
+    window.setTimeout(() => {
+      if (!nodes.loadingPanel.classList.contains("hidden")) {
+        nodes.loadingText.textContent = "100%";
+        nodes.loadingFill.style.width = "100%";
+        nodes.loadingPanel.classList.add("hidden");
+      }
+    }, 1400);
   }
 
   nodes.localeSelect.addEventListener("change", () => {
@@ -686,7 +681,6 @@
 
   localizeStatic();
   loadAssets();
-  render();
   window.setInterval(tickUi, 1000);
   window.setInterval(tickPark, 10000);
 })();
