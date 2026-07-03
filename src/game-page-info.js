@@ -721,7 +721,7 @@
     const game = localizedGame(gameId);
     return `
       <a class="game-info-related-card" href="${escapeHtml(gameHref(gameId))}">
-        <img src="${escapeHtml(assetHref(coverImages[gameId] || "weightplay-og.png"))}" alt="" />
+        <img src="${escapeHtml(assetHref(coverImages[gameId] || "weightplay-og.png"))}" alt="" width="320" height="320" loading="lazy" decoding="async" />
         <span class="game-info-related-copy">
           <strong>${escapeHtml(game.title)}</strong>
           <span>${escapeHtml(shortDescription(game))}</span>

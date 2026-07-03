@@ -94,9 +94,14 @@
     ];
     const nodes = Array.from(document.querySelectorAll(selectors.join(",")));
     nodes.forEach((node) => {
-      const observer = new MutationObserver(() => focusPlayableArea(node));
+      let wasVisible = isVisible(node);
+      const observer = new MutationObserver(() => {
+        const nowVisible = isVisible(node);
+        if (!wasVisible && nowVisible) focusPlayableArea(node);
+        wasVisible = nowVisible;
+      });
       observer.observe(node, { attributes: true, attributeFilter: ["class", "style", "hidden"] });
-      if (isVisible(node)) focusPlayableArea(node);
+      if (wasVisible && node.matches("#playPanel, #playArea, .play-panel, .play-area")) focusPlayableArea(node);
     });
   }
 
