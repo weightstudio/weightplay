@@ -241,7 +241,7 @@
       button.className = "tile";
       button.dataset.index = String(tile.index);
       button.dataset.tileId = tile.art.id;
-      button.innerHTML = `<img class="tile-image" src="${tile.art.asset}" alt="" draggable="false" /><span class="tile-label">${tile.art.label}</span>`;
+      button.innerHTML = `<img class="tile-image" src="${tile.art.asset}" alt="" draggable="false" />`;
       button.setAttribute("aria-label", tile.art.label);
       if (tile.matched) button.classList.add("matched");
       if (selectedTile?.index === tile.index) button.classList.add("selected");

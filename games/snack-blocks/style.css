@@ -285,6 +285,16 @@ button:active {
   transition: transform 150ms ease, filter 150ms ease, opacity 180ms ease;
 }
 
+.snack-image {
+  width: 78%;
+  height: 78%;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  filter: drop-shadow(0 5px 5px rgba(44, 22, 14, 0.24));
+}
+
 .tile.dropping {
   animation: snack-drop-move 0.34s cubic-bezier(0.2, 0.86, 0.25, 1.08) both;
 }

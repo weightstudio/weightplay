@@ -2,13 +2,13 @@
   const GAME_ID = "snack-blocks";
   const size = 7;
   const snacks = ["ST", "CK", "JM", "GR", "CH", "PR"];
-  const snackIcon = {
-    ST: "\u{1F353}",
-    CK: "\u{1F36A}",
-    JM: "\u{1F36C}",
-    GR: "\u{1F347}",
-    CH: "\u{1F9C0}",
-    PR: "\u{1F968}",
+  const snackArt = {
+    ST: { label: "Berry", asset: "../../assets/animal-vine-fruit-berry.png" },
+    CK: { label: "Apple", asset: "../../assets/animal-vine-fruit-apple.png" },
+    JM: { label: "Banana", asset: "../../assets/animal-vine-fruit-banana.png" },
+    GR: { label: "Leaf", asset: "../../assets/animal-guard-projectile-leaf.svg" },
+    CH: { label: "Seed", asset: "../../assets/animal-guard-projectile-seed.svg" },
+    PR: { label: "Feather", asset: "../../assets/animal-guard-projectile-feather.svg" },
   };
   const localeKey = "weightplayLocale";
   const unlockKey = "snackBlocksUnlocked";
@@ -188,7 +188,7 @@
 
   function goalLabel(stage = activeStage()) {
     return stage.goal === "collect"
-      ? t("goalCollect", { icon: snackIcon[stage.snack], target: stage.target })
+      ? t("goalCollect", { icon: snackArt[stage.snack].label, target: stage.target })
       : t("goalScore", { target: stage.target });
   }
 
@@ -378,10 +378,10 @@
       const button = document.createElement("button");
       button.type = "button";
       button.className = `tile tile-${snacks.indexOf(tile.type)}`;
-      button.textContent = snackIcon[tile.type];
+      button.innerHTML = `<img class="snack-image" src="${snackArt[tile.type].asset}" alt="" draggable="false" />`;
       button.dataset.index = String(index);
       button.dataset.tileId = String(tile.id);
-      button.setAttribute("aria-label", tile.type);
+      button.setAttribute("aria-label", snackArt[tile.type].label);
       if (dropMap.has(tile.id)) {
         button.classList.add("dropping");
         button.style.setProperty("--drop", `${-dropMap.get(tile.id) * 112}%`);
@@ -659,7 +659,7 @@
     nodes.resultText.textContent = cleared
       ? t(stage.id === stages.length ? "finalClearText" : "clearText", { score: state.score, goal: goalLabel(stage), best })
       : t("failedText", { score: state.score, goal: goalLabel(stage) });
-    nodes.resultStars.textContent = cleared ? starRating() : "";
+    nodes.resultStars.textContent = cleared ? ratingStars() : "";
     renderSkillReport(progress, cleared);
     nodes.nextBtn.classList.toggle("hidden", !cleared || stage.id >= stages.length);
     nodes.hud.classList.add("hidden");
@@ -673,6 +673,23 @@
       goal: stage.goal,
       cleared,
     });
+  }
+
+  function ratingStars() {
+    const stage = activeStage();
+    const value =
+      stage.goal === "collect"
+        ? state.goalCount >= stage.target + 8
+          ? 3
+          : state.goalCount >= stage.target + 4
+            ? 2
+            : 1
+        : state.score >= stage.target * 1.55
+          ? 3
+          : state.score >= stage.target * 1.25
+            ? 2
+            : 1;
+    return "\u2605".repeat(value);
   }
 
   function starRating() {

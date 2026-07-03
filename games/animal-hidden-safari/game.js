@@ -10,7 +10,7 @@
       gameTitle: "Animal Hidden Safari",
       language: "Language",
       chooseStage: "Choose Habitat",
-      menuHint: "Find animals and safari clues blended into each natural habitat.",
+      menuHint: "Find animals blended into each natural habitat.",
       stages: "Habitats",
       loading: "Loading",
       hint: "Hint",
@@ -23,7 +23,7 @@
       great: "Great find!",
       perfect: "Sharp safari eyes!",
       good: "Nice searching!",
-      result: "You found {found}/{total} targets in {time}.",
+      result: "You found {found}/{total} animals in {time}.",
       skillReport: "Skill Report",
       skillMessage: "Focus {focus} / Animal Knowledge {animal} / Problem Solving {solve}. Great progress through careful looking.",
       best: "Best {time}",
@@ -34,19 +34,13 @@
         lion: "Lion",
         elephant: "Elephant",
         giraffe: "Giraffe",
-        zebra: "Zebra",
-        monkey: "Monkey",
-        hippo: "Hippo",
-        rhino: "Rhino",
-        bird: "Bird",
-        paw: "Paw Print",
-        banana: "Banana",
-        feather: "Feather",
-        leaf: "Leaf",
-        shell: "Shell",
+        panda: "Panda",
+        penguin: "Penguin",
+        koala: "Koala",
+        rabbit: "Rabbit",
+        fox: "Fox",
         frog: "Frog",
-        butterfly: "Butterfly",
-        acacia: "Acacia Tree",
+        owl: "Owl",
       },
       habitat: {
         sunny: "Sunny Grassland",
@@ -61,22 +55,22 @@
       gameTitle: "動物探險找找看",
       language: "語言",
       chooseStage: "選擇棲地",
-      menuHint: "找出躲在樹葉、草叢、水邊和探險線索後面的動物。",
+      menuHint: "在自然場景裡找出躲起來的動物，練習觀察力與專注力。",
       stages: "棲地",
       loading: "載入中",
       hint: "提示",
-      findList: "要找的目標",
+      findList: "要找到",
       nextStage: "下一個棲地",
-      retry: "再玩一次",
+      retry: "再試一次",
       lobby: "大廳",
       locked: "棲地尚未解鎖",
       stage: "棲地 {n}",
       great: "找得很好！",
       perfect: "觀察力超棒！",
       good: "很會找喔！",
-      result: "你在 {time} 找到 {found}/{total} 個目標。",
+      result: "你在 {time} 找到 {found}/{total} 隻動物。",
       skillReport: "能力報告",
-      skillMessage: "專注 {focus} / 動物知識 {animal} / 問題解決 {solve}。透過慢慢觀察，你完成了一次很棒的找找看練習。",
+      skillMessage: "專注力 {focus} / 動物知識 {animal} / 解題能力 {solve}。你很細心地觀察每個角落。",
       best: "最佳 {time}",
       noHints: "沒有提示了",
       found: "找到了！",
@@ -85,57 +79,45 @@
         lion: "獅子",
         elephant: "大象",
         giraffe: "長頸鹿",
-        zebra: "斑馬",
-        monkey: "猴子",
-        hippo: "河馬",
-        rhino: "犀牛",
-        bird: "小鳥",
-        paw: "腳印",
-        banana: "香蕉",
-        feather: "羽毛",
-        leaf: "葉子",
-        shell: "貝殼",
+        panda: "熊貓",
+        penguin: "企鵝",
+        koala: "無尾熊",
+        rabbit: "兔子",
+        fox: "狐狸",
         frog: "青蛙",
-        butterfly: "蝴蝶",
-        acacia: "金合歡樹",
+        owl: "貓頭鷹",
       },
       habitat: {
         sunny: "陽光草原",
-        river: "河邊探險",
-        sunset: "夕陽樹林",
+        river: "河邊棲地",
+        sunset: "夕陽森林",
         pond: "池塘觀察",
         jungle: "叢林邊緣",
-        lookout: "瞭望小丘",
+        lookout: "瞭望山丘",
       },
     },
   };
 
-  const icons = {
-    lion: "\u{1F981}",
-    elephant: "\u{1F418}",
-    giraffe: "\u{1F992}",
-    zebra: "\u{1F993}",
-    monkey: "\u{1F412}",
-    hippo: "\u{1F99B}",
-    rhino: "\u{1F98F}",
-    bird: "\u{1F426}",
-    paw: "\u{1F43E}",
-    banana: "\u{1F34C}",
-    feather: "\u{1FAB6}",
-    leaf: "\u{1F33F}",
-    shell: "\u{1F41A}",
-    frog: "\u{1F438}",
-    butterfly: "\u{1F98B}",
-    acacia: "\u{1F333}",
+  const targetAssets = {
+    lion: "../../assets/animal-zoo-idle-lion.webp",
+    elephant: "../../assets/animal-zoo-elephant.png",
+    giraffe: "../../assets/animal-zoo-idle-giraffe.png",
+    panda: "../../assets/animal-zoo-panda.png",
+    penguin: "../../assets/animal-zoo-penguin.png",
+    koala: "../../assets/tiny-weather-animal-koala.png",
+    rabbit: "../../assets/tiny-weather-animal-rabbit.png",
+    fox: "../../assets/tiny-weather-animal-fox.png",
+    frog: "../../assets/bubble-bakery-frog.png",
+    owl: "../../assets/animal-guard-owl.png",
   };
 
   const stages = [
-    { habitat: "sunny", targets: [["lion", 50, 63, 62, "grass"], ["elephant", 18, 72, 54, "leaf-left"], ["giraffe", 82, 57, 58, "leaf-right"], ["zebra", 69, 79, 50, "grass"], ["monkey", 28, 47, 42, "leaf-top"], ["bird", 40, 26, 36], ["paw", 58, 84, 32, "dust"], ["banana", 32, 76, 32, "grass"]] },
-    { habitat: "river", theme: "river", targets: [["hippo", 24, 72, 60, "water"], ["elephant", 75, 67, 56, "leaf-right"], ["frog", 42, 82, 34, "water"], ["bird", 63, 34, 38], ["shell", 18, 84, 32, "water"], ["leaf", 86, 78, 32, "grass"], ["zebra", 52, 56, 46, "leaf-top"], ["paw", 36, 62, 30, "dust"]] },
-    { habitat: "sunset", theme: "sunset", targets: [["giraffe", 18, 54, 58, "leaf-left"], ["monkey", 78, 42, 42, "leaf-top"], ["lion", 64, 73, 54, "grass"], ["butterfly", 48, 30, 32], ["feather", 28, 82, 30, "grass"], ["acacia", 86, 66, 50, "leaf-right"], ["bird", 38, 42, 36], ["banana", 72, 82, 32, "grass"]] },
-    { habitat: "pond", theme: "pond", targets: [["frog", 18, 74, 38, "water"], ["hippo", 50, 72, 64, "water"], ["rhino", 78, 66, 54, "leaf-right"], ["bird", 84, 32, 38], ["shell", 36, 84, 32, "water"], ["leaf", 56, 54, 32, "leaf-top"], ["butterfly", 24, 36, 34], ["paw", 68, 84, 30, "dust"]] },
-    { habitat: "jungle", theme: "jungle", targets: [["monkey", 22, 42, 46, "leaf-left"], ["bird", 54, 28, 36, "leaf-top"], ["butterfly", 76, 34, 34], ["rhino", 70, 74, 56, "grass"], ["lion", 42, 70, 54, "leaf-left"], ["banana", 34, 86, 32, "grass"], ["feather", 88, 60, 30, "leaf-right"], ["leaf", 16, 78, 32, "grass"]] },
-    { habitat: "lookout", theme: "lookout", targets: [["lion", 21, 68, 54, "grass"], ["elephant", 46, 72, 58, "dust"], ["giraffe", 78, 54, 58, "leaf-right"], ["zebra", 65, 82, 48, "grass"], ["rhino", 34, 84, 50, "grass"], ["bird", 54, 30, 38], ["paw", 84, 82, 30, "dust"], ["acacia", 16, 48, 46, "leaf-top"]] },
+    { habitat: "sunny", targets: [["lion", 48, 65, 66], ["elephant", 18, 72, 58], ["giraffe", 82, 58, 62], ["panda", 66, 80, 48], ["koala", 30, 48, 44], ["owl", 42, 27, 38]] },
+    { habitat: "river", theme: "river", targets: [["penguin", 24, 74, 54], ["elephant", 75, 68, 58], ["frog", 43, 82, 40], ["owl", 64, 34, 40], ["panda", 54, 56, 48], ["fox", 35, 64, 42]] },
+    { habitat: "sunset", theme: "sunset", targets: [["giraffe", 18, 54, 62], ["koala", 78, 44, 46], ["lion", 64, 73, 58], ["rabbit", 48, 32, 38], ["fox", 28, 82, 42], ["owl", 38, 42, 38]] },
+    { habitat: "pond", theme: "pond", targets: [["frog", 18, 75, 44], ["penguin", 50, 73, 58], ["panda", 78, 66, 54], ["owl", 84, 32, 40], ["rabbit", 36, 84, 40], ["koala", 56, 54, 42]] },
+    { habitat: "jungle", theme: "jungle", targets: [["koala", 22, 43, 50], ["owl", 54, 29, 40], ["rabbit", 76, 35, 42], ["panda", 70, 74, 56], ["lion", 42, 70, 58], ["fox", 34, 86, 42]] },
+    { habitat: "lookout", theme: "lookout", targets: [["lion", 21, 68, 58], ["elephant", 46, 72, 60], ["giraffe", 78, 54, 62], ["panda", 64, 82, 50], ["frog", 34, 84, 42], ["owl", 54, 30, 40]] },
   ];
 
   const $ = (id) => document.getElementById(id);
@@ -202,6 +184,10 @@
     return Object.entries(data).reduce((out, [name, item]) => out.replaceAll(`{${name}}`, String(item)), value);
   }
 
+  function animalImg(id, className = "") {
+    return `<img class="${className}" src="${targetAssets[id]}" alt="" loading="lazy" draggable="false" />`;
+  }
+
   function playSound(name) {
     window.WonderSound?.play?.(name);
   }
@@ -240,7 +226,7 @@
       button.type = "button";
       if (stageNo > unlocked) button.classList.add("locked");
       button.innerHTML = `
-        <b>${icons[stage.targets[0][0]]}</b>
+        <b>${animalImg(stage.targets[0][0], "stage-animal")}</b>
         <strong>${t("stage", { n: stageNo })} - ${t(`habitat.${stage.habitat}`)}</strong>
         <span>${starsFor(stageNo)}${bestLine(stageNo)}</span>
       `;
@@ -296,7 +282,7 @@
       button.style.top = `${y}%`;
       button.style.setProperty("--size", `${size}px`);
       button.setAttribute("aria-label", t(`targets.${id}`));
-      button.textContent = icons[id];
+      button.innerHTML = animalImg(id, "target-animal");
       button.addEventListener("click", (event) => {
         event.stopPropagation();
         chooseTarget(index, button);
@@ -317,7 +303,7 @@
     stages[currentStage].targets.forEach(([id], index) => {
       const chip = document.createElement("div");
       chip.className = `target-chip ${found.has(index) ? "done" : ""}`;
-      chip.innerHTML = `<b>${icons[id]}</b><span>${t(`targets.${id}`)}</span>`;
+      chip.innerHTML = `<b>${animalImg(id, "chip-animal")}</b><span>${t(`targets.${id}`)}</span>`;
       nodes.targetList.appendChild(chip);
     });
   }
@@ -445,17 +431,28 @@
     window.setTimeout(() => node.remove(), 950);
   }
 
-  function fakeLoad() {
-    let progress = 0;
-    const id = window.setInterval(() => {
-      progress = Math.min(100, progress + 18 + Math.random() * 18);
-      nodes.loadingText.textContent = `${Math.round(progress)}%`;
-      nodes.loadingFill.style.width = `${progress}%`;
-      if (progress >= 100) {
-        window.clearInterval(id);
-        window.setTimeout(() => nodes.loadingPanel.classList.add("hidden"), 180);
-      }
-    }, 90);
+  function preloadGameAssets() {
+    const urls = [
+      "../../assets/animal-hidden-safari-cover.webp",
+      "../../assets/animal-hidden-safari-sunny-bg.webp",
+      ...new Set(Object.values(targetAssets)),
+    ];
+    let done = 0;
+    const update = () => {
+      const pct = Math.round((done / urls.length) * 100);
+      nodes.loadingText.textContent = `${pct}%`;
+      nodes.loadingFill.style.width = `${pct}%`;
+      if (done >= urls.length) window.setTimeout(() => nodes.loadingPanel.classList.add("hidden"), 180);
+    };
+    urls.forEach((src) => {
+      const img = new Image();
+      img.onload = img.onerror = () => {
+        done += 1;
+        update();
+      };
+      img.src = src;
+    });
+    update();
   }
 
   function bind() {
@@ -480,5 +477,5 @@
   localizeStatic();
   bind();
   showMenu();
-  fakeLoad();
+  preloadGameAssets();
 })();
