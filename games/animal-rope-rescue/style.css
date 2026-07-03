@@ -211,6 +211,40 @@ select {
   pointer-events: none;
 }
 
+.target-guide,
+.fall-guide {
+  position: absolute;
+  top: 9%;
+  bottom: 6%;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 2;
+  opacity: .52;
+}
+
+.target-guide {
+  width: clamp(56px, 14%, 92px);
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(255, 245, 146, 0), rgba(255, 229, 82, .3) 56%, rgba(255, 199, 66, .52));
+  box-shadow: 0 0 24px rgba(255, 230, 81, .34);
+}
+
+.target-guide.active {
+  opacity: .84;
+  animation: guideGlow 1s ease-in-out infinite;
+}
+
+.fall-guide {
+  width: 0;
+  border-left: 4px dotted rgba(255, 255, 255, .72);
+  filter: drop-shadow(0 0 6px rgba(54, 104, 45, .38));
+  opacity: 0;
+}
+
+.fall-guide.active {
+  opacity: .9;
+}
+
 .target-zone {
   position: absolute;
   left: 50%;
@@ -429,6 +463,11 @@ select {
 @keyframes paddleReady {
   0%, 100% { transform: translateX(-50%) scale(1); }
   50% { transform: translateX(-50%) scale(1.03); }
+}
+
+@keyframes guideGlow {
+  0%, 100% { box-shadow: 0 0 18px rgba(255, 230, 81, .28); }
+  50% { box-shadow: 0 0 34px rgba(255, 230, 81, .62); }
 }
 
 @media (max-width: 560px) {

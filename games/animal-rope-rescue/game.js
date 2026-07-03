@@ -15,6 +15,7 @@
       stages: "Stages",
       cut: "Cut",
       hint: "Drag the leaf under the fruit, then press Cut. Keep dragging the leaf while the fruit falls.",
+      fallHint: "Keep dragging the leaf under the falling fruit and bounce it toward the glowing basket.",
       loading: "Loading",
       nextStage: "Next Stage",
       retry: "Try Again",
@@ -38,6 +39,7 @@
       stages: "選關",
       cut: "切斷",
       hint: "先把葉子拖到水果下方，再按切斷。水果掉下來時也可以繼續拖葉子。",
+      fallHint: "水果掉下來時繼續拖葉子，把它彈向發光的籃子。",
       loading: "載入中",
       nextStage: "下一關",
       retry: "再玩一次",
@@ -93,6 +95,8 @@
     targetAnimal: $("targetAnimal"),
     vineButton: $("vineButton"),
     cutNowBtn: $("cutNowBtn"),
+    targetGuide: $("targetGuide"),
+    fallGuide: $("fallGuide"),
     fruit: $("fruit"),
     leafPaddle: $("leafPaddle"),
     floatText: $("floatText"),
@@ -181,6 +185,9 @@
     nodes.stageText.textContent = String(currentStage);
     nodes.scoreText.textContent = String(scoreForStage());
     nodes.targetZone.style.left = `${stage.targetX}%`;
+    nodes.targetGuide.style.left = `${stage.targetX}%`;
+    nodes.fallGuide.classList.remove("active");
+    nodes.targetGuide.classList.remove("active");
     nodes.targetAnimal.src = assets[stage.animal];
     nodes.fruit.src = assets[stage.fruit];
     nodes.vineButton.classList.remove("cut");
@@ -199,6 +206,7 @@
     nodes.fruit.style.left = `${fruit.x}%`;
     nodes.fruit.style.top = `${fruit.y}%`;
     nodes.fruit.style.rotate = `${fruit.rot}deg`;
+    nodes.fallGuide.style.left = `${fruit.x}%`;
     nodes.leafPaddle.style.left = `${paddleX}%`;
   }
 
@@ -209,7 +217,9 @@
     nodes.vineButton.classList.add("cut");
     nodes.cutNowBtn.disabled = true;
     nodes.cutNowBtn.classList.add("cut");
-    nodes.hintText.textContent = "";
+    nodes.fallGuide.classList.add("active");
+    nodes.targetGuide.classList.add("active");
+    nodes.hintText.textContent = t("fallHint");
     lastFrame = performance.now();
     window.WonderSound?.play?.("click");
     requestAnimationFrame(tick);
@@ -281,6 +291,8 @@
   function finish(success) {
     running = false;
     settled = true;
+    nodes.fallGuide.classList.remove("active");
+    nodes.targetGuide.classList.remove("active");
     if (success) {
       const stars = fruit.y < 88 ? 3 : 2;
       save.stars[currentStage] = Math.max(save.stars[currentStage] || 0, stars);
