@@ -559,9 +559,14 @@ body.zoo-playing .language-picker select {
 }
 
 body.zoo-playing .game-panel {
+  width: min(100%, 760px);
+  height: calc(100svh - 72px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+  max-height: 760px;
   min-height: 0;
   grid-template-rows: auto auto minmax(0, 1fr);
   gap: 8px;
+  margin: 0 auto;
+  overflow: hidden;
 }
 
 body.zoo-playing .resource-row {
@@ -596,12 +601,12 @@ body.zoo-playing .zoo-stage-card {
 
 body.zoo-playing .habitat-grid {
   min-height: 0;
-  overflow: visible;
+  overflow: hidden;
 }
 
 body.zoo-playing .zoo-stage-card {
   min-height: 0;
-  height: auto;
+  height: 100%;
   grid-template-rows: auto clamp(240px, 46svh, 420px) auto;
   padding: 8px;
   gap: 7px;
@@ -735,6 +740,10 @@ body.zoo-playing .zoo-actions button {
 }
 
 @media (max-width: 720px) {
+  body.zoo-playing .game-panel {
+    height: calc(100svh - 64px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+  }
+
   body.zoo-playing .topbar {
     grid-template-columns: 38px 1fr 88px;
   }
@@ -781,6 +790,10 @@ body.zoo-playing .zoo-actions button {
 }
 
 @media (max-height: 680px) {
+  body.zoo-playing .game-panel {
+    height: calc(100svh - 58px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+  }
+
   body.zoo-playing .topbar {
     transform: scale(.94);
     transform-origin: top center;
