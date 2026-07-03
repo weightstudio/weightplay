@@ -141,14 +141,14 @@ body.is-bakery-playing .play-panel {
 .play-panel {
   width: min(100%, 640px);
   height: auto;
-  max-height: calc(100svh - 82px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+  max-height: none;
   min-height: 0;
   margin: 0 auto;
   padding: clamp(7px, 1.2vw, 12px);
   border-radius: 24px;
   overflow: hidden;
   grid-template-columns: minmax(0, 1fr);
-  grid-template-rows: auto auto minmax(0, 1fr) auto;
+  grid-template-rows: auto auto auto auto;
   grid-template-areas:
     "head"
     "orders"
@@ -255,6 +255,8 @@ body.is-bakery-playing .play-panel {
 .order-bar {
   grid-area: orders;
   min-height: 0;
+  position: relative;
+  z-index: 2;
   align-content: start;
   border-radius: 20px;
   padding: clamp(6px, 1vw, 10px);
@@ -290,9 +292,10 @@ body.is-bakery-playing .play-panel {
 
 .bubble-board {
   grid-area: board;
-  width: min(100%, 560px);
-  max-height: min(560px, calc(100svh - 210px));
+  width: min(100%, 560px, calc(100svh - 184px));
+  min-width: min(100%, 280px);
   height: auto;
+  max-height: none;
   margin: 0 auto;
   aspect-ratio: 1;
   border-radius: 24px;
@@ -558,11 +561,11 @@ body.is-bakery-playing .play-panel {
   .play-panel {
     width: 100%;
     height: auto;
-    max-height: calc(100svh - 70px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+    max-height: none;
     gap: 5px;
     padding: 6px;
     grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: auto auto minmax(0, 1fr) 16px;
+    grid-template-rows: auto auto auto 16px;
     border-radius: 16px;
   }
 
@@ -602,8 +605,9 @@ body.is-bakery-playing .play-panel {
   }
 
   .bubble-board {
-    width: min(100%, calc(100svh - 205px));
-    max-height: min(100%, calc(100svh - 205px));
+    width: min(100%, calc(100svh - 176px));
+    min-width: min(100%, 268px);
+    max-height: none;
     align-self: center;
   }
 }

@@ -18,13 +18,13 @@
       ],
     },
     "color-lunchbox": {
-      title: "Color Lunchbox",
+      title: "Animal Color Lunchbox",
       age: "3+",
       difficulty: "Easy",
       time: "1-3 minutes",
       skills: ["Color Recognition", "Focus", "Hand-Eye Coordination"],
       intro:
-        "Color Lunchbox is a gentle preschool matching game where children place foods into lunchboxes by color. Each stage uses a small set of clear objects and a simple drag or tap interaction. The goal is to make color practice feel like play, with short rounds that parents can understand quickly and children can retry without pressure.",
+        "Animal Color Lunchbox is a gentle preschool matching game where children place foods into lunchboxes by color. Each stage uses a small set of clear objects and a simple drag or tap interaction. The goal is to make color practice feel like play, with short rounds that parents can understand quickly and children can retry without pressure.",
       how: ["Look at the food item.", "Find the lunchbox with the matching color.", "Drag or tap the item into the correct lunchbox.", "Finish the stage to unlock the next theme."],
       parent:
         "This game may help children practice color recognition, focus, and hand-eye coordination. It is meant for short, relaxed sessions and does not evaluate a child's development.",
@@ -87,18 +87,18 @@
       ],
     },
     "star-memory": {
-      title: "Star Memory",
+      title: "Animal Star Memory",
       age: "5+",
       difficulty: "Easy",
       time: "3-5 minutes",
       skills: ["Memory", "Focus", "Problem Solving"],
       intro:
-        "Star Memory is a card matching game where players remember positions and find pairs. Stages gradually add more cards and different themes, making it a calm way to practice attention and recall. The short stage format makes it suitable for quick play sessions on phones or tablets.",
+        "Animal Star Memory is a card matching game where players remember animal and star card positions and find pairs. Stages gradually add more cards and different themes, making it a calm way to practice attention and recall. The short stage format makes it suitable for quick play sessions on phones or tablets.",
       how: ["Flip a card to reveal its symbol.", "Remember where each symbol appears.", "Find the matching card pair.", "Clear every pair to finish the stage."],
       parent:
         "This game may help children practice memory and focus through simple matching. Progress feedback is for encouragement and local tracking only.",
       faq: [
-        ["What age is Star Memory for?", "It is recommended for age 5+ and family play."],
+        ["What age is Animal Star Memory for?", "It is recommended for age 5+ and family play."],
         ["Does it require fast reactions?", "No. It focuses on remembering positions."],
         ["Can children replay stages?", "Yes. Replaying can help practice memory in a low-pressure way."],
       ],

@@ -76,7 +76,7 @@
 
   const dictionary = {
     en: {
-      title: "Color Lunchbox",
+      title: "Animal Color Lunchbox",
       language: "Language",
       chooseLevel: "Choose Level",
       scoreLabel: "Score",
