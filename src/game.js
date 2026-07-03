@@ -9,6 +9,7 @@ const levelText = document.querySelector("#levelText");
 const waveText = document.querySelector("#waveText");
 const overlay = document.querySelector("#overlay");
 const overlayText = document.querySelector("#overlayText");
+const globalLocaleSelect = document.querySelector("#globalLocaleSelect");
 const loadingPanel = document.querySelector("#loadingPanel");
 const loadingText = document.querySelector("#loadingText");
 const loadingFill = document.querySelector("#loadingFill");
@@ -22,6 +23,7 @@ const pausePanel = document.querySelector("#pausePanel");
 const settingsBtn = document.querySelector("#settingsBtn");
 const resumeBtn = document.querySelector("#resumeBtn");
 const leaveBtn = document.querySelector("#leaveBtn");
+const pauseLocaleSelect = document.querySelector("#pauseLocaleSelect");
 const weaponModal = document.querySelector("#weaponModal");
 const weaponModalClose = document.querySelector("#weaponModalClose");
 const weaponModalContent = document.querySelector("#weaponModalContent");
@@ -45,6 +47,26 @@ function translateStaticUI() {
   for (const element of document.querySelectorAll("[data-i18n]")) {
     element.textContent = t(element.dataset.i18n);
   }
+  syncLocaleSelects();
+}
+
+function syncLocaleSelects() {
+  document.querySelectorAll("#globalLocaleSelect, #pauseLocaleSelect, #localeSelect").forEach((select) => {
+    if (select.value !== locale()) select.value = locale();
+  });
+}
+
+function bindLocaleSelect(select) {
+  if (!select || select.dataset.localeBound === "true") return;
+  select.dataset.localeBound = "true";
+  select.value = locale();
+  const updateLocale = () => {
+    window.WonderSound?.play("click");
+    window.WonderI18n?.setLocale(select.value);
+    syncLocaleSelects();
+  };
+  select.addEventListener("change", updateLocale);
+  select.addEventListener("input", updateLocale);
 }
 
 // Local Localization Dictionary
@@ -1739,17 +1761,8 @@ function renderProfilePanel(tab = activeMenuTab) {
   `;
 
   const select = profilePanel.querySelector("#localeSelect");
-  if (select) {
-    select.value = locale();
-    select.addEventListener("change", () => {
-      window.WonderSound?.play("click");
-      window.WonderI18n?.setLocale(select.value);
-    });
-    select.addEventListener("input", () => {
-      window.WonderSound?.play("click");
-      window.WonderI18n?.setLocale(select.value);
-    });
-  }
+  if (select?.options?.[1]) select.options[1].textContent = "\u7e41\u9ad4\u4e2d\u6587";
+  bindLocaleSelect(select);
   const backToLobbyBtn = profilePanel.querySelector("#backToLobbyBtn");
   if (backToLobbyBtn) {
     backToLobbyBtn.addEventListener("click", () => {
@@ -2590,6 +2603,8 @@ window.addEventListener("wonder:locale-change", () => {
 });
 
 // Initialize translations
+bindLocaleSelect(globalLocaleSelect);
+bindLocaleSelect(pauseLocaleSelect);
 translateStaticUI();
 
 preload().catch((error) => {

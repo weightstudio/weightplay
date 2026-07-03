@@ -1442,6 +1442,33 @@ canvas {
   object-fit: contain;
 }
 
+.wonder-language-picker {
+  min-height: 0;
+  width: min(100%, 360px);
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  padding: 8px 10px;
+  background: rgba(12, 15, 20, 0.62);
+}
+
+.wonder-language-picker select {
+  height: 36px;
+}
+
+.pause-language-picker {
+  width: min(100%, 320px);
+  display: grid;
+  gap: 6px;
+  text-align: left;
+  color: #e5edf7;
+  font-weight: 900;
+}
+
+.pause-language-picker span {
+  font-size: 0.78rem;
+  color: rgba(229, 237, 247, 0.72);
+}
+
 .settings-btn {
   position: absolute;
   top: max(12px, env(safe-area-inset-top));
