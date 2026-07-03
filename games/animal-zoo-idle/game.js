@@ -80,6 +80,8 @@
       maxGate: "Max Gate",
       buyAnimal: "Buy",
       owned: "Owned",
+      incomeShort: "+{n}/10s",
+      careShort: "Care +{n}",
       dragHint: "Drag animals in the meadow to arrange your zoo.",
       reportGood: "Great care! Your zoo is growing and the animals looked happy.",
       reportTry: "Good effort. Recruit animals and upgrade the gate to grow faster.",
@@ -130,6 +132,8 @@
     maxGate: "\u5927\u9580\u5df2\u6eff\u7d1a",
     buyAnimal: "\u8cfc\u8cb7",
     owned: "\u5df2\u64c1\u6709",
+    incomeShort: "+{n}/10\u79d2",
+    careShort: "\u7167\u9867 +{n}",
     dragHint: "\u53ef\u4ee5\u62d6\u66f3\u8349\u539f\u4e0a\u7684\u52d5\u7269\uff0c\u64fa\u6210\u81ea\u5df1\u559c\u6b61\u7684\u6a02\u5712\u3002",
     reportGood: "\u7167\u9867\u5f97\u5f88\u597d\uff01\u4f60\u7684\u52d5\u7269\u5712\u6b63\u5728\u7a69\u5b9a\u6210\u9577\u3002",
     reportTry: "\u8868\u73fe\u4e0d\u932f\uff01\u62db\u52df\u52d5\u7269\u548c\u5347\u7d1a\u5927\u9580\u53ef\u4ee5\u8b93\u6a02\u5712\u6210\u9577\u66f4\u5feb\u3002",
@@ -440,6 +444,7 @@
         <img src="${animal.asset}" alt="" draggable="false" />
         <strong>${t(animal.id)}</strong>
         <span>${owned ? t("owned") : `${t("buyAnimal")} ${formatNumber(animal.cost)}`}</span>
+        <small>${t("incomeShort", { n: formatNumber(animal.baseIncome) })} · ${t("careShort", { n: animal.care })}</small>
       `;
       button.addEventListener("click", () => buyAnimal(animal.id));
       container.appendChild(button);

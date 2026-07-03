@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 88" role="img" aria-label="dust cover">
+  <defs>
+    <linearGradient id="dust" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#f2d48b" stop-opacity=".78"/>
+      <stop offset=".62" stop-color="#be8346" stop-opacity=".86"/>
+      <stop offset="1" stop-color="#7f512d" stop-opacity=".92"/>
+    </linearGradient>
+    <filter id="soft" x="-20%" y="-30%" width="140%" height="150%">
+      <feGaussianBlur stdDeviation=".3"/>
+      <feDropShadow dx="0" dy="5" stdDeviation="4" flood-color="#4e301d" flood-opacity=".2"/>
+    </filter>
+  </defs>
+  <g filter="url(#soft)">
+    <path fill="url(#dust)" d="M0 45c20-27 50-13 74-22 27-10 50-22 86 2v63H0V45Z"/>
+    <circle cx="29" cy="43" r="9" fill="#f5dfad" opacity=".55"/>
+    <circle cx="63" cy="31" r="6" fill="#ffe8b2" opacity=".4"/>
+    <circle cx="122" cy="30" r="8" fill="#f3cf85" opacity=".46"/>
+    <path fill="none" stroke="#f7e0a6" stroke-width="4" stroke-linecap="round" opacity=".55" d="M17 56c25-12 42 3 66-8 18-8 37-14 60-3"/>
+  </g>
+</svg>

@@ -110,6 +110,19 @@ const dictionary = {
     stage_waves: "{count} waves",
     stage_reward: "~{coins} coins",
     stage_boss: "Boss",
+    beast_guide_title: "Wild Beast Guide",
+    beast_guide_hint: "Know each beast before choosing a stage.",
+    beast_role_runner: "Fast runner",
+    beast_role_wobbler: "Zigzag",
+    beast_role_tank: "Heavy armor",
+    beast_role_breaker: "Wall breaker",
+    beast_role_dasher: "Dash attack",
+    beast_role_caster: "Tricky path",
+    beast_role_sprinter: "Very fast",
+    beast_role_bruiser: "Heavy hitter",
+    beast_stat_hp: "HP",
+    beast_stat_speed: "Speed",
+    beast_stat_damage: "DMG",
     weapon_modal_empty: "Select a weapon to view damage, cooldown and merge details.",
     weapon_upgrade_tip: "Merge matching backpack items to upgrade.",
     weapon_stats_dmg: "Damage {val}",
@@ -227,6 +240,19 @@ const dictionary = {
     stage_waves: "{count} 波",
     stage_reward: "約 {coins} 金幣",
     stage_boss: "王關",
+    beast_guide_title: "野獸情報",
+    beast_guide_hint: "選關前先看每種野獸的特色。",
+    beast_role_runner: "速度快",
+    beast_role_wobbler: "左右擺動",
+    beast_role_tank: "血厚護甲",
+    beast_role_breaker: "破牆力強",
+    beast_role_dasher: "衝刺突擊",
+    beast_role_caster: "路線刁鑽",
+    beast_role_sprinter: "極速突進",
+    beast_role_bruiser: "高血高傷",
+    beast_stat_hp: "血量",
+    beast_stat_speed: "速度",
+    beast_stat_damage: "傷害",
     weapon_modal_empty: "點選武器查看攻擊、冷卻和合成變化",
     weapon_upgrade_tip: "同階背包武器可合成升級",
     weapon_stats_dmg: "攻擊 {val}",
@@ -1487,6 +1513,7 @@ function renderMenuContent() {
 
 function renderLevelGrid() {
   levelGrid.innerHTML = "";
+  levelGrid.append(renderBeastGuide());
   for (const level of LEVELS) {
     const button = document.createElement("button");
     button.type = "button";
@@ -1504,6 +1531,37 @@ function renderLevelGrid() {
     if (level.id === highestUnlocked && level.id <= LEVELS.length) button.classList.add("challenge");
     levelGrid.append(button);
   }
+}
+
+function renderBeastGuide() {
+  const guide = document.createElement("section");
+  guide.className = "beast-guide";
+  guide.innerHTML = `
+    <div class="beast-guide-head">
+      <strong>${t("beast_guide_title")}</strong>
+      <span>${t("beast_guide_hint")}</span>
+    </div>
+    <div class="beast-guide-list">
+      ${ENEMY_TYPES.map((type) => {
+        const image = enemyFiles[type.imageIndex] || "";
+        return `
+          <article class="beast-card">
+            <img src="${image}" alt="" />
+            <div>
+              <strong>${t("enemy_" + type.id)}</strong>
+              <span>${t("beast_role_" + type.role)}</span>
+              <small>${t("beast_stat_hp")} ${formatScale(type.hpScale)} · ${t("beast_stat_speed")} ${formatScale(type.speedScale)} · ${t("beast_stat_damage")} ${formatScale(type.damageScale)}</small>
+            </div>
+          </article>
+        `;
+      }).join("")}
+    </div>
+  `;
+  return guide;
+}
+
+function formatScale(value) {
+  return `${Math.round(Number(value || 1) * 100)}%`;
 }
 
 function getLevelSummary(level) {

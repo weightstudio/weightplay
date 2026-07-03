@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 96" role="img" aria-label="grass cover">
+  <defs>
+    <linearGradient id="g" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#8ee65f"/>
+      <stop offset="0.55" stop-color="#35ad56"/>
+      <stop offset="1" stop-color="#1d753b"/>
+    </linearGradient>
+    <filter id="s" x="-20%" y="-30%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="5" stdDeviation="3" flood-color="#164323" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+  <g filter="url(#s)">
+    <path fill="#2f9a48" d="M0 96c9-25 22-42 38-51 18-11 37-9 53-17 20-10 38-30 69-28v96H0Z"/>
+    <path fill="url(#g)" d="M4 96c6-24 13-48 29-71 2 30 0 52-4 71H4Zm20 0c13-30 26-55 47-76-8 34-15 58-19 76H24Zm26 0c9-26 19-44 38-64 1 25-4 45-9 64H50Zm29 0c17-39 36-66 61-88-7 42-16 67-22 88H79Zm36 0c9-28 22-51 45-74v74h-45Z"/>
+    <path fill="#b6f07b" opacity=".65" d="M14 96c11-28 26-50 44-68-8 23-15 45-19 68H14Zm63 0c14-34 32-57 55-73-8 27-16 51-20 73H77Z"/>
+  </g>
+</svg>

@@ -2,6 +2,7 @@
   const GAME_ID = "fruit-merge";
   const BEST_KEY = "fruitMergeBestScore";
   const PROGRESS_KEY = "weightplay_fruit_merge_progress";
+  const LEADERBOARD_KEY = "weightplay_fruit_merge_leaderboard";
   const canvas = document.querySelector("#gameCanvas");
   const ctx = canvas.getContext("2d");
   const localeSelect = document.querySelector("#localeSelect");
@@ -27,6 +28,8 @@
   const resultPanel = document.querySelector("#resultPanel");
   const resultTitle = document.querySelector("#resultTitle");
   const resultText = document.querySelector("#resultText");
+  const menuLeaderboard = document.querySelector("#menuLeaderboard");
+  const resultLeaderboard = document.querySelector("#resultLeaderboard");
   const playAgainBtn = document.querySelector("#playAgainBtn");
   const lobbyLink = document.querySelector("#lobbyLink");
   const loadingPanel = document.querySelector("#loadingPanel");
@@ -76,6 +79,9 @@
       progressImproved: "Great progress! You improved from your last best.",
       progressSteady: "Good effort! Try again to improve planning and placement.",
       progressNote: "Scores are for fun and local progress tracking only.",
+      leaderboardTitle: "Your Best Runs",
+      noLeaderboard: "Play once to start your local best-run list.",
+      leaderboardRow: "#{rank}  Score {score}  {animal}",
       playAgain: "Play Again",
       lobby: "Lobby",
       newBest: "New Best!",
@@ -119,6 +125,9 @@
       progressImproved: "很棒的進步！你比之前更會安排落點了。",
       progressSteady: "做得很好！再試一次，練習更好的放置位置。",
       progressNote: "分數只用於遊戲樂趣與本機進步紀錄。",
+      leaderboardTitle: "你的最佳挑戰",
+      noLeaderboard: "玩一場後，這裡會記錄你的本機最佳成績。",
+      leaderboardRow: "第 {rank} 名  分數 {score}  {animal}",
       playAgain: "再玩一次",
       lobby: "大廳",
       newBest: "新紀錄！",
@@ -223,6 +232,8 @@
     playAgainBtn.textContent = t("playAgain");
     lobbyLink.textContent = t("lobby");
     updateHud();
+    renderLeaderboard(menuLeaderboard, readLeaderboard());
+    renderLeaderboard(resultLeaderboard, readLeaderboard());
   }
 
   function setLocale(value) {
@@ -482,8 +493,10 @@
       showToast(t("newBest"));
     }
     const progress = saveProgress(score, previousBest, bestScore);
+    const leaderboard = recordLeaderboard(score, maxReachedLevel);
     resultTitle.textContent = t("gameOver");
     renderResultReport(progress, newBest);
+    renderLeaderboard(resultLeaderboard, leaderboard);
     resultPanel.classList.remove("hidden");
     window.WonderAnalytics?.track?.("game_complete", { game_id: GAME_ID, score, best_score: bestScore, new_best: newBest, cleared: false });
     window.WonderAnalytics?.track?.("score_game_over", { game_id: GAME_ID, score, best_score: bestScore });
@@ -517,6 +530,56 @@
       // Local progress is optional.
     }
     return { ...progress, previousBest };
+  }
+
+  function readLeaderboard() {
+    try {
+      const rows = JSON.parse(localStorage.getItem(LEADERBOARD_KEY) || "[]");
+      return Array.isArray(rows) ? rows : [];
+    } catch {
+      return [];
+    }
+  }
+
+  function recordLeaderboard(finalScore, level) {
+    const rows = readLeaderboard();
+    rows.push({
+      score: finalScore,
+      highestLevel: level,
+      playedAt: new Date().toISOString(),
+    });
+    const topRows = rows
+      .sort((a, b) => Number(b.score || 0) - Number(a.score || 0))
+      .slice(0, 5);
+    try {
+      localStorage.setItem(LEADERBOARD_KEY, JSON.stringify(topRows));
+    } catch {
+      // Local leaderboard is optional.
+    }
+    return topRows;
+  }
+
+  function renderLeaderboard(target, rows) {
+    if (!target) return;
+    target.replaceChildren();
+    const title = document.createElement("strong");
+    title.textContent = t("leaderboardTitle");
+    target.appendChild(title);
+    if (!rows.length) {
+      const empty = document.createElement("span");
+      empty.textContent = t("noLeaderboard");
+      target.appendChild(empty);
+      return;
+    }
+    rows.slice(0, 5).forEach((row, index) => {
+      const item = document.createElement("span");
+      item.textContent = t("leaderboardRow", {
+        rank: index + 1,
+        score: Number(row.score || 0),
+        animal: t(`fruit${clamp(Number(row.highestLevel) || 0, 0, fruits.length - 1)}`),
+      });
+      target.appendChild(item);
+    });
   }
 
   function buildSkillScores(finalScore) {
