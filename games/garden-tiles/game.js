@@ -68,7 +68,32 @@
       allClear: "\u5168\u90e8\u95dc\u5361\u5b8c\u6210\u3002",
     },
   };
-  const icons = ["Cat", "Dog", "Bird", "Bee", "Fish", "Bunny", "Flower", "Leaf", "Sun", "Moon", "Tree", "Seed", "Paw", "Nest", "Apple", "Berry", "Duck", "Snail"];
+  const tileArt = [
+    { id: "cat", label: "Cat", asset: "../../assets/animal-guard-cat.png" },
+    { id: "dog", label: "Dog", asset: "../../assets/animal-guard-dog.png" },
+    { id: "fox", label: "Fox", asset: "../../assets/animal-guard-fox.png" },
+    { id: "owl", label: "Owl", asset: "../../assets/animal-guard-owl.png" },
+    { id: "rabbit", label: "Rabbit", asset: "../../assets/tiny-weather-animal-rabbit.png" },
+    { id: "panda", label: "Panda", asset: "../../assets/tiny-weather-animal-panda.png" },
+    { id: "penguin", label: "Penguin", asset: "../../assets/tiny-weather-animal-penguin.png" },
+    { id: "koala", label: "Koala", asset: "../../assets/tiny-weather-animal-koala.png" },
+    { id: "lion", label: "Lion", asset: "../../assets/tiny-weather-animal-lion.png" },
+    { id: "elephant", label: "Elephant", asset: "../../assets/animal-zoo-elephant.png" },
+    { id: "giraffe", label: "Giraffe", asset: "../../assets/animal-zoo-idle-giraffe.png" },
+    { id: "whale", label: "Whale", asset: "../../assets/bubble-bakery-whale.png" },
+    { id: "chick", label: "Chick", asset: "../../assets/bubble-bakery-chick.png" },
+    { id: "frog", label: "Frog", asset: "../../assets/bubble-bakery-frog.png" },
+    { id: "apple", label: "Apple", asset: "../../assets/animal-vine-fruit-apple.png" },
+    { id: "banana", label: "Banana", asset: "../../assets/animal-vine-fruit-banana.png" },
+    { id: "berry", label: "Berry", asset: "../../assets/animal-vine-fruit-berry.png" },
+    { id: "leaf", label: "Leaf", asset: "../../assets/animal-guard-projectile-leaf.svg" },
+    { id: "seed", label: "Seed", asset: "../../assets/animal-guard-projectile-seed.svg" },
+    { id: "feather", label: "Feather", asset: "../../assets/animal-guard-projectile-feather.svg" },
+    { id: "keeper", label: "Keeper", asset: "../../assets/animal-zoo-keeper.png" },
+    { id: "visitor", label: "Visitor", asset: "../../assets/animal-zoo-visitor-child.png" },
+    { id: "ticket", label: "Ticket Booth", asset: "../../assets/animal-zoo-idle-ticket-booth.png" },
+    { id: "basket", label: "Basket", asset: "../../assets/animal-vine-basket.png" },
+  ];
   const levels = [
     { pairs: 6, cols: 4, starMoves: [12, 15] },
     { pairs: 8, cols: 4, starMoves: [16, 20] },
@@ -190,11 +215,11 @@
   }
 
   function makeTiles(pairCount, levelIndex) {
-    const levelIcons = icons.slice(0, Math.min(icons.length, pairCount + 3));
+    const levelIcons = tileArt.slice(0, Math.min(tileArt.length, pairCount + 3));
     const picks = [];
     for (let i = 0; i < pairCount; i += 1) {
-      const icon = levelIcons[(i + levelIndex) % levelIcons.length];
-      picks.push({ icon, matched: false, id: `${i}a` }, { icon, matched: false, id: `${i}b` });
+      const art = levelIcons[(i + levelIndex) % levelIcons.length];
+      picks.push({ art, matched: false, id: `${i}a` }, { art, matched: false, id: `${i}b` });
     }
     return shuffle(picks).map((tile, index) => ({ ...tile, index }));
   }
@@ -215,8 +240,9 @@
       button.type = "button";
       button.className = "tile";
       button.dataset.index = String(tile.index);
-      button.textContent = tile.icon;
-      button.setAttribute("aria-label", tile.icon);
+      button.dataset.tileId = tile.art.id;
+      button.innerHTML = `<img class="tile-image" src="${tile.art.asset}" alt="" draggable="false" /><span class="tile-label">${tile.art.label}</span>`;
+      button.setAttribute("aria-label", tile.art.label);
       if (tile.matched) button.classList.add("matched");
       if (selectedTile?.index === tile.index) button.classList.add("selected");
       board.append(button);
@@ -239,7 +265,7 @@
       return;
     }
     moves += 1;
-    if (selectedTile.icon === tile.icon) {
+    if (selectedTile.art.id === tile.art.id) {
       selectedTile.matched = true;
       tile.matched = true;
       matchedPairs += 1;
