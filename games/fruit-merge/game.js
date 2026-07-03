@@ -276,6 +276,7 @@
     running = !showMenu;
     gameOver = false;
     canDropAt = performance.now() + 300;
+    document.body.classList.toggle("fruit-playing", !showMenu);
     resultPanel.classList.add("hidden");
     menuPanel.classList.toggle("hidden", !showMenu);
     updateHud();
@@ -485,6 +486,7 @@
     if (gameOver) return;
     running = false;
     gameOver = true;
+    document.body.classList.remove("fruit-playing");
     const previousBest = bestScore;
     const newBest = score > previousBest;
     if (newBest) {

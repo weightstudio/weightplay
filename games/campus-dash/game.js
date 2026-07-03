@@ -14,6 +14,7 @@
   const startPanel = document.querySelector("#startPanel");
   const startTitle = document.querySelector("#startTitle");
   const startText = document.querySelector("#startText");
+  const controlChips = document.querySelector("#controlChips");
   const startBtn = document.querySelector("#startBtn");
   const resultPanel = document.querySelector("#resultPanel");
   const resultTitle = document.querySelector("#resultTitle");
@@ -41,6 +42,9 @@
       combo: "Combo",
       startTitle: "Pick a lane. Dash fast.",
       startText: "Tap the left or right side, or swipe, to dodge between the three lanes.",
+      controlTap: "Tap left / right",
+      controlSwipe: "Swipe lanes",
+      controlKeyboard: "A/D or ←/→",
       start: "Start",
       resultTitle: "Run Complete!",
       resultText: "Score {score}  Best {best}",
@@ -58,6 +62,9 @@
       combo: "\u9023\u64ca",
       startTitle: "\u9078\u597d\u8dd1\u9053\uff0c\u5feb\u901f\u885d\u523a\u3002",
       startText: "\u9ede\u756b\u9762\u5de6\u53f3\u5074\u6216\u6ed1\u52d5\uff0c\u5728\u4e09\u689d\u8dd1\u9053\u9593\u9583\u907f\u969c\u7919\u3002",
+      controlTap: "\u9ede\u5de6\u908a / \u53f3\u908a",
+      controlSwipe: "\u5de6\u53f3\u6ed1\u52d5",
+      controlKeyboard: "A/D \u6216 \u2190/\u2192",
       start: "\u958b\u59cb",
       resultTitle: "\u5954\u8dd1\u5b8c\u6210\uff01",
       resultText: "\u5206\u6578 {score}  \u6700\u4f73 {best}",
@@ -128,6 +135,7 @@
     comboLabel.textContent = t("combo");
     startTitle.textContent = t("startTitle");
     startText.textContent = t("startText");
+    controlChips.innerHTML = [t("controlTap"), t("controlSwipe"), t("controlKeyboard")].map((item) => `<span>${item}</span>`).join("");
     startBtn.textContent = t("start");
     resultTitle.textContent = t("resultTitle");
     againBtn.textContent = t("again");
@@ -590,8 +598,9 @@
     startRun();
   });
   window.addEventListener("keydown", (event) => {
-    if (event.key === "ArrowLeft") moveLane(-1);
-    if (event.key === "ArrowRight") moveLane(1);
+    const key = event.key.toLowerCase();
+    if (key === "arrowleft" || key === "a") moveLane(-1);
+    if (key === "arrowright" || key === "d") moveLane(1);
   });
   canvas.addEventListener("pointerdown", (event) => {
     event.preventDefault();
