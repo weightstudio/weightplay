@@ -42,67 +42,83 @@
     });
   }
 
-  function focusGame() {
-    const selectors = [
-      "#playArea",
-      "#playPanel",
-      "#gameArea",
-      "#gameStage",
-      "#gameBoard",
-      "#gameBoardPanel",
-      "#gameHud",
-      "#board",
-      ".battle-panel",
-      ".game-panel",
-      ".play-panel",
-      ".game-board-panel",
-      ".quiz-stage",
-      ".play-area",
-      ".stage-area",
-      ".game-area",
-      ".game-stage",
-      ".game-board",
-      "canvas",
-      "main",
-    ];
-    const target = selectors
+  const focusContainerSelectors = [
+    "[data-play-viewport]",
+    ".weightplay-play-viewport",
+    ".fixed-shell-host",
+    ".game-shell",
+    "#playPanel",
+    ".play-panel",
+    "#playArea",
+    "#gameArea",
+    "#gameStage",
+    ".game-panel",
+    ".battle-panel",
+    ".quiz-stage",
+    ".game-stage",
+    ".stage-area",
+    ".game-area",
+    "main",
+  ];
+
+  const narrowPlaySelectors = [
+    "#gameBoardPanel",
+    "#gameBoard",
+    "#board",
+    ".game-board-panel",
+    ".game-board",
+    ".play-area",
+    ".playfield",
+    "canvas",
+  ];
+
+  function hasHudAndPlayArea(element) {
+    if (!element) return false;
+    const hasHud = element.querySelector("#gameHud, #battleHud, .hud, .game-hud, .play-hud, .statusbar, .stage-status, .topbar");
+    const hasPlay = element.querySelector("#gameBoardPanel, #gameBoard, #board, .game-board-panel, .game-board, .play-area, .playfield, canvas");
+    return Boolean(hasHud && hasPlay);
+  }
+
+  function widenToPlayableFrame(element) {
+    let current = element;
+    while (current && current !== document.body) {
+      if (focusContainerSelectors.some((selector) => current.matches?.(selector)) || hasHudAndPlayArea(current)) {
+        return current;
+      }
+      current = current.parentElement;
+    }
+    return element;
+  }
+
+  function findPlayableFrame() {
+    const container = focusContainerSelectors
       .map((selector) => document.querySelector(selector))
       .find((element) => isVisible(element));
-    focusPlayableArea(target);
+    if (container) return container;
+
+    const narrowTarget = narrowPlaySelectors
+      .map((selector) => document.querySelector(selector))
+      .find((element) => isVisible(element));
+    return widenToPlayableFrame(narrowTarget);
+  }
+
+  function focusGame() {
+    focusPlayableArea(findPlayableFrame());
   }
 
   function installPlayableFocus() {
-    const selectors = [
-      "#playArea",
-      "#playPanel",
-      "#gameArea",
-      "#gameStage",
-      "#gameBoard",
-      "#gameBoardPanel",
-      "#gameHud",
-      "#board",
-      ".battle-panel",
-      ".game-panel",
-      ".play-panel",
-      ".game-board-panel",
-      ".quiz-stage",
-      ".play-area",
-      ".stage-area",
-      ".game-area",
-      ".game-stage",
-      ".game-board",
-      "canvas",
-    ];
-    const nodes = Array.from(document.querySelectorAll(selectors.join(",")));
+    const nodes = Array.from(document.querySelectorAll(focusContainerSelectors.join(",")));
     nodes.forEach((node) => {
       let wasVisible = isVisible(node);
       const observer = new MutationObserver(() => {
         const nowVisible = isVisible(node);
-        if (!wasVisible && nowVisible) focusPlayableArea(node);
+        if (!wasVisible && nowVisible) focusPlayableArea(widenToPlayableFrame(node));
         wasVisible = nowVisible;
       });
       observer.observe(node, { attributes: true, attributeFilter: ["class", "style", "hidden"] });
-      if (wasVisible && node.matches("#playPanel, #playArea, .play-panel, .play-area")) focusPlayableArea(node);
+      if (wasVisible && node.matches("#playPanel, #playArea, .play-panel, [data-play-viewport], .weightplay-play-viewport, .game-shell")) {
+        focusPlayableArea(widenToPlayableFrame(node));
+      }
     });
   }
 

@@ -1,6 +1,6 @@
 ﻿(() => {
   const GAME_ID = "zoo-helper-day";
-  const localeKey = "weightplayLocale";
+  const localeKey = "weightPlayLocale";
   const unlockKey = "weightplay_zoo_helper_unlocked";
   const starKey = "weightplay_zoo_helper_stars";
 
@@ -145,7 +145,7 @@
     loadingFill: $("loadingFill"),
   };
 
-  let locale = localStorage.getItem(localeKey) || "en";
+  let locale = window.WonderI18n?.locale?.() || localStorage.getItem(localeKey) || "en";
   let unlocked = clamp(Number(localStorage.getItem(unlockKey)) || 1, 1, stages.length);
   let stars = readStars();
   let currentStage = 0;
@@ -382,6 +382,16 @@
   function bindEvents() {
     nodes.localeSelect.addEventListener("change", () => {
       locale = nodes.localeSelect.value;
+      window.WonderI18n?.setLocale?.(locale);
+      localStorage.setItem(localeKey, locale);
+      localizeStatic();
+      renderStageGrid();
+      if (!nodes.playPanel.classList.contains("hidden")) renderTask();
+    });
+    window.addEventListener("wonder:locale-change", (event) => {
+      const nextLocale = event.detail?.locale || window.WonderI18n?.locale?.() || "en";
+      if (nextLocale === locale) return;
+      locale = nextLocale;
       localStorage.setItem(localeKey, locale);
       localizeStatic();
       renderStageGrid();
