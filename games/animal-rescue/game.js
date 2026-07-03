@@ -79,6 +79,9 @@ const dictionary = {
     meadow: "Sunny Meadow",
     ice: "Icy Path",
     farm: "Farm Road",
+    fruitGoal: "{count} fruit",
+    obstacleGoal: "{count} blocks",
+    parGoal: "{count} move goal",
   },
   "zh-Hant": {
     title: "\u52d5\u7269\u56de\u5bb6\u8def",
@@ -121,6 +124,9 @@ const dictionary = {
     meadow: "\u967d\u5149\u8349\u5730",
     ice: "\u51b0\u96ea\u5c0f\u8def",
     farm: "\u8fb2\u5834\u9053\u8def",
+    fruitGoal: "{count} \u500b\u6c34\u679c",
+    obstacleGoal: "{count} \u500b\u969c\u7919",
+    parGoal: "\u5efa\u8b70 {count} \u6b65",
   },
 };
 
@@ -270,11 +276,20 @@ function renderStageSelect() {
             <strong>${level.id}. ${t(level.animal)}</strong>
             <span>${t(level.biome)} - ${locked ? t("locked") : stars ? t("complete") : t("start")}</span>
           </span>
+          <span class="stage-meta" aria-label="${escapeHtml(stageMetaText(level))}">
+            <i>${t("fruitGoal", { count: level.fruits.length })}</i>
+            <i>${t("obstacleGoal", { count: level.blocks.length + (level.water || []).length })}</i>
+            <i>${t("parGoal", { count: level.par })}</i>
+          </span>
           <span class="stage-stars">${"\u2605".repeat(stars)}${"\u2606".repeat(3 - stars)}</span>
         </button>
       `;
     })
     .join("");
+}
+
+function stageMetaText(level) {
+  return `${t("fruitGoal", { count: level.fruits.length })}, ${t("obstacleGoal", { count: level.blocks.length + (level.water || []).length })}, ${t("parGoal", { count: level.par })}`;
 }
 
 function startLevel(index) {

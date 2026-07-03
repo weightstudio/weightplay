@@ -170,6 +170,18 @@ select {
   color: rgba(33, 66, 51, 0.68);
 }
 
+.stage-card em {
+  width: fit-content;
+  max-width: 100%;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: rgba(88, 197, 108, 0.16);
+  color: rgba(33, 66, 51, 0.74);
+  font-size: 0.76rem;
+  font-style: normal;
+  font-weight: 900;
+}
+
 .play-head {
   display: grid;
   grid-template-columns: auto 1fr;

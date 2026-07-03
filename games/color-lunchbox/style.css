@@ -260,6 +260,19 @@ a {
   margin-bottom: 4px;
 }
 
+.stage-card em {
+  width: fit-content;
+  max-width: 100%;
+  margin: 6px 0 8px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: rgba(217, 119, 6, 0.14);
+  color: #8b4a0b;
+  font-size: 0.76rem;
+  font-style: normal;
+  font-weight: 1000;
+}
+
 .stage-card small {
   font-size: 13px;
   color: #704f1f;

@@ -22,6 +22,7 @@
       keep: "Keep helping!",
       result: "You helped {animal} finish {count} tasks.",
       stage: "Stage {n}",
+      stageGoal: "{tasks} tasks / {items} items",
       task: "{animal} needs {item}.",
       correct: "Nice help!",
       wrong: "Try another item.",
@@ -63,6 +64,7 @@
       keep: "繼續幫忙！",
       result: "你幫 {animal} 完成了 {count} 個任務。",
       stage: "第 {n} 關",
+      stageGoal: "{tasks} 個任務 / {items} 種道具",
       task: "{animal} 需要{item}。",
       correct: "幫得真好！",
       wrong: "試試看其他道具。",
@@ -204,6 +206,7 @@
       button.innerHTML = `
         <b class="stage-icon"><img src="${animalAssets[stage.animal]}" alt="" /></b>
         <strong>${t("stage", { n: stageNo })} - ${t(`animals.${stage.animal}`)}</strong>
+        <em>${t("stageGoal", { tasks: stage.tasks.length, items: stage.pool.length })}</em>
         <span>${"★".repeat(stars[stageNo] || 0)}${"☆".repeat(3 - (stars[stageNo] || 0))}</span>
       `;
       button.addEventListener("click", () => {

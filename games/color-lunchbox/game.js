@@ -98,6 +98,7 @@
       locked: "Locked",
       play: "Play",
       loading: "Loading",
+      stageMeta: "{foods} foods / {colors} colors",
       resultScore: "Score {score}",
       previousBest: "Previous Best: {score}",
       newBest: "New best!",
@@ -193,6 +194,7 @@
       locked: "未解鎖",
       play: "開始玩",
       loading: "載入中",
+      stageMeta: "{foods} 題 / {colors} 種顏色",
       resultScore: "分數 {score}",
       previousBest: "過去最佳：{score}",
       newBest: "新的最佳紀錄！",
@@ -414,6 +416,7 @@
           <span>${isUnlocked ? t("play") : t("locked")}</span>
           <strong>${t(stage.nameKey)}</strong>
           <small>${t(stage.descKey)}</small>
+          <em>${t("stageMeta", { foods: stage.rounds, colors: stage.colors.length })}</em>
           <div class="stage-card-colors" aria-hidden="true">
             ${stage.colors.map((color) => `<i class="${colorDB[color].className}"></i>`).join("")}
           </div>
