@@ -406,7 +406,7 @@ function renderWallet() {
   const wallet = window.WeightPlayWallet?.read?.() || { diamonds: 0 };
   walletBar.innerHTML = `
     <span>${i18n.t("wallet.diamonds")}</span>
-    <strong><i aria-hidden="true">&#9670;</i>${wallet.diamonds}</strong>
+    <strong><img src="assets/shape-token-diamond.svg" alt="" />${wallet.diamonds}</strong>
   `;
 }
 

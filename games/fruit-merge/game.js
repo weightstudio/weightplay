@@ -25,6 +25,8 @@
   const playAgainBtn = document.querySelector("#playAgainBtn");
   const lobbyLink = document.querySelector("#lobbyLink");
   const loadingPanel = document.querySelector("#loadingPanel");
+  const loadingText = document.querySelector("#loadingText");
+  const loadingFill = document.querySelector("#loadingFill");
   const toast = document.querySelector("#toast");
 
   const W = canvas.width;
@@ -122,8 +124,14 @@
       fruit10: "獅王球",
     },  };
 
+  const imageLoadTasks = [];
+
   function loadImage(src) {
     const image = new Image();
+    image.decoding = "async";
+    imageLoadTasks.push(new Promise((resolve) => {
+      image.onload = image.onerror = resolve;
+    }));
     image.src = src;
     return image;
   }
@@ -208,6 +216,22 @@
   function setLocale(value) {
     window.WonderI18n?.setLocale?.(value);
     applyText();
+  }
+
+  function updateLoadingProgress(percent) {
+    const value = Math.max(0, Math.min(100, Math.round(percent)));
+    if (loadingText) loadingText.textContent = `${value}%`;
+    if (loadingFill) loadingFill.style.width = `${value}%`;
+  }
+
+  function preloadGameImages() {
+    const total = Math.max(1, imageLoadTasks.length);
+    let loaded = 0;
+    updateLoadingProgress(0);
+    return Promise.all(imageLoadTasks.map((task) => task.then(() => {
+      loaded += 1;
+      updateLoadingProgress((loaded / total) * 100);
+    })));
   }
 
   function randomNextLevel() {
@@ -730,11 +754,13 @@
     loadingPanel.classList.add("hidden");
     return;
   }
-  resetGame(true);
-  loadingPanel.classList.add("hidden");
-  window.WonderAnalytics?.track?.("game_ready", { game_id: GAME_ID });
-  requestAnimationFrame((now) => {
-    lastTime = now;
-    loop(now);
+  preloadGameImages().then(() => {
+    resetGame(true);
+    loadingPanel.classList.add("hidden");
+    window.WonderAnalytics?.track?.("game_ready", { game_id: GAME_ID });
+    requestAnimationFrame((now) => {
+      lastTime = now;
+      loop(now);
+    });
   });
 })();

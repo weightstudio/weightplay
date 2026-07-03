@@ -353,20 +353,6 @@ select {
   -webkit-user-drag: none;
 }
 
-.diamond-token i {
-  width: 22px;
-  height: 22px;
-  display: block;
-  transform: rotate(45deg);
-  border-radius: 6px 2px 6px 2px;
-  background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0 24%, transparent 25%),
-    linear-gradient(135deg, #bff2ff 0%, #56b7ff 48%, #356cff 100%);
-  box-shadow:
-    inset -3px -4px rgba(23, 71, 172, 0.22),
-    0 2px 0 rgba(48, 74, 148, 0.22);
-}
-
 .kennel-card button span,
 .shop-card button span {
   margin: 0;

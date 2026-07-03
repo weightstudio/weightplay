@@ -211,10 +211,11 @@ body.lobby-page {
   line-height: 1;
 }
 
-.lobby-wallet i {
-  color: #6bdcff;
-  font-style: normal;
-  text-shadow: 0 0 14px rgba(107, 220, 255, 0.58);
+.lobby-wallet img {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 10px rgba(107, 220, 255, 0.52));
 }
 
 .lobby-feature {
@@ -1390,15 +1391,16 @@ canvas {
   gap: 6px;
 }
 
-.diamond-wallet,
-.cost-diamond {
+.diamond-wallet {
   color: #9eeaff;
 }
 
-.diamond-wallet i,
+.diamond-wallet img,
 .cost-diamond {
-  font-style: normal;
-  text-shadow: 0 0 12px rgba(107, 220, 255, 0.55);
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 10px rgba(107, 220, 255, 0.48));
 }
 
 .menu-coin-line img {
@@ -2170,6 +2172,11 @@ canvas {
   width: 26px;
   height: 26px;
   object-fit: contain;
+}
+
+.cost-diamond {
+  width: 25px;
+  height: 25px;
 }
 
 .profile-row button:disabled {
