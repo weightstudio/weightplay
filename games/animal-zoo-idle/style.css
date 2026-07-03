@@ -107,6 +107,26 @@ select {
   opacity: .75;
 }
 
+.zoo-actions button {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.zoo-actions button.cooling::after {
+  content: "";
+  position: absolute;
+  left: 7px;
+  right: 7px;
+  bottom: 5px;
+  height: 4px;
+  border-radius: 999px;
+  background:
+    linear-gradient(90deg, #55d66a 0%, #55d66a var(--cooldown-pct, 0%), rgba(80, 82, 74, .32) var(--cooldown-pct, 0%), rgba(80, 82, 74, .32) 100%);
+  box-shadow: 0 0 8px rgba(85, 214, 106, .35);
+  pointer-events: none;
+}
+
 .language-picker {
   min-width: 112px;
   display: grid;

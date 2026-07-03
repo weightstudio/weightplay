@@ -397,6 +397,10 @@
     if (care) {
       const waitSeconds = careWaitSeconds();
       care.disabled = waitSeconds > 0;
+      care.classList.toggle("cooling", waitSeconds > 0);
+      const cooldownPercent = waitSeconds > 0 ? clamp((waitSeconds * 1000) / careCooldownMs, 0, 1) * 100 : 0;
+      care.style.setProperty("--cooldown-pct", `${cooldownPercent}%`);
+      care.setAttribute("aria-label", waitSeconds > 0 ? t("careWait", { n: waitSeconds }) : t("careAll"));
       care.textContent = waitSeconds > 0 ? `${t("careAll")} ${waitSeconds}s` : t("careAll");
     }
     const animalLayer = card.querySelector(".animal-layer");
@@ -523,6 +527,7 @@
     save.happiness = clamp(save.happiness + gain, 18, 100);
     save.careReadyAt = Date.now() + careCooldownMs;
     popHearts();
+    pulseAnimals();
     popToast(t("cared"));
     playSound("success");
     saveGame();
@@ -580,6 +585,17 @@
       stage.appendChild(heart);
       window.setTimeout(() => heart.remove(), 900);
     }
+  }
+
+  function pulseAnimals() {
+    document.querySelectorAll(".animal").forEach((animal, index) => {
+      window.setTimeout(() => {
+        animal.classList.remove("fed");
+        void animal.offsetWidth;
+        animal.classList.add("fed");
+        window.setTimeout(() => animal.classList.remove("fed"), 560);
+      }, index * 45);
+    });
   }
 
   function showReport() {

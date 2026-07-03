@@ -49,6 +49,10 @@
   const text = {
     en: {
       gameTitle: "Animal Helper Quest",
+      seoTitle: "Animal Helper Quest - WeightPlay",
+      seoDescription: "Help cute animals through weather, hunger, mud, darkness, and gentle care missions in Animal Helper Quest.",
+      ogTitle: "Animal Helper Quest - Animal Care Game",
+      ogDescription: "Tap or drag the right care item to help cute animals through gentle missions.",
       language: "Language",
       chooseStage: "Choose Help Mission",
       menuHint: "Help the little animal. Tap or drag the right care item to it.",
@@ -105,6 +109,10 @@
     },
     "zh-Hant": {
       gameTitle: "\u52d5\u7269\u5e6b\u5e6b\u968a",
+      seoTitle: "\u52d5\u7269\u5e6b\u5e6b\u968a - WeightPlay",
+      seoDescription: "\u5e6b\u52a9\u53ef\u611b\u5c0f\u52d5\u7269\u89e3\u6c7a\u4e0b\u96e8\u3001\u98e2\u9913\u3001\u6ce5\u6fd8\u3001\u5929\u9ed1\u8207\u5176\u4ed6\u6eab\u548c\u7167\u9867\u4efb\u52d9\u3002",
+      ogTitle: "\u52d5\u7269\u5e6b\u5e6b\u968a - \u52d5\u7269\u7167\u9867\u904a\u6232",
+      ogDescription: "\u9ede\u4e00\u4e0b\u6216\u62d6\u66f3\u6b63\u78ba\u7684\u7167\u9867\u9053\u5177\uff0c\u5e6b\u52a9\u53ef\u611b\u5c0f\u52d5\u7269\u5b8c\u6210\u4efb\u52d9\u3002",
       language: "\u8a9e\u8a00",
       chooseStage: "\u9078\u64c7\u5e6b\u5fd9\u4efb\u52d9",
       menuHint: "\u5e6b\u5c0f\u52d5\u7269\uff0c\u9ede\u6216\u62d6\u66f3\u6b63\u78ba\u7167\u9867\u9053\u5177\u7d66\u5b83\u3002",
@@ -244,10 +252,19 @@
 
   function localizeStatic() {
     document.documentElement.lang = locale === "zh-Hant" ? "zh-Hant" : "en";
+    document.title = t("seoTitle");
+    setMeta('meta[name="description"]', "content", t("seoDescription"));
+    setMeta('meta[property="og:title"]', "content", t("ogTitle"));
+    setMeta('meta[property="og:description"]', "content", t("ogDescription"));
     nodes.localeSelect.value = locale;
     document.querySelectorAll("[data-ui]").forEach((node) => {
       node.textContent = t(node.dataset.ui);
     });
+  }
+
+  function setMeta(selector, attr, value) {
+    const node = document.querySelector(selector);
+    if (node) node.setAttribute(attr, value);
   }
 
   function renderStageGrid() {
