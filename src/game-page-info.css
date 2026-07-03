@@ -1,6 +1,8 @@
 body.has-game-page-info {
   height: auto !important;
   min-height: 100vh !important;
+  max-height: none !important;
+  position: static !important;
   overflow-x: hidden !important;
   overflow-y: auto !important;
   display: block !important;
@@ -11,9 +13,12 @@ body.has-game-page-info {
   background-color: #111827;
 }
 
+html.has-game-page-info,
 html:has(body.has-game-page-info) {
   height: auto !important;
   min-height: 100% !important;
+  max-height: none !important;
+  position: static !important;
   overflow-x: hidden !important;
   overflow-y: auto !important;
   touch-action: pan-y !important;

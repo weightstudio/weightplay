@@ -746,6 +746,7 @@
     document.querySelector(".game-page-info")?.remove();
     document.querySelectorAll("script[data-game-page-info-jsonld]").forEach((node) => node.remove());
 
+    document.documentElement.classList.add("has-game-page-info");
     document.body.classList.add("has-game-page-info");
     const related = relatedGames(id, baseGame);
     const scoreBands = scoreBandsFor(baseGame);
