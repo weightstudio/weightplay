@@ -20,6 +20,8 @@
       moves: "Moves",
       score: "Score",
       stage: "Stage {n}",
+      theme: "Order: {theme}",
+      movesCount: "{n} moves",
       orderDone: "Order complete!",
       failed: "Try this order again.",
       resultWin: "You filled every order with {moves} moves left.",
@@ -36,6 +38,16 @@
       reportGreat: "Great progress! Your child planned groups well and stayed focused.",
       reportGood: "Good effort! Try again to improve focus and finish more orders.",
       reportNewBest: "Amazing progress! This is a new best score for this stage.",
+      themeCozyStart: "Cozy Bunny Box",
+      themeOceanCupcakes: "Ocean Cupcakes",
+      themeSunnyChickTray: "Sunny Chick Tray",
+      themeGardenMix: "Garden Mix",
+      themeFoxBerryCake: "Fox Berry Cake",
+      themeWhaleMintRolls: "Whale Mint Rolls",
+      themeRainbowCookies: "Rainbow Cookies",
+      themeForestPicnic: "Forest Picnic",
+      themePartyTray: "Party Tray",
+      themeMasterBakery: "Master Bakery",
     },
     "zh-Hant": {
       gameTitle: "動物泡泡烘焙坊",
@@ -51,6 +63,8 @@
       moves: "步數",
       score: "分數",
       stage: "第 {n} 關",
+      theme: "訂單：{theme}",
+      movesCount: "{n} 步",
       orderDone: "訂單完成！",
       failed: "再挑戰一次這張訂單。",
       resultWin: "你完成了所有訂單，還剩 {moves} 步。",
@@ -67,7 +81,18 @@
       reportGreat: "很棒的進步！孩子有好好規劃泡泡群組，也維持了專注。",
       reportGood: "努力得很好！再試一次，可以練習更專注並完成更多訂單。",
       reportNewBest: "太棒了！這一關拿到新的最佳分數。",
-    },  };
+      themeCozyStart: "兔兔暖心盒",
+      themeOceanCupcakes: "海洋杯子蛋糕",
+      themeSunnyChickTray: "小雞陽光盤",
+      themeGardenMix: "花園綜合盤",
+      themeFoxBerryCake: "狐狸莓果蛋糕",
+      themeWhaleMintRolls: "鯨魚薄荷捲",
+      themeRainbowCookies: "彩虹餅乾盤",
+      themeForestPicnic: "森林野餐盒",
+      themePartyTray: "派對點心盤",
+      themeMasterBakery: "大師烘焙訂單",
+    },
+  };
 
   const colors = [
     { id: "berry", label: "Bunny", asset: "../../assets/bubble-bakery-bunny.png" },
@@ -78,12 +103,16 @@
   ];
 
   const stages = [
-    { moves: 16, palette: ["berry", "sky", "lemon"], orders: { berry: 8, sky: 8 } },
-    { moves: 17, palette: ["berry", "sky", "lemon", "mint"], orders: { lemon: 10, mint: 8 } },
-    { moves: 18, palette: ["berry", "sky", "lemon", "mint"], orders: { sky: 12, berry: 8, mint: 8 } },
-    { moves: 19, palette: ["berry", "sky", "lemon", "mint", "grape"], orders: { grape: 10, lemon: 10 } },
-    { moves: 20, palette: ["berry", "sky", "lemon", "mint", "grape"], orders: { berry: 12, mint: 10, sky: 10 } },
-    { moves: 22, palette: ["berry", "sky", "lemon", "mint", "grape"], orders: { grape: 12, lemon: 12, berry: 10 } },
+    { theme: "themeCozyStart", moves: 16, palette: ["berry", "sky", "lemon"], orders: { berry: 8, sky: 8 } },
+    { theme: "themeOceanCupcakes", moves: 17, palette: ["berry", "sky", "lemon", "mint"], orders: { sky: 10, lemon: 8 } },
+    { theme: "themeSunnyChickTray", moves: 18, palette: ["berry", "sky", "lemon", "mint"], orders: { lemon: 12, berry: 8, mint: 6 } },
+    { theme: "themeGardenMix", moves: 19, palette: ["berry", "sky", "lemon", "mint", "grape"], orders: { mint: 10, sky: 8, grape: 6 } },
+    { theme: "themeFoxBerryCake", moves: 20, palette: ["berry", "sky", "lemon", "mint", "grape"], orders: { grape: 10, berry: 12 } },
+    { theme: "themeWhaleMintRolls", moves: 21, palette: ["sky", "lemon", "mint", "grape"], orders: { sky: 12, mint: 12, lemon: 8 } },
+    { theme: "themeRainbowCookies", moves: 22, palette: ["berry", "sky", "lemon", "mint", "grape"], orders: { berry: 10, lemon: 10, grape: 10 } },
+    { theme: "themeForestPicnic", moves: 23, palette: ["berry", "lemon", "mint", "grape"], orders: { mint: 14, grape: 10, berry: 8 } },
+    { theme: "themePartyTray", moves: 24, palette: ["berry", "sky", "lemon", "mint", "grape"], orders: { sky: 12, lemon: 12, mint: 12 } },
+    { theme: "themeMasterBakery", moves: 25, palette: ["berry", "sky", "lemon", "mint", "grape"], orders: { berry: 12, sky: 12, grape: 12, mint: 8 } },
   ];
 
   const rows = 7;
@@ -204,6 +233,7 @@
       button.innerHTML = `
         <b class="stage-icons">${orderIcons}</b>
         <strong>${t("stage", { n: stageNo })}</strong>
+        <small>${t(stage.theme)} · ${t("movesCount", { n: stage.moves })}</small>
         <span>${starIcons(got, 3)}</span>
       `;
       button.addEventListener("click", () => {
@@ -240,6 +270,7 @@
     nodes.playPanel.classList.remove("hidden");
     nodes.resultPanel.classList.add("hidden");
     nodes.hintText.textContent = t("smallGroup");
+    nodes.orderBar.dataset.theme = t("theme", { theme: t(stage.theme) });
     renderAll();
     playSound("start");
     track("game_start", { level: index + 1 });
@@ -276,6 +307,10 @@
 
   function renderOrders() {
     nodes.orderBar.innerHTML = "";
+    const title = document.createElement("strong");
+    title.className = "order-title";
+    title.textContent = nodes.orderBar.dataset.theme || "";
+    nodes.orderBar.appendChild(title);
     Object.entries(orders).forEach(([id, need]) => {
       const data = colorData(id);
       const chip = document.createElement("div");
@@ -597,7 +632,10 @@
     localStorage.setItem(localeKey, locale);
     localizeStatic();
     renderStageGrid();
-    if (!nodes.playPanel.classList.contains("hidden")) renderAll();
+    if (!nodes.playPanel.classList.contains("hidden")) {
+      nodes.orderBar.dataset.theme = t("theme", { theme: t(stages[currentStage].theme) });
+      renderAll();
+    }
     window.dispatchEvent(new CustomEvent("wonder:locale-change", { detail: { locale } }));
   });
   nodes.backToStagesBtn.addEventListener("click", showMenu);

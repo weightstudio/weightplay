@@ -199,6 +199,8 @@ const dictionary = {
     upgrade_explode_desc: "Hits splash nearby enemies",
     upgrade_lifeSteal_name: "Guard Spirit",
     upgrade_lifeSteal_desc: "Defeats restore 3 Wall HP",
+    upgrade_slow_name: "Lion Roar",
+    upgrade_slow_desc: "Hits can slow beasts for a short time",
     crit_label: "CRIT"
   },
   "zh-Hant": {
@@ -329,6 +331,8 @@ const dictionary = {
     upgrade_explode_desc: "命中時對附近敵人造成濺射傷害",
     upgrade_lifeSteal_name: "守城回復",
     upgrade_lifeSteal_desc: "擊敗敵人時回復 3 點牆血量",
+    upgrade_slow_name: "獅吼震懾",
+    upgrade_slow_desc: "命中時有機率讓野獸短暫變慢",
     crit_label: "暴"
   }
 };
@@ -348,6 +352,7 @@ const LEVELS = DATA.levels;
 const UPGRADES = DATA.upgrades;
 const WEAPONS = DATA.weapons;
 const ENEMY_TYPES = DATA.enemyTypes;
+registerWonderCombatUpgrades();
 const SAVE_KEY = "wonderCrashHighestUnlocked";
 const PROFILE_KEY = "wonderCrashProfile";
 const WEAPON_COOLDOWN = 1.35;
@@ -357,6 +362,22 @@ const DIFFICULTY = {
   enemySpeed: 0.9,
   enemyDamage: 0.78,
 };
+
+function registerWonderCombatUpgrades() {
+  if (UPGRADES.some((upgrade) => upgrade.id === "slow")) return;
+  UPGRADES.push({
+    id: "slow",
+    name: "Lion Roar",
+    desc: "Hits can slow beasts for a short time",
+    icon: "assets/upgrade-cooldown.png",
+    effect: {
+      slowChance: 0.32,
+      slowDuration: 1.8,
+      slowMultiplier: 0.55,
+    },
+  });
+}
+
 let highestUnlocked = loadHighestUnlocked();
 let profile = loadProfile();
 let activeMenuTab = "battle";
@@ -418,6 +439,9 @@ function makeState(levelIndex) {
     burstCount: 1,
     projectileSizeMultiplier: 1,
     pierceCount: 0,
+    slowChance: 0,
+    slowDuration: 0,
+    slowMultiplier: 1,
     splashDamage: 0,
     splashRadius: 0,
     killHeal: 0,
@@ -640,7 +664,9 @@ function update(dt) {
 
   for (const enemy of state.enemies) {
     updateEnemyAbility(enemy, dt);
-    enemy.y += enemy.speed * enemy.dashBoost * dt;
+    if (enemy.slowTimer > 0) enemy.slowTimer = Math.max(0, enemy.slowTimer - dt);
+    const slowFactor = enemy.slowTimer > 0 ? enemy.slowMultiplier : 1;
+    enemy.y += enemy.speed * enemy.dashBoost * slowFactor * dt;
     if (enemy.isBoss) {
       const stopY = wallY - enemy.size * 0.58;
       enemy.y = Math.min(enemy.y, stopY);
@@ -852,6 +878,8 @@ function addEnemy(type, wave, isBoss) {
     damage: Math.max(1, Math.ceil(wave.damage * type.damageScale * DIFFICULTY.enemyDamage * (bossScale?.damage || 1))),
     coinReward: Math.max(1, Math.ceil(wave.coinReward * type.coinScale * (bossScale?.coin || 1))),
     armorUsed: false,
+    slowTimer: 0,
+    slowMultiplier: 1,
     dashTimer: random(0.8, 1.8),
     dashBoost: 1,
     wobble: random(0, Math.PI * 2),
@@ -1095,6 +1123,7 @@ function resolveHits() {
 
 function damageEnemy(enemy, damage, crit, hitX = enemy.x, hitY = enemy.y) {
   enemy.hp -= damage;
+  applyHitSlow(enemy, hitX, hitY);
   state.hits.push({ x: hitX, y: hitY, radius: crit ? 26 : 18, life: 0.18 });
   state.damageTexts.push({
     x: enemy.x + random(-14, 14),
@@ -1109,6 +1138,21 @@ function damageEnemy(enemy, damage, crit, hitX = enemy.x, hitY = enemy.y) {
     return;
   }
   window.WonderSound?.play("hit");
+}
+
+function applyHitSlow(enemy, hitX, hitY) {
+  if (state.slowChance <= 0 || enemy.hp <= 0) return;
+  const bossChanceScale = enemy.isBoss ? 0.55 : 1;
+  if (Math.random() > state.slowChance * bossChanceScale) return;
+  enemy.slowTimer = Math.max(enemy.slowTimer || 0, state.slowDuration * (enemy.isBoss ? 0.65 : 1));
+  enemy.slowMultiplier = Math.min(enemy.slowMultiplier || 1, state.slowMultiplier);
+  state.hits.push({
+    x: hitX,
+    y: hitY,
+    radius: enemy.size * 0.32,
+    life: 0.34,
+    slow: true,
+  });
 }
 
 function defeatEnemy(enemy) {
@@ -1264,6 +1308,17 @@ function drawEnemies() {
     ctx.drawImage(enemy.image, x - enemy.size / 2, enemy.y - enemy.size / 2, enemy.size, enemy.size);
     ctx.restore();
 
+    if (enemy.slowTimer > 0) {
+      ctx.save();
+      ctx.globalAlpha = clamp(enemy.slowTimer / Math.max(0.1, state.slowDuration), 0.28, 0.78);
+      ctx.strokeStyle = "rgba(105, 221, 255, 0.95)";
+      ctx.lineWidth = enemy.isBoss ? 7 : 5;
+      ctx.beginPath();
+      ctx.arc(x, enemy.y, enemy.size * 0.46, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.restore();
+    }
+
     const hpWidth = enemy.isBoss ? Math.min(W * 0.76, enemy.size * 0.86) : enemy.size * 0.72;
     const hpHeight = enemy.isBoss ? 16 : 10;
     drawHpBar(x - hpWidth / 2, enemy.y + enemy.size * 0.48, hpWidth, hpHeight, enemy.hp / enemy.maxHp, 3);
@@ -1343,11 +1398,18 @@ function drawBossProjectiles() {
 
 function drawHits() {
   for (const hit of state.hits) {
-    const progress = hit.life / 0.28;
+    const baseLife = hit.slow ? 0.34 : 0.28;
+    const progress = hit.life / baseLife;
     ctx.beginPath();
     ctx.arc(hit.x, hit.y, hit.radius * (1.4 - progress), 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(255, 219, 92, ${Math.max(0, progress)})`;
-    ctx.fill();
+    if (hit.slow) {
+      ctx.lineWidth = 8;
+      ctx.strokeStyle = `rgba(105, 221, 255, ${Math.max(0, progress)})`;
+      ctx.stroke();
+    } else {
+      ctx.fillStyle = `rgba(255, 219, 92, ${Math.max(0, progress)})`;
+      ctx.fill();
+    }
   }
 }
 
@@ -1995,6 +2057,11 @@ function applyUpgrade(upgrade) {
   if (effect.wallHp) state.wallHp = Math.min(state.maxWallHp, state.wallHp + effect.wallHp);
   if (effect.coinMultiplier) state.coinMultiplier += effect.coinMultiplier;
   if (effect.pierceCount) state.pierceCount += effect.pierceCount;
+  if (effect.slowChance) {
+    state.slowChance = Math.min(0.72, state.slowChance + effect.slowChance);
+    state.slowDuration = Math.max(state.slowDuration, effect.slowDuration || 0);
+    state.slowMultiplier = Math.min(state.slowMultiplier, effect.slowMultiplier || 1);
+  }
   if (effect.splashDamage) {
     state.splashDamage = Math.min(0.85, state.splashDamage + effect.splashDamage);
     state.splashRadius = Math.max(state.splashRadius, effect.splashRadius || 0);

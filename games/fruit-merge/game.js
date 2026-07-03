@@ -60,6 +60,7 @@
       largest: "Largest",
       goal: "Goal: {name}",
       bestAnimal: "Best Animal {name}",
+      combo: "Combo x{count}!",
       drop: "Drop",
       restart: "Restart",
       menuTitle: "Merge to the Lion King",
@@ -98,7 +99,7 @@
       fruit10: "Lion King Ball",
     },
     "zh-Hant": {
-      title: "動物水果合成",
+      title: "動物合成塔",
       language: "語言",
       score: "分數",
       best: "最佳",
@@ -106,6 +107,7 @@
       largest: "最大合成",
       goal: "目標：{name}",
       bestAnimal: "最佳動物 {name}",
+      combo: "連續合成 x{count}！",
       drop: "落下",
       restart: "重新開始",
       menuTitle: "一路合成到獅王",
@@ -194,6 +196,8 @@
   let aimX = W / 2;
   let score = 0;
   let mergeCount = 0;
+  let comboCount = 0;
+  let comboUntil = 0;
   let bestScore = Number(localStorage.getItem(BEST_KEY) || 0);
   let running = false;
   let gameOver = false;
@@ -272,6 +276,8 @@
     aimX = W / 2;
     score = 0;
     mergeCount = 0;
+    comboCount = 0;
+    comboUntil = 0;
     fruitId = 1;
     running = !showMenu;
     gameOver = false;
@@ -435,7 +441,7 @@
         removeIds.add(b.id);
         additions.push(merged);
         spawnMergeBurst(merged.x, merged.y, next.color, impact);
-        score += next.score;
+        addMergeScore(next.score);
         mergeCount += 1;
         maxReachedLevel = Math.max(maxReachedLevel, merged.level);
         if (merged.level === fruits.length - 1) showToast(t("fruit10"));
@@ -446,6 +452,15 @@
     if (!removeIds.size) return;
     fruitsOnBoard = fruitsOnBoard.filter((fruit) => !removeIds.has(fruit.id)).concat(additions);
     updateHud();
+  }
+
+  function addMergeScore(baseScore) {
+    const now = performance.now();
+    comboCount = now <= comboUntil ? comboCount + 1 : 1;
+    comboUntil = now + 2200;
+    const multiplier = Math.min(5, comboCount);
+    score += baseScore * multiplier;
+    if (multiplier > 1) showToast(t("combo", { count: multiplier }));
   }
 
   function shouldMerge(a, b) {
