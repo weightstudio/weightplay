@@ -35,6 +35,8 @@
       level: "Level",
       moves: "Moves",
       pairs: "Pairs",
+      pairCount: "{count} pairs",
+      starGoal: "3-star: {moves} moves",
       chooseLevel: "Choose Level",
       locked: "Level locked",
       selectFirst: "Pick a tile, then find its matching pair.",
@@ -54,6 +56,8 @@
       level: "\u95dc\u5361",
       moves: "\u6b65\u6578",
       pairs: "\u914d\u5c0d",
+      pairCount: "{count} \u7d44\u914d\u5c0d",
+      starGoal: "\u4e09\u661f\uff1a{moves} \u6b65",
       chooseLevel: "\u9078\u64c7\u95dc\u5361",
       locked: "\u95dc\u5361\u5c1a\u672a\u89e3\u9396",
       selectFirst: "\u5148\u9078\u4e00\u5f35\u65b9\u584a\uff0c\u518d\u627e\u51fa\u76f8\u540c\u7684\u914d\u5c0d\u3002",
@@ -169,9 +173,13 @@
     levels.forEach((level, index) => {
       const button = document.createElement("button");
       button.type = "button";
-      button.textContent = String(index + 1);
       button.dataset.level = String(index);
       const stars = starMap[index + 1] || 0;
+      button.innerHTML = `
+        <strong>${index + 1}</strong>
+        <span>${t("pairCount", { count: level.pairs })}</span>
+        <small>${t("starGoal", { moves: level.starMoves[0] })}</small>
+      `;
       if (index + 1 > unlocked) button.classList.add("locked");
       if (stars > 0) button.classList.add("completed");
       if (index + 1 === unlocked) button.classList.add("challenge");

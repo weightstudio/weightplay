@@ -22,6 +22,7 @@
       keep: "Keep trying!",
       result: "You helped {count} shape friends ride the train.",
       stage: "Stage {n}",
+      stageGoal: "{cars} cars / {tasks} passengers",
       prompt: "Send the {shape} to its matching car.",
       correct: "All aboard!",
       wrong: "Try the matching car.",
@@ -51,6 +52,7 @@
       keep: "繼續練習！",
       result: "你幫 {count} 位形狀朋友搭上小火車。",
       stage: "第 {n} 關",
+      stageGoal: "{cars} 種車廂 / {tasks} 位乘客",
       prompt: "把{shape}送到相同形狀的車廂。",
       correct: "上車成功！",
       wrong: "找找相同形狀的車廂。",
@@ -171,6 +173,7 @@
       button.innerHTML = `
         <b class="stage-shapes">${stage.cars.map((shape) => `<img src="${shapes[shape].token}" alt="" />`).join("")}</b>
         <strong>${t("stage", { n: stageNo })}</strong>
+        <em>${t("stageGoal", { cars: stage.cars.length, tasks: stage.tasks.length })}</em>
         <span>${"★".repeat(stars[stageNo] || 0)}${"☆".repeat(3 - (stars[stageNo] || 0))}</span>
       `;
       button.addEventListener("click", () => {

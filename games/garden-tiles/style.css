@@ -163,6 +163,9 @@ select {
 }
 
 .level-grid button {
+  display: grid;
+  gap: 4px;
+  align-content: center;
   min-height: 64px;
   border: 2px solid rgba(49, 91, 53, 0.16);
   border-radius: 8px;
@@ -171,6 +174,20 @@ select {
   font-size: 25px;
   font-weight: 1000;
   box-shadow: 0 8px 18px rgba(49, 91, 53, 0.1);
+}
+
+.level-grid button strong {
+  font-size: 25px;
+  line-height: 1;
+}
+
+.level-grid button span,
+.level-grid button small {
+  display: block;
+  color: rgba(36, 53, 40, 0.72);
+  font-size: 12px;
+  font-weight: 1000;
+  line-height: 1.12;
 }
 
 .level-grid button.locked {

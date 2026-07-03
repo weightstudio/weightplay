@@ -217,6 +217,12 @@ select {
   color: rgba(23, 49, 79, 0.68);
 }
 
+.stage-card em {
+  font-style: normal;
+  font-size: 0.78rem;
+  color: rgba(23, 49, 79, 0.72);
+}
+
 .play-head {
   display: grid;
   grid-template-columns: auto 1fr;
