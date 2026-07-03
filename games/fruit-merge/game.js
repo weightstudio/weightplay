@@ -13,6 +13,11 @@
   const scoreText = document.querySelector("#scoreText");
   const bestText = document.querySelector("#bestText");
   const nextFruitText = document.querySelector("#nextFruitText");
+  const largestLabel = document.querySelector("#largestLabel");
+  const largestFruitText = document.querySelector("#largestFruitText");
+  const largestFruitToken = document.querySelector("#largestFruitToken");
+  const goalText = document.querySelector("#goalText");
+  const goalFill = document.querySelector("#goalFill");
   const dropBtn = document.querySelector("#dropBtn");
   const restartBtn = document.querySelector("#restartBtn");
   const startBtn = document.querySelector("#startBtn");
@@ -49,6 +54,9 @@
       score: "Score",
       best: "Best",
       next: "Next",
+      largest: "Largest",
+      goal: "Goal: {name}",
+      bestAnimal: "Best Animal {name}",
       drop: "Drop",
       restart: "Restart",
       menuTitle: "Merge to the Lion King",
@@ -89,6 +97,9 @@
       score: "分數",
       best: "最佳",
       next: "下一顆",
+      largest: "最大合成",
+      goal: "目標：{name}",
+      bestAnimal: "最佳動物 {name}",
       drop: "落下",
       restart: "重新開始",
       menuTitle: "一路合成到獅王",
@@ -169,6 +180,7 @@
   let fruitsOnBoard = [];
   let currentLevel = 0;
   let nextLevel = 0;
+  let maxReachedLevel = 0;
   let mergeBursts = [];
   let aimX = W / 2;
   let score = 0;
@@ -244,6 +256,7 @@
     fruitsOnBoard = [];
     currentLevel = randomNextLevel();
     nextLevel = randomNextLevel();
+    maxReachedLevel = currentLevel;
     mergeBursts = [];
     aimX = W / 2;
     score = 0;
@@ -266,6 +279,12 @@
     nextFruitText.innerHTML = animalTokenMarkup(nextLevel);
     nextFruitText.setAttribute("aria-label", t(`fruit${nextLevel}`));
     nextFruitText.title = t(`fruit${nextLevel}`);
+    largestLabel.textContent = t("largest");
+    largestFruitText.textContent = t(`fruit${maxReachedLevel}`);
+    largestFruitToken.innerHTML = animalTokenMarkup(maxReachedLevel);
+    largestFruitToken.setAttribute("aria-label", t(`fruit${maxReachedLevel}`));
+    goalText.textContent = t("goal", { name: t("fruit10") });
+    goalFill.style.width = `${Math.round((maxReachedLevel / (fruits.length - 1)) * 100)}%`;
   }
 
   function dropFruit() {
@@ -286,6 +305,7 @@
     };
     fruit.body = createFruitBody(fruit);
     fruitsOnBoard.push(fruit);
+    maxReachedLevel = Math.max(maxReachedLevel, currentLevel);
     World.add(world, fruit.body);
     currentLevel = nextLevel;
     nextLevel = randomNextLevel();
@@ -405,6 +425,7 @@
         spawnMergeBurst(merged.x, merged.y, next.color, impact);
         score += next.score;
         mergeCount += 1;
+        maxReachedLevel = Math.max(maxReachedLevel, merged.level);
         if (merged.level === fruits.length - 1) showToast(t("fruit10"));
         window.WonderSound?.play?.("success");
         break;
@@ -486,6 +507,8 @@
       playCount: (Number(old.playCount) || 0) + 1,
       lastPlayedAt: new Date().toISOString(),
       improvementPercent,
+      maxReachedLevel,
+      highestLevel: Math.max(Number(old.highestLevel) || 0, maxReachedLevel),
       skillScores: buildSkillScores(finalScore),
     };
     try {
@@ -523,6 +546,7 @@
       t("todayScore", { score: progress.lastScore }),
       t("previousBest", { score: progress.previousBest }),
       t("improvement", { value: Math.max(0, progress.improvementPercent) }),
+      t("bestAnimal", { name: t(`fruit${progress.highestLevel}`) }),
     ].forEach((item) => {
       const chip = document.createElement("span");
       chip.textContent = item;

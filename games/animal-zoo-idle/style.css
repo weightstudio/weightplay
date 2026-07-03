@@ -696,14 +696,92 @@ body.zoo-playing .savanna-stage {
   position: absolute;
   z-index: 6;
   height: auto;
+  cursor: grab;
   filter: drop-shadow(0 14px 14px rgba(37, 48, 26, .24));
   animation: animal-idle 3.2s ease-in-out infinite;
+  touch-action: none;
+  user-select: none;
 }
 
 .animal img {
   width: 100%;
   height: auto;
   object-fit: contain;
+}
+
+.animal.dragging {
+  z-index: 14;
+  cursor: grabbing;
+  animation: none;
+  filter: drop-shadow(0 20px 20px rgba(37, 48, 26, .32)) brightness(1.06);
+}
+
+.animal-shop-head {
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+  justify-content: space-between;
+  font-weight: 950;
+}
+
+.animal-shop-head span {
+  max-width: 68%;
+  color: rgba(72, 49, 22, .72);
+  font-size: .76rem;
+  line-height: 1.25;
+  text-align: right;
+}
+
+.animal-shop {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(86px, 1fr);
+  gap: 8px;
+  overflow-x: auto;
+  padding: 2px 2px 8px;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+}
+
+.animal-shop-card {
+  min-height: 86px;
+  border: 0;
+  border-radius: 16px;
+  padding: 7px 6px;
+  display: grid;
+  gap: 2px;
+  justify-items: center;
+  align-content: center;
+  background: linear-gradient(180deg, #fff8cf 0%, #ffd96d 58%, #ecaa3e 100%);
+  box-shadow: inset 0 2px rgba(255,255,255,.75), 0 6px 0 #95612d, 0 12px 18px rgba(82, 48, 18, .16);
+  color: #3d2914;
+  font-size: .72rem;
+  font-weight: 950;
+}
+
+.animal-shop-card img {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  pointer-events: none;
+  filter: drop-shadow(0 6px 6px rgba(67,43,20,.18));
+}
+
+.animal-shop-card strong,
+.animal-shop-card span {
+  overflow: hidden;
+  max-width: 100%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.animal-shop-card.owned {
+  background: linear-gradient(180deg, #eefbd0 0%, #a6df72 58%, #5bae52 100%);
+}
+
+.animal-shop-card:disabled:not(.owned) {
+  opacity: .56;
+  filter: grayscale(.2);
 }
 
 
@@ -729,6 +807,29 @@ body.zoo-playing .zoo-actions button {
   font-size: clamp(.6rem, 2.6vw, .82rem);
   line-height: 1.08;
   box-shadow: inset 0 2px rgba(255,255,255,.72), 0 5px 0 #8a5429, 0 10px 16px rgba(82, 48, 18, .16);
+}
+
+body.zoo-playing .animal-shop-head span {
+  display: none;
+}
+
+body.zoo-playing .animal-shop {
+  grid-auto-columns: minmax(68px, 1fr);
+  gap: 6px;
+  padding-bottom: 4px;
+}
+
+body.zoo-playing .animal-shop-card {
+  min-height: 68px;
+  border-radius: 12px;
+  padding: 5px 4px;
+  font-size: clamp(.56rem, 2.2vw, .7rem);
+  box-shadow: inset 0 2px rgba(255,255,255,.72), 0 4px 0 #95612d, 0 8px 12px rgba(82, 48, 18, .12);
+}
+
+body.zoo-playing .animal-shop-card img {
+  width: 34px;
+  height: 34px;
 }
 
 @keyframes visitor-walk-img {
