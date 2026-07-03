@@ -193,6 +193,7 @@
     energyText: $("energyText"),
     baseText: $("baseText"),
     waveText: $("waveText"),
+    waveTimer: $("waveTimer"),
     unitBar: $("unitBar"),
     yardBoard: $("yardBoard"),
     dangerAlert: $("dangerAlert"),
@@ -228,6 +229,7 @@
   let boardRect = { width: 1, height: 1 };
   let coinsEarned = 0;
   let lastDangerAt = 0;
+  let currentSpawnDelay = 1;
 
   function t(key, data) {
     const parts = key.split(".");
@@ -558,6 +560,7 @@
     baseHp = stage.hp;
     spawned = 0;
     nextSpawnAt = 900;
+    currentSpawnDelay = nextSpawnAt;
     nextSunAt = 1400;
     lastTick = performance.now();
     entities = [];
@@ -742,7 +745,8 @@
     nextSunAt -= dt;
     if (nextSpawnAt <= 0) {
       spawnZombie();
-      nextSpawnAt = stages[currentStage].interval * (0.82 + Math.random() * 0.36);
+      currentSpawnDelay = stages[currentStage].interval * (0.82 + Math.random() * 0.36);
+      nextSpawnAt = currentSpawnDelay;
     }
     if (nextSunAt <= 0) {
       spawnSun();
@@ -1000,7 +1004,20 @@
     nodes.energyText.textContent = Math.floor(energy);
     nodes.baseText.textContent = Math.max(0, baseHp);
     nodes.waveText.textContent = t("wave", { n: currentStage + 1, left });
+    updateWaveTimer(left);
     renderWallet();
+  }
+
+  function updateWaveTimer(left) {
+    if (!nodes.waveTimer) return;
+    const activeZombies = entities.filter((item) => item.kind === "zombie").length;
+    const remainingSpawns = Math.max(0, stages[currentStage].total - spawned);
+    const shouldShow = running && left > 0 && (remainingSpawns > 0 || activeZombies > 0);
+    nodes.waveTimer.classList.toggle("hidden", !shouldShow);
+    if (!shouldShow) return;
+    const progress = remainingSpawns > 0 ? 1 - clamp(nextSpawnAt / Math.max(1, currentSpawnDelay), 0, 1) : 1;
+    nodes.waveTimer.style.setProperty("--wave-progress", `${Math.round(progress * 100)}%`);
+    nodes.waveTimer.classList.toggle("is-hot", progress > 0.72);
   }
 
   function finish(won) {

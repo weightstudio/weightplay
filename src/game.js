@@ -107,6 +107,9 @@ const dictionary = {
     btn_start: "Start",
     btn_play_again: "Play Again",
     btn_stage_select: "Stage Select",
+    stage_waves: "{count} waves",
+    stage_reward: "~{coins} coins",
+    stage_boss: "Boss",
     weapon_modal_empty: "Select a weapon to view damage, cooldown and merge details.",
     weapon_upgrade_tip: "Merge matching backpack items to upgrade.",
     weapon_stats_dmg: "Damage {val}",
@@ -221,6 +224,9 @@ const dictionary = {
     btn_start: "開始",
     btn_play_again: "再玩一次",
     btn_stage_select: "回關卡選擇",
+    stage_waves: "{count} 波",
+    stage_reward: "約 {coins} 金幣",
+    stage_boss: "王關",
     weapon_modal_empty: "點選武器查看攻擊、冷卻和合成變化",
     weapon_upgrade_tip: "同階背包武器可合成升級",
     weapon_stats_dmg: "攻擊 {val}",
@@ -1485,13 +1491,31 @@ function renderLevelGrid() {
     const button = document.createElement("button");
     button.type = "button";
     button.dataset.level = String(level.id - 1);
-    button.textContent = String(level.id);
+    const summary = getLevelSummary(level);
+    button.innerHTML = `
+      <strong>${level.id}</strong>
+      <span>${t("stage_waves", { count: summary.waves })}</span>
+      <small>${t("stage_reward", { coins: summary.coins })}</small>
+      ${summary.hasBoss ? `<em>${t("stage_boss")}</em>` : ""}
+    `;
     button.className = "";
     if (level.id > highestUnlocked) button.classList.add("locked");
     if (level.id < highestUnlocked) button.classList.add("completed");
     if (level.id === highestUnlocked && level.id <= LEVELS.length) button.classList.add("challenge");
     levelGrid.append(button);
   }
+}
+
+function getLevelSummary(level) {
+  const waves = Array.isArray(level.waves) ? level.waves : [];
+  const coins = waves.reduce((total, wave) => {
+    return total + Math.round((Number(wave.count) || 0) * (Number(wave.coinReward) || 0));
+  }, 0);
+  return {
+    waves: waves.length,
+    coins,
+    hasBoss: waves.some((wave) => wave.boss),
+  };
 }
 
 function showFloatingMessage(text) {
