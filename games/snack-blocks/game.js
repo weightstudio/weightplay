@@ -118,6 +118,61 @@
       progressSteady: "努力得很好！再試一次可以繼續練習專注和連線規劃。",
       progressNote: "分數只用於遊戲樂趣與本機進步紀錄。",
     },
+    "zh-Hant": {
+      brand: "WeightPlay",
+      title: "動物零食方塊",
+      language: "語言",
+      stage: "關卡",
+      moves: "步數",
+      target: "目標",
+      score: "分數",
+      menuTitle: "選擇零食方塊關卡",
+      menuText: "用完所有步數，達成目標，挑戰更好的分數。",
+      stageName: "第 {stage} 關",
+      locked: "尚未解鎖",
+      best: "最佳 {score}",
+      hint: "點擊或拖曳零食，和相鄰方塊交換位置。",
+      goalScore: "分數達到 {target}",
+      goalCollect: "收集 {icon} x{target}",
+      goalProgress: "{count} / {target}",
+      goalReady: "目標達成！用剩下的步數挑戰更高分。",
+      loading: "載入中",
+      clear: "關卡完成！",
+      failed: "再試一次！",
+      clearText: "分數 {score}。目標 {goal}。最佳 {best}。",
+      finalClearText: "分數 {score}。目標 {goal}。所有零食關卡都完成了！",
+      failedText: "分數 {score}。目標 {goal}。試著做出更大的連線。",
+      next: "下一關",
+      again: "再玩一次",
+      menu: "關卡",
+      lobby: "大廳",
+      skillReport: "能力小報告",
+      todayScore: "本次分數",
+      previousBest: "之前最佳",
+      improvement: "進步幅度",
+      logicSkill: "邏輯",
+      problemSolvingSkill: "解題",
+      focusSkill: "專注",
+      progressNewBest: "很棒！你刷新了自己的最佳分數。",
+      progressImproved: "進步不錯！這次的規劃更穩定。",
+      progressSteady: "努力得很好！再試一次，練習專注和連線規劃。",
+      progressNote: "分數只用於遊戲樂趣與本機進步紀錄。",
+    },
+  };
+
+  const metadata = {
+    en: {
+      title: "Snack Blocks - WeightPlay",
+      description: "Clear snack matching stages, beat move goals, and unlock new levels in Snack Blocks, a mobile-friendly puzzle game on WeightPlay.",
+      ogTitle: "Snack Blocks - Stage Match Puzzle Game",
+      ogDescription: "Clear snack matching stages, beat move goals, and unlock new levels in Snack Blocks, a mobile-friendly puzzle game on WeightPlay.",
+    },
+    "zh-Hant": {
+      title: "動物零食方塊 - WeightPlay",
+      description: "遊玩動物零食方塊，交換相鄰零食圖案，在限定步數內完成分數或收集目標，練習邏輯、解題與專注力。",
+      ogTitle: "動物零食方塊 - 關卡式三消益智遊戲",
+      ogDescription: "交換零食方塊、完成關卡目標，挑戰更好的本機紀錄。",
+    },
   };
 
   const nodes = {
@@ -299,6 +354,7 @@
   }
 
   function applyText() {
+    updateMetadata();
     nodes.brandText.textContent = t("brand");
     nodes.titleText.textContent = t("title");
     nodes.languageLabel.textContent = t("language");
@@ -316,6 +372,20 @@
     nodes.lobbyLink.textContent = t("lobby");
     renderStageGrid();
     updateHud();
+  }
+
+  function updateMetadata() {
+    const current = metadata[state.locale] || metadata.en;
+    document.title = current.title;
+    setMeta("description", current.description);
+    setMeta("og:title", current.ogTitle, true);
+    setMeta("og:description", current.ogDescription, true);
+  }
+
+  function setMeta(name, content, property = false) {
+    const selector = property ? `meta[property="${name}"]` : `meta[name="${name}"]`;
+    const node = document.querySelector(selector);
+    if (node) node.setAttribute("content", content);
   }
 
   function makeTile(type) {
@@ -626,13 +696,16 @@
     state.running = true;
     state.busy = false;
     buildCleanBoard();
-    updateHud();
-    renderBoard();
-    nodes.hintText.textContent = t("hint");
     nodes.menuPanel.classList.add("hidden");
     nodes.resultPanel.classList.add("hidden");
     nodes.hud.classList.remove("hidden");
     nodes.playPanel.classList.remove("hidden");
+    updateHud();
+    renderBoard();
+    nodes.hintText.textContent = t("hint");
+    window.requestAnimationFrame(() => {
+      nodes.hud.scrollIntoView({ block: "start", behavior: "smooth" });
+    });
     window.WonderAnalytics?.track("game_start", {
       game_id: GAME_ID,
       stage: activeStage().id,
