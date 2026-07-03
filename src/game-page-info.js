@@ -496,6 +496,25 @@
     return locale() === "zh-Hant" && age === "Family" ? "親子" : age;
   }
 
+  function localizeDifficulty(difficulty) {
+    if (locale() !== "zh-Hant") return difficulty;
+    const map = {
+      Easy: "\u7c21\u55ae",
+      Medium: "\u4e2d\u7b49",
+      Hard: "\u56f0\u96e3",
+      Relaxed: "\u8f15\u9b06",
+    };
+    return map[difficulty] || difficulty;
+  }
+
+  function localizePlayTime(time) {
+    if (locale() !== "zh-Hant") return time;
+    return String(time)
+      .replace("1-3 minutes", "1-3 \u5206\u9418")
+      .replace("3-5 minutes", "3-5 \u5206\u9418")
+      .replace("5-8 minutes", "5-8 \u5206\u9418");
+  }
+
   function scoreBandsFor(game) {
     const compact = game.time.includes("1-3");
     const scoreAttack = game.title.includes("Dash") || game.title.includes("Merge") || game.title.includes("Blocks");
@@ -609,6 +628,17 @@
     `;
   }
 
+  function repairRelatedImages(section) {
+    section.querySelectorAll(".game-info-related-card img[data-fallback-src]").forEach((image) => {
+      const fallback = image.dataset.fallbackSrc;
+      const useFallback = () => {
+        if (fallback && image.src !== fallback) image.src = fallback;
+      };
+      image.addEventListener("error", useFallback, { once: true });
+      if (image.complete && image.naturalWidth === 0) useFallback();
+    });
+  }
+
   function render() {
     const id = currentGameId();
     const baseGame = games[id];
@@ -639,8 +669,8 @@
           <div class="game-info-fact"><span>${escapeHtml(uiLabel("gameplay"))}</span><strong>${escapeHtml(game.gameplay || game.title)}</strong></div>
           <div class="game-info-fact"><span>${escapeHtml(uiLabel("genre"))}</span><div class="game-info-tags">${(game.genre || []).map((tag) => `<span>${escapeHtml(tag)}</span>`).join("")}</div></div>
           <div class="game-info-fact"><span>${escapeHtml(uiLabel("recommendedAge"))}</span><strong>${escapeHtml(localizeAge(game.age))}</strong></div>
-          <div class="game-info-fact"><span>${escapeHtml(uiLabel("difficulty"))}</span><strong>${escapeHtml(game.difficulty)}</strong></div>
-          <div class="game-info-fact"><span>${escapeHtml(uiLabel("estimatedTime"))}</span><strong>${escapeHtml(game.time)}</strong></div>
+          <div class="game-info-fact"><span>${escapeHtml(uiLabel("difficulty"))}</span><strong>${escapeHtml(localizeDifficulty(game.difficulty))}</strong></div>
+          <div class="game-info-fact"><span>${escapeHtml(uiLabel("estimatedTime"))}</span><strong>${escapeHtml(localizePlayTime(game.time))}</strong></div>
           <div class="game-info-fact"><span>${escapeHtml(uiLabel("skills"))}</span><div class="game-info-skills">${gameSkills.map((skill) => `<span>${escapeHtml(localizeSkill(skill))}</span>`).join("")}</div></div>
         </div>
       </div>
@@ -693,6 +723,7 @@
       </div>
     `;
     main.insertAdjacentElement("afterend", section);
+    repairRelatedImages(section);
 
     const faqJsonLd = {
       "@context": "https://schema.org",

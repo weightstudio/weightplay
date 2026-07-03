@@ -334,6 +334,23 @@ select {
   font-weight: 900;
 }
 
+.target-status {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: flex-end;
+  color: rgba(35, 64, 51, 0.72);
+}
+
+.target-status b {
+  min-width: 58px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: rgba(255, 207, 72, 0.34);
+  color: #234033;
+  font-size: 0.78rem;
+}
+
 .target-list {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));

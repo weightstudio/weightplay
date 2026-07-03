@@ -61,6 +61,10 @@
   const dictionary = {
     en: {
       title: "Animal Star Memory",
+      seoTitle: "Animal Star Memory - WeightPlay",
+      seoDescription: "Flip animal and star cards, remember their positions, and clear 10 short memory stages in Animal Star Memory on WeightPlay.",
+      ogTitle: "Animal Star Memory - Memory Matching Game",
+      ogDescription: "Flip animal and star cards, remember their positions, and clear 10 short memory stages in Animal Star Memory on WeightPlay.",
       language: "Language",
       chooseLevel: "Choose Level",
       level: "Level {current} / {total}",
@@ -109,6 +113,10 @@
     },
     "zh-Hant": {
       title: "\u52d5\u7269\u661f\u661f\u7ffb\u724c",
+      seoTitle: "\u52d5\u7269\u661f\u661f\u7ffb\u724c - WeightPlay",
+      seoDescription: "\u7ffb\u958b\u52d5\u7269\u8207\u661f\u661f\u5361\u724c\uff0c\u8a18\u4f4f\u4f4d\u7f6e\u4e26\u5b8c\u6210 10 \u500b\u77ed\u95dc\u5361\uff0c\u5728 WeightPlay \u7df4\u7fd2\u8a18\u61b6\u8207\u5c08\u6ce8\u3002",
+      ogTitle: "\u52d5\u7269\u661f\u661f\u7ffb\u724c - \u8a18\u61b6\u914d\u5c0d\u904a\u6232",
+      ogDescription: "\u7ffb\u958b\u52d5\u7269\u8207\u661f\u661f\u5361\u724c\uff0c\u8a18\u4f4f\u4f4d\u7f6e\u4e26\u5b8c\u6210 10 \u500b\u77ed\u95dc\u5361\uff0c\u5728 WeightPlay \u7df4\u7fd2\u8a18\u61b6\u8207\u5c08\u6ce8\u3002",
       language: "\u8a9e\u8a00",
       chooseLevel: "\u9078\u64c7\u95dc\u5361",
       level: "\u7b2c {current} / {total} \u95dc",
@@ -339,6 +347,7 @@
   function translateStaticUI() {
     document.documentElement.lang = locale();
     localeSelect.value = locale();
+    updateSeoText();
     languageLabel.textContent = t("language");
     titleText.textContent = t("title");
     stageSelectTitle.textContent = t("chooseLevel");
@@ -360,6 +369,20 @@
     } else {
       updateHUD();
     }
+  }
+
+  function setMeta(selector, attr, value) {
+    const node = document.querySelector(selector);
+    if (node) {
+      node.setAttribute(attr, value);
+    }
+  }
+
+  function updateSeoText() {
+    document.title = t("seoTitle");
+    setMeta('meta[name="description"]', "content", t("seoDescription"));
+    setMeta('meta[property="og:title"]', "content", t("ogTitle"));
+    setMeta('meta[property="og:description"]', "content", t("ogDescription"));
   }
 
   // Loading Simulation
