@@ -128,9 +128,8 @@ select {
 }
 
 .fixed-game-shell {
-  width: min(100%, 960px);
-  max-height: calc(100svh - 118px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
-  aspect-ratio: 16 / 9;
+  width: min(100%, 860px);
+  aspect-ratio: 4 / 3;
   min-height: 0;
   padding: clamp(7px, 1.35vw, 14px);
   display: grid;
@@ -1466,8 +1465,9 @@ select {
   .fixed-game-shell {
     width: 100%;
     max-height: none;
+    aspect-ratio: 3 / 4;
     padding: 5px;
-    grid-template-rows: 28px 20px 48px minmax(0, 1fr) 18px;
+    grid-template-rows: 32px 22px 62px minmax(0, 1fr) 20px;
     gap: 4px;
     border-width: 3px;
     border-radius: 16px;

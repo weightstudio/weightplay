@@ -139,15 +139,22 @@ body.is-bakery-playing .play-panel {
 }
 
 .play-panel {
-  width: min(100%, 620px);
-  height: min(760px, calc(100svh - 24px - env(safe-area-inset-top) - env(safe-area-inset-bottom)));
+  width: min(100%, 960px);
+  height: auto;
+  max-height: calc(100svh - 82px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+  aspect-ratio: 16 / 9;
   min-height: 0;
-  max-height: min(760px, calc(100svh - 24px - env(safe-area-inset-top) - env(safe-area-inset-bottom)));
   margin: 0 auto;
-  padding: 10px;
+  padding: clamp(7px, 1.2vw, 12px);
   border-radius: 24px;
   overflow: hidden;
-  grid-template-rows: auto auto minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 0.64fr) minmax(190px, 0.36fr);
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  grid-template-areas:
+    "board head"
+    "board orders"
+    "board hint";
+  gap: clamp(6px, 1vw, 10px);
   background: rgba(255, 250, 225, 0.64);
   box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.5), 0 18px 34px rgba(86, 45, 20, 0.16);
 }
@@ -223,16 +230,18 @@ body.is-bakery-playing .play-panel {
 }
 
 .play-head {
+  grid-area: head;
   display: grid;
-  grid-template-columns: auto 1fr 1fr;
-  gap: 8px;
+  grid-template-columns: 1fr;
+  gap: clamp(5px, 0.8vw, 8px);
   align-items: center;
+  min-height: 0;
 }
 
 .hud-pill {
-  min-height: 44px;
+  min-height: 0;
   border-radius: 14px;
-  padding: 8px 10px;
+  padding: clamp(5px, 0.9vw, 8px) clamp(6px, 1vw, 10px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -240,14 +249,17 @@ body.is-bakery-playing .play-panel {
   background: rgba(255, 255, 255, 0.9);
   box-shadow: 0 8px 16px rgba(86, 45, 20, 0.15);
   font-weight: 950;
+  font-size: clamp(0.72rem, 1.22vw, 0.95rem);
 }
 
 .order-bar {
-  min-height: 72px;
+  grid-area: orders;
+  min-height: 0;
+  align-content: start;
   border-radius: 20px;
-  padding: 10px;
+  padding: clamp(6px, 1vw, 10px);
   display: flex;
-  gap: 8px;
+  gap: clamp(5px, 0.8vw, 8px);
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
@@ -256,41 +268,52 @@ body.is-bakery-playing .play-panel {
 }
 
 .order-chip {
-  min-width: 92px;
+  min-width: 0;
   border-radius: 999px;
-  padding: 8px 12px;
+  padding: clamp(5px, 0.82vw, 8px) clamp(7px, 1vw, 12px);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 7px;
   background: #fff;
   font-weight: 950;
+  font-size: clamp(0.66rem, 1.12vw, 0.9rem);
   box-shadow: inset 0 -4px rgba(0,0,0,.08);
 }
 
 .order-icon {
-  width: 2rem;
-  height: 2rem;
+  width: clamp(1.2rem, 2.7vw, 2rem);
+  height: clamp(1.2rem, 2.7vw, 2rem);
   object-fit: contain;
   filter: drop-shadow(0 3px 2px rgba(78, 35, 18, 0.18));
 }
 
 .bubble-board {
-  width: min(100%, 560px, 100%);
+  grid-area: board;
+  width: min(100%, 560px);
   max-height: 100%;
+  height: min(100%, 560px);
   margin: 0 auto;
   aspect-ratio: 1;
   border-radius: 24px;
-  padding: 10px;
+  padding: clamp(7px, 1.15vw, 10px);
   overflow: hidden;
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
   align-self: center;
-  gap: 7px;
+  gap: clamp(4px, 0.8vw, 7px);
   background:
     radial-gradient(circle at 22% 18%, rgba(255, 255, 255, 0.72), transparent 8rem),
     linear-gradient(180deg, #9b572d, #6f371e);
   box-shadow: inset 0 0 0 5px rgba(255, 241, 183, 0.35), 0 18px 34px rgba(86,45,20,.24);
+}
+
+.play-panel .hint-text {
+  grid-area: hint;
+  min-height: 0;
+  overflow: hidden;
+  text-align: center;
+  text-overflow: ellipsis;
 }
 
 .bubble {
@@ -514,19 +537,46 @@ body.is-bakery-playing .play-panel {
   }
 
   .play-panel {
-    height: calc(100svh - 16px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
-    max-height: calc(100svh - 16px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
-    gap: 8px;
-    padding: 8px;
+    width: 100%;
+    max-height: none;
+    gap: 5px;
+    padding: 5px;
+    grid-template-columns: minmax(0, 0.66fr) minmax(88px, 0.34fr);
+    grid-template-rows: auto minmax(0, 1fr) 18px;
+    border-radius: 16px;
+  }
+
+  .play-head {
+    gap: 4px;
+  }
+
+  .soft-btn,
+  .hud-pill {
+    min-height: 28px;
+    border-radius: 9px;
+    padding: 3px 5px;
+    font-size: 0.56rem;
   }
 
   .order-bar {
-    min-height: 58px;
-    padding: 7px;
+    padding: 5px;
+    border-radius: 12px;
+  }
+
+  .order-chip {
+    padding: 3px 5px;
+    gap: 4px;
+    font-size: 0.52rem;
+  }
+
+  .order-icon {
+    width: 1rem;
+    height: 1rem;
   }
 
   .hint-text {
-    min-height: 1.2em;
-    font-size: 0.86rem;
+    min-height: 0;
+    font-size: 0.52rem;
+    line-height: 1.1;
   }
 }
