@@ -175,13 +175,22 @@ select {
 
 .game-panel {
   display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto auto;
   gap: 10px;
+  width: min(100%, 640px);
+  height: min(760px, calc(100svh - 94px - env(safe-area-inset-top) - env(safe-area-inset-bottom)));
+  min-height: 0;
+  max-height: min(760px, calc(100svh - 94px - env(safe-area-inset-top) - env(safe-area-inset-bottom)));
+  margin: 0 auto;
+  overflow: hidden;
 }
 
 .playfield {
   position: relative;
   width: min(100%, 620px);
+  max-height: 100%;
   margin: 0 auto;
+  align-self: center;
   aspect-ratio: 3 / 4;
   overflow: hidden;
   border-radius: 28px;
@@ -423,6 +432,11 @@ select {
 }
 
 @media (max-width: 560px) {
+  .game-panel {
+    height: calc(100svh - 86px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+    max-height: calc(100svh - 86px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+  }
+
   .topbar {
     grid-template-columns: 44px 1fr;
   }
