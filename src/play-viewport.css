@@ -1,0 +1,64 @@
+:root {
+  --wp-play-frame-radius: clamp(18px, 3.8vw, 28px);
+  --wp-play-frame-border: rgba(255, 255, 255, 0.5);
+  --wp-play-frame-glow: rgba(104, 190, 255, 0.18);
+  --wp-play-frame-shadow: rgba(0, 0, 0, 0.26);
+}
+
+.play-area,
+.play-panel,
+.game-stage,
+.game-board,
+.game-board-panel,
+.playfield {
+  contain: layout paint;
+  overscroll-behavior: contain;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.play-area:not(canvas),
+.play-panel,
+.game-stage,
+.game-board,
+.game-board-panel,
+.playfield {
+  border-radius: var(--wp-play-frame-radius);
+  box-shadow:
+    inset 0 0 0 2px var(--wp-play-frame-border),
+    inset 0 -18px 38px rgba(0, 0, 0, 0.1),
+    0 18px 38px var(--wp-play-frame-shadow),
+    0 0 0 1px var(--wp-play-frame-glow);
+}
+
+canvas.play-area,
+.game-shell {
+  border-radius: var(--wp-play-frame-radius);
+  box-shadow:
+    inset 0 0 0 2px rgba(255, 255, 255, 0.16),
+    0 18px 46px rgba(0, 0, 0, 0.42),
+    0 0 0 1px rgba(114, 205, 255, 0.16);
+}
+
+.game-shell {
+  isolation: isolate;
+}
+
+@media (max-width: 640px) {
+  :root {
+    --wp-play-frame-radius: 18px;
+  }
+
+  .play-area:not(canvas),
+  .play-panel,
+  .game-stage,
+  .game-board,
+  .game-board-panel,
+  .playfield,
+  canvas.play-area,
+  .game-shell {
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 255, 255, 0.42),
+      0 10px 22px rgba(0, 0, 0, 0.2);
+  }
+}
