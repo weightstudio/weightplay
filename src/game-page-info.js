@@ -614,9 +614,9 @@
     if (!game) return "";
     const imageName = coverImages[gameId] || "weightplay-og.png";
     const fallbackName = imageName.endsWith(".webp") ? imageName.replace(/\.webp$/u, ".png") : "";
-    const fallbackAttrs = fallbackName
-      ? ` data-fallback-src="${escapeHtml(assetHref(fallbackName))}" onerror="this.onerror=null;this.src=this.dataset.fallbackSrc"`
-      : "";
+    const fallbackAttrs = ` data-final-src="${escapeHtml(assetHref("weightplay-logo.png"))}"${
+      fallbackName ? ` data-fallback-src="${escapeHtml(assetHref(fallbackName))}"` : ""
+    }`;
     return `
       <a class="game-info-related-card" href="${escapeHtml(gameHref(gameId))}">
         <img src="${escapeHtml(assetHref(imageName))}"${fallbackAttrs} alt="" width="320" height="320" loading="lazy" decoding="async" />
@@ -629,12 +629,19 @@
   }
 
   function repairRelatedImages(section) {
-    section.querySelectorAll(".game-info-related-card img[data-fallback-src]").forEach((image) => {
+    section.querySelectorAll(".game-info-related-card img").forEach((image) => {
       const fallback = image.dataset.fallbackSrc;
+      const finalFallback = image.dataset.finalSrc;
+      let attempts = 0;
       const useFallback = () => {
-        if (fallback && image.src !== fallback) image.src = fallback;
+        attempts += 1;
+        if (attempts === 1 && fallback && image.src !== fallback) {
+          image.src = fallback;
+          return;
+        }
+        if (finalFallback && image.src !== finalFallback) image.src = finalFallback;
       };
-      image.addEventListener("error", useFallback, { once: true });
+      image.addEventListener("error", useFallback);
       if (image.complete && image.naturalWidth === 0) useFallback();
     });
   }

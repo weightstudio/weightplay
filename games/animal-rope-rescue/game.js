@@ -27,6 +27,14 @@
       failText: "Keep moving the leaf while the fruit falls and bounce it toward the basket.",
       completeText: "Amazing rescue route! You cleared every vine stage.",
       stageLabel: "Stage {n}",
+      apple: "Apple",
+      banana: "Banana",
+      berry: "Berry",
+      lion: "Lion",
+      rabbit: "Rabbit",
+      panda: "Panda",
+      fox: "Fox",
+      koala: "Koala",
     },
     "zh-Hant": {
       title: "動物藤蔓救援",
@@ -51,6 +59,14 @@
       failText: "水果下落時繼續移動葉子，把它彈向籃子。",
       completeText: "太棒了！你完成了所有藤蔓救援關卡。",
       stageLabel: "第 {n} 關",
+      apple: "蘋果",
+      banana: "香蕉",
+      berry: "莓果",
+      lion: "獅子",
+      rabbit: "兔子",
+      panda: "熊貓",
+      fox: "狐狸",
+      koala: "無尾熊",
     },
   };
   const assets = {
@@ -167,7 +183,12 @@
         return `
           <button class="stage-card ${locked ? "locked" : ""}" type="button" data-stage="${stageNo}">
             <strong>${t("stageLabel", { n: stageNo })}</strong>
-            <span>${stage.animal} + ${stage.fruit}</span>
+            <span class="stage-card-route" aria-hidden="true">
+              <img src="${assets[stage.fruit]}" alt="" />
+              <b>→</b>
+              <img src="${assets[stage.animal]}" alt="" />
+            </span>
+            <small>${t(stage.fruit)} → ${t(stage.animal)}</small>
             <span>${"★".repeat(got)}${"☆".repeat(3 - got)}</span>
           </button>
         `;

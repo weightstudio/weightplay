@@ -6,6 +6,11 @@
 
   const text = {
     en: {
+      pageTitle: "Animal Shape Train - WeightPlay",
+      metaDescription:
+        "Play Animal Shape Train on WeightPlay, a gentle preschool animal train game for matching colorful shapes, practicing early logic, and building hand-eye coordination.",
+      metaOgTitle: "Animal Shape Train - Preschool Shape Matching Game",
+      metaOgDescription: "Help animal shape passengers board the right train cars in a short, picture-based preschool matching game.",
       gameTitle: "Animal Shape Train",
       language: "Language",
       chooseStage: "Choose Stage",
@@ -36,6 +41,10 @@
       },
     },
     "zh-Hant": {
+      pageTitle: "動物形狀小火車 - WeightPlay",
+      metaDescription: "在 WeightPlay 遊玩動物形狀小火車，幫可愛的形狀乘客搭上正確車廂，練習形狀辨識、基礎邏輯與手眼協調。",
+      metaOgTitle: "動物形狀小火車 - 兒童形狀配對遊戲",
+      metaOgDescription: "幫動物形狀乘客搭上正確的小火車車廂，適合短時間遊玩的親子形狀配對遊戲。",
       gameTitle: "動物形狀小火車",
       language: "語言",
       chooseStage: "選擇關卡",
@@ -156,10 +165,25 @@
 
   function localizeStatic() {
     document.documentElement.lang = locale === "zh-Hant" ? "zh-Hant" : "en";
+    updatePageMeta();
     document.querySelectorAll("[data-ui]").forEach((node) => {
       node.textContent = t(node.dataset.ui);
     });
     nodes.localeSelect.value = locale;
+  }
+
+  function updateMetaContent(selector, value) {
+    const node = document.querySelector(selector);
+    if (node) node.setAttribute("content", value);
+  }
+
+  function updatePageMeta() {
+    document.title = t("pageTitle");
+    updateMetaContent('meta[name="description"]', t("metaDescription"));
+    updateMetaContent('meta[property="og:title"]', t("metaOgTitle"));
+    updateMetaContent('meta[property="og:description"]', t("metaOgDescription"));
+    updateMetaContent('meta[name="twitter:title"]', t("metaOgTitle"));
+    updateMetaContent('meta[name="twitter:description"]', t("metaOgDescription"));
   }
 
   function renderStageGrid() {
@@ -196,6 +220,15 @@
     renderStageGrid();
   }
 
+  function focusPlayPanel() {
+    const targetY = Math.max(0, nodes.playPanel.getBoundingClientRect().top + window.scrollY - 8);
+    window.scrollTo({ top: targetY, left: 0, behavior: "auto" });
+    requestAnimationFrame(() => {
+      const refreshedY = Math.max(0, nodes.playPanel.getBoundingClientRect().top + window.scrollY - 8);
+      window.scrollTo({ top: refreshedY, left: 0, behavior: "auto" });
+    });
+  }
+
   function startStage(index) {
     currentStage = index;
     currentTask = 0;
@@ -207,6 +240,7 @@
     nodes.resultPanel.classList.add("hidden");
     renderCars();
     renderTask();
+    focusPlayPanel();
     playSound("start");
     track("game_start", { level: index + 1 });
   }
