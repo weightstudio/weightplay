@@ -90,25 +90,32 @@
   };
 
   const itemIcons = {
-    fruit: "\u{1F34C}",
-    water: "\u{1F4A7}",
-    brush: "\u{1FAA5}",
-    toy: "\u{1F9F8}",
-    leaf: "\u{1F33F}",
-    shower: "\u{1F6BF}",
-    fish: "\u{1F41F}",
-    ball: "\u{1F3C0}",
+    fruit: "../../assets/tiny-weather-tool-apple.svg",
+    water: "../../assets/tiny-weather-tool-towel.svg",
+    brush: "../../assets/tiny-weather-tool-towel.svg",
+    toy: "../../assets/tiny-weather-tool-blanket.svg",
+    leaf: "../../assets/tiny-weather-tool-apple.svg",
+    shower: "../../assets/tiny-weather-tool-towel.svg",
+    fish: "../../assets/tiny-weather-tool-apple.svg",
+    ball: "../../assets/tiny-weather-tool-blanket.svg",
+  };
+
+  const animalAssets = {
+    lion: "../../assets/animal-zoo-idle-lion.webp",
+    panda: "../../assets/animal-zoo-panda.png",
+    elephant: "../../assets/animal-zoo-elephant.png",
+    penguin: "../../assets/animal-zoo-penguin.png",
+    giraffe: "../../assets/animal-zoo-idle-giraffe.png",
+    koala: "../../assets/tiny-weather-animal-koala.png",
   };
 
   const stages = [
-    { animal: "lion", icon: "\u{1F981}", tasks: ["fruit", "water", "brush", "toy"], pool: ["fruit", "water", "brush", "toy", "leaf"] },
-    { animal: "panda", icon: "\u{1F43C}", tasks: ["leaf", "water", "brush", "ball"], pool: ["leaf", "water", "brush", "ball", "fish"] },
-    { animal: "elephant", icon: "\u{1F418}", tasks: ["shower", "fruit", "water", "toy", "brush"], pool: ["shower", "fruit", "water", "toy", "brush"] },
-    { animal: "penguin", icon: "\u{1F427}", tasks: ["fish", "water", "ball", "brush", "fish"], pool: ["fish", "water", "ball", "brush", "fruit"] },
-    { animal: "giraffe", icon: "\u{1F992}", tasks: ["leaf", "water", "fruit", "brush", "toy"], pool: ["leaf", "water", "fruit", "brush", "toy"] },
-    { animal: "monkey", icon: "\u{1F412}", tasks: ["fruit", "ball", "water", "toy", "brush", "fruit"], pool: ["fruit", "ball", "water", "toy", "brush"] },
-    { animal: "koala", icon: "\u{1F428}", tasks: ["leaf", "water", "brush", "toy", "fruit"], pool: ["leaf", "water", "brush", "toy", "fruit", "ball"] },
-    { animal: "zebra", icon: "\u{1F993}", tasks: ["brush", "water", "ball", "shower", "fruit", "leaf"], pool: ["brush", "water", "ball", "shower", "fruit", "leaf"] },
+    { animal: "lion", tasks: ["fruit", "water", "brush", "toy"], pool: ["fruit", "water", "brush", "toy", "leaf"] },
+    { animal: "panda", tasks: ["leaf", "water", "brush", "ball"], pool: ["leaf", "water", "brush", "ball", "fish"] },
+    { animal: "elephant", tasks: ["shower", "fruit", "water", "toy", "brush"], pool: ["shower", "fruit", "water", "toy", "brush"] },
+    { animal: "penguin", tasks: ["fish", "water", "ball", "brush", "fish"], pool: ["fish", "water", "ball", "brush", "fruit"] },
+    { animal: "giraffe", tasks: ["leaf", "water", "fruit", "brush", "toy"], pool: ["leaf", "water", "fruit", "brush", "toy"] },
+    { animal: "koala", tasks: ["leaf", "water", "brush", "toy", "fruit"], pool: ["leaf", "water", "brush", "toy", "fruit", "ball"] },
   ];
 
   const $ = (id) => document.getElementById(id);
@@ -195,7 +202,7 @@
       button.type = "button";
       if (stageNo > unlocked) button.classList.add("locked");
       button.innerHTML = `
-        <b class="stage-icon">${stage.icon}</b>
+        <b class="stage-icon"><img src="${animalAssets[stage.animal]}" alt="" /></b>
         <strong>${t("stage", { n: stageNo })} - ${t(`animals.${stage.animal}`)}</strong>
         <span>${"★".repeat(stars[stageNo] || 0)}${"☆".repeat(3 - (stars[stageNo] || 0))}</span>
       `;
@@ -236,7 +243,7 @@
     const wanted = stage.tasks[currentTask];
     nodes.stageText.textContent = t("stage", { n: currentStage + 1 });
     nodes.progressFill.style.width = `${(currentTask / stage.tasks.length) * 100}%`;
-    nodes.animalEmoji.textContent = stage.icon;
+    nodes.animalEmoji.innerHTML = `<img src="${animalAssets[stage.animal]}" alt="" />`;
     nodes.animalName.textContent = t(`animals.${stage.animal}`);
     nodes.requestText.textContent = t("task", { animal: t(`animals.${stage.animal}`), item: t(`items.${wanted}`) });
     nodes.feedbackText.textContent = "";
@@ -253,7 +260,7 @@
       button.type = "button";
       button.draggable = true;
       button.dataset.item = item;
-      button.innerHTML = `<b>${itemIcons[item]}</b><span>${t(`items.${item}`)}</span>`;
+      button.innerHTML = `<b><img src="${itemIcons[item]}" alt="" /></b><span>${t(`items.${item}`)}</span>`;
       button.addEventListener("click", () => chooseItem(item, button));
       button.addEventListener("dragstart", (event) => {
         event.dataTransfer.setData("text/plain", item);
@@ -350,19 +357,26 @@
   }
 
   function initLoading() {
-    let progress = 0;
-    const timer = setInterval(() => {
-      progress = Math.min(100, progress + 20);
+    const assets = [...new Set(["../../assets/zoo-helper-day-cover.png", ...Object.values(animalAssets), ...Object.values(itemIcons)])];
+    let loaded = 0;
+    const finish = () => {
+      loaded += 1;
+      const progress = Math.round((loaded / assets.length) * 100);
       nodes.loadingText.textContent = `${progress}%`;
       nodes.loadingFill.style.width = `${progress}%`;
-      if (progress >= 100) {
-        clearInterval(timer);
+      if (loaded >= assets.length) {
         setTimeout(() => {
           nodes.loadingPanel.classList.add("hidden");
           track("game_ready");
         }, 180);
       }
-    }, 110);
+    };
+    assets.forEach((src) => {
+      const img = new Image();
+      img.onload = finish;
+      img.onerror = finish;
+      img.src = src;
+    });
   }
 
   function bindEvents() {

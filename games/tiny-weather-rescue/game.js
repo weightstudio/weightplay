@@ -77,7 +77,7 @@
       reportTry: "Nice practice! Look at what the animal needs, then try a helpful item.",
       hint: "Tap a care item, or drag it to the animal.",
       correct: "Happy helper!",
-      wrong: "That made the animal sad.",
+      wrong: "Try another care item.",
       goal: "Goal {target}",
       rain: "It is raining.",
       puddle: "The animal is wet.",
@@ -133,7 +133,7 @@
       reportTry: "\u597d\u52aa\u529b\uff01\u5148\u770b\u770b\u5c0f\u52d5\u7269\u9047\u5230\u4ec0\u9ebc\u554f\u984c\uff0c\u518d\u9078\u7167\u9867\u9053\u5177\u3002",
       hint: "\u9ede\u7167\u9867\u9053\u5177\uff0c\u6216\u62d6\u5230\u5c0f\u52d5\u7269\u8eab\u4e0a\u3002",
       correct: "\u5c0f\u52d5\u7269\u958b\u5fc3\u4e86\uff01",
-      wrong: "\u5c0f\u52d5\u7269\u96e3\u904e\u4e86\u3002",
+      wrong: "\u518d\u8a66\u4e00\u500b\u7167\u9867\u9053\u5177\u3002",
       goal: "\u76ee\u6a19 {target}",
       rain: "\u5916\u9762\u5728\u4e0b\u96e8\u3002",
       puddle: "\u5c0f\u52d5\u7269\u6fd5\u6fd5\u7684\u3002",
@@ -192,6 +192,7 @@
   let currentStage = 0;
   let roundIndex = 0;
   let score = 0;
+  let mistakes = 0;
   let running = false;
   let busy = false;
   let dragState = null;
@@ -283,6 +284,7 @@
     currentStage = index;
     roundIndex = 0;
     score = 0;
+    mistakes = 0;
     running = true;
     busy = false;
     nodes.menuPanel.classList.add("hidden");
@@ -452,16 +454,22 @@
       nodes.hintText.textContent = t("correct");
       playSound("success");
     } else {
+      mistakes += 1;
       button.classList.add("wrong");
       zone?.classList.add("sad");
       showFace("\u{1F622}", "sad");
       nodes.hintText.textContent = t("wrong");
       playSound("wrong");
     }
-    track("weather_tool", { stage: stage.id, problem: problemKey, tool, correct });
+    track("weather_tool", { stage: stage.id, problem: problemKey, tool, correct, mistakes });
     window.setTimeout(() => {
-      roundIndex += 1;
       busy = false;
+      if (!correct) {
+        button.classList.remove("wrong");
+        zone?.classList.remove("sad");
+        return;
+      }
+      roundIndex += 1;
       if (roundIndex >= stage.rounds.length) {
         finishStage();
         return;
@@ -479,8 +487,8 @@
   }
 
   function starCount(stage) {
-    if (score >= stage.rounds.length) return 3;
-    if (score >= stage.target) return 2;
+    if (score >= stage.rounds.length && mistakes === 0) return 3;
+    if (score >= stage.target && mistakes <= 2) return 2;
     if (score >= Math.max(1, stage.target - 1)) return 1;
     return 0;
   }
@@ -508,6 +516,7 @@
       improvementPercent,
       stars,
       total: stage.rounds.length,
+      mistakes,
     });
   }
 
@@ -515,7 +524,7 @@
     const progress = readProgress()[stage.id] || {};
     const previousBest = Number(progress.previousBest) || 0;
     const improvementPercent = Number(progress.improvementPercent) || 0;
-    const messageKey = score >= stage.target ? (score >= stage.rounds.length ? "reportGreat" : "reportGood") : "reportTry";
+    const messageKey = score >= stage.target ? (mistakes <= 1 ? "reportGreat" : "reportGood") : "reportTry";
     nodes.skillReport.innerHTML = `
       <h2>${t("reportTitle")}</h2>
       <dl>
@@ -550,7 +559,7 @@
     nodes.nextStageBtn.classList.toggle("hidden", !cleared || stage.id >= stages.length);
     renderStageGrid();
     playSound(cleared ? "success" : "wrong");
-    track("game_complete", { stage: stage.id, score, stars, cleared });
+    track("game_complete", { stage: stage.id, score, stars, cleared, mistakes });
   }
 
   function showMenu() {

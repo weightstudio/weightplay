@@ -404,12 +404,12 @@ window.WONDER_LOBBY = {
       ageLabel: { en: "3+", "zh-Hant": "3+" },
       href: "games/shape-train/",
       description: {
-        en: "Match animal cargo by shape and color in a gentle train puzzle.",
-        "zh-Hant": "依照形狀和顏色，把動物貨物放到小火車上。",
+        en: "Tap or drag smiling shape friends onto the matching train cars.",
+        "zh-Hant": "點擊或拖曳可愛形狀朋友，送上相同形狀的小火車車廂。",
       },
       meta: {
-        en: ["Shapes", "Colors", "Train"],
-        "zh-Hant": ["形狀", "顏色", "小火車"],
+        en: ["Tap or Drag", "Shape Train", "3+"],
+        "zh-Hant": ["點擊拖曳", "形狀火車", "3+"],
       },
       art: {
         kind: "image",

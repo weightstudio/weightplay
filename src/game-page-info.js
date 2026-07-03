@@ -736,12 +736,6 @@
     `;
   }
 
-  function rerenderAfterLocaleSelect() {
-    window.requestAnimationFrame(() => {
-      window.requestAnimationFrame(render);
-    });
-  }
-
   function render() {
     const id = currentGameId();
     const baseGame = games[id];
@@ -885,13 +879,11 @@
   document.addEventListener("change", (event) => {
     if (event.target?.id === "localeSelect") {
       window.WonderI18n?.setLocale?.(event.target.value);
-      rerenderAfterLocaleSelect();
     }
   });
   document.addEventListener("input", (event) => {
     if (event.target?.id === "localeSelect") {
       window.WonderI18n?.setLocale?.(event.target.value);
-      rerenderAfterLocaleSelect();
     }
   });
 })();
