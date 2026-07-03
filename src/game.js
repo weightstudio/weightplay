@@ -1682,7 +1682,7 @@ function renderUpgradeRow(type, icon, title, desc, currency = "coin") {
   const canBuy = currency === "diamond" ? readWallet().diamonds >= cost : profile.coins >= cost;
   const costIcon =
     currency === "diamond"
-      ? `<img class="cost-diamond" src="assets/shape-token-diamond.svg" alt="" />`
+      ? `<img class="cost-diamond" src="assets/weightplay-diamond.svg" alt="" />`
       : `<img class="cost-coin" src="assets/coin.png" alt="" />`;
   return `
     <div class="profile-row">

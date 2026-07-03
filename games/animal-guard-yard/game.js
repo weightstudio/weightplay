@@ -475,7 +475,7 @@
     if (token === "coin") {
       return `<span class="cost-token"><img class="cost-icon" src="../../assets/coin.png" alt="" draggable="false" /><span>${amount}</span></span>`;
     }
-    return `<span class="cost-token diamond-token" aria-label="${t("diamondToken")} ${amount}"><img class="cost-icon" src="../../assets/shape-token-diamond.svg" alt="" draggable="false" /><span>${amount}</span></span>`;
+    return `<span class="cost-token diamond-token" aria-label="${t("diamondToken")} ${amount}"><img class="cost-icon" src="../../assets/weightplay-diamond.svg" alt="" draggable="false" /><span>${amount}</span></span>`;
   }
 
   function renderKennel() {
@@ -1084,7 +1084,7 @@
       "../../assets/menu-character.png",
       "../../assets/upgrade-coin.png",
       "../../assets/coin.png",
-      "../../assets/shape-token-diamond.svg",
+      "../../assets/weightplay-diamond.svg",
     ];
     let loaded = 0;
     const update = () => {
