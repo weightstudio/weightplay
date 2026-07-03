@@ -132,7 +132,10 @@
   function playNodeAnimation(node, keyframes, options) {
     if (!node || typeof node.animate !== "function") return wait(options.duration || 0);
     const animation = node.animate(keyframes, options);
-    return animation.finished.catch(() => undefined);
+    return Promise.race([
+      animation.finished.catch(() => undefined),
+      wait((options.duration || 0) + 90),
+    ]);
   }
 
   function clamp(value, min, max) {
@@ -216,6 +219,7 @@
   }
 
   function showMenu() {
+    document.body.classList.remove("is-bakery-playing");
     nodes.menuPanel.classList.remove("hidden");
     nodes.playPanel.classList.add("hidden");
     nodes.resultPanel.classList.add("hidden");
@@ -231,6 +235,7 @@
     score = 0;
     busy = false;
     board = makeBoard(stage.palette);
+    document.body.classList.add("is-bakery-playing");
     nodes.menuPanel.classList.add("hidden");
     nodes.playPanel.classList.remove("hidden");
     nodes.resultPanel.classList.add("hidden");

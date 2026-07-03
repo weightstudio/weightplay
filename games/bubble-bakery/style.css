@@ -43,6 +43,38 @@ select {
   gap: 12px;
 }
 
+body.is-bakery-playing {
+  height: 100svh;
+  overflow: hidden;
+}
+
+body.is-bakery-playing .bakery-game {
+  height: 100svh;
+  min-height: 100svh;
+  overflow: hidden;
+  align-content: stretch;
+  grid-template-rows: auto minmax(0, 1fr);
+  padding-bottom: calc(12px + env(safe-area-inset-bottom));
+}
+
+body.is-bakery-playing .topbar {
+  grid-template-columns: 46px 1fr;
+}
+
+body.is-bakery-playing .language-picker {
+  display: none;
+}
+
+body.is-bakery-playing .title-block p {
+  display: none;
+}
+
+body.is-bakery-playing .play-panel {
+  height: auto;
+  max-height: none;
+  align-self: stretch;
+}
+
 .topbar {
   display: grid;
   grid-template-columns: 46px 1fr auto;
