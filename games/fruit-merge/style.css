@@ -31,12 +31,12 @@ select {
 }
 
 .fruit-game {
-  width: min(100%, 760px);
+  width: min(100%, 1040px);
   min-height: 100svh;
   margin: 0 auto;
   padding: max(12px, env(safe-area-inset-top)) 12px calc(16px + env(safe-area-inset-bottom));
   display: grid;
-  grid-template-rows: auto auto minmax(0, 1fr) auto;
+  grid-template-rows: auto minmax(0, 1fr);
   gap: 10px;
 }
 
@@ -115,16 +115,50 @@ select {
   font-weight: 900;
 }
 
+.fixed-shell-host {
+  min-height: 0;
+  display: grid;
+  place-items: center;
+}
+
+.fixed-game-shell {
+  width: min(100%, 980px);
+  max-height: calc(100svh - 92px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+  aspect-ratio: 16 / 9;
+  min-height: 0;
+  padding: clamp(8px, 1.3vw, 14px);
+  display: grid;
+  grid-template-columns: minmax(0, 0.62fr) minmax(210px, 0.38fr);
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  grid-template-areas:
+    "board score"
+    "board goal"
+    "board controls";
+  gap: clamp(7px, 1.15vw, 12px);
+  overflow: hidden;
+  border: clamp(3px, 0.65vw, 5px) solid rgba(255, 255, 255, 0.22);
+  border-radius: 22px;
+  background:
+    radial-gradient(circle at 22% 14%, rgba(255, 218, 103, 0.22), transparent 22rem),
+    radial-gradient(circle at 80% 8%, rgba(95, 228, 168, 0.18), transparent 17rem),
+    linear-gradient(155deg, rgba(20, 33, 54, 0.98), rgba(32, 51, 73, 0.96));
+  box-shadow:
+    inset 0 0 0 2px rgba(255, 255, 255, 0.12),
+    0 18px 46px rgba(0, 0, 0, 0.36);
+}
+
 .scorebar {
+  grid-area: score;
+  min-height: 0;
   display: grid;
   grid-template-columns: 1fr 1fr 1.15fr;
-  gap: 8px;
+  gap: clamp(5px, 0.85vw, 8px);
 }
 
 .scorebar div {
   min-width: 0;
-  min-height: 72px;
-  padding: 9px 10px;
+  min-height: 0;
+  padding: clamp(5px, 0.9vw, 9px) clamp(6px, 1vw, 10px);
   border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.08);
@@ -133,7 +167,7 @@ select {
 .scorebar span {
   display: block;
   color: rgba(255, 255, 255, 0.68);
-  font-size: 12px;
+  font-size: clamp(0.56rem, 1.05vw, 0.75rem);
   font-weight: 900;
 }
 
@@ -144,16 +178,18 @@ select {
   text-overflow: ellipsis;
   white-space: nowrap;
   color: #ffd35d;
-  font-size: clamp(18px, 5vw, 28px);
+  font-size: clamp(1rem, 2.1vw, 1.7rem);
   line-height: 1.05;
 }
 
 .merge-goal {
-  min-height: 58px;
-  padding: 8px 10px;
+  grid-area: goal;
+  min-height: 0;
+  align-self: start;
+  padding: clamp(6px, 1vw, 10px);
   display: grid;
-  grid-template-columns: 48px minmax(0, 1fr) auto;
-  gap: 10px;
+  grid-template-columns: clamp(34px, 5.2vw, 48px) minmax(0, 1fr);
+  gap: clamp(6px, 1vw, 10px);
   align-items: center;
   border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 8px;
@@ -161,15 +197,15 @@ select {
 }
 
 .goal-token {
-  width: 46px;
-  height: 46px;
+  width: clamp(34px, 5.2vw, 46px);
+  height: clamp(34px, 5.2vw, 46px);
   display: grid;
   place-items: center;
 }
 
 .goal-token img {
-  width: 46px;
-  height: 46px;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
   filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.24));
 }
@@ -183,14 +219,14 @@ select {
 .goal-copy span,
 .goal-text {
   color: rgba(255, 255, 255, 0.68);
-  font-size: 12px;
+  font-size: clamp(0.56rem, 1.05vw, 0.75rem);
   font-weight: 900;
 }
 
 .goal-copy strong {
   overflow: hidden;
   color: #ffd35d;
-  font-size: clamp(16px, 4.4vw, 22px);
+  font-size: clamp(0.92rem, 1.8vw, 1.35rem);
   font-weight: 1000;
   line-height: 1.05;
   text-overflow: ellipsis;
@@ -214,14 +250,15 @@ select {
 }
 
 .goal-text {
-  max-width: 150px;
+  grid-column: 1 / -1;
+  max-width: none;
   color: #9eeaff;
-  text-align: right;
+  text-align: left;
 }
 
 #nextFruitText {
-  width: 54px;
-  height: 54px;
+  width: clamp(34px, 5.2vw, 54px);
+  height: clamp(34px, 5.2vw, 54px);
   margin-top: -2px;
   display: grid;
   place-items: center;
@@ -231,25 +268,28 @@ select {
 
 #nextFruitText img,
 #nextFruitText svg {
-  width: 54px;
-  height: 54px;
+  width: 100%;
+  height: 100%;
   display: block;
   object-fit: contain;
   filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.24));
 }
 
 .board-shell {
+  grid-area: board;
   position: relative;
   min-height: 0;
+  height: 100%;
   display: grid;
   place-items: center;
+  overflow: hidden;
 }
 
 #gameCanvas {
-  width: min(100%, calc((100svh - 254px) * 0.692));
+  width: auto;
   max-width: 720px;
-  height: auto;
-  max-height: calc(100svh - 254px);
+  height: 100%;
+  max-height: 100%;
   aspect-ratio: 720 / 1040;
   border: 4px solid rgba(255, 255, 255, 0.22);
   border-radius: 8px;
@@ -259,14 +299,17 @@ select {
 }
 
 .controls {
+  grid-area: controls;
+  align-self: end;
   display: grid;
-  grid-template-columns: 1.3fr 1fr;
-  gap: 10px;
+  grid-template-columns: 1fr;
+  gap: clamp(6px, 1vw, 10px);
 }
 
 .controls button {
   width: 100%;
-  font-size: 18px;
+  min-height: clamp(34px, 5vw, 44px);
+  font-size: clamp(0.82rem, 1.55vw, 1.1rem);
 }
 
 #restartBtn {
@@ -469,39 +512,59 @@ select {
     min-height: 40px;
   }
 
+  .fixed-game-shell {
+    width: 100%;
+    max-height: none;
+    padding: 5px;
+    grid-template-columns: minmax(0, 0.66fr) minmax(88px, 0.34fr);
+    gap: 5px;
+    border-radius: 15px;
+  }
+
+  .scorebar {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+
   .scorebar div {
-    min-height: 66px;
-    padding: 8px;
+    padding: 4px 5px;
+  }
+
+  .scorebar span,
+  .goal-copy span,
+  .goal-text {
+    font-size: 0.5rem;
+  }
+
+  .scorebar strong,
+  .goal-copy strong {
+    font-size: 0.72rem;
   }
 
   .merge-goal {
-    min-height: 52px;
-    grid-template-columns: 42px minmax(0, 1fr);
-    gap: 8px;
-    padding: 6px 8px;
+    grid-template-columns: 26px minmax(0, 1fr);
+    gap: 4px;
+    padding: 5px;
   }
 
   .goal-token,
-  .goal-token img {
-    width: 40px;
-    height: 40px;
+  #nextFruitText {
+    width: 26px;
+    height: 26px;
   }
 
-  .goal-text {
-    grid-column: 1 / -1;
-    max-width: none;
-    text-align: left;
+  .goal-track {
+    height: 5px;
   }
 
-  #nextFruitText,
-  #nextFruitText img,
-  #nextFruitText svg {
-    width: 48px;
-    height: 48px;
+  .controls button {
+    min-height: 28px;
+    border-radius: 7px;
+    font-size: 0.62rem;
   }
 
   #gameCanvas {
-    max-height: calc(100svh - 260px);
+    border-width: 3px;
   }
 
   .result-stats {

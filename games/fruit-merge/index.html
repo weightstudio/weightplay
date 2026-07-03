@@ -18,7 +18,7 @@
     <meta name="twitter:card" content="summary_large_image" />
     <title>Animal Merge Tower - WeightPlay</title>
     <link rel="canonical" href="https://weightplay.com/games/fruit-merge/" />
-    <link rel="stylesheet" href="style.css?v=20260703-fruit-goal1" />
+    <link rel="stylesheet" href="style.css?v=20260703-fixed-shell1" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
     <script type="application/ld+json">
 {
@@ -78,39 +78,43 @@
         </label>
       </header>
 
-      <section class="scorebar" aria-label="Score">
-        <div>
-          <span id="scoreLabel">Score</span>
-          <strong id="scoreText">0</strong>
-        </div>
-        <div>
-          <span id="bestLabel">Best</span>
-          <strong id="bestText">0</strong>
-        </div>
-        <div>
-          <span id="nextLabel">Next</span>
-          <strong id="nextFruitText" class="next-fruit-preview" aria-label="Blueberry"></strong>
-        </div>
-      </section>
+      <section id="playPanel" class="fixed-shell-host">
+        <div class="fixed-game-shell play-area" aria-label="Animal Merge Tower fixed game screen">
+          <section class="scorebar" aria-label="Score">
+            <div>
+              <span id="scoreLabel">Score</span>
+              <strong id="scoreText">0</strong>
+            </div>
+            <div>
+              <span id="bestLabel">Best</span>
+              <strong id="bestText">0</strong>
+            </div>
+            <div>
+              <span id="nextLabel">Next</span>
+              <strong id="nextFruitText" class="next-fruit-preview" aria-label="Blueberry"></strong>
+            </div>
+          </section>
 
-      <section class="merge-goal" aria-label="Merge progress">
-        <div class="goal-token" id="largestFruitToken"></div>
-        <div class="goal-copy">
-          <span id="largestLabel">Largest</span>
-          <strong id="largestFruitText">Mouse Ball</strong>
-          <div class="goal-track"><i id="goalFill"></i></div>
+          <section class="merge-goal" aria-label="Merge progress">
+            <div class="goal-token" id="largestFruitToken"></div>
+            <div class="goal-copy">
+              <span id="largestLabel">Largest</span>
+              <strong id="largestFruitText">Mouse Ball</strong>
+              <div class="goal-track"><i id="goalFill"></i></div>
+            </div>
+            <span id="goalText" class="goal-text">Goal: Lion King Ball</span>
+          </section>
+
+          <section class="board-shell">
+            <canvas id="gameCanvas" width="720" height="1040" aria-label="Fruit merge game board"></canvas>
+            <div id="toast" class="toast hidden" aria-live="polite"></div>
+          </section>
+
+          <section class="controls">
+            <button id="dropBtn" type="button">Drop</button>
+            <button id="restartBtn" type="button">Restart</button>
+          </section>
         </div>
-        <span id="goalText" class="goal-text">Goal: Lion King Ball</span>
-      </section>
-
-      <section class="board-shell">
-        <canvas id="gameCanvas" width="720" height="1040" aria-label="Fruit merge game board"></canvas>
-        <div id="toast" class="toast hidden" aria-live="polite"></div>
-      </section>
-
-      <section class="controls">
-        <button id="dropBtn" type="button">Drop</button>
-        <button id="restartBtn" type="button">Restart</button>
       </section>
 
       <section id="menuPanel" class="menu-panel">
@@ -141,7 +145,7 @@
       </section>
     </main>
 
-    <script src="../../src/site-config.js?v=20260703-fruit-goal1"></script>
+    <script src="../../src/site-config.js?v=20260703-fixed-shell1"></script>
     <script src="../../src/version.js?v=20260701-version2"></script>
     <script src="../../src/analytics.js?v=20260701-analytics2"></script>
     <script>
@@ -153,7 +157,7 @@
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
     <script src="../../src/vendor/matter.min.js?v=20260630-matter1"></script>
     <script src="../../src/vendor/matter-global.js?v=20260630-matter1"></script>
-    <script src="game.js?v=20260703-fruit-goal1"></script>
+    <script src="game.js?v=20260703-fixed-shell1"></script>
     <script src="../../src/game-page-info.js?v=20260703-scroll-guide1"></script>
   </body>
 </html>
