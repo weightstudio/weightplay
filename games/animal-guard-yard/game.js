@@ -65,6 +65,11 @@
       roleTankMelee: "Tank Melee",
       roleFastRanged: "Fast Ranged",
       roleCrossLane: "Cross-lane",
+      threatPreview: "Stage threats",
+      threatNormal: "Normal",
+      threatFast: "Fast",
+      threatShield: "Shield",
+      threatBoss: "Boss",
       fast: "Fast zombies",
       shield: "Shield zombies",
       swarm: "Swarm night",
@@ -132,6 +137,11 @@
       roleTankMelee: "\u5766\u514b\u8fd1\u6230",
       roleFastRanged: "\u5feb\u901f\u9060\u7a0b",
       roleCrossLane: "\u8de8\u7dda\u5c04\u64ca",
+      threatPreview: "\u95dc\u5361\u6575\u4eba",
+      threatNormal: "\u4e00\u822c",
+      threatFast: "\u5feb\u901f",
+      threatShield: "\u76fe\u724c",
+      threatBoss: "Boss",
       fast: "\u5feb\u901f\u6bad\u5c4d",
       shield: "\u76fe\u724c\u6bad\u5c4d",
       swarm: "\u591c\u665a\u7fa4\u8972",
@@ -439,6 +449,7 @@
         <b class="stage-animal">${animalSprite(iconUnit)}</b>
         <strong>${t("stage", { n: stageNo })}</strong>
         <span>${t(stage.titleKey)}</span>
+        ${stageThreatPreview(stage)}
       `;
       button.addEventListener("click", () => {
         if (stageNo > unlocked) {
@@ -471,6 +482,26 @@
         <img src="${spriteAssets[type] || spriteAssets.normal}" alt="" draggable="false" />
       </span>
     `;
+  }
+
+  function stageThreatPreview(stage) {
+    const types = [...new Set(stage.zombies.map((item) => item.type))];
+    if (stage.boss) types.push("boss");
+    const icons = types.slice(0, 4).map((type) => {
+      const label = stageThreatLabel(type);
+      return `<span class="stage-threat" title="${label}">${zombieSprite(type)}<em>${label}</em></span>`;
+    }).join("");
+    return `<div class="stage-threats" aria-label="${t("threatPreview")}">${icons}</div>`;
+  }
+
+  function stageThreatLabel(type) {
+    const key = {
+      normal: "threatNormal",
+      fast: "threatFast",
+      shield: "threatShield",
+      boss: "threatBoss",
+    }[type] || "threatNormal";
+    return t(key);
   }
 
   function costToken(token, amount) {

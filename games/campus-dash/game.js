@@ -119,6 +119,9 @@
       speed: 390,
       spawnTimer: 0.4,
       coinTimer: 0.9,
+      lanePulse: 0,
+      lanePulseLane: 1,
+      lanePulseDir: 0,
       obstacles: [],
       coins: [],
       sparks: [],
@@ -184,6 +187,7 @@
     state.x += (lanes[state.targetLane] - state.x) * Math.min(1, dt * 12);
     state.spawnTimer -= dt;
     state.coinTimer -= dt;
+    state.lanePulse = Math.max(0, state.lanePulse - dt);
 
     if (state.spawnTimer <= 0) {
       spawnObstacle();
@@ -252,7 +256,12 @@
 
   function moveLane(delta) {
     if (!state.running) return;
-    state.targetLane = Math.max(0, Math.min(2, state.targetLane + delta));
+    const nextLane = Math.max(0, Math.min(2, state.targetLane + delta));
+    if (nextLane === state.targetLane) return;
+    state.targetLane = nextLane;
+    state.lanePulse = 0.36;
+    state.lanePulseLane = nextLane;
+    state.lanePulseDir = Math.sign(delta);
     window.WonderSound?.play("click");
   }
 
@@ -423,7 +432,42 @@
       ctx.stroke();
     }
 
+    drawLanePulse(top, bottom, topY, bottomY);
     drawLaneHint();
+  }
+
+  function drawLanePulse(top, bottom, topY, bottomY) {
+    if (!state.lanePulse) return;
+    const lane = state.lanePulseLane;
+    const progress = 1 - state.lanePulse / 0.36;
+    const alpha = Math.max(0, state.lanePulse / 0.36);
+    const inset = 10 + progress * 18;
+    ctx.save();
+    ctx.globalAlpha = 0.42 * alpha;
+    ctx.fillStyle = "#fef08a";
+    ctx.beginPath();
+    ctx.moveTo(top[lane] + inset * 0.38, topY + inset);
+    ctx.lineTo(top[lane + 1] - inset * 0.38, topY + inset);
+    ctx.lineTo(bottom[lane + 1] - inset, bottomY - inset * 2);
+    ctx.lineTo(bottom[lane] + inset, bottomY - inset * 2);
+    ctx.closePath();
+    ctx.fill();
+
+    ctx.globalAlpha = 0.72 * alpha;
+    ctx.strokeStyle = "#fef9c3";
+    ctx.lineWidth = 7;
+    ctx.lineCap = "round";
+    const centerX = lanes[lane];
+    const arrowY = H - 134 - progress * 24;
+    const arrowDir = state.lanePulseDir || 1;
+    ctx.beginPath();
+    ctx.moveTo(centerX - arrowDir * 46, arrowY);
+    ctx.lineTo(centerX + arrowDir * 18, arrowY);
+    ctx.lineTo(centerX + arrowDir * 2, arrowY - 16);
+    ctx.moveTo(centerX + arrowDir * 18, arrowY);
+    ctx.lineTo(centerX + arrowDir * 2, arrowY + 16);
+    ctx.stroke();
+    ctx.restore();
   }
 
   function drawHero() {
