@@ -95,6 +95,7 @@
     targetAnimal: $("targetAnimal"),
     vineButton: $("vineButton"),
     cutNowBtn: $("cutNowBtn"),
+    aimGuide: $("aimGuide"),
     targetGuide: $("targetGuide"),
     fallGuide: $("fallGuide"),
     fruit: $("fruit"),
@@ -194,6 +195,7 @@
     nodes.cutNowBtn.disabled = false;
     nodes.cutNowBtn.classList.remove("cut");
     nodes.vineButton.style.left = `${stage.startX}%`;
+    nodes.aimGuide.classList.add("active");
     nodes.hintText.textContent = t("hint");
     positionElements();
   }
@@ -203,11 +205,26 @@
   }
 
   function positionElements() {
+    const stage = stages[currentStage - 1];
     nodes.fruit.style.left = `${fruit.x}%`;
     nodes.fruit.style.top = `${fruit.y}%`;
     nodes.fruit.style.rotate = `${fruit.rot}deg`;
     nodes.fallGuide.style.left = `${fruit.x}%`;
     nodes.leafPaddle.style.left = `${paddleX}%`;
+    updateAimGuide(paddleX, stage.targetX);
+  }
+
+  function updateAimGuide(fromX, toX) {
+    const startY = 78;
+    const endY = 82;
+    const dx = toX - fromX;
+    const dy = endY - startY;
+    const length = Math.sqrt(dx * dx + dy * dy);
+    const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+    nodes.aimGuide.style.left = `${fromX}%`;
+    nodes.aimGuide.style.top = `${startY}%`;
+    nodes.aimGuide.style.width = `${length}%`;
+    nodes.aimGuide.style.rotate = `${angle}deg`;
   }
 
   function cutVine() {
@@ -291,6 +308,7 @@
   function finish(success) {
     running = false;
     settled = true;
+    nodes.aimGuide.classList.remove("active");
     nodes.fallGuide.classList.remove("active");
     nodes.targetGuide.classList.remove("active");
     if (success) {

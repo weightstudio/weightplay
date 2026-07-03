@@ -29,22 +29,23 @@
   };
 
   const animals = [
-    { id: "lion", asset: ASSETS.lion, baseIncome: 3, cost: 0, care: 5, x: 20, y: 39, size: 23 },
-    { id: "giraffe", asset: ASSETS.giraffe, baseIncome: 6, cost: 650, care: 7, x: 74, y: 42, size: 28 },
-    { id: "elephant", asset: ASSETS.elephant, baseIncome: 11, cost: 2400, care: 9, x: 44, y: 31, size: 23 },
-    { id: "panda", asset: ASSETS.panda, baseIncome: 16, cost: 8200, care: 10, x: 84, y: 27, size: 17 },
-    { id: "penguin", asset: ASSETS.penguin, baseIncome: 23, cost: 24000, care: 11, x: 60, y: 22, size: 15 },
-    { id: "rabbit", asset: ASSETS.rabbit, baseIncome: 7, cost: 1400, care: 8, x: 59, y: 38, size: 14 },
-    { id: "fox", asset: ASSETS.fox, baseIncome: 14, cost: 5200, care: 10, x: 32, y: 26, size: 16 },
-    { id: "koala", asset: ASSETS.koala, baseIncome: 20, cost: 15000, care: 11, x: 73, y: 24, size: 15 },
-    { id: "tiger", asset: ASSETS.tiger, baseIncome: 34, cost: 46000, care: 12, x: 48, y: 42, size: 17 },
-    { id: "rhino", asset: ASSETS.rhino, baseIncome: 46, cost: 98000, care: 13, x: 78, y: 20, size: 22 },
-    { id: "crocodile", asset: ASSETS.crocodile, baseIncome: 58, cost: 210000, care: 14, x: 44, y: 19, size: 21 },
-    { id: "bear", asset: ASSETS.bear, baseIncome: 74, cost: 460000, care: 16, x: 18, y: 22, size: 20 },
+    { id: "lion", asset: ASSETS.lion, baseIncome: 3, cost: 0, care: 5, x: 18, y: 44, size: 22 },
+    { id: "giraffe", asset: ASSETS.giraffe, baseIncome: 6, cost: 650, care: 7, x: 76, y: 45, size: 26 },
+    { id: "elephant", asset: ASSETS.elephant, baseIncome: 11, cost: 2400, care: 9, x: 43, y: 37, size: 22 },
+    { id: "panda", asset: ASSETS.panda, baseIncome: 16, cost: 8200, care: 10, x: 86, y: 32, size: 16 },
+    { id: "penguin", asset: ASSETS.penguin, baseIncome: 23, cost: 24000, care: 11, x: 61, y: 25, size: 14 },
+    { id: "rabbit", asset: ASSETS.rabbit, baseIncome: 7, cost: 1400, care: 8, x: 58, y: 43, size: 13 },
+    { id: "fox", asset: ASSETS.fox, baseIncome: 14, cost: 5200, care: 10, x: 31, y: 29, size: 15 },
+    { id: "koala", asset: ASSETS.koala, baseIncome: 20, cost: 15000, care: 11, x: 71, y: 28, size: 14 },
+    { id: "tiger", asset: ASSETS.tiger, baseIncome: 34, cost: 46000, care: 12, x: 48, y: 48, size: 16 },
+    { id: "rhino", asset: ASSETS.rhino, baseIncome: 46, cost: 98000, care: 13, x: 83, y: 20, size: 21 },
+    { id: "crocodile", asset: ASSETS.crocodile, baseIncome: 58, cost: 210000, care: 14, x: 39, y: 22, size: 20 },
+    { id: "bear", asset: ASSETS.bear, baseIncome: 74, cost: 460000, care: 16, x: 16, y: 25, size: 19 },
   ];
 
   const maxGateLevel = 8;
   const careCooldownMs = 30000;
+  const layoutVersion = 2;
 
   const visitorAssets = [ASSETS.visitorChild, ASSETS.visitorElder, ASSETS.visitorFamily];
 
@@ -71,7 +72,7 @@
       happiness: "Happiness",
       animals: "Animals",
       offline: "Welcome back! Visitors left {coins} coins in the ticket box.",
-      notEnough: "Need more coins.",
+      notEnough: "Need {coins} more coins.",
       collected: "Collected {coins} coins.",
       cared: "Animals are happier. More visitors are coming.",
       careWait: "Care is resting for {n}s.",
@@ -123,7 +124,7 @@
     happiness: "\u5feb\u6a02\u5ea6",
     animals: "\u52d5\u7269",
     offline: "\u6b61\u8fce\u56de\u4f86\uff01\u53c3\u89c0\u8005\u5728\u7968\u7bb1\u7559\u4e0b {coins} \u91d1\u5e63\u3002",
-    notEnough: "\u91d1\u5e63\u4e0d\u5920\u3002",
+    notEnough: "\u9084\u5dee {coins} \u91d1\u5e63\u3002",
     collected: "\u6536\u5230 {coins} \u91d1\u5e63\u3002",
     cared: "\u52d5\u7269\u5011\u66f4\u958b\u5fc3\u4e86\uff01",
     careWait: "\u7167\u9867\u9700\u8981\u4f11\u606f {n} \u79d2\u3002",
@@ -192,6 +193,7 @@
       playCount: 0,
       careCount: 0,
       careReadyAt: 0,
+      layoutVersion,
       bestScore: 0,
       lastScore: 0,
       lastPlayedAt: Date.now(),
@@ -223,13 +225,19 @@
   function normalizeSave(data) {
     data.unlocked = { lion: true, ...(data.unlocked || {}) };
     data.positions = { ...(data.positions || {}) };
+    const shouldRefreshLayout = Number(data.layoutVersion || 0) < layoutVersion;
     for (const animal of animals) {
       const position = data.positions[animal.id] || {};
+      if (shouldRefreshLayout) {
+        data.positions[animal.id] = { x: animal.x, y: animal.y };
+        continue;
+      }
       data.positions[animal.id] = {
         x: clamp(Number(position.x ?? animal.x), 7, 90),
         y: clamp(Number(position.y ?? animal.y), 18, 62),
       };
     }
+    data.layoutVersion = layoutVersion;
     data.coins = Math.max(0, Number(data.coins || 0));
     data.ticketBox = Math.max(0, Number(data.ticketBox || 0));
     data.gateLevel = clamp(Math.floor(Number(data.gateLevel || 1)), 1, maxGateLevel);
@@ -279,6 +287,10 @@
     if (number >= 1000000) return `${Math.round((number / 1000000) * 10) / 10}M`;
     if (number >= 10000) return `${Math.round((number / 1000) * 10) / 10}K`;
     return String(number);
+  }
+
+  function formatCost(value) {
+    return Math.floor(Number(value || 0)).toLocaleString(locale === "zh-Hant" ? "zh-TW" : "en-US");
   }
 
   function careWaitSeconds() {
@@ -338,7 +350,7 @@
         <div class="zoo-actions">
           <button type="button" data-action="collect">${t("collect")}</button>
           <button type="button" data-action="care">${t("careAll")}</button>
-          <button type="button" data-action="upgrade" ${save.gateLevel >= maxGateLevel ? "disabled" : ""}>${save.gateLevel >= maxGateLevel ? t("maxGate") : `${t("upgradeGate")} ${formatNumber(gateUpgradeCost())}`}</button>
+          <button type="button" data-action="upgrade" ${save.gateLevel >= maxGateLevel ? "disabled" : ""}>${save.gateLevel >= maxGateLevel ? t("maxGate") : `${t("upgradeGate")} ${formatCost(gateUpgradeCost())}`}</button>
           <button type="button" data-action="report">${t("report")}</button>
         </div>
         <div class="animal-shop-head"><strong>${t("animals")}</strong><span>${t("dragHint")}</span></div>
@@ -378,7 +390,7 @@
     const upgrade = card.querySelector('[data-action="upgrade"]');
     if (upgrade) {
       upgrade.disabled = save.gateLevel >= maxGateLevel;
-      upgrade.textContent = save.gateLevel >= maxGateLevel ? t("maxGate") : `${t("upgradeGate")} ${formatNumber(gateUpgradeCost())}`;
+      upgrade.textContent = save.gateLevel >= maxGateLevel ? t("maxGate") : `${t("upgradeGate")} ${formatCost(gateUpgradeCost())}`;
     }
     renderAnimalShop(card.querySelector(".animal-shop"));
     const care = card.querySelector('[data-action="care"]');
@@ -444,8 +456,8 @@
       button.innerHTML = `
         <img src="${animal.asset}" alt="" draggable="false" />
         <strong>${t(animal.id)}</strong>
-        <span>${owned ? t("owned") : `${t("buyAnimal")} ${formatNumber(animal.cost)}`}</span>
-        <small>${t("incomeShort", { n: formatNumber(animal.baseIncome) })} · ${t("careShort", { n: animal.care })}</small>
+        <span>${owned ? t("owned") : `${t("buyAnimal")} ${formatCost(animal.cost)}`}</span>
+        <small>${t("incomeShort", { n: formatNumber(animal.baseIncome) })} / ${t("careShort", { n: animal.care })}</small>
       `;
       button.addEventListener("click", () => buyAnimal(animal.id));
       container.appendChild(button);
@@ -520,7 +532,7 @@
   function upgradeGate() {
     if (save.gateLevel >= maxGateLevel) return;
     const cost = gateUpgradeCost();
-    if (save.coins < cost) return notEnough();
+    if (save.coins < cost) return notEnough(cost);
     save.coins -= cost;
     save.gateLevel += 1;
     save.happiness = clamp(save.happiness + 7, 18, 100);
@@ -539,7 +551,7 @@
   function buyAnimal(animalId) {
     const animal = animals.find((item) => item.id === animalId);
     if (!animal || save.unlocked[animal.id]) return;
-    if (save.coins < animal.cost) return notEnough();
+    if (save.coins < animal.cost) return notEnough(animal.cost);
     save.coins -= animal.cost;
     save.unlocked[animal.id] = true;
     save.positions[animal.id] = animalPosition(animal);
@@ -551,8 +563,9 @@
     render();
   }
 
-  function notEnough() {
-    popToast(t("notEnough"));
+  function notEnough(cost = 0) {
+    const missing = Math.max(1, Math.ceil(Number(cost || 0) - save.coins));
+    popToast(t("notEnough", { coins: formatCost(missing) }));
     playSound("error");
   }
 
@@ -609,6 +622,7 @@
     nodes.gamePanel.classList.remove("hidden");
     applyOffline();
     render();
+    requestAnimationFrame(render);
     window.WonderAnalytics?.track("game_start", { game_id: GAME_ID });
   }
 
