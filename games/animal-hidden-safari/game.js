@@ -10,7 +10,7 @@
       gameTitle: "Animal Hidden Safari",
       language: "Language",
       chooseStage: "Choose Habitat",
-      menuHint: "Find animals hiding behind leaves, grass, water, and safari clues.",
+      menuHint: "Find animals and safari clues blended into each natural habitat.",
       stages: "Habitats",
       loading: "Loading",
       hint: "Hint",
@@ -127,34 +127,6 @@
     frog: "\u{1F438}",
     butterfly: "\u{1F98B}",
     acacia: "\u{1F333}",
-  };
-
-  const defaultCovers = {
-    bird: "leaf-top",
-    butterfly: "leaf-top",
-    monkey: "leaf-left",
-    giraffe: "leaf-right",
-    elephant: "dust",
-    lion: "grass",
-    zebra: "grass",
-    rhino: "grass",
-    hippo: "water",
-    frog: "water",
-    shell: "water",
-    paw: "dust",
-    banana: "grass",
-    feather: "grass",
-    leaf: "leaf-top",
-    acacia: "leaf-right",
-  };
-
-  const coverMasks = {
-    grass: "../../assets/safari-mask-grass.svg",
-    "leaf-left": "../../assets/safari-mask-leaf.svg",
-    "leaf-right": "../../assets/safari-mask-leaf.svg",
-    "leaf-top": "../../assets/safari-mask-leaf.svg",
-    water: "../../assets/safari-mask-water.svg",
-    dust: "../../assets/safari-mask-dust.svg",
   };
 
   const stages = [
@@ -314,12 +286,10 @@
 
   function renderScene() {
     nodes.targetsLayer.innerHTML = "";
-    stages[currentStage].targets.forEach(([id, x, y, size, cover], index) => {
-      const coverType = cover || defaultCovers[id] || "grass";
+    stages[currentStage].targets.forEach(([id, x, y, size], index) => {
       const button = document.createElement("button");
       button.type = "button";
       button.className = "target";
-      button.classList.add(`cover-${coverType}`);
       button.dataset.index = String(index);
       button.dataset.id = id;
       button.style.left = `${x}%`;
@@ -327,13 +297,6 @@
       button.style.setProperty("--size", `${size}px`);
       button.setAttribute("aria-label", t(`targets.${id}`));
       button.textContent = icons[id];
-      const mask = document.createElement("img");
-      mask.className = "cover-mask";
-      mask.src = coverMasks[coverType] || coverMasks.grass;
-      mask.alt = "";
-      mask.decoding = "async";
-      mask.draggable = false;
-      button.appendChild(mask);
       button.addEventListener("click", (event) => {
         event.stopPropagation();
         chooseTarget(index, button);
