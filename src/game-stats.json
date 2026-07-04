@@ -1,114 +1,114 @@
 {
-  "updatedAt": "2026-07-03T17:20:01.304Z",
+  "updatedAt": "2026-07-04T16:59:56.880Z",
   "source": "ga4",
   "windowDays": 7,
   "totals": {
-    "plays7d": 264,
-    "playsTotal": 264,
-    "users7d": 45
+    "plays7d": 369,
+    "playsTotal": 369,
+    "users7d": 57
   },
   "games": {
     "wonder-crash": {
-      "plays7d": 25,
-      "playsTotal": 25,
-      "users7d": 4,
-      "rank7d": 5
+      "plays7d": 35,
+      "playsTotal": 35,
+      "users7d": 5,
+      "rank7d": 4
     },
     "color-lunchbox": {
-      "plays7d": 10,
-      "playsTotal": 10,
-      "users7d": 3,
-      "rank7d": 7
+      "plays7d": 16,
+      "playsTotal": 16,
+      "users7d": 4,
+      "rank7d": 8
     },
     "bubble-bakery": {
-      "plays7d": 29,
-      "playsTotal": 29,
-      "users7d": 3,
+      "plays7d": 38,
+      "playsTotal": 38,
+      "users7d": 4,
       "rank7d": 3
     },
     "animal-rope-rescue": {
-      "plays7d": 9,
-      "playsTotal": 9,
-      "users7d": 2,
-      "rank7d": 8
+      "plays7d": 13,
+      "playsTotal": 13,
+      "users7d": 3,
+      "rank7d": 9
     },
     "animal-zoo-idle": {
-      "plays7d": 39,
-      "playsTotal": 39,
+      "plays7d": 47,
+      "playsTotal": 47,
       "users7d": 4,
       "rank7d": 2
     },
     "star-memory": {
-      "plays7d": 7,
-      "playsTotal": 7,
+      "plays7d": 9,
+      "playsTotal": 9,
       "users7d": 2,
       "rank7d": 13
     },
     "campus-dash": {
-      "plays7d": 8,
-      "playsTotal": 8,
+      "plays7d": 13,
+      "playsTotal": 13,
       "users7d": 2,
       "rank7d": 10
     },
     "snack-blocks": {
-      "plays7d": 8,
-      "playsTotal": 8,
-      "users7d": 4,
+      "plays7d": 13,
+      "playsTotal": 13,
+      "users7d": 5,
       "rank7d": 11
     },
     "fruit-merge": {
-      "plays7d": 25,
-      "playsTotal": 25,
+      "plays7d": 32,
+      "playsTotal": 32,
       "users7d": 4,
-      "rank7d": 4
+      "rank7d": 5
     },
     "garden-tiles": {
-      "plays7d": 9,
-      "playsTotal": 9,
+      "plays7d": 11,
+      "playsTotal": 11,
       "users7d": 2,
-      "rank7d": 9
+      "rank7d": 12
     },
     "animal-rescue": {
-      "plays7d": 6,
-      "playsTotal": 6,
+      "plays7d": 7,
+      "playsTotal": 7,
       "users7d": 2,
-      "rank7d": 14
+      "rank7d": 16
     },
     "animal-hidden-safari": {
-      "plays7d": 13,
-      "playsTotal": 13,
+      "plays7d": 16,
+      "playsTotal": 16,
       "users7d": 2,
-      "rank7d": 6
+      "rank7d": 7
     },
     "animal-guard-yard": {
-      "plays7d": 57,
-      "playsTotal": 57,
-      "users7d": 4,
+      "plays7d": 77,
+      "playsTotal": 77,
+      "users7d": 6,
       "rank7d": 1
     },
     "animal-quiz": {
-      "plays7d": 5,
-      "playsTotal": 5,
+      "plays7d": 8,
+      "playsTotal": 8,
       "users7d": 2,
       "rank7d": 15
     },
     "zoo-helper-day": {
-      "plays7d": 8,
-      "playsTotal": 8,
-      "users7d": 3,
-      "rank7d": 12
+      "plays7d": 19,
+      "playsTotal": 19,
+      "users7d": 4,
+      "rank7d": 6
     },
     "shape-train": {
-      "plays7d": 2,
-      "playsTotal": 2,
-      "users7d": 1,
+      "plays7d": 6,
+      "playsTotal": 6,
+      "users7d": 3,
       "rank7d": 17
     },
     "tiny-weather-rescue": {
-      "plays7d": 4,
-      "playsTotal": 4,
-      "users7d": 1,
-      "rank7d": 16
+      "plays7d": 9,
+      "playsTotal": 9,
+      "users7d": 3,
+      "rank7d": 14
     }
   }
 }
