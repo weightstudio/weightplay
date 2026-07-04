@@ -113,6 +113,13 @@
     owl: "../../assets/animal-guard-owl.png",
   };
 
+  const coverAssets = {
+    grass: "../../assets/safari-mask-grass.svg",
+    leaf: "../../assets/safari-mask-leaf.svg",
+    water: "../../assets/safari-mask-water.svg",
+    dust: "../../assets/safari-mask-dust.svg",
+  };
+
   const stages = [
     { habitat: "sunny", targets: [["lion", 48, 65, 66], ["elephant", 18, 72, 58], ["giraffe", 82, 58, 62], ["panda", 66, 80, 48], ["koala", 30, 48, 44], ["owl", 42, 27, 38]] },
     { habitat: "river", theme: "river", targets: [["penguin", 24, 74, 54], ["elephant", 75, 68, 58], ["frog", 43, 82, 40], ["owl", 64, 34, 40], ["panda", 54, 56, 48], ["fox", 35, 64, 42]] },
@@ -189,6 +196,17 @@
 
   function animalImg(id, className = "") {
     return `<img class="${className}" src="${targetAssets[id]}" alt="" loading="lazy" draggable="false" />`;
+  }
+
+  function coverImg(type) {
+    return `<img class="target-cover target-cover-${type}" src="${coverAssets[type]}" alt="" loading="lazy" draggable="false" />`;
+  }
+
+  function coverForTarget(stage, y) {
+    if ((stage.theme === "river" || stage.theme === "pond") && y >= 62) return "water";
+    if ((stage.theme === "jungle" || stage.theme === "sunset") && y <= 55) return "leaf";
+    if (stage.theme === "lookout" && y >= 60) return "dust";
+    return "grass";
   }
 
   function playSound(name) {
@@ -275,7 +293,9 @@
 
   function renderScene() {
     nodes.targetsLayer.innerHTML = "";
-    stages[currentStage].targets.forEach(([id, x, y, size], index) => {
+    const stage = stages[currentStage];
+    stage.targets.forEach(([id, x, y, size], index) => {
+      const cover = coverForTarget(stage, y);
       const button = document.createElement("button");
       button.type = "button";
       button.className = "target";
@@ -285,7 +305,7 @@
       button.style.top = `${y}%`;
       button.style.setProperty("--size", `${size}px`);
       button.setAttribute("aria-label", t(`targets.${id}`));
-      button.innerHTML = animalImg(id, "target-animal");
+      button.innerHTML = `${animalImg(id, "target-animal")}${coverImg(cover)}`;
       button.addEventListener("click", (event) => {
         event.stopPropagation();
         chooseTarget(index, button);
@@ -440,6 +460,7 @@
       "../../assets/animal-hidden-safari-cover.webp",
       "../../assets/animal-hidden-safari-sunny-bg.webp",
       ...new Set(Object.values(targetAssets)),
+      ...new Set(Object.values(coverAssets)),
     ];
     let done = 0;
     const update = () => {

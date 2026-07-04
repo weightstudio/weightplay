@@ -68,6 +68,9 @@
       roleTankMelee: "Tank Melee",
       roleFastRanged: "Fast Ranged",
       roleCrossLane: "Cross-lane",
+      costShort: "Cost",
+      atkShort: "ATK",
+      hpShort: "HP",
       threatPreview: "Stage threats",
       threatNormal: "Normal",
       threatFast: "Fast",
@@ -143,6 +146,9 @@
       roleTankMelee: "\u5766\u514b\u8fd1\u6230",
       roleFastRanged: "\u5feb\u901f\u9060\u7a0b",
       roleCrossLane: "\u8de8\u7dda\u5c04\u64ca",
+      costShort: "\u82b1\u8cbb",
+      atkShort: "\u653b\u64ca",
+      hpShort: "\u751f\u547d",
       threatPreview: "\u95dc\u5361\u6575\u4eba",
       threatNormal: "\u4e00\u822c",
       threatFast: "\u5feb\u901f",
@@ -681,7 +687,15 @@
       if (energy < trained.cost) button.classList.add("disabled");
       button.innerHTML = `
         <span class="mini-animal">${animalSprite(unit.id)}</span>
-        <span>${t(unit.nameKey)} <em>${t("level", { n: trained.level })}</em><small>${t(trained.roleKey)} / ${t("sunToken").toUpperCase()} ${trained.cost} / ATK ${trained.damage}</small></span>
+        <span class="unit-info">
+          <strong>${t(unit.nameKey)} <em>${t("level", { n: trained.level })}</em></strong>
+          <b class="role-badge">${t(trained.roleKey)}</b>
+          <small class="unit-stats">
+            <span>${t("costShort")} ${trained.cost}</span>
+            <span>${t("atkShort")} ${trained.damage}</span>
+            <span>${t("hpShort")} ${trained.hp}</span>
+          </small>
+        </span>
       `;
       button.addEventListener("click", () => {
         selectedUnit = unit.id;

@@ -602,14 +602,15 @@ body.lobby-page {
   z-index: 1;
   display: grid;
   place-items: center;
-  min-width: 42px;
+  min-width: 72px;
   min-height: 34px;
   padding: 0 10px;
   border-radius: 8px;
-  background: rgba(15, 20, 28, 0.82);
-  color: #ffcf63;
+  background: linear-gradient(180deg, rgba(255, 233, 160, 0.96), rgba(255, 185, 64, 0.92));
+  color: #241a08;
   font-size: 14px;
   font-weight: 1000;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.26);
 }
 
 .hero-game-copy {

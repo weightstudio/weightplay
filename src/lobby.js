@@ -131,6 +131,12 @@ function playCountText(game) {
   return i18n.t("stats.plays_7d", { count: formatCount(stats.plays7d || 0), days: gameStats.windowDays || 7 });
 }
 
+function rankLabel(game, fallbackRank) {
+  const stats = statFor(game);
+  const rank = hasRealStats() && stats.rank7d ? stats.rank7d : fallbackRank;
+  return i18n.t("stats.rank_label", { rank });
+}
+
 function popularGames(limit = 3) {
   const playableGames = lobby.games.filter((game) => game.status === "playable");
   if (!hasRealStats()) {
@@ -427,6 +433,7 @@ function renderHeroGames() {
       const title = text(game.title);
       const type = text(game.type);
       const ageLabel = text(game.ageLabel);
+      const rankText = rankLabel(game, index + 1);
       const card = document.createElement(isPlayable ? "a" : "button");
       card.className = `hero-game-card ${isPlayable ? "playable" : "planned"}`;
       card.type = isPlayable ? undefined : "button";
@@ -438,11 +445,11 @@ function renderHeroGames() {
       card.innerHTML = `
         <div class="hero-game-art">
           <img src="${game.art?.background || game.art?.hero || "assets/hero.png"}" alt="" />
-          <span>#${index + 1}</span>
+          <span>${rankText}</span>
         </div>
         <div class="hero-game-copy">
           <strong>${title}</strong>
-          <small>${type} · ${ageLabel}</small>
+          <small>${type} / ${ageLabel}</small>
           <em>${playCountText(game)}</em>
         </div>
       `;

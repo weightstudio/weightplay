@@ -286,7 +286,45 @@ select {
 }
 
 .target-animal {
+  position: relative;
+  z-index: 1;
   filter: saturate(0.95) contrast(0.96);
+}
+
+.target-cover {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  bottom: -9%;
+  width: 118%;
+  height: 58%;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  transform: translateX(-50%);
+  opacity: 0.9;
+  filter: drop-shadow(0 4px 4px rgba(31, 68, 41, 0.16));
+}
+
+.target-cover-leaf {
+  top: -7%;
+  bottom: auto;
+  width: 108%;
+  height: 52%;
+  opacity: 0.84;
+}
+
+.target-cover-water {
+  bottom: -5%;
+  height: 50%;
+  opacity: 0.82;
+}
+
+.target-cover-dust {
+  bottom: -8%;
+  height: 48%;
+  opacity: 0.72;
 }
 
 .target:active {
