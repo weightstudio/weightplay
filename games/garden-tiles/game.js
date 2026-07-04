@@ -372,4 +372,11 @@
   showLevelSelect();
   loadingPanel.classList.add("hidden");
   window.WonderAnalytics?.track?.("game_ready", { game_id: GAME_ID });
+  window.WeightPlayGameReady = true;
 })();
+
+window.setTimeout(() => {
+  if (window.WeightPlayGameReady) return;
+  document.querySelector("#loadingPanel")?.classList.add("hidden");
+  window.WeightPlayGameReady = true;
+}, 2200);

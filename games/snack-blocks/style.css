@@ -205,6 +205,28 @@ button {
   font-size: 1rem;
 }
 
+.stage-goal-kind {
+  min-width: 78px;
+  padding: 3px 7px;
+  border-radius: 999px;
+  color: #fff8e8;
+  background: rgba(105, 61, 33, 0.78);
+  font-size: 0.62rem;
+  font-weight: 1000;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0;
+  box-shadow: inset 0 -2px rgba(0, 0, 0, 0.16);
+}
+
+.stage-goal-kind.collect {
+  background: linear-gradient(180deg, #f26d7f, #b93353);
+}
+
+.stage-goal-kind.score {
+  background: linear-gradient(180deg, #40c484, #19754d);
+}
+
 .stage-card span {
   color: #322113;
   font-size: 0.78rem;

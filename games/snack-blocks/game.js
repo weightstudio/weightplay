@@ -54,6 +54,8 @@
       hint: "Tap or drag a snack to swap with its neighbor.",
       goalScore: "Score {target}",
       goalCollect: "Collect {icon} x{target}",
+      goalScoreKind: "Score goal",
+      goalCollectKind: "Collect goal",
       goalProgress: "{count} / {target}",
       goalReady: "Goal reached! Use remaining moves for a higher score.",
       loading: "Loading",
@@ -80,46 +82,6 @@
     },
     "zh-Hant": {
       brand: "WeightPlay",
-      title: "動物泡泡烘焙坊",
-      language: "語言",
-      stage: "關卡",
-      moves: "步數",
-      target: "目標",
-      score: "分數",
-      menuTitle: "選擇泡泡關卡",
-      menuText: "用完所有步數，達成目標，挑戰自己的最佳成績。",
-      stageName: "第 {stage} 關",
-      locked: "尚未解鎖",
-      best: "最佳 {score}",
-      hint: "點擊或拖曳點心，和相鄰泡泡交換位置。",
-      goalScore: "分數 {target}",
-      goalCollect: "收集 {icon} x{target}",
-      goalProgress: "{count} / {target}",
-      goalReady: "目標達成！剩下步數可以繼續衝高分。",
-      loading: "載入中",
-      clear: "關卡完成！",
-      failed: "再試一次！",
-      clearText: "分數 {score}。目標 {goal}。最佳 {best}。",
-      finalClearText: "分數 {score}。目標 {goal}。所有泡泡關卡都完成了！",
-      failedText: "分數 {score}。目標 {goal}。試著連出更大的組合。",
-      next: "下一關",
-      again: "再玩一次",
-      menu: "關卡",
-      lobby: "大廳",
-      skillReport: "能力小報告",
-      todayScore: "今日分數",
-      previousBest: "上次最佳",
-      improvement: "進步幅度",
-      logicSkill: "邏輯",
-      problemSolvingSkill: "問題解決",
-      focusSkill: "專注",
-      progressNewBest: "很棒的進步！這次刷新了自己的最佳紀錄。",
-      progressImproved: "進步很好！這次的規劃更穩了。",
-      progressSteady: "努力得很好！再試一次可以繼續練習專注和連線規劃。",
-      progressNote: "分數只用於遊戲樂趣與本機進步紀錄。",
-    },
-    "zh-Hant": {
-      brand: "WeightPlay",
       title: "動物零食方塊",
       language: "語言",
       stage: "關卡",
@@ -134,6 +96,8 @@
       hint: "點擊或拖曳零食，和相鄰方塊交換位置。",
       goalScore: "分數達到 {target}",
       goalCollect: "收集 {icon} x{target}",
+      goalScoreKind: "分數目標",
+      goalCollectKind: "收集目標",
       goalProgress: "{count} / {target}",
       goalReady: "目標達成！用剩下的步數挑戰更高分。",
       loading: "載入中",
@@ -312,6 +276,10 @@
     return records;
   }
 
+  function goalKindLabel(stage = activeStage()) {
+    return stage.goal === "collect" ? t("goalCollectKind") : t("goalScoreKind");
+  }
+
   function bestScoreFromRecord(record) {
     return typeof record === "number" ? record : Number(record?.bestScore) || 0;
   }
@@ -434,6 +402,7 @@
       button.disabled = !isUnlocked;
       button.innerHTML = `
         <strong>${stage.id}</strong>
+        <small class="stage-goal-kind ${stage.goal}">${goalKindLabel(stage)}</small>
         <span>${t("stageName", { stage: stage.id })}</span>
         <em>${isUnlocked ? `${goalLabel(stage)} · ${t("best", { score: bestScoreFromRecord(records[stage.id]) })}` : t("locked")}</em>
       `;

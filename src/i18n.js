@@ -25,6 +25,11 @@
       "recommend.shared_skill": "More {skill} practice",
       "recommend.shared_age": "More games for {age}",
       "recommend.popular_reason": "Popular this week",
+      "skill_path.title": "Practice by skill",
+      "skill_path.reason": "Skill paths",
+      "skill_path.count": "{count} games",
+      "skill_path.count_one": "1 game",
+      "skill_path.cta": "View games",
       "stats.total_games": "Total Games",
       "stats.hero_games": "Hero Games",
       "stats.plays_7d_short": "7-Day Plays",
@@ -196,6 +201,11 @@
     "recommend.shared_skill": "更多「{skill}」練習",
     "recommend.shared_age": "更多 {age} 遊戲",
     "recommend.popular_reason": "本週熱門",
+    "skill_path.title": "依能力練習",
+    "skill_path.reason": "能力路線",
+    "skill_path.count": "{count} 款遊戲",
+    "skill_path.count_one": "1 款遊戲",
+    "skill_path.cta": "查看遊戲",
   });
 
   function getSavedLocale() {

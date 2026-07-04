@@ -8,6 +8,8 @@ const heroGames = document.querySelector("#heroGames");
 const heroGamesSection = document.querySelector("#heroGamesSection");
 const recommendations = document.querySelector("#recommendations");
 const recommendationsSection = document.querySelector("#recommendationsSection");
+const skillPaths = document.querySelector("#skillPaths");
+const skillPathsSection = document.querySelector("#skillPathsSection");
 const lobbyStats = document.querySelector("#lobbyStats");
 const featuredGame = document.querySelector("#featuredGame");
 const lobbyToast = document.querySelector("#lobbyToast");
@@ -22,6 +24,8 @@ const heroRankLabel = document.querySelector("#heroRankLabel");
 const heroGamesTitle = document.querySelector("#heroGamesTitle");
 const recommendationTitle = document.querySelector("#recommendationTitle");
 const recommendationReason = document.querySelector("#recommendationReason");
+const skillPathsTitle = document.querySelector("#skillPathsTitle");
+const skillPathsReason = document.querySelector("#skillPathsReason");
 const dailyReward = document.querySelector("#dailyReward");
 const gameSearch = document.querySelector("#gameSearch");
 const i18n = window.WonderI18n;
@@ -30,6 +34,7 @@ const recentGamesKey = "weightplayRecentGames";
 const dailyRewardKey = "weightplayDailyReward";
 const walletBar = document.querySelector("#walletBar");
 const dailyRewardTrack = [5, 6, 8, 10, 12, 15, 25];
+const featuredSkillPaths = ["Memory", "Logic", "Reaction", "Focus", "Problem Solving", "Animal Knowledge"];
 const lobbyGameFacts = {
   "wonder-crash": { difficulty: "Medium", time: "5-8 minutes" },
   "color-lunchbox": { difficulty: "Easy", time: "1-3 minutes" },
@@ -409,6 +414,7 @@ function renderLobby() {
 
   renderHeroGames();
   renderRecommendations();
+  renderSkillPaths();
   gameGrid.replaceChildren(...lobby.games.map(createGameCard));
   applyFilter();
 }
@@ -591,6 +597,72 @@ function renderRecommendations() {
   recommendations.replaceChildren(...cards);
 }
 
+function gamesForSkillPath(skill, limit = 2) {
+  return playableGames()
+    .filter((game) => (game.skills || []).includes(skill))
+    .sort((a, b) => {
+      const aStats = statFor(a);
+      const bStats = statFor(b);
+      return (bStats.plays7d || 0) - (aStats.plays7d || 0) || (bStats.playsTotal || 0) - (aStats.playsTotal || 0);
+    })
+    .slice(0, limit);
+}
+
+function renderSkillPaths() {
+  if (!skillPaths || !skillPathsSection) return;
+  const cards = featuredSkillPaths
+    .map((skill) => {
+      const games = gamesForSkillPath(skill);
+      return games.length ? { skill, games } : null;
+    })
+    .filter(Boolean)
+    .map(({ skill, games }) => {
+      const count = playableGames().filter((game) => (game.skills || []).includes(skill)).length;
+      const card = document.createElement("button");
+      card.className = "skill-path-card";
+      card.type = "button";
+      card.dataset.skillPath = skill;
+      card.innerHTML = `
+        <span>${i18n.t(count === 1 ? "skill_path.count_one" : "skill_path.count", { count })}</span>
+        <strong>${skillText(skill)}</strong>
+        <div class="skill-path-thumbs" aria-hidden="true">
+          ${games.map((game) => `<img src="${game.art?.background || primaryArt(game)}" alt="" />`).join("")}
+        </div>
+        <small>${i18n.t("skill_path.cta")}</small>
+      `;
+      card.addEventListener("click", () => selectSkillPath(skill));
+      return card;
+    });
+
+  skillPathsTitle.textContent = i18n.t("skill_path.title");
+  skillPathsReason.textContent = i18n.t("skill_path.reason");
+  skillPathsSection.classList.toggle("hidden", cards.length === 0);
+  skillPaths.replaceChildren(...cards);
+}
+
+function setActiveButtons(buttons, dataKey, value) {
+  buttons.forEach((button) => {
+    button.classList.toggle("active", button.dataset[dataKey] === value);
+  });
+}
+
+function selectSkillPath(skill) {
+  activeFilter = "all";
+  activeTopic = "all";
+  activeSkill = skill;
+  activeLibrary = "all";
+  activeSearch = "";
+  if (gameSearch) gameSearch.value = "";
+  setActiveButtons(filterButtons, "ageFilter", "all");
+  setActiveButtons(topicButtons, "topicFilter", "all");
+  setActiveButtons(skillButtons, "skillFilter", skill);
+  setActiveButtons(libraryButtons, "libraryTab", "all");
+  window.WonderSound?.play("click");
+  window.WonderAnalytics?.track("skill_path_open", { skill_path: skill, locale: i18n.locale() });
+  applyFilter();
+  filterStatus?.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
 function applyFilter() {
   let visibleCount = 0;
   document.querySelectorAll("[data-age]").forEach((card) => {
@@ -614,6 +686,7 @@ function applyFilter() {
   const isFiltered = activeFilter !== "all" || activeTopic !== "all" || activeSkill !== "all" || activeLibrary !== "all" || Boolean(activeSearch);
   heroGamesSection.classList.toggle("hidden", isFiltered);
   recommendationsSection?.classList.toggle("hidden", isFiltered);
+  skillPathsSection?.classList.toggle("hidden", isFiltered);
   filterStatus.classList.toggle("empty", visibleCount === 0);
 
   if (visibleCount === 0) {
@@ -644,6 +717,8 @@ function applyStaticTranslations() {
   heroGamesTitle.textContent = i18n.t("section.hero_games");
   if (recommendationTitle) recommendationTitle.textContent = i18n.t("recommend.title");
   if (recommendationReason) recommendationReason.textContent = i18n.t("recommend.start_here");
+  if (skillPathsTitle) skillPathsTitle.textContent = i18n.t("skill_path.title");
+  if (skillPathsReason) skillPathsReason.textContent = i18n.t("skill_path.reason");
   document.querySelectorAll("[data-i18n]").forEach((element) => {
     element.textContent = i18n.t(element.dataset.i18n);
   });
