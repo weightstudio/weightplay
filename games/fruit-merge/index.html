@@ -18,7 +18,7 @@
     <meta name="twitter:card" content="summary_large_image" />
     <title>Animal Merge Tower - WeightPlay</title>
     <link rel="canonical" href="https://weightplay.com/games/fruit-merge/" />
-    <link rel="stylesheet" href="style.css?v=20260704-merge-chain-guide1" />
+    <link rel="stylesheet" href="style.css?v=20260704-merge-dom-ready1" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
     <script type="application/ld+json">
 {
@@ -148,7 +148,7 @@
       </section>
     </main>
 
-    <script src="../../src/site-config.js?v=20260704-merge-chain-guide1"></script>
+    <script src="../../src/site-config.js?v=20260704-merge-dom-ready1"></script>
     <script src="../../src/version.js?v=20260701-version2"></script>
     <script src="../../src/analytics.js?v=20260701-analytics2"></script>
     <script>
@@ -160,7 +160,26 @@
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
     <script src="../../src/vendor/matter.min.js?v=20260630-matter1"></script>
     <script src="../../src/vendor/matter-global.js?v=20260630-matter1"></script>
-    <script src="game.js?v=20260704-merge-chain-guide1"></script>
-    <script src="../../src/game-page-info.js?v=20260704-guide-zh-clean1"></script>
+    <script src="game.js?v=20260704-merge-dom-ready1"></script>
+    <script>
+      (() => {
+        const loadGameInfo = () => {
+          if (document.querySelector("script[data-merge-game-info]")) return;
+          const script = document.createElement("script");
+          script.src = "../../src/game-page-info.js?v=20260704-guide-zh-clean1";
+          script.dataset.mergeGameInfo = "idle";
+          document.body.appendChild(script);
+        };
+        const schedule = () => {
+          if ("requestIdleCallback" in window) {
+            window.requestIdleCallback(loadGameInfo, { timeout: 1600 });
+          } else {
+            window.setTimeout(loadGameInfo, 350);
+          }
+        };
+        if (document.readyState === "complete") schedule();
+        else window.addEventListener("load", schedule, { once: true });
+      })();
+    </script>
   </body>
 </html>

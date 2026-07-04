@@ -113,13 +113,13 @@
 
   const itemIcons = {
     fruit: "../../assets/tiny-weather-tool-apple.svg",
-    water: "../../assets/tiny-weather-tool-towel.svg",
-    brush: "../../assets/tiny-weather-tool-towel.svg",
-    toy: "../../assets/tiny-weather-tool-blanket.svg",
-    leaf: "../../assets/tiny-weather-tool-apple.svg",
-    shower: "../../assets/tiny-weather-tool-towel.svg",
-    fish: "../../assets/tiny-weather-tool-apple.svg",
-    ball: "../../assets/tiny-weather-tool-blanket.svg",
+    water: "../../assets/zoo-helper-water.svg",
+    brush: "../../assets/zoo-helper-brush.svg",
+    toy: "../../assets/zoo-helper-toy.svg",
+    leaf: "../../assets/zoo-helper-leaves.svg",
+    shower: "../../assets/zoo-helper-shower.svg",
+    fish: "../../assets/zoo-helper-fish.svg",
+    ball: "../../assets/zoo-helper-ball.svg",
   };
 
   const animalAssets = {

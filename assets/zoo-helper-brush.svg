@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-label="brush">
+  <defs>
+    <linearGradient id="brushHandle" x1="40" x2="121" y1="120" y2="38" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#8b5a2b"/>
+      <stop offset="1" stop-color="#d49b55"/>
+    </linearGradient>
+  </defs>
+  <rect x="29" y="97" width="87" height="22" rx="11" transform="rotate(-35 72.5 108)" fill="url(#brushHandle)"/>
+  <rect x="86" y="31" width="45" height="58" rx="14" transform="rotate(-35 108.5 60)" fill="#ffcc68"/>
+  <path d="M92 44l28 40M103 36l28 40M81 52l28 40" stroke="#fff2b6" stroke-width="6" stroke-linecap="round" opacity=".75"/>
+  <path d="M31 121l-7 17 18-4" fill="#70451f"/>
+  <circle cx="103" cy="50" r="8" fill="#fff" opacity=".38"/>
+</svg>

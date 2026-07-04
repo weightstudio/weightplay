@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-label="ball">
+  <defs>
+    <radialGradient id="ballFill" cx="52" cy="42" r="88" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff6a8"/>
+      <stop offset=".42" stop-color="#ffd84d"/>
+      <stop offset="1" stop-color="#ff8b2f"/>
+    </radialGradient>
+  </defs>
+  <circle cx="80" cy="80" r="57" fill="url(#ballFill)"/>
+  <path d="M29 74c31 10 70 10 102-1M61 30c-6 32-3 70 12 105M111 41c-25 21-40 54-41 92" fill="none" stroke="#fff3b0" stroke-width="9" stroke-linecap="round" opacity=".72"/>
+  <circle cx="58" cy="51" r="10" fill="#fff" opacity=".45"/>
+</svg>

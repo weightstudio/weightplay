@@ -5,6 +5,20 @@
   const starKey = "weightplay_hidden_safari_stars";
   const progressKey = "weightplay_progress_animal-hidden-safari";
 
+  document.querySelectorAll("img[data-fallback-src]").forEach((image) => {
+    image.addEventListener(
+      "error",
+      () => {
+        const fallback = image.dataset.fallbackSrc;
+        if (fallback && image.getAttribute("src") !== fallback) {
+          image.src = fallback;
+          image.removeAttribute("data-fallback-src");
+        }
+      },
+      { once: true }
+    );
+  });
+
   const text = {
     en: {
       gameTitle: "Animal Hidden Safari",

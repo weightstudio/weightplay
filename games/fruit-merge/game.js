@@ -211,6 +211,7 @@
   let toastTimer = null;
   let engine = null;
   let world = null;
+  let animationFrameId = null;
 
   function locale() {
     return window.WonderI18n?.locale?.() || "en";
@@ -294,6 +295,10 @@
     updateHud();
     if (!showMenu) {
       window.WonderAnalytics?.track?.("game_start", { game_id: GAME_ID, source });
+      startAnimationLoop();
+    } else {
+      stopAnimationLoop();
+      draw();
     }
   }
 
@@ -507,6 +512,7 @@
     if (gameOver) return;
     running = false;
     gameOver = true;
+    stopAnimationLoop();
     document.body.classList.remove("fruit-playing");
     const previousBest = bestScore;
     const newBest = score > previousBest;
@@ -840,11 +846,28 @@
   }
 
   function loop(now) {
+    animationFrameId = null;
     const dt = Math.min(0.033, (now - lastTime) / 1000);
     lastTime = now;
     if (running && !gameOver) step(dt);
     draw();
-    requestAnimationFrame(loop);
+    if (running && !gameOver) {
+      animationFrameId = requestAnimationFrame(loop);
+    }
+  }
+
+  function startAnimationLoop() {
+    if (animationFrameId !== null) return;
+    animationFrameId = requestAnimationFrame((now) => {
+      lastTime = now;
+      loop(now);
+    });
+  }
+
+  function stopAnimationLoop() {
+    if (animationFrameId === null) return;
+    cancelAnimationFrame(animationFrameId);
+    animationFrameId = null;
   }
 
   canvas.addEventListener("pointermove", (event) => {
@@ -893,9 +916,5 @@
     resetGame(true);
     loadingPanel.classList.add("hidden");
     window.WonderAnalytics?.track?.("game_ready", { game_id: GAME_ID });
-    requestAnimationFrame((now) => {
-      lastTime = now;
-      loop(now);
-    });
   });
 })();

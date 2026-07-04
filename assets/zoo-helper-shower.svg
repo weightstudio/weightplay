@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-label="shower">
+  <defs>
+    <linearGradient id="showerHead" x1="44" x2="119" y1="31" y2="78" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#9de7ff"/>
+      <stop offset="1" stop-color="#2f8dd9"/>
+    </linearGradient>
+  </defs>
+  <path d="M45 58c15-26 43-33 68-14" fill="none" stroke="#41627c" stroke-width="12" stroke-linecap="round"/>
+  <rect x="82" y="42" width="48" height="35" rx="15" transform="rotate(22 106 59.5)" fill="url(#showerHead)"/>
+  <path d="M55 91l-10 17M82 96l-8 20M109 96l-5 22M64 124l-7 12M94 126l-6 13" stroke="#54c7ff" stroke-width="8" stroke-linecap="round"/>
+  <circle cx="98" cy="51" r="7" fill="#fff" opacity=".5"/>
+</svg>
