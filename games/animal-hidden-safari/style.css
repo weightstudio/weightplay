@@ -258,6 +258,13 @@ select {
     #84d75f;
 }
 
+.scene[data-theme="pond"] {
+  background:
+    linear-gradient(180deg, rgba(28, 118, 116, 0.02), rgba(60, 142, 89, 0.04)),
+    url("../../assets/animal-hidden-safari-pond-bg.webp") center / cover no-repeat,
+    #86d879;
+}
+
 .float-layer {
   position: absolute;
   pointer-events: none;

@@ -474,6 +474,7 @@
       "../../assets/animal-hidden-safari-cover.webp",
       "../../assets/animal-hidden-safari-sunny-bg.webp",
       "../../assets/animal-hidden-safari-river-bg.webp",
+      "../../assets/animal-hidden-safari-pond-bg.webp",
       ...new Set(Object.values(targetAssets)),
       ...new Set(Object.values(coverAssets)),
     ];

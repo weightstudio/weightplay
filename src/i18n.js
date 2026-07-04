@@ -19,6 +19,9 @@
       "library.favorites": "Favorites",
       "section.hero_rank": "Top 3",
       "section.hero_games": "Popular Games",
+      "recommend.title": "Recommended next",
+      "recommend.start_here": "Start here",
+      "recommend.based_on_activity": "Based on your play",
       "stats.total_games": "Total Games",
       "stats.hero_games": "Hero Games",
       "stats.plays_7d_short": "7-Day Plays",
@@ -184,6 +187,9 @@
     "trust.local_progress.body": "分數與收藏會保存在這台裝置上。",
     "trust.supportive.title": "鼓勵式報告",
     "trust.supportive.body": "結果重點放在努力、能力練習與自己的進步。",
+    "recommend.title": "推薦下一款",
+    "recommend.start_here": "從這裡開始",
+    "recommend.based_on_activity": "依你的遊玩推薦",
   });
 
   function getSavedLocale() {

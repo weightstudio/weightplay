@@ -6,6 +6,8 @@ const libraryButtons = document.querySelectorAll("[data-library-tab]");
 const gameGrid = document.querySelector("#gameGrid");
 const heroGames = document.querySelector("#heroGames");
 const heroGamesSection = document.querySelector("#heroGamesSection");
+const recommendations = document.querySelector("#recommendations");
+const recommendationsSection = document.querySelector("#recommendationsSection");
 const lobbyStats = document.querySelector("#lobbyStats");
 const featuredGame = document.querySelector("#featuredGame");
 const lobbyToast = document.querySelector("#lobbyToast");
@@ -18,6 +20,8 @@ const languageLabel = document.querySelector("#languageLabel");
 const localeSelect = document.querySelector("#localeSelect");
 const heroRankLabel = document.querySelector("#heroRankLabel");
 const heroGamesTitle = document.querySelector("#heroGamesTitle");
+const recommendationTitle = document.querySelector("#recommendationTitle");
+const recommendationReason = document.querySelector("#recommendationReason");
 const dailyReward = document.querySelector("#dailyReward");
 const gameSearch = document.querySelector("#gameSearch");
 const i18n = window.WonderI18n;
@@ -195,6 +199,40 @@ function popularGames(limit = 3) {
     .slice(0, limit);
 }
 
+function playableGames() {
+  return lobby.games.filter((game) => game.status === "playable");
+}
+
+function recommendationSeeds() {
+  const seedIds = [...recentGameIds, ...favoriteGameIds].filter((id, index, list) => id && list.indexOf(id) === index);
+  return seedIds.map((id) => lobby.games.find((game) => game.id === id && game.status === "playable")).filter(Boolean);
+}
+
+function scoreRecommendation(game, seeds) {
+  if (!seeds.length) {
+    const stats = statFor(game);
+    return (stats.plays7d || 0) * 10 + (stats.playsTotal || 0);
+  }
+  return seeds.reduce((score, seed) => {
+    const sharedSkills = (game.skills || []).filter((skill) => (seed.skills || []).includes(skill)).length;
+    const sharedCategories = (game.categories || []).filter((category) => (seed.categories || []).includes(category)).length;
+    const sharedAges = (game.ages || []).filter((age) => (seed.ages || []).includes(age)).length;
+    return score + sharedSkills * 5 + sharedCategories * 3 + sharedAges * 4;
+  }, 0);
+}
+
+function recommendedGames(limit = 3) {
+  const seeds = recommendationSeeds();
+  const seedIds = new Set(seeds.map((game) => game.id));
+  const candidates = playableGames().filter((game) => !seedIds.has(game.id));
+  const ranked = candidates
+    .map((game) => ({ game, score: scoreRecommendation(game, seeds), stats: statFor(game) }))
+    .sort((a, b) => b.score - a.score || (b.stats.plays7d || 0) - (a.stats.plays7d || 0) || (b.stats.playsTotal || 0) - (a.stats.playsTotal || 0))
+    .map((entry) => entry.game)
+    .slice(0, limit);
+  return ranked.length ? ranked : popularGames(limit);
+}
+
 async function loadGameStats() {
   try {
     const response = await fetch("src/game-stats.json?v=20260630-stats1", { cache: "no-store" });
@@ -359,6 +397,7 @@ function renderLobby() {
   }
 
   renderHeroGames();
+  renderRecommendations();
   gameGrid.replaceChildren(...lobby.games.map(createGameCard));
   applyFilter();
 }
@@ -503,6 +542,38 @@ function renderHeroGames() {
   heroGames.replaceChildren(...cards);
 }
 
+function renderRecommendations() {
+  if (!recommendations || !recommendationsSection) return;
+  const seeds = recommendationSeeds();
+  const cards = recommendedGames(3).map((game) => {
+    const title = text(game.title);
+    const type = text(game.type);
+    const ageLabel = text(game.ageLabel);
+    const card = document.createElement("a");
+    card.className = "recommendation-card";
+    card.href = game.href;
+    card.addEventListener("click", () => {
+      window.WonderAnalytics?.track("recommendation_open", {
+        game_id: game.id,
+        game_title: title,
+        seed_count: seeds.length,
+        locale: i18n.locale(),
+      });
+      recordRecentGame(game.id);
+    });
+    card.innerHTML = `
+      <img src="${game.art?.background || primaryArt(game)}" alt="" />
+      <span>${ageLabel}</span>
+      <strong>${title}</strong>
+      <small>${type}</small>
+    `;
+    return card;
+  });
+  recommendationTitle.textContent = i18n.t("recommend.title");
+  recommendationReason.textContent = i18n.t(seeds.length ? "recommend.based_on_activity" : "recommend.start_here");
+  recommendations.replaceChildren(...cards);
+}
+
 function applyFilter() {
   let visibleCount = 0;
   document.querySelectorAll("[data-age]").forEach((card) => {
@@ -525,6 +596,7 @@ function applyFilter() {
 
   const isFiltered = activeFilter !== "all" || activeTopic !== "all" || activeSkill !== "all" || activeLibrary !== "all" || Boolean(activeSearch);
   heroGamesSection.classList.toggle("hidden", isFiltered);
+  recommendationsSection?.classList.toggle("hidden", isFiltered);
   filterStatus.classList.toggle("empty", visibleCount === 0);
 
   if (visibleCount === 0) {
@@ -553,6 +625,8 @@ function applyStaticTranslations() {
   languageLabel.textContent = i18n.t("language.label");
   heroRankLabel.textContent = i18n.t("section.hero_rank");
   heroGamesTitle.textContent = i18n.t("section.hero_games");
+  if (recommendationTitle) recommendationTitle.textContent = i18n.t("recommend.title");
+  if (recommendationReason) recommendationReason.textContent = i18n.t("recommend.start_here");
   document.querySelectorAll("[data-i18n]").forEach((element) => {
     element.textContent = i18n.t(element.dataset.i18n);
   });

@@ -370,13 +370,23 @@
   function preload() {
     const list = Object.values(assets);
     let loaded = 0;
+    let released = false;
     const done = () => {
+      if (released) return;
       loaded += 1;
       const pct = Math.round((loaded / list.length) * 100);
       nodes.loadingText.textContent = `${pct}%`;
       nodes.loadingFill.style.width = `${pct}%`;
-      if (loaded >= list.length) setTimeout(() => nodes.loadingPanel.classList.add("hidden"), 220);
+      if (loaded >= list.length) releaseLoading();
     };
+    const releaseLoading = () => {
+      if (released) return;
+      released = true;
+      nodes.loadingText.textContent = "100%";
+      nodes.loadingFill.style.width = "100%";
+      setTimeout(() => nodes.loadingPanel.classList.add("hidden"), 180);
+    };
+    window.setTimeout(releaseLoading, 2200);
     list.forEach((src) => {
       const img = new Image();
       img.onload = done;
