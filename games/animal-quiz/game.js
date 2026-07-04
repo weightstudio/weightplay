@@ -289,6 +289,22 @@ function preloadImage(src) {
   });
 }
 
+function preloadImageWithTimeout(src, timeoutMs = 900) {
+  let settled = false;
+  return new Promise((resolve) => {
+    const image = new Image();
+    const finish = () => {
+      if (settled) return;
+      settled = true;
+      resolve(image);
+    };
+    image.onload = finish;
+    image.onerror = finish;
+    image.src = src;
+    window.setTimeout(finish, timeoutMs);
+  });
+}
+
 function loadUnlockedStage() {
   const saved = Number(localStorage.getItem(UNLOCK_KEY));
   state.unlockedStage = Number.isFinite(saved) ? Math.min(saved, stages.length - 1) : 0;
@@ -326,7 +342,7 @@ async function preloadGame() {
   let loadedCount = 0;
   await Promise.all(
     animals.map((animal) =>
-      preloadImage(animal.image).then(() => {
+      preloadImageWithTimeout(animal.image).then(() => {
         loadedCount += 1;
         const percent = Math.round((loadedCount / animals.length) * 100);
         loadingText.textContent = `${percent}%`;
@@ -339,6 +355,16 @@ async function preloadGame() {
   loadingPanel.classList.add("hidden");
   window.WonderAnalytics?.track("game_ready", { game_id: GAME_ID });
   showStageSelect();
+}
+
+function scheduleReadinessFallback() {
+  window.setTimeout(() => {
+    if (state.ready) return;
+    state.ready = true;
+    loadUnlockedStage();
+    loadingPanel.classList.add("hidden");
+    showStageSelect();
+  }, 1800);
 }
 
 function renderStaticText() {
@@ -639,7 +665,11 @@ homeLink.addEventListener("click", (event) => {
 });
 
 renderStaticText();
+scheduleReadinessFallback();
 preloadGame().catch((error) => {
   console.error(error);
-  loadingText.textContent = t("loadingFailed");
+  state.ready = true;
+  loadUnlockedStage();
+  loadingPanel.classList.add("hidden");
+  showStageSelect();
 });

@@ -46,6 +46,12 @@
   const maxGateLevel = 8;
   const careCooldownMs = 30000;
   const layoutVersion = 2;
+  const milestones = [
+    { id: "collect500", type: "ticketCollected", target: 500, reward: 180 },
+    { id: "care3", type: "careCount", target: 3, reward: 260 },
+    { id: "gate3", type: "gateLevel", target: 3, reward: 420 },
+    { id: "animals4", type: "animalCount", target: 4, reward: 900 },
+  ];
 
   const visitorAssets = [ASSETS.visitorChild, ASSETS.visitorElder, ASSETS.visitorFamily];
 
@@ -73,6 +79,7 @@
       animals: "Animals",
       offline: "Welcome back! Visitors left {coins} coins in the ticket box.",
       notEnough: "Need {coins} more coins.",
+      noTickets: "The ticket box is still empty.",
       collected: "Collected {coins} coins.",
       cared: "Animals are happier. More visitors are coming.",
       careWait: "Care is resting for {n}s.",
@@ -96,6 +103,15 @@
       taskGate: "Upgrade the gate",
       taskGateReady: "Gate upgrade is ready",
       taskGateMax: "Gate fully upgraded",
+      milestones: "Park Milestones",
+      claim: "Claim",
+      claimed: "Claimed",
+      milestoneReward: "+{coins} coins",
+      milestoneCollect500: "Collect 500 total tickets",
+      milestoneCare3: "Care for animals 3 times",
+      milestoneGate3: "Upgrade the gate to Lv.3",
+      milestoneAnimals4: "Recruit 4 animals",
+      milestoneClaimed: "Milestone reward claimed!",
       parkPlan: "Park Growth Plan",
       parkRank: "Gate progress",
       nextUpgrade: "Next gate upgrade",
@@ -143,6 +159,7 @@
     animals: "\u52d5\u7269",
     offline: "\u6b61\u8fce\u56de\u4f86\uff01\u53c3\u89c0\u8005\u5728\u7968\u7bb1\u7559\u4e0b {coins} \u91d1\u5e63\u3002",
     notEnough: "\u9084\u5dee {coins} \u91d1\u5e63\u3002",
+    noTickets: "\u7968\u7bb1\u9084\u662f\u7a7a\u7684\u3002",
     collected: "\u6536\u5230 {coins} \u91d1\u5e63\u3002",
     cared: "\u52d5\u7269\u5011\u66f4\u958b\u5fc3\u4e86\uff01",
     careWait: "\u7167\u9867\u9700\u8981\u4f11\u606f {n} \u79d2\u3002",
@@ -166,6 +183,15 @@
     taskGate: "\u5347\u7d1a\u5927\u9580",
     taskGateReady: "\u53ef\u4ee5\u5347\u7d1a\u5927\u9580",
     taskGateMax: "\u5927\u9580\u5df2\u7d93\u6eff\u7d1a",
+    milestones: "\u5712\u5340\u91cc\u7a0b\u7891",
+    claim: "\u9818\u53d6",
+    claimed: "\u5df2\u9818\u53d6",
+    milestoneReward: "+{coins} \u91d1\u5e63",
+    milestoneCollect500: "\u7d2f\u8a08\u6536\u96c6 500 \u9580\u7968",
+    milestoneCare3: "\u7167\u9867\u52d5\u7269 3 \u6b21",
+    milestoneGate3: "\u5927\u9580\u5347\u5230 Lv.3",
+    milestoneAnimals4: "\u62db\u52df 4 \u96bb\u52d5\u7269",
+    milestoneClaimed: "\u91cc\u7a0b\u7891\u734e\u52f5\u5df2\u9818\u53d6\uff01",
     parkPlan: "\u6a02\u5712\u6210\u9577\u8a08\u756b",
     parkRank: "\u5927\u9580\u9032\u5ea6",
     nextUpgrade: "\u4e0b\u4e00\u6b21\u5927\u9580\u5347\u7d1a",
@@ -230,6 +256,8 @@
       playCount: 0,
       careCount: 0,
       careReadyAt: 0,
+      lifetimeTickets: 0,
+      claimedMilestones: {},
       layoutVersion,
       bestScore: 0,
       lastScore: 0,
@@ -280,6 +308,8 @@
     data.gateLevel = clamp(Math.floor(Number(data.gateLevel || 1)), 1, maxGateLevel);
     data.happiness = clamp(Number(data.happiness || 76), 18, 100);
     data.careReadyAt = Math.max(0, Number(data.careReadyAt || 0));
+    data.lifetimeTickets = Math.max(0, Number(data.lifetimeTickets || 0));
+    data.claimedMilestones = { ...(data.claimedMilestones || {}) };
     return data;
   }
 
@@ -398,6 +428,7 @@
         </div>
         <button class="next-goal-card" type="button" data-action="next-goal"></button>
         <div class="zoo-task-board" aria-live="polite"></div>
+        <div class="zoo-milestone-board" aria-live="polite"></div>
         <div class="animal-shop-head"><strong>${t("animals")}</strong><span>${t("dragHint")}</span></div>
         <div class="animal-shop" aria-label="Animal shop"></div>
       </div>
@@ -414,6 +445,7 @@
     renderNextGoal(card.querySelector(".next-goal-card"));
     renderParkPlan(card.querySelector(".park-plan-card"));
     renderTaskBoard(card.querySelector(".zoo-task-board"));
+    renderMilestones(card.querySelector(".zoo-milestone-board"));
     const shop = card.querySelector(".animal-shop");
     renderAnimalShop(shop);
     if (shop) shop.dataset.shopSignature = animalShopSignature();
@@ -446,6 +478,7 @@
     }
     renderNextGoal(card.querySelector(".next-goal-card"));
     renderTaskBoard(card.querySelector(".zoo-task-board"));
+    renderMilestones(card.querySelector(".zoo-milestone-board"));
     const shop = card.querySelector(".animal-shop");
     if (shop && shop.dataset.shopSignature !== animalShopSignature()) {
       renderAnimalShop(shop);
@@ -612,6 +645,49 @@
     `;
   }
 
+  function milestoneProgress(milestone) {
+    if (milestone.type === "ticketCollected") return Math.min(save.lifetimeTickets, milestone.target);
+    if (milestone.type === "careCount") return Math.min(save.careCount, milestone.target);
+    if (milestone.type === "gateLevel") return Math.min(save.gateLevel, milestone.target);
+    if (milestone.type === "animalCount") return Math.min(unlockedAnimals().length, milestone.target);
+    return 0;
+  }
+
+  function milestoneLabel(milestone) {
+    if (milestone.id === "collect500") return t("milestoneCollect500");
+    if (milestone.id === "care3") return t("milestoneCare3");
+    if (milestone.id === "gate3") return t("milestoneGate3");
+    if (milestone.id === "animals4") return t("milestoneAnimals4");
+    return milestone.id;
+  }
+
+  function renderMilestones(container) {
+    if (!container) return;
+    const nextMilestones = milestones.filter((milestone) => !save.claimedMilestones[milestone.id]).slice(0, 3);
+    const visibleMilestones = nextMilestones.length ? nextMilestones : milestones.slice(-1);
+    container.innerHTML = `
+      <strong>${t("milestones")}</strong>
+      <div class="zoo-milestone-list">
+        ${visibleMilestones.map((milestone) => {
+          const progress = milestoneProgress(milestone);
+          const done = progress >= milestone.target;
+          const claimed = Boolean(save.claimedMilestones[milestone.id]);
+          return `
+            <button type="button" class="zoo-milestone ${done ? "ready" : ""} ${claimed ? "claimed" : ""}" data-milestone="${milestone.id}" ${done && !claimed ? "" : "disabled"}>
+              <span>${milestoneLabel(milestone)}</span>
+              <small>${claimed ? t("claimed") : `${formatNumber(progress)} / ${formatNumber(milestone.target)} - ${t("milestoneReward", { coins: formatCost(milestone.reward) })}`}</small>
+              <b>${done && !claimed ? t("claim") : ""}</b>
+              <i style="--milestone-progress:${Math.round(taskProgress(progress, milestone.target) * 100)}%"></i>
+            </button>
+          `;
+        }).join("")}
+      </div>
+    `;
+    container.querySelectorAll("[data-milestone]").forEach((button) => {
+      button.addEventListener("click", () => claimMilestone(button.dataset.milestone));
+    });
+  }
+
   function renderParkPlan(container) {
     if (!container) return;
     const nextLevel = Math.min(maxGateLevel, save.gateLevel + 1);
@@ -669,12 +745,13 @@
   function collectTickets() {
     const amount = Math.floor(save.ticketBox);
     if (amount <= 0) {
-      popToast(t("notEnough"));
+      popToast(t("noTickets"));
       playSound("error");
       return;
     }
     save.coins += amount;
     save.ticketBox = 0;
+    save.lifetimeTickets += amount;
     popToast(t("collected", { coins: formatNumber(amount) }));
     playSound("coin");
     saveGame();
@@ -732,6 +809,19 @@
     popToast(t("recruited", { name: t(animal.id) }));
     playSound("upgrade");
     window.WonderAnalytics?.track("animal_unlock", { game_id: GAME_ID, animal_id: animal.id });
+    saveGame();
+    render();
+  }
+
+  function claimMilestone(milestoneId) {
+    const milestone = milestones.find((item) => item.id === milestoneId);
+    if (!milestone || save.claimedMilestones[milestone.id]) return;
+    if (milestoneProgress(milestone) < milestone.target) return;
+    save.claimedMilestones[milestone.id] = true;
+    save.coins += milestone.reward;
+    popToast(t("milestoneClaimed"));
+    playSound("coin");
+    window.WonderAnalytics?.track("zoo_milestone_claim", { game_id: GAME_ID, milestone_id: milestone.id });
     saveGame();
     render();
   }

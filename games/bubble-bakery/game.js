@@ -27,6 +27,7 @@
       resultWin: "You filled every order with {moves} moves left.",
       resultLose: "Collect the needed bubbles before moves run out.",
       smallGroup: "Tap 2 or more connected matching bubbles.",
+      notOrderTarget: "Nice group, but the order needs the glowing animal bubbles.",
       orderStreak: "Order streak x{streak}! +{bonus}",
       collect: "Collect {n}",
       skillReport: "Skill Report",
@@ -71,6 +72,7 @@
       resultWin: "你完成了所有訂單，還剩 {moves} 步。",
       resultLose: "步數用完前，要收集訂單需要的泡泡。",
       smallGroup: "請點擊 2 個以上相連的相同泡泡。",
+      notOrderTarget: "這組可以消除，但訂單需要發光的動物泡泡。",
       orderStreak: "訂單連擊 x{streak}！+{bonus}",
       collect: "收集 {n}",
       skillReport: "能力小報告",
@@ -368,6 +370,9 @@
         button.style.visibility = "visible";
         button.style.opacity = "1";
         button.style.transform = "none";
+        if ((orders[id] || 0) > 0) {
+          button.classList.add("order-target");
+        }
         const info = groupInfo.get(key);
         if (info?.size >= 2) {
           button.classList.add("match-ready");
@@ -450,7 +455,7 @@
       nodes.hintText.textContent = t("orderStreak", { streak: Math.min(orderStreak, 5), bonus });
       showFloat(t("orderStreak", { streak: Math.min(orderStreak, 5), bonus }), window.innerWidth / 2, window.innerHeight * 0.5);
     } else {
-      nodes.hintText.textContent = t("smallGroup");
+      nodes.hintText.textContent = wasNeeded ? t("smallGroup") : t("notOrderTarget");
       showFloat(`+${baseScore}`, window.innerWidth / 2, window.innerHeight * 0.5);
     }
     playSound("pop");

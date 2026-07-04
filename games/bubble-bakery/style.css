@@ -400,12 +400,30 @@ body.is-bakery-playing .play-panel {
   box-shadow: 0 0 14px rgba(255, 255, 255, 0.28), 0 8px 0 rgba(89, 47, 20, 0.18);
 }
 
+.bubble.order-target::after {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 223, 101, 0.72);
+  box-shadow: 0 0 12px rgba(255, 199, 61, 0.34);
+  pointer-events: none;
+}
+
 .bubble.order-ready {
   outline-color: rgba(255, 210, 89, 0.76);
   box-shadow:
     0 0 0 4px rgba(255, 210, 89, 0.14),
     0 0 18px rgba(255, 179, 58, 0.42),
     0 8px 0 rgba(89, 47, 20, 0.18);
+}
+
+.bubble.order-ready::after {
+  border-color: rgba(255, 189, 50, 0.96);
+  box-shadow:
+    0 0 0 5px rgba(255, 214, 86, 0.18),
+    0 0 20px rgba(255, 183, 53, 0.58);
+  animation: order-target-pulse 1.1s ease-in-out infinite;
 }
 
 .bubble.match-ready[data-group-size="2"] {
@@ -551,6 +569,18 @@ body.is-bakery-playing .play-panel {
     opacity: 0;
     transform: scale(.02) rotate(18deg);
     filter: brightness(1.45) saturate(1.25);
+  }
+}
+
+@keyframes order-target-pulse {
+  0%, 100% {
+    opacity: .86;
+    transform: scale(.98);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.04);
   }
 }
 
