@@ -4,11 +4,11 @@ window.WONDER_LOBBY = {
     company: "WeightStudio",
     tagline: {
       en: "Play animal games made for every age.",
-      "zh-Hant": "適合各年齡的動物遊戲。",
+      "zh-Hant": "為每個年齡打造的動物遊戲世界。",
     },
     subtitle: {
       en: "A growing animal browser game world for kids, families, and casual players.",
-      "zh-Hant": "為孩子、家庭與休閒玩家打造的動物瀏覽器遊戲世界。",
+      "zh-Hant": "持續成長的動物瀏覽器遊戲平台，適合孩子、親子與休閒玩家。",
     },
     defaultLocale: "en",
   },
@@ -20,7 +20,7 @@ window.WONDER_LOBBY = {
       title: { en: "Fantasy Lion Defense", "zh-Hant": "奇幻獅子守城" },
       status: "playable",
       statusText: { en: "Playable", "zh-Hant": "可遊玩" },
-      type: { en: "Animal Defense", "zh-Hant": "動物防衛" },
+      type: { en: "Animal Defense", "zh-Hant": "動物防守" },
       categories: ["Featured", "Animal Games", "Arcade"],
       skills: ["Reaction", "Focus", "Hand-Eye Coordination"],
       ages: ["5"],
@@ -28,18 +28,10 @@ window.WONDER_LOBBY = {
       href: "games/wonder-crash/",
       description: {
         en: "Help the lion hero guard a fantasy wall from fierce wild beasts with playful magic-supply weapons.",
-        "zh-Hant": "幫助獅子英雄使用奇幻文具武器，守住城牆並擊退兇猛野獸。",
+        "zh-Hant": "幫助獅子英雄用有趣的魔法文具武器，守住城牆並擊退兇猛野獸。",
       },
-      meta: {
-        en: ["Lion Hero", "Wild Beasts", "30 Levels"],
-        "zh-Hant": ["獅子英雄", "野獸敵人", "30 關"],
-      },
-      art: {
-        kind: "image",
-        background: "assets/wonder-crash-cover.webp",
-        hero: "assets/wonder-lion-hero.png",
-        hideHero: true,
-      },
+      meta: { en: ["Lion Hero", "Wild Beasts", "30 Levels"], "zh-Hant": ["獅子英雄", "野獸來襲", "30 關"] },
+      art: { kind: "image", background: "assets/wonder-crash-cover.webp", hero: "assets/wonder-lion-hero.png", hideHero: true },
     },
     {
       id: "color-lunchbox",
@@ -54,17 +46,10 @@ window.WONDER_LOBBY = {
       href: "games/color-lunchbox/",
       description: {
         en: "Help little animals sort colorful foods through themed lunchbox challenges.",
-        "zh-Hant": "幫小動物把不同顏色的食物放進正確便當盒。",
+        "zh-Hant": "幫小動物把不同顏色的食物放進正確便當盒，練習顏色辨識。",
       },
-      meta: {
-        en: ["Animal Theme", "12 Levels", "Drag Match"],
-        "zh-Hant": ["動物主題", "12 關", "拖曳配對"],
-      },
-      art: {
-        kind: "image",
-        background: "assets/lunchbox-cover.webp",
-        hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>",
-      },
+      meta: { en: ["Animal Theme", "12 Levels", "Drag Match"], "zh-Hant": ["動物主題", "12 關", "拖曳配對"] },
+      art: { kind: "image", background: "assets/lunchbox-cover.webp", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
     },
     {
       id: "bubble-bakery",
@@ -79,17 +64,10 @@ window.WONDER_LOBBY = {
       ageLabel: { en: "5+", "zh-Hant": "5+" },
       description: {
         en: "Help animal bakers tap matching bubbles, fill cozy orders, and clear puzzle stages.",
-        "zh-Hant": "幫動物烘焙師點擊相同泡泡，完成溫馨訂單。",
+        "zh-Hant": "幫動物烘焙師點擊相連泡泡，完成訂單並通過益智關卡。",
       },
-      meta: {
-        en: ["Animal Bakery", "6 Stages", "Tap Groups"],
-        "zh-Hant": ["動物烘焙", "6 關", "點擊群組"],
-      },
-      art: {
-        kind: "image",
-        background: "assets/bubble-bakery-cover.webp",
-        hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>",
-      },
+      meta: { en: ["Animal Bakery", "6 Stages", "Tap Groups"], "zh-Hant": ["動物烘焙", "6 關", "點擊群組"] },
+      art: { kind: "image", background: "assets/bubble-bakery-cover.webp", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
     },
     {
       id: "animal-rope-rescue",
@@ -104,17 +82,10 @@ window.WONDER_LOBBY = {
       ageLabel: { en: "5+", "zh-Hant": "5+" },
       description: {
         en: "Cut vines, drag the leaf trampoline, and bounce fruit into animal baskets through short physics stages.",
-        "zh-Hant": "切斷藤蔓、拖曳葉子彈板，把水果彈進動物籃子裡。",
+        "zh-Hant": "切斷藤蔓並移動葉子彈床，把水果彈進動物籃子裡。",
       },
-      meta: {
-        en: ["Animal Physics", "8 Stages", "Vine Timing"],
-        "zh-Hant": ["動物物理", "8 關", "藤蔓時機"],
-      },
-      art: {
-        kind: "image",
-        background: "assets/animal-vine-rescue-cover.webp",
-        hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>",
-      },
+      meta: { en: ["Animal Physics", "8 Stages", "Vine Timing"], "zh-Hant": ["動物物理", "8 關", "藤蔓時機"] },
+      art: { kind: "image", background: "assets/animal-vine-rescue-cover.webp", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
     },
     {
       id: "animal-zoo-idle",
@@ -122,24 +93,17 @@ window.WONDER_LOBBY = {
       status: "playable",
       statusText: { en: "Playable", "zh-Hant": "可遊玩" },
       href: "games/animal-zoo-idle/",
-      type: { en: "Idle Zoo", "zh-Hant": "放置樂園" },
+      type: { en: "Idle Zoo", "zh-Hant": "放置動物園" },
       categories: ["Featured", "Animal Games", "Family"],
       skills: ["Logic", "Focus", "Animal Knowledge"],
       ages: ["5", "family"],
       ageLabel: { en: "5+", "zh-Hant": "5+" },
       description: {
         en: "Run a safari meadow where visitors buy tickets while you feed animals and upgrade the park.",
-        "zh-Hant": "經營草原動物園，讓遊客買票參觀，餵食動物並升級樂園。",
+        "zh-Hant": "經營草原動物園，餵食動物、收取門票並升級樂園設施。",
       },
-      meta: {
-        en: ["Idle Zoo", "Ticket Income", "Animal Feeding"],
-        "zh-Hant": ["放置樂園", "票箱收益", "餵食動物"],
-      },
-      art: {
-        kind: "image",
-        background: "assets/animal-zoo-idle-cover.webp",
-        hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>",
-      },
+      meta: { en: ["Idle Zoo", "Ticket Income", "Animal Feeding"], "zh-Hant": ["放置動物園", "門票收入", "餵食動物"] },
+      art: { kind: "image", background: "assets/animal-zoo-idle-cover.webp", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
     },
     {
       id: "star-memory",
@@ -154,17 +118,10 @@ window.WONDER_LOBBY = {
       ageLabel: "5+",
       description: {
         en: "Clear memory stages by matching stars, animals, and friendly picture cards.",
-        "zh-Hant": "翻開星星與動物卡片，完成一關關記憶挑戰。",
+        "zh-Hant": "翻開星星與動物圖卡，找出相同配對並完成記憶關卡。",
       },
-      meta: {
-        en: ["Animal Cards", "10 Levels", "Memory"],
-        "zh-Hant": ["動物卡片", "10 關", "記憶力"],
-      },
-      art: {
-        kind: "image",
-        background: "assets/memory-cover.webp",
-        hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>",
-      },
+      meta: { en: ["Animal Cards", "10 Levels", "Memory"], "zh-Hant": ["動物卡片", "10 關", "記憶"] },
+      art: { kind: "image", background: "assets/memory-cover.webp", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
     },
     {
       id: "campus-dash",
@@ -179,17 +136,10 @@ window.WONDER_LOBBY = {
       ageLabel: "12+",
       description: {
         en: "Swipe left and right, dodge safari trail obstacles, and chase a high score.",
-        "zh-Hant": "左右閃避草原障礙，挑戰更高分數。",
+        "zh-Hant": "左右切換跑道，閃避草原障礙並挑戰高分。",
       },
-      meta: {
-        en: ["Safari", "Score Attack", "60 Sec"],
-        "zh-Hant": ["草原", "分數挑戰", "60 秒"],
-      },
-      art: {
-        kind: "image",
-        background: "assets/campus-dash-cover.webp",
-        hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>",
-      },
+      meta: { en: ["Safari", "Score Attack", "60 Sec"], "zh-Hant": ["草原跑酷", "分數挑戰", "60 秒"] },
+      art: { kind: "image", background: "assets/campus-dash-cover.webp", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
     },
     {
       id: "snack-blocks",
@@ -204,17 +154,10 @@ window.WONDER_LOBBY = {
       ageLabel: "12+",
       description: {
         en: "Match animal snacks, use every move, clear collection goals, and chase your best score.",
-        "zh-Hant": "消除動物零食方塊，在有限步數內完成收集目標。",
+        "zh-Hant": "消除動物零食方塊，用有限步數完成收集目標並挑戰最佳分數。",
       },
-      meta: {
-        en: ["Animal Snacks", "20 Stages", "Match Puzzle"],
-        "zh-Hant": ["動物零食", "20 關", "消除益智"],
-      },
-      art: {
-        kind: "image",
-        background: "assets/snack-blocks-cover.webp",
-        hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>",
-      },
+      meta: { en: ["Animal Snacks", "20 Stages", "Match Puzzle"], "zh-Hant": ["動物零食", "20 關", "消除益智"] },
+      art: { kind: "image", background: "assets/snack-blocks-cover.webp", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
     },
     {
       id: "fruit-merge",
@@ -229,17 +172,10 @@ window.WONDER_LOBBY = {
       ageLabel: { en: "5+", "zh-Hant": "5+" },
       description: {
         en: "Drop animal balls, merge matching pairs, and chase your best score all the way to the Lion King.",
-        "zh-Hant": "投下動物球、合成更大的動物，一路挑戰合成到獅王球。",
+        "zh-Hant": "落下動物球並合成相同動物，一路挑戰到獅王球與最佳分數。",
       },
-      meta: {
-        en: ["Animal Merge", "Physics Puzzle", "Best Record"],
-        "zh-Hant": ["動物合成", "物理益智", "最佳紀錄"],
-      },
-      art: {
-        kind: "image",
-        background: "assets/fruit-merge-cover.webp",
-        hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>",
-      },
+      meta: { en: ["Animal Merge", "Physics Puzzle", "Best Record"], "zh-Hant": ["動物合成", "物理益智", "最佳紀錄"] },
+      art: { kind: "image", background: "assets/fruit-merge-cover.webp", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
     },
     {
       id: "garden-tiles",
@@ -254,17 +190,10 @@ window.WONDER_LOBBY = {
       ageLabel: { en: "Relax", "zh-Hant": "放鬆" },
       description: {
         en: "A large-print, no-timer pet garden matching game made for calm daily play.",
-        "zh-Hant": "大字體、無壓力、沒有倒數的寵物花園配對遊戲。",
+        "zh-Hant": "大圖示、無倒數的寵物花園配對遊戲，適合每天輕鬆遊玩。",
       },
-      meta: {
-        en: ["Pet Garden", "Large Tiles", "No Timer"],
-        "zh-Hant": ["寵物花園", "大方塊", "無倒數"],
-      },
-      art: {
-        kind: "image",
-        background: "assets/garden-tiles-cover.webp",
-        hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>",
-      },
+      meta: { en: ["Pet Garden", "Large Tiles", "No Timer"], "zh-Hant": ["寵物花園", "大方塊", "無倒數"] },
+      art: { kind: "image", background: "assets/garden-tiles-cover.webp", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
     },
     {
       id: "animal-rescue",
@@ -279,17 +208,10 @@ window.WONDER_LOBBY = {
       href: "games/animal-rescue/",
       description: {
         en: "Tap gentle paths and guide cute animals back home.",
-        "zh-Hant": "點選安全路線，帶可愛動物回到家。",
+        "zh-Hant": "點選安全路線，帶可愛動物回到自己的家。",
       },
-      meta: {
-        en: ["Animal Games", "12 Trails", "No Pressure"],
-        "zh-Hant": ["動物遊戲", "12 條路線", "無壓力"],
-      },
-      art: {
-        kind: "image",
-        background: "assets/animal-rescue-cover.webp",
-        hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>",
-      },
+      meta: { en: ["Animal Games", "12 Trails", "No Pressure"], "zh-Hant": ["動物遊戲", "12 條路線", "無壓力"] },
+      art: { kind: "image", background: "assets/animal-rescue-cover.webp", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
     },
     {
       id: "animal-hidden-safari",
@@ -304,24 +226,17 @@ window.WONDER_LOBBY = {
       href: "games/animal-hidden-safari/",
       description: {
         en: "Search playful safari scenes and find hidden animals, tracks, and habitat clues.",
-        "zh-Hant": "觀察熱鬧的草原場景，找出藏起來的動物、腳印與棲地線索。",
+        "zh-Hant": "觀察自然探險場景，找出藏起來的動物、足跡與棲地線索。",
       },
-      meta: {
-        en: ["Seek & Find", "6 Habitats", "No Pressure"],
-        "zh-Hant": ["找找看", "6 個棲地", "無壓力"],
-      },
-      art: {
-        kind: "image",
-        background: "assets/animal-hidden-safari-cover.webp",
-        hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>",
-      },
+      meta: { en: ["Seek & Find", "6 Habitats", "No Pressure"], "zh-Hant": ["找找看", "6 個棲地", "無壓力"] },
+      art: { kind: "image", background: "assets/animal-hidden-safari-cover.webp", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
     },
     {
       id: "animal-guard-yard",
       title: { en: "Animal Guard Yard", "zh-Hant": "動物守衛庭院" },
       status: "playable",
       statusText: { en: "Playable", "zh-Hant": "可遊玩" },
-      type: { en: "Lane Defense", "zh-Hant": "路線防衛" },
+      type: { en: "Lane Defense", "zh-Hant": "路線防守" },
       categories: ["Featured", "Animal Games", "Arcade", "Family"],
       skills: ["Logic", "Focus", "Problem Solving"],
       ages: ["5", "family"],
@@ -329,18 +244,10 @@ window.WONDER_LOBBY = {
       href: "games/animal-guard-yard/",
       description: {
         en: "Place full-body animal guards, earn coins, upgrade your team, and fight through 8 zombie stages with boss battles.",
-        "zh-Hant": "放置全身動物守衛，收集陽光、賺取金幣、升級隊伍，在 8 個關卡中擋住殭屍與 Boss 進攻。",
+        "zh-Hant": "配置完整動物守衛、賺取金幣、升級隊伍，挑戰 8 個含 Boss 的防守關卡。",
       },
-      meta: {
-        en: ["Hero Defense", "Animal Upgrades", "Boss Battles"],
-        "zh-Hant": ["主打防衛", "動物升級", "Boss 戰"],
-      },
-      art: {
-        kind: "image",
-        background: "assets/animal-guard-yard-poster.webp",
-        hero: "assets/animal-guard-yard-poster.webp",
-        hideHero: true,
-      },
+      meta: { en: ["Hero Defense", "Animal Upgrades", "Boss Battles"], "zh-Hant": ["英雄防守", "動物升級", "Boss 戰"] },
+      art: { kind: "image", background: "assets/animal-guard-yard-poster.webp", hero: "assets/animal-guard-yard-poster.webp", hideHero: true },
     },
     {
       id: "animal-quiz",
@@ -355,17 +262,10 @@ window.WONDER_LOBBY = {
       href: "games/animal-quiz/",
       description: {
         en: "Clear animal stages with short, friendly quiz questions.",
-        "zh-Hant": "用簡短友善的問答完成動物知識關卡。",
+        "zh-Hant": "回答簡短友善的動物問題，完成一關關的小博士挑戰。",
       },
-      meta: {
-        en: ["Animal Games", "5 Stages", "Quiz"],
-        "zh-Hant": ["動物遊戲", "5 關", "問答"],
-      },
-      art: {
-        kind: "image",
-        background: "assets/quiz-cover.webp",
-        hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>",
-      },
+      meta: { en: ["Animal Games", "5 Stages", "Quiz"], "zh-Hant": ["動物遊戲", "5 關", "問答"] },
+      art: { kind: "image", background: "assets/quiz-cover.webp", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
     },
     {
       id: "zoo-helper-day",
@@ -380,17 +280,10 @@ window.WONDER_LOBBY = {
       href: "games/zoo-helper-day/",
       description: {
         en: "Help zoo animals with simple care choices made for young players.",
-        "zh-Hant": "用簡單選擇幫動物園的小動物完成照顧任務。",
+        "zh-Hant": "幫動物園裡的動物選擇需要的照顧道具，適合年幼玩家。",
       },
-      meta: {
-        en: ["Zoo Animals", "Care Choices", "Kids"],
-        "zh-Hant": ["動物園", "照顧選擇", "兒童"],
-      },
-      art: {
-        kind: "image",
-        background: "assets/zoo-helper-day-cover.webp",
-        hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>",
-      },
+      meta: { en: ["Zoo Animals", "Care Choices", "Kids"], "zh-Hant": ["動物園", "照顧選擇", "兒童"] },
+      art: { kind: "image", background: "assets/zoo-helper-day-cover.webp", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
     },
     {
       id: "shape-train",
@@ -405,24 +298,17 @@ window.WONDER_LOBBY = {
       href: "games/shape-train/",
       description: {
         en: "Tap or drag smiling shape friends onto the matching train cars.",
-        "zh-Hant": "點擊或拖曳可愛形狀朋友，送上相同形狀的小火車車廂。",
+        "zh-Hant": "點擊或拖曳可愛形狀朋友，把它們放到相同形狀的小火車車廂。",
       },
-      meta: {
-        en: ["Tap or Drag", "Shape Train", "3+"],
-        "zh-Hant": ["點擊拖曳", "形狀火車", "3+"],
-      },
-      art: {
-        kind: "image",
-        background: "assets/shape-train-cover.webp",
-        hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>",
-      },
+      meta: { en: ["Tap or Drag", "Shape Train", "3+"], "zh-Hant": ["點擊或拖曳", "形狀火車", "3+"] },
+      art: { kind: "image", background: "assets/shape-train-cover.webp", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
     },
     {
       id: "tiny-weather-rescue",
       title: { en: "Animal Helper Quest", "zh-Hant": "動物幫幫隊" },
       status: "playable",
       statusText: { en: "Playable", "zh-Hant": "可遊玩" },
-      type: { en: "Problem Puzzle", "zh-Hant": "情境益智" },
+      type: { en: "Problem Puzzle", "zh-Hant": "問題益智" },
       categories: ["Animal Games", "Puzzle", "Family"],
       skills: ["Problem Solving", "Animal Knowledge", "Focus"],
       ages: ["5", "family"],
@@ -430,17 +316,10 @@ window.WONDER_LOBBY = {
       href: "games/tiny-weather-rescue/",
       description: {
         en: "Pick helpful tools for animal scenes and solve simple everyday problems.",
-        "zh-Hant": "依照動物遇到的情境，選出合適道具幫忙解決問題。",
+        "zh-Hant": "觀察動物遇到的情境，選出合適道具幫忙解決日常小問題。",
       },
-      meta: {
-        en: ["Animal Help", "Scene Puzzle", "Kids"],
-        "zh-Hant": ["動物幫忙", "情境益智", "兒童"],
-      },
-      art: {
-        kind: "image",
-        background: "assets/tiny-weather-rescue-cover.webp",
-        hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>",
-      },
+      meta: { en: ["Animal Help", "Scene Puzzle", "Kids"], "zh-Hant": ["動物幫忙", "情境益智", "兒童"] },
+      art: { kind: "image", background: "assets/tiny-weather-rescue-cover.webp", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
     },
   ],
 };

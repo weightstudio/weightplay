@@ -150,6 +150,7 @@
   let currentStage = 0;
   let board = [];
   let orders = {};
+  let initialOrders = {};
   let moves = 0;
   let score = 0;
   let orderStreak = 0;
@@ -264,6 +265,7 @@
     currentStage = index;
     const stage = stages[index];
     orders = { ...stage.orders };
+    initialOrders = { ...stage.orders };
     moves = stage.moves;
     score = 0;
     orderStreak = 0;
@@ -311,9 +313,11 @@
 
   function renderOrders() {
     nodes.orderBar.innerHTML = "";
+    const progress = orderProgress();
+    nodes.orderBar.classList.toggle("is-complete", progress.total > 0 && progress.done >= progress.total);
     const title = document.createElement("strong");
     title.className = "order-title";
-    title.textContent = nodes.orderBar.dataset.theme || "";
+    title.textContent = `${nodes.orderBar.dataset.theme || ""} · ${progress.done}/${progress.total}`;
     nodes.orderBar.appendChild(title);
     Object.entries(orders).forEach(([id, need]) => {
       const data = colorData(id);
@@ -322,6 +326,22 @@
       chip.innerHTML = `<img class="order-icon" src="${data.asset}" alt="${data.label}" /><span>${t("collect", { n: Math.max(0, need) })}</span>`;
       nodes.orderBar.appendChild(chip);
     });
+    const meter = document.createElement("div");
+    meter.className = "order-progress";
+    meter.setAttribute("aria-hidden", "true");
+    meter.innerHTML = `<i style="transform: scaleX(${progress.ratio})"></i><span>${progress.done}/${progress.total}</span>`;
+    nodes.orderBar.appendChild(meter);
+  }
+
+  function orderProgress() {
+    const total = Object.values(initialOrders).reduce((sum, need) => sum + Math.max(0, need), 0);
+    const left = Object.values(orders).reduce((sum, need) => sum + Math.max(0, need), 0);
+    const done = clamp(total - left, 0, total);
+    return {
+      total,
+      done,
+      ratio: total > 0 ? done / total : 0,
+    };
   }
 
   function boardMetrics() {
@@ -622,15 +642,17 @@
 
   function initLoading() {
     const assets = [
-      "../../assets/bubble-bakery-cover.png",
+      "../../assets/bubble-bakery-cover.webp",
       ...colors.map((item) => item.asset),
     ];
     let loaded = 0;
+    let released = false;
     const update = () => {
       const pct = Math.min(100, Math.round((loaded / assets.length) * 100));
       nodes.loadingText.textContent = `${pct}%`;
       nodes.loadingFill.style.width = `${pct}%`;
-      if (pct >= 100) {
+      if (pct >= 100 && !released) {
+        released = true;
         nodes.loadingPanel.classList.add("hidden");
         track("game_ready");
       }
@@ -644,6 +666,14 @@
       image.src = src;
     });
     update();
+    window.setTimeout(() => {
+      if (released) return;
+      released = true;
+      nodes.loadingText.textContent = "100%";
+      nodes.loadingFill.style.width = "100%";
+      nodes.loadingPanel.classList.add("hidden");
+      track("game_ready", { fallback: true });
+    }, 1200);
   }
 
   nodes.localeSelect.addEventListener("change", () => {
@@ -661,6 +691,12 @@
   nodes.resultStagesBtn.addEventListener("click", showMenu);
   nodes.retryBtn.addEventListener("click", () => startStage(currentStage));
   nodes.nextStageBtn.addEventListener("click", () => startStage(Math.min(currentStage + 1, stages.length - 1)));
+  document.querySelectorAll("img[data-fallback-src]").forEach((image) => {
+    image.addEventListener("error", () => {
+      const fallback = image.dataset.fallbackSrc;
+      if (fallback && image.getAttribute("src") !== fallback) image.src = fallback;
+    }, { once: true });
+  });
 
   localizeStatic();
   renderStageGrid();
