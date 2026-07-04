@@ -53,6 +53,9 @@
       upgrade: "Upgrade",
       unlock: "Unlock",
       owned: "Owned",
+      nextLevel: "Next Lv {n}",
+      nextStats: "+{damage} ATK / +{hp} HP / {cooldown}s faster",
+      unlockHint: "Unlock to train this guard.",
       coinToken: "coins",
       diamondToken: "diamonds",
       sunToken: "sun",
@@ -125,6 +128,9 @@
       upgrade: "\u5347\u7d1a",
       unlock: "\u89e3\u9396",
       owned: "\u5df2\u64c1\u6709",
+      nextLevel: "\u4e0b\u4e00\u7d1a Lv {n}",
+      nextStats: "\u653b\u64ca +{damage} / \u751f\u547d +{hp} / \u51b7\u537b\u52a0\u5feb {cooldown} \u79d2",
+      unlockHint: "\u89e3\u9396\u5f8c\u624d\u80fd\u8a13\u7df4\u9019\u96bb\u5b88\u885b\u3002",
       coinToken: "\u91d1\u5e63",
       diamondToken: "\u947d\u77f3",
       sunToken: "\u967d\u5149",
@@ -387,7 +393,10 @@
   }
 
   function trainedUnit(unit) {
-    const level = unitLevel(unit.id);
+    return trainedUnitAtLevel(unit, unitLevel(unit.id));
+  }
+
+  function trainedUnitAtLevel(unit, level) {
     return {
       ...unit,
       level,
@@ -399,6 +408,18 @@
 
   function upgradeCost(unitId) {
     return Math.round(70 * Math.pow(1.42, unitLevel(unitId) - 1));
+  }
+
+  function upgradePreview(unit) {
+    if (!isOwned(unit.id)) return t("unlockHint");
+    const current = trainedUnit(unit);
+    const next = trainedUnitAtLevel(unit, current.level + 1);
+    const cooldownDelta = Math.max(0, current.cooldown - next.cooldown) / 1000;
+    return `${t("nextLevel", { n: next.level })}: ${t("nextStats", {
+      damage: next.damage - current.damage,
+      hp: next.hp - current.hp,
+      cooldown: cooldownDelta.toFixed(2).replace(/\.?0+$/u, ""),
+    })}`;
   }
 
   function playSound(name) {
@@ -528,6 +549,7 @@
         <div>
           <strong>${t(unit.nameKey)} <small>${t("level", { n: trained.level })}</small></strong>
           <span>${t(trained.roleKey)} / ATK ${trained.damage} / HP ${trained.hp} / ${t("sunToken").toUpperCase()} ${trained.cost}</span>
+          <em class="kennel-next">${upgradePreview(unit)}</em>
         </div>
         <button type="button" data-kennel-unit="${unit.id}" ${canBuy ? "" : "disabled"}>
           <span>${actionLabel}</span>

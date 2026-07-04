@@ -25,6 +25,7 @@
   const menuPanel = document.querySelector("#menuPanel");
   const menuTitle = document.querySelector("#menuTitle");
   const menuDesc = document.querySelector("#menuDesc");
+  const chainPreview = document.querySelector("#chainPreview");
   const resultPanel = document.querySelector("#resultPanel");
   const resultTitle = document.querySelector("#resultTitle");
   const resultText = document.querySelector("#resultText");
@@ -65,6 +66,8 @@
       restart: "Restart",
       menuTitle: "Merge to the Lion King",
       menuDesc: "Drop animal balls carefully. Matching animals merge into the next bigger animal. Keep the tower below the red line.",
+      chainTitle: "Merge Path",
+      chainHint: "Match two of the same animal to unlock the next one.",
       start: "Start",
       gameOver: "Game Over",
       result: "Score {score}  Best {best}",
@@ -112,6 +115,8 @@
       restart: "重新開始",
       menuTitle: "一路合成到獅王",
       menuDesc: "小心落下動物球。相同動物會合成下一個更大的動物，別讓塔超過紅線。",
+      chainTitle: "合成路線",
+      chainHint: "兩顆相同動物會合成下一種動物。",
       start: "開始",
       gameOver: "遊戲結束",
       result: "分數 {score}  最佳 {best}",
@@ -232,6 +237,7 @@
     restartBtn.textContent = t("restart");
     menuTitle.textContent = t("menuTitle");
     menuDesc.textContent = t("menuDesc");
+    renderChainPreview();
     startBtn.textContent = t("start");
     playAgainBtn.textContent = t("playAgain");
     lobbyLink.textContent = t("lobby");
@@ -597,6 +603,31 @@
       });
       target.appendChild(item);
     });
+  }
+
+  function renderChainPreview() {
+    if (!chainPreview) return;
+    chainPreview.replaceChildren();
+
+    const title = document.createElement("strong");
+    title.textContent = t("chainTitle");
+    chainPreview.appendChild(title);
+
+    const rail = document.createElement("div");
+    rail.className = "chain-rail";
+    fruits.forEach((_, level) => {
+      const item = document.createElement("span");
+      item.className = "chain-step";
+      item.title = t(`fruit${level}`);
+      item.setAttribute("aria-label", t(`fruit${level}`));
+      item.innerHTML = animalTokenMarkup(level);
+      rail.appendChild(item);
+    });
+    chainPreview.appendChild(rail);
+
+    const hint = document.createElement("small");
+    hint.textContent = t("chainHint");
+    chainPreview.appendChild(hint);
   }
 
   function buildSkillScores(finalScore) {

@@ -27,6 +27,7 @@
       resultWin: "You filled every order with {moves} moves left.",
       resultLose: "Collect the needed bubbles before moves run out.",
       smallGroup: "Tap 2 or more connected matching bubbles.",
+      orderStreak: "Order streak x{streak}! +{bonus}",
       collect: "Collect {n}",
       skillReport: "Skill Report",
       previousBest: "Previous Best",
@@ -70,6 +71,7 @@
       resultWin: "你完成了所有訂單，還剩 {moves} 步。",
       resultLose: "步數用完前，要收集訂單需要的泡泡。",
       smallGroup: "請點擊 2 個以上相連的相同泡泡。",
+      orderStreak: "訂單連擊 x{streak}！+{bonus}",
       collect: "收集 {n}",
       skillReport: "能力小報告",
       previousBest: "之前最佳",
@@ -150,6 +152,7 @@
   let orders = {};
   let moves = 0;
   let score = 0;
+  let orderStreak = 0;
   let busy = false;
   const popMs = 620;
   const dropMs = 920;
@@ -263,6 +266,7 @@
     orders = { ...stage.orders };
     moves = stage.moves;
     score = 0;
+    orderStreak = 0;
     busy = false;
     board = makeBoard(stage.palette);
     document.body.classList.add("is-bakery-playing");
@@ -410,10 +414,25 @@
       return;
     }
     busy = true;
+    const wasNeeded = (orders[id] || 0) > 0;
     moves -= 1;
-    score += group.length * group.length * 5;
+    const baseScore = group.length * group.length * 5;
+    let bonus = 0;
+    if (wasNeeded) {
+      orderStreak += 1;
+      bonus = Math.round(group.length * 8 * Math.min(orderStreak, 5));
+    } else {
+      orderStreak = 0;
+    }
+    score += baseScore + bonus;
     if (orders[id] > 0) orders[id] = Math.max(0, orders[id] - group.length);
-    showFloat(`+${group.length}`, window.innerWidth / 2, window.innerHeight * 0.5);
+    if (bonus > 0) {
+      nodes.hintText.textContent = t("orderStreak", { streak: Math.min(orderStreak, 5), bonus });
+      showFloat(t("orderStreak", { streak: Math.min(orderStreak, 5), bonus }), window.innerWidth / 2, window.innerHeight * 0.5);
+    } else {
+      nodes.hintText.textContent = t("smallGroup");
+      showFloat(`+${baseScore}`, window.innerWidth / 2, window.innerHeight * 0.5);
+    }
     playSound("pop");
 
     await markPopping(group);

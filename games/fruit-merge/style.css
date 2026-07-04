@@ -409,6 +409,61 @@ body.fruit-playing .topbar {
   box-shadow: inset 0 0 0 1px rgba(34, 51, 76, 0.08);
 }
 
+.chain-preview {
+  display: grid;
+  gap: 8px;
+  padding: 10px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(101, 230, 163, 0.18), rgba(255, 211, 93, 0.22));
+  box-shadow: inset 0 0 0 1px rgba(34, 51, 76, 0.1);
+}
+
+.chain-preview > strong {
+  color: #172033;
+  font-size: 15px;
+}
+
+.chain-preview small {
+  color: rgba(23, 32, 51, 0.62);
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1.35;
+}
+
+.chain-rail {
+  display: grid;
+  grid-template-columns: repeat(11, minmax(0, 1fr));
+  gap: 4px;
+  align-items: center;
+}
+
+.chain-step {
+  position: relative;
+  min-width: 0;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+}
+
+.chain-step:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  right: -4px;
+  top: 50%;
+  width: 5px;
+  height: 2px;
+  transform: translateY(-50%);
+  border-radius: 99px;
+  background: rgba(23, 32, 51, 0.28);
+}
+
+.chain-step img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 7px rgba(0, 0, 0, 0.18));
+}
+
 .leaderboard-panel strong {
   color: #172033;
   font-size: 15px;
