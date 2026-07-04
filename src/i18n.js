@@ -36,6 +36,15 @@
       "daily.claimed": "Claimed Today",
       "daily.toast": "Claimed {diamonds} diamonds. Streak day {count}!",
       "daily.toast_claimed": "Today's gift has already been claimed.",
+      "trust.kicker": "Parent Friendly",
+      "trust.title": "Built for short, safe skill practice",
+      "trust.body": "WeightPlay games are free to start, do not require login, and use supportive progress messages instead of child-to-child comparisons.",
+      "trust.no_login.title": "No login required",
+      "trust.no_login.body": "Kids can play without creating an account.",
+      "trust.local_progress.title": "Local progress",
+      "trust.local_progress.body": "Scores and favorites stay on this device.",
+      "trust.supportive.title": "Supportive reports",
+      "trust.supportive.body": "Results focus on effort, skills, and personal improvement.",
       "status.all_games": "All games",
       "status.favorite_games": "{count} favorite games",
       "status.favorite_games_one": "1 favorite game",
@@ -164,6 +173,18 @@
     "footer.terms": "使用條款",
     "footer.copyright": "Copyright 2026 WeightStudio. All rights reserved.",
   };
+
+  Object.assign(dictionaries["zh-Hant"], {
+    "trust.kicker": "家長友善",
+    "trust.title": "適合短時間、安全的能力練習",
+    "trust.body": "WeightPlay 遊戲可以免費開始，不需要登入，並使用鼓勵式進步訊息，不把孩子拿來互相比較。",
+    "trust.no_login.title": "不用登入",
+    "trust.no_login.body": "孩子可以不用建立帳號就開始玩。",
+    "trust.local_progress.title": "本機進度",
+    "trust.local_progress.body": "分數與收藏會保存在這台裝置上。",
+    "trust.supportive.title": "鼓勵式報告",
+    "trust.supportive.body": "結果重點放在努力、能力練習與自己的進步。",
+  });
 
   function getSavedLocale() {
     try {

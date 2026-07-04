@@ -204,6 +204,7 @@
   let locale = window.WonderI18n?.locale?.() || localStorage.getItem(localeKey) || "en";
   let save = loadSave();
   let tickCount = 0;
+  let newlyRecruitedAnimalId = "";
 
   function t(key, data = {}) {
     const value = text[locale]?.[key] || text.en[key] || key;
@@ -454,6 +455,7 @@
       renderAnimals(animalLayer);
       animalLayer.dataset.animalIds = animalIds;
     }
+    renderVisitors(card.querySelector(".visitor-line"));
   }
 
   function gateAsset() {
@@ -463,6 +465,11 @@
   }
 
   function renderVisitors(container) {
+    if (!container) return;
+    const signature = `${visitorCount()}`;
+    if (container.dataset.visitorSignature === signature) return;
+    container.dataset.visitorSignature = signature;
+    container.innerHTML = "";
     const count = visitorCount();
     for (let i = 0; i < count; i += 1) {
       const img = document.createElement("img");
@@ -485,9 +492,17 @@
       wrap.style.left = `${position.x}%`;
       wrap.style.bottom = `${position.y}%`;
       wrap.style.width = `${animal.size}%`;
+      if (newlyRecruitedAnimalId === animal.id) wrap.classList.add("new-arrival");
       wrap.innerHTML = `<img src="${animal.asset}" alt="" draggable="false" />`;
       attachAnimalDrag(wrap, animal);
       container.appendChild(wrap);
+    }
+    if (newlyRecruitedAnimalId) {
+      const animalId = newlyRecruitedAnimalId;
+      newlyRecruitedAnimalId = "";
+      window.setTimeout(() => {
+        document.querySelector(`.animal[data-animal-id="${animalId}"]`)?.classList.remove("new-arrival");
+      }, 760);
     }
   }
 
@@ -517,7 +532,7 @@
       const owned = save.unlocked[animal.id] ? 1 : 0;
       const affordable = save.coins >= animal.cost ? 1 : 0;
       return `${animal.id}:${owned}:${affordable}`;
-    }).join("|");
+    }).join("|") + `:${locale}`;
   }
 
   function renderNextGoal(container) {
@@ -677,6 +692,7 @@
     save.unlocked[animal.id] = true;
     save.positions[animal.id] = animalPosition(animal);
     save.happiness = clamp(save.happiness + 12, 18, 100);
+    newlyRecruitedAnimalId = animal.id;
     popToast(t("recruited", { name: t(animal.id) }));
     playSound("upgrade");
     window.WonderAnalytics?.track("animal_unlock", { game_id: GAME_ID, animal_id: animal.id });

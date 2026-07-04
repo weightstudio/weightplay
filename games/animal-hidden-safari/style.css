@@ -251,6 +251,13 @@ select {
     0 18px 34px rgba(48, 82, 63, 0.2);
 }
 
+.scene[data-theme="river"] {
+  background:
+    linear-gradient(180deg, rgba(27, 99, 122, 0.02), rgba(27, 99, 122, 0.04)),
+    url("../../assets/animal-hidden-safari-river-bg.webp") center / cover no-repeat,
+    #84d75f;
+}
+
 .float-layer {
   position: absolute;
   pointer-events: none;
