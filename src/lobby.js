@@ -302,6 +302,7 @@ function createGameCard(game) {
   const ageLabel = text(game.ageLabel);
   const card = document.createElement("article");
   const favorite = isFavorite(game.id);
+  const recent = isRecent(game.id);
   card.className = `game-card ${isPlayable ? "playable" : "coming-soon"}`;
   card.dataset.age = game.ages.join(" ");
   card.dataset.topic = (game.categories || []).join("|");
@@ -316,7 +317,7 @@ function createGameCard(game) {
     ...(game.skills || []).map(skillText),
   ].join(" ").toLowerCase();
   card.dataset.favorite = favorite ? "true" : "false";
-  card.dataset.recent = isRecent(game.id) ? "true" : "false";
+  card.dataset.recent = recent ? "true" : "false";
   card.dataset.recentIndex = String(recentGameIds.indexOf(game.id));
 
   if (isPlayable) {
@@ -354,9 +355,12 @@ function createGameCard(game) {
       : `<div class="game-card-art ${game.art.className}"><span>${ageLabel}</span></div>`;
   const favoriteAction = i18n.t(favorite ? "action.remove_favorite" : "action.add_favorite");
   const favoriteLabel = i18n.t(favorite ? "action.remove_favorite_title" : "action.add_favorite_title", { title });
+  const primaryAction = isPlayable ? i18n.t(recent ? "action.continue" : "action.play") : i18n.t("action.coming_soon");
+  const continueBadge = isPlayable && recent ? `<span class="continue-badge">${i18n.t("action.continue")}</span>` : "";
 
   card.innerHTML = `
     ${art}
+    ${continueBadge}
     <button class="favorite-toggle ${favorite ? "active" : ""}" type="button" aria-label="${favoriteLabel}" title="${favoriteAction}">
       <svg class="favorite-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
         <path d="M12 20.4 10.7 19.2C5.8 14.8 3 12.2 3 8.9 3 6.2 5.1 4.1 7.8 4.1 9.3 4.1 10.8 4.8 11.8 5.9 12.8 4.8 14.3 4.1 15.8 4.1 18.5 4.1 20.6 6.2 20.6 8.9 20.6 12.2 17.8 14.8 12.9 19.2L12 20.4Z" />
@@ -375,7 +379,7 @@ function createGameCard(game) {
       <div class="game-card-meta">${meta}</div>
       <div class="game-card-plays">${playCountText(game)}</div>
       <div class="game-card-actions">
-        <span>${isPlayable ? i18n.t("action.play") : i18n.t("action.coming_soon")}</span>
+        <span>${primaryAction}</span>
         <span>${type}</span>
       </div>
     </div>

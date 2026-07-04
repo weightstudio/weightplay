@@ -21,7 +21,7 @@
     <meta name="twitter:image" content="https://weightplay.com/assets/animal-hidden-safari-cover.png" />
     <title>Animal Hidden Safari - WeightPlay</title>
     <link rel="canonical" href="https://weightplay.com/games/animal-hidden-safari/" />
-    <link rel="stylesheet" href="style.css?v=20260704-safari-pond-bg1" />
+    <link rel="stylesheet" href="style.css?v=20260705-safari-dom-ready1" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260703-scroll-guide1" />
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
@@ -139,7 +139,7 @@
       </div>
     </main>
 
-    <script src="../../src/site-config.js?v=20260704-safari-pond-bg1"></script>
+    <script src="../../src/site-config.js?v=20260705-safari-dom-ready1"></script>
     <script src="../../src/version.js?v=20260701-version2"></script>
     <script src="../../src/analytics.js?v=20260701-analytics2"></script>
     <script>
@@ -149,7 +149,27 @@
     <script src="../../src/edge-guard.js?v=20260703-play-frame1"></script>
     <script src="../../src/i18n.js?v=20260703-i18n-clean1"></script>
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
-    <script src="game.js?v=20260704-safari-pond-bg1"></script>
-    <script src="../../src/game-page-info.js?v=20260704-guide-zh-clean1"></script>
+    <script src="game.js?v=20260705-safari-dom-ready1"></script>
+    <script>
+      (() => {
+        const loadGameInfo = () => {
+          if (document.querySelector("script[data-safari-game-info]")) return;
+          const script = document.createElement("script");
+          script.src = "../../src/game-page-info.js?v=20260704-guide-zh-clean1";
+          script.dataset.safariGameInfo = "idle";
+          script.async = true;
+          document.body.appendChild(script);
+        };
+        const schedule = () => {
+          if ("requestIdleCallback" in window) {
+            window.requestIdleCallback(loadGameInfo, { timeout: 1600 });
+          } else {
+            window.setTimeout(loadGameInfo, 350);
+          }
+        };
+        if (document.readyState === "complete") schedule();
+        else window.addEventListener("load", schedule, { once: true });
+      })();
+    </script>
   </body>
 </html>

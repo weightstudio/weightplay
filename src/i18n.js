@@ -67,11 +67,13 @@
       "status.games_found_one": "1 game found",
       "status.games_found_many": "{count} games found",
       "action.play": "Play",
+      "action.continue": "Continue",
       "action.coming_soon": "Coming Soon",
       "action.add_favorite": "Add to favorites",
       "action.remove_favorite": "Remove from favorites",
       "action.add_favorite_title": "Add {title} to favorites",
       "action.remove_favorite_title": "Remove {title} from favorites",
+      "action.continue_title": "Continue {title}",
       "toast.favorite_added": "Added {title} to favorites",
       "toast.favorite_removed": "Removed {title} from favorites",
       "toast.coming_soon": "{title} is coming soon",
@@ -206,6 +208,11 @@
     "skill_path.count": "{count} 款遊戲",
     "skill_path.count_one": "1 款遊戲",
     "skill_path.cta": "查看遊戲",
+  });
+
+  Object.assign(dictionaries["zh-Hant"], {
+    "action.continue": "繼續玩",
+    "action.continue_title": "繼續玩 {title}",
   });
 
   function getSavedLocale() {

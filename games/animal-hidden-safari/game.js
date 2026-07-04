@@ -496,6 +496,19 @@
     update();
   }
 
+  function scheduleAssetPreload() {
+    const run = () => {
+      if ("requestIdleCallback" in window) {
+        window.requestIdleCallback(preloadGameAssets, { timeout: 1400 });
+      } else {
+        window.setTimeout(preloadGameAssets, 250);
+      }
+    };
+    window.setTimeout(() => nodes.loadingPanel.classList.add("hidden"), 2600);
+    if (document.readyState === "complete") run();
+    else window.addEventListener("load", run, { once: true });
+  }
+
   function bind() {
     nodes.localeSelect.addEventListener("change", () => {
       locale = nodes.localeSelect.value;
@@ -518,5 +531,5 @@
   localizeStatic();
   bind();
   showMenu();
-  preloadGameAssets();
+  scheduleAssetPreload();
 })();
