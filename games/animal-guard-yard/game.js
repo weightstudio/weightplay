@@ -197,6 +197,7 @@
     boss: "../../assets/animal-guard-zombie-boss.png",
   };
   const diamondIcon = "../../assets/weightplay-diamond.svg?v=20260704-blue-diamond1";
+  const heartIcon = "../../assets/weightplay-heart.svg";
 
   const projectileAssets = {
     cat: "../../assets/animal-guard-projectile-seed.svg",
@@ -1131,7 +1132,6 @@
 
   function updateSpawnWarning(left) {
     if (!nodes.spawnWarning) return;
-    const activeZombies = entities.filter((item) => item.kind === "zombie").length;
     const remainingSpawns = Math.max(0, stages[currentStage].total - spawned);
     const shouldShow = running && left > 0 && remainingSpawns > 0 && nextSpawnPlan;
     nodes.spawnWarning.classList.toggle("hidden", !shouldShow);
@@ -1140,7 +1140,7 @@
       return;
     }
     const remaining = clamp(nextSpawnAt / Math.max(1, currentSpawnDelay), 0, 1);
-    nodes.spawnWarning.style.left = "94%";
+    nodes.spawnWarning.style.left = "calc(100% - (100% / var(--grid-cols)) * 0.5)";
     nodes.spawnWarning.style.top = `${laneCenterY(nextSpawnPlan.row) * 100}%`;
     nodes.spawnWarning.style.setProperty("--spawn-left", `${Math.round(remaining * 100)}%`);
     nodes.spawnWarning.classList.toggle("is-hot", remaining < 0.28);
@@ -1254,6 +1254,7 @@
       "../../assets/upgrade-coin.png",
       "../../assets/coin.png",
       diamondIcon,
+      heartIcon,
     ];
     let loaded = 0;
     const update = () => {

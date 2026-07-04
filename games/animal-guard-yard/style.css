@@ -554,6 +554,11 @@ select {
   filter: drop-shadow(0 2px 0 rgba(87, 55, 11, 0.18));
 }
 
+.heart-img {
+  object-fit: contain;
+  filter: drop-shadow(0 2px 0 rgba(128, 27, 54, 0.2));
+}
+
 .sun-icon {
   border-radius: 50%;
   background:
@@ -613,16 +618,18 @@ select {
   --spawn-left: 100%;
   position: absolute;
   z-index: 13;
-  width: clamp(34px, calc(var(--cell-w) * 0.58), 54px);
+  width: clamp(32px, calc(var(--cell-w) * 0.52), 48px);
   aspect-ratio: 1;
   transform: translate(-50%, -50%);
   border-radius: 999px;
   padding: 5px;
+  box-sizing: border-box;
   display: grid;
   place-items: center;
   pointer-events: none;
   background: conic-gradient(#57f07b var(--spawn-left), rgba(119, 125, 119, 0.72) 0);
   filter: drop-shadow(0 0 8px rgba(88, 240, 123, 0.42));
+  will-change: left, top;
 }
 
 .spawn-warning.hidden {

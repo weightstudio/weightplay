@@ -1,6 +1,6 @@
 ﻿(() => {
   const GAME_ID = "zoo-helper-day";
-  const assetVersion = "20260704-zoo-item-cache2";
+  const assetVersion = "20260705-zoo-helper-day-items1";
   const localeKey = "weightPlayLocale";
   const unlockKey = "weightplay_zoo_helper_unlocked";
   const starKey = "weightplay_zoo_helper_stars";
@@ -113,14 +113,14 @@
   };
 
   const itemIcons = {
-    fruit: "../../assets/tiny-weather-tool-apple.svg",
-    water: "../../assets/zoo-helper-water.svg",
-    brush: "../../assets/zoo-helper-brush.svg",
-    toy: "../../assets/zoo-helper-toy.svg",
-    leaf: "../../assets/zoo-helper-leaves.svg",
-    shower: "../../assets/zoo-helper-shower.svg",
-    fish: "../../assets/zoo-helper-fish.svg",
-    ball: "../../assets/zoo-helper-ball.svg",
+    fruit: "../../assets/zoo-helper-day-fruit-apple.svg",
+    water: "../../assets/zoo-helper-day-water-drop.svg",
+    brush: "../../assets/zoo-helper-day-care-brush.svg",
+    toy: "../../assets/zoo-helper-day-toy-block.svg",
+    leaf: "../../assets/zoo-helper-day-leaf-bunch.svg",
+    shower: "../../assets/zoo-helper-day-shower-head.svg",
+    fish: "../../assets/zoo-helper-day-fish-treat.svg",
+    ball: "../../assets/zoo-helper-day-play-ball.svg",
   };
 
   function iconSrc(item) {
@@ -295,7 +295,9 @@
       button.type = "button";
       button.draggable = true;
       button.dataset.item = item;
-      button.innerHTML = `<b><img src="${iconSrc(item)}" alt="" /></b><span>${t(`items.${item}`)}</span>`;
+      const itemLabel = t(`items.${item}`);
+      button.setAttribute("aria-label", itemLabel);
+      button.innerHTML = `<b><img src="${iconSrc(item)}" alt="${itemLabel}" loading="eager" /></b><span>${itemLabel}</span>`;
       button.addEventListener("click", () => chooseItem(item, button));
       button.addEventListener("dragstart", (event) => {
         event.dataTransfer.setData("text/plain", item);

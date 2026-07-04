@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-label="leaf bunch">
+  <defs>
+    <linearGradient id="zhdLeaf" x1="28" x2="132" y1="126" y2="32" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#2f9744"/>
+      <stop offset="1" stop-color="#b5f16e"/>
+    </linearGradient>
+  </defs>
+  <path d="M75 127C37 111 26 73 45 43c35 4 58 30 54 71-8 5-16 9-24 13z" fill="url(#zhdLeaf)"/>
+  <path d="M96 119c-16-35-3-67 32-86 20 29 11 68-24 90-3-1-6-2-8-4z" fill="#69cf5d"/>
+  <path d="M52 56c20 25 35 47 43 68M126 43c-9 28-20 51-33 72" stroke="#236a34" stroke-width="7" stroke-linecap="round" opacity=".56"/>
+  <circle cx="59" cy="51" r="8" fill="#fff" opacity=".34"/>
+</svg>

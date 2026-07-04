@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-label="play ball">
+  <defs>
+    <radialGradient id="zhdBall" cx="50" cy="40" r="92" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff8b7"/>
+      <stop offset=".45" stop-color="#ffd947"/>
+      <stop offset="1" stop-color="#ff8428"/>
+    </radialGradient>
+  </defs>
+  <circle cx="80" cy="80" r="58" fill="url(#zhdBall)"/>
+  <path d="M28 74c33 11 72 10 104-1M61 29c-7 34-3 71 13 106M112 40c-26 22-41 56-42 93" fill="none" stroke="#fff4b4" stroke-width="9" stroke-linecap="round" opacity=".75"/>
+  <circle cx="57" cy="50" r="10" fill="#fff" opacity=".48"/>
+</svg>

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-label="fruit apple">
+  <defs>
+    <radialGradient id="zhdApple" cx="56" cy="45" r="88" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ff9b8a"/>
+      <stop offset=".5" stop-color="#f04445"/>
+      <stop offset="1" stop-color="#bd2431"/>
+    </radialGradient>
+  </defs>
+  <path d="M78 51c-12-14-37-10-48 8-14 24-2 70 27 82 12 5 20 0 25 0s13 5 25 0c29-12 41-58 27-82-12-20-39-21-51-7-2 2-3 2-5-1z" fill="url(#zhdApple)"/>
+  <path d="M83 46c1-16 9-27 25-34" fill="none" stroke="#7a4a20" stroke-width="8" stroke-linecap="round"/>
+  <path d="M94 27c14-7 27-2 35 11-14 5-28 3-35-11z" fill="#64c95c"/>
+  <circle cx="55" cy="67" r="10" fill="#fff" opacity=".42"/>
+</svg>

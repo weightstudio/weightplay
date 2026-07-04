@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-label="water drop">
+  <defs>
+    <linearGradient id="zhdWater" x1="40" x2="120" y1="18" y2="140" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#bff7ff"/>
+      <stop offset=".45" stop-color="#35c8f5"/>
+      <stop offset="1" stop-color="#0b6fd0"/>
+    </linearGradient>
+  </defs>
+  <path d="M80 12c25 31 47 62 47 88 0 30-20 50-47 50s-47-20-47-50c0-26 22-57 47-88z" fill="url(#zhdWater)"/>
+  <path d="M60 66c-10 16-9 34 5 47" fill="none" stroke="#e9fdff" stroke-width="10" stroke-linecap="round" opacity=".78"/>
+  <circle cx="67" cy="50" r="10" fill="#fff" opacity=".58"/>
+</svg>

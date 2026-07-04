@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-label="shower head">
+  <defs>
+    <linearGradient id="zhdShower" x1="43" x2="121" y1="30" y2="79" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#a8edff"/>
+      <stop offset="1" stop-color="#2b86d4"/>
+    </linearGradient>
+  </defs>
+  <path d="M45 58c15-27 44-34 69-14" fill="none" stroke="#41627c" stroke-width="12" stroke-linecap="round"/>
+  <rect x="82" y="42" width="49" height="36" rx="15" transform="rotate(22 106.5 60)" fill="url(#zhdShower)"/>
+  <path d="M55 91l-10 18M82 96l-8 21M109 96l-5 23M64 124l-7 12M94 126l-6 13" stroke="#54c7ff" stroke-width="8" stroke-linecap="round"/>
+  <circle cx="98" cy="51" r="7" fill="#fff" opacity=".52"/>
+</svg>

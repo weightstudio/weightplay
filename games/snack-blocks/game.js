@@ -3,12 +3,12 @@
   const size = 7;
   const snacks = ["ST", "CK", "JM", "GR", "CH", "PR"];
   const snackArt = {
-    ST: { label: "Berry", asset: "../../assets/animal-vine-fruit-berry.png" },
-    CK: { label: "Apple", asset: "../../assets/animal-vine-fruit-apple.png" },
-    JM: { label: "Banana", asset: "../../assets/animal-vine-fruit-banana.png" },
-    GR: { label: "Leaf", asset: "../../assets/animal-guard-projectile-leaf.svg" },
-    CH: { label: "Seed", asset: "../../assets/animal-guard-projectile-seed.svg" },
-    PR: { label: "Feather", asset: "../../assets/animal-guard-projectile-feather.svg" },
+    ST: { label: "Strawberry", asset: "assets/tile-strawberry.png" },
+    CK: { label: "Cookie", asset: "assets/tile-cookie.png" },
+    JM: { label: "Candy", asset: "assets/tile-candy.png" },
+    GR: { label: "Grape", asset: "assets/tile-grape.png" },
+    CH: { label: "Cheese", asset: "assets/tile-cheese.png" },
+    PR: { label: "Pretzel", asset: "assets/tile-pretzel.png" },
   };
   const localeKey = "weightplayLocale";
   const unlockKey = "snackBlocksUnlocked";

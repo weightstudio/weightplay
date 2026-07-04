@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-label="toy block">
+  <defs>
+    <linearGradient id="zhdToy" x1="34" x2="126" y1="34" y2="126" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffe58b"/>
+      <stop offset="1" stop-color="#ff9a35"/>
+    </linearGradient>
+  </defs>
+  <rect x="34" y="34" width="92" height="92" rx="25" fill="url(#zhdToy)"/>
+  <path d="M56 105V57h19c16 0 25 8 25 23 0 15-10 25-27 25H56z" fill="#fff8d8"/>
+  <path d="M72 75h3c6 0 9 3 9 7 0 5-3 7-9 7h-3V75z" fill="#ff8b32"/>
+  <circle cx="55" cy="55" r="9" fill="#fff" opacity=".42"/>
+</svg>
