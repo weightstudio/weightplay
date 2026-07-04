@@ -176,6 +176,7 @@
     shield: "../../assets/animal-guard-zombie-shield.png",
     boss: "../../assets/animal-guard-zombie-boss.png",
   };
+  const diamondIcon = "../../assets/weightplay-diamond.svg?v=20260704-blue-diamond1";
 
   const projectileAssets = {
     cat: "../../assets/animal-guard-projectile-seed.svg",
@@ -246,6 +247,7 @@
   let coinsEarned = 0;
   let lastDangerAt = 0;
   let currentSpawnDelay = 1;
+  let nextSpawnPlan = null;
 
   function t(key, data) {
     const parts = key.split(".");
@@ -529,7 +531,7 @@
     if (token === "coin") {
       return `<span class="cost-token"><img class="cost-icon" src="../../assets/coin.png" alt="" draggable="false" /><span>${amount}</span></span>`;
     }
-    return `<span class="cost-token diamond-token" aria-label="${t("diamondToken")} ${amount}"><img class="cost-icon" src="../../assets/weightplay-diamond.svg" alt="" draggable="false" /><span>${amount}</span></span>`;
+    return `<span class="cost-token diamond-token" aria-label="${t("diamondToken")} ${amount}"><img class="cost-icon" src="${diamondIcon}" alt="" draggable="false" /><span>${amount}</span></span>`;
   }
 
   function renderKennel() {
@@ -614,6 +616,7 @@
     spawned = 0;
     nextSpawnAt = 900;
     currentSpawnDelay = nextSpawnAt;
+    nextSpawnPlan = makeSpawnPlan();
     nextSunAt = 1400;
     lastTick = performance.now();
     entities = [];
@@ -647,6 +650,10 @@
     nodes.dangerAlert.setAttribute("aria-live", "polite");
     nodes.dangerAlert.textContent = t("danger");
     nodes.yardBoard.appendChild(nodes.dangerAlert);
+    nodes.spawnWarning = document.createElement("div");
+    nodes.spawnWarning.className = "spawn-warning hidden";
+    nodes.spawnWarning.setAttribute("aria-hidden", "true");
+    nodes.yardBoard.appendChild(nodes.spawnWarning);
     for (let row = 0; row < stage.rows; row += 1) {
       for (let col = 0; col < stage.cols; col += 1) {
         const cell = document.createElement("button");
@@ -740,8 +747,9 @@
     const stage = stages[currentStage];
     if (spawned >= stage.total) return;
     spawned += 1;
-    const data = stage.boss && spawned === stage.total ? stage.boss : stage.zombies[Math.floor(Math.random() * stage.zombies.length)];
-    const row = Math.floor(Math.random() * stage.rows);
+    const plan = nextSpawnPlan || makeSpawnPlan(spawned);
+    const data = plan?.data || stage.zombies[0];
+    const row = Number.isInteger(plan?.row) ? plan.row : Math.floor(Math.random() * stage.rows);
     const zombie = {
       kind: "zombie",
       type: data.type,
@@ -800,6 +808,7 @@
       spawnZombie();
       currentSpawnDelay = stages[currentStage].interval * (0.82 + Math.random() * 0.36);
       nextSpawnAt = currentSpawnDelay;
+      nextSpawnPlan = makeSpawnPlan();
     }
     if (nextSunAt <= 0) {
       spawnSun();
@@ -1061,16 +1070,38 @@
     renderWallet();
   }
 
+  function makeSpawnPlan(nextSpawnNumber = spawned + 1) {
+    const stage = stages[currentStage];
+    if (!stage || nextSpawnNumber > stage.total) return null;
+    const data = stage.boss && nextSpawnNumber === stage.total
+      ? stage.boss
+      : stage.zombies[Math.floor(Math.random() * stage.zombies.length)];
+    return {
+      data,
+      row: Math.floor(Math.random() * stage.rows),
+    };
+  }
+
   function updateWaveTimer(left) {
-    if (!nodes.waveTimer) return;
+    nodes.waveTimer?.classList.add("hidden");
+    updateSpawnWarning(left);
+  }
+
+  function updateSpawnWarning(left) {
+    if (!nodes.spawnWarning) return;
     const activeZombies = entities.filter((item) => item.kind === "zombie").length;
     const remainingSpawns = Math.max(0, stages[currentStage].total - spawned);
-    const shouldShow = running && left > 0 && (remainingSpawns > 0 || activeZombies > 0);
-    nodes.waveTimer.classList.toggle("hidden", !shouldShow);
+    const shouldShow = running && left > 0 && remainingSpawns > 0 && nextSpawnPlan;
+    nodes.spawnWarning.classList.toggle("hidden", !shouldShow);
     if (!shouldShow) return;
-    const progress = remainingSpawns > 0 ? 1 - clamp(nextSpawnAt / Math.max(1, currentSpawnDelay), 0, 1) : 1;
-    nodes.waveTimer.style.setProperty("--wave-progress", `${Math.round(progress * 100)}%`);
-    nodes.waveTimer.classList.toggle("is-hot", progress > 0.72);
+    const remaining = clamp(nextSpawnAt / Math.max(1, currentSpawnDelay), 0, 1);
+    nodes.spawnWarning.style.left = "94%";
+    nodes.spawnWarning.style.top = `${laneCenterY(nextSpawnPlan.row) * 100}%`;
+    nodes.spawnWarning.style.setProperty("--spawn-left", `${Math.round(remaining * 100)}%`);
+    nodes.spawnWarning.classList.toggle("is-hot", remaining < 0.28);
+    const src = spriteAssets[nextSpawnPlan.data.type] || spriteAssets.normal;
+    const seconds = Math.max(1, Math.ceil(nextSpawnAt / 1000));
+    nodes.spawnWarning.innerHTML = `<img src="${src}" alt="" draggable="false" /><b>${seconds}</b>`;
   }
 
   function finish(won) {
@@ -1154,7 +1185,7 @@
       "../../assets/menu-character.png",
       "../../assets/upgrade-coin.png",
       "../../assets/coin.png",
-      "../../assets/weightplay-diamond.svg",
+      diamondIcon,
     ];
     let loaded = 0;
     const update = () => {

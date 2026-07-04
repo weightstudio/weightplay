@@ -1605,6 +1605,9 @@ function renderLevelGrid() {
     const summary = getLevelSummary(level);
     button.innerHTML = `
       <strong>${level.id}</strong>
+      <div class="level-beast-row" aria-label="${t("beast_guide_title")}">
+        ${summary.enemyTypes.map((type) => `<img src="${enemyFiles[type.imageIndex]}" alt="${t("enemy_" + type.id)}" title="${t("enemy_" + type.id)}" />`).join("")}
+      </div>
       <span>${t("stage_waves", { count: summary.waves })}</span>
       <small>${t("stage_reward", { coins: summary.coins })}</small>
       ${summary.hasBoss ? `<em>${t("stage_boss")}</em>` : ""}
@@ -1653,10 +1656,21 @@ function getLevelSummary(level) {
   const coins = waves.reduce((total, wave) => {
     return total + Math.round((Number(wave.count) || 0) * (Number(wave.coinReward) || 0));
   }, 0);
+  const enemyTypeIndexes = [];
+  for (const wave of waves) {
+    const maxType = clamp(Number(wave.maxEnemyType) || 0, 0, ENEMY_TYPES.length - 1);
+    const bossType = clamp(Number(wave.bossType ?? maxType) || 0, 0, ENEMY_TYPES.length - 1);
+    enemyTypeIndexes.push(maxType, bossType);
+  }
+  const enemyTypes = [...new Set(enemyTypeIndexes)]
+    .slice(0, 4)
+    .map((index) => ENEMY_TYPES[index])
+    .filter(Boolean);
   return {
     waves: waves.length,
     coins,
     hasBoss: waves.some((wave) => wave.boss),
+    enemyTypes,
   };
 }
 

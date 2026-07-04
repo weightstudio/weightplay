@@ -87,6 +87,15 @@
       nextGoalReady: "Ready to recruit",
       nextGoalNeed: "Need {coins} more",
       nextGoalAll: "All animals recruited",
+      taskBoard: "Zoo Tasks",
+      taskCollect: "Collect {coins} from the ticket box",
+      taskCollectReady: "Ticket box is ready",
+      taskCare: "Care for animals",
+      taskCareReady: "Animals are ready",
+      taskCareWait: "Care rests {n}s",
+      taskGate: "Upgrade the gate",
+      taskGateReady: "Gate upgrade is ready",
+      taskGateMax: "Gate fully upgraded",
       dragHint: "Drag animals in the meadow to arrange your zoo.",
       reportGood: "Great care! Your zoo is growing and the animals looked happy.",
       reportTry: "Good effort. Recruit animals and upgrade the gate to grow faster.",
@@ -143,6 +152,15 @@
     nextGoalReady: "\u53ef\u4ee5\u62db\u52df",
     nextGoalNeed: "\u9084\u5dee {coins}",
     nextGoalAll: "\u6240\u6709\u52d5\u7269\u90fd\u52a0\u5165\u4e86",
+    taskBoard: "\u6a02\u5712\u4efb\u52d9",
+    taskCollect: "\u6536\u96c6\u7968\u7bb1\u7684 {coins}",
+    taskCollectReady: "\u53ef\u4ee5\u6536\u7968\u4e86",
+    taskCare: "\u7167\u9867\u52d5\u7269",
+    taskCareReady: "\u52d5\u7269\u5011\u6e96\u5099\u597d\u4e86",
+    taskCareWait: "\u7167\u9867\u4f11\u606f {n}\u79d2",
+    taskGate: "\u5347\u7d1a\u5927\u9580",
+    taskGateReady: "\u53ef\u4ee5\u5347\u7d1a\u5927\u9580",
+    taskGateMax: "\u5927\u9580\u5df2\u7d93\u6eff\u7d1a",
     dragHint: "\u53ef\u4ee5\u62d6\u66f3\u8349\u539f\u4e0a\u7684\u52d5\u7269\uff0c\u64fa\u6210\u81ea\u5df1\u559c\u6b61\u7684\u6a02\u5712\u3002",
     reportGood: "\u7167\u9867\u5f97\u5f88\u597d\uff01\u4f60\u7684\u52d5\u7269\u5712\u6b63\u5728\u7a69\u5b9a\u6210\u9577\u3002",
     reportTry: "\u8868\u73fe\u4e0d\u932f\uff01\u62db\u52df\u52d5\u7269\u548c\u5347\u7d1a\u5927\u9580\u53ef\u4ee5\u8b93\u6a02\u5712\u6210\u9577\u66f4\u5feb\u3002",
@@ -290,6 +308,11 @@
     return clamp(Math.ceil(incomePerTick() / 18), 2, 6);
   }
 
+  function taskProgress(current, target) {
+    if (target <= 0) return 1;
+    return clamp(current / target, 0, 1);
+  }
+
   function formatNumber(value) {
     const number = Math.floor(Number(value || 0));
     if (number >= 1000000) return `${Math.round((number / 1000000) * 10) / 10}M`;
@@ -362,6 +385,7 @@
           <button type="button" data-action="report">${t("report")}</button>
         </div>
         <button class="next-goal-card" type="button" data-action="next-goal"></button>
+        <div class="zoo-task-board" aria-live="polite"></div>
         <div class="animal-shop-head"><strong>${t("animals")}</strong><span>${t("dragHint")}</span></div>
         <div class="animal-shop" aria-label="Animal shop"></div>
       </div>
@@ -376,6 +400,7 @@
     card.querySelector('[data-action="report"]').addEventListener("click", showReport);
     card.querySelector('[data-action="next-goal"]').addEventListener("click", recruitAnimal);
     renderNextGoal(card.querySelector(".next-goal-card"));
+    renderTaskBoard(card.querySelector(".zoo-task-board"));
     renderAnimalShop(card.querySelector(".animal-shop"));
     return card;
   }
@@ -404,6 +429,7 @@
       upgrade.textContent = save.gateLevel >= maxGateLevel ? t("maxGate") : `${t("upgradeGate")} ${formatCost(gateUpgradeCost())}`;
     }
     renderNextGoal(card.querySelector(".next-goal-card"));
+    renderTaskBoard(card.querySelector(".zoo-task-board"));
     renderAnimalShop(card.querySelector(".animal-shop"));
     const care = card.querySelector('[data-action="care"]');
     if (care) {
@@ -501,7 +527,46 @@
       <img src="${animal.asset}" alt="" draggable="false" />
       <strong>${t("nextGoal")}: ${t(animal.id)}</strong>
       <span>${missing <= 0 ? t("nextGoalReady") : t("nextGoalNeed", { coins: formatCost(missing) })}</span>
-      <small>${formatCost(animal.cost)} · ${t("incomeShort", { n: formatNumber(animal.baseIncome) })}</small>
+      <small>${formatCost(animal.cost)} - ${t("incomeShort", { n: formatNumber(animal.baseIncome) })}</small>
+    `;
+  }
+
+  function renderTaskBoard(container) {
+    if (!container) return;
+    const collectTarget = Math.max(120, Math.round(incomePerTick() * 4));
+    const gateCost = gateUpgradeCost();
+    const waitSeconds = careWaitSeconds();
+    const tasks = [
+      {
+        label: t("taskCollect", { coins: formatCost(collectTarget) }),
+        status: save.ticketBox >= collectTarget ? t("taskCollectReady") : `${formatNumber(save.ticketBox)} / ${formatCost(collectTarget)}`,
+        progress: taskProgress(save.ticketBox, collectTarget),
+        ready: save.ticketBox >= collectTarget,
+      },
+      {
+        label: t("taskCare"),
+        status: waitSeconds <= 0 ? t("taskCareReady") : t("taskCareWait", { n: waitSeconds }),
+        progress: waitSeconds <= 0 ? 1 : 1 - taskProgress(waitSeconds * 1000, careCooldownMs),
+        ready: waitSeconds <= 0,
+      },
+      {
+        label: t("taskGate"),
+        status: save.gateLevel >= maxGateLevel ? t("taskGateMax") : (save.coins >= gateCost ? t("taskGateReady") : `${formatNumber(save.coins)} / ${formatCost(gateCost)}`),
+        progress: save.gateLevel >= maxGateLevel ? 1 : taskProgress(save.coins, gateCost),
+        ready: save.gateLevel >= maxGateLevel || save.coins >= gateCost,
+      },
+    ];
+    container.innerHTML = `
+      <strong>${t("taskBoard")}</strong>
+      <div class="zoo-task-list">
+        ${tasks.map((task) => `
+          <div class="zoo-task ${task.ready ? "ready" : ""}">
+            <span>${task.label}</span>
+            <small>${task.status}</small>
+            <i style="--task-progress:${Math.round(task.progress * 100)}%"></i>
+          </div>
+        `).join("")}
+      </div>
     `;
   }
 
