@@ -26,6 +26,25 @@ const recentGamesKey = "weightplayRecentGames";
 const dailyRewardKey = "weightplayDailyReward";
 const walletBar = document.querySelector("#walletBar");
 const dailyRewardTrack = [5, 6, 8, 10, 12, 15, 25];
+const lobbyGameFacts = {
+  "wonder-crash": { difficulty: "Medium", time: "5-8 minutes" },
+  "color-lunchbox": { difficulty: "Easy", time: "1-3 minutes" },
+  "bubble-bakery": { difficulty: "Easy", time: "3-5 minutes" },
+  "animal-rope-rescue": { difficulty: "Easy", time: "3-5 minutes" },
+  "animal-zoo-idle": { difficulty: "Easy", time: "3-8 minutes" },
+  "star-memory": { difficulty: "Easy", time: "3-5 minutes" },
+  "campus-dash": { difficulty: "Hard", time: "1-3 minutes" },
+  "snack-blocks": { difficulty: "Medium", time: "5-8 minutes" },
+  "fruit-merge": { difficulty: "Medium", time: "3-5 minutes" },
+  "garden-tiles": { difficulty: "Relaxed", time: "3-5 minutes" },
+  "animal-rescue": { difficulty: "Easy", time: "3-5 minutes" },
+  "animal-hidden-safari": { difficulty: "Easy", time: "3-5 minutes" },
+  "animal-guard-yard": { difficulty: "Medium", time: "5-8 minutes" },
+  "animal-quiz": { difficulty: "Easy", time: "3-5 minutes" },
+  "zoo-helper-day": { difficulty: "Easy", time: "1-3 minutes" },
+  "shape-train": { difficulty: "Easy", time: "1-3 minutes" },
+  "tiny-weather-rescue": { difficulty: "Easy", time: "3-5 minutes" },
+};
 let activeFilter = "all";
 let activeTopic = "all";
 let activeSkill = "all";
@@ -55,11 +74,36 @@ function skillText(skill) {
 }
 
 function gameInfoText(gameId, key) {
-  const info = window.WeightPlayGameInfo;
-  if (!info?.get || !info?.label) return "";
-  const game = info.get(gameId);
+  const game = lobbyGameFacts[gameId];
   if (!game?.[key]) return "";
-  return `<span><b>${info.label(key === "time" ? "estimatedTime" : key)}</b>${game[key]}</span>`;
+  const label = key === "time" ? localizedFactLabel("time") : localizedFactLabel("difficulty");
+  const value = key === "time" ? localizePlayTime(game[key]) : localizeDifficulty(game[key]);
+  return `<span><b>${label}</b>${value}</span>`;
+}
+
+function localizedFactLabel(key) {
+  if (i18n.locale() !== "zh-Hant") return key === "time" ? "Time" : "Difficulty";
+  return key === "time" ? "\u6642\u9593" : "\u96e3\u5ea6";
+}
+
+function localizeDifficulty(value) {
+  if (i18n.locale() !== "zh-Hant") return value;
+  const map = {
+    Easy: "\u7c21\u55ae",
+    Medium: "\u4e2d\u7b49",
+    Hard: "\u56f0\u96e3",
+    Relaxed: "\u8f15\u9b06",
+  };
+  return map[value] || value;
+}
+
+function localizePlayTime(value) {
+  if (i18n.locale() !== "zh-Hant") return value;
+  return String(value)
+    .replace("1-3 minutes", "1-3 \u5206\u9418")
+    .replace("3-5 minutes", "3-5 \u5206\u9418")
+    .replace("5-8 minutes", "5-8 \u5206\u9418")
+    .replace("3-8 minutes", "3-8 \u5206\u9418");
 }
 
 function readFavorites() {
