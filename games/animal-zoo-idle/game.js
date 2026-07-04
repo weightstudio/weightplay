@@ -401,7 +401,9 @@
     card.querySelector('[data-action="next-goal"]').addEventListener("click", recruitAnimal);
     renderNextGoal(card.querySelector(".next-goal-card"));
     renderTaskBoard(card.querySelector(".zoo-task-board"));
-    renderAnimalShop(card.querySelector(".animal-shop"));
+    const shop = card.querySelector(".animal-shop");
+    renderAnimalShop(shop);
+    if (shop) shop.dataset.shopSignature = animalShopSignature();
     return card;
   }
 
@@ -430,7 +432,11 @@
     }
     renderNextGoal(card.querySelector(".next-goal-card"));
     renderTaskBoard(card.querySelector(".zoo-task-board"));
-    renderAnimalShop(card.querySelector(".animal-shop"));
+    const shop = card.querySelector(".animal-shop");
+    if (shop && shop.dataset.shopSignature !== animalShopSignature()) {
+      renderAnimalShop(shop);
+      shop.dataset.shopSignature = animalShopSignature();
+    }
     const care = card.querySelector('[data-action="care"]');
     if (care) {
       const waitSeconds = careWaitSeconds();
@@ -504,6 +510,14 @@
       button.addEventListener("click", () => buyAnimal(animal.id));
       container.appendChild(button);
     }
+  }
+
+  function animalShopSignature() {
+    return animals.map((animal) => {
+      const owned = save.unlocked[animal.id] ? 1 : 0;
+      const affordable = save.coins >= animal.cost ? 1 : 0;
+      return `${animal.id}:${owned}:${affordable}`;
+    }).join("|");
   }
 
   function renderNextGoal(container) {
