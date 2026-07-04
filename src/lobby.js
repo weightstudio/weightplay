@@ -233,6 +233,17 @@ function recommendedGames(limit = 3) {
   return ranked.length ? ranked : popularGames(limit);
 }
 
+function recommendationNote(game, seeds) {
+  if (seeds.length) {
+    const sharedSkill = (game.skills || []).find((skill) => seeds.some((seed) => (seed.skills || []).includes(skill)));
+    if (sharedSkill) return i18n.t("recommend.shared_skill", { skill: skillText(sharedSkill) });
+    const sharedAge = (game.ages || []).find((age) => seeds.some((seed) => (seed.ages || []).includes(age)));
+    if (sharedAge) return i18n.t("recommend.shared_age", { age: sharedAge === "family" ? i18n.t("filter.family") : `${sharedAge}+` });
+    return i18n.t("recommend.based_on_activity");
+  }
+  return hasStatsFeed() ? i18n.t("recommend.popular_reason") : i18n.t("recommend.start_here");
+}
+
 async function loadGameStats() {
   try {
     const response = await fetch("src/game-stats.json?v=20260630-stats1", { cache: "no-store" });
@@ -549,6 +560,8 @@ function renderRecommendations() {
     const title = text(game.title);
     const type = text(game.type);
     const ageLabel = text(game.ageLabel);
+    const note = recommendationNote(game, seeds);
+    const skillBadges = (game.skills || []).slice(0, 2).map((skill) => `<span>${skillText(skill)}</span>`).join("");
     const card = document.createElement("a");
     card.className = "recommendation-card";
     card.href = game.href;
@@ -563,9 +576,13 @@ function renderRecommendations() {
     });
     card.innerHTML = `
       <img src="${game.art?.background || primaryArt(game)}" alt="" />
-      <span>${ageLabel}</span>
-      <strong>${title}</strong>
-      <small>${type}</small>
+      <div class="recommendation-copy">
+        <span class="recommendation-age">${ageLabel}</span>
+        <strong>${title}</strong>
+        <small>${type}</small>
+        <em>${note}</em>
+        ${skillBadges ? `<div class="recommendation-skills" aria-label="Skills trained">${skillBadges}</div>` : ""}
+      </div>
     `;
     return card;
   });

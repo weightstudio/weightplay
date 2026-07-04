@@ -22,6 +22,9 @@
       "recommend.title": "Recommended next",
       "recommend.start_here": "Start here",
       "recommend.based_on_activity": "Based on your play",
+      "recommend.shared_skill": "More {skill} practice",
+      "recommend.shared_age": "More games for {age}",
+      "recommend.popular_reason": "Popular this week",
       "stats.total_games": "Total Games",
       "stats.hero_games": "Hero Games",
       "stats.plays_7d_short": "7-Day Plays",
@@ -190,6 +193,9 @@
     "recommend.title": "推薦下一款",
     "recommend.start_here": "從這裡開始",
     "recommend.based_on_activity": "依你的遊玩推薦",
+    "recommend.shared_skill": "更多「{skill}」練習",
+    "recommend.shared_age": "更多 {age} 遊戲",
+    "recommend.popular_reason": "本週熱門",
   });
 
   function getSavedLocale() {

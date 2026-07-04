@@ -125,6 +125,12 @@ const dictionary = {
     settlement_no_drops: "No weapon drops this time",
     settlement_diamond_reward: "Boss first-clear bonus",
     settlement_diamond_hint: "Clear each boss stage once to earn bonus Diamonds.",
+    skill_report_title: "Skill Report",
+    skill_focus: "Focus",
+    skill_reaction: "Reaction",
+    skill_problem_solving: "Problem Solving",
+    skill_report_win_message: "Great defense! Your child kept focus and made strong upgrade choices.",
+    skill_report_defeat_message: "Good effort! Try again to protect the wall a little longer.",
     btn_next: "Next Level",
     btn_confirm: "Back to Menu",
     btn_resume: "Resume",
@@ -344,6 +350,15 @@ const dictionary = {
   }
 };
 
+Object.assign(dictionary["zh-Hant"], {
+  skill_report_title: "能力報告",
+  skill_focus: "專注力",
+  skill_reaction: "反應力",
+  skill_problem_solving: "問題解決",
+  skill_report_win_message: "守得很棒！這場展現了穩定專注和不錯的強化選擇。",
+  skill_report_defeat_message: "努力得很好！再試一次，看看能不能把城牆守得更久。",
+});
+
 
 const W = canvas.width;
 const H = canvas.height;
@@ -453,6 +468,8 @@ function makeState(levelIndex) {
     splashRadius: 0,
     killHeal: 0,
     coinMultiplier: 1,
+    defeatedCount: 0,
+    upgradeChoices: 0,
     hero: {
       x: W / 2,
       y: heroY,
@@ -1073,6 +1090,7 @@ function renderSettlement(drops, wasChallenge, diamondReward = 0) {
         ${diamondItem}
         ${dropItems || `<div class="reward-empty">${diamondReward > 0 ? t("settlement_diamond_hint") : t("settlement_no_drops")}</div>`}
       </div>
+      ${renderSkillReport(true)}
       <div class="settlement-actions">
         ${state.levelIndex + 1 < LEVELS.length ? `<button type="button" data-settlement-action="next">${t("btn_next")}</button>` : ""}
         <button type="button" data-settlement-action="home">${t("btn_confirm")}</button>
@@ -1109,6 +1127,7 @@ function renderDefeatActions() {
         <strong>${t("defeat_title")}</strong>
         <span>${t("defeat_desc", { lvl: state.level.id, coins: state.coins })}</span>
       </div>
+      ${renderSkillReport(false)}
       <div class="settlement-actions">
         <button type="button" data-settlement-action="retry">${t("btn_play_again")}</button>
         <button type="button" data-settlement-action="home">${t("btn_stage_select")}</button>
@@ -1127,6 +1146,51 @@ function renderRewardItem(item) {
       <span>${weapon.name}${level > 1 ? ` x${level}` : ""}</span>
     </div>
   `;
+}
+
+function renderSkillReport(won) {
+  const report = buildSkillReport(won);
+  return `
+    <section class="skill-report" aria-label="${t("skill_report_title")}">
+      <strong>${t("skill_report_title")}</strong>
+      <div class="skill-report-list">
+        ${report.items.map((item) => `
+          <div class="skill-report-row">
+            <span>${item.label}</span>
+            <b aria-label="${item.stars} out of 5">${renderStars(item.stars)}</b>
+          </div>
+        `).join("")}
+      </div>
+      <p>${report.message}</p>
+    </section>
+  `;
+}
+
+function buildSkillReport(won) {
+  const expectedEnemies = Math.max(1, getExpectedEnemyCount(state.level));
+  const waveProgress = clamp((state.waveIndex + 1) / Math.max(1, state.level.waves.length), 0.15, 1);
+  const defeatProgress = clamp(state.defeatedCount / expectedEnemies, 0, 1);
+  const wallRatio = clamp(state.wallHp / Math.max(1, state.maxWallHp), 0, 1);
+  const focusStars = clamp(Math.round((won ? 2.2 : 1.2) + waveProgress * 1.4 + wallRatio * 1.4), 1, 5);
+  const reactionStars = clamp(Math.round(1.4 + defeatProgress * 3.2 + (won ? 0.4 : 0)), 1, 5);
+  const problemStars = clamp(Math.round(1.5 + Math.min(1, state.upgradeChoices / Math.max(1, state.level.waves.length - 1)) * 2.2 + (won ? 1 : 0)), 1, 5);
+  return {
+    message: won ? t("skill_report_win_message") : t("skill_report_defeat_message"),
+    items: [
+      { label: t("skill_focus"), stars: focusStars },
+      { label: t("skill_reaction"), stars: reactionStars },
+      { label: t("skill_problem_solving"), stars: problemStars },
+    ],
+  };
+}
+
+function getExpectedEnemyCount(level) {
+  return level.waves.reduce((total, wave) => total + (Number(wave.count) || 0) + (wave.boss ? 1 : 0), 0);
+}
+
+function renderStars(count) {
+  const safeCount = clamp(Math.round(count), 1, 5);
+  return "★".repeat(safeCount) + "☆".repeat(5 - safeCount);
 }
 
 function resolveHits() {
@@ -1201,6 +1265,7 @@ function applyHitSlow(enemy, hitX, hitY) {
 function defeatEnemy(enemy) {
   if (enemy.rewarded) return;
   enemy.rewarded = true;
+  state.defeatedCount += 1;
   state.score += 10;
   state.coins += Math.ceil(enemy.coinReward * state.coinMultiplier * (1 + getHeroCoinBonus()));
   if (state.killHeal > 0 && state.wallHp < state.maxWallHp) {
@@ -1275,7 +1340,8 @@ function damageWall() {
     if (enemy.y + enemy.size * 0.38 >= wallY && !enemy.hitWall) {
       enemy.hitWall = true;
       enemy.hp = 0;
-      state.wallHp = Math.max(0, state.wallHp - getGuardedWallDamage(enemy.damage));
+      const damage = getGuardedWallDamage(enemy.damage);
+      state.wallHp = Math.max(0, state.wallHp - damage);
       state.hits.push({ x: enemy.x, y: wallY, radius: enemy.type.ability === "breaker" ? 54 : 36, life: 0.28 });
       window.WonderSound?.play("wallHit");
     }
@@ -1768,6 +1834,7 @@ function chooseUpgrade(id) {
   const upgrade = UPGRADES.find((item) => item.id === id);
   if (!upgrade || !state.awaitingUpgrade) return;
   applyUpgrade(upgrade);
+  state.upgradeChoices += 1;
   state.awaitingUpgrade = false;
   prepareNextWave();
   upgradeGrid.classList.add("hidden");
