@@ -251,9 +251,9 @@
       time: "1-3 minutes",
       skills: ["Animal Knowledge", "Focus", "Hand-Eye Coordination"],
       intro:
-        "Zoo Helper Day is a gentle animal-care game where children help zoo animals with food, water, cleaning, and play tasks. Each stage uses simple picture-based actions, large touch targets, and friendly feedback so young players can understand the goal without heavy reading. The game is designed for short parent-child sessions where families can talk about what each animal needs and why the matching helper item makes sense.",
-      how: ["Look at the animal and the picture clue.", "Choose the helper item that matches the animal's need.", "Tap or drag the item to the animal.", "Finish each gentle care task to unlock the next zoo moment."],
-      strategyTips: ["Name the animal before choosing an item.", "Ask what the animal might need: food, water, cleaning, or play.", "If the first choice is wrong, look at the picture clue again and try another helper item."],
+        "Zoo Helper Day is a gentle zoo workday game where children help different animal zones earn tickets and keep visitors happy. Each stage is framed like a small zoo shift, with simple picture-based care actions, large touch targets, and friendly feedback so young players can understand the goal without heavy reading. It is designed to feel more like running a tiny zoo than only picking a helper item.",
+      how: ["Choose a zoo shift from the stage list.", "Look at the animal zone, ticket goal, and happiness meter.", "Choose or drag the helper item that matches the current zoo task.", "Finish the shift to earn tickets, stars, and the next zoo moment."],
+      strategyTips: ["Name the animal zone before choosing an item.", "Talk about how tickets and visitor happiness grow when animals are cared for.", "If the first choice is wrong, look at the station name and picture clue again."],
       parent:
         "This game may help children practice animal recognition, simple care concepts, focus, and hand-eye coordination through picture-first play. It works best as a short guided moment where parents can describe the animal and the care action out loud. Progress and stars are only for encouragement and local play tracking, not for diagnosis, ranking, or formal learning assessment.",
       faq: [
@@ -385,7 +385,7 @@
     "animal-hidden-safari": { gameplay: "Hidden Object", genre: ["Puzzle", "Safari", "Animal"] },
     "animal-guard-yard": { gameplay: "Lane Defense", genre: ["Strategy", "Tower Defense", "Animal"] },
     "animal-quiz": { gameplay: "Animal Quiz", genre: ["Quiz", "Education", "Animal"] },
-    "zoo-helper-day": { gameplay: "Animal Care", genre: ["Preschool", "Education", "Animal"] },
+    "zoo-helper-day": { gameplay: "Zoo Workday", genre: ["Preschool", "Simulation", "Animal"] },
     "shape-train": { gameplay: "Shape Sorting", genre: ["Preschool", "Education", "Animal"] },
     "tiny-weather-rescue": { gameplay: "Helper Choice", genre: ["Puzzle", "Care", "Animal"] },
   };
@@ -426,7 +426,7 @@
       "animal-hidden-safari": { gameplay: "找找看", genre: ["益智", "自然", "動物"] },
       "animal-guard-yard": { gameplay: "路線防禦", genre: ["策略", "防禦", "動物"] },
       "animal-quiz": { gameplay: "動物問答", genre: ["問答", "教育", "動物"] },
-      "zoo-helper-day": { gameplay: "動物照顧", genre: ["學齡前", "教育", "動物"] },
+      "zoo-helper-day": { gameplay: "動物園工作日", genre: ["學齡前", "模擬", "動物"] },
       "shape-train": { gameplay: "形狀分類", genre: ["學齡前", "教育", "動物"] },
       "tiny-weather-rescue": { gameplay: "道具選擇", genre: ["益智", "照顧", "動物"] },
     },

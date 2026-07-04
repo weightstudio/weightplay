@@ -27,6 +27,7 @@ const pauseLocaleSelect = document.querySelector("#pauseLocaleSelect");
 const weaponModal = document.querySelector("#weaponModal");
 const weaponModalClose = document.querySelector("#weaponModalClose");
 const weaponModalContent = document.querySelector("#weaponModalContent");
+const BOSS_FIRST_CLEAR_DIAMONDS = 2;
 
 // Shared Localization Helper Functions
 function locale() {
@@ -122,6 +123,8 @@ const dictionary = {
     settlement_reclear: "Cleared Stage Complete!",
     settlement_unlocked: "Level {id} unlocked!",
     settlement_no_drops: "No weapon drops this time",
+    settlement_diamond_reward: "Boss first-clear bonus",
+    settlement_diamond_hint: "Clear each boss stage once to earn bonus Diamonds.",
     btn_next: "Next Level",
     btn_confirm: "Back to Menu",
     btn_resume: "Resume",
@@ -201,6 +204,7 @@ const dictionary = {
     upgrade_lifeSteal_desc: "Defeats restore 3 Wall HP",
     upgrade_slow_name: "Lion Roar",
     upgrade_slow_desc: "Hits can slow beasts for a short time",
+    roar_label: "ROAR!",
     crit_label: "CRIT"
   },
   "zh-Hant": {
@@ -254,6 +258,8 @@ const dictionary = {
     settlement_reclear: "已通關關卡完成！",
     settlement_unlocked: "解鎖第 {id} 關！",
     settlement_no_drops: "本次沒有掉落武器",
+    settlement_diamond_reward: "王關首通獎勵",
+    settlement_diamond_hint: "每個王關首次通關可獲得鑽石獎勵。",
     btn_next: "下一關",
     btn_confirm: "回關卡選擇",
     btn_resume: "繼續",
@@ -333,6 +339,7 @@ const dictionary = {
     upgrade_lifeSteal_desc: "擊敗敵人時回復 3 點牆血量",
     upgrade_slow_name: "獅吼震懾",
     upgrade_slow_desc: "命中時有機率讓野獸短暫變慢",
+    roar_label: "獅吼！",
     crit_label: "暴"
   }
 };
@@ -369,7 +376,7 @@ function registerWonderCombatUpgrades() {
     id: "slow",
     name: "Lion Roar",
     desc: "Hits can slow beasts for a short time",
-    icon: "assets/upgrade-cooldown.png",
+    icon: "assets/wonder-lion-hero.png",
     effect: {
       slowChance: 0.32,
       slowDuration: 1.8,
@@ -988,6 +995,7 @@ function winLevel() {
   bankRunCoins();
   const wasChallenge = state.level.id === highestUnlocked;
   const drops = rollLevelDrops();
+  const diamondReward = awardBossFirstClearDiamonds(wasChallenge);
   state.running = false;
   state.won = true;
   settingsBtn.classList.add("hidden");
@@ -1006,10 +1014,26 @@ function winLevel() {
   upgradeGrid.classList.add("hidden");
   profilePanel.classList.remove("hidden");
   pausePanel.classList.add("hidden");
-  profilePanel.innerHTML = renderSettlement(drops, wasChallenge);
+  profilePanel.innerHTML = renderSettlement(drops, wasChallenge, diamondReward);
   overlay.classList.remove("hidden");
   updateHud();
   window.WonderSound?.play("win");
+}
+
+function awardBossFirstClearDiamonds(wasChallenge) {
+  if (!wasChallenge || !levelHasBoss(state.level)) return 0;
+  if (!window.WeightPlayWallet?.addDiamonds) return 0;
+  const levelId = Number(state.level.id);
+  if (profile.bossDiamondRewards.includes(levelId)) return 0;
+  profile.bossDiamondRewards.push(levelId);
+  profile.bossDiamondRewards.sort((a, b) => a - b);
+  window.WeightPlayWallet?.addDiamonds?.(BOSS_FIRST_CLEAR_DIAMONDS);
+  saveProfile();
+  return BOSS_FIRST_CLEAR_DIAMONDS;
+}
+
+function levelHasBoss(level) {
+  return Boolean(level?.waves?.some((wave) => wave.boss));
 }
 
 function rollLevelDrops() {
@@ -1035,8 +1059,9 @@ function buildWinText(drops, wasChallenge) {
   return t("victory_stage_clear") + ` ` + t("hud_stage") + ` ${state.level.id} ${unlockText}`;
 }
 
-function renderSettlement(drops, wasChallenge) {
+function renderSettlement(drops, wasChallenge, diamondReward = 0) {
   const dropItems = drops.map((item) => renderRewardItem(item)).join("");
+  const diamondItem = diamondReward > 0 ? renderDiamondReward(diamondReward) : "";
   return `
     <div class="settlement-panel">
       <div class="settlement-row">
@@ -1045,12 +1070,22 @@ function renderSettlement(drops, wasChallenge) {
       </div>
       <div class="reward-grid">
         <div class="reward-item coin-reward"><img src="assets/coin.png" alt="" /><span>x${state.coins}</span></div>
-        ${dropItems || `<div class="reward-empty">${t("settlement_no_drops")}</div>`}
+        ${diamondItem}
+        ${dropItems || `<div class="reward-empty">${diamondReward > 0 ? t("settlement_diamond_hint") : t("settlement_no_drops")}</div>`}
       </div>
       <div class="settlement-actions">
         ${state.levelIndex + 1 < LEVELS.length ? `<button type="button" data-settlement-action="next">${t("btn_next")}</button>` : ""}
         <button type="button" data-settlement-action="home">${t("btn_confirm")}</button>
       </div>
+    </div>
+  `;
+}
+
+function renderDiamondReward(amount) {
+  return `
+    <div class="reward-item diamond-reward">
+      <img src="assets/weightplay-diamond.svg" alt="" />
+      <span>${t("settlement_diamond_reward")} x${amount}</span>
     </div>
   `;
 }
@@ -1152,6 +1187,14 @@ function applyHitSlow(enemy, hitX, hitY) {
     radius: enemy.size * 0.32,
     life: 0.34,
     slow: true,
+  });
+  state.damageTexts.push({
+    x: enemy.x,
+    y: enemy.y - enemy.size * 0.54,
+    value: t("roar_label"),
+    roar: true,
+    life: 0.72,
+    maxLife: 0.72,
   });
 }
 
@@ -1419,12 +1462,12 @@ function drawDamageTexts() {
   ctx.textBaseline = "middle";
   for (const text of state.damageTexts) {
     const progress = clamp(text.life / text.maxLife, 0, 1);
-    const scale = text.crit ? 1.18 : 1;
+    const scale = text.crit ? 1.18 : text.roar ? 1.08 : 1;
     ctx.globalAlpha = Math.min(1, progress * 1.4);
-    ctx.font = `${text.crit ? "900" : "800"} ${Math.round((text.crit ? 34 : 28) * scale)}px 'Microsoft JhengHei', system-ui, sans-serif`;
-    ctx.lineWidth = text.crit || text.heal ? 8 : 6;
-    ctx.strokeStyle = "rgba(0, 0, 0, 0.72)";
-    ctx.fillStyle = text.heal ? "#7dff8a" : text.crit ? "#ffdf57" : "#fff";
+    ctx.font = `${text.crit || text.roar ? "900" : "800"} ${Math.round((text.crit ? 34 : text.roar ? 30 : 28) * scale)}px 'Microsoft JhengHei', system-ui, sans-serif`;
+    ctx.lineWidth = text.crit || text.heal || text.roar ? 8 : 6;
+    ctx.strokeStyle = text.roar ? "rgba(62, 39, 12, 0.82)" : "rgba(0, 0, 0, 0.72)";
+    ctx.fillStyle = text.heal ? "#7dff8a" : text.roar ? "#ffcf48" : text.crit ? "#ffdf57" : "#fff";
     const label = text.crit ? `${t("crit_label")} ${text.value}` : String(text.value);
     ctx.strokeText(label, text.x, text.y);
     ctx.fillText(label, text.x, text.y);
@@ -2506,6 +2549,7 @@ function loadProfile() {
       wallHpLevel: Math.max(1, Number(saved.wallHpLevel) || oldWallLevel),
       wallGuardLevel: Math.max(1, Number(saved.wallGuardLevel) || 1),
       wallRegenLevel: Math.max(1, Number(saved.wallRegenLevel) || 1),
+      bossDiamondRewards: normalizeNumberList(saved.bossDiamondRewards),
       weaponBag: normalizeWeaponBag(saved.weaponBag),
       equippedWeapons: normalizeEquippedWeapons(saved.equippedWeapons),
       backpackItems: normalizeBackpackItems(saved.backpackItems, saved.weaponBag, saved.equippedWeapons),
@@ -2540,10 +2584,16 @@ function createDefaultProfile() {
     wallHpLevel: 1,
     wallGuardLevel: 1,
     wallRegenLevel: 1,
+    bossDiamondRewards: [],
     weaponBag: { eraser: 1 },
     backpackItems: [],
     equippedWeapons: [{ id: "eraser", level: 1 }, null, null, null, null, null, null, null],
   };
+}
+
+function normalizeNumberList(value) {
+  if (!Array.isArray(value)) return [];
+  return [...new Set(value.map((item) => Math.floor(Number(item))).filter((item) => Number.isFinite(item) && item > 0))].sort((a, b) => a - b);
 }
 
 function normalizeWeaponBag(bag) {

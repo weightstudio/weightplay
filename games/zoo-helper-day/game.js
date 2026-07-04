@@ -20,10 +20,12 @@
       perfect: "Perfect helper!",
       good: "Good helper!",
       keep: "Keep helping!",
-      result: "You helped {animal} finish {count} tasks.",
+      result: "Shift complete: {station} earned {tickets} tickets and kept visitor happiness at {mood}%.",
       stage: "Stage {n}",
-      stageGoal: "{tasks} tasks / {items} items",
-      task: "{animal} needs {item}.",
+      stageGoal: "{station} shift / {tickets} tickets",
+      task: "{station}: help {animal} with {item}.",
+      tickets: "Tickets {count}",
+      mood: "Happiness {count}%",
       correct: "Nice help!",
       wrong: "Try another item.",
       items: {
@@ -46,6 +48,14 @@
         koala: "Koala",
         zebra: "Zebra",
       },
+      stations: {
+        savanna: "Savanna Feeding",
+        bamboo: "Bamboo Grove",
+        bath: "Elephant Bath",
+        ice: "Penguin Pool",
+        lookout: "Giraffe Lookout",
+        nursery: "Koala Nursery",
+      },
     },
     "zh-Hant": {
       gameTitle: "動物園幫忙日",
@@ -62,10 +72,12 @@
       perfect: "完美小幫手！",
       good: "很棒的小幫手！",
       keep: "繼續幫忙！",
-      result: "你幫 {animal} 完成了 {count} 個任務。",
+      result: "工作日完成：{station} 賺到 {tickets} 張票，遊客開心度保持 {mood}%。",
       stage: "第 {n} 關",
-      stageGoal: "{tasks} 個任務 / {items} 種道具",
-      task: "{animal} 需要{item}。",
+      stageGoal: "{station} 班次 / {tickets} 張票",
+      task: "{station}：幫 {animal} 準備{item}。",
+      tickets: "票券 {count}",
+      mood: "開心度 {count}%",
       correct: "幫得真好！",
       wrong: "試試看其他道具。",
       items: {
@@ -87,6 +99,14 @@
         monkey: "猴子",
         koala: "無尾熊",
         zebra: "斑馬",
+      },
+      stations: {
+        savanna: "草原餵食區",
+        bamboo: "竹林休息區",
+        bath: "大象沖澡區",
+        ice: "企鵝水池",
+        lookout: "長頸鹿觀景台",
+        nursery: "無尾熊育幼區",
       },
     },
   };
@@ -112,12 +132,12 @@
   };
 
   const stages = [
-    { animal: "lion", tasks: ["fruit", "water", "brush", "toy"], pool: ["fruit", "water", "brush", "toy", "leaf"] },
-    { animal: "panda", tasks: ["leaf", "water", "brush", "ball"], pool: ["leaf", "water", "brush", "ball", "fish"] },
-    { animal: "elephant", tasks: ["shower", "fruit", "water", "toy", "brush"], pool: ["shower", "fruit", "water", "toy", "brush"] },
-    { animal: "penguin", tasks: ["fish", "water", "ball", "brush", "fish"], pool: ["fish", "water", "ball", "brush", "fruit"] },
-    { animal: "giraffe", tasks: ["leaf", "water", "fruit", "brush", "toy"], pool: ["leaf", "water", "fruit", "brush", "toy"] },
-    { animal: "koala", tasks: ["leaf", "water", "brush", "toy", "fruit"], pool: ["leaf", "water", "brush", "toy", "fruit", "ball"] },
+    { animal: "lion", station: "savanna", tickets: 45, tasks: ["fruit", "water", "brush", "toy"], pool: ["fruit", "water", "brush", "toy", "leaf"] },
+    { animal: "panda", station: "bamboo", tickets: 58, tasks: ["leaf", "water", "brush", "ball"], pool: ["leaf", "water", "brush", "ball", "fish"] },
+    { animal: "elephant", station: "bath", tickets: 72, tasks: ["shower", "fruit", "water", "toy", "brush"], pool: ["shower", "fruit", "water", "toy", "brush"] },
+    { animal: "penguin", station: "ice", tickets: 86, tasks: ["fish", "water", "ball", "brush", "fish"], pool: ["fish", "water", "ball", "brush", "fruit"] },
+    { animal: "giraffe", station: "lookout", tickets: 98, tasks: ["leaf", "water", "fruit", "brush", "toy"], pool: ["leaf", "water", "fruit", "brush", "toy"] },
+    { animal: "koala", station: "nursery", tickets: 112, tasks: ["leaf", "water", "brush", "toy", "fruit"], pool: ["leaf", "water", "brush", "toy", "fruit", "ball"] },
   ];
 
   const $ = (id) => document.getElementById(id);
@@ -128,6 +148,9 @@
     playPanel: $("playPanel"),
     backToStagesBtn: $("backToStagesBtn"),
     stageText: $("stageText"),
+    stationText: $("stationText"),
+    ticketText: $("ticketText"),
+    moodText: $("moodText"),
     progressFill: $("progressFill"),
     animalCard: $("animalCard"),
     animalEmoji: $("animalEmoji"),
@@ -205,8 +228,8 @@
       if (stageNo > unlocked) button.classList.add("locked");
       button.innerHTML = `
         <b class="stage-icon"><img src="${animalAssets[stage.animal]}" alt="" /></b>
-        <strong>${t("stage", { n: stageNo })} - ${t(`animals.${stage.animal}`)}</strong>
-        <em>${t("stageGoal", { tasks: stage.tasks.length, items: stage.pool.length })}</em>
+        <strong>${t("stage", { n: stageNo })} - ${t(`stations.${stage.station}`)}</strong>
+        <em>${t("stageGoal", { station: t(`stations.${stage.station}`), tickets: stage.tickets })}</em>
         <span>${"★".repeat(stars[stageNo] || 0)}${"☆".repeat(3 - (stars[stageNo] || 0))}</span>
       `;
       button.addEventListener("click", () => {
@@ -244,11 +267,15 @@
   function renderTask() {
     const stage = stages[currentStage];
     const wanted = stage.tasks[currentTask];
+    const mood = clamp(100 - mistakes * 12, 40, 100);
     nodes.stageText.textContent = t("stage", { n: currentStage + 1 });
     nodes.progressFill.style.width = `${(currentTask / stage.tasks.length) * 100}%`;
+    nodes.stationText.textContent = t(`stations.${stage.station}`);
+    nodes.ticketText.textContent = t("tickets", { count: stage.tickets + currentTask * 3 });
+    nodes.moodText.textContent = t("mood", { count: mood });
     nodes.animalEmoji.innerHTML = `<img src="${animalAssets[stage.animal]}" alt="" />`;
     nodes.animalName.textContent = t(`animals.${stage.animal}`);
-    nodes.requestText.textContent = t("task", { animal: t(`animals.${stage.animal}`), item: t(`items.${wanted}`) });
+    nodes.requestText.textContent = t("task", { station: t(`stations.${stage.station}`), animal: t(`animals.${stage.animal}`), item: t(`items.${wanted}`) });
     nodes.feedbackText.textContent = "";
     renderItems(stage, wanted);
   }
@@ -312,6 +339,8 @@
     const stageNo = currentStage + 1;
     const stage = stages[currentStage];
     const earned = mistakes === 0 ? 3 : mistakes <= 2 ? 2 : 1;
+    const mood = clamp(100 - mistakes * 12, 40, 100);
+    const tickets = Math.max(0, stage.tickets + stage.tasks.length * 3 - mistakes * 4);
     stars[stageNo] = Math.max(stars[stageNo] || 0, earned);
     saveStars();
     if (stageNo === unlocked && unlocked < stages.length) {
@@ -321,7 +350,7 @@
     nodes.progressFill.style.width = "100%";
     nodes.resultTitle.textContent = earned === 3 ? t("perfect") : earned === 2 ? t("good") : t("keep");
     nodes.starText.textContent = "★".repeat(earned) + "☆".repeat(3 - earned);
-    nodes.resultText.textContent = t("result", { animal: t(`animals.${stage.animal}`), count: stage.tasks.length });
+    nodes.resultText.textContent = t("result", { station: t(`stations.${stage.station}`), tickets, mood });
     nodes.nextStageBtn.classList.toggle("hidden", currentStage >= stages.length - 1);
     nodes.resultPanel.classList.remove("hidden");
     playSound("win");

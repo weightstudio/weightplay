@@ -279,10 +279,10 @@ window.WONDER_LOBBY = {
       ageLabel: { en: "3+", "zh-Hant": "3+" },
       href: "games/zoo-helper-day/",
       description: {
-        en: "Help zoo animals with simple care choices made for young players.",
-        "zh-Hant": "幫動物園裡的動物選擇需要的照顧道具，適合年幼玩家。",
+        en: "Run a gentle zoo workday: collect tickets, keep visitors happy, and care for each animal zone.",
+        "zh-Hant": "經營溫柔的動物園工作日：收票、維持遊客開心度，照顧每個動物園區。",
       },
-      meta: { en: ["Zoo Animals", "Care Choices", "Kids"], "zh-Hant": ["動物園", "照顧選擇", "兒童"] },
+      meta: { en: ["Zoo Workday", "Tickets", "Kids"], "zh-Hant": ["動物園工作日", "收票", "兒童"] },
       art: { kind: "image", background: "assets/zoo-helper-day-cover.webp", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
     },
     {
