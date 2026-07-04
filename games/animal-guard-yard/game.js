@@ -607,6 +607,15 @@
   function showMenu() {
     running = false;
     cancelAnimationFrame(raf);
+    if (nodes.spawnWarning) {
+      nodes.spawnWarning.remove();
+      nodes.spawnWarning = null;
+    }
+    entities.forEach((entity) => entity.el?.remove?.());
+    projectiles.forEach((projectile) => projectile.el?.remove?.());
+    entities = [];
+    projectiles = [];
+    cells = [];
     nodes.menuPanel.classList.remove("hidden");
     nodes.playPanel.classList.add("hidden");
     nodes.resultPanel.classList.add("hidden");

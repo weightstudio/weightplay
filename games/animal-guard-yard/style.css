@@ -542,6 +542,7 @@ select {
   box-shadow: 0 8px 16px rgba(37, 84, 51, 0.15);
   font-weight: 900;
   font-size: clamp(0.68rem, 1.45vw, 1rem);
+  overflow: hidden;
 }
 
 .hud-icon {
@@ -571,32 +572,18 @@ select {
 }
 
 .heart-icon {
-  width: 23px;
-  height: 21px;
-  margin-top: 2px;
-  transform: rotate(-45deg);
-  border-radius: 6px 0 5px 2px;
-  background: linear-gradient(135deg, #ff7892 0%, #f02f5d 62%, #be1f4e 100%);
-}
-
-.heart-icon::before,
-.heart-icon::after {
-  content: "";
-  position: absolute;
-  width: 23px;
-  height: 23px;
-  border-radius: 50%;
-  background: inherit;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #fff1f4, #ffd2dc);
+  box-shadow: inset 0 -2px rgba(179, 45, 82, 0.14);
 }
 
 .heart-icon::before {
-  top: -11px;
-  left: 0;
-}
-
-.heart-icon::after {
-  top: 0;
-  right: -11px;
+  content: "\2665";
+  color: #ef3e64;
+  font-size: clamp(14px, 2.1vw, 21px);
+  line-height: 1;
 }
 
 .wave-text {
