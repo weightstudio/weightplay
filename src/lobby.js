@@ -82,6 +82,12 @@ function skillText(skill) {
   return i18n.t(`skill.${skill}`);
 }
 
+function skillReasonText(game) {
+  const primarySkill = (game.skills || [])[0];
+  if (!primarySkill) return "";
+  return i18n.t("card.skill_reason", { skill: skillText(primarySkill) });
+}
+
 function gameInfoText(gameId, key) {
   const game = lobbyGameFacts[gameId];
   if (!game?.[key]) return "";
@@ -347,6 +353,7 @@ function createGameCard(game) {
   const meta = text(game.meta).map((item) => `<span>${item}</span>`).join("");
   const categoryBadges = (game.categories || []).map((item) => `<span>${categoryText(item)}</span>`).join("");
   const skillBadges = (game.skills || []).slice(0, 3).map((item) => `<span>${skillText(item)}</span>`).join("");
+  const skillReason = skillReasonText(game);
   const quickFacts = [gameInfoText(game.id, "difficulty"), gameInfoText(game.id, "time")].filter(Boolean).join("");
   const showHero = game.art.hero && !game.art.hideHero && !game.art.hero.includes("width='1'");
   const art =
@@ -380,6 +387,7 @@ function createGameCard(game) {
       <p>${text(game.description)}</p>
       <div class="game-card-categories">${categoryBadges}</div>
       ${skillBadges ? `<div class="game-card-skills" aria-label="Skills trained">${skillBadges}</div>` : ""}
+      ${skillReason ? `<div class="game-card-skill-reason">${skillReason}</div>` : ""}
       ${quickFacts ? `<div class="game-card-facts" aria-label="Game quick facts">${quickFacts}</div>` : ""}
       <div class="game-card-meta">${meta}</div>
       <div class="game-card-plays">${playCountText(game)}</div>

@@ -14,6 +14,9 @@
   const scoreText = document.querySelector("#scoreText");
   const bestText = document.querySelector("#bestText");
   const nextFruitText = document.querySelector("#nextFruitText");
+  const comboBox = document.querySelector("#comboBox");
+  const comboLabel = document.querySelector("#comboLabel");
+  const comboText = document.querySelector("#comboText");
   const largestLabel = document.querySelector("#largestLabel");
   const largestFruitText = document.querySelector("#largestFruitText");
   const largestFruitToken = document.querySelector("#largestFruitToken");
@@ -58,6 +61,9 @@
       score: "Score",
       best: "Best",
       next: "Next",
+      comboLabel: "Combo",
+      comboReady: "Ready",
+      comboStatus: "x{count}",
       largest: "Largest",
       goal: "Goal: {name}",
       bestAnimal: "Best Animal {name}",
@@ -107,6 +113,9 @@
       score: "分數",
       best: "最佳",
       next: "下一顆",
+      comboLabel: "連擊",
+      comboReady: "待命",
+      comboStatus: "x{count}",
       largest: "最大合成",
       goal: "目標：{name}",
       bestAnimal: "最佳動物 {name}",
@@ -234,6 +243,7 @@
     scoreLabel.textContent = t("score");
     bestLabel.textContent = t("best");
     nextLabel.textContent = t("next");
+    comboLabel.textContent = t("comboLabel");
     dropBtn.textContent = t("drop");
     restartBtn.textContent = t("restart");
     menuTitle.textContent = t("menuTitle");
@@ -314,6 +324,13 @@
     largestFruitToken.setAttribute("aria-label", t(`fruit${maxReachedLevel}`));
     goalText.textContent = t("goal", { name: t("fruit10") });
     goalFill.style.width = `${Math.round((maxReachedLevel / (fruits.length - 1)) * 100)}%`;
+    updateComboHud();
+  }
+
+  function updateComboHud() {
+    const active = running && !gameOver && comboCount > 1 && performance.now() <= comboUntil;
+    comboBox.classList.toggle("active", active);
+    comboText.textContent = active ? t("comboStatus", { count: Math.min(5, comboCount) }) : t("comboReady");
   }
 
   function dropFruit() {
@@ -472,6 +489,7 @@
     const multiplier = Math.min(5, comboCount);
     score += baseScore * multiplier;
     if (multiplier > 1) showToast(t("combo", { count: multiplier }));
+    updateComboHud();
   }
 
   function shouldMerge(a, b) {
@@ -850,6 +868,7 @@
     const dt = Math.min(0.033, (now - lastTime) / 1000);
     lastTime = now;
     if (running && !gameOver) step(dt);
+    updateComboHud();
     draw();
     if (running && !gameOver) {
       animationFrameId = requestAnimationFrame(loop);

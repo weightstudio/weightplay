@@ -17,6 +17,7 @@
       "library.all_games": "All Games",
       "library.recent": "Recent",
       "library.favorites": "Favorites",
+      "card.skill_reason": "Practices {skill}",
       "section.hero_rank": "Top 3",
       "section.hero_games": "Popular Games",
       "recommend.title": "Recommended next",
@@ -213,6 +214,10 @@
   Object.assign(dictionaries["zh-Hant"], {
     "action.continue": "繼續玩",
     "action.continue_title": "繼續玩 {title}",
+  });
+
+  Object.assign(dictionaries["zh-Hant"], {
+    "card.skill_reason": "\u7df4\u7fd2\uff1a{skill}",
   });
 
   function getSavedLocale() {

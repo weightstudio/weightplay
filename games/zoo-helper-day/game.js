@@ -1,6 +1,6 @@
 ﻿(() => {
   const GAME_ID = "zoo-helper-day";
-  const assetVersion = "20260705-zoo-helper-day-items1";
+  const assetVersion = "20260705-zoo-helper-day-item-sync1";
   const localeKey = "weightPlayLocale";
   const unlockKey = "weightplay_zoo_helper_unlocked";
   const starKey = "weightplay_zoo_helper_stars";
@@ -125,6 +125,14 @@
 
   function iconSrc(item) {
     return `${itemIcons[item]}?v=${assetVersion}`;
+  }
+
+  function itemMeta(item) {
+    return {
+      id: item,
+      label: t(`items.${item}`),
+      icon: iconSrc(item),
+    };
   }
 
   const animalAssets = {
@@ -288,21 +296,59 @@
   function renderItems(stage, wanted) {
     const choices = [wanted, ...stage.pool.filter((item) => item !== wanted)].slice(0, 4);
     choices.sort(() => Math.random() - 0.5);
-    nodes.itemGrid.innerHTML = "";
+    nodes.itemGrid.replaceChildren();
     choices.forEach((item) => {
+      const meta = itemMeta(item);
       const button = document.createElement("button");
       button.className = "item-card";
       button.type = "button";
       button.draggable = true;
-      button.dataset.item = item;
-      const itemLabel = t(`items.${item}`);
-      button.setAttribute("aria-label", itemLabel);
-      button.innerHTML = `<b><img src="${iconSrc(item)}" alt="${itemLabel}" loading="eager" /></b><span>${itemLabel}</span>`;
-      button.addEventListener("click", () => chooseItem(item, button));
+      button.dataset.item = meta.id;
+      button.dataset.icon = meta.icon;
+      button.dataset.label = meta.label;
+      button.setAttribute("aria-label", meta.label);
+
+      const iconBox = document.createElement("b");
+      const icon = new Image();
+      icon.alt = meta.label;
+      icon.loading = "eager";
+      icon.decoding = "async";
+      icon.dataset.item = meta.id;
+      icon.onload = () => {
+        if (button.dataset.item !== meta.id) return;
+        iconBox.replaceChildren(icon);
+      };
+      icon.src = meta.icon;
+      iconBox.replaceChildren(icon);
+
+      const label = document.createElement("span");
+      label.textContent = meta.label;
+      button.replaceChildren(iconBox, label);
+
+      button.addEventListener("click", () => chooseItem(meta.id, button));
       button.addEventListener("dragstart", (event) => {
-        event.dataTransfer.setData("text/plain", item);
+        event.dataTransfer.setData("text/plain", meta.id);
       });
       nodes.itemGrid.appendChild(button);
+    });
+    requestAnimationFrame(syncItemCards);
+  }
+
+  function syncItemCards() {
+    nodes.itemGrid.querySelectorAll(".item-card").forEach((button) => {
+      const item = button.dataset.item;
+      const meta = itemMeta(item);
+      const image = button.querySelector("img");
+      const label = button.querySelector("span");
+      if (button.dataset.icon !== meta.icon) button.dataset.icon = meta.icon;
+      if (button.dataset.label !== meta.label) button.dataset.label = meta.label;
+      button.setAttribute("aria-label", meta.label);
+      if (label && label.textContent !== meta.label) label.textContent = meta.label;
+      if (image && (image.dataset.item !== item || image.getAttribute("src") !== meta.icon)) {
+        image.dataset.item = item;
+        image.alt = meta.label;
+        image.src = meta.icon;
+      }
     });
   }
 
