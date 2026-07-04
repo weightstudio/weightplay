@@ -1,5 +1,6 @@
 ﻿(() => {
   const GAME_ID = "zoo-helper-day";
+  const assetVersion = "20260704-zoo-item-cache2";
   const localeKey = "weightPlayLocale";
   const unlockKey = "weightplay_zoo_helper_unlocked";
   const starKey = "weightplay_zoo_helper_stars";
@@ -122,6 +123,10 @@
     ball: "../../assets/zoo-helper-ball.svg",
   };
 
+  function iconSrc(item) {
+    return `${itemIcons[item]}?v=${assetVersion}`;
+  }
+
   const animalAssets = {
     lion: "../../assets/animal-zoo-idle-lion.webp",
     panda: "../../assets/animal-zoo-panda.png",
@@ -135,7 +140,7 @@
     { animal: "lion", station: "savanna", tickets: 45, tasks: ["fruit", "water", "brush", "toy"], pool: ["fruit", "water", "brush", "toy", "leaf"] },
     { animal: "panda", station: "bamboo", tickets: 58, tasks: ["leaf", "water", "brush", "ball"], pool: ["leaf", "water", "brush", "ball", "fish"] },
     { animal: "elephant", station: "bath", tickets: 72, tasks: ["shower", "fruit", "water", "toy", "brush"], pool: ["shower", "fruit", "water", "toy", "brush"] },
-    { animal: "penguin", station: "ice", tickets: 86, tasks: ["fish", "water", "ball", "brush", "fish"], pool: ["fish", "water", "ball", "brush", "fruit"] },
+    { animal: "penguin", station: "ice", tickets: 86, tasks: ["fish", "water", "ball", "brush", "fruit"], pool: ["fish", "water", "ball", "brush", "fruit"] },
     { animal: "giraffe", station: "lookout", tickets: 98, tasks: ["leaf", "water", "fruit", "brush", "toy"], pool: ["leaf", "water", "fruit", "brush", "toy"] },
     { animal: "koala", station: "nursery", tickets: 112, tasks: ["leaf", "water", "brush", "toy", "fruit"], pool: ["leaf", "water", "brush", "toy", "fruit", "ball"] },
   ];
@@ -290,7 +295,7 @@
       button.type = "button";
       button.draggable = true;
       button.dataset.item = item;
-      button.innerHTML = `<b><img src="${itemIcons[item]}" alt="" /></b><span>${t(`items.${item}`)}</span>`;
+      button.innerHTML = `<b><img src="${iconSrc(item)}" alt="" /></b><span>${t(`items.${item}`)}</span>`;
       button.addEventListener("click", () => chooseItem(item, button));
       button.addEventListener("dragstart", (event) => {
         event.dataTransfer.setData("text/plain", item);
@@ -389,7 +394,7 @@
   }
 
   function initLoading() {
-    const assets = [...new Set(["../../assets/zoo-helper-day-cover.png", ...Object.values(animalAssets), ...Object.values(itemIcons)])];
+    const assets = [...new Set(["../../assets/zoo-helper-day-cover.png", ...Object.values(animalAssets), ...Object.keys(itemIcons).map(iconSrc)])];
     let loaded = 0;
     const finish = () => {
       loaded += 1;

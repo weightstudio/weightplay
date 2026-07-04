@@ -366,6 +366,48 @@ select {
   transition: width .25s ease;
 }
 
+.park-plan-card {
+  min-height: 82px;
+  border-radius: 18px;
+  padding: 10px;
+  display: grid;
+  gap: 8px;
+  background: linear-gradient(180deg, rgba(255,255,255,.92), rgba(229,248,198,.9));
+  box-shadow: inset 0 0 0 2px rgba(255,255,255,.74), 0 8px 18px rgba(67,43,20,.12);
+  font-weight: 950;
+}
+
+.park-plan-card > div:first-child {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+}
+
+.park-plan-card span,
+.park-plan-card small {
+  color: rgba(61, 41, 20, .72);
+  font-size: .72rem;
+}
+
+.park-plan-track {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 5px;
+}
+
+.park-plan-track i {
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(123, 92, 50, .18);
+  box-shadow: inset 0 1px rgba(255,255,255,.55);
+}
+
+.park-plan-track i.active {
+  background: linear-gradient(90deg, #63d66b, #ffd85a);
+  box-shadow: inset 0 1px rgba(255,255,255,.72), 0 0 8px rgba(117, 211, 90, .28);
+}
+
 .zoo-task-board {
   border-radius: 18px;
   padding: 10px;
@@ -974,6 +1016,30 @@ body.zoo-playing .happy-meter {
   min-height: 38px;
   padding: 6px 10px;
   border-radius: 13px;
+}
+
+body.zoo-playing .park-plan-card {
+  min-height: 62px;
+  border-radius: 13px;
+  padding: 7px 8px;
+  gap: 5px;
+}
+
+body.zoo-playing .park-plan-card strong {
+  font-size: clamp(.62rem, 2.45vw, .78rem);
+}
+
+body.zoo-playing .park-plan-card span,
+body.zoo-playing .park-plan-card small {
+  font-size: clamp(.5rem, 1.95vw, .6rem);
+}
+
+body.zoo-playing .park-plan-track {
+  gap: 3px;
+}
+
+body.zoo-playing .park-plan-track i {
+  height: 7px;
 }
 
 body.zoo-playing .zoo-actions {

@@ -96,6 +96,11 @@
       taskGate: "Upgrade the gate",
       taskGateReady: "Gate upgrade is ready",
       taskGateMax: "Gate fully upgraded",
+      parkPlan: "Park Growth Plan",
+      parkRank: "Gate progress",
+      nextUpgrade: "Next gate upgrade",
+      nextUpgradeMax: "All gate upgrades complete",
+      incomeBoost: "+{n}/10s after upgrade",
       dragHint: "Drag animals in the meadow to arrange your zoo.",
       reportGood: "Great care! Your zoo is growing and the animals looked happy.",
       reportTry: "Good effort. Recruit animals and upgrade the gate to grow faster.",
@@ -161,6 +166,11 @@
     taskGate: "\u5347\u7d1a\u5927\u9580",
     taskGateReady: "\u53ef\u4ee5\u5347\u7d1a\u5927\u9580",
     taskGateMax: "\u5927\u9580\u5df2\u7d93\u6eff\u7d1a",
+    parkPlan: "\u6a02\u5712\u6210\u9577\u8a08\u756b",
+    parkRank: "\u5927\u9580\u9032\u5ea6",
+    nextUpgrade: "\u4e0b\u4e00\u6b21\u5927\u9580\u5347\u7d1a",
+    nextUpgradeMax: "\u5927\u9580\u5df2\u5168\u90e8\u5347\u7d1a",
+    incomeBoost: "\u5347\u7d1a\u5f8c +{n}/10\u79d2",
     dragHint: "\u53ef\u4ee5\u62d6\u66f3\u8349\u539f\u4e0a\u7684\u52d5\u7269\uff0c\u64fa\u6210\u81ea\u5df1\u559c\u6b61\u7684\u6a02\u5712\u3002",
     reportGood: "\u7167\u9867\u5f97\u5f88\u597d\uff01\u4f60\u7684\u52d5\u7269\u5712\u6b63\u5728\u7a69\u5b9a\u6210\u9577\u3002",
     reportTry: "\u8868\u73fe\u4e0d\u932f\uff01\u62db\u52df\u52d5\u7269\u548c\u5347\u7d1a\u5927\u9580\u53ef\u4ee5\u8b93\u6a02\u5712\u6210\u9577\u66f4\u5feb\u3002",
@@ -298,9 +308,9 @@
     return save.gateLevel >= maxGateLevel ? 0 : Math.round(620 * save.gateLevel * save.gateLevel * 1.22);
   }
 
-  function incomePerTick() {
+  function incomePerTick(gateLevel = save.gateLevel) {
     const animalIncome = unlockedAnimals().reduce((sum, animal) => sum + animal.baseIncome, 0);
-    const gateBonus = 1 + (save.gateLevel - 1) * 0.16;
+    const gateBonus = 1 + (gateLevel - 1) * 0.16;
     const happyBonus = 0.35 + save.happiness / 240;
     return Math.max(2, Math.round(animalIncome * gateBonus * happyBonus));
   }
@@ -379,6 +389,7 @@
       </div>
       <div class="care-panel">
         <div class="happy-meter"><span>${t("happiness")}</span><b>${Math.round(save.happiness)}%</b><i style="width:${save.happiness}%"></i></div>
+        <div class="park-plan-card" aria-live="polite"></div>
         <div class="zoo-actions">
           <button type="button" data-action="collect">${t("collect")}</button>
           <button type="button" data-action="care">${t("careAll")}</button>
@@ -401,6 +412,7 @@
     card.querySelector('[data-action="report"]').addEventListener("click", showReport);
     card.querySelector('[data-action="next-goal"]').addEventListener("click", recruitAnimal);
     renderNextGoal(card.querySelector(".next-goal-card"));
+    renderParkPlan(card.querySelector(".park-plan-card"));
     renderTaskBoard(card.querySelector(".zoo-task-board"));
     const shop = card.querySelector(".animal-shop");
     renderAnimalShop(shop);
@@ -426,6 +438,7 @@
     const happyFill = card.querySelector(".happy-meter i");
     if (happyText) happyText.textContent = `${Math.round(save.happiness)}%`;
     if (happyFill) happyFill.style.width = `${save.happiness}%`;
+    renderParkPlan(card.querySelector(".park-plan-card"));
     const upgrade = card.querySelector('[data-action="upgrade"]');
     if (upgrade) {
       upgrade.disabled = save.gateLevel >= maxGateLevel;
@@ -596,6 +609,29 @@
           </div>
         `).join("")}
       </div>
+    `;
+  }
+
+  function renderParkPlan(container) {
+    if (!container) return;
+    const nextLevel = Math.min(maxGateLevel, save.gateLevel + 1);
+    const currentIncome = incomePerTick(save.gateLevel);
+    const nextIncome = save.gateLevel >= maxGateLevel ? currentIncome : incomePerTick(nextLevel);
+    const boost = Math.max(0, nextIncome - currentIncome);
+    const dots = Array.from({ length: maxGateLevel }, (_, index) => {
+      const level = index + 1;
+      return `<i class="${level <= save.gateLevel ? "active" : ""}" aria-hidden="true"></i>`;
+    }).join("");
+    const status = save.gateLevel >= maxGateLevel
+      ? t("nextUpgradeMax")
+      : `${t("nextUpgrade")} ${formatCost(gateUpgradeCost())}`;
+    container.innerHTML = `
+      <div>
+        <strong>${t("parkPlan")}</strong>
+        <span>${t("parkRank")}: ${save.gateLevel}/${maxGateLevel}</span>
+      </div>
+      <div class="park-plan-track">${dots}</div>
+      <small>${status}${boost > 0 ? ` - ${t("incomeBoost", { n: formatNumber(boost) })}` : ""}</small>
     `;
   }
 

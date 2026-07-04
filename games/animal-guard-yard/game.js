@@ -625,6 +625,7 @@
       nodes.spawnWarning.remove();
       nodes.spawnWarning = null;
     }
+    clearIncomingLane();
     entities.forEach((entity) => entity.el?.remove?.());
     projectiles.forEach((projectile) => projectile.el?.remove?.());
     entities = [];
@@ -1134,15 +1135,41 @@
     const remainingSpawns = Math.max(0, stages[currentStage].total - spawned);
     const shouldShow = running && left > 0 && remainingSpawns > 0 && nextSpawnPlan;
     nodes.spawnWarning.classList.toggle("hidden", !shouldShow);
-    if (!shouldShow) return;
+    if (!shouldShow) {
+      clearIncomingLane();
+      return;
+    }
     const remaining = clamp(nextSpawnAt / Math.max(1, currentSpawnDelay), 0, 1);
     nodes.spawnWarning.style.left = "94%";
     nodes.spawnWarning.style.top = `${laneCenterY(nextSpawnPlan.row) * 100}%`;
     nodes.spawnWarning.style.setProperty("--spawn-left", `${Math.round(remaining * 100)}%`);
     nodes.spawnWarning.classList.toggle("is-hot", remaining < 0.28);
+    syncIncomingLane(nextSpawnPlan.row, remaining);
     const src = spriteAssets[nextSpawnPlan.data.type] || spriteAssets.normal;
     const seconds = Math.max(1, Math.ceil(nextSpawnAt / 1000));
     nodes.spawnWarning.innerHTML = `<img src="${src}" alt="" draggable="false" /><b>${seconds}</b>`;
+  }
+
+  function syncIncomingLane(row, remaining) {
+    const hot = remaining < 0.28;
+    const opacity = (0.18 + (1 - remaining) * 0.34).toFixed(2);
+    cells.forEach((cell) => {
+      const isIncoming = cell.row === row;
+      cell.button.classList.toggle("incoming-lane", isIncoming);
+      cell.button.classList.toggle("incoming-lane-hot", isIncoming && hot);
+      if (isIncoming) {
+        cell.button.style.setProperty("--incoming-opacity", opacity);
+      } else {
+        cell.button.style.removeProperty("--incoming-opacity");
+      }
+    });
+  }
+
+  function clearIncomingLane() {
+    cells.forEach((cell) => {
+      cell.button.classList.remove("incoming-lane", "incoming-lane-hot");
+      cell.button.style.removeProperty("--incoming-opacity");
+    });
   }
 
   function finish(won) {
