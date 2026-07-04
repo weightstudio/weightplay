@@ -1242,6 +1242,25 @@ body.lobby-page {
   font-weight: 800;
 }
 
+.game-card-badges {
+  display: flex;
+  min-width: 0;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.popular-card-badge {
+  padding: 4px 7px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #fff4b7, #ffca4f);
+  color: #3a2711;
+  box-shadow: 0 5px 14px rgba(255, 202, 79, 0.22);
+  font-size: 11px;
+  font-weight: 1000;
+  line-height: 1;
+}
+
 .age-pill {
   display: inline-grid;
   place-items: center;
@@ -1644,6 +1663,14 @@ body.lobby-page {
 
   .game-card {
     min-height: 332px;
+  }
+
+  .game-card-topline {
+    align-items: flex-start;
+  }
+
+  .game-card-badges {
+    max-width: 70%;
   }
 
   .game-card-art.image-art {

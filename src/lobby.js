@@ -357,6 +357,8 @@ function createGameCard(game) {
   const favoriteLabel = i18n.t(favorite ? "action.remove_favorite_title" : "action.add_favorite_title", { title });
   const primaryAction = isPlayable ? i18n.t(recent ? "action.continue" : "action.play") : i18n.t("action.coming_soon");
   const continueBadge = isPlayable && recent ? `<span class="continue-badge">${i18n.t("action.continue")}</span>` : "";
+  const stats = statFor(game);
+  const popularBadge = hasRealStats() && stats.rank7d && stats.rank7d <= 5 ? `<span class="popular-card-badge">${rankLabel(game, stats.rank7d)}</span>` : "";
 
   card.innerHTML = `
     ${art}
@@ -369,7 +371,10 @@ function createGameCard(game) {
     <div class="game-card-body">
       <div class="game-card-topline">
         <span class="age-pill">${ageLabel}</span>
-        <span>${text(game.statusText)}</span>
+        <span class="game-card-badges">
+          ${popularBadge}
+          <span>${text(game.statusText)}</span>
+        </span>
       </div>
       <h2>${title}</h2>
       <p>${text(game.description)}</p>

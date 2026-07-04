@@ -251,16 +251,28 @@ function renderStaticText() {
 
 function preload() {
   let percent = 0;
+  let ready = false;
+  const finish = () => {
+    if (ready) return;
+    ready = true;
+    loadingText.textContent = "100%";
+    loadingFill.style.width = "100%";
+    loadingPanel.classList.add("hidden");
+    window.WonderAnalytics?.track("game_ready", { game_id: GAME_ID });
+  };
   const timer = setInterval(() => {
     percent += 20;
     loadingText.textContent = `${Math.min(100, percent)}%`;
     loadingFill.style.width = `${Math.min(100, percent)}%`;
     if (percent >= 100) {
       clearInterval(timer);
-      loadingPanel.classList.add("hidden");
-      window.WonderAnalytics?.track("game_ready", { game_id: GAME_ID });
+      finish();
     }
   }, 70);
+  window.setTimeout(() => {
+    clearInterval(timer);
+    finish();
+  }, 900);
 }
 
 function renderStageSelect() {
