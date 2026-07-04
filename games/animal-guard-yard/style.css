@@ -1357,6 +1357,13 @@ select {
   animation: board-pop 0.9s ease forwards;
 }
 
+.board-pop.energy-pop {
+  color: #89ff8a;
+  text-shadow:
+    0 2px 0 rgba(35, 77, 38, 0.38),
+    0 0 14px rgba(137, 255, 138, 0.42);
+}
+
 .result-panel,
 .loading-panel {
   position: fixed;

@@ -6,6 +6,20 @@
   const profileKey = "weightplay_animal_guard_profile";
   const progressKey = "weightplay_animal_guard_progress";
 
+  document.querySelectorAll("img[data-fallback-src]").forEach((image) => {
+    image.addEventListener(
+      "error",
+      () => {
+        const fallback = image.dataset.fallbackSrc;
+        if (fallback && image.getAttribute("src") !== fallback) {
+          image.src = fallback;
+          image.removeAttribute("data-fallback-src");
+        }
+      },
+      { once: true }
+    );
+  });
+
   const text = {
     en: {
       gameTitle: "Animal Guard Yard",
@@ -455,9 +469,9 @@
     window.setTimeout(() => bubble.remove(), 1200);
   }
 
-  function showBoardText(message, x, y) {
+  function showBoardText(message, x, y, variant = "") {
     const bubble = document.createElement("div");
-    bubble.className = "board-pop";
+    bubble.className = `board-pop ${variant}`.trim();
     bubble.textContent = message;
     bubble.style.left = `${x * 100}%`;
     bubble.style.top = `${y * 100}%`;
@@ -900,8 +914,12 @@
     if (target.hp <= 0 && !target.rewarded) {
       target.rewarded = true;
       const coinGain = target.type === "boss" ? 30 : target.type === "shield" ? 8 : target.type === "fast" ? 5 : 6;
+      const energyGain = target.type === "boss" ? 24 : target.type === "shield" ? 9 : target.type === "fast" ? 6 : 5;
       coinsEarned += coinGain;
-      showBoardText(`+${coinGain}`, target.x, impactY + 0.02);
+      energy += energyGain;
+      showBoardText(`+${coinGain}`, target.x, impactY + 0.02, "coin-pop");
+      showBoardText(`+${energyGain} ${t("sunToken")}`, target.x, Math.min(0.94, impactY + 0.1), "energy-pop");
+      updateHud();
     }
     playSound("hit");
   }
@@ -1202,7 +1220,7 @@
 
   function initLoading() {
     const assets = [
-      "../../assets/animal-guard-yard-poster.png",
+      "../../assets/animal-guard-yard-poster.webp",
       ...Object.values(spriteAssets),
       "../../assets/menu-battle.png",
       "../../assets/menu-character.png",
