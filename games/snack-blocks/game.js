@@ -10,6 +10,9 @@
     CH: { label: "Cheese", asset: "assets/tile-cheese.png" },
     PR: { label: "Pretzel", asset: "assets/tile-pretzel.png" },
   };
+  const effectArt = {
+    matchBurst: "assets/effect-match-burst.png",
+  };
   const localeKey = "weightplayLocale";
   const unlockKey = "snackBlocksUnlocked";
   const recordKey = "snackBlocksRecords";
@@ -505,9 +508,10 @@
       const col = index % size;
       const effect = document.createElement("span");
       effect.className = "match-spark";
-      effect.textContent = "+";
+      effect.setAttribute("aria-hidden", "true");
       effect.style.left = `${((col + 0.5) / size) * 100}%`;
       effect.style.top = `${((row + 0.5) / size) * 100}%`;
+      effect.style.setProperty("--burst-image", `url("${effectArt.matchBurst}")`);
       effect.style.animationDelay = `${Math.min(order * 18, 90)}ms`;
       nodes.board.append(effect);
     });

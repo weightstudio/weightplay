@@ -386,7 +386,7 @@
         button.dataset.row = String(r);
         button.dataset.col = String(c);
         button.setAttribute("aria-label", data.label);
-        button.innerHTML = `<img src="${data.asset}" alt="" draggable="false" />`;
+        button.innerHTML = `<img src="${data.asset}" alt="" draggable="false" /><span class="order-target-ring" aria-hidden="true"></span>`;
         button.addEventListener("click", () => popGroup(r, c));
         nodes.board.appendChild(button);
       });
@@ -648,6 +648,7 @@
   function initLoading() {
     const assets = [
       "../../assets/bubble-bakery-cover.webp",
+      "assets/order-target-ring.png",
       ...colors.map((item) => item.asset),
     ];
     let loaded = 0;
