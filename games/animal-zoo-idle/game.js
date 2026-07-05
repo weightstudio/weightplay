@@ -23,6 +23,7 @@
     gate1: "../../assets/animal-zoo-gate-lv1.png",
     gate2: "../../assets/animal-zoo-gate-lv2.png",
     gate3: "../../assets/animal-zoo-gate-lv3.png",
+    ticketBooth: "../../assets/animal-zoo-idle-ticket-booth.webp",
     visitorChild: "../../assets/animal-zoo-visitor-child.png",
     visitorElder: "../../assets/animal-zoo-visitor-elder.png",
     visitorFamily: "../../assets/animal-zoo-visitor-family.png",
@@ -58,6 +59,11 @@
     { count: 6, bonus: 0.16 },
     { count: 9, bonus: 0.26 },
     { count: 12, bonus: 0.38 },
+  ];
+  const facilities = [
+    { id: "snackStand", asset: ASSETS.ticketBooth, maxLevel: 4, baseCost: 1200, incomeBonus: 0.04, careBonus: 0, visitorBonus: 0, x: 24, y: 18, size: 13 },
+    { id: "viewDeck", asset: ASSETS.gate2, maxLevel: 4, baseCost: 4200, incomeBonus: 0.06, careBonus: 1, visitorBonus: 1, x: 69, y: 17, size: 11 },
+    { id: "keeperPost", asset: ASSETS.keeper, maxLevel: 4, baseCost: 12800, incomeBonus: 0.03, careBonus: 3, visitorBonus: 0, x: 89, y: 22, size: 8 },
   ];
 
   const visitorAssets = [ASSETS.visitorChild, ASSETS.visitorElder, ASSETS.visitorFamily];
@@ -135,6 +141,20 @@
       buildCompleteDesc: "All current animals and gate upgrades are built.",
       buildReady: "Ready now",
       buildNeed: "Need {coins} more",
+      facilityBoard: "Park Facilities",
+      facilityLevel: "Lv.{n}",
+      facilityMax: "Max",
+      facilityUpgrade: "Upgrade",
+      facilitySnackStand: "Snack Stand",
+      facilitySnackStandDesc: "Better snacks raise ticket income.",
+      facilityViewDeck: "View Deck",
+      facilityViewDeckDesc: "A nicer view brings more visitors.",
+      facilityKeeperPost: "Keeper Post",
+      facilityKeeperPostDesc: "Keeper tools make animal care stronger.",
+      facilityIncomeBoost: "+{n}% tickets",
+      facilityCareBoost: "+{n} care",
+      facilityVisitorBoost: "+{n} visitor",
+      facilityBuilt: "{name} upgraded!",
       habitatBonus: "Habitat Bonus",
       habitatBonusCurrent: "+{n}% ticket income",
       habitatBonusNext: "Recruit {count} animals for +{n}%",
@@ -230,6 +250,20 @@
     buildCompleteDesc: "\u76ee\u524d\u7684\u52d5\u7269\u548c\u5927\u9580\u90fd\u5df2\u5efa\u8a2d\u5b8c\u6210\u3002",
     buildReady: "\u73fe\u5728\u53ef\u4ee5\u5efa\u8a2d",
     buildNeed: "\u9084\u5dee {coins}",
+    facilityBoard: "\u5712\u5340\u8a2d\u65bd",
+    facilityLevel: "Lv.{n}",
+    facilityMax: "\u5df2\u6eff\u7d1a",
+    facilityUpgrade: "\u5347\u7d1a",
+    facilitySnackStand: "\u9ede\u5fc3\u4ead",
+    facilitySnackStandDesc: "\u66f4\u597d\u7684\u9ede\u5fc3\u6703\u63d0\u5347\u9580\u7968\u6536\u5165\u3002",
+    facilityViewDeck: "\u89c0\u666f\u53f0",
+    facilityViewDeckDesc: "\u66f4\u597d\u7684\u89c0\u666f\u6703\u5e36\u4f86\u66f4\u591a\u53c3\u89c0\u8005\u3002",
+    facilityKeeperPost: "\u4fdd\u80b2\u5c0f\u7ad9",
+    facilityKeeperPostDesc: "\u7167\u9867\u5de5\u5177\u8b93\u52d5\u7269\u7167\u9867\u66f4\u6709\u6548\u3002",
+    facilityIncomeBoost: "\u9580\u7968 +{n}%",
+    facilityCareBoost: "\u7167\u9867 +{n}",
+    facilityVisitorBoost: "\u53c3\u89c0\u8005 +{n}",
+    facilityBuilt: "{name} \u5347\u7d1a\u4e86\uff01",
     habitatBonus: "\u68f2\u5730\u52a0\u6210",
     habitatBonusCurrent: "\u9580\u7968\u6536\u5165 +{n}%",
     habitatBonusNext: "\u62db\u52df {count} \u96bb\u52d5\u7269\u89e3\u9396 +{n}%",
@@ -301,6 +335,7 @@
       lastPlayedAt: Date.now(),
       unlocked: { lion: true },
       positions: {},
+      facilities: {},
     };
     try {
       const current = JSON.parse(localStorage.getItem(saveKey) || "null");
@@ -327,6 +362,7 @@
   function normalizeSave(data) {
     data.unlocked = { lion: true, ...(data.unlocked || {}) };
     data.positions = { ...(data.positions || {}) };
+    data.facilities = { ...(data.facilities || {}) };
     const shouldRefreshLayout = Number(data.layoutVersion || 0) < layoutVersion;
     for (const animal of animals) {
       const position = data.positions[animal.id] || {};
@@ -347,6 +383,9 @@
     data.careReadyAt = Math.max(0, Number(data.careReadyAt || 0));
     data.lifetimeTickets = Math.max(0, Number(data.lifetimeTickets || 0));
     data.claimedMilestones = { ...(data.claimedMilestones || {}) };
+    for (const facility of facilities) {
+      data.facilities[facility.id] = clamp(Math.floor(Number(data.facilities[facility.id] || 0)), 0, facility.maxLevel);
+    }
     return data;
   }
 
@@ -380,7 +419,51 @@
     const gateBonus = 1 + (gateLevel - 1) * 0.16;
     const happyBonus = 0.35 + save.happiness / 240;
     const habitatBonus = 1 + habitatBonusRate();
-    return Math.max(2, Math.round(animalIncome * gateBonus * happyBonus * habitatBonus));
+    const facilityBonus = 1 + facilityIncomeBonus();
+    return Math.max(2, Math.round(animalIncome * gateBonus * happyBonus * habitatBonus * facilityBonus));
+  }
+
+  function facilityLevel(facility) {
+    return clamp(Math.floor(Number(save.facilities?.[facility.id] || 0)), 0, facility.maxLevel);
+  }
+
+  function facilityCost(facility) {
+    const level = facilityLevel(facility);
+    if (level >= facility.maxLevel) return 0;
+    return Math.round(facility.baseCost * Math.pow(2.15, level));
+  }
+
+  function facilityIncomeBonus() {
+    return facilities.reduce((sum, facility) => sum + facilityLevel(facility) * facility.incomeBonus, 0);
+  }
+
+  function facilityCareBonus() {
+    return facilities.reduce((sum, facility) => sum + facilityLevel(facility) * facility.careBonus, 0);
+  }
+
+  function facilityVisitorBonus() {
+    return facilities.reduce((sum, facility) => sum + facilityLevel(facility) * facility.visitorBonus, 0);
+  }
+
+  function facilityName(facility) {
+    if (facility.id === "snackStand") return t("facilitySnackStand");
+    if (facility.id === "viewDeck") return t("facilityViewDeck");
+    if (facility.id === "keeperPost") return t("facilityKeeperPost");
+    return facility.id;
+  }
+
+  function facilityDesc(facility) {
+    if (facility.id === "snackStand") return t("facilitySnackStandDesc");
+    if (facility.id === "viewDeck") return t("facilityViewDeckDesc");
+    if (facility.id === "keeperPost") return t("facilityKeeperPostDesc");
+    return "";
+  }
+
+  function nextFacilityUpgrade() {
+    return facilities
+      .filter((facility) => facilityLevel(facility) < facility.maxLevel)
+      .map((facility) => ({ facility, cost: facilityCost(facility) }))
+      .sort((a, b) => Math.max(0, a.cost - save.coins) - Math.max(0, b.cost - save.coins))[0] || null;
   }
 
   function habitatBonusRate(count = unlockedAnimals().length) {
@@ -394,6 +477,7 @@
   function nextBuildGoal() {
     const recruit = nextRecruit();
     const nextBonus = nextHabitatBonus();
+    const facilityUpgrade = nextFacilityUpgrade();
     const gateCost = gateUpgradeCost();
     const gateGoal = save.gateLevel < maxGateLevel ? {
       type: "gate",
@@ -413,7 +497,15 @@
       progress: taskProgress(save.coins, recruit.cost),
       animal: recruit,
     } : null;
-    const candidates = [gateGoal, recruitGoal].filter(Boolean);
+    const facilityGoal = facilityUpgrade ? {
+      type: "facility",
+      title: facilityName(facilityUpgrade.facility),
+      desc: facilityDesc(facilityUpgrade.facility),
+      cost: facilityUpgrade.cost,
+      progress: taskProgress(save.coins, facilityUpgrade.cost),
+      facility: facilityUpgrade.facility,
+    } : null;
+    const candidates = [gateGoal, recruitGoal, facilityGoal].filter(Boolean);
     if (!candidates.length) {
       return {
         type: "complete",
@@ -427,7 +519,7 @@
   }
 
   function visitorCount() {
-    return clamp(Math.ceil(incomePerTick() / 18), 2, 6);
+    return clamp(Math.ceil(incomePerTick() / 18) + facilityVisitorBonus(), 2, 9);
   }
 
   function taskProgress(current, target) {
@@ -493,6 +585,7 @@
       </div>
       <div class="savanna-stage stage-lv-${save.gateLevel}" aria-label="Safari park">
         <div class="gate image-asset"><img src="${gateAsset()}" alt="" draggable="false" /></div>
+        <div class="stage-facilities"></div>
         <div class="visitor-line"></div>
         <img class="keeper image-asset" src="${ASSETS.keeper}" alt="" draggable="false" />
         <div class="animal-layer"></div>
@@ -509,6 +602,7 @@
           <button type="button" data-action="report">${t("report")}</button>
         </div>
         <button class="next-goal-card" type="button" data-action="next-goal"></button>
+        <div class="facility-board" aria-live="polite"></div>
         <div class="zoo-task-board" aria-live="polite"></div>
         <div class="zoo-milestone-board" aria-live="polite"></div>
         <div class="animal-shop-head"><strong>${t("animals")}</strong><span>${t("dragHint")}</span></div>
@@ -516,6 +610,7 @@
       </div>
     `;
     renderVisitors(card.querySelector(".visitor-line"));
+    renderStageFacilities(card.querySelector(".stage-facilities"));
     const animalLayer = card.querySelector(".animal-layer");
     renderAnimals(animalLayer);
     animalLayer.dataset.animalIds = unlockedAnimals().map((animal) => animal.id).join(",");
@@ -527,6 +622,7 @@
     renderNextGoal(card.querySelector(".next-goal-card"));
     renderParkPlan(card.querySelector(".park-plan-card"));
     renderHabitatBonus(card.querySelector(".habitat-bonus-card"));
+    renderFacilityBoard(card.querySelector(".facility-board"));
     renderTaskBoard(card.querySelector(".zoo-task-board"));
     renderMilestones(card.querySelector(".zoo-milestone-board"));
     const shop = card.querySelector(".animal-shop");
@@ -563,6 +659,8 @@
     renderTaskBoard(card.querySelector(".zoo-task-board"));
     renderMilestones(card.querySelector(".zoo-milestone-board"));
     renderHabitatBonus(card.querySelector(".habitat-bonus-card"));
+    renderStageFacilities(card.querySelector(".stage-facilities"));
+    renderFacilityBoard(card.querySelector(".facility-board"));
     const shop = card.querySelector(".animal-shop");
     if (shop && shop.dataset.shopSignature !== animalShopSignature()) {
       renderAnimalShop(shop);
@@ -636,6 +734,27 @@
     }
   }
 
+  function renderStageFacilities(container) {
+    if (!container) return;
+    const signature = facilities.map((facility) => `${facility.id}:${facilityLevel(facility)}`).join("|");
+    if (container.dataset.facilitySignature === signature) return;
+    container.dataset.facilitySignature = signature;
+    container.innerHTML = "";
+    for (const facility of facilities) {
+      const level = facilityLevel(facility);
+      const wrap = document.createElement("div");
+      wrap.className = `stage-facility facility-${facility.id} ${level > 0 ? "built" : "ghost"}`;
+      wrap.style.left = `${facility.x}%`;
+      wrap.style.bottom = `${facility.y}%`;
+      wrap.style.width = `${facility.size + level * 1.5}%`;
+      wrap.innerHTML = `
+        <img src="${facility.asset}" alt="" draggable="false" />
+        <span>${level > 0 ? t("facilityLevel", { n: level }) : t("facilityUpgrade")}</span>
+      `;
+      container.appendChild(wrap);
+    }
+  }
+
   function renderAnimalShop(container) {
     if (!container) return;
     container.innerHTML = "";
@@ -663,6 +782,39 @@
       const affordable = save.coins >= animal.cost ? 1 : 0;
       return `${animal.id}:${owned}:${affordable}`;
     }).join("|") + `:${locale}`;
+  }
+
+  function renderFacilityBoard(container) {
+    if (!container) return;
+    container.innerHTML = `
+      <strong>${t("facilityBoard")}</strong>
+      <div class="facility-list">
+        ${facilities.map((facility) => {
+          const level = facilityLevel(facility);
+          const cost = facilityCost(facility);
+          const maxed = level >= facility.maxLevel;
+          const ready = !maxed && save.coins >= cost;
+          const effects = [
+            level > 0 && facility.incomeBonus ? t("facilityIncomeBoost", { n: Math.round(facility.incomeBonus * level * 100) }) : "",
+            level > 0 && facility.careBonus ? t("facilityCareBoost", { n: facility.careBonus * level }) : "",
+            level > 0 && facility.visitorBonus ? t("facilityVisitorBoost", { n: facility.visitorBonus * level }) : "",
+          ].filter(Boolean).join(" / ");
+          return `
+            <button type="button" class="facility-card ${ready ? "ready" : ""} ${maxed ? "maxed" : ""}" data-facility="${facility.id}" ${maxed ? "disabled" : ""}>
+              <img src="${facility.asset}" alt="" draggable="false" />
+              <span>
+                <strong>${facilityName(facility)}</strong>
+                <small>${level >= facility.maxLevel ? t("facilityMax") : `${t("facilityLevel", { n: level })} - ${t("facilityUpgrade")} ${formatCost(cost)}`}</small>
+                <em>${effects || facilityDesc(facility)}</em>
+              </span>
+            </button>
+          `;
+        }).join("")}
+      </div>
+    `;
+    container.querySelectorAll("[data-facility]").forEach((button) => {
+      button.addEventListener("click", () => upgradeFacility(button.dataset.facility));
+    });
   }
 
   function renderNextGoal(container) {
@@ -878,7 +1030,7 @@
       return;
     }
     save.careCount += 1;
-    const gain = unlockedAnimals().reduce((sum, animal) => sum + animal.care, 0);
+    const gain = unlockedAnimals().reduce((sum, animal) => sum + animal.care, 0) + facilityCareBonus();
     save.happiness = clamp(save.happiness + gain, 18, 100);
     save.careReadyAt = Date.now() + careCooldownMs;
     popHearts();
@@ -920,6 +1072,23 @@
     popToast(t("recruited", { name: t(animal.id) }));
     playSound("upgrade");
     window.WonderAnalytics?.track("animal_unlock", { game_id: GAME_ID, animal_id: animal.id });
+    saveGame();
+    render();
+  }
+
+  function upgradeFacility(facilityId) {
+    const facility = facilities.find((item) => item.id === facilityId);
+    if (!facility) return;
+    const level = facilityLevel(facility);
+    if (level >= facility.maxLevel) return;
+    const cost = facilityCost(facility);
+    if (save.coins < cost) return notEnough(cost);
+    save.coins -= cost;
+    save.facilities[facility.id] = level + 1;
+    save.happiness = clamp(save.happiness + 5 + facility.careBonus, 18, 100);
+    popToast(t("facilityBuilt", { name: facilityName(facility) }));
+    playSound("upgrade");
+    window.WonderAnalytics?.track("zoo_facility_upgrade", { game_id: GAME_ID, facility_id: facility.id, level: save.facilities[facility.id] });
     saveGame();
     render();
   }
@@ -1015,7 +1184,7 @@
     if (nodes.gamePanel.classList.contains("hidden")) return;
     tickCount += 1;
     save.ticketBox += incomePerTick();
-    save.happiness = clamp(save.happiness - 0.28, 18, 100);
+    save.happiness = clamp(save.happiness - Math.max(0.12, 0.28 - facilityLevel(facilities[2]) * 0.03), 18, 100);
     if (tickCount % 3 === 0) saveGame();
     render();
   }
@@ -1031,6 +1200,7 @@
       ASSETS.lion,
       ASSETS.keeper,
       ASSETS.gate1,
+      ASSETS.ticketBooth,
       visitorAssets[0],
     ];
     let done = 0;

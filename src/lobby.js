@@ -8,6 +8,8 @@ const heroGames = document.querySelector("#heroGames");
 const heroGamesSection = document.querySelector("#heroGamesSection");
 const recommendations = document.querySelector("#recommendations");
 const recommendationsSection = document.querySelector("#recommendationsSection");
+const freshUpdates = document.querySelector("#freshUpdates");
+const freshUpdatesSection = document.querySelector("#freshUpdatesSection");
 const skillPaths = document.querySelector("#skillPaths");
 const skillPathsSection = document.querySelector("#skillPathsSection");
 const lobbyStats = document.querySelector("#lobbyStats");
@@ -24,6 +26,8 @@ const heroRankLabel = document.querySelector("#heroRankLabel");
 const heroGamesTitle = document.querySelector("#heroGamesTitle");
 const recommendationTitle = document.querySelector("#recommendationTitle");
 const recommendationReason = document.querySelector("#recommendationReason");
+const freshUpdatesTitle = document.querySelector("#freshUpdatesTitle");
+const freshUpdatesReason = document.querySelector("#freshUpdatesReason");
 const skillPathsTitle = document.querySelector("#skillPathsTitle");
 const skillPathsReason = document.querySelector("#skillPathsReason");
 const dailyReward = document.querySelector("#dailyReward");
@@ -258,6 +262,13 @@ function playableGames() {
   return lobby.games.filter((game) => game.status === "playable");
 }
 
+function recentlyUpdatedGames(limit = 4) {
+  return [...recentlyUpdatedGameIds]
+    .map((id) => lobby.games.find((game) => game.id === id && game.status === "playable"))
+    .filter(Boolean)
+    .slice(0, limit);
+}
+
 function recommendationSeeds() {
   const seedIds = [...recentGameIds, ...favoriteGameIds].filter((id, index, list) => id && list.indexOf(id) === index);
   return seedIds.map((id) => lobby.games.find((game) => game.id === id && game.status === "playable")).filter(Boolean);
@@ -476,6 +487,7 @@ function renderLobby() {
   }
 
   renderHeroGames();
+  renderFreshUpdates();
   renderRecommendations();
   renderSkillPaths();
   gameGrid.replaceChildren(...lobby.games.map(createGameCard));
@@ -661,6 +673,46 @@ function renderRecommendations() {
   recommendations.replaceChildren(...cards);
 }
 
+function renderFreshUpdates() {
+  if (!freshUpdates || !freshUpdatesSection) return;
+  const cards = recentlyUpdatedGames(4).map((game) => {
+    const title = text(game.title);
+    const type = text(game.type);
+    const ageLabel = text(game.ageLabel);
+    const description = text(game.description);
+    const skillBadges = (game.skills || []).slice(0, 2).map((skill) => `<span>${skillText(skill)}</span>`).join("");
+    const card = document.createElement("a");
+    card.className = "fresh-update-card";
+    card.href = game.href;
+    card.addEventListener("click", () => {
+      window.WonderAnalytics?.track("fresh_update_open", {
+        game_id: game.id,
+        game_title: title,
+        locale: i18n.locale(),
+      });
+      recordRecentGame(game.id);
+    });
+    card.innerHTML = `
+      <div class="fresh-update-art">
+        <img src="${game.art?.background || primaryArt(game)}" alt="" />
+        <span>${i18n.t("badge.updated")}</span>
+      </div>
+      <div class="fresh-update-copy">
+        <strong>${title}</strong>
+        <small>${type} / ${ageLabel}</small>
+        <em>${description}</em>
+        ${skillBadges ? `<div class="fresh-update-skills" aria-label="Skills trained">${skillBadges}</div>` : ""}
+      </div>
+    `;
+    return card;
+  });
+
+  freshUpdatesTitle.textContent = i18n.t("fresh_updates.title");
+  freshUpdatesReason.textContent = i18n.t("fresh_updates.reason");
+  freshUpdatesSection.classList.toggle("hidden", cards.length === 0);
+  freshUpdates.replaceChildren(...cards);
+}
+
 function gamesForSkillPath(skill, limit = 2) {
   return playableGames()
     .filter((game) => (game.skills || []).includes(skill))
@@ -750,6 +802,7 @@ function applyFilter() {
   const isFiltered = activeFilter !== "all" || activeTopic !== "all" || activeSkill !== "all" || activeLibrary !== "all" || Boolean(activeSearch);
   heroGamesSection.classList.toggle("hidden", isFiltered);
   recommendationsSection?.classList.toggle("hidden", isFiltered);
+  freshUpdatesSection?.classList.toggle("hidden", isFiltered);
   skillPathsSection?.classList.toggle("hidden", isFiltered);
   filterStatus.classList.toggle("empty", visibleCount === 0);
 
@@ -781,6 +834,8 @@ function applyStaticTranslations() {
   heroGamesTitle.textContent = i18n.t("section.hero_games");
   if (recommendationTitle) recommendationTitle.textContent = i18n.t("recommend.title");
   if (recommendationReason) recommendationReason.textContent = i18n.t("recommend.start_here");
+  if (freshUpdatesTitle) freshUpdatesTitle.textContent = i18n.t("fresh_updates.title");
+  if (freshUpdatesReason) freshUpdatesReason.textContent = i18n.t("fresh_updates.reason");
   if (skillPathsTitle) skillPathsTitle.textContent = i18n.t("skill_path.title");
   if (skillPathsReason) skillPathsReason.textContent = i18n.t("skill_path.reason");
   document.querySelectorAll("[data-i18n]").forEach((element) => {

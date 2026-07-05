@@ -625,6 +625,7 @@ body.lobby-page {
   padding: 8px 0 14px;
 }
 
+.fresh-updates-section,
 .recommendations-section,
 .skill-paths-section {
   display: grid;
@@ -669,6 +670,7 @@ body.lobby-page {
   gap: 10px;
 }
 
+.fresh-updates,
 .recommendations,
 .skill-paths {
   display: grid;
@@ -708,6 +710,107 @@ body.lobby-page {
   color: #fff;
   text-decoration: none;
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.16);
+}
+
+.fresh-update-card {
+  position: relative;
+  display: grid;
+  grid-template-rows: 132px minmax(0, 1fr);
+  min-height: 282px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 207, 99, 0.22);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(255, 207, 99, 0.11), rgba(120, 228, 198, 0.08)),
+    rgba(255, 255, 255, 0.075);
+  color: #fff;
+  text-decoration: none;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.18);
+}
+
+.fresh-update-art {
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
+  background: #202938;
+}
+
+.fresh-update-art img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.fresh-update-art span {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  min-height: 26px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: linear-gradient(180deg, #d8fff4, #78e4c6);
+  color: #11372f;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.22);
+  font-size: 11px;
+  font-weight: 1000;
+  line-height: 1;
+}
+
+.fresh-update-copy {
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  min-width: 0;
+  padding: 12px;
+}
+
+.fresh-update-copy strong,
+.fresh-update-copy small,
+.fresh-update-copy em {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fresh-update-copy strong {
+  font-size: 18px;
+  line-height: 1.15;
+  white-space: nowrap;
+}
+
+.fresh-update-copy small {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 12px;
+  font-weight: 850;
+  white-space: nowrap;
+}
+
+.fresh-update-copy em {
+  display: -webkit-box;
+  color: #ffdf8a;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 850;
+  line-height: 1.35;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.fresh-update-skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.fresh-update-skills span {
+  min-height: 24px;
+  padding: 5px 8px;
+  border-radius: 8px;
+  background: rgba(129, 221, 255, 0.14);
+  color: #dff7ff;
+  font-size: 11px;
+  font-weight: 950;
 }
 
 .recommendation-card img {
@@ -1452,6 +1555,7 @@ body.lobby-page {
 
 .lobby-feature,
 .hero-game-card,
+.fresh-update-card,
 .recommendation-card,
 .skill-path-card,
 .game-card {
@@ -1461,6 +1565,7 @@ body.lobby-page {
 
 .lobby-feature img,
 .hero-game-art img,
+.fresh-update-art img,
 .recommendation-card img,
 .skill-path-thumbs img,
 .game-card-bg-blur,
@@ -1509,6 +1614,8 @@ body.lobby-page {
 .hero-game-card:focus-visible,
 .recommendation-card:hover,
 .recommendation-card:focus-visible,
+.fresh-update-card:hover,
+.fresh-update-card:focus-visible,
 .skill-path-card:hover,
 .skill-path-card:focus-visible,
 .game-card.playable:hover,
@@ -1535,6 +1642,12 @@ body.lobby-page {
 .recommendation-card:focus-visible img {
   filter: saturate(1.1) brightness(1.08);
   transform: scale(1.05);
+}
+
+.fresh-update-card:hover img,
+.fresh-update-card:focus-visible img {
+  filter: saturate(1.12) brightness(1.08);
+  transform: scale(1.04);
 }
 
 .skill-path-card:hover .skill-path-thumbs img,
@@ -1767,6 +1880,7 @@ body.lobby-page {
     scroll-snap-type: x mandatory;
   }
 
+  .fresh-updates,
   .recommendations,
   .skill-paths {
     grid-auto-columns: minmax(230px, 76vw);
@@ -1782,6 +1896,7 @@ body.lobby-page {
     scroll-snap-align: start;
   }
 
+  .fresh-update-card,
   .recommendation-card,
   .skill-path-card {
     scroll-snap-align: start;

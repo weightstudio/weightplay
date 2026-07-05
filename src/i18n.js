@@ -27,6 +27,8 @@
       "recommend.shared_skill": "More {skill} practice",
       "recommend.shared_age": "More games for {age}",
       "recommend.popular_reason": "Popular this week",
+      "fresh_updates.title": "Fresh Updates",
+      "fresh_updates.reason": "Recently improved",
       "skill_path.title": "Practice by skill",
       "skill_path.reason": "Skill paths",
       "skill_path.count": "{count} games",
@@ -224,6 +226,8 @@
   Object.assign(dictionaries["zh-Hant"], {
     "badge.updated": "\u5df2\u66f4\u65b0",
     "card.skill_reason": "\u7df4\u7fd2\uff1a{skill}",
+    "fresh_updates.title": "\u6700\u65b0\u512a\u5316",
+    "fresh_updates.reason": "\u6700\u8fd1\u6539\u597d\u7684\u904a\u6232",
   });
 
   function getSavedLocale() {

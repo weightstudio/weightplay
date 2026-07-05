@@ -329,6 +329,44 @@ select {
   pointer-events: none;
 }
 
+.stage-facilities {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.stage-facility {
+  position: absolute;
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+  transform: translateX(-50%);
+  filter: drop-shadow(0 12px 12px rgba(44, 25, 9, .22));
+  transition: width .25s ease, opacity .25s ease, filter .25s ease;
+}
+
+.stage-facility img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.stage-facility span {
+  border-radius: 999px;
+  padding: 3px 7px;
+  background: rgba(255, 249, 215, .9);
+  color: #4b3218;
+  font-size: .62rem;
+  font-weight: 950;
+  box-shadow: 0 5px 9px rgba(44, 25, 9, .14);
+}
+
+.stage-facility.ghost {
+  opacity: .42;
+  filter: grayscale(.45) drop-shadow(0 8px 8px rgba(44, 25, 9, .14));
+}
+
 .heart-field i {
   position: absolute;
   bottom: 52%;
@@ -457,6 +495,90 @@ select {
   background: linear-gradient(180deg, rgba(255,255,255,.9), rgba(255,239,190,.88));
   box-shadow: inset 0 0 0 2px rgba(255,255,255,.72), 0 8px 18px rgba(67,43,20,.12);
   font-weight: 950;
+}
+
+.facility-board {
+  border-radius: 18px;
+  padding: 10px;
+  display: grid;
+  gap: 8px;
+  background: linear-gradient(180deg, rgba(255,251,223,.94), rgba(231,247,213,.9));
+  box-shadow: inset 0 0 0 2px rgba(255,255,255,.72), 0 8px 18px rgba(67,43,20,.12);
+  font-weight: 950;
+}
+
+.facility-board > strong {
+  font-size: .95rem;
+}
+
+.facility-list {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(160px, 1fr);
+  gap: 8px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  padding: 1px 2px 7px;
+  scrollbar-width: thin;
+}
+
+.facility-card {
+  min-height: 74px;
+  border: 0;
+  border-radius: 16px;
+  padding: 8px;
+  display: grid;
+  grid-template-columns: 50px 1fr;
+  gap: 8px;
+  align-items: center;
+  text-align: left;
+  background: linear-gradient(180deg, #fff8cf 0%, #ffd96d 58%, #ecaa3e 100%);
+  box-shadow: inset 0 2px rgba(255,255,255,.75), 0 6px 0 #95612d, 0 12px 18px rgba(82, 48, 18, .16);
+  color: #3d2914;
+  font-weight: 950;
+}
+
+.facility-card img {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 6px rgba(67,43,20,.18));
+  pointer-events: none;
+}
+
+.facility-card span {
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+}
+
+.facility-card strong,
+.facility-card small,
+.facility-card em {
+  overflow: hidden;
+  max-width: 100%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.facility-card small,
+.facility-card em {
+  color: rgba(61, 41, 20, .72);
+  font-size: .66rem;
+  line-height: 1.08;
+  font-style: normal;
+}
+
+.facility-card.ready {
+  background: linear-gradient(180deg, #ecffd1 0%, #aee978 58%, #5fbd55 100%);
+}
+
+.facility-card.maxed {
+  background: linear-gradient(180deg, #effbd8 0%, #b6e47c 58%, #62b858 100%);
+}
+
+.facility-card:disabled {
+  opacity: .72;
 }
 
 .zoo-task-board > strong,
@@ -1213,6 +1335,46 @@ body.zoo-playing .next-goal-card {
   border-radius: 13px;
   padding: 6px 8px;
   box-shadow: inset 0 2px rgba(255,255,255,.72), 0 4px 0 #95612d, 0 8px 12px rgba(82, 48, 18, .12);
+}
+
+body.zoo-playing .facility-board {
+  border-radius: 13px;
+  padding: 7px 8px;
+  gap: 5px;
+}
+
+body.zoo-playing .facility-board > strong {
+  font-size: clamp(.64rem, 2.4vw, .78rem);
+}
+
+body.zoo-playing .facility-list {
+  grid-auto-columns: minmax(128px, 1fr);
+  gap: 6px;
+  padding-bottom: 4px;
+}
+
+body.zoo-playing .facility-card {
+  min-height: 58px;
+  height: 58px;
+  grid-template-columns: 38px 1fr;
+  gap: 6px;
+  border-radius: 12px;
+  padding: 6px;
+  box-shadow: inset 0 2px rgba(255,255,255,.72), 0 4px 0 #95612d, 0 8px 12px rgba(82, 48, 18, .12);
+}
+
+body.zoo-playing .facility-card img {
+  width: 38px;
+  height: 38px;
+}
+
+body.zoo-playing .facility-card strong {
+  font-size: clamp(.56rem, 2.2vw, .68rem);
+}
+
+body.zoo-playing .facility-card small,
+body.zoo-playing .facility-card em {
+  font-size: clamp(.48rem, 1.8vw, .56rem);
 }
 
 body.zoo-playing .next-goal-card img {
