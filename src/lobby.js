@@ -35,6 +35,7 @@ const dailyRewardKey = "weightplayDailyReward";
 const walletBar = document.querySelector("#walletBar");
 const dailyRewardTrack = [5, 6, 8, 10, 12, 15, 25];
 const featuredSkillPaths = ["Memory", "Logic", "Reaction", "Focus", "Problem Solving", "Animal Knowledge"];
+const recentlyUpdatedGameIds = new Set(["animal-zoo-idle", "animal-guard-yard", "bubble-bakery", "fruit-merge"]);
 const lobbyGameFacts = {
   "wonder-crash": { difficulty: "Medium", time: "5-8 minutes" },
   "color-lunchbox": { difficulty: "Easy", time: "1-3 minutes" },
@@ -409,6 +410,7 @@ function createGameCard(game) {
   const continueBadge = isPlayable && recent ? `<span class="continue-badge">${i18n.t("action.continue")}</span>` : "";
   const stats = statFor(game);
   const popularBadge = hasRealStats() && stats.rank7d && stats.rank7d <= 5 ? `<span class="popular-card-badge">${rankLabel(game, stats.rank7d)}</span>` : "";
+  const updatedBadge = recentlyUpdatedGameIds.has(game.id) ? `<span class="updated-card-badge">${i18n.t("badge.updated")}</span>` : "";
 
   card.innerHTML = `
     ${art}
@@ -422,6 +424,7 @@ function createGameCard(game) {
       <div class="game-card-topline">
         <span class="age-pill">${ageLabel}</span>
         <span class="game-card-badges">
+          ${updatedBadge}
           ${popularBadge}
           <span>${text(game.statusText)}</span>
         </span>
@@ -628,6 +631,7 @@ function renderRecommendations() {
     const ageLabel = text(game.ageLabel);
     const note = recommendationNote(game, seeds);
     const skillBadges = (game.skills || []).slice(0, 2).map((skill) => `<span>${skillText(skill)}</span>`).join("");
+    const updatedBadge = recentlyUpdatedGameIds.has(game.id) ? `<span class="recommendation-update">${i18n.t("badge.updated")}</span>` : "";
     const card = document.createElement("a");
     card.className = "recommendation-card";
     card.href = game.href;
@@ -643,7 +647,7 @@ function renderRecommendations() {
     card.innerHTML = `
       <img src="${game.art?.background || primaryArt(game)}" alt="" />
       <div class="recommendation-copy">
-        <span class="recommendation-age">${ageLabel}</span>
+        <span class="recommendation-labels"><span class="recommendation-age">${ageLabel}</span>${updatedBadge}</span>
         <strong>${title}</strong>
         <small>${type}</small>
         <em>${note}</em>

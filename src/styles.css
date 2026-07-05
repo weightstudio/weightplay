@@ -726,6 +726,14 @@ body.lobby-page {
   min-width: 0;
 }
 
+.recommendation-labels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  align-items: center;
+  min-width: 0;
+}
+
 .recommendation-card .recommendation-age {
   justify-self: start;
   min-height: 26px;
@@ -762,6 +770,20 @@ body.lobby-page {
   font-size: 12px;
   font-style: normal;
   font-weight: 950;
+}
+
+.recommendation-update {
+  display: inline-flex;
+  align-items: center;
+  min-height: 26px;
+  padding: 5px 9px;
+  border-radius: 8px;
+  background: linear-gradient(180deg, #d8fff4, #78e4c6);
+  color: #11372f;
+  box-shadow: 0 5px 14px rgba(120, 228, 198, 0.2);
+  font-size: 11px;
+  font-weight: 1000;
+  line-height: 1;
 }
 
 .recommendation-skills {
@@ -1290,6 +1312,17 @@ body.lobby-page {
   background: linear-gradient(180deg, #fff4b7, #ffca4f);
   color: #3a2711;
   box-shadow: 0 5px 14px rgba(255, 202, 79, 0.22);
+  font-size: 11px;
+  font-weight: 1000;
+  line-height: 1;
+}
+
+.updated-card-badge {
+  padding: 4px 7px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #d8fff4, #78e4c6);
+  color: #11372f;
+  box-shadow: 0 5px 14px rgba(120, 228, 198, 0.2);
   font-size: 11px;
   font-weight: 1000;
   line-height: 1;

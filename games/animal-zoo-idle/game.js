@@ -52,6 +52,13 @@
     { id: "gate3", type: "gateLevel", target: 3, reward: 420 },
     { id: "animals4", type: "animalCount", target: 4, reward: 900 },
   ];
+  const habitatBonuses = [
+    { count: 1, bonus: 0 },
+    { count: 3, bonus: 0.08 },
+    { count: 6, bonus: 0.16 },
+    { count: 9, bonus: 0.26 },
+    { count: 12, bonus: 0.38 },
+  ];
 
   const visitorAssets = [ASSETS.visitorChild, ASSETS.visitorElder, ASSETS.visitorFamily];
 
@@ -117,6 +124,21 @@
       nextUpgrade: "Next gate upgrade",
       nextUpgradeMax: "All gate upgrades complete",
       incomeBoost: "+{n}/10s after upgrade",
+      buildFocus: "Next Build",
+      buildUpgradeGateTitle: "Upgrade the entrance",
+      buildUpgradeGateDesc: "Better gates bring more visitors and raise ticket income.",
+      buildRecruitTitle: "Open a new habitat",
+      buildRecruitDesc: "Recruit {name} to add a new animal area and grow the park.",
+      buildHabitatTitle: "Unlock habitat bonus",
+      buildHabitatDesc: "Recruit {count} animals to activate the next park-wide income bonus.",
+      buildCompleteTitle: "Park plan complete",
+      buildCompleteDesc: "All current animals and gate upgrades are built.",
+      buildReady: "Ready now",
+      buildNeed: "Need {coins} more",
+      habitatBonus: "Habitat Bonus",
+      habitatBonusCurrent: "+{n}% ticket income",
+      habitatBonusNext: "Recruit {count} animals for +{n}%",
+      habitatBonusMax: "All habitat bonuses active",
       dragHint: "Drag animals in the meadow to arrange your zoo.",
       reportGood: "Great care! Your zoo is growing and the animals looked happy.",
       reportTry: "Good effort. Recruit animals and upgrade the gate to grow faster.",
@@ -197,6 +219,21 @@
     nextUpgrade: "\u4e0b\u4e00\u6b21\u5927\u9580\u5347\u7d1a",
     nextUpgradeMax: "\u5927\u9580\u5df2\u5168\u90e8\u5347\u7d1a",
     incomeBoost: "\u5347\u7d1a\u5f8c +{n}/10\u79d2",
+    buildFocus: "\u4e0b\u4e00\u500b\u5efa\u8a2d",
+    buildUpgradeGateTitle: "\u5347\u7d1a\u5165\u53e3\u5927\u9580",
+    buildUpgradeGateDesc: "\u66f4\u6f02\u4eae\u7684\u5927\u9580\u6703\u5438\u5f15\u66f4\u591a\u53c3\u89c0\u8005\uff0c\u63d0\u5347\u9580\u7968\u6536\u5165\u3002",
+    buildRecruitTitle: "\u958b\u653e\u65b0\u68f2\u5730",
+    buildRecruitDesc: "\u62db\u52df {name}\uff0c\u589e\u52a0\u65b0\u52d5\u7269\u5340\uff0c\u8b93\u6a02\u5712\u7e7c\u7e8c\u8b8a\u5927\u3002",
+    buildHabitatTitle: "\u89e3\u9396\u68f2\u5730\u52a0\u6210",
+    buildHabitatDesc: "\u62db\u52df {count} \u96bb\u52d5\u7269\uff0c\u555f\u52d5\u4e0b\u4e00\u500b\u5168\u5712\u6536\u5165\u52a0\u6210\u3002",
+    buildCompleteTitle: "\u5712\u5340\u8a08\u756b\u5b8c\u6210",
+    buildCompleteDesc: "\u76ee\u524d\u7684\u52d5\u7269\u548c\u5927\u9580\u90fd\u5df2\u5efa\u8a2d\u5b8c\u6210\u3002",
+    buildReady: "\u73fe\u5728\u53ef\u4ee5\u5efa\u8a2d",
+    buildNeed: "\u9084\u5dee {coins}",
+    habitatBonus: "\u68f2\u5730\u52a0\u6210",
+    habitatBonusCurrent: "\u9580\u7968\u6536\u5165 +{n}%",
+    habitatBonusNext: "\u62db\u52df {count} \u96bb\u52d5\u7269\u89e3\u9396 +{n}%",
+    habitatBonusMax: "\u6240\u6709\u68f2\u5730\u52a0\u6210\u5df2\u555f\u52d5",
     dragHint: "\u53ef\u4ee5\u62d6\u66f3\u8349\u539f\u4e0a\u7684\u52d5\u7269\uff0c\u64fa\u6210\u81ea\u5df1\u559c\u6b61\u7684\u6a02\u5712\u3002",
     reportGood: "\u7167\u9867\u5f97\u5f88\u597d\uff01\u4f60\u7684\u52d5\u7269\u5712\u6b63\u5728\u7a69\u5b9a\u6210\u9577\u3002",
     reportTry: "\u8868\u73fe\u4e0d\u932f\uff01\u62db\u52df\u52d5\u7269\u548c\u5347\u7d1a\u5927\u9580\u53ef\u4ee5\u8b93\u6a02\u5712\u6210\u9577\u66f4\u5feb\u3002",
@@ -342,7 +379,51 @@
     const animalIncome = unlockedAnimals().reduce((sum, animal) => sum + animal.baseIncome, 0);
     const gateBonus = 1 + (gateLevel - 1) * 0.16;
     const happyBonus = 0.35 + save.happiness / 240;
-    return Math.max(2, Math.round(animalIncome * gateBonus * happyBonus));
+    const habitatBonus = 1 + habitatBonusRate();
+    return Math.max(2, Math.round(animalIncome * gateBonus * happyBonus * habitatBonus));
+  }
+
+  function habitatBonusRate(count = unlockedAnimals().length) {
+    return habitatBonuses.reduce((best, item) => (count >= item.count ? item.bonus : best), 0);
+  }
+
+  function nextHabitatBonus(count = unlockedAnimals().length) {
+    return habitatBonuses.find((item) => item.count > count) || null;
+  }
+
+  function nextBuildGoal() {
+    const recruit = nextRecruit();
+    const nextBonus = nextHabitatBonus();
+    const gateCost = gateUpgradeCost();
+    const gateGoal = save.gateLevel < maxGateLevel ? {
+      type: "gate",
+      title: t("buildUpgradeGateTitle"),
+      desc: t("buildUpgradeGateDesc"),
+      cost: gateCost,
+      progress: taskProgress(save.coins, gateCost),
+      boost: Math.max(0, incomePerTick(save.gateLevel + 1) - incomePerTick(save.gateLevel)),
+    } : null;
+    const recruitGoal = recruit ? {
+      type: "recruit",
+      title: nextBonus && unlockedAnimals().length + 1 >= nextBonus.count ? t("buildHabitatTitle") : t("buildRecruitTitle"),
+      desc: nextBonus && unlockedAnimals().length + 1 >= nextBonus.count
+        ? t("buildHabitatDesc", { count: nextBonus.count })
+        : t("buildRecruitDesc", { name: t(recruit.id) }),
+      cost: recruit.cost,
+      progress: taskProgress(save.coins, recruit.cost),
+      animal: recruit,
+    } : null;
+    const candidates = [gateGoal, recruitGoal].filter(Boolean);
+    if (!candidates.length) {
+      return {
+        type: "complete",
+        title: t("buildCompleteTitle"),
+        desc: t("buildCompleteDesc"),
+        cost: 0,
+        progress: 1,
+      };
+    }
+    return candidates.sort((a, b) => Math.max(0, a.cost - save.coins) - Math.max(0, b.cost - save.coins))[0];
   }
 
   function visitorCount() {
@@ -420,6 +501,7 @@
       <div class="care-panel">
         <div class="happy-meter"><span>${t("happiness")}</span><b>${Math.round(save.happiness)}%</b><i style="width:${save.happiness}%"></i></div>
         <div class="park-plan-card" aria-live="polite"></div>
+        <div class="habitat-bonus-card" aria-live="polite"></div>
         <div class="zoo-actions">
           <button type="button" data-action="collect">${t("collect")}</button>
           <button type="button" data-action="care">${t("careAll")}</button>
@@ -444,6 +526,7 @@
     card.querySelector('[data-action="next-goal"]').addEventListener("click", recruitAnimal);
     renderNextGoal(card.querySelector(".next-goal-card"));
     renderParkPlan(card.querySelector(".park-plan-card"));
+    renderHabitatBonus(card.querySelector(".habitat-bonus-card"));
     renderTaskBoard(card.querySelector(".zoo-task-board"));
     renderMilestones(card.querySelector(".zoo-milestone-board"));
     const shop = card.querySelector(".animal-shop");
@@ -479,6 +562,7 @@
     renderNextGoal(card.querySelector(".next-goal-card"));
     renderTaskBoard(card.querySelector(".zoo-task-board"));
     renderMilestones(card.querySelector(".zoo-milestone-board"));
+    renderHabitatBonus(card.querySelector(".habitat-bonus-card"));
     const shop = card.querySelector(".animal-shop");
     if (shop && shop.dataset.shopSignature !== animalShopSignature()) {
       renderAnimalShop(shop);
@@ -690,6 +774,7 @@
 
   function renderParkPlan(container) {
     if (!container) return;
+    const goal = nextBuildGoal();
     const nextLevel = Math.min(maxGateLevel, save.gateLevel + 1);
     const currentIncome = incomePerTick(save.gateLevel);
     const nextIncome = save.gateLevel >= maxGateLevel ? currentIncome : incomePerTick(nextLevel);
@@ -701,13 +786,39 @@
     const status = save.gateLevel >= maxGateLevel
       ? t("nextUpgradeMax")
       : `${t("nextUpgrade")} ${formatCost(gateUpgradeCost())}`;
+    const missing = Math.max(0, goal.cost - save.coins);
+    const goalStatus = goal.type === "complete"
+      ? t("nextUpgradeMax")
+      : (missing <= 0 ? t("buildReady") : t("buildNeed", { coins: formatCost(missing) }));
+    container.classList.toggle("ready", missing <= 0 && goal.type !== "complete");
+    container.classList.toggle("complete", goal.type === "complete");
     container.innerHTML = `
       <div>
-        <strong>${t("parkPlan")}</strong>
-        <span>${t("parkRank")}: ${save.gateLevel}/${maxGateLevel}</span>
+        <strong>${t("buildFocus")}</strong>
+        <span>${goalStatus}</span>
       </div>
+      <b>${goal.title}</b>
+      <small>${goal.desc}</small>
+      <i style="--build-progress:${Math.round(goal.progress * 100)}%"></i>
       <div class="park-plan-track">${dots}</div>
-      <small>${status}${boost > 0 ? ` - ${t("incomeBoost", { n: formatNumber(boost) })}` : ""}</small>
+      <small>${t("parkRank")}: ${save.gateLevel}/${maxGateLevel} - ${status}${boost > 0 ? ` - ${t("incomeBoost", { n: formatNumber(boost) })}` : ""}</small>
+    `;
+  }
+
+  function renderHabitatBonus(container) {
+    if (!container) return;
+    const count = unlockedAnimals().length;
+    const currentBonus = Math.round(habitatBonusRate(count) * 100);
+    const nextBonus = nextHabitatBonus(count);
+    const progressTarget = nextBonus?.count || animals.length;
+    const progress = taskProgress(count, progressTarget);
+    container.innerHTML = `
+      <div>
+        <strong>${t("habitatBonus")}</strong>
+        <span>${t("habitatBonusCurrent", { n: currentBonus })}</span>
+      </div>
+      <i style="--habitat-progress:${Math.round(progress * 100)}%"></i>
+      <small>${nextBonus ? t("habitatBonusNext", { count: nextBonus.count, n: Math.round(nextBonus.bonus * 100) }) : t("habitatBonusMax")}</small>
     `;
   }
 

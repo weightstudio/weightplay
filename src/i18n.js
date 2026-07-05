@@ -20,6 +20,7 @@
       "card.skill_reason": "Practices {skill}",
       "section.hero_rank": "Top 3",
       "section.hero_games": "Popular Games",
+      "badge.updated": "Updated",
       "recommend.title": "Recommended next",
       "recommend.start_here": "Start here",
       "recommend.based_on_activity": "Based on your play",
@@ -221,6 +222,7 @@
   });
 
   Object.assign(dictionaries["zh-Hant"], {
+    "badge.updated": "\u5df2\u66f4\u65b0",
     "card.skill_reason": "\u7df4\u7fd2\uff1a{skill}",
   });
 
