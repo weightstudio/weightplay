@@ -211,10 +211,10 @@
     { titleKey: "fast", theme: "sunset", energy: 170, hp: 4, rows: 5, cols: 9, total: 12, interval: 2600, zombies: [{ type: "normal", hp: 95, speed: 9.2, damage: 13 }, { type: "fast", hp: 70, speed: 14.4, damage: 10 }] },
     { titleKey: "shield", theme: "rain", energy: 185, hp: 4, rows: 5, cols: 9, total: 15, interval: 2380, zombies: [{ type: "normal", hp: 108, speed: 9.6, damage: 15 }, { type: "fast", hp: 82, speed: 14.8, damage: 12 }, { type: "shield", hp: 170, speed: 7.2, damage: 20 }] },
     { titleKey: "swarm", theme: "swamp", energy: 205, hp: 5, rows: 5, cols: 9, total: 18, interval: 2180, zombies: [{ type: "normal", hp: 118, speed: 10.4, damage: 15 }, { type: "fast", hp: 90, speed: 16.2, damage: 13 }, { type: "shield", hp: 190, speed: 7.8, damage: 21 }] },
-    { titleKey: "boss", theme: "boss", energy: 230, hp: 5, rows: 5, cols: 9, total: 21, interval: 2080, zombies: [{ type: "normal", hp: 128, speed: 10.6, damage: 16 }, { type: "fast", hp: 98, speed: 16.8, damage: 14 }, { type: "shield", hp: 210, speed: 8, damage: 22 }], boss: { type: "boss", hp: 650, speed: 4.8, damage: 34 } },
-    { titleKey: "crossfire", theme: "sunset", energy: 245, hp: 5, rows: 5, cols: 9, total: 24, interval: 1960, zombies: [{ type: "normal", hp: 142, speed: 11, damage: 17 }, { type: "fast", hp: 108, speed: 17.4, damage: 15 }, { type: "shield", hp: 228, speed: 8.3, damage: 23 }] },
-    { titleKey: "tankTrial", theme: "rain", energy: 260, hp: 6, rows: 5, cols: 9, total: 26, interval: 1880, zombies: [{ type: "normal", hp: 154, speed: 11.4, damage: 18 }, { type: "shield", hp: 270, speed: 8.3, damage: 26 }, { type: "shield", hp: 300, speed: 7.3, damage: 29 }] },
-    { titleKey: "grandBoss", theme: "boss", energy: 285, hp: 6, rows: 5, cols: 9, total: 28, interval: 1800, zombies: [{ type: "normal", hp: 168, speed: 11.8, damage: 19 }, { type: "fast", hp: 122, speed: 18.2, damage: 16 }, { type: "shield", hp: 300, speed: 8.6, damage: 30 }], boss: { type: "boss", hp: 1020, speed: 5.1, damage: 42 } },
+    { titleKey: "boss", theme: "boss", energy: 230, hp: 5, rows: 5, cols: 9, total: 21, interval: 2080, zombies: [{ type: "normal", hp: 128, speed: 10.6, damage: 16 }, { type: "fast", hp: 98, speed: 16.8, damage: 14 }, { type: "shield", hp: 210, speed: 8, damage: 22 }], plan: [{ row: 2, type: "normal" }, { row: 1, type: "fast" }, { row: 3, type: "fast" }, { row: 0, type: "shield" }, { row: 4, type: "shield" }, { row: 2, type: "normal" }], boss: { type: "boss", hp: 650, speed: 4.8, damage: 34 } },
+    { titleKey: "crossfire", theme: "sunset", energy: 245, hp: 5, rows: 5, cols: 9, total: 24, interval: 1960, zombies: [{ type: "normal", hp: 142, speed: 11, damage: 17 }, { type: "fast", hp: 108, speed: 17.4, damage: 15 }, { type: "shield", hp: 228, speed: 8.3, damage: 23 }], plan: [{ row: 0, type: "fast" }, { row: 4, type: "fast" }, { row: 1, type: "normal" }, { row: 3, type: "normal" }, { row: 2, type: "shield" }, { row: 0, type: "normal" }, { row: 4, type: "shield" }, { row: 2, type: "fast" }] },
+    { titleKey: "tankTrial", theme: "rain", energy: 260, hp: 6, rows: 5, cols: 9, total: 26, interval: 1880, zombies: [{ type: "normal", hp: 154, speed: 11.4, damage: 18 }, { type: "shield", hp: 270, speed: 8.3, damage: 26 }, { type: "shield", hp: 300, speed: 7.3, damage: 29 }], plan: [{ row: 2, type: "shield" }, { row: 1, type: "normal" }, { row: 3, type: "shield" }, { row: 0, type: "normal" }, { row: 4, type: "shield" }, { row: 2, type: "shield" }, { row: 1, type: "shield" }, { row: 3, type: "normal" }] },
+    { titleKey: "grandBoss", theme: "boss", energy: 285, hp: 6, rows: 5, cols: 9, total: 28, interval: 1800, zombies: [{ type: "normal", hp: 168, speed: 11.8, damage: 19 }, { type: "fast", hp: 122, speed: 18.2, damage: 16 }, { type: "shield", hp: 300, speed: 8.6, damage: 30 }], plan: [{ row: 2, type: "shield" }, { row: 0, type: "fast" }, { row: 4, type: "fast" }, { row: 1, type: "normal" }, { row: 3, type: "normal" }, { row: 2, type: "shield" }, { row: 0, type: "shield" }, { row: 4, type: "shield" }, { row: 1, type: "fast" }, { row: 3, type: "fast" }], boss: { type: "boss", hp: 1020, speed: 5.1, damage: 42 } },
   ];
 
   const $ = (id) => document.getElementById(id);
@@ -1117,13 +1117,21 @@
   function makeSpawnPlan(nextSpawnNumber = spawned + 1) {
     const stage = stages[currentStage];
     if (!stage || nextSpawnNumber > stage.total) return null;
+    const scripted = Array.isArray(stage.plan) && stage.plan.length > 0
+      ? stage.plan[(nextSpawnNumber - 1) % stage.plan.length]
+      : null;
     const data = stage.boss && nextSpawnNumber === stage.total
       ? stage.boss
-      : stage.zombies[Math.floor(Math.random() * stage.zombies.length)];
+      : findStageEnemy(stage, scripted?.type) || stage.zombies[Math.floor(Math.random() * stage.zombies.length)];
     return {
       data,
-      row: Math.floor(Math.random() * stage.rows),
+      row: Number.isInteger(scripted?.row) ? clamp(scripted.row, 0, stage.rows - 1) : Math.floor(Math.random() * stage.rows),
     };
+  }
+
+  function findStageEnemy(stage, type) {
+    if (!type) return null;
+    return stage.zombies.find((item) => item.type === type) || null;
   }
 
   function updateWaveTimer(left) {

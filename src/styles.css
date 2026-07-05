@@ -431,6 +431,32 @@ body.lobby-page {
   line-height: 1.45;
 }
 
+.trust-report-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  max-width: 100%;
+  min-height: 38px;
+  margin-top: 4px;
+  padding: 9px 12px;
+  border: 1px solid rgba(158, 234, 255, 0.42);
+  border-radius: 8px;
+  background: rgba(10, 15, 23, 0.32);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 1000;
+  line-height: 1.2;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+
+.trust-report-link:hover,
+.trust-report-link:focus-visible {
+  border-color: rgba(255, 207, 99, 0.72);
+  background: rgba(255, 207, 99, 0.14);
+}
+
 .parent-trust-points {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(168px, 1fr));
