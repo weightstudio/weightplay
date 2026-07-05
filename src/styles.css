@@ -634,6 +634,11 @@ body.lobby-page {
 }
 
 .filter-status {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 10px;
+  align-items: center;
+  justify-content: space-between;
   min-height: 24px;
   padding: 0 2px 10px;
   color: rgba(255, 255, 255, 0.68);
@@ -641,11 +646,13 @@ body.lobby-page {
   font-weight: 900;
 }
 
-.filter-status.empty {
+.filter-status.empty,
+.filter-status.has-filters {
   color: #ffcf63;
 }
 
-.filter-status.empty {
+.filter-status.empty,
+.filter-status.has-filters {
   display: flex;
   gap: 10px;
   align-items: center;
@@ -653,7 +660,8 @@ body.lobby-page {
   flex-wrap: wrap;
 }
 
-.filter-status.empty button {
+.filter-status.empty button,
+.filter-status.has-filters button {
   min-height: 34px;
   border: 1px solid rgba(255, 220, 122, 0.72);
   border-radius: 10px;
@@ -662,6 +670,24 @@ body.lobby-page {
   color: #241a08;
   font-weight: 950;
   box-shadow: 0 8px 16px rgba(255, 191, 66, 0.18);
+}
+
+.filter-status-chips {
+  display: flex;
+  flex: 1 1 180px;
+  flex-wrap: wrap;
+  gap: 6px;
+  min-width: 0;
+}
+
+.filter-status-chips span {
+  max-width: 100%;
+  border: 1px solid rgba(255, 207, 99, 0.32);
+  border-radius: 999px;
+  padding: 5px 9px;
+  overflow-wrap: anywhere;
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.84);
 }
 
 .section-heading {

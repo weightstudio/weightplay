@@ -73,6 +73,7 @@
       "status.recent_games": "{count} recently played games",
       "status.games_found_one": "1 game found",
       "status.games_found_many": "{count} games found",
+      "status.search_term": "Search: {query}",
       "action.play": "Play",
       "action.continue": "Continue",
       "action.coming_soon": "Coming Soon",
@@ -230,6 +231,7 @@
     "fresh_updates.title": "\u6700\u65b0\u512a\u5316",
     "fresh_updates.reason": "\u6700\u8fd1\u6539\u597d\u7684\u904a\u6232",
     "status.clear_filters": "\u6e05\u9664\u7be9\u9078",
+    "status.search_term": "\u641c\u5c0b\uff1a{query}",
   });
 
   function getSavedLocale() {

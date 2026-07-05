@@ -87,6 +87,44 @@ function skillText(skill) {
   return i18n.t(`skill.${skill}`);
 }
 
+function escapeHtml(value) {
+  return String(value).replace(/[&<>"']/g, (char) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;",
+  })[char]);
+}
+
+function selectedButtonLabel(buttons, dataKey, value) {
+  const button = Array.from(buttons).find((item) => item.dataset[dataKey] === value);
+  return button?.querySelector(".filter-label")?.textContent?.trim() || button?.textContent?.trim() || "";
+}
+
+function activeDiscoveryLabels() {
+  const labels = [];
+  if (activeFilter !== "all") labels.push(selectedButtonLabel(filterButtons, "ageFilter", activeFilter));
+  if (activeTopic !== "all") labels.push(selectedButtonLabel(topicButtons, "topicFilter", activeTopic));
+  if (activeSkill !== "all") labels.push(selectedButtonLabel(skillButtons, "skillFilter", activeSkill));
+  if (activeLibrary !== "all") labels.push(selectedButtonLabel(libraryButtons, "libraryTab", activeLibrary));
+  if (activeSearch) labels.push(i18n.t("status.search_term", { query: activeSearch }));
+  return labels.filter(Boolean);
+}
+
+function renderFilterStatusSummary(visibleCount, labels) {
+  const countText = i18n.t(visibleCount > 1 ? "status.games_found_many" : "status.games_found_one", {
+    count: visibleCount,
+  });
+  const chips = labels.map((label) => `<span>${escapeHtml(label)}</span>`).join("");
+  filterStatus.innerHTML = `
+    <span>${countText}</span>
+    ${chips ? `<span class="filter-status-chips">${chips}</span>` : ""}
+    <button type="button" data-clear-filters>${i18n.t("status.clear_filters")}</button>
+  `;
+  filterStatus.querySelector("[data-clear-filters]")?.addEventListener("click", resetDiscoveryFilters);
+}
+
 function skillReasonText(game) {
   const primarySkill = (game.skills || [])[0];
   if (!primarySkill) return "";
@@ -821,6 +859,7 @@ function applyFilter() {
   freshUpdatesSection?.classList.toggle("hidden", isFiltered);
   skillPathsSection?.classList.toggle("hidden", isFiltered);
   filterStatus.classList.toggle("empty", visibleCount === 0);
+  filterStatus.classList.toggle("has-filters", isFiltered && visibleCount > 0);
 
   if (visibleCount === 0) {
     const emptyText =
@@ -839,9 +878,7 @@ function applyFilter() {
       count: visibleCount,
     });
   } else if (isFiltered) {
-    filterStatus.textContent = i18n.t(visibleCount > 1 ? "status.games_found_many" : "status.games_found_one", {
-      count: visibleCount,
-    });
+    renderFilterStatusSummary(visibleCount, activeDiscoveryLabels());
   } else {
     filterStatus.textContent = i18n.t("status.all_games");
   }
