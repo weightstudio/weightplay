@@ -1031,37 +1031,26 @@ select {
   aspect-ratio: 1;
   pointer-events: none;
   transform: translate(-50%, -50%);
-  border-radius: 999px;
-  background:
-    radial-gradient(circle, rgba(255, 255, 255, 0.98) 0 16%, transparent 17%),
-    conic-gradient(from 20deg, transparent 0 10%, #fff3a0 11% 18%, transparent 19% 30%, #ff8f3d 31% 39%, transparent 40% 52%, #fff3a0 53% 62%, transparent 63% 100%);
+  background: url("../../assets/animal-guard-beast-impact-fx.webp") 0 50% / 400% 100% no-repeat;
   filter: drop-shadow(0 4px 5px rgba(79, 45, 12, 0.24));
   animation: impact-pop 0.42s ease-out forwards;
 }
 
 .impact.owl {
-  background:
-    radial-gradient(circle, rgba(255, 255, 255, 0.98) 0 16%, transparent 17%),
-    conic-gradient(from 20deg, transparent 0 10%, #e8dcff 11% 18%, transparent 19% 30%, #8f78ff 31% 39%, transparent 40% 52%, #f6e7a4 53% 62%, transparent 63% 100%);
+  background-position: 33.333% 50%;
 }
 
 .impact.fox {
-  background:
-    radial-gradient(circle, rgba(255, 255, 255, 0.98) 0 16%, transparent 17%),
-    conic-gradient(from 20deg, transparent 0 10%, #bdffd2 11% 18%, transparent 19% 30%, #1fb86d 31% 39%, transparent 40% 52%, #fff0c3 53% 62%, transparent 63% 100%);
+  background-position: 66.666% 50%;
 }
 
 .impact.bite {
-  background:
-    radial-gradient(circle, rgba(255, 255, 255, 0.98) 0 14%, transparent 15%),
-    conic-gradient(from 20deg, transparent 0 9%, #ff4f5e 10% 18%, transparent 19% 32%, #6b1f2a 33% 42%, transparent 43% 55%, #ffb3b3 56% 65%, transparent 66% 100%);
+  background-position: 100% 50%;
 }
 
 .impact.place {
   width: calc(var(--cell-w) * 0.72);
-  background:
-    radial-gradient(circle, rgba(255, 255, 255, 0.92) 0 18%, transparent 19%),
-    conic-gradient(from 10deg, transparent 0 8%, #b7f47b 9% 17%, transparent 18% 30%, #fff3a0 31% 39%, transparent 40% 54%, #7ee0ff 55% 65%, transparent 66% 100%);
+  background-position: 66.666% 50%;
 }
 
 .animal-sprite,

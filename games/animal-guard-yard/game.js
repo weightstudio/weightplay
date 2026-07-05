@@ -198,6 +198,7 @@
   };
   const diamondIcon = "../../assets/weightplay-diamond.svg?v=20260704-blue-diamond1";
   const heartIcon = "../../assets/weightplay-heart.svg";
+  const impactFxAsset = "../../assets/animal-guard-beast-impact-fx.webp";
 
   const projectileAssets = {
     cat: "../../assets/animal-guard-projectile-seed.svg",
@@ -1255,6 +1256,7 @@
       "../../assets/coin.png",
       diamondIcon,
       heartIcon,
+      impactFxAsset,
     ];
     let loaded = 0;
     const update = () => {
