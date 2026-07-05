@@ -8,7 +8,7 @@
     cover: "../../assets/animal-zoo-idle-cover.webp",
     stage: "../../assets/animal-zoo-idle-stage-bg.webp",
     lion: "../../assets/animal-zoo-idle-lion.webp",
-    giraffe: "../../assets/animal-zoo-idle-giraffe.png",
+    giraffe: "../../assets/animal-zoo-idle-giraffe.webp",
     elephant: "../../assets/animal-zoo-elephant.png",
     panda: "../../assets/animal-zoo-panda.png",
     penguin: "../../assets/animal-zoo-penguin.png",
