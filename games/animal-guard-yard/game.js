@@ -191,10 +191,10 @@
     dog: "../../assets/animal-guard-dog.png",
     owl: "../../assets/animal-guard-owl.png",
     fox: "../../assets/animal-guard-fox.png",
-    normal: "../../assets/animal-guard-zombie-normal.png",
-    fast: "../../assets/animal-guard-zombie-fast.png",
-    shield: "../../assets/animal-guard-zombie-shield.png",
-    boss: "../../assets/animal-guard-zombie-boss.png",
+    normal: "../../assets/animal-guard-beast-normal.webp",
+    fast: "../../assets/animal-guard-beast-fast.webp",
+    shield: "../../assets/animal-guard-beast-shield.webp",
+    boss: "../../assets/animal-guard-beast-boss.webp",
   };
   const diamondIcon = "../../assets/weightplay-diamond.svg?v=20260704-blue-diamond1";
   const heartIcon = "../../assets/weightplay-heart.svg";

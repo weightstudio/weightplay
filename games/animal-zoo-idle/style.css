@@ -47,9 +47,13 @@ select {
   position: relative;
   z-index: 4;
   display: grid;
-  grid-template-columns: 46px 1fr auto;
+  grid-template-columns: 46px minmax(0, 1fr) auto;
   gap: 10px;
   align-items: center;
+}
+
+.topbar > div {
+  min-width: 0;
 }
 
 .topbar p,
@@ -66,6 +70,9 @@ select {
 .topbar h1 {
   font-size: clamp(1.35rem, 5vw, 2.4rem);
   line-height: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .icon-btn,
@@ -907,24 +914,26 @@ select {
 }
 
 body.zoo-playing {
-  height: 100svh;
   min-height: 100svh;
-  max-height: 100svh;
-  overflow: hidden;
+  height: auto;
+  max-height: none;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
 }
 
 body.zoo-playing .zoo-app {
-  height: 100svh;
-  max-height: 100svh;
-  min-height: 0;
-  grid-template-rows: 48px minmax(0, 1fr);
+  min-height: 100svh;
+  height: auto;
+  max-height: none;
+  grid-template-rows: 48px auto;
   padding: calc(8px + env(safe-area-inset-top)) 8px calc(8px + env(safe-area-inset-bottom));
   gap: 8px;
-  overflow: hidden;
+  overflow: visible;
 }
 
 body.zoo-playing .topbar {
-  grid-template-columns: 40px 1fr auto;
+  grid-template-columns: 40px minmax(0, 1fr) minmax(104px, 118px);
   height: 48px;
   min-height: 48px;
   align-self: start;
@@ -940,24 +949,26 @@ body.zoo-playing .language-picker span {
 }
 
 body.zoo-playing .language-picker {
-  min-width: 94px;
+  min-width: 0;
+  width: 100%;
 }
 
 body.zoo-playing .language-picker select {
   padding: 7px 8px;
   border-radius: 10px;
   min-height: 40px;
+  font-size: .72rem;
 }
 
 body.zoo-playing .game-panel {
   width: min(100%, 760px);
-  height: 100%;
-  max-height: 760px;
+  height: auto;
+  max-height: none;
   min-height: 0;
-  grid-template-rows: auto auto minmax(0, 1fr);
+  grid-template-rows: auto auto auto;
   gap: 8px;
   margin: 0 auto;
-  overflow: hidden;
+  overflow: visible;
 }
 
 body.zoo-playing .resource-row {
@@ -996,13 +1007,13 @@ body.zoo-playing .zoo-stage-card {
 
 body.zoo-playing .habitat-grid {
   min-height: 0;
-  overflow: hidden;
+  overflow: visible;
 }
 
 body.zoo-playing .zoo-stage-card {
   min-height: 0;
-  height: 100%;
-  grid-template-rows: 42px minmax(220px, 1fr) clamp(220px, 30svh, 270px);
+  height: auto;
+  grid-template-rows: 42px clamp(320px, 56svh, 520px) auto;
   padding: 8px;
   gap: 7px;
   border-radius: 20px;
@@ -1028,6 +1039,7 @@ body.zoo-playing .park-hud span {
 body.zoo-playing .savanna-stage {
   min-height: 0;
   height: 100%;
+  aspect-ratio: 16 / 10;
   border-radius: 18px;
   background-position: center bottom;
 }
@@ -1256,9 +1268,10 @@ body.zoo-playing .savanna-stage {
 
 
 body.zoo-playing .care-panel {
-  height: 100%;
+  height: auto;
+  max-height: none;
   min-height: 0;
-  overflow-y: auto;
+  overflow-y: visible;
   overflow-x: hidden;
   overscroll-behavior: contain;
   scrollbar-gutter: stable;
@@ -1354,8 +1367,8 @@ body.zoo-playing .facility-list {
 }
 
 body.zoo-playing .facility-card {
-  min-height: 58px;
-  height: 58px;
+  min-height: 74px;
+  height: auto;
   grid-template-columns: 38px 1fr;
   gap: 6px;
   border-radius: 12px;
@@ -1374,7 +1387,11 @@ body.zoo-playing .facility-card strong {
 
 body.zoo-playing .facility-card small,
 body.zoo-playing .facility-card em {
-  font-size: clamp(.48rem, 1.8vw, .56rem);
+  font-size: clamp(.5rem, 1.85vw, .6rem);
+  white-space: normal;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 
 body.zoo-playing .next-goal-card img {
@@ -1399,8 +1416,8 @@ body.zoo-playing .animal-shop {
 }
 
 body.zoo-playing .animal-shop-card {
-  min-height: 68px;
-  height: 68px;
+  min-height: 88px;
+  height: auto;
   border-radius: 12px;
   padding: 5px 4px;
   font-size: clamp(.56rem, 2.2vw, .7rem);
@@ -1413,7 +1430,9 @@ body.zoo-playing .animal-shop-card img {
 }
 
 body.zoo-playing .animal-shop-card small {
-  font-size: clamp(.5rem, 1.9vw, .58rem);
+  font-size: clamp(.5rem, 1.9vw, .6rem);
+  white-space: normal;
+  line-height: 1.12;
 }
 
 @keyframes visitor-walk-img {
@@ -1426,11 +1445,11 @@ body.zoo-playing .animal-shop-card small {
 
 @media (max-width: 720px) {
   body.zoo-playing .game-panel {
-    height: 100%;
+    height: auto;
   }
 
   body.zoo-playing .topbar {
-    grid-template-columns: 38px 1fr 88px;
+    grid-template-columns: 38px minmax(0, 1fr) 108px;
   }
 
   body.zoo-playing .icon-btn {
@@ -1476,13 +1495,12 @@ body.zoo-playing .animal-shop-card small {
 
 @media (max-height: 680px) {
   body.zoo-playing .game-panel {
-    height: 100%;
+    height: auto;
   }
 
   body.zoo-playing .topbar {
-    transform: scale(.94);
-    transform-origin: top center;
-    margin-bottom: -4px;
+    transform: none;
+    margin-bottom: 0;
   }
 
   body.zoo-playing .resource-card,
@@ -1498,7 +1516,7 @@ body.zoo-playing .animal-shop-card small {
   }
 
   body.zoo-playing .zoo-stage-card {
-    grid-template-rows: 38px minmax(190px, 1fr) clamp(188px, 31svh, 230px);
+    grid-template-rows: 38px clamp(300px, 54svh, 460px) auto;
   }
 
   body.zoo-playing .savanna-stage {

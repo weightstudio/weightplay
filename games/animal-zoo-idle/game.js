@@ -786,6 +786,17 @@
 
   function renderFacilityBoard(container) {
     if (!container) return;
+    const existingList = container.querySelector(".facility-list");
+    const previousScrollLeft = existingList ? existingList.scrollLeft : 0;
+    const signature = facilities.map((facility) => {
+      const level = facilityLevel(facility);
+      const cost = facilityCost(facility);
+      const maxed = level >= facility.maxLevel ? 1 : 0;
+      const ready = !maxed && save.coins >= cost ? 1 : 0;
+      return `${facility.id}:${level}:${cost}:${ready}:${maxed}`;
+    }).join("|") + `:${locale}`;
+    if (container.dataset.facilityBoardSignature === signature) return;
+    container.dataset.facilityBoardSignature = signature;
     container.innerHTML = `
       <strong>${t("facilityBoard")}</strong>
       <div class="facility-list">
@@ -812,6 +823,8 @@
         }).join("")}
       </div>
     `;
+    const newList = container.querySelector(".facility-list");
+    if (newList) newList.scrollLeft = previousScrollLeft;
     container.querySelectorAll("[data-facility]").forEach((button) => {
       button.addEventListener("click", () => upgradeFacility(button.dataset.facility));
     });
