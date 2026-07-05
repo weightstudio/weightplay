@@ -121,6 +121,49 @@ function localizePlayTime(value) {
     .replace("3-8 minutes", "3-8 \u5206\u9418");
 }
 
+function countGamesBy(type, value) {
+  if (type === "age") {
+    if (value === "all") return lobby.games.length;
+    return lobby.games.filter((game) => (game.ages || []).includes(value)).length;
+  }
+  if (type === "topic") {
+    if (value === "all") return lobby.games.length;
+    return lobby.games.filter((game) => (game.categories || []).includes(value)).length;
+  }
+  if (type === "skill") {
+    if (value === "all") return lobby.games.length;
+    return lobby.games.filter((game) => (game.skills || []).includes(value)).length;
+  }
+  if (type === "library") {
+    if (value === "favorites") return favoriteGameIds.filter((id) => lobby.games.some((game) => game.id === id)).length;
+    if (value === "recent") return recentGameIds.filter((id) => lobby.games.some((game) => game.id === id)).length;
+    return lobby.games.length;
+  }
+  return 0;
+}
+
+function filterButtonLabel(button, type, value) {
+  if (button.dataset.i18n) return i18n.t(button.dataset.i18n);
+  if (type === "age") return value === "family" ? i18n.t("filter.family") : `${value}+`;
+  if (type === "topic") return value === "all" ? i18n.t("filter.all_topics") : categoryText(value);
+  if (type === "skill") return value === "all" ? i18n.t("filter.all_skills") : skillText(value);
+  return button.textContent.trim();
+}
+
+function setFilterCount(button, type, value) {
+  const label = filterButtonLabel(button, type, value);
+  const count = countGamesBy(type, value);
+  button.innerHTML = `<span class="filter-label">${label}</span><b class="filter-count">${count}</b>`;
+  button.setAttribute("aria-label", `${label}, ${count}`);
+}
+
+function renderFilterCounts() {
+  filterButtons.forEach((button) => setFilterCount(button, "age", button.dataset.ageFilter));
+  topicButtons.forEach((button) => setFilterCount(button, "topic", button.dataset.topicFilter));
+  skillButtons.forEach((button) => setFilterCount(button, "skill", button.dataset.skillFilter));
+  libraryButtons.forEach((button) => setFilterCount(button, "library", button.dataset.libraryTab));
+}
+
 function readFavorites() {
   try {
     const saved = JSON.parse(localStorage.getItem(favoritesKey) || "[]");
@@ -742,6 +785,7 @@ function applyStaticTranslations() {
   document.querySelectorAll("[data-i18n-placeholder]").forEach((element) => {
     element.setAttribute("placeholder", i18n.t(element.dataset.i18nPlaceholder));
   });
+  renderFilterCounts();
   localeSelect.value = i18n.locale();
 }
 
