@@ -685,13 +685,17 @@
   nodes.localeSelect.addEventListener("change", () => {
     locale = nodes.localeSelect.value;
     localStorage.setItem(localeKey, locale);
+    if (window.WonderI18n?.locale?.() !== locale) {
+      window.WonderI18n?.setLocale?.(locale);
+    } else {
+      window.dispatchEvent(new CustomEvent("wonder:locale-change", { detail: { locale } }));
+    }
     localizeStatic();
     renderStageGrid();
     if (!nodes.playPanel.classList.contains("hidden")) {
       nodes.orderBar.dataset.theme = t("theme", { theme: t(stages[currentStage].theme) });
       renderAll();
     }
-    window.dispatchEvent(new CustomEvent("wonder:locale-change", { detail: { locale } }));
   });
   nodes.backToStagesBtn.addEventListener("click", showMenu);
   nodes.resultStagesBtn.addEventListener("click", showMenu);

@@ -206,6 +206,34 @@
         ["What skills does it practice?", "It practices focus, animal knowledge, careful observation, and problem solving."],
       ],
     },
+    "animal-crystal-survivor": {
+      title: "Animal Crystal Survivor",
+      age: "13+",
+      difficulty: "Medium",
+      time: "3 minutes",
+      skills: ["Reaction", "Focus", "Problem Solving"],
+      intro:
+        "Animal Crystal Survivor is a deeper 3-minute action score game set in WeightPlay's Crystal Grove. Players guide an animal ranger through a square arena, collect golden keys for score, pick up crystals for experience, and choose upgrades while shadow beasts move closer. The game is designed for older players who want an active survival loop with movement, risk, upgrades, and a clear final score.",
+      how: [
+        "Tap, drag, or use WASD / arrow keys to move the ranger.",
+        "Collect golden keys before the 3:00 timer ends.",
+        "Pick up crystals to level up and choose stronger abilities.",
+        "Keep moving when shadow beasts get close and use upgrades to survive longer.",
+      ],
+      strategyTips: [
+        "Collect early crystals so the first upgrade arrives quickly.",
+        "Move toward keys when the path is safe, but avoid getting trapped by close enemies.",
+        "Range and movement upgrades help new players stay alive, while attack upgrades help clear pressure faster.",
+      ],
+      parent:
+        "This game is intended for older children and casual players who enjoy real-time action. It may practice reaction, focus, planning, and flexible decision-making through play. Results are for fun and local progress tracking only, not a test, diagnosis, ranking, or school assessment.",
+      faq: [
+        ["Why is Animal Crystal Survivor marked 13+?", "It uses real-time movement, enemies approaching from multiple directions, survival pressure, and upgrade choices, so it is more intense than WeightPlay's younger-child games."],
+        ["What is the main goal?", "Collect as many golden keys as possible before the 3-minute run ends while surviving the shadow beasts."],
+        ["Does the player aim manually?", "No. The ranger attacks automatically. The player focuses on movement, collecting, and upgrade choices."],
+        ["Is this a formal skill test?", "No. Skill Report text is supportive local feedback for fun play only."],
+      ],
+    },
     "animal-guard-yard": {
       title: "Animal Guard Yard",
       age: "5+",
@@ -383,6 +411,7 @@
     "garden-tiles": { gameplay: "Tile Match", genre: ["Puzzle", "Relaxed", "Animal"] },
     "animal-rescue": { gameplay: "Path Choice", genre: ["Puzzle", "Adventure", "Animal"] },
     "animal-hidden-safari": { gameplay: "Hidden Object", genre: ["Puzzle", "Safari", "Animal"] },
+    "animal-crystal-survivor": { gameplay: "Action Survival Score Run", genre: ["Action", "Survival", "Animal"] },
     "animal-guard-yard": { gameplay: "Lane Defense", genre: ["Strategy", "Tower Defense", "Animal"] },
     "animal-quiz": { gameplay: "Animal Quiz", genre: ["Quiz", "Education", "Animal"] },
     "zoo-helper-day": { gameplay: "Zoo Workday", genre: ["Preschool", "Simulation", "Animal"] },
@@ -403,6 +432,7 @@
     "garden-tiles": "garden-tiles-cover.webp",
     "animal-rescue": "animal-rescue-cover.webp",
     "animal-hidden-safari": "animal-hidden-safari-cover.webp",
+    "animal-crystal-survivor": "animal-crystal-survivor-cover.webp",
     "animal-guard-yard": "animal-guard-yard-poster.webp",
     "animal-quiz": "quiz-cover.webp",
     "zoo-helper-day": "zoo-helper-day-cover.webp",
@@ -467,6 +497,38 @@
       "tiny-weather-rescue": zhGuide("動物幫幫隊", "道具選擇", ["觀察動物遇到的情境。", "選擇或拖曳正確道具幫忙。", "答對後完成關卡。"]),
     },
   };
+
+  localizedGames["zh-Hant"]["animal-crystal-survivor"] = {
+    title: "\u52d5\u7269\u6c34\u6676\u751f\u5b58\u6230",
+    age: "13+",
+    difficulty: "\u4e2d\u7b49",
+    time: "3 \u5206\u9418",
+    gameplay: "\u52d5\u4f5c\u751f\u5b58\u8a08\u5206",
+    genre: ["\u52d5\u4f5c", "\u751f\u5b58", "\u52d5\u7269"],
+    skills: ["Reaction", "Focus", "Problem Solving"],
+    intro:
+      "\u52d5\u7269\u6c34\u6676\u751f\u5b58\u6230\u662f\u4e00\u6b3e\u8f03\u6df1\u5ea6\u7684 3 \u5206\u9418\u52d5\u4f5c\u8a08\u5206\u904a\u6232\u3002\u73a9\u5bb6\u8981\u5728\u7d50\u6676\u68ee\u6797\u4e2d\u64cd\u4f5c\u52d5\u7269\u5de1\u5b88\u54e1\uff0c\u6536\u96c6\u91d1\u9470\u53d6\u5f97\u5206\u6578\uff0c\u62ff\u53d6\u6c34\u6676\u589e\u52a0\u7d93\u9a57\uff0c\u4e26\u5728\u9670\u5f71\u91ce\u7378\u9010\u6f38\u9760\u8fd1\u6642\u9078\u64c7\u5347\u7d1a\u80fd\u529b\u3002\u9019\u6b3e\u904a\u6232\u9069\u5408\u559c\u6b61\u79fb\u52d5\u3001\u98a8\u96aa\u5224\u65b7\u548c\u5347\u7d1a\u6210\u9577\u7684\u8f03\u5927\u73a9\u5bb6\u3002",
+    how: [
+      "\u9ede\u64ca\u3001\u62d6\u66f3\uff0c\u6216\u4f7f\u7528 WASD / \u65b9\u5411\u9375\u79fb\u52d5\u5de1\u5b88\u54e1\u3002",
+      "\u5728 3:00 \u5012\u6578\u7d50\u675f\u524d\uff0c\u76e1\u91cf\u6536\u96c6\u91d1\u9470\u3002",
+      "\u6536\u96c6\u6c34\u6676\u53ef\u4ee5\u5347\u7d1a\uff0c\u5347\u7d1a\u6642\u9078\u64c7\u4e00\u500b\u5f37\u5316\u80fd\u529b\u3002",
+      "\u9670\u5f71\u91ce\u7378\u9760\u8fd1\u6642\u8981\u63d0\u65e9\u79fb\u52d5\uff0c\u5229\u7528\u5347\u7d1a\u8b93\u81ea\u5df1\u6490\u5f97\u66f4\u4e45\u3002",
+    ],
+    strategyTips: [
+      "\u524d\u671f\u5148\u6536\u96c6\u6c34\u6676\uff0c\u8b93\u7b2c\u4e00\u6b21\u5347\u7d1a\u66f4\u65e9\u51fa\u73fe\u3002",
+      "\u91d1\u9470\u9644\u8fd1\u5982\u679c\u6709\u7a7a\u6a94\u5c31\u53bb\u62ff\uff0c\u4f46\u4e0d\u8981\u8b93\u81ea\u5df1\u88ab\u6575\u4eba\u5305\u570d\u3002",
+      "\u65b0\u624b\u53ef\u4ee5\u512a\u5148\u9078\u64c7\u5c04\u7a0b\u548c\u79fb\u52d5\u901f\u5ea6\uff1b\u60f3\u6253\u5f97\u66f4\u7a4d\u6975\u6642\uff0c\u518d\u9078\u64c7\u653b\u64ca\u985e\u5347\u7d1a\u3002",
+    ],
+    parent:
+      "\u9019\u6b3e\u904a\u6232\u9069\u5408\u8f03\u5927\u5b69\u5b50\u8207\u559c\u6b61\u52d5\u4f5c\u6311\u6230\u7684\u4f11\u9592\u73a9\u5bb6\u3002\u904a\u6232\u904e\u7a0b\u53ef\u4ee5\u7df4\u7fd2\u53cd\u61c9\u3001\u5c08\u6ce8\u3001\u5224\u65b7\u548c\u81e8\u5834\u6c7a\u7b56\u3002\u7d50\u679c\u50c5\u4f9b\u904a\u6232\u6a02\u8da3\u8207\u672c\u6a5f\u9032\u6b65\u8ffd\u8e64\u53c3\u8003\uff0c\u4e0d\u662f\u6e2c\u9a57\u3001\u8a3a\u65b7\u3001\u6392\u540d\u6216\u5b78\u6821\u8a55\u91cf\u3002",
+    faq: [
+      ["\u70ba\u4ec0\u9ebc\u52d5\u7269\u6c34\u6676\u751f\u5b58\u6230\u6a19\u793a\u70ba 13+\uff1f", "\u56e0\u70ba\u904a\u6232\u6709\u5373\u6642\u79fb\u52d5\u3001\u591a\u65b9\u5411\u6575\u4eba\u9760\u8fd1\u3001\u751f\u5b58\u58d3\u529b\u548c\u5347\u7d1a\u9078\u64c7\uff0c\u6bd4\u5e74\u9f61\u8f03\u5c0f\u7684 WeightPlay \u904a\u6232\u66f4\u523a\u6fc0\u3002"],
+      ["\u4e3b\u8981\u76ee\u6a19\u662f\u4ec0\u9ebc\uff1f", "\u5728 3 \u5206\u9418\u5167\u76e1\u91cf\u6536\u96c6\u91d1\u9470\uff0c\u540c\u6642\u8eb2\u958b\u9670\u5f71\u91ce\u7378\u4e26\u751f\u5b58\u5230\u6700\u5f8c\u3002"],
+      ["\u73a9\u5bb6\u9700\u8981\u624b\u52d5\u7784\u6e96\u55ce\uff1f", "\u4e0d\u9700\u8981\u3002\u5de1\u5b88\u54e1\u6703\u81ea\u52d5\u653b\u64ca\uff0c\u73a9\u5bb6\u4e3b\u8981\u5c08\u6ce8\u5728\u79fb\u52d5\u3001\u6536\u96c6\u548c\u5347\u7d1a\u9078\u64c7\u3002"],
+      ["\u9019\u662f\u6b63\u5f0f\u80fd\u529b\u6e2c\u9a57\u55ce\uff1f", "\u4e0d\u662f\u3002\u80fd\u529b\u56de\u994b\u53ea\u662f\u652f\u6301\u6027\u7684\u672c\u6a5f\u904a\u6232\u7d50\u679c\uff0c\u4e0d\u505a\u8a3a\u65b7\u6216\u6392\u540d\u3002"],
+    ],
+  };
+
   function currentGameId() {
     const parts = location.pathname.split("/").filter(Boolean);
     const gameIndex = parts.lastIndexOf("games");

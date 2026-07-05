@@ -265,6 +265,13 @@ select {
     #86d879;
 }
 
+.scene[data-theme="sunset"] {
+  background:
+    linear-gradient(180deg, rgba(142, 82, 35, 0.02), rgba(92, 78, 28, 0.04)),
+    url("../../assets/animal-hidden-safari-sunset-bg.webp") center / cover no-repeat,
+    #f2b94e;
+}
+
 .float-layer {
   position: absolute;
   pointer-events: none;
