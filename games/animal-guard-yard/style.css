@@ -618,7 +618,7 @@ select {
   --spawn-left: 100%;
   position: absolute;
   z-index: 13;
-  width: clamp(32px, calc(var(--cell-w) * 0.52), 48px);
+  width: clamp(38px, calc(var(--cell-w) * 0.6), 54px);
   aspect-ratio: 1;
   transform: translate(-50%, -50%);
   border-radius: 999px;
@@ -659,15 +659,15 @@ select {
   right: -3px;
   bottom: -4px;
   z-index: 2;
-  min-width: 18px;
-  height: 18px;
+  min-width: 20px;
+  height: 20px;
   padding: 0 4px;
   display: grid;
   place-items: center;
   border-radius: 999px;
   background: #fff7d0;
   color: #25321f;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 1000;
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
 }

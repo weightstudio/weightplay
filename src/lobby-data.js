@@ -13,7 +13,7 @@ window.WONDER_LOBBY = {
     defaultLocale: "en",
   },
   featuredGameId: "animal-guard-yard",
-  heroGameIds: ["animal-guard-yard", "snack-blocks", "wonder-crash"],
+  heroGameIds: ["animal-guard-yard", "animal-zoo-idle", "bubble-bakery"],
   games: [
     {
       id: "wonder-crash",

@@ -349,6 +349,7 @@ select {
   justify-items: center;
   gap: 2px;
   transform: translateX(-50%);
+  max-width: 18%;
   filter: drop-shadow(0 12px 12px rgba(44, 25, 9, .22));
   transition: width .25s ease, opacity .25s ease, filter .25s ease;
 }
@@ -950,7 +951,11 @@ body.zoo-playing .language-picker span {
 }
 
 body.zoo-playing .language-picker {
-  display: none;
+  display: none !important;
+}
+
+.zoo-app.is-playing .language-picker {
+  display: none !important;
 }
 
 body.zoo-playing .language-picker select {
@@ -969,7 +974,7 @@ body.zoo-playing .language-picker select {
 
 body.zoo-playing .game-panel {
   width: 100%;
-  max-width: 760px;
+  max-width: min(760px, calc(100vw - 16px));
   height: auto;
   max-height: none;
   min-height: 0;
@@ -1045,6 +1050,8 @@ body.zoo-playing .park-hud span {
 }
 
 body.zoo-playing .savanna-stage {
+  width: 100%;
+  max-width: 100%;
   min-height: 0;
   height: auto;
   aspect-ratio: 4 / 3;
@@ -1115,6 +1122,7 @@ body.zoo-playing .savanna-stage {
   position: absolute;
   z-index: 6;
   height: auto;
+  max-width: 24%;
   cursor: grab;
   filter: drop-shadow(0 14px 14px rgba(37, 48, 26, .24));
   animation: animal-idle 3.2s ease-in-out infinite;

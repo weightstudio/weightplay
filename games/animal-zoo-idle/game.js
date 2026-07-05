@@ -46,7 +46,7 @@
 
   const maxGateLevel = 8;
   const careCooldownMs = 30000;
-  const layoutVersion = 6;
+  const layoutVersion = 7;
   const milestones = [
     { id: "collect500", type: "ticketCollected", target: 500, reward: 180 },
     { id: "care3", type: "careCount", target: 3, reward: 260 },
@@ -419,7 +419,7 @@
     const size = Number(animal.size || 14);
     return {
       minX: 4,
-      maxX: Math.max(4, 92 - size),
+      maxX: Math.max(4, 86 - size),
       minY: 12,
       maxY: 60,
     };
@@ -813,6 +813,8 @@
       return `${facility.id}:${level}:${cost}:${ready}:${maxed}`;
     }).join("|") + `:${locale}`;
     if (container.dataset.facilityBoardSignature === signature) return;
+    const now = Date.now();
+    if (Number(container.dataset.userScrollingUntil || 0) > now) return;
     container.dataset.facilityBoardSignature = signature;
     container.innerHTML = `
       <strong>${t("facilityBoard")}</strong>
@@ -848,6 +850,13 @@
       });
       newList.addEventListener("scroll", () => {
         facilityScrollLeft = newList.scrollLeft;
+        container.dataset.userScrollingUntil = String(Date.now() + 1800);
+      }, { passive: true });
+      newList.addEventListener("pointerdown", () => {
+        container.dataset.userScrollingUntil = String(Date.now() + 1800);
+      }, { passive: true });
+      newList.addEventListener("touchstart", () => {
+        container.dataset.userScrollingUntil = String(Date.now() + 1800);
       }, { passive: true });
     }
     container.querySelectorAll("[data-facility]").forEach((button) => {
@@ -1211,6 +1220,8 @@
   function startGame() {
     if (!nodes.gamePanel.classList.contains("hidden")) return;
     document.body.classList.add("zoo-playing");
+    document.querySelector(".zoo-app")?.classList.add("is-playing");
+    nodes.localeSelect.closest(".language-picker")?.setAttribute("aria-hidden", "true");
     nodes.menuPanel.classList.add("hidden");
     nodes.gamePanel.classList.remove("hidden");
     applyOffline();
