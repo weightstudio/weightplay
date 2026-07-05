@@ -933,11 +933,11 @@ body.zoo-playing .zoo-app {
 }
 
 body.zoo-playing .topbar {
-  grid-template-columns: 40px minmax(0, 1fr) minmax(92px, 110px);
+  grid-template-columns: 40px minmax(0, 1fr) 84px;
   height: 48px;
   min-height: 48px;
   align-self: start;
-  overflow: visible;
+  overflow: hidden;
 }
 
 body.zoo-playing .topbar h1 {
@@ -957,15 +957,20 @@ body.zoo-playing .language-picker {
   width: 100%;
   position: relative;
   z-index: 6;
+  pointer-events: auto;
 }
 
 body.zoo-playing .language-picker select {
-  padding: 7px 8px;
-  border-radius: 10px;
-  min-height: 40px;
-  font-size: .68rem;
+  display: block;
+  max-width: 84px;
+  min-height: 34px;
+  padding: 5px 24px 5px 7px;
+  border-radius: 999px;
+  font-size: .58rem;
+  line-height: 1;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
   box-shadow: inset 0 1px rgba(255,255,255,.75), 0 5px 12px rgba(43, 93, 128, .16);
 }
 
@@ -1046,9 +1051,9 @@ body.zoo-playing .park-hud span {
 }
 
 body.zoo-playing .savanna-stage {
-  min-height: clamp(330px, 62vw, 500px);
+  min-height: 0;
   height: auto;
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 4 / 3;
   border-radius: 18px;
   background-size: 100% 100%;
   background-position: center center;
@@ -1459,7 +1464,7 @@ body.zoo-playing .animal-shop-card small {
   }
 
   body.zoo-playing .topbar {
-    grid-template-columns: 38px minmax(0, 1fr) minmax(88px, 96px);
+    grid-template-columns: 38px minmax(0, 1fr) 78px;
     height: 42px;
     min-height: 42px;
   }
@@ -1489,9 +1494,10 @@ body.zoo-playing .animal-shop-card small {
   }
 
   body.zoo-playing .language-picker select {
-    min-height: 36px;
-    padding: 6px 7px;
-    font-size: .62rem;
+    max-width: 78px;
+    min-height: 32px;
+    padding: 5px 22px 5px 6px;
+    font-size: .54rem;
   }
 
   body.zoo-playing .resource-card b {
@@ -1504,7 +1510,7 @@ body.zoo-playing .animal-shop-card small {
   }
 
   body.zoo-playing .savanna-stage {
-    min-height: clamp(320px, 78vw, 500px);
+    min-height: 0;
     aspect-ratio: 4 / 3;
   }
 
@@ -1557,7 +1563,7 @@ body.zoo-playing .animal-shop-card small {
   }
 
   body.zoo-playing .savanna-stage {
-    min-height: clamp(300px, 64vw, 460px);
+    min-height: 0;
   }
 
   body.zoo-playing .zoo-actions button {
