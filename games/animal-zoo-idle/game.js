@@ -30,23 +30,23 @@
   };
 
   const animals = [
-    { id: "lion", asset: ASSETS.lion, baseIncome: 3, cost: 0, care: 5, x: 18, y: 44, size: 22 },
-    { id: "giraffe", asset: ASSETS.giraffe, baseIncome: 6, cost: 650, care: 7, x: 62, y: 45, size: 24 },
-    { id: "elephant", asset: ASSETS.elephant, baseIncome: 11, cost: 2400, care: 9, x: 42, y: 36, size: 20 },
-    { id: "panda", asset: ASSETS.panda, baseIncome: 16, cost: 8200, care: 10, x: 72, y: 32, size: 14 },
-    { id: "penguin", asset: ASSETS.penguin, baseIncome: 23, cost: 24000, care: 11, x: 58, y: 25, size: 12 },
-    { id: "rabbit", asset: ASSETS.rabbit, baseIncome: 7, cost: 1400, care: 8, x: 58, y: 43, size: 13 },
-    { id: "fox", asset: ASSETS.fox, baseIncome: 14, cost: 5200, care: 10, x: 31, y: 29, size: 15 },
-    { id: "koala", asset: ASSETS.koala, baseIncome: 20, cost: 15000, care: 11, x: 72, y: 28, size: 14 },
-    { id: "tiger", asset: ASSETS.tiger, baseIncome: 34, cost: 46000, care: 12, x: 48, y: 46, size: 14 },
-    { id: "rhino", asset: ASSETS.rhino, baseIncome: 46, cost: 98000, care: 13, x: 60, y: 20, size: 18 },
-    { id: "crocodile", asset: ASSETS.crocodile, baseIncome: 58, cost: 210000, care: 14, x: 38, y: 22, size: 17 },
-    { id: "bear", asset: ASSETS.bear, baseIncome: 74, cost: 460000, care: 16, x: 16, y: 25, size: 19 },
+    { id: "lion", asset: ASSETS.lion, baseIncome: 3, cost: 0, care: 5, x: 17, y: 45, size: 20 },
+    { id: "giraffe", asset: ASSETS.giraffe, baseIncome: 6, cost: 650, care: 7, x: 60, y: 42, size: 22 },
+    { id: "elephant", asset: ASSETS.elephant, baseIncome: 11, cost: 2400, care: 9, x: 46, y: 36, size: 18 },
+    { id: "panda", asset: ASSETS.panda, baseIncome: 16, cost: 8200, care: 10, x: 72, y: 31, size: 12 },
+    { id: "penguin", asset: ASSETS.penguin, baseIncome: 23, cost: 24000, care: 11, x: 57, y: 25, size: 10 },
+    { id: "rabbit", asset: ASSETS.rabbit, baseIncome: 7, cost: 1400, care: 8, x: 57, y: 43, size: 11 },
+    { id: "fox", asset: ASSETS.fox, baseIncome: 14, cost: 5200, care: 10, x: 30, y: 29, size: 13 },
+    { id: "koala", asset: ASSETS.koala, baseIncome: 20, cost: 15000, care: 11, x: 72, y: 27, size: 12 },
+    { id: "tiger", asset: ASSETS.tiger, baseIncome: 34, cost: 46000, care: 12, x: 47, y: 48, size: 13 },
+    { id: "rhino", asset: ASSETS.rhino, baseIncome: 46, cost: 98000, care: 13, x: 60, y: 19, size: 16 },
+    { id: "crocodile", asset: ASSETS.crocodile, baseIncome: 58, cost: 210000, care: 14, x: 38, y: 22, size: 15 },
+    { id: "bear", asset: ASSETS.bear, baseIncome: 74, cost: 460000, care: 16, x: 15, y: 25, size: 17 },
   ];
 
   const maxGateLevel = 8;
   const careCooldownMs = 30000;
-  const layoutVersion = 5;
+  const layoutVersion = 6;
   const milestones = [
     { id: "collect500", type: "ticketCollected", target: 500, reward: 180 },
     { id: "care3", type: "careCount", target: 3, reward: 260 },
@@ -61,9 +61,9 @@
     { count: 12, bonus: 0.38 },
   ];
   const facilities = [
-    { id: "snackStand", asset: ASSETS.ticketBooth, maxLevel: 4, baseCost: 1200, incomeBonus: 0.04, careBonus: 0, visitorBonus: 0, x: 24, y: 18, size: 13 },
-    { id: "viewDeck", asset: ASSETS.gate2, maxLevel: 4, baseCost: 4200, incomeBonus: 0.06, careBonus: 1, visitorBonus: 1, x: 69, y: 17, size: 11 },
-    { id: "keeperPost", asset: ASSETS.keeper, maxLevel: 4, baseCost: 12800, incomeBonus: 0.03, careBonus: 3, visitorBonus: 0, x: 89, y: 22, size: 8 },
+    { id: "snackStand", asset: ASSETS.ticketBooth, maxLevel: 4, baseCost: 1200, incomeBonus: 0.04, careBonus: 0, visitorBonus: 0, x: 23, y: 18, size: 12 },
+    { id: "viewDeck", asset: ASSETS.gate2, maxLevel: 4, baseCost: 4200, incomeBonus: 0.06, careBonus: 1, visitorBonus: 1, x: 67, y: 17, size: 10 },
+    { id: "keeperPost", asset: ASSETS.keeper, maxLevel: 4, baseCost: 12800, incomeBonus: 0.03, careBonus: 3, visitorBonus: 0, x: 78, y: 22, size: 7 },
   ];
 
   const visitorAssets = [ASSETS.visitorChild, ASSETS.visitorElder, ASSETS.visitorFamily];
@@ -419,7 +419,7 @@
     const size = Number(animal.size || 14);
     return {
       minX: 4,
-      maxX: Math.max(4, 84 - size),
+      maxX: Math.max(4, 92 - size),
       minY: 12,
       maxY: 60,
     };
@@ -759,9 +759,11 @@
       const level = facilityLevel(facility);
       const wrap = document.createElement("div");
       wrap.className = `stage-facility facility-${facility.id} ${level > 0 ? "built" : "ghost"}`;
-      wrap.style.left = `${facility.x}%`;
+      const width = facility.size + level * 1.5;
+      const safeLeft = clamp(facility.x, 2, Math.max(2, 95 - width));
+      wrap.style.left = `${safeLeft}%`;
       wrap.style.bottom = `${facility.y}%`;
-      wrap.style.width = `${facility.size + level * 1.5}%`;
+      wrap.style.width = `${width}%`;
       wrap.innerHTML = `
         <img src="${facility.asset}" alt="" draggable="false" />
         <span>${level > 0 ? t("facilityLevel", { n: level }) : t("facilityUpgrade")}</span>

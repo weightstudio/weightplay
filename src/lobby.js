@@ -418,6 +418,9 @@ function createGameCard(game) {
   card.dataset.favorite = favorite ? "true" : "false";
   card.dataset.recent = recent ? "true" : "false";
   card.dataset.recentIndex = String(recentGameIds.indexOf(game.id));
+  const stats = statFor(game);
+  card.dataset.rank7d = String(stats.rank7d || 9999);
+  card.dataset.plays7d = String(stats.plays7d || 0);
 
   if (isPlayable) {
     card.tabIndex = 0;
@@ -457,7 +460,6 @@ function createGameCard(game) {
   const favoriteLabel = i18n.t(favorite ? "action.remove_favorite_title" : "action.add_favorite_title", { title });
   const primaryAction = isPlayable ? i18n.t(recent ? "action.continue" : "action.play") : i18n.t("action.coming_soon");
   const continueBadge = isPlayable && recent ? `<span class="continue-badge">${i18n.t("action.continue")}</span>` : "";
-  const stats = statFor(game);
   const popularBadge = hasRealStats() && stats.rank7d && stats.rank7d <= 5 ? `<span class="popular-card-badge">${rankLabel(game, stats.rank7d)}</span>` : "";
   const updatedBadge = recentlyUpdatedGameIds.has(game.id) ? `<span class="updated-card-badge">${i18n.t("badge.updated")}</span>` : "";
 
@@ -835,6 +837,7 @@ function resetDiscoveryFilters() {
 
 function applyFilter() {
   let visibleCount = 0;
+  const isFiltered = activeFilter !== "all" || activeTopic !== "all" || activeSkill !== "all" || activeLibrary !== "all" || Boolean(activeSearch);
   document.querySelectorAll("[data-age]").forEach((card) => {
     const ages = card.dataset.age.split(" ");
     const topics = card.dataset.topic ? card.dataset.topic.split("|") : [];
@@ -849,11 +852,16 @@ function applyFilter() {
       (activeLibrary === "recent" && card.dataset.recent === "true");
     const isVisible = matchesAge && matchesTopic && matchesSkill && matchesSearch && matchesLibrary;
     card.classList.toggle("hidden", !isVisible);
-    card.style.order = activeLibrary === "recent" && card.dataset.recentIndex !== "-1" ? card.dataset.recentIndex : "";
+    if (activeLibrary === "recent" && card.dataset.recentIndex !== "-1") {
+      card.style.order = card.dataset.recentIndex;
+    } else if (isFiltered && hasRealStats()) {
+      card.style.order = String(Number(card.dataset.rank7d || 9999) * 100000 - Number(card.dataset.plays7d || 0));
+    } else {
+      card.style.order = "";
+    }
     if (isVisible) visibleCount += 1;
   });
 
-  const isFiltered = activeFilter !== "all" || activeTopic !== "all" || activeSkill !== "all" || activeLibrary !== "all" || Boolean(activeSearch);
   heroGamesSection.classList.toggle("hidden", isFiltered);
   recommendationsSection?.classList.toggle("hidden", isFiltered);
   freshUpdatesSection?.classList.toggle("hidden", isFiltered);

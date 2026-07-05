@@ -933,7 +933,7 @@ body.zoo-playing .zoo-app {
 }
 
 body.zoo-playing .topbar {
-  grid-template-columns: 40px minmax(0, 1fr) 84px;
+  grid-template-columns: 40px minmax(0, 1fr);
   height: 48px;
   min-height: 48px;
   align-self: start;
@@ -950,14 +950,7 @@ body.zoo-playing .language-picker span {
 }
 
 body.zoo-playing .language-picker {
-  grid-column: auto;
-  grid-row: 1;
-  align-self: center;
-  min-width: 0;
-  width: 100%;
-  position: relative;
-  z-index: 6;
-  pointer-events: auto;
+  display: none;
 }
 
 body.zoo-playing .language-picker select {
@@ -975,7 +968,8 @@ body.zoo-playing .language-picker select {
 }
 
 body.zoo-playing .game-panel {
-  width: min(100%, 760px);
+  width: 100%;
+  max-width: 760px;
   height: auto;
   max-height: none;
   min-height: 0;
@@ -1057,6 +1051,7 @@ body.zoo-playing .savanna-stage {
   border-radius: 18px;
   background-size: 100% 100%;
   background-position: center center;
+  contain: layout paint;
 }
 
 .stage-lv-2 {
@@ -1464,7 +1459,7 @@ body.zoo-playing .animal-shop-card small {
   }
 
   body.zoo-playing .topbar {
-    grid-template-columns: 38px minmax(0, 1fr) 78px;
+    grid-template-columns: 38px minmax(0, 1fr);
     height: 42px;
     min-height: 42px;
   }
@@ -1486,18 +1481,6 @@ body.zoo-playing .animal-shop-card small {
   body.zoo-playing .park-hud {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     min-height: 40px;
-  }
-
-  body.zoo-playing .language-picker {
-    grid-column: 3;
-    grid-row: 1;
-  }
-
-  body.zoo-playing .language-picker select {
-    max-width: 78px;
-    min-height: 32px;
-    padding: 5px 22px 5px 6px;
-    font-size: .54rem;
   }
 
   body.zoo-playing .resource-card b {
