@@ -68,6 +68,7 @@
       "status.no_favorites": "No favorite games yet.",
       "status.no_recent": "No recently played games yet.",
       "status.no_games": "No games match this filter yet.",
+      "status.clear_filters": "Clear filters",
       "status.recent_games_one": "1 recently played game",
       "status.recent_games": "{count} recently played games",
       "status.games_found_one": "1 game found",
@@ -228,6 +229,7 @@
     "card.skill_reason": "\u7df4\u7fd2\uff1a{skill}",
     "fresh_updates.title": "\u6700\u65b0\u512a\u5316",
     "fresh_updates.reason": "\u6700\u8fd1\u6539\u597d\u7684\u904a\u6232",
+    "status.clear_filters": "\u6e05\u9664\u7be9\u9078",
   });
 
   function getSavedLocale() {

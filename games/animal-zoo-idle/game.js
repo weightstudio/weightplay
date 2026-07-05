@@ -31,22 +31,22 @@
 
   const animals = [
     { id: "lion", asset: ASSETS.lion, baseIncome: 3, cost: 0, care: 5, x: 18, y: 44, size: 22 },
-    { id: "giraffe", asset: ASSETS.giraffe, baseIncome: 6, cost: 650, care: 7, x: 76, y: 45, size: 26 },
+    { id: "giraffe", asset: ASSETS.giraffe, baseIncome: 6, cost: 650, care: 7, x: 68, y: 45, size: 26 },
     { id: "elephant", asset: ASSETS.elephant, baseIncome: 11, cost: 2400, care: 9, x: 43, y: 37, size: 22 },
-    { id: "panda", asset: ASSETS.panda, baseIncome: 16, cost: 8200, care: 10, x: 86, y: 32, size: 16 },
+    { id: "panda", asset: ASSETS.panda, baseIncome: 16, cost: 8200, care: 10, x: 77, y: 32, size: 16 },
     { id: "penguin", asset: ASSETS.penguin, baseIncome: 23, cost: 24000, care: 11, x: 61, y: 25, size: 14 },
     { id: "rabbit", asset: ASSETS.rabbit, baseIncome: 7, cost: 1400, care: 8, x: 58, y: 43, size: 13 },
     { id: "fox", asset: ASSETS.fox, baseIncome: 14, cost: 5200, care: 10, x: 31, y: 29, size: 15 },
-    { id: "koala", asset: ASSETS.koala, baseIncome: 20, cost: 15000, care: 11, x: 71, y: 28, size: 14 },
+    { id: "koala", asset: ASSETS.koala, baseIncome: 20, cost: 15000, care: 11, x: 72, y: 28, size: 14 },
     { id: "tiger", asset: ASSETS.tiger, baseIncome: 34, cost: 46000, care: 12, x: 48, y: 48, size: 16 },
-    { id: "rhino", asset: ASSETS.rhino, baseIncome: 46, cost: 98000, care: 13, x: 83, y: 20, size: 21 },
+    { id: "rhino", asset: ASSETS.rhino, baseIncome: 46, cost: 98000, care: 13, x: 63, y: 20, size: 21 },
     { id: "crocodile", asset: ASSETS.crocodile, baseIncome: 58, cost: 210000, care: 14, x: 39, y: 22, size: 20 },
     { id: "bear", asset: ASSETS.bear, baseIncome: 74, cost: 460000, care: 16, x: 16, y: 25, size: 19 },
   ];
 
   const maxGateLevel = 8;
   const careCooldownMs = 30000;
-  const layoutVersion = 2;
+  const layoutVersion = 3;
   const milestones = [
     { id: "collect500", type: "ticketCollected", target: 500, reward: 180 },
     { id: "care3", type: "careCount", target: 3, reward: 260 },
@@ -312,6 +312,7 @@
   let save = loadSave();
   let tickCount = 0;
   let newlyRecruitedAnimalId = "";
+  let facilityScrollLeft = 0;
 
   function t(key, data = {}) {
     const value = text[locale]?.[key] || text.en[key] || key;
@@ -366,13 +367,17 @@
     const shouldRefreshLayout = Number(data.layoutVersion || 0) < layoutVersion;
     for (const animal of animals) {
       const position = data.positions[animal.id] || {};
+      const bounds = animalBounds(animal);
       if (shouldRefreshLayout) {
-        data.positions[animal.id] = { x: animal.x, y: animal.y };
+        data.positions[animal.id] = {
+          x: clamp(animal.x, bounds.minX, bounds.maxX),
+          y: clamp(animal.y, bounds.minY, bounds.maxY),
+        };
         continue;
       }
       data.positions[animal.id] = {
-        x: clamp(Number(position.x ?? animal.x), 7, 90),
-        y: clamp(Number(position.y ?? animal.y), 18, 62),
+        x: clamp(Number(position.x ?? animal.x), bounds.minX, bounds.maxX),
+        y: clamp(Number(position.y ?? animal.y), bounds.minY, bounds.maxY),
       };
     }
     data.layoutVersion = layoutVersion;
@@ -408,6 +413,15 @@
 
   function animalPosition(animal) {
     return save.positions?.[animal.id] || { x: animal.x, y: animal.y };
+  }
+
+  function animalBounds(animal) {
+    return {
+      minX: 4,
+      maxX: Math.max(4, 94 - Number(animal.size || 14)),
+      minY: 12,
+      maxY: 62,
+    };
   }
 
   function gateUpgradeCost() {
@@ -787,7 +801,7 @@
   function renderFacilityBoard(container) {
     if (!container) return;
     const existingList = container.querySelector(".facility-list");
-    const previousScrollLeft = existingList ? existingList.scrollLeft : 0;
+    if (existingList) facilityScrollLeft = existingList.scrollLeft;
     const signature = facilities.map((facility) => {
       const level = facilityLevel(facility);
       const cost = facilityCost(facility);
@@ -824,7 +838,15 @@
       </div>
     `;
     const newList = container.querySelector(".facility-list");
-    if (newList) newList.scrollLeft = previousScrollLeft;
+    if (newList) {
+      newList.scrollLeft = facilityScrollLeft;
+      requestAnimationFrame(() => {
+        newList.scrollLeft = facilityScrollLeft;
+      });
+      newList.addEventListener("scroll", () => {
+        facilityScrollLeft = newList.scrollLeft;
+      }, { passive: true });
+    }
     container.querySelectorAll("[data-facility]").forEach((button) => {
       button.addEventListener("click", () => upgradeFacility(button.dataset.facility));
     });
@@ -997,8 +1019,9 @@
       element.classList.add("dragging");
       const move = (moveEvent) => {
         const rect = stage.getBoundingClientRect();
-        const x = clamp(((moveEvent.clientX - rect.left) / rect.width) * 100, 7, 90);
-        const y = clamp(((rect.bottom - moveEvent.clientY) / rect.height) * 100, 18, 62);
+        const bounds = animalBounds(animal);
+        const x = clamp(((moveEvent.clientX - rect.left) / rect.width) * 100, bounds.minX, bounds.maxX);
+        const y = clamp(((rect.bottom - moveEvent.clientY) / rect.height) * 100, bounds.minY, bounds.maxY);
         element.style.left = `${x}%`;
         element.style.bottom = `${y}%`;
         save.positions[animal.id] = { x, y };

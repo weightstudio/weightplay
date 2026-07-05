@@ -779,6 +779,22 @@ function selectSkillPath(skill) {
   filterStatus?.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
+function resetDiscoveryFilters() {
+  activeFilter = "all";
+  activeTopic = "all";
+  activeSkill = "all";
+  activeLibrary = "all";
+  activeSearch = "";
+  if (gameSearch) gameSearch.value = "";
+  setActiveButtons(filterButtons, "ageFilter", "all");
+  setActiveButtons(topicButtons, "topicFilter", "all");
+  setActiveButtons(skillButtons, "skillFilter", "all");
+  setActiveButtons(libraryButtons, "libraryTab", "all");
+  window.WonderSound?.play("click");
+  window.WonderAnalytics?.track("clear_lobby_filters", { locale: i18n.locale() });
+  applyFilter();
+}
+
 function applyFilter() {
   let visibleCount = 0;
   document.querySelectorAll("[data-age]").forEach((card) => {
@@ -807,8 +823,13 @@ function applyFilter() {
   filterStatus.classList.toggle("empty", visibleCount === 0);
 
   if (visibleCount === 0) {
-    filterStatus.textContent =
+    const emptyText =
       activeLibrary === "favorites" ? i18n.t("status.no_favorites") : activeLibrary === "recent" ? i18n.t("status.no_recent") : i18n.t("status.no_games");
+    filterStatus.innerHTML = `
+      <span>${emptyText}</span>
+      ${isFiltered ? `<button type="button" data-clear-filters>${i18n.t("status.clear_filters")}</button>` : ""}
+    `;
+    filterStatus.querySelector("[data-clear-filters]")?.addEventListener("click", resetDiscoveryFilters);
   } else if (activeLibrary === "favorites" && activeFilter === "all" && activeTopic === "all" && activeSkill === "all") {
     filterStatus.textContent = i18n.t(visibleCount > 1 ? "status.favorite_games" : "status.favorite_games_one", {
       count: visibleCount,
