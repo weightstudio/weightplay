@@ -181,8 +181,16 @@
   let lastFrame = 0;
   let pointerDown = false;
   let runToken = 0;
+  const soundGate = {};
   const keys = new Set();
   const movementKeys = new Set(["arrowleft", "arrowright", "arrowup", "arrowdown", "a", "d", "w", "s"]);
+
+  function playSound(name, gap = 0.08) {
+    const now = performance.now();
+    if (soundGate[name] && now - soundGate[name] < gap * 1000) return;
+    soundGate[name] = now;
+    window.WonderSound?.play(name);
+  }
 
   function loadSave() {
     try {
@@ -302,7 +310,7 @@
     show(nodes.gamePanel);
     renderHud();
     lastFrame = performance.now();
-    window.WonderSound?.play("click");
+    playSound("start", 0.2);
     window.WonderAnalytics?.track("game_start", { game_id: GAME_ID, locale, prototype: true });
     scheduleLoop();
   }
@@ -428,6 +436,7 @@
         enemy.touch = 1.05;
         addSpark(p.x, p.y - 34, "#ff7b7b");
         addFloater(`-${Math.ceil(enemy.damage)}`, p.x, p.y - 74, "#ffb4b4");
+        playSound("hit", 0.35);
       }
     });
   }
@@ -489,6 +498,7 @@
         state.xp += drop.value;
         addSpark(drop.x, drop.y, "#fef08a");
         addFloater(`+${drop.value}`, drop.x, drop.y - 18, "#fef08a");
+        playSound("coin", 0.12);
         if (state.xp >= state.xpNeed) levelUp();
         return false;
       }
@@ -507,6 +517,7 @@
       state.key = randomPoint(120);
       addSpark(p.x, p.y - 52, "#ffe76c");
       addFloater("+1", p.x, p.y - 90, "#ffe76c");
+      playSound("success", 0.12);
       window.WonderAnalytics?.track("game_key_collect", { game_id: GAME_ID, keys: state.keys, prototype: true });
     }
   }
@@ -518,6 +529,7 @@
     state.mode = "upgrade";
     renderUpgradeCards();
     nodes.upgradePanel.classList.remove("hidden");
+    playSound("upgrade", 0.2);
     window.WonderAnalytics?.track("game_level_up", { game_id: GAME_ID, level: state.level, prototype: true });
   }
 
@@ -548,6 +560,7 @@
     if (id === "pickup") p.pickup += 24;
     state.mode = "running";
     nodes.upgradePanel.classList.add("hidden");
+    playSound("click", 0.1);
     window.WonderAnalytics?.track("game_upgrade_choice", { game_id: GAME_ID, upgrade: id, level: state.level, prototype: true });
     lastFrame = performance.now();
     scheduleLoop();
@@ -579,6 +592,7 @@
     persist();
     renderResult(reason, previousBestKeys, improved);
     show(nodes.resultPanel);
+    playSound(reason === "time" ? "win" : "wrong", 0.4);
     window.WonderAnalytics?.track("game_complete", { game_id: GAME_ID, reason, keys: state.keys, level: state.level, prototype: true });
   }
 
@@ -922,12 +936,14 @@
     runToken += 1;
     clearInput();
     state.mode = "menu";
+    playSound("click", 0.1);
     show(nodes.menuPanel);
   });
   nodes.resultMenuBtn.addEventListener("click", () => {
     runToken += 1;
     clearInput();
     state.mode = "menu";
+    playSound("click", 0.1);
     show(nodes.menuPanel);
   });
   nodes.upgradeCards.addEventListener("click", (event) => {

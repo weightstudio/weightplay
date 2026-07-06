@@ -328,7 +328,7 @@ canvas {
   display: grid;
   gap: 8px;
   min-height: 150px;
-  padding: 10px;
+  padding: 12px 10px 10px;
   color: #fffce9;
   background: rgba(13, 45, 43, 0.96);
   box-shadow: inset 0 0 0 2px rgba(183, 244, 215, 0.22);
@@ -337,18 +337,22 @@ canvas {
 .upgrade-icon {
   display: grid;
   place-items: center;
-  width: 58px;
-  height: 58px;
+  width: 70px;
+  height: 70px;
   justify-self: center;
-  overflow: hidden;
-  border-radius: 8px;
+  overflow: visible;
+  border: 1px solid rgba(254, 240, 138, 0.38);
+  border-radius: 12px;
+  background: radial-gradient(circle at 50% 35%, rgba(255, 255, 255, 0.18), rgba(16, 55, 49, 0.62) 70%);
+  box-shadow: inset 0 0 0 2px rgba(9, 35, 34, 0.42), 0 8px 18px rgba(0, 0, 0, 0.24);
 }
 
 .upgrade-icon img {
   display: block;
-  width: 100%;
-  height: 100%;
+  width: 60px;
+  height: 60px;
   object-fit: contain;
+  border-radius: 9px;
 }
 
 .upgrade-card b {
@@ -530,9 +534,19 @@ canvas {
 
   .upgrade-card {
     min-height: 88px;
-    grid-template-columns: 64px minmax(0, 1fr);
+    grid-template-columns: 76px minmax(0, 1fr);
     align-items: center;
     text-align: left;
+  }
+
+  .upgrade-icon {
+    width: 66px;
+    height: 66px;
+  }
+
+  .upgrade-icon img {
+    width: 56px;
+    height: 56px;
   }
 
   .upgrade-card small {
