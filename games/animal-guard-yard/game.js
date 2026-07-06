@@ -85,11 +85,17 @@
       costShort: "Cost",
       atkShort: "ATK",
       hpShort: "HP",
+      beastGuideTitle: "Beast Guide",
+      beastGuideHint: "Learn what each wild beast does before choosing a stage.",
       threatPreview: "Stage threats",
       threatNormal: "Normal",
       threatFast: "Fast",
       threatShield: "Shield",
       threatBoss: "Boss",
+      beastNormalDesc: "Balanced beasts. Stop them with early cats or dogs.",
+      beastFastDesc: "Fast beasts rush lanes. Place guards before they appear.",
+      beastShieldDesc: "Shield beasts have high HP. Use stronger trained guards.",
+      beastBossDesc: "Boss beasts roar and slow nearby guards. Build a layered defense.",
       bossRoar: "Boss roar!",
       fast: "Fast beasts",
       shield: "Shield beasts",
@@ -164,11 +170,17 @@
       costShort: "\u82b1\u8cbb",
       atkShort: "\u653b\u64ca",
       hpShort: "\u751f\u547d",
+      beastGuideTitle: "\u91ce\u7378\u5716\u9451",
+      beastGuideHint: "\u9078\u95dc\u524d\u5148\u770b\u6bcf\u7a2e\u91ce\u7378\u7684\u7279\u6027\u3002",
       threatPreview: "\u95dc\u5361\u6575\u4eba",
       threatNormal: "\u4e00\u822c",
       threatFast: "\u5feb\u901f",
       threatShield: "\u76fe\u724c",
       threatBoss: "Boss",
+      beastNormalDesc: "\u5e73\u8861\u578b\u91ce\u7378\uff0c\u65e9\u9ede\u653e\u8c93\u9a0e\u58eb\u6216\u72d7\u6230\u58eb\u5c31\u80fd\u64cb\u4f4f\u3002",
+      beastFastDesc: "\u5feb\u901f\u7a81\u9032\u7684\u91ce\u7378\uff0c\u51fa\u73fe\u524d\u5c31\u8981\u5148\u5e03\u9632\u3002",
+      beastShieldDesc: "\u751f\u547d\u5f88\u9ad8\u7684\u91cd\u7532\u91ce\u7378\uff0c\u9700\u8981\u8a13\u7df4\u904e\u7684\u5b88\u885b\u96c6\u4e2d\u653b\u64ca\u3002",
+      beastBossDesc: "Boss \u6703\u5486\u54ee\u4e26\u8b93\u9644\u8fd1\u5b88\u885b\u8b8a\u6162\uff0c\u8acb\u63d0\u524d\u5efa\u7acb\u591a\u5c64\u9632\u7dda\u3002",
       bossRoar: "Boss \u5486\u54ee\uff01",
       fast: "\u5feb\u901f\u91ce\u7378",
       shield: "\u91cd\u7532\u91ce\u7378",
@@ -226,6 +238,7 @@
     diamondText: $("diamondText"),
     kennelGrid: $("kennelGrid"),
     shopGrid: $("shopGrid"),
+    beastGuide: $("beastGuide"),
     menuTabs: $("menuTabs"),
     menuPanel: $("menuPanel"),
     stageGrid: $("stageGrid"),
@@ -510,6 +523,33 @@
     });
   }
 
+  function renderBeastGuide() {
+    if (!nodes.beastGuide) return;
+    const beasts = [
+      ["normal", "threatNormal", "beastNormalDesc"],
+      ["fast", "threatFast", "beastFastDesc"],
+      ["shield", "threatShield", "beastShieldDesc"],
+      ["boss", "threatBoss", "beastBossDesc"],
+    ];
+    nodes.beastGuide.innerHTML = `
+      <div class="beast-guide-head">
+        <strong>${t("beastGuideTitle")}</strong>
+        <span>${t("beastGuideHint")}</span>
+      </div>
+      <div class="beast-guide-list">
+        ${beasts.map(([type, labelKey, descKey]) => `
+          <article class="beast-guide-card">
+            ${zombieSprite(type)}
+            <div>
+              <strong>${t(labelKey)}</strong>
+              <span>${t(descKey)}</span>
+            </div>
+          </article>
+        `).join("")}
+      </div>
+    `;
+  }
+
   function renderWallet() {
     if (nodes.coinText) nodes.coinText.textContent = profile.coins;
     if (nodes.diamondText) nodes.diamondText.textContent = readDiamonds();
@@ -617,6 +657,7 @@
       button.classList.toggle("active", button.dataset.menuTab === activeMenuTab);
     });
     renderWallet();
+    renderBeastGuide();
     renderStageGrid();
     renderKennel();
     renderShop();
