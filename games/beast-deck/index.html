@@ -8,17 +8,17 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="robots" content="index,follow" />
-    <meta name="description" content="Play Beast Deck: The Mist Forest, a turn-based Roguelike deckbuilder card game on WeightPlay. Build your animal power deck, choose upgrades, and defeat corrupted forest beasts." />
+    <meta name="description" content="Play Beast Deck: The Mist Forest, a turn-based Roguelike deckbuilder game on WeightPlay. Build an animal power deck, level up locally, and unlock forest missions." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Beast Deck: The Mist Forest - WeightPlay" />
-    <meta property="og:description" content="Build your deck of animal powers, choose upgrades, and defeat corrupted beasts in a mysterious mist forest." />
+    <meta property="og:description" content="Build your animal power deck, choose upgrades, level up, and defeat corrupted beasts in a mysterious mist forest." />
     <meta property="og:url" content="https://weightplay.com/games/beast-deck/" />
     <meta property="og:image" content="https://weightplay.com/assets/beast-deck-cover.png" />
     <meta name="twitter:card" content="summary_large_image" />
     <title>Beast Deck: The Mist Forest - WeightPlay</title>
     <link rel="canonical" href="https://weightplay.com/games/beast-deck/" />
-    <link rel="stylesheet" href="style.css?v=20260706-beast-deck-v1" />
+    <link rel="stylesheet" href="style.css?v=20260706-beast-economy1" />
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260703-frame1" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
@@ -31,7 +31,7 @@
         "alternateName": "獸王牌組：迷霧森林",
         "url": "https://weightplay.com/games/beast-deck/",
         "image": "https://weightplay.com/assets/beast-deck-cover.png",
-        "description": "Play a turn-based Roguelike deckbuilder game: select animal power cards, gain block, apply poison, and defeat corrupted beasts through 3 stages.",
+        "description": "Play a turn-based Roguelike deckbuilder game: select animal power cards, gain block, apply poison, level up locally, and unlock forest missions.",
         "genre": ["Card Game", "Roguelike", "Strategy", "Animal Games"],
         "gamePlatform": "Web browser",
         "operatingSystem": "Any",
@@ -70,19 +70,41 @@
         </label>
       </header>
 
-      <!-- Main Menu Section -->
       <section id="menuPanel" class="menu-panel">
         <img class="cover" src="../../assets/beast-deck-cover.png" alt="" />
         <div class="menu-copy">
           <strong data-ui="menuTitle">Enter the Mist Forest.</strong>
-          <span data-ui="menuHint">Goal: Build a deck of animal cards and survive 3 stages of corrupted beast battles. Use defense cards to block intents, and attacks to defeat the beasts.</span>
-          
-          <div class="prototype-goals" aria-label="Prototype test goals">
-            <b data-ui="prototypeGoalsTitle">Prototype test goals</b>
-            <span data-ui="prototypeGoalsText">Clear all 3 battles, test card play mechanics, and verify the Diamond Shop permanent upgrade works properly.</span>
+          <span data-ui="menuHint">Build an animal power deck, read enemy intent, and clear forest missions. Your level and unlocked missions are saved on this device.</span>
+
+          <div class="prototype-goals" aria-label="Local progress">
+            <b data-ui="progressTitle">Local Progress</b>
+            <span data-ui="progressText">Clear missions to earn XP, level up, and unlock deeper forest routes. Progress is saved on this device.</span>
           </div>
 
-          <!-- Diamond Shop / Permanent Upgrade -->
+          <div id="profilePanel" class="profile-panel" aria-live="polite">
+            <div>
+              <span data-ui="profileLevel">Level</span>
+              <b id="profileLevelText">1</b>
+            </div>
+            <div>
+              <span data-ui="profileXp">XP</span>
+              <b id="profileXpText">0/100</b>
+            </div>
+            <div>
+              <span data-ui="profileBest">Best</span>
+              <b id="profileBestText">1</b>
+            </div>
+            <small id="profileBonusText">+0 Max HP</small>
+          </div>
+
+          <div class="stage-select">
+            <div class="stage-select-head">
+              <strong data-ui="stageSelectTitle">Choose a Mission</strong>
+              <small data-ui="stageSelectHint">Unlocked missions stay available.</small>
+            </div>
+            <div id="stageGrid" class="stage-grid" aria-label="Mission selection"></div>
+          </div>
+
           <div id="diamondShop" class="diamond-shop" aria-live="polite">
             <div class="diamond-shop-head">
               <span data-ui="diamondShopTitle">Permanent Upgrade</span>
@@ -91,7 +113,7 @@
             <button id="amuletBtn" class="diamond-btn" type="button">
               <span>
                 <strong data-ui="amuletName">Mist Amulet</strong>
-                <small data-ui="amuletEffect">Start every run with +10 Max HP (40 HP instead of 30 HP).</small>
+                <small data-ui="amuletEffect">Start every run with +10 Max HP.</small>
               </span>
               <b><img src="../../assets/weightplay-diamond.svg" alt="" /> <span id="amuletCost">15</span></b>
             </button>
@@ -101,17 +123,17 @@
           <div class="control-chips">
             <span data-ui="controlCombat">Turn-Based Strategy</span>
             <span data-ui="controlUpgrades">Draft Cards</span>
-            <span data-ui="controlDeck">10 Card Starting Deck</span>
+            <span data-ui="controlDeck">Persistent Level</span>
           </div>
-          <button id="startBtn" type="button" data-ui="startRun">Start Run</button>
+          <button id="startBtn" type="button" data-ui="startRun">Start Mission</button>
         </div>
       </section>
 
-      <!-- Battle Panel -->
       <section id="gamePanel" class="game-panel hidden">
         <div class="hud-row">
           <button id="menuBtn" class="soft-btn" type="button" data-ui="menu">Menu</button>
           <div><span data-ui="hudStage">Battle</span><b id="stageText">1/3</b></div>
+          <div><span data-ui="hudMission">Mission</span><b id="missionText">1</b></div>
           <div><span data-ui="hudHp">Player HP</span><b id="hpText">30/30</b></div>
           <div><span data-ui="hudEnergy">Energy</span><b id="energyText">3/3</b></div>
           <div><span data-ui="hudDeck">Deck</span><b id="deckText">10</b></div>
@@ -119,71 +141,61 @@
         </div>
 
         <div class="battlefield">
-          <!-- Enemy display container -->
           <div id="enemyContainer" class="enemy-container">
             <div class="enemy-intent" id="enemyIntent" aria-live="polite">
-              <span class="intent-icon" id="intentIcon">⚔️</span>
+              <span class="intent-icon" id="intentIcon">ATK</span>
               <span class="intent-text" id="intentText">Attacking for 6</span>
             </div>
-            <div class="beast-avatar" id="enemyAvatar">🐗</div>
+            <div class="beast-avatar" id="enemyAvatar" aria-hidden="true"></div>
             <h2 id="enemyName">Shadow Boar</h2>
             <div class="hp-bar-container">
               <div class="hp-bar-fill" id="enemyHpFill" style="width: 100%;"></div>
               <span class="hp-text" id="enemyHpText">24/24</span>
             </div>
-            <div class="status-row" id="enemyStatusRow">
-              <!-- status icons go here, like Poison, Vulnerable -->
-            </div>
+            <div class="status-row" id="enemyStatusRow"></div>
           </div>
 
-          <!-- Battle log display -->
           <div class="battle-log" id="battleLog" aria-live="polite">
-            <p>Battle started! Draw your cards.</p>
+            <p>Battle started. Draw your cards.</p>
           </div>
 
-          <!-- Player profile/status -->
           <div class="player-container">
             <div class="status-row" id="playerStatusRow"></div>
             <div class="hp-bar-container player-hp">
               <div class="hp-bar-fill player" id="playerHpFill" style="width: 100%;"></div>
               <span class="hp-text" id="playerHpText">30/30</span>
             </div>
-            <div class="shield-display" id="shieldDisplay" style="display: none;">🛡️ <span id="shieldText">0</span></div>
+            <div class="shield-display" id="shieldDisplay" style="display: none;"><span data-ui="shieldLabel">Block</span><span id="shieldText">0</span></div>
           </div>
         </div>
 
-        <!-- Card play and Hand area -->
         <div class="action-area">
-          <div class="hand-row" id="handRow">
-            <!-- Cards are generated dynamically -->
-          </div>
+          <div class="hand-row" id="handRow"></div>
           <div class="control-row">
             <button id="endTurnBtn" type="button" class="action-btn" data-ui="endTurn">End Turn</button>
           </div>
         </div>
       </section>
 
-      <!-- Card Drafting Modal -->
       <section id="draftPanel" class="draft-panel hidden" aria-live="polite">
         <div class="draft-card-wrap">
           <h2 data-ui="chooseCard">Draft a Card</h2>
-          <p data-ui="chooseCardDesc">Select one of these animal power cards to add to your deck for the rest of the run.</p>
+          <p data-ui="chooseCardDesc">Choose one animal power to keep in this mission deck.</p>
           <div id="draftCards" class="draft-cards"></div>
         </div>
       </section>
 
-      <!-- Result Panel -->
       <section id="resultPanel" class="result-panel hidden">
         <div class="result-card">
-          <strong id="resultTitle">Run Complete</strong>
+          <strong id="resultTitle">Mission Complete</strong>
           <div id="resultScore" class="result-score">0</div>
-          <small class="result-score-label" data-ui="resultScoreLabel">Stages Cleared</small>
+          <small class="result-score-label" data-ui="resultScoreLabel">Mission Progress</small>
           <p id="resultText"></p>
-          
+
           <div class="skill-lines">
-            <span><span data-ui="skillLogic">Logic</span> <b id="logicStars">⭐⭐⭐⭐⭐</b></span>
-            <span><span data-ui="skillFocus">Focus</span> <b id="focusStars">⭐⭐⭐⭐⭐</b></span>
-            <span><span data-ui="skillProblem">Problem Solving</span> <b id="problemStars">⭐⭐⭐⭐⭐</b></span>
+            <span><span data-ui="skillLogic">Logic</span> <b id="logicStars">★★★★★</b></span>
+            <span><span data-ui="skillFocus">Focus</span> <b id="focusStars">★★★★★</b></span>
+            <span><span data-ui="skillProblem">Problem Solving</span> <b id="problemStars">★★★★★</b></span>
           </div>
 
           <div class="skill-report">
@@ -197,7 +209,6 @@
         </div>
       </section>
 
-      <!-- Loading Panel -->
       <div id="loadingPanel" class="loading-panel">
         <div class="loading-card">
           <strong data-ui="loading">Loading</strong>
@@ -207,8 +218,7 @@
       </div>
     </main>
 
-    <!-- Global shared platform scripts -->
-    <script src="../../src/site-config.js?v=20260706-beast-deck-v1"></script>
+    <script src="../../src/site-config.js?v=20260706-beast-economy1"></script>
     <script src="../../src/version.js?v=20260701-version2"></script>
     <script src="../../src/analytics.js?v=20260701-analytics2"></script>
     <script>window.WonderAnalytics?.track("game_view", { game_id: "beast-deck", release_state: "release_candidate" });</script>
@@ -216,14 +226,14 @@
     <script src="../../src/edge-guard.js?v=20260703-play-frame1"></script>
     <script src="../../src/i18n.js?v=20260703-i18n-clean1"></script>
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
-    <script src="../../src/wallet.js?v=20260706-beast-deck-v1"></script>
-    <script src="game.js?v=20260706-beast-deck-v1"></script>
+    <script src="../../src/wallet.js?v=20260706-beast-economy1"></script>
+    <script src="game.js?v=20260706-beast-economy1"></script>
     <script>
       (() => {
         const loadGameInfo = () => {
           if (document.querySelector("script[data-beast-game-info]")) return;
           const script = document.createElement("script");
-          script.src = "../../src/game-page-info.js?v=20260706-guide-age-layers1";
+          script.src = "../../src/game-page-info.js?v=20260706-beast-economy1";
           script.dataset.beastGameInfo = "idle";
           script.async = true;
           document.body.appendChild(script);

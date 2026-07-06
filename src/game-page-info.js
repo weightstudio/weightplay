@@ -331,28 +331,28 @@
       title: "Beast Deck: The Mist Forest",
       age: "13+",
       difficulty: "Medium",
-      time: "5-8 minutes",
+      time: "6-10 minutes",
       skills: ["Logic", "Problem Solving", "Focus"],
       intro:
-        "Beast Deck: The Mist Forest is a turn-based Roguelike deckbuilding card game. Players build a deck of animal powers, choose powerful upgrades, and fight corrupted beasts in a mysterious forest. The game challenges players with resource management, tactical synergy, and deck optimization.",
+        "Beast Deck: The Mist Forest is a turn-based Roguelike deckbuilding card game with local progression. Players clear missions, earn XP, level up, unlock deeper forest routes, draft animal-power cards, and spend platform Diamonds on permanent upgrades.",
       how: [
+        "Choose an unlocked mission from the menu. Your level and unlocked missions are saved on this device.",
         "Play cards from your hand by paying their Energy cost.",
-        "Gain block to defend against the enemy's declared attack intent.",
-        "Defeat corrupted beasts to draft new cards and expand your deck.",
-        "Defeat the final boss in Stage 3 to win the run and earn diamonds."
+        "Read the enemy intent before choosing attacks, block, poison, or draw cards.",
+        "Defeat all 3 battles in a mission to earn XP and unlock the next route."
       ],
       strategyTips: [
-        "Pay attention to the enemy's intent before deciding to play attacks or defenses.",
-        "Build synergies: Wolf Pack deals double damage when played after another attack card.",
-        "Poison deals damage over time and bypasses enemy block. Use it for heavy bosses.",
-        "Upgrade your starting cards early and buy the Mist Amulet from the shop."
+        "Pay attention to enemy intent before deciding to attack or defend.",
+        "Wolf Pack deals double damage when played after another attack card.",
+        "Poison helps against enemies with block, while Guard Bear and Iron Tortoise protect difficult turns.",
+        "Repeat earlier missions to gain XP before pushing into harder routes."
       ],
       parent:
-        "This game is intended for teenagers and casual players. It helps practice strategy, logic, planning, and resource coordination. Scores and upgrades are stored locally and are for fun only.",
+        "This game is intended for teens and casual players. It practices strategy, logic, planning, and resource coordination. Progress is stored locally on the device and is for fun only.",
       faq: [
-        ["Is Beast Deck free to play?", "Yes. Like all games on WeightPlay, it runs completely free in your browser."],
-        ["What age is it recommended for?", "It is recommended for age 13+ due to strategic complexity and text reading requirements."],
-        ["How do I earn diamonds?", "You earn 1 diamond for every normal battle won, and 5 diamonds for defeating the Stage 3 Boss."]
+        ["Is Beast Deck free to play?", "Yes. Like all games on WeightPlay, it runs free in the browser."],
+        ["Does progress continue between sessions?", "Yes. Player level, XP, best mission, selected mission, and permanent upgrades are saved locally on the device."],
+        ["How do I earn Diamonds?", "Beast Deck does not drop Diamonds from battles. Use platform sources such as daily check-in rewards, then spend Diamonds on optional upgrades like the Mist Amulet."]
       ],
     },
     "animal-relic-hunters": {
@@ -568,28 +568,28 @@
     title: "獸王牌組：迷霧森林",
     age: "13+",
     difficulty: "中等",
-    time: "5-8 分鐘",
-    gameplay: "卡牌構建 Roguelike",
+    time: "6-10 分鐘",
+    gameplay: "Roguelike 牌組構築",
     genre: ["卡牌", "策略", "動物"],
-    skills: ["Logic", "Problem Solving", "Focus"],
-    intro: "獸王牌組：迷霧森林是一款回合制的 Roguelike 卡牌構築遊戲。玩家需要利用有限的能量出牌，防守並擊敗受迷霧腐化的森林巨獸，逐步強化卡組完成最終關卡。",
+    skills: ["邏輯", "解題", "專注"],
+    intro: "獸王牌組：迷霧森林是一款有本機累積進度的回合制 Roguelike 牌組構築遊戲。玩家通過任務、獲得經驗、提升等級、解鎖更深的森林路線，並用動物能力卡對抗腐化野獸。",
     how: [
-      "根據手牌的能量消耗，拖曳或點擊卡片出牌。",
-      "觀察敵人的意圖（攻擊或防守），累積護盾抵擋傷害。",
-      "擊敗野獸後，可以選擇一張新卡片加入牌組。",
-      "通關全部三個關卡，擊敗最終 Boss 即可獲得豐厚鑽石獎勵。"
+      "在選單選擇已解鎖任務，等級與任務進度會儲存在本機。",
+      "支付能量打出手牌，造成傷害、格擋、抽牌或施加中毒。",
+      "先觀察敵人的意圖，再決定要攻擊、防守或調整牌組節奏。",
+      "通過任務中的 3 場戰鬥可獲得經驗並解鎖下一條路線。"
     ],
     strategyTips: [
-      "在出牌前先查看敵人的意圖，避免在敵人防守時浪費重擊卡。",
-      "注意卡牌連鎖：『狼群連擊』若在其他攻擊卡後打出，會造成雙倍傷害！",
-      "毒素傷害可以繞過敵人的護盾，對高血量的 Boss 非常有效。",
-      "在商店解鎖『迷霧護符』能永久提升 10 點生命值上限，讓通關更順利。"
+      "敵人準備大攻擊時，優先使用守衛熊或鐵甲龜累積格擋。",
+      "狼群突襲在本回合已打出攻擊卡後會造成雙倍傷害。",
+      "中毒能穩定消耗高格擋敵人，抽牌卡則能提高組合成功率。",
+      "如果後面任務太難，可以重複前面任務練等再挑戰。"
     ],
-    parent: "這款遊戲適合青少年與成人玩家，能培養策略思考、資源分配與長遠規劃能力。所有遊戲進度均保存在本機中。",
+    parent: "本遊戲設計給青少年與休閒玩家，主要練習策略、邏輯、規劃與資源分配。進度只儲存在本機，僅供遊戲樂趣使用。",
     faq: [
-      ["這款遊戲需要付費嗎？", "不需要，這是一款完全免費的瀏覽器網頁遊戲。"],
-      ["為什麼建議年齡是 13+？", "因為遊戲包含豐富的卡牌連鎖、數值計算與策略決策，具有一定的挑戰性。"],
-      ["鑽石可以用來做什麼？", "鑽石可以在開局前購買『迷霧護符』，為每局挑戰帶來永久的生命值加成。"]
+      ["獸王牌組需要付費嗎？", "不需要。WeightPlay 的遊戲都可以直接在瀏覽器免費遊玩。"],
+      ["進度會保留嗎？", "會。玩家等級、經驗、最高任務、選擇任務與永久升級會儲存在這台裝置。"],
+      ["鑽石可以做什麼？", "獸王牌組不會從戰鬥掉落鑽石。鑽石目前以每日簽到等平台來源取得，可用來解鎖迷霧護符等永久升級。"]
     ]
   };
 

@@ -352,17 +352,17 @@ window.WONDER_LOBBY = {
       title: { en: "Beast Deck: The Mist Forest", "zh-Hant": "獸王牌組：迷霧森林" },
       status: "playable",
       statusText: { en: "Playable", "zh-Hant": "可遊玩" },
-      type: { en: "Roguelike Deckbuilder", "zh-Hant": "卡牌構建 Roguelike" },
+      type: { en: "Roguelike Deckbuilder", "zh-Hant": "Roguelike 牌組構築" },
       categories: ["Featured", "Animal Games", "Puzzle"],
       skills: ["Logic", "Problem Solving", "Focus"],
       ages: ["13"],
       ageLabel: { en: "13+", "zh-Hant": "13+" },
       href: "games/beast-deck/",
       description: {
-        en: "Build your deck of animal powers, choose upgrades, and defeat corrupted beasts in a mysterious mist forest.",
-        "zh-Hant": "構築你的動物力量牌組，選擇強力升級，並在神秘的迷霧森林中擊敗腐化巨獸。"
+        en: "Build animal-power decks, clear missions, level up locally, and unlock deeper routes through the mist forest.",
+        "zh-Hant": "組出動物能力牌組，通過任務、累積本機等級，逐步解鎖迷霧森林深處。"
       },
-      meta: { en: ["Card Roguelike", "3 Battles", "Diamond Boost"], "zh-Hant": ["卡牌構築", "3 場戰鬥", "鑽石加成"] },
+      meta: { en: ["Card Roguelike", "Local Level", "Mission Unlock"], "zh-Hant": ["牌組構築", "本機等級", "任務解鎖"] },
       art: { kind: "image", background: "assets/beast-deck-cover.png", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
     },
     {
