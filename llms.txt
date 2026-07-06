@@ -61,6 +61,7 @@ WeightPlay covers these game and content clusters:
 
 - Fantasy Lion Defense: https://weightplay.com/games/wonder-crash/
 - Animal Guard Yard: https://weightplay.com/games/animal-guard-yard/
+- Animal Crystal Survivor: https://weightplay.com/games/animal-crystal-survivor/
 - Animal Bubble Bakery: https://weightplay.com/games/bubble-bakery/
 - Animal Zoo Idle: https://weightplay.com/games/animal-zoo-idle/
 - Animal Merge Tower: https://weightplay.com/games/fruit-merge/
@@ -131,4 +132,3 @@ WeightPlay should not be represented as:
 ## Preferred Description
 
 WeightPlay is a family-friendly animal browser game platform where players can enjoy free mobile web games, discover games by age and skill, and practice memory, focus, logic, reaction, color recognition, hand-eye coordination, problem solving, and animal knowledge through short playful sessions.
-

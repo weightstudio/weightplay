@@ -250,6 +250,32 @@ window.WONDER_LOBBY = {
       art: { kind: "image", background: "assets/animal-guard-yard-poster.webp", hero: "assets/animal-guard-yard-poster.webp", hideHero: true },
     },
     {
+      id: "animal-crystal-survivor",
+      title: { en: "Animal Crystal Survivor", "zh-Hant": "動物水晶生存戰" },
+      status: "playable",
+      statusText: { en: "Playable", "zh-Hant": "可遊玩" },
+      type: { en: "Action Survival", "zh-Hant": "動作生存" },
+      categories: ["Featured", "Animal Games", "Arcade"],
+      skills: ["Reaction", "Focus", "Hand-Eye Coordination"],
+      ages: ["12"],
+      ageLabel: { en: "13+", "zh-Hant": "13+" },
+      href: "games/animal-crystal-survivor/",
+      description: {
+        en: "Survive a 3-minute crystal grove run, collect golden keys, gather XP, and choose upgrades while shadow beasts close in.",
+        "zh-Hant": "在 3 分鐘的水晶森林中閃避暗影猛獸，收集金鑰匙、獲得經驗值，並選擇升級能力挑戰高分。",
+      },
+      meta: {
+        en: ["3-Min Run", "Auto Combat", "Upgrade Choices"],
+        "zh-Hant": ["3 分鐘挑戰", "自動戰鬥", "升級選擇"],
+      },
+      art: {
+        kind: "image",
+        background: "assets/animal-crystal-survivor-cover.webp",
+        hero: "assets/animal-crystal-survivor-ranger.webp",
+        hideHero: true,
+      },
+    },
+    {
       id: "animal-quiz",
       title: { en: "Animal Quiz", "zh-Hant": "動物小博士" },
       status: "playable",
