@@ -399,7 +399,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "率領 3 隻動物英雄小隊，施放強大職業技能，收集並穿戴神裝，深入地牢擊敗巨獸首領。"
       },
       meta: { en: ["Turn-Based RPG", "3 Hero Squad", "Gear Loot"], "zh-Hant": ["回合制戰略", "3 隻英雄小隊", "裝備掉寶"] },
-      art: { kind: "image", background: "assets/beast-deck-cover.png", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
+      art: { kind: "image", background: "assets/weightplay-lion-mascot.webp", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
     },
     {
       id: "shadow-wolf",
@@ -417,7 +417,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "奔跑、跳躍、閃避與揮爪砍殺影怪。獲得經驗升級、開啟寶箱並穿戴強力神裝，挑戰遺跡巨獸！"
       },
       meta: { en: ["2D Side-Scroller", "Jumping Physics", "Equip Gear"], "zh-Hant": ["橫向捲軸", "跳躍物理", "裝備收集"] },
-      art: { kind: "image", background: "assets/beast-deck-cover.png", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
+      art: { kind: "image", background: "assets/weightplay-lion-mascot.webp", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
     },
   ],
 };
