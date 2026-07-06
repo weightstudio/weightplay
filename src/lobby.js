@@ -59,6 +59,7 @@ const lobbyGameFacts = {
   "zoo-helper-day": { difficulty: "Easy", time: "1-3 minutes" },
   "shape-train": { difficulty: "Easy", time: "1-3 minutes" },
   "tiny-weather-rescue": { difficulty: "Easy", time: "3-5 minutes" },
+  "beast-deck": { difficulty: "Medium", time: "5-8 minutes" },
 };
 let activeFilter = "all";
 let activeTopic = "all";

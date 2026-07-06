@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260703-frame1" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
-    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260703-related-images1" />
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260706-guide-scroll-scope1" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -172,7 +172,7 @@
         const loadGameInfo = () => {
           if (document.querySelector("script[data-crystal-game-info]")) return;
           const script = document.createElement("script");
-          script.src = "../../src/game-page-info.js?v=20260706-crystal-public1";
+          script.src = "../../src/game-page-info.js?v=20260706-guide-age-layers1";
           script.dataset.crystalGameInfo = "idle";
           script.async = true;
           document.body.appendChild(script);

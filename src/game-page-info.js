@@ -327,6 +327,34 @@
         ["Is it stressful?", "No. Wrong choices should use gentle feedback and let players try again."],
       ],
     },
+    "beast-deck": {
+      title: "Beast Deck: The Mist Forest",
+      age: "13+",
+      difficulty: "Medium",
+      time: "5-8 minutes",
+      skills: ["Logic", "Problem Solving", "Focus"],
+      intro:
+        "Beast Deck: The Mist Forest is a turn-based Roguelike deckbuilding card game. Players build a deck of animal powers, choose powerful upgrades, and fight corrupted beasts in a mysterious forest. The game challenges players with resource management, tactical synergy, and deck optimization.",
+      how: [
+        "Play cards from your hand by paying their Energy cost.",
+        "Gain block to defend against the enemy's declared attack intent.",
+        "Defeat corrupted beasts to draft new cards and expand your deck.",
+        "Defeat the final boss in Stage 3 to win the run and earn diamonds."
+      ],
+      strategyTips: [
+        "Pay attention to the enemy's intent before deciding to play attacks or defenses.",
+        "Build synergies: Wolf Pack deals double damage when played after another attack card.",
+        "Poison deals damage over time and bypasses enemy block. Use it for heavy bosses.",
+        "Upgrade your starting cards early and buy the Mist Amulet from the shop."
+      ],
+      parent:
+        "This game is intended for teenagers and casual players. It helps practice strategy, logic, planning, and resource coordination. Scores and upgrades are stored locally and are for fun only.",
+      faq: [
+        ["Is Beast Deck free to play?", "Yes. Like all games on WeightPlay, it runs completely free in your browser."],
+        ["What age is it recommended for?", "It is recommended for age 13+ due to strategic complexity and text reading requirements."],
+        ["How do I earn diamonds?", "You earn 1 diamond for every normal battle won, and 5 diamonds for defeating the Stage 3 Boss."]
+      ],
+    },
   };
 
   const labels = {
@@ -417,6 +445,7 @@
     "zoo-helper-day": { gameplay: "Zoo Workday", genre: ["Preschool", "Simulation", "Animal"] },
     "shape-train": { gameplay: "Shape Sorting", genre: ["Preschool", "Education", "Animal"] },
     "tiny-weather-rescue": { gameplay: "Helper Choice", genre: ["Puzzle", "Care", "Animal"] },
+    "beast-deck": { gameplay: "Card Roguelike", genre: ["Card", "Roguelike", "Animal"] },
   };
 
   const coverImages = {
@@ -438,6 +467,7 @@
     "zoo-helper-day": "zoo-helper-day-cover.webp",
     "shape-train": "shape-train-cover.webp",
     "tiny-weather-rescue": "tiny-weather-rescue-cover.webp",
+    "beast-deck": "beast-deck-cover.png",
   };
 
   const localizedGameplayProfiles = {
@@ -459,6 +489,7 @@
       "zoo-helper-day": { gameplay: "動物園工作日", genre: ["學齡前", "模擬", "動物"] },
       "shape-train": { gameplay: "形狀分類", genre: ["學齡前", "教育", "動物"] },
       "tiny-weather-rescue": { gameplay: "道具選擇", genre: ["益智", "照顧", "動物"] },
+      "beast-deck": { gameplay: "卡牌構建 Roguelike", genre: ["卡牌", "策略", "動物"] },
     },
   };
 
@@ -496,6 +527,35 @@
       "shape-train": zhGuide("動物火車", "形狀分類", ["觀察車廂上的形狀。", "把正確物品放到相同形狀的位置。", "完成火車任務。"]),
       "tiny-weather-rescue": zhGuide("動物幫幫隊", "道具選擇", ["觀察動物遇到的情境。", "選擇或拖曳正確道具幫忙。", "答對後完成關卡。"]),
     },
+  };
+
+  localizedGames["zh-Hant"]["beast-deck"] = {
+    title: "獸王牌組：迷霧森林",
+    age: "13+",
+    difficulty: "中等",
+    time: "5-8 分鐘",
+    gameplay: "卡牌構建 Roguelike",
+    genre: ["卡牌", "策略", "動物"],
+    skills: ["Logic", "Problem Solving", "Focus"],
+    intro: "獸王牌組：迷霧森林是一款回合制的 Roguelike 卡牌構築遊戲。玩家需要利用有限的能量出牌，防守並擊敗受迷霧腐化的森林巨獸，逐步強化卡組完成最終關卡。",
+    how: [
+      "根據手牌的能量消耗，拖曳或點擊卡片出牌。",
+      "觀察敵人的意圖（攻擊或防守），累積護盾抵擋傷害。",
+      "擊敗野獸後，可以選擇一張新卡片加入牌組。",
+      "通關全部三個關卡，擊敗最終 Boss 即可獲得豐厚鑽石獎勵。"
+    ],
+    strategyTips: [
+      "在出牌前先查看敵人的意圖，避免在敵人防守時浪費重擊卡。",
+      "注意卡牌連鎖：『狼群連擊』若在其他攻擊卡後打出，會造成雙倍傷害！",
+      "毒素傷害可以繞過敵人的護盾，對高血量的 Boss 非常有效。",
+      "在商店解鎖『迷霧護符』能永久提升 10 點生命值上限，讓通關更順利。"
+    ],
+    parent: "這款遊戲適合青少年與成人玩家，能培養策略思考、資源分配與長遠規劃能力。所有遊戲進度均保存在本機中。",
+    faq: [
+      ["這款遊戲需要付費嗎？", "不需要，這是一款完全免費的瀏覽器網頁遊戲。"],
+      ["為什麼建議年齡是 13+？", "因為遊戲包含豐富的卡牌連鎖、數值計算與策略決策，具有一定的挑戰性。"],
+      ["鑽石可以用來做什麼？", "鑽石可以在開局前購買『迷霧護符』，為每局挑戰帶來永久的生命值加成。"]
+    ]
   };
 
   localizedGames["zh-Hant"]["animal-crystal-survivor"] = {
