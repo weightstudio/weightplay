@@ -1012,6 +1012,14 @@ select {
   animation: actor-hit 0.26s ease-out;
 }
 
+.actor.is-roar-slowed {
+  filter: drop-shadow(0 8px 10px rgba(255, 184, 79, 0.32)) saturate(0.82);
+}
+
+.actor.is-roar-hit {
+  animation: roar-hit 0.52s ease-out;
+}
+
 .zombie.is-entering {
   animation: zombie-enter 0.5s ease-out;
 }
@@ -1022,6 +1030,10 @@ select {
 
 .zombie.is-biting {
   animation: zombie-bite 0.28s ease-out;
+}
+
+.zombie.is-roaring {
+  animation: boss-roar 0.62s ease-out;
 }
 
 .impact {
@@ -1046,6 +1058,12 @@ select {
 
 .impact.bite {
   background-position: 100% 50%;
+}
+
+.impact.roar {
+  width: calc(var(--cell-w) * 0.94);
+  background-position: 100% 50%;
+  filter: drop-shadow(0 0 10px rgba(255, 184, 79, 0.44));
 }
 
 .impact.place {
@@ -1389,6 +1407,13 @@ select {
     0 0 14px rgba(137, 255, 138, 0.42);
 }
 
+.board-pop.roar-pop {
+  color: #ffdf7e;
+  text-shadow:
+    0 2px 0 rgba(77, 40, 16, 0.42),
+    0 0 14px rgba(255, 184, 79, 0.5);
+}
+
 .result-panel,
 .loading-panel {
   position: fixed;
@@ -1642,6 +1667,34 @@ select {
   }
   100% {
     transform: translate(var(--actor-x, 0), var(--actor-y, 0)) translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes boss-roar {
+  0% {
+    transform: translate(var(--actor-x, 0), var(--actor-y, 0)) translate(-50%, -50%) scale(1);
+  }
+  35% {
+    filter: drop-shadow(0 0 18px rgba(255, 184, 79, 0.52));
+    transform: translate(var(--actor-x, 0), var(--actor-y, 0)) translate(-50%, -53%) scale(1.12);
+  }
+  100% {
+    transform: translate(var(--actor-x, 0), var(--actor-y, 0)) translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes roar-hit {
+  0% {
+    transform: translate(var(--actor-x, 0), var(--actor-y, 0)) translate(-50%, -50%) rotate(0deg);
+  }
+  35% {
+    transform: translate(var(--actor-x, 0), var(--actor-y, 0)) translate(-50%, -50%) rotate(-4deg) scale(0.96);
+  }
+  70% {
+    transform: translate(var(--actor-x, 0), var(--actor-y, 0)) translate(-50%, -50%) rotate(3deg) scale(1.03);
+  }
+  100% {
+    transform: translate(var(--actor-x, 0), var(--actor-y, 0)) translate(-50%, -50%) rotate(0deg);
   }
 }
 

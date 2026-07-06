@@ -335,12 +335,20 @@ canvas {
 }
 
 .upgrade-icon {
+  display: grid;
+  place-items: center;
   width: 58px;
   height: 58px;
   justify-self: center;
+  overflow: hidden;
   border-radius: 8px;
-  background-image: url("../../assets/animal-crystal-survivor-upgrade-icons.webp");
-  background-size: 800% 100%;
+}
+
+.upgrade-icon img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .upgrade-card b {

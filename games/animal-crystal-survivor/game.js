@@ -144,7 +144,8 @@
       upgradeAttackSpeedDesc: "\u653b\u64ca\u9593\u9694\u7e2e\u77ed\u3002",
       upgradePickupRadius: "\u6c34\u6676\u78c1\u529b",
       upgradePickupRadiusDesc: "\u53ef\u4ee5\u5f9e\u66f4\u9060\u8655\u6536\u96c6\u6c34\u6676\u8207\u91d1\u9470\u3002",
-    },  };
+    },
+  };
 
   const assetPaths = {
     arena: "../../assets/animal-crystal-survivor-forest-arena.webp",
@@ -156,16 +157,21 @@
     key: "../../assets/animal-crystal-survivor-golden-key.webp",
     seed: "../../assets/animal-crystal-survivor-crystal-seed-shot-v2.webp",
     blade: "../../assets/animal-crystal-survivor-leaf-blade-shot-v2.webp",
-    upgrades: "../../assets/animal-crystal-survivor-upgrade-icons.webp",
+    upgradeAttack: "../../assets/animal-crystal-survivor-upgrade-attack.png",
+    upgradeRange: "../../assets/animal-crystal-survivor-upgrade-range.png",
+    upgradeSpeed: "../../assets/animal-crystal-survivor-upgrade-speed.png",
+    upgradeMaxHp: "../../assets/animal-crystal-survivor-upgrade-max-hp.png",
+    upgradeCooldown: "../../assets/animal-crystal-survivor-upgrade-cooldown.png",
+    upgradePickup: "../../assets/animal-crystal-survivor-upgrade-pickup.png",
   };
 
   const upgrades = [
-    { id: "attack", icon: 0, name: "upgradeAttack", desc: "upgradeAttackDesc" },
-    { id: "range", icon: 1, name: "upgradeRange", desc: "upgradeRangeDesc" },
-    { id: "speed", icon: 2, name: "upgradeSpeed", desc: "upgradeSpeedDesc" },
-    { id: "maxHp", icon: 3, name: "upgradeMaxHp", desc: "upgradeMaxHpDesc" },
-    { id: "cooldown", icon: 4, name: "upgradeAttackSpeed", desc: "upgradeAttackSpeedDesc" },
-    { id: "pickup", icon: 5, name: "upgradePickupRadius", desc: "upgradePickupRadiusDesc" },
+    { id: "attack", icon: "upgradeAttack", name: "upgradeAttack", desc: "upgradeAttackDesc" },
+    { id: "range", icon: "upgradeRange", name: "upgradeRange", desc: "upgradeRangeDesc" },
+    { id: "speed", icon: "upgradeSpeed", name: "upgradeSpeed", desc: "upgradeSpeedDesc" },
+    { id: "maxHp", icon: "upgradeMaxHp", name: "upgradeMaxHp", desc: "upgradeMaxHpDesc" },
+    { id: "cooldown", icon: "upgradeCooldown", name: "upgradeAttackSpeed", desc: "upgradeAttackSpeedDesc" },
+    { id: "pickup", icon: "upgradePickup", name: "upgradePickupRadius", desc: "upgradePickupRadiusDesc" },
   ];
 
   const images = {};
@@ -520,7 +526,7 @@
     nodes.upgradeCards.innerHTML = options
       .map((item) => `
         <button class="upgrade-card" type="button" data-upgrade="${item.id}">
-          <span class="upgrade-icon" style="background-position:${item.icon * -100}% 0"></span>
+          <span class="upgrade-icon"><img src="${assetPaths[item.icon]}" alt="" /></span>
           <b>${t(item.name)}</b>
           <small>${t(item.desc)}</small>
         </button>

@@ -90,6 +90,7 @@
       threatFast: "Fast",
       threatShield: "Shield",
       threatBoss: "Boss",
+      bossRoar: "Boss roar!",
       fast: "Fast beasts",
       shield: "Shield beasts",
       swarm: "Swarm night",
@@ -168,6 +169,7 @@
       threatFast: "\u5feb\u901f",
       threatShield: "\u76fe\u724c",
       threatBoss: "Boss",
+      bossRoar: "Boss \u5486\u54ee\uff01",
       fast: "\u5feb\u901f\u91ce\u7378",
       shield: "\u91cd\u7532\u91ce\u7378",
       swarm: "\u591c\u665a\u7fa4\u8972",
@@ -800,6 +802,7 @@
       speed: data.speed / 100000,
       damage: data.damage,
       biteCooldown: 0,
+      bossRoarCooldown: data.type === "boss" ? 1800 : 0,
       warned: false,
       el: document.createElement("div"),
       hpEl: document.createElement("span"),
@@ -867,7 +870,10 @@
 
   function updateGuards(dt) {
     entities.filter((item) => item.kind === "guard").forEach((guard) => {
-      guard.cooldown -= dt;
+      const slowed = guard.roarSlowMs > 0;
+      guard.roarSlowMs = Math.max(0, (guard.roarSlowMs || 0) - dt);
+      guard.cooldown -= dt * (slowed ? 0.45 : 1);
+      guard.el.classList.toggle("is-roar-slowed", guard.roarSlowMs > 0);
       const target = findTargetForGuard(guard);
       if (target) faceTarget(guard, target);
       if (target && guard.cooldown <= 0) {
@@ -986,6 +992,7 @@
 
   function updateZombies(dt) {
     entities.filter((item) => item.kind === "zombie").forEach((zombie) => {
+      if (zombie.type === "boss") updateBossRoar(zombie, dt);
       const blocking = entities.find((item) => item.kind === "guard" && item.row === zombie.row && Math.abs(cellCenterX(item.col) - zombie.x) < 0.065);
       if (blocking) {
         zombie.biteCooldown -= dt;
@@ -1013,6 +1020,20 @@
       }
       updateEntityElement(zombie);
     });
+  }
+
+  function updateBossRoar(zombie, dt) {
+    zombie.bossRoarCooldown -= dt;
+    if (zombie.bossRoarCooldown > 0 || zombie.x <= 0.1 || zombie.dead) return;
+    const sameLaneGuards = entities.filter((item) => item.kind === "guard" && item.row === zombie.row && !item.dead);
+    sameLaneGuards.forEach((guard) => {
+      guard.roarSlowMs = Math.max(guard.roarSlowMs || 0, 2200);
+      pulseClass(guard.el, "is-roar-hit", 520);
+    });
+    pulseClass(zombie.el, "is-roaring", 620);
+    spawnImpact(Math.max(0.12, zombie.x - 0.04), laneProjectileY(zombie.row), "roar");
+    showBoardText(t("bossRoar"), Math.max(0.18, zombie.x - 0.04), Math.max(0.1, laneProjectileY(zombie.row) - 0.12), "roar-pop");
+    zombie.bossRoarCooldown = 5200;
   }
 
   function cleanupDead() {
