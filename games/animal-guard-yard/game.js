@@ -40,6 +40,8 @@
       previousBest: "Previous Best {score}",
       newBest: "New best!",
       improvement: "Improvement {value}%",
+      stageCleared: "Cleared",
+      stageBest: "Best {score}",
       skillReport: "Skill Report",
       planning: "Planning",
       focusSkill: "Focus",
@@ -125,6 +127,8 @@
       previousBest: "\u904e\u53bb\u6700\u4f73 {score}",
       newBest: "\u65b0\u7684\u6700\u4f73\u7d00\u9304\uff01",
       improvement: "\u9032\u6b65 {value}%",
+      stageCleared: "\u5df2\u901a\u904e",
+      stageBest: "\u6700\u4f73 {score}",
       skillReport: "\u80fd\u529b\u5c0f\u5831\u544a",
       planning: "\u898f\u5283",
       focusSkill: "\u5c08\u6ce8\u529b",
@@ -328,19 +332,31 @@
     }
   }
 
-  function saveProgress(score, skillScores) {
+  function saveProgress(score, skillScores, won = false) {
     const previous = loadProgress();
     const previousBest = Number(previous.bestScore) || 0;
     const bestScore = Math.max(previousBest, score);
     const improvementPercent = previousBest > 0 ? Math.round(((score - previousBest) / previousBest) * 100) : (score > 0 ? 100 : 0);
+    const stageKey = String(currentStage + 1);
+    const stageRecords = typeof previous.stageRecords === "object" && previous.stageRecords ? { ...previous.stageRecords } : {};
+    const previousStage = typeof stageRecords[stageKey] === "object" && stageRecords[stageKey] ? stageRecords[stageKey] : {};
+    const playedAt = new Date().toISOString();
+    stageRecords[stageKey] = {
+      cleared: Boolean(previousStage.cleared || won),
+      bestScore: Math.max(Number(previousStage.bestScore) || 0, score),
+      lastScore: score,
+      plays: (Number(previousStage.plays) || 0) + 1,
+      lastPlayedAt: playedAt,
+    };
     const record = {
       lastScore: score,
       bestScore,
       playCount: (Number(previous.playCount) || 0) + 1,
-      lastPlayedAt: new Date().toISOString(),
+      lastPlayedAt: playedAt,
       improvementPercent,
       skillScores,
       stage: currentStage + 1,
+      stageRecords,
     };
     try {
       localStorage.setItem(progressKey, JSON.stringify(record));
@@ -498,17 +514,28 @@
 
   function renderStageGrid() {
     nodes.stageGrid.innerHTML = "";
+    const progress = loadProgress();
+    const stageRecords = typeof progress.stageRecords === "object" && progress.stageRecords ? progress.stageRecords : {};
+    const legacyBestStage = Number(localStorage.getItem(bestKey)) || 0;
     stages.forEach((stage, index) => {
       const stageNo = index + 1;
       const button = document.createElement("button");
       button.className = "stage-card";
       button.type = "button";
       if (stageNo > unlocked) button.classList.add("locked");
+      const stageRecord = typeof stageRecords[String(stageNo)] === "object" && stageRecords[String(stageNo)] ? stageRecords[String(stageNo)] : {};
+      const cleared = Boolean(stageRecord.cleared) || stageNo <= legacyBestStage;
+      const bestScore = Number(stageRecord.bestScore) || 0;
+      if (cleared) button.classList.add("cleared");
       const iconUnit = units[Math.min(index, units.length - 1)]?.id || "cat";
+      const progressMeta = cleared || bestScore > 0
+        ? `<div class="stage-progress">${cleared ? `<em>${t("stageCleared")}</em>` : ""}${bestScore > 0 ? `<small>${t("stageBest", { score: bestScore })}</small>` : ""}</div>`
+        : "";
       button.innerHTML = `
         <b class="stage-animal">${animalSprite(iconUnit)}</b>
         <strong>${t("stage", { n: stageNo })}</strong>
         <span>${t(stage.titleKey)}</span>
+        ${progressMeta}
         ${stageThreatPreview(stage)}
       `;
       button.addEventListener("click", () => {
@@ -1265,7 +1292,7 @@
     }
     finalScore = (currentStage + 1) * 60 + Math.max(0, baseHp) * 8 + coinsEarned + (won ? 80 : 0);
     const skillScores = buildSkillScores(won, finalScore);
-    const progress = saveProgress(finalScore, skillScores);
+    const progress = saveProgress(finalScore, skillScores, won);
     renderResultReport(resultMessage, progress);
     track(won ? "game_complete" : "game_over", {
       level: currentStage + 1,

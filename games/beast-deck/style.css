@@ -869,9 +869,12 @@ body {
   font-size: 12px;
   font-weight: 700;
   text-align: center;
-  white-space: nowrap;
+  line-height: 1.15;
+  min-height: 2.3em;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
   overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .card-desc {
@@ -1109,8 +1112,8 @@ body {
 
 @media (max-width: 560px) {
   :root {
-    --card-width: 104px;
-    --card-height: 154px;
+    --card-width: 108px;
+    --card-height: 174px;
   }
 
   .beast-deck-app {
@@ -1239,11 +1242,12 @@ body {
     min-height: calc(var(--card-height) + 8px);
     padding: 4px 2px;
     scroll-snap-type: x proximity;
+    align-items: stretch;
   }
 
   .card {
-    padding: 7px;
-    gap: 4px;
+    padding: 8px 7px;
+    gap: 5px;
     scroll-snap-align: start;
   }
 
@@ -1252,16 +1256,24 @@ body {
   }
 
   .card-icon {
-    height: 42px;
+    height: 34px;
+    margin: 0;
+  }
+
+  .card-icon img {
+    max-width: 58px;
+    max-height: 34px;
   }
 
   .card-name {
     font-size: 11px;
+    min-height: 2.45em;
   }
 
   .card-desc {
-    font-size: 8.5px;
-    line-height: 1.18;
+    font-size: 8.7px;
+    line-height: 1.22;
+    align-items: flex-start;
   }
 
   .action-btn {
@@ -1300,8 +1312,8 @@ body {
 
 @media (max-width: 380px) {
   :root {
-    --card-width: 96px;
-    --card-height: 148px;
+    --card-width: 100px;
+    --card-height: 168px;
   }
 
   .hud-row b {

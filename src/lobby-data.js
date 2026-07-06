@@ -363,7 +363,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "組出動物能力牌組，通過任務、累積本機等級，逐步解鎖迷霧森林深處。"
       },
       meta: { en: ["Card Roguelike", "Local Level", "Mission Unlock"], "zh-Hant": ["牌組構築", "本機等級", "任務解鎖"] },
-      art: { kind: "image", background: "assets/beast-deck-cover.png", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
+      art: { kind: "image", background: "assets/beast-deck-cover.webp", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
     },
     {
       id: "animal-relic-hunters",
@@ -385,3 +385,22 @@ window.WONDER_LOBBY = {
     },
   ],
 };
+
+for (const game of window.WONDER_LOBBY.games) {
+  if (game.id === "beast-deck") {
+    game.title["zh-Hant"] = "獸王牌組：迷霧森林";
+    game.statusText["zh-Hant"] = "可遊玩";
+    game.type["zh-Hant"] = "Roguelike 牌組構築";
+    game.description["zh-Hant"] = "組出動物能力牌組，完成任務、累積本地等級，並解鎖迷霧森林更深的路線。";
+    game.meta["zh-Hant"] = ["牌組 Roguelike", "本地等級", "任務解鎖"];
+  }
+
+  if (game.id === "animal-relic-hunters") {
+    game.title["zh-Hant"] = "動物遺跡獵人";
+    game.statusText["zh-Hant"] = "可遊玩";
+    game.type["zh-Hant"] = "房間動作 Roguelike";
+    game.description["zh-Hant"] = "探索古代遺跡房間，收集遺跡能量球，開啟寶箱並穿戴強力裝備，最終擊敗 Boss。";
+    game.meta["zh-Hant"] = ["動作 Roguelike", "3 個房間", "裝備欄位"];
+    game.art.background = "assets/animal-relic-hunters-cover.webp";
+  }
+}
