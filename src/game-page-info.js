@@ -387,6 +387,64 @@
         ["How do I defeat the Boss?", "Collect relics to increase your health and speed, and equip rare weapons to deal high damage before challenging the Boss Behemoth."]
       ],
     },
+    "beast-tactician": {
+      title: "Beast Tactician",
+      age: "13+",
+      difficulty: "Hard",
+      time: "5-8 minutes",
+      skills: ["Logic", "Problem Solving", "Focus"],
+      intro:
+        "Beast Tactician is a turn-based squad tactics RPG. Lead a party of 3 animal heroes (Shield Bear, Flame Tiger, and Nature Deer) into ancient dungeon rooms. Manage action timeline turns, cast unique class spells, collect weapons and armor, and clear rooms to challenge the final Boss Behemoth.",
+      how: [
+        "Select your active hero's skill card from the bottom Action Panel.",
+        "Click or tap on a target hero (for heals/buffs) or enemy shadow beast to cast the skill.",
+        "Defeat waves of shadow monsters to gain experience points (EXP) and level up your squad.",
+        "Loot equipment chests to obtain rare Weapon and Armor gear, and equip them in the sidebar to boost stats.",
+        "Explore Room 3 and defeat the Boss Behemoth to complete your expedition."
+      ],
+      strategyTips: [
+        "Use Shield Bear's Iron Wall taunt skill to draw enemy attacks away from your squishy healers and attackers.",
+        "Flame Tiger's Frenzy increases its next skill damage by 50%. Chain it before Shadow Slash for huge bursts.",
+        "Nature Deer's Rejuvenation heals allies. Keep Bear healthy so he can keep blocking damage.",
+        "Unlock the permanent Mist Amulet from the Diamond Shop to start the run with +10 Max HP for all squad members."
+      ],
+      parent:
+        "This game is designed for teenagers to train tactical planning, team coordination, health resource management, and step-by-step logic. All progression tracking is kept locally and does not store personal data.",
+      faq: [
+        ["Is Beast Tactician free to play?", "Yes. All games on the WeightPlay platform run free of cost in the web browser."],
+        ["How does the turn order work?", "Avatars in the top timeline are sorted by Speed. The leftmost character takes their action first."],
+        ["How do I buy upgrades?", "Earning diamonds in dungeons allows you to unlock the permanent Mist Amulet in the shop."]
+      ],
+    },
+    "shadow-wolf": {
+      title: "Shadow Wolf",
+      age: "13+",
+      difficulty: "Hard",
+      time: "5-8 minutes",
+      skills: ["Logic", "Problem Solving", "Focus"],
+      intro:
+        "Shadow Wolf is a 2D Action Platformer RPG. Navigate stone platforms, double jump over spike traps, dash past shadow monsters, level up your attributes, and collect keys to open gear chests. Stand strong in Room 3 and defeat the giant Boss Behemoth.",
+      how: [
+        "Use A/D or Arrow keys to run left and right.",
+        "Press W, Up Arrow, or Space to jump. Press it again in mid-air to double jump.",
+        "Press J or left click to execute a claw attack. Press K or Shift to dash.",
+        "Defeat waves of shadow bat/wolf monsters, pick up green experience orbs, and level up to pick passive relics.",
+        "Loot gold keys from elites, open chests, and equip Weapons, Armor, and Boots in the sidebar."
+      ],
+      strategyTips: [
+        "Time your double jumps carefully to avoid landing on spike traps, which deal constant damage.",
+        "If you fall off a platform, don't panic! You will respawn on the nearest stable ground with a minor penalty of -5 HP.",
+        "Dash grants brief invincibility frames. Use it to dodge bats shooting red projectiles.",
+        "Unlock the permanent Mist Amulet from the Diamond Shop to start the platform run with +10 Max HP."
+      ],
+      parent:
+        "This game helps teenagers practice spatial calculations, real-time motor reflexes, hand-eye coordination, and inventory optimization. All progression metrics are saved locally and are non-clinical.",
+      faq: [
+        ["Is Shadow Wolf free to play?", "Yes. All games on the WeightPlay platform run free of cost in the web browser."],
+        ["What happens if I fall into a pit?", "You respawn on the nearest edge with a minor health penalty of -5 HP."],
+        ["How do I defeat the Boss?", "Stay active, dodge its charge attacks by jumping onto higher platforms, and attack from behind."]
+      ],
+    },
   };
 
   const labels = {
@@ -525,6 +583,8 @@
       "tiny-weather-rescue": { gameplay: "道具選擇", genre: ["益智", "照顧", "動物"] },
       "beast-deck": { gameplay: "卡牌構建 Roguelike", genre: ["卡牌", "策略", "動物"] },
       "animal-relic-hunters": { gameplay: "房間動作 Roguelite", genre: ["動作", "策略", "動物"] },
+      "beast-tactician": { gameplay: "回合制戰略 RPG", genre: ["回合制", "策略", "動物"] },
+      "shadow-wolf": { gameplay: "橫向動作 RPG", genre: ["動作", "冒險", "動物"] },
     },
   };
 
@@ -590,6 +650,66 @@
       ["獸王牌組需要付費嗎？", "不需要。WeightPlay 的遊戲都可以直接在瀏覽器免費遊玩。"],
       ["進度會保留嗎？", "會。玩家等級、經驗、最高任務、選擇任務與永久升級會儲存在這台裝置。"],
       ["鑽石可以做什麼？", "獸王牌組不會從戰鬥掉落鑽石。鑽石目前以每日簽到等平台來源取得，可用來解鎖迷霧護符等永久升級。"]
+    ]
+  };
+
+  localizedGames["zh-Hant"]["beast-tactician"] = {
+    title: "獸王守衛",
+    age: "13+",
+    difficulty: "困難",
+    time: "5-8 分鐘",
+    gameplay: "回合制戰略 RPG",
+    genre: ["回合制", "策略", "動物"],
+    skills: ["邏輯", "解題", "專注"],
+    intro: "獸王守衛是一款本機累積進度的回合制戰略 RPG 遊戲。玩家率領 3 隻動物英雄（熊衛、虎刺、鹿祭）進入遺跡地牢，管理時間軸行動順序、施放職業特技與防禦嘲諷，並收集裝備強化屬性，最終挑戰地牢巨獸 Boss！",
+    how: [
+      "在下方動作面板點擊選擇當前行動英雄的技能卡。",
+      "在畫面中點選目標對象（友方施加治療/護盾，敌方施加攻擊）。",
+      "擊敗怪物波次可累積全隊經驗值並提升等級，解鎖更高技能倍率。",
+      "開啟遺跡寶箱獲得稀有武器與防具，在側邊欄為各英雄穿戴以提升戰鬥屬性。",
+      "挑戰 Room 3 的遺跡巨獸 Boss，取得探險勝利！"
+    ],
+    strategyTips: [
+      "熊衛的《鐵壁防護》能大幅提升護盾並嘲諷怪獸，必須隨時維持好以保護輸出和奶媽。",
+      "虎刺的《狂暴蓄能》可讓下一擊爆發增加 50% 傷害，配合《影爪暗襲》能瞬間秒殺精英怪。",
+      "鹿祭的《復甦之光》提供穩定單體治療，如果熊衛護盾被破，要立刻幫忙補血。",
+      "在鑽石商店解鎖永久『迷霧護符』，能讓三位英雄以 +10 Max HP 的更高姿態開局挑戰。"
+    ],
+    parent: "本遊戲旨在讓青少年玩家練習團隊策略、行動規劃、數值防禦防守與步驟性邏輯。所有進度只保存在瀏覽器本機，僅供遊戲娛樂參考，非臨床診斷評量。",
+    faq: [
+      ["獸王守衛需要付費嗎？", "不需要。WeightPlay 平台上的所有網頁遊戲均可免費在瀏覽器中遊玩。"],
+      ["行動順序是如何決定的？", "上方時間軸的頭像排序由各角色的『速度』屬性決定，最左邊的頭像將優先進行行動。"],
+      ["如何獲取更好的裝備？", "在戰後點擊寶箱能獲得不同品質的武器與防具，給予特定定位的角色穿戴能發揮最大威力。"]
+    ]
+  };
+
+  localizedGames["zh-Hant"]["shadow-wolf"] = {
+    title: "影狼傳說",
+    age: "13+",
+    difficulty: "困難",
+    time: "5-8 分鐘",
+    gameplay: "橫向動作 RPG",
+    genre: ["動作", "冒險", "動物"],
+    skills: ["邏輯", "解題", "專注"],
+    intro: "影狼傳說是一款 2D 橫向捲軸動作冒險 RPG 遊戲。玩家操作影狼探險家在浮空石台與棘刺陷阱間穿梭，利用二段跳與無敵衝刺躲避影怪，收集鑰匙解鎖寶箱，穿戴利齒、項圈與飛靴，最終深入遺跡擊敗巨獸 Boss！",
+    how: [
+      "使用鍵盤 A/D 或左右方向鍵左右奔跑。",
+      "按 W、上方向鍵或空白鍵進行跳躍，在空中再次按下可觸發『二段跳』以越過棘刺陷阱。",
+      "按 J 鍵進行近戰揮爪攻擊；按 K 鍵或 Shift 鍵進行短距離無敵衝刺（Dash）。",
+      "擊敗影獸會掉落經驗能量球，收集升級即可點選遺物能力。",
+      "擊殺精英怪取得金色鑰匙開啟寶箱，並在側邊欄為影狼穿戴武器、防具與鞋子。"
+    ],
+    strategyTips: [
+      "空中二段跳時要注意落地位置，不慎踩中棘刺陷阱會持續受到尖刺傷害。",
+      "如果掉落平台深淵，影狼會在最近的平台邊緣復活，但會損失 -5 HP 作為懲罰，請務必小心起跳。",
+      "衝刺（Dash）具有短暫無敵幀，可以用來穿過發射紅色彈幕的飛行怪獸。",
+      "收集鑽石在選單購買永久『迷霧護符』，可提供 +10 Max HP 的巨大起步優勢。"
+    ],
+    parent: "本遊戲旨在幫助青少年鍛鍊空間距離感、即時動作反射、眼手協調與資源規劃。進度保存在本機，結果僅供趣味，不涉及任何評估診斷。",
+    faq: [
+      ["影狼傳說需要付費嗎？", "不需要。WeightPlay 平台上的所有網頁遊戲均可免費在瀏覽器中遊玩。"],
+      ["掉下平台會直接死掉嗎？", "不會。您會在最近的平台邊緣復活，但會扣除 5 點生命值，請注意維持好安全血量。"],
+      ["如何對抗 Room 3 的 Boss？", "利用多層平台躲避 Boss 的衝撞攻擊，並在 Boss 出手空檔繞到背後進行連續揮爪輸出。"]
     ]
   };
 

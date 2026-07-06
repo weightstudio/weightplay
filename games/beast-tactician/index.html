@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title data-ui="title">Beast Tactician: Squad RPG</title>
+    <!-- Standard meta tags -->
+    <meta name="robots" content="index,follow" />
+    <meta name="description" content="Manage your squad of 3 animal heroes, cast tactical class skills, loot weapons and armor, and challenge the dungeon boss." />
+    <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Beast Tactician - WeightPlay" />
+    <meta property="og:description" content="Turn-based tactical team RPG. Level up, equip gear, and defeat the Behemoth!" />
+    <meta property="og:url" content="https://weightplay.com/games/beast-tactician/" />
+    <meta property="og:image" content="https://weightplay.com/assets/beast-deck-cover.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="canonical" href="https://weightplay.com/games/beast-tactician/" />
+    
+    <link rel="stylesheet" href="../../src/loading-screen.css" />
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260706-guide-scroll-scope1" />
+    <link rel="stylesheet" href="style.css?v=20260706-tactician-v1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet" />
+
+    <!-- Google Tag JSON-LD Schema -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "VideoGame",
+        "name": "Beast Tactician",
+        "alternateName": "獸王守衛",
+        "url": "https://weightplay.com/games/beast-tactician/",
+        "image": "https://weightplay.com/assets/beast-deck-cover.png",
+        "description": "Lead a squad of 3 animal heroes: Shield Bear, Flame Tiger, and Nature Deer in turn-based combat. Cast skills, loot and equip Weapons and Armor, and defeat the Behemoth.",
+        "genre": ["Turn-Based RPG", "Tactics", "Animal Games"],
+        "gamePlatform": "Web browser",
+        "operatingSystem": "Any",
+        "playMode": "SinglePlayer",
+        "keywords": "beast tactician, animal tactics rpg, turn based combat, squad builder, animal browser game",
+        "audience": {
+          "@type": "Audience",
+          "audienceType": "13+ players and families",
+          "suggestedMinAge": 13
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "WeightStudio",
+          "url": "https://weightplay.com/"
+        },
+        "inLanguage": ["en", "zh-Hant"],
+        "isAccessibleForFree": true
+      }
+    </script>
+  </head>
+  <body>
+    <!-- Top Nav bar -->
+    <header class="top-nav">
+      <div class="top-nav-left">
+        <button id="menuBtn" class="back-btn" type="button" aria-label="Go back to lobby">
+          <span class="icon">🏠</span>
+          <span class="text" data-ui="menu">Menu</span>
+        </button>
+        <h2 class="game-brand" data-ui="title">Beast Tactician</h2>
+      </div>
+      <div class="top-nav-right">
+        <div class="locale-picker">
+          <span class="picker-icon">🌐</span>
+          <select id="localeSelect" aria-label="Language selector">
+            <option value="en">English</option>
+            <option value="zh-Hant">繁體中文</option>
+          </select>
+        </div>
+      </div>
+    </header>
+
+    <main class="relic-app">
+      <!-- Loading screen -->
+      <section id="loadingPanel" class="loading-panel" aria-live="polite">
+        <div class="loading-content">
+          <h1 data-ui="title">Beast Tactician</h1>
+          <div class="loading-bar">
+            <div id="loadingFill" class="loading-fill" style="width: 0%"></div>
+          </div>
+          <span id="loadingText" class="loading-percentage">0%</span>
+        </div>
+      </section>
+
+      <!-- Start Menu panel -->
+      <section id="menuPanel" class="panel menu-panel">
+        <div class="menu-layout">
+          <div class="menu-main">
+            <div class="menu-cover-box">
+              <img class="cover" src="../../assets/beast-deck-cover.png" alt="Beast Tactician Cover" />
+            </div>
+            <h1 class="menu-title" data-ui="menuTitle">Lead your Animal Squad.</h1>
+            <p class="menu-hint" data-ui="menuHint">
+              Defeat shadow monsters in turn-based squad combat. Collect Weapon and Armor drops, level up to choose relic buffs, and defeat the Boss in Room 3.
+            </p>
+            <div class="goals-card">
+              <h3 data-ui="prototypeGoalsTitle">Prototype test goals</h3>
+              <p data-ui="prototypeGoalsText">Clear Room 3, defeat the giant Boss Behemoth, verify team level up buffs, and equip gear on Bear, Tiger, and Deer.</p>
+            </div>
+            <button id="startBtn" class="primary-btn start-btn" type="button" data-ui="startRun">Start Expedition</button>
+          </div>
+
+          <!-- Diamond Shop Upgrade -->
+          <div class="menu-shop">
+            <h2 data-ui="diamondShopTitle">Permanent Upgrade</h2>
+            <div class="shop-badge">
+              <span>💎</span>
+              <strong id="diamondBalance">0</strong>
+            </div>
+            <div class="shop-list">
+              <button id="amuletBtn" class="shop-item-btn" type="button">
+                <div class="shop-item-meta">
+                  <strong data-ui="amuletName">Mist Amulet</strong>
+                  <small data-ui="amuletEffect">Start every run with +10 Max HP for all squad members.</small>
+                </div>
+                <b class="shop-cost-tag">💎 <span id="amuletCost">15</span></b>
+              </button>
+              <div id="amuletStatus" class="shop-status-text"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Active Game / Turn-Based Battle View -->
+      <section id="gamePanel" class="panel game-panel hidden">
+        <div class="game-layout">
+          <!-- Main Combat Arena -->
+          <div class="arena-viewport">
+            <!-- Timeline Turn Order Bar -->
+            <div class="timeline-row">
+              <span class="timeline-label">TIMELINE</span>
+              <div id="timelineList" class="timeline-list">
+                <!-- Rendered dynamically -->
+              </div>
+            </div>
+
+            <!-- Stage & Room info row -->
+            <div class="arena-hud-row">
+              <div class="meta-badge font-bold">🗺️ Room <strong id="roomText">1/3</strong></div>
+              <div class="meta-badge text-yellow-300">⚔️ Action Points: <strong id="apText">1/1</strong></div>
+            </div>
+
+            <!-- Heroes vs Monsters Grid -->
+            <div class="battlefield-grid">
+              <!-- Heroes Column (Left) -->
+              <div class="battlefield-side left-side" id="heroesColumn">
+                <!-- Rendered dynamically (Bear, Tiger, Deer) -->
+              </div>
+              
+              <!-- Divider line -->
+              <div class="battlefield-divider"></div>
+
+              <!-- Enemies Column (Right) -->
+              <div class="battlefield-side right-side" id="enemiesColumn">
+                <!-- Rendered dynamically -->
+              </div>
+            </div>
+
+            <!-- Action Prompt / Targeting instruction -->
+            <div id="actionPrompt" class="action-prompt">Select a Skill card below...</div>
+
+            <!-- Bottom Action Panel (Control HUD) -->
+            <footer class="action-control-hud">
+              <div class="active-hero-banner">
+                <span class="active-badge">Active Turn:</span>
+                <strong id="activeHeroName">Shield Bear</strong>
+              </div>
+              <div class="skills-cards-container" id="skillCardsRow">
+                <!-- Skills cards rendered by JS -->
+              </div>
+              <button id="endTurnBtn" class="end-turn-btn" type="button">End Turn</button>
+            </footer>
+          </div>
+
+          <!-- Inventory Sidebar slots -->
+          <aside id="inventoryPanel" class="inventory-sidebar">
+            <h2 data-ui="sidebarInventory">Squad Inventory</h2>
+            
+            <div class="squad-members-tabs">
+              <button class="tab-btn active" data-hero="bear">🐻 Bear</button>
+              <button class="tab-btn" data-hero="tiger">🐯 Tiger</button>
+              <button class="tab-btn" data-hero="deer">🦌 Deer</button>
+            </div>
+
+            <!-- Selected Hero Gear Slots -->
+            <div class="selected-hero-gear">
+              <div class="gear-slot-card" data-slot="weapon" id="sidebarWeaponSlot">
+                <div class="slot-header"><span class="slot-label" data-ui="slotWeapon">WEAPON</span></div>
+                <div class="slot-body">
+                  <div class="slot-icon" id="eqWeaponIcon">⚔️</div>
+                  <strong class="item-name" id="eqWeaponName">None</strong>
+                  <span class="item-effect" id="eqWeaponEffect">+0 Attack</span>
+                </div>
+              </div>
+              
+              <div class="gear-slot-card" data-slot="armor" id="sidebarArmorSlot">
+                <div class="slot-header"><span class="slot-label" data-ui="slotArmor">ARMOR</span></div>
+                <div class="slot-body">
+                  <div class="slot-icon" id="eqArmorIcon">🛡️</div>
+                  <strong class="item-name" id="eqArmorName">None</strong>
+                  <span class="item-effect" id="eqArmorEffect">+0 Defense</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Stat values list -->
+            <div class="stats-list">
+              <h3 data-ui="sidebarStats">Character Stats</h3>
+              <div class="stat-row"><span>Lv / EXP:</span><strong id="statLevel">Lv.1 (0/100)</strong></div>
+              <div class="stat-row"><span>💥 Attack Power:</span><strong id="statAtk">10</strong></div>
+              <div class="stat-row"><span>🛡️ Defense:</span><strong id="statDef">4</strong></div>
+              <div class="stat-row"><span>⚡ Speed:</span><strong id="statSpeed">12</strong></div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <!-- Relic Draft Panel (Pause Overlay) -->
+      <section id="draftPanel" class="draft-overlay hidden">
+        <div class="draft-card-box">
+          <h2 data-ui="chooseCard">Choose a Relic Upgrade</h2>
+          <p class="draft-desc" data-ui="chooseCardDesc">Select one of these ancient relics to empower your squad.</p>
+          <div id="draftCards" class="draft-cards-row">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Loot Equipment Chest Modal Overlay -->
+      <section id="lootPanel" class="loot-overlay hidden">
+        <div class="loot-box">
+          <h2 data-ui="lootFound">Dungeon Chest Loot!</h2>
+          <div class="loot-card">
+            <div id="lootIcon" class="loot-card-icon">⚔️</div>
+            <h3 id="lootName">Crystal Sword</h3>
+            <p id="lootType">Rare Weapon</p>
+            <strong id="lootEffect">+10 Attack Power</strong>
+          </div>
+          <button id="equipLootBtn" class="primary-btn equip-loot-btn" type="button" data-ui="equipLoot">Equip Gear</button>
+        </div>
+      </section>
+
+      <!-- Result Screen -->
+      <section id="resultPanel" class="panel result-panel hidden">
+        <div class="result-card">
+          <h1 id="resultTitle" data-ui="runComplete">Expedition Success!</h1>
+          <div class="result-score-box">
+            <span data-ui="hudStage">Rooms Cleared</span>
+            <strong id="resultScore">3</strong>
+          </div>
+          <p id="resultText" class="result-flavor">Excellent run! You led the squad to victory against the shadow behemoth.</p>
+          
+          <div class="skills-card">
+            <h3 data-ui="skillReportTitle">Ability Analysis Report</h3>
+            <div class="skills-row">
+              <div class="skill-meter">
+                <span data-ui="skillLogic">Logic</span>
+                <span class="stars" id="logicStars">⭐⭐⭐⭐⭐</span>
+              </div>
+              <div class="skill-meter">
+                <span data-ui="skillFocus">Focus</span>
+                <span class="stars" id="focusStars">⭐⭐⭐⭐⭐</span>
+              </div>
+              <div class="skill-meter">
+                <span data-ui="skillProblem">Problem Solving</span>
+                <span class="stars" id="problemStars">⭐⭐⭐⭐⭐</span>
+              </div>
+            </div>
+            <p id="skillReportText" class="skills-report-desc">Your reaction, item placement, and equipment builds were optimized.</p>
+          </div>
+
+          <div class="result-btn-row">
+            <button id="retryBtn" class="primary-btn retry-btn" type="button" data-ui="tryAgain">Try Again</button>
+            <button id="resultMenuBtn" class="menu-btn" type="button" data-ui="backToMenu">Back to Menu</button>
+          </div>
+          <small class="disclaimer" data-ui="resultDisclaimer">For fun and local progress tracking only.</small>
+        </div>
+      </section>
+    </main>
+
+    <!-- Shared Game Guide standard structure -->
+    <section class="game-guide-wrapper">
+      <div id="game-page-info">
+        <!-- Rendered dynamically by game-page-info.js -->
+      </div>
+    </section>
+
+    <!-- Core Engine Scripts -->
+    <script src="../../src/site-config.js?v=20260706-tactician-v1"></script>
+    <script src="../../src/version.js?v=20260706-tactician-v1"></script>
+    <script src="../../src/analytics.js?v=20260706-tactician-v1"></script>
+    <script src="../../src/sound.js?v=20260706-tactician-v1"></script>
+    <script src="../../src/edge-guard.js?v=20260706-tactician-v1"></script>
+    <script src="../../src/i18n.js?v=20260706-tactician-v1"></script>
+    <script src="../../src/game-page-info.js?v=20260706-tactician-v1"></script>
+    <script src="../../src/wallet.js?v=20260706-tactician-v1"></script>
+    <script src="../../src/tutorial.js?v=20260706-tactician-v1"></script>
+    <script src="game.js?v=20260706-tactician-v1"></script>
+  </body>
+</html>

@@ -383,6 +383,42 @@ window.WONDER_LOBBY = {
       meta: { en: ["Action Roguelite", "3 Rooms", "Gear Slots"], "zh-Hant": ["動作冒險", "3 個房間", "裝備系統"] },
       art: { kind: "image", background: "assets/animal-relic-hunters-cover.png", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
     },
+    {
+      id: "beast-tactician",
+      title: { en: "Beast Tactician", "zh-Hant": "獸王守衛" },
+      status: "playable",
+      statusText: { en: "Playable", "zh-Hant": "可遊玩" },
+      type: { en: "Turn-Based Tactics RPG", "zh-Hant": "回合制戰略 RPG" },
+      categories: ["Featured", "Animal Games", "Puzzle"],
+      skills: ["Logic", "Problem Solving", "Focus"],
+      ages: ["13"],
+      ageLabel: { en: "13+", "zh-Hant": "13+" },
+      href: "games/beast-tactician/",
+      description: {
+        en: "Lead a squad of 3 animal heroes, cast powerful spells, collect gear, and clear dungeons to challenge the behemoth.",
+        "zh-Hant": "率領 3 隻動物英雄小隊，施放強大職業技能，收集並穿戴神裝，深入地牢擊敗巨獸首領。"
+      },
+      meta: { en: ["Turn-Based RPG", "3 Hero Squad", "Gear Loot"], "zh-Hant": ["回合制戰略", "3 隻英雄小隊", "裝備掉寶"] },
+      art: { kind: "image", background: "assets/beast-deck-cover.png", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
+    },
+    {
+      id: "shadow-wolf",
+      title: { en: "Shadow Wolf", "zh-Hant": "影狼傳說" },
+      status: "playable",
+      statusText: { en: "Playable", "zh-Hant": "可遊玩" },
+      type: { en: "2D Action Platformer RPG", "zh-Hant": "橫向動作 RPG" },
+      categories: ["Featured", "Animal Games"],
+      skills: ["Logic", "Problem Solving", "Focus"],
+      ages: ["13"],
+      ageLabel: { en: "13+", "zh-Hant": "13+" },
+      href: "games/shadow-wolf/",
+      description: {
+        en: "Run, jump, dash, and slash shadow beasts. Gain EXP, open gear chests, and defeat the behemoth boss.",
+        "zh-Hant": "奔跑、跳躍、閃避與揮爪砍殺影怪。獲得經驗升級、開啟寶箱並穿戴強力神裝，挑戰遺跡巨獸！"
+      },
+      meta: { en: ["2D Side-Scroller", "Jumping Physics", "Equip Gear"], "zh-Hant": ["橫向捲軸", "跳躍物理", "裝備收集"] },
+      art: { kind: "image", background: "assets/beast-deck-cover.png", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
+    },
   ],
 };
 

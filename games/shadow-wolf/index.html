@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title data-ui="title">Shadow Wolf: Platform RPG</title>
+    <!-- Standard meta tags -->
+    <meta name="robots" content="index,follow" />
+    <meta name="description" content="Navigate stone platforms, double jump over spikes, dash past shadow monsters, and equip rare accessories to defeat the boss." />
+    <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Shadow Wolf - WeightPlay" />
+    <meta property="og:description" content="2D side-scrolling platformer RPG. Run, jump, slash monsters, and equip rare gear!" />
+    <meta property="og:url" content="https://weightplay.com/games/shadow-wolf/" />
+    <meta property="og:image" content="https://weightplay.com/assets/beast-deck-cover.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="canonical" href="https://weightplay.com/games/shadow-wolf/" />
+    
+    <link rel="stylesheet" href="../../src/loading-screen.css" />
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260706-guide-scroll-scope1" />
+    <link rel="stylesheet" href="style.css?v=20260706-wolf-v1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet" />
+
+    <!-- Google Tag JSON-LD Schema -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "VideoGame",
+        "name": "Shadow Wolf",
+        "alternateName": "影狼傳說",
+        "url": "https://weightplay.com/games/shadow-wolf/",
+        "image": "https://weightplay.com/assets/beast-deck-cover.png",
+        "description": "Play a 2D action platformer RPG: run, double jump over traps, dash past shadow wolves/bats, level up, and open chests to equip gear and defeat the behemoth boss.",
+        "genre": ["2D Platformer", "Action RPG", "Animal Games"],
+        "gamePlatform": "Web browser",
+        "operatingSystem": "Any",
+        "playMode": "SinglePlayer",
+        "keywords": "shadow wolf, platformer rpg, side scroller, action rpg, jump physics, animal browser game",
+        "audience": {
+          "@type": "Audience",
+          "audienceType": "13+ players and families",
+          "suggestedMinAge": 13
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "WeightStudio",
+          "url": "https://weightplay.com/"
+        },
+        "inLanguage": ["en", "zh-Hant"],
+        "isAccessibleForFree": true
+      }
+    </script>
+  </head>
+  <body>
+    <!-- Top Nav bar -->
+    <header class="top-nav">
+      <div class="top-nav-left">
+        <button id="menuBtn" class="back-btn" type="button" aria-label="Go back to lobby">
+          <span class="icon">🏠</span>
+          <span class="text" data-ui="menu">Menu</span>
+        </button>
+        <h2 class="game-brand" data-ui="title">Shadow Wolf</h2>
+      </div>
+      <div class="top-nav-right">
+        <div class="locale-picker">
+          <span class="picker-icon">🌐</span>
+          <select id="localeSelect" aria-label="Language selector">
+            <option value="en">English</option>
+            <option value="zh-Hant">繁體中文</option>
+          </select>
+        </div>
+      </div>
+    </header>
+
+    <main class="relic-app">
+      <!-- Loading screen -->
+      <section id="loadingPanel" class="loading-panel" aria-live="polite">
+        <div class="loading-content">
+          <h1 data-ui="title">Shadow Wolf</h1>
+          <div class="loading-bar">
+            <div id="loadingFill" class="loading-fill" style="width: 0%"></div>
+          </div>
+          <span id="loadingText" class="loading-percentage">0%</span>
+        </div>
+      </section>
+
+      <!-- Start Menu panel -->
+      <section id="menuPanel" class="panel menu-panel">
+        <div class="menu-layout">
+          <div class="menu-main">
+            <div class="menu-cover-box">
+              <img class="cover" src="../../assets/beast-deck-cover.png" alt="Shadow Wolf Cover" />
+            </div>
+            <h1 class="menu-title" data-ui="menuTitle">Dungeon Platform Adventure.</h1>
+            <p class="menu-hint" data-ui="menuHint">
+              Move with A/D, jump/double-jump with W/Space, attack with J, and dash with K. Collect keys to open chest upgrades, and clear Room 3.
+            </p>
+            <div class="goals-card">
+              <h3 data-ui="prototypeGoalsTitle">Prototype test goals</h3>
+              <p data-ui="prototypeGoalsText">Jump over platforms and spikes, slash bat/wolf enemies, open loot chests, and verify equipped item buffs are active.</p>
+            </div>
+            <button id="startBtn" class="primary-btn start-btn" type="button" data-ui="startRun">Start Expedition</button>
+          </div>
+
+          <!-- Diamond Shop Upgrade -->
+          <div class="menu-shop">
+            <h2 data-ui="diamondShopTitle">Permanent Upgrade</h2>
+            <div class="shop-badge">
+              <span>💎</span>
+              <strong id="diamondBalance">0</strong>
+            </div>
+            <div class="shop-list">
+              <button id="amuletBtn" class="shop-item-btn" type="button">
+                <div class="shop-item-meta">
+                  <strong data-ui="amuletName">Mist Amulet</strong>
+                  <small data-ui="amuletEffect">Start every run with +10 Max HP (40 HP instead of 30 HP).</small>
+                </div>
+                <b class="shop-cost-tag">💎 <span id="amuletCost">15</span></b>
+              </button>
+              <div id="amuletStatus" class="shop-status-text"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Active Game View -->
+      <section id="gamePanel" class="panel game-panel hidden">
+        <div class="game-layout">
+          <!-- Main Arena Canvas -->
+          <div class="arena-viewport">
+            <div class="arena-hud">
+              <div class="hud-item player-health">
+                <div class="health-meta">
+                  <span data-ui="hudHp">Wolf HP</span>
+                  <strong id="hpText">30/30</strong>
+                </div>
+                <div class="bar-bg"><div id="hpFill" class="bar-fill health" style="width: 100%"></div></div>
+              </div>
+              <div class="hud-item player-exp">
+                <div class="exp-meta">
+                  <span>Lv.<strong id="levelVal">1</strong></span>
+                  <span id="expText">0/100</span>
+                </div>
+                <div class="bar-bg"><div id="expFill" class="bar-fill exp" style="width: 0%"></div></div>
+              </div>
+              <div class="hud-meta-row">
+                <div class="meta-badge font-bold">🗺️ Room <strong id="roomText">1/3</strong></div>
+                <div class="meta-badge text-yellow-300">🔑 Keys: <strong id="keyText">0</strong></div>
+              </div>
+            </div>
+
+            <!-- Canvas viewport -->
+            <div class="canvas-container">
+              <canvas id="gameCanvas" width="800" height="500"></canvas>
+              
+              <!-- Mobile Virtual D-Pad Layout -->
+              <div class="mobile-controls-row">
+                <div class="mobile-dpad">
+                  <button id="btnLeft" class="ctrl-btn" type="button" aria-label="Move left">⬅️</button>
+                  <button id="btnRight" class="ctrl-btn" type="button" aria-label="Move right">➡️</button>
+                </div>
+                <div class="mobile-actions">
+                  <button id="btnJump" class="ctrl-btn" type="button" aria-label="Jump">Jump</button>
+                  <button id="btnAttack" class="ctrl-btn" type="button" aria-label="Attack">Slash</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Inventory Sidebar slots -->
+          <aside id="inventoryPanel" class="inventory-sidebar">
+            <h2 data-ui="sidebarInventory">Equipped Gear</h2>
+            <div class="gear-slots">
+              <!-- Weapon Slot -->
+              <div class="gear-slot-card" data-slot="weapon">
+                <div class="slot-header"><span class="slot-label" data-ui="slotWeapon">WEAPON</span></div>
+                <div class="slot-body">
+                  <div class="slot-icon">⚔️</div>
+                  <strong class="item-name" id="eqWeaponName">None</strong>
+                  <span class="item-effect" id="eqWeaponEffect">+0 Damage</span>
+                </div>
+              </div>
+              <!-- Armor Slot -->
+              <div class="gear-slot-card" data-slot="armor">
+                <div class="slot-header"><span class="slot-label" data-ui="slotArmor">ARMOR</span></div>
+                <div class="slot-body">
+                  <div class="slot-icon">🛡️</div>
+                  <strong class="item-name" id="eqArmorName">None</strong>
+                  <span class="item-effect" id="eqArmorEffect">+0 Max HP</span>
+                </div>
+              </div>
+              <!-- Boots Slot -->
+              <div class="gear-slot-card" data-slot="boots">
+                <div class="slot-header"><span class="slot-label" data-ui="slotBoots">BOOTS</span></div>
+                <div class="slot-body">
+                  <div class="slot-icon">🥾</div>
+                  <strong class="item-name" id="eqBootsName">None</strong>
+                  <span class="item-effect" id="eqBootsEffect">+0 Jump Force</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Stat values list -->
+            <div class="stats-list">
+              <h3 data-ui="sidebarStats">Character Stats</h3>
+              <div class="stat-row"><span>💥 Claw Damage:</span><strong id="statDmg">10</strong></div>
+              <div class="stat-row"><span>⚡ Move Speed:</span><strong id="statSpeed">4.0</strong></div>
+              <div class="stat-row"><span>🦘 Jump Velocity:</span><strong id="statJump">8.5</strong></div>
+              <div class="stat-row"><span>🎯 Critical Chance:</span><strong id="statCrit">5%</strong></div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <!-- Relic Draft Panel (Pause Overlay) -->
+      <section id="draftPanel" class="draft-overlay hidden">
+        <div class="draft-card-box">
+          <h2 data-ui="chooseCard">Choose a Relic Upgrade</h2>
+          <p class="draft-desc" data-ui="chooseCardDesc">Select one of these ancient relics to empower your wolf.</p>
+          <div id="draftCards" class="draft-cards-row">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Loot Equipment Chest Modal Overlay -->
+      <section id="lootPanel" class="loot-overlay hidden">
+        <div class="loot-box">
+          <h2 data-ui="lootFound">Relic Chest Unlocked!</h2>
+          <div class="loot-card">
+            <div id="lootIcon" class="loot-card-icon">⚔️</div>
+            <h3 id="lootName">Crystal Sword</h3>
+            <p id="lootType">Rare Weapon</p>
+            <strong id="lootEffect">+30% Damage</strong>
+          </div>
+          <button id="equipLootBtn" class="primary-btn equip-loot-btn" type="button" data-ui="equipLoot">Equip Gear</button>
+        </div>
+      </section>
+
+      <!-- Result Screen -->
+      <section id="resultPanel" class="panel result-panel hidden">
+        <div class="result-card">
+          <h1 id="resultTitle" data-ui="runComplete">Expedition Success!</h1>
+          <div class="result-score-box">
+            <span data-ui="hudStage">Rooms Cleared</span>
+            <strong id="resultScore">3</strong>
+          </div>
+          <p id="resultText" class="result-flavor">Excellent run! You traversed the ruins and defeated the Behemoth.</p>
+          
+          <div class="skills-card">
+            <h3 data-ui="skillReportTitle">Ability Analysis Report</h3>
+            <div class="skills-row">
+              <div class="skill-meter">
+                <span data-ui="skillLogic">Logic</span>
+                <span class="stars" id="logicStars">⭐⭐⭐⭐⭐</span>
+              </div>
+              <div class="skill-meter">
+                <span data-ui="skillFocus">Focus</span>
+                <span class="stars" id="focusStars">⭐⭐⭐⭐⭐</span>
+              </div>
+              <div class="skill-meter">
+                <span data-ui="skillProblem">Problem Solving</span>
+                <span class="stars" id="problemStars">⭐⭐⭐⭐⭐</span>
+              </div>
+            </div>
+            <p id="skillReportText" class="skills-report-desc">Your reaction, item placement, and equipment builds were optimized.</p>
+          </div>
+
+          <div class="result-btn-row">
+            <button id="retryBtn" class="primary-btn retry-btn" type="button" data-ui="tryAgain">Try Again</button>
+            <button id="resultMenuBtn" class="menu-btn" type="button" data-ui="backToMenu">Back to Menu</button>
+          </div>
+          <small class="disclaimer" data-ui="resultDisclaimer">For fun and local progress tracking only.</small>
+        </div>
+      </section>
+    </main>
+
+    <!-- Shared Game Guide standard structure -->
+    <section class="game-guide-wrapper">
+      <div id="game-page-info">
+        <!-- Rendered dynamically by game-page-info.js -->
+      </div>
+    </section>
+
+    <!-- Core Engine Scripts -->
+    <script src="../../src/site-config.js?v=20260706-wolf-v1"></script>
+    <script src="../../src/version.js?v=20260706-wolf-v1"></script>
+    <script src="../../src/analytics.js?v=20260706-wolf-v1"></script>
+    <script src="../../src/sound.js?v=20260706-wolf-v1"></script>
+    <script src="../../src/edge-guard.js?v=20260706-wolf-v1"></script>
+    <script src="../../src/i18n.js?v=20260706-wolf-v1"></script>
+    <script src="../../src/game-page-info.js?v=20260706-wolf-v1"></script>
+    <script src="../../src/wallet.js?v=20260706-wolf-v1"></script>
+    <script src="../../src/tutorial.js?v=20260706-wolf-v1"></script>
+    <script src="game.js?v=20260706-wolf-v1"></script>
+  </body>
+</html>
