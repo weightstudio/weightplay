@@ -18,7 +18,7 @@
     
     <link rel="stylesheet" href="../../src/loading-screen.css" />
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260706-guide-scroll-scope1" />
-    <link rel="stylesheet" href="style.css?v=20260706-relic-v1" />
+    <link rel="stylesheet" href="style.css?v=20260706-relic-reroll1" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet" />
@@ -194,6 +194,11 @@
               </div>
             </div>
 
+            <div class="backpack-panel">
+              <h3 data-ui="backpackTitle">Backpack</h3>
+              <div id="backpackList" class="backpack-list" aria-live="polite"></div>
+            </div>
+
             <!-- Stat values list -->
             <div class="stats-list">
               <h3 data-ui="sidebarStats">Character Stats</h3>
@@ -214,6 +219,12 @@
           <div id="draftCards" class="draft-cards-row">
             <!-- Rendered by JS -->
           </div>
+          <button id="rerollDraftBtn" class="draft-reroll-btn" type="button">
+            <img class="ui-icon ui-icon--tiny" src="../../assets/weightplay-diamond.svg" alt="" aria-hidden="true">
+            <span data-ui="rerollRelics">Reroll relic choices</span>
+            <b id="rerollDraftCost">3</b>
+          </button>
+          <p id="rerollDraftStatus" class="draft-reroll-status" aria-live="polite"></p>
         </div>
       </section>
 
@@ -240,6 +251,7 @@
             <strong id="resultScore">3</strong>
           </div>
           <p id="resultText" class="result-flavor">Excellent run! You explored the ruins and defeated the Behemoth.</p>
+          <div id="resultSummary" class="result-summary" aria-live="polite"></div>
           
           <div class="skills-card">
             <h3 data-ui="skillReportTitle">Ability Analysis Report</h3>
@@ -283,9 +295,9 @@
     <script src="../../src/sound.js?v=20260706-relic-v1"></script>
     <script src="../../src/edge-guard.js?v=20260706-relic-v1"></script>
     <script src="../../src/i18n.js?v=20260706-relic-v1"></script>
-    <script src="../../src/game-page-info.js?v=20260706-relic-v1"></script>
+    <script src="../../src/game-page-info.js?v=20260706-relic-result-guide1"></script>
     <script src="../../src/wallet.js?v=20260706-relic-v1"></script>
     <script src="../../src/tutorial.js?v=20260706-relic-v1"></script>
-    <script src="game.js?v=20260706-relic-v1"></script>
+    <script src="game.js?v=20260706-relic-result1"></script>
   </body>
 </html>

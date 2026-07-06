@@ -1,6 +1,7 @@
 (() => {
   const GAME_ID = "animal-relic-hunters";
   const saveKey = "weightplay_relic_hunters_v1";
+  const profileKey = "weightplay:animal-relic-hunters:profile:v1";
   const localeKey = "weightPlayLocale";
 
   const $ = (id) => document.getElementById(id);
@@ -31,6 +32,7 @@
     eqArmorEffect: $("eqArmorEffect"),
     eqBootsName: $("eqBootsName"),
     eqBootsEffect: $("eqBootsEffect"),
+    backpackList: $("backpackList"),
     statDmg: $("statDmg"),
     statRate: $("statRate"),
     statSpeed: $("statSpeed"),
@@ -44,6 +46,7 @@
     resultTitle: $("resultTitle"),
     resultScore: $("resultScore"),
     resultText: $("resultText"),
+    resultSummary: $("resultSummary"),
     skillReportText: $("skillReportText"),
     logicStars: $("logicStars"),
     focusStars: $("focusStars"),
@@ -55,9 +58,13 @@
     amuletBtn: $("amuletBtn"),
     amuletCost: $("amuletCost"),
     amuletStatus: $("amuletStatus"),
+    rerollDraftBtn: $("rerollDraftBtn"),
+    rerollDraftCost: $("rerollDraftCost"),
+    rerollDraftStatus: $("rerollDraftStatus"),
   };
 
   const amuletCost = 15;
+  const draftRerollCost = 3;
 
   const text = {
     en: {
@@ -77,8 +84,15 @@
       keysLabel: "Keys",
       chooseCard: "Choose a Relic Upgrade",
       chooseCardDesc: "Select one of these ancient relics to empower your explorer.",
+      rerollRelics: "Reroll relic choices",
+      rerollRelicsUsed: "Reroll used for this level.",
+      rerollRelicsNeedDiamonds: "Not enough Diamonds for a reroll.",
       lootFound: "Relic Chest Unlocked!",
       equipLoot: "Equip Gear",
+      backpackTitle: "Backpack",
+      backpackEmpty: "Open relic chests to collect permanent gear.",
+      equipGearAction: "Equip",
+      equippedTag: "Equipped",
       tryAgain: "Try Again",
       backToMenu: "Back to Menu",
       sidebarInventory: "Equipped Gear",
@@ -91,8 +105,15 @@
       statAttackRate: "Attack Rate:",
       statSpeed: "Speed:",
       statMagnetRange: "Magnet Range:",
+      hudStage: "Rooms Cleared",
       runComplete: "Expedition Success!",
       runFailed: "Explorer Defeated",
+      resultSummaryLevel: "Saved Level",
+      resultSummaryRooms: "Rooms",
+      resultSummaryKeys: "Run Keys",
+      resultSummaryDiamonds: "Diamonds Earned",
+      resultSummaryGear: "Equipped Gear",
+      resultSummaryNoGear: "No gear equipped yet",
       resultDisclaimer: "For fun and local progress tracking only.",
       skillReportTitle: "Ability Analysis Report",
       skillLogic: "Logic",
@@ -106,6 +127,10 @@
       relic_speed_desc: "Decrease bullet firing interval by 20%.",
       relic_shield: "Shield Heart",
       relic_shield_desc: "Increase Max HP by 5 and heal 5 HP.",
+      relic_damage: "Crystal Fang",
+      relic_damage_desc: "Increase bullet damage by 20%.",
+      relic_heal: "Moonwell Breath",
+      relic_heal_desc: "Restore 12 HP immediately.",
 
       // Equipment Drops
       gear_sword_rare: "Crystal Sword",
@@ -147,8 +172,15 @@
       keysLabel: "鑰匙",
       chooseCard: "選擇遺跡能力",
       chooseCardDesc: "選擇古代遺跡之力以強化你的探險家能力。",
+      rerollRelics: "重抽遺跡能力",
+      rerollRelicsUsed: "本次升級已使用重抽。",
+      rerollRelicsNeedDiamonds: "鑽石不足，無法重抽。",
       lootFound: "解鎖遺跡寶箱！",
       equipLoot: "裝備道具",
+      backpackTitle: "背包",
+      backpackEmpty: "開啟遺跡寶箱後，永久裝備會收藏在這裡。",
+      equipGearAction: "裝備",
+      equippedTag: "已穿戴",
       tryAgain: "再試一次",
       backToMenu: "回到主選單",
       sidebarInventory: "已穿戴裝備",
@@ -176,6 +208,10 @@
       relic_speed_desc: "武器自動射擊的冷卻間隔縮短 20%。",
       relic_shield: "護盾心靈",
       relic_shield_desc: "最大生命值增加 5 點，並恢復 5 點生命值。",
+      relic_damage: "水晶獸牙",
+      relic_damage_desc: "子彈傷害提高 20%。",
+      relic_heal: "月泉吐息",
+      relic_heal_desc: "立刻恢復 12 點生命值。",
 
       // Equipment Drops
       gear_sword_rare: "晶體神劍",
@@ -201,6 +237,16 @@
       report_no_wins: "繼續加油！多收集鑰匙開啟寶箱，並維持好血量安全。"
     }
   };
+
+  Object.assign(text["zh-Hant"], {
+    hudStage: "\u5df2\u901a\u95dc\u623f\u9593",
+    resultSummaryLevel: "\u4fdd\u5b58\u7b49\u7d1a",
+    resultSummaryRooms: "\u623f\u9593\u9032\u5ea6",
+    resultSummaryKeys: "\u672c\u8f2a\u91d1\u9470",
+    resultSummaryDiamonds: "\u7372\u5f97\u947d\u77f3",
+    resultSummaryGear: "\u5df2\u7a7f\u6234\u88dd\u5099",
+    resultSummaryNoGear: "\u5c1a\u672a\u7a7f\u6234\u88dd\u5099"
+  });
 
   // Textures and Sprites
   const assets = {
@@ -243,12 +289,12 @@
     playerX: 400,
     playerY: 250,
     playerSpeed: 3.0,
-    playerAngle: 0,
     level: 1,
     exp: 0,
     expNeed: 100,
     room: 1,
     keys: 0,
+    runKeys: 0,
     gameActive: false,
     gameLoopId: null,
 
@@ -261,6 +307,7 @@
     relicMagnetCount: 0,
     relicRateCount: 0,
     relicHpCount: 0,
+    relicDamageCount: 0,
 
     // Equip slots
     eqWeapon: null,
@@ -274,6 +321,76 @@
     pickups: [], // keys, chests, portals
     particleSystems: [],
   };
+
+  let profile = createDefaultProfile();
+
+  function createDefaultProfile() {
+    return {
+      level: 1,
+      exp: 0,
+      expNeed: 100,
+      inventory: [],
+      equipped: {
+        weapon: null,
+        armor: null,
+        boots: null,
+      },
+    };
+  }
+
+  function normalizeProfile(data) {
+    const next = createDefaultProfile();
+    if (!data || typeof data !== "object") return next;
+
+    next.level = Math.max(1, Math.floor(Number(data.level) || 1));
+    next.exp = Math.max(0, Math.floor(Number(data.exp) || 0));
+    next.expNeed = Math.max(100, Math.floor(Number(data.expNeed) || 100));
+
+    if (Array.isArray(data.inventory)) {
+      next.inventory = [...new Set(data.inventory.filter((key) => gearDb[key]))];
+    }
+
+    const equipped = data.equipped && typeof data.equipped === "object" ? data.equipped : {};
+    for (const slot of ["weapon", "armor", "boots"]) {
+      const key = equipped[slot];
+      next.equipped[slot] = gearDb[key]?.slot === slot ? key : null;
+      if (next.equipped[slot] && !next.inventory.includes(next.equipped[slot])) {
+        next.inventory.push(next.equipped[slot]);
+      }
+    }
+
+    while (next.exp >= next.expNeed) {
+      next.exp -= next.expNeed;
+      next.level += 1;
+      next.expNeed = Math.floor(next.expNeed * 1.3);
+    }
+
+    return next;
+  }
+
+  function loadProfile() {
+    try {
+      profile = normalizeProfile(JSON.parse(localStorage.getItem(profileKey) || "{}"));
+    } catch {
+      profile = createDefaultProfile();
+    }
+    syncStateFromProfile();
+  }
+
+  function saveProfile() {
+    try {
+      localStorage.setItem(profileKey, JSON.stringify(profile));
+    } catch {}
+  }
+
+  function syncStateFromProfile() {
+    state.level = profile.level;
+    state.exp = profile.exp;
+    state.expNeed = profile.expNeed;
+    state.eqWeapon = profile.equipped.weapon;
+    state.eqArmor = profile.equipped.armor;
+    state.eqBoots = profile.equipped.boots;
+  }
 
   // Keyboard Movement Vector
   let keysPressed = {};
@@ -289,6 +406,7 @@
     } catch {
       state.amuletUnlocked = false;
     }
+    loadProfile();
   }
 
   function saveLocalState() {
@@ -355,6 +473,9 @@
     if (state.relicRateCount > 0) {
       rate *= Math.pow(0.8, state.relicRateCount);
     }
+    if (state.relicDamageCount > 0) {
+      dmg *= Math.pow(1.2, state.relicDamageCount);
+    }
 
     // Apply Gear Armor
     let maxHp = (state.amuletUnlocked ? 40 : 30) + (state.relicHpCount * 5);
@@ -384,8 +505,10 @@
     nodes.statSpeed.textContent = stats.speed.toFixed(1);
     nodes.statMagnet.textContent = `${stats.magnet}px`;
 
-    nodes.hpText.textContent = `${state.playerHp}/${stats.maxHp}`;
-    nodes.hpFill.style.width = `${(state.playerHp / stats.maxHp) * 100}%`;
+    const hp = Math.max(0, Math.ceil(state.playerHp));
+    const maxHp = Math.ceil(stats.maxHp);
+    nodes.hpText.textContent = `${hp}/${maxHp}`;
+    nodes.hpFill.style.width = `${Math.max(0, Math.min(100, (state.playerHp / stats.maxHp) * 100))}%`;
   }
 
   function renderEquippedGear() {
@@ -421,29 +544,92 @@
       nodes.eqBootsName.textContent = t("noneLabel");
       nodes.eqBootsEffect.style.display = "none";
     }
+
+    renderBackpack();
+  }
+
+  function renderBackpack() {
+    if (!nodes.backpackList) return;
+
+    nodes.backpackList.innerHTML = "";
+    if (profile.inventory.length === 0) {
+      const empty = document.createElement("p");
+      empty.className = "backpack-empty";
+      empty.textContent = t("backpackEmpty");
+      nodes.backpackList.appendChild(empty);
+      return;
+    }
+
+    profile.inventory.forEach((key) => {
+      const g = gearDb[key];
+      if (!g) return;
+
+      const equippedKey = profile.equipped[g.slot];
+      const equipped = equippedKey === key;
+      const item = document.createElement("button");
+      item.className = `backpack-item${equipped ? " is-equipped" : ""}`;
+      item.type = "button";
+      item.dataset.gearKey = key;
+      item.innerHTML = `
+        <img src="${g.iconSrc}" alt="" aria-hidden="true">
+        <span class="backpack-copy">
+          <strong>${t(g.nameKey)}</strong>
+          <small>${t(g.effectKey)}</small>
+        </span>
+        <b>${equipped ? t("equippedTag") : t("equipGearAction")}</b>
+      `;
+      item.addEventListener("click", () => equipGearItem(key));
+      nodes.backpackList.appendChild(item);
+    });
+  }
+
+  function addGearToInventory(key) {
+    if (!gearDb[key]) return;
+    if (!profile.inventory.includes(key)) {
+      profile.inventory.push(key);
+      saveProfile();
+    }
+  }
+
+  function equipGearItem(key) {
+    const g = gearDb[key];
+    if (!g) return;
+
+    addGearToInventory(key);
+    const oldStats = getStats();
+    profile.equipped[g.slot] = key;
+    syncStateFromProfile();
+    const newStats = getStats();
+
+    if (g.slot === "armor") {
+      state.playerHp = Math.min(newStats.maxHp, state.playerHp + (newStats.maxHp - oldStats.maxHp));
+    }
+
+    saveProfile();
+    renderStatsPanel();
+    renderEquippedGear();
+    updateHUDText();
+    window.WonderSound?.play("success");
   }
 
   // Combat loop updates
   function startRun() {
     loadLocalState();
+    syncStateFromProfile();
     const stats = getStats();
     state.playerMaxHp = stats.maxHp;
     state.playerHp = state.playerMaxHp;
     state.playerX = 400;
     state.playerY = 250;
-    state.level = 1;
-    state.exp = 0;
-    state.expNeed = 100;
     state.room = 1;
     state.keys = 0;
+    state.runKeys = 0;
 
-    // Reset slots/relics
-    state.eqWeapon = null;
-    state.eqArmor = null;
-    state.eqBoots = null;
+    // Reset run-only relic buffs. Level and equipment are permanent profile data.
     state.relicMagnetCount = 0;
     state.relicRateCount = 0;
     state.relicHpCount = 0;
+    state.relicDamageCount = 0;
 
     state.enemies = [];
     state.bullets = [];
@@ -543,7 +729,6 @@
     if (!nearest) return;
 
     const angle = Math.atan2(nearest.y - state.playerY, nearest.x - state.playerX);
-    state.playerAngle = angle;
 
     const stats = getStats();
     state.bullets.push({
@@ -559,21 +744,46 @@
 
   // Exp/Level up draft Relic selection
   let currentDraftChoices = [];
+  let draftRerollUsed = false;
+
+  function gainExp(amount) {
+    state.exp += amount;
+    profile.exp = state.exp;
+    profile.expNeed = state.expNeed;
+    profile.level = state.level;
+    saveProfile();
+  }
+
   function handleLevelUp() {
     state.level++;
     state.exp -= state.expNeed;
     state.expNeed = Math.floor(state.expNeed * 1.3);
+    profile.level = state.level;
+    profile.exp = state.exp;
+    profile.expNeed = state.expNeed;
+    saveProfile();
     window.WonderSound?.play("success");
 
     // Pause game loop
     state.gameActive = false;
 
-    // Choose 3 random relics
-    const pool = ["relic_magnet", "relic_speed", "relic_shield"];
-    shuffle(pool);
+    draftRerollUsed = false;
+    nodes.rerollDraftStatus.textContent = "";
+    renderDraftChoices();
+    nodes.draftPanel.classList.remove("hidden");
+    updateDraftRerollUI();
+  }
+
+  function renderDraftChoices(keepCurrent = false) {
+    // Choose 3 random relics from a wider pool so rerolling has real choice value.
+    if (!keepCurrent || currentDraftChoices.length === 0) {
+      const pool = ["relic_magnet", "relic_speed", "relic_shield", "relic_damage", "relic_heal"];
+      shuffle(pool);
+      currentDraftChoices = pool.slice(0, 3);
+    }
 
     nodes.draftCards.innerHTML = "";
-    pool.forEach((relicId) => {
+    currentDraftChoices.forEach((relicId) => {
       const cardEl = document.createElement("button");
       cardEl.className = "draft-item-btn";
       cardEl.type = "button";
@@ -581,6 +791,8 @@
       let iconSrc = uiAssets.magnet;
       if (relicId === "relic_speed") iconSrc = uiAssets.rate;
       else if (relicId === "relic_shield") iconSrc = uiAssets.shield;
+      else if (relicId === "relic_damage") iconSrc = uiAssets.attack;
+      else if (relicId === "relic_heal") iconSrc = uiAssets.shield;
 
       cardEl.innerHTML = `
         <div class="draft-item-icon"><img src="${iconSrc}" alt="" aria-hidden="true"></div>
@@ -600,8 +812,39 @@
 
       nodes.draftCards.appendChild(cardEl);
     });
+  }
 
-    nodes.draftPanel.classList.remove("hidden");
+  function updateDraftRerollUI() {
+    const wallet = window.WeightPlayWallet?.read() || { diamonds: 0 };
+    nodes.rerollDraftCost.textContent = draftRerollCost;
+    nodes.rerollDraftBtn.disabled = draftRerollUsed || wallet.diamonds < draftRerollCost;
+    if (draftRerollUsed) {
+      nodes.rerollDraftStatus.textContent = t("rerollRelicsUsed");
+    } else if (wallet.diamonds < draftRerollCost) {
+      nodes.rerollDraftStatus.textContent = t("rerollRelicsNeedDiamonds");
+    } else {
+      nodes.rerollDraftStatus.textContent = "";
+    }
+  }
+
+  function rerollDraftChoices() {
+    if (draftRerollUsed) {
+      updateDraftRerollUI();
+      return;
+    }
+
+    const spent = window.WeightPlayWallet?.spendDiamonds(draftRerollCost);
+    if (!spent) {
+      nodes.rerollDraftStatus.textContent = t("rerollRelicsNeedDiamonds");
+      updateDraftRerollUI();
+      return;
+    }
+
+    draftRerollUsed = true;
+    renderDraftChoices();
+    updateDraftRerollUI();
+    updateDiamondShopUI();
+    window.WonderSound?.play("upgrade");
   }
 
   function applyRelic(relicId) {
@@ -613,6 +856,11 @@
       state.relicHpCount++;
       const stats = getStats();
       state.playerHp = Math.min(stats.maxHp, state.playerHp + 5);
+    } else if (relicId === "relic_damage") {
+      state.relicDamageCount++;
+    } else if (relicId === "relic_heal") {
+      const stats = getStats();
+      state.playerHp = Math.min(stats.maxHp, state.playerHp + 12);
     }
   }
 
@@ -638,26 +886,16 @@
     nodes.lootName.textContent = t(g.nameKey);
     nodes.lootType.textContent = t(g.typeKey);
     nodes.lootEffect.textContent = t(g.effectKey);
+    addGearToInventory(pickedKey);
+    renderEquippedGear();
 
     nodes.lootPanel.classList.remove("hidden");
   }
 
   function equipLoot() {
-    const g = gearDb[currentLootItem];
-    if (g.slot === "weapon") {
-      state.eqWeapon = currentLootItem;
-    } else if (g.slot === "armor") {
-      // Recalculate maxHp differences
-      const oldStats = getStats();
-      state.eqArmor = currentLootItem;
-      const newStats = getStats();
-      state.playerHp += (newStats.maxHp - oldStats.maxHp);
-    } else if (g.slot === "boots") {
-      state.eqBoots = currentLootItem;
-    }
+    equipGearItem(currentLootItem);
 
     nodes.lootPanel.classList.add("hidden");
-    window.WonderSound?.play("success");
 
     // Resume loop
     state.gameActive = true;
@@ -665,6 +903,35 @@
     renderEquippedGear();
     updateHUDText();
     state.gameLoopId = requestAnimationFrame(updateGameEngine);
+  }
+
+  function equippedGearSummary() {
+    const keys = [state.eqWeapon, state.eqArmor, state.eqBoots].filter(Boolean);
+    if (keys.length === 0) return t("resultSummaryNoGear");
+    return keys.map((key) => t(gearDb[key].nameKey)).join(" / ");
+  }
+
+  function renderResultSummary({ cleared, diamondsEarned }) {
+    if (!nodes.resultSummary) return;
+    const rows = [
+      [t("resultSummaryLevel"), `Lv.${profile.level}`],
+      [t("resultSummaryRooms"), `${cleared}/3`],
+      [t("resultSummaryKeys"), String(state.runKeys)],
+      [t("resultSummaryDiamonds"), `+${diamondsEarned}`],
+      [t("resultSummaryGear"), equippedGearSummary()],
+    ];
+
+    nodes.resultSummary.textContent = "";
+    rows.forEach(([label, value]) => {
+      const row = document.createElement("div");
+      row.className = "result-summary-row";
+      const labelEl = document.createElement("span");
+      labelEl.textContent = label;
+      const valueEl = document.createElement("strong");
+      valueEl.textContent = value;
+      row.append(labelEl, valueEl);
+      nodes.resultSummary.appendChild(row);
+    });
   }
 
   // Complete Game Run
@@ -689,15 +956,22 @@
     nodes.focusStars.textContent = starsStr;
     nodes.problemStars.textContent = starsStr;
 
+    const diamondsEarned = won ? 8 : Math.max(0, cleared);
+    const skillScore = `${Math.min(5, cleared + 2)}/5`;
+    nodes.logicStars.textContent = skillScore;
+    nodes.focusStars.textContent = skillScore;
+    nodes.problemStars.textContent = skillScore;
+    renderResultSummary({ cleared, diamondsEarned });
+
     if (won) {
       nodes.resultText.textContent = t("report_win");
       nodes.skillReportText.textContent = t("report_win");
-      window.WeightPlayWallet?.addDiamonds(8);
+      window.WeightPlayWallet?.addDiamonds(diamondsEarned);
       window.WonderSound?.play("win");
     } else {
       nodes.resultText.textContent = t("report_partial", { room: state.room });
       nodes.skillReportText.textContent = t("report_partial", { room: state.room });
-      window.WeightPlayWallet?.addDiamonds(state.room - 1);
+      window.WeightPlayWallet?.addDiamonds(diamondsEarned);
       window.WonderSound?.play("wrong");
     }
   }
@@ -751,7 +1025,6 @@
       const angle = Math.atan2(moveY, moveX);
       state.playerX += Math.cos(angle) * stats.speed;
       state.playerY += Math.sin(angle) * stats.speed;
-      state.playerAngle = angle;
 
       // Keep boundaries
       state.playerX = Math.max(20, Math.min(780, state.playerX));
@@ -858,7 +1131,7 @@
 
       if (odist < 20) {
         state.orbs.splice(oIndex, 1);
-        state.exp += orb.value;
+        gainExp(orb.value);
         window.WonderSound?.play("coin");
         updateHUDText();
 
@@ -878,6 +1151,7 @@
         if (pickup.type === "key") {
           state.pickups.splice(pIndex, 1);
           state.keys++;
+          state.runKeys++;
           window.WonderSound?.play("success");
           updateHUDText();
 
@@ -935,7 +1209,7 @@
         ctx.strokeRect(pickup.x - 20, pickup.y - 15, 40, 30);
         ctx.fillStyle = "#fbbf24";
         ctx.font = "12px Outfit";
-        ctx.fillText("📦 CHEST", pickup.x - 24, pickup.y - 20);
+        ctx.fillText("CHEST", pickup.x - 20, pickup.y - 20);
       } else if (pickup.type === "portal") {
         // Draw glowing cyan portal
         ctx.strokeStyle = "#22d3ee";
@@ -949,7 +1223,7 @@
         ctx.fill();
         ctx.fillStyle = "#22d3ee";
         ctx.font = "12px Outfit";
-        ctx.fillText("🌀 PORTAL", pickup.x - 26, pickup.y - 32);
+        ctx.fillText("PORTAL", pickup.x - 22, pickup.y - 32);
       }
     });
 
@@ -978,22 +1252,30 @@
 
     // 5. Draw Enemies
     state.enemies.forEach((enemy) => {
-      // Rotation calculations
-      const angle = Math.atan2(state.playerY - enemy.y, state.playerX - enemy.x);
       ctx.save();
       ctx.translate(enemy.x, enemy.y);
-      ctx.rotate(angle);
 
-      const sprite = enemy.type === "boar" ? assets.boar : assets.jaguar;
+      const sprite = enemy.type === "boar" || enemy.type === "boss" ? assets.boar : assets.jaguar;
       if (enemy.type === "boss") {
-        // Giant Boss Behemoth
-        ctx.fillStyle = "#dc2626";
+        // Giant boss uses the premium creature sprite instead of a placeholder circle.
+        ctx.shadowColor = "rgba(212, 175, 55, 0.55)";
+        ctx.shadowBlur = 18;
+        ctx.fillStyle = "rgba(212, 175, 55, 0.16)";
         ctx.beginPath();
-        ctx.arc(0, 0, enemy.size, 0, Math.PI * 2);
+        ctx.ellipse(0, 8, enemy.size * 1.25, enemy.size * 0.9, 0, 0, Math.PI * 2);
         ctx.fill();
-        ctx.fillStyle = "#000";
-        ctx.font = "14px Outfit";
-        ctx.fillText("👹 BOSS", -20, 5);
+        ctx.shadowBlur = 0;
+        if (sprite.complete) {
+          ctx.drawImage(sprite, -enemy.size * 1.25, -enemy.size * 1.2, enemy.size * 2.5, enemy.size * 2.5);
+        } else {
+          ctx.fillStyle = "#4b5563";
+          ctx.fillRect(-enemy.size, -enemy.size, enemy.size * 2, enemy.size * 2);
+        }
+        ctx.fillStyle = "#fde68a";
+        ctx.font = "bold 13px Outfit";
+        ctx.textAlign = "center";
+        ctx.fillText("BOSS", 0, -enemy.size - 10);
+        ctx.textAlign = "left";
       } else if (sprite.complete) {
         ctx.drawImage(sprite, -enemy.size, -enemy.size, enemy.size * 2, enemy.size * 2);
       } else {
@@ -1015,7 +1297,6 @@
     // 6. Draw Hero Lion Explorer
     ctx.save();
     ctx.translate(state.playerX, state.playerY);
-    ctx.rotate(state.playerAngle);
     if (assets.hero.complete) {
       ctx.drawImage(assets.hero, -22, -22, 44, 44);
     } else {
@@ -1158,6 +1439,10 @@
       equipLoot();
     });
 
+    nodes.rerollDraftBtn.addEventListener("click", () => {
+      rerollDraftChoices();
+    });
+
     nodes.amuletBtn.addEventListener("click", () => {
       const wallet = window.WeightPlayWallet?.read() || { diamonds: 0 };
       if (wallet.diamonds >= amuletCost) {
@@ -1176,7 +1461,38 @@
       translateUI();
       updateHUDText();
       renderStatsPanel();
+      if (!nodes.draftPanel.classList.contains("hidden")) {
+        renderDraftChoices(true);
+        updateDraftRerollUI();
+      }
     });
+
+    if (new URLSearchParams(location.search).has("smoke")) {
+      window.__animalRelicHuntersSmoke = {
+        forceResult({ won = false, room = 2, keys = 1 } = {}) {
+          loadLocalState();
+          syncStateFromProfile();
+          state.room = Math.max(1, Math.min(3, Number(room) || 1));
+          state.runKeys = Math.max(0, Math.floor(Number(keys) || 0));
+          nodes.menuPanel.classList.add("hidden");
+          nodes.draftPanel.classList.add("hidden");
+          nodes.lootPanel.classList.add("hidden");
+          nodes.gamePanel.classList.remove("hidden");
+          endGame(Boolean(won));
+          return this.snapshot();
+        },
+        snapshot() {
+          return {
+            resultTitle: nodes.resultTitle.textContent,
+            resultScore: nodes.resultScore.textContent,
+            resultText: nodes.resultText.textContent,
+            resultSummary: nodes.resultSummary?.textContent || "",
+            skillReportText: nodes.skillReportText.textContent,
+            wallet: window.WeightPlayWallet?.read?.() || null,
+          };
+        },
+      };
+    }
 
     // Loading screen fake simulation
     let progress = 0;

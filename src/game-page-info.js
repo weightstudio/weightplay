@@ -368,11 +368,13 @@
         "Your explorer auto-attacks nearby enemies with magic energy bullets.",
         "Defeat shadow beasts to drop green Relic Orbs (EXP) to level up.",
         "Collect Golden Keys to unlock chests containing gear, then equip Weapons, Armor, and Boots in your side panel.",
+        "When a level-up draft appears, choose one relic upgrade or spend 3 Diamonds once to reroll the choices.",
         "Enter Room 3 and defeat the Boss Behemoth to complete your expedition."
       ],
       strategyTips: [
         "Maneuver and kite enemies in circles to avoid taking melee damage.",
         "Choose relic upgrades like Magnet Range or Shield early on to boost survivability.",
+        "Save Diamonds for meaningful choices: the Mist Amulet is permanent, while relic rerolls help rescue a difficult run.",
         "Keep upgrading and equipping better rarity gear to boost your basic attack power and max health.",
         "Chests contain rare equipment, so prioritize collecting keys from elite enemies."
       ],
@@ -381,6 +383,7 @@
       faq: [
         ["Is Animal Relic Hunters free to play?", "Yes. All games on the WeightPlay platform run free of cost in the web browser."],
         ["How does the gear system work?", "Defeating elites drops keys to open chests containing Weapon, Armor, and Boots. Equipping gear increases your active stats."],
+        ["What can Diamonds be used for?", "Diamonds can buy the permanent Mist Amulet and can optionally reroll one level-up relic draft for 3 Diamonds."],
         ["How do I defeat the Boss?", "Collect relics to increase your health and speed, and equip rare weapons to deal high damage before challenging the Boss Behemoth."]
       ],
     },
@@ -619,6 +622,42 @@
       ["這款遊戲完全免費嗎？", "是的，這是一款完全免費的瀏覽器動作射擊網頁遊戲。"]
     ]
   };
+
+  Object.assign(localizedGames["zh-Hant"]["animal-relic-hunters"], {
+    title: "動物遺跡獵人",
+    age: "13+",
+    difficulty: "困難",
+    time: "5-8 分鐘",
+    gameplay: "房間動作 Roguelite",
+    genre: ["動作", "Roguelite", "動物"],
+    skills: ["反應", "專注", "邏輯", "問題解決"],
+    intro:
+      "動物遺跡獵人是一款較深度的房間制動作 Roguelite。玩家操作獅子探險家探索古代遺跡，擊敗影獸、收集經驗水晶、取得金鑰、開寶箱換裝備，並在第 3 個房間挑戰 Boss。等級、背包與裝備會保存在本機，適合喜歡練功和角色成長的 13+ 玩家。",
+    how: [
+      "使用 WASD、方向鍵或虛擬搖桿移動獅子探險家。",
+      "角色會自動攻擊附近敵人，玩家主要負責走位、收集和升級選擇。",
+      "擊敗影獸會掉落經驗水晶，收集後可以升級並選擇一個遺跡能力。",
+      "升級選項出現時，可以直接選一個能力，也可以花 3 顆鑽石重抽一次。",
+      "收集金鑰開啟寶箱，取得武器、防具、靴子，並在背包裡替換裝備。",
+      "進入第 3 個房間並擊敗 Boss，即可完成這次探險。"
+    ],
+    strategyTips: [
+      "不要站著硬打，繞圈走位可以拉開影獸並減少近戰傷害。",
+      "前期優先選擇磁力、生命或移動速度，能讓收集與生存更穩。",
+      "鑽石要花在有感的地方：迷霧護符是永久強化，升級重抽適合用來拯救關鍵局。",
+      "打 Boss 前盡量收集金鑰開寶箱，換上更好的武器、防具和靴子。",
+      "如果打不過，先累積本機等級與裝備，再回來挑戰會更輕鬆。"
+    ],
+    parent:
+      "這款遊戲設計給 13+ 玩家與喜歡動作挑戰的休閒玩家。遊戲會練習反應、專注、路線判斷、資源選擇和長期角色養成。等級、背包與裝備只保存在瀏覽器本機，結果僅供遊戲樂趣與進度追蹤，不是能力診斷或正式評量。",
+    faq: [
+      ["動物遺跡獵人是免費遊戲嗎？", "是。WeightPlay 的遊戲都可以直接在瀏覽器免費遊玩。"],
+      ["為什麼建議 13+？", "因為它有即時走位、自動戰鬥、升級選擇、永久裝備與 Boss 挑戰，比低年齡層遊戲更刺激也更需要閱讀理解。"],
+      ["裝備系統怎麼運作？", "收集金鑰後可以打開寶箱取得武器、防具和靴子。裝備會保存在本機背包，玩家可以替換成自己喜歡的配置。"],
+      ["鑽石可以做什麼？", "鑽石可以購買永久迷霧護符，也可以在升級選項出現時花 3 顆鑽石重抽一次。"],
+      ["打不過 Boss 怎麼辦？", "先提升本機等級、換上更好的裝備，並在關卡中選擇生命、移動速度或攻擊相關能力，下一輪會更容易。"]
+    ]
+  });
 
   localizedGames["zh-Hant"]["animal-crystal-survivor"] = {
     title: "\u52d5\u7269\u6c34\u6676\u751f\u5b58\u6230",
