@@ -257,7 +257,7 @@ window.WONDER_LOBBY = {
       type: { en: "Action Survival", "zh-Hant": "動作生存" },
       categories: ["Featured", "Animal Games", "Arcade"],
       skills: ["Reaction", "Focus", "Hand-Eye Coordination"],
-      ages: ["12"],
+      ages: ["13"],
       ageLabel: { en: "13+", "zh-Hant": "13+" },
       href: "games/animal-crystal-survivor/",
       description: {

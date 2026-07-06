@@ -54,6 +54,7 @@ const lobbyGameFacts = {
   "animal-rescue": { difficulty: "Easy", time: "3-5 minutes" },
   "animal-hidden-safari": { difficulty: "Easy", time: "3-5 minutes" },
   "animal-guard-yard": { difficulty: "Medium", time: "5-8 minutes" },
+  "animal-crystal-survivor": { difficulty: "Medium", time: "3-5 minutes" },
   "animal-quiz": { difficulty: "Easy", time: "3-5 minutes" },
   "zoo-helper-day": { difficulty: "Easy", time: "1-3 minutes" },
   "shape-train": { difficulty: "Easy", time: "1-3 minutes" },

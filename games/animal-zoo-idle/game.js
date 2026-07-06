@@ -52,6 +52,12 @@
     { id: "care3", type: "careCount", target: 3, reward: 260 },
     { id: "gate3", type: "gateLevel", target: 3, reward: 420 },
     { id: "animals4", type: "animalCount", target: 4, reward: 900 },
+    { id: "collect5000", type: "ticketCollected", target: 5000, reward: 1200 },
+    { id: "care12", type: "careCount", target: 12, reward: 1600 },
+    { id: "gate6", type: "gateLevel", target: 6, reward: 2400 },
+    { id: "animals8", type: "animalCount", target: 8, reward: 4200 },
+    { id: "collect25000", type: "ticketCollected", target: 25000, reward: 9000 },
+    { id: "animals12", type: "animalCount", target: 12, reward: 12000 },
   ];
   const habitatBonuses = [
     { count: 1, bonus: 0 },
@@ -124,6 +130,12 @@
       milestoneCare3: "Care for animals 3 times",
       milestoneGate3: "Upgrade the gate to Lv.3",
       milestoneAnimals4: "Recruit 4 animals",
+      milestoneCollect5000: "Collect 5,000 total tickets",
+      milestoneCare12: "Care for animals 12 times",
+      milestoneGate6: "Upgrade the gate to Lv.6",
+      milestoneAnimals8: "Recruit 8 animals",
+      milestoneCollect25000: "Collect 25,000 total tickets",
+      milestoneAnimals12: "Recruit every animal",
       milestoneClaimed: "Milestone reward claimed!",
       parkPlan: "Park Growth Plan",
       parkRank: "Gate progress",
@@ -233,6 +245,12 @@
     milestoneCare3: "\u7167\u9867\u52d5\u7269 3 \u6b21",
     milestoneGate3: "\u5927\u9580\u5347\u5230 Lv.3",
     milestoneAnimals4: "\u62db\u52df 4 \u96bb\u52d5\u7269",
+    milestoneCollect5000: "\u7d2f\u8a08\u6536\u96c6 5,000 \u9580\u7968",
+    milestoneCare12: "\u7167\u9867\u52d5\u7269 12 \u6b21",
+    milestoneGate6: "\u5927\u9580\u5347\u5230 Lv.6",
+    milestoneAnimals8: "\u62db\u52df 8 \u96bb\u52d5\u7269",
+    milestoneCollect25000: "\u7d2f\u8a08\u6536\u96c6 25,000 \u9580\u7968",
+    milestoneAnimals12: "\u62db\u52df\u5168\u90e8\u52d5\u7269",
     milestoneClaimed: "\u91cc\u7a0b\u7891\u734e\u52f5\u5df2\u9818\u53d6\uff01",
     parkPlan: "\u6a02\u5712\u6210\u9577\u8a08\u756b",
     parkRank: "\u5927\u9580\u9032\u5ea6",
@@ -937,11 +955,19 @@
   }
 
   function milestoneLabel(milestone) {
-    if (milestone.id === "collect500") return t("milestoneCollect500");
-    if (milestone.id === "care3") return t("milestoneCare3");
-    if (milestone.id === "gate3") return t("milestoneGate3");
-    if (milestone.id === "animals4") return t("milestoneAnimals4");
-    return milestone.id;
+    const labelKeys = {
+      collect500: "milestoneCollect500",
+      care3: "milestoneCare3",
+      gate3: "milestoneGate3",
+      animals4: "milestoneAnimals4",
+      collect5000: "milestoneCollect5000",
+      care12: "milestoneCare12",
+      gate6: "milestoneGate6",
+      animals8: "milestoneAnimals8",
+      collect25000: "milestoneCollect25000",
+      animals12: "milestoneAnimals12",
+    };
+    return labelKeys[milestone.id] ? t(labelKeys[milestone.id]) : milestone.id;
   }
 
   function renderMilestones(container) {
