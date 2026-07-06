@@ -18,7 +18,7 @@
     <meta name="twitter:card" content="summary_large_image" />
     <title>Animal Crystal Survivor - WeightPlay</title>
     <link rel="canonical" href="https://weightplay.com/games/animal-crystal-survivor/" />
-    <link rel="stylesheet" href="style.css?v=20260706-crystal-sound-icons1" />
+    <link rel="stylesheet" href="style.css?v=20260706-crystal-diamond-charm1" />
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260703-frame1" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
@@ -78,6 +78,20 @@
           <div class="prototype-goals" aria-label="Prototype test goals">
             <b data-ui="prototypeGoalsTitle">Prototype test goals</b>
             <span data-ui="prototypeGoalsText">In one run, collect at least 1 key, level up once, choose an upgrade, then confirm Retry and Menu both work.</span>
+          </div>
+          <div id="diamondShop" class="diamond-shop" aria-live="polite">
+            <div class="diamond-shop-head">
+              <span data-ui="diamondShopTitle">Run Boost</span>
+              <b><img src="../../assets/weightplay-diamond.svg" alt="" /> <span id="diamondBalance">0</span></b>
+            </div>
+            <button id="charmBtn" class="diamond-btn" type="button">
+              <span>
+                <strong data-ui="charmName">Crystal Charm</strong>
+                <small data-ui="charmEffect">Permanent: start each run with +1 HP and wider crystal pickup.</small>
+              </span>
+              <b><img src="../../assets/weightplay-diamond.svg" alt="" /> <span id="charmCost">12</span></b>
+            </button>
+            <small id="charmStatus" class="diamond-status"></small>
           </div>
           <div class="control-chips">
             <span data-ui="controlMove">Tap or drag to move</span>
@@ -143,7 +157,7 @@
       </div>
     </main>
 
-    <script src="../../src/site-config.js?v=20260706-crystal-sound-icons1"></script>
+    <script src="../../src/site-config.js?v=20260706-crystal-diamond-charm1"></script>
     <script src="../../src/version.js?v=20260701-version2"></script>
     <script src="../../src/analytics.js?v=20260701-analytics2"></script>
     <script>window.WonderAnalytics?.track("game_view", { game_id: "animal-crystal-survivor", release_state: "release_candidate" });</script>
@@ -151,7 +165,8 @@
     <script src="../../src/edge-guard.js?v=20260703-play-frame1"></script>
     <script src="../../src/i18n.js?v=20260703-i18n-clean1"></script>
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
-    <script src="game.js?v=20260706-crystal-sound-icons1"></script>
+    <script src="../../src/wallet.js?v=20260706-crystal-diamond-charm1"></script>
+    <script src="game.js?v=20260706-crystal-diamond-charm1"></script>
     <script>
       (() => {
         const loadGameInfo = () => {

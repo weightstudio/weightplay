@@ -265,7 +265,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "在 3 分鐘的水晶森林中閃避暗影猛獸，收集金鑰匙、獲得經驗值，並選擇升級能力挑戰高分。",
       },
       meta: {
-        en: ["3-Min Run", "Auto Combat", "Upgrade Choices"],
+        en: ["3-Min Run", "Auto Combat", "Diamond Boost"],
         "zh-Hant": ["3 分鐘挑戰", "自動戰鬥", "升級選擇"],
       },
       art: {

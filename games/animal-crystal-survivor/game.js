@@ -5,6 +5,7 @@
   const W = 1024;
   const H = 1024;
   const RUN_SECONDS = 180;
+  const crystalCharmCost = 12;
 
   const $ = (id) => document.getElementById(id);
   const canvas = $("gameCanvas");
@@ -36,6 +37,10 @@
     loadingPanel: $("loadingPanel"),
     loadingText: $("loadingText"),
     loadingFill: $("loadingFill"),
+    diamondBalance: $("diamondBalance"),
+    charmBtn: $("charmBtn"),
+    charmCost: $("charmCost"),
+    charmStatus: $("charmStatus"),
   };
 
   const text = {
@@ -49,6 +54,13 @@
       controlMove: "Tap or drag to move",
       controlKeys: "WASD / Arrow keys",
       controlAttack: "Auto attack",
+      diamondShopTitle: "Run Boost",
+      charmName: "Crystal Charm",
+      charmEffect: "Permanent: start each run with +1 HP and wider crystal pickup.",
+      charmOwned: "Owned: every run starts with the Crystal Charm bonus.",
+      charmBuy: "Unlock for {cost}",
+      charmNeed: "Need {cost} diamonds.",
+      charmBought: "Crystal Charm unlocked.",
       startRun: "Start Run",
       menu: "Menu",
       time: "Time",
@@ -102,6 +114,13 @@
       controlMove: "\u9ede\u64ca\u6216\u62d6\u66f3\u79fb\u52d5",
       controlKeys: "WASD / \u65b9\u5411\u9375",
       controlAttack: "\u81ea\u52d5\u653b\u64ca",
+      diamondShopTitle: "\u6311\u6230\u52a0\u6210",
+      charmName: "\u6c34\u6676\u8b77\u7b26",
+      charmEffect: "\u6c38\u4e45\uff1a\u6bcf\u5c40\u958b\u59cb\u6642 +1 \u751f\u547d\uff0c\u4e26\u63d0\u9ad8\u6c34\u6676\u62fe\u53d6\u7bc4\u570d\u3002",
+      charmOwned: "\u5df2\u64c1\u6709\uff1a\u6bcf\u5c40\u90fd\u6703\u5957\u7528\u6c34\u6676\u8b77\u7b26\u52a0\u6210\u3002",
+      charmBuy: "\u82b1\u8cbb {cost} \u89e3\u9396",
+      charmNeed: "\u9700\u8981 {cost} \u9846\u947d\u77f3\u3002",
+      charmBought: "\u5df2\u89e3\u9396\u6c34\u6676\u8b77\u7b26\u3002",
       startRun: "\u958b\u59cb\u6311\u6230",
       menu: "\u9078\u55ae",
       time: "\u6642\u9593",
@@ -194,9 +213,9 @@
 
   function loadSave() {
     try {
-      return { bestKeys: 0, bestLevel: 1, playCount: 0, ...JSON.parse(localStorage.getItem(saveKey) || "{}") };
+      return { bestKeys: 0, bestLevel: 1, playCount: 0, crystalCharm: false, ...JSON.parse(localStorage.getItem(saveKey) || "{}") };
     } catch {
-      return { bestKeys: 0, bestLevel: 1, playCount: 0 };
+      return { bestKeys: 0, bestLevel: 1, playCount: 0, crystalCharm: false };
     }
   }
 
@@ -209,11 +228,30 @@
     return Object.entries(data).reduce((out, [name, item]) => out.replaceAll(`{${name}}`, String(item)), value);
   }
 
+  function makePlayer() {
+    const hasCharm = Boolean(save.crystalCharm);
+    const maxHp = hasCharm ? 8 : 7;
+    return {
+      x: W / 2,
+      y: H / 2,
+      tx: W / 2,
+      ty: H / 2,
+      hp: maxHp,
+      maxHp,
+      speed: 238,
+      range: 238,
+      damage: 1,
+      cooldown: 0.78,
+      shotTimer: 0,
+      pickup: hasCharm ? 68 : 54,
+    };
+  }
+
   function makeState() {
     return {
       mode: "menu",
       timeLeft: RUN_SECONDS,
-      player: { x: W / 2, y: H / 2, tx: W / 2, ty: H / 2, hp: 7, maxHp: 7, speed: 238, range: 238, damage: 1, cooldown: 0.78, shotTimer: 0, pickup: 54 },
+      player: makePlayer(),
       level: 1,
       xp: 0,
       xpNeed: 4,
@@ -283,6 +321,44 @@
     });
     nodes.localeSelect.value = locale;
     renderHud();
+    updateDiamondShop();
+  }
+
+  function getWallet() {
+    return window.WeightPlayWallet || null;
+  }
+
+  function diamondBalance() {
+    return getWallet()?.read?.().diamonds || 0;
+  }
+
+  function updateDiamondShop(message = "") {
+    if (!nodes.charmBtn || !nodes.diamondBalance) return;
+    const owned = Boolean(save.crystalCharm);
+    const balance = diamondBalance();
+    nodes.diamondBalance.textContent = String(balance);
+    nodes.charmCost.textContent = owned ? "\u2713" : String(crystalCharmCost);
+    nodes.charmBtn.disabled = owned || balance < crystalCharmCost;
+    nodes.charmBtn.setAttribute("aria-label", `${t("charmName")} - ${owned ? t("charmOwned") : t("charmBuy", { cost: crystalCharmCost })}`);
+    nodes.charmStatus.textContent = message || (owned ? t("charmOwned") : t("charmBuy", { cost: crystalCharmCost }));
+  }
+
+  function buyCrystalCharm() {
+    if (save.crystalCharm) {
+      updateDiamondShop();
+      return;
+    }
+    const wallet = getWallet();
+    if (!wallet?.spendDiamonds || !wallet.spendDiamonds(crystalCharmCost)) {
+      updateDiamondShop(t("charmNeed", { cost: crystalCharmCost }));
+      playSound("wrong", 0.2);
+      return;
+    }
+    save.crystalCharm = true;
+    persist();
+    updateDiamondShop(t("charmBought"));
+    playSound("success", 0.2);
+    window.WonderAnalytics?.track("diamond_spend", { game_id: GAME_ID, item: "crystal_charm", cost: crystalCharmCost, balance: diamondBalance() });
   }
 
   function show(panel) {
@@ -652,6 +728,8 @@
         resultText: nodes.resultText.textContent,
         skillReportText: nodes.skillReportText.textContent,
         upgradeVisible: !nodes.upgradePanel.classList.contains("hidden"),
+        crystalCharm: Boolean(save.crystalCharm),
+        diamondBalance: diamondBalance(),
       }),
       collectKeyAtPlayer: () => {
         state.key = { x: state.player.x, y: state.player.y };
@@ -931,6 +1009,7 @@
 
   nodes.localeSelect.addEventListener("change", (event) => setLocale(event.target.value));
   nodes.startBtn.addEventListener("click", startRun);
+  nodes.charmBtn?.addEventListener("click", buyCrystalCharm);
   nodes.retryBtn.addEventListener("click", startRun);
   nodes.menuBtn.addEventListener("click", () => {
     runToken += 1;
