@@ -111,7 +111,6 @@
       resultSummaryLevel: "Saved Level",
       resultSummaryRooms: "Rooms",
       resultSummaryKeys: "Run Keys",
-      resultSummaryDiamonds: "Diamonds Earned",
       resultSummaryGear: "Equipped Gear",
       resultSummaryNoGear: "No gear equipped yet",
       resultDisclaimer: "For fun and local progress tracking only.",
@@ -153,7 +152,8 @@
       // Reports
       report_win: "Legendary hunter! You defeated the Behemoth, equipped rare relics, and solved the ruin mysteries.",
       report_partial: "Decent explorer! You reached Room {room}. Level up and equip stronger gear to beat the Behemoth.",
-      report_no_wins: "Keep exploring! Focus on picking up keys and keeping your health up."
+      report_no_wins: "Keep exploring! Focus on picking up keys and keeping your health up.",
+      bossWarning: "Boss Behemoth approaching!"
     },
     "zh-Hant": {
       title: "動物遺跡獵人",
@@ -239,13 +239,82 @@
   };
 
   Object.assign(text["zh-Hant"], {
+    title: "動物遺跡獵人",
+    menuTitle: "探索古代動物遺跡",
+    menuHint: "使用 WASD 或虛擬搖桿移動。擊敗影獸、收集遺跡能量球升級，並找到金鑰開啟寶箱取得武器、防具與靴子。",
+    prototypeGoalsTitle: "遊玩目標",
+    prototypeGoalsText: "通過第 3 個房間、擊敗遺跡巨獸 Boss、收集遺跡能量球，並確認裝備槽與鑽石重抽功能正常。",
+    diamondShopTitle: "永久升級",
+    amuletName: "迷霧護符",
+    amuletEffect: "每次探險開始時生命上限 +10（從 30 HP 變成 40 HP）。",
+    amuletOwned: "已擁有：每次探險都會以 40 Max HP 開始。",
+    startRun: "開始探險",
+    menu: "選單",
+    hudHp: "生命值",
+    roomLabel: "房間",
+    keysLabel: "鑰匙",
+    chooseCard: "選擇遺跡能力",
+    chooseCardDesc: "選擇一個古代遺跡能力，強化你的探險家。",
+    rerollRelics: "重抽遺跡能力",
+    rerollRelicsUsed: "本次升級已使用重抽。",
+    rerollRelicsNeedDiamonds: "鑽石不足，無法重抽。",
+    lootFound: "遺跡寶箱已開啟！",
+    equipLoot: "穿戴裝備",
+    backpackTitle: "背包",
+    backpackEmpty: "開啟遺跡寶箱即可收集永久裝備。",
+    equipGearAction: "穿戴",
+    equippedTag: "已穿戴",
+    tryAgain: "再玩一次",
+    backToMenu: "返回選單",
+    sidebarInventory: "已穿戴裝備",
+    sidebarStats: "角色能力",
+    slotWeapon: "武器",
+    slotArmor: "防具",
+    slotBoots: "靴子",
+    noneLabel: "無",
+    statDamage: "傷害：",
+    statAttackRate: "攻擊間隔：",
+    statSpeed: "移動速度：",
+    statMagnetRange: "吸取範圍：",
     hudStage: "\u5df2\u901a\u95dc\u623f\u9593",
     resultSummaryLevel: "\u4fdd\u5b58\u7b49\u7d1a",
     resultSummaryRooms: "\u623f\u9593\u9032\u5ea6",
     resultSummaryKeys: "\u672c\u8f2a\u91d1\u9470",
-    resultSummaryDiamonds: "\u7372\u5f97\u947d\u77f3",
     resultSummaryGear: "\u5df2\u7a7f\u6234\u88dd\u5099",
-    resultSummaryNoGear: "\u5c1a\u672a\u7a7f\u6234\u88dd\u5099"
+    resultSummaryNoGear: "\u5c1a\u672a\u7a7f\u6234\u88dd\u5099",
+    resultDisclaimer: "僅供遊戲娛樂與本機進度紀錄。",
+    skillReportTitle: "能力分析報告",
+    skillLogic: "邏輯力",
+    skillFocus: "專注力",
+    skillProblem: "問題解決",
+    relic_magnet: "遺跡磁力",
+    relic_magnet_desc: "吸取範圍增加 40px。",
+    relic_speed: "燈火爆發",
+    relic_speed_desc: "武器發射間隔降低 20%。",
+    relic_shield: "守護之心",
+    relic_shield_desc: "生命上限 +5，並立即恢復 5 HP。",
+    relic_damage: "水晶獸牙",
+    relic_damage_desc: "子彈傷害提高 20%。",
+    relic_heal: "月泉吐息",
+    relic_heal_desc: "立即恢復 12 HP。",
+    gear_sword_rare: "水晶長劍",
+    gear_sword_rare_desc: "+30% 子彈傷害",
+    gear_dagger_epic: "遺跡短刃",
+    gear_dagger_epic_desc: "-30% 射擊間隔",
+    gear_armor_rare: "遺跡胸甲",
+    gear_armor_rare_desc: "+10 生命上限",
+    gear_armor_epic: "黃金遺跡鎧甲",
+    gear_armor_epic_desc: "+20 生命上限",
+    gear_boots_rare: "探險靴",
+    gear_boots_rare_desc: "+20% 移動速度",
+    gear_boots_epic: "疾風遺跡靴",
+    gear_boots_epic_desc: "+40% 移動速度",
+    rarity_rare: "稀有裝備",
+    rarity_epic: "史詩裝備",
+    report_win: "傳奇獵人！你擊敗遺跡巨獸、穿戴強力裝備，成功解開古代遺跡的謎團。",
+    report_partial: "不錯的探險家！你抵達第 {room} 個房間。提升等級並換上更強裝備，下次就能挑戰遺跡巨獸。",
+    report_no_wins: "繼續探索！先專注收集鑰匙、開啟寶箱，並保持生命值。",
+    bossWarning: "遺跡巨獸即將出現！"
   });
 
   // Textures and Sprites
@@ -320,6 +389,8 @@
     orbs: [],
     pickups: [], // keys, chests, portals
     particleSystems: [],
+    bossWarningUntil: 0,
+    lastHitSoundAt: 0,
   };
 
   let profile = createDefaultProfile();
@@ -688,6 +759,10 @@
     // Spawn 1 Elite enemy in the center to drop the key
     setTimeout(() => {
       if (!state.gameActive) return;
+      if (room === 3) {
+        state.bossWarningUntil = performance.now() + 2400;
+        window.WonderSound?.play("boss");
+      }
       state.enemies.push({
         x: 400,
         y: -50,
@@ -911,13 +986,12 @@
     return keys.map((key) => t(gearDb[key].nameKey)).join(" / ");
   }
 
-  function renderResultSummary({ cleared, diamondsEarned }) {
+  function renderResultSummary({ cleared }) {
     if (!nodes.resultSummary) return;
     const rows = [
       [t("resultSummaryLevel"), `Lv.${profile.level}`],
       [t("resultSummaryRooms"), `${cleared}/3`],
       [t("resultSummaryKeys"), String(state.runKeys)],
-      [t("resultSummaryDiamonds"), `+${diamondsEarned}`],
       [t("resultSummaryGear"), equippedGearSummary()],
     ];
 
@@ -956,22 +1030,19 @@
     nodes.focusStars.textContent = starsStr;
     nodes.problemStars.textContent = starsStr;
 
-    const diamondsEarned = won ? 8 : Math.max(0, cleared);
     const skillScore = `${Math.min(5, cleared + 2)}/5`;
     nodes.logicStars.textContent = skillScore;
     nodes.focusStars.textContent = skillScore;
     nodes.problemStars.textContent = skillScore;
-    renderResultSummary({ cleared, diamondsEarned });
+    renderResultSummary({ cleared });
 
     if (won) {
       nodes.resultText.textContent = t("report_win");
       nodes.skillReportText.textContent = t("report_win");
-      window.WeightPlayWallet?.addDiamonds(diamondsEarned);
       window.WonderSound?.play("win");
     } else {
       nodes.resultText.textContent = t("report_partial", { room: state.room });
       nodes.skillReportText.textContent = t("report_partial", { room: state.room });
-      window.WeightPlayWallet?.addDiamonds(diamondsEarned);
       window.WonderSound?.play("wrong");
     }
   }
@@ -1064,6 +1135,11 @@
       // Check player contact damage
       if (dist < enemy.size + 15) {
         state.playerHp = Math.max(0, state.playerHp - 0.15); // continuous contact dmg
+        const now = performance.now();
+        if (now - state.lastHitSoundAt > 520) {
+          state.lastHitSoundAt = now;
+          window.WonderSound?.play("hit");
+        }
         renderStatsPanel();
         if (state.playerHp <= 0) {
           endGame(false);
@@ -1189,6 +1265,21 @@
     } else {
       ctx.fillStyle = "#111827";
       ctx.fillRect(0, 0, 800, 500);
+    }
+
+    if (state.bossWarningUntil > performance.now()) {
+      ctx.save();
+      ctx.fillStyle = "rgba(10, 20, 18, 0.78)";
+      ctx.strokeStyle = "rgba(253, 230, 138, 0.85)";
+      ctx.lineWidth = 2;
+      ctx.roundRect(230, 18, 340, 46, 14);
+      ctx.fill();
+      ctx.stroke();
+      ctx.fillStyle = "#fde68a";
+      ctx.font = "bold 20px Outfit";
+      ctx.textAlign = "center";
+      ctx.fillText(t("bossWarning"), 400, 48);
+      ctx.restore();
     }
 
     // 2. Draw Chests, Keys, Portals
@@ -1480,6 +1571,12 @@
           nodes.gamePanel.classList.remove("hidden");
           endGame(Boolean(won));
           return this.snapshot();
+        },
+        forceBossWarning() {
+          state.bossWarningUntil = performance.now() + 2400;
+          window.WonderSound?.play("boss");
+          drawCanvasFrame();
+          return { warningText: t("bossWarning"), bossWarningActive: state.bossWarningUntil > performance.now() };
         },
         snapshot() {
           return {

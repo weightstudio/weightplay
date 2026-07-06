@@ -18,7 +18,7 @@
     
     <link rel="stylesheet" href="../../src/loading-screen.css" />
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260706-guide-scroll-scope1" />
-    <link rel="stylesheet" href="style.css?v=20260706-relic-reroll1" />
+    <link rel="stylesheet" href="style.css?v=20260706-relic-economy-i18n1" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet" />
@@ -29,7 +29,7 @@
         "@context": "https://schema.org",
         "@type": "VideoGame",
         "name": "Animal Relic Hunters",
-        "alternateName": "動物遺跡獵人",
+        "alternateName": "\u52d5\u7269\u907a\u8de1\u7375\u4eba",
         "url": "https://weightplay.com/games/animal-relic-hunters/",
         "image": "https://weightplay.com/assets/animal-relic-hunters-cover.png",
         "description": "Explore ancient ruin chambers, defeat wave-based shadow beasts, level up to pick relic upgrades, collect golden keys, and unlock treasure chests to equip Weapons, Armor, and Boots to defeat the Boss.",
@@ -58,17 +58,17 @@
     <header class="top-nav">
       <div class="top-nav-left">
         <button id="menuBtn" class="back-btn" type="button" aria-label="Go back to lobby">
-          <span class="icon" aria-hidden="true">←</span>
+          <span class="icon" aria-hidden="true">&larr;</span>
           <span class="text" data-ui="menu">Menu</span>
         </button>
         <h2 class="game-brand" data-ui="title">Animal Relic Hunters</h2>
       </div>
       <div class="top-nav-right">
         <div class="locale-picker">
-          <span class="picker-icon" aria-hidden="true">A/文</span>
+          <span class="picker-icon" aria-hidden="true">A/&#25991;</span>
           <select id="localeSelect" aria-label="Language selector">
             <option value="en">English</option>
-            <option value="zh-Hant">繁體中文</option>
+            <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
           </select>
         </div>
       </div>
@@ -258,15 +258,15 @@
             <div class="skills-row">
               <div class="skill-meter">
                 <span data-ui="skillLogic">Logic</span>
-                <span class="stars" id="logicStars">⭐⭐⭐⭐⭐</span>
+                <span class="stars" id="logicStars">0/5</span>
               </div>
               <div class="skill-meter">
                 <span data-ui="skillFocus">Focus</span>
-                <span class="stars" id="focusStars">⭐⭐⭐⭐⭐</span>
+                <span class="stars" id="focusStars">0/5</span>
               </div>
               <div class="skill-meter">
                 <span data-ui="skillProblem">Problem Solving</span>
-                <span class="stars" id="problemStars">⭐⭐⭐⭐⭐</span>
+                <span class="stars" id="problemStars">0/5</span>
               </div>
             </div>
             <p id="skillReportText" class="skills-report-desc">Your reaction, item placement, and equipment builds were optimized.</p>
@@ -289,15 +289,15 @@
     </section>
 
     <!-- Core Engine Scripts -->
-    <script src="../../src/site-config.js?v=20260706-relic-v1"></script>
+    <script src="../../src/site-config.js?v=20260706-relic-boss-sfx1"></script>
     <script src="../../src/version.js?v=20260706-relic-v1"></script>
     <script src="../../src/analytics.js?v=20260706-relic-v1"></script>
     <script src="../../src/sound.js?v=20260706-relic-v1"></script>
     <script src="../../src/edge-guard.js?v=20260706-relic-v1"></script>
     <script src="../../src/i18n.js?v=20260706-relic-v1"></script>
-    <script src="../../src/game-page-info.js?v=20260706-relic-result-guide1"></script>
+    <script src="../../src/game-page-info.js?v=20260706-relic-economy-i18n1"></script>
     <script src="../../src/wallet.js?v=20260706-relic-v1"></script>
     <script src="../../src/tutorial.js?v=20260706-relic-v1"></script>
-    <script src="game.js?v=20260706-relic-result1"></script>
+    <script src="game.js?v=20260706-relic-boss-sfx1"></script>
   </body>
 </html>
