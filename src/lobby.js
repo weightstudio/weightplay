@@ -60,6 +60,7 @@ const lobbyGameFacts = {
   "shape-train": { difficulty: "Easy", time: "1-3 minutes" },
   "tiny-weather-rescue": { difficulty: "Easy", time: "3-5 minutes" },
   "beast-deck": { difficulty: "Medium", time: "5-8 minutes" },
+  "animal-relic-hunters": { difficulty: "Hard", time: "5-8 minutes" },
 };
 let activeFilter = "all";
 let activeTopic = "all";

@@ -355,6 +355,35 @@
         ["How do I earn diamonds?", "You earn 1 diamond for every normal battle won, and 5 diamonds for defeating the Stage 3 Boss."]
       ],
     },
+    "animal-relic-hunters": {
+      title: "Animal Relic Hunters",
+      age: "13+",
+      difficulty: "Hard",
+      time: "5-8 minutes",
+      skills: ["Logic", "Problem Solving", "Focus", "Reaction"],
+      intro:
+        "Animal Relic Hunters is a room-based action Roguelite survivor game. Explore ancient ruin chambers, defeat wave-based shadow beasts, level up to pick relic upgrades, collect golden keys, and unlock treasure chests to equip Weapons, Armor, and Boots to defeat the Boss.",
+      how: [
+        "Move your explorer using keyboard WASD or virtual joystick controls.",
+        "Your explorer auto-attacks nearby enemies with magic energy bullets.",
+        "Defeat shadow beasts to drop green Relic Orbs (EXP) to level up.",
+        "Collect Golden Keys to unlock chests containing gear, then equip Weapons, Armor, and Boots in your side panel.",
+        "Enter Room 3 and defeat the Boss Behemoth to complete your expedition."
+      ],
+      strategyTips: [
+        "Maneuver and kite enemies in circles to avoid taking melee damage.",
+        "Choose relic upgrades like Magnet Range or Shield early on to boost survivability.",
+        "Keep upgrading and equipping better rarity gear to boost your basic attack power and max health.",
+        "Chests contain rare equipment, so prioritize collecting keys from elite enemies."
+      ],
+      parent:
+        "This game is designed for teens, offering practice in reflex reaction, focus, tactical item selection, and logic planning. Progression is stored locally and contains no clinical or diagnosis metrics.",
+      faq: [
+        ["Is Animal Relic Hunters free to play?", "Yes. All games on the WeightPlay platform run free of cost in the web browser."],
+        ["How does the gear system work?", "Defeating elites drops keys to open chests containing Weapon, Armor, and Boots. Equipping gear increases your active stats."],
+        ["How do I defeat the Boss?", "Collect relics to increase your health and speed, and equip rare weapons to deal high damage before challenging the Boss Behemoth."]
+      ],
+    },
   };
 
   const labels = {
@@ -446,6 +475,7 @@
     "shape-train": { gameplay: "Shape Sorting", genre: ["Preschool", "Education", "Animal"] },
     "tiny-weather-rescue": { gameplay: "Helper Choice", genre: ["Puzzle", "Care", "Animal"] },
     "beast-deck": { gameplay: "Card Roguelike", genre: ["Card", "Roguelike", "Animal"] },
+    "animal-relic-hunters": { gameplay: "Room Action Roguelite", genre: ["Action", "Roguelite", "Animal"] },
   };
 
   const coverImages = {
@@ -468,6 +498,7 @@
     "shape-train": "shape-train-cover.webp",
     "tiny-weather-rescue": "tiny-weather-rescue-cover.webp",
     "beast-deck": "beast-deck-cover.png",
+    "animal-relic-hunters": "animal-relic-hunters-cover.png",
   };
 
   const localizedGameplayProfiles = {
@@ -490,6 +521,7 @@
       "shape-train": { gameplay: "形狀分類", genre: ["學齡前", "教育", "動物"] },
       "tiny-weather-rescue": { gameplay: "道具選擇", genre: ["益智", "照顧", "動物"] },
       "beast-deck": { gameplay: "卡牌構建 Roguelike", genre: ["卡牌", "策略", "動物"] },
+      "animal-relic-hunters": { gameplay: "房間動作 Roguelite", genre: ["動作", "策略", "動物"] },
     },
   };
 
@@ -555,6 +587,36 @@
       ["這款遊戲需要付費嗎？", "不需要，這是一款完全免費的瀏覽器網頁遊戲。"],
       ["為什麼建議年齡是 13+？", "因為遊戲包含豐富的卡牌連鎖、數值計算與策略決策，具有一定的挑戰性。"],
       ["鑽石可以用來做什麼？", "鑽石可以在開局前購買『迷霧護符』，為每局挑戰帶來永久的生命值加成。"]
+    ]
+  };
+
+  localizedGames["zh-Hant"]["animal-relic-hunters"] = {
+    title: "動物遺跡獵人",
+    age: "13+",
+    difficulty: "困難",
+    time: "5-8 分鐘",
+    gameplay: "房間動作 Roguelite",
+    genre: ["動作", "冒險", "動物"],
+    skills: ["Logic", "Problem Solving", "Focus", "Reaction"],
+    intro: "動物遺跡獵人是一款房間制的動作生存冒險遊戲。探險家在遺跡中閃避並自動射擊腐化野獸，收集遺跡能量球升級挑選能力，並收集鑰匙解鎖寶箱，穿戴強力武器、防具與靴子，最終挑戰遺跡巨獸！",
+    how: [
+      "使用鍵盤 WASD 或畫面虛擬搖桿移動探險家。",
+      "角色會自動射擊距離最近的敵方怪物。",
+      "擊敗怪物掉落綠色遺跡能量球（EXP）即可累積經驗值升級。",
+      "擊敗波次精英怪獲得金色鑰匙以開啟寶箱，並在側邊欄裝備獲得的武器、防具與鞋子。",
+      "進入第 3 關並擊敗遺跡巨獸 Boss，完成冒險！"
+    ],
+    strategyTips: [
+      "繞圈移動可以有效拉扯怪物，避免承受近戰接觸傷害。",
+      "前期優先挑選『磁鐵範圍』與『防禦盾牌』以提高生存機率。",
+      "優先收集鑰匙並開寶箱，穿上高品質的裝備能大幅提升基礎傷害與血量上限。",
+      "在商店解鎖冒險特權，為冒險取得更大的起步優勢。"
+    ],
+    parent: "這款遊戲能鍛鍊玩家的敏捷反應力、戰略裝備選擇與資源規劃。所有遊戲數據均保存在本機中，不包含任何診斷指標。",
+    faq: [
+      ["遊戲內裝備有什麼效果？", "裝備分為武器、防具與鞋子，分別能提供不同的傷害、血量、盾牌與移速加成。"],
+      ["如何解鎖更高難度的關卡？", "擊敗前一關的怪物波次，並在收集鑰匙後進入傳送門即可挑戰下一關的 Boss。"],
+      ["這款遊戲完全免費嗎？", "是的，這是一款完全免費的瀏覽器動作射擊網頁遊戲。"]
     ]
   };
 

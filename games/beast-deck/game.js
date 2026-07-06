@@ -265,6 +265,25 @@
     return Object.entries(params).reduce((str, [k, v]) => str.replaceAll(`{${k}}`, String(v)), raw);
   }
 
+  const combatLogText = {
+    en: {
+      shieldAbsorbed: "Player Shield absorbed all damage. ({shield} left)",
+      playerDamage: "Player took {damage} damage! ({hp} HP remaining)",
+      playerPoison: "Player took {damage} Poison damage. ({hp} HP remaining)",
+    },
+    "zh-Hant": {
+      shieldAbsorbed: "\u73a9\u5bb6\u8b77\u76fe\u64cb\u4e0b\u4e86\u5168\u90e8\u50b7\u5bb3\u3002(\u5269\u9918 {shield})",
+      playerDamage: "\u73a9\u5bb6\u53d7\u5230 {damage} \u9ede\u50b7\u5bb3\uff01(\u5269\u9918 {hp} HP)",
+      playerPoison: "\u73a9\u5bb6\u53d7\u5230 {damage} \u9ede\u4e2d\u6bd2\u50b7\u5bb3\u3002(\u5269\u9918 {hp} HP)",
+    },
+  };
+
+  function combatText(key, params = {}) {
+    const locale = getLocale();
+    const raw = combatLogText[locale]?.[key] || combatLogText.en[key] || key;
+    return Object.entries(params).reduce((str, [k, v]) => str.replaceAll(`{${k}}`, String(v)), raw);
+  }
+
   function translateUI() {
     document.documentElement.lang = getLocale();
     for (const el of document.querySelectorAll("[data-ui]")) {
@@ -351,13 +370,13 @@
       // Deal damage minus shield
       if (state.playerShield >= dmg) {
         state.playerShield -= dmg;
-        log(`Player Shield absorbed all damage. (${state.playerShield} left)`, "system");
+        log(combatText("shieldAbsorbed", { shield: state.playerShield }), "system");
         window.WonderSound?.play("wallHit");
       } else {
         dmg -= state.playerShield;
         state.playerShield = 0;
         state.playerHp = Math.max(0, state.playerHp - dmg);
-        log(`Player took ${dmg} damage! (${state.playerHp} HP remaining)`, "enemy");
+        log(combatText("playerDamage", { damage: dmg, hp: state.playerHp }), "enemy");
         window.WonderSound?.play("hit");
       }
     } else if (intent.type === "defend") {
@@ -405,7 +424,7 @@
     if (state.playerPoison > 0) {
       const poisonDmg = state.playerPoison;
       state.playerHp = Math.max(0, state.playerHp - poisonDmg);
-      log(`Player took ${poisonDmg} Poison damage. (${state.playerHp} HP remaining)`, "enemy");
+      log(combatText("playerPoison", { damage: poisonDmg, hp: state.playerHp }), "enemy");
       state.playerPoison--;
       renderStats();
 

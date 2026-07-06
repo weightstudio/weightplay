@@ -350,8 +350,8 @@ window.WONDER_LOBBY = {
     {
       id: "beast-deck",
       title: { en: "Beast Deck: The Mist Forest", "zh-Hant": "獸王牌組：迷霧森林" },
-      status: "planned",
-      statusText: { en: "Coming Soon", "zh-Hant": "製作中" },
+      status: "playable",
+      statusText: { en: "Playable", "zh-Hant": "可遊玩" },
       type: { en: "Roguelike Deckbuilder", "zh-Hant": "卡牌構建 Roguelike" },
       categories: ["Featured", "Animal Games", "Puzzle"],
       skills: ["Logic", "Problem Solving", "Focus"],
@@ -364,6 +364,24 @@ window.WONDER_LOBBY = {
       },
       meta: { en: ["Card Roguelike", "3 Battles", "Diamond Boost"], "zh-Hant": ["卡牌構築", "3 場戰鬥", "鑽石加成"] },
       art: { kind: "image", background: "assets/beast-deck-cover.png", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
+    },
+    {
+      id: "animal-relic-hunters",
+      title: { en: "Animal Relic Hunters", "zh-Hant": "動物遺跡獵人" },
+      status: "playable",
+      statusText: { en: "Playable", "zh-Hant": "可遊玩" },
+      type: { en: "Room Action Roguelite", "zh-Hant": "房間動作 Roguelite" },
+      categories: ["Featured", "Animal Games", "Puzzle"],
+      skills: ["Logic", "Problem Solving", "Focus", "Reaction"],
+      ages: ["13"],
+      ageLabel: { en: "13+", "zh-Hant": "13+" },
+      href: "games/animal-relic-hunters/",
+      description: {
+        en: "Explore ancient ruin rooms, collect relic orbs, unlock chests, and equip powerful gear to defeat the boss.",
+        "zh-Hant": "探索古代遺跡房間，收集遺跡能量球，解鎖寶箱並穿戴強力裝備，最終擊敗強大首領。"
+      },
+      meta: { en: ["Action Roguelite", "3 Rooms", "Gear Slots"], "zh-Hant": ["動作冒險", "3 個房間", "裝備系統"] },
+      art: { kind: "image", background: "assets/animal-relic-hunters-cover.png", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
     },
   ],
 };
