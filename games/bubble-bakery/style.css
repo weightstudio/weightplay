@@ -353,6 +353,7 @@ body.is-bakery-playing .play-panel {
   border-radius: 24px;
   padding: clamp(7px, 1.15vw, 10px);
   overflow: hidden;
+  position: relative;
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
   align-self: center;
@@ -439,6 +440,25 @@ body.is-bakery-playing .play-panel {
 .bubble.pop {
   pointer-events: none;
   animation: bubble-pop .62s cubic-bezier(.14,.78,.2,1) both;
+}
+
+.bubble.is-pop-source {
+  visibility: hidden !important;
+}
+
+.bubble-pop-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+}
+
+.bubble-pop-ghost {
+  position: absolute;
+  z-index: 1;
+  margin: 0;
+  pointer-events: none;
+  transform-origin: 50% 50%;
 }
 
 .bubble.drop {

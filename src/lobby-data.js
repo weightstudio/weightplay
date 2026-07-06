@@ -187,7 +187,7 @@ window.WONDER_LOBBY = {
       categories: ["Animal Games", "Puzzle", "Family"],
       skills: ["Memory", "Focus", "Problem Solving"],
       ages: ["family"],
-      ageLabel: { en: "Relax", "zh-Hant": "放鬆" },
+      ageLabel: { en: "Family", "zh-Hant": "親子" },
       description: {
         en: "A large-print, no-timer pet garden matching game made for calm daily play.",
         "zh-Hant": "大圖示、無倒數的寵物花園配對遊戲，適合每天輕鬆遊玩。",
