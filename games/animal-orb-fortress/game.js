@@ -153,8 +153,6 @@
     orbs: "../../assets/animal-orb-fortress-orb-set.webp",
     beasts: "../../assets/animal-orb-fortress-shadow-beasts.webp",
     boss: "../../assets/animal-orb-fortress-boss-golem.webp",
-    rooms: "../../assets/animal-orb-fortress-room-icons.webp",
-    upgrades: "../../assets/animal-orb-fortress-upgrade-icons.webp",
     revive: "../../assets/animal-orb-fortress-diamond-revive.webp",
     fx: "../../assets/animal-orb-fortress-fx.webp",
   };
@@ -175,18 +173,18 @@
   };
 
   const roomDefs = [
-    { id: "forge", icon: 0, name: "roomForge", desc: "roomForgeDesc" },
-    { id: "shield", icon: 2, name: "roomShield", desc: "roomShieldDesc" },
-    { id: "den", icon: 1, name: "roomDen", desc: "roomDenDesc" },
-    { id: "tower", icon: 3, name: "roomTower", desc: "roomTowerDesc" },
+    { id: "forge", iconSrc: "../../assets/animal-orb-fortress-room-icon-1.webp", name: "roomForge", desc: "roomForgeDesc" },
+    { id: "shield", iconSrc: "../../assets/animal-orb-fortress-room-icon-3.webp", name: "roomShield", desc: "roomShieldDesc" },
+    { id: "den", iconSrc: "../../assets/animal-orb-fortress-room-icon-2.webp", name: "roomDen", desc: "roomDenDesc" },
+    { id: "tower", iconSrc: "../../assets/animal-orb-fortress-room-icon-4.webp", name: "roomTower", desc: "roomTowerDesc" },
   ];
   const upgradeDefs = [
-    { id: "damage", icon: 0, name: "upgradeDamage", desc: "upgradeDamageDesc" },
-    { id: "split", icon: 1, name: "upgradeSplit", desc: "upgradeSplitDesc" },
-    { id: "pierce", icon: 2, name: "upgradePierce", desc: "upgradePierceDesc" },
-    { id: "recharge", icon: 3, name: "upgradeRecharge", desc: "upgradeRechargeDesc" },
-    { id: "shield", icon: 4, name: "upgradeShield", desc: "upgradeShieldDesc" },
-    { id: "magnet", icon: 5, name: "upgradeMagnet", desc: "upgradeMagnetDesc" },
+    { id: "damage", iconSrc: "../../assets/animal-orb-fortress-upgrade-icon-1.webp", name: "upgradeDamage", desc: "upgradeDamageDesc" },
+    { id: "split", iconSrc: "../../assets/animal-orb-fortress-upgrade-icon-2.webp", name: "upgradeSplit", desc: "upgradeSplitDesc" },
+    { id: "pierce", iconSrc: "../../assets/animal-orb-fortress-upgrade-icon-3.webp", name: "upgradePierce", desc: "upgradePierceDesc" },
+    { id: "recharge", iconSrc: "../../assets/animal-orb-fortress-upgrade-icon-4.webp", name: "upgradeRecharge", desc: "upgradeRechargeDesc" },
+    { id: "shield", iconSrc: "../../assets/animal-orb-fortress-upgrade-icon-5.webp", name: "upgradeShield", desc: "upgradeShieldDesc" },
+    { id: "magnet", iconSrc: "../../assets/animal-orb-fortress-upgrade-icon-6.webp", name: "upgradeMagnet", desc: "upgradeMagnetDesc" },
   ];
 
   const images = {};
@@ -337,7 +335,7 @@
         const canUpgrade = level < 5 && save.starStones >= cost;
         return `
           <div class="room-card">
-            <img src="../../assets/animal-orb-fortress-room-icons.webp" alt="" style="${atlasPosition(room.icon, roomDefs.length)}" />
+            <img src="${room.iconSrc}" alt="" />
             <div>
               <strong>${t(room.name)}</strong>
               <span>${t("level", { n: level })} - ${t(room.desc)}</span>
@@ -598,22 +596,12 @@
       .map(
         (upgrade) => `
           <button type="button" class="upgrade-card" data-upgrade="${upgrade.id}">
-            <span class="upgrade-icon" aria-hidden="true" style="${atlasBackground(upgrade.icon, upgradeDefs.length)}"></span>
+            <img class="upgrade-icon" src="${upgrade.iconSrc}" alt="" />
             <strong>${t(upgrade.name)}</strong>
             <span>${t(upgrade.desc)}</span>
           </button>`
       )
       .join("");
-  }
-
-  function atlasPosition(index, count) {
-    const x = count <= 1 ? 50 : (index / (count - 1)) * 100;
-    return `object-position:${x}% 50%`;
-  }
-
-  function atlasBackground(index, count) {
-    const x = count <= 1 ? 50 : (index / (count - 1)) * 100;
-    return `background-position:${x}% 50%;background-size:${count * 100}% 100%;`;
   }
 
   function chooseUpgrade(id) {

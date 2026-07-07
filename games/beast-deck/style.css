@@ -870,6 +870,12 @@ body {
   background: rgba(168, 85, 247, 0.1);
 }
 
+.status-badge.defend {
+  border-color: rgba(16, 185, 129, 0.8);
+  color: #a7f3d0;
+  background: rgba(16, 185, 129, 0.12);
+}
+
 .status-badge.vulnerable {
   border-color: var(--accent-color);
   color: #fde047;
@@ -1033,6 +1039,11 @@ body {
 .card.drafted-card {
   border-color: #fbbf24;
   box-shadow: 0 0 18px rgba(251, 191, 36, 0.32);
+}
+
+.card.draft-picked {
+  outline: 3px solid rgba(251, 191, 36, 0.78);
+  outline-offset: 2px;
 }
 
 .card.drafted-card::after {

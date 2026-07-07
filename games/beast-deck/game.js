@@ -138,7 +138,7 @@
       hudDiscard: "Discard",
       shieldLabel: "Block",
       chooseCard: "Draft a Card",
-      chooseCardDesc: "Choose one animal power to keep in this mission deck.",
+      chooseCardDesc: "Choose one animal power for this mission deck. The chosen card is guaranteed in the next opening hand.",
       tryAgain: "Try Again",
       backToMenu: "Back to Menu",
       skillLogic: "Logic",
@@ -185,7 +185,8 @@
       log_player_turn: "Your turn. Drew {count} cards. Energy restored to {energy}.",
       log_player_block: "You gained {amount} Block. It will absorb enemy attack damage this turn.",
       log_enemy_block_fade: "{enemy}'s remaining Block faded.",
-      log_draft_added: "{card} joined your mission deck and is highlighted in this opening hand.",
+      log_draft_added: "{card} joined this mission deck and is guaranteed in this opening hand.",
+      enemyBlockStatus: "DEF {amount} absorbs your next damage.",
       log_win_battle: "Defeated {enemy}. Draft a new card.",
       log_win_boss: "Mission boss defeated. Gained {xp} XP.",
       log_coin_gain: "Earned {coins} Beast Coins.",
@@ -253,7 +254,7 @@
       hudDiscard: "棄牌",
       shieldLabel: "格擋",
       chooseCard: "選擇卡牌",
-      chooseCardDesc: "選一張動物能力加入本次任務牌組。",
+      chooseCardDesc: "選一張動物能力加入本次任務牌組，選到的卡會保證出現在下一場開手牌。",
       tryAgain: "再試一次",
       backToMenu: "回到選單",
       skillLogic: "邏輯",
@@ -300,7 +301,8 @@
       log_player_turn: "你的回合，抽 {count} 張牌，能量恢復為 {energy}。",
       log_player_block: "你獲得 {amount} 點格擋，可吸收本回合敵方攻擊。",
       log_enemy_block_fade: "{enemy} 剩餘的格擋消退了。",
-      log_draft_added: "{card} 已加入本次任務牌組，下一場開手牌會標示出來。",
+      log_draft_added: "{card} 已加入本次任務牌組，並保證出現在這場開手牌。",
+      enemyBlockStatus: "DEF {amount} 會吸收你的下一次傷害。",
       log_win_battle: "擊敗 {enemy}，選一張新卡。",
       log_win_boss: "任務首領被擊敗，獲得 {xp} 經驗。",
       log_coin_gain: "獲得 {coins} 枚獸王金幣。",
@@ -984,8 +986,17 @@
     }
   }
 
+  function addDraftCardToMission(cardId) {
+    state.deck.push(cardId);
+    state.guaranteedOpeningCard = cardId;
+    state.lastDraftCard = cardId;
+    state.playerHp = Math.min(state.playerMaxHp, state.playerHp + 10);
+    state.battle += 1;
+  }
+
   function showDraftScreen() {
     nodes.draftCards.innerHTML = "";
+    let draftLocked = false;
     const draftPool = ["sky-hawk", "cheetah-sprint", "viper-venom", "owl-wisdom", "iron-tortoise"];
     shuffle(draftPool);
     draftPool.slice(0, 3).forEach((cardId) => {
@@ -995,11 +1006,13 @@
       cardEl.type = "button";
       cardEl.innerHTML = cardMarkup(card);
       cardEl.addEventListener("click", () => {
-        state.deck.push(cardId);
-        state.guaranteedOpeningCard = cardId;
-        state.lastDraftCard = cardId;
-        state.playerHp = Math.min(state.playerMaxHp, state.playerHp + 10);
-        state.battle += 1;
+        if (draftLocked) return;
+        draftLocked = true;
+        nodes.draftCards.querySelectorAll("button").forEach((button) => {
+          button.disabled = true;
+          button.classList.toggle("draft-picked", button === cardEl);
+        });
+        addDraftCardToMission(cardId);
         nodes.draftPanel.classList.add("hidden");
         startNextBattle();
       });
@@ -1070,7 +1083,9 @@
     nodes.playerStatusRow.innerHTML = state.playerPoison > 0 ? `<span class="status-badge poison">POI ${state.playerPoison}</span>` : "";
     nodes.enemyStatusRow.innerHTML = "";
     if (state.enemyPoison > 0) nodes.enemyStatusRow.innerHTML += `<span class="status-badge poison">POI ${state.enemyPoison}</span>`;
-    if (state.enemyShield > 0) nodes.enemyStatusRow.innerHTML += `<span class="status-badge defend">DEF ${state.enemyShield}</span>`;
+    if (state.enemyShield > 0) {
+      nodes.enemyStatusRow.innerHTML += `<span class="status-badge defend" title="${t("enemyBlockStatus", { amount: state.enemyShield })}">${t("enemyBlockStatus", { amount: state.enemyShield })}</span>`;
+    }
   }
 
   function renderHand() {
@@ -1181,11 +1196,7 @@
         highlightDraftCard: state.highlightDraftCard || null,
       }),
       forceDraftChoice: (cardId = "iron-tortoise") => {
-        state.deck.push(cardId);
-        state.guaranteedOpeningCard = cardId;
-        state.lastDraftCard = cardId;
-        state.playerHp = Math.min(state.playerMaxHp, state.playerHp + 10);
-        state.battle += 1;
+        addDraftCardToMission(cardId);
         nodes.draftPanel.classList.add("hidden");
         startNextBattle();
         return window.__beastDeckSmoke.getState();

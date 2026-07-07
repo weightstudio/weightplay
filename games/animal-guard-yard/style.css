@@ -2079,3 +2079,50 @@ select {
     grid-template-columns: 1fr;
   }
 }
+
+@media (max-width: 700px) {
+  .yard-game,
+  .menu-panel,
+  .menu-shell,
+  .menu-tab-panel,
+  .beast-guide,
+  .stage-grid {
+    max-width: 100vw;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  .yard-game {
+    overflow-x: hidden;
+  }
+
+  .menu-shell {
+    width: 100%;
+    padding-inline: clamp(8px, 2.4vw, 12px);
+  }
+
+  .beast-guide {
+    padding: 8px;
+  }
+
+  .beast-guide-list {
+    grid-template-columns: 1fr;
+    gap: 7px;
+  }
+
+  .beast-guide-card {
+    width: 100%;
+    min-height: 70px;
+    grid-template-columns: 52px minmax(0, 1fr);
+    align-items: center;
+  }
+
+  .stage-grid {
+    padding-inline: 0;
+    scroll-padding-inline: 26%;
+  }
+
+  .stage-card {
+    flex-basis: clamp(172px, 62vw, 232px);
+  }
+}

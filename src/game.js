@@ -688,6 +688,7 @@ function startLevel(levelIndex) {
   battleHud.classList.remove("hidden");
   menuCoinLine.classList.add("hidden");
   menuTabs.classList.add("hidden");
+  overlay.classList.remove("settlement-screen", "equipment-screen");
   overlay.classList.add("hidden");
   updateHud();
   window.WonderSound?.play("start");
@@ -1132,6 +1133,7 @@ function getBossBallColor(enemy) {
 
 function loseLevel() {
   overlay.classList.remove("equipment-screen");
+  overlay.classList.add("settlement-screen");
   bankRunCoins();
   state.running = false;
   state.gameOver = true;
@@ -1155,6 +1157,7 @@ function loseLevel() {
 
 function winLevel() {
   overlay.classList.remove("equipment-screen");
+  overlay.classList.add("settlement-screen");
   bankRunCoins();
   const wasChallenge = state.level.id === highestUnlocked;
   const drops = rollLevelDrops();
@@ -1809,7 +1812,11 @@ function updateHud() {
 function showMainMenu(tab = activeMenuTab) {
   activeMenuTab = tab;
   state.running = false;
+  state.won = false;
+  state.gameOver = false;
+  state.awaitingUpgrade = false;
   document.body.classList.remove("wonder-tutorial-hidden");
+  overlay.classList.remove("settlement-screen");
   settingsBtn.classList.add("hidden");
   battleHud.classList.add("hidden");
   menuCoinLine.classList.remove("hidden");
@@ -1998,7 +2005,7 @@ function showFloatingMessage(text) {
 }
 
 function showUpgradeChoices() {
-  overlay.classList.remove("equipment-screen");
+  overlay.classList.remove("equipment-screen", "settlement-screen");
   state.running = false;
   document.body.classList.add("wonder-tutorial-hidden");
   settingsBtn.classList.add("hidden");
@@ -2048,7 +2055,7 @@ function chooseUpgrade(id) {
 
 function showPauseMenu() {
   if (!state.running) return;
-  overlay.classList.remove("equipment-screen");
+  overlay.classList.remove("equipment-screen", "settlement-screen");
   state.running = false;
   document.body.classList.add("wonder-tutorial-hidden");
   settingsBtn.classList.add("hidden");
