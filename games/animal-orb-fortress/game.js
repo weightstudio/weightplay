@@ -705,12 +705,18 @@
   function drawEnemy(enemy) {
     const size = enemy.kind === "boss" ? 132 : enemy.size * 2.25;
     ctx.save();
-    ctx.shadowColor = enemy.kind === "thorn" ? "rgba(255, 202, 86, 0.75)" : enemy.kind === "boss" ? "rgba(255, 86, 128, 0.75)" : "rgba(132, 210, 255, 0.72)";
-    ctx.shadowBlur = enemy.hitTimer > 0 ? 28 : 18;
-    ctx.fillStyle = enemy.kind === "boss" ? "rgba(69, 13, 35, 0.56)" : "rgba(7, 20, 48, 0.52)";
+    const aura = enemy.kind === "thorn" ? "#ffd56a" : enemy.kind === "boss" ? "#ff5f91" : "#8ee7ff";
+    ctx.shadowColor = enemy.kind === "thorn" ? "rgba(255, 202, 86, 0.82)" : enemy.kind === "boss" ? "rgba(255, 86, 128, 0.82)" : "rgba(132, 210, 255, 0.8)";
+    ctx.shadowBlur = enemy.hitTimer > 0 ? 34 : 22;
+    ctx.fillStyle = enemy.kind === "boss" ? "rgba(61, 10, 34, 0.74)" : "rgba(5, 13, 34, 0.7)";
     ctx.beginPath();
-    ctx.ellipse(enemy.x, enemy.y + size * 0.08, size * 0.52, size * 0.42, 0, 0, Math.PI * 2);
+    ctx.ellipse(enemy.x, enemy.y + size * 0.1, size * 0.62, size * 0.48, 0, 0, Math.PI * 2);
     ctx.fill();
+    ctx.strokeStyle = aura;
+    ctx.lineWidth = enemy.kind === "boss" ? 5 : 3;
+    ctx.globalAlpha = enemy.hitTimer > 0 ? 0.95 : 0.72;
+    ctx.stroke();
+    ctx.globalAlpha = 1;
     if (enemy.kind === "boss") drawAtlas(images.boss, 0, 1, enemy.x, enemy.y, size);
     else drawAtlas(images.beasts, enemy.kind === "skitter" ? 0 : enemy.kind === "thorn" ? 1 : 2, 3, enemy.x, enemy.y, size);
     ctx.restore();

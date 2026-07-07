@@ -12,6 +12,8 @@ const recommendations = document.querySelector("#recommendations");
 const recommendationsSection = document.querySelector("#recommendationsSection");
 const freshUpdates = document.querySelector("#freshUpdates");
 const freshUpdatesSection = document.querySelector("#freshUpdatesSection");
+const challengeSpotlight = document.querySelector("#challengeSpotlight");
+const challengeSpotlightSection = document.querySelector("#challengeSpotlightSection");
 const skillPaths = document.querySelector("#skillPaths");
 const skillPathsSection = document.querySelector("#skillPathsSection");
 const lobbyStats = document.querySelector("#lobbyStats");
@@ -32,6 +34,8 @@ const recommendationTitle = document.querySelector("#recommendationTitle");
 const recommendationReason = document.querySelector("#recommendationReason");
 const freshUpdatesTitle = document.querySelector("#freshUpdatesTitle");
 const freshUpdatesReason = document.querySelector("#freshUpdatesReason");
+const challengeSpotlightTitle = document.querySelector("#challengeSpotlightTitle");
+const challengeSpotlightReason = document.querySelector("#challengeSpotlightReason");
 const skillPathsTitle = document.querySelector("#skillPathsTitle");
 const skillPathsReason = document.querySelector("#skillPathsReason");
 const dailyReward = document.querySelector("#dailyReward");
@@ -336,6 +340,17 @@ function upcomingPreviewGames(limit = 3) {
     .slice(0, limit);
 }
 
+function challengeSpotlightGames(limit = 4) {
+  return playableGames()
+    .filter((game) => (game.ages || []).includes("13"))
+    .sort((a, b) => {
+      const aStats = statFor(a);
+      const bStats = statFor(b);
+      return (bStats.plays7d || 0) - (aStats.plays7d || 0) || (bStats.playsTotal || 0) - (aStats.playsTotal || 0);
+    })
+    .slice(0, limit);
+}
+
 function recommendationSeeds() {
   const seedIds = [...recentGameIds, ...favoriteGameIds].filter((id, index, list) => id && list.indexOf(id) === index);
   return seedIds.map((id) => lobby.games.find((game) => game.id === id && game.status === "playable")).filter(Boolean);
@@ -559,6 +574,7 @@ function renderLobby() {
   renderHeroGames();
   renderUpcomingGames();
   renderFreshUpdates();
+  renderChallengeSpotlight();
   renderRecommendations();
   renderSkillPaths();
   gameGrid.replaceChildren(...lobby.games.map(createGameCard));
@@ -815,6 +831,46 @@ function renderFreshUpdates() {
   freshUpdates.replaceChildren(...cards);
 }
 
+function renderChallengeSpotlight() {
+  if (!challengeSpotlight || !challengeSpotlightSection) return;
+  const cards = challengeSpotlightGames(4).map((game) => {
+    const title = text(game.title);
+    const type = text(game.type);
+    const description = text(game.description);
+    const skillBadges = (game.skills || []).slice(0, 3).map((skill) => `<span>${skillText(skill)}</span>`).join("");
+    const card = document.createElement("a");
+    card.className = "challenge-spotlight-card";
+    card.href = game.href;
+    card.addEventListener("click", () => {
+      window.WonderAnalytics?.track("challenge_spotlight_open", {
+        game_id: game.id,
+        game_title: title,
+        locale: i18n.locale(),
+      });
+      recordRecentGame(game.id);
+    });
+    card.innerHTML = `
+      <div class="challenge-spotlight-art">
+        <img src="${game.art?.background || primaryArt(game)}" alt="" />
+        <span>${i18n.t("challenge_spotlight.badge")}</span>
+      </div>
+      <div class="challenge-spotlight-copy">
+        <strong>${title}</strong>
+        <small>${type}</small>
+        <em>${description}</em>
+        ${skillBadges ? `<div class="challenge-spotlight-skills" aria-label="Skills trained">${skillBadges}</div>` : ""}
+        <b>${i18n.t("challenge_spotlight.cta")}</b>
+      </div>
+    `;
+    return card;
+  });
+
+  challengeSpotlightTitle.textContent = i18n.t("challenge_spotlight.title");
+  challengeSpotlightReason.textContent = i18n.t("challenge_spotlight.reason");
+  challengeSpotlightSection.classList.toggle("hidden", cards.length === 0);
+  challengeSpotlight.replaceChildren(...cards);
+}
+
 function gamesForSkillPath(skill, limit = 2) {
   return playableGames()
     .filter((game) => (game.skills || []).includes(skill))
@@ -966,6 +1022,8 @@ function applyStaticTranslations() {
   if (recommendationReason) recommendationReason.textContent = i18n.t("recommend.start_here");
   if (freshUpdatesTitle) freshUpdatesTitle.textContent = i18n.t("fresh_updates.title");
   if (freshUpdatesReason) freshUpdatesReason.textContent = i18n.t("fresh_updates.reason");
+  if (challengeSpotlightTitle) challengeSpotlightTitle.textContent = i18n.t("challenge_spotlight.title");
+  if (challengeSpotlightReason) challengeSpotlightReason.textContent = i18n.t("challenge_spotlight.reason");
   if (skillPathsTitle) skillPathsTitle.textContent = i18n.t("skill_path.title");
   if (skillPathsReason) skillPathsReason.textContent = i18n.t("skill_path.reason");
   document.querySelectorAll("[data-i18n]").forEach((element) => {

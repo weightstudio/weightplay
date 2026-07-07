@@ -653,6 +653,7 @@ body.lobby-page {
 
 .upcoming-games-section,
 .fresh-updates-section,
+.challenge-spotlight-section,
 .recommendations-section,
 .skill-paths-section {
   display: grid;
@@ -744,11 +745,16 @@ body.lobby-page {
 
 .upcoming-games,
 .fresh-updates,
+.challenge-spotlight,
 .recommendations,
 .skill-paths {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 10px;
+}
+
+.challenge-spotlight {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 .hero-game-card {
@@ -799,6 +805,122 @@ body.lobby-page {
   color: #fff;
   text-decoration: none;
   box-shadow: 0 14px 30px rgba(0, 0, 0, 0.18);
+}
+
+.challenge-spotlight-card {
+  position: relative;
+  display: grid;
+  grid-template-rows: 138px minmax(0, 1fr);
+  min-height: 332px;
+  overflow: hidden;
+  border: 1px solid rgba(134, 174, 255, 0.34);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(74, 110, 187, 0.18), rgba(17, 192, 145, 0.1)),
+    rgba(255, 255, 255, 0.075);
+  color: #fff;
+  text-decoration: none;
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.2);
+}
+
+.challenge-spotlight-art {
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
+  background: #172235;
+}
+
+.challenge-spotlight-art img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(1.08) brightness(0.92);
+}
+
+.challenge-spotlight-art span {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  min-height: 26px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: linear-gradient(180deg, #dff7ff, #78a9ff);
+  color: #101b35;
+  font-size: 11px;
+  font-weight: 1000;
+  line-height: 1;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.22);
+}
+
+.challenge-spotlight-copy {
+  display: grid;
+  align-content: start;
+  gap: 7px;
+  min-width: 0;
+  padding: 12px;
+}
+
+.challenge-spotlight-copy strong,
+.challenge-spotlight-copy small,
+.challenge-spotlight-copy em {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.challenge-spotlight-copy strong {
+  font-size: 18px;
+  line-height: 1.15;
+  white-space: nowrap;
+}
+
+.challenge-spotlight-copy small {
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 12px;
+  font-weight: 850;
+  white-space: nowrap;
+}
+
+.challenge-spotlight-copy em {
+  display: -webkit-box;
+  color: #dff7ff;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 850;
+  line-height: 1.35;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.challenge-spotlight-skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.challenge-spotlight-skills span {
+  min-height: 24px;
+  padding: 5px 8px;
+  border-radius: 8px;
+  background: rgba(129, 221, 255, 0.14);
+  color: #dff7ff;
+  font-size: 11px;
+  font-weight: 950;
+}
+
+.challenge-spotlight-copy b {
+  align-self: end;
+  display: inline-flex;
+  width: fit-content;
+  min-height: 30px;
+  align-items: center;
+  border-radius: 8px;
+  padding: 7px 10px;
+  background: linear-gradient(180deg, #d8fff4, #10c58d);
+  color: #083326;
+  font-size: 12px;
+  font-weight: 1000;
 }
 
 .upcoming-game-card {
@@ -2111,6 +2233,7 @@ body.lobby-page {
 
   .upcoming-games,
   .fresh-updates,
+  .challenge-spotlight,
   .recommendations,
   .skill-paths {
     grid-auto-columns: minmax(230px, 76vw);
@@ -2128,6 +2251,7 @@ body.lobby-page {
 
   .upcoming-game-card,
   .fresh-update-card,
+  .challenge-spotlight-card,
   .recommendation-card,
   .skill-path-card {
     scroll-snap-align: start;

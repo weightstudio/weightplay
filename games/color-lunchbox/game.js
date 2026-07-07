@@ -83,6 +83,7 @@
       roundLabel: "Progress",
       levelLabel: "Level",
       ready: "Drag the food to the matching lunchbox.",
+      voicePrompt: "Put {food} into the {color} lunchbox.",
       correct: "Yum! Correct!",
       wrong: "Try another box!",
       winTitle: "Level Complete!",
@@ -271,6 +272,8 @@
     color_black: "黑色",
     color_cyan: "青色",
   };
+
+  dictionary["zh-Hant"].voicePrompt = "\u628a {food} \u653e\u9032 {color} \u4fbf\u7576\u76d2\u3002";
 
   const pageMetadata = {
     en: {
@@ -615,6 +618,13 @@
     roundText.textContent = `${Math.min(state.index + 1, state.deck.length)} / ${state.deck.length}`;
   }
 
+  function setCurrentPrompt(food) {
+    feedbackText.textContent = t("voicePrompt", {
+      food: t(food.nameKey),
+      color: t(colorDB[food.color].labelKey),
+    });
+  }
+
   function loadFood() {
     const food = state.deck[state.index];
     if (!food) return;
@@ -624,6 +634,7 @@
     foodCard.style.transform = "";
     foodCard.classList.remove("pop", "shake");
     foodCard.style.pointerEvents = "";
+    setCurrentPrompt(food);
   }
 
   function submitColor(color, target) {
@@ -632,7 +643,10 @@
 
     if (color !== food.color) {
       state.mistakes += 1;
-      feedbackText.textContent = t("wrong");
+      feedbackText.textContent = `${t("wrong")} ${t("voicePrompt", {
+        food: t(food.nameKey),
+        color: t(colorDB[food.color].labelKey),
+      })}`;
       window.WonderSound?.play("wrong");
       window.WonderAnalytics?.track("game_answer", {
         game_id: GAME_ID,
