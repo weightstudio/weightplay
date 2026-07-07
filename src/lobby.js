@@ -481,10 +481,11 @@ function createGameCard(game) {
   const skillReason = skillReasonText(game);
   const quickFacts = [gameInfoText(game.id, "difficulty"), gameInfoText(game.id, "time")].filter(Boolean).join("");
   const showHero = game.art.hero && !game.art.hideHero && !game.art.hero.includes("width='1'");
+  const comingSoonBadge = isPlayable ? "" : `<span class="coming-soon-art-badge">${i18n.t("action.coming_soon")}</span>`;
   const art =
     game.art.kind === "image"
-      ? `<div class="game-card-art image-art"><img class="game-card-bg-blur" src="${game.art.background}" alt="" /><img class="game-card-fg" src="${game.art.background}" alt="" />${showHero ? `<img class="game-card-hero" src="${game.art.hero}" alt="" />` : ""}</div>`
-      : `<div class="game-card-art ${game.art.className}"><span>${ageLabel}</span></div>`;
+      ? `<div class="game-card-art image-art"><img class="game-card-bg-blur" src="${game.art.background}" alt="" /><img class="game-card-fg" src="${game.art.background}" alt="" />${showHero ? `<img class="game-card-hero" src="${game.art.hero}" alt="" />` : ""}${comingSoonBadge}</div>`
+      : `<div class="game-card-art ${game.art.className}"><span>${ageLabel}</span>${comingSoonBadge}</div>`;
   const favoriteAction = i18n.t(favorite ? "action.remove_favorite" : "action.add_favorite");
   const favoriteLabel = i18n.t(favorite ? "action.remove_favorite_title" : "action.add_favorite_title", { title });
   const primaryAction = isPlayable ? i18n.t(recent ? "action.continue" : "action.play") : i18n.t("action.coming_soon");

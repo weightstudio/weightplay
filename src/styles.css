@@ -1866,8 +1866,64 @@ body.lobby-page {
   transform: translateY(-1px) scale(0.99);
 }
 
-.coming-soon {
-  opacity: 0.72;
+.game-card.coming-soon {
+  border-color: rgba(255, 207, 99, 0.32);
+  background: rgba(255, 255, 255, 0.08);
+  opacity: 0.9;
+}
+
+.game-card.coming-soon .game-card-art {
+  filter: saturate(0.86) brightness(0.86);
+}
+
+.game-card.coming-soon .game-card-art::after,
+.game-card.coming-soon .game-card-art::before {
+  display: none;
+}
+
+.coming-soon-art-badge {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  z-index: 8;
+  display: grid;
+  place-items: center;
+  min-height: 36px;
+  padding: 6px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.58);
+  border-radius: 999px;
+  background: rgba(12, 17, 24, 0.78);
+  color: #fff3ba;
+  font-size: 0.88rem;
+  font-weight: 900;
+  letter-spacing: 0;
+  text-align: center;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(10px);
+}
+
+.game-card.coming-soon .game-card-actions {
+  background: rgba(255, 207, 99, 0.12);
+  color: #fff3ba;
+}
+
+.game-card.coming-soon:hover,
+.game-card.coming-soon:focus-visible {
+  border-color: rgba(255, 211, 107, 0.52);
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 20px 44px rgba(0, 0, 0, 0.28);
+  transform: translateY(-3px);
+}
+
+.game-card.coming-soon:hover .game-card-art,
+.game-card.coming-soon:focus-visible .game-card-art {
+  filter: saturate(0.95) brightness(0.92);
+}
+
+.game-card.coming-soon:hover .game-card-fg,
+.game-card.coming-soon:focus-visible .game-card-fg {
+  transform: scale(1.03);
 }
 
 .lobby-toast {
