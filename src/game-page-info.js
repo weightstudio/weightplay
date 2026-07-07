@@ -859,6 +859,7 @@
     if (locale() !== "zh-Hant") return time;
     return String(time)
       .replace("1-3 minutes", "1-3 \u5206\u9418")
+      .replace("3-8 minutes", "3-8 \u5206\u9418")
       .replace("3 minutes", "3 \u5206\u9418")
       .replace("3-5 minutes", "3-5 \u5206\u9418")
       .replace("5-8 minutes", "5-8 \u5206\u9418");
