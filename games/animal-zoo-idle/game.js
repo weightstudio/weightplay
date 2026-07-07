@@ -86,6 +86,9 @@
       visitors: "Visitors",
       report: "Report",
       reportTitle: "Zoo Growth Report",
+      skillFocus: "Focus",
+      skillLogic: "Logic",
+      skillAnimalKnowledge: "Animal Knowledge",
       continue: "Continue",
       loading: "Loading",
       collect: "Collect",
@@ -305,6 +308,9 @@
     dragHint: "\u53ef\u4ee5\u62d6\u66f3\u8349\u539f\u4e0a\u7684\u52d5\u7269\uff0c\u64fa\u6210\u81ea\u5df1\u559c\u6b61\u7684\u6a02\u5712\u3002",
     reportGood: "\u7167\u9867\u5f97\u5f88\u597d\uff01\u4f60\u7684\u52d5\u7269\u5712\u6b63\u5728\u7a69\u5b9a\u6210\u9577\u3002",
     reportTry: "\u8868\u73fe\u4e0d\u932f\uff01\u62db\u52df\u52d5\u7269\u548c\u5347\u7d1a\u5927\u9580\u53ef\u4ee5\u8b93\u6a02\u5712\u6210\u9577\u66f4\u5feb\u3002",
+    skillFocus: "\u5c08\u6ce8",
+    skillLogic: "\u908f\u8f2f",
+    skillAnimalKnowledge: "\u52d5\u7269\u77e5\u8b58",
     lion: "\u7345\u5b50",
     giraffe: "\u9577\u9838\u9e7f",
     elephant: "\u5927\u8c61",
@@ -320,6 +326,20 @@
   };
 
   const $ = (id) => document.getElementById(id);
+  const pageMeta = {
+    en: {
+      title: "Animal Zoo Idle - WeightPlay",
+      description: "Run a lively animal park where visitors buy tickets while you care for animals, upgrade the zoo gate, recruit new animals, and grow your zoo in Animal Zoo Idle on WeightPlay.",
+      ogTitle: "Animal Zoo Idle - WeightPlay",
+      ogDescription: "A family-friendly zoo management game with visitor income, animal care, gate upgrades, animal recruitment, and local progress.",
+    },
+    "zh-Hant": {
+      title: "\u52d5\u7269\u5c0f\u5c0f\u6a02\u5712 - WeightPlay",
+      description: "\u5728 WeightPlay \u7d93\u71df\u71b1\u9b27\u7684\u52d5\u7269\u5712\uff0c\u6536\u53d6\u904a\u5ba2\u9580\u7968\u3001\u7167\u9867\u52d5\u7269\u3001\u5347\u7d1a\u5927\u9580\u4e26\u62db\u52df\u65b0\u52d5\u7269\uff0c\u8b93\u6a02\u5712\u6301\u7e8c\u6210\u9577\u3002",
+      ogTitle: "\u52d5\u7269\u5c0f\u5c0f\u6a02\u5712 - WeightPlay",
+      ogDescription: "\u9069\u5408\u89aa\u5b50\u7684\u52d5\u7269\u5712\u7d93\u71df\u904a\u6232\uff0c\u5305\u542b\u9580\u7968\u6536\u5165\u3001\u52d5\u7269\u7167\u9867\u3001\u5927\u9580\u5347\u7d1a\u3001\u52d5\u7269\u62db\u52df\u8207\u672c\u5730\u9032\u5ea6\u3002",
+    },
+  };
   const nodes = {
     localeSelect: $("localeSelect"),
     menuPanel: $("menuPanel"),
@@ -642,6 +662,22 @@
       node.textContent = t(node.dataset.ui);
     });
     nodes.localeSelect.value = locale;
+    updatePageMetadata();
+  }
+
+  function updateMeta(selector, value) {
+    const node = document.head.querySelector(selector);
+    if (node) node.setAttribute("content", value);
+  }
+
+  function updatePageMetadata() {
+    const meta = pageMeta[locale] || pageMeta.en;
+    document.title = meta.title;
+    updateMeta('meta[name="description"]', meta.description);
+    updateMeta('meta[property="og:title"]', meta.ogTitle);
+    updateMeta('meta[property="og:description"]', meta.ogDescription);
+    updateMeta('meta[name="twitter:title"]', meta.ogTitle);
+    updateMeta('meta[name="twitter:description"]', meta.ogDescription);
   }
 
   function render() {
@@ -1356,7 +1392,18 @@
     applyOffline();
     render();
     requestAnimationFrame(render);
+    alignGamePanelTop();
     window.WonderAnalytics?.track("game_start", { game_id: GAME_ID });
+  }
+
+  function alignGamePanelTop() {
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        const rect = nodes.gamePanel.getBoundingClientRect();
+        const target = Math.max(0, window.scrollY + rect.top - 8);
+        window.scrollTo({ top: target, behavior: "auto" });
+      });
+    });
   }
 
   function tickPark() {
