@@ -137,6 +137,14 @@
       milestoneCollect25000: "Collect 25,000 total tickets",
       milestoneAnimals12: "Recruit every animal",
       milestoneClaimed: "Milestone reward claimed!",
+      tourBoard: "Daily Park Tour",
+      tourRound: "Tour {n}",
+      tourReward: "Reward +{coins} coins",
+      tourCollect: "Collect {coins} tickets",
+      tourCare: "Care for animals {count} times",
+      tourBuild: "Build or recruit {count} time",
+      tourClaim: "Claim Tour",
+      tourComplete: "Park tour complete!",
       parkPlan: "Park Growth Plan",
       parkRank: "Gate progress",
       nextUpgrade: "Next gate upgrade",
@@ -252,6 +260,14 @@
     milestoneCollect25000: "\u7d2f\u8a08\u6536\u96c6 25,000 \u9580\u7968",
     milestoneAnimals12: "\u62db\u52df\u5168\u90e8\u52d5\u7269",
     milestoneClaimed: "\u91cc\u7a0b\u7891\u734e\u52f5\u5df2\u9818\u53d6\uff01",
+    tourBoard: "\u6bcf\u65e5\u5712\u5340\u5de1\u8ff4",
+    tourRound: "\u7b2c {n} \u8f2a\u5de1\u8ff4",
+    tourReward: "\u734e\u52f5 +{coins} \u91d1\u5e63",
+    tourCollect: "\u6536\u96c6 {coins} \u9580\u7968",
+    tourCare: "\u7167\u9867\u52d5\u7269 {count} \u6b21",
+    tourBuild: "\u5efa\u8a2d\u6216\u62db\u52df {count} \u6b21",
+    tourClaim: "\u9818\u53d6\u5de1\u8ff4",
+    tourComplete: "\u5712\u5340\u5de1\u8ff4\u5b8c\u6210\uff01",
     parkPlan: "\u6a02\u5712\u6210\u9577\u8a08\u756b",
     parkRank: "\u5927\u9580\u9032\u5ea6",
     nextUpgrade: "\u4e0b\u4e00\u6b21\u5927\u9580\u5347\u7d1a",
@@ -348,6 +364,8 @@
       careReadyAt: 0,
       lifetimeTickets: 0,
       claimedMilestones: {},
+      tourRound: 1,
+      tour: { collected: 0, cared: 0, built: 0 },
       layoutVersion,
       bestScore: 0,
       lastScore: 0,
@@ -406,6 +424,12 @@
     data.careReadyAt = Math.max(0, Number(data.careReadyAt || 0));
     data.lifetimeTickets = Math.max(0, Number(data.lifetimeTickets || 0));
     data.claimedMilestones = { ...(data.claimedMilestones || {}) };
+    data.tourRound = clamp(Math.floor(Number(data.tourRound || 1)), 1, 999);
+    data.tour = {
+      collected: Math.max(0, Number(data.tour?.collected || 0)),
+      cared: Math.max(0, Number(data.tour?.cared || 0)),
+      built: Math.max(0, Number(data.tour?.built || 0)),
+    };
     for (const facility of facilities) {
       data.facilities[facility.id] = clamp(Math.floor(Number(data.facilities[facility.id] || 0)), 0, facility.maxLevel);
     }
@@ -551,6 +575,31 @@
     return candidates.sort((a, b) => Math.max(0, a.cost - save.coins) - Math.max(0, b.cost - save.coins))[0];
   }
 
+  function tourTargets(round = save.tourRound) {
+    return {
+      collected: 260 + (round - 1) * 180,
+      cared: Math.min(6, 1 + Math.floor((round - 1) / 2)),
+      built: Math.min(3, 1 + Math.floor((round - 1) / 4)),
+      reward: 360 + (round - 1) * 170,
+    };
+  }
+
+  function tourProgress() {
+    const targets = tourTargets();
+    return {
+      collected: taskProgress(save.tour.collected, targets.collected),
+      cared: taskProgress(save.tour.cared, targets.cared),
+      built: taskProgress(save.tour.built, targets.built),
+    };
+  }
+
+  function isTourComplete() {
+    const targets = tourTargets();
+    return save.tour.collected >= targets.collected
+      && save.tour.cared >= targets.cared
+      && save.tour.built >= targets.built;
+  }
+
   function visitorCount() {
     return clamp(Math.ceil(incomePerTick() / 18) + facilityVisitorBonus(), 2, 9);
   }
@@ -627,6 +676,7 @@
       <div class="care-panel">
         <div class="happy-meter"><span>${t("happiness")}</span><b>${Math.round(save.happiness)}%</b><i style="width:${save.happiness}%"></i></div>
         <div class="park-plan-card" aria-live="polite"></div>
+        <div class="tour-board" aria-live="polite"></div>
         <div class="habitat-bonus-card" aria-live="polite"></div>
         <div class="zoo-actions">
           <button type="button" data-action="collect">${t("collect")}</button>
@@ -654,6 +704,7 @@
     card.querySelector('[data-action="next-goal"]').addEventListener("click", recruitAnimal);
     renderNextGoal(card.querySelector(".next-goal-card"));
     renderParkPlan(card.querySelector(".park-plan-card"));
+    renderTourBoard(card.querySelector(".tour-board"));
     renderHabitatBonus(card.querySelector(".habitat-bonus-card"));
     renderFacilityBoard(card.querySelector(".facility-board"));
     renderTaskBoard(card.querySelector(".zoo-task-board"));
@@ -683,6 +734,7 @@
     if (happyText) happyText.textContent = `${Math.round(save.happiness)}%`;
     if (happyFill) happyFill.style.width = `${save.happiness}%`;
     renderParkPlan(card.querySelector(".park-plan-card"));
+    renderTourBoard(card.querySelector(".tour-board"));
     const upgrade = card.querySelector('[data-action="upgrade"]');
     if (upgrade) {
       upgrade.disabled = save.gateLevel >= maxGateLevel;
@@ -1030,6 +1082,39 @@
     `;
   }
 
+  function renderTourBoard(container) {
+    if (!container) return;
+    const targets = tourTargets();
+    const progress = tourProgress();
+    const ready = isTourComplete();
+    container.classList.toggle("ready", ready);
+    container.innerHTML = `
+      <div class="tour-head">
+        <strong>${t("tourBoard")}</strong>
+        <span>${t("tourRound", { n: save.tourRound })}</span>
+      </div>
+      <div class="tour-list">
+        <span>
+          <b>${t("tourCollect", { coins: formatCost(targets.collected) })}</b>
+          <small>${formatNumber(save.tour.collected)} / ${formatNumber(targets.collected)}</small>
+          <i style="--tour-progress:${Math.round(progress.collected * 100)}%"></i>
+        </span>
+        <span>
+          <b>${t("tourCare", { count: targets.cared })}</b>
+          <small>${formatNumber(save.tour.cared)} / ${formatNumber(targets.cared)}</small>
+          <i style="--tour-progress:${Math.round(progress.cared * 100)}%"></i>
+        </span>
+        <span>
+          <b>${t("tourBuild", { count: targets.built })}</b>
+          <small>${formatNumber(save.tour.built)} / ${formatNumber(targets.built)}</small>
+          <i style="--tour-progress:${Math.round(progress.built * 100)}%"></i>
+        </span>
+      </div>
+      <button type="button" data-action="tour-claim" ${ready ? "" : "disabled"}>${ready ? t("tourClaim") : t("tourReward", { coins: formatCost(targets.reward) })}</button>
+    `;
+    container.querySelector('[data-action="tour-claim"]')?.addEventListener("click", claimTourReward);
+  }
+
   function renderHabitatBonus(container) {
     if (!container) return;
     const count = unlockedAnimals().length;
@@ -1089,6 +1174,7 @@
     save.coins += amount;
     save.ticketBox = 0;
     save.lifetimeTickets += amount;
+    save.tour.collected += amount;
     popToast(t("collected", { coins: formatNumber(amount) }));
     playSound("coin");
     saveGame();
@@ -1104,6 +1190,7 @@
       return;
     }
     save.careCount += 1;
+    save.tour.cared += 1;
     const gain = unlockedAnimals().reduce((sum, animal) => sum + animal.care, 0) + facilityCareBonus();
     save.happiness = clamp(save.happiness + gain, 18, 100);
     save.careReadyAt = Date.now() + careCooldownMs;
@@ -1121,6 +1208,7 @@
     if (save.coins < cost) return notEnough(cost);
     save.coins -= cost;
     save.gateLevel += 1;
+    save.tour.built += 1;
     save.happiness = clamp(save.happiness + 7, 18, 100);
     popToast(t("upgraded"));
     playSound("upgrade");
@@ -1140,6 +1228,7 @@
     if (save.coins < animal.cost) return notEnough(animal.cost);
     save.coins -= animal.cost;
     save.unlocked[animal.id] = true;
+    save.tour.built += 1;
     save.positions[animal.id] = animalPosition(animal);
     save.happiness = clamp(save.happiness + 12, 18, 100);
     newlyRecruitedAnimalId = animal.id;
@@ -1159,6 +1248,7 @@
     if (save.coins < cost) return notEnough(cost);
     save.coins -= cost;
     save.facilities[facility.id] = level + 1;
+    save.tour.built += 1;
     save.happiness = clamp(save.happiness + 5 + facility.careBonus, 18, 100);
     popToast(t("facilityBuilt", { name: facilityName(facility) }));
     playSound("upgrade");
@@ -1176,6 +1266,19 @@
     popToast(t("milestoneClaimed"));
     playSound("coin");
     window.WonderAnalytics?.track("zoo_milestone_claim", { game_id: GAME_ID, milestone_id: milestone.id });
+    saveGame();
+    render();
+  }
+
+  function claimTourReward() {
+    if (!isTourComplete()) return;
+    const targets = tourTargets();
+    save.coins += targets.reward;
+    save.tourRound += 1;
+    save.tour = { collected: 0, cared: 0, built: 0 };
+    popToast(t("tourComplete"));
+    playSound("success");
+    window.WonderAnalytics?.track("zoo_tour_complete", { game_id: GAME_ID, round: save.tourRound - 1 });
     saveGame();
     render();
   }

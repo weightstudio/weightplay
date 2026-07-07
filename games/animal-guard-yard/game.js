@@ -40,6 +40,9 @@
       previousBest: "Previous Best {score}",
       newBest: "New best!",
       improvement: "Improvement {value}%",
+      perfectClear: "Perfect Clear!",
+      perfectBadge: "Perfect",
+      perfectBonus: "Perfect defense bonus +{coins} coins",
       stageCleared: "Cleared",
       stageBest: "Best {score}",
       skillReport: "Skill Report",
@@ -127,6 +130,9 @@
       previousBest: "\u904e\u53bb\u6700\u4f73 {score}",
       newBest: "\u65b0\u7684\u6700\u4f73\u7d00\u9304\uff01",
       improvement: "\u9032\u6b65 {value}%",
+      perfectClear: "\u5b8c\u7f8e\u5b88\u4f4f\uff01",
+      perfectBadge: "\u5b8c\u7f8e",
+      perfectBonus: "\u5b8c\u7f8e\u9632\u885b\u734e\u52f5 +{coins} \u91d1\u5e63",
       stageCleared: "\u5df2\u901a\u904e",
       stageBest: "\u6700\u4f73 {score}",
       skillReport: "\u80fd\u529b\u5c0f\u5831\u544a",
@@ -332,7 +338,7 @@
     }
   }
 
-  function saveProgress(score, skillScores, won = false) {
+  function saveProgress(score, skillScores, won = false, perfect = false) {
     const previous = loadProgress();
     const previousBest = Number(previous.bestScore) || 0;
     const bestScore = Math.max(previousBest, score);
@@ -343,6 +349,7 @@
     const playedAt = new Date().toISOString();
     stageRecords[stageKey] = {
       cleared: Boolean(previousStage.cleared || won),
+      perfect: Boolean(previousStage.perfect || perfect),
       bestScore: Math.max(Number(previousStage.bestScore) || 0, score),
       lastScore: score,
       plays: (Number(previousStage.plays) || 0) + 1,
@@ -525,11 +532,12 @@
       if (stageNo > unlocked) button.classList.add("locked");
       const stageRecord = typeof stageRecords[String(stageNo)] === "object" && stageRecords[String(stageNo)] ? stageRecords[String(stageNo)] : {};
       const cleared = Boolean(stageRecord.cleared) || stageNo <= legacyBestStage;
+      const perfect = Boolean(stageRecord.perfect);
       const bestScore = Number(stageRecord.bestScore) || 0;
       if (cleared) button.classList.add("cleared");
       const iconUnit = units[Math.min(index, units.length - 1)]?.id || "cat";
       const progressMeta = cleared || bestScore > 0
-        ? `<div class="stage-progress">${cleared ? `<em>${t("stageCleared")}</em>` : ""}${bestScore > 0 ? `<small>${t("stageBest", { score: bestScore })}</small>` : ""}</div>`
+        ? `<div class="stage-progress">${cleared ? `<em>${t("stageCleared")}</em>` : ""}${perfect ? `<em class="perfect">${t("perfectBadge")}</em>` : ""}${bestScore > 0 ? `<small>${t("stageBest", { score: bestScore })}</small>` : ""}</div>`
         : "";
       button.innerHTML = `
         <b class="stage-animal">${animalSprite(iconUnit)}</b>
@@ -1275,15 +1283,19 @@
     cancelAnimationFrame(raf);
     let resultMessage = "";
     let finalScore = 0;
+    let perfect = false;
     if (won) {
+      perfect = baseHp >= stages[currentStage].hp;
+      const perfectBonus = perfect ? 20 + currentStage * 8 : 0;
       const clearBonus = 18 + currentStage * 10 + Math.max(0, baseHp) * 4;
-      coinsEarned += clearBonus;
+      coinsEarned += clearBonus + perfectBonus;
       unlocked = Math.max(unlocked, Math.min(stages.length, currentStage + 2));
       localStorage.setItem(unlockKey, String(unlocked));
       const best = Math.max(Number(localStorage.getItem(bestKey)) || 0, currentStage + 1);
       localStorage.setItem(bestKey, String(best));
       nodes.resultTitle.textContent = t("victory");
       resultMessage = `${t("resultWin", { n: currentStage + 1, hp: Math.max(0, baseHp) })} ${t("reward", { coins: coinsEarned })}`;
+      if (perfectBonus > 0) resultMessage = `${t("perfectClear")} ${resultMessage} ${t("perfectBonus", { coins: perfectBonus })}`;
       playSound("win");
     } else {
       nodes.resultTitle.textContent = t("defeat");
@@ -1292,7 +1304,7 @@
     }
     finalScore = (currentStage + 1) * 60 + Math.max(0, baseHp) * 8 + coinsEarned + (won ? 80 : 0);
     const skillScores = buildSkillScores(won, finalScore);
-    const progress = saveProgress(finalScore, skillScores, won);
+    const progress = saveProgress(finalScore, skillScores, won, perfect);
     renderResultReport(resultMessage, progress);
     track(won ? "game_complete" : "game_over", {
       level: currentStage + 1,

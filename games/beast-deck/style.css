@@ -137,13 +137,13 @@ body {
 .menu-panel {
   align-items: center;
   justify-content: flex-start;
-  gap: 20px;
+  gap: 14px;
 }
 
 .cover {
   width: 100%;
-  max-width: 320px;
-  aspect-ratio: 4/3;
+  max-width: 260px;
+  aspect-ratio: 16/9;
   object-fit: cover;
   border-radius: 16px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), 0 0 20px rgba(6, 182, 212, 0.1);
@@ -155,7 +155,7 @@ body {
   max-width: 520px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
   text-align: center;
 }
 
@@ -177,7 +177,7 @@ body {
   background: rgba(245, 158, 11, 0.1);
   border: 1px dashed rgba(245, 158, 11, 0.3);
   border-radius: 10px;
-  padding: 10px 14px;
+  padding: 8px 12px;
   text-align: left;
   display: flex;
   flex-direction: column;
@@ -265,7 +265,7 @@ body {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 8px;
-  max-height: 230px;
+  max-height: 178px;
   overflow-y: auto;
   padding-right: 2px;
 }
@@ -274,10 +274,10 @@ body {
   display: flex;
   flex-direction: column;
   gap: 3px;
-  min-height: 86px;
+  min-height: 72px;
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 10px;
-  padding: 9px;
+  padding: 8px;
   background: rgba(255, 255, 255, 0.04);
   color: #fff;
   text-align: left;
@@ -311,6 +311,7 @@ body {
 .stage-card em {
   margin-top: auto;
   color: #a7f3d0;
+  font-weight: 700;
   font-style: normal;
 }
 
@@ -744,7 +745,7 @@ body {
 .action-area {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
   flex-shrink: 0;
 }
 
@@ -752,9 +753,9 @@ body {
   display: flex;
   justify-content: flex-start;
   gap: 8px;
-  padding: 8px 4px;
+  padding: 4px;
   overflow-x: auto;
-  min-height: calc(var(--card-height) + 16px);
+  min-height: calc(var(--card-height) + 8px);
   align-items: flex-end;
 }
 
@@ -766,8 +767,28 @@ body {
 .action-btn {
   width: 100%;
   max-width: 200px;
-  padding: 10px 20px;
+  padding: 9px 20px;
   font-size: 14px;
+}
+
+@media (min-width: 561px) and (max-height: 760px) {
+  .game-panel {
+    padding: 10px 12px;
+    gap: 8px;
+  }
+
+  .hud-row {
+    padding: 7px 10px;
+  }
+
+  .battlefield {
+    padding: 12px;
+    gap: 8px;
+  }
+
+  .battle-log {
+    max-height: 66px;
+  }
 }
 
 /* Cards Styling */
@@ -1166,7 +1187,7 @@ body {
   }
 
   .cover {
-    max-width: 260px;
+    max-width: 220px;
   }
 
   .menu-copy {
@@ -1188,12 +1209,22 @@ body {
   }
 
   .stage-grid {
-    grid-template-columns: 1fr;
-    max-height: 210px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    max-height: 164px;
   }
 
   .stage-card {
-    min-height: 78px;
+    min-height: 70px;
+  }
+
+  .stage-card strong {
+    font-size: 12px;
+  }
+
+  .stage-card span,
+  .stage-card small,
+  .stage-card em {
+    font-size: 9.5px;
   }
 
   .game-panel {

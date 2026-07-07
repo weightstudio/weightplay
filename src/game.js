@@ -1852,6 +1852,7 @@ function renderMenuContent() {
 
 function renderLevelGrid() {
   levelGrid.innerHTML = "";
+  levelGrid.append(renderCampaignSummary());
   levelGrid.append(renderBeastGuide());
   for (const level of LEVELS) {
     const button = document.createElement("button");
@@ -1873,6 +1874,58 @@ function renderLevelGrid() {
     if (level.id === highestUnlocked && level.id <= LEVELS.length) button.classList.add("challenge");
     levelGrid.append(button);
   }
+}
+
+function renderCampaignSummary() {
+  const summary = document.createElement("section");
+  summary.className = "campaign-summary";
+  const clearedStages = clamp(highestUnlocked - 1, 0, LEVELS.length);
+  const nextStage = Math.min(highestUnlocked, LEVELS.length);
+  const isComplete = clearedStages >= LEVELS.length;
+  const bossStage = LEVELS.find((level) => level.id >= nextStage && getLevelSummary(level).hasBoss)?.id;
+  const wallet = readWallet();
+  const targetLevelIndex = isComplete ? LEVELS.length - 1 : Math.max(0, nextStage - 1);
+  summary.innerHTML = `
+    <div class="campaign-summary-head">
+      <strong>${campaignText("title")}</strong>
+      <span>${campaignText(isComplete ? "complete" : "next", { stage: nextStage })}</span>
+    </div>
+    <div class="campaign-summary-stats">
+      <span>${campaignText("cleared", { cleared: clearedStages, total: LEVELS.length })}</span>
+      <span>${bossStage ? campaignText("boss", { stage: bossStage }) : campaignText("bossDone")}</span>
+      <span>${campaignText("wallet", { coins: profile.coins, diamonds: wallet.diamonds })}</span>
+    </div>
+    <button class="campaign-continue" type="button" data-level="${targetLevelIndex}">
+      ${campaignText(isComplete ? "replay" : "continue", { stage: nextStage })}
+    </button>
+  `;
+  return summary;
+}
+
+function campaignText(key, params = {}) {
+  const table = locale() === "zh-Hant" ? {
+    title: "\u7345\u5b50\u6230\u5f79\u9032\u5ea6",
+    next: "\u4e0b\u4e00\u95dc\uff1a\u7b2c {stage} \u95dc",
+    complete: "\u6240\u6709\u95dc\u5361\u5df2\u5b8c\u6210",
+    cleared: "\u5df2\u901a\u95dc {cleared}/{total}",
+    boss: "\u4e0b\u4e00\u500b Boss\uff1a\u7b2c {stage} \u95dc",
+    bossDone: "Boss \u6230\u5168\u90e8\u5b8c\u6210",
+    wallet: "\u91d1\u5e63 {coins} / \u947d\u77f3 {diamonds}",
+    continue: "\u7e7c\u7e8c\u6311\u6230\u7b2c {stage} \u95dc",
+    replay: "\u91cd\u73a9\u6700\u7d42\u95dc",
+  } : {
+    title: "Lion Campaign Progress",
+    next: "Next Stage: Stage {stage}",
+    complete: "All stages cleared",
+    cleared: "Cleared {cleared}/{total}",
+    boss: "Next Boss: Stage {stage}",
+    bossDone: "All boss fights cleared",
+    wallet: "Coins {coins} / Diamonds {diamonds}",
+    continue: "Continue Stage {stage}",
+    replay: "Replay Final Stage",
+  };
+  const value = table[key] || key;
+  return Object.entries(params).reduce((text, [name, val]) => text.replaceAll(`{${name}}`, String(val)), value);
 }
 
 function renderBeastGuide() {

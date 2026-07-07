@@ -61,6 +61,17 @@
 
   const asset = (name) => `../../assets/${name}`;
 
+  const metaText = {
+    en: {
+      description: "Play Beast Deck: The Mist Forest, a turn-based Roguelike deckbuilder game on WeightPlay. Build an animal power deck, level up locally, and unlock forest missions.",
+      ogDescription: "Build your animal power deck, choose upgrades, level up, and defeat corrupted beasts in a mysterious mist forest.",
+    },
+    "zh-Hant": {
+      description: "遊玩《獸王牌組：迷霧森林》，在 WeightPlay 體驗 13+ 動物卡牌 Roguelike。組出動物能力牌組、累積本機等級，並解鎖更深的森林任務。",
+      ogDescription: "組出動物能力牌組，選擇升級、累積本機等級，並在迷霧森林中擊敗腐化野獸。",
+    },
+  };
+
   const text = {
     en: {
       title: "Beast Deck: The Mist Forest",
@@ -74,10 +85,11 @@
       profileBest: "Best",
       profileBonus: "+{hp} Max HP from level",
       stageSelectTitle: "Choose a Mission",
-      stageSelectHint: "Unlocked missions stay available.",
+      stageSelectHint: "Tap an unlocked mission to start.",
       lockedMission: "Locked",
       missionLabel: "Mission {mission}",
       missionReward: "{xp} XP",
+      startMissionCard: "Start",
       controlCombat: "Turn-Based Strategy",
       controlUpgrades: "Draft Cards",
       controlDeck: "Persistent Level",
@@ -86,7 +98,7 @@
       amuletEffect: "Start every run with +10 Max HP.",
       amuletOwned: "Owned: every run starts with +10 Max HP.",
       amuletNeed: "Need {cost} diamonds.",
-      startRun: "Start Mission",
+      startRun: "Start Selected Mission",
       menu: "Menu",
       hudStage: "Battle",
       hudMission: "Mission",
@@ -132,7 +144,10 @@
       log_combo: "Combo! {card} deals {damage} damage.",
       log_poison_damage: "{enemy} takes {damage} Poison damage.",
       log_enemy_turn: "Enemy turn: {action}.",
+      log_enemy_blocked: "{enemy}'s Block absorbed {blocked} damage.",
+      log_enemy_damage_after_block: "{enemy}'s Block absorbed {blocked}. {damage} damage went through.",
       log_player_turn: "Your turn. Drew {count} cards. Energy restored to {energy}.",
+      log_draft_added: "{card} joined your deck and will appear in your next opening hand.",
       log_win_battle: "Defeated {enemy}. Draft a new card.",
       log_win_boss: "Mission boss defeated. Gained {xp} XP.",
       log_loss: "You were defeated by {enemy}.",
@@ -347,8 +362,11 @@
   }
 
   function translateUI() {
-    document.documentElement.lang = getLocale();
+    const locale = getLocale();
+    document.documentElement.lang = locale;
     document.title = `${t("title")} - WeightPlay`;
+    document.querySelector("meta[name='description']")?.setAttribute("content", metaText[locale]?.description || metaText.en.description);
+    document.querySelector("meta[property='og:description']")?.setAttribute("content", metaText[locale]?.ogDescription || metaText.en.ogDescription);
     document.querySelectorAll("[data-ui]").forEach((el) => {
       el.textContent = t(el.dataset.ui);
     });
@@ -396,7 +414,7 @@
         <span>${t("missionLabel", { mission: i })}</span>
         <strong>${unlocked ? missionTitle(i) : t("lockedMission")}</strong>
         <small>${unlocked ? missionSubtitle(i) : ""}</small>
-        <em>${unlocked ? t("missionReward", { xp: getMission(i).xp }) : ""}</em>
+        <em>${unlocked ? `${t("missionReward", { xp: getMission(i).xp })} · ${t("startMissionCard")}` : ""}</em>
       `;
       button.addEventListener("click", () => {
         if (!unlocked) return;
@@ -404,6 +422,7 @@
         saveLocalState();
         renderProgressUI();
         window.WonderSound?.play("click");
+        startRun();
       });
       nodes.stageGrid.appendChild(button);
     }
@@ -471,12 +490,15 @@
 
   function applyEnemyDamage(amount) {
     let damage = amount;
+    const blocked = Math.min(state.enemyShield, damage);
     if (state.enemyShield >= damage) {
       state.enemyShield -= damage;
       damage = 0;
+      if (blocked > 0) log(t("log_enemy_blocked", { enemy: enemyName(state.enemy), blocked }), "system");
     } else {
       damage -= state.enemyShield;
       state.enemyShield = 0;
+      if (blocked > 0) log(t("log_enemy_damage_after_block", { enemy: enemyName(state.enemy), blocked, damage }), "system");
     }
     if (damage > 0) {
       state.enemyHp = Math.max(0, state.enemyHp - damage);
@@ -664,6 +686,8 @@
       cardEl.innerHTML = cardMarkup(card);
       cardEl.addEventListener("click", () => {
         state.deck.push(cardId);
+        state.guaranteedOpeningCard = cardId;
+        state.lastDraftCard = cardId;
         state.playerHp = Math.min(state.playerMaxHp, state.playerHp + 10);
         state.battle += 1;
         nodes.draftPanel.classList.add("hidden");
@@ -699,12 +723,24 @@
     state.discardPile = [];
     state.hand = [];
     shuffle(state.drawPile);
+    if (state.guaranteedOpeningCard) {
+      const guaranteedIndex = state.drawPile.indexOf(state.guaranteedOpeningCard);
+      if (guaranteedIndex >= 0) {
+        state.drawPile.splice(guaranteedIndex, 1);
+        state.drawPile.push(state.guaranteedOpeningCard);
+      }
+      state.guaranteedOpeningCard = null;
+    }
     nodes.stageText.textContent = `${state.battle}/3`;
     nodes.missionText.textContent = String(state.mission);
     nodes.enemyName.textContent = enemyName(state.enemy);
     nodes.enemyAvatar.innerHTML = `<img src="${asset(state.enemy.image)}" alt="">`;
     nodes.battleLog.innerHTML = "";
     log(t("log_start", { enemy: enemyName(state.enemy) }), "system");
+    if (state.lastDraftCard) {
+      log(t("log_draft_added", { card: t(cardDb[state.lastDraftCard].nameKey) }), "player");
+      state.lastDraftCard = null;
+    }
     startPlayerTurn();
   }
 
@@ -791,6 +827,8 @@
       attacksPlayedThisTurn: 0,
       isPlayerTurn: true,
       xpEarned: 0,
+      guaranteedOpeningCard: null,
+      lastDraftCard: null,
     };
   }
 

@@ -2856,6 +2856,77 @@ canvas {
     0 5px 8px rgba(0, 0, 0, 0.28);
 }
 
+.campaign-summary {
+  display: grid;
+  grid-column: 1 / -1;
+  gap: 9px;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid rgba(255, 226, 126, 0.34);
+  border-radius: 8px;
+  background: linear-gradient(145deg, rgba(52, 35, 20, 0.92), rgba(15, 22, 34, 0.9));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 10px 20px rgba(0, 0, 0, 0.18);
+}
+
+.campaign-summary-head {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.campaign-summary-head strong {
+  overflow: hidden;
+  color: #ffe282;
+  font-size: 15px;
+  line-height: 1.1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.campaign-summary-head span {
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+.campaign-summary-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.campaign-summary-stats span {
+  min-width: 0;
+  padding: 7px 6px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.11);
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 1.15;
+  text-align: center;
+}
+
+.level-grid .campaign-continue {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 44px;
+  height: auto;
+  padding: 10px 12px;
+  border: 0;
+  border-radius: 8px;
+  background: linear-gradient(180deg, #fff08a, #ffbd37);
+  color: #241806;
+  font-size: 14px;
+  font-weight: 900;
+  line-height: 1.15;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
 .beast-guide {
   display: grid;
   grid-column: 1 / -1;

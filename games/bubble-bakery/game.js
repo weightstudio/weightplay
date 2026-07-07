@@ -50,6 +50,11 @@
       themeForestPicnic: "Forest Picnic",
       themePartyTray: "Party Tray",
       themeMasterBakery: "Master Bakery",
+      bakeryProgress: "Bakery Progress",
+      clearedStages: "Cleared {done}/{total}",
+      totalStars: "Stars {stars}/{total}",
+      nextGoal: "Next: clear {stage}",
+      allOrdersDone: "All bakery orders complete!",
     },
     "zh-Hant": {
       gameTitle: "動物泡泡烘焙坊",
@@ -95,6 +100,11 @@
       themeForestPicnic: "森林野餐盒",
       themePartyTray: "派對點心盤",
       themeMasterBakery: "大師烘焙訂單",
+      bakeryProgress: "烘焙進度",
+      clearedStages: "已完成 {done}/{total}",
+      totalStars: "星星 {stars}/{total}",
+      nextGoal: "下一步：完成{stage}",
+      allOrdersDone: "全部烘焙訂單完成！",
     },
   };
 
@@ -125,6 +135,7 @@
   const nodes = {
     localeSelect: $("localeSelect"),
     menuPanel: $("menuPanel"),
+    bakeryProgress: $("bakeryProgress"),
     stageGrid: $("stageGrid"),
     playPanel: $("playPanel"),
     backToStagesBtn: $("backToStagesBtn"),
@@ -254,12 +265,29 @@
     });
   }
 
+  function renderBakeryProgress() {
+    const totalStars = stages.length * 3;
+    const earnedStars = stages.reduce((sum, _, index) => sum + (stars[index + 1] || 0), 0);
+    const cleared = stages.reduce((sum, _, index) => sum + ((stars[index + 1] || 0) > 0 ? 1 : 0), 0);
+    const nextStage = Math.min(stages.length, Math.max(1, cleared + 1));
+    const nextLabel = cleared >= stages.length
+      ? t("allOrdersDone")
+      : t("nextGoal", { stage: t("stage", { n: nextStage }) });
+    nodes.bakeryProgress.innerHTML = `
+      <strong>${t("bakeryProgress")}</strong>
+      <span>${t("clearedStages", { done: cleared, total: stages.length })}</span>
+      <span>${t("totalStars", { stars: earnedStars, total: totalStars })}</span>
+      <em>${nextLabel}</em>
+    `;
+  }
+
   function showMenu() {
     document.body.classList.remove("is-bakery-playing");
     nodes.menuPanel.classList.remove("hidden");
     nodes.playPanel.classList.add("hidden");
     nodes.resultPanel.classList.add("hidden");
     busy = false;
+    renderBakeryProgress();
     renderStageGrid();
   }
 
@@ -710,6 +738,7 @@
       window.dispatchEvent(new CustomEvent("wonder:locale-change", { detail: { locale } }));
     }
     localizeStatic();
+    renderBakeryProgress();
     renderStageGrid();
     if (!nodes.playPanel.classList.contains("hidden")) {
       nodes.orderBar.dataset.theme = t("theme", { theme: t(stages[currentStage].theme) });
@@ -728,6 +757,7 @@
   });
 
   localizeStatic();
+  renderBakeryProgress();
   renderStageGrid();
   initLoading();
 })();

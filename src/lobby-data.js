@@ -384,6 +384,42 @@ window.WONDER_LOBBY = {
       art: { kind: "image", background: "assets/animal-relic-hunters-cover.png", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
     },
     {
+      id: "animal-rune-tactics",
+      title: { en: "Animal Rune Tactics", "zh-Hant": "動物符文戰棋" },
+      status: "playable",
+      statusText: { en: "Playable", "zh-Hant": "可遊玩" },
+      type: { en: "Turn-Based Squad Tactics", "zh-Hant": "回合制小隊戰棋" },
+      categories: ["Featured", "Animal Games", "Puzzle"],
+      skills: ["Logic", "Problem Solving", "Focus"],
+      ages: ["13"],
+      ageLabel: { en: "13+", "zh-Hant": "13+" },
+      href: "games/animal-rune-tactics/",
+      description: {
+        en: "Command a lion, owl, and turtle squad across rune-grid battles, clear shadow beasts, save local progress, and choose rewards.",
+        "zh-Hant": "指揮獅子、貓頭鷹與烏龜小隊，在符文格上移動、攻擊、防禦，清除影獸並保存本機進度。"
+      },
+      meta: { en: ["Turn-Based Tactics", "Rune Rewards", "Local Progress"], "zh-Hant": ["回合制戰棋", "符文獎勵", "本機進度"] },
+      art: { kind: "image", background: "assets/animal-rune-tactics-cover.webp", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
+    },
+    {
+      id: "animal-orb-fortress",
+      title: { en: "Animal Orb Fortress", "zh-Hant": "動物星珠要塞" },
+      status: "planned",
+      statusText: { en: "Coming Soon", "zh-Hant": "敬請期待" },
+      type: { en: "Ricochet Roguelite", "zh-Hant": "彈射 Roguelite" },
+      categories: ["Featured", "Animal Games", "Arcade"],
+      skills: ["Logic", "Problem Solving", "Focus"],
+      ages: ["13"],
+      ageLabel: { en: "13+", "zh-Hant": "13+" },
+      href: "games/animal-orb-fortress/",
+      description: {
+        en: "Aim animal orbs through crystal fortress rooms, plan bounce routes, grow your base, and prepare for boss waves.",
+        "zh-Hant": "瞄準動物星珠穿越水晶要塞房間，規劃彈射路線、累積基地成長，準備挑戰 Boss 波次。",
+      },
+      meta: { en: ["Orb Bounces", "Fortress Growth", "Boss Waves"], "zh-Hant": ["星珠彈射", "要塞成長", "Boss 波次"] },
+      art: { kind: "image", background: "assets/animal-orb-fortress-cover.webp", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
+    },
+    {
       id: "beast-tactician",
       title: { en: "Beast Guardian", "zh-Hant": "獸王守衛" },
       status: "planned",
@@ -399,7 +435,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "率領 3 隻動物英雄小隊，施放強大職業技能，收集並穿戴神裝，深入地牢擊敗巨獸首領。"
       },
       meta: { en: ["Turn-Based RPG", "3 Hero Squad", "Gear Loot"], "zh-Hant": ["回合制戰略", "3 隻英雄小隊", "裝備掉寶"] },
-      art: { kind: "image", background: "assets/weightplay-lion-mascot.webp", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
+      art: { kind: "image", background: "assets/beast-tactician-cover.webp", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
     },
     {
       id: "shadow-wolf",
@@ -417,7 +453,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "奔跑、跳躍、閃避與揮爪砍殺影怪。獲得經驗升級、開啟寶箱並穿戴強力神裝，挑戰遺跡巨獸！"
       },
       meta: { en: ["2D Side-Scroller", "Jumping Physics", "Equip Gear"], "zh-Hant": ["橫向捲軸", "跳躍物理", "裝備收集"] },
-      art: { kind: "image", background: "assets/weightplay-lion-mascot.webp", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
+      art: { kind: "image", background: "assets/shadow-wolf-cover.webp", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
     },
   ],
 };

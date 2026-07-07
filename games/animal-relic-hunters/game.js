@@ -496,13 +496,34 @@
     return Object.entries(params).reduce((str, [k, v]) => str.replaceAll(`{${k}}`, String(v)), raw);
   }
 
+  const metaText = {
+    en: {
+      description: "Explore ancient ruins, level up, collect chests, and equip Weapons, Armor, and Boots in this animal roguelite survivor.",
+      ogDescription: "Defeat shadow beasts, collect keys, and equip rare gear to defeat the Behemoth!"
+    },
+    "zh-Hant": {
+      description: "遊玩《動物遺跡獵人》，探索古代遺跡、累積等級、開啟寶箱，並穿戴武器、護甲與靴子挑戰遺跡巨獸。",
+      ogDescription: "擊敗暗影野獸、收集鑰匙、穿戴稀有裝備，挑戰遺跡巨獸。"
+    }
+  };
+
+  function focusGamePanel() {
+    requestAnimationFrame(() => {
+      nodes.gamePanel.scrollIntoView({ block: "start", inline: "nearest" });
+    });
+  }
+
   function translateUI() {
-    document.documentElement.lang = getLocale();
+    const locale = getLocale();
+    document.documentElement.lang = locale;
+    document.title = `${t("title")} - WeightPlay`;
+    document.querySelector("meta[name='description']")?.setAttribute("content", metaText[locale]?.description || metaText.en.description);
+    document.querySelector("meta[property='og:description']")?.setAttribute("content", metaText[locale]?.ogDescription || metaText.en.ogDescription);
     for (const el of document.querySelectorAll("[data-ui]")) {
       const key = el.dataset.ui;
       el.textContent = t(key);
     }
-    nodes.localeSelect.value = getLocale();
+    nodes.localeSelect.value = locale;
     updateDiamondShopUI();
     renderEquippedGear();
   }
@@ -714,6 +735,7 @@
     nodes.menuPanel.classList.add("hidden");
     nodes.resultPanel.classList.add("hidden");
     nodes.gamePanel.classList.remove("hidden");
+    focusGamePanel();
 
     renderStatsPanel();
     renderEquippedGear();

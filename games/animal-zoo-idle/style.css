@@ -413,6 +413,7 @@ select {
 }
 
 .park-plan-card,
+.tour-board,
 .habitat-bonus-card {
   min-height: 112px;
   border-radius: 18px;
@@ -455,6 +456,91 @@ select {
 
 .park-plan-card.ready {
   background: linear-gradient(180deg, rgba(255,250,214,.96), rgba(218,250,193,.94));
+}
+
+.tour-board {
+  min-height: 136px;
+  background: linear-gradient(180deg, rgba(238, 255, 224, .96), rgba(255, 243, 194, .9));
+}
+
+.tour-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+}
+
+.tour-head span {
+  border-radius: 999px;
+  padding: 4px 9px;
+  background: rgba(255,255,255,.72);
+  color: #3a5f2c;
+  font-size: .72rem;
+}
+
+.tour-list {
+  display: grid;
+  gap: 6px;
+}
+
+.tour-list span {
+  position: relative;
+  min-height: 36px;
+  overflow: hidden;
+  border-radius: 12px;
+  padding: 6px 8px 8px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 4px 8px;
+  background: rgba(255,255,255,.72);
+}
+
+.tour-list b,
+.tour-list small {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tour-list small {
+  color: rgba(61, 41, 20, .7);
+  font-size: .68rem;
+}
+
+.tour-list i {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: var(--tour-progress, 0%);
+  height: 5px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #55d66a, #5ccfff, #ffe066);
+  transition: width .25s ease;
+}
+
+.tour-board button {
+  min-height: 38px;
+  border: 0;
+  border-radius: 14px;
+  background: linear-gradient(180deg, #fff4bd 0%, #ffcf5d 58%, #e49532 100%);
+  color: #3d2914;
+  box-shadow: inset 0 2px rgba(255,255,255,.72), 0 5px 0 #8a5429;
+  font-weight: 950;
+}
+
+.tour-board.ready {
+  background: linear-gradient(180deg, rgba(229,255,206,.98), rgba(255,239,174,.94));
+}
+
+.tour-board.ready button {
+  background: linear-gradient(180deg, #e9ffd1 0%, #9dea77 58%, #55b84e 100%);
+}
+
+.tour-board button:disabled {
+  opacity: .82;
 }
 
 .habitat-bonus-card {
