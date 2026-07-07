@@ -180,19 +180,26 @@ select {
 }
 
 .room-card img,
-.upgrade-card img {
+.upgrade-icon {
   width: 54px;
   height: 54px;
-  object-fit: cover;
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.18);
   background: rgba(0, 0, 0, 0.25);
 }
 
-.upgrade-card img {
+.room-card img {
+  object-fit: cover;
+}
+
+.upgrade-icon {
+  display: block;
   width: 72px;
   height: 72px;
   border-radius: 16px;
+  background-image: url("../../assets/animal-orb-fortress-upgrade-icons.webp");
+  background-repeat: no-repeat;
+  box-shadow: inset 0 0 0 1px rgba(210, 255, 236, 0.12), 0 8px 22px rgba(0, 0, 0, 0.22);
 }
 
 .room-card strong {
@@ -303,10 +310,10 @@ select {
   justify-items: start;
   gap: 8px;
   min-height: 190px;
-  border: 1px solid rgba(108, 245, 192, 0.34);
+  border: 1px solid rgba(139, 225, 255, 0.34);
   border-radius: 16px;
   color: var(--text);
-  background: linear-gradient(160deg, rgba(18, 46, 41, 0.94), rgba(8, 21, 19, 0.98));
+  background: linear-gradient(160deg, rgba(19, 43, 60, 0.94), rgba(7, 18, 31, 0.98));
   padding: 12px;
   text-align: left;
 }

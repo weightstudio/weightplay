@@ -592,7 +592,7 @@
       .map(
         (upgrade) => `
           <button type="button" class="upgrade-card" data-upgrade="${upgrade.id}">
-            <img src="../../assets/animal-orb-fortress-upgrade-icons.webp" alt="" style="${atlasPosition(upgrade.icon, upgradeDefs.length)}" />
+            <span class="upgrade-icon" aria-hidden="true" style="${atlasBackground(upgrade.icon, upgradeDefs.length)}"></span>
             <strong>${t(upgrade.name)}</strong>
             <span>${t(upgrade.desc)}</span>
           </button>`
@@ -603,6 +603,11 @@
   function atlasPosition(index, count) {
     const x = count <= 1 ? 50 : (index / (count - 1)) * 100;
     return `object-position:${x}% 50%`;
+  }
+
+  function atlasBackground(index, count) {
+    const x = count <= 1 ? 50 : (index / (count - 1)) * 100;
+    return `background-position:${x}% 50%;background-size:${count * 100}% 100%;`;
   }
 
   function chooseUpgrade(id) {
@@ -668,7 +673,13 @@
   function draw() {
     ctx.clearRect(0, 0, W, H);
     if (images.bg?.complete) ctx.drawImage(images.bg, 0, 0, W, H);
-    ctx.fillStyle = "rgba(2, 15, 14, 0.18)";
+    ctx.fillStyle = "rgba(3, 10, 28, 0.34)";
+    ctx.fillRect(0, 0, W, H);
+    const contrastGlow = ctx.createRadialGradient(W * 0.5, H * 0.35, 80, W * 0.5, H * 0.45, W * 0.7);
+    contrastGlow.addColorStop(0, "rgba(24, 41, 84, 0.18)");
+    contrastGlow.addColorStop(0.62, "rgba(8, 18, 42, 0.24)");
+    contrastGlow.addColorStop(1, "rgba(3, 9, 24, 0.46)");
+    ctx.fillStyle = contrastGlow;
     ctx.fillRect(0, 0, W, H);
     ctx.strokeStyle = "rgba(126, 255, 202, 0.6)";
     ctx.lineWidth = 5;
@@ -699,11 +710,19 @@
 
   function drawEnemy(enemy) {
     const size = enemy.kind === "boss" ? 132 : enemy.size * 2.25;
+    ctx.save();
+    ctx.shadowColor = enemy.kind === "thorn" ? "rgba(255, 202, 86, 0.75)" : enemy.kind === "boss" ? "rgba(255, 86, 128, 0.75)" : "rgba(132, 210, 255, 0.72)";
+    ctx.shadowBlur = enemy.hitTimer > 0 ? 28 : 18;
+    ctx.fillStyle = enemy.kind === "boss" ? "rgba(69, 13, 35, 0.56)" : "rgba(7, 20, 48, 0.52)";
+    ctx.beginPath();
+    ctx.ellipse(enemy.x, enemy.y + size * 0.08, size * 0.52, size * 0.42, 0, 0, Math.PI * 2);
+    ctx.fill();
     if (enemy.kind === "boss") drawAtlas(images.boss, 0, 1, enemy.x, enemy.y, size);
     else drawAtlas(images.beasts, enemy.kind === "skitter" ? 0 : enemy.kind === "thorn" ? 1 : 2, 3, enemy.x, enemy.y, size);
+    ctx.restore();
     const barW = Math.max(48, size * 0.58);
-    ctx.fillStyle = "rgba(0,0,0,0.45)";
-    ctx.fillRect(enemy.x - barW / 2, enemy.y - size * 0.48, barW, 7);
+    ctx.fillStyle = "rgba(2,8,20,0.82)";
+    ctx.fillRect(enemy.x - barW / 2 - 2, enemy.y - size * 0.48 - 2, barW + 4, 11);
     ctx.fillStyle = enemy.hitTimer > 0 ? "#fff06a" : "#ff6478";
     ctx.fillRect(enemy.x - barW / 2, enemy.y - size * 0.48, barW * Math.max(0, enemy.hp / enemy.maxHp), 7);
   }

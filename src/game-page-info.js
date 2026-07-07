@@ -477,6 +477,37 @@
         ["Does progress continue between sessions?", "Yes. Star Stones, best raid tier, play count, and fortress room levels are saved locally on the device."]
       ],
     },
+
+    "animal-auto-squad": {
+      title: "Animal Auto Squad",
+      age: "13+",
+      difficulty: "Medium",
+      time: "5-10 minutes",
+      skills: ["Logic", "Problem Solving", "Strategic Planning"],
+      intro:
+        "Animal Auto Squad is a tactical strategy auto-battler where players draft, level up, and position chibi animal warriors to defeat shadow beasts in automated combat. The game challenges players to build linear squad synergies, manage gold economy, and choose relic buffs across 10 rounds of a forest expedition. It includes optional Diamond purchases for relic rerolls, expedition revives, and cosmetic skins, with all progress saved locally on the device.",
+      how: [
+        "Buy animal cards from the shop using your starting Gold.",
+        "Drag and drop animals onto active squad slots or the storage bench.",
+        "Combine three identical animals to level them up and increase stats.",
+        "Tap Start Battle to run automated round resolution against shadow beasts.",
+        "Losing a round costs 1 Heart; win 10 rounds to complete the expedition."
+      ],
+      strategyTips: [
+        "Combine matching animals early to build high-stat Level 2 units.",
+        "Place tanky animals like Otter or Turtle in the front slots, and damage units like Fox or Bear in the back.",
+        "Utilize Owl's gold generation or Otter's buff abilities to optimize shop drafting.",
+        "Collect Melon food items to shield your key damage dealers from enemy boss strikes."
+      ],
+      parent:
+        "This game is designed for teens and casual players who enjoy logic puzzles and planning. It may help players practice strategic positioning, resources management, and problem solving through automated combat scenarios. Progress and high scores are saved locally in the browser.",
+      faq: [
+        ["Is Animal Auto Squad free to play?", "Yes. It runs entirely in the browser on WeightPlay."],
+        ["What is the goal of the expedition?", "Win 10 consecutive combat rounds to defeat the shadow boss and clear the Forest Stage."],
+        ["What do Diamonds do?", "Diamonds are used to buy optional relic rerolls, revive after a run defeat, or unlock cosmetic golden warrior skins."],
+        ["Does the game support saving?", "Yes. Completed runs, best rounds, and custom skins are saved locally in the browser."]
+      ],
+    },
     "beast-tactician": {
       title: "Beast Tactician",
       age: "13+",
@@ -629,6 +660,7 @@
     "animal-relic-hunters": { gameplay: "Room Action Roguelite", genre: ["Action", "Roguelite", "Animal"] },
     "animal-rune-tactics": { gameplay: "Turn-Based Squad Tactics", genre: ["Strategy", "Tactics", "Animal"] },
     "animal-orb-fortress": { gameplay: "Ricochet Roguelite", genre: ["Action", "Roguelite", "Animal"] },
+    "animal-auto-squad": { gameplay: "Tactical Auto-Battler", genre: ["Auto-Battler", "Strategy", "Animal"] },
     "beast-tactician": { gameplay: "Turn-Based Squad Tactics RPG", genre: ["Tactics", "RPG", "Animal"] },
     "shadow-wolf": { gameplay: "2D Action Platformer RPG", genre: ["Action", "Platformer", "Animal"] },
   };
@@ -656,6 +688,7 @@
     "animal-relic-hunters": "animal-relic-hunters-cover.webp",
     "animal-rune-tactics": "animal-rune-tactics-cover.webp",
     "animal-orb-fortress": "animal-orb-fortress-cover.webp",
+    "animal-auto-squad": "animal-auto-squad-cover.webp",
     "beast-tactician": "beast-tactician-cover.webp",
     "shadow-wolf": "shadow-wolf-cover.webp",
   };
@@ -684,6 +717,7 @@
       "animal-relic-hunters": { gameplay: "房間動作 Roguelite", genre: ["動作", "Roguelite", "動物"] },
       "animal-rune-tactics": { gameplay: "回合制小隊戰棋", genre: ["策略", "戰棋", "動物"] },
       "beast-tactician": { gameplay: "回合制小隊戰術 RPG", genre: ["戰術", "RPG", "動物"] },
+      "animal-auto-squad": { gameplay: "自走棋策略益智", genre: ["自走棋", "策略", "益智", "動物"] },
       "shadow-wolf": { gameplay: "橫向動作 RPG", genre: ["動作", "平台", "動物"] },
     },
   };
@@ -764,6 +798,39 @@
           ["需要鑽石才能獲勝嗎？", "不需要。主要突襲與要塞升級都能免費遊玩，鑽石只用於可選的祝福重抽。"],
           ["進度會保留嗎？", "會。星石、最佳突襲層級、遊玩次數與要塞房間等級會儲存在本機裝置。"]
         ],
+      },
+
+      "animal-auto-squad": {
+        title: "動物自走小隊",
+        age: "13+",
+        difficulty: "中等",
+        time: "5-10 分鐘",
+        gameplay: "自走棋策略益智",
+        genre: ["自走棋", "策略", "益智", "動物"],
+        skills: ["邏輯", "問題解決", "策略規劃"],
+        intro:
+          "《動物自走小隊》是一款戰術自走棋策略網頁遊戲。玩家招募、升級並調整可愛的動物戰士站位，在自動戰鬥中擊退影之獸。挑戰在於如何運用有限的金幣配置隊伍、合成升級相同角色以觸發更強大的被動技能，並善用聖物加成完成 10 回合的森林遠征！",
+        how: [
+          "在商店使用初始金幣購買動物卡牌或食物道具。",
+          "將動物放置到作戰插槽（最多 5 隻）或備戰欄位。",
+          "收集 3 張相同卡牌將自動合成升級，大幅強化屬性與技能數值。",
+          "點擊開始戰鬥，小隊將以自動對撞方式與影獸交戰。",
+          "戰敗會扣除 1 點生命值；成功贏下 10 回合即可完成遠征挑戰。"
+        ],
+        strategyTips: [
+          "優先收集相同卡牌進行合成，高等級動物的技能效果會成倍增長。",
+          "將高血量或具防禦效果的動物（如水獺、陸龜）放在前線，將高輸出角色（如狐狸、大熊）放在後排。",
+          "善用貓頭鷹的出售加金幣能力，或浣熊購買獲得免費刷新商店的機會來優化你的金幣經濟。",
+          "購買甜瓜食物可以為你後排的輸出主力提供一次性護盾，防止被 Boss 的高傷害秒殺。"
+        ],
+        parent:
+          "這款遊戲適合青少年與休閒玩家。玩家在遊戲中可以練習策略規劃、金幣資源分配及戰位編排邏輯。所有的遠征進度與解鎖外觀都儲存在本機瀏覽器中，不涉及任何付費競爭。",
+        faq: [
+          ["動物自走小隊可以免費遊玩嗎？", "可以。遊戲在 WeightPlay 平台上完全免費，且在瀏覽器中直接載入。"],
+          ["如何算獲得遠征勝利？", "連續通過 10 個戰鬥回合，並在最後擊敗暗影巨獸首領，即算通關遠征。"],
+          ["鑽石在遊戲中有什麼用處？", "鑽石可用於在聖物階段重新挑選聖物、在生命值歸零時購買復活次數，或解鎖獅子卡牌的黃金外觀。"],
+          ["遊戲會自動存檔嗎？", "會。玩家的最佳遠征紀錄、通關次數以及黃金外觀解鎖狀態，都會妥善保存在本機裝置。"]
+        ]
       },
       "beast-tactician": {
         title: "獸王守衛",

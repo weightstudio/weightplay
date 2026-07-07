@@ -1,0 +1,733 @@
+:root {
+  color-scheme: dark;
+  font-family: "Outfit", "Noto Sans TC", system-ui, sans-serif;
+  --bg: #070f0d;
+  --panel: rgba(10, 27, 23, 0.94);
+  --panel-2: rgba(18, 46, 38, 0.9);
+  --line: rgba(140, 240, 195, 0.22);
+  --gold: #ffd666;
+  --mint: #62ebb3;
+  --danger: #ff5266;
+  --text: #f0f7f3;
+  --muted: #a6c4b6;
+  --accent: #5e8cf2;
+  --shadow: rgba(0, 0, 0, 0.4);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100svh;
+  background: radial-gradient(circle at 50% 0%, #113629 0, #091c16 46%, #040907 100%);
+  color: var(--text);
+  overflow-y: auto;
+}
+
+button,
+select {
+  font: inherit;
+}
+
+.squad-app {
+  width: min(100%, 1024px);
+  min-height: 100svh;
+  margin: 0 auto;
+  padding: max(12px, env(safe-area-inset-top)) 14px max(18px, env(safe-area-inset-bottom));
+}
+
+.topbar {
+  display: grid;
+  grid-template-columns: 58px 1fr minmax(132px, 190px);
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.back-btn {
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  border-radius: 16px;
+  color: #201305;
+  text-decoration: none;
+  font-size: 2rem;
+  font-weight: 900;
+  background: linear-gradient(#ffe082, #f57c00);
+  box-shadow: 0 8px 0 #7e4b0c, 0 12px 20px rgba(0, 0, 0, 0.4);
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  border: 0;
+  cursor: pointer;
+}
+
+.back-btn:active {
+  transform: translateY(4px);
+  box-shadow: 0 4px 0 #7e4b0c, 0 6px 10px rgba(0, 0, 0, 0.4);
+}
+
+.brand span,
+.locale span,
+.hud-row span,
+.profile-grid span,
+.cosmetic-store span {
+  display: block;
+  color: var(--muted);
+  font-size: 0.76rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.brand h1 {
+  margin: 2px 0 0;
+  font-size: clamp(1.2rem, 4.5vw, 1.8rem);
+  line-height: 1.1;
+  font-weight: 800;
+  background: linear-gradient(135deg, #ffffff 30%, var(--mint));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.locale {
+  display: grid;
+  gap: 4px;
+}
+
+.locale select {
+  width: 100%;
+  min-height: 38px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  color: var(--text);
+  background: rgba(6, 18, 14, 0.9);
+  padding: 0 8px;
+}
+
+.panel {
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: linear-gradient(160deg, rgba(16, 42, 35, 0.94), rgba(7, 18, 15, 0.96));
+  box-shadow: 0 16px 50px var(--shadow);
+  overflow: hidden;
+}
+
+.is-hidden {
+  display: none !important;
+}
+
+/* Menu Screen Styling */
+.menu-panel {
+  display: grid;
+  grid-template-columns: minmax(280px, 36%) 1fr;
+  gap: 20px;
+  padding: 20px;
+  margin-top: 10px;
+}
+
+.cover {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.menu-copy {
+  display: grid;
+  align-content: start;
+  gap: 16px;
+}
+
+.menu-copy strong {
+  font-size: clamp(1.4rem, 4vw, 2.2rem);
+  line-height: 1.1;
+  font-weight: 800;
+}
+
+.menu-copy > span {
+  color: var(--muted);
+  line-height: 1.5;
+  font-size: 0.95rem;
+}
+
+.profile-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  background: rgba(0, 0, 0, 0.25);
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  text-align: center;
+}
+
+.profile-grid strong {
+  font-size: clamp(1rem, 3vw, 1.25rem);
+  color: var(--mint);
+}
+
+.cosmetic-store {
+  background: rgba(94, 140, 242, 0.08);
+  border: 1px solid rgba(94, 140, 242, 0.25);
+  border-radius: 12px;
+  padding: 12px;
+  display: grid;
+  gap: 8px;
+}
+
+.store-label {
+  font-weight: 700 !important;
+  color: #a6c7ff !important;
+}
+
+.skin-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.store-btn {
+  background: linear-gradient(135deg, #5e8cf2, #3562c6);
+  border: 0;
+  border-radius: 8px;
+  color: white;
+  padding: 8px 14px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(94, 140, 242, 0.3);
+}
+
+.store-btn:active {
+  transform: translateY(1px);
+}
+
+.primary-btn {
+  background: linear-gradient(185deg, #ffd666, #f39c12);
+  color: #1e1102;
+  font-weight: 900;
+  padding: 14px 24px;
+  font-size: 1.15rem;
+  border: 0;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 6px 0 #9e6406, 0 10px 20px rgba(0, 0, 0, 0.3);
+  transition: transform 0.05s ease, box-shadow 0.05s ease;
+}
+
+.primary-btn:active {
+  transform: translateY(3px);
+  box-shadow: 0 3px 0 #9e6406, 0 5px 10px rgba(0, 0, 0, 0.3);
+}
+
+.secondary-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--line);
+  color: var(--text);
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.secondary-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* Active Game Viewport Screen Styling */
+.game-panel {
+  padding: 14px;
+  display: grid;
+  gap: 12px;
+}
+
+.hud-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.hud-row strong {
+  font-size: 1.15rem;
+  color: var(--mint);
+}
+
+.hud-row #goldText {
+  color: var(--gold);
+}
+
+.hud-row #heartText {
+  color: var(--danger);
+}
+
+.relic-badge {
+  background: rgba(94, 140, 242, 0.2);
+  border: 1px solid rgba(94, 140, 242, 0.4);
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  color: #a6c7ff !important;
+}
+
+/* Prep Phase Container Styling */
+.prep-phase-area {
+  display: grid;
+  gap: 12px;
+}
+
+.squad-section,
+.bench-section,
+.shop-section {
+  background: rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(140, 240, 195, 0.08);
+  border-radius: 14px;
+  padding: 8px 12px;
+}
+
+.squad-section h3,
+.bench-section h3,
+.shop-section h3 {
+  margin: 0 0 6px;
+  font-size: 0.82rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.cards-row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+  min-height: 110px;
+}
+
+.shop-row {
+  grid-template-columns: repeat(5, 1fr);
+}
+
+/* Individual Card Item Design */
+.card-item {
+  background: rgba(16, 32, 28, 0.6);
+  border: 2px dashed rgba(140, 240, 195, 0.15);
+  border-radius: 12px;
+  position: relative;
+  aspect-ratio: 1 / 1.2;
+  cursor: grab;
+  user-select: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 6px;
+  transition: transform 0.12s ease, border-color 0.12s ease, box-shadow 0.12s ease;
+  overflow: hidden;
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+}
+
+.card-item:hover:not(.empty-slot) {
+  transform: translateY(-2px);
+  border-color: var(--mint);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+}
+
+.card-item:active {
+  cursor: grabbing;
+}
+
+.empty-slot {
+  cursor: default;
+}
+
+/* Card Visual Graphic representation using Sheet WebP */
+.card-graphic {
+  position: absolute;
+  top: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(80%, 75px);
+  aspect-ratio: 1;
+  background-size: 300% 200%;
+  background-repeat: no-repeat;
+  border-radius: 10px;
+}
+
+.card-item.mascot-golden .card-graphic::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  border: 2px solid var(--gold);
+  box-shadow: inset 0 0 8px rgba(255, 214, 102, 0.7);
+  border-radius: 10px;
+  pointer-events: none;
+  animation: shine 2s infinite linear;
+}
+
+@keyframes shine {
+  0% { opacity: 0.5; }
+  50% { opacity: 1.0; }
+  100% { opacity: 0.5; }
+}
+
+.card-level-tag {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  background: rgba(0, 0, 0, 0.75);
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  border-radius: 6px;
+  font-size: 0.7rem;
+  font-weight: 900;
+  padding: 1px 5px;
+}
+
+.card-frozen-tag {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: rgba(94, 140, 242, 0.85);
+  border: 1px solid #a6c7ff;
+  color: white;
+  border-radius: 6px;
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 1px 4px;
+  text-transform: uppercase;
+}
+
+.card-shield-tag {
+  position: absolute;
+  bottom: 34px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(94, 140, 242, 0.9);
+  border: 1px solid #62cbdc;
+  color: white;
+  border-radius: 8px;
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 1px 5px;
+  white-space: nowrap;
+}
+
+.card-stats {
+  display: flex;
+  justify-content: space-between;
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 6px;
+  padding: 2px 6px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 2;
+}
+
+.card-atk {
+  color: var(--gold);
+}
+
+.card-hp {
+  color: var(--danger);
+}
+
+.card-name {
+  text-align: center;
+  font-size: 0.78rem;
+  font-weight: 800;
+  margin-bottom: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--text);
+  z-index: 2;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+}
+
+.card-cost {
+  position: absolute;
+  bottom: 40%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 214, 102, 0.9);
+  color: #1a0f02;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  font-size: 0.72rem;
+  font-weight: 900;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+  border: 1px solid white;
+}
+
+/* Dragging Over Styles */
+.drag-over {
+  border-color: var(--mint) !important;
+  background: rgba(98, 235, 179, 0.1) !important;
+}
+
+/* Shop Control Area Styling */
+.shop-controls {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.shop-action-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--line);
+  color: var(--text);
+  border-radius: 10px;
+  padding: 10px 16px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.shop-action-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.battle-action-btn {
+  flex-grow: 1;
+  padding: 10px 16px;
+  font-size: 1.05rem;
+}
+
+/* Combat Scene Canvas Area styling */
+.combat-area {
+  display: grid;
+  justify-content: center;
+  background: #020605;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  overflow: hidden;
+  position: relative;
+}
+
+#gameCanvas {
+  max-width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  background-size: cover;
+  background-position: center;
+}
+
+.combat-status {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.8);
+  border: 1px solid var(--line);
+  padding: 4px 14px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: bold;
+  color: var(--mint);
+  text-align: center;
+}
+
+.hint {
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-style: italic;
+  margin-top: 4px;
+}
+
+/* Modals & Popups Glassmorphism Styling */
+.modal-panel {
+  display: grid;
+  align-content: start;
+  gap: 16px;
+  padding: 24px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(90%, 480px);
+  z-index: 100;
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--line);
+  box-shadow: 0 20px 80px rgba(0, 0, 0, 0.6);
+  border-radius: 20px;
+}
+
+.status-line {
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+.relic-choices {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.relic-card {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px;
+  cursor: pointer;
+  text-align: center;
+  display: grid;
+  gap: 8px;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.relic-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.relic-card.selected {
+  border-color: var(--mint);
+  background: rgba(98, 235, 179, 0.08);
+}
+
+.relic-icon-art {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto;
+  background-size: 400% 100%;
+  background-repeat: no-repeat;
+  border-radius: 8px;
+}
+
+.relic-card h4 {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--text);
+}
+
+.relic-card p {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--muted);
+  line-height: 1.3;
+}
+
+.reroll-relic-btn {
+  width: 100%;
+  padding: 10px;
+  background: linear-gradient(135deg, rgba(94, 140, 242, 0.2), rgba(53, 98, 198, 0.2));
+  border: 1px solid rgba(94, 140, 242, 0.4);
+}
+
+.revive-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+/* Result Screen Styling */
+.result-panel {
+  display: grid;
+  grid-template-columns: minmax(200px, 32%) 1fr;
+  gap: 24px;
+  padding: 24px;
+  margin-top: 10px;
+}
+
+.result-lion {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 16px;
+  border: 2px solid var(--gold);
+  box-shadow: 0 0 20px rgba(255, 214, 102, 0.2);
+}
+
+.result-copy {
+  display: grid;
+  align-content: center;
+  gap: 16px;
+}
+
+.result-heading {
+  font-size: 2.2rem;
+  margin: 0;
+  font-weight: 900;
+  background: linear-gradient(135deg, #ffffff 40%, var(--gold));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.result-desc {
+  font-size: 1.05rem;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.skill-report {
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid var(--line);
+  padding: 14px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  margin: 0;
+  line-height: 1.6;
+}
+
+.result-actions {
+  display: flex;
+  gap: 12px;
+}
+
+/* Screen Scaling Adjustment for small devices */
+@media (max-width: 640px) {
+  .menu-panel,
+  .result-panel {
+    grid-template-columns: 1fr;
+  }
+  .cover,
+  .result-lion {
+    max-width: 260px;
+    margin: 0 auto;
+  }
+  .hud-row {
+    font-size: 0.85rem;
+  }
+  .cards-row {
+    gap: 4px;
+    min-height: 90px;
+  }
+  .card-item {
+    padding: 3px;
+    border-width: 1px;
+  }
+  .card-name {
+    font-size: 0.65rem;
+  }
+  .card-stats {
+    font-size: 0.65rem;
+    padding: 1px 3px;
+  }
+  .card-level-tag {
+    font-size: 0.6rem;
+    padding: 0px 3px;
+    left: 3px; top: 3px;
+  }
+  .card-frozen-tag {
+    font-size: 0.55rem;
+    padding: 0px 3px;
+    right: 3px; top: 3px;
+  }
+  .card-cost {
+    width: 18px;
+    height: 18px;
+    font-size: 0.65rem;
+  }
+}

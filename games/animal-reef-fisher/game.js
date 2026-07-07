@@ -438,6 +438,18 @@
     ctx.drawImage(img, sx, sy, img.width / cols, img.height / rows, x, y, w, h);
   }
 
+  function drawFishSprite(fishData, x, y, w, h) {
+    const img = images[fishData.sheet];
+    if (!img || !img.width) return;
+    const cols = 3;
+    const rows = 2;
+    const cellW = img.width / cols;
+    const cellH = img.height / rows;
+    const sx = fishData.sx * cellW;
+    const sy = fishData.sy * cellH;
+    ctx.drawImage(img, sx, sy, cellW, cellH, x, y, w, h);
+  }
+
   function draw() {
     ctx.clearRect(0, 0, W, H);
     if (images.bg) ctx.drawImage(images.bg, 0, 0, W, H);
@@ -463,8 +475,7 @@
         const x = 500 + Math.sin(t * 1.4) * 80;
         const y = 240 + Math.cos(t * 1.1) * 45;
         const f = run.hookFish || fish[0];
-        const frame = (Math.floor(t * 6) % 3) + f.sx * 3 + f.sy * 9;
-        drawSpriteSheet(images[f.sheet], 9, 2, frame, x, y, f.rare ? 132 : 104, f.rare ? 90 : 72);
+        drawFishSprite(f, x, y, f.rare ? 132 : 112, f.rare ? 132 : 112);
         if (f.rare || run.sonarPulse > 0) drawSpriteSheet(images.shimmer, 1, 1, 0, x - 18, y - 18, 150, 110);
       }
 

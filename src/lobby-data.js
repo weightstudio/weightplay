@@ -420,6 +420,24 @@ window.WONDER_LOBBY = {
       art: { kind: "image", background: "assets/animal-orb-fortress-cover.webp", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
     },
     {
+      id: "animal-auto-squad",
+      title: { en: "Animal Auto Squad", "zh-Hant": "動物自走小隊" },
+      status: "playable",
+      statusText: { en: "Playable", "zh-Hant": "可遊玩" },
+      type: { en: "Auto-Battler", "zh-Hant": "自走棋策略" },
+      categories: ["Featured", "Animal Games", "Puzzle"],
+      skills: ["Logic", "Problem Solving", "Focus"],
+      ages: ["13"],
+      ageLabel: { en: "13+", "zh-Hant": "13+" },
+      href: "games/animal-auto-squad/",
+      description: {
+        en: "Draft, upgrade, and position animal warriors to defeat shadow beasts in automated forest battles.",
+        "zh-Hant": "招募、升級並擺放你的動物小隊，在自動戰鬥中擊退影之獸完成遠征。"
+      },
+      meta: { en: ["Strategy", "10 Rounds", "13+ Diamond Sink"], "zh-Hant": ["策略自走", "10 回合", "鑽石經濟"] },
+      art: { kind: "image", background: "assets/animal-auto-squad-cover.webp", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
+    },
+    {
       id: "beast-tactician",
       title: { en: "Beast Guardian", "zh-Hant": "獸王守衛" },
       status: "planned",
