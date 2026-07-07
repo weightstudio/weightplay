@@ -155,8 +155,8 @@
       title: { en: "Cast and control tension.", "zh-Hant": "拋竿並控制張力。" },
       steps: [
         { icon: "1", en: ["Cast", "Hold in the reef play area to charge, then release to cast."], "zh-Hant": ["拋竿", "按住礁海畫面蓄力，放開即可拋竿。"] },
-        { icon: "2", en: ["Tension", "When a fish is hooked, drag in the lane and keep the red marker inside the safe band."], "zh-Hant": ["張力", "魚上鉤後，在張力條拖曳，讓紅色標記留在安全區。"] },
-        { icon: "3", en: ["Upgrade", "Use Reef Notes for gear upgrades. Diamonds are optional tools only."], "zh-Hant": ["升級", "用礁石筆記升級裝備。鑽石只提供選擇性的工具。"] },
+        { icon: "2", en: ["Tension", "When a fish is hooked, drag left or right and keep the red marker inside the green safe band."], "zh-Hant": ["張力", "魚上鉤後，左右拖曳紅色標記，讓它留在綠色安全區。"] },
+        { icon: "3", en: ["Upgrade", "Use Reef Notes for gear upgrades. Diamonds are optional tools only."], "zh-Hant": ["升級", "用礁石筆記升級裝備；鑽石道具只是選用工具。"] },
       ],
     },
     "animal-auto-squad": {

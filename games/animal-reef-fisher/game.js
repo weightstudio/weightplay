@@ -38,7 +38,9 @@
     hintText: $("hintText"),
     castFill: $("castFill"),
     tensionLane: $("tensionLane"),
+    safeBand: $("safeBand"),
     tensionMarker: $("tensionMarker"),
+    tensionStatus: $("tensionStatus"),
     resultTitle: $("resultTitle"),
     resultText: $("resultText"),
     skillReportText: $("skillReportText"),
@@ -63,7 +65,17 @@
       retry: "Try Again",
       castHint: "Hold in the reef to charge, release to cast.",
       charging: "Release when the power reaches the water depth you want.",
-      hooked: "Fish hooked. Drag in the lane and keep the red marker inside the bright safe band.",
+      hooked: "Fish hooked. Drag the red marker left or right. Keep it in the green SAFE area.",
+      tensionTitle: "Line Tension",
+      tensionLow: "Loose",
+      tensionSafe: "Safe",
+      tensionHigh: "Tight",
+      tensionMarker: "Drag",
+      tensionStatusAim: "Cast first, then control the line here.",
+      tensionStatusCharging: "Release to cast. The tension control starts after a fish bites.",
+      tensionStatusHooked: "Drag here. Red marker must stay in SAFE.",
+      tensionStatusSafe: "Good tension. Keep the red marker here.",
+      tensionStatusDanger: "Danger. Move the marker back into SAFE.",
       landed: "Catch landed! Keep going before time runs out.",
       broke: "Line broke. The tension marker left the safe band too long.",
       escaped: "The fish escaped. Cast again and keep the marker centered.",
@@ -102,7 +114,17 @@
       retry: "再試一次",
       castHint: "按住礁海畫面蓄力，放開即可拋竿。",
       charging: "蓄力到想要的水深時放開。",
-      hooked: "魚上鉤了。拖曳張力條，讓紅色標記留在亮色安全區。",
+      hooked: "魚上鉤了。左右拖曳紅色標記，讓它留在綠色安全區。",
+      tensionTitle: "魚線張力",
+      tensionLow: "太鬆",
+      tensionSafe: "安全",
+      tensionHigh: "太緊",
+      tensionMarker: "拖曳",
+      tensionStatusAim: "先拋竿，魚上鉤後在這裡控線。",
+      tensionStatusCharging: "放開即可拋竿；魚咬餌後才需要控線。",
+      tensionStatusHooked: "拖曳這裡，紅色標記要留在安全區。",
+      tensionStatusSafe: "張力剛好，讓紅色標記維持在這裡。",
+      tensionStatusDanger: "危險，快把標記拉回安全區。",
       landed: "成功收線！趁時間結束前繼續挑戰。",
       broke: "魚線斷了。張力標記離開安全區太久。",
       escaped: "魚逃走了。再拋一次，讓標記更靠近中央。",
@@ -222,6 +244,7 @@
       node.textContent = t(node.dataset.ui);
     });
     renderMenu();
+    updateTensionGuide();
   }
 
   function loadImages() {
@@ -317,6 +340,7 @@
     nodes.zoneText.textContent = zone.name[locale];
     nodes.goalText.textContent = `${run.catches}/${zone.goal}`;
     nodes.hintText.textContent = t("castHint");
+    updateTensionGuide();
     state = "game";
     showPanel("game");
     focusPanel(nodes.gamePanel);
@@ -355,6 +379,7 @@
     run.fishTimer = 1.2;
     run.splashTimer = 0.8;
     nodes.hintText.textContent = t("hooked");
+    updateTensionGuide();
     track("fish_hooked", { fish: run.hookFish.id, zone: run.zone.id });
   }
 
@@ -372,6 +397,7 @@
     run.splashTimer = 0.8;
     nodes.goalText.textContent = `${run.catches}/${run.zone.goal}`;
     nodes.hintText.textContent = t("landed");
+    updateTensionGuide();
     if (run.catches >= run.zone.goal) finishRun(true);
   }
 
@@ -380,7 +406,32 @@
     run.hookFish = null;
     run.splashTimer = 1;
     nodes.hintText.textContent = t("broke");
+    updateTensionGuide();
     track("line_break", { zone: run.zone.id });
+  }
+
+  function tensionRange() {
+    if (!run) return { safeMin: 38, safeMax: 62, safe: true };
+    const safeMin = 38 - save.gear.rod;
+    const safeMax = 62 + save.gear.line;
+    return {
+      safeMin,
+      safeMax,
+      safe: run.tension >= safeMin && run.tension <= safeMax,
+    };
+  }
+
+  function updateTensionGuide() {
+    const range = tensionRange();
+    nodes.safeBand.style.left = `${range.safeMin}%`;
+    nodes.safeBand.style.width = `${range.safeMax - range.safeMin}%`;
+    nodes.tensionLane.classList.toggle("is-active", Boolean(run && run.phase === "reel"));
+    nodes.tensionLane.classList.toggle("is-safe", Boolean(run && run.phase === "reel" && range.safe));
+    nodes.tensionLane.classList.toggle("is-danger", Boolean(run && run.phase === "reel" && !range.safe));
+    if (!run || run.phase === "aim") nodes.tensionStatus.textContent = t("tensionStatusAim");
+    else if (run.phase === "charging" || run.phase === "cast") nodes.tensionStatus.textContent = t("tensionStatusCharging");
+    else if (run.phase === "reel") nodes.tensionStatus.textContent = range.safe ? t("tensionStatusSafe") : t("tensionStatusDanger");
+    else nodes.tensionStatus.textContent = t("tensionStatusHooked");
   }
 
   function update(dt) {
@@ -416,9 +467,8 @@
       const pull = Math.sin(performance.now() / 360) * run.zone.speed * 24 + (run.hookFish.rare ? 10 : 0);
       run.tension += (target - run.tension) * dt * (1.4 + gearControl) + pull * dt;
       run.tension = Math.max(0, Math.min(100, run.tension));
-      const safeMin = 38 - save.gear.rod;
-      const safeMax = 62 + save.gear.line;
-      if (run.tension < safeMin || run.tension > safeMax) run.struggle += dt;
+      const { safe } = tensionRange();
+      if (!safe) run.struggle += dt;
       else run.struggle = Math.max(0, run.struggle - dt * 1.8);
       run.fishPower -= dt * (9 + save.gear.rod * 1.7 + save.gear.bait * 0.9);
       if (run.struggle > 2.2) lineBreak();
@@ -429,6 +479,7 @@
     run.sonarPulse = Math.max(0, run.sonarPulse - dt);
     nodes.castFill.style.width = `${run.phase === "charging" ? run.castPower : 0}%`;
     nodes.tensionMarker.style.left = `${run.tension}%`;
+    updateTensionGuide();
   }
 
   function drawSpriteSheet(img, cols, rows, index, x, y, w, h) {
@@ -504,6 +555,7 @@
     run.castPower = 0;
     run.castDir = 1;
     nodes.hintText.textContent = t("charging");
+    updateTensionGuide();
   }
 
   function releaseCast() {
@@ -512,6 +564,7 @@
     if (run.phase === "charging") {
       run.phase = "cast";
       run.fishTimer = Math.max(0.45, 1.45 - run.castPower / 100);
+      updateTensionGuide();
       track("cast", { power: Math.round(run.castPower), zone: run.zone.id });
     }
   }
