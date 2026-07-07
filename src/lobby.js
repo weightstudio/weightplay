@@ -43,7 +43,7 @@ const dailyRewardKey = "weightplayDailyReward";
 const walletBar = document.querySelector("#walletBar");
 const dailyRewardTrack = [5, 6, 8, 10, 12, 15, 25];
 const featuredSkillPaths = ["Memory", "Logic", "Reaction", "Focus", "Problem Solving", "Animal Knowledge"];
-const recentlyUpdatedGameIds = new Set(["animal-zoo-idle", "animal-guard-yard", "bubble-bakery", "fruit-merge"]);
+const recentlyUpdatedGameIds = new Set(["animal-reef-fisher", "animal-rune-tactics", "animal-orb-fortress", "beast-deck"]);
 const ageFilterGroups = {
   starter: ["3"],
   family: ["6", "9", "family"],

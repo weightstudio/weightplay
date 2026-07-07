@@ -218,6 +218,26 @@
     },
   };
 
+  Object.assign(text.en, {
+    missionPlan: "Plan: {plan}",
+    missionTactic1: "Learn basic positioning against two wolves.",
+    missionTactic2: "Protect the owl from a ranged raven.",
+    missionTactic3: "Focus the boss stag after clearing guards.",
+    missionTactic4: "Use turtle guard before two ravens fire.",
+    missionTactic5: "Long fight: manage energy and focus targets.",
+    missionTactic6: "Boss pressure: survive two stags and raven fire.",
+  });
+
+  Object.assign(text["zh-Hant"], {
+    missionPlan: "重點：{plan}",
+    missionTactic1: "練習站位，先處理兩隻近戰狼。",
+    missionTactic2: "保護貓頭鷹，避免被遠程渡鴉壓制。",
+    missionTactic3: "清掉護衛後集中攻擊石鹿首領。",
+    missionTactic4: "兩隻渡鴉開火前，先讓烏龜守護隊伍。",
+    missionTactic5: "長戰鬥：管理能量並集中火力。",
+    missionTactic6: "首領壓力：撐過雙石鹿與渡鴉火力。",
+  });
+
   const heroDefs = [
     { id: "lion", name: "lion", role: "lionRole", img: "animal-rune-tactics-hero-lion.webp", hp: 7, atk: 3, skillName: "skillLion", skillDesc: "skillLionDesc", skill: "animal-rune-tactics-skill-lion-strike.webp" },
     { id: "owl", name: "owl", role: "owlRole", img: "animal-rune-tactics-hero-owl.webp", hp: 5, atk: 2, range: 2, skillName: "skillOwl", skillDesc: "skillOwlDesc", skill: "animal-rune-tactics-skill-owl-rune-bolt.webp" },
@@ -239,12 +259,12 @@
   ];
 
   const missionDefs = [
-    { id: 1, xp: 45, runes: 10, enemies: ["wolf", "wolf"] },
-    { id: 2, xp: 65, runes: 14, enemies: ["wolf", "raven"] },
-    { id: 3, xp: 90, runes: 18, enemies: ["wolf", "raven", "stag"] },
-    { id: 4, xp: 115, runes: 22, enemies: ["raven", "raven", "stag"] },
-    { id: 5, xp: 140, runes: 28, enemies: ["wolf", "wolf", "raven", "stag"] },
-    { id: 6, xp: 170, runes: 34, enemies: ["raven", "raven", "stag", "stag"] },
+    { id: 1, xp: 45, runes: 10, enemies: ["wolf", "wolf"], tactic: "missionTactic1" },
+    { id: 2, xp: 65, runes: 14, enemies: ["wolf", "raven"], tactic: "missionTactic2" },
+    { id: 3, xp: 90, runes: 18, enemies: ["wolf", "raven", "stag"], tactic: "missionTactic3" },
+    { id: 4, xp: 115, runes: 22, enemies: ["raven", "raven", "stag"], tactic: "missionTactic4" },
+    { id: 5, xp: 140, runes: 28, enemies: ["wolf", "wolf", "raven", "stag"], tactic: "missionTactic5" },
+    { id: 6, xp: 170, runes: 34, enemies: ["raven", "raven", "stag", "stag"], tactic: "missionTactic6" },
   ];
 
   let locale = localStorage.getItem(localeKey) || "en";
@@ -335,7 +355,8 @@
       btn.innerHTML = `
         <strong>${t("missionCard", { n: mission.id })}</strong>
         <small>${mission.id > profile.unlockedMission ? t("locked") : t("missionReward", { xp: mission.xp, runes: mission.runes })}</small>
-        <span>${t("missionGoal", { enemies: enemyNames })}</span>`;
+        <span>${t("missionGoal", { enemies: enemyNames })}</span>
+        <em>${t("missionPlan", { plan: t(mission.tactic) })}</em>`;
       btn.addEventListener("click", () => {
         selectedMission = mission.id;
         renderMenu();
@@ -714,7 +735,7 @@
     nodes.resultTitle.textContent = t(win ? "missionClear" : "missionFailed");
     nodes.resultText.textContent = t(win ? "resultWin" : "resultLose", { mission: state.mission, xp, runes });
     nodes.skillReportText.textContent = t(win ? "reportWin" : "reportLose");
-    nodes.nextBtn.disabled = !win || state.mission >= 4;
+    nodes.nextBtn.disabled = !win || state.mission >= missionDefs.length;
     nodes.resultPanel.classList.remove("is-hidden");
     renderMenu();
     focusPanel(nodes.resultPanel);
@@ -798,7 +819,7 @@
     nodes.skillBtn.addEventListener("click", skill);
     nodes.endTurnBtn.addEventListener("click", endTurn);
     nodes.rerollBtn.addEventListener("click", () => renderRewards(true));
-    nodes.nextBtn.addEventListener("click", () => startMission(Math.min(4, state.mission + 1)));
+    nodes.nextBtn.addEventListener("click", () => startMission(Math.min(missionDefs.length, state.mission + 1)));
     nodes.retryBtn.addEventListener("click", () => startMission(state?.mission || selectedMission));
     nodes.menuBtn.addEventListener("click", showMenu);
   }

@@ -328,4 +328,29 @@ body.has-game-page-info :is(.level-list, .level-grid, .stage-list, .stage-grid, 
   .game-info-fact {
     min-height: 72px;
   }
+
+  .game-info-related-card {
+    display: grid;
+    grid-template-columns: 92px minmax(0, 1fr);
+    align-items: stretch;
+  }
+
+  .game-info-related-card img {
+    width: 92px;
+    height: 100%;
+    min-height: 92px;
+    aspect-ratio: auto;
+  }
+
+  .game-info-related-copy {
+    align-content: center;
+    min-width: 0;
+    padding: 10px 12px;
+  }
+
+  .game-info-related-copy strong,
+  .game-info-related-copy span {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
 }
