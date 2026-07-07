@@ -32,6 +32,8 @@
   const resultPanel = document.querySelector("#resultPanel");
   const resultTitle = document.querySelector("#resultTitle");
   const resultText = document.querySelector("#resultText");
+  const menuMilestone = document.querySelector("#menuMilestone");
+  const resultMilestone = document.querySelector("#resultMilestone");
   const menuLeaderboard = document.querySelector("#menuLeaderboard");
   const resultLeaderboard = document.querySelector("#resultLeaderboard");
   const playAgainBtn = document.querySelector("#playAgainBtn");
@@ -89,6 +91,11 @@
       progressImproved: "Great progress! You improved from your last best.",
       progressSteady: "Good effort! Try again to improve planning and placement.",
       progressNote: "Scores are for fun and local progress tracking only.",
+      milestoneTitle: "Merge Milestone",
+      milestoneUnlocked: "Best unlocked: {name}",
+      milestoneNext: "Next target: {name}",
+      milestoneComplete: "All animals unlocked! Chase a new best score.",
+      milestoneNew: "New animal unlocked: {name}!",
       leaderboardTitle: "Your Best Runs",
       noLeaderboard: "Play once to start your local best-run list.",
       leaderboardRow: "#{rank}  Score {score}  {animal}",
@@ -141,6 +148,11 @@
       progressImproved: "很棒的進步！你比之前更會安排落點了。",
       progressSteady: "做得很好！再試一次，練習更好的放置位置。",
       progressNote: "分數只用於遊戲樂趣與本機進步紀錄。",
+      milestoneTitle: "合成里程碑",
+      milestoneUnlocked: "已解鎖最高：{name}",
+      milestoneNext: "下一個目標：{name}",
+      milestoneComplete: "全部動物都解鎖了！挑戰更高分吧。",
+      milestoneNew: "解鎖新動物：{name}！",
       leaderboardTitle: "你的最佳挑戰",
       noLeaderboard: "玩一場後，這裡會記錄你的本機最佳成績。",
       leaderboardRow: "第 {rank} 名  分數 {score}  {animal}",
@@ -253,6 +265,8 @@
     playAgainBtn.textContent = t("playAgain");
     lobbyLink.textContent = t("lobby");
     updateHud();
+    renderMilestone(menuMilestone, readProgress());
+    renderMilestone(resultMilestone, readProgress());
     renderLeaderboard(menuLeaderboard, readLeaderboard());
     renderLeaderboard(resultLeaderboard, readLeaderboard());
   }
@@ -471,7 +485,12 @@
         spawnMergeBurst(merged.x, merged.y, next.color, impact);
         addMergeScore(next.score);
         mergeCount += 1;
+        const previousRunMax = maxReachedLevel;
         maxReachedLevel = Math.max(maxReachedLevel, merged.level);
+        const savedHighest = Number(readProgress().highestLevel) || 0;
+        if (merged.level > previousRunMax && merged.level > savedHighest) {
+          showToast(t("milestoneNew", { name: t(`fruit${merged.level}`) }));
+        }
         if (merged.level === fruits.length - 1) showToast(t("fruit10"));
         window.WonderSound?.play?.("success");
         break;
@@ -543,6 +562,7 @@
     const leaderboard = recordLeaderboard(score, maxReachedLevel);
     resultTitle.textContent = t("gameOver");
     renderResultReport(progress, newBest);
+    renderMilestone(resultMilestone, progress);
     renderLeaderboard(resultLeaderboard, leaderboard);
     resultPanel.classList.remove("hidden");
     window.WonderAnalytics?.track?.("game_complete", { game_id: GAME_ID, score, best_score: bestScore, new_best: newBest, cleared: false });
@@ -627,6 +647,23 @@
       });
       target.appendChild(item);
     });
+  }
+
+  function renderMilestone(target, progress = readProgress()) {
+    if (!target) return;
+    target.replaceChildren();
+    const highest = Math.max(0, Math.min(fruits.length - 1, Number(progress.highestLevel) || 0));
+    const next = Math.min(fruits.length - 1, highest + 1);
+    const title = document.createElement("strong");
+    title.textContent = t("milestoneTitle");
+    const row = document.createElement("div");
+    row.className = "milestone-row";
+    const current = document.createElement("span");
+    current.innerHTML = `${animalTokenMarkup(highest)} <b>${t("milestoneUnlocked", { name: t(`fruit${highest}`) })}</b>`;
+    const nextTarget = document.createElement("span");
+    nextTarget.innerHTML = `${animalTokenMarkup(next)} <b>${highest >= fruits.length - 1 ? t("milestoneComplete") : t("milestoneNext", { name: t(`fruit${next}`) })}</b>`;
+    row.append(current, nextTarget);
+    target.append(title, row);
   }
 
   function renderChainPreview() {

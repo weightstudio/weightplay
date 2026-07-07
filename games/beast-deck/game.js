@@ -1,4 +1,4 @@
-(() => {
+﻿(() => {
   const GAME_ID = "beast-deck";
   const saveKey = "weightplay_beast_deck_v1";
   const localeKey = "weightPlayLocale";
@@ -74,12 +74,12 @@
 
   const metaText = {
     en: {
-      description: "Play Beast Deck: The Mist Forest, a turn-based Roguelike deckbuilder game on WeightPlay. Build an animal power deck, level up locally, and unlock forest missions.",
+      description: "Play Beast Deck: The Mist Forest, a turn-based roguelike deckbuilder game on WeightPlay. Build an animal power deck, level up locally, and unlock forest missions.",
       ogDescription: "Build your animal power deck, choose upgrades, level up, and defeat corrupted beasts in a mysterious mist forest.",
     },
     "zh-Hant": {
-      description: "遊玩《獸王牌組：迷霧森林》，在 WeightPlay 體驗 13+ 動物卡牌 Roguelike。組出動物能力牌組、累積本機等級，並解鎖更深的森林任務。",
-      ogDescription: "組出動物能力牌組，選擇升級、累積本機等級，並在迷霧森林中擊敗腐化野獸。",
+      description: "在 WeightPlay 遊玩獸王牌組：迷霧森林。建立動物牌組、累積本地等級、解鎖森林任務，挑戰回合制 Roguelike 牌組戰鬥。",
+      ogDescription: "組出你的動物能力牌組，判斷敵人意圖，升級並擊敗迷霧森林中的腐化獸王。",
     },
   };
 
@@ -88,9 +88,9 @@
       title: "Beast Deck: The Mist Forest",
       language: "Language",
       menuTitle: "Enter the Mist Forest.",
-      menuHint: "Build an animal power deck, read enemy intent, and clear forest missions. Your level and unlocked missions are saved on this device.",
+      menuHint: "Build an animal power deck, read enemy intent, and clear forest missions. Your level, coins, cards, equipment, and unlocked missions are saved on this device.",
       progressTitle: "Local Progress",
-      progressText: "Clear missions to earn XP, level up, and unlock deeper forest routes. Progress is saved on this device.",
+      progressText: "Clear missions to earn XP and Beast Coins. Spend coins on packs, equip cards and gear, then push deeper into the forest.",
       profileLevel: "Level",
       profileXp: "XP",
       profileBest: "Best",
@@ -99,7 +99,7 @@
       collectionTitle: "Card Collection",
       collectionHint: "Equip up to 6 extra cards before a mission.",
       packTitle: "Draw Beast Pack",
-      packHint: "Gain a card or equipment for future runs.",
+      packHint: "Spend coins for a card or equipment for future runs.",
       packNeed: "Need {cost} coins.",
       packResultCard: "New card: {card}.",
       packResultGear: "New equipment: {gear}.",
@@ -115,11 +115,11 @@
       gearEquip: "Equip",
       gearNone: "No equipment yet",
       stageSelectTitle: "Choose a Mission",
-      stageSelectHint: "Tap an unlocked mission card to start immediately, or use the button below.",
+      stageSelectHint: "Drag the mission row left or right. Tap a mission to select it, then start.",
       lockedMission: "Locked",
       missionLabel: "Mission {mission}",
       missionReward: "{xp} XP",
-      startMissionCard: "Tap to Start",
+      startMissionCard: "Tap to Select",
       controlCombat: "Turn-Based Strategy",
       controlUpgrades: "Draft Cards",
       controlDeck: "Persistent Level",
@@ -203,27 +203,47 @@
       title: "獸王牌組：迷霧森林",
       language: "語言",
       menuTitle: "進入迷霧森林。",
-      menuHint: "組出動物能力牌組，觀察敵人的意圖，逐步突破森林任務。等級與已解鎖關卡會儲存在本機。",
-      progressTitle: "本機進度",
-      progressText: "通關任務可獲得經驗、提升等級並解鎖更深的森林路線。進度會儲存在這台裝置。",
+      menuHint: "建立動物能力牌組、判斷敵人意圖並通關森林任務。等級、金幣、卡牌、裝備與任務進度都會保存在本機。",
+      progressTitle: "本地進度",
+      progressText: "通關任務可獲得經驗與獸王金幣。用金幣抽卡包、裝備卡牌與道具，再挑戰更深的森林路線。",
       profileLevel: "等級",
       profileXp: "經驗",
-      profileBest: "最高",
-      profileBonus: "等級加成：生命上限 +{hp}",
+      profileBest: "最佳",
+      profileCoins: "金幣",
+      profileBonus: "等級提供生命上限 +{hp}",
+      collectionTitle: "卡冊",
+      collectionHint: "出戰前最多裝備 6 張額外卡牌。",
+      packTitle: "金幣抽卡包",
+      packHint: "消耗金幣，獲得未來出戰可用的卡牌或裝備。",
+      packNeed: "需要 {cost} 金幣。",
+      packResultCard: "獲得卡牌：{card}。",
+      packResultGear: "獲得裝備：{gear}。",
+      packDuplicate: "重複裝備強化：{name}。",
+      deckBuildTitle: "出戰牌組",
+      collectionOwnedTitle: "持有卡牌",
+      equipmentTitle: "裝備",
+      equipCard: "裝備",
+      unequipCard: "移除",
+      ownedCount: "持有 {count}",
+      equippedCount: "已裝備 {count}/{max}",
+      gearEquipped: "已裝備",
+      gearEquip: "裝備",
+      gearNone: "尚未持有裝備",
       stageSelectTitle: "選擇任務",
-      stageSelectHint: "點已解鎖任務卡會直接開始，也可用下方開始按鈕。",
+      stageSelectHint: "左右拖滑任務列。點任務卡選擇，再按開始任務。",
       lockedMission: "未解鎖",
       missionLabel: "任務 {mission}",
       missionReward: "{xp} 經驗",
+      startMissionCard: "點擊選擇",
       controlCombat: "回合策略",
-      controlUpgrades: "戰後選牌",
-      controlDeck: "本機等級",
+      controlUpgrades: "抽選卡牌",
+      controlDeck: "永久等級",
       diamondShopTitle: "永久升級",
       amuletName: "迷霧護符",
-      amuletEffect: "每次挑戰生命上限 +10。",
-      amuletOwned: "已擁有：每次挑戰生命上限 +10。",
-      amuletNeed: "需要 {cost} 顆鑽石。",
-      startRun: "開始任務",
+      amuletEffect: "每次出戰生命上限 +10。",
+      amuletOwned: "已擁有：每次出戰生命上限 +10。",
+      amuletNeed: "需要 {cost} 鑽石。",
+      startRun: "開始選定任務",
       menu: "選單",
       hudStage: "戰鬥",
       hudMission: "任務",
@@ -233,21 +253,21 @@
       hudDiscard: "棄牌",
       shieldLabel: "格擋",
       chooseCard: "選擇卡牌",
-      chooseCardDesc: "選一張動物能力卡，加入本次任務牌組。",
+      chooseCardDesc: "選一張動物能力加入本次任務牌組。",
       tryAgain: "再試一次",
       backToMenu: "回到選單",
       skillLogic: "邏輯",
       skillFocus: "專注",
-      skillProblem: "解題",
+      skillProblem: "問題解決",
       endTurn: "結束回合",
       runComplete: "任務完成！",
       runFailed: "任務失敗",
       resultScoreLabel: "任務進度",
-      resultDisclaimer: "僅作趣味與本機進度紀錄，不蒐集個人資料。",
+      resultDisclaimer: "僅供遊玩與本地進度追蹤。",
       skillReportTitle: "能力報告",
       loading: "載入中",
       card_wolf_pack: "狼群突襲",
-      card_wolf_pack_desc: "造成 6 點傷害。本回合若已打出攻擊卡，改為 12 點。",
+      card_wolf_pack_desc: "造成 6 點傷害。本回合若已打出攻擊卡，改為造成 12 點。",
       card_guard_bear: "守衛熊",
       card_guard_bear_desc: "獲得 6 點格擋。",
       card_sky_hawk: "天鷹俯衝",
@@ -260,29 +280,39 @@
       card_owl_wisdom_desc: "抽 1 張牌。",
       card_iron_tortoise: "鐵甲龜",
       card_iron_tortoise_desc: "獲得 15 點格擋。",
-      intent_attack: "即將攻擊 {amount}",
-      intent_defend: "即將防守 {amount}",
-      intent_poison: "即將施加 {amount} 層中毒",
-      intent_buff: "正在準備重擊",
+      gear_mist_cloak: "迷霧披風",
+      gear_mist_cloak_desc: "生命上限 +6。",
+      gear_hunter_charm: "獵手護符",
+      gear_hunter_charm_desc: "每場戰鬥能量 +1。",
+      gear_forest_banner: "森林戰旗",
+      gear_forest_banner_desc: "戰鬥開始時獲得 4 點格擋。",
+      intent_attack: "準備攻擊 {amount}",
+      intent_defend: "準備防禦 {amount}",
+      intent_poison: "準備施加 {amount} 層中毒",
+      intent_buff: "準備蓄力重擊",
       log_start: "與 {enemy} 的戰鬥開始。",
       log_play_card: "打出 {card}，消耗 {cost}。",
       log_combo: "連擊成功！{card} 造成 {damage} 點傷害。",
       log_poison_damage: "{enemy} 受到 {damage} 點中毒傷害。",
       log_enemy_turn: "敵方回合：{action}。",
+      log_enemy_blocked: "{enemy} 的格擋吸收了 {blocked} 點傷害。",
+      log_enemy_damage_after_block: "{enemy} 的格擋吸收 {blocked} 點，仍受到 {damage} 點傷害。",
       log_player_turn: "你的回合，抽 {count} 張牌，能量恢復為 {energy}。",
-      log_player_block: "獲得 {amount} 點格擋，本回合會抵消敵人攻擊傷害。",
-      log_enemy_block_fade: "{enemy} 剩餘的防禦消失了。",
-      log_win_battle: "擊敗 {enemy}，選擇一張新卡。",
-      log_win_boss: "任務首領已擊敗，獲得 {xp} 經驗。",
-      log_loss: "你被 {enemy} 擊敗。",
-      log_reshuffle: "牌庫已空，重新洗入棄牌堆。",
-      shieldAbsorbed: "格擋擋下所有傷害，剩餘 {shield} 點格擋。",
+      log_player_block: "你獲得 {amount} 點格擋，可吸收本回合敵方攻擊。",
+      log_enemy_block_fade: "{enemy} 剩餘的格擋消退了。",
+      log_draft_added: "{card} 已加入本次任務牌組，下一場開手牌會標示出來。",
+      log_win_battle: "擊敗 {enemy}，選一張新卡。",
+      log_win_boss: "任務首領被擊敗，獲得 {xp} 經驗。",
+      log_coin_gain: "獲得 {coins} 枚獸王金幣。",
+      log_loss: "你被 {enemy} 擊敗了。",
+      log_reshuffle: "抽牌堆已空，棄牌堆重新洗入牌庫。",
+      shieldAbsorbed: "格擋吸收所有傷害，剩餘 {shield} 點格擋。",
       playerDamage: "玩家受到 {damage} 點傷害，剩餘 {hp} HP。",
       playerPoison: "玩家受到 {damage} 點中毒傷害，剩餘 {hp} HP。",
-      levelUp: "升級！目前等級 {level}。",
-      report_win: "任務 {mission} 通關，獲得 {xp} 經驗，森林進度已推進。",
-      report_partial: "任務 {mission} 已通過 {count} 場戰鬥，獲得 {xp} 經驗。調整牌組節奏再挑戰一次。",
-      report_no_wins: "尚未通過戰鬥。先觀察敵人意圖，擋住大攻擊，再組合攻擊卡。"
+      levelUp: "升級！達到等級 {level}。",
+      report_win: "任務 {mission} 通關，獲得 {xp} 經驗並推進森林進度。",
+      report_partial: "任務 {mission} 已通過 {count} 場戰鬥，獲得 {xp} 經驗。調整牌組再挑戰一次。",
+      report_no_wins: "尚未通過戰鬥。觀察敵人意圖、用格擋承受大攻擊，並組出卡牌連擊。"
     }
   };
 
@@ -316,25 +346,24 @@
   };
 
   const enemyCatalog = {
-    boar: { name: "Shadow Boar", nameZh: "影牙野豬", image: "wonder-beast-boar.png", hp: 24, intents: [{ type: "attack", val: 6 }, { type: "defend", val: 5 }, { type: "attack", val: 9 }] },
+    boar: { name: "Shadow Boar", nameZh: "暗影野豬", image: "wonder-beast-boar.png", hp: 24, intents: [{ type: "attack", val: 6 }, { type: "defend", val: 5 }, { type: "attack", val: 9 }] },
     viper: { name: "Corrupted Viper", nameZh: "腐化毒蛇", image: "wonder-beast-crocodile.png", hp: 34, intents: [{ type: "poison", val: 2 }, { type: "defend", val: 8 }, { type: "attack", val: 8 }] },
     behemoth: { name: "Mist Behemoth", nameZh: "迷霧巨獸", image: "wonder-beast-buffalo.png", hp: 58, intents: [{ type: "attack", val: 10 }, { type: "defend", val: 10 }, { type: "attack", val: 15 }, { type: "buff", val: 0 }] },
     rhino: { name: "Ironhide Rhino", nameZh: "鐵皮犀牛", image: "wonder-beast-rhino.png", hp: 42, intents: [{ type: "defend", val: 11 }, { type: "attack", val: 11 }, { type: "attack", val: 8 }] },
     tiger: { name: "Amber Tiger", nameZh: "琥珀猛虎", image: "wonder-beast-tiger.png", hp: 46, intents: [{ type: "attack", val: 12 }, { type: "attack", val: 7 }, { type: "buff", val: 0 }] },
-    bear: { name: "Ancient Bear", nameZh: "古木巨熊", image: "wonder-beast-bear.png", hp: 52, intents: [{ type: "defend", val: 12 }, { type: "attack", val: 13 }, { type: "poison", val: 2 }] },
+    bear: { name: "Ancient Bear", nameZh: "古林巨熊", image: "wonder-beast-bear.png", hp: 52, intents: [{ type: "defend", val: 12 }, { type: "attack", val: 13 }, { type: "poison", val: 2 }] },
   };
 
   const missionTemplates = [
-    { title: "Misty Trail", titleZh: "迷霧小徑", subtitle: "Learn intent reading.", subtitleZh: "熟悉敵人意圖。", enemies: ["boar", "viper", "behemoth"], xp: 70 },
-    { title: "Thorn Ruins", titleZh: "荊棘遺跡", subtitle: "Defense matters more.", subtitleZh: "更重視防守節奏。", enemies: ["boar", "rhino", "behemoth"], xp: 85 },
-    { title: "Amber Den", titleZh: "琥珀獸穴", subtitle: "Fast enemies punish greed.", subtitleZh: "高速敵人會懲罰貪攻。", enemies: ["viper", "tiger", "rhino"], xp: 105 },
-    { title: "Old Grove", titleZh: "古林深處", subtitle: "Poison and shield mix.", subtitleZh: "中毒與護盾交錯。", enemies: ["bear", "viper", "behemoth"], xp: 125 },
-    { title: "Moon Gate", titleZh: "月影門", subtitle: "Higher HP and sharper turns.", subtitleZh: "更高生命與更緊湊回合。", enemies: ["tiger", "rhino", "bear"], xp: 145 },
-    { title: "Beast Crown", titleZh: "獸王冠冕", subtitle: "A serious forest trial.", subtitleZh: "真正的森林試煉。", enemies: ["rhino", "bear", "behemoth"], xp: 170 },
-    { title: "Crystal Maw", titleZh: "水晶巨口", subtitle: "Late-game scaling starts.", subtitleZh: "後期強度開始提升。", enemies: ["viper", "tiger", "bear"], xp: 195 },
-    { title: "Night Monarch", titleZh: "夜森君王", subtitle: "Endless practice route.", subtitleZh: "高難度練功路線。", enemies: ["tiger", "bear", "behemoth"], xp: 225 },
+    { title: "Misty Trail", titleZh: "迷霧小徑", subtitle: "Learn intent reading.", subtitleZh: "練習判斷敵人意圖。", enemies: ["boar", "viper", "behemoth"], xp: 70 },
+    { title: "Thorn Ruins", titleZh: "荊棘遺跡", subtitle: "Defense matters more.", subtitleZh: "防禦與格擋更重要。", enemies: ["boar", "rhino", "behemoth"], xp: 85 },
+    { title: "Amber Den", titleZh: "琥珀獸巢", subtitle: "Fast enemies punish greed.", subtitleZh: "快速敵人會懲罰貪攻。", enemies: ["viper", "tiger", "rhino"], xp: 105 },
+    { title: "Old Grove", titleZh: "古林深處", subtitle: "Poison and shield mix.", subtitleZh: "中毒與護盾交錯出現。", enemies: ["bear", "viper", "behemoth"], xp: 125 },
+    { title: "Moon Gate", titleZh: "月影之門", subtitle: "Higher HP and sharper turns.", subtitleZh: "敵人生命與回合壓力提高。", enemies: ["tiger", "rhino", "bear"], xp: 145 },
+    { title: "Beast Crown", titleZh: "獸王冠冕", subtitle: "A serious forest trial.", subtitleZh: "真正的森林考驗。", enemies: ["rhino", "bear", "behemoth"], xp: 170 },
+    { title: "Crystal Maw", titleZh: "水晶巨口", subtitle: "Late-game scaling starts.", subtitleZh: "後期強度開始成長。", enemies: ["viper", "tiger", "bear"], xp: 195 },
+    { title: "Night Monarch", titleZh: "夜之獸王", subtitle: "Endless practice route.", subtitleZh: "高壓練功路線。", enemies: ["tiger", "bear", "behemoth"], xp: 225 },
   ];
-
   let profile = normalizeProfile();
   let state = {};
 
@@ -401,36 +430,7 @@
 
   function t(key, params = {}) {
     const locale = getLocale();
-    const zhRuntimeFallback = {
-      profileCoins: "金幣",
-      collectionTitle: "卡冊",
-      collectionHint: "出戰前最多裝備 6 張額外卡。",
-      packTitle: "金幣抽卡",
-      packHint: "抽到卡牌或裝備，之後挑戰都能使用。",
-      packNeed: "需要 {cost} 金幣。",
-      packResultCard: "獲得卡牌：{card}。",
-      packResultGear: "獲得裝備：{gear}。",
-      packDuplicate: "重複強化：{name}。",
-      deckBuildTitle: "出戰牌組",
-      collectionOwnedTitle: "持有卡牌",
-      equipmentTitle: "裝備",
-      equipCard: "裝備",
-      unequipCard: "移除",
-      ownedCount: "持有 {count}",
-      equippedCount: "已裝備 {count}/{max}",
-      gearEquipped: "已裝備",
-      gearEquip: "裝備",
-      gearNone: "尚未獲得裝備",
-      gear_mist_cloak: "迷霧披風",
-      gear_mist_cloak_desc: "生命上限 +6。",
-      gear_hunter_charm: "獵手護符",
-      gear_hunter_charm_desc: "每場戰鬥能量 +1。",
-      gear_forest_banner: "森林戰旗",
-      gear_forest_banner_desc: "開場獲得 4 點格擋。",
-      log_coin_gain: "獲得 {coins} 獸王金幣。",
-      startMissionCard: "點擊開始",
-      log_draft_added: "{card} 已加入本次牌組，下一場開手牌會標示出來。",
-    };
+    const zhRuntimeFallback = {};
     const raw = (locale === "zh-Hant" ? zhRuntimeFallback[key] : "") || text[locale]?.[key] || text.en[key] || key;
     return Object.entries(params).reduce((str, [k, v]) => str.replaceAll(`{${k}}`, String(v)), raw);
   }
@@ -645,13 +645,14 @@
     nodes.startBtn.textContent = `${t("startRun")} · ${t("missionLabel", { mission: profile.selectedMission })}`;
     nodes.stageGrid.innerHTML = "";
 
-    for (let i = 1; i <= maxMission; i++) {
+    getVisibleMissionIds().forEach((i) => {
       const unlocked = i <= profile.unlockedMission;
       const button = document.createElement("button");
       button.type = "button";
       button.className = `stage-card${profile.selectedMission === i ? " selected" : ""}`;
       button.disabled = !unlocked;
       button.dataset.mission = String(i);
+      button.setAttribute("aria-pressed", profile.selectedMission === i ? "true" : "false");
       button.innerHTML = `
         <span>${t("missionLabel", { mission: i })}</span>
         <strong>${unlocked ? missionTitle(i) : t("lockedMission")}</strong>
@@ -662,22 +663,39 @@
         if (!unlocked) return;
         profile.selectedMission = i;
         saveLocalState();
-        updateStageSelectionUI();
+        renderProgressUI();
         scrollStageToSelected();
         window.WonderSound?.play("click");
-        startRun();
       });
       nodes.stageGrid.appendChild(button);
-    }
+    });
     updateStageSelectionUI();
     scrollStageToSelected();
   }
 
+  function getVisibleMissionIds() {
+    const selected = clamp(profile.selectedMission, 1, maxMission);
+    let start = selected - 1;
+    let end = selected + 1;
+    if (selected <= 1) {
+      start = 1;
+      end = Math.min(maxMission, 3);
+    } else if (selected >= maxMission) {
+      start = Math.max(1, maxMission - 2);
+      end = maxMission;
+    }
+    const ids = [];
+    for (let i = start; i <= end; i++) ids.push(i);
+    return ids;
+  }
+
   function updateStageSelectionUI() {
     if (!nodes.stageGrid) return;
-    nodes.startBtn.textContent = `${t("startRun")} - ${t("missionLabel", { mission: profile.selectedMission })}`;
+    nodes.startBtn.textContent = `${t("startRun")} · ${t("missionLabel", { mission: profile.selectedMission })}`;
     nodes.stageGrid.querySelectorAll(".stage-card").forEach((card) => {
-      card.classList.toggle("selected", Number(card.dataset.mission) === profile.selectedMission);
+      const selected = Number(card.dataset.mission) === profile.selectedMission;
+      card.classList.toggle("selected", selected);
+      card.setAttribute("aria-pressed", selected ? "true" : "false");
     });
   }
 
@@ -703,9 +721,9 @@
     if (!mission || mission === profile.selectedMission) return;
     profile.selectedMission = clamp(mission, 1, profile.unlockedMission);
     saveLocalState();
-    updateStageSelectionUI();
+    renderProgressUI();
+    scrollStageToSelected();
   }
-
   function addXp(amount) {
     const gained = Math.max(0, Math.round(amount));
     state.xpEarned += gained;
@@ -1074,7 +1092,7 @@
     nodes.gamePanel.classList.add("hidden");
     nodes.resultPanel.classList.remove("hidden");
     const cleared = won ? 3 : Math.max(0, state.battle - 1);
-    const stars = cleared === 3 ? "★★★★★" : cleared === 2 ? "★★★" : cleared === 1 ? "★" : "-";
+    const stars = cleared === 3 ? "★★★" : cleared === 2 ? "★★" : cleared === 1 ? "★" : "-";
     nodes.resultTitle.textContent = won ? t("runComplete") : t("runFailed");
     nodes.resultScore.textContent = won ? `${state.mission}/8` : `${cleared}/3`;
     nodes.logicStars.textContent = stars;

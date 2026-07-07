@@ -71,7 +71,7 @@
       upgradeDamage: "Bigger Orb",
       upgradeDamageDesc: "+1 orb damage.",
       upgradeSplit: "Split Orb",
-      upgradeSplitDesc: "Fire a second weaker orb after release.",
+      upgradeSplitDesc: "Add a third echo orb to each release.",
       upgradePierce: "Piercing Shine",
       upgradePierceDesc: "The orb can hit the same beast again sooner.",
       upgradeRecharge: "Faster Recharge",
@@ -259,7 +259,7 @@
       bonusStones: 0,
       rerolled: false,
       readyTimer: 0,
-      orbCooldown: 0.55,
+      orbCooldown: 0.48,
       split: false,
       pierce: false,
       enemies: [],
@@ -470,8 +470,14 @@
     if (!canFireOrb()) return;
     const v = aimVector(x, y);
     const limit = activeOrbLimit();
-    state.orbs.push(makeOrb(v.vx, v.vy, state.shotCount % 5));
-    if (state.split && state.orbs.length < limit) state.orbs.push(makeOrb(v.vx * 0.78 + 80, v.vy * 0.78, (state.shotCount + 1) % 5, 0.72));
+    const volley = [
+      { vx: v.vx, vy: v.vy, skin: state.shotCount % 5, scale: 1 },
+      { vx: v.vx * 0.86 - 68, vy: v.vy * 0.9, skin: (state.shotCount + 1) % 5, scale: 0.72 },
+    ];
+    if (state.split) volley.push({ vx: v.vx * 0.82 + 74, vy: v.vy * 0.88, skin: (state.shotCount + 2) % 5, scale: 0.62 });
+    volley.forEach((shot) => {
+      if (state.orbs.length < limit) state.orbs.push(makeOrb(shot.vx, shot.vy, shot.skin, shot.scale));
+    });
     state.preview = [];
     state.shotCount += 1;
     state.readyTimer = state.orbCooldown;
@@ -486,7 +492,7 @@
   }
 
   function activeOrbLimit() {
-    return state.split ? 3 : 2;
+    return state.split ? 6 : 4;
   }
 
   function canFireOrb() {
@@ -556,7 +562,7 @@
         orb.hits.set(enemy, recent - dt);
         return;
       }
-      const enemyVisualRadius = enemy.kind === "boss" ? 62 : enemy.size * 0.78;
+      const enemyVisualRadius = enemy.kind === "boss" ? 76 : enemy.size * 1.05;
       if (Math.hypot(orb.x - enemy.x, orb.y - enemy.y) < orb.r + enemyVisualRadius) {
         enemy.hp -= orb.damage;
         enemy.hitTimer = 0.16;

@@ -303,6 +303,7 @@
 
   // Game UI DOM Nodes
   const nodes = {
+    mainGameTitle: $("mainGameTitle"),
     localeSelect: $("localeSelect"),
     loadingPanel: $("loadingPanel"),
     loadingFill: $("loadingFill"),
@@ -451,35 +452,53 @@
   };
 
   let loadedCount = 0;
+  let assetsReady = false;
+  let appStarted = false;
   const totalAssets = Object.keys(assetsToLoad).length;
 
-  function preloadAssets(onDone) {
+  function updateLoadingProgress() {
+    const pct = Math.floor((loadedCount / totalAssets) * 100);
+    nodes.loadingFill.style.width = pct + "%";
+    nodes.loadingText.textContent = pct + "%";
+  }
+
+  function preloadAssets(onDone = () => {}) {
+    loadedCount = 0;
+    updateLoadingProgress();
     for (const [key, src] of Object.entries(assetsToLoad)) {
       const img = new Image();
-      img.src = src;
-      img.onload = () => {
-        imageCache[key] = img;
+      img.decoding = "async";
+      const completeAsset = () => {
         loadedCount++;
-        const pct = Math.floor((loadedCount / totalAssets) * 100);
-        nodes.loadingFill.style.width = pct + "%";
-        nodes.loadingText.textContent = pct + "%";
+        updateLoadingProgress();
         if (loadedCount === totalAssets) {
-          setTimeout(() => {
-            nodes.loadingPanel.classList.add("is-hidden");
-            onDone();
-          }, 400);
-        }
-      };
-      img.onerror = () => {
-        console.error("Failed to load asset:", src);
-        // continue regardless
-        loadedCount++;
-        if (loadedCount === totalAssets) {
+          assetsReady = true;
           nodes.loadingPanel.classList.add("is-hidden");
+          window.__ANIMAL_AUTO_SQUAD_READY__ = true;
           onDone();
         }
       };
+      img.onload = () => {
+        imageCache[key] = img;
+        completeAsset();
+      };
+      img.onerror = () => {
+        console.error("Failed to load asset:", src);
+        completeAsset();
+      };
+      img.src = src;
     }
+  }
+
+  function startApp() {
+    if (appStarted) return;
+    appStarted = true;
+    setupEvents();
+    setLocale(locale);
+    renderMenu();
+    requestAnimationFrame(() => nodes.loadingPanel.classList.add("is-hidden"));
+    window.__ANIMAL_AUTO_SQUAD_BOOTED__ = true;
+    window.setTimeout(() => preloadAssets(), 0);
   }
 
   // Render Functions
@@ -1747,10 +1766,6 @@
   }
 
   // Initialization
-  preloadAssets(() => {
-    setupEvents();
-    setLocale(locale);
-    renderMenu();
-  });
+  startApp();
 
 })();
