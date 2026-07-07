@@ -151,6 +151,14 @@
         { icon: "?", en: ["Hint", "Use a hint if one target is hard to see."], "zh-Hant": ["\u63d0\u793a", "\u5982\u679c\u67d0\u500b\u76ee\u6a19\u5f88\u96e3\u627e\uff0c\u53ef\u4ee5\u4f7f\u7528\u63d0\u793a\u3002"] },
       ],
     },
+    "animal-reef-fisher": {
+      title: { en: "Cast and control tension.", "zh-Hant": "拋竿並控制張力。" },
+      steps: [
+        { icon: "1", en: ["Cast", "Hold in the reef play area to charge, then release to cast."], "zh-Hant": ["拋竿", "按住礁海畫面蓄力，放開即可拋竿。"] },
+        { icon: "2", en: ["Tension", "When a fish is hooked, drag in the lane and keep the red marker inside the safe band."], "zh-Hant": ["張力", "魚上鉤後，在張力條拖曳，讓紅色標記留在安全區。"] },
+        { icon: "3", en: ["Upgrade", "Use Reef Notes for gear upgrades. Diamonds are optional tools only."], "zh-Hant": ["升級", "用礁石筆記升級裝備。鑽石只提供選擇性的工具。"] },
+      ],
+    },
   };
 
   function gameIdFromPath() {

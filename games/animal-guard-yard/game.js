@@ -521,15 +521,18 @@
 
   function renderStageGrid() {
     nodes.stageGrid.innerHTML = "";
+    delete nodes.stageGrid.dataset.draggingClick;
     const progress = loadProgress();
     const stageRecords = typeof progress.stageRecords === "object" && progress.stageRecords ? progress.stageRecords : {};
     const legacyBestStage = Number(localStorage.getItem(bestKey)) || 0;
+    const selectedStageIndex = clamp(Math.max(currentStage, unlocked - 1), 0, stages.length - 1);
     stages.forEach((stage, index) => {
       const stageNo = index + 1;
       const button = document.createElement("button");
       button.className = "stage-card";
       button.type = "button";
       if (stageNo > unlocked) button.classList.add("locked");
+      if (index === selectedStageIndex) button.classList.add("selected");
       const stageRecord = typeof stageRecords[String(stageNo)] === "object" && stageRecords[String(stageNo)] ? stageRecords[String(stageNo)] : {};
       const cleared = Boolean(stageRecord.cleared) || stageNo <= legacyBestStage;
       const perfect = Boolean(stageRecord.perfect);
@@ -547,6 +550,7 @@
         ${stageThreatPreview(stage)}
       `;
       button.addEventListener("click", () => {
+        if (nodes.stageGrid.dataset.draggingClick === "1") return;
         if (stageNo > unlocked) {
           showFloatingText(t("locked"));
           playSound("click");
@@ -556,6 +560,58 @@
       });
       nodes.stageGrid.appendChild(button);
     });
+    bindStageGridDrag();
+    window.requestAnimationFrame(() => {
+      nodes.stageGrid.querySelector(".stage-card.selected")?.scrollIntoView({ block: "nearest", inline: "center" });
+    });
+  }
+
+  function bindStageGridDrag() {
+    if (nodes.stageGrid.dataset.dragBound === "1") return;
+    nodes.stageGrid.dataset.dragBound = "1";
+    let drag = null;
+
+    nodes.stageGrid.addEventListener("pointerdown", (event) => {
+      if (event.button !== 0 || nodes.stageGrid.scrollWidth <= nodes.stageGrid.clientWidth) return;
+      drag = {
+        id: event.pointerId,
+        x: event.clientX,
+        scrollLeft: nodes.stageGrid.scrollLeft,
+        moved: false,
+        captured: false,
+      };
+    });
+
+    nodes.stageGrid.addEventListener("pointermove", (event) => {
+      if (!drag || drag.id !== event.pointerId) return;
+      const deltaX = event.clientX - drag.x;
+      if (Math.abs(deltaX) > 18) {
+        drag.moved = true;
+        if (!drag.captured) {
+          nodes.stageGrid.setPointerCapture?.(event.pointerId);
+          drag.captured = true;
+        }
+        nodes.stageGrid.classList.add("dragging");
+        nodes.stageGrid.dataset.draggingClick = "1";
+      }
+      if (drag.moved) {
+        event.preventDefault();
+        nodes.stageGrid.scrollLeft = drag.scrollLeft - deltaX;
+      }
+    });
+
+    const endDrag = (event) => {
+      if (!drag || drag.id !== event.pointerId) return;
+      if (drag.captured) nodes.stageGrid.releasePointerCapture?.(event.pointerId);
+      nodes.stageGrid.classList.remove("dragging");
+      const moved = drag.moved;
+      drag = null;
+      if (moved) window.setTimeout(() => delete nodes.stageGrid.dataset.draggingClick, 0);
+    };
+
+    nodes.stageGrid.addEventListener("pointerup", endDrag);
+    nodes.stageGrid.addEventListener("pointercancel", endDrag);
+    nodes.stageGrid.addEventListener("dragstart", (event) => event.preventDefault());
   }
 
   function renderBeastGuide() {

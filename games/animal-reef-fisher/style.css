@@ -1,0 +1,545 @@
+:root {
+  color-scheme: dark;
+  --bg: #061d28;
+  --panel: rgba(245, 255, 244, 0.92);
+  --ink: #10313a;
+  --muted: #53717a;
+  --line: rgba(16, 49, 58, 0.16);
+  --sea: #20b6c7;
+  --reef: #12b886;
+  --gold: #ffd166;
+  --danger: #ff5b73;
+  --shadow: 0 18px 40px rgba(2, 25, 35, 0.28);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: "Outfit", "Noto Sans TC", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: var(--ink);
+  background:
+    linear-gradient(180deg, rgba(32, 182, 199, 0.82), rgba(8, 82, 99, 0.9)),
+    url("../../assets/animal-reef-fisher-reef-bg.webp") center / cover fixed,
+    var(--bg);
+}
+
+button,
+select {
+  font: inherit;
+}
+
+button {
+  touch-action: manipulation;
+}
+
+.reef-app {
+  width: min(1120px, 100%);
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: max(10px, env(safe-area-inset-top)) clamp(10px, 2vw, 22px) 22px;
+}
+
+.topbar {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 10px;
+}
+
+.back-btn {
+  display: grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  border-radius: 18px;
+  color: #2d2514;
+  text-decoration: none;
+  font-size: 32px;
+  font-weight: 900;
+  background: linear-gradient(180deg, #fff4a6, #ffb335);
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.5), 0 8px 0 #8b5a1d, var(--shadow);
+}
+
+.brand span {
+  display: block;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 0.82rem;
+  font-weight: 900;
+}
+
+.brand h1 {
+  margin: 0;
+  color: #fff;
+  font-size: clamp(1.35rem, 4vw, 2.3rem);
+  font-weight: 1000;
+  text-shadow: 0 2px 10px rgba(0, 37, 45, 0.45);
+}
+
+.locale {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 46px;
+  padding: 8px 10px;
+  border-radius: 14px;
+  color: #fff;
+  font-size: 0.82rem;
+  font-weight: 900;
+  background: rgba(0, 45, 60, 0.38);
+  border: 1px solid rgba(255, 255, 255, 0.26);
+}
+
+.locale select {
+  max-width: 138px;
+  min-height: 34px;
+  border: 0;
+  border-radius: 10px;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.94);
+  font-weight: 900;
+}
+
+.panel {
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 22px;
+  background: var(--panel);
+  box-shadow: var(--shadow);
+}
+
+.is-hidden {
+  display: none !important;
+}
+
+.loading-panel {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  background:
+    linear-gradient(180deg, rgba(4, 44, 57, 0.9), rgba(3, 24, 34, 0.94)),
+    url("../../assets/animal-reef-fisher-cover.webp") center / cover;
+}
+
+.loading-content {
+  width: min(420px, calc(100vw - 36px));
+  padding: 28px;
+  border-radius: 22px;
+  text-align: center;
+  background: rgba(4, 35, 48, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.loading-content h2 {
+  margin: 0 0 18px;
+}
+
+.loading-bar {
+  height: 14px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.loading-fill {
+  width: 0;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #7ee8fa, #80ffb6, #ffe66d);
+}
+
+.loading-percentage {
+  display: block;
+  margin-top: 10px;
+  font-weight: 1000;
+}
+
+.menu-panel {
+  display: grid;
+  grid-template-columns: minmax(240px, 0.68fr) minmax(500px, 1.32fr);
+  gap: 14px;
+  padding: clamp(10px, 1.8vw, 16px);
+}
+
+.cover {
+  width: 100%;
+  height: min(520px, calc(100vh - 132px));
+  min-height: 0;
+  object-fit: cover;
+  border-radius: 18px;
+  border: 1px solid rgba(16, 49, 58, 0.12);
+}
+
+.menu-copy {
+  display: grid;
+  gap: 9px;
+  align-content: start;
+}
+
+.menu-copy > strong {
+  font-size: clamp(1.12rem, 2.2vw, 1.58rem);
+  line-height: 1.12;
+}
+
+.menu-copy > span,
+.hint,
+.skill-report {
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.profile-grid,
+.hud-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.profile-grid div,
+.hud-row div {
+  min-width: 0;
+  padding: 9px 10px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.62);
+  border: 1px solid var(--line);
+}
+
+.profile-grid span,
+.hud-row span,
+.gear-card span,
+.zone-card span {
+  display: block;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.profile-grid strong,
+.hud-row strong {
+  display: block;
+  margin-top: 2px;
+  font-size: 1.04rem;
+  font-weight: 1000;
+}
+
+.zone-row {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(160px, 34%);
+  gap: 12px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 4px;
+  scrollbar-width: none;
+}
+
+.zone-row::-webkit-scrollbar {
+  display: none;
+}
+
+.zone-card {
+  min-height: 132px;
+  padding: 8px;
+  border: 2px solid transparent;
+  border-radius: 18px;
+  scroll-snap-align: center;
+  text-align: left;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.68);
+  box-shadow: inset 0 0 0 1px var(--line);
+  cursor: pointer;
+}
+
+.zone-card.is-selected {
+  border-color: var(--sea);
+  background: #fff;
+}
+
+.zone-card.is-locked {
+  opacity: 0.58;
+}
+
+.zone-card img {
+  width: 100%;
+  aspect-ratio: 1 / 0.56;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.gear-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.gear-card {
+  display: grid;
+  grid-template-columns: 36px 1fr;
+  align-items: center;
+  gap: 7px;
+  min-height: 58px;
+  padding: 8px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid var(--line);
+}
+
+.gear-card img {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+}
+
+.gear-card button {
+  grid-column: 1 / -1;
+  min-height: 34px;
+  border-radius: 11px;
+  font-size: 0.78rem;
+}
+
+.shop-row,
+.result-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.primary-btn,
+.secondary-btn,
+.icon-btn {
+  min-height: 44px;
+  border: 0;
+  border-radius: 16px;
+  font-weight: 1000;
+  cursor: pointer;
+}
+
+@media (min-width: 900px) {
+  .zone-row {
+    grid-auto-flow: row;
+    grid-auto-columns: unset;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    overflow: visible;
+    padding-bottom: 0;
+  }
+
+  .zone-card {
+    scroll-snap-align: none;
+  }
+
+  .gear-grid {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .gear-card {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    align-content: start;
+    min-height: 104px;
+    text-align: center;
+  }
+
+  .gear-card img {
+    width: 32px;
+    height: 32px;
+  }
+
+  .gear-card strong {
+    display: block;
+    font-size: 0.78rem;
+    line-height: 1.1;
+  }
+
+  .gear-card span {
+    font-size: 0.7rem;
+  }
+
+  .gear-card button {
+    width: 100%;
+    min-height: 30px;
+    padding: 4px 6px;
+  }
+}
+
+.primary-btn {
+  color: #09352e;
+  background: linear-gradient(180deg, #8effc2, #12c995);
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.5), 0 7px 0 #08775b;
+}
+
+.secondary-btn {
+  color: var(--ink);
+  background: linear-gradient(180deg, #fff, #d9f9ff);
+  border: 1px solid rgba(16, 49, 58, 0.18);
+}
+
+.game-panel {
+  padding: 12px;
+}
+
+.hud-row {
+  grid-template-columns: auto repeat(3, 1fr);
+  margin-bottom: 10px;
+}
+
+.play-frame {
+  position: relative;
+  overflow: hidden;
+  border-radius: 18px;
+  border: 1px solid rgba(16, 49, 58, 0.2);
+  background: #0b3240;
+}
+
+canvas {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  max-height: min(62vh, 640px);
+  touch-action: none;
+}
+
+.cast-meter {
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  bottom: 16px;
+  height: 12px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.cast-fill {
+  width: 0;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #80ffb6, #ffe66d, #ff8a5b);
+}
+
+.tension-panel {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  align-items: center;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.icon-btn {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  padding: 6px;
+  background: #fff;
+  border: 1px solid var(--line);
+}
+
+.icon-btn img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.tension-lane {
+  position: relative;
+  height: 22px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.62);
+  border: 1px solid var(--line);
+}
+
+.safe-band {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  left: 38%;
+  width: 24%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #9cffb7, #fff07a);
+}
+
+.tension-marker {
+  position: absolute;
+  top: -5px;
+  left: 50%;
+  width: 18px;
+  height: 32px;
+  border-radius: 999px;
+  transform: translateX(-50%);
+  background: var(--danger);
+  box-shadow: 0 0 0 4px rgba(255, 91, 115, 0.22);
+}
+
+.hint {
+  grid-column: 1 / -1;
+  min-height: 24px;
+}
+
+.result-panel {
+  display: grid;
+  grid-template-columns: 210px 1fr;
+  gap: 18px;
+  padding: clamp(16px, 3vw, 28px);
+}
+
+.result-otter {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  object-position: 0 0;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.6);
+}
+
+@media (max-width: 760px) {
+  .reef-app {
+    padding-inline: 10px;
+  }
+
+  .topbar {
+    grid-template-columns: auto 1fr;
+  }
+
+  .locale {
+    grid-column: 1 / -1;
+    justify-content: space-between;
+  }
+
+  .menu-panel,
+  .result-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .cover {
+    min-height: 220px;
+    max-height: 32vh;
+  }
+
+  .profile-grid,
+  .shop-row,
+  .gear-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hud-row {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .hud-row .secondary-btn {
+    grid-column: 1 / -1;
+  }
+
+  canvas {
+    max-height: 52vh;
+  }
+}

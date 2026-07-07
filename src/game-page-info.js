@@ -417,6 +417,36 @@
         ["What can Diamonds be used for?", "Diamonds can optionally reroll rune reward choices or unlock a permanent training slot. The core mission is playable without spending Diamonds."]
       ],
     },
+    "animal-reef-fisher": {
+      title: "Animal Reef Fisher",
+      age: "13+",
+      difficulty: "Medium",
+      time: "3-5 minutes",
+      skills: ["Focus", "Reaction", "Problem Solving"],
+      intro:
+        "Animal Reef Fisher is an Ocean World fishing, collection, and gear-upgrade game. Players choose reef zones, charge casts, control line tension, discover sea creatures for a local album, and spend Reef Notes on better gear. It is built for older players who want a calm but active timing challenge with local progress and optional Diamond tools.",
+      how: [
+        "Choose an unlocked reef zone from the map.",
+        "Hold in the reef play area to charge the cast, then release to cast.",
+        "When a fish is hooked, drag in the tension lane and keep the red marker inside the safe band.",
+        "Land enough catches to complete the expedition and unlock album progress.",
+        "Use Reef Notes for gear upgrades. Optional Diamonds can prepare a rare lure or sonar ping.",
+      ],
+      strategyTips: [
+        "Start in Sunny Shore until the tension lane feels natural.",
+        "Upgrade reel control and line durability early if fish keep escaping.",
+        "Use rare lures for zones where you still need album discoveries.",
+        "Save sonar pings for harder zones or rare shimmer movement.",
+      ],
+      parent:
+        "This game is intended for teens and casual players who enjoy timing and collection. It may practice focus, reaction, planning, and calm adjustment through play. Progress is stored locally in the browser and is for entertainment only, not diagnosis, ranking, or formal assessment.",
+      faq: [
+        ["Is Animal Reef Fisher free to play?", "Yes. It runs in the browser on WeightPlay."],
+        ["Why is it marked 13+?", "It uses timing pressure, gear choices, collection progress, and optional Diamond spending, so it is deeper than younger-child games."],
+        ["Do I need Diamonds to progress?", "No. Reef zones, gear upgrades, and the album can progress without Diamonds. Diamonds only prepare optional rare lure or sonar tools."],
+        ["Does progress save?", "Yes. Unlocked zones, album entries, gear levels, and best results are saved locally on the device."],
+      ],
+    },
     "animal-orb-fortress": {
       title: "Animal Orb Fortress",
       age: "13+",
@@ -782,6 +812,38 @@
         ],
       },
       "animal-rune-tactics": zhGuide("動物符文戰棋", "回合制小隊戰棋", ["選擇英雄並移動到符文格。", "攻擊或防守來控制戰局。", "完成任務後領取獎勵並保存本機進度。"]),
+      "animal-reef-fisher": {
+        title: "動物珊瑚釣手",
+        age: "13+",
+        difficulty: "中等",
+        time: "3-5 分鐘",
+        gameplay: "釣魚收集模擬",
+        genre: ["釣魚", "收集", "模擬", "動物"],
+        skills: ["專注", "反應", "問題解決"],
+        intro:
+          "動物珊瑚釣手是海洋世界的釣魚、收集與裝備升級遊戲。玩家選擇礁區、蓄力拋竿、控制魚線張力，並把發現的海洋生物記錄到本機圖鑑。遊戲適合想要溫和但需要專注操作的 13+ 玩家。",
+        how: [
+          "從礁區地圖選擇已解鎖的遠征區域。",
+          "按住礁海畫面蓄力，放開即可拋竿。",
+          "魚上鉤時，拖曳張力條，讓紅色標記留在亮色安全區。",
+          "完成足夠收獲後即可完成遠征並保存圖鑑進度。",
+          "使用礁石筆記升級裝備；鑽石只用於選擇性的稀有魚餌或聲納脈衝。",
+        ],
+        strategyTips: [
+          "先在陽光淺灘練習，熟悉張力條節奏。",
+          "如果魚常逃走，優先升級捲線控制與魚線耐久。",
+          "稀有魚餌適合用在還缺圖鑑發現的礁區。",
+          "把聲納脈衝留給較難的礁區或稀有移動。",
+        ],
+        parent:
+          "這款遊戲適合喜歡節奏操作與收集的青少年與休閒玩家。遊玩過程可練習專注、反應、規劃與穩定調整。進度只保存在本機瀏覽器，僅供娛樂，不作為診斷、排名或正式評量。",
+        faq: [
+          ["動物珊瑚釣手可以免費玩嗎？", "可以。它可在 WeightPlay 的瀏覽器頁面遊玩。"],
+          ["為什麼標示為 13+？", "遊戲包含張力控制、裝備選擇、收集進度與選擇性鑽石消耗，比低年齡層遊戲更深入。"],
+          ["一定要使用鑽石才能進度嗎？", "不用。礁區、裝備與圖鑑都能不花鑽石推進；鑽石只提供選擇性的魚餌或聲納工具。"],
+          ["進度會保存嗎？", "會。解鎖礁區、圖鑑項目、裝備等級與最佳紀錄會保存在本機裝置。"],
+        ],
+      },
       "animal-crystal-survivor": {
         title: "動物水晶生存戰",
         age: "13+",
@@ -815,6 +877,106 @@
       "shadow-wolf": zhGuide("影狼傳說", "橫向動作 RPG", ["左右移動並跳過平台陷阱。", "攻擊影獸並收集經驗。", "開啟寶箱、穿戴裝備並挑戰巨獸。"]),
     },
   };
+  games["animal-reef-fisher"] = {
+    title: "Animal Reef Fisher",
+    age: "13+",
+    difficulty: "Medium",
+    time: "3-5 minutes",
+    skills: ["Focus", "Reaction", "Problem Solving"],
+    intro:
+      "Animal Reef Fisher is an Ocean World fishing, collection, and gear-upgrade game. Players choose reef zones, charge casts, control line tension, discover sea creatures for a local album, and spend Reef Notes on better gear. It is built for older players who want a calm but active timing challenge with local progress and optional Diamond tools.",
+    how: [
+      "Choose an unlocked reef zone from the map.",
+      "Hold in the reef play area to charge the cast, then release to cast.",
+      "When a fish is hooked, drag in the tension lane and keep the red marker inside the safe band.",
+      "Land enough catches to complete the expedition and unlock album progress.",
+      "Use Reef Notes for gear upgrades. Optional Diamonds can prepare a rare lure or sonar ping.",
+    ],
+    strategyTips: [
+      "Start in Sunny Shore until the tension lane feels natural.",
+      "Upgrade reel control and line durability early if fish keep escaping.",
+      "Use rare lures for zones where you still need album discoveries.",
+      "Save sonar pings for harder zones or rare shimmer movement.",
+    ],
+    parent:
+      "This game is intended for teens and casual players who enjoy timing and collection. It may practice focus, reaction, planning, and calm adjustment through play. Progress is stored locally in the browser and is for entertainment only, not diagnosis, ranking, or formal assessment.",
+    faq: [
+      ["Is Animal Reef Fisher free to play?", "Yes. It runs in the browser on WeightPlay."],
+      ["Why is it marked 13+?", "It uses timing pressure, gear choices, collection progress, and optional Diamond spending, so it is deeper than younger-child games."],
+      ["Do I need Diamonds to progress?", "No. Reef zones, gear upgrades, and the album can progress without Diamonds. Diamonds only prepare optional rare lure or sonar tools."],
+      ["Does progress save?", "Yes. Unlocked zones, album entries, gear levels, and best results are saved locally on the device."],
+    ],
+  };
+  gameplayProfiles["animal-reef-fisher"] = { gameplay: "Fishing Collection Sim", genre: ["Fishing", "Collection", "Simulation", "Animal"] };
+  coverImages["animal-reef-fisher"] = "animal-reef-fisher-cover.webp";
+  localizedGameplayProfiles["zh-Hant"]["animal-reef-fisher"] = { gameplay: "釣魚收集模擬", genre: ["釣魚", "收集", "模擬", "動物"] };
+  localizedGames["zh-Hant"]["animal-reef-fisher"] = {
+    title: "動物珊瑚釣手",
+    age: "13+",
+    difficulty: "中等",
+    time: "3-5 分鐘",
+    gameplay: "釣魚收集模擬",
+    genre: ["釣魚", "收集", "模擬", "動物"],
+    skills: ["專注", "反應", "問題解決"],
+    intro:
+      "動物珊瑚釣手是海洋世界的釣魚、收集與裝備升級遊戲。玩家選擇礁區、蓄力拋竿、控制魚線張力，並把發現的海洋生物記錄到本機圖鑑。遊戲適合想要溫和但需要專注操作的 13+ 玩家。",
+    how: [
+      "從礁區地圖選擇已解鎖的遠征區域。",
+      "按住礁海畫面蓄力，放開即可拋竿。",
+      "魚上鉤後，在張力條中拖曳並讓紅色標記留在安全區。",
+      "完成足夠收獲即可結束遠征並推進圖鑑進度。",
+      "使用礁石筆記升級裝備；鑽石只用於選擇性的稀有魚餌或聲納脈衝。",
+    ],
+    strategyTips: [
+      "先在陽光淺灘練習張力控制。",
+      "如果魚常逃走，優先升級捲線控制與魚線耐久。",
+      "稀有魚餌適合用在還缺圖鑑發現的礁區。",
+      "把聲納脈衝留給較難的礁區或稀有移動。",
+    ],
+    parent:
+      "這款遊戲適合青少年與喜歡計時收集的休閒玩家。它可能透過遊玩練習專注、反應、規劃與穩定調整。進度只儲存在本機瀏覽器中，僅供娛樂，不是診斷、排名或正式評量。",
+    faq: [
+      ["動物珊瑚釣手可以免費玩嗎？", "可以。它可在 WeightPlay 的瀏覽器頁面遊玩。"],
+      ["為什麼標示為 13+？", "它包含張力控制、裝備選擇、收集進度與選擇性鑽石工具，比低年齡遊戲更深入。"],
+      ["一定要使用鑽石才能進度嗎？", "不用。礁區、裝備與圖鑑都能不花鑽石推進；鑽石只提供選擇性的魚餌或聲納工具。"],
+      ["進度會保存嗎？", "會。解鎖礁區、圖鑑項目、裝備等級與最佳紀錄會保存在本機裝置。"],
+    ],
+  };
+
+  localizedGameplayProfiles["zh-Hant"]["animal-reef-fisher"] = { gameplay: "釣魚收集模擬", genre: ["釣魚", "收集", "模擬", "動物"] };
+  localizedGames["zh-Hant"]["animal-reef-fisher"] = {
+    title: "動物珊瑚釣手",
+    age: "13+",
+    difficulty: "中等",
+    time: "3-5 分鐘",
+    gameplay: "釣魚收集模擬",
+    genre: ["釣魚", "收集", "模擬", "動物"],
+    skills: ["專注", "反應", "問題解決"],
+    intro:
+      "動物珊瑚釣手是海洋世界的釣魚、收集與裝備升級遊戲。玩家選擇礁區、蓄力拋竿、控制魚線張力，並把發現的海洋生物記錄到本機圖鑑。遊戲適合想要溫和但需要專注操作的 13+ 玩家。",
+    how: [
+      "從礁區地圖選擇已解鎖的遠征區域。",
+      "按住礁海畫面蓄力，放開即可拋竿。",
+      "魚上鉤時，拖曳張力條，讓紅色標記留在亮色安全區。",
+      "完成足夠收獲後即可完成遠征並保存圖鑑進度。",
+      "使用礁石筆記升級裝備；鑽石只用於選擇性的稀有魚餌或聲納脈衝。",
+    ],
+    strategyTips: [
+      "先在陽光淺灘練習，熟悉張力條節奏。",
+      "如果魚常逃走，優先升級捲線控制與魚線耐久。",
+      "稀有魚餌適合用在還缺圖鑑發現的礁區。",
+      "把聲納脈衝留給較難的礁區或稀有移動。",
+    ],
+    parent:
+      "這款遊戲適合喜歡節奏操作與收集的青少年與休閒玩家。遊玩過程可練習專注、反應、規劃與穩定調整。進度只保存在本機瀏覽器，僅供娛樂，不作為診斷、排名或正式評量。",
+    faq: [
+      ["動物珊瑚釣手可以免費玩嗎？", "可以。它可在 WeightPlay 的瀏覽器頁面遊玩。"],
+      ["為什麼標示為 13+？", "遊戲包含張力控制、裝備選擇、收集進度與選擇性鑽石消耗，比低年齡層遊戲更深入。"],
+      ["一定要使用鑽石才能進度嗎？", "不用。礁區、裝備與圖鑑都能不花鑽石推進；鑽石只提供選擇性的魚餌或聲納工具。"],
+      ["進度會保存嗎？", "會。解鎖礁區、圖鑑項目、裝備等級與最佳紀錄會保存在本機裝置。"],
+    ],
+  };
+
   function currentGameId() {
     const parts = location.pathname.split("/").filter(Boolean);
     const gameIndex = parts.lastIndexOf("games");

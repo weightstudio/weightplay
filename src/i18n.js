@@ -32,6 +32,8 @@
       "recommend.popular_reason": "Popular this week",
       "fresh_updates.title": "Fresh Updates",
       "fresh_updates.reason": "Recently improved",
+      "upcoming.title": "Coming Soon",
+      "upcoming.reason": "In production",
       "skill_path.title": "Practice by skill",
       "skill_path.reason": "Skill paths",
       "skill_path.count": "{count} games",
@@ -115,6 +117,7 @@
       "footer.privacy": "Privacy",
       "footer.contact": "Contact",
       "footer.terms": "Terms",
+      "footer.advertising": "Advertising",
       "footer.copyright": "Copyright 2026 WeightStudio. All rights reserved.",
     },
     "zh-Hant": {},
@@ -199,6 +202,7 @@
     "footer.privacy": "隱私權",
     "footer.contact": "聯絡我們",
     "footer.terms": "使用條款",
+    "footer.advertising": "廣告原則",
     "footer.copyright": "Copyright 2026 WeightStudio. All rights reserved.",
   };
 
@@ -238,6 +242,8 @@
     "card.skill_reason": "\u7df4\u7fd2\uff1a{skill}",
     "fresh_updates.title": "\u6700\u65b0\u512a\u5316",
     "fresh_updates.reason": "\u6700\u8fd1\u6539\u597d\u7684\u904a\u6232",
+    "upcoming.title": "\u65b0\u904a\u6232\u9810\u544a",
+    "upcoming.reason": "\u88fd\u4f5c\u4e2d",
     "status.clear_filters": "\u6e05\u9664\u7be9\u9078",
     "status.search_term": "\u641c\u5c0b\uff1a{query}",
   });
@@ -352,6 +358,7 @@
     "footer.privacy": "隱私",
     "footer.contact": "聯絡",
     "footer.terms": "條款",
+    "footer.advertising": "廣告原則",
     "footer.copyright": "Copyright 2026 WeightStudio. All rights reserved.",
   });
 

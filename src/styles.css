@@ -651,6 +651,7 @@ body.lobby-page {
   padding: 8px 0 14px;
 }
 
+.upcoming-games-section,
 .fresh-updates-section,
 .recommendations-section,
 .skill-paths-section {
@@ -741,6 +742,7 @@ body.lobby-page {
   gap: 10px;
 }
 
+.upcoming-games,
 .fresh-updates,
 .recommendations,
 .skill-paths {
@@ -797,6 +799,95 @@ body.lobby-page {
   color: #fff;
   text-decoration: none;
   box-shadow: 0 14px 30px rgba(0, 0, 0, 0.18);
+}
+
+.upcoming-game-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: 126px minmax(0, 1fr);
+  gap: 12px;
+  min-height: 148px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 207, 99, 0.28);
+  border-radius: 8px;
+  padding: 10px;
+  background:
+    linear-gradient(135deg, rgba(255, 207, 99, 0.15), rgba(129, 221, 255, 0.1)),
+    rgba(255, 255, 255, 0.08);
+  color: #fff;
+  text-align: left;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.18);
+}
+
+.upcoming-game-art {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #202938;
+}
+
+.upcoming-game-art img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(1.05) brightness(0.94);
+}
+
+.upcoming-game-art span {
+  position: absolute;
+  left: 8px;
+  bottom: 8px;
+  min-height: 26px;
+  padding: 6px 9px;
+  border-radius: 8px;
+  background: linear-gradient(180deg, #fff3bf, #ffbf42);
+  color: #241a08;
+  font-size: 11px;
+  font-weight: 1000;
+  line-height: 1;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.22);
+}
+
+.upcoming-game-copy {
+  display: grid;
+  align-content: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.upcoming-game-copy strong,
+.upcoming-game-copy small,
+.upcoming-game-copy em {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.upcoming-game-copy strong {
+  font-size: 19px;
+  line-height: 1.12;
+  white-space: nowrap;
+}
+
+.upcoming-game-copy small {
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 12px;
+  font-weight: 850;
+  white-space: nowrap;
+}
+
+.upcoming-game-copy em {
+  display: -webkit-box;
+  color: #ffdf8a;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 850;
+  line-height: 1.35;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
 }
 
 .fresh-update-art {
@@ -1626,6 +1717,7 @@ body.lobby-page {
 
 .lobby-feature,
 .hero-game-card,
+.upcoming-game-card,
 .fresh-update-card,
 .recommendation-card,
 .skill-path-card,
@@ -1636,6 +1728,7 @@ body.lobby-page {
 
 .lobby-feature img,
 .hero-game-art img,
+.upcoming-game-art img,
 .fresh-update-art img,
 .recommendation-card img,
 .skill-path-thumbs img,
@@ -1683,6 +1776,8 @@ body.lobby-page {
 .lobby-feature:focus-visible,
 .hero-game-card:hover,
 .hero-game-card:focus-visible,
+.upcoming-game-card:hover,
+.upcoming-game-card:focus-visible,
 .recommendation-card:hover,
 .recommendation-card:focus-visible,
 .fresh-update-card:hover,
@@ -1707,6 +1802,12 @@ body.lobby-page {
 .hero-game-card:focus-visible .hero-game-art img {
   filter: saturate(1.1) brightness(1.08);
   transform: scale(1.06);
+}
+
+.upcoming-game-card:hover .upcoming-game-art img,
+.upcoming-game-card:focus-visible .upcoming-game-art img {
+  filter: saturate(1.12) brightness(1.04);
+  transform: scale(1.04);
 }
 
 .recommendation-card:hover img,
@@ -1759,6 +1860,7 @@ body.lobby-page {
 
 .game-card:active,
 .hero-game-card:active,
+.upcoming-game-card:active,
 .skill-path-card:active,
 .lobby-feature:active {
   transform: translateY(-1px) scale(0.99);
@@ -1951,6 +2053,7 @@ body.lobby-page {
     scroll-snap-type: x mandatory;
   }
 
+  .upcoming-games,
   .fresh-updates,
   .recommendations,
   .skill-paths {
@@ -1967,10 +2070,17 @@ body.lobby-page {
     scroll-snap-align: start;
   }
 
+  .upcoming-game-card,
   .fresh-update-card,
   .recommendation-card,
   .skill-path-card {
     scroll-snap-align: start;
+  }
+
+  .upcoming-game-card {
+    grid-template-columns: none;
+    grid-template-rows: 126px minmax(0, 1fr);
+    min-height: 270px;
   }
 }
 

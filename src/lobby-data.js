@@ -476,3 +476,29 @@ for (const game of window.WONDER_LOBBY.games) {
     game.art.background = "assets/animal-relic-hunters-cover.webp";
   }
 }
+
+window.WONDER_LOBBY.games.push({
+  id: "animal-reef-fisher",
+  title: { en: "Animal Reef Fisher", "zh-Hant": "動物珊瑚釣手" },
+  status: "playable",
+  statusText: { en: "Playable", "zh-Hant": "可遊玩" },
+  type: { en: "Fishing Collection Sim", "zh-Hant": "釣魚收集模擬" },
+  categories: ["Featured", "Animal Games", "Arcade"],
+  skills: ["Focus", "Reaction", "Problem Solving"],
+  ages: ["13"],
+  ageLabel: { en: "13+", "zh-Hant": "13+" },
+  href: "games/animal-reef-fisher/",
+  description: {
+    en: "Run reef expeditions with an otter fishing team, time casts, manage line tension, fill a sea-creature album, and upgrade gear locally.",
+    "zh-Hant": "帶領水獺釣魚隊進行礁區遠征，掌握拋竿時機與魚線張力，收集海洋生物圖鑑，並在本機升級裝備。",
+  },
+  meta: {
+    en: ["Reef Fishing", "Album Progress", "Gear Upgrades"],
+    "zh-Hant": ["珊瑚礁釣魚", "圖鑑進度", "裝備升級"],
+  },
+  art: {
+    kind: "image",
+    background: "assets/animal-reef-fisher-cover.webp",
+    hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>",
+  },
+});

@@ -6,6 +6,8 @@ const libraryButtons = document.querySelectorAll("[data-library-tab]");
 const gameGrid = document.querySelector("#gameGrid");
 const heroGames = document.querySelector("#heroGames");
 const heroGamesSection = document.querySelector("#heroGamesSection");
+const upcomingGames = document.querySelector("#upcomingGames");
+const upcomingGamesSection = document.querySelector("#upcomingGamesSection");
 const recommendations = document.querySelector("#recommendations");
 const recommendationsSection = document.querySelector("#recommendationsSection");
 const freshUpdates = document.querySelector("#freshUpdates");
@@ -24,6 +26,8 @@ const languageLabel = document.querySelector("#languageLabel");
 const localeSelect = document.querySelector("#localeSelect");
 const heroRankLabel = document.querySelector("#heroRankLabel");
 const heroGamesTitle = document.querySelector("#heroGamesTitle");
+const upcomingGamesTitle = document.querySelector("#upcomingGamesTitle");
+const upcomingGamesReason = document.querySelector("#upcomingGamesReason");
 const recommendationTitle = document.querySelector("#recommendationTitle");
 const recommendationReason = document.querySelector("#recommendationReason");
 const freshUpdatesTitle = document.querySelector("#freshUpdatesTitle");
@@ -326,6 +330,12 @@ function recentlyUpdatedGames(limit = 4) {
     .slice(0, limit);
 }
 
+function upcomingPreviewGames(limit = 3) {
+  return lobby.games
+    .filter((game) => game.status === "planned" && (game.art?.background || game.art?.hero))
+    .slice(0, limit);
+}
+
 function recommendationSeeds() {
   const seedIds = [...recentGameIds, ...favoriteGameIds].filter((id, index, list) => id && list.indexOf(id) === index);
   return seedIds.map((id) => lobby.games.find((game) => game.id === id && game.status === "playable")).filter(Boolean);
@@ -546,6 +556,7 @@ function renderLobby() {
   }
 
   renderHeroGames();
+  renderUpcomingGames();
   renderFreshUpdates();
   renderRecommendations();
   renderSkillPaths();
@@ -691,6 +702,37 @@ function renderHeroGames() {
     });
 
   heroGames.replaceChildren(...cards);
+}
+
+function renderUpcomingGames() {
+  if (!upcomingGames || !upcomingGamesSection) return;
+  const cards = upcomingPreviewGames(3).map((game) => {
+    const title = text(game.title);
+    const type = text(game.type);
+    const ageLabel = text(game.ageLabel);
+    const description = text(game.description);
+    const card = document.createElement("button");
+    card.className = "upcoming-game-card";
+    card.type = "button";
+    card.addEventListener("click", () => showPlannedGame(game));
+    card.innerHTML = `
+      <div class="upcoming-game-art">
+        <img src="${game.art?.background || primaryArt(game)}" alt="" />
+        <span>${i18n.t("action.coming_soon")}</span>
+      </div>
+      <div class="upcoming-game-copy">
+        <strong>${title}</strong>
+        <small>${type} / ${ageLabel}</small>
+        <em>${description}</em>
+      </div>
+    `;
+    return card;
+  });
+
+  upcomingGamesTitle.textContent = i18n.t("upcoming.title");
+  upcomingGamesReason.textContent = i18n.t("upcoming.reason");
+  upcomingGamesSection.classList.toggle("hidden", cards.length === 0);
+  upcomingGames.replaceChildren(...cards);
 }
 
 function renderRecommendations() {
@@ -917,6 +959,8 @@ function applyStaticTranslations() {
   languageLabel.textContent = i18n.t("language.label");
   heroRankLabel.textContent = i18n.t("section.hero_rank");
   heroGamesTitle.textContent = i18n.t("section.hero_games");
+  if (upcomingGamesTitle) upcomingGamesTitle.textContent = i18n.t("upcoming.title");
+  if (upcomingGamesReason) upcomingGamesReason.textContent = i18n.t("upcoming.reason");
   if (recommendationTitle) recommendationTitle.textContent = i18n.t("recommend.title");
   if (recommendationReason) recommendationReason.textContent = i18n.t("recommend.start_here");
   if (freshUpdatesTitle) freshUpdatesTitle.textContent = i18n.t("fresh_updates.title");
