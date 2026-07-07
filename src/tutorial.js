@@ -159,6 +159,15 @@
         { icon: "3", en: ["Upgrade", "Use Reef Notes for gear upgrades. Diamonds are optional tools only."], "zh-Hant": ["升級", "用礁石筆記升級裝備。鑽石只提供選擇性的工具。"] },
       ],
     },
+    "animal-auto-squad": {
+      title: { en: "Draft and fight.", "zh-Hant": "招募與戰鬥。" },
+      steps: [
+        { icon: "1", en: ["Draft", "Buy an animal card from the shop using your starting Gold."], "zh-Hant": ["招募", "使用初始金幣從商店購買一隻動物戰士卡牌。"] },
+        { icon: "2", en: ["Deploy", "Drag and drop the animal into slot 1 of your active squad."], "zh-Hant": ["派兵", "將動物拖曳並放置到作戰小隊的第一個欄位。"] },
+        { icon: "3", en: ["Combine", "Combine three matching animals to level them up and increase stats."], "zh-Hant": ["合成", "收集三隻相同的動物以進行合成升級，大幅強化屬性。"] },
+        { icon: "4", en: ["Battle", "Press Start Battle to watch your squad fight automated shadow beast rounds."], "zh-Hant": ["戰鬥", "點擊開始戰鬥，觀看你的小隊在自動戰鬥中擊退影獸。"] }
+      ],
+    },
   };
 
   function gameIdFromPath() {

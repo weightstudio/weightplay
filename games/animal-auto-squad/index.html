@@ -116,16 +116,16 @@
         <!-- Preparation (Shop & Grid) Phase UI -->
         <div id="prepPhaseArea" class="prep-phase-area">
           
-          <!-- Squad Positions (Linear Row, Slots 1-5) -->
-          <div class="squad-section">
-            <h3 data-ui="yourSquadLabel">Active Squad (Left: Frontline | Right: Backline)</h3>
-            <div id="squadGrid" class="cards-row squad-row" aria-label="Active squad slots"></div>
-          </div>
-
           <!-- Bench Storage Row (Slots 1-5) -->
           <div class="bench-section">
             <h3 data-ui="benchLabel">Storage Bench</h3>
             <div id="benchGrid" class="cards-row bench-row" aria-label="Storage bench slots"></div>
+          </div>
+
+          <!-- Squad Positions (Linear Row, Slots 1-5) -->
+          <div class="squad-section">
+            <h3 data-ui="yourSquadLabel">Active Squad (Left: Frontline | Right: Backline)</h3>
+            <div id="squadGrid" class="cards-row squad-row" aria-label="Active squad slots"></div>
           </div>
 
           <!-- Shop Shelf Row (3 Animals, 2 Items, Freeze Actions) -->
@@ -133,6 +133,7 @@
             <h3 data-ui="shopLabel">Expedition Shop</h3>
             <div class="shop-controls">
               <button id="rerollShopBtn" class="shop-action-btn" type="button"></button>
+              <button id="sellCardBtn" class="shop-action-btn sell-action-btn is-hidden" type="button"></button>
               <button id="startBattleBtn" class="primary-btn battle-action-btn" type="button" data-ui="startBattle">Start Battle</button>
             </div>
             <div id="shopRow" class="cards-row shop-row" aria-label="Shop shelf items"></div>

@@ -351,7 +351,7 @@ select {
   left: 50%;
   transform: translateX(-50%);
   width: min(80%, 75px);
-  aspect-ratio: 1;
+  aspect-ratio: 682 / 768;
   background-size: 300% 200%;
   background-repeat: no-repeat;
   border-radius: 10px;
@@ -498,6 +498,16 @@ select {
   background: rgba(255, 255, 255, 0.12);
 }
 
+.sell-action-btn {
+  background: var(--danger);
+  color: white;
+  border-color: transparent;
+}
+
+.sell-action-btn:hover {
+  background: #ff7081;
+}
+
 .battle-action-btn {
   flex-grow: 1;
   padding: 10px 16px;
@@ -599,7 +609,7 @@ select {
 
 .relic-icon-art {
   width: 48px;
-  height: 48px;
+  aspect-ratio: 384 / 512;
   margin: 0 auto;
   background-size: 400% 100%;
   background-repeat: no-repeat;

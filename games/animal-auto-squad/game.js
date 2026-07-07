@@ -324,6 +324,7 @@
     benchGrid: $("benchGrid"),
     shopRow: $("shopRow"),
     rerollShopBtn: $("rerollShopBtn"),
+    sellCardBtn: $("sellCardBtn"),
     startBattleBtn: $("startBattleBtn"),
     combatArea: $("combatArea"),
     gameCanvas: $("gameCanvas"),
@@ -542,6 +543,8 @@
     document.documentElement.lang = locale === "zh-Hant" ? "zh-Hant" : "en";
     if (window.WonderI18n?.locale?.() !== locale) {
       window.WonderI18n?.setLocale?.(locale);
+    } else {
+      window.dispatchEvent(new CustomEvent("wonder:locale-change", { detail: { locale } }));
     }
     translateUI();
     updatePageMeta();
@@ -629,7 +632,7 @@
       const card = document.createElement("div");
       card.className = "relic-card";
       card.innerHTML = `
-        <div class="relic-icon-art" style="background-image: url('../../assets/animal-auto-squad-fx.webp'); background-position: -${relic.id * 80}px 0px; background-size: 400% 100%;"></div>
+        <div class="relic-icon-art" style="background-image: url('../../assets/animal-auto-squad-items.webp'); background-position: ${relic.id * 33.33}% 0%; background-size: 400% 100%;"></div>
         <h4>${locale === "zh-Hant" ? relic.nameZht : relic.nameEn}</h4>
         <p>${locale === "zh-Hant" ? relic.descZht : relic.descEn}</p>
       `;
@@ -743,6 +746,7 @@
     graphic.className = "card-graphic";
     if (isAnimal) {
       graphic.style.backgroundImage = `url('../../assets/animal-auto-squad-sheet-${card.sheet}.webp')`;
+      graphic.style.aspectRatio = "682 / 768";
       // background position based on 3x2 grid
       const col = card.id % 5;
       const sheetCol = col % 3;
@@ -752,6 +756,7 @@
     } else {
       // It's food
       graphic.style.backgroundImage = `url('../../assets/animal-auto-squad-items.webp')`;
+      graphic.style.aspectRatio = "384 / 512";
       graphic.style.backgroundPosition = `${card.id * 33.33}% 0%`;
       graphic.style.backgroundSize = "400% 100%";
     }
@@ -851,13 +856,50 @@
       selectedSlot = { area, index };
       highlightSelectedCard(true);
       playSynth("click");
+      renderPrepScreen();
     } else {
-      // Tap target slot to execute action
       const source = selectedSlot;
-      selectedSlot = null;
-      highlightSelectedCard(false);
+      
+      // If tapping the exact same slot, deselect it
+      if (source.area === area && source.index === index) {
+        selectedSlot = null;
+        highlightSelectedCard(false);
+        playSynth("click");
+        renderPrepScreen();
+        return;
+      }
 
-      executeAction(source.area, source.index, area, index);
+      const sourceCard = getCardAt(source.area, source.index);
+      const targetCard = getCardAt(area, index);
+
+      if (targetCard) {
+        // If they are both animal cards and have matching IDs, merge them
+        const isSrcAnimal = sourceCard.atk !== undefined;
+        const isTgtAnimal = targetCard.atk !== undefined;
+        if (isSrcAnimal && isTgtAnimal && sourceCard.id === targetCard.id) {
+          selectedSlot = null;
+          highlightSelectedCard(false);
+          executeAction(source.area, source.index, area, index);
+        }
+        // If source is food/item and target is animal, feed them
+        else if (source.area === "shop-item" && isTgtAnimal) {
+          selectedSlot = null;
+          highlightSelectedCard(false);
+          executeAction(source.area, source.index, area, index);
+        }
+        // Otherwise, switch active selection to the tapped card!
+        else {
+          selectedSlot = { area, index };
+          highlightSelectedCard(true);
+          playSynth("click");
+          renderPrepScreen();
+        }
+      } else {
+        // Tapped empty slot: execute move/buy action
+        selectedSlot = null;
+        highlightSelectedCard(false);
+        executeAction(source.area, source.index, area, index);
+      }
     }
   }
 
@@ -1201,15 +1243,12 @@
       nodes.shopRow.appendChild(cell);
     });
 
-    // Add Sell Button if squad/bench card is selected
+    // Toggle static Sell Button visibility based on selection
     if (selectedSlot) {
-      const sellBtn = document.createElement("button");
-      sellBtn.className = "shop-action-btn sell-action-btn";
-      sellBtn.style.background = "var(--danger)";
-      sellBtn.style.color = "white";
-      sellBtn.textContent = `🗑️ ${t("sell")} (+1 ${t("gold")})`;
-      sellBtn.addEventListener("click", handleSellSelected);
-      nodes.shopRow.appendChild(sellBtn);
+      nodes.sellCardBtn.classList.remove("is-hidden");
+      nodes.sellCardBtn.textContent = `🗑️ ${t("sell")} (+1 ${t("gold")})`;
+    } else {
+      nodes.sellCardBtn.classList.add("is-hidden");
     }
   }
 
@@ -1686,6 +1725,15 @@
     
     nodes.localeSelect.addEventListener("change", (e) => {
       setLocale(e.target.value);
+    });
+
+    nodes.sellCardBtn.addEventListener("click", handleSellSelected);
+
+    window.addEventListener("wonder:locale-change", (e) => {
+      const next = e.detail?.locale || window.WonderI18n?.locale?.();
+      if (next && next !== locale) {
+        setLocale(next);
+      }
     });
 
     // Close overlays on document tap to reset selections
