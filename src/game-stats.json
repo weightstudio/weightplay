@@ -1,29 +1,29 @@
 {
-  "updatedAt": "2026-07-06T18:07:52.826Z",
+  "updatedAt": "2026-07-07T17:55:27.235Z",
   "source": "ga4",
   "windowDays": 7,
   "totals": {
-    "plays7d": 446,
-    "playsTotal": 446,
-    "users7d": 77
+    "plays7d": 464,
+    "playsTotal": 480,
+    "users7d": 85
   },
   "games": {
     "wonder-crash": {
-      "plays7d": 39,
+      "plays7d": 36,
       "playsTotal": 39,
       "users7d": 5,
       "rank7d": 4
     },
     "color-lunchbox": {
-      "plays7d": 20,
+      "plays7d": 19,
       "playsTotal": 20,
       "users7d": 4,
       "rank7d": 6
     },
     "bubble-bakery": {
-      "plays7d": 45,
-      "playsTotal": 45,
-      "users7d": 5,
+      "plays7d": 47,
+      "playsTotal": 47,
+      "users7d": 6,
       "rank7d": 3
     },
     "animal-rope-rescue": {
@@ -33,8 +33,8 @@
       "rank7d": 9
     },
     "animal-zoo-idle": {
-      "plays7d": 60,
-      "playsTotal": 60,
+      "plays7d": 61,
+      "playsTotal": 61,
       "users7d": 6,
       "rank7d": 2
     },
@@ -42,13 +42,13 @@
       "plays7d": 11,
       "playsTotal": 11,
       "users7d": 3,
-      "rank7d": 13
+      "rank7d": 15
     },
     "campus-dash": {
       "plays7d": 14,
       "playsTotal": 14,
       "users7d": 4,
-      "rank7d": 11
+      "rank7d": 12
     },
     "snack-blocks": {
       "plays7d": 15,
@@ -57,22 +57,22 @@
       "rank7d": 10
     },
     "fruit-merge": {
-      "plays7d": 37,
+      "plays7d": 29,
       "playsTotal": 37,
       "users7d": 6,
       "rank7d": 5
     },
     "garden-tiles": {
-      "plays7d": 13,
+      "plays7d": 11,
       "playsTotal": 13,
       "users7d": 3,
-      "rank7d": 12
+      "rank7d": 13
     },
     "animal-rescue": {
       "plays7d": 9,
       "playsTotal": 9,
       "users7d": 2,
-      "rank7d": 15
+      "rank7d": 17
     },
     "animal-hidden-safari": {
       "plays7d": 17,
@@ -87,16 +87,16 @@
       "rank7d": 1
     },
     "animal-crystal-survivor": {
-      "plays7d": 6,
-      "playsTotal": 6,
-      "users7d": 2,
-      "rank7d": 18
-    },
-    "animal-quiz": {
       "plays7d": 10,
       "playsTotal": 10,
       "users7d": 2,
-      "rank7d": 14
+      "rank7d": 16
+    },
+    "animal-quiz": {
+      "plays7d": 8,
+      "playsTotal": 10,
+      "users7d": 2,
+      "rank7d": 19
     },
     "zoo-helper-day": {
       "plays7d": 19,
@@ -108,25 +108,49 @@
       "plays7d": 6,
       "playsTotal": 6,
       "users7d": 3,
-      "rank7d": 19
+      "rank7d": 22
     },
     "tiny-weather-rescue": {
       "plays7d": 9,
       "playsTotal": 9,
       "users7d": 3,
-      "rank7d": 16
+      "rank7d": 18
     },
     "beast-deck": {
-      "plays7d": 8,
-      "playsTotal": 8,
-      "users7d": 3,
-      "rank7d": 17
+      "plays7d": 14,
+      "playsTotal": 14,
+      "users7d": 4,
+      "rank7d": 11
     },
     "animal-relic-hunters": {
-      "plays7d": 5,
-      "playsTotal": 5,
+      "plays7d": 11,
+      "playsTotal": 11,
       "users7d": 3,
+      "rank7d": 14
+    },
+    "animal-rune-tactics": {
+      "plays7d": 6,
+      "playsTotal": 6,
+      "users7d": 1,
+      "rank7d": 21
+    },
+    "animal-orb-fortress": {
+      "plays7d": 6,
+      "playsTotal": 6,
+      "users7d": 2,
       "rank7d": 20
+    },
+    "animal-auto-squad": {
+      "plays7d": 3,
+      "playsTotal": 3,
+      "users7d": 2,
+      "rank7d": 23
+    },
+    "animal-reef-fisher": {
+      "plays7d": 0,
+      "playsTotal": 0,
+      "users7d": 1,
+      "rank7d": null
     }
   }
 }
