@@ -13,6 +13,7 @@
     draftPanel: $("draftPanel"),
     resultPanel: $("resultPanel"),
     startBtn: $("startBtn"),
+    nextMissionBtn: $("nextMissionBtn"),
     menuBtn: $("menuBtn"),
     retryBtn: $("retryBtn"),
     resultMenuBtn: $("resultMenuBtn"),
@@ -85,11 +86,11 @@
       profileBest: "Best",
       profileBonus: "+{hp} Max HP from level",
       stageSelectTitle: "Choose a Mission",
-      stageSelectHint: "Tap an unlocked mission to start.",
+      stageSelectHint: "Tap an unlocked mission card to start immediately, or use the button below.",
       lockedMission: "Locked",
       missionLabel: "Mission {mission}",
       missionReward: "{xp} XP",
-      startMissionCard: "Start",
+      startMissionCard: "Tap to Start",
       controlCombat: "Turn-Based Strategy",
       controlUpgrades: "Draft Cards",
       controlDeck: "Persistent Level",
@@ -147,7 +148,9 @@
       log_enemy_blocked: "{enemy}'s Block absorbed {blocked} damage.",
       log_enemy_damage_after_block: "{enemy}'s Block absorbed {blocked}. {damage} damage went through.",
       log_player_turn: "Your turn. Drew {count} cards. Energy restored to {energy}.",
-      log_draft_added: "{card} joined your deck and will appear in your next opening hand.",
+      log_player_block: "You gained {amount} Block. It will absorb enemy attack damage this turn.",
+      log_enemy_block_fade: "{enemy}'s remaining Block faded.",
+      log_draft_added: "{card} joined your mission deck and is highlighted in this opening hand.",
       log_win_battle: "Defeated {enemy}. Draft a new card.",
       log_win_boss: "Mission boss defeated. Gained {xp} XP.",
       log_loss: "You were defeated by {enemy}.",
@@ -172,7 +175,7 @@
       profileBest: "最高",
       profileBonus: "等級加成：生命上限 +{hp}",
       stageSelectTitle: "選擇任務",
-      stageSelectHint: "已解鎖任務會保留，可重複挑戰練等。",
+      stageSelectHint: "點已解鎖任務卡會直接開始，也可用下方開始按鈕。",
       lockedMission: "未解鎖",
       missionLabel: "任務 {mission}",
       missionReward: "{xp} 經驗",
@@ -231,6 +234,8 @@
       log_poison_damage: "{enemy} 受到 {damage} 點中毒傷害。",
       log_enemy_turn: "敵方回合：{action}。",
       log_player_turn: "你的回合，抽 {count} 張牌，能量恢復為 {energy}。",
+      log_player_block: "獲得 {amount} 點格擋，本回合會抵消敵人攻擊傷害。",
+      log_enemy_block_fade: "{enemy} 剩餘的防禦消失了。",
       log_win_battle: "擊敗 {enemy}，選擇一張新卡。",
       log_win_boss: "任務首領已擊敗，獲得 {xp} 經驗。",
       log_loss: "你被 {enemy} 擊敗。",
@@ -322,12 +327,20 @@
 
   function t(key, params = {}) {
     const locale = getLocale();
-    const raw = text[locale]?.[key] || text.en[key] || key;
+    const zhRuntimeFallback = {
+      startMissionCard: "點擊開始",
+      log_draft_added: "{card} 已加入本次牌組，下一場開手牌會標示出來。",
+    };
+    const raw = (locale === "zh-Hant" ? zhRuntimeFallback[key] : "") || text[locale]?.[key] || text.en[key] || key;
     return Object.entries(params).reduce((str, [k, v]) => str.replaceAll(`{${k}}`, String(v)), raw);
   }
 
   function getMission(id = profile.selectedMission) {
     return missionTemplates[clamp(id, 1, maxMission) - 1];
+  }
+
+  function nextMissionLabel(missionId) {
+    return getLocale() === "zh-Hant" ? `下一關：任務 ${missionId}` : `Next Mission: ${missionId}`;
   }
 
   function missionTitle(id) {
@@ -402,6 +415,7 @@
     nodes.profileXpText.textContent = `${profile.xp}/${xpToNext(profile.level)}`;
     nodes.profileBestText.textContent = String(profile.bestMission);
     nodes.profileBonusText.textContent = t("profileBonus", { hp: levelHpBonus() });
+    nodes.startBtn.textContent = `${t("startRun")} · ${t("missionLabel", { mission: profile.selectedMission })}`;
     nodes.stageGrid.innerHTML = "";
 
     for (let i = 1; i <= maxMission; i++) {
@@ -410,6 +424,7 @@
       button.type = "button";
       button.className = `stage-card${profile.selectedMission === i ? " selected" : ""}`;
       button.disabled = !unlocked;
+      button.dataset.mission = String(i);
       button.innerHTML = `
         <span>${t("missionLabel", { mission: i })}</span>
         <strong>${unlocked ? missionTitle(i) : t("lockedMission")}</strong>
@@ -420,12 +435,48 @@
         if (!unlocked) return;
         profile.selectedMission = i;
         saveLocalState();
-        renderProgressUI();
+        updateStageSelectionUI();
+        scrollStageToSelected();
         window.WonderSound?.play("click");
         startRun();
       });
       nodes.stageGrid.appendChild(button);
     }
+    updateStageSelectionUI();
+    scrollStageToSelected();
+  }
+
+  function updateStageSelectionUI() {
+    if (!nodes.stageGrid) return;
+    nodes.startBtn.textContent = `${t("startRun")} - ${t("missionLabel", { mission: profile.selectedMission })}`;
+    nodes.stageGrid.querySelectorAll(".stage-card").forEach((card) => {
+      card.classList.toggle("selected", Number(card.dataset.mission) === profile.selectedMission);
+    });
+  }
+
+  function scrollStageToSelected() {
+    if (!nodes.stageGrid) return;
+    const selected = nodes.stageGrid.querySelector(`.stage-card[data-mission="${profile.selectedMission}"]`);
+    if (!selected) return;
+    requestAnimationFrame(() => selected.scrollIntoView({ block: "nearest", inline: "center", behavior: "smooth" }));
+  }
+
+  function selectNearestVisibleStage() {
+    if (!nodes.stageGrid) return;
+    const unlockedCards = [...nodes.stageGrid.querySelectorAll(".stage-card:not([disabled])")];
+    if (!unlockedCards.length) return;
+    const gridBox = nodes.stageGrid.getBoundingClientRect();
+    const center = gridBox.left + gridBox.width / 2;
+    const nearest = unlockedCards.reduce((best, card) => {
+      const box = card.getBoundingClientRect();
+      const distance = Math.abs(box.left + box.width / 2 - center);
+      return !best || distance < best.distance ? { card, distance } : best;
+    }, null)?.card;
+    const mission = Number(nearest?.dataset.mission);
+    if (!mission || mission === profile.selectedMission) return;
+    profile.selectedMission = clamp(mission, 1, profile.unlockedMission);
+    saveLocalState();
+    updateStageSelectionUI();
   }
 
   function addXp(amount) {
@@ -529,6 +580,7 @@
       window.WonderSound?.play("shoot");
     } else if (cardId === "guard-bear") {
       state.playerShield += 6;
+      log(t("log_player_block", { amount: 6 }), "system");
       window.WonderSound?.play("upgrade");
     } else if (cardId === "sky-hawk") {
       applyEnemyDamage(14);
@@ -547,6 +599,7 @@
       window.WonderSound?.play("click");
     } else if (cardId === "iron-tortoise") {
       state.playerShield += 15;
+      log(t("log_player_block", { amount: 15 }), "system");
       window.WonderSound?.play("upgrade");
     }
 
@@ -570,6 +623,11 @@
   }
 
   function executeEnemyTurn() {
+    if (state.enemyShield > 0) {
+      log(t("log_enemy_block_fade", { enemy: enemyName(state.enemy) }), "system");
+      state.enemyShield = 0;
+      renderStats();
+    }
     const intent = state.enemy.intents[state.enemyIntentIndex];
     triggerEnemyAnimation("attack");
     let actionText = "";
@@ -643,7 +701,6 @@
     nodes.endTurnBtn.disabled = false;
     state.energy = 3;
     state.playerShield = 0;
-    state.enemyShield = 0;
     state.attacksPlayedThisTurn = 0;
     drawCards(3);
     log(t("log_player_turn", { count: 3, energy: 3 }), "player");
@@ -738,6 +795,7 @@
     nodes.battleLog.innerHTML = "";
     log(t("log_start", { enemy: enemyName(state.enemy) }), "system");
     if (state.lastDraftCard) {
+      state.highlightDraftCard = state.lastDraftCard;
       log(t("log_draft_added", { card: t(cardDb[state.lastDraftCard].nameKey) }), "player");
       state.lastDraftCard = null;
     }
@@ -767,6 +825,7 @@
       const card = cardDb[cardId];
       const cardEl = document.createElement("button");
       cardEl.className = `card ${card.type}`;
+      if (state.highlightDraftCard === cardId) cardEl.classList.add("drafted-card");
       cardEl.type = "button";
       cardEl.innerHTML = cardMarkup(card);
       if (state.energy < card.cost || !state.isPlayerTurn) cardEl.classList.add("disabled");
@@ -796,6 +855,11 @@
       nodes.resultText.textContent = t("report_no_wins");
       nodes.skillReportText.textContent = t("report_no_wins");
       window.WonderSound?.play("wrong");
+    }
+    const canContinue = won && state.mission < maxMission && profile.selectedMission > state.mission;
+    if (nodes.nextMissionBtn) {
+      nodes.nextMissionBtn.classList.toggle("hidden", !canContinue);
+      if (canContinue) nodes.nextMissionBtn.textContent = nextMissionLabel(profile.selectedMission);
     }
     renderProgressUI();
     updateDiamondShopUI();
@@ -829,6 +893,7 @@
       xpEarned: 0,
       guaranteedOpeningCard: null,
       lastDraftCard: null,
+      highlightDraftCard: null,
     };
   }
 
@@ -841,6 +906,38 @@
     startNextBattle();
     window.WonderSound?.play("start");
     nodes.gamePanel.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function exposeSmokeHooks() {
+    if (!new URLSearchParams(window.location.search).has("smoke")) return;
+    window.__beastDeckSmoke = {
+      getState: () => ({
+        mission: state.mission,
+        battle: state.battle,
+        deck: [...(state.deck || [])],
+        hand: [...(state.hand || [])],
+        drawPile: [...(state.drawPile || [])],
+        discardPile: [...(state.discardPile || [])],
+        enemyShield: state.enemyShield || 0,
+        playerShield: state.playerShield || 0,
+        highlightDraftCard: state.highlightDraftCard || null,
+      }),
+      forceDraftChoice: (cardId = "iron-tortoise") => {
+        state.deck.push(cardId);
+        state.guaranteedOpeningCard = cardId;
+        state.lastDraftCard = cardId;
+        state.playerHp = Math.min(state.playerMaxHp, state.playerHp + 10);
+        state.battle += 1;
+        nodes.draftPanel.classList.add("hidden");
+        startNextBattle();
+        return window.__beastDeckSmoke.getState();
+      },
+      forceEnemyBlock: (amount = 9) => {
+        state.enemyShield = amount;
+        renderStats();
+        return window.__beastDeckSmoke.getState();
+      },
+    };
   }
 
   function init() {
@@ -889,6 +986,7 @@
       updateDiamondShopUI();
       window.WonderSound?.play("success");
     });
+    exposeSmokeHooks();
     window.addEventListener("wonder:locale-change", translateUI);
 
     let progress = 0;

@@ -189,6 +189,12 @@ select {
   background: rgba(0, 0, 0, 0.25);
 }
 
+.upgrade-card img {
+  width: 72px;
+  height: 72px;
+  border-radius: 16px;
+}
+
 .room-card strong {
   display: block;
   margin: 0 0 3px;
@@ -293,7 +299,7 @@ select {
 
 .upgrade-card {
   display: grid;
-  grid-template-rows: 62px auto 1fr;
+  grid-template-rows: 78px auto 1fr;
   justify-items: start;
   gap: 8px;
   min-height: 190px;

@@ -159,6 +159,21 @@
     fx: "../../assets/animal-orb-fortress-fx.webp",
   };
 
+  const pageMeta = {
+    en: {
+      title: "Animal Orb Fortress - Free Animal Ricochet Roguelite",
+      description: "Animal Orb Fortress is a 13+ animal ricochet roguelite where players aim spirit orbs, clear boss waves, and grow a crystal fortress locally.",
+      ogDescription: "Aim animal spirit orbs through crystal fortress rooms, clear boss waves, choose upgrades, and grow permanent rooms with local progress.",
+      twitterDescription: "Plan bounce shots, defeat boss waves, and build a crystal animal fortress with local progress.",
+    },
+    "zh-Hant": {
+      title: "動物星珠要塞 - 免費動物反彈 Roguelite",
+      description: "動物星珠要塞是一款 13+ 動物反彈 Roguelite，玩家瞄準星珠、清除首領波次，並在本機累積水晶要塞進度。",
+      ogDescription: "用動物星珠穿越水晶要塞房間，規劃反彈路線、擊退首領波次、選擇升級並累積永久進度。",
+      twitterDescription: "規劃反彈射擊、擊敗首領波次，並在本機進度中建設水晶動物要塞。",
+    },
+  };
+
   const roomDefs = [
     { id: "forge", icon: 0, name: "roomForge", desc: "roomForgeDesc" },
     { id: "shield", icon: 2, name: "roomShield", desc: "roomShieldDesc" },
@@ -186,6 +201,20 @@
   function t(key, data = {}) {
     const value = text[locale]?.[key] || text.en[key] || key;
     return Object.entries(data).reduce((out, [name, item]) => out.replaceAll(`{${name}}`, String(item)), value);
+  }
+
+  function setMeta(selector, value) {
+    document.querySelector(selector)?.setAttribute("content", value);
+  }
+
+  function updatePageMeta() {
+    const meta = pageMeta[locale] || pageMeta.en;
+    document.title = meta.title;
+    setMeta("meta[name='description']", meta.description);
+    setMeta("meta[property='og:title']", meta.title);
+    setMeta("meta[property='og:description']", meta.ogDescription);
+    setMeta("meta[name='twitter:title']", meta.title);
+    setMeta("meta[name='twitter:description']", meta.twitterDescription);
   }
 
   function playSound(name, gap = 0.08) {
@@ -231,7 +260,6 @@
       rerolled: false,
       readyTimer: 0,
       orbCooldown: 0.55,
-      hitGrace: 0.5,
       split: false,
       pierce: false,
       enemies: [],
@@ -260,7 +288,7 @@
     document.querySelectorAll("[data-ui]").forEach((node) => {
       node.textContent = t(node.dataset.ui);
     });
-    document.title = `${t("title")} - WeightPlay`;
+    updatePageMeta();
     nodes.localeSelect.value = locale;
     renderMenu();
     renderHud();
@@ -309,7 +337,7 @@
         const canUpgrade = level < 5 && save.starStones >= cost;
         return `
           <div class="room-card">
-            <img src="../../assets/animal-orb-fortress-room-icons.webp" alt="" style="object-position:${room.icon * -54}px 0" />
+            <img src="../../assets/animal-orb-fortress-room-icons.webp" alt="" style="${atlasPosition(room.icon, roomDefs.length)}" />
             <div>
               <strong>${t(room.name)}</strong>
               <span>${t("level", { n: level })} - ${t(room.desc)}</span>
@@ -385,7 +413,7 @@
   }
 
   function onPointerStart(event) {
-    if (state.mode !== "running" || state.readyTimer > 0 || state.orbs.length) return;
+    if (state.mode !== "running" || !canFireOrb()) return;
     event.preventDefault();
     pointer.active = true;
     Object.assign(pointer, canvasPoint(event));
@@ -439,10 +467,11 @@
   }
 
   function releaseOrb(x, y) {
-    if (state.readyTimer > 0 || state.orbs.length) return;
+    if (!canFireOrb()) return;
     const v = aimVector(x, y);
-    state.orbs.push(makeOrb(v.vx, v.vy, 0));
-    if (state.split) state.orbs.push(makeOrb(v.vx * 0.78 + 80, v.vy * 0.78, 1));
+    const limit = activeOrbLimit();
+    state.orbs.push(makeOrb(v.vx, v.vy, state.shotCount % 5));
+    if (state.split && state.orbs.length < limit) state.orbs.push(makeOrb(v.vx * 0.78 + 80, v.vy * 0.78, (state.shotCount + 1) % 5, 0.72));
     state.preview = [];
     state.shotCount += 1;
     state.readyTimer = state.orbCooldown;
@@ -452,8 +481,16 @@
     renderHud();
   }
 
-  function makeOrb(vx, vy, skin) {
-    return { x: state.launcher.x, y: state.launcher.y, vx, vy, r: 17, life: 4.5, damage: state.baseDamage, skin, hits: new Map() };
+  function makeOrb(vx, vy, skin, damageScale = 1) {
+    return { x: state.launcher.x, y: state.launcher.y, vx, vy, r: 20, life: 5.2, damage: Math.max(1, Math.round(state.baseDamage * damageScale)), skin, hits: new Map() };
+  }
+
+  function activeOrbLimit() {
+    return state.split ? 3 : 2;
+  }
+
+  function canFireOrb() {
+    return state.readyTimer <= 0 && state.orbs.length < activeOrbLimit();
   }
 
   function loop(now) {
@@ -494,7 +531,7 @@
     else if (state.enemies.length === 0) {
       if (state.wave >= 3) finishRaid(true);
       else showUpgrade();
-    } else if (!state.orbs.length && state.readyTimer <= 0) {
+    } else if (canFireOrb()) {
       nodes.hintText.textContent = t("orbReady");
     }
   }
@@ -519,7 +556,8 @@
         orb.hits.set(enemy, recent - dt);
         return;
       }
-      if (Math.hypot(orb.x - enemy.x, orb.y - enemy.y) < orb.r + enemy.size * 0.34) {
+      const enemyVisualRadius = enemy.kind === "boss" ? 62 : enemy.size * 0.78;
+      if (Math.hypot(orb.x - enemy.x, orb.y - enemy.y) < orb.r + enemyVisualRadius) {
         enemy.hp -= orb.damage;
         enemy.hitTimer = 0.16;
         orb.hits.set(enemy, state.pierce ? 0.2 : 0.55);
@@ -554,12 +592,17 @@
       .map(
         (upgrade) => `
           <button type="button" class="upgrade-card" data-upgrade="${upgrade.id}">
-            <img src="../../assets/animal-orb-fortress-upgrade-icons.webp" alt="" style="object-position:${upgrade.icon * -54}px 0" />
+            <img src="../../assets/animal-orb-fortress-upgrade-icons.webp" alt="" style="${atlasPosition(upgrade.icon, upgradeDefs.length)}" />
             <strong>${t(upgrade.name)}</strong>
             <span>${t(upgrade.desc)}</span>
           </button>`
       )
       .join("");
+  }
+
+  function atlasPosition(index, count) {
+    const x = count <= 1 ? 50 : (index / (count - 1)) * 100;
+    return `object-position:${x}% 50%`;
   }
 
   function chooseUpgrade(id) {
@@ -722,6 +765,7 @@
       enemies: state.enemies.length,
       enemyKinds: state.enemies.map((enemy) => enemy.kind),
       orbs: state.orbs.length,
+      activeOrbLimit: activeOrbLimit(),
       stonesEarned: state.stonesEarned,
       rerolled: state.rerolled,
       walletDiamonds: walletDiamonds(),
@@ -738,6 +782,17 @@
       update(0.016);
     },
     forceWin: () => finishRaid(true),
+    forceCollisionProbe: () => {
+      const enemy = makeEnemy("skitter", state.launcher.x, state.launcher.y - 90, 8, 0, 42);
+      const orb = makeOrb(0, -80, 0);
+      orb.x = enemy.x;
+      orb.y = enemy.y + orb.r + enemy.size * 0.7 - 2;
+      state.enemies = [enemy];
+      state.orbs = [orb];
+      const before = enemy.hp;
+      updateOrb(orb, 0.016);
+      return { before, after: enemy.hp, damage: before - enemy.hp, distance: Math.hypot(orb.x - enemy.x, orb.y - enemy.y) };
+    },
   };
 
   setLocale(locale);
