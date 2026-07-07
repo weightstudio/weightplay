@@ -23,6 +23,7 @@
     expFill: $("expFill"),
     roomText: $("roomText"),
     keyText: $("keyText"),
+    goldText: $("goldText"),
     gameCanvas: $("gameCanvas"),
     joystickContainer: $("joystickContainer"),
     joystickKnob: $("joystickKnob"),
@@ -55,6 +56,9 @@
     loadingText: $("loadingText"),
     loadingFill: $("loadingFill"),
     diamondBalance: $("diamondBalance"),
+    goldBalance: $("goldBalance"),
+    trainingPoints: $("trainingPoints"),
+    trainingList: $("trainingList"),
     amuletBtn: $("amuletBtn"),
     amuletCost: $("amuletCost"),
     amuletStatus: $("amuletStatus"),
@@ -74,6 +78,24 @@
       prototypeGoalsTitle: "Prototype test goals",
       prototypeGoalsText: "Clear Room 3, fight the Behemoth Boss, collect Relic Orbs, and verify the Equipment slots and Diamond upgrades work properly.",
       diamondShopTitle: "Permanent Upgrade",
+      goldLabel: "Gold",
+      trainingTitle: "Permanent Training",
+      trainingPoints: "Points",
+      trainingNote: "Character level is permanent. Spend level points here so every run starts stronger.",
+      train_damage: "Attack Training",
+      train_damage_desc: "+2 damage per level.",
+      train_hp: "Vitality Training",
+      train_hp_desc: "+5 max HP per level.",
+      train_speed: "Agility Training",
+      train_speed_desc: "+0.2 move speed per level.",
+      train_magnet: "Relic Sense",
+      train_magnet_desc: "+15px pickup range per level.",
+      trainAction: "Train",
+      trainMax: "Max",
+      upgradeGearAction: "Upgrade",
+      upgradeNeedGold: "Need {gold} gold",
+      gearLevelLabel: "Lv.{level}",
+      goldEarned: "Gold",
       amuletName: "Mist Amulet",
       amuletEffect: "Start every run with +10 Max HP (40 HP instead of 30 HP).",
       amuletOwned: "Owned: every run starts with 40 Max HP.",
@@ -102,6 +124,7 @@
       slotBoots: "BOOTS",
       noneLabel: "None",
       statDamage: "Damage:",
+      statMaxHp: "Max HP",
       statAttackRate: "Attack Rate:",
       statSpeed: "Speed:",
       statMagnetRange: "Magnet Range:",
@@ -111,6 +134,7 @@
       resultSummaryLevel: "Saved Level",
       resultSummaryRooms: "Rooms",
       resultSummaryKeys: "Run Keys",
+      resultSummaryGold: "Gold Earned",
       resultSummaryGear: "Equipped Gear",
       resultSummaryNoGear: "No gear equipped yet",
       resultDisclaimer: "For fun and local progress tracking only.",
@@ -162,6 +186,24 @@
       prototypeGoalsTitle: "原型測試目標",
       prototypeGoalsText: "通關第 3 關並擊敗遺跡巨獸 Boss，收集遺跡能量球，驗證裝備槽與鑽石商店運作正常。",
       diamondShopTitle: "永久升級",
+      goldLabel: "金幣",
+      trainingTitle: "永久訓練",
+      trainingPoints: "點數",
+      trainingNote: "角色等級會永久保存。把升級點數投到這裡，每次探險一開始都會更強。",
+      train_damage: "攻擊訓練",
+      train_damage_desc: "每級增加 2 點傷害。",
+      train_hp: "體力訓練",
+      train_hp_desc: "每級增加 5 點生命上限。",
+      train_speed: "敏捷訓練",
+      train_speed_desc: "每級增加 0.2 移動速度。",
+      train_magnet: "遺跡感知",
+      train_magnet_desc: "每級增加 15px 拾取範圍。",
+      trainAction: "訓練",
+      trainMax: "滿級",
+      upgradeGearAction: "升級",
+      upgradeNeedGold: "需要 {gold} 金幣",
+      gearLevelLabel: "Lv.{level}",
+      goldEarned: "金幣",
       amuletName: "迷霧護符",
       amuletEffect: "每局挑戰開始時 +10 最大生命值 (以 40 HP 開局，原為 30 HP)。",
       amuletOwned: "已擁有：以 40 Max HP 開局。",
@@ -190,6 +232,7 @@
       slotBoots: "鞋子槽",
       noneLabel: "無",
       statDamage: "傷害：",
+      statMaxHp: "生命上限",
       statAttackRate: "攻擊速率：",
       statSpeed: "移動速度：",
       statMagnetRange: "吸取範圍：",
@@ -245,6 +288,24 @@
     prototypeGoalsTitle: "遊玩目標",
     prototypeGoalsText: "通過第 3 個房間、擊敗遺跡巨獸 Boss、收集遺跡能量球，並確認裝備槽與鑽石重抽功能正常。",
     diamondShopTitle: "永久升級",
+    goldLabel: "金幣",
+    trainingTitle: "永久訓練",
+    trainingPoints: "點數",
+    trainingNote: "角色等級會永久保存。把升級點數投到這裡，每次探險一開始都會更強。",
+    train_damage: "攻擊訓練",
+    train_damage_desc: "每級增加 2 點傷害。",
+    train_hp: "體力訓練",
+    train_hp_desc: "每級增加 5 點生命上限。",
+    train_speed: "敏捷訓練",
+    train_speed_desc: "每級增加 0.2 移動速度。",
+    train_magnet: "遺跡感知",
+    train_magnet_desc: "每級增加 15px 拾取範圍。",
+    trainAction: "訓練",
+    trainMax: "滿級",
+    upgradeGearAction: "升級",
+    upgradeNeedGold: "需要 {gold} 金幣",
+    gearLevelLabel: "Lv.{level}",
+    goldEarned: "金幣",
     amuletName: "迷霧護符",
     amuletEffect: "每次探險開始時生命上限 +10（從 30 HP 變成 40 HP）。",
     amuletOwned: "已擁有：每次探險都會以 40 Max HP 開始。",
@@ -273,6 +334,7 @@
     slotBoots: "靴子",
     noneLabel: "無",
     statDamage: "傷害：",
+    statMaxHp: "生命上限",
     statAttackRate: "攻擊間隔：",
     statSpeed: "移動速度：",
     statMagnetRange: "吸取範圍：",
@@ -280,6 +342,7 @@
     resultSummaryLevel: "\u4fdd\u5b58\u7b49\u7d1a",
     resultSummaryRooms: "\u623f\u9593\u9032\u5ea6",
     resultSummaryKeys: "\u672c\u8f2a\u91d1\u9470",
+    resultSummaryGold: "本輪金幣",
     resultSummaryGear: "\u5df2\u7a7f\u6234\u88dd\u5099",
     resultSummaryNoGear: "\u5c1a\u672a\u7a7f\u6234\u88dd\u5099",
     resultDisclaimer: "僅供遊戲娛樂與本機進度紀錄。",
@@ -371,6 +434,8 @@
     baseDamage: 10,
     baseRate: 1.2, // seconds
     baseMagnet: 80, // pixels
+    gold: 0,
+    runGold: 0,
 
     // Relic Buffs
     relicMagnetCount: 0,
@@ -400,6 +465,15 @@
       level: 1,
       exp: 0,
       expNeed: 100,
+      gold: 0,
+      statPoints: 0,
+      training: {
+        damage: 0,
+        hp: 0,
+        speed: 0,
+        magnet: 0,
+      },
+      gearLevels: {},
       inventory: [],
       equipped: {
         weapon: null,
@@ -416,9 +490,20 @@
     next.level = Math.max(1, Math.floor(Number(data.level) || 1));
     next.exp = Math.max(0, Math.floor(Number(data.exp) || 0));
     next.expNeed = Math.max(100, Math.floor(Number(data.expNeed) || 100));
+    next.gold = Math.max(0, Math.floor(Number(data.gold) || 0));
+
+    const training = data.training && typeof data.training === "object" ? data.training : {};
+    for (const key of ["damage", "hp", "speed", "magnet"]) {
+      next.training[key] = Math.max(0, Math.min(10, Math.floor(Number(training[key]) || 0)));
+    }
 
     if (Array.isArray(data.inventory)) {
       next.inventory = [...new Set(data.inventory.filter((key) => gearDb[key]))];
+    }
+
+    const gearLevels = data.gearLevels && typeof data.gearLevels === "object" ? data.gearLevels : {};
+    for (const key of next.inventory) {
+      next.gearLevels[key] = Math.max(1, Math.min(10, Math.floor(Number(gearLevels[key]) || 1)));
     }
 
     const equipped = data.equipped && typeof data.equipped === "object" ? data.equipped : {};
@@ -435,6 +520,11 @@
       next.level += 1;
       next.expNeed = Math.floor(next.expNeed * 1.3);
     }
+
+    const spentPoints = Object.values(next.training).reduce((sum, value) => sum + value, 0);
+    const earnedPoints = Math.max(0, next.level - 1);
+    const storedPoints = Math.max(0, Math.floor(Number(data.statPoints) || 0));
+    next.statPoints = Math.max(storedPoints, earnedPoints - spentPoints);
 
     return next;
   }
@@ -458,6 +548,7 @@
     state.level = profile.level;
     state.exp = profile.exp;
     state.expNeed = profile.expNeed;
+    state.gold = profile.gold;
     state.eqWeapon = profile.equipped.weapon;
     state.eqArmor = profile.equipped.armor;
     state.eqBoots = profile.equipped.boots;
@@ -496,6 +587,40 @@
     return Object.entries(params).reduce((str, [k, v]) => str.replaceAll(`{${k}}`, String(v)), raw);
   }
 
+  const trainingDefs = [
+    { key: "damage", nameKey: "train_damage", descKey: "train_damage_desc", max: 10 },
+    { key: "hp", nameKey: "train_hp", descKey: "train_hp_desc", max: 10 },
+    { key: "speed", nameKey: "train_speed", descKey: "train_speed_desc", max: 10 },
+    { key: "magnet", nameKey: "train_magnet", descKey: "train_magnet_desc", max: 10 },
+  ];
+
+  function gearLevel(key) {
+    return Math.max(1, Math.min(10, Math.floor(Number(profile.gearLevels?.[key]) || 1)));
+  }
+
+  function gearUpgradeCost(key) {
+    const g = gearDb[key];
+    if (!g) return 999999;
+    const level = gearLevel(key);
+    const rarityBase = g.typeKey === "rarity_epic" ? 90 : 55;
+    return Math.floor(rarityBase * Math.pow(1.45, level - 1));
+  }
+
+  function gearScale(key) {
+    return 1 + (gearLevel(key) - 1) * 0.18;
+  }
+
+  function describeGearEffect(key) {
+    const g = gearDb[key];
+    if (!g) return "";
+    const scale = gearScale(key);
+    if (g.bonusDmg) return `+${Math.round(g.bonusDmg * scale)} ${t("statDamage").replace(":", "")}`;
+    if (g.bonusRate) return `-${Math.round(g.bonusRate * scale * 100)}% ${t("statAttackRate").replace(":", "")}`;
+    if (g.bonusHp) return `+${Math.round(g.bonusHp * scale)} ${t("statMaxHp") || "Max HP"}`;
+    if (g.bonusSpeed) return `+${(g.bonusSpeed * scale).toFixed(1)} ${t("statSpeed").replace(":", "")}`;
+    return t(g.effectKey);
+  }
+
   const metaText = {
     en: {
       description: "Explore ancient ruins, level up, collect chests, and equip Weapons, Armor, and Boots in this animal roguelite survivor.",
@@ -525,12 +650,14 @@
     }
     nodes.localeSelect.value = locale;
     updateDiamondShopUI();
+    renderTrainingPanel();
     renderEquippedGear();
   }
 
   function updateDiamondShopUI() {
     const wallet = window.WeightPlayWallet?.read() || { diamonds: 0 };
     nodes.diamondBalance.textContent = wallet.diamonds;
+    if (nodes.goldBalance) nodes.goldBalance.textContent = profile.gold;
 
     if (state.amuletUnlocked) {
       nodes.amuletStatus.textContent = t("amuletOwned");
@@ -548,18 +675,57 @@
     }
   }
 
+  function renderTrainingPanel() {
+    if (!nodes.trainingList) return;
+    nodes.trainingPoints.textContent = profile.statPoints;
+    nodes.trainingList.innerHTML = "";
+
+    trainingDefs.forEach((def) => {
+      const level = profile.training[def.key] || 0;
+      const row = document.createElement("div");
+      row.className = "training-row";
+      row.innerHTML = `
+        <span class="training-copy">
+          <strong>${t(def.nameKey)} ${t("gearLevelLabel", { level })}</strong>
+          <small>${t(def.descKey)}</small>
+        </span>
+      `;
+      const button = document.createElement("button");
+      button.type = "button";
+      button.textContent = level >= def.max ? t("trainMax") : t("trainAction");
+      button.disabled = level >= def.max || profile.statPoints <= 0;
+      button.addEventListener("click", () => spendTrainingPoint(def.key));
+      row.appendChild(button);
+      nodes.trainingList.appendChild(row);
+    });
+  }
+
+  function spendTrainingPoint(key) {
+    const def = trainingDefs.find((item) => item.key === key);
+    if (!def || profile.statPoints <= 0 || profile.training[key] >= def.max) return;
+    profile.training[key] += 1;
+    profile.statPoints -= 1;
+    saveProfile();
+    syncStateFromProfile();
+    renderTrainingPanel();
+    renderStatsPanel();
+    updateHUDText();
+    window.WonderSound?.play("upgrade");
+  }
+
   // Calculate stats based on relics and equipped gear
   function getStats() {
-    let dmg = state.baseDamage;
+    let dmg = state.baseDamage + (profile.training.damage * 2);
     let rate = state.baseRate;
-    let speed = state.playerSpeed;
-    let magnet = state.baseMagnet;
+    let speed = state.playerSpeed + (profile.training.speed * 0.2);
+    let magnet = state.baseMagnet + (profile.training.magnet * 15);
 
     // Apply Gear Weapon
     if (state.eqWeapon) {
       const g = gearDb[state.eqWeapon];
-      if (g.bonusDmg) dmg += g.bonusDmg;
-      if (g.bonusRate) rate *= (1 - g.bonusRate);
+      const scale = gearScale(state.eqWeapon);
+      if (g.bonusDmg) dmg += g.bonusDmg * scale;
+      if (g.bonusRate) rate *= Math.max(0.35, 1 - (g.bonusRate * scale));
     }
     // Apply Relics Firing Rate
     if (state.relicRateCount > 0) {
@@ -570,16 +736,16 @@
     }
 
     // Apply Gear Armor
-    let maxHp = (state.amuletUnlocked ? 40 : 30) + (state.relicHpCount * 5);
+    let maxHp = (state.amuletUnlocked ? 40 : 30) + (state.relicHpCount * 5) + (profile.training.hp * 5);
     if (state.eqArmor) {
       const g = gearDb[state.eqArmor];
-      if (g.bonusHp) maxHp += g.bonusHp;
+      if (g.bonusHp) maxHp += g.bonusHp * gearScale(state.eqArmor);
     }
 
     // Apply Gear Boots
     if (state.eqBoots) {
       const g = gearDb[state.eqBoots];
-      if (g.bonusSpeed) speed += g.bonusSpeed;
+      if (g.bonusSpeed) speed += g.bonusSpeed * gearScale(state.eqBoots);
     }
 
     // Apply Relic Magnet
@@ -607,8 +773,8 @@
     // Weapon
     if (state.eqWeapon) {
       const g = gearDb[state.eqWeapon];
-      nodes.eqWeaponName.textContent = t(g.nameKey);
-      nodes.eqWeaponEffect.textContent = t(g.effectKey);
+      nodes.eqWeaponName.textContent = `${t(g.nameKey)} ${t("gearLevelLabel", { level: gearLevel(state.eqWeapon) })}`;
+      nodes.eqWeaponEffect.textContent = describeGearEffect(state.eqWeapon);
       nodes.eqWeaponEffect.style.display = "inline-block";
     } else {
       nodes.eqWeaponName.textContent = t("noneLabel");
@@ -618,8 +784,8 @@
     // Armor
     if (state.eqArmor) {
       const g = gearDb[state.eqArmor];
-      nodes.eqArmorName.textContent = t(g.nameKey);
-      nodes.eqArmorEffect.textContent = t(g.effectKey);
+      nodes.eqArmorName.textContent = `${t(g.nameKey)} ${t("gearLevelLabel", { level: gearLevel(state.eqArmor) })}`;
+      nodes.eqArmorEffect.textContent = describeGearEffect(state.eqArmor);
       nodes.eqArmorEffect.style.display = "inline-block";
     } else {
       nodes.eqArmorName.textContent = t("noneLabel");
@@ -629,8 +795,8 @@
     // Boots
     if (state.eqBoots) {
       const g = gearDb[state.eqBoots];
-      nodes.eqBootsName.textContent = t(g.nameKey);
-      nodes.eqBootsEffect.textContent = t(g.effectKey);
+      nodes.eqBootsName.textContent = `${t(g.nameKey)} ${t("gearLevelLabel", { level: gearLevel(state.eqBoots) })}`;
+      nodes.eqBootsEffect.textContent = describeGearEffect(state.eqBoots);
       nodes.eqBootsEffect.style.display = "inline-block";
     } else {
       nodes.eqBootsName.textContent = t("noneLabel");
@@ -658,19 +824,28 @@
 
       const equippedKey = profile.equipped[g.slot];
       const equipped = equippedKey === key;
-      const item = document.createElement("button");
+      const level = gearLevel(key);
+      const cost = gearUpgradeCost(key);
+      const item = document.createElement("div");
       item.className = `backpack-item${equipped ? " is-equipped" : ""}`;
-      item.type = "button";
       item.dataset.gearKey = key;
       item.innerHTML = `
         <img src="${g.iconSrc}" alt="" aria-hidden="true">
         <span class="backpack-copy">
           <strong>${t(g.nameKey)}</strong>
-          <small>${t(g.effectKey)}</small>
+          <small>${describeGearEffect(key)}</small>
         </span>
-        <b>${equipped ? t("equippedTag") : t("equipGearAction")}</b>
+        <span class="gear-level-tag">${t("gearLevelLabel", { level })}</span>
+        <span class="backpack-actions">
+          <button class="gear-equip-btn${equipped ? " is-equipped" : ""}" type="button">${equipped ? t("equippedTag") : t("equipGearAction")}</button>
+          <button class="gear-upgrade-btn" type="button">${t("upgradeGearAction")} ${cost}</button>
+        </span>
       `;
-      item.addEventListener("click", () => equipGearItem(key));
+      item.querySelector(".gear-equip-btn").addEventListener("click", () => equipGearItem(key));
+      const upgradeBtn = item.querySelector(".gear-upgrade-btn");
+      upgradeBtn.disabled = level >= 10 || profile.gold < cost;
+      upgradeBtn.title = profile.gold < cost ? t("upgradeNeedGold", { gold: cost }) : "";
+      upgradeBtn.addEventListener("click", () => upgradeGearItem(key));
       nodes.backpackList.appendChild(item);
     });
   }
@@ -679,8 +854,27 @@
     if (!gearDb[key]) return;
     if (!profile.inventory.includes(key)) {
       profile.inventory.push(key);
+      profile.gearLevels[key] = Math.max(1, Math.floor(Number(profile.gearLevels[key]) || 1));
       saveProfile();
     }
+  }
+
+  function upgradeGearItem(key) {
+    if (!gearDb[key] || !profile.inventory.includes(key)) return;
+    const level = gearLevel(key);
+    if (level >= 10) return;
+    const cost = gearUpgradeCost(key);
+    if (profile.gold < cost) return;
+    profile.gold -= cost;
+    profile.gearLevels[key] = level + 1;
+    saveProfile();
+    syncStateFromProfile();
+    renderStatsPanel();
+    renderEquippedGear();
+    renderTrainingPanel();
+    updateDiamondShopUI();
+    updateHUDText();
+    window.WonderSound?.play("upgrade");
   }
 
   function equipGearItem(key) {
@@ -716,6 +910,7 @@
     state.room = 1;
     state.keys = 0;
     state.runKeys = 0;
+    state.runGold = 0;
 
     // Reset run-only relic buffs. Level and equipment are permanent profile data.
     state.relicMagnetCount = 0;
@@ -801,6 +996,7 @@
   function updateHUDText() {
     nodes.roomText.textContent = `${state.room}/3`;
     nodes.keyText.textContent = state.keys;
+    if (nodes.goldText) nodes.goldText.textContent = state.runGold;
     nodes.levelVal.textContent = state.level;
     nodes.expText.textContent = `${state.exp}/${state.expNeed}`;
     nodes.expFill.style.width = `${(state.exp / state.expNeed) * 100}%`;
@@ -851,10 +1047,22 @@
     saveProfile();
   }
 
+  function gainGold(amount) {
+    const value = Math.max(0, Math.floor(Number(amount) || 0));
+    if (value <= 0) return;
+    state.runGold += value;
+    profile.gold += value;
+    state.gold = profile.gold;
+    saveProfile();
+    updateDiamondShopUI();
+    updateHUDText();
+  }
+
   function handleLevelUp() {
     state.level++;
     state.exp -= state.expNeed;
     state.expNeed = Math.floor(state.expNeed * 1.3);
+    profile.statPoints += 1;
     profile.level = state.level;
     profile.exp = state.exp;
     profile.expNeed = state.expNeed;
@@ -866,6 +1074,7 @@
 
     draftRerollUsed = false;
     nodes.rerollDraftStatus.textContent = "";
+    renderTrainingPanel();
     renderDraftChoices();
     nodes.draftPanel.classList.remove("hidden");
     updateDraftRerollUI();
@@ -1014,6 +1223,7 @@
       [t("resultSummaryLevel"), `Lv.${profile.level}`],
       [t("resultSummaryRooms"), `${cleared}/3`],
       [t("resultSummaryKeys"), String(state.runKeys)],
+      [t("resultSummaryGold"), String(state.runGold)],
       [t("resultSummaryGear"), equippedGearSummary()],
     ];
 
@@ -1197,6 +1407,17 @@
               });
             }
 
+            // Drop gold for equipment upgrades.
+            const goldCount = enemy.isElite ? 5 : 2;
+            for (let k = 0; k < goldCount; k++) {
+              state.pickups.push({
+                x: enemy.x + (Math.random() * 28 - 14),
+                y: enemy.y + (Math.random() * 28 - 14),
+                type: "gold",
+                value: enemy.isElite ? 12 : 5,
+              });
+            }
+
             // Drop key if Elite
             if (enemy.isElite) {
               if (state.room === 3) {
@@ -1256,6 +1477,10 @@
           // Spawn Chest and Portal
           state.pickups.push({ x: 300, y: 250, type: "chest" });
           state.pickups.push({ x: 500, y: 250, type: "portal" });
+        } else if (pickup.type === "gold") {
+          state.pickups.splice(pIndex, 1);
+          gainGold(pickup.value || 1);
+          window.WonderSound?.play("coin");
         } else if (pickup.type === "chest") {
           if (state.keys > 0) {
             state.keys--;
@@ -1306,13 +1531,27 @@
 
     // 2. Draw Chests, Keys, Portals
     state.pickups.forEach((pickup) => {
-      if (pickup.type === "key") {
-        if (assets.key.complete) {
-          ctx.drawImage(assets.key, pickup.x - 16, pickup.y - 16, 32, 32);
-        } else {
-          ctx.fillStyle = "#facc15";
-          ctx.fillRect(pickup.x - 12, pickup.y - 12, 24, 24);
-        }
+        if (pickup.type === "key") {
+          if (assets.key.complete) {
+            ctx.drawImage(assets.key, pickup.x - 16, pickup.y - 16, 32, 32);
+          } else {
+            ctx.fillStyle = "#facc15";
+            ctx.fillRect(pickup.x - 12, pickup.y - 12, 24, 24);
+          }
+      } else if (pickup.type === "gold") {
+        ctx.save();
+        ctx.fillStyle = "#facc15";
+        ctx.strokeStyle = "#92400e";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(pickup.x, pickup.y, 8, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+        ctx.fillStyle = "#3b2500";
+        ctx.font = "bold 9px Outfit";
+        ctx.textAlign = "center";
+        ctx.fillText("$", pickup.x, pickup.y + 3);
+        ctx.restore();
       } else if (pickup.type === "chest") {
         // Draw locked chest box
         ctx.fillStyle = "#a16207";

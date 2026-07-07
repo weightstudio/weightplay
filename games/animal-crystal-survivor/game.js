@@ -46,6 +46,8 @@
   const text = {
     en: {
       title: "Animal Crystal Survivor",
+      pageDescription: "Play Animal Crystal Survivor, a 3-minute animal action survival score game where you collect keys, gain XP, and choose upgrades.",
+      ogDescription: "Survive a 3-minute crystal grove run, collect golden keys, gather XP, and choose upgrades while shadow beasts close in.",
       language: "Language",
       menuTitle: "Survive the Crystal Grove.",
       menuHint: "Goal: collect golden keys before 3:00. Crystals give XP, and upgrades help the ranger survive longer.",
@@ -106,6 +108,8 @@
     },
     "zh-Hant": {
       title: "\u52d5\u7269\u6c34\u6676\u751f\u5b58\u6230",
+      pageDescription: "\u904a\u73a9\u300a\u52d5\u7269\u6c34\u6676\u751f\u5b58\u6230\u300b\uff0c\u5728 3 \u5206\u9418\u7684\u52d5\u4f5c\u751f\u5b58\u6311\u6230\u4e2d\u6536\u96c6\u91d1\u9470\u3001\u62fe\u53d6\u6c34\u6676\u3001\u5347\u7d1a\u80fd\u529b\u4e26\u8eb2\u958b\u5f71\u7378\u3002",
+      ogDescription: "\u5728\u7d50\u6676\u68ee\u6797\u4e2d\u9032\u884c 3 \u5206\u9418\u751f\u5b58\u6311\u6230\uff0c\u6536\u96c6\u91d1\u9470\u3001\u7372\u5f97\u7d93\u9a57\u4e26\u9078\u64c7\u5f37\u5316\u80fd\u529b\u3002",
       language: "\u8a9e\u8a00",
       menuTitle: "\u5728\u7d50\u6676\u68ee\u6797\u4e2d\u751f\u5b58\u4e0b\u53bb\u3002",
       menuHint: "\u76ee\u6a19\uff1a\u5728 3:00 \u4e4b\u524d\u6536\u96c6\u91d1\u9470\u3002\u6c34\u6676\u6703\u589e\u52a0\u7d93\u9a57\uff0c\u5347\u7d1a\u53ef\u4ee5\u8b93\u5de1\u5b88\u54e1\u6490\u5f97\u66f4\u4e45\u3002",
@@ -228,6 +232,16 @@
     return Object.entries(data).reduce((out, [name, item]) => out.replaceAll(`{${name}}`, String(item)), value);
   }
 
+  function updatePageMeta() {
+    const pageTitle = `${t("title")} - WeightPlay`;
+    const description = t("pageDescription");
+    const ogDescription = t("ogDescription");
+    document.title = pageTitle;
+    document.querySelector('meta[name="description"]')?.setAttribute("content", description);
+    document.querySelector('meta[property="og:title"]')?.setAttribute("content", pageTitle);
+    document.querySelector('meta[property="og:description"]')?.setAttribute("content", ogDescription);
+  }
+
   function makePlayer() {
     const hasCharm = Boolean(save.crystalCharm);
     const maxHp = hasCharm ? 8 : 7;
@@ -319,6 +333,7 @@
     document.querySelectorAll("[data-ui]").forEach((node) => {
       node.textContent = t(node.dataset.ui);
     });
+    updatePageMeta();
     nodes.localeSelect.value = locale;
     renderHud();
     updateDiamondShop();
@@ -384,6 +399,7 @@
     save.playCount += 1;
     persist();
     show(nodes.gamePanel);
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
     renderHud();
     lastFrame = performance.now();
     playSound("start", 0.2);
