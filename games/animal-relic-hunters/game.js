@@ -515,6 +515,10 @@
       }
     }
 
+    for (const key of next.inventory) {
+      next.gearLevels[key] = Math.max(1, Math.min(10, Math.floor(Number(gearLevels[key]) || next.gearLevels[key] || 1)));
+    }
+
     while (next.exp >= next.expNeed) {
       next.exp -= next.expNeed;
       next.level += 1;
@@ -1773,6 +1777,7 @@
       nodes.gamePanel.classList.add("hidden");
       nodes.menuPanel.classList.remove("hidden");
       updateDiamondShopUI();
+      renderTrainingPanel();
     });
 
     nodes.resultMenuBtn.addEventListener("click", () => {
@@ -1780,6 +1785,7 @@
       nodes.resultPanel.classList.add("hidden");
       nodes.menuPanel.classList.remove("hidden");
       updateDiamondShopUI();
+      renderTrainingPanel();
     });
 
     nodes.localeSelect.addEventListener("change", (e) => {
@@ -1839,6 +1845,10 @@
           drawCanvasFrame();
           return { warningText: t("bossWarning"), bossWarningActive: state.bossWarningUntil > performance.now() };
         },
+        forceGainGold(amount = 17) {
+          gainGold(amount);
+          return this.snapshot();
+        },
         snapshot() {
           return {
             resultTitle: nodes.resultTitle.textContent,
@@ -1846,6 +1856,9 @@
             resultText: nodes.resultText.textContent,
             resultSummary: nodes.resultSummary?.textContent || "",
             skillReportText: nodes.skillReportText.textContent,
+            runGold: state.runGold,
+            goldText: nodes.goldText?.textContent || "",
+            profile: JSON.parse(localStorage.getItem(profileKey) || "{}"),
             wallet: window.WeightPlayWallet?.read?.() || null,
           };
         },

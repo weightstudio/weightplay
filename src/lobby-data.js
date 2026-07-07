@@ -403,10 +403,10 @@ window.WONDER_LOBBY = {
     },
     {
       id: "animal-orb-fortress",
-      title: { en: "Animal Orb Fortress", "zh-Hant": "動物星珠要塞" },
-      status: "planned",
-      statusText: { en: "Coming Soon", "zh-Hant": "敬請期待" },
-      type: { en: "Ricochet Roguelite", "zh-Hant": "彈射 Roguelite" },
+      title: { en: "Animal Orb Fortress", "zh-Hant": "\u52d5\u7269\u661f\u73e0\u8981\u585e" },
+      status: "playable",
+      statusText: { en: "Playable", "zh-Hant": "\u53ef\u904a\u73a9" },
+      type: { en: "Ricochet Roguelite", "zh-Hant": "\u53cd\u5f48 Roguelite" },
       categories: ["Featured", "Animal Games", "Arcade"],
       skills: ["Logic", "Problem Solving", "Focus"],
       ages: ["13"],
@@ -414,9 +414,9 @@ window.WONDER_LOBBY = {
       href: "games/animal-orb-fortress/",
       description: {
         en: "Aim animal orbs through crystal fortress rooms, plan bounce routes, grow your base, and prepare for boss waves.",
-        "zh-Hant": "瞄準動物星珠穿越水晶要塞房間，規劃彈射路線、累積基地成長，準備挑戰 Boss 波次。",
+        "zh-Hant": "\u7784\u6e96\u52d5\u7269\u661f\u73e0\u7a7f\u8d8a\u6c34\u6676\u8981\u585e\u623f\u9593\uff0c\u898f\u5283\u53cd\u5f48\u8def\u7dda\uff0c\u5347\u7d1a\u57fa\u5730\uff0c\u4e26\u6e96\u5099\u8fce\u6230 Boss \u6ce2\u6b21\u3002",
       },
-      meta: { en: ["Orb Bounces", "Fortress Growth", "Boss Waves"], "zh-Hant": ["星珠彈射", "要塞成長", "Boss 波次"] },
+      meta: { en: ["Orb Bounces", "Fortress Growth", "Boss Waves"], "zh-Hant": ["\u661f\u73e0\u53cd\u5f48", "\u8981\u585e\u6210\u9577", "Boss \u6ce2\u6b21"] },
       art: { kind: "image", background: "assets/animal-orb-fortress-cover.webp", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
     },
     {

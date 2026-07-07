@@ -417,6 +417,36 @@
         ["What can Diamonds be used for?", "Diamonds can optionally reroll rune reward choices or unlock a permanent training slot. The core mission is playable without spending Diamonds."]
       ],
     },
+    "animal-orb-fortress": {
+      title: "Animal Orb Fortress",
+      age: "13+",
+      difficulty: "Hard",
+      time: "5-8 minutes",
+      skills: ["Logic", "Problem Solving", "Focus"],
+      intro:
+        "Animal Orb Fortress is a ricochet roguelite defense game where players aim spirit orbs through a crystal fortress arena, bounce shots off walls, clear three enemy waves, choose run upgrades, and spend Star Stones on permanent fortress rooms. The game is built for older players who enjoy aim planning, boss pressure, and local progression without requiring Diamond spending.",
+      how: [
+        "Start a raid from the fortress map and drag from the launcher to aim the spirit orb.",
+        "Use wall bounces to hit shadow beasts before they reach the core.",
+        "Clear each wave to choose one fortress blessing, or optionally spend 3 Diamonds once to reroll the choices.",
+        "Defeat the wave 3 boss while keeping core HP above zero.",
+        "Spend earned Star Stones on fortress rooms such as Orb Forge, Core Shield, Companion Den, and Scout Tower."
+      ],
+      strategyTips: [
+        "Aim for bank shots that cross the center of the arena instead of only shooting straight at the closest enemy.",
+        "Choose shield or recharge upgrades when enemies are getting too close to the core.",
+        "Save Diamond rerolls for runs where all three upgrade choices miss your current plan.",
+        "Upgrade Core Shield and Orb Forge early to make later raid tiers more stable."
+      ],
+      parent:
+        "This game is intended for teens and casual strategy-action players. It practices logic, focus, aiming plans, and upgrade decisions through fantasy animal combat. Progress is stored locally on the device and is for entertainment only, not diagnosis, ranking, or formal assessment.",
+      faq: [
+        ["Is Animal Orb Fortress free to play?", "Yes. It runs in the browser on WeightPlay."],
+        ["Why is it marked 13+?", "It has real-time aiming, enemy pressure, boss waves, upgrade choices, and optional Diamond rerolls, so it is deeper than younger-child games."],
+        ["Do I need Diamonds to win?", "No. The main raid and fortress upgrades are playable without Diamonds. Diamonds only provide optional rerolls for upgrade choices."],
+        ["Does progress continue between sessions?", "Yes. Star Stones, best raid tier, play count, and fortress room levels are saved locally on the device."]
+      ],
+    },
     "beast-tactician": {
       title: "Beast Tactician",
       age: "13+",
@@ -568,6 +598,7 @@
     "beast-deck": { gameplay: "Card Roguelike", genre: ["Card", "Roguelike", "Animal"] },
     "animal-relic-hunters": { gameplay: "Room Action Roguelite", genre: ["Action", "Roguelite", "Animal"] },
     "animal-rune-tactics": { gameplay: "Turn-Based Squad Tactics", genre: ["Strategy", "Tactics", "Animal"] },
+    "animal-orb-fortress": { gameplay: "Ricochet Roguelite", genre: ["Action", "Roguelite", "Animal"] },
     "beast-tactician": { gameplay: "Turn-Based Squad Tactics RPG", genre: ["Tactics", "RPG", "Animal"] },
     "shadow-wolf": { gameplay: "2D Action Platformer RPG", genre: ["Action", "Platformer", "Animal"] },
   };
@@ -594,6 +625,7 @@
     "beast-deck": "beast-deck-cover.webp",
     "animal-relic-hunters": "animal-relic-hunters-cover.webp",
     "animal-rune-tactics": "animal-rune-tactics-cover.webp",
+    "animal-orb-fortress": "animal-orb-fortress-cover.webp",
     "beast-tactician": "beast-tactician-cover.webp",
     "shadow-wolf": "shadow-wolf-cover.webp",
   };
@@ -672,6 +704,15 @@
         strategyTips: ["保留防守牌可以避免血量突然降低。", "升級後先確認新卡牌是否能配合既有牌組。", "鑽石升級是選用，不是通關必要條件。"],
         parent: "這款遊戲適合青少年練習回合規劃、資源管理與風險判斷。進度存在本機，不需要登入。",
         faq: [["獸王牌組需要付費嗎？", "不需要。WeightPlay 的遊戲都可以直接在瀏覽器免費遊玩。"], ["鑽石可以做什麼？", "鑽石目前以每日簽到等平台來源取得，可用來解鎖可選永久升級。"]],
+      },
+      "animal-orb-fortress": {
+        title: "\u52d5\u7269\u661f\u73e0\u8981\u585e",
+        age: "13+",
+        difficulty: "\u56f0\u96e3",
+        time: "5-8 \u5206\u9418",
+        gameplay: "\u53cd\u5f48 Roguelite",
+        genre: ["\u52d5\u4f5c", "Roguelite", "\u52d5\u7269"],
+        skills: ["\u908f\u8f2f", "\u554f\u984c\u89e3\u6c7a", "\u5c08\u6ce8"],
       },
       "beast-tactician": {
         title: "獸王守衛",
