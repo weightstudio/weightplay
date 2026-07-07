@@ -46,7 +46,7 @@
 
   const maxGateLevel = 8;
   const careCooldownMs = 30000;
-  const layoutVersion = 7;
+  const layoutVersion = 8;
   const milestones = [
     { id: "collect500", type: "ticketCollected", target: 500, reward: 180 },
     { id: "care3", type: "careCount", target: 3, reward: 260 },
@@ -480,10 +480,10 @@
   function animalBounds(animal) {
     const size = Number(animal.size || 14);
     return {
-      minX: 4,
-      maxX: Math.max(4, 86 - size),
+      minX: 5,
+      maxX: Math.max(5, 82 - size),
       minY: 12,
-      maxY: 60,
+      maxY: 54,
     };
   }
 

@@ -156,8 +156,8 @@
   const fish = Array.from({ length: 12 }, (_, index) => ({
     id: `fish-${index + 1}`,
     sheet: index < 6 ? "fishA" : "fishB",
-    sx: (index % 6) % 3,
-    sy: Math.floor((index % 6) / 3),
+    sx: index % 3,
+    sy: index % 6,
     rare: index === 5 || index === 11,
   }));
 
@@ -442,7 +442,7 @@
     const img = images[fishData.sheet];
     if (!img || !img.width) return;
     const cols = 3;
-    const rows = 2;
+    const rows = 6;
     const cellW = img.width / cols;
     const cellH = img.height / rows;
     const sx = fishData.sx * cellW;
@@ -657,6 +657,13 @@
       },
       readWallet() {
         return wallet();
+      },
+      readFishSheetGrid() {
+        return {
+          cols: 3,
+          rows: 6,
+          sample: fish.map((item) => ({ id: item.id, sheet: item.sheet, sx: item.sx, sy: item.sy })),
+        };
       },
     };
   }

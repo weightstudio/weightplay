@@ -914,11 +914,12 @@ select {
 }
 
 @keyframes animal-idle {
-  50% { transform: translateY(-4px); }
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(-4px); }
 }
 
 @keyframes animal-fed {
-  45% { transform: translateY(-16px) scale(1.07); }
+  45% { transform: translateX(-50%) translateY(-16px) scale(1.07); }
 }
 
 @keyframes animal-arrive {
@@ -1146,8 +1147,9 @@ body.zoo-playing .savanna-stage {
   height: auto;
   aspect-ratio: 4 / 3;
   border-radius: 18px;
-  background-size: 100% 100%;
-  background-position: center center;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.08), rgba(61,42,15,.08)),
+    #ccefa9 url("../../assets/animal-zoo-idle-stage-bg.webp") center / 100% 100% no-repeat;
   contain: layout paint;
 }
 
@@ -1219,6 +1221,7 @@ body.zoo-playing .savanna-stage {
   z-index: 6;
   height: auto;
   max-width: 24%;
+  transform: translateX(-50%);
   cursor: grab;
   filter: drop-shadow(0 14px 14px rgba(37, 48, 26, .24));
   animation: animal-idle 3.2s ease-in-out infinite;
@@ -1599,6 +1602,7 @@ body.zoo-playing .animal-shop-card small {
   body.zoo-playing .savanna-stage {
     min-height: 0;
     aspect-ratio: 4 / 3;
+    border-radius: 16px;
   }
 
   body.zoo-playing .gate {
@@ -1620,6 +1624,17 @@ body.zoo-playing .animal-shop-card small {
 
   body.zoo-playing .zoo-actions {
     grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  body.zoo-playing .animal {
+    max-width: 15%;
+  }
+
+  body.zoo-playing .animal-bear,
+  body.zoo-playing .animal-rhino,
+  body.zoo-playing .animal-giraffe,
+  body.zoo-playing .animal-lion {
+    max-width: 17%;
   }
 }
 
