@@ -191,7 +191,7 @@ body.is-bakery-playing .play-panel {
   border-radius: 18px;
   padding: 12px 14px;
   display: grid;
-  grid-template-columns: 1.1fr repeat(2, minmax(0, 0.9fr)) 1.5fr;
+  grid-template-columns: 1.05fr repeat(3, minmax(0, 0.82fr)) 1.35fr;
   gap: 8px;
   align-items: center;
   background: rgba(255, 251, 226, 0.9);
@@ -250,6 +250,28 @@ body.is-bakery-playing .play-panel {
   color: rgba(74, 41, 24, 0.72);
   font-size: 0.72rem;
   line-height: 1.12;
+}
+
+.stage-stars {
+  color: #ffae00;
+  line-height: 1;
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+
+.stage-badge {
+  width: fit-content;
+  border-radius: 999px;
+  padding: 5px 9px;
+  background: rgba(255, 255, 255, 0.72);
+  color: #7a3b1c;
+  font-size: 0.68rem;
+  line-height: 1;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.68);
+}
+
+.stage-card:not(.locked) .stage-badge {
+  background: linear-gradient(135deg, rgba(255, 237, 135, 0.92), rgba(255, 154, 183, 0.82));
 }
 
 .stage-icons {

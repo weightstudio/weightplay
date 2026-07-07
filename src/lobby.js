@@ -40,6 +40,11 @@ const walletBar = document.querySelector("#walletBar");
 const dailyRewardTrack = [5, 6, 8, 10, 12, 15, 25];
 const featuredSkillPaths = ["Memory", "Logic", "Reaction", "Focus", "Problem Solving", "Animal Knowledge"];
 const recentlyUpdatedGameIds = new Set(["animal-zoo-idle", "animal-guard-yard", "bubble-bakery", "fruit-merge"]);
+const ageFilterGroups = {
+  starter: ["3"],
+  family: ["6", "9", "family"],
+  challenge: ["13"],
+};
 const lobbyGameFacts = {
   "wonder-crash": { difficulty: "Medium", time: "5-8 minutes" },
   "color-lunchbox": { difficulty: "Easy", time: "1-3 minutes" },
@@ -174,7 +179,7 @@ function localizePlayTime(value) {
 function countGamesBy(type, value) {
   if (type === "age") {
     if (value === "all") return lobby.games.length;
-    return lobby.games.filter((game) => (game.ages || []).includes(value)).length;
+    return lobby.games.filter((game) => matchesAgeFilter(game.ages || [], value)).length;
   }
   if (type === "topic") {
     if (value === "all") return lobby.games.length;
@@ -198,6 +203,13 @@ function filterButtonLabel(button, type, value) {
   if (type === "topic") return value === "all" ? i18n.t("filter.all_topics") : categoryText(value);
   if (type === "skill") return value === "all" ? i18n.t("filter.all_skills") : skillText(value);
   return button.textContent.trim();
+}
+
+function matchesAgeFilter(ages, filterValue) {
+  if (filterValue === "all") return true;
+  const group = ageFilterGroups[filterValue];
+  if (group) return ages.some((age) => group.includes(age));
+  return ages.includes(filterValue);
 }
 
 function setFilterCount(button, type, value) {
@@ -849,7 +861,7 @@ function applyFilter() {
     const ages = card.dataset.age.split(" ");
     const topics = card.dataset.topic ? card.dataset.topic.split("|") : [];
     const skills = card.dataset.skill ? card.dataset.skill.split("|") : [];
-    const matchesAge = activeFilter === "all" || ages.includes(activeFilter);
+    const matchesAge = matchesAgeFilter(ages, activeFilter);
     const matchesTopic = activeTopic === "all" || topics.includes(activeTopic);
     const matchesSkill = activeSkill === "all" || skills.includes(activeSkill);
     const matchesSearch = !activeSearch || card.dataset.search.includes(activeSearch);

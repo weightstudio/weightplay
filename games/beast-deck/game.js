@@ -3,6 +3,8 @@
   const saveKey = "weightplay_beast_deck_v1";
   const localeKey = "weightPlayLocale";
   const amuletCost = 15;
+  const packCost = 80;
+  const maxEquippedCards = 6;
   const maxMission = 8;
 
   const $ = (id) => document.getElementById(id);
@@ -57,6 +59,14 @@
     profileXpText: $("profileXpText"),
     profileBestText: $("profileBestText"),
     profileBonusText: $("profileBonusText"),
+    profileCoinText: $("profileCoinText"),
+    packBtn: $("packBtn"),
+    packCost: $("packCost"),
+    packStatus: $("packStatus"),
+    deckBuildCount: $("deckBuildCount"),
+    deckSlots: $("deckSlots"),
+    collectionGrid: $("collectionGrid"),
+    gearGrid: $("gearGrid"),
     stageGrid: $("stageGrid"),
   };
 
@@ -84,7 +94,26 @@
       profileLevel: "Level",
       profileXp: "XP",
       profileBest: "Best",
+      profileCoins: "Coins",
       profileBonus: "+{hp} Max HP from level",
+      collectionTitle: "Card Collection",
+      collectionHint: "Equip up to 6 extra cards before a mission.",
+      packTitle: "Draw Beast Pack",
+      packHint: "Gain a card or equipment for future runs.",
+      packNeed: "Need {cost} coins.",
+      packResultCard: "New card: {card}.",
+      packResultGear: "New equipment: {gear}.",
+      packDuplicate: "Duplicate upgraded: {name}.",
+      deckBuildTitle: "Battle Deck",
+      collectionOwnedTitle: "Owned Cards",
+      equipmentTitle: "Equipment",
+      equipCard: "Equip",
+      unequipCard: "Remove",
+      ownedCount: "Owned {count}",
+      equippedCount: "Equipped {count}/{max}",
+      gearEquipped: "Equipped",
+      gearEquip: "Equip",
+      gearNone: "No equipment yet",
       stageSelectTitle: "Choose a Mission",
       stageSelectHint: "Tap an unlocked mission card to start immediately, or use the button below.",
       lockedMission: "Locked",
@@ -136,6 +165,12 @@
       card_owl_wisdom_desc: "Draw 1 card.",
       card_iron_tortoise: "Iron Tortoise",
       card_iron_tortoise_desc: "Gain 15 Block.",
+      gear_mist_cloak: "Mist Cloak",
+      gear_mist_cloak_desc: "+6 Max HP.",
+      gear_hunter_charm: "Hunter Charm",
+      gear_hunter_charm_desc: "+1 Energy each battle.",
+      gear_forest_banner: "Forest Banner",
+      gear_forest_banner_desc: "Start with 4 Block.",
       intent_attack: "Attacking for {amount}",
       intent_defend: "Defending for {amount}",
       intent_poison: "Applying {amount} Poison",
@@ -153,6 +188,7 @@
       log_draft_added: "{card} joined your mission deck and is highlighted in this opening hand.",
       log_win_battle: "Defeated {enemy}. Draft a new card.",
       log_win_boss: "Mission boss defeated. Gained {xp} XP.",
+      log_coin_gain: "Earned {coins} Beast Coins.",
       log_loss: "You were defeated by {enemy}.",
       log_reshuffle: "Draw pile empty: discard pile reshuffled.",
       shieldAbsorbed: "Block absorbed all damage. {shield} Block left.",
@@ -260,6 +296,25 @@
     "iron-tortoise": { cost: 2, type: "defense", image: "wonder-beast-rhino.png", nameKey: "card_iron_tortoise", descKey: "card_iron_tortoise_desc" },
   };
 
+  const baseDeck = [
+    "wolf-pack", "wolf-pack", "wolf-pack", "wolf-pack",
+    "guard-bear", "guard-bear", "guard-bear", "guard-bear",
+    "sky-hawk", "cheetah-sprint"
+  ];
+
+  const starterCollection = {
+    "wolf-pack": 1,
+    "guard-bear": 1,
+    "sky-hawk": 1,
+    "cheetah-sprint": 1,
+  };
+
+  const gearDb = {
+    "mist-cloak": { nameKey: "gear_mist_cloak", descKey: "gear_mist_cloak_desc", image: "animal-relic-hunters-skill-shield-heart.webp", hp: 6 },
+    "hunter-charm": { nameKey: "gear_hunter_charm", descKey: "gear_hunter_charm_desc", image: "animal-crystal-survivor-upgrade-cooldown.png", energy: 1 },
+    "forest-banner": { nameKey: "gear_forest_banner", descKey: "gear_forest_banner_desc", image: "animal-crystal-survivor-upgrade-attack.png", block: 4 },
+  };
+
   const enemyCatalog = {
     boar: { name: "Shadow Boar", nameZh: "影牙野豬", image: "wonder-beast-boar.png", hp: 24, intents: [{ type: "attack", val: 6 }, { type: "defend", val: 5 }, { type: "attack", val: 9 }] },
     viper: { name: "Corrupted Viper", nameZh: "腐化毒蛇", image: "wonder-beast-crocodile.png", hp: 34, intents: [{ type: "poison", val: 2 }, { type: "defend", val: 8 }, { type: "attack", val: 8 }] },
@@ -295,11 +350,30 @@
     return Math.max(0, (profile.level - 1) * 2);
   }
 
+  function normalizeCountMap(source, allowed, defaults = {}) {
+    const result = { ...defaults };
+    Object.keys(source || {}).forEach((key) => {
+      if (allowed.includes(key)) result[key] = Math.max(result[key] || 0, Math.floor(Number(source[key]) || 0));
+    });
+    return result;
+  }
+
   function normalizeProfile(data = {}) {
+    const collection = normalizeCountMap(data.collection, Object.keys(cardDb), starterCollection);
+    const gear = normalizeCountMap(data.gear, Object.keys(gearDb));
+    const equippedCards = Array.isArray(data.equippedCards)
+      ? data.equippedCards.filter((id) => cardDb[id]).slice(0, maxEquippedCards)
+      : ["sky-hawk", "cheetah-sprint"].filter((id) => collection[id] > 0);
+    const equippedGear = gearDb[data.equippedGear] && gear[data.equippedGear] > 0 ? data.equippedGear : "";
     return {
       amuletUnlocked: !!data.amuletUnlocked,
       level: clamp(Number(data.level) || 1, 1, 99),
       xp: Math.max(0, Number(data.xp) || 0),
+      coins: Math.max(0, Math.floor(Number(data.coins) || 0)),
+      collection,
+      equippedCards,
+      gear,
+      equippedGear,
       unlockedMission: clamp(Number(data.unlockedMission) || 1, 1, maxMission),
       bestMission: clamp(Number(data.bestMission) || 1, 1, maxMission),
       selectedMission: clamp(Number(data.selectedMission) || 1, 1, maxMission),
@@ -328,6 +402,32 @@
   function t(key, params = {}) {
     const locale = getLocale();
     const zhRuntimeFallback = {
+      profileCoins: "金幣",
+      collectionTitle: "卡冊",
+      collectionHint: "出戰前最多裝備 6 張額外卡。",
+      packTitle: "金幣抽卡",
+      packHint: "抽到卡牌或裝備，之後挑戰都能使用。",
+      packNeed: "需要 {cost} 金幣。",
+      packResultCard: "獲得卡牌：{card}。",
+      packResultGear: "獲得裝備：{gear}。",
+      packDuplicate: "重複強化：{name}。",
+      deckBuildTitle: "出戰牌組",
+      collectionOwnedTitle: "持有卡牌",
+      equipmentTitle: "裝備",
+      equipCard: "裝備",
+      unequipCard: "移除",
+      ownedCount: "持有 {count}",
+      equippedCount: "已裝備 {count}/{max}",
+      gearEquipped: "已裝備",
+      gearEquip: "裝備",
+      gearNone: "尚未獲得裝備",
+      gear_mist_cloak: "迷霧披風",
+      gear_mist_cloak_desc: "生命上限 +6。",
+      gear_hunter_charm: "獵手護符",
+      gear_hunter_charm_desc: "每場戰鬥能量 +1。",
+      gear_forest_banner: "森林戰旗",
+      gear_forest_banner_desc: "開場獲得 4 點格擋。",
+      log_coin_gain: "獲得 {coins} 獸王金幣。",
       startMissionCard: "點擊開始",
       log_draft_added: "{card} 已加入本次牌組，下一場開手牌會標示出來。",
     };
@@ -386,6 +486,7 @@
     nodes.localeSelect.value = getLocale();
     updateDiamondShopUI();
     renderProgressUI();
+    renderCollectionUI();
     if (!nodes.gamePanel.classList.contains("hidden") && state.enemy) {
       nodes.enemyName.textContent = enemyName(state.enemy);
       displayIntent(state.enemy.intents[state.enemyIntentIndex]);
@@ -407,6 +508,132 @@
       nodes.amuletBtn.querySelector("b").style.display = "flex";
       nodes.amuletBtn.querySelector("b span").textContent = amuletCost;
     }
+  }
+
+  function cardName(cardId) {
+    return t(cardDb[cardId]?.nameKey || cardId);
+  }
+
+  function gearName(gearId) {
+    return t(gearDb[gearId]?.nameKey || gearId);
+  }
+
+  function equippedCardCount(cardId) {
+    return profile.equippedCards.filter((id) => id === cardId).length;
+  }
+
+  function renderCollectionUI() {
+    if (!nodes.collectionGrid) return;
+    nodes.profileCoinText.textContent = String(profile.coins);
+    nodes.packCost.textContent = String(packCost);
+    nodes.packBtn.disabled = profile.coins < packCost;
+    if (profile.coins < packCost && !nodes.packStatus.textContent) {
+      nodes.packStatus.textContent = t("packNeed", { cost: packCost });
+    }
+    nodes.deckBuildCount.textContent = t("equippedCount", { count: profile.equippedCards.length, max: maxEquippedCards });
+    nodes.deckSlots.innerHTML = "";
+    if (!profile.equippedCards.length) {
+      const empty = document.createElement("span");
+      empty.className = "empty-slot";
+      empty.textContent = t("collectionHint");
+      nodes.deckSlots.appendChild(empty);
+    } else {
+      profile.equippedCards.forEach((cardId, index) => {
+        const card = cardDb[cardId];
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = `mini-card ${card.type}`;
+        button.innerHTML = `<img src="${asset(card.image)}" alt=""><span>${cardName(cardId)}</span><small>${t("unequipCard")}</small>`;
+        button.addEventListener("click", () => {
+          profile.equippedCards.splice(index, 1);
+          saveLocalState();
+          renderCollectionUI();
+          window.WonderSound?.play("click");
+        });
+        nodes.deckSlots.appendChild(button);
+      });
+    }
+
+    nodes.collectionGrid.innerHTML = "";
+    Object.keys(cardDb).forEach((cardId) => {
+      const card = cardDb[cardId];
+      const owned = profile.collection[cardId] || 0;
+      const equipped = equippedCardCount(cardId);
+      const canEquip = owned > equipped && profile.equippedCards.length < maxEquippedCards;
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = `collection-card ${card.type}`;
+      button.disabled = !canEquip;
+      button.innerHTML = `
+        <img src="${asset(card.image)}" alt="">
+        <strong>${cardName(cardId)}</strong>
+        <small>${t("ownedCount", { count: owned })} / ${t("equippedCount", { count: equipped, max: owned })}</small>
+        <span>${canEquip ? t("equipCard") : owned ? t("unequipCard") : t("lockedMission")}</span>
+      `;
+      button.addEventListener("click", () => {
+        if (!canEquip) return;
+        profile.equippedCards.push(cardId);
+        saveLocalState();
+        renderCollectionUI();
+        window.WonderSound?.play("click");
+      });
+      nodes.collectionGrid.appendChild(button);
+    });
+
+    nodes.gearGrid.innerHTML = "";
+    const ownedGearIds = Object.keys(gearDb).filter((gearId) => (profile.gear[gearId] || 0) > 0);
+    if (!ownedGearIds.length) {
+      const empty = document.createElement("span");
+      empty.className = "empty-slot";
+      empty.textContent = t("gearNone");
+      nodes.gearGrid.appendChild(empty);
+    }
+    ownedGearIds.forEach((gearId) => {
+      const gear = gearDb[gearId];
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = `gear-card${profile.equippedGear === gearId ? " equipped" : ""}`;
+      button.innerHTML = `
+        <img src="${asset(gear.image)}" alt="">
+        <strong>${gearName(gearId)}</strong>
+        <small>${t(gear.descKey)}</small>
+        <span>${profile.equippedGear === gearId ? t("gearEquipped") : t("gearEquip")}</span>
+      `;
+      button.addEventListener("click", () => {
+        profile.equippedGear = gearId;
+        saveLocalState();
+        renderCollectionUI();
+        window.WonderSound?.play("upgrade");
+      });
+      nodes.gearGrid.appendChild(button);
+    });
+  }
+
+  function drawPack() {
+    if (profile.coins < packCost) {
+      nodes.packStatus.textContent = t("packNeed", { cost: packCost });
+      window.WonderSound?.play("wrong");
+      return;
+    }
+    profile.coins -= packCost;
+    const roll = Math.random();
+    if (roll < 0.72) {
+      const pool = Object.keys(cardDb);
+      const cardId = pool[Math.floor(Math.random() * pool.length)];
+      profile.collection[cardId] = (profile.collection[cardId] || 0) + 1;
+      nodes.packStatus.textContent = t("packResultCard", { card: cardName(cardId) });
+    } else {
+      const pool = Object.keys(gearDb);
+      const gearId = pool[Math.floor(Math.random() * pool.length)];
+      profile.gear[gearId] = (profile.gear[gearId] || 0) + 1;
+      if (!profile.equippedGear) profile.equippedGear = gearId;
+      nodes.packStatus.textContent = profile.gear[gearId] > 1
+        ? t("packDuplicate", { name: gearName(gearId) })
+        : t("packResultGear", { gear: gearName(gearId) });
+    }
+    saveLocalState();
+    renderCollectionUI();
+    window.WonderSound?.play("success");
   }
 
   function renderProgressUI() {
@@ -699,11 +926,16 @@
   function startPlayerTurn() {
     state.isPlayerTurn = true;
     nodes.endTurnBtn.disabled = false;
-    state.energy = 3;
+    state.energy = state.maxEnergy || 3;
     state.playerShield = 0;
+    if (state.gearBlock > 0 && !state.gearBlockAppliedThisBattle) {
+      state.playerShield = state.gearBlock;
+      state.gearBlockAppliedThisBattle = true;
+      log(t("log_player_block", { amount: state.gearBlock }), "system");
+    }
     state.attacksPlayedThisTurn = 0;
     drawCards(3);
-    log(t("log_player_turn", { count: 3, energy: 3 }), "player");
+    log(t("log_player_turn", { count: 3, energy: state.energy }), "player");
     displayIntent(state.enemy.intents[state.enemyIntentIndex]);
     renderStats();
     renderHand();
@@ -711,6 +943,9 @@
 
   function handleBattleWin() {
     const isBoss = state.battle >= 3;
+    const coins = isBoss ? 40 + state.mission * 8 : 16 + state.mission * 3;
+    profile.coins += coins;
+    log(t("log_coin_gain", { coins }), "system");
     if (isBoss) {
       const mission = getMission(state.mission);
       addXp(mission.xp);
@@ -776,6 +1011,7 @@
     state.playerPoison = 0;
     state.enemyIntentIndex = 0;
     state.attacksPlayedThisTurn = 0;
+    state.gearBlockAppliedThisBattle = false;
     state.drawPile = [...state.deck];
     state.discardPile = [];
     state.hand = [];
@@ -866,22 +1102,24 @@
   }
 
   function resetRunState() {
+    const gear = gearDb[profile.equippedGear] || {};
+    const maxHp = 30 + levelHpBonus() + (profile.amuletUnlocked ? 10 : 0) + (gear.hp || 0);
+    const maxEnergy = 3 + (gear.energy || 0);
     state = {
-      playerMaxHp: 30 + levelHpBonus() + (profile.amuletUnlocked ? 10 : 0),
-      playerHp: 30 + levelHpBonus() + (profile.amuletUnlocked ? 10 : 0),
+      playerMaxHp: maxHp,
+      playerHp: maxHp,
       playerShield: 0,
       playerPoison: 0,
       mission: clamp(profile.selectedMission, 1, profile.unlockedMission),
       battle: 1,
-      deck: [
-        "wolf-pack", "wolf-pack", "wolf-pack", "wolf-pack",
-        "guard-bear", "guard-bear", "guard-bear", "guard-bear",
-        "sky-hawk", "cheetah-sprint"
-      ],
+      deck: [...baseDeck, ...profile.equippedCards],
       drawPile: [],
       discardPile: [],
       hand: [],
-      energy: 3,
+      energy: maxEnergy,
+      maxEnergy,
+      gearBlock: gear.block || 0,
+      gearBlockAppliedThisBattle: false,
       enemy: null,
       enemyHp: 0,
       enemyMaxHp: 0,
@@ -918,6 +1156,8 @@
         hand: [...(state.hand || [])],
         drawPile: [...(state.drawPile || [])],
         discardPile: [...(state.discardPile || [])],
+        energy: state.energy || 0,
+        maxEnergy: state.maxEnergy || 0,
         enemyShield: state.enemyShield || 0,
         playerShield: state.playerShield || 0,
         highlightDraftCard: state.highlightDraftCard || null,
@@ -932,10 +1172,37 @@
         startNextBattle();
         return window.__beastDeckSmoke.getState();
       },
+      forceDrawPack: () => {
+        drawPack();
+        return {
+          profile: normalizeProfile(profile),
+          packStatus: nodes.packStatus?.textContent || "",
+          collectionText: nodes.collectionGrid?.textContent || "",
+          gearText: nodes.gearGrid?.textContent || "",
+        };
+      },
       forceEnemyBlock: (amount = 9) => {
         state.enemyShield = amount;
         renderStats();
         return window.__beastDeckSmoke.getState();
+      },
+      forceWinMission: () => {
+        const mission = getMission(state.mission || profile.selectedMission);
+        state.xpEarned = mission.xp;
+        if (state.mission >= profile.unlockedMission && profile.unlockedMission < maxMission) {
+          profile.unlockedMission = state.mission + 1;
+        }
+        profile.bestMission = Math.max(profile.bestMission, state.mission);
+        profile.selectedMission = Math.min(profile.unlockedMission, state.mission + 1);
+        saveLocalState();
+        endGame(true);
+        return {
+          ...window.__beastDeckSmoke.getState(),
+          selectedMission: profile.selectedMission,
+          unlockedMission: profile.unlockedMission,
+          nextMissionVisible: !nodes.nextMissionBtn?.classList.contains("hidden"),
+          nextMissionText: nodes.nextMissionBtn?.textContent || "",
+        };
       },
     };
   }
@@ -960,8 +1227,13 @@
       nodes.menuPanel.classList.remove("hidden");
       renderProgressUI();
       updateDiamondShopUI();
+      renderCollectionUI();
     });
     nodes.retryBtn.addEventListener("click", () => {
+      window.WonderSound?.play("click");
+      startRun();
+    });
+    nodes.nextMissionBtn?.addEventListener("click", () => {
       window.WonderSound?.play("click");
       startRun();
     });
@@ -971,11 +1243,45 @@
       nodes.menuPanel.classList.remove("hidden");
       renderProgressUI();
       updateDiamondShopUI();
+      renderCollectionUI();
     });
     nodes.localeSelect.addEventListener("change", (event) => {
       window.WonderSound?.play("click");
       window.WonderI18n?.setLocale?.(event.target.value);
     });
+    let stageScrollTimer = 0;
+    nodes.stageGrid?.addEventListener("scroll", () => {
+      window.clearTimeout(stageScrollTimer);
+      stageScrollTimer = window.setTimeout(selectNearestVisibleStage, 120);
+    }, { passive: true });
+    let isStageDragging = false;
+    let stageDragStartX = 0;
+    let stageDragStartLeft = 0;
+    nodes.stageGrid?.addEventListener("pointerdown", (event) => {
+      if (event.pointerType === "touch") return;
+      isStageDragging = true;
+      stageDragStartX = event.clientX;
+      stageDragStartLeft = nodes.stageGrid.scrollLeft;
+      nodes.stageGrid.classList.add("dragging");
+      nodes.stageGrid.setPointerCapture?.(event.pointerId);
+    });
+    nodes.stageGrid?.addEventListener("pointermove", (event) => {
+      if (!isStageDragging) return;
+      event.preventDefault();
+      nodes.stageGrid.scrollLeft = stageDragStartLeft - (event.clientX - stageDragStartX);
+    });
+    const endStageDrag = (event) => {
+      if (!isStageDragging) return;
+      isStageDragging = false;
+      nodes.stageGrid.classList.remove("dragging");
+      nodes.stageGrid.releasePointerCapture?.(event.pointerId);
+      window.clearTimeout(stageScrollTimer);
+      stageScrollTimer = window.setTimeout(selectNearestVisibleStage, 80);
+    };
+    nodes.stageGrid?.addEventListener("pointerup", endStageDrag);
+    nodes.stageGrid?.addEventListener("pointercancel", endStageDrag);
+    nodes.stageGrid?.addEventListener("pointerleave", endStageDrag);
+    nodes.packBtn?.addEventListener("click", drawPack);
     nodes.amuletBtn.addEventListener("click", () => {
       const wallet = window.WeightPlayWallet?.read() || { diamonds: 0 };
       if (wallet.diamonds < amuletCost) return;

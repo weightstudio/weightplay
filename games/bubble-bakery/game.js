@@ -54,7 +54,12 @@
       clearedStages: "Cleared {done}/{total}",
       totalStars: "Stars {stars}/{total}",
       nextGoal: "Next: clear {stage}",
+      perfectOrders: "Mastered {done}/{total}",
+      nextPerfectGoal: "Replay: master {stage}",
       allOrdersDone: "All bakery orders complete!",
+      stageNew: "New",
+      stageImprove: "Improve",
+      stageMastered: "Mastered",
     },
     "zh-Hant": {
       gameTitle: "動物泡泡烘焙坊",
@@ -104,7 +109,12 @@
       clearedStages: "已完成 {done}/{total}",
       totalStars: "星星 {stars}/{total}",
       nextGoal: "下一步：完成{stage}",
+      perfectOrders: "精通 {done}/{total}",
+      nextPerfectGoal: "重玩：精通{stage}",
       allOrdersDone: "全部烘焙訂單完成！",
+      stageNew: "新關卡",
+      stageImprove: "再提升",
+      stageMastered: "已精通",
     },
   };
 
@@ -247,11 +257,13 @@
       if (stageNo > unlocked) button.classList.add("locked");
       const orderIcons = Object.keys(stage.orders).map((id) => `<img src="${colorData(id).asset}" alt="" />`).join("");
       const got = stars[stageNo] || 0;
+      const badgeKey = got >= 3 ? "stageMastered" : got > 0 ? "stageImprove" : "stageNew";
       button.innerHTML = `
         <b class="stage-icons">${orderIcons}</b>
         <strong>${t("stage", { n: stageNo })}</strong>
         <small>${t(stage.theme)} · ${t("movesCount", { n: stage.moves })}</small>
-        <span>${starIcons(got, 3)}</span>
+        <span class="stage-stars">${starIcons(got, 3)}</span>
+        <span class="stage-badge">${t(badgeKey)}</span>
       `;
       button.addEventListener("click", () => {
         if (stageNo > unlocked) {
@@ -269,14 +281,19 @@
     const totalStars = stages.length * 3;
     const earnedStars = stages.reduce((sum, _, index) => sum + (stars[index + 1] || 0), 0);
     const cleared = stages.reduce((sum, _, index) => sum + ((stars[index + 1] || 0) > 0 ? 1 : 0), 0);
-    const nextStage = Math.min(stages.length, Math.max(1, cleared + 1));
-    const nextLabel = cleared >= stages.length
+    const mastered = stages.reduce((sum, _, index) => sum + ((stars[index + 1] || 0) >= 3 ? 1 : 0), 0);
+    const nextClearStage = Math.min(stages.length, Math.max(1, cleared + 1));
+    const nextMasterStage = stages.findIndex((_, index) => (stars[index + 1] || 0) < 3 && index + 1 <= unlocked) + 1;
+    const nextLabel = nextMasterStage > 0
+      ? t("nextPerfectGoal", { stage: t("stage", { n: nextMasterStage }) })
+      : cleared >= stages.length
       ? t("allOrdersDone")
-      : t("nextGoal", { stage: t("stage", { n: nextStage }) });
+      : t("nextGoal", { stage: t("stage", { n: nextClearStage }) });
     nodes.bakeryProgress.innerHTML = `
       <strong>${t("bakeryProgress")}</strong>
       <span>${t("clearedStages", { done: cleared, total: stages.length })}</span>
       <span>${t("totalStars", { stars: earnedStars, total: totalStars })}</span>
+      <span>${t("perfectOrders", { done: mastered, total: stages.length })}</span>
       <em>${nextLabel}</em>
     `;
   }
