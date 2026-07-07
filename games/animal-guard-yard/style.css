@@ -121,7 +121,10 @@ select {
 
 .menu-panel,
 .fixed-shell-host {
+  width: 100%;
+  max-width: 100%;
   flex: 1;
+  min-width: 0;
   min-height: 0;
   display: grid;
   align-content: start;
@@ -159,6 +162,10 @@ select {
 }
 
 .menu-shell {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow: hidden;
   border: 5px solid rgba(97, 67, 36, 0.9);
   border-radius: 28px;
   padding: 12px;
@@ -171,6 +178,14 @@ select {
     inset 0 0 0 3px rgba(255, 255, 255, 0.38),
     inset 0 -18px rgba(92, 53, 25, 0.12),
     0 18px 36px rgba(8, 16, 12, 0.36);
+}
+
+.menu-tab-panel {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  display: grid;
+  gap: 12px;
 }
 
 .cover {
@@ -200,6 +215,10 @@ select {
 }
 
 .beast-guide {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow: hidden;
   border-radius: 18px;
   padding: 10px;
   display: grid;
@@ -225,6 +244,7 @@ select {
 }
 
 .beast-guide-list {
+  min-width: 0;
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 7px;
@@ -324,8 +344,8 @@ select {
   gap: 10px;
   overflow-x: auto;
   overflow-y: hidden;
-  padding: 3px 6px 14px;
-  margin: 0 -6px;
+  padding: 3px 0 14px;
+  margin: 0;
   scroll-snap-type: x mandatory;
   scroll-padding-inline: 40%;
   -webkit-overflow-scrolling: touch;
@@ -395,6 +415,18 @@ select {
   color: rgba(59, 42, 23, 0.68);
   font-size: 0.82rem;
   line-height: 1.18;
+}
+
+.stage-plan {
+  display: -webkit-box;
+  min-height: 34px;
+  overflow: hidden;
+  color: rgba(59, 42, 23, 0.8);
+  font-size: 0.72rem;
+  font-weight: 950;
+  line-height: 1.32;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
 .stage-progress {
@@ -1882,6 +1914,19 @@ select {
     padding-inline: 8px;
   }
 
+  .menu-shell {
+    border-width: 3px;
+    border-radius: 20px;
+    padding: 8px;
+    gap: 10px;
+  }
+
+  .cover {
+    aspect-ratio: 16 / 9;
+    border-width: 3px;
+    border-radius: 18px;
+  }
+
   .fixed-shell-host {
     gap: 0;
     align-content: start;
@@ -1910,16 +1955,43 @@ select {
 
   .stage-grid {
     gap: 8px;
-    padding-bottom: 12px;
+    padding: 3px 0 12px;
     scroll-padding-inline: 30%;
   }
 
   .stage-card {
-    flex-basis: clamp(188px, 70vw, 248px);
+    flex-basis: clamp(178px, 68vw, 238px);
+  }
+
+  .stage-plan {
+    min-height: 30px;
+    font-size: 0.66rem;
   }
 
   .beast-guide-list {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .beast-guide-card {
+    min-height: 72px;
+    grid-template-columns: 52px minmax(0, 1fr);
+    align-items: center;
+  }
+
+  .beast-guide-card .zombie-sprite {
+    width: 44px;
+    height: 36px;
+  }
+
+  .wallet-row {
+    flex-wrap: wrap;
+    gap: 7px;
+  }
+
+  .wallet-row span {
+    min-width: min(132px, calc(50% - 4px));
+    flex: 1 1 0;
   }
 
   .play-head {

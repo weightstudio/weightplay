@@ -672,7 +672,7 @@ function renderWallet() {
 }
 
 function renderHeroGames() {
-  const cards = popularGames(3)
+  const cards = popularGames(5)
     .map((game, index) => {
       const isPlayable = game.status === "playable";
       const title = text(game.title);

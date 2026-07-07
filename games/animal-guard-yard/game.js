@@ -110,6 +110,14 @@
       crossfire: "Cross-lane ambush",
       tankTrial: "Shield stampede",
       grandBoss: "Grand boss garden",
+      stagePlan1: "Start with Cat damage, then add a Dog before the final beasts.",
+      stagePlan2: "Fast beasts hit the outer lanes. Place a Dog blocker early.",
+      stagePlan3: "Shield beasts are tough. Focus Cats and add Owl slows.",
+      stagePlan4: "Center lanes get crowded. Build the middle first, then sides.",
+      stagePlan5: "Boss stage. Block the boss lane and slow it with Owls.",
+      stagePlan6: "More lanes and speed. Upgrade Dogs and spread Cat damage.",
+      stagePlan7: "Shield-heavy stage. Use Owl slows and Fox burst if unlocked.",
+      stagePlan8: "Grand boss. Save sun for center lanes and extra blockers.",
     },
     "zh-Hant": {
       gameTitle: "\u52d5\u7269\u5b88\u885b\u5ead\u9662",
@@ -200,6 +208,14 @@
       crossfire: "\u8de8\u7dda\u5947\u8972",
       tankTrial: "\u76fe\u724c\u8a66\u7df4",
       grandBoss: "\u6700\u7d42\u5ead\u9662",
+      stagePlan1: "先用貓咪輸出，最後一波前補上小狗。",
+      stagePlan2: "外側快獸較多，提早放小狗擋路。",
+      stagePlan3: "盾獸血厚，用貓咪集火並搭配貓頭鷹緩速。",
+      stagePlan4: "中央壓力最高，先守中路再補兩側。",
+      stagePlan5: "Boss 關，Boss 路線放小狗並用貓頭鷹拖慢。",
+      stagePlan6: "路線更多且速度更快，升級小狗並分散貓咪。",
+      stagePlan7: "盾獸很多，靠貓頭鷹緩速與狐狸爆發。",
+      stagePlan8: "最終 Boss，保留陽光補中路與防線。",
     },
   };
 
@@ -231,14 +247,14 @@
   };
 
   const stages = [
-    { titleKey: "basic", theme: "sunny", energy: 155, hp: 4, rows: 5, cols: 9, total: 9, interval: 2850, zombies: [{ type: "normal", hp: 82, speed: 8.2, damage: 12 }] },
-    { titleKey: "fast", theme: "sunset", energy: 170, hp: 4, rows: 5, cols: 9, total: 12, interval: 2600, zombies: [{ type: "normal", hp: 95, speed: 9.2, damage: 13 }, { type: "fast", hp: 70, speed: 14.4, damage: 10 }] },
-    { titleKey: "shield", theme: "rain", energy: 185, hp: 4, rows: 5, cols: 9, total: 15, interval: 2380, zombies: [{ type: "normal", hp: 108, speed: 9.6, damage: 15 }, { type: "fast", hp: 82, speed: 14.8, damage: 12 }, { type: "shield", hp: 170, speed: 7.2, damage: 20 }] },
-    { titleKey: "swarm", theme: "swamp", energy: 205, hp: 5, rows: 5, cols: 9, total: 18, interval: 2180, zombies: [{ type: "normal", hp: 118, speed: 10.4, damage: 15 }, { type: "fast", hp: 90, speed: 16.2, damage: 13 }, { type: "shield", hp: 190, speed: 7.8, damage: 21 }] },
-    { titleKey: "boss", theme: "boss", energy: 230, hp: 5, rows: 5, cols: 9, total: 21, interval: 2080, zombies: [{ type: "normal", hp: 128, speed: 10.6, damage: 16 }, { type: "fast", hp: 98, speed: 16.8, damage: 14 }, { type: "shield", hp: 210, speed: 8, damage: 22 }], plan: [{ row: 2, type: "normal" }, { row: 1, type: "fast" }, { row: 3, type: "fast" }, { row: 0, type: "shield" }, { row: 4, type: "shield" }, { row: 2, type: "normal" }], boss: { type: "boss", hp: 650, speed: 4.8, damage: 34 } },
-    { titleKey: "crossfire", theme: "sunset", energy: 245, hp: 5, rows: 5, cols: 9, total: 24, interval: 1960, zombies: [{ type: "normal", hp: 142, speed: 11, damage: 17 }, { type: "fast", hp: 108, speed: 17.4, damage: 15 }, { type: "shield", hp: 228, speed: 8.3, damage: 23 }], plan: [{ row: 0, type: "fast" }, { row: 4, type: "fast" }, { row: 1, type: "normal" }, { row: 3, type: "normal" }, { row: 2, type: "shield" }, { row: 0, type: "normal" }, { row: 4, type: "shield" }, { row: 2, type: "fast" }] },
-    { titleKey: "tankTrial", theme: "rain", energy: 260, hp: 6, rows: 5, cols: 9, total: 26, interval: 1880, zombies: [{ type: "normal", hp: 154, speed: 11.4, damage: 18 }, { type: "shield", hp: 270, speed: 8.3, damage: 26 }, { type: "shield", hp: 300, speed: 7.3, damage: 29 }], plan: [{ row: 2, type: "shield" }, { row: 1, type: "normal" }, { row: 3, type: "shield" }, { row: 0, type: "normal" }, { row: 4, type: "shield" }, { row: 2, type: "shield" }, { row: 1, type: "shield" }, { row: 3, type: "normal" }] },
-    { titleKey: "grandBoss", theme: "boss", energy: 285, hp: 6, rows: 5, cols: 9, total: 28, interval: 1800, zombies: [{ type: "normal", hp: 168, speed: 11.8, damage: 19 }, { type: "fast", hp: 122, speed: 18.2, damage: 16 }, { type: "shield", hp: 300, speed: 8.6, damage: 30 }], plan: [{ row: 2, type: "shield" }, { row: 0, type: "fast" }, { row: 4, type: "fast" }, { row: 1, type: "normal" }, { row: 3, type: "normal" }, { row: 2, type: "shield" }, { row: 0, type: "shield" }, { row: 4, type: "shield" }, { row: 1, type: "fast" }, { row: 3, type: "fast" }], boss: { type: "boss", hp: 1020, speed: 5.1, damage: 42 } },
+    { titleKey: "basic", planKey: "stagePlan1", theme: "sunny", energy: 155, hp: 4, rows: 5, cols: 9, total: 9, interval: 2850, zombies: [{ type: "normal", hp: 82, speed: 8.2, damage: 12 }] },
+    { titleKey: "fast", planKey: "stagePlan2", theme: "sunset", energy: 170, hp: 4, rows: 5, cols: 9, total: 12, interval: 2600, zombies: [{ type: "normal", hp: 95, speed: 9.2, damage: 13 }, { type: "fast", hp: 70, speed: 14.4, damage: 10 }] },
+    { titleKey: "shield", planKey: "stagePlan3", theme: "rain", energy: 185, hp: 4, rows: 5, cols: 9, total: 15, interval: 2380, zombies: [{ type: "normal", hp: 108, speed: 9.6, damage: 15 }, { type: "fast", hp: 82, speed: 14.8, damage: 12 }, { type: "shield", hp: 170, speed: 7.2, damage: 20 }] },
+    { titleKey: "swarm", planKey: "stagePlan4", theme: "swamp", energy: 205, hp: 5, rows: 5, cols: 9, total: 18, interval: 2180, zombies: [{ type: "normal", hp: 118, speed: 10.4, damage: 15 }, { type: "fast", hp: 90, speed: 16.2, damage: 13 }, { type: "shield", hp: 190, speed: 7.8, damage: 21 }] },
+    { titleKey: "boss", planKey: "stagePlan5", theme: "boss", energy: 230, hp: 5, rows: 5, cols: 9, total: 21, interval: 2080, zombies: [{ type: "normal", hp: 128, speed: 10.6, damage: 16 }, { type: "fast", hp: 98, speed: 16.8, damage: 14 }, { type: "shield", hp: 210, speed: 8, damage: 22 }], plan: [{ row: 2, type: "normal" }, { row: 1, type: "fast" }, { row: 3, type: "fast" }, { row: 0, type: "shield" }, { row: 4, type: "shield" }, { row: 2, type: "normal" }], boss: { type: "boss", hp: 650, speed: 4.8, damage: 34 } },
+    { titleKey: "crossfire", planKey: "stagePlan6", theme: "sunset", energy: 245, hp: 5, rows: 5, cols: 9, total: 24, interval: 1960, zombies: [{ type: "normal", hp: 142, speed: 11, damage: 17 }, { type: "fast", hp: 108, speed: 17.4, damage: 15 }, { type: "shield", hp: 228, speed: 8.3, damage: 23 }], plan: [{ row: 0, type: "fast" }, { row: 4, type: "fast" }, { row: 1, type: "normal" }, { row: 3, type: "normal" }, { row: 2, type: "shield" }, { row: 0, type: "normal" }, { row: 4, type: "shield" }, { row: 2, type: "fast" }] },
+    { titleKey: "tankTrial", planKey: "stagePlan7", theme: "rain", energy: 260, hp: 6, rows: 5, cols: 9, total: 26, interval: 1880, zombies: [{ type: "normal", hp: 154, speed: 11.4, damage: 18 }, { type: "shield", hp: 270, speed: 8.3, damage: 26 }, { type: "shield", hp: 300, speed: 7.3, damage: 29 }], plan: [{ row: 2, type: "shield" }, { row: 1, type: "normal" }, { row: 3, type: "shield" }, { row: 0, type: "normal" }, { row: 4, type: "shield" }, { row: 2, type: "shield" }, { row: 1, type: "shield" }, { row: 3, type: "normal" }] },
+    { titleKey: "grandBoss", planKey: "stagePlan8", theme: "boss", energy: 285, hp: 6, rows: 5, cols: 9, total: 28, interval: 1800, zombies: [{ type: "normal", hp: 168, speed: 11.8, damage: 19 }, { type: "fast", hp: 122, speed: 18.2, damage: 16 }, { type: "shield", hp: 300, speed: 8.6, damage: 30 }], plan: [{ row: 2, type: "shield" }, { row: 0, type: "fast" }, { row: 4, type: "fast" }, { row: 1, type: "normal" }, { row: 3, type: "normal" }, { row: 2, type: "shield" }, { row: 0, type: "shield" }, { row: 4, type: "shield" }, { row: 1, type: "fast" }, { row: 3, type: "fast" }], boss: { type: "boss", hp: 1020, speed: 5.1, damage: 42 } },
   ];
 
   const $ = (id) => document.getElementById(id);
@@ -546,6 +562,7 @@
         <b class="stage-animal">${animalSprite(iconUnit)}</b>
         <strong>${t("stage", { n: stageNo })}</strong>
         <span>${t(stage.titleKey)}</span>
+        ${stage.planKey ? `<small class="stage-plan">${t(stage.planKey)}</small>` : ""}
         ${progressMeta}
         ${stageThreatPreview(stage)}
       `;
