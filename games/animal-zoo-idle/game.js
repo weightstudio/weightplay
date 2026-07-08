@@ -116,6 +116,13 @@
       nextGoalReady: "Ready to recruit",
       nextGoalNeed: "Need {coins} more",
       nextGoalAll: "All animals recruited",
+      todayGoal: "Today",
+      todayGoalReady: "Ready",
+      todayGoalCollect: "Collect the ticket box",
+      todayGoalCare: "Care for the animals",
+      todayGoalBuild: "Build the next upgrade",
+      todayGoalTour: "Claim the tour reward",
+      todayGoalComplete: "Park tour complete",
       taskBoard: "Zoo Tasks",
       taskCollect: "Collect {coins} from the ticket box",
       taskCollectReady: "Ticket box is ready",
@@ -239,6 +246,13 @@
     nextGoalReady: "\u53ef\u4ee5\u62db\u52df",
     nextGoalNeed: "\u9084\u5dee {coins}",
     nextGoalAll: "\u6240\u6709\u52d5\u7269\u90fd\u52a0\u5165\u4e86",
+    todayGoal: "\u4eca\u65e5\u76ee\u6a19",
+    todayGoalReady: "\u53ef\u4ee5\u884c\u52d5",
+    todayGoalCollect: "\u6536\u53d6\u7968\u7bb1",
+    todayGoalCare: "\u7167\u9867\u52d5\u7269",
+    todayGoalBuild: "\u5efa\u8a2d\u4e0b\u4e00\u500b\u5347\u7d1a",
+    todayGoalTour: "\u9818\u53d6\u5de1\u8ff4\u734e\u52f5",
+    todayGoalComplete: "\u5712\u5340\u5de1\u8ff4\u5b8c\u6210",
     taskBoard: "\u6a02\u5712\u4efb\u52d9",
     taskCollect: "\u6536\u96c6\u7968\u7bb1\u7684 {coins}",
     taskCollectReady: "\u53ef\u4ee5\u6536\u7968\u4e86",
@@ -620,6 +634,40 @@
       && save.tour.built >= targets.built;
   }
 
+  function todayGoal() {
+    const targets = tourTargets();
+    if (isTourComplete()) {
+      return {
+        label: t("todayGoalTour"),
+        status: t("todayGoalReady"),
+        progress: 1,
+        ready: true,
+      };
+    }
+    const buildGoal = nextBuildGoal();
+    const options = [
+      {
+        label: t("todayGoalCollect"),
+        status: `${formatNumber(save.tour.collected)} / ${formatNumber(targets.collected)}`,
+        progress: taskProgress(save.tour.collected, targets.collected),
+        ready: save.tour.collected >= targets.collected,
+      },
+      {
+        label: t("todayGoalCare"),
+        status: `${formatNumber(save.tour.cared)} / ${formatNumber(targets.cared)}`,
+        progress: taskProgress(save.tour.cared, targets.cared),
+        ready: save.tour.cared >= targets.cared,
+      },
+      {
+        label: buildGoal.type === "complete" ? t("todayGoalComplete") : t("todayGoalBuild"),
+        status: `${formatNumber(save.tour.built)} / ${formatNumber(targets.built)}`,
+        progress: taskProgress(save.tour.built, targets.built),
+        ready: save.tour.built >= targets.built,
+      },
+    ];
+    return options.find((goal) => !goal.ready) || options[0];
+  }
+
   function visitorCount() {
     return clamp(Math.ceil(incomePerTick() / 18) + facilityVisitorBonus(), 2, 9);
   }
@@ -710,6 +758,7 @@
         <div class="heart-field"></div>
       </div>
       <div class="care-panel">
+        <div class="daily-focus-card" aria-live="polite"></div>
         <div class="happy-meter"><span>${t("happiness")}</span><b>${Math.round(save.happiness)}%</b><i style="width:${save.happiness}%"></i></div>
         <div class="park-plan-card" aria-live="polite"></div>
         <div class="tour-board" aria-live="polite"></div>
@@ -738,6 +787,7 @@
     card.querySelector('[data-action="upgrade"]').addEventListener("click", upgradeGate);
     card.querySelector('[data-action="report"]').addEventListener("click", showReport);
     card.querySelector('[data-action="next-goal"]').addEventListener("click", recruitAnimal);
+    renderDailyFocus(card.querySelector(".daily-focus-card"));
     renderNextGoal(card.querySelector(".next-goal-card"));
     renderParkPlan(card.querySelector(".park-plan-card"));
     renderTourBoard(card.querySelector(".tour-board"));
@@ -769,6 +819,7 @@
     const happyFill = card.querySelector(".happy-meter i");
     if (happyText) happyText.textContent = `${Math.round(save.happiness)}%`;
     if (happyFill) happyFill.style.width = `${save.happiness}%`;
+    renderDailyFocus(card.querySelector(".daily-focus-card"));
     renderParkPlan(card.querySelector(".park-plan-card"));
     renderTourBoard(card.querySelector(".tour-board"));
     const upgrade = card.querySelector('[data-action="upgrade"]');
@@ -992,6 +1043,20 @@
       <strong>${t("nextGoal")}: ${t(animal.id)}</strong>
       <span>${missing <= 0 ? t("nextGoalReady") : t("nextGoalNeed", { coins: formatCost(missing) })}</span>
       <small>${formatCost(animal.cost)} - ${t("incomeShort", { n: formatNumber(animal.baseIncome) })}</small>
+    `;
+  }
+
+  function renderDailyFocus(container) {
+    if (!container) return;
+    const goal = todayGoal();
+    container.classList.toggle("ready", goal.ready);
+    container.innerHTML = `
+      <div>
+        <strong>${t("todayGoal")}</strong>
+        <span>${goal.status}</span>
+      </div>
+      <b>${goal.label}</b>
+      <i style="--daily-progress:${Math.round(goal.progress * 100)}%"></i>
     `;
   }
 

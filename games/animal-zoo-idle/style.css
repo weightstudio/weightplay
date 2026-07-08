@@ -1383,6 +1383,52 @@ body.zoo-playing .savanna-stage {
   filter: grayscale(.2);
 }
 
+.daily-focus-card {
+  min-height: 74px;
+  border-radius: 18px;
+  padding: 10px 12px;
+  display: grid;
+  gap: 6px;
+  background: linear-gradient(180deg, rgba(255,255,255,.96), rgba(228,255,195,.93));
+  box-shadow: inset 0 0 0 2px rgba(255,255,255,.7), 0 8px 16px rgba(82,48,18,.13);
+  font-weight: 950;
+}
+
+.daily-focus-card div {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.daily-focus-card strong,
+.daily-focus-card b,
+.daily-focus-card span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.daily-focus-card span {
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .72);
+  color: #4b8a2f;
+  font-size: .76rem;
+}
+
+.daily-focus-card > i {
+  height: 8px;
+  border-radius: 999px;
+  background:
+    linear-gradient(90deg, #52cf64 0%, #ffe066 var(--daily-progress, 0%), rgba(123, 92, 50, .16) var(--daily-progress, 0%), rgba(123, 92, 50, .16) 100%);
+  box-shadow: inset 0 1px rgba(255,255,255,.62);
+}
+
+.daily-focus-card.ready {
+  background: linear-gradient(180deg, #f8ffcf 0%, #b8f07f 100%);
+}
+
 
 body.zoo-playing .care-panel {
   height: auto;
@@ -1402,6 +1448,27 @@ body.zoo-playing .happy-meter {
   height: 38px;
   padding: 6px 10px;
   border-radius: 13px;
+}
+
+body.zoo-playing .daily-focus-card {
+  min-height: 58px;
+  border-radius: 13px;
+  padding: 7px 8px;
+  gap: 4px;
+}
+
+body.zoo-playing .daily-focus-card strong,
+body.zoo-playing .daily-focus-card b {
+  font-size: clamp(.64rem, 2.6vw, .82rem);
+}
+
+body.zoo-playing .daily-focus-card span {
+  font-size: clamp(.52rem, 2vw, .64rem);
+  padding: 3px 6px;
+}
+
+body.zoo-playing .daily-focus-card > i {
+  height: 7px;
 }
 
 body.zoo-playing .park-plan-card {
