@@ -106,6 +106,18 @@
     focusPlayableArea(findPlayableFrame());
   }
 
+  function preserveGuideWheelScroll(event) {
+    if (!document.body?.classList.contains("has-game-page-info")) return;
+    if (event.ctrlKey || Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
+    const startY = window.scrollY;
+    const deltaY = event.deltaY;
+    window.requestAnimationFrame(() => {
+      if (!document.body?.classList.contains("has-game-page-info")) return;
+      if (Math.abs(window.scrollY - startY) > 2) return;
+      window.scrollBy({ top: deltaY, left: 0, behavior: "auto" });
+    });
+  }
+
   function installPlayableFocus() {
     const nodes = Array.from(document.querySelectorAll(focusContainerSelectors.join(",")));
     nodes.forEach((node) => {
@@ -176,6 +188,7 @@
   window.addEventListener("touchmove", move, { passive: false, capture: true });
   window.addEventListener("touchend", end, { passive: true, capture: true });
   window.addEventListener("touchcancel", end, { passive: true, capture: true });
+  window.addEventListener("wheel", preserveGuideWheelScroll, { passive: true, capture: true });
   window.addEventListener("selectstart", blockSelection, { capture: true });
   window.addEventListener("dragstart", blockNativeDrag, { capture: true });
 })();

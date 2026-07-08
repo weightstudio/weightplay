@@ -1283,6 +1283,12 @@
       window.clearTimeout(stageScrollTimer);
       stageScrollTimer = window.setTimeout(selectNearestVisibleStage, 120);
     }, { passive: true });
+    nodes.stageGrid?.addEventListener("wheel", (event) => {
+      if (event.ctrlKey || event.shiftKey) return;
+      if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
+      event.preventDefault();
+      window.scrollBy({ top: event.deltaY, left: 0, behavior: "auto" });
+    }, { passive: false });
     let isStageDragging = false;
     let stageDragStartX = 0;
     let stageDragStartLeft = 0;
