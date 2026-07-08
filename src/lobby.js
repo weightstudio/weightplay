@@ -57,6 +57,13 @@ const dailyRewardTrack = [5, 6, 8, 10, 12, 15, 25];
 const featuredSkillPaths = ["Memory", "Logic", "Reaction", "Focus", "Problem Solving", "Animal Knowledge"];
 const recentlyUpdatedGameIds = new Set(["animal-reef-fisher", "animal-rune-tactics", "animal-orb-fortress", "beast-deck"]);
 const mobilePickGameIds = ["animal-guard-yard", "animal-reef-fisher", "animal-auto-squad", "fruit-merge"];
+const hiddenTrialGate = {
+  gameId: "beast-tactician",
+  tapsRequired: 10,
+  resetMs: 8000,
+  count: 0,
+  timer: 0,
+};
 const weightPlayCharacters = [
   {
     nameKey: "character.spark_paw_fox.name",
@@ -1191,6 +1198,7 @@ function showToast(message) {
 }
 
 function showPlannedGame(game) {
+  if (handleHiddenTrialGate(game)) return;
   window.WonderSound?.play("wrong");
   window.WonderAnalytics?.track("planned_game_click", {
     game_id: game.id,
@@ -1200,6 +1208,40 @@ function showPlannedGame(game) {
     locale: i18n.locale(),
   });
   showToast(i18n.t("toast.coming_soon", { title: text(game.title) }));
+}
+
+function handleHiddenTrialGate(game) {
+  if (game.id !== hiddenTrialGate.gameId) return false;
+
+  hiddenTrialGate.count += 1;
+  clearTimeout(hiddenTrialGate.timer);
+
+  window.WonderAnalytics?.track("hidden_trial_gate_tap", {
+    game_id: game.id,
+    tap_count: hiddenTrialGate.count,
+    taps_required: hiddenTrialGate.tapsRequired,
+    locale: i18n.locale(),
+  });
+
+  if (hiddenTrialGate.count >= hiddenTrialGate.tapsRequired) {
+    hiddenTrialGate.count = 0;
+    try {
+      sessionStorage.setItem("beastGuardianTrialUnlocked", "true");
+    } catch (error) {
+      // The trial route can still open when storage is unavailable.
+    }
+    window.WonderSound?.play("success");
+    window.location.href = `${game.href}internal-test.html?trial=1`;
+    return true;
+  }
+
+  hiddenTrialGate.timer = setTimeout(() => {
+    hiddenTrialGate.count = 0;
+  }, hiddenTrialGate.resetMs);
+
+  window.WonderSound?.play("click");
+  showToast(`${i18n.t("toast.coming_soon", { title: text(game.title) })} ${hiddenTrialGate.count}/${hiddenTrialGate.tapsRequired}`);
+  return true;
 }
 
 filterButtons.forEach((button) => {
