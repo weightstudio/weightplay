@@ -734,8 +734,7 @@ body {
   min-width: 0;
 }
 
-.backpack-copy strong,
-.backpack-copy small {
+.backpack-copy strong {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -749,6 +748,11 @@ body {
 .backpack-copy small {
   color: #9ee7c4;
   font-size: 0.72rem;
+  line-height: 1.25;
+}
+
+.backpack-copy .gear-next-effect {
+  color: #fde68a;
 }
 
 .backpack-actions {

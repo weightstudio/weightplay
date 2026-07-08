@@ -381,7 +381,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "探索古代遺跡房間，收集遺跡能量球，解鎖寶箱並穿戴強力裝備，最終擊敗強大首領。"
       },
       meta: { en: ["Action Roguelite", "3 Rooms", "Gear Slots"], "zh-Hant": ["動作冒險", "3 個房間", "裝備系統"] },
-      art: { kind: "image", background: "assets/animal-relic-hunters-cover.png", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
+      art: { kind: "image", background: "assets/animal-relic-hunters-cover.png", hero: "assets/weightplay-character-boom-mane-lion-cutout.webp" },
     },
     {
       id: "animal-rune-tactics",
@@ -399,7 +399,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "指揮獅子、貓頭鷹與烏龜小隊，在符文格上移動、攻擊、防禦，清除影獸並保存本機進度。"
       },
       meta: { en: ["Turn-Based Tactics", "Rune Rewards", "Local Progress"], "zh-Hant": ["回合制戰棋", "符文獎勵", "本機進度"] },
-      art: { kind: "image", background: "assets/animal-rune-tactics-cover.webp", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
+      art: { kind: "image", background: "assets/animal-rune-tactics-cover.webp", hero: "assets/weightplay-character-moon-cap-owl-cutout.webp" },
     },
     {
       id: "animal-orb-fortress",
@@ -417,7 +417,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "\u7784\u6e96\u52d5\u7269\u661f\u73e0\u7a7f\u8d8a\u6c34\u6676\u8981\u585e\u623f\u9593\uff0c\u898f\u5283\u53cd\u5f48\u8def\u7dda\uff0c\u5347\u7d1a\u57fa\u5730\uff0c\u4e26\u6e96\u5099\u8fce\u6230 Boss \u6ce2\u6b21\u3002",
       },
       meta: { en: ["Orb Bounces", "Fortress Growth", "Boss Waves"], "zh-Hant": ["\u661f\u73e0\u53cd\u5f48", "\u8981\u585e\u6210\u9577", "Boss \u6ce2\u6b21"] },
-      art: { kind: "image", background: "assets/animal-orb-fortress-cover.webp", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
+      art: { kind: "image", background: "assets/animal-orb-fortress-cover.webp", hero: "assets/weightplay-character-moss-shell-turtle-cutout.webp" },
     },
     {
       id: "animal-auto-squad",
@@ -435,7 +435,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "招募、升級並擺放你的動物小隊，在自動戰鬥中擊退影之獸完成遠征。"
       },
       meta: { en: ["Strategy", "10 Rounds", "13+ Diamond Sink"], "zh-Hant": ["策略自走", "10 回合", "鑽石經濟"] },
-      art: { kind: "image", background: "assets/animal-auto-squad-cover.webp", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
+      art: { kind: "image", background: "assets/animal-auto-squad-cover.webp", hero: "assets/weightplay-character-gear-horn-rhino-cutout.webp" },
     },
     {
       id: "beast-tactician",
@@ -519,6 +519,6 @@ window.WONDER_LOBBY.games.push({
   art: {
     kind: "image",
     background: "assets/animal-reef-fisher-cover.webp",
-    hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>",
+    hero: "assets/weightplay-character-bubble-fin-otter-cutout.webp",
   },
 });

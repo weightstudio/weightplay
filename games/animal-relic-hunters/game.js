@@ -393,6 +393,22 @@
     bossWarning: "遺跡巨獸即將出現！"
   });
 
+  Object.assign(text.en, {
+    lootNewGear: "New gear added to backpack.",
+    lootDuplicateGear: "Duplicate gear converted into +{gold} gold.",
+    gearCurrentEffect: "Now: {effect}",
+    gearNextEffect: "Next: {effect}",
+    gearMaxLevel: "Max level",
+  });
+
+  Object.assign(text["zh-Hant"], {
+    lootNewGear: "\u65b0\u88dd\u5099\u5df2\u52a0\u5165\u80cc\u5305\u3002",
+    lootDuplicateGear: "\u91cd\u8907\u88dd\u5099\u5df2\u8f49\u6210 +{gold} \u91d1\u5e63\u3002",
+    gearCurrentEffect: "\u76ee\u524d\uff1a{effect}",
+    gearNextEffect: "\u4e0b\u4e00\u7d1a\uff1a{effect}",
+    gearMaxLevel: "\u5df2\u6eff\u7d1a",
+  });
+
   // Textures and Sprites
   const assets = {
     bg: new Image(),
@@ -623,19 +639,40 @@
     return Math.floor(rarityBase * Math.pow(1.45, level - 1));
   }
 
-  function gearScale(key) {
-    return 1 + (gearLevel(key) - 1) * 0.18;
+  function gearScaleAtLevel(level) {
+    return 1 + (Math.max(1, Math.min(10, Math.floor(Number(level) || 1))) - 1) * 0.18;
   }
 
-  function describeGearEffect(key) {
+  function gearScale(key) {
+    return gearScaleAtLevel(gearLevel(key));
+  }
+
+  function describeGearEffectAtLevel(key, level) {
     const g = gearDb[key];
     if (!g) return "";
-    const scale = gearScale(key);
-    if (g.bonusDmg) return `+${Math.round(g.bonusDmg * scale)} ${t("statDamage").replace(":", "")}`;
+    const scale = gearScaleAtLevel(level);
+    if (g.bonusDmg) return `+${(g.bonusDmg * scale).toFixed(1)} ${t("statDamage").replace(":", "")}`;
     if (g.bonusRate) return `-${Math.round(g.bonusRate * scale * 100)}% ${t("statAttackRate").replace(":", "")}`;
     if (g.bonusHp) return `+${Math.round(g.bonusHp * scale)} ${t("statMaxHp") || "Max HP"}`;
     if (g.bonusSpeed) return `+${(g.bonusSpeed * scale).toFixed(1)} ${t("statSpeed").replace(":", "")}`;
     return t(g.effectKey);
+  }
+
+  function describeGearEffect(key) {
+    return describeGearEffectAtLevel(key, gearLevel(key));
+  }
+
+  function describeGearNextEffect(key) {
+    const level = gearLevel(key);
+    if (level >= 10) return t("gearMaxLevel");
+    return t("gearNextEffect", { effect: describeGearEffectAtLevel(key, level + 1) });
+  }
+
+  function duplicateGearGold(key) {
+    const g = gearDb[key];
+    if (!g) return 0;
+    const base = g.typeKey === "rarity_epic" ? 55 : 30;
+    return base + (gearLevel(key) * 5);
   }
 
   function nextGearUpgradeCandidate() {
@@ -892,7 +929,8 @@
         <img src="${g.iconSrc}" alt="" aria-hidden="true">
         <span class="backpack-copy">
           <strong>${t(g.nameKey)}</strong>
-          <small>${describeGearEffect(key)}</small>
+          <small>${t("gearCurrentEffect", { effect: describeGearEffect(key) })}</small>
+          <small class="gear-next-effect">${describeGearNextEffect(key)}</small>
         </span>
         <span class="gear-level-tag">${t("gearLevelLabel", { level })}</span>
         <span class="backpack-actions">
@@ -916,6 +954,18 @@
       profile.gearLevels[key] = Math.max(1, Math.floor(Number(profile.gearLevels[key]) || 1));
       saveProfile();
     }
+  }
+
+  function claimGearDrop(key) {
+    if (!gearDb[key]) return { isNew: false, duplicateGold: 0 };
+    if (!profile.inventory.includes(key)) {
+      addGearToInventory(key);
+      return { isNew: true, duplicateGold: 0 };
+    }
+
+    const duplicateGold = duplicateGearGold(key);
+    gainGold(duplicateGold);
+    return { isNew: false, duplicateGold };
   }
 
   function upgradeGearItem(key) {
@@ -1249,11 +1299,15 @@
     currentLootItem = pickedKey;
 
     const g = gearDb[pickedKey];
+    const dropResult = claimGearDrop(pickedKey);
     nodes.lootIcon.innerHTML = `<img src="${g.iconSrc}" alt="" aria-hidden="true">`;
     nodes.lootName.textContent = t(g.nameKey);
     nodes.lootType.textContent = t(g.typeKey);
-    nodes.lootEffect.textContent = t(g.effectKey);
-    addGearToInventory(pickedKey);
+    nodes.lootEffect.textContent = [
+      dropResult.isNew ? t("lootNewGear") : t("lootDuplicateGear", { gold: dropResult.duplicateGold }),
+      t("gearCurrentEffect", { effect: describeGearEffect(pickedKey) }),
+      describeGearNextEffect(pickedKey),
+    ].join(" ");
     renderEquippedGear();
 
     nodes.lootPanel.classList.remove("hidden");
@@ -1906,6 +1960,13 @@
         forceGainGold(amount = 17) {
           gainGold(amount);
           return this.snapshot();
+        },
+        forceGearDrop(key = "sword-rare") {
+          const result = claimGearDrop(key);
+          renderEquippedGear();
+          updateDiamondShopUI();
+          updateHUDText();
+          return { ...this.snapshot(), dropResult: result };
         },
         snapshot() {
           return {
