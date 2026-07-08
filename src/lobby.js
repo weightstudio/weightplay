@@ -56,32 +56,32 @@ const weightPlayCharacters = [
   {
     nameKey: "character.spark_paw_fox.name",
     roleKey: "character.spark_paw_fox.role",
-    image: "assets/weightplay-character-spark-paw-fox.png",
+    image: "assets/weightplay-character-spark-paw-fox-cutout.webp",
   },
   {
     nameKey: "character.boom_mane_lion.name",
     roleKey: "character.boom_mane_lion.role",
-    image: "assets/weightplay-character-boom-mane-lion.png",
+    image: "assets/weightplay-character-boom-mane-lion-cutout.webp",
   },
   {
     nameKey: "character.moss_shell_turtle.name",
     roleKey: "character.moss_shell_turtle.role",
-    image: "assets/weightplay-character-moss-shell-turtle.png",
+    image: "assets/weightplay-character-moss-shell-turtle-cutout.webp",
   },
   {
     nameKey: "character.moon_cap_owl.name",
     roleKey: "character.moon_cap_owl.role",
-    image: "assets/weightplay-character-moon-cap-owl.png",
+    image: "assets/weightplay-character-moon-cap-owl-cutout.webp",
   },
   {
     nameKey: "character.bubble_fin_otter.name",
     roleKey: "character.bubble_fin_otter.role",
-    image: "assets/weightplay-character-bubble-fin-otter.png",
+    image: "assets/weightplay-character-bubble-fin-otter-cutout.webp",
   },
   {
     nameKey: "character.gear_horn_rhino.name",
     roleKey: "character.gear_horn_rhino.role",
-    image: "assets/weightplay-character-gear-horn-rhino.png",
+    image: "assets/weightplay-character-gear-horn-rhino-cutout.webp",
   },
 ];
 const ageFilterGroups = {

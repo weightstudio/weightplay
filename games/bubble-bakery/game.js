@@ -716,7 +716,7 @@
   function initLoading() {
     const assets = [
       "../../assets/bubble-bakery-cover.webp",
-      "../../assets/weightplay-character-drum-belly-panda.png",
+      "../../assets/weightplay-character-drum-belly-panda-cutout.webp",
       "assets/order-target-ring.png",
       ...colors.map((item) => item.asset),
     ];

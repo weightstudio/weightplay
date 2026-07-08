@@ -2,7 +2,7 @@ window.WONDER_DATA = {
   assets: {
     images: {
       bg: "assets/battle-bg.webp",
-      hero: "assets/weightplay-character-boom-mane-lion.png",
+      hero: "assets/weightplay-character-boom-mane-lion-cutout.webp",
       wall: "assets/wall.webp",
       eraser: "assets/eraser.png",
       pencil: "assets/weapon-pencil.png",

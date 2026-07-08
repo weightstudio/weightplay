@@ -445,14 +445,14 @@
     enemies: "../../assets/animal-auto-squad-enemies.webp",
     items: "../../assets/animal-auto-squad-items.webp",
     fx: "../../assets/animal-auto-squad-fx.webp",
-    sparkFox: "../../assets/weightplay-character-spark-paw-fox.png",
-    bubbleOtter: "../../assets/weightplay-character-bubble-fin-otter.png",
-    drumPanda: "../../assets/weightplay-character-drum-belly-panda.png",
-    moonOwl: "../../assets/weightplay-character-moon-cap-owl.png",
-    mossTurtle: "../../assets/weightplay-character-moss-shell-turtle.png",
-    rainbowRabbit: "../../assets/weightplay-character-rainbow-hop-rabbit.png",
-    gearRhino: "../../assets/weightplay-character-gear-horn-rhino.png",
-    boomLion: "../../assets/weightplay-character-boom-mane-lion.png",
+    sparkFox: "../../assets/weightplay-character-spark-paw-fox-cutout.webp",
+    bubbleOtter: "../../assets/weightplay-character-bubble-fin-otter-cutout.webp",
+    drumPanda: "../../assets/weightplay-character-drum-belly-panda-cutout.webp",
+    moonOwl: "../../assets/weightplay-character-moon-cap-owl-cutout.webp",
+    mossTurtle: "../../assets/weightplay-character-moss-shell-turtle-cutout.webp",
+    rainbowRabbit: "../../assets/weightplay-character-rainbow-hop-rabbit-cutout.webp",
+    gearRhino: "../../assets/weightplay-character-gear-horn-rhino-cutout.webp",
+    boomLion: "../../assets/weightplay-character-boom-mane-lion-cutout.webp",
     foodApple: "assets/food-apple.svg",
     foodHoney: "assets/food-honey.svg",
     foodMelon: "assets/food-melon.svg",
@@ -462,6 +462,7 @@
   let loadedCount = 0;
   let assetsReady = false;
   let appStarted = false;
+  let preloadStarted = false;
   const totalAssets = Object.keys(assetsToLoad).length;
 
   function updateLoadingProgress() {
@@ -471,6 +472,10 @@
   }
 
   function preloadAssets(onDone = () => {}) {
+    if (assetsReady) {
+      onDone();
+      return;
+    }
     loadedCount = 0;
     updateLoadingProgress();
     for (const [key, src] of Object.entries(assetsToLoad)) {
@@ -498,15 +503,39 @@
     }
   }
 
+  function scheduleAssetPreload() {
+    if (preloadStarted) return;
+    preloadStarted = true;
+
+    const startPreload = () => preloadAssets();
+    if (window.location.search.includes("smoke=first-screen")) {
+      window.setTimeout(startPreload, 1200);
+      return;
+    }
+    if ("requestIdleCallback" in window) {
+      window.requestIdleCallback(startPreload, { timeout: 1800 });
+      return;
+    }
+    window.setTimeout(startPreload, 800);
+  }
+
   function startApp() {
     if (appStarted) return;
     appStarted = true;
     setupEvents();
     setLocale(locale);
     renderMenu();
-    requestAnimationFrame(() => nodes.loadingPanel.classList.add("is-hidden"));
+    nodes.loadingPanel.classList.add("is-hidden");
     window.__ANIMAL_AUTO_SQUAD_BOOTED__ = true;
-    window.setTimeout(() => preloadAssets(), 0);
+    window.__ANIMAL_AUTO_SQUAD_FIRST_SCREEN__ = {
+      booted: true,
+      title: document.title,
+      language: locale,
+      startText: nodes.startBtn.textContent.trim(),
+      loadingHidden: nodes.loadingPanel.classList.contains("is-hidden"),
+      menuHidden: nodes.menuPanel.classList.contains("is-hidden")
+    };
+    scheduleAssetPreload();
   }
 
   // Render Functions
