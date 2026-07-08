@@ -48,6 +48,9 @@
     newAlbumText: $("newAlbumText"),
     catchList: $("catchList"),
     catchToast: $("catchToast"),
+    runScoreText: $("runScoreText"),
+    runValueText: $("runValueText"),
+    lastCatchText: $("lastCatchText"),
     skillReportText: $("skillReportText"),
   };
 
@@ -100,10 +103,15 @@
       result: "Landed {catches} catches, discovered {newFish} new album entries, and earned {notes} Reef Notes.",
       score: "Score",
       catchValue: "Catch Value",
+      runScore: "Run Score",
+      runCatchValue: "Reef Notes",
+      lastCatch: "Last Catch",
+      noCatchYet: "No catch yet",
       newAlbum: "New Album",
       catchSummary: "This Expedition's Catch",
       catchToast: "Caught {fish}",
       catchToastMeta: "+{points} pts · +{notes} notes{newTag}",
+      catchHudMeta: "{rarity} · +{points} pts · +{notes} notes{newTag}",
       newTag: " · New album!",
       noCatch: "No fish landed yet. Try a safer cast and keep the line in SAFE.",
       rareFish: "Rare",
@@ -159,10 +167,15 @@
       result: "收獲 {catches} 次，發現 {newFish} 個新圖鑑項目，並獲得 {notes} 份礁石筆記。",
       score: "分數",
       catchValue: "漁獲價值",
+      runScore: "本局分數",
+      runCatchValue: "礁石筆記",
+      lastCatch: "最新漁獲",
+      noCatchYet: "尚未釣到",
       newAlbum: "新圖鑑",
       catchSummary: "本次漁獲",
       catchToast: "釣到 {fish}",
       catchToastMeta: "+{points} 分 · +{notes} 筆記{newTag}",
+      catchHudMeta: "{rarity} · +{points} 分 · +{notes} 筆記{newTag}",
       newTag: " · 新圖鑑！",
       noCatch: "還沒有釣到魚。試著拋近一點，並把張力留在安全區。",
       rareFish: "稀有",
@@ -292,6 +305,7 @@
     });
     renderMenu();
     updateTensionGuide();
+    updateCatchHud();
   }
 
   function loadImages() {
@@ -381,6 +395,7 @@
       splashTimer: 0,
       sonarPulse: 0,
       catchToastTimer: 0,
+      lastCatch: null,
       finished: false,
       lureUsed: save.lureReady,
       sonarReady: save.sonarReady,
@@ -394,6 +409,7 @@
     nodes.hintText.textContent = t("castHint");
     nodes.catchToast.classList.add("is-hidden");
     nodes.catchToast.innerHTML = "";
+    updateCatchHud();
     updateTensionGuide();
     state = "game";
     showPanel("game");
@@ -453,6 +469,7 @@
     run.score += points;
     run.catchValue += notes;
     run.catchLog.push({ id, points, notes, isNew });
+    run.lastCatch = { id, points, notes, isNew };
     run.catches += 1;
     run.notes += notes;
     run.phase = "aim";
@@ -460,6 +477,7 @@
     run.splashTimer = 0.8;
     run.catchToastTimer = 1.7;
     showCatchToast(caught, points, notes, isNew);
+    updateCatchHud();
     nodes.goalText.textContent = `${run.catches}/${run.zone.goal}`;
     nodes.hintText.textContent = `${t("landed")} ${caught.name[locale]} +${points}`;
     updateTensionGuide();
@@ -484,6 +502,29 @@
       <span>${t("catchToastMeta", { points, notes, newTag: isNew ? t("newTag") : "" })}</span>
     `;
     nodes.catchToast.classList.remove("is-hidden");
+  }
+
+  function updateCatchHud() {
+    if (!run) return;
+    nodes.runScoreText.textContent = Math.floor(run.score);
+    nodes.runValueText.textContent = Math.floor(run.notes);
+    if (!run.lastCatch) {
+      nodes.lastCatchText.textContent = t("noCatchYet");
+      nodes.lastCatchText.classList.remove("is-new-catch");
+      return;
+    }
+    const item = fishById(run.lastCatch.id);
+    const rarity = item.rare ? t("rareFish") : t("commonFish");
+    nodes.lastCatchText.innerHTML = `
+      <span class="last-catch-name">${item.name[locale]}</span>
+      <small>${t("catchHudMeta", {
+        rarity,
+        points: run.lastCatch.points,
+        notes: run.lastCatch.notes,
+        newTag: run.lastCatch.isNew ? t("newTag") : "",
+      })}</small>
+    `;
+    nodes.lastCatchText.classList.toggle("is-new-catch", run.lastCatch.isNew);
   }
 
   function renderResultSummary() {
@@ -794,10 +835,14 @@
           save.album.push(firstFish.id);
           run.newFish += 1;
         }
-        run.catchLog.push({ id: firstFish.id, points: firstFish.points + 25, notes: firstFish.notes, isNew: true });
-        run.score += firstFish.points + 25;
+        const points = firstFish.points + 25;
+        const notes = firstFish.notes;
+        run.catchLog.push({ id: firstFish.id, points, notes, isNew: true });
+        run.lastCatch = { id: firstFish.id, points, notes, isNew: true };
+        run.score += points;
         run.catchValue += firstFish.notes;
         run.notes += firstFish.notes;
+        updateCatchHud();
         run.catches = Math.max(run.zone.goal, 1);
         finishRun(true);
         return this.readState();

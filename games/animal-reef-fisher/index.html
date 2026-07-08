@@ -46,7 +46,7 @@
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260703-frame1" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260707-guide-related-compact1" />
-    <link rel="stylesheet" href="style.css?v=20260708-reef-catch-reward1" />
+    <link rel="stylesheet" href="style.css?v=20260708-reef-catch-hud1" />
   </head>
   <body>
     <main class="reef-app">
@@ -105,6 +105,20 @@
           <div id="catchToast" class="catch-toast is-hidden" aria-live="polite"></div>
           <div class="cast-meter" aria-hidden="true"><div id="castFill" class="cast-fill"></div></div>
         </div>
+        <div class="catch-hud" aria-live="polite">
+          <div>
+            <span data-ui="runScore">Run Score</span>
+            <strong id="runScoreText">0</strong>
+          </div>
+          <div>
+            <span data-ui="runCatchValue">Reef Notes</span>
+            <strong id="runValueText">0</strong>
+          </div>
+          <div class="catch-hud-last">
+            <span data-ui="lastCatch">Last Catch</span>
+            <strong id="lastCatchText" data-ui="noCatchYet">No catch yet</strong>
+          </div>
+        </div>
         <div class="tension-panel">
           <button id="sonarBtn" class="icon-btn" type="button" aria-label="Use sonar">
             <img src="../../assets/animal-reef-fisher-diamond-sonar-ping.webp" alt="" />
@@ -155,7 +169,7 @@
     <script src="../../src/i18n.js?v=20260703-i18n-clean1"></script>
     <script src="../../src/tutorial.js?v=20260708-reef-tension-clarity1"></script>
     <script src="../../src/wallet.js?v=20260706-diamond1"></script>
-    <script src="game.js?v=20260708-reef-catch-reward1"></script>
+    <script src="game.js?v=20260708-reef-catch-hud1"></script>
     <script>
       (() => {
         const loadGameInfo = () => {

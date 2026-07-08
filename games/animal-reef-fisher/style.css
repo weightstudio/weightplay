@@ -462,6 +462,67 @@ canvas {
   color: #0a9b72;
 }
 
+.catch-hud {
+  display: grid;
+  grid-template-columns: minmax(0, 0.82fr) minmax(0, 0.82fr) minmax(180px, 1.36fr);
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.catch-hud > div {
+  min-width: 0;
+  padding: 9px 10px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.76);
+  border: 1px solid rgba(32, 182, 199, 0.22);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.38);
+}
+
+.catch-hud span {
+  display: block;
+  color: var(--muted);
+  font-size: 0.74rem;
+  font-weight: 1000;
+  text-transform: uppercase;
+}
+
+.catch-hud strong {
+  display: block;
+  min-width: 0;
+  margin-top: 2px;
+  color: var(--ink);
+  font-size: clamp(1rem, 2.3vw, 1.28rem);
+  font-weight: 1000;
+}
+
+.catch-hud-last strong {
+  overflow: hidden;
+  line-height: 1.18;
+  text-overflow: ellipsis;
+}
+
+.last-catch-name {
+  display: block;
+  overflow: hidden;
+  color: var(--ink);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.catch-hud small {
+  display: block;
+  margin-top: 2px;
+  overflow: hidden;
+  color: #0a806c;
+  font-size: 0.72rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.catch-hud .is-new-catch small {
+  color: #a46b00;
+}
+
 .tension-panel {
   display: grid;
   grid-template-columns: 56px minmax(0, 1fr);
@@ -591,6 +652,14 @@ canvas {
 @media (max-width: 520px) {
   .tension-panel {
     grid-template-columns: 1fr;
+  }
+
+  .catch-hud {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .catch-hud-last {
+    grid-column: 1 / -1;
   }
 
   .icon-btn {

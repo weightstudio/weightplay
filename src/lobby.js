@@ -8,6 +8,8 @@ const heroGames = document.querySelector("#heroGames");
 const heroGamesSection = document.querySelector("#heroGamesSection");
 const upcomingGames = document.querySelector("#upcomingGames");
 const upcomingGamesSection = document.querySelector("#upcomingGamesSection");
+const mobilePicks = document.querySelector("#mobilePicks");
+const mobilePicksSection = document.querySelector("#mobilePicksSection");
 const recommendations = document.querySelector("#recommendations");
 const recommendationsSection = document.querySelector("#recommendationsSection");
 const freshUpdates = document.querySelector("#freshUpdates");
@@ -30,6 +32,8 @@ const languageLabel = document.querySelector("#languageLabel");
 const localeSelect = document.querySelector("#localeSelect");
 const heroRankLabel = document.querySelector("#heroRankLabel");
 const heroGamesTitle = document.querySelector("#heroGamesTitle");
+const mobilePicksTitle = document.querySelector("#mobilePicksTitle");
+const mobilePicksReason = document.querySelector("#mobilePicksReason");
 const upcomingGamesTitle = document.querySelector("#upcomingGamesTitle");
 const upcomingGamesReason = document.querySelector("#upcomingGamesReason");
 const recommendationTitle = document.querySelector("#recommendationTitle");
@@ -52,6 +56,7 @@ const walletBar = document.querySelector("#walletBar");
 const dailyRewardTrack = [5, 6, 8, 10, 12, 15, 25];
 const featuredSkillPaths = ["Memory", "Logic", "Reaction", "Focus", "Problem Solving", "Animal Knowledge"];
 const recentlyUpdatedGameIds = new Set(["animal-reef-fisher", "animal-rune-tactics", "animal-orb-fortress", "beast-deck"]);
+const mobilePickGameIds = ["animal-guard-yard", "animal-reef-fisher", "animal-auto-squad", "fruit-merge"];
 const weightPlayCharacters = [
   {
     nameKey: "character.spark_paw_fox.name",
@@ -393,6 +398,21 @@ function challengeSpotlightGames(limit = 4) {
     .slice(0, limit);
 }
 
+function mobileFriendlyGames(limit = 4) {
+  const pinned = mobilePickGameIds
+    .map((id) => lobby.games.find((game) => game.id === id && game.status === "playable"))
+    .filter(Boolean);
+  const pinnedIds = new Set(pinned.map((game) => game.id));
+  const extras = playableGames()
+    .filter((game) => !pinnedIds.has(game.id))
+    .sort((a, b) => {
+      const aStats = statFor(a);
+      const bStats = statFor(b);
+      return (bStats.plays7d || 0) - (aStats.plays7d || 0) || (bStats.playsTotal || 0) - (aStats.playsTotal || 0);
+    });
+  return [...pinned, ...extras].slice(0, limit);
+}
+
 function recommendationSeeds() {
   const seedIds = [...recentGameIds, ...favoriteGameIds].filter((id, index, list) => id && list.indexOf(id) === index);
   return seedIds.map((id) => lobby.games.find((game) => game.id === id && game.status === "playable")).filter(Boolean);
@@ -614,6 +634,7 @@ function renderLobby() {
   }
 
   renderHeroGames();
+  renderMobilePicks();
   renderUpcomingGames();
   renderCharacterShowcase();
   renderFreshUpdates();
@@ -762,6 +783,45 @@ function renderHeroGames() {
     });
 
   heroGames.replaceChildren(...cards);
+}
+
+function renderMobilePicks() {
+  if (!mobilePicks || !mobilePicksSection) return;
+  const cards = mobileFriendlyGames(4).map((game) => {
+    const title = text(game.title);
+    const type = text(game.type);
+    const ageLabel = text(game.ageLabel);
+    const skillBadges = (game.skills || []).slice(0, 2).map((skill) => `<span>${skillText(skill)}</span>`).join("");
+    const card = document.createElement("a");
+    card.className = "mobile-pick-card";
+    card.href = game.href;
+    card.addEventListener("click", () => {
+      window.WonderAnalytics?.track("mobile_pick_open", {
+        game_id: game.id,
+        game_title: title,
+        locale: i18n.locale(),
+      });
+      recordRecentGame(game.id);
+    });
+    card.innerHTML = `
+      <div class="mobile-pick-art">
+        <img src="${game.art?.background || primaryArt(game)}" alt="" />
+        <span>${i18n.t("mobile_picks.badge")}</span>
+      </div>
+      <div class="mobile-pick-copy">
+        <strong>${title}</strong>
+        <small>${type} / ${ageLabel}</small>
+        <em>${i18n.t("mobile_picks.note")}</em>
+        ${skillBadges ? `<div class="mobile-pick-skills" aria-label="Skills trained">${skillBadges}</div>` : ""}
+      </div>
+    `;
+    return card;
+  });
+
+  mobilePicksTitle.textContent = i18n.t("mobile_picks.title");
+  mobilePicksReason.textContent = i18n.t("mobile_picks.reason");
+  mobilePicksSection.classList.toggle("hidden", cards.length === 0);
+  mobilePicks.replaceChildren(...cards);
 }
 
 function renderUpcomingGames() {
@@ -1099,6 +1159,8 @@ function applyStaticTranslations() {
   languageLabel.textContent = i18n.t("language.label");
   heroRankLabel.textContent = i18n.t("section.hero_rank");
   heroGamesTitle.textContent = i18n.t("section.hero_games");
+  if (mobilePicksTitle) mobilePicksTitle.textContent = i18n.t("mobile_picks.title");
+  if (mobilePicksReason) mobilePicksReason.textContent = i18n.t("mobile_picks.reason");
   if (upcomingGamesTitle) upcomingGamesTitle.textContent = i18n.t("upcoming.title");
   if (upcomingGamesReason) upcomingGamesReason.textContent = i18n.t("upcoming.reason");
   if (characterShowcaseTitle) characterShowcaseTitle.textContent = i18n.t("character_showcase.title");
