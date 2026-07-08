@@ -14,6 +14,8 @@ const freshUpdates = document.querySelector("#freshUpdates");
 const freshUpdatesSection = document.querySelector("#freshUpdatesSection");
 const challengeSpotlight = document.querySelector("#challengeSpotlight");
 const challengeSpotlightSection = document.querySelector("#challengeSpotlightSection");
+const characterShowcase = document.querySelector("#characterShowcase");
+const characterShowcaseSection = document.querySelector("#characterShowcaseSection");
 const skillPaths = document.querySelector("#skillPaths");
 const skillPathsSection = document.querySelector("#skillPathsSection");
 const lobbyStats = document.querySelector("#lobbyStats");
@@ -36,6 +38,8 @@ const freshUpdatesTitle = document.querySelector("#freshUpdatesTitle");
 const freshUpdatesReason = document.querySelector("#freshUpdatesReason");
 const challengeSpotlightTitle = document.querySelector("#challengeSpotlightTitle");
 const challengeSpotlightReason = document.querySelector("#challengeSpotlightReason");
+const characterShowcaseTitle = document.querySelector("#characterShowcaseTitle");
+const characterShowcaseReason = document.querySelector("#characterShowcaseReason");
 const skillPathsTitle = document.querySelector("#skillPathsTitle");
 const skillPathsReason = document.querySelector("#skillPathsReason");
 const dailyReward = document.querySelector("#dailyReward");
@@ -48,6 +52,38 @@ const walletBar = document.querySelector("#walletBar");
 const dailyRewardTrack = [5, 6, 8, 10, 12, 15, 25];
 const featuredSkillPaths = ["Memory", "Logic", "Reaction", "Focus", "Problem Solving", "Animal Knowledge"];
 const recentlyUpdatedGameIds = new Set(["animal-reef-fisher", "animal-rune-tactics", "animal-orb-fortress", "beast-deck"]);
+const weightPlayCharacters = [
+  {
+    nameKey: "character.spark_paw_fox.name",
+    roleKey: "character.spark_paw_fox.role",
+    image: "assets/weightplay-character-spark-paw-fox.png",
+  },
+  {
+    nameKey: "character.boom_mane_lion.name",
+    roleKey: "character.boom_mane_lion.role",
+    image: "assets/weightplay-character-boom-mane-lion.png",
+  },
+  {
+    nameKey: "character.moss_shell_turtle.name",
+    roleKey: "character.moss_shell_turtle.role",
+    image: "assets/weightplay-character-moss-shell-turtle.png",
+  },
+  {
+    nameKey: "character.moon_cap_owl.name",
+    roleKey: "character.moon_cap_owl.role",
+    image: "assets/weightplay-character-moon-cap-owl.png",
+  },
+  {
+    nameKey: "character.bubble_fin_otter.name",
+    roleKey: "character.bubble_fin_otter.role",
+    image: "assets/weightplay-character-bubble-fin-otter.png",
+  },
+  {
+    nameKey: "character.gear_horn_rhino.name",
+    roleKey: "character.gear_horn_rhino.role",
+    image: "assets/weightplay-character-gear-horn-rhino.png",
+  },
+];
 const ageFilterGroups = {
   starter: ["3"],
   family: ["6", "9", "family"],
@@ -573,6 +609,7 @@ function renderLobby() {
 
   renderHeroGames();
   renderUpcomingGames();
+  renderCharacterShowcase();
   renderFreshUpdates();
   renderChallengeSpotlight();
   renderRecommendations();
@@ -750,6 +787,27 @@ function renderUpcomingGames() {
   upcomingGamesReason.textContent = i18n.t("upcoming.reason");
   upcomingGamesSection.classList.toggle("hidden", cards.length === 0);
   upcomingGames.replaceChildren(...cards);
+}
+
+function renderCharacterShowcase() {
+  if (!characterShowcase || !characterShowcaseSection) return;
+  const cards = weightPlayCharacters.map((character) => {
+    const card = document.createElement("article");
+    card.className = "character-showcase-card";
+    card.innerHTML = `
+      <img src="${character.image}" alt="" loading="lazy" />
+      <div class="character-showcase-copy">
+        <strong>${i18n.t(character.nameKey)}</strong>
+        <small>${i18n.t(character.roleKey)}</small>
+      </div>
+    `;
+    return card;
+  });
+
+  characterShowcaseTitle.textContent = i18n.t("character_showcase.title");
+  characterShowcaseReason.textContent = i18n.t("character_showcase.reason");
+  characterShowcaseSection.classList.toggle("hidden", cards.length === 0);
+  characterShowcase.replaceChildren(...cards);
 }
 
 function renderRecommendations() {
@@ -1018,6 +1076,8 @@ function applyStaticTranslations() {
   heroGamesTitle.textContent = i18n.t("section.hero_games");
   if (upcomingGamesTitle) upcomingGamesTitle.textContent = i18n.t("upcoming.title");
   if (upcomingGamesReason) upcomingGamesReason.textContent = i18n.t("upcoming.reason");
+  if (characterShowcaseTitle) characterShowcaseTitle.textContent = i18n.t("character_showcase.title");
+  if (characterShowcaseReason) characterShowcaseReason.textContent = i18n.t("character_showcase.reason");
   if (recommendationTitle) recommendationTitle.textContent = i18n.t("recommend.title");
   if (recommendationReason) recommendationReason.textContent = i18n.t("recommend.start_here");
   if (freshUpdatesTitle) freshUpdatesTitle.textContent = i18n.t("fresh_updates.title");
