@@ -197,6 +197,11 @@
     return localStorage.getItem(seenKey(gameId)) === "1";
   }
 
+  function isAutomationRun() {
+    const params = new URLSearchParams(window.location.search);
+    return params.has("smoke") || params.has("qa") || params.has("test");
+  }
+
   function renderTutorial(backdrop, gameId, fromButton = false) {
     const tutorial = tutorials[gameId];
     if (!tutorial || !backdrop) return;
@@ -297,7 +302,7 @@
     document.body.append(button);
     applyCommonLabels();
     window.addEventListener("wonder:locale-change", applyCommonLabels);
-    if (!hasSeen(gameId)) scheduleFirstShow(gameId);
+    if (!hasSeen(gameId) && !isAutomationRun()) scheduleFirstShow(gameId);
   }
 
   if (document.readyState === "loading") {

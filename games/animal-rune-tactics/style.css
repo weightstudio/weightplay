@@ -180,16 +180,25 @@ select {
 }
 
 .mission-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  display: flex;
   gap: 8px;
   margin-top: 8px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  padding-bottom: 2px;
+}
+
+.mission-grid::-webkit-scrollbar {
+  display: none;
 }
 
 .mission-card {
   display: grid;
   align-content: start;
   gap: 5px;
+  flex: 0 0 min(76vw, 230px);
   min-height: 108px;
   border: 1px solid var(--line);
   border-radius: 12px;
@@ -197,6 +206,24 @@ select {
   background: rgba(11, 40, 31, 0.72);
   padding: 10px;
   text-align: left;
+  scroll-snap-align: center;
+}
+
+.mission-card__top {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.mission-card__top b {
+  flex: 0 0 auto;
+  border-radius: 999px;
+  background: rgba(103, 242, 190, 0.14);
+  color: var(--mint);
+  font-size: 0.68rem;
+  line-height: 1;
+  padding: 5px 7px;
 }
 
 .mission-card small,
@@ -218,6 +245,11 @@ select {
 .mission-card.is-active {
   border-color: var(--gold);
   box-shadow: inset 0 0 0 2px rgba(248, 214, 106, 0.25);
+}
+
+.mission-card.is-active .mission-card__top b {
+  background: rgba(248, 214, 106, 0.18);
+  color: var(--gold);
 }
 
 .mission-card:disabled {
@@ -745,7 +777,7 @@ select {
     grid-template-columns: 1fr;
   }
 
-  .mission-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .mission-card {
+    flex-basis: min(82vw, 250px);
   }
 }

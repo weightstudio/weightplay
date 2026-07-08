@@ -261,6 +261,20 @@
     chooseTarget: "{hero}：生命 {hp}/{maxHp}，能量 {energy}。",
   });
 
+  Object.assign(text.en, {
+    missionStatusCurrent: "Selected",
+    missionStatusUnlocked: "Tap to choose",
+    missionRewardLabel: "Clear reward",
+    startSelectedMission: "Start Mission {n}",
+  });
+
+  Object.assign(text["zh-Hant"], {
+    missionStatusCurrent: "已選擇",
+    missionStatusUnlocked: "點選挑戰",
+    missionRewardLabel: "通關獎勵",
+    startSelectedMission: "開始任務 {n}",
+  });
+
   const heroDefs = [
     { id: "lion", name: "lion", role: "lionRole", img: "animal-rune-tactics-hero-lion.webp", hp: 7, atk: 3, skillName: "skillLion", skillDesc: "skillLionDesc", skill: "animal-rune-tactics-skill-lion-strike.webp" },
     { id: "owl", name: "owl", role: "owlRole", img: "animal-rune-tactics-hero-owl.webp", hp: 5, atk: 2, range: 2, skillName: "skillOwl", skillDesc: "skillOwlDesc", skill: "animal-rune-tactics-skill-owl-rune-bolt.webp" },
@@ -372,12 +386,18 @@
     missionDefs.forEach((mission) => {
       const btn = document.createElement("button");
       btn.type = "button";
-      btn.className = `mission-card ${selectedMission === mission.id ? "is-active" : ""}`;
-      btn.disabled = mission.id > profile.unlockedMission;
+      const isLocked = mission.id > profile.unlockedMission;
+      const isActive = selectedMission === mission.id;
+      btn.className = `mission-card ${isActive ? "is-active" : ""}`;
+      btn.disabled = isLocked;
+      btn.setAttribute("aria-pressed", String(isActive));
       const enemyNames = mission.enemies.map((id) => t(enemyDefs.find((enemy) => enemy.id === id)?.name || id)).join(" / ");
       btn.innerHTML = `
-        <strong>${t("missionCard", { n: mission.id })}</strong>
-        <small>${mission.id > profile.unlockedMission ? t("locked") : t("missionReward", { xp: mission.xp, runes: mission.runes })}</small>
+        <span class="mission-card__top">
+          <strong>${t("missionCard", { n: mission.id })}</strong>
+          <b>${isLocked ? t("locked") : isActive ? t("missionStatusCurrent") : t("missionStatusUnlocked")}</b>
+        </span>
+        <small>${t("missionRewardLabel")}: ${isLocked ? t("locked") : t("missionReward", { xp: mission.xp, runes: mission.runes })}</small>
         <span>${t("missionGoal", { enemies: enemyNames })}</span>
         <em>${t("missionPlan", { plan: t(mission.tactic) })}</em>`;
       btn.addEventListener("click", () => {
@@ -385,6 +405,16 @@
         renderMenu();
       });
       nodes.missionGrid.appendChild(btn);
+    });
+    nodes.startBtn.textContent = t("startSelectedMission", { n: selectedMission });
+    scrollSelectedMissionIntoView();
+  }
+
+  function scrollSelectedMissionIntoView() {
+    const active = nodes.missionGrid.querySelector(".mission-card.is-active");
+    if (!active) return;
+    requestAnimationFrame(() => {
+      active.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
     });
   }
 
@@ -784,6 +814,7 @@
     if (win) {
       profile.bestMission = Math.max(profile.bestMission, state.mission);
       profile.unlockedMission = Math.max(profile.unlockedMission, Math.min(missionDefs.length, state.mission + 1));
+      selectedMission = Math.min(missionDefs.length, state.mission + 1);
     }
     saveProfile();
     nodes.resultTitle.textContent = t(win ? "missionClear" : "missionFailed");
@@ -873,7 +904,10 @@
     nodes.skillBtn.addEventListener("click", skill);
     nodes.endTurnBtn.addEventListener("click", endTurn);
     nodes.rerollBtn.addEventListener("click", () => renderRewards(true));
-    nodes.nextBtn.addEventListener("click", () => startMission(Math.min(missionDefs.length, state.mission + 1)));
+    nodes.nextBtn.addEventListener("click", () => {
+      selectedMission = Math.min(missionDefs.length, state.mission + 1);
+      startMission(selectedMission);
+    });
     nodes.retryBtn.addEventListener("click", () => startMission(state?.mission || selectedMission));
     nodes.menuBtn.addEventListener("click", showMenu);
   }

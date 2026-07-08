@@ -2681,7 +2681,7 @@ canvas {
 }
 
 .overlay.settlement-screen {
-  grid-template-rows: auto 1fr;
+  grid-template-rows: auto minmax(0, 1fr);
   align-content: start;
   align-items: start;
   gap: 10px;
@@ -2703,14 +2703,14 @@ canvas {
   width: min(100%, 520px);
   max-width: none;
   margin: 0;
-  padding: 12px 14px;
+  padding: 10px 14px;
   border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 8px;
   background: rgba(12, 18, 28, 0.78);
   color: rgba(255, 255, 255, 0.94);
-  font-size: clamp(16px, 4.4vw, 20px);
+  font-size: clamp(15px, 4.1vw, 18px);
   font-weight: 900;
-  line-height: 1.45;
+  line-height: 1.35;
   text-align: center;
 }
 
@@ -2781,8 +2781,8 @@ canvas {
 
 .overlay.settlement-screen .menu-content {
   width: min(100%, 520px);
-  max-height: none;
-  overflow: visible;
+  max-height: calc(100dvh - 96px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+  overflow-y: auto;
   padding: 0;
   animation: wonder-panel-pop 0.28s cubic-bezier(0.17, 0.9, 0.28, 1.2);
 }
@@ -3154,13 +3154,13 @@ canvas {
 
 .settlement-panel {
   display: grid;
-  gap: 14px;
+  gap: 10px;
   width: 100%;
 }
 
 .overlay.settlement-screen .profile-panel {
-  gap: 0;
-  padding: 16px;
+  gap: 10px;
+  padding: 14px;
   border: 1px solid rgba(255, 255, 255, 0.22);
   border-radius: 8px;
   background: linear-gradient(180deg, rgba(18, 39, 42, 0.95), rgba(12, 20, 30, 0.94));
@@ -3169,8 +3169,8 @@ canvas {
 
 .settlement-row {
   display: grid;
-  gap: 4px;
-  padding: 14px;
+  gap: 3px;
+  padding: 11px 12px;
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.08);
   text-align: left;
@@ -3178,25 +3178,26 @@ canvas {
 }
 
 .settlement-row strong {
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .settlement-row span {
   color: rgba(255, 255, 255, 0.78);
-  font-size: 13px;
+  font-size: 12px;
+  line-height: 1.35;
 }
 
 .reward-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 8px;
+  gap: 7px;
 }
 
 .reward-item,
 .reward-empty {
   display: grid;
   place-items: center;
-  min-height: 76px;
+  min-height: 64px;
   padding: 6px;
   border: 1px solid rgba(188, 195, 207, 0.72);
   border-radius: 8px;
@@ -3209,8 +3210,8 @@ canvas {
   display: block;
   width: auto;
   height: auto;
-  max-width: 52px;
-  max-height: 52px;
+  max-width: 44px;
+  max-height: 44px;
   object-fit: contain;
 }
 
@@ -3223,7 +3224,7 @@ canvas {
 
 .reward-empty {
   grid-column: 1 / -1;
-  min-height: 58px;
+  min-height: 44px;
   color: rgba(255, 255, 255, 0.74);
 }
 
@@ -3256,8 +3257,8 @@ canvas {
 
 .skill-report {
   display: grid;
-  gap: 10px;
-  padding: 14px;
+  gap: 8px;
+  padding: 11px 12px;
   border: 1px solid rgba(255, 234, 166, 0.28);
   border-radius: 8px;
   background: rgba(20, 47, 52, 0.62);
@@ -3266,12 +3267,12 @@ canvas {
 
 .skill-report > strong {
   color: #ffe8a3;
-  font-size: 15px;
+  font-size: 14px;
 }
 
 .skill-report-list {
   display: grid;
-  gap: 6px;
+  gap: 4px;
 }
 
 .skill-report-row {
@@ -3279,19 +3280,19 @@ canvas {
   grid-template-columns: minmax(0, 1fr) max-content;
   gap: 10px;
   align-items: center;
-  min-height: 24px;
+  min-height: 20px;
 }
 
 .skill-report-row span {
   min-width: 0;
   color: rgba(255, 255, 255, 0.86);
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 900;
 }
 
 .skill-report-row b {
   color: #ffd861;
-  font-size: 14px;
+  font-size: 13px;
   letter-spacing: 0;
   white-space: nowrap;
 }
@@ -3299,7 +3300,7 @@ canvas {
 .skill-report p {
   margin: 0;
   color: rgba(255, 255, 255, 0.74);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 800;
   line-height: 1.35;
 }
@@ -3310,9 +3311,13 @@ canvas {
 }
 
 .settlement-actions {
+  position: sticky;
+  bottom: 0;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
+  padding-top: 4px;
+  background: linear-gradient(180deg, rgba(12, 20, 30, 0), rgba(12, 20, 30, 0.96) 26%);
 }
 
 .settlement-actions button {
@@ -3885,21 +3890,72 @@ canvas {
     width: 100%;
   }
 
+  .overlay.settlement-screen #overlayText {
+    padding: 9px 10px;
+    font-size: 15px;
+    line-height: 1.3;
+  }
+
+  .overlay.settlement-screen .menu-content {
+    max-height: calc(100dvh - 82px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+  }
+
   .overlay.settlement-screen .profile-panel {
-    padding: 12px;
+    padding: 10px;
   }
 
   .settlement-panel {
-    gap: 10px;
+    gap: 8px;
+  }
+
+  .settlement-row {
+    padding: 9px 10px;
+  }
+
+  .settlement-row strong {
+    font-size: 15px;
+  }
+
+  .settlement-row span {
+    font-size: 11px;
   }
 
   .reward-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
   }
 
   .reward-item,
   .reward-empty {
-    min-height: 68px;
+    min-height: 56px;
+  }
+
+  .reward-item img {
+    max-width: 38px;
+    max-height: 38px;
+  }
+
+  .reward-item span,
+  .reward-empty {
+    font-size: 11px;
+  }
+
+  .skill-report {
+    gap: 6px;
+    padding: 9px 10px;
+  }
+
+  .skill-report-row {
+    min-height: 18px;
+  }
+
+  .skill-report-row span,
+  .skill-report p {
+    font-size: 11px;
+  }
+
+  .skill-report-row b {
+    font-size: 12px;
   }
 
   .settlement-actions {
