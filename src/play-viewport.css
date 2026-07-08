@@ -3,6 +3,8 @@
   --wp-play-frame-border: rgba(255, 255, 255, 0.5);
   --wp-play-frame-glow: rgba(104, 190, 255, 0.18);
   --wp-play-frame-shadow: rgba(0, 0, 0, 0.26);
+  --wp-mobile-vh: 100svh;
+  --wp-mobile-vw: 100vw;
 }
 
 .play-area,
@@ -60,5 +62,52 @@ canvas.play-area,
     box-shadow:
       inset 0 0 0 1px rgba(255, 255, 255, 0.42),
       0 10px 22px rgba(0, 0, 0, 0.2);
+  }
+}
+
+@media (max-width: 820px) and (pointer: coarse) {
+  html.wp-mobile-game-mode,
+  body.wp-mobile-game-mode {
+    width: 100%;
+    min-height: var(--wp-mobile-vh);
+    overflow: hidden;
+    overscroll-behavior: none;
+    touch-action: none;
+  }
+
+  body.wp-mobile-game-mode {
+    padding: 0 !important;
+  }
+
+  body.wp-mobile-game-mode .weightplay-active-viewport {
+    width: min(100vw, var(--wp-mobile-vw)) !important;
+    max-width: none !important;
+    height: var(--wp-mobile-vh) !important;
+    max-height: var(--wp-mobile-vh) !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+    overflow: hidden !important;
+    box-shadow: none !important;
+  }
+
+  body.wp-mobile-game-mode .weightplay-active-viewport:fullscreen {
+    width: 100vw !important;
+    height: 100vh !important;
+    max-height: 100vh !important;
+  }
+
+  body.wp-mobile-game-mode .weightplay-active-viewport:-webkit-full-screen {
+    width: 100vw !important;
+    height: 100vh !important;
+    max-height: 100vh !important;
+  }
+
+  body.wp-mobile-game-mode .weightplay-active-viewport canvas,
+  body.wp-mobile-game-mode .weightplay-active-viewport .play-area,
+  body.wp-mobile-game-mode .weightplay-active-viewport .playfield,
+  body.wp-mobile-game-mode .weightplay-active-viewport .game-board,
+  body.wp-mobile-game-mode .weightplay-active-viewport .game-board-panel {
+    max-width: 100% !important;
   }
 }

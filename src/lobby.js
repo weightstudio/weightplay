@@ -58,11 +58,10 @@ const featuredSkillPaths = ["Memory", "Logic", "Reaction", "Focus", "Problem Sol
 const recentlyUpdatedGameIds = new Set(["animal-reef-fisher", "animal-rune-tactics", "animal-orb-fortress", "beast-deck"]);
 const mobilePickGameIds = ["animal-guard-yard", "animal-reef-fisher", "animal-auto-squad", "fruit-merge"];
 const hiddenTrialGate = {
-  gameId: "beast-tactician",
   tapsRequired: 10,
   resetMs: 8000,
-  count: 0,
-  timer: 0,
+  counts: new Map(),
+  timers: new Map(),
 };
 const weightPlayCharacters = [
   {
@@ -1210,37 +1209,50 @@ function showPlannedGame(game) {
   showToast(i18n.t("toast.coming_soon", { title: text(game.title) }));
 }
 
-function handleHiddenTrialGate(game) {
-  if (game.id !== hiddenTrialGate.gameId) return false;
+function internalTrialPath(game) {
+  if (!game.internalTrial) return "";
+  if (typeof game.internalTrial === "string") return game.internalTrial;
+  return "internal-test.html?trial=1";
+}
 
-  hiddenTrialGate.count += 1;
-  clearTimeout(hiddenTrialGate.timer);
+function hiddenTrialStorageKey(game) {
+  return `${game.id}TrialUnlocked`;
+}
+
+function handleHiddenTrialGate(game) {
+  const trialPath = internalTrialPath(game);
+  if (game.status !== "planned" || !trialPath) return false;
+
+  const count = (hiddenTrialGate.counts.get(game.id) || 0) + 1;
+  hiddenTrialGate.counts.set(game.id, count);
+  clearTimeout(hiddenTrialGate.timers.get(game.id));
 
   window.WonderAnalytics?.track("hidden_trial_gate_tap", {
     game_id: game.id,
-    tap_count: hiddenTrialGate.count,
+    tap_count: count,
     taps_required: hiddenTrialGate.tapsRequired,
     locale: i18n.locale(),
   });
 
-  if (hiddenTrialGate.count >= hiddenTrialGate.tapsRequired) {
-    hiddenTrialGate.count = 0;
+  if (count >= hiddenTrialGate.tapsRequired) {
+    hiddenTrialGate.counts.set(game.id, 0);
     try {
-      sessionStorage.setItem("beastGuardianTrialUnlocked", "true");
+      sessionStorage.setItem(hiddenTrialStorageKey(game), "true");
     } catch (error) {
       // The trial route can still open when storage is unavailable.
     }
     window.WonderSound?.play("success");
-    window.location.href = `${game.href}internal-test.html?trial=1`;
+    window.location.href = `${game.href}${trialPath}`;
     return true;
   }
 
-  hiddenTrialGate.timer = setTimeout(() => {
-    hiddenTrialGate.count = 0;
+  const timer = setTimeout(() => {
+    hiddenTrialGate.counts.set(game.id, 0);
   }, hiddenTrialGate.resetMs);
+  hiddenTrialGate.timers.set(game.id, timer);
 
   window.WonderSound?.play("click");
-  showToast(`${i18n.t("toast.coming_soon", { title: text(game.title) })} ${hiddenTrialGate.count}/${hiddenTrialGate.tapsRequired}`);
+  showToast(`${i18n.t("toast.coming_soon", { title: text(game.title) })} ${count}/${hiddenTrialGate.tapsRequired}`);
   return true;
 }
 

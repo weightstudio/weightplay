@@ -448,6 +448,7 @@ window.WONDER_LOBBY = {
       ages: ["13"],
       ageLabel: { en: "13+", "zh-Hant": "13+" },
       href: "games/beast-tactician/",
+      internalTrial: "internal-test.html?trial=1",
       description: {
         en: "A premium 10-stage hero tower-defense game is in production. Build soldiers and WeightPlay heroes on the grid, shape enemy routes, and stop boss waves.",
         "zh-Hant": "高品質 10 關英雄塔防大作製作中。你將在格子地形上建置士兵與 WeightPlay 英雄，改變敵人路線並抵擋王關波次。"
@@ -466,6 +467,7 @@ window.WONDER_LOBBY = {
       ages: ["13"],
       ageLabel: { en: "13+", "zh-Hant": "13+" },
       href: "games/shadow-wolf/",
+      internalTrial: "internal-test.html?trial=1",
       description: {
         en: "Run, jump, dash, and slash shadow beasts. Gain EXP, open gear chests, and defeat the behemoth boss.",
         "zh-Hant": "奔跑、跳躍、衝刺並斬擊影獸。累積經驗、開啟裝備寶箱，最後擊敗巨獸首領。"

@@ -41,6 +41,7 @@
     safeBand: $("safeBand"),
     tensionMarker: $("tensionMarker"),
     tensionStatus: $("tensionStatus"),
+    tensionCoach: $("tensionCoach"),
     resultTitle: $("resultTitle"),
     resultText: $("resultText"),
     scoreText: $("scoreText"),
@@ -79,11 +80,15 @@
       tensionSafe: "Safe",
       tensionHigh: "Tight",
       tensionMarker: "Drag",
-      tensionStatusAim: "Cast first, then control the line here.",
-      tensionStatusCharging: "Release to cast. The tension control starts after a fish bites.",
-      tensionStatusHooked: "Drag here. Red marker must stay in SAFE.",
-      tensionStatusSafe: "Good tension. Keep the red marker here.",
-      tensionStatusDanger: "Danger. Move the marker back into SAFE.",
+      tensionCoachAim: "Hold the water to cast. When a fish bites, use the red knob below.",
+      tensionCoachReel: "Drag the red knob left or right and keep it inside the green SAFE area.",
+      tensionCoachSafe: "Good. Stay in SAFE until the fish is landed.",
+      tensionCoachDanger: "Drag back into SAFE now.",
+      tensionStatusAim: "Step 1: hold the sea to charge, then release to cast.",
+      tensionStatusCharging: "Release to cast. Step 2 starts when a fish bites.",
+      tensionStatusHooked: "Step 2: hold the red knob and drag it into SAFE.",
+      tensionStatusSafe: "Good. Keep holding the red knob inside SAFE.",
+      tensionStatusDanger: "Move the red knob back into SAFE before the line breaks.",
       landed: "Catch landed! Keep going before time runs out.",
       broke: "Line broke. The tension marker left the safe band too long.",
       escaped: "The fish escaped. Cast again and keep the marker centered.",
@@ -143,11 +148,15 @@
       tensionSafe: "安全",
       tensionHigh: "太緊",
       tensionMarker: "拖曳",
-      tensionStatusAim: "先拋竿，魚上鉤後在這裡控線。",
-      tensionStatusCharging: "放開即可拋竿；魚咬餌後才需要控線。",
-      tensionStatusHooked: "拖曳這裡，紅色標記要留在安全區。",
-      tensionStatusSafe: "張力剛好，讓紅色標記維持在這裡。",
-      tensionStatusDanger: "危險，快把標記拉回安全區。",
+      tensionCoachAim: "先按住海面拋竿；魚咬餌後，改用下方紅色鈕。",
+      tensionCoachReel: "左右拖曳紅色鈕，讓它留在綠色安全區。",
+      tensionCoachSafe: "很好，留在安全區直到魚上岸。",
+      tensionCoachDanger: "現在把紅色鈕拖回安全區。",
+      tensionStatusAim: "步驟1：按住海面蓄力，放開拋竿。",
+      tensionStatusCharging: "放開即可拋竿；魚咬餌後進入步驟2。",
+      tensionStatusHooked: "步驟2：按住紅色鈕左右拖，拉進綠色安全區。",
+      tensionStatusSafe: "很好，繼續按住紅色鈕留在安全區。",
+      tensionStatusDanger: "快把紅色鈕拖回安全區，不然魚線會斷。",
       landed: "成功收線！趁時間結束前繼續挑戰。",
       broke: "魚線斷了。張力標記離開安全區太久。",
       escaped: "魚逃走了。再拋一次，讓標記更靠近中央。",
@@ -488,11 +497,25 @@
     return fish.find((item) => item.id === id) || fish[0];
   }
 
+  function fishFrameCrop(img, item, frame = 1) {
+    const cols = 3;
+    const rows = 6;
+    const frameW = img.width / cols;
+    const frameH = img.height / rows;
+    return {
+      sx: Math.max(0, Math.min(cols - 1, frame)) * frameW,
+      sy: item.sy * frameH,
+      sw: frameW,
+      sh: frameH,
+    };
+  }
+
   function fishFrameStyle(item) {
     return [
       `background-image:url('${assetPaths[item.sheet]}')`,
       "background-size:300% 600%",
-      `background-position:0% ${(item.sy / 5) * 100}%`,
+      "background-repeat:no-repeat",
+      `background-position:50% ${(item.sy / 5) * 100}%`,
     ].join(";");
   }
 
@@ -582,6 +605,9 @@
     else if (run.phase === "charging" || run.phase === "cast") nodes.tensionStatus.textContent = t("tensionStatusCharging");
     else if (run.phase === "reel") nodes.tensionStatus.textContent = range.safe ? t("tensionStatusSafe") : t("tensionStatusDanger");
     else nodes.tensionStatus.textContent = t("tensionStatusHooked");
+    if (!run || run.phase === "aim") nodes.tensionCoach.textContent = t("tensionCoachAim");
+    else if (run.phase === "reel") nodes.tensionCoach.textContent = range.safe ? t("tensionCoachSafe") : t("tensionCoachDanger");
+    else nodes.tensionCoach.textContent = t("tensionCoachReel");
   }
 
   function update(dt) {
@@ -644,14 +670,10 @@
   function drawFishSprite(fishData, x, y, w, h) {
     const img = images[fishData.sheet];
     if (!img || !img.width) return;
-    const cols = 3;
-    const rows = 6;
-    const cellW = img.width / cols;
-    const cellH = img.height / rows;
-    const swimFrame = Math.floor(performance.now() / 180) % cols;
-    const sx = swimFrame * cellW;
-    const sy = fishData.sy * cellH;
-    ctx.drawImage(img, sx, sy, cellW, cellH, x, y, w, h);
+    const swimFrame = Math.floor(performance.now() / 180) % 3;
+    const crop = fishFrameCrop(img, fishData, swimFrame);
+    const bob = Math.sin(performance.now() / 240) * 3;
+    ctx.drawImage(img, crop.sx, crop.sy, crop.sw, crop.sh, x, y + bob, w, h);
   }
 
   function draw() {
@@ -679,7 +701,7 @@
         const x = 500 + Math.sin(t * 1.4) * 80;
         const y = 240 + Math.cos(t * 1.1) * 45;
         const f = run.hookFish || fish[0];
-        drawFishSprite(f, x, y, f.rare ? 132 : 112, f.rare ? 132 : 112);
+        drawFishSprite(f, x - 78, y - 38, f.rare ? 174 : 156, f.rare ? 90 : 76);
         if (f.rare || run.sonarPulse > 0) drawSpriteSheet(images.shimmer, 1, 1, 0, x - 18, y - 18, 150, 110);
       }
 
@@ -885,9 +907,14 @@
         return wallet();
       },
       readFishSheetGrid() {
+        const img = images.fishA || { width: 0, height: 0 };
+        const sampleCrop = img.width ? fishFrameCrop(img, fish[0], 0) : null;
         return {
           cols: 3,
           rows: 6,
+          safeCrop: sampleCrop,
+          leftInsetRatio: 0,
+          frameWidthRatio: 1 / 3,
           sample: fish.map((item) => ({ id: item.id, sheet: item.sheet, sx: item.sx, sy: item.sy })),
         };
       },

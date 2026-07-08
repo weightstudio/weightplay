@@ -1,7 +1,9 @@
 (function () {
   const edgeSize = 44;
   const minSwipe = 8;
+  const mobileGameMaxWidth = 820;
   let gesture = null;
+  let immersiveFrame = null;
 
   function isEditable(target) {
     return Boolean(target?.closest?.("input, textarea, select, [contenteditable='true'], [data-allow-select='true']"));
@@ -73,6 +75,48 @@
     "canvas",
   ];
 
+  const immersiveTriggerSelectors = [
+    "[data-play-viewport]",
+    ".weightplay-play-viewport",
+    ".fixed-game-shell",
+    ".game-shell",
+    "#playPanel",
+    "#playArea",
+    "#gameArea",
+    "#gameStage",
+    "#gamePanel",
+    ".play-panel",
+    ".play-area",
+    ".game-panel",
+    ".battle-panel",
+    ".quiz-stage",
+    ".game-stage",
+    ".stage-area",
+    ".game-area",
+    ".playfield",
+    "canvas",
+    "#startBtn",
+    "#playBtn",
+    "#beginBtn",
+    "#restartBtn",
+    "#retryBtn",
+    "#nextStageBtn",
+    "[data-start-game]",
+  ];
+
+  function isMobileGameViewport() {
+    const coarsePointer = window.matchMedia?.("(pointer: coarse)")?.matches;
+    const narrowScreen = Math.min(window.innerWidth || 0, window.screen?.width || window.innerWidth || 0) <= mobileGameMaxWidth;
+    return Boolean(coarsePointer && narrowScreen);
+  }
+
+  function updateVisualViewportVars() {
+    const visualHeight = window.visualViewport?.height || window.innerHeight || document.documentElement.clientHeight || 0;
+    const visualWidth = window.visualViewport?.width || window.innerWidth || document.documentElement.clientWidth || 0;
+    if (visualHeight > 0) document.documentElement.style.setProperty("--wp-mobile-vh", `${visualHeight}px`);
+    if (visualWidth > 0) document.documentElement.style.setProperty("--wp-mobile-vw", `${visualWidth}px`);
+  }
+
   function hasHudAndPlayArea(element) {
     if (!element) return false;
     const hasHud = element.querySelector("#gameHud, #battleHud, .hud, .game-hud, .play-hud, .statusbar, .stage-status, .topbar");
@@ -107,6 +151,50 @@
     focusPlayableArea(findPlayableFrame());
   }
 
+  function findImmersiveFrameFromEventTarget(target) {
+    const direct = target?.closest?.(immersiveTriggerSelectors.join(","));
+    if (direct && isVisible(direct)) return widenToPlayableFrame(direct);
+    return findPlayableFrame();
+  }
+
+  function markImmersiveFrame(frame) {
+    if (!frame || !isMobileGameViewport()) return;
+    if (immersiveFrame && immersiveFrame !== frame) immersiveFrame.classList.remove("weightplay-active-viewport");
+    immersiveFrame = frame;
+    document.documentElement.classList.add("wp-mobile-game-mode");
+    document.body?.classList.add("wp-mobile-game-mode");
+    frame.classList.add("weightplay-active-viewport");
+    updateVisualViewportVars();
+  }
+
+  async function requestFullscreen(frame) {
+    if (!frame || document.fullscreenElement || document.webkitFullscreenElement) return;
+    const target = frame.requestFullscreen || document.documentElement.requestFullscreen
+      ? frame
+      : document.documentElement;
+    const request =
+      target.requestFullscreen ||
+      target.webkitRequestFullscreen ||
+      target.msRequestFullscreen ||
+      document.documentElement.requestFullscreen ||
+      document.documentElement.webkitRequestFullscreen;
+    if (!request) return;
+    try {
+      await request.call(target, { navigationUI: "hide" });
+    } catch (error) {
+      // Mobile browsers may reject fullscreen outside supported elements; viewport sizing still improves play space.
+    }
+  }
+
+  function enterMobileGameMode(target) {
+    if (!isMobileGameViewport()) return;
+    const frame = findImmersiveFrameFromEventTarget(target);
+    if (!frame || !isVisible(frame)) return;
+    markImmersiveFrame(frame);
+    focusPlayableArea(frame);
+    requestFullscreen(frame);
+  }
+
   function preserveGuideWheelScroll(event) {
     if (!document.body?.classList.contains("has-game-page-info")) return;
     if (event.ctrlKey || Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
@@ -125,7 +213,11 @@
       let wasVisible = isVisible(node);
       const observer = new MutationObserver(() => {
         const nowVisible = isVisible(node);
-        if (!wasVisible && nowVisible) focusPlayableArea(widenToPlayableFrame(node));
+        if (!wasVisible && nowVisible) {
+          const frame = widenToPlayableFrame(node);
+          focusPlayableArea(frame);
+          if (document.body?.classList.contains("wp-mobile-game-mode")) markImmersiveFrame(frame);
+        }
         wasVisible = nowVisible;
       });
       observer.observe(node, { attributes: true, attributeFilter: ["class", "style", "hidden"] });
@@ -166,6 +258,13 @@
     gesture = null;
   }
 
+  function handlePointerUp(event) {
+    const target = event.target;
+    if (isEditable(target)) return;
+    if (!target?.closest?.(immersiveTriggerSelectors.join(","))) return;
+    enterMobileGameMode(target);
+  }
+
   document.documentElement.style.overscrollBehaviorX = "none";
   document.body?.style.setProperty("overscroll-behavior-x", "none");
   document.documentElement.style.webkitTouchCallout = "none";
@@ -177,7 +276,10 @@
   window.WeightPlayGame = {
     ...(window.WeightPlayGame || {}),
     focusGame,
+    enterMobileGameMode: () => enterMobileGameMode(findPlayableFrame()),
+    updateVisualViewportVars,
   };
+  updateVisualViewportVars();
   markNonDraggableMedia();
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", markNonDraggableMedia, { once: true });
@@ -189,6 +291,10 @@
   window.addEventListener("touchmove", move, { passive: false, capture: true });
   window.addEventListener("touchend", end, { passive: true, capture: true });
   window.addEventListener("touchcancel", end, { passive: true, capture: true });
+  window.addEventListener("pointerup", handlePointerUp, { passive: true, capture: true });
+  window.addEventListener("resize", updateVisualViewportVars, { passive: true });
+  window.visualViewport?.addEventListener("resize", updateVisualViewportVars, { passive: true });
+  window.visualViewport?.addEventListener("scroll", updateVisualViewportVars, { passive: true });
   window.addEventListener("wheel", preserveGuideWheelScroll, { passive: true, capture: true });
   window.addEventListener("selectstart", blockSelection, { capture: true });
   window.addEventListener("dragstart", blockNativeDrag, { capture: true });
