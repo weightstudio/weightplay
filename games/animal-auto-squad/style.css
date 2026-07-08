@@ -267,6 +267,55 @@ select {
   color: var(--danger);
 }
 
+.combat-summary,
+.food-guide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  border: 1px solid rgba(140, 240, 195, 0.18);
+  border-radius: 12px;
+  background: rgba(2, 9, 7, 0.72);
+  padding: 8px 10px;
+}
+
+.combat-summary strong {
+  color: var(--mint);
+  font-size: 0.92rem;
+}
+
+.combat-summary span {
+  color: #e8fff5;
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.food-guide {
+  justify-content: flex-start;
+  background: rgba(255, 214, 102, 0.08);
+  border-color: rgba(255, 214, 102, 0.22);
+}
+
+.food-guide strong,
+.food-guide span {
+  border-radius: 999px;
+  padding: 4px 8px;
+  font-size: 0.75rem;
+  font-weight: 900;
+}
+
+.food-guide strong {
+  color: #201305;
+  background: var(--gold);
+}
+
+.food-guide span {
+  color: #f4fff9;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
 .relic-badge {
   background: rgba(94, 140, 242, 0.2);
   border: 1px solid rgba(94, 140, 242, 0.4);
@@ -779,6 +828,27 @@ select {
   .hud-row {
     font-size: 0.85rem;
   }
+
+  .combat-summary,
+  .food-guide {
+    gap: 5px;
+    padding: 6px;
+  }
+
+  .combat-summary strong,
+  .combat-summary span {
+    width: 100%;
+    text-align: center;
+    font-size: 0.72rem;
+    line-height: 1.2;
+  }
+
+  .food-guide strong,
+  .food-guide span {
+    font-size: 0.58rem;
+    padding: 3px 5px;
+  }
+
   .cards-row {
     gap: 4px;
     min-height: 104px;

@@ -113,7 +113,7 @@ body.lobby-page {
 .lobby-mascot {
   position: relative;
   align-self: end;
-  min-height: 188px;
+  min-height: 206px;
   pointer-events: none;
 }
 
@@ -134,12 +134,36 @@ body.lobby-page {
   position: relative;
   z-index: 1;
   display: block;
+  object-fit: contain;
+}
+
+.lobby-mascot-main {
   width: min(100%, 176px);
   max-height: 220px;
   margin: 0 auto;
-  object-fit: contain;
   transform-origin: 50% 100%;
   animation: mascot-breathe 3.6s ease-in-out infinite;
+}
+
+.lobby-mascot-side {
+  position: absolute;
+  bottom: 14px;
+  width: 72px;
+  max-height: 96px;
+  opacity: 0.98;
+  filter: drop-shadow(0 12px 18px rgba(0, 0, 0, 0.34));
+}
+
+.lobby-mascot-fia {
+  left: -16px;
+  z-index: 2;
+  transform: rotate(-6deg);
+}
+
+.lobby-mascot-nori {
+  right: -18px;
+  z-index: 0;
+  transform: rotate(5deg);
 }
 
 @keyframes mascot-breathe {
@@ -2352,12 +2376,26 @@ body.lobby-page {
     grid-column: 2;
     grid-row: 2 / span 2;
     align-self: end;
-    min-height: 150px;
+    min-height: 158px;
   }
 
-  .lobby-mascot img {
+  .lobby-mascot-main {
     width: 132px;
     max-height: 168px;
+  }
+
+  .lobby-mascot-side {
+    bottom: 10px;
+    width: 64px;
+    max-height: 82px;
+  }
+
+  .lobby-mascot-fia {
+    left: -8px;
+  }
+
+  .lobby-mascot-nori {
+    right: -10px;
   }
 
   .language-picker {

@@ -554,6 +554,7 @@
     nodes.menuPanel.classList.remove("is-hidden");
     nodes.gamePanel.classList.add("is-hidden");
     nodes.resultPanel.classList.add("is-hidden");
+    nodes.combatSummary?.classList.add("is-hidden");
     nodes.bestRoundsText.textContent = t("roundNum", { round: save.bestRound });
     nodes.clearedRunsText.textContent = String(save.clearedRuns);
     updateWalletUI();
@@ -1582,6 +1583,23 @@
     canvasCtx.restore();
   }
 
+  function updateCombatSummary() {
+    if (!nodes.combatSummary || !state.combat.animating) return;
+    const sumHp = (squad) => squad.reduce((total, unit) => total + Math.max(0, Math.round(unit.hp || 0)), 0);
+    const sumMax = (squad) => squad.reduce((total, unit) => total + Math.max(1, Math.round(unit.maxHp || unit.hp || 1)), 0);
+    const playerHp = sumHp(state.combat.playerSquad);
+    const playerMax = sumMax(state.combat.playerSquad);
+    const enemyHp = sumHp(state.combat.enemySquad);
+    const enemyMax = sumMax(state.combat.enemySquad);
+    const playerFront = state.combat.playerSquad[0];
+    const enemyFront = state.combat.enemySquad[0];
+    const playerName = playerFront ? (locale === "zh-Hant" ? playerFront.nameZht : playerFront.nameEn) : "-";
+    const enemyName = enemyFront ? (locale === "zh-Hant" ? enemyFront.nameZht : enemyFront.nameEn) : "-";
+    const summary = t("combatSummary", { playerHp, playerMax, enemyHp, enemyMax });
+    const front = t("combatFront", { player: playerName, enemy: enemyName });
+    nodes.combatSummary.innerHTML = `<strong>${summary}</strong><span>${front}</span>`;
+  }
+
   function drawEffects() {
     state.combat.effects = state.combat.effects.filter((fx) => {
       fx.life--;
@@ -1753,6 +1771,7 @@
         // Return to shop prep
         nodes.prepPhaseArea.classList.remove("is-hidden");
         nodes.combatArea.classList.add("is-hidden");
+        nodes.combatSummary?.classList.add("is-hidden");
         startRoundPrep();
       }
     } else if (result === "lose") {
@@ -1766,12 +1785,14 @@
         // Return to shop prep
         nodes.prepPhaseArea.classList.remove("is-hidden");
         nodes.combatArea.classList.add("is-hidden");
+        nodes.combatSummary?.classList.add("is-hidden");
         startRoundPrep();
       }
     } else {
       // Draw: no heart lost, return to shop
       nodes.prepPhaseArea.classList.remove("is-hidden");
       nodes.combatArea.classList.add("is-hidden");
+      nodes.combatSummary?.classList.add("is-hidden");
       startRoundPrep();
     }
     window.WonderAnalytics?.track("battle_end", { game_id: GAME_ID, round: state.round, result });
