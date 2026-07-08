@@ -1,6 +1,6 @@
 ﻿(() => {
   const GAME_ID = "zoo-helper-day";
-  const assetVersion = "20260705-zoo-helper-day-item-sync1";
+  const assetVersion = "20260708-zoo-helper-day-clear-icons1";
   const localeKey = "weightPlayLocale";
   const unlockKey = "weightplay_zoo_helper_unlocked";
   const starKey = "weightplay_zoo_helper_stars";

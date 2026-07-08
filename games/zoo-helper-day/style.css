@@ -316,11 +316,40 @@ select {
   display: grid;
   place-items: center;
   line-height: 1;
+  border: 2px solid rgba(255, 255, 255, 0.78);
+  border-radius: 18px;
+  box-shadow: inset 0 -8px 16px rgba(36, 70, 48, 0.12), 0 8px 14px rgba(47, 86, 64, 0.12);
+}
+
+.item-card[data-item="fruit"] b {
+  background: linear-gradient(145deg, #ffe4dc, #fff7bb);
+}
+
+.item-card[data-item="water"] b,
+.item-card[data-item="shower"] b {
+  background: linear-gradient(145deg, #e2fbff, #9bddff);
+}
+
+.item-card[data-item="brush"] b {
+  background: linear-gradient(145deg, #fff2c2, #ffc66d);
+}
+
+.item-card[data-item="toy"] b,
+.item-card[data-item="ball"] b {
+  background: linear-gradient(145deg, #fff4b6, #ffd05a);
+}
+
+.item-card[data-item="leaf"] b {
+  background: linear-gradient(145deg, #e9ffd8, #8ce071);
+}
+
+.item-card[data-item="fish"] b {
+  background: linear-gradient(145deg, #e2f2ff, #8bb9ff);
 }
 
 .item-card b img {
-  width: 100%;
-  height: 100%;
+  width: 88%;
+  height: 88%;
   object-fit: contain;
   filter: drop-shadow(0 6px 8px rgba(47, 86, 64, 0.16));
 }

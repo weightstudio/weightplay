@@ -769,6 +769,11 @@
     renderShop();
   }
 
+  function getItemEffectText(card) {
+    if (!card || card.atk !== undefined) return "";
+    return locale === "zh-Hant" ? (card.descZht || card.descEn || "") : (card.descEn || "");
+  }
+
   // Cards UI helpers
   function makeCardElement(card, sourceArea, index) {
     const el = document.createElement("div");
@@ -822,6 +827,14 @@
     nameEl.textContent = locale === "zh-Hant" ? (card.nameZht || card.nameEn) : card.nameEn;
     el.appendChild(nameEl);
 
+    if (!isAnimal) {
+      const effectEl = document.createElement("div");
+      effectEl.className = "card-effect";
+      effectEl.textContent = getItemEffectText(card);
+      el.appendChild(effectEl);
+      el.title = `${locale === "zh-Hant" ? (card.nameZht || card.nameEn) : card.nameEn}: ${effectEl.textContent}`;
+    }
+
     // Level tag
     if (isAnimal && card.level > 1) {
       const levelEl = document.createElement("div");
@@ -844,6 +857,7 @@
       statsEl.className = "card-stats";
       statsEl.innerHTML = `<span class="card-atk">ATK ${card.currentAtk}</span><span class="card-hp">HP ${card.currentHp}</span>`;
       el.appendChild(statsEl);
+      el.title = `${locale === "zh-Hant" ? (card.nameZht || card.nameEn) : card.nameEn}: ATK ${card.currentAtk}, HP ${card.currentHp}. ${locale === "zh-Hant" ? (card.descZht || card.descEn || "") : (card.descEn || "")}`;
     } else {
       // Cost
       const costEl = document.createElement("div");
@@ -1333,7 +1347,10 @@
     }
     // Trigger Oak Seed relic (+1 HP in combat)
     if (state.relic?.id === 1) {
-      state.combat.playerSquad.forEach((c) => c.hp += 1);
+      state.combat.playerSquad.forEach((c) => {
+        c.hp += 1;
+        c.maxHp += 1;
+      });
     }
     // Trigger Shadow Claw relic (+1 Atk in combat)
     if (state.relic?.id === 2) {
@@ -1429,8 +1446,9 @@
 
   function drawSquadLine(squad, team) {
     const isPlayer = team === "player";
-    const xBase = isPlayer ? 400 : 560; // front unit centers
-    const spacing = 100;
+    const mobileCombat = window.matchMedia?.("(max-width: 640px)")?.matches;
+    const xBase = isPlayer ? (mobileCombat ? 390 : 400) : (mobileCombat ? 570 : 560); // front unit centers
+    const spacing = mobileCombat ? 74 : 100;
     
     squad.forEach((unit, idx) => {
       // Slide active slots forward
@@ -1448,10 +1466,10 @@
         state.combat.shakeFrames--;
       }
       
-      const x = targetX + shakeX - 40;
-      const y = 250 - 48; // centered vertically
-      const w = 80;
-      const h = 100;
+      const w = mobileCombat ? 112 : 88;
+      const h = mobileCombat ? 136 : 112;
+      const x = targetX + shakeX - w / 2;
+      const y = (mobileCombat ? 286 : 258) - h / 2;
 
       // Draw backdrop
       canvasCtx.fillStyle = isPlayer ? "rgba(10, 30, 24, 0.9)" : "rgba(35, 12, 12, 0.9)";
@@ -1467,15 +1485,17 @@
       // Draw character sprite
       if (isPlayer) {
         const portrait = imageCache[unit.imageKey] || imageCache.boomLion;
-        if (portrait) canvasCtx.drawImage(portrait, x + 8, y + 8, w - 16, h - 42);
+        if (portrait) canvasCtx.drawImage(portrait, x + 10, y + 20, w - 20, h - 58);
       } else {
         const sheet = imageCache.enemies;
         if (sheet) {
           const sw = 682;
           const sh = 768;
-          canvasCtx.drawImage(sheet, unit.sx, unit.sy, sw, sh, x + 10, y + 10, w - 20, h - 45);
+          canvasCtx.drawImage(sheet, unit.sx, unit.sy, sw, sh, x + 12, y + 20, w - 24, h - 60);
         }
       }
+
+      drawUnitHealthBar(unit, x + 8, y + 8, w - 16, isPlayer);
 
       // Draw Melon shield overlay
       if (unit.shield) {
@@ -1507,6 +1527,37 @@
 
       canvasCtx.restore();
     });
+  }
+
+  function drawUnitHealthBar(unit, x, y, width, isPlayer) {
+    const hp = Math.max(0, Math.round(unit.hp || 0));
+    const maxHp = Math.max(1, Math.round(unit.maxHp || hp || 1));
+    const pct = Math.max(0, Math.min(1, hp / maxHp));
+    const barHeight = 12;
+
+    canvasCtx.save();
+    canvasCtx.fillStyle = "rgba(0, 0, 0, 0.82)";
+    canvasCtx.strokeStyle = "rgba(255, 255, 255, 0.72)";
+    canvasCtx.lineWidth = 2;
+    canvasCtx.beginPath();
+    canvasCtx.roundRect(x, y, width, barHeight, 7);
+    canvasCtx.fill();
+    canvasCtx.stroke();
+
+    canvasCtx.fillStyle = pct > 0.45 ? "#53f29d" : pct > 0.22 ? "#ffd666" : "#ff5266";
+    canvasCtx.beginPath();
+    canvasCtx.roundRect(x + 2, y + 2, Math.max(4, (width - 4) * pct), barHeight - 4, 5);
+    canvasCtx.fill();
+
+    canvasCtx.font = "bold 10px Outfit, system-ui";
+    canvasCtx.textAlign = "center";
+    canvasCtx.textBaseline = "middle";
+    canvasCtx.lineWidth = 3;
+    canvasCtx.strokeStyle = "rgba(0, 0, 0, 0.9)";
+    canvasCtx.fillStyle = isPlayer ? "#ffffff" : "#ffe1e6";
+    canvasCtx.strokeText(`${hp}/${maxHp}`, x + width / 2, y + barHeight / 2 + 0.5);
+    canvasCtx.fillText(`${hp}/${maxHp}`, x + width / 2, y + barHeight / 2 + 0.5);
+    canvasCtx.restore();
   }
 
   function drawEffects() {

@@ -465,6 +465,18 @@ select {
   text-shadow: 0 2px 4px rgba(0,0,0,0.8);
 }
 
+.card-effect {
+  z-index: 2;
+  min-height: 2.4em;
+  margin: 2px 0 4px;
+  color: #d5f7e8;
+  font-size: 0.66rem;
+  font-weight: 800;
+  line-height: 1.15;
+  text-align: center;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.82);
+}
+
 .card-cost {
   position: absolute;
   bottom: 40%;
@@ -542,6 +554,8 @@ select {
 }
 
 #gameCanvas {
+  display: block;
+  width: 100%;
   max-width: 100%;
   height: auto;
   aspect-ratio: 16 / 9;
@@ -714,10 +728,49 @@ select {
 
 /* Screen Scaling Adjustment for small devices */
 @media (max-width: 640px) {
+  .squad-app {
+    padding: max(6px, env(safe-area-inset-top)) 6px max(10px, env(safe-area-inset-bottom));
+  }
+
+  .topbar {
+    grid-template-columns: 44px 1fr minmax(104px, 132px);
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .back-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    font-size: 1.45rem;
+    box-shadow: 0 5px 0 #7e4b0c, 0 8px 14px rgba(0, 0, 0, 0.35);
+  }
+
+  .brand span,
+  .locale span {
+    font-size: 0.62rem;
+  }
+
+  .brand h1 {
+    font-size: 1.06rem;
+  }
+
+  .locale select {
+    min-height: 34px;
+    font-size: 0.82rem;
+  }
+
   .menu-panel,
   .result-panel {
     grid-template-columns: 1fr;
   }
+
+  .game-panel {
+    padding: 8px;
+    gap: 8px;
+    border-radius: 14px;
+  }
+
   .cover,
   .result-lion {
     max-width: 260px;
@@ -728,15 +781,40 @@ select {
   }
   .cards-row {
     gap: 4px;
-    min-height: 90px;
+    min-height: 104px;
   }
+
+  .squad-section,
+  .bench-section,
+  .shop-section {
+    padding: 7px;
+  }
+
   .card-item {
     padding: 3px;
     border-width: 1px;
+    min-height: 104px;
   }
+
+  .card-graphic.character-icon {
+    width: min(94%, 76px);
+  }
+
+  .card-graphic.food-icon {
+    width: min(72%, 58px);
+  }
+
   .card-name {
-    font-size: 0.65rem;
+    font-size: 0.62rem;
+    min-height: 1.25em;
   }
+
+  .card-effect {
+    font-size: 0.55rem;
+    min-height: 2.45em;
+    margin-bottom: 2px;
+  }
+
   .card-stats {
     font-size: 0.65rem;
     padding: 1px 3px;
@@ -755,5 +833,39 @@ select {
     width: 18px;
     height: 18px;
     font-size: 0.65rem;
+  }
+
+  .shop-controls {
+    gap: 6px;
+  }
+
+  .shop-action-btn,
+  .battle-action-btn {
+    min-height: 42px;
+    padding: 8px 10px;
+    font-size: 0.86rem;
+  }
+
+  .combat-area {
+    width: calc(100vw - 12px);
+    margin-inline: -2px;
+    border-radius: 12px;
+  }
+
+  #gameCanvas {
+    width: calc(100vw - 14px);
+    max-width: none;
+  }
+
+  .combat-status {
+    top: 8px;
+    width: min(92%, 330px);
+    font-size: 0.82rem;
+    padding: 4px 10px;
+  }
+
+  .hint {
+    font-size: 0.72rem;
+    margin-top: 0;
   }
 }
