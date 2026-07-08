@@ -766,12 +766,18 @@ body.lobby-page {
   min-height: 248px;
   overflow: hidden;
   isolation: isolate;
+  width: 100%;
+  padding: 0;
   border: 1px solid rgba(120, 228, 198, 0.24);
   border-radius: 8px;
   background:
     radial-gradient(circle at 50% 34%, rgba(255, 236, 153, 0.18), rgba(120, 228, 198, 0.06) 48%, transparent 70%),
     rgba(255, 255, 255, 0.045);
   box-shadow: 0 14px 30px rgba(0, 0, 0, 0.14);
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+  appearance: none;
 }
 
 .character-showcase-card::before {
@@ -818,7 +824,8 @@ body.lobby-page {
 }
 
 .character-showcase-copy strong,
-.character-showcase-copy small {
+.character-showcase-copy small,
+.character-showcase-copy span {
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -837,6 +844,20 @@ body.lobby-page {
   font-size: 12px;
   font-weight: 850;
   line-height: 1.3;
+}
+
+.character-showcase-copy span {
+  justify-self: start;
+  margin-top: 2px;
+  padding: 5px 8px;
+  border: 1px solid rgba(120, 228, 198, 0.28);
+  border-radius: 999px;
+  background: rgba(12, 51, 63, 0.68);
+  color: #dff7ff;
+  font-size: 11px;
+  font-weight: 950;
+  line-height: 1.1;
+  white-space: nowrap;
 }
 
 .challenge-spotlight {

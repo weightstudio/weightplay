@@ -57,31 +57,37 @@ const weightPlayCharacters = [
     nameKey: "character.spark_paw_fox.name",
     roleKey: "character.spark_paw_fox.role",
     image: "assets/weightplay-character-spark-paw-fox-cutout.webp",
+    skill: "Reaction",
   },
   {
     nameKey: "character.boom_mane_lion.name",
     roleKey: "character.boom_mane_lion.role",
     image: "assets/weightplay-character-boom-mane-lion-cutout.webp",
+    skill: "Focus",
   },
   {
     nameKey: "character.moss_shell_turtle.name",
     roleKey: "character.moss_shell_turtle.role",
     image: "assets/weightplay-character-moss-shell-turtle-cutout.webp",
+    skill: "Logic",
   },
   {
     nameKey: "character.moon_cap_owl.name",
     roleKey: "character.moon_cap_owl.role",
     image: "assets/weightplay-character-moon-cap-owl-cutout.webp",
+    skill: "Problem Solving",
   },
   {
     nameKey: "character.bubble_fin_otter.name",
     roleKey: "character.bubble_fin_otter.role",
     image: "assets/weightplay-character-bubble-fin-otter-cutout.webp",
+    skill: "Animal Knowledge",
   },
   {
     nameKey: "character.gear_horn_rhino.name",
     roleKey: "character.gear_horn_rhino.role",
     image: "assets/weightplay-character-gear-horn-rhino-cutout.webp",
+    skill: "Problem Solving",
   },
 ];
 const ageFilterGroups = {
@@ -792,13 +798,19 @@ function renderUpcomingGames() {
 function renderCharacterShowcase() {
   if (!characterShowcase || !characterShowcaseSection) return;
   const cards = weightPlayCharacters.map((character) => {
-    const card = document.createElement("article");
+    const name = i18n.t(character.nameKey);
+    const skill = skillText(character.skill);
+    const card = document.createElement("button");
     card.className = "character-showcase-card";
+    card.type = "button";
+    card.setAttribute("aria-label", i18n.t("character_showcase.open", { name, skill }));
+    card.addEventListener("click", () => selectCharacterPath(character));
     card.innerHTML = `
       <img src="${character.image}" alt="" />
       <div class="character-showcase-copy">
-        <strong>${i18n.t(character.nameKey)}</strong>
+        <strong>${name}</strong>
         <small>${i18n.t(character.roleKey)}</small>
+        <span>${i18n.t("character_showcase.cta", { skill })}</span>
       </div>
     `;
     return card;
@@ -993,6 +1005,18 @@ function selectSkillPath(skill) {
   window.WonderAnalytics?.track("skill_path_open", { skill_path: skill, locale: i18n.locale() });
   applyFilter();
   filterStatus?.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function selectCharacterPath(character) {
+  const name = i18n.t(character.nameKey);
+  const skill = skillText(character.skill);
+  selectSkillPath(character.skill);
+  window.WonderAnalytics?.track("character_showcase_open", {
+    character: name,
+    skill_path: character.skill,
+    locale: i18n.locale(),
+  });
+  showToast(i18n.t("character_showcase.toast", { name, skill }));
 }
 
 function resetDiscoveryFilters() {

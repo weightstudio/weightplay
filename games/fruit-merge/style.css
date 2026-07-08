@@ -346,6 +346,43 @@ body.fruit-playing .topbar {
   touch-action: none;
 }
 
+.aim-coach {
+  position: absolute;
+  left: clamp(12px, 4cqw, 24px);
+  right: clamp(12px, 4cqw, 24px);
+  bottom: clamp(12px, 4cqh, 28px);
+  z-index: 6;
+  min-height: 36px;
+  padding: 9px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 999px;
+  background: rgba(24, 33, 51, 0.8);
+  color: #fff;
+  font-size: clamp(0.72rem, 1.9cqw, 0.95rem);
+  font-weight: 1000;
+  line-height: 1.25;
+  text-align: center;
+  text-wrap: balance;
+  pointer-events: none;
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.24);
+}
+
+.aim-coach.hidden {
+  display: none;
+}
+
+.aim-coach[data-tone="match"] {
+  background: rgba(20, 77, 71, 0.86);
+  border-color: rgba(101, 230, 163, 0.48);
+  color: #e8fff5;
+}
+
+.aim-coach[data-tone="danger"] {
+  background: rgba(119, 34, 48, 0.9);
+  border-color: rgba(255, 122, 140, 0.58);
+  color: #fff1f3;
+}
+
 .controls {
   grid-area: controls;
   align-self: end;
@@ -744,6 +781,15 @@ body.fruit-playing .topbar {
     width: min(100cqw, calc(100cqh * 720 / 1040));
     height: auto;
     border-width: 3px;
+  }
+
+  .aim-coach {
+    left: 9px;
+    right: 9px;
+    bottom: 9px;
+    min-height: 30px;
+    padding: 7px 9px;
+    font-size: 0.62rem;
   }
 
   .result-stats {

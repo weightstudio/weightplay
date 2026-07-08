@@ -227,6 +227,67 @@ body.is-bakery-playing .play-panel {
   line-height: 1.32;
 }
 
+.recommend-card {
+  border-radius: 18px;
+  padding: 12px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: 10px;
+  align-items: center;
+  background: linear-gradient(135deg, rgba(255, 248, 220, 0.95), rgba(255, 204, 109, 0.92));
+  color: #4a2918;
+  box-shadow: inset 0 0 0 2px rgba(255,255,255,.58), 0 8px 18px rgba(86,45,20,.14);
+}
+
+.recommend-card div {
+  min-width: 0;
+  display: grid;
+  gap: 3px;
+}
+
+.recommend-card strong {
+  font-size: 0.9rem;
+  line-height: 1;
+}
+
+.recommend-card span {
+  font-size: 1rem;
+  font-weight: 950;
+  line-height: 1.1;
+}
+
+.recommend-card em {
+  color: rgba(74, 41, 24, 0.72);
+  font-size: 0.76rem;
+  font-style: normal;
+  font-weight: 900;
+  line-height: 1.18;
+}
+
+.recommend-icons {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+}
+
+.recommend-icons img {
+  width: 2rem;
+  height: 2rem;
+  object-fit: contain;
+  filter: drop-shadow(0 3px 3px rgba(76, 38, 18, 0.16));
+}
+
+.recommend-card button {
+  border: 0;
+  border-radius: 14px;
+  min-height: 44px;
+  padding: 0 14px;
+  background: linear-gradient(180deg, #46e083, #13b96b);
+  color: #08351e;
+  font-weight: 950;
+  box-shadow: 0 5px 0 #08783f, 0 10px 16px rgba(19, 130, 75, 0.22);
+}
+
 .bakery-progress {
   border-radius: 18px;
   padding: 12px 14px;
@@ -779,6 +840,30 @@ body.is-bakery-playing .play-panel {
   }
 
   .coach-card span {
+    font-size: 0.8rem;
+  }
+
+  .recommend-card {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px;
+    padding: 10px;
+  }
+
+  .recommend-icons {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .recommend-icons img {
+    width: 1.55rem;
+    height: 1.55rem;
+  }
+
+  .recommend-card button {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    align-self: stretch;
+    padding: 0 10px;
     font-size: 0.8rem;
   }
 

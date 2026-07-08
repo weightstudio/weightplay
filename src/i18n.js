@@ -40,6 +40,9 @@
       "upcoming.reason": "In production",
       "character_showcase.title": "WeightPlay Heroes",
       "character_showcase.reason": "Original IP",
+      "character_showcase.cta": "Explore {skill}",
+      "character_showcase.open": "Explore {skill} games with {name}",
+      "character_showcase.toast": "Showing {skill} games with {name}.",
       "character.spark_paw_fox.name": "Spark Paw Fia",
       "character.spark_paw_fox.role": "Speed / dodge hero",
       "character.boom_mane_lion.name": "Boom Mane Leo",
@@ -540,6 +543,26 @@
     "character.bubble_fin_otter.role": "海洋節奏專家",
     "character.gear_horn_rhino.name": "齒角魯克斯",
     "character.gear_horn_rhino.role": "裝備與升級",
+  });
+
+  Object.assign(dictionaries["zh-Hant"], {
+    "character_showcase.title": "\u0057\u0065\u0069\u0067\u0068\u0074\u0050\u006c\u0061\u0079 \u82f1\u96c4\u89d2\u8272",
+    "character_showcase.reason": "\u539f\u5275 IP",
+    "character_showcase.cta": "\u63a2\u7d22{skill}",
+    "character_showcase.open": "\u8ddf{name}\u4e00\u8d77\u63a2\u7d22{skill}\u904a\u6232",
+    "character_showcase.toast": "\u5df2\u986f\u793a{name}\u63a8\u85a6\u7684{skill}\u904a\u6232\u3002",
+    "character.spark_paw_fox.name": "\u9583\u722a\u83f2\u4e9e",
+    "character.spark_paw_fox.role": "\u901f\u5ea6 / \u9583\u907f\u82f1\u96c4",
+    "character.boom_mane_lion.name": "\u7206\u9b03\u96f7\u6b50",
+    "character.boom_mane_lion.role": "\u524d\u7dda\u968a\u9577",
+    "character.moss_shell_turtle.name": "\u82d4\u7532\u592a\u90ce",
+    "character.moss_shell_turtle.role": "\u9632\u79a6\u898f\u5283",
+    "character.moon_cap_owl.name": "\u6708\u5e3d\u6b50\u62c9",
+    "character.moon_cap_owl.role": "\u7b56\u7565\u5f15\u5c0e",
+    "character.bubble_fin_otter.name": "\u6ce1\u9c2d\u8afe\u91cc",
+    "character.bubble_fin_otter.role": "\u6d77\u6d0b\u7bc0\u594f\u5c08\u5bb6",
+    "character.gear_horn_rhino.name": "\u9f52\u89d2\u9b6f\u514b\u65af",
+    "character.gear_horn_rhino.role": "\u88dd\u5099\u8207\u5347\u7d1a",
   });
 
   function getSavedLocale() {

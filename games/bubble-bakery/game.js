@@ -62,6 +62,12 @@
       stageMastered: "Mastered",
       coachName: "Panko the Bakery Coach",
       coachTip: "Plan the biggest matching group first, then save moves for the glowing order bubbles.",
+      recommendedTitle: "Panko's Pick",
+      recommendedCopy: "{stage} · {theme}",
+      recommendedNew: "Clear this order to unlock the next bakery tray.",
+      recommendedImprove: "Replay this order to earn more stars.",
+      recommendedMastered: "Everything is mastered. Replay your newest favorite order.",
+      startRecommended: "Start Pick",
     },
     "zh-Hant": {
       gameTitle: "動物泡泡烘焙坊",
@@ -119,6 +125,12 @@
       stageMastered: "已精通",
       coachName: "Panko 烘焙教練",
       coachTip: "先找最大的相同泡泡群，再把步數留給發光的訂單泡泡。",
+      recommendedTitle: "Panko 推薦",
+      recommendedCopy: "{stage} · {theme}",
+      recommendedNew: "完成這張訂單，就能解鎖下一個烘焙盤。",
+      recommendedImprove: "重玩這張訂單，試著拿到更多星星。",
+      recommendedMastered: "全部都精通了！可以重玩最新喜歡的訂單。",
+      startRecommended: "開始推薦",
     },
   };
 
@@ -149,6 +161,7 @@
   const nodes = {
     localeSelect: $("localeSelect"),
     menuPanel: $("menuPanel"),
+    recommendedOrder: $("recommendedOrder"),
     bakeryProgress: $("bakeryProgress"),
     stageGrid: $("stageGrid"),
     playPanel: $("playPanel"),
@@ -281,6 +294,33 @@
     });
   }
 
+  function recommendedStageIndex() {
+    const firstImprove = stages.findIndex((_, index) => {
+      const stageNo = index + 1;
+      return stageNo <= unlocked && (stars[stageNo] || 0) < 3;
+    });
+    if (firstImprove >= 0) return firstImprove;
+    return clamp(unlocked - 1, 0, stages.length - 1);
+  }
+
+  function renderRecommendedOrder() {
+    const index = recommendedStageIndex();
+    const stageNo = index + 1;
+    const stage = stages[index];
+    const got = stars[stageNo] || 0;
+    const reasonKey = got >= 3 ? "recommendedMastered" : got > 0 ? "recommendedImprove" : "recommendedNew";
+    const orderIcons = Object.keys(stage.orders).map((id) => `<img src="${colorData(id).asset}" alt="" />`).join("");
+    nodes.recommendedOrder.innerHTML = `
+      <div>
+        <strong>${t("recommendedTitle")}</strong>
+        <span>${t("recommendedCopy", { stage: t("stage", { n: stageNo }), theme: t(stage.theme) })}</span>
+        <em>${t(reasonKey)}</em>
+      </div>
+      <b class="recommend-icons">${orderIcons}</b>
+      <button type="button" data-recommended-stage="${index}">${t("startRecommended")}</button>
+    `;
+  }
+
   function renderBakeryProgress() {
     const totalStars = stages.length * 3;
     const earnedStars = stages.reduce((sum, _, index) => sum + (stars[index + 1] || 0), 0);
@@ -308,6 +348,7 @@
     nodes.playPanel.classList.add("hidden");
     nodes.resultPanel.classList.add("hidden");
     busy = false;
+    renderRecommendedOrder();
     renderBakeryProgress();
     renderStageGrid();
   }
@@ -760,6 +801,7 @@
       window.dispatchEvent(new CustomEvent("wonder:locale-change", { detail: { locale } }));
     }
     localizeStatic();
+    renderRecommendedOrder();
     renderBakeryProgress();
     renderStageGrid();
     if (!nodes.playPanel.classList.contains("hidden")) {
@@ -768,6 +810,11 @@
     }
   });
   nodes.backToStagesBtn.addEventListener("click", showMenu);
+  nodes.recommendedOrder.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-recommended-stage]");
+    if (!button) return;
+    startStage(Number(button.dataset.recommendedStage || 0));
+  });
   nodes.resultStagesBtn.addEventListener("click", showMenu);
   nodes.retryBtn.addEventListener("click", () => startStage(currentStage));
   nodes.nextStageBtn.addEventListener("click", () => startStage(Math.min(currentStage + 1, stages.length - 1)));
@@ -779,6 +826,7 @@
   });
 
   localizeStatic();
+  renderRecommendedOrder();
   renderBakeryProgress();
   renderStageGrid();
   initLoading();

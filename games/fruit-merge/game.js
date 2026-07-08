@@ -42,6 +42,7 @@
   const loadingText = document.querySelector("#loadingText");
   const loadingFill = document.querySelector("#loadingFill");
   const toast = document.querySelector("#toast");
+  const aimCoach = document.querySelector("#aimCoach");
 
   const W = canvas.width;
   const H = canvas.height;
@@ -96,6 +97,11 @@
       milestoneNext: "Next target: {name}",
       milestoneComplete: "All animals unlocked! Chase a new best score.",
       milestoneNew: "New animal unlocked: {name}!",
+      aimStart: "Tap or drag the board to aim. Drop matching animal balls below the red line.",
+      aimMatch: "Aim near another {name} to merge.",
+      aimSafe: "Keep the animal tower under the red warning line.",
+      aimDanger: "Too high! Merge quickly or aim away from the red line.",
+      dangerLine: "Warning Line",
       leaderboardTitle: "Your Best Runs",
       noLeaderboard: "Play once to start your local best-run list.",
       leaderboardRow: "#{rank}  Score {score}  {animal}",
@@ -153,6 +159,11 @@
       milestoneNext: "下一個目標：{name}",
       milestoneComplete: "全部動物都解鎖了！挑戰更高分吧。",
       milestoneNew: "解鎖新動物：{name}！",
+      aimStart: "點擊或拖曳遊戲區來瞄準。讓相同動物球在紅線下方合成。",
+      aimMatch: "瞄準另一顆{name}，讓牠們合成。",
+      aimSafe: "讓動物塔保持在紅色警戒線下方。",
+      aimDanger: "太高了！快合成，或避開紅線附近。",
+      dangerLine: "警戒線",
       leaderboardTitle: "你的最佳挑戰",
       noLeaderboard: "玩一場後，這裡會記錄你的本機最佳成績。",
       leaderboardRow: "第 {rank} 名  分數 {score}  {animal}",
@@ -265,6 +276,7 @@
     playAgainBtn.textContent = t("playAgain");
     lobbyLink.textContent = t("lobby");
     updateHud();
+    updateAimCoach();
     renderMilestone(menuMilestone, readProgress());
     renderMilestone(resultMilestone, readProgress());
     renderLeaderboard(menuLeaderboard, readLeaderboard());
@@ -317,6 +329,7 @@
     resultPanel.classList.add("hidden");
     menuPanel.classList.toggle("hidden", !showMenu);
     updateHud();
+    updateAimCoach();
     if (!showMenu) {
       window.WonderAnalytics?.track?.("game_start", { game_id: GAME_ID, source });
       startAnimationLoop();
@@ -339,6 +352,7 @@
     goalText.textContent = t("goal", { name: t("fruit10") });
     goalFill.style.width = `${Math.round((maxReachedLevel / (fruits.length - 1)) * 100)}%`;
     updateComboHud();
+    updateAimCoach();
   }
 
   function updateComboHud() {
@@ -372,6 +386,7 @@
     canDropAt = performance.now() + 520;
     window.WonderSound?.play?.("click");
     updateHud();
+    updateAimCoach();
   }
 
   function initPhysicsWorld() {
@@ -499,6 +514,7 @@
     if (!removeIds.size) return;
     fruitsOnBoard = fruitsOnBoard.filter((fruit) => !removeIds.has(fruit.id)).concat(additions);
     updateHud();
+    updateAimCoach();
   }
 
   function addMergeScore(baseScore) {
@@ -543,6 +559,30 @@
       dangerTime = Math.max(dangerTime, fruit.dangerTime);
     }
     if (dangerTime > 0.9) endGame();
+    updateAimCoach();
+  }
+
+  function updateAimCoach() {
+    if (!aimCoach) return;
+    aimCoach.classList.toggle("hidden", !running || gameOver);
+    if (!running || gameOver) return;
+
+    const highFruit = fruitsOnBoard.some((fruit) => {
+      const age = performance.now() - fruit.bornAt;
+      return age > 1200 && fruit.y - fruit.radius < dangerY + 92;
+    });
+    const sameLevel = fruitsOnBoard.find((fruit) => fruit.level === currentLevel && performance.now() - fruit.bornAt > 700);
+
+    if (highFruit) {
+      aimCoach.textContent = t("aimDanger");
+      aimCoach.dataset.tone = "danger";
+    } else if (sameLevel) {
+      aimCoach.textContent = t("aimMatch", { name: t(`fruit${currentLevel}`) });
+      aimCoach.dataset.tone = "match";
+    } else {
+      aimCoach.textContent = fruitsOnBoard.length ? t("aimSafe") : t("aimStart");
+      aimCoach.dataset.tone = fruitsOnBoard.length ? "safe" : "start";
+    }
   }
 
   function endGame() {
@@ -788,6 +828,11 @@
     ctx.lineTo(wallRight, dangerY);
     ctx.stroke();
     ctx.setLineDash([]);
+
+    ctx.fillStyle = "rgba(255, 77, 99, 0.9)";
+    ctx.font = "900 20px system-ui, sans-serif";
+    ctx.textAlign = "right";
+    ctx.fillText(t("dangerLine"), wallRight - 10, dangerY - 14);
 
     ctx.fillStyle = "rgba(41, 54, 77, 0.72)";
     ctx.font = "900 24px system-ui, sans-serif";
