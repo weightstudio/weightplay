@@ -1524,6 +1524,19 @@ body.lobby-page {
   object-fit: cover;
 }
 
+.hero-game-art img.hero-game-character {
+  position: absolute;
+  right: 8px;
+  bottom: -4px;
+  z-index: 1;
+  width: 44%;
+  height: 86%;
+  object-fit: contain;
+  object-position: bottom right;
+  filter: drop-shadow(0 16px 20px rgba(0, 0, 0, 0.4));
+  pointer-events: none;
+}
+
 .hero-game-art::after {
   content: "";
   position: absolute;
@@ -1858,17 +1871,32 @@ body.lobby-page {
 .game-card-art .game-card-hero {
   position: absolute;
   bottom: 4px;
-  left: 50%;
-  width: 104px;
-  height: 104px;
+  left: auto;
+  right: 4px;
+  z-index: 2;
+  width: min(48%, 132px);
+  height: min(72%, 132px);
   object-fit: contain;
-  transform: translateX(-50%);
+  object-position: bottom right;
+  transform: none;
   filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.42));
 }
 
 .game-card-art.image-art .game-card-hero {
-  width: 76px;
-  height: 76px;
+  width: min(46%, 126px);
+  height: min(74%, 126px);
+}
+
+.game-card[data-game-id="wonder-crash"] .game-card-fg {
+  width: 90%;
+  height: 90%;
+  filter: saturate(0.9) brightness(0.78);
+}
+
+.game-card[data-game-id="wonder-crash"] .game-card-hero {
+  width: min(58%, 150px);
+  height: min(86%, 150px);
+  right: 2px;
 }
 
 .game-card-art.color-match {
@@ -2216,7 +2244,7 @@ body.lobby-page {
 .game-card.playable:hover .game-card-hero,
 .game-card.playable:focus-visible .game-card-hero {
   filter: drop-shadow(0 16px 22px rgba(255, 207, 99, 0.28));
-  transform: translateX(-50%) scale(1.16);
+  transform: scale(1.12);
 }
 
 .game-card:active,

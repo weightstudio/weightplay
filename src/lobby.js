@@ -766,6 +766,7 @@ function renderHeroGames() {
       const type = text(game.type);
       const ageLabel = text(game.ageLabel);
       const rankText = rankLabel(game, index + 1);
+      const showHero = game.art?.hero && !game.art.hideHero && !game.art.hero.includes("width='1'");
       const card = document.createElement(isPlayable ? "a" : "button");
       card.className = `hero-game-card ${isPlayable ? "playable" : "planned"}`;
       card.type = isPlayable ? undefined : "button";
@@ -777,6 +778,7 @@ function renderHeroGames() {
       card.innerHTML = `
         <div class="hero-game-art">
           <img src="${game.art?.background || game.art?.hero || "assets/hero.png"}" alt="" />
+          ${showHero ? `<img class="hero-game-character" src="${game.art.hero}" alt="" />` : ""}
           <span>${rankText}</span>
         </div>
         <div class="hero-game-copy">

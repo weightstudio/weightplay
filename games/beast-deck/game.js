@@ -103,7 +103,9 @@
       packHint: "Spend coins for a card or equipment for future runs.",
       packNeed: "Need {cost} coins.",
       packResultCard: "New card: {card}.",
+      packResultCardEquipped: "New card: {card}. Added to Battle Deck.",
       packResultGear: "New equipment: {gear}.",
+      packResultGearEquipped: "New equipment: {gear}. Equipped now.",
       packDuplicate: "Duplicate upgraded: {name}.",
       deckBuildTitle: "Battle Deck",
       collectionOwnedTitle: "Owned Cards",
@@ -125,6 +127,8 @@
       missionSelectedCard: "Selected - start below",
       selectedMissionTitle: "Selected Mission",
       selectedMissionReady: "{mission} is ready. Clear reward: {xp} XP + {coins} coins.",
+      loadoutReady: "Loadout: {cards}/{max} extra cards · Gear: {gear}.",
+      noGear: "None",
       controlCombat: "Turn-Based Strategy",
       controlUpgrades: "Draft Cards",
       controlDeck: "Persistent Level",
@@ -224,7 +228,9 @@
       packHint: "消耗金幣，獲得未來出戰可用的卡牌或裝備。",
       packNeed: "需要 {cost} 金幣。",
       packResultCard: "獲得卡牌：{card}。",
+      packResultCardEquipped: "獲得卡牌：{card}，已加入出戰牌組。",
       packResultGear: "獲得裝備：{gear}。",
+      packResultGearEquipped: "獲得裝備：{gear}，已自動裝備。",
       packDuplicate: "重複裝備強化：{name}。",
       deckBuildTitle: "出戰牌組",
       collectionOwnedTitle: "持有卡牌",
@@ -246,6 +252,8 @@
       missionSelectedCard: "已選擇・按下方開始",
       selectedMissionTitle: "已選任務",
       selectedMissionReady: "{mission} 已準備。通關獎勵：{xp} 經驗 + {coins} 金幣。",
+      loadoutReady: "出戰配置：額外卡牌 {cards}/{max} · 裝備：{gear}。",
+      noGear: "無",
       controlCombat: "回合策略",
       controlUpgrades: "抽選卡牌",
       controlDeck: "永久等級",
@@ -542,6 +550,10 @@
     return profile.equippedCards.filter((id) => id === cardId).length;
   }
 
+  function canEquipCard(cardId) {
+    return (profile.collection[cardId] || 0) > equippedCardCount(cardId) && profile.equippedCards.length < maxEquippedCards;
+  }
+
   function renderCollectionUI() {
     if (!nodes.collectionGrid) return;
     nodes.profileCoinText.textContent = String(profile.coins);
@@ -579,7 +591,7 @@
       const card = cardDb[cardId];
       const owned = profile.collection[cardId] || 0;
       const equipped = equippedCardCount(cardId);
-      const canEquip = owned > equipped && profile.equippedCards.length < maxEquippedCards;
+      const canEquip = canEquipCard(cardId);
       const button = document.createElement("button");
       button.type = "button";
       button.className = `collection-card ${card.type}`;
@@ -639,21 +651,37 @@
     const roll = Math.random();
     if (roll < 0.72) {
       const pool = Object.keys(cardDb);
-      const cardId = pool[Math.floor(Math.random() * pool.length)];
-      profile.collection[cardId] = (profile.collection[cardId] || 0) + 1;
-      nodes.packStatus.textContent = t("packResultCard", { card: cardName(cardId) });
+      awardPackCard(pool[Math.floor(Math.random() * pool.length)]);
     } else {
       const pool = Object.keys(gearDb);
-      const gearId = pool[Math.floor(Math.random() * pool.length)];
-      profile.gear[gearId] = (profile.gear[gearId] || 0) + 1;
-      if (!profile.equippedGear) profile.equippedGear = gearId;
-      nodes.packStatus.textContent = profile.gear[gearId] > 1
-        ? t("packDuplicate", { name: gearName(gearId) })
-        : t("packResultGear", { gear: gearName(gearId) });
+      awardPackGear(pool[Math.floor(Math.random() * pool.length)]);
     }
     saveLocalState();
     renderCollectionUI();
     window.WonderSound?.play("success");
+  }
+
+  function awardPackCard(cardId) {
+    profile.collection[cardId] = (profile.collection[cardId] || 0) + 1;
+    if (canEquipCard(cardId)) {
+      profile.equippedCards.push(cardId);
+      nodes.packStatus.textContent = t("packResultCardEquipped", { card: cardName(cardId) });
+    } else {
+      nodes.packStatus.textContent = t("packResultCard", { card: cardName(cardId) });
+    }
+  }
+
+  function awardPackGear(gearId) {
+    profile.gear[gearId] = (profile.gear[gearId] || 0) + 1;
+    const shouldEquip = !profile.equippedGear;
+    if (shouldEquip) profile.equippedGear = gearId;
+    if (profile.gear[gearId] > 1) {
+      nodes.packStatus.textContent = t("packDuplicate", { name: gearName(gearId) });
+    } else {
+      nodes.packStatus.textContent = shouldEquip
+        ? t("packResultGearEquipped", { gear: gearName(gearId) })
+        : t("packResultGear", { gear: gearName(gearId) });
+    }
   }
 
   function renderProgressUI() {
@@ -716,10 +744,12 @@
       const missionLabel = t("missionLabel", { mission: profile.selectedMission });
       const xp = getMission(profile.selectedMission).xp;
       const coins = missionCoinReward(profile.selectedMission);
+      const gear = profile.equippedGear ? gearName(profile.equippedGear) : t("noGear");
       nodes.selectedMissionSummary.innerHTML = `
         <span>${t("selectedMissionTitle")}</span>
         <strong>${missionLabel}: ${missionTitle(profile.selectedMission)}</strong>
         <small>${t("selectedMissionReady", { mission: missionLabel, xp, coins })}</small>
+        <small>${t("loadoutReady", { cards: profile.equippedCards.length, max: maxEquippedCards, gear })}</small>
       `;
     }
     nodes.stageGrid.querySelectorAll(".stage-card").forEach((card) => {
@@ -1238,6 +1268,19 @@
           packStatus: nodes.packStatus?.textContent || "",
           collectionText: nodes.collectionGrid?.textContent || "",
           gearText: nodes.gearGrid?.textContent || "",
+        };
+      },
+      forceDrawCardPack: (cardId = "viper-venom") => {
+        profile.coins = Math.max(profile.coins, packCost);
+        profile.coins -= packCost;
+        awardPackCard(cardId);
+        saveLocalState();
+        renderCollectionUI();
+        return {
+          profile: normalizeProfile(profile),
+          packStatus: nodes.packStatus?.textContent || "",
+          equippedText: nodes.deckSlots?.textContent || "",
+          selectedSummaryText: nodes.selectedMissionSummary?.textContent || "",
         };
       },
       forceEnemyBlock: (amount = 9) => {
