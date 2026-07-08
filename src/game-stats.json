@@ -1,28 +1,28 @@
 {
-  "updatedAt": "2026-07-07T17:55:27.235Z",
+  "updatedAt": "2026-07-08T17:25:04.901Z",
   "source": "ga4",
   "windowDays": 7,
   "totals": {
-    "plays7d": 464,
-    "playsTotal": 480,
+    "plays7d": 408,
+    "playsTotal": 498,
     "users7d": 85
   },
   "games": {
     "wonder-crash": {
-      "plays7d": 36,
-      "playsTotal": 39,
+      "plays7d": 31,
+      "playsTotal": 40,
       "users7d": 5,
       "rank7d": 4
     },
     "color-lunchbox": {
-      "plays7d": 19,
+      "plays7d": 16,
       "playsTotal": 20,
-      "users7d": 4,
-      "rank7d": 6
+      "users7d": 3,
+      "rank7d": 7
     },
     "bubble-bakery": {
-      "plays7d": 47,
-      "playsTotal": 47,
+      "plays7d": 39,
+      "playsTotal": 48,
       "users7d": 6,
       "rank7d": 3
     },
@@ -30,61 +30,61 @@
       "plays7d": 16,
       "playsTotal": 16,
       "users7d": 3,
-      "rank7d": 9
+      "rank7d": 8
     },
     "animal-zoo-idle": {
-      "plays7d": 61,
-      "playsTotal": 61,
+      "plays7d": 62,
+      "playsTotal": 62,
       "users7d": 6,
-      "rank7d": 2
+      "rank7d": 1
     },
     "star-memory": {
-      "plays7d": 11,
+      "plays7d": 10,
       "playsTotal": 11,
       "users7d": 3,
       "rank7d": 15
     },
     "campus-dash": {
-      "plays7d": 14,
+      "plays7d": 13,
       "playsTotal": 14,
       "users7d": 4,
-      "rank7d": 12
+      "rank7d": 11
     },
     "snack-blocks": {
-      "plays7d": 15,
+      "plays7d": 13,
       "playsTotal": 15,
-      "users7d": 6,
+      "users7d": 5,
       "rank7d": 10
     },
     "fruit-merge": {
-      "plays7d": 29,
+      "plays7d": 26,
       "playsTotal": 37,
       "users7d": 6,
       "rank7d": 5
     },
     "garden-tiles": {
-      "plays7d": 11,
+      "plays7d": 10,
       "playsTotal": 13,
       "users7d": 3,
-      "rank7d": 13
+      "rank7d": 14
     },
     "animal-rescue": {
       "plays7d": 9,
       "playsTotal": 9,
       "users7d": 2,
-      "rank7d": 17
+      "rank7d": 18
     },
     "animal-hidden-safari": {
-      "plays7d": 17,
+      "plays7d": 10,
       "playsTotal": 17,
       "users7d": 2,
-      "rank7d": 8
+      "rank7d": 13
     },
     "animal-guard-yard": {
-      "plays7d": 87,
-      "playsTotal": 87,
+      "plays7d": 49,
+      "playsTotal": 88,
       "users7d": 8,
-      "rank7d": 1
+      "rank7d": 2
     },
     "animal-crystal-survivor": {
       "plays7d": 10,
@@ -96,61 +96,61 @@
       "plays7d": 8,
       "playsTotal": 10,
       "users7d": 2,
-      "rank7d": 19
+      "rank7d": 20
     },
     "zoo-helper-day": {
-      "plays7d": 19,
+      "plays7d": 17,
       "playsTotal": 19,
       "users7d": 4,
-      "rank7d": 7
+      "rank7d": 6
     },
     "shape-train": {
       "plays7d": 6,
       "playsTotal": 6,
       "users7d": 3,
-      "rank7d": 22
+      "rank7d": 23
     },
     "tiny-weather-rescue": {
       "plays7d": 9,
       "playsTotal": 9,
       "users7d": 3,
-      "rank7d": 18
+      "rank7d": 19
     },
     "beast-deck": {
-      "plays7d": 14,
-      "playsTotal": 14,
-      "users7d": 4,
-      "rank7d": 11
+      "plays7d": 15,
+      "playsTotal": 15,
+      "users7d": 3,
+      "rank7d": 9
     },
     "animal-relic-hunters": {
       "plays7d": 11,
       "playsTotal": 11,
       "users7d": 3,
-      "rank7d": 14
+      "rank7d": 12
     },
     "animal-rune-tactics": {
-      "plays7d": 6,
-      "playsTotal": 6,
-      "users7d": 1,
-      "rank7d": 21
+      "plays7d": 7,
+      "playsTotal": 7,
+      "users7d": 2,
+      "rank7d": 22
     },
     "animal-orb-fortress": {
-      "plays7d": 6,
-      "playsTotal": 6,
+      "plays7d": 10,
+      "playsTotal": 10,
       "users7d": 2,
-      "rank7d": 20
+      "rank7d": 17
     },
     "animal-auto-squad": {
-      "plays7d": 3,
-      "playsTotal": 3,
-      "users7d": 2,
-      "rank7d": 23
+      "plays7d": 7,
+      "playsTotal": 7,
+      "users7d": 3,
+      "rank7d": 21
     },
     "animal-reef-fisher": {
-      "plays7d": 0,
-      "playsTotal": 0,
-      "users7d": 1,
-      "rank7d": null
+      "plays7d": 4,
+      "playsTotal": 4,
+      "users7d": 2,
+      "rank7d": 24
     }
   }
 }
