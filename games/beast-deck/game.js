@@ -68,6 +68,7 @@
     collectionGrid: $("collectionGrid"),
     gearGrid: $("gearGrid"),
     stageGrid: $("stageGrid"),
+    selectedMissionSummary: $("selectedMissionSummary"),
   };
 
   const asset = (name) => `../../assets/${name}`;
@@ -115,11 +116,15 @@
       gearEquip: "Equip",
       gearNone: "No equipment yet",
       stageSelectTitle: "Choose a Mission",
-      stageSelectHint: "Drag the mission row left or right. Tap a mission to select it, then start.",
+      stageSelectHint: "Swipe or drag missions. The center card is selected; press Start below to enter.",
       lockedMission: "Locked",
       missionLabel: "Mission {mission}",
       missionReward: "{xp} XP",
-      startMissionCard: "Tap to Select",
+      missionCoins: "{coins} coins",
+      startMissionCard: "Tap to choose",
+      missionSelectedCard: "Selected - start below",
+      selectedMissionTitle: "Selected Mission",
+      selectedMissionReady: "{mission} is ready. Clear reward: {xp} XP + {coins} coins.",
       controlCombat: "Turn-Based Strategy",
       controlUpgrades: "Draft Cards",
       controlDeck: "Persistent Level",
@@ -139,6 +144,7 @@
       shieldLabel: "Block",
       chooseCard: "Draft a Card",
       chooseCardDesc: "Choose one animal power for this mission deck. The chosen card is guaranteed in the next opening hand.",
+      draftPermanentHint: "Mission draft cards last for this mission only. Permanent cards come from Gold Beast Packs on the menu.",
       tryAgain: "Try Again",
       backToMenu: "Back to Menu",
       skillLogic: "Logic",
@@ -231,11 +237,15 @@
       gearEquip: "裝備",
       gearNone: "尚未持有裝備",
       stageSelectTitle: "選擇任務",
-      stageSelectHint: "左右拖滑任務列。點任務卡選擇，再按開始任務。",
+      stageSelectHint: "左右滑動任務列。中間卡片就是選定任務，再按下方開始。",
       lockedMission: "未解鎖",
       missionLabel: "任務 {mission}",
       missionReward: "{xp} 經驗",
+      missionCoins: "{coins} 金幣",
       startMissionCard: "點擊選擇",
+      missionSelectedCard: "已選擇・按下方開始",
+      selectedMissionTitle: "已選任務",
+      selectedMissionReady: "{mission} 已準備。通關獎勵：{xp} 經驗 + {coins} 金幣。",
       controlCombat: "回合策略",
       controlUpgrades: "抽選卡牌",
       controlDeck: "永久等級",
@@ -255,6 +265,7 @@
       shieldLabel: "格擋",
       chooseCard: "選擇卡牌",
       chooseCardDesc: "選一張動物能力加入本次任務牌組，選到的卡會保證出現在下一場開手牌。",
+      draftPermanentHint: "戰鬥中選到的卡只存在本次任務；永久卡冊要用選單的金幣卡包取得。",
       tryAgain: "再試一次",
       backToMenu: "回到選單",
       skillLogic: "邏輯",
@@ -441,6 +452,11 @@
     return missionTemplates[clamp(id, 1, maxMission) - 1];
   }
 
+  function missionCoinReward(missionId = profile.selectedMission) {
+    const mission = clamp(Number(missionId) || 1, 1, maxMission);
+    return (16 + mission * 3) * 2 + (40 + mission * 8);
+  }
+
   function nextMissionLabel(missionId) {
     return getLocale() === "zh-Hant" ? `下一關：任務 ${missionId}` : `Next Mission: ${missionId}`;
   }
@@ -485,6 +501,8 @@
     document.querySelectorAll("[data-ui]").forEach((el) => {
       el.textContent = t(el.dataset.ui);
     });
+    nodes.localeSelect.querySelector('option[value="en"]').textContent = "English";
+    nodes.localeSelect.querySelector('option[value="zh-Hant"]').textContent = "繁體中文";
     nodes.localeSelect.value = getLocale();
     updateDiamondShopUI();
     renderProgressUI();
@@ -659,7 +677,7 @@
         <span>${t("missionLabel", { mission: i })}</span>
         <strong>${unlocked ? missionTitle(i) : t("lockedMission")}</strong>
         <small>${unlocked ? missionSubtitle(i) : ""}</small>
-        <em>${unlocked ? `${t("missionReward", { xp: getMission(i).xp })} · ${t("startMissionCard")}` : ""}</em>
+        <em>${unlocked ? `${t("missionReward", { xp: getMission(i).xp })} · ${t("missionCoins", { coins: missionCoinReward(i) })} · <span data-stage-action>${profile.selectedMission === i ? t("missionSelectedCard") : t("startMissionCard")}</span>` : ""}</em>
       `;
       button.addEventListener("click", () => {
         if (!unlocked) return;
@@ -694,10 +712,22 @@
   function updateStageSelectionUI() {
     if (!nodes.stageGrid) return;
     nodes.startBtn.textContent = `${t("startRun")} · ${t("missionLabel", { mission: profile.selectedMission })}`;
+    if (nodes.selectedMissionSummary) {
+      const missionLabel = t("missionLabel", { mission: profile.selectedMission });
+      const xp = getMission(profile.selectedMission).xp;
+      const coins = missionCoinReward(profile.selectedMission);
+      nodes.selectedMissionSummary.innerHTML = `
+        <span>${t("selectedMissionTitle")}</span>
+        <strong>${missionLabel}: ${missionTitle(profile.selectedMission)}</strong>
+        <small>${t("selectedMissionReady", { mission: missionLabel, xp, coins })}</small>
+      `;
+    }
     nodes.stageGrid.querySelectorAll(".stage-card").forEach((card) => {
       const selected = Number(card.dataset.mission) === profile.selectedMission;
       card.classList.toggle("selected", selected);
       card.setAttribute("aria-pressed", selected ? "true" : "false");
+      const action = card.querySelector("[data-stage-action]");
+      if (action) action.textContent = selected ? t("missionSelectedCard") : t("startMissionCard");
     });
   }
 

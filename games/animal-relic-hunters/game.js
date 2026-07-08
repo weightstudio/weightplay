@@ -34,6 +34,7 @@
     eqBootsName: $("eqBootsName"),
     eqBootsEffect: $("eqBootsEffect"),
     backpackList: $("backpackList"),
+    growthPrompt: $("growthPrompt"),
     statDmg: $("statDmg"),
     statRate: $("statRate"),
     statSpeed: $("statSpeed"),
@@ -82,6 +83,11 @@
       trainingTitle: "Permanent Training",
       trainingPoints: "Points",
       trainingNote: "Character level is permanent. Spend level points here so every run starts stronger.",
+      growthReadyTitle: "Next permanent growth",
+      growthReadyTraining: "Spend {points} training point(s) before the next run.",
+      growthReadyGear: "Upgrade {gear} for {gold} gold.",
+      growthReadyBoth: "Train first, then upgrade {gear} for {gold} gold.",
+      growthReadyNone: "Fight for gold and EXP, then return here to train or upgrade gear.",
       train_damage: "Attack Training",
       train_damage_desc: "+2 damage per level.",
       train_hp: "Vitality Training",
@@ -137,6 +143,7 @@
       resultSummaryGold: "Gold Earned",
       resultSummaryGear: "Equipped Gear",
       resultSummaryNoGear: "No gear equipped yet",
+      resultSummaryNext: "Next Growth",
       resultDisclaimer: "For fun and local progress tracking only.",
       skillReportTitle: "Ability Analysis Report",
       skillLogic: "Logic",
@@ -292,6 +299,11 @@
     trainingTitle: "永久訓練",
     trainingPoints: "點數",
     trainingNote: "角色等級會永久保存。把升級點數投到這裡，每次探險一開始都會更強。",
+    growthReadyTitle: "下一步永久成長",
+    growthReadyTraining: "先使用 {points} 點訓練點數，下一場會直接變強。",
+    growthReadyGear: "可用 {gold} 金幣升級 {gear}。",
+    growthReadyBoth: "先點永久訓練，再用 {gold} 金幣升級 {gear}。",
+    growthReadyNone: "戰鬥取得金幣與經驗，回到這裡升級訓練或裝備。",
     train_damage: "攻擊訓練",
     train_damage_desc: "每級增加 2 點傷害。",
     train_hp: "體力訓練",
@@ -345,6 +357,7 @@
     resultSummaryGold: "本輪金幣",
     resultSummaryGear: "\u5df2\u7a7f\u6234\u88dd\u5099",
     resultSummaryNoGear: "\u5c1a\u672a\u7a7f\u6234\u88dd\u5099",
+    resultSummaryNext: "下一步成長",
     resultDisclaimer: "僅供遊戲娛樂與本機進度紀錄。",
     skillReportTitle: "能力分析報告",
     skillLogic: "邏輯力",
@@ -625,6 +638,45 @@
     return t(g.effectKey);
   }
 
+  function nextGearUpgradeCandidate() {
+    const equipped = Object.values(profile.equipped || {}).filter(Boolean);
+    const owned = Array.from(new Set([...equipped, ...(profile.inventory || [])]));
+    return owned
+      .filter((key) => gearDb[key] && gearLevel(key) < 10)
+      .map((key) => ({
+        key,
+        cost: gearUpgradeCost(key),
+        name: t(gearDb[key].nameKey),
+      }))
+      .sort((a, b) => a.cost - b.cost)[0] || null;
+  }
+
+  function nextGrowthText() {
+    const points = Math.max(0, Math.floor(Number(profile.statPoints) || 0));
+    const gear = nextGearUpgradeCandidate();
+    const canUpgradeGear = gear && profile.gold >= gear.cost;
+
+    if (points > 0 && canUpgradeGear) {
+      return t("growthReadyBoth", { points, gear: gear.name, gold: gear.cost });
+    }
+    if (points > 0) {
+      return t("growthReadyTraining", { points });
+    }
+    if (canUpgradeGear) {
+      return t("growthReadyGear", { gear: gear.name, gold: gear.cost });
+    }
+    return t("growthReadyNone");
+  }
+
+  function renderGrowthPrompt() {
+    if (!nodes.growthPrompt) return;
+    const body = nextGrowthText();
+    nodes.growthPrompt.innerHTML = `
+      <strong>${t("growthReadyTitle")}</strong>
+      <span>${body}</span>
+    `;
+  }
+
   const metaText = {
     en: {
       description: "Explore ancient ruins, level up, collect chests, and equip Weapons, Armor, and Boots in this animal roguelite survivor.",
@@ -656,12 +708,14 @@
     updateDiamondShopUI();
     renderTrainingPanel();
     renderEquippedGear();
+    renderGrowthPrompt();
   }
 
   function updateDiamondShopUI() {
     const wallet = window.WeightPlayWallet?.read() || { diamonds: 0 };
     nodes.diamondBalance.textContent = wallet.diamonds;
     if (nodes.goldBalance) nodes.goldBalance.textContent = profile.gold;
+    renderGrowthPrompt();
 
     if (state.amuletUnlocked) {
       nodes.amuletStatus.textContent = t("amuletOwned");
@@ -713,6 +767,7 @@
     syncStateFromProfile();
     renderTrainingPanel();
     renderStatsPanel();
+    renderGrowthPrompt();
     updateHUDText();
     window.WonderSound?.play("upgrade");
   }
@@ -877,6 +932,7 @@
     renderEquippedGear();
     renderTrainingPanel();
     updateDiamondShopUI();
+    renderBackpack();
     updateHUDText();
     window.WonderSound?.play("upgrade");
   }
@@ -898,6 +954,7 @@
     saveProfile();
     renderStatsPanel();
     renderEquippedGear();
+    renderGrowthPrompt();
     updateHUDText();
     window.WonderSound?.play("success");
   }
@@ -1229,6 +1286,7 @@
       [t("resultSummaryKeys"), String(state.runKeys)],
       [t("resultSummaryGold"), String(state.runGold)],
       [t("resultSummaryGear"), equippedGearSummary()],
+      [t("resultSummaryNext"), nextGrowthText()],
     ];
 
     nodes.resultSummary.textContent = "";
