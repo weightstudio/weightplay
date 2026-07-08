@@ -59,6 +59,10 @@
       "character.bubble_fin_otter.role": "Ocean timing expert",
       "character.gear_horn_rhino.name": "Gear Horn Rux",
       "character.gear_horn_rhino.role": "Gear and upgrades",
+      "character.drum_belly_panda.name": "Drum Belly Bao",
+      "character.drum_belly_panda.role": "Rhythm focus coach",
+      "character.rainbow_hop_rabbit.name": "Rainbow Hop Mimi",
+      "character.rainbow_hop_rabbit.role": "Quick reaction guide",
       "skill_path.title": "Practice by skill",
       "skill_path.reason": "Skill paths",
       "skill_path.count": "{count} games",
@@ -571,6 +575,10 @@
     "character.bubble_fin_otter.role": "\u6d77\u6d0b\u7bc0\u594f\u5c08\u5bb6",
     "character.gear_horn_rhino.name": "\u9f52\u89d2\u9b6f\u514b\u65af",
     "character.gear_horn_rhino.role": "\u88dd\u5099\u8207\u5347\u7d1a",
+    "character.drum_belly_panda.name": "\u9f13\u809a\u5305\u5305",
+    "character.drum_belly_panda.role": "\u7bc0\u594f\u5c08\u6ce8\u6559\u7df4",
+    "character.rainbow_hop_rabbit.name": "\u5f69\u8df3\u54aa\u54aa",
+    "character.rainbow_hop_rabbit.role": "\u5feb\u901f\u53cd\u61c9\u5f15\u5c0e",
   });
 
   function getSavedLocale() {

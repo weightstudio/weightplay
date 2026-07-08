@@ -100,6 +100,18 @@ const weightPlayCharacters = [
     image: "assets/weightplay-character-gear-horn-rhino-cutout.webp",
     skill: "Problem Solving",
   },
+  {
+    nameKey: "character.drum_belly_panda.name",
+    roleKey: "character.drum_belly_panda.role",
+    image: "assets/weightplay-character-drum-belly-panda-cutout.webp",
+    skill: "Focus",
+  },
+  {
+    nameKey: "character.rainbow_hop_rabbit.name",
+    roleKey: "character.rainbow_hop_rabbit.role",
+    image: "assets/weightplay-character-rainbow-hop-rabbit-cutout.webp",
+    skill: "Reaction",
+  },
 ];
 const ageFilterGroups = {
   starter: ["3"],

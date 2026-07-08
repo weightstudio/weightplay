@@ -262,6 +262,8 @@
   let lastTime = performance.now();
   let raf = 0;
   const images = {};
+  let assetsReady = false;
+  let preloadPromise = null;
 
   function t(key, vars = {}) {
     let value = (text[locale] && text[locale][key]) || text.en[key] || key;
@@ -335,7 +337,16 @@
         resolve();
       };
       img.src = src;
-    })));
+    }))).then(() => {
+      assetsReady = true;
+      window.__ANIMAL_REEF_FISHER_ASSETS_READY__ = true;
+    });
+  }
+
+  function ensureImagesReady() {
+    if (assetsReady) return preloadPromise || Promise.resolve();
+    if (!preloadPromise) preloadPromise = loadImages();
+    return preloadPromise;
   }
 
   function renderMenu() {
@@ -381,7 +392,16 @@
     window.setTimeout(align, 80);
   }
 
-  function startRun() {
+  async function startRun() {
+    if (!assetsReady) {
+      nodes.startBtn.disabled = true;
+      nodes.retryBtn.disabled = true;
+      nodes.loadingPanel.classList.remove("is-hidden");
+      await ensureImagesReady();
+      nodes.loadingPanel.classList.add("is-hidden");
+      nodes.startBtn.disabled = false;
+      nodes.retryBtn.disabled = false;
+    }
     const zone = zones.find((z) => z.id === selectedZone) || zones[0];
     run = {
       zone,
@@ -928,14 +948,28 @@
   }
 
   applyLocale();
-  loadImages().then(() => {
+  state = "menu";
+  showPanel("menu");
+  window.__ANIMAL_REEF_FISHER_BOOTED__ = true;
+  window.__ANIMAL_REEF_FISHER_FIRST_SCREEN__ = {
+    booted: true,
+    title: document.title,
+    language: locale,
+    startText: nodes.startBtn.textContent.trim(),
+    loadingHidden: false,
+    menuHidden: nodes.menuPanel.classList.contains("is-hidden"),
+  };
+  track("game_view", { internalPrototype: false });
+  lastTime = performance.now();
+  raf = requestAnimationFrame(tick);
+  preloadPromise = loadImages().then(() => {
     nodes.loadingPanel.classList.add("is-hidden");
-    state = "menu";
-    showPanel("menu");
-    track("game_view", { internalPrototype: true });
-    lastTime = performance.now();
-    raf = requestAnimationFrame(tick);
+    window.__ANIMAL_REEF_FISHER_FIRST_SCREEN__.loadingHidden = true;
   });
+  if (!isTestMode) {
+    nodes.loadingPanel.classList.add("is-hidden");
+    window.__ANIMAL_REEF_FISHER_FIRST_SCREEN__.loadingHidden = true;
+  }
 
   window.addEventListener("beforeunload", () => cancelAnimationFrame(raf));
 })();
