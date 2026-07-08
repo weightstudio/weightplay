@@ -525,6 +525,23 @@
     "footer.copyright": "Copyright 2026 WeightStudio. All rights reserved.",
   });
 
+  Object.assign(dictionaries["zh-Hant"], {
+    "character_showcase.title": "WeightPlay 英雄角色",
+    "character_showcase.reason": "原創 IP",
+    "character.spark_paw_fox.name": "閃爪菲亞",
+    "character.spark_paw_fox.role": "速度 / 閃避英雄",
+    "character.boom_mane_lion.name": "爆鬃雷歐",
+    "character.boom_mane_lion.role": "前線隊長",
+    "character.moss_shell_turtle.name": "苔甲太郎",
+    "character.moss_shell_turtle.role": "防禦規劃",
+    "character.moon_cap_owl.name": "月帽歐拉",
+    "character.moon_cap_owl.role": "策略引導",
+    "character.bubble_fin_otter.name": "泡鰭諾里",
+    "character.bubble_fin_otter.role": "海洋節奏專家",
+    "character.gear_horn_rhino.name": "齒角魯克斯",
+    "character.gear_horn_rhino.role": "裝備與升級",
+  });
+
   function getSavedLocale() {
     try {
       const saved = localStorage.getItem(localeKey);

@@ -60,6 +60,8 @@
       stageNew: "New",
       stageImprove: "Improve",
       stageMastered: "Mastered",
+      coachName: "Panko the Bakery Coach",
+      coachTip: "Plan the biggest matching group first, then save moves for the glowing order bubbles.",
     },
     "zh-Hant": {
       gameTitle: "動物泡泡烘焙坊",
@@ -115,6 +117,8 @@
       stageNew: "新關卡",
       stageImprove: "再提升",
       stageMastered: "已精通",
+      coachName: "Panko 烘焙教練",
+      coachTip: "先找最大的相同泡泡群，再把步數留給發光的訂單泡泡。",
     },
   };
 
@@ -712,6 +716,7 @@
   function initLoading() {
     const assets = [
       "../../assets/bubble-bakery-cover.webp",
+      "../../assets/weightplay-character-drum-belly-panda.png",
       "assets/order-target-ring.png",
       ...colors.map((item) => item.asset),
     ];

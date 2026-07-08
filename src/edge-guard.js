@@ -16,6 +16,7 @@
   }
 
   function blockNativeDrag(event) {
+    if (event.target?.closest?.("[data-allow-native-drag='true']")) return;
     if (shouldBlockSelection(event.target)) event.preventDefault();
   }
 

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="melon" x1="0" x2="1">
+      <stop offset="0%" stop-color="#7ee36b"/>
+      <stop offset="50%" stop-color="#d9ff7a"/>
+      <stop offset="100%" stop-color="#4caf50"/>
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" rx="28" fill="#123426"/>
+  <ellipse cx="64" cy="67" rx="46" ry="36" fill="url(#melon)" stroke="#e8ffd2" stroke-width="5"/>
+  <path d="M27 67h74M38 45c14 18 14 48 0 66M64 34c8 22 8 45 0 66M90 45c-14 18-14 48 0 66" stroke="#2d7d38" stroke-width="5" fill="none" opacity=".75"/>
+  <path d="M53 25c9-13 26-12 36 1-15-2-25 3-31 13z" fill="#5bd15f"/>
+  <path d="M45 36c13-14 31-18 49-4" stroke="#8bf06e" stroke-width="5" stroke-linecap="round" opacity=".8"/>
+</svg>

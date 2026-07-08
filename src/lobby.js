@@ -795,7 +795,7 @@ function renderCharacterShowcase() {
     const card = document.createElement("article");
     card.className = "character-showcase-card";
     card.innerHTML = `
-      <img src="${character.image}" alt="" loading="lazy" />
+      <img src="${character.image}" alt="" />
       <div class="character-showcase-copy">
         <strong>${i18n.t(character.nameKey)}</strong>
         <small>${i18n.t(character.roleKey)}</small>
@@ -1039,6 +1039,7 @@ function applyFilter() {
   });
 
   heroGamesSection.classList.toggle("hidden", isFiltered);
+  characterShowcaseSection?.classList.toggle("hidden", isFiltered);
   recommendationsSection?.classList.toggle("hidden", isFiltered);
   freshUpdatesSection?.classList.toggle("hidden", isFiltered);
   skillPathsSection?.classList.toggle("hidden", isFiltered);

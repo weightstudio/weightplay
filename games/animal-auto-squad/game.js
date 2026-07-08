@@ -265,25 +265,23 @@
 
   // Asset configuration
   const ANIMAL_METADATA = [
-    // Sheet A (0-4)
-    { id: 0, nameEn: "Squirrel", nameZht: "小松鼠", sheet: "a", sx: 0, sy: 0, tier: 1, atk: 2, hp: 2, descEn: "Buy: Gains +1/+1.", descZht: "購買：獲得 +1/+1 屬性。" },
-    { id: 1, nameEn: "Otter", nameZht: "海獺", sheet: "a", sx: 682, sy: 0, tier: 1, atk: 1, hp: 3, descEn: "Sell: Gives random ally +1 HP.", descZht: "出售：使一名隨機隊友獲得 +1 生命。" },
-    { id: 2, nameEn: "Beaver", nameZht: "河狸", sheet: "a", sx: 1365, sy: 0, tier: 2, atk: 3, hp: 2, descEn: "Buy: Gives 2 random allies +1 HP.", descZht: "購買：使兩名隨機隊友獲得 +1 生命。" },
-    { id: 3, nameEn: "Owl", nameZht: "貓頭鷹", sheet: "a", sx: 0, sy: 768, tier: 2, atk: 2, hp: 3, descEn: "Sell: Gains +1 extra Gold.", descZht: "出售：獲得額外 1 金幣。" },
-    { id: 4, nameEn: "Turtle", nameZht: "陸龜", sheet: "a", sx: 682, sy: 768, tier: 3, atk: 2, hp: 4, descEn: "Faint: Gives behind ally Melon Shield.", descZht: "昏厥：使後方隊友獲得甜瓜護盾。" },
-    // Sheet B (5-9)
-    { id: 5, nameEn: "Raccoon", nameZht: "浣熊", sheet: "b", sx: 0, sy: 0, tier: 3, atk: 4, hp: 2, descEn: "Buy: Gives 1 free shop reroll.", descZht: "購買：獲得 1 次免費商店重置。" },
-    { id: 6, nameEn: "Fox", nameZht: "小狐狸", sheet: "b", sx: 682, sy: 0, tier: 4, atk: 3, hp: 4, descEn: "Sell: Gives random shop slot +2/+2.", descZht: "出售：使商店的一張隨機卡牌獲得 +2/+2。" },
-    { id: 7, nameEn: "Wolf", nameZht: "灰狼", sheet: "b", sx: 1365, sy: 0, tier: 4, atk: 4, hp: 4, descEn: "Faint: Gives all allies +1/+1.", descZht: "昏厥：使全體隊友獲得 +1/+1。" },
-    { id: 8, nameEn: "Lion", nameZht: "雄獅", sheet: "b", sx: 0, sy: 768, tier: 5, atk: 5, hp: 5, descEn: "Buy: Gives all allies +2 HP.", descZht: "購買：使全體隊友獲得 +2 生命。" },
-    { id: 9, nameEn: "Bear", nameZht: "大黑熊", sheet: "b", sx: 682, sy: 768, tier: 5, atk: 6, hp: 6, descEn: "Faint: Deals 4 dmg to lead enemy.", descZht: "昏厥：對敵方最前方單位造成 4 點傷害。" }
+    { id: 0, nameEn: "Spark Paw Fox", nameZht: "\u661f\u722a\u72d0", imageKey: "sparkFox", tier: 1, atk: 2, hp: 2, descEn: "Buy: gains +1/+1.", descZht: "\u8cfc\u8cb7\uff1a\u7372\u5f97 +1/+1\u3002" },
+    { id: 1, nameEn: "Bubble Fin Otter", nameZht: "\u6ce1\u6ce1\u9c2d\u6c34\u737a", imageKey: "bubbleOtter", tier: 1, atk: 1, hp: 3, descEn: "Sell: gives a random ally +1 HP.", descZht: "\u51fa\u552e\uff1a\u96a8\u6a5f\u968a\u53cb +1 \u751f\u547d\u3002" },
+    { id: 2, nameEn: "Drum Belly Panda", nameZht: "\u9f13\u809a\u718a\u8c93", imageKey: "drumPanda", tier: 2, atk: 3, hp: 2, descEn: "Buy: gives two allies +1 HP.", descZht: "\u8cfc\u8cb7\uff1a\u5169\u540d\u968a\u53cb +1 \u751f\u547d\u3002" },
+    { id: 3, nameEn: "Moon Cap Owl", nameZht: "\u6708\u5e3d\u8c93\u982d\u9df9", imageKey: "moonOwl", tier: 2, atk: 2, hp: 3, descEn: "Sell: gains +1 extra Gold.", descZht: "\u51fa\u552e\uff1a\u984d\u5916\u7372\u5f97 1 \u91d1\u5e63\u3002" },
+    { id: 4, nameEn: "Moss Shell Turtle", nameZht: "\u82d4\u6bbc\u70cf\u9f9c", imageKey: "mossTurtle", tier: 3, atk: 2, hp: 4, descEn: "Faint: gives the ally behind Melon Shield.", descZht: "\u5012\u4e0b\uff1a\u4f7f\u5f8c\u65b9\u968a\u53cb\u7372\u5f97\u751c\u74dc\u8b77\u76fe\u3002" },
+    { id: 5, nameEn: "Rainbow Hop Rabbit", nameZht: "\u5f69\u8679\u8df3\u5154", imageKey: "rainbowRabbit", tier: 3, atk: 4, hp: 2, descEn: "Buy: gives one free shop reroll.", descZht: "\u8cfc\u8cb7\uff1a\u7372\u5f97\u4e00\u6b21\u514d\u8cbb\u5237\u65b0\u3002" },
+    { id: 6, nameEn: "Gear Horn Rhino", nameZht: "\u9f52\u8f2a\u89d2\u7280\u725b", imageKey: "gearRhino", tier: 4, atk: 3, hp: 4, descEn: "Sell: buffs a random shop card +2/+2.", descZht: "\u51fa\u552e\uff1a\u96a8\u6a5f\u5546\u5e97\u5361 +2/+2\u3002" },
+    { id: 7, nameEn: "Boom Mane Lion", nameZht: "\u7206\u9b03\u7345", imageKey: "boomLion", tier: 4, atk: 4, hp: 4, descEn: "Faint: gives all allies +1/+1.", descZht: "\u5012\u4e0b\uff1a\u5168\u9ad4\u968a\u53cb +1/+1\u3002" },
+    { id: 8, nameEn: "Spark Paw Captain", nameZht: "\u661f\u722a\u968a\u9577", imageKey: "sparkFox", tier: 5, atk: 5, hp: 5, descEn: "Buy: gives all allies +2 HP.", descZht: "\u8cfc\u8cb7\uff1a\u5168\u9ad4\u968a\u53cb +2 \u751f\u547d\u3002" },
+    { id: 9, nameEn: "Rhino Guardian", nameZht: "\u7280\u725b\u5b88\u885b", imageKey: "gearRhino", tier: 5, atk: 6, hp: 6, descEn: "Faint: deals 4 damage to the lead enemy.", descZht: "\u5012\u4e0b\uff1a\u5c0d\u6700\u524d\u65b9\u6575\u4eba\u9020\u6210 4 \u50b7\u5bb3\u3002" }
   ];
 
   const ITEM_METADATA = [
-    { id: 0, nameEn: "Apple", nameZht: "蘋果", sx: 0, descEn: "+1/+1 stats.", descZht: "獲得 +1/+1 屬性。" },
-    { id: 1, nameEn: "Honey", nameZht: "蜂蜜", sx: 384, descEn: "+2 HP. Buy: +1 Gold.", descZht: "獲得 +2 生命。購買時額外獲得 1 金幣。" },
-    { id: 2, nameEn: "Melon", nameZht: "甜瓜", sx: 768, descEn: "Gives Melon Shield.", descZht: "獲得甜瓜護盾（抵擋一次傷害）。" },
-    { id: 3, nameEn: "Chocolate", nameZht: "巧克力", sx: 1152, descEn: "+2 Exp points.", descZht: "獲得 +2 經驗值（可加速合成升級）。" }
+    { id: 0, nameEn: "Apple", nameZht: "\u860b\u679c", imageKey: "foodApple", descEn: "+1/+1 stats.", descZht: "+1/+1 \u5c6c\u6027\u3002" },
+    { id: 1, nameEn: "Honey", nameZht: "\u8702\u871c", imageKey: "foodHoney", descEn: "+2 HP. Buy: +1 Gold.", descZht: "+2 \u751f\u547d\uff0c\u8cfc\u8cb7\u5f8c\u56de 1 \u91d1\u5e63\u3002" },
+    { id: 2, nameEn: "Melon", nameZht: "\u751c\u74dc", imageKey: "foodMelon", descEn: "Gives Melon Shield.", descZht: "\u7372\u5f97\u751c\u74dc\u8b77\u76fe\u3002" },
+    { id: 3, nameEn: "Chocolate", nameZht: "\u5de7\u514b\u529b", imageKey: "foodChocolate", descEn: "+2 Exp points.", descZht: "+2 \u7d93\u9a57\u3002" }
   ];
 
   const RELIC_METADATA = [
@@ -444,11 +442,21 @@
   const assetsToLoad = {
     cover: "../../assets/animal-auto-squad-cover.webp",
     bg: "../../assets/animal-auto-squad-bg.webp",
-    sheetA: "../../assets/animal-auto-squad-sheet-a.webp",
-    sheetB: "../../assets/animal-auto-squad-sheet-b.webp",
     enemies: "../../assets/animal-auto-squad-enemies.webp",
     items: "../../assets/animal-auto-squad-items.webp",
-    fx: "../../assets/animal-auto-squad-fx.webp"
+    fx: "../../assets/animal-auto-squad-fx.webp",
+    sparkFox: "../../assets/weightplay-character-spark-paw-fox.png",
+    bubbleOtter: "../../assets/weightplay-character-bubble-fin-otter.png",
+    drumPanda: "../../assets/weightplay-character-drum-belly-panda.png",
+    moonOwl: "../../assets/weightplay-character-moon-cap-owl.png",
+    mossTurtle: "../../assets/weightplay-character-moss-shell-turtle.png",
+    rainbowRabbit: "../../assets/weightplay-character-rainbow-hop-rabbit.png",
+    gearRhino: "../../assets/weightplay-character-gear-horn-rhino.png",
+    boomLion: "../../assets/weightplay-character-boom-mane-lion.png",
+    foodApple: "assets/food-apple.svg",
+    foodHoney: "assets/food-honey.svg",
+    foodMelon: "assets/food-melon.svg",
+    foodChocolate: "assets/food-chocolate.svg"
   };
 
   let loadedCount = 0;
@@ -727,7 +735,6 @@
   }
 
   function renderPrepScreen() {
-    selectedSlot = null;
     renderSquad();
     renderBench();
     renderShop();
@@ -754,6 +761,7 @@
       el.classList.add("mascot-golden");
     }
     el.draggable = true;
+    el.dataset.allowNativeDrag = "true";
     el.dataset.slot = String(index);
     el.dataset.area = sourceArea;
 
@@ -764,20 +772,18 @@
     const graphic = document.createElement("div");
     graphic.className = "card-graphic";
     if (isAnimal) {
-      graphic.style.backgroundImage = `url('../../assets/animal-auto-squad-sheet-${card.sheet}.webp')`;
-      graphic.style.aspectRatio = "682 / 768";
-      // background position based on 3x2 grid
-      const col = card.id % 5;
-      const sheetCol = col % 3;
-      const sheetRow = Math.floor(col / 3);
-      graphic.style.backgroundPosition = `${sheetCol * 50}% ${sheetRow * 100}%`;
-      graphic.style.backgroundSize = "300% 200%";
+      graphic.classList.add("character-icon");
+      graphic.style.backgroundImage = `url('${assetsToLoad[card.imageKey] || assetsToLoad.boomLion}')`;
+      graphic.style.aspectRatio = "1 / 1";
+      graphic.style.backgroundPosition = "center";
+      graphic.style.backgroundSize = "contain";
     } else {
-      // It's food
-      graphic.style.backgroundImage = `url('../../assets/animal-auto-squad-items.webp')`;
-      graphic.style.aspectRatio = "384 / 512";
-      graphic.style.backgroundPosition = `${card.id * 33.33}% 0%`;
-      graphic.style.backgroundSize = "400% 100%";
+      // Food uses independent icons so no sheet crop can show the wrong item.
+      graphic.classList.add("food-icon");
+      graphic.style.backgroundImage = `url('${assetsToLoad[card.imageKey] || assetsToLoad.foodApple}')`;
+      graphic.style.aspectRatio = "1 / 1";
+      graphic.style.backgroundPosition = "center";
+      graphic.style.backgroundSize = "contain";
     }
     el.appendChild(graphic);
 
@@ -799,7 +805,7 @@
     if (card.hasShield) {
       const shieldEl = document.createElement("div");
       shieldEl.className = "card-shield-tag";
-      shieldEl.textContent = "🛡️ Melon";
+      shieldEl.textContent = "Shield";
       el.appendChild(shieldEl);
     }
 
@@ -807,7 +813,7 @@
     if (isAnimal) {
       const statsEl = document.createElement("div");
       statsEl.className = "card-stats";
-      statsEl.innerHTML = `<span class="card-atk">⚔️${card.currentAtk}</span><span class="card-hp">❤️${card.currentHp}</span>`;
+      statsEl.innerHTML = `<span class="card-atk">ATK ${card.currentAtk}</span><span class="card-hp">HP ${card.currentHp}</span>`;
       el.appendChild(statsEl);
     } else {
       // Cost
@@ -1265,7 +1271,7 @@
     // Toggle static Sell Button visibility based on selection
     if (selectedSlot) {
       nodes.sellCardBtn.classList.remove("is-hidden");
-      nodes.sellCardBtn.textContent = `🗑️ ${t("sell")} (+1 ${t("gold")})`;
+      nodes.sellCardBtn.textContent = `${t("sell")} (+1 ${t("gold")})`;
     } else {
       nodes.sellCardBtn.classList.add("is-hidden");
     }
@@ -1430,12 +1436,16 @@
       canvasCtx.stroke();
       
       // Draw character sprite
-      const sheet = isPlayer ? imageCache[unit.sheet === "a" ? "sheetA" : "sheetB"] : imageCache.enemies;
-      if (sheet) {
-        // Source crop 3x2 grid cell dimensions
-        const sw = 682;
-        const sh = 768;
-        canvasCtx.drawImage(sheet, unit.sx, unit.sy, sw, sh, x + 10, y + 10, w - 20, h - 45);
+      if (isPlayer) {
+        const portrait = imageCache[unit.imageKey] || imageCache.boomLion;
+        if (portrait) canvasCtx.drawImage(portrait, x + 8, y + 8, w - 16, h - 42);
+      } else {
+        const sheet = imageCache.enemies;
+        if (sheet) {
+          const sw = 682;
+          const sh = 768;
+          canvasCtx.drawImage(sheet, unit.sx, unit.sy, sw, sh, x + 10, y + 10, w - 20, h - 45);
+        }
       }
 
       // Draw Melon shield overlay
@@ -1453,10 +1463,10 @@
 
       canvasCtx.font = "bold 11px Outfit, system-ui";
       canvasCtx.fillStyle = "var(--gold)";
-      canvasCtx.fillText(`⚔️${unit.atk}`, x + 6, y + h - 8);
+      canvasCtx.fillText(`ATK ${unit.atk}`, x + 6, y + h - 8);
 
       canvasCtx.fillStyle = "var(--danger)";
-      const hpText = `❤️${Math.max(0, unit.hp)}`;
+      const hpText = `HP ${Math.max(0, unit.hp)}`;
       const hpWidth = canvasCtx.measureText(hpText).width;
       canvasCtx.fillText(hpText, x + w - hpWidth - 6, y + h - 8);
 

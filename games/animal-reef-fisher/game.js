@@ -178,7 +178,7 @@
   const fish = Array.from({ length: 12 }, (_, index) => ({
     id: `fish-${index + 1}`,
     sheet: index < 6 ? "fishA" : "fishB",
-    sx: index % 3,
+    sx: 0,
     sy: index % 6,
     rare: index === 5 || index === 11,
   }));
@@ -189,7 +189,7 @@
   let selectedZone = save.selectedZone || "sunny";
   let state = "loading";
   let run = null;
-  let pointer = { down: false, x: 0, y: 0 };
+  let pointer = { down: false, x: 0, y: 0, tensionPct: 50, source: "canvas" };
   let lastTime = performance.now();
   let raf = 0;
   const images = {};
@@ -463,7 +463,7 @@
 
     if (run.phase === "reel") {
       const gearControl = save.gear.reel * 0.4 + save.gear.line * 0.28;
-      const target = pointer.down ? Math.max(0, Math.min(100, (pointer.x / canvas.getBoundingClientRect().width) * 100)) : 50;
+      const target = pointer.down ? Math.max(0, Math.min(100, pointer.tensionPct)) : 50;
       const pull = Math.sin(performance.now() / 360) * run.zone.speed * 24 + (run.hookFish.rare ? 10 : 0);
       run.tension += (target - run.tension) * dt * (1.4 + gearControl) + pull * dt;
       run.tension = Math.max(0, Math.min(100, run.tension));
@@ -496,7 +496,8 @@
     const rows = 6;
     const cellW = img.width / cols;
     const cellH = img.height / rows;
-    const sx = fishData.sx * cellW;
+    const swimFrame = Math.floor(performance.now() / 180) % cols;
+    const sx = swimFrame * cellW;
     const sy = fishData.sy * cellH;
     ctx.drawImage(img, sx, sy, cellW, cellH, x, y, w, h);
   }
@@ -572,8 +573,10 @@
   function updatePointer(evt) {
     const point = evt.touches ? evt.touches[0] : evt;
     const rect = canvas.getBoundingClientRect();
+    pointer.source = "canvas";
     pointer.x = point.clientX - rect.left;
     pointer.y = point.clientY - rect.top;
+    pointer.tensionPct = Math.max(0, Math.min(100, (pointer.x / rect.width) * 100));
   }
 
   function updateLanePointer(evt) {
@@ -581,6 +584,8 @@
     const laneRect = nodes.tensionLane.getBoundingClientRect();
     const canvasRect = canvas.getBoundingClientRect();
     const pct = Math.max(0, Math.min(1, (point.clientX - laneRect.left) / laneRect.width));
+    pointer.source = "lane";
+    pointer.tensionPct = pct * 100;
     pointer.x = pct * canvasRect.width;
     pointer.y = canvasRect.height * 0.86;
   }
@@ -658,10 +663,14 @@
   window.addEventListener("pointerup", releaseCast);
   nodes.tensionLane.addEventListener("pointerdown", (evt) => {
     pointer.down = true;
+    nodes.tensionLane.setPointerCapture?.(evt.pointerId);
     updateLanePointer(evt);
   });
   nodes.tensionLane.addEventListener("pointermove", (evt) => {
     if (pointer.down) updateLanePointer(evt);
+  });
+  nodes.tensionLane.addEventListener("pointercancel", () => {
+    pointer.down = false;
   });
 
   if (isTestMode) {
@@ -717,6 +726,12 @@
           rows: 6,
           sample: fish.map((item) => ({ id: item.id, sheet: item.sheet, sx: item.sx, sy: item.sy })),
         };
+      },
+      setReelPointerPercent(value) {
+        pointer.down = true;
+        pointer.source = "lane";
+        pointer.tensionPct = Math.max(0, Math.min(100, Number(value) || 0));
+        return { ...pointer };
       },
     };
   }

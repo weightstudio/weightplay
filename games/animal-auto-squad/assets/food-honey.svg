@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="jar" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#fff6b7"/>
+      <stop offset="45%" stop-color="#ffc94b"/>
+      <stop offset="100%" stop-color="#c87812"/>
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" rx="28" fill="#163527"/>
+  <path d="M40 24h48l6 18H34z" fill="#f6e3aa" stroke="#6e4214" stroke-width="5"/>
+  <rect x="29" y="38" width="70" height="67" rx="19" fill="url(#jar)" stroke="#6e4214" stroke-width="5"/>
+  <path d="M38 58c15 10 35 10 52 0v24c-17 10-37 10-52 0z" fill="#f59e0b" opacity=".75"/>
+  <path d="M50 35v56" stroke="#fff2a8" stroke-width="7" stroke-linecap="round" opacity=".6"/>
+  <path d="M74 31c16 0 26-9 31-21 5 12-1 25-13 31" fill="none" stroke="#ffc83d" stroke-width="8" stroke-linecap="round"/>
+  <text x="64" y="79" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="900" fill="#6e4214">HONEY</text>
+</svg>

@@ -347,14 +347,28 @@ select {
 /* Card Visual Graphic representation using Sheet WebP */
 .card-graphic {
   position: absolute;
-  top: 4px;
+  top: 6px;
   left: 50%;
   transform: translateX(-50%);
-  width: min(80%, 75px);
-  aspect-ratio: 682 / 768;
-  background-size: 300% 200%;
+  width: min(76%, 78px);
+  aspect-ratio: 1 / 1;
+  background-size: contain;
+  background-position: center;
   background-repeat: no-repeat;
   border-radius: 10px;
+}
+
+.card-graphic.character-icon {
+  top: 2px;
+  width: min(88%, 92px);
+  filter: drop-shadow(0 8px 10px rgba(0, 0, 0, 0.45));
+}
+
+.card-graphic.food-icon {
+  top: 12px;
+  width: min(70%, 68px);
+  background-color: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.14);
 }
 
 .card-item.mascot-golden .card-graphic::after {
@@ -438,12 +452,14 @@ select {
 
 .card-name {
   text-align: center;
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   font-weight: 800;
   margin-bottom: 2px;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
+  white-space: normal;
+  line-height: 1.05;
+  min-height: 1.55em;
   color: var(--text);
   z-index: 2;
   text-shadow: 0 2px 4px rgba(0,0,0,0.8);
