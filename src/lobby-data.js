@@ -442,17 +442,17 @@ window.WONDER_LOBBY = {
       title: { en: "Beast Guardian", "zh-Hant": "獸王守衛" },
       status: "planned",
       statusText: { en: "Coming Soon", "zh-Hant": "敬請期待" },
-      type: { en: "Turn-Based Tactics RPG", "zh-Hant": "回合制戰術 RPG" },
+      type: { en: "Hero Tower Defense", "zh-Hant": "英雄塔防" },
       categories: ["Featured", "Animal Games", "Puzzle"],
       skills: ["Logic", "Problem Solving", "Focus"],
       ages: ["13"],
       ageLabel: { en: "13+", "zh-Hant": "13+" },
       href: "games/beast-tactician/",
       description: {
-        en: "Lead a squad of 3 animal heroes, cast powerful spells, collect gear, and clear dungeons to challenge the behemoth.",
-        "zh-Hant": "帶領 3 位動物英雄，施放戰術技能、收集裝備，並挑戰巨獸首領。"
+        en: "A premium 10-stage hero tower-defense game is in production. Build soldiers and WeightPlay heroes on the grid, shape enemy routes, and stop boss waves.",
+        "zh-Hant": "高品質 10 關英雄塔防大作製作中。你將在格子地形上建置士兵與 WeightPlay 英雄，改變敵人路線並抵擋王關波次。"
       },
-      meta: { en: ["Turn-Based RPG", "3 Hero Squad", "Gear Loot"], "zh-Hant": ["回合 RPG", "3 位英雄", "裝備收集"] },
+      meta: { en: ["Tower Defense", "10 Stages", "Boss Waves"], "zh-Hant": ["塔防", "10 關", "王關波次"] },
       art: { kind: "image", background: "assets/beast-tactician-cover.webp", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
     },
     {
