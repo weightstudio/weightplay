@@ -43,6 +43,11 @@
     tensionStatus: $("tensionStatus"),
     resultTitle: $("resultTitle"),
     resultText: $("resultText"),
+    scoreText: $("scoreText"),
+    catchValueText: $("catchValueText"),
+    newAlbumText: $("newAlbumText"),
+    catchList: $("catchList"),
+    catchToast: $("catchToast"),
     skillReportText: $("skillReportText"),
   };
 
@@ -93,6 +98,16 @@
       expeditionWin: "Expedition Complete",
       expeditionFail: "Expedition Ended",
       result: "Landed {catches} catches, discovered {newFish} new album entries, and earned {notes} Reef Notes.",
+      score: "Score",
+      catchValue: "Catch Value",
+      newAlbum: "New Album",
+      catchSummary: "This Expedition's Catch",
+      catchToast: "Caught {fish}",
+      catchToastMeta: "+{points} pts · +{notes} notes{newTag}",
+      newTag: " · New album!",
+      noCatch: "No fish landed yet. Try a safer cast and keep the line in SAFE.",
+      rareFish: "Rare",
+      commonFish: "Common",
       reportWin: "Skill Report: strong focus and reaction. You managed line tension while choosing safer casts.",
       reportFail: "Skill Report: good practice. Upgrade gear and keep the marker inside the safe band earlier.",
     },
@@ -142,6 +157,16 @@
       expeditionWin: "遠征完成",
       expeditionFail: "遠征結束",
       result: "收獲 {catches} 次，發現 {newFish} 個新圖鑑項目，並獲得 {notes} 份礁石筆記。",
+      score: "分數",
+      catchValue: "漁獲價值",
+      newAlbum: "新圖鑑",
+      catchSummary: "本次漁獲",
+      catchToast: "釣到 {fish}",
+      catchToastMeta: "+{points} 分 · +{notes} 筆記{newTag}",
+      newTag: " · 新圖鑑！",
+      noCatch: "還沒有釣到魚。試著拋近一點，並把張力留在安全區。",
+      rareFish: "稀有",
+      commonFish: "一般",
       reportWin: "能力報告：專注與反應表現穩定。你能一邊控制魚線張力，一邊選擇更安全的拋竿時機。",
       reportFail: "能力報告：這次是很好的練習。升級裝備，並更早讓標記回到安全區。",
     },
@@ -175,13 +200,35 @@
     { id: "scan", name: { en: "Reef Scanner", "zh-Hant": "礁區掃描" }, img: "../../assets/animal-reef-fisher-gear-reef-scanner.webp", cost: 20 },
   ];
 
-  const fish = Array.from({ length: 12 }, (_, index) => ({
-    id: `fish-${index + 1}`,
-    sheet: index < 6 ? "fishA" : "fishB",
-    sx: 0,
-    sy: index % 6,
-    rare: index === 5 || index === 11,
-  }));
+  const fishNames = [
+    ["Lagoon Stripe", "潟湖條紋魚"],
+    ["Bubble Puffer", "泡泡河豚"],
+    ["Coral Finch", "珊瑚雀魚"],
+    ["Glass Ray", "琉璃魟魚"],
+    ["Kelp Snapper", "海藻笛鯛"],
+    ["Sun Crown Koi", "日冠錦魚"],
+    ["Moon Jellyfish", "月光水母"],
+    ["Bluefin Runner", "藍鰭快游魚"],
+    ["Pearl Seahorse", "珍珠海馬"],
+    ["Reef Lantern", "礁燈魚"],
+    ["Storm Manta", "風暴鬼蝠魟"],
+    ["Crystal Whale", "水晶鯨"],
+  ];
+
+  const fish = Array.from({ length: 12 }, (_, index) => {
+    const rare = index === 5 || index === 11;
+    const tier = Math.floor(index / 2) + 1;
+    return {
+      id: `fish-${index + 1}`,
+      name: { en: fishNames[index][0], "zh-Hant": fishNames[index][1] },
+      sheet: index < 6 ? "fishA" : "fishB",
+      sx: 0,
+      sy: index % 6,
+      rare,
+      points: tier * 12 + (rare ? 34 : 0),
+      notes: tier + (rare ? 5 : 1),
+    };
+  });
 
   let locale = localStorage.getItem(localeKey) || "en";
   if (!text[locale]) locale = "en";
@@ -319,6 +366,10 @@
       catches: 0,
       newFish: 0,
       notes: 0,
+      score: 0,
+      catchValue: 0,
+      finalScore: 0,
+      catchLog: [],
       phase: "aim",
       castPower: 0,
       castDir: 1,
@@ -329,6 +380,7 @@
       hookFish: null,
       splashTimer: 0,
       sonarPulse: 0,
+      catchToastTimer: 0,
       finished: false,
       lureUsed: save.lureReady,
       sonarReady: save.sonarReady,
@@ -340,6 +392,8 @@
     nodes.zoneText.textContent = zone.name[locale];
     nodes.goalText.textContent = `${run.catches}/${zone.goal}`;
     nodes.hintText.textContent = t("castHint");
+    nodes.catchToast.classList.add("is-hidden");
+    nodes.catchToast.innerHTML = "";
     updateTensionGuide();
     state = "game";
     showPanel("game");
@@ -354,17 +408,19 @@
     const bonus = won ? 12 : 5;
     const earned = run.catches * (4 + save.gear.bait) + bonus;
     run.notes += earned;
-    save.notes += earned;
+    run.finalScore = run.score + run.catches * 20 + (won ? 100 : 25);
+    save.notes += run.notes;
     save.bestCatches = Math.max(save.bestCatches, run.catches);
     if (won) save.unlockedZone = Math.min(5, Math.max(save.unlockedZone, zones.indexOf(run.zone) + 2));
     saveProgress();
     nodes.resultTitle.textContent = won ? t("expeditionWin") : t("expeditionFail");
-    nodes.resultText.textContent = t("result", { catches: run.catches, newFish: run.newFish, notes: earned });
+    nodes.resultText.textContent = t("result", { catches: run.catches, newFish: run.newFish, notes: run.notes });
+    renderResultSummary();
     nodes.skillReportText.textContent = won ? t("reportWin") : t("reportFail");
     showPanel("result");
     focusPanel(nodes.resultPanel);
     renderMenu();
-    track("game_complete", { zone: run.zone.id, won, catches: run.catches, newFish: run.newFish, notes: earned });
+    track("game_complete", { zone: run.zone.id, won, catches: run.catches, newFish: run.newFish, notes: run.notes, score: run.finalScore });
   }
 
   function hookFish() {
@@ -384,21 +440,74 @@
   }
 
   function landFish() {
-    const id = run.hookFish.id;
-    if (!save.album.includes(id)) {
+    const caught = run.hookFish;
+    const id = caught.id;
+    const isNew = !save.album.includes(id);
+    if (isNew) {
       save.album.push(id);
       run.newFish += 1;
       track("album_unlock", { fish: id });
     }
+    const points = caught.points + Math.round(run.zone.speed * 10) + (isNew ? 25 : 0);
+    const notes = caught.notes + Math.floor(save.gear.bait / 2);
+    run.score += points;
+    run.catchValue += notes;
+    run.catchLog.push({ id, points, notes, isNew });
     run.catches += 1;
-    run.notes += 3;
+    run.notes += notes;
     run.phase = "aim";
     run.hookFish = null;
     run.splashTimer = 0.8;
+    run.catchToastTimer = 1.7;
+    showCatchToast(caught, points, notes, isNew);
     nodes.goalText.textContent = `${run.catches}/${run.zone.goal}`;
-    nodes.hintText.textContent = t("landed");
+    nodes.hintText.textContent = `${t("landed")} ${caught.name[locale]} +${points}`;
     updateTensionGuide();
     if (run.catches >= run.zone.goal) finishRun(true);
+  }
+
+  function fishById(id) {
+    return fish.find((item) => item.id === id) || fish[0];
+  }
+
+  function fishFrameStyle(item) {
+    return [
+      `background-image:url('${assetPaths[item.sheet]}')`,
+      "background-size:300% 600%",
+      `background-position:0% ${(item.sy / 5) * 100}%`,
+    ].join(";");
+  }
+
+  function showCatchToast(item, points, notes, isNew) {
+    nodes.catchToast.innerHTML = `
+      <strong>${t("catchToast", { fish: item.name[locale] })}</strong>
+      <span>${t("catchToastMeta", { points, notes, newTag: isNew ? t("newTag") : "" })}</span>
+    `;
+    nodes.catchToast.classList.remove("is-hidden");
+  }
+
+  function renderResultSummary() {
+    nodes.scoreText.textContent = Math.floor(run.finalScore || run.score);
+    nodes.catchValueText.textContent = Math.floor(run.notes);
+    nodes.newAlbumText.textContent = run.newFish;
+    if (!run.catchLog.length) {
+      nodes.catchList.innerHTML = `<p class="empty-catch">${t("noCatch")}</p>`;
+      return;
+    }
+    nodes.catchList.innerHTML = run.catchLog.map((entry) => {
+      const item = fishById(entry.id);
+      const rarity = item.rare ? t("rareFish") : t("commonFish");
+      return `
+        <div class="catch-item">
+          <div class="catch-thumb" style="${fishFrameStyle(item)}" aria-hidden="true"></div>
+          <div>
+            <strong>${item.name[locale]}</strong>
+            <span>${rarity}${entry.isNew ? t("newTag") : ""}</span>
+          </div>
+          <div class="catch-points">+${entry.points}</div>
+        </div>
+      `;
+    }).join("");
   }
 
   function lineBreak() {
@@ -477,6 +586,8 @@
 
     run.splashTimer = Math.max(0, run.splashTimer - dt);
     run.sonarPulse = Math.max(0, run.sonarPulse - dt);
+    run.catchToastTimer = Math.max(0, run.catchToastTimer - dt);
+    if (run.catchToastTimer <= 0) nodes.catchToast.classList.add("is-hidden");
     nodes.castFill.style.width = `${run.phase === "charging" ? run.castPower : 0}%`;
     nodes.tensionMarker.style.left = `${run.tension}%`;
     updateTensionGuide();
@@ -678,11 +789,15 @@
       startRun,
       forceWin() {
         if (!run || run.finished) startRun();
-        const firstFish = fish[0].id;
-        if (!save.album.includes(firstFish)) {
-          save.album.push(firstFish);
+        const firstFish = fish[0];
+        if (!save.album.includes(firstFish.id)) {
+          save.album.push(firstFish.id);
           run.newFish += 1;
         }
+        run.catchLog.push({ id: firstFish.id, points: firstFish.points + 25, notes: firstFish.notes, isNew: true });
+        run.score += firstFish.points + 25;
+        run.catchValue += firstFish.notes;
+        run.notes += firstFish.notes;
         run.catches = Math.max(run.zone.goal, 1);
         finishRun(true);
         return this.readState();
@@ -710,6 +825,10 @@
                 phase: run.phase,
                 catches: run.catches,
                 newFish: run.newFish,
+                score: run.score,
+                finalScore: run.finalScore,
+                notes: run.notes,
+                catchLog: run.catchLog,
                 finished: run.finished,
                 zone: run.zone.id,
               }

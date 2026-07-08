@@ -537,7 +537,7 @@ function registerWonderCombatUpgrades() {
     id: "slow",
     name: "Lion Roar",
     desc: "Hits can slow beasts for a short time",
-    icon: "assets/wonder-lion-hero.png",
+    icon: "assets/weightplay-character-boom-mane-lion.png",
     effect: {
       slowChance: 0.32,
       slowDuration: 1.8,

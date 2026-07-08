@@ -31,7 +31,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "幫助獅子英雄用有趣的魔法文具武器，守住城牆並擊退兇猛野獸。",
       },
       meta: { en: ["Lion Hero", "Wild Beasts", "30 Levels"], "zh-Hant": ["獅子英雄", "野獸來襲", "30 關"] },
-      art: { kind: "image", background: "assets/wonder-crash-cover.webp", hero: "assets/wonder-lion-hero.png", hideHero: true },
+      art: { kind: "image", background: "assets/weightplay-character-boom-mane-lion.png", hero: "assets/weightplay-character-boom-mane-lion.png" },
     },
     {
       id: "color-lunchbox",
