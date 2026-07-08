@@ -30,6 +30,7 @@
     startBtn: $("startBtn"),
     grid: $("grid"),
     fxLayer: $("fxLayer"),
+    turnRoster: $("turnRoster"),
     selectedCard: $("selectedCard"),
     battleLog: $("battleLog"),
     attackBtn: $("attackBtn"),
@@ -91,7 +92,10 @@
       chooseTarget: "{hero}: HP {hp}/{maxHp}, Energy {energy}.",
       ready: "Ready",
       acted: "Done",
+      fallen: "Fallen",
+      turnRosterTitle: "Squad Action",
       skillInfo: "Skill: {skill} - {desc}",
+      skillInfoLabel: "Skill",
       skillLion: "Lion Pounce",
       skillLionDesc: "Deal heavy damage to the closest target.",
       skillOwl: "Rune Bolt",
@@ -236,6 +240,25 @@
     missionTactic4: "兩隻渡鴉開火前，先讓烏龜守護隊伍。",
     missionTactic5: "長戰鬥：管理能量並集中火力。",
     missionTactic6: "首領壓力：撐過雙石鹿與渡鴉火力。",
+  });
+
+  Object.assign(text["zh-Hant"], {
+    title: "動物符文戰棋",
+    language: "語言",
+    ready: "可行動",
+    acted: "已行動",
+    fallen: "倒下",
+    turnRosterTitle: "隊伍行動",
+    skillInfo: "技能：{skill} - {desc}",
+    skillInfoLabel: "技能",
+    skillLion: "獅子撲擊",
+    skillLionDesc: "重擊最近的目標。",
+    skillOwl: "符文箭",
+    skillOwlDesc: "用符文魔法攻擊較遠的敵人。",
+    skillTurtle: "守護殼",
+    skillTurtleDesc: "保護同伴並吸收傷害。",
+    chooseHero: "選擇英雄，再移動、攻擊或使用技能。",
+    chooseTarget: "{hero}：生命 {hp}/{maxHp}，能量 {energy}。",
   });
 
   const heroDefs = [
@@ -405,7 +428,7 @@
     state = {
       mission,
       turn: 1,
-      selected: null,
+      selected: "lion",
       acted: new Set(),
       phase: "player",
       rerolled: false,
@@ -474,6 +497,7 @@
       }
     }
     renderSelected();
+    renderTurnRoster();
     updateActionButtons();
   }
 
@@ -509,7 +533,37 @@
       <strong>${t(hero.name)} ${t("heroLevel", { level: hero.level })} · ${status}</strong>
       <span>${t("chooseTarget", { hero: t(hero.name), hp: hero.hp, maxHp: hero.maxHp, energy: hero.energy })}</span>
       <small>${t("skillInfo", { skill: t(hero.skillName), desc: t(hero.skillDesc) })}</small>`;
+    nodes.selectedCard.querySelector("strong").textContent = `${t(hero.name)} ${t("heroLevel", { level: hero.level })} / ${status}`;
+    const skillHelp = nodes.selectedCard.querySelector("small");
+    skillHelp.className = "skill-help";
+    skillHelp.innerHTML = `<b>${t("skillInfoLabel")}</b>${t("skillInfo", { skill: t(hero.skillName), desc: t(hero.skillDesc) })}`;
     nodes.skillBtn.title = t("skillInfo", { skill: t(hero.skillName), desc: t(hero.skillDesc) });
+  }
+
+  function renderTurnRoster() {
+    if (!nodes.turnRoster || !state) return;
+    const items = state.heroes.map((hero) => {
+      const isSelected = state.selected === hero.id;
+      const isFallen = hero.hp <= 0;
+      const isDone = !isFallen && state.acted.has(hero.id);
+      const status = isFallen ? t("fallen") : isDone ? t("acted") : t("ready");
+      const className = ["turn-roster-item", isSelected ? "is-selected" : "", isDone ? "is-done" : "", isFallen ? "is-fallen" : ""].filter(Boolean).join(" ");
+      return `
+        <button class="${className}" type="button" data-roster-hero="${hero.id}" ${isFallen ? "disabled" : ""}>
+          <img src="${asset(hero.img)}" alt="" aria-hidden="true" />
+          <span>
+            <strong>${t(hero.name)}</strong>
+            <small>${status} / HP ${Math.max(0, hero.hp)}/${hero.maxHp}</small>
+          </span>
+        </button>`;
+    }).join("");
+    nodes.turnRoster.innerHTML = `<strong class="turn-roster-title">${t("turnRosterTitle")}</strong><div>${items}</div>`;
+    nodes.turnRoster.querySelectorAll("[data-roster-hero]").forEach((button) => {
+      button.addEventListener("click", () => {
+        state.selected = button.dataset.rosterHero;
+        render();
+      });
+    });
   }
 
   function updateActionButtons() {
