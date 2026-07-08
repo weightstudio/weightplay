@@ -369,6 +369,7 @@ select {
 
 .stage-card {
   flex: 0 0 clamp(196px, 38%, 280px);
+  max-width: 100%;
   min-height: 124px;
   border: 0;
   border-radius: 16px;
@@ -1919,6 +1920,10 @@ select {
     padding-inline: 8px;
   }
 
+  .menu-panel {
+    padding-bottom: calc(92px + env(safe-area-inset-bottom));
+  }
+
   .menu-shell {
     border-width: 3px;
     border-radius: 20px;
@@ -1965,7 +1970,9 @@ select {
   }
 
   .stage-card {
-    flex-basis: 100%;
+    flex: 0 0 100%;
+    max-width: 100%;
+    min-height: 118px;
   }
 
   .stage-plan {
@@ -2083,6 +2090,42 @@ select {
   .shop-grid {
     grid-template-columns: 1fr;
   }
+
+  .menu-tabs {
+    bottom: max(8px, env(safe-area-inset-bottom));
+    width: calc(100vw - 18px);
+    max-width: 500px;
+    border-width: 3px;
+    border-radius: 18px;
+    padding: 6px;
+    gap: 6px;
+  }
+
+  .menu-tabs button {
+    min-width: 0;
+    min-height: 54px;
+    border-radius: 13px;
+    padding: 4px 2px;
+  }
+
+  .menu-tabs button.active {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 0 #a56526, inset 0 -4px rgba(103, 60, 22, 0.14);
+  }
+
+  .menu-tabs img {
+    width: 28px;
+    height: 28px;
+  }
+
+  .menu-tabs span {
+    max-width: 100%;
+    overflow: hidden;
+    font-size: 0.7rem;
+    line-height: 1.05;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 }
 
 @media (max-width: 700px) {
@@ -2128,6 +2171,7 @@ select {
   }
 
   .stage-card {
-    flex-basis: 100%;
+    flex: 0 0 100%;
+    max-width: 100%;
   }
 }

@@ -1540,6 +1540,7 @@
   window.addEventListener("beforeunload", saveGame);
 
   localizeStatic();
+  document.documentElement.dataset.zooIdleBasicReady = "true";
   loadAssets();
   window.setInterval(tickUi, 1000);
   window.setInterval(tickPark, 10000);

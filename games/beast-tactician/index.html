@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" data-public-gate-ready="true">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex,nofollow" />
+    <script>
+      if (new URLSearchParams(window.location.search).get("trial") === "1") {
+        fetch("internal-test.html?trial=1", { cache: "no-store" })
+          .then((response) => {
+            if (!response.ok) throw new Error(`Trial route failed: ${response.status}`);
+            return response.text();
+          })
+          .then((html) => {
+            document.open();
+            document.write(html);
+            document.close();
+          })
+          .catch(() => {
+            document.documentElement.dataset.trialLoadFailed = "true";
+          });
+      }
+    </script>
+    <title>獸王守衛 - 敬請期待 | WeightPlay</title>
+    <meta
+      name="description"
+      content="獸王守衛是內部 Release-ready 的 10 關英雄塔防遊戲，公開遊玩入口尚未開放。"
+    />
+    <link rel="canonical" href="https://weightplay.com/games/beast-tactician/" />
+    <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Beast Guardian - Coming Soon | WeightPlay" />
+    <meta
+      property="og:description"
+      content="Beast Guardian is a 10-stage hero tower defense game held behind a Coming Soon public gate until public opening is approved."
+    />
+    <meta property="og:url" content="https://weightplay.com/games/beast-tactician/" />
+    <meta property="og:image" content="https://weightplay.com/assets/beast-tactician-cover.webp" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260707-guide-related-compact1" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "Beast Guardian - Coming Soon",
+        "url": "https://weightplay.com/games/beast-tactician/",
+        "image": "https://weightplay.com/assets/beast-tactician-cover.webp",
+        "description": "Beast Guardian is an internal release-ready tower defense game, but public gameplay is not open yet.",
+        "isPartOf": {
+          "@type": "WebSite",
+          "name": "WeightPlay",
+          "url": "https://weightplay.com/"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "WeightStudio"
+        }
+      }
+    </script>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #0b1320;
+        --panel: rgba(13, 24, 38, 0.92);
+        --line: rgba(255, 220, 150, 0.28);
+        --text: #fff9eb;
+        --muted: #d8ccb5;
+        --gold: #ffd166;
+        --green: #7dd87d;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Outfit", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        color: var(--text);
+        background: linear-gradient(140deg, #07101c, #182818);
+      }
+
+      .hold-page {
+        min-height: 100vh;
+        display: grid;
+        grid-template-rows: auto 1fr;
+      }
+
+      .hold-nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 18px clamp(16px, 4vw, 40px);
+      }
+
+      .back-link,
+      .locale-picker {
+        min-height: 44px;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        background: rgba(255, 255, 255, 0.08);
+        color: var(--text);
+        font-weight: 800;
+      }
+
+      .back-link {
+        display: inline-flex;
+        align-items: center;
+        padding: 10px 16px;
+        text-decoration: none;
+      }
+
+      .locale-picker {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+      }
+
+      .locale-picker select {
+        max-width: min(48vw, 180px);
+        border: 0;
+        outline: 0;
+        background: transparent;
+        color: var(--text);
+        font: inherit;
+      }
+
+      .locale-picker option {
+        color: #111827;
+      }
+
+      .hold-main {
+        display: grid;
+        place-items: center;
+        padding: 18px clamp(16px, 5vw, 48px) 48px;
+      }
+
+      .hold-card {
+        width: min(940px, 100%);
+        display: grid;
+        grid-template-columns: minmax(220px, 330px) 1fr;
+        gap: clamp(20px, 4vw, 42px);
+        align-items: center;
+        padding: clamp(22px, 5vw, 48px);
+        border-radius: 28px;
+        border: 1px solid var(--line);
+        background: var(--panel);
+        box-shadow: 0 28px 80px rgba(0, 0, 0, 0.34);
+      }
+
+      .poster-frame {
+        aspect-ratio: 1;
+        border-radius: 24px;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        background: rgba(255, 255, 255, 0.06);
+      }
+
+      .poster-frame img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        width: fit-content;
+        margin-bottom: 14px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        color: #1d1604;
+        background: linear-gradient(180deg, #fff3bf, var(--gold));
+        font-weight: 900;
+      }
+
+      h1 {
+        margin: 0 0 12px;
+        font-size: clamp(2rem, 5vw, 4rem);
+        line-height: 1.05;
+      }
+
+      p {
+        margin: 0;
+        max-width: 58ch;
+        color: var(--muted);
+        font-size: clamp(1rem, 2.4vw, 1.18rem);
+        line-height: 1.7;
+      }
+
+      .status-list {
+        display: grid;
+        gap: 10px;
+        margin-top: 24px;
+      }
+
+      .teaser-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+        margin-top: 22px;
+      }
+
+      .teaser-card {
+        min-width: 0;
+        padding: 13px;
+        border-radius: 16px;
+        text-align: left;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.13);
+      }
+
+      .teaser-card strong,
+      .teaser-card span {
+        display: block;
+      }
+
+      .teaser-card strong {
+        margin-bottom: 4px;
+        color: var(--gold);
+        font-size: 0.96rem;
+      }
+
+      .teaser-card span {
+        color: var(--muted);
+        font-weight: 700;
+        line-height: 1.45;
+      }
+
+      .status-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--text);
+        font-weight: 800;
+      }
+
+      .trial-unlock-status {
+        min-height: 1.4em;
+        margin-top: 18px;
+        color: #d9f99d;
+        font-weight: 900;
+        letter-spacing: 0;
+        opacity: 0;
+        transition: opacity 160ms ease, transform 160ms ease;
+        transform: translateY(4px);
+      }
+
+      .trial-unlock-status.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .hold-card.is-unlocking {
+        border-color: rgba(217, 249, 157, 0.56);
+        box-shadow: 0 28px 80px rgba(0, 0, 0, 0.34), 0 0 28px rgba(125, 216, 125, 0.18);
+      }
+
+      .status-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 999px;
+        background: var(--green);
+        box-shadow: 0 0 18px rgba(125, 216, 125, 0.72);
+        flex: 0 0 auto;
+      }
+
+      @media (max-width: 720px) {
+        .hold-nav {
+          align-items: stretch;
+          flex-direction: column;
+        }
+
+        .hold-card {
+          grid-template-columns: 1fr;
+          text-align: center;
+        }
+
+        .poster-frame {
+          width: min(250px, 78vw);
+          margin: 0 auto;
+        }
+
+        .eyebrow {
+          margin-inline: auto;
+        }
+
+        .status-item {
+          justify-content: center;
+        }
+
+        .teaser-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .teaser-card {
+          text-align: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="hold-page">
+      <header class="hold-nav">
+        <a class="back-link" href="../../index.html" data-i18n="back">Back to Lobby</a>
+        <label class="locale-picker">
+          <span data-i18n="language">Language</span>
+          <select id="localeSelect" aria-label="Language selector">
+            <option value="zh-Hant" selected>繁體中文</option>
+            <option value="en">English</option>
+          </select>
+        </label>
+      </header>
+
+      <main class="hold-main">
+        <section class="hold-card" aria-labelledby="holdTitle">
+          <div class="poster-frame">
+            <img src="../../assets/beast-tactician-cover.webp" alt="Beast Guardian cover" />
+          </div>
+          <div>
+            <strong class="eyebrow" data-i18n="status">敬請期待</strong>
+            <h1 id="holdTitle" data-i18n="title">獸王守衛</h1>
+            <p data-i18n="body">10 關英雄塔防源碼已完成內部 Release 檢查，但公開入口仍等待核准；此頁在核准前不開放遊玩。</p>
+            <div class="status-list" aria-label="Release checklist">
+              <div class="status-item"><span class="status-dot"></span><span data-i18n="poster">入口預告圖已準備完成</span></div>
+              <div class="status-item"><span class="status-dot"></span><span data-i18n="art">內部塔防版本已完成</span></div>
+              <div class="status-item"><span class="status-dot"></span><span data-i18n="release">公開開放核准前維持關閉</span></div>
+            </div>
+            <div class="teaser-grid" aria-label="Game preview">
+              <div class="teaser-card">
+                <strong data-i18n="previewRoleTitle">守住戰線</strong>
+                <span data-i18n="previewRoleBody">率領盾熊、焰虎與自然鹿小隊。</span>
+              </div>
+              <div class="teaser-card">
+                <strong data-i18n="previewBattleTitle">野獸戰術戰鬥</strong>
+                <span data-i18n="previewBattleBody">在戰場上建置英雄與士兵，阻擋往核心前進的敵人。</span>
+              </div>
+              <div class="teaser-card">
+                <strong data-i18n="previewProgressTitle">開放 Gate</strong>
+                <span data-i18n="previewProgressBody">等待明確公開發布核准。</span>
+              </div>
+            </div>
+            <p id="trialUnlockStatus" class="trial-unlock-status" aria-live="polite"></p>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      const copy = {
+        en: {
+          back: "Back to Lobby",
+          language: "Language",
+          status: "Coming Soon",
+          title: "Beast Guardian",
+          body:
+            "The 10-stage hero tower defense source is being held for public approval. Gameplay remains closed here until release conversion is approved.",
+          poster: "Preview poster is ready",
+          art: "Internal tower defense build is ready",
+          release: "Gameplay stays closed until public opening is approved",
+          previewRoleTitle: "Protect the lanes",
+          previewRoleBody: "Lead a shield bear, flame tiger, and nature deer squad.",
+          previewBattleTitle: "Tactical beast battles",
+          previewBattleBody: "Build heroes and soldiers on the battlefield while enemies route toward the core.",
+          previewProgressTitle: "Release gate",
+          previewProgressBody: "Opening waits for explicit public release approval.",
+          trialUnlockReady: "Opening internal trial...",
+        },
+        "zh-Hant": {
+          back: "回到大廳",
+          language: "語言",
+          status: "敬請期待",
+          title: "獸王守衛",
+          body:
+            "10 關英雄塔防源碼已完成內部 Release 檢查，但公開入口仍等待核准；此頁在核准前不開放遊玩。",
+          poster: "入口預告圖已準備完成",
+          art: "內部塔防版本已完成",
+          release: "公開開放核准前維持關閉",
+          previewRoleTitle: "守住戰線",
+          previewRoleBody: "率領盾熊、焰虎與自然鹿小隊。",
+          previewBattleTitle: "野獸戰術戰鬥",
+          previewBattleBody: "在戰場上建置英雄與士兵，阻擋往核心前進的敵人。",
+          previewProgressTitle: "開放 Gate",
+          previewProgressBody: "等待明確公開發布核准。",
+          trialUnlockReady: "正在開啟內部試玩...",
+        },      };
+
+      const localeSelect = document.getElementById("localeSelect");
+      const holdCard = document.querySelector(".hold-card");
+      const trialUnlockStatus = document.getElementById("trialUnlockStatus");
+      const TRIAL_UNLOCK_TAPS = 10;
+      let trialUnlockCount = 0;
+      let trialUnlockTimer = 0;
+
+      window.__WEIGHTPLAY_PUBLIC_GATE_STATE__ = {
+        gameId: "beast-tactician",
+        status: "coming-soon",
+        playable: false,
+        ready: true,
+        hiddenTrialTaps: TRIAL_UNLOCK_TAPS,
+      };
+
+      function getLocaleDict() {
+        return copy[localeSelect.value] || copy.en;
+      }
+
+      function renderTrialUnlockStatus() {
+        if (!trialUnlockStatus) return;
+        const dict = getLocaleDict();
+        const key = "trialUnlockReady";
+        const text = trialUnlockCount >= TRIAL_UNLOCK_TAPS ? dict[key] || copy.en[key] || "" : "";
+        trialUnlockStatus.textContent = text;
+        trialUnlockStatus.classList.toggle("is-visible", trialUnlockCount >= TRIAL_UNLOCK_TAPS);
+        holdCard?.classList.toggle("is-unlocking", trialUnlockCount > 0);
+      }
+
+      function resetTrialUnlockSoon() {
+        window.clearTimeout(trialUnlockTimer);
+        trialUnlockTimer = window.setTimeout(() => {
+          trialUnlockCount = 0;
+          renderTrialUnlockStatus();
+        }, 8000);
+      }
+
+      function openInternalTrial() {
+        window.clearTimeout(trialUnlockTimer);
+        window.__WEIGHTPLAY_PUBLIC_GATE_STATE__.hiddenTrialUnlocked = true;
+        try {
+          sessionStorage.setItem("beastGuardianTrialUnlocked", "true");
+        } catch (error) {
+          // The direct trial link still opens when storage is unavailable.
+        }
+        window.location.href = "index.html?trial=1";
+      }
+
+      function handleTrialUnlockTap(event) {
+        if (event.target.closest("a, button, select, option, label")) return;
+        trialUnlockCount += 1;
+        renderTrialUnlockStatus();
+        if (trialUnlockCount >= TRIAL_UNLOCK_TAPS) {
+          openInternalTrial();
+          return;
+        }
+        resetTrialUnlockSoon();
+      }
+
+      function applyLocale(locale) {
+        const dict = copy[locale] || copy.en;
+        document.documentElement.lang = locale === "zh-Hant" ? "zh-Hant" : "en";
+        document.title = `${dict.title} - ${dict.status} | WeightPlay`;
+        document.querySelectorAll("[data-i18n]").forEach((node) => {
+          const key = node.getAttribute("data-i18n");
+          if (dict[key]) node.textContent = dict[key];
+        });
+        renderTrialUnlockStatus();
+      }
+
+      let savedLocale = "zh-Hant";
+      try {
+        savedLocale = localStorage.getItem("weightPlayLocale") || "zh-Hant";
+      } catch (error) {
+        savedLocale = "en";
+      }
+      localeSelect.value = copy[savedLocale] ? savedLocale : "en";
+      applyLocale(localeSelect.value);
+      document.documentElement.dataset.publicGateReady = "true";
+      localeSelect.addEventListener("change", () => {
+        try {
+          localStorage.setItem("weightPlayLocale", localeSelect.value);
+        } catch (error) {
+          // Locale switching still works even when browser storage is unavailable.
+        }
+        applyLocale(localeSelect.value);
+      });
+      holdCard?.addEventListener("pointerup", handleTrialUnlockTap);
+    </script>
+  </body>
+</html>

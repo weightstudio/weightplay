@@ -67,7 +67,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "幫動物烘焙師點擊相連泡泡，完成訂單並通過益智關卡。",
       },
       meta: { en: ["Animal Bakery", "6 Stages", "Tap Groups"], "zh-Hant": ["動物烘焙", "6 關", "點擊群組"] },
-      art: { kind: "image", background: "assets/bubble-bakery-cover.webp", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
+      art: { kind: "image", background: "assets/bubble-bakery-cover.webp", hero: "assets/weightplay-character-drum-belly-panda-cutout.webp" },
     },
     {
       id: "animal-rope-rescue",
@@ -103,7 +103,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "經營草原動物園，餵食動物、收取門票並升級樂園設施。",
       },
       meta: { en: ["Idle Zoo", "Ticket Income", "Animal Feeding"], "zh-Hant": ["放置動物園", "門票收入", "餵食動物"] },
-      art: { kind: "image", background: "assets/animal-zoo-idle-cover.webp", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
+      art: { kind: "image", background: "assets/animal-zoo-idle-cover.webp", hero: "assets/weightplay-character-rainbow-hop-rabbit-cutout.webp" },
     },
     {
       id: "star-memory",
@@ -175,7 +175,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "落下動物球並合成相同動物，一路挑戰到獅王球與最佳分數。",
       },
       meta: { en: ["Animal Merge", "Physics Puzzle", "Best Record"], "zh-Hant": ["動物合成", "物理益智", "最佳紀錄"] },
-      art: { kind: "image", background: "assets/fruit-merge-cover.webp", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
+      art: { kind: "image", background: "assets/fruit-merge-cover.webp", hero: "assets/weightplay-character-moss-shell-turtle-cutout.webp" },
     },
     {
       id: "garden-tiles",
@@ -247,7 +247,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "配置完整動物守衛、賺取金幣、升級隊伍，挑戰 8 個含 Boss 的防守關卡。",
       },
       meta: { en: ["Hero Defense", "Animal Upgrades", "Boss Battles"], "zh-Hant": ["英雄防守", "動物升級", "Boss 戰"] },
-      art: { kind: "image", background: "assets/animal-guard-yard-poster.webp", hero: "assets/animal-guard-yard-poster.webp", hideHero: true },
+      art: { kind: "image", background: "assets/animal-guard-yard-poster.webp", hero: "assets/weightplay-character-spark-paw-fox-cutout.webp" },
     },
     {
       id: "animal-crystal-survivor",
@@ -448,7 +448,7 @@ window.WONDER_LOBBY = {
       ages: ["13"],
       ageLabel: { en: "13+", "zh-Hant": "13+" },
       href: "games/beast-tactician/",
-      internalTrial: "internal-test.html?trial=1",
+      internalTrial: "index.html?trial=1",
       description: {
         en: "A premium 10-stage hero tower-defense game is in production. Build soldiers and WeightPlay heroes on the grid, shape enemy routes, and stop boss waves.",
         "zh-Hant": "高品質 10 關英雄塔防大作製作中。你將在格子地形上建置士兵與 WeightPlay 英雄，改變敵人路線並抵擋王關波次。"

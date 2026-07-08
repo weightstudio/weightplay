@@ -224,6 +224,30 @@ function gameInfoText(gameId, key) {
   return `<span><b>${label}</b>${value}</span>`;
 }
 
+function stateCopy(key) {
+  const zh = i18n.locale() === "zh-Hant";
+  const copy = {
+    playableLabel: zh ? "\u53ef\u904a\u73a9" : "Playable",
+    playableNote: zh ? "\u9ede\u64ca\u5f8c\u7acb\u5373\u9032\u5165" : "Opens immediately",
+    previewLabel: zh ? "\u65b0\u904a\u6232\u9810\u544a" : "Preview",
+    previewNote: zh ? "\u656c\u8acb\u671f\u5f85\uff0c\u5c1a\u672a\u516c\u958b\u904a\u73a9" : "Coming Soon, not public yet",
+  };
+  return copy[key] || key;
+}
+
+function gameStateCard(game, isPlayable) {
+  const state = isPlayable ? "ready" : "preview";
+  const label = isPlayable ? stateCopy("playableLabel") : stateCopy("previewLabel");
+  const note = isPlayable ? stateCopy("playableNote") : stateCopy("previewNote");
+  const hasInternalTrial = Boolean(!isPlayable && internalTrialPath(game));
+  return `
+    <div class="game-card-state ${state}" data-state="${state}" data-internal-trial="${hasInternalTrial ? "true" : "false"}">
+      <strong>${label}</strong>
+      <span>${note}</span>
+    </div>
+  `;
+}
+
 function localizedFactLabel(key) {
   if (i18n.locale() !== "zh-Hant") return key === "time" ? "Time" : "Difficulty";
   return key === "time" ? "\u6642\u9593" : "\u96e3\u5ea6";
@@ -542,6 +566,7 @@ function createGameCard(game) {
   card.dataset.favorite = favorite ? "true" : "false";
   card.dataset.recent = recent ? "true" : "false";
   card.dataset.recentIndex = String(recentGameIds.indexOf(game.id));
+  card.dataset.internalTrial = !isPlayable && internalTrialPath(game) ? "true" : "false";
   const stats = statFor(game);
   card.dataset.rank7d = String(stats.rank7d || 9999);
   card.dataset.plays7d = String(stats.plays7d || 0);
@@ -607,6 +632,7 @@ function createGameCard(game) {
       </div>
       <h2>${title}</h2>
       <p>${text(game.description)}</p>
+      ${gameStateCard(game, isPlayable)}
       <div class="game-card-categories">${categoryBadges}</div>
       ${skillBadges ? `<div class="game-card-skills" aria-label="Skills trained">${skillBadges}</div>` : ""}
       ${skillReason ? `<div class="game-card-skill-reason">${skillReason}</div>` : ""}
@@ -1266,7 +1292,7 @@ function handleHiddenTrialGate(game) {
   hiddenTrialGate.timers.set(game.id, timer);
 
   window.WonderSound?.play("click");
-  showToast(`${i18n.t("toast.coming_soon", { title: text(game.title) })} ${count}/${hiddenTrialGate.tapsRequired}`);
+  showToast(i18n.t("toast.coming_soon", { title: text(game.title) }));
   return true;
 }
 
