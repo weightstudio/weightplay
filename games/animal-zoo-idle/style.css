@@ -1149,7 +1149,7 @@ body.zoo-playing .savanna-stage {
   border-radius: 18px;
   background:
     linear-gradient(180deg, rgba(255,255,255,.08), rgba(61,42,15,.08)),
-    #ccefa9 url("../../assets/animal-zoo-idle-stage-bg.webp") center / 100% 100% no-repeat;
+    #d5f0ae url("../../assets/animal-zoo-idle-stage-bg.webp") center / contain no-repeat;
   contain: layout paint;
 }
 

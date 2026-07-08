@@ -30,6 +30,9 @@
       backToMenu: "Main Menu",
       quitRun: "Quit Run",
       combatIntro: "Prepare for Battle!",
+      combatSummary: "Squad HP {playerHp}/{playerMax} | Enemy HP {enemyHp}/{enemyMax}",
+      combatFront: "Front: {player} vs {enemy}",
+      foodGuideTitle: "Food effects",
       guideHint: "Drag or tap cards to select, then tap target slot to buy, move, combine, or feed. Level up matching animals!",
       level: "Lv.",
       buy: "Buy",
@@ -328,6 +331,8 @@
     combatArea: $("combatArea"),
     gameCanvas: $("gameCanvas"),
     combatStatusText: $("combatStatusText"),
+    combatSummary: $("combatSummary"),
+    foodGuide: $("foodGuide"),
     relicDraftPanel: $("relicDraftPanel"),
     relicChoices: $("relicChoices"),
     rerollRelicsBtn: $("rerollRelicsBtn"),
@@ -352,6 +357,12 @@
   let imageCache = {};
   let canvasCtx = null;
   let animationId = null;
+
+  const zhRuntimeText = {
+    combatSummary: "小隊生命 {playerHp}/{playerMax}｜敵方生命 {enemyHp}/{enemyMax}",
+    combatFront: "前排：{player} 對 {enemy}",
+    foodGuideTitle: "食物效果"
+  };
 
   function loadSave() {
     try {
@@ -403,7 +414,7 @@
   }
 
   function t(key, data = {}) {
-    const value = text[locale]?.[key] || text.en[key] || key;
+    const value = (locale === "zh-Hant" && zhRuntimeText[key]) || text[locale]?.[key] || text.en[key] || key;
     return Object.entries(data).reduce((out, [name, item]) => out.replaceAll(`{${name}}`, String(item)), value);
   }
 
@@ -633,6 +644,7 @@
     document.querySelector(".shop-section h3").textContent = t("shopLabel");
     nodes.startBattleBtn.textContent = t("startBattle");
     nodes.hintText.textContent = t("guideHint");
+    renderFoodGuide();
 
     // Reroll shop label
     const rerollCost = state.freeRerollThisRound ? 0 : 1;
@@ -764,9 +776,16 @@
   }
 
   function renderPrepScreen() {
+    renderFoodGuide();
     renderSquad();
     renderBench();
     renderShop();
+  }
+
+  function renderFoodGuide() {
+    if (!nodes.foodGuide) return;
+    const items = [t("appleDesc"), t("honeyDesc"), t("melonDesc"), t("chocolateDesc")];
+    nodes.foodGuide.innerHTML = `<strong>${t("foodGuideTitle")}</strong>${items.map((item) => `<span>${item}</span>`).join("")}`;
   }
 
   function getItemEffectText(card) {
@@ -1363,6 +1382,7 @@
     // Swap views
     nodes.prepPhaseArea.classList.add("is-hidden");
     nodes.combatArea.classList.remove("is-hidden");
+    nodes.combatSummary?.classList.remove("is-hidden");
     nodes.hintText.textContent = "";
 
     // Reset combat state
@@ -1374,6 +1394,7 @@
     
     canvasCtx = nodes.gameCanvas.getContext("2d");
     combatLog(t("combatIntro"));
+    updateCombatSummary();
     
     // Start animation loop
     runCombatAnimation();
@@ -1435,6 +1456,7 @@
       state.combat.timer = 0;
       resolveCombatStep();
     }
+    updateCombatSummary();
 
     // Draw Squad lines
     drawSquadLine(state.combat.playerSquad, "player");
@@ -1466,8 +1488,8 @@
         state.combat.shakeFrames--;
       }
       
-      const w = mobileCombat ? 112 : 88;
-      const h = mobileCombat ? 136 : 112;
+      const w = mobileCombat ? 132 : 88;
+      const h = mobileCombat ? 158 : 112;
       const x = targetX + shakeX - w / 2;
       const y = (mobileCombat ? 286 : 258) - h / 2;
 
