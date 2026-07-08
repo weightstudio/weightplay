@@ -547,6 +547,7 @@
       const button = document.createElement("button");
       button.className = "stage-card";
       button.type = "button";
+      button.dataset.stageIndex = String(index);
       if (stageNo > unlocked) button.classList.add("locked");
       if (index === selectedStageIndex) button.classList.add("selected");
       const stageRecord = typeof stageRecords[String(stageNo)] === "object" && stageRecords[String(stageNo)] ? stageRecords[String(stageNo)] : {};
@@ -566,20 +567,11 @@
         ${progressMeta}
         ${stageThreatPreview(stage)}
       `;
-      button.addEventListener("click", () => {
-        if (nodes.stageGrid.dataset.draggingClick === "1") return;
-        if (stageNo > unlocked) {
-          showFloatingText(t("locked"));
-          playSound("click");
-          return;
-        }
-        startStage(index);
-      });
       nodes.stageGrid.appendChild(button);
     });
     bindStageGridDrag();
     window.requestAnimationFrame(() => {
-      nodes.stageGrid.querySelector(".stage-card.selected")?.scrollIntoView({ block: "nearest", inline: "center" });
+      nodes.stageGrid.querySelector(".stage-card.selected")?.scrollIntoView({ block: "center", inline: "center" });
     });
   }
 
@@ -629,6 +621,19 @@
     nodes.stageGrid.addEventListener("pointerup", endDrag);
     nodes.stageGrid.addEventListener("pointercancel", endDrag);
     nodes.stageGrid.addEventListener("dragstart", (event) => event.preventDefault());
+    nodes.stageGrid.addEventListener("click", (event) => {
+      const button = event.target.closest(".stage-card");
+      if (!button || !nodes.stageGrid.contains(button)) return;
+      if (nodes.stageGrid.dataset.draggingClick === "1") return;
+      const index = Number(button.dataset.stageIndex);
+      if (!Number.isInteger(index)) return;
+      if (index + 1 > unlocked) {
+        showFloatingText(t("locked"));
+        playSound("click");
+        return;
+      }
+      startStage(index);
+    });
   }
 
   function renderBeastGuide() {

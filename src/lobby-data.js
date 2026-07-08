@@ -442,7 +442,7 @@ window.WONDER_LOBBY = {
       title: { en: "Beast Guardian", "zh-Hant": "獸王守衛" },
       status: "planned",
       statusText: { en: "Coming Soon", "zh-Hant": "敬請期待" },
-      type: { en: "Turn-Based Tactics RPG", "zh-Hant": "回合制戰略 RPG" },
+      type: { en: "Turn-Based Tactics RPG", "zh-Hant": "回合制戰術 RPG" },
       categories: ["Featured", "Animal Games", "Puzzle"],
       skills: ["Logic", "Problem Solving", "Focus"],
       ages: ["13"],
@@ -450,9 +450,9 @@ window.WONDER_LOBBY = {
       href: "games/beast-tactician/",
       description: {
         en: "Lead a squad of 3 animal heroes, cast powerful spells, collect gear, and clear dungeons to challenge the behemoth.",
-        "zh-Hant": "率領 3 隻動物英雄小隊，施放強大職業技能，收集並穿戴神裝，深入地牢擊敗巨獸首領。"
+        "zh-Hant": "帶領 3 位動物英雄，施放戰術技能、收集裝備，並挑戰巨獸首領。"
       },
-      meta: { en: ["Turn-Based RPG", "3 Hero Squad", "Gear Loot"], "zh-Hant": ["回合制戰略", "3 隻英雄小隊", "裝備掉寶"] },
+      meta: { en: ["Turn-Based RPG", "3 Hero Squad", "Gear Loot"], "zh-Hant": ["回合 RPG", "3 位英雄", "裝備收集"] },
       art: { kind: "image", background: "assets/beast-tactician-cover.webp", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
     },
     {
@@ -460,7 +460,7 @@ window.WONDER_LOBBY = {
       title: { en: "Shadow Wolf Legend", "zh-Hant": "影狼傳說" },
       status: "planned",
       statusText: { en: "Coming Soon", "zh-Hant": "敬請期待" },
-      type: { en: "2D Action Platformer RPG", "zh-Hant": "橫向動作 RPG" },
+      type: { en: "2D Action Platformer RPG", "zh-Hant": "2D 動作平台 RPG" },
       categories: ["Featured", "Animal Games"],
       skills: ["Logic", "Problem Solving", "Focus"],
       ages: ["13"],
@@ -468,9 +468,9 @@ window.WONDER_LOBBY = {
       href: "games/shadow-wolf/",
       description: {
         en: "Run, jump, dash, and slash shadow beasts. Gain EXP, open gear chests, and defeat the behemoth boss.",
-        "zh-Hant": "奔跑、跳躍、閃避與揮爪砍殺影怪。獲得經驗升級、開啟寶箱並穿戴強力神裝，挑戰遺跡巨獸！"
+        "zh-Hant": "奔跑、跳躍、衝刺並斬擊影獸。累積經驗、開啟裝備寶箱，最後擊敗巨獸首領。"
       },
-      meta: { en: ["2D Side-Scroller", "Jumping Physics", "Equip Gear"], "zh-Hant": ["橫向捲軸", "跳躍物理", "裝備收集"] },
+      meta: { en: ["2D Side-Scroller", "Jumping Physics", "Equip Gear"], "zh-Hant": ["2D 橫向卷軸", "跳躍操作", "裝備養成"] },
       art: { kind: "image", background: "assets/shadow-wolf-cover.webp", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
     },
   ],

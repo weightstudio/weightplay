@@ -131,6 +131,10 @@ select {
   gap: 12px;
 }
 
+.menu-panel {
+  padding-bottom: calc(104px + env(safe-area-inset-bottom));
+}
+
 .fixed-shell-host {
   align-content: center;
   justify-items: center;
@@ -378,6 +382,7 @@ select {
   font-weight: 900;
   scroll-snap-align: center;
   scroll-snap-stop: always;
+  scroll-margin-block: 118px;
 }
 
 .stage-card.cleared {
@@ -1956,11 +1961,11 @@ select {
   .stage-grid {
     gap: 8px;
     padding: 3px 0 12px;
-    scroll-padding-inline: 30%;
+    scroll-padding-inline: 0;
   }
 
   .stage-card {
-    flex-basis: clamp(178px, 68vw, 238px);
+    flex-basis: 100%;
   }
 
   .stage-plan {
@@ -2119,10 +2124,10 @@ select {
 
   .stage-grid {
     padding-inline: 0;
-    scroll-padding-inline: 26%;
+    scroll-padding-inline: 0;
   }
 
   .stage-card {
-    flex-basis: clamp(172px, 62vw, 232px);
+    flex-basis: 100%;
   }
 }
