@@ -4,6 +4,7 @@ const topicButtons = document.querySelectorAll("[data-topic-filter]");
 const skillButtons = document.querySelectorAll("[data-skill-filter]");
 const libraryButtons = document.querySelectorAll("[data-library-tab]");
 const availabilityButtons = document.querySelectorAll("[data-availability-filter]");
+const discoverySnapshot = document.querySelector("#discoverySnapshot");
 const gameGrid = document.querySelector("#gameGrid");
 const heroGames = document.querySelector("#heroGames");
 const heroGamesSection = document.querySelector("#heroGamesSection");
@@ -213,6 +214,60 @@ function renderFilterStatusSummary(visibleCount, labels) {
     <button type="button" data-clear-filters>${i18n.t("status.clear_filters")}</button>
   `;
   filterStatus.querySelector("[data-clear-filters]")?.addEventListener("click", resetDiscoveryFilters);
+}
+
+function renderDiscoverySnapshot() {
+  if (!discoverySnapshot) return;
+  const playableCount = lobby.games.filter((game) => game.status === "playable").length;
+  const previewCount = lobby.games.filter((game) => game.status === "planned").length;
+  const phonePickCount = mobileFriendlyGames(99).length;
+  discoverySnapshot.innerHTML = `
+    <button type="button" data-snapshot-filter="playable">
+      <strong>${playableCount}</strong>
+      <span>${i18n.t("snapshot.playable_title")}</span>
+      <small>${i18n.t("snapshot.playable_note")}</small>
+    </button>
+    <button type="button" data-snapshot-filter="preview">
+      <strong>${previewCount}</strong>
+      <span>${i18n.t("snapshot.preview_title")}</span>
+      <small>${i18n.t("snapshot.preview_note")}</small>
+    </button>
+    <button type="button" data-snapshot-filter="mobile">
+      <strong>${phonePickCount}</strong>
+      <span>${i18n.t("snapshot.mobile_title")}</span>
+      <small>${i18n.t("snapshot.mobile_note")}</small>
+    </button>
+  `;
+  discoverySnapshot.querySelectorAll("[data-snapshot-filter]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const target = button.dataset.snapshotFilter;
+      if (target === "mobile") {
+        activeFilter = "all";
+        activeTopic = "all";
+        activeSkill = "all";
+        activeLibrary = "all";
+        activeAvailability = "playable";
+        activeSearch = "";
+        if (gameSearch) gameSearch.value = "";
+        setActiveButtons(filterButtons, "ageFilter", "all");
+        setActiveButtons(topicButtons, "topicFilter", "all");
+        setActiveButtons(skillButtons, "skillFilter", "all");
+        setActiveButtons(libraryButtons, "libraryTab", "all");
+        setActiveButtons(availabilityButtons, "availabilityFilter", "playable");
+        applyFilter();
+        mobilePicksSection?.scrollIntoView({ behavior: "smooth", block: "start" });
+        window.WonderAnalytics?.track("discovery_snapshot_open", { snapshot: target, locale: i18n.locale() });
+        return;
+      }
+      activeAvailability = target === "preview" ? "preview" : "playable";
+      activeLibrary = "all";
+      setActiveButtons(libraryButtons, "libraryTab", "all");
+      setActiveButtons(availabilityButtons, "availabilityFilter", activeAvailability);
+      applyFilter();
+      filterStatus?.scrollIntoView({ behavior: "smooth", block: "start" });
+      window.WonderAnalytics?.track("discovery_snapshot_open", { snapshot: target, locale: i18n.locale() });
+    });
+  });
 }
 
 function skillReasonText(game) {
@@ -1270,6 +1325,7 @@ function applyStaticTranslations() {
     element.setAttribute("placeholder", i18n.t(element.dataset.i18nPlaceholder));
   });
   renderFilterCounts();
+  renderDiscoverySnapshot();
   localeSelect.value = i18n.locale();
 }
 

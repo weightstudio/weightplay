@@ -1,4 +1,4 @@
-body.has-game-page-info {
+body.has-game-page-info:not(.wp-mobile-game-mode) {
   height: auto !important;
   min-height: 100vh !important;
   max-height: none !important;
@@ -13,8 +13,8 @@ body.has-game-page-info {
   background-color: #111827;
 }
 
-html.has-game-page-info,
-html:has(body.has-game-page-info) {
+html.has-game-page-info:not(.wp-mobile-game-mode),
+html:not(.wp-mobile-game-mode):has(body.has-game-page-info:not(.wp-mobile-game-mode)) {
   height: auto !important;
   min-height: 100% !important;
   max-height: none !important;

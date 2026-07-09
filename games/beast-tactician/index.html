@@ -1,15 +1,11 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-Hant" data-public-gate-ready="true">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="robots" content="noindex,nofollow" />
-    <title>獸王守衛 - 敬請期待 | WeightPlay</title>
-    <meta
-      name="description"
-      content="獸王守衛是內部測試中的 10 關英雄塔防遊戲，公開入口仍維持敬請期待，正式開放前不直接載入遊戲。"
-    />
-    <link rel="canonical" href="https://weightplay.com/games/beast-tactician/" />
+    <title>&#29560;&#29579;&#23432;&#34907; - &#25964;&#35531;&#26399;&#24453; | WeightPlay</title>
+    <meta name="description" content="Beast Guardian is a 10-stage hero tower defense game held behind a Coming Soon public gate until public opening is approved." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Beast Guardian - Coming Soon | WeightPlay" />
@@ -20,7 +16,7 @@
     <meta property="og:url" content="https://weightplay.com/games/beast-tactician/" />
     <meta property="og:image" content="https://weightplay.com/assets/beast-tactician-cover.webp" />
     <meta name="twitter:card" content="summary_large_image" />
-    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260707-guide-related-compact1" />
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
     <script>
       (() => {
         if (new URLSearchParams(window.location.search).get("trial") !== "1") return;
@@ -328,11 +324,11 @@
   <body>
     <div class="hold-page">
       <header class="hold-nav">
-        <a class="back-link" href="../../index.html" data-i18n="back">回到大廳</a>
+        <a class="back-link" href="../../index.html" data-i18n="back">&#22238;&#21040;&#22823;&#24307;</a>
         <label class="locale-picker">
-          <span data-i18n="language">語言</span>
+          <span data-i18n="language">&#35486;&#35328;</span>
           <select id="localeSelect" aria-label="Language selector">
-            <option value="zh-Hant" selected>繁體中文</option>
+            <option value="zh-Hant" selected>&#32321;&#39636;&#20013;&#25991;</option>
             <option value="en">English</option>
           </select>
         </label>
@@ -344,32 +340,32 @@
             <img src="../../assets/beast-tactician-cover.webp" alt="Beast Guardian cover" />
           </div>
           <div>
-            <strong class="eyebrow" data-i18n="status">敬請期待</strong>
-            <h1 id="holdTitle" data-i18n="title">獸王守衛</h1>
+            <strong class="eyebrow" data-i18n="status">&#25964;&#35531;&#26399;&#24453;</strong>
+            <h1 id="holdTitle" data-i18n="title">&#29560;&#29579;&#23432;&#34907;</h1>
             <p data-i18n="body">
-              10 關英雄塔防已進入內部測試，但公開入口仍維持預告狀態。正式開放前，這裡不直接啟動遊戲。
+              10-stage hero tower defense is in internal testing. Public play stays closed until release approval is complete.
             </p>
             <div class="status-list" aria-label="Release checklist">
-              <div class="status-item"><span class="status-dot"></span><span data-i18n="poster">入口海報已準備</span></div>
-              <div class="status-item"><span class="status-dot"></span><span data-i18n="art">內部塔防版本可測試</span></div>
-              <div class="status-item"><span class="status-dot"></span><span data-i18n="release">公開開放仍需最後核准</span></div>
+              <div class="status-item"><span class="status-dot"></span><span data-i18n="poster">Preview poster is ready</span></div>
+              <div class="status-item"><span class="status-dot"></span><span data-i18n="art">Internal tower defense build is testable</span></div>
+              <div class="status-item"><span class="status-dot"></span><span data-i18n="release">Public opening still needs final approval</span></div>
             </div>
             <div class="teaser-grid" aria-label="Game preview">
               <div class="teaser-card">
-                <strong data-i18n="previewRoleTitle">守住路線</strong>
-                <span data-i18n="previewRoleBody">派出盾衛、火力與自然支援角色守護核心。</span>
+                <strong data-i18n="previewRoleTitle">Protect the lanes</strong>
+                <span data-i18n="previewRoleBody">Deploy shield, damage, and nature-support heroes to guard the core.</span>
               </div>
               <div class="teaser-card">
-                <strong data-i18n="previewBattleTitle">戰場佈陣</strong>
-                <span data-i18n="previewBattleBody">在路線旁部署隊伍，阻擋野獸突襲。</span>
+                <strong data-i18n="previewBattleTitle">Battlefield tactics</strong>
+                <span data-i18n="previewBattleBody">Place your squad beside the route and stop beast raids.</span>
               </div>
               <div class="teaser-card">
-                <strong data-i18n="previewProgressTitle">開放前檢查</strong>
-                <span data-i18n="previewProgressBody">公開前會再做手機版與流程驗證。</span>
+                <strong data-i18n="previewProgressTitle">Release check</strong>
+                <span data-i18n="previewProgressBody">Phone layout and flow will be verified again before public opening.</span>
               </div>
             </div>
             <p id="trialUnlockStatus" class="trial-unlock-status" aria-live="polite"></p>
-            <p id="trialFallback" class="trial-fallback" data-i18n="trialLoadFailed">內部試玩暫時無法載入，請稍後再試。</p>
+            <p id="trialFallback" class="trial-fallback" data-i18n="trialLoadFailed">The internal trial cannot load right now. Please try again later.</p>
           </div>
         </section>
       </main>
@@ -397,23 +393,23 @@
           trialLoadFailed: "The internal trial cannot load right now. Please try again later.",
         },
         "zh-Hant": {
-          back: "回到大廳",
-          language: "語言",
-          status: "敬請期待",
-          title: "獸王守衛",
+          back: "\u56de\u5230\u5927\u5ef3",
+          language: "\u8a9e\u8a00",
+          status: "\u656c\u8acb\u671f\u5f85",
+          title: "\u7378\u738b\u5b88\u885b",
           body:
-            "10 關英雄塔防已進入內部測試，但公開入口仍維持預告狀態。正式開放前，這裡不直接啟動遊戲。",
-          poster: "入口海報已準備",
-          art: "內部塔防版本可測試",
-          release: "公開開放仍需最後核准",
-          previewRoleTitle: "守住路線",
-          previewRoleBody: "派出盾衛、火力與自然支援角色守護核心。",
-          previewBattleTitle: "戰場佈陣",
-          previewBattleBody: "在路線旁部署隊伍，阻擋野獸突襲。",
-          previewProgressTitle: "開放前檢查",
-          previewProgressBody: "公開前會再做手機版與流程驗證。",
-          trialUnlockReady: "正在開啟內部試玩...",
-          trialLoadFailed: "內部試玩暫時無法載入，請稍後再試。",
+            "10 \u95dc\u82f1\u96c4\u5854\u9632\u7248\u672c\u6b63\u5728\u5167\u90e8\u6e2c\u8a66\u3002\u516c\u958b\u904a\u73a9\u5165\u53e3\u6703\u4fdd\u6301\u95dc\u9589\uff0c\u76f4\u5230\u767c\u5e03\u6838\u51c6\u5b8c\u6210\u3002",
+          poster: "\u9810\u544a\u6d77\u5831\u5df2\u5b8c\u6210",
+          art: "\u5167\u90e8\u5854\u9632\u7248\u672c\u53ef\u6e2c\u8a66",
+          release: "\u516c\u958b\u4e0a\u7dda\u4ecd\u9700\u6700\u5f8c\u6838\u51c6",
+          previewRoleTitle: "\u5b88\u4f4f\u8def\u7dda",
+          previewRoleBody: "\u6d3e\u51fa\u76fe\u724c\u3001\u8f38\u51fa\u548c\u81ea\u7136\u652f\u63f4\u82f1\u96c4\u4fdd\u8b77\u6838\u5fc3\u3002",
+          previewBattleTitle: "\u6230\u5834\u7b56\u7565",
+          previewBattleBody: "\u5728\u8def\u7dda\u65c1\u90e8\u7f72\u968a\u4f0d\uff0c\u64cb\u4e0b\u91ce\u7378\u9032\u653b\u3002",
+          previewProgressTitle: "\u958b\u653e\u524d\u6aa2\u67e5",
+          previewProgressBody: "\u624b\u6a5f\u7248\u9762\u8207\u6d41\u7a0b\u6703\u5728\u516c\u958b\u524d\u518d\u6b21\u9a57\u8b49\u3002",
+          trialUnlockReady: "\u6b63\u5728\u958b\u555f\u5167\u90e8\u8a66\u73a9...",
+          trialLoadFailed: "\u5167\u90e8\u8a66\u73a9\u73fe\u5728\u7121\u6cd5\u8f09\u5165\uff0c\u8acb\u7a0d\u5f8c\u518d\u8a66\u3002",
         },
       };
 

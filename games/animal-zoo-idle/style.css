@@ -1837,20 +1837,99 @@ body.zoo-playing .animal-shop-card small {
       #d5f0ae url("../../assets/animal-zoo-idle-stage-bg.webp") center / contain no-repeat;
   }
 
-  body.zoo-playing .care-panel {
-    min-height: 0;
-    height: 100%;
-    max-height: 100%;
-    overflow-y: auto;
-    overflow-x: hidden;
-    overscroll-behavior: contain;
-    -webkit-overflow-scrolling: touch;
-    touch-action: pan-y;
+body.zoo-playing .care-panel {
+  min-height: 0;
+  height: 100%;
+  max-height: 100%;
+  padding-bottom: calc(92px + env(safe-area-inset-bottom));
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
     scrollbar-gutter: stable;
   }
 
   body.zoo-playing .facility-list,
   body.zoo-playing .animal-shop {
     touch-action: pan-x;
+  }
+
+  body.zoo-playing .zoo-actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 7px;
+  }
+
+  body.zoo-playing .zoo-actions button {
+    min-height: 38px;
+    height: 38px;
+    padding: 4px 6px;
+    white-space: normal;
+    word-break: keep-all;
+  }
+
+  body.zoo-playing .daily-focus-card,
+  body.zoo-playing .park-plan-card,
+  body.zoo-playing .facility-board,
+  body.zoo-playing .zoo-task-board {
+    width: 100%;
+    min-width: 0;
+    flex: 0 0 auto;
+  }
+
+  body.zoo-playing .facility-list {
+    grid-auto-columns: minmax(178px, 198px);
+    min-height: 90px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+  }
+
+  body.zoo-playing .facility-list::-webkit-scrollbar,
+  body.zoo-playing .animal-shop::-webkit-scrollbar {
+    display: none;
+  }
+
+  body.zoo-playing .facility-card {
+    height: 84px;
+    min-height: 84px;
+    max-height: 84px;
+    scroll-snap-align: start;
+    align-content: center;
+  }
+
+  body.zoo-playing .facility-card span {
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  body.zoo-playing .facility-card small,
+  body.zoo-playing .facility-card em {
+    display: -webkit-box;
+    white-space: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+  }
+
+  body.zoo-playing .zoo-task {
+    min-height: 44px;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 4px 8px;
+    align-items: center;
+  }
+
+  body.zoo-playing .zoo-task span,
+  body.zoo-playing .zoo-task small {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  body.zoo-playing .zoo-task i {
+    grid-column: 1 / -1;
   }
 }

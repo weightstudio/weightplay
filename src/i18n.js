@@ -115,6 +115,12 @@
       "availability_hint.all": "Browse all",
       "availability_hint.playable": "Opens now",
       "availability_hint.preview": "Preview only",
+      "snapshot.playable_title": "Ready to play",
+      "snapshot.playable_note": "Tap a card and start now.",
+      "snapshot.preview_title": "New previews",
+      "snapshot.preview_note": "Coming Soon cards do not open public play yet.",
+      "snapshot.mobile_title": "Phone picks",
+      "snapshot.mobile_note": "Touch-first games for quick sessions.",
       "action.play": "Play",
       "action.continue": "Continue",
       "action.coming_soon": "Coming Soon",
@@ -591,6 +597,12 @@
     "availability_hint.all": "\u5168\u90e8\u700f\u89bd",
     "availability_hint.playable": "\u7acb\u5373\u9032\u5165",
     "availability_hint.preview": "\u50c5\u4f9b\u9810\u544a",
+    "snapshot.playable_title": "\u53ef\u7acb\u523b\u73a9",
+    "snapshot.playable_note": "\u9ede\u64ca\u5361\u7247\u5c31\u80fd\u9032\u5165\u904a\u6232\u3002",
+    "snapshot.preview_title": "\u65b0\u904a\u6232\u9810\u544a",
+    "snapshot.preview_note": "\u656c\u8acb\u671f\u5f85\u5361\u7247\u9084\u4e0d\u6703\u516c\u958b\u904a\u73a9\u3002",
+    "snapshot.mobile_title": "\u624b\u6a5f\u63a8\u85a6",
+    "snapshot.mobile_note": "\u9069\u5408\u89f8\u63a7\u8207\u77ed\u56de\u5408\u904a\u73a9\u3002",
   });
 
   function getSavedLocale() {

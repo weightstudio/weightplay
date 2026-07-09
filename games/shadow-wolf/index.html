@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -21,7 +21,7 @@
     <meta property="og:image" content="https://weightplay.com/assets/shadow-wolf-cover.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="stylesheet" href="../../src/loading-screen.css" />
-    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260707-guide-related-compact1" />
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -260,7 +260,7 @@
           <span data-i18n="language">Language</span>
           <select id="localeSelect" aria-label="Language selector">
             <option value="en">English</option>
-            <option value="zh-Hant">繁體中文</option>
+            <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
           </select>
         </label>
       </header>
@@ -303,18 +303,19 @@
           trialUnlockReady: "Opening internal trial...",
         },
         "zh-Hant": {
-          back: "回到大廳",
-          language: "語言",
-          status: "敬請期待",
-          title: "影狼傳說",
+          back: "\u56de\u5230\u5927\u5ef3",
+          language: "\u8a9e\u8a00",
+          status: "\u656c\u8acb\u671f\u5f85",
+          title: "\u5f71\u72fc\u50b3\u8aaa",
           body:
-            "這款遊戲已完成新版美術，正在接入內部版本並等待 Tester 驗證，暫時還沒有開放公開遊玩。",
-          art: "新版美術正在接入內部版本",
-          qa: "開放前需要完成 Tester 驗證",
-          release: "所有 Gate 通過前，公開入口會保持關閉",
-          trialUnlockProgress: "內部試玩門 {count}/10",
-          trialUnlockReady: "正在開啟內部試玩...",
-        },      };
+            "\u9019\u6b3e\u904a\u6232\u5df2\u6709\u6838\u51c6\u7f8e\u8853\uff0c\u76ee\u524d\u6b63\u5728\u63a5\u5165\u5167\u90e8\u7248\u672c\u4e26\u7b49\u5f85 Tester \u9a57\u8b49\u3002\u9084\u6c92\u6709\u958b\u653e\u516c\u958b\u904a\u73a9\u3002",
+          art: "\u6838\u51c6\u7f8e\u8853\u6b63\u5728\u63a5\u5165\u5167\u90e8\u7248\u672c",
+          qa: "\u958b\u653e\u524d\u9700\u8981 Tester \u9a57\u8b49",
+          release: "\u5168\u90e8 Gate \u901a\u904e\u524d\uff0c\u516c\u958b\u5165\u53e3\u4fdd\u6301\u95dc\u9589",
+          trialUnlockProgress: "\u5167\u90e8\u8a66\u73a9 Gate {count}/10",
+          trialUnlockReady: "\u6b63\u5728\u958b\u555f\u5167\u90e8\u8a66\u73a9...",
+        },
+      };
 
       const localeSelect = document.getElementById("localeSelect");
       const holdCard = document.querySelector(".hold-card");
