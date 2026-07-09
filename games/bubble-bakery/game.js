@@ -223,6 +223,7 @@
   let score = 0;
   let orderStreak = 0;
   let busy = false;
+  let stageRailDragged = false;
   const popMs = 620;
   const dropMs = 920;
 
@@ -330,6 +331,7 @@
         <span class="stage-badge">${t(badgeKey)}</span>
       `;
       button.addEventListener("click", () => {
+        if (stageRailDragged) return;
         if (stageNo > unlocked) {
           showFloat(t("locked"));
           playSound("click");
@@ -429,6 +431,8 @@
 
   function showMenu() {
     document.body.classList.remove("is-bakery-playing");
+    window.WEIGHTPLAY_BUBBLE_BAKERY_ACTIVE = false;
+    window.dispatchEvent(new CustomEvent("bubble-bakery:play-state", { detail: { playing: false } }));
     nodes.menuPanel.classList.remove("hidden");
     nodes.playPanel.classList.add("hidden");
     nodes.resultPanel.classList.add("hidden");
@@ -449,12 +453,18 @@
     busy = false;
     board = makeBoard(stage.palette);
     document.body.classList.add("is-bakery-playing");
+    window.WEIGHTPLAY_BUBBLE_BAKERY_ACTIVE = true;
+    window.dispatchEvent(new CustomEvent("bubble-bakery:play-state", { detail: { playing: true } }));
     nodes.menuPanel.classList.add("hidden");
     nodes.playPanel.classList.remove("hidden");
     nodes.resultPanel.classList.add("hidden");
     nodes.hintText.textContent = t("smallGroup");
     nodes.orderBar.dataset.theme = t("theme", { theme: t(stage.theme) });
     renderAll();
+    requestAnimationFrame(() => {
+      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      nodes.playPanel.scrollIntoView?.({ block: "start", inline: "nearest", behavior: "auto" });
+    });
     playSound("start");
     track("game_start", { level: index + 1 });
   }
@@ -766,6 +776,8 @@
 
   function finish(won) {
     busy = true;
+    window.WEIGHTPLAY_BUBBLE_BAKERY_ACTIVE = false;
+    window.dispatchEvent(new CustomEvent("bubble-bakery:play-state", { detail: { playing: false } }));
     const stageNo = currentStage + 1;
     const previousBest = Number(readProgress()[stageNo]?.bestScore || 0);
     let earned = 0;
@@ -903,6 +915,78 @@
     }, 1200);
   }
 
+  function setupStageRailDrag() {
+    let active = false;
+    let pointerId = null;
+    let startX = 0;
+    let startScroll = 0;
+    let moved = false;
+
+    const snapNearestCard = () => {
+      const cards = Array.from(nodes.stageGrid.querySelectorAll(".stage-card"));
+      if (!cards.length) return;
+      const railRect = nodes.stageGrid.getBoundingClientRect();
+      const railCenter = railRect.left + railRect.width / 2;
+      const nearest = cards.reduce((best, card) => {
+        const rect = card.getBoundingClientRect();
+        const distance = Math.abs(rect.left + rect.width / 2 - railCenter);
+        return distance < best.distance ? { card, distance } : best;
+      }, { card: cards[0], distance: Infinity }).card;
+      nearest?.scrollIntoView?.({ behavior: "smooth", inline: "center", block: "nearest" });
+    };
+
+    nodes.stageGrid.addEventListener("pointerdown", (event) => {
+      if (event.button !== undefined && event.button !== 0) return;
+      active = true;
+      moved = false;
+      stageRailDragged = false;
+      pointerId = event.pointerId;
+      startX = event.clientX;
+      startScroll = nodes.stageGrid.scrollLeft;
+      nodes.stageGrid.classList.add("is-dragging");
+      try {
+        nodes.stageGrid.setPointerCapture?.(pointerId);
+      } catch (error) {
+        // Some synthetic or older mobile pointer paths do not expose an active capture target.
+      }
+    });
+
+    nodes.stageGrid.addEventListener("pointermove", (event) => {
+      if (!active) return;
+      const delta = event.clientX - startX;
+      if (Math.abs(delta) > 6) {
+        moved = true;
+        stageRailDragged = true;
+        nodes.stageGrid.scrollLeft = startScroll - delta;
+        event.preventDefault();
+      }
+    });
+
+    const endDrag = () => {
+      if (!active) return;
+      active = false;
+      nodes.stageGrid.classList.remove("is-dragging");
+      try {
+        if (pointerId !== null) nodes.stageGrid.releasePointerCapture?.(pointerId);
+      } catch (error) {
+        // Capture may already be released by the browser.
+      }
+      pointerId = null;
+      if (moved) {
+        snapNearestCard();
+        window.setTimeout(() => {
+          stageRailDragged = false;
+        }, 140);
+      } else {
+        stageRailDragged = false;
+      }
+    };
+
+    nodes.stageGrid.addEventListener("pointerup", endDrag);
+    nodes.stageGrid.addEventListener("pointercancel", endDrag);
+    nodes.stageGrid.addEventListener("lostpointercapture", endDrag);
+  }
+
   nodes.localeSelect.addEventListener("change", () => {
     locale = nodes.localeSelect.value;
     localStorage.setItem(localeKey, locale);
@@ -929,6 +1013,7 @@
   nodes.resultStagesBtn.addEventListener("click", showMenu);
   nodes.retryBtn.addEventListener("click", () => startStage(currentStage));
   nodes.nextStageBtn.addEventListener("click", () => startStage(Math.min(currentStage + 1, stages.length - 1)));
+  setupStageRailDrag();
   document.querySelectorAll("img[data-fallback-src]").forEach((image) => {
     image.addEventListener("error", () => {
       const fallback = image.dataset.fallbackSrc;

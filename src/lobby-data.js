@@ -577,3 +577,58 @@ for (const game of window.WONDER_LOBBY.games) {
   game.description["zh-Hant"] = clean.description;
   game.meta["zh-Hant"] = clean.meta;
 }
+
+const verifiedCleanZhLobbyCopy = {
+  "beast-deck": {
+    title: "獸王牌組：迷霧森林",
+    statusText: "可遊玩",
+    type: "Roguelike 牌組構築",
+    description: "組出動物能力牌組，完成任務、累積本地等級，並解鎖迷霧森林更深的路線。",
+    meta: ["牌組 Roguelike", "本地等級", "任務解鎖"],
+  },
+  "animal-relic-hunters": {
+    title: "動物遺跡獵人",
+    statusText: "可遊玩",
+    type: "房間動作 Roguelike",
+    description: "探索古代遺跡房間，收集遺跡能量球，開啟寶箱並穿戴強力裝備，最終擊敗 Boss。",
+    meta: ["動作 Roguelike", "3 個房間", "裝備系統"],
+  },
+  "animal-auto-squad": {
+    title: "動物自走小隊",
+    statusText: "可遊玩",
+    type: "自走棋策略",
+    description: "招募、升級並擺放你的動物小隊，在自動戰鬥中擊退影之獸完成遠征。",
+    meta: ["策略自走", "10 回合", "鑽石經濟"],
+  },
+  "beast-tactician": {
+    title: "獸王守衛",
+    statusText: "敬請期待",
+    type: "英雄塔防",
+    description: "高品質 10 關英雄塔防大作製作中。你將在格子地形上建置士兵與 WeightPlay 英雄，改變敵人路線並抵擋王關波次。",
+    meta: ["塔防", "10 關", "王關波次"],
+  },
+  "shadow-wolf": {
+    title: "影狼傳說",
+    statusText: "敬請期待",
+    type: "2D 動作平台 RPG",
+    description: "奔跑、跳躍、衝刺並斬擊影獸。累積經驗、開啟裝備寶箱，最後擊敗巨獸首領。",
+    meta: ["2D 橫向卷軸", "跳躍操作", "裝備養成"],
+  },
+  "animal-reef-fisher": {
+    title: "動物珊瑚釣手",
+    statusText: "可遊玩",
+    type: "釣魚收集模擬",
+    description: "帶領水獺釣魚隊進行礁區遠征，掌握拋竿時機與魚線張力，收集海洋生物圖鑑，並在本機升級裝備。",
+    meta: ["珊瑚礁釣魚", "圖鑑進度", "裝備升級"],
+  },
+};
+
+for (const game of window.WONDER_LOBBY.games) {
+  const clean = verifiedCleanZhLobbyCopy[game.id];
+  if (!clean) continue;
+  game.title["zh-Hant"] = clean.title;
+  game.statusText["zh-Hant"] = clean.statusText;
+  game.type["zh-Hant"] = clean.type;
+  game.description["zh-Hant"] = clean.description;
+  game.meta["zh-Hant"] = clean.meta;
+}

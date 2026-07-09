@@ -1191,9 +1191,9 @@ body.zoo-playing .savanna-stage {
 .keeper {
   position: absolute;
   z-index: 7;
-  left: 8%;
-  bottom: 35%;
-  width: clamp(58px, 10%, 96px);
+  left: 5%;
+  bottom: 27%;
+  width: clamp(52px, 8.5%, 84px);
   filter: drop-shadow(0 10px 12px rgba(44,25,9,.22));
   animation: animal-idle 3s ease-in-out infinite;
 }
@@ -1203,7 +1203,7 @@ body.zoo-playing .savanna-stage {
   left: 6%;
   bottom: calc(4% + var(--lane) * 3%);
   z-index: 4;
-  width: clamp(36px, 7.5%, 72px);
+  width: clamp(30px, 5.8%, 60px);
   height: auto;
   filter: drop-shadow(0 9px 10px rgba(0,0,0,.18));
   animation: visitor-walk-img 9.2s linear infinite;
@@ -1679,14 +1679,14 @@ body.zoo-playing .animal-shop-card small {
   }
 
   body.zoo-playing .keeper {
-    left: 6%;
-    bottom: 35%;
-    width: 12%;
+    left: 4%;
+    bottom: 28%;
+    width: 9%;
   }
 
   body.zoo-playing .visitor-line img {
     bottom: calc(3% + var(--lane) * 2.5%);
-    width: 9%;
+    width: 6.8%;
   }
 
   body.zoo-playing .zoo-actions {

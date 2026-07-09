@@ -19,14 +19,14 @@
     rhino: "../../assets/wonder-beast-rhino.png",
     crocodile: "../../assets/wonder-beast-crocodile.png",
     bear: "../../assets/wonder-beast-bear.png",
-    keeper: "../../assets/animal-zoo-keeper.png",
+    keeper: "../../assets/weightplay-character-gear-horn-rhino-cutout.webp",
     gate1: "../../assets/animal-zoo-gate-lv1.png",
     gate2: "../../assets/animal-zoo-gate-lv2.png",
     gate3: "../../assets/animal-zoo-gate-lv3.png",
     ticketBooth: "../../assets/animal-zoo-idle-ticket-booth.webp",
-    visitorChild: "../../assets/animal-zoo-visitor-child.png",
-    visitorElder: "../../assets/animal-zoo-visitor-elder.png",
-    visitorFamily: "../../assets/animal-zoo-visitor-family.png",
+    visitorMimi: "../../assets/weightplay-character-rainbow-hop-mimi-clean-cutout.webp",
+    visitorPanko: "../../assets/weightplay-character-drum-belly-panda-safe-face-cutout.webp",
+    visitorOtter: "../../assets/weightplay-character-bubble-fin-otter-cutout.webp",
   };
 
   const animals = [
@@ -72,7 +72,7 @@
     { id: "keeperPost", asset: ASSETS.keeper, maxLevel: 4, baseCost: 12800, incomeBonus: 0.03, careBonus: 3, visitorBonus: 0, x: 78, y: 22, size: 7 },
   ];
 
-  const visitorAssets = [ASSETS.visitorChild, ASSETS.visitorElder, ASSETS.visitorFamily];
+  const visitorAssets = [ASSETS.visitorMimi, ASSETS.visitorPanko, ASSETS.visitorOtter];
 
   const text = {
     en: {

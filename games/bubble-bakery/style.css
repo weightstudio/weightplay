@@ -75,6 +75,10 @@ body.is-bakery-playing .play-panel {
   align-self: stretch;
 }
 
+body.is-bakery-playing .game-page-info {
+  display: none !important;
+}
+
 .topbar {
   display: grid;
   grid-template-columns: 46px 1fr auto;
@@ -380,6 +384,14 @@ body.is-bakery-playing .play-panel {
   scroll-padding-inline: 16px;
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
+  cursor: grab;
+  touch-action: pan-x pinch-zoom;
+  overscroll-behavior-inline: contain;
+}
+
+.stage-grid.is-dragging {
+  cursor: grabbing;
+  scroll-snap-type: none;
 }
 
 .stage-grid::-webkit-scrollbar {
@@ -399,6 +411,7 @@ body.is-bakery-playing .play-panel {
   box-shadow: 0 8px 0 #a95f2b, 0 14px 22px rgba(86, 45, 20, 0.16);
   font-weight: 950;
   scroll-snap-align: center;
+  touch-action: pan-x pinch-zoom;
 }
 
 .stage-card b {
@@ -689,11 +702,15 @@ body.is-bakery-playing .play-panel {
 .board-float {
   position: fixed;
   z-index: 20;
+  max-width: min(72vw, 320px);
   padding: 8px 12px;
   border-radius: 999px;
   background: rgba(74, 41, 24, 0.9);
   color: #fff6bd;
   font-weight: 950;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   transform: translate(-50%, -50%);
   pointer-events: none;
   animation: float-up .85s ease forwards;

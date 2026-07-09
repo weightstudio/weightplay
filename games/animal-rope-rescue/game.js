@@ -140,6 +140,12 @@
   let paddleX = 50;
   let fruit = { x: 50, y: 20, vx: 0, vy: 0, rot: 0, cut: false };
 
+  function setPlayingState(isPlaying) {
+    document.body.classList.toggle("is-vine-playing", isPlaying);
+    window.WEIGHTPLAY_VINE_RESCUE_ACTIVE = isPlaying;
+    window.dispatchEvent(new CustomEvent("animal-vine-rescue:play-state", { detail: { playing: isPlaying } }));
+  }
+
   function t(key, data = {}) {
     const value = text[locale]?.[key] || text.en[key] || key;
     return Object.entries(data).reduce((out, [name, item]) => out.replaceAll(`{${name}}`, String(item)), value);
@@ -169,9 +175,10 @@
   }
 
   function show(panel) {
+    setPlayingState(panel === nodes.gamePanel);
     [nodes.menuPanel, nodes.stagePanel, nodes.gamePanel].forEach((node) => node.classList.add("hidden"));
     panel.classList.remove("hidden");
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, left: 0, behavior: panel === nodes.gamePanel ? "auto" : "smooth" });
   }
 
   function renderStages() {
@@ -329,6 +336,7 @@
   function finish(success) {
     running = false;
     settled = true;
+    setPlayingState(false);
     nodes.aimGuide.classList.remove("active");
     nodes.fallGuide.classList.remove("active");
     nodes.targetGuide.classList.remove("active");
@@ -441,10 +449,12 @@
   });
   nodes.nextStageBtn.addEventListener("click", () => {
     nodes.resultPanel.classList.add("hidden");
+    setPlayingState(true);
     setupStage(currentStage + 1);
   });
   nodes.retryBtn.addEventListener("click", () => {
     nodes.resultPanel.classList.add("hidden");
+    setPlayingState(true);
     setupStage(currentStage);
   });
   nodes.resultStagesBtn.addEventListener("click", () => {
