@@ -522,3 +522,58 @@ window.WONDER_LOBBY.games.push({
     hero: "assets/weightplay-character-bubble-fin-otter-cutout.webp",
   },
 });
+
+const cleanZhLobbyCopy = {
+  "beast-deck": {
+    title: "獸王牌組",
+    statusText: "可遊玩",
+    type: "Roguelike 牌組戰鬥",
+    description: "組合野獸卡牌、管理能量與牌庫，在連續戰鬥中擊敗敵人並累積牌組成長。",
+    meta: ["牌組 Roguelike", "關卡戰鬥", "金幣抽卡"],
+  },
+  "animal-relic-hunters": {
+    title: "動物遺跡獵人",
+    statusText: "可遊玩",
+    type: "房間制動作 Roguelike",
+    description: "探索森林遺跡、擊敗怪物、收集金幣與裝備，透過本地進度讓角色越練越強。",
+    meta: ["動作 Roguelike", "裝備成長", "Boss 房間"],
+  },
+  "animal-auto-squad": {
+    title: "動物自走小隊",
+    statusText: "可遊玩",
+    type: "自走棋策略",
+    description: "招募、合成並配置動物小隊，用不同角色能力在自動戰鬥中擊敗森林敵人。",
+    meta: ["自走棋", "小隊成長", "13+ 策略"],
+  },
+  "beast-tactician": {
+    title: "獸王守衛",
+    statusText: "敬請期待",
+    type: "英雄塔防",
+    description: "10 關英雄塔防正在內部測試。部署士兵與 WeightPlay 英雄，阻擋 Boss 波次並守住核心。",
+    meta: ["塔防", "10 關", "Boss 波次"],
+  },
+  "shadow-wolf": {
+    title: "影狼傳說",
+    statusText: "敬請期待",
+    type: "2D 動作平台 RPG",
+    description: "奔跑、跳躍、衝刺並斬擊影獸，累積經驗、打開裝備寶箱，挑戰巨獸 Boss。",
+    meta: ["2D 橫向動作", "跳躍操作", "裝備成長"],
+  },
+  "animal-reef-fisher": {
+    title: "動物珊瑚釣手",
+    statusText: "可遊玩",
+    type: "釣魚收集模擬",
+    description: "帶著海獺釣手前往珊瑚礁遠征，控制拋竿與魚線張力，收集海洋生物並升級裝備。",
+    meta: ["珊瑚釣魚", "圖鑑收集", "裝備升級"],
+  },
+};
+
+for (const game of window.WONDER_LOBBY.games) {
+  const clean = cleanZhLobbyCopy[game.id];
+  if (!clean) continue;
+  game.title["zh-Hant"] = clean.title;
+  game.statusText["zh-Hant"] = clean.statusText;
+  game.type["zh-Hant"] = clean.type;
+  game.description["zh-Hant"] = clean.description;
+  game.meta["zh-Hant"] = clean.meta;
+}

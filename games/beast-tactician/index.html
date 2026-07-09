@@ -2,29 +2,12 @@
 <html lang="zh-Hant" data-public-gate-ready="true">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="robots" content="noindex,nofollow" />
-    <script>
-      if (new URLSearchParams(window.location.search).get("trial") === "1") {
-        fetch("internal-test.html?trial=1", { cache: "no-store" })
-          .then((response) => {
-            if (!response.ok) throw new Error(`Trial route failed: ${response.status}`);
-            return response.text();
-          })
-          .then((html) => {
-            document.open();
-            document.write(html);
-            document.close();
-          })
-          .catch(() => {
-            document.documentElement.dataset.trialLoadFailed = "true";
-          });
-      }
-    </script>
     <title>獸王守衛 - 敬請期待 | WeightPlay</title>
     <meta
       name="description"
-      content="獸王守衛是內部 Release-ready 的 10 關英雄塔防遊戲，公開遊玩入口尚未開放。"
+      content="獸王守衛是內部測試中的 10 關英雄塔防遊戲，公開入口仍維持敬請期待，正式開放前不直接載入遊戲。"
     />
     <link rel="canonical" href="https://weightplay.com/games/beast-tactician/" />
     <meta property="og:site_name" content="WeightPlay" />
@@ -38,6 +21,27 @@
     <meta property="og:image" content="https://weightplay.com/assets/beast-tactician-cover.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260707-guide-related-compact1" />
+    <script>
+      (() => {
+        if (new URLSearchParams(window.location.search).get("trial") !== "1") return;
+
+        document.documentElement.dataset.trialLoading = "true";
+        fetch("internal-test.html?trial=1", { cache: "no-store" })
+          .then((response) => {
+            if (!response.ok) throw new Error(`Trial route failed: ${response.status}`);
+            return response.text();
+          })
+          .then((html) => {
+            document.open();
+            document.write(html);
+            document.close();
+          })
+          .catch(() => {
+            document.documentElement.dataset.trialLoadFailed = "true";
+            document.documentElement.dataset.trialLoading = "false";
+          });
+      })();
+    </script>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -61,7 +65,7 @@
       :root {
         color-scheme: dark;
         --bg: #0b1320;
-        --panel: rgba(13, 24, 38, 0.92);
+        --panel: rgba(13, 24, 38, 0.94);
         --line: rgba(255, 220, 150, 0.28);
         --text: #fff9eb;
         --muted: #d8ccb5;
@@ -78,7 +82,14 @@
         min-height: 100vh;
         font-family: "Outfit", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         color: var(--text);
-        background: linear-gradient(140deg, #07101c, #182818);
+        background:
+          radial-gradient(circle at 22% 14%, rgba(255, 209, 102, 0.16), transparent 34%),
+          linear-gradient(140deg, #07101c, #182818);
+      }
+
+      body.trial-booting .hold-page {
+        opacity: 0.45;
+        pointer-events: none;
       }
 
       .hold-page {
@@ -135,7 +146,7 @@
       .hold-main {
         display: grid;
         place-items: center;
-        padding: 18px clamp(16px, 5vw, 48px) 48px;
+        padding: 18px clamp(16px, 5vw, 48px) max(44px, env(safe-area-inset-bottom));
       }
 
       .hold-card {
@@ -181,6 +192,7 @@
         margin: 0 0 12px;
         font-size: clamp(2rem, 5vw, 4rem);
         line-height: 1.05;
+        letter-spacing: 0;
       }
 
       p {
@@ -195,6 +207,23 @@
         display: grid;
         gap: 10px;
         margin-top: 24px;
+      }
+
+      .status-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--text);
+        font-weight: 800;
+      }
+
+      .status-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 999px;
+        background: var(--green);
+        box-shadow: 0 0 18px rgba(125, 216, 125, 0.72);
+        flex: 0 0 auto;
       }
 
       .teaser-grid {
@@ -230,14 +259,6 @@
         line-height: 1.45;
       }
 
-      .status-item {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        color: var(--text);
-        font-weight: 800;
-      }
-
       .trial-unlock-status {
         min-height: 1.4em;
         margin-top: 18px;
@@ -259,13 +280,15 @@
         box-shadow: 0 28px 80px rgba(0, 0, 0, 0.34), 0 0 28px rgba(125, 216, 125, 0.18);
       }
 
-      .status-dot {
-        width: 10px;
-        height: 10px;
-        border-radius: 999px;
-        background: var(--green);
-        box-shadow: 0 0 18px rgba(125, 216, 125, 0.72);
-        flex: 0 0 auto;
+      .trial-fallback {
+        display: none;
+        margin: 12px auto 0;
+        color: #fca5a5;
+        font-weight: 800;
+      }
+
+      html[data-trial-load-failed="true"] .trial-fallback {
+        display: block;
       }
 
       @media (max-width: 720px) {
@@ -305,9 +328,9 @@
   <body>
     <div class="hold-page">
       <header class="hold-nav">
-        <a class="back-link" href="../../index.html" data-i18n="back">Back to Lobby</a>
+        <a class="back-link" href="../../index.html" data-i18n="back">回到大廳</a>
         <label class="locale-picker">
-          <span data-i18n="language">Language</span>
+          <span data-i18n="language">語言</span>
           <select id="localeSelect" aria-label="Language selector">
             <option value="zh-Hant" selected>繁體中文</option>
             <option value="en">English</option>
@@ -323,27 +346,30 @@
           <div>
             <strong class="eyebrow" data-i18n="status">敬請期待</strong>
             <h1 id="holdTitle" data-i18n="title">獸王守衛</h1>
-            <p data-i18n="body">10 關英雄塔防源碼已完成內部 Release 檢查，但公開入口仍等待核准；此頁在核准前不開放遊玩。</p>
+            <p data-i18n="body">
+              10 關英雄塔防已進入內部測試，但公開入口仍維持預告狀態。正式開放前，這裡不直接啟動遊戲。
+            </p>
             <div class="status-list" aria-label="Release checklist">
-              <div class="status-item"><span class="status-dot"></span><span data-i18n="poster">入口預告圖已準備完成</span></div>
-              <div class="status-item"><span class="status-dot"></span><span data-i18n="art">內部塔防版本已完成</span></div>
-              <div class="status-item"><span class="status-dot"></span><span data-i18n="release">公開開放核准前維持關閉</span></div>
+              <div class="status-item"><span class="status-dot"></span><span data-i18n="poster">入口海報已準備</span></div>
+              <div class="status-item"><span class="status-dot"></span><span data-i18n="art">內部塔防版本可測試</span></div>
+              <div class="status-item"><span class="status-dot"></span><span data-i18n="release">公開開放仍需最後核准</span></div>
             </div>
             <div class="teaser-grid" aria-label="Game preview">
               <div class="teaser-card">
-                <strong data-i18n="previewRoleTitle">守住戰線</strong>
-                <span data-i18n="previewRoleBody">率領盾熊、焰虎與自然鹿小隊。</span>
+                <strong data-i18n="previewRoleTitle">守住路線</strong>
+                <span data-i18n="previewRoleBody">派出盾衛、火力與自然支援角色守護核心。</span>
               </div>
               <div class="teaser-card">
-                <strong data-i18n="previewBattleTitle">野獸戰術戰鬥</strong>
-                <span data-i18n="previewBattleBody">在戰場上建置英雄與士兵，阻擋往核心前進的敵人。</span>
+                <strong data-i18n="previewBattleTitle">戰場佈陣</strong>
+                <span data-i18n="previewBattleBody">在路線旁部署隊伍，阻擋野獸突襲。</span>
               </div>
               <div class="teaser-card">
-                <strong data-i18n="previewProgressTitle">開放 Gate</strong>
-                <span data-i18n="previewProgressBody">等待明確公開發布核准。</span>
+                <strong data-i18n="previewProgressTitle">開放前檢查</strong>
+                <span data-i18n="previewProgressBody">公開前會再做手機版與流程驗證。</span>
               </div>
             </div>
             <p id="trialUnlockStatus" class="trial-unlock-status" aria-live="polite"></p>
+            <p id="trialFallback" class="trial-fallback" data-i18n="trialLoadFailed">內部試玩暫時無法載入，請稍後再試。</p>
           </div>
         </section>
       </main>
@@ -357,17 +383,18 @@
           status: "Coming Soon",
           title: "Beast Guardian",
           body:
-            "The 10-stage hero tower defense source is being held for public approval. Gameplay remains closed here until release conversion is approved.",
+            "The 10-stage hero tower defense build is in internal testing. Public gameplay stays closed here until release approval is complete.",
           poster: "Preview poster is ready",
-          art: "Internal tower defense build is ready",
-          release: "Gameplay stays closed until public opening is approved",
+          art: "Internal tower defense build is testable",
+          release: "Public opening still needs final approval",
           previewRoleTitle: "Protect the lanes",
-          previewRoleBody: "Lead a shield bear, flame tiger, and nature deer squad.",
-          previewBattleTitle: "Tactical beast battles",
-          previewBattleBody: "Build heroes and soldiers on the battlefield while enemies route toward the core.",
-          previewProgressTitle: "Release gate",
-          previewProgressBody: "Opening waits for explicit public release approval.",
+          previewRoleBody: "Deploy shield, damage, and nature-support heroes to guard the core.",
+          previewBattleTitle: "Battlefield tactics",
+          previewBattleBody: "Place your squad beside the route and stop beast raids.",
+          previewProgressTitle: "Release check",
+          previewProgressBody: "Phone layout and flow will be verified again before public opening.",
           trialUnlockReady: "Opening internal trial...",
+          trialLoadFailed: "The internal trial cannot load right now. Please try again later.",
         },
         "zh-Hant": {
           back: "回到大廳",
@@ -375,18 +402,20 @@
           status: "敬請期待",
           title: "獸王守衛",
           body:
-            "10 關英雄塔防源碼已完成內部 Release 檢查，但公開入口仍等待核准；此頁在核准前不開放遊玩。",
-          poster: "入口預告圖已準備完成",
-          art: "內部塔防版本已完成",
-          release: "公開開放核准前維持關閉",
-          previewRoleTitle: "守住戰線",
-          previewRoleBody: "率領盾熊、焰虎與自然鹿小隊。",
-          previewBattleTitle: "野獸戰術戰鬥",
-          previewBattleBody: "在戰場上建置英雄與士兵，阻擋往核心前進的敵人。",
-          previewProgressTitle: "開放 Gate",
-          previewProgressBody: "等待明確公開發布核准。",
+            "10 關英雄塔防已進入內部測試，但公開入口仍維持預告狀態。正式開放前，這裡不直接啟動遊戲。",
+          poster: "入口海報已準備",
+          art: "內部塔防版本可測試",
+          release: "公開開放仍需最後核准",
+          previewRoleTitle: "守住路線",
+          previewRoleBody: "派出盾衛、火力與自然支援角色守護核心。",
+          previewBattleTitle: "戰場佈陣",
+          previewBattleBody: "在路線旁部署隊伍，阻擋野獸突襲。",
+          previewProgressTitle: "開放前檢查",
+          previewProgressBody: "公開前會再做手機版與流程驗證。",
           trialUnlockReady: "正在開啟內部試玩...",
-        },      };
+          trialLoadFailed: "內部試玩暫時無法載入，請稍後再試。",
+        },
+      };
 
       const localeSelect = document.getElementById("localeSelect");
       const holdCard = document.querySelector(".hold-card");
@@ -410,8 +439,7 @@
       function renderTrialUnlockStatus() {
         if (!trialUnlockStatus) return;
         const dict = getLocaleDict();
-        const key = "trialUnlockReady";
-        const text = trialUnlockCount >= TRIAL_UNLOCK_TAPS ? dict[key] || copy.en[key] || "" : "";
+        const text = trialUnlockCount >= TRIAL_UNLOCK_TAPS ? dict.trialUnlockReady || copy.en.trialUnlockReady : "";
         trialUnlockStatus.textContent = text;
         trialUnlockStatus.classList.toggle("is-visible", trialUnlockCount >= TRIAL_UNLOCK_TAPS);
         holdCard?.classList.toggle("is-unlocking", trialUnlockCount > 0);
@@ -428,6 +456,7 @@
       function openInternalTrial() {
         window.clearTimeout(trialUnlockTimer);
         window.__WEIGHTPLAY_PUBLIC_GATE_STATE__.hiddenTrialUnlocked = true;
+        document.body.classList.add("trial-booting");
         try {
           sessionStorage.setItem("beastGuardianTrialUnlocked", "true");
         } catch (error) {
@@ -439,11 +468,12 @@
       function handleTrialUnlockTap(event) {
         if (event.target.closest("a, button, select, option, label")) return;
         trialUnlockCount += 1;
-        renderTrialUnlockStatus();
         if (trialUnlockCount >= TRIAL_UNLOCK_TAPS) {
+          renderTrialUnlockStatus();
           openInternalTrial();
           return;
         }
+        renderTrialUnlockStatus();
         resetTrialUnlockSoon();
       }
 

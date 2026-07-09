@@ -936,7 +936,21 @@
       ctx.stroke();
       ctx.setLineDash([]);
 
-      if (run.phase === "cast" || run.phase === "reel") {
+      if (run.phase === "cast") {
+        const t = performance.now() / 1000;
+        const bobberX = 570 + Math.sin(t * 1.4) * 42;
+        const bobberY = 288 + Math.cos(t * 1.1) * 18;
+        ctx.fillStyle = "rgba(255, 255, 255, 0.92)";
+        ctx.beginPath();
+        ctx.arc(bobberX, bobberY, 12, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = "#ff8a3d";
+        ctx.beginPath();
+        ctx.arc(bobberX, bobberY + 2, 9, 0, Math.PI);
+        ctx.fill();
+      }
+
+      if (run.phase === "reel") {
         const t = performance.now() / 1000;
         const x = 500 + Math.sin(t * 1.4) * 80;
         const y = 240 + Math.cos(t * 1.1) * 45;
@@ -1150,6 +1164,7 @@
                 finished: run.finished,
                 zone: run.zone.id,
                 hookFish: run.hookFish ? run.hookFish.id : "",
+                visibleFish: run.phase === "reel" && run.hookFish ? run.hookFish.id : "",
               }
             : null,
           pointer: { down: pointer.down, tensionPct: pointer.tensionPct, source: pointer.source },
