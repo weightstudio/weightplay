@@ -324,8 +324,20 @@ body.is-bakery-playing .play-panel {
 
 .stage-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(190px, 30%);
   gap: 10px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0 2px 12px;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 16px;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.stage-grid::-webkit-scrollbar {
+  display: none;
 }
 
 .stage-card {
@@ -340,6 +352,7 @@ body.is-bakery-playing .play-panel {
   color: #4a2918;
   box-shadow: 0 8px 0 #a95f2b, 0 14px 22px rgba(86, 45, 20, 0.16);
   font-weight: 950;
+  scroll-snap-align: center;
 }
 
 .stage-card b {
@@ -373,6 +386,11 @@ body.is-bakery-playing .play-panel {
 
 .stage-card:not(.locked) .stage-badge {
   background: linear-gradient(135deg, rgba(255, 237, 135, 0.92), rgba(255, 154, 183, 0.82));
+}
+
+.stage-card.is-selected {
+  outline: 3px solid rgba(19, 185, 107, 0.62);
+  background: linear-gradient(145deg, #fffbe7, #ffd57f);
 }
 
 .stage-icons {
@@ -878,7 +896,10 @@ body.is-bakery-playing .play-panel {
   }
 
   .stage-grid {
-    grid-template-columns: 1fr 1fr;
+    grid-auto-columns: minmax(214px, 78%);
+    margin-inline: -8px;
+    padding-inline: 8px;
+    scroll-padding-inline: 42px;
   }
 
   .coach-card {

@@ -226,7 +226,7 @@
     fiaSheet: "../../assets/beast-tactician-hero-fia-sheet.webp",
     rux: "../../assets/weightplay-character-gear-horn-rhino-cutout.webp",
     ruxSheet: "../../assets/beast-tactician-hero-rux-sheet.webp",
-    panko: "../../assets/weightplay-character-drum-belly-panda-cutout.webp",
+    panko: "../../assets/weightplay-character-drum-belly-panda-safe-face-cutout.webp",
     pankoSheet: "../../assets/beast-tactician-hero-panko-sheet.webp",
     bear: "../../assets/beast-tactician-hero-bear.webp",
     tiger: "../../assets/beast-tactician-hero-tiger.webp",

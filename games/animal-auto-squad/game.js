@@ -458,7 +458,7 @@
     fx: "../../assets/animal-auto-squad-fx.webp",
     sparkFox: "../../assets/weightplay-character-spark-paw-fox-cutout.webp",
     bubbleOtter: "../../assets/weightplay-character-bubble-fin-otter-cutout.webp",
-    drumPanda: "../../assets/weightplay-character-drum-belly-panda-cutout.webp",
+    drumPanda: "../../assets/weightplay-character-drum-belly-panda-safe-face-cutout.webp",
     moonOwl: "../../assets/weightplay-character-moon-cap-owl-cutout.webp",
     mossTurtle: "../../assets/weightplay-character-moss-shell-turtle-cutout.webp",
     rainbowRabbit: "../../assets/weightplay-character-rainbow-hop-mimi-clean-cutout.webp",

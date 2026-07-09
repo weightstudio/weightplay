@@ -103,7 +103,7 @@ const weightPlayCharacters = [
   {
     nameKey: "character.drum_belly_panda.name",
     roleKey: "character.drum_belly_panda.role",
-    image: "assets/weightplay-character-drum-belly-panda-cutout.webp",
+    image: "assets/weightplay-character-drum-belly-panda-safe-face-cutout.webp",
     skill: "Focus",
   },
   {
@@ -141,6 +141,8 @@ const lobbyGameFacts = {
   "animal-relic-hunters": { difficulty: "Hard", time: "5-8 minutes" },
   "animal-rune-tactics": { difficulty: "Medium", time: "5-8 minutes" },
   "animal-orb-fortress": { difficulty: "Hard", time: "5-8 minutes" },
+  "animal-auto-squad": { difficulty: "Medium", time: "5-8 minutes" },
+  "animal-reef-fisher": { difficulty: "Medium", time: "3-5 minutes" },
   "beast-tactician": { difficulty: "Hard", time: "5-8 minutes" },
   "shadow-wolf": { difficulty: "Hard", time: "5-8 minutes" },
 };

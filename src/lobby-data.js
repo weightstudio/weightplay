@@ -67,7 +67,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "幫動物烘焙師點擊相連泡泡，完成訂單並通過益智關卡。",
       },
       meta: { en: ["Animal Bakery", "6 Stages", "Tap Groups"], "zh-Hant": ["動物烘焙", "6 關", "點擊群組"] },
-      art: { kind: "image", background: "assets/bubble-bakery-cover.webp", hero: "assets/weightplay-character-drum-belly-panda-cutout.webp" },
+      art: { kind: "image", background: "assets/bubble-bakery-cover.webp", hero: "assets/weightplay-character-drum-belly-panda-safe-face-cutout.webp" },
     },
     {
       id: "animal-rope-rescue",

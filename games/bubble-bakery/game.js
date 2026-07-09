@@ -285,6 +285,7 @@
       button.type = "button";
       button.className = "stage-card";
       if (stageNo > unlocked) button.classList.add("locked");
+      if (index === recommendedStageIndex()) button.classList.add("is-selected");
       const orderIcons = Object.keys(stage.orders).map((id) => `<img src="${colorData(id).asset}" alt="" />`).join("");
       const got = stars[stageNo] || 0;
       const badgeKey = got >= 3 ? "stageMastered" : got > 0 ? "stageImprove" : "stageNew";
@@ -304,6 +305,10 @@
         startStage(index);
       });
       nodes.stageGrid.appendChild(button);
+    });
+    requestAnimationFrame(() => {
+      const selected = nodes.stageGrid.querySelector(".stage-card.is-selected");
+      selected?.scrollIntoView?.({ behavior: "auto", inline: "center", block: "nearest" });
     });
   }
 
@@ -794,7 +799,7 @@
   function initLoading() {
     const assets = [
       "../../assets/bubble-bakery-cover.webp",
-      "../../assets/weightplay-character-drum-belly-panda-cutout.webp",
+      "../../assets/weightplay-character-drum-belly-panda-safe-face-cutout.webp",
       "assets/order-target-ring.png",
       ...colors.map((item) => item.asset),
     ];
