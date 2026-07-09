@@ -74,20 +74,20 @@
       retry: "Try Again",
       castHint: "Hold in the reef to charge, release to cast.",
       charging: "Release when the power reaches the water depth you want.",
-      hooked: "Fish hooked. Drag the red marker left or right. Keep it in the green SAFE area.",
+      hooked: "Fish hooked. Drag the red knob below, or slide left and right on the sea. Keep the marker in the green SAFE area.",
       tensionTitle: "Line Tension",
       tensionLow: "Loose",
       tensionSafe: "Safe",
       tensionHigh: "Tight",
       tensionMarker: "Drag",
-      tensionCoachAim: "Hold the water to cast. When a fish bites, use the red knob below.",
-      tensionCoachReel: "Drag the red knob left or right and keep it inside the green SAFE area.",
-      tensionCoachSafe: "Good. Stay in SAFE until the fish is landed.",
-      tensionCoachDanger: "Drag back into SAFE now.",
+      tensionCoachAim: "Hold the sea to cast. When a fish bites, drag the red knob or slide on the sea.",
+      tensionCoachReel: "Drag the red knob, or slide on the sea, and keep the marker inside the green SAFE area.",
+      tensionCoachSafe: "Good. Keep sliding gently and stay in SAFE until the fish is landed.",
+      tensionCoachDanger: "Slide back into SAFE now.",
       tensionStatusAim: "Step 1: hold the sea to charge, then release to cast.",
       tensionStatusCharging: "Release to cast. Step 2 starts when a fish bites.",
-      tensionStatusHooked: "Step 2: hold the red knob and drag it into SAFE.",
-      tensionStatusSafe: "Good. Keep holding the red knob inside SAFE.",
+      tensionStatusHooked: "Step 2: drag the red knob, or slide on the sea, into SAFE.",
+      tensionStatusSafe: "Good. Keep the marker inside SAFE.",
       tensionStatusDanger: "Move the red knob back into SAFE before the line breaks.",
       landed: "Catch landed! Keep going before time runs out.",
       broke: "Line broke. The tension marker left the safe band too long.",
@@ -142,20 +142,20 @@
       retry: "再試一次",
       castHint: "按住礁海畫面蓄力，放開即可拋竿。",
       charging: "蓄力到想要的水深時放開。",
-      hooked: "魚上鉤了。左右拖曳紅色標記，讓它留在綠色安全區。",
+      hooked: "魚上鉤了。拖曳下方紅色鈕，或直接在海面左右滑，讓標記留在綠色安全區。",
       tensionTitle: "魚線張力",
       tensionLow: "太鬆",
       tensionSafe: "安全",
       tensionHigh: "太緊",
       tensionMarker: "拖曳",
-      tensionCoachAim: "先按住海面拋竿；魚咬餌後，改用下方紅色鈕。",
-      tensionCoachReel: "左右拖曳紅色鈕，讓它留在綠色安全區。",
-      tensionCoachSafe: "很好，留在安全區直到魚上岸。",
-      tensionCoachDanger: "現在把紅色鈕拖回安全區。",
+      tensionCoachAim: "先按住海面拋竿；魚咬餌後，拖紅色鈕或在海面左右滑。",
+      tensionCoachReel: "拖曳紅色鈕，或在海面左右滑，讓標記留在綠色安全區。",
+      tensionCoachSafe: "很好，輕輕左右滑並留在安全區直到魚上岸。",
+      tensionCoachDanger: "現在滑回安全區。",
       tensionStatusAim: "步驟1：按住海面蓄力，放開拋竿。",
       tensionStatusCharging: "放開即可拋竿；魚咬餌後進入步驟2。",
-      tensionStatusHooked: "步驟2：按住紅色鈕左右拖，拉進綠色安全區。",
-      tensionStatusSafe: "很好，繼續按住紅色鈕留在安全區。",
+      tensionStatusHooked: "步驟2：拖紅色鈕，或在海面左右滑，拉進綠色安全區。",
+      tensionStatusSafe: "很好，讓標記留在安全區。",
       tensionStatusDanger: "快把紅色鈕拖回安全區，不然魚線會斷。",
       landed: "成功收線！趁時間結束前繼續挑戰。",
       broke: "魚線斷了。張力標記離開安全區太久。",
@@ -522,11 +522,13 @@
     const rows = 6;
     const frameW = img.width / cols;
     const frameH = img.height / rows;
+    const insetX = frameW * 0.055;
+    const insetY = frameH * 0.08;
     return {
-      sx: Math.max(0, Math.min(cols - 1, frame)) * frameW,
-      sy: item.sy * frameH,
-      sw: frameW,
-      sh: frameH,
+      sx: Math.max(0, Math.min(cols - 1, frame)) * frameW + insetX,
+      sy: item.sy * frameH + insetY,
+      sw: frameW - insetX * 2,
+      sh: frameH - insetY * 2,
     };
   }
 
@@ -743,7 +745,15 @@
   }
 
   function startCharge(evt) {
-    if (state !== "game" || !run || run.phase !== "aim") return;
+    if (state !== "game" || !run) return;
+    if (run.phase === "reel") {
+      pointer.down = true;
+      updatePointer(evt);
+      nodes.hintText.textContent = t("hooked");
+      updateTensionGuide();
+      return;
+    }
+    if (run.phase !== "aim") return;
     pointer.down = true;
     updatePointer(evt);
     run.phase = "charging";
@@ -920,6 +930,7 @@
                 zone: run.zone.id,
               }
             : null,
+          pointer: { down: pointer.down, tensionPct: pointer.tensionPct, source: pointer.source },
           wallet: wallet(),
         };
       },
@@ -933,10 +944,20 @@
           cols: 3,
           rows: 6,
           safeCrop: sampleCrop,
-          leftInsetRatio: 0,
-          frameWidthRatio: 1 / 3,
+          leftInsetRatio: 0.055,
+          frameWidthRatio: 0.89 / 3,
           sample: fish.map((item) => ({ id: item.id, sheet: item.sheet, sx: item.sx, sy: item.sy })),
         };
+      },
+      forceHookForControlTest() {
+        if (!run || run.finished) startRun();
+        run.hookFish = fish[0];
+        run.phase = "reel";
+        run.tension = 50;
+        run.struggle = 0;
+        run.fishPower = 80;
+        updateTensionGuide();
+        return this.readState();
       },
       setReelPointerPercent(value) {
         pointer.down = true;

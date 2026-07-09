@@ -49,7 +49,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "幫小動物把不同顏色的食物放進正確便當盒，練習顏色辨識。",
       },
       meta: { en: ["Animal Theme", "12 Levels", "Drag Match"], "zh-Hant": ["動物主題", "12 關", "拖曳配對"] },
-      art: { kind: "image", background: "assets/lunchbox-cover.webp", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
+      art: { kind: "image", background: "assets/lunchbox-cover.webp", hero: "assets/weightplay-character-rainbow-hop-rabbit-cutout.webp" },
     },
     {
       id: "bubble-bakery",
@@ -85,7 +85,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "切斷藤蔓並移動葉子彈床，把水果彈進動物籃子裡。",
       },
       meta: { en: ["Animal Physics", "8 Stages", "Vine Timing"], "zh-Hant": ["動物物理", "8 關", "藤蔓時機"] },
-      art: { kind: "image", background: "assets/animal-vine-rescue-cover.webp", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
+      art: { kind: "image", background: "assets/animal-vine-rescue-cover.webp", hero: "assets/weightplay-character-spark-paw-fox-cutout.webp" },
     },
     {
       id: "animal-zoo-idle",
@@ -121,7 +121,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "翻開星星與動物圖卡，找出相同配對並完成記憶關卡。",
       },
       meta: { en: ["Animal Cards", "10 Levels", "Memory"], "zh-Hant": ["動物卡片", "10 關", "記憶"] },
-      art: { kind: "image", background: "assets/memory-cover.webp", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
+      art: { kind: "image", background: "assets/memory-cover.webp", hero: "assets/weightplay-character-moon-cap-owl-cutout.webp" },
     },
     {
       id: "campus-dash",
@@ -309,7 +309,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "經營一整天的動物園：收票、引導遊客，照顧不同動物園區。",
       },
       meta: { en: ["Ticket Loop", "Animal Zones", "Care Tasks"], "zh-Hant": ["收票經營", "動物園區", "照顧任務"] },
-      art: { kind: "image", background: "assets/zoo-helper-day-cover.webp", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
+      art: { kind: "image", background: "assets/zoo-helper-day-cover.webp", hero: "assets/weightplay-character-gear-horn-rhino-cutout.webp" },
     },
     {
       id: "shape-train",

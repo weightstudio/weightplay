@@ -1259,6 +1259,11 @@ function hiddenTrialStorageKey(game) {
   return `${game.id}TrialUnlocked`;
 }
 
+function hiddenTrialUrl(game, trialPath) {
+  const gameUrl = new URL(game.href || "", window.location.href);
+  return new URL(trialPath, gameUrl).href;
+}
+
 function handleHiddenTrialGate(game) {
   const trialPath = internalTrialPath(game);
   if (game.status !== "planned" || !trialPath) return false;
@@ -1282,7 +1287,7 @@ function handleHiddenTrialGate(game) {
       // The trial route can still open when storage is unavailable.
     }
     window.WonderSound?.play("success");
-    window.location.href = `${game.href}${trialPath}`;
+    window.location.href = hiddenTrialUrl(game, trialPath);
     return true;
   }
 

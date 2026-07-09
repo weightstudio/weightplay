@@ -677,6 +677,18 @@ canvas {
   animation: marker-nudge 900ms ease-in-out infinite;
 }
 
+.tension-lane.is-active {
+  border-color: rgba(18, 170, 180, 0.58);
+  box-shadow:
+    inset 0 0 0 2px rgba(255, 255, 255, 0.68),
+    0 0 0 4px rgba(18, 170, 180, 0.12);
+}
+
+.tension-lane.is-active::before,
+.tension-lane.is-active::after {
+  color: rgba(7, 70, 79, 0.72);
+}
+
 @keyframes marker-nudge {
   0%,
   100% {
