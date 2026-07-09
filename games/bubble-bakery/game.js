@@ -4,6 +4,7 @@
   const unlockKey = "weightplay_bubble_bakery_unlocked";
   const starKey = "weightplay_bubble_bakery_stars";
   const progressKey = "weightplay_bubble_bakery_progress";
+  const statsKey = "weightplay_bubble_bakery_stats";
 
   const text = {
     en: {
@@ -74,6 +75,13 @@
       resultNextCopy: "{stage} · {theme}",
       resultAllClear: "All trays are open. Replay any order to master every star.",
       resultTryAgainGoal: "Try again: {stage} still needs these order bubbles.",
+      customerStamps: "Customer Stamps",
+      stampOrders: "Orders {orders}",
+      stampStickers: "Stickers {stickers}",
+      nextSticker: "{n} to next sticker",
+      stickerReady: "Sticker ready!",
+      resultStampWin: "Stamp +1 · {next}",
+      resultStampLose: "Finish the order to earn a stamp.",
     },
     "zh-Hant": {
       gameTitle: "動物泡泡烘焙坊",
@@ -143,6 +151,13 @@
       resultNextCopy: "{stage} · {theme}",
       resultAllClear: "全部烘焙盤都開放了，重玩任何訂單來補滿星星。",
       resultTryAgainGoal: "再挑戰：{stage}還需要這些訂單泡泡。",
+      customerStamps: "常客印章",
+      stampOrders: "訂單 {orders}",
+      stampStickers: "貼紙 {stickers}",
+      nextSticker: "再 {n} 張換貼紙",
+      stickerReady: "可以換貼紙了！",
+      resultStampWin: "印章 +1 · {next}",
+      resultStampLose: "完成訂單就能拿印章。",
     },
   };
 
@@ -252,6 +267,24 @@
     localStorage.setItem(progressKey, JSON.stringify(progress));
   }
 
+  function readStats() {
+    try {
+      const parsed = JSON.parse(localStorage.getItem(statsKey) || "{}");
+      return {
+        orders: Math.max(0, Number(parsed.orders || 0)),
+        plays: Math.max(0, Number(parsed.plays || 0)),
+        bestStage: Math.max(0, Number(parsed.bestStage || 0)),
+        lastWinAt: parsed.lastWinAt || "",
+      };
+    } catch {
+      return { orders: 0, plays: 0, bestStage: 0, lastWinAt: "" };
+    }
+  }
+
+  function saveStats(stats) {
+    localStorage.setItem(statsKey, JSON.stringify(stats));
+  }
+
   function t(key, data = {}) {
     const value = text[locale]?.[key] || text.en[key] || key;
     return Object.entries(data).reduce((out, [name, item]) => out.replaceAll(`{${name}}`, String(item)), value);
@@ -344,6 +377,7 @@
     const earnedStars = stages.reduce((sum, _, index) => sum + (stars[index + 1] || 0), 0);
     const cleared = stages.reduce((sum, _, index) => sum + ((stars[index + 1] || 0) > 0 ? 1 : 0), 0);
     const mastered = stages.reduce((sum, _, index) => sum + ((stars[index + 1] || 0) >= 3 ? 1 : 0), 0);
+    const stamp = stampProgress(readStats());
     const nextClearStage = Math.min(stages.length, Math.max(1, cleared + 1));
     const nextMasterStage = stages.findIndex((_, index) => (stars[index + 1] || 0) < 3 && index + 1 <= unlocked) + 1;
     const nextLabel = nextMasterStage > 0
@@ -357,7 +391,40 @@
       <span>${t("totalStars", { stars: earnedStars, total: totalStars })}</span>
       <span>${t("perfectOrders", { done: mastered, total: stages.length })}</span>
       <em>${nextLabel}</em>
+      <div class="stamp-card" aria-label="${t("customerStamps")}">
+        <b>${t("customerStamps")}</b>
+        <span>${t("stampOrders", { orders: stamp.orders })}</span>
+        <span>${t("stampStickers", { stickers: stamp.stickers })}</span>
+        <i><span style="transform: scaleX(${stamp.ratio})"></span></i>
+        <small>${stamp.nextText}</small>
+      </div>
     `;
+  }
+
+  function stampProgress(stats) {
+    const cycle = 5;
+    const orders = Math.max(0, Number(stats.orders || 0));
+    const filled = orders % cycle;
+    const visibleFilled = orders > 0 && filled === 0 ? cycle : filled;
+    const next = visibleFilled >= cycle ? cycle : cycle - visibleFilled;
+    return {
+      orders,
+      stickers: Math.floor(orders / cycle),
+      ratio: visibleFilled / cycle,
+      nextText: visibleFilled >= cycle ? t("stickerReady") : t("nextSticker", { n: next }),
+    };
+  }
+
+  function recordFinishStats(won, stageNo) {
+    const stats = readStats();
+    stats.plays += 1;
+    if (won) {
+      stats.orders += 1;
+      stats.bestStage = Math.max(stats.bestStage || 0, stageNo);
+      stats.lastWinAt = new Date().toISOString();
+    }
+    saveStats(stats);
+    return stampProgress(stats);
   }
 
   function showMenu() {
@@ -713,18 +780,19 @@
         localStorage.setItem(unlockKey, String(unlocked));
       }
     }
+    const stamp = recordFinishStats(won, stageNo);
     nodes.resultPanel.classList.remove("hidden");
     nodes.resultTitle.textContent = won ? t("orderDone") : t("failed");
     nodes.resultText.textContent = won ? t("resultWin", { moves }) : t("resultLose");
     nodes.starText.textContent = won ? starIcons(earned, 3) : t("failed");
-    renderResultNextOrder({ won, stageNo, earned, unlockedStageNo });
+    renderResultNextOrder({ won, stageNo, earned, unlockedStageNo, stamp });
     renderSkillReport({ stageNo, won, earned, previousBest });
     nodes.nextStageBtn.classList.toggle("hidden", !won || currentStage >= stages.length - 1);
     playSound(won ? "success" : "error");
     track("game_complete", { level: stageNo, success: won, score, moves_left: moves });
   }
 
-  function renderResultNextOrder({ won, stageNo, earned, unlockedStageNo }) {
+  function renderResultNextOrder({ won, stageNo, earned, unlockedStageNo, stamp }) {
     const targetIndex = won ? recommendedStageIndex() : currentStage;
     const targetStage = stages[targetIndex] || stages[currentStage];
     const targetStageNo = targetIndex + 1;
@@ -741,6 +809,7 @@
       <strong>${t("resultNextTitle")}</strong>
       <span>${statusText}</span>
       <em>${t("resultNextCopy", { stage: t("stage", { n: targetStageNo }), theme: t(targetStage.theme) })}</em>
+      <small class="result-stamp">${won ? t("resultStampWin", { next: stamp.nextText }) : t("resultStampLose")}</small>
       <b class="result-order-icons">${orderIcons}</b>
     `;
   }
