@@ -119,6 +119,10 @@ button {
   display: none !important;
 }
 
+body.reef-fisher-playing .game-page-info {
+  display: none !important;
+}
+
 .loading-panel {
   position: fixed;
   inset: 0;

@@ -701,7 +701,7 @@
       const card = document.createElement("div");
       card.className = "relic-card";
       card.innerHTML = `
-        <div class="relic-icon-art" style="background-image: url('../../assets/animal-auto-squad-items.webp'); background-position: ${relic.id * 33.33}% 0%; background-size: 400% 100%;"></div>
+        <div class="relic-icon-art relic-icon-${relic.id}" aria-hidden="true"><span></span></div>
         <h4>${locale === "zh-Hant" ? relic.nameZht : relic.nameEn}</h4>
         <p>${locale === "zh-Hant" ? relic.descZht : relic.descEn}</p>
       `;
@@ -1460,8 +1460,10 @@
     updateCombatSummary();
 
     // Draw Squad lines
+    state.combat.layout = [];
     drawSquadLine(state.combat.playerSquad, "player");
     drawSquadLine(state.combat.enemySquad, "enemy");
+    window.__ANIMAL_AUTO_SQUAD_COMBAT_LAYOUT__ = state.combat.layout;
 
     // Draw active particle effects
     drawEffects();
@@ -1471,7 +1473,7 @@
     const isPlayer = team === "player";
     const mobileCombat = window.matchMedia?.("(max-width: 640px)")?.matches;
     const xBase = isPlayer ? (mobileCombat ? 390 : 400) : (mobileCombat ? 570 : 560); // front unit centers
-    const spacing = mobileCombat ? 74 : 100;
+    const spacing = mobileCombat ? 84 : 100;
     
     squad.forEach((unit, idx) => {
       // Slide active slots forward
@@ -1489,10 +1491,11 @@
         state.combat.shakeFrames--;
       }
       
-      const w = mobileCombat ? 132 : 88;
-      const h = mobileCombat ? 158 : 112;
+      const w = mobileCombat ? 82 : 88;
+      const h = mobileCombat ? 116 : 112;
       const x = targetX + shakeX - w / 2;
       const y = (mobileCombat ? 286 : 258) - h / 2;
+      state.combat.layout?.push({ team, index: idx, x, y, w, h });
 
       // Draw backdrop
       canvasCtx.fillStyle = isPlayer ? "rgba(10, 30, 24, 0.9)" : "rgba(35, 12, 12, 0.9)";

@@ -383,6 +383,7 @@
     nodes.menuPanel.classList.toggle("is-hidden", which !== "menu");
     nodes.gamePanel.classList.toggle("is-hidden", which !== "game");
     nodes.resultPanel.classList.toggle("is-hidden", which !== "result");
+    document.body.classList.toggle("reef-fisher-playing", which === "game");
   }
 
   function focusPanel(node) {

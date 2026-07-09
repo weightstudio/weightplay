@@ -195,6 +195,7 @@
   let raf = 0;
   let pointer = { active: false, x: 0, y: 0 };
   let soundAt = {};
+  let preloadFinished = false;
 
   function t(key, data = {}) {
     const value = text[locale]?.[key] || text.en[key] || key;
@@ -275,6 +276,7 @@
   function show(panel) {
     [nodes.menuPanel, nodes.gamePanel, nodes.upgradePanel, nodes.resultPanel].forEach((node) => node.classList.add("is-hidden"));
     panel.classList.remove("is-hidden");
+    document.body.classList.toggle("orb-fortress-playing", panel === nodes.gamePanel || panel === nodes.upgradePanel);
   }
 
   function setLocale(next) {
@@ -297,6 +299,8 @@
     const entries = Object.entries(assets);
     let done = 0;
     const finish = () => {
+      if (preloadFinished) return;
+      preloadFinished = true;
       nodes.loadingText.textContent = "100%";
       nodes.loadingFill.style.width = "100%";
       nodes.loadingPanel.classList.add("is-hidden");
@@ -318,6 +322,18 @@
       };
     });
     window.setTimeout(finish, 1800);
+  }
+
+  function exposeBasicReady() {
+    nodes.loadingPanel.classList.add("is-hidden");
+    document.body.dataset.orbFortressBasicReady = "true";
+    window.__ANIMAL_ORB_FORTRESS_BOOTED__ = true;
+    window.__ANIMAL_ORB_FORTRESS_FIRST_SCREEN__ = {
+      title: t("title"),
+      locale,
+      controls: ["localeSelect", "startBtn"],
+      rooms: roomDefs.length,
+    };
   }
 
   function roomCost(id) {
@@ -822,5 +838,6 @@
   };
 
   setLocale(locale);
+  exposeBasicReady();
   preload();
 })();

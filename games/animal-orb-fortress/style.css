@@ -112,6 +112,10 @@ select {
   display: none !important;
 }
 
+body.orb-fortress-playing .game-page-info {
+  display: none !important;
+}
+
 .menu-panel {
   display: grid;
   grid-template-columns: minmax(240px, 38%) 1fr;

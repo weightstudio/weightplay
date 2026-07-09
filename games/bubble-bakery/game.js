@@ -68,6 +68,12 @@
       recommendedImprove: "Replay this order to earn more stars.",
       recommendedMastered: "Everything is mastered. Replay your newest favorite order.",
       startRecommended: "Start Pick",
+      resultNextTitle: "Next bakery order",
+      resultUnlocked: "New tray unlocked: {stage}",
+      resultReplay: "Replay goal: earn more stars on {stage}",
+      resultNextCopy: "{stage} · {theme}",
+      resultAllClear: "All trays are open. Replay any order to master every star.",
+      resultTryAgainGoal: "Try again: {stage} still needs these order bubbles.",
     },
     "zh-Hant": {
       gameTitle: "動物泡泡烘焙坊",
@@ -131,6 +137,12 @@
       recommendedImprove: "重玩這張訂單，試著拿到更多星星。",
       recommendedMastered: "全部都精通了！可以重玩最新喜歡的訂單。",
       startRecommended: "開始推薦",
+      resultNextTitle: "下一張烘焙訂單",
+      resultUnlocked: "新烘焙盤解鎖：{stage}",
+      resultReplay: "重玩目標：在{stage}拿更多星星",
+      resultNextCopy: "{stage} · {theme}",
+      resultAllClear: "全部烘焙盤都開放了，重玩任何訂單來補滿星星。",
+      resultTryAgainGoal: "再挑戰：{stage}還需要這些訂單泡泡。",
     },
   };
 
@@ -175,6 +187,7 @@
     resultTitle: $("resultTitle"),
     starText: $("starText"),
     resultText: $("resultText"),
+    resultNextOrder: $("resultNextOrder"),
     skillReport: $("skillReport"),
     nextStageBtn: $("nextStageBtn"),
     retryBtn: $("retryBtn"),
@@ -684,12 +697,14 @@
     const stageNo = currentStage + 1;
     const previousBest = Number(readProgress()[stageNo]?.bestScore || 0);
     let earned = 0;
+    let unlockedStageNo = null;
     if (won) {
       earned = moves >= 7 ? 3 : moves >= 3 ? 2 : 1;
       stars[stageNo] = Math.max(stars[stageNo] || 0, earned);
       saveStars();
       if (stageNo === unlocked && unlocked < stages.length) {
         unlocked += 1;
+        unlockedStageNo = unlocked;
         localStorage.setItem(unlockKey, String(unlocked));
       }
     }
@@ -697,10 +712,32 @@
     nodes.resultTitle.textContent = won ? t("orderDone") : t("failed");
     nodes.resultText.textContent = won ? t("resultWin", { moves }) : t("resultLose");
     nodes.starText.textContent = won ? starIcons(earned, 3) : t("failed");
+    renderResultNextOrder({ won, stageNo, earned, unlockedStageNo });
     renderSkillReport({ stageNo, won, earned, previousBest });
     nodes.nextStageBtn.classList.toggle("hidden", !won || currentStage >= stages.length - 1);
     playSound(won ? "success" : "error");
     track("game_complete", { level: stageNo, success: won, score, moves_left: moves });
+  }
+
+  function renderResultNextOrder({ won, stageNo, earned, unlockedStageNo }) {
+    const targetIndex = won ? recommendedStageIndex() : currentStage;
+    const targetStage = stages[targetIndex] || stages[currentStage];
+    const targetStageNo = targetIndex + 1;
+    const orderIcons = Object.keys(targetStage.orders).map((id) => `<img src="${colorData(id).asset}" alt="" />`).join("");
+    const statusText = won
+      ? unlockedStageNo
+        ? t("resultUnlocked", { stage: t("stage", { n: unlockedStageNo }) })
+        : earned >= 3 && targetStageNo >= stages.length
+          ? t("resultAllClear")
+          : t("resultReplay", { stage: t("stage", { n: targetStageNo }) })
+      : t("resultTryAgainGoal", { stage: t("stage", { n: stageNo }) });
+
+    nodes.resultNextOrder.innerHTML = `
+      <strong>${t("resultNextTitle")}</strong>
+      <span>${statusText}</span>
+      <em>${t("resultNextCopy", { stage: t("stage", { n: targetStageNo }), theme: t(targetStage.theme) })}</em>
+      <b class="result-order-icons">${orderIcons}</b>
+    `;
   }
 
   function renderSkillReport({ stageNo, won, earned, previousBest }) {
