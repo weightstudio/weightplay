@@ -229,10 +229,10 @@
     scoutArcher: "../../assets/beast-tactician-soldier-scout-archer.webp",
     runeSapper: "../../assets/beast-tactician-soldier-rune-sapper.png",
     medicCub: "../../assets/beast-tactician-soldier-medic-cub.png",
-    wolf: "../../assets/beast-tactician-enemy-wolf.webp",
-    boar: "../../assets/shadow-wolf-enemy-boar.webp",
-    bat: "../../assets/shadow-wolf-enemy-bat.webp",
-    boss: "../../assets/shadow-wolf-boss-behemoth.webp",
+    wolf: "../../assets/beast-tactician-enemy-wolf-cutout.webp",
+    boar: "../../assets/shadow-wolf-enemy-boar-cutout.webp",
+    bat: "../../assets/shadow-wolf-enemy-bat-cutout.webp",
+    boss: "../../assets/shadow-wolf-boss-behemoth-cutout.webp",
     hit: "../../assets/shadow-wolf-fx-hit-spark.webp",
     slash: "../../assets/shadow-wolf-fx-claw-slash.webp",
     portal: "../../assets/shadow-wolf-fx-portal-glow.webp",
@@ -1451,6 +1451,10 @@
   }
 
   function findPath(ignoreBlockers = false) {
+    return findPathFrom(startTile, ignoreBlockers);
+  }
+
+  function findPathFrom(originTile, ignoreBlockers = false) {
     const blocked = new Set();
     if (!ignoreBlockers) {
       state.defenders.forEach((d) => {
@@ -1458,8 +1462,9 @@
       });
     }
     const key = (tile) => `${tile.x},${tile.y}`;
-    const queue = [{ ...startTile }];
-    const came = new Map([[key(startTile), null]]);
+    const start = { ...originTile };
+    const queue = [start];
+    const came = new Map([[key(start), null]]);
     while (queue.length) {
       const current = queue.shift();
       if (sameTile(current, coreTile)) {
@@ -1488,6 +1493,16 @@
     return null;
   }
 
+  function enemyAttackRange(enemy) {
+    return enemy?.boss ? 2.15 : 1.45;
+  }
+
+  function nearestAttackableDefender(enemy) {
+    return state.defenders
+      .filter((d) => d.hp > 0 && tileDistance(enemy.tile, d.tile) <= enemyAttackRange(enemy))
+      .sort((a, b) => tileDistance(enemy.tile, a.tile) - tileDistance(enemy.tile, b.tile))[0] || null;
+  }
+
   function nearestBlocker(enemy) {
     const clearPath = findPath(true) || [];
     let best = null;
@@ -1514,14 +1529,26 @@
     }
     const path = findPath(false);
     if (path) {
-      enemy.path = path;
-      enemy.pathIndex = Math.max(1, path.findIndex((tile) => sameTile(tile, enemy.tile)) + 1);
+      const currentPathIndex = path.findIndex((tile) => sameTile(tile, enemy.tile));
+      const currentPath = currentPathIndex >= 0 ? path : findPathFrom(enemy.tile, false);
+      enemy.path = currentPath || path;
+      enemy.pathIndex = currentPathIndex >= 0 ? Math.max(1, currentPathIndex + 1) : 1;
       enemy.targetDefender = null;
       return;
     }
-    enemy.path = [];
-    enemy.targetDefender = nearestBlocker(enemy);
-    if (enemy.targetDefender) showToast(t("blocked"));
+    const attackTarget = nearestAttackableDefender(enemy);
+    if (attackTarget) {
+      enemy.path = [];
+      enemy.pathIndex = 0;
+      enemy.targetDefender = attackTarget;
+      showToast(t("blocked"));
+      return;
+    }
+    const fallbackPath = findPathFrom(enemy.tile, true);
+    enemy.path = fallbackPath || [];
+    enemy.pathIndex = fallbackPath ? 1 : 0;
+    enemy.targetDefender = null;
+    if (fallbackPath) showToast(t("blocked"));
   }
 
   function updateEnemyPaths() {
@@ -1646,6 +1673,14 @@
       enemy.hitPulse = Math.max(0, (enemy.hitPulse || 0) - dt);
       enemy.tile = pointToTile(enemy.pos.x, enemy.pos.y);
       enemy.attackCd -= dt;
+      if (!enemy.flying && !findPath(false)) {
+        const attackTarget = nearestAttackableDefender(enemy);
+        if (attackTarget) {
+          enemy.targetDefender = attackTarget;
+          attackDefender(enemy, dt);
+          return;
+        }
+      }
       if (enemy.targetDefender && enemy.targetDefender.hp > 0) {
         attackDefender(enemy, dt);
         return;
@@ -1659,8 +1694,14 @@
       }
       const targetTile = enemy.path?.[enemy.pathIndex];
       if (!targetTile) {
-        enemy.targetDefender = nearestBlocker(enemy);
+        enemy.targetDefender = nearestAttackableDefender(enemy);
         if (enemy.targetDefender) attackDefender(enemy, dt);
+        return;
+      }
+      const blockerOnTarget = !enemy.flying && defenderAt(targetTile);
+      if (blockerOnTarget && tileDistance(enemy.tile, blockerOnTarget.tile) <= enemyAttackRange(enemy)) {
+        enemy.targetDefender = blockerOnTarget;
+        attackDefender(enemy, dt);
         return;
       }
       const targetPoint = tileToPoint(targetTile);
@@ -1693,8 +1734,8 @@
   function attackDefender(enemy) {
     const d = enemy.targetDefender;
     if (!d || d.hp <= 0) return;
-    if (tileDistance(enemy.tile, d.tile) > 1.45 && !enemy.boss) {
-      enemy.targetDefender = nearestBlocker(enemy);
+    if (tileDistance(enemy.tile, d.tile) > enemyAttackRange(enemy)) {
+      enemy.targetDefender = nearestAttackableDefender(enemy);
       return;
     }
     if (enemy.attackCd <= 0) {
@@ -1933,8 +1974,79 @@
         ctx.strokeRect(px + 2, py + 2, board.cell - 4, board.cell - 4);
       }
     }
-    drawLabel(tileToPoint(startTile), t("routeGate"), "#7dd87d");
-    drawLabel(tileToPoint(coreTile), t("routeCore"), "#ffd166");
+    drawRouteEndpointIcon(tileToPoint(startTile), "gate", board);
+    drawRouteEndpointIcon(tileToPoint(coreTile), "core", board);
+  }
+
+  function drawRouteEndpointIcon(p, type, board) {
+    const size = board.cell * (type === "core" ? 0.86 : 0.78);
+    const pulse = 0.72 + Math.sin(performance.now() / (type === "core" ? 180 : 220)) * 0.14;
+    ctx.save();
+    ctx.translate(p.x, p.y);
+    ctx.shadowBlur = Math.max(10, board.cell * 0.18);
+    ctx.shadowColor = type === "core" ? "rgba(255, 209, 102, 0.78)" : "rgba(125, 216, 125, 0.62)";
+    if (type === "gate") {
+      const arch = ctx.createLinearGradient(0, -size * 0.5, 0, size * 0.48);
+      arch.addColorStop(0, "rgba(168, 118, 59, 0.98)");
+      arch.addColorStop(0.55, "rgba(82, 64, 39, 0.96)");
+      arch.addColorStop(1, "rgba(35, 74, 48, 0.96)");
+      ctx.fillStyle = arch;
+      ctx.strokeStyle = "rgba(217, 249, 157, 0.86)";
+      ctx.lineWidth = Math.max(2, board.cell * 0.035);
+      ctx.beginPath();
+      ctx.moveTo(-size * 0.42, size * 0.42);
+      ctx.lineTo(-size * 0.42, -size * 0.08);
+      ctx.quadraticCurveTo(-size * 0.42, -size * 0.48, 0, -size * 0.48);
+      ctx.quadraticCurveTo(size * 0.42, -size * 0.48, size * 0.42, -size * 0.08);
+      ctx.lineTo(size * 0.42, size * 0.42);
+      ctx.lineTo(size * 0.21, size * 0.42);
+      ctx.lineTo(size * 0.21, -size * 0.04);
+      ctx.quadraticCurveTo(size * 0.21, -size * 0.26, 0, -size * 0.26);
+      ctx.quadraticCurveTo(-size * 0.21, -size * 0.26, -size * 0.21, -size * 0.04);
+      ctx.lineTo(-size * 0.21, size * 0.42);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+      ctx.fillStyle = `rgba(125, 216, 125, ${0.22 + pulse * 0.16})`;
+      ctx.beginPath();
+      ctx.ellipse(0, size * 0.46, size * 0.48, size * 0.12, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = "#d9f99d";
+      ctx.beginPath();
+      ctx.moveTo(size * 0.06, -size * 0.06);
+      ctx.lineTo(size * 0.23, 0);
+      ctx.lineTo(size * 0.06, size * 0.06);
+      ctx.closePath();
+      ctx.fill();
+    } else {
+      ctx.strokeStyle = `rgba(255, 209, 102, ${0.58 + pulse * 0.22})`;
+      ctx.lineWidth = Math.max(3, board.cell * 0.055);
+      ctx.beginPath();
+      ctx.arc(0, 0, size * 0.52, 0, Math.PI * 2);
+      ctx.stroke();
+      const glow = ctx.createRadialGradient(-size * 0.14, -size * 0.18, size * 0.04, 0, 0, size * 0.48);
+      glow.addColorStop(0, "rgba(255, 255, 255, 0.98)");
+      glow.addColorStop(0.28, "rgba(147, 247, 255, 0.96)");
+      glow.addColorStop(0.72, "rgba(45, 212, 191, 0.88)");
+      glow.addColorStop(1, "rgba(20, 83, 45, 0.76)");
+      ctx.fillStyle = glow;
+      ctx.beginPath();
+      ctx.moveTo(0, -size * 0.52);
+      ctx.lineTo(size * 0.38, -size * 0.08);
+      ctx.lineTo(size * 0.24, size * 0.45);
+      ctx.lineTo(-size * 0.24, size * 0.45);
+      ctx.lineTo(-size * 0.38, -size * 0.08);
+      ctx.closePath();
+      ctx.fill();
+      ctx.strokeStyle = "rgba(236, 253, 245, 0.88)";
+      ctx.lineWidth = Math.max(1.5, board.cell * 0.026);
+      ctx.stroke();
+      ctx.fillStyle = `rgba(255, 209, 102, ${0.16 + pulse * 0.16})`;
+      ctx.beginPath();
+      ctx.arc(0, 0, size * 0.66, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.restore();
   }
 
   function drawKeyboardCursor(board) {
@@ -3910,6 +4022,117 @@
     return { openText, blockedText, pathBlocked };
   }
 
+  function makeScenarioEnemy(tile, overrides = {}) {
+    return {
+      id: `scenario-enemy-${Date.now()}-${Math.random()}`,
+      type: "wolf",
+      img: "wolf",
+      sheet: "",
+      tile: { ...tile },
+      pos: tileToPoint(tile),
+      hp: 160,
+      maxHp: 160,
+      speed: 62,
+      damage: 13,
+      attackCd: 0,
+      path: [],
+      pathIndex: 0,
+      targetDefender: null,
+      animTime: 0,
+      actionPulse: 0,
+      actionFrame: 0,
+      hitPulse: 0,
+      boss: false,
+      flying: false,
+      slow: 0,
+      ...overrides,
+    };
+  }
+
+  function addScenarioWall(x) {
+    const unit = unitTypes.find((item) => item.id === "guard");
+    Array.from({ length: grid.rows }, (_, y) => {
+      if (sameTile({ x, y }, startTile) || sameTile({ x, y }, coreTile)) return;
+      state.defenders.push({
+        id: `scenario-wall-${x}-${y}`,
+        type: "guard",
+        img: unit.img,
+        sheet: "",
+        kind: "soldier",
+        name: unitName(unit),
+        tile: { x, y },
+        hp: 120,
+        maxHp: 120,
+        damage: 0,
+        range: unit.range,
+        cooldown: unit.cooldown,
+        cd: 0,
+        level: 1,
+        cost: unit.cost,
+        slow: 0,
+        splash: 0,
+        heal: 0,
+        buff: 0,
+        animTime: 0,
+        actionPulse: 0,
+        actionFrame: 0,
+      });
+    });
+  }
+
+  function runBlockedRouteFallbackScenario() {
+    state.manualSimulation = true;
+    state.save = {
+      bestStage: 10,
+      diamonds: 20,
+      upgradePoints: 8,
+      tech: { power: 1, bulwark: 1, economy: 1 },
+      cosmetics: { goldenFrame: false },
+      clears: {},
+      stars: {},
+    };
+    startStage(1);
+    state.coins = 999;
+    state.runningWave = true;
+    state.wave = 1;
+    state.waveSpawned = 1;
+    state.waveToSpawn = 1;
+    addScenarioWall(7);
+    const farEnemy = makeScenarioEnemy({ x: 3, y: 4 });
+    state.enemies = [farEnemy];
+    setEnemyPath(farEnemy);
+    const farBefore = { x: farEnemy.pos.x, y: farEnemy.pos.y };
+    const farPathBlocked = findPathFrom(farEnemy.tile, false) === null;
+    const farFallbackPath = farEnemy.path.map((tile) => ({ ...tile }));
+    const farTargetBefore = farEnemy.targetDefender?.tile || null;
+    updateEnemies(0.45);
+    const farAfter = { x: farEnemy.pos.x, y: farEnemy.pos.y };
+
+    state.defenders = [];
+    addScenarioWall(7);
+    const nearEnemy = makeScenarioEnemy({ x: 6, y: 4 });
+    state.enemies = [nearEnemy];
+    setEnemyPath(nearEnemy);
+    const target = nearEnemy.targetDefender;
+    const targetHpBefore = target?.hp || 0;
+    updateEnemies(1.1);
+    const targetHpAfter = target?.hp || 0;
+    const result = {
+      farPathBlocked,
+      farTargetBefore,
+      farFallbackPathLength: farFallbackPath.length,
+      farMovedTowardCore: farAfter.x > farBefore.x + 1 || Math.abs(farAfter.y - farBefore.y) > 1,
+      farBefore,
+      farAfter,
+      nearTargetTile: target?.tile || null,
+      nearTargetHpBefore: targetHpBefore,
+      nearTargetHpAfter: targetHpAfter,
+      nearAttacked: targetHpAfter < targetHpBefore,
+    };
+    state.manualSimulation = false;
+    return result;
+  }
+
   function runRoutePreviewScenario() {
     state.manualSimulation = true;
     state.save = {
@@ -4239,6 +4462,7 @@
       runWaveClearFeedbackScenario,
       runSelectedBuildInfoScenario,
       runRouteStatusScenario,
+      runBlockedRouteFallbackScenario,
       runRoutePreviewScenario,
       runTraditionalChineseReadabilityScenario,
       runSoundReadinessScenario,

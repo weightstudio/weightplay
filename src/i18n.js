@@ -112,6 +112,9 @@
       "availability.all": "All Status",
       "availability.playable": "Play Now",
       "availability.preview": "Coming Soon",
+      "availability_hint.all": "Browse all",
+      "availability_hint.playable": "Opens now",
+      "availability_hint.preview": "Preview only",
       "action.play": "Play",
       "action.continue": "Continue",
       "action.coming_soon": "Coming Soon",
@@ -585,6 +588,9 @@
     "availability.all": "\u5168\u90e8\u72c0\u614b",
     "availability.playable": "\u73fe\u5728\u53ef\u73a9",
     "availability.preview": "\u65b0\u904a\u6232\u9810\u544a",
+    "availability_hint.all": "\u5168\u90e8\u700f\u89bd",
+    "availability_hint.playable": "\u7acb\u5373\u9032\u5165",
+    "availability_hint.preview": "\u50c5\u4f9b\u9810\u544a",
   });
 
   function getSavedLocale() {

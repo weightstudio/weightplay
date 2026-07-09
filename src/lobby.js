@@ -313,6 +313,13 @@ function filterButtonLabel(button, type, value) {
   return button.textContent.trim();
 }
 
+function filterButtonHint(type, value) {
+  if (type !== "availability") return "";
+  const key = `availability_hint.${value}`;
+  const hint = i18n.t(key);
+  return hint === key ? "" : hint;
+}
+
 function matchesAgeFilter(ages, filterValue) {
   if (filterValue === "all") return true;
   const group = ageFilterGroups[filterValue];
@@ -323,8 +330,15 @@ function matchesAgeFilter(ages, filterValue) {
 function setFilterCount(button, type, value) {
   const label = filterButtonLabel(button, type, value);
   const count = countGamesBy(type, value);
-  button.innerHTML = `<span class="filter-label">${label}</span><b class="filter-count">${count}</b>`;
-  button.setAttribute("aria-label", `${label}, ${count}`);
+  const hint = filterButtonHint(type, value);
+  button.innerHTML = `
+    <span class="filter-copy">
+      <span class="filter-label">${label}</span>
+      ${hint ? `<span class="filter-hint">${hint}</span>` : ""}
+    </span>
+    <b class="filter-count">${count}</b>
+  `;
+  button.setAttribute("aria-label", hint ? `${label}, ${hint}, ${count}` : `${label}, ${count}`);
 }
 
 function renderFilterCounts() {
