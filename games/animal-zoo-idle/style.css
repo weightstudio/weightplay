@@ -1668,7 +1668,7 @@ body.zoo-playing .animal-shop-card small {
 
   body.zoo-playing .savanna-stage {
     min-height: 0;
-    aspect-ratio: 4 / 3;
+    aspect-ratio: 1 / 1;
     border-radius: 16px;
   }
 

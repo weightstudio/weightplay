@@ -247,7 +247,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "配置完整動物守衛、賺取金幣、升級隊伍，挑戰 8 個含 Boss 的防守關卡。",
       },
       meta: { en: ["Hero Defense", "Animal Upgrades", "Boss Battles"], "zh-Hant": ["英雄防守", "動物升級", "Boss 戰"] },
-      art: { kind: "image", background: "assets/animal-guard-yard-poster.webp", hero: "assets/weightplay-character-spark-paw-fox-cutout.webp" },
+      art: { kind: "image", background: "assets/animal-guard-yard-poster.webp", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
     },
     {
       id: "animal-crystal-survivor",

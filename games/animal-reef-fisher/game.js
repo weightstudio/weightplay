@@ -252,6 +252,73 @@
     };
   });
 
+  const fishFrameCrops = {
+    fishA: [
+      [
+        { x: 309, y: 16, w: 243, h: 158 },
+        { x: 650, y: 29, w: 260, h: 152 },
+        { x: 995, y: 33, w: 233, h: 148 },
+      ],
+      [
+        { x: 315, y: 186, w: 234, h: 166 },
+        { x: 648, y: 160, w: 243, h: 192 },
+        { x: 991, y: 160, w: 238, h: 192 },
+      ],
+      [
+        { x: 288, y: 331, w: 270, h: 191 },
+        { x: 637, y: 331, w: 258, h: 159 },
+        { x: 981, y: 331, w: 259, h: 161 },
+      ],
+      [
+        { x: 285, y: 502, w: 263, h: 191 },
+        { x: 629, y: 503, w: 266, h: 156 },
+        { x: 968, y: 504, w: 263, h: 157 },
+      ],
+      [
+        { x: 284, y: 672, w: 276, h: 192 },
+        { x: 618, y: 678, w: 273, h: 186 },
+        { x: 962, y: 680, w: 273, h: 184 },
+      ],
+      [
+        { x: 301, y: 843, w: 225, h: 150 },
+        { x: 648, y: 843, w: 225, h: 152 },
+        { x: 983, y: 843, w: 249, h: 161 },
+      ],
+    ],
+    fishB: [
+      [
+        { x: 242, y: 19, w: 296, h: 162 },
+        { x: 589, y: 26, w: 300, h: 155 },
+        { x: 941, y: 31, w: 306, h: 150 },
+      ],
+      [
+        { x: 261, y: 160, w: 282, h: 170 },
+        { x: 618, y: 160, w: 283, h: 168 },
+        { x: 978, y: 160, w: 291, h: 170 },
+      ],
+      [
+        { x: 303, y: 368, w: 233, h: 136 },
+        { x: 650, y: 369, w: 227, h: 153 },
+        { x: 997, y: 371, w: 229, h: 129 },
+      ],
+      [
+        { x: 271, y: 502, w: 258, h: 191 },
+        { x: 614, y: 502, w: 268, h: 191 },
+        { x: 993, y: 502, w: 216, h: 154 },
+      ],
+      [
+        { x: 243, y: 672, w: 297, h: 192 },
+        { x: 596, y: 672, w: 295, h: 192 },
+        { x: 943, y: 673, w: 299, h: 191 },
+      ],
+      [
+        { x: 0, y: 843, w: 521, h: 181 },
+        { x: 615, y: 843, w: 276, h: 141 },
+        { x: 982, y: 843, w: 250, h: 142 },
+      ],
+    ],
+  };
+
   let locale = localStorage.getItem(localeKey) || "en";
   if (!text[locale]) locale = "en";
   let save = loadSave();
@@ -262,6 +329,7 @@
   let lastTime = performance.now();
   let raf = 0;
   const images = {};
+  const fishThumbCache = {};
   let assetsReady = false;
   let preloadPromise = null;
 
@@ -521,24 +589,42 @@
   function fishFrameCrop(img, item, frame = 1) {
     const cols = 3;
     const rows = 6;
+    const crop = fishFrameCrops[item.sheet]?.[item.sy]?.[Math.max(0, Math.min(cols - 1, frame))];
+    if (crop) {
+      return { sx: crop.x, sy: crop.y, sw: crop.w, sh: crop.h };
+    }
     const frameW = img.width / cols;
     const frameH = img.height / rows;
-    const insetX = frameW * 0.055;
-    const insetY = frameH * 0.08;
     return {
-      sx: Math.max(0, Math.min(cols - 1, frame)) * frameW + insetX,
-      sy: item.sy * frameH + insetY,
-      sw: frameW - insetX * 2,
-      sh: frameH - insetY * 2,
+      sx: Math.max(0, Math.min(cols - 1, frame)) * frameW,
+      sy: item.sy * frameH,
+      sw: frameW,
+      sh: frameH,
     };
+  }
+
+  function fishThumbUrl(item, frame = 1) {
+    const cacheKey = `${item.sheet}:${item.sy}:${frame}`;
+    if (fishThumbCache[cacheKey]) return fishThumbCache[cacheKey];
+    const img = images[item.sheet];
+    if (!img) return assetPaths[item.sheet];
+    const crop = fishFrameCrop(img, item, frame);
+    const thumb = document.createElement("canvas");
+    thumb.width = 180;
+    thumb.height = Math.max(96, Math.round((thumb.width * crop.sh) / crop.sw));
+    const thumbCtx = thumb.getContext("2d");
+    thumbCtx.clearRect(0, 0, thumb.width, thumb.height);
+    thumbCtx.drawImage(img, crop.sx, crop.sy, crop.sw, crop.sh, 0, 0, thumb.width, thumb.height);
+    fishThumbCache[cacheKey] = thumb.toDataURL("image/png");
+    return fishThumbCache[cacheKey];
   }
 
   function fishFrameStyle(item) {
     return [
-      `background-image:url('${assetPaths[item.sheet]}')`,
-      "background-size:300% 600%",
+      `background-image:url("${fishThumbUrl(item)}")`,
+      "background-size:contain",
       "background-repeat:no-repeat",
-      `background-position:50% ${(item.sy / 5) * 100}%`,
+      "background-position:center",
     ].join(";");
   }
 
@@ -696,7 +782,14 @@
     const swimFrame = Math.floor(performance.now() / 180) % 3;
     const crop = fishFrameCrop(img, fishData, swimFrame);
     const bob = Math.sin(performance.now() / 240) * 3;
-    ctx.drawImage(img, crop.sx, crop.sy, crop.sw, crop.sh, x, y + bob, w, h);
+    const ratio = crop.sw / crop.sh;
+    let drawW = w;
+    let drawH = w / ratio;
+    if (drawH > h) {
+      drawH = h;
+      drawW = h * ratio;
+    }
+    ctx.drawImage(img, crop.sx, crop.sy, crop.sw, crop.sh, x + (w - drawW) / 2, y + bob + (h - drawH) / 2, drawW, drawH);
   }
 
   function draw() {
@@ -941,13 +1034,20 @@
       readFishSheetGrid() {
         const img = images.fishA || { width: 0, height: 0 };
         const sampleCrop = img.width ? fishFrameCrop(img, fish[0], 0) : null;
+        const allCrops = fish.map((item) => ({
+          id: item.id,
+          sheet: item.sheet,
+          sy: item.sy,
+          frames: [0, 1, 2].map((frame) => fishFrameCrop(images[item.sheet] || img, item, frame)),
+          thumbIsTrimmed: fishFrameStyle(item).includes("data:image/png"),
+        }));
         return {
           cols: 3,
           rows: 6,
           safeCrop: sampleCrop,
-          leftInsetRatio: 0.055,
-          frameWidthRatio: 0.89 / 3,
-          sample: fish.map((item) => ({ id: item.id, sheet: item.sheet, sx: item.sx, sy: item.sy })),
+          cropMode: "per-fish-alpha-bounds",
+          cropCount: allCrops.reduce((sum, item) => sum + item.frames.length, 0),
+          sample: allCrops,
         };
       },
       forceHookForControlTest() {

@@ -889,6 +889,7 @@ function renderUpcomingGames() {
       <div class="upcoming-game-copy">
         <strong>${title}</strong>
         <small>${type} / ${ageLabel}</small>
+        ${gameStateCard(game, false)}
         <em>${description}</em>
       </div>
     `;

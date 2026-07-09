@@ -1251,6 +1251,19 @@ body.lobby-page {
   -webkit-line-clamp: 3;
 }
 
+.upcoming-game-copy .game-card-state {
+  padding: 7px 9px;
+  gap: 2px;
+}
+
+.upcoming-game-copy .game-card-state strong {
+  font-size: 12px;
+}
+
+.upcoming-game-copy .game-card-state span {
+  font-size: 11px;
+}
+
 .fresh-update-art {
   position: relative;
   min-height: 0;

@@ -350,7 +350,7 @@ body.fruit-playing .topbar {
   position: absolute;
   left: clamp(12px, 4cqw, 24px);
   right: clamp(12px, 4cqw, 24px);
-  bottom: clamp(12px, 4cqh, 28px);
+  top: clamp(12px, 4cqh, 28px);
   z-index: 6;
   min-height: 36px;
   padding: 9px 12px;
@@ -786,7 +786,7 @@ body.fruit-playing .topbar {
   .aim-coach {
     left: 9px;
     right: 9px;
-    bottom: 9px;
+    top: 9px;
     min-height: 30px;
     padding: 7px 9px;
     font-size: 0.62rem;
