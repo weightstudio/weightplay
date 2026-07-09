@@ -879,6 +879,7 @@ function renderUpcomingGames() {
     const type = text(game.type);
     const ageLabel = text(game.ageLabel);
     const description = text(game.description);
+    const showHero = game.art?.hero && !game.art.hideHero && !game.art.hero.includes("width='1'");
     const card = document.createElement("button");
     card.className = "upcoming-game-card";
     card.type = "button";
@@ -886,6 +887,7 @@ function renderUpcomingGames() {
     card.innerHTML = `
       <div class="upcoming-game-art">
         <img src="${game.art?.background || primaryArt(game)}" alt="" />
+        ${showHero ? `<img class="upcoming-game-hero" src="${game.art.hero}" alt="" />` : ""}
         <span>${i18n.t("action.coming_soon")}</span>
       </div>
       <div class="upcoming-game-copy">

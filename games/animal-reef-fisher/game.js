@@ -330,6 +330,7 @@
   let raf = 0;
   const images = {};
   const fishThumbCache = {};
+  const fishCropCache = {};
   let assetsReady = false;
   let preloadPromise = null;
 
@@ -445,6 +446,10 @@
     }).join("");
     nodes.lureBtn.textContent = save.lureReady ? t("lureReady") : t("buyLure", { cost: lureCost });
     nodes.sonarPrepBtn.textContent = save.sonarReady ? t("sonarReady") : t("buySonar", { cost: sonarCost });
+    window.requestAnimationFrame(() => {
+      const selectedCard = nodes.zoneRow.querySelector(".zone-card.is-selected");
+      selectedCard?.scrollIntoView({ block: "nearest", inline: "center", behavior: "auto" });
+    });
   }
 
   function showPanel(which) {
@@ -452,25 +457,21 @@
     nodes.gamePanel.classList.toggle("is-hidden", which !== "game");
     nodes.resultPanel.classList.toggle("is-hidden", which !== "result");
     document.body.classList.toggle("reef-fisher-playing", which === "game");
+    document.body.dataset.reefState = which;
+    document.documentElement.dataset.reefState = which;
   }
 
   function focusPanel(node) {
-    const align = () => node.scrollIntoView({ block: "start", behavior: "auto" });
+    const align = () => {
+      const top = Math.max(0, node.getBoundingClientRect().top + window.scrollY - 6);
+      window.scrollTo({ top, behavior: "auto" });
+    };
     align();
     window.requestAnimationFrame(align);
     window.setTimeout(align, 80);
   }
 
   async function startRun() {
-    if (!assetsReady) {
-      nodes.startBtn.disabled = true;
-      nodes.retryBtn.disabled = true;
-      nodes.loadingPanel.classList.remove("is-hidden");
-      await ensureImagesReady();
-      nodes.loadingPanel.classList.add("is-hidden");
-      nodes.startBtn.disabled = false;
-      nodes.retryBtn.disabled = false;
-    }
     const zone = zones.find((z) => z.id === selectedZone) || zones[0];
     run = {
       zone,
@@ -512,6 +513,17 @@
     state = "game";
     showPanel("game");
     focusPanel(nodes.gamePanel);
+    resizeCanvas();
+    if (!assetsReady) {
+      nodes.startBtn.disabled = true;
+      nodes.retryBtn.disabled = true;
+      await ensureImagesReady();
+      nodes.loadingPanel.classList.add("is-hidden");
+      nodes.startBtn.disabled = false;
+      nodes.retryBtn.disabled = false;
+      resizeCanvas();
+      focusPanel(nodes.gamePanel);
+    }
     track("game_start", { zone: zone.id });
   }
 
@@ -589,18 +601,66 @@
   function fishFrameCrop(img, item, frame = 1) {
     const cols = 3;
     const rows = 6;
-    const crop = fishFrameCrops[item.sheet]?.[item.sy]?.[Math.max(0, Math.min(cols - 1, frame))];
-    if (crop) {
-      return { sx: crop.x, sy: crop.y, sw: crop.w, sh: crop.h };
-    }
+    const frameIndex = Math.max(0, Math.min(cols - 1, frame));
     const frameW = img.width / cols;
     const frameH = img.height / rows;
-    return {
-      sx: Math.max(0, Math.min(cols - 1, frame)) * frameW,
-      sy: item.sy * frameH,
-      sw: frameW,
-      sh: frameH,
+    const cell = {
+      sx: Math.round(frameIndex * frameW),
+      sy: Math.round(item.sy * frameH),
+      sw: Math.round(frameW),
+      sh: Math.round(frameH),
     };
+    const cacheKey = `${item.sheet}:${item.sy}:${frameIndex}:${img.width}x${img.height}`;
+    if (fishCropCache[cacheKey]) return fishCropCache[cacheKey];
+    const fallback = fishFrameCrops[item.sheet]?.[item.sy]?.[frameIndex];
+    try {
+      const probe = document.createElement("canvas");
+      probe.width = cell.sw;
+      probe.height = cell.sh;
+      const probeCtx = probe.getContext("2d", { willReadFrequently: true });
+      probeCtx.clearRect(0, 0, probe.width, probe.height);
+      probeCtx.drawImage(img, cell.sx, cell.sy, cell.sw, cell.sh, 0, 0, cell.sw, cell.sh);
+      const data = probeCtx.getImageData(0, 0, cell.sw, cell.sh).data;
+      let minX = cell.sw;
+      let minY = cell.sh;
+      let maxX = -1;
+      let maxY = -1;
+      for (let y = 0; y < cell.sh; y += 1) {
+        for (let x = 0; x < cell.sw; x += 1) {
+          const alpha = data[(y * cell.sw + x) * 4 + 3];
+          if (alpha > 22) {
+            minX = Math.min(minX, x);
+            minY = Math.min(minY, y);
+            maxX = Math.max(maxX, x);
+            maxY = Math.max(maxY, y);
+          }
+        }
+      }
+      if (maxX >= minX && maxY >= minY) {
+        const pad = Math.max(6, Math.round(Math.min(cell.sw, cell.sh) * 0.035));
+        const x = Math.max(0, minX - pad);
+        const y = Math.max(0, minY - pad);
+        const right = Math.min(cell.sw, maxX + pad + 1);
+        const bottom = Math.min(cell.sh, maxY + pad + 1);
+        fishCropCache[cacheKey] = {
+          sx: cell.sx + x,
+          sy: cell.sy + y,
+          sw: Math.max(1, right - x),
+          sh: Math.max(1, bottom - y),
+          cellSx: cell.sx,
+          cellSy: cell.sy,
+          cellSw: cell.sw,
+          cellSh: cell.sh,
+        };
+        return fishCropCache[cacheKey];
+      }
+    } catch {
+      // Canvas sampling can fail on unexpected asset states; fall back to the bounded atlas cell.
+    }
+    fishCropCache[cacheKey] = fallback
+      ? { sx: fallback.x, sy: fallback.y, sw: fallback.w, sh: fallback.h, cellSx: cell.sx, cellSy: cell.sy, cellSw: cell.sw, cellSh: cell.sh }
+      : { ...cell, cellSx: cell.sx, cellSy: cell.sy, cellSw: cell.sw, cellSh: cell.sh };
+    return fishCropCache[cacheKey];
   }
 
   function fishThumbUrl(item, frame = 1) {
@@ -1045,7 +1105,7 @@
           cols: 3,
           rows: 6,
           safeCrop: sampleCrop,
-          cropMode: "per-fish-alpha-bounds",
+          cropMode: "per-frame-alpha-trim",
           cropCount: allCrops.reduce((sum, item) => sum + item.frames.length, 0),
           sample: allCrops,
         };

@@ -1197,10 +1197,23 @@ body.lobby-page {
   filter: saturate(1.05) brightness(0.94);
 }
 
+.upcoming-game-art .upcoming-game-hero {
+  position: absolute;
+  right: 8px;
+  bottom: 4px;
+  width: min(42%, 118px);
+  height: min(78%, 126px);
+  object-fit: contain;
+  object-position: center bottom;
+  filter: drop-shadow(0 14px 18px rgba(8, 22, 32, 0.42));
+  z-index: 1;
+}
+
 .upcoming-game-art span {
   position: absolute;
   left: 8px;
   bottom: 8px;
+  z-index: 2;
   min-height: 26px;
   padding: 6px 9px;
   border-radius: 8px;
@@ -2258,6 +2271,12 @@ body.lobby-page {
 .upcoming-game-card:focus-visible .upcoming-game-art img {
   filter: saturate(1.12) brightness(1.04);
   transform: scale(1.04);
+}
+
+.upcoming-game-card:hover .upcoming-game-hero,
+.upcoming-game-card:focus-visible .upcoming-game-hero {
+  filter: drop-shadow(0 16px 22px rgba(126, 235, 185, 0.28));
+  transform: scale(1.08);
 }
 
 .recommendation-card:hover img,

@@ -24,6 +24,7 @@
     profileXp: $("profileXp"),
     profileBest: $("profileBest"),
     profileRunes: $("profileRunes"),
+    growthSummary: $("growthSummary"),
     heroUpgradeGrid: $("heroUpgradeGrid"),
     trainingBtn: $("trainingBtn"),
     trainingStatus: $("trainingStatus"),
@@ -266,6 +267,18 @@
     missionStatusUnlocked: "Tap to choose",
     missionRewardLabel: "Clear reward",
     startSelectedMission: "Start Mission {n}",
+    progressionTitle: "Permanent Growth",
+    progressionLevelLine: "Squad Lv.{level} / {xp} XP to next level",
+    progressionHeroLine: "Hero upgrades: Lion Lv.{lion}, Owl Lv.{owl}, Turtle Lv.{turtle}",
+    progressionBonusLine: "Saved bonuses: ATK +{atk}, HP +{hp}, Energy +{energy}, Revive Tokens {revives}",
+    progressionNextUpgrade: "Next upgrade: {hero} needs {cost} more runes.",
+    heroGrowthStats: "Permanent: HP +{hp} / ATK +{atk}",
+    heroNextStats: "Next Lv.{level}: HP +{hp} / ATK +{atk}",
+    heroUpgradeNeed: "Need {need} more runes",
+    heroUpgradeReady: "Ready to upgrade",
+    rewardPermanent: "Permanent growth",
+    rewardReviveDesc: "Save 1 revive token. A fallen hero auto-revives in a future fight.",
+    reviveTriggered: "{hero} used a revive token and returned to battle.",
   });
 
   Object.assign(text["zh-Hant"], {
@@ -273,6 +286,18 @@
     missionStatusUnlocked: "點選挑戰",
     missionRewardLabel: "通關獎勵",
     startSelectedMission: "開始任務 {n}",
+    progressionTitle: "永久成長",
+    progressionLevelLine: "小隊 Lv.{level} / 距離下級 {xp} 經驗",
+    progressionHeroLine: "英雄等級：獅子 Lv.{lion}、貓頭鷹 Lv.{owl}、烏龜 Lv.{turtle}",
+    progressionBonusLine: "保存加成：攻擊 +{atk}、生命 +{hp}、能量 +{energy}、復甦代幣 {revives}",
+    progressionNextUpgrade: "下一個升級：{hero} 還需要 {cost} 符石。",
+    heroGrowthStats: "永久：生命 +{hp} / 攻擊 +{atk}",
+    heroNextStats: "下一級 Lv.{level}：生命 +{hp} / 攻擊 +{atk}",
+    heroUpgradeNeed: "還差 {need} 符石",
+    heroUpgradeReady: "可以升級",
+    rewardPermanent: "永久成長",
+    rewardReviveDesc: "保存 1 枚復甦代幣，未來戰鬥中英雄倒下會自動復活。",
+    reviveTriggered: "{hero} 使用復甦代幣回到戰鬥。",
   });
 
   const heroDefs = [
@@ -378,6 +403,7 @@
     nodes.profileXp.textContent = `${profile.xp}/100`;
     nodes.profileBest.textContent = profile.bestMission;
     nodes.profileRunes.textContent = profile.runes || 0;
+    renderGrowthSummary();
     nodes.diamondText.textContent = wallet().diamonds;
     nodes.trainingBtn.disabled = profile.training || wallet().diamonds < trainingCost;
     nodes.trainingStatus.textContent = profile.training ? t("trainingOwned") : wallet().diamonds < trainingCost ? t("trainingNeed", { cost: trainingCost }) : "";
@@ -423,19 +449,52 @@
     return 18 + level * 12;
   }
 
+  function growthStats(level) {
+    return {
+      hp: Math.max(0, level - 1),
+      atk: Math.floor(level / 2),
+    };
+  }
+
+  function renderGrowthSummary() {
+    if (!nodes.growthSummary) return;
+    const heroLevels = profile.heroLevels || {};
+    const nextHero = heroDefs
+      .map((hero) => ({ hero, level: heroLevels[hero.id] || 1, cost: heroUpgradeCost(hero.id) }))
+      .filter((item) => item.level < 6)
+      .sort((a, b) => a.cost - b.cost)[0];
+    const nextLine = nextHero
+      ? (profile.runes || 0) >= nextHero.cost
+        ? `${t(nextHero.hero.name)}: ${t("heroUpgradeReady")}`
+        : t("progressionNextUpgrade", { hero: t(nextHero.hero.name), cost: nextHero.cost - (profile.runes || 0) })
+      : t("heroUpgradeMax");
+    nodes.growthSummary.innerHTML = `
+      <strong>${t("progressionTitle")}</strong>
+      <span>${t("progressionLevelLine", { level: profile.level, xp: 100 - profile.xp })}</span>
+      <span>${t("progressionHeroLine", { lion: heroLevels.lion || 1, owl: heroLevels.owl || 1, turtle: heroLevels.turtle || 1 })}</span>
+      <span>${t("progressionBonusLine", { atk: profile.bonusAtk || 0, hp: profile.bonusHp || 0, energy: (profile.bonusEnergy || 0) + (profile.training ? 1 : 0), revives: profile.reviveTokens || 0 })}</span>
+      <em>${nextLine}</em>`;
+  }
+
   function renderHeroUpgrades() {
     if (!nodes.heroUpgradeGrid) return;
     nodes.heroUpgradeGrid.innerHTML = "";
     heroDefs.forEach((hero) => {
       const level = profile.heroLevels?.[hero.id] || 1;
       const cost = heroUpgradeCost(hero.id);
+      const currentStats = growthStats(level);
+      const nextStats = growthStats(Math.min(6, level + 1));
+      const need = Math.max(0, cost - (profile.runes || 0));
       const card = document.createElement("div");
       card.className = "hero-upgrade-card";
       card.innerHTML = `
         <img src="${asset(hero.img)}" alt="" />
         <div>
           <strong>${t(hero.name)} ${t("heroLevel", { level })}</strong>
-          <span>${t(hero.role)} · HP +${level - 1} · ATK +${Math.floor(level / 2)}</span>
+          <span>${t(hero.role)}</span>
+          <small>${t("heroGrowthStats", { hp: currentStats.hp, atk: currentStats.atk })}</small>
+          <small>${level >= 6 ? t("heroUpgradeMax") : t("heroNextStats", { level: level + 1, hp: nextStats.hp, atk: nextStats.atk })}</small>
+          <em>${level >= 6 ? "" : need > 0 ? t("heroUpgradeNeed", { need }) : t("heroUpgradeReady")}</em>
         </div>
         <button type="button" data-hero-upgrade="${hero.id}" ${level >= 6 || (profile.runes || 0) < cost ? "disabled" : ""}>${level >= 6 ? t("heroUpgradeMax") : t("heroUpgradeCost", { cost })}</button>`;
       nodes.heroUpgradeGrid.appendChild(card);
@@ -729,6 +788,7 @@
         const damage = Math.max(1, enemy.atk - (target.guard ? 1 : 0));
         target.hp = Math.max(0, target.hp - damage);
         playFx("attack-hit", target.x, target.y);
+        tryAutoRevive(target);
       } else {
         const dx = Math.sign(target.x - enemy.x);
         const dy = Math.sign(target.y - enemy.y);
@@ -784,7 +844,7 @@
       const btn = document.createElement("button");
       btn.type = "button";
       btn.className = "reward-card";
-      btn.innerHTML = `<img src="${asset(reward.icon)}" alt="" /><strong>${t(reward.title)}</strong><span>${t(reward.desc)}</span>`;
+      btn.innerHTML = `<img src="${asset(reward.icon)}" alt="" /><b>${t("rewardPermanent")}</b><strong>${t(reward.title)}</strong><span>${t(reward.desc)}</span>`;
       btn.addEventListener("click", () => claimReward(reward.id));
       nodes.rewardCards.appendChild(btn);
     });
@@ -797,6 +857,16 @@
     if (id === "focus") profile.bonusEnergy = (profile.bonusEnergy || 0) + 1;
     if (id === "revive") profile.reviveTokens = (profile.reviveTokens || 0) + 1;
     showResult(true);
+  }
+
+  function tryAutoRevive(hero) {
+    if (!hero || hero.hp > 0 || (profile.reviveTokens || 0) <= 0) return false;
+    profile.reviveTokens -= 1;
+    hero.hp = Math.max(1, Math.ceil(hero.maxHp / 2));
+    saveProfile();
+    playFx("healing-swirl", hero.x, hero.y);
+    log("reviveTriggered", { hero: t(hero.name) });
+    return true;
   }
 
   function showResult(win) {

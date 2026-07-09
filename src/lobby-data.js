@@ -454,7 +454,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "高品質 10 關英雄塔防大作製作中。你將在格子地形上建置士兵與 WeightPlay 英雄，改變敵人路線並抵擋王關波次。"
       },
       meta: { en: ["Tower Defense", "10 Stages", "Boss Waves"], "zh-Hant": ["塔防", "10 關", "王關波次"] },
-      art: { kind: "image", background: "assets/beast-tactician-cover.webp", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
+      art: { kind: "image", background: "assets/beast-tactician-cover.webp", hero: "assets/weightplay-character-moss-shell-turtle-cutout.webp" },
     },
     {
       id: "shadow-wolf",

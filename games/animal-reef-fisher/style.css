@@ -119,8 +119,12 @@ button {
   display: none !important;
 }
 
-body.reef-fisher-playing .game-page-info {
+body.reef-fisher-playing .game-page-info,
+body[data-reef-state="game"] .game-page-info,
+html[data-reef-state="game"] .game-page-info {
   display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
 }
 
 .loading-panel {
@@ -244,6 +248,7 @@ body.reef-fisher-playing .game-page-info {
   gap: 12px;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
+  scroll-padding-inline: 0;
   padding-bottom: 4px;
   scrollbar-width: none;
 }
@@ -255,9 +260,11 @@ body.reef-fisher-playing .game-page-info {
 .zone-card {
   min-height: 132px;
   padding: 8px;
+  overflow: hidden;
   border: 2px solid transparent;
   border-radius: 18px;
   scroll-snap-align: center;
+  scroll-snap-stop: always;
   text-align: left;
   color: var(--ink);
   background: rgba(255, 255, 255, 0.68);
@@ -278,6 +285,8 @@ body.reef-fisher-playing .game-page-info {
   width: 100%;
   aspect-ratio: 1 / 0.56;
   object-fit: contain;
+  object-position: center;
+  display: block;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.74), rgba(190, 245, 238, 0.46));
   border-radius: 12px;
 }
@@ -977,6 +986,20 @@ canvas {
   .shop-row,
   .gear-grid {
     grid-template-columns: 1fr;
+  }
+
+  .zone-row {
+    grid-auto-columns: 100%;
+  }
+
+  .zone-card {
+    min-height: 150px;
+  }
+
+  .zone-card img {
+    width: min(100%, 220px);
+    margin-inline: auto;
+    aspect-ratio: 1 / 0.62;
   }
 
   .hud-row {
