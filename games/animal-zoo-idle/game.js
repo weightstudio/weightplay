@@ -759,19 +759,19 @@
       </div>
       <div class="care-panel">
         <div class="daily-focus-card" aria-live="polite"></div>
+        <div class="zoo-task-board" aria-live="polite"></div>
         <div class="happy-meter"><span>${t("happiness")}</span><b>${Math.round(save.happiness)}%</b><i style="width:${save.happiness}%"></i></div>
-        <div class="park-plan-card" aria-live="polite"></div>
-        <div class="tour-board" aria-live="polite"></div>
-        <div class="habitat-bonus-card" aria-live="polite"></div>
         <div class="zoo-actions">
           <button type="button" data-action="collect">${t("collect")}</button>
           <button type="button" data-action="care">${t("careAll")}</button>
           <button type="button" data-action="upgrade" ${save.gateLevel >= maxGateLevel ? "disabled" : ""}>${save.gateLevel >= maxGateLevel ? t("maxGate") : `${t("upgradeGate")} ${formatCost(gateUpgradeCost())}`}</button>
           <button type="button" data-action="report">${t("report")}</button>
         </div>
+        <div class="park-plan-card" aria-live="polite"></div>
+        <div class="tour-board" aria-live="polite"></div>
+        <div class="habitat-bonus-card" aria-live="polite"></div>
         <button class="next-goal-card" type="button" data-action="next-goal"></button>
         <div class="facility-board" aria-live="polite"></div>
-        <div class="zoo-task-board" aria-live="polite"></div>
         <div class="zoo-milestone-board" aria-live="polite"></div>
         <div class="animal-shop-head"><strong>${t("animals")}</strong><span>${t("dragHint")}</span></div>
         <div class="animal-shop" aria-label="Animal shop"></div>

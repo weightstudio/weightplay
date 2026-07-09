@@ -299,7 +299,6 @@
           art: "Approved art is being wired into the internal build",
           qa: "Tester review is required before opening",
           release: "Playable entry stays closed until all gates pass",
-          trialUnlockProgress: "Internal trial gate {count}/10",
           trialUnlockReady: "Opening internal trial...",
         },
         "zh-Hant": {
@@ -312,7 +311,6 @@
           art: "\u6838\u51c6\u7f8e\u8853\u6b63\u5728\u63a5\u5165\u5167\u90e8\u7248\u672c",
           qa: "\u958b\u653e\u524d\u9700\u8981 Tester \u9a57\u8b49",
           release: "\u5168\u90e8 Gate \u901a\u904e\u524d\uff0c\u516c\u958b\u5165\u53e3\u4fdd\u6301\u95dc\u9589",
-          trialUnlockProgress: "\u5167\u90e8\u8a66\u73a9 Gate {count}/10",
           trialUnlockReady: "\u6b63\u5728\u958b\u555f\u5167\u90e8\u8a66\u73a9...",
         },
       };
@@ -339,10 +337,9 @@
       function renderTrialUnlockStatus() {
         if (!trialUnlockStatus) return;
         const dict = getLocaleDict();
-        const key = trialUnlockCount >= TRIAL_UNLOCK_TAPS ? "trialUnlockReady" : "trialUnlockProgress";
-        const message = (dict[key] || copy.en[key] || "").replace("{count}", String(trialUnlockCount));
-        trialUnlockStatus.textContent = message;
-        trialUnlockStatus.classList.toggle("is-visible", trialUnlockCount > 0);
+        const showReady = trialUnlockCount >= TRIAL_UNLOCK_TAPS;
+        trialUnlockStatus.textContent = showReady ? (dict.trialUnlockReady || copy.en.trialUnlockReady || "") : "";
+        trialUnlockStatus.classList.toggle("is-visible", showReady);
         holdCard?.classList.toggle("is-unlocking", trialUnlockCount > 0);
       }
 
