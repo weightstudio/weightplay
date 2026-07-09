@@ -900,7 +900,7 @@ canvas {
   white-space: nowrap;
 }
 
-@media (max-width: 760px) {
+@media (max-width: 760px), (pointer: coarse) {
   .reef-app {
     padding-inline: 10px;
   }
@@ -1090,14 +1090,17 @@ canvas {
     display: none !important;
   }
 
-  body.reef-fisher-playing #gamePanel.game-panel {
+  body.reef-fisher-playing #gamePanel.game-panel,
+  body.wp-mobile-game-mode.reef-fisher-playing #gamePanel.game-panel.weightplay-active-viewport {
     display: grid;
     grid-template-rows: 60px minmax(0, 1fr) 54px 154px;
     gap: 6px;
-    width: calc(100vw - 16px);
-    height: calc(var(--wp-mobile-vh, 100svh) - 54px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+    width: calc(100vw - 16px) !important;
+    max-width: calc(100vw - 16px) !important;
+    height: calc(var(--wp-mobile-vh, 100svh) - 54px - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
     min-height: 0;
-    max-height: calc(var(--wp-mobile-vh, 100svh) - 54px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+    max-height: calc(var(--wp-mobile-vh, 100svh) - 54px - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
+    margin: 0 !important;
     padding: 8px;
     overflow: hidden;
     border-radius: 18px;
@@ -1269,7 +1272,15 @@ canvas {
   }
 
   body.reef-fisher-playing .lane-label {
-    display: none;
+    font-size: 0.54rem;
+  }
+
+  body.reef-fisher-playing .lane-label-left {
+    left: 8px;
+  }
+
+  body.reef-fisher-playing .lane-label-right {
+    right: 8px;
   }
 
   body.reef-fisher-playing .tension-coach {
@@ -1287,17 +1298,19 @@ canvas {
   }
 }
 
-@media (max-width: 380px) {
+@media (max-width: 380px), (pointer: coarse) and (max-width: 430px) {
   body.reef-fisher-playing .reef-app {
     grid-template-rows: 44px minmax(0, 1fr);
     padding-inline: 6px;
   }
 
-  body.reef-fisher-playing #gamePanel.game-panel {
+  body.reef-fisher-playing #gamePanel.game-panel,
+  body.wp-mobile-game-mode.reef-fisher-playing #gamePanel.game-panel.weightplay-active-viewport {
     grid-template-rows: 54px minmax(0, 1fr) 48px 136px;
-    width: calc(100vw - 12px);
-    height: calc(var(--wp-mobile-vh, 100svh) - 48px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
-    max-height: calc(var(--wp-mobile-vh, 100svh) - 48px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+    width: calc(100vw - 12px) !important;
+    max-width: calc(100vw - 12px) !important;
+    height: calc(var(--wp-mobile-vh, 100svh) - 48px - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
+    max-height: calc(var(--wp-mobile-vh, 100svh) - 48px - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
     padding: 6px;
   }
 

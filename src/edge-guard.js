@@ -152,6 +152,7 @@
   }
 
   function findImmersiveFrameFromEventTarget(target) {
+    if (target?.closest?.("[data-no-mobile-immersive='true']")) return null;
     const direct = target?.closest?.(immersiveTriggerSelectors.join(","));
     if (direct && isVisible(direct)) return widenToPlayableFrame(direct);
     return findPlayableFrame();
@@ -261,6 +262,7 @@
   function handlePointerUp(event) {
     const target = event.target;
     if (isEditable(target)) return;
+    if (target?.closest?.("[data-no-mobile-immersive='true']")) return;
     if (!target?.closest?.(immersiveTriggerSelectors.join(","))) return;
     enterMobileGameMode(target);
   }

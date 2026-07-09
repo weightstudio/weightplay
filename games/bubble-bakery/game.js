@@ -871,8 +871,10 @@
     const bubble = document.createElement("div");
     bubble.className = "board-float";
     bubble.textContent = message;
-    bubble.style.left = `${x}px`;
-    bubble.style.top = `${y}px`;
+    const safeX = clamp(Number(x) || window.innerWidth / 2, 88, Math.max(88, window.innerWidth - 88));
+    const safeY = clamp(Number(y) || window.innerHeight / 2, 72, Math.max(72, window.innerHeight - 72));
+    bubble.style.left = `${safeX}px`;
+    bubble.style.top = `${safeY}px`;
     document.body.appendChild(bubble);
     window.setTimeout(() => bubble.remove(), 850);
   }
