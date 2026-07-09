@@ -463,6 +463,10 @@
   }
 
   function focusPanel(node) {
+    if (node === nodes.gamePanel && window.matchMedia?.("(max-width: 760px)").matches) {
+      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      return;
+    }
     const align = () => {
       const top = Math.max(0, node.getBoundingClientRect().top + window.scrollY - 6);
       window.scrollTo({ top, behavior: "auto" });

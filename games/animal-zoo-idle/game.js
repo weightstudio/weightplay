@@ -1457,18 +1457,8 @@
     applyOffline();
     render();
     requestAnimationFrame(render);
-    alignGamePanelTop();
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
     window.WonderAnalytics?.track("game_start", { game_id: GAME_ID });
-  }
-
-  function alignGamePanelTop() {
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        const rect = nodes.gamePanel.getBoundingClientRect();
-        const target = Math.max(0, window.scrollY + rect.top - 8);
-        window.scrollTo({ top: target, behavior: "auto" });
-      });
-    });
   }
 
   function tickPark() {

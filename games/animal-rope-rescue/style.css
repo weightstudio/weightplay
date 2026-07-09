@@ -587,6 +587,19 @@ body.is-vine-playing .game-page-info {
     overflow: hidden;
   }
 
+  body.is-vine-playing main.vine-app #gamePanel.game-panel {
+    width: calc(100vw - 16px) !important;
+    max-width: calc(100vw - 16px) !important;
+    height: calc(100svh - 78px - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
+    max-height: calc(100svh - 78px - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
+    justify-self: center !important;
+  }
+
+  body.is-vine-playing main.vine-app #playfield.playfield.play-area {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
   .topbar {
     grid-template-columns: 44px 1fr;
   }

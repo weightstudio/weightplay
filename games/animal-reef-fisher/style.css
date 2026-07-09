@@ -1014,3 +1014,326 @@ canvas {
     max-height: 52vh;
   }
 }
+
+@media (max-width: 760px) {
+  body.reef-fisher-playing {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: var(--wp-mobile-vh, 100svh);
+    min-height: var(--wp-mobile-vh, 100svh);
+    max-height: var(--wp-mobile-vh, 100svh);
+    overflow: hidden;
+    overscroll-behavior: none;
+    touch-action: none;
+  }
+
+  body.reef-fisher-playing .reef-app {
+    position: fixed;
+    inset: 0;
+    display: grid;
+    grid-template-rows: 50px minmax(0, 1fr);
+    width: 100vw;
+    height: var(--wp-mobile-vh, 100svh);
+    min-height: var(--wp-mobile-vh, 100svh);
+    max-height: var(--wp-mobile-vh, 100svh);
+    padding: max(4px, env(safe-area-inset-top)) 8px max(4px, env(safe-area-inset-bottom));
+    overflow: hidden;
+  }
+
+  body.reef-fisher-playing .topbar {
+    grid-template-columns: 42px minmax(0, 1fr) minmax(116px, 34vw);
+    gap: 8px;
+    min-height: 0;
+    margin: 0;
+  }
+
+  body.reef-fisher-playing .back-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 14px;
+    font-size: 25px;
+    box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.44), 0 4px 0 #8b5a1d, var(--shadow);
+  }
+
+  body.reef-fisher-playing .brand {
+    min-width: 0;
+  }
+
+  body.reef-fisher-playing .brand span {
+    display: none;
+  }
+
+  body.reef-fisher-playing .brand h1 {
+    overflow: hidden;
+    font-size: clamp(1.03rem, 5vw, 1.32rem);
+    line-height: 1.04;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  body.reef-fisher-playing .locale {
+    grid-column: auto;
+    min-height: 38px;
+    padding: 4px 6px;
+    font-size: 0;
+  }
+
+  body.reef-fisher-playing .locale select {
+    width: 100%;
+    max-width: none;
+    min-height: 30px;
+    font-size: 0.76rem;
+  }
+
+  body.reef-fisher-playing .game-page-info {
+    display: none !important;
+  }
+
+  body.reef-fisher-playing #gamePanel.game-panel {
+    display: grid;
+    grid-template-rows: 60px minmax(0, 1fr) 54px 154px;
+    gap: 6px;
+    width: calc(100vw - 16px);
+    height: calc(var(--wp-mobile-vh, 100svh) - 54px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+    min-height: 0;
+    max-height: calc(var(--wp-mobile-vh, 100svh) - 54px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+    padding: 8px;
+    overflow: hidden;
+    border-radius: 18px;
+  }
+
+  body.reef-fisher-playing #gamePanel.game-panel::before {
+    display: none;
+  }
+
+  body.reef-fisher-playing .hud-row {
+    display: grid;
+    grid-template-columns: 76px repeat(3, minmax(0, 1fr));
+    gap: 5px;
+    min-height: 0;
+    margin: 0;
+  }
+
+  body.reef-fisher-playing .hud-row .secondary-btn {
+    grid-column: auto;
+    min-height: 44px;
+    padding: 5px;
+    border-radius: 13px;
+    font-size: 0.74rem;
+  }
+
+  body.reef-fisher-playing .hud-row div {
+    display: grid;
+    align-content: center;
+    min-height: 44px;
+    padding: 5px 6px;
+    border-radius: 13px;
+  }
+
+  body.reef-fisher-playing .hud-row span {
+    font-size: 0.62rem;
+    line-height: 1;
+  }
+
+  body.reef-fisher-playing .hud-row strong {
+    overflow: hidden;
+    font-size: clamp(0.78rem, 3.2vw, 0.96rem);
+    line-height: 1.1;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  body.reef-fisher-playing .play-frame {
+    min-height: 0;
+    border-radius: 15px;
+  }
+
+  body.reef-fisher-playing canvas {
+    width: 100%;
+    height: 100%;
+    max-height: none;
+    aspect-ratio: auto;
+    object-fit: contain;
+  }
+
+  body.reef-fisher-playing .cast-meter {
+    left: 12px;
+    right: 12px;
+    bottom: 10px;
+    height: 9px;
+  }
+
+  body.reef-fisher-playing .catch-toast {
+    top: 8px;
+    padding: 8px 10px;
+    border-radius: 14px;
+  }
+
+  body.reef-fisher-playing .catch-hud {
+    grid-template-columns: 0.76fr 0.76fr 1.48fr;
+    gap: 5px;
+    min-height: 0;
+    margin: 0;
+  }
+
+  body.reef-fisher-playing .catch-hud > div {
+    display: grid;
+    align-content: center;
+    min-height: 0;
+    padding: 5px 6px;
+    border-radius: 12px;
+  }
+
+  body.reef-fisher-playing .catch-hud span {
+    font-size: 0.56rem;
+    line-height: 1;
+  }
+
+  body.reef-fisher-playing .catch-hud strong {
+    font-size: clamp(0.75rem, 3vw, 0.9rem);
+    line-height: 1.1;
+  }
+
+  body.reef-fisher-playing .catch-hud small {
+    display: none;
+  }
+
+  body.reef-fisher-playing .last-catch-name {
+    white-space: nowrap;
+  }
+
+  body.reef-fisher-playing .tension-panel {
+    grid-template-columns: 44px minmax(0, 1fr);
+    align-items: stretch;
+    gap: 7px;
+    min-height: 0;
+    margin: 0;
+  }
+
+  body.reef-fisher-playing .icon-btn {
+    width: 44px;
+    height: 44px;
+    align-self: center;
+    padding: 5px;
+    border-radius: 14px;
+  }
+
+  body.reef-fisher-playing .icon-btn img {
+    width: 34px;
+    height: 34px;
+  }
+
+  body.reef-fisher-playing .tension-control {
+    grid-template-rows: auto 56px auto;
+    gap: 5px;
+    min-height: 0;
+  }
+
+  body.reef-fisher-playing .tension-head {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: 8px;
+  }
+
+  body.reef-fisher-playing .tension-head strong {
+    font-size: 0.72rem;
+  }
+
+  body.reef-fisher-playing .tension-head span {
+    max-width: none;
+    overflow: hidden;
+    font-size: 0.62rem;
+    line-height: 1.1;
+    white-space: nowrap;
+    text-align: right;
+    text-overflow: ellipsis;
+  }
+
+  body.reef-fisher-playing .tension-lane {
+    height: 56px;
+  }
+
+  body.reef-fisher-playing .safe-band {
+    top: 9px;
+    bottom: 9px;
+    font-size: 0.56rem;
+  }
+
+  body.reef-fisher-playing .tension-marker {
+    top: 7px;
+    width: 56px;
+    height: 42px;
+    font-size: 0.56rem;
+  }
+
+  body.reef-fisher-playing .lane-label {
+    display: none;
+  }
+
+  body.reef-fisher-playing .tension-coach {
+    min-height: 0;
+    padding: 5px 8px;
+    overflow: hidden;
+    font-size: 0.66rem;
+    line-height: 1.16;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  body.reef-fisher-playing .hint {
+    display: none;
+  }
+}
+
+@media (max-width: 380px) {
+  body.reef-fisher-playing .reef-app {
+    grid-template-rows: 44px minmax(0, 1fr);
+    padding-inline: 6px;
+  }
+
+  body.reef-fisher-playing #gamePanel.game-panel {
+    grid-template-rows: 54px minmax(0, 1fr) 48px 136px;
+    width: calc(100vw - 12px);
+    height: calc(var(--wp-mobile-vh, 100svh) - 48px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+    max-height: calc(var(--wp-mobile-vh, 100svh) - 48px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+    padding: 6px;
+  }
+
+  body.reef-fisher-playing .topbar {
+    grid-template-columns: 38px minmax(0, 1fr) 104px;
+  }
+
+  body.reef-fisher-playing .back-btn {
+    width: 38px;
+    height: 38px;
+  }
+
+  body.reef-fisher-playing .hud-row {
+    grid-template-columns: 64px repeat(3, minmax(0, 1fr));
+  }
+
+  body.reef-fisher-playing .tension-panel {
+    grid-template-columns: 38px minmax(0, 1fr);
+  }
+
+  body.reef-fisher-playing .icon-btn {
+    width: 38px;
+    height: 38px;
+  }
+
+  body.reef-fisher-playing .tension-control {
+    grid-template-rows: auto 48px auto;
+  }
+
+  body.reef-fisher-playing .tension-lane {
+    height: 48px;
+  }
+
+  body.reef-fisher-playing .tension-marker {
+    top: 6px;
+    width: 50px;
+    height: 36px;
+  }
+}
