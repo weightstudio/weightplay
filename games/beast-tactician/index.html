@@ -21,6 +21,7 @@
       (() => {
         if (new URLSearchParams(window.location.search).get("trial") !== "1") return;
 
+        window.__WEIGHTPLAY_INTERNAL_TRIAL__ = true;
         document.documentElement.dataset.trialLoading = "true";
         fetch("internal-test.html?trial=1", { cache: "no-store" })
           .then((response) => {
@@ -28,6 +29,7 @@
             return response.text();
           })
           .then((html) => {
+            document.documentElement.dataset.trialLoading = "false";
             document.open();
             document.write(html);
             document.close();

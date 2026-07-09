@@ -767,19 +767,29 @@ body.fruit-playing .topbar {
     aspect-ratio: auto;
     padding: 4px;
     grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: 52px 56px minmax(0, 1fr) 58px;
+    grid-template-rows: 48px 50px minmax(0, 1fr) 44px;
     gap: 4px;
     border-radius: 15px;
   }
 
   .scorebar {
-    grid-template-columns: 1fr 1fr 52px 1fr;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 44px minmax(0, 1fr);
     gap: 4px;
   }
 
   .scorebar div {
-    min-height: 48px;
+    min-height: 44px;
     padding: 4px 5px;
+  }
+
+  .scorebar div:nth-child(3) {
+    padding: 2px;
+    display: grid;
+    place-items: center;
+  }
+
+  .scorebar div:nth-child(3) span {
+    display: none;
   }
 
   .scorebar span,
@@ -809,14 +819,25 @@ body.fruit-playing .topbar {
     height: 26px;
   }
 
+  #nextFruitText {
+    width: 34px;
+    height: 34px;
+    margin: 0;
+  }
+
   .goal-track {
     height: 5px;
   }
 
   .controls button {
-    min-height: 28px;
+    min-height: 40px;
     border-radius: 7px;
     font-size: 0.62rem;
+  }
+
+  body.fruit-playing .controls {
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
   }
 
   #gameCanvas {

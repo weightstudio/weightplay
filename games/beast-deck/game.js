@@ -510,7 +510,7 @@
       el.textContent = t(el.dataset.ui);
     });
     nodes.localeSelect.querySelector('option[value="en"]').textContent = "English";
-    nodes.localeSelect.querySelector('option[value="zh-Hant"]').textContent = "繁體中文";
+    nodes.localeSelect.querySelector('option[value="zh-Hant"]').textContent = "\u7e41\u9ad4\u4e2d\u6587";
     nodes.localeSelect.value = getLocale();
     updateDiamondShopUI();
     renderProgressUI();
