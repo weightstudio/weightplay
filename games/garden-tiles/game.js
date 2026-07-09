@@ -189,6 +189,7 @@
   }
 
   function showLevelSelect() {
+    document.body.classList.remove("garden-playing");
     resultPanel.classList.add("hidden");
     boardPanel.classList.add("hidden");
     levelSelect.classList.remove("hidden");
@@ -212,6 +213,7 @@
     busy = false;
     tiles = makeTiles(level.pairs, index);
     board.style.setProperty("--cols", level.cols);
+    document.body.classList.add("garden-playing");
     levelSelect.classList.add("hidden");
     boardPanel.classList.remove("hidden");
     resultPanel.classList.add("hidden");

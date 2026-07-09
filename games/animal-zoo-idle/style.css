@@ -1479,6 +1479,68 @@ body.zoo-playing .park-plan-card {
   gap: 4px;
 }
 
+body.zoo-playing .tour-board {
+  min-height: 154px;
+  height: auto;
+  border-radius: 13px;
+  padding: 7px 8px;
+  gap: 5px;
+}
+
+body.zoo-playing .tour-head {
+  min-height: 22px;
+  gap: 6px;
+}
+
+body.zoo-playing .tour-head strong {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: clamp(.64rem, 2.4vw, .78rem);
+}
+
+body.zoo-playing .tour-head span {
+  flex: 0 0 auto;
+  padding: 3px 7px;
+  font-size: clamp(.5rem, 1.85vw, .6rem);
+}
+
+body.zoo-playing .tour-list {
+  gap: 5px;
+}
+
+body.zoo-playing .tour-list span {
+  min-height: 35px;
+  padding: 5px 7px 8px;
+  gap: 2px 6px;
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+body.zoo-playing .tour-list b,
+body.zoo-playing .tour-list small {
+  line-height: 1.08;
+}
+
+body.zoo-playing .tour-list b {
+  font-size: clamp(.56rem, 2.15vw, .68rem);
+}
+
+body.zoo-playing .tour-list small {
+  font-size: clamp(.5rem, 1.9vw, .6rem);
+}
+
+body.zoo-playing .tour-board button {
+  min-height: 34px;
+  height: 34px;
+  border-radius: 12px;
+  font-size: clamp(.58rem, 2.25vw, .72rem);
+  line-height: 1.08;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 body.zoo-playing .park-plan-card strong {
   font-size: clamp(.62rem, 2.45vw, .78rem);
 }
