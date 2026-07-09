@@ -42,9 +42,36 @@ select {
   overflow-x: clip;
 }
 
+html.is-vine-playing,
 body.is-vine-playing {
-  overflow: hidden;
-  height: 100svh;
+  width: 100% !important;
+  height: 100svh !important;
+  max-height: 100svh !important;
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+  touch-action: none !important;
+}
+
+body.is-vine-playing {
+  position: fixed !important;
+  inset: 0 !important;
+}
+
+html.has-game-page-info.is-vine-playing:not(.wp-mobile-game-mode),
+html:not(.wp-mobile-game-mode):has(body.has-game-page-info.is-vine-playing),
+body.has-game-page-info.is-vine-playing:not(.wp-mobile-game-mode) {
+  width: 100% !important;
+  height: 100svh !important;
+  min-height: 100svh !important;
+  max-height: 100svh !important;
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+  touch-action: none !important;
+}
+
+body.has-game-page-info.is-vine-playing:not(.wp-mobile-game-mode) {
+  position: fixed !important;
+  inset: 0 !important;
 }
 
 body.is-vine-playing .vine-app {
@@ -52,6 +79,7 @@ body.is-vine-playing .vine-app {
   height: 100svh;
   align-content: start;
   padding-bottom: calc(10px + env(safe-area-inset-bottom));
+  overflow: hidden;
 }
 
 body.is-vine-playing .game-page-info {

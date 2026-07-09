@@ -139,7 +139,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "左右切換跑道，閃避草原障礙並挑戰高分。",
       },
       meta: { en: ["Safari", "Score Attack", "60 Sec"], "zh-Hant": ["草原跑酷", "分數挑戰", "60 秒"] },
-      art: { kind: "image", background: "assets/campus-dash-cover.webp", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
+      art: { kind: "image", background: "assets/campus-dash-cover.webp", hero: "assets/weightplay-character-spark-paw-fox-cutout.webp" },
     },
     {
       id: "snack-blocks",
@@ -157,7 +157,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "消除動物零食方塊，用有限步數完成收集目標並挑戰最佳分數。",
       },
       meta: { en: ["Animal Snacks", "20 Stages", "Match Puzzle"], "zh-Hant": ["動物零食", "20 關", "消除益智"] },
-      art: { kind: "image", background: "assets/snack-blocks-cover.webp", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
+      art: { kind: "image", background: "assets/snack-blocks-cover.webp", hero: "assets/weightplay-character-drum-belly-panda-safe-face-cutout.webp" },
     },
     {
       id: "fruit-merge",
@@ -193,7 +193,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "大圖示、無倒數的寵物花園配對遊戲，適合每天輕鬆遊玩。",
       },
       meta: { en: ["Pet Garden", "Large Tiles", "No Timer"], "zh-Hant": ["寵物花園", "大方塊", "無倒數"] },
-      art: { kind: "image", background: "assets/garden-tiles-cover.webp", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
+      art: { kind: "image", background: "assets/garden-tiles-cover.webp", hero: "assets/weightplay-character-rainbow-hop-mimi-clean-cutout.webp" },
     },
     {
       id: "animal-rescue",
@@ -211,7 +211,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "點選安全路線，帶可愛動物回到自己的家。",
       },
       meta: { en: ["Animal Games", "12 Trails", "No Pressure"], "zh-Hant": ["動物遊戲", "12 條路線", "無壓力"] },
-      art: { kind: "image", background: "assets/animal-rescue-cover.webp", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
+      art: { kind: "image", background: "assets/animal-rescue-cover.webp", hero: "assets/weightplay-character-boom-mane-lion-cutout.webp" },
     },
     {
       id: "animal-hidden-safari",
@@ -229,7 +229,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "觀察自然探險場景，找出藏起來的動物、足跡與棲地線索。",
       },
       meta: { en: ["Seek & Find", "6 Habitats", "No Pressure"], "zh-Hant": ["找找看", "6 個棲地", "無壓力"] },
-      art: { kind: "image", background: "assets/animal-hidden-safari-cover.webp", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
+      art: { kind: "image", background: "assets/animal-hidden-safari-cover.webp", hero: "assets/weightplay-character-moon-cap-owl-cutout.webp" },
     },
     {
       id: "animal-guard-yard",
@@ -291,7 +291,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "回答簡短友善的動物問題，完成一關關的小博士挑戰。",
       },
       meta: { en: ["Animal Games", "5 Stages", "Quiz"], "zh-Hant": ["動物遊戲", "5 關", "問答"] },
-      art: { kind: "image", background: "assets/quiz-cover.webp", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
+      art: { kind: "image", background: "assets/quiz-cover.webp", hero: "assets/weightplay-character-moon-cap-owl-cutout.webp" },
     },
     {
       id: "zoo-helper-day",
@@ -327,7 +327,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "點擊或拖曳可愛形狀朋友，把它們放到相同形狀的小火車車廂。",
       },
       meta: { en: ["Tap or Drag", "Shape Train", "3+"], "zh-Hant": ["點擊或拖曳", "形狀火車", "3+"] },
-      art: { kind: "image", background: "assets/shape-train-cover.webp", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
+      art: { kind: "image", background: "assets/shape-train-cover.webp", hero: "assets/weightplay-character-rainbow-hop-mimi-clean-cutout.webp" },
     },
     {
       id: "tiny-weather-rescue",
@@ -345,7 +345,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "看懂每個動物情境，從道具中選出最適合的幫忙方式。",
       },
       meta: { en: ["Tool Choices", "Scene Clues", "5+"], "zh-Hant": ["道具選擇", "看圖線索", "5+"] },
-      art: { kind: "image", background: "assets/tiny-weather-rescue-cover.webp", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
+      art: { kind: "image", background: "assets/tiny-weather-rescue-cover.webp", hero: "assets/weightplay-character-gear-horn-rhino-cutout.webp" },
     },
     {
       id: "beast-deck",
@@ -363,7 +363,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "組出動物能力牌組，通過任務、累積本機等級，逐步解鎖迷霧森林深處。"
       },
       meta: { en: ["Card Roguelike", "Local Level", "Mission Unlock"], "zh-Hant": ["牌組構築", "本機等級", "任務解鎖"] },
-      art: { kind: "image", background: "assets/beast-deck-cover.webp", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
+      art: { kind: "image", background: "assets/beast-deck-cover.webp", hero: "assets/weightplay-character-moon-cap-owl-cutout.webp" },
     },
     {
       id: "animal-relic-hunters",

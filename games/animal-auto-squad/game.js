@@ -73,6 +73,9 @@
       noDiamonds: "Not enough diamonds!",
       noGold: "Not enough gold!",
       noSupplies: "Not enough supplies!",
+      teamBonusTitle: "Permanent team bonus",
+      teamBonusValue: "All owned animals enter expeditions with +{atk} ATK and +{hp} HP from Team Level.",
+      teamBonusNext: "Next team level in {remaining} XP.",
       relicMaple: "Maple Shield: Front unit starts with Melon Shield.",
       relicOak: "Oak Seed: All units gain +1 Health in battle.",
       relicShadow: "Shadow Claw: All units gain +1 Attack in battle.",
@@ -329,6 +332,7 @@
     bestRoundsText: $("bestRoundsText"),
     clearedRunsText: $("clearedRunsText"),
     teamLevelText: $("teamLevelText"),
+    teamBonusText: $("teamBonusText"),
     diamondText: $("diamondText"),
     trainingTitleText: $("trainingTitleText"),
     trainingGoldText: $("trainingGoldText"),
@@ -416,7 +420,10 @@
       guideHint: "\u5f9e\u80cc\u5305\u62d6\u66f3\u6216\u9ede\u9078\u5df2\u64c1\u6709\u89d2\u8272\u5230\u968a\u4f0d\u3002\u9060\u5f81\u5347\u7d1a\u4f7f\u7528\u81e8\u6642\u7d20\u6750\uff0c\u96e2\u958b\u9060\u5f81\u5f8c\u4e0d\u6703\u4fdd\u7559\u3002",
       upgradeRun: "\u9060\u5f81\u5347\u7d1a\uff08{cost} \u7d20\u6750\uff09",
       backpackHint: "\u53ea\u986f\u793a\u5df2\u64c1\u6709\u89d2\u8272\u3002\u653e\u5165\u4e0a\u9663\u6216\u5099\u6230\u5340\u5f8c\uff0c\u53ef\u7528\u81e8\u6642\u7d20\u6750\u5347\u7d1a\u3002",
-      noSupplies: "\u9060\u5f81\u7d20\u6750\u4e0d\u8db3\uff01"
+      noSupplies: "\u9060\u5f81\u7d20\u6750\u4e0d\u8db3\uff01",
+      teamBonusTitle: "\u6c38\u4e45\u5718\u968a\u52a0\u6210",
+      teamBonusValue: "\u6240\u6709\u5df2\u64c1\u6709\u89d2\u8272\u9032\u5165\u9060\u5f81\u6642\uff0c\u6703\u56e0\u5718\u968a\u7b49\u7d1a\u7372\u5f97 +{atk} \u653b\u64ca\u548c +{hp} \u751f\u547d\u3002",
+      teamBonusNext: "\u8ddd\u96e2\u4e0b\u4e00\u500b\u5718\u968a\u7b49\u7d1a\u9084\u9700 {remaining} XP\u3002"
   });
 
   function normalizeSave(data) {
@@ -516,6 +523,16 @@
       .replace("{xp}", normalized.teamXp)
       .replace("{goal}", teamXpGoal(normalized.teamLevel));
     return value;
+  }
+
+  function formatTeamBonusNote() {
+    const normalized = normalizeSave(save);
+    const bonus = teamBonus();
+    const remaining = Math.max(0, teamXpGoal(normalized.teamLevel) - normalized.teamXp);
+    const title = t("teamBonusTitle");
+    const value = t("teamBonusValue", { atk: bonus.atk, hp: bonus.hp });
+    const next = t("teamBonusNext", { remaining });
+    return `<strong>${title}</strong><span>${value} ${next}</span>`;
   }
 
   function installTestApi() {
@@ -804,6 +821,9 @@
     nodes.clearedRunsText.textContent = String(save.clearedRuns);
     if (nodes.teamLevelText) {
       nodes.teamLevelText.textContent = formatTeamLevel();
+    }
+    if (nodes.teamBonusText) {
+      nodes.teamBonusText.innerHTML = formatTeamBonusNote();
     }
     updateWalletUI();
     renderTrainingRoster();

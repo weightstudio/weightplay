@@ -141,8 +141,10 @@
   let fruit = { x: 50, y: 20, vx: 0, vy: 0, rot: 0, cut: false };
 
   function setPlayingState(isPlaying) {
+    document.documentElement.classList.toggle("is-vine-playing", isPlaying);
     document.body.classList.toggle("is-vine-playing", isPlaying);
     window.WEIGHTPLAY_VINE_RESCUE_ACTIVE = isPlaying;
+    window.WeightPlayGame?.updateVisualViewportVars?.();
     window.dispatchEvent(new CustomEvent("animal-vine-rescue:play-state", { detail: { playing: isPlaying } }));
   }
 

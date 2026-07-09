@@ -169,6 +169,27 @@ select {
   color: var(--mint);
 }
 
+.team-bonus-note {
+  display: grid;
+  gap: 4px;
+  padding: 10px 12px;
+  border: 1px solid rgba(98, 235, 179, 0.28);
+  border-radius: 12px;
+  background: rgba(98, 235, 179, 0.08);
+  color: var(--text);
+  font-size: 0.88rem;
+  line-height: 1.35;
+}
+
+.team-bonus-note strong {
+  color: var(--mint);
+  font-size: 0.95rem;
+}
+
+.team-bonus-note span {
+  color: var(--muted);
+}
+
 .cosmetic-store {
   background: rgba(94, 140, 242, 0.08);
   border: 1px solid rgba(94, 140, 242, 0.25);
