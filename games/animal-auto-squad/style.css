@@ -178,6 +178,124 @@ select {
   gap: 8px;
 }
 
+.training-store {
+  background: rgba(255, 214, 102, 0.08);
+  border: 1px solid rgba(255, 214, 102, 0.25);
+  border-radius: 12px;
+  padding: 12px;
+  display: grid;
+  gap: 10px;
+}
+
+.training-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.training-header strong {
+  color: var(--gold);
+  font-size: 1rem;
+  white-space: nowrap;
+}
+
+.training-roster {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.training-hint {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.78rem;
+  line-height: 1.35;
+}
+
+.training-card {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  gap: 8px;
+  align-items: center;
+  min-width: 0;
+  padding: 8px;
+  border: 1px solid rgba(140, 240, 195, 0.2);
+  border-radius: 10px;
+  background: rgba(4, 18, 15, 0.74);
+}
+
+.training-card.is-locked {
+  border-color: rgba(255, 255, 255, 0.12);
+  opacity: 0.88;
+}
+
+.training-card.is-premium {
+  border-color: rgba(94, 140, 242, 0.52);
+  box-shadow: inset 0 0 18px rgba(94, 140, 242, 0.12);
+}
+
+.training-art {
+  width: 52px;
+  aspect-ratio: 1;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.45));
+}
+
+.training-copy {
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+}
+
+.training-copy strong {
+  min-width: 0;
+  color: var(--text);
+  font-size: 0.85rem;
+  line-height: 1.1;
+  overflow-wrap: anywhere;
+}
+
+.training-copy span,
+.training-copy small {
+  color: var(--muted);
+  font-size: 0.7rem;
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.training-action {
+  grid-column: 1 / -1;
+  min-height: 34px;
+  border: 0;
+  border-radius: 8px;
+  padding: 7px 8px;
+  color: #08150f;
+  background: linear-gradient(135deg, #8cf0c3, #35d99d);
+  font-size: 0.78rem;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.training-action.unlock-action {
+  background: linear-gradient(135deg, #ffd666, #f39c12);
+}
+
+.training-card.is-premium .training-action.unlock-action {
+  color: white;
+  background: linear-gradient(135deg, #5e8cf2, #8a5ef2);
+}
+
+.training-action:disabled {
+  cursor: default;
+  opacity: 0.45;
+  filter: grayscale(0.25);
+}
+
 .store-label {
   font-weight: 700 !important;
   color: #a6c7ff !important;
@@ -955,6 +1073,30 @@ select {
     max-width: 260px;
     margin: 0 auto;
   }
+
+  .training-roster {
+    grid-template-columns: 1fr;
+  }
+
+  .training-card {
+    grid-template-columns: 46px minmax(0, 1fr);
+    gap: 7px;
+    padding: 7px;
+  }
+
+  .training-art {
+    width: 46px;
+  }
+
+  .training-copy strong {
+    font-size: 0.8rem;
+  }
+
+  .training-action {
+    min-height: 32px;
+    font-size: 0.74rem;
+  }
+
   .hud-row {
     font-size: 0.85rem;
   }

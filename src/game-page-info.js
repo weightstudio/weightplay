@@ -509,32 +509,33 @@
       ],
     },
     "beast-tactician": {
-      title: "Beast Tactician",
+      title: "Beast Guardian",
       age: "13+",
       difficulty: "Hard",
-      time: "5-8 minutes",
+      time: "8-12 minutes",
       skills: ["Logic", "Problem Solving", "Focus"],
       intro:
-        "Beast Tactician is a turn-based squad tactics RPG. Lead a party of 3 animal heroes (Shield Bear, Flame Tiger, and Nature Deer) into ancient dungeon rooms. Manage action timeline turns, cast unique class spells, collect weapons and armor, and clear rooms to challenge the final Boss Behemoth.",
+        "Beast Guardian is a 13+ hero tower-defense game in production. Build ordinary animal soldiers and elite WeightPlay heroes on a tactical forest grid, shape enemy routes, stop boss waves, and protect the crystal core. The public page remains Coming Soon while the internal trial is used for release-quality testing.",
       how: [
-        "Select your active hero's skill card from the bottom Action Panel.",
-        "Click or tap on a target hero (for heals/buffs) or enemy shadow beast to cast the skill.",
-        "Defeat waves of shadow monsters to gain experience points (EXP) and level up your squad.",
-        "Loot equipment chests to obtain rare Weapon and Armor gear, and equip them in the sidebar to boost stats.",
-        "Explore Room 3 and defeat the Boss Behemoth to complete your expedition."
+        "Choose a stage from the swipe stage rail and read the threat, plan, and reward notes.",
+        "Spend coins to place soldiers or elite heroes on normal ground tiles.",
+        "Keep at least one path open, or blocked enemies will attack the nearest defender until the route reopens.",
+        "Upgrade defenders, unlock permanent tech, and use optional diamonds only for safe support choices such as revive, reroll, or cosmetic frames.",
+        "Win the wave, collect stars, then use the next-stage action to continue the campaign."
       ],
       strategyTips: [
-        "Use Shield Bear's Iron Wall taunt skill to draw enemy attacks away from your squishy healers and attackers.",
-        "Flame Tiger's Frenzy increases its next skill damage by 50%. Chain it before Shadow Slash for huge bursts.",
-        "Nature Deer's Rejuvenation heals allies. Keep Bear healthy so he can keep blocking damage.",
-        "Unlock the permanent Mist Amulet from the Diamond Shop to start the run with +10 Max HP for all squad members."
+        "Use cheap soldiers to shape the path before spending on elite heroes.",
+        "Moss Shell Taro and Boom Mane Leo are strong blockers, but over-blocking can make enemies attack them directly.",
+        "Moon Cap Orla and Spark Paw Fia help clear pressure before fast enemies reach the core.",
+        "Save diamonds for optional revive, reward reroll, or cosmetics; normal stage progress does not require spending."
       ],
       parent:
-        "This game is designed for teenagers to train tactical planning, team coordination, health resource management, and step-by-step logic. All progression tracking is kept locally and does not store personal data.",
+        "This game is designed for teenagers who enjoy planning, route control, timing, and resource decisions. Progress is saved locally in the browser, and the public page stays in Coming Soon status until the full release gate is approved.",
       faq: [
-        ["Is Beast Tactician free to play?", "Yes. All games on the WeightPlay platform run free of cost in the web browser."],
-        ["How does the turn order work?", "Avatars in the top timeline are sorted by Speed. The leftmost character takes their action first."],
-        ["How do I buy upgrades?", "Earning diamonds in dungeons allows you to unlock the permanent Mist Amulet in the shop."]
+        ["Is Beast Guardian free to play?", "Yes. WeightPlay games run in the browser for free."],
+        ["Why does the public page say Coming Soon?", "Beast Guardian is built as an internal trial first. It remains hidden from public playable lists until release gates pass."],
+        ["Can I enter the internal trial?", "Only the approved hidden trial route may open it for testing. The normal public card still behaves as a Coming Soon preview."],
+        ["What can Diamonds do?", "Diamonds are optional and may support revive, reward reroll, or cosmetics. They are not required for normal play."]
       ],
     },
     "shadow-wolf": {
@@ -661,7 +662,7 @@
     "animal-rune-tactics": { gameplay: "Turn-Based Squad Tactics", genre: ["Strategy", "Tactics", "Animal"] },
     "animal-orb-fortress": { gameplay: "Ricochet Roguelite", genre: ["Action", "Roguelite", "Animal"] },
     "animal-auto-squad": { gameplay: "Tactical Auto-Battler", genre: ["Auto-Battler", "Strategy", "Animal"] },
-    "beast-tactician": { gameplay: "Turn-Based Squad Tactics RPG", genre: ["Tactics", "RPG", "Animal"] },
+    "beast-tactician": { gameplay: "Hero Tower Defense", genre: ["Tower Defense", "Strategy", "Animal"] },
     "shadow-wolf": { gameplay: "2D Action Platformer RPG", genre: ["Action", "Platformer", "Animal"] },
   };
 
@@ -1041,6 +1042,41 @@
       ["為什麼標示為 13+？", "遊戲包含張力控制、裝備選擇、收集進度與選擇性鑽石消耗，比低年齡層遊戲更深入。"],
       ["一定要使用鑽石才能進度嗎？", "不用。礁區、裝備與圖鑑都能不花鑽石推進；鑽石只提供選擇性的魚餌或聲納工具。"],
       ["進度會保存嗎？", "會。解鎖礁區、圖鑑項目、裝備等級與最佳紀錄會保存在本機裝置。"],
+    ],
+  };
+
+  gameplayProfiles["beast-tactician"] = { gameplay: "Hero Tower Defense", genre: ["Tower Defense", "Strategy", "Animal"] };
+  localizedGameplayProfiles["zh-Hant"]["beast-tactician"] = { gameplay: "英雄塔防", genre: ["塔防", "策略", "動物"] };
+  localizedGames["zh-Hant"]["beast-tactician"] = {
+    title: "獸王守衛",
+    age: "13+",
+    difficulty: "困難",
+    time: "8-12 分鐘",
+    gameplay: "英雄塔防",
+    genre: ["塔防", "策略", "動物"],
+    skills: ["邏輯", "解決問題", "專注"],
+    intro:
+      "獸王守衛是一款製作中的 13+ 英雄塔防遊戲。玩家在森林遺跡格子上建造一般動物士兵與 WeightPlay 英雄，調整敵人路線、抵擋 Boss 波次並保護水晶核心。公開頁面仍維持敬請期待，內部試玩路線只用於發行品質測試。",
+    how: [
+      "從可滑動關卡列選擇關卡，先閱讀威脅、建議配置與獎勵。",
+      "花費金幣在普通地格放置士兵或英雄。",
+      "保持至少一條路線可通行；如果完全堵住路線，敵人會攻擊最近的守衛直到路線恢復。",
+      "升級守衛、解鎖永久科技，鑽石只作為復活、獎勵重抽或外觀框等可選支援。",
+      "守住波次後取得星星，並用下一關按鈕繼續推進。"
+    ],
+    strategyTips: [
+      "先用便宜士兵調整路線，再投入高費英雄。",
+      "苔殼塔羅與轟鬃里奧適合擋線，但過度封路會讓敵人直接攻擊他們。",
+      "月帽歐拉與星爪菲亞適合在快速敵人靠近核心前清理壓力。",
+      "鑽石留給可選復活、獎勵重抽或外觀；正常通關不需要強制花費。"
+    ],
+    parent:
+      "這款遊戲設計給喜歡規劃、路線控制、時機與資源選擇的青少年玩家。進度只保存在本機瀏覽器中，正式發行門檻通過前，公開頁面會維持敬請期待。",
+    faq: [
+      ["獸王守衛是免費遊戲嗎？", "是。WeightPlay 的遊戲都可以直接在瀏覽器免費遊玩。"],
+      ["為什麼公開頁面顯示敬請期待？", "獸王守衛目前先作為內部試玩版本驗證品質，通過發行門檻前不會加入公開可玩清單。"],
+      ["可以進入內部試玩嗎？", "只有核准的隱藏試玩路線可以進入；一般公開卡片仍然是敬請期待預告。"],
+      ["鑽石可以做什麼？", "鑽石是可選支援，可用於復活、獎勵重抽或外觀，不是正常遊玩的必要條件。"]
     ],
   };
 

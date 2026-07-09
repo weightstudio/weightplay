@@ -13,6 +13,16 @@
       expeditionsCleared: "Cleared Runs",
       teamLevel: "Team Level",
       diamonds: "Diamonds",
+      trainingTitle: "Squad Training",
+      trainingGold: "Training Gold",
+      owned: "Owned",
+      locked: "Locked",
+      premium: "Premium",
+      unlockGold: "Unlock {cost} Gold",
+      unlockDiamond: "Unlock {cost} Diamonds",
+      upgradeGold: "Upgrade {cost} Gold",
+      freeUnit: "Starter",
+      rosterHint: "Unlocked animals can appear in the expedition shop. Permanent levels are saved locally.",
       startExpedition: "Start Expedition",
       yourSquadLabel: "Active Squad (Left: Frontline | Right: Backline)",
       benchLabel: "Storage Bench",
@@ -316,6 +326,9 @@
     clearedRunsText: $("clearedRunsText"),
     teamLevelText: $("teamLevelText"),
     diamondText: $("diamondText"),
+    trainingTitleText: $("trainingTitleText"),
+    trainingGoldText: $("trainingGoldText"),
+    trainingRoster: $("trainingRoster"),
     buySkinBtn: $("buySkinBtn"),
     equipSkinBtn: $("equipSkinBtn"),
     startBtn: $("startBtn"),
@@ -352,6 +365,21 @@
     hintText: $("hintText")
   };
 
+  const STARTER_ANIMAL_IDS = [0, 1];
+  const PREMIUM_ANIMAL_IDS = [8, 9];
+  const ANIMAL_UNLOCK_COSTS = {
+    2: 25,
+    3: 30,
+    4: 40,
+    5: 45,
+    6: 55,
+    7: 65
+  };
+  const PREMIUM_UNLOCK_COSTS = {
+    8: 25,
+    9: 30
+  };
+
   // State Management
   let locale = window.WonderI18n?.locale?.() || localStorage.getItem(localeKey) || "en";
   let save = loadSave();
@@ -368,16 +396,79 @@
     foodGuideTitle: "食物效果"
   };
 
+  Object.assign(zhRuntimeText, {
+    trainingTitle: "\u5c0f\u968a\u8a13\u7df4",
+    trainingGold: "\u8a13\u7df4\u91d1\u5e63",
+    owned: "\u5df2\u64c1\u6709",
+    locked: "\u672a\u89e3\u9396",
+    premium: "\u83c1\u82f1",
+    unlockGold: "\u7528 {cost} \u91d1\u5e63\u89e3\u9396",
+    unlockDiamond: "\u7528 {cost} \u947d\u77f3\u89e3\u9396",
+    upgradeGold: "\u7528 {cost} \u91d1\u5e63\u5347\u7d1a",
+    freeUnit: "\u521d\u59cb\u89d2\u8272",
+    rosterHint: "\u5df2\u89e3\u9396\u89d2\u8272\u624d\u6703\u51fa\u73fe\u5728\u9060\u5f81\u5546\u5e97\uff0c\u6c38\u4e45\u7b49\u7d1a\u6703\u5b58\u5728\u672c\u6a5f\u3002"
+  });
+
   function normalizeSave(data) {
     const source = data && typeof data === "object" ? data : {};
+    const animalLevels = {};
+    const incomingLevels = source.animalLevels && typeof source.animalLevels === "object" ? source.animalLevels : {};
+    ANIMAL_METADATA.forEach((animal) => {
+      animalLevels[animal.id] = Math.max(1, Math.min(20, Math.floor(Number(incomingLevels[animal.id]) || 1)));
+    });
+    const unlockedAnimals = new Set(STARTER_ANIMAL_IDS);
+    if (Array.isArray(source.unlockedAnimals)) {
+      source.unlockedAnimals.forEach((id) => {
+        const normalizedId = Number(id);
+        if (ANIMAL_METADATA.some((animal) => animal.id === normalizedId)) unlockedAnimals.add(normalizedId);
+      });
+    }
     return {
       bestRound: Math.max(0, Number(source.bestRound) || 0),
       clearedRuns: Math.max(0, Number(source.clearedRuns) || 0),
       unlockedSkin: Boolean(source.unlockedSkin),
       selectedSkin: source.selectedSkin || "normal",
       teamLevel: Math.max(1, Number(source.teamLevel) || 1),
-      teamXp: Math.max(0, Number(source.teamXp) || 0)
+      teamXp: Math.max(0, Number(source.teamXp) || 0),
+      coins: Math.max(0, Math.floor(source.coins === undefined ? 18 : Number(source.coins) || 0)),
+      unlockedAnimals: [...unlockedAnimals].sort((a, b) => a - b),
+      animalLevels
     };
+  }
+
+  function isPremiumAnimal(id) {
+    return PREMIUM_ANIMAL_IDS.includes(Number(id));
+  }
+
+  function isAnimalUnlocked(id) {
+    save = normalizeSave(save);
+    return save.unlockedAnimals.includes(Number(id));
+  }
+
+  function animalPermanentLevel(id) {
+    save = normalizeSave(save);
+    return Math.max(1, Number(save.animalLevels?.[id]) || 1);
+  }
+
+  function animalUnlockCost(id) {
+    return ANIMAL_UNLOCK_COSTS[id] || 0;
+  }
+
+  function premiumUnlockCost(id) {
+    return PREMIUM_UNLOCK_COSTS[id] || 25;
+  }
+
+  function animalUpgradeCost(id) {
+    const level = animalPermanentLevel(id);
+    const animal = ANIMAL_METADATA.find((item) => item.id === Number(id));
+    const tier = Math.max(1, Number(animal?.tier) || 1);
+    return 12 + level * 6 + tier * 4;
+  }
+
+  function saveAnimalLevel(id, level) {
+    save = normalizeSave(save);
+    save.animalLevels[id] = Math.max(save.animalLevels[id] || 1, Math.min(20, Math.floor(Number(level) || 1)));
+    saveSave();
   }
 
   function teamXpGoal(level = save.teamLevel) {
@@ -402,6 +493,12 @@
     saveSave();
   }
 
+  function addTrainingCoins(amount) {
+    save = normalizeSave(save);
+    save.coins += Math.max(0, Math.floor(Number(amount) || 0));
+    saveSave();
+  }
+
   function formatTeamLevel() {
     const normalized = normalizeSave(save);
     const value = text.en.teamLevelValue
@@ -415,6 +512,12 @@
     window.__ANIMAL_AUTO_SQUAD_TEST__ = {
       readSave: () => normalizeSave(save),
       teamBonus: () => teamBonus(),
+      trainingPreview: () => ({
+        unlockedAnimals: normalizeSave(save).unlockedAnimals,
+        foxLevel: animalPermanentLevel(0),
+        premiumCosts: PREMIUM_ANIMAL_IDS.map((id) => ({ id, cost: premiumUnlockCost(id) })),
+        normalUnlockCosts: Object.entries(ANIMAL_UNLOCK_COSTS).map(([id, cost]) => ({ id: Number(id), cost }))
+      }),
       combinePreview: () => {
         const base = createAnimalCard(0);
         const copy = createAnimalCard(0);
@@ -455,7 +558,7 @@
         resolveOrderedCombatStep(state.combat.playerSquad, state.combat.enemySquad);
         resolveOrderedCombatStep(state.combat.playerSquad, state.combat.enemySquad);
         resolveOrderedCombatStep(state.combat.playerSquad, state.combat.enemySquad);
-        return {
+        const orderedPreview = {
           firstEnemyHp: state.combat.enemySquad[0]?.hp,
           randomEnemyDamageCount: state.combat.enemySquad.filter((unit, index) => index > 0 && unit.hp < unit.maxHp).length,
           rhinoShield: state.combat.playerSquad[2]?.shieldHp || 0,
@@ -463,6 +566,16 @@
           rabbitMax: state.combat.playerSquad[3]?.maxHp || 0,
           status: state.combat.status,
           effects: state.combat.effects.map((fx) => ({ type: fx.type, text: fx.text || "" }))
+        };
+        const enemyBackline = enemy(4, 8);
+        state.combat.playerSquad = [toCombat(createAnimalCard(0)), toCombat(createAnimalCard(1))];
+        state.combat.enemySquad = [enemy(0, 12), enemyBackline];
+        resolveEnemySlotAction(enemyBackline, 1);
+        return {
+          ...orderedPreview,
+          playerFrontHpAfterBackline: state.combat.playerSquad[0]?.hp,
+          playerBackHpAfterBackline: state.combat.playerSquad[1]?.hp,
+          activeActor: state.combat.activeActor
         };
       }
     };
@@ -512,6 +625,7 @@
         enemyActiveIndex: 0,
         shakeFrames: 0,
         shakeTarget: "",
+        activeActor: null,
         effects: [] // visual particle FX
       }
     };
@@ -551,6 +665,7 @@
   function updateWalletUI() {
     nodes.diamondText.textContent = String(getWalletDiamonds());
     renderCosmeticSection();
+    renderTrainingRoster();
   }
 
   // Preloading required sheets
@@ -666,6 +781,7 @@
       nodes.teamLevelText.textContent = formatTeamLevel();
     }
     updateWalletUI();
+    renderTrainingRoster();
     updatePageMeta();
   }
 
@@ -712,6 +828,110 @@
     renderCosmeticSection();
   }
 
+  function renderTrainingRoster() {
+    if (!nodes.trainingRoster || !nodes.trainingGoldText) return;
+    save = normalizeSave(save);
+    nodes.trainingGoldText.textContent = `${save.coins} ${t("gold")}`;
+    nodes.trainingRoster.innerHTML = "";
+
+    const hint = document.createElement("p");
+    hint.className = "training-hint";
+    hint.textContent = t("rosterHint");
+    nodes.trainingRoster.appendChild(hint);
+
+    ANIMAL_METADATA.forEach((animal) => {
+      const unlocked = isAnimalUnlocked(animal.id);
+      const level = animalPermanentLevel(animal.id);
+      const premium = isPremiumAnimal(animal.id);
+      const card = document.createElement("article");
+      card.className = `training-card${unlocked ? " is-owned" : " is-locked"}${premium ? " is-premium" : ""}`;
+      const name = locale === "zh-Hant" ? (animal.nameZht || animal.nameEn) : animal.nameEn;
+      const status = STARTER_ANIMAL_IDS.includes(animal.id)
+        ? t("freeUnit")
+        : premium
+          ? t("premium")
+          : unlocked
+            ? t("owned")
+            : t("locked");
+      const statBoost = Math.max(0, level - 1) * (premium ? 2 : 1);
+      card.innerHTML = `
+        <div class="training-art" style="background-image:url('${assetsToLoad[animal.imageKey] || assetsToLoad.boomLion}')"></div>
+        <div class="training-copy">
+          <strong>${name}</strong>
+          <span>${status} · ${t("level")}${level}</span>
+          <small>ATK ${animal.atk + statBoost} / HP ${animal.hp + statBoost}</small>
+        </div>
+      `;
+
+      const action = document.createElement("button");
+      action.type = "button";
+      action.className = unlocked ? "training-action upgrade-action" : "training-action unlock-action";
+      if (unlocked) {
+        const cost = animalUpgradeCost(animal.id);
+        action.textContent = t("upgradeGold", { cost });
+        action.disabled = save.coins < cost || level >= 20;
+        action.addEventListener("click", () => handleUpgradeAnimal(animal.id));
+      } else if (premium) {
+        const cost = premiumUnlockCost(animal.id);
+        action.textContent = t("unlockDiamond", { cost });
+        action.disabled = getWalletDiamonds() < cost;
+        action.addEventListener("click", () => handleUnlockAnimal(animal.id));
+      } else {
+        const cost = animalUnlockCost(animal.id);
+        action.textContent = t("unlockGold", { cost });
+        action.disabled = save.coins < cost;
+        action.addEventListener("click", () => handleUnlockAnimal(animal.id));
+      }
+      card.appendChild(action);
+      nodes.trainingRoster.appendChild(card);
+    });
+  }
+
+  function handleUnlockAnimal(id) {
+    initAudio();
+    save = normalizeSave(save);
+    if (isAnimalUnlocked(id)) return;
+    if (isPremiumAnimal(id)) {
+      const cost = premiumUnlockCost(id);
+      if (!spendWalletDiamonds(cost)) {
+        alert(t("noDiamonds"));
+        playSynth("click");
+        return;
+      }
+    } else {
+      const cost = animalUnlockCost(id);
+      if (save.coins < cost) {
+        alert(t("noGold"));
+        playSynth("click");
+        return;
+      }
+      save.coins -= cost;
+    }
+    save.unlockedAnimals = [...new Set([...save.unlockedAnimals, Number(id)])].sort((a, b) => a - b);
+    saveSave();
+    playSynth("buy");
+    renderTrainingRoster();
+  }
+
+  function handleUpgradeAnimal(id) {
+    initAudio();
+    save = normalizeSave(save);
+    if (!isAnimalUnlocked(id)) return;
+    const currentLevel = animalPermanentLevel(id);
+    if (currentLevel >= 20) return;
+    const cost = animalUpgradeCost(id);
+    if (save.coins < cost) {
+      alert(t("noGold"));
+      playSynth("click");
+      return;
+    }
+    save.coins -= cost;
+    save.animalLevels[id] = currentLevel + 1;
+    saveSave();
+    playSynth("combine");
+    renderTrainingRoster();
+  }
+
   // Language Setup
   function setLocale(next) {
     locale = next || "en";
@@ -743,6 +963,7 @@
     }
     $("diamondText").previousElementSibling.textContent = t("diamonds");
     document.querySelector(".cosmetic-store .store-label").textContent = t("buySkin");
+    if (nodes.trainingTitleText) nodes.trainingTitleText.textContent = t("trainingTitle");
 
     // HUD labels
     nodes.roundText.previousElementSibling.textContent = t("round");
@@ -778,6 +999,7 @@
     nodes.resultMenuBtn.textContent = t("backToMenu");
 
     renderCosmeticSection();
+    renderTrainingRoster();
   }
 
   // Start Expedition Run
@@ -868,13 +1090,16 @@
 
   function createAnimalCard(id) {
     const source = ANIMAL_METADATA.find((animal) => animal.id === id) || ANIMAL_METADATA[0];
+    const permanentLevel = animalPermanentLevel(source.id);
+    const statBoost = Math.max(0, permanentLevel - 1) * (isPremiumAnimal(source.id) ? 2 : 1);
     return {
       ...source,
-      exp: 1,
-      level: 1,
-      currentAtk: source.atk,
-      currentHp: source.hp,
-      maxHp: source.hp,
+      exp: permanentLevel,
+      level: permanentLevel,
+      permanentLevel,
+      currentAtk: source.atk + statBoost,
+      currentHp: source.hp + statBoost,
+      maxHp: source.hp + statBoost,
       hasShield: false
     };
   }
@@ -883,7 +1108,10 @@
   function generateShop() {
     // Reroll normal items if not frozen
     const tierLimit = Math.min(5, Math.ceil(state.round / 2)); // Tiers 1-5 unlocked as rounds progress
-    const animalPool = ANIMAL_METADATA.filter((a) => a.tier <= tierLimit);
+    let animalPool = ANIMAL_METADATA.filter((a) => a.tier <= tierLimit && isAnimalUnlocked(a.id));
+    if (!animalPool.length) {
+      animalPool = ANIMAL_METADATA.filter((a) => STARTER_ANIMAL_IDS.includes(a.id));
+    }
 
     for (let i = 0; i < 3; i++) {
       if (!state.shop.frozenAnimals[i]) {
@@ -1010,6 +1238,12 @@
       statsEl.innerHTML = `<span class="card-atk">ATK ${card.currentAtk}</span><span class="card-hp">HP ${card.currentHp}</span>`;
       el.appendChild(statsEl);
       el.title = `${locale === "zh-Hant" ? (card.nameZht || card.nameEn) : card.nameEn}: ATK ${card.currentAtk}, HP ${card.currentHp}. ${locale === "zh-Hant" ? (card.descZht || card.descEn || "") : (card.descEn || "")}`;
+      if (sourceArea === "shop-animal") {
+        const costEl = document.createElement("div");
+        costEl.className = "card-cost animal-cost";
+        costEl.textContent = "3";
+        el.appendChild(costEl);
+      }
     } else {
       // Cost
       const costEl = document.createElement("div");
@@ -1527,7 +1761,12 @@
   }
 
   function addCombatEffect(type, x, y, text = "", textColor = "white") {
-    state.combat.effects.push({ type, x, y, life: 16, text, textColor });
+    const maxLife = type === "starfall" ? 28 : type === "buff" ? 24 : 18;
+    state.combat.effects.push({ type, x, y, life: maxLife, maxLife, text, textColor });
+  }
+
+  function markActing(team, index, style = "attack") {
+    state.combat.activeActor = { team, index, style, life: 26, maxLife: 26 };
   }
 
   function removeDefeatedUnits(squad, team) {
@@ -1686,6 +1925,7 @@
     state.combat.log = [];
     state.combat.animating = true;
     state.combat.timer = 0;
+    state.combat.activeActor = null;
     state.combat.effects = [];
     
     canvasCtx = nodes.gameCanvas.getContext("2d");
@@ -1821,10 +2061,19 @@
       
       const w = mobileCombat ? 82 : 88;
       const h = mobileCombat ? 116 : 112;
-      const x = targetX + shakeX - w / 2;
-      const y = (mobileCombat ? 286 : 258) - h / 2;
+      const actor = state.combat.activeActor;
+      const isActing = actor?.team === team && actor.index === idx && actor.life > 0;
+      const actorProgress = isActing ? 1 - actor.life / Math.max(1, actor.maxLife || 26) : 0;
+      const bounce = isActing ? Math.sin(actorProgress * Math.PI) : 0;
+      const actorOffset = bounce * (isActing && actor.style === "cast" ? 18 : 12);
+      const scale = isActing ? 1 + bounce * 0.08 : 1;
+      const centerY = (mobileCombat ? 286 : 258) - actorOffset;
+      const x = targetX + shakeX - (w * scale) / 2;
+      const y = centerY - (h * scale) / 2;
+      const drawW = w * scale;
+      const drawH = h * scale;
       const imageBox = { x: x + 9, y: y + 24, w: w - 18, h: h - 48 };
-      state.combat.layout?.push({ team, index: idx, x, y, w, h, imageBox });
+      state.combat.layout?.push({ team, index: idx, x, y, w: drawW, h: drawH, imageBox });
 
       // Draw backdrop
       canvasCtx.fillStyle = isPlayer ? "rgba(10, 30, 24, 0.9)" : "rgba(35, 12, 12, 0.9)";
@@ -1833,9 +2082,18 @@
       
       // Draw rounded rectangle
       canvasCtx.beginPath();
-      canvasCtx.roundRect(x, y, w, h, 10);
+      canvasCtx.roundRect(x, y, drawW, drawH, 10);
       canvasCtx.fill();
       canvasCtx.stroke();
+      if (isActing) {
+        canvasCtx.strokeStyle = actor.style === "cast" ? "#8ff7ff" : "#ffd666";
+        canvasCtx.lineWidth = 4;
+        canvasCtx.globalAlpha = 0.82;
+        canvasCtx.beginPath();
+        canvasCtx.roundRect(x - 3, y - 3, drawW + 6, drawH + 6, 12);
+        canvasCtx.stroke();
+        canvasCtx.globalAlpha = 1;
+      }
       
       // Draw character sprite
       if (isPlayer) {
@@ -1866,18 +2124,18 @@
         canvasCtx.strokeStyle = "#5e8cf2";
         canvasCtx.lineWidth = 3;
         canvasCtx.beginPath();
-        canvasCtx.arc(x + w/2, y + h/2 - 10, w/2 - 2, 0, Math.PI * 2);
+        canvasCtx.arc(x + drawW/2, y + drawH/2 - 10, drawW/2 - 2, 0, Math.PI * 2);
         canvasCtx.stroke();
         if (unit.shieldHp > 0) {
-          drawStatPill(`S${Math.round(unit.shieldHp)}`, x + w / 2 - 18, y + h - 40, "#9cc8ff");
+          drawStatPill(`S${Math.round(unit.shieldHp)}`, x + drawW / 2 - 18, y + drawH - 40, "#9cc8ff");
         }
       }
 
-      drawStatPill(`A${unit.atk}`, x + 6, y + h - 20, "#ffd666");
-      drawStatPill(`H${Math.max(0, Math.round(unit.hp))}`, x + w - 42, y + h - 20, "#ff7081");
+      drawStatPill(`A${unit.atk}`, x + 6, y + drawH - 20, "#ffd666");
+      drawStatPill(`H${Math.max(0, Math.round(unit.hp))}`, x + drawW - 42, y + drawH - 20, "#ff7081");
 
       if (isPlayer) {
-        drawStatPill(`L${unitLevel(unit)}`, x + w / 2 - 18, y + 23, "#ffd666");
+        drawStatPill(`L${unitLevel(unit)}`, x + drawW / 2 - 18, y + 23, "#ffd666");
       }
 
       // Level star indicator for player units
@@ -1888,6 +2146,10 @@
 
       canvasCtx.restore();
     });
+    if (state.combat.activeActor?.life > 0) {
+      state.combat.activeActor.life--;
+      if (state.combat.activeActor.life <= 0) state.combat.activeActor = null;
+    }
   }
 
   function drawUnitHealthBar(unit, x, y, width, isPlayer) {
@@ -1941,29 +2203,87 @@
   function drawEffects() {
     state.combat.effects = state.combat.effects.filter((fx) => {
       fx.life--;
-      
+      const maxLife = Math.max(1, fx.maxLife || 18);
+      const progress = 1 - fx.life / maxLife;
+      const alpha = Math.max(0, fx.life / maxLife);
+      const radius = 18 + progress * 42;
+
       canvasCtx.save();
-      // Draw particle overlay
+      canvasCtx.globalAlpha = alpha;
       if (fx.type === "hit") {
-        canvasCtx.drawImage(imageCache.fx, 0, 0, 307, 512, fx.x - 40, fx.y - 40, 80, 80);
+        canvasCtx.strokeStyle = "#ffd666";
+        canvasCtx.lineWidth = 4;
+        for (let i = 0; i < 8; i++) {
+          const angle = (Math.PI * 2 * i) / 8 + progress * 0.8;
+          canvasCtx.beginPath();
+          canvasCtx.moveTo(fx.x + Math.cos(angle) * 10, fx.y + Math.sin(angle) * 10);
+          canvasCtx.lineTo(fx.x + Math.cos(angle) * radius, fx.y + Math.sin(angle) * radius);
+          canvasCtx.stroke();
+        }
       } else if (fx.type === "shield") {
-        canvasCtx.drawImage(imageCache.fx, 307, 0, 307, 512, fx.x - 40, fx.y - 40, 80, 80);
+        canvasCtx.strokeStyle = "#8fb7ff";
+        canvasCtx.lineWidth = 5;
+        canvasCtx.beginPath();
+        canvasCtx.arc(fx.x, fx.y, radius * 0.72, 0, Math.PI * 2);
+        canvasCtx.stroke();
+        canvasCtx.fillStyle = "rgba(143, 183, 255, 0.16)";
+        canvasCtx.fill();
       } else if (fx.type === "heal") {
-        canvasCtx.drawImage(imageCache.fx, 614, 0, 307, 512, fx.x - 40, fx.y - 40, 80, 80);
+        canvasCtx.strokeStyle = "#82ffd1";
+        canvasCtx.lineWidth = 6;
+        canvasCtx.beginPath();
+        canvasCtx.moveTo(fx.x - 18, fx.y);
+        canvasCtx.lineTo(fx.x + 18, fx.y);
+        canvasCtx.moveTo(fx.x, fx.y - 18);
+        canvasCtx.lineTo(fx.x, fx.y + 18);
+        canvasCtx.stroke();
+        canvasCtx.beginPath();
+        canvasCtx.arc(fx.x, fx.y, radius * 0.55, 0, Math.PI * 2);
+        canvasCtx.stroke();
       } else if (fx.type === "buff") {
-        canvasCtx.drawImage(imageCache.fx, 921, 0, 307, 512, fx.x - 40, fx.y - 40, 80, 80);
+        canvasCtx.fillStyle = "#ffd666";
+        for (let i = 0; i < 3; i++) {
+          const y = fx.y + 18 - progress * 44 - i * 10;
+          canvasCtx.beginPath();
+          canvasCtx.moveTo(fx.x - 12 + i * 12, y + 8);
+          canvasCtx.lineTo(fx.x + i * 12, y - 8);
+          canvasCtx.lineTo(fx.x + 12 + i * 12, y + 8);
+          canvasCtx.closePath();
+          canvasCtx.fill();
+        }
       } else if (fx.type === "smoke") {
-        canvasCtx.drawImage(imageCache.fx, 1228, 0, 307, 512, fx.x - 40, fx.y - 40, 80, 80);
+        canvasCtx.fillStyle = "rgba(210, 220, 230, 0.42)";
+        for (let i = 0; i < 5; i++) {
+          canvasCtx.beginPath();
+          canvasCtx.arc(fx.x + (i - 2) * 11, fx.y + Math.sin(i) * 8, radius * (0.28 + i * 0.025), 0, Math.PI * 2);
+          canvasCtx.fill();
+        }
+      } else if (fx.type === "starfall") {
+        canvasCtx.strokeStyle = "#b9f7ff";
+        canvasCtx.fillStyle = "#fff2a8";
+        canvasCtx.lineWidth = 3;
+        for (let i = 0; i < 5; i++) {
+          const angle = -Math.PI / 2 + (i * Math.PI * 2) / 5;
+          const x = fx.x + Math.cos(angle) * radius * 0.55;
+          const y = fx.y + Math.sin(angle) * radius * 0.55;
+          canvasCtx.beginPath();
+          canvasCtx.arc(x, y, 5 + progress * 5, 0, Math.PI * 2);
+          canvasCtx.fill();
+        }
+        canvasCtx.beginPath();
+        canvasCtx.arc(fx.x, fx.y, radius * 0.8, 0, Math.PI * 2);
+        canvasCtx.stroke();
       }
       
       // Floating text overlays (e.g. Damage numbers)
       if (fx.text) {
+        canvasCtx.globalAlpha = 1;
         canvasCtx.font = "bold 20px Outfit, system-ui";
         canvasCtx.fillStyle = fx.textColor || "white";
         canvasCtx.strokeStyle = "black";
         canvasCtx.lineWidth = 3;
-        canvasCtx.strokeText(fx.text, fx.x - 10, fx.y - 20 + (15 - fx.life));
-        canvasCtx.fillText(fx.text, fx.x - 10, fx.y - 20 + (15 - fx.life));
+        canvasCtx.strokeText(fx.text, fx.x - 10, fx.y - 20 - progress * 18);
+        canvasCtx.fillText(fx.text, fx.x - 10, fx.y - 20 - progress * 18);
       }
 
       canvasCtx.restore();
@@ -2096,6 +2416,7 @@
     if (!pUnit || !eUnit) return;
     state.combat.shakeFrames = 10;
     state.combat.shakeTarget = "player";
+    markActing("player", 0, "attack");
     const pPoint = combatPoint("player", 0);
     const ePoint = combatPoint("enemy", 0);
     damageTarget(pUnit, eUnit.atk, pPoint.x, pPoint.y);
@@ -2104,7 +2425,8 @@
   }
 
   function resolveEnemySlotAction(unit, slot) {
-    const target = state.combat.playerSquad[slot] || state.combat.playerSquad[0];
+    markActing("enemy", slot, "attack");
+    const target = state.combat.playerSquad[0];
     if (!target) return "";
     const targetIndex = Math.max(0, state.combat.playerSquad.indexOf(target));
     const point = combatPoint("player", targetIndex);
@@ -2121,6 +2443,7 @@
     const halfAttack = Math.max(1, Math.ceil((unit.atk || 1) * 0.5));
 
     if (!enemies.length) return "";
+    markActing(team, slot, unit.id === 3 || unit.id === 6 || unit.id === 7 || unit.id === 8 ? "cast" : "attack");
     if (unit.id === 1 || unit.id === 5) {
       healWeakestAlly(allies, halfAttack, team);
       return `${combatUnitName(unit)} ${locale === "zh-Hant" ? "\u6cbb\u7652\u968a\u53cb" : "heals an ally"}`;
@@ -2132,11 +2455,13 @@
     if (unit.id === 3) {
       const frontTarget = enemies[0];
       const frontPoint = combatPoint(enemyTeam, 0);
+      addCombatEffect("starfall", frontPoint.x, frontPoint.y, "", "#b9f7ff");
       damageTarget(frontTarget, Math.max(1, unit.atk + level - 1), frontPoint.x, frontPoint.y);
       const randomPool = enemies.filter((enemy) => enemy.hp > 0 && enemy !== frontTarget);
       const randomTarget = randomPool.length ? randomPool[Math.floor(Math.random() * randomPool.length)] : frontTarget;
       const randomIndex = Math.max(0, enemies.indexOf(randomTarget));
       const randomPoint = combatPoint(enemyTeam, randomIndex);
+      addCombatEffect("starfall", randomPoint.x, randomPoint.y, "", "#b9f7ff");
       damageTarget(randomTarget, Math.max(1, Math.ceil(unit.atk * 0.75)), randomPoint.x, randomPoint.y);
       return `${combatUnitName(unit)} ${locale === "zh-Hant" ? "\u964d\u4e0b\u661f\u843d" : "casts Starfall"}`;
     }
@@ -2199,6 +2524,7 @@
 
     if (result === "win") {
       addTeamXp(5 + state.round * 2);
+      addTrainingCoins(8 + state.round * 2);
       // Victory: next round
       if (state.round >= 10) {
         // Finished Stage Clear!
@@ -2222,6 +2548,7 @@
       }
     } else if (result === "lose") {
       addTeamXp(Math.max(1, state.round));
+      addTrainingCoins(Math.max(2, state.round));
       // Defeat: lose 1 Heart
       state.hearts--;
       updateHUD();
@@ -2236,6 +2563,7 @@
         startRoundPrep();
       }
     } else {
+      addTrainingCoins(Math.max(2, Math.ceil(state.round / 2)));
       // Draw: no heart lost, return to shop
       nodes.prepPhaseArea.classList.remove("is-hidden");
       nodes.combatArea.classList.add("is-hidden");
