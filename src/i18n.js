@@ -131,7 +131,7 @@
       "action.continue_title": "Continue {title}",
       "toast.favorite_added": "Added {title} to favorites",
       "toast.favorite_removed": "Removed {title} from favorites",
-      "toast.coming_soon": "{title} is coming soon",
+      "toast.coming_soon": "{title} is coming soon. This preview is not public play yet.",
       "language.label": "Language",
       "topic.featured": "Featured",
       "topic.animal": "Animal Games",
@@ -603,6 +603,7 @@
     "snapshot.preview_note": "\u656c\u8acb\u671f\u5f85\u5361\u7247\u9084\u4e0d\u6703\u516c\u958b\u904a\u73a9\u3002",
     "snapshot.mobile_title": "\u624b\u6a5f\u63a8\u85a6",
     "snapshot.mobile_note": "\u9069\u5408\u89f8\u63a7\u8207\u77ed\u56de\u5408\u904a\u73a9\u3002",
+    "toast.coming_soon": "{title} \u656c\u8acb\u671f\u5f85\uff0c\u76ee\u524d\u9084\u6c92\u6709\u958b\u653e\u516c\u958b\u904a\u73a9\u3002",
   });
 
   function getSavedLocale() {
