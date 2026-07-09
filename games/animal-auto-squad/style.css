@@ -377,6 +377,7 @@ select {
   aspect-ratio: 1 / 1.2;
   cursor: grab;
   user-select: none;
+  touch-action: none;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -416,8 +417,9 @@ select {
 }
 
 .card-graphic.character-icon {
-  top: 2px;
-  width: min(88%, 92px);
+  top: 34%;
+  transform: translate(-50%, -50%);
+  width: min(78%, 86px);
   filter: drop-shadow(0 8px 10px rgba(0, 0, 0, 0.45));
 }
 
@@ -499,6 +501,16 @@ select {
   font-weight: 800;
   border: 1px solid rgba(255, 255, 255, 0.1);
   z-index: 2;
+}
+
+.touch-drag-ghost {
+  position: fixed;
+  width: 82px;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.88;
+  transform: translate(-50%, -50%) scale(1.05);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.45);
 }
 
 .card-atk {
@@ -1001,8 +1013,9 @@ select {
   }
 
   .card-graphic.character-icon {
-    top: 3px;
-    width: min(88%, 62px);
+    top: 34%;
+    transform: translate(-50%, -50%);
+    width: min(76%, 58px);
   }
 
   .card-graphic.food-icon {

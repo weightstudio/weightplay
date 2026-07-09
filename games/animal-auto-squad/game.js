@@ -273,10 +273,10 @@
     { id: 0, nameEn: "Spark Paw Fox", nameZht: "\u661f\u722a\u72d0", imageKey: "sparkFox", tier: 1, atk: 2, hp: 2, roleEn: "Pounce", roleZht: "\u8df3\u64ca", descEn: "Buy: gains +1/+1. Battle: deals Lv damage to the lead enemy before each clash.", descZht: "\u8cfc\u8cb7\uff1a\u7372\u5f97 +1/+1\u3002\u6230\u9b25\uff1a\u6bcf\u6b21\u4ea4\u92d2\u524d\u5c0d\u6700\u524d\u65b9\u6575\u4eba\u9020\u6210\u7b49\u7d1a\u50b7\u5bb3\u3002" },
     { id: 1, nameEn: "Bubble Fin Otter", nameZht: "\u6ce1\u6ce1\u9c2d\u6c34\u737a", imageKey: "bubbleOtter", tier: 1, atk: 1, hp: 3, roleEn: "Tide Care", roleZht: "\u6f6e\u6c50\u6cbb\u7652", descEn: "Sell: gives a random ally +1 HP. Battle: heals the weakest ally by Lv.", descZht: "\u51fa\u552e\uff1a\u96a8\u6a5f\u968a\u53cb +1 \u751f\u547d\u3002\u6230\u9b25\uff1a\u6cbb\u7652\u751f\u547d\u6700\u4f4e\u7684\u968a\u53cb\u7b49\u7d1a\u9ede\u3002" },
     { id: 2, nameEn: "Drum Belly Panda", nameZht: "\u9f13\u809a\u718a\u8c93", imageKey: "drumPanda", tier: 2, atk: 3, hp: 2, roleEn: "Rhythm Guard", roleZht: "\u7bc0\u594f\u5b88\u8b77", descEn: "Buy: gives two allies +1 HP. Battle start: gives all allies +Lv HP.", descZht: "\u8cfc\u8cb7\uff1a\u5169\u540d\u968a\u53cb +1 \u751f\u547d\u3002\u958b\u6230\uff1a\u5168\u9ad4\u968a\u53cb +\u7b49\u7d1a \u751f\u547d\u3002" },
-    { id: 3, nameEn: "Moon Cap Owl", nameZht: "\u6708\u5e3d\u8c93\u982d\u9df9", imageKey: "moonOwl", tier: 2, atk: 2, hp: 3, roleEn: "Long Shot", roleZht: "\u9060\u8ddd\u5c04\u64ca", descEn: "Sell: gains +1 extra Gold. Battle: shoots the back enemy before each clash.", descZht: "\u51fa\u552e\uff1a\u984d\u5916\u7372\u5f97 1 \u91d1\u5e63\u3002\u6230\u9b25\uff1a\u6bcf\u6b21\u4ea4\u92d2\u524d\u5c04\u64ca\u6700\u5f8c\u65b9\u6575\u4eba\u3002" },
+    { id: 3, nameEn: "Moon Cap Owl", nameZht: "\u6708\u5e3d\u8c93\u982d\u9df9", imageKey: "moonOwl", tier: 2, atk: 2, hp: 3, roleEn: "Starfall", roleZht: "\u661f\u843d\u9023\u64ca", descEn: "Sell: gains +1 extra Gold. Battle: randomly strikes two enemies.", descZht: "\u51fa\u552e\uff1a\u984d\u5916\u7372\u5f97 1 \u91d1\u5e63\u3002\u6230\u9b25\uff1a\u96a8\u6a5f\u653b\u64ca\u5169\u540d\u6575\u4eba\u3002" },
     { id: 4, nameEn: "Moss Shell Turtle", nameZht: "\u82d4\u6bbc\u70cf\u9f9c", imageKey: "mossTurtle", tier: 3, atk: 2, hp: 4, roleEn: "Shell Wall", roleZht: "\u5805\u6bbc\u9632\u7dda", descEn: "Battle start: starts shielded. Faint: gives the ally behind Melon Shield.", descZht: "\u958b\u6230\uff1a\u81ea\u5e36\u8b77\u76fe\u3002\u5012\u4e0b\uff1a\u4f7f\u5f8c\u65b9\u968a\u53cb\u7372\u5f97\u751c\u74dc\u8b77\u76fe\u3002" },
-    { id: 5, nameEn: "Rainbow Hop Rabbit", nameZht: "\u5f69\u8679\u8df3\u5154", imageKey: "rainbowRabbit", tier: 3, atk: 4, hp: 2, roleEn: "Quick Hop", roleZht: "\u5feb\u901f\u8e0f\u64ca", descEn: "Buy: gives one free shop reroll. Battle: nips the weakest enemy before each clash.", descZht: "\u8cfc\u8cb7\uff1a\u7372\u5f97\u4e00\u6b21\u514d\u8cbb\u5237\u65b0\u3002\u6230\u9b25\uff1a\u6bcf\u6b21\u4ea4\u92d2\u524d\u653b\u64ca\u751f\u547d\u6700\u4f4e\u7684\u6575\u4eba\u3002" },
-    { id: 6, nameEn: "Gear Horn Rhino", nameZht: "\u9f52\u8f2a\u89d2\u7280\u725b", imageKey: "gearRhino", tier: 4, atk: 3, hp: 4, roleEn: "Armor", roleZht: "\u91cd\u7532", descEn: "Sell: buffs a random shop card +2/+2. Battle: reduces clash damage by Lv.", descZht: "\u51fa\u552e\uff1a\u96a8\u6a5f\u5546\u5e97\u5361 +2/+2\u3002\u6230\u9b25\uff1a\u4ea4\u92d2\u6642\u6e1b\u5c11\u7b49\u7d1a\u9ede\u50b7\u5bb3\u3002" },
+    { id: 5, nameEn: "Rainbow Hop Rabbit", nameZht: "\u5f69\u8679\u8df3\u5154", imageKey: "rainbowRabbit", tier: 3, atk: 4, hp: 2, roleEn: "Field Medic", roleZht: "\u5feb\u901f\u6cbb\u7652", descEn: "Buy: gives one free shop reroll. Battle: heals an ally for half its attack instead of attacking.", descZht: "\u8cfc\u8cb7\uff1a\u7372\u5f97\u4e00\u6b21\u514d\u8cbb\u5237\u65b0\u3002\u6230\u9b25\uff1a\u4e0d\u653b\u64ca\uff0c\u4ee5\u653b\u64ca\u529b\u4e00\u534a\u6cbb\u7652\u968a\u53cb\u3002" },
+    { id: 6, nameEn: "Gear Horn Rhino", nameZht: "\u9f52\u8f2a\u89d2\u7280\u725b", imageKey: "gearRhino", tier: 4, atk: 3, hp: 4, roleEn: "Shield Wall", roleZht: "\u8b77\u76fe\u9632\u7dda", descEn: "Sell: buffs a random shop card +2/+2. Battle: grants shield equal to half its attack instead of attacking.", descZht: "\u51fa\u552e\uff1a\u96a8\u6a5f\u5546\u5e97\u5361 +2/+2\u3002\u6230\u9b25\uff1a\u4e0d\u653b\u64ca\uff0c\u4ee5\u653b\u64ca\u529b\u4e00\u534a\u8f49\u6210\u8b77\u76fe\u3002" },
     { id: 7, nameEn: "Boom Mane Lion", nameZht: "\u7206\u9b03\u7345", imageKey: "boomLion", tier: 4, atk: 4, hp: 4, roleEn: "Roar", roleZht: "\u9f13\u821e\u5486\u54ee", descEn: "Faint: gives all allies +Lv/+Lv.", descZht: "\u5012\u4e0b\uff1a\u5168\u9ad4\u968a\u53cb\u7372\u5f97 +\u7b49\u7d1a/+\u7b49\u7d1a\u3002" },
     { id: 8, nameEn: "Spark Paw Captain", nameZht: "\u661f\u722a\u968a\u9577", imageKey: "sparkFox", tier: 5, atk: 5, hp: 5, roleEn: "Command", roleZht: "\u968a\u9577\u6307\u63ee", descEn: "Buy: gives all allies +2 HP. Battle start: gives all allies +Lv attack.", descZht: "\u8cfc\u8cb7\uff1a\u5168\u9ad4\u968a\u53cb +2 \u751f\u547d\u3002\u958b\u6230\uff1a\u5168\u9ad4\u968a\u53cb +\u7b49\u7d1a \u653b\u64ca\u3002" },
     { id: 9, nameEn: "Rhino Guardian", nameZht: "\u7280\u725b\u5b88\u885b", imageKey: "gearRhino", tier: 5, atk: 6, hp: 6, roleEn: "Last Stand", roleZht: "\u6700\u5f8c\u9632\u7dda", descEn: "Faint: deals 4 x Lv damage to the lead enemy.", descZht: "\u5012\u4e0b\uff1a\u5c0d\u6700\u524d\u65b9\u6575\u4eba\u9020\u6210 4 x \u7b49\u7d1a\u50b7\u5bb3\u3002" }
@@ -357,6 +357,7 @@
   let save = loadSave();
   let state = makeState();
   let selectedSlot = null; // for tap-to-select mobile fallback
+  let pointerDrag = null;
   let imageCache = {};
   let canvasCtx = null;
   let animationId = null;
@@ -420,6 +421,49 @@
         combineCards(base, copy);
         combineCards(base, createAnimalCard(0));
         return { level: base.level, exp: base.exp, atk: base.currentAtk, hp: base.currentHp };
+      },
+      abilityPreview: () => {
+        const toCombat = (card) => ({
+          ...card,
+          hp: card.currentHp,
+          maxHp: card.maxHp,
+          atk: card.currentAtk,
+          shield: Boolean(card.hasShield),
+          shieldHp: 0
+        });
+        const enemy = (id, hp = 10) => ({
+          id,
+          nameEn: `Test Enemy ${id}`,
+          nameZht: `測試敵人 ${id}`,
+          atk: 2,
+          hp,
+          maxHp: hp,
+          shield: false,
+          shieldHp: 0,
+          level: 1
+        });
+        state.combat = {
+          ...state.combat,
+          playerSquad: [toCombat(createAnimalCard(0)), toCombat(createAnimalCard(3)), toCombat(createAnimalCard(6)), toCombat(createAnimalCard(5))],
+          enemySquad: [enemy(0, 12), enemy(1, 8), enemy(2, 8), enemy(3, 8)],
+          step: 0,
+          effects: [],
+          status: "",
+          animating: true
+        };
+        resolveOrderedCombatStep(state.combat.playerSquad, state.combat.enemySquad);
+        resolveOrderedCombatStep(state.combat.playerSquad, state.combat.enemySquad);
+        resolveOrderedCombatStep(state.combat.playerSquad, state.combat.enemySquad);
+        resolveOrderedCombatStep(state.combat.playerSquad, state.combat.enemySquad);
+        return {
+          firstEnemyHp: state.combat.enemySquad[0]?.hp,
+          randomEnemyDamageCount: state.combat.enemySquad.filter((unit, index) => index > 0 && unit.hp < unit.maxHp).length,
+          rhinoShield: state.combat.playerSquad[2]?.shieldHp || 0,
+          rabbitHp: state.combat.playerSquad[3]?.hp || 0,
+          rabbitMax: state.combat.playerSquad[3]?.maxHp || 0,
+          status: state.combat.status,
+          effects: state.combat.effects.map((fx) => ({ type: fx.type, text: fx.text || "" }))
+        };
       }
     };
   }
@@ -887,6 +931,7 @@
       el.addEventListener("dragleave", dragLeave);
       el.addEventListener("drop", dragDrop);
       el.addEventListener("click", () => handleSlotTap(sourceArea, index));
+      el.addEventListener("pointerup", pointerCardUp);
       return el;
     }
 
@@ -991,6 +1036,10 @@
     el.addEventListener("dragover", dragOver);
     el.addEventListener("dragleave", dragLeave);
     el.addEventListener("drop", dragDrop);
+    el.addEventListener("pointerdown", pointerCardDown);
+    el.addEventListener("pointermove", pointerCardMove);
+    el.addEventListener("pointerup", pointerCardUp);
+    el.addEventListener("pointercancel", pointerCardCancel);
 
     return el;
   }
@@ -1017,6 +1066,73 @@
     } catch (err) {
       console.warn("Drag drop error:", err);
     }
+  }
+
+  function pointerCardDown(e) {
+    if (!state.activeRun || e.pointerType === "mouse") return;
+    const area = e.currentTarget.dataset.area;
+    const index = Number(e.currentTarget.dataset.slot);
+    const card = getCardAt(area, index);
+    if (!card) return;
+    pointerDrag = {
+      area,
+      index,
+      startX: e.clientX,
+      startY: e.clientY,
+      active: false,
+      ghost: null
+    };
+    e.currentTarget.setPointerCapture?.(e.pointerId);
+  }
+
+  function pointerCardMove(e) {
+    if (!pointerDrag) return;
+    const dx = e.clientX - pointerDrag.startX;
+    const dy = e.clientY - pointerDrag.startY;
+    if (!pointerDrag.active && Math.hypot(dx, dy) < 10) return;
+    if (!pointerDrag.active) {
+      pointerDrag.active = true;
+      pointerDrag.ghost = e.currentTarget.cloneNode(true);
+      pointerDrag.ghost.classList.add("touch-drag-ghost");
+      document.body.appendChild(pointerDrag.ghost);
+      e.currentTarget.classList.add("dragging");
+      selectedSlot = { area: pointerDrag.area, index: pointerDrag.index };
+    }
+    e.preventDefault();
+    pointerDrag.ghost.style.left = `${e.clientX}px`;
+    pointerDrag.ghost.style.top = `${e.clientY}px`;
+    document.querySelectorAll(".card-item.drag-over").forEach((node) => node.classList.remove("drag-over"));
+    const target = document.elementFromPoint(e.clientX, e.clientY)?.closest?.(".card-item");
+    if (target && target.dataset.area) target.classList.add("drag-over");
+  }
+
+  function pointerCardUp(e) {
+    if (!pointerDrag) return;
+    const drag = pointerDrag;
+    pointerDrag = null;
+    document.querySelectorAll(".card-item.drag-over, .card-item.dragging").forEach((node) => {
+      node.classList.remove("drag-over", "dragging");
+    });
+    drag.ghost?.remove();
+
+    if (!drag.active) return;
+    e.preventDefault();
+    const target = document.elementFromPoint(e.clientX, e.clientY)?.closest?.(".card-item");
+    selectedSlot = null;
+    if (!target || !target.dataset.area) {
+      renderPrepScreen();
+      return;
+    }
+    executeAction(drag.area, drag.index, target.dataset.area, Number(target.dataset.slot));
+  }
+
+  function pointerCardCancel() {
+    if (!pointerDrag) return;
+    pointerDrag.ghost?.remove();
+    pointerDrag = null;
+    document.querySelectorAll(".card-item.drag-over, .card-item.dragging").forEach((node) => {
+      node.classList.remove("drag-over", "dragging");
+    });
   }
 
   // Mobile/Tap Fallback
@@ -1423,17 +1539,57 @@
     }
   }
 
-  function healWeakestAlly(squad, amount) {
+  function combatPoint(team, index = 0) {
+    const isPlayer = team === "player";
+    const mobileCombat = window.matchMedia?.("(max-width: 640px)")?.matches;
+    const xBase = isPlayer ? (mobileCombat ? 390 : 400) : (mobileCombat ? 570 : 560);
+    const spacing = mobileCombat ? 84 : 100;
+    return {
+      x: xBase + (isPlayer ? -1 : 1) * index * spacing,
+      y: mobileCombat ? 286 : 258
+    };
+  }
+
+  function combatUnitName(unit) {
+    return unit ? (locale === "zh-Hant" ? (unit.nameZht || unit.nameEn) : unit.nameEn) : "-";
+  }
+
+  function healWeakestAlly(squad, amount, team = "player") {
     const target = squad.filter((unit) => unit.hp > 0).sort((a, b) => (a.hp / a.maxHp) - (b.hp / b.maxHp))[0];
     if (!target) return;
     target.hp = Math.min(target.maxHp, target.hp + amount);
-    addCombatEffect("heal", 390, 250, `+${amount}`, "#82ffd1");
+    const idx = Math.max(0, squad.indexOf(target));
+    const point = combatPoint(team, idx);
+    addCombatEffect("heal", point.x, point.y, `+${amount}`, "#82ffd1");
+  }
+
+  function addUnitShield(unit, amount, team = "player", index = 0) {
+    if (!unit || amount <= 0) return;
+    unit.shieldHp = Math.max(0, Math.round(unit.shieldHp || 0)) + Math.max(1, Math.round(amount));
+    unit.shield = unit.shieldHp > 0;
+    const point = combatPoint(team, index);
+    addCombatEffect("shield", point.x, point.y, `+${Math.max(1, Math.round(amount))}`, "#8fb7ff");
   }
 
   function damageTarget(unit, amount, x, y) {
     if (!unit || amount <= 0) return;
-    unit.hp -= amount;
-    addCombatEffect("hit", x, y, `-${amount}`, "yellow");
+    let damage = Math.max(0, Math.round(amount));
+    const shieldHp = Math.max(0, Math.round(unit.shieldHp || 0));
+    if (shieldHp > 0) {
+      const absorbed = Math.min(shieldHp, damage);
+      unit.shieldHp = shieldHp - absorbed;
+      unit.shield = unit.shieldHp > 0;
+      damage -= absorbed;
+      addCombatEffect("shield", x, y, `-${absorbed}`, "#8fb7ff");
+    } else if (unit.shield) {
+      unit.shield = false;
+      damage = 0;
+      addCombatEffect("shield", x, y, "Block", "#8fb7ff");
+    }
+    if (damage > 0) {
+      unit.hp -= damage;
+      addCombatEffect("hit", x, y, `-${damage}`, "yellow");
+    }
   }
 
   function triggerBattleStartAbilities() {
@@ -1446,8 +1602,7 @@
         });
         addCombatEffect("buff", 320, 245, `+${level} HP`, "#82ffd1");
       } else if (unit.id === 4) {
-        unit.shield = true;
-        addCombatEffect("shield", 390, 250);
+        addUnitShield(unit, Math.max(1, level), "player", state.combat.playerSquad.indexOf(unit));
       } else if (unit.id === 8) {
         state.combat.playerSquad.forEach((ally) => {
           ally.atk += level;
@@ -1496,12 +1651,13 @@
       hp: c.currentHp + bonus.hp,
       maxHp: c.maxHp + bonus.hp,
       atk: c.currentAtk + bonus.atk,
-      shield: c.hasShield
+      shield: c.hasShield,
+      shieldHp: c.hasShield ? Math.max(1, Math.ceil(c.currentHp * 0.35)) : 0
     }));
 
     // Trigger Maple Shield relic (first unit gets shield)
     if (state.relic?.id === 0 && state.combat.playerSquad.length) {
-      state.combat.playerSquad[0].shield = true;
+      addUnitShield(state.combat.playerSquad[0], 2, "player", 0);
     }
     // Trigger Oak Seed relic (+1 HP in combat)
     if (state.relic?.id === 1) {
@@ -1563,7 +1719,9 @@
         atk: baseAtk,
         hp: baseHp,
         maxHp: baseHp,
-        shield: false
+        shield: false,
+        shieldHp: 0,
+        level: Math.max(1, Math.ceil(round / 3))
       });
     }
     return squad;
@@ -1704,22 +1862,22 @@
       drawUnitHealthBar(unit, x + 8, y + 8, w - 16, isPlayer);
 
       // Draw Melon shield overlay
-      if (unit.shield) {
+      if (unit.shield || unit.shieldHp > 0) {
         canvasCtx.strokeStyle = "#5e8cf2";
         canvasCtx.lineWidth = 3;
         canvasCtx.beginPath();
         canvasCtx.arc(x + w/2, y + h/2 - 10, w/2 - 2, 0, Math.PI * 2);
         canvasCtx.stroke();
+        if (unit.shieldHp > 0) {
+          drawStatPill(`S${Math.round(unit.shieldHp)}`, x + w / 2 - 18, y + h - 40, "#9cc8ff");
+        }
       }
 
       drawStatPill(`A${unit.atk}`, x + 6, y + h - 20, "#ffd666");
       drawStatPill(`H${Math.max(0, Math.round(unit.hp))}`, x + w - 42, y + h - 20, "#ff7081");
 
       if (isPlayer) {
-        canvasCtx.font = "bold 10px Outfit, system-ui";
-        canvasCtx.textAlign = "center";
-        canvasCtx.fillStyle = "#ffd666";
-        canvasCtx.fillText(`Lv.${unitLevel(unit)}`, x + w / 2, y + 19);
+        drawStatPill(`L${unitLevel(unit)}`, x + w / 2 - 18, y + 23, "#ffd666");
       }
 
       // Level star indicator for player units
@@ -1838,6 +1996,9 @@
       return;
     }
 
+    resolveOrderedCombatStep(playerSquad, enemySquad);
+    return;
+
     triggerBeforeClashAbilities();
     if (!enemySquad.length) {
       combatLog(t("winText"));
@@ -1906,6 +2067,98 @@
         playSynth("faint");
       }
     }, 400);
+  }
+
+  function resolveOrderedCombatStep(playerSquad, enemySquad) {
+    const maxSlots = Math.max(playerSquad.length, enemySquad.length, 1);
+    const slot = state.combat.step % maxSlots;
+    state.combat.step++;
+    playSynth("hit");
+
+    if (slot === 0) {
+      resolveDirectClash(playerSquad[0], enemySquad[0]);
+    } else {
+      const actions = [];
+      if (playerSquad[slot]) actions.push(resolveUnitAbility(playerSquad[slot], "player", slot));
+      if (enemySquad[slot]) actions.push(resolveEnemySlotAction(enemySquad[slot], slot));
+      combatLog(actions.filter(Boolean).join("  |  ") || `${locale === "zh-Hant" ? "\u7b2c" : "Slot"} ${slot + 1}`);
+    }
+
+    setTimeout(() => {
+      const before = playerSquad.length + enemySquad.length;
+      removeDefeatedUnits(playerSquad, "player");
+      removeDefeatedUnits(enemySquad, "enemy");
+      if (before !== playerSquad.length + enemySquad.length) playSynth("faint");
+    }, 220);
+  }
+
+  function resolveDirectClash(pUnit, eUnit) {
+    if (!pUnit || !eUnit) return;
+    state.combat.shakeFrames = 10;
+    state.combat.shakeTarget = "player";
+    const pPoint = combatPoint("player", 0);
+    const ePoint = combatPoint("enemy", 0);
+    damageTarget(pUnit, eUnit.atk, pPoint.x, pPoint.y);
+    damageTarget(eUnit, pUnit.atk, ePoint.x, ePoint.y);
+    combatLog(`${combatUnitName(pUnit)} ${locale === "zh-Hant" ? "\u8207" : "clashes with"} ${combatUnitName(eUnit)}`);
+  }
+
+  function resolveEnemySlotAction(unit, slot) {
+    const target = state.combat.playerSquad[slot] || state.combat.playerSquad[0];
+    if (!target) return "";
+    const targetIndex = Math.max(0, state.combat.playerSquad.indexOf(target));
+    const point = combatPoint("player", targetIndex);
+    damageTarget(target, unit.atk, point.x, point.y);
+    return `${combatUnitName(unit)} ${locale === "zh-Hant" ? "\u53cd\u64ca" : "strikes"}`;
+  }
+
+  function resolveUnitAbility(unit, team, slot) {
+    const isPlayer = team === "player";
+    const allies = isPlayer ? state.combat.playerSquad : state.combat.enemySquad;
+    const enemies = isPlayer ? state.combat.enemySquad : state.combat.playerSquad;
+    const enemyTeam = isPlayer ? "enemy" : "player";
+    const level = unitLevel(unit);
+    const halfAttack = Math.max(1, Math.ceil((unit.atk || 1) * 0.5));
+
+    if (!enemies.length) return "";
+    if (unit.id === 1 || unit.id === 5) {
+      healWeakestAlly(allies, halfAttack, team);
+      return `${combatUnitName(unit)} ${locale === "zh-Hant" ? "\u6cbb\u7652\u968a\u53cb" : "heals an ally"}`;
+    }
+    if (unit.id === 6) {
+      addUnitShield(unit, halfAttack, team, slot);
+      return `${combatUnitName(unit)} ${locale === "zh-Hant" ? "\u6490\u8d77\u8b77\u76fe" : "raises a shield"}`;
+    }
+    if (unit.id === 3) {
+      const frontTarget = enemies[0];
+      const frontPoint = combatPoint(enemyTeam, 0);
+      damageTarget(frontTarget, Math.max(1, unit.atk + level - 1), frontPoint.x, frontPoint.y);
+      const randomPool = enemies.filter((enemy) => enemy.hp > 0 && enemy !== frontTarget);
+      const randomTarget = randomPool.length ? randomPool[Math.floor(Math.random() * randomPool.length)] : frontTarget;
+      const randomIndex = Math.max(0, enemies.indexOf(randomTarget));
+      const randomPoint = combatPoint(enemyTeam, randomIndex);
+      damageTarget(randomTarget, Math.max(1, Math.ceil(unit.atk * 0.75)), randomPoint.x, randomPoint.y);
+      return `${combatUnitName(unit)} ${locale === "zh-Hant" ? "\u964d\u4e0b\u661f\u843d" : "casts Starfall"}`;
+    }
+    if (unit.id === 2 || unit.id === 4) {
+      allies.forEach((ally, idx) => addUnitShield(ally, Math.max(1, level), team, idx));
+      return `${combatUnitName(unit)} ${locale === "zh-Hant" ? "\u5b88\u8b77\u5168\u968a" : "guards the squad"}`;
+    }
+    if (unit.id === 7 || unit.id === 8) {
+      allies.forEach((ally) => {
+        ally.atk += Math.max(1, level);
+        ally.maxHp += 1;
+        ally.hp += 1;
+      });
+      const point = combatPoint(team, slot);
+      addCombatEffect("buff", point.x, point.y, `+${level}`, "#ffd666");
+      return `${combatUnitName(unit)} ${locale === "zh-Hant" ? "\u5f37\u5316\u968a\u53cb" : "rallies allies"}`;
+    }
+
+    const target = enemies[0];
+    const point = combatPoint(enemyTeam, 0);
+    damageTarget(target, unit.atk, point.x, point.y);
+    return `${combatUnitName(unit)} ${locale === "zh-Hant" ? "\u653b\u64ca\u524d\u6392" : "attacks the front"}`;
   }
 
   // Combat Faint triggers

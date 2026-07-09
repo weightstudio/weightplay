@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex,nofollow" />
+    <title>Shadow Wolf Legend - Coming Soon | WeightPlay</title>
+    <meta
+      name="description"
+      content="Shadow Wolf Legend is in internal rebuild and testing and is not open for public play yet."
+    />
+    <link rel="canonical" href="https://weightplay.com/games/shadow-wolf/" />
+    <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Shadow Wolf Legend - Coming Soon | WeightPlay" />
+    <meta
+      property="og:description"
+      content="Shadow Wolf Legend has approved new art and is now in internal implementation and tester review before public play opens."
+    />
+    <meta property="og:url" content="https://weightplay.com/games/shadow-wolf/" />
+    <meta property="og:image" content="https://weightplay.com/assets/shadow-wolf-cover.webp" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="stylesheet" href="../../src/loading-screen.css" />
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260707-guide-related-compact1" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "Shadow Wolf Legend - Coming Soon",
+        "url": "https://weightplay.com/games/shadow-wolf/",
+        "image": "https://weightplay.com/assets/shadow-wolf-cover.webp",
+        "description": "Shadow Wolf Legend has approved new art and is now in internal implementation and tester review before public play opens.",
+        "isPartOf": {
+          "@type": "WebSite",
+          "name": "WeightPlay",
+          "url": "https://weightplay.com/"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "WeightStudio"
+        }
+      }
+    </script>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #081320;
+        --panel: rgba(9, 24, 38, 0.86);
+        --panel-line: rgba(170, 220, 255, 0.22);
+        --text: #f5fbff;
+        --muted: #b8cad8;
+        --gold: #ffd166;
+        --cyan: #5eead4;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Outfit", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        color: var(--text);
+        background:
+          linear-gradient(145deg, rgba(5, 16, 28, 0.96), rgba(5, 35, 48, 0.9)),
+          radial-gradient(circle at 22% 16%, rgba(94, 234, 212, 0.2), transparent 34%),
+          var(--bg);
+      }
+
+      .hold-page {
+        min-height: 100vh;
+        display: grid;
+        grid-template-rows: auto 1fr;
+      }
+
+      .hold-nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 18px clamp(16px, 4vw, 40px);
+      }
+
+      .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        min-height: 44px;
+        padding: 10px 16px;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        color: var(--text);
+        background: rgba(255, 255, 255, 0.08);
+        text-decoration: none;
+        font-weight: 800;
+      }
+
+      .locale-picker {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 44px;
+        padding: 8px 12px;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        background: rgba(255, 255, 255, 0.08);
+        color: var(--text);
+        font-weight: 800;
+      }
+
+      .locale-picker select {
+        max-width: min(48vw, 180px);
+        border: 0;
+        outline: 0;
+        background: transparent;
+        color: var(--text);
+        font: inherit;
+      }
+
+      .locale-picker option {
+        color: #0f172a;
+      }
+
+      .hold-main {
+        display: grid;
+        place-items: center;
+        padding: 18px clamp(16px, 5vw, 48px) 48px;
+      }
+
+      .hold-card {
+        width: min(920px, 100%);
+        display: grid;
+        grid-template-columns: minmax(220px, 320px) 1fr;
+        gap: clamp(20px, 4vw, 42px);
+        align-items: center;
+        padding: clamp(22px, 5vw, 48px);
+        border-radius: 28px;
+        border: 1px solid var(--panel-line);
+        background: var(--panel);
+        box-shadow: 0 28px 80px rgba(0, 0, 0, 0.34);
+      }
+
+      .mascot-frame {
+        aspect-ratio: 1;
+        border-radius: 24px;
+        display: grid;
+        place-items: center;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.04));
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        overflow: hidden;
+      }
+
+      .mascot-frame img {
+        width: 86%;
+        height: 86%;
+        object-fit: contain;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        width: fit-content;
+        margin-bottom: 14px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        color: #082f49;
+        background: linear-gradient(180deg, #fef3c7, var(--gold));
+        font-weight: 900;
+      }
+
+      h1 {
+        margin: 0 0 12px;
+        font-size: clamp(2rem, 5vw, 4rem);
+        line-height: 1.05;
+      }
+
+      p {
+        margin: 0;
+        max-width: 58ch;
+        color: var(--muted);
+        font-size: clamp(1rem, 2.4vw, 1.2rem);
+        line-height: 1.7;
+      }
+
+      .status-list {
+        display: grid;
+        gap: 10px;
+        margin-top: 24px;
+      }
+
+      .status-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--text);
+        font-weight: 800;
+      }
+
+      .trial-unlock-status {
+        min-height: 1.4em;
+        margin-top: 18px;
+        color: #d9f99d;
+        font-weight: 900;
+        opacity: 0;
+        transform: translateY(4px);
+        transition: opacity 160ms ease, transform 160ms ease;
+      }
+
+      .trial-unlock-status.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .hold-card.is-unlocking {
+        border-color: rgba(217, 249, 157, 0.56);
+        box-shadow: 0 28px 80px rgba(0, 0, 0, 0.34), 0 0 28px rgba(94, 234, 212, 0.2);
+      }
+
+      .status-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 999px;
+        background: var(--cyan);
+        box-shadow: 0 0 18px rgba(94, 234, 212, 0.72);
+        flex: 0 0 auto;
+      }
+
+      @media (max-width: 720px) {
+        .hold-nav {
+          align-items: stretch;
+          flex-direction: column;
+        }
+
+        .hold-card {
+          grid-template-columns: 1fr;
+          text-align: center;
+        }
+
+        .mascot-frame {
+          width: min(240px, 78vw);
+          margin: 0 auto;
+        }
+
+        .eyebrow {
+          margin-inline: auto;
+        }
+
+        .status-item {
+          justify-content: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="hold-page">
+      <header class="hold-nav">
+        <a class="back-link" href="../../index.html" data-i18n="back">Back to Lobby</a>
+        <label class="locale-picker">
+          <span data-i18n="language">Language</span>
+          <select id="localeSelect" aria-label="Language selector">
+            <option value="en">English</option>
+            <option value="zh-Hant">繁體中文</option>
+          </select>
+        </label>
+      </header>
+
+      <main class="hold-main">
+        <section class="hold-card" aria-labelledby="holdTitle">
+          <div class="mascot-frame">
+            <img src="../../assets/shadow-wolf-cover.webp" alt="Shadow Wolf Legend cover" />
+          </div>
+          <div>
+            <strong class="eyebrow" data-i18n="status">Coming Soon</strong>
+            <h1 id="holdTitle" data-i18n="title">Shadow Wolf Legend</h1>
+            <p data-i18n="body">
+              This game has approved new art and is now being wired into the internal build for tester review. It is not open for public play yet.
+            </p>
+            <div class="status-list" aria-label="Release checklist">
+              <div class="status-item"><span class="status-dot"></span><span data-i18n="art">Approved art is being wired into the internal build</span></div>
+              <div class="status-item"><span class="status-dot"></span><span data-i18n="qa">Tester review is required before opening</span></div>
+              <div class="status-item"><span class="status-dot"></span><span data-i18n="release">Playable entry stays closed until all gates pass</span></div>
+            </div>
+            <p id="trialUnlockStatus" class="trial-unlock-status" aria-live="polite"></p>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      const copy = {
+        en: {
+          back: "Back to Lobby",
+          language: "Language",
+          status: "Coming Soon",
+          title: "Shadow Wolf Legend",
+          body:
+            "This game has approved new art and is now being wired into the internal build for tester review. It is not open for public play yet.",
+          art: "Approved art is being wired into the internal build",
+          qa: "Tester review is required before opening",
+          release: "Playable entry stays closed until all gates pass",
+          trialUnlockProgress: "Internal trial gate {count}/10",
+          trialUnlockReady: "Opening internal trial...",
+        },
+        "zh-Hant": {
+          back: "回到大廳",
+          language: "語言",
+          status: "敬請期待",
+          title: "影狼傳說",
+          body:
+            "這款遊戲已完成新版美術，正在接入內部版本並等待 Tester 驗證，暫時還沒有開放公開遊玩。",
+          art: "新版美術正在接入內部版本",
+          qa: "開放前需要完成 Tester 驗證",
+          release: "所有 Gate 通過前，公開入口會保持關閉",
+          trialUnlockProgress: "內部試玩門 {count}/10",
+          trialUnlockReady: "正在開啟內部試玩...",
+        },      };
+
+      const localeSelect = document.getElementById("localeSelect");
+      const holdCard = document.querySelector(".hold-card");
+      const trialUnlockStatus = document.getElementById("trialUnlockStatus");
+      const TRIAL_UNLOCK_TAPS = 10;
+      let trialUnlockCount = 0;
+      let trialUnlockTimer = 0;
+
+      window.__WEIGHTPLAY_PUBLIC_GATE_STATE__ = {
+        gameId: "shadow-wolf",
+        status: "coming-soon",
+        playable: false,
+        ready: true,
+        hiddenTrialTaps: TRIAL_UNLOCK_TAPS,
+      };
+
+      function getLocaleDict() {
+        return copy[localeSelect.value] || copy.en;
+      }
+
+      function renderTrialUnlockStatus() {
+        if (!trialUnlockStatus) return;
+        const dict = getLocaleDict();
+        const key = trialUnlockCount >= TRIAL_UNLOCK_TAPS ? "trialUnlockReady" : "trialUnlockProgress";
+        const message = (dict[key] || copy.en[key] || "").replace("{count}", String(trialUnlockCount));
+        trialUnlockStatus.textContent = message;
+        trialUnlockStatus.classList.toggle("is-visible", trialUnlockCount > 0);
+        holdCard?.classList.toggle("is-unlocking", trialUnlockCount > 0);
+      }
+
+      function resetTrialUnlockSoon() {
+        window.clearTimeout(trialUnlockTimer);
+        trialUnlockTimer = window.setTimeout(() => {
+          trialUnlockCount = 0;
+          renderTrialUnlockStatus();
+        }, 8000);
+      }
+
+      function openInternalTrial() {
+        window.clearTimeout(trialUnlockTimer);
+        window.__WEIGHTPLAY_PUBLIC_GATE_STATE__.hiddenTrialUnlocked = true;
+        try {
+          sessionStorage.setItem("shadow-wolfTrialUnlocked", "true");
+        } catch (error) {
+          // The direct trial link still opens when storage is unavailable.
+        }
+        window.location.href = "internal-test.html?trial=1";
+      }
+
+      function handleTrialUnlockTap(event) {
+        if (event.target.closest("a, button, select, option, label")) return;
+        trialUnlockCount += 1;
+        renderTrialUnlockStatus();
+        if (trialUnlockCount >= TRIAL_UNLOCK_TAPS) {
+          openInternalTrial();
+          return;
+        }
+        resetTrialUnlockSoon();
+      }
+
+      function applyLocale(locale) {
+        const dict = copy[locale] || copy.en;
+        document.documentElement.lang = locale === "zh-Hant" ? "zh-Hant" : "en";
+        document.title = `${dict.title} - ${dict.status} | WeightPlay`;
+        document.querySelectorAll("[data-i18n]").forEach((node) => {
+          const key = node.getAttribute("data-i18n");
+          if (dict[key]) node.textContent = dict[key];
+        });
+        renderTrialUnlockStatus();
+      }
+
+      const savedLocale = localStorage.getItem("weightPlayLocale") || "en";
+      localeSelect.value = copy[savedLocale] ? savedLocale : "en";
+      applyLocale(localeSelect.value);
+      localeSelect.addEventListener("change", () => {
+        localStorage.setItem("weightPlayLocale", localeSelect.value);
+        applyLocale(localeSelect.value);
+      });
+      holdCard?.addEventListener("pointerup", handleTrialUnlockTap);
+    </script>
+  </body>
+</html>

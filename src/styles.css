@@ -586,6 +586,13 @@ body.lobby-page {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 8px;
+  padding: 0 0 8px;
+}
+
+.availability-filter {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
   padding: 0 0 14px;
 }
 
@@ -603,7 +610,8 @@ body.lobby-page {
 .age-filter button,
 .topic-filter button,
 .skill-filter button,
-.library-tabs button {
+.library-tabs button,
+.availability-filter button {
   min-width: 64px;
   height: 42px;
   border: 1px solid rgba(255, 255, 255, 0.16);
@@ -654,7 +662,8 @@ body.lobby-page {
 .age-filter button.active,
 .topic-filter button.active,
 .skill-filter button.active,
-.library-tabs button.active {
+.library-tabs button.active,
+.availability-filter button.active {
   border-color: rgba(255, 220, 122, 0.86);
   background: linear-gradient(180deg, #ffeaa0, #ffbf42);
   color: #241a08;
@@ -664,7 +673,8 @@ body.lobby-page {
 .age-filter button.active .filter-count,
 .topic-filter button.active .filter-count,
 .skill-filter button.active .filter-count,
-.library-tabs button.active .filter-count {
+.library-tabs button.active .filter-count,
+.availability-filter button.active .filter-count {
   background: rgba(36, 26, 8, 0.16);
   color: #241a08;
 }

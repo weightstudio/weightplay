@@ -3,6 +3,7 @@ const filterButtons = document.querySelectorAll("[data-age-filter]");
 const topicButtons = document.querySelectorAll("[data-topic-filter]");
 const skillButtons = document.querySelectorAll("[data-skill-filter]");
 const libraryButtons = document.querySelectorAll("[data-library-tab]");
+const availabilityButtons = document.querySelectorAll("[data-availability-filter]");
 const gameGrid = document.querySelector("#gameGrid");
 const heroGames = document.querySelector("#heroGames");
 const heroGamesSection = document.querySelector("#heroGamesSection");
@@ -150,6 +151,7 @@ let activeFilter = "all";
 let activeTopic = "all";
 let activeSkill = "all";
 let activeLibrary = "all";
+let activeAvailability = "all";
 let activeSearch = "";
 let toastTimer = null;
 let favoriteGameIds = readFavorites();
@@ -195,6 +197,7 @@ function activeDiscoveryLabels() {
   if (activeTopic !== "all") labels.push(selectedButtonLabel(topicButtons, "topicFilter", activeTopic));
   if (activeSkill !== "all") labels.push(selectedButtonLabel(skillButtons, "skillFilter", activeSkill));
   if (activeLibrary !== "all") labels.push(selectedButtonLabel(libraryButtons, "libraryTab", activeLibrary));
+  if (activeAvailability !== "all") labels.push(selectedButtonLabel(availabilityButtons, "availabilityFilter", activeAvailability));
   if (activeSearch) labels.push(i18n.t("status.search_term", { query: activeSearch }));
   return labels.filter(Boolean);
 }
@@ -293,6 +296,11 @@ function countGamesBy(type, value) {
     if (value === "recent") return recentGameIds.filter((id) => lobby.games.some((game) => game.id === id)).length;
     return lobby.games.length;
   }
+  if (type === "availability") {
+    if (value === "playable") return lobby.games.filter((game) => game.status === "playable").length;
+    if (value === "preview") return lobby.games.filter((game) => game.status === "planned").length;
+    return lobby.games.length;
+  }
   return 0;
 }
 
@@ -301,6 +309,7 @@ function filterButtonLabel(button, type, value) {
   if (type === "age") return value === "family" ? i18n.t("filter.family") : `${value}+`;
   if (type === "topic") return value === "all" ? i18n.t("filter.all_topics") : categoryText(value);
   if (type === "skill") return value === "all" ? i18n.t("filter.all_skills") : skillText(value);
+  if (type === "availability") return value === "all" ? i18n.t("availability.all") : i18n.t(`availability.${value}`);
   return button.textContent.trim();
 }
 
@@ -323,6 +332,7 @@ function renderFilterCounts() {
   topicButtons.forEach((button) => setFilterCount(button, "topic", button.dataset.topicFilter));
   skillButtons.forEach((button) => setFilterCount(button, "skill", button.dataset.skillFilter));
   libraryButtons.forEach((button) => setFilterCount(button, "library", button.dataset.libraryTab));
+  availabilityButtons.forEach((button) => setFilterCount(button, "availability", button.dataset.availabilityFilter));
 }
 
 function readFavorites() {
@@ -556,6 +566,7 @@ function createGameCard(game) {
   card.dataset.age = game.ages.join(" ");
   card.dataset.topic = (game.categories || []).join("|");
   card.dataset.skill = (game.skills || []).join("|");
+  card.dataset.status = game.status;
   card.dataset.gameId = game.id;
   card.dataset.search = [
     title,
@@ -1106,12 +1117,14 @@ function selectSkillPath(skill) {
   activeTopic = "all";
   activeSkill = skill;
   activeLibrary = "all";
+  activeAvailability = "all";
   activeSearch = "";
   if (gameSearch) gameSearch.value = "";
   setActiveButtons(filterButtons, "ageFilter", "all");
   setActiveButtons(topicButtons, "topicFilter", "all");
   setActiveButtons(skillButtons, "skillFilter", skill);
   setActiveButtons(libraryButtons, "libraryTab", "all");
+  setActiveButtons(availabilityButtons, "availabilityFilter", "all");
   window.WonderSound?.play("click");
   window.WonderAnalytics?.track("skill_path_open", { skill_path: skill, locale: i18n.locale() });
   applyFilter();
@@ -1135,12 +1148,14 @@ function resetDiscoveryFilters() {
   activeTopic = "all";
   activeSkill = "all";
   activeLibrary = "all";
+  activeAvailability = "all";
   activeSearch = "";
   if (gameSearch) gameSearch.value = "";
   setActiveButtons(filterButtons, "ageFilter", "all");
   setActiveButtons(topicButtons, "topicFilter", "all");
   setActiveButtons(skillButtons, "skillFilter", "all");
   setActiveButtons(libraryButtons, "libraryTab", "all");
+  setActiveButtons(availabilityButtons, "availabilityFilter", "all");
   window.WonderSound?.play("click");
   window.WonderAnalytics?.track("clear_lobby_filters", { locale: i18n.locale() });
   applyFilter();
@@ -1148,7 +1163,13 @@ function resetDiscoveryFilters() {
 
 function applyFilter() {
   let visibleCount = 0;
-  const isFiltered = activeFilter !== "all" || activeTopic !== "all" || activeSkill !== "all" || activeLibrary !== "all" || Boolean(activeSearch);
+  const isFiltered =
+    activeFilter !== "all" ||
+    activeTopic !== "all" ||
+    activeSkill !== "all" ||
+    activeLibrary !== "all" ||
+    activeAvailability !== "all" ||
+    Boolean(activeSearch);
   document.querySelectorAll("[data-age]").forEach((card) => {
     const ages = card.dataset.age.split(" ");
     const topics = card.dataset.topic ? card.dataset.topic.split("|") : [];
@@ -1161,7 +1182,11 @@ function applyFilter() {
       activeLibrary === "all" ||
       (activeLibrary === "favorites" && card.dataset.favorite === "true") ||
       (activeLibrary === "recent" && card.dataset.recent === "true");
-    const isVisible = matchesAge && matchesTopic && matchesSkill && matchesSearch && matchesLibrary;
+    const matchesAvailability =
+      activeAvailability === "all" ||
+      (activeAvailability === "playable" && card.dataset.status === "playable") ||
+      (activeAvailability === "preview" && card.dataset.status === "planned");
+    const isVisible = matchesAge && matchesTopic && matchesSkill && matchesSearch && matchesLibrary && matchesAvailability;
     card.classList.toggle("hidden", !isVisible);
     if (activeLibrary === "recent" && card.dataset.recentIndex !== "-1") {
       card.style.order = card.dataset.recentIndex;
@@ -1189,11 +1214,11 @@ function applyFilter() {
       ${isFiltered ? `<button type="button" data-clear-filters>${i18n.t("status.clear_filters")}</button>` : ""}
     `;
     filterStatus.querySelector("[data-clear-filters]")?.addEventListener("click", resetDiscoveryFilters);
-  } else if (activeLibrary === "favorites" && activeFilter === "all" && activeTopic === "all" && activeSkill === "all") {
+  } else if (activeLibrary === "favorites" && activeFilter === "all" && activeTopic === "all" && activeSkill === "all" && activeAvailability === "all") {
     filterStatus.textContent = i18n.t(visibleCount > 1 ? "status.favorite_games" : "status.favorite_games_one", {
       count: visibleCount,
     });
-  } else if (activeLibrary === "recent" && activeFilter === "all" && activeTopic === "all" && activeSkill === "all") {
+  } else if (activeLibrary === "recent" && activeFilter === "all" && activeTopic === "all" && activeSkill === "all" && activeAvailability === "all") {
     filterStatus.textContent = i18n.t(visibleCount > 1 ? "status.recent_games" : "status.recent_games_one", {
       count: visibleCount,
     });
@@ -1346,6 +1371,17 @@ libraryButtons.forEach((button) => {
     window.WonderSound?.play("click");
     window.WonderAnalytics?.track("library_tab", { library_tab: activeLibrary, locale: i18n.locale() });
     libraryButtons.forEach((item) => item.classList.toggle("active", item === button));
+    applyFilter();
+  });
+});
+
+availabilityButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    activeAvailability = button.dataset.availabilityFilter;
+
+    window.WonderSound?.play("click");
+    window.WonderAnalytics?.track("availability_filter", { availability_filter: activeAvailability, locale: i18n.locale() });
+    availabilityButtons.forEach((item) => item.classList.toggle("active", item === button));
     applyFilter();
   });
 });

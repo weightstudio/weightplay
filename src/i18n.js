@@ -109,6 +109,9 @@
       "status.games_found_one": "1 game found",
       "status.games_found_many": "{count} games found",
       "status.search_term": "Search: {query}",
+      "availability.all": "All Status",
+      "availability.playable": "Play Now",
+      "availability.preview": "Coming Soon",
       "action.play": "Play",
       "action.continue": "Continue",
       "action.coming_soon": "Coming Soon",
@@ -579,6 +582,9 @@
     "character.drum_belly_panda.role": "\u7bc0\u594f\u5c08\u6ce8\u6559\u7df4",
     "character.rainbow_hop_rabbit.name": "\u5f69\u8df3\u54aa\u54aa",
     "character.rainbow_hop_rabbit.role": "\u5feb\u901f\u53cd\u61c9\u5f15\u5c0e",
+    "availability.all": "\u5168\u90e8\u72c0\u614b",
+    "availability.playable": "\u73fe\u5728\u53ef\u73a9",
+    "availability.preview": "\u65b0\u904a\u6232\u9810\u544a",
   });
 
   function getSavedLocale() {

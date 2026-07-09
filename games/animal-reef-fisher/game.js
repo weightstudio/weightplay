@@ -548,11 +548,15 @@
     track("game_complete", { zone: run.zone.id, won, catches: run.catches, newFish: run.newFish, notes: run.notes, score: run.finalScore });
   }
 
-  function hookFish() {
+  function pickHookFish() {
     const zoneIndex = zones.indexOf(run.zone);
     let pool = fish.slice(0, Math.min(12, 4 + zoneIndex * 2));
     if (run.lureUsed) pool = pool.concat(fish.filter((f) => f.rare));
-    run.hookFish = pool[Math.floor(Math.random() * pool.length)];
+    return pool[Math.floor(Math.random() * pool.length)] || fish[0];
+  }
+
+  function hookFish() {
+    if (!run.hookFish) run.hookFish = pickHookFish();
     run.phase = "reel";
     run.tension = 50;
     run.struggle = 0;
@@ -936,9 +940,11 @@
         const t = performance.now() / 1000;
         const x = 500 + Math.sin(t * 1.4) * 80;
         const y = 240 + Math.cos(t * 1.1) * 45;
-        const f = run.hookFish || fish[0];
-        drawFishSprite(f, x - 78, y - 38, f.rare ? 174 : 156, f.rare ? 90 : 76);
-        if (f.rare || run.sonarPulse > 0) drawSpriteSheet(images.shimmer, 1, 1, 0, x - 18, y - 18, 150, 110);
+        const f = run.hookFish;
+        if (f) {
+          drawFishSprite(f, x - 78, y - 38, f.rare ? 174 : 156, f.rare ? 90 : 76);
+          if (f.rare || run.sonarPulse > 0) drawSpriteSheet(images.shimmer, 1, 1, 0, x - 18, y - 18, 150, 110);
+        }
       }
 
       if (run.splashTimer > 0) {
@@ -981,10 +987,11 @@
     if (state !== "game" || !run) return;
     pointer.down = false;
     if (run.phase === "charging") {
+      run.hookFish = pickHookFish();
       run.phase = "cast";
       run.fishTimer = Math.max(0.45, 1.45 - run.castPower / 100);
       updateTensionGuide();
-      track("cast", { power: Math.round(run.castPower), zone: run.zone.id });
+      track("cast", { power: Math.round(run.castPower), zone: run.zone.id, fish: run.hookFish.id });
     }
   }
 
@@ -1142,6 +1149,7 @@
                 catchLog: run.catchLog,
                 finished: run.finished,
                 zone: run.zone.id,
+                hookFish: run.hookFish ? run.hookFish.id : "",
               }
             : null,
           pointer: { down: pointer.down, tensionPct: pointer.tensionPct, source: pointer.source },
