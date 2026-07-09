@@ -779,6 +779,8 @@
   function showMenu() {
     running = false;
     cancelAnimationFrame(raf);
+    document.documentElement.classList.remove("guard-yard-playing");
+    document.body.classList.remove("guard-yard-playing");
     if (nodes.spawnWarning) {
       nodes.spawnWarning.remove();
       nodes.spawnWarning = null;
@@ -816,6 +818,8 @@
     nodes.menuPanel.classList.add("hidden");
     nodes.playPanel.classList.remove("hidden");
     nodes.resultPanel.classList.add("hidden");
+    document.documentElement.classList.add("guard-yard-playing");
+    document.body.classList.add("guard-yard-playing");
     nodes.hintText.textContent = t("select");
     buildBoard(stage);
     renderUnits();
@@ -1396,6 +1400,8 @@
       saveProfile();
     }
     nodes.nextStageBtn.classList.toggle("hidden", !won || currentStage >= stages.length - 1);
+    document.documentElement.classList.add("guard-yard-playing");
+    document.body.classList.add("guard-yard-playing");
     nodes.resultPanel.classList.remove("hidden");
     renderWallet();
     renderKennel();

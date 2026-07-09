@@ -1472,11 +1472,11 @@ body.zoo-playing .daily-focus-card > i {
 }
 
 body.zoo-playing .park-plan-card {
-  min-height: 94px;
-  height: 94px;
+  min-height: 108px;
+  height: auto;
   border-radius: 13px;
-  padding: 7px 8px;
-  gap: 4px;
+  padding: 8px 9px;
+  gap: 6px;
 }
 
 body.zoo-playing .tour-board {
@@ -1598,8 +1598,8 @@ body.zoo-playing .next-goal-card {
 
 body.zoo-playing .facility-board {
   border-radius: 13px;
-  padding: 7px 8px;
-  gap: 5px;
+  padding: 8px 9px;
+  gap: 7px;
 }
 
 body.zoo-playing .facility-board > strong {
@@ -1891,7 +1891,7 @@ body.zoo-playing .animal-shop-card small {
     max-width: 100%;
     aspect-ratio: 1 / 1;
     height: auto;
-    max-height: min(47vh, 100%);
+    max-height: min(44vh, 100%);
     flex: 0 0 auto;
     align-self: start;
     background:
@@ -1903,7 +1903,7 @@ body.zoo-playing .care-panel {
   min-height: 0;
   height: 100%;
   max-height: 100%;
-  padding-bottom: calc(92px + env(safe-area-inset-bottom));
+  padding-bottom: calc(112px + env(safe-area-inset-bottom));
   overflow-y: auto;
   overflow-x: hidden;
   overscroll-behavior: contain;
@@ -1937,6 +1937,26 @@ body.zoo-playing .care-panel {
     width: 100%;
     min-width: 0;
     flex: 0 0 auto;
+  }
+
+  body.zoo-playing .daily-focus-card {
+    min-height: 74px;
+    padding: 9px 10px;
+  }
+
+  body.zoo-playing .daily-focus-card div {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 4px 8px;
+  }
+
+  body.zoo-playing .daily-focus-card strong {
+    grid-column: 1 / -1;
+  }
+
+  body.zoo-playing .park-plan-card {
+    min-height: 112px;
+    padding: 9px 10px;
   }
 
   body.zoo-playing .facility-list {
@@ -1977,10 +1997,11 @@ body.zoo-playing .care-panel {
   }
 
   body.zoo-playing .zoo-task {
-    min-height: 44px;
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: 4px 8px;
-    align-items: center;
+    min-height: 58px;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 4px;
+    align-items: start;
+    padding: 8px 9px 12px;
   }
 
   body.zoo-playing .zoo-task span,
@@ -1989,6 +2010,15 @@ body.zoo-playing .care-panel {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+
+  body.zoo-playing .zoo-task span {
+    font-size: clamp(.74rem, 3vw, .9rem);
+  }
+
+  body.zoo-playing .zoo-task small {
+    text-align: left;
+    font-size: clamp(.62rem, 2.45vw, .76rem);
   }
 
   body.zoo-playing .zoo-task i {

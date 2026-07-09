@@ -1915,6 +1915,48 @@ select {
 }
 
 @media (max-width: 560px) {
+  html.guard-yard-playing,
+  body.guard-yard-playing {
+    width: 100%;
+    height: var(--wp-mobile-vh, 100svh);
+    min-height: var(--wp-mobile-vh, 100svh);
+    overflow: hidden;
+    overscroll-behavior: none;
+    touch-action: none;
+  }
+
+  body.guard-yard-playing .yard-game {
+    width: 100%;
+    height: var(--wp-mobile-vh, 100svh);
+    min-height: 0;
+    padding: max(4px, env(safe-area-inset-top)) 4px max(4px, env(safe-area-inset-bottom));
+    gap: 0;
+    overflow: hidden;
+  }
+
+  body.guard-yard-playing .topbar,
+  body.guard-yard-playing .menu-tabs,
+  body.guard-yard-playing .game-page-info {
+    display: none !important;
+  }
+
+  body.guard-yard-playing .fixed-shell-host {
+    width: 100%;
+    height: calc(var(--wp-mobile-vh, 100svh) - max(4px, env(safe-area-inset-top)) - max(4px, env(safe-area-inset-bottom)));
+    min-height: 0;
+    align-content: stretch;
+    justify-items: stretch;
+    overflow: hidden;
+  }
+
+  body.guard-yard-playing .fixed-game-shell {
+    width: 100%;
+    height: 100%;
+    max-height: none;
+    aspect-ratio: auto;
+    grid-template-rows: 34px 24px 66px minmax(0, 1fr) 22px;
+  }
+
   .yard-game {
     gap: 9px;
     padding-inline: 8px;
