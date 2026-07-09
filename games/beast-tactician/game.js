@@ -217,43 +217,29 @@
   const assetSources = {
     bg: "../../assets/beast-tactician-battle-bg.webp",
     leo: "../../assets/weightplay-character-boom-mane-lion-cutout.webp",
-    leoSheet: "../../assets/beast-tactician-hero-leo-sheet.webp",
     taro: "../../assets/weightplay-character-moss-shell-turtle-cutout.webp",
-    taroSheet: "../../assets/beast-tactician-hero-taro-sheet.webp",
     orla: "../../assets/weightplay-character-moon-cap-owl-cutout.webp",
-    orlaSheet: "../../assets/beast-tactician-hero-orla-sheet.webp",
     fia: "../../assets/weightplay-character-spark-paw-fox-cutout.webp",
-    fiaSheet: "../../assets/beast-tactician-hero-fia-sheet.webp",
     rux: "../../assets/weightplay-character-gear-horn-rhino-cutout.webp",
-    ruxSheet: "../../assets/beast-tactician-hero-rux-sheet.webp",
     panko: "../../assets/weightplay-character-drum-belly-panda-safe-face-cutout.webp",
-    pankoSheet: "../../assets/beast-tactician-hero-panko-sheet.webp",
     bear: "../../assets/beast-tactician-hero-bear.webp",
     tiger: "../../assets/beast-tactician-hero-tiger.webp",
     deer: "../../assets/beast-tactician-hero-deer.webp",
-    deerSheet: "../../assets/beast-tactician-hero-deer-sheet.webp",
     acornGuard: "../../assets/beast-tactician-soldier-acorn-guard.webp",
-    acornGuardSheet: "../../assets/beast-tactician-soldier-acorn-guard-sheet.webp",
     scoutArcher: "../../assets/beast-tactician-soldier-scout-archer.webp",
-    scoutArcherSheet: "../../assets/beast-tactician-soldier-scout-archer-sheet.webp",
     runeSapper: "../../assets/beast-tactician-soldier-rune-sapper.png",
-    runeSapperSheet: "../../assets/beast-tactician-soldier-rune-sapper-sheet.png",
     medicCub: "../../assets/beast-tactician-soldier-medic-cub.png",
-    medicCubSheet: "../../assets/beast-tactician-soldier-medic-cub-sheet.png",
     wolf: "../../assets/beast-tactician-enemy-wolf.webp",
-    wolfSheet: "../../assets/beast-tactician-enemy-wolf-sheet.webp",
     boar: "../../assets/shadow-wolf-enemy-boar.webp",
-    boarSheet: "../../assets/beast-tactician-enemy-boar-sheet.webp",
     bat: "../../assets/shadow-wolf-enemy-bat.webp",
-    batSheet: "../../assets/beast-tactician-enemy-bat-sheet.webp",
     boss: "../../assets/shadow-wolf-boss-behemoth.webp",
-    bossSheet: "../../assets/beast-tactician-boss-behemoth-sheet.webp",
     hit: "../../assets/shadow-wolf-fx-hit-spark.webp",
     slash: "../../assets/shadow-wolf-fx-claw-slash.webp",
     portal: "../../assets/shadow-wolf-fx-portal-glow.webp",
     skillFx: "../../assets/beast-tactician-skill-fx-atlas.webp",
   };
   const assets = {};
+  const characterRenderMode = "static-procedural";
   const skillFxFrames = {
     heroStrike: 0,
     arrow: 1,
@@ -268,7 +254,6 @@
       id: "guard",
       kind: "soldier",
       img: "acornGuard",
-      sheet: "acornGuardSheet",
       name: { en: "Acorn Guard", "zh-Hant": "橡果守衛" },
       cost: 50,
       hp: 145,
@@ -281,7 +266,6 @@
       id: "archer",
       kind: "soldier",
       img: "scoutArcher",
-      sheet: "scoutArcherSheet",
       name: { en: "Scout Archer", "zh-Hant": "斥候弓手" },
       cost: 75,
       hp: 90,
@@ -294,7 +278,6 @@
       id: "sapper",
       kind: "soldier",
       img: "runeSapper",
-      sheet: "runeSapperSheet",
       name: { en: "Rune Sapper", "zh-Hant": "符文工兵" },
       cost: 105,
       hp: 105,
@@ -309,7 +292,6 @@
       id: "medic",
       kind: "soldier",
       img: "medicCub",
-      sheet: "medicCubSheet",
       name: { en: "Medic Cub", "zh-Hant": "醫護幼獸" },
       cost: 95,
       hp: 120,
@@ -323,7 +305,6 @@
       id: "leo",
       kind: "hero",
       img: "leo",
-      sheet: "leoSheet",
       name: { en: "Boom Mane Leo", "zh-Hant": "爆鬃雷歐" },
       cost: 180,
       hp: 265,
@@ -337,7 +318,6 @@
       id: "taro",
       kind: "hero",
       img: "taro",
-      sheet: "taroSheet",
       name: { en: "Moss Shell Taro", "zh-Hant": "苔殼太郎" },
       cost: 170,
       hp: 310,
@@ -351,7 +331,6 @@
       id: "orla",
       kind: "hero",
       img: "orla",
-      sheet: "orlaSheet",
       name: { en: "Moon Cap Orla", "zh-Hant": "月帽歐拉" },
       cost: 155,
       hp: 115,
@@ -364,7 +343,6 @@
       id: "fia",
       kind: "hero",
       img: "fia",
-      sheet: "fiaSheet",
       name: { en: "Spark Paw Fia", "zh-Hant": "電爪菲亞" },
       cost: 160,
       hp: 135,
@@ -377,7 +355,6 @@
       id: "rux",
       kind: "hero",
       img: "rux",
-      sheet: "ruxSheet",
       name: { en: "Gear Horn Rux", "zh-Hant": "齒角魯克斯" },
       cost: 145,
       hp: 155,
@@ -391,7 +368,6 @@
       id: "panko",
       kind: "hero",
       img: "panko",
-      sheet: "pankoSheet",
       name: { en: "Drum Belly Panko", "zh-Hant": "鼓腹潘可" },
       cost: 140,
       hp: 150,
@@ -405,7 +381,6 @@
       id: "deer",
       kind: "hero",
       img: "deer",
-      sheet: "deerSheet",
       name: { en: "Nature Deer", "zh-Hant": "自然鹿" },
       cost: 150,
       hp: 140,
@@ -1295,7 +1270,7 @@
       id: `${unit.id}-${Date.now()}-${Math.random()}`,
       type: unit.id,
       img: unit.img,
-      sheet: unit.sheet || "",
+      sheet: "",
       kind: unit.kind,
       name: unitName(unit),
       tile: { ...tile },
@@ -1443,7 +1418,7 @@
       id: `e-${Date.now()}-${Math.random()}`,
       type,
       img: isBoss ? "boss" : type,
-      sheet: isBoss ? "bossSheet" : `${type}Sheet`,
+      sheet: "",
       tile: { ...startTile },
       pos: tileToPoint(startTile),
       hp: state.stage.enemyHp * hpScale,
@@ -2210,12 +2185,7 @@
   }
 
   function drawEnemyImage(enemy, size) {
-    const sheet = enemy.sheet ? assets[enemy.sheet] : null;
     const pose = unitPose(enemy, "enemy");
-    if (sheet?.complete && sheet.naturalWidth > 0 && sheet.naturalHeight > 0) {
-      drawSpriteFrame(sheet, enemyFrame(enemy), 4, enemy.pos.x - size / 2, enemy.pos.y - size / 2, size, size, pose);
-      return;
-    }
     const image = assets[enemy.img];
     if (image?.complete) drawImageWithPose(image, enemy.pos.x - size / 2, enemy.pos.y - size / 2, size, size, pose);
   }
@@ -2227,12 +2197,7 @@
   }
 
   function drawUnitImage(defender, p, size) {
-    const sheet = defender.sheet ? assets[defender.sheet] : null;
     const pose = unitPose(defender, "defender");
-    if (sheet?.complete && sheet.naturalWidth > 0 && sheet.naturalHeight > 0) {
-      drawSpriteFrame(sheet, defenderFrame(defender), 4, p.x - size / 2, p.y - size / 2, size, size, pose);
-      return;
-    }
     const image = assets[defender.img];
     if (image?.complete) drawImageWithPose(image, p.x - size / 2, p.y - size / 2, size, size, pose);
   }
@@ -2281,13 +2246,12 @@
     const scaleY = 1 - actionEase * (role === "enemy" ? 0.075 : 0.065) + hitEase * 0.025 - (blocked ? 0.02 : 0);
     const offsetY = (attacking ? -actionEase * 0.055 : idleBob + blockedJitter) * bossWeight - hitEase * 0.025;
     const offsetX = attacking ? (role === "enemy" ? -actionEase * 0.018 : actionEase * 0.018) : Math.sin(time * 5.5) * 0.01 * bossWeight + hitEase * (role === "enemy" ? 0.018 : -0.018);
-    const rotate = (attacking ? (role === "enemy" ? -0.035 : 0.035) * actionEase : 0) + hitEase * (role === "enemy" ? 0.026 : -0.026);
     return {
       scaleX: Number(scaleX.toFixed(4)),
       scaleY: Number(scaleY.toFixed(4)),
       offsetX: Number(offsetX.toFixed(4)),
       offsetY: Number(offsetY.toFixed(4)),
-      rotate: Number(rotate.toFixed(4)),
+      rotate: 0,
       blocked,
       attacking,
       hit: hitEase > 0,
@@ -2970,20 +2934,16 @@
       update(0.05);
       elapsed += 0.05;
     }
-    const defender = state.defenders.find((item) => item.sheet) || state.defenders[0];
-    const enemy = state.enemies.find((item) => item.sheet) || state.enemies[0];
-    const defenderIdleFrames = [];
-    const enemyMoveFrames = [];
+    const defender = state.defenders[0];
+    const enemy = state.enemies[0];
     const defenderIdlePoses = [];
     const enemyMovePoses = [];
     for (let i = 0; i < 36; i += 1) {
       update(0.05);
       if (defender) {
-        defenderIdleFrames.push(defenderFrame(defender));
         defenderIdlePoses.push(unitPose(defender, "defender"));
       }
       if (enemy) {
-        enemyMoveFrames.push(enemyFrame(enemy));
         enemyMovePoses.push(unitPose(enemy, "enemy"));
       }
     }
@@ -2995,19 +2955,12 @@
       enemy.actionPulse = 0.2;
       enemy.actionFrame = 3;
     }
-    const actionFrames = {
-      defender: defender ? defenderFrame(defender) : -1,
-      enemy: enemy ? enemyFrame(enemy) : -1,
-    };
     const actionPoses = {
       defender: defender ? unitPose(defender, "defender") : null,
       enemy: enemy ? unitPose(enemy, "enemy") : null,
     };
     const blockedEnemy = { animTime: 0.3, actionPulse: 0, targetDefender: defender || null };
-    const blockedEnemyFrame = enemyFrame(blockedEnemy);
     const blockedEnemyPose = unitPose(blockedEnemy, "enemy");
-    const uniqueDefenderPhases = Array.from(new Set(defenderIdleFrames.map((frame) => Math.round(frame * 10) / 10)));
-    const uniqueEnemyPhases = Array.from(new Set(enemyMoveFrames.map((frame) => Math.round(frame * 10) / 10)));
     const poseSummary = (poses) => {
       if (!poses.length) return { offsetYRange: 0, offsetXRange: 0, scaleXRange: 0, scaleYRange: 0 };
       return {
@@ -3018,23 +2971,18 @@
       };
     };
     const result = {
+      renderMode: characterRenderMode,
       defenderType: defender?.type || "",
+      defenderImage: defender?.img || "",
+      defenderSheet: defender?.sheet || "",
       enemyType: enemy?.type || "",
-      defenderIdleFrames: uniqueDefenderPhases,
-      enemyMoveFrames: uniqueEnemyPhases,
-      defenderSmoothFrameCount: uniqueDefenderPhases.length,
-      enemySmoothFrameCount: uniqueEnemyPhases.length,
-      defenderFrameDetails: uniqueDefenderPhases.map(framePhaseDetail),
-      enemyFrameDetails: uniqueEnemyPhases.map(framePhaseDetail),
-      actionFrames,
-      actionFrameDetails: {
-        defender: framePhaseDetail(actionFrames.defender),
-        enemy: framePhaseDetail(actionFrames.enemy),
-      },
+      enemyImage: enemy?.img || "",
+      enemySheet: enemy?.sheet || "",
+      characterSheetsLoaded: Object.keys(assets).filter((key) => /Sheet$/i.test(key) && assets[key]?.complete),
+      sheetFrameBlendingActive: false,
       defenderPoseMotion: poseSummary(defenderIdlePoses),
       enemyPoseMotion: poseSummary(enemyMovePoses),
       actionPoses,
-      blockedEnemyFrame,
       blockedEnemyPose,
       defenders: state.defenders.length,
       enemies: state.enemies.length,
@@ -3318,11 +3266,11 @@
     const damageText = state.effects.filter((effect) => effect.type === "floatingText").map((effect) => effect.text);
     const result = {
       medicHeal: Math.round(hpAfterHeal - hpBeforeHeal),
-      medicFrame: medic ? defenderFrame(medic) : -1,
+      medicPose: medic ? unitPose(medic, "defender") : null,
       sapperPrimaryDamage: Math.round(100 - enemyA.hp),
       sapperSplashDamage: Math.round(100 - enemyB.hp),
       sapperSplashSlow: enemyB.slow,
-      sapperFrame: sapper ? defenderFrame(sapper) : -1,
+      sapperPose: sapper ? unitPose(sapper, "defender") : null,
       healText,
       damageText,
       effects: state.effects.length,
@@ -3828,7 +3776,7 @@
       id: "hit-response-enemy",
       type: "wolf",
       img: "wolf",
-      sheet: "wolfSheet",
+      sheet: "",
       tile: { x: 4, y: 3 },
       pos: tileToPoint({ x: 4, y: 3 }),
       hp: 180,
@@ -4103,8 +4051,10 @@
       bossStages: stages.filter((stage) => stage.boss).map((stage) => stage.id),
       defenders: unitTypes.length,
       ordinarySoldiers: unitTypes.filter((unit) => unit.kind === "soldier").map((unit) => unit.id),
-      animatedSheets: unitTypes.filter((unit) => unit.sheet && assets[unit.sheet]?.complete).map((unit) => unit.id),
-      animatedEnemySheets: ["wolfSheet", "boarSheet", "batSheet", "bossSheet"].filter((key) => assets[key]?.complete),
+      characterRenderMode,
+      staticDefenderAssets: unitTypes.filter((unit) => assets[unit.img]?.complete).map((unit) => unit.id),
+      staticEnemyAssets: ["wolf", "boar", "bat", "boss"].filter((key) => assets[key]?.complete),
+      characterSheetsLoaded: Object.keys(assets).filter((key) => /Sheet$/i.test(key) && assets[key]?.complete),
       skillFxLoaded: Boolean(assets.skillFx?.complete),
       skillEffectFrames,
       bossWaveProfiles,

@@ -331,6 +331,7 @@
   const images = {};
   const fishThumbCache = {};
   const fishCropCache = {};
+  const fishFrameCanvasCache = {};
   let assetsReady = false;
   let preloadPromise = null;
 
@@ -513,7 +514,6 @@
     state = "game";
     showPanel("game");
     focusPanel(nodes.gamePanel);
-    resizeCanvas();
     if (!assetsReady) {
       nodes.startBtn.disabled = true;
       nodes.retryBtn.disabled = true;
@@ -521,7 +521,6 @@
       nodes.loadingPanel.classList.add("is-hidden");
       nodes.startBtn.disabled = false;
       nodes.retryBtn.disabled = false;
-      resizeCanvas();
       focusPanel(nodes.gamePanel);
     }
     track("game_start", { zone: zone.id });
@@ -598,16 +597,23 @@
     return fish.find((item) => item.id === id) || fish[0];
   }
 
+  function isFishSheetBackground(data, offset) {
+    const r = data[offset];
+    const g = data[offset + 1];
+    const b = data[offset + 2];
+    const a = data[offset + 3];
+    return a <= 22 || (r > 185 && b > 145 && g < 105 && r - g > 90 && b - g > 70);
+  }
+
   function fishFrameCrop(img, item, frame = 1) {
     const cols = 3;
     const rows = 6;
     const frameIndex = Math.max(0, Math.min(cols - 1, frame));
-    const frameW = img.width / cols;
     const frameH = img.height / rows;
-    const cell = {
-      sx: Math.round(frameIndex * frameW),
+    const row = {
+      sx: 0,
       sy: Math.round(item.sy * frameH),
-      sw: Math.round(frameW),
+      sw: Math.round(img.width),
       sh: Math.round(frameH),
     };
     const cacheKey = `${item.sheet}:${item.sy}:${frameIndex}:${img.width}x${img.height}`;
@@ -615,42 +621,70 @@
     const fallback = fishFrameCrops[item.sheet]?.[item.sy]?.[frameIndex];
     try {
       const probe = document.createElement("canvas");
-      probe.width = cell.sw;
-      probe.height = cell.sh;
+      probe.width = row.sw;
+      probe.height = row.sh;
       const probeCtx = probe.getContext("2d", { willReadFrequently: true });
       probeCtx.clearRect(0, 0, probe.width, probe.height);
-      probeCtx.drawImage(img, cell.sx, cell.sy, cell.sw, cell.sh, 0, 0, cell.sw, cell.sh);
-      const data = probeCtx.getImageData(0, 0, cell.sw, cell.sh).data;
-      let minX = cell.sw;
-      let minY = cell.sh;
-      let maxX = -1;
-      let maxY = -1;
-      for (let y = 0; y < cell.sh; y += 1) {
-        for (let x = 0; x < cell.sw; x += 1) {
-          const alpha = data[(y * cell.sw + x) * 4 + 3];
-          if (alpha > 22) {
-            minX = Math.min(minX, x);
-            minY = Math.min(minY, y);
-            maxX = Math.max(maxX, x);
-            maxY = Math.max(maxY, y);
+      probeCtx.drawImage(img, row.sx, row.sy, row.sw, row.sh, 0, 0, row.sw, row.sh);
+      const data = probeCtx.getImageData(0, 0, row.sw, row.sh).data;
+      const activeColumns = [];
+      for (let x = 0; x < row.sw; x += 1) {
+        let activePixels = 0;
+        for (let y = 0; y < row.sh; y += 1) {
+          const offset = (y * row.sw + x) * 4;
+          if (!isFishSheetBackground(data, offset)) activePixels += 1;
+        }
+        activeColumns[x] = activePixels > 1;
+      }
+      const clusters = [];
+      let start = -1;
+      let gap = 0;
+      const maxGap = Math.max(16, Math.round(row.sw * 0.012));
+      activeColumns.forEach((active, x) => {
+        if (active) {
+          if (start < 0) start = x;
+          gap = 0;
+        } else if (start >= 0) {
+          gap += 1;
+          if (gap > maxGap) {
+            const end = x - gap;
+            if (end - start > 28) clusters.push({ start, end });
+            start = -1;
+            gap = 0;
           }
         }
-      }
-      if (maxX >= minX && maxY >= minY) {
-        const pad = Math.max(6, Math.round(Math.min(cell.sw, cell.sh) * 0.035));
-        const x = Math.max(0, minX - pad);
+      });
+      if (start >= 0) clusters.push({ start, end: row.sw - 1 });
+      const expectedCenter = ((frameIndex + 0.5) * row.sw) / cols;
+      const cluster = clusters
+        .slice()
+        .sort((a, b) => Math.abs((a.start + a.end) / 2 - expectedCenter) - Math.abs((b.start + b.end) / 2 - expectedCenter))[0];
+      if (cluster) {
+        let minY = row.sh;
+        let maxY = -1;
+        for (let y = 0; y < row.sh; y += 1) {
+          for (let x = cluster.start; x <= cluster.end; x += 1) {
+            const offset = (y * row.sw + x) * 4;
+            if (!isFishSheetBackground(data, offset)) {
+              minY = Math.min(minY, y);
+              maxY = Math.max(maxY, y);
+            }
+          }
+        }
+        const pad = Math.max(6, Math.round(Math.min(row.sw / cols, row.sh) * 0.04));
+        const x = Math.max(0, cluster.start - pad);
         const y = Math.max(0, minY - pad);
-        const right = Math.min(cell.sw, maxX + pad + 1);
-        const bottom = Math.min(cell.sh, maxY + pad + 1);
+        const right = Math.min(row.sw, cluster.end + pad + 1);
+        const bottom = Math.min(row.sh, maxY + pad + 1);
         fishCropCache[cacheKey] = {
-          sx: cell.sx + x,
-          sy: cell.sy + y,
+          sx: row.sx + x,
+          sy: row.sy + y,
           sw: Math.max(1, right - x),
           sh: Math.max(1, bottom - y),
-          cellSx: cell.sx,
-          cellSy: cell.sy,
-          cellSw: cell.sw,
-          cellSh: cell.sh,
+          cellSx: row.sx,
+          cellSy: row.sy,
+          cellSw: row.sw,
+          cellSh: row.sh,
         };
         return fishCropCache[cacheKey];
       }
@@ -658,23 +692,50 @@
       // Canvas sampling can fail on unexpected asset states; fall back to the bounded atlas cell.
     }
     fishCropCache[cacheKey] = fallback
-      ? { sx: fallback.x, sy: fallback.y, sw: fallback.w, sh: fallback.h, cellSx: cell.sx, cellSy: cell.sy, cellSw: cell.sw, cellSh: cell.sh }
-      : { ...cell, cellSx: cell.sx, cellSy: cell.sy, cellSw: cell.sw, cellSh: cell.sh };
+      ? { sx: fallback.x, sy: fallback.y, sw: fallback.w, sh: fallback.h, cellSx: row.sx, cellSy: row.sy, cellSw: row.sw, cellSh: row.sh }
+      : { ...row, cellSx: row.sx, cellSy: row.sy, cellSw: row.sw, cellSh: row.sh };
     return fishCropCache[cacheKey];
+  }
+
+  function fishFrameCanvas(item, frame = 1) {
+    const img = images[item.sheet];
+    if (!img) return null;
+    const frameIndex = Math.max(0, Math.min(2, frame));
+    const crop = fishFrameCrop(img, item, frameIndex);
+    const cacheKey = `${item.sheet}:${item.sy}:${frameIndex}:${crop.sx},${crop.sy},${crop.sw},${crop.sh}`;
+    if (fishFrameCanvasCache[cacheKey]) return fishFrameCanvasCache[cacheKey];
+    const frameCanvas = document.createElement("canvas");
+    frameCanvas.width = Math.max(1, Math.round(crop.sw));
+    frameCanvas.height = Math.max(1, Math.round(crop.sh));
+    const frameCtx = frameCanvas.getContext("2d", { willReadFrequently: true });
+    frameCtx.clearRect(0, 0, frameCanvas.width, frameCanvas.height);
+    frameCtx.drawImage(img, crop.sx, crop.sy, crop.sw, crop.sh, 0, 0, frameCanvas.width, frameCanvas.height);
+    try {
+      const pixels = frameCtx.getImageData(0, 0, frameCanvas.width, frameCanvas.height);
+      for (let i = 0; i < pixels.data.length; i += 4) {
+        if (isFishSheetBackground(pixels.data, i)) {
+          pixels.data[i + 3] = 0;
+        }
+      }
+      frameCtx.putImageData(pixels, 0, 0);
+    } catch {
+      // If pixel reads are unavailable, the bounded crop still prevents adjacent atlas frames.
+    }
+    fishFrameCanvasCache[cacheKey] = frameCanvas;
+    return frameCanvas;
   }
 
   function fishThumbUrl(item, frame = 1) {
     const cacheKey = `${item.sheet}:${item.sy}:${frame}`;
     if (fishThumbCache[cacheKey]) return fishThumbCache[cacheKey];
-    const img = images[item.sheet];
-    if (!img) return assetPaths[item.sheet];
-    const crop = fishFrameCrop(img, item, frame);
+    const frameCanvas = fishFrameCanvas(item, frame);
+    if (!frameCanvas) return assetPaths[item.sheet];
     const thumb = document.createElement("canvas");
     thumb.width = 180;
-    thumb.height = Math.max(96, Math.round((thumb.width * crop.sh) / crop.sw));
+    thumb.height = Math.max(96, Math.round((thumb.width * frameCanvas.height) / frameCanvas.width));
     const thumbCtx = thumb.getContext("2d");
     thumbCtx.clearRect(0, 0, thumb.width, thumb.height);
-    thumbCtx.drawImage(img, crop.sx, crop.sy, crop.sw, crop.sh, 0, 0, thumb.width, thumb.height);
+    thumbCtx.drawImage(frameCanvas, 0, 0, thumb.width, thumb.height);
     fishThumbCache[cacheKey] = thumb.toDataURL("image/png");
     return fishThumbCache[cacheKey];
   }
@@ -837,19 +898,18 @@
   }
 
   function drawFishSprite(fishData, x, y, w, h) {
-    const img = images[fishData.sheet];
-    if (!img || !img.width) return;
     const swimFrame = Math.floor(performance.now() / 180) % 3;
-    const crop = fishFrameCrop(img, fishData, swimFrame);
+    const frameCanvas = fishFrameCanvas(fishData, swimFrame);
+    if (!frameCanvas) return;
     const bob = Math.sin(performance.now() / 240) * 3;
-    const ratio = crop.sw / crop.sh;
+    const ratio = frameCanvas.width / frameCanvas.height;
     let drawW = w;
     let drawH = w / ratio;
     if (drawH > h) {
       drawH = h;
       drawW = h * ratio;
     }
-    ctx.drawImage(img, crop.sx, crop.sy, crop.sw, crop.sh, x + (w - drawW) / 2, y + bob + (h - drawH) / 2, drawW, drawH);
+    ctx.drawImage(frameCanvas, x + (w - drawW) / 2, y + bob + (h - drawH) / 2, drawW, drawH);
   }
 
   function draw() {
@@ -1105,7 +1165,7 @@
           cols: 3,
           rows: 6,
           safeCrop: sampleCrop,
-          cropMode: "per-frame-alpha-trim",
+          cropMode: "per-row-color-key-cluster",
           cropCount: allCrops.reduce((sum, item) => sum + item.frames.length, 0),
           sample: allCrops,
         };

@@ -11,6 +11,7 @@
       menuHint: "Assemble Squirrels, Otters, Owls, and Lions. Feed them apples or honey, buy relics, and complete the 10-round Forest Expedition!",
       bestExpedition: "Best Run",
       expeditionsCleared: "Cleared Runs",
+      teamLevel: "Team Level",
       diamonds: "Diamonds",
       startExpedition: "Start Expedition",
       yourSquadLabel: "Active Squad (Left: Frontline | Right: Backline)",
@@ -62,7 +63,8 @@
       relicOak: "Oak Seed: All units gain +1 Health in battle.",
       relicShadow: "Shadow Claw: All units gain +1 Attack in battle.",
       relicClover: "Clover Leaf: First shop reroll each round is free.",
-      roundNum: "Round {round}/10"
+      roundNum: "Round {round}/10",
+      teamLevelValue: "Lv.{level}  XP {xp}/{goal}"
     },
     "zh-Hant": {
       title: "動物自走小隊",
@@ -268,16 +270,16 @@
 
   // Asset configuration
   const ANIMAL_METADATA = [
-    { id: 0, nameEn: "Spark Paw Fox", nameZht: "\u661f\u722a\u72d0", imageKey: "sparkFox", tier: 1, atk: 2, hp: 2, descEn: "Buy: gains +1/+1.", descZht: "\u8cfc\u8cb7\uff1a\u7372\u5f97 +1/+1\u3002" },
-    { id: 1, nameEn: "Bubble Fin Otter", nameZht: "\u6ce1\u6ce1\u9c2d\u6c34\u737a", imageKey: "bubbleOtter", tier: 1, atk: 1, hp: 3, descEn: "Sell: gives a random ally +1 HP.", descZht: "\u51fa\u552e\uff1a\u96a8\u6a5f\u968a\u53cb +1 \u751f\u547d\u3002" },
-    { id: 2, nameEn: "Drum Belly Panda", nameZht: "\u9f13\u809a\u718a\u8c93", imageKey: "drumPanda", tier: 2, atk: 3, hp: 2, descEn: "Buy: gives two allies +1 HP.", descZht: "\u8cfc\u8cb7\uff1a\u5169\u540d\u968a\u53cb +1 \u751f\u547d\u3002" },
-    { id: 3, nameEn: "Moon Cap Owl", nameZht: "\u6708\u5e3d\u8c93\u982d\u9df9", imageKey: "moonOwl", tier: 2, atk: 2, hp: 3, descEn: "Sell: gains +1 extra Gold.", descZht: "\u51fa\u552e\uff1a\u984d\u5916\u7372\u5f97 1 \u91d1\u5e63\u3002" },
-    { id: 4, nameEn: "Moss Shell Turtle", nameZht: "\u82d4\u6bbc\u70cf\u9f9c", imageKey: "mossTurtle", tier: 3, atk: 2, hp: 4, descEn: "Faint: gives the ally behind Melon Shield.", descZht: "\u5012\u4e0b\uff1a\u4f7f\u5f8c\u65b9\u968a\u53cb\u7372\u5f97\u751c\u74dc\u8b77\u76fe\u3002" },
-    { id: 5, nameEn: "Rainbow Hop Rabbit", nameZht: "\u5f69\u8679\u8df3\u5154", imageKey: "rainbowRabbit", tier: 3, atk: 4, hp: 2, descEn: "Buy: gives one free shop reroll.", descZht: "\u8cfc\u8cb7\uff1a\u7372\u5f97\u4e00\u6b21\u514d\u8cbb\u5237\u65b0\u3002" },
-    { id: 6, nameEn: "Gear Horn Rhino", nameZht: "\u9f52\u8f2a\u89d2\u7280\u725b", imageKey: "gearRhino", tier: 4, atk: 3, hp: 4, descEn: "Sell: buffs a random shop card +2/+2.", descZht: "\u51fa\u552e\uff1a\u96a8\u6a5f\u5546\u5e97\u5361 +2/+2\u3002" },
-    { id: 7, nameEn: "Boom Mane Lion", nameZht: "\u7206\u9b03\u7345", imageKey: "boomLion", tier: 4, atk: 4, hp: 4, descEn: "Faint: gives all allies +1/+1.", descZht: "\u5012\u4e0b\uff1a\u5168\u9ad4\u968a\u53cb +1/+1\u3002" },
-    { id: 8, nameEn: "Spark Paw Captain", nameZht: "\u661f\u722a\u968a\u9577", imageKey: "sparkFox", tier: 5, atk: 5, hp: 5, descEn: "Buy: gives all allies +2 HP.", descZht: "\u8cfc\u8cb7\uff1a\u5168\u9ad4\u968a\u53cb +2 \u751f\u547d\u3002" },
-    { id: 9, nameEn: "Rhino Guardian", nameZht: "\u7280\u725b\u5b88\u885b", imageKey: "gearRhino", tier: 5, atk: 6, hp: 6, descEn: "Faint: deals 4 damage to the lead enemy.", descZht: "\u5012\u4e0b\uff1a\u5c0d\u6700\u524d\u65b9\u6575\u4eba\u9020\u6210 4 \u50b7\u5bb3\u3002" }
+    { id: 0, nameEn: "Spark Paw Fox", nameZht: "\u661f\u722a\u72d0", imageKey: "sparkFox", tier: 1, atk: 2, hp: 2, roleEn: "Pounce", roleZht: "\u8df3\u64ca", descEn: "Buy: gains +1/+1. Battle: deals Lv damage to the lead enemy before each clash.", descZht: "\u8cfc\u8cb7\uff1a\u7372\u5f97 +1/+1\u3002\u6230\u9b25\uff1a\u6bcf\u6b21\u4ea4\u92d2\u524d\u5c0d\u6700\u524d\u65b9\u6575\u4eba\u9020\u6210\u7b49\u7d1a\u50b7\u5bb3\u3002" },
+    { id: 1, nameEn: "Bubble Fin Otter", nameZht: "\u6ce1\u6ce1\u9c2d\u6c34\u737a", imageKey: "bubbleOtter", tier: 1, atk: 1, hp: 3, roleEn: "Tide Care", roleZht: "\u6f6e\u6c50\u6cbb\u7652", descEn: "Sell: gives a random ally +1 HP. Battle: heals the weakest ally by Lv.", descZht: "\u51fa\u552e\uff1a\u96a8\u6a5f\u968a\u53cb +1 \u751f\u547d\u3002\u6230\u9b25\uff1a\u6cbb\u7652\u751f\u547d\u6700\u4f4e\u7684\u968a\u53cb\u7b49\u7d1a\u9ede\u3002" },
+    { id: 2, nameEn: "Drum Belly Panda", nameZht: "\u9f13\u809a\u718a\u8c93", imageKey: "drumPanda", tier: 2, atk: 3, hp: 2, roleEn: "Rhythm Guard", roleZht: "\u7bc0\u594f\u5b88\u8b77", descEn: "Buy: gives two allies +1 HP. Battle start: gives all allies +Lv HP.", descZht: "\u8cfc\u8cb7\uff1a\u5169\u540d\u968a\u53cb +1 \u751f\u547d\u3002\u958b\u6230\uff1a\u5168\u9ad4\u968a\u53cb +\u7b49\u7d1a \u751f\u547d\u3002" },
+    { id: 3, nameEn: "Moon Cap Owl", nameZht: "\u6708\u5e3d\u8c93\u982d\u9df9", imageKey: "moonOwl", tier: 2, atk: 2, hp: 3, roleEn: "Long Shot", roleZht: "\u9060\u8ddd\u5c04\u64ca", descEn: "Sell: gains +1 extra Gold. Battle: shoots the back enemy before each clash.", descZht: "\u51fa\u552e\uff1a\u984d\u5916\u7372\u5f97 1 \u91d1\u5e63\u3002\u6230\u9b25\uff1a\u6bcf\u6b21\u4ea4\u92d2\u524d\u5c04\u64ca\u6700\u5f8c\u65b9\u6575\u4eba\u3002" },
+    { id: 4, nameEn: "Moss Shell Turtle", nameZht: "\u82d4\u6bbc\u70cf\u9f9c", imageKey: "mossTurtle", tier: 3, atk: 2, hp: 4, roleEn: "Shell Wall", roleZht: "\u5805\u6bbc\u9632\u7dda", descEn: "Battle start: starts shielded. Faint: gives the ally behind Melon Shield.", descZht: "\u958b\u6230\uff1a\u81ea\u5e36\u8b77\u76fe\u3002\u5012\u4e0b\uff1a\u4f7f\u5f8c\u65b9\u968a\u53cb\u7372\u5f97\u751c\u74dc\u8b77\u76fe\u3002" },
+    { id: 5, nameEn: "Rainbow Hop Rabbit", nameZht: "\u5f69\u8679\u8df3\u5154", imageKey: "rainbowRabbit", tier: 3, atk: 4, hp: 2, roleEn: "Quick Hop", roleZht: "\u5feb\u901f\u8e0f\u64ca", descEn: "Buy: gives one free shop reroll. Battle: nips the weakest enemy before each clash.", descZht: "\u8cfc\u8cb7\uff1a\u7372\u5f97\u4e00\u6b21\u514d\u8cbb\u5237\u65b0\u3002\u6230\u9b25\uff1a\u6bcf\u6b21\u4ea4\u92d2\u524d\u653b\u64ca\u751f\u547d\u6700\u4f4e\u7684\u6575\u4eba\u3002" },
+    { id: 6, nameEn: "Gear Horn Rhino", nameZht: "\u9f52\u8f2a\u89d2\u7280\u725b", imageKey: "gearRhino", tier: 4, atk: 3, hp: 4, roleEn: "Armor", roleZht: "\u91cd\u7532", descEn: "Sell: buffs a random shop card +2/+2. Battle: reduces clash damage by Lv.", descZht: "\u51fa\u552e\uff1a\u96a8\u6a5f\u5546\u5e97\u5361 +2/+2\u3002\u6230\u9b25\uff1a\u4ea4\u92d2\u6642\u6e1b\u5c11\u7b49\u7d1a\u9ede\u50b7\u5bb3\u3002" },
+    { id: 7, nameEn: "Boom Mane Lion", nameZht: "\u7206\u9b03\u7345", imageKey: "boomLion", tier: 4, atk: 4, hp: 4, roleEn: "Roar", roleZht: "\u9f13\u821e\u5486\u54ee", descEn: "Faint: gives all allies +Lv/+Lv.", descZht: "\u5012\u4e0b\uff1a\u5168\u9ad4\u968a\u53cb\u7372\u5f97 +\u7b49\u7d1a/+\u7b49\u7d1a\u3002" },
+    { id: 8, nameEn: "Spark Paw Captain", nameZht: "\u661f\u722a\u968a\u9577", imageKey: "sparkFox", tier: 5, atk: 5, hp: 5, roleEn: "Command", roleZht: "\u968a\u9577\u6307\u63ee", descEn: "Buy: gives all allies +2 HP. Battle start: gives all allies +Lv attack.", descZht: "\u8cfc\u8cb7\uff1a\u5168\u9ad4\u968a\u53cb +2 \u751f\u547d\u3002\u958b\u6230\uff1a\u5168\u9ad4\u968a\u53cb +\u7b49\u7d1a \u653b\u64ca\u3002" },
+    { id: 9, nameEn: "Rhino Guardian", nameZht: "\u7280\u725b\u5b88\u885b", imageKey: "gearRhino", tier: 5, atk: 6, hp: 6, roleEn: "Last Stand", roleZht: "\u6700\u5f8c\u9632\u7dda", descEn: "Faint: deals 4 x Lv damage to the lead enemy.", descZht: "\u5012\u4e0b\uff1a\u5c0d\u6700\u524d\u65b9\u6575\u4eba\u9020\u6210 4 x \u7b49\u7d1a\u50b7\u5bb3\u3002" }
   ];
 
   const ITEM_METADATA = [
@@ -312,6 +314,7 @@
     menuPanel: $("menuPanel"),
     bestRoundsText: $("bestRoundsText"),
     clearedRunsText: $("clearedRunsText"),
+    teamLevelText: $("teamLevelText"),
     diamondText: $("diamondText"),
     buySkinBtn: $("buySkinBtn"),
     equipSkinBtn: $("equipSkinBtn"),
@@ -364,12 +367,69 @@
     foodGuideTitle: "食物效果"
   };
 
+  function normalizeSave(data) {
+    const source = data && typeof data === "object" ? data : {};
+    return {
+      bestRound: Math.max(0, Number(source.bestRound) || 0),
+      clearedRuns: Math.max(0, Number(source.clearedRuns) || 0),
+      unlockedSkin: Boolean(source.unlockedSkin),
+      selectedSkin: source.selectedSkin || "normal",
+      teamLevel: Math.max(1, Number(source.teamLevel) || 1),
+      teamXp: Math.max(0, Number(source.teamXp) || 0)
+    };
+  }
+
+  function teamXpGoal(level = save.teamLevel) {
+    return 18 + Math.max(1, Number(level) || 1) * 7;
+  }
+
+  function teamBonus() {
+    const level = Math.max(1, Number(save.teamLevel) || 1);
+    return {
+      atk: Math.floor((level - 1) / 3),
+      hp: Math.floor((level - 1) / 2)
+    };
+  }
+
+  function addTeamXp(amount) {
+    save = normalizeSave(save);
+    save.teamXp += Math.max(0, Number(amount) || 0);
+    while (save.teamXp >= teamXpGoal(save.teamLevel)) {
+      save.teamXp -= teamXpGoal(save.teamLevel);
+      save.teamLevel += 1;
+    }
+    saveSave();
+  }
+
+  function formatTeamLevel() {
+    const normalized = normalizeSave(save);
+    const value = text.en.teamLevelValue
+      .replace("{level}", normalized.teamLevel)
+      .replace("{xp}", normalized.teamXp)
+      .replace("{goal}", teamXpGoal(normalized.teamLevel));
+    return value;
+  }
+
+  function installTestApi() {
+    window.__ANIMAL_AUTO_SQUAD_TEST__ = {
+      readSave: () => normalizeSave(save),
+      teamBonus: () => teamBonus(),
+      combinePreview: () => {
+        const base = createAnimalCard(0);
+        const copy = createAnimalCard(0);
+        combineCards(base, copy);
+        combineCards(base, createAnimalCard(0));
+        return { level: base.level, exp: base.exp, atk: base.currentAtk, hp: base.currentHp };
+      }
+    };
+  }
+
   function loadSave() {
     try {
       const data = localStorage.getItem(saveKey);
-      return data ? JSON.parse(data) : { bestRound: 0, clearedRuns: 0, unlockedSkin: false, selectedSkin: "normal" };
+      return normalizeSave(data ? JSON.parse(data) : null);
     } catch (e) {
-      return { bestRound: 0, clearedRuns: 0, unlockedSkin: false, selectedSkin: "normal" };
+      return normalizeSave(null);
     }
   }
 
@@ -537,6 +597,7 @@
     setLocale(locale);
     renderMenu();
     nodes.loadingPanel.classList.add("is-hidden");
+    installTestApi();
     window.__ANIMAL_AUTO_SQUAD_BOOTED__ = true;
     window.__ANIMAL_AUTO_SQUAD_FIRST_SCREEN__ = {
       booted: true,
@@ -557,6 +618,9 @@
     nodes.combatSummary?.classList.add("is-hidden");
     nodes.bestRoundsText.textContent = t("roundNum", { round: save.bestRound });
     nodes.clearedRunsText.textContent = String(save.clearedRuns);
+    if (nodes.teamLevelText) {
+      nodes.teamLevelText.textContent = formatTeamLevel();
+    }
     updateWalletUI();
     updatePageMeta();
   }
@@ -630,6 +694,9 @@
     nodes.startBtn.textContent = t("startExpedition");
     $("bestRoundsText").previousElementSibling.textContent = t("bestExpedition");
     $("clearedRunsText").previousElementSibling.textContent = t("expeditionsCleared");
+    if (nodes.teamLevelText?.previousElementSibling) {
+      nodes.teamLevelText.previousElementSibling.textContent = locale === "zh-Hant" ? "\u5718\u968a\u7b49\u7d1a" : t("teamLevel");
+    }
     $("diamondText").previousElementSibling.textContent = t("diamonds");
     document.querySelector(".cosmetic-store .store-label").textContent = t("buySkin");
 
@@ -755,6 +822,19 @@
     nodes.heartText.textContent = `${state.hearts}/4`;
   }
 
+  function createAnimalCard(id) {
+    const source = ANIMAL_METADATA.find((animal) => animal.id === id) || ANIMAL_METADATA[0];
+    return {
+      ...source,
+      exp: 1,
+      level: 1,
+      currentAtk: source.atk,
+      currentHp: source.hp,
+      maxHp: source.hp,
+      hasShield: false
+    };
+  }
+
   // Generate random tier pool of animals
   function generateShop() {
     // Reroll normal items if not frozen
@@ -764,7 +844,7 @@
     for (let i = 0; i < 3; i++) {
       if (!state.shop.frozenAnimals[i]) {
         const rand = animalPool[Math.floor(Math.random() * animalPool.length)];
-        state.shop.animals[i] = { ...rand, exp: 1, level: 1, currentAtk: rand.atk, currentHp: rand.hp, maxHp: rand.hp, hasShield: false };
+        state.shop.animals[i] = createAnimalCard(rand.id);
       }
     }
 
@@ -847,6 +927,13 @@
     nameEl.textContent = locale === "zh-Hant" ? (card.nameZht || card.nameEn) : card.nameEn;
     el.appendChild(nameEl);
 
+    if (isAnimal) {
+      const abilityEl = document.createElement("div");
+      abilityEl.className = "card-ability";
+      abilityEl.textContent = locale === "zh-Hant" ? (card.roleZht || card.descZht || card.descEn || "") : (card.roleEn || card.descEn || "");
+      el.appendChild(abilityEl);
+    }
+
     if (!isAnimal) {
       const effectEl = document.createElement("div");
       effectEl.className = "card-effect";
@@ -856,10 +943,10 @@
     }
 
     // Level tag
-    if (isAnimal && card.level > 1) {
+    if (isAnimal) {
       const levelEl = document.createElement("div");
       levelEl.className = "card-level-tag";
-      levelEl.textContent = `${t("level")}${card.level}`;
+      levelEl.textContent = `${t("level")}${card.level || 1}`;
       el.appendChild(levelEl);
     }
 
@@ -1094,34 +1181,17 @@
     renderPrepScreen();
   }
 
-  // Level combination calculations (SAP rule)
+  // Each duplicate directly advances the animal level so merges always feel readable.
   function combineCards(mainCard, secondaryCard) {
-    mainCard.exp += secondaryCard.exp;
-    // Combine raw base stats
-    mainCard.currentAtk += 1;
-    mainCard.currentHp += 1;
-    mainCard.maxHp += 1;
+    const previousLevel = Math.max(1, Number(mainCard.level) || 1);
+    const expGain = Math.max(1, Number(secondaryCard.exp) || 1);
+    mainCard.exp = Math.max(1, Number(mainCard.exp) || 1) + expGain;
+    mainCard.level = Math.min(9, Math.max(previousLevel + 1, mainCard.exp));
 
-    // Check level ups
-    let newLevel = 1;
-    if (mainCard.exp >= 6) {
-      newLevel = 3;
-      mainCard.currentAtk += 3;
-      mainCard.currentHp += 3;
-      mainCard.maxHp += 3;
-    } else if (mainCard.exp >= 3) {
-      newLevel = 2;
-      mainCard.currentAtk += 1.5; // Round upward in float or convert integer
-      mainCard.currentHp += 1.5;
-      mainCard.maxHp += 1.5;
-      mainCard.currentAtk = Math.ceil(mainCard.currentAtk);
-      mainCard.currentHp = Math.ceil(mainCard.currentHp);
-      mainCard.maxHp = Math.ceil(mainCard.maxHp);
-    }
-    
-    if (newLevel > mainCard.level) {
-      mainCard.level = newLevel;
-    }
+    const levelGain = Math.max(1, mainCard.level - previousLevel);
+    mainCard.currentAtk = Math.round(mainCard.currentAtk + levelGain);
+    mainCard.currentHp = Math.round(mainCard.currentHp + levelGain);
+    mainCard.maxHp = Math.round(mainCard.maxHp + levelGain);
   }
 
   // Food / Relic feeding mechanic
@@ -1293,8 +1363,6 @@
       if (card) {
         const freezeBtn = document.createElement("button");
         freezeBtn.className = "card-frozen-tag";
-        freezeBtn.style.top = "auto";
-        freezeBtn.style.bottom = "6px";
         freezeBtn.style.cursor = "pointer";
         freezeBtn.textContent = state.shop.frozenAnimals[idx] ? t("unfreeze") : t("freeze");
         freezeBtn.addEventListener("click", (e) => {
@@ -1318,8 +1386,6 @@
       if (card) {
         const freezeBtn = document.createElement("button");
         freezeBtn.className = "card-frozen-tag";
-        freezeBtn.style.top = "auto";
-        freezeBtn.style.bottom = "6px";
         freezeBtn.style.cursor = "pointer";
         freezeBtn.textContent = state.shop.frozenItems[idx] ? t("unfreeze") : t("freeze");
         freezeBtn.addEventListener("click", (e) => {
@@ -1340,6 +1406,77 @@
     }
   }
 
+  function unitLevel(unit) {
+    return Math.max(1, Number(unit?.level) || 1);
+  }
+
+  function addCombatEffect(type, x, y, text = "", textColor = "white") {
+    state.combat.effects.push({ type, x, y, life: 16, text, textColor });
+  }
+
+  function removeDefeatedUnits(squad, team) {
+    for (let i = squad.length - 1; i >= 0; i--) {
+      if (squad[i].hp <= 0) {
+        const fallen = squad.splice(i, 1)[0];
+        triggerFaintAbility(fallen, team);
+      }
+    }
+  }
+
+  function healWeakestAlly(squad, amount) {
+    const target = squad.filter((unit) => unit.hp > 0).sort((a, b) => (a.hp / a.maxHp) - (b.hp / b.maxHp))[0];
+    if (!target) return;
+    target.hp = Math.min(target.maxHp, target.hp + amount);
+    addCombatEffect("heal", 390, 250, `+${amount}`, "#82ffd1");
+  }
+
+  function damageTarget(unit, amount, x, y) {
+    if (!unit || amount <= 0) return;
+    unit.hp -= amount;
+    addCombatEffect("hit", x, y, `-${amount}`, "yellow");
+  }
+
+  function triggerBattleStartAbilities() {
+    state.combat.playerSquad.forEach((unit) => {
+      const level = unitLevel(unit);
+      if (unit.id === 2) {
+        state.combat.playerSquad.forEach((ally) => {
+          ally.hp += level;
+          ally.maxHp += level;
+        });
+        addCombatEffect("buff", 320, 245, `+${level} HP`, "#82ffd1");
+      } else if (unit.id === 4) {
+        unit.shield = true;
+        addCombatEffect("shield", 390, 250);
+      } else if (unit.id === 8) {
+        state.combat.playerSquad.forEach((ally) => {
+          ally.atk += level;
+        });
+        addCombatEffect("buff", 320, 245, `+${level} ATK`, "#ffd666");
+      }
+    });
+  }
+
+  function triggerBeforeClashAbilities() {
+    const playerSquad = state.combat.playerSquad;
+    const enemySquad = state.combat.enemySquad;
+    playerSquad.forEach((unit) => {
+      if (!enemySquad.length || unit.hp <= 0) return;
+      const level = unitLevel(unit);
+      if (unit.id === 0) {
+        damageTarget(enemySquad[0], level, 560, 250);
+      } else if (unit.id === 1) {
+        healWeakestAlly(playerSquad, level);
+      } else if (unit.id === 3) {
+        damageTarget(enemySquad[enemySquad.length - 1], level + 1, 620, 250);
+      } else if (unit.id === 5) {
+        const target = enemySquad.filter((enemy) => enemy.hp > 0).sort((a, b) => a.hp - b.hp)[0];
+        damageTarget(target, level, 585, 250);
+      }
+    });
+    removeDefeatedUnits(enemySquad, "enemy");
+  }
+
   // Combat Execution
   function startBattle() {
     initAudio();
@@ -1353,11 +1490,12 @@
     }
 
     // Prepare combatants (deep clone to not alter permanent state)
+    const bonus = teamBonus();
     state.combat.playerSquad = activeSquad.map((c) => ({
       ...c,
-      hp: c.currentHp,
-      maxHp: c.maxHp,
-      atk: c.currentAtk,
+      hp: c.currentHp + bonus.hp,
+      maxHp: c.maxHp + bonus.hp,
+      atk: c.currentAtk + bonus.atk,
       shield: c.hasShield
     }));
 
@@ -1376,6 +1514,7 @@
     if (state.relic?.id === 2) {
       state.combat.playerSquad.forEach((c) => c.atk += 1);
     }
+    triggerBattleStartAbilities();
 
     // Generate Enemy shadow team based on round difficulty
     state.combat.enemySquad = generateEnemySquad(state.round);
@@ -1469,6 +1608,37 @@
     drawEffects();
   }
 
+  function drawContainImage(image, x, y, w, h) {
+    if (!image || !image.naturalWidth || !image.naturalHeight) return;
+    const sourceRatio = image.naturalWidth / image.naturalHeight;
+    const targetRatio = w / h;
+    let drawW = w;
+    let drawH = h;
+    if (sourceRatio > targetRatio) {
+      drawH = w / sourceRatio;
+    } else {
+      drawW = h * sourceRatio;
+    }
+    canvasCtx.drawImage(image, x + (w - drawW) / 2, y + (h - drawH) / 2, drawW, drawH);
+  }
+
+  function drawStatPill(textValue, x, y, color) {
+    canvasCtx.save();
+    canvasCtx.fillStyle = "rgba(6, 12, 18, 0.78)";
+    canvasCtx.strokeStyle = "rgba(255, 255, 255, 0.2)";
+    canvasCtx.lineWidth = 1;
+    canvasCtx.beginPath();
+    canvasCtx.roundRect(x, y, 36, 16, 8);
+    canvasCtx.fill();
+    canvasCtx.stroke();
+    canvasCtx.font = "bold 10px Outfit, system-ui";
+    canvasCtx.textAlign = "center";
+    canvasCtx.textBaseline = "middle";
+    canvasCtx.fillStyle = color;
+    canvasCtx.fillText(textValue, x + 18, y + 8);
+    canvasCtx.restore();
+  }
+
   function drawSquadLine(squad, team) {
     const isPlayer = team === "player";
     const mobileCombat = window.matchMedia?.("(max-width: 640px)")?.matches;
@@ -1495,7 +1665,8 @@
       const h = mobileCombat ? 116 : 112;
       const x = targetX + shakeX - w / 2;
       const y = (mobileCombat ? 286 : 258) - h / 2;
-      state.combat.layout?.push({ team, index: idx, x, y, w, h });
+      const imageBox = { x: x + 9, y: y + 24, w: w - 18, h: h - 48 };
+      state.combat.layout?.push({ team, index: idx, x, y, w, h, imageBox });
 
       // Draw backdrop
       canvasCtx.fillStyle = isPlayer ? "rgba(10, 30, 24, 0.9)" : "rgba(35, 12, 12, 0.9)";
@@ -1511,13 +1682,22 @@
       // Draw character sprite
       if (isPlayer) {
         const portrait = imageCache[unit.imageKey] || imageCache.boomLion;
-        if (portrait) canvasCtx.drawImage(portrait, x + 10, y + 20, w - 20, h - 58);
+        drawContainImage(portrait, imageBox.x, imageBox.y, imageBox.w, imageBox.h);
       } else {
         const sheet = imageCache.enemies;
         if (sheet) {
           const sw = 682;
           const sh = 768;
-          canvasCtx.drawImage(sheet, unit.sx, unit.sy, sw, sh, x + 12, y + 20, w - 24, h - 60);
+          const cropRatio = sw / sh;
+          const targetRatio = imageBox.w / imageBox.h;
+          let drawW = imageBox.w;
+          let drawH = imageBox.h;
+          if (cropRatio > targetRatio) {
+            drawH = imageBox.w / cropRatio;
+          } else {
+            drawW = imageBox.h * cropRatio;
+          }
+          canvasCtx.drawImage(sheet, unit.sx, unit.sy, sw, sh, imageBox.x + (imageBox.w - drawW) / 2, imageBox.y + (imageBox.h - drawH) / 2, drawW, drawH);
         }
       }
 
@@ -1532,21 +1712,18 @@
         canvasCtx.stroke();
       }
 
-      // Draw Stats HUD bottom
-      canvasCtx.fillStyle = "rgba(0, 0, 0, 0.75)";
-      canvasCtx.fillRect(x + 2, y + h - 22, w - 4, 20);
+      drawStatPill(`A${unit.atk}`, x + 6, y + h - 20, "#ffd666");
+      drawStatPill(`H${Math.max(0, Math.round(unit.hp))}`, x + w - 42, y + h - 20, "#ff7081");
 
-      canvasCtx.font = "bold 11px Outfit, system-ui";
-      canvasCtx.fillStyle = "var(--gold)";
-      canvasCtx.fillText(`ATK ${unit.atk}`, x + 6, y + h - 8);
-
-      canvasCtx.fillStyle = "var(--danger)";
-      const hpText = `HP ${Math.max(0, unit.hp)}`;
-      const hpWidth = canvasCtx.measureText(hpText).width;
-      canvasCtx.fillText(hpText, x + w - hpWidth - 6, y + h - 8);
+      if (isPlayer) {
+        canvasCtx.font = "bold 10px Outfit, system-ui";
+        canvasCtx.textAlign = "center";
+        canvasCtx.fillStyle = "#ffd666";
+        canvasCtx.fillText(`Lv.${unitLevel(unit)}`, x + w / 2, y + 19);
+      }
 
       // Level star indicator for player units
-      if (isPlayer && unit.level > 1) {
+      if (false && isPlayer && unit.level > 1) {
         canvasCtx.fillStyle = "var(--gold)";
         canvasCtx.fillText(`★${unit.level}`, x + w/2 - 8, y + 16);
       }
@@ -1661,6 +1838,14 @@
       return;
     }
 
+    triggerBeforeClashAbilities();
+    if (!enemySquad.length) {
+      combatLog(t("winText"));
+      playSynth("win");
+      setTimeout(() => endBattleRun("win"), 900);
+      return;
+    }
+
     // Clash frontmost units
     const pUnit = playerSquad[0];
     const eUnit = enemySquad[0];
@@ -1673,6 +1858,9 @@
     // Apply shield logic
     let pDmg = eUnit.atk;
     let eDmg = pUnit.atk;
+    if (pUnit.id === 6) {
+      pDmg = Math.max(0, pDmg - unitLevel(pUnit));
+    }
 
     if (pUnit.shield) {
       pDmg = 0;
@@ -1757,12 +1945,14 @@
     cancelAnimationFrame(animationId);
 
     if (result === "win") {
+      addTeamXp(5 + state.round * 2);
       // Victory: next round
       if (state.round >= 10) {
         // Finished Stage Clear!
         state.activeRun = false;
         save.clearedRuns++;
         save.bestRound = 10;
+        addTeamXp(25);
         saveSave();
         openResultScreen(true);
       } else {
@@ -1778,6 +1968,7 @@
         startRoundPrep();
       }
     } else if (result === "lose") {
+      addTeamXp(Math.max(1, state.round));
       // Defeat: lose 1 Heart
       state.hearts--;
       updateHUD();

@@ -422,7 +422,8 @@ select {
 }
 
 .card-graphic.food-icon {
-  top: 12px;
+  top: 42%;
+  transform: translate(-50%, -50%);
   width: min(70%, 68px);
   background-color: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.14);
@@ -470,6 +471,7 @@ select {
   font-weight: 800;
   padding: 1px 4px;
   text-transform: uppercase;
+  z-index: 4;
 }
 
 .card-shield-tag {
@@ -531,6 +533,21 @@ select {
   font-weight: 800;
   line-height: 1.15;
   text-align: center;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.82);
+}
+
+.card-ability {
+  z-index: 2;
+  color: #9ff7d8;
+  font-size: 0.58rem;
+  font-weight: 900;
+  line-height: 1.05;
+  text-align: center;
+  min-height: 1.05em;
+  margin: 0 0 3px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.82);
 }
 
@@ -989,8 +1006,9 @@ select {
   }
 
   .card-graphic.food-icon {
-    top: 7px;
-    width: min(72%, 50px);
+    top: 40%;
+    transform: translate(-50%, -50%);
+    width: min(70%, 48px);
   }
 
   .card-name {
@@ -1010,6 +1028,11 @@ select {
     margin-bottom: 2px;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3;
+  }
+
+  .card-ability {
+    font-size: clamp(0.44rem, 2.05vw, 0.54rem);
+    margin-bottom: 2px;
   }
 
   .card-stats {
