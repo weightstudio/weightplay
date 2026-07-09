@@ -8,7 +8,7 @@
     en: {
       title: "Animal Auto Squad",
       menuTitle: "Draft and position your animal squad!",
-      menuHint: "Assemble Squirrels, Otters, Owls, and Lions. Feed them apples or honey, buy relics, and complete the 10-round Forest Expedition!",
+      menuHint: "Train your owned animals, choose a squad from your backpack, spend temporary expedition supplies on run upgrades, and clear the 10-round Forest Expedition!",
       bestExpedition: "Best Run",
       expeditionsCleared: "Cleared Runs",
       teamLevel: "Team Level",
@@ -22,14 +22,15 @@
       unlockDiamond: "Unlock {cost} Diamonds",
       upgradeGold: "Upgrade {cost} Gold",
       freeUnit: "Starter",
-      rosterHint: "Unlocked animals can appear in the expedition shop. Permanent levels are saved locally.",
+      rosterHint: "Unlocked animals appear in your expedition backpack. Permanent levels are saved locally.",
       startExpedition: "Start Expedition",
       yourSquadLabel: "Active Squad (Left: Frontline | Right: Backline)",
       benchLabel: "Storage Bench",
-      shopLabel: "Expedition Shop",
+      shopLabel: "Character Backpack",
       startBattle: "Start Battle",
       round: "Round",
       gold: "Gold",
+      supplies: "Supplies",
       hearts: "Hearts",
       activeRelic: "Relic",
       chooseRelic: "Choose an Expedition Relic",
@@ -44,10 +45,12 @@
       combatSummary: "Squad HP {playerHp}/{playerMax} | Enemy HP {enemyHp}/{enemyMax}",
       combatFront: "Front: {player} vs {enemy}",
       foodGuideTitle: "Food effects",
-      guideHint: "Drag or tap cards to select, then tap target slot to buy, move, combine, or feed. Level up matching animals!",
+      guideHint: "Drag or tap owned animals from the backpack into your squad. Expedition upgrades use temporary Supplies and reset after the run.",
       level: "Lv.",
       buy: "Buy",
       sell: "Sell",
+      upgradeRun: "Run Upgrade ({cost} Supplies)",
+      backpackHint: "Owned animals only. Move them into the active squad or bench, then spend Supplies for temporary expedition upgrades.",
       reroll: "Reroll",
       freeze: "Freeze",
       unfreeze: "Unfreeze",
@@ -69,6 +72,7 @@
       chocolateDesc: "Chocolate: +2 Exp",
       noDiamonds: "Not enough diamonds!",
       noGold: "Not enough gold!",
+      noSupplies: "Not enough supplies!",
       relicMaple: "Maple Shield: Front unit starts with Melon Shield.",
       relicOak: "Oak Seed: All units gain +1 Health in battle.",
       relicShadow: "Shadow Claw: All units gain +1 Attack in battle.",
@@ -406,7 +410,13 @@
     unlockDiamond: "\u7528 {cost} \u947d\u77f3\u89e3\u9396",
     upgradeGold: "\u7528 {cost} \u91d1\u5e63\u5347\u7d1a",
     freeUnit: "\u521d\u59cb\u89d2\u8272",
-    rosterHint: "\u5df2\u89e3\u9396\u89d2\u8272\u624d\u6703\u51fa\u73fe\u5728\u9060\u5f81\u5546\u5e97\uff0c\u6c38\u4e45\u7b49\u7d1a\u6703\u5b58\u5728\u672c\u6a5f\u3002"
+      rosterHint: "\u5df2\u89e3\u9396\u89d2\u8272\u6703\u51fa\u73fe\u5728\u9060\u5f81\u80cc\u5305\uff0c\u6c38\u4e45\u7b49\u7d1a\u6703\u5b58\u5728\u672c\u6a5f\u3002",
+      shopLabel: "\u89d2\u8272\u80cc\u5305",
+      supplies: "\u9060\u5f81\u7d20\u6750",
+      guideHint: "\u5f9e\u80cc\u5305\u62d6\u66f3\u6216\u9ede\u9078\u5df2\u64c1\u6709\u89d2\u8272\u5230\u968a\u4f0d\u3002\u9060\u5f81\u5347\u7d1a\u4f7f\u7528\u81e8\u6642\u7d20\u6750\uff0c\u96e2\u958b\u9060\u5f81\u5f8c\u4e0d\u6703\u4fdd\u7559\u3002",
+      upgradeRun: "\u9060\u5f81\u5347\u7d1a\uff08{cost} \u7d20\u6750\uff09",
+      backpackHint: "\u53ea\u986f\u793a\u5df2\u64c1\u6709\u89d2\u8272\u3002\u653e\u5165\u4e0a\u9663\u6216\u5099\u6230\u5340\u5f8c\uff0c\u53ef\u7528\u81e8\u6642\u7d20\u6750\u5347\u7d1a\u3002",
+      noSupplies: "\u9060\u5f81\u7d20\u6750\u4e0d\u8db3\uff01"
   });
 
   function normalizeSave(data) {
@@ -518,6 +528,18 @@
         premiumCosts: PREMIUM_ANIMAL_IDS.map((id) => ({ id, cost: premiumUnlockCost(id) })),
         normalUnlockCosts: Object.entries(ANIMAL_UNLOCK_COSTS).map(([id, cost]) => ({ id: Number(id), cost }))
       }),
+      runPreview: () => {
+        const previewState = makeState();
+        previewState.backpack = createBackpackCards();
+        return {
+          supplies: previewState.gold,
+          backpackIds: previewState.backpack.map((card) => card.id),
+          firstUpgradeCost: runUpgradeCost(previewState.backpack[0]),
+          firstAbility: previewState.backpack[0]
+            ? [previewState.backpack[0].roleEn, previewState.backpack[0].descEn].filter(Boolean).join(": ")
+            : ""
+        };
+      },
       combinePreview: () => {
         const base = createAnimalCard(0);
         const copy = createAnimalCard(0);
@@ -575,7 +597,8 @@
           ...orderedPreview,
           playerFrontHpAfterBackline: state.combat.playerSquad[0]?.hp,
           playerBackHpAfterBackline: state.combat.playerSquad[1]?.hp,
-          activeActor: state.combat.activeActor
+          activeActor: state.combat.activeActor,
+          activeActors: state.combat.activeActors
         };
       }
     };
@@ -600,13 +623,14 @@
     return {
       activeRun: false,
       round: 1,
-      gold: 10,
+      gold: 12,
       hearts: 4,
       relic: null,
       freeRerollThisRound: false,
       rerollsUsedThisRound: 0,
       squad: [null, null, null, null, null],
       bench: [null, null, null, null, null],
+      backpack: [],
       shop: {
         animals: [null, null, null],
         items: [null, null],
@@ -626,6 +650,7 @@
         shakeFrames: 0,
         shakeTarget: "",
         activeActor: null,
+        activeActors: [],
         effects: [] // visual particle FX
       }
     };
@@ -967,7 +992,7 @@
 
     // HUD labels
     nodes.roundText.previousElementSibling.textContent = t("round");
-    nodes.goldText.previousElementSibling.textContent = t("gold");
+    nodes.goldText.previousElementSibling.textContent = t("supplies");
     nodes.heartText.previousElementSibling.textContent = t("hearts");
     nodes.relicText.previousElementSibling.textContent = t("activeRelic");
 
@@ -979,9 +1004,7 @@
     nodes.hintText.textContent = t("guideHint");
     renderFoodGuide();
 
-    // Reroll shop label
-    const rerollCost = state.freeRerollThisRound ? 0 : 1;
-    nodes.rerollShopBtn.textContent = `${t("reroll")} (${rerollCost} ${t("gold")})`;
+    nodes.rerollShopBtn.classList.add("is-hidden");
 
     // Relic Modal labels
     document.querySelector("#relicDraftPanel h2").textContent = t("chooseRelic");
@@ -1007,6 +1030,7 @@
     initAudio();
     playSynth("click");
     state = makeState();
+    state.backpack = createBackpackCards();
     state.activeRun = true;
     nodes.menuPanel.classList.add("is-hidden");
     nodes.gamePanel.classList.remove("is-hidden");
@@ -1073,12 +1097,11 @@
 
   // Round Setup and Shop Drafting
   function startRoundPrep() {
-    state.gold = 10;
+    selectedSlot = null;
     state.freeRerollThisRound = state.relic?.id === 3; // Clover leaf gives free first reroll
     state.rerollsUsedThisRound = 0;
     translateUI();
     updateHUD();
-    generateShop();
     renderPrepScreen();
   }
 
@@ -1104,7 +1127,14 @@
     };
   }
 
-  // Generate random tier pool of animals
+  function createBackpackCards() {
+    save = normalizeSave(save);
+    return save.unlockedAnimals
+      .map((id) => createAnimalCard(Number(id)))
+      .filter(Boolean);
+  }
+
+  // Legacy shop generator kept for old saves/tests that still call it directly.
   function generateShop() {
     // Reroll normal items if not frozen
     const tierLimit = Math.min(5, Math.ceil(state.round / 2)); // Tiers 1-5 unlocked as rounds progress
@@ -1137,8 +1167,7 @@
 
   function renderFoodGuide() {
     if (!nodes.foodGuide) return;
-    const items = [t("appleDesc"), t("honeyDesc"), t("melonDesc"), t("chocolateDesc")];
-    nodes.foodGuide.innerHTML = `<strong>${t("foodGuideTitle")}</strong>${items.map((item) => `<span>${item}</span>`).join("")}`;
+    nodes.foodGuide.innerHTML = `<strong>${t("shopLabel")}</strong><span>${t("backpackHint")}</span>`;
   }
 
   function getItemEffectText(card) {
@@ -1203,7 +1232,9 @@
     if (isAnimal) {
       const abilityEl = document.createElement("div");
       abilityEl.className = "card-ability";
-      abilityEl.textContent = locale === "zh-Hant" ? (card.roleZht || card.descZht || card.descEn || "") : (card.roleEn || card.descEn || "");
+      const role = locale === "zh-Hant" ? (card.roleZht || card.roleEn || "") : (card.roleEn || "");
+      const desc = locale === "zh-Hant" ? (card.descZht || card.descEn || "") : (card.descEn || "");
+      abilityEl.textContent = [role, desc].filter(Boolean).join(": ");
       el.appendChild(abilityEl);
     }
 
@@ -1431,6 +1462,7 @@
   function getCardAt(area, index) {
     if (area === "squad") return state.squad[index];
     if (area === "bench") return state.bench[index];
+    if (area === "backpack") return state.backpack[index];
     if (area === "shop-animal") return state.shop.animals[index];
     if (area === "shop-item") return state.shop.items[index];
     return null;
@@ -1439,6 +1471,7 @@
   function setCardAt(area, index, card) {
     if (area === "squad") state.squad[index] = card;
     if (area === "bench") state.bench[index] = card;
+    if (area === "backpack") state.backpack[index] = card;
     if (area === "shop-animal") state.shop.animals[index] = card;
     if (area === "shop-item") state.shop.items[index] = card;
   }
@@ -1466,11 +1499,23 @@
   function executeAction(srcArea, srcIndex, destArea, destIndex) {
     const card = getCardAt(srcArea, srcIndex);
     if (!card) return;
+    const placementAreas = ["squad", "bench", "backpack"];
 
-    // 1. Buy Animal from Shop
+    if (placementAreas.includes(srcArea) && placementAreas.includes(destArea)) {
+      if (srcArea === destArea && srcIndex === destIndex) return;
+      const targetCard = getCardAt(destArea, destIndex);
+      setCardAt(srcArea, srcIndex, targetCard || null);
+      setCardAt(destArea, destIndex, card);
+      playSynth("click");
+      updateHUD();
+      renderPrepScreen();
+      return;
+    }
+
+    // 1. Legacy buy animal from shop
     if (srcArea === "shop-animal" && (destArea === "squad" || destArea === "bench")) {
       if (state.gold < 3) {
-        alert(t("noGold"));
+        alert(t("noSupplies"));
         return;
       }
       const targetCard = getCardAt(destArea, destIndex);
@@ -1495,7 +1540,7 @@
       const targetCard = getCardAt(destArea, destIndex);
       if (!targetCard) return; // food must be fed to animal
       if (state.gold < 3) {
-        alert(t("noGold"));
+        alert(t("noSupplies"));
         return;
       }
       state.gold -= 3;
@@ -1631,20 +1676,27 @@
     playSynth("buff");
   }
 
-  // Sell Action (handled by double tap, special button, or dropping out of grid)
-  // Let's make a Sell overlay button or drop zone, or simple tap behavior.
-  // Tap-to-select: if card selected, show a "Sell" button in the shop header!
-  // This is extremely simple and clean.
-  function handleSellSelected() {
+  function runUpgradeCost(card) {
+    return 4 + Math.max(1, Number(card?.level) || 1) * 2;
+  }
+
+  function handleRunUpgradeSelected() {
     if (!selectedSlot) return;
     const card = getCardAt(selectedSlot.area, selectedSlot.index);
-    if (!card) return;
-
-    triggerSellAbility(card);
-    state.gold = Math.min(10, state.gold + 1); // sell price is always 1 gold
-    setCardAt(selectedSlot.area, selectedSlot.index, null);
+    if (!card || card.atk === undefined) return;
+    const cost = runUpgradeCost(card);
+    if (state.gold < cost) {
+      alert(t("noSupplies"));
+      return;
+    }
+    state.gold -= cost;
+    card.level = Math.min(20, Math.max(1, Number(card.level) || 1) + 1);
+    card.exp = Math.max(Number(card.exp) || 1, card.level);
+    card.currentAtk += 1;
+    card.currentHp += 2;
+    card.maxHp += 2;
     selectedSlot = null;
-    playSynth("sell");
+    playSynth("combine");
     updateHUD();
     renderPrepScreen();
   }
@@ -1654,7 +1706,7 @@
     initAudio();
     const rerollCost = state.freeRerollThisRound ? 0 : 1;
     if (state.gold < rerollCost) {
-      alert(t("noGold"));
+      alert(t("noSupplies"));
       return;
     }
 
@@ -1699,58 +1751,20 @@
 
   function renderShop() {
     nodes.shopRow.innerHTML = "";
-    
-    // Animals (slots 0-2)
-    state.shop.animals.forEach((card, idx) => {
+
+    const visibleSlots = Math.max(5, state.backpack.length);
+    for (let idx = 0; idx < visibleSlots; idx++) {
       const cell = document.createElement("div");
       cell.className = "shop-cell";
       cell.style.position = "relative";
-      
-      const itemEl = makeCardElement(card, "shop-animal", idx);
-      cell.appendChild(itemEl);
-
-      // Freeze button overlay if card exists
-      if (card) {
-        const freezeBtn = document.createElement("button");
-        freezeBtn.className = "card-frozen-tag";
-        freezeBtn.style.cursor = "pointer";
-        freezeBtn.textContent = state.shop.frozenAnimals[idx] ? t("unfreeze") : t("freeze");
-        freezeBtn.addEventListener("click", (e) => {
-          e.stopPropagation();
-          toggleFreeze("animal", idx);
-        });
-        cell.appendChild(freezeBtn);
-      }
+      cell.appendChild(makeCardElement(state.backpack[idx] || null, "backpack", idx));
       nodes.shopRow.appendChild(cell);
-    });
+    }
 
-    // Items (slots 0-1, placed in shop slots 3-4)
-    state.shop.items.forEach((card, idx) => {
-      const cell = document.createElement("div");
-      cell.className = "shop-cell";
-      cell.style.position = "relative";
-
-      const itemEl = makeCardElement(card, "shop-item", idx);
-      cell.appendChild(itemEl);
-
-      if (card) {
-        const freezeBtn = document.createElement("button");
-        freezeBtn.className = "card-frozen-tag";
-        freezeBtn.style.cursor = "pointer";
-        freezeBtn.textContent = state.shop.frozenItems[idx] ? t("unfreeze") : t("freeze");
-        freezeBtn.addEventListener("click", (e) => {
-          e.stopPropagation();
-          toggleFreeze("item", idx);
-        });
-        cell.appendChild(freezeBtn);
-      }
-      nodes.shopRow.appendChild(cell);
-    });
-
-    // Toggle static Sell Button visibility based on selection
-    if (selectedSlot) {
+    const selectedCard = selectedSlot ? getCardAt(selectedSlot.area, selectedSlot.index) : null;
+    if (selectedCard && selectedCard.atk !== undefined) {
       nodes.sellCardBtn.classList.remove("is-hidden");
-      nodes.sellCardBtn.textContent = `${t("sell")} (+1 ${t("gold")})`;
+      nodes.sellCardBtn.textContent = t("upgradeRun", { cost: runUpgradeCost(selectedCard) });
     } else {
       nodes.sellCardBtn.classList.add("is-hidden");
     }
@@ -1766,7 +1780,10 @@
   }
 
   function markActing(team, index, style = "attack") {
-    state.combat.activeActor = { team, index, style, life: 26, maxLife: 26 };
+    const actor = { team, index, style, life: 26, maxLife: 26 };
+    state.combat.activeActor = actor;
+    state.combat.activeActors = (state.combat.activeActors || []).filter((item) => !(item.team === team && item.index === index));
+    state.combat.activeActors.push(actor);
   }
 
   function removeDefeatedUnits(squad, team) {
@@ -1926,6 +1943,7 @@
     state.combat.animating = true;
     state.combat.timer = 0;
     state.combat.activeActor = null;
+    state.combat.activeActors = [];
     state.combat.effects = [];
     
     canvasCtx = nodes.gameCanvas.getContext("2d");
@@ -2061,7 +2079,7 @@
       
       const w = mobileCombat ? 82 : 88;
       const h = mobileCombat ? 116 : 112;
-      const actor = state.combat.activeActor;
+      const actor = (state.combat.activeActors || []).find((item) => item.team === team && item.index === idx && item.life > 0);
       const isActing = actor?.team === team && actor.index === idx && actor.life > 0;
       const actorProgress = isActing ? 1 - actor.life / Math.max(1, actor.maxLife || 26) : 0;
       const bounce = isActing ? Math.sin(actorProgress * Math.PI) : 0;
@@ -2146,10 +2164,11 @@
 
       canvasCtx.restore();
     });
-    if (state.combat.activeActor?.life > 0) {
-      state.combat.activeActor.life--;
-      if (state.combat.activeActor.life <= 0) state.combat.activeActor = null;
-    }
+    state.combat.activeActors = (state.combat.activeActors || []).filter((actor) => {
+      actor.life--;
+      return actor.life > 0;
+    });
+    state.combat.activeActor = state.combat.activeActors[state.combat.activeActors.length - 1] || null;
   }
 
   function drawUnitHealthBar(unit, x, y, width, isPlayer) {
@@ -2417,6 +2436,7 @@
     state.combat.shakeFrames = 10;
     state.combat.shakeTarget = "player";
     markActing("player", 0, "attack");
+    markActing("enemy", 0, "attack");
     const pPoint = combatPoint("player", 0);
     const ePoint = combatPoint("enemy", 0);
     damageTarget(pUnit, eUnit.atk, pPoint.x, pPoint.y);
@@ -2525,6 +2545,7 @@
     if (result === "win") {
       addTeamXp(5 + state.round * 2);
       addTrainingCoins(8 + state.round * 2);
+      state.gold += 5 + Math.floor(state.round / 2);
       // Victory: next round
       if (state.round >= 10) {
         // Finished Stage Clear!
@@ -2564,6 +2585,7 @@
       }
     } else {
       addTrainingCoins(Math.max(2, Math.ceil(state.round / 2)));
+      state.gold += 2;
       // Draw: no heart lost, return to shop
       nodes.prepPhaseArea.classList.remove("is-hidden");
       nodes.combatArea.classList.add("is-hidden");
@@ -2654,7 +2676,7 @@
       setLocale(e.target.value);
     });
 
-    nodes.sellCardBtn.addEventListener("click", handleSellSelected);
+    nodes.sellCardBtn.addEventListener("click", handleRunUpgradeSelected);
 
     window.addEventListener("wonder:locale-change", (e) => {
       const next = e.detail?.locale || window.WonderI18n?.locale?.();
