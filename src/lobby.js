@@ -109,7 +109,7 @@ const weightPlayCharacters = [
   {
     nameKey: "character.rainbow_hop_rabbit.name",
     roleKey: "character.rainbow_hop_rabbit.role",
-    image: "assets/weightplay-character-rainbow-hop-rabbit-cutout.webp",
+    image: "assets/weightplay-character-rainbow-hop-mimi-clean-cutout.webp",
     skill: "Reaction",
   },
 ];

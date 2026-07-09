@@ -49,7 +49,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "幫小動物把不同顏色的食物放進正確便當盒，練習顏色辨識。",
       },
       meta: { en: ["Animal Theme", "12 Levels", "Drag Match"], "zh-Hant": ["動物主題", "12 關", "拖曳配對"] },
-      art: { kind: "image", background: "assets/lunchbox-cover.webp", hero: "assets/weightplay-character-rainbow-hop-rabbit-cutout.webp" },
+      art: { kind: "image", background: "assets/lunchbox-cover.webp", hero: "assets/weightplay-character-rainbow-hop-mimi-clean-cutout.webp" },
     },
     {
       id: "bubble-bakery",
@@ -103,7 +103,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "經營草原動物園，餵食動物、收取門票並升級樂園設施。",
       },
       meta: { en: ["Idle Zoo", "Ticket Income", "Animal Feeding"], "zh-Hant": ["放置動物園", "門票收入", "餵食動物"] },
-      art: { kind: "image", background: "assets/animal-zoo-idle-cover.webp", hero: "assets/weightplay-character-gear-horn-rhino-cutout.webp" },
+      art: { kind: "image", background: "assets/animal-zoo-idle-cover.webp", hero: "assets/weightplay-character-rainbow-hop-mimi-clean-cutout.webp" },
     },
     {
       id: "star-memory",

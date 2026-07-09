@@ -461,7 +461,7 @@
     drumPanda: "../../assets/weightplay-character-drum-belly-panda-cutout.webp",
     moonOwl: "../../assets/weightplay-character-moon-cap-owl-cutout.webp",
     mossTurtle: "../../assets/weightplay-character-moss-shell-turtle-cutout.webp",
-    rainbowRabbit: "../../assets/weightplay-character-rainbow-hop-rabbit-cutout.webp",
+    rainbowRabbit: "../../assets/weightplay-character-rainbow-hop-mimi-clean-cutout.webp",
     gearRhino: "../../assets/weightplay-character-gear-horn-rhino-cutout.webp",
     boomLion: "../../assets/weightplay-character-boom-mane-lion-cutout.webp",
     foodApple: "assets/food-apple.svg",
