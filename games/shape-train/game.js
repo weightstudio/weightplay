@@ -216,6 +216,7 @@
     nodes.menuPanel.classList.remove("hidden");
     nodes.playPanel.classList.add("hidden");
     nodes.resultPanel.classList.add("hidden");
+    document.body.classList.remove("shape-playing");
     selectedPassenger = false;
     renderStageGrid();
   }
@@ -238,9 +239,10 @@
     nodes.menuPanel.classList.add("hidden");
     nodes.playPanel.classList.remove("hidden");
     nodes.resultPanel.classList.add("hidden");
+    document.body.classList.add("shape-playing");
     renderCars();
     renderTask();
-    focusPlayPanel();
+    window.WeightPlayGame?.enterMobileGameMode?.();
     playSound("start");
     track("game_start", { level: index + 1 });
   }

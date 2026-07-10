@@ -168,7 +168,7 @@ body.fruit-playing .topbar {
   grid-area: score;
   min-height: 0;
   display: grid;
-  grid-template-columns: 0.9fr 0.9fr 1fr 0.92fr;
+  grid-template-columns: 1fr 1fr 0.82fr;
   gap: clamp(5px, 0.85vw, 8px);
 }
 
@@ -721,7 +721,7 @@ body.fruit-playing .topbar {
     position: fixed;
     inset: 0;
     gap: 0;
-    padding: max(4px, env(safe-area-inset-top)) 4px max(4px, env(safe-area-inset-bottom));
+    padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
     width: 100vw;
     height: var(--wp-mobile-vh, 100svh);
     min-height: 0;
@@ -769,11 +769,12 @@ body.fruit-playing .topbar {
     justify-self: stretch;
     align-self: stretch;
     aspect-ratio: auto;
-    padding: 4px;
+    padding: 5px 6px 6px;
     grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: 48px 50px minmax(0, 1fr) 44px;
-    gap: 4px;
-    border-radius: 15px;
+    grid-template-rows: 42px 44px minmax(0, 1fr) 36px;
+    gap: 3px;
+    border: 0;
+    border-radius: 0;
   }
 
   .board-shell {
@@ -782,13 +783,13 @@ body.fruit-playing .topbar {
   }
 
   .scorebar {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 44px minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 36px;
     gap: 4px;
   }
 
   .scorebar div {
-    min-height: 44px;
-    padding: 4px 5px;
+    min-height: 42px;
+    padding: 3px 5px;
   }
 
   .scorebar div:nth-child(3) {
@@ -829,8 +830,8 @@ body.fruit-playing .topbar {
   }
 
   #nextFruitText {
-    width: 34px;
-    height: 34px;
+    width: 28px;
+    height: 28px;
     margin: 0;
   }
 
@@ -839,14 +840,13 @@ body.fruit-playing .topbar {
   }
 
   .controls button {
-    min-height: 40px;
+    min-height: 34px;
     border-radius: 7px;
     font-size: 0.62rem;
   }
 
   body.fruit-playing .controls {
-    grid-template-columns: 1fr 1fr;
-    gap: 4px;
+    grid-template-columns: 1fr;
   }
 
   #gameCanvas {

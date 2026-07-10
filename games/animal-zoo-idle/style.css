@@ -1892,7 +1892,7 @@ body.zoo-playing .animal-shop-card small {
   }
 
   body.zoo-playing .savanna-stage {
-    width: 100%;
+    width: min(100%, clamp(210px, calc(var(--wp-mobile-vh, 100svh) - 480px), 358px));
     max-width: 100%;
     height: auto;
     min-height: 0;
@@ -1900,6 +1900,7 @@ body.zoo-playing .animal-shop-card small {
     aspect-ratio: 1 / 1;
     flex: 0 0 auto;
     align-self: start;
+    justify-self: center;
     background:
       linear-gradient(180deg, rgba(255,255,255,.08), rgba(61,42,15,.08)),
       #d5f0ae url("../../assets/animal-zoo-idle-stage-bg.webp") center / contain no-repeat;

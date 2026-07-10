@@ -388,6 +388,10 @@ select {
   display: none !important;
 }
 
+body.zoo-helper-playing .game-page-info {
+  display: none !important;
+}
+
 .loading-panel,
 .result-panel {
   position: fixed;
@@ -456,6 +460,63 @@ select {
 }
 
 @media (max-width: 430px) {
+  html:has(body.zoo-helper-playing),
+  body.zoo-helper-playing {
+    overflow: hidden !important;
+    overscroll-behavior: none;
+    touch-action: none;
+  }
+
+  body.zoo-helper-playing .zoo-game {
+    width: 100vw;
+    height: var(--wp-mobile-vh, 100svh);
+    min-height: 0;
+    padding: calc(7px + env(safe-area-inset-top)) 10px calc(7px + env(safe-area-inset-bottom));
+    gap: 6px;
+  }
+
+  body.zoo-helper-playing .topbar {
+    grid-template-columns: 44px minmax(0, 1fr);
+    gap: 8px;
+  }
+
+  body.zoo-helper-playing .title-block p,
+  body.zoo-helper-playing .language-picker {
+    display: none;
+  }
+
+  body.zoo-helper-playing .title-block h1 {
+    font-size: clamp(1.05rem, 5vw, 1.35rem);
+  }
+
+  body.zoo-helper-playing .play-panel {
+    min-height: 0;
+    gap: 6px;
+  }
+
+  body.zoo-helper-playing .animal-card {
+    min-height: min(35vh, 270px);
+    padding: 14px 12px;
+    gap: 6px;
+  }
+
+  body.zoo-helper-playing .animal-emoji {
+    width: min(34vw, 156px);
+  }
+
+  body.zoo-helper-playing .animal-card strong {
+    font-size: 1.35rem;
+  }
+
+  body.zoo-helper-playing .item-card {
+    height: clamp(68px, 18vw, 82px);
+  }
+
+  body.zoo-helper-playing .item-card b {
+    width: 42px;
+    height: 42px;
+  }
+
   .zoo-game {
     padding-inline: 10px;
     gap: 10px;

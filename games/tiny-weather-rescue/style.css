@@ -536,6 +536,10 @@ select {
   display: none !important;
 }
 
+body.helper-playing .game-page-info {
+  display: none !important;
+}
+
 .loading-panel,
 .result-panel {
   position: fixed;
@@ -702,6 +706,61 @@ select {
 }
 
 @media (max-width: 430px) {
+  html:has(body.helper-playing),
+  body.helper-playing {
+    overflow: hidden !important;
+    overscroll-behavior: none;
+    touch-action: none;
+  }
+
+  body.helper-playing .weather-game {
+    width: 100vw;
+    height: var(--wp-mobile-vh, 100svh);
+    min-height: 0;
+    padding: calc(7px + env(safe-area-inset-top)) 10px calc(7px + env(safe-area-inset-bottom));
+    gap: 6px;
+  }
+
+  body.helper-playing .topbar {
+    grid-template-columns: 44px minmax(0, 1fr);
+    gap: 8px;
+  }
+
+  body.helper-playing .title-block p,
+  body.helper-playing .language-picker {
+    display: none;
+  }
+
+  body.helper-playing .title-block h1 {
+    font-size: clamp(1.05rem, 5vw, 1.35rem);
+  }
+
+  body.helper-playing .play-panel {
+    min-height: 0;
+    gap: 6px;
+  }
+
+  body.helper-playing .board {
+    width: 100%;
+    height: calc(var(--wp-mobile-vh, 100svh) - 172px);
+    min-height: 0;
+    padding: 8px;
+  }
+
+  body.helper-playing .weather-scene {
+    min-height: 0;
+    height: 100%;
+  }
+
+  body.helper-playing .rescue-scene {
+    min-height: 0;
+    height: min(48%, 290px);
+  }
+
+  body.helper-playing .tool-btn {
+    min-height: 76px;
+  }
+
   .weather-game {
     padding-inline: 10px;
     gap: 10px;

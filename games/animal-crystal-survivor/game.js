@@ -379,6 +379,7 @@
   function show(panel) {
     [nodes.menuPanel, nodes.gamePanel, nodes.resultPanel, nodes.upgradePanel].forEach((node) => node.classList.add("hidden"));
     panel.classList.remove("hidden");
+    document.body.classList.toggle("crystal-playing", panel === nodes.gamePanel || panel === nodes.upgradePanel);
   }
 
   function scheduleLoop(token = runToken) {
@@ -399,6 +400,7 @@
     save.playCount += 1;
     persist();
     show(nodes.gamePanel);
+    window.WeightPlayGame?.enterMobileGameMode?.();
     window.scrollTo({ top: 0, left: 0, behavior: "instant" });
     renderHud();
     lastFrame = performance.now();

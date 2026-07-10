@@ -5,6 +5,22 @@
   color: #fffce9;
 }
 
+@media (max-width: 640px) and (pointer: coarse) {
+  html:has(body.crystal-playing), body.crystal-playing { overflow: hidden !important; touch-action: none; }
+  body.crystal-playing .crystal-app { width: 100vw; height: var(--wp-mobile-vh, 100svh); min-height: 0; padding: 7px 9px; grid-template-rows: 48px minmax(0, 1fr); gap: 6px; }
+  body.crystal-playing .topbar { grid-template-columns: 44px minmax(0, 1fr); }
+  body.crystal-playing .brand-title p, body.crystal-playing .language-picker, body.crystal-playing .game-page-info { display: none !important; }
+  body.crystal-playing .brand-title h1 { font-size: 1.1rem; }
+  body.crystal-playing .game-panel { min-height: 0; gap: 6px; }
+  body.crystal-playing .hud-row { grid-template-columns: 44px repeat(4, minmax(0, 1fr)); gap: 4px; }
+  body.crystal-playing .hud-row > div, body.crystal-playing .soft-btn { min-height: 40px; padding: 4px; }
+  body.crystal-playing .hud-row span { font-size: 0.58rem; }
+  body.crystal-playing .hud-row b { font-size: 0.82rem; }
+  body.crystal-playing .canvas-wrap { width: min(100%, calc(var(--wp-mobile-vh, 100svh) - 210px)); }
+  body.crystal-playing .upgrade-panel { padding: 10px; }
+  body.crystal-playing .upgrade-card-wrap { width: 100%; max-height: calc(var(--wp-mobile-vh, 100svh) - 20px); overflow-y: auto; }
+}
+
 * {
   box-sizing: border-box;
 }

@@ -261,6 +261,7 @@
     nodes.menuPanel.classList.remove("hidden");
     nodes.playPanel.classList.add("hidden");
     nodes.resultPanel.classList.add("hidden");
+    document.body.classList.remove("zoo-helper-playing");
     renderStageGrid();
   }
 
@@ -272,9 +273,11 @@
     nodes.menuPanel.classList.add("hidden");
     nodes.playPanel.classList.remove("hidden");
     nodes.resultPanel.classList.add("hidden");
+    document.body.classList.add("zoo-helper-playing");
     track("game_start", { level: index + 1 });
     playSound("start");
     renderTask();
+    window.WeightPlayGame?.enterMobileGameMode?.();
   }
 
   function renderTask() {

@@ -385,7 +385,7 @@ select {
   scroll-padding-inline: 40%;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
-  touch-action: pan-x;
+  touch-action: pan-x pinch-zoom;
   cursor: grab;
 }
 
@@ -396,6 +396,13 @@ select {
 .stage-grid.dragging {
   cursor: grabbing;
   scroll-snap-type: none;
+}
+
+@media (pointer: coarse) {
+  .stage-grid {
+    scroll-snap-type: x proximity;
+    overscroll-behavior-inline: contain;
+  }
 }
 
 .stage-card {

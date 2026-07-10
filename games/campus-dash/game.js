@@ -82,7 +82,8 @@
   }
 
   const sprites = {
-    hero: loadImage("../../assets/campus-dash-runner.svg"),
+    runway: loadImage("../../assets/campus-dash-savanna-runway.jpg"),
+    hero: loadImage("../../assets/campus-dash-spark-fox-runner.png"),
     coin: loadImage("../../assets/campus-dash-coin.svg"),
     cone: loadImage("../../assets/campus-dash-cone.svg"),
     bag: loadImage("../../assets/campus-dash-bag.svg"),
@@ -176,11 +177,14 @@
   function startRun() {
     state = makeState();
     state.running = true;
+    document.body.classList.add("dash-playing");
+    document.querySelector(".dash-game")?.classList.add("is-playing");
     startPanel.classList.add("hidden");
     resultPanel.classList.add("hidden");
     hud.classList.remove("hidden");
     lastTime = performance.now();
     window.WonderSound?.play("click");
+    window.WeightPlayGame?.enterMobileGameMode?.();
     window.WonderAnalytics?.track("game_start", { game_id: GAME_ID, locale: locale() });
     requestAnimationFrame(loop);
   }
@@ -343,6 +347,16 @@
   }
 
   function drawBackground() {
+    if (sprites.runway.complete && sprites.runway.naturalWidth) {
+      ctx.drawImage(sprites.runway, 0, 0, W, H);
+      const shade = ctx.createLinearGradient(0, 0, 0, H);
+      shade.addColorStop(0, "rgba(8, 48, 92, 0.04)");
+      shade.addColorStop(0.56, "rgba(255, 221, 126, 0.02)");
+      shade.addColorStop(1, "rgba(73, 35, 8, 0.18)");
+      ctx.fillStyle = shade;
+      ctx.fillRect(0, 0, W, H);
+      return;
+    }
     const sky = ctx.createLinearGradient(0, 0, 0, H);
     sky.addColorStop(0, "#7dd3fc");
     sky.addColorStop(0.34, "#38bdf8");
@@ -390,12 +404,12 @@
     const bottomY = H + 18;
     const top = [W * 0.31, W * 0.44, W * 0.56, W * 0.69];
     const bottom = [W * 0.06, W * 0.36, W * 0.64, W * 0.94];
-    const laneColors = ["#38bdf8", "#f97316", "#22c55e"];
+    const laneColors = ["rgba(247, 184, 73, 0.18)", "rgba(255, 228, 133, 0.24)", "rgba(247, 184, 73, 0.18)"];
 
     for (let lane = 0; lane < 3; lane += 1) {
       const fill = ctx.createLinearGradient(0, topY, 0, H);
       fill.addColorStop(0, laneColors[lane]);
-      fill.addColorStop(0.58, lane === state.targetLane ? "#fef08a" : laneColors[lane]);
+      fill.addColorStop(0.58, lane === state.targetLane ? "rgba(255, 249, 181, 0.45)" : laneColors[lane]);
       fill.addColorStop(1, laneColors[lane]);
       ctx.globalAlpha = lane === state.targetLane ? 0.92 : 0.68;
       ctx.fillStyle = fill;
@@ -409,8 +423,8 @@
       ctx.globalAlpha = 1;
     }
 
-    ctx.strokeStyle = "rgba(255, 255, 255, 0.95)";
-    ctx.lineWidth = 7;
+    ctx.strokeStyle = "rgba(255, 247, 213, 0.8)";
+    ctx.lineWidth = 5;
     ctx.lineCap = "round";
     for (let i = 0; i < 4; i += 1) {
       ctx.beginPath();
@@ -492,7 +506,7 @@
     ctx.ellipse(0, 124, 62, 14, 0, 0, Math.PI * 2);
     ctx.fill();
     if (sprites.hero.complete && sprites.hero.naturalWidth) {
-      ctx.drawImage(sprites.hero, -86, -112, 172, 210);
+      ctx.drawImage(sprites.hero, -108, -134, 216, 216);
     }
     ctx.restore();
   }

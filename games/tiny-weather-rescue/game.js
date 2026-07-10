@@ -307,8 +307,10 @@
     nodes.menuPanel.classList.add("hidden");
     nodes.resultPanel.classList.add("hidden");
     nodes.playPanel.classList.remove("hidden");
+    document.body.classList.add("helper-playing");
     nodes.hintText.textContent = t("hint");
     renderRound();
+    window.WeightPlayGame?.enterMobileGameMode?.();
     track("game_start", { stage: currentStage + 1 });
   }
 
@@ -586,6 +588,7 @@
     nodes.playPanel.classList.add("hidden");
     nodes.resultPanel.classList.add("hidden");
     nodes.menuPanel.classList.remove("hidden");
+    document.body.classList.remove("helper-playing");
     renderStageGrid();
   }
 

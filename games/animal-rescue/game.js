@@ -316,10 +316,12 @@ function startLevel(index) {
   resultPanel.classList.add("hidden");
   playArea.classList.remove("hidden");
   hud.classList.remove("hidden");
+  document.body.classList.add("rescue-playing");
   renderAvatar(level.animal);
   animalName.textContent = t(level.animal);
   renderBoard();
   updateHud();
+  window.WeightPlayGame?.enterMobileGameMode?.();
   window.WonderSound?.play("start");
   window.WonderAnalytics?.track("game_start", { game_id: GAME_ID, stage: level.id, locale: locale() });
 }
@@ -329,6 +331,7 @@ function showStageSelect() {
   hud.classList.add("hidden");
   resultPanel.classList.add("hidden");
   stageSelect.classList.remove("hidden");
+  document.body.classList.remove("rescue-playing");
   renderStageSelect();
 }
 

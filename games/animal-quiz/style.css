@@ -547,6 +547,34 @@ a {
 }
 
 @media (max-width: 430px) {
+  html:has(body.quiz-playing),
+  body.quiz-playing {
+    overflow: hidden !important;
+    touch-action: none;
+  }
+
+  body.quiz-playing .animal-game {
+    width: 100vw;
+    height: var(--wp-mobile-vh, 100svh);
+    min-height: 0;
+    padding: 7px 9px;
+    gap: 6px;
+  }
+
+  body.quiz-playing .topbar {
+    grid-template-columns: 42px minmax(0, 1fr);
+  }
+
+  body.quiz-playing .topbar p,
+  body.quiz-playing .language-picker,
+  body.quiz-playing .game-page-info {
+    display: none !important;
+  }
+
+  body.quiz-playing .level-line {
+    margin: 0;
+  }
+
   .animal-game {
     grid-template-rows: 58px 38px minmax(0, 1fr) 124px 46px;
     gap: 9px;

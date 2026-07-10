@@ -673,12 +673,11 @@
     nodes.resultPanel.classList.add("hidden");
     nodes.hud.classList.remove("hidden");
     nodes.playPanel.classList.remove("hidden");
+    document.body.classList.add("snack-playing");
     updateHud();
     renderBoard();
     nodes.hintText.textContent = t("hint");
-    window.requestAnimationFrame(() => {
-      nodes.hud.scrollIntoView({ block: "start", behavior: "smooth" });
-    });
+    window.WeightPlayGame?.enterMobileGameMode?.();
     window.WonderAnalytics?.track("game_start", {
       game_id: GAME_ID,
       stage: activeStage().id,
@@ -710,6 +709,7 @@
     nodes.nextBtn.classList.toggle("hidden", !cleared || stage.id >= stages.length);
     nodes.hud.classList.add("hidden");
     nodes.playPanel.classList.add("hidden");
+    document.body.classList.remove("snack-playing");
     nodes.resultPanel.classList.remove("hidden");
     window.WonderSound?.play(cleared ? "win" : "wrong");
     window.WonderAnalytics?.track("game_complete", {
@@ -757,6 +757,7 @@
     nodes.playPanel.classList.add("hidden");
     nodes.resultPanel.classList.add("hidden");
     nodes.menuPanel.classList.remove("hidden");
+    document.body.classList.remove("snack-playing");
     renderStageGrid();
     window.WonderAnalytics?.track("game_menu", { game_id: GAME_ID });
   }

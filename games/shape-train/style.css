@@ -442,6 +442,11 @@ select {
 }
 
 @media (max-width: 430px) {
+  html:has(body.shape-playing), body.shape-playing { overflow: hidden !important; touch-action: none; }
+  body.shape-playing .shape-game { width: 100vw; height: var(--wp-mobile-vh, 100svh); min-height: 0; padding: 7px 10px; gap: 6px; }
+  body.shape-playing .topbar { grid-template-columns: 44px minmax(0, 1fr); }
+  body.shape-playing .title-block p, body.shape-playing .language-picker, body.shape-playing .game-page-info { display: none !important; }
+  body.shape-playing .play-panel { min-height: 0; gap: 6px; }
   .shape-game {
     padding-inline: 10px;
     gap: 10px;

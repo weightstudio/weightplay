@@ -144,6 +144,8 @@
   }
 
   function widenToPlayableFrame(element) {
+    const declaredFrame = element?.closest?.("[data-play-viewport], .weightplay-play-viewport, .fixed-shell-host, .fixed-game-shell, .game-shell");
+    if (declaredFrame && isVisible(declaredFrame)) return declaredFrame;
     let current = element;
     while (current && current !== document.body) {
       if (primaryFrameSelectors.some((selector) => current.matches?.(selector)) || hasHudAndPlayArea(current)) {
@@ -172,6 +174,11 @@
 
   function findImmersiveFrameFromEventTarget(target) {
     if (target?.closest?.("[data-no-mobile-immersive='true']")) return null;
+    const declaredFrame = target?.closest?.("[data-play-viewport], .weightplay-play-viewport, .fixed-shell-host, .fixed-game-shell, .game-shell");
+    if (declaredFrame && isVisible(declaredFrame)) return declaredFrame;
+    // An in-game button must never promote only its closest panel. Keep the full game root stable.
+    const gameRoot = target?.closest?.("main");
+    if (gameRoot && isVisible(gameRoot)) return gameRoot;
     const direct = target?.closest?.(immersiveTriggerSelectors.join(","));
     if (direct && isVisible(direct)) return widenToPlayableFrame(direct);
     return findPlayableFrame();

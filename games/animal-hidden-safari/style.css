@@ -440,7 +440,8 @@ select {
 }
 
 .target-chip span {
-  font-size: 0.72rem;
+  font-size: 0.8rem;
+  line-height: 1;
 }
 
 .target-chip.done {
@@ -531,6 +532,17 @@ select {
 }
 
 @media (max-width: 560px) {
+  html:has(body.safari-playing), body.safari-playing { overflow: hidden !important; touch-action: none; }
+  body.safari-playing .safari-game { width: 100vw; height: var(--wp-mobile-vh, 100svh); min-height: 0; padding: 7px 10px; gap: 6px; }
+  body.safari-playing .title-block p, body.safari-playing .language-picker, body.safari-playing .game-page-info { display: none !important; }
+  body.safari-playing .title-block h1 { font-size: 1.15rem; }
+  body.safari-playing .play-panel { min-height: 0; gap: 6px; }
+  body.safari-playing .scene { min-height: 0; height: calc(var(--wp-mobile-vh, 100svh) - 330px); }
+  body.safari-playing .target-panel { padding: 8px; gap: 6px; }
+  body.safari-playing .target-list { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+  body.safari-playing .target-chip { min-height: 62px; grid-template-columns: 40px minmax(0, 1fr); gap: 5px; padding: 5px; text-align: left; }
+  body.safari-playing .target-chip b { width: 38px; height: 38px; }
+  body.safari-playing .target-chip span { font-size: 0.78rem; overflow-wrap: anywhere; }
   .topbar {
     grid-template-columns: 44px minmax(0, 1fr);
   }

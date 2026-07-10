@@ -426,6 +426,8 @@ function startStage(stageIndex) {
   state.completed = false;
   resultPanel.classList.add("hidden");
   setQuizVisible(true);
+  document.body.classList.add("quiz-playing");
+  window.WeightPlayGame?.enterMobileGameMode?.();
   window.WonderAnalytics?.track("game_start", {
     game_id: GAME_ID,
     stage: stageIndex + 1,

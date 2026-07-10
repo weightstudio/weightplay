@@ -643,7 +643,7 @@
     nodes.stageGrid.addEventListener("pointermove", (event) => {
       if (!drag || drag.id !== event.pointerId) return;
       const deltaX = event.clientX - drag.x;
-      if (Math.abs(deltaX) > 18) {
+      if (Math.abs(deltaX) > 6) {
         drag.moved = true;
         if (!drag.captured) {
           nodes.stageGrid.setPointerCapture?.(event.pointerId);
@@ -858,6 +858,7 @@
     nodes.playPanel.classList.add("hidden");
     nodes.resultPanel.classList.add("hidden");
     showMenuTab(activeMenuTab);
+    window.requestAnimationFrame(() => window.scrollTo({ top: 0, left: 0, behavior: "auto" }));
   }
 
   function startStage(index) {
@@ -889,6 +890,7 @@
     updateHud();
     track("game_start", { level: index + 1 });
     playSound("start");
+    window.WeightPlayGame?.enterMobileGameMode?.();
     raf = requestAnimationFrame(tick);
   }
 

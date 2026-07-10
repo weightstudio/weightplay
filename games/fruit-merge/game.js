@@ -14,15 +14,11 @@
   const scoreText = document.querySelector("#scoreText");
   const bestText = document.querySelector("#bestText");
   const nextFruitText = document.querySelector("#nextFruitText");
-  const comboBox = document.querySelector("#comboBox");
-  const comboLabel = document.querySelector("#comboLabel");
-  const comboText = document.querySelector("#comboText");
   const largestLabel = document.querySelector("#largestLabel");
   const largestFruitText = document.querySelector("#largestFruitText");
   const largestFruitToken = document.querySelector("#largestFruitToken");
   const goalText = document.querySelector("#goalText");
   const goalFill = document.querySelector("#goalFill");
-  const dropBtn = document.querySelector("#dropBtn");
   const restartBtn = document.querySelector("#restartBtn");
   const startBtn = document.querySelector("#startBtn");
   const menuPanel = document.querySelector("#menuPanel");
@@ -266,8 +262,6 @@
     scoreLabel.textContent = t("score");
     bestLabel.textContent = t("best");
     nextLabel.textContent = t("next");
-    comboLabel.textContent = t("comboLabel");
-    dropBtn.textContent = t("drop");
     restartBtn.textContent = t("restart");
     menuTitle.textContent = t("menuTitle");
     menuDesc.textContent = t("menuDesc");
@@ -357,8 +351,7 @@
 
   function updateComboHud() {
     const active = running && !gameOver && comboCount > 1 && performance.now() <= comboUntil;
-    comboBox.classList.toggle("active", active);
-    comboText.textContent = active ? t("comboStatus", { count: Math.min(5, comboCount) }) : t("comboReady");
+    // Combo multipliers remain part of scoring; the compact mobile HUD does not show a separate combo card.
   }
 
   function dropFruit() {
@@ -986,7 +979,6 @@
     canvas.releasePointerCapture?.(event.pointerId);
   });
 
-  dropBtn.addEventListener("click", dropFruit);
   restartBtn.addEventListener("click", () => {
     window.WonderAnalytics?.track?.("game_restart", { game_id: GAME_ID, score, source: "button" });
     resetGame(false, "restart");

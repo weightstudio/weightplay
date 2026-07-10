@@ -500,6 +500,10 @@ a {
   display: none !important;
 }
 
+body.rescue-playing .game-page-info {
+  display: none !important;
+}
+
 @keyframes rescue-fade-in {
   from {
     opacity: 0;
@@ -546,6 +550,65 @@ a {
 }
 
 @media (max-width: 420px) {
+  html:has(body.rescue-playing),
+  body.rescue-playing {
+    overflow: hidden !important;
+    overscroll-behavior: none;
+    touch-action: none;
+  }
+
+  body.rescue-playing .rescue-game {
+    width: 100vw;
+    height: var(--wp-mobile-vh, 100svh);
+    min-height: 0;
+    padding: calc(7px + env(safe-area-inset-top)) 9px calc(7px + env(safe-area-inset-bottom));
+    grid-template-rows: 48px 50px minmax(0, 1fr);
+    gap: 6px;
+  }
+
+  body.rescue-playing .topbar {
+    grid-template-columns: 44px minmax(0, 1fr);
+  }
+
+  body.rescue-playing .topbar p,
+  body.rescue-playing .language-picker {
+    display: none;
+  }
+
+  body.rescue-playing .topbar h1 {
+    font-size: clamp(1.05rem, 5.2vw, 1.35rem);
+  }
+
+  body.rescue-playing .play-area {
+    grid-template-rows: 72px minmax(0, 1fr) 42px;
+    gap: 6px;
+  }
+
+  body.rescue-playing .animal-panel {
+    grid-template-columns: 54px minmax(0, 1fr);
+    gap: 7px;
+    padding: 7px;
+  }
+
+  body.rescue-playing .animal-avatar {
+    width: 50px;
+    height: 50px;
+  }
+
+  body.rescue-playing .animal-panel strong {
+    font-size: 1rem;
+  }
+
+  body.rescue-playing .animal-panel span {
+    margin-top: 3px;
+    font-size: 0.72rem;
+  }
+
+  body.rescue-playing .action-row button {
+    min-height: 40px;
+    font-size: 0.86rem;
+  }
+
   .rescue-game {
     grid-template-rows: 56px 52px minmax(0, 1fr);
     gap: 8px;
@@ -566,13 +629,34 @@ a {
   }
 
   .stage-grid {
+    grid-template-columns: 1fr;
     gap: 8px;
   }
 
   .stage-card {
     grid-template-columns: 48px 1fr;
-    min-height: 104px;
+    min-height: 142px;
     padding: 8px;
+    align-content: start;
+  }
+
+  .stage-card-route,
+  .stage-card .mini-animal {
+    align-self: start;
+  }
+
+  .stage-card span,
+  .stage-meta i {
+    overflow-wrap: anywhere;
+  }
+
+  .stage-meta {
+    align-items: start;
+  }
+
+  .stage-stars {
+    min-height: 20px;
+    line-height: 1;
   }
 }
 html,

@@ -283,6 +283,7 @@
     nodes.resultPanel.classList.add("hidden");
     nodes.playPanel.classList.add("hidden");
     nodes.menuPanel.classList.remove("hidden");
+    document.body.classList.remove("safari-playing");
     renderStageGrid();
   }
 
@@ -296,6 +297,7 @@
     nodes.resultPanel.classList.add("hidden");
     nodes.menuPanel.classList.add("hidden");
     nodes.playPanel.classList.remove("hidden");
+    document.body.classList.add("safari-playing");
     nodes.scene.dataset.theme = stages[index].theme || "sunny";
     renderScene();
     renderTargetList();
@@ -303,6 +305,7 @@
     startTimer();
     track("game_start", { level: index + 1 });
     playSound("start");
+    window.WeightPlayGame?.enterMobileGameMode?.();
   }
 
   function renderScene() {
