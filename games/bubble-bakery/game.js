@@ -193,8 +193,8 @@
     stageGrid: $("stageGrid"),
     playPanel: $("playPanel"),
     backToStagesBtn: $("backToStagesBtn"),
+    pauseBtn: $("pauseBtn"),
     movesText: $("movesText"),
-    scoreText: $("scoreText"),
     orderBar: $("orderBar"),
     board: $("board"),
     hintText: $("hintText"),
@@ -307,6 +307,9 @@
     document.documentElement.lang = locale === "zh-Hant" ? "zh-Hant" : "en";
     document.querySelectorAll("[data-ui]").forEach((node) => {
       node.textContent = t(node.dataset.ui);
+    });
+    document.querySelectorAll("[data-ui-aria-label]").forEach((node) => {
+      node.setAttribute("aria-label", t(node.dataset.uiAriaLabel));
     });
     nodes.localeSelect.value = locale;
   }
@@ -771,7 +774,6 @@
 
   function updateHud() {
     nodes.movesText.textContent = moves;
-    nodes.scoreText.textContent = score;
   }
 
   function finish(won) {
@@ -1007,6 +1009,7 @@
     }
   });
   nodes.backToStagesBtn.addEventListener("click", showMenu);
+  nodes.pauseBtn.addEventListener("click", showMenu);
   nodes.recommendedOrder.addEventListener("click", (event) => {
     const button = event.target.closest("[data-recommended-stage]");
     if (!button) return;

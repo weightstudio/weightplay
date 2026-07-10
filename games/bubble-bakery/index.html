@@ -98,9 +98,12 @@
 
       <section id="playPanel" class="play-panel hidden" data-play-viewport data-no-mobile-immersive="true">
         <div class="play-head">
-          <button id="backToStagesBtn" class="soft-btn" type="button" data-ui="stages">Stages</button>
+          <button id="backToStagesBtn" class="play-return" type="button" aria-label="Back to stages" data-ui-aria-label="stages">
+            <img src="../../assets/weightplay-logo.png" alt="" draggable="false" />
+            <span class="sr-only" data-ui="stages">Stages</span>
+          </button>
           <div class="hud-pill"><span data-ui="moves">Moves</span><b id="movesText">0</b></div>
-          <div class="hud-pill"><span data-ui="score">Score</span><b id="scoreText">0</b></div>
+          <button id="pauseBtn" class="play-settings" type="button" aria-label="Open stages" data-ui-aria-label="stages"><img src="../../assets/menu-settings.png" alt="" draggable="false" /></button>
         </div>
         <div id="orderBar" class="order-bar" aria-label="Bakery orders"></div>
         <div id="board" class="bubble-board" aria-label="Bubble board"></div>

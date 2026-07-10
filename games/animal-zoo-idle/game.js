@@ -78,6 +78,7 @@
     en: {
       title: "Animal Zoo Idle",
       language: "Language",
+      backToMenu: "Back to park menu.",
       menuTitle: "Build a growing animal park.",
       menuHint: "Welcome visitors, collect tickets, upgrade the zoo gate, and recruit more animals to grow your park.",
       start: "Open Park",
@@ -211,6 +212,7 @@
   text["zh-Hant"] = {
     title: "\u52d5\u7269\u5c0f\u5c0f\u6a02\u5712",
     language: "\u8a9e\u8a00",
+    backToMenu: "\u8fd4\u56de\u6a02\u5712\u9078\u55ae\u3002",
     menuTitle: "\u5efa\u8a2d\u4e00\u5ea7\u6703\u6210\u9577\u7684\u52d5\u7269\u6a02\u5712\u3002",
     menuHint: "\u6b61\u8fce\u53c3\u89c0\u8005\u3001\u6536\u96c6\u9580\u7968\u6536\u5165\u3001\u5347\u7d1a\u5927\u9580\uff0c\u4e26\u62db\u52df\u66f4\u591a\u52d5\u7269\u4f86\u64f4\u5efa\u6a02\u5712\u3002",
     start: "\u958b\u5712",
@@ -359,6 +361,7 @@
     menuPanel: $("menuPanel"),
     gamePanel: $("gamePanel"),
     startBtn: $("startBtn"),
+    backToMenuBtn: $("backToMenuBtn"),
     coinText: $("coinText"),
     incomeText: $("incomeText"),
     reportBtn: $("reportBtn"),
@@ -718,6 +721,9 @@
     document.querySelectorAll("[data-ui]").forEach((node) => {
       node.textContent = t(node.dataset.ui);
     });
+    document.querySelectorAll("[data-ui-aria-label]").forEach((node) => {
+      node.setAttribute("aria-label", t(node.dataset.uiAriaLabel));
+    });
     nodes.localeSelect.value = locale;
     updatePageMetadata();
   }
@@ -740,7 +746,7 @@
   function render() {
     if (nodes.gamePanel.classList.contains("hidden")) return;
     nodes.coinText.textContent = formatNumber(save.coins);
-    nodes.incomeText.textContent = formatNumber(save.ticketBox);
+    if (nodes.incomeText) nodes.incomeText.textContent = formatNumber(save.ticketBox);
     const card = nodes.habitatGrid.querySelector(".zoo-stage-card");
     if (!card) {
       nodes.habitatGrid.appendChild(renderPark());
@@ -1470,6 +1476,17 @@
     window.WonderAnalytics?.track("game_start", { game_id: GAME_ID });
   }
 
+  function showMenu() {
+    if (nodes.gamePanel.classList.contains("hidden")) return;
+    document.body.classList.remove("zoo-playing");
+    document.querySelector(".zoo-app")?.classList.remove("is-playing");
+    nodes.localeSelect.closest(".language-picker")?.removeAttribute("aria-hidden");
+    nodes.gamePanel.classList.add("hidden");
+    nodes.menuPanel.classList.remove("hidden");
+    nodes.resultPanel.classList.add("hidden");
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  }
+
   function tickPark() {
     if (nodes.gamePanel.classList.contains("hidden")) return;
     tickCount += 1;
@@ -1531,6 +1548,7 @@
     event.stopPropagation();
     startGame();
   });
+  nodes.backToMenuBtn.addEventListener("click", showMenu);
   window.addEventListener("weightplay:tutorial-start", (event) => {
     if (event.detail?.gameId === GAME_ID) startGame();
   });

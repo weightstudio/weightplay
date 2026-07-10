@@ -284,6 +284,7 @@
     stageGrid: $("stageGrid"),
     playPanel: $("playPanel"),
     backToStagesBtn: $("backToStagesBtn"),
+    pauseBtn: $("pauseBtn"),
     energyText: $("energyText"),
     baseText: $("baseText"),
     waveText: $("waveText"),
@@ -560,6 +561,9 @@
     document.documentElement.lang = locale === "zh-Hant" ? "zh-Hant" : "en";
     document.querySelectorAll("[data-ui]").forEach((node) => {
       node.textContent = t(node.dataset.ui);
+    });
+    document.querySelectorAll("[data-ui-aria-label]").forEach((node) => {
+      node.setAttribute("aria-label", t(node.dataset.uiAriaLabel));
     });
     nodes.localeSelect.value = locale;
     renderWallet();
@@ -1567,6 +1571,7 @@
     playSound("click");
   });
   nodes.backToStagesBtn.addEventListener("click", showMenu);
+  nodes.pauseBtn.addEventListener("click", showMenu);
   nodes.resultStagesBtn.addEventListener("click", showMenu);
   nodes.retryBtn.addEventListener("click", () => startStage(currentStage));
   nodes.nextStageBtn.addEventListener("click", () => startStage(Math.min(currentStage + 1, stages.length - 1)));

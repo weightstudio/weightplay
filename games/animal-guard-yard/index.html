@@ -127,11 +127,17 @@
       <section id="playPanel" class="fixed-shell-host hidden">
         <div class="fixed-game-shell play-area" aria-label="Animal Guard Yard fixed game screen">
           <div class="play-head">
-            <button id="backToStagesBtn" class="soft-btn" type="button" data-ui="stages">Stages</button>
+            <button id="backToStagesBtn" class="play-return" type="button" aria-label="Back to stages" data-ui-aria-label="stages">
+              <img src="../../assets/weightplay-logo.png" alt="" draggable="false" />
+              <span class="sr-only" data-ui="stages">Stages</span>
+            </button>
             <div class="resource-pill" aria-label="Sun energy"><span class="hud-icon sun-icon" aria-hidden="true"></span><b id="energyText">0</b></div>
-            <div class="base-pill" aria-label="Home hearts"><img class="hud-icon heart-img" src="../../assets/weightplay-heart.svg" alt="" draggable="false" /><b id="baseText">3</b></div>
+            <button id="pauseBtn" class="play-settings" type="button" aria-label="Open stages" data-ui-aria-label="stages"><img src="../../assets/menu-settings.png" alt="" draggable="false" /></button>
           </div>
-          <div id="waveText" class="wave-text">Stage 1</div>
+          <div class="wave-status">
+            <span id="waveText" class="wave-text">Stage 1</span>
+            <span class="base-pill" aria-label="Home hearts"><img class="hud-icon heart-img" src="../../assets/weightplay-heart.svg" alt="" draggable="false" /><b id="baseText">3</b></span>
+          </div>
           <div id="waveTimer" class="wave-timer" aria-hidden="true"><i></i></div>
           <div id="unitBar" class="unit-bar" aria-label="Animal guards"></div>
           <div id="yardBoard" class="yard-board" aria-label="Animal defense lanes">
