@@ -531,9 +531,11 @@
     nodes.orderBar.appendChild(title);
     Object.entries(orders).forEach(([id, need]) => {
       const data = colorData(id);
+      const remaining = Math.max(0, need);
       const chip = document.createElement("div");
       chip.className = "order-chip";
-      chip.innerHTML = `<img class="order-icon" src="${data.asset}" alt="${data.label}" /><span>${t("collect", { n: Math.max(0, need) })}</span>`;
+      chip.setAttribute("aria-label", `${data.label}: ${remaining}/${initialOrders[id]}`);
+      chip.innerHTML = `<img class="order-icon" src="${data.asset}" alt="" /><span>${remaining}/${initialOrders[id]}</span>`;
       nodes.orderBar.appendChild(chip);
     });
     const meter = document.createElement("div");

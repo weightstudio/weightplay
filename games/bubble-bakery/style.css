@@ -653,25 +653,25 @@ body.is-bakery-playing .wp-tutorial-button {
 
 body.is-bakery-playing .order-bar {
   min-height: 0;
-  height: 46px;
-  max-height: 46px;
+  height: 56px;
+  max-height: 56px;
   overflow: hidden;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(98px, 0.9fr);
-  grid-template-rows: 1fr;
+  grid-template-columns: minmax(0, 1fr) repeat(2, max-content);
+  grid-template-rows: 24px 12px;
   align-content: center;
   justify-content: stretch;
   justify-items: center;
   align-items: center;
-  gap: 3px 6px;
-  padding: 5px 7px;
+  gap: 4px 6px;
+  padding: 6px 8px;
 }
 
 body.is-bakery-playing .order-title {
   grid-column: 1;
   grid-row: 1;
   width: 100%;
-  font-size: 0.74rem;
+  font-size: 0.7rem;
   line-height: 1.08;
   margin: 0;
   text-align: left;
@@ -681,14 +681,23 @@ body.is-bakery-playing .order-title {
 }
 
 body.is-bakery-playing .order-chip {
-  display: none;
+  grid-row: 1;
+  min-width: 0;
+  min-height: 22px;
+  padding: 2px 5px;
+  font-size: 0.56rem;
+  white-space: nowrap;
 }
 
 body.is-bakery-playing .order-progress {
-  grid-column: 2;
-  grid-row: 1;
+  grid-column: 1 / -1;
+  grid-row: 2;
   width: 100%;
   height: 10px;
+}
+
+body.is-bakery-playing .order-progress span {
+  display: none;
 }
 
 .order-icon {
@@ -1310,25 +1319,25 @@ body.is-bakery-playing .order-progress {
 
   body.is-bakery-playing .order-bar {
     min-height: 0;
-    height: 46px;
-    max-height: 46px;
+    height: 56px;
+    max-height: 56px;
     overflow: hidden;
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(98px, 0.9fr);
-    grid-template-rows: 1fr;
+    grid-template-columns: minmax(0, 1fr) repeat(2, max-content);
+    grid-template-rows: 24px 12px;
     align-content: center;
     justify-content: stretch;
     justify-items: center;
     align-items: center;
-    gap: 3px 6px;
-    padding: 5px 7px;
+    gap: 4px 6px;
+    padding: 6px 8px;
   }
 
   body.is-bakery-playing .order-title {
     grid-column: 1;
     grid-row: 1;
     width: 100%;
-    font-size: 0.74rem;
+    font-size: 0.7rem;
     line-height: 1.08;
     margin: 0;
     text-align: left;
@@ -1338,12 +1347,17 @@ body.is-bakery-playing .order-progress {
   }
 
   body.is-bakery-playing .order-chip {
-    display: none;
+    grid-row: 1;
+    min-width: 0;
+    min-height: 22px;
+    padding: 2px 5px;
+    font-size: 0.56rem;
+    white-space: nowrap;
   }
 
   body.is-bakery-playing .order-progress {
-    grid-column: 2;
-    grid-row: 1;
+    grid-column: 1 / -1;
+    grid-row: 2;
     width: 100%;
     height: 10px;
   }
