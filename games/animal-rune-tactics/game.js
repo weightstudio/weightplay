@@ -16,6 +16,7 @@
     loadingFill: $("loadingFill"),
     loadingText: $("loadingText"),
     menuPanel: $("menuPanel"),
+    backBtn: $("backBtn"),
     gamePanel: $("gamePanel"),
     rewardPanel: $("rewardPanel"),
     resultPanel: $("resultPanel"),
@@ -55,6 +56,7 @@
     en: {
       title: "Animal Rune Tactics",
       language: "Language",
+      backToMenu: "Back to missions",
       menuTitle: "Command the Rune Squad.",
       menuHint: "Choose a mission, move animal heroes on the rune grid, and clear enemies with smart positioning.",
       profileLevel: "Level",
@@ -141,6 +143,7 @@
     "zh-Hant": {
       title: "動物符文戰棋",
       language: "語言",
+      backToMenu: "返回任務",
       menuTitle: "指揮符文小隊。",
       menuHint: "選擇任務，在符文格上移動動物英雄，用站位與集火清除敵人。",
       profileLevel: "等級",
@@ -390,6 +393,7 @@
 
   function applyLocale() {
     document.documentElement.lang = locale === "zh-Hant" ? "zh-Hant" : "en";
+    nodes.backBtn.setAttribute("aria-label", state ? t("backToMenu") : "Back to lobby");
     document.querySelectorAll("[data-ui]").forEach((node) => {
       node.textContent = t(node.dataset.ui);
     });
@@ -540,6 +544,8 @@
       enemies: makeEnemies(mission),
     };
     nodes.menuPanel.classList.add("is-hidden");
+    document.body.classList.add("is-rune-playing");
+    nodes.backBtn.setAttribute("aria-label", t("backToMenu"));
     nodes.resultPanel.classList.add("is-hidden");
     nodes.rewardPanel.classList.add("is-hidden");
     nodes.gamePanel.classList.remove("is-hidden");
@@ -917,6 +923,8 @@
 
   function showMenu() {
     state = null;
+    document.body.classList.remove("is-rune-playing");
+    nodes.backBtn.setAttribute("aria-label", "Back to lobby");
     nodes.gamePanel.classList.add("is-hidden");
     nodes.rewardPanel.classList.add("is-hidden");
     nodes.resultPanel.classList.add("is-hidden");
@@ -945,6 +953,11 @@
   }
 
   function bind() {
+    nodes.backBtn.addEventListener("click", (event) => {
+      if (!state) return;
+      event.preventDefault();
+      showMenu();
+    });
     nodes.localeSelect.addEventListener("change", () => {
       locale = nodes.localeSelect.value;
       localStorage.setItem(localeKey, locale);

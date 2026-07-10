@@ -369,11 +369,11 @@ select {
 }
 
 .item-card.wrong,
-.animal-card.wrong {
+.animal-card.wrong .animal-emoji {
   animation: shake 0.28s ease;
 }
 
-.animal-card.happy {
+.animal-card.happy .animal-emoji {
   animation: happy 0.48s ease;
 }
 

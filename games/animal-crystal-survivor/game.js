@@ -237,9 +237,9 @@
     const description = t("pageDescription");
     const ogDescription = t("ogDescription");
     document.title = pageTitle;
-    document.querySelector('meta[name="description"]')?.setAttribute("content", description);
-    document.querySelector('meta[property="og:title"]')?.setAttribute("content", pageTitle);
-    document.querySelector('meta[property="og:description"]')?.setAttribute("content", ogDescription);
+    document.querySelector?.('meta[name="description"]')?.setAttribute("content", description);
+    document.querySelector?.('meta[property="og:title"]')?.setAttribute("content", pageTitle);
+    document.querySelector?.('meta[property="og:description"]')?.setAttribute("content", ogDescription);
   }
 
   function makePlayer() {
@@ -379,7 +379,7 @@
   function show(panel) {
     [nodes.menuPanel, nodes.gamePanel, nodes.resultPanel, nodes.upgradePanel].forEach((node) => node.classList.add("hidden"));
     panel.classList.remove("hidden");
-    document.body.classList.toggle("crystal-playing", panel === nodes.gamePanel || panel === nodes.upgradePanel);
+    document.body?.classList.toggle("crystal-playing", panel === nodes.gamePanel || panel === nodes.upgradePanel);
   }
 
   function scheduleLoop(token = runToken) {
@@ -401,7 +401,7 @@
     persist();
     show(nodes.gamePanel);
     window.WeightPlayGame?.enterMobileGameMode?.();
-    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    window.scrollTo?.({ top: 0, left: 0, behavior: "instant" });
     renderHud();
     lastFrame = performance.now();
     playSound("start", 0.2);

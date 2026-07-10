@@ -2345,11 +2345,7 @@ body.zoo-playing .animal-shop {
 
 /* The active play shell wins over the legacy narrow-screen management rules. */
 @media (max-width: 820px) {
-  /* Keep the first actionable management summaries in the care-panel scroll area. */
-  body.zoo-playing .daily-focus-card,
-  body.zoo-playing .zoo-task-board,
-  body.zoo-playing .park-plan-card,
-  body.zoo-playing .tour-board,
+  /* The active loop stays focused on care, upgrades, and animal recruitment. */
   body.zoo-playing .facility-board {
     display: grid !important;
   }
@@ -2362,39 +2358,8 @@ body.zoo-playing .animal-shop {
     order: 1;
   }
 
-  body.zoo-playing .daily-focus-card {
-    order: 2;
-  }
-
-  body.zoo-playing .zoo-task-board {
-    order: 3;
-  }
-
-  body.zoo-playing .park-plan-card {
-    order: 4;
-  }
-
-  body.zoo-playing .tour-board {
-    order: 5;
-  }
-
   body.zoo-playing .facility-board {
-    order: 7;
-  }
-
-  body.zoo-playing .park-plan-card {
-    min-height: 116px !important;
-    height: auto !important;
-  }
-
-  body.zoo-playing .tour-board {
-    min-height: 220px !important;
-    height: auto !important;
-    overflow: visible !important;
-  }
-
-  body.zoo-playing .tour-board button {
-    min-height: 42px;
+    order: 5;
   }
 
   body.zoo-playing .resource-row {
