@@ -502,6 +502,12 @@ body {
   display: block;
 }
 
+@media (pointer: fine) {
+  #gameCanvas {
+    cursor: crosshair;
+  }
+}
+
 /* Virtual Joystick */
 .joystick-container {
   display: none;

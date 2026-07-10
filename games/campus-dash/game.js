@@ -44,7 +44,7 @@
       startText: "Tap the left or right side, or swipe, to dodge between the three lanes.",
       controlTap: "Tap left / right",
       controlSwipe: "Swipe lanes",
-      controlKeyboard: "A/D or ←/→",
+      controlKeyboard: "A/D or Left/Right",
       start: "Start",
       resultTitle: "Run Complete!",
       resultText: "Score {score}  Best {best}",
@@ -84,11 +84,11 @@
   const sprites = {
     runway: loadImage("../../assets/campus-dash-savanna-runway.jpg"),
     hero: loadImage("../../assets/campus-dash-spark-fox-runner.png"),
-    coin: loadImage("../../assets/campus-dash-coin.svg"),
-    cone: loadImage("../../assets/campus-dash-cone.svg"),
-    bag: loadImage("../../assets/campus-dash-bag.svg"),
-    books: loadImage("../../assets/campus-dash-books.svg"),
-    puddle: loadImage("../../assets/campus-dash-puddle.svg"),
+    coin: loadImage("../../assets/campus-dash-coin-premium.webp"),
+    cone: loadImage("../../assets/campus-dash-cone-premium.webp"),
+    bag: loadImage("../../assets/campus-dash-bag-premium.webp"),
+    books: loadImage("../../assets/campus-dash-books-premium.webp"),
+    puddle: loadImage("../../assets/campus-dash-puddle-premium.webp"),
   };
 
   let state = makeState();
@@ -229,15 +229,26 @@
   }
 
   function spawnObstacle() {
-    const lane = Math.floor(Math.random() * 3);
+    const lane = chooseClearDropLane(-90, 154);
+    if (lane < 0) return;
     const kinds = ["bag", "cone", "books", "puddle"];
     const kind = kinds[Math.floor(Math.random() * kinds.length)];
     state.obstacles.push({ lane, x: lanes[lane], y: -90, size: 82, kind });
   }
 
   function spawnCoin() {
-    const lane = Math.floor(Math.random() * 3);
+    const lane = chooseClearDropLane(-65, 138);
+    if (lane < 0) return;
     state.coins.push({ lane, x: lanes[lane], y: -65, size: 42, used: false });
+  }
+
+  function chooseClearDropLane(y, clearance) {
+    const candidates = [0, 1, 2].filter((lane) => {
+      const drops = [...state.obstacles, ...state.coins.filter((coin) => !coin.used)];
+      return drops.every((drop) => drop.lane !== lane || Math.abs(drop.y - y) >= clearance);
+    });
+    if (!candidates.length) return -1;
+    return candidates[Math.floor(Math.random() * candidates.length)];
   }
 
   function checkCollisions() {
@@ -297,6 +308,34 @@
       score: state.score,
       locale: locale(),
     });
+  }
+
+  function exposeSmokeHooks() {
+    if (!new URLSearchParams(window.location.search).has("smoke")) return;
+    window.__campusDashSmoke = {
+      spawnSequence: (count = 24) => {
+        state = makeState();
+        for (let index = 0; index < count; index += 1) {
+          spawnObstacle();
+          spawnCoin();
+        }
+        return {
+          obstacles: state.obstacles.map(({ lane, y }) => ({ lane, y })),
+          coins: state.coins.map(({ lane, y }) => ({ lane, y })),
+        };
+      },
+      finish: () => {
+        state.running = false;
+        state.finished = true;
+        finishRun();
+        const box = resultPanel.getBoundingClientRect();
+        return {
+          resultVisible: !resultPanel.classList.contains("hidden"),
+          resultBox: { left: box.left, top: box.top, width: box.width, height: box.height },
+          animationFrames: resultPanel.getAnimations().flatMap((animation) => animation.effect?.getKeyframes?.() || []),
+        };
+      },
+    };
   }
 
   function getScores() {
@@ -690,5 +729,6 @@
 
   renderStaticText();
   updateHud();
+  exposeSmokeHooks();
   preloadGame();
 })();

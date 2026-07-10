@@ -515,7 +515,7 @@
       time: "8-12 minutes",
       skills: ["Logic", "Problem Solving", "Focus"],
       intro:
-        "Beast Guardian is a 13+ hero tower-defense game in production. Build ordinary animal soldiers and elite WeightPlay heroes on a tactical forest grid, shape enemy routes, stop boss waves, and protect the crystal core. The public page remains Coming Soon while the internal trial is used for release-quality testing.",
+        "Beast Guardian is a 13+ hero tower-defense game. Build ordinary animal soldiers and elite WeightPlay heroes on a tactical forest grid, shape enemy routes, stop boss waves, and protect the crystal core across 10 forest stages.",
       how: [
         "Choose a stage from the swipe stage rail and read the threat, plan, and reward notes.",
         "Spend coins to place soldiers or elite heroes on normal ground tiles.",
@@ -530,11 +530,11 @@
         "Save diamonds for optional revive, reward reroll, or cosmetics; normal stage progress does not require spending."
       ],
       parent:
-        "This game is designed for teenagers who enjoy planning, route control, timing, and resource decisions. Progress is saved locally in the browser, and the public page stays in Coming Soon status until the full release gate is approved.",
+        "This game is designed for teenagers who enjoy planning, route control, timing, and resource decisions. Progress is saved locally in the browser.",
       faq: [
         ["Is Beast Guardian free to play?", "Yes. WeightPlay games run in the browser for free."],
-        ["Why does the public page say Coming Soon?", "Beast Guardian is built as an internal trial first. It remains hidden from public playable lists until release gates pass."],
-        ["Can I enter the internal trial?", "Only the approved hidden trial route may open it for testing. The normal public card still behaves as a Coming Soon preview."],
+        ["How do I start a stage?", "Choose an unlocked stage from the swipe rail, then begin the defense. Cleared non-final waves start automatically after a five-second countdown."],
+        ["Does Beast Guardian save progress?", "Yes. Stage progress, stars, permanent tech, and optional cosmetics are saved locally in the browser."],
         ["What can Diamonds do?", "Diamonds are optional and may support revive, reward reroll, or cosmetics. They are not required for normal play."]
       ],
     },
@@ -1079,6 +1079,13 @@
       ["鑽石可以做什麼？", "鑽石是可選支援，可用於復活、獎勵重抽或外觀，不是正常遊玩的必要條件。"]
     ],
   };
+
+  Object.assign(localizedGames["zh-Hant"]["beast-tactician"], {
+    title: "\u7378\u738b\u5b88\u885b",
+    gameplay: "\u82f1\u96c4\u5854\u9632",
+    intro: "\u7378\u738b\u5b88\u885b\u662f 13+ \u82f1\u96c4\u5854\u9632\u904a\u6232\u3002\u5728\u68ee\u6797\u68cb\u76e4\u4f48\u7f6e\u52d5\u7269\u5b88\u885b\u8207 WeightPlay \u82f1\u96c4\uff0c\u8abf\u6574\u6575\u4eba\u8def\u7dda\u3001\u64ca\u9000\u738b\u95dc\u6ce2\u6b21\uff0c\u4fdd\u8b77\u6c34\u6676\u6838\u5fc3\u4e26\u6311\u6230 10 \u500b\u95dc\u5361\u3002",
+    parent: "\u9019\u6b3e\u904a\u6232\u9069\u5408\u559c\u6b61\u898f\u5283\u3001\u8def\u7dda\u63a7\u5236\u3001\u6642\u6a5f\u8207\u8cc7\u6e90\u6c7a\u7b56\u7684\u9752\u5c11\u5e74\u3002\u9032\u5ea6\u6703\u5132\u5b58\u5728\u700f\u89bd\u5668\u672c\u6a5f\u3002",
+  });
 
   function currentGameId() {
     const parts = location.pathname.split("/").filter(Boolean);

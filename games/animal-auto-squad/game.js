@@ -61,7 +61,7 @@
       buy: "Buy",
       sell: "Sell",
       upgradeRun: "Run Upgrade ({cost} Supplies)",
-      backpackHint: "Owned animals only. Move them into the active squad or bench, then spend Supplies for temporary expedition upgrades.",
+      backpackHint: "Owned animals only. Move them into the active squad, then spend Supplies for temporary expedition upgrades.",
       reroll: "Reroll",
       freeze: "Freeze",
       unfreeze: "Unfreeze",
@@ -425,6 +425,8 @@
   let canvasCtx = null;
   let animationId = null;
   let stageSnapTimer = null;
+  let stageRenderVersion = 0;
+  let stageScrollLockUntil = 0;
 
   const zhRuntimeText = {
     combatSummary: "小隊生命 {playerHp}/{playerMax}｜敵方生命 {enemyHp}/{enemyMax}",
@@ -447,7 +449,7 @@
       supplies: "\u9060\u5f81\u7d20\u6750",
       guideHint: "\u5f9e\u80cc\u5305\u62d6\u66f3\u6216\u9ede\u9078\u5df2\u64c1\u6709\u89d2\u8272\u5230\u968a\u4f0d\u3002\u9060\u5f81\u5347\u7d1a\u4f7f\u7528\u81e8\u6642\u7d20\u6750\uff0c\u96e2\u958b\u9060\u5f81\u5f8c\u4e0d\u6703\u4fdd\u7559\u3002",
       upgradeRun: "\u9060\u5f81\u5347\u7d1a\uff08{cost} \u7d20\u6750\uff09",
-      backpackHint: "\u53ea\u986f\u793a\u5df2\u64c1\u6709\u89d2\u8272\u3002\u653e\u5165\u4e0a\u9663\u6216\u5099\u6230\u5340\u5f8c\uff0c\u53ef\u7528\u81e8\u6642\u7d20\u6750\u5347\u7d1a\u3002",
+      backpackHint: "\u53ea\u986f\u793a\u5df2\u64c1\u6709\u89d2\u8272\u3002\u653e\u5165\u4e0a\u9663\u5f8c\uff0c\u53ef\u7528\u81e8\u6642\u7d20\u6750\u5347\u7d1a\u3002",
       noSupplies: "\u9060\u5f81\u7d20\u6750\u4e0d\u8db3\uff01",
       teamBonusTitle: "\u6c38\u4e45\u5718\u968a\u52a0\u6210",
       teamBonusValue: "\u6240\u6709\u5df2\u64c1\u6709\u89d2\u8272\u9032\u5165\u9060\u5f81\u6642\uff0c\u6703\u56e0\u5718\u968a\u7b49\u7d1a\u7372\u5f97 +{atk} \u653b\u64ca\u548c +{hp} \u751f\u547d\u3002",
@@ -673,6 +675,13 @@
           activeActor: state.combat.activeActor,
           activeActors: state.combat.activeActors
         };
+      },
+      returnToMenu(stage = normalizeSave(save).selectedStage) {
+        save = normalizeSave({ ...save, selectedStage: stage });
+        saveSave();
+        state.activeRun = false;
+        renderMenu();
+        return { selectedStage: normalizeSave(save).selectedStage, startText: nodes.startBtn.textContent.trim() };
       }
     };
   }
@@ -870,7 +879,11 @@
 
   // Render Functions
   function renderMenu() {
-    save = normalizeSave(save);
+    clearTimeout(stageSnapTimer);
+    selectedSlot = null;
+    pointerDrag = null;
+    state.activeRun = false;
+    save = loadSave();
     nodes.menuPanel.classList.remove("is-hidden");
     nodes.gamePanel.classList.add("is-hidden");
     nodes.resultPanel.classList.add("is-hidden");
@@ -894,6 +907,7 @@
   }
 
   function selectStage(stage, shouldScroll = true) {
+    clearTimeout(stageSnapTimer);
     save = normalizeSave(save);
     save.selectedStage = Math.max(1, Math.min(save.unlockedStage, Number(stage) || 1));
     saveSave();
@@ -902,6 +916,8 @@
 
   function renderStageSelector(shouldScroll = true) {
     if (!nodes.stageRail) return;
+    clearTimeout(stageSnapTimer);
+    const renderVersion = ++stageRenderVersion;
     save = normalizeSave(save);
     nodes.stageSelectTitle.textContent = t("chooseStage");
     nodes.stageProgressText.textContent = t("stageProgress", { unlocked: save.unlockedStage, total: STAGE_COUNT });
@@ -922,7 +938,9 @@
 
     nodes.startBtn.textContent = t("startStage", { stage: save.selectedStage });
     if (shouldScroll) {
+      stageScrollLockUntil = performance.now() + 500;
       requestAnimationFrame(() => {
+        if (renderVersion !== stageRenderVersion) return;
         nodes.stageRail.querySelector(".stage-card.is-selected")?.scrollIntoView({ block: "nearest", inline: "center" });
       });
     }
@@ -1117,7 +1135,8 @@
 
     // Prep labels
     document.querySelector(".squad-section h3").textContent = t("yourSquadLabel");
-    document.querySelector(".bench-section h3").textContent = t("benchLabel");
+    const benchHeading = document.querySelector(".bench-section h3");
+    if (benchHeading) benchHeading.textContent = t("benchLabel");
     document.querySelector(".shop-section h3").textContent = t("shopLabel");
     nodes.startBattleBtn.textContent = t("startBattle");
     nodes.hintText.textContent = t("guideHint");
@@ -1865,6 +1884,7 @@
   }
 
   function renderBench() {
+    if (!nodes.benchGrid) return;
     nodes.benchGrid.innerHTML = "";
     state.bench.forEach((card, idx) => {
       const el = makeCardElement(card, "bench", idx);
@@ -2825,8 +2845,11 @@
     nodes.resultMenuBtn.addEventListener("click", renderMenu);
 
     nodes.stageRail.addEventListener("scroll", () => {
+      if (performance.now() < stageScrollLockUntil) return;
       clearTimeout(stageSnapTimer);
+      const renderVersion = stageRenderVersion;
       stageSnapTimer = setTimeout(() => {
+        if (renderVersion !== stageRenderVersion) return;
         const railBox = nodes.stageRail.getBoundingClientRect();
         const railCenter = railBox.left + railBox.width / 2;
         const cards = [...nodes.stageRail.querySelectorAll(".stage-card:not(:disabled)")];

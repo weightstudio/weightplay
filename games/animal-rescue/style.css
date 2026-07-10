@@ -168,9 +168,11 @@ a {
   position: relative;
   display: grid;
   grid-template-columns: 58px 1fr;
+  grid-template-rows: minmax(58px, auto) minmax(20px, auto) 20px;
   gap: 8px;
-  min-height: 112px;
+  min-height: 142px;
   padding: 10px;
+  box-sizing: border-box;
   color: inherit;
   text-align: left;
 }
@@ -213,8 +215,11 @@ a {
 
 .stage-stars {
   grid-column: 1 / -1;
+  align-self: center;
+  min-height: 20px;
   color: #f5a623;
   font-size: 18px;
+  line-height: 1;
   letter-spacing: 1px;
 }
 
@@ -635,7 +640,8 @@ body.rescue-playing .game-page-info {
 
   .stage-card {
     grid-template-columns: 48px 1fr;
-    min-height: 142px;
+    grid-template-rows: minmax(48px, auto) minmax(20px, auto) 20px;
+    min-height: 150px;
     padding: 8px;
     align-content: start;
   }

@@ -439,17 +439,16 @@ window.WONDER_LOBBY = {
     {
       id: "beast-tactician",
       title: { en: "Beast Guardian", "zh-Hant": "獸王守衛" },
-      status: "planned",
-      statusText: { en: "Coming Soon", "zh-Hant": "敬請期待" },
+      status: "playable",
+      statusText: { en: "Playable", "zh-Hant": "可遊玩" },
       type: { en: "Hero Tower Defense", "zh-Hant": "英雄塔防" },
       categories: ["Featured", "Animal Games", "Puzzle"],
       skills: ["Logic", "Problem Solving", "Focus"],
       ages: ["13"],
       ageLabel: { en: "13+", "zh-Hant": "13+" },
       href: "games/beast-tactician/",
-      internalTrial: "index.html?trial=1",
       description: {
-        en: "A premium 10-stage hero tower-defense game is in production. Build soldiers and WeightPlay heroes on the grid, shape enemy routes, and stop boss waves.",
+        en: "Build animal defenders on the grid, shape enemy routes, and stop boss waves across 10 forest stages.",
         "zh-Hant": "高品質 10 關英雄塔防大作製作中。你將在格子地形上建置士兵與 WeightPlay 英雄，改變敵人路線並抵擋王關波次。"
       },
       meta: { en: ["Tower Defense", "10 Stages", "Boss Waves"], "zh-Hant": ["塔防", "10 關", "王關波次"] },
@@ -577,6 +576,24 @@ for (const game of window.WONDER_LOBBY.games) {
   game.meta["zh-Hant"] = clean.meta;
 }
 
+const beastGuardianPublicCopy = {
+  title: "\u7378\u738b\u5b88\u885b",
+  statusText: "\u53ef\u904a\u73a9",
+  type: "\u82f1\u96c4\u5854\u9632",
+  description: "\u5728 10 \u500b\u68ee\u6797\u95dc\u5361\u4e2d\u4f48\u7f6e\u52d5\u7269\u5b88\u885b\u3001\u8abf\u6574\u8def\u7dda\uff0c\u64ca\u9000\u738b\u95dc\u6ce2\u6b21\u3002",
+  meta: ["\u5854\u9632", "10 \u95dc", "\u738b\u95dc\u6ce2\u6b21"],
+};
+const beastGuardian = window.WONDER_LOBBY.games.find((game) => game.id === "beast-tactician");
+if (beastGuardian) {
+  beastGuardian.status = "playable";
+  beastGuardian.title["zh-Hant"] = beastGuardianPublicCopy.title;
+  beastGuardian.statusText["zh-Hant"] = beastGuardianPublicCopy.statusText;
+  beastGuardian.type["zh-Hant"] = beastGuardianPublicCopy.type;
+  beastGuardian.description["zh-Hant"] = beastGuardianPublicCopy.description;
+  beastGuardian.meta["zh-Hant"] = beastGuardianPublicCopy.meta;
+  delete beastGuardian.internalTrial;
+}
+
 const verifiedCleanZhLobbyCopy = {
   "beast-deck": {
     title: "獸王牌組：迷霧森林",
@@ -630,4 +647,14 @@ for (const game of window.WONDER_LOBBY.games) {
   game.type["zh-Hant"] = clean.type;
   game.description["zh-Hant"] = clean.description;
   game.meta["zh-Hant"] = clean.meta;
+}
+
+if (beastGuardian) {
+  beastGuardian.status = "playable";
+  beastGuardian.title["zh-Hant"] = beastGuardianPublicCopy.title;
+  beastGuardian.statusText["zh-Hant"] = beastGuardianPublicCopy.statusText;
+  beastGuardian.type["zh-Hant"] = beastGuardianPublicCopy.type;
+  beastGuardian.description["zh-Hant"] = beastGuardianPublicCopy.description;
+  beastGuardian.meta["zh-Hant"] = beastGuardianPublicCopy.meta;
+  delete beastGuardian.internalTrial;
 }

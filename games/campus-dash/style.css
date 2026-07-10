@@ -173,7 +173,7 @@ canvas {
 .panel {
   position: absolute;
   inset: auto;
-  top: 54%;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   align-content: center;
@@ -356,11 +356,11 @@ body.dash-playing .game-page-info {
 @keyframes dash-panel-pop {
   from {
     opacity: 0;
-    transform: translateY(18px) scale(0.93);
+    transform: translate(-50%, calc(-50% + 18px)) scale(0.93);
   }
   to {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: translate(-50%, -50%) scale(1);
   }
 }
 

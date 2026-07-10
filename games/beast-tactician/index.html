@@ -1,509 +1,165 @@
-﻿<!DOCTYPE html>
-<html lang="zh-Hant" data-public-gate-ready="true">
+<!doctype html>
+<html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="robots" content="noindex,nofollow" />
-    <title>&#29560;&#29579;&#23432;&#34907; - &#25964;&#35531;&#26399;&#24453; | WeightPlay</title>
-    <meta name="description" content="Beast Guardian is a 10-stage hero tower defense game held behind a Coming Soon public gate until public opening is approved." />
-    <meta property="og:site_name" content="WeightPlay" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="robots" content="index,follow" />
+    <meta name="description" content="Build animal defenders, protect the crystal core, and clear 10 forest tower-defense stages in Beast Guardian." />
+    <link rel="canonical" href="https://weightplay.com/games/beast-tactician/" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Beast Guardian - Coming Soon | WeightPlay" />
-    <meta
-      property="og:description"
-      content="Beast Guardian is a 10-stage hero tower defense game held behind a Coming Soon public gate until public opening is approved."
-    />
-    <meta property="og:url" content="https://weightplay.com/games/beast-tactician/" />
+    <meta property="og:title" content="Beast Guardian - Free Hero Tower Defense | WeightPlay" />
+    <meta property="og:description" content="Build animal defenders, protect the crystal core, and clear 10 forest tower-defense stages." />
     <meta property="og:image" content="https://weightplay.com/assets/beast-tactician-cover.webp" />
     <meta name="twitter:card" content="summary_large_image" />
-    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
-    <script>
-      (() => {
-        if (new URLSearchParams(window.location.search).get("trial") !== "1") return;
-
-        window.__WEIGHTPLAY_INTERNAL_TRIAL__ = true;
-        document.documentElement.dataset.trialLoading = "true";
-        fetch("internal-test.html?trial=1", { cache: "no-store" })
-          .then((response) => {
-            if (!response.ok) throw new Error(`Trial route failed: ${response.status}`);
-            return response.text();
-          })
-          .then((html) => {
-            document.documentElement.dataset.trialLoading = "false";
-            document.open();
-            document.write(html);
-            document.close();
-          })
-          .catch(() => {
-            document.documentElement.dataset.trialLoadFailed = "true";
-            document.documentElement.dataset.trialLoading = "false";
-          });
-      })();
-    </script>
+    <title>Beast Guardian - Free Hero Tower Defense | WeightPlay</title>
+    <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
+    <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guardian-public1" />
+    <link rel="stylesheet" href="defense.css?v=20260710-guardian-clean-cutouts1" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "WebPage",
-        "name": "Beast Guardian - Coming Soon",
+        "@type": "VideoGame",
+        "name": "Beast Guardian",
         "url": "https://weightplay.com/games/beast-tactician/",
         "image": "https://weightplay.com/assets/beast-tactician-cover.webp",
-        "description": "Beast Guardian is an internal release-ready tower defense game, but public gameplay is not open yet.",
-        "isPartOf": {
-          "@type": "WebSite",
-          "name": "WeightPlay",
-          "url": "https://weightplay.com/"
-        },
-        "publisher": {
-          "@type": "Organization",
-          "name": "WeightStudio"
-        }
+        "applicationCategory": "Game",
+        "genre": ["Tower Defense", "Strategy"],
+        "inLanguage": ["en", "zh-Hant"],
+        "isAccessibleForFree": true,
+        "operatingSystem": "Web"
       }
     </script>
-    <style>
-      :root {
-        color-scheme: dark;
-        --bg: #0b1320;
-        --panel: rgba(13, 24, 38, 0.94);
-        --line: rgba(255, 220, 150, 0.28);
-        --text: #fff9eb;
-        --muted: #d8ccb5;
-        --gold: #ffd166;
-        --green: #7dd87d;
-      }
-
-      * {
-        box-sizing: border-box;
-      }
-
-      body {
-        margin: 0;
-        min-height: 100vh;
-        font-family: "Outfit", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-        color: var(--text);
-        background:
-          radial-gradient(circle at 22% 14%, rgba(255, 209, 102, 0.16), transparent 34%),
-          linear-gradient(140deg, #07101c, #182818);
-      }
-
-      body.trial-booting .hold-page {
-        opacity: 0.45;
-        pointer-events: none;
-      }
-
-      .hold-page {
-        min-height: 100vh;
-        display: grid;
-        grid-template-rows: auto 1fr;
-      }
-
-      .hold-nav {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 16px;
-        padding: 18px clamp(16px, 4vw, 40px);
-      }
-
-      .back-link,
-      .locale-picker {
-        min-height: 44px;
-        border-radius: 12px;
-        border: 1px solid rgba(255, 255, 255, 0.18);
-        background: rgba(255, 255, 255, 0.08);
-        color: var(--text);
-        font-weight: 800;
-      }
-
-      .back-link {
-        display: inline-flex;
-        align-items: center;
-        padding: 10px 16px;
-        text-decoration: none;
-      }
-
-      .locale-picker {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 8px 12px;
-      }
-
-      .locale-picker select {
-        max-width: min(48vw, 180px);
-        border: 0;
-        outline: 0;
-        background: transparent;
-        color: var(--text);
-        font: inherit;
-      }
-
-      .locale-picker option {
-        color: #111827;
-      }
-
-      .hold-main {
-        display: grid;
-        place-items: center;
-        padding: 18px clamp(16px, 5vw, 48px) max(44px, env(safe-area-inset-bottom));
-      }
-
-      .hold-card {
-        width: min(940px, 100%);
-        display: grid;
-        grid-template-columns: minmax(220px, 330px) 1fr;
-        gap: clamp(20px, 4vw, 42px);
-        align-items: center;
-        padding: clamp(22px, 5vw, 48px);
-        border-radius: 28px;
-        border: 1px solid var(--line);
-        background: var(--panel);
-        box-shadow: 0 28px 80px rgba(0, 0, 0, 0.34);
-      }
-
-      .poster-frame {
-        aspect-ratio: 1;
-        border-radius: 24px;
-        overflow: hidden;
-        border: 1px solid rgba(255, 255, 255, 0.16);
-        background: rgba(255, 255, 255, 0.06);
-      }
-
-      .poster-frame img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: block;
-      }
-
-      .eyebrow {
-        display: inline-flex;
-        width: fit-content;
-        margin-bottom: 14px;
-        padding: 8px 12px;
-        border-radius: 999px;
-        color: #1d1604;
-        background: linear-gradient(180deg, #fff3bf, var(--gold));
-        font-weight: 900;
-      }
-
-      h1 {
-        margin: 0 0 12px;
-        font-size: clamp(2rem, 5vw, 4rem);
-        line-height: 1.05;
-        letter-spacing: 0;
-      }
-
-      p {
-        margin: 0;
-        max-width: 58ch;
-        color: var(--muted);
-        font-size: clamp(1rem, 2.4vw, 1.18rem);
-        line-height: 1.7;
-      }
-
-      .status-list {
-        display: grid;
-        gap: 10px;
-        margin-top: 24px;
-      }
-
-      .status-item {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        color: var(--text);
-        font-weight: 800;
-      }
-
-      .status-dot {
-        width: 10px;
-        height: 10px;
-        border-radius: 999px;
-        background: var(--green);
-        box-shadow: 0 0 18px rgba(125, 216, 125, 0.72);
-        flex: 0 0 auto;
-      }
-
-      .teaser-grid {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 10px;
-        margin-top: 22px;
-      }
-
-      .teaser-card {
-        min-width: 0;
-        padding: 13px;
-        border-radius: 16px;
-        text-align: left;
-        background: rgba(255, 255, 255, 0.08);
-        border: 1px solid rgba(255, 255, 255, 0.13);
-      }
-
-      .teaser-card strong,
-      .teaser-card span {
-        display: block;
-      }
-
-      .teaser-card strong {
-        margin-bottom: 4px;
-        color: var(--gold);
-        font-size: 0.96rem;
-      }
-
-      .teaser-card span {
-        color: var(--muted);
-        font-weight: 700;
-        line-height: 1.45;
-      }
-
-      .trial-unlock-status {
-        min-height: 1.4em;
-        margin-top: 18px;
-        color: #d9f99d;
-        font-weight: 900;
-        letter-spacing: 0;
-        opacity: 0;
-        transition: opacity 160ms ease, transform 160ms ease;
-        transform: translateY(4px);
-      }
-
-      .trial-unlock-status.is-visible {
-        opacity: 1;
-        transform: translateY(0);
-      }
-
-      .hold-card.is-unlocking {
-        border-color: rgba(217, 249, 157, 0.56);
-        box-shadow: 0 28px 80px rgba(0, 0, 0, 0.34), 0 0 28px rgba(125, 216, 125, 0.18);
-      }
-
-      .trial-fallback {
-        display: none;
-        margin: 12px auto 0;
-        color: #fca5a5;
-        font-weight: 800;
-      }
-
-      html[data-trial-load-failed="true"] .trial-fallback {
-        display: block;
-      }
-
-      @media (max-width: 720px) {
-        .hold-nav {
-          align-items: stretch;
-          flex-direction: column;
-        }
-
-        .hold-card {
-          grid-template-columns: 1fr;
-          text-align: center;
-        }
-
-        .poster-frame {
-          width: min(250px, 78vw);
-          margin: 0 auto;
-        }
-
-        .eyebrow {
-          margin-inline: auto;
-        }
-
-        .status-item {
-          justify-content: center;
-        }
-
-        .teaser-grid {
-          grid-template-columns: 1fr;
-        }
-
-        .teaser-card {
-          text-align: center;
-        }
-      }
-    </style>
   </head>
   <body>
-    <div class="hold-page">
-      <header class="hold-nav">
-        <a class="back-link" href="../../index.html" data-i18n="back">&#22238;&#21040;&#22823;&#24307;</a>
-        <label class="locale-picker">
-          <span data-i18n="language">&#35486;&#35328;</span>
-          <select id="localeSelect" aria-label="Language selector">
-            <option value="zh-Hant" selected>&#32321;&#39636;&#20013;&#25991;</option>
+    <main class="guardian-app">
+      <header class="guardian-topbar">
+        <a class="back-btn" href="/" aria-label="Back to lobby">&larr;</a>
+        <div class="brand-lockup">
+          <span>WeightPlay</span>
+          <h1 id="gameTitle">Beast Guardian</h1>
+        </div>
+        <label class="locale-box">
+          <span id="languageLabel">Language</span>
+          <select id="localeSelect" aria-label="Language">
             <option value="en">English</option>
+            <option value="zh-Hant">繁體中文</option>
           </select>
         </label>
+        <button id="soundBtn" class="secondary-btn sound-btn" type="button" aria-pressed="false">SFX Off</button>
       </header>
 
-      <main class="hold-main">
-        <section class="hold-card" aria-labelledby="holdTitle">
-          <div class="poster-frame">
-            <img src="../../assets/beast-tactician-cover.webp" alt="Beast Guardian cover" />
+      <section id="loadingPanel" class="loading-panel" aria-live="polite">
+        <div class="loading-content">
+          <h2>Beast Guardian</h2>
+          <div class="loading-bar"><div id="loadingFill" class="loading-fill"></div></div>
+          <span id="loadingText" class="loading-percentage">0%</span>
+        </div>
+      </section>
+
+      <section id="menuPanel" class="menu-panel">
+        <div class="poster-frame">
+          <img src="../../assets/beast-tactician-cover.webp" alt="Beast Guardian cover" />
+        </div>
+        <div class="menu-copy">
+          <p id="releaseBadge" class="release-badge">Playable Now</p>
+          <h2 id="menuTitle">Hero Tower Defense</h2>
+          <p id="menuHint" class="menu-hint"></p>
+          <div class="profile-grid">
+            <div><span id="bestStageLabel">Best Stage</span><strong id="bestStageText">1</strong></div>
+            <div><span id="upgradePointLabel">Upgrade Points</span><strong id="upgradePointText">0</strong></div>
+            <div><span id="diamondLabel">Diamonds</span><strong id="diamondText">0</strong></div>
           </div>
+          <div class="menu-actions">
+            <button id="startBtn" class="primary-btn" type="button">Start Defense</button>
+            <button id="techBtn" class="secondary-btn" type="button">Tech Upgrades</button>
+          </div>
+          <p id="holdNotice" class="hold-notice"></p>
+        </div>
+      </section>
+
+      <section id="techPanel" class="modal-panel is-hidden" aria-live="polite">
+        <div class="modal-card">
+          <h2 id="techTitle">Permanent Tech</h2>
+          <p id="techHint"></p>
+          <div id="techGrid" class="tech-grid"></div>
+          <button id="techBackBtn" class="secondary-btn" type="button">Back</button>
+        </div>
+      </section>
+
+      <section id="stagePanel" class="stage-panel is-hidden">
+        <div class="stage-header">
+          <h2 id="stageTitle">Choose Stage</h2>
+          <button id="stageBackBtn" class="secondary-btn" type="button">Menu</button>
+        </div>
+        <div id="stageRail" class="stage-rail" aria-label="Stage selector"></div>
+      </section>
+
+      <section id="gamePanel" class="game-panel play-area is-hidden" data-play-viewport>
+        <div class="hud-row">
+          <button id="menuBtn" class="secondary-btn" type="button">Menu</button>
+          <div><span id="stageHudLabel">Stage</span><strong id="stageHudText">1</strong></div>
+          <div><span id="coreHudLabel">Core</span><strong id="coreText">100</strong></div>
+          <div><span id="coinHudLabel">Coins</span><strong id="coinText">0</strong></div>
+          <div><span id="waveHudLabel">Wave</span><strong id="waveText">0/0</strong></div>
+          <div id="waveIntelPanel" class="wave-intel-panel" aria-live="polite">
+            <span id="waveIntelLabel">Next Wave</span>
+            <strong id="waveIntelText">Scout the route before starting.</strong>
+          </div>
+          <button id="speedBtn" class="secondary-btn" type="button">1x</button>
+        </div>
+        <div id="bossPanel" class="boss-panel is-hidden" aria-live="polite">
           <div>
-            <strong class="eyebrow" data-i18n="status">&#25964;&#35531;&#26399;&#24453;</strong>
-            <h1 id="holdTitle" data-i18n="title">&#29560;&#29579;&#23432;&#34907;</h1>
-            <p data-i18n="body">
-              10-stage hero tower defense is in internal testing. Public play stays closed until release approval is complete.
-            </p>
-            <div class="status-list" aria-label="Release checklist">
-              <div class="status-item"><span class="status-dot"></span><span data-i18n="poster">Preview poster is ready</span></div>
-              <div class="status-item"><span class="status-dot"></span><span data-i18n="art">Internal tower defense build is testable</span></div>
-              <div class="status-item"><span class="status-dot"></span><span data-i18n="release">Public opening still needs final approval</span></div>
-            </div>
-            <div class="teaser-grid" aria-label="Game preview">
-              <div class="teaser-card">
-                <strong data-i18n="previewRoleTitle">Protect the lanes</strong>
-                <span data-i18n="previewRoleBody">Deploy shield, damage, and nature-support heroes to guard the core.</span>
-              </div>
-              <div class="teaser-card">
-                <strong data-i18n="previewBattleTitle">Battlefield tactics</strong>
-                <span data-i18n="previewBattleBody">Place your squad beside the route and stop beast raids.</span>
-              </div>
-              <div class="teaser-card">
-                <strong data-i18n="previewProgressTitle">Release check</strong>
-                <span data-i18n="previewProgressBody">Phone layout and flow will be verified again before public opening.</span>
-              </div>
-            </div>
-            <p id="trialUnlockStatus" class="trial-unlock-status" aria-live="polite"></p>
-            <p id="trialFallback" class="trial-fallback" data-i18n="trialLoadFailed">The internal trial cannot load right now. Please try again later.</p>
+            <span id="bossLabel">Boss Pressure</span>
+            <strong id="bossNameText">Forest Behemoth</strong>
           </div>
-        </section>
-      </main>
-    </div>
+          <div class="boss-meter" aria-hidden="true"><div id="bossMeterFill"></div></div>
+          <span id="bossHpText">100%</span>
+          <span id="bossHintText">Hold the route</span>
+        </div>
+        <div class="battle-layout">
+          <aside class="build-panel">
+            <h3 id="buildTitle">Build</h3>
+            <div id="buildCards" class="build-cards"></div>
+            <div id="selectedInfo" class="selected-info"></div>
+          </aside>
+          <div class="canvas-shell">
+            <canvas id="gameCanvas" width="960" height="640" tabindex="0" aria-label="Beast Guardian tower defense board"></canvas>
+            <div id="toast" class="toast is-hidden"></div>
+          </div>
+        </div>
+        <div class="command-row">
+          <button id="waveBtn" class="primary-btn" type="button">Start Wave</button>
+          <button id="upgradeBtn" class="secondary-btn" type="button">Upgrade</button>
+          <button id="sellBtn" class="secondary-btn" type="button">Sell</button>
+          <button id="reviveBtn" class="secondary-btn" type="button">Revive Core</button>
+        </div>
+      </section>
 
-    <script>
-      const copy = {
-        en: {
-          back: "Back to Lobby",
-          language: "Language",
-          status: "Coming Soon",
-          title: "Beast Guardian",
-          body:
-            "The 10-stage hero tower defense build is in internal testing. Public gameplay stays closed here until release approval is complete.",
-          poster: "Preview poster is ready",
-          art: "Internal tower defense build is testable",
-          release: "Public opening still needs final approval",
-          previewRoleTitle: "Protect the lanes",
-          previewRoleBody: "Deploy shield, damage, and nature-support heroes to guard the core.",
-          previewBattleTitle: "Battlefield tactics",
-          previewBattleBody: "Place your squad beside the route and stop beast raids.",
-          previewProgressTitle: "Release check",
-          previewProgressBody: "Phone layout and flow will be verified again before public opening.",
-          trialUnlockReady: "Opening internal trial...",
-          trialLoadFailed: "The internal trial cannot load right now. Please try again later.",
-        },
-        "zh-Hant": {
-          back: "\u56de\u5230\u5927\u5ef3",
-          language: "\u8a9e\u8a00",
-          status: "\u656c\u8acb\u671f\u5f85",
-          title: "\u7378\u738b\u5b88\u885b",
-          body:
-            "10 \u95dc\u82f1\u96c4\u5854\u9632\u7248\u672c\u6b63\u5728\u5167\u90e8\u6e2c\u8a66\u3002\u516c\u958b\u904a\u73a9\u5165\u53e3\u6703\u4fdd\u6301\u95dc\u9589\uff0c\u76f4\u5230\u767c\u5e03\u6838\u51c6\u5b8c\u6210\u3002",
-          poster: "\u9810\u544a\u6d77\u5831\u5df2\u5b8c\u6210",
-          art: "\u5167\u90e8\u5854\u9632\u7248\u672c\u53ef\u6e2c\u8a66",
-          release: "\u516c\u958b\u4e0a\u7dda\u4ecd\u9700\u6700\u5f8c\u6838\u51c6",
-          previewRoleTitle: "\u5b88\u4f4f\u8def\u7dda",
-          previewRoleBody: "\u6d3e\u51fa\u76fe\u724c\u3001\u8f38\u51fa\u548c\u81ea\u7136\u652f\u63f4\u82f1\u96c4\u4fdd\u8b77\u6838\u5fc3\u3002",
-          previewBattleTitle: "\u6230\u5834\u7b56\u7565",
-          previewBattleBody: "\u5728\u8def\u7dda\u65c1\u90e8\u7f72\u968a\u4f0d\uff0c\u64cb\u4e0b\u91ce\u7378\u9032\u653b\u3002",
-          previewProgressTitle: "\u958b\u653e\u524d\u6aa2\u67e5",
-          previewProgressBody: "\u624b\u6a5f\u7248\u9762\u8207\u6d41\u7a0b\u6703\u5728\u516c\u958b\u524d\u518d\u6b21\u9a57\u8b49\u3002",
-          trialUnlockReady: "\u6b63\u5728\u958b\u555f\u5167\u90e8\u8a66\u73a9...",
-          trialLoadFailed: "\u5167\u90e8\u8a66\u73a9\u73fe\u5728\u7121\u6cd5\u8f09\u5165\uff0c\u8acb\u7a0d\u5f8c\u518d\u8a66\u3002",
-        },
-      };
+      <section id="resultPanel" class="modal-panel is-hidden" aria-live="polite">
+        <div class="modal-card result-card">
+          <img src="../../assets/weightplay-character-boom-mane-lion-cutout.webp" alt="Boom Mane Leo" />
+          <div>
+            <h2 id="resultTitle">Victory</h2>
+            <p id="resultText"></p>
+            <p id="resultStars" class="result-stars"></p>
+            <p id="resultRewardText" class="result-reward"></p>
+            <p id="skillReportText" class="skill-report"></p>
+            <div class="result-actions">
+              <button id="nextStageBtn" class="primary-btn" type="button">Next Stage</button>
+              <button id="rerollRewardBtn" class="secondary-btn" type="button">Reroll Reward</button>
+              <button id="retryBtn" class="secondary-btn" type="button">Retry</button>
+              <button id="resultMenuBtn" class="secondary-btn" type="button">Menu</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
 
-      const localeSelect = document.getElementById("localeSelect");
-      const holdCard = document.querySelector(".hold-card");
-      const trialUnlockStatus = document.getElementById("trialUnlockStatus");
-      const TRIAL_UNLOCK_TAPS = 10;
-      let trialUnlockCount = 0;
-      let trialUnlockTimer = 0;
-
-      window.__WEIGHTPLAY_PUBLIC_GATE_STATE__ = {
-        gameId: "beast-tactician",
-        status: "coming-soon",
-        playable: false,
-        ready: true,
-        hiddenTrialTaps: TRIAL_UNLOCK_TAPS,
-      };
-
-      function getLocaleDict() {
-        return copy[localeSelect.value] || copy.en;
-      }
-
-      function renderTrialUnlockStatus() {
-        if (!trialUnlockStatus) return;
-        const dict = getLocaleDict();
-        const text = trialUnlockCount >= TRIAL_UNLOCK_TAPS ? dict.trialUnlockReady || copy.en.trialUnlockReady : "";
-        trialUnlockStatus.textContent = text;
-        trialUnlockStatus.classList.toggle("is-visible", trialUnlockCount >= TRIAL_UNLOCK_TAPS);
-        holdCard?.classList.toggle("is-unlocking", trialUnlockCount > 0);
-      }
-
-      function resetTrialUnlockSoon() {
-        window.clearTimeout(trialUnlockTimer);
-        trialUnlockTimer = window.setTimeout(() => {
-          trialUnlockCount = 0;
-          renderTrialUnlockStatus();
-        }, 8000);
-      }
-
-      function openInternalTrial() {
-        window.clearTimeout(trialUnlockTimer);
-        window.__WEIGHTPLAY_PUBLIC_GATE_STATE__.hiddenTrialUnlocked = true;
-        document.body.classList.add("trial-booting");
-        try {
-          sessionStorage.setItem("beastGuardianTrialUnlocked", "true");
-        } catch (error) {
-          // The direct trial link still opens when storage is unavailable.
-        }
-        window.location.href = "index.html?trial=1";
-      }
-
-      function handleTrialUnlockTap(event) {
-        if (event.target.closest("a, button, select, option, label")) return;
-        trialUnlockCount += 1;
-        if (trialUnlockCount >= TRIAL_UNLOCK_TAPS) {
-          renderTrialUnlockStatus();
-          openInternalTrial();
-          return;
-        }
-        renderTrialUnlockStatus();
-        resetTrialUnlockSoon();
-      }
-
-      function applyLocale(locale) {
-        const dict = copy[locale] || copy.en;
-        document.documentElement.lang = locale === "zh-Hant" ? "zh-Hant" : "en";
-        document.title = `${dict.title} - ${dict.status} | WeightPlay`;
-        document.querySelectorAll("[data-i18n]").forEach((node) => {
-          const key = node.getAttribute("data-i18n");
-          if (dict[key]) node.textContent = dict[key];
-        });
-        renderTrialUnlockStatus();
-      }
-
-      let savedLocale = "zh-Hant";
-      try {
-        savedLocale = localStorage.getItem("weightPlayLocale") || "zh-Hant";
-      } catch (error) {
-        savedLocale = "en";
-      }
-      localeSelect.value = copy[savedLocale] ? savedLocale : "en";
-      applyLocale(localeSelect.value);
-      document.documentElement.dataset.publicGateReady = "true";
-      localeSelect.addEventListener("change", () => {
-        try {
-          localStorage.setItem("weightPlayLocale", localeSelect.value);
-        } catch (error) {
-          // Locale switching still works even when browser storage is unavailable.
-        }
-        applyLocale(localeSelect.value);
-      });
-      holdCard?.addEventListener("pointerup", handleTrialUnlockTap);
-    </script>
+    <script src="../../src/site-config.js?v=20260710-guardian-clean-cutouts1"></script>
+    <script src="../../src/analytics.js?v=20260701-analytics2"></script>
+    <script src="../../src/wallet.js?v=20260706-crystal-diamond-charm1"></script>
+    <script src="game.js?v=20260710-guardian-clean-cutouts1"></script>
+    <script src="../../src/game-page-info.js?v=20260710-guardian-public1"></script>
   </body>
 </html>

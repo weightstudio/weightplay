@@ -1,5 +1,6 @@
 (() => {
   const GAME_ID = "beast-tactician";
+  const isPublicRelease = !location.pathname.endsWith("/internal-test.html");
   const saveKey = "weightplay_beast_guardian_defense_v1";
   const soundKey = "weightplay_beast_guardian_sound_v1";
   const localeKey = "weightPlayLocale";
@@ -86,11 +87,13 @@
       language: "Language",
       localeName: "Traditional Chinese",
       releaseBadge: "Internal Release Candidate",
+      publicReleaseBadge: "Playable Now",
       menuTitle: "Hero Tower Defense",
       menuHint:
         "Build anywhere on the forest grid, shape enemy routes, and command WeightPlay heroes with balanced animal soldiers through 10 defense stages.",
       holdNotice:
         "Public lobby remains Coming Soon until the user approves release. This route is for internal release validation.",
+      publicNotice: "Build defenders, protect the crystal core, and unlock all 10 forest stages. Progress saves on this device.",
       bestStage: "Best Stage",
       upgradePoints: "Upgrade Points",
       diamonds: "Diamonds",
@@ -108,6 +111,7 @@
       build: "Build",
       startWave: "Start Wave",
       nextWave: "Next Wave",
+      autoWave: "Next wave in {seconds}s",
       waveIntel: "Wave Intel",
       waveIntelReady: "Next: Wave {wave}/{total} - {enemies}",
       waveIntelActive: "Active: Wave {wave}/{total} - {remaining} left - {enemies}",
@@ -256,10 +260,10 @@
       img: "acornGuard",
       name: { en: "Acorn Guard", "zh-Hant": "橡果守衛" },
       cost: 50,
-      hp: 145,
-      damage: 9,
+      hp: 180,
+      damage: 12,
       range: 1.25,
-      cooldown: 0.88,
+      cooldown: 0.8,
       note: { en: "Cheap blocker.", "zh-Hant": "便宜阻擋。" },
     },
     {
@@ -268,10 +272,10 @@
       img: "scoutArcher",
       name: { en: "Scout Archer", "zh-Hant": "斥候弓手" },
       cost: 75,
-      hp: 90,
-      damage: 14,
-      range: 3.2,
-      cooldown: 1.05,
+      hp: 85,
+      damage: 12,
+      range: 3,
+      cooldown: 1.15,
       note: { en: "Reliable range.", "zh-Hant": "穩定遠程。" },
     },
     {
@@ -279,13 +283,13 @@
       kind: "soldier",
       img: "runeSapper",
       name: { en: "Rune Sapper", "zh-Hant": "符文工兵" },
-      cost: 105,
-      hp: 105,
-      damage: 16,
-      range: 2.45,
-      cooldown: 1.45,
-      slow: 0.12,
-      splash: 0.9,
+      cost: 100,
+      hp: 120,
+      damage: 22,
+      range: 2.65,
+      cooldown: 1.18,
+      slow: 0.18,
+      splash: 1.15,
       note: { en: "Area control.", "zh-Hant": "範圍控場。" },
     },
     {
@@ -293,12 +297,12 @@
       kind: "soldier",
       img: "medicCub",
       name: { en: "Medic Cub", "zh-Hant": "醫護幼獸" },
-      cost: 95,
-      hp: 120,
+      cost: 80,
+      hp: 135,
       damage: 0,
-      range: 2.65,
-      cooldown: 1.05,
-      heal: 12,
+      range: 3,
+      cooldown: 0.82,
+      heal: 20,
       note: { en: "Repairs blockers.", "zh-Hant": "修復阻擋者。" },
     },
     {
@@ -665,6 +669,9 @@
     upgradeFeedback: "+Lv.{level}",
     sellFeedback: "+{coins} \u91d1\u5e63",
     waveClearFeedback: "\u7b2c {wave} \u6ce2\u5b88\u4f4f\u4e86",
+    publicReleaseBadge: "\u7acb\u5373\u904a\u73a9",
+    publicNotice: "\u5efa\u7f6e\u5b88\u885b\u3001\u4fdd\u8b77\u6c34\u6676\u6838\u5fc3\uff0c\u4e26\u89e3\u9396\u5168\u90e8 10 \u500b\u68ee\u6797\u95dc\u5361\u3002\u9032\u5ea6\u6703\u4fdd\u5b58\u5728\u9019\u53f0\u88dd\u7f6e\u3002",
+    autoWave: "\u4e0b\u4e00\u6ce2\u5c07\u5728 {seconds} \u79d2\u5f8c\u81ea\u52d5\u958b\u59cb",
   });
 
   const state = {
@@ -685,6 +692,7 @@
     waveSpawned: 0,
     waveToSpawn: 0,
     spawnTimer: 0,
+    nextWaveTimer: 0,
     defenders: [],
     enemies: [],
     shots: [],
@@ -713,7 +721,7 @@
   }
 
   function track(event, payload = {}) {
-    window.WonderAnalytics?.track?.(event, { game_id: GAME_ID, internal: true, ...payload });
+    window.WonderAnalytics?.track?.(event, { game_id: GAME_ID, internal: !isPublicRelease, ...payload });
   }
 
   function updateSoundButton() {
@@ -861,10 +869,10 @@
     document.documentElement.lang = state.locale;
     nodes.gameTitle.textContent = t("title");
     nodes.languageLabel.textContent = t("language");
-    nodes.releaseBadge.textContent = t("releaseBadge");
+    nodes.releaseBadge.textContent = t(isPublicRelease ? "publicReleaseBadge" : "releaseBadge");
     nodes.menuTitle.textContent = t("menuTitle");
     nodes.menuHint.textContent = t("menuHint");
-    nodes.holdNotice.textContent = t("holdNotice");
+    nodes.holdNotice.textContent = t(isPublicRelease ? "publicNotice" : "holdNotice");
     nodes.bestStageLabel.textContent = t("bestStage");
     nodes.upgradePointLabel.textContent = t("upgradePoints");
     nodes.diamondLabel.textContent = t("diamonds");
@@ -1080,6 +1088,7 @@
     state.waveSpawned = 0;
     state.waveToSpawn = 0;
     state.spawnTimer = 0;
+    state.nextWaveTimer = 0;
     state.resultReward = null;
     state.defenders = [];
     state.enemies = [];
@@ -1107,8 +1116,13 @@
     nodes.coreText.textContent = Math.max(0, Math.ceil(state.coreHp));
     nodes.coinText.textContent = Math.floor(state.coins);
     nodes.waveText.textContent = state.stage ? `${state.wave}/${state.stage.waves}` : "0/0";
-    nodes.waveBtn.textContent = state.runningWave ? t("nextWave") : t("startWave");
-    nodes.waveBtn.disabled = state.runningWave || state.gameOver;
+    const autoWavePending = !state.runningWave && state.nextWaveTimer > 0;
+    nodes.waveBtn.textContent = state.runningWave
+      ? t("nextWave")
+      : autoWavePending
+        ? t("autoWave", { seconds: Math.max(1, Math.ceil(state.nextWaveTimer)) })
+        : t("startWave");
+    nodes.waveBtn.disabled = state.runningWave || state.gameOver || autoWavePending;
     nodes.speedBtn.textContent = state.paused ? t("paused") : `${state.speed}x`;
     nodes.speedBtn.setAttribute("aria-pressed", String(state.paused));
     nodes.reviveBtn.disabled = state.revived || state.save.diamonds < 5 || state.coreHp > 0;
@@ -1359,6 +1373,7 @@
 
   function startWave() {
     if (!state.stage || state.runningWave || state.gameOver) return;
+    state.nextWaveTimer = 0;
     state.wave += 1;
     state.runningWave = true;
     state.waveSpawned = 0;
@@ -1559,6 +1574,12 @@
     if (state.screen !== "game" || state.gameOver) return;
     if (state.paused) return;
     const step = dt * state.speed;
+    if (!state.manualSimulation && !state.runningWave && state.nextWaveTimer > 0) {
+      const previousSecond = Math.ceil(state.nextWaveTimer);
+      state.nextWaveTimer = Math.max(0, state.nextWaveTimer - step);
+      if (state.nextWaveTimer === 0) startWave();
+      else if (Math.ceil(state.nextWaveTimer) !== previousSecond) updateHud();
+    }
     if (state.runningWave) {
       state.spawnTimer -= step;
       if (state.spawnTimer <= 0 && state.waveSpawned < state.waveToSpawn) {
@@ -1799,6 +1820,8 @@
     addSkillEffect(core, skillFxFrames.heal, 1.18, 0.52);
     playSfx("reward");
     track("game_wave_clear", { stage: state.currentStage, wave: state.wave, core_hp: Math.max(0, Math.ceil(state.coreHp)) });
+    if (!state.manualSimulation && state.wave < state.stage.waves) state.nextWaveTimer = 5;
+    updateHud();
   }
 
   function stageStars(stage, coreHp) {
@@ -3391,6 +3414,30 @@
     return result;
   }
 
+  function runAutoWaveScenario() {
+    state.manualSimulation = false;
+    state.save = {
+      bestStage: 10,
+      diamonds: 0,
+      upgradePoints: 0,
+      tech: { power: 0, bulwark: 0, economy: 0 },
+      clears: {},
+    };
+    startStage(1);
+    state.wave = 1;
+    state.waveSpawned = 1;
+    state.waveToSpawn = 1;
+    state.enemies = [];
+    showWaveClearFeedback();
+    const queued = { timer: state.nextWaveTimer, disabled: nodes.waveBtn.disabled, text: nodes.waveBtn.textContent };
+    update(4.8);
+    const beforeStart = { wave: state.wave, runningWave: state.runningWave, timer: state.nextWaveTimer };
+    update(0.3);
+    const started = { wave: state.wave, runningWave: state.runningWave, timer: state.nextWaveTimer };
+    state.manualSimulation = false;
+    return { queued, beforeStart, started };
+  }
+
   function runDiamondSinkScenario() {
     state.manualSimulation = true;
     state.save = {
@@ -4446,6 +4493,7 @@
       runImpactFeedbackScenario,
       runCoreCriticalScenario,
       runSoldierRoleScenario,
+      runAutoWaveScenario,
       runDiamondSinkScenario,
       runStageSelectorScenario,
       showStageScreenScenario,

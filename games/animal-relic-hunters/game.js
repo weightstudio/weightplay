@@ -591,6 +591,7 @@
   let keysPressed = {};
   let touchStartPos = null;
   let moveVector = { x: 0, y: 0 };
+  let mouseMoveActive = false;
   let shootTimer = 0;
 
   // Safe read/write LocalStorage
@@ -1825,6 +1826,47 @@
       keysPressed[e.key] = false;
     });
 
+    function updateMouseMoveVector(event) {
+      const rect = nodes.gameCanvas.getBoundingClientRect();
+      if (!rect.width || !rect.height) return;
+      const targetX = ((event.clientX - rect.left) / rect.width) * nodes.gameCanvas.width;
+      const targetY = ((event.clientY - rect.top) / rect.height) * nodes.gameCanvas.height;
+      const dx = targetX - state.playerX;
+      const dy = targetY - state.playerY;
+      const distance = Math.hypot(dx, dy);
+      if (distance < 8) {
+        moveVector = { x: 0, y: 0 };
+        return;
+      }
+      moveVector = { x: dx / distance, y: dy / distance };
+    }
+
+    // Desktop movement: hold the primary mouse button and steer toward its position.
+    nodes.gameCanvas.addEventListener("pointerdown", (event) => {
+      if (event.pointerType !== "mouse" || event.button !== 0 || !state.gameActive) return;
+      mouseMoveActive = true;
+      nodes.gameCanvas.setPointerCapture?.(event.pointerId);
+      updateMouseMoveVector(event);
+      event.preventDefault();
+    });
+    nodes.gameCanvas.addEventListener("pointermove", (event) => {
+      if (!mouseMoveActive || event.pointerType !== "mouse") return;
+      updateMouseMoveVector(event);
+      event.preventDefault();
+    });
+    const stopMouseMove = (event) => {
+      if (event.pointerType !== "mouse") return;
+      mouseMoveActive = false;
+      moveVector = { x: 0, y: 0 };
+      if (nodes.gameCanvas.hasPointerCapture?.(event.pointerId)) nodes.gameCanvas.releasePointerCapture(event.pointerId);
+    };
+    nodes.gameCanvas.addEventListener("pointerup", stopMouseMove);
+    nodes.gameCanvas.addEventListener("pointercancel", stopMouseMove);
+    nodes.gameCanvas.addEventListener("lostpointercapture", () => {
+      mouseMoveActive = false;
+      moveVector = { x: 0, y: 0 };
+    });
+
     // Touch Virtual Joystick Logic
     nodes.joystickContainer.addEventListener("touchstart", (e) => {
       const touch = e.touches[0];
@@ -1979,6 +2021,7 @@
             goldText: nodes.goldText?.textContent || "",
             profile: JSON.parse(localStorage.getItem(profileKey) || "{}"),
             wallet: window.WeightPlayWallet?.read?.() || null,
+            player: { x: state.playerX, y: state.playerY, active: state.gameActive },
           };
         },
       };
