@@ -2429,6 +2429,30 @@ body.lobby-page {
   opacity: 0.9;
 }
 
+.game-card.coming-soon .game-card-body {
+  gap: 9px;
+}
+
+.game-card.coming-soon .game-card-art.image-art {
+  height: clamp(184px, 56vw, 260px);
+  aspect-ratio: auto;
+}
+
+.game-card.coming-soon .game-card-body > p {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.game-card.coming-soon .game-card-categories {
+  margin-top: 1px;
+}
+
+.game-card.coming-soon .game-card-meta:empty {
+  display: none;
+}
+
 .game-card.coming-soon .game-card-art {
   filter: saturate(0.86) brightness(0.86);
 }

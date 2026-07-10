@@ -712,11 +712,11 @@ function createGameCard(game) {
     });
   }
 
-  const meta = text(game.meta).map((item) => `<span>${item}</span>`).join("");
+  const meta = isPlayable ? text(game.meta).map((item) => `<span>${item}</span>`).join("") : "";
   const categoryBadges = (game.categories || []).map((item) => `<span>${categoryText(item)}</span>`).join("");
-  const skillBadges = (game.skills || []).slice(0, 3).map((item) => `<span>${skillText(item)}</span>`).join("");
-  const skillReason = skillReasonText(game);
-  const quickFacts = [gameInfoText(game.id, "difficulty"), gameInfoText(game.id, "time")].filter(Boolean).join("");
+  const skillBadges = isPlayable ? (game.skills || []).slice(0, 3).map((item) => `<span>${skillText(item)}</span>`).join("") : "";
+  const skillReason = isPlayable ? skillReasonText(game) : "";
+  const quickFacts = isPlayable ? [gameInfoText(game.id, "difficulty"), gameInfoText(game.id, "time")].filter(Boolean).join("") : "";
   const showHero = game.art.hero && !game.art.hideHero && !game.art.hero.includes("width='1'");
   const comingSoonBadge = isPlayable ? "" : `<span class="coming-soon-art-badge">${i18n.t("action.coming_soon")}</span>`;
   const art =
@@ -755,7 +755,7 @@ function createGameCard(game) {
       ${skillReason ? `<div class="game-card-skill-reason">${skillReason}</div>` : ""}
       ${quickFacts ? `<div class="game-card-facts" aria-label="Game quick facts">${quickFacts}</div>` : ""}
       <div class="game-card-meta">${meta}</div>
-      <div class="game-card-plays">${playCountText(game)}</div>
+      ${isPlayable ? `<div class="game-card-plays">${playCountText(game)}</div>` : ""}
       <div class="game-card-actions">
         <span>${primaryAction}</span>
         <span>${type}</span>

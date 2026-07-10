@@ -476,13 +476,15 @@
     const urls = [
       "../../assets/animal-hidden-safari-cover.webp",
       "../../assets/animal-hidden-safari-sunny-bg.webp",
+      ...new Set(Object.values(targetAssets)),
+      ...new Set(Object.values(coverAssets)),
+    ];
+    const laterScenes = [
       "../../assets/animal-hidden-safari-river-bg.webp",
       "../../assets/animal-hidden-safari-pond-bg.webp",
       "../../assets/animal-hidden-safari-sunset-bg.webp",
       "../../assets/animal-hidden-safari-jungle-bg.webp",
       "../../assets/animal-hidden-safari-lookout-bg.webp",
-      ...new Set(Object.values(targetAssets)),
-      ...new Set(Object.values(coverAssets)),
     ];
     let done = 0;
     const update = () => {
@@ -499,6 +501,10 @@
       };
       img.src = src;
     });
+    window.setTimeout(() => laterScenes.forEach((src) => {
+      const image = new Image();
+      image.src = src;
+    }), 0);
     update();
   }
 
