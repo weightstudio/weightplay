@@ -202,7 +202,7 @@ const dictionary = {
 };
 
 const animals = [
-  { id: "lion", image: "assets/lion.svg", clue: "clueLion" },
+  { id: "lion", image: "../../assets/weightplay-boom-mane-lion.png", clue: "clueLion" },
   { id: "hippo", image: "assets/hippo.svg", clue: "clueHippo" },
   { id: "snake", image: "assets/snake.svg", clue: "clueSnake" },
   { id: "rabbit", image: "assets/rabbit.svg", clue: "clueRabbit" },

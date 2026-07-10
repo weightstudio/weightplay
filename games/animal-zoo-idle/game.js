@@ -7,7 +7,7 @@
   const ASSETS = {
     cover: "../../assets/animal-zoo-idle-cover.webp",
     stage: "../../assets/animal-zoo-idle-stage-bg.webp",
-    lion: "../../assets/animal-zoo-idle-lion.webp",
+    lion: "../../assets/weightplay-boom-mane-lion.png",
     giraffe: "../../assets/animal-zoo-idle-giraffe.webp",
     elephant: "../../assets/animal-zoo-elephant.png",
     panda: "../../assets/animal-zoo-panda.png",

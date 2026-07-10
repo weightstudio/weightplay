@@ -301,7 +301,7 @@
   });
 
   const heroDefs = [
-    { id: "lion", name: "lion", role: "lionRole", img: "animal-rune-tactics-hero-lion.webp", hp: 7, atk: 3, skillName: "skillLion", skillDesc: "skillLionDesc", skill: "animal-rune-tactics-skill-lion-strike.webp" },
+    { id: "lion", name: "lion", role: "lionRole", img: "weightplay-boom-mane-lion.png", hp: 7, atk: 3, skillName: "skillLion", skillDesc: "skillLionDesc", skill: "animal-rune-tactics-skill-lion-strike.webp" },
     { id: "owl", name: "owl", role: "owlRole", img: "animal-rune-tactics-hero-owl.webp", hp: 5, atk: 2, range: 2, skillName: "skillOwl", skillDesc: "skillOwlDesc", skill: "animal-rune-tactics-skill-owl-rune-bolt.webp" },
     { id: "turtle", name: "turtle", role: "turtleRole", img: "animal-rune-tactics-hero-turtle.webp", hp: 9, atk: 1, skillName: "skillTurtle", skillDesc: "skillTurtleDesc", skill: "animal-rune-tactics-skill-turtle-guard.webp" },
   ];

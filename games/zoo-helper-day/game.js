@@ -136,7 +136,7 @@
   }
 
   const animalAssets = {
-    lion: "../../assets/animal-zoo-idle-lion.webp",
+    lion: "../../assets/weightplay-boom-mane-lion.png",
     panda: "../../assets/animal-zoo-panda.png",
     elephant: "../../assets/animal-zoo-elephant.png",
     penguin: "../../assets/animal-zoo-penguin.png",

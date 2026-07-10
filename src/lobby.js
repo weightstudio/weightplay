@@ -57,7 +57,7 @@ const dailyRewardKey = "weightplayDailyReward";
 const walletBar = document.querySelector("#walletBar");
 const dailyRewardTrack = [5, 6, 8, 10, 12, 15, 25];
 const featuredSkillPaths = ["Memory", "Logic", "Reaction", "Focus", "Problem Solving", "Animal Knowledge"];
-const recentlyUpdatedGameIds = new Set(["animal-reef-fisher", "animal-rune-tactics", "animal-orb-fortress", "beast-deck"]);
+const recentlyUpdatedGameIds = new Set(["animal-relic-hunters", "animal-zoo-idle", "bubble-bakery", "fruit-merge"]);
 const mobilePickGameIds = ["animal-guard-yard", "animal-reef-fisher", "animal-auto-squad", "fruit-merge"];
 const hiddenTrialGate = {
   tapsRequired: 10,
@@ -1062,6 +1062,7 @@ function renderFreshUpdates() {
     const skillBadges = (game.skills || []).slice(0, 2).map((skill) => `<span>${skillText(skill)}</span>`).join("");
     const card = document.createElement("a");
     card.className = "fresh-update-card";
+    card.dataset.gameId = game.id;
     card.href = game.href;
     card.addEventListener("click", () => {
       window.WonderAnalytics?.track("fresh_update_open", {

@@ -419,7 +419,7 @@
     key: new Image(),
   };
   assets.bg.src = "../../assets/animal-relic-hunters-ruin-room.png";
-  assets.hero.src = "../../assets/animal-relic-hunters-lion-explorer.png";
+  assets.hero.src = "../../assets/weightplay-boom-mane-lion.png";
   assets.jaguar.src = "../../assets/animal-relic-hunters-shadow-jaguar.png";
   assets.boar.src = "../../assets/animal-relic-hunters-stone-boar.png";
   assets.orb.src = "../../assets/animal-relic-hunters-relic-orb.png";

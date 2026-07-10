@@ -81,7 +81,7 @@
     { id: "panda", label: "Panda", asset: "../../assets/tiny-weather-animal-panda.png" },
     { id: "penguin", label: "Penguin", asset: "../../assets/tiny-weather-animal-penguin.png" },
     { id: "koala", label: "Koala", asset: "../../assets/tiny-weather-animal-koala.png" },
-    { id: "lion", label: "Lion", asset: "../../assets/tiny-weather-animal-lion.png" },
+    { id: "lion", label: "Lion", asset: "../../assets/weightplay-boom-mane-lion.png" },
     { id: "elephant", label: "Elephant", asset: "../../assets/animal-zoo-elephant.png" },
     { id: "giraffe", label: "Giraffe", asset: "../../assets/animal-zoo-idle-giraffe.png" },
     { id: "whale", label: "Whale", asset: "../../assets/bubble-bakery-whale.png" },

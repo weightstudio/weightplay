@@ -52,7 +52,7 @@
     heart: "../../assets/star-memory-heart.svg",
     panda: "../../assets/star-memory-panda.svg",
     bear: "../../assets/star-memory-bear.svg",
-    lion: "../../assets/star-memory-lion.svg",
+    lion: "../../assets/weightplay-boom-mane-lion.png",
     cat: "../../assets/star-memory-cat.svg",
     cardBack: "../../assets/star-memory-card-back.svg"
   };

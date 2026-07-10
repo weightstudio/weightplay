@@ -247,7 +247,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "配置完整動物守衛、賺取金幣、升級隊伍，挑戰 8 個含 Boss 的防守關卡。",
       },
       meta: { en: ["Hero Defense", "Animal Upgrades", "Boss Battles"], "zh-Hant": ["英雄防守", "動物升級", "Boss 戰"] },
-      art: { kind: "image", background: "assets/animal-guard-yard-poster.webp", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
+      art: { kind: "image", background: "assets/animal-guard-yard-poster.webp", hero: "assets/weightplay-character-moss-shell-turtle-cutout.webp" },
     },
     {
       id: "animal-crystal-survivor",
@@ -271,8 +271,7 @@ window.WONDER_LOBBY = {
       art: {
         kind: "image",
         background: "assets/animal-crystal-survivor-cover.webp",
-        hero: "assets/animal-crystal-survivor-ranger.webp",
-        hideHero: true,
+        hero: "assets/weightplay-character-spark-paw-fox-cutout.webp",
       },
     },
     {
@@ -473,7 +472,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "奔跑、跳躍、衝刺並斬擊影獸。累積經驗、開啟裝備寶箱，最後擊敗巨獸首領。"
       },
       meta: { en: ["2D Side-Scroller", "Jumping Physics", "Equip Gear"], "zh-Hant": ["2D 橫向卷軸", "跳躍操作", "裝備養成"] },
-      art: { kind: "image", background: "assets/shadow-wolf-cover.webp", hero: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>" },
+      art: { kind: "image", background: "assets/shadow-wolf-cover.webp", hero: "assets/weightplay-character-spark-paw-fox-cutout.webp" },
     },
   ],
 };

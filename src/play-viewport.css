@@ -80,6 +80,9 @@ canvas.play-area,
   }
 
   body.wp-mobile-game-mode .weightplay-active-viewport {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 50 !important;
     width: min(100vw, var(--wp-mobile-vw)) !important;
     max-width: none !important;
     height: var(--wp-mobile-vh) !important;

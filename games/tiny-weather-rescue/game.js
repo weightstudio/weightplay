@@ -33,7 +33,7 @@
     fox: "../../assets/tiny-weather-animal-fox.png",
     panda: "../../assets/tiny-weather-animal-panda.png",
     penguin: "../../assets/tiny-weather-animal-penguin.png",
-    lion: "../../assets/tiny-weather-animal-lion.png",
+    lion: "../../assets/weightplay-boom-mane-lion.png",
     koala: "../../assets/tiny-weather-animal-koala.png",
   };
 

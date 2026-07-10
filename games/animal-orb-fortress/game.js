@@ -149,7 +149,7 @@
 
   const assets = {
     bg: "../../assets/animal-orb-fortress-arena-bg.webp",
-    lion: "../../assets/animal-orb-fortress-hero-lion.webp",
+    lion: "../../assets/weightplay-boom-mane-lion.png",
     orbs: "../../assets/animal-orb-fortress-orb-set.webp",
     beasts: "../../assets/animal-orb-fortress-shadow-beasts.webp",
     boss: "../../assets/animal-orb-fortress-boss-golem.webp",

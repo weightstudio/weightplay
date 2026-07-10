@@ -78,7 +78,7 @@
     apple: "../../assets/animal-vine-fruit-apple.png",
     banana: "../../assets/animal-vine-fruit-banana.png",
     berry: "../../assets/animal-vine-fruit-berry.png",
-    lion: "../../assets/tiny-weather-animal-lion.png",
+    lion: "../../assets/weightplay-boom-mane-lion.png",
     rabbit: "../../assets/tiny-weather-animal-rabbit.png",
     panda: "../../assets/tiny-weather-animal-panda.png",
     fox: "../../assets/tiny-weather-animal-fox.png",

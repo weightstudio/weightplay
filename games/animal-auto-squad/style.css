@@ -153,6 +153,90 @@ select {
   font-size: 0.95rem;
 }
 
+.stage-select {
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid rgba(98, 235, 179, 0.24);
+  border-radius: 14px;
+  background: rgba(3, 16, 12, 0.74);
+}
+
+.stage-select-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.stage-select-heading strong {
+  font-size: 0.95rem;
+}
+
+.stage-select-heading span {
+  color: var(--mint);
+  font-size: 0.8rem;
+  font-weight: 900;
+}
+
+.stage-rail {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(150px, 72%);
+  gap: 8px;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  padding: 2px calc(14% - 4px) 6px;
+  touch-action: pan-x;
+}
+
+.stage-rail::-webkit-scrollbar {
+  display: none;
+}
+
+.stage-card {
+  min-height: 82px;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+  display: grid;
+  align-content: center;
+  gap: 4px;
+  padding: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 12px;
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.055);
+  text-align: left;
+  cursor: pointer;
+}
+
+.stage-card strong {
+  font-size: 0.94rem;
+}
+
+.stage-card span,
+.stage-card small {
+  color: var(--muted);
+  font-size: 0.72rem;
+}
+
+.stage-card.is-selected {
+  border-color: var(--mint);
+  background: rgba(98, 235, 179, 0.14);
+  box-shadow: inset 0 0 0 1px rgba(98, 235, 179, 0.16);
+}
+
+.stage-card.is-cleared small {
+  color: #9ff0cb;
+}
+
+.stage-card:disabled {
+  cursor: not-allowed;
+  opacity: 0.48;
+}
+
 .profile-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

@@ -133,7 +133,7 @@ const dictionary = {
 const assetBase = "../../assets/";
 
 const animalAssets = {
-  lion: { src: "tiny-weather-animal-lion.png", fallback: "Lion" },
+  lion: { src: "weightplay-boom-mane-lion.png", fallback: "Boom Mane Leo" },
   panda: { src: "tiny-weather-animal-panda.png", fallback: "Panda" },
   elephant: { src: "animal-zoo-elephant.png", fallback: "Elephant" },
   turtle: { src: "animal-merge-token-1.png", fallback: "Turtle" },

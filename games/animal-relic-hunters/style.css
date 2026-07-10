@@ -699,6 +699,8 @@ body {
 .backpack-item {
   width: 100%;
   min-height: 104px;
+  flex: 0 0 auto;
+  box-sizing: border-box;
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 10px;
   background: rgba(255, 255, 255, 0.035);
@@ -758,13 +760,18 @@ body {
 .backpack-actions {
   grid-column: 1 / -1;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 8px;
+  width: 100%;
+  min-width: 0;
   position: relative;
   z-index: 2;
 }
 
 .gear-equip-btn {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
   min-height: 34px;
   border: 1px solid rgba(212, 175, 55, 0.38);
   border-radius: 9px;
@@ -775,6 +782,12 @@ body {
   cursor: pointer;
   position: relative;
   z-index: 3;
+}
+
+.backpack-actions .gear-upgrade-btn {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
 }
 
 .gear-equip-btn.is-equipped {
@@ -1262,7 +1275,48 @@ body {
   }
 
   .backpack-list {
-    max-height: 136px;
+    max-height: 180px;
+    gap: 8px;
+  }
+
+  .backpack-item {
+    min-height: 0;
+    grid-template-columns: 38px minmax(0, 1fr) auto;
+    align-items: start;
+    gap: 8px;
+    padding: 8px;
+  }
+
+  .backpack-item img {
+    width: 38px;
+    height: 38px;
+  }
+
+  .backpack-copy strong {
+    font-size: 0.76rem;
+  }
+
+  .backpack-copy small {
+    font-size: 0.67rem;
+  }
+
+  .gear-level-tag {
+    padding: 3px 5px;
+    font-size: 0.64rem;
+  }
+
+  .backpack-actions {
+    gap: 6px;
+  }
+
+  .backpack-actions .gear-equip-btn,
+  .backpack-actions .gear-upgrade-btn {
+    min-height: 36px;
+    padding: 6px 4px;
+    font-size: 0.68rem;
+    line-height: 1.15;
+    white-space: normal;
+    overflow-wrap: anywhere;
   }
 
   .stats-list {

@@ -217,10 +217,10 @@
     "../../assets/animal-merge-token-4.png",
     "../../assets/animal-merge-token-5.png",
     "../../assets/animal-merge-token-6.png",
-    "../../assets/animal-merge-token-7.png",
+    "../../assets/animal-merge-token-7-boom-lion.png",
     "../../assets/animal-merge-token-8.png",
     "../../assets/animal-merge-token-9.png",
-    "../../assets/animal-merge-token-10.png",
+    "../../assets/animal-merge-token-10-boom-lion.png",
   ];
   const tokenImages = tokenSources.map((src) => loadImage(src));
 

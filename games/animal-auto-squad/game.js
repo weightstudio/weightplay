@@ -8,7 +8,7 @@
     en: {
       title: "Animal Auto Squad",
       menuTitle: "Draft and position your animal squad!",
-      menuHint: "Train your owned animals, choose a squad from your backpack, spend temporary expedition supplies on run upgrades, and clear the 10-round Forest Expedition!",
+      menuHint: "Train your owned animals, choose a squad, and clear balanced five-wave forest stages. Each cleared stage unlocks the next challenge.",
       bestExpedition: "Best Run",
       expeditionsCleared: "Cleared Runs",
       teamLevel: "Team Level",
@@ -28,7 +28,18 @@
       benchLabel: "Storage Bench",
       shopLabel: "Character Backpack",
       startBattle: "Start Battle",
-      round: "Round",
+      round: "Wave",
+      stage: "Stage",
+      chooseStage: "Choose Stage",
+      stageReady: "Ready",
+      stageCleared: "Cleared",
+      stageLocked: "Clear the previous stage",
+      stageProgress: "Unlocked {unlocked}/{total}",
+      stageWaveCount: "{count} waves",
+      startStage: "Start Stage {stage}",
+      nextStage: "Next Stage",
+      stageClearText: "Stage {stage} cleared! Stage {next} is now unlocked.",
+      allStagesClearText: "All forest stages cleared! Replay any stage to strengthen your squad.",
       gold: "Gold",
       supplies: "Supplies",
       hearts: "Hearts",
@@ -80,7 +91,7 @@
       relicOak: "Oak Seed: All units gain +1 Health in battle.",
       relicShadow: "Shadow Claw: All units gain +1 Attack in battle.",
       relicClover: "Clover Leaf: First shop reroll each round is free.",
-      roundNum: "Round {round}/10",
+      roundNum: "Stage {stage} - Wave {round}/5",
       teamLevelValue: "Lv.{level}  XP {xp}/{goal}"
     },
     "zh-Hant": {
@@ -137,7 +148,7 @@
       relicOak: "橡樹種子：全體單位在戰鬥中獲得 +1 生命。",
       relicShadow: "暗影爪痕：全體單位在戰鬥中獲得 +1 攻擊力。",
       relicClover: "幸運草：每回合第一次商店重置免費。",
-      roundNum: "第 {round}/10 回合"
+      roundNum: "第 {stage} 關 - 第 {round}/5 波"
     }
   };
 
@@ -145,7 +156,7 @@
     en: {
       title: "Animal Auto Squad - Play Free Auto-Battler Game",
       description: "Animal Auto Squad is a free online 13+ strategy auto-battler. Draft chibi animal cards, level up your squad, choose relic buffs, and defeat shadow monsters.",
-      ogDescription: "Draft and position your chibi animal squad. Combine matching warriors, buy relics, and complete the 10-round Forest Expedition.",
+      ogDescription: "Draft and position your chibi animal squad. Train permanent units and clear six balanced five-wave forest stages.",
       twitterDescription: "Draft animal cards, level up your squad, and defeat the shadow boss in this free online strategy auto-battler."
     },
     "zh-Hant": {
@@ -340,7 +351,12 @@
     buySkinBtn: $("buySkinBtn"),
     equipSkinBtn: $("equipSkinBtn"),
     startBtn: $("startBtn"),
+    stageSelectTitle: $("stageSelectTitle"),
+    stageProgressText: $("stageProgressText"),
+    stageRail: $("stageRail"),
     gamePanel: $("gamePanel"),
+    stageHudLabel: $("stageHudLabel"),
+    stageText: $("stageText"),
     roundText: $("roundText"),
     goldText: $("goldText"),
     heartText: $("heartText"),
@@ -368,6 +384,7 @@
     resultText: $("resultText"),
     skillReportText: $("skillReportText"),
     retryBtn: $("retryBtn"),
+    nextStageBtn: $("nextStageBtn"),
     resultMenuBtn: $("resultMenuBtn"),
     quitRunBtn: $("quitRunBtn"),
     hintText: $("hintText")
@@ -387,6 +404,16 @@
     8: 25,
     9: 30
   };
+  const STAGE_COUNT = 6;
+  const WAVES_PER_STAGE = 5;
+  const STAGE_ENEMY_COUNTS = [
+    [1, 1, 2, 2, 2],
+    [1, 2, 2, 2, 3],
+    [2, 2, 2, 3, 3],
+    [2, 2, 3, 3, 3],
+    [2, 3, 3, 3, 4],
+    [2, 3, 3, 4, 4]
+  ];
 
   // State Management
   let locale = window.WonderI18n?.locale?.() || localStorage.getItem(localeKey) || "en";
@@ -397,6 +424,7 @@
   let imageCache = {};
   let canvasCtx = null;
   let animationId = null;
+  let stageSnapTimer = null;
 
   const zhRuntimeText = {
     combatSummary: "小隊生命 {playerHp}/{playerMax}｜敵方生命 {enemyHp}/{enemyMax}",
@@ -423,7 +451,20 @@
       noSupplies: "\u9060\u5f81\u7d20\u6750\u4e0d\u8db3\uff01",
       teamBonusTitle: "\u6c38\u4e45\u5718\u968a\u52a0\u6210",
       teamBonusValue: "\u6240\u6709\u5df2\u64c1\u6709\u89d2\u8272\u9032\u5165\u9060\u5f81\u6642\uff0c\u6703\u56e0\u5718\u968a\u7b49\u7d1a\u7372\u5f97 +{atk} \u653b\u64ca\u548c +{hp} \u751f\u547d\u3002",
-      teamBonusNext: "\u8ddd\u96e2\u4e0b\u4e00\u500b\u5718\u968a\u7b49\u7d1a\u9084\u9700 {remaining} XP\u3002"
+      teamBonusNext: "\u8ddd\u96e2\u4e0b\u4e00\u500b\u5718\u968a\u7b49\u7d1a\u9084\u9700 {remaining} XP\u3002",
+      stage: "\u95dc\u5361",
+      round: "\u6ce2\u6b21",
+      chooseStage: "\u9078\u64c7\u95dc\u5361",
+      stageReady: "\u53ef\u6311\u6230",
+      stageCleared: "\u5df2\u901a\u95dc",
+      stageLocked: "\u5148\u901a\u904e\u524d\u4e00\u95dc",
+      stageProgress: "\u5df2\u89e3\u9396 {unlocked}/{total}",
+      stageWaveCount: "{count} \u6ce2",
+      startStage: "\u6311\u6230\u7b2c {stage} \u95dc",
+      nextStage: "\u4e0b\u4e00\u95dc",
+      stageClearText: "\u7b2c {stage} \u95dc\u901a\u904e\uff01\u5df2\u89e3\u9396\u7b2c {next} \u95dc\u3002",
+      allStagesClearText: "\u5168\u90e8\u68ee\u6797\u95dc\u5361\u5df2\u901a\u95dc\uff01\u53ef\u91cd\u65b0\u6311\u6230\u4efb\u4f55\u95dc\u5361\u4f86\u57f9\u990a\u5c0f\u968a\u3002",
+      menuHint: "\u8a13\u7df4\u5df2\u64c1\u6709\u89d2\u8272\uff0c\u7d44\u6210\u5c0f\u968a\uff0c\u6311\u6230\u6575\u4eba\u6578\u91cf\u5e73\u7a69\u6210\u9577\u7684 5 \u6ce2\u95dc\u5361\u3002\u901a\u95dc\u5f8c\u6703\u6c38\u4e45\u89e3\u9396\u4e0b\u4e00\u95dc\u3002"
   });
 
   function normalizeSave(data) {
@@ -440,6 +481,8 @@
         if (ANIMAL_METADATA.some((animal) => animal.id === normalizedId)) unlockedAnimals.add(normalizedId);
       });
     }
+    const unlockedStage = Math.max(1, Math.min(STAGE_COUNT, Math.floor(Number(source.unlockedStage) || 1)));
+    const selectedStage = Math.max(1, Math.min(unlockedStage, Math.floor(Number(source.selectedStage) || unlockedStage)));
     return {
       bestRound: Math.max(0, Number(source.bestRound) || 0),
       clearedRuns: Math.max(0, Number(source.clearedRuns) || 0),
@@ -448,6 +491,11 @@
       teamLevel: Math.max(1, Number(source.teamLevel) || 1),
       teamXp: Math.max(0, Number(source.teamXp) || 0),
       coins: Math.max(0, Math.floor(source.coins === undefined ? 18 : Number(source.coins) || 0)),
+      unlockedStage,
+      selectedStage,
+      completedStages: Array.isArray(source.completedStages)
+        ? [...new Set(source.completedStages.map(Number).filter((stage) => stage >= 1 && stage <= STAGE_COUNT))].sort((a, b) => a - b)
+        : [],
       unlockedAnimals: [...unlockedAnimals].sort((a, b) => a - b),
       animalLevels
     };
@@ -539,6 +587,14 @@
     window.__ANIMAL_AUTO_SQUAD_TEST__ = {
       readSave: () => normalizeSave(save),
       teamBonus: () => teamBonus(),
+      stagePreview: () => ({
+        unlockedStage: normalizeSave(save).unlockedStage,
+        selectedStage: normalizeSave(save).selectedStage,
+        completedStages: normalizeSave(save).completedStages,
+        enemyCounts: STAGE_ENEMY_COUNTS.map((waves) => [...waves]),
+        firstWave: summarizeEnemyWave(1, 1),
+        firstBossWave: summarizeEnemyWave(1, WAVES_PER_STAGE)
+      }),
       trainingPreview: () => ({
         unlockedAnimals: normalizeSave(save).unlockedAnimals,
         foxLevel: animalPermanentLevel(0),
@@ -639,6 +695,7 @@
   function makeState() {
     return {
       activeRun: false,
+      stage: Math.max(1, Math.min(STAGE_COUNT, Number(save?.selectedStage) || 1)),
       round: 1,
       gold: 12,
       hearts: 4,
@@ -813,12 +870,13 @@
 
   // Render Functions
   function renderMenu() {
+    save = normalizeSave(save);
     nodes.menuPanel.classList.remove("is-hidden");
     nodes.gamePanel.classList.add("is-hidden");
     nodes.resultPanel.classList.add("is-hidden");
     nodes.combatSummary?.classList.add("is-hidden");
-    nodes.bestRoundsText.textContent = t("roundNum", { round: save.bestRound });
-    nodes.clearedRunsText.textContent = String(save.clearedRuns);
+    nodes.bestRoundsText.textContent = t("stageProgress", { unlocked: save.unlockedStage, total: STAGE_COUNT });
+    nodes.clearedRunsText.textContent = String(save.completedStages.length);
     if (nodes.teamLevelText) {
       nodes.teamLevelText.textContent = formatTeamLevel();
     }
@@ -826,8 +884,48 @@
       nodes.teamBonusText.innerHTML = formatTeamBonusNote();
     }
     updateWalletUI();
+    renderStageSelector();
     renderTrainingRoster();
     updatePageMeta();
+  }
+
+  function stageLabel(stage) {
+    return locale === "zh-Hant" ? `\u7b2c ${stage} \u95dc` : `Stage ${stage}`;
+  }
+
+  function selectStage(stage, shouldScroll = true) {
+    save = normalizeSave(save);
+    save.selectedStage = Math.max(1, Math.min(save.unlockedStage, Number(stage) || 1));
+    saveSave();
+    renderStageSelector(shouldScroll);
+  }
+
+  function renderStageSelector(shouldScroll = true) {
+    if (!nodes.stageRail) return;
+    save = normalizeSave(save);
+    nodes.stageSelectTitle.textContent = t("chooseStage");
+    nodes.stageProgressText.textContent = t("stageProgress", { unlocked: save.unlockedStage, total: STAGE_COUNT });
+    nodes.stageRail.innerHTML = "";
+
+    for (let stage = 1; stage <= STAGE_COUNT; stage++) {
+      const locked = stage > save.unlockedStage;
+      const cleared = save.completedStages.includes(stage);
+      const card = document.createElement("button");
+      card.type = "button";
+      card.className = `stage-card${stage === save.selectedStage ? " is-selected" : ""}${cleared ? " is-cleared" : ""}`;
+      card.dataset.stage = String(stage);
+      card.disabled = locked;
+      card.innerHTML = `<strong>${stageLabel(stage)}</strong><span>${t("stageWaveCount", { count: WAVES_PER_STAGE })}</span><small>${locked ? t("stageLocked") : cleared ? t("stageCleared") : t("stageReady")}</small>`;
+      card.addEventListener("click", () => selectStage(stage));
+      nodes.stageRail.appendChild(card);
+    }
+
+    nodes.startBtn.textContent = t("startStage", { stage: save.selectedStage });
+    if (shouldScroll) {
+      requestAnimationFrame(() => {
+        nodes.stageRail.querySelector(".stage-card.is-selected")?.scrollIntoView({ block: "nearest", inline: "center" });
+      });
+    }
   }
 
   function renderCosmeticSection() {
@@ -1000,7 +1098,7 @@
     // Menu elements
     $("menuHeadingText").textContent = t("menuTitle");
     $("menuSubText").textContent = t("menuHint");
-    nodes.startBtn.textContent = t("startExpedition");
+    nodes.startBtn.textContent = t("startStage", { stage: normalizeSave(save).selectedStage });
     $("bestRoundsText").previousElementSibling.textContent = t("bestExpedition");
     $("clearedRunsText").previousElementSibling.textContent = t("expeditionsCleared");
     if (nodes.teamLevelText?.previousElementSibling) {
@@ -1011,6 +1109,7 @@
     if (nodes.trainingTitleText) nodes.trainingTitleText.textContent = t("trainingTitle");
 
     // HUD labels
+    nodes.stageHudLabel.textContent = t("stage");
     nodes.roundText.previousElementSibling.textContent = t("round");
     nodes.goldText.previousElementSibling.textContent = t("supplies");
     nodes.heartText.previousElementSibling.textContent = t("hearts");
@@ -1039,9 +1138,11 @@
     // Result labels
     nodes.resultTitle.textContent = state.hearts > 0 ? t("expeditionClear") : t("expeditionFail");
     nodes.retryBtn.textContent = t("retry");
+    nodes.nextStageBtn.textContent = t("nextStage");
     nodes.resultMenuBtn.textContent = t("backToMenu");
 
     renderCosmeticSection();
+    if (!nodes.menuPanel.classList.contains("is-hidden")) renderStageSelector(false);
     renderTrainingRoster();
   }
 
@@ -1050,6 +1151,7 @@
     initAudio();
     playSynth("click");
     state = makeState();
+    state.stage = normalizeSave(save).selectedStage;
     state.backpack = createBackpackCards();
     state.activeRun = true;
     nodes.menuPanel.classList.add("is-hidden");
@@ -1059,7 +1161,7 @@
 
     // Initial Relic draft
     openRelicDraft();
-    window.WonderAnalytics?.track("expedition_start", { game_id: GAME_ID });
+    window.WonderAnalytics?.track("expedition_start", { game_id: GAME_ID, stage: state.stage });
   }
 
   function openRelicDraft() {
@@ -1126,7 +1228,8 @@
   }
 
   function updateHUD() {
-    nodes.roundText.textContent = `${state.round}/10`;
+    nodes.stageText.textContent = `${state.stage}/${STAGE_COUNT}`;
+    nodes.roundText.textContent = `${state.round}/${WAVES_PER_STAGE}`;
     nodes.goldText.textContent = String(state.gold);
     nodes.heartText.textContent = `${state.hearts}/4`;
   }
@@ -1948,8 +2051,8 @@
     }
     triggerBattleStartAbilities();
 
-    // Generate Enemy shadow team based on round difficulty
-    state.combat.enemySquad = generateEnemySquad(state.round);
+    // Generate a stage-specific wave instead of adding another enemy every round.
+    state.combat.enemySquad = generateEnemySquad(state.stage, state.round);
 
     // Swap views
     nodes.prepPhaseArea.classList.add("is-hidden");
@@ -1972,34 +2075,47 @@
     
     // Start animation loop
     runCombatAnimation();
-    window.WonderAnalytics?.track("battle_start", { game_id: GAME_ID, round: state.round });
+    window.WonderAnalytics?.track("battle_start", { game_id: GAME_ID, stage: state.stage, wave: state.round });
   }
 
-  function generateEnemySquad(round) {
-    const enemiesCount = Math.min(5, Math.ceil(round / 2) + 1);
+  function enemyWaveStats(stage, wave) {
+    const safeStage = Math.max(1, Math.min(STAGE_COUNT, Number(stage) || 1));
+    const safeWave = Math.max(1, Math.min(WAVES_PER_STAGE, Number(wave) || 1));
+    const scale = 1 + (safeStage - 1) * 0.18 + (safeWave - 1) * 0.08;
+    return {
+      stage: safeStage,
+      wave: safeWave,
+      count: STAGE_ENEMY_COUNTS[safeStage - 1][safeWave - 1],
+      atk: Math.max(1, Math.floor(1.25 * scale)),
+      hp: Math.max(2, Math.round(2 * scale)),
+      tierLimit: Math.min(ENEMY_METADATA.length, 1 + Math.floor((safeStage + safeWave - 2) / 2)),
+      level: Math.max(1, Math.ceil((safeStage + safeWave - 1) / 3))
+    };
+  }
+
+  function summarizeEnemyWave(stage, wave) {
+    const stats = enemyWaveStats(stage, wave);
+    return { count: stats.count, atk: stats.atk, hp: stats.hp, level: stats.level };
+  }
+
+  function generateEnemySquad(stage, wave) {
+    const stats = enemyWaveStats(stage, wave);
     const squad = [];
-    const limit = Math.min(ENEMY_METADATA.length, Math.ceil(round / 2));
-    
-    for (let i = 0; i < enemiesCount; i++) {
+    for (let i = 0; i < stats.count; i++) {
       // Pick random enemy matching difficulty tier
-      const rand = ENEMY_METADATA[Math.floor(Math.random() * limit)];
-      // Enemy stats ramp up with round count
-      const scale = 1 + (round - 1) * 0.28;
-      const baseAtk = Math.max(1, Math.round(2 * scale));
-      const baseHp = Math.max(1, Math.round(3 * scale));
-      
+      const rand = ENEMY_METADATA[Math.floor(Math.random() * stats.tierLimit)];
       squad.push({
         id: rand.id,
         nameEn: rand.nameEn,
         nameZht: rand.nameZht,
         sx: rand.sx,
         sy: rand.sy,
-        atk: baseAtk,
-        hp: baseHp,
-        maxHp: baseHp,
+        atk: stats.atk,
+        hp: stats.hp,
+        maxHp: stats.hp,
         shield: false,
         shieldHp: 0,
-        level: Math.max(1, Math.ceil(round / 3))
+        level: stats.level
       });
     }
     return squad;
@@ -2563,16 +2679,19 @@
     cancelAnimationFrame(animationId);
 
     if (result === "win") {
-      addTeamXp(5 + state.round * 2);
-      addTrainingCoins(8 + state.round * 2);
-      state.gold += 5 + Math.floor(state.round / 2);
-      // Victory: next round
-      if (state.round >= 10) {
-        // Finished Stage Clear!
+      addTeamXp(4 + state.stage * 2 + state.round);
+      addTrainingCoins(6 + state.stage * 2 + state.round);
+      state.gold += 4 + Math.floor((state.stage + state.round) / 2);
+      if (state.round >= WAVES_PER_STAGE) {
+        const clearedStage = state.stage;
         state.activeRun = false;
+        save = normalizeSave(save);
         save.clearedRuns++;
-        save.bestRound = 10;
-        addTeamXp(25);
+        save.bestRound = Math.max(save.bestRound, clearedStage * WAVES_PER_STAGE);
+        save.completedStages = [...new Set([...save.completedStages, clearedStage])].sort((a, b) => a - b);
+        save.unlockedStage = Math.max(save.unlockedStage, Math.min(STAGE_COUNT, clearedStage + 1));
+        save.selectedStage = save.unlockedStage;
+        addTeamXp(12 + clearedStage * 3);
         saveSave();
         openResultScreen(true);
       } else {
@@ -2612,7 +2731,7 @@
       nodes.combatSummary?.classList.add("is-hidden");
       startRoundPrep();
     }
-    window.WonderAnalytics?.track("battle_end", { game_id: GAME_ID, round: state.round, result });
+    window.WonderAnalytics?.track("battle_end", { game_id: GAME_ID, stage: state.stage, wave: state.round, result });
   }
 
   // Revival Popup (spend 5 diamonds)
@@ -2656,12 +2775,15 @@
 
     nodes.resultTitle.textContent = isWin ? t("expeditionClear") : t("expeditionFail");
     nodes.resultText.textContent = isWin
-      ? t("winText")
-      : `${t("failText")} (${t("round")}: ${state.round})`;
+      ? state.stage < STAGE_COUNT
+        ? t("stageClearText", { stage: state.stage, next: state.stage + 1 })
+        : t("allStagesClearText")
+      : `${t("failText")} (${stageLabel(state.stage)} - ${t("round")} ${state.round}/${WAVES_PER_STAGE})`;
+    nodes.nextStageBtn.classList.toggle("is-hidden", !isWin || state.stage >= STAGE_COUNT);
     nodes.skillReportText.innerHTML = `<strong>${t("skillReport")}</strong><br/>${t("skillsLearned")}`;
     
     playSynth(isWin ? "win" : "fail");
-    window.WonderAnalytics?.track("expedition_end", { game_id: GAME_ID, round: state.round, cleared: isWin });
+    window.WonderAnalytics?.track("expedition_end", { game_id: GAME_ID, stage: state.stage, wave: state.round, cleared: isWin });
   }
 
   function quitRun() {
@@ -2688,9 +2810,35 @@
     
     nodes.retryBtn.addEventListener("click", () => {
       nodes.resultPanel.classList.add("is-hidden");
+      save = normalizeSave(save);
+      save.selectedStage = state.stage;
+      saveSave();
+      startExpedition();
+    });
+    nodes.nextStageBtn.addEventListener("click", () => {
+      save = normalizeSave(save);
+      save.selectedStage = Math.min(save.unlockedStage, state.stage + 1);
+      saveSave();
+      nodes.resultPanel.classList.add("is-hidden");
       startExpedition();
     });
     nodes.resultMenuBtn.addEventListener("click", renderMenu);
+
+    nodes.stageRail.addEventListener("scroll", () => {
+      clearTimeout(stageSnapTimer);
+      stageSnapTimer = setTimeout(() => {
+        const railBox = nodes.stageRail.getBoundingClientRect();
+        const railCenter = railBox.left + railBox.width / 2;
+        const cards = [...nodes.stageRail.querySelectorAll(".stage-card:not(:disabled)")];
+        const nearest = cards.reduce((best, card) => {
+          const box = card.getBoundingClientRect();
+          const distance = Math.abs(box.left + box.width / 2 - railCenter);
+          return !best || distance < best.distance ? { card, distance } : best;
+        }, null);
+        const nearestStage = Number(nearest?.card.dataset.stage);
+        if (nearestStage && nearestStage !== normalizeSave(save).selectedStage) selectStage(nearestStage, true);
+      }, 120);
+    }, { passive: true });
     
     nodes.localeSelect.addEventListener("change", (e) => {
       setLocale(e.target.value);

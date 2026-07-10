@@ -115,7 +115,7 @@
   };
 
   const targetAssets = {
-    lion: "../../assets/animal-zoo-idle-lion.webp",
+    lion: "../../assets/weightplay-boom-mane-lion.png",
     elephant: "../../assets/animal-zoo-elephant.png",
     giraffe: "../../assets/animal-zoo-idle-giraffe.png",
     panda: "../../assets/animal-zoo-panda.png",

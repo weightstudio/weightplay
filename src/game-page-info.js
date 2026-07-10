@@ -485,13 +485,13 @@
       time: "5-10 minutes",
       skills: ["Logic", "Problem Solving", "Strategic Planning"],
       intro:
-        "Animal Auto Squad is a tactical strategy auto-battler where players draft, level up, and position chibi animal warriors to defeat shadow beasts in automated combat. The game challenges players to build linear squad synergies, manage gold economy, and choose relic buffs across 10 rounds of a forest expedition. It includes optional Diamond purchases for relic rerolls, expedition revives, and cosmetic skins, with all progress saved locally on the device.",
+        "Animal Auto Squad is a tactical strategy auto-battler where players train, level up, and position chibi animal warriors to defeat shadow beasts in automated combat. Clear six locally saved forest stages, each with five balanced waves, while building squad synergies and choosing relic buffs. Optional Diamond purchases cover relic rerolls, expedition revives, and cosmetic skins.",
       how: [
         "Buy animal cards from the shop using your starting Gold.",
         "Drag and drop animals onto active squad slots or the storage bench.",
         "Combine three identical animals to level them up and increase stats.",
         "Tap Start Battle to run automated round resolution against shadow beasts.",
-        "Losing a round costs 1 Heart; win 10 rounds to complete the expedition."
+        "Losing a wave costs 1 Heart; clear all 5 waves to unlock the next forest stage."
       ],
       strategyTips: [
         "Combine matching animals early to build high-stat Level 2 units.",
@@ -810,13 +810,13 @@
         genre: ["自走棋", "策略", "益智", "動物"],
         skills: ["邏輯", "問題解決", "策略規劃"],
         intro:
-          "《動物自走小隊》是一款戰術自走棋策略網頁遊戲。玩家招募、升級並調整可愛的動物戰士站位，在自動戰鬥中擊退影之獸。挑戰在於如何運用有限的金幣配置隊伍、合成升級相同角色以觸發更強大的被動技能，並善用聖物加成完成 10 回合的森林遠征！",
+          "《動物自走小隊》是一款戰術自走棋策略網頁遊戲。玩家培養並調整動物戰士站位，在自動戰鬥中擊退影之獸。遊戲共有 6 個可永久解鎖的森林關卡，每關包含 5 波平衡戰鬥，並可透過隊伍搭配與聖物加成持續挑戰。",
         how: [
           "在商店使用初始金幣購買動物卡牌或食物道具。",
           "將動物放置到作戰插槽（最多 5 隻）或備戰欄位。",
           "收集 3 張相同卡牌將自動合成升級，大幅強化屬性與技能數值。",
           "點擊開始戰鬥，小隊將以自動對撞方式與影獸交戰。",
-          "戰敗會扣除 1 點生命值；成功贏下 10 回合即可完成遠征挑戰。"
+          "戰敗會扣除 1 點生命值；成功通過 5 波即可完成關卡並解鎖下一關。"
         ],
         strategyTips: [
           "優先收集相同卡牌進行合成，高等級動物的技能效果會成倍增長。",

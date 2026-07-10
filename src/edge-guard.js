@@ -34,11 +34,11 @@
     return rect.width > 0 && rect.height > 0;
   }
 
-  function focusPlayableArea(element) {
+  function focusPlayableArea(element, { force = false } = {}) {
     if (!element || element.classList.contains("hidden")) return;
     window.requestAnimationFrame(() => {
       window.requestAnimationFrame(() => {
-        if (document.body?.classList.contains("has-game-page-info") && window.scrollY > 20) return;
+        if (!force && document.body?.classList.contains("has-game-page-info") && window.scrollY > 20) return;
         const top = element.getBoundingClientRect().top + window.scrollY - 10;
         window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
       });
@@ -59,6 +59,25 @@
     ".battle-panel",
     ".quiz-stage",
     ".game-stage",
+    ".stage-area",
+    ".game-area",
+    "main",
+  ];
+
+  const primaryFrameSelectors = [
+    "[data-play-viewport]",
+    ".weightplay-play-viewport",
+    ".fixed-game-shell",
+    ".game-shell",
+    "#playPanel",
+    "#playArea",
+    "#gameArea",
+    "#gameStage",
+    "#gamePanel",
+    ".play-panel",
+    ".game-panel",
+    ".battle-panel",
+    ".quiz-stage",
     ".stage-area",
     ".game-area",
     "main",
@@ -127,7 +146,7 @@
   function widenToPlayableFrame(element) {
     let current = element;
     while (current && current !== document.body) {
-      if (focusContainerSelectors.some((selector) => current.matches?.(selector)) || hasHudAndPlayArea(current)) {
+      if (primaryFrameSelectors.some((selector) => current.matches?.(selector)) || hasHudAndPlayArea(current)) {
         return current;
       }
       current = current.parentElement;
@@ -148,7 +167,7 @@
   }
 
   function focusGame() {
-    focusPlayableArea(findPlayableFrame());
+    focusPlayableArea(findPlayableFrame(), { force: true });
   }
 
   function findImmersiveFrameFromEventTarget(target) {
@@ -192,7 +211,7 @@
     const frame = findImmersiveFrameFromEventTarget(target);
     if (!frame || !isVisible(frame)) return;
     markImmersiveFrame(frame);
-    focusPlayableArea(frame);
+    focusPlayableArea(frame, { force: true });
     requestFullscreen(frame);
   }
 
@@ -216,7 +235,7 @@
         const nowVisible = isVisible(node);
         if (!wasVisible && nowVisible) {
           const frame = widenToPlayableFrame(node);
-          focusPlayableArea(frame);
+          focusPlayableArea(frame, { force: true });
           if (document.body?.classList.contains("wp-mobile-game-mode")) markImmersiveFrame(frame);
         }
         wasVisible = nowVisible;
