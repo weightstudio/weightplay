@@ -85,7 +85,7 @@ body.is-bakery-playing .play-panel {
 
 .topbar {
   display: grid;
-  grid-template-columns: 46px 1fr auto;
+  grid-template-columns: 58px minmax(0, 1fr) auto;
   gap: 10px;
   align-items: center;
 }
@@ -107,15 +107,19 @@ body.is-bakery-playing .play-panel {
 }
 
 .home-link {
-  grid-template-columns: auto 1fr;
-  gap: 2px;
-  padding: 5px;
-  font-size: 1.2rem;
+  width: 58px;
+  min-height: 44px;
+  grid-template-columns: 16px 28px;
+  gap: 4px;
+  padding: 4px;
+  font-size: 1.35rem;
+  line-height: 1;
+  overflow: hidden;
 }
 
 .home-link img {
-  width: 22px;
-  height: 22px;
+  width: 28px;
+  height: 28px;
   object-fit: contain;
 }
 
@@ -511,7 +515,7 @@ body.is-bakery-playing .play-panel {
 .play-head {
   grid-area: head;
   display: grid;
-  grid-template-columns: clamp(54px, 8vw, 68px) minmax(0, 1fr);
+  grid-template-columns: 44px minmax(0, 1fr);
   gap: clamp(5px, 0.8vw, 8px);
   align-items: center;
   min-height: 0;
@@ -525,23 +529,16 @@ body.is-bakery-playing .play-panel {
   border-radius: 14px;
   display: grid;
   place-items: center;
-  padding: 5px;
+  padding: 4px;
   cursor: pointer;
   background: rgba(255, 255, 255, 0.9);
   box-shadow: 0 8px 16px rgba(86, 45, 20, 0.15);
 }
 
-.play-return img {
-  width: min(100%, 28px);
-  height: min(100%, 28px);
-  object-fit: contain;
-}
-
 .play-return {
-  grid-template-columns: auto 1fr;
-  gap: 1px;
+  grid-template-columns: 1fr;
   color: #4a2918;
-  font-size: 0.86rem;
+  font-size: 1.25rem;
   font-weight: 950;
 }
 
@@ -647,6 +644,51 @@ body.is-bakery-playing .play-panel {
   font-size: clamp(0.52rem, 0.95vw, 0.68rem);
   font-weight: 950;
   text-shadow: 0 1px rgba(255, 255, 255, .65);
+}
+
+/* Battle order information stays compact at every viewport width. */
+body.is-bakery-playing .wp-tutorial-button {
+  display: none;
+}
+
+body.is-bakery-playing .order-bar {
+  min-height: 0;
+  height: 46px;
+  max-height: 46px;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(98px, 0.9fr);
+  grid-template-rows: 1fr;
+  align-content: center;
+  justify-content: stretch;
+  justify-items: center;
+  align-items: center;
+  gap: 3px 6px;
+  padding: 5px 7px;
+}
+
+body.is-bakery-playing .order-title {
+  grid-column: 1;
+  grid-row: 1;
+  width: 100%;
+  font-size: 0.74rem;
+  line-height: 1.08;
+  margin: 0;
+  text-align: left;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+body.is-bakery-playing .order-chip {
+  display: none;
+}
+
+body.is-bakery-playing .order-progress {
+  grid-column: 2;
+  grid-row: 1;
+  width: 100%;
+  height: 10px;
 }
 
 .order-icon {
@@ -1043,7 +1085,7 @@ body.is-bakery-playing .play-panel {
   }
 
   .topbar {
-    grid-template-columns: 42px 1fr;
+    grid-template-columns: 58px minmax(0, 1fr);
   }
 
   .language-picker {
@@ -1232,7 +1274,7 @@ body.is-bakery-playing .play-panel {
   body.wp-mobile-game-mode.is-bakery-playing .play-panel.weightplay-active-viewport,
   html.wp-mobile-game-mode body.is-bakery-playing #playPanel.play-panel.weightplay-active-viewport {
     display: grid;
-    grid-template-rows: 44px 92px minmax(0, 1fr) 22px;
+    grid-template-rows: 44px 78px minmax(0, 1fr);
     gap: 6px;
     width: calc(100vw - 20px) !important;
     max-width: calc(100vw - 20px) !important;
@@ -1251,7 +1293,7 @@ body.is-bakery-playing .play-panel {
   }
 
   body.is-bakery-playing .play-head {
-    grid-template-columns: 50px minmax(0, 1fr);
+    grid-template-columns: 44px minmax(0, 1fr);
     min-height: 0;
   }
 
@@ -1262,51 +1304,48 @@ body.is-bakery-playing .play-panel {
     font-size: 0.68rem;
   }
 
-  body.is-bakery-playing .play-return img {
-    width: 25px;
-    height: 25px;
+  body.is-bakery-playing .wp-tutorial-button {
+    display: none;
   }
 
   body.is-bakery-playing .order-bar {
     min-height: 0;
-    height: 92px;
-    max-height: 92px;
+    height: 46px;
+    max-height: 46px;
     overflow: hidden;
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, auto));
-    grid-template-rows: 18px 28px 13px;
+    grid-template-columns: minmax(0, 1fr) minmax(98px, 0.9fr);
+    grid-template-rows: 1fr;
     align-content: center;
-    justify-content: center;
+    justify-content: stretch;
     justify-items: center;
     align-items: center;
-    gap: 4px 7px;
-    padding: 6px 7px;
+    gap: 3px 6px;
+    padding: 5px 7px;
   }
 
   body.is-bakery-playing .order-title {
-    grid-column: 1 / -1;
+    grid-column: 1;
+    grid-row: 1;
     width: 100%;
     font-size: 0.74rem;
     line-height: 1.08;
     margin: 0;
+    text-align: left;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
   }
 
   body.is-bakery-playing .order-chip {
-    min-width: 0;
-    max-width: 118px;
-    min-height: 24px;
-    padding: 3px 6px;
-    font-size: 0.58rem;
-    white-space: nowrap;
+    display: none;
   }
 
   body.is-bakery-playing .order-progress {
-    grid-column: 1 / -1;
+    grid-column: 2;
+    grid-row: 1;
     width: 100%;
-    height: 12px;
+    height: 10px;
   }
 
   body.is-bakery-playing .bubble-board {
@@ -1315,8 +1354,9 @@ body.is-bakery-playing .play-panel {
     height: min(100%, calc(100vw - 34px));
     max-height: 100%;
     min-width: 0;
+    min-height: 0;
     aspect-ratio: 1 / 1;
-    align-self: center;
+    align-self: start;
     justify-self: center;
     gap: clamp(3px, 1.1vw, 5px);
     padding: clamp(5px, 1.6vw, 8px);
@@ -1331,11 +1371,7 @@ body.is-bakery-playing .play-panel {
   }
 
   body.is-bakery-playing .hint-text {
-    min-height: 0;
-    overflow: hidden;
-    font-size: 0.62rem;
-    line-height: 1.1;
-    white-space: nowrap;
+    display: none;
   }
 
   body.is-bakery-playing .board-float {

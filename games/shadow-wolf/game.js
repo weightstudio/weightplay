@@ -213,10 +213,10 @@
   const shadowAssetPaths = {
     bg: "../../assets/shadow-wolf-stage-bg.webp",
     wolf: "../../assets/shadow-wolf-hero.webp",
-    enemyWolf: "../../assets/shadow-wolf-enemy-wolf.png",
-    bat: "../../assets/shadow-wolf-enemy-bat.webp",
-    boar: "../../assets/shadow-wolf-enemy-boar.webp",
-    boss: "../../assets/shadow-wolf-boss-behemoth.webp",
+    enemyWolf: "../../assets/shadow-wolf-hero.png",
+    bat: "../../assets/shadow-wolf-enemy-bat-cutout.png",
+    boar: "../../assets/shadow-wolf-enemy-boar-cutout.png",
+    boss: "../../assets/shadow-wolf-boss-behemoth-cutout.png",
     tiles: "../../assets/shadow-wolf-platform-tiles.webp",
     clawFx: "../../assets/shadow-wolf-fx-claw-slash.webp",
     dashFx: "../../assets/shadow-wolf-fx-dash-trail.webp",
@@ -1203,17 +1203,11 @@
       }
 
       if (enemy.type === "boss") {
-        drawEnemyFallback(ctx, enemy);
-        ctx.globalCompositeOperation = "screen";
-        const drewBoss = drawImageContain(ctx, assets.boss, -12, -62, enemy.width + 24, enemy.height + 62);
-        ctx.globalCompositeOperation = "source-over";
+        const drewBoss = drawImageContain(ctx, assets.boss, -12, -42, enemy.width + 24, enemy.height + 62);
         if (!drewBoss) drawEnemyFallback(ctx, enemy);
       } else {
         const sprite = enemy.type === "boar" ? assets.boar : enemy.type === "wolf" ? assets.enemyWolf : assets.bat;
-        drawEnemyFallback(ctx, enemy);
-        ctx.globalCompositeOperation = "screen";
         const drewEnemy = drawImageContain(ctx, sprite, -22, -enemy.height * 1.25, enemy.width + 44, enemy.height + 60);
-        ctx.globalCompositeOperation = "source-over";
         if (!drewEnemy) drawEnemyFallback(ctx, enemy);
       }
       ctx.restore();
