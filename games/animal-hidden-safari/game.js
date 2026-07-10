@@ -480,6 +480,7 @@
       "../../assets/animal-hidden-safari-pond-bg.webp",
       "../../assets/animal-hidden-safari-sunset-bg.webp",
       "../../assets/animal-hidden-safari-jungle-bg.webp",
+      "../../assets/animal-hidden-safari-lookout-bg.webp",
       ...new Set(Object.values(targetAssets)),
       ...new Set(Object.values(coverAssets)),
     ];

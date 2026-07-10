@@ -279,6 +279,13 @@ select {
     #367d49;
 }
 
+.scene[data-theme="lookout"] {
+  background:
+    linear-gradient(180deg, rgba(34, 98, 143, 0.02), rgba(159, 103, 34, 0.08)),
+    url("../../assets/animal-hidden-safari-lookout-bg.webp") center / cover no-repeat,
+    #c89948;
+}
+
 .float-layer {
   position: absolute;
   pointer-events: none;

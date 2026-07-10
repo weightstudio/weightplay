@@ -182,6 +182,48 @@ function escapeHtml(value) {
   })[char]);
 }
 
+function selectedFilterValue(buttons, datasetKey, value) {
+  return [...buttons].some((button) => button.dataset[datasetKey] === value) ? value : "all";
+}
+
+function restoreDiscoveryFiltersFromUrl() {
+  const params = new URLSearchParams(window.location.search);
+  activeFilter = selectedFilterValue(filterButtons, "ageFilter", params.get("age") || "all");
+  activeTopic = selectedFilterValue(topicButtons, "topicFilter", params.get("topic") || "all");
+  activeSkill = selectedFilterValue(skillButtons, "skillFilter", params.get("skill") || "all");
+  activeLibrary = selectedFilterValue(libraryButtons, "libraryTab", params.get("library") || "all");
+  activeAvailability = selectedFilterValue(availabilityButtons, "availabilityFilter", params.get("availability") || "all");
+  const query = params.get("q") || "";
+  activeSearch = query.trim().toLowerCase();
+  if (gameSearch) gameSearch.value = query;
+
+  setActiveButtons(filterButtons, "ageFilter", activeFilter);
+  setActiveButtons(topicButtons, "topicFilter", activeTopic);
+  setActiveButtons(skillButtons, "skillFilter", activeSkill);
+  setActiveButtons(libraryButtons, "libraryTab", activeLibrary);
+  setActiveButtons(availabilityButtons, "availabilityFilter", activeAvailability);
+}
+
+function syncDiscoveryFiltersToUrl(historyMode = "replace") {
+  const url = new URL(window.location.href);
+  const values = {
+    age: activeFilter,
+    topic: activeTopic,
+    skill: activeSkill,
+    library: activeLibrary,
+    availability: activeAvailability,
+    q: activeSearch,
+  };
+  Object.entries(values).forEach(([key, value]) => {
+    if (!value || value === "all") url.searchParams.delete(key);
+    else url.searchParams.set(key, value);
+  });
+  const target = `${url.pathname}${url.search}${url.hash}`;
+  const current = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+  if (target === current) return;
+  window.history[historyMode === "push" ? "pushState" : "replaceState"](null, "", target);
+}
+
 function selectedButtonLabel(buttons, dataKey, value) {
   const button = Array.from(buttons).find((item) => item.dataset[dataKey] === value);
   return button?.querySelector(".filter-label")?.textContent?.trim() || button?.textContent?.trim() || "";
@@ -249,7 +291,7 @@ function renderDiscoverySnapshot() {
         setActiveButtons(skillButtons, "skillFilter", "all");
         setActiveButtons(libraryButtons, "libraryTab", "all");
         setActiveButtons(availabilityButtons, "availabilityFilter", "playable");
-        applyFilter();
+        applyFilter({ historyMode: "push" });
         mobilePicksSection?.scrollIntoView({ behavior: "smooth", block: "start" });
         window.WonderAnalytics?.track("discovery_snapshot_open", { snapshot: target, locale: i18n.locale() });
         return;
@@ -258,7 +300,7 @@ function renderDiscoverySnapshot() {
       activeLibrary = "all";
       setActiveButtons(libraryButtons, "libraryTab", "all");
       setActiveButtons(availabilityButtons, "availabilityFilter", activeAvailability);
-      applyFilter();
+      applyFilter({ historyMode: "push" });
       filterStatus?.scrollIntoView({ behavior: "smooth", block: "start" });
       window.WonderAnalytics?.track("discovery_snapshot_open", { snapshot: target, locale: i18n.locale() });
     });
@@ -1190,7 +1232,7 @@ function selectSkillPath(skill) {
   setActiveButtons(availabilityButtons, "availabilityFilter", "all");
   window.WonderSound?.play("click");
   window.WonderAnalytics?.track("skill_path_open", { skill_path: skill, locale: i18n.locale() });
-  applyFilter();
+  applyFilter({ historyMode: "push" });
   filterStatus?.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
@@ -1221,10 +1263,10 @@ function resetDiscoveryFilters() {
   setActiveButtons(availabilityButtons, "availabilityFilter", "all");
   window.WonderSound?.play("click");
   window.WonderAnalytics?.track("clear_lobby_filters", { locale: i18n.locale() });
-  applyFilter();
+  applyFilter({ historyMode: "push" });
 }
 
-function applyFilter() {
+function applyFilter({ historyMode = "replace" } = {}) {
   let visibleCount = 0;
   const isFiltered =
     activeFilter !== "all" ||
@@ -1290,6 +1332,8 @@ function applyFilter() {
   } else {
     filterStatus.textContent = i18n.t("status.all_games");
   }
+
+  syncDiscoveryFiltersToUrl(historyMode);
 }
 
 function applyStaticTranslations() {
@@ -1402,7 +1446,7 @@ filterButtons.forEach((button) => {
     window.WonderSound?.play("click");
     window.WonderAnalytics?.track("age_filter", { age_filter: activeFilter, locale: i18n.locale() });
     filterButtons.forEach((item) => item.classList.toggle("active", item === button));
-    applyFilter();
+    applyFilter({ historyMode: "push" });
   });
 });
 
@@ -1413,7 +1457,7 @@ topicButtons.forEach((button) => {
     window.WonderSound?.play("click");
     window.WonderAnalytics?.track("topic_filter", { topic_filter: activeTopic, locale: i18n.locale() });
     topicButtons.forEach((item) => item.classList.toggle("active", item === button));
-    applyFilter();
+    applyFilter({ historyMode: "push" });
   });
 });
 
@@ -1424,7 +1468,7 @@ skillButtons.forEach((button) => {
     window.WonderSound?.play("click");
     window.WonderAnalytics?.track("skill_filter", { skill_filter: activeSkill, locale: i18n.locale() });
     skillButtons.forEach((item) => item.classList.toggle("active", item === button));
-    applyFilter();
+    applyFilter({ historyMode: "push" });
   });
 });
 
@@ -1435,7 +1479,7 @@ libraryButtons.forEach((button) => {
     window.WonderSound?.play("click");
     window.WonderAnalytics?.track("library_tab", { library_tab: activeLibrary, locale: i18n.locale() });
     libraryButtons.forEach((item) => item.classList.toggle("active", item === button));
-    applyFilter();
+    applyFilter({ historyMode: "push" });
   });
 });
 
@@ -1446,7 +1490,7 @@ availabilityButtons.forEach((button) => {
     window.WonderSound?.play("click");
     window.WonderAnalytics?.track("availability_filter", { availability_filter: activeAvailability, locale: i18n.locale() });
     availabilityButtons.forEach((item) => item.classList.toggle("active", item === button));
-    applyFilter();
+    applyFilter({ historyMode: "push" });
   });
 });
 
@@ -1467,6 +1511,12 @@ localeSelect.addEventListener("input", () => {
 
 window.addEventListener("wonder:locale-change", renderLobby);
 
+window.addEventListener("popstate", () => {
+  restoreDiscoveryFiltersFromUrl();
+  renderLobby();
+});
+
+restoreDiscoveryFiltersFromUrl();
 renderLobby();
 loadGameStats();
 window.WonderAnalytics?.track("lobby_ready", {

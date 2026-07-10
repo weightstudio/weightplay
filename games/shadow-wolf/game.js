@@ -212,6 +212,10 @@
 
   const shadowAssetPaths = {
     bg: "../../assets/shadow-wolf-stage-bg.webp",
+    bgCrystal: "../../assets/shadow-wolf-bg-crystal-cavern.png",
+    bgJungle: "../../assets/shadow-wolf-bg-vine-jungle.png",
+    bgRift: "../../assets/shadow-wolf-bg-shadow-rift.png",
+    bgVolcanic: "../../assets/shadow-wolf-bg-volcanic-altar.png",
     wolf: "../../assets/shadow-wolf-hero.webp",
     enemyWolf: "../../assets/shadow-wolf-hero.png",
     bat: "../../assets/shadow-wolf-enemy-bat-cutout.png",
@@ -307,6 +311,7 @@
   // Level platforms geometry lists
   let platforms = [];
   let spikesList = [];
+  let damageNumbers = [];
   let selectedStage = 1;
   const stageNames = ["", "月影遺跡", "水晶斷橋", "古獸祭壇"];
 
@@ -442,6 +447,7 @@
     state.bullets = [];
     state.orbs = [];
     state.pickups = [];
+    damageNumbers = [];
 
     const room = state.room;
     if (room === 1 || room === 4 || room === 7) {
@@ -595,6 +601,8 @@
         if (isCrit) finalDmg *= 1.5;
 
         enemy.hp -= finalDmg;
+        enemy.hitTimer = 10;
+        damageNumbers.push({ x: enemy.x + enemy.width / 2, y: enemy.y - 4, value: Math.round(finalDmg), crit: isCrit, life: 34 });
         createSlashSparks(enemy.x + enemy.width / 2, enemy.y + enemy.height / 2, isCrit);
         window.WonderSound?.play("hit");
 
@@ -858,6 +866,7 @@
 
     // Move & Shoot enemies
     state.enemies.forEach((enemy, index) => {
+      if (enemy.hitTimer > 0) enemy.hitTimer--;
       // Wolf/Boar walks along platform bounds
       if (enemy.type === "wolf" || enemy.type === "boar") {
         enemy.x += enemy.speed * (enemy.bounds.dir || 1);
@@ -888,18 +897,21 @@
           });
         }
       } else if (enemy.type === "boss") {
-        // Boss continuously tracks the player; never teleports or turns its back.
-        enemy.facing = state.x < enemy.x ? "left" : "right";
-        const desiredX = state.x + (enemy.facing === "left" ? 92 : -92);
-        const deltaX = desiredX - enemy.x;
-        if (Math.abs(deltaX) > 10) enemy.x += Math.sign(deltaX) * Math.min(enemy.speed * 0.55, Math.abs(deltaX));
+        // Hold a deliberate combat distance and aim at the player's predicted path.
+        const playerCenter = state.x + state.width / 2;
+        const bossCenter = enemy.x + enemy.width / 2;
+        const horizontalGap = playerCenter - bossCenter;
+        enemy.facing = horizontalGap < 0 ? "left" : "right";
+        if (Math.abs(horizontalGap) > 180) enemy.x += Math.sign(horizontalGap) * enemy.speed * 0.9;
+        if (Math.abs(horizontalGap) < 100) enemy.x -= Math.sign(horizontalGap || 1) * enemy.speed * 0.55;
         enemy.x = Math.max(20, Math.min(670, enemy.x));
         enemy.shootCooldown--;
         if (enemy.shootCooldown <= 0) {
-          enemy.shootCooldown = 90 + Math.random() * 40;
-          const baseAngle = Math.atan2((state.y + state.height / 2) - enemy.y, (state.x + state.width / 2) - enemy.x);
-          for (let aOffset of [-0.22, 0, 0.22]) {
-            state.bullets.push({ x: enemy.x + enemy.width / 2, y: enemy.y + enemy.height / 2, vx: Math.cos(baseAngle + aOffset) * 4.2, vy: Math.sin(baseAngle + aOffset) * 4.2, size: 6 });
+          enemy.shootCooldown = 70 + Math.random() * 25;
+          const predictedX = playerCenter + state.vx * 18;
+          const baseAngle = Math.atan2((state.y + state.height / 2) - (enemy.y + 46), predictedX - bossCenter);
+          for (let aOffset of [-0.32, -0.16, 0, 0.16, 0.32]) {
+            state.bullets.push({ x: bossCenter, y: enemy.y + 46, vx: Math.cos(baseAngle + aOffset) * 4.8, vy: Math.sin(baseAngle + aOffset) * 4.8, size: 7 });
           }
           window.WonderSound?.play("shoot");
         }
@@ -1099,8 +1111,11 @@
       ctx.fillRect(plat.x, plat.y, plat.w, plat.h);
       ctx.strokeStyle = "rgba(220, 255, 175, 0.62)";
       ctx.strokeRect(plat.x + .5, plat.y + .5, plat.w - 1, plat.h - 1);
-      ctx.fillStyle = "rgba(20, 40, 32, 0.8)";
-      for (let x = plat.x + 8; x < plat.x + plat.w; x += 18) ctx.fillRect(x, plat.y + 10, 2, 9);
+      ctx.strokeStyle = "rgba(23, 39, 41, 0.85)";
+      ctx.lineWidth = 1;
+      for (let x = plat.x + 16; x < plat.x + plat.w; x += 28) ctx.strokeRect(x, plat.y + 8, 24, plat.h - 9);
+      ctx.fillStyle = "rgba(191, 232, 123, 0.65)";
+      ctx.fillRect(plat.x + 3, plat.y + 2, plat.w - 6, 3);
       ctx.restore();
       return;
     }
@@ -1125,8 +1140,9 @@
     ctx.clearRect(0, 0, 800, 500);
 
     // 1. Background image
-    if (assets.bg.complete) {
-      ctx.drawImage(assets.bg, 0, 0, 800, 500);
+    const background = state.room <= 2 ? assets.bg : state.room <= 4 ? assets.bgCrystal : state.room <= 6 ? assets.bgJungle : state.room === 7 ? assets.bgRift : assets.bgVolcanic;
+    if (background.complete) {
+      ctx.drawImage(background, 0, 0, 800, 500);
     } else {
       ctx.fillStyle = "#0c1020";
       ctx.fillRect(0, 0, 800, 500);
@@ -1203,11 +1219,20 @@
       }
 
       if (enemy.type === "boss") {
-        const drewBoss = drawImageContain(ctx, assets.boss, -12, -42, enemy.width + 24, enemy.height + 62);
+        const drewBoss = drawImageContain(ctx, assets.boss, -12, -24, enemy.width + 24, enemy.height + 62);
+        if (enemy.hitTimer > 0) {
+          ctx.save(); ctx.globalAlpha = 0.72; ctx.globalCompositeOperation = "screen";
+          drawImageContain(ctx, assets.boss, -12, -24, enemy.width + 24, enemy.height + 62); ctx.restore();
+        }
         if (!drewBoss) drawEnemyFallback(ctx, enemy);
       } else {
         const sprite = enemy.type === "boar" ? assets.boar : enemy.type === "wolf" ? assets.enemyWolf : assets.bat;
-        const drewEnemy = drawImageContain(ctx, sprite, -22, -enemy.height * 1.25, enemy.width + 44, enemy.height + 60);
+        const visualY = enemy.type === "wolf" ? -48 : enemy.type === "boar" ? -34 : -10;
+        const drewEnemy = drawImageContain(ctx, sprite, -22, visualY, enemy.width + 44, enemy.height + 60);
+        if (enemy.hitTimer > 0) {
+          ctx.save(); ctx.globalAlpha = 0.72; ctx.globalCompositeOperation = "screen";
+          drawImageContain(ctx, sprite, -22, visualY, enemy.width + 44, enemy.height + 60); ctx.restore();
+        }
         if (!drewEnemy) drawEnemyFallback(ctx, enemy);
       }
       ctx.restore();
@@ -1235,7 +1260,7 @@
       if (state.invincibilityTimer > 0 && Math.floor(Date.now() / 80) % 2 === 0) {
         ctx.globalAlpha = 0.4;
       }
-      if (!drawImageContain(ctx, assets.wolf, -20, -state.height * 2, state.width + 40, state.height + 72)) drawHeroFallback(ctx);
+      if (!drawImageContain(ctx, assets.wolf, -20, -state.height * 1.65, state.width + 40, state.height + 72)) drawHeroFallback(ctx);
       ctx.globalAlpha = 1.0;
     } else {
       drawHeroFallback(ctx);
@@ -1248,6 +1273,26 @@
 
     // 10. Update & Draw sparks particles
     updateSparksParticles(ctx);
+    drawDamageNumbers(ctx);
+  }
+
+  function drawDamageNumbers(ctx) {
+    ctx.save();
+    ctx.textAlign = "center";
+    ctx.font = "800 17px system-ui";
+    damageNumbers = damageNumbers.filter((number) => {
+      number.y -= 0.75;
+      number.life--;
+      ctx.globalAlpha = Math.min(1, number.life / 12);
+      ctx.fillStyle = number.crit ? "#fde047" : "#f8fafc";
+      ctx.strokeStyle = "#07121f";
+      ctx.lineWidth = 3;
+      const label = `${number.crit ? "CRIT " : ""}${number.value}`;
+      ctx.strokeText(label, number.x, number.y);
+      ctx.fillText(label, number.x, number.y);
+      return number.life > 0;
+    });
+    ctx.restore();
   }
 
   function drawClawArc(ctx) {
@@ -1536,6 +1581,14 @@
       forceLevelUp() {
         handleLevelUp();
         return this.readState();
+      },
+      forceDamageEffect() {
+        const enemy = state.enemies[0];
+        if (!enemy) return this.readState();
+        enemy.hitTimer = 10;
+        damageNumbers.push({ x: enemy.x + enemy.width / 2, y: enemy.y - 4, value: 18, crit: true, life: 34 });
+        drawCanvasFrame();
+        return { ...this.readState(), damageNumbers: damageNumbers.length, enemyHitTimer: enemy.hitTimer };
       },
       forceLoot(itemId = "sword-rare") {
         currentLootItem = gearDb[itemId] ? itemId : "sword-rare";
