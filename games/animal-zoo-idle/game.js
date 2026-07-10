@@ -386,6 +386,7 @@
     loadingPanel: $("loadingPanel"),
     loadingText: $("loadingText"),
     loadingFill: $("loadingFill"),
+    battleAdReserve: $("battleAdReserve"),
   };
 
   let locale = window.WonderI18n?.locale?.() || localStorage.getItem(localeKey) || "en";
@@ -1502,6 +1503,7 @@
     nodes.localeSelect.closest(".language-picker")?.setAttribute("aria-hidden", "true");
     nodes.menuPanel.classList.add("hidden");
     nodes.gamePanel.classList.remove("hidden");
+    nodes.battleAdReserve.classList.remove("hidden");
     applyOffline();
     render();
     requestAnimationFrame(render);
@@ -1516,6 +1518,7 @@
     nodes.localeSelect.closest(".language-picker")?.removeAttribute("aria-hidden");
     nodes.gamePanel.classList.add("hidden");
     nodes.menuPanel.classList.remove("hidden");
+    nodes.battleAdReserve.classList.add("hidden");
     nodes.resultPanel.classList.add("hidden");
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   }
@@ -1573,8 +1576,19 @@
     locale = nodes.localeSelect.value;
     window.WonderI18n?.setLocale?.(locale);
     localStorage.setItem(localeKey, locale);
+    window.dispatchEvent(new CustomEvent("wonder:locale-change", { detail: { locale } }));
     localizeStatic();
     render();
+  });
+  window.addEventListener("wonder:locale-change", (event) => {
+    if (event.detail?.locale && event.detail.locale !== locale) {
+      locale = event.detail.locale;
+      nodes.localeSelect.value = locale;
+      window.WonderI18n?.setLocale?.(locale);
+      localStorage.setItem(localeKey, locale);
+      localizeStatic();
+      render();
+    }
   });
   nodes.startBtn.addEventListener("click", (event) => {
     event.preventDefault();
@@ -1585,7 +1599,7 @@
   window.addEventListener("weightplay:tutorial-start", (event) => {
     if (event.detail?.gameId === GAME_ID) startGame();
   });
-  nodes.reportBtn.addEventListener("click", showReport);
+  nodes.reportBtn?.addEventListener("click", showReport);
   nodes.closeReportBtn.addEventListener("click", () => nodes.resultPanel.classList.add("hidden"));
   window.addEventListener("beforeunload", saveGame);
 
