@@ -272,6 +272,13 @@ select {
     #f2b94e;
 }
 
+.scene[data-theme="jungle"] {
+  background:
+    linear-gradient(180deg, rgba(18, 75, 39, 0.04), rgba(12, 57, 31, 0.08)),
+    url("../../assets/animal-hidden-safari-jungle-bg.webp") center / cover no-repeat,
+    #367d49;
+}
+
 .float-layer {
   position: absolute;
   pointer-events: none;

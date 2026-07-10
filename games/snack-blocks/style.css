@@ -279,7 +279,10 @@ button:active {
   margin: 0 auto;
   padding: 8px;
   border-radius: 8px;
-  background: rgba(18, 21, 31, 0.76);
+  background:
+    linear-gradient(180deg, rgba(28, 12, 25, 0.04), rgba(19, 9, 18, 0.14)),
+    url("assets/board-frame.webp") center / cover no-repeat,
+    rgba(18, 21, 31, 0.76);
   border: 2px solid rgba(255, 255, 255, 0.18);
   display: grid;
   grid-template-columns: repeat(7, 1fr);

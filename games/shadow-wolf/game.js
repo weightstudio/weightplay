@@ -29,10 +29,16 @@
     btnAttack: $("btnAttack"),
     eqWeaponName: $("eqWeaponName"),
     eqWeaponEffect: $("eqWeaponEffect"),
+    eqWeaponIcon: $("eqWeaponIcon"),
+    weaponSlot: $("weaponSlot"),
     eqArmorName: $("eqArmorName"),
     eqArmorEffect: $("eqArmorEffect"),
+    eqArmorIcon: $("eqArmorIcon"),
+    armorSlot: $("armorSlot"),
     eqBootsName: $("eqBootsName"),
     eqBootsEffect: $("eqBootsEffect"),
+    eqBootsIcon: $("eqBootsIcon"),
+    bootsSlot: $("bootsSlot"),
     statDmg: $("statDmg"),
     statSpeed: $("statSpeed"),
     statJump: $("statJump"),
@@ -57,6 +63,8 @@
     amuletBtn: $("amuletBtn"),
     amuletCost: $("amuletCost"),
     amuletStatus: $("amuletStatus"),
+    stageSelectionLabel: $("stageSelectionLabel"),
+    stageButtons: Array.from(document.querySelectorAll("[data-stage]")),
   };
 
   const amuletCost = 15;
@@ -261,7 +269,7 @@
     // Base Stats
     baseDmg: 10,
     baseSpeed: 3.5,
-    baseJump: 8.5,
+    baseJump: 10.5,
     baseCrit: 0.05,
 
     // Relic buff counts
@@ -285,6 +293,8 @@
   // Level platforms geometry lists
   let platforms = [];
   let spikesList = [];
+  let selectedStage = 1;
+  const stageNames = ["", "月影遺跡", "水晶斷橋", "古獸祭壇"];
 
   // Inputs
   let keysPressed = {};
@@ -393,45 +403,33 @@
   }
 
   function renderEquippedGear() {
-    // Weapon
-    if (state.eqWeapon) {
-      const g = gearDb[state.eqWeapon];
-      nodes.eqWeaponName.textContent = t(g.nameKey);
-      nodes.eqWeaponEffect.textContent = t(g.effectKey);
-      nodes.eqWeaponEffect.style.display = "inline-block";
-    } else {
-      nodes.eqWeaponName.textContent = "None";
-      nodes.eqWeaponEffect.style.display = "none";
-    }
+    const renderSlot = (itemId, slot, icon, name, effect) => {
+      const gear = itemId ? gearDb[itemId] : null;
+      slot.classList.toggle("has-item", Boolean(gear));
+      icon.hidden = !gear;
+      icon.removeAttribute("src");
+      if (gear) {
+        icon.src = gear.iconSrc;
+        icon.alt = t(gear.nameKey);
+        name.textContent = t(gear.nameKey);
+        effect.textContent = t(gear.effectKey);
+        effect.style.display = "block";
+      } else {
+        name.textContent = "尚未裝備";
+        effect.style.display = "none";
+      }
+    };
 
-    // Armor
-    if (state.eqArmor) {
-      const g = gearDb[state.eqArmor];
-      nodes.eqArmorName.textContent = t(g.nameKey);
-      nodes.eqArmorEffect.textContent = t(g.effectKey);
-      nodes.eqArmorEffect.style.display = "inline-block";
-    } else {
-      nodes.eqArmorName.textContent = "None";
-      nodes.eqArmorEffect.style.display = "none";
-    }
-
-    // Boots
-    if (state.eqBoots) {
-      const g = gearDb[state.eqBoots];
-      nodes.eqBootsName.textContent = t(g.nameKey);
-      nodes.eqBootsEffect.textContent = t(g.effectKey);
-      nodes.eqBootsEffect.style.display = "inline-block";
-    } else {
-      nodes.eqBootsName.textContent = "None";
-      nodes.eqBootsEffect.style.display = "none";
-    }
+    renderSlot(state.eqWeapon, nodes.weaponSlot, nodes.eqWeaponIcon, nodes.eqWeaponName, nodes.eqWeaponEffect);
+    renderSlot(state.eqArmor, nodes.armorSlot, nodes.eqArmorIcon, nodes.eqArmorName, nodes.eqArmorEffect);
+    renderSlot(state.eqBoots, nodes.bootsSlot, nodes.eqBootsIcon, nodes.eqBootsName, nodes.eqBootsEffect);
   }
 
   // The background contains three readable stone surfaces. Keep every collision
   // surface on those visible ledges so the player never has to guess the floor.
   const stageTerrain = Object.freeze([
     { x: 0, y: 370, w: 800, h: 130, kind: "ground" },
-    { x: 0, y: 250, w: 310, h: 24, kind: "ledge" },
+    { x: 0, y: 170, w: 310, h: 24, kind: "ledge" },
     { x: 520, y: 210, w: 280, h: 24, kind: "ledge" },
   ]);
   const mainFloorY = stageTerrain[0].y;
@@ -482,7 +480,7 @@
       addBackgroundAlignedTerrain();
 
       // Giant Boss Behemoth
-      state.enemies.push({ x: 600, y: mainFloorY - 64, width: 64, height: 64, hp: 300, maxHp: 300, speed: 2.2, type: "boss", dir: -1, isElite: true, shootCooldown: 90 });
+      state.enemies.push({ x: 570, y: mainFloorY - 110, width: 110, height: 110, hp: 300, maxHp: 300, speed: 2.2, type: "boss", dir: -1, isElite: true, shootCooldown: 90 });
 
       state.x = 80;
       state.y = mainFloorY - state.height;
@@ -490,7 +488,17 @@
   }
 
   // Active game start trigger
-  function startRun() {
+  function selectStage(room) {
+    selectedStage = room;
+    nodes.stageSelectionLabel.textContent = `關卡 ${room}：${stageNames[room]}`;
+    nodes.stageButtons.forEach((button) => {
+      const isSelected = Number(button.dataset.stage) === room;
+      button.classList.toggle("is-selected", isSelected);
+      button.setAttribute("aria-pressed", String(isSelected));
+    });
+  }
+
+  function startRun(startRoom = selectedStage) {
     loadLocalState();
     const stats = getStats();
     state.playerMaxHp = stats.maxHp;
@@ -498,7 +506,7 @@
     state.level = 1;
     state.exp = 0;
     state.expNeed = 100;
-    state.room = 1;
+    state.room = startRoom;
     state.keys = 0;
 
     state.eqWeapon = null;
@@ -566,14 +574,14 @@
 
     // Attack collision sweeps forward
     const stats = getStats();
-    const slashRange = 50;
-    const slashWidth = 40;
+    const slashRange = 124;
+    const slashWidth = 90;
     
     let ax = state.x + state.width;
     if (state.facing === "left") {
       ax = state.x - slashRange;
     }
-    let ay = state.y - 5;
+    let ay = state.y - 22;
 
     state.enemies.forEach((enemy, idx) => {
       if (enemy.hp <= 0) return;
@@ -718,7 +726,8 @@
     nodes.lootType.textContent = t(g.typeKey);
     nodes.lootEffect.textContent = t(g.effectKey);
 
-    nodes.lootPanel.classList.remove("hidden");
+    // Platform runs should stay uninterrupted: chest gear immediately occupies its sidebar slot.
+    equipLoot();
   }
 
   function equipLoot() {
@@ -1062,6 +1071,8 @@
 
   function drawImageContain(ctx, image, x, y, w, h, flip = false) {
     if (!image || !image.complete || !image.naturalWidth) return false;
+    const sourceWidth = image.naturalWidth || image.width;
+    const sourceHeight = image.naturalHeight || image.height;
     ctx.save();
     if (flip) {
       ctx.translate(x + w, y);
@@ -1069,7 +1080,7 @@
       x = 0;
       y = 0;
     }
-    const imageRatio = image.naturalWidth / image.naturalHeight;
+    const imageRatio = sourceWidth / sourceHeight;
     const boxRatio = w / h;
     let drawW = w;
     let drawH = h;
@@ -1083,6 +1094,34 @@
     ctx.drawImage(image, drawX, drawY, drawW, drawH);
     ctx.restore();
     return true;
+  }
+
+  function drawEnemyFallback(ctx, enemy) {
+    ctx.save();
+    ctx.fillStyle = enemy.isElite ? "#a855f7" : "#22d3ee";
+    ctx.strokeStyle = "#e0f2fe";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.ellipse(enemy.width / 2, enemy.height / 2, enemy.width / 2 + 5, enemy.height / 2 + 7, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+    ctx.fillStyle = "#07121f";
+    ctx.fillRect(enemy.width * 0.58, enemy.height * 0.32, 5, 5);
+    ctx.restore();
+  }
+
+  function drawHeroFallback(ctx) {
+    ctx.save();
+    ctx.fillStyle = "#22d3ee";
+    ctx.strokeStyle = "#e0f2fe";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.arc(state.width / 2, state.height / 2, state.width / 2 + 7, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+    ctx.fillStyle = "#07121f";
+    ctx.fillRect(state.width * 0.62, state.height * 0.28, 6, 6);
+    ctx.restore();
   }
 
   function drawTileCell(ctx, cellIndex, x, y, w, h) {
@@ -1181,15 +1220,16 @@
       }
 
       if (enemy.type === "boss") {
-        drawImageContain(ctx, assets.boss, 0, -34, enemy.width, enemy.height + 34);
+        ctx.globalCompositeOperation = "screen";
+        const drewBoss = drawImageContain(ctx, assets.boss, -12, -62, enemy.width + 24, enemy.height + 62);
+        ctx.globalCompositeOperation = "source-over";
+        if (!drewBoss) drawEnemyFallback(ctx, enemy);
       } else {
         const sprite = enemy.type === "boar" ? assets.boar : enemy.type === "wolf" ? assets.enemyWolf : assets.bat;
-        if (sprite.complete) {
-          drawImageContain(ctx, sprite, 0, -enemy.height * 0.2, enemy.width, enemy.height * 1.35);
-        } else {
-          ctx.fillStyle = enemy.type === "boar" ? "#64748b" : "#475569";
-          ctx.fillRect(0, 0, enemy.width, enemy.height);
-        }
+        ctx.globalCompositeOperation = "screen";
+        const drewEnemy = drawImageContain(ctx, sprite, -22, -enemy.height * 1.25, enemy.width + 44, enemy.height + 60);
+        ctx.globalCompositeOperation = "source-over";
+        if (!drewEnemy) drawEnemyFallback(ctx, enemy);
       }
       ctx.restore();
 
@@ -1211,16 +1251,15 @@
       ctx.translate(state.x, state.y);
     }
 
-    if (assets.wolf.complete) {
+    if (assets.wolf.complete && assets.wolf.naturalWidth) {
       // Render flashing hit texture
       if (state.invincibilityTimer > 0 && Math.floor(Date.now() / 80) % 2 === 0) {
         ctx.globalAlpha = 0.4;
       }
-      drawImageContain(ctx, assets.wolf, 0, -state.height * 0.45, state.width, state.height * 1.55);
+      if (!drawImageContain(ctx, assets.wolf, -20, -state.height * 2, state.width + 40, state.height + 72)) drawHeroFallback(ctx);
       ctx.globalAlpha = 1.0;
     } else {
-      ctx.fillStyle = "#38bdf8";
-      ctx.fillRect(0, 0, state.width, state.height);
+      drawHeroFallback(ctx);
     }
 
     ctx.restore();
@@ -1363,6 +1402,14 @@
       window.WonderSound?.play("click");
       startRun();
     });
+
+    nodes.stageButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        window.WonderSound?.play("click");
+        selectStage(Number(button.dataset.stage));
+      });
+    });
+    selectStage(selectedStage);
 
     nodes.retryBtn.addEventListener("click", () => {
       window.WonderSound?.play("click");
