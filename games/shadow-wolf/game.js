@@ -217,10 +217,12 @@
     bgRift: "../../assets/shadow-wolf-bg-shadow-rift.png",
     bgVolcanic: "../../assets/shadow-wolf-bg-volcanic-altar.png",
     wolf: "../../assets/shadow-wolf-hero.webp",
-    enemyWolf: "../../assets/shadow-wolf-hero.png",
+    enemyWolf: "../../assets/shadow-wolf-enemy-hunter.png",
     bat: "../../assets/shadow-wolf-enemy-bat-cutout.png",
     boar: "../../assets/shadow-wolf-enemy-boar-cutout.png",
     boss: "../../assets/shadow-wolf-boss-behemoth-cutout.png",
+    bossBasilisk: "../../assets/shadow-wolf-boss-basilisk.png",
+    bossGuardian: "../../assets/shadow-wolf-boss-guardian.png",
     tiles: "../../assets/shadow-wolf-platform-tiles.webp",
     clawFx: "../../assets/shadow-wolf-fx-claw-slash.webp",
     dashFx: "../../assets/shadow-wolf-fx-dash-trail.webp",
@@ -481,7 +483,7 @@
       addBackgroundAlignedTerrain();
 
       // Giant Boss Behemoth
-      state.enemies.push({ x: 570, y: mainFloorY - 110, width: 110, height: 110, hp: 300, maxHp: 300, speed: 2.2, type: "boss", dir: -1, isElite: true, shootCooldown: 90 });
+      state.enemies.push({ x: 570, y: mainFloorY - 110, width: 110, height: 110, hp: 180, maxHp: 180, speed: 1.45, type: "boss", variant: "behemoth", dir: -1, isElite: true, shootCooldown: 105 });
 
       state.x = 80;
       state.y = mainFloorY - state.height;
@@ -496,6 +498,14 @@
     (zoneObstacleLayouts[room] || []).forEach((obstacle) => {
       platforms.push({ ...obstacle, h: 22, kind: "generated", dir: 1 });
     });
+
+    const miniBosses = {
+      4: { variant: "basilisk", x: 560, y: mainFloorY - 82, width: 82, height: 82, hp: 105, maxHp: 105, speed: 1.35, shootCooldown: 105 },
+      6: { variant: "guardian", x: 545, y: mainFloorY - 96, width: 96, height: 96, hp: 135, maxHp: 135, speed: 1.05, shootCooldown: 95 },
+    };
+    if (miniBosses[room]) {
+      state.enemies = [{ ...miniBosses[room], type: "boss", dir: -1, isElite: true }];
+    }
   }
 
   // Active game start trigger
@@ -907,11 +917,11 @@
         enemy.x = Math.max(20, Math.min(670, enemy.x));
         enemy.shootCooldown--;
         if (enemy.shootCooldown <= 0) {
-          enemy.shootCooldown = 70 + Math.random() * 25;
+          enemy.shootCooldown = 115 + Math.random() * 35;
           const predictedX = playerCenter + state.vx * 18;
           const baseAngle = Math.atan2((state.y + state.height / 2) - (enemy.y + 46), predictedX - bossCenter);
-          for (let aOffset of [-0.32, -0.16, 0, 0.16, 0.32]) {
-            state.bullets.push({ x: bossCenter, y: enemy.y + 46, vx: Math.cos(baseAngle + aOffset) * 4.8, vy: Math.sin(baseAngle + aOffset) * 4.8, size: 7 });
+          for (let aOffset of [-0.18, 0, 0.18]) {
+            state.bullets.push({ x: bossCenter, y: enemy.y + 46, vx: Math.cos(baseAngle + aOffset) * 3.8, vy: Math.sin(baseAngle + aOffset) * 3.8, size: 6 });
           }
           window.WonderSound?.play("shoot");
         }
@@ -1219,15 +1229,17 @@
       }
 
       if (enemy.type === "boss") {
-        const drewBoss = drawImageContain(ctx, assets.boss, -12, -24, enemy.width + 24, enemy.height + 62);
+        const bossSprite = enemy.variant === "basilisk" ? assets.bossBasilisk : enemy.variant === "guardian" ? assets.bossGuardian : assets.boss;
+        const bossY = enemy.variant === "guardian" ? -30 : -24;
+        const drewBoss = drawImageContain(ctx, bossSprite, -12, bossY, enemy.width + 24, enemy.height + 62);
         if (enemy.hitTimer > 0) {
           ctx.save(); ctx.globalAlpha = 0.72; ctx.globalCompositeOperation = "screen";
-          drawImageContain(ctx, assets.boss, -12, -24, enemy.width + 24, enemy.height + 62); ctx.restore();
+          drawImageContain(ctx, bossSprite, -12, bossY, enemy.width + 24, enemy.height + 62); ctx.restore();
         }
         if (!drewBoss) drawEnemyFallback(ctx, enemy);
       } else {
         const sprite = enemy.type === "boar" ? assets.boar : enemy.type === "wolf" ? assets.enemyWolf : assets.bat;
-        const visualY = enemy.type === "wolf" ? -48 : enemy.type === "boar" ? -34 : -10;
+        const visualY = enemy.type === "wolf" ? -38 : enemy.type === "boar" ? -34 : -10;
         const drewEnemy = drawImageContain(ctx, sprite, -22, visualY, enemy.width + 44, enemy.height + 60);
         if (enemy.hitTimer > 0) {
           ctx.save(); ctx.globalAlpha = 0.72; ctx.globalCompositeOperation = "screen";

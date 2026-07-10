@@ -1292,6 +1292,10 @@ select {
   animation: actor-hit 0.26s ease-out;
 }
 
+.zombie.is-slowed {
+  filter: drop-shadow(0 10px 8px rgba(29, 50, 32, 0.32)) drop-shadow(0 0 9px rgba(103, 218, 255, 0.78));
+}
+
 .actor.is-roar-slowed {
   filter: drop-shadow(0 8px 10px rgba(255, 184, 79, 0.32)) saturate(0.82);
 }

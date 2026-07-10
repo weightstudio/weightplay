@@ -40,6 +40,7 @@ const dictionary = {
     start: "Start",
     locked: "Locked",
     complete: "Complete",
+    stageBest: "Best {score} / {total}",
     prompt: "Who is this animal?",
     choose: "Choose one",
     correct: "Correct!",
@@ -123,6 +124,7 @@ const dictionary = {
     start: "\u958b\u59cb",
     locked: "\u672a\u89e3\u9396",
     complete: "\u5df2\u5b8c\u6210",
+    stageBest: "\u6700\u4f73 {score} / {total}",
     prompt: "\u9019\u662f\u4ec0\u9ebc\u52d5\u7269\uff1f",
     choose: "\u9078\u4e00\u500b\u7b54\u6848",
     correct: "\u7b54\u5c0d\u4e86\uff01",
@@ -399,10 +401,15 @@ function showStageSelect() {
 }
 
 function renderStageCards() {
+  const progress = loadProgress();
   stageGrid.replaceChildren(
     ...stages.map((stage, index) => {
       const isUnlocked = index <= state.unlockedStage;
-      const isComplete = index < state.unlockedStage;
+      const stageProgress = progress[String(index)] || {};
+      // Older saves only recorded a play count after a cleared stage.
+      const isComplete = Boolean(stageProgress.cleared || stageProgress.playCount);
+      const total = stage.questions.length;
+      const bestScore = Math.min(Number(stageProgress.bestScore) || 0, total);
       const button = document.createElement("button");
       button.type = "button";
       button.className = `stage-card ${isUnlocked ? "unlocked" : "locked"}`;
@@ -411,6 +418,7 @@ function renderStageCards() {
         <span>${isComplete ? t("complete") : isUnlocked ? t("start") : t("locked")}</span>
         <strong>${t(stage.name)}</strong>
         <small>${t(stage.description)}</small>
+        ${isComplete ? `<em>${t("stageBest", { score: bestScore, total })} ${stars(scoreStars(bestScore, total))}</em>` : ""}
       `;
       button.addEventListener("click", () => startStage(index));
       return button;
@@ -568,6 +576,7 @@ function updateProgress() {
   const bestScore = Math.max(previousBest, state.score);
   const improvementPercent = previousBest > 0 ? Math.round(((state.score - previousBest) / previousBest) * 100) : state.score > 0 ? 100 : 0;
   saveProgress(stageKey, {
+    cleared: true,
     lastScore: state.score,
     bestScore,
     previousBest,

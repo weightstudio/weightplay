@@ -233,7 +233,7 @@
 
   const units = [
     { id: "cat", nameKey: "unitCat", roleKey: "roleRanged", attackStyle: "ranged", cost: 45, hp: 92, damage: 18, cooldown: 930, range: 9, unlockCost: 0 },
-    { id: "dog", nameKey: "unitDog", roleKey: "roleTankMelee", attackStyle: "melee", cost: 70, hp: 235, damage: 30, cooldown: 1120, range: 1.35, unlockCost: 0 },
+    { id: "dog", nameKey: "unitDog", roleKey: "roleTankMelee", attackStyle: "melee", cost: 65, hp: 300, damage: 36, cooldown: 950, range: 1.5, unlockCost: 0 },
     { id: "owl", nameKey: "unitOwl", roleKey: "roleFastRanged", attackStyle: "ranged", cost: 95, hp: 78, damage: 15, cooldown: 660, range: 9, unlockCost: 0 },
     { id: "fox", nameKey: "unitFox", roleKey: "roleCrossLane", attackStyle: "cross", cost: 135, hp: 112, damage: 26, cooldown: 1040, range: 9, targetRows: 1, unlockCost: 5 },
   ];
@@ -1165,6 +1165,7 @@
     pulseClass(guard.el, "is-shooting");
     const y = laneProjectileY(target.row);
     applyDamage(target, guard.data.damage, guard.id, y);
+    if (guard.id === "dog") applySlow(target, 0.55, 950);
   }
 
   function shoot(guard, target) {
@@ -1192,6 +1193,13 @@
     playSound("shoot");
   }
 
+  function applySlow(target, factor, duration) {
+    if (!target || target.kind !== "zombie" || target.dead) return;
+    target.slowMs = Math.max(Number(target.slowMs) || 0, duration);
+    target.slowFactor = Math.min(Number(target.slowFactor) || 1, factor);
+    target.el?.classList.add("is-slowed");
+  }
+
   function updateProjectiles(dt) {
     projectiles.forEach((shot) => {
       const previousX = shot.x;
@@ -1206,6 +1214,7 @@
       ));
       if (hit) {
         applyDamage(hit, shot.damage, shot.unitId, shot.y);
+        if (shot.unitId === "owl") applySlow(hit, 0.72, 1250);
         shot.dead = true;
       }
       if (shot.x > 1.08 || shot.x < -0.08) shot.dead = true;
@@ -1219,6 +1228,9 @@
 
   function updateZombies(dt) {
     entities.filter((item) => item.kind === "zombie").forEach((zombie) => {
+      zombie.slowMs = Math.max(0, (Number(zombie.slowMs) || 0) - dt);
+      if (zombie.slowMs <= 0) zombie.slowFactor = 1;
+      zombie.el.classList.toggle("is-slowed", zombie.slowMs > 0);
       if (zombie.type === "boss") updateBossRoar(zombie, dt);
       const blocking = entities.find((item) => item.kind === "guard" && item.row === zombie.row && Math.abs(cellCenterX(item.col) - zombie.x) < 0.065);
       if (blocking) {
@@ -1232,7 +1244,7 @@
           playSound("hit");
         }
       } else {
-        zombie.x -= zombie.speed * dt;
+        zombie.x -= zombie.speed * dt * (zombie.slowFactor || 1);
       }
       zombie.el.classList.toggle("near-home", zombie.x < 0.24);
       if (!zombie.warned && zombie.x < 0.26) {

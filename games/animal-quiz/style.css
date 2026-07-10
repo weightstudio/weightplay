@@ -214,6 +214,14 @@ a {
   line-height: 1.35;
 }
 
+.stage-card em {
+  color: #a35f00;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 1000;
+  line-height: 1.2;
+}
+
 .stage-card.locked {
   border-color: #7d8979;
   background: #dde2d8;

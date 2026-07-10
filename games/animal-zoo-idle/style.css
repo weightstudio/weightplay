@@ -886,6 +886,12 @@ select {
   animation: panel-in .24s ease both;
 }
 
+.result-card {
+  max-height: min(760px, calc(100dvh - 36px));
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
 .report-score {
   width: 96px;
   aspect-ratio: 1;
@@ -916,6 +922,83 @@ select {
 
 .skill-lines b {
   color: #ffae00;
+}
+
+.animal-album {
+  display: grid;
+  gap: 8px;
+  text-align: left;
+}
+
+.animal-album-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.animal-album-head strong {
+  color: #365226;
+}
+
+.animal-album-head span {
+  color: rgba(54, 82, 38, .72);
+  font-size: .76rem;
+}
+
+.animal-album-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 7px;
+}
+
+.animal-album-card {
+  min-width: 0;
+  min-height: 102px;
+  padding: 7px 5px;
+  border: 1px solid rgba(71, 114, 49, .2);
+  border-radius: 13px;
+  display: grid;
+  grid-template-rows: 46px auto auto;
+  justify-items: center;
+  align-content: center;
+  gap: 2px;
+  background: linear-gradient(180deg, #f8ffe9, #d9f3ba);
+  overflow: hidden;
+}
+
+.animal-album-card img {
+  width: 48px;
+  height: 46px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 4px rgba(45, 69, 25, .18));
+}
+
+.animal-album-card strong,
+.animal-album-card small {
+  width: 100%;
+  overflow: hidden;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.animal-album-card strong {
+  color: #355023;
+  font-size: .7rem;
+}
+
+.animal-album-card small {
+  color: rgba(53, 80, 35, .72);
+  font-size: .58rem;
+}
+
+.animal-album-card.locked {
+  background: linear-gradient(180deg, #f4f5ed, #d9dcd0);
+}
+
+.animal-album-card.locked img {
+  filter: grayscale(1) brightness(.42) opacity(.5);
 }
 
 .loading-card div {

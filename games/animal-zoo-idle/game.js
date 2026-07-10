@@ -87,6 +87,10 @@
       visitors: "Visitors",
       report: "Report",
       reportTitle: "Zoo Growth Report",
+      animalAlbum: "Animal Album",
+      animalAlbumProgress: "{count}/{total} animals welcomed",
+      animalAlbumLocked: "Keep growing your park",
+      animalAlbumIncome: "+{n}/10s tickets",
       skillFocus: "Focus",
       skillLogic: "Logic",
       skillAnimalKnowledge: "Animal Knowledge",
@@ -221,6 +225,10 @@
     visitors: "\u53c3\u89c0\u8005",
     report: "\u5831\u544a",
     reportTitle: "\u6a02\u5712\u6210\u9577\u5831\u544a",
+    animalAlbum: "\u52d5\u7269\u5716\u9451",
+    animalAlbumProgress: "\u5df2\u6b61\u8fce {count}/{total} \u96bb\u52d5\u7269",
+    animalAlbumLocked: "\u6301\u7e8c\u58ef\u5927\u6a02\u5712",
+    animalAlbumIncome: "+{n}/10\u79d2\u9580\u7968",
     continue: "\u7e7c\u7e8c",
     loading: "\u8f09\u5165\u4e2d",
     collect: "\u6536\u7968",
@@ -370,6 +378,7 @@
     resultPanel: $("resultPanel"),
     reportScore: $("reportScore"),
     reportText: $("reportText"),
+    animalAlbum: $("animalAlbum"),
     focusStars: $("focusStars"),
     logicStars: $("logicStars"),
     animalStars: $("animalStars"),
@@ -1441,8 +1450,32 @@
     nodes.focusStars.textContent = starText(save.careCount * 32 + save.happiness);
     nodes.logicStars.textContent = starText(save.gateLevel * 90 + unlockedAnimals().length * 34);
     nodes.animalStars.textContent = starText(unlockedAnimals().length * 95);
+    renderAnimalAlbum(nodes.animalAlbum);
     nodes.resultPanel.classList.remove("hidden");
     window.WonderAnalytics?.track("game_complete", { game_id: GAME_ID, score, animals: unlockedAnimals().length });
+  }
+
+  function renderAnimalAlbum(container) {
+    if (!container) return;
+    const unlockedCount = unlockedAnimals().length;
+    container.innerHTML = `
+      <div class="animal-album-head">
+        <strong>${t("animalAlbum")}</strong>
+        <span>${t("animalAlbumProgress", { count: unlockedCount, total: animals.length })}</span>
+      </div>
+      <div class="animal-album-grid">
+        ${animals.map((animal) => {
+          const unlocked = Boolean(save.unlocked[animal.id]);
+          return `
+            <article class="animal-album-card ${unlocked ? "unlocked" : "locked"}">
+              <img src="${animal.asset}" alt="${unlocked ? t(animal.id) : ""}" draggable="false" />
+              <strong>${unlocked ? t(animal.id) : "?"}</strong>
+              <small>${unlocked ? t("animalAlbumIncome", { n: formatNumber(animal.baseIncome) }) : t("animalAlbumLocked")}</small>
+            </article>
+          `;
+        }).join("")}
+      </div>
+    `;
   }
 
   function starText(score) {
