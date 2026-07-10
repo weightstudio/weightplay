@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="robots" content="noindex,nofollow" />
+    <meta name="theme-color" content="#123b39" />
+    <title>Animal Cafe Rush - Internal Test</title>
+    <link rel="stylesheet" href="../../src/loading-screen.css" />
+    <link rel="stylesheet" href="../../src/play-viewport.css" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="cafe-app">
+      <header class="topbar">
+        <a id="lobbyLink" class="home-link" href="/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
+        <div class="brand"><span>WeightPlay</span><h1 data-ui="title">Animal Cafe Rush</h1></div>
+        <label class="locale"><span data-ui="language">Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option></select></label>
+      </header>
+
+      <section id="menuPanel" class="menu-panel">
+        <img class="cover" src="../../assets/animal-cafe-rush-cover.webp" alt="" />
+        <div class="menu-copy">
+          <span class="eyebrow" data-ui="internal">Internal prototype</span>
+          <h2 data-ui="menuTitle">Serve the animal cafe.</h2>
+          <p data-ui="menuHint">Tap a customer, prepare each pictured order, then tap the ready tray to serve.</p>
+          <div class="profile-grid"><div><span data-ui="day">Day</span><b id="dayText">1</b></div><div><span data-ui="coins">Coins</span><b id="coinText">0</b></div><div><span data-ui="best">Best</span><b id="bestText">0</b></div></div>
+          <section class="upgrade-panel"><div><strong data-ui="upgrades">Cafe upgrades</strong><small data-ui="upgradeHint">Coins make future days friendlier.</small></div><div id="upgradeCards" class="upgrade-cards"></div></section>
+          <button id="startBtn" class="primary-btn" type="button" data-ui="start">Start day</button>
+        </div>
+      </section>
+
+      <section id="playPanel" class="play-panel is-hidden" data-no-mobile-immersive="true">
+        <button id="backToMenuBtn" class="play-return" type="button" aria-label="Back to menu">&larr;</button>
+        <div class="play-hud"><div><span data-ui="day">Day</span><b id="playDay">1</b></div><div><span data-ui="served">Served</span><b id="servedText">0/3</b></div><div><span data-ui="coins">Coins</span><b id="playCoins">0</b></div></div>
+        <div id="objectiveRow" class="objective-row"></div>
+        <div class="cafe-scene"><img class="cafe-bg" src="../../assets/animal-cafe-rush-cafe-bg.webp" alt="" /><div id="customerRow" class="customer-row"></div></div>
+        <div class="prep-row"><div id="stationRow" class="station-row"></div><div id="tray" class="tray" aria-live="polite"></div></div>
+        <div id="playMessage" class="play-message" aria-live="polite"></div>
+      </section>
+      <div id="adReserve" class="ad-reserve" aria-hidden="true"></div>
+      <section id="resultPanel" class="result-panel is-hidden" aria-live="polite"><div class="result-card"><img src="../../assets/animal-cafe-rush-lion-guide.webp" alt="" /><h2 id="resultTitle"></h2><p id="resultText"></p><p id="skillText"></p><div><button id="retryBtn" class="secondary-btn is-hidden" type="button" data-ui="retry">Try again</button><button id="nextBtn" class="primary-btn" type="button" data-ui="next">Next day</button><button id="menuBtn" class="secondary-btn" type="button" data-ui="menu">Menu</button></div></div></section>
+    </main>
+    <script src="../../src/analytics.js"></script>
+    <script src="../../src/edge-guard.js"></script>
+    <script src="game.js"></script>
+  </body>
+</html>
