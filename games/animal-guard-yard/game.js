@@ -43,6 +43,12 @@
       perfectClear: "Perfect Clear!",
       perfectBadge: "Perfect",
       perfectBonus: "Perfect defense bonus +{coins} coins",
+      masteryTitle: "Garden Medals",
+      masteryProgress: "{current}/{total} perfect defenses",
+      masteryNext: "Next reward at {count} medals",
+      masteryComplete: "All garden medals earned!",
+      masteryNewMedal: "New garden medal earned!",
+      masteryMilestone: "Medal milestone +{coins} coins",
       stageCleared: "Cleared",
       stageBest: "Best {score}",
       skillReport: "Skill Report",
@@ -141,6 +147,12 @@
       perfectClear: "\u5b8c\u7f8e\u5b88\u4f4f\uff01",
       perfectBadge: "\u5b8c\u7f8e",
       perfectBonus: "\u5b8c\u7f8e\u9632\u885b\u734e\u52f5 +{coins} \u91d1\u5e63",
+      masteryTitle: "\u5ead\u9662\u52f3\u7ae0",
+      masteryProgress: "{current}/{total} \u679a\u5b8c\u7f8e\u9632\u885b",
+      masteryNext: "\u4e0b\u500b\u734e\u52f5\uff1a{count} \u679a\u52f3\u7ae0",
+      masteryComplete: "\u5df2\u6536\u96c6\u5168\u90e8\u5ead\u9662\u52f3\u7ae0\uff01",
+      masteryNewMedal: "\u7372\u5f97\u65b0\u7684\u5ead\u9662\u52f3\u7ae0\uff01",
+      masteryMilestone: "\u52f3\u7ae0\u91cc\u7a0b\u7891 +{coins} \u91d1\u5e63",
       stageCleared: "\u5df2\u901a\u904e",
       stageBest: "\u6700\u4f73 {score}",
       skillReport: "\u80fd\u529b\u5c0f\u5831\u544a",
@@ -239,6 +251,7 @@
   const diamondIcon = "../../assets/weightplay-diamond.svg?v=20260704-blue-diamond1";
   const heartIcon = "../../assets/weightplay-heart.svg";
   const impactFxAsset = "../../assets/animal-guard-beast-impact-fx.webp";
+  const masteryMilestones = new Map([[3, 30], [6, 55], [8, 90]]);
 
   const projectileAssets = {
     cat: "../../assets/animal-guard-projectile-seed.svg",
@@ -265,6 +278,7 @@
     kennelGrid: $("kennelGrid"),
     shopGrid: $("shopGrid"),
     beastGuide: $("beastGuide"),
+    masterySummary: $("masterySummary"),
     menuTabs: $("menuTabs"),
     menuPanel: $("menuPanel"),
     stageGrid: $("stageGrid"),
@@ -363,6 +377,7 @@
     const stageRecords = typeof previous.stageRecords === "object" && previous.stageRecords ? { ...previous.stageRecords } : {};
     const previousStage = typeof stageRecords[stageKey] === "object" && stageRecords[stageKey] ? stageRecords[stageKey] : {};
     const playedAt = new Date().toISOString();
+    const earnedNewMedal = Boolean(won && perfect && !previousStage.perfect);
     stageRecords[stageKey] = {
       cleared: Boolean(previousStage.cleared || won),
       perfect: Boolean(previousStage.perfect || perfect),
@@ -371,6 +386,11 @@
       plays: (Number(previousStage.plays) || 0) + 1,
       lastPlayedAt: playedAt,
     };
+    const medalCount = Object.values(stageRecords).filter((stageRecord) => stageRecord?.perfect).length;
+    const priorClaims = Array.isArray(previous.masteryMilestones) ? previous.masteryMilestones.map(Number).filter(Number.isFinite) : [];
+    const newMilestones = [...masteryMilestones.keys()].filter((threshold) => medalCount >= threshold && !priorClaims.includes(threshold));
+    const masteryMilestonesClaimed = [...new Set([...priorClaims, ...newMilestones])].sort((a, b) => a - b);
+    const masteryCoins = newMilestones.reduce((total, threshold) => total + (masteryMilestones.get(threshold) || 0), 0);
     const record = {
       lastScore: score,
       bestScore,
@@ -380,13 +400,22 @@
       skillScores,
       stage: currentStage + 1,
       stageRecords,
+      masteryMilestones: masteryMilestonesClaimed,
     };
     try {
       localStorage.setItem(progressKey, JSON.stringify(record));
     } catch {
       // Local progress is optional.
     }
-    return { ...record, previousBest, improved: score > previousBest };
+    return {
+      ...record,
+      previousBest,
+      improved: score > previousBest,
+      medalCount,
+      newMedal: earnedNewMedal,
+      newMilestones,
+      masteryCoins,
+    };
   }
 
   function starRating(value) {
@@ -430,6 +459,25 @@
       stats.appendChild(item);
     });
     nodes.resultText.appendChild(stats);
+
+    const mastery = document.createElement("section");
+    mastery.className = "mastery-result";
+    const masteryTitle = document.createElement("strong");
+    masteryTitle.textContent = t("masteryTitle");
+    const masteryProgress = document.createElement("span");
+    masteryProgress.textContent = t("masteryProgress", { current: progress.medalCount || 0, total: stages.length });
+    mastery.append(masteryTitle, masteryProgress);
+    if (progress.newMedal) {
+      const medalNote = document.createElement("em");
+      medalNote.textContent = t("masteryNewMedal");
+      mastery.appendChild(medalNote);
+    }
+    if (progress.masteryCoins > 0) {
+      const milestoneNote = document.createElement("em");
+      milestoneNote.textContent = t("masteryMilestone", { coins: progress.masteryCoins });
+      mastery.appendChild(milestoneNote);
+    }
+    nodes.resultText.appendChild(mastery);
 
     const report = document.createElement("section");
     report.className = "skill-report";
@@ -515,6 +563,7 @@
     });
     nodes.localeSelect.value = locale;
     renderWallet();
+    renderMasterySummary();
   }
 
   function showFloatingText(message) {
@@ -668,6 +717,19 @@
     if (nodes.diamondText) nodes.diamondText.textContent = readDiamonds();
   }
 
+  function renderMasterySummary() {
+    if (!nodes.masterySummary) return;
+    const progress = loadProgress();
+    const stageRecords = typeof progress.stageRecords === "object" && progress.stageRecords ? progress.stageRecords : {};
+    const medalCount = Object.values(stageRecords).filter((stageRecord) => stageRecord?.perfect).length;
+    const nextMilestone = [...masteryMilestones.keys()].find((threshold) => threshold > medalCount);
+    nodes.masterySummary.innerHTML = `
+      <strong>${t("masteryTitle")}</strong>
+      <span>${t("masteryProgress", { current: medalCount, total: stages.length })}</span>
+      <small>${nextMilestone ? t("masteryNext", { count: nextMilestone }) : t("masteryComplete")}</small>
+    `;
+  }
+
   function animalSprite(unitId) {
     return `
       <span class="animal-sprite ${unitId}" aria-hidden="true">
@@ -770,6 +832,7 @@
       button.classList.toggle("active", button.dataset.menuTab === activeMenuTab);
     });
     renderWallet();
+    renderMasterySummary();
     renderBeastGuide();
     renderStageGrid();
     renderKennel();
@@ -1387,6 +1450,10 @@
     finalScore = (currentStage + 1) * 60 + Math.max(0, baseHp) * 8 + coinsEarned + (won ? 80 : 0);
     const skillScores = buildSkillScores(won, finalScore);
     const progress = saveProgress(finalScore, skillScores, won, perfect);
+    if (progress.masteryCoins > 0) {
+      coinsEarned += progress.masteryCoins;
+      resultMessage = `${resultMessage} ${t("masteryMilestone", { coins: progress.masteryCoins })}`;
+    }
     renderResultReport(resultMessage, progress);
     track(won ? "game_complete" : "game_over", {
       level: currentStage + 1,

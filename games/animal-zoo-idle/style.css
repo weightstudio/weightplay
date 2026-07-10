@@ -1808,12 +1808,12 @@ body.zoo-playing .animal-shop-card small {
 
 @media (max-width: 820px) {
   body.zoo-playing {
-    position: fixed;
-    inset: 0;
-    width: 100vw;
-    height: var(--wp-mobile-vh, 100svh);
-    min-height: 0;
-    max-height: var(--wp-mobile-vh, 100svh);
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100vw !important;
+    height: var(--wp-mobile-vh, 100svh) !important;
+    min-height: 0 !important;
+    max-height: var(--wp-mobile-vh, 100svh) !important;
     overflow: hidden !important;
     overscroll-behavior: none;
     touch-action: none;
