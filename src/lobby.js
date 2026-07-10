@@ -115,11 +115,6 @@ const weightPlayCharacters = [
     skill: "Reaction",
   },
 ];
-const ageFilterGroups = {
-  starter: ["3"],
-  family: ["6", "9", "family"],
-  challenge: ["13"],
-};
 const lobbyGameFacts = {
   "wonder-crash": { difficulty: "Medium", time: "5-8 minutes" },
   "color-lunchbox": { difficulty: "Easy", time: "1-3 minutes" },
@@ -377,8 +372,6 @@ function filterButtonHint(type, value) {
 
 function matchesAgeFilter(ages, filterValue) {
   if (filterValue === "all") return true;
-  const group = ageFilterGroups[filterValue];
-  if (group) return ages.some((age) => group.includes(age));
   return ages.includes(filterValue);
 }
 

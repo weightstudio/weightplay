@@ -67,15 +67,18 @@
     <main class="game-shell">
       <canvas id="game" class="play-area" width="950" height="1688" aria-label="Fantasy Lion Defense game board"></canvas>
 
-      <!-- Battle HUD -->
-      <div id="battleHud" class="hud top-right hidden">
-        <div><span data-i18n="hud_stage">Stage</span> <span id="levelText">1</span></div>
-        <div><span data-i18n="hud_wave">Wave</span> <span id="waveText">1/1</span></div>
-        <div class="coin-line"><img src="../../assets/coin.png" alt="" /> <span id="coinText">0</span></div>
+      <!-- Active battle chrome: return, one primary value, one status row, settings. -->
+      <button id="backToMenuBtn" type="button" class="play-return hidden" aria-label="Back to game menu" data-i18n-aria="menu_title">
+        <img src="assets/weightplay-logo.png" alt="" draggable="false" />
+      </button>
+
+      <div id="battleHud" class="hud battle-hud hidden">
+        <div class="battle-primary"><img src="../../assets/coin.png" alt="" /> <span id="coinText">0</span></div>
+        <div class="battle-status"><span data-i18n="hud_stage">Stage</span> <span id="levelText">1</span><span aria-hidden="true"> · </span><span data-i18n="hud_wave">Wave</span> <span id="waveText">1/1</span></div>
       </div>
 
       <!-- Settings In-game Toggle Button -->
-      <button id="settingsBtn" type="button" class="settings-btn hidden" aria-label="Settings">&#9881;</button>
+      <button id="settingsBtn" type="button" class="settings-btn hidden" aria-label="Settings" data-i18n-aria="menu_settings"><img src="assets/menu-settings.png" alt="" draggable="false" /></button>
 
       <!-- Main Game Overlays / Menus -->
       <div id="overlay" class="overlay">
@@ -86,7 +89,7 @@
         </div>
         <label class="language-picker wonder-language-picker">
           <span data-i18n="language">Language</span>
-          <select id="globalLocaleSelect" aria-label="Language">
+          <select id="globalLocaleSelect" aria-label="Language" data-i18n-aria="language">
             <option value="en">English</option>
             <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
           </select>
@@ -104,7 +107,7 @@
         <div id="pausePanel" class="pause-panel hidden">
           <label class="pause-language-picker">
             <span data-i18n="language">Language</span>
-            <select id="pauseLocaleSelect" class="settings-select" aria-label="Language">
+            <select id="pauseLocaleSelect" class="settings-select" aria-label="Language" data-i18n-aria="language">
               <option value="en">English</option>
               <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
             </select>

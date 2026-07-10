@@ -9,6 +9,11 @@
       "site.kicker": "Kids & Family Games",
       "site.featured": "Featured",
       "filter.all_ages": "All Ages",
+      "filter.age_3": "3+",
+      "filter.age_6": "6+",
+      "filter.age_9": "9+",
+      "filter.age_13": "13+",
+      "filter.age_family": "Family",
       "filter.family": "Family",
       "filter.starter_games": "Starter",
       "filter.family_games": "Family",
@@ -617,6 +622,14 @@
   }
 
   let currentLocale = getSavedLocale();
+
+  Object.assign(dictionaries["zh-Hant"], {
+    "filter.age_3": "3+",
+    "filter.age_6": "6+",
+    "filter.age_9": "9+",
+    "filter.age_13": "13+",
+    "filter.age_family": "\u5bb6\u5ead",
+  });
 
   function interpolate(value, params) {
     return Object.entries(params || {}).reduce((text, [key, replacement]) => {

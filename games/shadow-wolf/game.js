@@ -197,7 +197,7 @@
   const shadowAssetPaths = {
     bg: "../../assets/shadow-wolf-stage-bg.webp",
     wolf: "../../assets/shadow-wolf-hero.webp",
-    enemyWolf: "../../assets/shadow-wolf-enemy-wolf.webp",
+    enemyWolf: "../../assets/shadow-wolf-enemy-wolf.png",
     bat: "../../assets/shadow-wolf-enemy-bat.webp",
     boar: "../../assets/shadow-wolf-enemy-boar.webp",
     boss: "../../assets/shadow-wolf-boss-behemoth.webp",
@@ -431,7 +431,7 @@
   // surface on those visible ledges so the player never has to guess the floor.
   const stageTerrain = Object.freeze([
     { x: 0, y: 370, w: 800, h: 130, kind: "ground" },
-    { x: 0, y: 170, w: 310, h: 24, kind: "ledge" },
+    { x: 0, y: 250, w: 310, h: 24, kind: "ledge" },
     { x: 520, y: 210, w: 280, h: 24, kind: "ledge" },
   ]);
   const mainFloorY = stageTerrain[0].y;
@@ -1148,7 +1148,7 @@
         drawTileCell(ctx, 4, pickup.x - 24, pickup.y - 24, 48, 48);
       } else if (pickup.type === "portal") {
         drawTileCell(ctx, 3, pickup.x - 28, pickup.y - 28, 56, 56);
-        drawImageContain(ctx, assets.portalFx, pickup.x - 30, pickup.y - 30, 60, 60);
+        drawPortal(ctx, pickup.x, pickup.y);
       }
     });
 
@@ -1231,7 +1231,7 @@
       if (state.facing === "left") {
         ax = state.x - 30;
       }
-      drawImageContain(ctx, assets.clawFx, ax - 24, state.y + state.height / 2 - 24, 48, 48, state.facing === "left");
+      drawImageContain(ctx, assets.clawFx, ax - 24, state.y + state.height / 2 - 24, 48, 48, state.facing !== "left");
     }
 
     // 10. Update & Draw sparks particles
@@ -1239,6 +1239,20 @@
   }
 
   // Visual effects
+  function drawPortal(context, x, y) {
+    context.save();
+    context.translate(x, y);
+    for (let ring = 0; ring < 3; ring += 1) {
+      context.strokeStyle = ring === 0 ? "#a855f7" : "#22d3ee";
+      context.globalAlpha = 0.9 - ring * 0.2;
+      context.lineWidth = 5 - ring;
+      context.beginPath();
+      context.ellipse(0, 0, 20 - ring * 5, 29 - ring * 7, 0, 0, Math.PI * 2);
+      context.stroke();
+    }
+    context.restore();
+  }
+
   let sparksList = [];
   function createSlashSparks(x, y, isCrit) {
     const color = isCrit ? "#facc15" : "#22d3ee";

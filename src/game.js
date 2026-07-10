@@ -21,6 +21,7 @@ const upgradeGrid = document.querySelector("#upgradeGrid");
 const profilePanel = document.querySelector("#profilePanel");
 const pausePanel = document.querySelector("#pausePanel");
 const settingsBtn = document.querySelector("#settingsBtn");
+const backToMenuBtn = document.querySelector("#backToMenuBtn");
 const resumeBtn = document.querySelector("#resumeBtn");
 const leaveBtn = document.querySelector("#leaveBtn");
 const pauseLocaleSelect = document.querySelector("#pauseLocaleSelect");
@@ -45,8 +46,12 @@ function t(key, params = {}) {
 
 function translateStaticUI() {
   document.documentElement.lang = locale();
+  document.title = t("browser_title");
   for (const element of document.querySelectorAll("[data-i18n]")) {
     element.textContent = t(element.dataset.i18n);
+  }
+  for (const element of document.querySelectorAll("[data-i18n-aria]")) {
+    element.setAttribute("aria-label", t(element.dataset.i18nAria));
   }
   syncLocaleSelects();
 }
@@ -361,7 +366,15 @@ Object.assign(dictionary["zh-Hant"], {
 
 
 Object.assign(dictionary.en, {
+  browser_title: "Fantasy Lion Defense - WeightPlay",
   weapon_next_tier_preview: "x{lvl} -> x{next}: Damage {dmg} / Cooldown {cd}s / Size {size}",
+});
+
+Object.assign(dictionary["zh-Hant"], {
+  browser_title: "\u5947\u5e7b\u7345\u5b50\u5b88\u57ce - WeightPlay",
+  menu_title: "\u4e3b\u9078\u55ae",
+  menu_settings: "\u8a2d\u5b9a",
+  language: "\u8a9e\u8a00",
 });
 
 Object.assign(dictionary["zh-Hant"], {
@@ -565,6 +578,15 @@ const equipmentPointerDrag = {
   ghost: null,
 };
 
+// Keep browser-facing and control labels readable even while older combat-copy
+// migrations are still being completed.
+Object.assign(dictionary["zh-Hant"], {
+  browser_title: "\u5947\u5e7b\u7345\u5b50\u5b88\u57ce - WeightPlay",
+  menu_title: "\u4e3b\u9078\u55ae",
+  menu_settings: "\u8a2d\u5b9a",
+  language: "\u8a9e\u8a00",
+});
+
 const drag = {
   active: false,
   pointerId: null,
@@ -683,7 +705,9 @@ function startLevel(levelIndex) {
   }
   state = makeState(levelIndex);
   state.running = true;
+  document.body.classList.add("wonder-playing");
   document.body.classList.add("wonder-tutorial-hidden");
+  backToMenuBtn.classList.remove("hidden");
   settingsBtn.classList.remove("hidden");
   battleHud.classList.remove("hidden");
   menuCoinLine.classList.add("hidden");
@@ -794,6 +818,7 @@ profilePanel.addEventListener("pointermove", moveEquipmentPointerDrag);
 profilePanel.addEventListener("pointerup", finishEquipmentPointerDrag);
 profilePanel.addEventListener("pointercancel", cancelEquipmentPointerDrag);
 settingsBtn.addEventListener("click", showPauseMenu);
+backToMenuBtn.addEventListener("click", leaveBattle);
 resumeBtn.addEventListener("click", resumeBattle);
 leaveBtn.addEventListener("click", leaveBattle);
 weaponModalClose.addEventListener("click", closeWeaponModal);
@@ -1815,9 +1840,11 @@ function showMainMenu(tab = activeMenuTab) {
   state.won = false;
   state.gameOver = false;
   state.awaitingUpgrade = false;
+  document.body.classList.remove("wonder-playing");
   document.body.classList.remove("wonder-tutorial-hidden");
   overlay.classList.remove("settlement-screen");
   settingsBtn.classList.add("hidden");
+  backToMenuBtn.classList.add("hidden");
   battleHud.classList.add("hidden");
   menuCoinLine.classList.remove("hidden");
   overlay.querySelector("h1").textContent = t("game_title");
@@ -2046,7 +2073,9 @@ function chooseUpgrade(id) {
   upgradeGrid.classList.add("hidden");
   overlay.classList.add("hidden");
   state.running = true;
+  document.body.classList.add("wonder-playing");
   document.body.classList.add("wonder-tutorial-hidden");
+  backToMenuBtn.classList.remove("hidden");
   settingsBtn.classList.remove("hidden");
   battleHud.classList.remove("hidden");
   menuCoinLine.classList.add("hidden");
@@ -2058,6 +2087,7 @@ function showPauseMenu() {
   overlay.classList.remove("equipment-screen", "settlement-screen");
   state.running = false;
   document.body.classList.add("wonder-tutorial-hidden");
+  backToMenuBtn.classList.add("hidden");
   settingsBtn.classList.add("hidden");
   battleHud.classList.add("hidden");
   menuCoinLine.classList.add("hidden");
@@ -2077,6 +2107,8 @@ function resumeBattle() {
   pausePanel.classList.add("hidden");
   overlay.classList.add("hidden");
   document.body.classList.add("wonder-tutorial-hidden");
+  document.body.classList.add("wonder-playing");
+  backToMenuBtn.classList.remove("hidden");
   settingsBtn.classList.remove("hidden");
   battleHud.classList.remove("hidden");
   menuCoinLine.classList.add("hidden");
