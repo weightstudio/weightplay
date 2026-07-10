@@ -62,7 +62,7 @@ body.is-bakery-playing .bakery-game {
   max-height: var(--wp-mobile-vh, 100svh);
   overflow: hidden;
   align-content: stretch;
-  grid-template-rows: auto minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr) 56px;
   padding-bottom: calc(12px + env(safe-area-inset-bottom));
 }
 
@@ -70,15 +70,17 @@ body.is-bakery-playing .topbar {
   display: none;
 }
 
+body.is-bakery-stage-select .topbar,
+body.is-bakery-stage-select .game-page-info,
+body.is-bakery-playing .game-page-info {
+  display: none !important;
+}
+
 body.is-bakery-playing .play-panel {
   height: 100%;
   max-height: 100%;
   align-self: stretch;
   overflow: hidden;
-}
-
-body.is-bakery-playing .game-page-info {
-  display: none !important;
 }
 
 .topbar {
@@ -102,6 +104,19 @@ body.is-bakery-playing .game-page-info {
   box-shadow: 0 7px 0 #9d5626, 0 12px 20px rgba(86, 45, 20, 0.22);
   font-weight: 950;
   text-decoration: none;
+}
+
+.home-link {
+  grid-template-columns: auto 1fr;
+  gap: 2px;
+  padding: 5px;
+  font-size: 1.2rem;
+}
+
+.home-link img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
 }
 
 .title-block p,
@@ -138,10 +153,38 @@ body.is-bakery-playing .game-page-info {
   font-weight: 900;
 }
 
-.menu-panel,
+.main-panel,
+.stage-panel,
 .play-panel {
   display: grid;
   gap: 12px;
+}
+
+.stage-panel {
+  width: min(100%, 720px);
+  margin: 0 auto;
+}
+
+.stage-panel-head {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+}
+
+.stage-panel-head strong {
+  font-size: clamp(1.2rem, 3vw, 1.65rem);
+}
+
+.stage-back {
+  min-height: 44px;
+  border: 0;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.9);
+  color: #4a2918;
+  box-shadow: 0 7px 0 #9d5626, 0 12px 20px rgba(86, 45, 20, 0.18);
+  font-size: 1.4rem;
+  font-weight: 950;
 }
 
 .play-panel {
@@ -191,6 +234,17 @@ body.is-bakery-playing .game-page-info {
 .hint-text {
   color: rgba(74, 41, 24, 0.72);
   font-weight: 900;
+}
+
+.main-start {
+  min-height: 54px;
+  border: 0;
+  border-radius: 16px;
+  background: linear-gradient(180deg, #fff8d8, #ffba58);
+  color: #4a2918;
+  box-shadow: 0 8px 0 #9d5626, 0 14px 22px rgba(86, 45, 20, 0.2);
+  font-weight: 950;
+  font-size: 1rem;
 }
 
 .coach-card {
@@ -376,32 +430,15 @@ body.is-bakery-playing .game-page-info {
 
 .stage-grid {
   display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: minmax(190px, 30%);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 10px;
-  overflow-x: auto;
-  overflow-y: hidden;
-  padding: 0 2px 12px;
-  scroll-snap-type: x mandatory;
-  scroll-padding-inline: 16px;
-  scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
-  cursor: grab;
-  touch-action: pan-x pinch-zoom;
-  overscroll-behavior-inline: contain;
-}
-
-.stage-grid.is-dragging {
-  cursor: grabbing;
-  scroll-snap-type: none;
-}
-
-.stage-grid::-webkit-scrollbar {
-  display: none;
+  padding: 2px;
+  overflow-x: clip !important;
+  overflow-y: visible;
 }
 
 .stage-card {
-  min-height: 112px;
+  min-height: 136px;
   border: 0;
   border-radius: 18px;
   padding: 12px;
@@ -412,8 +449,7 @@ body.is-bakery-playing .game-page-info {
   color: #4a2918;
   box-shadow: 0 8px 0 #a95f2b, 0 14px 22px rgba(86, 45, 20, 0.16);
   font-weight: 950;
-  scroll-snap-align: center;
-  touch-action: pan-x pinch-zoom;
+  touch-action: manipulation;
 }
 
 .stage-card b {
@@ -475,14 +511,13 @@ body.is-bakery-playing .game-page-info {
 .play-head {
   grid-area: head;
   display: grid;
-  grid-template-columns: clamp(34px, 5vw, 46px) minmax(0, 1fr) clamp(34px, 5vw, 46px);
+  grid-template-columns: clamp(54px, 8vw, 68px) minmax(0, 1fr);
   gap: clamp(5px, 0.8vw, 8px);
   align-items: center;
   min-height: 0;
 }
 
-.play-return,
-.play-settings {
+.play-return {
   width: 100%;
   height: 100%;
   min-height: 0;
@@ -502,16 +537,26 @@ body.is-bakery-playing .game-page-info {
   object-fit: contain;
 }
 
-.play-settings img {
-  width: min(100%, 25px);
-  height: min(100%, 25px);
-  object-fit: contain;
+.play-return {
+  grid-template-columns: auto 1fr;
+  gap: 1px;
+  color: #4a2918;
+  font-size: 0.86rem;
+  font-weight: 950;
 }
 
-.play-return:focus-visible,
-.play-settings:focus-visible {
+.play-return:focus-visible {
   outline: 3px solid #ffe37a;
   outline-offset: 2px;
+}
+
+.battle-ad-reserve {
+  width: min(100%, 640px);
+  height: 56px;
+  margin: 0 auto;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.18);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.32);
 }
 
 .hud-pill {
@@ -1008,10 +1053,36 @@ body.is-bakery-playing .game-page-info {
   }
 
   .stage-grid {
-    grid-auto-columns: minmax(214px, 78%);
-    margin-inline: -8px;
-    padding-inline: 8px;
-    scroll-padding-inline: 42px;
+    gap: 7px;
+  }
+
+  .stage-card {
+    min-height: 124px;
+    padding: 8px;
+    gap: 4px;
+  }
+
+  .stage-card b {
+    font-size: 1.18rem;
+  }
+
+  .stage-card strong {
+    font-size: 0.72rem;
+  }
+
+  .stage-card small {
+    min-height: 2.3em;
+    font-size: 0.58rem;
+  }
+
+  .stage-icons img {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  .stage-stars,
+  .stage-badge {
+    font-size: 0.56rem;
   }
 
   .coach-card {
@@ -1147,7 +1218,7 @@ body.is-bakery-playing .game-page-info {
 
   body.is-bakery-playing .bakery-game {
     display: grid;
-    grid-template-rows: minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr) 56px;
     width: 100vw;
     height: var(--wp-mobile-vh, 100svh);
     min-height: var(--wp-mobile-vh, 100svh);
@@ -1165,8 +1236,8 @@ body.is-bakery-playing .game-page-info {
     gap: 6px;
     width: calc(100vw - 20px) !important;
     max-width: calc(100vw - 20px) !important;
-    height: calc(var(--wp-mobile-vh, 100svh) - 12px - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
-    max-height: calc(var(--wp-mobile-vh, 100svh) - 12px - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
+    height: 100% !important;
+    max-height: 100% !important;
     min-height: 0;
     margin: 0 auto !important;
     padding: 7px;
@@ -1180,12 +1251,11 @@ body.is-bakery-playing .game-page-info {
   }
 
   body.is-bakery-playing .play-head {
-    grid-template-columns: 36px minmax(0, 1fr) 36px;
+    grid-template-columns: 50px minmax(0, 1fr);
     min-height: 0;
   }
 
   body.is-bakery-playing .play-return,
-  body.is-bakery-playing .play-settings,
   body.is-bakery-playing .hud-pill {
     min-height: 36px;
     padding: 4px 6px;
@@ -1195,11 +1265,6 @@ body.is-bakery-playing .game-page-info {
   body.is-bakery-playing .play-return img {
     width: 25px;
     height: 25px;
-  }
-
-  body.is-bakery-playing .play-settings img {
-    width: 22px;
-    height: 22px;
   }
 
   body.is-bakery-playing .order-bar {

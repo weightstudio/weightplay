@@ -6,7 +6,7 @@
     <meta name="robots" content="noindex,nofollow" />
     <title>Shadow Wolf Legend Internal Test | WeightPlay</title>
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
-    <link rel="stylesheet" href="style.css?v=20260710-shadow-wolf-desktop-fix9" />
+    <link rel="stylesheet" href="style.css?v=20260710-shadow-wolf-worldmap2" />
   </head>
   <body>
     <header class="top-nav">
@@ -45,14 +45,6 @@
             </div>
             <h2 class="menu-title" data-ui="menuTitle">Dungeon Platform Adventure.</h2>
             <p class="menu-hint" data-ui="menuHint"></p>
-            <section class="stage-select" aria-label="關卡選擇">
-              <div class="stage-select-heading"><strong>選擇關卡</strong><span id="stageSelectionLabel">關卡 1：月影遺跡</span></div>
-              <div class="stage-grid" role="group" aria-label="選擇欲挑戰的關卡">
-                <button class="stage-card is-selected" type="button" data-stage="1"><b>01</b><span>月影遺跡</span><small>巡邏影狼</small></button>
-                <button class="stage-card" type="button" data-stage="2"><b>02</b><span>水晶斷橋</span><small>飛蝠與戰豬</small></button>
-                <button class="stage-card" type="button" data-stage="3"><b>03</b><span>古獸祭壇</span><small>首領戰</small></button>
-              </div>
-            </section>
             <div class="desktop-controls" aria-label="Desktop controls"><span><kbd>A</kbd><kbd>D</kbd> Move</span><span><kbd>W</kbd><kbd>Space</kbd> Jump</span><span><kbd>J</kbd> Attack</span><span><kbd>K</kbd><kbd>Shift</kbd> Dash</span></div>
             <div class="goals-card">
               <h3 data-ui="prototypeGoalsTitle">Prototype test goals</h3>
@@ -82,6 +74,14 @@
             </div>
           </aside>
         </div>
+      </section>
+
+      <section id="mapPanel" class="panel world-map-panel hidden" aria-label="探索地圖">
+        <div class="world-map-heading"><span>影狼遠征</span><h2>選擇探索區域</h2><p>目前等級 Lv.<strong id="mapLevel">1</strong></p></div>
+        <div class="world-map-grid">
+          <button type="button" class="zone-node" data-zone="1"><b>01</b><span>月影入口</span><small>巡邏狼群</small></button><button type="button" class="zone-node" data-zone="2"><b>02</b><span>苔石斷崖</span><small>高台伏擊</small></button><button type="button" class="zone-node" data-zone="3"><b>03</b><span>螢晶洞口</span><small>水晶尖刺</small></button><button type="button" class="zone-node" data-zone="4"><b>04</b><span>暮影橋頭</span><small>飛蝠群</small></button><button type="button" class="zone-node" data-zone="5"><b>05</b><span>藤蔓回廊</span><small>雙重陷阱</small></button><button type="button" class="zone-node" data-zone="6"><b>06</b><span>古樹祭階</span><small>戰豬守衛</small></button><button type="button" class="zone-node" data-zone="7"><b>07</b><span>裂谷深處</span><small>精英狩獵</small></button><button type="button" class="zone-node boss-zone" data-zone="8"><b>08</b><span>古獸祭壇</span><small>首領戰</small></button>
+        </div>
+        <button id="mapBackBtn" type="button" class="secondary-btn">返回</button>
       </section>
 
       <section class="desktop-only-notice" aria-live="polite">
@@ -120,19 +120,17 @@
             </div>
           </div>
 
-          <aside class="inventory-sidebar">
-            <div class="sidebar-section-heading"><h2 data-ui="sidebarInventory">Equipped Gear</h2><span>背包</span></div>
-            <div class="backpack-grid" aria-label="已穿戴裝備背包">
-              <div id="weaponSlot" class="gear-slot"><div class="gear-icon"><img id="eqWeaponIcon" alt="" /></div><div class="gear-copy"><span data-ui="slotWeapon">WEAPON</span><strong id="eqWeaponName">尚未裝備</strong><small id="eqWeaponEffect"></small></div></div>
-              <div id="armorSlot" class="gear-slot"><div class="gear-icon"><img id="eqArmorIcon" alt="" /></div><div class="gear-copy"><span data-ui="slotArmor">ARMOR</span><strong id="eqArmorName">尚未裝備</strong><small id="eqArmorEffect"></small></div></div>
-              <div id="bootsSlot" class="gear-slot"><div class="gear-icon"><img id="eqBootsIcon" alt="" /></div><div class="gear-copy"><span data-ui="slotBoots">BOOTS</span><strong id="eqBootsName">尚未裝備</strong><small id="eqBootsEffect"></small></div></div>
+          <aside class="inventory-sidebar attribute-sidebar">
+            <div class="sidebar-section-heading"><h2>角色養成</h2><span>可用點數 <strong id="attrPoints">0</strong></span></div>
+            <div class="attribute-list">
+              <div class="attribute-row"><div><b>力</b><span>力量</span><small>傷害</small></div><strong id="attrStrength">0</strong><button type="button" data-attribute="strength">+</button></div>
+              <div class="attribute-row"><div><b>敏</b><span>敏捷</span><small>攻速、閃避</small></div><strong id="attrAgility">0</strong><button type="button" data-attribute="agility">+</button></div>
+              <div class="attribute-row"><div><b>體</b><span>體質</span><small>生命、防禦</small></div><strong id="attrConstitution">0</strong><button type="button" data-attribute="constitution">+</button></div>
+              <div class="attribute-row"><div><b>幸</b><span>幸運</span><small>爆擊、經驗</small></div><strong id="attrLuck">0</strong><button type="button" data-attribute="luck">+</button></div>
             </div>
-            <div class="sidebar-section-heading"><h2 data-ui="sidebarStats">Character Stats</h2><span>狀態</span></div>
+            <div class="sidebar-section-heading"><h2>戰鬥數值</h2><span>即時</span></div>
             <div class="stats-grid">
-              <div class="stat-card"><span>傷害</span><strong id="statDmg">0</strong><small>DMG</small></div>
-              <div class="stat-card"><span>速度</span><strong id="statSpeed">0</strong><small>SPD</small></div>
-              <div class="stat-card"><span>跳躍</span><strong id="statJump">0</strong><small>JMP</small></div>
-              <div class="stat-card"><span>暴擊</span><strong id="statCrit">0%</strong><small>CRIT</small></div>
+              <div class="stat-card"><span>傷害</span><strong id="statDmg">0</strong><small>DMG</small></div><div class="stat-card"><span>速度</span><strong id="statSpeed">0</strong><small>SPD</small></div><div class="stat-card"><span>生命</span><strong id="statJump">0</strong><small>HP</small></div><div class="stat-card"><span>暴擊</span><strong id="statCrit">0%</strong><small>CRIT</small></div>
             </div>
           </aside>
         </div>
@@ -177,6 +175,6 @@
     <script src="../../src/sound.js?v=20260701-labels1"></script>
     <script src="../../src/i18n.js?v=20260703-i18n-clean1"></script>
     <script src="../../src/wallet.js?v=20260706-crystal-diamond-charm1"></script>
-    <script src="game.js?v=20260710-shadow-wolf-desktop-fix9"></script>
+    <script src="game.js?v=20260710-shadow-wolf-worldmap2"></script>
   </body>
 </html>

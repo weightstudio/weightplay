@@ -64,7 +64,10 @@
   <body>
     <main class="bakery-game">
       <header class="topbar">
-        <a class="home-link" href="/" aria-label="Back to lobby">&larr;</a>
+        <a class="home-link" href="/" aria-label="Back to lobby">
+          <span aria-hidden="true">&larr;</span>
+          <img src="../../assets/weightplay-logo.png" alt="" draggable="false" />
+        </a>
         <div class="title-block">
           <p>WeightPlay</p>
           <h1 data-ui="gameTitle">Bubble Bakery</h1>
@@ -78,10 +81,10 @@
         </label>
       </header>
 
-      <section id="menuPanel" class="menu-panel">
+      <section id="mainPanel" class="main-panel">
         <img class="cover" src="../../assets/bubble-bakery-cover.webp" data-fallback-src="../../assets/bubble-bakery-cover.png" alt="" />
         <div class="menu-copy">
-          <strong data-ui="chooseStage">Choose Stage</strong>
+          <strong data-ui="gameTitle">Animal Bubble Bakery</strong>
           <span data-ui="menuHint">Tap matching bubbles to fill bakery orders.</span>
         </div>
         <section class="coach-card" aria-label="Bakery coach">
@@ -91,6 +94,14 @@
             <span data-ui="coachTip">Plan the biggest matching group first, then save moves for the glowing order bubbles.</span>
           </div>
         </section>
+        <button id="startGameBtn" class="main-start" type="button" data-ui="startGame">Start Game</button>
+      </section>
+
+      <section id="stagePanel" class="stage-panel hidden">
+        <div class="stage-panel-head">
+          <button id="stageBackBtn" class="stage-back" type="button" aria-label="Back" data-ui-aria-label="back">&larr;</button>
+          <strong data-ui="chooseStage">Choose Stage</strong>
+        </div>
         <section id="recommendedOrder" class="recommend-card" aria-live="polite"></section>
         <div id="bakeryProgress" class="bakery-progress" aria-live="polite"></div>
         <div id="stageGrid" class="stage-grid" aria-label="Stage list"></div>
@@ -99,16 +110,17 @@
       <section id="playPanel" class="play-panel hidden" data-play-viewport data-no-mobile-immersive="true">
         <div class="play-head">
           <button id="backToStagesBtn" class="play-return" type="button" aria-label="Back to stages" data-ui-aria-label="stages">
+            <span aria-hidden="true">&larr;</span>
             <img src="../../assets/weightplay-logo.png" alt="" draggable="false" />
             <span class="sr-only" data-ui="stages">Stages</span>
           </button>
           <div class="hud-pill"><span data-ui="moves">Moves</span><b id="movesText">0</b></div>
-          <button id="pauseBtn" class="play-settings" type="button" aria-label="Open stages" data-ui-aria-label="stages"><img src="../../assets/menu-settings.png" alt="" draggable="false" /></button>
         </div>
         <div id="orderBar" class="order-bar" aria-label="Bakery orders"></div>
         <div id="board" class="bubble-board" aria-label="Bubble board"></div>
         <div id="hintText" class="hint-text" aria-live="polite"></div>
       </section>
+      <div id="battleAdReserve" class="battle-ad-reserve hidden" aria-hidden="true"></div>
 
       <div id="resultPanel" class="result-panel hidden">
         <div class="result-card">

@@ -7,6 +7,9 @@
   const nodes = {
     localeSelect: $("localeSelect"),
     menuPanel: $("menuPanel"),
+    mapPanel: $("mapPanel"),
+    mapBackBtn: $("mapBackBtn"),
+    mapLevel: $("mapLevel"),
     gamePanel: $("gamePanel"),
     draftPanel: $("draftPanel"),
     lootPanel: $("lootPanel"),
@@ -43,6 +46,11 @@
     statSpeed: $("statSpeed"),
     statJump: $("statJump"),
     statCrit: $("statCrit"),
+    attrPoints: $("attrPoints"),
+    attrStrength: $("attrStrength"),
+    attrAgility: $("attrAgility"),
+    attrConstitution: $("attrConstitution"),
+    attrLuck: $("attrLuck"),
     draftCards: $("draftCards"),
     lootIcon: $("lootIcon"),
     lootName: $("lootName"),
@@ -63,8 +71,8 @@
     amuletBtn: $("amuletBtn"),
     amuletCost: $("amuletCost"),
     amuletStatus: $("amuletStatus"),
-    stageSelectionLabel: $("stageSelectionLabel"),
-    stageButtons: Array.from(document.querySelectorAll("[data-stage]")),
+    zoneButtons: Array.from(document.querySelectorAll("[data-zone]")),
+    attributeButtons: Array.from(document.querySelectorAll("[data-attribute]")),
   };
 
   const amuletCost = 15;
@@ -271,6 +279,12 @@
     baseSpeed: 3.5,
     baseJump: 10.5,
     baseCrit: 0.05,
+    attributePoints: 0,
+    strength: 0,
+    agility: 0,
+    constitution: 0,
+    luck: 0,
+    zone: 1,
 
     // Relic buff counts
     relicAtkCount: 0,
@@ -360,69 +374,39 @@
     }
   }
 
-  // Calculate actual stats based on levels, relics, and equipment
+  // Attributes drive the entire progression system; there is no gear layer.
   function getStats() {
-    let dmg = state.baseDmg + (state.relicAtkCount * 3);
-    let speed = state.baseSpeed;
-    let jump = state.baseJump + (state.relicJumpCount * 0.8);
-    let crit = state.baseCrit;
-
-    // Apply weapon
-    if (state.eqWeapon) {
-      const g = gearDb[state.eqWeapon];
-      if (g.bonusDmg) dmg += g.bonusDmg;
-      if (g.bonusCrit) crit += g.bonusCrit;
-    }
-
-    // Apply boots
-    if (state.eqBoots) {
-      const g = gearDb[state.eqBoots];
-      if (g.bonusJump) jump += g.bonusJump;
-      if (g.bonusSpeed) speed += g.bonusSpeed;
-    }
-
-    // Apply max HP
-    let maxHp = (state.amuletUnlocked ? 40 : 30) + (state.relicHpCount * 5);
-    if (state.eqArmor) {
-      const g = gearDb[state.eqArmor];
-      if (g.bonusHp) maxHp += g.bonusHp;
-    }
-
-    return { dmg, speed, jump, crit, maxHp };
+    return {
+      dmg: state.baseDmg + state.strength * 2,
+      speed: state.baseSpeed + state.agility * 0.12,
+      jump: state.baseJump + state.agility * 0.08,
+      crit: Math.min(0.7, state.baseCrit + state.luck * 0.012),
+      maxHp: (state.amuletUnlocked ? 40 : 30) + state.constitution * 8,
+      defense: state.constitution * 0.55,
+      dodge: Math.min(0.35, state.agility * 0.012),
+      expBonus: 1 + state.luck * 0.08,
+      attackFrames: Math.max(7, 18 - state.agility),
+    };
   }
 
   function renderStatsPanel() {
     const stats = getStats();
     nodes.statDmg.textContent = stats.dmg.toFixed(0);
     nodes.statSpeed.textContent = stats.speed.toFixed(1);
-    nodes.statJump.textContent = stats.jump.toFixed(1);
+    nodes.statJump.textContent = stats.maxHp.toFixed(0);
     nodes.statCrit.textContent = `${Math.round(stats.crit * 100)}%`;
+    nodes.attrPoints.textContent = state.attributePoints;
+    nodes.attrStrength.textContent = state.strength;
+    nodes.attrAgility.textContent = state.agility;
+    nodes.attrConstitution.textContent = state.constitution;
+    nodes.attrLuck.textContent = state.luck;
 
     nodes.hpText.textContent = `${Math.ceil(state.playerHp)}/${stats.maxHp}`;
     nodes.hpFill.style.width = `${(state.playerHp / stats.maxHp) * 100}%`;
   }
 
   function renderEquippedGear() {
-    const renderSlot = (itemId, slot, icon, name, effect) => {
-      const gear = itemId ? gearDb[itemId] : null;
-      slot.classList.toggle("has-item", Boolean(gear));
-      icon.hidden = !gear;
-      icon.removeAttribute("src");
-      if (gear) {
-        icon.src = gear.iconSrc;
-        icon.alt = t(gear.nameKey);
-        name.textContent = t(gear.nameKey);
-        effect.textContent = t(gear.effectKey);
-        effect.style.display = "block";
-      } else {
-        name.textContent = "尚未裝備";
-        effect.style.display = "none";
-      }
-    };
-
-    renderSlot(state.eqWeapon, nodes.weaponSlot, nodes.eqWeaponIcon, nodes.eqWeaponName, nodes.eqWeaponEffect);
-    renderSlot(state.eqArmor, nodes.armorSlot, nodes.eqArmorIcon, nodes.eqArmorName, nodes.eqArmorEffect);
-    renderSlot(state.eqBoots, nodes.bootsSlot, nodes.eqBootsIcon, nodes.eqBootsName, nodes.eqBootsEffect);
+    // Kept as a harmless compatibility hook for saved sessions from the old gear build.
   }
 
   // The background contains three readable stone surfaces. Keep every collision
@@ -433,6 +417,17 @@
     { x: 520, y: 210, w: 280, h: 24, kind: "ledge" },
   ]);
   const mainFloorY = stageTerrain[0].y;
+
+  const zoneObstacleLayouts = {
+    1: [{ x: 180, y: 302, w: 118 }, { x: 498, y: 286, w: 92 }],
+    2: [{ x: 110, y: 310, w: 92 }, { x: 380, y: 270, w: 126 }, { x: 645, y: 310, w: 82 }],
+    3: [{ x: 260, y: 315, w: 92 }, { x: 520, y: 250, w: 116 }],
+    4: [{ x: 170, y: 270, w: 104, moving: true, minX: 110, maxX: 330, speed: 0.8 }, { x: 570, y: 300, w: 96 }],
+    5: [{ x: 90, y: 285, w: 116 }, { x: 350, y: 325, w: 78, moving: true, minX: 310, maxX: 500, speed: 1.05 }, { x: 620, y: 258, w: 105 }],
+    6: [{ x: 240, y: 292, w: 150 }, { x: 540, y: 320, w: 104 }],
+    7: [{ x: 135, y: 315, w: 82, moving: true, minX: 80, maxX: 260, speed: 1.2 }, { x: 390, y: 255, w: 116 }, { x: 650, y: 298, w: 80 }],
+    8: [{ x: 220, y: 315, w: 105 }, { x: 470, y: 315, w: 105 }],
+  };
 
   function addBackgroundAlignedTerrain(spike) {
     platforms.push(...stageTerrain.map((platform) => ({ ...platform })));
@@ -449,9 +444,9 @@
     state.pickups = [];
 
     const room = state.room;
-    if (room === 1) {
+    if (room === 1 || room === 4 || room === 7) {
       // Room 1: the hazard sits visibly on the main stone path, never below it.
-      addBackgroundAlignedTerrain({ x: 350, y: mainFloorY - 25, w: 100, h: 25 });
+      addBackgroundAlignedTerrain({ x: room === 4 ? 235 : room === 7 ? 470 : 350, y: mainFloorY - 25, w: room === 7 ? 150 : 100, h: 25 });
 
       // Spawns
       state.enemies.push({ x: 250, y: mainFloorY - 24, width: 24, height: 24, hp: 12, maxHp: 12, speed: 1.0, type: "wolf", bounds: { min: 80, max: 330 }, isElite: false });
@@ -462,9 +457,9 @@
 
       state.x = 80;
       state.y = mainFloorY - state.height;
-    } else if (room === 2) {
+    } else if (room === 2 || room === 5) {
       // Room 2 reuses the same illustrated ruins, with a smaller visible hazard.
-      addBackgroundAlignedTerrain({ x: 320, y: mainFloorY - 25, w: 85, h: 25 });
+      addBackgroundAlignedTerrain({ x: room === 5 ? 470 : 320, y: mainFloorY - 25, w: room === 5 ? 125 : 85, h: 25 });
 
       // Spawns (Bats shoot projectiles)
       state.enemies.push({ x: 280, y: 140, width: 24, height: 24, hp: 15, maxHp: 15, type: "bat", shootCooldown: 60 });
@@ -475,7 +470,7 @@
 
       state.x = 60;
       state.y = mainFloorY - state.height;
-    } else {
+    } else if (room === 8) {
       // Room 3: Flat arena boss chamber
       addBackgroundAlignedTerrain();
 
@@ -484,21 +479,21 @@
 
       state.x = 80;
       state.y = mainFloorY - state.height;
+    } else {
+      addBackgroundAlignedTerrain({ x: 430, y: mainFloorY - 25, w: 140, h: 25 });
+      state.enemies.push({ x: 210, y: mainFloorY - 24, width: 26, height: 26, hp: 30, maxHp: 30, speed: 1.35, type: "wolf", bounds: { min: 80, max: 350 }, isElite: false });
+      state.enemies.push({ x: 610, y: 176, width: 34, height: 34, hp: 65, maxHp: 65, speed: 1.35, type: "boar", bounds: { min: 530, max: 770 }, isElite: true });
+      state.x = 80;
+      state.y = mainFloorY - state.height;
     }
-  }
 
-  // Active game start trigger
-  function selectStage(room) {
-    selectedStage = room;
-    nodes.stageSelectionLabel.textContent = `關卡 ${room}：${stageNames[room]}`;
-    nodes.stageButtons.forEach((button) => {
-      const isSelected = Number(button.dataset.stage) === room;
-      button.classList.toggle("is-selected", isSelected);
-      button.setAttribute("aria-pressed", String(isSelected));
+    (zoneObstacleLayouts[room] || []).forEach((obstacle) => {
+      platforms.push({ ...obstacle, h: 22, kind: "generated", dir: 1 });
     });
   }
 
-  function startRun(startRoom = selectedStage) {
+  // Active game start trigger
+  function startRun(startRoom = state.zone) {
     loadLocalState();
     const stats = getStats();
     state.playerMaxHp = stats.maxHp;
@@ -529,6 +524,7 @@
     buildRoomGeometry();
 
     nodes.menuPanel.classList.add("hidden");
+    nodes.mapPanel.classList.add("hidden");
     nodes.resultPanel.classList.add("hidden");
     nodes.gamePanel.classList.remove("hidden");
 
@@ -544,8 +540,8 @@
   }
 
   function updateHUDText() {
-    nodes.roomText.textContent = `${state.room}/3`;
-    nodes.keyText.textContent = state.keys;
+    nodes.roomText.textContent = `${state.room}/8`;
+    nodes.keyText.textContent = state.attributePoints;
     nodes.levelVal.textContent = state.level;
     nodes.expText.textContent = `${state.exp}/${state.expNeed}`;
     nodes.expFill.style.width = `${(state.exp / state.expNeed) * 100}%`;
@@ -569,11 +565,11 @@
 
   function makePlayerAttack() {
     if (state.attackTimer > 0) return;
-    state.attackTimer = 18; // Slash duration frames
+    const stats = getStats();
+    state.attackTimer = stats.attackFrames;
     window.WonderSound?.play("shoot");
 
     // Attack collision sweeps forward
-    const stats = getStats();
     const slashRange = 124;
     const slashWidth = 90;
     
@@ -654,55 +650,20 @@
   function handleLevelUp() {
     state.level++;
     state.exp -= state.expNeed;
-    state.expNeed = Math.floor(state.expNeed * 1.35);
+    state.expNeed = Math.floor(90 * Math.pow(state.level, 1.55));
+    state.attributePoints += 2;
     window.WonderSound?.play("success");
-
-    // Pause physics
-    state.gameActive = false;
-
-    // Pick 3 relics
-    const pool = ["relic_fang", "relic_fur", "relic_boots"];
-    shuffle(pool);
-
-    nodes.draftCards.innerHTML = "";
-    pool.forEach((relicId) => {
-      const cardEl = document.createElement("button");
-      cardEl.className = "draft-item-btn";
-      cardEl.type = "button";
-      const iconHtml = assetImg(relicIconMap[relicId], t(relicId));
-
-      cardEl.innerHTML = `
-        <div class="draft-item-icon">${iconHtml}</div>
-        <strong class="draft-item-name">${t(relicId)}</strong>
-        <p class="draft-item-desc">${t(`${relicId}_desc`)}</p>
-      `;
-
-      cardEl.addEventListener("click", () => {
-        applyRelic(relicId);
-        nodes.draftPanel.classList.add("hidden");
-        // Resume
-        state.gameActive = true;
-        renderStatsPanel();
-        updateHUDText();
-        state.gameLoopId = requestAnimationFrame(updateGameEngine);
-      });
-
-      nodes.draftCards.appendChild(cardEl);
-    });
-
-    nodes.draftPanel.classList.remove("hidden");
+    renderStatsPanel();
+    updateHUDText();
   }
 
-  function applyRelic(relicId) {
-    if (relicId === "relic_fang") {
-      state.relicAtkCount++;
-    } else if (relicId === "relic_fur") {
-      state.relicHpCount++;
-      const stats = getStats();
-      state.playerHp = Math.min(stats.maxHp, state.playerHp + 5);
-    } else if (relicId === "relic_boots") {
-      state.relicJumpCount++;
-    }
+  function spendAttribute(attribute) {
+    if (state.attributePoints < 1 || !Object.hasOwn(state, attribute)) return;
+    state.attributePoints--;
+    state[attribute]++;
+    const stats = getStats();
+    state.playerHp = Math.min(stats.maxHp, state.playerHp + (attribute === "constitution" ? 8 : 0));
+    renderStatsPanel();
   }
 
   // Chest looting modal
@@ -829,6 +790,12 @@
 
     state.vx = moveDir * curSpeed;
 
+    platforms.forEach((platform) => {
+      if (!platform.moving) return;
+      platform.x += platform.speed * platform.dir;
+      if (platform.x <= platform.minX || platform.x + platform.w >= platform.maxX) platform.dir *= -1;
+    });
+
     // Apply Gravity AABB physics
     const gravityForce = 0.45;
     state.vy += gravityForce;
@@ -921,29 +888,20 @@
           });
         }
       } else if (enemy.type === "boss") {
-        // Boss AI: Charge & Projectiles
+        // Boss continuously tracks the player; never teleports or turns its back.
+        enemy.facing = state.x < enemy.x ? "left" : "right";
+        const desiredX = state.x + (enemy.facing === "left" ? 92 : -92);
+        const deltaX = desiredX - enemy.x;
+        if (Math.abs(deltaX) > 10) enemy.x += Math.sign(deltaX) * Math.min(enemy.speed * 0.55, Math.abs(deltaX));
+        enemy.x = Math.max(20, Math.min(670, enemy.x));
         enemy.shootCooldown--;
         if (enemy.shootCooldown <= 0) {
           enemy.shootCooldown = 90 + Math.random() * 40;
-          // Charge at player or shoot 3-way bullets
-          if (Math.random() > 0.4) {
-            enemy.dir = state.x < enemy.x ? -1 : 1;
-            enemy.x += enemy.speed * 12 * enemy.dir;
-            enemy.x = Math.max(20, Math.min(720, enemy.x));
-            window.WonderSound?.play("shoot");
-          } else {
-            // Shoot bullets
-            const baseAngle = Math.atan2((state.y + state.height / 2) - enemy.y, (state.x + state.width / 2) - enemy.x);
-            for (let aOffset of [-0.3, 0, 0.3]) {
-              state.bullets.push({
-                x: enemy.x + enemy.width / 2,
-                y: enemy.y + enemy.height / 2,
-                vx: Math.cos(baseAngle + aOffset) * 4.5,
-                vy: Math.sin(baseAngle + aOffset) * 4.5,
-                size: 6,
-              });
-            }
+          const baseAngle = Math.atan2((state.y + state.height / 2) - enemy.y, (state.x + state.width / 2) - enemy.x);
+          for (let aOffset of [-0.22, 0, 0.22]) {
+            state.bullets.push({ x: enemy.x + enemy.width / 2, y: enemy.y + enemy.height / 2, vx: Math.cos(baseAngle + aOffset) * 4.2, vy: Math.sin(baseAngle + aOffset) * 4.2, size: 6 });
           }
+          window.WonderSound?.play("shoot");
         }
 
         // Boss contact dmg
@@ -1013,7 +971,7 @@
 
       if (dist < 20) {
         state.orbs.splice(index, 1);
-        state.exp += orb.value;
+        state.exp += Math.ceil(orb.value * getStats().expBonus);
         window.WonderSound?.play("coin");
         updateHUDText();
 
@@ -1036,19 +994,13 @@
           window.WonderSound?.play("success");
           updateHUDText();
 
-          // Keep rewards on the visible right-hand stone ledge.
-          state.pickups.push({ x: 620, y: 184, type: "chest" });
+          // Elite seals now open the next route directly; no gear chest system.
+          state.exp += Math.ceil(35 * getStats().expBonus);
           state.pickups.push({ x: 740, y: 184, type: "portal" });
-        } else if (pickup.type === "chest") {
-          if (state.keys > 0) {
-            state.keys--;
-            state.pickups.splice(index, 1);
-            updateHUDText();
-            triggerChestLoot();
-          }
         } else if (pickup.type === "portal") {
           state.pickups.splice(index, 1);
-          enterNextRoom();
+          if (state.room >= 8) endGame(true);
+          else enterNextRoom();
         }
       }
     });
@@ -1061,7 +1013,9 @@
 
   function applyPlayerDamage(amt) {
     if (state.invincibilityTimer > 0) return;
-    state.playerHp = Math.max(0, state.playerHp - amt);
+    const stats = getStats();
+    if (Math.random() < stats.dodge) return;
+    state.playerHp = Math.max(0, state.playerHp - Math.max(0.5, amt - stats.defense));
     renderStatsPanel();
 
     if (state.playerHp <= 0) {
@@ -1132,6 +1086,24 @@
   }
 
   function drawMossPlatform(ctx, plat) {
+    if (plat.kind === "generated") {
+      ctx.save();
+      const stone = ctx.createLinearGradient(plat.x, plat.y, plat.x, plat.y + plat.h);
+      stone.addColorStop(0, "#b8d58a");
+      stone.addColorStop(0.18, "#5d824a");
+      stone.addColorStop(0.22, "#526b4b");
+      stone.addColorStop(1, "#263c39");
+      ctx.fillStyle = stone;
+      ctx.shadowColor = "rgba(0, 0, 0, 0.55)";
+      ctx.shadowBlur = 7;
+      ctx.fillRect(plat.x, plat.y, plat.w, plat.h);
+      ctx.strokeStyle = "rgba(220, 255, 175, 0.62)";
+      ctx.strokeRect(plat.x + .5, plat.y + .5, plat.w - 1, plat.h - 1);
+      ctx.fillStyle = "rgba(20, 40, 32, 0.8)";
+      for (let x = plat.x + 8; x < plat.x + plat.w; x += 18) ctx.fillRect(x, plat.y + 10, 2, 9);
+      ctx.restore();
+      return;
+    }
     // The illustrated ruins already contain the production platform art. This
     // restrained edge is only a collision cue, preventing a second mismatched
     // tile layer from covering the scene or suggesting a false floor.
@@ -1165,18 +1137,29 @@
       drawMossPlatform(ctx, plat);
     });
 
-    // 3. Draw spike hazard triangles
-    ctx.fillStyle = "#ef4444";
+    // 3. Draw crystalline thorn hazards instead of flat red triangles.
     spikesList.forEach((spike) => {
       const step = 20;
       const count = Math.ceil(spike.w / step);
       for (let i = 0; i < count; i++) {
+        const x = spike.x + i * step;
+        const gradient = ctx.createLinearGradient(x, spike.y, x, spike.y + spike.h);
+        gradient.addColorStop(0, "#fef3c7");
+        gradient.addColorStop(0.3, "#fb7185");
+        gradient.addColorStop(1, "#7f1d1d");
+        ctx.fillStyle = gradient;
+        ctx.strokeStyle = "rgba(255, 228, 230, 0.72)";
+        ctx.lineWidth = 1;
+        ctx.shadowColor = "rgba(244, 63, 94, 0.72)";
+        ctx.shadowBlur = 6;
         ctx.beginPath();
-        ctx.moveTo(spike.x + i * step, spike.y + spike.h);
-        ctx.lineTo(spike.x + (i + 0.5) * step, spike.y);
-        ctx.lineTo(spike.x + (i + 1) * step, spike.y + spike.h);
+        ctx.moveTo(x, spike.y + spike.h);
+        ctx.lineTo(x + step * 0.5, spike.y);
+        ctx.lineTo(x + step, spike.y + spike.h);
         ctx.fill();
+        ctx.stroke();
       }
+      ctx.shadowBlur = 0;
     });
 
     // 4. Draw pickups (key, chest, portal)
@@ -1212,7 +1195,7 @@
     state.enemies.forEach((enemy) => {
       ctx.save();
       // Face direction logic
-      if (enemy.bounds && enemy.bounds.dir === -1) {
+      if ((enemy.bounds && enemy.bounds.dir === -1) || enemy.facing === "left") {
         ctx.translate(enemy.x + enemy.width, enemy.y);
         ctx.scale(-1, 1);
       } else {
@@ -1220,12 +1203,14 @@
       }
 
       if (enemy.type === "boss") {
+        drawEnemyFallback(ctx, enemy);
         ctx.globalCompositeOperation = "screen";
         const drewBoss = drawImageContain(ctx, assets.boss, -12, -62, enemy.width + 24, enemy.height + 62);
         ctx.globalCompositeOperation = "source-over";
         if (!drewBoss) drawEnemyFallback(ctx, enemy);
       } else {
         const sprite = enemy.type === "boar" ? assets.boar : enemy.type === "wolf" ? assets.enemyWolf : assets.bat;
+        drawEnemyFallback(ctx, enemy);
         ctx.globalCompositeOperation = "screen";
         const drewEnemy = drawImageContain(ctx, sprite, -22, -enemy.height * 1.25, enemy.width + 44, enemy.height + 60);
         ctx.globalCompositeOperation = "source-over";
@@ -1265,16 +1250,32 @@
     ctx.restore();
 
     // 9. Draw Slash Swipe overlay
-    if (state.attackTimer > 0) {
-      let ax = state.x + state.width + 10;
-      if (state.facing === "left") {
-        ax = state.x - 30;
-      }
-      drawImageContain(ctx, assets.clawFx, ax - 24, state.y + state.height / 2 - 24, 48, 48, state.facing !== "left");
-    }
+    if (state.attackTimer > 0) drawClawArc(ctx);
 
     // 10. Update & Draw sparks particles
     updateSparksParticles(ctx);
+  }
+
+  function drawClawArc(ctx) {
+    const direction = state.facing === "left" ? -1 : 1;
+    const originX = state.x + (direction > 0 ? state.width + 8 : -8);
+    const originY = state.y + 18;
+    const progress = 1 - state.attackTimer / getStats().attackFrames;
+    ctx.save();
+    ctx.translate(originX, originY);
+    ctx.scale(direction, 1);
+    ctx.lineCap = "round";
+    ctx.globalAlpha = 0.95 - progress * 0.45;
+    for (let line = 0; line < 3; line++) {
+      ctx.beginPath();
+      ctx.strokeStyle = line === 1 ? "#d8fbff" : "#26e7ff";
+      ctx.lineWidth = 3 - line * 0.45;
+      ctx.shadowColor = "#06b6d4";
+      ctx.shadowBlur = 10;
+      ctx.arc(8 + line * 7, 2, 24 + line * 5, -1.25 + progress * 0.4, 0.55 + progress * 0.4);
+      ctx.stroke();
+    }
+    ctx.restore();
   }
 
   // Visual effects
@@ -1400,16 +1401,23 @@
 
     nodes.startBtn.addEventListener("click", () => {
       window.WonderSound?.play("click");
-      startRun();
+      nodes.menuPanel.classList.add("hidden");
+      nodes.mapPanel.classList.remove("hidden");
+      nodes.mapLevel.textContent = state.level;
     });
 
-    nodes.stageButtons.forEach((button) => {
+    nodes.zoneButtons.forEach((button) => {
       button.addEventListener("click", () => {
         window.WonderSound?.play("click");
-        selectStage(Number(button.dataset.stage));
+        state.zone = Number(button.dataset.zone);
+        startRun(state.zone);
       });
     });
-    selectStage(selectedStage);
+    nodes.mapBackBtn.addEventListener("click", () => {
+      nodes.mapPanel.classList.add("hidden");
+      nodes.menuPanel.classList.remove("hidden");
+    });
+    nodes.attributeButtons.forEach((button) => button.addEventListener("click", () => spendAttribute(button.dataset.attribute)));
 
     nodes.retryBtn.addEventListener("click", () => {
       window.WonderSound?.play("click");
@@ -1421,6 +1429,7 @@
       state.gameActive = false;
       cancelAnimationFrame(state.gameLoopId);
       nodes.gamePanel.classList.add("hidden");
+      nodes.mapPanel.classList.add("hidden");
       nodes.menuPanel.classList.remove("hidden");
       updateDiamondShopUI();
     });

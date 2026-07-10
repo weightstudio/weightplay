@@ -52,6 +52,12 @@ body.fruit-playing .topbar {
   display: none;
 }
 
+/* Active play must never leave the start overlay over the game controls. */
+body.fruit-playing #menuPanel {
+  display: none !important;
+  pointer-events: none;
+}
+
 .topbar {
   display: grid;
   grid-template-columns: 44px minmax(0, 1fr) minmax(132px, 170px);
@@ -168,7 +174,7 @@ body.fruit-playing .topbar {
   grid-area: score;
   min-height: 0;
   display: grid;
-  grid-template-columns: 1fr 1fr 0.82fr;
+  grid-template-columns: 1fr 1fr 0.78fr 0.52fr;
   gap: clamp(5px, 0.85vw, 8px);
 }
 
@@ -783,7 +789,7 @@ body.fruit-playing .topbar {
   }
 
   .scorebar {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 36px;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 0.76fr) 36px;
     gap: 4px;
   }
 
@@ -792,13 +798,13 @@ body.fruit-playing .topbar {
     padding: 3px 5px;
   }
 
-  .scorebar div:nth-child(3) {
+  .scorebar div:nth-child(4) {
     padding: 2px;
     display: grid;
     place-items: center;
   }
 
-  .scorebar div:nth-child(3) span {
+  .scorebar div:nth-child(4) span {
     display: none;
   }
 

@@ -128,6 +128,20 @@ body {
   margin: 0 auto;
 }
 
+.world-map-panel { max-width: 980px; margin: 0 auto; padding: 28px; border: 1px solid rgba(103,232,249,.25); border-radius: 8px; background: #091827 url("../../assets/shadow-wolf-stage-bg.webp") center / cover; box-shadow: inset 0 0 0 999px rgba(5,13,25,.72); }
+.world-map-heading { text-align: center; margin-bottom: 22px; }
+.world-map-heading > span { color: var(--accent-cyan); font-weight: 800; }
+.world-map-heading h2 { margin: 6px 0; font-size: 1.8rem; }
+.world-map-heading p { color: var(--text-muted); }
+.world-map-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+.zone-node { min-height: 130px; padding: 14px; border: 1px solid rgba(186,230,253,.3); border-radius: 8px; background: rgba(6,20,34,.86); color: #fff; text-align: left; cursor: pointer; }
+.zone-node:hover { border-color: var(--accent-cyan); background: rgba(8,65,86,.9); transform: translateY(-2px); }
+.zone-node b,.zone-node span,.zone-node small { display:block; }.zone-node b{color:#67e8f9}.zone-node span{font-weight:800;margin:10px 0 4px}.zone-node small{color:#cbd5e1}.boss-zone{border-color:#c084fc}.world-map-panel .secondary-btn{margin-top:18px;width:auto}
+.attribute-list { display:grid; gap:8px; }
+.attribute-row { display:grid; grid-template-columns:minmax(0,1fr) 34px 34px; align-items:center; gap:8px; padding:9px; border:1px solid rgba(148,163,184,.22); border-radius:8px; background:rgba(5,16,29,.68); }
+.attribute-row div { display:grid; grid-template-columns:28px 1fr; column-gap:7px; align-items:center; }.attribute-row b{grid-row:span 2; display:grid; place-items:center; width:28px;height:28px;border-radius:6px;background:#164e63;color:#a5f3fc}.attribute-row span{font-weight:800}.attribute-row small{color:var(--text-muted);font-size:.68rem}.attribute-row strong{text-align:center}.attribute-row button{width:30px;height:30px;border:0;border-radius:6px;background:#0891b2;color:#fff;font-size:1.2rem;cursor:pointer}.attribute-row button:disabled{opacity:.35}
+@media(max-width:800px){.world-map-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
 .menu-layout {
   display: grid;
   grid-template-columns: 1.2fr 0.8fr;

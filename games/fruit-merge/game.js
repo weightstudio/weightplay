@@ -10,9 +10,12 @@
   const languageLabel = document.querySelector("#languageLabel");
   const scoreLabel = document.querySelector("#scoreLabel");
   const bestLabel = document.querySelector("#bestLabel");
+  const comboLabel = document.querySelector("#comboLabel");
   const nextLabel = document.querySelector("#nextLabel");
   const scoreText = document.querySelector("#scoreText");
   const bestText = document.querySelector("#bestText");
+  const comboBox = document.querySelector("#comboBox");
+  const comboText = document.querySelector("#comboText");
   const nextFruitText = document.querySelector("#nextFruitText");
   const largestLabel = document.querySelector("#largestLabel");
   const largestFruitText = document.querySelector("#largestFruitText");
@@ -231,6 +234,7 @@
   let mergeCount = 0;
   let comboCount = 0;
   let comboUntil = 0;
+  let comboHudTimer = null;
   let bestScore = Number(localStorage.getItem(BEST_KEY) || 0);
   let running = false;
   let gameOver = false;
@@ -257,10 +261,12 @@
 
   function applyText() {
     document.documentElement.lang = locale();
+    document.title = `${t("title")} - WeightPlay`;
     titleText.textContent = t("title");
     languageLabel.textContent = t("language");
     scoreLabel.textContent = t("score");
     bestLabel.textContent = t("best");
+    comboLabel.textContent = t("comboLabel");
     nextLabel.textContent = t("next");
     restartBtn.textContent = t("restart");
     menuTitle.textContent = t("menuTitle");
@@ -315,6 +321,7 @@
     mergeCount = 0;
     comboCount = 0;
     comboUntil = 0;
+    window.clearTimeout(comboHudTimer);
     fruitId = 1;
     running = !showMenu;
     gameOver = false;
@@ -351,7 +358,8 @@
 
   function updateComboHud() {
     const active = running && !gameOver && comboCount > 1 && performance.now() <= comboUntil;
-    // Combo multipliers remain part of scoring; the compact mobile HUD does not show a separate combo card.
+    comboText.textContent = active ? t("comboStatus", { count: comboCount }) : t("comboReady");
+    comboBox.classList.toggle("active", active);
   }
 
   function dropFruit() {
@@ -517,6 +525,8 @@
     const multiplier = Math.min(5, comboCount);
     score += baseScore * multiplier;
     if (multiplier > 1) showToast(t("combo", { count: multiplier }));
+    window.clearTimeout(comboHudTimer);
+    comboHudTimer = window.setTimeout(updateHud, Math.max(0, comboUntil - performance.now()) + 20);
     updateComboHud();
   }
 
