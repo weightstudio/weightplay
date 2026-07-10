@@ -8,6 +8,51 @@
   touch-action: manipulation;
 }
 
+@media (max-width: 560px) and (pointer: coarse) {
+  body.zoo-playing .habitat-grid {
+    display: block;
+    overflow-y: auto;
+    padding-bottom: calc(110px + env(safe-area-inset-bottom));
+    touch-action: pan-y;
+  }
+
+  body.zoo-playing .zoo-stage-card {
+    display: grid;
+    grid-template-rows: auto auto auto auto;
+    gap: 8px;
+  }
+
+  body.zoo-playing .savanna-stage {
+    width: min(100%, 358px) !important;
+    height: auto !important;
+    min-height: 0 !important;
+    aspect-ratio: 1 / 1 !important;
+    margin: 0 auto;
+  }
+
+  body.zoo-playing .care-panel,
+  body.zoo-playing .happy-meter,
+  body.zoo-playing .zoo-actions {
+    position: static !important;
+    inset: auto !important;
+    width: 100% !important;
+    margin: 0 !important;
+  }
+
+  body.zoo-playing .care-panel {
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  body.zoo-playing .happy-meter {
+    order: 3;
+  }
+
+  body.zoo-playing .zoo-actions {
+    order: 4;
+  }
+}
+
 * {
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
@@ -2073,4 +2118,42 @@ body.zoo-playing .animal-shop-card small {
   body.zoo-playing .zoo-task i {
     grid-column: 1 / -1;
   }
+}
+
+/* Keep the park management loop focused: collect, care, upgrade, and recruit. */
+body.zoo-playing .daily-focus-card,
+body.zoo-playing .zoo-task-board,
+body.zoo-playing .park-plan-card,
+body.zoo-playing .tour-board,
+body.zoo-playing .habitat-bonus-card,
+body.zoo-playing .facility-board,
+body.zoo-playing .zoo-milestone-board {
+  display: none !important;
+}
+
+body.zoo-playing .care-panel {
+  display: grid;
+  gap: 10px;
+}
+
+body.zoo-playing .happy-meter {
+  order: 1;
+}
+
+body.zoo-playing .zoo-actions {
+  order: 2;
+}
+
+body.zoo-playing .next-goal-card {
+  order: 3;
+  min-height: 58px;
+}
+
+body.zoo-playing .animal-shop-head {
+  order: 4;
+  margin-top: 4px;
+}
+
+body.zoo-playing .animal-shop {
+  order: 5;
 }

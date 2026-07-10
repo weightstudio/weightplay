@@ -4,6 +4,7 @@
   const localeKey = "weightPlayLocale";
   const amuletCost = 15;
   const packCost = 80;
+  const maxGearRank = 3;
   const maxEquippedCards = 6;
   const maxMission = 8;
 
@@ -106,7 +107,7 @@
       packResultCardEquipped: "New card: {card}. Added to Battle Deck.",
       packResultGear: "New equipment: {gear}.",
       packResultGearEquipped: "New equipment: {gear}. Equipped now.",
-      packDuplicate: "Duplicate upgraded: {name}.",
+      packDuplicate: "{name} upgraded to Rank {rank}/{maxRank}.",
       deckBuildTitle: "Battle Deck",
       collectionOwnedTitle: "Owned Cards",
       equipmentTitle: "Equipment",
@@ -117,6 +118,10 @@
       gearEquipped: "Equipped",
       gearEquip: "Equip",
       gearNone: "No equipment yet",
+      gearRank: "Rank {rank}/{maxRank}",
+      gearStatHp: "+{amount} Max HP",
+      gearStatEnergy: "+{amount} Energy each battle",
+      gearStatBlock: "Start each battle with {amount} Block",
       stageSelectTitle: "Choose a Mission",
       stageSelectHint: "Swipe or drag missions. The center card is selected; press Start below to enter.",
       lockedMission: "Locked",
@@ -231,7 +236,7 @@
       packResultCardEquipped: "獲得卡牌：{card}，已加入出戰牌組。",
       packResultGear: "獲得裝備：{gear}。",
       packResultGearEquipped: "獲得裝備：{gear}，已自動裝備。",
-      packDuplicate: "重複裝備強化：{name}。",
+      packDuplicate: "{name} 強化至 {rank}/{maxRank} 階。",
       deckBuildTitle: "出戰牌組",
       collectionOwnedTitle: "持有卡牌",
       equipmentTitle: "裝備",
@@ -242,6 +247,10 @@
       gearEquipped: "已裝備",
       gearEquip: "裝備",
       gearNone: "尚未持有裝備",
+      gearRank: "{rank}/{maxRank} 階",
+      gearStatHp: "生命上限 +{amount}",
+      gearStatEnergy: "每場戰鬥能量 +{amount}",
+      gearStatBlock: "每場開始獲得 {amount} 點格擋",
       stageSelectTitle: "選擇任務",
       stageSelectHint: "左右滑動任務列。中間卡片就是選定任務，再按下方開始。",
       lockedMission: "未解鎖",
@@ -361,9 +370,9 @@
   };
 
   const gearDb = {
-    "mist-cloak": { nameKey: "gear_mist_cloak", descKey: "gear_mist_cloak_desc", image: "animal-relic-hunters-skill-shield-heart.webp", hp: 6 },
-    "hunter-charm": { nameKey: "gear_hunter_charm", descKey: "gear_hunter_charm_desc", image: "animal-crystal-survivor-upgrade-cooldown.png", energy: 1 },
-    "forest-banner": { nameKey: "gear_forest_banner", descKey: "gear_forest_banner_desc", image: "animal-crystal-survivor-upgrade-attack.png", block: 4 },
+    "mist-cloak": { nameKey: "gear_mist_cloak", descKey: "gear_mist_cloak_desc", statKey: "gearStatHp", image: "animal-relic-hunters-skill-shield-heart.webp", hp: 6 },
+    "hunter-charm": { nameKey: "gear_hunter_charm", descKey: "gear_hunter_charm_desc", statKey: "gearStatEnergy", image: "animal-crystal-survivor-upgrade-cooldown.png", energy: 1 },
+    "forest-banner": { nameKey: "gear_forest_banner", descKey: "gear_forest_banner_desc", statKey: "gearStatBlock", image: "animal-crystal-survivor-upgrade-attack.png", block: 4 },
   };
 
   const enemyCatalog = {
@@ -546,6 +555,27 @@
     return t(gearDb[gearId]?.nameKey || gearId);
   }
 
+  function gearRank(gearId) {
+    return clamp(profile.gear[gearId] || 0, 0, maxGearRank);
+  }
+
+  function gearBonus(gearId) {
+    const gear = gearDb[gearId] || {};
+    const rank = gearRank(gearId);
+    return {
+      hp: (gear.hp || 0) * rank,
+      energy: (gear.energy || 0) * rank,
+      block: (gear.block || 0) * rank,
+    };
+  }
+
+  function gearBonusText(gearId) {
+    const gear = gearDb[gearId] || {};
+    const bonus = gearBonus(gearId);
+    const amount = bonus.hp || bonus.energy || bonus.block || 0;
+    return t(gear.statKey, { amount });
+  }
+
   function equippedCardCount(cardId) {
     return profile.equippedCards.filter((id) => id === cardId).length;
   }
@@ -628,7 +658,7 @@
       button.innerHTML = `
         <img src="${asset(gear.image)}" alt="">
         <strong>${gearName(gearId)}</strong>
-        <small>${t(gear.descKey)}</small>
+        <small>${t("gearRank", { rank: gearRank(gearId), maxRank: maxGearRank })} · ${gearBonusText(gearId)}</small>
         <span>${profile.equippedGear === gearId ? t("gearEquipped") : t("gearEquip")}</span>
       `;
       button.addEventListener("click", () => {
@@ -648,13 +678,13 @@
       return;
     }
     profile.coins -= packCost;
+    const upgradeableGear = Object.keys(gearDb).filter((gearId) => gearRank(gearId) < maxGearRank);
     const roll = Math.random();
-    if (roll < 0.72) {
+    if (roll < 0.72 || !upgradeableGear.length) {
       const pool = Object.keys(cardDb);
       awardPackCard(pool[Math.floor(Math.random() * pool.length)]);
     } else {
-      const pool = Object.keys(gearDb);
-      awardPackGear(pool[Math.floor(Math.random() * pool.length)]);
+      awardPackGear(upgradeableGear[Math.floor(Math.random() * upgradeableGear.length)]);
     }
     saveLocalState();
     renderCollectionUI();
@@ -676,7 +706,7 @@
     const shouldEquip = !profile.equippedGear;
     if (shouldEquip) profile.equippedGear = gearId;
     if (profile.gear[gearId] > 1) {
-      nodes.packStatus.textContent = t("packDuplicate", { name: gearName(gearId) });
+      nodes.packStatus.textContent = t("packDuplicate", { name: gearName(gearId), rank: gearRank(gearId), maxRank: maxGearRank });
     } else {
       nodes.packStatus.textContent = shouldEquip
         ? t("packResultGearEquipped", { gear: gearName(gearId) })
@@ -744,7 +774,7 @@
       const missionLabel = t("missionLabel", { mission: profile.selectedMission });
       const xp = getMission(profile.selectedMission).xp;
       const coins = missionCoinReward(profile.selectedMission);
-      const gear = profile.equippedGear ? gearName(profile.equippedGear) : t("noGear");
+      const gear = profile.equippedGear ? `${gearName(profile.equippedGear)} ${t("gearRank", { rank: gearRank(profile.equippedGear), maxRank: maxGearRank })}` : t("noGear");
       nodes.selectedMissionSummary.innerHTML = `
         <span>${t("selectedMissionTitle")}</span>
         <strong>${missionLabel}: ${missionTitle(profile.selectedMission)}</strong>
@@ -1195,9 +1225,9 @@
   }
 
   function resetRunState() {
-    const gear = gearDb[profile.equippedGear] || {};
-    const maxHp = 30 + levelHpBonus() + (profile.amuletUnlocked ? 10 : 0) + (gear.hp || 0);
-    const maxEnergy = 3 + (gear.energy || 0);
+    const gear = gearBonus(profile.equippedGear);
+    const maxHp = 30 + levelHpBonus() + (profile.amuletUnlocked ? 10 : 0) + gear.hp;
+    const maxEnergy = 3 + gear.energy;
     state = {
       playerMaxHp: maxHp,
       playerHp: maxHp,
@@ -1211,7 +1241,7 @@
       hand: [],
       energy: maxEnergy,
       maxEnergy,
-      gearBlock: gear.block || 0,
+      gearBlock: gear.block,
       gearBlockAppliedThisBattle: false,
       enemy: null,
       enemyHp: 0,
@@ -1281,6 +1311,19 @@
           packStatus: nodes.packStatus?.textContent || "",
           equippedText: nodes.deckSlots?.textContent || "",
           selectedSummaryText: nodes.selectedMissionSummary?.textContent || "",
+        };
+      },
+      forceDrawGearPack: (gearId = "hunter-charm") => {
+        profile.coins = Math.max(profile.coins, packCost);
+        profile.coins -= packCost;
+        awardPackGear(gearId);
+        saveLocalState();
+        renderCollectionUI();
+        return {
+          profile: normalizeProfile(profile),
+          packStatus: nodes.packStatus?.textContent || "",
+          gearText: nodes.gearGrid?.textContent || "",
+          bonus: gearBonus(gearId),
         };
       },
       forceEnemyBlock: (amount = 9) => {
