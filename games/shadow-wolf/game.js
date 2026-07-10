@@ -427,6 +427,20 @@
     }
   }
 
+  // The background contains three readable stone surfaces. Keep every collision
+  // surface on those visible ledges so the player never has to guess the floor.
+  const stageTerrain = Object.freeze([
+    { x: 0, y: 370, w: 800, h: 130, kind: "ground" },
+    { x: 0, y: 170, w: 310, h: 24, kind: "ledge" },
+    { x: 520, y: 210, w: 280, h: 24, kind: "ledge" },
+  ]);
+  const mainFloorY = stageTerrain[0].y;
+
+  function addBackgroundAlignedTerrain(spike) {
+    platforms.push(...stageTerrain.map((platform) => ({ ...platform })));
+    if (spike) spikesList.push(spike);
+  }
+
   // Setup platform configurations per room
   function buildRoomGeometry() {
     platforms = [];
@@ -438,54 +452,40 @@
 
     const room = state.room;
     if (room === 1) {
-      // Room 1: Forest Platform tutorial
-      platforms.push({ x: 0, y: 440, w: 250, h: 60 });
-      platforms.push({ x: 320, y: 380, w: 180, h: 20 });
-      platforms.push({ x: 580, y: 320, w: 220, h: 180 });
-      platforms.push({ x: 100, y: 220, w: 120, h: 20 });
-
-      // Spikes pit in middle gap
-      spikesList.push({ x: 250, y: 475, w: 330, h: 25 });
+      // Room 1: the hazard sits visibly on the main stone path, never below it.
+      addBackgroundAlignedTerrain({ x: 350, y: mainFloorY - 25, w: 100, h: 25 });
 
       // Spawns
-      state.enemies.push({ x: 380, y: 340, width: 24, height: 24, hp: 12, maxHp: 12, speed: 1.0, type: "wolf", bounds: { min: 320, max: 480 }, isElite: false });
-      state.enemies.push({ x: 140, y: 180, width: 24, height: 24, hp: 12, maxHp: 12, speed: 1.0, type: "wolf", bounds: { min: 100, max: 200 }, isElite: false });
+      state.enemies.push({ x: 250, y: mainFloorY - 24, width: 24, height: 24, hp: 12, maxHp: 12, speed: 1.0, type: "wolf", bounds: { min: 80, max: 330 }, isElite: false });
+      state.enemies.push({ x: 150, y: 146, width: 24, height: 24, hp: 12, maxHp: 12, speed: 1.0, type: "wolf", bounds: { min: 60, max: 280 }, isElite: false });
       
       // Elite drops Key
-      state.enemies.push({ x: 680, y: 280, width: 32, height: 32, hp: 40, maxHp: 40, speed: 1.5, type: "wolf", bounds: { min: 580, max: 760 }, isElite: true });
+      state.enemies.push({ x: 680, y: 178, width: 32, height: 32, hp: 40, maxHp: 40, speed: 1.5, type: "wolf", bounds: { min: 550, max: 770 }, isElite: true });
 
       state.x = 80;
-      state.y = 350;
+      state.y = mainFloorY - state.height;
     } else if (room === 2) {
-      // Room 2: Floating stones and Spikes Cave
-      platforms.push({ x: 0, y: 440, w: 150, h: 60 });
-      platforms.push({ x: 220, y: 360, w: 120, h: 20 });
-      platforms.push({ x: 420, y: 280, w: 120, h: 20 });
-      platforms.push({ x: 220, y: 200, w: 120, h: 20 });
-      platforms.push({ x: 600, y: 240, w: 200, h: 260 });
-
-      spikesList.push({ x: 150, y: 475, w: 450, h: 25 });
+      // Room 2 reuses the same illustrated ruins, with a smaller visible hazard.
+      addBackgroundAlignedTerrain({ x: 320, y: mainFloorY - 25, w: 85, h: 25 });
 
       // Spawns (Bats shoot projectiles)
       state.enemies.push({ x: 280, y: 140, width: 24, height: 24, hp: 15, maxHp: 15, type: "bat", shootCooldown: 60 });
-      state.enemies.push({ x: 480, y: 220, width: 24, height: 24, hp: 15, maxHp: 15, type: "bat", shootCooldown: 100 });
+      state.enemies.push({ x: 480, y: 205, width: 24, height: 24, hp: 15, maxHp: 15, type: "bat", shootCooldown: 100 });
       
       // Elite Boar
-      state.enemies.push({ x: 680, y: 200, width: 34, height: 34, hp: 80, maxHp: 80, speed: 1.2, type: "boar", bounds: { min: 600, max: 760 }, isElite: true });
+      state.enemies.push({ x: 680, y: 176, width: 34, height: 34, hp: 80, maxHp: 80, speed: 1.2, type: "boar", bounds: { min: 550, max: 770 }, isElite: true });
 
       state.x = 60;
-      state.y = 350;
+      state.y = mainFloorY - state.height;
     } else {
       // Room 3: Flat arena boss chamber
-      platforms.push({ x: 0, y: 440, w: 800, h: 60 });
-      platforms.push({ x: 120, y: 300, w: 150, h: 20 });
-      platforms.push({ x: 530, y: 300, w: 150, h: 20 });
+      addBackgroundAlignedTerrain();
 
       // Giant Boss Behemoth
-      state.enemies.push({ x: 600, y: 360, width: 64, height: 64, hp: 300, maxHp: 300, speed: 2.2, type: "boss", dir: -1, isElite: true, shootCooldown: 90 });
+      state.enemies.push({ x: 600, y: mainFloorY - 64, width: 64, height: 64, hp: 300, maxHp: 300, speed: 2.2, type: "boss", dir: -1, isElite: true, shootCooldown: 90 });
 
       state.x = 80;
-      state.y = 350;
+      state.y = mainFloorY - state.height;
     }
   }
 
@@ -1027,9 +1027,9 @@
           window.WonderSound?.play("success");
           updateHUDText();
 
-          // Spawn Chest and Portal
-          state.pickups.push({ x: 620, y: state.room === 1 ? 290 : 210, type: "chest" });
-          state.pickups.push({ x: 740, y: state.room === 1 ? 290 : 210, type: "portal" });
+          // Keep rewards on the visible right-hand stone ledge.
+          state.pickups.push({ x: 620, y: 184, type: "chest" });
+          state.pickups.push({ x: 740, y: 184, type: "portal" });
         } else if (pickup.type === "chest") {
           if (state.keys > 0) {
             state.keys--;
@@ -1093,12 +1093,19 @@
   }
 
   function drawMossPlatform(ctx, plat) {
-    if (drawTileCell(ctx, 0, plat.x, plat.y - 8, plat.w, plat.h + 8)) return;
-    ctx.fillStyle = "#1e293b";
-    ctx.strokeStyle = "#475569";
-    ctx.lineWidth = 3;
-    ctx.fillRect(plat.x, plat.y, plat.w, plat.h);
-    ctx.strokeRect(plat.x, plat.y, plat.w, plat.h);
+    // The illustrated ruins already contain the production platform art. This
+    // restrained edge is only a collision cue, preventing a second mismatched
+    // tile layer from covering the scene or suggesting a false floor.
+    ctx.save();
+    ctx.strokeStyle = plat.kind === "ground" ? "rgba(225, 255, 184, 0.28)" : "rgba(231, 255, 196, 0.44)";
+    ctx.shadowColor = "rgba(9, 36, 23, 0.7)";
+    ctx.shadowBlur = 4;
+    ctx.lineWidth = plat.kind === "ground" ? 2 : 2.5;
+    ctx.beginPath();
+    ctx.moveTo(plat.x, plat.y + 0.5);
+    ctx.lineTo(plat.x + plat.w, plat.y + 0.5);
+    ctx.stroke();
+    ctx.restore();
   }
 
   // Draw 2D Canvas side-scroller elements
@@ -1421,6 +1428,15 @@
           hp: Math.ceil(state.playerHp),
           maxHp: stats.maxHp,
           keys: state.keys,
+          player: {
+            x: Math.round(state.x),
+            y: Math.round(state.y),
+            width: state.width,
+            height: state.height,
+            grounded: state.grounded,
+          },
+          terrain: platforms.map((platform) => ({ x: platform.x, y: platform.y, w: platform.w, h: platform.h, kind: platform.kind })),
+          spikes: spikesList.map((spike) => ({ x: spike.x, y: spike.y, w: spike.w, h: spike.h })),
           enemies: state.enemies.map((enemy) => ({ type: enemy.type, hp: Math.ceil(enemy.hp), x: Math.round(enemy.x), y: Math.round(enemy.y) })),
           equipment: {
             weapon: state.eqWeapon,

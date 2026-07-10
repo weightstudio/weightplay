@@ -521,6 +521,28 @@ window.WONDER_LOBBY.games.push({
   },
 });
 
+window.WONDER_LOBBY.games.push({
+  id: "animal-cafe-rush",
+  title: { en: "Animal Cafe Rush", "zh-Hant": "\u52d5\u7269\u5496\u5561\u5feb\u624b" },
+  status: "planned",
+  statusText: { en: "Coming Soon", "zh-Hant": "\u656c\u8acb\u671f\u5f85" },
+  type: { en: "Animal Cafe Time Management", "zh-Hant": "\u52d5\u7269\u5496\u5561\u6642\u9593\u7ba1\u7406" },
+  categories: ["Animal Games", "Family"],
+  skills: ["Focus", "Reaction", "Problem Solving"],
+  ages: ["6", "family"],
+  ageLabel: { en: "6+", "zh-Hant": "6+" },
+  href: "games/animal-cafe-rush/",
+  description: {
+    en: "Serve friendly animal customers, choose food stations in the right order, and grow a cozy safari-town cafe across short days.",
+    "zh-Hant": "\u70ba\u52d5\u7269\u5ba2\u4eba\u8655\u7406\u9ede\u5fc3\u8a02\u55ae\uff0c\u9078\u64c7\u6b63\u78ba\u7ad9\u9ede\u8207\u88fd\u4f5c\u9806\u5e8f\uff0c\u5728\u77ed\u5c0f\u7684\u5496\u5561\u65e5\u5e38\u4e2d\u7d93\u71df\u6eab\u6696\u7684\u52d5\u7269\u5c0f\u93ae\u5496\u5561\u9928\u3002",
+  },
+  meta: {
+    en: ["Cafe Queue", "Food Stations", "12 Cafe Days"],
+    "zh-Hant": ["\u5496\u5561\u5ba2\u4eba\u968a\u5217", "\u70b9\u5fc3\u7ad9\u9ede", "12 \u5929\u5496\u5561\u65e5\u5e38"],
+  },
+  art: { kind: "image", background: "assets/animal-cafe-rush-cover.webp", hideHero: true },
+});
+
 const cleanZhLobbyCopy = {
   "beast-deck": {
     title: "獸王牌組",
