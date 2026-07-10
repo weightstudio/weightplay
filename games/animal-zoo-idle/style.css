@@ -1443,6 +1443,10 @@ body.zoo-playing .care-panel {
   scrollbar-width: thin;
 }
 
+body.zoo-playing .wp-tutorial-button {
+  display: none !important;
+}
+
 body.zoo-playing .happy-meter {
   min-height: 38px;
   height: 38px;
@@ -1905,7 +1909,7 @@ body.zoo-playing .animal-shop-card small {
     min-height: 0;
     height: 100%;
     max-height: 100%;
-    padding: 0 2px calc(58px + env(safe-area-inset-bottom));
+    padding: 0 2px calc(34px + env(safe-area-inset-bottom));
     overflow-y: auto;
     overflow-x: hidden;
     overscroll-behavior: contain;
@@ -1926,14 +1930,16 @@ body.zoo-playing .animal-shop-card small {
   }
 
   body.zoo-playing .zoo-actions {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 7px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 5px;
   }
 
   body.zoo-playing .zoo-actions button {
     min-height: 38px;
     height: 38px;
-    padding: 4px 6px;
+    padding: 4px 3px;
+    font-size: clamp(.56rem, 2.3vw, .72rem);
+    line-height: 1.05;
     white-space: normal;
     word-break: keep-all;
   }
@@ -1950,8 +1956,8 @@ body.zoo-playing .animal-shop-card small {
   }
 
   body.zoo-playing .daily-focus-card {
-    min-height: 64px;
-    padding: 8px 10px;
+    min-height: 50px;
+    padding: 6px 8px;
   }
 
   body.zoo-playing .daily-focus-card div {
@@ -2032,15 +2038,17 @@ body.zoo-playing .animal-shop-card small {
   }
 
   body.zoo-playing .zoo-task {
-    min-height: 54px;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 4px;
-    align-items: start;
-    padding: 8px 9px 12px;
+    min-height: 40px;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 4px 8px;
+    align-items: center;
+    padding: 6px 8px 9px;
   }
 
   body.zoo-playing .zoo-task-board {
-    min-height: 226px;
+    min-height: 142px;
+    padding: 8px;
+    gap: 5px;
   }
 
   body.zoo-playing .zoo-task span,
@@ -2048,7 +2056,7 @@ body.zoo-playing .animal-shop-card small {
     min-width: 0;
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: normal;
+    white-space: nowrap;
     line-height: 1.08;
   }
 
@@ -2057,7 +2065,7 @@ body.zoo-playing .animal-shop-card small {
   }
 
   body.zoo-playing .zoo-task small {
-    text-align: left;
+    text-align: right;
     font-size: clamp(.62rem, 2.45vw, .76rem);
   }
 

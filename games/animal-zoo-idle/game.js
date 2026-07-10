@@ -692,6 +692,15 @@
     return Math.max(0, Math.ceil((Number(save.careReadyAt || 0) - Date.now()) / 1000));
   }
 
+  function isCompactPlayShell() {
+    return Boolean(window.matchMedia?.("(max-width: 820px)")?.matches && document.body.classList.contains("zoo-playing"));
+  }
+
+  function upgradeButtonLabel() {
+    if (save.gateLevel >= maxGateLevel) return t("maxGate");
+    return isCompactPlayShell() ? t("upgradeGate") : `${t("upgradeGate")} ${formatCost(gateUpgradeCost())}`;
+  }
+
   function applyOffline() {
     const elapsedSeconds = Math.min(7200, Math.max(0, (Date.now() - Number(save.lastPlayedAt || Date.now())) / 1000));
     const earned = Math.floor((elapsedSeconds / 10) * incomePerTick() * 0.55);
@@ -764,7 +773,7 @@
         <div class="zoo-actions">
           <button type="button" data-action="collect">${t("collect")}</button>
           <button type="button" data-action="care">${t("careAll")}</button>
-          <button type="button" data-action="upgrade" ${save.gateLevel >= maxGateLevel ? "disabled" : ""}>${save.gateLevel >= maxGateLevel ? t("maxGate") : `${t("upgradeGate")} ${formatCost(gateUpgradeCost())}`}</button>
+          <button type="button" data-action="upgrade" ${save.gateLevel >= maxGateLevel ? "disabled" : ""}>${upgradeButtonLabel()}</button>
           <button type="button" data-action="report">${t("report")}</button>
         </div>
         <div class="park-plan-card" aria-live="polite"></div>
@@ -825,7 +834,7 @@
     const upgrade = card.querySelector('[data-action="upgrade"]');
     if (upgrade) {
       upgrade.disabled = save.gateLevel >= maxGateLevel;
-      upgrade.textContent = save.gateLevel >= maxGateLevel ? t("maxGate") : `${t("upgradeGate")} ${formatCost(gateUpgradeCost())}`;
+      upgrade.textContent = upgradeButtonLabel();
     }
     renderNextGoal(card.querySelector(".next-goal-card"));
     renderTaskBoard(card.querySelector(".zoo-task-board"));
