@@ -436,6 +436,17 @@
     8: [{ x: 220, y: 315, w: 105 }, { x: 470, y: 315, w: 105 }],
   };
 
+  // Calculated from each transparent PNG's alpha bounds: these align visible feet
+  // with the collision-box bottom rather than assuming every sprite shares a canvas crop.
+  const spriteAnchors = Object.freeze({
+    heroY: -55.4,
+    hunterY: -39.2,
+    boarY: -27.1,
+    behemothY: -11.6,
+    basiliskY: -19.1,
+    guardianY: -20.9,
+  });
+
   function addBackgroundAlignedTerrain(spike) {
     platforms.push(...stageTerrain.map((platform) => ({ ...platform })));
     if (spike) spikesList.push(spike);
@@ -1230,7 +1241,7 @@
 
       if (enemy.type === "boss") {
         const bossSprite = enemy.variant === "basilisk" ? assets.bossBasilisk : enemy.variant === "guardian" ? assets.bossGuardian : assets.boss;
-        const bossY = enemy.variant === "guardian" ? -30 : -24;
+        const bossY = enemy.variant === "basilisk" ? spriteAnchors.basiliskY : enemy.variant === "guardian" ? spriteAnchors.guardianY : spriteAnchors.behemothY;
         const drewBoss = drawImageContain(ctx, bossSprite, -12, bossY, enemy.width + 24, enemy.height + 62);
         if (enemy.hitTimer > 0) {
           ctx.save(); ctx.globalAlpha = 0.72; ctx.globalCompositeOperation = "screen";
@@ -1239,7 +1250,7 @@
         if (!drewBoss) drawEnemyFallback(ctx, enemy);
       } else {
         const sprite = enemy.type === "boar" ? assets.boar : enemy.type === "wolf" ? assets.enemyWolf : assets.bat;
-        const visualY = enemy.type === "wolf" ? -38 : enemy.type === "boar" ? -34 : -10;
+        const visualY = enemy.type === "wolf" ? spriteAnchors.hunterY : enemy.type === "boar" ? spriteAnchors.boarY : -10;
         const drewEnemy = drawImageContain(ctx, sprite, -22, visualY, enemy.width + 44, enemy.height + 60);
         if (enemy.hitTimer > 0) {
           ctx.save(); ctx.globalAlpha = 0.72; ctx.globalCompositeOperation = "screen";
@@ -1272,7 +1283,7 @@
       if (state.invincibilityTimer > 0 && Math.floor(Date.now() / 80) % 2 === 0) {
         ctx.globalAlpha = 0.4;
       }
-      if (!drawImageContain(ctx, assets.wolf, -20, -state.height * 1.65, state.width + 40, state.height + 72)) drawHeroFallback(ctx);
+      if (!drawImageContain(ctx, assets.wolf, -20, spriteAnchors.heroY, state.width + 40, state.height + 72)) drawHeroFallback(ctx);
       ctx.globalAlpha = 1.0;
     } else {
       drawHeroFallback(ctx);

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex,nofollow" />
+    <title>Animal Cafe Rush - Coming Soon | WeightPlay</title>
+    <link rel="canonical" href="https://weightplay.com/games/animal-cafe-rush/" />
+    <style>
+      :root { color-scheme: light; font-family: "Microsoft JhengHei", "Noto Sans TC", system-ui, sans-serif; background: #173b3a; color: #1b2a28; }
+      * { box-sizing: border-box; }
+      body { min-height: 100dvh; margin: 0; background: linear-gradient(160deg, #0b302f, #2d746e); }
+      .page { width: min(100%, 760px); min-height: 100dvh; margin: auto; padding: max(16px, env(safe-area-inset-top)) 16px calc(24px + env(safe-area-inset-bottom)); }
+      .topbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
+      .home-link, .locale-picker { min-height: 44px; border: 0; border-radius: 12px; background: rgba(255, 255, 255, 0.95); color: #174a47; font: inherit; font-weight: 900; }
+      .home-link { display: inline-flex; align-items: center; gap: 8px; padding: 0 14px; text-decoration: none; }
+      .locale-picker { padding: 0 10px; }
+      .preview-card { display: grid; gap: 18px; overflow: hidden; border: 3px solid rgba(255, 255, 255, 0.5); border-radius: 18px; background: #fffaf0; box-shadow: 0 18px 46px rgba(0, 0, 0, 0.28); }
+      .cover { display: block; width: 100%; aspect-ratio: 1; object-fit: cover; }
+      .copy { padding: 0 20px 24px; }
+      .eyebrow { display: inline-block; margin-bottom: 8px; padding: 6px 10px; border-radius: 999px; background: #ffd269; color: #5b3a00; font-size: 14px; font-weight: 1000; }
+      h1 { margin: 0; font-size: clamp(30px, 8vw, 48px); line-height: 1.08; }
+      p { margin: 12px 0 0; color: #48635d; font-size: clamp(16px, 4.4vw, 19px); font-weight: 700; line-height: 1.55; }
+      .status { color: #14736c; font-weight: 1000; }
+      @media (min-width: 680px) { .preview-card { grid-template-columns: minmax(0, 1fr) minmax(280px, 0.88fr); align-items: center; } .copy { padding: 22px 24px; } }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <header class="topbar">
+        <a class="home-link" href="../../" id="homeLink"><span aria-hidden="true">W</span><span id="homeText">WeightPlay</span></a>
+        <select class="locale-picker" id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option></select>
+      </header>
+      <section class="preview-card" aria-live="polite">
+        <img class="cover" src="../../assets/animal-cafe-rush-cover.webp" alt="" />
+        <div class="copy"><span class="eyebrow" id="eyebrow">Coming Soon</span><h1 id="title">Animal Cafe Rush</h1><p id="description">A new animal cafe is preparing its customers, food stations, and cozy cafe days.</p><p class="status" id="status">This game is not playable yet.</p></div>
+      </section>
+    </main>
+    <script>
+      const copy = {
+        en: { eyebrow: "Coming Soon", title: "Animal Cafe Rush", description: "A new animal cafe is preparing its customers, food stations, and cozy cafe days.", status: "This game is not playable yet.", home: "WeightPlay", alt: "Animal Cafe Rush preview poster" },
+        "zh-Hant": { eyebrow: "\u656c\u8acb\u671f\u5f85", title: "\u52d5\u7269\u5496\u5561\u5feb\u624b", description: "\u65b0\u7684\u52d5\u7269\u5496\u5561\u9928\u6b63\u5728\u6e96\u5099\u5ba2\u4eba\u3001\u9ede\u5fc3\u5de5\u4f5c\u7ad9\u8207\u6eab\u6696\u7684\u5496\u5561\u65e5\u5e38\u3002", status: "\u9019\u6b3e\u904a\u6232\u5c1a\u672a\u958b\u653e\u904a\u73a9\u3002", home: "WeightPlay", alt: "\u52d5\u7269\u5496\u5561\u5feb\u624b\u9810\u544a\u6d77\u5831" },
+      };
+      const localeSelect = document.querySelector("#localeSelect");
+      const render = () => { const text = copy[localeSelect.value]; document.documentElement.lang = localeSelect.value; document.querySelector("#eyebrow").textContent = text.eyebrow; document.querySelector("#title").textContent = text.title; document.querySelector("#description").textContent = text.description; document.querySelector("#status").textContent = text.status; document.querySelector("#homeText").textContent = text.home; document.querySelector(".cover").alt = text.alt; };
+      localeSelect.addEventListener("change", render);
+      render();
+    </script>
+  </body>
+</html>
