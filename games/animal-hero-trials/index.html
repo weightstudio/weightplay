@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#071712" />
+  <meta name="robots" content="index,follow" />
+  <meta name="description" content="Choose a WeightPlay hero, clear three forest rooms, collect blessings, and defeat the Shadow Sovereign in Animal Hero Trials." />
+  <meta property="og:site_name" content="WeightPlay" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Animal Hero Trials - WeightPlay" />
+  <meta property="og:description" content="Master four distinct heroes in a mobile-first forest action trial." />
+  <meta property="og:url" content="https://weightplay.com/games/animal-hero-trials/" />
+  <meta property="og:image" content="https://weightplay.com/assets/animal-hero-trials-cover.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <title>Animal Hero Trials - WeightPlay</title>
+  <link rel="canonical" href="https://weightplay.com/games/animal-hero-trials/" />
+  <link rel="stylesheet" href="../../src/loading-screen.css" />
+  <link rel="stylesheet" href="../../src/game-page-info.css" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .canvas-wrap canvas{position:absolute;left:50%;top:50%;width:auto;height:auto;object-fit:initial;transform:translate(-50%,-50%)}
+    .reroll-row{margin-top:10px;display:grid;gap:5px}.reroll-row button{min-height:46px;border:1px solid #8edbb3;border-radius:9px;background:#0c281f;color:#fff;display:flex;align-items:center;justify-content:center;gap:7px;font-weight:900}.reroll-row button:disabled{opacity:.48}.reroll-row img{width:24px;height:24px;object-fit:contain}.reroll-row small{min-height:18px;color:#ffd45f}
+    .hero-picker{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(86px,1fr);gap:7px;overflow-x:auto;scrollbar-width:none}.hero-option{min-height:94px;border:1px solid #4f8b70;border-radius:9px;background:#102d24;color:#fff;padding:5px;display:grid;justify-items:center;align-content:center;gap:2px}.hero-option.selected{border:2px solid #ffd45f;background:#194635}.hero-option img{width:52px;height:52px;object-fit:contain}.hero-option b{font-size:11px}.hero-option small{font-size:9px;color:#bfe6d2;white-space:nowrap}
+    body[data-game-view="stage"] .game-page-info,body[data-game-view="battle"] .game-page-info{display:none!important}
+  </style>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Animal Hero Trials","url":"https://weightplay.com/games/animal-hero-trials/","image":"https://weightplay.com/assets/animal-hero-trials-cover.png","description":"Choose one of four WeightPlay heroes, clear three action rooms, collect blessings, and defeat the Shadow Sovereign.","applicationCategory":"Game","operatingSystem":"Web browser","publisher":{"@type":"Organization","name":"WeightStudio"},"inLanguage":["en","zh-Hant"],"isAccessibleForFree":true,"genre":["Action","Roguelite","Animal"],"audience":{"@type":"Audience","audienceType":"Teens and families","suggestedMinAge":13}}</script>
+</head>
+<body data-game-view="main" data-tutorial-auto-show="false">
+  <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong>Animal Hero Trials</strong><span>Loading</span><div class="loading-track"><i></i></div></div></section>
+  <main id="app" class="app">
+    <section id="mainView" class="view main-view">
+      <a class="lobby-return" href="/" aria-label="Back to WeightPlay"><span>&larr;</span><img src="../../assets/weightplay-logo.png" alt="" /></a>
+      <label class="locale"><span>Language</span><select id="localeSelect"><option value="en">English</option><option value="zh-Hant">繁體中文</option></select></label>
+      <img class="cover" src="../../assets/animal-hero-trials-cover.png" alt="Animal Hero Trials poster" />
+      <div class="main-copy"><h1 data-t="title">Animal Hero Trials</h1><p data-t="pitch">Guide Leo through three forest trials and choose a blessing after every room.</p></div>
+      <div class="progress-card"><span><b data-t="marks">Trial Marks</b><strong id="markCount">0</strong></span><button id="masteryBtn" type="button"><span data-t="mastery">Heart Mastery</span><b id="masteryLevel">Lv.0</b><small id="masteryCost">5</small></button></div>
+      <button id="startBtn" class="primary" type="button" data-t="start">Start Trial</button>
+    </section>
+    <section id="stageView" class="view hidden">
+      <header class="compact-head"><button id="stageBack" class="icon-btn" type="button" aria-label="Back">&larr;</button><h2 data-t="choose">Choose Trial</h2></header>
+      <div id="heroPicker" class="hero-picker" aria-label="Choose hero"></div><div id="stageRail" class="stage-rail"></div><div class="stage-ad" aria-hidden="true"></div>
+    </section>
+    <section id="battleView" class="view battle-view hidden">
+      <header class="battle-head"><button id="battleBack" class="icon-btn" type="button" aria-label="Back">&larr;</button><div class="health"><span id="roomText">Room 1/3</span><div><i id="hpFill"></i></div></div><button id="skillBtn" class="skill-btn" type="button"><img src="../../assets/animal-hero-trials-icon-roaring-mane.webp" alt="" /><span id="cooldownText">ROAR</span></button></header>
+      <div class="canvas-wrap"><canvas id="game" width="390" height="560"></canvas><div id="joystick" class="joystick"><i></i></div><p id="objective"></p></div><div id="battleAd" class="battle-ad" aria-hidden="true"></div>
+    </section>
+    <div id="choiceModal" class="modal hidden"><section><h2 data-t="blessing">Choose a Blessing</h2><div id="choices" class="choices"></div><div class="reroll-row"><button id="rerollBtn" type="button"><img src="../../assets/weightplay-diamond.svg" alt="" /><span id="rerollLabel">Reroll 3</span></button><small id="rerollStatus"></small></div></section></div>
+    <div id="resultModal" class="modal hidden"><section><img id="resultFx" src="../../assets/animal-hero-trials-fx-victory.webp" alt="" /><h2 id="resultTitle"></h2><p id="resultCopy"></p><button id="resultNext" class="primary" type="button"></button><button id="resultHome" type="button" data-t="menu">Main Menu</button></section></div>
+  </main>
+  <script src="../../src/site-config.js"></script><script src="../../src/analytics.js"></script><script>window.WonderAnalytics?.track("game_view",{game_id:"animal-hero-trials"});</script>
+  <script src="../../src/edge-guard.js"></script><script src="../../src/i18n.js"></script><script src="../../src/tutorial.js"></script>
+  <script src="../../src/wallet.js"></script><script src="fit.js"></script><script src="game.js"></script><script src="locale-runtime.js"></script><script src="../../src/game-page-info.js"></script>
+  <script>window.addEventListener("load",()=>document.querySelector("#loadingPanel")?.classList.add("hidden"),{once:true});</script>
+</body>
+</html>

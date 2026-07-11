@@ -103,6 +103,23 @@
         ["Does the game require an account?", "No. Basic progress and upgrades are stored only in the browser."],
       ],
     },
+    "animal-hero-trials": {
+      title: "Animal Hero Trials",
+      age: "13+",
+      difficulty: "Medium",
+      time: "5-10 minutes",
+      skills: ["Reaction", "Focus", "Problem Solving"],
+      intro:
+        "Animal Hero Trials is a mobile-first action game starring four recurring WeightPlay heroes. Each hero has different movement, range, durability, and an active skill. Clear three forest rooms, choose a blessing after each room, defeat the Shadow Sovereign, and spend earned Trial Marks on permanent mastery.",
+      how: ["Choose a hero and an unlocked trial.", "Move with the joystick or keyboard while the hero attacks nearby enemies.", "Time the hero skill to escape danger or deal extra damage.", "Choose one free blessing after each room and defeat the Boss."],
+      parent:
+        "This 13+ game may practice reaction, focus, route planning, and adapting to different hero abilities. Progress and mastery are stored locally. The optional diamond blessing reroll is clearly confirmed and is never required for normal progression.",
+      faq: [
+        ["Is Animal Hero Trials free?", "Yes. Normal trials, blessings, and progression are free to play in the browser."],
+        ["What carries between runs?", "Trial Marks, unlocked trials, selected hero, and permanent mastery are saved locally."],
+        ["Are diamonds required?", "No. Diamonds only offer one optional blessing reroll per run."],
+      ],
+    },
     "star-memory": {
       title: "Animal Star Memory",
       age: "5+",
@@ -661,6 +678,7 @@
     "bubble-bakery": { gameplay: "Bubble Match Puzzle", genre: ["Puzzle", "Logic", "Animal"] },
     "animal-zoo-idle": { gameplay: "Idle Zoo Care", genre: ["Idle", "Simulation", "Animal"] },
     "animal-cafe-rush": { gameplay: "Cafe Queue Matching", genre: ["Time Management", "Matching", "Animal"] },
+    "animal-hero-trials": { gameplay: "Hero Action Trials", genre: ["Action", "Roguelite", "Animal"] },
     "animal-rope-rescue": { gameplay: "Vine Physics Puzzle", genre: ["Physics", "Puzzle", "Animal"] },
     "star-memory": { gameplay: "Memory Match", genre: ["Memory", "Puzzle", "Animal"] },
     "campus-dash": { gameplay: "Lane Runner", genre: ["Runner", "Reaction", "Animal"] },
@@ -690,6 +708,7 @@
     "bubble-bakery": "bubble-bakery-cover.webp",
     "animal-zoo-idle": "animal-zoo-idle-cover.webp",
     "animal-cafe-rush": "animal-cafe-rush-cover.webp",
+    "animal-hero-trials": "animal-hero-trials-cover.png",
     "animal-rope-rescue": "animal-vine-rescue-cover.webp",
     "star-memory": "memory-cover.webp",
     "campus-dash": "campus-dash-cover.webp",
@@ -962,6 +981,7 @@
         ],
       },
       "shadow-wolf": zhGuide("影狼傳說", "橫向動作 RPG", ["左右移動並跳過平台陷阱。", "攻擊影獸並收集經驗。", "開啟寶箱、穿戴裝備並挑戰巨獸。"]),
+      "animal-hero-trials": zhGuide("動物英雄試煉", "英雄動作試煉", ["選擇一位英雄與已解鎖試煉。", "移動閃避敵人，並掌握英雄技能的使用時機。", "每個房間選擇一項免費祝福，最後擊敗暗影王者。"]),
     },
   };
   games["animal-reef-fisher"] = {
@@ -1066,6 +1086,7 @@
 
   gameplayProfiles["beast-tactician"] = { gameplay: "Hero Tower Defense", genre: ["Tower Defense", "Strategy", "Animal"] };
   localizedGameplayProfiles["zh-Hant"]["beast-tactician"] = { gameplay: "英雄塔防", genre: ["塔防", "策略", "動物"] };
+  localizedGameplayProfiles["zh-Hant"]["animal-hero-trials"] = { gameplay: "英雄動作試煉", genre: ["動作", "Roguelite", "動物"] };
   localizedGames["zh-Hant"]["beast-tactician"] = {
     title: "獸王守衛",
     age: "13+",

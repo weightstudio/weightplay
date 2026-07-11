@@ -50,6 +50,7 @@
   };
 
   let locale = localStorage.getItem("weightPlayLocale") || "en";
+  let selectedHero = localStorage.getItem("aht-selected-hero") || "leo";
   let unlocked = +(localStorage.getItem("aht-unlocked") || 1);
   let marks = +(localStorage.getItem("aht-marks") || 0);
   let mastery = +(localStorage.getItem("aht-mastery") || 0);
@@ -69,11 +70,20 @@
   const images = {
     bg: load("animal-hero-trials-arena.png"),
     leo: load("animal-hero-trials-leo.png"),
+    fia: load("animal-hero-trials-fia.webp"),
+    orla: load("animal-hero-trials-orla.webp"),
+    taro: load("animal-hero-trials-taro.webp"),
     enemy: load("animal-hero-trials-shadow-scout.png"),
     boss: load("animal-hero-trials-shadow-boss.webp"),
     roar: load("animal-hero-trials-fx-roar.webp"),
     hit: load("animal-hero-trials-fx-hit.webp"),
     shadow: load("animal-hero-trials-fx-shadow-hit.webp"),
+  };
+  const heroes = {
+    leo: { image: "leo", asset: "animal-hero-trials-leo.png", hp: 100, speed: 125, attack: 10, range: 76, skill: { en: "ROAR", zh: "怒吼" } },
+    fia: { image: "fia", asset: "animal-hero-trials-fia.webp", hp: 86, speed: 145, attack: 11, range: 72, skill: { en: "DASH", zh: "彗星衝刺" } },
+    orla: { image: "orla", asset: "animal-hero-trials-orla.webp", hp: 82, speed: 112, attack: 8, range: 165, skill: { en: "MARK", zh: "月之印記" } },
+    taro: { image: "taro", asset: "animal-hero-trials-taro.webp", hp: 126, speed: 92, attack: 8, range: 76, skill: { en: "GUARD", zh: "庭園守護" } },
   };
 
   function load(filename) {
@@ -87,6 +97,7 @@
   }
 
   function show(name) {
+    document.body.dataset.gameView = name;
     Object.entries(views).forEach(([key, view]) => {
       view.classList.toggle("hidden", key !== name);
     });
@@ -106,7 +117,34 @@
     $("#markCount").textContent = marks;
     $("#masteryLevel").textContent = `Lv.${mastery}`;
     $("#masteryCost").textContent = `${5 + mastery * 4} marks`;
+    renderHeroPicker();
     renderStages();
+  }
+
+  function renderHeroPicker() {
+    const picker = $("#heroPicker");
+    if (!picker) return;
+    const labels = {
+      leo: ["Boom Mane Leo", locale === "zh-Hant" ? "怒吼爆發" : "Roar burst"],
+      fia: ["Spark Paw Fia", locale === "zh-Hant" ? "無敵衝刺" : "Invulnerable dash"],
+      orla: ["Moon Cap Orla", locale === "zh-Hant" ? "遠距印記" : "Ranged mark"],
+      taro: ["Moss Shell Taro", locale === "zh-Hant" ? "減傷守護" : "Damage guard"],
+    };
+    picker.innerHTML = "";
+    Object.entries(heroes).forEach(([id, hero]) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.dataset.hero = id;
+      button.setAttribute("aria-label", labels[id].join(" - "));
+      button.className = `hero-option${id === selectedHero ? " selected" : ""}`;
+      button.innerHTML = `<img src="${ASSET_ROOT + hero.asset}" alt=""><b>${labels[id][0]}</b><small>${labels[id][1]}</small>`;
+      button.onclick = () => {
+        selectedHero = id;
+        localStorage.setItem("aht-selected-hero", id);
+        renderHeroPicker();
+      };
+      picker.append(button);
+    });
   }
 
   function renderStages() {
@@ -130,7 +168,8 @@
 
   function startTrial(stage) {
     show("battle");
-    const maxHp = 100 + mastery * 12;
+    const hero = heroes[selectedHero] || heroes.leo;
+    const maxHp = hero.hp + mastery * 12;
     run = {
       active: true,
       stage,
@@ -138,14 +177,18 @@
       hp: maxHp,
       maxHp,
       leo: { x: 195, y: 430 },
+      heroId: selectedHero,
       enemies: [],
       cool: 0,
       attackCool: 0,
+      invulnerable: 0,
+      guard: 0,
       rerollUsed: false,
       last: performance.now(),
       bless: { power: 0, speed: 0, heal: 0 },
       fx: [],
     };
+    $("#skillBtn img").src = ASSET_ROOT + hero.asset;
     spawn();
     loop(performance.now());
   }
@@ -170,19 +213,83 @@
 
   function updateHud() {
     $("#hpFill").style.width = `${Math.max(0, (run.hp / run.maxHp) * 100)}%`;
-    $("#cooldownText").textContent = run.cool > 0 ? run.cool.toFixed(1) : "ROAR";
+    const skillName = locale === "zh-Hant" ? heroes[run.heroId].skill.zh : heroes[run.heroId].skill.en;
+    $("#cooldownText").textContent = run.cool > 0 ? run.cool.toFixed(1) : skillName;
   }
 
   function skill() {
     if (!run?.active || run.cool > 0) return;
-    run.cool = Math.max(2.5, 5 - run.bless.speed * 0.5);
-    run.fx.push({ type: "roar", x: run.leo.x, y: run.leo.y, t: 0.45 });
+    if (run.heroId === "leo") {
+      run.cool = Math.max(2.5, 5 - run.bless.speed * 0.5);
+      run.fx.push({ type: "roar", x: run.leo.x, y: run.leo.y, t: 0.45 });
+      for (const enemy of run.enemies) {
+        if (Math.hypot(enemy.x - run.leo.x, enemy.y - run.leo.y) < 145) {
+          enemy.hp -= 24 + run.bless.power * 7;
+          run.fx.push({ type: "hit", x: enemy.x, y: enemy.y, t: 0.3 });
+        }
+      }
+      return;
+    }
+    if (run.heroId === "fia") {
+      run.cool = Math.max(2.2, 4.2 - run.bless.speed * 0.45);
+      const skillTarget = [...run.enemies].sort((a, b) => Math.hypot(a.x - run.leo.x, a.y - run.leo.y) - Math.hypot(b.x - run.leo.x, b.y - run.leo.y))[0];
+      let dx = (keys.ArrowRight || keys.KeyD ? 1 : 0) - (keys.ArrowLeft || keys.KeyA ? 1 : 0) + stick.x;
+      let dy = (keys.ArrowDown || keys.KeyS ? 1 : 0) - (keys.ArrowUp || keys.KeyW ? 1 : 0) + stick.y;
+      if (skillTarget) {
+        dx = skillTarget.x - run.leo.x;
+        dy = skillTarget.y - run.leo.y;
+      }
+      const length = Math.hypot(dx, dy) || 1;
+      if (!dx && !dy) dy = -1;
+      const from = { ...run.leo };
+      run.leo.x = Math.max(35, Math.min(355, run.leo.x + (dx / length) * 125));
+      run.leo.y = Math.max(80, Math.min(520, run.leo.y + (dy / length) * 125));
+      run.invulnerable = 0.55;
+      run.fx.push({ type: "roar", x: (from.x + run.leo.x) / 2, y: (from.y + run.leo.y) / 2, t: 0.3 });
+      let dashTarget = null;
+      let dashDistance = Infinity;
+      for (const enemy of run.enemies) {
+        const distance = Math.hypot(enemy.x - run.leo.x, enemy.y - run.leo.y);
+        if (distance < dashDistance) {
+          dashDistance = distance;
+          dashTarget = enemy;
+        }
+        if (distance < 105) {
+          enemy.hp -= 30 + run.bless.power * 6;
+          run.fx.push({ type: "hit", x: enemy.x, y: enemy.y, t: 0.25 });
+        }
+      }
+      if (dashTarget && dashDistance >= 105 && dashDistance < 190) {
+        dashTarget.hp -= 22 + run.bless.power * 5;
+        run.fx.push({ type: "hit", x: dashTarget.x, y: dashTarget.y, t: 0.25 });
+      }
+      return;
+    }
+    if (run.heroId === "orla") {
+      run.cool = Math.max(2.5, 4.8 - run.bless.speed * 0.45);
+      const target = [...run.enemies].sort((a, b) => Math.hypot(a.x - run.leo.x, a.y - run.leo.y) - Math.hypot(b.x - run.leo.x, b.y - run.leo.y))[0];
+      if (target) {
+        target.hp -= 24 + run.bless.power * 5;
+        target.marked = true;
+        run.fx.push({ type: "roar", x: target.x, y: target.y, t: 0.4 });
+      }
+      return;
+    }
+    run.cool = Math.max(3.2, 6 - run.bless.speed * 0.45);
+    run.guard = 3.5;
+    run.hp = Math.min(run.maxHp, run.hp + 8 + run.bless.heal * 2);
+    run.fx.push({ type: "roar", x: run.leo.x, y: run.leo.y, t: 0.55 });
     for (const enemy of run.enemies) {
-      if (Math.hypot(enemy.x - run.leo.x, enemy.y - run.leo.y) < 145) {
-        enemy.hp -= 24 + run.bless.power * 7;
+      if (Math.hypot(enemy.x - run.leo.x, enemy.y - run.leo.y) < 220) {
+        enemy.hp -= 20 + run.bless.power * 4;
         run.fx.push({ type: "hit", x: enemy.x, y: enemy.y, t: 0.3 });
       }
     }
+  }
+
+  function hurt(amount) {
+    if (run.invulnerable > 0) return;
+    run.hp -= run.guard > 0 ? Math.ceil(amount * 0.3) : amount;
   }
 
   function autoAttack() {
@@ -196,8 +303,14 @@
         target = enemy;
       }
     }
-    if (!target || distance > 76) return;
-    target.hp -= 10 + run.bless.power * 2;
+    const hero = heroes[run.heroId];
+    if (!target || distance > hero.range) return;
+    let damage = hero.attack + run.bless.power * 2;
+    if (target.marked) {
+      damage += 18;
+      target.marked = false;
+    }
+    target.hp -= damage;
     run.attackCool = 0.58;
     run.fx.push({ type: "hit", x: target.x, y: target.y, t: 0.22 });
   }
@@ -299,10 +412,13 @@
     const dx = (keys.ArrowRight || keys.KeyD ? 1 : 0) - (keys.ArrowLeft || keys.KeyA ? 1 : 0) + stick.x;
     const dy = (keys.ArrowDown || keys.KeyS ? 1 : 0) - (keys.ArrowUp || keys.KeyW ? 1 : 0) + stick.y;
     const length = Math.hypot(dx, dy) || 1;
-    run.leo.x = Math.max(35, Math.min(355, run.leo.x + (dx / length) * 125 * dt));
-    run.leo.y = Math.max(80, Math.min(520, run.leo.y + (dy / length) * 125 * dt));
+    const heroSpeed = heroes[run.heroId].speed;
+    run.leo.x = Math.max(35, Math.min(355, run.leo.x + (dx / length) * heroSpeed * dt));
+    run.leo.y = Math.max(80, Math.min(520, run.leo.y + (dy / length) * heroSpeed * dt));
     run.cool = Math.max(0, run.cool - dt);
     run.attackCool = Math.max(0, run.attackCool - dt);
+    run.invulnerable = Math.max(0, run.invulnerable - dt);
+    run.guard = Math.max(0, run.guard - dt);
 
     for (const enemy of run.enemies) {
       const ex = run.leo.x - enemy.x;
@@ -317,7 +433,7 @@
         if (enemy.warning > 0) {
           enemy.warning -= dt;
           if (enemy.warning <= 0) {
-            if (distance < 155) run.hp -= 11;
+            if (distance < 155) hurt(11);
             run.fx.push({ type: "shadow", x: run.leo.x, y: run.leo.y, t: 0.38 });
           }
         } else if (enemy.special <= 0) {
@@ -327,7 +443,7 @@
         }
       }
       if (distance < 48 && enemy.cd <= 0) {
-        run.hp -= enemy.boss ? 7 : 4;
+        hurt(enemy.boss ? 7 : 4);
         enemy.cd = 1;
         run.fx.push({ type: "shadow", x: run.leo.x, y: run.leo.y, t: 0.3 });
       }
@@ -356,8 +472,27 @@
       ctx.fillRect(enemy.x - barWidth / 2, barY, barWidth, 6);
       ctx.fillStyle = "#7be0b1";
       ctx.fillRect(enemy.x - barWidth / 2, barY, (barWidth * enemy.hp) / enemy.max, 6);
+      if (enemy.marked) {
+        ctx.strokeStyle = "#7cecff";
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.arc(enemy.x, enemy.y - size / 2 - 18, 9, 0, Math.PI * 2);
+        ctx.stroke();
+      }
     }
-    ctx.drawImage(images.leo, run.leo.x - 39, run.leo.y - 45, 78, 90);
+    const hero = heroes[run.heroId];
+    const heroWidth = run.heroId === "taro" ? 94 : run.heroId === "orla" ? 82 : 78;
+    const heroHeight = run.heroId === "taro" ? 78 : 90;
+    ctx.globalAlpha = run.invulnerable > 0 ? 0.72 : 1;
+    ctx.drawImage(images[hero.image], run.leo.x - heroWidth / 2, run.leo.y - heroHeight / 2, heroWidth, heroHeight);
+    ctx.globalAlpha = 1;
+    if (run.guard > 0) {
+      ctx.strokeStyle = "#55e0b1";
+      ctx.lineWidth = 5;
+      ctx.beginPath();
+      ctx.arc(run.leo.x, run.leo.y, 56, 0, Math.PI * 2);
+      ctx.stroke();
+    }
     for (const effect of run.fx) {
       const image = effect.type === "roar" ? images.roar : effect.type === "hit" ? images.hit : images.shadow;
       const size = effect.type === "roar" ? 180 : 74;
@@ -393,8 +528,9 @@
     };
   }
 
-  $("#locale").value = locale;
-  $("#locale").onchange = (event) => {
+  const localeSelect = $("#locale") || $("#localeSelect");
+  localeSelect.value = locale;
+  localeSelect.onchange = (event) => {
     locale = event.target.value;
     localStorage.setItem("weightPlayLocale", locale);
     localize();

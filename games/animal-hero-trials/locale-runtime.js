@@ -1,5 +1,5 @@
 (() => {
-  const select = document.querySelector("#locale");
+  const select = document.querySelector("#locale, #localeSelect");
   let scheduled = false;
   const zh = () => select?.value === "zh-Hant";
   const set = (selector, value) => {

@@ -1129,6 +1129,6 @@ body.crystal-playing .upgrade-card-wrap { max-height: 100%; overflow-y: auto; }
   body.crystal-playing .hud-row .play-return { width: 100%; min-width: 0; min-height: 0; }
   body.crystal-playing .canvas-wrap { grid-column: 2; grid-row: 1 / -1; }
   body.crystal-playing .xp-row { grid-column: 3; grid-row: 1; }
-  body.crystal-playing .hint-text { grid-column: 3; grid-row: 2; align-self: center; white-space: normal; }
+  body.crystal-playing .hint-text { grid-column: 3; grid-row: 2; align-self: stretch; min-height: 0; height: 100%; margin: 0; display: grid; place-items: center; overflow-y: auto; white-space: normal; }
   body.crystal-playing .upgrade-cards { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }

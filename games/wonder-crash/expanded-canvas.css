@@ -1,0 +1,72 @@
+html:has(body.wonder-playing),
+body.wonder-playing {
+  width: 100%;
+  height: var(--wonder-vh, 100dvh);
+  overflow: hidden;
+  overscroll-behavior: none;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body.wonder-playing .game-shell[data-battle-shell] {
+  position: fixed !important;
+  top: 4px !important;
+  right: auto !important;
+  bottom: auto !important;
+  left: 4px !important;
+  width: calc(var(--wonder-vw, 100vw) - 8px) !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  height: calc(var(--wonder-vh, 100dvh) - 64px) !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  container-type: size;
+  transform: none !important;
+  background: #12151d;
+}
+
+body.wonder-playing #game {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(100cqw, calc(100cqh * 390 / 788));
+  height: auto;
+  aspect-ratio: 390 / 788;
+  transform: translate(-50%, -50%);
+}
+
+body.wonder-playing .battle-ad-reserve[data-active] {
+  right: auto;
+  bottom: 4px;
+  left: 4px;
+  width: calc(var(--wonder-vw, 100vw) - 8px);
+  height: 56px;
+}
+
+@media (max-height: 560px) {
+  body.wonder-playing .play-return {
+    top: 10px;
+    left: 10px;
+  }
+
+  body.wonder-playing .battle-hud {
+    top: 62px;
+    right: auto;
+    left: 10px;
+    width: 150px;
+    transform: none;
+  }
+
+  body.wonder-playing .battle-primary,
+  body.wonder-playing .battle-status {
+    justify-content: center;
+    white-space: normal;
+  }
+
+  body.wonder-playing .settings-btn {
+    top: 10px;
+    right: 10px;
+  }
+}

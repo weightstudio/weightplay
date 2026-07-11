@@ -543,6 +543,28 @@ window.WONDER_LOBBY.games.push({
   art: { kind: "image", background: "assets/animal-cafe-rush-cover.webp", hideHero: true },
 });
 
+window.WONDER_LOBBY.games.push({
+  id: "animal-hero-trials",
+  title: { en: "Animal Hero Trials", "zh-Hant": "動物英雄試煉" },
+  status: "playable",
+  statusText: { en: "Play Now", "zh-Hant": "立即遊玩" },
+  type: { en: "Hero Action Roguelite", "zh-Hant": "英雄動作試煉" },
+  categories: ["Featured", "Animal Games", "Arcade"],
+  skills: ["Reaction", "Focus", "Problem Solving"],
+  ages: ["13"],
+  ageLabel: { en: "13+", "zh-Hant": "13+" },
+  href: "games/animal-hero-trials/",
+  description: {
+    en: "Choose one of four WeightPlay heroes, clear three forest rooms, collect blessings, and defeat the Shadow Sovereign.",
+    "zh-Hant": "選擇四位 WeightPlay 英雄之一，通過三個森林房間、收集祝福並擊敗暗影王者。",
+  },
+  meta: {
+    en: ["Four Heroes", "Trial Blessings", "Saved Mastery"],
+    "zh-Hant": ["四位英雄", "試煉祝福", "永久精通"],
+  },
+  art: { kind: "image", background: "assets/animal-hero-trials-cover.png", hideHero: true },
+});
+
 const cleanZhLobbyCopy = {
   "beast-deck": {
     title: "獸王牌組",

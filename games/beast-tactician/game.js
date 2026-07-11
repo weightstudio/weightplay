@@ -869,24 +869,12 @@
 
   function updateBattleShell() {
     if (!document.body.classList.contains("guardian-playing")) return;
-    const logicalWidth = 390;
-    const logicalHeight = 788;
-    const reserveHeight = 56;
-    const gutter = 8;
-    const availableWidth = Math.max(1, window.innerWidth - gutter);
-    const availableHeight = Math.max(1, window.innerHeight - reserveHeight - gutter);
-    const scale = Math.max(0.1, Math.min(availableWidth / logicalWidth, availableHeight / logicalHeight));
-    const width = logicalWidth * scale;
-    const contentHeight = logicalHeight * scale;
-    const totalHeight = contentHeight + reserveHeight;
-    const left = Math.max(0, (window.innerWidth - width) / 2);
-    const top = Math.max(0, (window.innerHeight - totalHeight) / 2);
+    const viewport = window.visualViewport;
+    const width = viewport?.width >= window.innerWidth * 0.75 ? viewport.width : window.innerWidth;
+    const height = viewport?.height >= window.innerHeight * 0.75 ? viewport.height : window.innerHeight;
     const style = document.documentElement.style;
-    style.setProperty("--guardian-scale", String(scale));
-    style.setProperty("--guardian-width", `${width}px`);
-    style.setProperty("--guardian-content-height", `${contentHeight}px`);
-    style.setProperty("--guardian-left", `${left}px`);
-    style.setProperty("--guardian-top", `${top}px`);
+    style.setProperty("--guardian-vw", `${width}px`);
+    style.setProperty("--guardian-vh", `${height}px`);
   }
 
   function updateLocale() {

@@ -7,6 +7,7 @@
   <title>Animal Hero Trials - Internal Test</title>
   <link rel="stylesheet" href="style.css" />
   <style>.canvas-wrap canvas{position:absolute;left:50%;top:50%;width:auto;height:auto;object-fit:initial;transform:translate(-50%,-50%)}.reroll-row{margin-top:10px;display:grid;gap:5px}.reroll-row button{min-height:46px;border:1px solid #8edbb3;border-radius:9px;background:#0c281f;color:#fff;display:flex;align-items:center;justify-content:center;gap:7px;font-weight:900}.reroll-row button:disabled{opacity:.48}.reroll-row img{width:24px;height:24px;object-fit:contain}.reroll-row small{min-height:18px;color:#ffd45f}</style>
+  <style>.hero-picker{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(86px,1fr);gap:7px;overflow-x:auto;scrollbar-width:none}.hero-option{min-height:94px;border:1px solid #4f8b70;border-radius:9px;background:#102d24;color:#fff;padding:5px;display:grid;justify-items:center;align-content:center;gap:2px}.hero-option.selected{border:2px solid #ffd45f;background:#194635}.hero-option img{width:52px;height:52px;object-fit:contain}.hero-option b{font-size:11px}.hero-option small{font-size:9px;color:#bfe6d2;white-space:nowrap}</style>
 </head>
 <body>
   <main id="app" class="app">
@@ -21,6 +22,7 @@
 
     <section id="stageView" class="view hidden">
       <header class="compact-head"><button id="stageBack" class="icon-btn" type="button" aria-label="Back">&larr;</button><h2 data-t="choose">Choose Trial</h2></header>
+      <div id="heroPicker" class="hero-picker" aria-label="Choose hero"></div>
       <div id="stageRail" class="stage-rail"></div>
       <div class="stage-ad" aria-hidden="true"></div>
     </section>

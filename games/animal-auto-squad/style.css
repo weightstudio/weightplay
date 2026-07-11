@@ -1761,3 +1761,69 @@ body.squad-active .combat-area {
     transform: none !important;
   }
 }
+
+@media (max-height: 560px) {
+  body.squad-active .prep-phase-area {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: minmax(0, 1fr);
+    gap: 6px;
+    overflow: hidden;
+  }
+
+  body.squad-active .food-guide {
+    display: none;
+  }
+
+  body.squad-active .squad-section,
+  body.squad-active .shop-section {
+    min-width: 0;
+    min-height: 0;
+    height: 100%;
+    padding: 6px;
+    overflow-y: auto;
+  }
+
+  body.squad-active .cards-row {
+    gap: 4px;
+  }
+
+  body.squad-active .card-item {
+    padding: 3px;
+  }
+
+  body.squad-active .card-ability,
+  body.squad-active .card-effect {
+    display: none;
+  }
+
+  body.squad-active .card-name {
+    min-height: 0;
+    margin-bottom: 2px;
+    font-size: 0.58rem;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  body.squad-active .card-stats {
+    padding: 2px 3px;
+    font-size: 0.58rem;
+  }
+
+  body.squad-active .card-graphic.character-icon {
+    top: 38%;
+    width: min(64%, 62px);
+  }
+
+  body.squad-active .shop-controls {
+    gap: 4px;
+    margin-bottom: 4px;
+  }
+
+  body.squad-active .shop-action-btn,
+  body.squad-active .battle-action-btn {
+    min-height: 34px;
+    padding: 5px 7px;
+    font-size: 0.72rem;
+  }
+}
