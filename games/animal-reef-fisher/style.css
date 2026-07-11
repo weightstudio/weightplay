@@ -1015,7 +1015,7 @@ canvas {
   }
 }
 
-@media (max-width: 760px) {
+@media (min-width: 0px) {
   body.reef-fisher-playing {
     position: fixed;
     inset: 0;
@@ -1361,4 +1361,163 @@ canvas {
     width: 50px;
     height: 36px;
   }
+}
+
+/* Battle uses one portrait logical frame at every viewport size. */
+body.reef-fisher-playing {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100dvh;
+  min-height: 100dvh;
+  max-height: 100dvh;
+  overflow: hidden;
+  overscroll-behavior: none;
+  touch-action: none;
+}
+
+body.reef-fisher-playing .reef-app {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  width: 100vw;
+  height: 100dvh;
+  min-height: 100dvh;
+  max-height: 100dvh;
+  padding: 4px;
+  overflow: hidden;
+}
+
+body.reef-fisher-playing .topbar,
+body.reef-fisher-playing .game-page-info {
+  display: none !important;
+}
+
+body.reef-fisher-playing #gamePanel.game-panel,
+body.wp-mobile-game-mode.reef-fisher-playing #gamePanel.game-panel.weightplay-active-viewport {
+  position: fixed !important;
+  inset: auto !important;
+  top: 50% !important;
+  left: 50% !important;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) 56px;
+  gap: 0;
+  width: var(--reef-battle-width, 382px) !important;
+  max-width: none !important;
+  height: var(--reef-battle-height, 826px) !important;
+  min-height: 0;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: clamp(8px, 2.1cqw, 18px);
+  box-shadow: none;
+  transform: translate(-50%, -50%);
+  transform-origin: center;
+}
+
+body.reef-fisher-playing .battle-shell {
+  container-type: size;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: grid;
+  grid-template-rows: 7.6% minmax(0, 1fr) 6.8% 19.4%;
+  gap: 0.75%;
+  width: 390px;
+  height: 788px;
+  padding: 1%;
+  overflow: hidden;
+  transform: scale(var(--reef-battle-scale, 1));
+  transform-origin: top left;
+}
+
+body.reef-fisher-playing .hud-row,
+body.reef-fisher-playing .catch-hud,
+body.reef-fisher-playing .tension-panel,
+body.reef-fisher-playing .battle-ad-reserve {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  min-width: 0;
+  min-height: 0;
+  margin: 0;
+}
+
+body.reef-fisher-playing .battle-shell > .hud-row { grid-row: 1; }
+body.reef-fisher-playing .battle-shell > .play-frame { grid-row: 2; }
+body.reef-fisher-playing .battle-shell > .catch-hud { grid-row: 3; }
+body.reef-fisher-playing .battle-shell > .tension-panel {
+  grid-row: 4 !important;
+  height: 100%;
+  min-height: 100%;
+  align-self: stretch;
+}
+
+body.reef-fisher-playing .hud-row {
+  grid-template-columns: 18% repeat(3, minmax(0, 1fr));
+  gap: 1.1%;
+}
+
+body.reef-fisher-playing .hud-row .secondary-btn,
+body.reef-fisher-playing .hud-row div {
+  min-width: 0;
+  min-height: 0;
+  padding: 1cqw;
+}
+
+body.reef-fisher-playing .hud-row .play-return {
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+}
+
+body.reef-fisher-playing .play-frame,
+body.reef-fisher-playing canvas {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  max-height: none;
+  aspect-ratio: auto;
+}
+
+body.reef-fisher-playing .tension-panel {
+  grid-template-columns: 11.5% minmax(0, 1fr);
+  gap: 1.8%;
+}
+
+body.reef-fisher-playing .icon-btn {
+  width: 100%;
+  height: auto;
+  max-height: 44px;
+  aspect-ratio: 1;
+}
+
+body.reef-fisher-playing .tension-control {
+  grid-template-rows: 18% 45% minmax(0, 1fr);
+  gap: 3%;
+  height: 100%;
+  align-self: stretch;
+}
+
+body.reef-fisher-playing .tension-lane {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+}
+
+body.reef-fisher-playing .tension-coach {
+  min-height: 0;
+}
+
+body.reef-fisher-playing .battle-ad-reserve {
+  width: auto;
+  max-width: 100%;
+  height: 56px;
+  min-height: 56px;
+  box-sizing: border-box;
 }

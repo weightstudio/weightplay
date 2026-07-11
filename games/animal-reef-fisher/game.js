@@ -1217,6 +1217,16 @@
     };
   }
 
+  function updateBattleScale() {
+    const scale = Math.max(0.1, Math.min((window.innerWidth - 8) / 390, (window.innerHeight - 64) / 788));
+    document.documentElement.style.setProperty("--reef-battle-scale", String(scale));
+    document.documentElement.style.setProperty("--reef-battle-width", `${390 * scale}px`);
+    document.documentElement.style.setProperty("--reef-battle-height", `${788 * scale + 56}px`);
+  }
+
+  updateBattleScale();
+  window.addEventListener("resize", updateBattleScale);
+  window.addEventListener("orientationchange", updateBattleScale);
   applyLocale();
   state = "menu";
   showPanel("menu");

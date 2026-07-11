@@ -81,13 +81,19 @@
         </label>
       </header>
 
-      <section id="menuPanel" class="menu-panel">
+      <section id="mainPanel" class="menu-panel main-panel">
         <img class="cover" src="../../assets/animal-hidden-safari-cover.webp" data-fallback-src="../../assets/animal-hidden-safari-cover.png" alt="" />
         <div class="menu-copy">
-          <strong data-ui="chooseStage">Choose Habitat</strong>
+          <strong data-ui="gameTitle">Animal Hidden Safari</strong>
           <span data-ui="menuHint">Find animals blended into each natural habitat.</span>
         </div>
+        <button id="startGameBtn" class="stage-entry-btn" type="button" data-ui="chooseStage">Choose Habitat</button>
+      </section>
+
+      <section id="menuPanel" class="menu-panel stage-panel hidden">
+        <div class="stage-head"><button id="stageBackMainBtn" type="button" aria-label="Back">&larr;</button><strong data-ui="chooseStage">Choose Habitat</strong></div>
         <div id="stageGrid" class="stage-grid" aria-label="Stage list"></div>
+        <div class="stage-ad-reserve" aria-hidden="true"></div>
       </section>
 
       <section id="playPanel" class="play-panel hidden">

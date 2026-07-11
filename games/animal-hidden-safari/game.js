@@ -146,6 +146,9 @@
   const $ = (id) => document.getElementById(id);
   const nodes = {
     localeSelect: $("localeSelect"),
+    mainPanel: $("mainPanel"),
+    startGameBtn: $("startGameBtn"),
+    stageBackMainBtn: $("stageBackMainBtn"),
     menuPanel: $("menuPanel"),
     stageGrid: $("stageGrid"),
     playPanel: $("playPanel"),
@@ -259,6 +262,7 @@
       const button = document.createElement("button");
       button.className = "stage-card";
       button.type = "button";
+      button.dataset.stageIndex = String(index);
       if (stageNo > unlocked) button.classList.add("locked");
       button.innerHTML = `
         <b>${animalImg(stage.targets[0][0], "stage-animal")}</b>
@@ -266,6 +270,7 @@
         <span>${starsFor(stageNo)}${bestLine(stageNo)}</span>
       `;
       button.addEventListener("click", () => {
+        if (nodes.stageGrid.dataset.draggingClick === "1") return;
         if (stageNo > unlocked) {
           showFloatingText(t("locked"), 50, 50);
           playSound("click");
@@ -275,6 +280,43 @@
       });
       nodes.stageGrid.appendChild(button);
     });
+    bindStageDrag();
+  }
+
+  function bindStageDrag() {
+    if (nodes.stageGrid.dataset.dragBound === "1") return;
+    nodes.stageGrid.dataset.dragBound = "1";
+    let drag = null;
+    nodes.stageGrid.addEventListener("pointerdown", (event) => {
+      drag = { id: event.pointerId, x: event.clientX, scrollLeft: nodes.stageGrid.scrollLeft, moved: false };
+    });
+    nodes.stageGrid.addEventListener("pointermove", (event) => {
+      if (!drag || drag.id !== event.pointerId) return;
+      const delta = event.clientX - drag.x;
+      if (Math.abs(delta) > 6) drag.moved = true;
+      if (drag.moved) {
+        event.preventDefault();
+        nodes.stageGrid.dataset.draggingClick = "1";
+        nodes.stageGrid.scrollLeft = drag.scrollLeft - delta;
+      }
+    });
+    const end = (event) => {
+      if (!drag || drag.id !== event.pointerId) return;
+      const moved = drag.moved;
+      drag = null;
+      if (!moved) return;
+      const frame = nodes.stageGrid.getBoundingClientRect();
+      const center = frame.left + frame.width / 2;
+      const nearest = [...nodes.stageGrid.querySelectorAll(".stage-card:not(.locked)")].reduce((best, card) => {
+        const rect = card.getBoundingClientRect();
+        const distance = Math.abs(rect.left + rect.width / 2 - center);
+        return !best || distance < best.distance ? { card, distance } : best;
+      }, null);
+      nearest?.card.scrollIntoView({ block: "nearest", inline: "center", behavior: "smooth" });
+      window.setTimeout(() => delete nodes.stageGrid.dataset.draggingClick, 0);
+    };
+    nodes.stageGrid.addEventListener("pointerup", end);
+    nodes.stageGrid.addEventListener("pointercancel", end);
   }
 
   function showMenu() {
@@ -283,8 +325,22 @@
     nodes.resultPanel.classList.add("hidden");
     nodes.playPanel.classList.add("hidden");
     nodes.menuPanel.classList.remove("hidden");
+    nodes.mainPanel.classList.add("hidden");
     document.body.classList.remove("safari-playing");
+    document.documentElement.classList.add("safari-stage");
+    document.body.classList.add("safari-stage");
     renderStageGrid();
+  }
+
+  function showMain() {
+    stopTimer();
+    acceptingInput = false;
+    nodes.mainPanel.classList.remove("hidden");
+    nodes.menuPanel.classList.add("hidden");
+    nodes.playPanel.classList.add("hidden");
+    nodes.resultPanel.classList.add("hidden");
+    document.documentElement.classList.remove("safari-stage");
+    document.body.classList.remove("safari-stage", "safari-playing");
   }
 
   function startStage(index) {
@@ -298,6 +354,8 @@
     nodes.menuPanel.classList.add("hidden");
     nodes.playPanel.classList.remove("hidden");
     document.body.classList.add("safari-playing");
+    document.documentElement.classList.remove("safari-stage");
+    document.body.classList.remove("safari-stage");
     nodes.scene.dataset.theme = stages[index].theme || "sunny";
     renderScene();
     renderTargetList();
@@ -534,6 +592,8 @@
       window.dispatchEvent(new CustomEvent("wonder:locale-change", { detail: { locale } }));
     });
     nodes.backToStagesBtn.addEventListener("click", showMenu);
+    nodes.startGameBtn.addEventListener("click", showMenu);
+    nodes.stageBackMainBtn.addEventListener("click", showMain);
     nodes.resultStagesBtn.addEventListener("click", showMenu);
     nodes.retryBtn.addEventListener("click", () => startStage(currentStage));
     nodes.nextStageBtn.addEventListener("click", () => startStage(Math.min(stages.length - 1, currentStage + 1)));
@@ -542,6 +602,6 @@
 
   localizeStatic();
   bind();
-  showMenu();
+  showMain();
   scheduleAssetPreload();
 })();
