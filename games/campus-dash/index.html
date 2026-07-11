@@ -63,7 +63,7 @@
   <body>
     <main class="dash-game" data-play-viewport>
       <header class="topbar">
-        <a class="home-link" href="/" aria-label="Back to lobby">&larr;</a>
+        <a class="home-link" href="/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
         <div>
           <p>WeightPlay</p>
           <h1 id="titleText">Safari Dash</h1>
@@ -77,21 +77,24 @@
         </label>
       </header>
 
+      <section id="mainPanel" class="main-panel">
+        <img class="main-poster" src="../../assets/campus-dash-cover.webp" alt="" />
+        <section id="startPanel" class="panel">
+          <strong id="startTitle">Swipe. Dodge. Score.</strong>
+          <p id="startText">Move left and right, collect stars, and survive 60 seconds.</p>
+          <div id="controlChips" class="control-chips" aria-label="Controls"></div>
+          <button id="startBtn" type="button">Start</button>
+        </section>
+      </section>
+
       <section id="hud" class="hud hidden">
         <div><span id="scoreLabel">Score</span><strong id="scoreText">0</strong></div>
         <div><span id="timeLabel">Time</span><strong id="timeText">60</strong></div>
         <div><span id="comboLabel">Combo</span><strong id="comboText">x1</strong></div>
       </section>
 
-      <section class="canvas-wrap">
+      <section class="canvas-wrap hidden">
         <canvas id="gameCanvas" width="720" height="960" aria-label="Safari Dash game"></canvas>
-      </section>
-
-      <section id="startPanel" class="panel">
-        <strong id="startTitle">Swipe. Dodge. Score.</strong>
-        <p id="startText">Move left and right, collect stars, and survive 60 seconds.</p>
-        <div id="controlChips" class="control-chips" aria-label="Controls"></div>
-        <button id="startBtn" type="button">Start</button>
       </section>
 
       <section id="resultPanel" class="panel hidden">
@@ -110,6 +113,7 @@
         </div>
       </div>
     </main>
+    <div id="battleAdReserve" class="battle-ad-reserve hidden" aria-hidden="true"></div>
 
     <script src="../../src/site-config.js?v=20260710-savanna-premium-shell1"></script>
     <script src="../../src/version.js?v=20260701-version2"></script>

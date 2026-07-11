@@ -2,6 +2,10 @@
   const localeSelect = document.querySelector("#localeSelect");
   const languageLabel = document.querySelector("#languageLabel");
   const titleText = document.querySelector("#titleText");
+  const mainPanel = document.querySelector("#mainPanel");
+  const mainTitle = document.querySelector("#mainTitle");
+  const mainIntro = document.querySelector("#mainIntro");
+  const startBtn = document.querySelector("#startBtn");
   const stageSelectPanel = document.querySelector("#stageSelectPanel");
   const stageSelectTitle = document.querySelector("#stageSelectTitle");
   const stageGrid = document.querySelector("#stageGrid");
@@ -25,6 +29,7 @@
   const lobbyLink = document.querySelector("#lobbyLink");
   const homeLink = document.querySelector("#homeLink");
   const battleBackBtn = document.querySelector("#battleBackBtn");
+  const stageAdReserve = document.querySelector("#stageAdReserve");
   const battleAdReserve = document.querySelector("#battleAdReserve");
   const loadingPanel = document.querySelector("#loadingPanel");
   const loadingText = document.querySelector("#loadingText");
@@ -393,6 +398,11 @@
     localeSelect.value = locale();
     languageLabel.textContent = t("language");
     titleText.textContent = t("title");
+    mainTitle.textContent = t("title");
+    mainIntro.textContent = locale() === "zh-Hant"
+      ? "把每一種彩色食物放進相同顏色的便當盒，完成全部十二個關卡。"
+      : "Sort each colorful food into the matching lunchbox, then clear all twelve stages.";
+    startBtn.textContent = t("chooseLevel");
     stageSelectTitle.textContent = t("chooseLevel");
     document.querySelector("#scoreLabel").textContent = t("scoreLabel");
     document.querySelector("#roundLabel").textContent = t("roundLabel");
@@ -422,7 +432,7 @@
         loadUnlockedStage();
         loadingPanel.classList.add("hidden");
         window.WonderAnalytics?.track("game_ready", { game_id: GAME_ID });
-        showStageSelect();
+        showMain();
       }
     }
     assets.forEach((src) => {
@@ -433,15 +443,56 @@
     });
   }
 
+  function updateLunchFrame() {
+    if (!document.body.classList.contains("lunch-stage") && !document.body.classList.contains("lunch-playing")) return;
+    const scale = Math.min(Math.max(1, innerWidth - 8) / 390, Math.max(1, innerHeight - 64) / 788);
+    const width = 390 * scale;
+    const height = 788 * scale;
+    document.documentElement.style.setProperty("--lunch-frame-scale", String(scale));
+    document.documentElement.style.setProperty("--lunch-frame-left", `${(innerWidth - width) / 2}px`);
+    document.documentElement.style.setProperty("--lunch-frame-top", `${(innerHeight - 56 - height) / 2}px`);
+    document.documentElement.style.setProperty("--lunch-frame-width", `${width}px`);
+    document.documentElement.style.setProperty("--lunch-frame-height", `${height}px`);
+  }
+
+  function exitSharedPlayViewport() {
+    window.WeightPlayGame?.exitMobileGameMode?.();
+    document.body.classList.remove("weightplay-active-viewport");
+    if (document.fullscreenElement) document.exitFullscreen?.().catch(() => {});
+    if (document.webkitFullscreenElement) document.webkitExitFullscreen?.();
+  }
+
+  window.addEventListener("resize", updateLunchFrame);
+  window.addEventListener("orientationchange", updateLunchFrame);
+
+  function showMain() {
+    document.body.classList.remove("lunch-stage", "lunch-playing");
+    document.body.classList.add("lunch-main");
+    resultPanel.classList.add("hidden");
+    mainPanel.classList.remove("hidden");
+    stageSelectPanel.classList.add("hidden");
+    gameHud.classList.add("hidden");
+    gamePlayContent.classList.add("hidden");
+    stageAdReserve.classList.add("hidden");
+    battleAdReserve.classList.add("hidden");
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  }
+
   function showStageSelect() {
+    document.body.classList.remove("lunch-main");
     document.body.classList.remove("lunch-playing");
     document.body.classList.add("lunch-stage");
     resultPanel.classList.add("hidden");
+    mainPanel.classList.add("hidden");
     gameHud.classList.add("hidden");
     gamePlayContent.classList.add("hidden");
     battleAdReserve.classList.add("hidden");
+    stageAdReserve.classList.remove("hidden");
     stageSelectPanel.classList.remove("hidden");
+    exitSharedPlayViewport();
     renderStageCards();
+    updateLunchFrame();
+    requestAnimationFrame(updateLunchFrame);
   }
 
   function renderStageCards() {
@@ -465,6 +516,10 @@
         return button;
       }),
     );
+    requestAnimationFrame(() => {
+      const unlocked = [...stageGrid.querySelectorAll(".stage-card.unlocked")].at(-1);
+      unlocked?.scrollIntoView({ block: "nearest", inline: "center", behavior: "auto" });
+    });
   }
 
   function getStageBoxes(stage) {
@@ -604,16 +659,20 @@
     state.deck = shuffle(pool).slice(0, stage.rounds);
 
     stageSelectPanel.classList.add("hidden");
+    stageAdReserve.classList.add("hidden");
     resultPanel.classList.add("hidden");
     gameHud.classList.remove("hidden");
     gamePlayContent.classList.remove("hidden");
     battleAdReserve.classList.remove("hidden");
+    exitSharedPlayViewport();
+    updateLunchFrame();
     feedbackText.textContent = t("ready");
     foodCard.style.pointerEvents = "";
 
     setupBoxes(stage);
     updateHUD();
     loadFood();
+    requestAnimationFrame(updateLunchFrame);
     window.WonderSound?.play("click");
     window.WonderAnalytics?.track("game_start", { game_id: GAME_ID, stage: stage.id, locale: locale() });
   }
@@ -781,6 +840,11 @@
   });
   window.addEventListener("wonder:locale-change", translateStaticUI);
 
+  startBtn.addEventListener("click", () => {
+    window.WonderSound?.play("click");
+    showStageSelect();
+  });
+
   againBtn.addEventListener("click", () => {
     window.WonderAnalytics?.track("game_restart", {
       game_id: GAME_ID,
@@ -797,10 +861,10 @@
   battleBackBtn.addEventListener("click", showStageSelect);
 
   homeLink.addEventListener("click", (event) => {
-    if (!stageSelectPanel.classList.contains("hidden")) return;
+    if (document.body.classList.contains("lunch-main")) return;
     event.preventDefault();
     window.WonderSound?.play("click");
-    showStageSelect();
+    showMain();
   });
 
   translateStaticUI();

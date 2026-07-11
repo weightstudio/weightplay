@@ -80,6 +80,45 @@ a {
   font-size: 28px;
   font-weight: 1000;
   text-decoration: none;
+  gap: 4px;
+}
+
+.home-link img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.main-panel {
+  grid-row: 2 / -1;
+  display: grid;
+  gap: 14px;
+  min-height: 0;
+  overflow: visible;
+}
+
+.main-poster {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.72);
+  border-radius: 8px;
+}
+
+body:not(.dash-playing) .dash-game {
+  height: auto;
+  min-height: 100svh;
+  grid-template-rows: 68px auto;
+  overflow: visible;
+}
+
+body:not(.dash-playing) #startPanel {
+  position: static;
+  transform: none;
+  width: min(360px, calc(100% - 34px));
+  justify-self: center;
+  min-height: 230px;
+  animation: none;
 }
 
 .topbar div {
@@ -345,6 +384,69 @@ body.dash-playing .game-page-info {
 
 .hidden {
   display: none !important;
+}
+
+.battle-ad-reserve {
+  position: fixed;
+  z-index: 20;
+  left: var(--dash-frame-left, 4px);
+  top: calc(var(--dash-frame-top, 4px) + var(--dash-frame-height, 780px));
+  width: var(--dash-frame-width, calc(100vw - 8px));
+  height: 56px;
+  border-top: 1px dashed rgba(147, 197, 253, 0.4);
+  background: rgba(8, 47, 73, 0.92);
+}
+
+body.dash-playing,
+html:has(body.dash-playing) {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  touch-action: none !important;
+}
+
+body.dash-playing .dash-game,
+body.dash-playing.weightplay-active-viewport .dash-game {
+  position: fixed !important;
+  inset: auto !important;
+  left: var(--dash-frame-left, 4px) !important;
+  top: var(--dash-frame-top, 4px) !important;
+  width: 390px !important;
+  min-width: 390px !important;
+  max-width: 390px !important;
+  height: 788px !important;
+  min-height: 788px !important;
+  max-height: 788px !important;
+  margin: 0 !important;
+  padding: 8px 10px !important;
+  grid-template-rows: 56px 58px minmax(0, 1fr) !important;
+  gap: 8px !important;
+  transform: scale(var(--dash-frame-scale, 1)) !important;
+  transform-origin: top left !important;
+  overflow: hidden !important;
+}
+
+body.dash-playing .topbar {
+  grid-template-columns: 48px minmax(0, 1fr) !important;
+}
+
+body.dash-playing .language-picker,
+body.dash-playing .topbar p,
+body.dash-playing .home-link img,
+body.dash-playing .sound-toggle,
+body.dash-playing .wp-tutorial-button {
+  display: none !important;
+}
+
+body.dash-playing .topbar h1 {
+  font-size: 20px;
+}
+
+body.dash-playing .canvas-wrap {
+  grid-row: 3;
 }
 
 .hud.hidden {

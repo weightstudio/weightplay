@@ -12,6 +12,10 @@
   const timeText = document.querySelector("#timeText");
   const comboText = document.querySelector("#comboText");
   const startPanel = document.querySelector("#startPanel");
+  const mainPanel = document.querySelector("#mainPanel");
+  const canvasWrap = document.querySelector(".canvas-wrap");
+  const battleAdReserve = document.querySelector("#battleAdReserve");
+  const homeLink = document.querySelector(".home-link");
   const startTitle = document.querySelector("#startTitle");
   const startText = document.querySelector("#startText");
   const controlChips = document.querySelector("#controlChips");
@@ -174,19 +178,61 @@
     }, 900);
   }
 
+  function updateDashFrame() {
+    if (!document.body.classList.contains("dash-playing")) return;
+    const scale = Math.min(Math.max(1, innerWidth - 8) / 390, Math.max(1, innerHeight - 64) / 788);
+    const width = 390 * scale;
+    const height = 788 * scale;
+    document.documentElement.style.setProperty("--dash-frame-scale", String(scale));
+    document.documentElement.style.setProperty("--dash-frame-left", `${(innerWidth - width) / 2}px`);
+    document.documentElement.style.setProperty("--dash-frame-top", `${(innerHeight - 56 - height) / 2}px`);
+    document.documentElement.style.setProperty("--dash-frame-width", `${width}px`);
+    document.documentElement.style.setProperty("--dash-frame-height", `${height}px`);
+  }
+
+  function exitSharedPlayViewport() {
+    window.WeightPlayGame?.exitMobileGameMode?.();
+    document.body.classList.remove("weightplay-active-viewport", "wp-mobile-game-mode");
+    if (document.fullscreenElement) document.exitFullscreen?.().catch(() => {});
+    if (document.webkitFullscreenElement) document.webkitExitFullscreen?.();
+  }
+
+  function showMain() {
+    state.running = false;
+    document.body.classList.remove("dash-playing");
+    document.querySelector(".dash-game")?.classList.remove("is-playing");
+    document.querySelector(".dash-game")?.setAttribute("data-play-viewport", "");
+    mainPanel.classList.remove("hidden");
+    canvasWrap.classList.add("hidden");
+    hud.classList.add("hidden");
+    resultPanel.classList.add("hidden");
+    battleAdReserve.classList.add("hidden");
+  }
+
+  window.addEventListener("resize", updateDashFrame);
+  window.addEventListener("orientationchange", updateDashFrame);
+
   function startRun() {
     state = makeState();
     state.running = true;
     document.body.classList.add("dash-playing");
     document.querySelector(".dash-game")?.classList.add("is-playing");
-    startPanel.classList.add("hidden");
+    document.querySelector(".dash-game")?.removeAttribute("data-play-viewport");
+    mainPanel.classList.add("hidden");
+    canvasWrap.classList.remove("hidden");
+    battleAdReserve.classList.remove("hidden");
     resultPanel.classList.add("hidden");
     hud.classList.remove("hidden");
     lastTime = performance.now();
     window.WonderSound?.play("click");
-    window.WeightPlayGame?.enterMobileGameMode?.();
+    exitSharedPlayViewport();
+    updateDashFrame();
     window.WonderAnalytics?.track("game_start", { game_id: GAME_ID, locale: locale() });
     requestAnimationFrame(loop);
+    requestAnimationFrame(() => {
+      exitSharedPlayViewport();
+      updateDashFrame();
+    });
   }
 
   function loop(now) {
@@ -702,6 +748,11 @@
   });
   window.addEventListener("wonder:locale-change", renderStaticText);
   startBtn.addEventListener("click", startRun);
+  homeLink.addEventListener("click", (event) => {
+    if (!document.body.classList.contains("dash-playing")) return;
+    event.preventDefault();
+    showMain();
+  });
   againBtn.addEventListener("click", () => {
     window.WonderAnalytics?.track("game_restart", { game_id: GAME_ID, score: state.score, locale: locale() });
     startRun();
