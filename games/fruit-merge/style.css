@@ -1101,6 +1101,83 @@ body.fruit-playing #battleAdReserve {
   background: rgba(15, 25, 40, 0.72);
   pointer-events: none;
 }
+
+/* Phone Battle follows the Expanded Canvas contract; the physics board keeps 720:1040. */
+body.fruit-playing.fruit-expanded-canvas .fixed-game-shell,
+body.fruit-playing.fruit-expanded-canvas #resultPanel.result-panel {
+  width: var(--fruit-battle-width, calc(var(--wp-mobile-vw, 100vw) - 8px));
+  height: var(--fruit-battle-height, calc(var(--wp-mobile-vh, 100dvh) - 64px));
+  min-height: 0;
+  transform: none;
+}
+
+body.fruit-playing.fruit-expanded-canvas #battleAdReserve {
+  left: 4px;
+  right: 4px;
+  top: auto;
+  bottom: 4px;
+  width: auto;
+}
+
+body.fruit-playing.fruit-expanded-canvas .fixed-game-shell {
+  grid-template-rows: 42px 42px minmax(0, 1fr) 36px;
+}
+
+body.fruit-playing.fruit-expanded-canvas .combo-box {
+  display: none;
+}
+
+body.fruit-playing.fruit-expanded-canvas .scorebar {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 40px;
+}
+
+body.fruit-playing.fruit-expanded-canvas #nextFruitText {
+  width: 36px;
+  height: 36px;
+}
+
+@media (max-height: 430px) and (pointer: coarse) {
+  body.fruit-playing.fruit-expanded-canvas .fixed-game-shell {
+    grid-template-rows: 38px 54px minmax(0, 1fr) 30px;
+    padding: 4px 6px;
+    gap: 3px;
+  }
+
+  body.fruit-playing.fruit-expanded-canvas .scorebar {
+    margin-left: 42px;
+  }
+
+  body.fruit-playing.fruit-expanded-canvas .scorebar div {
+    padding: 3px 6px;
+  }
+
+  body.fruit-playing.fruit-expanded-canvas #nextFruitText {
+    width: 30px;
+    height: 30px;
+  }
+
+  body.fruit-playing.fruit-expanded-canvas .merge-goal {
+    height: 54px;
+    padding: 4px 8px;
+    grid-template-columns: 34px minmax(0, 1fr);
+  }
+
+  body.fruit-playing.fruit-expanded-canvas .goal-token {
+    width: 34px;
+    height: 34px;
+  }
+
+  body.fruit-playing.fruit-expanded-canvas .goal-text,
+  body.fruit-playing.fruit-expanded-canvas .aim-coach {
+    display: none !important;
+  }
+
+  body.fruit-playing.fruit-expanded-canvas .controls button {
+    min-height: 30px;
+    height: 30px;
+    padding: 2px 8px;
+  }
+}
 html,
 body,
 button,

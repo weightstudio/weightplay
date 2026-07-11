@@ -351,19 +351,25 @@
     const logicalWidth = 390;
     const logicalHeight = 788;
     const reserveHeight = 56;
-    const scale = Math.max(0.1, Math.min((innerWidth - 8) / logicalWidth, (innerHeight - reserveHeight - 8) / logicalHeight));
-    const width = logicalWidth * scale;
-    const contentHeight = logicalHeight * scale;
+    const viewportWidth = visualViewport?.width || innerWidth;
+    const viewportHeight = visualViewport?.height || innerHeight;
+    const expandedCanvas = matchMedia("(pointer: coarse)").matches || navigator.maxTouchPoints > 0;
+    const scale = expandedCanvas ? 1 : Math.max(0.1, Math.min((viewportWidth - 8) / logicalWidth, (viewportHeight - reserveHeight - 8) / logicalHeight));
+    const width = expandedCanvas ? viewportWidth - 8 : logicalWidth * scale;
+    const contentHeight = expandedCanvas ? viewportHeight - reserveHeight - 8 : logicalHeight * scale;
     const root = document.documentElement.style;
+    document.body.classList.toggle("fruit-expanded-canvas", expandedCanvas);
     root.setProperty("--fruit-battle-scale", String(scale));
     root.setProperty("--fruit-battle-width", `${width}px`);
     root.setProperty("--fruit-battle-height", `${contentHeight}px`);
-    root.setProperty("--fruit-battle-left", `${Math.max(0, (innerWidth - width) / 2)}px`);
-    root.setProperty("--fruit-battle-top", `${Math.max(0, (innerHeight - contentHeight - reserveHeight) / 2)}px`);
+    root.setProperty("--fruit-battle-left", `${Math.max(0, (viewportWidth - width) / 2)}px`);
+    root.setProperty("--fruit-battle-top", expandedCanvas ? "4px" : `${Math.max(0, (viewportHeight - contentHeight - reserveHeight) / 2)}px`);
   }
 
   addEventListener("resize", updateFruitBattleScale, { passive: true });
   addEventListener("orientationchange", updateFruitBattleScale, { passive: true });
+  visualViewport?.addEventListener("resize", updateFruitBattleScale, { passive: true });
+  visualViewport?.addEventListener("scroll", updateFruitBattleScale, { passive: true });
 
   function updateHud() {
     scoreText.textContent = score;
