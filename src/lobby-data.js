@@ -576,6 +576,7 @@ window.WONDER_LOBBY.games.push({
   ages: ["13"],
   ageLabel: { en: "13+", "zh-Hant": "13+" },
   href: "games/animal-gearpack-expedition/",
+  internalTrial: "internal-test.html?trial=1",
   description: {
     en: "Arrange Rux's equipment inside a travel pack, connect item synergies, and prepare for short Gearwood expeditions.",
     "zh-Hant": "把魯克斯的裝備排進旅行行囊，連結道具效果，準備展開短程齒輪森林遠征。",
