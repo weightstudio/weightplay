@@ -56,8 +56,16 @@ select {
 
 .home-link {
   display: grid;
+  grid-auto-flow: column;
   place-items: center;
+  gap: 4px;
   font-size: 1.4rem;
+}
+
+.home-link img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
 }
 
 .title-block p,
@@ -172,12 +180,17 @@ select {
 }
 
 .stage-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  display: flex;
   gap: 10px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 4px max(28px, calc((100% - 264px) / 2)) 12px;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
 }
 
 .stage-card {
+  flex: 0 0 264px;
   min-height: 94px;
   border: 0;
   border-radius: 18px;
@@ -189,6 +202,8 @@ select {
   color: #17314f;
   box-shadow: 0 10px 22px rgba(38, 79, 113, 0.17);
   font-weight: 900;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
 }
 
 .stage-card.locked {
@@ -231,7 +246,9 @@ select {
 }
 
 .soft-btn {
-  padding: 0 14px;
+  width: 52px;
+  padding: 0;
+  font-size: 24px;
 }
 
 .progress-line {
@@ -372,6 +389,83 @@ select {
 
 .hidden {
   display: none !important;
+}
+
+.battle-ad-reserve {
+  position: fixed;
+  z-index: 20;
+  left: var(--shape-frame-left, 4px);
+  top: calc(var(--shape-frame-top, 4px) + var(--shape-frame-height, 780px));
+  width: var(--shape-frame-width, calc(100vw - 8px));
+  height: 56px;
+  border-top: 1px dashed rgba(23, 49, 79, 0.28);
+  background: rgba(217, 242, 255, 0.94);
+}
+
+html:has(body.shape-playing),
+body.shape-playing {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  touch-action: none !important;
+}
+
+body.shape-playing .shape-game,
+body.shape-playing.weightplay-active-viewport .shape-game {
+  position: fixed !important;
+  inset: auto !important;
+  left: var(--shape-frame-left, 4px) !important;
+  top: var(--shape-frame-top, 4px) !important;
+  width: 390px !important;
+  min-width: 390px !important;
+  max-width: 390px !important;
+  height: 788px !important;
+  min-height: 788px !important;
+  max-height: 788px !important;
+  margin: 0 !important;
+  padding: 8px 10px !important;
+  gap: 8px !important;
+  transform: scale(var(--shape-frame-scale, 1)) !important;
+  transform-origin: top left !important;
+  overflow: hidden !important;
+}
+
+body.shape-playing .topbar {
+  flex: 0 0 52px;
+  min-height: 52px;
+  grid-template-columns: 44px minmax(0, 1fr) !important;
+}
+
+body.shape-playing .title-block p,
+body.shape-playing .language-picker,
+body.shape-playing .home-link img,
+body.shape-playing .game-page-info,
+body.shape-playing .wp-tutorial-button,
+body.shape-playing .sound-toggle {
+  display: none !important;
+}
+
+body.shape-playing .play-panel {
+  grid-template-rows: 52px 270px 1fr 32px;
+  min-height: 0;
+  gap: 8px;
+  overflow: hidden;
+}
+
+body.shape-playing .train-track {
+  min-height: 0;
+  height: 270px;
+}
+
+body.shape-playing .passenger-area {
+  min-height: 0;
+}
+
+body.shape-playing .passenger {
+  width: 142px;
 }
 
 .loading-panel,

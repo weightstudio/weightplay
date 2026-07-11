@@ -2562,4 +2562,10 @@ body.zoo-playing .care-panel {
     display: grid !important;
     padding-bottom: 0 !important;
   }
+
+  body.zoo-playing .savanna-stage {
+    background-size: auto, cover !important;
+    background-position: center, center !important;
+    background-repeat: no-repeat !important;
+  }
 }

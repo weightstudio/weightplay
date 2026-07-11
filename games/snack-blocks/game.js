@@ -165,6 +165,7 @@
     board: document.getElementById("board"),
     hintText: document.getElementById("hintText"),
     resultPanel: document.getElementById("resultPanel"),
+    battleAdReserve: document.getElementById("battleAdReserve"),
     resultTitle: document.getElementById("resultTitle"),
     resultText: document.getElementById("resultText"),
     resultStars: document.getElementById("resultStars"),
@@ -412,6 +413,10 @@
       button.addEventListener("click", () => startStage(index));
       nodes.stageGrid.append(button);
     });
+    requestAnimationFrame(() => {
+      const unlockedCard = [...nodes.stageGrid.querySelectorAll(".stage-card:not(.locked)")].at(-1);
+      unlockedCard?.scrollIntoView({ block: "nearest", inline: "center", behavior: "auto" });
+    });
   }
 
   function renderBoard(dropMap = new Map()) {
@@ -655,6 +660,38 @@
     trySwap(target);
   }
 
+  function updateSnackFrame() {
+    if (!document.body.classList.contains("snack-playing")) return;
+    const scale = Math.min(Math.max(1, innerWidth - 8) / 390, Math.max(1, innerHeight - 64) / 788);
+    const width = 390 * scale;
+    const height = 788 * scale;
+    document.documentElement.style.setProperty("--snack-frame-scale", String(scale));
+    document.documentElement.style.setProperty("--snack-frame-left", `${(innerWidth - width) / 2}px`);
+    document.documentElement.style.setProperty("--snack-frame-top", `${(innerHeight - 56 - height) / 2}px`);
+    document.documentElement.style.setProperty("--snack-frame-width", `${width}px`);
+    document.documentElement.style.setProperty("--snack-frame-height", `${height}px`);
+    const shell = document.querySelector(".snack-game");
+    shell?.style.setProperty("position", "fixed", "important");
+    shell?.style.setProperty("inset", "auto", "important");
+    shell?.style.setProperty("left", `${(innerWidth - width) / 2}px`, "important");
+    shell?.style.setProperty("top", `${(innerHeight - 56 - height) / 2}px`, "important");
+    shell?.style.setProperty("width", "390px", "important");
+    shell?.style.setProperty("height", "788px", "important");
+    shell?.style.setProperty("min-height", "788px", "important");
+    shell?.style.setProperty("transform", `scale(${scale})`, "important");
+    shell?.style.setProperty("transform-origin", "top left", "important");
+  }
+
+  function exitSharedPlayViewport() {
+    window.WeightPlayGame?.exitMobileGameMode?.();
+    document.body.classList.remove("weightplay-active-viewport", "wp-mobile-game-mode");
+    if (document.fullscreenElement) document.exitFullscreen?.().catch(() => {});
+    if (document.webkitFullscreenElement) document.webkitExitFullscreen?.();
+  }
+
+  window.addEventListener("resize", updateSnackFrame);
+  window.addEventListener("orientationchange", updateSnackFrame);
+
   function startStage(index) {
     if (index >= loadUnlocked()) return;
     window.WonderSound?.unlock();
@@ -674,14 +711,21 @@
     nodes.hud.classList.remove("hidden");
     nodes.playPanel.classList.remove("hidden");
     document.body.classList.add("snack-playing");
+    document.querySelector(".snack-game")?.removeAttribute("data-play-viewport");
+    nodes.battleAdReserve.classList.remove("hidden");
     updateHud();
     renderBoard();
     nodes.hintText.textContent = t("hint");
-    window.WeightPlayGame?.enterMobileGameMode?.();
+    exitSharedPlayViewport();
+    updateSnackFrame();
     window.WonderAnalytics?.track("game_start", {
       game_id: GAME_ID,
       stage: activeStage().id,
       goal: activeStage().goal,
+    });
+    requestAnimationFrame(() => {
+      exitSharedPlayViewport();
+      updateSnackFrame();
     });
   }
 
@@ -709,7 +753,6 @@
     nodes.nextBtn.classList.toggle("hidden", !cleared || stage.id >= stages.length);
     nodes.hud.classList.add("hidden");
     nodes.playPanel.classList.add("hidden");
-    document.body.classList.remove("snack-playing");
     nodes.resultPanel.classList.remove("hidden");
     window.WonderSound?.play(cleared ? "win" : "wrong");
     window.WonderAnalytics?.track("game_complete", {
@@ -758,6 +801,8 @@
     nodes.resultPanel.classList.add("hidden");
     nodes.menuPanel.classList.remove("hidden");
     document.body.classList.remove("snack-playing");
+    document.querySelector(".snack-game")?.setAttribute("data-play-viewport", "");
+    nodes.battleAdReserve.classList.add("hidden");
     renderStageGrid();
     window.WonderAnalytics?.track("game_menu", { game_id: GAME_ID });
   }

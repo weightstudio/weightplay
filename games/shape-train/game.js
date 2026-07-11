@@ -119,6 +119,7 @@
     loadingPanel: $("loadingPanel"),
     loadingText: $("loadingText"),
     loadingFill: $("loadingFill"),
+    battleAdReserve: $("battleAdReserve"),
   };
 
   let locale = localStorage.getItem(localeKey) || "en";
@@ -210,13 +211,41 @@
       });
       nodes.stageGrid.appendChild(button);
     });
+    requestAnimationFrame(() => {
+      const available = [...nodes.stageGrid.querySelectorAll(".stage-card:not(.locked)")].at(-1);
+      available?.scrollIntoView({ block: "nearest", inline: "center", behavior: "auto" });
+    });
   }
+
+  function updateShapeFrame() {
+    if (!document.body.classList.contains("shape-playing")) return;
+    const scale = Math.min(Math.max(1, innerWidth - 8) / 390, Math.max(1, innerHeight - 64) / 788);
+    const width = 390 * scale;
+    const height = 788 * scale;
+    document.documentElement.style.setProperty("--shape-frame-scale", String(scale));
+    document.documentElement.style.setProperty("--shape-frame-left", `${(innerWidth - width) / 2}px`);
+    document.documentElement.style.setProperty("--shape-frame-top", `${(innerHeight - 56 - height) / 2}px`);
+    document.documentElement.style.setProperty("--shape-frame-width", `${width}px`);
+    document.documentElement.style.setProperty("--shape-frame-height", `${height}px`);
+  }
+
+  function exitSharedPlayViewport() {
+    window.WeightPlayGame?.exitMobileGameMode?.();
+    document.body.classList.remove("weightplay-active-viewport", "wp-mobile-game-mode");
+    if (document.fullscreenElement) document.exitFullscreen?.().catch(() => {});
+    if (document.webkitFullscreenElement) document.webkitExitFullscreen?.();
+  }
+
+  window.addEventListener("resize", updateShapeFrame);
+  window.addEventListener("orientationchange", updateShapeFrame);
 
   function showMenu() {
     nodes.menuPanel.classList.remove("hidden");
     nodes.playPanel.classList.add("hidden");
     nodes.resultPanel.classList.add("hidden");
     document.body.classList.remove("shape-playing");
+    document.querySelector(".shape-game")?.setAttribute("data-play-viewport", "");
+    nodes.battleAdReserve.classList.add("hidden");
     selectedPassenger = false;
     renderStageGrid();
   }
@@ -240,11 +269,18 @@
     nodes.playPanel.classList.remove("hidden");
     nodes.resultPanel.classList.add("hidden");
     document.body.classList.add("shape-playing");
+    document.querySelector(".shape-game")?.removeAttribute("data-play-viewport");
+    nodes.battleAdReserve.classList.remove("hidden");
     renderCars();
     renderTask();
-    window.WeightPlayGame?.enterMobileGameMode?.();
+    exitSharedPlayViewport();
+    updateShapeFrame();
     playSound("start");
     track("game_start", { level: index + 1 });
+    requestAnimationFrame(() => {
+      exitSharedPlayViewport();
+      updateShapeFrame();
+    });
   }
 
   function renderCars() {
