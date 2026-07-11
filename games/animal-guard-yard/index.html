@@ -68,7 +68,7 @@
   <body>
     <main class="yard-game">
       <header class="topbar">
-        <a class="home-link" href="/" aria-label="Back to lobby">&larr;</a>
+        <a class="home-link" href="/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
         <div class="title-block">
           <p>WeightPlay</p>
           <h1 data-ui="gameTitle">Animal Guard Yard</h1>
@@ -128,7 +128,7 @@
         <div class="fixed-game-shell play-area" aria-label="Animal Guard Yard fixed game screen">
           <div class="play-head">
             <button id="backToStagesBtn" class="play-return" type="button" aria-label="Back to stages" data-ui-aria-label="stages">
-              <img src="../../assets/weightplay-logo.png" alt="" draggable="false" />
+              <span aria-hidden="true">&larr;</span>
               <span class="sr-only" data-ui="stages">Stages</span>
             </button>
             <div class="resource-pill" aria-label="Sun energy"><span class="hud-icon sun-icon" aria-hidden="true"></span><b id="energyText">0</b></div>
@@ -144,6 +144,7 @@
             <div id="dangerAlert" class="danger-alert hidden" aria-live="polite">Danger!</div>
           </div>
           <div id="hintText" class="hint-text" aria-live="polite"></div>
+          <div class="battle-ad-reserve" aria-hidden="true"></div>
         </div>
       </section>
 
@@ -156,6 +157,7 @@
           <button id="resultStagesBtn" type="button" data-ui="stages">Stages</button>
           <a href="/" data-ui="lobby">Lobby</a>
         </div>
+        <div class="battle-ad-reserve result-ad-reserve" aria-hidden="true"></div>
       </div>
 
       <div id="loadingPanel" class="loading-panel">

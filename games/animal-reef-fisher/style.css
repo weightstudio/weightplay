@@ -1032,7 +1032,7 @@ canvas {
     position: fixed;
     inset: 0;
     display: grid;
-    grid-template-rows: 50px minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr);
     width: 100vw;
     height: var(--wp-mobile-vh, 100svh);
     min-height: var(--wp-mobile-vh, 100svh);
@@ -1042,10 +1042,7 @@ canvas {
   }
 
   body.reef-fisher-playing .topbar {
-    grid-template-columns: 42px minmax(0, 1fr) minmax(116px, 34vw);
-    gap: 8px;
-    min-height: 0;
-    margin: 0;
+    display: none;
   }
 
   body.reef-fisher-playing .back-btn {
@@ -1093,13 +1090,13 @@ canvas {
   body.reef-fisher-playing #gamePanel.game-panel,
   body.wp-mobile-game-mode.reef-fisher-playing #gamePanel.game-panel.weightplay-active-viewport {
     display: grid;
-    grid-template-rows: 60px minmax(0, 1fr) 54px 154px;
+    grid-template-rows: 60px minmax(0, 1fr) 54px 154px 56px;
     gap: 6px;
     width: calc(100vw - 16px) !important;
     max-width: calc(100vw - 16px) !important;
-    height: calc(var(--wp-mobile-vh, 100svh) - 54px - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
+    height: calc(var(--wp-mobile-vh, 100svh) - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
     min-height: 0;
-    max-height: calc(var(--wp-mobile-vh, 100svh) - 54px - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
+    max-height: calc(var(--wp-mobile-vh, 100svh) - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
     margin: 0 !important;
     padding: 8px;
     overflow: hidden;
@@ -1124,6 +1121,14 @@ canvas {
     padding: 5px;
     border-radius: 13px;
     font-size: 0.74rem;
+  }
+
+  body.reef-fisher-playing .hud-row .play-return {
+    width: 44px;
+    min-width: 44px;
+    padding: 0;
+    font-size: 1.45rem;
+    line-height: 1;
   }
 
   body.reef-fisher-playing .hud-row div {
@@ -1296,21 +1301,28 @@ canvas {
   body.reef-fisher-playing .hint {
     display: none;
   }
+
+  body.reef-fisher-playing .battle-ad-reserve {
+    min-height: 56px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(3, 30, 42, 0.38);
+    pointer-events: none;
+  }
 }
 
 @media (max-width: 380px), (pointer: coarse) and (max-width: 430px) {
   body.reef-fisher-playing .reef-app {
-    grid-template-rows: 44px minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr);
     padding-inline: 6px;
   }
 
   body.reef-fisher-playing #gamePanel.game-panel,
   body.wp-mobile-game-mode.reef-fisher-playing #gamePanel.game-panel.weightplay-active-viewport {
-    grid-template-rows: 54px minmax(0, 1fr) 48px 136px;
+    grid-template-rows: 54px minmax(0, 1fr) 48px 136px 56px;
     width: calc(100vw - 12px) !important;
     max-width: calc(100vw - 12px) !important;
-    height: calc(var(--wp-mobile-vh, 100svh) - 48px - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
-    max-height: calc(var(--wp-mobile-vh, 100svh) - 48px - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
+    height: calc(var(--wp-mobile-vh, 100svh) - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
+    max-height: calc(var(--wp-mobile-vh, 100svh) - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
     padding: 6px;
   }
 

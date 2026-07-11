@@ -276,7 +276,7 @@
   function show(panel) {
     [nodes.menuPanel, nodes.gamePanel, nodes.upgradePanel, nodes.resultPanel].forEach((node) => node.classList.add("is-hidden"));
     panel.classList.remove("is-hidden");
-    document.body.classList.toggle("orb-fortress-playing", panel === nodes.gamePanel || panel === nodes.upgradePanel);
+    document.body.classList.toggle("orb-fortress-playing", panel !== nodes.menuPanel);
   }
 
   function setLocale(next) {
@@ -288,6 +288,8 @@
     document.querySelectorAll("[data-ui]").forEach((node) => {
       node.textContent = t(node.dataset.ui);
     });
+    nodes.mapBtn.setAttribute("aria-label", t("raidMap"));
+    nodes.resultMenuBtn.setAttribute("aria-label", t("raidMap"));
     updatePageMeta();
     nodes.localeSelect.value = locale;
     renderMenu();

@@ -67,7 +67,7 @@
   <body>
     <main class="safari-game" data-play-viewport>
       <header class="topbar">
-        <a class="home-link" href="/" aria-label="Back to lobby">&larr;</a>
+        <a class="home-link" href="/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
         <div class="title-block">
           <p>WeightPlay</p>
           <h1 data-ui="gameTitle">Animal Hidden Safari</h1>
@@ -92,7 +92,7 @@
 
       <section id="playPanel" class="play-panel hidden">
         <div class="play-head">
-          <button id="backToStagesBtn" class="soft-btn" type="button" data-ui="stages">Habitats</button>
+          <button id="backToStagesBtn" class="play-return" type="button" aria-label="Back to habitats">&larr;</button>
           <div class="progress-card">
             <span id="stageText">Stage 1</span>
             <div><i id="progressFill"></i></div>
@@ -105,14 +105,15 @@
           <div id="floatLayer" class="float-layer"></div>
         </div>
 
-        <div class="target-panel">
+          <div class="target-panel">
           <div>
             <strong data-ui="findList">Find These</strong>
             <span class="target-status"><b id="remainingText"></b><span id="timerText">0:00</span></span>
           </div>
           <div id="targetList" class="target-list"></div>
-        </div>
-      </section>
+          </div>
+          <div class="ad-reserve" aria-hidden="true"></div>
+        </section>
 
       <div id="resultPanel" class="result-panel hidden">
         <div class="result-card">

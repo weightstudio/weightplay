@@ -57,8 +57,11 @@ select {
 
 .back-btn {
   display: grid;
+  grid-template-columns: 16px 28px;
+  gap: 4px;
   place-items: center;
-  width: 54px;
+  width: 58px;
+  min-height: 44px;
   height: 54px;
   border-radius: 16px;
   color: #281704;
@@ -67,6 +70,12 @@ select {
   font-weight: 900;
   background: linear-gradient(#fff7af, #f5ad28);
   box-shadow: 0 8px 0 #855219;
+}
+
+.back-btn img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
 }
 
 .brand span,
@@ -354,13 +363,29 @@ body.orb-fortress-playing .game-page-info {
   margin-top: 14px;
 }
 
+.play-return {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  min-width: 48px;
+  height: 48px;
+  padding: 0;
+  font-size: 1.45rem;
+  line-height: 1;
+}
+
+.battle-ad-reserve {
+  min-height: 56px;
+  pointer-events: none;
+}
+
 @media (max-width: 700px) {
   .orb-app {
     padding-inline: 10px;
   }
 
   .topbar {
-    grid-template-columns: 52px 1fr;
+    grid-template-columns: 58px minmax(0, 1fr);
   }
 
   .locale {
@@ -368,7 +393,7 @@ body.orb-fortress-playing .game-page-info {
   }
 
   .back-btn {
-    width: 48px;
+    width: 58px;
     height: 48px;
   }
 
@@ -407,5 +432,146 @@ body.orb-fortress-playing .game-page-info {
 
   #gameCanvas {
     max-height: 48svh;
+  }
+}
+
+@media (max-width: 760px) {
+  body.orb-fortress-playing {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: var(--wp-mobile-vh, 100svh);
+    min-height: var(--wp-mobile-vh, 100svh);
+    max-height: var(--wp-mobile-vh, 100svh);
+    overflow: hidden;
+    overscroll-behavior: none;
+  }
+
+  body.orb-fortress-playing .orb-app {
+    position: fixed;
+    inset: 0;
+    display: grid;
+    grid-template-rows: minmax(0, 1fr);
+    width: 100vw;
+    height: var(--wp-mobile-vh, 100svh);
+    min-height: var(--wp-mobile-vh, 100svh);
+    max-height: var(--wp-mobile-vh, 100svh);
+    padding: max(4px, env(safe-area-inset-top)) 8px max(4px, env(safe-area-inset-bottom));
+    overflow: hidden;
+  }
+
+  body.orb-fortress-playing .topbar,
+  body.orb-fortress-playing .game-page-info,
+  body.orb-fortress-playing .tutorial-button {
+    display: none !important;
+  }
+
+  body.orb-fortress-playing #gamePanel.game-panel,
+  body.wp-mobile-game-mode.orb-fortress-playing #gamePanel.game-panel.weightplay-active-viewport {
+    display: grid;
+    grid-template-rows: 54px minmax(0, 1fr) 38px 56px;
+    gap: 6px;
+    width: calc(100vw - 16px) !important;
+    max-width: calc(100vw - 16px) !important;
+    height: calc(var(--wp-mobile-vh, 100svh) - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
+    min-height: 0;
+    max-height: calc(var(--wp-mobile-vh, 100svh) - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
+    margin: 0 !important;
+    padding: 8px;
+    overflow: hidden;
+    border-radius: 18px;
+  }
+
+  body.orb-fortress-playing .hud-row {
+    grid-template-columns: 48px repeat(3, minmax(0, 1fr));
+    gap: 5px;
+    min-height: 0;
+  }
+
+  body.orb-fortress-playing .hud-row > div,
+  body.orb-fortress-playing .hud-row > button {
+    min-height: 0;
+    padding: 5px;
+  }
+
+  body.orb-fortress-playing .hud-row span {
+    font-size: 0.58rem;
+    line-height: 1;
+  }
+
+  body.orb-fortress-playing .hud-row strong {
+    overflow: hidden;
+    font-size: clamp(0.74rem, 3vw, 0.92rem);
+    line-height: 1.1;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  body.orb-fortress-playing .hud-row .play-return {
+    width: 42px;
+    min-width: 42px;
+    height: 42px;
+  }
+
+  body.orb-fortress-playing #gameCanvas {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    max-height: none;
+    aspect-ratio: auto;
+    border-radius: 14px;
+  }
+
+  body.orb-fortress-playing .hint {
+    min-height: 0;
+    padding: 5px 8px;
+    overflow: hidden;
+    font-size: 0.66rem;
+    line-height: 1.1;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  body.orb-fortress-playing .battle-ad-reserve {
+    min-height: 56px;
+    border-top: 1px solid rgba(255, 255, 255, 0.18);
+    background: rgba(3, 18, 15, 0.38);
+    pointer-events: none;
+  }
+
+  body.orb-fortress-playing #resultPanel.result-panel {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto minmax(0, 1fr) 56px;
+    gap: 10px;
+    width: calc(100vw - 16px);
+    height: calc(var(--wp-mobile-vh, 100svh) - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+    min-height: 0;
+    margin: 0;
+    padding: 14px;
+    overflow: hidden;
+  }
+
+  body.orb-fortress-playing .result-lion {
+    width: 74px;
+    height: 74px;
+    justify-self: center;
+  }
+
+  body.orb-fortress-playing .result-panel > div:not(.battle-ad-reserve) {
+    min-height: 0;
+    overflow: auto;
+  }
+
+  body.orb-fortress-playing .result-actions {
+    grid-template-columns: minmax(0, 1fr) 48px;
+  }
+
+  body.orb-fortress-playing .result-actions .play-return {
+    justify-self: end;
+  }
+
+  body.orb-fortress-playing .result-ad-reserve {
+    width: 100%;
   }
 }

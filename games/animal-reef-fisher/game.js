@@ -384,6 +384,7 @@
     document.querySelectorAll("[data-ui]").forEach((node) => {
       node.textContent = t(node.dataset.ui);
     });
+    nodes.mapBtn.setAttribute("aria-label", t("reefMap"));
     renderMenu();
     updateTensionGuide();
     updateCatchHud();

@@ -333,6 +333,8 @@
     document.querySelectorAll("[data-ui]").forEach((node) => {
       node.textContent = t(node.dataset.ui);
     });
+    nodes.menuBtn.setAttribute("aria-label", t("menu"));
+    nodes.resultMenuBtn.setAttribute("aria-label", t("backToMenu"));
     updatePageMeta();
     nodes.localeSelect.value = locale;
     renderHud();
@@ -379,7 +381,7 @@
   function show(panel) {
     [nodes.menuPanel, nodes.gamePanel, nodes.resultPanel, nodes.upgradePanel].forEach((node) => node.classList.add("hidden"));
     panel.classList.remove("hidden");
-    document.body?.classList.toggle("crystal-playing", panel === nodes.gamePanel || panel === nodes.upgradePanel);
+    document.body?.classList.toggle("crystal-playing", panel !== nodes.menuPanel);
   }
 
   function scheduleLoop(token = runToken) {

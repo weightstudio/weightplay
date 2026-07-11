@@ -51,7 +51,7 @@
   <body>
     <main class="orb-app">
       <header class="topbar">
-        <a class="back-btn" href="/" aria-label="Back to lobby">&larr;</a>
+        <a class="back-btn" href="/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
         <div class="brand">
           <span>WeightPlay</span>
           <h1 data-ui="title">Animal Orb Fortress</h1>
@@ -90,13 +90,14 @@
 
       <section id="gamePanel" class="panel game-panel is-hidden" data-play-viewport>
         <div class="hud-row">
-          <button id="mapBtn" class="secondary-btn" type="button" data-ui="raidMap">Raid Map</button>
+          <button id="mapBtn" class="secondary-btn play-return" type="button" aria-label="Return to raid map">&larr;</button>
           <div><span data-ui="wave">Wave</span><strong id="waveText">1/3</strong></div>
           <div><span data-ui="core">Core</span><strong id="coreText">20/20</strong></div>
           <div><span data-ui="shots">Shots</span><strong id="shotText">0</strong></div>
         </div>
         <canvas id="gameCanvas" width="960" height="540" aria-label="Animal Orb Fortress arena"></canvas>
         <div id="hintText" class="hint" data-ui="aimHint">Drag from the launcher, preview the bounce path, then release.</div>
+        <div class="battle-ad-reserve" aria-hidden="true"></div>
       </section>
 
       <section id="upgradePanel" class="panel modal-panel is-hidden" aria-live="polite">
@@ -114,9 +115,10 @@
           <p id="skillReportText" class="skill-report"></p>
           <div class="result-actions">
             <button id="retryBtn" class="primary-btn" type="button" data-ui="retry">Retry</button>
-            <button id="resultMenuBtn" class="secondary-btn" type="button" data-ui="raidMap">Raid Map</button>
+            <button id="resultMenuBtn" class="secondary-btn play-return" type="button" aria-label="Return to raid map">&larr;</button>
           </div>
         </div>
+        <div class="battle-ad-reserve result-ad-reserve" aria-hidden="true"></div>
       </section>
     </main>
 

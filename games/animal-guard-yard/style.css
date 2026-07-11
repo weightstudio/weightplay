@@ -51,7 +51,7 @@ select {
 
 .topbar {
   display: grid;
-  grid-template-columns: 46px 1fr auto;
+  grid-template-columns: 58px minmax(0, 1fr) auto;
   gap: 10px;
   align-items: center;
 }
@@ -72,13 +72,18 @@ select {
 
 .home-link {
   display: grid;
-  place-items: center;
+  grid-template-columns: 16px 28px;
+  place-content: center;
+  gap: 4px;
+  width: 58px;
   font-size: 1.45rem;
   overflow: hidden;
 }
 
 .home-link img {
-  display: none !important;
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
 }
 
 .title-block p,
@@ -150,7 +155,8 @@ select {
     clamp(24px, 3.4vw, 34px)
     clamp(58px, 10vw, 92px)
     minmax(0, 1fr)
-    clamp(20px, 3.4vw, 32px);
+    clamp(20px, 3.4vw, 32px)
+    56px;
   gap: clamp(5px, 1vw, 10px);
   overflow: hidden;
   border: 5px solid rgba(93, 58, 31, 0.9);
@@ -1071,6 +1077,11 @@ select {
   text-align: center;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.battle-ad-reserve {
+  min-height: 56px;
+  pointer-events: none;
 }
 
 .yard-board::before,
@@ -2068,7 +2079,7 @@ select {
     height: 100%;
     max-height: none;
     aspect-ratio: auto;
-    grid-template-rows: 34px 24px 66px minmax(0, 1fr) 22px;
+    grid-template-rows: 34px 24px 66px minmax(0, 1fr) 22px 56px;
   }
 
   .yard-game {
@@ -2103,7 +2114,7 @@ select {
     max-height: none;
     aspect-ratio: 3 / 4;
     padding: 5px;
-    grid-template-rows: 32px 22px 62px minmax(0, 1fr) 20px;
+    grid-template-rows: 32px 22px 62px minmax(0, 1fr) 20px 56px;
     gap: 4px;
     border-width: 3px;
     border-radius: 16px;
@@ -2187,6 +2198,12 @@ select {
   .play-return img {
     width: 24px;
     height: 24px;
+  }
+
+  body.guard-yard-playing .battle-ad-reserve {
+    min-height: 56px;
+    border-top: 1px solid rgba(255, 255, 255, 0.22);
+    background: rgba(35, 77, 49, 0.34);
   }
 
   .play-settings img {
