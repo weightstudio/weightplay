@@ -810,6 +810,18 @@ body.guard-yard-stage .menu-tabs { position: static; left: auto; bottom: auto; t
   object-fit: contain;
 }
 
+.play-return .sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 .play-settings img {
   width: min(100%, 25px);
   height: min(100%, 25px);

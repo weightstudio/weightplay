@@ -118,7 +118,6 @@
           <canvas id="gameCanvas" width="1024" height="1024" aria-label="Animal Crystal Survivor playfield"></canvas>
         </div>
         <p id="hintText" class="hint-text" data-ui="playHint">Goal: collect golden keys before 3:00. Grab crystals to level up, then choose upgrades when the cards appear.</p>
-        <div class="battle-ad-reserve" aria-hidden="true"></div>
       </section>
 
       <section id="upgradePanel" class="upgrade-panel hidden" aria-live="polite">
@@ -147,8 +146,9 @@
           <button id="retryBtn" type="button" data-ui="tryAgain">Try Again</button>
           <button id="resultMenuBtn" class="play-return" type="button" aria-label="Back to menu">&larr;</button>
         </div>
-        <div class="battle-ad-reserve result-ad-reserve" aria-hidden="true"></div>
       </section>
+
+      <div id="battleAdReserve" class="battle-ad-reserve result-ad-reserve" aria-hidden="true"></div>
 
       <div id="loadingPanel" class="loading-panel">
         <div class="loading-card">

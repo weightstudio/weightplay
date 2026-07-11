@@ -382,7 +382,27 @@
     [nodes.menuPanel, nodes.gamePanel, nodes.resultPanel, nodes.upgradePanel].forEach((node) => node.classList.add("hidden"));
     panel.classList.remove("hidden");
     document.body?.classList.toggle("crystal-playing", panel !== nodes.menuPanel);
+    updateCrystalBattleScale();
   }
+
+  function updateCrystalBattleScale() {
+    if (!document.body?.classList.contains("crystal-playing")) return;
+    const logicalWidth = 390;
+    const logicalHeight = 788;
+    const reserveHeight = 56;
+    const scale = Math.max(0.1, Math.min((innerWidth - 8) / logicalWidth, (innerHeight - reserveHeight - 8) / logicalHeight));
+    const width = logicalWidth * scale;
+    const contentHeight = logicalHeight * scale;
+    const root = document.documentElement.style;
+    root.setProperty("--crystal-battle-scale", String(scale));
+    root.setProperty("--crystal-battle-width", `${width}px`);
+    root.setProperty("--crystal-battle-content-height", `${contentHeight}px`);
+    root.setProperty("--crystal-battle-left", `${Math.max(0, (innerWidth - width) / 2)}px`);
+    root.setProperty("--crystal-battle-top", `${Math.max(0, (innerHeight - contentHeight - reserveHeight) / 2)}px`);
+  }
+
+  addEventListener("resize", updateCrystalBattleScale, { passive: true });
+  addEventListener("orientationchange", updateCrystalBattleScale, { passive: true });
 
   function scheduleLoop(token = runToken) {
     requestAnimationFrame((now) => loop(now, token));

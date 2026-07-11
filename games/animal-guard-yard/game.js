@@ -562,6 +562,7 @@
 
   function localizeStatic() {
     document.documentElement.lang = locale === "zh-Hant" ? "zh-Hant" : "en";
+    document.title = `${t("gameTitle")} - WeightPlay`;
     document.querySelectorAll("[data-ui]").forEach((node) => {
       node.textContent = t(node.dataset.ui);
     });

@@ -1504,11 +1504,35 @@
     nodes.menuPanel.classList.add("hidden");
     nodes.gamePanel.classList.remove("hidden");
     nodes.battleAdReserve.classList.remove("hidden");
+    updateZooBattleScale();
     applyOffline();
     render();
     requestAnimationFrame(render);
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
     window.WonderAnalytics?.track("game_start", { game_id: GAME_ID });
+  }
+
+  function updateZooBattleScale() {
+    if (!document.body.classList.contains("zoo-playing")) return;
+    const logicalWidth = 390;
+    const logicalHeight = 788;
+    const reserveHeight = 56;
+    const gutter = 8;
+    const scale = Math.max(0.1, Math.min((window.innerWidth - gutter) / logicalWidth, (window.innerHeight - reserveHeight - gutter) / logicalHeight));
+    const width = logicalWidth * scale;
+    const contentHeight = logicalHeight * scale;
+    const totalHeight = contentHeight + reserveHeight;
+    const rootStyle = document.documentElement.style;
+    rootStyle.setProperty("--zoo-battle-scale", String(scale));
+    rootStyle.setProperty("--zoo-battle-width", `${width}px`);
+    rootStyle.setProperty("--zoo-battle-content-height", `${contentHeight}px`);
+    rootStyle.setProperty("--zoo-battle-left", `${Math.max(0, (window.innerWidth - width) / 2)}px`);
+    rootStyle.setProperty("--zoo-battle-top", `${Math.max(0, (window.innerHeight - totalHeight) / 2)}px`);
+    nodes.gamePanel.style.setProperty("width", `${logicalWidth}px`, "important");
+    nodes.gamePanel.style.setProperty("max-width", "none", "important");
+    nodes.gamePanel.style.setProperty("height", `${logicalHeight}px`, "important");
+    nodes.gamePanel.style.setProperty("max-height", "none", "important");
+    nodes.gamePanel.style.setProperty("min-height", `${logicalHeight}px`, "important");
   }
 
   function showMenu() {
@@ -1522,6 +1546,9 @@
     nodes.resultPanel.classList.add("hidden");
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   }
+
+  window.addEventListener("resize", updateZooBattleScale, { passive: true });
+  window.addEventListener("orientationchange", updateZooBattleScale, { passive: true });
 
   function tickPark() {
     if (nodes.gamePanel.classList.contains("hidden")) return;

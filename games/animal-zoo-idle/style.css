@@ -2308,6 +2308,89 @@ body.zoo-playing .animal-shop-card small {
   }
 }
 
+/* Fixed Battle composition: surrounding viewport space letterboxes instead of resizing park UI tracks. */
+html:has(body.zoo-playing),
+body.zoo-playing {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  overscroll-behavior: none;
+}
+
+body.zoo-playing .zoo-app {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  max-width: none;
+  height: 100vh;
+  min-height: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+body.zoo-playing #gamePanel.game-panel {
+  position: fixed;
+  z-index: 50;
+  left: var(--zoo-battle-left, 4px);
+  top: var(--zoo-battle-top, 4px);
+  width: 390px !important;
+  max-width: none !important;
+  height: 788px !important;
+  max-height: none !important;
+  min-height: 788px !important;
+  margin: 0 !important;
+  padding: 4px !important;
+  overflow: hidden !important;
+  transform: scale(var(--zoo-battle-scale, 1));
+  transform-origin: top left;
+  grid-template-rows: 48px minmax(0, 1fr);
+}
+
+body.zoo-playing #offlineNotice.offline-notice {
+  position: absolute;
+  z-index: 8;
+  top: 112px;
+  left: 12px;
+  right: 12px;
+  min-height: 36px;
+  max-height: 36px;
+  margin: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+body.zoo-playing #battleAdReserve.battle-ad-reserve {
+  position: fixed;
+  z-index: 49;
+  left: var(--zoo-battle-left, 4px);
+  top: calc(var(--zoo-battle-top, 4px) + var(--zoo-battle-content-height, 772px));
+  display: block;
+  width: var(--zoo-battle-width, 382px);
+  height: 56px;
+  min-height: 56px;
+  margin: 0;
+  pointer-events: none;
+}
+
+body.zoo-playing #habitatGrid.habitat-grid {
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+body.zoo-playing .zoo-stage-card {
+  height: 100%;
+  grid-template-rows: 42px minmax(0, 1fr) 244px;
+}
+
+body.zoo-playing .care-panel {
+  height: 244px !important;
+  max-height: 244px !important;
+}
+
 /* Keep the park management loop focused: collect, care, upgrade, and recruit. */
 body.zoo-playing .daily-focus-card,
 body.zoo-playing .zoo-task-board,
@@ -2408,4 +2491,52 @@ body.zoo-playing .animal-shop {
     overscroll-behavior: contain;
     touch-action: pan-y;
   }
+}
+
+/* Final fixed-shell precedence over all legacy phone rules above. */
+body.zoo-playing #gamePanel.game-panel {
+  position: fixed !important;
+  left: var(--zoo-battle-left, 4px) !important;
+  top: var(--zoo-battle-top, 4px) !important;
+  width: 390px !important;
+  max-width: none !important;
+  height: 788px !important;
+  max-height: none !important;
+  min-height: 788px !important;
+  margin: 0 !important;
+  padding: 4px !important;
+  overflow: hidden !important;
+  transform: scale(var(--zoo-battle-scale, 1)) !important;
+  transform-origin: top left !important;
+  display: grid !important;
+  grid-template-rows: 48px minmax(0, 1fr) !important;
+  gap: 8px !important;
+}
+
+body.zoo-playing #battleAdReserve.battle-ad-reserve {
+  position: fixed !important;
+  left: var(--zoo-battle-left, 4px) !important;
+  top: calc(var(--zoo-battle-top, 4px) + var(--zoo-battle-content-height, 772px)) !important;
+  display: block !important;
+  width: var(--zoo-battle-width, 382px) !important;
+  height: 56px !important;
+  min-height: 56px !important;
+  margin: 0 !important;
+}
+
+body.zoo-playing .zoo-stage-card {
+  height: 100% !important;
+  grid-template-rows: 42px 274px minmax(0, 1fr) !important;
+}
+
+body.zoo-playing #habitatGrid.habitat-grid {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+
+body.zoo-playing .care-panel {
+  height: 100% !important;
+  max-height: 100% !important;
 }
