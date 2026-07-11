@@ -520,7 +520,13 @@ body.fruit-main #startBtn {
 .result-panel.hidden,
 .loading-panel.hidden,
 .toast.hidden {
-  display: none;
+  display: none !important;
+}
+
+body.fruit-playing #menuPanel {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
 }
 
 .menu-panel > div,

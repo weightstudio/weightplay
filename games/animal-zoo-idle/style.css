@@ -23,11 +23,12 @@
   }
 
   body.zoo-playing .savanna-stage {
-    width: min(94%, clamp(270px, calc(var(--wp-mobile-vh, 100svh) - 340px), 358px)) !important;
+    width: 100% !important;
+    max-width: none !important;
     height: auto !important;
     min-height: 0 !important;
     aspect-ratio: 1 / 1 !important;
-    margin: 0 auto;
+    margin: 0;
   }
 
   body.zoo-playing .care-panel,
@@ -2122,16 +2123,16 @@ body.zoo-playing .animal-shop-card small {
   }
 
   body.zoo-playing .savanna-stage {
-    /* Keep the key management controls visible before optional park details. */
-    width: min(94%, clamp(270px, calc(var(--wp-mobile-vh, 100svh) - 340px), 358px));
-    max-width: 100%;
+    /* Prioritize a readable park scene; management details scroll below it. */
+    width: 100%;
+    max-width: none;
     height: auto;
     min-height: 0;
     max-height: 100%;
     aspect-ratio: 1 / 1;
     flex: 0 0 auto;
     align-self: start;
-    justify-self: center;
+    justify-self: stretch;
     background:
       linear-gradient(180deg, rgba(255,255,255,.08), rgba(61,42,15,.08)),
       #d5f0ae url("../../assets/animal-zoo-idle-stage-bg.webp") center / contain no-repeat;

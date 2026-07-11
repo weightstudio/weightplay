@@ -82,14 +82,20 @@
         </label>
       </header>
 
-      <section id="menuPanel" class="menu-panel">
+      <section id="mainPanel" class="main-entry-panel">
+        <img class="main-cover" src="../../assets/animal-guard-yard-poster.webp" data-fallback-src="../../assets/animal-guard-yard-poster.png" alt="" />
+        <div class="main-entry-copy"><strong data-ui="gameTitle">Animal Guard Yard</strong><span data-ui="menuHint">Place animal guards and stop the wild beasts.</span></div>
+        <button id="startGameBtn" class="main-start-btn" type="button" data-ui="chooseStage">Choose Stage</button>
+      </section>
+
+      <section id="menuPanel" class="menu-panel hidden">
         <div class="menu-shell">
+          <div class="stage-screen-head"><button id="stageBackMainBtn" type="button" aria-label="Back">&larr;</button><strong data-ui="chooseStage">Choose Stage</strong></div>
           <div class="wallet-row" aria-label="Animal Guard Yard wallet">
             <span class="coin-chip"><img src="../../assets/coin.png" alt="" /><b id="coinText">0</b></span>
             <span class="diamond-chip"><img src="../../assets/weightplay-diamond.svg?v=20260704-blue-diamond1" alt="" /><b id="diamondText">0</b></span>
           </div>
           <section id="stageTabPanel" class="menu-tab-panel" data-tab-panel="stages">
-            <img class="cover" src="../../assets/animal-guard-yard-poster.webp" data-fallback-src="../../assets/animal-guard-yard-poster.png" alt="" />
             <div class="menu-copy">
               <strong data-ui="chooseStage">Choose Stage</strong>
               <span data-ui="menuHint">Place animal guards and stop the wild beasts.</span>
@@ -122,6 +128,7 @@
           <button type="button" data-menu-tab="animals"><img src="../../assets/menu-character.png" alt="" /><span data-ui="tabAnimals">Animals</span></button>
           <button type="button" data-menu-tab="shop"><img src="../../assets/upgrade-coin.png" alt="" /><span data-ui="tabShop">Shop</span></button>
         </nav>
+        <div class="stage-ad-reserve" aria-hidden="true"></div>
       </section>
 
       <section id="playPanel" class="fixed-shell-host hidden">

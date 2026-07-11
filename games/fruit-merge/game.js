@@ -311,6 +311,12 @@
   }
 
   function resetGame(showMenu = false, source = "menu") {
+    document.body.classList.toggle("fruit-playing", !showMenu);
+    document.body.classList.toggle("fruit-main", showMenu);
+    resultPanel.classList.add("hidden");
+    menuPanel.classList.toggle("hidden", !showMenu);
+    startBtn.disabled = !showMenu;
+
     initPhysicsWorld();
     fruitsOnBoard = [];
     currentLevel = randomNextLevel();
@@ -327,16 +333,13 @@
     running = !showMenu;
     gameOver = false;
     canDropAt = performance.now() + 300;
-    document.body.classList.toggle("fruit-playing", !showMenu);
-    document.body.classList.toggle("fruit-main", showMenu);
-    resultPanel.classList.add("hidden");
-    menuPanel.classList.toggle("hidden", !showMenu);
     updateHud();
     updateAimCoach();
     if (!showMenu) {
       window.WonderAnalytics?.track?.("game_start", { game_id: GAME_ID, source });
       startAnimationLoop();
     } else {
+      startBtn.disabled = false;
       stopAnimationLoop();
       draw();
     }
@@ -996,6 +999,10 @@
   });
   backToMenuBtn.addEventListener("click", () => resetGame(true, "battle-return"));
   startBtn.addEventListener("click", () => {
+    if (startBtn.disabled) return;
+    menuPanel.classList.add("hidden");
+    document.body.classList.remove("fruit-main");
+    document.body.classList.add("fruit-playing");
     window.WonderSound?.play?.("start");
     resetGame(false, "start");
   });

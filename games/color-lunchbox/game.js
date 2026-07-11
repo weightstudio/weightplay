@@ -24,6 +24,8 @@
   const stageSelectBtn = document.querySelector("#stageSelectBtn");
   const lobbyLink = document.querySelector("#lobbyLink");
   const homeLink = document.querySelector("#homeLink");
+  const battleBackBtn = document.querySelector("#battleBackBtn");
+  const battleAdReserve = document.querySelector("#battleAdReserve");
   const loadingPanel = document.querySelector("#loadingPanel");
   const loadingText = document.querySelector("#loadingText");
   const loadingFill = document.querySelector("#loadingFill");
@@ -432,9 +434,12 @@
   }
 
   function showStageSelect() {
+    document.body.classList.remove("lunch-playing");
+    document.body.classList.add("lunch-stage");
     resultPanel.classList.add("hidden");
     gameHud.classList.add("hidden");
     gamePlayContent.classList.add("hidden");
+    battleAdReserve.classList.add("hidden");
     stageSelectPanel.classList.remove("hidden");
     renderStageCards();
   }
@@ -587,6 +592,8 @@
   }
 
   function startStage(stageIndex) {
+    document.body.classList.remove("lunch-stage");
+    document.body.classList.add("lunch-playing");
     const stage = stages[stageIndex];
     state.stageIndex = stageIndex;
     state.score = 0;
@@ -600,6 +607,7 @@
     resultPanel.classList.add("hidden");
     gameHud.classList.remove("hidden");
     gamePlayContent.classList.remove("hidden");
+    battleAdReserve.classList.remove("hidden");
     feedbackText.textContent = t("ready");
     foodCard.style.pointerEvents = "";
 
@@ -786,6 +794,7 @@
     window.WonderSound?.play("click");
     showStageSelect();
   });
+  battleBackBtn.addEventListener("click", showStageSelect);
 
   homeLink.addEventListener("click", (event) => {
     if (!stageSelectPanel.classList.contains("hidden")) return;

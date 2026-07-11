@@ -280,6 +280,9 @@
     beastGuide: $("beastGuide"),
     masterySummary: $("masterySummary"),
     menuTabs: $("menuTabs"),
+    mainPanel: $("mainPanel"),
+    startGameBtn: $("startGameBtn"),
+    stageBackMainBtn: $("stageBackMainBtn"),
     menuPanel: $("menuPanel"),
     stageGrid: $("stageGrid"),
     playPanel: $("playPanel"),
@@ -668,7 +671,21 @@
       nodes.stageGrid.classList.remove("dragging");
       const moved = drag.moved;
       drag = null;
-      if (moved) window.setTimeout(() => delete nodes.stageGrid.dataset.draggingClick, 0);
+      if (moved) {
+        const gridRect = nodes.stageGrid.getBoundingClientRect();
+        const center = gridRect.left + gridRect.width / 2;
+        const nearest = [...nodes.stageGrid.querySelectorAll(".stage-card:not(.locked)")].reduce((best, card) => {
+          const rect = card.getBoundingClientRect();
+          const distance = Math.abs(rect.left + rect.width / 2 - center);
+          return !best || distance < best.distance ? { card, distance } : best;
+        }, null);
+        if (nearest) {
+          nodes.stageGrid.querySelectorAll(".stage-card").forEach((card) => card.classList.toggle("selected", card === nearest.card));
+          currentStage = Number(nearest.card.dataset.stageIndex) || 0;
+          nearest.card.scrollIntoView({ block: "nearest", inline: "center", behavior: "smooth" });
+        }
+        window.setTimeout(() => delete nodes.stageGrid.dataset.draggingClick, 0);
+      }
     };
 
     nodes.stageGrid.addEventListener("pointerup", endDrag);
@@ -848,6 +865,8 @@
     cancelAnimationFrame(raf);
     document.documentElement.classList.remove("guard-yard-playing");
     document.body.classList.remove("guard-yard-playing");
+    document.documentElement.classList.add("guard-yard-stage");
+    document.body.classList.add("guard-yard-stage");
     if (nodes.spawnWarning) {
       nodes.spawnWarning.remove();
       nodes.spawnWarning = null;
@@ -859,10 +878,22 @@
     projectiles = [];
     cells = [];
     nodes.menuPanel.classList.remove("hidden");
+    nodes.mainPanel.classList.add("hidden");
     nodes.playPanel.classList.add("hidden");
     nodes.resultPanel.classList.add("hidden");
     showMenuTab(activeMenuTab);
     window.requestAnimationFrame(() => window.scrollTo({ top: 0, left: 0, behavior: "auto" }));
+  }
+
+  function showMain() {
+    running = false;
+    cancelAnimationFrame(raf);
+    document.documentElement.classList.remove("guard-yard-playing", "guard-yard-stage");
+    document.body.classList.remove("guard-yard-playing", "guard-yard-stage");
+    nodes.mainPanel.classList.remove("hidden");
+    nodes.menuPanel.classList.add("hidden");
+    nodes.playPanel.classList.add("hidden");
+    nodes.resultPanel.classList.add("hidden");
   }
 
   function startStage(index) {
@@ -888,6 +919,8 @@
     nodes.resultPanel.classList.add("hidden");
     document.documentElement.classList.add("guard-yard-playing");
     document.body.classList.add("guard-yard-playing");
+    document.documentElement.classList.remove("guard-yard-stage");
+    document.body.classList.remove("guard-yard-stage");
     nodes.hintText.textContent = t("select");
     buildBoard(stage);
     renderUnits();
@@ -1582,6 +1615,8 @@
     showMenuTab(button.dataset.menuTab);
     playSound("click");
   });
+  nodes.startGameBtn?.addEventListener("click", showMenu);
+  nodes.stageBackMainBtn?.addEventListener("click", showMain);
   nodes.backToStagesBtn.addEventListener("click", showMenu);
   nodes.pauseBtn.addEventListener("click", showMenu);
   nodes.resultStagesBtn.addEventListener("click", showMenu);
@@ -1594,5 +1629,6 @@
 
   localizeStatic();
   showMenuTab(activeMenuTab);
+  showMain();
   initLoading();
 })();

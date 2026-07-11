@@ -139,6 +139,30 @@ select {
   padding-bottom: calc(104px + env(safe-area-inset-bottom));
 }
 
+.main-entry-panel { width: 100%; display: grid; gap: 14px; justify-items: center; }
+.main-cover { width: min(100%, 620px); aspect-ratio: 4 / 3; object-fit: cover; border-radius: 22px; border: 4px solid rgba(74, 48, 25, 0.82); }
+.main-entry-copy { display: grid; gap: 4px; text-align: center; color: #fff7d1; }
+.main-entry-copy strong { font-size: 1.45rem; }
+.main-start-btn, .stage-screen-head button { min-height: 44px; border: 0; border-radius: 12px; padding: 10px 18px; background: linear-gradient(180deg, #fff8d8, #f7c95d); color: #3b2a17; font-weight: 900; }
+.stage-screen-head { min-height: 46px; display: grid; grid-template-columns: 46px minmax(0, 1fr); align-items: center; gap: 10px; }
+.stage-screen-head button { width: 44px; padding: 0; font-size: 1.45rem; }
+.stage-ad-reserve { width: 100%; height: 56px; min-height: 56px; pointer-events: none; border-top: 1px solid rgba(255, 239, 188, 0.24); background: rgba(8, 16, 12, 0.26); }
+
+html.guard-yard-stage, body.guard-yard-stage { width: 100%; height: var(--wp-mobile-vh, 100dvh); overflow: hidden; }
+body.guard-yard-stage .topbar, body.guard-yard-stage .game-page-info, body.guard-yard-stage .wp-tutorial-button { display: none !important; }
+body.guard-yard-stage .yard-game { width: min(100%, 860px); height: var(--wp-mobile-vh, 100dvh); min-height: 0; padding: 6px 8px; overflow: hidden; }
+body.guard-yard-stage .menu-panel { height: 100%; padding: 0; grid-template-rows: minmax(0, 1fr) 64px 56px; gap: 6px; overflow: hidden; }
+body.guard-yard-stage .menu-shell { min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+body.guard-yard-stage .menu-tabs { position: static; left: auto; bottom: auto; transform: none; width: 100%; height: 64px; min-height: 64px; }
+
+@media (max-width: 640px) {
+  body.guard-yard-stage .beast-guide { display: none; }
+  body.guard-yard-stage .menu-shell { padding: 8px; gap: 8px; }
+  body.guard-yard-stage .wallet-row span { min-height: 36px; padding-block: 4px; }
+  body.guard-yard-stage .stage-card { flex-basis: 264px; min-height: 154px; }
+  body.guard-yard-stage .stage-grid { padding-inline: calc((100% - 264px) / 2); }
+}
+
 .fixed-shell-host {
   align-content: center;
   justify-items: center;

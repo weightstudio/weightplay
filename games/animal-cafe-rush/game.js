@@ -15,6 +15,7 @@
   function save() { localStorage.setItem(saveKey, JSON.stringify(profile)); }
   function applyLocale() {
     document.documentElement.lang = locale;
+    document.title = `${copy[locale].title} - WeightPlay`;
     document.querySelectorAll("[data-ui]").forEach((node) => node.textContent = t(node.dataset.ui));
     const releaseCopy = locale === "zh-Hant"
       ? { internal: "\u6b63\u5f0f\u71df\u696d", menuHint: "\u9ede\u9078\u5ba2\u4eba\u6c23\u6ce1\u88e1\u7684\u9910\u9ede\uff0c\u518d\u9ede\u8a72\u5ba2\u4eba\u5b8c\u6210\u51fa\u9910\u3002" }
