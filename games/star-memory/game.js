@@ -3,6 +3,10 @@
   const localeSelect = document.querySelector("#localeSelect");
   const languageLabel = document.querySelector("#languageLabel");
   const titleText = document.querySelector("#titleText");
+  const mainPanel = document.querySelector("#mainPanel");
+  const mainTitle = document.querySelector("#mainTitle");
+  const mainIntro = document.querySelector("#mainIntro");
+  const startBtn = document.querySelector("#startBtn");
   const stageSelectPanel = document.querySelector("#stageSelectPanel");
   const stageSelectTitle = document.querySelector("#stageSelectTitle");
   const stageGrid = document.querySelector("#stageGrid");
@@ -67,6 +71,8 @@
       ogTitle: "Animal Star Memory - Memory Matching Game",
       ogDescription: "Flip animal and star cards, remember their positions, and clear 10 short memory stages in Animal Star Memory on WeightPlay.",
       language: "Language",
+      mainIntro: "Remember where each animal and star is hiding, then clear all ten matching stages.",
+      start: "Choose Level",
       chooseLevel: "Choose Level",
       level: "Level {current} / {total}",
       score: "Score",
@@ -119,6 +125,8 @@
       ogTitle: "\u52d5\u7269\u661f\u661f\u7ffb\u724c - \u8a18\u61b6\u914d\u5c0d\u904a\u6232",
       ogDescription: "\u7ffb\u958b\u52d5\u7269\u8207\u661f\u661f\u5361\u724c\uff0c\u8a18\u4f4f\u4f4d\u7f6e\u4e26\u5b8c\u6210 10 \u500b\u77ed\u95dc\u5361\uff0c\u5728 WeightPlay \u7df4\u7fd2\u8a18\u61b6\u8207\u5c08\u6ce8\u3002",
       language: "\u8a9e\u8a00",
+      mainIntro: "\u8a18\u4f4f\u6bcf\u5f35\u52d5\u7269\u8207\u661f\u661f\u5361\u724c\u7684\u4f4d\u7f6e\uff0c\u5b8c\u6210\u5168\u90e8 10 \u500b\u914d\u5c0d\u95dc\u5361\u3002",
+      start: "\u9078\u64c7\u95dc\u5361",
       chooseLevel: "\u9078\u64c7\u95dc\u5361",
       level: "\u7b2c {current} / {total} \u95dc",
       score: "\u5206\u6578",
@@ -351,6 +359,9 @@
     updateSeoText();
     languageLabel.textContent = t("language");
     titleText.textContent = t("title");
+    mainTitle.textContent = t("title");
+    mainIntro.textContent = t("mainIntro");
+    startBtn.textContent = t("start");
     stageSelectTitle.textContent = t("chooseLevel");
     
     // HUD Labels
@@ -398,18 +409,33 @@
         loadProgress();
         loadingPanel.classList.add("hidden");
         window.WonderAnalytics?.track("game_ready", { game_id: GAME_ID });
-        showStageSelect();
+        showMain();
       }
       loadingText.textContent = `${progress}%`;
       loadingFill.style.width = `${progress}%`;
     }, 40);
   }
 
+  function showMain() {
+    document.body.classList.remove("memory-stage", "memory-playing");
+    document.body.classList.add("memory-main");
+    resultPanel.classList.add("hidden");
+    mainPanel.classList.remove("hidden");
+    stageSelectPanel.classList.add("hidden");
+    gameHud.classList.add("hidden");
+    gameBoardPanel.classList.add("hidden");
+    gameFeedback.classList.add("hidden");
+    battleAdReserve.classList.add("hidden");
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  }
+
   // Stage Selection Screen
   function showStageSelect() {
+    document.body.classList.remove("memory-main");
     document.body.classList.remove("memory-playing");
     document.body.classList.add("memory-stage");
     resultPanel.classList.add("hidden");
+    mainPanel.classList.add("hidden");
     gameHud.classList.add("hidden");
     gameBoardPanel.classList.add("hidden");
     gameFeedback.classList.add("hidden");
@@ -451,6 +477,12 @@
         return button;
       })
     );
+    if (window.matchMedia("(max-width: 560px)").matches) {
+      requestAnimationFrame(() => {
+        const unlocked = [...stageGrid.querySelectorAll(".stage-card.unlocked")].at(-1);
+        unlocked?.scrollIntoView({ block: "nearest", inline: "center", behavior: "auto" });
+      });
+    }
   }
 
   // Start Gameplay Stage
@@ -688,6 +720,11 @@
   }
 
   // Event Listeners
+  startBtn.addEventListener("click", () => {
+    window.WonderSound?.play("click");
+    showStageSelect();
+  });
+
   localeSelect.addEventListener("change", () => {
     window.WonderSound?.play("click");
     window.WonderI18n?.setLocale(localeSelect.value);
@@ -721,10 +758,11 @@
   });
 
   document.querySelector("#homeLink").addEventListener("click", (event) => {
-    if (!stageSelectPanel.classList.contains("hidden")) return;
+    if (document.body.classList.contains("memory-main")) return;
     event.preventDefault();
     window.WonderSound?.play("click");
-    showStageSelect();
+    if (document.body.classList.contains("memory-playing")) showStageSelect();
+    else showMain();
   });
 
   // Initialization

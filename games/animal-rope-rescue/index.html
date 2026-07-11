@@ -46,7 +46,7 @@
   <body>
     <main class="vine-app" data-no-mobile-immersive="true">
       <header class="topbar">
-        <a class="icon-btn" href="/" aria-label="Back to lobby">&larr;</a>
+        <a class="icon-btn" href="/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
         <div>
           <p>WeightPlay</p>
           <h1 data-ui="title">Animal Vine Rescue</h1>
@@ -73,7 +73,7 @@
 
       <section id="gamePanel" class="game-panel hidden">
         <div class="hud-row">
-          <button id="stageBackBtn" type="button" class="soft-btn" data-ui="stages">Stages</button>
+          <button id="stageBackBtn" type="button" class="soft-btn" aria-label="Back to stages">&larr;</button>
           <div class="hud-pill"><span data-ui="stage">Stage</span><b id="stageText">1</b></div>
           <div class="hud-pill"><span data-ui="score">Score</span><b id="scoreText">0</b></div>
         </div>
@@ -96,6 +96,7 @@
         <button id="cutNowBtn" class="cut-now-btn" type="button" data-ui="cut">Cut</button>
         <p id="hintText" class="hint-text" data-ui="hint">Drag the leaf. Cut the vine when you are ready.</p>
       </section>
+      <div class="battle-ad-reserve" aria-hidden="true"></div>
 
       <div id="resultPanel" class="result-panel hidden">
         <div class="result-card">

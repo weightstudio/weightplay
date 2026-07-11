@@ -148,6 +148,13 @@
     window.dispatchEvent(new CustomEvent("animal-vine-rescue:play-state", { detail: { playing: isPlaying } }));
   }
 
+  function setStageState(isStage) {
+    document.documentElement.classList.toggle("is-vine-stage-select", isStage);
+    document.body.classList.toggle("is-vine-stage-select", isStage);
+    window.WonderSound?.setGameActive?.(isStage);
+    window.WeightPlayGame?.updateVisualViewportVars?.();
+  }
+
   function t(key, data = {}) {
     const value = text[locale]?.[key] || text.en[key] || key;
     return Object.entries(data).reduce((out, [name, item]) => out.replaceAll(`{${name}}`, String(item)), value);
@@ -178,13 +185,14 @@
 
   function show(panel) {
     setPlayingState(panel === nodes.gamePanel);
+    setStageState(panel === nodes.stagePanel);
     [nodes.menuPanel, nodes.stagePanel, nodes.gamePanel].forEach((node) => node.classList.add("hidden"));
     panel.classList.remove("hidden");
     window.scrollTo({ top: 0, left: 0, behavior: panel === nodes.gamePanel ? "auto" : "smooth" });
   }
 
   function renderStages() {
-    nodes.stagePanel.innerHTML = stages
+    nodes.stagePanel.innerHTML = `<div class="stage-shell-head"><button type="button" class="stage-return" data-stage-main aria-label="Back">&larr;</button><div><strong>${t("stages")}</strong><span>${t("menuHint")}</span></div></div><div class="stage-rail">` + stages
       .map((stage, index) => {
         const stageNo = index + 1;
         const locked = stageNo > save.unlocked;
@@ -202,7 +210,7 @@
           </button>
         `;
       })
-      .join("");
+      .join("") + `</div><div class="stage-ad-reserve" aria-hidden="true"></div>`;
   }
 
   function setupStage(stageNo) {
@@ -414,6 +422,10 @@
     show(nodes.stagePanel);
   });
   nodes.stagePanel.addEventListener("click", (event) => {
+    if (event.target.closest("[data-stage-main]")) {
+      show(nodes.menuPanel);
+      return;
+    }
     const button = event.target.closest("[data-stage]");
     if (!button) return;
     const stageNo = Number(button.dataset.stage);

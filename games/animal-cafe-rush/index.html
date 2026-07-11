@@ -1,50 +1,65 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="robots" content="noindex,nofollow" />
-    <title>Animal Cafe Rush - Coming Soon | WeightPlay</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#123b39" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="robots" content="index,follow" />
+    <meta name="description" content="Serve a growing queue of animal customers by matching pictured food orders in Animal Cafe Rush, a fast family cafe game on WeightPlay." />
+    <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Animal Cafe Rush - WeightPlay" />
+    <meta property="og:description" content="Match food tiles to animal customers before their patience runs out in a lively cafe queue." />
+    <meta property="og:url" content="https://weightplay.com/games/animal-cafe-rush/" />
+    <meta property="og:image" content="https://weightplay.com/assets/animal-cafe-rush-cover.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>Animal Cafe Rush - WeightPlay</title>
     <link rel="canonical" href="https://weightplay.com/games/animal-cafe-rush/" />
-    <style>
-      :root { color-scheme: light; font-family: "Microsoft JhengHei", "Noto Sans TC", system-ui, sans-serif; background: #173b3a; color: #1b2a28; }
-      * { box-sizing: border-box; }
-      body { min-height: 100dvh; margin: 0; background: linear-gradient(160deg, #0b302f, #2d746e); }
-      .page { width: min(100%, 760px); min-height: 100dvh; margin: auto; padding: max(16px, env(safe-area-inset-top)) 16px calc(24px + env(safe-area-inset-bottom)); }
-      .topbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
-      .home-link, .locale-picker { min-height: 44px; border: 0; border-radius: 12px; background: rgba(255, 255, 255, 0.95); color: #174a47; font: inherit; font-weight: 900; }
-      .home-link { display: inline-flex; align-items: center; gap: 8px; padding: 0 14px; text-decoration: none; }
-      .locale-picker { padding: 0 10px; }
-      .preview-card { display: grid; gap: 18px; overflow: hidden; border: 3px solid rgba(255, 255, 255, 0.5); border-radius: 18px; background: #fffaf0; box-shadow: 0 18px 46px rgba(0, 0, 0, 0.28); }
-      .cover { display: block; width: 100%; aspect-ratio: 1; object-fit: cover; }
-      .copy { padding: 0 20px 24px; }
-      .eyebrow { display: inline-block; margin-bottom: 8px; padding: 6px 10px; border-radius: 999px; background: #ffd269; color: #5b3a00; font-size: 14px; font-weight: 1000; }
-      h1 { margin: 0; font-size: clamp(30px, 8vw, 48px); line-height: 1.08; }
-      p { margin: 12px 0 0; color: #48635d; font-size: clamp(16px, 4.4vw, 19px); font-weight: 700; line-height: 1.55; }
-      .status { color: #14736c; font-weight: 1000; }
-      @media (min-width: 680px) { .preview-card { grid-template-columns: minmax(0, 1fr) minmax(280px, 0.88fr); align-items: center; } .copy { padding: 22px 24px; } }
-    </style>
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260711-cafe-release1" />
+    <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
+    <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
+    <link rel="stylesheet" href="style.css?v=20260711-cafe-release1" />
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Animal Cafe Rush","url":"https://weightplay.com/games/animal-cafe-rush/","image":"https://weightplay.com/assets/animal-cafe-rush-cover.png","description":"Serve a growing queue of animal customers by matching pictured food orders before their patience runs out.","applicationCategory":"Game","operatingSystem":"Web browser","publisher":{"@type":"Organization","name":"WeightStudio"},"inLanguage":["en","zh-Hant"],"isAccessibleForFree":true,"genre":["Animal Games","Time Management","Family Browser Game"],"audience":{"@type":"Audience","audienceType":"Kids and families","suggestedMinAge":6}}</script>
   </head>
   <body>
-    <main class="page">
+    <main class="cafe-app" data-no-mobile-immersive="true">
       <header class="topbar">
-        <a class="home-link" href="../../" id="homeLink"><span aria-hidden="true">W</span><span id="homeText">WeightPlay</span></a>
-        <select class="locale-picker" id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option></select>
+        <a id="lobbyLink" class="home-link" href="/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
+        <div class="brand"><span>WeightPlay</span><h1 data-ui="title">Animal Cafe Rush</h1></div>
+        <label class="locale"><span data-ui="language">Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option></select></label>
       </header>
-      <section class="preview-card" aria-live="polite">
-        <img class="cover" src="../../assets/animal-cafe-rush-cover.webp" alt="" />
-        <div class="copy"><span class="eyebrow" id="eyebrow">Coming Soon</span><h1 id="title">Animal Cafe Rush</h1><p id="description">A new animal cafe is preparing its customers, food stations, and cozy cafe days.</p><p class="status" id="status">This game is not playable yet.</p></div>
+      <section id="menuPanel" class="menu-panel">
+        <img class="cover" src="../../assets/animal-cafe-rush-cover.webp" alt="Animal Cafe Rush poster" />
+        <div class="menu-copy">
+          <span class="eyebrow" data-ui="internal">Cafe open</span>
+          <h2 data-ui="menuTitle">Serve the animal cafe.</h2>
+          <p data-ui="menuHint">Pick the food shown in a customer's bubble, then tap that customer to serve.</p>
+          <div class="profile-grid"><div><span data-ui="day">Day</span><b id="dayText">1</b></div><div><span data-ui="coins">Coins</span><b id="coinText">0</b></div><div><span data-ui="best">Best</span><b id="bestText">0</b></div></div>
+          <section class="upgrade-panel"><div><strong data-ui="upgrades">Cafe upgrades</strong><small data-ui="upgradeHint">Coins make future days friendlier.</small></div><div id="upgradeCards" class="upgrade-cards"></div></section>
+          <button id="startBtn" class="primary-btn" type="button" data-ui="start">Start day</button>
+        </div>
       </section>
+      <section id="playPanel" class="play-panel is-hidden" data-no-mobile-immersive="true">
+        <button id="backToMenuBtn" class="play-return" type="button" aria-label="Back to menu">&larr;</button>
+        <div class="play-hud"><div><span data-ui="day">Day</span><b id="playDay">1</b></div><div><span data-ui="served">Served</span><b id="servedText">0/3</b></div><div><span data-ui="coins">Coins</span><b id="playCoins">0</b></div></div>
+        <div id="objectiveRow" class="objective-row"></div>
+        <div class="cafe-scene"><img class="cafe-bg" src="../../assets/animal-cafe-rush-cafe-bg.webp" alt="" /><div id="customerRow" class="customer-row"></div></div>
+        <div class="prep-row"><div id="stationRow" class="station-row"></div><div id="tray" class="tray" aria-live="polite"></div></div>
+        <div id="playMessage" class="play-message" aria-live="polite"></div>
+      </section>
+      <div id="adReserve" class="ad-reserve" aria-hidden="true"></div>
+      <section id="resultPanel" class="result-panel is-hidden" aria-live="polite"><div class="result-card"><img src="../../assets/animal-cafe-rush-lion-guide.webp" alt="" /><h2 id="resultTitle"></h2><p id="resultText"></p><p id="skillText"></p><div><button id="retryBtn" class="secondary-btn is-hidden" type="button" data-ui="retry">Try again</button><button id="nextBtn" class="primary-btn" type="button" data-ui="next">Next day</button><button id="menuBtn" class="secondary-btn" type="button" data-ui="menu">Menu</button></div></div></section>
     </main>
-    <script>
-      const copy = {
-        en: { eyebrow: "Coming Soon", title: "Animal Cafe Rush", description: "A new animal cafe is preparing its customers, food stations, and cozy cafe days.", status: "This game is not playable yet.", home: "WeightPlay", alt: "Animal Cafe Rush preview poster" },
-        "zh-Hant": { eyebrow: "\u656c\u8acb\u671f\u5f85", title: "\u52d5\u7269\u5496\u5561\u5feb\u624b", description: "\u65b0\u7684\u52d5\u7269\u5496\u5561\u9928\u6b63\u5728\u6e96\u5099\u5ba2\u4eba\u3001\u9ede\u5fc3\u5de5\u4f5c\u7ad9\u8207\u6eab\u6696\u7684\u5496\u5561\u65e5\u5e38\u3002", status: "\u9019\u6b3e\u904a\u6232\u5c1a\u672a\u958b\u653e\u904a\u73a9\u3002", home: "WeightPlay", alt: "\u52d5\u7269\u5496\u5561\u5feb\u624b\u9810\u544a\u6d77\u5831" },
-      };
-      const localeSelect = document.querySelector("#localeSelect");
-      const render = () => { const text = copy[localeSelect.value]; document.documentElement.lang = localeSelect.value; document.querySelector("#eyebrow").textContent = text.eyebrow; document.querySelector("#title").textContent = text.title; document.querySelector("#description").textContent = text.description; document.querySelector("#status").textContent = text.status; document.querySelector("#homeText").textContent = text.home; document.querySelector(".cover").alt = text.alt; };
-      localeSelect.addEventListener("change", render);
-      render();
-    </script>
+    <script src="../../src/site-config.js?v=20260711-cafe-release1"></script>
+    <script src="../../src/version.js?v=20260701-version2"></script>
+    <script src="../../src/analytics.js?v=20260701-analytics2"></script>
+    <script>window.WonderAnalytics?.track("game_view", { game_id: "animal-cafe-rush" });</script>
+    <script src="../../src/edge-guard.js?v=20260710-mobile-play-shell2"></script>
+    <script src="../../src/sound.js?v=20260701-labels1"></script>
+    <script src="game.js?v=20260711-cafe-release1"></script>
+    <script src="../../src/game-page-info.js?v=20260711-cafe-release1"></script>
   </body>
 </html>

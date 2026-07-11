@@ -65,7 +65,7 @@
     <main class="memory-game">
       <!-- Top Navigation and Settings -->
       <header class="topbar">
-        <a class="home-link" href="/" id="homeLink" aria-label="Back to lobby">&larr;</a>
+        <a class="home-link" href="/" id="homeLink" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
         <div>
           <p id="brandText">WeightPlay</p>
           <h1 id="titleText">Animal Star Memory</h1>
@@ -80,6 +80,15 @@
           </label>
         </div>
       </header>
+
+      <section id="mainPanel" class="main-panel">
+        <img class="main-poster" src="../../assets/memory-cover.webp" alt="" />
+        <div class="main-copy">
+          <h2 id="mainTitle">Animal Star Memory</h2>
+          <p id="mainIntro">Remember where each animal and star is hiding, then clear all ten matching stages.</p>
+          <button id="startBtn" type="button">Choose Level</button>
+        </div>
+      </section>
 
       <!-- Gameplay HUD -->
       <section id="gameHud" class="game-hud hidden" aria-label="Game stats">
@@ -98,9 +107,10 @@
       </section>
 
       <!-- Stage Selection Screen -->
-      <section id="stageSelectPanel" class="stage-select">
+      <section id="stageSelectPanel" class="stage-select hidden">
         <h2 id="stageSelectTitle">Choose Level</h2>
         <div id="stageGrid" class="stage-grid"></div>
+        <div id="stageAdReserve" class="stage-ad-reserve" aria-hidden="true"></div>
       </section>
 
       <!-- Main Game Board -->

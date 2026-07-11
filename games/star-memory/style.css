@@ -32,6 +32,18 @@ body {
   width: 100vw;
 }
 
+body.memory-main {
+  height: auto;
+  min-height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+body.memory-main .memory-game {
+  height: auto;
+  min-height: 100svh;
+}
+
 /* App Layout Shell */
 .memory-game {
   display: flex;
@@ -110,14 +122,69 @@ body.memory-playing .wp-tutorial-button {
   font-size: 24px;
   color: var(--text-muted);
   text-decoration: none;
-  width: 40px;
+  width: 64px;
   height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
+  gap: 5px;
+  border-radius: 14px;
   transition: all 0.2s ease;
   background: rgba(255, 255, 255, 0.05);
+}
+
+.home-link img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+body.memory-stage .home-link,
+body.memory-playing .home-link {
+  width: 40px;
+  border-radius: 50%;
+}
+
+body.memory-stage .home-link img,
+body.memory-playing .home-link img {
+  display: none;
+}
+
+.main-panel {
+  display: grid;
+  gap: 16px;
+  padding: 16px;
+}
+
+.main-poster {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid var(--glass-border);
+}
+
+.main-copy {
+  display: grid;
+  gap: 10px;
+}
+
+.main-copy h2 {
+  font-size: 24px;
+}
+
+.main-copy p {
+  color: var(--text-muted);
+  line-height: 1.55;
+}
+
+.main-copy button {
+  min-height: 48px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--primary);
+  color: #fff;
+  font-weight: 800;
 }
 
 .home-link:active {
@@ -231,13 +298,61 @@ body.memory-playing .wp-tutorial-button {
 .stage-select {
   flex: 1;
   min-height: 0;
-  padding: 24px 16px calc(42px + env(safe-area-inset-bottom));
+  padding: 16px 16px 0;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.stage-ad-reserve {
+  flex: 0 0 56px;
+  width: 100%;
+  min-height: 56px;
+  margin-top: 10px;
+  border-top: 1px dashed rgba(148, 163, 184, 0.3);
+  background: linear-gradient(180deg, rgba(30, 41, 59, 0.96), rgba(2, 6, 23, 0.96));
+}
+
+@media (max-width: 560px) {
+  body.memory-stage .topbar,
+  body.memory-playing .topbar {
+    flex: 0 0 56px;
+    min-height: 56px;
+    padding: 8px 16px;
+  }
+
+  body.memory-stage .stage-select {
+    overflow: hidden;
+  }
+
+  body.memory-stage .stage-select h2 {
+    flex: 0 0 auto;
+    margin-bottom: 10px;
+  }
+
+  body.memory-stage .stage-grid {
+    display: flex;
+    flex: 1 1 auto;
+    width: 100%;
+    max-width: none;
+    min-height: 0;
+    gap: 12px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-inline: max(47px, calc((100% - 264px) / 2));
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  body.memory-stage .stage-card {
+    flex: 0 0 264px;
+    min-height: 0;
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+  }
 }
 
 .stage-select h2 {

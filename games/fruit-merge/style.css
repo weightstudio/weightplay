@@ -48,6 +48,23 @@ body.fruit-playing .fruit-game {
   overflow: hidden;
 }
 
+body.fruit-main {
+  min-height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+body.fruit-main .fruit-game {
+  height: auto;
+  min-height: 100svh;
+  grid-template-rows: auto auto;
+  overflow: visible;
+}
+
+body.fruit-main #playPanel {
+  display: none;
+}
+
 body.fruit-playing .topbar {
   display: none;
 }
@@ -83,8 +100,17 @@ body.fruit-playing #menuPanel {
 
 .home-link {
   display: grid;
+  grid-template-columns: 14px 24px;
+  gap: 4px;
   place-items: center;
   font-size: 26px;
+  width: 66px;
+}
+
+.home-link img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
 }
 
 .title-block {
@@ -459,6 +485,37 @@ body.fruit-playing .game-page-info {
   backdrop-filter: blur(8px);
 }
 
+body.fruit-main .menu-panel {
+  position: static;
+  inset: auto;
+  z-index: auto;
+  display: grid;
+  grid-template-rows: auto auto;
+  gap: 12px;
+  place-items: stretch center;
+  padding: 16px 16px 24px;
+  background: transparent;
+  backdrop-filter: none;
+}
+
+body.fruit-main .menu-panel > div {
+  grid-row: auto;
+  width: min(100%, 520px);
+}
+
+body.fruit-main #startBtn {
+  grid-row: auto;
+  align-self: auto;
+  width: min(100%, 520px);
+}
+
+.menu-poster {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
 .menu-panel.hidden,
 .result-panel.hidden,
 .loading-panel.hidden,
@@ -801,6 +858,10 @@ body.fruit-playing .game-page-info {
 
   .home-link {
     min-height: 40px;
+  }
+
+  body.fruit-main .topbar {
+    grid-template-columns: 66px minmax(0, 1fr) 122px;
   }
 
   .fixed-game-shell {

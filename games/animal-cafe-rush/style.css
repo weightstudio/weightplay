@@ -31,3 +31,27 @@ body.is-cafe-playing { overflow:hidden; } body.is-cafe-playing .cafe-app { posit
 .order-cloud .food-icon { position:relative; z-index:1; width:27px; height:27px; }
 .queue-customer small { color:#c5e9e0; font-size:9px; }
 @keyframes queue-arrive { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
+
+/* Speed-service board: food tiles replace the old cropped station artwork. */
+.customer-row { display:grid; grid-template-columns:repeat(5, minmax(0, 1fr)); align-content:end; gap:18px 5px; padding:28px 6px 8px; }
+.queue-customer { width:100%; max-width:none; min-width:0; padding:10px 2px 2px; animation:queue-arrive .22s ease-out; }
+.queue-customer img { height:clamp(54px, 10vw, 86px); margin-top:2px; }
+.queue-customer small { min-height:0; padding:2px; font-size:8px; }
+.queue-customer.is-leaving { pointer-events:none; animation:customer-leave .45s ease-in forwards; }
+.order-cloud { top:-24px; display:flex; width:max-content; min-width:38px; max-width:none; height:34px; gap:3px; padding:3px 6px; white-space:nowrap; }
+.order-item { position:relative; z-index:1; display:grid; place-items:center; flex:0 0 auto; width:22px; height:22px; }
+.order-cloud .food-icon { width:21px; height:21px; }
+.order-count { position:absolute; right:-5px; bottom:-5px; z-index:2; display:grid; place-items:center; min-width:16px; height:16px; padding:0 3px; border-radius:8px; background:#e9564f; color:#fff; box-shadow:0 1px 0 #802b28; font-size:10px; line-height:1; }
+.order-cloud::after { left:calc(50% - 5px); }
+.prep-row { grid-template-columns:minmax(0, 1fr) 104px; }
+.station-row { grid-template-columns:repeat(4, minmax(0, 1fr)); grid-template-rows:repeat(2, minmax(0, 1fr)); gap:6px; }
+.station.food-tile { display:grid; place-items:center; min-height:0; border-color:#80cbbd; background:#1c554d; }
+.station.food-tile .food-icon { width:min(44px, 72%); aspect-ratio:1; height:auto; }
+.station.food-tile.is-new { animation:tile-drop .22s ease-out; }
+.station img { display:none; }
+.tray { overflow:hidden; }
+.tray > div { display:flex; flex-wrap:wrap; justify-content:center; gap:3px; }
+.tray .food-icon { width:34px; height:34px; }
+@keyframes customer-leave { to { opacity:0; transform:translateY(-28px) scale(.82); } }
+@keyframes tile-drop { from { opacity:0; transform:translateY(-14px); } to { opacity:1; transform:translateY(0); } }
+@media (max-width:620px) { .play-panel { grid-template-rows:42px 42px minmax(0,1fr) 142px 28px; }.prep-row { grid-template-columns:minmax(0, 1fr) 96px; }.customer-row { gap:16px 4px; padding-top:26px; }.queue-customer img { height:58px; }.station-row { gap:5px; }.station.food-tile .food-icon { width:min(40px, 76%); } }
