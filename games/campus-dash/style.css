@@ -447,6 +447,128 @@ body.dash-playing .topbar h1 {
 
 body.dash-playing .canvas-wrap {
   grid-row: 3;
+  width: min(100%, 370px);
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  aspect-ratio: 3 / 4;
+  align-self: center;
+  justify-self: center;
+}
+
+/* Phone Battle expands the Canvas; the runner camera remains a 3:4 child scene. */
+body.dash-playing.dash-expanded-canvas .dash-game,
+body.dash-playing.dash-expanded-canvas.weightplay-active-viewport .dash-game {
+  left: var(--dash-frame-left, 4px) !important;
+  top: var(--dash-frame-top, 4px) !important;
+  width: var(--dash-frame-width, calc(100vw - 8px)) !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  height: var(--dash-frame-height, calc(100svh - 64px)) !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  padding: 6px 8px !important;
+  grid-template-rows: 44px 58px minmax(0, 1fr) !important;
+  gap: 6px !important;
+  transform: none !important;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body.dash-playing.dash-expanded-canvas .topbar {
+  grid-template-columns: 40px !important;
+  min-height: 44px;
+  height: 44px;
+  padding: 2px;
+}
+
+body.dash-playing.dash-expanded-canvas .topbar > div {
+  display: none;
+}
+
+body.dash-playing.dash-expanded-canvas .home-link {
+  width: 40px;
+  min-width: 40px;
+  height: 40px;
+  min-height: 40px;
+  font-size: 22px;
+  line-height: 26px;
+}
+
+body.dash-playing.dash-expanded-canvas .hud span {
+  font-size: 11px;
+  line-height: 14px;
+}
+
+body.dash-playing.dash-expanded-canvas .hud strong {
+  font-size: 20px;
+  line-height: 22px;
+}
+
+body.dash-playing.dash-expanded-canvas .canvas-wrap {
+  width: min(100%, calc((var(--dash-frame-height, 780px) - 126px) * 0.75));
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  aspect-ratio: 3 / 4;
+  align-self: center;
+  justify-self: center;
+}
+
+body.dash-playing.dash-expanded-canvas #gameCanvas {
+  width: 100%;
+  height: 100%;
+}
+
+body.dash-playing.dash-expanded-canvas #battleAdReserve {
+  left: 4px;
+  right: 4px;
+  top: auto;
+  bottom: 4px;
+  width: auto;
+  height: 56px;
+}
+
+body.dash-playing .weightplay-version-badge,
+body.dash-playing .sound-toggle,
+body.dash-playing .wp-tutorial-button {
+  display: none !important;
+}
+
+@media (max-height: 430px) {
+  body.dash-playing.dash-expanded-canvas .dash-game,
+  body.dash-playing.dash-expanded-canvas.weightplay-active-viewport .dash-game {
+    padding: 4px 6px !important;
+    grid-template-rows: 38px 48px minmax(0, 1fr) !important;
+    gap: 4px !important;
+  }
+
+  body.dash-playing.dash-expanded-canvas .topbar {
+    min-height: 38px;
+    height: 38px;
+  }
+
+  body.dash-playing.dash-expanded-canvas .home-link {
+    width: 36px;
+    min-width: 36px;
+    height: 36px;
+    min-height: 36px;
+    font-size: 20px;
+  }
+
+  body.dash-playing.dash-expanded-canvas .hud span {
+    font-size: 10px;
+    line-height: 12px;
+  }
+
+  body.dash-playing.dash-expanded-canvas .hud strong {
+    font-size: 18px;
+    line-height: 20px;
+  }
+
+  body.dash-playing.dash-expanded-canvas .canvas-wrap {
+    width: min(100%, calc((var(--dash-frame-height, 320px) - 102px) * 0.75));
+  }
 }
 
 .hud.hidden {

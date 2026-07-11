@@ -419,13 +419,27 @@
 
   function updateMemoryFrame() {
     if (!document.body.classList.contains("memory-stage") && !document.body.classList.contains("memory-playing")) return;
-    const availableWidth = Math.max(1, window.innerWidth - 8);
-    const availableHeight = Math.max(1, window.innerHeight - 56 - 8);
+    const viewport = window.visualViewport;
+    const viewportWidth = viewport?.width || window.innerWidth;
+    const viewportHeight = viewport?.height || window.innerHeight;
+    const isPhoneBattle = document.body.classList.contains("memory-playing")
+      && (window.matchMedia("(pointer: coarse)").matches || viewportWidth <= 600 || viewportHeight <= 430);
+    document.body.classList.toggle("memory-expanded-canvas", isPhoneBattle);
+    if (isPhoneBattle) {
+      document.documentElement.style.setProperty("--memory-frame-scale", "1");
+      document.documentElement.style.setProperty("--memory-frame-left", "4px");
+      document.documentElement.style.setProperty("--memory-frame-top", "4px");
+      document.documentElement.style.setProperty("--memory-frame-width", `${Math.max(1, viewportWidth - 8)}px`);
+      document.documentElement.style.setProperty("--memory-frame-height", `${Math.max(1, viewportHeight - 64)}px`);
+      return;
+    }
+    const availableWidth = Math.max(1, viewportWidth - 8);
+    const availableHeight = Math.max(1, viewportHeight - 56 - 8);
     const scale = Math.min(availableWidth / 390, availableHeight / 788);
     const frameWidth = 390 * scale;
     const frameHeight = 788 * scale;
-    const frameLeft = (window.innerWidth - frameWidth) / 2;
-    const frameTop = (window.innerHeight - 56 - frameHeight) / 2;
+    const frameLeft = (viewportWidth - frameWidth) / 2;
+    const frameTop = (viewportHeight - 56 - frameHeight) / 2;
     document.documentElement.style.setProperty("--memory-frame-scale", String(scale));
     document.documentElement.style.setProperty("--memory-frame-left", `${frameLeft}px`);
     document.documentElement.style.setProperty("--memory-frame-top", `${frameTop}px`);
@@ -442,9 +456,11 @@
 
   window.addEventListener("resize", updateMemoryFrame);
   window.addEventListener("orientationchange", updateMemoryFrame);
+  window.visualViewport?.addEventListener("resize", updateMemoryFrame);
+  window.visualViewport?.addEventListener("scroll", updateMemoryFrame);
 
   function showMain() {
-    document.body.classList.remove("memory-stage", "memory-playing");
+    document.body.classList.remove("memory-stage", "memory-playing", "memory-expanded-canvas");
     document.body.classList.add("memory-main");
     resultPanel.classList.add("hidden");
     mainPanel.classList.remove("hidden");

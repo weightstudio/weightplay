@@ -662,19 +662,43 @@
 
   function updateSnackFrame() {
     if (!document.body.classList.contains("snack-playing")) return;
-    const scale = Math.min(Math.max(1, innerWidth - 8) / 390, Math.max(1, innerHeight - 64) / 788);
+    const viewport = window.visualViewport;
+    const viewportWidth = viewport?.width || innerWidth;
+    const viewportHeight = viewport?.height || innerHeight;
+    const isPhoneBattle = window.matchMedia("(pointer: coarse)").matches || viewportWidth <= 600 || viewportHeight <= 430;
+    document.body.classList.toggle("snack-expanded-canvas", isPhoneBattle);
+    const shell = document.querySelector(".snack-game");
+    if (isPhoneBattle) {
+      const width = Math.max(1, viewportWidth - 8);
+      const height = Math.max(1, viewportHeight - 64);
+      document.documentElement.style.setProperty("--snack-frame-scale", "1");
+      document.documentElement.style.setProperty("--snack-frame-left", "4px");
+      document.documentElement.style.setProperty("--snack-frame-top", "4px");
+      document.documentElement.style.setProperty("--snack-frame-width", `${width}px`);
+      document.documentElement.style.setProperty("--snack-frame-height", `${height}px`);
+      shell?.style.setProperty("position", "fixed", "important");
+      shell?.style.setProperty("inset", "auto", "important");
+      shell?.style.setProperty("left", "4px", "important");
+      shell?.style.setProperty("top", "4px", "important");
+      shell?.style.setProperty("width", `${width}px`, "important");
+      shell?.style.setProperty("height", `${height}px`, "important");
+      shell?.style.setProperty("min-height", "0", "important");
+      shell?.style.setProperty("transform", "none", "important");
+      shell?.style.setProperty("transform-origin", "top left", "important");
+      return;
+    }
+    const scale = Math.min(Math.max(1, viewportWidth - 8) / 390, Math.max(1, viewportHeight - 64) / 788);
     const width = 390 * scale;
     const height = 788 * scale;
     document.documentElement.style.setProperty("--snack-frame-scale", String(scale));
-    document.documentElement.style.setProperty("--snack-frame-left", `${(innerWidth - width) / 2}px`);
-    document.documentElement.style.setProperty("--snack-frame-top", `${(innerHeight - 56 - height) / 2}px`);
+    document.documentElement.style.setProperty("--snack-frame-left", `${(viewportWidth - width) / 2}px`);
+    document.documentElement.style.setProperty("--snack-frame-top", `${(viewportHeight - 56 - height) / 2}px`);
     document.documentElement.style.setProperty("--snack-frame-width", `${width}px`);
     document.documentElement.style.setProperty("--snack-frame-height", `${height}px`);
-    const shell = document.querySelector(".snack-game");
     shell?.style.setProperty("position", "fixed", "important");
     shell?.style.setProperty("inset", "auto", "important");
-    shell?.style.setProperty("left", `${(innerWidth - width) / 2}px`, "important");
-    shell?.style.setProperty("top", `${(innerHeight - 56 - height) / 2}px`, "important");
+    shell?.style.setProperty("left", `${(viewportWidth - width) / 2}px`, "important");
+    shell?.style.setProperty("top", `${(viewportHeight - 56 - height) / 2}px`, "important");
     shell?.style.setProperty("width", "390px", "important");
     shell?.style.setProperty("height", "788px", "important");
     shell?.style.setProperty("min-height", "788px", "important");
@@ -691,6 +715,8 @@
 
   window.addEventListener("resize", updateSnackFrame);
   window.addEventListener("orientationchange", updateSnackFrame);
+  window.visualViewport?.addEventListener("resize", updateSnackFrame);
+  window.visualViewport?.addEventListener("scroll", updateSnackFrame);
 
   function startStage(index) {
     if (index >= loadUnlocked()) return;
@@ -800,8 +826,10 @@
     nodes.playPanel.classList.add("hidden");
     nodes.resultPanel.classList.add("hidden");
     nodes.menuPanel.classList.remove("hidden");
-    document.body.classList.remove("snack-playing");
-    document.querySelector(".snack-game")?.setAttribute("data-play-viewport", "");
+    document.body.classList.remove("snack-playing", "snack-expanded-canvas");
+    const shell = document.querySelector(".snack-game");
+    shell?.setAttribute("data-play-viewport", "");
+    for (const property of ["position", "inset", "left", "top", "width", "height", "min-height", "transform", "transform-origin"]) shell?.style.removeProperty(property);
     nodes.battleAdReserve.classList.add("hidden");
     renderStageGrid();
     window.WonderAnalytics?.track("game_menu", { game_id: GAME_ID });

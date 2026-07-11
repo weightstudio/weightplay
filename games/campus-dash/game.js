@@ -180,12 +180,25 @@
 
   function updateDashFrame() {
     if (!document.body.classList.contains("dash-playing")) return;
-    const scale = Math.min(Math.max(1, innerWidth - 8) / 390, Math.max(1, innerHeight - 64) / 788);
+    const viewport = window.visualViewport;
+    const viewportWidth = viewport?.width || innerWidth;
+    const viewportHeight = viewport?.height || innerHeight;
+    const isPhoneBattle = window.matchMedia("(pointer: coarse)").matches || viewportWidth <= 600 || viewportHeight <= 430;
+    document.body.classList.toggle("dash-expanded-canvas", isPhoneBattle);
+    if (isPhoneBattle) {
+      document.documentElement.style.setProperty("--dash-frame-scale", "1");
+      document.documentElement.style.setProperty("--dash-frame-left", "4px");
+      document.documentElement.style.setProperty("--dash-frame-top", "4px");
+      document.documentElement.style.setProperty("--dash-frame-width", `${Math.max(1, viewportWidth - 8)}px`);
+      document.documentElement.style.setProperty("--dash-frame-height", `${Math.max(1, viewportHeight - 64)}px`);
+      return;
+    }
+    const scale = Math.min(Math.max(1, viewportWidth - 8) / 390, Math.max(1, viewportHeight - 64) / 788);
     const width = 390 * scale;
     const height = 788 * scale;
     document.documentElement.style.setProperty("--dash-frame-scale", String(scale));
-    document.documentElement.style.setProperty("--dash-frame-left", `${(innerWidth - width) / 2}px`);
-    document.documentElement.style.setProperty("--dash-frame-top", `${(innerHeight - 56 - height) / 2}px`);
+    document.documentElement.style.setProperty("--dash-frame-left", `${(viewportWidth - width) / 2}px`);
+    document.documentElement.style.setProperty("--dash-frame-top", `${(viewportHeight - 56 - height) / 2}px`);
     document.documentElement.style.setProperty("--dash-frame-width", `${width}px`);
     document.documentElement.style.setProperty("--dash-frame-height", `${height}px`);
   }
@@ -199,7 +212,7 @@
 
   function showMain() {
     state.running = false;
-    document.body.classList.remove("dash-playing");
+    document.body.classList.remove("dash-playing", "dash-expanded-canvas");
     document.querySelector(".dash-game")?.classList.remove("is-playing");
     document.querySelector(".dash-game")?.setAttribute("data-play-viewport", "");
     mainPanel.classList.remove("hidden");
@@ -211,6 +224,8 @@
 
   window.addEventListener("resize", updateDashFrame);
   window.addEventListener("orientationchange", updateDashFrame);
+  window.visualViewport?.addEventListener("resize", updateDashFrame);
+  window.visualViewport?.addEventListener("scroll", updateDashFrame);
 
   function startRun() {
     state = makeState();

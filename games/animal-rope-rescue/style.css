@@ -488,7 +488,7 @@ body.is-vine-playing .game-page-info {
 .cut-now-btn:disabled {
   opacity: .58;
   filter: grayscale(.35);
-  transform: translateY(4px);
+  transform: none;
   box-shadow: inset 0 2px rgba(255,255,255,.6), 0 4px 0 #7c4b20, 0 8px 18px rgba(55, 34, 12, .16);
 }
 
@@ -849,4 +849,136 @@ body.is-vine-playing .battle-ad-reserve {
   min-height: 56px;
   margin: 0;
   box-sizing: border-box;
+}
+
+/* Phone Battle expands its Canvas while the 3:4 playfield keeps its own ratio. */
+body.is-vine-playing.vine-expanded-canvas main.vine-app #gamePanel.game-panel {
+  top: var(--vine-battle-top, 4px) !important;
+  left: var(--vine-battle-left, 4px) !important;
+  width: var(--vine-battle-width, calc(100vw - 8px)) !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  height: var(--vine-battle-content-height, calc(100svh - 64px)) !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  transform: none !important;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body.is-vine-playing.vine-expanded-canvas .hud-row {
+  grid-template-columns: 44px minmax(0, 1fr) minmax(0, 1fr);
+  gap: 6px;
+}
+
+body.is-vine-playing.vine-expanded-canvas .hud-row .soft-btn {
+  grid-column: auto;
+  width: 44px;
+  min-width: 44px;
+  height: 44px;
+  min-height: 44px;
+  padding: 4px;
+  font-size: 22px;
+  line-height: 26px;
+}
+
+body.is-vine-playing.vine-expanded-canvas .hud-pill {
+  min-width: 0;
+  min-height: 44px;
+  padding: 6px 8px;
+  gap: 6px;
+  font-size: 13px;
+  line-height: 17px;
+  white-space: nowrap;
+}
+
+body.is-vine-playing.vine-expanded-canvas .cut-now-btn {
+  min-height: 48px;
+  height: 48px;
+  font-size: 16px;
+  line-height: 20px;
+}
+
+body.is-vine-playing.vine-expanded-canvas .cut-now-btn.cut,
+body.is-vine-playing.vine-expanded-canvas .cut-now-btn:disabled {
+  transform: none;
+}
+
+body.is-vine-playing.vine-expanded-canvas .hint-text {
+  height: 42px;
+  min-height: 42px;
+  font-size: 12px;
+  line-height: 16px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+body.is-vine-playing.vine-expanded-canvas main.vine-app #playfield.playfield.play-area {
+  width: min(100%, calc((var(--vine-battle-content-height, 780px) - 166px) * 0.75)) !important;
+  height: auto;
+  max-width: 100% !important;
+  max-height: 100%;
+  aspect-ratio: 3 / 4;
+  align-self: center;
+  justify-self: center;
+}
+
+body.is-vine-playing.vine-expanded-canvas .battle-ad-reserve {
+  top: auto;
+  left: 4px;
+  right: 4px;
+  bottom: 4px;
+  width: auto;
+  height: 56px;
+  min-height: 56px;
+}
+
+body.is-vine-playing .weightplay-version-badge,
+body.is-vine-playing .sound-toggle,
+body.is-vine-playing .wp-tutorial-button {
+  display: none !important;
+}
+
+@media (max-height: 430px) {
+  body.is-vine-playing.vine-expanded-canvas main.vine-app #gamePanel.game-panel {
+    grid-template-rows: 44px minmax(0, 1fr) 38px 30px;
+    gap: 4px;
+    padding: 4px;
+  }
+
+  body.is-vine-playing.vine-expanded-canvas .hud-row .soft-btn {
+    width: 38px;
+    min-width: 38px;
+    height: 38px;
+    min-height: 38px;
+    font-size: 20px;
+  }
+
+  body.is-vine-playing.vine-expanded-canvas .hud-row {
+    grid-template-columns: 38px minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  body.is-vine-playing.vine-expanded-canvas .hud-pill {
+    min-height: 38px;
+    padding: 4px 7px;
+    font-size: 12px;
+  }
+
+  body.is-vine-playing.vine-expanded-canvas .cut-now-btn {
+    min-height: 38px;
+    height: 38px;
+    font-size: 14px;
+  }
+
+  body.is-vine-playing.vine-expanded-canvas .hint-text {
+    height: 30px;
+    min-height: 30px;
+    font-size: 11px;
+    line-height: 14px;
+  }
+
+  body.is-vine-playing.vine-expanded-canvas main.vine-app #playfield.playfield.play-area {
+    width: min(100%, calc((var(--vine-battle-content-height, 320px) - 132px) * 0.75)) !important;
+  }
 }

@@ -915,6 +915,108 @@ body.lunch-playing .battle-ad-reserve {
   background: rgba(255, 249, 220, 0.7);
 }
 
+/* Phone Battle follows the Expanded Canvas contract; Stage keeps its snap-rail shell. */
+body.lunch-playing.lunch-expanded-canvas .lunch-game,
+body.lunch-playing.lunch-expanded-canvas.weightplay-active-viewport .lunch-game {
+  left: 4px !important;
+  top: 4px !important;
+  width: var(--lunch-frame-width, calc(var(--wp-mobile-vw, 100vw) - 8px)) !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  height: var(--lunch-frame-height, calc(var(--wp-mobile-vh, 100dvh) - 64px)) !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  transform: none !important;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body.lunch-playing.lunch-expanded-canvas .battle-ad-reserve {
+  left: 4px;
+  right: 4px;
+  top: auto;
+  bottom: 4px;
+  width: auto;
+}
+
+body.lunch-playing .hud-item span,
+body.lunch-playing .hud-item-score span,
+body.lunch-playing .hud-item-round span {
+  font-size: 11px;
+  line-height: 12px;
+}
+
+body.lunch-playing .hud-item-score strong,
+body.lunch-playing .hud-item-round strong {
+  font-size: 18px;
+  line-height: 20px;
+}
+
+body.lunch-playing .lunchbox strong {
+  font-size: 18px;
+  line-height: 20px;
+}
+
+body.lunch-playing .battle-return {
+  position: absolute;
+  z-index: 40;
+  top: 8px;
+  left: 10px;
+  width: 38px;
+  min-width: 38px;
+  max-width: 38px;
+  height: 38px;
+  min-height: 38px;
+  max-height: 38px;
+  padding: 0;
+  font-size: 22px;
+  line-height: 1;
+}
+
+body.lunch-playing .game-hud {
+  margin-left: 46px;
+}
+
+body.lunch-playing .weightplay-version-badge,
+body.lunch-playing .sound-toggle,
+body.lunch-playing .wp-tutorial-button {
+  display: none !important;
+}
+
+@media (max-height: 430px) {
+  body.lunch-playing.lunch-expanded-canvas .game-hud {
+    flex-basis: 62px;
+    min-height: 62px;
+  }
+
+  body.lunch-playing.lunch-expanded-canvas .game-play-content {
+    grid-template-rows: 84px minmax(0, 1fr) 36px;
+    gap: 5px;
+  }
+
+  body.lunch-playing.lunch-expanded-canvas .lunchboxes {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  body.lunch-playing.lunch-expanded-canvas .lunchbox {
+    min-height: 78px;
+  }
+
+  body.lunch-playing.lunch-expanded-canvas .food-card {
+    width: 70px;
+    min-width: 70px;
+    height: 70px;
+    min-height: 70px;
+  }
+
+  body.lunch-playing.lunch-expanded-canvas .feedback {
+    min-height: 36px;
+    font-size: 14px;
+    line-height: 16px;
+  }
+}
+
 /* Sound Toggle Placement */
 .sound-toggle {
   position: fixed;

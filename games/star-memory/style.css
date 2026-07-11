@@ -102,6 +102,10 @@ body.memory-playing .sound-toggle {
   display: none !important;
 }
 
+body.memory-playing .weightplay-version-badge {
+  display: none !important;
+}
+
 body.memory-stage .wp-tutorial-button,
 body.memory-playing .wp-tutorial-button {
   display: none !important;
@@ -882,6 +886,151 @@ body.memory-playing .battle-ad-reserve {
   margin: 0;
   border-top: 1px dashed rgba(148, 163, 184, 0.3);
   background: linear-gradient(180deg, rgba(30, 41, 59, 0.96), rgba(2, 6, 23, 0.96));
+}
+
+/* Phone Battle follows the Expanded Canvas contract; Stage keeps its snap-shell ratio. */
+body.memory-playing.memory-expanded-canvas .memory-game,
+body.memory-playing.memory-expanded-canvas.weightplay-active-viewport .memory-game {
+  left: var(--memory-frame-left, 4px) !important;
+  top: var(--memory-frame-top, 4px) !important;
+  width: var(--memory-frame-width, calc(100vw - 8px)) !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  height: var(--memory-frame-height, calc(100svh - 64px)) !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  transform: none !important;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body.memory-playing.memory-expanded-canvas .topbar {
+  position: relative;
+  flex: 0 0 48px;
+  min-height: 48px;
+  padding: 4px 12px;
+}
+
+body.memory-playing.memory-expanded-canvas .topbar > div,
+body.memory-playing.memory-expanded-canvas .header-right {
+  display: none;
+}
+
+body.memory-playing.memory-expanded-canvas .home-link {
+  position: absolute;
+  z-index: 4;
+  top: 5px;
+  left: 8px;
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+  min-height: 38px;
+  font-size: 22px;
+  line-height: 38px;
+  transition: none;
+}
+
+body.memory-playing.memory-expanded-canvas .game-hud {
+  flex: 0 0 64px;
+  min-height: 64px;
+  grid-template-columns: minmax(90px, 1fr) 72px 108px;
+  padding: 8px 12px;
+  gap: 8px;
+}
+
+body.memory-playing.memory-expanded-canvas .hud-item span,
+body.memory-playing.memory-expanded-canvas .hud-item-score span,
+body.memory-playing.memory-expanded-canvas .hud-item-moves span {
+  font-size: 10px;
+  line-height: 13px;
+  letter-spacing: 0;
+}
+
+body.memory-playing.memory-expanded-canvas .hud-item-score strong,
+body.memory-playing.memory-expanded-canvas .hud-item-moves strong {
+  font-size: 18px;
+  line-height: 22px;
+  white-space: nowrap;
+}
+
+body.memory-playing.memory-expanded-canvas .game-board-panel {
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: 8px 12px;
+}
+
+body.memory-playing.memory-expanded-canvas .card-grid {
+  width: min(100%, calc((var(--memory-frame-height, 780px) - 128px) * 0.82));
+  max-width: 520px;
+  max-height: 100%;
+  gap: 8px;
+}
+
+body.memory-playing.memory-expanded-canvas .feedback {
+  flex: 0 0 52px;
+  min-height: 52px;
+  padding: 6px 12px;
+}
+
+body.memory-playing.memory-expanded-canvas #feedbackText {
+  font-size: 13px;
+  line-height: 17px;
+}
+
+body.memory-playing.memory-expanded-canvas .battle-ad-reserve {
+  left: 4px;
+  top: auto;
+  right: 4px;
+  bottom: 4px;
+  width: auto;
+  height: 56px;
+  min-height: 56px;
+}
+
+body.memory-playing.memory-expanded-canvas .version-badge,
+body.memory-playing.memory-expanded-canvas .weightplay-version-badge,
+body.memory-playing.memory-expanded-canvas .sound-toggle,
+body.memory-playing.memory-expanded-canvas .wp-tutorial-button {
+  display: none !important;
+}
+
+@media (max-height: 430px) {
+  body.memory-playing.memory-expanded-canvas .topbar {
+    flex-basis: 40px;
+    min-height: 40px;
+  }
+
+  body.memory-playing.memory-expanded-canvas .home-link {
+    top: 3px;
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
+    min-height: 34px;
+    font-size: 20px;
+    line-height: 34px;
+  }
+
+  body.memory-playing.memory-expanded-canvas .game-hud {
+    flex-basis: 54px;
+    min-height: 54px;
+    grid-template-columns: minmax(150px, 1fr) 90px 130px;
+    padding: 5px 10px;
+  }
+
+  body.memory-playing.memory-expanded-canvas .game-board-panel {
+    padding: 5px 10px;
+  }
+
+  body.memory-playing.memory-expanded-canvas .card-grid {
+    width: min(100%, calc(var(--memory-frame-height, 320px) - 132px));
+    gap: 6px;
+  }
+
+  body.memory-playing.memory-expanded-canvas .feedback {
+    flex-basis: 38px;
+    min-height: 38px;
+    padding: 3px 10px;
+  }
 }
 
 /* Keyframe Animations */

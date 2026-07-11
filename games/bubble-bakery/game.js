@@ -442,7 +442,7 @@
   }
 
   function showMain() {
-    document.body.classList.remove("is-bakery-playing", "is-bakery-stage-select", "is-bakery-result");
+    document.body.classList.remove("is-bakery-playing", "is-bakery-stage-select", "is-bakery-result", "bakery-expanded-canvas");
     window.WEIGHTPLAY_BUBBLE_BAKERY_ACTIVE = false;
     window.dispatchEvent(new CustomEvent("bubble-bakery:play-state", { detail: { playing: false } }));
     nodes.mainPanel.classList.remove("hidden");
@@ -457,22 +457,39 @@
 
   function updateBakeryFrame() {
     if (!document.body.classList.contains("is-bakery-playing") && !document.body.classList.contains("is-bakery-stage-select")) return;
+    const viewport = window.visualViewport;
+    const viewportWidth = viewport?.width || innerWidth;
+    const viewportHeight = viewport?.height || innerHeight;
+    const isPhoneBattle = document.body.classList.contains("is-bakery-playing")
+      && (matchMedia("(pointer: coarse)").matches || viewportWidth <= 600 || viewportHeight <= 430);
+    document.body.classList.toggle("bakery-expanded-canvas", isPhoneBattle);
+    if (isPhoneBattle) {
+      const root = document.documentElement.style;
+      root.setProperty("--bakery-frame-scale", "1");
+      root.setProperty("--bakery-frame-width", `${Math.max(1, viewportWidth - 8)}px`);
+      root.setProperty("--bakery-frame-height", `${Math.max(1, viewportHeight - 64)}px`);
+      root.setProperty("--bakery-frame-left", "4px");
+      root.setProperty("--bakery-frame-top", "4px");
+      return;
+    }
     const logicalWidth = 390;
     const logicalHeight = 788;
     const reserveHeight = 56;
-    const scale = Math.max(0.1, Math.min((innerWidth - 8) / logicalWidth, (innerHeight - reserveHeight - 8) / logicalHeight));
+    const scale = Math.max(0.1, Math.min((viewportWidth - 8) / logicalWidth, (viewportHeight - reserveHeight - 8) / logicalHeight));
     const width = logicalWidth * scale;
     const contentHeight = logicalHeight * scale;
     const root = document.documentElement.style;
     root.setProperty("--bakery-frame-scale", String(scale));
     root.setProperty("--bakery-frame-width", `${width}px`);
     root.setProperty("--bakery-frame-height", `${contentHeight}px`);
-    root.setProperty("--bakery-frame-left", `${Math.max(0, (innerWidth - width) / 2)}px`);
-    root.setProperty("--bakery-frame-top", `${Math.max(0, (innerHeight - contentHeight - reserveHeight) / 2)}px`);
+    root.setProperty("--bakery-frame-left", `${Math.max(0, (viewportWidth - width) / 2)}px`);
+    root.setProperty("--bakery-frame-top", `${Math.max(0, (viewportHeight - contentHeight - reserveHeight) / 2)}px`);
   }
 
   addEventListener("resize", updateBakeryFrame, { passive: true });
   addEventListener("orientationchange", updateBakeryFrame, { passive: true });
+  visualViewport?.addEventListener("resize", updateBakeryFrame, { passive: true });
+  visualViewport?.addEventListener("scroll", updateBakeryFrame, { passive: true });
 
   function showStageSelect() {
     document.body.classList.remove("is-bakery-playing", "is-bakery-result");
