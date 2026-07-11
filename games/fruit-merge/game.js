@@ -22,6 +22,7 @@
   const largestFruitToken = document.querySelector("#largestFruitToken");
   const goalText = document.querySelector("#goalText");
   const goalFill = document.querySelector("#goalFill");
+  const backToMenuBtn = document.querySelector("#backToMenuBtn");
   const restartBtn = document.querySelector("#restartBtn");
   const startBtn = document.querySelector("#startBtn");
   const menuPanel = document.querySelector("#menuPanel");
@@ -993,6 +994,7 @@
     window.WonderAnalytics?.track?.("game_restart", { game_id: GAME_ID, score, source: "button" });
     resetGame(false, "restart");
   });
+  backToMenuBtn.addEventListener("click", () => resetGame(true, "battle-return"));
   startBtn.addEventListener("click", () => {
     window.WonderSound?.play?.("start");
     resetGame(false, "start");

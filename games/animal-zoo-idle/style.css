@@ -23,7 +23,7 @@
   }
 
   body.zoo-playing .savanna-stage {
-    width: min(100%, clamp(330px, calc(var(--wp-mobile-vh, 100svh) - 530px), 340px)) !important;
+    width: min(100%, clamp(218px, calc(var(--wp-mobile-vh, 100svh) - 470px), 340px)) !important;
     height: auto !important;
     min-height: 0 !important;
     aspect-ratio: 1 / 1 !important;
@@ -2122,8 +2122,8 @@ body.zoo-playing .animal-shop-card small {
   }
 
   body.zoo-playing .savanna-stage {
-    /* Reserve a stable first screen for happiness and the four park actions. */
-    width: min(100%, clamp(330px, calc(var(--wp-mobile-vh, 100svh) - 530px), 340px));
+    /* Keep the key management controls visible before optional park details. */
+    width: min(100%, clamp(218px, calc(var(--wp-mobile-vh, 100svh) - 470px), 340px));
     max-width: 100%;
     height: auto;
     min-height: 0;
@@ -2354,14 +2354,31 @@ body.zoo-playing .animal-shop {
 
   body.zoo-playing .happy-meter {
     order: 0;
+    min-height: 44px;
+    height: 44px;
+    padding: 8px 12px;
+    font-size: clamp(.9rem, 3.8vw, 1.05rem);
   }
 
   body.zoo-playing .zoo-actions {
     order: 1;
+    min-height: 40px;
+  }
+
+  body.zoo-playing .zoo-actions button {
+    min-height: 40px;
+    height: 40px;
+    font-size: clamp(.6rem, 2.55vw, .76rem);
+  }
+
+  body.zoo-playing .next-goal-card {
+    order: 2;
+    min-height: 56px;
+    height: 56px;
   }
 
   body.zoo-playing .facility-board {
-    order: 5;
+    order: 6;
   }
 
   body.zoo-playing .resource-row {

@@ -302,7 +302,8 @@
     document.body.append(button);
     applyCommonLabels();
     window.addEventListener("wonder:locale-change", applyCommonLabels);
-    if (!hasSeen(gameId) && !isAutomationRun()) scheduleFirstShow(gameId);
+    const autoShowEnabled = document.body.dataset.tutorialAutoShow !== "false";
+    if (autoShowEnabled && !hasSeen(gameId) && !isAutomationRun()) scheduleFirstShow(gameId);
   }
 
   if (document.readyState === "loading") {

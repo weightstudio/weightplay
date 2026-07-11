@@ -45,6 +45,56 @@ body {
   padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 
+/* Stage and Battle are self-contained mobile play states, never page-guide states. */
+body.has-game-page-info.memory-stage,
+body.has-game-page-info.memory-playing {
+  width: 100vw !important;
+  height: var(--wp-mobile-vh, 100svh) !important;
+  min-height: 0 !important;
+  max-height: var(--wp-mobile-vh, 100svh) !important;
+  overflow: hidden !important;
+  touch-action: none;
+}
+
+html.has-game-page-info:has(body.memory-stage),
+html.has-game-page-info:has(body.memory-playing) {
+  height: var(--wp-mobile-vh, 100svh) !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+
+body.memory-stage .game-page-info,
+body.memory-playing .game-page-info {
+  display: none !important;
+}
+
+body.memory-stage .memory-game,
+body.memory-playing .memory-game {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  max-width: none;
+  height: var(--wp-mobile-vh, 100svh);
+  min-height: 0;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+body.memory-stage .language-picker,
+body.memory-playing .language-picker,
+body.memory-stage #brandText,
+body.memory-playing #brandText {
+  display: none;
+}
+
+body.memory-playing .sound-toggle {
+  display: none !important;
+}
+
+body.memory-stage .wp-tutorial-button,
+body.memory-playing .wp-tutorial-button {
+  display: none !important;
+}
+
 /* Header Topbar */
 .topbar {
   display: flex;
@@ -199,8 +249,8 @@ body {
 
 .stage-grid {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 14px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
   width: 100%;
   max-width: 360px;
   padding-bottom: 8px;
@@ -211,7 +261,8 @@ body {
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 14px;
-  padding: 16px;
+  min-height: 112px;
+  padding: 10px;
   color: var(--text-light);
   text-align: left;
   display: flex;
@@ -250,13 +301,13 @@ body {
 }
 
 .stage-card strong {
-  font-size: 16px;
+  font-size: 13px;
   font-weight: 700;
   margin-bottom: 4px;
 }
 
 .stage-card small {
-  font-size: 12px;
+  font-size: 10px;
   color: var(--text-muted);
   line-height: 1.4;
 }
@@ -378,6 +429,15 @@ body {
   align-items: center;
   justify-content: center;
   min-height: 70px;
+}
+
+.battle-ad-reserve {
+  flex: 0 0 56px;
+  width: 100%;
+  min-height: 56px;
+  border-top: 1px dashed rgba(148, 163, 184, 0.3);
+  background: linear-gradient(180deg, rgba(30, 41, 59, 0.96), rgba(2, 6, 23, 0.96));
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.04);
 }
 
 #feedbackText {

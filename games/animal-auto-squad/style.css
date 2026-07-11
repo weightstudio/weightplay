@@ -465,6 +465,73 @@ select {
   gap: 12px;
 }
 
+.battle-ad-reserve {
+  min-height: 56px;
+  border-top: 1px solid rgba(140, 240, 195, 0.18);
+  background: rgba(2, 9, 7, 0.42);
+  pointer-events: none;
+}
+
+.play-return {
+  width: 42px;
+  min-width: 42px;
+  min-height: 42px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+body.squad-active {
+  overflow: hidden;
+}
+
+body.squad-active .topbar,
+body.squad-active .game-page-info,
+body.squad-active .wp-tutorial-button {
+  display: none !important;
+}
+
+body.squad-active .squad-app {
+  height: var(--wp-mobile-vh, 100dvh);
+  min-height: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+body.squad-active .game-panel {
+  height: 100%;
+  min-height: 0;
+  grid-template-rows: auto auto minmax(0, 1fr) auto 56px;
+  overflow: hidden;
+}
+
+body.squad-active .hud-row {
+  grid-row: 1;
+}
+
+body.squad-active .combat-summary {
+  grid-row: 2;
+}
+
+body.squad-active .prep-phase-area,
+body.squad-active .combat-area {
+  grid-row: 3;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+body.squad-active .hint {
+  grid-row: 4;
+  display: none;
+}
+
+body.squad-active .battle-ad-reserve {
+  grid-row: 5;
+}
+
 .hud-row {
   display: flex;
   justify-content: space-between;
@@ -1132,6 +1199,28 @@ select {
 
 /* Screen Scaling Adjustment for small devices */
 @media (max-width: 640px) {
+  body.squad-active {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: var(--wp-mobile-vh, 100dvh);
+    min-height: 0;
+  }
+
+  body.squad-active .squad-app {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: var(--wp-mobile-vh, 100dvh);
+    min-height: 0;
+  }
+
+  body.squad-active .game-panel {
+    padding: 6px;
+    gap: 6px;
+    border-radius: 0;
+  }
+
   .squad-app {
     padding: max(6px, env(safe-area-inset-top)) 6px max(10px, env(safe-area-inset-bottom));
   }

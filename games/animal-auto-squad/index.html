@@ -48,7 +48,7 @@
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
     <link rel="stylesheet" href="style.css?v=20260710-auto-squad-stages1" />
   </head>
-  <body>
+  <body data-tutorial-auto-show="false">
     <main class="squad-app">
       <header class="topbar">
         <a id="backToLobbyBtn" class="back-btn" href="/" aria-label="Back to lobby">&larr;</a>
@@ -122,7 +122,7 @@
         
         <!-- HUD Line -->
         <div class="hud-row">
-          <button id="quitRunBtn" class="secondary-btn" type="button" data-ui="quitRun">Quit Run</button>
+          <button id="quitRunBtn" class="secondary-btn play-return" type="button" aria-label="Quit expedition" data-ui="quitRun">&larr;</button>
           <div><span id="stageHudLabel">Stage</span><strong id="stageText">1/6</strong></div>
           <div><span data-ui="round">Wave</span><strong id="roundText">1/5</strong></div>
           <div><span data-ui="gold">Gold</span><strong id="goldText">10</strong></div>
@@ -161,6 +161,7 @@
         </div>
 
         <div id="hintText" class="hint" data-ui="guideHint">Drag matching animals to combine and level up. Drag food to feed them!</div>
+        <div class="battle-ad-reserve" aria-hidden="true"></div>
       </section>
 
       <!-- Relic Draft Modal (Spend 3 Diamonds to reroll relics) -->
@@ -205,7 +206,7 @@
     <script src="../../src/sound.js?v=20260701-labels1"></script>
     <script src="../../src/edge-guard.js?v=20260710-mobile-play-shell2"></script>
     <script src="../../src/i18n.js?v=20260703-i18n-clean1"></script>
-    <script src="../../src/tutorial.js?v=20260709-automation-safe1"></script>
+    <script src="../../src/tutorial.js?v=20260711-auto-squad-guide1"></script>
     <script src="../../src/wallet.js?v=20260706-crystal-diamond-charm1"></script>
     <script src="game.js?v=20260710-auto-squad-stages1"></script>
     <script>

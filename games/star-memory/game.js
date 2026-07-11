@@ -20,6 +20,7 @@
   const feedbackText = document.querySelector("#feedbackText");
   const comboContainer = document.querySelector("#comboContainer");
   const comboText = document.querySelector("#comboText");
+  const battleAdReserve = document.querySelector("#battleAdReserve");
   
   const resultPanel = document.querySelector("#resultPanel");
   const resultTitle = document.querySelector("#resultTitle");
@@ -406,10 +407,13 @@
 
   // Stage Selection Screen
   function showStageSelect() {
+    document.body.classList.remove("memory-playing");
+    document.body.classList.add("memory-stage");
     resultPanel.classList.add("hidden");
     gameHud.classList.add("hidden");
     gameBoardPanel.classList.add("hidden");
     gameFeedback.classList.add("hidden");
+    battleAdReserve.classList.add("hidden");
     stageSelectPanel.classList.remove("hidden");
     
     renderStageGrid();
@@ -459,6 +463,8 @@
     state.matchedPairsCount = 0;
     state.selectedCards = [];
     state.isLocked = false;
+    document.body.classList.remove("memory-stage");
+    document.body.classList.add("memory-playing");
 
     // Analytics event
     window.WonderAnalytics?.track("game_start", {
@@ -472,6 +478,7 @@
     gameHud.classList.remove("hidden");
     gameBoardPanel.classList.remove("hidden");
     gameFeedback.classList.remove("hidden");
+    battleAdReserve.classList.remove("hidden");
     
     feedbackText.textContent = t("tipTap");
     comboContainer.classList.add("hidden");

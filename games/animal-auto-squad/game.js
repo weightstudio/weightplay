@@ -883,6 +883,7 @@
     selectedSlot = null;
     pointerDrag = null;
     state.activeRun = false;
+    document.body.classList.remove("squad-active");
     save = loadSave();
     nodes.menuPanel.classList.remove("is-hidden");
     nodes.gamePanel.classList.add("is-hidden");
@@ -1111,7 +1112,8 @@
     // Top headings
     nodes.mainGameTitle.textContent = t("title");
     nodes.localeSelect.value = locale;
-    nodes.quitRunBtn.textContent = t("quitRun");
+    nodes.quitRunBtn.textContent = "\u2190";
+    nodes.quitRunBtn.setAttribute("aria-label", t("quitRun"));
     
     // Menu elements
     $("menuHeadingText").textContent = t("menuTitle");
@@ -1173,6 +1175,7 @@
     state.stage = normalizeSave(save).selectedStage;
     state.backpack = createBackpackCards();
     state.activeRun = true;
+    document.body.classList.add("squad-active");
     nodes.menuPanel.classList.add("is-hidden");
     nodes.gamePanel.classList.remove("is-hidden");
     nodes.prepPhaseArea.classList.remove("is-hidden");
