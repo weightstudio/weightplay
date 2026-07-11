@@ -5,6 +5,12 @@
   const titleText = document.querySelector("#titleText");
   const languageLabel = document.querySelector("#languageLabel");
   const localeSelect = document.querySelector("#localeSelect");
+  const homeLink = document.querySelector("#homeLink");
+  const mainPanel = document.querySelector("#mainPanel");
+  const mainTitle = document.querySelector("#mainTitle");
+  const mainIntro = document.querySelector("#mainIntro");
+  const startBtn = document.querySelector("#startBtn");
+  const statusbar = document.querySelector("#statusbar");
   const levelLabel = document.querySelector("#levelLabel");
   const movesLabel = document.querySelector("#movesLabel");
   const pairsLabel = document.querySelector("#pairsLabel");
@@ -17,6 +23,8 @@
   const levelGrid = document.querySelector("#levelGrid");
   const boardPanel = document.querySelector("#boardPanel");
   const board = document.querySelector("#board");
+  const battleBackBtn = document.querySelector("#battleBackBtn");
+  const battleAdReserve = document.querySelector(".battle-ad-reserve");
   const message = document.querySelector("#message");
   const resultPanel = document.querySelector("#resultPanel");
   const resultTitle = document.querySelector("#resultTitle");
@@ -32,6 +40,8 @@
     en: {
       title: "Pet Garden Tiles",
       language: "Language",
+      mainIntro: "Remember the garden pictures and match every pair across ten levels.",
+      start: "Choose Level",
       level: "Level",
       moves: "Moves",
       pairs: "Pairs",
@@ -53,6 +63,8 @@
     "zh-Hant": {
       title: "\u5bf5\u7269\u82b1\u5712\u65b9\u584a",
       language: "\u8a9e\u8a00",
+      mainIntro: "\u8a18\u4f4f\u82b1\u5712\u5716\u6848\u7684\u4f4d\u7f6e\uff0c\u5728 10 \u500b\u95dc\u5361\u4e2d\u627e\u51fa\u6240\u6709\u76f8\u540c\u914d\u5c0d\u3002",
+      start: "\u9078\u64c7\u95dc\u5361",
       level: "\u95dc\u5361",
       moves: "\u6b65\u6578",
       pairs: "\u914d\u5c0d",
@@ -155,6 +167,9 @@
   function applyText() {
     document.documentElement.lang = locale();
     titleText.textContent = t("title");
+    mainTitle.textContent = t("title");
+    mainIntro.textContent = t("mainIntro");
+    startBtn.textContent = t("start");
     languageLabel.textContent = t("language");
     levelLabel.textContent = t("level");
     movesLabel.textContent = t("moves");
@@ -166,6 +181,18 @@
     lobbyLink.textContent = t("lobby");
     renderLevelGrid();
     updateHud();
+  }
+
+  function showMain() {
+    document.body.classList.remove("garden-stage", "garden-playing");
+    document.body.classList.add("garden-main");
+    resultPanel.classList.add("hidden");
+    mainPanel.classList.remove("hidden");
+    statusbar.classList.add("hidden");
+    levelSelect.classList.add("hidden");
+    boardPanel.classList.add("hidden");
+    battleAdReserve.classList.add("hidden");
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   }
 
   function renderLevelGrid() {
@@ -189,14 +216,21 @@
   }
 
   function showLevelSelect() {
-    document.body.classList.remove("garden-playing");
+    document.body.classList.remove("garden-main", "garden-playing");
+    document.body.classList.add("garden-stage");
     resultPanel.classList.add("hidden");
+    mainPanel.classList.add("hidden");
+    statusbar.classList.add("hidden");
     boardPanel.classList.add("hidden");
+    battleAdReserve.classList.add("hidden");
     levelSelect.classList.remove("hidden");
     message.textContent = "";
     levelMessage.textContent = "";
     renderLevelGrid();
     updateHud();
+    if (window.matchMedia("(max-width: 520px)").matches) {
+      requestAnimationFrame(() => levelGrid.querySelector("button.challenge")?.scrollIntoView({ block: "nearest", inline: "center", behavior: "auto" }));
+    }
   }
 
   function startLevel(index) {
@@ -213,9 +247,12 @@
     busy = false;
     tiles = makeTiles(level.pairs, index);
     board.style.setProperty("--cols", level.cols);
+    document.body.classList.remove("garden-stage");
     document.body.classList.add("garden-playing");
+    statusbar.classList.remove("hidden");
     levelSelect.classList.add("hidden");
     boardPanel.classList.remove("hidden");
+    battleAdReserve.classList.remove("hidden");
     resultPanel.classList.add("hidden");
     renderBoard();
     showMessage(t("selectFirst"));
@@ -360,6 +397,14 @@
     startLevel(currentLevelIndex);
   });
   levelsBtn.addEventListener("click", showLevelSelect);
+  startBtn.addEventListener("click", showLevelSelect);
+  battleBackBtn.addEventListener("click", showLevelSelect);
+  homeLink.addEventListener("click", (event) => {
+    if (document.body.classList.contains("garden-main")) return;
+    event.preventDefault();
+    if (document.body.classList.contains("garden-playing")) showLevelSelect();
+    else showMain();
+  });
   localeSelect.addEventListener("change", () => {
     window.WonderI18n?.setLocale?.(localeSelect.value);
     applyText();
@@ -371,7 +416,7 @@
 
   localeSelect.value = locale();
   applyText();
-  showLevelSelect();
+  showMain();
   loadingPanel.classList.add("hidden");
   window.WonderAnalytics?.track?.("game_ready", { game_id: GAME_ID });
   window.WeightPlayGameReady = true;

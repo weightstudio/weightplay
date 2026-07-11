@@ -23,7 +23,7 @@
   }
 
   body.zoo-playing .savanna-stage {
-    width: min(100%, clamp(218px, calc(var(--wp-mobile-vh, 100svh) - 470px), 340px)) !important;
+    width: min(94%, clamp(270px, calc(var(--wp-mobile-vh, 100svh) - 340px), 358px)) !important;
     height: auto !important;
     min-height: 0 !important;
     aspect-ratio: 1 / 1 !important;
@@ -2123,7 +2123,7 @@ body.zoo-playing .animal-shop-card small {
 
   body.zoo-playing .savanna-stage {
     /* Keep the key management controls visible before optional park details. */
-    width: min(100%, clamp(218px, calc(var(--wp-mobile-vh, 100svh) - 470px), 340px));
+    width: min(94%, clamp(270px, calc(var(--wp-mobile-vh, 100svh) - 340px), 358px));
     max-width: 100%;
     height: auto;
     min-height: 0;

@@ -64,7 +64,7 @@
   <body>
     <main class="garden-game">
       <header class="topbar">
-        <a class="home-link" href="/" aria-label="Back to lobby">&larr;</a>
+        <a id="homeLink" class="home-link" href="/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
         <div class="title-block">
           <p>WeightPlay</p>
           <h1 id="titleText">Pet Garden Tiles</h1>
@@ -78,7 +78,14 @@
         </label>
       </header>
 
-      <section class="statusbar" aria-label="Game status">
+      <section id="mainPanel" class="main-panel">
+        <img class="main-poster" src="../../assets/garden-tiles-cover.webp" alt="" />
+        <h2 id="mainTitle">Pet Garden Tiles</h2>
+        <p id="mainIntro">Remember the garden pictures and match every pair across ten levels.</p>
+        <button id="startBtn" type="button">Choose Level</button>
+      </section>
+
+      <section id="statusbar" class="statusbar hidden" aria-label="Game status">
         <div>
           <span id="levelLabel">Level</span>
           <strong id="levelText">1 / 10</strong>
@@ -93,16 +100,19 @@
         </div>
       </section>
 
-      <section id="levelSelect" class="level-select">
+      <section id="levelSelect" class="level-select hidden">
         <h2 id="levelSelectTitle">Choose Level</h2>
         <div id="levelGrid" class="level-grid"></div>
         <div id="levelMessage" class="message" aria-live="polite"></div>
+        <div class="stage-ad-reserve" aria-hidden="true"></div>
       </section>
 
       <section id="boardPanel" class="board-panel hidden" data-no-mobile-immersive="true">
+        <button id="battleBackBtn" class="play-return" type="button" aria-label="Back to levels">&larr;</button>
         <div id="board" class="tile-board" aria-label="Garden tile board"></div>
         <div id="message" class="message" aria-live="polite"></div>
       </section>
+      <div class="battle-ad-reserve hidden" aria-hidden="true"></div>
 
       <section id="resultPanel" class="result-panel hidden" role="dialog" aria-modal="true">
         <div class="result-card">
