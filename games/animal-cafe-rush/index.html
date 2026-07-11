@@ -18,6 +18,7 @@
     <meta name="twitter:card" content="summary_large_image" />
     <title>Animal Cafe Rush - WeightPlay</title>
     <link rel="canonical" href="https://weightplay.com/games/animal-cafe-rush/" />
+    <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260711-cafe-release1" />
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
@@ -26,6 +27,9 @@
   </head>
   <body>
     <main class="cafe-app" data-no-mobile-immersive="true">
+      <section id="loadingPanel" class="loading-panel" aria-live="polite">
+        <div class="loading-card"><strong>Animal Cafe Rush</strong><span id="loadingText">Loading</span><div><i id="loadingFill"></i></div></div>
+      </section>
       <header class="topbar">
         <a id="lobbyLink" class="home-link" href="/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
         <div class="brand"><span>WeightPlay</span><h1 data-ui="title">Animal Cafe Rush</h1></div>
@@ -59,7 +63,10 @@
     <script>window.WonderAnalytics?.track("game_view", { game_id: "animal-cafe-rush" });</script>
     <script src="../../src/edge-guard.js?v=20260710-mobile-play-shell2"></script>
     <script src="../../src/sound.js?v=20260701-labels1"></script>
+    <script src="../../src/i18n.js?v=20260703-i18n-clean1"></script>
+    <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
     <script src="game.js?v=20260711-cafe-release1"></script>
     <script src="../../src/game-page-info.js?v=20260711-cafe-release1"></script>
+    <script>window.addEventListener("load", () => document.querySelector("#loadingPanel")?.classList.add("hidden"), { once: true });</script>
   </body>
 </html>

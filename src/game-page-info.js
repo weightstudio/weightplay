@@ -86,6 +86,23 @@
         ["What skills does it practice?", "It can practice focus, logic, planning, and animal knowledge."],
       ],
     },
+    "animal-cafe-rush": {
+      title: "Animal Cafe Rush",
+      age: "6+",
+      difficulty: "Easy to Medium",
+      time: "3-8 minutes",
+      skills: ["Focus", "Reaction", "Problem Solving"],
+      intro:
+        "Animal Cafe Rush is a quick picture-matching cafe game where animal customers continuously join the queue. Players choose food tiles that match a customer's order bubble, then tap that customer to serve before patience runs out. Duplicate foods and longer queues gradually add challenge while cafe upgrades support repeat play.",
+      how: ["Check the food pictures above each customer.", "Tap matching food tiles to build one complete order.", "Tap the customer whose bubble matches the selected food.", "Keep serving as the queue grows and use earned coins for cafe upgrades."],
+      parent:
+        "This game may help children practice visual matching, focus, reaction, and planning through short cafe rounds. Progress is stored locally and is for playful feedback only, not a formal assessment.",
+      faq: [
+        ["How do I serve a customer?", "Choose every food shown in one order bubble, then tap that customer."],
+        ["What happens when a customer waits too long?", "The customer leaves and the business rating drops, but the day can be retried."],
+        ["Does the game require an account?", "No. Basic progress and upgrades are stored only in the browser."],
+      ],
+    },
     "star-memory": {
       title: "Animal Star Memory",
       age: "5+",
@@ -643,6 +660,7 @@
     "color-lunchbox": { gameplay: "Color Sorting", genre: ["Preschool", "Education", "Animal"] },
     "bubble-bakery": { gameplay: "Bubble Match Puzzle", genre: ["Puzzle", "Logic", "Animal"] },
     "animal-zoo-idle": { gameplay: "Idle Zoo Care", genre: ["Idle", "Simulation", "Animal"] },
+    "animal-cafe-rush": { gameplay: "Cafe Queue Matching", genre: ["Time Management", "Matching", "Animal"] },
     "animal-rope-rescue": { gameplay: "Vine Physics Puzzle", genre: ["Physics", "Puzzle", "Animal"] },
     "star-memory": { gameplay: "Memory Match", genre: ["Memory", "Puzzle", "Animal"] },
     "campus-dash": { gameplay: "Lane Runner", genre: ["Runner", "Reaction", "Animal"] },
@@ -671,6 +689,7 @@
     "color-lunchbox": "lunchbox-cover.webp",
     "bubble-bakery": "bubble-bakery-cover.webp",
     "animal-zoo-idle": "animal-zoo-idle-cover.webp",
+    "animal-cafe-rush": "animal-cafe-rush-cover.webp",
     "animal-rope-rescue": "animal-vine-rescue-cover.webp",
     "star-memory": "memory-cover.webp",
     "campus-dash": "campus-dash-cover.webp",
