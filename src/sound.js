@@ -170,7 +170,7 @@
   }
 
   function updateToggle() {
-    const toggle = document.querySelector("[data-sound-toggle]");
+    const toggle = document.querySelector("button[data-sound-toggle]");
     if (!toggle) return;
 
     const text = soundLabels();
@@ -324,7 +324,7 @@
   }
 
   function installToggle() {
-    if (document.querySelector("[data-sound-toggle]")) return;
+    if (document.querySelector("button[data-sound-toggle]")) return;
 
     installStyles();
     const button = document.createElement("button");

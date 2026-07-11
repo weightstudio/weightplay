@@ -15,6 +15,14 @@
   };
 
   const tutorials = {
+    "animal-gearpack-expedition": {
+      title: { en: "Build Rux's gearpack.", "zh-Hant": "配置魯克斯的裝備行囊。" },
+      steps: [
+        { icon: "1", en: ["Choose Gear", "Tap an item in the tray, then tap open backpack cells."], "zh-Hant": ["選擇裝備", "點待放區的裝備，再點行囊中的空格。"] },
+        { icon: "2", en: ["Link Materials", "Place matching material tags next to each other for bonuses."], "zh-Hant": ["連結材質", "把相同材質標籤的裝備放在相鄰位置取得加成。"] },
+        { icon: "3", en: ["Clear the Route", "Rotate or sell gear, then defeat five encounters."], "zh-Hant": ["完成路線", "旋轉或出售裝備，接著擊敗五場遭遇。"] },
+      ],
+    },
     "wonder-crash": {
       title: { en: "Protect the wall.", "zh-Hant": "\u5b88\u4f4f\u57ce\u7246\u3002" },
       steps: [

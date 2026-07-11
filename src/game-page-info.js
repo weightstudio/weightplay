@@ -120,6 +120,23 @@
         ["Are diamonds required?", "No. Diamonds only offer one optional blessing reroll per run."],
       ],
     },
+    "animal-gearpack-expedition": {
+      title: "Animal Gearpack Expedition",
+      age: "13+",
+      difficulty: "Medium",
+      time: "6-12 minutes",
+      skills: ["Planning", "Problem Solving", "Spatial Reasoning"],
+      intro:
+        "Animal Gearpack Expedition is a spatial-inventory strategy adventure starring Gear Horn Rux. Arrange equipment inside a five-by-seven pack, connect matching material tags, clear five encounters, and visit Moon Cap Orla's caravan shop before facing the Root Guardian.",
+      how: ["Choose the Gearwood route.", "Tap an item, rotate it when useful, and place it in open pack cells.", "Put matching material tags beside each other to earn attack and defense links.", "Fight, choose loot, buy or sell gear, and defeat the fifth-room Boss."],
+      parent:
+        "This 13+ game may practice spatial reasoning, planning, trade-off decisions, and adapting a build between encounters. Workshop XP and discoveries are stored locally. The optional three-diamond merchant refresh is confirmed and is never required to clear the first route.",
+      faq: [
+        ["What carries between expeditions?", "Workshop XP, discovered items, and best-room progress are stored locally in the browser."],
+        ["How do adjacency bonuses work?", "Equipment with the same material tag gains bonuses when their occupied cells touch."],
+        ["Are diamonds required?", "No. Diamonds only provide an optional confirmed merchant-stock refresh."],
+      ],
+    },
     "star-memory": {
       title: "Animal Star Memory",
       age: "5+",
@@ -679,6 +696,7 @@
     "animal-zoo-idle": { gameplay: "Idle Zoo Care", genre: ["Idle", "Simulation", "Animal"] },
     "animal-cafe-rush": { gameplay: "Cafe Queue Matching", genre: ["Time Management", "Matching", "Animal"] },
     "animal-hero-trials": { gameplay: "Hero Action Trials", genre: ["Action", "Roguelite", "Animal"] },
+    "animal-gearpack-expedition": { gameplay: "Spatial Inventory Expedition", genre: ["Strategy", "Roguelite", "Animal"] },
     "animal-rope-rescue": { gameplay: "Vine Physics Puzzle", genre: ["Physics", "Puzzle", "Animal"] },
     "star-memory": { gameplay: "Memory Match", genre: ["Memory", "Puzzle", "Animal"] },
     "campus-dash": { gameplay: "Lane Runner", genre: ["Runner", "Reaction", "Animal"] },
@@ -709,6 +727,7 @@
     "animal-zoo-idle": "animal-zoo-idle-cover.webp",
     "animal-cafe-rush": "animal-cafe-rush-cover.webp",
     "animal-hero-trials": "animal-hero-trials-cover.png",
+    "animal-gearpack-expedition": "animal-gearpack-expedition-cover.webp",
     "animal-rope-rescue": "animal-vine-rescue-cover.webp",
     "star-memory": "memory-cover.webp",
     "campus-dash": "campus-dash-cover.webp",
@@ -980,6 +999,7 @@
           ["這是正式能力測驗嗎？", "不是。能力回饋只是支援性的本機遊戲提示，僅供娛樂參考。"],
         ],
       },
+      "animal-gearpack-expedition": zhGuide("動物裝備行囊遠征", "空間行囊策略遠征", ["選擇齒輪森林路線。", "選擇、旋轉並把裝備放入行囊空格。", "讓相同材質的裝備彼此相鄰取得連結加成。", "通過五場遭遇並擊敗樹根守衛。"]),
       "shadow-wolf": zhGuide("影狼傳說", "橫向動作 RPG", ["左右移動並跳過平台陷阱。", "攻擊影獸並收集經驗。", "開啟寶箱、穿戴裝備並挑戰巨獸。"]),
       "animal-hero-trials": zhGuide("動物英雄試煉", "英雄動作試煉", ["選擇一位英雄與已解鎖試煉。", "移動閃避敵人，並掌握英雄技能的使用時機。", "每個房間選擇一項免費祝福，最後擊敗暗影王者。"]),
     },
@@ -1087,6 +1107,7 @@
   gameplayProfiles["beast-tactician"] = { gameplay: "Hero Tower Defense", genre: ["Tower Defense", "Strategy", "Animal"] };
   localizedGameplayProfiles["zh-Hant"]["beast-tactician"] = { gameplay: "英雄塔防", genre: ["塔防", "策略", "動物"] };
   localizedGameplayProfiles["zh-Hant"]["animal-hero-trials"] = { gameplay: "英雄動作試煉", genre: ["動作", "Roguelite", "動物"] };
+  localizedGameplayProfiles["zh-Hant"]["animal-gearpack-expedition"] = { gameplay: "空間行囊策略遠征", genre: ["策略", "Roguelite", "動物"] };
   localizedGames["zh-Hant"]["beast-tactician"] = {
     title: "獸王守衛",
     age: "13+",
