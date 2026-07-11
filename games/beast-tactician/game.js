@@ -869,8 +869,8 @@
 
   function updateBattleShell() {
     if (!document.body.classList.contains("guardian-playing")) return;
-    const logicalWidth = 960;
-    const logicalHeight = 720;
+    const logicalWidth = 390;
+    const logicalHeight = 788;
     const reserveHeight = 56;
     const gutter = 8;
     const availableWidth = Math.max(1, window.innerWidth - gutter);
