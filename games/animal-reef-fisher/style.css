@@ -1423,9 +1423,7 @@ body.reef-fisher-playing .battle-shell {
   position: absolute;
   top: 0;
   left: 0;
-  display: grid;
-  grid-template-rows: 7.6% minmax(0, 1fr) 6.8% 19.4%;
-  gap: 0.75%;
+  display: block;
   width: 390px;
   height: 788px;
   padding: 1%;
@@ -1447,15 +1445,21 @@ body.reef-fisher-playing .battle-ad-reserve {
   margin: 0;
 }
 
-body.reef-fisher-playing .battle-shell > .hud-row { grid-row: 1; }
-body.reef-fisher-playing .battle-shell > .play-frame { grid-row: 2; }
-body.reef-fisher-playing .battle-shell > .catch-hud { grid-row: 3; }
+body.reef-fisher-playing .battle-shell > .hud-row,
+body.reef-fisher-playing .battle-shell > .play-frame,
+body.reef-fisher-playing .battle-shell > .catch-hud,
 body.reef-fisher-playing .battle-shell > .tension-panel {
-  grid-row: 4 !important;
-  height: 100%;
-  min-height: 100%;
-  align-self: stretch;
+  position: absolute;
+  right: 4px;
+  left: 4px;
+  width: auto;
+  margin: 0;
 }
+
+body.reef-fisher-playing .battle-shell > .hud-row { top: 4px; height: 56px; }
+body.reef-fisher-playing .battle-shell > .play-frame { top: 66px; height: 498px; }
+body.reef-fisher-playing .battle-shell > .catch-hud { top: 570px; height: 52px; }
+body.reef-fisher-playing .battle-shell > .tension-panel { top: 628px; height: 156px; }
 
 body.reef-fisher-playing .hud-row {
   grid-template-columns: 18% repeat(3, minmax(0, 1fr));

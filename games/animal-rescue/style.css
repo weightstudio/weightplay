@@ -694,6 +694,94 @@ body.rescue-playing .game-page-info {
     line-height: 1;
   }
 }
+
+/* Battle uses one fixed portrait composition plus a physical ad reserve. */
+body.rescue-playing {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100dvh;
+  min-height: 100dvh;
+  max-height: 100dvh;
+  overflow: hidden !important;
+  overscroll-behavior: none;
+  touch-action: none;
+}
+
+body.rescue-playing .rescue-game,
+body.wp-mobile-game-mode.rescue-playing .rescue-game.weightplay-active-viewport {
+  position: fixed !important;
+  inset: auto !important;
+  top: 50% !important;
+  left: 50% !important;
+  display: block;
+  width: var(--rescue-battle-width, 382px) !important;
+  max-width: none !important;
+  height: var(--rescue-battle-height, 826px) !important;
+  min-height: 0;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  box-shadow: none;
+  transform: translate(-50%, -50%);
+}
+
+body.rescue-playing .topbar,
+body.rescue-playing .game-page-info,
+body.rescue-playing .wp-tutorial-button {
+  display: none !important;
+}
+
+body.rescue-playing #hud,
+body.rescue-playing #playArea {
+  position: absolute;
+  left: var(--rescue-battle-left, 4px);
+  width: 390px;
+  margin: 0;
+  transform: scale(var(--rescue-battle-scale, 1));
+  transform-origin: top left;
+}
+
+body.rescue-playing #hud {
+  top: var(--rescue-battle-top, 8px);
+  display: grid;
+  height: 50px;
+}
+
+body.rescue-playing #playArea {
+  top: calc(var(--rescue-battle-top, 8px) + 56px * var(--rescue-battle-scale, 1));
+  display: grid;
+  grid-template-rows: 72px minmax(0, 1fr) 42px;
+  gap: 6px;
+  height: 732px;
+  min-height: 0;
+  padding: 0 8px 4px;
+  overflow: hidden;
+}
+
+body.rescue-playing .board {
+  width: min(100%, 602px);
+  height: auto;
+  max-height: 100%;
+  aspect-ratio: 1;
+  margin: auto;
+}
+
+body.rescue-playing .battle-ad-reserve {
+  position: absolute;
+  top: calc(var(--rescue-battle-top, 8px) + var(--rescue-battle-content-height, 772px));
+  right: auto;
+  bottom: auto;
+  left: var(--rescue-battle-left, 4px);
+  display: block;
+  width: var(--rescue-battle-width, 382px);
+  height: 56px;
+  min-height: 56px;
+  margin: 0;
+  box-sizing: border-box;
+}
 html,
 body,
 button,

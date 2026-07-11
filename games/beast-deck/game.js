@@ -1194,6 +1194,7 @@
   }
 
   function endGame(won) {
+    document.body.classList.remove("beast-deck-playing");
     nodes.gamePanel.classList.add("hidden");
     nodes.resultPanel.classList.remove("hidden");
     const cleared = won ? 3 : Math.max(0, state.battle - 1);
@@ -1264,6 +1265,7 @@
     nodes.menuPanel.classList.add("hidden");
     nodes.resultPanel.classList.add("hidden");
     nodes.gamePanel.classList.remove("hidden");
+    document.body.classList.add("beast-deck-playing");
     startNextBattle();
     window.WonderSound?.play("start");
     nodes.gamePanel.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -1383,6 +1385,7 @@
       startRun();
     });
     nodes.resultMenuBtn.addEventListener("click", () => {
+      document.body.classList.remove("beast-deck-playing");
       window.WonderSound?.play("click");
       nodes.resultPanel.classList.add("hidden");
       nodes.menuPanel.classList.remove("hidden");
@@ -1459,5 +1462,19 @@
     }, 60);
   }
 
+  function updateBattleScale() {
+    const scale = Math.max(0.1, Math.min((window.innerWidth - 8) / 390, (window.innerHeight - 64) / 788));
+    const width = 390 * scale;
+    const contentHeight = 788 * scale;
+    const totalHeight = contentHeight + 56;
+    document.documentElement.style.setProperty("--beast-battle-scale", String(scale));
+    document.documentElement.style.setProperty("--beast-battle-width", `${width}px`);
+    document.documentElement.style.setProperty("--beast-battle-content-height", `${contentHeight}px`);
+    document.documentElement.style.setProperty("--beast-battle-left", `${(window.innerWidth - width) / 2}px`);
+    document.documentElement.style.setProperty("--beast-battle-top", `${(window.innerHeight - totalHeight) / 2}px`);
+  }
+  updateBattleScale();
+  window.addEventListener("resize", updateBattleScale);
+  window.addEventListener("orientationchange", updateBattleScale);
   window.addEventListener("DOMContentLoaded", init);
 })();

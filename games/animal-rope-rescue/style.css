@@ -779,3 +779,74 @@ body.is-vine-playing .game-page-info {
     line-height: 1.15;
   }
 }
+
+/* Battle keeps one portrait layout and a separate physical ad reserve. */
+body.is-vine-playing {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100dvh;
+  min-height: 100dvh;
+  max-height: 100dvh;
+  overflow: hidden !important;
+  overscroll-behavior: none;
+  touch-action: none;
+}
+
+body.is-vine-playing .vine-app {
+  position: fixed;
+  inset: 0;
+  display: block;
+  width: 100vw;
+  height: 100dvh;
+  min-height: 100dvh;
+  max-height: 100dvh;
+  padding: 0;
+  overflow: hidden;
+}
+
+body.is-vine-playing .topbar,
+body.is-vine-playing .game-page-info,
+body.is-vine-playing .wp-tutorial-button {
+  display: none !important;
+}
+
+body.is-vine-playing main.vine-app #gamePanel.game-panel {
+  position: absolute !important;
+  top: var(--vine-battle-top, 8px) !important;
+  left: var(--vine-battle-left, 4px) !important;
+  display: grid;
+  grid-template-rows: 58px minmax(0, 1fr) 48px 42px;
+  gap: 6px;
+  width: 390px !important;
+  max-width: none !important;
+  height: 788px !important;
+  max-height: none !important;
+  min-height: 0;
+  margin: 0 !important;
+  padding: 6px;
+  overflow: hidden;
+  transform: scale(var(--vine-battle-scale, 1));
+  transform-origin: top left;
+}
+
+body.is-vine-playing main.vine-app #playfield.playfield.play-area {
+  width: min(100%, 504px) !important;
+  height: auto;
+  max-width: 100% !important;
+  max-height: 100%;
+  aspect-ratio: 3 / 4;
+  margin: auto;
+}
+
+body.is-vine-playing .battle-ad-reserve {
+  position: absolute;
+  top: calc(var(--vine-battle-top, 8px) + var(--vine-battle-content-height, 772px));
+  left: var(--vine-battle-left, 4px);
+  display: block;
+  width: var(--vine-battle-width, 382px);
+  height: 56px;
+  min-height: 56px;
+  margin: 0;
+  box-sizing: border-box;
+}

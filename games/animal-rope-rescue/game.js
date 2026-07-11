@@ -485,6 +485,22 @@
 
   nodes.localeSelect.value = locale;
   setLocale(locale);
+
+  function updateBattleScale() {
+    const scale = Math.max(0.1, Math.min((window.innerWidth - 8) / 390, (window.innerHeight - 64) / 788));
+    const width = 390 * scale;
+    const contentHeight = 788 * scale;
+    const totalHeight = contentHeight + 56;
+    document.documentElement.style.setProperty("--vine-battle-scale", String(scale));
+    document.documentElement.style.setProperty("--vine-battle-width", `${width}px`);
+    document.documentElement.style.setProperty("--vine-battle-content-height", `${contentHeight}px`);
+    document.documentElement.style.setProperty("--vine-battle-left", `${(window.innerWidth - width) / 2}px`);
+    document.documentElement.style.setProperty("--vine-battle-top", `${(window.innerHeight - totalHeight) / 2}px`);
+  }
+
+  updateBattleScale();
+  window.addEventListener("resize", updateBattleScale);
+  window.addEventListener("orientationchange", updateBattleScale);
   setupStage(1);
   preload();
 })();

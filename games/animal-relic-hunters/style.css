@@ -1214,7 +1214,7 @@ body {
 /* ==========================================================================
    MOBILE RESPONSIVENESS
    ========================================================================== */
-@media (max-width: 900px) {
+@media (min-width: 0px) {
   html:has(body.relic-stage-select),
   body.relic-stage-select,
   html:has(body.relic-playing),
@@ -1393,4 +1393,143 @@ body {
   .joystick-container {
     display: block; /* show joystick on smaller viewports */
   }
+}
+
+/* Battle keeps one portrait composition; only the backpack list scrolls. */
+body.relic-playing {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100dvh;
+  min-height: 100dvh;
+  max-height: 100dvh;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+body.relic-playing .relic-app {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  width: 100vw;
+  height: 100dvh;
+  min-height: 100dvh;
+  max-height: 100dvh;
+  padding: 4px;
+  overflow: hidden;
+}
+
+body.relic-playing #gamePanel.game-panel,
+body.wp-mobile-game-mode.relic-playing #gamePanel.game-panel.weightplay-active-viewport {
+  position: fixed !important;
+  inset: auto !important;
+  top: 50% !important;
+  left: 50% !important;
+  display: block;
+  width: var(--relic-battle-width, 382px) !important;
+  max-width: none !important;
+  height: var(--relic-battle-height, 826px) !important;
+  min-height: 0;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  box-shadow: none;
+  transform: translate(-50%, -50%);
+}
+
+body.relic-playing .game-layout {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: grid;
+  grid-template-rows: 420px 360px;
+  gap: 8px;
+  width: 390px;
+  height: 788px;
+  min-height: 0;
+  padding: 44px 4px 4px;
+  overflow: hidden;
+  transform: scale(var(--relic-battle-scale, 1));
+  transform-origin: top left;
+}
+
+body.relic-playing .battle-return {
+  top: 4px;
+  left: 4px;
+  width: 40px;
+  height: 36px;
+  min-height: 36px;
+  z-index: 20;
+}
+
+body.relic-playing .arena-viewport,
+body.relic-playing .inventory-sidebar {
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  margin: 0;
+  overflow: hidden;
+}
+
+body.relic-playing .arena-viewport {
+  display: grid;
+  grid-template-rows: 138px minmax(0, 1fr);
+  padding: 6px;
+}
+
+body.relic-playing .arena-hud {
+  min-height: 0;
+  margin: 0;
+  overflow: hidden;
+}
+
+body.relic-playing .canvas-container {
+  width: 100%;
+  height: auto;
+  max-height: 100%;
+  aspect-ratio: 8 / 5;
+  align-self: end;
+}
+
+body.relic-playing .inventory-sidebar {
+  display: grid;
+  grid-template-rows: auto 126px minmax(0, 1fr);
+  gap: 6px;
+  padding: 8px;
+}
+
+body.relic-playing .stats-list {
+  display: none;
+}
+
+body.relic-playing .backpack-panel,
+body.relic-playing .backpack-list {
+  min-height: 0;
+}
+
+body.relic-playing .backpack-panel {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  overflow: hidden;
+}
+
+body.relic-playing .backpack-list {
+  max-height: none;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+body.relic-playing .battle-ad-reserve {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: auto;
+  height: 56px;
+  min-height: 56px;
+  margin: 0;
+  box-sizing: border-box;
 }

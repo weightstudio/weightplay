@@ -570,6 +570,23 @@ localeSelect.addEventListener("input", () => {
   renderStaticText();
 });
 window.addEventListener("wonder:locale-change", renderStaticText);
+
+function updateBattleScale() {
+  const scale = Math.max(0.1, Math.min((window.innerWidth - 8) / 390, (window.innerHeight - 64) / 788));
+  const width = 390 * scale;
+  const contentHeight = 788 * scale;
+  const totalHeight = contentHeight + 56;
+  document.documentElement.style.setProperty("--rescue-battle-scale", String(scale));
+  document.documentElement.style.setProperty("--rescue-battle-width", `${width}px`);
+  document.documentElement.style.setProperty("--rescue-battle-height", `${totalHeight}px`);
+  document.documentElement.style.setProperty("--rescue-battle-content-height", `${contentHeight}px`);
+  document.documentElement.style.setProperty("--rescue-battle-left", `${(window.innerWidth - width) / 2}px`);
+  document.documentElement.style.setProperty("--rescue-battle-top", `${(window.innerHeight - totalHeight) / 2}px`);
+}
+
+updateBattleScale();
+window.addEventListener("resize", updateBattleScale);
+window.addEventListener("orientationchange", updateBattleScale);
 showStageBtn.addEventListener("click", showStageSelect);
 stageBackBtn.addEventListener("click", showMain);
 battleBackBtn.addEventListener("click", showStageSelect);
