@@ -69,7 +69,7 @@
 
       <!-- Active battle chrome: return, one primary value, one status row, settings. -->
       <button id="backToMenuBtn" type="button" class="play-return hidden" aria-label="Back to game menu" data-i18n-aria="menu_title">
-        <img src="assets/weightplay-logo.png" alt="" draggable="false" />
+        <span aria-hidden="true">&larr;</span>
       </button>
 
       <div id="battleHud" class="hud battle-hud hidden">
@@ -144,6 +144,7 @@
         </div>
       </div>
     </main>
+    <div id="battleAdReserve" class="battle-ad-reserve" aria-hidden="true"></div>
 
     <!-- Platform Modules and Script Loaders -->
     <script src="src/site-config.js?v=20260709-wonder-settlement-mobile1"></script>

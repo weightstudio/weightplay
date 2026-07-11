@@ -22,6 +22,8 @@ const profilePanel = document.querySelector("#profilePanel");
 const pausePanel = document.querySelector("#pausePanel");
 const settingsBtn = document.querySelector("#settingsBtn");
 const backToMenuBtn = document.querySelector("#backToMenuBtn");
+const gameShell = document.querySelector(".game-shell");
+const battleAdReserve = document.querySelector("#battleAdReserve");
 const resumeBtn = document.querySelector("#resumeBtn");
 const leaveBtn = document.querySelector("#leaveBtn");
 const pauseLocaleSelect = document.querySelector("#pauseLocaleSelect");
@@ -697,6 +699,31 @@ function restart() {
   startLevel(state.levelIndex);
 }
 
+const BATTLE_LOGICAL_WIDTH = 390;
+const BATTLE_LOGICAL_HEIGHT = 788;
+const BATTLE_AD_HEIGHT = 56;
+
+function updateBattleShell() {
+  if (!document.body.classList.contains("wonder-playing")) return;
+  const scale = Math.min(
+    Math.max(0, window.innerWidth - 8) / BATTLE_LOGICAL_WIDTH,
+    Math.max(0, window.innerHeight - BATTLE_AD_HEIGHT - 8) / BATTLE_LOGICAL_HEIGHT
+  );
+  document.documentElement.style.setProperty("--wonder-battle-scale", String(scale));
+}
+
+function setBattleShellActive(active) {
+  document.body.classList.toggle("wonder-playing", active);
+  gameShell?.toggleAttribute("data-battle-shell", active);
+  battleAdReserve?.toggleAttribute("data-active", active);
+  if (active) {
+    updateBattleShell();
+    requestAnimationFrame(updateBattleShell);
+  }
+}
+
+window.addEventListener("resize", updateBattleShell);
+
 function startLevel(levelIndex) {
   if (levelIndex + 1 > highestUnlocked) {
     showFloatingMessage(t("locked"));
@@ -705,7 +732,7 @@ function startLevel(levelIndex) {
   }
   state = makeState(levelIndex);
   state.running = true;
-  document.body.classList.add("wonder-playing");
+  setBattleShellActive(true);
   document.body.classList.add("wonder-tutorial-hidden");
   backToMenuBtn.classList.remove("hidden");
   settingsBtn.classList.remove("hidden");
@@ -1840,7 +1867,7 @@ function showMainMenu(tab = activeMenuTab) {
   state.won = false;
   state.gameOver = false;
   state.awaitingUpgrade = false;
-  document.body.classList.remove("wonder-playing");
+  setBattleShellActive(false);
   document.body.classList.remove("wonder-tutorial-hidden");
   overlay.classList.remove("settlement-screen");
   settingsBtn.classList.add("hidden");
@@ -2073,7 +2100,7 @@ function chooseUpgrade(id) {
   upgradeGrid.classList.add("hidden");
   overlay.classList.add("hidden");
   state.running = true;
-  document.body.classList.add("wonder-playing");
+  setBattleShellActive(true);
   document.body.classList.add("wonder-tutorial-hidden");
   backToMenuBtn.classList.remove("hidden");
   settingsBtn.classList.remove("hidden");
@@ -2107,7 +2134,7 @@ function resumeBattle() {
   pausePanel.classList.add("hidden");
   overlay.classList.add("hidden");
   document.body.classList.add("wonder-tutorial-hidden");
-  document.body.classList.add("wonder-playing");
+  setBattleShellActive(true);
   backToMenuBtn.classList.remove("hidden");
   settingsBtn.classList.remove("hidden");
   battleHud.classList.remove("hidden");

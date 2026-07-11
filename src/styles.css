@@ -4284,6 +4284,54 @@ canvas {
 }
 
 /* Shared WeightPlay active-play chrome for Wonder Crash's portrait battle canvas. */
+body.wonder-playing {
+  display: block;
+  overflow: hidden;
+}
+
+body.wonder-playing .game-shell[data-battle-shell] {
+  position: fixed;
+  top: calc((100dvh - 56px - (788px * var(--wonder-battle-scale, 1))) / 2);
+  left: 50%;
+  width: 390px;
+  min-width: 390px;
+  max-width: 390px;
+  height: 788px;
+  min-height: 788px;
+  max-height: 788px;
+  transform: translateX(-50%) scale(var(--wonder-battle-scale, 1));
+  transform-origin: top center;
+  border-radius: 0;
+  overflow: hidden;
+}
+
+.battle-ad-reserve {
+  display: none;
+}
+
+.battle-ad-reserve[data-active] {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 60;
+  display: block;
+  width: 100%;
+  height: 56px;
+  pointer-events: none;
+  background: #12151d;
+}
+
+body.wonder-playing .game-page-info,
+body.wonder-playing .tutorial-toggle,
+body.wonder-playing .sound-toggle,
+body.wonder-playing .version-badge,
+body.wonder-playing .wonder-language-picker,
+body.wonder-playing .menu-coin-line,
+body.wonder-playing .menu-tabs {
+  display: none !important;
+}
+
 body.wonder-playing .play-return,
 body.wonder-playing .settings-btn {
   position: absolute;
@@ -4311,10 +4359,10 @@ body.wonder-playing .settings-btn {
   left: auto;
 }
 
-body.wonder-playing .play-return img {
-  width: 28px;
-  height: 28px;
-  object-fit: contain;
+body.wonder-playing .play-return span {
+  font-size: 27px;
+  font-weight: 900;
+  line-height: 1;
 }
 
 body.wonder-playing .settings-btn img {

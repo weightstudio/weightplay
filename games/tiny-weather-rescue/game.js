@@ -192,6 +192,8 @@
     loadingPanel: $("loadingPanel"),
     loadingText: $("loadingText"),
     loadingFill: $("loadingFill"),
+    battleAdReserve: $("battleAdReserve"),
+    homeLink: document.querySelector(".home-link"),
   };
 
   let locale = localStorage.getItem(localeKey) || window.WonderI18n?.locale?.() || "en";
@@ -295,7 +297,45 @@
       });
       nodes.stageGrid.append(button);
     });
+    requestAnimationFrame(() => {
+      const unlockedCard = [...nodes.stageGrid.querySelectorAll(".stage-card:not(.locked)")].at(-1);
+      unlockedCard?.scrollIntoView({ block: "nearest", inline: "center", behavior: "auto" });
+    });
   }
+
+  function updateWeatherFrame() {
+    if (!document.body.classList.contains("helper-playing")) return;
+    const scale = Math.min(Math.max(1, innerWidth - 8) / 390, Math.max(1, innerHeight - 64) / 788);
+    const width = 390 * scale;
+    const height = 788 * scale;
+    const left = (innerWidth - width) / 2;
+    const top = (innerHeight - 56 - height) / 2;
+    document.documentElement.style.setProperty("--weather-frame-scale", String(scale));
+    document.documentElement.style.setProperty("--weather-frame-left", `${left}px`);
+    document.documentElement.style.setProperty("--weather-frame-top", `${top}px`);
+    document.documentElement.style.setProperty("--weather-frame-width", `${width}px`);
+    document.documentElement.style.setProperty("--weather-frame-height", `${height}px`);
+    const shell = document.querySelector(".weather-game");
+    shell?.style.setProperty("position", "fixed", "important");
+    shell?.style.setProperty("inset", "auto", "important");
+    shell?.style.setProperty("left", `${left}px`, "important");
+    shell?.style.setProperty("top", `${top}px`, "important");
+    shell?.style.setProperty("width", "390px", "important");
+    shell?.style.setProperty("height", "788px", "important");
+    shell?.style.setProperty("min-height", "788px", "important");
+    shell?.style.setProperty("transform", `scale(${scale})`, "important");
+    shell?.style.setProperty("transform-origin", "top left", "important");
+  }
+
+  function exitSharedPlayViewport() {
+    window.WeightPlayGame?.exitMobileGameMode?.();
+    document.body.classList.remove("weightplay-active-viewport", "wp-mobile-game-mode");
+    if (document.fullscreenElement) document.exitFullscreen?.().catch(() => {});
+    if (document.webkitFullscreenElement) document.webkitExitFullscreen?.();
+  }
+
+  window.addEventListener("resize", updateWeatherFrame);
+  window.addEventListener("orientationchange", updateWeatherFrame);
 
   function startStage(index) {
     currentStage = index;
@@ -308,10 +348,21 @@
     nodes.resultPanel.classList.add("hidden");
     nodes.playPanel.classList.remove("hidden");
     document.body.classList.add("helper-playing");
+    document.querySelector(".weather-game")?.removeAttribute("data-play-viewport");
+    nodes.battleAdReserve.classList.remove("hidden");
     nodes.hintText.textContent = t("hint");
     renderRound();
-    window.WeightPlayGame?.enterMobileGameMode?.();
+    exitSharedPlayViewport();
+    updateWeatherFrame();
     track("game_start", { stage: currentStage + 1 });
+    requestAnimationFrame(() => {
+      exitSharedPlayViewport();
+      updateWeatherFrame();
+    });
+    window.setTimeout(() => {
+      exitSharedPlayViewport();
+      updateWeatherFrame();
+    }, 160);
   }
 
   function progressPercent(stage) {
@@ -589,6 +640,8 @@
     nodes.resultPanel.classList.add("hidden");
     nodes.menuPanel.classList.remove("hidden");
     document.body.classList.remove("helper-playing");
+    document.querySelector(".weather-game")?.setAttribute("data-play-viewport", "");
+    nodes.battleAdReserve.classList.add("hidden");
     renderStageGrid();
   }
 
@@ -625,6 +678,11 @@
     if (running) renderRound();
   });
   nodes.backToStagesBtn.addEventListener("click", showMenu);
+  nodes.homeLink.addEventListener("click", (event) => {
+    if (!document.body.classList.contains("helper-playing")) return;
+    event.preventDefault();
+    showMenu();
+  });
   nodes.resultStagesBtn.addEventListener("click", showMenu);
   nodes.retryBtn.addEventListener("click", () => {
     track("game_restart", { stage: currentStage + 1 });

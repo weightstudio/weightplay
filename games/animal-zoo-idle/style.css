@@ -2568,4 +2568,18 @@ body.zoo-playing .care-panel {
     background-position: center, center !important;
     background-repeat: no-repeat !important;
   }
+
+  body.zoo-playing .animal-shop {
+    height: 100px !important;
+    min-height: 100px !important;
+    padding-bottom: 8px !important;
+    align-items: start;
+    overflow-y: hidden !important;
+  }
+
+  body.zoo-playing .animal-shop-card {
+    height: 88px !important;
+    min-height: 88px !important;
+    max-height: 88px !important;
+  }
 }
