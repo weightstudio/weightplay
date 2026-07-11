@@ -198,6 +198,7 @@
     recommendedOrder: $("recommendedOrder"),
     bakeryProgress: $("bakeryProgress"),
     stageGrid: $("stageGrid"),
+    stageAdReserve: $("stageAdReserve"),
     playPanel: $("playPanel"),
     backToStagesBtn: $("backToStagesBtn"),
     battleAdReserve: $("battleAdReserve"),
@@ -349,6 +350,13 @@
       });
       nodes.stageGrid.appendChild(button);
     });
+    window.requestAnimationFrame(() => {
+      nodes.stageGrid.querySelector(".stage-card.is-selected")?.scrollIntoView({
+        block: "nearest",
+        inline: "center",
+        behavior: "instant",
+      });
+    });
   }
 
   function recommendedStageIndex() {
@@ -439,6 +447,7 @@
     window.dispatchEvent(new CustomEvent("bubble-bakery:play-state", { detail: { playing: false } }));
     nodes.mainPanel.classList.remove("hidden");
     nodes.stagePanel.classList.add("hidden");
+    nodes.stageAdReserve.classList.add("hidden");
     nodes.playPanel.classList.add("hidden");
     nodes.battleAdReserve.classList.add("hidden");
     nodes.resultPanel.classList.add("hidden");
@@ -452,6 +461,7 @@
     window.dispatchEvent(new CustomEvent("bubble-bakery:play-state", { detail: { playing: false } }));
     nodes.mainPanel.classList.add("hidden");
     nodes.stagePanel.classList.remove("hidden");
+    nodes.stageAdReserve.classList.remove("hidden");
     nodes.playPanel.classList.add("hidden");
     nodes.battleAdReserve.classList.add("hidden");
     nodes.resultPanel.classList.add("hidden");
@@ -478,6 +488,7 @@
     window.dispatchEvent(new CustomEvent("bubble-bakery:play-state", { detail: { playing: true } }));
     nodes.mainPanel.classList.add("hidden");
     nodes.stagePanel.classList.add("hidden");
+    nodes.stageAdReserve.classList.add("hidden");
     nodes.playPanel.classList.remove("hidden");
     nodes.battleAdReserve.classList.remove("hidden");
     nodes.resultPanel.classList.add("hidden");

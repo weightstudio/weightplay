@@ -1127,6 +1127,14 @@
     return map[difficulty] || difficulty;
   }
 
+  Object.assign(localizedGames["zh-Hant"]["animal-quiz"], {
+    strategyTips: [
+      "\u5148\u89c0\u5bdf\u5716\u7247\u7dda\u7d22\uff0c\u518d\u95b1\u8b80\u984c\u76ee\u3002",
+      "\u4e0d\u78ba\u5b9a\u6642\uff0c\u53ef\u4ee5\u60f3\u60f3\u52d5\u7269\u7684\u68f2\u606f\u5730\u6216\u5927\u5916\u5f62\u7279\u5fb5\u3002",
+      "\u7b54\u932f\u4e5f\u6c92\u95dc\u4fc2\uff0c\u628a\u5b83\u7576\u6210\u8a8d\u8b58\u65b0\u52d5\u7269\u77e5\u8b58\u7684\u6a5f\u6703\u3002",
+    ],
+  });
+
   function localizePlayTime(time) {
     if (locale() !== "zh-Hant") return time;
     return String(time)

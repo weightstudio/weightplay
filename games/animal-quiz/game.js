@@ -1,8 +1,16 @@
 const localeSelect = document.querySelector("#localeSelect");
 const languageLabel = document.querySelector("#languageLabel");
 const titleText = document.querySelector("#titleText");
+const mainPanel = document.querySelector("#mainPanel");
+const mainTitle = document.querySelector("#mainTitle");
+const mainIntro = document.querySelector("#mainIntro");
+const startGameBtn = document.querySelector("#startGameBtn");
 const stageSelectPanel = document.querySelector("#stageSelectPanel");
 const stageSelectTitle = document.querySelector("#stageSelectTitle");
+const stageSetupTitle = document.querySelector("#stageSetupTitle");
+const stageSetupText = document.querySelector("#stageSetupText");
+const stageBackBtn = document.querySelector("#stageBackBtn");
+const stageAdReserve = document.querySelector("#stageAdReserve");
 const stageGrid = document.querySelector("#stageGrid");
 const levelLine = document.querySelector(".level-line");
 const levelText = document.querySelector("#levelText");
@@ -15,6 +23,7 @@ const choiceGrid = document.querySelector("#choiceGrid");
 const feedback = document.querySelector(".feedback");
 const feedbackText = document.querySelector("#feedbackText");
 const resultPanel = document.querySelector("#resultPanel");
+const backToStagesBtn = document.querySelector("#backToStagesBtn");
 const resultTitle = document.querySelector("#resultTitle");
 const resultText = document.querySelector("#resultText");
 const skillReport = document.querySelector("#skillReport");
@@ -28,6 +37,17 @@ const loadingTitle = document.querySelector("#loadingTitle");
 const loadingText = document.querySelector("#loadingText");
 const loadingFill = document.querySelector("#loadingFill");
 
+const pageMeta = {
+  en: {
+    title: "Animal Quiz - WeightPlay",
+    description: "Play Animal Quiz on WeightPlay, a family-friendly animal knowledge game with picture-supported questions about habitats, features, and animal facts.",
+  },
+  "zh-Hant": {
+    title: "\u52d5\u7269\u5c0f\u535a\u58eb - WeightPlay",
+    description: "\u5728 WeightPlay \u904a\u73a9\u52d5\u7269\u5c0f\u535a\u58eb\uff0c\u900f\u904e\u5716\u7247\u984c\u76ee\u8a8d\u8b58\u52d5\u7269\u68f2\u606f\u5730\u3001\u5916\u5f62\u7279\u5fb5\u8207\u751f\u6d3b\u5c0f\u77e5\u8b58\u3002",
+  },
+};
+
 const GAME_ID = "animal-quiz";
 const UNLOCK_KEY = "animalQuizUnlockedStage";
 const PROGRESS_KEY = "animalQuizProgress";
@@ -36,7 +56,11 @@ const dictionary = {
   en: {
     title: "Animal Quiz",
     language: "Language",
+    mainIntro: "Read picture clues and discover animal facts.",
+    startGame: "Start Game",
     chooseStage: "Choose Stage",
+    stageSetupTitle: "Pick an animal topic",
+    stageSetupText: "Choose an unlocked topic to begin.",
     start: "Start",
     locked: "Locked",
     complete: "Complete",
@@ -120,7 +144,11 @@ const dictionary = {
   "zh-Hant": {
     title: "\u52d5\u7269\u5c0f\u535a\u58eb",
     language: "\u8a9e\u8a00",
+    mainIntro: "\u770b\u5716\u7247\u7dda\u7d22\uff0c\u4e00\u8d77\u8a8d\u8b58\u52d5\u7269\u5c0f\u77e5\u8b58\u3002",
+    startGame: "\u958b\u59cb\u904a\u6232",
     chooseStage: "\u9078\u64c7\u95dc\u5361",
+    stageSetupTitle: "\u9078\u4e00\u500b\u52d5\u7269\u4e3b\u984c",
+    stageSetupText: "\u9078\u64c7\u5df2\u89e3\u9396\u7684\u4e3b\u984c\u958b\u59cb\u7b54\u984c\u3002",
     start: "\u958b\u59cb",
     locked: "\u672a\u89e3\u9396",
     complete: "\u5df2\u5b8c\u6210",
@@ -356,7 +384,7 @@ async function preloadGame() {
   loadUnlockedStage();
   loadingPanel.classList.add("hidden");
   window.WonderAnalytics?.track("game_ready", { game_id: GAME_ID });
-  showStageSelect();
+  showMain();
 }
 
 function scheduleReadinessFallback() {
@@ -365,7 +393,7 @@ function scheduleReadinessFallback() {
     state.ready = true;
     loadUnlockedStage();
     loadingPanel.classList.add("hidden");
-    showStageSelect();
+    showMain();
   }, 1800);
 }
 
@@ -374,7 +402,12 @@ function renderStaticText() {
   localeSelect.value = locale();
   languageLabel.textContent = t("language");
   titleText.textContent = t("title");
+  mainTitle.textContent = t("title");
+  mainIntro.textContent = t("mainIntro");
+  startGameBtn.textContent = t("startGame");
   stageSelectTitle.textContent = t("chooseStage");
+  stageSetupTitle.textContent = t("stageSetupTitle");
+  stageSetupText.textContent = t("stageSetupText");
   promptText.textContent = t("prompt");
   feedbackText.textContent = t("choose");
   loadingTitle.textContent = t("loading");
@@ -382,6 +415,11 @@ function renderStaticText() {
   nextStageBtn.textContent = t("nextStage");
   stageSelectBtn.textContent = t("stages");
   homeText.textContent = t("lobby");
+  const meta = pageMeta[locale()] || pageMeta.en;
+  document.title = meta.title;
+  document.querySelector('meta[name="description"]')?.setAttribute("content", meta.description);
+  document.querySelector('meta[property="og:title"]')?.setAttribute("content", meta.title);
+  document.querySelector('meta[property="og:description"]')?.setAttribute("content", meta.description);
 }
 
 function setQuizVisible(isVisible) {
@@ -392,12 +430,32 @@ function setQuizVisible(isVisible) {
   feedback.classList.toggle("hidden", !isVisible);
 }
 
+function showMain() {
+  renderStaticText();
+  state.completed = false;
+  document.body.classList.remove("quiz-playing", "quiz-stage-select");
+  document.body.classList.add("quiz-main");
+  resultPanel.classList.add("hidden");
+  mainPanel.classList.remove("hidden");
+  stageAdReserve.classList.add("hidden");
+  setQuizVisible(false);
+  stageSelectPanel.classList.add("hidden");
+}
+
 function showStageSelect() {
   renderStaticText();
   state.completed = false;
   resultPanel.classList.add("hidden");
+  document.body.classList.remove("quiz-playing", "quiz-main");
+  document.body.classList.add("quiz-stage-select");
+  mainPanel.classList.add("hidden");
+  stageAdReserve.classList.remove("hidden");
   setQuizVisible(false);
   renderStageCards();
+  window.requestAnimationFrame(() => {
+    const unlockedCards = [...stageGrid.querySelectorAll(".stage-card.unlocked")];
+    unlockedCards.at(-1)?.scrollIntoView({ block: "nearest", inline: "center", behavior: "instant" });
+  });
 }
 
 function renderStageCards() {
@@ -433,7 +491,10 @@ function startStage(stageIndex) {
   state.score = 0;
   state.completed = false;
   resultPanel.classList.add("hidden");
+  mainPanel.classList.add("hidden");
+  stageAdReserve.classList.add("hidden");
   setQuizVisible(true);
+  document.body.classList.remove("quiz-main", "quiz-stage-select");
   document.body.classList.add("quiz-playing");
   window.WeightPlayGame?.enterMobileGameMode?.();
   window.WonderAnalytics?.track("game_start", {
@@ -621,6 +682,10 @@ function applyLocaleChange() {
     renderResultText();
     return;
   }
+  if (document.body.classList.contains("quiz-main")) {
+    showMain();
+    return;
+  }
   if (stageSelectPanel.classList.contains("hidden")) {
     renderQuestion({ track: false });
   } else {
@@ -630,6 +695,9 @@ function applyLocaleChange() {
 
 localeSelect.addEventListener("change", applyLocaleChange);
 localeSelect.addEventListener("input", applyLocaleChange);
+startGameBtn.addEventListener("click", showStageSelect);
+stageBackBtn.addEventListener("click", showMain);
+backToStagesBtn.addEventListener("click", showStageSelect);
 
 window.addEventListener("wonder:locale-change", () => {
   if (!state.ready) {
@@ -639,6 +707,10 @@ window.addEventListener("wonder:locale-change", () => {
   if (state.completed) {
     renderStaticText();
     renderResultText();
+    return;
+  }
+  if (document.body.classList.contains("quiz-main")) {
+    showMain();
     return;
   }
   if (stageSelectPanel.classList.contains("hidden")) {
@@ -668,13 +740,6 @@ stageSelectBtn.addEventListener("click", () => {
   showStageSelect();
 });
 
-homeLink.addEventListener("click", (event) => {
-  if (!stageSelectPanel.classList.contains("hidden")) return;
-  event.preventDefault();
-  window.WonderSound?.play("click");
-  showStageSelect();
-});
-
 renderStaticText();
 scheduleReadinessFallback();
 preloadGame().catch((error) => {
@@ -682,5 +747,5 @@ preloadGame().catch((error) => {
   state.ready = true;
   loadUnlockedStage();
   loadingPanel.classList.add("hidden");
-  showStageSelect();
+  showMain();
 });

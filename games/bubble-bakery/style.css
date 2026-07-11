@@ -433,16 +433,26 @@ body.is-bakery-playing .play-panel {
 }
 
 .stage-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 10px;
-  padding: 2px;
-  overflow-x: clip !important;
-  overflow-y: visible;
+  display: flex;
+  gap: 12px;
+  min-width: 0;
+  padding: 4px max(44px, calc((100% - 280px) / 2));
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: max(44px, calc((100% - 280px) / 2));
+  scrollbar-width: none;
+  touch-action: pan-x;
+}
+
+.stage-grid::-webkit-scrollbar {
+  display: none;
 }
 
 .stage-card {
-  min-height: 136px;
+  flex: 0 0 min(280px, 100%);
+  min-height: 164px;
   border: 0;
   border-radius: 18px;
   padding: 12px;
@@ -454,6 +464,8 @@ body.is-bakery-playing .play-panel {
   box-shadow: 0 8px 0 #a95f2b, 0 14px 22px rgba(86, 45, 20, 0.16);
   font-weight: 950;
   touch-action: manipulation;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
 }
 
 .stage-card b {
@@ -547,6 +559,7 @@ body.is-bakery-playing .play-panel {
   outline-offset: 2px;
 }
 
+.stage-ad-reserve,
 .battle-ad-reserve {
   width: min(100%, 640px);
   height: 56px;
@@ -1103,39 +1116,6 @@ body.is-bakery-playing .order-progress span {
     align-items: center;
   }
 
-  .stage-grid {
-    gap: 7px;
-  }
-
-  .stage-card {
-    min-height: 124px;
-    padding: 8px;
-    gap: 4px;
-  }
-
-  .stage-card b {
-    font-size: 1.18rem;
-  }
-
-  .stage-card strong {
-    font-size: 0.72rem;
-  }
-
-  .stage-card small {
-    min-height: 2.3em;
-    font-size: 0.58rem;
-  }
-
-  .stage-icons img {
-    width: 1.25rem;
-    height: 1.25rem;
-  }
-
-  .stage-stars,
-  .stage-badge {
-    font-size: 0.56rem;
-  }
-
   .coach-card {
     min-height: 104px;
     grid-template-columns: 82px minmax(0, 1fr);
@@ -1257,6 +1237,136 @@ body.is-bakery-playing .order-progress span {
     min-width: min(100%, 268px);
     max-height: none;
     align-self: center;
+  }
+
+  body.is-bakery-stage-select {
+    width: 100vw;
+    height: var(--wp-mobile-vh, 100svh);
+    min-height: var(--wp-mobile-vh, 100svh);
+    max-height: var(--wp-mobile-vh, 100svh);
+    overflow: hidden;
+  }
+
+  body.is-bakery-stage-select .topbar,
+  body.is-bakery-stage-select .main-panel,
+  body.is-bakery-stage-select .game-page-info,
+  body.is-bakery-stage-select .wp-tutorial-button {
+    display: none !important;
+  }
+
+  body.is-bakery-stage-select .bakery-game {
+    display: grid;
+    grid-template-rows: minmax(0, 1fr) 56px;
+    width: 100vw;
+    height: var(--wp-mobile-vh, 100svh);
+    min-height: var(--wp-mobile-vh, 100svh);
+    max-height: var(--wp-mobile-vh, 100svh);
+    padding: max(4px, env(safe-area-inset-top)) 10px max(4px, env(safe-area-inset-bottom));
+    gap: 6px;
+    overflow: hidden;
+  }
+
+  body.is-bakery-stage-select .stage-panel {
+    display: grid;
+    grid-template-rows: 42px auto minmax(0, 1fr);
+    width: calc(100vw - 20px);
+    height: 100%;
+    min-height: 0;
+    margin: 0 auto;
+    gap: 6px;
+    overflow: hidden;
+  }
+
+  body.is-bakery-stage-select .stage-panel-head {
+    grid-template-columns: 42px minmax(0, 1fr);
+    gap: 8px;
+  }
+
+  body.is-bakery-stage-select .stage-back {
+    width: 42px;
+    min-height: 42px;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    font-size: 1.2rem;
+  }
+
+  body.is-bakery-stage-select .stage-panel-head strong {
+    font-size: 1rem;
+  }
+
+  body.is-bakery-stage-select .recommend-card {
+    min-height: 72px;
+    padding: 8px 10px;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px;
+  }
+
+  body.is-bakery-stage-select .recommend-card strong {
+    font-size: 0.72rem;
+  }
+
+  body.is-bakery-stage-select .recommend-card span {
+    font-size: 0.88rem;
+  }
+
+  body.is-bakery-stage-select .recommend-card em,
+  body.is-bakery-stage-select .recommend-icons {
+    display: none;
+  }
+
+  body.is-bakery-stage-select .recommend-card button {
+    grid-column: 2;
+    grid-row: 1;
+    min-height: 46px;
+    padding: 0 12px;
+    font-size: 0.76rem;
+  }
+
+  body.is-bakery-stage-select .bakery-progress {
+    display: none;
+  }
+
+  body.is-bakery-stage-select .stage-grid {
+    align-self: stretch;
+    align-items: center;
+    gap: 12px;
+    height: 100%;
+    min-height: 0;
+    padding-block: 0;
+    padding-inline: max(44px, calc((100% - 264px) / 2));
+    scroll-padding-inline: max(44px, calc((100% - 264px) / 2));
+  }
+
+  body.is-bakery-stage-select .stage-card {
+    flex-basis: min(264px, 100%);
+    min-height: 196px;
+    max-height: 240px;
+    padding: 14px;
+    align-content: center;
+    gap: 8px;
+  }
+
+  body.is-bakery-stage-select .stage-card b {
+    font-size: 1.45rem;
+  }
+
+  body.is-bakery-stage-select .stage-card small {
+    min-height: 0;
+    font-size: 0.72rem;
+  }
+
+  body.is-bakery-stage-select .stage-icons img {
+    width: 1.9rem;
+    height: 1.9rem;
+  }
+
+  body.is-bakery-stage-select .stage-ad-reserve {
+    display: block;
+    width: calc(100vw - 20px);
+    height: 56px;
+    min-height: 56px;
+    margin: 0 auto;
   }
 
   body.is-bakery-playing {

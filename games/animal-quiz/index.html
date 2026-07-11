@@ -63,7 +63,7 @@
   <body>
     <main class="animal-game" data-play-viewport>
       <header class="topbar">
-        <a id="homeLink" class="home-link" href="/" aria-label="Back to lobby">&larr;</a>
+        <a id="homeLink" class="home-link" href="/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
         <div>
           <p id="brandText">WeightPlay</p>
           <h1 id="titleText">Animal Quiz</h1>
@@ -77,17 +77,35 @@
         </label>
       </header>
 
+      <section id="mainPanel" class="main-panel">
+        <img class="main-cover" src="../../assets/quiz-cover.webp" alt="" />
+        <div class="main-copy">
+          <strong id="mainTitle">Animal Quiz</strong>
+          <span id="mainIntro">Read picture clues and discover animal facts.</span>
+        </div>
+        <button id="startGameBtn" class="main-start" type="button">Start Game</button>
+      </section>
+
       <section class="level-line" aria-label="Level progress">
         <span id="levelText">Level 1 / 8</span>
         <div><i id="levelFill"></i></div>
       </section>
 
-      <section id="stageSelectPanel" class="stage-select">
-        <strong id="stageSelectTitle">Choose Stage</strong>
+      <section id="stageSelectPanel" class="stage-select hidden">
+        <div class="stage-shell-head">
+          <button id="stageBackBtn" class="stage-return" type="button" aria-label="Back">&larr;</button>
+          <strong id="stageSelectTitle">Choose Stage</strong>
+        </div>
+        <div class="stage-setup">
+          <strong id="stageSetupTitle">Pick an animal topic</strong>
+          <span id="stageSetupText">Choose an unlocked topic to begin.</span>
+        </div>
         <div id="stageGrid" class="stage-grid"></div>
       </section>
+      <div id="stageAdReserve" class="stage-ad-reserve hidden" aria-hidden="true"></div>
 
       <section class="quiz-stage play-area hidden">
+        <button id="backToStagesBtn" class="play-return" type="button" aria-label="Back to stages">&larr;</button>
         <div class="animal-card">
           <img id="animalImage" src="" alt="" />
           <strong id="promptText">Who is this animal?</strong>
@@ -100,6 +118,7 @@
       <section class="feedback hidden" aria-live="polite">
         <strong id="feedbackText">Choose one</strong>
       </section>
+      <div class="battle-ad-reserve" aria-hidden="true"></div>
 
       <div id="resultPanel" class="result-panel hidden">
         <div class="result-card">
@@ -111,6 +130,7 @@
           <button id="stageSelectBtn" type="button">Stages</button>
           <a id="homeText" href="/">Lobby</a>
         </div>
+        <div class="result-ad-reserve" aria-hidden="true"></div>
       </div>
 
       <div id="loadingPanel" class="loading-panel">
@@ -138,7 +158,7 @@
         const loadGameInfo = () => {
           if (document.querySelector("script[data-quiz-game-info]")) return;
           const script = document.createElement("script");
-          script.src = "../../src/game-page-info.js?v=20260706-guide-age-layers1";
+          script.src = "../../src/game-page-info.js?v=20260711-quiz-zh-guide1";
           script.dataset.quizGameInfo = "idle";
           script.async = true;
           document.body.appendChild(script);
