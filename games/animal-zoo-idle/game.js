@@ -1518,16 +1518,19 @@
     const logicalHeight = 788;
     const reserveHeight = 56;
     const gutter = 8;
-    const scale = Math.max(0.1, Math.min((window.innerWidth - gutter) / logicalWidth, (window.innerHeight - reserveHeight - gutter) / logicalHeight));
+    const viewportWidth = window.visualViewport?.width || window.innerWidth;
+    const viewportHeight = window.visualViewport?.height || window.innerHeight;
+    const scale = Math.max(0.1, Math.min((viewportWidth - gutter) / logicalWidth, (viewportHeight - reserveHeight - gutter) / logicalHeight));
     const width = logicalWidth * scale;
     const contentHeight = logicalHeight * scale;
-    const totalHeight = contentHeight + reserveHeight;
+    const top = gutter / 2;
     const rootStyle = document.documentElement.style;
     rootStyle.setProperty("--zoo-battle-scale", String(scale));
     rootStyle.setProperty("--zoo-battle-width", `${width}px`);
     rootStyle.setProperty("--zoo-battle-content-height", `${contentHeight}px`);
-    rootStyle.setProperty("--zoo-battle-left", `${Math.max(0, (window.innerWidth - width) / 2)}px`);
-    rootStyle.setProperty("--zoo-battle-top", `${Math.max(0, (window.innerHeight - totalHeight) / 2)}px`);
+    rootStyle.setProperty("--zoo-battle-left", `${Math.max(0, (viewportWidth - width) / 2)}px`);
+    rootStyle.setProperty("--zoo-battle-top", `${top}px`);
+    rootStyle.setProperty("--zoo-battle-reserve-top", `${top + contentHeight}px`);
     nodes.gamePanel.style.setProperty("width", `${logicalWidth}px`, "important");
     nodes.gamePanel.style.setProperty("max-width", "none", "important");
     nodes.gamePanel.style.setProperty("height", `${logicalHeight}px`, "important");
@@ -1549,6 +1552,8 @@
 
   window.addEventListener("resize", updateZooBattleScale, { passive: true });
   window.addEventListener("orientationchange", updateZooBattleScale, { passive: true });
+  window.visualViewport?.addEventListener("resize", updateZooBattleScale, { passive: true });
+  window.visualViewport?.addEventListener("scroll", updateZooBattleScale, { passive: true });
 
   function tickPark() {
     if (nodes.gamePanel.classList.contains("hidden")) return;

@@ -24,7 +24,8 @@
   const boardPanel = document.querySelector("#boardPanel");
   const board = document.querySelector("#board");
   const battleBackBtn = document.querySelector("#battleBackBtn");
-  const battleAdReserve = document.querySelector(".battle-ad-reserve");
+  const battleAdReserve = document.querySelector("#battleAdReserve");
+  const stageAdReserve = document.querySelector("#stageAdReserve");
   const message = document.querySelector("#message");
   const resultPanel = document.querySelector("#resultPanel");
   const resultTitle = document.querySelector("#resultTitle");
@@ -192,8 +193,39 @@
     levelSelect.classList.add("hidden");
     boardPanel.classList.add("hidden");
     battleAdReserve.classList.add("hidden");
+    stageAdReserve.classList.add("hidden");
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   }
+
+  function updateGardenFrame() {
+    if (!document.body.classList.contains("garden-playing") && !document.body.classList.contains("garden-stage")) return;
+    const logicalWidth = 390;
+    const logicalHeight = 788;
+    const reserveHeight = 56;
+    const scale = Math.max(0.1, Math.min((innerWidth - 8) / logicalWidth, (innerHeight - reserveHeight - 8) / logicalHeight));
+    const width = logicalWidth * scale;
+    const contentHeight = logicalHeight * scale;
+    const root = document.documentElement.style;
+    root.setProperty("--garden-frame-scale", String(scale));
+    root.setProperty("--garden-frame-width", `${width}px`);
+    root.setProperty("--garden-frame-height", `${contentHeight}px`);
+    root.setProperty("--garden-frame-left", `${Math.max(0, (innerWidth - width) / 2)}px`);
+    root.setProperty("--garden-frame-top", `${Math.max(0, (innerHeight - contentHeight - reserveHeight) / 2)}px`);
+    const shell = document.querySelector(".garden-game");
+    shell?.style.setProperty("position", "fixed", "important");
+    shell?.style.setProperty("inset", "auto", "important");
+    shell?.style.setProperty("left", "var(--garden-frame-left)", "important");
+    shell?.style.setProperty("top", "var(--garden-frame-top)", "important");
+    shell?.style.setProperty("width", "390px", "important");
+    shell?.style.setProperty("height", "788px", "important");
+    shell?.style.setProperty("min-height", "788px", "important");
+    shell?.style.setProperty("max-height", "none", "important");
+    shell?.style.setProperty("transform", "scale(var(--garden-frame-scale))", "important");
+    shell?.style.setProperty("transform-origin", "top left", "important");
+  }
+
+  addEventListener("resize", updateGardenFrame, { passive: true });
+  addEventListener("orientationchange", updateGardenFrame, { passive: true });
 
   function renderLevelGrid() {
     levelGrid.innerHTML = "";
@@ -223,11 +255,13 @@
     statusbar.classList.add("hidden");
     boardPanel.classList.add("hidden");
     battleAdReserve.classList.add("hidden");
+    stageAdReserve.classList.remove("hidden");
     levelSelect.classList.remove("hidden");
     message.textContent = "";
     levelMessage.textContent = "";
     renderLevelGrid();
     updateHud();
+    updateGardenFrame();
     if (window.matchMedia("(max-width: 520px)").matches) {
       requestAnimationFrame(() => levelGrid.querySelector("button.challenge")?.scrollIntoView({ block: "nearest", inline: "center", behavior: "auto" }));
     }
@@ -249,14 +283,27 @@
     board.style.setProperty("--cols", level.cols);
     document.body.classList.remove("garden-stage");
     document.body.classList.add("garden-playing");
+    window.WeightPlayGame?.exitMobileGameMode?.();
+    if (document.fullscreenElement) document.exitFullscreen?.().catch(() => {});
+    if (document.webkitFullscreenElement) document.webkitExitFullscreen?.();
+    document.querySelector(".garden-game")?.classList.remove("weightplay-active-viewport");
     statusbar.classList.remove("hidden");
     levelSelect.classList.add("hidden");
     boardPanel.classList.remove("hidden");
     battleAdReserve.classList.remove("hidden");
+    stageAdReserve.classList.add("hidden");
     resultPanel.classList.add("hidden");
     renderBoard();
     showMessage(t("selectFirst"));
     updateHud();
+    updateGardenFrame();
+    requestAnimationFrame(() => {
+      window.WeightPlayGame?.exitMobileGameMode?.();
+      if (document.fullscreenElement) document.exitFullscreen?.().catch(() => {});
+      if (document.webkitFullscreenElement) document.webkitExitFullscreen?.();
+      document.querySelector(".garden-game")?.classList.remove("weightplay-active-viewport");
+      updateGardenFrame();
+    });
     window.WonderAnalytics?.track?.("game_start", { game_id: GAME_ID, level: index + 1 });
     window.WonderAnalytics?.track?.("level_start", { game_id: GAME_ID, level: index + 1 });
   }

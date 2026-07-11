@@ -316,6 +316,7 @@
     resultPanel.classList.add("hidden");
     menuPanel.classList.toggle("hidden", !showMenu);
     startBtn.disabled = !showMenu;
+    updateFruitBattleScale();
 
     initPhysicsWorld();
     fruitsOnBoard = [];
@@ -344,6 +345,25 @@
       draw();
     }
   }
+
+  function updateFruitBattleScale() {
+    if (!document.body.classList.contains("fruit-playing")) return;
+    const logicalWidth = 390;
+    const logicalHeight = 788;
+    const reserveHeight = 56;
+    const scale = Math.max(0.1, Math.min((innerWidth - 8) / logicalWidth, (innerHeight - reserveHeight - 8) / logicalHeight));
+    const width = logicalWidth * scale;
+    const contentHeight = logicalHeight * scale;
+    const root = document.documentElement.style;
+    root.setProperty("--fruit-battle-scale", String(scale));
+    root.setProperty("--fruit-battle-width", `${width}px`);
+    root.setProperty("--fruit-battle-height", `${contentHeight}px`);
+    root.setProperty("--fruit-battle-left", `${Math.max(0, (innerWidth - width) / 2)}px`);
+    root.setProperty("--fruit-battle-top", `${Math.max(0, (innerHeight - contentHeight - reserveHeight) / 2)}px`);
+  }
+
+  addEventListener("resize", updateFruitBattleScale, { passive: true });
+  addEventListener("orientationchange", updateFruitBattleScale, { passive: true });
 
   function updateHud() {
     scoreText.textContent = score;

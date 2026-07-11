@@ -2366,7 +2366,7 @@ body.zoo-playing #battleAdReserve.battle-ad-reserve {
   position: fixed;
   z-index: 49;
   left: var(--zoo-battle-left, 4px);
-  top: calc(var(--zoo-battle-top, 4px) + var(--zoo-battle-content-height, 772px));
+  top: var(--zoo-battle-reserve-top, calc(var(--zoo-battle-top, 4px) + var(--zoo-battle-content-height, 772px)));
   display: block;
   width: var(--zoo-battle-width, 382px);
   height: 56px;
@@ -2516,7 +2516,7 @@ body.zoo-playing #gamePanel.game-panel {
 body.zoo-playing #battleAdReserve.battle-ad-reserve {
   position: fixed !important;
   left: var(--zoo-battle-left, 4px) !important;
-  top: calc(var(--zoo-battle-top, 4px) + var(--zoo-battle-content-height, 772px)) !important;
+  top: var(--zoo-battle-reserve-top, calc(var(--zoo-battle-top, 4px) + var(--zoo-battle-content-height, 772px))) !important;
   display: block !important;
   width: var(--zoo-battle-width, 382px) !important;
   height: 56px !important;
