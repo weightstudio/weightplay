@@ -19,6 +19,12 @@
       fail: "Trial Failed",
       next: "Next Trial",
       retry: "Try Again",
+      bossObjective: "Defeat the Shadow Sovereign",
+      reroll: "Reroll 3",
+      rerollConfirm: "Spend 3 Diamonds to reroll these blessings?",
+      rerollUsed: "Reroll already used this trial.",
+      rerollNeed: "Not enough Diamonds. Choose a free blessing.",
+      rerollDone: "New blessings revealed.",
     },
     "zh-Hant": {
       title: "動物英雄試煉",
@@ -34,6 +40,12 @@
       fail: "試煉失敗",
       next: "下一個試煉",
       retry: "再試一次",
+      bossObjective: "擊敗暗影君王",
+      reroll: "重抽 3",
+      rerollConfirm: "確定花費 3 顆鑽石重抽祝福嗎？",
+      rerollUsed: "本次試煉已使用過重抽。",
+      rerollNeed: "鑽石不足，仍可免費選擇祝福。",
+      rerollDone: "新的祝福已出現。",
     },
   };
 
@@ -58,6 +70,7 @@
     bg: load("animal-hero-trials-arena.png"),
     leo: load("animal-hero-trials-leo.png"),
     enemy: load("animal-hero-trials-shadow-scout.png"),
+    boss: load("animal-hero-trials-shadow-boss.webp"),
     roar: load("animal-hero-trials-fx-roar.webp"),
     hit: load("animal-hero-trials-fx-hit.webp"),
     shadow: load("animal-hero-trials-fx-shadow-hit.webp"),
@@ -128,6 +141,7 @@
       enemies: [],
       cool: 0,
       attackCool: 0,
+      rerollUsed: false,
       last: performance.now(),
       bless: { power: 0, speed: 0, heal: 0 },
       fx: [],
@@ -137,6 +151,14 @@
   }
 
   function spawn() {
+    if (run.room === 3) {
+      const hp = 145 + run.stage * 25;
+      run.enemies = [{ x: 195, y: 125, hp, max: hp, cd: 0, boss: true, special: 2.8, warning: 0 }];
+      $("#roomText").textContent = `Room ${run.room}/3 · BOSS`;
+      $("#objective").textContent = t("bossObjective");
+      updateHud();
+      return;
+    }
     run.enemies = Array.from({ length: 2 + run.room }, (_, index) => {
       const hp = 28 + run.stage * 7 + run.room * 5;
       return { x: 80 + index * 110, y: 105 + (index % 2) * 90, hp, max: hp, cd: 0 };
@@ -182,20 +204,37 @@
 
   function chooseBlessing() {
     run.active = false;
-    const options = [
-      { id: "power", img: "animal-hero-trials-icon-roaring-mane.webp", name: "Roaring Power", copy: "Roar damage +7" },
-      { id: "speed", img: "animal-hero-trials-icon-comet-dash.webp", name: "Comet Rhythm", copy: "Cooldown -0.5s" },
-      { id: "heal", img: "animal-hero-trials-icon-moon-mark.webp", name: "Moon Recovery", copy: "Recover 24 HP" },
+    renderBlessings(false);
+    $("#choiceModal").classList.remove("hidden");
+  }
+
+  function blessingPool(rerolled) {
+    if (rerolled) {
+      return [
+        { id: "power", amount: 2, img: "animal-hero-trials-icon-roaring-mane.webp", name: locale === "zh-Hant" ? "王者勇氣" : "Sovereign Courage", copy: locale === "zh-Hant" ? "攻擊威力 +2" : "Attack power +2" },
+        { id: "speed", amount: 2, img: "animal-hero-trials-icon-comet-dash.webp", name: locale === "zh-Hant" ? "彗星節奏" : "Comet Tempo", copy: locale === "zh-Hant" ? "冷卻時間 -1.0 秒" : "Cooldown -1.0s" },
+        { id: "heal", amount: 2, img: "animal-hero-trials-icon-moon-mark.webp", name: locale === "zh-Hant" ? "滿月復甦" : "Full Moon Recovery", copy: locale === "zh-Hant" ? "恢復 48 生命" : "Recover 48 HP" },
+      ];
+    }
+    return [
+      { id: "power", amount: 1, img: "animal-hero-trials-icon-roaring-mane.webp", name: locale === "zh-Hant" ? "怒吼之力" : "Roaring Power", copy: locale === "zh-Hant" ? "攻擊威力 +1" : "Attack power +1" },
+      { id: "speed", amount: 1, img: "animal-hero-trials-icon-comet-dash.webp", name: locale === "zh-Hant" ? "彗星律動" : "Comet Rhythm", copy: locale === "zh-Hant" ? "冷卻時間 -0.5 秒" : "Cooldown -0.5s" },
+      { id: "heal", amount: 1, img: "animal-hero-trials-icon-moon-mark.webp", name: locale === "zh-Hant" ? "月光恢復" : "Moon Recovery", copy: locale === "zh-Hant" ? "恢復 24 生命" : "Recover 24 HP" },
     ];
+  }
+
+  function renderBlessings(rerolled) {
+    const options = blessingPool(rerolled);
     const box = $("#choices");
     box.innerHTML = "";
     for (const option of options) {
       const button = document.createElement("button");
       button.className = "choice";
+      button.dataset.nativeLocalized = "true";
       button.innerHTML = `<img src="${ASSET_ROOT + option.img}" alt=""><span><b>${option.name}</b><br><small>${option.copy}</small></span>`;
       button.onclick = () => {
-        run.bless[option.id] += 1;
-        if (option.id === "heal") run.hp = Math.min(run.maxHp, run.hp + 24);
+        run.bless[option.id] += option.amount;
+        if (option.id === "heal") run.hp = Math.min(run.maxHp, run.hp + 24 * option.amount);
         $("#choiceModal").classList.add("hidden");
         run.room += 1;
         run.active = true;
@@ -205,7 +244,31 @@
       };
       box.append(button);
     }
-    $("#choiceModal").classList.remove("hidden");
+    updateRerollUi();
+  }
+
+  function updateRerollUi(message = "") {
+    const balance = window.WeightPlayWallet?.read?.().diamonds || 0;
+    $("#rerollLabel").textContent = `${t("reroll")} · ${balance}`;
+    $("#rerollBtn").disabled = run.rerollUsed || balance < 3;
+    $("#rerollStatus").textContent = message || (run.rerollUsed ? t("rerollUsed") : balance < 3 ? t("rerollNeed") : "");
+  }
+
+  function rerollBlessings() {
+    if (run.rerollUsed) return updateRerollUi(t("rerollUsed"));
+    const balance = window.WeightPlayWallet?.read?.().diamonds || 0;
+    if (balance < 3) return updateRerollUi(t("rerollNeed"));
+    if (!window.confirm(t("rerollConfirm"))) return;
+    if (!window.WeightPlayWallet?.spendDiamonds?.(3)) return updateRerollUi(t("rerollNeed"));
+    run.rerollUsed = true;
+    renderBlessings(true);
+    updateRerollUi(t("rerollDone"));
+    window.WonderAnalytics?.track?.("diamond_spend", {
+      game_id: "animal-hero-trials",
+      item: "blessing_reroll",
+      cost: 3,
+      balance: window.WeightPlayWallet.read().diamonds,
+    });
   }
 
   function finish(won) {
@@ -245,11 +308,26 @@
       const ex = run.leo.x - enemy.x;
       const ey = run.leo.y - enemy.y;
       const distance = Math.hypot(ex, ey) || 1;
-      enemy.x += (ex / distance) * 32 * dt;
-      enemy.y += (ey / distance) * 32 * dt;
+      const moveSpeed = enemy.boss ? 24 : 32;
+      enemy.x += (ex / distance) * moveSpeed * dt;
+      enemy.y += (ey / distance) * moveSpeed * dt;
       enemy.cd -= dt;
+      if (enemy.boss) {
+        enemy.special -= dt;
+        if (enemy.warning > 0) {
+          enemy.warning -= dt;
+          if (enemy.warning <= 0) {
+            if (distance < 155) run.hp -= 11;
+            run.fx.push({ type: "shadow", x: run.leo.x, y: run.leo.y, t: 0.38 });
+          }
+        } else if (enemy.special <= 0) {
+          enemy.warning = 0.7;
+          enemy.special = 4.2;
+          run.fx.push({ type: "roar", x: enemy.x, y: enemy.y, t: 0.7 });
+        }
+      }
       if (distance < 48 && enemy.cd <= 0) {
-        run.hp -= 4;
+        run.hp -= enemy.boss ? 7 : 4;
         enemy.cd = 1;
         run.fx.push({ type: "shadow", x: run.leo.x, y: run.leo.y, t: 0.3 });
       }
@@ -269,11 +347,15 @@
     ctx.clearRect(0, 0, 390, 560);
     ctx.drawImage(images.bg, 0, 0, 390, 560);
     for (const enemy of run.enemies) {
-      ctx.drawImage(images.enemy, enemy.x - 34, enemy.y - 34, 68, 68);
+      const enemyImage = enemy.boss ? images.boss : images.enemy;
+      const size = enemy.boss ? 118 : 68;
+      ctx.drawImage(enemyImage, enemy.x - size / 2, enemy.y - size / 2, size, size);
       ctx.fillStyle = "#17231f";
-      ctx.fillRect(enemy.x - 28, enemy.y - 43, 56, 5);
+      const barWidth = enemy.boss ? 100 : 56;
+      const barY = enemy.y - size / 2 - 9;
+      ctx.fillRect(enemy.x - barWidth / 2, barY, barWidth, 6);
       ctx.fillStyle = "#7be0b1";
-      ctx.fillRect(enemy.x - 28, enemy.y - 43, (56 * enemy.hp) / enemy.max, 5);
+      ctx.fillRect(enemy.x - barWidth / 2, barY, (barWidth * enemy.hp) / enemy.max, 6);
     }
     ctx.drawImage(images.leo, run.leo.x - 39, run.leo.y - 45, 78, 90);
     for (const effect of run.fx) {
@@ -321,6 +403,7 @@
   $("#stageBack").onclick = () => show("main");
   $("#battleBack").onclick = () => show("stage");
   $("#skillBtn").onclick = skill;
+  $("#rerollBtn").onclick = rerollBlessings;
   $("#resultHome").onclick = () => { show("main"); localize(); };
   $("#masteryBtn").onclick = () => {
     const cost = 5 + mastery * 4;

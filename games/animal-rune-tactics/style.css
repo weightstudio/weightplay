@@ -935,3 +935,37 @@ body.is-rune-playing .battle-ad-reserve {
   border-top: 1px solid rgba(248, 214, 106, 0.3);
   pointer-events: none;
 }
+
+/* Final Expanded Canvas override. */
+html:has(body.is-rune-playing), body.is-rune-playing { width:100%; height:var(--rune-vh,100dvh); -webkit-text-size-adjust:100%; text-size-adjust:100%; }
+body.is-rune-playing .rune-app { width:var(--rune-vw,100vw); height:var(--rune-vh,100dvh); min-height:0; padding:0; overflow:hidden; }
+body.is-rune-playing .topbar { position:fixed; z-index:20; top:4px; left:50%; width:min(calc(var(--rune-vw,100vw) - 8px),612px); height:48px; padding:4px; transform:translateX(-50%); }
+body.is-rune-playing .topbar .brand, body.is-rune-playing .topbar .locale, body.is-rune-playing .game-page-info, body.is-rune-playing .wp-tutorial-button, body.is-rune-playing .wp-tutorial-backdrop { display:none !important; }
+body.is-rune-playing #gamePanel.game-panel { container-type:size; position:fixed; top:54px; left:50%; display:grid; grid-template-columns:1fr; grid-template-rows:56px minmax(0,1fr) minmax(180px,.45fr); gap:6px; width:min(calc(var(--rune-vw,100vw) - 8px),612px); max-width:none; height:min(calc(var(--rune-vh,100dvh) - 114px),738px); min-height:0; margin:0; padding:6px; overflow:hidden; transform:translateX(-50%); }
+body.is-rune-playing .battle-shell { width:min(100%,calc((100cqh - 250px) * 4 / 3)); max-width:100%; height:auto; max-height:100%; aspect-ratio:4/3; align-self:center; justify-self:center; margin:0; }
+body.is-rune-playing .battle-info { min-height:0; overflow:hidden; }
+body.is-rune-playing .turn-roster { max-height:112px; overflow-y:auto; }
+body.is-rune-playing .battle-log { min-height:42px; max-height:58px; overflow-y:auto; }
+body.is-rune-playing .battle-ad-reserve { position:fixed; top:auto; bottom:4px; left:50%; display:block; width:min(calc(var(--rune-vw,100vw) - 8px),612px); height:56px; min-height:56px; transform:translateX(-50%); }
+
+@media (max-width:560px), (max-height:560px) {
+  body.is-rune-playing .topbar, body.is-rune-playing #gamePanel.game-panel, body.is-rune-playing .battle-ad-reserve { width:calc(var(--rune-vw,100vw) - 8px); }
+  body.is-rune-playing #gamePanel.game-panel { height:calc(var(--rune-vh,100dvh) - 114px); }
+}
+
+@media (max-height:560px) {
+  body.is-rune-playing .topbar { top:4px; left:4px; width:48px; height:calc(var(--rune-vh,100dvh) - 64px); padding:4px; transform:none; }
+  body.is-rune-playing .topbar .back-btn { width:40px; min-width:0; }
+  body.is-rune-playing #gamePanel.game-panel { top:4px; left:58px; grid-template-columns:140px minmax(0,1fr) 230px; grid-template-rows:minmax(0,1fr); width:calc(var(--rune-vw,100vw) - 62px); height:calc(var(--rune-vh,100dvh) - 64px); transform:none; }
+  body.is-rune-playing .game-panel > .hud { grid-column:1; grid-row:1; }
+  body.is-rune-playing .battle-shell { grid-column:2; grid-row:1; align-self:center; }
+  body.is-rune-playing .battle-shell { width:min(100%,calc(100cqh * 4 / 3)); }
+  body.is-rune-playing .battle-info { grid-column:3; grid-row:1; }
+  body.is-rune-playing .battle-info { display:grid; grid-template-rows:76px minmax(0,1fr) 54px 34px; align-content:stretch; gap:4px; }
+  body.is-rune-playing .hud { grid-template-columns:1fr; align-content:start; }
+  body.is-rune-playing .turn-roster { max-height:76px; }
+  body.is-rune-playing .selected-card { min-height:0; overflow:hidden; font-size:13px; }
+  body.is-rune-playing .actions { min-height:0; gap:4px; }
+  body.is-rune-playing .actions button { min-height:0; padding:4px; }
+  body.is-rune-playing .battle-log { min-height:0; max-height:none; overflow:hidden; }
+}

@@ -282,22 +282,18 @@
 
   function updateOrbBattleScale() {
     if (!document.body.classList.contains("orb-fortress-playing")) return;
-    const logicalWidth = 390;
-    const logicalHeight = 788;
-    const reserveHeight = 56;
-    const scale = Math.max(0.1, Math.min((innerWidth - 8) / logicalWidth, (innerHeight - reserveHeight - 8) / logicalHeight));
-    const width = logicalWidth * scale;
-    const contentHeight = logicalHeight * scale;
+    const viewport = window.visualViewport;
+    const visualWidth = Math.round(viewport?.width || 0);
+    const visualHeight = Math.round(viewport?.height || 0);
+    const useVisual = visualWidth > 0 && visualHeight > 0 && Math.abs(visualWidth - innerWidth) <= 2 && visualHeight <= innerHeight + 2;
     const root = document.documentElement.style;
-    root.setProperty("--orb-battle-scale", String(scale));
-    root.setProperty("--orb-battle-width", `${width}px`);
-    root.setProperty("--orb-battle-content-height", `${contentHeight}px`);
-    root.setProperty("--orb-battle-left", `${Math.max(0, (innerWidth - width) / 2)}px`);
-    root.setProperty("--orb-battle-top", `${Math.max(0, (innerHeight - contentHeight - reserveHeight) / 2)}px`);
+    root.setProperty("--orb-vw", `${useVisual ? visualWidth : innerWidth}px`);
+    root.setProperty("--orb-vh", `${useVisual ? visualHeight : innerHeight}px`);
   }
 
-  addEventListener("resize", updateOrbBattleScale, { passive: true });
-  addEventListener("orientationchange", updateOrbBattleScale, { passive: true });
+  window.addEventListener?.("resize", updateOrbBattleScale, { passive: true });
+  window.addEventListener?.("orientationchange", updateOrbBattleScale, { passive: true });
+  window.visualViewport?.addEventListener("resize", updateOrbBattleScale, { passive: true });
 
   function setLocale(next) {
     locale = next || "en";

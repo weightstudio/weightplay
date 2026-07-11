@@ -305,26 +305,17 @@
 
   function updateWeatherFrame() {
     if (!document.body.classList.contains("helper-playing")) return;
-    const scale = Math.min(Math.max(1, innerWidth - 8) / 390, Math.max(1, innerHeight - 64) / 788);
-    const width = 390 * scale;
-    const height = 788 * scale;
-    const left = (innerWidth - width) / 2;
-    const top = (innerHeight - 56 - height) / 2;
-    document.documentElement.style.setProperty("--weather-frame-scale", String(scale));
-    document.documentElement.style.setProperty("--weather-frame-left", `${left}px`);
-    document.documentElement.style.setProperty("--weather-frame-top", `${top}px`);
-    document.documentElement.style.setProperty("--weather-frame-width", `${width}px`);
-    document.documentElement.style.setProperty("--weather-frame-height", `${height}px`);
+    const viewport = window.visualViewport;
+    const visualWidth = Math.round(viewport?.width || 0);
+    const visualHeight = Math.round(viewport?.height || 0);
+    const useVisual = visualWidth > 0
+      && visualHeight > 0
+      && Math.abs(visualWidth - innerWidth) <= 2
+      && visualHeight <= innerHeight + 2;
+    document.documentElement.style.setProperty("--weather-vw", `${useVisual ? visualWidth : innerWidth}px`);
+    document.documentElement.style.setProperty("--weather-vh", `${useVisual ? visualHeight : innerHeight}px`);
     const shell = document.querySelector(".weather-game");
-    shell?.style.setProperty("position", "fixed", "important");
-    shell?.style.setProperty("inset", "auto", "important");
-    shell?.style.setProperty("left", `${left}px`, "important");
-    shell?.style.setProperty("top", `${top}px`, "important");
-    shell?.style.setProperty("width", "390px", "important");
-    shell?.style.setProperty("height", "788px", "important");
-    shell?.style.setProperty("min-height", "788px", "important");
-    shell?.style.setProperty("transform", `scale(${scale})`, "important");
-    shell?.style.setProperty("transform-origin", "top left", "important");
+    ["position", "inset", "left", "top", "width", "height", "min-height", "transform", "transform-origin"].forEach((property) => shell?.style.removeProperty(property));
   }
 
   function exitSharedPlayViewport() {
@@ -336,6 +327,7 @@
 
   window.addEventListener("resize", updateWeatherFrame);
   window.addEventListener("orientationchange", updateWeatherFrame);
+  window.visualViewport?.addEventListener("resize", updateWeatherFrame, { passive: true });
 
   function startStage(index) {
     currentStage = index;

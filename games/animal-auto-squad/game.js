@@ -2915,6 +2915,19 @@
     });
   }
 
+  function updateBattleViewport() {
+    const viewport = window.visualViewport;
+    const viewportWidth = viewport?.width >= window.innerWidth * 0.75 ? viewport.width : window.innerWidth;
+    const viewportHeight = viewport?.height >= window.innerHeight * 0.75 ? viewport.height : window.innerHeight;
+    document.documentElement.style.setProperty("--squad-vw", `${viewportWidth}px`);
+    document.documentElement.style.setProperty("--squad-vh", `${viewportHeight}px`);
+  }
+
+  updateBattleViewport();
+  window.addEventListener("resize", updateBattleViewport, { passive: true });
+  window.visualViewport?.addEventListener("resize", updateBattleViewport, { passive: true });
+  window.visualViewport?.addEventListener("scroll", updateBattleViewport, { passive: true });
+
   // Initialization
   startApp();
 

@@ -1463,18 +1463,16 @@
   }
 
   function updateBattleScale() {
-    const scale = Math.max(0.1, Math.min((window.innerWidth - 8) / 390, (window.innerHeight - 64) / 788));
-    const width = 390 * scale;
-    const contentHeight = 788 * scale;
-    const totalHeight = contentHeight + 56;
-    document.documentElement.style.setProperty("--beast-battle-scale", String(scale));
-    document.documentElement.style.setProperty("--beast-battle-width", `${width}px`);
-    document.documentElement.style.setProperty("--beast-battle-content-height", `${contentHeight}px`);
-    document.documentElement.style.setProperty("--beast-battle-left", `${(window.innerWidth - width) / 2}px`);
-    document.documentElement.style.setProperty("--beast-battle-top", `${(window.innerHeight - totalHeight) / 2}px`);
+    const viewport = window.visualViewport;
+    const visualWidth = Math.round(viewport?.width || 0);
+    const visualHeight = Math.round(viewport?.height || 0);
+    const useVisual = visualWidth > 0 && visualHeight > 0 && Math.abs(visualWidth - innerWidth) <= 2 && visualHeight <= innerHeight + 2;
+    document.documentElement.style.setProperty("--beast-vw", `${useVisual ? visualWidth : innerWidth}px`);
+    document.documentElement.style.setProperty("--beast-vh", `${useVisual ? visualHeight : innerHeight}px`);
   }
   updateBattleScale();
   window.addEventListener("resize", updateBattleScale);
   window.addEventListener("orientationchange", updateBattleScale);
+  window.visualViewport?.addEventListener("resize", updateBattleScale, { passive: true });
   window.addEventListener("DOMContentLoaded", init);
 })();

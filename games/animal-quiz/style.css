@@ -45,6 +45,12 @@ body.quiz-playing .animal-game {
   gap: 6px;
 }
 
+body.quiz-playing .level-line { grid-row: 1; }
+body.quiz-playing .quiz-stage { grid-row: 2; min-height: 0; }
+body.quiz-playing .choice-grid { grid-row: 3; min-height: 0; }
+body.quiz-playing .feedback { grid-row: 4; min-height: 0; }
+body.quiz-playing .animal-card { width: 100%; max-height: 100%; }
+
 body.quiz-stage-select .animal-game {
   display: grid;
   grid-template-rows: minmax(0, 1fr);
@@ -1082,4 +1088,95 @@ select,
 [contenteditable="true"] {
   -webkit-user-select: text;
   user-select: text;
+}
+
+/* Final Expanded Canvas override. */
+html:has(body.quiz-playing),
+html:has(body.quiz-stage-select),
+body.quiz-playing,
+body.quiz-stage-select {
+  width: 100%;
+  height: var(--quiz-vh, 100dvh);
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body.quiz-playing .animal-game,
+body.quiz-stage-select .animal-game {
+  position: fixed;
+  z-index: 50;
+  left: 50%;
+  top: 4px;
+  width: min(calc(var(--quiz-vw, 100vw) - 8px), 612px);
+  max-width: none;
+  height: min(calc(var(--quiz-vh, 100dvh) - 64px), 788px);
+  min-height: 0;
+  max-height: none;
+  margin: 0;
+  transform: translateX(-50%);
+  overflow: hidden;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body.quiz-playing .animal-game {
+  grid-template-rows: 38px minmax(0, 1fr) 120px 34px;
+  padding: 8px;
+  gap: 6px;
+}
+
+body.quiz-stage-select .animal-game {
+  grid-template-rows: minmax(0, 1fr);
+  padding: 8px;
+  gap: 0;
+}
+
+body.quiz-playing #battleAdReserve,
+body.quiz-stage-select #stageAdReserve {
+  position: fixed;
+  z-index: 49;
+  left: 50%;
+  top: auto;
+  bottom: 4px;
+  display: block;
+  width: min(calc(var(--quiz-vw, 100vw) - 8px), 612px);
+  height: 56px;
+  min-height: 56px;
+  margin: 0;
+  transform: translateX(-50%);
+}
+
+body.quiz-playing .wp-tutorial-backdrop,
+body.quiz-stage-select .wp-tutorial-backdrop {
+  display: none !important;
+}
+
+@media (max-width: 560px), (max-height: 560px) {
+  body.quiz-playing .animal-game,
+  body.quiz-stage-select .animal-game,
+  body.quiz-playing #battleAdReserve,
+  body.quiz-stage-select #stageAdReserve {
+    width: calc(var(--quiz-vw, 100vw) - 8px);
+  }
+
+  body.quiz-playing .animal-game,
+  body.quiz-stage-select .animal-game {
+    height: calc(var(--quiz-vh, 100dvh) - 64px);
+  }
+}
+
+@media (max-height: 560px) {
+  body.quiz-playing .animal-game {
+    grid-template-columns: minmax(0, 1fr) 300px;
+    grid-template-rows: 34px minmax(0, 1fr) 32px;
+    gap: 5px;
+    padding: 6px;
+  }
+
+  body.quiz-playing .level-line { grid-column: 1 / -1; grid-row: 1; }
+  body.quiz-playing .quiz-stage { grid-column: 1; grid-row: 2 / 4; min-height: 0; }
+  body.quiz-playing .choice-grid { grid-column: 2; grid-row: 2; min-height: 0; align-content: center; }
+  body.quiz-playing .feedback { grid-column: 2; grid-row: 3; }
+  body.quiz-playing .animal-card { min-height: 0; }
+  body.quiz-playing .animal-card img { width: min(26vw, 180px); height: min(46%, 150px); }
 }

@@ -617,6 +617,14 @@ body.helper-playing .play-panel {
   overflow: hidden;
 }
 
+body.helper-playing .hint {
+  min-height: 0;
+  height: 30px;
+  overflow: hidden;
+  font-size: 14px;
+  line-height: 1.1;
+}
+
 body.helper-playing .play-head {
   grid-template-columns: 1fr;
 }
@@ -841,6 +849,8 @@ body.helper-playing .result-panel {
     gap: 6px;
   }
 
+  body.helper-playing .hint { height: 26px; font-size: 13px; }
+
   body.helper-playing .board {
     width: 100%;
     height: calc(var(--wp-mobile-vh, 100svh) - 172px);
@@ -914,6 +924,121 @@ body.helper-playing .result-panel {
     font-size: 0.76rem;
     grid-template-columns: 58px 1fr 64px;
   }
+}
+
+/* Final Expanded Canvas override. */
+html:has(body.helper-playing),
+body.helper-playing {
+  width: 100%;
+  height: var(--weather-vh, 100dvh) !important;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body.helper-playing .weather-game,
+body.helper-playing.weightplay-active-viewport .weather-game {
+  position: fixed !important;
+  inset: 4px auto auto 50% !important;
+  width: min(calc(var(--weather-vw, 100vw) - 8px), 612px) !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  height: min(calc(var(--weather-vh, 100dvh) - 64px), 788px) !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 8px !important;
+  gap: 0 !important;
+  transform: translateX(-50%) !important;
+  overflow: hidden !important;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body.helper-playing .topbar { display: none !important; }
+
+body.helper-playing .play-panel {
+  width: 100%;
+  height: 100%;
+  grid-template-rows: 48px minmax(0, 1fr) 30px;
+  min-height: 0;
+  gap: 6px;
+  overflow: hidden;
+}
+
+body.helper-playing .play-head {
+  grid-template-columns: 48px minmax(0, 1fr);
+}
+
+body.helper-playing #backToStagesBtn {
+  display: grid;
+  width: 48px;
+  min-height: 0;
+}
+
+body.helper-playing .board {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  padding: 8px;
+}
+
+body.helper-playing .weather-scene {
+  width: 100%;
+  height: 100% !important;
+  min-height: 0 !important;
+}
+
+body.helper-playing #battleAdReserve {
+  position: fixed;
+  left: 50%;
+  top: auto;
+  bottom: 4px;
+  width: min(calc(var(--weather-vw, 100vw) - 8px), 612px);
+  height: 56px;
+  min-height: 56px;
+  transform: translateX(-50%);
+}
+
+body.helper-playing .wp-tutorial-backdrop { display: none !important; }
+
+@media (max-width: 560px), (max-height: 560px) {
+  body.helper-playing .weather-game,
+  body.helper-playing.weightplay-active-viewport .weather-game,
+  body.helper-playing #battleAdReserve {
+    width: calc(var(--weather-vw, 100vw) - 8px) !important;
+  }
+
+  body.helper-playing .weather-game,
+  body.helper-playing.weightplay-active-viewport .weather-game {
+    height: calc(var(--weather-vh, 100dvh) - 64px) !important;
+  }
+}
+
+@media (max-height: 560px) {
+  body.helper-playing .play-panel {
+    grid-template-rows: 42px minmax(0, 1fr) 26px;
+    gap: 5px;
+  }
+
+  body.helper-playing .weather-scene {
+    grid-template-columns: minmax(0, 1fr) 310px;
+    grid-template-rows: minmax(0, 1fr);
+    gap: 6px;
+  }
+
+  body.helper-playing .rescue-scene {
+    grid-column: 1;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+  }
+
+  body.helper-playing .tool-grid {
+    grid-column: 2;
+    align-self: center;
+  }
+
+  body.helper-playing .tool-btn { min-height: 92px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

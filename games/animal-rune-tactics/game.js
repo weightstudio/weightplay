@@ -335,20 +335,18 @@
   let locale = localStorage.getItem(localeKey) || "en";
 
   function updateBattleScale() {
-    const scale = Math.max(0.1, Math.min((window.innerWidth - 8) / 390, (window.innerHeight - 64) / 788));
-    const width = 390 * scale;
-    const contentHeight = 788 * scale;
-    const totalHeight = contentHeight + 56;
-    document.documentElement.style.setProperty("--rune-battle-scale", String(scale));
-    document.documentElement.style.setProperty("--rune-battle-width", `${width}px`);
-    document.documentElement.style.setProperty("--rune-battle-content-height", `${contentHeight}px`);
-    document.documentElement.style.setProperty("--rune-battle-left", `${(window.innerWidth - width) / 2}px`);
-    document.documentElement.style.setProperty("--rune-battle-top", `${(window.innerHeight - totalHeight) / 2}px`);
+    const viewport = window.visualViewport;
+    const visualWidth = Math.round(viewport?.width || 0);
+    const visualHeight = Math.round(viewport?.height || 0);
+    const useVisual = visualWidth > 0 && visualHeight > 0 && Math.abs(visualWidth - innerWidth) <= 2 && visualHeight <= innerHeight + 2;
+    document.documentElement.style.setProperty("--rune-vw", `${useVisual ? visualWidth : innerWidth}px`);
+    document.documentElement.style.setProperty("--rune-vh", `${useVisual ? visualHeight : innerHeight}px`);
   }
 
   updateBattleScale();
   window.addEventListener("resize", updateBattleScale);
   window.addEventListener("orientationchange", updateBattleScale);
+  window.visualViewport?.addEventListener("resize", updateBattleScale, { passive: true });
   let selectedMission = 1;
   let profile = loadProfile();
   let state = null;

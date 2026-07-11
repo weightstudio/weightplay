@@ -445,22 +445,21 @@ function showMain() {
 
 function updateQuizFrame() {
   if (!document.body.classList.contains("quiz-playing") && !document.body.classList.contains("quiz-stage-select")) return;
-  const logicalWidth = 390;
-  const logicalHeight = 788;
-  const reserveHeight = 56;
-  const scale = Math.max(0.1, Math.min((innerWidth - 8) / logicalWidth, (innerHeight - reserveHeight - 8) / logicalHeight));
-  const width = logicalWidth * scale;
-  const contentHeight = logicalHeight * scale;
+  const viewport = window.visualViewport;
+  const visualWidth = Math.round(viewport?.width || 0);
+  const visualHeight = Math.round(viewport?.height || 0);
+  const useVisual = visualWidth > 0
+    && visualHeight > 0
+    && Math.abs(visualWidth - innerWidth) <= 2
+    && visualHeight <= innerHeight + 2;
   const root = document.documentElement.style;
-  root.setProperty("--quiz-frame-scale", String(scale));
-  root.setProperty("--quiz-frame-width", `${width}px`);
-  root.setProperty("--quiz-frame-height", `${contentHeight}px`);
-  root.setProperty("--quiz-frame-left", `${Math.max(0, (innerWidth - width) / 2)}px`);
-  root.setProperty("--quiz-frame-top", `${Math.max(0, (innerHeight - contentHeight - reserveHeight) / 2)}px`);
+  root.setProperty("--quiz-vw", `${useVisual ? visualWidth : innerWidth}px`);
+  root.setProperty("--quiz-vh", `${useVisual ? visualHeight : innerHeight}px`);
 }
 
-addEventListener("resize", updateQuizFrame, { passive: true });
-addEventListener("orientationchange", updateQuizFrame, { passive: true });
+window.addEventListener?.("resize", updateQuizFrame, { passive: true });
+window.addEventListener?.("orientationchange", updateQuizFrame, { passive: true });
+window.visualViewport?.addEventListener("resize", updateQuizFrame, { passive: true });
 
 function showStageSelect() {
   renderStaticText();
@@ -471,6 +470,7 @@ function showStageSelect() {
   mainPanel.classList.add("hidden");
   stageAdReserve.classList.remove("hidden");
   updateQuizFrame();
+  window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   setQuizVisible(false);
   renderStageCards();
   window.requestAnimationFrame(() => {
@@ -518,6 +518,7 @@ function startStage(stageIndex) {
   document.body.classList.remove("quiz-main", "quiz-stage-select");
   document.body.classList.add("quiz-playing");
   updateQuizFrame();
+  window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   window.WeightPlayGame?.exitMobileGameMode?.();
   quizStage.classList.remove("weightplay-active-viewport");
   window.WonderAnalytics?.track("game_start", {

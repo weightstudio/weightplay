@@ -60,3 +60,82 @@ html:has(body.is-cafe-playing),body.is-cafe-playing { position:fixed; inset:0; w
 body.is-cafe-playing .cafe-app { position:fixed; inset:0; width:100vw; max-width:none; height:100vh; min-height:0; max-height:none; padding:0; overflow:hidden; transform:none; }
 body.is-cafe-playing #playPanel.play-panel { position:fixed; z-index:50; left:var(--cafe-battle-left,4px); top:var(--cafe-battle-top,4px); width:390px; max-width:none; height:788px; min-height:788px; max-height:none; margin:0; padding:8px; transform:scale(var(--cafe-battle-scale,1)); transform-origin:top left; grid-template-rows:44px 44px minmax(0,1fr) 142px 30px; }
 body.is-cafe-playing #adReserve.ad-reserve { position:fixed; z-index:49; left:var(--cafe-battle-left,4px); top:calc(var(--cafe-battle-top,4px) + var(--cafe-battle-content-height,772px)); display:block; width:var(--cafe-battle-width,382px); height:56px; min-height:56px; margin:0; pointer-events:none; border-top:1px solid #69b5aa; background:#0d2f2caa; }
+
+/* Final Expanded Canvas override. */
+html:has(body.is-cafe-playing),
+body.is-cafe-playing {
+  width: 100%;
+  height: var(--cafe-vh, 100dvh);
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body.is-cafe-playing .cafe-app {
+  width: var(--cafe-vw, 100vw);
+  height: var(--cafe-vh, 100dvh);
+}
+
+body.is-cafe-playing #playPanel.play-panel {
+  position: fixed;
+  z-index: 50;
+  left: 50%;
+  top: 4px;
+  width: min(calc(var(--cafe-vw, 100vw) - 8px), 612px);
+  max-width: none;
+  height: min(calc(var(--cafe-vh, 100dvh) - 64px), 788px);
+  min-height: 0;
+  max-height: none;
+  margin: 0;
+  padding: 8px;
+  transform: translateX(-50%);
+  grid-template-rows: 44px 44px minmax(0, 1fr) 142px 30px;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body.is-cafe-playing #adReserve.ad-reserve {
+  position: fixed;
+  z-index: 49;
+  left: 50%;
+  top: auto;
+  bottom: 4px;
+  display: block;
+  width: min(calc(var(--cafe-vw, 100vw) - 8px), 612px);
+  height: 56px;
+  min-height: 56px;
+  margin: 0;
+  transform: translateX(-50%);
+}
+
+body.is-cafe-playing .wp-tutorial-backdrop,
+body.is-cafe-playing .wp-tutorial-button,
+body.is-cafe-playing .sound-toggle {
+  display: none !important;
+}
+
+@media (max-width: 560px), (max-height: 560px) {
+  body.is-cafe-playing #playPanel.play-panel,
+  body.is-cafe-playing #adReserve.ad-reserve {
+    width: calc(var(--cafe-vw, 100vw) - 8px);
+  }
+
+  body.is-cafe-playing #playPanel.play-panel {
+    height: calc(var(--cafe-vh, 100dvh) - 64px);
+  }
+}
+
+@media (max-height: 560px) {
+  body.is-cafe-playing #playPanel.play-panel {
+    grid-template-columns: minmax(0, 1fr) 320px;
+    grid-template-rows: 44px 44px minmax(0, 1fr) 30px;
+    gap: 5px;
+    padding: 6px;
+  }
+
+  body.is-cafe-playing .play-hud { grid-column: 1 / -1; grid-row: 1; }
+  body.is-cafe-playing .objective-row { grid-column: 2; grid-row: 2; }
+  body.is-cafe-playing .cafe-scene { grid-column: 1; grid-row: 2 / 5; }
+  body.is-cafe-playing .prep-row { grid-column: 2; grid-row: 3; min-height: 0; }
+  body.is-cafe-playing .play-message { grid-column: 2; grid-row: 4; }
+  body.is-cafe-playing .queue-customer img { height: clamp(48px, 10vh, 68px); }
+}

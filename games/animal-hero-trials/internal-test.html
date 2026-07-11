@@ -6,7 +6,7 @@
   <meta name="robots" content="noindex,nofollow" />
   <title>Animal Hero Trials - Internal Test</title>
   <link rel="stylesheet" href="style.css" />
-  <style>.canvas-wrap canvas{position:absolute;left:50%;top:50%;width:auto;height:auto;object-fit:initial;transform:translate(-50%,-50%)}</style>
+  <style>.canvas-wrap canvas{position:absolute;left:50%;top:50%;width:auto;height:auto;object-fit:initial;transform:translate(-50%,-50%)}.reroll-row{margin-top:10px;display:grid;gap:5px}.reroll-row button{min-height:46px;border:1px solid #8edbb3;border-radius:9px;background:#0c281f;color:#fff;display:flex;align-items:center;justify-content:center;gap:7px;font-weight:900}.reroll-row button:disabled{opacity:.48}.reroll-row img{width:24px;height:24px;object-fit:contain}.reroll-row small{min-height:18px;color:#ffd45f}</style>
 </head>
 <body>
   <main id="app" class="app">
@@ -31,9 +31,10 @@
       <div id="battleAd" class="battle-ad" aria-hidden="true"></div>
     </section>
 
-    <div id="choiceModal" class="modal hidden"><section><h2 data-t="blessing">Choose a Blessing</h2><div id="choices" class="choices"></div></section></div>
+    <div id="choiceModal" class="modal hidden"><section><h2 data-t="blessing">Choose a Blessing</h2><div id="choices" class="choices"></div><div class="reroll-row"><button id="rerollBtn" type="button"><img src="../../assets/weightplay-diamond.svg" alt="" /><span id="rerollLabel">Reroll · 3</span></button><small id="rerollStatus"></small></div></section></div>
     <div id="resultModal" class="modal hidden"><section><img id="resultFx" src="../../assets/animal-hero-trials-fx-victory.webp" alt="" /><h2 id="resultTitle"></h2><p id="resultCopy"></p><button id="resultNext" class="primary" type="button"></button><button id="resultHome" type="button" data-t="menu">Main Menu</button></section></div>
   </main>
+  <script src="../../src/wallet.js"></script>
   <script src="fit.js"></script>
   <script src="game.js"></script>
   <script src="locale-runtime.js"></script>

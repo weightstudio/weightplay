@@ -48,8 +48,8 @@
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
     <link rel="stylesheet" href="style.css?v=20260709-reef-fixed-play1" />
   </head>
-  <body>
-    <main class="reef-app">
+  <body data-tutorial-auto-show="false">
+    <main class="reef-app" data-no-mobile-immersive="true">
       <header class="topbar">
         <a class="back-btn" href="/" aria-label="Back to lobby">&larr;</a>
         <div class="brand">
@@ -93,7 +93,7 @@
         </div>
       </section>
 
-      <section id="gamePanel" class="panel game-panel is-hidden" data-play-viewport>
+      <section id="gamePanel" class="panel game-panel is-hidden" data-play-viewport data-no-mobile-immersive="true">
         <div class="battle-shell">
         <div class="hud-row">
           <button id="mapBtn" class="secondary-btn play-return" type="button" aria-label="Return to reef map">&larr;</button>

@@ -45,6 +45,7 @@
       ["月光復甦", "恢復 24 點生命"],
     ];
     document.querySelectorAll("#choices .choice").forEach((choice, index) => {
+      if (choice.dataset.nativeLocalized === "true") return;
       const [name, copy] = blessingCopy[index] || [];
       if (!name) return;
       const bold = choice.querySelector("b");

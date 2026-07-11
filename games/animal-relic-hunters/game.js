@@ -2080,14 +2080,17 @@
   }
 
   function updateBattleScale() {
-    const scale = Math.max(0.1, Math.min((window.innerWidth - 8) / 390, (window.innerHeight - 64) / 788));
-    document.documentElement.style.setProperty("--relic-battle-scale", String(scale));
-    document.documentElement.style.setProperty("--relic-battle-width", `${390 * scale}px`);
-    document.documentElement.style.setProperty("--relic-battle-height", `${788 * scale + 56}px`);
+    const viewport = window.visualViewport;
+    const visualWidth = Math.round(viewport?.width || 0);
+    const visualHeight = Math.round(viewport?.height || 0);
+    const useVisual = visualWidth > 0 && visualHeight > 0 && Math.abs(visualWidth - innerWidth) <= 2 && visualHeight <= innerHeight + 2;
+    document.documentElement.style.setProperty("--relic-vw", `${useVisual ? visualWidth : innerWidth}px`);
+    document.documentElement.style.setProperty("--relic-vh", `${useVisual ? visualHeight : innerHeight}px`);
   }
 
   updateBattleScale();
   window.addEventListener("resize", updateBattleScale);
   window.addEventListener("orientationchange", updateBattleScale);
+  window.visualViewport?.addEventListener("resize", updateBattleScale, { passive: true });
   window.addEventListener("DOMContentLoaded", init);
 })();
