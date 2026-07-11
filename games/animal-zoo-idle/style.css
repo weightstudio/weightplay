@@ -2557,4 +2557,9 @@ body.zoo-playing .care-panel {
     bottom: 4px !important;
     width: auto !important;
   }
+
+  body.zoo-playing main.zoo-app #habitatGrid.habitat-grid.play-area {
+    display: grid !important;
+    padding-bottom: 0 !important;
+  }
 }
