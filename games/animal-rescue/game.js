@@ -330,11 +330,15 @@ function startLevel(index) {
   hud.classList.remove("hidden");
   document.body.classList.remove("rescue-stage-select");
   document.body.classList.add("rescue-playing");
+  hud.prepend(battleBackBtn);
   renderAvatar(level.animal);
   animalName.textContent = t(level.animal);
   renderBoard();
   updateHud();
-  window.WeightPlayGame?.enterMobileGameMode?.();
+  window.WeightPlayGame?.exitMobileGameMode?.();
+  document.body.classList.remove("wp-mobile-game-mode", "weightplay-active-viewport");
+  document.querySelector(".rescue-game")?.classList.remove("weightplay-active-viewport");
+  updateBattleScale();
   window.WonderSound?.play("start");
   window.WonderAnalytics?.track("game_start", { game_id: GAME_ID, stage: level.id, locale: locale() });
 }
@@ -346,7 +350,7 @@ function showStageSelect() {
   resultPanel.classList.add("hidden");
   stageSelect.classList.remove("hidden");
   stageAdReserve.classList.remove("hidden");
-  document.body.classList.remove("rescue-playing");
+  document.body.classList.remove("rescue-playing", "rescue-expanded-canvas");
   document.body.classList.add("rescue-stage-select");
   renderStageSelect();
 }
@@ -358,7 +362,7 @@ function showMain() {
   stageSelect.classList.add("hidden");
   stageAdReserve.classList.add("hidden");
   mainPanel.classList.remove("hidden");
-  document.body.classList.remove("rescue-playing", "rescue-stage-select");
+  document.body.classList.remove("rescue-playing", "rescue-stage-select", "rescue-expanded-canvas");
   renderStaticText();
 }
 
@@ -572,7 +576,24 @@ localeSelect.addEventListener("input", () => {
 window.addEventListener("wonder:locale-change", renderStaticText);
 
 function updateBattleScale() {
-  const scale = Math.max(0.1, Math.min((window.innerWidth - 8) / 390, (window.innerHeight - 64) / 788));
+  const viewport = window.visualViewport;
+  const viewportWidth = viewport?.width || window.innerWidth;
+  const viewportHeight = viewport?.height || window.innerHeight;
+  const isPhoneBattle = document.body.classList.contains("rescue-playing")
+    && (window.matchMedia("(pointer: coarse)").matches || viewportWidth <= 600 || viewportHeight <= 430);
+  document.body.classList.toggle("rescue-expanded-canvas", isPhoneBattle);
+  if (isPhoneBattle) {
+    const width = Math.max(1, viewportWidth - 8);
+    const contentHeight = Math.max(1, viewportHeight - 64);
+    document.documentElement.style.setProperty("--rescue-battle-scale", "1");
+    document.documentElement.style.setProperty("--rescue-battle-width", `${width}px`);
+    document.documentElement.style.setProperty("--rescue-battle-height", `${contentHeight}px`);
+    document.documentElement.style.setProperty("--rescue-battle-content-height", `${contentHeight}px`);
+    document.documentElement.style.setProperty("--rescue-battle-left", "4px");
+    document.documentElement.style.setProperty("--rescue-battle-top", "4px");
+    return;
+  }
+  const scale = Math.max(0.1, Math.min((viewportWidth - 8) / 390, (viewportHeight - 64) / 788));
   const width = 390 * scale;
   const contentHeight = 788 * scale;
   const totalHeight = contentHeight + 56;
@@ -580,13 +601,15 @@ function updateBattleScale() {
   document.documentElement.style.setProperty("--rescue-battle-width", `${width}px`);
   document.documentElement.style.setProperty("--rescue-battle-height", `${totalHeight}px`);
   document.documentElement.style.setProperty("--rescue-battle-content-height", `${contentHeight}px`);
-  document.documentElement.style.setProperty("--rescue-battle-left", `${(window.innerWidth - width) / 2}px`);
-  document.documentElement.style.setProperty("--rescue-battle-top", `${(window.innerHeight - totalHeight) / 2}px`);
+  document.documentElement.style.setProperty("--rescue-battle-left", `${(viewportWidth - width) / 2}px`);
+  document.documentElement.style.setProperty("--rescue-battle-top", `${(viewportHeight - totalHeight) / 2}px`);
 }
 
 updateBattleScale();
 window.addEventListener("resize", updateBattleScale);
 window.addEventListener("orientationchange", updateBattleScale);
+window.visualViewport?.addEventListener("resize", updateBattleScale);
+window.visualViewport?.addEventListener("scroll", updateBattleScale);
 showStageBtn.addEventListener("click", showStageSelect);
 stageBackBtn.addEventListener("click", showMain);
 battleBackBtn.addEventListener("click", showStageSelect);

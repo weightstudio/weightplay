@@ -326,7 +326,7 @@
     nodes.playPanel.classList.add("hidden");
     nodes.menuPanel.classList.remove("hidden");
     nodes.mainPanel.classList.add("hidden");
-    document.body.classList.remove("safari-playing");
+    document.body.classList.remove("safari-playing", "safari-expanded-canvas");
     document.documentElement.classList.add("safari-stage");
     document.body.classList.add("safari-stage");
     renderStageGrid();
@@ -340,7 +340,7 @@
     nodes.playPanel.classList.add("hidden");
     nodes.resultPanel.classList.add("hidden");
     document.documentElement.classList.remove("safari-stage");
-    document.body.classList.remove("safari-stage", "safari-playing");
+    document.body.classList.remove("safari-stage", "safari-playing", "safari-expanded-canvas");
   }
 
   function startStage(index) {
@@ -360,11 +360,45 @@
     renderScene();
     renderTargetList();
     updateHud();
+    updateSafariFrame();
     startTimer();
     track("game_start", { level: index + 1 });
     playSound("start");
-    window.WeightPlayGame?.enterMobileGameMode?.();
+    window.WeightPlayGame?.exitMobileGameMode?.();
+    document.body.classList.remove("wp-mobile-game-mode", "weightplay-active-viewport");
+    document.querySelector(".safari-game")?.classList.remove("weightplay-active-viewport");
   }
+
+  function updateSafariFrame() {
+    if (!document.body.classList.contains("safari-playing")) return;
+    const viewport = window.visualViewport;
+    const viewportWidth = viewport?.width || window.innerWidth;
+    const viewportHeight = viewport?.height || window.innerHeight;
+    const expanded = window.matchMedia("(pointer: coarse)").matches || viewportWidth <= 600 || viewportHeight <= 430;
+    document.body.classList.toggle("safari-expanded-canvas", expanded);
+    const root = document.documentElement.style;
+    if (expanded) {
+      root.setProperty("--safari-frame-left", "4px");
+      root.setProperty("--safari-frame-top", "4px");
+      root.setProperty("--safari-frame-width", `${Math.max(1, viewportWidth - 8)}px`);
+      root.setProperty("--safari-frame-height", `${Math.max(1, viewportHeight - 64)}px`);
+      return;
+    }
+    const logicalWidth = 390;
+    const logicalHeight = logicalWidth * 16 / 9;
+    const scale = Math.min((viewportWidth - 8) / logicalWidth, (viewportHeight - 64) / logicalHeight);
+    const frameWidth = logicalWidth * scale;
+    const frameHeight = logicalHeight * scale;
+    root.setProperty("--safari-frame-left", `${(viewportWidth - frameWidth) / 2}px`);
+    root.setProperty("--safari-frame-top", `${(viewportHeight - 56 - frameHeight) / 2}px`);
+    root.setProperty("--safari-frame-width", `${frameWidth}px`);
+    root.setProperty("--safari-frame-height", `${frameHeight}px`);
+  }
+
+  window.addEventListener("resize", updateSafariFrame);
+  window.addEventListener("orientationchange", updateSafariFrame);
+  window.visualViewport?.addEventListener("resize", updateSafariFrame);
+  window.visualViewport?.addEventListener("scroll", updateSafariFrame);
 
   function renderScene() {
     nodes.targetsLayer.innerHTML = "";

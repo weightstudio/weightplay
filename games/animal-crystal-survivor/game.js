@@ -382,27 +382,26 @@
     [nodes.menuPanel, nodes.gamePanel, nodes.resultPanel, nodes.upgradePanel].forEach((node) => node.classList.add("hidden"));
     panel.classList.remove("hidden");
     document.body?.classList.toggle("crystal-playing", panel !== nodes.menuPanel);
-    updateCrystalBattleScale();
+    updateCrystalBattleViewport();
   }
 
-  function updateCrystalBattleScale() {
+  function updateCrystalBattleViewport() {
     if (!document.body?.classList.contains("crystal-playing")) return;
-    const logicalWidth = 390;
-    const logicalHeight = 788;
-    const reserveHeight = 56;
-    const scale = Math.max(0.1, Math.min((innerWidth - 8) / logicalWidth, (innerHeight - reserveHeight - 8) / logicalHeight));
-    const width = logicalWidth * scale;
-    const contentHeight = logicalHeight * scale;
+    const viewport = window.visualViewport;
+    const visualWidth = Math.round(viewport?.width || 0);
+    const visualHeight = Math.round(viewport?.height || 0);
+    const useVisual = visualWidth > 0
+      && visualHeight > 0
+      && Math.abs(visualWidth - innerWidth) <= 2
+      && visualHeight <= innerHeight + 2;
     const root = document.documentElement.style;
-    root.setProperty("--crystal-battle-scale", String(scale));
-    root.setProperty("--crystal-battle-width", `${width}px`);
-    root.setProperty("--crystal-battle-content-height", `${contentHeight}px`);
-    root.setProperty("--crystal-battle-left", `${Math.max(0, (innerWidth - width) / 2)}px`);
-    root.setProperty("--crystal-battle-top", `${Math.max(0, (innerHeight - contentHeight - reserveHeight) / 2)}px`);
+    root.setProperty("--crystal-vw", `${useVisual ? visualWidth : innerWidth}px`);
+    root.setProperty("--crystal-vh", `${useVisual ? visualHeight : innerHeight}px`);
   }
 
-  addEventListener("resize", updateCrystalBattleScale, { passive: true });
-  addEventListener("orientationchange", updateCrystalBattleScale, { passive: true });
+  window.addEventListener?.("resize", updateCrystalBattleViewport, { passive: true });
+  window.addEventListener?.("orientationchange", updateCrystalBattleViewport, { passive: true });
+  window.visualViewport?.addEventListener("resize", updateCrystalBattleViewport, { passive: true });
 
   function scheduleLoop(token = runToken) {
     requestAnimationFrame((now) => loop(now, token));
@@ -422,7 +421,7 @@
     save.playCount += 1;
     persist();
     show(nodes.gamePanel);
-    window.WeightPlayGame?.enterMobileGameMode?.();
+    window.WeightPlayGame?.exitMobileGameMode?.();
     window.scrollTo?.({ top: 0, left: 0, behavior: "instant" });
     renderHud();
     lastFrame = performance.now();

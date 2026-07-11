@@ -2396,19 +2396,65 @@ body.guard-yard-stage .menu-tabs { position: static; left: auto; bottom: auto; t
   }
 }
 
-/* Final fixed-ratio override remains after legacy responsive rules. */
+/* Battle Canvas and the physical banner reserve are independent sibling tracks. */
 html.guard-yard-playing,
-body.guard-yard-playing { width: 100%; height: 100dvh; overflow: hidden; }
-body.guard-yard-playing .yard-game { width: 100%; height: 100dvh; min-height: 0; padding: 4px; overflow: hidden; }
+body.guard-yard-playing {
+  width: 100%;
+  height: var(--guard-yard-vh, 100dvh);
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+body.guard-yard-playing .yard-game {
+  width: 100%;
+  height: var(--guard-yard-vh, 100dvh);
+  min-height: 0;
+  padding: 4px;
+  overflow: hidden;
+}
 body.guard-yard-playing .topbar,
 body.guard-yard-playing .menu-tabs,
-body.guard-yard-playing .game-page-info { display: none !important; }
-body.guard-yard-playing .fixed-shell-host { width: 100%; height: calc(100dvh - 8px); display: grid; place-items: center; overflow: hidden; }
+body.guard-yard-playing .game-page-info,
+body.guard-yard-playing .wp-tutorial-button,
+body.guard-yard-playing .wp-tutorial-backdrop { display: none !important; }
+body.guard-yard-playing .fixed-shell-host {
+  width: 100%;
+  height: calc(var(--guard-yard-vh, 100dvh) - 8px);
+  min-height: 0;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) 56px;
+  gap: 0;
+  place-items: center;
+  overflow: hidden;
+}
 body.guard-yard-playing .fixed-game-shell {
-  width: min(calc(100vw - 8px), calc((100dvh - 8px) * 3 / 4));
-  height: auto;
-  max-height: calc(100dvh - 8px);
-  aspect-ratio: 3 / 4;
-  grid-template-rows: 34px 24px 66px minmax(0, 1fr) 22px 56px;
+  width: min(calc(var(--guard-yard-vw, 100vw) - 8px), 860px, calc((var(--guard-yard-vh, 100dvh) - 64px) * 4 / 3));
+  height: min(calc(var(--guard-yard-vh, 100dvh) - 64px), 645px, calc((var(--guard-yard-vw, 100vw) - 8px) * 3 / 4));
+  max-height: none;
+  aspect-ratio: 4 / 3;
+  grid-template-rows: 34px 24px 66px minmax(0, 1fr) 22px;
   gap: 4px;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+body.guard-yard-playing #playPanel > .battle-ad-reserve {
+  width: 100%;
+  height: 56px;
+  min-height: 56px;
+  align-self: stretch;
+  border-top: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(35, 77, 49, 0.34);
+}
+
+@media (max-width: 560px), (max-height: 560px) and (pointer: coarse) {
+  body.guard-yard-playing .fixed-shell-host {
+    place-items: stretch;
+  }
+
+  body.guard-yard-playing .fixed-game-shell {
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    aspect-ratio: auto;
+    grid-template-rows: 34px 24px 66px minmax(0, 1fr) 22px;
+  }
 }

@@ -584,6 +584,116 @@ body.shape-playing .passenger {
   }
 }
 
+/* Final Expanded Canvas override. */
+html:has(body.shape-playing),
+body.shape-playing {
+  width: 100%;
+  height: var(--shape-vh, 100dvh) !important;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body.shape-playing .shape-game,
+body.shape-playing.weightplay-active-viewport .shape-game {
+  position: fixed !important;
+  inset: 4px auto auto 50% !important;
+  width: min(calc(var(--shape-vw, 100vw) - 8px), 612px) !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  height: min(calc(var(--shape-vh, 100dvh) - 64px), 788px) !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  padding: 8px 10px !important;
+  gap: 6px !important;
+  transform: translateX(-50%) !important;
+  overflow: hidden !important;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body.shape-playing .topbar {
+  flex: 0 0 48px;
+  min-height: 48px;
+  grid-template-columns: minmax(0, 1fr) !important;
+}
+
+body.shape-playing .topbar .home-link { display: none !important; }
+
+body.shape-playing .play-panel {
+  grid-template-rows: 48px auto minmax(0, 1fr) 30px;
+  min-height: 0;
+  gap: 6px;
+  overflow: hidden;
+}
+
+body.shape-playing .train-track {
+  width: 100%;
+  height: auto;
+  min-height: 0;
+  aspect-ratio: 4 / 3;
+}
+
+body.shape-playing .passenger-area {
+  min-height: 0;
+  overflow: hidden;
+}
+
+body.shape-playing #battleAdReserve {
+  position: fixed;
+  left: 50%;
+  top: auto;
+  bottom: 4px;
+  width: min(calc(var(--shape-vw, 100vw) - 8px), 612px);
+  height: 56px;
+  min-height: 56px;
+  transform: translateX(-50%);
+}
+
+@media (max-width: 560px), (max-height: 560px) {
+  body.shape-playing .shape-game,
+  body.shape-playing.weightplay-active-viewport .shape-game,
+  body.shape-playing #battleAdReserve {
+    width: calc(var(--shape-vw, 100vw) - 8px) !important;
+  }
+
+  body.shape-playing .shape-game,
+  body.shape-playing.weightplay-active-viewport .shape-game {
+    height: calc(var(--shape-vh, 100dvh) - 64px) !important;
+  }
+}
+
+@media (max-height: 560px) {
+  body.shape-playing .shape-game,
+  body.shape-playing.weightplay-active-viewport .shape-game {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr);
+    padding: 6px !important;
+  }
+
+  body.shape-playing .topbar {
+    display: none !important;
+  }
+
+  body.shape-playing .title-block {
+    display: none;
+  }
+
+  body.shape-playing .play-panel {
+    grid-column: 1;
+    grid-row: 1;
+    grid-template-columns: minmax(0, 1fr) 210px;
+    grid-template-rows: 42px minmax(0, 1fr) 28px;
+    gap: 5px;
+  }
+
+  body.shape-playing .play-head { grid-column: 1 / -1; grid-row: 1; }
+  body.shape-playing .train-track { grid-column: 1; grid-row: 2; width: auto; height: 100%; max-width: 100%; justify-self: center; }
+  body.shape-playing .passenger-area { grid-column: 2; grid-row: 2; }
+  body.shape-playing .feedback { grid-column: 1 / -1; grid-row: 3; }
+  body.shape-playing .passenger { width: min(112px, 70%); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

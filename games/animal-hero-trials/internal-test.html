@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Animal Hero Trials - Internal Test</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>.canvas-wrap canvas{position:absolute;left:50%;top:50%;width:auto;height:auto;object-fit:initial;transform:translate(-50%,-50%)}</style>
+</head>
+<body>
+  <main id="app" class="app">
+    <section id="mainView" class="view main-view">
+      <a class="lobby-return" href="/" aria-label="Back to WeightPlay"><span>&larr;</span><img src="../../assets/weightplay-logo.png" alt="" /></a>
+      <label class="locale"><span>Language</span><select id="locale"><option value="en">English</option><option value="zh-Hant">繁體中文</option></select></label>
+      <img class="cover" src="../../assets/animal-hero-trials-cover.png" alt="" />
+      <div class="main-copy"><h1 data-t="title">Animal Hero Trials</h1><p data-t="pitch">Guide Leo through three forest trials and choose a blessing after every room.</p></div>
+      <div class="progress-card"><span><b data-t="marks">Trial Marks</b><strong id="markCount">0</strong></span><button id="masteryBtn" type="button"><span data-t="mastery">Heart Mastery</span><b id="masteryLevel">Lv.0</b><small id="masteryCost">5</small></button></div>
+      <button id="startBtn" class="primary" type="button" data-t="start">Start Trial</button>
+    </section>
+
+    <section id="stageView" class="view hidden">
+      <header class="compact-head"><button id="stageBack" class="icon-btn" type="button" aria-label="Back">&larr;</button><h2 data-t="choose">Choose Trial</h2></header>
+      <div id="stageRail" class="stage-rail"></div>
+      <div class="stage-ad" aria-hidden="true"></div>
+    </section>
+
+    <section id="battleView" class="view battle-view hidden">
+      <header class="battle-head"><button id="battleBack" class="icon-btn" type="button" aria-label="Back">&larr;</button><div class="health"><span id="roomText">Room 1/3</span><div><i id="hpFill"></i></div></div><button id="skillBtn" class="skill-btn" type="button"><img src="../../assets/animal-hero-trials-icon-roaring-mane.webp" alt="" /><span id="cooldownText">ROAR</span></button></header>
+      <div class="canvas-wrap"><canvas id="game" width="390" height="560"></canvas><div id="joystick" class="joystick"><i></i></div><p id="objective"></p></div>
+      <div id="battleAd" class="battle-ad" aria-hidden="true"></div>
+    </section>
+
+    <div id="choiceModal" class="modal hidden"><section><h2 data-t="blessing">Choose a Blessing</h2><div id="choices" class="choices"></div></section></div>
+    <div id="resultModal" class="modal hidden"><section><img id="resultFx" src="../../assets/animal-hero-trials-fx-victory.webp" alt="" /><h2 id="resultTitle"></h2><p id="resultCopy"></p><button id="resultNext" class="primary" type="button"></button><button id="resultHome" type="button" data-t="menu">Main Menu</button></section></div>
+  </main>
+  <script src="fit.js"></script>
+  <script src="game.js"></script>
+  <script src="locale-runtime.js"></script>
+</body>
+</html>

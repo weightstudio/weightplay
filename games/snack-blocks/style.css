@@ -734,7 +734,7 @@ body.snack-playing .wp-tutorial-button {
   }
 
   body.snack-playing.snack-expanded-canvas .board {
-    width: min(100%, calc(var(--snack-frame-height, 320px) - 166px)) !important;
+    width: min(100%, calc(var(--snack-frame-height, 320px) - 178px)) !important;
   }
 
   body.snack-playing.snack-expanded-canvas .hint {
@@ -916,4 +916,31 @@ select,
 [contenteditable="true"] {
   -webkit-user-select: text;
   user-select: text;
+}
+
+/* Keep this final: shared immersive selectors may be re-applied after a board tap. */
+html body.snack-playing.snack-expanded-canvas main.snack-game,
+html body.snack-playing.snack-expanded-canvas main.snack-game.weightplay-active-viewport {
+  position: fixed !important;
+  inset: auto !important;
+  left: var(--snack-frame-left, 4px) !important;
+  top: var(--snack-frame-top, 4px) !important;
+  width: var(--snack-frame-width, calc(100vw - 8px)) !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  height: var(--snack-frame-height, calc(100svh - 64px)) !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  transform: none !important;
+}
+
+html body.snack-playing.snack-expanded-canvas #battleAdReserve {
+  position: fixed !important;
+  left: 4px !important;
+  right: 4px !important;
+  top: auto !important;
+  bottom: 4px !important;
+  width: auto !important;
+  height: 56px !important;
+  min-height: 56px !important;
 }

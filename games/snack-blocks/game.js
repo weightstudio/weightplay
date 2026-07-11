@@ -668,6 +668,7 @@
     const isPhoneBattle = window.matchMedia("(pointer: coarse)").matches || viewportWidth <= 600 || viewportHeight <= 430;
     document.body.classList.toggle("snack-expanded-canvas", isPhoneBattle);
     const shell = document.querySelector(".snack-game");
+    shell?.classList.remove("weightplay-active-viewport");
     if (isPhoneBattle) {
       const width = Math.max(1, viewportWidth - 8);
       const height = Math.max(1, viewportHeight - 64);
@@ -709,6 +710,7 @@
   function exitSharedPlayViewport() {
     window.WeightPlayGame?.exitMobileGameMode?.();
     document.body.classList.remove("weightplay-active-viewport", "wp-mobile-game-mode");
+    document.querySelector(".snack-game")?.classList.remove("weightplay-active-viewport");
     if (document.fullscreenElement) document.exitFullscreen?.().catch(() => {});
     if (document.webkitFullscreenElement) document.webkitExitFullscreen?.();
   }

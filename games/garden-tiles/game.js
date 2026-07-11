@@ -37,6 +37,8 @@
   const lobbyLink = document.querySelector("#lobbyLink");
   const loadingPanel = document.querySelector("#loadingPanel");
 
+  statusbar?.prepend(battleBackBtn);
+
   const dictionary = {
     en: {
       title: "Pet Garden Tiles",
@@ -185,7 +187,7 @@
   }
 
   function showMain() {
-    document.body.classList.remove("garden-stage", "garden-playing");
+    document.body.classList.remove("garden-stage", "garden-playing", "garden-expanded-canvas");
     document.body.classList.add("garden-main");
     resultPanel.classList.add("hidden");
     mainPanel.classList.remove("hidden");
@@ -194,24 +196,54 @@
     boardPanel.classList.add("hidden");
     battleAdReserve.classList.add("hidden");
     stageAdReserve.classList.add("hidden");
+    const shell = document.querySelector(".garden-game");
+    for (const property of ["position", "inset", "left", "top", "width", "height", "min-height", "max-height", "transform", "transform-origin"]) shell?.style.removeProperty(property);
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   }
 
   function updateGardenFrame() {
     if (!document.body.classList.contains("garden-playing") && !document.body.classList.contains("garden-stage")) return;
+    const viewport = window.visualViewport;
+    const viewportWidth = viewport?.width || innerWidth;
+    const viewportHeight = viewport?.height || innerHeight;
+    const isPhoneBattle = document.body.classList.contains("garden-playing")
+      && (matchMedia("(pointer: coarse)").matches || viewportWidth <= 600 || viewportHeight <= 430);
+    document.body.classList.toggle("garden-expanded-canvas", isPhoneBattle);
+    const shell = document.querySelector(".garden-game");
+    shell?.classList.remove("weightplay-active-viewport");
+    if (isPhoneBattle) {
+      const width = Math.max(1, viewportWidth - 8);
+      const contentHeight = Math.max(1, viewportHeight - 64);
+      const root = document.documentElement.style;
+      root.setProperty("--garden-frame-scale", "1");
+      root.setProperty("--garden-frame-width", `${width}px`);
+      root.setProperty("--garden-frame-height", `${contentHeight}px`);
+      root.setProperty("--garden-frame-left", "4px");
+      root.setProperty("--garden-frame-top", "4px");
+      shell?.style.setProperty("position", "fixed", "important");
+      shell?.style.setProperty("inset", "auto", "important");
+      shell?.style.setProperty("left", "4px", "important");
+      shell?.style.setProperty("top", "4px", "important");
+      shell?.style.setProperty("width", `${width}px`, "important");
+      shell?.style.setProperty("height", `${contentHeight}px`, "important");
+      shell?.style.setProperty("min-height", "0", "important");
+      shell?.style.setProperty("max-height", "none", "important");
+      shell?.style.setProperty("transform", "none", "important");
+      shell?.style.setProperty("transform-origin", "top left", "important");
+      return;
+    }
     const logicalWidth = 390;
     const logicalHeight = 788;
     const reserveHeight = 56;
-    const scale = Math.max(0.1, Math.min((innerWidth - 8) / logicalWidth, (innerHeight - reserveHeight - 8) / logicalHeight));
+    const scale = Math.max(0.1, Math.min((viewportWidth - 8) / logicalWidth, (viewportHeight - reserveHeight - 8) / logicalHeight));
     const width = logicalWidth * scale;
     const contentHeight = logicalHeight * scale;
     const root = document.documentElement.style;
     root.setProperty("--garden-frame-scale", String(scale));
     root.setProperty("--garden-frame-width", `${width}px`);
     root.setProperty("--garden-frame-height", `${contentHeight}px`);
-    root.setProperty("--garden-frame-left", `${Math.max(0, (innerWidth - width) / 2)}px`);
-    root.setProperty("--garden-frame-top", `${Math.max(0, (innerHeight - contentHeight - reserveHeight) / 2)}px`);
-    const shell = document.querySelector(".garden-game");
+    root.setProperty("--garden-frame-left", `${Math.max(0, (viewportWidth - width) / 2)}px`);
+    root.setProperty("--garden-frame-top", `${Math.max(0, (viewportHeight - contentHeight - reserveHeight) / 2)}px`);
     shell?.style.setProperty("position", "fixed", "important");
     shell?.style.setProperty("inset", "auto", "important");
     shell?.style.setProperty("left", "var(--garden-frame-left)", "important");
@@ -226,6 +258,8 @@
 
   addEventListener("resize", updateGardenFrame, { passive: true });
   addEventListener("orientationchange", updateGardenFrame, { passive: true });
+  visualViewport?.addEventListener("resize", updateGardenFrame, { passive: true });
+  visualViewport?.addEventListener("scroll", updateGardenFrame, { passive: true });
 
   function renderLevelGrid() {
     levelGrid.innerHTML = "";
@@ -281,6 +315,9 @@
     busy = false;
     tiles = makeTiles(level.pairs, index);
     board.style.setProperty("--cols", level.cols);
+    const rowCount = Math.ceil((level.pairs * 2) / level.cols);
+    board.style.setProperty("--rows", rowCount);
+    board.style.setProperty("--board-aspect", String(level.cols / rowCount));
     document.body.classList.remove("garden-stage");
     document.body.classList.add("garden-playing");
     window.WeightPlayGame?.exitMobileGameMode?.();

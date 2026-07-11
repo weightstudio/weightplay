@@ -782,6 +782,374 @@ body.rescue-playing .battle-ad-reserve {
   margin: 0;
   box-sizing: border-box;
 }
+
+body.rescue-playing #hud {
+  grid-template-columns: 44px repeat(3, minmax(0, 1fr));
+  gap: 6px;
+}
+
+body.rescue-playing .battle-return {
+  position: static;
+  width: 44px;
+  min-width: 44px;
+  height: 44px;
+  min-height: 44px;
+  align-self: center;
+  font-size: 22px;
+  line-height: 26px;
+}
+
+/* Desktop/web keeps a bounded Canvas, but never offsets or scales its children twice. */
+html body.rescue-playing:not(.rescue-expanded-canvas) main.rescue-game {
+  position: fixed !important;
+  inset: auto !important;
+  left: var(--rescue-battle-left, 4px) !important;
+  top: var(--rescue-battle-top, 4px) !important;
+  display: grid !important;
+  grid-template-rows: 54px minmax(0, 1fr) !important;
+  gap: 5px !important;
+  width: var(--rescue-battle-width, 390px) !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  height: var(--rescue-battle-content-height, 788px) !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 6px !important;
+  overflow: hidden !important;
+  transform: none !important;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body.rescue-playing:not(.rescue-expanded-canvas) #hud,
+body.rescue-playing:not(.rescue-expanded-canvas) #playArea {
+  position: static;
+  left: auto;
+  top: auto;
+  width: 100%;
+  margin: 0;
+  transform: none;
+}
+
+body.rescue-playing:not(.rescue-expanded-canvas) #hud {
+  grid-row: 1;
+  display: grid;
+  grid-template-columns: 44px repeat(3, minmax(0, 1fr));
+  gap: 5px;
+  height: 54px;
+  min-height: 54px;
+}
+
+body.rescue-playing:not(.rescue-expanded-canvas) #hud div {
+  min-width: 0;
+  height: 54px;
+  min-height: 54px;
+  padding: 5px 6px;
+  overflow: hidden;
+}
+
+body.rescue-playing:not(.rescue-expanded-canvas) #hud span {
+  font-size: 10px;
+  line-height: 13px;
+}
+
+body.rescue-playing:not(.rescue-expanded-canvas) #hud strong {
+  font-size: 18px;
+  line-height: 20px;
+  white-space: nowrap;
+}
+
+body.rescue-playing:not(.rescue-expanded-canvas) #playArea {
+  grid-row: 2;
+  display: grid;
+  grid-template-rows: 72px minmax(0, 1fr) 42px;
+  gap: 6px;
+  height: auto;
+  min-height: 0;
+  padding: 0 2px 2px;
+  overflow: hidden;
+}
+
+body.rescue-playing:not(.rescue-expanded-canvas) .animal-panel {
+  grid-template-columns: 54px minmax(0, 1fr);
+  gap: 7px;
+  height: 72px;
+  min-height: 72px;
+  padding: 7px;
+  overflow: hidden;
+}
+
+body.rescue-playing:not(.rescue-expanded-canvas) .animal-avatar {
+  width: 50px;
+  height: 50px;
+}
+
+body.rescue-playing:not(.rescue-expanded-canvas) .animal-panel strong {
+  font-size: 16px;
+  line-height: 19px;
+}
+
+body.rescue-playing:not(.rescue-expanded-canvas) .animal-panel span {
+  max-height: 32px;
+  margin-top: 2px;
+  overflow: hidden;
+  font-size: 11px;
+  line-height: 15px;
+}
+
+body.rescue-playing:not(.rescue-expanded-canvas) .board {
+  width: min(100%, calc(var(--rescue-battle-content-height, 788px) - 197px));
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  aspect-ratio: 1;
+  align-self: center;
+  justify-self: center;
+}
+
+body.rescue-playing:not(.rescue-expanded-canvas) .action-row,
+body.rescue-playing:not(.rescue-expanded-canvas) .action-row button {
+  height: 42px;
+  min-height: 42px;
+}
+
+html body.rescue-playing:not(.rescue-expanded-canvas) > .battle-ad-reserve {
+  position: fixed !important;
+  z-index: 49;
+  left: var(--rescue-battle-left, 4px) !important;
+  top: calc(var(--rescue-battle-top, 4px) + var(--rescue-battle-content-height, 788px)) !important;
+  right: auto !important;
+  bottom: auto !important;
+  display: block;
+  width: var(--rescue-battle-width, 390px) !important;
+  height: 56px !important;
+  min-height: 56px !important;
+  margin: 0 !important;
+}
+
+/* Phone Battle uses one Expanded Canvas with a separate physical reserve. */
+html body.rescue-playing.rescue-expanded-canvas main.rescue-game,
+html body.wp-mobile-game-mode.rescue-playing.rescue-expanded-canvas main.rescue-game.weightplay-active-viewport {
+  position: fixed !important;
+  inset: auto !important;
+  left: var(--rescue-battle-left, 4px) !important;
+  top: var(--rescue-battle-top, 4px) !important;
+  display: grid !important;
+  grid-template-rows: 54px minmax(0, 1fr) !important;
+  gap: 5px !important;
+  width: var(--rescue-battle-width, calc(100vw - 8px)) !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  height: var(--rescue-battle-content-height, calc(100svh - 64px)) !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 6px !important;
+  overflow: hidden !important;
+  transform: none !important;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body.rescue-playing.rescue-expanded-canvas #hud,
+body.rescue-playing.rescue-expanded-canvas #playArea {
+  position: static;
+  left: auto;
+  top: auto;
+  width: 100%;
+  margin: 0;
+  transform: none;
+}
+
+body.rescue-playing.rescue-expanded-canvas #hud {
+  grid-row: 1;
+  display: grid;
+  grid-template-columns: 44px repeat(3, minmax(0, 1fr));
+  gap: 5px;
+  height: 54px;
+  min-height: 54px;
+}
+
+body.rescue-playing.rescue-expanded-canvas #hud div {
+  min-width: 0;
+  min-height: 54px;
+  height: 54px;
+  padding: 5px 6px;
+  overflow: hidden;
+}
+
+body.rescue-playing.rescue-expanded-canvas #hud span {
+  font-size: 10px;
+  line-height: 13px;
+}
+
+body.rescue-playing.rescue-expanded-canvas #hud strong {
+  font-size: 18px;
+  line-height: 20px;
+  white-space: nowrap;
+}
+
+body.rescue-playing.rescue-expanded-canvas #playArea {
+  grid-row: 2;
+  display: grid;
+  grid-template-rows: 72px minmax(0, 1fr) 42px;
+  gap: 6px;
+  height: auto;
+  min-height: 0;
+  padding: 0 2px 2px;
+  overflow: hidden;
+}
+
+body.rescue-playing.rescue-expanded-canvas .animal-panel {
+  grid-template-columns: 54px minmax(0, 1fr);
+  gap: 7px;
+  height: 72px;
+  min-height: 72px;
+  padding: 7px;
+  overflow: hidden;
+}
+
+body.rescue-playing.rescue-expanded-canvas .animal-avatar {
+  width: 50px;
+  height: 50px;
+}
+
+body.rescue-playing.rescue-expanded-canvas .animal-panel strong {
+  font-size: 16px;
+  line-height: 19px;
+}
+
+body.rescue-playing.rescue-expanded-canvas .animal-panel span {
+  max-height: 32px;
+  margin-top: 2px;
+  overflow: hidden;
+  font-size: 11px;
+  line-height: 15px;
+}
+
+body.rescue-playing.rescue-expanded-canvas .board {
+  width: min(100%, calc(var(--rescue-battle-content-height, 780px) - 197px));
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  aspect-ratio: 1;
+  align-self: center;
+  justify-self: center;
+}
+
+body.rescue-playing.rescue-expanded-canvas .action-row {
+  height: 42px;
+  min-height: 42px;
+  gap: 6px;
+}
+
+body.rescue-playing.rescue-expanded-canvas .action-row button {
+  height: 42px;
+  min-height: 42px;
+  font-size: 14px;
+  line-height: 18px;
+}
+
+html body.rescue-playing.rescue-expanded-canvas > .battle-ad-reserve {
+  position: fixed !important;
+  z-index: 49;
+  left: 4px !important;
+  right: 4px !important;
+  top: auto !important;
+  bottom: 4px !important;
+  display: block;
+  width: auto !important;
+  height: 56px !important;
+  min-height: 56px !important;
+  margin: 0 !important;
+}
+
+body.rescue-playing .weightplay-version-badge,
+body.rescue-playing .sound-toggle,
+body.rescue-playing .wp-tutorial-button {
+  display: none !important;
+}
+
+@media (max-height: 430px) {
+  html body.rescue-playing.rescue-expanded-canvas main.rescue-game,
+  html body.wp-mobile-game-mode.rescue-playing.rescue-expanded-canvas main.rescue-game.weightplay-active-viewport {
+    grid-template-rows: 48px minmax(0, 1fr) !important;
+    gap: 4px !important;
+    padding: 4px !important;
+  }
+
+  body.rescue-playing.rescue-expanded-canvas #hud {
+    grid-template-columns: 38px repeat(3, minmax(0, 1fr));
+    height: 48px;
+    min-height: 48px;
+    gap: 4px;
+  }
+
+  body.rescue-playing.rescue-expanded-canvas .battle-return {
+    width: 38px;
+    min-width: 38px;
+    height: 38px;
+    min-height: 38px;
+    font-size: 20px;
+  }
+
+  body.rescue-playing.rescue-expanded-canvas #hud div {
+    height: 48px;
+    min-height: 48px;
+    padding: 3px 5px;
+  }
+
+  body.rescue-playing.rescue-expanded-canvas #hud span {
+    font-size: 9px;
+    line-height: 11px;
+  }
+
+  body.rescue-playing.rescue-expanded-canvas #hud strong {
+    font-size: 16px;
+    line-height: 18px;
+  }
+
+  body.rescue-playing.rescue-expanded-canvas #playArea {
+    grid-template-rows: 60px minmax(0, 1fr) 36px;
+    gap: 4px;
+    padding: 0 2px 2px;
+  }
+
+  body.rescue-playing.rescue-expanded-canvas .animal-panel {
+    grid-template-columns: 44px minmax(0, 1fr);
+    height: 60px;
+    min-height: 60px;
+    padding: 5px;
+  }
+
+  body.rescue-playing.rescue-expanded-canvas .animal-avatar {
+    width: 40px;
+    height: 40px;
+  }
+
+  body.rescue-playing.rescue-expanded-canvas .animal-panel strong {
+    font-size: 14px;
+    line-height: 17px;
+  }
+
+  body.rescue-playing.rescue-expanded-canvas .animal-panel span {
+    max-height: 28px;
+    font-size: 10px;
+    line-height: 13px;
+  }
+
+  body.rescue-playing.rescue-expanded-canvas .board {
+    width: min(100%, calc(var(--rescue-battle-content-height, 320px) - 166px));
+  }
+
+  body.rescue-playing.rescue-expanded-canvas .action-row,
+  body.rescue-playing.rescue-expanded-canvas .action-row button {
+    height: 36px;
+    min-height: 36px;
+    font-size: 13px;
+  }
+}
 html,
 body,
 button,

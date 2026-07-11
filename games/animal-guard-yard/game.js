@@ -329,6 +329,29 @@
   let lastDangerAt = 0;
   let currentSpawnDelay = 1;
   let nextSpawnPlan = null;
+  let viewportWidth = 0;
+  let viewportHeight = 0;
+
+  function updateGuardYardViewport() {
+    const viewport = window.visualViewport;
+    const visualWidth = Math.round(viewport?.width || 0);
+    const visualHeight = Math.round(viewport?.height || 0);
+    const visualMatchesLayout = visualWidth > 0
+      && visualHeight > 0
+      && Math.abs(visualWidth - window.innerWidth) <= 2
+      && visualHeight <= window.innerHeight + 2;
+    const width = visualMatchesLayout ? visualWidth : window.innerWidth;
+    const height = visualMatchesLayout ? visualHeight : window.innerHeight;
+    if (width === viewportWidth && height === viewportHeight) return;
+    viewportWidth = width;
+    viewportHeight = height;
+    document.documentElement.style.setProperty("--guard-yard-vw", `${width}px`);
+    document.documentElement.style.setProperty("--guard-yard-vh", `${height}px`);
+  }
+
+  updateGuardYardViewport();
+  window.addEventListener("resize", updateGuardYardViewport, { passive: true });
+  window.visualViewport?.addEventListener("resize", updateGuardYardViewport, { passive: true });
 
   function t(key, data) {
     const parts = key.split(".");
@@ -864,6 +887,7 @@
   function showMenu() {
     running = false;
     cancelAnimationFrame(raf);
+    window.WeightPlayGame?.exitMobileGameMode?.();
     document.documentElement.classList.remove("guard-yard-playing");
     document.body.classList.remove("guard-yard-playing");
     document.documentElement.classList.add("guard-yard-stage");
@@ -889,6 +913,7 @@
   function showMain() {
     running = false;
     cancelAnimationFrame(raf);
+    window.WeightPlayGame?.exitMobileGameMode?.();
     document.documentElement.classList.remove("guard-yard-playing", "guard-yard-stage");
     document.body.classList.remove("guard-yard-playing", "guard-yard-stage");
     nodes.mainPanel.classList.remove("hidden");
@@ -898,6 +923,7 @@
   }
 
   function startStage(index) {
+    updateGuardYardViewport();
     currentStage = index;
     const stage = stages[currentStage];
     running = true;
@@ -928,7 +954,7 @@
     updateHud();
     track("game_start", { level: index + 1 });
     playSound("start");
-    window.WeightPlayGame?.enterMobileGameMode?.();
+    window.WeightPlayGame?.exitMobileGameMode?.();
     raf = requestAnimationFrame(tick);
   }
 
@@ -1104,6 +1130,7 @@
 
   function tick(now) {
     if (!running) return;
+    updateGuardYardViewport();
     const dt = Math.min(48, now - lastTick);
     lastTick = now;
     nextSpawnAt -= dt;

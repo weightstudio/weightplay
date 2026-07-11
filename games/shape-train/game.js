@@ -219,14 +219,15 @@
 
   function updateShapeFrame() {
     if (!document.body.classList.contains("shape-playing")) return;
-    const scale = Math.min(Math.max(1, innerWidth - 8) / 390, Math.max(1, innerHeight - 64) / 788);
-    const width = 390 * scale;
-    const height = 788 * scale;
-    document.documentElement.style.setProperty("--shape-frame-scale", String(scale));
-    document.documentElement.style.setProperty("--shape-frame-left", `${(innerWidth - width) / 2}px`);
-    document.documentElement.style.setProperty("--shape-frame-top", `${(innerHeight - 56 - height) / 2}px`);
-    document.documentElement.style.setProperty("--shape-frame-width", `${width}px`);
-    document.documentElement.style.setProperty("--shape-frame-height", `${height}px`);
+    const viewport = window.visualViewport;
+    const visualWidth = Math.round(viewport?.width || 0);
+    const visualHeight = Math.round(viewport?.height || 0);
+    const useVisual = visualWidth > 0
+      && visualHeight > 0
+      && Math.abs(visualWidth - innerWidth) <= 2
+      && visualHeight <= innerHeight + 2;
+    document.documentElement.style.setProperty("--shape-vw", `${useVisual ? visualWidth : innerWidth}px`);
+    document.documentElement.style.setProperty("--shape-vh", `${useVisual ? visualHeight : innerHeight}px`);
   }
 
   function exitSharedPlayViewport() {
@@ -238,6 +239,7 @@
 
   window.addEventListener("resize", updateShapeFrame);
   window.addEventListener("orientationchange", updateShapeFrame);
+  window.visualViewport?.addEventListener("resize", updateShapeFrame, { passive: true });
 
   function showMenu() {
     nodes.menuPanel.classList.remove("hidden");
