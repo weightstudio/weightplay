@@ -24,6 +24,7 @@
   const feedbackText = document.querySelector("#feedbackText");
   const comboContainer = document.querySelector("#comboContainer");
   const comboText = document.querySelector("#comboText");
+  const stageAdReserve = document.querySelector("#stageAdReserve");
   const battleAdReserve = document.querySelector("#battleAdReserve");
   
   const resultPanel = document.querySelector("#resultPanel");
@@ -416,6 +417,32 @@
     }, 40);
   }
 
+  function updateMemoryFrame() {
+    if (!document.body.classList.contains("memory-stage") && !document.body.classList.contains("memory-playing")) return;
+    const availableWidth = Math.max(1, window.innerWidth - 8);
+    const availableHeight = Math.max(1, window.innerHeight - 56 - 8);
+    const scale = Math.min(availableWidth / 390, availableHeight / 788);
+    const frameWidth = 390 * scale;
+    const frameHeight = 788 * scale;
+    const frameLeft = (window.innerWidth - frameWidth) / 2;
+    const frameTop = (window.innerHeight - 56 - frameHeight) / 2;
+    document.documentElement.style.setProperty("--memory-frame-scale", String(scale));
+    document.documentElement.style.setProperty("--memory-frame-left", `${frameLeft}px`);
+    document.documentElement.style.setProperty("--memory-frame-top", `${frameTop}px`);
+    document.documentElement.style.setProperty("--memory-frame-width", `${frameWidth}px`);
+    document.documentElement.style.setProperty("--memory-frame-height", `${frameHeight}px`);
+  }
+
+  function exitSharedPlayViewport() {
+    window.WeightPlayGame?.exitMobileGameMode?.();
+    document.body.classList.remove("weightplay-active-viewport");
+    if (document.fullscreenElement) document.exitFullscreen?.().catch(() => {});
+    if (document.webkitFullscreenElement) document.webkitExitFullscreen?.();
+  }
+
+  window.addEventListener("resize", updateMemoryFrame);
+  window.addEventListener("orientationchange", updateMemoryFrame);
+
   function showMain() {
     document.body.classList.remove("memory-stage", "memory-playing");
     document.body.classList.add("memory-main");
@@ -426,6 +453,7 @@
     gameBoardPanel.classList.add("hidden");
     gameFeedback.classList.add("hidden");
     battleAdReserve.classList.add("hidden");
+    stageAdReserve.classList.add("hidden");
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   }
 
@@ -440,9 +468,16 @@
     gameBoardPanel.classList.add("hidden");
     gameFeedback.classList.add("hidden");
     battleAdReserve.classList.add("hidden");
+    stageAdReserve.classList.remove("hidden");
     stageSelectPanel.classList.remove("hidden");
-    
+
+    exitSharedPlayViewport();
     renderStageGrid();
+    updateMemoryFrame();
+    requestAnimationFrame(() => {
+      exitSharedPlayViewport();
+      updateMemoryFrame();
+    });
   }
 
   function renderStageGrid() {
@@ -497,6 +532,7 @@
     state.isLocked = false;
     document.body.classList.remove("memory-stage");
     document.body.classList.add("memory-playing");
+    stageAdReserve.classList.add("hidden");
 
     // Analytics event
     window.WonderAnalytics?.track("game_start", {
@@ -511,12 +547,15 @@
     gameBoardPanel.classList.remove("hidden");
     gameFeedback.classList.remove("hidden");
     battleAdReserve.classList.remove("hidden");
-    
+
+    exitSharedPlayViewport();
+    updateMemoryFrame();
     feedbackText.textContent = t("tipTap");
     comboContainer.classList.add("hidden");
     
     updateHUD();
     generateGameBoard(stage);
+    requestAnimationFrame(updateMemoryFrame);
   }
 
   function updateHUD() {

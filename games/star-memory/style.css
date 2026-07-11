@@ -778,6 +778,112 @@ body.memory-playing .home-link img {
   display: none !important;
 }
 
+/* Fixed-ratio Stage/Battle shell. The 56px ad band remains physical, not scaled. */
+body.memory-stage,
+body.memory-playing,
+body.has-game-page-info.memory-stage,
+body.has-game-page-info.memory-playing {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow: hidden !important;
+  touch-action: none;
+}
+
+body.memory-stage .memory-game,
+body.memory-playing .memory-game,
+body.memory-stage.weightplay-active-viewport .memory-game,
+body.memory-playing.weightplay-active-viewport .memory-game {
+  position: fixed !important;
+  inset: auto !important;
+  left: var(--memory-frame-left, 4px) !important;
+  top: var(--memory-frame-top, 4px) !important;
+  width: 390px !important;
+  min-width: 390px !important;
+  max-width: 390px !important;
+  height: 788px !important;
+  min-height: 788px !important;
+  max-height: 788px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  transform: scale(var(--memory-frame-scale, 1)) !important;
+  transform-origin: top left !important;
+  overflow: hidden !important;
+}
+
+body.memory-stage .topbar,
+body.memory-playing .topbar {
+  flex: 0 0 56px;
+  min-height: 56px;
+  padding: 8px 16px;
+}
+
+body.memory-stage .stage-select {
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: 16px;
+  overflow: hidden;
+}
+
+body.memory-stage .stage-grid {
+  display: flex;
+  flex: 1 1 auto;
+  width: 100%;
+  max-width: none;
+  min-height: 0;
+  gap: 12px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0 47px 8px;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+body.memory-stage .stage-card {
+  flex: 0 0 264px;
+  min-height: 0;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+}
+
+body.memory-playing .game-hud {
+  flex: 0 0 70px;
+  min-height: 70px;
+}
+
+body.memory-playing .game-board-panel {
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: 12px 16px;
+}
+
+body.memory-playing .card-grid {
+  max-height: 590px;
+}
+
+body.memory-playing .feedback {
+  flex: 0 0 66px;
+  min-height: 66px;
+}
+
+body.memory-stage .stage-ad-reserve,
+body.memory-playing .battle-ad-reserve {
+  display: block;
+  position: fixed;
+  z-index: 20;
+  left: var(--memory-frame-left, 4px);
+  top: calc(var(--memory-frame-top, 4px) + var(--memory-frame-height, 780px));
+  width: var(--memory-frame-width, calc(100vw - 8px));
+  height: 56px;
+  min-height: 56px;
+  margin: 0;
+  border-top: 1px dashed rgba(148, 163, 184, 0.3);
+  background: linear-gradient(180deg, rgba(30, 41, 59, 0.96), rgba(2, 6, 23, 0.96));
+}
+
 /* Keyframe Animations */
 @keyframes fadeIn {
   from { opacity: 0; }

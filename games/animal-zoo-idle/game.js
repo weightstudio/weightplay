@@ -760,9 +760,11 @@
     const card = nodes.habitatGrid.querySelector(".zoo-stage-card");
     if (!card) {
       nodes.habitatGrid.appendChild(renderPark());
+      scheduleZooAdReserveSync();
       return;
     }
     updatePark(card);
+    scheduleZooAdReserveSync();
   }
 
   function renderPark() {
@@ -1536,6 +1538,21 @@
     nodes.gamePanel.style.setProperty("height", `${logicalHeight}px`, "important");
     nodes.gamePanel.style.setProperty("max-height", "none", "important");
     nodes.gamePanel.style.setProperty("min-height", `${logicalHeight}px`, "important");
+    scheduleZooAdReserveSync();
+  }
+
+  let zooAdReserveFrame = 0;
+  function scheduleZooAdReserveSync() {
+    window.cancelAnimationFrame(zooAdReserveFrame);
+    zooAdReserveFrame = window.requestAnimationFrame(() => {
+      if (!document.body.classList.contains("zoo-playing")) return;
+      const card = nodes.habitatGrid.querySelector(".zoo-stage-card");
+      if (!card) return;
+      const viewportHeight = window.visualViewport?.height || window.innerHeight;
+      const cardBottom = card.getBoundingClientRect().bottom;
+      const reserveTop = Math.max(0, Math.min(cardBottom, viewportHeight - 56));
+      document.documentElement.style.setProperty("--zoo-battle-reserve-top", `${reserveTop}px`);
+    });
   }
 
   function showMenu() {
