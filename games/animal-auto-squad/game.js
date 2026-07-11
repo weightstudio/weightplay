@@ -24,6 +24,8 @@
       freeUnit: "Starter",
       rosterHint: "Unlocked animals appear in your expedition backpack. Permanent levels are saved locally.",
       startExpedition: "Start Expedition",
+      chooseExpedition: "Choose Expedition",
+      stageSetup: "Pick an unlocked forest stage, then prepare your squad for the expedition.",
       yourSquadLabel: "Active Squad (Left: Frontline | Right: Backline)",
       benchLabel: "Storage Bench",
       shopLabel: "Character Backpack",
@@ -340,6 +342,10 @@
     loadingFill: $("loadingFill"),
     loadingText: $("loadingText"),
     menuPanel: $("menuPanel"),
+    stagePanel: $("stagePanel"),
+    showStageBtn: $("showStageBtn"),
+    stageBackBtn: $("stageBackBtn"),
+    stageSetupText: $("stageSetupText"),
     bestRoundsText: $("bestRoundsText"),
     clearedRunsText: $("clearedRunsText"),
     teamLevelText: $("teamLevelText"),
@@ -884,8 +890,10 @@
     pointerDrag = null;
     state.activeRun = false;
     document.body.classList.remove("squad-active");
+    document.body.classList.remove("squad-stage-select");
     save = loadSave();
     nodes.menuPanel.classList.remove("is-hidden");
+    nodes.stagePanel.classList.add("is-hidden");
     nodes.gamePanel.classList.add("is-hidden");
     nodes.resultPanel.classList.add("is-hidden");
     nodes.combatSummary?.classList.add("is-hidden");
@@ -901,6 +909,18 @@
     renderStageSelector();
     renderTrainingRoster();
     updatePageMeta();
+  }
+
+  function showStageSelection() {
+    clearTimeout(stageSnapTimer);
+    document.body.classList.remove("squad-active");
+    document.body.classList.add("squad-stage-select");
+    nodes.menuPanel.classList.add("is-hidden");
+    nodes.stagePanel.classList.remove("is-hidden");
+    nodes.gamePanel.classList.add("is-hidden");
+    nodes.resultPanel.classList.add("is-hidden");
+    save = loadSave();
+    renderStageSelector();
   }
 
   function stageLabel(stage) {
@@ -922,6 +942,7 @@
     save = normalizeSave(save);
     nodes.stageSelectTitle.textContent = t("chooseStage");
     nodes.stageProgressText.textContent = t("stageProgress", { unlocked: save.unlockedStage, total: STAGE_COUNT });
+    nodes.stageSetupText.textContent = t("stageSetup");
     nodes.stageRail.innerHTML = "";
 
     for (let stage = 1; stage <= STAGE_COUNT; stage++) {
@@ -1118,6 +1139,7 @@
     // Menu elements
     $("menuHeadingText").textContent = t("menuTitle");
     $("menuSubText").textContent = t("menuHint");
+    nodes.showStageBtn.textContent = t("chooseExpedition");
     nodes.startBtn.textContent = t("startStage", { stage: normalizeSave(save).selectedStage });
     $("bestRoundsText").previousElementSibling.textContent = t("bestExpedition");
     $("clearedRunsText").previousElementSibling.textContent = t("expeditionsCleared");
@@ -1163,7 +1185,7 @@
     nodes.resultMenuBtn.textContent = t("backToMenu");
 
     renderCosmeticSection();
-    if (!nodes.menuPanel.classList.contains("is-hidden")) renderStageSelector(false);
+    if (!nodes.stagePanel.classList.contains("is-hidden")) renderStageSelector(false);
     renderTrainingRoster();
   }
 
@@ -1176,7 +1198,9 @@
     state.backpack = createBackpackCards();
     state.activeRun = true;
     document.body.classList.add("squad-active");
+    document.body.classList.remove("squad-stage-select");
     nodes.menuPanel.classList.add("is-hidden");
+    nodes.stagePanel.classList.add("is-hidden");
     nodes.gamePanel.classList.remove("is-hidden");
     nodes.prepPhaseArea.classList.remove("is-hidden");
     nodes.combatArea.classList.add("is-hidden");
@@ -2814,12 +2838,14 @@
       initAudio();
       playSynth("sell");
       state.activeRun = false;
-      renderMenu();
+      showStageSelection();
     }
   }
 
   // Event Listeners Registration
   function setupEvents() {
+    nodes.showStageBtn.addEventListener("click", showStageSelection);
+    nodes.stageBackBtn.addEventListener("click", renderMenu);
     nodes.startBtn.addEventListener("click", startExpedition);
     nodes.rerollShopBtn.addEventListener("click", rerollShop);
     nodes.startBattleBtn.addEventListener("click", startBattle);

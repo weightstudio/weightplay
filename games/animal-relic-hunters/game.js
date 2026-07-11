@@ -8,7 +8,12 @@
   const nodes = {
     localeSelect: $("localeSelect"),
     menuPanel: $("menuPanel"),
+    stagePanel: $("stagePanel"),
+    stageConfigMount: $("stageConfigMount"),
+    showStageBtn: $("showStageBtn"),
+    stageBackBtn: $("stageBackBtn"),
     gamePanel: $("gamePanel"),
+    backToStageBtn: $("backToStageBtn"),
     draftPanel: $("draftPanel"),
     lootPanel: $("lootPanel"),
     resultPanel: $("resultPanel"),
@@ -732,6 +737,33 @@
     });
   }
 
+  function showMain() {
+    state.gameActive = false;
+    cancelAnimationFrame(state.gameLoopId);
+    document.body.classList.remove("relic-playing", "relic-stage-select");
+    nodes.gamePanel.classList.add("hidden");
+    nodes.stagePanel.classList.add("hidden");
+    nodes.resultPanel.classList.add("hidden");
+    nodes.menuPanel.classList.remove("hidden");
+    updateDiamondShopUI();
+    renderTrainingPanel();
+    renderEquippedGear();
+  }
+
+  function showStage() {
+    state.gameActive = false;
+    cancelAnimationFrame(state.gameLoopId);
+    document.body.classList.remove("relic-playing");
+    document.body.classList.add("relic-stage-select");
+    nodes.menuPanel.classList.add("hidden");
+    nodes.resultPanel.classList.add("hidden");
+    nodes.gamePanel.classList.add("hidden");
+    nodes.stagePanel.classList.remove("hidden");
+    updateDiamondShopUI();
+    renderTrainingPanel();
+    renderEquippedGear();
+  }
+
   function translateUI() {
     const locale = getLocale();
     document.documentElement.lang = locale;
@@ -1040,8 +1072,11 @@
     spawnRoomEntities();
 
     nodes.menuPanel.classList.add("hidden");
+    nodes.stagePanel.classList.add("hidden");
     nodes.resultPanel.classList.add("hidden");
     nodes.gamePanel.classList.remove("hidden");
+    document.body.classList.remove("relic-stage-select");
+    document.body.classList.add("relic-playing");
     focusGamePanel();
 
     renderStatsPanel();
@@ -1909,11 +1944,22 @@
   // Init handler
   function init() {
     loadLocalState();
+    nodes.stageConfigMount.append(document.querySelector(".menu-shop"), nodes.startBtn);
     updateDiamondShopUI();
     translateUI();
     setupInputs();
 
     // Event buttons
+    nodes.showStageBtn.addEventListener("click", () => {
+      window.WonderSound?.play("click");
+      showStage();
+    });
+
+    nodes.stageBackBtn.addEventListener("click", () => {
+      window.WonderSound?.play("click");
+      showMain();
+    });
+
     nodes.startBtn.addEventListener("click", () => {
       window.WonderSound?.play("click");
       startRun();
@@ -1924,22 +1970,14 @@
       startRun();
     });
 
-    nodes.menuBtn.addEventListener("click", () => {
+    nodes.backToStageBtn.addEventListener("click", () => {
       window.WonderSound?.play("click");
-      state.gameActive = false;
-      cancelAnimationFrame(state.gameLoopId);
-      nodes.gamePanel.classList.add("hidden");
-      nodes.menuPanel.classList.remove("hidden");
-      updateDiamondShopUI();
-      renderTrainingPanel();
+      showStage();
     });
 
     nodes.resultMenuBtn.addEventListener("click", () => {
       window.WonderSound?.play("click");
-      nodes.resultPanel.classList.add("hidden");
-      nodes.menuPanel.classList.remove("hidden");
-      updateDiamondShopUI();
-      renderTrainingPanel();
+      showMain();
     });
 
     nodes.localeSelect.addEventListener("change", (e) => {

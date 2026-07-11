@@ -64,7 +64,7 @@
   <body>
     <main class="rescue-game" data-play-viewport>
       <header class="topbar">
-        <a id="homeLink" class="home-link" href="/" aria-label="Back to lobby">&larr;</a>
+        <a id="homeLink" class="home-link" href="/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
         <div>
           <p>WeightPlay</p>
           <h1 id="titleText">Animal Rescue Trail</h1>
@@ -84,12 +84,21 @@
         <div><span id="fruitLabel">Fruit</span><strong id="fruitText">0 / 2</strong></div>
       </section>
 
-      <section id="stageSelect" class="stage-select">
-        <strong id="stageSelectTitle">Choose Trail</strong>
-        <div id="stageGrid" class="stage-grid"></div>
+      <section id="mainPanel" class="main-panel">
+        <img class="main-cover" src="../../assets/animal-rescue-cover.webp" alt="" />
+        <div class="main-copy"><strong id="mainTitle">Animal Rescue Trail</strong><span id="mainIntro">Guide animal friends safely home across each trail.</span></div>
+        <button id="showStageBtn" class="main-start" type="button">Choose Trail</button>
       </section>
 
+      <section id="stageSelect" class="stage-select hidden">
+        <div class="stage-shell-head"><button id="stageBackBtn" class="stage-return" type="button" aria-label="Back">&larr;</button><strong id="stageSelectTitle">Choose Trail</strong></div>
+        <span id="stageSetupText" class="stage-setup-text">Choose an unlocked trail and help the next animal home.</span>
+        <div id="stageGrid" class="stage-grid"></div>
+      </section>
+      <div id="stageAdReserve" class="stage-ad-reserve hidden" aria-hidden="true"></div>
+
       <section id="playArea" class="play-area hidden">
+        <button id="battleBackBtn" class="battle-return" type="button" aria-label="Back to trails">&larr;</button>
         <div class="animal-panel">
           <div id="animalAvatar" class="animal-avatar"></div>
           <div>
@@ -103,6 +112,7 @@
           <button id="resetBtn" type="button">Reset</button>
         </div>
       </section>
+      <div class="battle-ad-reserve" aria-hidden="true"></div>
 
       <section id="resultPanel" class="result-panel hidden">
         <div class="result-card">

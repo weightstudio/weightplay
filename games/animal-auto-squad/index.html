@@ -51,7 +51,7 @@
   <body data-tutorial-auto-show="false">
     <main class="squad-app">
       <header class="topbar">
-        <a id="backToLobbyBtn" class="back-btn" href="/" aria-label="Back to lobby">&larr;</a>
+        <a id="backToLobbyBtn" class="back-btn" href="/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
         <div class="brand">
           <span>WeightPlay</span>
           <h1 id="mainGameTitle" data-ui="title">Animal Auto Squad</h1>
@@ -80,14 +80,7 @@
         <div class="menu-copy">
           <strong id="menuHeadingText" data-ui="menuTitle">Draft and position your animal squad!</strong>
           <span id="menuSubText" data-ui="menuHint">Build your permanent squad and clear balanced five-wave forest stages.</span>
-          <section class="stage-select" aria-labelledby="stageSelectTitle">
-            <div class="stage-select-heading">
-              <strong id="stageSelectTitle">Choose Stage</strong>
-              <span id="stageProgressText">1 / 6</span>
-            </div>
-            <div id="stageRail" class="stage-rail" aria-label="Stage selection"></div>
-          </section>
-          <button id="startBtn" class="primary-btn" type="button" data-ui="startExpedition">Start Expedition</button>
+          <button id="showStageBtn" class="primary-btn" type="button">Choose Expedition</button>
           
           <!-- Cosmetic and Stats Grid -->
           <div class="profile-grid">
@@ -115,6 +108,20 @@
             <div id="trainingRoster" class="training-roster"></div>
           </div>
         </div>
+      </section>
+
+      <section id="stagePanel" class="panel stage-panel is-hidden" aria-labelledby="stageSelectTitle">
+        <div class="stage-panel-head">
+          <button id="stageBackBtn" class="stage-back-btn" type="button" aria-label="Back">&larr;</button>
+          <div>
+            <strong id="stageSelectTitle">Choose Stage</strong>
+            <span id="stageProgressText">1 / 6</span>
+          </div>
+        </div>
+        <p id="stageSetupText" class="stage-setup-text">Pick an unlocked forest stage, then prepare your squad for the expedition.</p>
+        <div id="stageRail" class="stage-rail" aria-label="Stage selection"></div>
+        <button id="startBtn" class="primary-btn" type="button" data-ui="startExpedition">Start Expedition</button>
+        <div class="stage-ad-reserve" aria-hidden="true"></div>
       </section>
 
       <!-- Active Play Viewport Container -->

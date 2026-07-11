@@ -48,7 +48,10 @@ select {
 
 .back-btn {
   display: grid;
+  grid-template-columns: 16px 28px;
   place-items: center;
+  place-content: center;
+  gap: 4px;
   width: 54px;
   height: 54px;
   border-radius: 16px;
@@ -61,6 +64,12 @@ select {
   transition: transform 0.1s ease, box-shadow 0.1s ease;
   border: 0;
   cursor: pointer;
+}
+
+.back-btn img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
 }
 
 .back-btn:active {
@@ -235,6 +244,72 @@ select {
 .stage-card:disabled {
   cursor: not-allowed;
   opacity: 0.48;
+}
+
+.stage-panel {
+  display: grid;
+  grid-template-rows: 54px auto minmax(0, 1fr) 52px 56px;
+  gap: 12px;
+  min-height: min(720px, calc(100svh - 110px));
+  padding: 16px;
+}
+
+.stage-panel-head {
+  display: grid;
+  grid-template-columns: 46px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+}
+
+.stage-panel-head > div {
+  display: grid;
+  gap: 2px;
+}
+
+.stage-panel-head strong {
+  font-size: 1.2rem;
+}
+
+.stage-panel-head span,
+.stage-setup-text {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.84rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.stage-back-btn {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.08);
+  font-size: 1.5rem;
+  font-weight: 900;
+}
+
+.stage-panel .stage-rail {
+  align-self: center;
+  grid-auto-columns: minmax(220px, 70%);
+  height: 100%;
+  min-height: 0;
+  padding-inline: max(38px, calc((100% - 264px) / 2));
+}
+
+.stage-panel .stage-card {
+  min-height: 176px;
+}
+
+.stage-ad-reserve {
+  min-height: 56px;
+  border-top: 1px solid rgba(140, 240, 195, 0.18);
+  background: rgba(2, 9, 7, 0.42);
+  pointer-events: none;
 }
 
 .profile-grid {
@@ -1199,6 +1274,46 @@ body.squad-active .battle-ad-reserve {
 
 /* Screen Scaling Adjustment for small devices */
 @media (max-width: 640px) {
+  html:has(body.squad-stage-select),
+  body.squad-stage-select {
+    overflow: hidden;
+    touch-action: pan-x;
+  }
+
+  body.squad-stage-select .topbar,
+  body.squad-stage-select .game-page-info,
+  body.squad-stage-select .wp-tutorial-button {
+    display: none !important;
+  }
+
+  body.squad-stage-select .squad-app {
+    width: 100vw;
+    height: var(--wp-mobile-vh, 100dvh);
+    min-height: 0;
+    padding: 6px 8px;
+    overflow: hidden;
+  }
+
+  body.squad-stage-select .stage-panel {
+    width: calc(100vw - 16px);
+    height: calc(var(--wp-mobile-vh, 100dvh) - 12px);
+    min-height: 0;
+    margin: 0;
+    grid-template-rows: 46px auto minmax(0, 1fr) 50px 56px;
+    gap: 8px;
+    padding: 8px;
+    border-radius: 14px;
+  }
+
+  body.squad-stage-select .stage-panel .stage-rail {
+    grid-auto-columns: 264px;
+    padding-inline: max(32px, calc((100% - 264px) / 2));
+  }
+
+  body.squad-stage-select .stage-panel .stage-card {
+    min-height: 190px;
+  }
+
   body.squad-active {
     position: fixed;
     inset: 0;

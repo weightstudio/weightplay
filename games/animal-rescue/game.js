@@ -10,6 +10,13 @@ const stageText = document.querySelector("#stageText");
 const moveText = document.querySelector("#moveText");
 const fruitText = document.querySelector("#fruitText");
 const stageSelect = document.querySelector("#stageSelect");
+const mainPanel = document.querySelector("#mainPanel");
+const mainTitle = document.querySelector("#mainTitle");
+const mainIntro = document.querySelector("#mainIntro");
+const showStageBtn = document.querySelector("#showStageBtn");
+const stageBackBtn = document.querySelector("#stageBackBtn");
+const stageAdReserve = document.querySelector("#stageAdReserve");
+const battleBackBtn = document.querySelector("#battleBackBtn");
 const stageSelectTitle = document.querySelector("#stageSelectTitle");
 const stageGrid = document.querySelector("#stageGrid");
 const playArea = document.querySelector("#playArea");
@@ -232,6 +239,9 @@ function renderStaticText() {
   localeSelect.value = locale();
   languageLabel.textContent = t("language");
   titleText.textContent = t("title");
+  mainTitle.textContent = t("title");
+  mainIntro.textContent = t("hint");
+  showStageBtn.textContent = t("chooseTrail");
   stageLabel.textContent = t("stage");
   moveLabel.textContent = t("moves");
   fruitLabel.textContent = t("fruit");
@@ -313,9 +323,12 @@ function startLevel(index) {
   activeIndex = index;
   state = makeState(level);
   stageSelect.classList.add("hidden");
+  mainPanel.classList.add("hidden");
+  stageAdReserve.classList.add("hidden");
   resultPanel.classList.add("hidden");
   playArea.classList.remove("hidden");
   hud.classList.remove("hidden");
+  document.body.classList.remove("rescue-stage-select");
   document.body.classList.add("rescue-playing");
   renderAvatar(level.animal);
   animalName.textContent = t(level.animal);
@@ -327,12 +340,26 @@ function startLevel(index) {
 }
 
 function showStageSelect() {
+  mainPanel.classList.add("hidden");
   playArea.classList.add("hidden");
   hud.classList.add("hidden");
   resultPanel.classList.add("hidden");
   stageSelect.classList.remove("hidden");
+  stageAdReserve.classList.remove("hidden");
   document.body.classList.remove("rescue-playing");
+  document.body.classList.add("rescue-stage-select");
   renderStageSelect();
+}
+
+function showMain() {
+  playArea.classList.add("hidden");
+  hud.classList.add("hidden");
+  resultPanel.classList.add("hidden");
+  stageSelect.classList.add("hidden");
+  stageAdReserve.classList.add("hidden");
+  mainPanel.classList.remove("hidden");
+  document.body.classList.remove("rescue-playing", "rescue-stage-select");
+  renderStaticText();
 }
 
 function showLocked() {
@@ -543,12 +570,9 @@ localeSelect.addEventListener("input", () => {
   renderStaticText();
 });
 window.addEventListener("wonder:locale-change", renderStaticText);
-homeLink.addEventListener("click", (event) => {
-  if (!stageSelect.classList.contains("hidden")) return;
-  event.preventDefault();
-  window.WonderSound?.play("click");
-  showStageSelect();
-});
+showStageBtn.addEventListener("click", showStageSelect);
+stageBackBtn.addEventListener("click", showMain);
+battleBackBtn.addEventListener("click", showStageSelect);
 stageGrid.addEventListener("click", (event) => {
   const card = event.target.closest("[data-stage]");
   if (!card) return;
@@ -575,5 +599,5 @@ retryBtn.addEventListener("click", () => {
 trailsBtn.addEventListener("click", showStageSelect);
 
 renderStaticText();
-showStageSelect();
+showMain();
 preload();
