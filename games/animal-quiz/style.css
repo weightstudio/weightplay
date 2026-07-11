@@ -5,6 +5,74 @@
   color: #233516;
 }
 
+#battleAdReserve {
+  display: none;
+}
+
+html:has(body.quiz-playing),
+html:has(body.quiz-stage-select),
+body.quiz-playing,
+body.quiz-stage-select {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  min-height: 0;
+  overflow: hidden !important;
+  overscroll-behavior: none;
+}
+
+body.quiz-playing .animal-game,
+body.quiz-stage-select .animal-game {
+  position: fixed;
+  z-index: 50;
+  left: var(--quiz-frame-left, 4px);
+  top: var(--quiz-frame-top, 4px);
+  width: 390px;
+  max-width: none;
+  height: 788px;
+  min-height: 788px;
+  max-height: none;
+  margin: 0;
+  transform: scale(var(--quiz-frame-scale, 1));
+  transform-origin: top left;
+  overflow: hidden;
+}
+
+body.quiz-playing .animal-game {
+  grid-template-rows: 38px minmax(0, 1fr) 120px 34px;
+  padding: 8px;
+  gap: 6px;
+}
+
+body.quiz-stage-select .animal-game {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr);
+  padding: 8px;
+  gap: 0;
+}
+
+body.quiz-stage-select .stage-select {
+  width: 100%;
+  height: 100%;
+}
+
+body.quiz-playing #battleAdReserve,
+body.quiz-stage-select #stageAdReserve {
+  position: fixed;
+  z-index: 49;
+  left: var(--quiz-frame-left, 4px);
+  top: calc(var(--quiz-frame-top, 4px) + var(--quiz-frame-height, 788px));
+  display: block;
+  width: var(--quiz-frame-width, 390px);
+  height: 56px;
+  min-height: 56px;
+  margin: 0;
+  border-top: 1px solid rgba(56, 107, 45, 0.35);
+  background: rgba(255, 251, 234, 0.3);
+  pointer-events: none;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -942,6 +1010,61 @@ a {
   .feedback strong {
     height: 38px;
   }
+}
+
+/* Fixed logical Stage/Battle frame; keep this after all legacy viewport rules. */
+body.quiz-playing .animal-game,
+body.quiz-stage-select .animal-game {
+  position: fixed;
+  z-index: 50;
+  left: var(--quiz-frame-left, 4px);
+  top: var(--quiz-frame-top, 4px);
+  width: 390px;
+  max-width: none;
+  height: 788px;
+  min-height: 788px;
+  max-height: none;
+  margin: 0;
+  transform: scale(var(--quiz-frame-scale, 1));
+  transform-origin: top left;
+  overflow: hidden;
+}
+
+body.quiz-playing .animal-game {
+  grid-template-rows: 38px minmax(0, 1fr) 120px 34px;
+  padding: 8px;
+  gap: 6px;
+}
+
+body.quiz-stage-select .animal-game {
+  grid-template-rows: minmax(0, 1fr);
+  padding: 8px;
+  gap: 0;
+}
+
+body.quiz-playing .topbar,
+body.quiz-playing .language-picker,
+body.quiz-playing .game-page-info,
+body.quiz-playing .wp-tutorial-button,
+body.quiz-stage-select .topbar,
+body.quiz-stage-select .level-line,
+body.quiz-stage-select .game-page-info,
+body.quiz-stage-select .wp-tutorial-button {
+  display: none !important;
+}
+
+body.quiz-playing #battleAdReserve,
+body.quiz-stage-select #stageAdReserve {
+  position: fixed;
+  z-index: 49;
+  left: var(--quiz-frame-left, 4px);
+  top: calc(var(--quiz-frame-top, 4px) + var(--quiz-frame-height, 788px));
+  display: block;
+  width: var(--quiz-frame-width, 390px);
+  height: 56px;
+  min-height: 56px;
+  margin: 0;
+  pointer-events: none;
 }
 html,
 body,

@@ -1531,3 +1531,91 @@ body.is-bakery-playing .order-progress span {
     height: 1.55rem;
   }
 }
+
+/* Fixed logical Stage/Battle frame; keep after legacy viewport rules. */
+html:has(body.is-bakery-playing),
+html:has(body.is-bakery-stage-select),
+body.is-bakery-playing,
+body.is-bakery-stage-select {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  min-height: 0;
+  overflow: hidden !important;
+  overscroll-behavior: none;
+}
+
+body.is-bakery-playing .bakery-game,
+body.is-bakery-stage-select .bakery-game {
+  position: fixed;
+  z-index: 50;
+  left: var(--bakery-frame-left, 4px);
+  top: var(--bakery-frame-top, 4px);
+  width: 390px;
+  max-width: none;
+  height: 788px;
+  min-height: 788px;
+  max-height: none;
+  margin: 0;
+  transform: scale(var(--bakery-frame-scale, 1));
+  transform-origin: top left;
+  overflow: hidden;
+}
+
+body.is-bakery-playing .bakery-game {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr);
+  padding: 8px;
+  gap: 0;
+}
+
+body.is-bakery-stage-select .bakery-game {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr);
+  padding: 8px;
+  gap: 0;
+}
+
+body.is-bakery-playing .topbar,
+body.is-bakery-playing .main-panel,
+body.is-bakery-playing .stage-panel,
+body.is-bakery-playing .game-page-info,
+body.is-bakery-playing .wp-tutorial-button,
+body.is-bakery-stage-select .topbar,
+body.is-bakery-stage-select .main-panel,
+body.is-bakery-stage-select .game-page-info,
+body.is-bakery-stage-select .wp-tutorial-button {
+  display: none !important;
+}
+
+body.is-bakery-stage-select .stage-panel {
+  width: 100%;
+  height: 100%;
+}
+
+body.is-bakery-playing #playPanel.play-panel {
+  display: grid;
+  grid-template-rows: 44px 78px minmax(0, 1fr);
+  width: 100% !important;
+  max-width: none !important;
+  height: 100% !important;
+  max-height: none !important;
+  margin: 0 !important;
+}
+
+body.is-bakery-playing #battleAdReserve,
+body.is-bakery-stage-select #stageAdReserve {
+  position: fixed;
+  z-index: 49;
+  left: var(--bakery-frame-left, 4px);
+  top: calc(var(--bakery-frame-top, 4px) + var(--bakery-frame-height, 788px));
+  display: block;
+  width: var(--bakery-frame-width, 390px);
+  height: 56px;
+  min-height: 56px;
+  margin: 0;
+  border-top: 1px solid rgba(86, 45, 20, 0.22);
+  background: rgba(255, 244, 222, 0.62);
+  pointer-events: none;
+}

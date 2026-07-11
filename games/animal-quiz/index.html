@@ -61,7 +61,7 @@
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
   </head>
   <body>
-    <main class="animal-game" data-play-viewport>
+    <main class="animal-game">
       <header class="topbar">
         <a id="homeLink" class="home-link" href="/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
         <div>
@@ -102,7 +102,6 @@
         </div>
         <div id="stageGrid" class="stage-grid"></div>
       </section>
-      <div id="stageAdReserve" class="stage-ad-reserve hidden" aria-hidden="true"></div>
 
       <section class="quiz-stage play-area hidden">
         <button id="backToStagesBtn" class="play-return" type="button" aria-label="Back to stages">&larr;</button>
@@ -118,7 +117,6 @@
       <section class="feedback hidden" aria-live="polite">
         <strong id="feedbackText">Choose one</strong>
       </section>
-      <div class="battle-ad-reserve" aria-hidden="true"></div>
 
       <div id="resultPanel" class="result-panel hidden">
         <div class="result-card">
@@ -130,7 +128,6 @@
           <button id="stageSelectBtn" type="button">Stages</button>
           <a id="homeText" href="/">Lobby</a>
         </div>
-        <div class="result-ad-reserve" aria-hidden="true"></div>
       </div>
 
       <div id="loadingPanel" class="loading-panel">
@@ -141,6 +138,8 @@
         </div>
       </div>
     </main>
+    <div id="stageAdReserve" class="stage-ad-reserve hidden" aria-hidden="true"></div>
+    <div id="battleAdReserve" class="battle-ad-reserve" aria-hidden="true"></div>
 
     <script src="../../src/site-config.js?v=20260705-quiz-dom-ready1"></script>
     <script src="../../src/version.js?v=20260701-version2"></script>

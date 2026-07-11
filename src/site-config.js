@@ -1,9 +1,9 @@
 window.WONDER_SITE = {
-    version: "v0.15.44",
+    version: "v0.15.45",
   localization: {
     defaultLocale: "en",
     fallbackLocale: "en",
-    phaseOneLocales: ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt", "fr", "de", "it", "ru"],
+    phaseOneLocales: ["en", "zh-Hant"],
   },
   analytics: {
     gaMeasurementId: "G-PP4XJGHCD3",

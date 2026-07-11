@@ -440,7 +440,27 @@ function showMain() {
   stageAdReserve.classList.add("hidden");
   setQuizVisible(false);
   stageSelectPanel.classList.add("hidden");
+  updateQuizFrame();
 }
+
+function updateQuizFrame() {
+  if (!document.body.classList.contains("quiz-playing") && !document.body.classList.contains("quiz-stage-select")) return;
+  const logicalWidth = 390;
+  const logicalHeight = 788;
+  const reserveHeight = 56;
+  const scale = Math.max(0.1, Math.min((innerWidth - 8) / logicalWidth, (innerHeight - reserveHeight - 8) / logicalHeight));
+  const width = logicalWidth * scale;
+  const contentHeight = logicalHeight * scale;
+  const root = document.documentElement.style;
+  root.setProperty("--quiz-frame-scale", String(scale));
+  root.setProperty("--quiz-frame-width", `${width}px`);
+  root.setProperty("--quiz-frame-height", `${contentHeight}px`);
+  root.setProperty("--quiz-frame-left", `${Math.max(0, (innerWidth - width) / 2)}px`);
+  root.setProperty("--quiz-frame-top", `${Math.max(0, (innerHeight - contentHeight - reserveHeight) / 2)}px`);
+}
+
+addEventListener("resize", updateQuizFrame, { passive: true });
+addEventListener("orientationchange", updateQuizFrame, { passive: true });
 
 function showStageSelect() {
   renderStaticText();
@@ -450,6 +470,7 @@ function showStageSelect() {
   document.body.classList.add("quiz-stage-select");
   mainPanel.classList.add("hidden");
   stageAdReserve.classList.remove("hidden");
+  updateQuizFrame();
   setQuizVisible(false);
   renderStageCards();
   window.requestAnimationFrame(() => {
@@ -496,7 +517,9 @@ function startStage(stageIndex) {
   setQuizVisible(true);
   document.body.classList.remove("quiz-main", "quiz-stage-select");
   document.body.classList.add("quiz-playing");
-  window.WeightPlayGame?.enterMobileGameMode?.();
+  updateQuizFrame();
+  window.WeightPlayGame?.exitMobileGameMode?.();
+  quizStage.classList.remove("weightplay-active-viewport");
   window.WonderAnalytics?.track("game_start", {
     game_id: GAME_ID,
     stage: stageIndex + 1,

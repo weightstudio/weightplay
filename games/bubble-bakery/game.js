@@ -452,7 +452,27 @@
     nodes.battleAdReserve.classList.add("hidden");
     nodes.resultPanel.classList.add("hidden");
     busy = false;
+    updateBakeryFrame();
   }
+
+  function updateBakeryFrame() {
+    if (!document.body.classList.contains("is-bakery-playing") && !document.body.classList.contains("is-bakery-stage-select")) return;
+    const logicalWidth = 390;
+    const logicalHeight = 788;
+    const reserveHeight = 56;
+    const scale = Math.max(0.1, Math.min((innerWidth - 8) / logicalWidth, (innerHeight - reserveHeight - 8) / logicalHeight));
+    const width = logicalWidth * scale;
+    const contentHeight = logicalHeight * scale;
+    const root = document.documentElement.style;
+    root.setProperty("--bakery-frame-scale", String(scale));
+    root.setProperty("--bakery-frame-width", `${width}px`);
+    root.setProperty("--bakery-frame-height", `${contentHeight}px`);
+    root.setProperty("--bakery-frame-left", `${Math.max(0, (innerWidth - width) / 2)}px`);
+    root.setProperty("--bakery-frame-top", `${Math.max(0, (innerHeight - contentHeight - reserveHeight) / 2)}px`);
+  }
+
+  addEventListener("resize", updateBakeryFrame, { passive: true });
+  addEventListener("orientationchange", updateBakeryFrame, { passive: true });
 
   function showStageSelect() {
     document.body.classList.remove("is-bakery-playing", "is-bakery-result");
@@ -465,6 +485,7 @@
     nodes.playPanel.classList.add("hidden");
     nodes.battleAdReserve.classList.add("hidden");
     nodes.resultPanel.classList.add("hidden");
+    updateBakeryFrame();
     busy = false;
     renderRecommendedOrder();
     renderBakeryProgress();
@@ -492,6 +513,9 @@
     nodes.playPanel.classList.remove("hidden");
     nodes.battleAdReserve.classList.remove("hidden");
     nodes.resultPanel.classList.add("hidden");
+    window.WeightPlayGame?.exitMobileGameMode?.();
+    nodes.playPanel.classList.remove("weightplay-active-viewport");
+    updateBakeryFrame();
     nodes.hintText.textContent = t("smallGroup");
     nodes.orderBar.dataset.theme = t("theme", { theme: t(stage.theme) });
     renderAll();

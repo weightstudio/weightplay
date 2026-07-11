@@ -277,7 +277,27 @@
     [nodes.menuPanel, nodes.gamePanel, nodes.upgradePanel, nodes.resultPanel].forEach((node) => node.classList.add("is-hidden"));
     panel.classList.remove("is-hidden");
     document.body.classList.toggle("orb-fortress-playing", panel !== nodes.menuPanel);
+    updateOrbBattleScale();
   }
+
+  function updateOrbBattleScale() {
+    if (!document.body.classList.contains("orb-fortress-playing")) return;
+    const logicalWidth = 390;
+    const logicalHeight = 788;
+    const reserveHeight = 56;
+    const scale = Math.max(0.1, Math.min((innerWidth - 8) / logicalWidth, (innerHeight - reserveHeight - 8) / logicalHeight));
+    const width = logicalWidth * scale;
+    const contentHeight = logicalHeight * scale;
+    const root = document.documentElement.style;
+    root.setProperty("--orb-battle-scale", String(scale));
+    root.setProperty("--orb-battle-width", `${width}px`);
+    root.setProperty("--orb-battle-content-height", `${contentHeight}px`);
+    root.setProperty("--orb-battle-left", `${Math.max(0, (innerWidth - width) / 2)}px`);
+    root.setProperty("--orb-battle-top", `${Math.max(0, (innerHeight - contentHeight - reserveHeight) / 2)}px`);
+  }
+
+  addEventListener("resize", updateOrbBattleScale, { passive: true });
+  addEventListener("orientationchange", updateOrbBattleScale, { passive: true });
 
   function setLocale(next) {
     locale = next || "en";
