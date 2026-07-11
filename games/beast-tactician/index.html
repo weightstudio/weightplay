@@ -109,7 +109,7 @@
 
       <section id="gamePanel" class="game-panel play-area is-hidden" data-play-viewport>
         <div class="hud-row">
-          <button id="menuBtn" class="secondary-btn" type="button">Menu</button>
+          <button id="menuBtn" class="secondary-btn" type="button" aria-label="Back to stages">Menu</button>
           <div><span id="stageHudLabel">Stage</span><strong id="stageHudText">1</strong></div>
           <div><span id="coreHudLabel">Core</span><strong id="coreText">100</strong></div>
           <div><span id="coinHudLabel">Coins</span><strong id="coinText">0</strong></div>
@@ -147,6 +147,8 @@
           <button id="reviveBtn" class="secondary-btn" type="button">Revive Core</button>
         </div>
       </section>
+
+      <div class="battle-ad-reserve" aria-hidden="true"></div>
 
       <section id="resultPanel" class="modal-panel is-hidden" aria-live="polite">
         <div class="modal-card result-card">

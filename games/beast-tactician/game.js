@@ -857,12 +857,36 @@
 
   function setScreen(screen) {
     state.screen = screen;
+    document.body.classList.toggle("guardian-playing", screen === "game" || screen === "result");
     [nodes.menuPanel, nodes.stagePanel, nodes.techPanel, nodes.gamePanel, nodes.resultPanel].forEach((panel) => panel?.classList.add("is-hidden"));
     if (screen === "menu") nodes.menuPanel.classList.remove("is-hidden");
     if (screen === "stages") nodes.stagePanel.classList.remove("is-hidden");
     if (screen === "tech") nodes.techPanel.classList.remove("is-hidden");
     if (screen === "game") nodes.gamePanel.classList.remove("is-hidden");
     if (screen === "result") nodes.resultPanel.classList.remove("is-hidden");
+    updateBattleShell();
+  }
+
+  function updateBattleShell() {
+    if (!document.body.classList.contains("guardian-playing")) return;
+    const logicalWidth = 960;
+    const logicalHeight = 720;
+    const reserveHeight = 56;
+    const gutter = 8;
+    const availableWidth = Math.max(1, window.innerWidth - gutter);
+    const availableHeight = Math.max(1, window.innerHeight - reserveHeight - gutter);
+    const scale = Math.max(0.1, Math.min(availableWidth / logicalWidth, availableHeight / logicalHeight));
+    const width = logicalWidth * scale;
+    const contentHeight = logicalHeight * scale;
+    const totalHeight = contentHeight + reserveHeight;
+    const left = Math.max(0, (window.innerWidth - width) / 2);
+    const top = Math.max(0, (window.innerHeight - totalHeight) / 2);
+    const style = document.documentElement.style;
+    style.setProperty("--guardian-scale", String(scale));
+    style.setProperty("--guardian-width", `${width}px`);
+    style.setProperty("--guardian-content-height", `${contentHeight}px`);
+    style.setProperty("--guardian-left", `${left}px`);
+    style.setProperty("--guardian-top", `${top}px`);
   }
 
   function updateLocale() {
@@ -1976,9 +2000,8 @@
   }
 
   function resizeCanvas() {
-    const rect = nodes.canvas.getBoundingClientRect();
-    const width = Math.max(320, Math.round(rect.width * window.devicePixelRatio));
-    const height = Math.max(260, Math.round(rect.height * window.devicePixelRatio));
+    const width = Math.max(320, Math.round(nodes.canvas.clientWidth * window.devicePixelRatio));
+    const height = Math.max(260, Math.round(nodes.canvas.clientHeight * window.devicePixelRatio));
     if (nodes.canvas.width !== width || nodes.canvas.height !== height) {
       nodes.canvas.width = width;
       nodes.canvas.height = height;
@@ -2672,6 +2695,7 @@
       startStage(nextStage);
     });
     nodes.soundBtn?.addEventListener("click", () => setSoundEnabled(!state.soundEnabled, true));
+    window.addEventListener("resize", updateBattleShell, { passive: true });
     nodes.canvas.addEventListener("pointerdown", onCanvasClick);
     nodes.canvas.addEventListener("pointermove", onCanvasPointerMove);
     nodes.canvas.addEventListener("pointerleave", () => {
@@ -3323,7 +3347,7 @@
     const board = getBoard();
     const core = tileToPoint(coreTile);
     const sample = {
-      x: Math.round(core.x + board.cell * 0.66),
+      x: Math.round(core.x - board.cell * 0.66),
       y: Math.round(core.y),
     };
     const pixel = ctx.getImageData(sample.x, sample.y, 1, 1).data;

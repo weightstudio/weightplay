@@ -45,6 +45,74 @@ button {
   min-height: 100vh;
 }
 
+.battle-ad-reserve {
+  display: none;
+}
+
+body.guardian-playing {
+  width: 100vw;
+  height: 100vh;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  touch-action: none;
+  overscroll-behavior: none;
+}
+
+body.guardian-playing .guardian-topbar,
+body.guardian-playing .game-page-info {
+  display: none !important;
+}
+
+body.guardian-playing .guardian-app {
+  width: 100vw;
+  height: 100vh;
+  min-height: 0;
+}
+
+body.guardian-playing .game-panel {
+  position: fixed;
+  z-index: 50;
+  left: var(--guardian-left, 0);
+  top: var(--guardian-top, 0);
+  width: 960px;
+  height: 720px;
+  min-height: 720px;
+  margin: 0;
+  transform: scale(var(--guardian-scale, 1));
+  transform-origin: top left;
+  grid-template-rows: 64px minmax(0, 1fr) 54px;
+  gap: 8px;
+  overflow: hidden;
+}
+
+body.guardian-playing .battle-ad-reserve {
+  position: fixed;
+  z-index: 49;
+  left: var(--guardian-left, 0);
+  top: calc(var(--guardian-top, 0px) + var(--guardian-content-height, 0px));
+  display: block;
+  width: var(--guardian-width, 100vw);
+  height: 56px;
+  pointer-events: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(4, 10, 16, 0.72);
+}
+
+body.guardian-playing #menuBtn {
+  width: 44px;
+  min-width: 44px;
+  padding: 0;
+  overflow: hidden;
+  color: transparent;
+  font-size: 0;
+}
+
+body.guardian-playing #menuBtn::before {
+  content: "\2190";
+  color: var(--text);
+  font-size: 24px;
+}
+
 .guardian-topbar,
 .hud-row,
 .boss-panel,
@@ -651,12 +719,33 @@ button {
     overflow: hidden;
   }
 
+  body.guardian-playing .game-panel {
+    width: 960px;
+    max-width: none;
+    height: 720px;
+    min-height: 720px;
+  }
+
   .hud-row {
     width: 100%;
     max-width: 100%;
     min-width: 0;
     flex-wrap: wrap;
     overflow-x: visible;
+  }
+
+  body.guardian-playing .hud-row {
+    flex-wrap: nowrap;
+    overflow: hidden;
+  }
+
+  body.guardian-playing .hud-row > div {
+    min-width: 62px;
+  }
+
+  body.guardian-playing .wave-intel-panel {
+    flex: 1 1 auto;
+    min-width: 190px;
   }
 
   .boss-panel {
@@ -684,6 +773,10 @@ button {
     min-width: 0;
   }
 
+  body.guardian-playing .battle-layout {
+    grid-template-columns: 190px minmax(0, 1fr);
+  }
+
   .build-panel {
     width: 100%;
     max-width: 100%;
@@ -691,8 +784,16 @@ button {
     max-height: 148px;
   }
 
+  body.guardian-playing .build-panel {
+    max-height: none;
+  }
+
   .build-cards {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  body.guardian-playing .build-cards {
+    grid-template-columns: 1fr;
   }
 
   .canvas-shell {
@@ -700,6 +801,12 @@ button {
     max-width: 100%;
     min-width: 0;
     aspect-ratio: 3 / 2;
+  }
+
+  body.guardian-playing .canvas-shell {
+    width: auto;
+    max-width: none;
+    aspect-ratio: auto;
   }
 
   .command-row {
