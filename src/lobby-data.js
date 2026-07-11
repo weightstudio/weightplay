@@ -565,6 +565,25 @@ window.WONDER_LOBBY.games.push({
   art: { kind: "image", background: "assets/animal-hero-trials-cover.png", hideHero: true },
 });
 
+window.WONDER_LOBBY.games.push({
+  id: "animal-gearpack-expedition",
+  title: { en: "Animal Gearpack Expedition", "zh-Hant": "動物裝備行囊遠征" },
+  status: "planned",
+  statusText: { en: "Coming Soon", "zh-Hant": "敬請期待" },
+  type: { en: "Spatial Inventory Roguelite", "zh-Hant": "空間行囊策略遠征" },
+  categories: ["Featured", "Animal Games"],
+  skills: ["Planning", "Problem Solving", "Spatial Reasoning"],
+  ages: ["13"],
+  ageLabel: { en: "13+", "zh-Hant": "13+" },
+  href: "games/animal-gearpack-expedition/",
+  description: {
+    en: "Arrange Rux's equipment inside a travel pack, connect item synergies, and prepare for short Gearwood expeditions.",
+    "zh-Hant": "把魯克斯的裝備排進旅行行囊，連結道具效果，準備展開短程齒輪森林遠征。",
+  },
+  meta: { en: ["Gear Horn Rux", "Pack Synergies", "Workshop Growth"], "zh-Hant": ["齒輪角魯克斯", "行囊連鎖", "工坊成長"] },
+  art: { kind: "image", background: "assets/animal-gearpack-expedition-cover.webp", hideHero: true },
+});
+
 const cleanZhLobbyCopy = {
   "beast-deck": {
     title: "獸王牌組",

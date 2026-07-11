@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="robots" content="noindex,nofollow" />
+  <meta name="theme-color" content="#132f2b" />
+  <title>Animal Gearpack Expedition - Coming Soon | WeightPlay</title>
+  <meta name="description" content="Animal Gearpack Expedition is in art production and is not open for public play yet." />
+  <link rel="canonical" href="https://weightplay.com/games/animal-gearpack-expedition/" />
+  <link rel="stylesheet" href="../../src/game-page-info.css" />
+  <style>
+    *{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:system-ui,"Microsoft JhengHei",sans-serif;background:#0b211d;color:#fff}body{display:grid;place-items:center;padding:16px}.card{width:min(100%,720px);border:1px solid #91743d;background:#132f2b;padding:14px;display:grid;gap:14px}.top{display:flex;justify-content:space-between;align-items:center;gap:12px}.back{display:inline-flex;align-items:center;gap:6px;min-height:46px;color:#fff;text-decoration:none;font-weight:900}.back img{width:28px;height:28px}.locale{min-height:44px;border:1px solid #8daea4;background:#0b211d;color:#fff;padding:0 10px}.poster{width:100%;aspect-ratio:1;object-fit:cover;border:1px solid #ad8e51}.copy{display:grid;gap:7px}.copy h1,.copy p{margin:0}.status{color:#ffd978;font-weight:900}.zh{display:none}body[data-locale="zh-Hant"] .en{display:none}body[data-locale="zh-Hant"] .zh{display:block}@media(max-width:480px){body{padding:8px}.card{padding:9px}.copy h1{font-size:24px}}
+  </style>
+</head>
+<body data-locale="en">
+  <main class="card">
+    <div class="top"><a class="back" href="/"><span>&larr;</span><img src="../../assets/weightplay-logo.png" alt="" /></a><select id="locale" class="locale"><option value="en">English</option><option value="zh-Hant">繁體中文</option></select></div>
+    <img class="poster" src="../../assets/animal-gearpack-expedition-cover.webp" alt="Animal Gearpack Expedition poster" />
+    <section class="copy en"><span class="status">Coming Soon</span><h1>Animal Gearpack Expedition</h1><p>Gear Horn Rux is preparing a spatial equipment-packing expedition. Art and gameplay production are still underway.</p></section>
+    <section class="copy zh"><span class="status">敬請期待</span><h1>動物裝備行囊遠征</h1><p>齒輪角魯克斯正在準備空間裝備配置遠征。美術與遊戲內容仍在製作中。</p></section>
+  </main>
+  <script>const select=document.querySelector("#locale");select.onchange=()=>{document.body.dataset.locale=select.value;localStorage.setItem("weightPlayLocale",select.value)};select.value=localStorage.getItem("weightPlayLocale")==="zh-Hant"?"zh-Hant":"en";select.onchange();</script>
+</body>
+</html>
