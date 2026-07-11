@@ -181,6 +181,8 @@
     loadingPanel: $("loadingPanel"),
     loadingText: $("loadingText"),
     loadingFill: $("loadingFill"),
+    gameShell: document.querySelector(".zoo-game"),
+    battleAdReserve: $("battleAdReserve"),
   };
 
   let locale = window.WonderI18n?.locale?.() || localStorage.getItem(localeKey) || "en";
@@ -190,6 +192,47 @@
   let currentTask = 0;
   let mistakes = 0;
   let acceptingInput = false;
+
+  function updateBattleViewport() {
+    if (!document.body.classList.contains("zoo-helper-playing")) return;
+    const viewport = window.visualViewport;
+    const width = Math.round(Math.min(viewport?.width || window.innerWidth, window.innerWidth));
+    const height = Math.max(0, Math.round(Math.min(viewport?.height || window.innerHeight, window.innerHeight)) - 56);
+    document.documentElement.classList.remove("wp-mobile-game-mode");
+    document.body.classList.remove("wp-mobile-game-mode");
+    nodes.gameShell?.classList.remove("weightplay-active-viewport");
+    document.documentElement.style.setProperty("--zoo-live-width", `${width}px`);
+    document.documentElement.style.setProperty("--zoo-live-height", `${height}px`);
+    nodes.gameShell?.style.setProperty("position", "fixed", "important");
+    nodes.gameShell?.style.setProperty("inset", "0 auto auto 50%", "important");
+    nodes.gameShell?.style.setProperty("width", `${width}px`, "important");
+    nodes.gameShell?.style.setProperty("max-width", "none", "important");
+    nodes.gameShell?.style.setProperty("height", `${height}px`, "important");
+    nodes.gameShell?.style.setProperty("min-height", "0", "important");
+    nodes.gameShell?.style.setProperty("max-height", `${height}px`, "important");
+    nodes.gameShell?.style.setProperty("transform", "translateX(-50%)", "important");
+  }
+
+  function setBattleViewport(active) {
+    document.body.classList.toggle("zoo-helper-playing", active);
+    nodes.battleAdReserve?.toggleAttribute("data-active", active);
+    if (active) {
+      nodes.gameShell?.removeAttribute("data-play-viewport");
+      window.WeightPlayGame?.exitMobileGameMode?.();
+      updateBattleViewport();
+      requestAnimationFrame(updateBattleViewport);
+      setTimeout(updateBattleViewport, 160);
+    } else {
+      nodes.gameShell?.setAttribute("data-play-viewport", "");
+      window.WeightPlayGame?.exitMobileGameMode?.();
+      for (const property of ["position", "inset", "width", "max-width", "height", "min-height", "max-height", "transform"]) {
+        nodes.gameShell?.style.removeProperty(property);
+      }
+    }
+  }
+
+  window.addEventListener("resize", updateBattleViewport);
+  window.visualViewport?.addEventListener("resize", updateBattleViewport);
 
   function t(key, data) {
     const parts = key.split(".");
@@ -261,7 +304,7 @@
     nodes.menuPanel.classList.remove("hidden");
     nodes.playPanel.classList.add("hidden");
     nodes.resultPanel.classList.add("hidden");
-    document.body.classList.remove("zoo-helper-playing");
+    setBattleViewport(false);
     renderStageGrid();
   }
 
@@ -273,11 +316,10 @@
     nodes.menuPanel.classList.add("hidden");
     nodes.playPanel.classList.remove("hidden");
     nodes.resultPanel.classList.add("hidden");
-    document.body.classList.add("zoo-helper-playing");
+    setBattleViewport(true);
     track("game_start", { level: index + 1 });
     playSound("start");
     renderTask();
-    window.WeightPlayGame?.enterMobileGameMode?.();
   }
 
   function renderTask() {

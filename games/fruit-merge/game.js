@@ -353,7 +353,10 @@
     const reserveHeight = 56;
     const viewportWidth = visualViewport?.width || innerWidth;
     const viewportHeight = visualViewport?.height || innerHeight;
-    const expandedCanvas = matchMedia("(pointer: coarse)").matches || navigator.maxTouchPoints > 0;
+    const expandedCanvas = matchMedia("(pointer: coarse)").matches
+      || navigator.maxTouchPoints > 0
+      || viewportWidth <= 600
+      || viewportHeight <= 430;
     const scale = expandedCanvas ? 1 : Math.max(0.1, Math.min((viewportWidth - 8) / logicalWidth, (viewportHeight - reserveHeight - 8) / logicalHeight));
     const width = expandedCanvas ? viewportWidth - 8 : logicalWidth * scale;
     const contentHeight = expandedCanvas ? viewportHeight - reserveHeight - 8 : logicalHeight * scale;

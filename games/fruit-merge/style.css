@@ -1058,7 +1058,9 @@ body.fruit-playing #playPanel.fixed-shell-host {
 
 body.fruit-playing .topbar,
 body.fruit-playing .game-page-info,
-body.fruit-playing .wp-tutorial-button {
+body.fruit-playing .wp-tutorial-button,
+body.fruit-playing .weightplay-version-badge,
+body.fruit-playing .sound-toggle {
   display: none !important;
 }
 
@@ -1102,6 +1104,119 @@ body.fruit-playing #battleAdReserve {
   pointer-events: none;
 }
 
+/* Battle typography is tied to the game shell, never to browser viewport width. */
+body.fruit-playing .fixed-game-shell {
+  grid-template-rows: 42px 58px minmax(0, 1fr) 36px;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  font-size: 16px;
+}
+
+body.fruit-playing #backToMenuBtn.play-return {
+  top: 5px;
+  left: 6px;
+  width: 38px;
+  min-width: 38px;
+  max-width: 38px;
+  height: 38px;
+  min-height: 38px;
+  max-height: 38px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  font-family: Arial, sans-serif;
+  font-size: 22px;
+  font-weight: 900;
+  line-height: 1;
+  text-indent: 0;
+}
+
+body.fruit-playing .combo-box {
+  display: none;
+}
+
+body.fruit-playing .scorebar {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 40px;
+  gap: 4px;
+}
+
+body.fruit-playing .scorebar div {
+  min-width: 0;
+  overflow: hidden;
+  padding: 3px 5px;
+}
+
+body.fruit-playing .scorebar div:last-child {
+  display: grid;
+  place-items: center;
+  padding: 2px;
+}
+
+body.fruit-playing .scorebar div:last-child > span {
+  display: none;
+}
+
+body.fruit-playing .scorebar span {
+  font-size: 10px;
+  line-height: 11px;
+}
+
+body.fruit-playing .scorebar strong {
+  margin-top: 1px;
+  font-size: 20px;
+  line-height: 22px;
+}
+
+body.fruit-playing #nextFruitText {
+  width: 32px;
+  height: 32px;
+  margin: 0;
+}
+
+body.fruit-playing .merge-goal {
+  align-self: stretch;
+  height: 58px;
+  min-height: 58px;
+  max-height: 58px;
+  padding: 4px 7px;
+  grid-template-columns: 34px minmax(0, 1fr);
+  gap: 6px;
+  overflow: hidden;
+}
+
+body.fruit-playing .goal-token {
+  width: 34px;
+  height: 34px;
+}
+
+body.fruit-playing .goal-copy {
+  gap: 1px;
+}
+
+body.fruit-playing .goal-copy span,
+body.fruit-playing .goal-text {
+  font-size: 9px;
+  line-height: 10px;
+}
+
+body.fruit-playing .goal-copy strong {
+  font-size: 17px;
+  line-height: 18px;
+}
+
+body.fruit-playing .goal-track {
+  height: 5px;
+}
+
+body.fruit-playing .controls button {
+  font-size: 14px;
+  line-height: 16px;
+}
+
+body.fruit-playing .aim-coach {
+  display: none !important;
+}
+
 /* Phone Battle follows the Expanded Canvas contract; the physics board keeps 720:1040. */
 body.fruit-playing.fruit-expanded-canvas .fixed-game-shell,
 body.fruit-playing.fruit-expanded-canvas #resultPanel.result-panel {
@@ -1120,7 +1235,7 @@ body.fruit-playing.fruit-expanded-canvas #battleAdReserve {
 }
 
 body.fruit-playing.fruit-expanded-canvas .fixed-game-shell {
-  grid-template-rows: 42px 42px minmax(0, 1fr) 36px;
+  grid-template-rows: 42px 58px minmax(0, 1fr) 36px;
 }
 
 body.fruit-playing.fruit-expanded-canvas .combo-box {
@@ -1136,7 +1251,123 @@ body.fruit-playing.fruit-expanded-canvas #nextFruitText {
   height: 36px;
 }
 
-@media (max-height: 430px) and (pointer: coarse) {
+/* iOS browsers do not always report coarse-pointer capability consistently. */
+@media (max-width: 600px) {
+  body.fruit-playing {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    font-size: 16px;
+  }
+
+  body.fruit-playing.fruit-expanded-canvas .fixed-game-shell {
+    grid-template-rows: 42px 58px minmax(0, 1fr) 36px;
+  }
+
+  body.fruit-playing .combo-box {
+    display: none !important;
+  }
+
+  body.fruit-playing .scorebar {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 40px !important;
+    gap: 4px;
+  }
+
+  body.fruit-playing .scorebar div {
+    min-width: 0;
+    overflow: hidden;
+    padding: 3px 5px;
+  }
+
+  body.fruit-playing .scorebar div:last-child {
+    display: grid;
+    place-items: center;
+    padding: 2px;
+  }
+
+  body.fruit-playing .scorebar div:last-child > span {
+    display: none;
+  }
+
+  body.fruit-playing #nextFruitText {
+    width: 32px;
+    height: 32px;
+    margin: 0;
+  }
+
+  body.fruit-playing .scorebar span,
+  body.fruit-playing .scorebar strong,
+  body.fruit-playing .goal-copy span,
+  body.fruit-playing .goal-copy strong,
+  body.fruit-playing .goal-text,
+  body.fruit-playing .controls button {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  body.fruit-playing .scorebar span {
+    font-size: 10px;
+    line-height: 11px;
+  }
+
+  body.fruit-playing .scorebar strong {
+    margin-top: 1px;
+    font-size: 20px;
+    line-height: 22px;
+  }
+
+  body.fruit-playing .merge-goal {
+    align-self: stretch;
+    height: 58px;
+    min-height: 58px;
+    max-height: 58px;
+    padding: 4px 7px;
+    grid-template-columns: 34px minmax(0, 1fr);
+    gap: 6px;
+    overflow: hidden;
+  }
+
+  body.fruit-playing .goal-token {
+    width: 34px;
+    height: 34px;
+  }
+
+  body.fruit-playing .goal-copy {
+    gap: 1px;
+  }
+
+  body.fruit-playing .goal-copy span,
+  body.fruit-playing .goal-text {
+    font-size: 9px;
+    line-height: 10px;
+  }
+
+  body.fruit-playing .goal-copy strong {
+    font-size: 17px;
+    line-height: 18px;
+  }
+
+  body.fruit-playing .goal-track {
+    height: 5px;
+  }
+
+  body.fruit-playing .controls button {
+    font-size: 14px;
+    line-height: 16px;
+  }
+
+  body.fruit-playing .aim-coach {
+    display: none !important;
+  }
+}
+
+@media (max-height: 430px) {
+  body.fruit-playing {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    font-size: 16px;
+  }
+
   body.fruit-playing.fruit-expanded-canvas .fixed-game-shell {
     grid-template-rows: 38px 54px minmax(0, 1fr) 30px;
     padding: 4px 6px;
@@ -1149,6 +1380,17 @@ body.fruit-playing.fruit-expanded-canvas #nextFruitText {
 
   body.fruit-playing.fruit-expanded-canvas .scorebar div {
     padding: 3px 6px;
+  }
+
+  body.fruit-playing .scorebar span {
+    font-size: 10px;
+    line-height: 11px;
+  }
+
+  body.fruit-playing .scorebar strong {
+    margin-top: 1px;
+    font-size: 20px;
+    line-height: 22px;
   }
 
   body.fruit-playing.fruit-expanded-canvas #nextFruitText {
@@ -1167,6 +1409,17 @@ body.fruit-playing.fruit-expanded-canvas #nextFruitText {
     height: 34px;
   }
 
+  body.fruit-playing .goal-copy span,
+  body.fruit-playing .goal-text {
+    font-size: 9px;
+    line-height: 10px;
+  }
+
+  body.fruit-playing .goal-copy strong {
+    font-size: 17px;
+    line-height: 18px;
+  }
+
   body.fruit-playing.fruit-expanded-canvas .goal-text,
   body.fruit-playing.fruit-expanded-canvas .aim-coach {
     display: none !important;
@@ -1176,6 +1429,8 @@ body.fruit-playing.fruit-expanded-canvas #nextFruitText {
     min-height: 30px;
     height: 30px;
     padding: 2px 8px;
+    font-size: 13px;
+    line-height: 15px;
   }
 }
 html,

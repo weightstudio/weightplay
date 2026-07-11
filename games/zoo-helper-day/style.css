@@ -55,9 +55,17 @@ select {
 }
 
 .home-link {
-  display: grid;
+  display: flex;
+  gap: 3px;
   place-items: center;
+  justify-content: center;
   font-size: 1.4rem;
+}
+
+.home-link img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
 }
 
 .title-block p,
@@ -392,6 +400,165 @@ body.zoo-helper-playing .game-page-info {
   display: none !important;
 }
 
+.battle-ad-reserve {
+  display: none;
+}
+
+.battle-ad-reserve[data-active] {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 30;
+  display: block;
+  height: 56px;
+  pointer-events: none;
+  background: #183126;
+}
+
+html:has(body.zoo-helper-playing),
+body.zoo-helper-playing {
+  width: 100%;
+  height: 100%;
+  overflow: hidden !important;
+  overscroll-behavior: none;
+  touch-action: none;
+}
+
+body.zoo-helper-playing .zoo-game {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  width: var(--zoo-live-width, 100vw);
+  max-width: none;
+  height: var(--zoo-live-height, calc(100dvh - 56px));
+  min-height: 0;
+  margin: 0;
+  padding: max(6px, env(safe-area-inset-top)) 8px 6px;
+  transform: translateX(-50%);
+  gap: 0;
+  overflow: hidden;
+}
+
+body.zoo-helper-playing .topbar,
+body.zoo-helper-playing .language-picker,
+body.zoo-helper-playing .game-page-info,
+body.zoo-helper-playing .wp-tutorial-button,
+body.zoo-helper-playing .sound-toggle {
+  display: none !important;
+}
+
+body.zoo-helper-playing .play-panel {
+  width: min(100%, 760px);
+  height: 100%;
+  min-height: 0;
+  margin: 0 auto;
+  display: grid;
+  grid-template-rows: 44px 40px minmax(0, 1fr) 76px 24px;
+  gap: 6px;
+  overflow: hidden;
+}
+
+body.zoo-helper-playing .play-head,
+body.zoo-helper-playing .shift-board,
+body.zoo-helper-playing .animal-card,
+body.zoo-helper-playing .item-grid,
+body.zoo-helper-playing .feedback {
+  min-width: 0;
+  min-height: 0;
+}
+
+body.zoo-helper-playing .battle-return {
+  width: 44px;
+  min-width: 44px;
+  height: 44px;
+  min-height: 44px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  font-size: 1.45rem;
+}
+
+body.zoo-helper-playing .shift-board span {
+  min-height: 40px;
+  padding: 5px 7px;
+  border-radius: 12px;
+}
+
+body.zoo-helper-playing .animal-card {
+  height: 100%;
+  min-height: 0;
+  padding: 8px;
+  grid-template-rows: minmax(0, 1fr) auto auto;
+  gap: 3px;
+  border-radius: 18px;
+}
+
+body.zoo-helper-playing .animal-emoji {
+  width: min(100%, 210px);
+  height: 100%;
+  max-height: 210px;
+  aspect-ratio: 1;
+}
+
+body.zoo-helper-playing .animal-card strong {
+  font-size: clamp(1rem, 3.5vmin, 1.45rem);
+}
+
+body.zoo-helper-playing .animal-card span {
+  min-height: 1.3em;
+  font-size: clamp(0.72rem, 2.5vmin, 1rem);
+}
+
+body.zoo-helper-playing .item-grid {
+  height: 76px;
+}
+
+body.zoo-helper-playing .item-card {
+  width: 100%;
+  height: 76px;
+  min-width: 0;
+  padding: 4px 2px;
+  gap: 2px;
+  border-radius: 12px;
+}
+
+body.zoo-helper-playing .item-card b {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+}
+
+body.zoo-helper-playing .feedback {
+  min-height: 24px;
+  height: 24px;
+  overflow: hidden;
+}
+
+@media (max-height: 500px) {
+  body.zoo-helper-playing .animal-card {
+    grid-template-columns: 120px minmax(0, 1fr);
+    grid-template-rows: 1fr 1fr;
+    justify-items: start;
+    text-align: left;
+  }
+
+  body.zoo-helper-playing .animal-emoji {
+    grid-row: 1 / 3;
+    width: 96px;
+    height: 96px;
+    align-self: center;
+    justify-self: center;
+  }
+
+  body.zoo-helper-playing .animal-card strong,
+  body.zoo-helper-playing .animal-card span {
+    align-self: center;
+    justify-self: stretch;
+    text-align: left;
+  }
+}
+
 .loading-panel,
 .result-panel {
   position: fixed;
@@ -460,63 +627,6 @@ body.zoo-helper-playing .game-page-info {
 }
 
 @media (max-width: 430px) {
-  html:has(body.zoo-helper-playing),
-  body.zoo-helper-playing {
-    overflow: hidden !important;
-    overscroll-behavior: none;
-    touch-action: none;
-  }
-
-  body.zoo-helper-playing .zoo-game {
-    width: 100vw;
-    height: var(--wp-mobile-vh, 100svh);
-    min-height: 0;
-    padding: calc(7px + env(safe-area-inset-top)) 10px calc(7px + env(safe-area-inset-bottom));
-    gap: 6px;
-  }
-
-  body.zoo-helper-playing .topbar {
-    grid-template-columns: 44px minmax(0, 1fr);
-    gap: 8px;
-  }
-
-  body.zoo-helper-playing .title-block p,
-  body.zoo-helper-playing .language-picker {
-    display: none;
-  }
-
-  body.zoo-helper-playing .title-block h1 {
-    font-size: clamp(1.05rem, 5vw, 1.35rem);
-  }
-
-  body.zoo-helper-playing .play-panel {
-    min-height: 0;
-    gap: 6px;
-  }
-
-  body.zoo-helper-playing .animal-card {
-    min-height: min(35vh, 270px);
-    padding: 14px 12px;
-    gap: 6px;
-  }
-
-  body.zoo-helper-playing .animal-emoji {
-    width: min(34vw, 156px);
-  }
-
-  body.zoo-helper-playing .animal-card strong {
-    font-size: 1.35rem;
-  }
-
-  body.zoo-helper-playing .item-card {
-    height: clamp(68px, 18vw, 82px);
-  }
-
-  body.zoo-helper-playing .item-card b {
-    width: 42px;
-    height: 42px;
-  }
-
   .zoo-game {
     padding-inline: 10px;
     gap: 10px;

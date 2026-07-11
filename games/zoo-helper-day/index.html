@@ -67,7 +67,7 @@
   <body>
     <main class="zoo-game" data-play-viewport>
       <header class="topbar">
-        <a class="home-link" href="/" aria-label="Back to lobby">&larr;</a>
+        <a class="home-link" href="/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
         <div class="title-block">
           <p>WeightPlay</p>
           <h1 data-ui="gameTitle">Zoo Helper Day</h1>
@@ -92,7 +92,7 @@
 
       <section id="playPanel" class="play-panel hidden">
         <div class="play-head">
-          <button id="backToStagesBtn" class="soft-btn" type="button" data-ui="stages">Stages</button>
+          <button id="backToStagesBtn" class="soft-btn battle-return" type="button" aria-label="Back to stages"><span aria-hidden="true">&larr;</span></button>
           <div class="progress-line">
             <span id="stageText">Stage 1</span>
             <div><i id="progressFill"></i></div>
@@ -132,6 +132,7 @@
         </div>
       </div>
     </main>
+    <div id="battleAdReserve" class="battle-ad-reserve" aria-hidden="true"></div>
 
     <script src="../../src/site-config.js?v=20260710-zoo-helper-mobile-shell1"></script>
     <script src="../../src/version.js?v=20260701-version2"></script>
