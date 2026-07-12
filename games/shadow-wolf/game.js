@@ -9,7 +9,6 @@
     menuPanel: $("menuPanel"),
     mapPanel: $("mapPanel"),
     mapBackBtn: $("mapBackBtn"),
-    mapLevel: $("mapLevel"),
     gamePanel: $("gamePanel"),
     draftPanel: $("draftPanel"),
     lootPanel: $("lootPanel"),
@@ -89,6 +88,14 @@
       amuletEffect: "Start every run with +10 Max HP (40 HP instead of 30 HP).",
       amuletOwned: "Owned: every run starts with 40 Max HP.",
       startRun: "Start Expedition",
+      languageSelector: "Language selector",
+      controlLegend: "A/D Move · W/Space Jump · J Attack · K/Shift Dash",
+      roomLabel: "Room",
+      keyLabel: "Key",
+      arenaLabel: "Shadow Wolf arena",
+      stageEyebrow: "EXPEDITION",
+      stageTitle: "Choose an expedition",
+      stageHint: "Drag the rail or choose an unlocked region to begin.",
       menu: "Menu",
       hudHp: "Wolf HP",
       chooseCard: "Choose a Relic Upgrade",
@@ -151,6 +158,14 @@
       amuletEffect: "每局挑戰開始時最大生命值 +10 HP (以 40 HP 開局，原為 30 HP)。",
       amuletOwned: "已擁有：以 40 Max HP 開局。",
       startRun: "開始探險",
+      languageSelector: "語言選擇",
+      controlLegend: "A/D 移動 · W/空白鍵 跳躍 · J 攻擊 · K/Shift 衝刺",
+      roomLabel: "房間",
+      keyLabel: "鑰匙",
+      arenaLabel: "影狼戰鬥場景",
+      stageEyebrow: "影狼遠征",
+      stageTitle: "選擇探索區域",
+      stageHint: "左右滑動選擇已解鎖區域，點擊卡片開始挑戰。",
       menu: "選單",
       hudHp: "影狼生命",
       chooseCard: "選擇遺跡能力",
@@ -351,14 +366,84 @@
   }
 
   function translateUI() {
-    document.documentElement.lang = getLocale();
+    const locale = getLocale();
+    document.documentElement.lang = locale;
     for (const el of document.querySelectorAll("[data-ui]")) {
       const key = el.dataset.ui;
       el.textContent = t(key);
     }
+    for (const el of document.querySelectorAll("[data-ui-aria]")) {
+      el.setAttribute("aria-label", t(el.dataset.uiAria));
+    }
     nodes.localeSelect.value = getLocale();
+    renderStageCards();
+    const publicMeta = locale === "zh-Hant"
+      ? { title: "影狼傳說 - WeightPlay", description: "探索影狼遺跡、收集遺物並挑戰首領的 13+ 動作冒險。" }
+      : { title: "Shadow Wolf Legend - WeightPlay", description: "Explore Shadow Wolf ruins, collect relics, and challenge the boss in this 13+ action adventure." };
+    document.title = publicMeta.title;
+    document.querySelector('meta[name="description"]')?.setAttribute("content", publicMeta.description);
+    document.querySelector('meta[property="og:title"]')?.setAttribute("content", publicMeta.title);
+    document.querySelector('meta[property="og:description"]')?.setAttribute("content", publicMeta.description);
     updateDiamondShopUI();
     renderEquippedGear();
+  }
+
+  const stageCopy = {
+    en: [
+      ["Moonshade Gate", "Patrol wolves"],
+      ["Mosscliff", "High ledge ambush"],
+      ["Crystal Mouth", "Crystal spikes"],
+      ["Dusk Bridge", "Bat swarm"],
+      ["Vine Passage", "Twin traps"],
+      ["Ancient Steps", "Boar guardian"],
+      ["Rift Depths", "Elite hunt"],
+      ["Behemoth Altar", "Boss battle"],
+    ],
+    "zh-Hant": [
+      ["月影入口", "巡邏狼群"],
+      ["苔石斷崖", "高台伏擊"],
+      ["螢晶洞口", "水晶尖刺"],
+      ["暮影橋頭", "飛蝠群"],
+      ["藤蔓回廊", "雙重陷阱"],
+      ["古樹祭階", "戰豬守衛"],
+      ["裂谷深處", "精英狩獵"],
+      ["古獸祭壇", "首領戰"],
+    ],
+  };
+
+  function renderStageCards() {
+    const copy = stageCopy[getLocale()];
+    nodes.zoneButtons.forEach((button, index) => {
+      const [title, hint] = copy[index];
+      button.querySelector("span").textContent = title;
+      button.querySelector("small").textContent = hint;
+      button.setAttribute("aria-label", String(index + 1) + ". " + title + ": " + hint);
+    });
+  }
+
+  function setScreen(screen) {
+    document.body.dataset.shadowWolfScreen = screen;
+    document.documentElement.dataset.shadowWolfScreen = screen;
+  }
+
+  function showStage() {
+    nodes.menuPanel.classList.add("hidden");
+    nodes.gamePanel.classList.add("hidden");
+    nodes.resultPanel.classList.add("hidden");
+    nodes.mapPanel.classList.remove("hidden");
+    setScreen("stage");
+    renderStageCards();
+  }
+
+  function showMain() {
+    state.gameActive = false;
+    cancelAnimationFrame(state.gameLoopId);
+    nodes.gamePanel.classList.add("hidden");
+    nodes.mapPanel.classList.add("hidden");
+    nodes.resultPanel.classList.add("hidden");
+    nodes.menuPanel.classList.remove("hidden");
+    setScreen("main");
+    updateDiamondShopUI();
   }
 
   function updateDiamondShopUI() {
@@ -554,6 +639,7 @@
     nodes.mapPanel.classList.add("hidden");
     nodes.resultPanel.classList.add("hidden");
     nodes.gamePanel.classList.remove("hidden");
+    setScreen("battle");
 
     renderStatsPanel();
     renderEquippedGear();
@@ -1463,9 +1549,7 @@
 
     nodes.startBtn.addEventListener("click", () => {
       window.WonderSound?.play("click");
-      nodes.menuPanel.classList.add("hidden");
-      nodes.mapPanel.classList.remove("hidden");
-      nodes.mapLevel.textContent = state.level;
+      showStage();
     });
 
     nodes.zoneButtons.forEach((button) => {
@@ -1476,8 +1560,7 @@
       });
     });
     nodes.mapBackBtn.addEventListener("click", () => {
-      nodes.mapPanel.classList.add("hidden");
-      nodes.menuPanel.classList.remove("hidden");
+      showMain();
     });
     nodes.attributeButtons.forEach((button) => button.addEventListener("click", () => spendAttribute(button.dataset.attribute)));
 
@@ -1488,19 +1571,12 @@
 
     nodes.menuBtn.addEventListener("click", () => {
       window.WonderSound?.play("click");
-      state.gameActive = false;
-      cancelAnimationFrame(state.gameLoopId);
-      nodes.gamePanel.classList.add("hidden");
-      nodes.mapPanel.classList.add("hidden");
-      nodes.menuPanel.classList.remove("hidden");
-      updateDiamondShopUI();
+      showStage();
     });
 
     nodes.resultMenuBtn.addEventListener("click", () => {
       window.WonderSound?.play("click");
-      nodes.resultPanel.classList.add("hidden");
-      nodes.menuPanel.classList.remove("hidden");
-      updateDiamondShopUI();
+      showMain();
     });
 
     nodes.localeSelect.addEventListener("change", (e) => {
@@ -1530,6 +1606,7 @@
       updateHUDText();
       renderStatsPanel();
     });
+    setScreen("main");
 
     // Faked Loading screen loop
     let progress = 0;

@@ -2949,7 +2949,7 @@ canvas {
 }
 
 .overlay.settlement-screen #overlayText {
-  width: min(100%, 520px);
+  width: min(358px, 100%);
   max-width: none;
   margin: 0;
   padding: 10px 14px;
@@ -2957,7 +2957,7 @@ canvas {
   border-radius: 8px;
   background: rgba(12, 18, 28, 0.78);
   color: rgba(255, 255, 255, 0.94);
-  font-size: clamp(15px, 4.1vw, 18px);
+  font-size: 16px;
   font-weight: 900;
   line-height: 1.35;
   text-align: center;
@@ -2995,7 +2995,7 @@ canvas {
   border-radius: 8px;
   background: #ffcb3f;
   color: #202020;
-  font-size: 19px;
+  font-size: 16px;
   font-weight: 900;
   box-shadow: 0 4px 0 rgba(105, 68, 10, 0.72);
   transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
@@ -3029,7 +3029,7 @@ canvas {
 }
 
 .overlay.settlement-screen .menu-content {
-  width: min(100%, 520px);
+  width: min(358px, 100%);
   max-height: calc(100dvh - 96px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
   overflow-y: auto;
   padding: 0;
@@ -3058,12 +3058,12 @@ canvas {
   gap: 2px;
   width: 100%;
   min-width: 0;
-  min-height: 82px;
+  min-height: 72px;
   padding: 4px;
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.16);
   color: #fff;
-  font-size: clamp(10px, 2.8vw, 12px);
+  font-size: 11px;
   line-height: 1.05;
   overflow: hidden;
 }
@@ -3075,8 +3075,8 @@ canvas {
 
 .menu-tabs img,
 .tab-gear {
-  width: 58px;
-  height: 58px;
+  width: 46px;
+  height: 46px;
   object-fit: contain;
   font-size: 26px;
   line-height: 28px;
@@ -3563,17 +3563,20 @@ canvas {
   position: sticky;
   bottom: 0;
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(2, 148px);
+  justify-content: center;
   gap: 10px;
   padding-top: 4px;
   background: linear-gradient(180deg, rgba(12, 20, 30, 0), rgba(12, 20, 30, 0.96) 26%);
 }
 
 .settlement-actions button {
-  width: 100%;
-  min-width: 0;
+  width: 148px;
+  min-width: 148px;
+  max-width: 148px;
+  height: 48px;
   min-height: 48px;
-  max-height: none;
+  max-height: 48px;
   border: 0;
   border-radius: 8px;
   background: #ffcb3f;
@@ -3584,11 +3587,13 @@ canvas {
   transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
 }
 
-.settlement-actions button:only-child {
-  grid-column: 1 / -1;
+.settlement-actions button[data-settlement-action="next"],
+.settlement-actions button[data-settlement-action="retry"] {
+  grid-column: 1;
 }
 
-.settlement-actions button:last-child {
+.settlement-actions button[data-settlement-action="home"] {
+  grid-column: 2;
   background: rgba(255, 255, 255, 0.88);
 }
 
@@ -3604,11 +3609,11 @@ canvas {
 @keyframes wonder-panel-pop {
   from {
     opacity: 0;
-    transform: translateY(16px) scale(0.94);
+    transform: translateY(16px);
   }
   to {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: translateY(0);
   }
 }
 
@@ -4125,7 +4130,7 @@ canvas {
   }
 
   .overlay button {
-    min-height: 42px;
+    min-height: 46px;
     font-size: 16px;
   }
 
@@ -4140,9 +4145,9 @@ canvas {
   }
 
   .overlay.settlement-screen #overlayText {
-    padding: 9px 10px;
-    font-size: 15px;
-    line-height: 1.3;
+    padding: 10px 14px;
+    font-size: 16px;
+    line-height: 1.35;
   }
 
   .overlay.settlement-screen .menu-content {
@@ -4150,70 +4155,73 @@ canvas {
   }
 
   .overlay.settlement-screen .profile-panel {
-    padding: 10px;
+    padding: 14px;
   }
 
   .settlement-panel {
-    gap: 8px;
+    gap: 10px;
   }
 
   .settlement-row {
-    padding: 9px 10px;
+    padding: 11px 12px;
   }
 
   .settlement-row strong {
-    font-size: 15px;
+    font-size: 16px;
   }
 
   .settlement-row span {
-    font-size: 11px;
+    font-size: 12px;
   }
 
   .reward-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 6px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 7px;
   }
 
   .reward-item,
   .reward-empty {
-    min-height: 56px;
+    min-height: 64px;
   }
 
   .reward-item img {
-    max-width: 38px;
-    max-height: 38px;
+    max-width: 44px;
+    max-height: 44px;
   }
 
   .reward-item span,
   .reward-empty {
-    font-size: 11px;
+    font-size: 12px;
   }
 
   .skill-report {
-    gap: 6px;
-    padding: 9px 10px;
+    gap: 8px;
+    padding: 11px 12px;
   }
 
   .skill-report-row {
-    min-height: 18px;
+    min-height: 20px;
   }
 
-  .skill-report-row span,
+  .skill-report-row span {
+    font-size: 12px;
+  }
+
   .skill-report p {
     font-size: 11px;
   }
 
   .skill-report-row b {
-    font-size: 12px;
+    font-size: 13px;
   }
 
   .settlement-actions {
-    gap: 8px;
+    gap: 10px;
   }
 
   .settlement-actions button {
-    min-height: 46px;
-    font-size: 15px;
+    min-height: 48px;
+    font-size: 16px;
   }
 
   .menu-tabs button {

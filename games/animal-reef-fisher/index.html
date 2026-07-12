@@ -51,7 +51,7 @@
   <body data-tutorial-auto-show="false">
     <main class="reef-app" data-no-mobile-immersive="true">
       <header class="topbar">
-        <a class="back-btn" href="/" aria-label="Back to lobby">&larr;</a>
+        <a class="back-btn" href="/" aria-label="Back to lobby"><span>&larr;</span><img src="../../assets/weightplay-logo.png" alt="" /></a>
         <div class="brand">
           <span>WeightPlay</span>
           <h1 data-ui="title">Animal Reef Fisher</h1>
@@ -73,24 +73,37 @@
         </div>
       </section>
 
-      <section id="menuPanel" class="panel menu-panel">
+      <section id="mainPanel" class="panel menu-panel">
         <img class="cover" src="../../assets/animal-reef-fisher-cover.webp" alt="" />
         <div class="menu-copy">
           <strong data-ui="menuTitle">Cast into the coral reef and build your sea-creature album.</strong>
           <span data-ui="menuHint">Choose a reef zone, control line tension, earn Reef Notes, and upgrade your gear locally.</span>
+          <button id="startBtn" class="primary-btn" type="button" data-ui="startGame">Start Game</button>
+        </div>
+      </section>
+
+      <section id="stagePanel" class="panel stage-panel is-hidden">
+        <header class="stage-head">
+          <button id="stageBackBtn" class="stage-return" type="button" aria-label="Back">&larr;</button>
+          <strong data-ui="chooseZone">Choose Reef Zone</strong>
+        </header>
+        <div class="stage-workspace">
           <div class="profile-grid">
             <div><span data-ui="reefNotes">Reef Notes</span><strong id="notesText">0</strong></div>
             <div><span data-ui="album">Album</span><strong id="albumText">0/12</strong></div>
             <div><span data-ui="diamonds">Diamonds</span><strong id="diamondText">0</strong></div>
           </div>
-          <div id="zoneRow" class="zone-row" aria-label="Reef zones"></div>
+          <div id="zoneRow" class="zone-row stage-rail" aria-label="Reef zones"></div>
+          <section class="stage-upgrades">
+            <strong data-ui="prepareGear">Prepare Gear</strong>
           <div class="shop-row">
             <button id="lureBtn" class="secondary-btn" type="button"></button>
             <button id="sonarPrepBtn" class="secondary-btn" type="button"></button>
           </div>
           <div id="gearGrid" class="gear-grid" aria-label="Gear upgrades"></div>
-          <button id="startBtn" class="primary-btn" type="button" data-ui="startExpedition">Start Expedition</button>
+          </section>
         </div>
+        <div class="stage-ad-reserve" aria-hidden="true"></div>
       </section>
 
       <section id="gamePanel" class="panel game-panel is-hidden" data-play-viewport data-no-mobile-immersive="true">

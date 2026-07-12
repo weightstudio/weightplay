@@ -17,12 +17,14 @@
     loadingPanel: $("loadingPanel"),
     loadingFill: $("loadingFill"),
     loadingText: $("loadingText"),
-    menuPanel: $("menuPanel"),
+    mainPanel: $("mainPanel"),
+    stagePanel: $("stagePanel"),
     gamePanel: $("gamePanel"),
     resultPanel: $("resultPanel"),
     zoneRow: $("zoneRow"),
     gearGrid: $("gearGrid"),
     startBtn: $("startBtn"),
+    stageBackBtn: $("stageBackBtn"),
     mapBtn: $("mapBtn"),
     retryBtn: $("retryBtn"),
     resultMenuBtn: $("resultMenuBtn"),
@@ -66,6 +68,9 @@
       reefNotes: "Reef Notes",
       album: "Album",
       diamonds: "Diamonds",
+      startGame: "Start Game",
+      chooseZone: "Choose Reef Zone",
+      prepareGear: "Prepare Gear",
       startExpedition: "Start Expedition",
       reefMap: "Reef Map",
       zone: "Zone",
@@ -134,6 +139,9 @@
       reefNotes: "礁石筆記",
       album: "圖鑑",
       diamonds: "鑽石",
+      startGame: "開始遊戲",
+      chooseZone: "選擇礁區",
+      prepareGear: "遠征準備",
       startExpedition: "開始遠征",
       reefMap: "礁區地圖",
       zone: "礁區",
@@ -427,7 +435,7 @@
     nodes.zoneRow.innerHTML = zones.map((zone, index) => {
       const locked = index + 1 > save.unlockedZone;
       return `
-        <button class="zone-card ${zone.id === selectedZone ? "is-selected" : ""} ${locked ? "is-locked" : ""}" data-zone="${zone.id}" type="button">
+        <button class="zone-card stage-card ${zone.id === selectedZone ? "is-selected" : ""} ${locked ? "is-locked" : ""}" data-zone="${zone.id}" type="button">
           <img src="${zone.img}" alt="" />
           <strong>${zone.name[locale]}</strong>
           <span>${locked ? t("locked") : `${t("goal")} ${zone.goal}`}</span>
@@ -455,10 +463,12 @@
   }
 
   function showPanel(which) {
-    nodes.menuPanel.classList.toggle("is-hidden", which !== "menu");
+    nodes.mainPanel.classList.toggle("is-hidden", which !== "main");
+    nodes.stagePanel.classList.toggle("is-hidden", which !== "stage");
     nodes.gamePanel.classList.toggle("is-hidden", which !== "game");
     nodes.resultPanel.classList.toggle("is-hidden", which !== "result");
     document.body.classList.toggle("reef-fisher-playing", which === "game");
+    document.body.classList.toggle("reef-fisher-stage", which === "stage");
     document.body.dataset.reefState = which;
     document.documentElement.dataset.reefState = which;
   }
@@ -1069,21 +1079,32 @@
     if (index + 1 > save.unlockedZone) return;
     selectedZone = zone.id;
     renderMenu();
+    startRun();
   });
   nodes.gearGrid.addEventListener("click", (evt) => {
     const btn = evt.target.closest("[data-gear]");
     if (btn) upgradeGear(btn.dataset.gear);
   });
-  nodes.startBtn.addEventListener("click", startRun);
+  nodes.startBtn.addEventListener("click", () => {
+    state = "stage";
+    showPanel("stage");
+    renderMenu();
+    focusPanel(nodes.stagePanel);
+  });
+  nodes.stageBackBtn.addEventListener("click", () => {
+    state = "main";
+    showPanel("main");
+    focusPanel(nodes.mainPanel);
+  });
   nodes.mapBtn.addEventListener("click", () => {
-    state = "menu";
-    showPanel("menu");
+    state = "stage";
+    showPanel("stage");
     renderMenu();
   });
   nodes.retryBtn.addEventListener("click", startRun);
   nodes.resultMenuBtn.addEventListener("click", () => {
-    state = "menu";
-    showPanel("menu");
+    state = "stage";
+    showPanel("stage");
     renderMenu();
   });
   nodes.lureBtn.addEventListener("click", () => buyDiamondItem("lure"));
@@ -1231,8 +1252,8 @@
   window.addEventListener("orientationchange", updateBattleScale);
   window.visualViewport?.addEventListener("resize", updateBattleScale, { passive: true });
   applyLocale();
-  state = "menu";
-  showPanel("menu");
+  state = "main";
+  showPanel("main");
   window.__ANIMAL_REEF_FISHER_BOOTED__ = true;
   window.__ANIMAL_REEF_FISHER_FIRST_SCREEN__ = {
     booted: true,
@@ -1240,7 +1261,7 @@
     language: locale,
     startText: nodes.startBtn.textContent.trim(),
     loadingHidden: false,
-    menuHidden: nodes.menuPanel.classList.contains("is-hidden"),
+    menuHidden: nodes.mainPanel.classList.contains("is-hidden"),
   };
   track("game_view", { internalPrototype: false });
   lastTime = performance.now();

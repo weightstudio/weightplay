@@ -19,6 +19,10 @@
   display: none;
 }
 
+:is(.stage-grid, .stage-rail, .mission-grid, .mission-rail, .region-rail, .level-grid).hidden {
+  display: none !important;
+}
+
 :is(.stage-grid, .stage-rail, .mission-grid, .mission-rail, .region-rail, .level-grid) > :is(.stage-card, .mission-card, .region-card, button) {
   box-sizing: border-box !important;
   flex: 0 0 264px !important;
@@ -276,15 +280,29 @@ body.garden-stage .level-grid > button {
   object-fit: contain;
 }
 
-.wonder-stage-back {
+#wonderMainStart {
+  justify-self: center;
+  width: min(374px, 100%);
+  max-width: 374px;
+  height: 52px;
+  min-height: 52px;
+  max-height: 52px;
+}
+
+body.wonder-stage-select #wonderStageBack {
   position: absolute;
   z-index: 90;
   top: max(8px, env(safe-area-inset-top));
   left: 8px;
-  width: 48px;
-  height: 48px;
+  width: 48px !important;
+  min-width: 48px !important;
+  max-width: 48px !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  max-height: 48px !important;
   padding: 0;
-  font-size: 24px;
+  font-size: 24px !important;
+  line-height: 1 !important;
   font-weight: 900;
 }
 
@@ -305,6 +323,30 @@ body.wonder-stage-select #game {
 body.wonder-stage-select #overlay {
   bottom: 56px !important;
   height: auto !important;
+}
+
+body.wonder-stage-select #menuContent {
+  width: min(342px, calc(100vw - 48px));
+}
+
+body.wonder-stage-select #menuTabs {
+  grid-template-columns: repeat(5, 66px);
+  justify-content: center;
+}
+
+body.wonder-stage-select #menuTabs button {
+  width: 66px;
+  min-width: 66px;
+  max-width: 66px;
+  height: 72px;
+  min-height: 72px;
+  max-height: 72px;
+  font-size: 11px;
+}
+
+body.wonder-stage-select #menuTabs :is(img, .tab-gear) {
+  width: 46px;
+  height: 46px;
 }
 
 body.wonder-stage-select #battleAdReserve {

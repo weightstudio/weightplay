@@ -585,6 +585,181 @@ body {
   font-weight: 700;
 }
 
+/* Screen-flow contract: Main owns lobby/link/guide; Stage and Battle own a fixed play shell. */
+.home-link {
+  width: 58px;
+  min-height: 44px;
+  display: grid;
+  grid-template-columns: 16px 28px;
+  place-items: center;
+  gap: 4px;
+  padding: 4px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.16);
+  border-radius: 8px;
+  background: rgba(255,255,255,.06);
+  color: var(--text-main);
+  font-size: 1.35rem;
+  line-height: 1;
+  text-decoration: none;
+}
+.home-link img { width: 28px; height: 28px; object-fit: contain; }
+.top-nav { grid-template-columns: 58px minmax(0, 1fr) auto; }
+
+.play-return {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  border: 1px solid rgba(186,230,253,.5);
+  border-radius: 8px;
+  background: rgba(7,24,43,.92);
+  color: #7dd3fc;
+  font: 800 1.45rem/1 var(--font-main);
+  cursor: pointer;
+}
+
+body[data-shadow-wolf-screen="stage"],
+body[data-shadow-wolf-screen="battle"] {
+  overflow: hidden;
+  height: 100dvh;
+}
+body[data-shadow-wolf-screen="stage"] .top-nav,
+body[data-shadow-wolf-screen="battle"] .top-nav,
+body[data-shadow-wolf-screen="stage"] .game-page-info,
+body[data-shadow-wolf-screen="battle"] .game-page-info,
+body[data-shadow-wolf-screen="stage"] .desktop-only-notice,
+body[data-shadow-wolf-screen="battle"] .desktop-only-notice {
+  display: none !important;
+}
+body[data-shadow-wolf-screen="stage"] .relic-app,
+body[data-shadow-wolf-screen="battle"] .relic-app {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  max-width: none;
+  min-height: 0;
+  height: 100dvh;
+  margin: 0;
+  padding: 0;
+}
+
+.world-map-panel {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) 56px;
+  gap: 12px;
+  width: 100%;
+  max-width: none;
+  min-height: 0;
+  height: 100dvh;
+  margin: 0;
+  padding: 12px 12px 0;
+  border: 0;
+  border-radius: 0;
+  background: #091827 url("../../assets/shadow-wolf-world-map.png") center / cover;
+  box-shadow: inset 0 0 0 999px rgba(5,13,25,.62);
+  animation: none;
+}
+.stage-header { position: relative; z-index: 1; display: flex; align-items: center; gap: 12px; min-width: 0; }
+.stage-header > div { min-width: 0; }
+.stage-header span { color: #67e8f9; font-size: .72rem; font-weight: 800; letter-spacing: .08em; }
+.stage-header h2 { margin: 2px 0 0; color: #f8fafc; font-size: clamp(1.05rem, 3vw, 1.45rem); }
+.stage-subtitle { position: absolute; top: 72px; left: 72px; right: 12px; z-index: 1; color: #cbd5e1; font-size: .82rem; }
+.world-map-grid.stage-rail {
+  position: relative;
+  inset: auto;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  min-height: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 56px max(12px, calc(50% - 132px)) 12px;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  touch-action: pan-x;
+}
+.world-map-grid.stage-rail::-webkit-scrollbar { display: none; }
+.world-map-grid.stage-rail .stage-card {
+  position: relative;
+  left: auto;
+  top: auto;
+  width: 264px;
+  min-width: 264px;
+  height: 190px;
+  min-height: 190px;
+  padding: 22px;
+  scroll-snap-align: center;
+  text-align: left;
+  background: rgba(6,20,34,.92);
+}
+.world-map-grid.stage-rail .stage-card::after { content: none; }
+.world-map-grid.stage-rail .stage-card b { font-size: .76rem; }
+.world-map-grid.stage-rail .stage-card span { margin: 18px 0 8px; font-size: 1.1rem; color: #fff; }
+.world-map-grid.stage-rail .stage-card small { font-size: .84rem; color: #cbd5e1; }
+.stage-ad-reserve,
+.battle-ad-reserve { height: 56px; min-height: 56px; pointer-events: none; background: #081320; }
+
+.game-panel {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) 56px;
+  width: 100%;
+  max-width: none;
+  height: 100dvh;
+  margin: 0;
+  animation: none;
+}
+.game-layout { min-height: 0; grid-template-columns: 1fr; gap: 0; }
+.attribute-sidebar { display: none; }
+.arena-viewport {
+  position: relative;
+  min-height: 0;
+  padding: 60px 12px 10px;
+  border: 0;
+  border-radius: 0;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 10px;
+}
+.battle-return { position: absolute; top: 8px; left: 8px; z-index: 4; }
+.arena-hud { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px; }
+.hud-meta-row { grid-column: auto; justify-content: flex-end; gap: 6px; }
+.meta-badge { padding: 4px 7px; font-size: .72rem; }
+.canvas-container {
+  min-height: 0;
+  height: 100%;
+  aspect-ratio: auto;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+}
+#gameCanvas {
+  width: min(100%, calc((100dvh - 178px) * 1.6));
+  height: auto;
+  max-height: 100%;
+  aspect-ratio: 800 / 500;
+}
+
+@media (max-width: 1024px) {
+  .relic-app > .panel { display: block !important; }
+  .relic-app > .panel.hidden { display: none !important; }
+  .relic-app > #mapPanel:not(.hidden),
+  .relic-app > #gamePanel:not(.hidden) { display: grid !important; }
+  .desktop-only-notice { display: none !important; }
+}
+@media (max-height: 470px) {
+  .world-map-grid.stage-rail .stage-card { height: 176px; min-height: 176px; }
+  .arena-viewport { padding-top: 52px; }
+  .play-return { width: 38px; height: 38px; font-size: 1.2rem; }
+  .hud-meta-row { display: none; }
+  #gameCanvas { width: min(100%, calc((100dvh - 128px) * 1.6)); }
+}
+
 .sidebar-section-heading {
   display: flex;
   align-items: baseline;

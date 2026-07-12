@@ -736,6 +736,7 @@ function startLevel(levelIndex) {
     window.WonderSound?.play("wrong");
     return;
   }
+  clearFloatingMessage();
   state = makeState(levelIndex);
   state.running = true;
   setBattleShellActive(true);
@@ -1193,6 +1194,7 @@ function getBossBallColor(enemy) {
 }
 
 function loseLevel() {
+  clearFloatingMessage();
   overlay.classList.remove("equipment-screen");
   overlay.classList.add("settlement-screen");
   bankRunCoins();
@@ -1217,6 +1219,7 @@ function loseLevel() {
 }
 
 function winLevel() {
+  clearFloatingMessage();
   overlay.classList.remove("equipment-screen");
   overlay.classList.add("settlement-screen");
   bankRunCoins();
@@ -1871,6 +1874,7 @@ function updateHud() {
 }
 
 function showMainMenu(tab = activeMenuTab) {
+  clearFloatingMessage();
   activeMenuTab = tab;
   state.running = false;
   state.won = false;
@@ -1902,6 +1906,7 @@ function showMainMenu(tab = activeMenuTab) {
 }
 
 function showWonderMain() {
+  clearFloatingMessage();
   state.running = false;
   setBattleShellActive(false);
   document.body.classList.remove("wonder-stage-select", "wonder-tutorial-hidden");
@@ -2068,9 +2073,7 @@ function getLevelSummary(level) {
 }
 
 function showFloatingMessage(text) {
-  const existing = document.querySelector(".floating-message");
-  if (existing) existing.remove();
-  if (floatingMessageTimer) clearTimeout(floatingMessageTimer);
+  clearFloatingMessage();
 
   const message = document.createElement("div");
   message.className = "floating-message";
@@ -2080,6 +2083,12 @@ function showFloatingMessage(text) {
     message.remove();
     floatingMessageTimer = null;
   }, 1500);
+}
+
+function clearFloatingMessage() {
+  document.querySelectorAll(".floating-message").forEach((message) => message.remove());
+  if (floatingMessageTimer) clearTimeout(floatingMessageTimer);
+  floatingMessageTimer = null;
 }
 
 function showUpgradeChoices() {
