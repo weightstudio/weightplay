@@ -968,7 +968,7 @@
         <span class="gear-level-tag">${t("gearLevelLabel", { level })}</span>
         <span class="backpack-actions">
           <button class="gear-equip-btn${equipped ? " is-equipped" : ""}" type="button">${equipped ? t("equippedTag") : t("equipGearAction")}</button>
-          <button class="gear-upgrade-btn" type="button">${t("upgradeGearAction")} ${cost}</button>
+          <button class="gear-upgrade-btn" type="button">${level >= 10 ? t("gearMaxLevel") : `${t("upgradeGearAction")} ${cost}`}</button>
         </span>
       `;
       item.querySelector(".gear-equip-btn").addEventListener("click", () => equipGearItem(key));

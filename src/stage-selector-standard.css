@@ -291,7 +291,6 @@ body.garden-stage .level-grid > button {
   font-weight: 900;
 }
 
-body.wonder-stage-select #menuTabs,
 body.wonder-stage-select .wonder-language-picker,
 body.wonder-stage-select .game-page-info {
   display: none !important;
@@ -299,6 +298,11 @@ body.wonder-stage-select .game-page-info {
 
 body.wonder-stage-select :is(.campaign-summary, .beast-guide) {
   display: none !important;
+}
+
+body.wonder-stage-select #game {
+  visibility: hidden !important;
+  pointer-events: none !important;
 }
 
 body.wonder-stage-select #overlay {

@@ -1878,7 +1878,7 @@ function showMainMenu(tab = activeMenuTab) {
   setBattleShellActive(false);
   wonderMain.classList.add("hidden");
   wonderStageBack.classList.remove("hidden");
-  document.body.classList.toggle("wonder-stage-select", tab === "battle");
+  document.body.classList.add("wonder-stage-select");
   document.body.classList.remove("wonder-tutorial-hidden");
   overlay.classList.remove("settlement-screen");
   settingsBtn.classList.add("hidden");
@@ -1889,7 +1889,7 @@ function showMainMenu(tab = activeMenuTab) {
   overlayText.textContent = getMenuTitle(tab);
   startBtn.classList.add("hidden");
   menuContent.classList.remove("hidden");
-  menuTabs.classList.toggle("hidden", tab === "battle");
+  menuTabs.classList.remove("hidden");
   profilePanel.classList.remove("hidden");
   levelGrid.classList.add("hidden");
   upgradeGrid.classList.add("hidden");
