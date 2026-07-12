@@ -22,10 +22,11 @@
 
     <section class="screen stage-screen hidden" data-screen="stage">
       <button class="back" id="stageBack" aria-label="Back">←</button>
-      <header><strong data-copy="chooseStage">Choose a trail</strong><span id="stageProgress"></span></header>
+      <header><strong data-copy="chooseStage">Choose a trail</strong><span id="stageProgress"></span><button id="album" class="mini">Album</button></header>
       <div class="stage-rail" id="stageRail" aria-label="Stages"></div>
       <button class="primary" id="playStage" data-copy="playStage">Begin trail</button>
       <div class="ad-reserve" aria-hidden="true"></div>
+      <dialog id="albumDialog"><button id="closeAlbum" class="back">←</button><h2>Animal clues</h2><div id="albumList"></div></dialog>
     </section>
 
     <section class="screen battle-shell hidden" data-screen="battle" data-no-mobile-immersive="true">
