@@ -1369,6 +1369,84 @@
     });
   }
 
+  function stageArtworkUrl() {
+    const image = document.querySelector(
+      ".main-poster, .main-cover, .wonder-main-cover, img.cover, img[class*='poster'], img[class*='cover']"
+    );
+    const imageUrl = image?.currentSrc || image?.src;
+    if (imageUrl) return imageUrl;
+    const metaUrl = document.querySelector('meta[property="og:image"]')?.content;
+    return metaUrl ? new URL(metaUrl, location.href).href : "";
+  }
+
+  function syncStageArtwork() {
+    const rails = document.querySelectorAll(
+      ".stage-grid, .stage-rail, .mission-grid, .mission-rail, .region-rail, .level-grid"
+    );
+    const artUrl = stageArtworkUrl();
+    if (!artUrl) return;
+    const shellSelector = [
+      "[data-wp-standard-stage-screen]",
+      "#stagePanel",
+      "#stageScreen",
+      "#stageSelectPanel",
+      "#stageSelect",
+      "#stageView",
+      "#levelSelect",
+      "#menuPanel",
+      ".stage-panel",
+      ".stage-screen",
+      ".stage-shell",
+      ".stage-select",
+      ".level-select",
+      ".menu-shell",
+      "#overlay",
+    ].join(",");
+
+    const activeShells = new Set([...rails]
+      .filter((rail) => rail.getClientRects().length && getComputedStyle(rail).visibility !== "hidden")
+      .map((rail) => rail.closest(shellSelector))
+      .filter(Boolean));
+
+    document.querySelectorAll(".wp-stage-art-shell").forEach((shell) => {
+      if (activeShells.has(shell)) return;
+      shell.classList.remove("wp-stage-art-shell");
+      shell.removeAttribute("data-wp-stage-art");
+      shell.style.removeProperty("--wp-stage-art");
+    });
+
+    activeShells.forEach((shell) => {
+      if (shell.dataset.wpStageArt !== artUrl) {
+        shell.dataset.wpStageArt = artUrl;
+        shell.style.setProperty("--wp-stage-art", `url("${artUrl.replaceAll('"', '\\"')}")`);
+      }
+      shell.classList.add("wp-stage-art-shell");
+    });
+  }
+
+  function installStageArtworkSync() {
+    document.body.dataset.wpGameId = currentGameId();
+    let queued = false;
+    const queueSync = () => {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(() => {
+        queued = false;
+        syncStageArtwork();
+      });
+    };
+    const observer = new MutationObserver(queueSync);
+    observer.observe(document.body, {
+      attributes: true,
+      attributeFilter: ["class", "hidden", "style"],
+      childList: true,
+      subtree: true,
+    });
+    window.addEventListener("pageshow", queueSync);
+    window.addEventListener("resize", queueSync);
+    queueSync();
+  }
+
   function render() {
     const id = currentGameId();
     const baseGame = games[id];
@@ -1504,9 +1582,13 @@
   };
 
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", render, { once: true });
+    document.addEventListener("DOMContentLoaded", () => {
+      render();
+      installStageArtworkSync();
+    }, { once: true });
   } else {
     render();
+    installStageArtworkSync();
   }
 
   window.addEventListener("wonder:locale-change", render);

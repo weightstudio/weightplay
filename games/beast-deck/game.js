@@ -1375,6 +1375,17 @@
         renderStats();
         return window.__beastDeckSmoke.getState();
       },
+      playFirstAffordableCard: () => {
+        const index = state.hand.findIndex((cardId) => (cardDb[cardId]?.cost || 0) <= state.energy);
+        if (index >= 0) playCard(index);
+        const panel = nodes.gamePanel.getBoundingClientRect();
+        const hand = nodes.handRow.getBoundingClientRect();
+        return {
+          state: window.__beastDeckSmoke.getState(),
+          panel: { left: panel.left, width: panel.width, right: panel.right },
+          hand: { left: hand.left, width: hand.width, right: hand.right },
+        };
+      },
       forceWinMission: () => {
         const mission = getMission(state.mission || profile.selectedMission);
         state.xpEarned = mission.xp;

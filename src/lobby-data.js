@@ -473,6 +473,25 @@ window.WONDER_LOBBY = {
       meta: { en: ["2D Side-Scroller", "Jumping Physics", "Equip Gear"], "zh-Hant": ["2D 橫向卷軸", "跳躍操作", "裝備養成"] },
       art: { kind: "image", background: "assets/shadow-wolf-cover.webp", hero: "assets/weightplay-character-spark-paw-fox-cutout.webp" },
     },
+    {
+      id: "animal-skyport-dispatch",
+      title: { en: "Animal Skyport Dispatch", "zh-Hant": "\u52d5\u7269\u5929\u7a7a\u6e2f\u8abf\u5ea6\u968a" },
+      status: "planned",
+      statusText: { en: "Coming Soon", "zh-Hant": "\u656c\u8acb\u671f\u5f85" },
+      type: { en: "Route Management Strategy", "zh-Hant": "\u822a\u7dda\u8abf\u5ea6\u7b56\u7565" },
+      categories: ["Animal Games", "Strategy"],
+      skills: ["Logic", "Focus", "Problem Solving"],
+      ages: ["13"],
+      ageLabel: "13+",
+      href: "games/animal-skyport-dispatch/",
+      internalTrial: "index.html?trial=1",
+      description: {
+        en: "Route animal airships to the right docks, manage storms and crew, and keep Cloudline Skyport moving.",
+        "zh-Hant": "\u8abf\u5ea6\u52d5\u7269\u98db\u8239\u9032\u5165\u6b63\u78ba\u78bc\u982d\uff0c\u8655\u7406\u66b4\u98a8\u3001\u7d44\u54e1\u8207\u58c5\u585e\u3002"
+      },
+      meta: { en: ["Route Planning", "Five Shifts", "Skyport Growth"], "zh-Hant": ["\u822a\u7dda\u898f\u5283", "\u4e94\u500b\u73ed\u6b21", "\u5929\u7a7a\u6e2f\u6210\u9577"] },
+      art: { kind: "image", background: "assets/animal-skyport-dispatch-cover.webp", hero: "assets/animal-skyport-dispatch-orla.webp" },
+    },
   ],
 };
 

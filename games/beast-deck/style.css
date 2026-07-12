@@ -1673,11 +1673,11 @@ body.beast-deck-playing .battle-ad-reserve {
 html:has(body.beast-deck-playing), body.beast-deck-playing { width:100%; height:100dvh; -webkit-text-size-adjust:100%; text-size-adjust:100%; }
 body.beast-deck-playing .game-container { width:100vw; height:100dvh; min-height:0; overflow:hidden; }
 body.beast-deck-playing .topbar, body.beast-deck-playing .game-page-info, body.beast-deck-playing .wp-tutorial-button, body.beast-deck-playing .wp-tutorial-backdrop, body.beast-deck-playing .weightplay-version-badge { display:none !important; }
-body.beast-deck-playing #gamePanel.game-panel { position:fixed; top:4px; left:50%; display:grid; grid-template-rows:86px minmax(0,1fr) 238px; gap:6px; width:min(calc(100vw - 8px),612px); max-width:none; height:min(calc(100dvh - 64px),788px); min-height:0; margin:0; padding:8px; overflow:hidden; transform:translateX(-50%); }
+body.beast-deck-playing #gamePanel.game-panel { position:fixed; top:4px; left:50%; display:grid; grid-template-columns:minmax(0,1fr); grid-template-rows:86px minmax(0,1fr) 238px; justify-content:stretch; justify-items:stretch; gap:6px; width:min(calc(100vw - 8px),612px); max-width:none; height:min(calc(100dvh - 64px),788px); min-height:0; margin:0; padding:8px; overflow:hidden; transform:translateX(-50%); }
 body.beast-deck-playing .hud-row, body.beast-deck-playing .battlefield, body.beast-deck-playing .action-area { min-width:0; min-height:0; margin:0; overflow:hidden; }
 body.beast-deck-playing .hand-row { min-height:176px; max-height:184px; overflow-x:auto; overflow-y:hidden; }
-body.beast-deck-playing .action-area { height:238px; min-height:238px; grid-template-rows:184px 48px; }
-body.beast-deck-playing .hand-row { height:184px; min-height:184px; max-height:184px; flex:0 0 184px; }
+body.beast-deck-playing .action-area { width:100%; min-width:100%; max-width:100%; height:238px; min-height:238px; grid-template-rows:184px 48px; justify-self:stretch; align-self:stretch; }
+body.beast-deck-playing .hand-row { width:100%; min-width:100%; max-width:100%; height:184px; min-height:184px; max-height:184px; flex:0 0 184px; align-self:stretch; }
 body.beast-deck-playing .battle-log { max-height:58px; overflow-y:auto; }
 body.beast-deck-playing #menuBtn { font-size:0; }
 body.beast-deck-playing #menuBtn::before { content:"\2190"; font-size:1.45rem; line-height:1; }
