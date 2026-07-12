@@ -128,6 +128,7 @@
       equippedTag: "Equipped",
       tryAgain: "Try Again",
       backToMenu: "Back to Menu",
+      backToStage: "Back to Missions",
       sidebarInventory: "Equipped Gear",
       sidebarStats: "Character Stats",
       slotWeapon: "WEAPON",
@@ -343,7 +344,8 @@
     equipGearAction: "穿戴",
     equippedTag: "已穿戴",
     tryAgain: "再玩一次",
-    backToMenu: "返回選單",
+      backToMenu: "返回選單",
+      backToStage: "返回任務",
     sidebarInventory: "已穿戴裝備",
     sidebarStats: "角色能力",
     slotWeapon: "武器",
@@ -741,6 +743,7 @@
     state.gameActive = false;
     cancelAnimationFrame(state.gameLoopId);
     document.body.classList.remove("relic-playing", "relic-stage-select");
+    document.body.classList.remove("relic-result");
     nodes.gamePanel.classList.add("hidden");
     nodes.stagePanel.classList.add("hidden");
     nodes.resultPanel.classList.add("hidden");
@@ -754,6 +757,7 @@
     state.gameActive = false;
     cancelAnimationFrame(state.gameLoopId);
     document.body.classList.remove("relic-playing");
+    document.body.classList.remove("relic-result");
     document.body.classList.add("relic-stage-select");
     nodes.menuPanel.classList.add("hidden");
     nodes.resultPanel.classList.add("hidden");
@@ -1076,6 +1080,7 @@
     nodes.resultPanel.classList.add("hidden");
     nodes.gamePanel.classList.remove("hidden");
     document.body.classList.remove("relic-stage-select");
+    document.body.classList.remove("relic-result");
     document.body.classList.add("relic-playing");
     focusGamePanel();
 
@@ -1399,6 +1404,8 @@
 
     nodes.gamePanel.classList.add("hidden");
     nodes.resultPanel.classList.remove("hidden");
+    document.body.classList.remove("relic-playing", "relic-stage-select");
+    document.body.classList.add("relic-result");
 
     nodes.resultTitle.textContent = won ? t("runComplete") : t("runFailed");
     nodes.resultScore.textContent = won ? "3" : String(state.room - 1);
@@ -1977,7 +1984,7 @@
 
     nodes.resultMenuBtn.addEventListener("click", () => {
       window.WonderSound?.play("click");
-      showMain();
+      showStage();
     });
 
     nodes.localeSelect.addEventListener("change", (e) => {

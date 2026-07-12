@@ -303,6 +303,28 @@
     reviveTriggered: "{hero} 使用復甦代幣回到戰鬥。",
   });
 
+  // Keep the production Traditional Chinese dictionary separate from legacy
+  // mojibake literals above, so every current UI surface has a safe source.
+  Object.assign(text["zh-Hant"], {
+    title: "動物符文戰棋", language: "語言", backToLobby: "返回大廳", backToMenu: "返回任務", backToMain: "返回主選單", startGame: "開始遊戲",
+    menuTitle: "指揮你的符文小隊。", menuHint: "選擇任務，在符文格上移動動物英雄，透過站位與技能擊敗敵人。",
+    profileLevel: "等級", profileXp: "經驗值", profileBest: "最佳任務", profileRunes: "符文",
+    heroTrainingTitle: "英雄訓練", heroTrainingHint: "花費符文，永久提升每位動物英雄。", heroLevel: "Lv.{level}", heroUpgradeCost: "升級 {cost}", heroUpgradeMax: "最高等級",
+    lionRole: "前排攻擊手", owlRole: "遠距爆發", turtleRole: "隊伍守護者",
+    missionSelect: "選擇任務", missionHint: "已解鎖任務會保存在這台裝置。", missionCard: "任務 {n}", missionGoal: "目標：擊敗 {enemies}", missionReward: "{xp} 經驗值 / {runes} 符文", missionEnemyLine: "敵人：{enemies}", locked: "未解鎖",
+    trainingTitle: "訓練欄位", trainingText: "永久效果：英雄每場任務起始能量 +1。", trainingOwned: "已擁有：起始能量 +1。", trainingNeed: "需要 {cost} 顆鑽石。", trainingBuy: "解鎖 {cost}",
+    startMission: "開始任務", mission: "任務", turn: "回合", wallet: "鑽石", attack: "攻擊", guard: "防守", skill: "技能", endTurn: "結束回合", health: "生命", energy: "能量",
+    chooseHero: "選擇一位英雄，再移動或攻擊。", chooseTarget: "{hero}：生命 {hp}/{maxHp}，能量 {energy}。", ready: "可行動", acted: "已行動", fallen: "倒下", turnRosterTitle: "小隊行動", skillInfo: "技能：{skill} - {desc}", skillInfoLabel: "技能",
+    skillLion: "獅王撲擊", skillLionDesc: "對最近目標造成重擊。", skillOwl: "符文箭", skillOwlDesc: "以符文魔法攻擊較遠的目標。", skillTurtle: "甲殼守護", skillTurtleDesc: "守護全隊並回復 1 點生命。",
+    moved: "{hero} 已移動。", attacked: "{hero} 攻擊了 {enemy}。", guarded: "{hero} 進入防守。", skillUsed: "{hero} 使用了符文技能。", enemyTurn: "敵人正在行動。",
+    chooseReward: "選擇符文獎勵", reroll: "重抽 3", rerollNeed: "重抽需要 3 顆鑽石。", missionClear: "任務完成", missionFailed: "任務失敗", resultWin: "完成任務 {mission}，獲得 {xp} 經驗值和 {runes} 符文。", resultLose: "符文小隊在任務 {mission} 倒下。讓烏龜守在前排，集中攻擊同一隻敵人。",
+    skillReport: "能力報告", reportWin: "規劃很棒：你用站位、集火和獎勵選擇保護了小隊。", reportLose: "這是很好的練習：敵人回合前先防守，並一次專注一隻野獸。", nextMission: "下一個任務", retry: "再試一次", menu: "選單",
+    lion: "獅王守護者", owl: "月帽貓頭鷹法師", turtle: "苔殼烏龜", wolf: "暗影狼", raven: "水晶渡鴉", stag: "石角巨鹿",
+    rewardPower: "力量符文", rewardPowerDesc: "所有英雄攻擊力 +1。", rewardGuard: "守護徽章", rewardGuardDesc: "所有英雄生命上限 +1。", rewardShard: "符文碎片", rewardShardDesc: "任務後額外獲得 35 經驗值。", rewardRevive: "復活代幣", rewardReviveDesc: "保留 1 枚復活代幣；未來戰鬥中可自動復活一位倒下英雄。", rewardFocus: "專注符文", rewardFocusDesc: "下次任務起始能量 +1。",
+    missionPlan: "策略：{plan}", missionTactic1: "先學會在兩隻暗影狼前維持站位。", missionTactic2: "保護貓頭鷹，避免被遠程渡鴉擊倒。", missionTactic3: "清除守衛後，集中攻擊石角巨鹿。", missionTactic4: "兩隻渡鴉出手前，讓烏龜先防守。", missionTactic5: "長戰鬥要管理能量並集中目標。", missionTactic6: "Boss 壓力戰：撐過兩隻巨鹿與渡鴉火力。",
+    missionStatusCurrent: "目前選擇", missionStatusUnlocked: "點擊選擇", missionRewardLabel: "通關獎勵", startSelectedMission: "開始任務 {n}", progressionTitle: "永久成長", progressionLevelLine: "小隊 Lv.{level} / 距離下級還差 {xp} 經驗值", progressionHeroLine: "英雄升級：獅王 Lv.{lion}、貓頭鷹 Lv.{owl}、烏龜 Lv.{turtle}", progressionBonusLine: "已保存加成：攻擊 +{atk}、生命 +{hp}、能量 +{energy}、復活代幣 {revives}", progressionNextUpgrade: "下一次升級：{hero} 還差 {cost} 枚符文。", heroGrowthStats: "永久：生命 +{hp} / 攻擊 +{atk}", heroNextStats: "下一級 Lv.{level}：生命 +{hp} / 攻擊 +{atk}", heroUpgradeNeed: "還差 {need} 枚符文", heroUpgradeReady: "可以升級", rewardPermanent: "永久成長", reviveTriggered: "{hero} 使用復活代幣回到戰場。"
+  });
+
   const heroDefs = [
     { id: "lion", name: "lion", role: "lionRole", img: "weightplay-boom-mane-lion.png", hp: 7, atk: 3, skillName: "skillLion", skillDesc: "skillLionDesc", skill: "animal-rune-tactics-skill-lion-strike.webp" },
     { id: "owl", name: "owl", role: "owlRole", img: "animal-rune-tactics-hero-owl.webp", hp: 5, atk: 2, range: 2, skillName: "skillOwl", skillDesc: "skillOwlDesc", skill: "animal-rune-tactics-skill-owl-rune-bolt.webp" },
@@ -407,11 +429,26 @@
 
   function applyLocale() {
     document.documentElement.lang = locale === "zh-Hant" ? "zh-Hant" : "en";
-    nodes.backBtn.setAttribute("aria-label", state ? t("backToMenu") : "Back to lobby");
+    document.title = `${t("title")} - WeightPlay`;
+    const description = locale === "zh-Hant"
+      ? "免費 13+ 動物回合制戰棋遊戲。指揮獅王、貓頭鷹與烏龜，在符文戰場完成任務並保存本機進度。"
+      : "Play Animal Rune Tactics, a free 13+ turn-based animal squad tactics game with rune grid battles, local progress, rewards, and optional diamond rerolls.";
+    document.querySelector('meta[name="description"]')?.setAttribute("content", description);
+    document.querySelector('meta[property="og:title"]')?.setAttribute("content", `${t("title")} - WeightPlay`);
+    document.querySelector('meta[property="og:description"]')?.setAttribute("content", description);
+    document.querySelector('meta[name="twitter:title"]')?.setAttribute("content", `${t("title")} - WeightPlay`);
+    document.querySelector('meta[name="twitter:description"]')?.setAttribute("content", description);
+    nodes.backBtn.setAttribute("aria-label", state ? t("backToMenu") : t("backToLobby"));
     document.querySelectorAll("[data-ui]").forEach((node) => {
       node.textContent = t(node.dataset.ui);
     });
     nodes.localeSelect.value = locale;
+    nodes.localeSelect.setAttribute("aria-label", t("language"));
+    if (nodes.mainStartBtn) nodes.mainStartBtn.textContent = t("startGame");
+    if (nodes.stagePanel) {
+      nodes.stagePanel.querySelector("strong").textContent = t("missionSelect");
+      nodes.stageBackBtn.setAttribute("aria-label", t("backToMain"));
+    }
     renderMenu();
     if (state) render();
   }
@@ -537,13 +574,13 @@
     mainStart.type = "button";
     mainStart.className = "primary-btn standard-main-start";
     mainStart.dataset.wpMainStart = "true";
-    mainStart.textContent = "Start Game";
+    mainStart.textContent = t("startGame");
     menuCopy.insertBefore(mainStart, menuCopy.querySelector(".profile-grid"));
     const stagePanel = document.createElement("section");
     stagePanel.id = "stagePanel";
     stagePanel.className = "wp-standard-stage-panel is-hidden";
     stagePanel.dataset.wpStandardStageScreen = "true";
-    stagePanel.innerHTML = '<header class="wp-standard-stage-heading"><button id="stageBackBtn" type="button" aria-label="Back">&larr;</button><strong>Choose Mission</strong></header>';
+    stagePanel.innerHTML = `<header class="wp-standard-stage-heading"><button id="stageBackBtn" type="button" aria-label="${t("backToMain")}">&larr;</button><strong>${t("missionSelect")}</strong></header>`;
     stagePanel.append(missionList, nodes.startBtn);
     nodes.menuPanel.after(stagePanel);
     const reserve = document.createElement("div");
@@ -601,6 +638,7 @@
     nodes.stageReserve.classList.add("is-hidden");
     document.body.classList.remove("wp-standard-stage-page");
     document.body.classList.add("is-rune-playing");
+    nodes.backBtn.setAttribute("href", "#stage");
     nodes.backBtn.setAttribute("aria-label", t("backToMenu"));
     nodes.resultPanel.classList.add("is-hidden");
     nodes.rewardPanel.classList.add("is-hidden");
@@ -704,7 +742,7 @@
           <img src="${asset(hero.img)}" alt="" aria-hidden="true" />
           <span>
             <strong>${t(hero.name)}</strong>
-            <small>${status} / HP ${Math.max(0, hero.hp)}/${hero.maxHp}</small>
+            <small>${status} / ${t("health")} ${Math.max(0, hero.hp)}/${hero.maxHp}</small>
           </span>
         </button>`;
     }).join("");
@@ -980,7 +1018,8 @@
   function showMenu() {
     state = null;
     document.body.classList.remove("is-rune-playing");
-    nodes.backBtn.setAttribute("aria-label", "Back to lobby");
+    nodes.backBtn.setAttribute("href", "/");
+    nodes.backBtn.setAttribute("aria-label", t("backToLobby"));
     nodes.gamePanel.classList.add("is-hidden");
     nodes.rewardPanel.classList.add("is-hidden");
     nodes.resultPanel.classList.add("is-hidden");

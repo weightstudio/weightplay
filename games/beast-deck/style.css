@@ -1737,3 +1737,198 @@ body.beast-deck-playing .draft-panel, body.beast-deck-playing .result-panel { z-
   body.beast-deck-playing .action-area { grid-column:3; grid-row:1; display:grid; grid-template-rows:minmax(0,1fr) 48px; gap:4px; }
   body.beast-deck-playing .hand-row { min-width:0; min-height:0; max-height:none; width:100%; height:100%; overscroll-behavior-x:contain; }
 }
+
+/* Standard Main and Stage ownership. Battle geometry remains independent. */
+#menuPanel .menu-copy {
+  max-width: 520px;
+}
+
+#menuPanel .standard-main-start {
+  width: 100%;
+  height: 52px;
+  min-height: 52px;
+  max-height: 52px;
+  flex: 0 0 52px;
+  font-size: 16px;
+}
+
+#stagePanel.wp-standard-stage-panel {
+  grid-template-rows: 52px minmax(0, 1fr) 52px;
+  background-color: #17243a;
+  background-image: linear-gradient(rgb(7 18 31 / 82%), rgb(23 36 58 / 92%)), url("../../assets/beast-deck-cover.webp");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.beast-stage-workspace {
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.beast-stage-view {
+  display: none;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+}
+
+.beast-stage-view.is-active {
+  display: grid;
+}
+
+.beast-stage-view[data-stage-view="missions"] {
+  grid-template-rows: minmax(0, 1fr) 52px;
+  gap: 8px;
+}
+
+.beast-stage-view[data-stage-view="missions"] .stage-select {
+  display: grid;
+  grid-template-rows: 44px 190px minmax(52px, 1fr);
+  gap: 8px;
+  min-width: 0;
+  min-height: 0;
+  padding: 8px;
+  overflow: hidden;
+  background: rgb(8 20 36 / 88%);
+}
+
+#stagePanel .stage-select-head {
+  min-width: 0;
+  padding: 5px 8px;
+  overflow: hidden;
+}
+
+#stagePanel .stage-select-head :is(strong, small) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#stagePanel .stage-grid {
+  height: 190px;
+  min-height: 190px;
+  max-height: 190px;
+  padding: 0 calc((100% - 264px) / 2);
+  gap: 12px;
+  touch-action: pan-x;
+  overscroll-behavior-x: contain;
+}
+
+#stagePanel .stage-card {
+  flex: 0 0 264px !important;
+  width: 264px !important;
+  min-width: 264px !important;
+  max-width: 264px !important;
+  height: 190px !important;
+  min-height: 190px !important;
+  max-height: 190px !important;
+  padding: 16px;
+  justify-content: center;
+}
+
+#stagePanel .stage-card strong {
+  font-size: 20px;
+}
+
+#stagePanel .stage-card :is(span, small, em) {
+  font-size: 13px;
+  line-height: 18px;
+}
+
+#stagePanel .selected-mission-summary {
+  grid-auto-rows: max-content;
+  align-content: start;
+  min-height: 0;
+  max-height: none;
+  overflow-y: auto;
+  background: rgb(8 20 36 / 92%);
+}
+
+#stagePanel #startBtn {
+  width: min(100%, 360px);
+  height: 52px;
+  min-height: 52px;
+  max-height: 52px;
+  justify-self: center;
+}
+
+.beast-stage-view[data-stage-view="deck"],
+.beast-stage-view[data-stage-view="shop"] {
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+}
+
+#stagePanel .collection-panel,
+#stagePanel .diamond-shop {
+  width: min(100%, 720px);
+  margin: 0 auto;
+  background: rgb(8 20 36 / 92%);
+}
+
+.beast-stage-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, 104px);
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 0;
+  padding: 2px 8px;
+  background: rgb(8 20 36 / 92%);
+  border-radius: 8px;
+}
+
+.beast-stage-tabs button {
+  width: 104px;
+  min-width: 104px;
+  max-width: 104px;
+  height: 44px;
+  min-height: 44px;
+  max-height: 44px;
+  padding: 4px 6px;
+  overflow: hidden;
+  border: 1px solid rgb(255 255 255 / 18%);
+  border-radius: 8px;
+  background: #263650;
+  color: #f8fafc;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.beast-stage-tabs button.is-active {
+  border-color: #34d399;
+  background: #087f63;
+}
+
+@media (max-width: 360px) {
+  .beast-stage-tabs {
+    grid-template-columns: repeat(3, 92px);
+  }
+
+  .beast-stage-tabs button {
+    width: 92px;
+    min-width: 92px;
+    max-width: 92px;
+  }
+}
+
+@media (max-height: 560px) {
+  .beast-stage-view[data-stage-view="missions"] .stage-select {
+    grid-template-rows: 34px 176px;
+  }
+
+  #stagePanel .stage-grid,
+  #stagePanel .stage-card {
+    height: 176px !important;
+    min-height: 176px !important;
+    max-height: 176px !important;
+  }
+
+  #stagePanel .selected-mission-summary {
+    display: none;
+  }
+}

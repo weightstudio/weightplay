@@ -78,6 +78,8 @@
   function installStandardStageFlow() {
     const menuCopy = nodes.menuPanel.querySelector(".menu-copy");
     const stageSelect = nodes.stageGrid.closest(".stage-select");
+    const collectionPanel = $("collectionPanel");
+    const diamondShop = $("diamondShop");
     const mainStart = document.createElement("button");
     mainStart.id = "mainStartBtn";
     mainStart.type = "button";
@@ -89,14 +91,39 @@
     stagePanel.id = "stagePanel";
     stagePanel.className = "wp-standard-stage-panel hidden";
     stagePanel.dataset.wpStandardStageScreen = "true";
-    stagePanel.innerHTML = '<header class="wp-standard-stage-heading"><button id="stageBackBtn" type="button" aria-label="Back">&larr;</button><strong>Choose a Mission</strong></header>';
-    stagePanel.append(stageSelect, nodes.startBtn);
+    stagePanel.innerHTML = `
+      <header class="wp-standard-stage-heading"><button id="stageBackBtn" type="button" aria-label="Back">&larr;</button><strong data-ui="stageHubTitle">Mission Preparation</strong></header>
+      <div class="beast-stage-workspace">
+        <section class="beast-stage-view is-active" data-stage-view="missions"></section>
+        <section class="beast-stage-view" data-stage-view="deck"></section>
+        <section class="beast-stage-view" data-stage-view="shop"></section>
+      </div>
+      <nav class="beast-stage-tabs" aria-label="Preparation">
+        <button type="button" class="is-active" data-stage-tab="missions" data-ui="stageTabMissions">Missions</button>
+        <button type="button" data-stage-tab="deck" data-ui="stageTabDeck">Deck</button>
+        <button type="button" data-stage-tab="shop" data-ui="stageTabShop">Upgrades</button>
+      </nav>`;
+    const missionView = stagePanel.querySelector('[data-stage-view="missions"]');
+    const deckView = stagePanel.querySelector('[data-stage-view="deck"]');
+    const shopView = stagePanel.querySelector('[data-stage-view="shop"]');
+    missionView.append(stageSelect, nodes.startBtn);
+    deckView.append(collectionPanel);
+    shopView.append(diamondShop);
     nodes.menuPanel.after(stagePanel);
     const reserve = document.createElement("div");
     reserve.className = "wp-standard-stage-reserve hidden";
     reserve.setAttribute("aria-hidden", "true");
     stagePanel.after(reserve);
     Object.assign(nodes, { stagePanel, stageReserve: reserve, mainStartBtn: mainStart, stageBackBtn: stagePanel.querySelector("#stageBackBtn") });
+  }
+
+  function selectStageTab(tabName) {
+    nodes.stagePanel.querySelectorAll("[data-stage-tab]").forEach((button) => {
+      button.classList.toggle("is-active", button.dataset.stageTab === tabName);
+    });
+    nodes.stagePanel.querySelectorAll("[data-stage-view]").forEach((view) => {
+      view.classList.toggle("is-active", view.dataset.stageView === tabName);
+    });
   }
 
   function showStage() {
@@ -164,6 +191,10 @@
       gearStatBlock: "Start each battle with {amount} Block",
       stageSelectTitle: "Choose a Mission",
       stageSelectHint: "Swipe or drag missions. The center card is selected; press Start below to enter.",
+      stageHubTitle: "Mission Preparation",
+      stageTabMissions: "Missions",
+      stageTabDeck: "Deck",
+      stageTabShop: "Upgrades",
       lockedMission: "Locked",
       missionLabel: "Mission {mission}",
       missionReward: "{xp} XP",
@@ -294,6 +325,10 @@
       gearStatBlock: "每場開始獲得 {amount} 點格擋",
       stageSelectTitle: "選擇任務",
       stageSelectHint: "左右滑動任務列。中間卡片就是選定任務，再按下方開始。",
+      stageHubTitle: "任務準備",
+      stageTabMissions: "任務",
+      stageTabDeck: "牌組",
+      stageTabShop: "升級",
       lockedMission: "未解鎖",
       missionLabel: "任務 {mission}",
       missionReward: "{xp} 經驗",
@@ -1468,6 +1503,9 @@
     });
     nodes.mainStartBtn.addEventListener("click", showStage);
     nodes.stageBackBtn.addEventListener("click", showMainFromStage);
+    nodes.stagePanel.querySelectorAll("[data-stage-tab]").forEach((button) => {
+      button.addEventListener("click", () => selectStageTab(button.dataset.stageTab));
+    });
     nodes.localeSelect.addEventListener("change", (event) => {
       window.WonderSound?.play("click");
       window.WonderI18n?.setLocale?.(event.target.value);

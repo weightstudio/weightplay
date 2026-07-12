@@ -469,6 +469,7 @@
     nodes.resultPanel.classList.toggle("is-hidden", which !== "result");
     document.body.classList.toggle("reef-fisher-playing", which === "game");
     document.body.classList.toggle("reef-fisher-stage", which === "stage");
+    document.body.classList.toggle("reef-fisher-result", which === "result");
     document.body.dataset.reefState = which;
     document.documentElement.dataset.reefState = which;
   }

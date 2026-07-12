@@ -6,6 +6,14 @@
     'zh-Hant': { title:'\u52d5\u7269\u5929\u7a7a\u6e2f\u8abf\u5ea6\u968a', language:'\u8a9e\u8a00', headline:'\u8b93\u96f2\u7dda\u5929\u7a7a\u6e2f\u6301\u7e8c\u904b\u4f5c\u3002', intro:'\u7e6a\u51fa\u5b89\u5168\u822a\u7dda\uff0c\u914d\u5c0d\u98db\u8239\u8207\u78bc\u982d\uff0c\u4fdd\u8b77\u73ed\u6b21\u4e0d\u88ab\u58c5\u585e\u3002', start:'\u958b\u59cb\u904a\u6232', chooseShift:'\u9078\u64c7\u73ed\u6b21', best:'\u6700\u4f73\u73ed\u6b21\uff1a{n}', shift:'\u73ed\u6b21 {n}/5', objective:'\u5b8c\u6210 {done}/{goal} \u67b6\u98db\u8239', stageReady:'\u53ef\u958b\u59cb', stageLocked:'\u672a\u89e3\u9396', stageReplay:'\u53ef\u91cd\u73a9', service:'\u4f7f\u7528\u7dad\u4fee\u670d\u52d9', dragHint:'\u628a\u98db\u8239\u62d6\u66f3\u5230\u5c0d\u61c9\u78bc\u982d\u3002', menu:'\u56de\u4e3b\u9078\u55ae', next:'\u4e0b\u4e00\u73ed', retry:'\u91cd\u8a66\u73ed\u6b21', win:'\u73ed\u6b21\u5b8c\u6210\uff01', lose:'\u5929\u7a7a\u6e2f\u58c5\u585e\uff01', winCopy:'\u6e05\u6670\u8abf\u5ea6\u70ba\u5929\u7a7a\u6e2f\u5beb\u4e0b\u65b0\u7d00\u9304\u3002', loseCopy:'\u4e09\u6b21\u4e0d\u5b89\u5168\u9032\u5834\u95dc\u9589\u4e86\u73ed\u6b21\uff0c\u91cd\u8a66\u514d\u8cbb\u3002', repair:'\u7dad\u4fee\u96f6\u4ef6 {n}' }
   };
   const flights = [['cargo','cargo'], ['passenger','passenger'], ['repair','repair'], ['festival','passenger'], ['heavy','cargo']];
+  const flightLabels = {
+    en: {cargo:'Cargo airship', passenger:'Passenger airship', repair:'Repair airship', festival:'Festival airship', heavy:'Heavy cargo airship'},
+    'zh-Hant': {cargo:'貨運飛船', passenger:'旅客飛船', repair:'維修飛船', festival:'節慶飛船', heavy:'重型貨運飛船'}
+  };
+  const dockLabels = {
+    en: {cargo:'Cargo Dock A', passenger:'Passenger Dock B', repair:'Repair Dock C'},
+    'zh-Hant': {cargo:'貨運碼頭 A', passenger:'旅客碼頭 B', repair:'維修碼頭 C'}
+  };
   const shiftConfig = [null, {goal:4, parts:2, stormEvery:0, coin:24, stamps:1}, {goal:6, parts:2, stormEvery:0, coin:36, stamps:1}, {goal:7, parts:2, stormEvery:3, coin:48, stamps:2}, {goal:8, parts:4, stormEvery:2, coin:62, stamps:2}, {goal:10, parts:5, stormEvery:2, coin:80, stamps:3}];
   const saved = JSON.parse(localStorage.getItem(saveKey) || '{}');
   let locale = localStorage.getItem('weightPlayLocale') || 'en';
@@ -50,7 +58,41 @@
     $('shiftText').textContent = t('shift', {n:state.shift});
     $('scoreText').textContent = `${state.done}/${state.goal}`;
     $('objectiveText').textContent = t('objective', {done:state.done, goal:state.goal});
-    $('resourceText').textContent = `Crew ${state.crew}/${state.maxCrew} · Fuel ${state.fuel} · ${t('repair', {n:state.parts})}`;
+    const crewLabel = locale === 'zh-Hant' ? '\u7d44\u54e1' : 'Crew';
+    const fuelLabel = locale === 'zh-Hant' ? '\u71c3\u6599' : 'Fuel';
+    $('resourceText').textContent = `${crewLabel} ${state.crew}/${state.maxCrew} · ${fuelLabel} ${state.fuel} · ${t('repair', {n:state.parts})}`;
+    renderFlightTask();
+  }
+
+  function renderFlightTask() {
+    if (!state.kind) return;
+    const labels = locale === 'zh-Hant'
+      ? {
+          flights: {cargo:'\u8ca8\u904b\u98db\u8239', passenger:'\u65c5\u5ba2\u98db\u8239', repair:'\u7dad\u4fee\u98db\u8239', festival:'\u7bc0\u6176\u98db\u8239', heavy:'\u91cd\u578b\u8ca8\u904b\u98db\u8239'},
+          docks: {cargo:'\u8ca8\u904b\u78bc\u982d A', passenger:'\u65c5\u5ba2\u78bc\u982d B', repair:'\u7dad\u4fee\u78bc\u982d C'},
+          repair:'\u5148\u6309\u7dad\u4fee\u670d\u52d9', conflict:'\u5148\u6e05\u9664\u822a\u7dda\u885d\u7a81', crew:'\u5148\u6307\u6d3e\u7d44\u54e1', drag:'\u518d\u62d6\u5230 '
+        }
+      : {
+          flights: flightLabels.en, docks: dockLabels.en,
+          repair:'use repair service first', conflict:'clear route conflict first', crew:'assign crew first', drag:'then drag to '
+        };
+    const flightName = labels.flights[state.kind];
+    const dockName = labels.docks[state.dock];
+    const steps = [];
+    if (state.storm && !state.serviced) steps.push(labels.repair);
+    if (state.conflict) steps.push(labels.conflict);
+    if (state.needsCrew && !state.crewAssigned) steps.push(labels.crew);
+    steps.push(labels.drag + dockName);
+    $('flightTask').textContent = locale === 'zh-Hant'
+      ? `\u672c\u67b6\uff1a${flightName} \u2192 ${dockName}\uff5c${steps.join(' \u2192 ')}`
+      : `Current: ${flightName} -> ${dockName} | ${steps.join(' -> ')}`;
+    $('flight').setAttribute('aria-label', locale === 'zh-Hant' ? `${flightName}\uff0c\u76ee\u6a19 ${dockName}` : `${flightName}, target ${dockName}`);
+    document.querySelectorAll('.dock').forEach((dock) => {
+      const label = labels.docks[dock.dataset.dock];
+      dock.querySelector('.dock-label').textContent = label;
+      dock.setAttribute('aria-label', label);
+      dock.classList.toggle('is-target', dock.dataset.dock === state.dock);
+    });
   }
   function startBattle() {
     const shift = state.shift || 1;
@@ -66,21 +108,27 @@
     state.dock = dock;
     state.storm = state.stormEvery > 0 && state.flightIndex % state.stormEvery === 0;
     state.conflict = state.shift >= 3 && state.flightIndex % 4 === 1;
-    state.needsCrew = ['cargo','repair','festival','heavy'].includes(kind);
+    // Shift 1 teaches only matching and routing; crew arrives after the player
+    // has a stable mental model of docks.
+    state.needsCrew = state.shift >= 2 && ['cargo','repair','festival','heavy'].includes(kind);
     state.crewAssigned = !state.needsCrew;
     state.serviced = !state.storm;
     $('flight').style.backgroundImage = `url('../../assets/animal-skyport-dispatch-airship-${kind}.webp')`;
     $('weatherZone').classList.toggle('hidden', !state.storm);
     $('weatherZone').src = '../../assets/animal-skyport-dispatch-weather-storm.webp';
+    $('serviceBtn').classList.toggle('hidden', !state.storm);
     $('clearRouteBtn').classList.toggle('hidden', !state.conflict);
     $('assignCrewBtn').classList.toggle('hidden', !state.needsCrew);
+    $('serviceBtn').textContent = locale === 'zh-Hant' ? '1. 維修服務' : '1. Repair service';
+    $('clearRouteBtn').textContent = locale === 'zh-Hant' ? '1. 清除衝突' : '1. Clear conflict';
+    $('assignCrewBtn').textContent = locale === 'zh-Hant' ? '1. 指派組員' : '1. Assign crew';
     $('feedback').textContent = state.storm ? (locale === 'zh-Hant' ? '\u66b4\u98a8\u822a\u7dda\uff1a\u5148\u5b8c\u6210\u7dad\u4fee\u670d\u52d9\u3002' : 'Storm route: service first.') : t('dragHint');
     $('routeLine').style.opacity = '0';
   }
   function result(win) {
     show('result');
     $('resultTitle').textContent = win ? t('win') : t('lose');
-    $('resultCopy').textContent = win ? t('winCopy') : t('loseCopy');
+    $('resultCopy').textContent = win ? t('winCopy') : (state.lastError || t('loseCopy'));
     $('resultRewards').innerHTML = win
       ? `<span>Reputation +${state.done * 5}</span><span>Sky coins +${shiftConfig[state.shift].coin + (state.contract && state.errors === 0 ? 20 : 0)}</span><span>Medals ${save.medals[state.shift] || 1}/3</span>`
       : `<span>Safe routing ${state.done}/${state.goal}</span><span>Errors ${state.errors}/3</span><span>${insuranceActive ? 'Contract bonus protected' : 'Retry is free'}</span>`;
@@ -111,7 +159,8 @@
       nextFlight();
     } else {
       state.errors += 1;
-      $('feedback').textContent = state.conflict ? (locale === 'zh-Hant' ? '\u5148\u6e05\u9664\u822a\u7dda\u885d\u7a81\u3002' : 'Clear the route conflict first.') : !state.crewAssigned ? (locale === 'zh-Hant' ? '\u5148\u6307\u6d3e\u7d44\u54e1\u3002' : 'Assign crew first.') : state.storm && !state.serviced ? (locale === 'zh-Hant' ? '\u9700\u5148\u5b8c\u6210\u670d\u52d9' : 'Service required') : state.fuel <= 0 ? (locale === 'zh-Hant' ? '\u71c3\u6599\u4e0d\u8db3\u3002' : 'Fuel depleted.') : (locale === 'zh-Hant' ? '\u78bc\u982d\u4e0d\u5c0d\uff0c\u8acb\u91cd\u8a66\u3002' : 'Unsafe dock. Try again.');
+      state.lastError = state.conflict ? (locale === 'zh-Hant' ? '先清除航線衝突，再拖曳飛船。' : 'Clear the route conflict before dragging.') : !state.crewAssigned ? (locale === 'zh-Hant' ? '這架需要組員：先按「指派組員」，再拖曳飛船。' : 'This flight needs crew: assign crew before dragging.') : state.storm && !state.serviced ? (locale === 'zh-Hant' ? '暴風航線需要先完成維修服務。' : 'Storm route: repair service is required first.') : state.fuel <= 0 ? (locale === 'zh-Hant' ? '燃料不足，無法派遣。' : 'Fuel depleted.') : (locale === 'zh-Hant' ? '碼頭不對：請依上方任務卡前往目標碼頭。' : 'Wrong dock: follow the task card target.');
+      $('feedback').textContent = state.lastError;
       if (state.errors >= 3) { if (insuranceActive && state.contract) { save.coins = (save.coins || 0) + 20; persist(); } result(false); }
     }
     renderHud();

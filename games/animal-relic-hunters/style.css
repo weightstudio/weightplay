@@ -1556,6 +1556,143 @@ body.relic-playing .backpack-panel { display:block; overflow:visible; }
 body.relic-playing .backpack-list { max-height:none; overflow:visible; }
 body.relic-playing .battle-ad-reserve { position:relative; inset:auto; grid-row:2; width:100%; height:56px; min-height:56px; transform:none; }
 
+/* Result is a bounded screen: report scrolls, recovery actions never leave view. */
+html:has(body.relic-result),
+body.relic-result {
+  width: 100%;
+  height: var(--wp-mobile-vh, 100dvh);
+  min-height: 0;
+  overflow: hidden;
+}
+
+body.relic-result .top-nav,
+body.relic-result .game-guide-wrapper,
+body.relic-result .wp-tutorial-button,
+body.relic-result .wp-tutorial-backdrop,
+body.relic-result .weightplay-version-badge {
+  display: none !important;
+}
+
+body.relic-result .relic-app {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  padding: 4px;
+  overflow: hidden;
+}
+
+body.relic-result #resultPanel.result-panel {
+  position: fixed;
+  inset: 4px auto 4px 50%;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) 82px 56px;
+  gap: 0;
+  width: min(100%, 612px);
+  height: auto;
+  min-height: 0;
+  margin: 0 auto;
+  padding: 0;
+  transform: translateX(-50%);
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+body.relic-result .result-card {
+  display: flex;
+  width: 100%;
+  max-width: none;
+  min-height: 0;
+  padding: 16px 12px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+}
+
+body.relic-result #resultTitle {
+  margin-bottom: 10px;
+  font-size: 28px;
+  line-height: 34px;
+}
+
+body.relic-result .result-score-box {
+  margin-bottom: 10px;
+  padding: 10px 24px;
+}
+
+body.relic-result .result-score-box strong {
+  font-size: 38px;
+  line-height: 44px;
+}
+
+body.relic-result .skills-card {
+  margin-bottom: 0;
+}
+
+.result-action-shell {
+  display: grid;
+  grid-template-rows: 52px 18px;
+  align-content: center;
+  gap: 4px;
+  min-width: 0;
+  padding: 4px 8px;
+  background: #101827;
+  border-top: 1px solid rgb(255 255 255 / 10%);
+}
+
+.result-action-shell .result-btn-row {
+  display: grid;
+  grid-template-columns: repeat(2, 148px);
+  justify-content: center;
+  gap: 10px;
+  margin: 0;
+}
+
+.result-action-shell .result-btn-row button {
+  width: 148px;
+  min-width: 148px;
+  max-width: 148px;
+  height: 48px;
+  min-height: 48px;
+  max-height: 48px;
+  padding: 6px 10px;
+  overflow: hidden;
+  border-radius: 8px;
+  font-size: 14px;
+  line-height: 18px;
+}
+
+.result-action-shell .disclaimer {
+  overflow: hidden;
+  color: #94a3b8;
+  font-size: 10px;
+  line-height: 14px;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.result-ad-reserve {
+  width: 100%;
+  height: 56px;
+  min-height: 56px;
+  pointer-events: none;
+  background: #101827;
+  border-top: 1px solid rgb(212 175 55 / 24%);
+}
+
+@media (max-width: 350px) {
+  .result-action-shell .result-btn-row {
+    grid-template-columns: repeat(2, 132px);
+  }
+
+  .result-action-shell .result-btn-row button {
+    width: 132px;
+    min-width: 132px;
+    max-width: 132px;
+  }
+}
+
 @media (max-width:560px), (max-height:560px) {
   body.relic-playing #gamePanel.game-panel, body.wp-mobile-game-mode.relic-playing #gamePanel.game-panel.weightplay-active-viewport { width:calc(100vw - 8px) !important; height:calc(100dvh - 8px) !important; }
 }

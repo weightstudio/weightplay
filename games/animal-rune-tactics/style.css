@@ -969,3 +969,97 @@ body.is-rune-playing .battle-ad-reserve { position:fixed; top:auto; bottom:4px; 
   body.is-rune-playing .actions button { min-height:0; padding:4px; }
   body.is-rune-playing .battle-log { min-height:0; max-height:none; overflow:hidden; }
 }
+
+/* Stable Battle tracks: dynamic instructions cannot overlap fixed controls. */
+@media (min-height: 561px) {
+  body.is-rune-playing .game-panel > .hud {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    width: 100%;
+    height: 56px;
+    min-height: 56px;
+    max-height: 56px;
+    gap: 6px;
+    overflow: hidden;
+  }
+
+  body.is-rune-playing .game-panel > .hud > div {
+    min-width: 0;
+    height: 56px;
+    min-height: 56px;
+    max-height: 56px;
+    padding: 6px 8px;
+    overflow: hidden;
+  }
+
+  body.is-rune-playing .game-panel > .hud :is(span, b) {
+    overflow: hidden;
+    font-size: 13px;
+    line-height: 18px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  body.is-rune-playing #gamePanel.game-panel {
+    grid-template-rows: 56px minmax(0, 1fr) 310px;
+  }
+
+  body.is-rune-playing .battle-info {
+    display: grid;
+    grid-template-rows: 64px minmax(0, 1fr) 48px 34px;
+    align-content: stretch;
+    gap: 6px;
+    min-height: 0;
+    padding: 8px;
+    overflow: hidden;
+  }
+
+  body.is-rune-playing .turn-roster {
+    width: 100%;
+    height: 64px;
+    min-height: 64px;
+    max-height: 64px;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+
+  body.is-rune-playing .selected-card {
+    min-height: 0;
+    padding: 8px 10px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    touch-action: pan-y;
+  }
+
+  body.is-rune-playing .actions {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    width: 100%;
+    height: 48px;
+    min-height: 48px;
+    max-height: 48px;
+    gap: 6px;
+  }
+
+  body.is-rune-playing .actions button {
+    width: 100%;
+    height: 48px;
+    min-height: 48px;
+    max-height: 48px;
+    padding: 4px;
+    overflow: hidden;
+    font-size: 13px;
+    line-height: 16px;
+  }
+
+  body.is-rune-playing .battle-log {
+    width: 100%;
+    height: 34px;
+    min-height: 34px;
+    max-height: 34px;
+    padding: 4px 6px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    font-size: 12px;
+    line-height: 16px;
+  }
+}
