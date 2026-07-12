@@ -1553,3 +1553,14 @@ body.reef-fisher-playing .battle-ad-reserve { position:relative; inset:auto; gri
   body.reef-fisher-playing .tension-panel { grid-template-columns:42px minmax(0,1fr); gap:5px; }
   body.reef-fisher-playing .tension-coach { font-size:10px; }
 }
+
+@media (max-width: 600px) {
+  body:not(.reef-fisher-playing) #menuPanel #startBtn {
+    position: fixed;
+    z-index: 60;
+    right: 20px;
+    bottom: calc(64px + env(safe-area-inset-bottom));
+    left: 20px;
+    width: auto;
+  }
+}

@@ -378,6 +378,17 @@ a {
   font-weight: 1000;
 }
 
+body:not(.crystal-playing) .language-picker {
+  display: grid !important;
+  visibility: visible !important;
+}
+
+body:not(.crystal-playing) .language-picker select {
+  display: block !important;
+  visibility: visible !important;
+  min-width: 88px;
+}
+
 .menu-panel,
 .game-panel {
   min-height: 0;

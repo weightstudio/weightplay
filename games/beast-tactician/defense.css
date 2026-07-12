@@ -63,6 +63,11 @@ body.guardian-playing .game-page-info {
   display: none !important;
 }
 
+body.guardian-stage .locale-box,
+body.guardian-stage .game-page-info {
+  display: none !important;
+}
+
 body.guardian-playing .guardian-app {
   width: 100vw;
   height: 100vh;
@@ -308,6 +313,17 @@ body.guardian-playing .command-row button {
   outline: 0;
   background: transparent;
   font-weight: 800;
+}
+
+.guardian-app:not(.is-playing) .locale-box {
+  display: flex !important;
+  visibility: visible !important;
+}
+
+.guardian-app:not(.is-playing) .locale-box select {
+  display: block !important;
+  visibility: visible !important;
+  min-width: 88px;
 }
 
 .locale-box option {

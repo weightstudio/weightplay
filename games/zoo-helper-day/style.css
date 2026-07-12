@@ -18,6 +18,26 @@ body {
   overflow-x: hidden;
 }
 
+body.wp-standard-stage-page .wp-standard-stage-panel {
+  background: #182944;
+}
+
+body.wp-standard-stage-page .wp-standard-stage-heading strong {
+  color: #fff9dd;
+  font-size: 18px;
+  text-shadow: 0 2px 0 rgba(8, 32, 61, 0.55);
+}
+
+body.wp-standard-stage-page .wp-standard-stage-heading button {
+  background: #f4f7fc;
+  color: #1689dd;
+  box-shadow: 0 4px 0 rgba(7, 43, 82, 0.28);
+}
+
+body.wp-standard-stage-page #stageAdReserve {
+  background: #182944;
+}
+
 button,
 select {
   font: inherit;

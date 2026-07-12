@@ -1535,22 +1535,22 @@ body.relic-playing .battle-ad-reserve {
 }
 
 /* Final Expanded Canvas override. */
-html:has(body.relic-playing), body.relic-playing { width:100%; height:var(--relic-vh,100dvh); -webkit-text-size-adjust:100%; text-size-adjust:100%; }
-body.relic-playing .relic-app { width:var(--relic-vw,100vw); height:var(--relic-vh,100dvh); min-height:0; padding:0; overflow:hidden; }
+html:has(body.relic-playing), body.relic-playing { width:100%; height:100dvh; -webkit-text-size-adjust:100%; text-size-adjust:100%; }
+body.relic-playing .relic-app { width:100vw; height:100dvh; min-height:0; padding:0; overflow:hidden; }
 body.relic-playing .top-nav, body.relic-playing .game-guide-wrapper, body.relic-playing .wp-tutorial-button, body.relic-playing .wp-tutorial-backdrop { display:none !important; }
-body.relic-playing #gamePanel.game-panel, body.wp-mobile-game-mode.relic-playing #gamePanel.game-panel.weightplay-active-viewport { position:fixed !important; inset:4px auto auto 50% !important; display:grid; grid-template-rows:minmax(0,1fr) 56px; gap:0; width:min(calc(var(--relic-vw,100vw) - 8px),612px) !important; max-width:none !important; height:min(calc(var(--relic-vh,100dvh) - 8px),844px) !important; min-height:0; max-height:none !important; margin:0 !important; padding:0; transform:translateX(-50%); overflow:hidden; border:0; box-shadow:none; }
-body.relic-playing .game-layout { position:relative; inset:auto; display:grid; grid-template-rows:minmax(0,1.08fr) minmax(280px,.92fr); gap:6px; width:100%; height:100%; min-height:0; padding:48px 6px 6px; overflow:hidden; transform:none; background:linear-gradient(180deg,#111b2c,#18223a); }
+body.relic-playing #gamePanel.game-panel, body.wp-mobile-game-mode.relic-playing #gamePanel.game-panel.weightplay-active-viewport { position:fixed !important; inset:4px auto auto 50% !important; display:grid; grid-template-rows:minmax(0,1fr) 56px; gap:0; width:min(calc(100vw - 8px),612px) !important; max-width:none !important; height:min(calc(100dvh - 8px),844px) !important; min-height:0; max-height:none !important; margin:0 !important; padding:0; transform:translateX(-50%); overflow:hidden; border:0; box-shadow:none; }
+body.relic-playing .game-layout { position:relative; inset:auto; display:grid; grid-template-rows:minmax(430px,1.7fr) minmax(168px,.55fr); gap:6px; width:100%; height:100%; min-height:0; padding:48px 6px 6px; overflow:hidden; transform:none; background:linear-gradient(180deg,#111b2c,#18223a); }
 body.relic-playing .arena-viewport, body.relic-playing .inventory-sidebar { width:100%; min-width:0; min-height:0; margin:0; overflow:hidden; }
-body.relic-playing .arena-viewport { container-type:size; display:grid; grid-template-rows:124px minmax(0,1fr); padding:6px; }
-body.relic-playing .canvas-container { width:min(100%,calc((100cqh - 136px) * 8 / 5)); max-width:100%; height:auto; max-height:none; aspect-ratio:8/5; align-self:end; justify-self:center; }
+body.relic-playing .arena-viewport { container-type:size; display:grid; grid-template-rows:96px minmax(0,1fr); padding:6px; }
+body.relic-playing .canvas-container { width:min(100%,max(320px,calc((100cqh - 108px) * 8 / 5))); max-width:100%; min-width:min(320px,100%); height:auto; max-height:none; aspect-ratio:8/5; align-self:end; justify-self:center; }
 body.relic-playing .canvas-container canvas { width:100%; height:100%; aspect-ratio:8/5; }
-body.relic-playing .inventory-sidebar { display:grid; grid-template-rows:auto 126px minmax(0,1fr); gap:6px; padding:8px; }
+body.relic-playing .inventory-sidebar { display:grid; grid-template-rows:auto 96px minmax(0,1fr); gap:6px; padding:8px; }
 body.relic-playing .backpack-panel { min-height:0; display:grid; grid-template-rows:auto minmax(0,1fr); overflow:hidden; }
 body.relic-playing .backpack-list { min-height:0; max-height:none; overflow-y:auto; overscroll-behavior:contain; }
 body.relic-playing .battle-ad-reserve { position:relative; inset:auto; grid-row:2; width:100%; height:56px; min-height:56px; transform:none; }
 
 @media (max-width:560px), (max-height:560px) {
-  body.relic-playing #gamePanel.game-panel, body.wp-mobile-game-mode.relic-playing #gamePanel.game-panel.weightplay-active-viewport { width:calc(var(--relic-vw,100vw) - 8px) !important; height:calc(var(--relic-vh,100dvh) - 8px) !important; }
+  body.relic-playing #gamePanel.game-panel, body.wp-mobile-game-mode.relic-playing #gamePanel.game-panel.weightplay-active-viewport { width:calc(100vw - 8px) !important; height:calc(100dvh - 8px) !important; }
 }
 
 @media (max-height:560px) {

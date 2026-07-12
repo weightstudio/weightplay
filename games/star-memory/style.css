@@ -245,6 +245,18 @@ body.memory-playing .home-link img {
   color: var(--text-light);
 }
 
+body:not(.memory-stage):not(.memory-playing) .language-picker {
+  display: flex !important;
+  visibility: visible !important;
+}
+
+body:not(.memory-stage):not(.memory-playing) .language-picker select {
+  display: block !important;
+  visibility: visible !important;
+  min-width: 88px;
+  min-height: 30px;
+}
+
 /* Gameplay HUD */
 .game-hud {
   display: grid;

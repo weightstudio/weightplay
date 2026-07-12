@@ -94,6 +94,17 @@
   align-items: center;
   gap: 8px;
   text-align: center;
+  color: #f8fafc;
+}
+
+.wp-standard-stage-heading :is(h1, h2, h3, strong, span) {
+  min-width: 0;
+  margin: 0;
+  color: inherit;
+  font-size: 18px;
+  font-weight: 900;
+  line-height: 1.2;
+  text-shadow: 0 1px 2px rgb(0 0 0 / 35%);
 }
 
 .wp-standard-stage-heading::after {
@@ -106,6 +117,8 @@
   padding: 0;
   border: 0;
   border-radius: 8px;
+  background: #f8fafc;
+  color: #1676c9;
   font-size: 24px;
   font-weight: 900;
 }
@@ -118,6 +131,7 @@
   bottom: 0;
   height: 56px;
   pointer-events: none;
+  background: #17243a;
 }
 
 body.wp-standard-stage-page {

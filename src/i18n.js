@@ -623,6 +623,9 @@
 
   let currentLocale = getSavedLocale();
 
+  Object.assign(dictionaries.en, { "game.start": "Start Game" });
+  Object.assign(dictionaries["zh-Hant"], { "game.start": "\u958b\u59cb\u904a\u6232" });
+
   Object.assign(dictionaries["zh-Hant"], {
     "filter.age_3": "3+",
     "filter.age_6": "6+",
@@ -666,6 +669,17 @@
     return currentLocale;
   }
 
+  function syncStandardMainStartLabels() {
+    document.querySelectorAll("[data-wp-main-start], #mainStartBtn, #startBtn, #startGameBtn, #showStageBtn, #wonderMainStart").forEach((node) => {
+      const rect = node.getBoundingClientRect();
+      const style = window.getComputedStyle(node);
+      const active = style.display !== "none" && style.visibility !== "hidden" && rect.width > 0 && rect.height > 0;
+      if (!active) return;
+      const label = t("game.start");
+      if (node.textContent.trim() !== label) node.textContent = label;
+    });
+  }
+
   document.documentElement.lang = currentLocale;
 
   window.WonderI18n = {
@@ -676,4 +690,11 @@
     supportedLocales,
     fallbackLocale,
   };
+
+  document.addEventListener("DOMContentLoaded", () => {
+    window.setTimeout(syncStandardMainStartLabels, 0);
+    const observer = new MutationObserver(() => window.setTimeout(syncStandardMainStartLabels, 0));
+    observer.observe(document.body, { childList: true, characterData: true, subtree: true });
+  }, { once: true });
+  window.addEventListener("wonder:locale-change", () => window.setTimeout(syncStandardMainStartLabels, 0));
 })();

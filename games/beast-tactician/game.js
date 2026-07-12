@@ -858,6 +858,7 @@
   function setScreen(screen) {
     state.screen = screen;
     document.body.classList.toggle("guardian-playing", screen === "game" || screen === "result");
+    document.body.classList.toggle("guardian-stage", screen === "stages");
     [nodes.menuPanel, nodes.stagePanel, nodes.techPanel, nodes.gamePanel, nodes.resultPanel].forEach((panel) => panel?.classList.add("is-hidden"));
     if (screen === "menu") nodes.menuPanel.classList.remove("is-hidden");
     if (screen === "stages") nodes.stagePanel.classList.remove("is-hidden");
