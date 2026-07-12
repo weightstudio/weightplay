@@ -29,7 +29,6 @@ const leaveBtn = document.querySelector("#leaveBtn");
 const pauseLocaleSelect = document.querySelector("#pauseLocaleSelect");
 const wonderMain = document.querySelector("#wonderMain");
 const wonderMainStart = document.querySelector("#wonderMainStart");
-const wonderManageBtn = document.querySelector("#wonderManageBtn");
 const wonderStageBack = document.querySelector("#wonderStageBack");
 const wonderMainLocaleSelect = document.querySelector("#wonderMainLocaleSelect");
 const weaponModal = document.querySelector("#weaponModal");
@@ -3095,7 +3094,6 @@ bindLocaleSelect(wonderMainLocaleSelect);
 translateStaticUI();
 
 wonderMainStart.addEventListener("click", () => showMainMenu("battle"));
-wonderManageBtn.addEventListener("click", () => showMainMenu("character"));
 wonderStageBack.addEventListener("click", showWonderMain);
 
 preload().catch((error) => {
