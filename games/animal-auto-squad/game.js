@@ -441,6 +441,16 @@
   };
 
   Object.assign(zhRuntimeText, {
+    language: "\u8a9e\u8a00",
+    chooseExpedition: "\u9078\u64c7\u9060\u5f81",
+    bestExpedition: "\u6700\u4f73\u9060\u5f81",
+    expeditionsCleared: "\u5df2\u901a\u904e\u95dc\u5361",
+    teamLevel: "\u5718\u968a\u7b49\u7d1a",
+    teamLevelValue: "\u7b49\u7d1a {level}  \u7d93\u9a57\u503c {xp}/{goal}",
+    stageSetup: "\u9078\u64c7\u5df2\u89e3\u9396\u7684\u68ee\u6797\u95dc\u5361\uff0c\u518d\u914d\u7f6e\u5c0f\u968a\u51fa\u767c\u9060\u5f81\u3002",
+    none: "\u7121",
+    attackShort: "\u653b",
+    healthShort: "\u751f",
     trainingTitle: "\u5c0f\u968a\u8a13\u7df4",
     trainingGold: "\u8a13\u7df4\u91d1\u5e63",
     owned: "\u5df2\u64c1\u6709",
@@ -574,7 +584,7 @@
 
   function formatTeamLevel() {
     const normalized = normalizeSave(save);
-    const value = text.en.teamLevelValue
+    const value = t("teamLevelValue")
       .replace("{level}", normalized.teamLevel)
       .replace("{xp}", normalized.teamXp)
       .replace("{goal}", teamXpGoal(normalized.teamLevel));
@@ -1043,7 +1053,7 @@
         <div class="training-copy">
           <strong>${name}</strong>
           <span>${status} · ${t("level")}${level}</span>
-          <small>ATK ${animal.atk + statBoost} / HP ${animal.hp + statBoost}</small>
+          <small>${locale === "zh-Hant" ? "攻" : "ATK"} ${animal.atk + statBoost} / ${locale === "zh-Hant" ? "生" : "HP"} ${animal.hp + statBoost}</small>
         </div>
       `;
 
@@ -1134,6 +1144,9 @@
     // Top headings
     nodes.mainGameTitle.textContent = t("title");
     nodes.localeSelect.value = locale;
+    const languageLabel = document.querySelector(".locale > span");
+    if (languageLabel) languageLabel.textContent = t("language");
+    nodes.localeSelect.setAttribute("aria-label", locale === "zh-Hant" ? "選擇語言" : "Language selection");
     nodes.quitRunBtn.textContent = "\u2190";
     nodes.quitRunBtn.setAttribute("aria-label", t("quitRun"));
     
@@ -1147,6 +1160,7 @@
     if (nodes.teamLevelText?.previousElementSibling) {
       nodes.teamLevelText.previousElementSibling.textContent = locale === "zh-Hant" ? "\u5718\u968a\u7b49\u7d1a" : t("teamLevel");
     }
+    if (nodes.teamLevelText) nodes.teamLevelText.textContent = formatTeamLevel();
     $("diamondText").previousElementSibling.textContent = t("diamonds");
     document.querySelector(".cosmetic-store .store-label").textContent = t("buySkin");
     if (nodes.trainingTitleText) nodes.trainingTitleText.textContent = t("trainingTitle");
@@ -1157,6 +1171,7 @@
     nodes.goldText.previousElementSibling.textContent = t("supplies");
     nodes.heartText.previousElementSibling.textContent = t("hearts");
     nodes.relicText.previousElementSibling.textContent = t("activeRelic");
+    if (!state.relic) nodes.relicText.textContent = t("none");
 
     // Prep labels
     document.querySelector(".squad-section h3").textContent = t("yourSquadLabel");
@@ -1436,9 +1451,11 @@
     if (isAnimal) {
       const statsEl = document.createElement("div");
       statsEl.className = "card-stats";
-      statsEl.innerHTML = `<span class="card-atk">ATK ${card.currentAtk}</span><span class="card-hp">HP ${card.currentHp}</span>`;
+      const attackLabel = locale === "zh-Hant" ? t("attackShort") : "ATK";
+      const healthLabel = locale === "zh-Hant" ? t("healthShort") : "HP";
+      statsEl.innerHTML = `<span class="card-atk">${attackLabel} ${card.currentAtk}</span><span class="card-hp">${healthLabel} ${card.currentHp}</span>`;
       el.appendChild(statsEl);
-      el.title = `${locale === "zh-Hant" ? (card.nameZht || card.nameEn) : card.nameEn}: ATK ${card.currentAtk}, HP ${card.currentHp}. ${locale === "zh-Hant" ? (card.descZht || card.descEn || "") : (card.descEn || "")}`;
+      el.title = `${locale === "zh-Hant" ? (card.nameZht || card.nameEn) : card.nameEn}: ${attackLabel} ${card.currentAtk}, ${healthLabel} ${card.currentHp}. ${locale === "zh-Hant" ? (card.descZht || card.descEn || "") : (card.descEn || "")}`;
       if (sourceArea === "shop-animal") {
         const costEl = document.createElement("div");
         costEl.className = "card-cost animal-cost";

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="robots" content="noindex,nofollow" />
+    <title>Animal Skyport Dispatch - Internal Trial</title>
+    <link rel="stylesheet" href="../../src/play-viewport.css" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header id="mainHeader" class="topbar">
+        <a class="home-link" href="/" aria-label="Back to lobby"><span>&larr;</span><img src="../../assets/weightplay-logo.png" alt="" /></a>
+        <h1 data-i18n="title">Animal Skyport Dispatch</h1>
+        <label class="locale"><span data-i18n="language">Language</span><select id="localeSelect"><option value="en">English</option><option value="zh-Hant">繁體中文</option></select></label>
+      </header>
+      <section id="mainScreen" class="main-screen">
+        <img class="cover" src="../../assets/animal-skyport-dispatch-cover.webp" alt="Skyport dispatch animals" />
+        <h2 data-i18n="headline">Keep Cloudline Skyport moving.</h2>
+        <p data-i18n="intro">Draw safe routes, match airships to docks, and protect the shift from congestion.</p>
+        <button id="startBtn" class="primary" data-i18n="start">Start Game</button>
+      </section>
+      <section id="stageScreen" class="stage-screen hidden">
+        <button id="stageBack" class="return" aria-label="Back">&larr;</button>
+        <div class="stage-copy"><strong data-i18n="chooseShift">Choose a shift</strong><span id="bestText"></span></div>
+        <div id="stageRail" class="stage-rail" aria-label="Shift selection"></div>
+        <div class="ad-reserve" aria-hidden="true"></div>
+      </section>
+      <section id="battleShell" class="battle-shell hidden">
+        <section class="battle-canvas">
+          <header class="battle-hud"><button id="battleBack" class="return" aria-label="Back">&larr;</button><strong id="shiftText"></strong><span id="scoreText"></span></header>
+          <div class="objective"><span id="objectiveText"></span><span id="resourceText"></span></div>
+          <div id="routeField" class="route-field">
+            <img class="skyport-bg" src="../../assets/animal-skyport-dispatch-skyport-bg.webp" alt="" />
+            <div id="flight" class="flight" role="button" tabindex="0"></div>
+            <div class="dock cargo" data-dock="cargo"><img src="../../assets/animal-skyport-dispatch-dock-cargo.webp" alt="" /></div>
+            <div class="dock passenger" data-dock="passenger"><img src="../../assets/animal-skyport-dispatch-dock-passenger.webp" alt="" /></div>
+            <div class="dock repair" data-dock="repair"><img src="../../assets/animal-skyport-dispatch-dock-repair.webp" alt="" /></div>
+            <div id="routeLine" class="route-line"></div>
+            <div id="feedback" class="feedback" aria-live="polite"></div>
+          </div>
+          <div class="flight-row"><button id="serviceBtn" class="secondary" data-i18n="service">Use repair service</button><span id="flightHint" data-i18n="dragHint">Drag the airship to its matching dock.</span></div>
+        </section>
+        <div class="ad-reserve" aria-hidden="true"></div>
+      </section>
+      <section id="result" class="result hidden"><h2 id="resultTitle"></h2><p id="resultCopy"></p><button id="nextBtn" class="primary"></button><button id="menuBtn" class="secondary" data-i18n="menu">Main Menu</button></section>
+    </main>
+    <script src="game.js"></script>
+  </body>
+</html>

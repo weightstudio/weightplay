@@ -568,6 +568,22 @@ body.squad-active .wp-tutorial-button {
   display: none !important;
 }
 
+/* Stage is its own screen at every viewport size. Main-only controls and
+   public guide content must never remain behind the stage rail. */
+body.squad-stage-select {
+  overflow: hidden;
+}
+
+body.squad-stage-select .topbar,
+body.squad-stage-select .game-page-info,
+body.squad-stage-select .wp-tutorial-button {
+  display: none !important;
+}
+
+body.squad-stage-select .squad-app {
+  min-height: 100svh;
+}
+
 body.squad-active .squad-app {
   height: var(--wp-mobile-vh, 100dvh);
   min-height: 0;

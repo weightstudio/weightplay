@@ -715,6 +715,23 @@
     nodes.stageGrid.addEventListener("pointerup", endDrag);
     nodes.stageGrid.addEventListener("pointercancel", endDrag);
     nodes.stageGrid.addEventListener("dragstart", (event) => event.preventDefault());
+    let scrollSyncTimer = 0;
+    nodes.stageGrid.addEventListener("scroll", () => {
+      if (drag) return;
+      window.clearTimeout(scrollSyncTimer);
+      scrollSyncTimer = window.setTimeout(() => {
+        const gridRect = nodes.stageGrid.getBoundingClientRect();
+        const center = gridRect.left + gridRect.width / 2;
+        const nearest = [...nodes.stageGrid.querySelectorAll(".stage-card:not(.locked)")].reduce((best, card) => {
+          const rect = card.getBoundingClientRect();
+          const distance = Math.abs(rect.left + rect.width / 2 - center);
+          return !best || distance < best.distance ? { card, distance } : best;
+        }, null);
+        if (!nearest) return;
+        nodes.stageGrid.querySelectorAll(".stage-card").forEach((card) => card.classList.toggle("selected", card === nearest.card));
+        currentStage = Number(nearest.card.dataset.stageIndex) || 0;
+      }, 120);
+    }, { passive: true });
     nodes.stageGrid.addEventListener("click", (event) => {
       const button = event.target.closest(".stage-card");
       if (!button || !nodes.stageGrid.contains(button)) return;
