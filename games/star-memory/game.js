@@ -422,10 +422,10 @@
     const viewport = window.visualViewport;
     const viewportWidth = viewport?.width || window.innerWidth;
     const viewportHeight = viewport?.height || window.innerHeight;
-    const isPhoneBattle = document.body.classList.contains("memory-playing")
-      && (window.matchMedia("(pointer: coarse)").matches || viewportWidth <= 600 || viewportHeight <= 430);
-    document.body.classList.toggle("memory-expanded-canvas", isPhoneBattle);
-    if (isPhoneBattle) {
+    const isPhoneCanvas = (document.body.classList.contains("memory-playing") || document.body.classList.contains("memory-stage"))
+      && (window.matchMedia("(pointer: coarse)").matches || viewportWidth <= 700 || viewportHeight <= 430);
+    document.body.classList.toggle("memory-expanded-canvas", isPhoneCanvas);
+    if (isPhoneCanvas) {
       document.documentElement.style.setProperty("--memory-frame-scale", "1");
       document.documentElement.style.setProperty("--memory-frame-left", "4px");
       document.documentElement.style.setProperty("--memory-frame-top", "4px");
@@ -528,7 +528,7 @@
         return button;
       })
     );
-    if (window.matchMedia("(max-width: 560px)").matches) {
+    if (window.matchMedia("(max-width: 700px), (max-height: 430px)").matches) {
       requestAnimationFrame(() => {
         const unlocked = [...stageGrid.querySelectorAll(".stage-card.unlocked")].at(-1);
         unlocked?.scrollIntoView({ block: "nearest", inline: "center", behavior: "auto" });

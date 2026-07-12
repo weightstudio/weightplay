@@ -892,7 +892,9 @@ body.memory-playing .battle-ad-reserve {
   background: linear-gradient(180deg, rgba(30, 41, 59, 0.96), rgba(2, 6, 23, 0.96));
 }
 
-/* Phone Battle follows the Expanded Canvas contract; Stage keeps its snap-shell ratio. */
+/* Phone Stage and Battle share the Expanded Canvas contract. */
+body.memory-stage.memory-expanded-canvas .memory-game,
+body.memory-stage.memory-expanded-canvas.weightplay-active-viewport .memory-game,
 body.memory-playing.memory-expanded-canvas .memory-game,
 body.memory-playing.memory-expanded-canvas.weightplay-active-viewport .memory-game {
   left: var(--memory-frame-left, 4px) !important;
@@ -906,6 +908,12 @@ body.memory-playing.memory-expanded-canvas.weightplay-active-viewport .memory-ga
   transform: none !important;
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
+}
+
+body.memory-stage.memory-expanded-canvas .stage-ad-reserve {
+  left: var(--memory-frame-left, 4px);
+  top: calc(var(--memory-frame-top, 4px) + var(--memory-frame-height, calc(100svh - 64px)));
+  width: var(--memory-frame-width, calc(100vw - 8px));
 }
 
 body.memory-playing.memory-expanded-canvas .topbar {

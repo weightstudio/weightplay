@@ -144,6 +144,34 @@ select {
   font-weight: 800;
 }
 
+/* Keep the primary Main action in a short desktop viewport. */
+@media (min-width: 800px) and (max-height: 800px) {
+  .main-panel {
+    gap: 10px;
+  }
+
+  .main-panel .cover {
+    aspect-ratio: 16 / 9;
+    max-height: 410px;
+    object-position: center 44%;
+  }
+
+  .main-panel .menu-copy {
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: 12px;
+  }
+
+  .main-panel .menu-copy strong {
+    font-size: 1.1rem;
+    white-space: nowrap;
+  }
+
+  .main-panel .menu-copy span {
+    font-size: 0.9rem;
+  }
+}
+
 .stage-grid {
   display: flex;
   overflow-x: auto;
