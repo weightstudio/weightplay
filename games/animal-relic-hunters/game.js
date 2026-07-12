@@ -1183,6 +1183,7 @@
       vy: Math.sin(angle) * 7.5,
       dmg: stats.dmg,
       size: 6,
+      trail: [],
     });
     window.WonderSound?.play("shoot");
   }
@@ -1502,6 +1503,8 @@
 
     // 3. Move & Check Bullets
     state.bullets.forEach((bullet, index) => {
+      bullet.trail.push({ x: bullet.x, y: bullet.y });
+      if (bullet.trail.length > 5) bullet.trail.shift();
       bullet.x += bullet.vx;
       bullet.y += bullet.vy;
 
@@ -1752,6 +1755,13 @@
 
     // 4. Draw Bullets
     state.bullets.forEach((bullet) => {
+      bullet.trail.forEach((point, index) => {
+        const strength = (index + 1) / (bullet.trail.length + 1);
+        ctx.fillStyle = `rgba(103, 232, 249, ${strength * 0.32})`;
+        ctx.beginPath();
+        ctx.arc(point.x, point.y, Math.max(1.5, bullet.size * strength * 0.7), 0, Math.PI * 2);
+        ctx.fill();
+      });
       ctx.fillStyle = "#67e8f9";
       ctx.shadowColor = "#06b6d4";
       ctx.shadowBlur = 8;

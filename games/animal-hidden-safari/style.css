@@ -702,7 +702,8 @@ html body.wp-mobile-game-mode.safari-playing #playPanel.play-panel.weightplay-ac
   left: var(--safari-frame-left, 4px) !important;
   top: var(--safari-frame-top, 4px) !important;
   display: grid !important;
-  grid-template-rows: 40px minmax(0, 1fr) 160px !important;
+  grid-template-rows: 40px auto 160px !important;
+  align-content: start;
   gap: 6px !important;
   width: var(--safari-frame-width, calc(100vw - 8px)) !important;
   min-width: 0 !important;

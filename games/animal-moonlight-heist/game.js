@@ -51,6 +51,15 @@
   function closeResult(){nodes.modal.hidden=true;nodes.fia.classList.remove("caught")}
   function bind(){$("#localeSelect").value=locale;$("#localeSelect").addEventListener("change",e=>{locale=e.target.value;localStorage.setItem(localeKey,locale);localize()});$("#startBtn").addEventListener("click",()=>{show("stage");renderStage()});$("#stageBackBtn").addEventListener("click",()=>show("main"));$("#battleBackBtn").addEventListener("click",()=>{show("stage");renderStage()});$("#pauseBtn").addEventListener("click",()=>{paused=!paused;nodes.feedback.textContent=t(paused?"paused":"holdRoute")});nodes.field.addEventListener("pointerdown",e=>{if(!playing||paused)return;nodes.field.setPointerCapture(e.pointerId);routeTo(e.clientX,e.clientY)});nodes.field.addEventListener("pointermove",e=>{if(nodes.field.hasPointerCapture(e.pointerId))routeTo(e.clientX,e.clientY)});nodes.field.addEventListener("pointerup",e=>{if(nodes.field.hasPointerCapture(e.pointerId)){routeTo(e.clientX,e.clientY,true);nodes.field.releasePointerCapture(e.pointerId)}});$("#gadgetBtn").addEventListener("click",useGadget);$("#retryBtn").addEventListener("click",()=>{closeResult();startMission(selectedMission)});$("#stagesBtn").addEventListener("click",()=>{closeResult();show("stage");renderStage()});$("#nextBtn").addEventListener("click",()=>{closeResult();startMission(Math.min(4,selectedMission+1))})}
   function bindMissionRailDrag(){let pointerId=null,startX=0,startLeft=0,dragged=false;const rail=nodes.rail;rail.addEventListener("pointerdown",event=>{pointerId=event.pointerId;startX=event.clientX;startLeft=rail.scrollLeft;dragged=false;rail.setPointerCapture(pointerId)});rail.addEventListener("pointermove",event=>{if(event.pointerId!==pointerId)return;const delta=event.clientX-startX;if(Math.abs(delta)>6)dragged=true;rail.scrollLeft=startLeft-delta});rail.addEventListener("pointerup",event=>{if(event.pointerId!==pointerId)return;rail.releasePointerCapture(pointerId);pointerId=null;window.setTimeout(()=>{dragged=false},0)});rail.addEventListener("pointercancel",()=>{pointerId=null;dragged=false});rail.addEventListener("click",event=>{if(dragged){event.preventDefault();event.stopPropagation()}},true)}
+  window.addEventListener("keydown",event=>{
+    if(!playing||paused||event.target.matches("button,select,input,textarea"))return;
+    const direction={arrowleft:[-1,0],a:[-1,0],arrowright:[1,0],d:[1,0],arrowup:[0,-1],w:[0,-1],arrowdown:[0,1],s:[0,1]}[event.key.toLowerCase()];
+    if(event.key===" "){event.preventDefault();useGadget();return}
+    if(!direction)return;
+    event.preventDefault();
+    const current=point(nodes.fia),next=[Math.max(6,Math.min(94,current[0]+direction[0]*6)),Math.max(8,Math.min(92,current[1]+direction[1]*6))];
+    nodes.route.hidden=true;nodes.fia.style.transitionDuration="120ms";place(nodes.fia,next);window.setTimeout(resolveArrival,140);
+  });
   $("#rerollBtn").addEventListener("click",rerollOffers);
   $("#insuranceBtn").addEventListener("click",buyInsurance);
   // Keep the public Traditional Chinese runtime dictionary ASCII-safe so it cannot be damaged by a legacy editor encoding.

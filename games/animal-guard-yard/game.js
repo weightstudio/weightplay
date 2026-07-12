@@ -93,6 +93,10 @@
       roleTankMelee: "Tank Melee",
       roleFastRanged: "Fast Ranged",
       roleCrossLane: "Cross-lane",
+      catTactic: "Steady lane damage for early pressure.",
+      dogTactic: "Blocks the lane and briefly slows bites.",
+      owlTactic: "Fast shots keep rushing beasts slowed.",
+      foxTactic: "Supports the nearby lanes from one tile.",
       costShort: "Cost",
       atkShort: "ATK",
       hpShort: "HP",
@@ -197,6 +201,10 @@
       roleTankMelee: "\u5766\u514b\u8fd1\u6230",
       roleFastRanged: "\u5feb\u901f\u9060\u7a0b",
       roleCrossLane: "\u8de8\u7dda\u5c04\u64ca",
+      catTactic: "\u7a69\u5b9a\u9060\u7a0b\u50b7\u5bb3\uff0c\u9069\u5408\u65e9\u671f\u9632\u7dda\u3002",
+      dogTactic: "\u64cb\u4f4f\u540c\u7dda\u91ce\u7378\uff0c\u54ac\u64ca\u6703\u77ed\u66ab\u6e1b\u901f\u3002",
+      owlTactic: "\u5feb\u901f\u5c04\u64ca\uff0c\u53ef\u58d3\u4f4f\u885d\u523a\u578b\u91ce\u7378\u3002",
+      foxTactic: "\u5f9e\u4e00\u500b\u683c\u5b50\u652f\u63f4\u9644\u8fd1\u7dda\u8def\u3002",
       costShort: "\u82b1\u8cbb",
       atkShort: "\u653b\u64ca",
       hpShort: "\u751f\u547d",
@@ -852,6 +860,7 @@
         <div>
           <strong>${t(unit.nameKey)} <small>${t("level", { n: trained.level })}</small></strong>
           <span>${t(trained.roleKey)} / ATK ${trained.damage} / HP ${trained.hp} / ${t("sunToken").toUpperCase()} ${trained.cost}</span>
+          <small class="unit-tactic">${t(`${unit.id}Tactic`)}</small>
           <em class="kennel-next">${upgradePreview(unit)}</em>
         </div>
         <button type="button" data-kennel-unit="${unit.id}" ${canBuy ? "" : "disabled"}>
@@ -876,6 +885,7 @@
         <div>
           <strong>${t(unit.nameKey)}</strong>
           <span>${t(trained.roleKey)} / ATK ${trained.damage} / HP ${trained.hp} / ${t("sunToken").toUpperCase()} ${trained.cost}</span>
+          <small class="unit-tactic">${t(`${unit.id}Tactic`)}</small>
         </div>
         <button type="button" data-kennel-unit="${unit.id}" ${owned || readDiamonds() < unit.unlockCost ? "disabled" : ""}>
           ${owned ? t("owned") : `<span>${t("unlock")}</span><b>${costToken("diamond", unit.unlockCost)}</b>`}
