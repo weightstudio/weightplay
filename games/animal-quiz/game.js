@@ -69,6 +69,7 @@ const dictionary = {
     choose: "Choose one",
     correct: "Correct!",
     wrong: "Try again",
+    animalNote: "Animal note: {animal} - {clue}",
     loading: "Loading",
     loadingFailed: "Load failed. Please refresh and try again.",
     question: "{stage}  {current} / {total}",
@@ -157,6 +158,7 @@ const dictionary = {
     choose: "\u9078\u4e00\u500b\u7b54\u6848",
     correct: "\u7b54\u5c0d\u4e86\uff01",
     wrong: "\u518d\u89c0\u5bdf\u4e00\u6b21",
+    animalNote: "\u52d5\u7269\u5c0f\u77e5\u8b58\uff1a{animal}\uff0c{clue}",
     loading: "\u8f09\u5165\u4e2d",
     loadingFailed: "\u8f09\u5165\u5931\u6557\uff0c\u8acb\u91cd\u65b0\u6574\u7406\u5f8c\u518d\u8a66\u3002",
     question: "{stage}  {current} / {total}",
@@ -604,7 +606,13 @@ function chooseAnswer(choiceId, answerId, button) {
   state.answered = true;
   state.score += 1;
   window.WonderSound?.play("success");
-  feedbackText.textContent = t("correct");
+  const answeredAnimal = animalMap.get(answerId);
+  feedbackText.textContent = answeredAnimal
+    ? t("animalNote", {
+        animal: t(answeredAnimal.id),
+        clue: t(answeredAnimal.clue),
+      })
+    : t("correct");
   button.classList.add("correct");
   window.WonderAnalytics?.track("level_complete", {
     game_id: GAME_ID,

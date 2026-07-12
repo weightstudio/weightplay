@@ -89,9 +89,13 @@
     $('flight').setAttribute('aria-label', locale === 'zh-Hant' ? `${flightName}\uff0c\u76ee\u6a19 ${dockName}` : `${flightName}, target ${dockName}`);
     document.querySelectorAll('.dock').forEach((dock) => {
       const label = labels.docks[dock.dataset.dock];
+      const isTarget = dock.dataset.dock === state.dock;
       dock.querySelector('.dock-label').textContent = label;
       dock.setAttribute('aria-label', label);
-      dock.classList.toggle('is-target', dock.dataset.dock === state.dock);
+      dock.classList.toggle('is-target', isTarget);
+      dock.querySelector('.dock-target-badge').textContent = isTarget
+        ? (locale === 'zh-Hant' ? '目標' : 'TARGET')
+        : '';
     });
   }
   function startBattle() {
