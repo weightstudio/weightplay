@@ -1406,6 +1406,13 @@ function handleHiddenTrialGate(game) {
   const trialPath = internalTrialPath(game);
   if (game.status !== "planned" || !trialPath) return false;
 
+  for (const [gameId, timer] of hiddenTrialGate.timers) {
+    if (gameId === game.id) continue;
+    clearTimeout(timer);
+    hiddenTrialGate.timers.delete(gameId);
+    hiddenTrialGate.counts.delete(gameId);
+  }
+
   const count = (hiddenTrialGate.counts.get(game.id) || 0) + 1;
   hiddenTrialGate.counts.set(game.id, count);
   clearTimeout(hiddenTrialGate.timers.get(game.id));
@@ -1419,6 +1426,8 @@ function handleHiddenTrialGate(game) {
 
   if (count >= hiddenTrialGate.tapsRequired) {
     hiddenTrialGate.counts.set(game.id, 0);
+    clearTimeout(hiddenTrialGate.timers.get(game.id));
+    hiddenTrialGate.timers.delete(game.id);
     try {
       sessionStorage.setItem(hiddenTrialStorageKey(game), "true");
     } catch (error) {
@@ -1430,7 +1439,8 @@ function handleHiddenTrialGate(game) {
   }
 
   const timer = setTimeout(() => {
-    hiddenTrialGate.counts.set(game.id, 0);
+    hiddenTrialGate.counts.delete(game.id);
+    hiddenTrialGate.timers.delete(game.id);
   }, hiddenTrialGate.resetMs);
   hiddenTrialGate.timers.set(game.id, timer);
 

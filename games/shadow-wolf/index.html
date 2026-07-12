@@ -1,397 +1,193 @@
-﻿<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="robots" content="noindex,nofollow" />
-    <title>Shadow Wolf Legend - Coming Soon | WeightPlay</title>
-    <meta
-      name="description"
-      content="Shadow Wolf Legend is in internal rebuild and testing and is not open for public play yet."
-    />
-    <link rel="canonical" href="https://weightplay.com/games/shadow-wolf/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="robots" content="index,follow" />
+    <meta name="description" content="Run, jump, dash, collect gear, and defeat the Shadow Wolf boss in this 13+ WeightPlay action platformer." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Shadow Wolf Legend - Coming Soon | WeightPlay" />
-    <meta
-      property="og:description"
-      content="Shadow Wolf Legend has approved new art and is now in internal implementation and tester review before public play opens."
-    />
+    <meta property="og:title" content="Shadow Wolf Legend - WeightPlay" />
+    <meta property="og:description" content="Run, jump, dash, collect gear, and defeat the Shadow Wolf boss in this 13+ WeightPlay action platformer." />
     <meta property="og:url" content="https://weightplay.com/games/shadow-wolf/" />
     <meta property="og:image" content="https://weightplay.com/assets/shadow-wolf-cover.webp" />
     <meta name="twitter:card" content="summary_large_image" />
-    <link rel="stylesheet" href="../../src/loading-screen.css" />
-    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "WebPage",
-        "name": "Shadow Wolf Legend - Coming Soon",
-        "url": "https://weightplay.com/games/shadow-wolf/",
-        "image": "https://weightplay.com/assets/shadow-wolf-cover.webp",
-        "description": "Shadow Wolf Legend has approved new art and is now in internal implementation and tester review before public play opens.",
-        "isPartOf": {
-          "@type": "WebSite",
-          "name": "WeightPlay",
-          "url": "https://weightplay.com/"
-        },
-        "publisher": {
-          "@type": "Organization",
-          "name": "WeightStudio"
-        }
-      }
-    </script>
-    <style>
-      :root {
-        color-scheme: dark;
-        --bg: #081320;
-        --panel: rgba(9, 24, 38, 0.86);
-        --panel-line: rgba(170, 220, 255, 0.22);
-        --text: #f5fbff;
-        --muted: #b8cad8;
-        --gold: #ffd166;
-        --cyan: #5eead4;
-      }
-
-      * {
-        box-sizing: border-box;
-      }
-
-      body {
-        margin: 0;
-        min-height: 100vh;
-        font-family: "Outfit", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-        color: var(--text);
-        background:
-          linear-gradient(145deg, rgba(5, 16, 28, 0.96), rgba(5, 35, 48, 0.9)),
-          radial-gradient(circle at 22% 16%, rgba(94, 234, 212, 0.2), transparent 34%),
-          var(--bg);
-      }
-
-      .hold-page {
-        min-height: 100vh;
-        display: grid;
-        grid-template-rows: auto 1fr;
-      }
-
-      .hold-nav {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 16px;
-        padding: 18px clamp(16px, 4vw, 40px);
-      }
-
-      .back-link {
-        display: inline-flex;
-        align-items: center;
-        gap: 10px;
-        min-height: 44px;
-        padding: 10px 16px;
-        border-radius: 12px;
-        border: 1px solid rgba(255, 255, 255, 0.18);
-        color: var(--text);
-        background: rgba(255, 255, 255, 0.08);
-        text-decoration: none;
-        font-weight: 800;
-      }
-
-      .locale-picker {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        min-height: 44px;
-        padding: 8px 12px;
-        border-radius: 12px;
-        border: 1px solid rgba(255, 255, 255, 0.18);
-        background: rgba(255, 255, 255, 0.08);
-        color: var(--text);
-        font-weight: 800;
-      }
-
-      .locale-picker select {
-        max-width: min(48vw, 180px);
-        border: 0;
-        outline: 0;
-        background: transparent;
-        color: var(--text);
-        font: inherit;
-      }
-
-      .locale-picker option {
-        color: #0f172a;
-      }
-
-      .hold-main {
-        display: grid;
-        place-items: center;
-        padding: 18px clamp(16px, 5vw, 48px) 48px;
-      }
-
-      .hold-card {
-        width: min(920px, 100%);
-        display: grid;
-        grid-template-columns: minmax(220px, 320px) 1fr;
-        gap: clamp(20px, 4vw, 42px);
-        align-items: center;
-        padding: clamp(22px, 5vw, 48px);
-        border-radius: 28px;
-        border: 1px solid var(--panel-line);
-        background: var(--panel);
-        box-shadow: 0 28px 80px rgba(0, 0, 0, 0.34);
-      }
-
-      .mascot-frame {
-        aspect-ratio: 1;
-        border-radius: 24px;
-        display: grid;
-        place-items: center;
-        background: linear-gradient(180deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.04));
-        border: 1px solid rgba(255, 255, 255, 0.16);
-        overflow: hidden;
-      }
-
-      .mascot-frame img {
-        width: 86%;
-        height: 86%;
-        object-fit: contain;
-      }
-
-      .eyebrow {
-        display: inline-flex;
-        align-items: center;
-        width: fit-content;
-        margin-bottom: 14px;
-        padding: 8px 12px;
-        border-radius: 999px;
-        color: #082f49;
-        background: linear-gradient(180deg, #fef3c7, var(--gold));
-        font-weight: 900;
-      }
-
-      h1 {
-        margin: 0 0 12px;
-        font-size: clamp(2rem, 5vw, 4rem);
-        line-height: 1.05;
-      }
-
-      p {
-        margin: 0;
-        max-width: 58ch;
-        color: var(--muted);
-        font-size: clamp(1rem, 2.4vw, 1.2rem);
-        line-height: 1.7;
-      }
-
-      .status-list {
-        display: grid;
-        gap: 10px;
-        margin-top: 24px;
-      }
-
-      .status-item {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        color: var(--text);
-        font-weight: 800;
-      }
-
-      .trial-unlock-status {
-        min-height: 1.4em;
-        margin-top: 18px;
-        color: #d9f99d;
-        font-weight: 900;
-        opacity: 0;
-        transform: translateY(4px);
-        transition: opacity 160ms ease, transform 160ms ease;
-      }
-
-      .trial-unlock-status.is-visible {
-        opacity: 1;
-        transform: translateY(0);
-      }
-
-      .hold-card.is-unlocking {
-        border-color: rgba(217, 249, 157, 0.56);
-        box-shadow: 0 28px 80px rgba(0, 0, 0, 0.34), 0 0 28px rgba(94, 234, 212, 0.2);
-      }
-
-      .status-dot {
-        width: 10px;
-        height: 10px;
-        border-radius: 999px;
-        background: var(--cyan);
-        box-shadow: 0 0 18px rgba(94, 234, 212, 0.72);
-        flex: 0 0 auto;
-      }
-
-      @media (max-width: 720px) {
-        .hold-nav {
-          align-items: stretch;
-          flex-direction: column;
-        }
-
-        .hold-card {
-          grid-template-columns: 1fr;
-          text-align: center;
-        }
-
-        .mascot-frame {
-          width: min(240px, 78vw);
-          margin: 0 auto;
-        }
-
-        .eyebrow {
-          margin-inline: auto;
-        }
-
-        .status-item {
-          justify-content: center;
-        }
-      }
-    </style>
+    <link rel="canonical" href="https://weightplay.com/games/shadow-wolf/" />
+    <title>Shadow Wolf Legend - WeightPlay</title>
+    <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260712-shadow-wolf-public1" />
+    <link rel="stylesheet" href="style.css?v=20260710-shadow-wolf-worldmap5" />
   </head>
   <body>
-    <div class="hold-page">
-      <header class="hold-nav">
-        <a class="back-link" href="../../index.html" data-i18n="back">Back to Lobby</a>
+    <header class="top-nav">
+      <div class="top-nav-left">
+        <button id="menuBtn" class="back-btn" type="button" aria-label="Back to menu">
+          <span class="icon" aria-hidden="true">&larr;</span>
+          <span class="text" data-ui="menu">Menu</span>
+        </button>
+        <h1 class="game-brand" data-ui="title">Shadow Wolf</h1>
+      </div>
+      <div class="top-nav-right">
         <label class="locale-picker">
-          <span data-i18n="language">Language</span>
+          <span aria-hidden="true">A/&#25991;</span>
           <select id="localeSelect" aria-label="Language selector">
             <option value="en">English</option>
             <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
           </select>
         </label>
-      </header>
+      </div>
+    </header>
 
-      <main class="hold-main">
-        <section class="hold-card" aria-labelledby="holdTitle">
-          <div class="mascot-frame">
-            <img src="../../assets/shadow-wolf-cover.webp" alt="Shadow Wolf Legend cover" />
-          </div>
-          <div>
-            <strong class="eyebrow" data-i18n="status">Coming Soon</strong>
-            <h1 id="holdTitle" data-i18n="title">Shadow Wolf Legend</h1>
-            <p data-i18n="body">
-              This game has approved new art and is now being wired into the internal build for tester review. It is not open for public play yet.
-            </p>
-            <div class="status-list" aria-label="Release checklist">
-              <div class="status-item"><span class="status-dot"></span><span data-i18n="art">Approved art is being wired into the internal build</span></div>
-              <div class="status-item"><span class="status-dot"></span><span data-i18n="qa">Tester review is required before opening</span></div>
-              <div class="status-item"><span class="status-dot"></span><span data-i18n="release">Playable entry stays closed until all gates pass</span></div>
+    <main class="relic-app" data-internal-shadow-wolf-test="true">
+      <section id="loadingPanel" class="loading-panel" aria-live="polite">
+        <div class="loading-content">
+          <h2 data-ui="title">Shadow Wolf</h2>
+          <div class="loading-bar"><div id="loadingFill" class="loading-fill" style="width: 0%"></div></div>
+          <span id="loadingText" class="loading-percentage">0%</span>
+        </div>
+      </section>
+
+      <section id="menuPanel" class="panel menu-panel">
+        <div class="menu-layout">
+          <div class="menu-main">
+            <div class="menu-cover-box">
+              <img class="cover" src="../../assets/shadow-wolf-cover.webp" alt="Shadow Wolf Legend cover" />
             </div>
-            <p id="trialUnlockStatus" class="trial-unlock-status" aria-live="polite"></p>
+            <h2 class="menu-title" data-ui="menuTitle">Dungeon Platform Adventure.</h2>
+            <p class="menu-hint" data-ui="menuHint"></p>
+            <div class="desktop-controls" aria-label="Desktop controls"><span><kbd>A</kbd><kbd>D</kbd> Move</span><span><kbd>W</kbd><kbd>Space</kbd> Jump</span><span><kbd>J</kbd> Attack</span><span><kbd>K</kbd><kbd>Shift</kbd> Dash</span></div>
+            <div class="goals-card">
+              <h3 data-ui="prototypeGoalsTitle">Prototype test goals</h3>
+              <p data-ui="prototypeGoalsText"></p>
+            </div>
+            <button id="startBtn" class="primary-btn start-btn" type="button" data-ui="startRun">Start Expedition</button>
           </div>
-        </section>
-      </main>
-    </div>
 
-    <script>
-      const copy = {
-        en: {
-          back: "Back to Lobby",
-          language: "Language",
-          status: "Coming Soon",
-          title: "Shadow Wolf Legend",
-          body:
-            "This game has approved new art and is now being wired into the internal build for tester review. It is not open for public play yet.",
-          art: "Approved art is being wired into the internal build",
-          qa: "Tester review is required before opening",
-          release: "Playable entry stays closed until all gates pass",
-          trialUnlockReady: "Opening internal trial...",
-        },
-        "zh-Hant": {
-          back: "\u56de\u5230\u5927\u5ef3",
-          language: "\u8a9e\u8a00",
-          status: "\u656c\u8acb\u671f\u5f85",
-          title: "\u5f71\u72fc\u50b3\u8aaa",
-          body:
-            "\u9019\u6b3e\u904a\u6232\u5df2\u6709\u6838\u51c6\u7f8e\u8853\uff0c\u76ee\u524d\u6b63\u5728\u63a5\u5165\u5167\u90e8\u7248\u672c\u4e26\u7b49\u5f85 Tester \u9a57\u8b49\u3002\u9084\u6c92\u6709\u958b\u653e\u516c\u958b\u904a\u73a9\u3002",
-          art: "\u6838\u51c6\u7f8e\u8853\u6b63\u5728\u63a5\u5165\u5167\u90e8\u7248\u672c",
-          qa: "\u958b\u653e\u524d\u9700\u8981 Tester \u9a57\u8b49",
-          release: "\u5168\u90e8 Gate \u901a\u904e\u524d\uff0c\u516c\u958b\u5165\u53e3\u4fdd\u6301\u95dc\u9589",
-          trialUnlockReady: "\u6b63\u5728\u958b\u555f\u5167\u90e8\u8a66\u73a9...",
-        },
-      };
+          <aside class="menu-shop">
+            <h2 data-ui="diamondShopTitle">Permanent Upgrade</h2>
+            <div class="shop-badge">
+              <img class="ui-icon ui-icon--small" src="../../assets/weightplay-diamond.svg" alt="" aria-hidden="true" />
+              <strong id="diamondBalance">0</strong>
+            </div>
+            <div class="shop-list">
+              <button id="amuletBtn" class="shop-item-btn" type="button">
+                <div class="shop-item-meta">
+                  <strong data-ui="amuletName">Mist Amulet</strong>
+                  <small data-ui="amuletEffect"></small>
+                </div>
+                <b class="shop-cost-tag">
+                  <img class="ui-icon ui-icon--tiny" src="../../assets/weightplay-diamond.svg" alt="" aria-hidden="true" />
+                  <span id="amuletCost">15</span>
+                </b>
+              </button>
+              <div id="amuletStatus" class="shop-status-text"></div>
+            </div>
+          </aside>
+        </div>
+      </section>
 
-      const localeSelect = document.getElementById("localeSelect");
-      const holdCard = document.querySelector(".hold-card");
-      const trialUnlockStatus = document.getElementById("trialUnlockStatus");
-      const TRIAL_UNLOCK_TAPS = 10;
-      let trialUnlockCount = 0;
-      let trialUnlockTimer = 0;
+      <section id="mapPanel" class="panel world-map-panel hidden" aria-label="探索地圖">
+        <div class="world-map-heading"><span>影狼遠征</span><h2>選擇探索區域</h2><p>目前等級 Lv.<strong id="mapLevel">1</strong></p></div>
+        <div class="world-map-grid">
+          <button type="button" class="zone-node" data-zone="1"><b>01</b><span>月影入口</span><small>巡邏狼群</small></button><button type="button" class="zone-node" data-zone="2"><b>02</b><span>苔石斷崖</span><small>高台伏擊</small></button><button type="button" class="zone-node" data-zone="3"><b>03</b><span>螢晶洞口</span><small>水晶尖刺</small></button><button type="button" class="zone-node" data-zone="4"><b>04</b><span>暮影橋頭</span><small>飛蝠群</small></button><button type="button" class="zone-node" data-zone="5"><b>05</b><span>藤蔓回廊</span><small>雙重陷阱</small></button><button type="button" class="zone-node" data-zone="6"><b>06</b><span>古樹祭階</span><small>戰豬守衛</small></button><button type="button" class="zone-node" data-zone="7"><b>07</b><span>裂谷深處</span><small>精英狩獵</small></button><button type="button" class="zone-node boss-zone" data-zone="8"><b>08</b><span>古獸祭壇</span><small>首領戰</small></button>
+        </div>
+        <button id="mapBackBtn" type="button" class="secondary-btn">返回</button>
+      </section>
 
-      window.__WEIGHTPLAY_PUBLIC_GATE_STATE__ = {
-        gameId: "shadow-wolf",
-        status: "coming-soon",
-        playable: false,
-        ready: true,
-        hiddenTrialTaps: TRIAL_UNLOCK_TAPS,
-      };
+      <section class="desktop-only-notice" aria-live="polite">
+        <strong>Desktop only</strong><span>This internal platform game requires a keyboard and is not available on mobile.</span>
+      </section>
 
-      function getLocaleDict() {
-        return copy[localeSelect.value] || copy.en;
-      }
+      <section id="gamePanel" class="panel game-panel hidden">
+        <div class="game-layout">
+          <div class="arena-viewport">
+            <div class="arena-hud">
+              <div class="hud-item player-health">
+                <div class="health-meta"><span data-ui="hudHp">Wolf HP</span><strong id="hpText">30/30</strong></div>
+                <div class="bar-bg"><div id="hpFill" class="bar-fill health" style="width: 100%"></div></div>
+              </div>
+              <div class="hud-item player-exp">
+                <div class="exp-meta"><span>Lv.<strong id="levelVal">1</strong></span><span id="expText">0/100</span></div>
+                <div class="bar-bg"><div id="expFill" class="bar-fill exp" style="width: 0%"></div></div>
+              </div>
+              <div class="hud-meta-row">
+                <div class="meta-badge">Room <strong id="roomText">1/3</strong></div>
+                <div class="meta-badge">Key: <strong id="keyText">0</strong></div>
+              </div>
+            </div>
+            <div class="canvas-container">
+              <canvas id="gameCanvas" width="800" height="500" aria-label="Shadow Wolf internal arena"></canvas>
+              <div class="mobile-controls-row">
+                <div class="mobile-dpad">
+                  <button id="btnLeft" class="ctrl-btn" type="button" aria-label="Move left">&larr;</button>
+                  <button id="btnRight" class="ctrl-btn" type="button" aria-label="Move right">&rarr;</button>
+                </div>
+                <div class="mobile-actions">
+                  <button id="btnJump" class="ctrl-btn" type="button" aria-label="Jump">J</button>
+                  <button id="btnAttack" class="ctrl-btn" type="button" aria-label="Attack">A</button>
+                </div>
+              </div>
+            </div>
+          </div>
 
-      function renderTrialUnlockStatus() {
-        if (!trialUnlockStatus) return;
-        const dict = getLocaleDict();
-        const showReady = trialUnlockCount >= TRIAL_UNLOCK_TAPS;
-        trialUnlockStatus.textContent = showReady ? (dict.trialUnlockReady || copy.en.trialUnlockReady || "") : "";
-        trialUnlockStatus.classList.toggle("is-visible", showReady);
-        holdCard?.classList.toggle("is-unlocking", trialUnlockCount > 0);
-      }
+          <aside class="inventory-sidebar attribute-sidebar">
+            <div class="sidebar-section-heading"><h2>角色養成</h2><span>可用點數 <strong id="attrPoints">0</strong></span></div>
+            <div class="attribute-list">
+              <div class="attribute-row"><div><b>力</b><span>力量</span><small>傷害</small></div><strong id="attrStrength">0</strong><button type="button" data-attribute="strength">+</button></div>
+              <div class="attribute-row"><div><b>敏</b><span>敏捷</span><small>攻速、閃避</small></div><strong id="attrAgility">0</strong><button type="button" data-attribute="agility">+</button></div>
+              <div class="attribute-row"><div><b>體</b><span>體質</span><small>生命、防禦</small></div><strong id="attrConstitution">0</strong><button type="button" data-attribute="constitution">+</button></div>
+              <div class="attribute-row"><div><b>幸</b><span>幸運</span><small>爆擊、經驗</small></div><strong id="attrLuck">0</strong><button type="button" data-attribute="luck">+</button></div>
+            </div>
+            <div class="sidebar-section-heading"><h2>戰鬥數值</h2><span>即時</span></div>
+            <div class="stats-grid">
+              <div class="stat-card"><span>傷害</span><strong id="statDmg">0</strong><small>DMG</small></div><div class="stat-card"><span>速度</span><strong id="statSpeed">0</strong><small>SPD</small></div><div class="stat-card"><span>生命</span><strong id="statJump">0</strong><small>HP</small></div><div class="stat-card"><span>暴擊</span><strong id="statCrit">0%</strong><small>CRIT</small></div>
+            </div>
+          </aside>
+        </div>
+      </section>
 
-      function resetTrialUnlockSoon() {
-        window.clearTimeout(trialUnlockTimer);
-        trialUnlockTimer = window.setTimeout(() => {
-          trialUnlockCount = 0;
-          renderTrialUnlockStatus();
-        }, 8000);
-      }
+      <section id="draftPanel" class="modal-panel hidden" aria-live="polite">
+        <h2 data-ui="chooseCard">Choose a Relic Upgrade</h2>
+        <p data-ui="chooseCardDesc"></p>
+        <div id="draftCards" class="draft-grid"></div>
+      </section>
 
-      function openInternalTrial() {
-        window.clearTimeout(trialUnlockTimer);
-        window.__WEIGHTPLAY_PUBLIC_GATE_STATE__.hiddenTrialUnlocked = true;
-        try {
-          sessionStorage.setItem("shadow-wolfTrialUnlocked", "true");
-        } catch (error) {
-          // The direct trial link still opens when storage is unavailable.
-        }
-        window.location.href = "internal-test.html?trial=1";
-      }
+      <section id="lootPanel" class="modal-panel hidden" aria-live="polite">
+        <h2 data-ui="lootFound">Relic Chest Unlocked!</h2>
+        <div id="lootIcon" class="loot-icon"></div>
+        <strong id="lootName">Gear</strong>
+        <span id="lootType">Rare Gear</span>
+        <p id="lootEffect"></p>
+        <button id="equipLootBtn" class="primary-btn" type="button" data-ui="equipLoot">Equip Gear</button>
+      </section>
 
-      function handleTrialUnlockTap(event) {
-        if (event.target.closest("a, button, select, option, label")) return;
-        trialUnlockCount += 1;
-        renderTrialUnlockStatus();
-        if (trialUnlockCount >= TRIAL_UNLOCK_TAPS) {
-          openInternalTrial();
-          return;
-        }
-        resetTrialUnlockSoon();
-      }
+      <section id="resultPanel" class="panel result-panel hidden" aria-live="polite">
+        <h2 id="resultTitle">Expedition Success!</h2>
+        <p>Rooms cleared: <strong id="resultScore">0</strong></p>
+        <p id="resultText"></p>
+        <h3 data-ui="skillReportTitle">Ability Analysis Report</h3>
+        <div class="report-grid">
+          <div><span data-ui="skillLogic">Logic</span><strong id="logicStars">---</strong></div>
+          <div><span data-ui="skillFocus">Focus</span><strong id="focusStars">---</strong></div>
+          <div><span data-ui="skillProblem">Problem Solving</span><strong id="problemStars">---</strong></div>
+        </div>
+        <p id="skillReportText" class="skill-report"></p>
+        <p data-ui="resultDisclaimer"></p>
+        <div class="result-actions">
+          <button id="retryBtn" class="primary-btn" type="button" data-ui="tryAgain">Try Again</button>
+          <button id="resultMenuBtn" class="secondary-btn" type="button" data-ui="backToMenu">Back to Menu</button>
+        </div>
+      </section>
+    </main>
 
-      function applyLocale(locale) {
-        const dict = copy[locale] || copy.en;
-        document.documentElement.lang = locale === "zh-Hant" ? "zh-Hant" : "en";
-        document.title = `${dict.title} - ${dict.status} | WeightPlay`;
-        document.querySelectorAll("[data-i18n]").forEach((node) => {
-          const key = node.getAttribute("data-i18n");
-          if (dict[key]) node.textContent = dict[key];
-        });
-        renderTrialUnlockStatus();
-      }
-
-      const savedLocale = localStorage.getItem("weightPlayLocale") || "en";
-      localeSelect.value = copy[savedLocale] ? savedLocale : "en";
-      applyLocale(localeSelect.value);
-      localeSelect.addEventListener("change", () => {
-        localStorage.setItem("weightPlayLocale", localeSelect.value);
-        applyLocale(localeSelect.value);
-      });
-      holdCard?.addEventListener("pointerup", handleTrialUnlockTap);
-    </script>
+    <script src="../../src/site-config.js?v=20260708-shadow-wolf-internal-route1"></script>
+    <script src="../../src/version.js?v=20260701-version2"></script>
+    <script src="../../src/analytics.js?v=20260701-analytics2"></script>
+    <script>window.WonderAnalytics?.track("game_view", { game_id: "shadow-wolf", release_state: "playable" });</script>
+    <script src="../../src/sound.js?v=20260701-labels1"></script>
+    <script src="../../src/i18n.js?v=20260703-i18n-clean1"></script>
+    <script src="../../src/wallet.js?v=20260706-crystal-diamond-charm1"></script>
+    <script src="game.js?v=20260710-shadow-wolf-worldmap12"></script>
+    <script src="../../src/game-page-info.js?v=20260712-shadow-wolf-public1"></script>
   </body>
 </html>

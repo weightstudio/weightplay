@@ -695,6 +695,24 @@ if (beastGuardian) {
   delete beastGuardian.internalTrial;
 }
 
+const shadowWolfPublicCopy = {
+  title: "\u5f71\u72fc\u50b3\u8aaa",
+  statusText: "\u53ef\u904a\u73a9",
+  type: "\u6a6b\u5411\u52d5\u4f5c RPG",
+  description: "\u64cd\u4f5c\u5f71\u72fc\u5967\u5c3c\u8def\u904e\u77f3\u9053\u3001\u8e8d\u904e\u9677\u9631\u3001\u6536\u96c6\u88dd\u5099\uff0c\u4e26\u6311\u6230\u5de8\u7378\u738b\u95dc\u3002",
+  meta: ["\u52d5\u4f5c RPG", "\u8df3\u8e8d\u885d\u523a", "\u88dd\u5099\u6210\u9577"],
+};
+const shadowWolf = window.WONDER_LOBBY.games.find((game) => game.id === "shadow-wolf");
+if (shadowWolf) {
+  shadowWolf.status = "playable";
+  shadowWolf.title["zh-Hant"] = shadowWolfPublicCopy.title;
+  shadowWolf.statusText["zh-Hant"] = shadowWolfPublicCopy.statusText;
+  shadowWolf.type["zh-Hant"] = shadowWolfPublicCopy.type;
+  shadowWolf.description["zh-Hant"] = shadowWolfPublicCopy.description;
+  shadowWolf.meta["zh-Hant"] = shadowWolfPublicCopy.meta;
+  delete shadowWolf.internalTrial;
+}
+
 const verifiedCleanZhLobbyCopy = {
   "beast-deck": {
     title: "獸王牌組：迷霧森林",
