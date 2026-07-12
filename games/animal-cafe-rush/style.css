@@ -38,6 +38,8 @@ body.is-cafe-playing { overflow:hidden; } body.is-cafe-playing .cafe-app { posit
 .queue-customer img { height:clamp(54px, 10vw, 86px); margin-top:2px; }
 .queue-customer small { min-height:0; padding:2px; font-size:8px; }
 .queue-customer.is-leaving { pointer-events:none; animation:customer-leave .45s ease-in forwards; }
+.queue-customer.is-priority { border-color:#f7cd63; box-shadow:0 0 0 2px #f7cd6355; }
+.queue-customer.is-priority small { color:#ffe17c; font-weight:900; }
 .order-cloud { top:-24px; display:flex; width:max-content; min-width:38px; max-width:none; height:34px; gap:3px; padding:3px 6px; white-space:nowrap; }
 .order-item { position:relative; z-index:1; display:grid; place-items:center; flex:0 0 auto; width:22px; height:22px; }
 .order-cloud .food-icon { width:21px; height:21px; }

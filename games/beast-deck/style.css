@@ -790,6 +790,7 @@ body {
 
 .combat-feedback.damage { border-color: rgba(251, 113, 133, 0.9); color: #fecdd3; }
 .combat-feedback.block { border-color: rgba(52, 211, 153, 0.9); color: #bbf7d0; }
+.combat-feedback.card { top: 66%; border-color: rgba(96, 165, 250, 0.9); color: #dbeafe; background: rgba(30, 64, 175, 0.88); }
 
 @keyframes combat-feedback-rise {
   0% { opacity: 0; transform: translate(-50%, 16px) scale(0.82); }

@@ -2066,11 +2066,6 @@
         damageTarget(enemySquad[0], level, 560, 250);
       } else if (unit.id === 1) {
         healWeakestAlly(playerSquad, level);
-      } else if (unit.id === 3) {
-        damageTarget(enemySquad[enemySquad.length - 1], level + 1, 620, 250);
-      } else if (unit.id === 5) {
-        const target = enemySquad.filter((enemy) => enemy.hp > 0).sort((a, b) => a.hp - b.hp)[0];
-        damageTarget(target, level, 585, 250);
       }
     });
     removeDefeatedUnits(enemySquad, "enemy");

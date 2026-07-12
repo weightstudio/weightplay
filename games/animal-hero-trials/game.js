@@ -25,6 +25,9 @@
       rerollUsed: "Reroll already used this trial.",
       rerollNeed: "Not enough Diamonds. Choose a free blessing.",
       rerollDone: "New blessings revealed.",
+      room: "Room {room}/3",
+      bossRoom: "Room {room}/3 · BOSS",
+      failCopy: "{hero} needs another route.",
     },
     "zh-Hant": {
       title: "動物英雄試煉",
@@ -94,6 +97,19 @@
 
   function t(key) {
     return copy[locale]?.[key] || copy.en[key] || key;
+  }
+
+  function roomLabel(room, boss = false) {
+    if (locale === "zh-Hant") return `\u623f\u9593 ${room}/3${boss ? " \u00b7 \u9996\u9818" : ""}`;
+    return interpolate(boss ? "bossRoom" : "room", { room });
+  }
+
+  function interpolate(key, values) {
+    return t(key).replace(/\{(\w+)\}/g, (_, name) => values[name] ?? "");
+  }
+
+  function heroName(heroId) {
+    return heroId.charAt(0).toUpperCase() + heroId.slice(1);
   }
 
   function show(name) {
@@ -197,7 +213,7 @@
     if (run.room === 3) {
       const hp = 145 + run.stage * 25;
       run.enemies = [{ x: 195, y: 125, hp, max: hp, cd: 0, boss: true, special: 2.8, warning: 0 }];
-      $("#roomText").textContent = `Room ${run.room}/3 · BOSS`;
+      $("#roomText").textContent = roomLabel(run.room, true);
       $("#objective").textContent = t("bossObjective");
       updateHud();
       return;
@@ -206,7 +222,7 @@
       const hp = 28 + run.stage * 7 + run.room * 5;
       return { x: 80 + index * 110, y: 105 + (index % 2) * 90, hp, max: hp, cd: 0 };
     });
-    $("#roomText").textContent = `Room ${run.room}/3`;
+    $("#roomText").textContent = roomLabel(run.room);
     $("#objective").textContent = `Defeat ${run.enemies.length} Shadow Scouts`;
     updateHud();
   }
@@ -398,7 +414,9 @@
       $("#resultNext").onclick = () => run.stage < 3 ? startTrial(run.stage + 1) : (show("main"), localize());
     } else {
       $("#resultTitle").textContent = t("fail");
-      $("#resultCopy").textContent = "Leo needs another route.";
+      $("#resultCopy").textContent = locale === "zh-Hant"
+        ? `${heroName(run.heroId)}\u9700\u8981\u518d\u8a66\u4e00\u6b21\u3002`
+        : interpolate("failCopy", { hero: heroName(run.heroId) });
       $("#resultNext").textContent = t("retry");
       $("#resultNext").onclick = () => startTrial(run.stage);
     }

@@ -1001,6 +1001,7 @@
     state.discardPile.push(cardId);
     const cardName = t(card.nameKey);
     log(t("log_play_card", { card: cardName, cost: card.cost }), "player");
+    showCombatFeedback(cardName, "card");
 
     if (cardId === "wolf-pack") {
       const damage = state.attacksPlayedThisTurn > 0 ? 12 : 6;
