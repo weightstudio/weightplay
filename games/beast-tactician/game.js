@@ -892,7 +892,7 @@
     nodes.techBtn.textContent = t("tech");
     nodes.techBackBtn.textContent = t("back");
     nodes.stageTitle.textContent = t("chooseStage");
-    nodes.stageBackBtn.textContent = t("menu");
+    nodes.stageBackBtn.textContent = "\u2190";
     nodes.menuBtn.textContent = t("menu");
     nodes.buildTitle.textContent = t("build");
     nodes.stageHudLabel.textContent = t("stage");

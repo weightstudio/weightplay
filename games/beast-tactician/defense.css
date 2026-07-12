@@ -816,10 +816,36 @@ body.guardian-playing .command-row button {
 
   .menu-panel {
     grid-template-columns: 1fr;
+    width: calc(100% - 16px);
+    margin: 8px auto;
+    padding: 12px;
+    gap: 10px;
+  }
+
+  .poster-frame {
+    width: min(100%, 300px);
+    justify-self: center;
+  }
+
+  .menu-copy h2 {
+    margin-bottom: 6px;
+    font-size: 1.65rem;
+  }
+
+  .menu-hint {
+    margin: 4px 0;
+    line-height: 1.35;
   }
 
   .profile-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin: 8px 0;
+    gap: 6px;
+  }
+
+  .profile-grid div {
+    min-width: 0;
+    padding: 7px;
   }
 
   .stage-panel {

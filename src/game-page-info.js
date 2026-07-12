@@ -1,4 +1,12 @@
 (function () {
+  const sharedAssetBase = new URL(".", document.currentScript?.src || location.href);
+  if (!document.querySelector('link[data-wp-stage-standard]')) {
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = new URL("stage-selector-standard.css", sharedAssetBase).href;
+    link.dataset.wpStageStandard = "true";
+    document.head.appendChild(link);
+  }
   const games = {
     "wonder-crash": {
       title: "Fantasy Lion Defense",

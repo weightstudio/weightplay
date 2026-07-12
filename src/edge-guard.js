@@ -114,13 +114,6 @@
     ".game-area",
     ".playfield",
     "canvas",
-    "#startBtn",
-    "#playBtn",
-    "#beginBtn",
-    "#restartBtn",
-    "#retryBtn",
-    "#nextStageBtn",
-    "[data-start-game]",
   ];
 
   function isMobileGameViewport() {
@@ -288,6 +281,7 @@
   function handlePointerUp(event) {
     const target = event.target;
     if (isEditable(target)) return;
+    if (target?.closest?.("button, a, [role='button'], input, select, textarea")) return;
     if (target?.closest?.("[data-no-mobile-immersive='true']")) return;
     if (!target?.closest?.(immersiveTriggerSelectors.join(","))) return;
     enterMobileGameMode(target);

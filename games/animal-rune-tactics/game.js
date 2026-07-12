@@ -529,6 +529,45 @@
     renderMenu();
   }
 
+  function installStandardStageFlow() {
+    const menuCopy = nodes.menuPanel.querySelector(".menu-copy");
+    const missionList = nodes.missionGrid.closest(".mission-list");
+    const mainStart = document.createElement("button");
+    mainStart.id = "mainStartBtn";
+    mainStart.type = "button";
+    mainStart.className = "primary-btn standard-main-start";
+    mainStart.dataset.wpMainStart = "true";
+    mainStart.textContent = "Start Game";
+    menuCopy.insertBefore(mainStart, menuCopy.querySelector(".profile-grid"));
+    const stagePanel = document.createElement("section");
+    stagePanel.id = "stagePanel";
+    stagePanel.className = "wp-standard-stage-panel is-hidden";
+    stagePanel.dataset.wpStandardStageScreen = "true";
+    stagePanel.innerHTML = '<header class="wp-standard-stage-heading"><button id="stageBackBtn" type="button" aria-label="Back">&larr;</button><strong>Choose Mission</strong></header>';
+    stagePanel.append(missionList, nodes.startBtn);
+    nodes.menuPanel.after(stagePanel);
+    const reserve = document.createElement("div");
+    reserve.className = "wp-standard-stage-reserve is-hidden";
+    reserve.setAttribute("aria-hidden", "true");
+    stagePanel.after(reserve);
+    Object.assign(nodes, { stagePanel, stageReserve: reserve, mainStartBtn: mainStart, stageBackBtn: stagePanel.querySelector("#stageBackBtn") });
+  }
+
+  function showStage() {
+    nodes.menuPanel.classList.add("is-hidden");
+    nodes.stagePanel.classList.remove("is-hidden");
+    nodes.stageReserve.classList.remove("is-hidden");
+    document.body.classList.add("wp-standard-stage-page");
+    renderMenu();
+  }
+
+  function showMainFromStage() {
+    nodes.stagePanel.classList.add("is-hidden");
+    nodes.stageReserve.classList.add("is-hidden");
+    nodes.menuPanel.classList.remove("is-hidden");
+    document.body.classList.remove("wp-standard-stage-page");
+  }
+
   function startMission(mission = selectedMission) {
     const extraEnergy = (profile.training ? 1 : 0) + (profile.bonusEnergy || 0);
     const hpBonus = profile.bonusHp || 0;
@@ -558,6 +597,9 @@
       enemies: makeEnemies(mission),
     };
     nodes.menuPanel.classList.add("is-hidden");
+    nodes.stagePanel.classList.add("is-hidden");
+    nodes.stageReserve.classList.add("is-hidden");
+    document.body.classList.remove("wp-standard-stage-page");
     document.body.classList.add("is-rune-playing");
     nodes.backBtn.setAttribute("aria-label", t("backToMenu"));
     nodes.resultPanel.classList.add("is-hidden");
@@ -942,7 +984,10 @@
     nodes.gamePanel.classList.add("is-hidden");
     nodes.rewardPanel.classList.add("is-hidden");
     nodes.resultPanel.classList.add("is-hidden");
-    nodes.menuPanel.classList.remove("is-hidden");
+    nodes.menuPanel.classList.add("is-hidden");
+    nodes.stagePanel.classList.remove("is-hidden");
+    nodes.stageReserve.classList.remove("is-hidden");
+    document.body.classList.add("wp-standard-stage-page");
     renderMenu();
     focusPanel(nodes.menuPanel);
   }
@@ -967,6 +1012,8 @@
   }
 
   function bind() {
+    nodes.mainStartBtn.addEventListener("click", showStage);
+    nodes.stageBackBtn.addEventListener("click", showMainFromStage);
     nodes.backBtn.addEventListener("click", (event) => {
       if (!state) return;
       event.preventDefault();
@@ -1010,6 +1057,7 @@
   }
 
   function boot() {
+    installStandardStageFlow();
     bind();
     installTestHooks();
     let progress = 0;

@@ -8,6 +8,7 @@
   const startBtn = document.querySelector("#startBtn");
   const stageSelectPanel = document.querySelector("#stageSelectPanel");
   const stageSelectTitle = document.querySelector("#stageSelectTitle");
+  const stageBackBtn = document.querySelector("#stageBackBtn");
   const stageGrid = document.querySelector("#stageGrid");
   const gameHud = document.querySelector("#gameHud");
   const levelIndicator = document.querySelector("#levelIndicator");
@@ -852,6 +853,7 @@
     window.WonderSound?.play("click");
     showStageSelect();
   });
+  stageBackBtn.addEventListener("click", showMain);
 
   againBtn.addEventListener("click", () => {
     window.WonderAnalytics?.track("game_restart", {

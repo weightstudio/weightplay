@@ -698,14 +698,14 @@
       if (moved) {
         const gridRect = nodes.stageGrid.getBoundingClientRect();
         const center = gridRect.left + gridRect.width / 2;
-        const nearest = [...nodes.stageGrid.querySelectorAll(".stage-card:not(.locked)")].reduce((best, card) => {
+        const nearest = [...nodes.stageGrid.querySelectorAll(".stage-card")].reduce((best, card) => {
           const rect = card.getBoundingClientRect();
           const distance = Math.abs(rect.left + rect.width / 2 - center);
           return !best || distance < best.distance ? { card, distance } : best;
         }, null);
         if (nearest) {
           nodes.stageGrid.querySelectorAll(".stage-card").forEach((card) => card.classList.toggle("selected", card === nearest.card));
-          currentStage = Number(nearest.card.dataset.stageIndex) || 0;
+          if (!nearest.card.classList.contains("locked")) currentStage = Number(nearest.card.dataset.stageIndex) || 0;
           nearest.card.scrollIntoView({ block: "nearest", inline: "center", behavior: "smooth" });
         }
         window.setTimeout(() => delete nodes.stageGrid.dataset.draggingClick, 0);

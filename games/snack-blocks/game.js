@@ -445,6 +445,7 @@
   }
 
   function installStageDrag() {
+    nodes.stageGrid.dataset.stageDragInstalled = "true";
     let pointerId = null;
     let startX = 0;
     let startScroll = 0;

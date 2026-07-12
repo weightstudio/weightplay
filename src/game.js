@@ -27,6 +27,11 @@ const battleAdReserve = document.querySelector("#battleAdReserve");
 const resumeBtn = document.querySelector("#resumeBtn");
 const leaveBtn = document.querySelector("#leaveBtn");
 const pauseLocaleSelect = document.querySelector("#pauseLocaleSelect");
+const wonderMain = document.querySelector("#wonderMain");
+const wonderMainStart = document.querySelector("#wonderMainStart");
+const wonderManageBtn = document.querySelector("#wonderManageBtn");
+const wonderStageBack = document.querySelector("#wonderStageBack");
+const wonderMainLocaleSelect = document.querySelector("#wonderMainLocaleSelect");
 const weaponModal = document.querySelector("#weaponModal");
 const weaponModalClose = document.querySelector("#weaponModalClose");
 const weaponModalContent = document.querySelector("#weaponModalContent");
@@ -683,7 +688,7 @@ async function preload() {
   loaded = true;
   loadingPanel?.classList.add("hidden");
   window.WonderAnalytics?.track("game_ready", { game_id: "wonder-crash" });
-  showMainMenu("battle");
+  showWonderMain();
   requestAnimationFrame(loop);
 }
 
@@ -733,6 +738,9 @@ function startLevel(levelIndex) {
   state = makeState(levelIndex);
   state.running = true;
   setBattleShellActive(true);
+  wonderMain.classList.add("hidden");
+  wonderStageBack.classList.add("hidden");
+  document.body.classList.remove("wonder-stage-select");
   document.body.classList.add("wonder-tutorial-hidden");
   backToMenuBtn.classList.remove("hidden");
   settingsBtn.classList.remove("hidden");
@@ -1868,6 +1876,9 @@ function showMainMenu(tab = activeMenuTab) {
   state.gameOver = false;
   state.awaitingUpgrade = false;
   setBattleShellActive(false);
+  wonderMain.classList.add("hidden");
+  wonderStageBack.classList.remove("hidden");
+  document.body.classList.toggle("wonder-stage-select", tab === "battle");
   document.body.classList.remove("wonder-tutorial-hidden");
   overlay.classList.remove("settlement-screen");
   settingsBtn.classList.add("hidden");
@@ -1878,7 +1889,7 @@ function showMainMenu(tab = activeMenuTab) {
   overlayText.textContent = getMenuTitle(tab);
   startBtn.classList.add("hidden");
   menuContent.classList.remove("hidden");
-  menuTabs.classList.remove("hidden");
+  menuTabs.classList.toggle("hidden", tab === "battle");
   profilePanel.classList.remove("hidden");
   levelGrid.classList.add("hidden");
   upgradeGrid.classList.add("hidden");
@@ -1887,6 +1898,18 @@ function showMainMenu(tab = activeMenuTab) {
   renderMenuContent();
   overlay.classList.remove("hidden");
   updateHud();
+}
+
+function showWonderMain() {
+  state.running = false;
+  setBattleShellActive(false);
+  document.body.classList.remove("wonder-stage-select", "wonder-tutorial-hidden");
+  overlay.classList.add("hidden");
+  wonderStageBack.classList.add("hidden");
+  wonderMain.classList.remove("hidden");
+  battleHud.classList.add("hidden");
+  settingsBtn.classList.add("hidden");
+  backToMenuBtn.classList.add("hidden");
 }
 
 function getMenuTitle(tab) {
@@ -3068,7 +3091,12 @@ window.addEventListener("wonder:locale-change", () => {
 // Initialize translations
 bindLocaleSelect(globalLocaleSelect);
 bindLocaleSelect(pauseLocaleSelect);
+bindLocaleSelect(wonderMainLocaleSelect);
 translateStaticUI();
+
+wonderMainStart.addEventListener("click", () => showMainMenu("battle"));
+wonderManageBtn.addEventListener("click", () => showMainMenu("character"));
+wonderStageBack.addEventListener("click", showWonderMain);
 
 preload().catch((error) => {
   if (loadingText) loadingText.textContent = t("load_fail");

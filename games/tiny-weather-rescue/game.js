@@ -173,6 +173,10 @@
   const nodes = {
     localeSelect: $("localeSelect"),
     menuPanel: $("menuPanel"),
+    stagePanel: $("stagePanel"),
+    stageAdReserve: $("stageAdReserve"),
+    startGameBtn: $("startGameBtn"),
+    stageBackBtn: $("stageBackBtn"),
     stageGrid: $("stageGrid"),
     playPanel: $("playPanel"),
     backToStagesBtn: $("backToStagesBtn"),
@@ -337,6 +341,9 @@
     running = true;
     busy = false;
     nodes.menuPanel.classList.add("hidden");
+    nodes.stagePanel.classList.add("hidden");
+    nodes.stageAdReserve.classList.add("hidden");
+    document.body.classList.remove("wp-standard-stage-page");
     nodes.resultPanel.classList.add("hidden");
     nodes.playPanel.classList.remove("hidden");
     document.body.classList.add("helper-playing");
@@ -630,11 +637,21 @@
     cleanupDrag();
     nodes.playPanel.classList.add("hidden");
     nodes.resultPanel.classList.add("hidden");
-    nodes.menuPanel.classList.remove("hidden");
+    nodes.menuPanel.classList.add("hidden");
+    nodes.stagePanel.classList.remove("hidden");
+    nodes.stageAdReserve.classList.remove("hidden");
     document.body.classList.remove("helper-playing");
+    document.body.classList.add("wp-standard-stage-page");
     document.querySelector(".weather-game")?.setAttribute("data-play-viewport", "");
     nodes.battleAdReserve.classList.add("hidden");
     renderStageGrid();
+  }
+
+  function showMain() {
+    nodes.stagePanel.classList.add("hidden");
+    nodes.stageAdReserve.classList.add("hidden");
+    nodes.menuPanel.classList.remove("hidden");
+    document.body.classList.remove("wp-standard-stage-page");
   }
 
   function showFloatingText(message) {
@@ -661,6 +678,8 @@
     }, 80);
   }
 
+  nodes.startGameBtn.addEventListener("click", showMenu);
+  nodes.stageBackBtn.addEventListener("click", showMain);
   nodes.localeSelect.addEventListener("change", (event) => {
     locale = event.target.value;
     localStorage.setItem(localeKey, locale);

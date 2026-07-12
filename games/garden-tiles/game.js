@@ -19,6 +19,7 @@
   const pairsText = document.querySelector("#pairsText");
   const levelSelect = document.querySelector("#levelSelect");
   const levelSelectTitle = document.querySelector("#levelSelectTitle");
+  const levelBackBtn = document.querySelector("#levelBackBtn");
   const levelMessage = document.querySelector("#levelMessage");
   const levelGrid = document.querySelector("#levelGrid");
   const boardPanel = document.querySelector("#boardPanel");
@@ -482,6 +483,7 @@
   });
   levelsBtn.addEventListener("click", showLevelSelect);
   startBtn.addEventListener("click", showLevelSelect);
+  levelBackBtn.addEventListener("click", showMain);
   battleBackBtn.addEventListener("click", showLevelSelect);
   homeLink.addEventListener("click", (event) => {
     if (document.body.classList.contains("garden-main")) return;

@@ -157,6 +157,10 @@
   const nodes = {
     localeSelect: $("localeSelect"),
     menuPanel: $("menuPanel"),
+    stagePanel: $("stagePanel"),
+    stageAdReserve: $("stageAdReserve"),
+    startGameBtn: $("startGameBtn"),
+    stageBackBtn: $("stageBackBtn"),
     stageGrid: $("stageGrid"),
     playPanel: $("playPanel"),
     backToStagesBtn: $("backToStagesBtn"),
@@ -301,11 +305,21 @@
   }
 
   function showMenu() {
-    nodes.menuPanel.classList.remove("hidden");
+    nodes.menuPanel.classList.add("hidden");
+    nodes.stagePanel.classList.remove("hidden");
+    nodes.stageAdReserve.classList.remove("hidden");
     nodes.playPanel.classList.add("hidden");
     nodes.resultPanel.classList.add("hidden");
     setBattleViewport(false);
+    document.body.classList.add("wp-standard-stage-page");
     renderStageGrid();
+  }
+
+  function showMain() {
+    nodes.stagePanel.classList.add("hidden");
+    nodes.stageAdReserve.classList.add("hidden");
+    nodes.menuPanel.classList.remove("hidden");
+    document.body.classList.remove("wp-standard-stage-page");
   }
 
   function startStage(index) {
@@ -314,6 +328,9 @@
     mistakes = 0;
     acceptingInput = true;
     nodes.menuPanel.classList.add("hidden");
+    nodes.stagePanel.classList.add("hidden");
+    nodes.stageAdReserve.classList.add("hidden");
+    document.body.classList.remove("wp-standard-stage-page");
     nodes.playPanel.classList.remove("hidden");
     nodes.resultPanel.classList.add("hidden");
     setBattleViewport(true);
@@ -510,6 +527,8 @@
   }
 
   function bindEvents() {
+    nodes.startGameBtn.addEventListener("click", showMenu);
+    nodes.stageBackBtn.addEventListener("click", showMain);
     nodes.localeSelect.addEventListener("change", () => {
       locale = nodes.localeSelect.value;
       window.WonderI18n?.setLocale?.(locale);

@@ -74,6 +74,45 @@
 
   const asset = (name) => `../../assets/${name}`;
 
+  function installStandardStageFlow() {
+    const menuCopy = nodes.menuPanel.querySelector(".menu-copy");
+    const stageSelect = nodes.stageGrid.closest(".stage-select");
+    const mainStart = document.createElement("button");
+    mainStart.id = "mainStartBtn";
+    mainStart.type = "button";
+    mainStart.className = "standard-main-start";
+    mainStart.dataset.wpMainStart = "true";
+    mainStart.textContent = "Start Game";
+    menuCopy.insertBefore(mainStart, menuCopy.querySelector(".prototype-goals"));
+    const stagePanel = document.createElement("section");
+    stagePanel.id = "stagePanel";
+    stagePanel.className = "wp-standard-stage-panel hidden";
+    stagePanel.dataset.wpStandardStageScreen = "true";
+    stagePanel.innerHTML = '<header class="wp-standard-stage-heading"><button id="stageBackBtn" type="button" aria-label="Back">&larr;</button><strong>Choose a Mission</strong></header>';
+    stagePanel.append(stageSelect, nodes.startBtn);
+    nodes.menuPanel.after(stagePanel);
+    const reserve = document.createElement("div");
+    reserve.className = "wp-standard-stage-reserve hidden";
+    reserve.setAttribute("aria-hidden", "true");
+    stagePanel.after(reserve);
+    Object.assign(nodes, { stagePanel, stageReserve: reserve, mainStartBtn: mainStart, stageBackBtn: stagePanel.querySelector("#stageBackBtn") });
+  }
+
+  function showStage() {
+    nodes.menuPanel.classList.add("hidden");
+    nodes.stagePanel.classList.remove("hidden");
+    nodes.stageReserve.classList.remove("hidden");
+    document.body.classList.add("wp-standard-stage-page");
+    renderProgressUI();
+  }
+
+  function showMainFromStage() {
+    nodes.stagePanel.classList.add("hidden");
+    nodes.stageReserve.classList.add("hidden");
+    nodes.menuPanel.classList.remove("hidden");
+    document.body.classList.remove("wp-standard-stage-page");
+  }
+
   const metaText = {
     en: {
       description: "Play Beast Deck: The Mist Forest, a turn-based roguelike deckbuilder game on WeightPlay. Build an animal power deck, level up locally, and unlock forest missions.",
@@ -1263,6 +1302,9 @@
     loadLocalState();
     resetRunState();
     nodes.menuPanel.classList.add("hidden");
+    nodes.stagePanel.classList.add("hidden");
+    nodes.stageReserve.classList.add("hidden");
+    document.body.classList.remove("wp-standard-stage-page");
     nodes.resultPanel.classList.add("hidden");
     nodes.gamePanel.classList.remove("hidden");
     document.body.classList.add("beast-deck-playing");
@@ -1355,6 +1397,7 @@
   }
 
   function init() {
+    installStandardStageFlow();
     loadLocalState();
     translateUI();
     renderProgressUI();
@@ -1371,7 +1414,7 @@
     nodes.menuBtn.addEventListener("click", () => {
       window.WonderSound?.play("click");
       nodes.gamePanel.classList.add("hidden");
-      nodes.menuPanel.classList.remove("hidden");
+      showStage();
       renderProgressUI();
       updateDiamondShopUI();
       renderCollectionUI();
@@ -1388,11 +1431,13 @@
       document.body.classList.remove("beast-deck-playing");
       window.WonderSound?.play("click");
       nodes.resultPanel.classList.add("hidden");
-      nodes.menuPanel.classList.remove("hidden");
+      showStage();
       renderProgressUI();
       updateDiamondShopUI();
       renderCollectionUI();
     });
+    nodes.mainStartBtn.addEventListener("click", showStage);
+    nodes.stageBackBtn.addEventListener("click", showMainFromStage);
     nodes.localeSelect.addEventListener("change", (event) => {
       window.WonderSound?.play("click");
       window.WonderI18n?.setLocale?.(event.target.value);
@@ -1412,6 +1457,7 @@
     let stageDragStartX = 0;
     let stageDragStartLeft = 0;
     nodes.stageGrid?.addEventListener("pointerdown", (event) => {
+      if (nodes.stageGrid.dataset.wpStageRail === "true") return;
       if (event.pointerType === "touch") return;
       isStageDragging = true;
       stageDragStartX = event.clientX;
