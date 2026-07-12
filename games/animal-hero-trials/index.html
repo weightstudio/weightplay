@@ -16,6 +16,7 @@
   <title>Animal Hero Trials - WeightPlay</title>
   <link rel="canonical" href="https://weightplay.com/games/animal-hero-trials/" />
   <link rel="stylesheet" href="../../src/loading-screen.css" />
+  <link rel="stylesheet" href="../../src/play-viewport.css" />
   <link rel="stylesheet" href="../../src/game-page-info.css" />
   <link rel="stylesheet" href="style.css" />
   <style>
@@ -41,7 +42,7 @@
       <header class="compact-head"><button id="stageBack" class="icon-btn" type="button" aria-label="Back">&larr;</button><h2 data-t="choose">Choose Trial</h2></header>
       <div id="heroPicker" class="hero-picker" aria-label="Choose hero"></div><div id="stageRail" class="stage-rail"></div><div class="stage-ad" aria-hidden="true"></div>
     </section>
-    <section id="battleView" class="view battle-view hidden">
+    <section id="battleView" class="view battle-view hidden" data-play-viewport>
       <header class="battle-head"><button id="battleBack" class="icon-btn" type="button" aria-label="Back">&larr;</button><div class="health"><span id="roomText">Room 1/3</span><div><i id="hpFill"></i></div></div><button id="skillBtn" class="skill-btn" type="button"><img src="../../assets/animal-hero-trials-icon-roaring-mane.webp" alt="" /><span id="cooldownText">ROAR</span></button></header>
       <div class="canvas-wrap"><canvas id="game" width="390" height="560"></canvas><div id="joystick" class="joystick"><i></i></div><p id="objective"></p></div><div id="battleAd" class="battle-ad" aria-hidden="true"></div>
     </section>

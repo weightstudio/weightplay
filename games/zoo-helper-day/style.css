@@ -474,7 +474,7 @@ body.zoo-helper-playing .play-panel {
   min-height: 0;
   margin: 0 auto;
   display: grid;
-  grid-template-rows: 44px 40px minmax(0, 1fr) 76px 24px;
+  grid-template-rows: 44px 40px minmax(280px, 1fr) 176px 24px;
   gap: 6px;
   overflow: hidden;
 }
@@ -531,12 +531,16 @@ body.zoo-helper-playing .animal-card span {
 }
 
 body.zoo-helper-playing .item-grid {
-  height: 76px;
+  height: 176px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: 8px;
 }
 
 body.zoo-helper-playing .item-card {
   width: 100%;
-  height: 76px;
+  height: auto;
+  min-height: 0;
   min-width: 0;
   padding: 4px 2px;
   gap: 2px;
@@ -556,6 +560,30 @@ body.zoo-helper-playing .feedback {
 }
 
 @media (max-height: 500px) {
+  body.zoo-helper-playing .play-panel {
+    grid-template-rows: 44px 40px minmax(0, 1fr) 92px 20px;
+  }
+
+  body.zoo-helper-playing .item-grid {
+    height: 92px;
+    gap: 4px;
+  }
+
+  body.zoo-helper-playing .item-card {
+    height: auto;
+    min-height: 0;
+  }
+
+  body.zoo-helper-playing .item-card b {
+    width: 34px;
+    height: 34px;
+  }
+
+  body.zoo-helper-playing .feedback {
+    min-height: 20px;
+    height: 20px;
+  }
+
   body.zoo-helper-playing .animal-card {
     grid-template-columns: 120px minmax(0, 1fr);
     grid-template-rows: 1fr 1fr;
