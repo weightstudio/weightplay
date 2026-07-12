@@ -42,9 +42,18 @@
           <h2 data-ui="menuTitle">Serve the animal cafe.</h2>
           <p data-ui="menuHint">Pick the food shown in a customer's bubble, then tap that customer to serve.</p>
           <div class="profile-grid"><div><span data-ui="day">Day</span><b id="dayText">1</b></div><div><span data-ui="coins">Coins</span><b id="coinText">0</b></div><div><span data-ui="best">Best</span><b id="bestText">0</b></div></div>
-          <section class="upgrade-panel"><div><strong data-ui="upgrades">Cafe upgrades</strong><small data-ui="upgradeHint">Coins make future days friendlier.</small></div><div id="upgradeCards" class="upgrade-cards"></div></section>
-          <button id="startBtn" class="primary-btn" type="button" data-ui="start">Start day</button>
+          <button id="mainStartBtn" class="primary-btn standard-main-start" type="button" data-ui="startGame">Start Game</button>
         </div>
+      </section>
+      <section id="stagePanel" class="stage-panel is-hidden">
+        <header class="stage-head"><button id="stageBackBtn" type="button" aria-label="Back">&larr;</button><strong data-ui="chooseDay">Choose a Day</strong></header>
+        <div class="stage-workspace">
+          <div class="stage-profile"><div><span data-ui="day">Day</span><b id="stageDayText">1</b></div><div><span data-ui="coins">Coins</span><b id="stageCoinText">0</b></div><div><span data-ui="best">Best</span><b id="stageBestText">0</b></div></div>
+          <div id="dayRail" class="day-rail stage-rail" aria-label="Cafe days"></div>
+          <section class="upgrade-panel"><div><strong data-ui="upgrades">Cafe upgrades</strong><small data-ui="upgradeHint">Coins make future days friendlier.</small></div><div id="upgradeCards" class="upgrade-cards"></div></section>
+          <button id="startBtn" class="primary-btn" type="button" data-ui="startSelected">Start Selected Day</button>
+        </div>
+        <div class="stage-ad-reserve" aria-hidden="true"></div>
       </section>
       <section id="playPanel" class="play-panel is-hidden" data-no-mobile-immersive="true">
         <button id="backToMenuBtn" class="play-return" type="button" aria-label="Back to menu">&larr;</button>
@@ -55,7 +64,7 @@
         <div id="playMessage" class="play-message" aria-live="polite"></div>
       </section>
       <div id="adReserve" class="ad-reserve" aria-hidden="true"></div>
-      <section id="resultPanel" class="result-panel is-hidden" aria-live="polite"><div class="result-card"><img src="../../assets/animal-cafe-rush-lion-guide.webp" alt="" /><h2 id="resultTitle"></h2><p id="resultText"></p><p id="skillText"></p><div><button id="retryBtn" class="secondary-btn is-hidden" type="button" data-ui="retry">Try again</button><button id="nextBtn" class="primary-btn" type="button" data-ui="next">Next day</button><button id="menuBtn" class="secondary-btn" type="button" data-ui="menu">Menu</button></div></div></section>
+      <section id="resultPanel" class="result-panel is-hidden" aria-live="polite"><div class="result-card"><img src="../../assets/animal-cafe-rush-lion-guide.webp" alt="" /><h2 id="resultTitle"></h2><p id="resultText"></p><p id="skillText"></p><div><button id="retryBtn" class="secondary-btn is-hidden" type="button" data-ui="retry">Try again</button><button id="nextBtn" class="primary-btn" type="button" data-ui="next">Next day</button><button id="menuBtn" class="secondary-btn" type="button" data-ui="backStage">Back to Days</button></div></div></section>
     </main>
     <script src="../../src/site-config.js?v=20260711-cafe-release1"></script>
     <script src="../../src/version.js?v=20260701-version2"></script>

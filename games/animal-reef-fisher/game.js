@@ -436,7 +436,7 @@
       const locked = index + 1 > save.unlockedZone;
       return `
         <button class="zone-card stage-card ${zone.id === selectedZone ? "is-selected" : ""} ${locked ? "is-locked" : ""}" data-zone="${zone.id}" type="button">
-          <img src="${zone.img}" alt="" />
+          <span class="zone-art"><img src="${zone.img}" alt="" /></span>
           <strong>${zone.name[locale]}</strong>
           <span>${locked ? t("locked") : `${t("goal")} ${zone.goal}`}</span>
         </button>
