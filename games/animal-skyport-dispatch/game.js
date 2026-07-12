@@ -6,7 +6,7 @@
     'zh-Hant': { title:'\u52d5\u7269\u5929\u7a7a\u6e2f\u8abf\u5ea6\u968a', language:'\u8a9e\u8a00', headline:'\u8b93\u96f2\u7dda\u5929\u7a7a\u6e2f\u6301\u7e8c\u904b\u4f5c\u3002', intro:'\u7e6a\u51fa\u5b89\u5168\u822a\u7dda\uff0c\u914d\u5c0d\u98db\u8239\u8207\u78bc\u982d\uff0c\u4fdd\u8b77\u73ed\u6b21\u4e0d\u88ab\u58c5\u585e\u3002', start:'\u958b\u59cb\u904a\u6232', chooseShift:'\u9078\u64c7\u73ed\u6b21', best:'\u6700\u4f73\u73ed\u6b21\uff1a{n}', shift:'\u73ed\u6b21 {n}/5', objective:'\u5b8c\u6210 {done}/{goal} \u67b6\u98db\u8239', service:'\u4f7f\u7528\u7dad\u4fee\u670d\u52d9', dragHint:'\u628a\u98db\u8239\u62d6\u66f3\u5230\u5c0d\u61c9\u78bc\u982d\u3002', menu:'\u56de\u4e3b\u9078\u55ae', next:'\u4e0b\u4e00\u73ed', retry:'\u91cd\u8a66\u73ed\u6b21', win:'\u73ed\u6b21\u5b8c\u6210\uff01', lose:'\u5929\u7a7a\u6e2f\u58c5\u585e\uff01', winCopy:'\u6e05\u6670\u8abf\u5ea6\u70ba\u5929\u7a7a\u6e2f\u5beb\u4e0b\u65b0\u7d00\u9304\u3002', loseCopy:'\u4e09\u6b21\u4e0d\u5b89\u5168\u9032\u5834\u95dc\u9589\u4e86\u73ed\u6b21\uff0c\u91cd\u8a66\u514d\u8cbb\u3002', repair:'\u7dad\u4fee\u96f6\u4ef6 {n}' }
   };
   const flights = [['cargo','cargo'], ['passenger','passenger'], ['repair','repair'], ['festival','passenger'], ['heavy','cargo']];
-  const shiftConfig = [null, {goal:4, parts:2, stormEvery:0, coin:24, stamps:1}, {goal:6, parts:2, stormEvery:0, coin:36, stamps:1}, {goal:7, parts:2, stormEvery:3, coin:48, stamps:2}, {goal:8, parts:3, stormEvery:2, coin:62, stamps:2}, {goal:10, parts:3, stormEvery:2, coin:80, stamps:3}];
+  const shiftConfig = [null, {goal:4, parts:2, stormEvery:0, coin:24, stamps:1}, {goal:6, parts:2, stormEvery:0, coin:36, stamps:1}, {goal:7, parts:2, stormEvery:3, coin:48, stamps:2}, {goal:8, parts:4, stormEvery:2, coin:62, stamps:2}, {goal:10, parts:5, stormEvery:2, coin:80, stamps:3}];
   const saved = JSON.parse(localStorage.getItem(saveKey) || '{}');
   let locale = localStorage.getItem('weightPlayLocale') || 'en';
   let save = {best:1, unlocked:1, reputation:0, coins:0, stamps:0, medals:{}, ...saved};
@@ -14,6 +14,7 @@
   let dragging = false;
   let inputMode = '';
   let suppressClick = false;
+  let insuranceActive = false;
   const t = (key, values = {}) => Object.entries(values).reduce((value, [name, replacement]) => value.replace(`{${name}}`, replacement), strings[locale][key]);
   const persist = () => localStorage.setItem(saveKey, JSON.stringify(save));
   const show = (id) => {
@@ -26,6 +27,8 @@
     document.title = `${t('title')} - Internal Trial`;
     document.querySelectorAll('[data-i18n]').forEach((node) => { node.textContent = t(node.dataset.i18n); });
     $('localeSelect').value = locale;
+    $('contractText').textContent = locale === 'zh-Hant' ? '\u512a\u5148\u5408\u7d04\uff1a\u7121\u932f\u8aa4\u5b8c\u6210\u6642\u7372\u5f97\u984d\u5916\u5929\u7a7a\u5e63\u3002' : 'Priority contract: finish with no errors for bonus sky coins.';
+    $('insuranceBtn').textContent = insuranceActive ? (locale === 'zh-Hant' ? '\u5df2\u6295\u4fdd' : 'Insurance active') : (locale === 'zh-Hant' ? '\u4fdd\u96aa 5 \u947d\u77f3' : 'Insure 5 diamonds');
     renderStages();
   }
   function renderStages() {
@@ -46,12 +49,12 @@
     $('shiftText').textContent = t('shift', {n:state.shift});
     $('scoreText').textContent = `${state.done}/${state.goal}`;
     $('objectiveText').textContent = t('objective', {done:state.done, goal:state.goal});
-    $('resourceText').textContent = t('repair', {n:state.parts});
+    $('resourceText').textContent = `Crew ${state.crew}/${state.maxCrew} · Fuel ${state.fuel} · ${t('repair', {n:state.parts})}`;
   }
   function startBattle() {
     const shift = state.shift || 1;
     const config = shiftConfig[shift];
-    state = {shift, done:0, errors:0, parts:config.parts, goal:config.goal, stormEvery:config.stormEvery, flightIndex:0, matched:0, selected:false};
+    state = {shift, done:0, errors:0, parts:config.parts, crew:2, maxCrew:2, fuel:config.goal+4, goal:config.goal, stormEvery:config.stormEvery, flightIndex:0, matched:0, selected:false, contract:Boolean(state.contract)};
     show('battleShell');
     nextFlight();
     renderHud();
@@ -61,10 +64,15 @@
     state.kind = kind;
     state.dock = dock;
     state.storm = state.stormEvery > 0 && state.flightIndex % state.stormEvery === 0;
+    state.conflict = state.shift >= 3 && state.flightIndex % 4 === 1;
+    state.needsCrew = ['cargo','repair','festival','heavy'].includes(kind);
+    state.crewAssigned = !state.needsCrew;
     state.serviced = !state.storm;
     $('flight').style.backgroundImage = `url('../../assets/animal-skyport-dispatch-airship-${kind}.webp')`;
     $('weatherZone').classList.toggle('hidden', !state.storm);
     $('weatherZone').src = '../../assets/animal-skyport-dispatch-weather-storm.webp';
+    $('clearRouteBtn').classList.toggle('hidden', !state.conflict);
+    $('assignCrewBtn').classList.toggle('hidden', !state.needsCrew);
     $('feedback').textContent = state.storm ? (locale === 'zh-Hant' ? '\u66b4\u98a8\u822a\u7dda\uff1a\u5148\u5b8c\u6210\u7dad\u4fee\u670d\u52d9\u3002' : 'Storm route: service first.') : t('dragHint');
     $('routeLine').style.opacity = '0';
   }
@@ -73,22 +81,25 @@
     $('resultTitle').textContent = win ? t('win') : t('lose');
     $('resultCopy').textContent = win ? t('winCopy') : t('loseCopy');
     $('resultRewards').innerHTML = win
-      ? `<span>Reputation +${state.done * 5}</span><span>Sky coins +${shiftConfig[state.shift].coin}</span><span>Medals ${save.medals[state.shift] || 1}/3</span>`
-      : `<span>Safe routing ${state.done}/${state.goal}</span><span>Errors ${state.errors}/3</span><span>Retry is free</span>`;
+      ? `<span>Reputation +${state.done * 5}</span><span>Sky coins +${shiftConfig[state.shift].coin + (state.contract && state.errors === 0 ? 20 : 0)}</span><span>Medals ${save.medals[state.shift] || 1}/3</span>`
+      : `<span>Safe routing ${state.done}/${state.goal}</span><span>Errors ${state.errors}/3</span><span>${insuranceActive ? 'Contract bonus protected' : 'Retry is free'}</span>`;
     $('nextBtn').textContent = win && state.shift < 5 ? t('next') : t('retry');
     $('nextBtn').onclick = () => { state.shift = win ? Math.min(5, state.shift + 1) : state.shift; startBattle(); };
   }
   function finish(ok) {
-    if (ok && state.serviced) {
+    if (ok && state.serviced && !state.conflict && state.crewAssigned && state.fuel > 0) {
       state.done += 1;
       state.matched += 1;
+      state.fuel -= 1;
+      if (state.needsCrew) state.crew = state.maxCrew;
       $('feedback').textContent = locale === 'zh-Hant' ? '\u78bc\u982d\u914d\u5c0d\u6210\u529f\u3002' : 'Dock matched.';
       if (state.done >= state.goal) {
         const config = shiftConfig[state.shift];
         save.best = Math.max(save.best || 1, state.shift);
         save.unlocked = Math.max(save.unlocked || 1, Math.min(5, state.shift + 1));
         save.reputation = (save.reputation || 0) + state.done * 5;
-        save.coins = (save.coins || 0) + config.coin;
+        const contractBonus = state.contract && state.errors === 0 ? 20 : 0;
+        save.coins = (save.coins || 0) + config.coin + contractBonus;
         save.stamps = (save.stamps || 0) + config.stamps;
         save.medals = save.medals || {};
         save.medals[state.shift] = Math.max(save.medals[state.shift] || 0, 1 + (state.errors === 0 ? 1 : 0) + (state.matched === state.goal ? 1 : 0));
@@ -99,8 +110,8 @@
       nextFlight();
     } else {
       state.errors += 1;
-      $('feedback').textContent = state.storm && !state.serviced ? (locale === 'zh-Hant' ? '\u9700\u5148\u5b8c\u6210\u670d\u52d9' : 'Service required') : (locale === 'zh-Hant' ? '\u78bc\u982d\u4e0d\u5c0d\uff0c\u8acb\u91cd\u8a66\u3002' : 'Unsafe dock. Try again.');
-      if (state.errors >= 3) result(false);
+      $('feedback').textContent = state.conflict ? (locale === 'zh-Hant' ? '\u5148\u6e05\u9664\u822a\u7dda\u885d\u7a81\u3002' : 'Clear the route conflict first.') : !state.crewAssigned ? (locale === 'zh-Hant' ? '\u5148\u6307\u6d3e\u7d44\u54e1\u3002' : 'Assign crew first.') : state.storm && !state.serviced ? (locale === 'zh-Hant' ? '\u9700\u5148\u5b8c\u6210\u670d\u52d9' : 'Service required') : state.fuel <= 0 ? (locale === 'zh-Hant' ? '\u71c3\u6599\u4e0d\u8db3\u3002' : 'Fuel depleted.') : (locale === 'zh-Hant' ? '\u78bc\u982d\u4e0d\u5c0d\uff0c\u8acb\u91cd\u8a66\u3002' : 'Unsafe dock. Try again.');
+      if (state.errors >= 3) { if (insuranceActive && state.contract) { save.coins = (save.coins || 0) + 20; persist(); } result(false); }
     }
     renderHud();
   }
@@ -137,6 +148,13 @@
     finish(nearest <= Math.max(64, target?.getBoundingClientRect().width || 0) ? target?.dataset.dock === state.dock : false);
   }
   $('startBtn').onclick = () => { state.shift = save.unlocked; show('stageScreen'); renderStages(); };
+  $('contractToggle').onchange = (event) => { state.contract = event.target.checked; };
+  $('insuranceBtn').onclick = () => {
+    if (insuranceActive) return;
+    if (!confirm(locale === 'zh-Hant' ? '\u82b1\u8cbb 5 \u947d\u77f3\uff0c\u5728\u5931\u6557\u6642\u4fdd\u7559\u5408\u7d04\u734e\u52f5\u55ce\uff1f' : 'Spend 5 diamonds to protect this run\'s contract bonus on failure?')) return;
+    if (!window.WeightPlayWallet?.spendDiamonds?.(5)) { $('contractText').textContent = locale === 'zh-Hant' ? '\u947d\u77f3\u4e0d\u8db3\u3002' : 'Not enough diamonds.'; return; }
+    insuranceActive = true; localize();
+  };
   $('stageBack').onclick = () => show('mainScreen');
   $('battleBack').onclick = () => { show('stageScreen'); renderStages(); };
   $('menuBtn').onclick = () => show('mainScreen');
@@ -148,6 +166,8 @@
       renderHud();
     }
   };
+  $('clearRouteBtn').onclick = () => { if (state.conflict && state.fuel > 0) { state.fuel -= 1; state.conflict = false; $('clearRouteBtn').classList.add('hidden'); $('feedback').textContent = locale === 'zh-Hant' ? '\u822a\u7dda\u5df2\u6e05\u7406\u3002' : 'Route cleared.'; renderHud(); } };
+  $('assignCrewBtn').onclick = () => { if (state.needsCrew && !state.crewAssigned && state.crew > 0) { state.crew -= 1; state.crewAssigned = true; $('assignCrewBtn').classList.add('hidden'); $('feedback').textContent = locale === 'zh-Hant' ? '\u7d44\u54e1\u5df2\u6307\u6d3e\u3002' : 'Crew assigned.'; renderHud(); } };
   $('flight').addEventListener('pointerdown', routePointer);
   $('flight').addEventListener('mousedown', routePointer);
   $('flight').addEventListener('click', (event) => {

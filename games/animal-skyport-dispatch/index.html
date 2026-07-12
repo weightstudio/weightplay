@@ -24,6 +24,7 @@
       <section id="stageScreen" class="stage-screen hidden">
         <button id="stageBack" class="return" aria-label="Back">&larr;</button>
         <div class="stage-copy"><strong data-i18n="chooseShift">Choose a shift</strong><span id="bestText"></span></div>
+        <div class="contract-row"><label class="contract-choice"><input id="contractToggle" type="checkbox" /><span id="contractText">Priority contract: finish with no errors for bonus sky coins.</span></label><button id="insuranceBtn" class="secondary insurance-btn" type="button">Insure 5 diamonds</button></div>
         <div id="stageRail" class="stage-rail" aria-label="Shift selection"></div>
         <div class="ad-reserve" aria-hidden="true"></div>
       </section>
@@ -41,12 +42,13 @@
             <div id="routeLine" class="route-line"></div>
             <div id="feedback" class="feedback" aria-live="polite"></div>
           </div>
-          <div class="flight-row"><button id="serviceBtn" class="secondary" data-i18n="service">Use repair service</button><span id="flightHint" data-i18n="dragHint">Drag the airship to its matching dock.</span></div>
+          <div class="flight-row"><button id="serviceBtn" class="secondary" data-i18n="service">Use repair service</button><button id="assignCrewBtn" class="secondary hidden" type="button">Assign crew</button><button id="clearRouteBtn" class="secondary hidden" type="button">Clear conflict</button><span id="flightHint" data-i18n="dragHint">Drag the airship to its matching dock.</span></div>
         </section>
         <div class="ad-reserve" aria-hidden="true"></div>
       </section>
       <section id="result" class="result hidden"><h2 id="resultTitle"></h2><p id="resultCopy"></p><div id="resultRewards" class="result-rewards" aria-live="polite"></div><button id="nextBtn" class="primary"></button><button id="menuBtn" class="secondary" data-i18n="menu">Main Menu</button></section>
     </main>
+    <script src="../../src/wallet.js"></script>
     <script src="game.js"></script>
   </body>
 </html>
