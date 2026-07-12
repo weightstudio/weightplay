@@ -373,11 +373,13 @@ Object.assign(dictionary["zh-Hant"], {
 
 Object.assign(dictionary.en, {
   browser_title: "Fantasy Lion Defense - WeightPlay",
+  locked: "Stage locked.",
   weapon_next_tier_preview: "x{lvl} -> x{next}: Damage {dmg} / Cooldown {cd}s / Size {size}",
 });
 
 Object.assign(dictionary["zh-Hant"], {
   browser_title: "\u5947\u5e7b\u7345\u5b50\u5b88\u57ce - WeightPlay",
+  locked: "\u95dc\u5361\u5c1a\u672a\u89e3\u9396\u3002",
   menu_title: "\u4e3b\u9078\u55ae",
   menu_settings: "\u8a2d\u5b9a",
   language: "\u8a9e\u8a00",

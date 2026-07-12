@@ -3,6 +3,7 @@
   grid-template-columns: none !important;
   grid-auto-columns: unset !important;
   align-items: center !important;
+  justify-content: flex-start !important;
   gap: 12px !important;
   overflow-x: auto !important;
   overflow-y: hidden !important;

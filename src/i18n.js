@@ -626,6 +626,9 @@
   Object.assign(dictionaries.en, { "game.start": "Start Game" });
   Object.assign(dictionaries["zh-Hant"], { "game.start": "\u958b\u59cb\u904a\u6232" });
 
+  Object.assign(dictionaries.en, { "topic.strategy": "Strategy", "category.Strategy": "Strategy" });
+  Object.assign(dictionaries["zh-Hant"], { "topic.strategy": "\u7b56\u7565", "category.Strategy": "\u7b56\u7565" });
+
   Object.assign(dictionaries["zh-Hant"], {
     "filter.age_3": "3+",
     "filter.age_6": "6+",

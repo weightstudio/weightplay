@@ -1343,8 +1343,9 @@ body {
   }
 
   .backpack-item {
-    min-height: 0;
+    min-height: 112px;
     grid-template-columns: 38px minmax(0, 1fr) auto;
+    grid-template-rows: minmax(38px, auto) 36px;
     align-items: start;
     gap: 8px;
     padding: 8px;
@@ -1370,6 +1371,8 @@ body {
 
   .backpack-actions {
     gap: 6px;
+    align-self: stretch;
+    min-height: 36px;
   }
 
   .backpack-actions .gear-equip-btn,
@@ -1547,6 +1550,10 @@ body.relic-playing .canvas-container canvas { width:100%; height:100%; aspect-ra
 body.relic-playing .inventory-sidebar { display:grid; grid-template-rows:auto 96px minmax(0,1fr); gap:6px; padding:8px; }
 body.relic-playing .backpack-panel { min-height:0; display:grid; grid-template-rows:auto minmax(0,1fr); overflow:hidden; }
 body.relic-playing .backpack-list { min-height:0; max-height:none; overflow-y:auto; overscroll-behavior:contain; }
+/* One scroll owner keeps equipped gear and backpack actions reachable in the fixed Battle shell. */
+body.relic-playing .inventory-sidebar { overflow-y:auto; overscroll-behavior:contain; }
+body.relic-playing .backpack-panel { display:block; overflow:visible; }
+body.relic-playing .backpack-list { max-height:none; overflow:visible; }
 body.relic-playing .battle-ad-reserve { position:relative; inset:auto; grid-row:2; width:100%; height:56px; min-height:56px; transform:none; }
 
 @media (max-width:560px), (max-height:560px) {

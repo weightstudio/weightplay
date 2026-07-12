@@ -31,6 +31,7 @@
     enemyIntent: $("enemyIntent"),
     intentIcon: $("intentIcon"),
     intentText: $("intentText"),
+    battlefield: document.querySelector(".battlefield"),
     enemyAvatar: $("enemyAvatar"),
     enemyName: $("enemyName"),
     enemyHpFill: $("enemyHpFill"),
@@ -189,6 +190,7 @@
       hudEnergy: "Energy",
       hudDeck: "Deck",
       hudDiscard: "Discard",
+      combatBlock: "Block",
       shieldLabel: "Block",
       chooseCard: "Draft a Card",
       chooseCardDesc: "Choose one animal power for this mission deck. The chosen card is guaranteed in the next opening hand.",
@@ -318,6 +320,7 @@
       hudEnergy: "能量",
       hudDeck: "牌庫",
       hudDiscard: "棄牌",
+      combatBlock: "格擋",
       shieldLabel: "格擋",
       chooseCard: "選擇卡牌",
       chooseCardDesc: "選一張動物能力加入本次任務牌組，選到的卡會保證出現在下一場開手牌。",
@@ -873,6 +876,16 @@
     setTimeout(() => nodes.enemyAvatar.classList.remove(className), 300);
   }
 
+  function showCombatFeedback(message, tone = "damage") {
+    if (!nodes.battlefield) return;
+    const feedback = document.createElement("span");
+    feedback.className = `combat-feedback ${tone}`;
+    feedback.textContent = message;
+    feedback.setAttribute("aria-hidden", "true");
+    nodes.battlefield.appendChild(feedback);
+    window.setTimeout(() => feedback.remove(), 720);
+  }
+
   function log(message, type = "system") {
     const p = document.createElement("p");
     p.className = `log-${type}`;
@@ -930,6 +943,12 @@
     if (damage > 0) {
       state.enemyHp = Math.max(0, state.enemyHp - damage);
       triggerEnemyAnimation("hurt");
+    }
+    if (blocked > 0) {
+      const impact = damage > 0 ? `-${damage} · ${t("combatBlock")} ${blocked}` : `${t("combatBlock")} ${blocked}`;
+      showCombatFeedback(impact, damage > 0 ? "damage" : "block");
+    } else if (damage > 0) {
+      showCombatFeedback(`-${damage}`, "damage");
     }
   }
 
