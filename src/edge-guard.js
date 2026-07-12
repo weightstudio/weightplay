@@ -4,6 +4,7 @@
   const mobileGameMaxWidth = 820;
   let gesture = null;
   let immersiveFrame = null;
+  const controlPointerIds = new Set();
 
   function isEditable(target) {
     return Boolean(target?.closest?.("input, textarea, select, [contenteditable='true'], [data-allow-select='true']"));
@@ -95,24 +96,10 @@
   ];
 
   const immersiveTriggerSelectors = [
-    "[data-play-viewport]",
-    ".weightplay-play-viewport",
-    ".fixed-game-shell",
-    ".game-shell",
-    "#playPanel",
-    "#playArea",
-    "#gameArea",
-    "#gameStage",
-    "#gamePanel",
-    ".play-panel",
     ".play-area",
-    ".game-panel",
-    ".battle-panel",
-    ".quiz-stage",
-    ".game-stage",
-    ".stage-area",
-    ".game-area",
     ".playfield",
+    ".game-board",
+    ".game-board-panel",
     "canvas",
   ];
 
@@ -215,6 +202,15 @@
     requestFullscreen(frame);
   }
 
+  function exitMobileGameMode() {
+    immersiveFrame?.classList.remove("weightplay-active-viewport");
+    immersiveFrame = null;
+    document.documentElement.classList.remove("wp-mobile-game-mode");
+    document.body?.classList.remove("wp-mobile-game-mode");
+    if (document.fullscreenElement) document.exitFullscreen?.().catch(() => {});
+    if (document.webkitFullscreenElement) document.webkitExitFullscreen?.();
+  }
+
   function preserveGuideWheelScroll(event) {
     if (!document.body?.classList.contains("has-game-page-info")) return;
     if (event.ctrlKey || Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
@@ -233,6 +229,9 @@
       let wasVisible = isVisible(node);
       const observer = new MutationObserver(() => {
         const nowVisible = isVisible(node);
+        if (wasVisible && !nowVisible && (node === immersiveFrame || node.classList.contains("weightplay-active-viewport"))) {
+          exitMobileGameMode();
+        }
         if (!wasVisible && nowVisible) {
           const frame = widenToPlayableFrame(node);
           focusPlayableArea(frame, { force: true });
@@ -280,9 +279,11 @@
 
   function handlePointerUp(event) {
     const target = event.target;
+    if (controlPointerIds.delete(event.pointerId)) return;
     if (isEditable(target)) return;
     if (target?.closest?.("button, a, [role='button'], input, select, textarea")) return;
     if (target?.closest?.("[data-no-mobile-immersive='true']")) return;
+    if (!target?.closest?.("[data-enable-mobile-immersive='true']")) return;
     if (!target?.closest?.(immersiveTriggerSelectors.join(","))) return;
     enterMobileGameMode(target);
   }
@@ -299,6 +300,7 @@
     ...(window.WeightPlayGame || {}),
     focusGame,
     enterMobileGameMode: () => enterMobileGameMode(findPlayableFrame()),
+    exitMobileGameMode,
     updateVisualViewportVars,
   };
   updateVisualViewportVars();
@@ -313,7 +315,11 @@
   window.addEventListener("touchmove", move, { passive: false, capture: true });
   window.addEventListener("touchend", end, { passive: true, capture: true });
   window.addEventListener("touchcancel", end, { passive: true, capture: true });
+  window.addEventListener("pointerdown", (event) => {
+    if (event.target?.closest?.("button, a, [role='button'], input, select, textarea")) controlPointerIds.add(event.pointerId);
+  }, { passive: true, capture: true });
   window.addEventListener("pointerup", handlePointerUp, { passive: true, capture: true });
+  window.addEventListener("pointercancel", (event) => controlPointerIds.delete(event.pointerId), { passive: true, capture: true });
   window.addEventListener("resize", updateVisualViewportVars, { passive: true });
   window.visualViewport?.addEventListener("resize", updateVisualViewportVars, { passive: true });
   window.visualViewport?.addEventListener("scroll", updateVisualViewportVars, { passive: true });

@@ -1,6 +1,6 @@
 (function () {
   const sharedAssetBase = new URL(".", document.currentScript?.src || location.href);
-  if (!document.querySelector('link[data-wp-stage-standard]')) {
+  if (!document.querySelector('link[data-wp-stage-standard], link[href*="stage-selector-standard.css"]')) {
     const link = document.createElement("link");
     link.rel = "stylesheet";
     link.href = new URL("stage-selector-standard.css", sharedAssetBase).href;

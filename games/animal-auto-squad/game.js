@@ -913,6 +913,7 @@
 
   function showStageSelection() {
     clearTimeout(stageSnapTimer);
+    window.WeightPlayGame?.exitMobileGameMode?.();
     document.body.classList.remove("squad-active");
     document.body.classList.add("squad-stage-select");
     nodes.menuPanel.classList.add("is-hidden");

@@ -1718,7 +1718,7 @@ body.squad-active #gamePanel.game-panel {
   left: 50% !important;
   width: min(calc(var(--squad-vw, 100vw) - 8px), 960px) !important;
   max-width: none !important;
-  height: calc(var(--squad-vh, 100dvh) - 64px) !important;
+  height: calc(var(--wp-mobile-vh, 100dvh) - 64px) !important;
   max-height: none !important;
   min-height: 0 !important;
   margin: 0 !important;

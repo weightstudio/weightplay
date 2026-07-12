@@ -1,3 +1,5 @@
+@import url("stage-selector-standard.css");
+
 body.has-game-page-info:not(.wp-mobile-game-mode):not(.zoo-playing) {
   height: auto !important;
   min-height: 100vh !important;

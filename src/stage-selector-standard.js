@@ -68,8 +68,6 @@
       startX = event.clientX;
       startScroll = rail.scrollLeft;
       moved = false;
-      rail.classList.add("wp-stage-dragging");
-      rail.setPointerCapture?.(pointerId);
     }, true);
 
     rail.addEventListener("pointermove", (event) => {
