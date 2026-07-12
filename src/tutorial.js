@@ -15,6 +15,14 @@
   };
 
   const tutorials = {
+    "animal-moonlight-heist": {
+      title: { en: "Recover the moonlit relic.", "zh-Hant": "找回月光檔案館的文物。" },
+      steps: [
+        { icon: "1", en: ["Plan a Route", "Hold and drag across the archive, then release to move Fia."], "zh-Hant": ["規劃路線", "按住並拖曳檔案館畫面，放開後讓菲亞移動。"] },
+        { icon: "2", en: ["Read Patrols", "Avoid nearby patrols and use your selected gadget when alert rises."], "zh-Hant": ["觀察巡邏", "避開附近巡邏隊，警戒升高時使用已選技能。"] },
+        { icon: "3", en: ["Recover and Extract", "Secure the mission object, then reach the extraction gate. Bonus treasure is optional."], "zh-Hant": ["取得並撤離", "取得任務物件後前往撤離門；額外寶藏可以自由選擇。"] },
+      ],
+    },
     "animal-gearpack-expedition": {
       title: { en: "Build Rux's gearpack.", "zh-Hant": "配置魯克斯的裝備行囊。" },
       steps: [

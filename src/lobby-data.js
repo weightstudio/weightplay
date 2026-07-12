@@ -584,6 +584,25 @@ window.WONDER_LOBBY.games.push({
   art: { kind: "image", background: "assets/animal-gearpack-expedition-cover.webp", hideHero: true },
 });
 
+window.WONDER_LOBBY.games.push({
+  id: "animal-moonlight-heist",
+  title: { en: "Animal Moonlight Heist", "zh-Hant": "動物月影潛行隊" },
+  status: "playable",
+  statusText: { en: "Playable", "zh-Hant": "可遊玩" },
+  type: { en: "Stealth Extraction Adventure", "zh-Hant": "潛行撤離冒險" },
+  categories: ["Featured", "Animal Games", "Arcade"],
+  skills: ["Planning", "Focus", "Risk Assessment"],
+  ages: ["13"],
+  ageLabel: { en: "13+", "zh-Hant": "13+" },
+  href: "games/animal-moonlight-heist/",
+  description: {
+    en: "Guide Spark Paw Fia through moonlit patrol routes, recover lost relics, and decide whether to risk optional treasure before extraction.",
+    "zh-Hant": "帶領星爪菲亞穿越月光巡邏路線、找回失落文物，並決定是否冒險取得額外寶藏再撤離。",
+  },
+  meta: { en: ["Five Missions", "Stealth Gadgets", "Safehouse Growth"], "zh-Hant": ["五個任務", "潛行技能", "安全屋成長"] },
+  art: { kind: "image", background: "assets/animal-moonlight-heist-cover.png", hideHero: true },
+});
+
 const cleanZhLobbyCopy = {
   "beast-deck": {
     title: "獸王牌組",

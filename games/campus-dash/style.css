@@ -73,7 +73,9 @@ a {
 
 .home-link {
   display: grid;
+  grid-template-columns: 18px 24px;
   place-items: center;
+  place-content: center;
   min-height: 52px;
   height: 52px;
   color: #f8fafc;
@@ -83,10 +85,70 @@ a {
   gap: 4px;
 }
 
+@media (max-width: 700px) {
+  body:not(.dash-playing) .dash-game {
+    width: 100vw;
+    height: 100dvh;
+    min-height: 0;
+    padding: max(8px, env(safe-area-inset-top)) 12px max(8px, env(safe-area-inset-bottom));
+    grid-template-rows: 64px minmax(0, 1fr);
+    gap: 8px;
+    overflow: hidden;
+    container-type: size;
+  }
+
+  body:not(.dash-playing) .main-panel {
+    grid-template-rows: minmax(0, 1fr) auto;
+    gap: 8px;
+    overflow: hidden;
+  }
+
+  body:not(.dash-playing) .main-poster {
+    width: auto;
+    max-width: 100%;
+    height: 100%;
+    max-height: 100%;
+    justify-self: center;
+    aspect-ratio: 1;
+  }
+
+  body:not(.dash-playing) #startPanel {
+    width: 100%;
+    min-height: 0;
+    padding: 10px 14px 12px;
+    gap: 6px;
+  }
+
+  body:not(.dash-playing) #startPanel strong {
+    font-size: 24px;
+  }
+
+  body:not(.dash-playing) #startPanel p {
+    font-size: 13px;
+    line-height: 1.25;
+  }
+
+  body:not(.dash-playing) #controlChips {
+    display: none;
+  }
+
+  body:not(.dash-playing) #startBtn {
+    min-height: 44px;
+  }
+}
+
 .home-link img {
   width: 24px;
   height: 24px;
   object-fit: contain;
+}
+
+.home-link span {
+  width: 18px;
+  overflow: hidden;
+  font-size: 22px;
+  line-height: 1;
+  text-align: center;
 }
 
 .main-panel {
@@ -664,4 +726,75 @@ select,
 [contenteditable="true"] {
   -webkit-user-select: text;
   user-select: text;
+}
+
+/* Final phone Main layout: Start remains visible in the first visual viewport. */
+@media (max-width: 700px), (max-height: 560px) {
+  body:not(.dash-playing) .dash-game {
+    width: 100vw;
+    height: 100dvh;
+    min-height: 0;
+    padding: max(8px, env(safe-area-inset-top)) 12px max(8px, env(safe-area-inset-bottom));
+    grid-template-rows: 64px minmax(0, 1fr);
+    gap: 8px;
+    overflow: hidden;
+  }
+
+  body:not(.dash-playing) .main-panel {
+    grid-template-rows: minmax(0, 1fr) auto;
+    gap: 8px;
+    overflow: hidden;
+  }
+
+  body:not(.dash-playing) .main-poster {
+    width: auto;
+    max-width: 100%;
+    height: 100%;
+    max-height: 100%;
+    justify-self: center;
+    aspect-ratio: 1;
+  }
+
+  body:not(.dash-playing) #startPanel {
+    width: 100%;
+    min-height: 0;
+    padding: 10px 14px 12px;
+    gap: 6px;
+  }
+
+  body:not(.dash-playing) #startPanel strong {
+    font-size: 24px;
+  }
+
+  body:not(.dash-playing) #startPanel p {
+    font-size: 13px;
+    line-height: 1.25;
+  }
+
+  body:not(.dash-playing) #controlChips {
+    display: none;
+  }
+
+  body:not(.dash-playing) #startBtn {
+    min-height: 44px;
+  }
+}
+
+@media (max-height: 560px) {
+  body:not(.dash-playing) .main-panel {
+    grid-template-columns: minmax(0, 1fr) minmax(250px, 320px);
+    grid-template-rows: minmax(0, 1fr);
+  }
+
+  body:not(.dash-playing) .main-poster {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  body:not(.dash-playing) #startPanel {
+    grid-column: 2;
+    grid-row: 1;
+    align-self: stretch;
+    align-content: center;
+  }
 }

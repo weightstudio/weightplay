@@ -87,10 +87,22 @@
 
       <section id="menuPanel" class="menu-panel">
         <img src="../../assets/snack-blocks-cover.png" alt="" />
-        <strong id="menuTitle">Choose a snack stage.</strong>
+        <strong id="menuTitle">Snack Blocks</strong>
         <span id="menuText">Match 3 or more snacks, hit the target, and unlock the next stage.</span>
+        <button id="startBtn" class="primary-action" type="button">Start Game</button>
+      </section>
+
+      <section id="stagePanel" class="stage-panel hidden" aria-label="Stage selection">
+        <div class="stage-heading">
+          <button id="stageBackBtn" class="stage-back" type="button" aria-label="Back">&larr;</button>
+          <div>
+            <strong id="stageTitle">Choose a snack stage.</strong>
+            <span id="stageHelp">Drag sideways and choose an unlocked stage.</span>
+          </div>
+        </div>
         <div id="stageGrid" class="stage-grid"></div>
       </section>
+      <div id="stageAdReserve" class="stage-ad-reserve hidden" aria-hidden="true"></div>
 
       <section id="playPanel" class="play-panel hidden">
         <div id="scoreLine" class="score-line">

@@ -51,6 +51,8 @@
       score: "Score",
       menuTitle: "Choose a snack stage.",
       menuText: "Use all moves, reach the goal, and chase your best score.",
+      start: "Start Game",
+      stageHelp: "Drag sideways and choose an unlocked stage.",
       stageName: "Stage {stage}",
       locked: "Locked",
       best: "Best {score}",
@@ -158,6 +160,12 @@
     scoreLabel: document.getElementById("scoreLabel"),
     scoreText: document.getElementById("scoreText"),
     menuPanel: document.getElementById("menuPanel"),
+    stagePanel: document.getElementById("stagePanel"),
+    startBtn: document.getElementById("startBtn"),
+    stageBackBtn: document.getElementById("stageBackBtn"),
+    stageTitle: document.getElementById("stageTitle"),
+    stageHelp: document.getElementById("stageHelp"),
+    stageAdReserve: document.getElementById("stageAdReserve"),
     menuTitle: document.getElementById("menuTitle"),
     menuText: document.getElementById("menuText"),
     stageGrid: document.getElementById("stageGrid"),
@@ -334,8 +342,11 @@
     nodes.movesLabel.textContent = t("moves");
     nodes.targetLabel.textContent = t("target");
     nodes.scoreLabel.textContent = t("score");
-    nodes.menuTitle.textContent = t("menuTitle");
+    nodes.menuTitle.textContent = t("title");
     nodes.menuText.textContent = t("menuText");
+    nodes.startBtn.textContent = state.locale === "zh-Hant" ? "\u958b\u59cb\u904a\u6232" : t("start");
+    nodes.stageTitle.textContent = t("menuTitle");
+    nodes.stageHelp.textContent = state.locale === "zh-Hant" ? "\u5de6\u53f3\u6ed1\u52d5\uff0c\u9078\u64c7\u5df2\u89e3\u9396\u7684\u95dc\u5361\u3002" : t("stageHelp");
     nodes.hintText.textContent = t("hint");
     nodes.loadingTitle.textContent = t("loading");
     nodes.nextBtn.textContent = t("next");
@@ -410,13 +421,74 @@
         <span>${t("stageName", { stage: stage.id })}</span>
         <em>${isUnlocked ? `${goalLabel(stage)} · ${t("best", { score: bestScoreFromRecord(records[stage.id]) })}` : t("locked")}</em>
       `;
-      button.addEventListener("click", () => startStage(index));
+      button.addEventListener("click", () => {
+        if (nodes.stageGrid.dataset.dragged === "true") return;
+        startStage(index);
+      });
       nodes.stageGrid.append(button);
     });
     requestAnimationFrame(() => {
       const unlockedCard = [...nodes.stageGrid.querySelectorAll(".stage-card:not(.locked)")].at(-1);
       unlockedCard?.scrollIntoView({ block: "nearest", inline: "center", behavior: "auto" });
     });
+  }
+
+  function centerNearestStage() {
+    const cards = [...nodes.stageGrid.querySelectorAll(".stage-card")];
+    if (!cards.length) return;
+    const center = nodes.stageGrid.scrollLeft + nodes.stageGrid.clientWidth / 2;
+    const nearest = cards.reduce((best, card) => {
+      const distance = Math.abs(card.offsetLeft + card.offsetWidth / 2 - center);
+      return !best || distance < best.distance ? { card, distance } : best;
+    }, null)?.card;
+    nearest?.scrollIntoView({ block: "nearest", inline: "center", behavior: "smooth" });
+  }
+
+  function installStageDrag() {
+    let pointerId = null;
+    let startX = 0;
+    let startScroll = 0;
+    let moved = false;
+    nodes.stageGrid.addEventListener("pointerdown", (event) => {
+      pointerId = event.pointerId;
+      startX = event.clientX;
+      startScroll = nodes.stageGrid.scrollLeft;
+      moved = false;
+      nodes.stageGrid.classList.add("dragging");
+      nodes.stageGrid.setPointerCapture?.(pointerId);
+    });
+    nodes.stageGrid.addEventListener("pointermove", (event) => {
+      if (event.pointerId !== pointerId) return;
+      const delta = event.clientX - startX;
+      if (Math.abs(delta) > 6) moved = true;
+      nodes.stageGrid.scrollLeft = startScroll - delta;
+    });
+    const finish = (event) => {
+      if (event.pointerId !== pointerId) return;
+      nodes.stageGrid.releasePointerCapture?.(pointerId);
+      pointerId = null;
+      nodes.stageGrid.classList.remove("dragging");
+      if (moved) nodes.stageGrid.dataset.dragged = "true";
+      centerNearestStage();
+      setTimeout(() => { delete nodes.stageGrid.dataset.dragged; }, 120);
+    };
+    nodes.stageGrid.addEventListener("pointerup", finish);
+    nodes.stageGrid.addEventListener("pointercancel", finish);
+  }
+
+  function showStage() {
+    nodes.menuPanel.classList.add("hidden");
+    nodes.stagePanel.classList.remove("hidden");
+    nodes.stageAdReserve.classList.remove("hidden");
+    document.body.classList.add("snack-stage");
+    renderStageGrid();
+  }
+
+  function showMain() {
+    nodes.stagePanel.classList.add("hidden");
+    nodes.stageAdReserve.classList.add("hidden");
+    nodes.menuPanel.classList.remove("hidden");
+    document.body.classList.remove("snack-stage");
   }
 
   function renderBoard(dropMap = new Map()) {
@@ -735,9 +807,12 @@
     state.busy = false;
     buildCleanBoard();
     nodes.menuPanel.classList.add("hidden");
+    nodes.stagePanel.classList.add("hidden");
+    nodes.stageAdReserve.classList.add("hidden");
     nodes.resultPanel.classList.add("hidden");
     nodes.hud.classList.remove("hidden");
     nodes.playPanel.classList.remove("hidden");
+    document.body.classList.remove("snack-stage");
     document.body.classList.add("snack-playing");
     document.querySelector(".snack-game")?.removeAttribute("data-play-viewport");
     nodes.battleAdReserve.classList.remove("hidden");
@@ -827,8 +902,11 @@
     nodes.hud.classList.add("hidden");
     nodes.playPanel.classList.add("hidden");
     nodes.resultPanel.classList.add("hidden");
-    nodes.menuPanel.classList.remove("hidden");
+    nodes.menuPanel.classList.add("hidden");
+    nodes.stagePanel.classList.remove("hidden");
+    nodes.stageAdReserve.classList.remove("hidden");
     document.body.classList.remove("snack-playing", "snack-expanded-canvas");
+    document.body.classList.add("snack-stage");
     const shell = document.querySelector(".snack-game");
     shell?.setAttribute("data-play-viewport", "");
     for (const property of ["position", "inset", "left", "top", "width", "height", "min-height", "transform", "transform-origin"]) shell?.style.removeProperty(property);
@@ -862,6 +940,8 @@
     startStage(state.currentStageIndex);
   });
   nodes.menuBtn.addEventListener("click", showMenu);
+  nodes.startBtn.addEventListener("click", showStage);
+  nodes.stageBackBtn.addEventListener("click", showMain);
   nodes.localeSelect.addEventListener("change", (event) => setLocale(event.target.value));
   nodes.homeLink.addEventListener("click", (event) => {
     if (state.running || !nodes.resultPanel.classList.contains("hidden")) {
@@ -875,5 +955,6 @@
   } catch {
     setLocale("en");
   }
+  installStageDrag();
   installLoading();
 })();

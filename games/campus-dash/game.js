@@ -374,6 +374,7 @@
   function exposeSmokeHooks() {
     if (!new URLSearchParams(window.location.search).has("smoke")) return;
     window.__campusDashSmoke = {
+      getState: () => ({ running: state.running, lane: state.targetLane, score: state.score, time: state.time }),
       spawnSequence: (count = 24) => {
         state = makeState();
         for (let index = 0; index < count; index += 1) {

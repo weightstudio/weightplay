@@ -137,6 +137,23 @@
         ["Are diamonds required?", "No. Diamonds only provide an optional confirmed merchant-stock refresh."],
       ],
     },
+    "animal-moonlight-heist": {
+      title: "Animal Moonlight Heist",
+      age: "13+",
+      difficulty: "Medium",
+      time: "4-8 minutes",
+      skills: ["Planning", "Focus", "Risk Assessment"],
+      intro:
+        "Animal Moonlight Heist is a phone-first stealth extraction adventure starring Spark Paw Fia and Moon Cap Orla. Preview a route, read moving patrols, recover each archive object, and decide whether optional treasure is worth the extra risk before extraction.",
+      how: ["Choose one of five archive missions and a stealth gadget.", "Hold and drag through the scene to preview Fia's route, then release to move.", "Avoid patrols or use Lightning Dash, Star Decoy, or Smoke Leaf when alert rises.", "Recover the mission object and reach extraction; optional treasure earns an extra medal and moon coins."],
+      parent:
+        "This 13+ game may practice route planning, attention, timing, and weighing optional risk. Mission progress, medals, moon coins, and safehouse growth stay in local browser storage. Normal progress and retry are free; optional diamond reroll and insurance always require confirmation.",
+      faq: [
+        ["What carries between missions?", "Unlocked missions, medals, moon coins, and safehouse progress are saved locally."],
+        ["Is combat required?", "No. Players read patrol movement and use routes or gadgets to avoid detection."],
+        ["Are diamonds required?", "No. Diamonds only provide optional confirmed gadget reroll and treasure insurance choices."],
+      ],
+    },
     "star-memory": {
       title: "Animal Star Memory",
       age: "5+",
@@ -697,6 +714,7 @@
     "animal-cafe-rush": { gameplay: "Cafe Queue Matching", genre: ["Time Management", "Matching", "Animal"] },
     "animal-hero-trials": { gameplay: "Hero Action Trials", genre: ["Action", "Roguelite", "Animal"] },
     "animal-gearpack-expedition": { gameplay: "Spatial Inventory Expedition", genre: ["Strategy", "Roguelite", "Animal"] },
+    "animal-moonlight-heist": { gameplay: "Stealth Extraction Adventure", genre: ["Stealth", "Strategy", "Adventure", "Animal"] },
     "animal-rope-rescue": { gameplay: "Vine Physics Puzzle", genre: ["Physics", "Puzzle", "Animal"] },
     "star-memory": { gameplay: "Memory Match", genre: ["Memory", "Puzzle", "Animal"] },
     "campus-dash": { gameplay: "Lane Runner", genre: ["Runner", "Reaction", "Animal"] },
@@ -728,6 +746,7 @@
     "animal-cafe-rush": "animal-cafe-rush-cover.webp",
     "animal-hero-trials": "animal-hero-trials-cover.png",
     "animal-gearpack-expedition": "animal-gearpack-expedition-cover.webp",
+    "animal-moonlight-heist": "animal-moonlight-heist-cover.png",
     "animal-rope-rescue": "animal-vine-rescue-cover.webp",
     "star-memory": "memory-cover.webp",
     "campus-dash": "campus-dash-cover.webp",
@@ -1000,6 +1019,7 @@
         ],
       },
       "animal-gearpack-expedition": zhGuide("動物裝備行囊遠征", "空間行囊策略遠征", ["選擇齒輪森林路線。", "選擇、旋轉並把裝備放入行囊空格。", "讓相同材質的裝備彼此相鄰取得連結加成。", "通過五場遭遇並擊敗樹根守衛。"]),
+      "animal-moonlight-heist": zhGuide("動物月影潛行隊", "潛行撤離冒險", ["選擇檔案館任務與潛行技能。", "按住並拖曳畫面預覽路線，放開後讓菲亞移動。", "觀察巡邏隊並在警戒升高時使用技能。", "取得任務物件後前往撤離門；額外寶藏可以自由選擇。"]),
       "shadow-wolf": zhGuide("影狼傳說", "橫向動作 RPG", ["左右移動並跳過平台陷阱。", "攻擊影獸並收集經驗。", "開啟寶箱、穿戴裝備並挑戰巨獸。"]),
       "animal-hero-trials": zhGuide("動物英雄試煉", "英雄動作試煉", ["選擇一位英雄與已解鎖試煉。", "移動閃避敵人，並掌握英雄技能的使用時機。", "每個房間選擇一項免費祝福，最後擊敗暗影王者。"]),
     },
@@ -1108,6 +1128,7 @@
   localizedGameplayProfiles["zh-Hant"]["beast-tactician"] = { gameplay: "英雄塔防", genre: ["塔防", "策略", "動物"] };
   localizedGameplayProfiles["zh-Hant"]["animal-hero-trials"] = { gameplay: "英雄動作試煉", genre: ["動作", "Roguelite", "動物"] };
   localizedGameplayProfiles["zh-Hant"]["animal-gearpack-expedition"] = { gameplay: "空間行囊策略遠征", genre: ["策略", "Roguelite", "動物"] };
+  localizedGameplayProfiles["zh-Hant"]["animal-moonlight-heist"] = { gameplay: "潛行撤離冒險", genre: ["潛行", "策略", "冒險", "動物"] };
   localizedGames["zh-Hant"]["beast-tactician"] = {
     title: "獸王守衛",
     age: "13+",
