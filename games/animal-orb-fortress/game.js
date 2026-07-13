@@ -292,15 +292,11 @@
   }
 
   function configureArena() {
-    const viewport = window.visualViewport;
-    const width = Math.round(viewport?.width || innerWidth);
-    const height = Math.round(viewport?.height || innerHeight);
-    const portrait = height > width * 1.15;
-    W = portrait ? 720 : 960;
-    H = portrait ? 1200 : 540;
+    W = 720;
+    H = 1200;
     canvas.width = W;
     canvas.height = H;
-    canvas.dataset.orientation = portrait ? "portrait" : "landscape";
+    canvas.dataset.orientation = "portrait";
     document.documentElement.style.setProperty("--orb-arena-ratio", `${W} / ${H}`);
   }
 

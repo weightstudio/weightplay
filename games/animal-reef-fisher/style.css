@@ -1531,10 +1531,10 @@ html:has(body.reef-fisher-playing), body.reef-fisher-playing { width:100%; heigh
 body.reef-fisher-playing .reef-app { width:var(--reef-vw,100vw); height:var(--reef-vh,100dvh); min-height:0; padding:0; overflow:hidden; }
 body.reef-fisher-playing .topbar, body.reef-fisher-playing .game-page-info, body.reef-fisher-playing .wp-tutorial-button, body.reef-fisher-playing .wp-tutorial-backdrop { display:none !important; }
 body.reef-fisher-playing #gamePanel.game-panel, body.wp-mobile-game-mode.reef-fisher-playing #gamePanel.game-panel.weightplay-active-viewport { position:fixed !important; inset:4px auto auto 50% !important; display:grid; grid-template-rows:minmax(0,1fr) 56px; gap:0; width:min(calc(var(--reef-vw,100vw) - 8px),612px) !important; max-width:none !important; height:min(calc(var(--reef-vh,100dvh) - 8px),844px) !important; min-height:0; max-height:none !important; margin:0 !important; padding:0; transform:translateX(-50%); overflow:hidden; border:0; box-shadow:none; }
-body.reef-fisher-playing .battle-shell { position:relative; inset:auto; display:grid; grid-template-rows:56px auto 52px minmax(156px,1fr); gap:6px; width:100%; height:100%; min-height:0; padding:8px; overflow:hidden; transform:none; container-type:size; background:linear-gradient(180deg,#0d4c61,#082d3d); }
+body.reef-fisher-playing .battle-shell { position:relative; inset:auto; display:grid; grid-template-rows:56px 366px 52px minmax(156px,1fr); gap:6px; width:100%; height:100%; min-height:0; padding:8px; overflow:hidden; transform:none; container-type:size; background:linear-gradient(180deg,#0d4c61,#082d3d); }
 body.reef-fisher-playing .battle-shell > .hud-row, body.reef-fisher-playing .battle-shell > .play-frame, body.reef-fisher-playing .battle-shell > .catch-hud, body.reef-fisher-playing .battle-shell > .tension-panel { position:relative; inset:auto; width:100%; height:auto; margin:0; }
 body.reef-fisher-playing .battle-shell > .hud-row { grid-row:1; }
-body.reef-fisher-playing .battle-shell > .play-frame { grid-row:2; width:100%; height:auto; aspect-ratio:var(--reef-arena-ratio, 16/9); align-self:start; }
+body.reef-fisher-playing .battle-shell > .play-frame { grid-row:2; width:100%; height:366px; aspect-ratio:var(--reef-arena-ratio, 16/9); align-self:start; }
 body.reef-fisher-playing .battle-shell > .catch-hud { grid-row:3; }
 body.reef-fisher-playing .battle-shell > .tension-panel { grid-row:4; height:100%; }
 body.reef-fisher-playing .play-frame, body.reef-fisher-playing canvas { width:100%; height:100%; min-height:0; aspect-ratio:var(--reef-arena-ratio, 16/9); }
@@ -1866,7 +1866,7 @@ body.reef-fisher-stage :is(.topbar, .game-page-info, .wp-tutorial-button, .wp-tu
 }
 
 body.reef-fisher-playing .battle-shell {
-  grid-template-rows: 56px auto 64px minmax(176px, 1fr);
+  grid-template-rows: 56px 366px 64px minmax(176px, 1fr);
   background: #083647;
 }
 

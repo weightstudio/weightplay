@@ -108,7 +108,9 @@
     document.querySelector('.task-destination').textContent = locale === 'zh-Hant'
       ? `本架：${flightName} → ${dockName}`
       : `Current: ${flightName} -> ${dockName}`;
-    document.querySelector('.task-steps').textContent = numberedSteps.at(-1);
+    // Keep the task strip focused on the action the player can take now. Showing
+    // only the final drag step made late flights look like they had skipped rules.
+    document.querySelector('.task-steps').textContent = numberedSteps[0];
     let nextStep = 1;
     if (state.storm) $('serviceBtn').textContent = `${nextStep++}. ${locale === 'zh-Hant' ? '維修服務' : 'Repair service'}`;
     if (state.conflict) $('clearRouteBtn').textContent = `${nextStep++}. ${locale === 'zh-Hant' ? '清除航線衝突' : 'Clear conflict'}`;
@@ -122,7 +124,7 @@
       dock.setAttribute('aria-label', label);
       dock.classList.toggle('is-target', isTarget);
       dock.querySelector('.dock-target-badge').textContent = isTarget
-        ? (locale === 'zh-Hant' ? '目標' : 'TARGET')
+        ? (locale === 'zh-Hant' ? `前往 ${dockName.at(-1)}` : `GO: ${dockName.at(-1)}`)
         : '';
     });
     requestAnimationFrame(renderGuidanceLine);

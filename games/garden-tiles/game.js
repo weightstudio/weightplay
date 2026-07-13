@@ -43,6 +43,8 @@
   const dictionary = {
     en: {
       title: "Pet Garden Tiles",
+      pageTitle: "Pet Garden Tiles - WeightPlay",
+      pageDescription: "Relax with large-print pet garden tile matching. Match animals, flowers, birds, tools, and cozy garden items across gentle levels on WeightPlay.",
       language: "Language",
       mainIntro: "Remember the garden pictures and match every pair across ten levels.",
       start: "Choose Level",
@@ -63,9 +65,22 @@
       levels: "Levels",
       lobby: "Lobby",
       allClear: "All levels cleared.",
+      homeAria: "Back to lobby",
+      languageAria: "Language",
+      statusAria: "Game status",
+      stageBackAria: "Back",
+      battleBackAria: "Back to levels",
+      boardAria: "Garden tile board",
+      tileNames: {
+        cat: "Cat", dog: "Dog", fox: "Fox", owl: "Owl", rabbit: "Rabbit", panda: "Panda", penguin: "Penguin", koala: "Koala",
+        lion: "Lion", elephant: "Elephant", giraffe: "Giraffe", whale: "Whale", chick: "Chick", frog: "Frog", apple: "Apple", banana: "Banana",
+        berry: "Berry", leaf: "Leaf", seed: "Seed", feather: "Feather", keeper: "Keeper", visitor: "Visitor", ticket: "Ticket booth", basket: "Basket",
+      },
     },
     "zh-Hant": {
       title: "\u5bf5\u7269\u82b1\u5712\u65b9\u584a",
+      pageTitle: "\u5bf5\u7269\u82b1\u5712\u65b9\u584a - WeightPlay",
+      pageDescription: "\u5728 WeightPlay \u7528\u5927\u5b57\u9ad4\u8f15\u9b06\u914d\u5c0d\u5bf5\u7269\u82b1\u5712\u65b9\u584a\uff0c\u5728\u6eab\u548c\u7684\u95dc\u5361\u4e2d\u627e\u51fa\u52d5\u7269\u3001\u82b1\u6735\u3001\u9ce5\u985e\u3001\u5de5\u5177\u8207\u82b1\u5712\u7269\u4ef6\u7684\u914d\u5c0d\u3002",
       language: "\u8a9e\u8a00",
       mainIntro: "\u8a18\u4f4f\u82b1\u5712\u5716\u6848\u7684\u4f4d\u7f6e\uff0c\u5728 10 \u500b\u95dc\u5361\u4e2d\u627e\u51fa\u6240\u6709\u76f8\u540c\u914d\u5c0d\u3002",
       start: "\u9078\u64c7\u95dc\u5361",
@@ -86,6 +101,17 @@
       levels: "\u9078\u95dc",
       lobby: "\u5927\u5ef3",
       allClear: "\u5168\u90e8\u95dc\u5361\u5b8c\u6210\u3002",
+      homeAria: "\u56de\u5230\u5927\u5ef3",
+      languageAria: "\u8a9e\u8a00",
+      statusAria: "\u904a\u6232\u72c0\u614b",
+      stageBackAria: "\u8fd4\u56de",
+      battleBackAria: "\u8fd4\u56de\u9078\u95dc",
+      boardAria: "\u82b1\u5712\u65b9\u584a\u914d\u5c0d\u76e4\u9762",
+      tileNames: {
+        cat: "\u8c93\u54aa", dog: "\u5c0f\u72d7", fox: "\u72d0\u72f8", owl: "\u8c93\u982d\u9df9", rabbit: "\u5154\u5b50", panda: "\u8c93\u718a", penguin: "\u4f01\u9d5d", koala: "\u7121\u5c3e\u718a",
+        lion: "\u7345\u5b50", elephant: "\u5927\u8c61", giraffe: "\u9577\u9818\u9e7f", whale: "\u9be8\u9b5a", chick: "\u5c0f\u96de", frog: "\u9752\u86d9", apple: "\u860b\u679c", banana: "\u9999\u8549",
+        berry: "\u8393\u679c", leaf: "\u6a39\u8449", seed: "\u7a2e\u5b50", feather: "\u7fbd\u6bdb", keeper: "\u7ba1\u7406\u54e1", visitor: "\u904a\u5ba2", ticket: "\u552e\u7968\u5c0f\u5c4b", basket: "\u63d0\u7c43",
+      },
     },
   };
   const tileArt = [
@@ -150,6 +176,11 @@
     return value;
   }
 
+  function tileName(art) {
+    const names = dictionary[locale()]?.tileNames || dictionary.en.tileNames;
+    return names[art.id] || art.label;
+  }
+
   function readNumber(key, fallback) {
     const value = Number(localStorage.getItem(key));
     return Number.isFinite(value) && value > 0 ? value : fallback;
@@ -170,6 +201,10 @@
 
   function applyText() {
     document.documentElement.lang = locale();
+    document.title = t("pageTitle");
+    document.querySelector('meta[name="description"]')?.setAttribute("content", t("pageDescription"));
+    document.querySelector('meta[property="og:title"]')?.setAttribute("content", t("pageTitle"));
+    document.querySelector('meta[property="og:description"]')?.setAttribute("content", t("pageDescription"));
     titleText.textContent = t("title");
     mainTitle.textContent = t("title");
     mainIntro.textContent = t("mainIntro");
@@ -183,7 +218,14 @@
     againBtn.textContent = t("again");
     levelsBtn.textContent = t("levels");
     lobbyLink.textContent = t("lobby");
+    homeLink.setAttribute("aria-label", t("homeAria"));
+    localeSelect.setAttribute("aria-label", t("languageAria"));
+    statusbar.setAttribute("aria-label", t("statusAria"));
+    levelBackBtn.setAttribute("aria-label", t("stageBackAria"));
+    battleBackBtn.setAttribute("aria-label", t("battleBackAria"));
+    board.setAttribute("aria-label", t("boardAria"));
     renderLevelGrid();
+    if (tiles.length) renderBoard();
     updateHud();
   }
 
@@ -316,8 +358,7 @@
     busy = false;
     tiles = makeTiles(level.pairs, index);
     const totalCards = level.pairs * 2;
-    const phoneBattle = (window.visualViewport?.width || innerWidth) <= 600;
-    const columns = phoneBattle ? choosePhoneColumns(totalCards) : level.cols;
+    const columns = chooseBattleColumns(totalCards);
     board.style.setProperty("--cols", columns);
     const rowCount = Math.ceil(totalCards / columns);
     board.style.setProperty("--rows", rowCount);
@@ -349,7 +390,7 @@
     window.WonderAnalytics?.track?.("level_start", { game_id: GAME_ID, level: index + 1 });
   }
 
-  function choosePhoneColumns(totalCards) {
+  function chooseBattleColumns(totalCards) {
     const availableWidth = 366;
     const availableHeight = 650;
     let bestColumns = 3;
@@ -393,7 +434,7 @@
       button.dataset.index = String(tile.index);
       button.dataset.tileId = tile.art.id;
       button.innerHTML = `<img class="tile-image" src="${tile.art.asset}" alt="" draggable="false" />`;
-      button.setAttribute("aria-label", tile.art.label);
+      button.setAttribute("aria-label", tileName(tile.art));
       if (tile.matched) button.classList.add("matched");
       if (selectedTile?.index === tile.index) button.classList.add("selected");
       board.append(button);
@@ -517,6 +558,9 @@
   window.addEventListener("wonder:locale-change", () => {
     localeSelect.value = locale();
     applyText();
+  });
+  window.addEventListener("weightplay:tutorial-start", (event) => {
+    if (event.detail?.gameId === GAME_ID && document.body.classList.contains("garden-main")) showLevelSelect();
   });
 
   localeSelect.value = locale();

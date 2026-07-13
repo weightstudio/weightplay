@@ -92,6 +92,10 @@
     stagePanel.id = "stagePanel";
     stagePanel.className = "wp-standard-stage-panel hidden";
     stagePanel.dataset.wpStandardStageScreen = "true";
+    // The preparation tabs share one logical Stage Canvas. Keep the Stage active
+    // while Missions is hidden, otherwise the shared scaler drops between tabs.
+    stagePanel.dataset.wpStageRail = "true";
+    stagePanel.dataset.wpStageInitiallyHidden = "true";
     stagePanel.innerHTML = `
       <header class="wp-standard-stage-heading"><button id="stageBackBtn" data-wp-return="stage" type="button" aria-label="Back">&larr;</button><strong data-ui="stageHubTitle">Mission Preparation</strong></header>
       <div class="beast-stage-workspace">
@@ -131,6 +135,7 @@
     nodes.menuPanel.classList.add("hidden");
     nodes.stagePanel.classList.remove("hidden");
     nodes.stageReserve.classList.remove("hidden");
+    nodes.startBtn.hidden = false;
     document.body.classList.add("wp-standard-stage-page");
     renderProgressUI();
   }
@@ -138,6 +143,7 @@
   function showMainFromStage() {
     nodes.stagePanel.classList.add("hidden");
     nodes.stageReserve.classList.add("hidden");
+    nodes.startBtn.hidden = true;
     nodes.menuPanel.classList.remove("hidden");
     document.body.classList.remove("wp-standard-stage-page");
   }
@@ -205,6 +211,7 @@
       missionSelectedCard: "Selected - start below",
       selectedMissionTitle: "Selected Mission",
       selectedMissionReady: "{mission} is ready. Clear reward: {xp} XP + {coins} coins.",
+      missionScout: "Scout: {enemies}. First battle: {first}.",
       loadoutReady: "Loadout: {cards}/{max} extra cards · Gear: {gear}.",
       noGear: "None",
       controlCombat: "Turn-Based Strategy",
@@ -340,6 +347,7 @@
       missionSelectedCard: "已選擇・按下方開始",
       selectedMissionTitle: "已選任務",
       selectedMissionReady: "{mission} 已準備。通關獎勵：{xp} 經驗 + {coins} 金幣。",
+      missionScout: "偵察：{enemies}。首戰：{first}。",
       loadoutReady: "出戰配置：額外卡牌 {cards}/{max} · 裝備：{gear}。",
       noGear: "無",
       controlCombat: "回合策略",
@@ -476,6 +484,7 @@
   ];
   let profile = normalizeProfile();
   let state = {};
+  let isAutoPositioningStage = false;
 
   function clamp(num, min, max) {
     return Math.max(min, Math.min(max, num));
@@ -587,6 +596,17 @@
 
   function enemyName(enemy) {
     return getLocale() === "zh-Hant" ? enemy.nameZh : enemy.name;
+  }
+
+  function missionScout(id = profile.selectedMission) {
+    const mission = getMission(id);
+    const enemies = mission.enemies.map((enemyId) => enemyName(enemyCatalog[enemyId])).join(" → ");
+    const firstEnemy = enemyCatalog[mission.enemies[0]];
+    const firstIntent = firstEnemy.intents[0];
+    const firstAction = firstIntent.type === "buff"
+      ? t("intent_buff")
+      : t(`intent_${firstIntent.type}`, { amount: firstIntent.val });
+    return t("missionScout", { enemies, first: `${enemyName(firstEnemy)} ${firstAction}` });
   }
 
   function translateUI() {
@@ -873,6 +893,7 @@
         <span>${t("selectedMissionTitle")}</span>
         <strong>${missionLabel}: ${missionTitle(profile.selectedMission)}</strong>
         <small>${t("selectedMissionReady", { mission: missionLabel, xp, coins })}</small>
+        <small>${missionScout(profile.selectedMission)}</small>
         <small>${t("loadoutReady", { cards: profile.equippedCards.length, max: maxEquippedCards, gear })}</small>
       `;
     }
@@ -889,7 +910,14 @@
     if (!nodes.stageGrid) return;
     const selected = nodes.stageGrid.querySelector(`.stage-card[data-mission="${profile.selectedMission}"]`);
     if (!selected) return;
-    requestAnimationFrame(() => selected.scrollIntoView({ block: "nearest", inline: "center", behavior: "smooth" }));
+    isAutoPositioningStage = true;
+    requestAnimationFrame(() => {
+      // Work in the rail's logical coordinates. scrollIntoView() uses transformed
+      // screen geometry and can choose the wrong card after the Stage Canvas scales.
+      const target = selected.offsetLeft + selected.offsetWidth / 2 - nodes.stageGrid.clientWidth / 2;
+      nodes.stageGrid.scrollTo({ left: Math.max(0, target), behavior: "auto" });
+      requestAnimationFrame(() => { isAutoPositioningStage = false; });
+    });
   }
 
   function selectNearestVisibleStage() {
@@ -1530,6 +1558,7 @@
     });
     let stageScrollTimer = 0;
     nodes.stageGrid?.addEventListener("scroll", () => {
+      if (isAutoPositioningStage) return;
       window.clearTimeout(stageScrollTimer);
       stageScrollTimer = window.setTimeout(selectNearestVisibleStage, 120);
     }, { passive: true });

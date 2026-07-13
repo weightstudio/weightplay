@@ -1,4 +1,6 @@
 (() => {
+  const ARENA_WIDTH = 800;
+  const ARENA_HEIGHT = 1000;
   const GAME_ID = "animal-relic-hunters";
   const saveKey = "weightplay_relic_hunters_v1";
   const profileKey = "weightplay:animal-relic-hunters:profile:v1";
@@ -474,7 +476,7 @@
     playerMaxHp: 30,
     playerHp: 30,
     playerX: 400,
-    playerY: 250,
+    playerY: ARENA_HEIGHT / 2,
     playerSpeed: 3.0,
     level: 1,
     exp: 0,
@@ -1130,7 +1132,7 @@
     state.playerMaxHp = stats.maxHp;
     state.playerHp = state.playerMaxHp;
     state.playerX = 400;
-    state.playerY = 250;
+    state.playerY = ARENA_HEIGHT / 2;
     state.room = 1;
     state.expedition = selectedExpedition;
     state.keys = 0;
@@ -1185,10 +1187,10 @@
     for (let i = 0; i < enemyCount; i++) {
       const side = Math.floor(Math.random() * 4);
       let ex = 0, ey = 0;
-      if (side === 0) { ex = Math.random() * 800; ey = -40; }
-      else if (side === 1) { ex = 840; ey = Math.random() * 500; }
-      else if (side === 2) { ex = Math.random() * 800; ey = 540; }
-      else { ex = -40; ey = Math.random() * 500; }
+      if (side === 0) { ex = Math.random() * ARENA_WIDTH; ey = -40; }
+      else if (side === 1) { ex = ARENA_WIDTH + 40; ey = Math.random() * ARENA_HEIGHT; }
+      else if (side === 2) { ex = Math.random() * ARENA_WIDTH; ey = ARENA_HEIGHT + 40; }
+      else { ex = -40; ey = Math.random() * ARENA_HEIGHT; }
 
       const isBoar = room > 1 && Math.random() > 0.4;
       state.enemies.push({
@@ -1525,7 +1527,7 @@
     state.room++;
     state.keys = 0;
     state.playerX = 100;
-    state.playerY = 250;
+    state.playerY = ARENA_HEIGHT / 2;
     
     // Heal player slightly between rooms
     const stats = getStats();
@@ -1572,7 +1574,7 @@
 
       // Keep boundaries
       state.playerX = Math.max(20, Math.min(780, state.playerX));
-      state.playerY = Math.max(20, Math.min(480, state.playerY));
+      state.playerY = Math.max(20, Math.min(ARENA_HEIGHT - 20, state.playerY));
     }
 
     // 2. Automated Weapon Firing Timer
@@ -1718,8 +1720,8 @@
           updateHUDText();
 
           // Spawn Chest and Portal
-          state.pickups.push({ x: 300, y: 250, type: "chest" });
-          state.pickups.push({ x: 500, y: 250, type: "portal" });
+          state.pickups.push({ x: 300, y: ARENA_HEIGHT / 2, type: "chest" });
+          state.pickups.push({ x: 500, y: ARENA_HEIGHT / 2, type: "portal" });
         } else if (pickup.type === "gold") {
           state.pickups.splice(pIndex, 1);
           gainGold(pickup.value || 1);
@@ -1747,14 +1749,14 @@
   // Draw Arena textures
   function drawCanvasFrame() {
     const ctx = nodes.gameCanvas.getContext("2d");
-    ctx.clearRect(0, 0, 800, 500);
+    ctx.clearRect(0, 0, ARENA_WIDTH, ARENA_HEIGHT);
 
     // 1. Ruin Room background
     if (assets.bg.complete) {
-      ctx.drawImage(assets.bg, 0, 0, 800, 500);
+      drawImageCover(ctx, assets.bg, ARENA_WIDTH, ARENA_HEIGHT);
     } else {
       ctx.fillStyle = "#111827";
-      ctx.fillRect(0, 0, 800, 500);
+      ctx.fillRect(0, 0, ARENA_WIDTH, ARENA_HEIGHT);
     }
 
     if (state.bossWarningUntil > performance.now()) {
@@ -1937,6 +1939,15 @@
 
     // 7. Draw Sparks particles
     updateDamageSparks(ctx);
+  }
+
+  function drawImageCover(ctx, image, width, height) {
+    const scale = Math.max(width / image.width, height / image.height);
+    const sourceWidth = width / scale;
+    const sourceHeight = height / scale;
+    const sourceX = (image.width - sourceWidth) / 2;
+    const sourceY = (image.height - sourceHeight) / 2;
+    ctx.drawImage(image, sourceX, sourceY, sourceWidth, sourceHeight, 0, 0, width, height);
   }
 
   // Particle Effects system

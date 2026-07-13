@@ -934,11 +934,7 @@
   }
 
   function configureArena() {
-    const viewport = window.visualViewport;
-    const width = viewport?.width || innerWidth;
-    const height = viewport?.height || innerHeight;
-    const portrait = width <= 700 && height > width;
-    H = portrait ? 960 : 540;
+    H = 960;
     canvas.width = W;
     canvas.height = H;
     canvas.style.setProperty("--reef-arena-ratio", `${W} / ${H}`);
