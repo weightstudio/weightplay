@@ -1398,6 +1398,13 @@ body {
   }
 }
 
+@media (max-width: 720px) {
+  #menuPanel .menu-cover-box { margin-bottom: 10px; }
+  #menuPanel .menu-hint,
+  #menuPanel .goals-card { display: none; }
+  #menuPanel .menu-title { margin-bottom: 12px; }
+}
+
 /* Battle keeps one portrait composition; only the backpack list scrolls. */
 body.relic-playing {
   position: fixed;

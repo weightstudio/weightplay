@@ -333,3 +333,49 @@ body.wp-logical-battle-active.is-bakery-playing #playPanel.play-panel[data-wp-lo
   gap: 6px !important;
   padding: 7px !important;
 }
+
+/* Result content remains reachable above the external 56px reserve on short landscape screens. */
+@media (orientation: landscape) and (max-height: 460px) {
+  body .result-panel:not(.hidden):not(.is-hidden),
+  body .result-screen:not(.hidden):not(.is-hidden) {
+    max-height: calc(var(--wp-mobile-vh, 100dvh) - 56px) !important;
+    align-content: start !important;
+    align-items: start !important;
+    justify-content: center !important;
+    place-items: start center !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain !important;
+    touch-action: pan-y !important;
+  }
+  body .result-panel:not(.hidden):not(.is-hidden) {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    justify-items: center !important;
+  }
+  body .result-panel:not(.hidden):not(.is-hidden) > .result-card,
+  body .result-screen:not(.hidden):not(.is-hidden) > .result-card {
+    flex: 0 0 auto !important;
+    margin-right: auto !important;
+    margin-left: auto !important;
+  }
+}
+
+/* Viewport units must not make result cards wider than their logical Canvas. */
+body.fruit-playing #resultPanel .result-card,
+body.garden-playing #resultPanel .result-card {
+  width: calc(100% - 24px) !important;
+  max-width: 460px !important;
+  min-width: 0 !important;
+}
+body.fruit-playing #resultPanel .result-actions,
+body.garden-playing #resultPanel .result-actions {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  min-width: 0 !important;
+}
+body.fruit-playing #resultPanel .result-actions > *,
+body.garden-playing #resultPanel .result-actions > * {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+}

@@ -78,7 +78,10 @@
     en: {
       title: "Animal Zoo Idle",
       language: "Language",
+      backToLobby: "Back to WeightPlay lobby.",
       backToMenu: "Back to park menu.",
+      safariPark: "Safari park",
+      animalShop: "Animal shop",
       menuTitle: "Build a growing animal park.",
       menuHint: "Welcome visitors, collect tickets, upgrade the zoo gate, and recruit more animals to grow your park.",
       start: "Open Park",
@@ -223,7 +226,10 @@
   text["zh-Hant"] = {
     title: "\u52d5\u7269\u5c0f\u5c0f\u6a02\u5712",
     language: "\u8a9e\u8a00",
+    backToLobby: "\u8fd4\u56de WeightPlay \u5927\u5ef3\u3002",
     backToMenu: "\u8fd4\u56de\u6a02\u5712\u9078\u55ae\u3002",
+    safariPark: "\u91ce\u751f\u52d5\u7269\u6a02\u5712",
+    animalShop: "\u52d5\u7269\u5546\u5e97",
     menuTitle: "\u5efa\u8a2d\u4e00\u5ea7\u6703\u6210\u9577\u7684\u52d5\u7269\u6a02\u5712\u3002",
     menuHint: "\u6b61\u8fce\u53c3\u89c0\u8005\u3001\u6536\u96c6\u9580\u7968\u6536\u5165\u3001\u5347\u7d1a\u5927\u9580\uff0c\u4e26\u62db\u52df\u66f4\u591a\u52d5\u7269\u4f86\u64f4\u5efa\u6a02\u5712\u3002",
     start: "\u958b\u5712",
@@ -794,7 +800,7 @@
         <span>${t("income", { n: formatNumber(incomePerTick()) })}</span>
         <span>${t("animals")}: ${unlockedAnimals().length}/${animals.length}</span>
       </div>
-      <div class="savanna-stage stage-lv-${save.gateLevel}" aria-label="Safari park">
+      <div class="savanna-stage stage-lv-${save.gateLevel}" aria-label="${t("safariPark")}">
         <div class="gate image-asset"><img src="${gateAsset()}" alt="" draggable="false" /></div>
         <div class="stage-facilities"></div>
         <div class="visitor-line"></div>
@@ -824,7 +830,7 @@
         <div class="facility-board" aria-live="polite"></div>
         <div class="zoo-milestone-board" aria-live="polite"></div>
         <div class="animal-shop-head"><strong>${t("animals")}</strong><span>${t("dragHint")}</span></div>
-        <div class="animal-shop" aria-label="Animal shop"></div>
+        <div class="animal-shop" aria-label="${t("animalShop")}"></div>
       </div>
     `;
     renderVisitors(card.querySelector(".visitor-line"));
@@ -1579,10 +1585,9 @@
     const gutter = 8;
     const viewportWidth = window.visualViewport?.width || window.innerWidth;
     const viewportHeight = window.visualViewport?.height || window.innerHeight;
-    const expandedCanvas = viewportWidth <= 820;
-    const scale = expandedCanvas ? 1 : Math.max(0.1, Math.min((viewportWidth - gutter) / logicalWidth, (viewportHeight - reserveHeight - gutter) / logicalHeight));
-    const width = expandedCanvas ? viewportWidth - gutter : logicalWidth * scale;
-    const contentHeight = expandedCanvas ? viewportHeight - reserveHeight - gutter : logicalHeight * scale;
+    const scale = Math.max(0.1, Math.min((viewportWidth - gutter) / logicalWidth, (viewportHeight - reserveHeight - gutter) / logicalHeight));
+    const width = logicalWidth * scale;
+    const contentHeight = logicalHeight * scale;
     const top = gutter / 2;
     const rootStyle = document.documentElement.style;
     rootStyle.setProperty("--zoo-battle-scale", String(scale));
@@ -1591,11 +1596,11 @@
     rootStyle.setProperty("--zoo-battle-left", `${Math.max(0, (viewportWidth - width) / 2)}px`);
     rootStyle.setProperty("--zoo-battle-top", `${top}px`);
     rootStyle.setProperty("--zoo-battle-reserve-top", `${top + contentHeight}px`);
-    nodes.gamePanel.style.setProperty("width", `${expandedCanvas ? width : logicalWidth}px`, "important");
+    nodes.gamePanel.style.setProperty("width", `${logicalWidth}px`, "important");
     nodes.gamePanel.style.setProperty("max-width", "none", "important");
-    nodes.gamePanel.style.setProperty("height", `${expandedCanvas ? contentHeight : logicalHeight}px`, "important");
+    nodes.gamePanel.style.setProperty("height", `${logicalHeight}px`, "important");
     nodes.gamePanel.style.setProperty("max-height", "none", "important");
-    nodes.gamePanel.style.setProperty("min-height", `${expandedCanvas ? contentHeight : logicalHeight}px`, "important");
+    nodes.gamePanel.style.setProperty("min-height", `${logicalHeight}px`, "important");
   }
 
   function showMenu() {

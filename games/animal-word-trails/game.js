@@ -1,16 +1,16 @@
 (() => {
   const packs = {
     en: [
-      { name: 'Forest friends', words: ['LION', 'BEAR', 'FOX', 'FROG'], board: ['L','I','O','N','B','E','A','R','F','O','X','G','R','O','F','G'] },
-      { name: 'Forest trail', words: ['TREE', 'LEAF', 'NEST', 'TRAIL'], board: ['T','R','E','E','L','E','A','F','N','E','S','T','T','R','A','I'] },
-      { name: 'Forest pond', words: ['POND', 'FISH'], board: ['P','O','N','D','F','I','S','H','R','E','E','D','W','A','T','E'] },
-      { name: 'Safari grassland', words: ['ZEBRA', 'GRASS'], board: ['Z','E','B','R','P','A','W','A','G','R','A','S','S','H','E','S'] },
-      { name: 'Safari lookout', words: ['LION', 'PAW'], rule: 'Blocked tiles cannot join a word path.', blocked: [15], board: ['L','I','O','N','P','A','W','S','R','O','C','K','S','U','N','E'] },
-      { name: 'Ocean shallows', words: ['WHALE', 'TURTLE'], board: ['W','H','A','L','C','O','R','E','T','U','R','T','L','E','E','L'] },
-      { name: 'Ocean current', words: ['SHELL', 'TIDE'], board: ['S','H','E','L','W','A','V','L','T','I','D','E','K','E','L','P'] },
-      { name: 'Arctic camp', words: ['SEAL', 'ICE'], board: ['S','E','A','L','P','E','N','G','I','C','E','S','N','O','W','R'] },
-      { name: 'Mountain path', words: ['OWL', 'CAVE'], rule: 'Follow the leaf direction into the one-way tile.', oneWay: { index: 11, from: 10 }, board: ['O','W','L','E','A','G','L','E','C','A','V','E','W','I','N','D'] },
-      { name: 'Habitat album', words: ['FOREST'], board: ['F','O','R','E','A','A','T','S','S','A','F','A','R','I','O','C'] }
+      { name: 'Forest friends', words: ['LION', 'BEAR', 'FOX', 'FROG'], board: ['L','I','O','N','B','E','A','R','F','O','X','G','F','R','O','G'] },
+      { name: 'Forest trail', words: ['TREE', 'LEAF', 'NEST', 'TRAIL'], board: ['B','E','T','S','E','R','L','E','E','A','I','N','F','L','R','T'] },
+      { name: 'Forest pond', words: ['POND', 'REED', 'FISH', 'WATER'], board: ['E','E','D','L','R','F','T','W','D','S','I','A','H','N','O','P'] },
+      { name: 'Safari grassland', words: ['GIRAFFE', 'ZEBRA', 'GRASS', 'HERD'], board: ['F','E','R','G','F','A','G','I','S','D','R','B','S','H','E','Z'] },
+      { name: 'Safari lookout', words: ['LION', 'PAW', 'ROCK', 'SUN'], rule: 'Blocked tiles cannot join a word path.', blocked: [15], board: ['I','L','W','P','E','O','K','A','R','C','N','U','A','O','S','X'] },
+      { name: 'Ocean shallows', words: ['WHALE', 'TURTLE', 'CORAL', 'WAVE'], board: ['C','R','W','V','O','T','A','E','R','T','L','A','S','U','W','H'] },
+      { name: 'Ocean current', words: ['DOLPHIN', 'SHELL', 'TIDE', 'KELP'], board: ['L','E','H','A','L','S','K','E','P','O','D','N','D','H','I','T'] },
+      { name: 'Arctic camp', words: ['PENGUIN', 'SNOW', 'ICE', 'SEAL'], board: ['W','E','A','I','S','O','C','L','N','G','N','P','U','I','N','E'] },
+      { name: 'Mountain path', words: ['OWL', 'EAGLE', 'CAVE', 'WIND'], rule: 'Follow the leaf direction into the one-way tile.', oneWay: { index: 5, from: 1 }, board: ['C','A','E','W','O','V','I','D','W','E','G','N','L','L','A','E'] },
+      { name: 'Habitat album', words: ['FOREST', 'SAFARI', 'OCEAN', 'ARCTIC'], board: ['N','E','R','O','S','A','F','S','T','R','E','A','C','I','C','O'] }
     ],
     'zh-Hant': [
       { name: '森林朋友', words: ['獅子', '熊', '狐狸', '青蛙'], board: ['獅','子','熊','狐','狸','青','蛙','樹','葉','熊','獅','子','青','蛙','狐','狸'] },
@@ -22,14 +22,14 @@
   packs['zh-Hant'] = [
     { name: '\u68ee\u6797\u670b\u53cb', words: ['\u7345\u5b50', '\u718a', '\u72d0\u72f8', '\u9752\u86d9'], board: ['\u7345','\u5b50','\u718a','\u72d0','\u6a39','\u8449','\u9752','\u72f8','\u718a','\u7345','\u5b50','\u86d9','\u9752','\u86d9','\u72d0','\u72f8'] },
     { name: '\u68ee\u6797\u5c0f\u5f91', words: ['\u6a39\u8449', '\u9ce5\u5de2', '\u5c0f\u5f91', '\u68ee\u6797'], board: ['\u6a39','\u8449','\u9ce5','\u5de2','\u5c0f','\u5f91','\u68ee','\u6797','\u6a39','\u8449','\u9ce5','\u5de2','\u68ee','\u6797','\u5c0f','\u5f91'] },
-    { name: '\u68ee\u6797\u6c60\u5858', words: ['\u6c60\u5858','\u9752\u86d9'], board: ['\u6c60','\u5858','\u9b5a','\u6c34','\u8606','\u8449','\u6a39','\u5df4','\u9752','\u86d9','\u6ce2','\u7d0b','\u9ce5','\u5de2','\u68ee','\u6797'] },
-    { name: '\u8349\u539f\u4e4b\u65c5', words: ['\u9577\u9818\u9e7f','\u6591\u99ac'], board: ['\u9577','\u9818','\u9e7f','\u8349','\u6591','\u99ac','\u77f3','\u967d','\u7345','\u5b50','\u5927','\u8c61','\u8173','\u5370','\u91ce','\u98a8'] },
-    { name: '\u8349\u539f\u77ad\u671b', words: ['\u7345\u5b50','\u638c\u5370'], rule: '\u5c01\u9396\u683c\u4e0d\u80fd\u52a0\u5165\u5b57\u8a5e\u8def\u5f91\u3002', blocked: [15], board: ['\u7345','\u5b50','\u638c','\u5370','\u5ca9','\u77f3','\u592a','\u967d','\u91ce','\u8349','\u9b3c','\u5f71','\u98a8','\u6c99','\u9ce5','\u5de2'] },
-    { name: '\u6d77\u5cb8\u6dfa\u6c34', words: ['\u9be8\u9b5a','\u70cf\u9f9c'], board: ['\u9be8','\u9b5a','\u6d77','\u6ce2','\u70cf','\u9f9c','\u73ca','\u745a','\u6c99','\u7058','\u6d6a','\u82b1','\u6bdb','\u8c9d','\u85fb','\u77f3'] },
-    { name: '\u6d77\u6d0b\u6f6e\u6d41', words: ['\u6d77\u8c5a','\u8c9d\u6bbc'], board: ['\u6d77','\u8c5a','\u8c9d','\u6bbc','\u6f6e','\u6c34','\u6d6a','\u82b1','\u6d77','\u85fb','\u73ca','\u745a','\u8c9d','\u6bbc','\u6c99','\u5cb8'] },
-    { name: '\u6975\u5730\u71df\u5730', words: ['\u4f01\u9d5d','\u51b0\u5ddd'], board: ['\u4f01','\u9d5d','\u96ea','\u82b1','\u6d77','\u8c79','\u51b0','\u5ddd','\u6d77','\u8c61','\u51b7','\u98a8','\u8173','\u5370','\u5e33','\u7bf7'] },
-    { name: '\u5c71\u8def\u4e4b\u65c5', words: ['\u8c93\u982d\u9df9','\u5c71\u6d1e'], rule: '\u8acb\u9806\u8457\u8449\u7247\u65b9\u5411\u9032\u5165\u55ae\u5411\u683c\u3002', oneWay: { index: 4, from: 3 }, board: ['\u8c93','\u982d','\u9df9','\u5c71','\u6d1e','\u91ce','\u98a8','\u8001','\u9df9','\u5ca9','\u77f3','\u96f2','\u98db','\u9df9','\u6a39','\u6797'] },
-    { name: '\u68f2\u5730\u5716\u9451', words: ['\u68ee\u6797','\u8349\u539f'], board: ['\u68ee','\u6797','\u8349','\u539f','\u6d77','\u6d0b','\u6975','\u5730','\u5c71','\u8def','\u6a39','\u8449','\u52d5','\u7269','\u5c0f','\u5f91'] }
+    { name: '\u68ee\u6797\u6c60\u5858', words: ['\u6c60\u5858','\u8606\u8449','\u9b5a','\u6c34'], board: ['\u6a39','\u8449','\u96f2','\u98a8','\u6c34','\u9b5a','\u5858','\u8349','\u77f3','\u8449','\u6d77','\u6c60','\u9ce5','\u5de2','\u8606','\u68ee'] },
+    { name: '\u8349\u539f\u4e4b\u65c5', words: ['\u9577\u9818\u9e7f','\u6591\u99ac','\u8349\u539f','\u7378\u7fa4'], board: ['\u592a','\u967d','\u91ce','\u98a8','\u9577','\u9e7f','\u8349','\u99ac','\u7378','\u9818','\u6591','\u539f','\u7fa4','\u96f2','\u77f3','\u6a39'] },
+    { name: '\u8349\u539f\u77ad\u671b', words: ['\u7345\u5b50','\u638c\u5370','\u5ca9\u77f3','\u592a\u967d'], rule: '\u5c01\u9396\u683c\u4e0d\u80fd\u52a0\u5165\u5b57\u8a5e\u8def\u5f91\u3002', blocked: [15], board: ['\u8349','\u967d','\u6c99','\u5b50','\u96f2','\u592a','\u7345','\u5f71','\u98a8','\u638c','\u77f3','\u9ce5','\u6a39','\u5370','\u5ca9','X'] },
+    { name: '\u6d77\u5cb8\u6dfa\u6c34', words: ['\u9be8\u9b5a','\u70cf\u9f9c','\u73ca\u745a','\u6d77\u6d6a'], board: ['\u6c99','\u6d77','\u9f9c','\u85fb','\u6d77','\u6d6a','\u70cf','\u77f3','\u73ca','\u6ce2','\u9b5a','\u6bdb','\u96f2','\u745a','\u8c9d','\u9be8'] },
+    { name: '\u6d77\u6d0b\u6f6e\u6d41', words: ['\u6d77\u8c5a','\u8c9d\u6bbc','\u6f6e\u6c50','\u6d77\u85fb'], board: ['\u6ce2','\u6f6e','\u85fb','\u77f3','\u8c5a','\u6d77','\u6c50','\u8c9d','\u6d6a','\u73ca','\u6c34','\u6bbc','\u6c99','\u6d77','\u5cb8','\u96f2'] },
+    { name: '\u6975\u5730\u71df\u5730', words: ['\u4f01\u9d5d','\u96ea\u82b1','\u51b0\u5ddd','\u6d77\u8c79'], board: ['\u96f2','\u8c79','\u6d77','\u6c34','\u96ea','\u5e33','\u9d5d','\u4f01','\u82b1','\u51b7','\u5ddd','\u51b0','\u77f3','\u98a8','\u8173','\u5370'] },
+    { name: '\u5c71\u8def\u4e4b\u65c5', words: ['\u8c93\u982d\u9df9','\u8001\u9df9','\u5c71\u6d1e','\u5c71\u98a8'], rule: '\u8acb\u9806\u8457\u8449\u7247\u65b9\u5411\u9032\u5165\u55ae\u5411\u683c\u3002', oneWay: { index: 8, from: 4 }, board: ['\u96f2','\u98a8','\u5c71','\u6a39','\u5c71','\u77f3','\u8001','\u9ce5','\u6d1e','\u8c93','\u982d','\u9df9','\u5ca9','\u98db','\u9df9','\u68ee'] },
+    { name: '\u68f2\u5730\u5716\u9451', words: ['\u68ee\u6797','\u8349\u539f','\u6d77\u6d0b','\u6975\u5730'], board: ['\u6d77','\u9ce5','\u96f2','\u6a39','\u77f3','\u6d0b','\u8349','\u6c34','\u5c71','\u98a8','\u6797','\u539f','\u52d5','\u68ee','\u5730','\u6975'] }
   ];
   copy['zh-Hant'] = { title:'\u52d5\u7269\u5b57\u8a5e\u5c0f\u5f91', intro:'\u8ddf\u8457\u52d5\u7269\u7dda\u7d22\uff0c\u9023\u51fa\u6b63\u78ba\u7684\u5b57\u8a5e\u8def\u5f91\u3002', start:'\u958b\u59cb\u5c0f\u5f91', guideTitle:'\u8f15\u9b06\u7684\u95b1\u8b80\u62fc\u5b57\u904a\u6232', guideBody:'\u627e\u51fa\u52d5\u7269\u8207\u68f2\u5730\u5b57\u8a5e\uff0c\u9032\u5ea6\u6703\u5132\u5b58\u5728\u9019\u53f0\u88dd\u7f6e\u3002', chooseStage:'\u9078\u64c7\u5c0f\u5f91', playStage:'\u958b\u59cb\u6311\u6230', hint:'\u63d0\u793a', clear:'\u6e05\u9664', check:'\u78ba\u8a8d\u5b57\u8a5e', complete:'\u5c0f\u5f91\u5b8c\u6210', next:'\u4e0b\u4e00\u689d\u5c0f\u5f91', trails:'\u5c0f\u5f91\u9078\u55ae', skill:'\u95b1\u8b80 \u00b7 \u5c08\u6ce8 \u00b7 \u908f\u8f2f \u00b7 \u52d5\u7269\u77e5\u8b58', found:'\u5df2\u627e\u5230', try:'\u63db\u4e00\u689d\u8def\u5f91\u8a66\u8a66\u770b\u3002', great:'\u95b1\u8b80\u771f\u68d2\uff01' };
   copy.en.start = 'Start Game';
