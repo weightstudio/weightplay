@@ -636,9 +636,7 @@ body.snack-playing.weightplay-active-viewport .snack-game {
 }
 
 body.snack-playing .topbar {
-  flex: 0 0 48px;
-  min-height: 48px;
-  grid-template-columns: 44px minmax(0, 1fr) !important;
+  display: none !important;
 }
 
 body.snack-playing .language-picker,

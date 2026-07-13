@@ -51,7 +51,32 @@
   function closeResult(){nodes.modal.hidden=true;nodes.fia.classList.remove("caught")}
   $(".home-link").setAttribute("data-wp-return","main");$("#stageBackBtn").setAttribute("data-wp-return","stage");$("#battleBackBtn").setAttribute("data-wp-return","battle");
   function bind(){$("#localeSelect").value=locale;$("#localeSelect").addEventListener("change",e=>{locale=e.target.value;localStorage.setItem(localeKey,locale);localize()});$("#startBtn").addEventListener("click",()=>{show("stage");renderStage()});$("#stageBackBtn").addEventListener("click",()=>show("main"));$("#battleBackBtn").addEventListener("click",()=>{show("stage");renderStage()});$("#pauseBtn").addEventListener("click",()=>{paused=!paused;nodes.feedback.textContent=t(paused?"paused":"holdRoute")});nodes.field.addEventListener("pointerdown",e=>{if(!playing||paused)return;nodes.field.setPointerCapture(e.pointerId);routeTo(e.clientX,e.clientY)});nodes.field.addEventListener("pointermove",e=>{if(nodes.field.hasPointerCapture(e.pointerId))routeTo(e.clientX,e.clientY)});nodes.field.addEventListener("pointerup",e=>{if(nodes.field.hasPointerCapture(e.pointerId)){routeTo(e.clientX,e.clientY,true);nodes.field.releasePointerCapture(e.pointerId)}});$("#gadgetBtn").addEventListener("click",useGadget);$("#retryBtn").addEventListener("click",()=>{closeResult();startMission(selectedMission)});$("#stagesBtn").addEventListener("click",()=>{closeResult();show("stage");renderStage()});$("#nextBtn").addEventListener("click",()=>{closeResult();startMission(Math.min(4,selectedMission+1))})}
-  function bindMissionRailDrag(){let pointerId=null,startX=0,startLeft=0,dragged=false;const rail=nodes.rail;rail.addEventListener("pointerdown",event=>{pointerId=event.pointerId;startX=event.clientX;startLeft=rail.scrollLeft;dragged=false;rail.setPointerCapture(pointerId)});rail.addEventListener("pointermove",event=>{if(event.pointerId!==pointerId)return;const delta=event.clientX-startX;if(Math.abs(delta)>6)dragged=true;rail.scrollLeft=startLeft-delta});rail.addEventListener("pointerup",event=>{if(event.pointerId!==pointerId)return;rail.releasePointerCapture(pointerId);pointerId=null;window.setTimeout(()=>{dragged=false},0)});rail.addEventListener("pointercancel",()=>{pointerId=null;dragged=false});rail.addEventListener("click",event=>{if(dragged){event.preventDefault();event.stopPropagation()}},true)}
+  function bindMissionRailDrag(){
+    let pointerId=null,startX=0,startLeft=0,dragged=false,suppressClickUntil=0;
+    const rail=nodes.rail;
+    rail.addEventListener("pointerdown",event=>{
+      if(event.button!==undefined&&event.button!==0)return;
+      pointerId=event.pointerId;startX=event.clientX;startLeft=rail.scrollLeft;dragged=false;suppressClickUntil=0;
+    });
+    rail.addEventListener("pointermove",event=>{
+      if(event.pointerId!==pointerId)return;
+      const delta=event.clientX-startX;
+      if(Math.abs(delta)>6&&!dragged){dragged=true;rail.setPointerCapture(pointerId)}
+      if(!dragged)return;
+      event.preventDefault();rail.scrollLeft=startLeft-delta;
+    });
+    const finish=event=>{
+      if(event.pointerId!==pointerId)return;
+      if(rail.hasPointerCapture(pointerId))rail.releasePointerCapture(pointerId);
+      suppressClickUntil=dragged?performance.now()+90:0;pointerId=null;
+    };
+    rail.addEventListener("pointerup",finish);
+    rail.addEventListener("pointercancel",finish);
+    rail.addEventListener("click",event=>{
+      if(performance.now()>suppressClickUntil)return;
+      event.preventDefault();event.stopPropagation();suppressClickUntil=0;
+    },true);
+  }
   window.addEventListener("keydown",event=>{
     if(!playing||paused||event.target.matches("button,select,input,textarea"))return;
     const direction={arrowleft:[-1,0],a:[-1,0],arrowright:[1,0],d:[1,0],arrowup:[0,-1],w:[0,-1],arrowdown:[0,1],s:[0,1]}[event.key.toLowerCase()];

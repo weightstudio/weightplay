@@ -110,6 +110,13 @@
       collected: "Collected {coins} coins.",
       cared: "Animals are happier. More visitors are coming.",
       careWait: "Care is resting for {n}s.",
+      careRouteHabitat: "Tidy Habitat",
+      careRouteHabitatHint: "+8 happiness",
+      careRouteEnrichment: "Enrichment Time",
+      careRouteEnrichmentHint: "+{tickets} tickets",
+      careRouteCancel: "Back",
+      careRouteHabitatDone: "The habitat is sparkling. Happiness +8.",
+      careRouteEnrichmentDone: "The animals loved it. +{tickets} tickets.",
       upgraded: "The gate looks better. Ticket income increased!",
       recruited: "{name} joined the zoo!",
       maxGate: "Max Gate",
@@ -245,6 +252,13 @@
     collected: "\u6536\u5230 {coins} \u91d1\u5e63\u3002",
     cared: "\u52d5\u7269\u5011\u66f4\u958b\u5fc3\u4e86\uff01",
     careWait: "\u7167\u9867\u9700\u8981\u4f11\u606f {n} \u79d2\u3002",
+    careRouteHabitat: "\u6574\u7406\u68f2\u5730",
+    careRouteHabitatHint: "\u5feb\u6a02\u5ea6 +8",
+    careRouteEnrichment: "\u8c50\u5bcc\u6d3b\u52d5",
+    careRouteEnrichmentHint: "+{tickets} \u9580\u7968",
+    careRouteCancel: "\u8fd4\u56de",
+    careRouteHabitatDone: "\u68f2\u5730\u6574\u9f4a\u4eae\u6676\u6676\uff0c\u5feb\u6a02\u5ea6 +8\u3002",
+    careRouteEnrichmentDone: "\u52d5\u7269\u5011\u5f88\u559c\u6b61\uff0c\u9580\u7968 +{tickets}\u3002",
     upgraded: "\u5927\u9580\u8b8a\u66f4\u6f02\u4eae\uff0c\u9580\u7968\u6536\u5165\u63d0\u5347\u4e86\uff01",
     recruited: "{name} \u52a0\u5165\u6a02\u5712\uff01",
     maxGate: "\u5927\u9580\u5df2\u6eff\u7d1a",
@@ -394,6 +408,7 @@
   let tickCount = 0;
   let newlyRecruitedAnimalId = "";
   let facilityScrollLeft = 0;
+  let careRouteChoiceOpen = false;
 
   function t(key, data = {}) {
     const value = text[locale]?.[key] || text.en[key] || key;
@@ -413,6 +428,7 @@
       claimedMilestones: {},
       tourRound: 1,
       tour: { collected: 0, cared: 0, built: 0 },
+      careRoutes: { habitat: 0, enrichment: 0 },
       layoutVersion,
       bestScore: 0,
       lastScore: 0,
@@ -476,6 +492,10 @@
       collected: Math.max(0, Number(data.tour?.collected || 0)),
       cared: Math.max(0, Number(data.tour?.cared || 0)),
       built: Math.max(0, Number(data.tour?.built || 0)),
+    };
+    data.careRoutes = {
+      habitat: Math.max(0, Number(data.careRoutes?.habitat || 0)),
+      enrichment: Math.max(0, Number(data.careRoutes?.enrichment || 0)),
     };
     for (const facility of facilities) {
       data.facilities[facility.id] = clamp(Math.floor(Number(data.facilities[facility.id] || 0)), 0, facility.maxLevel);
@@ -792,6 +812,11 @@
           <button type="button" data-action="upgrade" ${save.gateLevel >= maxGateLevel ? "disabled" : ""}>${upgradeButtonLabel()}</button>
           <button type="button" data-action="report">${t("report")}</button>
         </div>
+        <div class="care-route-actions hidden" aria-live="polite">
+          <button type="button" data-action="route-habitat"><strong>${t("careRouteHabitat")}</strong><small>${t("careRouteHabitatHint")}</small></button>
+          <button type="button" data-action="route-enrichment"><strong>${t("careRouteEnrichment")}</strong><small>${t("careRouteEnrichmentHint", { tickets: formatNumber(careRouteTicketReward()) })}</small></button>
+          <button type="button" data-action="route-cancel">${t("careRouteCancel")}</button>
+        </div>
         <div class="park-plan-card" aria-live="polite"></div>
         <div class="tour-board" aria-live="polite"></div>
         <div class="habitat-bonus-card" aria-live="polite"></div>
@@ -809,6 +834,9 @@
     animalLayer.dataset.animalIds = unlockedAnimals().map((animal) => animal.id).join(",");
     card.querySelector('[data-action="collect"]').addEventListener("click", collectTickets);
     card.querySelector('[data-action="care"]').addEventListener("click", careAnimals);
+    card.querySelector('[data-action="route-habitat"]').addEventListener("click", () => completeCareRoute("habitat"));
+    card.querySelector('[data-action="route-enrichment"]').addEventListener("click", () => completeCareRoute("enrichment"));
+    card.querySelector('[data-action="route-cancel"]').addEventListener("click", closeCareRoutes);
     card.querySelector('[data-action="upgrade"]').addEventListener("click", upgradeGate);
     card.querySelector('[data-action="report"]').addEventListener("click", showReport);
     card.querySelector('[data-action="next-goal"]').addEventListener("click", recruitAnimal);
@@ -1315,15 +1343,46 @@
       render();
       return;
     }
+    openCareRoutes();
+  }
+
+  function careRouteTicketReward() {
+    return Math.max(12, Math.floor(incomePerTick() * 2));
+  }
+
+  function openCareRoutes() {
+    careRouteChoiceOpen = true;
+    const card = nodes.habitatGrid.querySelector(".zoo-stage-card");
+    card?.querySelector(".zoo-actions")?.classList.add("hidden");
+    card?.querySelector(".care-route-actions")?.classList.remove("hidden");
+  }
+
+  function closeCareRoutes() {
+    careRouteChoiceOpen = false;
+    const card = nodes.habitatGrid.querySelector(".zoo-stage-card");
+    card?.querySelector(".zoo-actions")?.classList.remove("hidden");
+    card?.querySelector(".care-route-actions")?.classList.add("hidden");
+  }
+
+  function completeCareRoute(route) {
+    if (!careRouteChoiceOpen) return;
+    closeCareRoutes();
     save.careCount += 1;
     save.tour.cared += 1;
     const gain = unlockedAnimals().reduce((sum, animal) => sum + animal.care, 0) + facilityCareBonus();
-    save.happiness = clamp(save.happiness + gain, 18, 100);
+    const habitatBoost = route === "habitat" ? 8 : 0;
+    const ticketReward = route === "enrichment" ? careRouteTicketReward() : 0;
+    save.happiness = clamp(save.happiness + gain + habitatBoost, 18, 100);
+    save.ticketBox += ticketReward;
+    save.careRoutes[route] += 1;
     save.careReadyAt = Date.now() + careCooldownMs;
     popHearts();
     pulseAnimals();
-    popToast(t("cared"));
+    popToast(route === "habitat"
+      ? t("careRouteHabitatDone")
+      : t("careRouteEnrichmentDone", { tickets: formatNumber(ticketReward) }));
     playSound("success");
+    window.WonderAnalytics?.track("zoo_care_route", { game_id: GAME_ID, route });
     saveGame();
     render();
   }

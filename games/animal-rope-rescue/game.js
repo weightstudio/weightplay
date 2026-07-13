@@ -7,6 +7,11 @@
     en: {
       title: "Animal Vine Rescue",
       language: "Language",
+      backToLobby: "Back to WeightPlay lobby",
+      backToMain: "Back to main menu",
+      backToStages: "Back to stages",
+      playfield: "Animal Vine Rescue playfield",
+      cutVine: "Cut vine",
       menuTitle: "Rescue fruit for hungry animals.",
       menuHint: "Cut the vine, drag the leaf, and bounce fruit into the animal basket.",
       start: "Choose Stage",
@@ -39,6 +44,11 @@
     "zh-Hant": {
       title: "動物藤蔓救援",
       language: "語言",
+      backToLobby: "返回 WeightPlay 大廳",
+      backToMain: "返回主選單",
+      backToStages: "返回選關",
+      playfield: "動物藤蔓救援遊玩區",
+      cutVine: "剪斷藤蔓",
       menuTitle: "把水果送給肚子餓的動物。",
       menuHint: "切斷藤蔓，拖曳葉子，讓水果彈進動物籃子。",
       start: "選擇關卡",
@@ -83,6 +93,16 @@
     panda: "../../assets/tiny-weather-animal-panda.png",
     fox: "../../assets/tiny-weather-animal-fox.png",
     koala: "../../assets/tiny-weather-animal-koala.png",
+  };
+  const seo = {
+    en: {
+      title: "Animal Vine Rescue - WeightPlay",
+      description: "Cut vines, move the leaf trampoline, and guide fruit to hungry animals in Animal Vine Rescue, a family-friendly animal physics puzzle on WeightPlay.",
+    },
+    "zh-Hant": {
+      title: "動物藤蔓救援 - WeightPlay",
+      description: "在動物藤蔓救援中剪斷藤蔓、移動葉子彈墊，把水果送進飢餓動物的籃子；這是一款適合家庭遊玩的動物物理益智遊戲。",
+    },
   };
 
   const stages = [
@@ -181,6 +201,16 @@
     document.querySelectorAll("[data-ui]").forEach((node) => {
       node.textContent = t(node.dataset.ui);
     });
+    const seoCopy = seo[locale] || seo.en;
+    document.title = seoCopy.title;
+    document.querySelector('meta[name="description"]')?.setAttribute("content", seoCopy.description);
+    document.querySelector('meta[property="og:title"]')?.setAttribute("content", seoCopy.title);
+    document.querySelector('meta[property="og:description"]')?.setAttribute("content", seoCopy.description);
+    document.querySelector('[data-wp-return="main"]')?.setAttribute("aria-label", t("backToLobby"));
+    nodes.localeSelect.setAttribute("aria-label", t("language"));
+    nodes.stageBackBtn.setAttribute("aria-label", t("backToStages"));
+    nodes.playfield.setAttribute("aria-label", t("playfield"));
+    nodes.vineButton.setAttribute("aria-label", t("cutVine"));
     renderStages();
     if (!nodes.gamePanel.classList.contains("hidden")) setupStage(currentStage);
   }
@@ -194,7 +224,7 @@
   }
 
   function renderStages() {
-    nodes.stagePanel.innerHTML = `<div class="stage-shell-head"><button type="button" class="stage-return" data-wp-return="stage" data-stage-main aria-label="Back">&larr;</button><div><strong>${t("stages")}</strong><span>${t("menuHint")}</span></div></div><div class="stage-rail">` + stages
+    nodes.stagePanel.innerHTML = `<div class="stage-shell-head"><button type="button" class="stage-return" data-wp-return="stage" data-stage-main aria-label="${t("backToMain")}">&larr;</button><div><strong>${t("stages")}</strong><span>${t("menuHint")}</span></div></div><div class="stage-rail">` + stages
       .map((stage, index) => {
         const stageNo = index + 1;
         const locked = stageNo > save.unlocked;
@@ -213,6 +243,60 @@
         `;
       })
       .join("") + `</div><div class="stage-ad-reserve" aria-hidden="true"></div>`;
+    installStageRailDrag();
+  }
+
+  function installStageRailDrag() {
+    const rail = nodes.stagePanel.querySelector(".stage-rail");
+    if (!rail) return;
+    let pointerId = null;
+    let startX = 0;
+    let startScroll = 0;
+    let dragged = false;
+    const snapNearest = () => {
+      const cards = [...rail.querySelectorAll(".stage-card")];
+      const railCenter = rail.scrollLeft + rail.clientWidth / 2;
+      const nearest = cards.reduce((best, card) => {
+        const distance = Math.abs(card.offsetLeft + card.offsetWidth / 2 - railCenter);
+        return !best || distance < best.distance ? { card, distance } : best;
+      }, null);
+      if (nearest) rail.scrollTo({ left: Math.max(0, nearest.card.offsetLeft + nearest.card.offsetWidth / 2 - rail.clientWidth / 2), behavior: "smooth" });
+    };
+    const dragSurface = nodes.stagePanel;
+    const beginDrag = (event, id) => {
+      if (!event.target.closest(".stage-rail")) return;
+      pointerId = id;
+      startX = event.clientX;
+      startScroll = rail.scrollLeft;
+      dragged = false;
+      rail.style.scrollSnapType = "none";
+    };
+    const moveDrag = (event, id) => {
+      if (id !== pointerId) return;
+      const delta = event.clientX - startX;
+      if (!dragged && Math.abs(delta) < 5) return;
+      dragged = true;
+      rail.scrollLeft = startScroll - delta;
+      event.preventDefault();
+    };
+    const finishDrag = (id) => {
+      if (id !== pointerId) return;
+      if (dragged) {
+        rail.dataset.suppressClick = "true";
+        rail.style.scrollSnapType = "";
+        snapNearest();
+        window.setTimeout(() => delete rail.dataset.suppressClick, 0);
+      }
+      if (!dragged) rail.style.scrollSnapType = "";
+      pointerId = null;
+    };
+    dragSurface.addEventListener("pointerdown", (event) => beginDrag(event, `pointer-${event.pointerId}`), true);
+    dragSurface.addEventListener("pointermove", (event) => moveDrag(event, `pointer-${event.pointerId}`), true);
+    dragSurface.addEventListener("pointerup", (event) => finishDrag(`pointer-${event.pointerId}`), true);
+    dragSurface.addEventListener("pointercancel", (event) => finishDrag(`pointer-${event.pointerId}`), true);
+    dragSurface.addEventListener("mousedown", (event) => beginDrag(event, "mouse"), true);
+    dragSurface.addEventListener("mousemove", (event) => moveDrag(event, "mouse"), true);
+    dragSurface.addEventListener("mouseup", () => finishDrag("mouse"), true);
   }
 
   function setupStage(stageNo) {
@@ -430,6 +514,7 @@
     }
     const button = event.target.closest("[data-stage]");
     if (!button) return;
+    if (nodes.stagePanel.querySelector(".stage-rail")?.dataset.suppressClick) return;
     const stageNo = Number(button.dataset.stage);
     if (stageNo > save.unlocked) {
       showToast(t("locked"));
@@ -483,6 +568,11 @@
     setLocale(event.target.value);
   });
   window.addEventListener("wonder:locale-change", (event) => setLocale(event.detail?.locale || window.WonderI18n?.locale?.()));
+  window.addEventListener("weightplay:tutorial-start", (event) => {
+    if (event.detail?.gameId !== GAME_ID || nodes.menuPanel.classList.contains("hidden")) return;
+    renderStages();
+    show(nodes.stagePanel);
+  });
   window.addEventListener("resize", positionElements);
 
   nodes.localeSelect.value = locale;

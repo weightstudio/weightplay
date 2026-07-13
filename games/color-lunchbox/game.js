@@ -35,8 +35,6 @@
   const loadingPanel = document.querySelector("#loadingPanel");
   const loadingText = document.querySelector("#loadingText");
   const loadingFill = document.querySelector("#loadingFill");
-  document.querySelector(".lunch-game")?.append(battleBackBtn);
-
   const GAME_ID = "color-lunchbox";
   const UNLOCK_KEY = "colorLunchboxUnlockedStage";
   const PROGRESS_KEY = "weightplay_color_lunchbox_progress";

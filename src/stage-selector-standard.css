@@ -53,6 +53,11 @@
   overflow: hidden !important;
 }
 
+:is(a, button)[data-wp-return].hidden,
+:is(a, button)[data-wp-return][hidden] {
+  display: none !important;
+}
+
 :is(.stage-grid, .stage-rail, .mission-grid, .mission-rail, .region-rail, .level-grid) {
   display: flex !important;
   grid-template-columns: none !important;
@@ -297,6 +302,8 @@ body.garden-stage .level-grid > button {
   grid-template-columns: 58px minmax(0, 1fr) 116px;
   align-items: center;
   gap: 8px;
+  justify-self: center;
+  width: min(374px, 100%);
   text-align: center;
 }
 
@@ -329,7 +336,9 @@ body.garden-stage .level-grid > button {
 }
 
 .wonder-main-cover {
+  justify-self: center;
   width: 100%;
+  max-width: 374px;
   height: 100%;
   min-height: 0;
   object-fit: contain;
@@ -362,7 +371,11 @@ body.wonder-stage-select #wonderStageBack {
 }
 
 body.wonder-stage-select .wonder-language-picker,
-body.wonder-stage-select .game-page-info {
+body.wonder-stage-select .game-page-info,
+body.wonder-stage-select .wp-tutorial-button,
+body.wonder-stage-select .sound-toggle,
+body.wonder-stage-select .weightplay-version-badge,
+body.wonder-stage-select .version-badge {
   display: none !important;
 }
 

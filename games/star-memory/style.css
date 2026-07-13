@@ -159,6 +159,11 @@ body.memory-playing .home-link img {
   display: none;
 }
 
+body.memory-stage .topbar,
+body.memory-playing .topbar {
+  display: none !important;
+}
+
 .main-panel {
   display: grid;
   gap: 16px;

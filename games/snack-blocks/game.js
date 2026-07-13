@@ -430,8 +430,17 @@
     });
     requestAnimationFrame(() => {
       const unlockedCard = [...nodes.stageGrid.querySelectorAll(".stage-card:not(.locked)")].at(-1);
-      unlockedCard?.scrollIntoView({ block: "nearest", inline: "center", behavior: "auto" });
+      scrollStageCardToCenter(unlockedCard, "auto");
     });
+  }
+
+  function scrollStageCardToCenter(card, behavior = "smooth") {
+    if (!card) return;
+    const left = Math.max(0, Math.min(
+      card.offsetLeft + card.offsetWidth / 2 - nodes.stageGrid.clientWidth / 2,
+      nodes.stageGrid.scrollWidth - nodes.stageGrid.clientWidth
+    ));
+    nodes.stageGrid.scrollTo({ left, behavior });
   }
 
   function centerNearestStage() {
@@ -442,7 +451,7 @@
       const distance = Math.abs(card.offsetLeft + card.offsetWidth / 2 - center);
       return !best || distance < best.distance ? { card, distance } : best;
     }, null)?.card;
-    nearest?.scrollIntoView({ block: "nearest", inline: "center", behavior: "smooth" });
+    scrollStageCardToCenter(nearest);
   }
 
   function installStageDrag() {
@@ -457,17 +466,20 @@
       startScroll = nodes.stageGrid.scrollLeft;
       moved = false;
       nodes.stageGrid.classList.add("dragging");
-      nodes.stageGrid.setPointerCapture?.(pointerId);
     });
     nodes.stageGrid.addEventListener("pointermove", (event) => {
       if (event.pointerId !== pointerId) return;
       const delta = event.clientX - startX;
-      if (Math.abs(delta) > 6) moved = true;
+      if (Math.abs(delta) > 6 && !moved) {
+        moved = true;
+        nodes.stageGrid.setPointerCapture?.(pointerId);
+      }
+      if (!moved) return;
       nodes.stageGrid.scrollLeft = startScroll - delta;
     });
     const finish = (event) => {
       if (event.pointerId !== pointerId) return;
-      nodes.stageGrid.releasePointerCapture?.(pointerId);
+      if (nodes.stageGrid.hasPointerCapture?.(pointerId)) nodes.stageGrid.releasePointerCapture(pointerId);
       pointerId = null;
       nodes.stageGrid.classList.remove("dragging");
       if (moved) nodes.stageGrid.dataset.dragged = "true";

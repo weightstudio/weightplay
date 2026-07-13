@@ -666,6 +666,7 @@ body.is-vine-playing .game-page-info {
     overflow-y: hidden;
     padding-inline: max(44px, calc((100% - 264px) / 2));
     scroll-snap-type: x mandatory;
+    touch-action: pan-x;
     scrollbar-width: none;
   }
 
@@ -673,6 +674,7 @@ body.is-vine-playing .game-page-info {
     flex: 0 0 264px;
     scroll-snap-align: center;
     scroll-snap-stop: always;
+    touch-action: pan-x;
   }
 
   body.is-vine-stage-select .stage-ad-reserve {
@@ -808,6 +810,12 @@ body.is-vine-playing .vine-app {
 body.is-vine-playing .topbar,
 body.is-vine-playing .game-page-info,
 body.is-vine-playing .wp-tutorial-button {
+  display: none !important;
+}
+
+body.is-vine-stage-select .topbar,
+body.is-vine-stage-select .game-page-info,
+body.is-vine-stage-select .wp-tutorial-button {
   display: none !important;
 }
 

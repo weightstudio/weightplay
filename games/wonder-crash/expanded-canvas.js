@@ -19,6 +19,23 @@
     let startX = 0;
     let startScrollLeft = 0;
     let dragged = false;
+    let suppressClickUntil = 0;
+    let wheelSnapTimer = 0;
+
+    const snapToNearestCard = (behavior = "smooth") => {
+      const cards = [...stageRail.querySelectorAll("button[data-level]")];
+      if (!cards.length) return;
+      const railCenter = stageRail.scrollLeft + stageRail.clientWidth / 2;
+      const nearest = cards.reduce((best, card) => {
+        const center = card.offsetLeft + card.offsetWidth / 2;
+        return Math.abs(center - railCenter) < Math.abs(best.center - railCenter) ? { card, center } : best;
+      }, { card: cards[0], center: cards[0].offsetLeft + cards[0].offsetWidth / 2 }).card;
+      const targetLeft = Math.max(0, Math.min(
+        nearest.offsetLeft + nearest.offsetWidth / 2 - stageRail.clientWidth / 2,
+        stageRail.scrollWidth - stageRail.clientWidth
+      ));
+      stageRail.scrollTo({ left: targetLeft, behavior });
+    };
 
     stageRail.addEventListener("pointerdown", (event) => {
       if (event.pointerType !== "mouse" || event.button !== 0) return;
@@ -26,14 +43,17 @@
       startX = event.clientX;
       startScrollLeft = stageRail.scrollLeft;
       dragged = false;
-      stageRail.setPointerCapture(pointerId);
+      suppressClickUntil = 0;
       stageRail.classList.add("is-mouse-dragging");
     });
 
     stageRail.addEventListener("pointermove", (event) => {
       if (event.pointerId !== pointerId) return;
       const delta = event.clientX - startX;
-      if (Math.abs(delta) > 5) dragged = true;
+      if (Math.abs(delta) > 5 && !dragged) {
+        dragged = true;
+        stageRail.setPointerCapture(pointerId);
+      }
       if (!dragged) return;
       event.preventDefault();
       stageRail.scrollLeft = startScrollLeft - delta;
@@ -44,37 +64,27 @@
       if (stageRail.hasPointerCapture(pointerId)) stageRail.releasePointerCapture(pointerId);
       pointerId = null;
       stageRail.classList.remove("is-mouse-dragging");
+      suppressClickUntil = dragged ? performance.now() + 90 : 0;
+      if (dragged) requestAnimationFrame(() => snapToNearestCard());
     };
     stageRail.addEventListener("pointerup", finishMouseDrag);
     stageRail.addEventListener("pointercancel", finishMouseDrag);
     stageRail.addEventListener("click", (event) => {
-      if (!dragged) return;
+      if (performance.now() > suppressClickUntil) return;
       event.preventDefault();
       event.stopPropagation();
+      suppressClickUntil = 0;
       dragged = false;
     }, true);
 
-    let mouseActive = false;
-    stageRail.addEventListener("mousedown", (event) => {
-      if (event.button !== 0) return;
-      mouseActive = true;
-      startX = event.clientX;
-      startScrollLeft = stageRail.scrollLeft;
-      dragged = false;
-      stageRail.classList.add("is-mouse-dragging");
-    });
-    window.addEventListener("mousemove", (event) => {
-      if (!mouseActive) return;
-      const delta = event.clientX - startX;
-      if (Math.abs(delta) > 5) dragged = true;
-      if (!dragged) return;
+    stageRail.addEventListener("wheel", (event) => {
+      if (stageRail.scrollWidth <= stageRail.clientWidth) return;
+      const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY;
+      if (!delta) return;
       event.preventDefault();
-      stageRail.scrollLeft = startScrollLeft - delta;
+      stageRail.scrollLeft += delta;
+      window.clearTimeout(wheelSnapTimer);
+      wheelSnapTimer = window.setTimeout(() => snapToNearestCard(), 90);
     }, { passive: false });
-    window.addEventListener("mouseup", () => {
-      if (!mouseActive) return;
-      mouseActive = false;
-      stageRail.classList.remove("is-mouse-dragging");
-    });
   }
 })();

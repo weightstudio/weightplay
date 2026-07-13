@@ -503,6 +503,10 @@ body.dash-playing .wp-tutorial-button {
   display: none !important;
 }
 
+body.dash-playing .topbar {
+  display: none !important;
+}
+
 body.dash-playing .topbar h1 {
   font-size: 20px;
 }
