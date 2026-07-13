@@ -92,7 +92,7 @@
     stagePanel.className = "wp-standard-stage-panel hidden";
     stagePanel.dataset.wpStandardStageScreen = "true";
     stagePanel.innerHTML = `
-      <header class="wp-standard-stage-heading"><button id="stageBackBtn" type="button" aria-label="Back">&larr;</button><strong data-ui="stageHubTitle">Mission Preparation</strong></header>
+      <header class="wp-standard-stage-heading"><button id="stageBackBtn" data-wp-return="stage" type="button" aria-label="Back">&larr;</button><strong data-ui="stageHubTitle">Mission Preparation</strong></header>
       <div class="beast-stage-workspace">
         <section class="beast-stage-view is-active" data-stage-view="missions"></section>
         <section class="beast-stage-view" data-stage-view="deck"></section>

@@ -586,7 +586,7 @@
     stagePanel.className = "wp-standard-stage-panel is-hidden";
     stagePanel.dataset.wpStandardStageScreen = "true";
     stagePanel.innerHTML = `
-      <header class="wp-standard-stage-heading"><button id="stageBackBtn" type="button" aria-label="${t("backToMain")}">&larr;</button><strong>${t("missionSelect")}</strong></header>
+      <header class="wp-standard-stage-heading"><button id="stageBackBtn" data-wp-return="stage" type="button" aria-label="${t("backToMain")}">&larr;</button><strong>${t("missionSelect")}</strong></header>
       <div class="rune-stage-workspace">
         <section class="rune-stage-view is-active" data-rune-stage-view="missions"></section>
         <section class="rune-stage-view" data-rune-stage-view="heroes"></section>
@@ -663,6 +663,8 @@
     document.body.classList.add("is-rune-playing");
     nodes.backBtn.setAttribute("href", "#stage");
     nodes.backBtn.setAttribute("aria-label", t("backToMenu"));
+    nodes.backBtn.setAttribute("data-wp-return", "battle");
+    nodes.backBtn.replaceChildren(document.createTextNode("\u2190"));
     nodes.resultPanel.classList.add("is-hidden");
     nodes.rewardPanel.classList.add("is-hidden");
     nodes.gamePanel.classList.remove("is-hidden");
@@ -1043,6 +1045,11 @@
     document.body.classList.remove("is-rune-playing");
     nodes.backBtn.setAttribute("href", "/");
     nodes.backBtn.setAttribute("aria-label", t("backToLobby"));
+    nodes.backBtn.setAttribute("data-wp-return", "main");
+    const logo = document.createElement("img");
+    logo.src = "../../assets/weightplay-logo.png";
+    logo.alt = "";
+    nodes.backBtn.replaceChildren(document.createTextNode("\u2190"), logo);
     nodes.gamePanel.classList.add("is-hidden");
     nodes.rewardPanel.classList.add("is-hidden");
     nodes.resultPanel.classList.add("is-hidden");

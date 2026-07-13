@@ -260,7 +260,7 @@ body:not(.memory-stage):not(.memory-playing) .language-picker select {
 /* Gameplay HUD */
 .game-hud {
   display: grid;
-  grid-template-columns: 1.2fr 0.9fr 0.9fr;
+  grid-template-columns: 48px 1.2fr 0.9fr 0.9fr;
   gap: 10px;
   padding: 10px 16px;
   background: rgba(15, 23, 42, 0.2);

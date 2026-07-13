@@ -10,6 +10,7 @@
   const stageSelectPanel = document.querySelector("#stageSelectPanel");
   const stageSelectTitle = document.querySelector("#stageSelectTitle");
   const stageBackBtn = document.querySelector("#stageBackBtn");
+  const battleBackBtn = document.querySelector("#battleBackBtn");
   const stageGrid = document.querySelector("#stageGrid");
   
   const gameHud = document.querySelector("#gameHud");
@@ -781,6 +782,7 @@
     showStageSelect();
   });
   stageBackBtn.addEventListener("click", showMain);
+  battleBackBtn.addEventListener("click", showStageSelect);
 
   localeSelect.addEventListener("change", () => {
     window.WonderSound?.play("click");

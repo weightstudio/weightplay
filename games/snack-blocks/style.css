@@ -114,7 +114,7 @@ button {
 
 .hud {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 48px repeat(3, 1fr);
   gap: 8px;
 }
 

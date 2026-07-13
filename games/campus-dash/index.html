@@ -63,7 +63,7 @@
   <body>
     <main class="dash-game" data-play-viewport>
       <header class="topbar">
-        <a class="home-link" href="/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
+        <a class="home-link" data-wp-return="main" href="/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
         <div>
           <p>WeightPlay</p>
           <h1 id="titleText">Safari Dash</h1>
@@ -88,6 +88,7 @@
       </section>
 
       <section id="hud" class="hud hidden">
+        <button id="battleBackBtn" data-wp-return="battle" type="button" aria-label="Back to menu">&larr;</button>
         <div><span id="scoreLabel">Score</span><strong id="scoreText">0</strong></div>
         <div><span id="timeLabel">Time</span><strong id="timeText">60</strong></div>
         <div><span id="comboLabel">Combo</span><strong id="comboText">x1</strong></div>

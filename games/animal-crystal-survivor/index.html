@@ -56,7 +56,7 @@
   <body data-tutorial-auto-show="false">
     <main class="crystal-app" data-play-viewport data-no-mobile-immersive="true">
       <header class="topbar">
-        <a class="icon-btn home-link" href="/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
+        <a class="icon-btn home-link" data-wp-return="main" href="/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
         <div class="brand-title">
           <p>WeightPlay</p>
           <h1 data-ui="title">Animal Crystal Survivor</h1>
@@ -104,7 +104,7 @@
 
       <section id="gamePanel" class="game-panel hidden">
         <div class="hud-row">
-          <button id="menuBtn" class="soft-btn play-return" type="button" aria-label="Back to menu">&larr;</button>
+          <button id="menuBtn" class="soft-btn play-return" data-wp-return="battle" type="button" aria-label="Back to menu">&larr;</button>
           <div><span data-ui="time">Time</span><b id="timeText">3:00</b></div>
           <div><span data-ui="keys">Keys</span><b id="keyText">0</b></div>
           <div><span data-ui="level">Level</span><b id="levelText">1</b></div>

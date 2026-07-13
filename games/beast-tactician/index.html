@@ -48,7 +48,7 @@
   <body>
     <main class="guardian-app">
       <header class="guardian-topbar">
-        <a class="back-btn" href="/" aria-label="Back to lobby">&larr;</a>
+        <a class="back-btn" data-wp-return="main" href="/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
         <div class="brand-lockup">
           <span>WeightPlay</span>
           <h1 id="gameTitle">Beast Guardian</h1>
@@ -73,7 +73,7 @@
 
       <section id="menuPanel" class="menu-panel">
         <div class="poster-frame">
-          <img src="../../assets/beast-tactician-cover.webp" alt="Beast Guardian cover" />
+          <img class="cover" src="../../assets/beast-tactician-cover.webp" alt="Beast Guardian cover" />
         </div>
         <div class="menu-copy">
           <p id="releaseBadge" class="release-badge">Playable Now</p>
@@ -104,14 +104,14 @@
       <section id="stagePanel" class="stage-panel is-hidden">
         <div class="stage-header">
           <h2 id="stageTitle">Choose Stage</h2>
-          <button id="stageBackBtn" class="secondary-btn" type="button">Menu</button>
+          <button id="stageBackBtn" class="secondary-btn" data-wp-return="stage" type="button" aria-label="Back">&larr;</button>
         </div>
         <div id="stageRail" class="stage-rail" aria-label="Stage selector"></div>
       </section>
 
       <section id="gamePanel" class="game-panel play-area is-hidden" data-play-viewport>
         <div class="hud-row">
-          <button id="menuBtn" class="secondary-btn" type="button" aria-label="Back to stages">Menu</button>
+          <button id="menuBtn" class="secondary-btn" data-wp-return="battle" type="button" aria-label="Back to stages">&larr;</button>
           <div><span id="stageHudLabel">Stage</span><strong id="stageHudText">1</strong></div>
           <div><span id="coreHudLabel">Core</span><strong id="coreText">100</strong></div>
           <div><span id="coinHudLabel">Coins</span><strong id="coinText">0</strong></div>

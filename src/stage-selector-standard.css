@@ -1,3 +1,58 @@
+:is(a, button)[data-wp-return="main"] {
+  box-sizing: border-box !important;
+  width: 58px !important;
+  min-width: 58px !important;
+  max-width: 58px !important;
+  height: 51px !important;
+  min-height: 51px !important;
+  max-height: 51px !important;
+  display: grid !important;
+  grid-template-columns: 16px 28px !important;
+  place-items: center !important;
+  gap: 4px !important;
+  padding: 4px !important;
+  border: 0 !important;
+  border-radius: 12px !important;
+  background: linear-gradient(180deg, #fff8d8, #ffba58) !important;
+  color: #4a2918 !important;
+  box-shadow: 0 7px 0 #9d5626, 0 12px 20px rgb(86 45 20 / 22%) !important;
+  font-size: 22px !important;
+  font-weight: 950 !important;
+  line-height: 1 !important;
+  text-decoration: none !important;
+  overflow: hidden !important;
+}
+
+:is(a, button)[data-wp-return="main"] > img {
+  width: 28px !important;
+  height: 28px !important;
+  object-fit: contain !important;
+}
+
+:is(button, a)[data-wp-return="stage"],
+:is(button, a)[data-wp-return="battle"] {
+  box-sizing: border-box !important;
+  width: 48px !important;
+  min-width: 48px !important;
+  max-width: 48px !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  max-height: 48px !important;
+  display: grid !important;
+  place-items: center !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 8px !important;
+  background: #f8fafc !important;
+  color: #1676c9 !important;
+  box-shadow: none !important;
+  font-size: 24px !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+  text-decoration: none !important;
+  overflow: hidden !important;
+}
+
 :is(.stage-grid, .stage-rail, .mission-grid, .mission-rail, .region-rail, .level-grid) {
   display: flex !important;
   grid-template-columns: none !important;

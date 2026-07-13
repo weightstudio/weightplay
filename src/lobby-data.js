@@ -457,15 +457,14 @@ window.WONDER_LOBBY = {
     {
       id: "shadow-wolf",
       title: { en: "Shadow Wolf Legend", "zh-Hant": "影狼傳說" },
-      status: "planned",
-      statusText: { en: "Coming Soon", "zh-Hant": "敬請期待" },
+      status: "playable",
+      statusText: { en: "Playable", "zh-Hant": "可遊玩" },
       type: { en: "2D Action Platformer RPG", "zh-Hant": "2D 動作平台 RPG" },
       categories: ["Featured", "Animal Games"],
       skills: ["Logic", "Problem Solving", "Focus"],
       ages: ["13"],
       ageLabel: { en: "13+", "zh-Hant": "13+" },
       href: "games/shadow-wolf/",
-      internalTrial: "internal-test.html?trial=1",
       description: {
         en: "Run, jump, dash, and slash shadow beasts. Gain EXP, open gear chests, and defeat the behemoth boss.",
         "zh-Hant": "奔跑、跳躍、衝刺並斬擊影獸。累積經驗、開啟裝備寶箱，最後擊敗巨獸首領。"

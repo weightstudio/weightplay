@@ -58,7 +58,7 @@
     <!-- Top Nav bar -->
     <header class="top-nav">
       <div class="top-nav-left">
-        <a id="menuBtn" class="back-btn" href="/" aria-label="Go back to lobby">
+        <a id="menuBtn" class="back-btn" data-wp-return="main" href="/" aria-label="Go back to lobby">
           <span class="icon" aria-hidden="true">&larr;</span>
           <img src="../../assets/weightplay-logo.png" alt="" draggable="false">
         </a>
@@ -141,7 +141,7 @@
 
       <section id="stagePanel" class="panel stage-panel hidden" aria-labelledby="stageTitle">
         <div class="stage-panel-head">
-          <button id="stageBackBtn" class="play-return stage-return" type="button" aria-label="Back">&larr;</button>
+          <button id="stageBackBtn" class="play-return stage-return" data-wp-return="stage" type="button" aria-label="Back">&larr;</button>
           <div><strong id="stageTitle">Prepare Expedition</strong><span id="stageSetupText">Review permanent gear and training before entering Room 1.</span></div>
         </div>
         <div id="expeditionRail" class="expedition-rail stage-rail" aria-label="Ruin regions"></div>
@@ -152,7 +152,7 @@
       <!-- Active Game / Canvas Viewport -->
       <section id="gamePanel" class="panel game-panel hidden" data-play-viewport data-no-mobile-immersive="true">
         <div class="game-layout">
-          <button id="backToStageBtn" class="play-return battle-return" type="button" aria-label="Back to preparation">&larr;</button>
+          <button id="backToStageBtn" class="play-return battle-return" data-wp-return="battle" type="button" aria-label="Back to preparation">&larr;</button>
           <!-- Main Arena Canvas -->
           <div class="arena-viewport">
             <div class="arena-hud">

@@ -63,7 +63,7 @@
   <body data-tutorial-auto-show="false">
     <main class="animal-game" data-no-mobile-immersive="true">
       <header class="topbar">
-        <a id="homeLink" class="home-link" href="/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
+        <a id="homeLink" class="home-link" data-wp-return="main" href="/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
         <div>
           <p id="brandText">WeightPlay</p>
           <h1 id="titleText">Animal Quiz</h1>
@@ -93,7 +93,7 @@
 
       <section id="stageSelectPanel" class="stage-select hidden">
         <div class="stage-shell-head">
-          <button id="stageBackBtn" class="stage-return" type="button" aria-label="Back">&larr;</button>
+          <button id="stageBackBtn" class="stage-return" data-wp-return="stage" type="button" aria-label="Back">&larr;</button>
           <strong id="stageSelectTitle">Choose Stage</strong>
         </div>
         <div class="stage-setup">
@@ -104,7 +104,7 @@
       </section>
 
       <section class="quiz-stage play-area hidden">
-        <button id="backToStagesBtn" class="play-return" type="button" aria-label="Back to stages">&larr;</button>
+        <button id="backToStagesBtn" class="play-return" data-wp-return="battle" type="button" aria-label="Back to stages">&larr;</button>
         <div class="animal-card">
           <img id="animalImage" src="" alt="" />
           <strong id="promptText">Who is this animal?</strong>

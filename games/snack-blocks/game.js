@@ -163,6 +163,7 @@
     stagePanel: document.getElementById("stagePanel"),
     startBtn: document.getElementById("startBtn"),
     stageBackBtn: document.getElementById("stageBackBtn"),
+    battleBackBtn: document.getElementById("battleBackBtn"),
     stageTitle: document.getElementById("stageTitle"),
     stageHelp: document.getElementById("stageHelp"),
     stageAdReserve: document.getElementById("stageAdReserve"),
@@ -943,6 +944,7 @@
   nodes.menuBtn.addEventListener("click", showMenu);
   nodes.startBtn.addEventListener("click", showStage);
   nodes.stageBackBtn.addEventListener("click", showMain);
+  nodes.battleBackBtn.addEventListener("click", showStage);
   nodes.localeSelect.addEventListener("change", (event) => setLocale(event.target.value));
   nodes.homeLink.addEventListener("click", (event) => {
     if (state.running || !nodes.resultPanel.classList.contains("hidden")) {

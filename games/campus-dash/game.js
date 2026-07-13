@@ -20,6 +20,7 @@
   const startText = document.querySelector("#startText");
   const controlChips = document.querySelector("#controlChips");
   const startBtn = document.querySelector("#startBtn");
+  const battleBackBtn = document.querySelector("#battleBackBtn");
   const resultPanel = document.querySelector("#resultPanel");
   const resultTitle = document.querySelector("#resultTitle");
   const resultText = document.querySelector("#resultText");
@@ -764,6 +765,7 @@
   });
   window.addEventListener("wonder:locale-change", renderStaticText);
   startBtn.addEventListener("click", startRun);
+  battleBackBtn.addEventListener("click", showMain);
   homeLink.addEventListener("click", (event) => {
     if (!document.body.classList.contains("dash-playing")) return;
     event.preventDefault();

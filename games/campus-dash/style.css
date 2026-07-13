@@ -226,7 +226,7 @@ body:not(.dash-playing) #startPanel {
 
 .hud {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: 48px repeat(3, minmax(0, 1fr));
   gap: 8px;
 }
 

@@ -67,7 +67,7 @@
   <body>
     <main class="zoo-game" data-play-viewport>
       <header class="topbar">
-        <a class="home-link" href="/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
+        <a class="home-link" data-wp-return="main" href="/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
         <div class="title-block">
           <p>WeightPlay</p>
           <h1 data-ui="gameTitle">Zoo Helper Day</h1>
@@ -91,14 +91,14 @@
       </section>
 
       <section id="stagePanel" class="wp-standard-stage-panel hidden" data-wp-standard-stage-screen>
-        <header class="wp-standard-stage-heading"><button id="stageBackBtn" type="button" aria-label="Back">&larr;</button><strong data-ui="chooseStage">Choose Stage</strong></header>
+        <header class="wp-standard-stage-heading"><button id="stageBackBtn" data-wp-return="stage" type="button" aria-label="Back">&larr;</button><strong data-ui="chooseStage">Choose Stage</strong></header>
         <div id="stageGrid" class="stage-grid" aria-label="Stage list"></div>
       </section>
       <div id="stageAdReserve" class="wp-standard-stage-reserve hidden" aria-hidden="true"></div>
 
       <section id="playPanel" class="play-panel hidden">
         <div class="play-head">
-          <button id="backToStagesBtn" class="soft-btn battle-return" type="button" aria-label="Back to stages"><span aria-hidden="true">&larr;</span></button>
+          <button id="backToStagesBtn" class="soft-btn battle-return" data-wp-return="battle" type="button" aria-label="Back to stages"><span aria-hidden="true">&larr;</span></button>
           <div class="progress-line">
             <span id="stageText">Stage 1</span>
             <div><i id="progressFill"></i></div>

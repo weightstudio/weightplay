@@ -64,7 +64,7 @@
   <body>
     <main class="garden-game">
       <header class="topbar">
-        <a id="homeLink" class="home-link" href="/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
+        <a id="homeLink" class="home-link" data-wp-return="main" href="/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
         <div class="title-block">
           <p>WeightPlay</p>
           <h1 id="titleText">Pet Garden Tiles</h1>
@@ -101,13 +101,13 @@
       </section>
 
       <section id="levelSelect" class="level-select hidden">
-        <header class="wp-standard-stage-heading"><button id="levelBackBtn" type="button" aria-label="Back">&larr;</button><h2 id="levelSelectTitle">Choose Level</h2></header>
+        <header class="wp-standard-stage-heading"><button id="levelBackBtn" data-wp-return="stage" type="button" aria-label="Back">&larr;</button><h2 id="levelSelectTitle">Choose Level</h2></header>
         <div id="levelGrid" class="level-grid"></div>
         <div id="levelMessage" class="message" aria-live="polite"></div>
       </section>
 
       <section id="boardPanel" class="board-panel hidden" data-no-mobile-immersive="true">
-        <button id="battleBackBtn" class="play-return" type="button" aria-label="Back to levels">&larr;</button>
+        <button id="battleBackBtn" class="play-return" data-wp-return="battle" type="button" aria-label="Back to levels">&larr;</button>
         <div id="board" class="tile-board" aria-label="Garden tile board"></div>
         <div id="message" class="message" aria-live="polite"></div>
       </section>

@@ -71,7 +71,7 @@
 
       <section id="wonderMain" class="wonder-main">
         <header>
-          <a class="home-link" href="/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
+          <a class="home-link" data-wp-return="main" href="/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
           <strong data-i18n="game_title">Fantasy Lion Defense</strong>
           <label><span data-i18n="language">Language</span><select id="wonderMainLocaleSelect" aria-label="Language" data-i18n-aria="language"><option value="en">English</option><option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option></select></label>
         </header>
@@ -80,7 +80,7 @@
       </section>
 
       <!-- Active battle chrome: return, one primary value, one status row, settings. -->
-      <button id="backToMenuBtn" type="button" class="play-return hidden" aria-label="Back to game menu" data-i18n-aria="menu_title">
+      <button id="backToMenuBtn" type="button" class="play-return hidden" data-wp-return="battle" aria-label="Back to game menu" data-i18n-aria="menu_title">
         <span aria-hidden="true">&larr;</span>
       </button>
 
@@ -94,7 +94,7 @@
 
       <!-- Main Game Overlays / Menus -->
       <div id="overlay" class="overlay">
-        <button id="wonderStageBack" class="wonder-stage-back" type="button" aria-label="Back">&larr;</button>
+        <button id="wonderStageBack" class="wonder-stage-back" data-wp-return="stage" type="button" aria-label="Back">&larr;</button>
         <h1 class="hidden" data-i18n="game_title">Fantasy Lion Defense</h1>
         <div id="menuCoinLine" class="menu-coin-line">
           <span class="menu-wallet-item"><img src="../../assets/coin.png" alt="" /> <span id="menuCoinText">0</span></span>

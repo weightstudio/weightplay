@@ -64,7 +64,7 @@
   <body data-tutorial-auto-show="false">
     <main class="weather-game" data-play-viewport data-no-mobile-immersive="true">
       <header class="topbar">
-        <a class="home-link" href="/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
+        <a class="home-link" data-wp-return="main" href="/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
         <div class="title-block">
           <p>WeightPlay</p>
           <h1 data-ui="gameTitle">Animal Helper Quest</h1>
@@ -88,14 +88,14 @@
       </section>
 
       <section id="stagePanel" class="wp-standard-stage-panel hidden" data-wp-standard-stage-screen>
-        <header class="wp-standard-stage-heading"><button id="stageBackBtn" type="button" aria-label="Back">&larr;</button><strong data-ui="chooseStage">Choose Rescue</strong></header>
+        <header class="wp-standard-stage-heading"><button id="stageBackBtn" data-wp-return="stage" type="button" aria-label="Back">&larr;</button><strong data-ui="chooseStage">Choose Rescue</strong></header>
         <div id="stageGrid" class="stage-grid" aria-label="Stage list"></div>
       </section>
       <div id="stageAdReserve" class="wp-standard-stage-reserve hidden" aria-hidden="true"></div>
 
       <section id="playPanel" class="play-panel hidden">
         <div class="play-head">
-          <button id="backToStagesBtn" class="soft-btn" type="button" aria-label="Back to stages">&larr;</button>
+          <button id="backToStagesBtn" class="soft-btn" data-wp-return="battle" type="button" aria-label="Back to stages">&larr;</button>
           <div class="stats">
             <span id="stageText">Stage 1</span>
             <span id="movesText" class="round-progress"><b>1/4</b><i></i></span>

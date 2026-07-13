@@ -241,9 +241,9 @@
 
   const units = [
     { id: "cat", nameKey: "unitCat", roleKey: "roleRanged", attackStyle: "ranged", cost: 45, hp: 92, damage: 18, cooldown: 930, range: 9, unlockCost: 0 },
-    { id: "dog", nameKey: "unitDog", roleKey: "roleTankMelee", attackStyle: "melee", cost: 65, hp: 300, damage: 36, cooldown: 950, range: 1.5, unlockCost: 0 },
-    { id: "owl", nameKey: "unitOwl", roleKey: "roleFastRanged", attackStyle: "ranged", cost: 95, hp: 78, damage: 15, cooldown: 660, range: 9, unlockCost: 0 },
-    { id: "fox", nameKey: "unitFox", roleKey: "roleCrossLane", attackStyle: "cross", cost: 135, hp: 112, damage: 26, cooldown: 1040, range: 9, targetRows: 1, unlockCost: 5 },
+    { id: "dog", nameKey: "unitDog", roleKey: "roleTankMelee", attackStyle: "melee", cost: 58, hp: 350, damage: 42, cooldown: 820, range: 1.5, unlockCost: 0 },
+    { id: "owl", nameKey: "unitOwl", roleKey: "roleFastRanged", attackStyle: "ranged", cost: 105, hp: 78, damage: 14, cooldown: 680, range: 9, unlockCost: 0 },
+    { id: "fox", nameKey: "unitFox", roleKey: "roleCrossLane", attackStyle: "cross", cost: 120, hp: 128, damage: 34, cooldown: 880, range: 9, targetRows: 1, unlockCost: 5 },
   ];
 
   const spriteAssets = {

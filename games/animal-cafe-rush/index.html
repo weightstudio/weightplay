@@ -31,7 +31,7 @@
         <div class="loading-card"><strong>Animal Cafe Rush</strong><span id="loadingText">Loading</span><div><i id="loadingFill"></i></div></div>
       </section>
       <header class="topbar">
-        <a id="lobbyLink" class="home-link" href="/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
+        <a id="lobbyLink" class="home-link" data-wp-return="main" href="/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
         <div class="brand"><span>WeightPlay</span><h1 data-ui="title">Animal Cafe Rush</h1></div>
         <label class="locale"><span data-ui="language">Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option></select></label>
       </header>
@@ -46,7 +46,7 @@
         </div>
       </section>
       <section id="stagePanel" class="stage-panel is-hidden">
-        <header class="stage-head"><button id="stageBackBtn" type="button" aria-label="Back">&larr;</button><strong data-ui="chooseDay">Choose a Day</strong></header>
+        <header class="stage-head"><button id="stageBackBtn" data-wp-return="stage" type="button" aria-label="Back">&larr;</button><strong data-ui="chooseDay">Choose a Day</strong></header>
         <div class="stage-workspace">
           <div class="stage-profile"><div><span data-ui="day">Day</span><b id="stageDayText">1</b></div><div><span data-ui="coins">Coins</span><b id="stageCoinText">0</b></div><div><span data-ui="best">Best</span><b id="stageBestText">0</b></div></div>
           <div id="dayRail" class="day-rail stage-rail" aria-label="Cafe days"></div>
@@ -56,7 +56,7 @@
         <div class="stage-ad-reserve" aria-hidden="true"></div>
       </section>
       <section id="playPanel" class="play-panel is-hidden" data-no-mobile-immersive="true">
-        <button id="backToMenuBtn" class="play-return" type="button" aria-label="Back to menu">&larr;</button>
+        <button id="backToMenuBtn" class="play-return" data-wp-return="battle" type="button" aria-label="Back to menu">&larr;</button>
         <div class="play-hud"><div><span data-ui="day">Day</span><b id="playDay">1</b></div><div><span data-ui="served">Served</span><b id="servedText">0/3</b></div><div><span data-ui="coins">Coins</span><b id="playCoins">0</b></div></div>
         <div id="objectiveRow" class="objective-row"></div>
         <div class="cafe-scene"><img class="cafe-bg" src="../../assets/animal-cafe-rush-cafe-bg.webp" alt="" /><div id="customerRow" class="customer-row"></div></div>

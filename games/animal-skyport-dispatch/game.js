@@ -127,6 +127,11 @@
     $('clearRouteBtn').textContent = locale === 'zh-Hant' ? '1. 清除衝突' : '1. Clear conflict';
     $('assignCrewBtn').textContent = locale === 'zh-Hant' ? '1. 指派組員' : '1. Assign crew';
     $('feedback').textContent = state.storm ? (locale === 'zh-Hant' ? '\u66b4\u98a8\u822a\u7dda\uff1a\u5148\u5b8c\u6210\u7dad\u4fee\u670d\u52d9\u3002' : 'Storm route: service first.') : t('dragHint');
+    if (!state.storm && state.flightIndex <= 3) {
+      $('feedback').textContent = locale === 'zh-Hant'
+        ? '\u5c07\u98db\u8239\u62d6\u5230\u91d1\u8272\u300c\u62d6\u5230\u9019\u88e1\u300d\u78bc\u982d\u3002'
+        : 'Drag the airship to the gold DRAG HERE dock.';
+    }
     $('routeLine').style.opacity = '0';
   }
   function result(win) {

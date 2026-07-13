@@ -66,7 +66,7 @@
   <body>
     <main class="lunch-game">
       <header class="topbar">
-        <a class="home-link" href="/" id="homeLink" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
+        <a class="home-link" data-wp-return="main" href="/" id="homeLink" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
         <div>
           <p id="brandText">WeightPlay</p>
           <h1 id="titleText">Animal Color Lunchbox</h1>
@@ -107,12 +107,12 @@
       </section>
 
       <section id="stageSelectPanel" class="stage-select hidden">
-        <header class="wp-standard-stage-heading"><button id="stageBackBtn" type="button" aria-label="Back">&larr;</button><h2 id="stageSelectTitle">Choose Level</h2></header>
+        <header class="wp-standard-stage-heading"><button id="stageBackBtn" data-wp-return="stage" type="button" aria-label="Back">&larr;</button><h2 id="stageSelectTitle">Choose Level</h2></header>
         <div id="stageGrid" class="stage-grid"></div>
       </section>
 
       <div id="gamePlayContent" class="game-play-content play-area hidden">
-        <button id="battleBackBtn" class="battle-return" type="button" aria-label="Back to levels">&larr;</button>
+        <button id="battleBackBtn" class="battle-return" data-wp-return="battle" type="button" aria-label="Back to levels">&larr;</button>
         <section id="dropZone" class="lunchboxes" aria-label="Lunchbox drop zones"></section>
 
         <section class="food-stage" aria-label="Food card drag area">

@@ -48,7 +48,7 @@
   <body>
     <header class="top-nav">
       <div class="top-nav-left">
-        <a class="home-link icon-btn" href="/" aria-label="Back to lobby">
+        <a class="home-link icon-btn" data-wp-return="main" href="/" aria-label="Back to lobby">
           <span aria-hidden="true">&larr;</span>
           <img src="../../assets/weightplay-logo.png" alt="" draggable="false" />
         </a>
@@ -114,7 +114,7 @@
       </section>
 
       <section id="mapPanel" class="panel world-map-panel hidden" aria-label="Stage selection">
-        <div class="stage-header"><button id="mapBackBtn" type="button" class="play-return" aria-label="Back to main">&larr;</button><div><span data-ui="stageEyebrow">EXPEDITION</span><h2 data-ui="stageTitle">Choose an expedition</h2></div></div>
+        <div class="stage-header"><button id="mapBackBtn" type="button" class="play-return" data-wp-return="stage" aria-label="Back to main">&larr;</button><div><span data-ui="stageEyebrow">EXPEDITION</span><h2 data-ui="stageTitle">Choose an expedition</h2></div></div>
         <p class="stage-subtitle" data-ui="stageHint">Pick an unlocked region to begin.</p>
         <div class="world-map-grid stage-rail" aria-label="Stage rail">
           <button type="button" class="zone-node stage-card" data-zone="1"><b>01</b><span></span><small></small></button><button type="button" class="zone-node stage-card" data-zone="2"><b>02</b><span></span><small></small></button><button type="button" class="zone-node stage-card" data-zone="3"><b>03</b><span></span><small></small></button><button type="button" class="zone-node stage-card" data-zone="4"><b>04</b><span></span><small></small></button><button type="button" class="zone-node stage-card" data-zone="5"><b>05</b><span></span><small></small></button><button type="button" class="zone-node stage-card" data-zone="6"><b>06</b><span></span><small></small></button><button type="button" class="zone-node stage-card" data-zone="7"><b>07</b><span></span><small></small></button><button type="button" class="zone-node stage-card boss-zone" data-zone="8"><b>08</b><span></span><small></small></button>
@@ -129,7 +129,7 @@
       <section id="gamePanel" class="panel game-panel hidden">
         <div class="game-layout">
           <div class="arena-viewport">
-            <button id="menuBtn" class="play-return battle-return" type="button" aria-label="Back to stages">&larr;</button>
+            <button id="menuBtn" class="play-return battle-return" data-wp-return="battle" type="button" aria-label="Back to stages">&larr;</button>
             <div class="arena-hud">
               <div class="hud-item player-health">
                 <div class="health-meta"><span data-ui="hudHp">Wolf HP</span><strong id="hpText">30/30</strong></div>
