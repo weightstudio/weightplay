@@ -1547,7 +1547,7 @@
     const toast = document.createElement("div");
     toast.className = "zoo-toast";
     toast.textContent = message;
-    document.body.appendChild(toast);
+    (nodes.gamePanel || document.body).appendChild(toast);
     window.setTimeout(() => toast.remove(), 1300);
   }
 

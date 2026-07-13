@@ -1106,6 +1106,11 @@
   gameplayProfiles["animal-reef-fisher"] = { gameplay: "Fishing Collection Sim", genre: ["Fishing", "Collection", "Simulation", "Animal"] };
   coverImages["animal-reef-fisher"] = "animal-reef-fisher-cover.webp";
   localizedGameplayProfiles["zh-Hant"]["animal-reef-fisher"] = { gameplay: "釣魚收集模擬", genre: ["釣魚", "收集", "模擬", "動物"] };
+  localizedGames["zh-Hant"]["campus-dash"] = zhGuide("\u8349\u539f\u9583\u96fb\u8dd1", "\u8def\u7dda\u9583\u907f\u8dd1\u9177", [
+    "\u5de6\u53f3\u79fb\u52d5\u5207\u63db\u8dd1\u9053\u3002",
+    "\u907f\u958b\u969c\u7919\u4e26\u6536\u96c6\u661f\u661f\u3002",
+    "\u4fdd\u6301\u53cd\u61c9\u901f\u5ea6\u5b8c\u6210\u6311\u6230\u3002",
+  ]);
   localizedGames["zh-Hant"]["animal-reef-fisher"] = {
     title: "動物珊瑚釣手",
     age: "13+",

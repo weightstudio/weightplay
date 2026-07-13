@@ -42,6 +42,11 @@
     en: {
       title: "Safari Dash",
       language: "Language",
+      backToLobby: "Back to WeightPlay lobby",
+      controls: "Controls",
+      backToMenu: "Back to menu",
+      gameLabel: "Safari Dash game",
+      description: "Swipe lanes, dodge safari obstacles, collect stars, and chase a local high score in Safari Dash.",
       score: "Score",
       time: "Time",
       combo: "Combo",
@@ -62,6 +67,11 @@
     "zh-Hant": {
       title: "\u8349\u539f\u9583\u96fb\u8dd1",
       language: "\u8a9e\u8a00",
+      backToLobby: "\u8fd4\u56de WeightPlay \u5927\u5ef3",
+      controls: "\u64cd\u4f5c\u65b9\u5f0f",
+      backToMenu: "\u8fd4\u56de\u9078\u55ae",
+      gameLabel: "\u8349\u539f\u9583\u96fb\u8dd1\u904a\u6232",
+      description: "\u5728\u4e09\u689d\u8dd1\u9053\u4e4b\u9593\u9583\u907f\u8349\u539f\u969c\u7919\u3001\u6536\u96c6\u661f\u661f\uff0c\u6311\u6230\u672c\u6a5f\u6700\u9ad8\u5206\u3002",
       score: "\u5206\u6578",
       time: "\u6642\u9593",
       combo: "\u9023\u64ca",
@@ -139,6 +149,14 @@
     localeSelect.value = locale();
     languageLabel.textContent = t("language");
     titleText.textContent = t("title");
+    document.title = `${t("title")} - WeightPlay`;
+    document.querySelector('meta[name="description"]')?.setAttribute("content", t("description"));
+    document.querySelector('meta[property="og:title"]')?.setAttribute("content", `${t("title")} - WeightPlay`);
+    document.querySelector('meta[property="og:description"]')?.setAttribute("content", t("description"));
+    homeLink.setAttribute("aria-label", t("backToLobby"));
+    controlChips.setAttribute("aria-label", t("controls"));
+    battleBackBtn.setAttribute("aria-label", t("backToMenu"));
+    canvas.setAttribute("aria-label", t("gameLabel"));
     scoreLabel.textContent = t("score");
     timeLabel.textContent = t("time");
     comboLabel.textContent = t("combo");
@@ -764,6 +782,9 @@
     renderStaticText();
   });
   window.addEventListener("wonder:locale-change", renderStaticText);
+  window.addEventListener("weightplay:tutorial-start", (event) => {
+    if (event.detail?.gameId === GAME_ID && !state.running) startRun();
+  });
   startBtn.addEventListener("click", startRun);
   battleBackBtn.addEventListener("click", showMain);
   homeLink.addEventListener("click", (event) => {

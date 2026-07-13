@@ -522,10 +522,14 @@ body.dash-playing .canvas-wrap {
   justify-self: center;
 }
 
+body.dash-playing .hud {
+  grid-row: 2;
+}
+
 /* Keep completion feedback anchored in the active play area instead of inheriting page layout. */
 body.dash-playing #resultPanel.panel {
   position: fixed;
-  top: calc(50% - 28px);
+  top: 50%;
   left: 50%;
   z-index: 50;
 }
@@ -642,6 +646,10 @@ body.dash-playing .wp-tutorial-button {
 
   body.dash-playing.dash-expanded-canvas .canvas-wrap {
     width: min(100%, calc((var(--dash-frame-height, 320px) - 54px) * 0.75));
+  }
+
+  body.dash-playing.dash-expanded-canvas .home-link {
+    font-size: 20px !important;
   }
 }
 
