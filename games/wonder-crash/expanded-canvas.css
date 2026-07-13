@@ -9,7 +9,6 @@ body.wonder-playing {
 }
 
 body:not(.wonder-playing) .game-shell {
-  position: fixed !important;
   left: 50% !important;
   width: 390px !important;
   min-width: 390px !important;
@@ -20,14 +19,18 @@ body:not(.wonder-playing) .game-shell {
   margin: 0 !important;
 }
 
+body:not(.wonder-playing):not(.wonder-stage-select) .wonder-main-flow-slot {
+  position: relative;
+  width: var(--wonder-menu-rendered-width, 390px);
+  height: var(--wonder-menu-rendered-height, calc(390px * 16 / 9));
+  margin: 0 auto;
+}
+
 body:not(.wonder-playing):not(.wonder-stage-select) .game-shell {
+  position: absolute !important;
   top: 0 !important;
   transform: translateX(-50%) scale(var(--wonder-shell-scale, 1)) !important;
   transform-origin: top center !important;
-}
-
-body.has-game-page-info:not(.wonder-playing):not(.wonder-stage-select) .game-page-info {
-  margin-top: calc(var(--wonder-menu-rendered-height, 100vh) + 16px) !important;
 }
 
 body:not(.wonder-playing):not(.wonder-stage-select) .wonder-main {
@@ -47,6 +50,7 @@ body:not(.wonder-playing):not(.wonder-stage-select) .wonder-main-cover {
 }
 
 body.wonder-stage-select:not(.wonder-playing) .game-shell {
+  position: fixed !important;
   top: calc((var(--wonder-vh, 100dvh) - 56px) / 2) !important;
   transform: translate(-50%, -50%) scale(var(--wonder-shell-scale, 1)) !important;
   transform-origin: center !important;

@@ -241,7 +241,7 @@ select {
   color: #9ff0cb;
 }
 
-.stage-card:disabled {
+.stage-card[aria-disabled="true"] {
   cursor: not-allowed;
   opacity: 0.48;
 }

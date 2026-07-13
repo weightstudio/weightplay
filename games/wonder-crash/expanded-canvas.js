@@ -20,6 +20,7 @@
       Math.max(0, height - AD_RESERVE_HEIGHT - 8) / BATTLE_LOGICAL_HEIGHT
     );
     document.documentElement.style.setProperty("--wonder-shell-scale", String(menuScale));
+    document.documentElement.style.setProperty("--wonder-menu-rendered-width", `${MENU_LOGICAL_WIDTH * menuScale}px`);
     document.documentElement.style.setProperty("--wonder-menu-rendered-height", `${MENU_LOGICAL_HEIGHT * menuScale}px`);
     if (playing) document.documentElement.style.setProperty("--wonder-battle-scale", String(battleScale));
   }

@@ -7,6 +7,13 @@
   const text = {
     en: {
       title: "Animal Auto Squad",
+      backToLobby: "Back to WeightPlay lobby",
+      back: "Back",
+      languageSelection: "Language selection",
+      stageSelection: "Stage selection",
+      activeSquadSlots: "Active squad slots",
+      shopShelfItems: "Character backpack items",
+      battleArena: "Animal Auto Squad Arena",
       menuTitle: "Draft and position your animal squad!",
       menuHint: "Train your owned animals, choose a squad, and clear balanced five-wave forest stages. Each cleared stage unlocks the next challenge.",
       bestExpedition: "Best Run",
@@ -99,6 +106,13 @@
     },
     "zh-Hant": {
       title: "動物自走小隊",
+      backToLobby: "\u8fd4\u56de WeightPlay \u5927\u5ef3",
+      back: "\u8fd4\u56de",
+      languageSelection: "\u9078\u64c7\u8a9e\u8a00",
+      stageSelection: "\u95dc\u5361\u9078\u64c7",
+      activeSquadSlots: "\u4e0a\u5834\u5c0f\u968a\u69fd\u4f4d",
+      shopShelfItems: "\u89d2\u8272\u80cc\u5305\u7269\u54c1",
+      battleArena: "\u52d5\u7269\u81ea\u8d70\u5c0f\u968a\u7af6\u6280\u5834",
       menuTitle: "挑選並擺放你的動物小隊！",
       menuHint: "募集松鼠、水獺、貓頭鷹和獅子。餵食蘋果或蜂蜜、購買聖物，並完成10回合的森林遠征！",
       bestExpedition: "最佳遠征",
@@ -337,6 +351,7 @@
 
   // Game UI DOM Nodes
   const nodes = {
+    backToLobbyBtn: $("backToLobbyBtn"),
     mainGameTitle: $("mainGameTitle"),
     localeSelect: $("localeSelect"),
     loadingPanel: $("loadingPanel"),
@@ -428,6 +443,7 @@
   let state = makeState();
   let selectedSlot = null; // for tap-to-select mobile fallback
   let pointerDrag = null;
+  let stageTapSuppressedUntil = 0;
   let imageCache = {};
   let canvasCtx = null;
   let animationId = null;
@@ -965,13 +981,19 @@
       card.type = "button";
       card.className = `stage-card${stage === save.selectedStage ? " is-selected" : ""}${cleared ? " is-cleared" : ""}`;
       card.dataset.stage = String(stage);
-      card.disabled = locked;
+      // Keep locked cards draggable as part of the horizontal rail.
+      card.setAttribute("aria-disabled", String(locked));
+      if (locked) card.tabIndex = -1;
       const firstWave = enemyWaveStats(stage, 1);
       const finalWave = enemyWaveStats(stage, WAVES_PER_STAGE);
       const enemyRange = t("stageEnemyRange", { first: firstWave.count, last: finalWave.count });
       card.innerHTML = `<strong>${stageLabel(stage)}</strong><span>${t("stageWaveCount", { count: WAVES_PER_STAGE })}</span><small>${enemyRange}</small><small>${locked ? t("stageLocked") : cleared ? t("stageCleared") : t("stageReady")}</small>`;
       card.setAttribute("aria-label", `${stageLabel(stage)}. ${t("stageWaveCount", { count: WAVES_PER_STAGE })}. ${enemyRange}. ${locked ? t("stageLocked") : cleared ? t("stageCleared") : t("stageReady")}`);
-      card.addEventListener("click", () => selectStage(stage));
+      card.addEventListener("click", () => {
+        if (locked || performance.now() < stageTapSuppressedUntil) return;
+        selectStage(stage, false);
+        startExpedition();
+      });
       nodes.stageRail.appendChild(card);
     }
 
@@ -1152,7 +1174,13 @@
     nodes.localeSelect.value = locale;
     const languageLabel = document.querySelector(".locale > span");
     if (languageLabel) languageLabel.textContent = t("language");
-    nodes.localeSelect.setAttribute("aria-label", locale === "zh-Hant" ? "選擇語言" : "Language selection");
+    nodes.backToLobbyBtn.setAttribute("aria-label", t("backToLobby"));
+    nodes.localeSelect.setAttribute("aria-label", t("languageSelection"));
+    nodes.stageBackBtn.setAttribute("aria-label", t("back"));
+    nodes.stageRail.setAttribute("aria-label", t("stageSelection"));
+    nodes.squadGrid.setAttribute("aria-label", t("activeSquadSlots"));
+    nodes.shopRow.setAttribute("aria-label", t("shopShelfItems"));
+    nodes.gameCanvas.setAttribute("aria-label", t("battleArena"));
     nodes.quitRunBtn.textContent = "\u2190";
     nodes.quitRunBtn.setAttribute("aria-label", t("quitRun"));
     
@@ -2900,7 +2928,7 @@
         if (renderVersion !== stageRenderVersion) return;
         const railBox = nodes.stageRail.getBoundingClientRect();
         const railCenter = railBox.left + railBox.width / 2;
-        const cards = [...nodes.stageRail.querySelectorAll(".stage-card:not(:disabled)")];
+        const cards = [...nodes.stageRail.querySelectorAll(".stage-card:not([aria-disabled='true'])")];
         const nearest = cards.reduce((best, card) => {
           const box = card.getBoundingClientRect();
           const distance = Math.abs(box.left + box.width / 2 - railCenter);
@@ -2910,6 +2938,22 @@
         if (nearestStage && nearestStage !== normalizeSave(save).selectedStage) selectStage(nearestStage, true);
       }, 120);
     }, { passive: true });
+
+    let stagePointer = null;
+    const releaseStagePointer = () => {
+      if (!stagePointer) return;
+      if (stagePointer.moved) stageTapSuppressedUntil = performance.now() + 220;
+      stagePointer = null;
+    };
+    nodes.stageRail.addEventListener("pointerdown", (event) => {
+      stagePointer = { x: event.clientX, y: event.clientY, moved: false };
+    }, { passive: true });
+    nodes.stageRail.addEventListener("pointermove", (event) => {
+      if (!stagePointer) return;
+      if (Math.hypot(event.clientX - stagePointer.x, event.clientY - stagePointer.y) > 8) stagePointer.moved = true;
+    }, { passive: true });
+    nodes.stageRail.addEventListener("pointerup", releaseStagePointer, { passive: true });
+    nodes.stageRail.addEventListener("pointercancel", releaseStagePointer, { passive: true });
     
     nodes.localeSelect.addEventListener("change", (e) => {
       setLocale(e.target.value);
