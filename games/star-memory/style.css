@@ -496,16 +496,20 @@ body:not(.memory-stage):not(.memory-playing) .language-picker select {
   height: 100%;
   transition: transform 0.4s cubic-bezier(0.3, 0.8, 0.4, 1.1);
   transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  will-change: transform;
   position: relative;
   border-radius: 12px;
 }
 
 .card.flipped .card-inner {
   transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg);
 }
 
 .card.matched .card-inner {
   transform: rotateY(180deg) scale(0.95);
+  -webkit-transform: rotateY(180deg) scale(0.95);
   pointer-events: none;
 }
 
@@ -514,6 +518,7 @@ body:not(.memory-stage):not(.memory-playing) .language-picker select {
   width: 100%;
   height: 100%;
   backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
   border-radius: 12px;
   display: flex;
   align-items: center;

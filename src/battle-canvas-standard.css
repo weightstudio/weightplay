@@ -1,0 +1,88 @@
+html:has(body.wp-logical-battle-active),
+body.wp-logical-battle-active {
+  width: 100%;
+  height: var(--wp-battle-viewport-height, 100dvh);
+  min-height: 0 !important;
+  overflow: hidden !important;
+  overscroll-behavior: none;
+}
+
+body.wp-logical-battle-active [data-wp-logical-battle-canvas] {
+  position: fixed !important;
+  inset: auto !important;
+  top: var(--wp-battle-canvas-top, 4px) !important;
+  left: 50% !important;
+  width: var(--wp-battle-logical-width, 390px) !important;
+  min-width: var(--wp-battle-logical-width, 390px) !important;
+  max-width: var(--wp-battle-logical-width, 390px) !important;
+  height: var(--wp-battle-logical-height, 788px) !important;
+  min-height: var(--wp-battle-logical-height, 788px) !important;
+  max-height: var(--wp-battle-logical-height, 788px) !important;
+  margin: 0 !important;
+  transform: translateX(-50%) scale(var(--wp-battle-canvas-scale, 1)) !important;
+  transform-origin: top center !important;
+  overflow: hidden !important;
+}
+
+body.wp-logical-battle-active :is(
+  .battle-ad-reserve,
+  .battle-ad,
+  .ad-reserve,
+  .result-ad-reserve,
+  #battleAdReserve,
+  #battleAd
+)[data-wp-battle-physical-reserve] {
+  position: fixed !important;
+  z-index: 49 !important;
+  inset: auto auto 4px 50% !important;
+  display: block !important;
+  width: var(--wp-battle-canvas-rendered-width, calc(100vw - 8px)) !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  height: 56px !important;
+  min-height: 56px !important;
+  max-height: 56px !important;
+  margin: 0 !important;
+  transform: translateX(-50%) !important;
+  pointer-events: none !important;
+}
+
+/* Keep Garden Tiles on its portrait logical tracks in a short physical viewport. */
+body.wp-logical-battle-active.garden-playing.garden-expanded-canvas .garden-game[data-wp-logical-battle-canvas] {
+  padding: 6px !important;
+  grid-template-rows: 54px minmax(0, 1fr) !important;
+  gap: 5px !important;
+}
+
+body.wp-logical-battle-active.garden-playing.garden-expanded-canvas .statusbar {
+  grid-template-columns: 44px repeat(3, minmax(0, 1fr)) !important;
+  min-height: 54px !important;
+  gap: 5px !important;
+}
+
+body.wp-logical-battle-active.garden-playing.garden-expanded-canvas .statusbar div {
+  height: 54px !important;
+  min-height: 54px !important;
+  padding: 5px 7px !important;
+}
+
+body.wp-logical-battle-active.garden-playing.garden-expanded-canvas .statusbar span { font-size: 10px !important; line-height: 13px !important; }
+body.wp-logical-battle-active.garden-playing.garden-expanded-canvas .statusbar strong { font-size: 18px !important; line-height: 20px !important; }
+body.wp-logical-battle-active.garden-playing.garden-expanded-canvas .play-return { width: 44px !important; min-width: 44px !important; height: 44px !important; min-height: 44px !important; font-size: 22px !important; }
+body.wp-logical-battle-active.garden-playing.garden-expanded-canvas .board-panel { grid-template-rows: minmax(0, 1fr) 36px !important; gap: 5px !important; }
+body.wp-logical-battle-active.garden-playing.garden-expanded-canvas .tile-board { width: min(100%, calc(670px * var(--board-aspect, 1))) !important; padding: 6px !important; gap: 5px !important; }
+body.wp-logical-battle-active.garden-playing.garden-expanded-canvas .message { height: 36px !important; min-height: 36px !important; font-size: 13px !important; line-height: 17px !important; }
+
+/* The quiz keeps one portrait composition; a short viewport scales it as a unit. */
+body.wp-logical-battle-active.quiz-playing .animal-game[data-wp-logical-battle-canvas] {
+  grid-template-columns: minmax(0, 1fr) !important;
+  grid-template-rows: 38px minmax(0, 1fr) 120px 34px !important;
+  gap: 6px !important;
+  padding: 8px !important;
+}
+
+body.wp-logical-battle-active.quiz-playing .level-line { grid-column: 1 !important; grid-row: 1 !important; }
+body.wp-logical-battle-active.quiz-playing .quiz-stage { grid-column: 1 !important; grid-row: 2 !important; }
+body.wp-logical-battle-active.quiz-playing .choice-grid { grid-column: 1 !important; grid-row: 3 !important; align-content: stretch !important; }
+body.wp-logical-battle-active.quiz-playing .feedback { grid-column: 1 !important; grid-row: 4 !important; }
+body.wp-logical-battle-active.quiz-playing .animal-card img { width: 190px !important; height: min(100%, 190px) !important; }

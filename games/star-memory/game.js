@@ -74,6 +74,10 @@
       ogTitle: "Animal Star Memory - Memory Matching Game",
       ogDescription: "Flip animal and star cards, remember their positions, and clear 10 short memory stages in Animal Star Memory on WeightPlay.",
       language: "Language",
+      languageAria: "Choose language",
+      stageBackAria: "Back to main page",
+      battleBackAria: "Back to levels",
+      gameStatsAria: "Game stats",
       mainIntro: "Remember where each animal and star is hiding, then clear all ten matching stages.",
       start: "Choose Level",
       chooseLevel: "Choose Level",
@@ -128,6 +132,10 @@
       ogTitle: "\u52d5\u7269\u661f\u661f\u7ffb\u724c - \u8a18\u61b6\u914d\u5c0d\u904a\u6232",
       ogDescription: "\u7ffb\u958b\u52d5\u7269\u8207\u661f\u661f\u5361\u724c\uff0c\u8a18\u4f4f\u4f4d\u7f6e\u4e26\u5b8c\u6210 10 \u500b\u77ed\u95dc\u5361\uff0c\u5728 WeightPlay \u7df4\u7fd2\u8a18\u61b6\u8207\u5c08\u6ce8\u3002",
       language: "\u8a9e\u8a00",
+      languageAria: "\u9078\u64c7\u8a9e\u8a00",
+      stageBackAria: "\u8fd4\u56de\u9996\u9801",
+      battleBackAria: "\u8fd4\u56de\u95dc\u5361",
+      gameStatsAria: "\u904a\u6232\u72c0\u614b",
       mainIntro: "\u8a18\u4f4f\u6bcf\u5f35\u52d5\u7269\u8207\u661f\u661f\u5361\u724c\u7684\u4f4d\u7f6e\uff0c\u5b8c\u6210\u5168\u90e8 10 \u500b\u914d\u5c0d\u95dc\u5361\u3002",
       start: "\u9078\u64c7\u95dc\u5361",
       chooseLevel: "\u9078\u64c7\u95dc\u5361",
@@ -361,6 +369,7 @@
     localeSelect.value = locale();
     updateSeoText();
     languageLabel.textContent = t("language");
+    localeSelect.setAttribute("aria-label", t("languageAria"));
     titleText.textContent = t("title");
     mainTitle.textContent = t("title");
     mainIntro.textContent = t("mainIntro");
@@ -377,6 +386,9 @@
     stageSelectBtn.textContent = t("levels");
     document.querySelector("#lobbyLink").textContent = t("lobby");
     document.querySelector("#homeLink").setAttribute("aria-label", t("lobby"));
+    stageBackBtn.setAttribute("aria-label", t("stageBackAria"));
+    battleBackBtn.setAttribute("aria-label", t("battleBackAria"));
+    gameHud.setAttribute("aria-label", t("gameStatsAria"));
     
     // HUD Level text
     if (!stageSelectPanel.classList.contains("hidden")) {
@@ -795,6 +807,11 @@
   });
 
   window.addEventListener("wonder:locale-change", translateStaticUI);
+
+  window.addEventListener("weightplay:tutorial-start", (event) => {
+    if (event.detail?.gameId !== GAME_ID || !document.body.classList.contains("memory-main")) return;
+    showStageSelect();
+  });
 
   againBtn.addEventListener("click", () => {
     window.WonderSound?.play("click");

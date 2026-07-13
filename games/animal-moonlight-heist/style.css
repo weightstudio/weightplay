@@ -15,3 +15,7 @@
 .economy-feedback{min-height:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#ffd765;font-size:10px}
 .patrol-sight{position:absolute;width:36%;height:36%;z-index:2;transform:translate(-50%,-50%);pointer-events:none;border:1px solid rgba(255,215,101,.46);border-radius:50%;background:radial-gradient(ellipse,rgba(255,191,88,.12),rgba(255,191,88,.025) 64%,transparent 70%);transition:left .9s linear,top .9s linear}
 @media(max-height:430px){.stage-canvas{grid-template-columns:250px minmax(0,1fr)}.planner{grid-template-columns:48px minmax(0,1fr)}.planner>img{width:48px;height:48px}.planner-body{grid-template-rows:auto 43px auto}.gadget-row,.planner-heading{gap:3px}.gadget-choices{gap:2px}.gadget-choice{width:38px;height:38px;padding:2px}.economy-btn{min-height:36px;padding:3px 5px;font-size:9px}}
+
+body[data-screen="battle"] :is(.wp-tutorial-button, .wp-tutorial-backdrop, .sound-toggle, .weightplay-version-badge) {
+  display: none !important;
+}

@@ -948,6 +948,15 @@ body.is-rune-playing .turn-roster { max-height:112px; overflow-y:auto; }
 body.is-rune-playing .battle-log { min-height:42px; max-height:58px; overflow-y:auto; }
 body.is-rune-playing .battle-ad-reserve { position:fixed; top:auto; bottom:4px; left:50%; display:block; width:min(calc(var(--rune-vw,100vw) - 8px),612px); height:56px; min-height:56px; transform:translateX(-50%); }
 
+/* The logical Battle Canvas excludes the separate physical ad reserve. */
+body.is-rune-playing .rune-app[data-wp-logical-battle-canvas] {
+  position: fixed;
+  inset: 4px auto auto max(4px, calc((var(--rune-vw, 100vw) - 612px) / 2));
+  width: min(calc(var(--rune-vw, 100vw) - 8px), 612px);
+  height: calc(var(--rune-vh, 100dvh) - 64px);
+  min-height: 0;
+}
+
 @media (max-width:560px), (max-height:560px) {
   body.is-rune-playing .topbar, body.is-rune-playing #gamePanel.game-panel, body.is-rune-playing .battle-ad-reserve { width:calc(var(--rune-vw,100vw) - 8px); }
   body.is-rune-playing #gamePanel.game-panel { height:calc(var(--rune-vh,100dvh) - 114px); }
