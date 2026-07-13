@@ -258,17 +258,52 @@
     const margin = 8;
     const nextX = clamp(x, margin, window.innerWidth - width - margin);
     const nextY = clamp(y, margin, window.innerHeight - height - margin);
-    button.style.left = `${nextX}px`;
-    button.style.top = `${nextY}px`;
-    button.style.right = "auto";
-    button.style.bottom = "auto";
+    button.style.setProperty("left", `${nextX}px`, "important");
+    button.style.setProperty("top", `${nextY}px`, "important");
+    button.style.setProperty("right", "auto", "important");
+    button.style.setProperty("bottom", "auto", "important");
     if (persist) savePosition(nextX, nextY);
+  }
+
+  function overlapsControl(button, x, y) {
+    const candidate = { left: x, top: y, right: x + 42, bottom: y + 42 };
+    return [...document.querySelectorAll("button, a, select, input, [role='button']")].some((node) => {
+      if (node === button || node.contains(button) || button.contains(node)) return false;
+      const style = getComputedStyle(node);
+      const box = node.getBoundingClientRect();
+      if (style.display === "none" || style.visibility === "hidden" || Number(style.opacity) <= 0.02 || box.width <= 4 || box.height <= 4) return false;
+      return Math.min(candidate.right, box.right) - Math.max(candidate.left, box.left) > 4
+        && Math.min(candidate.bottom, box.bottom) - Math.max(candidate.top, box.top) > 4;
+    });
+  }
+
+  function findFreePosition(button) {
+    const margin = 8;
+    const right = Math.max(margin, window.innerWidth - 42 - Math.max(12, margin));
+    const left = margin;
+    const candidates = [];
+    for (let y = window.innerHeight - 42 - 12; y >= margin; y -= 50) candidates.push([right, y]);
+    for (let y = window.innerHeight - 42 - 12; y >= margin; y -= 50) candidates.push([left, y]);
+    return candidates.find(([x, y]) => !overlapsControl(button, x, y)) || [right, Math.max(margin, window.innerHeight - 54)];
   }
 
   function applySavedPosition(button) {
     const saved = readPosition();
-    if (!saved) return;
-    requestAnimationFrame(() => placeToggle(button, saved.x, saved.y, false));
+    requestAnimationFrame(() => {
+      if (saved && !overlapsControl(button, saved.x, saved.y)) {
+        placeToggle(button, saved.x, saved.y, false);
+        return;
+      }
+      const [x, y] = findFreePosition(button);
+      placeToggle(button, x, y, false);
+    });
+  }
+
+  function ensureFreePosition(button) {
+    const box = button.getBoundingClientRect();
+    if (!overlapsControl(button, box.left, box.top)) return;
+    const [x, y] = findFreePosition(button);
+    placeToggle(button, x, y, false);
   }
 
   function installDrag(button) {
@@ -343,6 +378,8 @@
     });
     document.body.append(button);
     applySavedPosition(button);
+    window.setTimeout(() => ensureFreePosition(button), 250);
+    window.setTimeout(() => ensureFreePosition(button), 900);
     updateToggle();
   }
 

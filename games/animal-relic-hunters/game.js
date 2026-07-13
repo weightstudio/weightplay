@@ -1585,7 +1585,7 @@
     // 3. Move & Check Bullets
     state.bullets.forEach((bullet, index) => {
       bullet.trail.push({ x: bullet.x, y: bullet.y });
-      if (bullet.trail.length > 5) bullet.trail.shift();
+      if (bullet.trail.length > 10) bullet.trail.shift();
       bullet.x += bullet.vx;
       bullet.y += bullet.vy;
 
@@ -1836,20 +1836,39 @@
 
     // 4. Draw Bullets
     state.bullets.forEach((bullet) => {
-      bullet.trail.forEach((point, index) => {
-        const strength = (index + 1) / (bullet.trail.length + 1);
-        ctx.fillStyle = `rgba(103, 232, 249, ${strength * 0.32})`;
+      const trailStart = bullet.trail[0];
+      if (trailStart) {
+        const glow = ctx.createLinearGradient(trailStart.x, trailStart.y, bullet.x, bullet.y);
+        glow.addColorStop(0, "rgba(34, 211, 238, 0)");
+        glow.addColorStop(0.56, "rgba(103, 232, 249, 0.22)");
+        glow.addColorStop(1, "rgba(224, 251, 255, 0.78)");
+        ctx.save();
+        ctx.strokeStyle = glow;
+        ctx.lineCap = "round";
+        ctx.lineWidth = Math.max(2, bullet.size * 0.72);
         ctx.beginPath();
-        ctx.arc(point.x, point.y, Math.max(1.5, bullet.size * strength * 0.7), 0, Math.PI * 2);
-        ctx.fill();
-      });
-      ctx.fillStyle = "#67e8f9";
+        bullet.trail.forEach((point, index) => {
+          if (index === 0) ctx.moveTo(point.x, point.y);
+          else ctx.lineTo(point.x, point.y);
+        });
+        ctx.lineTo(bullet.x, bullet.y);
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      ctx.save();
+      ctx.fillStyle = "#dffbff";
       ctx.shadowColor = "#06b6d4";
-      ctx.shadowBlur = 8;
+      ctx.shadowBlur = 14;
       ctx.beginPath();
       ctx.arc(bullet.x, bullet.y, bullet.size, 0, Math.PI * 2);
       ctx.fill();
-      ctx.shadowBlur = 0; // reset
+      ctx.fillStyle = "#22d3ee";
+      ctx.shadowBlur = 0;
+      ctx.beginPath();
+      ctx.arc(bullet.x, bullet.y, Math.max(2, bullet.size * 0.44), 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
     });
 
     // 5. Draw Enemies

@@ -187,9 +187,10 @@ body.orb-fortress-playing .game-page-info {
 
 .room-card {
   display: grid;
-  grid-template-columns: 54px 1fr;
+  grid-template-columns: 54px minmax(0, 1fr);
   gap: 10px;
   align-items: center;
+  min-width: 0;
 }
 
 .room-card img,
@@ -225,6 +226,8 @@ body.orb-fortress-playing .game-page-info {
 
 .room-card button {
   grid-column: 1 / -1;
+  width: 100%;
+  min-width: 0;
   min-height: 34px;
   border-radius: 10px;
   color: #102015;
@@ -693,15 +696,4 @@ body.orb-fortress-playing #battleAdReserve { position:fixed; z-index:49; left:50
   body.orb-fortress-playing #gameCanvas { grid-column:2; grid-row:1; }
   body.orb-fortress-playing .hint { grid-column:3; grid-row:1; align-self:center; white-space:normal; }
   body.orb-fortress-playing .play-return { width:100%; min-width:0; }
-}
-
-@media (max-width: 600px) {
-  body:not(.orb-fortress-playing) #menuPanel #startBtn {
-    position: fixed;
-    z-index: 60;
-    right: 20px;
-    bottom: calc(64px + env(safe-area-inset-bottom));
-    left: 20px;
-    width: auto;
-  }
 }

@@ -1029,17 +1029,6 @@ body.fruit-playing #menuPanel {
   }
 }
 
-@media (max-width: 600px) {
-  body.fruit-main #startBtn {
-    position: fixed;
-    z-index: 60;
-    right: 20px;
-    bottom: calc(64px + env(safe-area-inset-bottom));
-    left: 20px;
-    width: auto;
-  }
-}
-
 /* Fixed logical Battle frame; keep after legacy viewport rules. */
 html:has(body.fruit-playing),
 body.fruit-playing {

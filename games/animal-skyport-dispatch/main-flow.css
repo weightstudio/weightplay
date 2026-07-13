@@ -1,0 +1,16 @@
+.main-screen .guide {
+  display: grid;
+  gap: 6px;
+  padding: 14px;
+  border: 1px solid #528fb0;
+  border-radius: 12px;
+  background: #0d263f;
+}
+
+.main-screen .guide h2 {
+  font-size: 1rem;
+}
+
+.main-screen .guide p {
+  line-height: 1.45;
+}
