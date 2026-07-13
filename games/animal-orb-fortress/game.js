@@ -2,8 +2,8 @@
   const GAME_ID = "animal-orb-fortress";
   const saveKey = "weightplay_animal_orb_fortress_v1";
   const localeKey = "weightPlayLocale";
-  const W = 960;
-  const H = 540;
+  let W = 960;
+  let H = 540;
   const rerollCost = 3;
 
   const $ = (id) => document.getElementById(id);
@@ -291,6 +291,19 @@
     root.setProperty("--orb-vh", `${useVisual ? visualHeight : innerHeight}px`);
   }
 
+  function configureArena() {
+    const viewport = window.visualViewport;
+    const width = Math.round(viewport?.width || innerWidth);
+    const height = Math.round(viewport?.height || innerHeight);
+    const portrait = height > width * 1.15;
+    W = portrait ? 720 : 960;
+    H = portrait ? 1200 : 540;
+    canvas.width = W;
+    canvas.height = H;
+    canvas.dataset.orientation = portrait ? "portrait" : "landscape";
+    document.documentElement.style.setProperty("--orb-arena-ratio", `${W} / ${H}`);
+  }
+
   window.addEventListener?.("resize", updateOrbBattleScale, { passive: true });
   window.addEventListener?.("orientationchange", updateOrbBattleScale, { passive: true });
   window.visualViewport?.addEventListener("resize", updateOrbBattleScale, { passive: true });
@@ -394,6 +407,7 @@
 
   function startRaid() {
     cancelAnimationFrame(raf);
+    configureArena();
     state = makeState();
     state.mode = "running";
     save.playCount += 1;
@@ -414,19 +428,21 @@
     const tier = state.raidTier;
     const wave = state.wave;
     if (wave >= 3) {
-      state.enemies.push(makeEnemy("boss", W / 2, 96, 20 + tier * 4, 13, 55));
+      state.enemies.push(makeEnemy("boss", W / 2, Math.max(96, H * 0.09), 20 + tier * 4, 13, 55));
     } else {
       const count = 2 + wave + Math.min(2, tier - 1);
       for (let i = 0; i < count; i += 1) {
         const kind = i % 3 === 0 ? "skitter" : i % 3 === 1 ? "thorn" : "wisp";
-        state.enemies.push(makeEnemy(kind, 128 + i * (720 / Math.max(1, count - 1)), 82 + (i % 2) * 42, 4 + wave * 2 + tier, kind === "thorn" ? 9 : 15, kind === "thorn" ? 33 : 27));
+        const side = W * 0.14;
+        const span = W - side * 2;
+        state.enemies.push(makeEnemy(kind, side + i * (span / Math.max(1, count - 1)), Math.max(82, H * 0.075) + (i % 2) * 54, 4 + wave * 2 + tier, kind === "thorn" ? 9 : 15, kind === "thorn" ? 33 : 27));
       }
     }
     renderHud();
   }
 
   function makeEnemy(kind, x, y, hp, speed, size) {
-    return { kind, x, y, hp, maxHp: hp, speed, size, hitTimer: 0 };
+    return { kind, x, y, hp, maxHp: hp, speed: speed * (H / 540), size, hitTimer: 0 };
   }
 
   function renderHud() {
@@ -471,7 +487,7 @@
     const dx = x - state.launcher.x;
     const dy = y - state.launcher.y;
     const len = Math.max(1, Math.hypot(dx, dy));
-    const power = 520;
+    const power = 520 * (H / 540);
     return { vx: (dx / len) * power, vy: (dy / len) * power };
   }
 
@@ -700,7 +716,7 @@
 
   function draw() {
     ctx.clearRect(0, 0, W, H);
-    if (images.bg?.complete) ctx.drawImage(images.bg, 0, 0, W, H);
+    if (images.bg?.complete) drawImageCover(images.bg, 0, 0, W, H);
     ctx.fillStyle = "rgba(3, 10, 28, 0.34)";
     ctx.fillRect(0, 0, W, H);
     const contrastGlow = ctx.createRadialGradient(W * 0.5, H * 0.35, 80, W * 0.5, H * 0.45, W * 0.7);
@@ -734,6 +750,23 @@
 
     drawAtlas(images.lion, 0, 1, state.launcher.x, state.launcher.y + 8, 86);
     drawCore();
+  }
+
+  function drawImageCover(image, x, y, width, height) {
+    const sourceRatio = image.naturalWidth / image.naturalHeight;
+    const targetRatio = width / height;
+    let sourceWidth = image.naturalWidth;
+    let sourceHeight = image.naturalHeight;
+    let sourceX = 0;
+    let sourceY = 0;
+    if (sourceRatio > targetRatio) {
+      sourceWidth = image.naturalHeight * targetRatio;
+      sourceX = (image.naturalWidth - sourceWidth) / 2;
+    } else {
+      sourceHeight = image.naturalWidth / targetRatio;
+      sourceY = (image.naturalHeight - sourceHeight) / 2;
+    }
+    ctx.drawImage(image, sourceX, sourceY, sourceWidth, sourceHeight, x, y, width, height);
   }
 
   function drawEnemy(enemy) {

@@ -1,6 +1,7 @@
 (function () {
   const GAME_ID = "snack-blocks";
   const size = 7;
+  const matchClearDuration = 360;
   const snacks = ["ST", "CK", "JM", "GR", "CH", "PR"];
   const snackArt = {
     ST: { label: "Strawberry", asset: "assets/tile-strawberry.png" },
@@ -670,7 +671,7 @@
       const dropMap = collapse(matches);
       renderBoard(dropMap);
       window.setTimeout(resolveBoard, 300);
-    }, 220);
+    }, matchClearDuration);
   }
 
   function trySwap(target) {

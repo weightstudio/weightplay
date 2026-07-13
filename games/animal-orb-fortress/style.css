@@ -680,7 +680,7 @@ body.orb-fortress-playing .orb-app { width:var(--orb-vw,100vw); height:var(--orb
 body.orb-fortress-playing .topbar, body.orb-fortress-playing .game-page-info, body.orb-fortress-playing .tutorial-button, body.orb-fortress-playing .wp-tutorial-button, body.orb-fortress-playing .wp-tutorial-backdrop { display:none !important; }
 body.orb-fortress-playing #gamePanel.game-panel, body.orb-fortress-playing #upgradePanel.modal-panel, body.orb-fortress-playing #resultPanel.result-panel { position:fixed; z-index:50; left:50%; top:4px; width:min(calc(var(--orb-vw,100vw) - 8px),612px) !important; max-width:none !important; height:min(calc(var(--orb-vh,100dvh) - 64px),788px) !important; min-height:0; max-height:none !important; margin:0 !important; transform:translateX(-50%); overflow:hidden; -webkit-text-size-adjust:100%; text-size-adjust:100%; }
 body.orb-fortress-playing #gamePanel.game-panel { display:grid; grid-template-rows:54px minmax(0,1fr) 38px; gap:6px; padding:8px; background:radial-gradient(circle at center,rgba(38,104,88,.72),rgba(3,22,18,.96)); }
-body.orb-fortress-playing #gameCanvas { width:100%; max-width:100%; height:auto; max-height:100%; align-self:center; justify-self:center; aspect-ratio:16/9; }
+body.orb-fortress-playing #gameCanvas { width:100%; max-width:100%; height:auto; max-height:100%; align-self:center; justify-self:center; aspect-ratio:var(--orb-arena-ratio,16/9); }
 body.orb-fortress-playing #upgradePanel.modal-panel { z-index:80; display:grid; place-items:center; padding:10px; }
 body.orb-fortress-playing #resultPanel.result-panel { z-index:80; display:grid; grid-template-rows:auto minmax(0,1fr); gap:10px; padding:14px; }
 body.orb-fortress-playing #battleAdReserve { position:fixed; z-index:49; left:50%; top:auto; bottom:4px; display:block; width:min(calc(var(--orb-vw,100vw) - 8px),612px); height:56px; min-height:56px; margin:0; transform:translateX(-50%); }
@@ -693,7 +693,7 @@ body.orb-fortress-playing #battleAdReserve { position:fixed; z-index:49; left:50
 @media (max-height:560px) {
   body.orb-fortress-playing #gamePanel.game-panel { grid-template-columns:146px minmax(0,1fr) 170px; grid-template-rows:minmax(0,1fr); gap:6px; padding:6px; }
   body.orb-fortress-playing .hud-row { grid-column:1; grid-row:1; grid-template-columns:1fr; grid-template-rows:repeat(4,minmax(0,1fr)); gap:4px; }
-  body.orb-fortress-playing #gameCanvas { grid-column:2; grid-row:1; }
+  body.orb-fortress-playing #gameCanvas { grid-column:2; grid-row:1; aspect-ratio:16/9; }
   body.orb-fortress-playing .hint { grid-column:3; grid-row:1; align-self:center; white-space:normal; }
   body.orb-fortress-playing .play-return { width:100%; min-width:0; }
 }

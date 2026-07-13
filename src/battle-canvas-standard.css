@@ -159,7 +159,7 @@ body.wp-logical-battle-active.reef-fisher-playing .battle-shell[data-wp-logical-
   padding: 8px !important;
 }
 body.wp-logical-battle-active.reef-fisher-playing .battle-shell > .hud-row { grid-column: 1 !important; grid-row: 1 !important; grid-template-columns: 48px minmax(0, 1fr) 88px 88px !important; grid-template-rows: 56px !important; }
-body.wp-logical-battle-active.reef-fisher-playing .battle-shell > .play-frame { grid-column: 1 !important; grid-row: 2 !important; width: 100% !important; align-self: start !important; }
+body.wp-logical-battle-active.reef-fisher-playing .battle-shell > .play-frame { grid-column: 1 !important; grid-row: 2 !important; width: 100% !important; aspect-ratio: var(--reef-arena-ratio, 16 / 9) !important; align-self: start !important; }
 body.wp-logical-battle-active.reef-fisher-playing .battle-shell > .catch-hud { grid-column: 1 !important; grid-row: 3 !important; width: 100% !important; height: 64px !important; }
 body.wp-logical-battle-active.reef-fisher-playing .battle-shell > .tension-panel { grid-column: 1 !important; grid-row: 4 !important; width: 100% !important; height: 176px !important; align-self: center !important; }
 
@@ -207,12 +207,12 @@ body.wp-logical-battle-active.is-game-playing .battle-actions { grid-column: 1 !
 /* Hidden Safari keeps its seek scene above the fixed target tray. */
 body.wp-logical-battle-active.safari-playing #playPanel.play-panel {
   grid-template-columns: minmax(0, 1fr) !important;
-  grid-template-rows: 40px auto 160px !important;
+  grid-template-rows: 40px minmax(0, 1fr) 160px !important;
   grid-template-areas: none !important;
   gap: 6px !important;
 }
 body.wp-logical-battle-active.safari-playing .play-head { grid-area: auto !important; grid-column: 1 !important; grid-row: 1 !important; }
-body.wp-logical-battle-active.safari-playing .scene { grid-area: auto !important; grid-column: 1 !important; grid-row: 2 !important; width: 100% !important; height: auto !important; aspect-ratio: 1.34 / 1 !important; align-self: center !important; justify-self: center !important; }
+body.wp-logical-battle-active.safari-playing .scene { grid-area: auto !important; grid-column: 1 !important; grid-row: 2 !important; width: min(100%, 430px) !important; height: auto !important; max-height: 100% !important; aspect-ratio: 1 / 1 !important; align-self: center !important; justify-self: center !important; }
 body.wp-logical-battle-active.safari-playing .target-panel { grid-area: auto !important; grid-column: 1 !important; grid-row: 3 !important; width: 100% !important; height: 160px !important; min-height: 160px !important; padding: 6px !important; gap: 5px !important; }
 body.wp-logical-battle-active.safari-playing .target-list { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; gap: 5px !important; }
 body.wp-logical-battle-active.safari-playing .target-chip { grid-template-columns: 32px minmax(0, 1fr) !important; min-height: 54px !important; height: 54px !important; padding: 4px !important; gap: 4px !important; }
@@ -231,7 +231,7 @@ body.wp-logical-battle-active .battle-canvas[data-wp-logical-battle-canvas] > .a
 body.wp-logical-battle-active .battle-canvas[data-wp-logical-battle-canvas] > .play-field { grid-area: auto !important; grid-column: 1 !important; grid-row: 3 !important; }
 body.wp-logical-battle-active .battle-canvas[data-wp-logical-battle-canvas] > .battle-controls { grid-area: auto !important; grid-column: 1 !important; grid-row: 4 !important; width: 100% !important; height: 62px !important; grid-template-columns: minmax(0, 1fr) 124px !important; grid-template-rows: 62px !important; }
 
-/* Orb Fortress keeps HUD, 16:9 arena and hint in one portrait stack. */
+/* Orb Fortress uses a tall phone arena and a wide landscape arena without stretching either coordinate system. */
 body.wp-logical-battle-active.orb-fortress-playing #gamePanel.game-panel {
   grid-template-columns: minmax(0, 1fr) !important;
   grid-template-rows: 54px minmax(0, 1fr) 38px !important;
@@ -240,7 +240,7 @@ body.wp-logical-battle-active.orb-fortress-playing #gamePanel.game-panel {
 }
 body.wp-logical-battle-active.orb-fortress-playing .hud-row { grid-column: 1 !important; grid-row: 1 !important; grid-template-columns: 48px repeat(3, minmax(0, 1fr)) !important; grid-template-rows: 54px !important; gap: 5px !important; }
 body.wp-logical-battle-active.orb-fortress-playing .hud-row .play-return { width: 48px !important; min-width: 48px !important; height: 48px !important; min-height: 48px !important; }
-body.wp-logical-battle-active.orb-fortress-playing #gameCanvas { grid-column: 1 !important; grid-row: 2 !important; width: 100% !important; height: auto !important; max-height: 100% !important; aspect-ratio: 16 / 9 !important; align-self: center !important; justify-self: center !important; }
+body.wp-logical-battle-active.orb-fortress-playing #gameCanvas { grid-column: 1 !important; grid-row: 2 !important; width: 100% !important; height: auto !important; max-height: 100% !important; aspect-ratio: var(--orb-arena-ratio, 16 / 9) !important; align-self: center !important; justify-self: center !important; }
 body.wp-logical-battle-active.orb-fortress-playing .hint { grid-column: 1 !important; grid-row: 3 !important; width: 100% !important; height: 38px !important; min-height: 38px !important; align-self: stretch !important; white-space: nowrap !important; }
 
 /* Zoo Battle uses the same compact return slot on every viewport. */

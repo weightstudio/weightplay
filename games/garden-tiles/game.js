@@ -315,10 +315,13 @@
     matchedPairs = 0;
     busy = false;
     tiles = makeTiles(level.pairs, index);
-    board.style.setProperty("--cols", level.cols);
-    const rowCount = Math.ceil((level.pairs * 2) / level.cols);
+    const totalCards = level.pairs * 2;
+    const phoneBattle = (window.visualViewport?.width || innerWidth) <= 600;
+    const columns = phoneBattle ? choosePhoneColumns(totalCards) : level.cols;
+    board.style.setProperty("--cols", columns);
+    const rowCount = Math.ceil(totalCards / columns);
     board.style.setProperty("--rows", rowCount);
-    board.style.setProperty("--board-aspect", String(level.cols / rowCount));
+    board.style.setProperty("--board-aspect", String(columns / rowCount));
     document.body.classList.remove("garden-stage");
     document.body.classList.add("garden-playing");
     window.WeightPlayGame?.exitMobileGameMode?.();
@@ -344,6 +347,22 @@
     });
     window.WonderAnalytics?.track?.("game_start", { game_id: GAME_ID, level: index + 1 });
     window.WonderAnalytics?.track?.("level_start", { game_id: GAME_ID, level: index + 1 });
+  }
+
+  function choosePhoneColumns(totalCards) {
+    const availableWidth = 366;
+    const availableHeight = 650;
+    let bestColumns = 3;
+    let bestTileSize = 0;
+    for (let columns = 3; columns <= 6; columns += 1) {
+      const rows = Math.ceil(totalCards / columns);
+      const tileSize = Math.min(availableWidth / columns, availableHeight / rows);
+      if (tileSize > bestTileSize) {
+        bestTileSize = tileSize;
+        bestColumns = columns;
+      }
+    }
+    return bestColumns;
   }
 
   function makeTiles(pairCount, levelIndex) {

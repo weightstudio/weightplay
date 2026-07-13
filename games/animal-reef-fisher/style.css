@@ -1534,10 +1534,10 @@ body.reef-fisher-playing #gamePanel.game-panel, body.wp-mobile-game-mode.reef-fi
 body.reef-fisher-playing .battle-shell { position:relative; inset:auto; display:grid; grid-template-rows:56px auto 52px minmax(156px,1fr); gap:6px; width:100%; height:100%; min-height:0; padding:8px; overflow:hidden; transform:none; container-type:size; background:linear-gradient(180deg,#0d4c61,#082d3d); }
 body.reef-fisher-playing .battle-shell > .hud-row, body.reef-fisher-playing .battle-shell > .play-frame, body.reef-fisher-playing .battle-shell > .catch-hud, body.reef-fisher-playing .battle-shell > .tension-panel { position:relative; inset:auto; width:100%; height:auto; margin:0; }
 body.reef-fisher-playing .battle-shell > .hud-row { grid-row:1; }
-body.reef-fisher-playing .battle-shell > .play-frame { grid-row:2; width:100%; height:auto; aspect-ratio:16/9; align-self:start; }
+body.reef-fisher-playing .battle-shell > .play-frame { grid-row:2; width:100%; height:auto; aspect-ratio:var(--reef-arena-ratio, 16/9); align-self:start; }
 body.reef-fisher-playing .battle-shell > .catch-hud { grid-row:3; }
 body.reef-fisher-playing .battle-shell > .tension-panel { grid-row:4; height:100%; }
-body.reef-fisher-playing .play-frame, body.reef-fisher-playing canvas { width:100%; height:100%; min-height:0; aspect-ratio:16/9; }
+body.reef-fisher-playing .play-frame, body.reef-fisher-playing canvas { width:100%; height:100%; min-height:0; aspect-ratio:var(--reef-arena-ratio, 16/9); }
 body.reef-fisher-playing .battle-ad-reserve { position:relative; inset:auto; grid-row:2; width:100%; height:56px; min-height:56px; transform:none; }
 
 @media (max-width:560px), (max-height:560px) {

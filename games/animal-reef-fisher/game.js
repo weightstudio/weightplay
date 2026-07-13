@@ -3,7 +3,7 @@
   const saveKey = "weightplay_animal_reef_fisher_v1";
   const localeKey = "weightPlayLocale";
   const W = 960;
-  const H = 540;
+  let H = 540;
   const expeditionSeconds = 90;
   const lureCost = 3;
   const sonarCost = 2;
@@ -489,6 +489,7 @@
   }
 
   async function startRun() {
+    configureArena();
     const zone = zones.find((z) => z.id === selectedZone) || zones[0];
     run = {
       zone,
@@ -932,11 +933,35 @@
     ctx.drawImage(frameCanvas, x + (w - drawW) / 2, y + bob + (h - drawH) / 2, drawW, drawH);
   }
 
+  function configureArena() {
+    const viewport = window.visualViewport;
+    const width = viewport?.width || innerWidth;
+    const height = viewport?.height || innerHeight;
+    const portrait = width <= 700 && height > width;
+    H = portrait ? 960 : 540;
+    canvas.width = W;
+    canvas.height = H;
+    canvas.style.setProperty("--reef-arena-ratio", `${W} / ${H}`);
+  }
+
+  function drawImageCover(img, x, y, width, height) {
+    if (!img?.width || !img?.height) return;
+    const scale = Math.max(width / img.width, height / img.height);
+    const sourceWidth = width / scale;
+    const sourceHeight = height / scale;
+    const sourceX = (img.width - sourceWidth) / 2;
+    const sourceY = (img.height - sourceHeight) / 2;
+    ctx.drawImage(img, sourceX, sourceY, sourceWidth, sourceHeight, x, y, width, height);
+  }
+
   function draw() {
     ctx.clearRect(0, 0, W, H);
-    if (images.bg) ctx.drawImage(images.bg, 0, 0, W, H);
+    drawImageCover(images.bg, 0, 0, W, H);
     ctx.fillStyle = "rgba(2, 38, 48, 0.12)";
     ctx.fillRect(0, 0, W, H);
+
+    ctx.save();
+    ctx.translate(0, (H - 540) / 2);
 
     if (images.boat) ctx.drawImage(images.boat, 34, 288, 196, 116);
     drawSpriteSheet(images.otter, 3, 2, run && run.phase === "reel" ? 2 : 0, 42, 236, 132, 132);
@@ -984,6 +1009,7 @@
         drawSpriteSheet(images.sonar, 1, 1, 0, 360, 120, 270, 270);
       }
     }
+    ctx.restore();
   }
 
   function tick(now) {
@@ -1246,6 +1272,7 @@
     const useVisual = visualWidth > 0 && visualHeight > 0 && Math.abs(visualWidth - innerWidth) <= 2 && visualHeight <= innerHeight + 2;
     document.documentElement.style.setProperty("--reef-vw", `${useVisual ? visualWidth : innerWidth}px`);
     document.documentElement.style.setProperty("--reef-vh", `${useVisual ? visualHeight : innerHeight}px`);
+    if (state === "game") configureArena();
   }
 
   updateBattleScale();
