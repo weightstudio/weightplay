@@ -7,6 +7,12 @@
     link.dataset.wpStageStandard = "true";
     document.head.appendChild(link);
   }
+  if (!document.querySelector('script[data-wp-stage-standard], script[src*="stage-selector-standard.js"]')) {
+    const script = document.createElement("script");
+    script.src = new URL("stage-selector-standard.js", sharedAssetBase).href;
+    script.dataset.wpStageStandard = "true";
+    document.head.appendChild(script);
+  }
   const games = {
     "wonder-crash": {
       title: "Fantasy Lion Defense",
@@ -1266,9 +1272,11 @@
       "7+": scoreAttack ? [0, 110, 111, 210, 211] : [0, 55, 56, 95, 96],
       "9+": scoreAttack ? [0, 140, 141, 260, 261] : [0, 70, 71, 120, 121],
       "12+": scoreAttack ? [0, 180, 181, 340, 341] : [0, 90, 91, 150, 151],
+      "13+": scoreAttack ? [0, 220, 221, 400, 401] : [0, 110, 111, 190, 191],
       Family: [0, 50, 51, 100, 101],
     };
-    return [game.age, "5+", "7+"]
+    const ages = /^(12|13)\+$/.test(game.age) ? [game.age] : [game.age, "5+", "7+"];
+    return ages
       .filter((age, index, list) => age && list.indexOf(age) === index)
       .slice(0, 3)
       .map((age) => {
@@ -1414,12 +1422,14 @@
       "#stageSelectPanel",
       "#stageSelect",
       "#stageView",
+      "#mapPanel",
       "#levelSelect",
       "#menuPanel",
       ".stage-panel",
       ".stage-screen",
       ".stage-shell",
       ".stage-select",
+      ".world-map-panel",
       ".level-select",
       ".menu-shell",
       "#overlay",

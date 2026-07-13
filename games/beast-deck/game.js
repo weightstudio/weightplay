@@ -66,6 +66,7 @@
     packCost: $("packCost"),
     packStatus: $("packStatus"),
     deckBuildCount: $("deckBuildCount"),
+    deckAnalysis: $("deckAnalysis"),
     deckSlots: $("deckSlots"),
     collectionGrid: $("collectionGrid"),
     gearGrid: $("gearGrid"),
@@ -176,6 +177,7 @@
       packResultGearEquipped: "New equipment: {gear}. Equipped now.",
       packDuplicate: "{name} upgraded to Rank {rank}/{maxRank}.",
       deckBuildTitle: "Battle Deck",
+      deckAnalysis: "Next mission: {total} cards - {attack} Attack / {defense} Defense / {utility} Tactics.",
       collectionOwnedTitle: "Owned Cards",
       equipmentTitle: "Equipment",
       equipCard: "Equip",
@@ -310,6 +312,7 @@
       packResultGearEquipped: "獲得裝備：{gear}，已自動裝備。",
       packDuplicate: "{name} 強化至 {rank}/{maxRank} 階。",
       deckBuildTitle: "出戰牌組",
+      deckAnalysis: "下次任務：共 {total} 張牌 - 攻擊 {attack} / 防禦 {defense} / 戰術 {utility}。",
       collectionOwnedTitle: "持有卡牌",
       equipmentTitle: "裝備",
       equipCard: "裝備",
@@ -661,6 +664,14 @@
     return (profile.collection[cardId] || 0) > equippedCardCount(cardId) && profile.equippedCards.length < maxEquippedCards;
   }
 
+  function getDeckComposition() {
+    return [...baseDeck, ...profile.equippedCards].reduce((summary, cardId) => {
+      const type = cardDb[cardId]?.type;
+      if (type && Object.hasOwn(summary, type)) summary[type] += 1;
+      return summary;
+    }, { attack: 0, defense: 0, utility: 0 });
+  }
+
   function renderCollectionUI() {
     if (!nodes.collectionGrid) return;
     nodes.profileCoinText.textContent = String(profile.coins);
@@ -670,6 +681,13 @@
       nodes.packStatus.textContent = t("packNeed", { cost: packCost });
     }
     nodes.deckBuildCount.textContent = t("equippedCount", { count: profile.equippedCards.length, max: maxEquippedCards });
+    const composition = getDeckComposition();
+    nodes.deckAnalysis.textContent = t("deckAnalysis", {
+      total: baseDeck.length + profile.equippedCards.length,
+      attack: composition.attack,
+      defense: composition.defense,
+      utility: composition.utility,
+    });
     nodes.deckSlots.innerHTML = "";
     if (!profile.equippedCards.length) {
       const empty = document.createElement("span");

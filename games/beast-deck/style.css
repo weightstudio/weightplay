@@ -408,6 +408,14 @@ body {
   white-space: nowrap;
 }
 
+.deck-analysis {
+  display: block;
+  color: #bfdbfe;
+  font-size: 11px;
+  line-height: 1.35;
+  margin-top: -4px;
+}
+
 .pack-btn {
   width: 100%;
   display: flex;

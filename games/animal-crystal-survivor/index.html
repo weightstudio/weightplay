@@ -56,14 +56,14 @@
   <body data-tutorial-auto-show="false">
     <main class="crystal-app" data-play-viewport data-no-mobile-immersive="true">
       <header class="topbar">
-        <a class="icon-btn home-link" data-wp-return="main" href="/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
+        <a class="icon-btn home-link" data-wp-return="main" href="/" aria-label="Back to lobby" data-aria-ui="backToLobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
         <div class="brand-title">
           <p>WeightPlay</p>
           <h1 data-ui="title">Animal Crystal Survivor</h1>
         </div>
         <label class="language-picker">
           <span data-ui="language">Language</span>
-          <select id="localeSelect" aria-label="Language">
+          <select id="localeSelect" aria-label="Language" data-aria-ui="language">
             <option value="en">English</option>
             <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
           </select>
@@ -75,7 +75,7 @@
         <div class="menu-copy">
           <strong data-ui="menuTitle">Survive the Crystal Grove.</strong>
           <span data-ui="menuHint">Goal: collect golden keys before 3:00. Crystals give XP, and upgrades help the ranger survive longer.</span>
-          <div class="prototype-goals" aria-label="Prototype test goals">
+          <div class="prototype-goals" aria-label="Prototype test goals" data-aria-ui="prototypeGoalsTitle">
             <b data-ui="prototypeGoalsTitle">Prototype test goals</b>
             <span data-ui="prototypeGoalsText">In one run, collect at least 1 key, level up once, choose an upgrade, then confirm Retry and Menu both work.</span>
           </div>
@@ -115,7 +115,7 @@
           <div class="xp-track"><i id="xpFill"></i></div>
         </div>
         <div class="canvas-wrap play-area">
-          <canvas id="gameCanvas" width="1024" height="1024" aria-label="Animal Crystal Survivor playfield"></canvas>
+          <canvas id="gameCanvas" width="1024" height="1024" aria-label="Animal Crystal Survivor playfield" data-aria-ui="playfield"></canvas>
         </div>
         <p id="hintText" class="hint-text" data-ui="playHint">Goal: collect golden keys before 3:00. Grab crystals to level up, then choose upgrades when the cards appear.</p>
       </section>

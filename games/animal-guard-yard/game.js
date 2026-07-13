@@ -1081,12 +1081,24 @@
       data: unit,
       el: document.createElement("div"),
       hpEl: document.createElement("span"),
+      reachEl: null,
       facing: "left",
     };
     guard.el.className = "actor";
     guard.el.innerHTML = animalSprite(unit.id);
     guard.hpEl.className = "hp-bar guard-hp";
     guard.hpEl.innerHTML = "<i></i>";
+    if (unit.attackStyle === "cross") {
+      const rowReach = unit.targetRows || 1;
+      const startRow = Math.max(0, row - rowReach);
+      const endRow = Math.min(stages[currentStage].rows - 1, row + rowReach);
+      guard.reachEl = document.createElement("span");
+      guard.reachEl.className = "cross-lane-reach";
+      guard.reachEl.setAttribute("aria-hidden", "true");
+      guard.reachEl.style.top = `${(startRow / stages[currentStage].rows) * 100}%`;
+      guard.reachEl.style.height = `${((endRow - startRow + 1) / stages[currentStage].rows) * 100}%`;
+      nodes.yardBoard.appendChild(guard.reachEl);
+    }
     nodes.yardBoard.appendChild(guard.el);
     nodes.yardBoard.appendChild(guard.hpEl);
     cell.unit = guard;
@@ -1369,6 +1381,7 @@
       if (entity.dead) {
         entity.el.remove();
         entity.hpEl?.remove();
+        entity.reachEl?.remove();
         if (entity.kind === "guard") {
           const cell = cells.find((item) => item.unit === entity);
           if (cell) cell.unit = null;

@@ -816,7 +816,7 @@
     bg: "../../assets/animal-auto-squad-bg.webp",
     enemies: "../../assets/animal-auto-squad-enemies.webp",
     items: "../../assets/animal-auto-squad-items.webp",
-    fx: "../../assets/animal-auto-squad-fx.webp",
+    fxV2: "../../assets/animal-auto-squad-fx-v2.png",
     sparkFox: "../../assets/weightplay-character-spark-paw-fox-cutout.webp",
     bubbleOtter: "../../assets/weightplay-character-bubble-fin-otter-cutout.webp",
     drumPanda: "../../assets/weightplay-character-drum-belly-panda-safe-face-cutout.webp",
@@ -2449,6 +2449,22 @@
     nodes.combatSummary.innerHTML = `<strong>${summary}</strong><span>${front}</span>`;
   }
 
+  function drawEffectSprite(fx, progress, radius) {
+    const sheet = imageCache.fxV2;
+    if (!sheet?.naturalWidth || !sheet?.naturalHeight) return;
+    const spriteIndex = { hit: 0, shield: 1, heal: 2, buff: 3, smoke: 4, starfall: 5 }[fx.type] ?? 0;
+    const columns = 3;
+    const sourceWidth = sheet.naturalWidth / columns;
+    const sourceHeight = sheet.naturalHeight / 2;
+    const sourceX = (spriteIndex % columns) * sourceWidth;
+    const sourceY = Math.floor(spriteIndex / columns) * sourceHeight;
+    const size = radius * (fx.type === "smoke" ? 2.15 : 2.45) * (0.82 + progress * 0.18);
+
+    canvasCtx.globalCompositeOperation = "screen";
+    canvasCtx.drawImage(sheet, sourceX, sourceY, sourceWidth, sourceHeight, fx.x - size / 2, fx.y - size / 2, size, size);
+    canvasCtx.globalCompositeOperation = "source-over";
+  }
+
   function drawEffects() {
     state.combat.effects = state.combat.effects.filter((fx) => {
       fx.life--;
@@ -2459,70 +2475,7 @@
 
       canvasCtx.save();
       canvasCtx.globalAlpha = alpha;
-      if (fx.type === "hit") {
-        canvasCtx.strokeStyle = "#ffd666";
-        canvasCtx.lineWidth = 4;
-        for (let i = 0; i < 8; i++) {
-          const angle = (Math.PI * 2 * i) / 8 + progress * 0.8;
-          canvasCtx.beginPath();
-          canvasCtx.moveTo(fx.x + Math.cos(angle) * 10, fx.y + Math.sin(angle) * 10);
-          canvasCtx.lineTo(fx.x + Math.cos(angle) * radius, fx.y + Math.sin(angle) * radius);
-          canvasCtx.stroke();
-        }
-      } else if (fx.type === "shield") {
-        canvasCtx.strokeStyle = "#8fb7ff";
-        canvasCtx.lineWidth = 5;
-        canvasCtx.beginPath();
-        canvasCtx.arc(fx.x, fx.y, radius * 0.72, 0, Math.PI * 2);
-        canvasCtx.stroke();
-        canvasCtx.fillStyle = "rgba(143, 183, 255, 0.16)";
-        canvasCtx.fill();
-      } else if (fx.type === "heal") {
-        canvasCtx.strokeStyle = "#82ffd1";
-        canvasCtx.lineWidth = 6;
-        canvasCtx.beginPath();
-        canvasCtx.moveTo(fx.x - 18, fx.y);
-        canvasCtx.lineTo(fx.x + 18, fx.y);
-        canvasCtx.moveTo(fx.x, fx.y - 18);
-        canvasCtx.lineTo(fx.x, fx.y + 18);
-        canvasCtx.stroke();
-        canvasCtx.beginPath();
-        canvasCtx.arc(fx.x, fx.y, radius * 0.55, 0, Math.PI * 2);
-        canvasCtx.stroke();
-      } else if (fx.type === "buff") {
-        canvasCtx.fillStyle = "#ffd666";
-        for (let i = 0; i < 3; i++) {
-          const y = fx.y + 18 - progress * 44 - i * 10;
-          canvasCtx.beginPath();
-          canvasCtx.moveTo(fx.x - 12 + i * 12, y + 8);
-          canvasCtx.lineTo(fx.x + i * 12, y - 8);
-          canvasCtx.lineTo(fx.x + 12 + i * 12, y + 8);
-          canvasCtx.closePath();
-          canvasCtx.fill();
-        }
-      } else if (fx.type === "smoke") {
-        canvasCtx.fillStyle = "rgba(210, 220, 230, 0.42)";
-        for (let i = 0; i < 5; i++) {
-          canvasCtx.beginPath();
-          canvasCtx.arc(fx.x + (i - 2) * 11, fx.y + Math.sin(i) * 8, radius * (0.28 + i * 0.025), 0, Math.PI * 2);
-          canvasCtx.fill();
-        }
-      } else if (fx.type === "starfall") {
-        canvasCtx.strokeStyle = "#b9f7ff";
-        canvasCtx.fillStyle = "#fff2a8";
-        canvasCtx.lineWidth = 3;
-        for (let i = 0; i < 5; i++) {
-          const angle = -Math.PI / 2 + (i * Math.PI * 2) / 5;
-          const x = fx.x + Math.cos(angle) * radius * 0.55;
-          const y = fx.y + Math.sin(angle) * radius * 0.55;
-          canvasCtx.beginPath();
-          canvasCtx.arc(x, y, 5 + progress * 5, 0, Math.PI * 2);
-          canvasCtx.fill();
-        }
-        canvasCtx.beginPath();
-        canvasCtx.arc(fx.x, fx.y, radius * 0.8, 0, Math.PI * 2);
-        canvasCtx.stroke();
-      }
+      drawEffectSprite(fx, progress, radius);
       
       // Floating text overlays (e.g. Damage numbers)
       if (fx.text) {

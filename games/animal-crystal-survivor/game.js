@@ -65,6 +65,8 @@
       charmBought: "Crystal Charm unlocked.",
       startRun: "Start Run",
       menu: "Menu",
+      backToLobby: "Back to lobby",
+      playfield: "Animal Crystal Survivor playfield",
       time: "Time",
       keys: "Keys",
       level: "Level",
@@ -127,6 +129,8 @@
       charmBought: "\u5df2\u89e3\u9396\u6c34\u6676\u8b77\u7b26\u3002",
       startRun: "\u958b\u59cb\u6311\u6230",
       menu: "\u9078\u55ae",
+      backToLobby: "\u56de\u5230\u5927\u5ef3",
+      playfield: "\u52d5\u7269\u6c34\u6676\u751f\u5b58\u6230\u904a\u73a9\u5340",
       time: "\u6642\u9593",
       keys: "\u91d1\u9470",
       level: "\u7b49\u7d1a",
@@ -332,6 +336,9 @@
     }
     document.querySelectorAll("[data-ui]").forEach((node) => {
       node.textContent = t(node.dataset.ui);
+    });
+    document.querySelectorAll("[data-aria-ui]").forEach((node) => {
+      node.setAttribute("aria-label", t(node.dataset.ariaUi));
     });
     nodes.menuBtn.setAttribute("aria-label", t("menu"));
     nodes.resultMenuBtn.setAttribute("aria-label", t("backToMenu"));

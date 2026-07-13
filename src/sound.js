@@ -380,6 +380,8 @@
     applySavedPosition(button);
     window.setTimeout(() => ensureFreePosition(button), 250);
     window.setTimeout(() => ensureFreePosition(button), 900);
+    new MutationObserver(() => window.setTimeout(() => ensureFreePosition(button), 80))
+      .observe(document.body, { attributes: true, attributeFilter: ["class"] });
     updateToggle();
   }
 
