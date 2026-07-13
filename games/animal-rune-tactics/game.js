@@ -325,6 +325,9 @@
     missionStatusCurrent: "目前選擇", missionStatusUnlocked: "點擊選擇", missionRewardLabel: "通關獎勵", startSelectedMission: "開始任務 {n}", progressionTitle: "永久成長", progressionLevelLine: "小隊 Lv.{level} / 距離下級還差 {xp} 經驗值", progressionHeroLine: "英雄升級：獅王 Lv.{lion}、貓頭鷹 Lv.{owl}、烏龜 Lv.{turtle}", progressionBonusLine: "已保存加成：攻擊 +{atk}、生命 +{hp}、能量 +{energy}、復活代幣 {revives}", progressionNextUpgrade: "下一次升級：{hero} 還差 {cost} 枚符文。", heroGrowthStats: "永久：生命 +{hp} / 攻擊 +{atk}", heroNextStats: "下一級 Lv.{level}：生命 +{hp} / 攻擊 +{atk}", heroUpgradeNeed: "還差 {need} 枚符文", heroUpgradeReady: "可以升級", rewardPermanent: "永久成長", reviveTriggered: "{hero} 使用復活代幣回到戰場。"
   });
 
+  Object.assign(text.en, { stageTabMissions: "Missions", stageTabHeroes: "Heroes", stageTabTraining: "Training" });
+  Object.assign(text["zh-Hant"], { stageTabMissions: "\u4efb\u52d9", stageTabHeroes: "\u82f1\u96c4", stageTabTraining: "\u8a13\u7df4" });
+
   const heroDefs = [
     { id: "lion", name: "lion", role: "lionRole", img: "weightplay-boom-mane-lion.png", hp: 7, atk: 3, skillName: "skillLion", skillDesc: "skillLionDesc", skill: "animal-rune-tactics-skill-lion-strike.webp" },
     { id: "owl", name: "owl", role: "owlRole", img: "animal-rune-tactics-hero-owl.webp", hp: 5, atk: 2, range: 2, skillName: "skillOwl", skillDesc: "skillOwlDesc", skill: "animal-rune-tactics-skill-owl-rune-bolt.webp" },
@@ -569,6 +572,8 @@
   function installStandardStageFlow() {
     const menuCopy = nodes.menuPanel.querySelector(".menu-copy");
     const missionList = nodes.missionGrid.closest(".mission-list");
+    const heroList = nodes.heroUpgradeGrid.closest(".hero-upgrade-list");
+    const diamondCard = nodes.trainingBtn.closest(".diamond-card");
     const mainStart = document.createElement("button");
     mainStart.id = "mainStartBtn";
     mainStart.type = "button";
@@ -580,14 +585,32 @@
     stagePanel.id = "stagePanel";
     stagePanel.className = "wp-standard-stage-panel is-hidden";
     stagePanel.dataset.wpStandardStageScreen = "true";
-    stagePanel.innerHTML = `<header class="wp-standard-stage-heading"><button id="stageBackBtn" type="button" aria-label="${t("backToMain")}">&larr;</button><strong>${t("missionSelect")}</strong></header>`;
-    stagePanel.append(missionList, nodes.startBtn);
+    stagePanel.innerHTML = `
+      <header class="wp-standard-stage-heading"><button id="stageBackBtn" type="button" aria-label="${t("backToMain")}">&larr;</button><strong>${t("missionSelect")}</strong></header>
+      <div class="rune-stage-workspace">
+        <section class="rune-stage-view is-active" data-rune-stage-view="missions"></section>
+        <section class="rune-stage-view" data-rune-stage-view="heroes"></section>
+        <section class="rune-stage-view" data-rune-stage-view="training"></section>
+      </div>
+      <nav class="rune-stage-tabs">
+        <button class="is-active" type="button" data-rune-stage-tab="missions" data-ui="stageTabMissions">Missions</button>
+        <button type="button" data-rune-stage-tab="heroes" data-ui="stageTabHeroes">Heroes</button>
+        <button type="button" data-rune-stage-tab="training" data-ui="stageTabTraining">Training</button>
+      </nav>`;
+    stagePanel.querySelector('[data-rune-stage-view="missions"]').append(missionList, nodes.startBtn);
+    stagePanel.querySelector('[data-rune-stage-view="heroes"]').append(nodes.growthSummary, heroList);
+    stagePanel.querySelector('[data-rune-stage-view="training"]').append(diamondCard);
     nodes.menuPanel.after(stagePanel);
     const reserve = document.createElement("div");
     reserve.className = "wp-standard-stage-reserve is-hidden";
     reserve.setAttribute("aria-hidden", "true");
     stagePanel.after(reserve);
     Object.assign(nodes, { stagePanel, stageReserve: reserve, mainStartBtn: mainStart, stageBackBtn: stagePanel.querySelector("#stageBackBtn") });
+    stagePanel.querySelectorAll("[data-rune-stage-tab]").forEach((button) => button.addEventListener("click", () => {
+      const tab = button.dataset.runeStageTab;
+      stagePanel.querySelectorAll("[data-rune-stage-tab]").forEach((item) => item.classList.toggle("is-active", item === button));
+      stagePanel.querySelectorAll("[data-rune-stage-view]").forEach((view) => view.classList.toggle("is-active", view.dataset.runeStageView === tab));
+    }));
   }
 
   function showStage() {

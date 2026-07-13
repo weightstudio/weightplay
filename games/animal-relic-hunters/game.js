@@ -9,9 +9,12 @@
     localeSelect: $("localeSelect"),
     menuPanel: $("menuPanel"),
     stagePanel: $("stagePanel"),
+    expeditionRail: $("expeditionRail"),
     stageConfigMount: $("stageConfigMount"),
     showStageBtn: $("showStageBtn"),
     stageBackBtn: $("stageBackBtn"),
+    stageTitle: $("stageTitle"),
+    stageSetupText: $("stageSetupText"),
     gamePanel: $("gamePanel"),
     backToStageBtn: $("backToStageBtn"),
     draftPanel: $("draftPanel"),
@@ -401,6 +404,10 @@
   });
 
   Object.assign(text.en, {
+    startGame: "Start Game",
+    chooseExpedition: "Choose Ruin Region",
+    expeditionGoal: "3 rooms · Recommended Lv.{level}",
+    expeditionLocked: "Complete Region {region} first",
     lootNewGear: "New gear added to backpack.",
     lootDuplicateGear: "Duplicate gear converted into +{gold} gold.",
     gearCurrentEffect: "Now: {effect}",
@@ -409,6 +416,10 @@
   });
 
   Object.assign(text["zh-Hant"], {
+    startGame: "\u958b\u59cb\u904a\u6232",
+    chooseExpedition: "\u9078\u64c7\u907a\u8de1\u5340\u57df",
+    expeditionGoal: "3 \u500b\u623f\u9593\u00b7\u5efa\u8b70 Lv.{level}",
+    expeditionLocked: "\u5148\u5b8c\u6210\u7b2c {region} \u5340",
     lootNewGear: "\u65b0\u88dd\u5099\u5df2\u52a0\u5165\u80cc\u5305\u3002",
     lootDuplicateGear: "\u91cd\u8907\u88dd\u5099\u5df2\u8f49\u6210 +{gold} \u91d1\u5e63\u3002",
     gearCurrentEffect: "\u76ee\u524d\uff1a{effect}",
@@ -448,6 +459,14 @@
     "boots-rare": { slot: "boots", nameKey: "gear_boots_rare", typeKey: "rarity_rare", effectKey: "gear_boots_rare_desc", iconSrc: uiAssets.boots, bonusSpeed: 0.6 },
     "boots-epic": { slot: "boots", nameKey: "gear_boots_epic", typeKey: "rarity_epic", effectKey: "gear_boots_epic_desc", iconSrc: uiAssets.boots, bonusSpeed: 1.2 },
   };
+
+  const expeditionDefs = [
+    { id: 1, level: 1, en: "Moss Gate", zh: "\u82d4\u75d5\u4e4b\u9580" },
+    { id: 2, level: 4, en: "Echo Gallery", zh: "\u56de\u8072\u9577\u5eca" },
+    { id: 3, level: 7, en: "Crystal Vault", zh: "\u6c34\u6676\u5730\u5eab" },
+    { id: 4, level: 10, en: "Sunken Shrine", zh: "\u6c89\u6c92\u795e\u6bbf" },
+    { id: 5, level: 13, en: "Behemoth Throne", zh: "\u5de8\u7378\u738b\u5ea7" },
+  ];
 
   // State Variables
   let state = {
@@ -495,6 +514,7 @@
   };
 
   let profile = createDefaultProfile();
+  let selectedExpedition = 1;
 
   function createDefaultProfile() {
     return {
@@ -516,6 +536,8 @@
         armor: null,
         boots: null,
       },
+      unlockedExpedition: 1,
+      bestExpedition: 0,
     };
   }
 
@@ -527,6 +549,8 @@
     next.exp = Math.max(0, Math.floor(Number(data.exp) || 0));
     next.expNeed = Math.max(100, Math.floor(Number(data.expNeed) || 100));
     next.gold = Math.max(0, Math.floor(Number(data.gold) || 0));
+    next.unlockedExpedition = Math.max(1, Math.min(5, Math.floor(Number(data.unlockedExpedition) || 1)));
+    next.bestExpedition = Math.max(0, Math.min(5, Math.floor(Number(data.bestExpedition) || 0)));
 
     const training = data.training && typeof data.training === "object" ? data.training : {};
     for (const key of ["damage", "hp", "speed", "magnet"]) {
@@ -753,6 +777,29 @@
     renderEquippedGear();
   }
 
+  function renderExpeditionStage() {
+    const currentLocale = getLocale();
+    selectedExpedition = Math.max(1, Math.min(profile.unlockedExpedition || 1, selectedExpedition));
+    nodes.expeditionRail.innerHTML = expeditionDefs.map((region) => {
+      const locked = region.id > profile.unlockedExpedition;
+      const name = currentLocale === "zh-Hant" ? region.zh : region.en;
+      return `<button class="expedition-card stage-card ${region.id === selectedExpedition ? "is-selected" : ""} ${locked ? "is-locked" : ""}" data-expedition="${region.id}" type="button" ${locked ? "disabled" : ""}>
+        <span>${currentLocale === "zh-Hant" ? `\u7b2c ${region.id} \u5340` : `Region ${region.id}`}</span>
+        <strong>${name}</strong>
+        <small>${locked ? t("expeditionLocked", { region: region.id - 1 }) : t("expeditionGoal", { level: region.level })}</small>
+      </button>`;
+    }).join("");
+    nodes.expeditionRail.querySelectorAll(".expedition-card:not(.is-locked)").forEach((button) => {
+      button.addEventListener("click", () => {
+        selectedExpedition = Number(button.dataset.expedition);
+        renderExpeditionStage();
+      });
+    });
+    nodes.stageTitle.textContent = t("chooseExpedition");
+    nodes.stageSetupText.textContent = t("expeditionGoal", { level: expeditionDefs[selectedExpedition - 1].level });
+    window.requestAnimationFrame(() => nodes.expeditionRail.querySelector(".is-selected")?.scrollIntoView({ inline: "center", block: "nearest" }));
+  }
+
   function showStage() {
     state.gameActive = false;
     cancelAnimationFrame(state.gameLoopId);
@@ -766,6 +813,7 @@
     updateDiamondShopUI();
     renderTrainingPanel();
     renderEquippedGear();
+    renderExpeditionStage();
   }
 
   function translateUI() {
@@ -783,6 +831,7 @@
     renderTrainingPanel();
     renderEquippedGear();
     renderGrowthPrompt();
+    if (!nodes.stagePanel.classList.contains("hidden")) renderExpeditionStage();
   }
 
   function updateDiamondShopUI() {
@@ -1056,6 +1105,7 @@
     state.playerX = 400;
     state.playerY = 250;
     state.room = 1;
+    state.expedition = selectedExpedition;
     state.keys = 0;
     state.runKeys = 0;
     state.runGold = 0;
@@ -1102,6 +1152,7 @@
     state.pickups = [];
 
     const room = state.room;
+    const difficulty = 1 + ((state.expedition || 1) - 1) * 0.24;
     // Spawn basic enemies around borders
     const enemyCount = 8 + room * 4;
     for (let i = 0; i < enemyCount; i++) {
@@ -1117,8 +1168,8 @@
         x: ex,
         y: ey,
         type: isBoar ? "boar" : "jaguar",
-        hp: isBoar ? 25 + room * 10 : 12 + room * 5,
-        maxHp: isBoar ? 25 + room * 10 : 12 + room * 5,
+        hp: Math.round((isBoar ? 25 + room * 10 : 12 + room * 5) * difficulty),
+        maxHp: Math.round((isBoar ? 25 + room * 10 : 12 + room * 5) * difficulty),
         speed: isBoar ? 1.0 : 2.0,
         isElite: false,
         size: isBoar ? 24 : 20,
@@ -1136,8 +1187,8 @@
         x: 400,
         y: -50,
         type: room === 3 ? "boss" : "boar",
-        hp: room === 3 ? 400 : 80 + room * 40,
-        maxHp: room === 3 ? 400 : 80 + room * 40,
+        hp: Math.round((room === 3 ? 400 : 80 + room * 40) * difficulty),
+        maxHp: Math.round((room === 3 ? 400 : 80 + room * 40) * difficulty),
         speed: room === 3 ? 1.2 : 1.5,
         isElite: true,
         size: room === 3 ? 45 : 32,
@@ -1429,6 +1480,9 @@
     renderResultSummary({ cleared });
 
     if (won) {
+      profile.bestExpedition = Math.max(profile.bestExpedition || 0, state.expedition || 1);
+      profile.unlockedExpedition = Math.min(5, Math.max(profile.unlockedExpedition || 1, (state.expedition || 1) + 1));
+      saveProfile();
       nodes.resultText.textContent = t("report_win");
       nodes.skillReportText.textContent = t("report_win");
       window.WonderSound?.play("win");
