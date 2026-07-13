@@ -38,6 +38,7 @@
       stageLocked: "Clear the previous stage",
       stageProgress: "Unlocked {unlocked}/{total}",
       stageWaveCount: "{count} waves",
+      stageEnemyRange: "Enemies: {first} to {last}",
       startStage: "Start Stage {stage}",
       nextStage: "Next Stage",
       stageClearText: "Stage {stage} cleared! Stage {next} is now unlocked.",
@@ -478,6 +479,7 @@
       stageLocked: "\u5148\u901a\u904e\u524d\u4e00\u95dc",
       stageProgress: "\u5df2\u89e3\u9396 {unlocked}/{total}",
       stageWaveCount: "{count} \u6ce2",
+      stageEnemyRange: "\u6575\u4eba\uff1a{first} \u81f3 {last} \u96bb",
       startStage: "\u6311\u6230\u7b2c {stage} \u95dc",
       nextStage: "\u4e0b\u4e00\u95dc",
       stageClearText: "\u7b2c {stage} \u95dc\u901a\u904e\uff01\u5df2\u89e3\u9396\u7b2c {next} \u95dc\u3002",
@@ -964,7 +966,11 @@
       card.className = `stage-card${stage === save.selectedStage ? " is-selected" : ""}${cleared ? " is-cleared" : ""}`;
       card.dataset.stage = String(stage);
       card.disabled = locked;
-      card.innerHTML = `<strong>${stageLabel(stage)}</strong><span>${t("stageWaveCount", { count: WAVES_PER_STAGE })}</span><small>${locked ? t("stageLocked") : cleared ? t("stageCleared") : t("stageReady")}</small>`;
+      const firstWave = enemyWaveStats(stage, 1);
+      const finalWave = enemyWaveStats(stage, WAVES_PER_STAGE);
+      const enemyRange = t("stageEnemyRange", { first: firstWave.count, last: finalWave.count });
+      card.innerHTML = `<strong>${stageLabel(stage)}</strong><span>${t("stageWaveCount", { count: WAVES_PER_STAGE })}</span><small>${enemyRange}</small><small>${locked ? t("stageLocked") : cleared ? t("stageCleared") : t("stageReady")}</small>`;
+      card.setAttribute("aria-label", `${stageLabel(stage)}. ${t("stageWaveCount", { count: WAVES_PER_STAGE })}. ${enemyRange}. ${locked ? t("stageLocked") : cleared ? t("stageCleared") : t("stageReady")}`);
       card.addEventListener("click", () => selectStage(stage));
       nodes.stageRail.appendChild(card);
     }
