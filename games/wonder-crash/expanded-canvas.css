@@ -37,6 +37,34 @@ body.wonder-playing #game {
   transform: translate(-50%, -50%);
 }
 
+/* Battle chrome keeps fixed logical geometry while the outer canvas expands. */
+body.wonder-playing .battle-hud {
+  right: auto;
+  left: 50%;
+  width: 280px;
+  min-width: 280px;
+  max-width: 280px;
+  height: 54px;
+  min-height: 54px;
+  max-height: 54px;
+  transform: translateX(-50%);
+}
+
+#levelGrid {
+  cursor: grab;
+}
+
+#levelGrid.is-mouse-dragging {
+  cursor: grabbing;
+  scroll-behavior: auto;
+}
+
+#levelGrid img {
+  pointer-events: none;
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
 body.wonder-playing .battle-ad-reserve[data-active] {
   right: auto;
   bottom: 4px;

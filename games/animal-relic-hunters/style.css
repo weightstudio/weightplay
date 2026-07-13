@@ -1884,3 +1884,14 @@ body.relic-stage-select .stage-ad-reserve {
   body.relic-playing .canvas-container { align-self:center; }
   body.relic-playing .gear-slot-card { min-height:0; }
 }
+
+/* Stage and Battle are exclusive fixed screens. Public page content stays on Main only. */
+body.relic-stage-select .game-page-info,
+body.relic-playing .game-page-info,
+body.relic-stage-select .game-guide-wrapper,
+body.relic-playing .game-guide-wrapper {
+  display: none !important;
+}
+body.relic-stage-select #startBtn {
+  display: none !important;
+}

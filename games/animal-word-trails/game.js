@@ -51,9 +51,83 @@
   function result(){ const key=lang+'-'+stage, best=JSON.parse(localStorage.wordTrailsBest||'{}'), stars=Math.max(1,3-hints); best[key]=Math.max(best[key]||0,stars);localStorage.wordTrailsBest=JSON.stringify(best); $('resultSummary').textContent=`${found.size} ${t('found')} \u00b7 \u2605 ${stars}`; screen('result'); }
   const baseRenderBattle = renderBattle;
   renderBattle = function(){ baseRenderBattle(); const rule=packs[lang][stage].rule; if(rule)$('objective').textContent=rule; };
+  renderStages = function(){
+    const rail=$('stageRail'), best=JSON.parse(localStorage.wordTrailsBest||'{}'), album=JSON.parse(localStorage.wordTrailsAlbum||'{}');
+    const cards=Object.keys(album).filter(key=>key.startsWith(lang+'-')).length;
+    rail.innerHTML='';
+    packs[lang].forEach((item,i)=>{
+      const card=document.createElement('button'), locked=i>0&&!best[lang+'-'+(i-1)];
+      card.className='stage-card'+(i===stage?' selected':'')+(locked?' locked':'');
+      card.disabled=locked;
+      card.dataset.stage=String(i);
+      card.innerHTML='<strong>'+String(i+1)+'. '+item.name+'</strong><span>'+String(item.words.length)+' '+(lang==='en'?'words':'\u500b\u5b57\u8a5e')+'</span>';
+      card.onclick=()=>{ if(rail.dataset.dragging==='true') return; stage=i; renderBattle(); };
+      rail.append(card);
+    });
+    $('stageProgress').textContent=(stage+1)+'/'+packs[lang].length+' · '+(lang==='en'?'Cards ':'\u7dda\u7d22\u5361 ')+cards;
+  };
   function reveal(word){ const panel=$('clueReveal'); $('clueTitle').textContent=lang==='en'?`Clue found: ${word}`:`\u627e\u5230\u52d5\u7269\u7dda\u7d22\uff1a${word}`; $('clearFx').style.backgroundPosition=`${(found.size-1)%4*33.333}% center`; panel.classList.remove('hidden'); setTimeout(()=>panel.classList.add('hidden'),850); }
   const originalSubmit = submit;
   submit = function(){ const before=found.size; originalSubmit(); if(found.size>before){ const word=[...found].at(-1); const album=JSON.parse(localStorage.wordTrailsAlbum||'{}'); album[lang+'-'+word]=true; localStorage.wordTrailsAlbum=JSON.stringify(album); reveal(word); } };
+  Object.assign(copy.en, {
+    language:'Language', album:'Album', albumTitle:'Animal clues',
+    backLobby:'Back to WeightPlay', backMain:'Back to main', backStage:'Back to trails', closeAlbum:'Close album', stages:'Trails', board:'Word board',
+    seoTitle:'Animal Word Trails - WeightPlay', seoDescription:'Connect animal and habitat words in a calm reading puzzle.'
+  });
+  Object.assign(copy['zh-Hant'], {
+    language:'\u8a9e\u8a00', album:'\u7dda\u7d22\u5361', albumTitle:'\u52d5\u7269\u7dda\u7d22\u5361',
+    backLobby:'\u8fd4\u56de WeightPlay \u5927\u5ef3', backMain:'\u8fd4\u56de\u9996\u9801', backStage:'\u8fd4\u56de\u5c0f\u5f91\u9078\u55ae', closeAlbum:'\u95dc\u9589\u7dda\u7d22\u5361',
+    stages:'\u5c0f\u5f91\u9078\u55ae', board:'\u5b57\u8a5e\u68cb\u76e4', seoTitle:'\u52d5\u7269\u5b57\u8a5e\u5c0f\u5f91 - WeightPlay',
+    seoDescription:'\u9023\u7dda\u627e\u51fa\u52d5\u7269\u8207\u68f2\u5730\u5b57\u8a5e\u7684\u8f15\u9b06\u95b1\u8b80\u904a\u6232\u3002'
+  });
+  translate = function(){
+    document.documentElement.lang=lang;
+    document.querySelectorAll('[data-copy]').forEach(el=>el.textContent=t(el.dataset.copy));
+    document.querySelectorAll('[data-aria]').forEach(el=>el.setAttribute('aria-label',t(el.dataset.aria)));
+    document.title=t('seoTitle');
+    $('pageDescription').setAttribute('content',t('seoDescription'));
+  };
+  const rail=$('stageRail');
+  let railStartX=0;
+  let railStartScroll=0;
+  let railPointerActive=false;
+  let railStartStage=null;
+  rail.addEventListener('pointerdown',event=>{
+    railStartX=event.clientX;
+    railStartScroll=rail.scrollLeft;
+    railPointerActive=true;
+    railStartStage=event.target.closest('.stage-card:not([disabled])')?.dataset.stage ?? null;
+    rail.dataset.dragging='false';
+    rail.setPointerCapture?.(event.pointerId);
+  });
+  rail.addEventListener('pointermove',event=>{
+    if(!railPointerActive) return;
+    const delta=event.clientX-railStartX;
+    if(Math.abs(delta)<=10) return;
+    rail.dataset.dragging='true';
+    rail.scrollLeft=railStartScroll-delta;
+  });
+  rail.addEventListener('pointerup',event=>{
+    const tappedStage=railStartStage;
+    const dragged=rail.dataset.dragging==='true';
+    railPointerActive=false;
+    railStartStage=null;
+    rail.releasePointerCapture?.(event.pointerId);
+    const cards=[...rail.querySelectorAll('.stage-card')];
+    const center=rail.scrollLeft+rail.clientWidth/2;
+    const nearest=cards.reduce((best,card)=>Math.abs(card.offsetLeft+card.offsetWidth/2-center)<Math.abs(best.offsetLeft+best.offsetWidth/2-center)?card:best,cards[0]);
+    nearest?.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});
+    if(tappedStage!==null && !dragged) {
+      setTimeout(()=>{stage=Number(tappedStage);renderBattle();},0);
+    }
+    setTimeout(()=>{rail.dataset.dragging='false';},0);
+  });
+  rail.addEventListener('click',event=>{
+    const card=event.target.closest('.stage-card:not([disabled])');
+    if(!card || rail.dataset.dragging==='true') return;
+    stage=Number(card.dataset.stage);
+    renderBattle();
+  });
   locale.value=lang; translate();
   locale.onchange=()=>{lang=locale.value;stage=0;save();translate();}; $('start').onclick=()=>{renderStages();screen('stage')}; $('stageBack').onclick=()=>screen('main'); $('playStage').onclick=renderBattle; $('battleBack').onclick=()=>{document.exitFullscreen?.();renderStages();screen('stage')}; $('clear').onclick=clear; $('hint').onclick=hint; $('submit').onclick=submit; $('next').onclick=()=>{stage=Math.min(stage+1,packs[lang].length-1);renderBattle()}; $('resultsBack').onclick=()=>{renderStages();screen('stage')}; $('album').onclick=()=>{const album=JSON.parse(localStorage.wordTrailsAlbum||'{}');const words=[...new Set(packs[lang].flatMap(x=>x.words))];$('albumList').innerHTML=words.map((word,index)=>{const x=(index%4)*33.333,y=Math.floor(index/4)*50;return `<span class="${album[lang+'-'+word]?'card':'locked'}" style="background-position:${x}% ${y}%">${album[lang+'-'+word]?word:'?'}</span>`}).join('');$('albumDialog').showModal()};$('closeAlbum').onclick=()=>$('albumDialog').close();
 })();

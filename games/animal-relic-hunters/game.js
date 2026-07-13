@@ -652,6 +652,32 @@
     return Object.entries(params).reduce((str, [k, v]) => str.replaceAll(`{${k}}`, String(v)), raw);
   }
 
+  const ariaText = {
+    en: {
+      lobby: "Go back to lobby",
+      language: "Language selector",
+      stageBack: "Back to main",
+      regions: "Ruin regions",
+      battleBack: "Back to preparation"
+    },
+    "zh-Hant": {
+      lobby: "\u8fd4\u56de\u5927\u5ef3",
+      language: "\u8a9e\u8a00\u9078\u64c7\u5668",
+      stageBack: "\u8fd4\u56de\u9996\u9801",
+      regions: "\u907a\u8de1\u5340\u57df",
+      battleBack: "\u8fd4\u56de\u884c\u524d\u6e96\u5099"
+    }
+  };
+
+  function translateAriaLabels(locale) {
+    const labels = ariaText[locale] || ariaText.en;
+    nodes.menuBtn.setAttribute("aria-label", labels.lobby);
+    nodes.localeSelect.setAttribute("aria-label", labels.language);
+    nodes.stageBackBtn.setAttribute("aria-label", labels.stageBack);
+    nodes.expeditionRail.setAttribute("aria-label", labels.regions);
+    nodes.backToStageBtn.setAttribute("aria-label", labels.battleBack);
+  }
+
   const trainingDefs = [
     { key: "damage", nameKey: "train_damage", descKey: "train_damage_desc", max: 10 },
     { key: "hp", nameKey: "train_hp", descKey: "train_hp_desc", max: 10 },
@@ -792,7 +818,7 @@
     nodes.expeditionRail.querySelectorAll(".expedition-card:not(.is-locked)").forEach((button) => {
       button.addEventListener("click", () => {
         selectedExpedition = Number(button.dataset.expedition);
-        renderExpeditionStage();
+        startRun();
       });
     });
     nodes.stageTitle.textContent = t("chooseExpedition");
@@ -827,6 +853,7 @@
       el.textContent = t(key);
     }
     nodes.localeSelect.value = locale;
+    translateAriaLabels(locale);
     updateDiamondShopUI();
     renderTrainingPanel();
     renderEquippedGear();
