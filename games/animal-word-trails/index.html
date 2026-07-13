@@ -7,6 +7,7 @@
   <meta id="pageDescription" name="description" content="Connect animal and habitat words in a calm reading puzzle.">
   <title>Animal Word Trails - WeightPlay</title>
   <link rel="stylesheet" href="../../src/game-page-info.css">
+  <link rel="stylesheet" href="../../src/loading-screen.css">
   <link rel="stylesheet" href="../../src/play-viewport.css">
   <link rel="stylesheet" href="style.css">
 </head>
@@ -35,13 +36,13 @@
       <div class="battle-canvas">
         <header class="battle-top"><button class="back" id="battleBack" data-wp-return="battle" data-aria="backStage" aria-label="Back">&larr;</button><strong id="battleTitle"></strong><span id="starCount">&#9733; 0</span></header>
         <section class="objective"><span id="objective"></span><span id="foundCount"></span></section>
-        <section class="play-scene">
+        <section class="play-scene" id="playScene">
           <div class="target-row" id="targets"></div>
           <div class="board" id="board" data-aria="board" aria-label="Word board"></div>
           <div class="clue-reveal hidden" id="clueReveal"><i id="clearFx"></i><strong id="clueTitle"></strong></div>
           <p class="feedback" id="feedback" aria-live="polite"></p>
         </section>
-        <footer class="actions"><button id="hint" class="icon-action"><i class="icon hint"></i><span data-copy="hint">Hint</span></button><button id="clear" class="icon-action"><i class="icon clear"></i><span data-copy="clear">Clear</span></button><button id="submit" class="primary compact" data-copy="check">Check word</button></footer>
+        <footer class="actions"><button id="hint" class="icon-action"><i class="icon hint"></i><span data-copy="hint">Hint</span></button><button id="undo" class="icon-action"><i class="icon undo"></i><span data-copy="undo">Undo</span></button><button id="clear" class="icon-action"><i class="icon clear"></i><span data-copy="clear">Clear</span></button><button id="submit" class="primary compact" data-copy="check">Check word</button></footer>
       </div>
       <div class="battle-ad-reserve" aria-hidden="true"></div>
     </section>
@@ -52,6 +53,12 @@
       <button class="primary" id="next" data-copy="next">Next trail</button><button class="secondary" id="resultsBack" data-copy="trails">Trail menu</button>
     </section>
   </main>
+  <div id="loadingPanel" class="loading-panel" role="status" aria-live="polite">
+    <div class="loading-card"><strong id="loadingTitle">Loading</strong><span id="loadingText">0%</span><div><i id="loadingFill"></i></div></div>
+  </div>
+  <script src="../../src/site-config.js"></script>
+  <script src="../../src/analytics.js"></script>
+  <script src="../../src/sound.js"></script>
   <script src="../../src/edge-guard.js"></script>
   <script src="../../src/stage-selector-standard.js"></script>
   <script src="game.js"></script>

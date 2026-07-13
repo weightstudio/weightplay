@@ -62,7 +62,7 @@
   display: none !important;
 }
 
-:is(.stage-grid, .stage-rail, .mission-grid, .mission-rail, .region-rail, .level-grid) {
+:is(.stage-grid, .stage-rail, .mission-grid, .mission-rail, .region-rail, .level-grid, .route-rail, .day-rail, .zone-row, .expedition-rail, .world-map-grid) {
   display: flex !important;
   grid-template-columns: none !important;
   grid-auto-columns: unset !important;
@@ -77,18 +77,25 @@
   scrollbar-width: none;
   overscroll-behavior-x: contain;
   touch-action: pan-x !important;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
   min-height: 198px !important;
 }
 
-:is(.stage-grid, .stage-rail, .mission-grid, .mission-rail, .region-rail, .level-grid)::-webkit-scrollbar {
+:is(.stage-grid, .stage-rail, .mission-grid, .mission-rail, .region-rail, .level-grid, .route-rail, .day-rail, .zone-row, .expedition-rail, .world-map-grid).wp-stage-dragging {
+  cursor: grabbing;
+}
+
+:is(.stage-grid, .stage-rail, .mission-grid, .mission-rail, .region-rail, .level-grid, .route-rail, .day-rail, .zone-row, .expedition-rail, .world-map-grid)::-webkit-scrollbar {
   display: none;
 }
 
-:is(.stage-grid, .stage-rail, .mission-grid, .mission-rail, .region-rail, .level-grid).hidden {
+:is(.stage-grid, .stage-rail, .mission-grid, .mission-rail, .region-rail, .level-grid, .route-rail, .day-rail, .zone-row, .expedition-rail, .world-map-grid).hidden {
   display: none !important;
 }
 
-:is(.stage-grid, .stage-rail, .mission-grid, .mission-rail, .region-rail, .level-grid) > :is(.stage-card, .mission-card, .region-card, button) {
+:is(.stage-grid, .stage-rail, .mission-grid, .mission-rail, .region-rail, .level-grid, .route-rail, .day-rail, .zone-row, .expedition-rail, .world-map-grid) > :is(.stage-card, .mission-card, .region-card, .route-card, .day-card, .zone-card, .expedition-card, .zone-node, button) {
   box-sizing: border-box !important;
   flex: 0 0 264px !important;
   width: 264px !important;
@@ -100,6 +107,30 @@
   scroll-snap-align: center !important;
   scroll-snap-stop: always !important;
   overflow: hidden;
+}
+
+/* Locked native buttons must not swallow a swipe before it reaches the rail. */
+:is(.stage-grid, .stage-rail, .mission-grid, .mission-rail, .region-rail, .level-grid, .route-rail, .day-rail, .zone-row, .expedition-rail, .world-map-grid) > :is(
+  .stage-card,
+  .mission-card,
+  .region-card,
+  button
+):is(.locked, .is-locked, :disabled, [aria-disabled="true"]) {
+  pointer-events: none !important;
+}
+
+/* Wrapped locked cards must also leave the rail as the gesture target. */
+:is(.stage-grid, .stage-rail, .mission-grid, .mission-rail, .region-rail, .level-grid, .route-rail, .day-rail, .zone-row, .expedition-rail, .world-map-grid) :is(
+  .stage-card,
+  .mission-card,
+  .region-card,
+  .route-card,
+  .day-card,
+  .zone-card,
+  .expedition-card,
+  .zone-node
+):is(.locked, .is-locked, :disabled, [aria-disabled="true"]) {
+  pointer-events: none !important;
 }
 
 .standard-main-start {

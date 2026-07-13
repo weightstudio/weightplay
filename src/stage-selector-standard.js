@@ -2,8 +2,11 @@
   const STAGE_LOGICAL_WIDTH = 390;
   const STAGE_LOGICAL_HEIGHT = 788;
   const STAGE_RESERVE_HEIGHT = 56;
-  const railSelector = ".stage-grid,.stage-rail,.mission-grid,.mission-rail,.region-rail,.level-grid";
+  const railSelector = ".stage-grid,.stage-rail,.mission-grid,.mission-rail,.region-rail,.level-grid,.route-rail,.day-rail,.zone-row,.expedition-rail,.world-map-grid";
+  const cardSelector = ".stage-card,.mission-card,.region-card,.route-card,.day-card,.zone-card,.expedition-card,.zone-node,button";
   const installed = new WeakSet();
+  const railVisibility = new WeakMap();
+  const pendingRecommendation = new WeakMap();
   const nativeStageScalers = new Set(["bubble-bakery", "color-lunchbox", "garden-tiles", "wonder-crash"]);
   const stageRootByGame = {
     "animal-guard-yard": "#menuPanel",
@@ -133,7 +136,7 @@
   }
 
   function centerNearest(rail) {
-    const cards = [...rail.children].filter((card) => card.matches(".stage-card,.mission-card,.region-card,button"));
+    const cards = stageCards(rail);
     if (!cards.length) return;
     const railRect = rail.getBoundingClientRect();
     const coordinateScale = railRect.width > 0 ? rail.clientWidth / railRect.width : 1;
@@ -151,11 +154,65 @@
     rail.scrollTo({ left: Math.max(0, Math.min(target, rail.scrollWidth - rail.clientWidth)), behavior: "smooth" });
   }
 
+  function stageCards(rail) {
+    return [...rail.querySelectorAll(cardSelector)];
+  }
+
+  function isUnlockedCard(card) {
+    return !card.disabled
+      && card.getAttribute("aria-disabled") !== "true"
+      && !card.classList.contains("locked")
+      && !card.classList.contains("is-locked")
+      && !card.hasAttribute("data-locked");
+  }
+
+  function recommendedCard(rail) {
+    const unlocked = stageCards(rail).filter(isUnlockedCard);
+    return unlocked.at(-1) || null;
+  }
+
+  function centerCard(rail, card, behavior = "auto") {
+    if (!card || !rail.getClientRects().length) return;
+    const railRect = rail.getBoundingClientRect();
+    const cardRect = card.getBoundingClientRect();
+    const coordinateScale = railRect.width > 0 ? rail.clientWidth / railRect.width : 1;
+    const target = rail.scrollLeft
+      + ((cardRect.left + cardRect.width / 2) - (railRect.left + railRect.width / 2)) * coordinateScale;
+    rail.scrollTo({
+      left: Math.max(0, Math.min(target, rail.scrollWidth - rail.clientWidth)),
+      behavior,
+    });
+  }
+
+  function scheduleRecommendedCenter(rail, force = false) {
+    if (pendingRecommendation.has(rail)) {
+      pendingRecommendation.set(rail, pendingRecommendation.get(rail) || force);
+      return;
+    }
+    pendingRecommendation.set(rail, force);
+    requestAnimationFrame(() => {
+      force = pendingRecommendation.get(rail) || false;
+      pendingRecommendation.delete(rail);
+      const visible = Boolean(rail.getClientRects().length && getComputedStyle(rail).visibility !== "hidden");
+      const wasVisible = railVisibility.get(rail) || false;
+      railVisibility.set(rail, visible);
+      if (!visible || (!force && wasVisible)) return;
+      const recommended = recommendedCard(rail);
+      stageCards(rail).forEach((card) => {
+        if (card === recommended) card.dataset.wpStageRecommended = "true";
+        else delete card.dataset.wpStageRecommended;
+      });
+      centerCard(rail, recommended, "auto");
+      requestAnimationFrame(() => centerCard(rail, recommended, "auto"));
+    });
+  }
+
   function install(rail) {
     if (installed.has(rail)) return;
     installed.add(rail);
     rail.dataset.wpStageRail = "true";
     rail.dataset.wpStageInitiallyHidden = rail.getClientRects().length ? "false" : "true";
+    railVisibility.set(rail, Boolean(rail.getClientRects().length));
     let pointerId = null;
     let startX = 0;
     let startScroll = 0;
@@ -170,6 +227,8 @@
       rail.dataset.wpDragDown = String(Number(rail.dataset.wpDragDown || 0) + 1);
       startX = event.clientX;
       startScroll = rail.scrollLeft;
+      rail.dataset.wpDragStartScroll = String(startScroll);
+      rail.dataset.wpDragApplied = "0";
       moved = false;
       previousScrollBehavior = rail.style.getPropertyValue("scroll-behavior");
       previousSnapType = rail.style.getPropertyValue("scroll-snap-type");
@@ -191,6 +250,7 @@
       if (event.cancelable) event.preventDefault();
       rail.scrollLeft = startScroll - delta;
       rail.dataset.wpDragScroll = String(rail.scrollLeft);
+      rail.dataset.wpDragApplied = String(rail.scrollLeft - startScroll);
     }, true);
 
     const finish = (event) => {
@@ -218,11 +278,13 @@
       event.preventDefault();
       event.stopImmediatePropagation();
     }, true);
+    scheduleRecommendedCenter(rail, true);
   }
 
   function scan(root = document) {
     if (document.body && !document.body.dataset.wpGameId) document.body.dataset.wpGameId = gameId();
     root.querySelectorAll?.(railSelector).forEach(install);
+    document.querySelectorAll(railSelector).forEach((rail) => scheduleRecommendedCenter(rail));
     standardizeMainStart();
     updateStageState();
   }
@@ -237,6 +299,7 @@
     requestAnimationFrame(() => {
       standardizeMainStart();
       updateStageState();
+      document.querySelectorAll(railSelector).forEach((rail) => scheduleRecommendedCenter(rail, records.some((record) => record.type === "childList" && rail.contains(record.target))));
     });
   }).observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ["class", "hidden", "lang"] });
   window.addEventListener("wonder:locale-change", standardizeMainStart);

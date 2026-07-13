@@ -36,6 +36,7 @@
   copy['zh-Hant'].start = '\u958b\u59cb\u904a\u6232';
   const app = document.getElementById('app'), locale = document.getElementById('locale'); let lang = localStorage.wordTrailsLocale || 'en', stage = 0, path = [], found = new Set(), hints = 0, dragStartLength = 0;
   const $ = id => document.getElementById(id); const t = key => copy[lang][key];
+  const track = (event, details = {}) => window.WonderAnalytics?.track(event, { game_id: 'animal-word-trails', locale: lang, stage: stage + 1, ...details });
   function screen(name) { document.querySelectorAll('[data-screen]').forEach(x => x.classList.toggle('hidden', x.dataset.screen !== name)); document.body.classList.toggle('wp-mobile-game-mode', name === 'battle'); if (name === 'battle') document.documentElement.requestFullscreen?.().catch(()=>{}); }
   function translate(){ document.documentElement.lang=lang; document.querySelectorAll('[data-copy]').forEach(el=>el.textContent=t(el.dataset.copy)); }
   function save(){ localStorage.wordTrailsLocale=lang; localStorage.wordTrailsBest = JSON.stringify(JSON.parse(localStorage.wordTrailsBest || '{}')); }
@@ -45,14 +46,19 @@
   function select(i){ const data=packs[lang][stage]; if(data.blocked?.includes(i)||path.includes(i)) return; if(path.length && !neighbors(path.at(-1),i)) return; if(data.oneWay?.index===i && path.length && path.at(-1)!==data.oneWay.from){ $('feedback').textContent=lang==='en'?'Follow the leaf direction.':'\u8acb\u9806\u8457\u8449\u7247\u65b9\u5411\u524d\u9032\u3002'; return; } path.push(i); document.querySelectorAll('.tile').forEach(x=>x.classList.toggle('selected',path.includes(+x.dataset.index))); }
   function clear(){ path=[];document.querySelectorAll('.tile').forEach(x=>x.classList.remove('selected'));$('feedback').textContent=''; }
   function submit(){ const data=packs[lang][stage], word=path.map(i=>data.board[i]).join(''); if(!data.words.includes(word)||found.has(word)){ $('feedback').textContent=t('try'); clear(); return; } found.add(word); document.querySelector(`[data-word="${word}"]`).classList.add('done'); path.forEach(i=>document.querySelector(`.tile[data-index="${i}"]`).classList.add('correct')); $('feedback').textContent=t('great'); $('foundCount').textContent=`${found.size}/${data.words.length}`; $('starCount').textContent=`★ ${Math.max(1,3-hints)}`; if(found.size===data.words.length) setTimeout(result,450); else setTimeout(clear,420); }
-  function hint(){ const data=packs[lang][stage], word=data.words.find(w=>!found.has(w)); if(!word)return; hints++; const ix=data.board.findIndex(l=>l===word[0]); clear(); select(ix); $('feedback').textContent=`${t('hint')}: ${word[0]}`; }
+  function hint(){ const data=packs[lang][stage], word=data.words.find(w=>!found.has(w)); if(!word)return; hints++; track('word_trails_hint_used', { hints_used: hints }); window.WonderSound?.play('click'); const ix=data.board.findIndex(l=>l===word[0]); clear(); select(ix); $('feedback').textContent=`${t('hint')}: ${word[0]}`; }
   function result(){ const key=lang+'-'+stage, best=JSON.parse(localStorage.wordTrailsBest||'{}'), stars=Math.max(1,3-hints); best[key]=Math.max(best[key]||0,stars);localStorage.wordTrailsBest=JSON.stringify(best); $('resultSummary').textContent=`${found.size} ${t('found')} · ★ ${stars}`; screen('result'); }
   function renderStages(){ const rail=$('stageRail'); rail.innerHTML=''; const best=JSON.parse(localStorage.wordTrailsBest||'{}'); const album=JSON.parse(localStorage.wordTrailsAlbum||'{}'); const cards=Object.keys(album).filter(key=>key.startsWith(lang+'-')).length; packs[lang].forEach((item,i)=>{ const card=document.createElement('button'); const locked=i>0&&!best[lang+'-'+(i-1)]; card.className='stage-card'+(i===stage?' selected':'')+(locked?' locked':''); card.disabled=locked; card.innerHTML=`<strong>${i+1}. ${item.name}</strong><span>${item.words.length} ${lang==='en'?'words':'\u500b\u5b57\u8a5e'}</span>`; card.onclick=()=>{stage=i;renderStages()};rail.append(card); }); $('stageProgress').textContent=lang==='en'?`${stage+1}/${packs[lang].length} · Cards ${cards}`:`${stage+1}/${packs[lang].length} · \u7dda\u7d22\u5361 ${cards}`; }
   function renderBattle(){ const data=packs[lang][stage]; path=[]; found=new Set(); hints=0; $('battleTitle').textContent=data.name; $('objective').textContent=lang==='en'?'Find the animal words':'\u627e\u51fa\u52d5\u7269\u5b57\u8a5e'; $('foundCount').textContent=`0/${data.words.length}`; $('starCount').textContent='\u2605 0'; $('targets').innerHTML=data.words.map(w=>`<span class="target" data-word="${w}">${w}</span>`).join(''); const board=$('board'); board.innerHTML=''; data.board.forEach((letter,i)=>{const b=document.createElement('button');b.className='tile'+(data.blocked?.includes(i)?' blocked':'');b.disabled=Boolean(data.blocked?.includes(i));b.dataset.index=i;b.textContent=letter;b.addEventListener('click',()=>select(i));b.addEventListener('pointerenter',e=>{if(e.buttons)select(i)});board.append(b)}); board.onpointerdown=e=>{if(e.target.matches('.tile')){dragStartLength=path.length;board.setPointerCapture(e.pointerId);select(+e.target.dataset.index)}}; board.onpointerup=()=>{if(path.length-dragStartLength>1)submit()}; $('feedback').textContent=lang==='en'?'Connect adjacent tiles.':'\u9023\u63a5\u76f8\u9130\u7684\u5b57\u8a5e\u683c\u3002'; screen('battle'); }
   function submit(){ const data=packs[lang][stage], word=path.map(i=>data.board[i]).join(''); if(!data.words.includes(word)||found.has(word)){ $('feedback').textContent=t('try'); clear(); return; } found.add(word); document.querySelector(`[data-word="${word}"]`).classList.add('done'); path.forEach(i=>document.querySelector(`.tile[data-index="${i}"]`).classList.add('correct')); $('feedback').textContent=t('great'); $('foundCount').textContent=`${found.size}/${data.words.length}`; $('starCount').textContent=`\u2605 ${Math.max(1,3-hints)}`; if(found.size===data.words.length) setTimeout(result,450); else setTimeout(clear,420); }
-  function result(){ const key=lang+'-'+stage, best=JSON.parse(localStorage.wordTrailsBest||'{}'), stars=Math.max(1,3-hints); best[key]=Math.max(best[key]||0,stars);localStorage.wordTrailsBest=JSON.stringify(best); $('resultSummary').textContent=`${found.size} ${t('found')} \u00b7 \u2605 ${stars}`; screen('result'); }
+  function result(){ const key=lang+'-'+stage, best=JSON.parse(localStorage.wordTrailsBest||'{}'), stars=Math.max(1,3-hints); best[key]=Math.max(best[key]||0,stars);localStorage.wordTrailsBest=JSON.stringify(best); track('word_trails_stage_complete', { words_found: found.size, hints_used: hints, stars }); window.WonderSound?.play('win'); $('resultSummary').textContent=`${found.size} ${t('found')} \u00b7 \u2605 ${stars}`; screen('result'); }
   const baseRenderBattle = renderBattle;
-  renderBattle = function(){ baseRenderBattle(); const rule=packs[lang][stage].rule; if(rule)$('objective').textContent=rule; };
+  renderBattle = function(){
+    baseRenderBattle();
+    $('playScene').dataset.habitat=stage>=3&&stage<=4?'safari':'forest';
+    const rule=packs[lang][stage].rule;
+    if(rule)$('objective').textContent=rule;
+  };
   renderStages = function(){
     const rail=$('stageRail'), best=JSON.parse(localStorage.wordTrailsBest||'{}'), album=JSON.parse(localStorage.wordTrailsAlbum||'{}');
     const cards=Object.keys(album).filter(key=>key.startsWith(lang+'-')).length;
@@ -68,26 +74,42 @@
     });
     $('stageProgress').textContent=(stage+1)+'/'+packs[lang].length+' · '+(lang==='en'?'Cards ':'\u7dda\u7d22\u5361 ')+cards;
   };
-  function reveal(word){ const panel=$('clueReveal'); $('clueTitle').textContent=lang==='en'?`Clue found: ${word}`:`\u627e\u5230\u52d5\u7269\u7dda\u7d22\uff1a${word}`; $('clearFx').style.backgroundPosition=`${(found.size-1)%4*33.333}% center`; panel.classList.remove('hidden'); setTimeout(()=>panel.classList.add('hidden'),850); }
+  function reveal(word){
+    const panel=$('clueReveal');
+    const effectPositions=['0%','33.333%','66.667%','100%'];
+    $('clueTitle').textContent=lang==='en'?`Clue found: ${word}`:`\u627e\u5230\u52d5\u7269\u7dda\u7d22\uff1a${word}`;
+    $('clearFx').style.backgroundPosition=`${effectPositions[(found.size-1)%effectPositions.length]} center`;
+    panel.classList.remove('hidden');
+    setTimeout(()=>panel.classList.add('hidden'),850);
+  }
+  function undo(){
+    if(!path.length) return;
+    path.pop();
+    document.querySelectorAll('.tile').forEach(x=>x.classList.toggle('selected',path.includes(+x.dataset.index)));
+    $('feedback').textContent='';
+    window.WonderSound?.play('click');
+  }
   const originalSubmit = submit;
-  submit = function(){ const before=found.size; originalSubmit(); if(found.size>before){ const word=[...found].at(-1); const album=JSON.parse(localStorage.wordTrailsAlbum||'{}'); album[lang+'-'+word]=true; localStorage.wordTrailsAlbum=JSON.stringify(album); reveal(word); } };
+  submit = function(){ const before=found.size; originalSubmit(); if(found.size>before){ const word=[...found].at(-1); const album=JSON.parse(localStorage.wordTrailsAlbum||'{}'); album[lang+'-'+word]=true; localStorage.wordTrailsAlbum=JSON.stringify(album); track('word_trails_word_found', { words_found: found.size, word_length: word.length }); window.WonderSound?.play('success'); reveal(word); } else { window.WonderSound?.play('wrong'); } };
   Object.assign(copy.en, {
-    language:'Language', album:'Album', albumTitle:'Animal clues',
+    language:'Language', album:'Album', albumTitle:'Animal clues', undo:'Undo', loading:'Loading trail',
     backLobby:'Back to WeightPlay', backMain:'Back to main', backStage:'Back to trails', closeAlbum:'Close album', stages:'Trails', board:'Word board',
     seoTitle:'Animal Word Trails - WeightPlay', seoDescription:'Connect animal and habitat words in a calm reading puzzle.'
   });
   Object.assign(copy['zh-Hant'], {
-    language:'\u8a9e\u8a00', album:'\u7dda\u7d22\u5361', albumTitle:'\u52d5\u7269\u7dda\u7d22\u5361',
+    language:'\u8a9e\u8a00', album:'\u7dda\u7d22\u5361', albumTitle:'\u52d5\u7269\u7dda\u7d22\u5361', undo:'\u5fa9\u539f', loading:'\u6e96\u5099\u5c0f\u5f91',
     backLobby:'\u8fd4\u56de WeightPlay \u5927\u5ef3', backMain:'\u8fd4\u56de\u9996\u9801', backStage:'\u8fd4\u56de\u5c0f\u5f91\u9078\u55ae', closeAlbum:'\u95dc\u9589\u7dda\u7d22\u5361',
     stages:'\u5c0f\u5f91\u9078\u55ae', board:'\u5b57\u8a5e\u68cb\u76e4', seoTitle:'\u52d5\u7269\u5b57\u8a5e\u5c0f\u5f91 - WeightPlay',
     seoDescription:'\u9023\u7dda\u627e\u51fa\u52d5\u7269\u8207\u68f2\u5730\u5b57\u8a5e\u7684\u8f15\u9b06\u95b1\u8b80\u904a\u6232\u3002'
   });
   translate = function(){
     document.documentElement.lang=lang;
+    app.dataset.locale=lang;
     document.querySelectorAll('[data-copy]').forEach(el=>el.textContent=t(el.dataset.copy));
     document.querySelectorAll('[data-aria]').forEach(el=>el.setAttribute('aria-label',t(el.dataset.aria)));
     document.title=t('seoTitle');
     $('pageDescription').setAttribute('content',t('seoDescription'));
+    $('loadingTitle').textContent=t('loading');
   };
   const rail=$('stageRail');
   let railStartX=0;
@@ -130,6 +152,17 @@
     stage=Number(card.dataset.stage);
     renderBattle();
   });
+  function finishLoading(){
+    const panel=$('loadingPanel');
+    if(panel.classList.contains('hidden')) return;
+    $('loadingFill').style.width='100%';
+    $('loadingText').textContent='100%';
+    setTimeout(()=>panel.classList.add('hidden'),120);
+  }
   locale.value=lang; translate();
-  locale.onchange=()=>{lang=locale.value;stage=0;save();translate();}; $('start').onclick=()=>{renderStages();screen('stage')}; $('stageBack').onclick=()=>screen('main'); $('playStage').onclick=renderBattle; $('battleBack').onclick=()=>{document.exitFullscreen?.();renderStages();screen('stage')}; $('clear').onclick=clear; $('hint').onclick=hint; $('submit').onclick=submit; $('next').onclick=()=>{stage=Math.min(stage+1,packs[lang].length-1);renderBattle()}; $('resultsBack').onclick=()=>{renderStages();screen('stage')}; $('album').onclick=()=>{const album=JSON.parse(localStorage.wordTrailsAlbum||'{}');const words=[...new Set(packs[lang].flatMap(x=>x.words))];$('albumList').innerHTML=words.map((word,index)=>{const x=(index%4)*33.333,y=Math.floor(index/4)*50;return `<span class="${album[lang+'-'+word]?'card':'locked'}" style="background-position:${x}% ${y}%">${album[lang+'-'+word]?word:'?'}</span>`}).join('');$('albumDialog').showModal()};$('closeAlbum').onclick=()=>$('albumDialog').close();
+  $('loadingFill').style.width='72%';
+  $('loadingText').textContent='72%';
+  if(document.readyState==='complete') finishLoading(); else window.addEventListener('load',finishLoading,{once:true});
+  setTimeout(finishLoading,1800);
+  track('game_view'); locale.onchange=()=>{lang=locale.value;stage=0;save();translate();}; $('start').onclick=()=>{track('game_start');renderStages();screen('stage')}; $('stageBack').onclick=()=>screen('main'); $('playStage').onclick=renderBattle; $('battleBack').onclick=()=>{document.exitFullscreen?.();renderStages();screen('stage')}; $('clear').onclick=clear; $('undo').onclick=undo; $('hint').onclick=hint; $('submit').onclick=submit; $('next').onclick=()=>{stage=Math.min(stage+1,packs[lang].length-1);renderBattle()}; $('resultsBack').onclick=()=>{renderStages();screen('stage')}; $('album').onclick=()=>{const album=JSON.parse(localStorage.wordTrailsAlbum||'{}');const words=[...new Set(packs[lang].flatMap(x=>x.words))];$('albumList').innerHTML=words.map((word,index)=>{const x=(index%4)*33.333,y=Math.floor(index/4)*50;return `<span class="${album[lang+'-'+word]?'card':'locked'}" style="background-position:${x}% ${y}%">${album[lang+'-'+word]?word:'?'}</span>`}).join('');$('albumDialog').showModal()};$('closeAlbum').onclick=()=>$('albumDialog').close();
 })();
