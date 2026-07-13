@@ -283,13 +283,13 @@ body.garden-stage .level-grid > button {
 }
 
 .wonder-main {
-  position: fixed;
+  position: absolute;
   inset: 0;
   z-index: 80;
   display: grid;
   grid-template-rows: 54px minmax(0, 1fr) 52px 44px;
   gap: 8px;
-  padding: max(8px, env(safe-area-inset-top)) 8px max(8px, env(safe-area-inset-bottom));
+  padding: 8px;
   background: #101827;
 }
 
@@ -356,7 +356,7 @@ body.garden-stage .level-grid > button {
 body.wonder-stage-select #wonderStageBack {
   position: absolute;
   z-index: 90;
-  top: max(8px, env(safe-area-inset-top));
+  top: 8px;
   left: 8px;
   width: 48px !important;
   min-width: 48px !important;
@@ -389,12 +389,16 @@ body.wonder-stage-select #game {
 }
 
 body.wonder-stage-select #overlay {
-  bottom: 56px !important;
-  height: auto !important;
+  inset: 0 !important;
+  width: 390px !important;
+  height: calc(390px * 16 / 9) !important;
+  gap: 12px;
+  padding: 12px 24px 96px;
 }
 
 body.wonder-stage-select #menuContent {
-  width: min(342px, calc(100vw - 48px));
+  width: 342px;
+  max-height: 448px;
 }
 
 body.wonder-stage-select #menuTabs {
@@ -417,14 +421,25 @@ body.wonder-stage-select #menuTabs :is(img, .tab-gear) {
   height: 46px;
 }
 
+body.wonder-stage-select #levelGrid > button {
+  width: 264px !important;
+  min-width: 264px !important;
+  max-width: 264px !important;
+  flex-basis: 264px !important;
+  height: 190px !important;
+  min-height: 190px !important;
+  max-height: 190px !important;
+}
+
 body.wonder-stage-select #battleAdReserve {
   position: fixed !important;
   z-index: 70;
-  left: 0 !important;
-  right: 0 !important;
+  left: 50% !important;
+  right: auto !important;
   bottom: 0 !important;
   display: block !important;
-  width: 100% !important;
+  width: calc(390px * var(--wonder-shell-scale, 1)) !important;
   height: 56px !important;
+  transform: translateX(-50%);
   pointer-events: none !important;
 }

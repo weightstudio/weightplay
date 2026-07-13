@@ -12,7 +12,7 @@
 <body>
   <main class="word-trails" id="app">
     <section class="screen main-screen" data-screen="main">
-      <a class="lobby-return" href="../../index.html" data-aria="backLobby" aria-label="Back to WeightPlay"><span aria-hidden="true">&larr;</span><b aria-hidden="true">W</b></a>
+      <a class="lobby-return" data-wp-return="main" href="../../index.html" data-aria="backLobby" aria-label="Back to WeightPlay"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false"></a>
       <div class="locale-row"><label for="locale" data-copy="language">Language</label><select id="locale" data-aria="language" aria-label="Language"><option value="en">English</option><option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option></select></div>
       <img class="cover" src="../../assets/animal-word-trails-cover.webp" alt="">
       <h1 data-copy="title">Animal Word Trails</h1>
@@ -22,7 +22,7 @@
     </section>
 
     <section class="screen stage-screen hidden" data-screen="stage">
-      <button class="back" id="stageBack" data-aria="backMain" aria-label="Back">&larr;</button>
+      <button class="back" id="stageBack" data-wp-return="stage" data-aria="backMain" aria-label="Back">&larr;</button>
       <header><strong data-copy="chooseStage">Choose a trail</strong><span id="stageProgress"></span><button id="album" class="mini" data-copy="album">Album</button></header>
       <div class="stage-rail" id="stageRail" data-aria="stages" aria-label="Stages"></div>
       <button id="playStage" hidden type="button" tabindex="-1" aria-hidden="true"></button>
@@ -32,7 +32,7 @@
 
     <section class="screen battle-shell hidden" data-screen="battle" data-no-mobile-immersive="true">
       <div class="battle-canvas">
-        <header class="battle-top"><button class="back" id="battleBack" data-aria="backStage" aria-label="Back">&larr;</button><strong id="battleTitle"></strong><span id="starCount">&#9733; 0</span></header>
+        <header class="battle-top"><button class="back" id="battleBack" data-wp-return="battle" data-aria="backStage" aria-label="Back">&larr;</button><strong id="battleTitle"></strong><span id="starCount">&#9733; 0</span></header>
         <section class="objective"><span id="objective"></span><span id="foundCount"></span></section>
         <section class="play-scene">
           <div class="target-row" id="targets"></div>

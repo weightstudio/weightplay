@@ -8,7 +8,7 @@ button, select { font: inherit; }
 .main-screen { text-align: center; background: linear-gradient(#eff9de, #f6efd8); }
 .lobby-return, .back { width: 48px; height: 48px; border: 0; border-radius: 12px; background: #fff; color: #274b3c; display: inline-grid; place-items: center; text-decoration: none; font-size: 26px; box-shadow: 0 3px 10px #31462c33; }
 .lobby-return { position: absolute; top: 16px; left: 16px; grid-template-columns: 1fr 1fr; font-size: 22px; }
-.lobby-return b { color: #20a9d8; font-size: 26px; }
+.lobby-return img { width: 24px; height: 24px; object-fit: contain; }
 .locale-row { display: flex; justify-content: flex-end; gap: 8px; align-items: center; min-height: 44px; font-weight: 700; }
 select { border: 2px solid #527f69; border-radius: 9px; padding: 7px 10px; background: #fff; }
 .cover { display: block; width: min(100%, 430px); aspect-ratio: 1; object-fit: cover; border-radius: 18px; margin: 10px auto 16px; box-shadow: 0 8px 24px #3c472b33; }

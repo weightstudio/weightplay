@@ -14,6 +14,18 @@
     en: {cargo:'Cargo Dock A', passenger:'Passenger Dock B', repair:'Repair Dock C'},
     'zh-Hant': {cargo:'貨運碼頭 A', passenger:'旅客碼頭 B', repair:'維修碼頭 C'}
   };
+  Object.assign(flightLabels['zh-Hant'], {
+    cargo: '\u8ca8\u904b\u98db\u8239',
+    passenger: '\u65c5\u5ba2\u98db\u8239',
+    repair: '\u7dad\u4fee\u98db\u8239',
+    festival: '\u7bc0\u6176\u98db\u8239',
+    heavy: '\u91cd\u578b\u8ca8\u904b\u98db\u8239'
+  });
+  Object.assign(dockLabels['zh-Hant'], {
+    cargo: '\u8ca8\u904b\u78bc\u982d A',
+    passenger: '\u65c5\u5ba2\u78bc\u982d B',
+    repair: '\u7dad\u4fee\u78bc\u982d C'
+  });
   const shiftConfig = [null, {goal:4, parts:2, stormEvery:0, coin:24, stamps:1}, {goal:6, parts:2, stormEvery:0, coin:36, stamps:1}, {goal:7, parts:2, stormEvery:3, coin:48, stamps:2}, {goal:8, parts:4, stormEvery:2, coin:62, stamps:2}, {goal:10, parts:5, stormEvery:2, coin:80, stamps:3}];
   const saved = JSON.parse(localStorage.getItem(saveKey) || '{}');
   let locale = localStorage.getItem('weightPlayLocale') || 'en';
@@ -35,6 +47,7 @@
     document.title = `${t('title')} - Internal Trial`;
     document.querySelectorAll('[data-i18n]').forEach((node) => { node.textContent = t(node.dataset.i18n); });
     $('localeSelect').value = locale;
+    $('localeSelect').options[1].textContent = '\u7e41\u9ad4\u4e2d\u6587';
     $('contractText').textContent = locale === 'zh-Hant' ? '\u512a\u5148\u5408\u7d04\uff1a\u7121\u932f\u8aa4\u5b8c\u6210\u6642\u7372\u5f97\u984d\u5916\u5929\u7a7a\u5e63\u3002' : 'Priority contract: finish with no errors for bonus sky coins.';
     $('insuranceBtn').textContent = insuranceActive ? (locale === 'zh-Hant' ? '\u5df2\u6295\u4fdd' : 'Insurance active') : (locale === 'zh-Hant' ? '\u4fdd\u96aa 5 \u947d\u77f3' : 'Insure 5 diamonds');
     renderStages();
@@ -83,9 +96,10 @@
     if (state.conflict) steps.push(labels.conflict);
     if (state.needsCrew && !state.crewAssigned) steps.push(labels.crew);
     steps.push(labels.drag + dockName);
+    const numberedSteps = steps.map((step, index) => `${index + 1}. ${step}`).join('  →  ');
     $('flightTask').textContent = locale === 'zh-Hant'
-      ? `\u672c\u67b6\uff1a${flightName} \u2192 ${dockName}\uff5c${steps.join(' \u2192 ')}`
-      : `Current: ${flightName} -> ${dockName} | ${steps.join(' -> ')}`;
+      ? `\u672c\u67b6\uff1a${flightName} \u2192 ${dockName}\uff5c${numberedSteps}`
+      : `Current: ${flightName} -> ${dockName} | ${numberedSteps}`;
     $('flight').setAttribute('aria-label', locale === 'zh-Hant' ? `${flightName}\uff0c\u76ee\u6a19 ${dockName}` : `${flightName}, target ${dockName}`);
     document.querySelectorAll('.dock').forEach((dock) => {
       const label = labels.docks[dock.dataset.dock];
@@ -133,6 +147,9 @@
         : 'Drag the airship to the gold DRAG HERE dock.';
     }
     $('routeLine').style.opacity = '0';
+    $('serviceBtn').textContent = locale === 'zh-Hant' ? '1. \u7dad\u4fee\u670d\u52d9' : '1. Repair service';
+    $('clearRouteBtn').textContent = locale === 'zh-Hant' ? '1. \u6e05\u9664\u885d\u7a81' : '1. Clear conflict';
+    $('assignCrewBtn').textContent = locale === 'zh-Hant' ? '1. \u6307\u6d3e\u7d44\u54e1' : '1. Assign crew';
   }
   function result(win) {
     show('result');

@@ -1,16 +1,33 @@
 (() => {
+  const MENU_LOGICAL_WIDTH = 390;
+  const MENU_LOGICAL_HEIGHT = MENU_LOGICAL_WIDTH * 16 / 9;
+  const BATTLE_LOGICAL_WIDTH = 390;
+  const BATTLE_LOGICAL_HEIGHT = 788;
+  const AD_RESERVE_HEIGHT = 56;
+
   function updateViewport() {
     const viewport = window.visualViewport;
     const width = viewport?.width >= window.innerWidth * 0.75 ? viewport.width : window.innerWidth;
     const height = viewport?.height >= window.innerHeight * 0.75 ? viewport.height : window.innerHeight;
     document.documentElement.style.setProperty("--wonder-vw", `${width}px`);
     document.documentElement.style.setProperty("--wonder-vh", `${height}px`);
+    const stageActive = document.body.classList.contains("wonder-stage-select");
+    const playing = document.body.classList.contains("wonder-playing");
+    const menuHeight = Math.max(1, height - (stageActive ? AD_RESERVE_HEIGHT : 0));
+    const menuScale = Math.min(width / MENU_LOGICAL_WIDTH, menuHeight / MENU_LOGICAL_HEIGHT);
+    const battleScale = Math.min(
+      Math.max(0, width - 8) / BATTLE_LOGICAL_WIDTH,
+      Math.max(0, height - AD_RESERVE_HEIGHT - 8) / BATTLE_LOGICAL_HEIGHT
+    );
+    document.documentElement.style.setProperty("--wonder-shell-scale", String(menuScale));
+    if (playing) document.documentElement.style.setProperty("--wonder-battle-scale", String(battleScale));
   }
 
   updateViewport();
   window.addEventListener("resize", updateViewport, { passive: true });
   window.visualViewport?.addEventListener("resize", updateViewport, { passive: true });
   window.visualViewport?.addEventListener("scroll", updateViewport, { passive: true });
+  new MutationObserver(updateViewport).observe(document.body, { attributes: true, attributeFilter: ["class"] });
 
   const stageRail = document.querySelector("#levelGrid");
   if (stageRail) {

@@ -1677,6 +1677,7 @@ body {
   }
 }
 
+/* Battle shell: one centered layout path for every viewport. */
 body.beast-deck-playing { position:fixed; inset:0; width:100vw; height:100dvh; overflow:hidden; overscroll-behavior:none; }
 body.beast-deck-playing .game-container { position:fixed; inset:0; width:100vw; height:100dvh; overflow:hidden; }
 body.beast-deck-playing .topbar,
@@ -1684,26 +1685,6 @@ body.beast-deck-playing .game-page-info,
 body.beast-deck-playing .wp-tutorial-button,
 body.beast-deck-playing .weightplay-version-badge { display:none !important; }
 .battle-ad-reserve { display:none; }
-body.beast-deck-playing #gamePanel.game-panel {
-  position:fixed; top:var(--beast-battle-top,8px); left:var(--beast-battle-left,4px);
-  display:grid; grid-template-rows:108px 300px minmax(0,1fr); gap:8px;
-  width:390px; max-width:none; height:788px; min-height:0; margin:0; padding:8px; overflow:hidden;
-  transform:scale(var(--beast-battle-scale,1)); transform-origin:top left;
-}
-body.beast-deck-playing .hud-row { min-height:0; margin:0; }
-body.beast-deck-playing .battlefield { min-height:0; height:100%; margin:0; overflow:hidden; }
-body.beast-deck-playing .action-area { min-height:0; overflow:hidden; }
-body.beast-deck-playing .hand-row { min-height:176px; max-height:184px; overflow-x:auto; overflow-y:hidden; }
-body.beast-deck-playing .battle-log { max-height:58px; overflow-y:auto; }
-body.beast-deck-playing #menuBtn { font-size:0; }
-body.beast-deck-playing #menuBtn::before { content:"\2190"; font-size:1.45rem; line-height:1; }
-body.beast-deck-playing .battle-ad-reserve {
-  position:fixed; top:calc(var(--beast-battle-top,8px) + var(--beast-battle-content-height,772px)); left:var(--beast-battle-left,4px);
-  display:block; width:var(--beast-battle-width,382px); height:56px; min-height:56px;
-  background:rgba(4,12,24,.72); border-top:1px solid rgba(52,211,153,.25); pointer-events:none;
-}
-
-/* Final Expanded Canvas override. */
 html:has(body.beast-deck-playing), body.beast-deck-playing { width:100%; height:100dvh; -webkit-text-size-adjust:100%; text-size-adjust:100%; }
 body.beast-deck-playing .game-container { width:100vw; height:100dvh; min-height:0; overflow:hidden; }
 body.beast-deck-playing .topbar, body.beast-deck-playing .game-page-info, body.beast-deck-playing .wp-tutorial-button, body.beast-deck-playing .wp-tutorial-backdrop, body.beast-deck-playing .weightplay-version-badge { display:none !important; }

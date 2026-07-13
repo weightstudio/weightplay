@@ -22,7 +22,37 @@
   function move(direction){const risky=(state.zone+state.route+(direction==="right"?1:0))%3===0;state.oxygen=Math.max(0,state.oxygen-(risky&&!state.sonar?25:12));state.salvage+=risky&&!state.sonar?0:1;$("feedback").textContent=risky&&!state.sonar?t("hazard"):t("collect");state.sonar=false;if(state.oxygen<=0||state.zone>=3)return finish(state.oxygen>0);state.zone+=1;renderBattle();}
   function localize(){document.documentElement.lang=locale;document.title=`${t("title")} - Internal Trial`;$("title").textContent=t("title");$("languageLabel").textContent=t("language");$("localeSelect").value=locale;$("headline").textContent=t("headline");$("intro").textContent=t("intro");$("guideTitle").textContent=t("guideTitle");$("guideCopy").textContent=t("guideCopy");$("startBtn").textContent=t("start");$("stageTitle").textContent=t("stage");$("stageHint").textContent=t("stageHint");$("leftBtn").textContent=t("left");$("rightBtn").textContent=t("right");$("sonarBtn").textContent=t("sonar");$("surfaceBtn").textContent=t("surface");$("stageBack").ariaLabel=t("back");$("battleBack").ariaLabel=t("back");$("progress").textContent=`${t("rank",{n:save.rank})} - ${t("coins",{n:save.coins})}`;renderRoutes();if(state.route)renderBattle();}
   $("startBtn").onclick=()=>{show("stageScreen");renderRoutes();};$("stageBack").onclick=()=>show("mainScreen");$("battleBack").onclick=()=>{show("stageScreen");renderRoutes();};$("menuBtn").onclick=()=>show("mainScreen");$("leftBtn").onclick=()=>move("left");$("rightBtn").onclick=()=>move("right");$("sonarBtn").onclick=()=>{state.sonar=true;$("feedback").textContent=t("sonarSafe");renderBattle();};$("surfaceBtn").onclick=()=>finish(false);$("beaconBtn").onclick=()=>{if(state.beaconUsed)return;if(!window.WeightPlayWallet?.spendDiamonds?.(3)){$("feedback").textContent=t("beaconNeed");return;}state.beaconUsed=true;state.oxygen=Math.max(state.oxygen,30);$("feedback").textContent=`${t("beaconUsed")}: ${t("beaconHelp")}`;window.WonderAnalytics?.track?.("diamond_spend",{sink:"abyss_emergency_beacon",amount:3});renderBattle();};$("localeSelect").onchange=(event)=>{locale=event.target.value;localStorage.setItem("weightPlayLocale",locale);localize();};
-  let drag;$("routeRail").addEventListener("pointerdown",(event)=>{drag={id:event.pointerId,x:event.clientX,left:event.currentTarget.scrollLeft};event.currentTarget.setPointerCapture(event.pointerId);});$("routeRail").addEventListener("pointermove",(event)=>{if(drag?.id===event.pointerId)event.currentTarget.scrollLeft=drag.left-(event.clientX-drag.x);});$("routeRail").addEventListener("pointerup",(event)=>{if(drag?.id===event.pointerId)drag=null;});localize();
+  let drag;
+  let suppressRouteClickUntil = 0;
+  const routeRail = $("routeRail");
+  routeRail.addEventListener("pointerdown", (event) => {
+    drag = { id: event.pointerId, x: event.clientX, left: routeRail.scrollLeft, active: false };
+  });
+  routeRail.addEventListener("pointermove", (event) => {
+    if (drag?.id !== event.pointerId) return;
+    const delta = event.clientX - drag.x;
+    if (!drag.active && Math.abs(delta) > 8) {
+      drag.active = true;
+      routeRail.setPointerCapture(event.pointerId);
+    }
+    if (!drag.active) return;
+    event.preventDefault();
+    routeRail.scrollLeft = drag.left - delta;
+  });
+  const finishRoutePointer = (event) => {
+    if (drag?.id !== event.pointerId) return;
+    if (routeRail.hasPointerCapture(event.pointerId)) routeRail.releasePointerCapture(event.pointerId);
+    if (drag.active) suppressRouteClickUntil = performance.now() + 100;
+    drag = null;
+  };
+  routeRail.addEventListener("pointerup", finishRoutePointer);
+  routeRail.addEventListener("pointercancel", finishRoutePointer);
+  routeRail.addEventListener("click", (event) => {
+    if (performance.now() >= suppressRouteClickUntil) return;
+    event.preventDefault();
+    event.stopPropagation();
+  }, true);
+  localize();
   const lobbyLabels = { en: "Back to lobby", "zh-Hant": u("\\u8fd4\\u56de\\u5927\\u5ef3") };
   function syncMetadata() {
     document.title = `${t("title")} - WeightPlay`;
