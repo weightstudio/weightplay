@@ -190,7 +190,7 @@ body.wp-logical-battle-active.crystal-playing .hint-text { grid-column: 1 !impor
 
 /* Gearpack never turns the logical portrait Canvas into a physical-landscape layout. */
 body.wp-logical-battle-active.is-game-playing .battle-canvas[data-wp-logical-battle-canvas] {
-  --cell: 32px;
+  --cell: 27px;
   grid-template-columns: minmax(0, 1fr) !important;
   grid-template-rows: 50px 38px minmax(120px, 34%) minmax(0, 1fr) 30px 52px !important;
   gap: 4px !important;

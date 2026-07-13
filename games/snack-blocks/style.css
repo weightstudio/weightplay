@@ -667,6 +667,23 @@ body.snack-playing .board {
 
 body.snack-playing .result-panel {
   position: absolute;
+  inset: 6px 8px;
+  z-index: 8;
+  display: grid;
+  place-items: center;
+  width: auto;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  background: rgba(18, 21, 31, 0.96);
+}
+
+body.snack-playing .result-card {
+  width: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 body.snack-playing .game-page-info {
