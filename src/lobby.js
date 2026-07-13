@@ -751,9 +751,9 @@ function createGameCard(game) {
       <p>${text(game.description)}</p>
       ${gameStateCard(game, isPlayable)}
       <div class="game-card-categories">${categoryBadges}</div>
-      ${skillBadges ? `<div class="game-card-skills" aria-label="Skills trained">${skillBadges}</div>` : ""}
+      ${skillBadges ? `<div class="game-card-skills" aria-label="${i18n.t("aria.skills_trained")}">${skillBadges}</div>` : ""}
       ${skillReason ? `<div class="game-card-skill-reason">${skillReason}</div>` : ""}
-      ${quickFacts ? `<div class="game-card-facts" aria-label="Game quick facts">${quickFacts}</div>` : ""}
+      ${quickFacts ? `<div class="game-card-facts" aria-label="${i18n.t("aria.game_quick_facts")}">${quickFacts}</div>` : ""}
       <div class="game-card-meta">${meta}</div>
       ${isPlayable ? `<div class="game-card-plays">${playCountText(game)}</div>` : ""}
       <div class="game-card-actions">
@@ -975,7 +975,7 @@ function renderMobilePicks() {
         <strong>${title}</strong>
         <small>${type} / ${ageLabel}</small>
         <em>${i18n.t("mobile_picks.note")}</em>
-        ${skillBadges ? `<div class="mobile-pick-skills" aria-label="Skills trained">${skillBadges}</div>` : ""}
+        ${skillBadges ? `<div class="mobile-pick-skills" aria-label="${i18n.t("aria.skills_trained")}">${skillBadges}</div>` : ""}
       </div>
     `;
     return card;
@@ -1077,7 +1077,7 @@ function renderRecommendations() {
         <strong>${title}</strong>
         <small>${type}</small>
         <em>${note}</em>
-        ${skillBadges ? `<div class="recommendation-skills" aria-label="Skills trained">${skillBadges}</div>` : ""}
+        ${skillBadges ? `<div class="recommendation-skills" aria-label="${i18n.t("aria.skills_trained")}">${skillBadges}</div>` : ""}
       </div>
     `;
     return card;
@@ -1116,7 +1116,7 @@ function renderFreshUpdates() {
         <strong>${title}</strong>
         <small>${type} / ${ageLabel}</small>
         <em>${description}</em>
-        ${skillBadges ? `<div class="fresh-update-skills" aria-label="Skills trained">${skillBadges}</div>` : ""}
+        ${skillBadges ? `<div class="fresh-update-skills" aria-label="${i18n.t("aria.skills_trained")}">${skillBadges}</div>` : ""}
       </div>
     `;
     return card;
@@ -1155,7 +1155,7 @@ function renderChallengeSpotlight() {
         <strong>${title}</strong>
         <small>${type}</small>
         <em>${description}</em>
-        ${skillBadges ? `<div class="challenge-spotlight-skills" aria-label="Skills trained">${skillBadges}</div>` : ""}
+        ${skillBadges ? `<div class="challenge-spotlight-skills" aria-label="${i18n.t("aria.skills_trained")}">${skillBadges}</div>` : ""}
         <b>${i18n.t("challenge_spotlight.cta")}</b>
       </div>
     `;
@@ -1337,6 +1337,7 @@ function applyFilter({ historyMode = "replace" } = {}) {
 }
 
 function applyStaticTranslations() {
+  document.title = i18n.t("site.title");
   lobbyKicker.textContent = i18n.t("site.kicker");
   featuredLabel.textContent = i18n.t("site.featured");
   languageLabel.textContent = i18n.t("language.label");
@@ -1361,6 +1362,16 @@ function applyStaticTranslations() {
   });
   document.querySelectorAll("[data-i18n-placeholder]").forEach((element) => {
     element.setAttribute("placeholder", i18n.t(element.dataset.i18nPlaceholder));
+  });
+  const ariaLabels = {
+    "#localeSelect": "language.label",
+    "#lobbyStats": "aria.platform_status",
+    "#dailyReward": "aria.daily_reward",
+    ".parent-trust-points": "aria.parent_trust_highlights",
+    ".site-footer nav": "aria.site_links",
+  };
+  Object.entries(ariaLabels).forEach(([selector, key]) => {
+    document.querySelector(selector)?.setAttribute("aria-label", i18n.t(key));
   });
   renderFilterCounts();
   renderDiscoverySnapshot();

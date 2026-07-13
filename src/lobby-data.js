@@ -694,6 +694,41 @@ if (beastGuardian) {
   delete beastGuardian.internalTrial;
 }
 
+for (const game of window.WONDER_LOBBY.games) {
+  const clean = verifiedPublicLobbyCopy[game.id];
+  if (!clean) continue;
+  game.status = "playable";
+  game.title["zh-Hant"] = clean.title;
+  game.statusText["zh-Hant"] = clean.statusText;
+  game.type["zh-Hant"] = clean.type;
+  game.description["zh-Hant"] = clean.description;
+  game.meta["zh-Hant"] = clean.meta;
+  delete game.internalTrial;
+}
+
+const verifiedPublicLobbyCopy = {
+  "animal-gearpack-expedition": {
+    title: "\u52d5\u7269\u88dd\u5099\u884c\u56ca\u9060\u5f81",
+    statusText: "\u53ef\u904a\u73a9",
+    type: "\u7a7a\u9593\u884c\u56ca\u7b56\u7565\u9060\u5f81",
+    description: "\u70ba\u9f52\u8f2a\u89d2\u9b6f\u514b\u65af\u6392\u597d\u65c5\u884c\u884c\u56ca\uff0c\u9023\u7d50\u88dd\u5099\u7d44\u5408\uff0c\u5b8c\u6210\u9f52\u8f2a\u6797\u5730\u9060\u5f81\u3002",
+    meta: ["\u9f52\u8f2a\u89d2\u9b6f\u514b\u65af", "\u884c\u56ca\u9023\u9396", "\u5de5\u574a\u6210\u9577"],
+  },
+  "shadow-wolf": shadowWolfPublicCopy,
+};
+
+for (const game of window.WONDER_LOBBY.games) {
+  const clean = verifiedPublicLobbyCopy[game.id];
+  if (!clean) continue;
+  game.status = "playable";
+  game.title["zh-Hant"] = clean.title;
+  game.statusText["zh-Hant"] = clean.statusText;
+  game.type["zh-Hant"] = clean.type;
+  game.description["zh-Hant"] = clean.description;
+  game.meta["zh-Hant"] = clean.meta;
+  delete game.internalTrial;
+}
+
 const shadowWolfPublicCopy = {
   title: "\u5f71\u72fc\u50b3\u8aaa",
   statusText: "\u53ef\u904a\u73a9",

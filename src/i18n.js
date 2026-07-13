@@ -637,6 +637,33 @@
     "filter.age_family": "\u5bb6\u5ead",
   });
 
+  Object.assign(dictionaries.en, {
+    "site.title": "WeightPlay - Free Mobile Web Games for Kids and Families",
+    "aria.platform_status": "Platform status",
+    "aria.daily_reward": "Daily reward",
+    "aria.parent_trust_highlights": "Parent trust highlights",
+    "aria.skills_trained": "Skills trained",
+    "aria.game_quick_facts": "Game quick facts",
+    "aria.site_links": "Site links",
+    "skill.Planning": "Planning",
+    "skill.Spatial Reasoning": "Spatial Reasoning",
+    "skill.Risk Assessment": "Risk Assessment",
+  });
+
+  Object.assign(dictionaries["zh-Hant"], {
+    "site.title": "WeightPlay - \u514d\u8cbb\u5152\u7ae5\u8207\u5bb6\u5ead\u624b\u6a5f\u7db2\u9801\u904a\u6232",
+    "language.label": "\u8a9e\u8a00",
+    "aria.platform_status": "\u5e73\u53f0\u72c0\u614b",
+    "aria.daily_reward": "\u6bcf\u65e5\u7c3d\u5230\u734e\u52f5",
+    "aria.parent_trust_highlights": "\u5bb6\u9577\u5b89\u5fc3\u91cd\u9ede",
+    "aria.skills_trained": "\u57f9\u990a\u80fd\u529b",
+    "aria.game_quick_facts": "\u904a\u6232\u91cd\u9ede",
+    "aria.site_links": "\u7db2\u7ad9\u9023\u7d50",
+    "skill.Planning": "\u898f\u5283\u80fd\u529b",
+    "skill.Spatial Reasoning": "\u7a7a\u9593\u63a8\u7406",
+    "skill.Risk Assessment": "\u98a8\u96aa\u5224\u65b7",
+  });
+
   function interpolate(value, params) {
     return Object.entries(params || {}).reduce((text, [key, replacement]) => {
       return text.replaceAll(`{${key}}`, String(replacement));
