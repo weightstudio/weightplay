@@ -83,7 +83,7 @@
     en: {
       title: "Animal Relic Hunters",
       menuTitle: "Explore the Ancient Ruins.",
-      menuHint: "Move with WASD / virtual joystick. Defeat shadow beasts, collect Relic Orbs to level up, and find keys to unlock chests for Weapons, Armor, and Boots.",
+      menuHint: "Move with WASD / virtual joystick. On desktop, hold the left mouse button in the arena to move toward the cursor. Defeat shadow beasts, collect Relic Orbs to level up, and find keys to unlock chests for Weapons, Armor, and Boots.",
       prototypeGoalsTitle: "Expedition Goal",
       prototypeGoalsText: "Clear Room 3, defeat the Behemoth Boss, collect Relic Orbs, and grow stronger with permanent training and gear upgrades.",
       diamondShopTitle: "Permanent Upgrade",
@@ -198,7 +198,7 @@
     "zh-Hant": {
       title: "動物遺跡獵人",
       menuTitle: "探索古代遺跡。",
-      menuHint: "使用 WASD 或虛擬搖桿移動。擊敗怪物，收集能量球升級，並獲得鑰匙以解鎖寶箱獲得武器、防具與鞋子。",
+      menuHint: "使用 WASD 或虛擬搖桿移動。電腦版請在戰鬥場景按住滑鼠左鍵，朝游標方向移動。擊敗怪物，收集能量球升級，並獲得鑰匙以解鎖寶箱獲得武器、防具與鞋子。",
       prototypeGoalsTitle: "遠征目標",
       prototypeGoalsText: "通過第 3 個房間並擊敗遺跡巨獸 Boss，收集遺跡能量球，透過永久訓練與裝備升級變得更強。",
       diamondShopTitle: "永久升級",
@@ -300,7 +300,7 @@
   Object.assign(text["zh-Hant"], {
     title: "動物遺跡獵人",
     menuTitle: "探索古代動物遺跡",
-    menuHint: "使用 WASD 或虛擬搖桿移動。擊敗影獸、收集遺跡能量球升級，並找到金鑰開啟寶箱取得武器、防具與靴子。",
+    menuHint: "使用 WASD 或虛擬搖桿移動。電腦版請在戰鬥場景按住滑鼠左鍵，朝游標方向移動。擊敗影獸、收集遺跡能量球升級，並找到金鑰開啟寶箱取得武器、防具與靴子。",
     prototypeGoalsTitle: "遠征目標",
     prototypeGoalsText: "通過第 3 個房間、擊敗遺跡巨獸 Boss、收集遺跡能量球，並透過永久訓練與裝備升級變得更強。",
     diamondShopTitle: "永久升級",

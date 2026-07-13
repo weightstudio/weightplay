@@ -73,6 +73,7 @@
   scrollbar-width: none;
   overscroll-behavior-x: contain;
   touch-action: pan-x !important;
+  min-height: 198px !important;
 }
 
 :is(.stage-grid, .stage-rail, .mission-grid, .mission-rail, .region-rail, .level-grid)::-webkit-scrollbar {
@@ -389,6 +390,88 @@ body[data-wp-game-id="animal-moonlight-heist"] [data-wp-logical-stage-canvas] .e
 
 body[data-wp-game-id="animal-moonlight-heist"] [data-wp-logical-stage-canvas] .mission-rail {
   padding-block: 12px !important;
+}
+
+body[data-wp-game-id="animal-gearpack-expedition"] [data-wp-logical-stage-canvas]:has(> .stage-canvas) {
+  grid-template-rows: minmax(0, 1fr) !important;
+}
+
+body[data-wp-game-id="animal-gearpack-expedition"] [data-wp-logical-stage-canvas] .stage-canvas {
+  grid-template-columns: none !important;
+  grid-template-rows: 52px 96px minmax(0, 1fr) !important;
+}
+
+body[data-wp-game-id="animal-gearpack-expedition"] [data-wp-logical-stage-canvas] :is(.stage-header, .loadout-preview, .region-rail) {
+  grid-column: auto !important;
+  grid-row: auto !important;
+}
+
+body[data-wp-game-id="animal-gearpack-expedition"] [data-wp-logical-stage-canvas] .loadout-preview {
+  grid-template-columns: 76px minmax(0, 1fr) !important;
+  height: auto !important;
+}
+
+body[data-wp-game-id="animal-gearpack-expedition"] [data-wp-logical-stage-canvas] .region-rail {
+  width: 100% !important;
+  padding-block: 8px !important;
+}
+
+body[data-wp-game-id="animal-relic-hunters"] [data-wp-logical-stage-canvas] {
+  grid-template-columns: none !important;
+  grid-template-rows: 54px 198px minmax(0, 1fr) !important;
+  gap: 8px !important;
+}
+
+body[data-wp-game-id="animal-relic-hunters"] [data-wp-logical-stage-canvas] :is(.stage-panel-head, .expedition-rail, .stage-config-mount) {
+  grid-column: auto !important;
+  grid-row: auto !important;
+}
+
+body[data-wp-game-id="animal-relic-hunters"] [data-wp-logical-stage-canvas] .expedition-rail {
+  width: 100% !important;
+  height: 198px !important;
+  min-height: 198px !important;
+  max-height: 198px !important;
+}
+
+body[data-wp-game-id="animal-rune-tactics"] [data-wp-logical-stage-canvas] .mission-list {
+  grid-template-rows: 44px 198px !important;
+}
+
+body[data-wp-game-id="animal-rune-tactics"] [data-wp-logical-stage-canvas] .mission-grid {
+  width: 100% !important;
+  height: 198px !important;
+  min-height: 198px !important;
+  max-height: 198px !important;
+}
+
+body[data-wp-game-id="animal-rune-tactics"] [data-wp-logical-stage-canvas] .mission-card {
+  height: 190px !important;
+  min-height: 190px !important;
+  max-height: 190px !important;
+}
+
+body[data-wp-game-id="animal-rune-tactics"] [data-wp-logical-stage-canvas] .rune-stage-view[data-rune-stage-view="missions"] {
+  grid-template-columns: none !important;
+  grid-template-rows: minmax(0, 1fr) 52px !important;
+}
+
+body[data-wp-game-id="animal-rune-tactics"] [data-wp-logical-stage-canvas] .rune-stage-view > #startBtn {
+  width: 100% !important;
+  height: 52px !important;
+  min-height: 52px !important;
+  max-height: 52px !important;
+  align-self: auto !important;
+}
+
+body[data-wp-game-id="beast-deck"] [data-wp-logical-stage-canvas] .beast-stage-view[data-stage-view="missions"] .stage-select {
+  grid-template-rows: 34px 190px !important;
+}
+
+body[data-wp-game-id="beast-deck"] [data-wp-logical-stage-canvas] #stagePanel :is(.stage-grid, .stage-card) {
+  height: 190px !important;
+  min-height: 190px !important;
+  max-height: 190px !important;
 }
 
 .wonder-main {

@@ -659,8 +659,17 @@
     });
     bindStageGridDrag();
     window.requestAnimationFrame(() => {
-      nodes.stageGrid.querySelector(".stage-card.selected")?.scrollIntoView({ block: "center", inline: "center" });
+      centerStageCard(nodes.stageGrid.querySelector(".stage-card.selected"));
     });
+  }
+
+  function centerStageCard(card, behavior = "auto") {
+    if (!card) return;
+    const gridRect = nodes.stageGrid.getBoundingClientRect();
+    const cardRect = card.getBoundingClientRect();
+    const renderedScale = gridRect.width > 0 ? gridRect.width / nodes.stageGrid.clientWidth : 1;
+    const horizontalDelta = ((cardRect.left + cardRect.width / 2) - (gridRect.left + gridRect.width / 2)) / renderedScale;
+    nodes.stageGrid.scrollTo({ left: nodes.stageGrid.scrollLeft + horizontalDelta, behavior });
   }
 
   function bindStageGridDrag() {
@@ -669,6 +678,7 @@
     let drag = null;
 
     nodes.stageGrid.addEventListener("pointerdown", (event) => {
+      if (nodes.stageGrid.dataset.wpStageRail === "true") return;
       if (event.button !== 0 || nodes.stageGrid.scrollWidth <= nodes.stageGrid.clientWidth) return;
       drag = {
         id: event.pointerId,
@@ -714,7 +724,7 @@
         if (nearest) {
           nodes.stageGrid.querySelectorAll(".stage-card").forEach((card) => card.classList.toggle("selected", card === nearest.card));
           if (!nearest.card.classList.contains("locked")) currentStage = Number(nearest.card.dataset.stageIndex) || 0;
-          nearest.card.scrollIntoView({ block: "nearest", inline: "center", behavior: "smooth" });
+          centerStageCard(nearest.card, "smooth");
         }
         window.setTimeout(() => delete nodes.stageGrid.dataset.draggingClick, 0);
       }

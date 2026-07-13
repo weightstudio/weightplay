@@ -816,7 +816,7 @@
     bg: "../../assets/animal-auto-squad-bg.webp",
     enemies: "../../assets/animal-auto-squad-enemies.webp",
     items: "../../assets/animal-auto-squad-items.webp",
-    fxV2: "../../assets/animal-auto-squad-fx-v2.png",
+    fxV2: "../../assets/animal-auto-squad-fx-v2.webp",
     sparkFox: "../../assets/weightplay-character-spark-paw-fox-cutout.webp",
     bubbleOtter: "../../assets/weightplay-character-bubble-fin-otter-cutout.webp",
     drumPanda: "../../assets/weightplay-character-drum-belly-panda-safe-face-cutout.webp",

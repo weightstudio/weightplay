@@ -4,12 +4,13 @@
   const STAGE_RESERVE_HEIGHT = 56;
   const railSelector = ".stage-grid,.stage-rail,.mission-grid,.mission-rail,.region-rail,.level-grid";
   const installed = new WeakSet();
-  const nativeStageScalers = new Set(["wonder-crash"]);
+  const nativeStageScalers = new Set(["bubble-bakery", "color-lunchbox", "garden-tiles", "wonder-crash"]);
   const stageRootByGame = {
     "animal-guard-yard": "#menuPanel",
     "animal-quiz": ".animal-game",
     "animal-rune-tactics": "#menuPanel",
-    "beast-deck": "#menuPanel",
+    "beast-deck": ".beast-deck-app",
+    "star-memory": ".memory-game",
   };
   const mainStartByGame = {
     "animal-abyss-diver": "#startBtn",
@@ -151,7 +152,7 @@
   }
 
   function install(rail) {
-    if (installed.has(rail) || rail.dataset.stageDragInstalled === "true") return;
+    if (installed.has(rail)) return;
     installed.add(rail);
     rail.dataset.wpStageRail = "true";
     rail.dataset.wpStageInitiallyHidden = rail.getClientRects().length ? "false" : "true";
@@ -200,7 +201,7 @@
       if (moved) {
         event.preventDefault();
         suppressClick = true;
-        window.setTimeout(() => { suppressClick = false; }, 0);
+        window.setTimeout(() => { suppressClick = false; }, 240);
       }
       centerNearest(rail);
     };

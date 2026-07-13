@@ -1021,6 +1021,24 @@ body.memory-playing.memory-expanded-canvas .battle-ad-reserve {
   min-height: 56px;
 }
 
+/* Stage and Battle own their physical ad band; never let the shared logical-stage scaler hide it. */
+body.memory-stage .game-guide-wrapper,
+body.memory-playing .game-guide-wrapper {
+  display: none !important;
+}
+
+body[data-wp-game-id="star-memory"] .wp-stage-physical-reserve {
+  display: none !important;
+}
+
+body.memory-stage.wp-stage-select-active #stageAdReserve.stage-ad-reserve,
+body.memory-stage #stageAdReserve.stage-ad-reserve,
+body.memory-playing #battleAdReserve.battle-ad-reserve {
+  display: block !important;
+  height: 56px !important;
+  min-height: 56px !important;
+}
+
 body.memory-playing.memory-expanded-canvas .version-badge,
 body.memory-playing.memory-expanded-canvas .weightplay-version-badge,
 body.memory-playing.memory-expanded-canvas .sound-toggle,

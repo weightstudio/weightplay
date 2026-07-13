@@ -109,6 +109,7 @@
       ? `\u672c\u67b6\uff1a${flightName} \u2192 ${dockName}\uff5c${numberedSteps}`
       : `Current: ${flightName} -> ${dockName} | ${numberedSteps}`;
     $('flight').setAttribute('aria-label', locale === 'zh-Hant' ? `${flightName}\uff0c\u76ee\u6a19 ${dockName}` : `${flightName}, target ${dockName}`);
+    $('flight').dataset.destination = locale === 'zh-Hant' ? `\u9001\u5f80 ${dockName}` : `TO ${dockName.toUpperCase()}`;
     document.querySelectorAll('.dock').forEach((dock) => {
       const label = labels.docks[dock.dataset.dock];
       const isTarget = dock.dataset.dock === state.dock;
@@ -119,6 +120,23 @@
         ? (locale === 'zh-Hant' ? '目標' : 'TARGET')
         : '';
     });
+    requestAnimationFrame(renderGuidanceLine);
+  }
+
+  function renderGuidanceLine() {
+    const field = $('routeField').getBoundingClientRect();
+    const flight = $('flight').getBoundingClientRect();
+    const dock = document.querySelector(`.dock[data-dock="${state.dock}"]`)?.getBoundingClientRect();
+    if (!field.width || !flight.width || !dock) return;
+    const fromX = flight.left - field.left + flight.width / 2;
+    const fromY = flight.top - field.top + flight.height / 2;
+    const toX = dock.left - field.left + dock.width / 2;
+    const toY = dock.top - field.top + dock.height / 2;
+    Object.assign($('routeLine').style, {
+      left: `${fromX}px`, top: `${fromY}px`, width: `${Math.hypot(toX - fromX, toY - fromY)}px`,
+      transform: `rotate(${Math.atan2(toY - fromY, toX - fromX)}rad)`, opacity: '0.9'
+    });
+    $('routeLine').classList.add('is-guidance');
   }
   function startBattle() {
     const shift = state.shift || 1;
@@ -155,6 +173,7 @@
         : 'Drag the airship to the gold DRAG HERE dock.';
     }
     $('routeLine').style.opacity = '0';
+    $('routeLine').classList.remove('is-guidance');
     $('serviceBtn').textContent = locale === 'zh-Hant' ? '1. \u7dad\u4fee\u670d\u52d9' : '1. Repair service';
     $('clearRouteBtn').textContent = locale === 'zh-Hant' ? '1. \u6e05\u9664\u885d\u7a81' : '1. Clear conflict';
     $('assignCrewBtn').textContent = locale === 'zh-Hant' ? '1. \u6307\u6d3e\u7d44\u54e1' : '1. Assign crew';
@@ -217,6 +236,7 @@
     const dx = event.clientX - field.left - fromX;
     const dy = event.clientY - field.top - fromY;
     const length = Math.hypot(dx, dy);
+    $('routeLine').classList.remove('is-guidance');
     Object.assign($('routeLine').style, {left:`${fromX}px`, top:`${fromY}px`, width:`${length}px`, transform:`rotate(${Math.atan2(dy, dx)}rad)`, opacity:'1'});
     if (!isEnd) return;
     dragging = false;
