@@ -357,7 +357,7 @@
     trainingRoster: $("trainingRoster"),
     buySkinBtn: $("buySkinBtn"),
     equipSkinBtn: $("equipSkinBtn"),
-    startBtn: $("startBtn"),
+    startBtn: $("stageStartBtn"),
     stageSelectTitle: $("stageSelectTitle"),
     stageProgressText: $("stageProgressText"),
     stageRail: $("stageRail"),

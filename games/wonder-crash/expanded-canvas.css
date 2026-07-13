@@ -10,7 +10,6 @@ body.wonder-playing {
 
 body:not(.wonder-playing) .game-shell {
   position: fixed !important;
-  top: 50% !important;
   left: 50% !important;
   width: 390px !important;
   min-width: 390px !important;
@@ -19,12 +18,38 @@ body:not(.wonder-playing) .game-shell {
   min-height: calc(390px * 16 / 9) !important;
   max-height: calc(390px * 16 / 9) !important;
   margin: 0 !important;
-  transform: translate(-50%, -50%) scale(var(--wonder-shell-scale, 1)) !important;
-  transform-origin: center !important;
+}
+
+body:not(.wonder-playing):not(.wonder-stage-select) .game-shell {
+  top: 0 !important;
+  transform: translateX(-50%) scale(var(--wonder-shell-scale, 1)) !important;
+  transform-origin: top center !important;
+}
+
+body.has-game-page-info:not(.wonder-playing):not(.wonder-stage-select) .game-page-info {
+  margin-top: calc(var(--wonder-menu-rendered-height, 100vh) + 16px) !important;
+}
+
+body:not(.wonder-playing):not(.wonder-stage-select) .wonder-main {
+  grid-template-rows: 54px 374px 52px;
+  align-content: start;
+}
+
+body:not(.wonder-playing):not(.wonder-stage-select) .wonder-main-cover {
+  width: 374px;
+  min-width: 374px;
+  max-width: 374px;
+  height: 374px;
+  min-height: 374px;
+  max-height: 374px;
+  object-fit: cover;
+  object-position: center top;
 }
 
 body.wonder-stage-select:not(.wonder-playing) .game-shell {
   top: calc((var(--wonder-vh, 100dvh) - 56px) / 2) !important;
+  transform: translate(-50%, -50%) scale(var(--wonder-shell-scale, 1)) !important;
+  transform-origin: center !important;
 }
 
 body.wonder-playing .game-shell[data-battle-shell] {
