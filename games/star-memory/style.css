@@ -661,8 +661,42 @@ body:not(.memory-stage):not(.memory-playing) .language-picker select {
 #resultText {
   font-size: 14px;
   color: var(--text-muted);
-  margin-bottom: 24px;
+  margin-bottom: 14px;
   line-height: 1.5;
+}
+
+.memory-report {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 7px;
+  margin: 0 0 16px;
+}
+
+.memory-report-item {
+  min-width: 0;
+  padding: 8px 5px;
+  border: 1px solid rgba(148, 163, 184, 0.24);
+  border-radius: 10px;
+  background: rgba(15, 23, 42, 0.64);
+}
+
+.memory-report-item span,
+.memory-report-item strong {
+  display: block;
+}
+
+.memory-report-item span {
+  color: var(--text-muted);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.memory-report-item strong {
+  margin-top: 4px;
+  color: #f8fafc;
+  font-size: 14px;
+  line-height: 1.1;
 }
 
 .result-actions {

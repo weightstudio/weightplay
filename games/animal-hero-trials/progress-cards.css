@@ -1,0 +1,40 @@
+.progress-card > span {
+  grid-template-columns: 32px minmax(0, 1fr);
+  gap: 7px;
+  align-items: center;
+}
+
+.progress-card > span > img,
+.progress-card button > img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+.progress-copy {
+  display: grid;
+  gap: 2px;
+}
+
+.progress-card button {
+  grid-template-columns: 32px minmax(0, 1fr) auto;
+  column-gap: 7px;
+  align-items: center;
+}
+
+.progress-card button > span,
+.progress-card small {
+  text-align: left;
+}
+
+.progress-card button > span {
+  font-weight: 700;
+}
+
+.progress-card button > b {
+  white-space: nowrap;
+}
+
+.progress-card small {
+  grid-column: 2 / 4;
+}

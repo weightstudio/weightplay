@@ -19,6 +19,7 @@
   <link rel="stylesheet" href="../../src/play-viewport.css" />
   <link rel="stylesheet" href="../../src/game-page-info.css" />
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="progress-cards.css" />
   <style>
     .canvas-wrap canvas{position:absolute;left:50%;top:50%;width:auto;height:auto;object-fit:initial;transform:translate(-50%,-50%)}
     .reroll-row{margin-top:10px;display:grid;gap:5px}.reroll-row button{min-height:46px;border:1px solid #8edbb3;border-radius:9px;background:#0c281f;color:#fff;display:flex;align-items:center;justify-content:center;gap:7px;font-weight:900}.reroll-row button:disabled{opacity:.48}.reroll-row img{width:24px;height:24px;object-fit:contain}.reroll-row small{min-height:18px;color:#ffd45f}
@@ -35,7 +36,7 @@
       <label class="locale"><span>Language</span><select id="localeSelect"><option value="en">English</option><option value="zh-Hant">繁體中文</option></select></label>
       <img class="cover" src="../../assets/animal-hero-trials-cover.png" alt="Animal Hero Trials poster" />
       <div class="main-copy"><h1 data-t="title">Animal Hero Trials</h1><p data-t="pitch">Guide Leo through three forest trials and choose a blessing after every room.</p></div>
-      <div class="progress-card"><span><b data-t="marks">Trial Marks</b><strong id="markCount">0</strong></span><button id="masteryBtn" type="button"><span data-t="mastery">Heart Mastery</span><b id="masteryLevel">Lv.0</b><small id="masteryCost">5</small></button></div>
+      <div class="progress-card"><span><img src="../../assets/animal-hero-trials-icon-trial-gate.png" alt="" aria-hidden="true" /><span class="progress-copy"><b data-t="marks">Trial Marks</b><strong id="markCount">0</strong></span></span><button id="masteryBtn" type="button"><img src="../../assets/animal-hero-trials-icon-heart-mastery.png" alt="" aria-hidden="true" /><span data-t="mastery">Heart Mastery</span><b id="masteryLevel">Lv.0</b><small id="masteryCost">5</small></button></div>
       <button id="startBtn" class="primary" type="button" data-t="start">Start Trial</button>
     </section>
     <section id="stageView" class="view hidden">

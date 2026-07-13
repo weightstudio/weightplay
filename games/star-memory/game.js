@@ -33,6 +33,13 @@
   const resultTitle = document.querySelector("#resultTitle");
   const resultText = document.querySelector("#resultText");
   const starContainer = document.querySelector("#starContainer");
+  const memoryReport = document.querySelector("#memoryReport");
+  const reportPairsLabel = document.querySelector("#reportPairsLabel");
+  const reportPairsValue = document.querySelector("#reportPairsValue");
+  const reportMovesLabel = document.querySelector("#reportMovesLabel");
+  const reportMovesValue = document.querySelector("#reportMovesValue");
+  const reportStreakLabel = document.querySelector("#reportStreakLabel");
+  const reportStreakValue = document.querySelector("#reportStreakValue");
   
   const nextLevelBtn = document.querySelector("#nextLevelBtn");
   const againBtn = document.querySelector("#againBtn");
@@ -123,7 +130,10 @@
       stage8Desc: "More animal pairs with a careful move limit.",
       stage9Desc: "Space, animals, and sweets all mixed together.",
       stage10Desc: "The full 12-pair board for memory experts.",
-      highScore: "High Score: {score}"
+      highScore: "High Score: {score}",
+      reportPairs: "Pairs found",
+      reportMoves: "Moves used",
+      reportStreak: "Best streak"
     },
     "zh-Hant": {
       title: "\u52d5\u7269\u661f\u661f\u7ffb\u724c",
@@ -181,7 +191,10 @@
       stage8Desc: "\u66f4\u591a\u52d5\u7269\u914d\u5c0d\uff0c\u9700\u8981\u4ed4\u7d30\u8a18\u4f4d\u7f6e\u3002",
       stage9Desc: "\u661f\u7a7a\u3001\u52d5\u7269\u548c\u751c\u9ede\u6df7\u5408\u5728\u4e00\u8d77\u3002",
       stage10Desc: "\u5b8c\u6574 12 \u7d44\u5361\u724c\uff0c\u6311\u6230\u8a18\u61b6\u9ad8\u624b\u3002",
-      highScore: "\u6700\u9ad8\u5206\uff1a{score}"
+      highScore: "\u6700\u9ad8\u5206\uff1a{score}",
+      reportPairs: "\u5df2\u627e\u5230\u914d\u5c0d",
+      reportMoves: "\u4f7f\u7528\u6b65\u6578",
+      reportStreak: "\u6700\u4f73\u9023\u7e8c\u914d\u5c0d"
     }
   };
 
@@ -285,6 +298,7 @@
     score: 0,
     moves: 0,
     combo: 0,
+    bestCombo: 0,
     unlockedLevel: 1,
     selectedCards: [],
     matchedPairsCount: 0,
@@ -557,6 +571,7 @@
     state.score = 0;
     state.moves = 0;
     state.combo = 0;
+    state.bestCombo = 0;
     state.matchedPairsCount = 0;
     state.selectedCards = [];
     state.isLocked = false;
@@ -661,6 +676,7 @@
       // It's a match!
       state.matchedPairsCount += 1;
       state.combo += 1;
+      state.bestCombo = Math.max(state.bestCombo, state.combo);
       
       // Calculate scores
       const matchScore = 100 + (state.combo - 1) * 50;
@@ -748,6 +764,13 @@
     // Victory UI
     resultTitle.textContent = stage.id === stages.length ? t("allClear") : t("victory");
     resultText.textContent = stage.id === stages.length ? t("allClearDesc", { count: stages.length }) : t("victoryDesc", { moves: state.moves });
+    reportPairsLabel.textContent = t("reportPairs");
+    reportPairsValue.textContent = `${state.matchedPairsCount} / ${stage.symbols.length}`;
+    reportMovesLabel.textContent = t("reportMoves");
+    reportMovesValue.textContent = state.moves;
+    reportStreakLabel.textContent = t("reportStreak");
+    reportStreakValue.textContent = `x${state.bestCombo}`;
+    memoryReport.classList.remove("hidden");
     
     // Stars indicator
     document.querySelectorAll("#starContainer .star").forEach((star) => {
@@ -776,6 +799,7 @@
   function gameOver() {
     resultTitle.textContent = t("defeat");
     resultText.textContent = t("defeatDesc");
+    memoryReport.classList.add("hidden");
     
     // Stars indicator (none)
     document.querySelectorAll("#starContainer .star").forEach((star) => {
