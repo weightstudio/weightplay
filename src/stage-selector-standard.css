@@ -58,6 +58,10 @@
   display: none !important;
 }
 
+[data-wp-logical-stage-canvas] [hidden] {
+  display: none !important;
+}
+
 :is(.stage-grid, .stage-rail, .mission-grid, .mission-rail, .region-rail, .level-grid) {
   display: flex !important;
   grid-template-columns: none !important;

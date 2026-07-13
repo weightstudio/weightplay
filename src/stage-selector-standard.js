@@ -175,16 +175,20 @@
       previousSnapType = rail.style.getPropertyValue("scroll-snap-type");
       rail.style.setProperty("scroll-behavior", "auto", "important");
       rail.style.setProperty("scroll-snap-type", "none", "important");
-      rail.setPointerCapture?.(event.pointerId);
     }, true);
 
     rail.addEventListener("pointermove", (event) => {
       if (event.pointerId !== pointerId) return;
       const delta = event.clientX - startX;
-      if (event.cancelable) event.preventDefault();
       rail.dataset.wpDragDelta = String(delta);
       rail.dataset.wpDragMove = String(Number(rail.dataset.wpDragMove || 0) + 1);
-      if (Math.abs(delta) > 8) moved = true;
+      if (!moved && Math.abs(delta) > 8) {
+        moved = true;
+        rail.classList.add("wp-stage-dragging");
+        rail.setPointerCapture?.(event.pointerId);
+      }
+      if (!moved) return;
+      if (event.cancelable) event.preventDefault();
       rail.scrollLeft = startScroll - delta;
       rail.dataset.wpDragScroll = String(rail.scrollLeft);
     }, true);

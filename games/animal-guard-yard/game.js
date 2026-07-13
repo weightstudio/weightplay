@@ -93,6 +93,10 @@
       roleTankMelee: "Tank Melee",
       roleFastRanged: "Fast Ranged",
       roleCrossLane: "Cross-lane",
+      abilityCat: "Steady shot",
+      abilityDog: "Bite slow",
+      abilityOwl: "Feather slow",
+      abilityFox: "Cross-lane shot",
       catTactic: "Steady lane damage for early pressure.",
       dogTactic: "Blocks the lane and briefly slows bites.",
       owlTactic: "Fast shots keep rushing beasts slowed.",
@@ -201,6 +205,10 @@
       roleTankMelee: "\u5766\u514b\u8fd1\u6230",
       roleFastRanged: "\u5feb\u901f\u9060\u7a0b",
       roleCrossLane: "\u8de8\u7dda\u5c04\u64ca",
+      abilityCat: "\u7a69\u5b9a\u5c04\u64ca",
+      abilityDog: "\u54ac\u64ca\u6e1b\u901f",
+      abilityOwl: "\u7fbd\u7bad\u7de9\u901f",
+      abilityFox: "\u8de8\u7dda\u652f\u63f4",
       catTactic: "\u7a69\u5b9a\u9060\u7a0b\u50b7\u5bb3\uff0c\u9069\u5408\u65e9\u671f\u9632\u7dda\u3002",
       dogTactic: "\u64cb\u4f4f\u540c\u7dda\u91ce\u7378\uff0c\u54ac\u64ca\u6703\u77ed\u66ab\u6e1b\u901f\u3002",
       owlTactic: "\u5feb\u901f\u5c04\u64ca\uff0c\u53ef\u58d3\u4f4f\u885d\u523a\u578b\u91ce\u7378\u3002",
@@ -240,10 +248,10 @@
   };
 
   const units = [
-    { id: "cat", nameKey: "unitCat", roleKey: "roleRanged", attackStyle: "ranged", cost: 45, hp: 92, damage: 18, cooldown: 930, range: 9, unlockCost: 0 },
-    { id: "dog", nameKey: "unitDog", roleKey: "roleTankMelee", attackStyle: "melee", cost: 58, hp: 350, damage: 42, cooldown: 820, range: 1.5, unlockCost: 0 },
-    { id: "owl", nameKey: "unitOwl", roleKey: "roleFastRanged", attackStyle: "ranged", cost: 105, hp: 78, damage: 14, cooldown: 680, range: 9, unlockCost: 0 },
-    { id: "fox", nameKey: "unitFox", roleKey: "roleCrossLane", attackStyle: "cross", cost: 120, hp: 128, damage: 34, cooldown: 880, range: 9, targetRows: 1, unlockCost: 5 },
+    { id: "cat", nameKey: "unitCat", roleKey: "roleRanged", abilityKey: "abilityCat", attackStyle: "ranged", cost: 45, hp: 92, damage: 18, cooldown: 930, range: 9, unlockCost: 0 },
+    { id: "dog", nameKey: "unitDog", roleKey: "roleTankMelee", abilityKey: "abilityDog", attackStyle: "melee", cost: 58, hp: 350, damage: 42, cooldown: 820, range: 1.5, unlockCost: 0 },
+    { id: "owl", nameKey: "unitOwl", roleKey: "roleFastRanged", abilityKey: "abilityOwl", attackStyle: "ranged", cost: 105, hp: 78, damage: 14, cooldown: 680, range: 9, unlockCost: 0 },
+    { id: "fox", nameKey: "unitFox", roleKey: "roleCrossLane", abilityKey: "abilityFox", attackStyle: "cross", cost: 120, hp: 128, damage: 34, cooldown: 880, range: 9, targetRows: 1, unlockCost: 5 },
   ];
 
   const spriteAssets = {
@@ -1035,13 +1043,14 @@
       const button = document.createElement("button");
       button.className = "unit-card";
       button.type = "button";
+      button.setAttribute("aria-label", `${t(unit.nameKey)}: ${t(unit.roleKey)}. ${t(unit.abilityKey)}`);
       if (unit.id === selectedUnit) button.classList.add("selected");
       if (energy < trained.cost) button.classList.add("disabled");
       button.innerHTML = `
         <span class="mini-animal">${animalSprite(unit.id)}</span>
         <span class="unit-info">
           <strong>${t(unit.nameKey)} <em>${t("level", { n: trained.level })}</em></strong>
-          <b class="role-badge">${t(trained.roleKey)}</b>
+          <b class="role-badge" title="${t(trained.roleKey)}">${t(trained.abilityKey)}</b>
           <small class="unit-stats">
             <span>${t("costShort")} ${trained.cost}</span>
             <span>${t("atkShort")} ${trained.damage}</span>

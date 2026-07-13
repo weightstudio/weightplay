@@ -486,7 +486,7 @@
         <em>${t("missionPlan", { plan: t(mission.tactic) })}</em>`;
       btn.addEventListener("click", () => {
         selectedMission = mission.id;
-        renderMenu();
+        startMission(selectedMission);
       });
       nodes.missionGrid.appendChild(btn);
     });

@@ -104,10 +104,15 @@
     if (state.conflict) steps.push(labels.conflict);
     if (state.needsCrew && !state.crewAssigned) steps.push(labels.crew);
     steps.push(labels.drag + dockName);
-    const numberedSteps = steps.map((step, index) => `${index + 1}. ${step}`).join('  →  ');
-    $('flightTask').textContent = locale === 'zh-Hant'
-      ? `\u672c\u67b6\uff1a${flightName} \u2192 ${dockName}\uff5c${numberedSteps}`
-      : `Current: ${flightName} -> ${dockName} | ${numberedSteps}`;
+    const numberedSteps = steps.map((step, index) => `${index + 1}. ${step}`);
+    document.querySelector('.task-destination').textContent = locale === 'zh-Hant'
+      ? `本架：${flightName} → ${dockName}`
+      : `Current: ${flightName} -> ${dockName}`;
+    document.querySelector('.task-steps').textContent = numberedSteps.at(-1);
+    let nextStep = 1;
+    if (state.storm) $('serviceBtn').textContent = `${nextStep++}. ${locale === 'zh-Hant' ? '維修服務' : 'Repair service'}`;
+    if (state.conflict) $('clearRouteBtn').textContent = `${nextStep++}. ${locale === 'zh-Hant' ? '清除航線衝突' : 'Clear conflict'}`;
+    if (state.needsCrew) $('assignCrewBtn').textContent = `${nextStep}. ${locale === 'zh-Hant' ? '指派組員' : 'Assign crew'}`;
     $('flight').setAttribute('aria-label', locale === 'zh-Hant' ? `${flightName}\uff0c\u76ee\u6a19 ${dockName}` : `${flightName}, target ${dockName}`);
     $('flight').dataset.destination = locale === 'zh-Hant' ? `\u9001\u5f80 ${dockName}` : `TO ${dockName.toUpperCase()}`;
     document.querySelectorAll('.dock').forEach((dock) => {
@@ -163,9 +168,6 @@
     $('serviceBtn').classList.toggle('hidden', !state.storm);
     $('clearRouteBtn').classList.toggle('hidden', !state.conflict);
     $('assignCrewBtn').classList.toggle('hidden', !state.needsCrew);
-    $('serviceBtn').textContent = locale === 'zh-Hant' ? '1. 維修服務' : '1. Repair service';
-    $('clearRouteBtn').textContent = locale === 'zh-Hant' ? '1. 清除衝突' : '1. Clear conflict';
-    $('assignCrewBtn').textContent = locale === 'zh-Hant' ? '1. 指派組員' : '1. Assign crew';
     $('feedback').textContent = state.storm ? (locale === 'zh-Hant' ? '\u66b4\u98a8\u822a\u7dda\uff1a\u5148\u5b8c\u6210\u7dad\u4fee\u670d\u52d9\u3002' : 'Storm route: service first.') : t('dragHint');
     if (!state.storm && state.flightIndex <= 3) {
       $('feedback').textContent = locale === 'zh-Hant'
@@ -174,9 +176,6 @@
     }
     $('routeLine').style.opacity = '0';
     $('routeLine').classList.remove('is-guidance');
-    $('serviceBtn').textContent = locale === 'zh-Hant' ? '1. \u7dad\u4fee\u670d\u52d9' : '1. Repair service';
-    $('clearRouteBtn').textContent = locale === 'zh-Hant' ? '1. \u6e05\u9664\u885d\u7a81' : '1. Clear conflict';
-    $('assignCrewBtn').textContent = locale === 'zh-Hant' ? '1. \u6307\u6d3e\u7d44\u54e1' : '1. Assign crew';
   }
   function result(win) {
     show('result');

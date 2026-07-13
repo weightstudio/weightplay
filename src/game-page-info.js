@@ -1429,7 +1429,7 @@
 
   function syncStageArtwork() {
     const rails = document.querySelectorAll(
-      ".stage-grid, .stage-rail, .mission-grid, .mission-rail, .region-rail, .level-grid"
+      ".stage-grid, .stage-rail, .mission-grid, .mission-rail, .region-rail, .route-rail, .level-grid"
     );
     const artUrl = stageArtworkUrl();
     if (!artUrl) return;

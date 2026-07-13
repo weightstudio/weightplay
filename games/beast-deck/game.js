@@ -836,9 +836,8 @@
         if (!unlocked) return;
         profile.selectedMission = i;
         saveLocalState();
-        renderProgressUI();
-        scrollStageToSelected();
         window.WonderSound?.play("click");
+        startRun();
       });
       nodes.stageGrid.appendChild(button);
     });
