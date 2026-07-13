@@ -22,7 +22,7 @@
     draftPanel: $("draftPanel"),
     lootPanel: $("lootPanel"),
     resultPanel: $("resultPanel"),
-    startBtn: $("startBtn"),
+    menuCover: $("menuCover"),
     menuBtn: $("menuBtn"),
     retryBtn: $("retryBtn"),
     resultMenuBtn: $("resultMenuBtn"),
@@ -820,6 +820,7 @@
     nodes.expeditionRail.querySelectorAll(".expedition-card:not(.is-locked)").forEach((button) => {
       button.addEventListener("click", () => {
         selectedExpedition = Number(button.dataset.expedition);
+        window.WonderSound?.play("click");
         startRun();
       });
     });
@@ -850,6 +851,7 @@
     document.title = `${t("title")} - WeightPlay`;
     document.querySelector("meta[name='description']")?.setAttribute("content", metaText[locale]?.description || metaText.en.description);
     document.querySelector("meta[property='og:description']")?.setAttribute("content", metaText[locale]?.ogDescription || metaText.en.ogDescription);
+    nodes.menuCover?.setAttribute("alt", locale === "zh-Hant" ? "\u52d5\u7269\u907a\u8de1\u7375\u4eba\u5c01\u9762" : "Animal Relic Hunters cover");
     for (const el of document.querySelectorAll("[data-ui]")) {
       const key = el.dataset.ui;
       el.textContent = t(key);
@@ -1635,7 +1637,7 @@
           state.bullets.splice(bIndex, 1);
 
           // Spark particle system
-          createDamageSparks(bullet.x, bullet.y);
+          createDamageSparks(bullet.x, bullet.y, Math.max(1, Math.round(bullet.dmg)));
 
           // Enemy Defeated
           if (enemy.hp <= 0) {
@@ -1952,7 +1954,7 @@
 
   // Particle Effects system
   let particleSparksList = [];
-  function createDamageSparks(x, y) {
+  function createDamageSparks(x, y, damage = 0) {
     for (let i = 0; i < 6; i++) {
       particleSparksList.push({
         x: x,
@@ -1963,21 +1965,46 @@
         color: `hsl(${180 + Math.random() * 40}, 100%, 75%)`,
       });
     }
+    particleSparksList.push({
+      x,
+      y: y - 5,
+      vx: 0,
+      vy: -0.72,
+      life: 26,
+      maxLife: 26,
+      type: "damage-label",
+      damage,
+    });
   }
 
   function updateDamageSparks(ctx) {
-    particleSparksList.forEach((p, index) => {
+    for (let index = particleSparksList.length - 1; index >= 0; index--) {
+      const p = particleSparksList[index];
       p.x += p.vx;
       p.y += p.vy;
       p.life--;
 
-      ctx.fillStyle = p.color;
-      ctx.fillRect(p.x, p.y, 2, 2);
+      if (p.type === "damage-label") {
+        const alpha = Math.max(0, p.life / p.maxLife);
+        ctx.save();
+        ctx.globalAlpha = alpha;
+        ctx.font = "bold 13px Outfit";
+        ctx.textAlign = "center";
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = "rgba(4, 20, 32, 0.82)";
+        ctx.fillStyle = "#e6fbff";
+        ctx.strokeText(`-${p.damage}`, p.x, p.y);
+        ctx.fillText(`-${p.damage}`, p.x, p.y);
+        ctx.restore();
+      } else {
+        ctx.fillStyle = p.color;
+        ctx.fillRect(p.x, p.y, 2, 2);
+      }
 
       if (p.life <= 0) {
         particleSparksList.splice(index, 1);
       }
-    });
+    }
   }
 
   // Keyboard Event registers
@@ -2072,7 +2099,7 @@
   // Init handler
   function init() {
     loadLocalState();
-    nodes.stageConfigMount.append(document.querySelector(".menu-shop"), nodes.startBtn);
+    nodes.stageConfigMount.append(document.querySelector(".menu-shop"));
     updateDiamondShopUI();
     translateUI();
     setupInputs();
@@ -2086,11 +2113,6 @@
     nodes.stageBackBtn.addEventListener("click", () => {
       window.WonderSound?.play("click");
       showMain();
-    });
-
-    nodes.startBtn.addEventListener("click", () => {
-      window.WonderSound?.play("click");
-      startRun();
     });
 
     nodes.retryBtn.addEventListener("click", () => {

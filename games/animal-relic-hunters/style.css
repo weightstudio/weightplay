@@ -1718,6 +1718,15 @@ body.relic-stage-select .stage-panel {
   background-size: cover;
 }
 
+@media (min-height: 561px) {
+  body.relic-stage-select .stage-panel {
+    grid-template-rows: 54px 190px minmax(0, 1fr) 56px;
+  }
+
+  body.relic-stage-select .stage-config-mount { grid-row: 3; }
+  body.relic-stage-select .stage-ad-reserve { grid-row: 4; }
+}
+
 body.relic-stage-select .stage-panel-head {
   grid-template-columns: 48px minmax(0, 1fr);
   min-width: 0;
@@ -1899,6 +1908,73 @@ body.relic-stage-select .game-guide-wrapper,
 body.relic-playing .game-guide-wrapper {
   display: none !important;
 }
-body.relic-stage-select #startBtn {
+
+/* The shared Battle Canvas owns the only scale and the physical 56px reserve.
+   Keep this game's panel as a transparent wrapper so it cannot scale a second time. */
+body.wp-logical-battle-active.relic-playing #gamePanel.game-panel,
+body.wp-logical-battle-active.relic-playing #gamePanel.game-panel.weightplay-active-viewport {
+  position: static !important;
+  display: contents !important;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  transform: none !important;
+  overflow: visible !important;
+}
+
+body.wp-logical-battle-active.relic-playing .game-layout[data-wp-logical-battle-canvas] {
+  box-sizing: border-box;
+}
+
+body.wp-logical-battle-active.relic-playing .battle-ad-reserve[data-wp-battle-physical-reserve] {
+  position: fixed !important;
+  inset: auto auto 4px 50% !important;
+  grid-row: auto !important;
+}
+
+/* Give the reserve a measurable frame before the shared controller adopts it. */
+body.wp-logical-battle-active.relic-playing .battle-ad-reserve:not([data-wp-battle-physical-reserve]) {
+  position: fixed !important;
+  inset: auto auto 4px 50% !important;
+  width: min(calc(100vw - 8px), 612px) !important;
+  min-width: 0 !important;
+  transform: translateX(-50%) !important;
+}
+
+/* Result is its own fixed screen. The public guide remains a Main-only document section. */
+html:has(body.relic-result),
+body.relic-result {
+  height: var(--wp-mobile-vh, 100dvh) !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+
+body.relic-result .game-guide-wrapper,
+body.relic-result .game-page-info {
   display: none !important;
+}
+
+body.relic-result .relic-app {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: var(--wp-mobile-vh, 100dvh);
+  min-height: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+body.relic-result #resultPanel.result-panel {
+  inset: 4px auto auto 50% !important;
+  width: min(calc(100vw - 8px), 612px) !important;
+  height: calc(var(--wp-mobile-vh, 100dvh) - 8px) !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  grid-template-rows: minmax(0, 1fr) 82px 56px !important;
+  transform: translateX(-50%) !important;
 }
