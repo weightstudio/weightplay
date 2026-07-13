@@ -857,7 +857,7 @@
         profile.selectedMission = i;
         saveLocalState();
         window.WonderSound?.play("click");
-        startRun();
+        renderProgressUI();
       });
       nodes.stageGrid.appendChild(button);
     });
@@ -916,7 +916,10 @@
       // screen geometry and can choose the wrong card after the Stage Canvas scales.
       const target = selected.offsetLeft + selected.offsetWidth / 2 - nodes.stageGrid.clientWidth / 2;
       nodes.stageGrid.scrollTo({ left: Math.max(0, target), behavior: "auto" });
-      requestAnimationFrame(() => { isAutoPositioningStage = false; });
+      // The native scroll event can arrive after the next animation frame. Keep
+      // it marked as programmatic long enough that it cannot overwrite the
+      // saved selection with a neighboring card.
+      window.setTimeout(() => { isAutoPositioningStage = false; }, 220);
     });
   }
 
