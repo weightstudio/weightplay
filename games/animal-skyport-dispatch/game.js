@@ -8,10 +8,18 @@
   Object.assign(strings.en, {
     guideTitle: 'How to dispatch',
     guideBody: 'Choose a shift, read each flight request, then guide the airship to the highlighted matching dock before congestion builds.',
+    backToLobby: 'Back to lobby',
+    back: 'Back',
+    coverAlt: 'Skyport dispatch animals',
+    shiftSelection: 'Shift selection',
   });
   Object.assign(strings['zh-Hant'], {
     guideTitle: '\u5982\u4f55\u8abf\u5ea6',
     guideBody: '\u9078\u64c7\u73ed\u6b21\u3001\u8b80\u61c2\u6bcf\u67b6\u98db\u8239\u7684\u9700\u6c42\uff0c\u518d\u65bc\u58c5\u585e\u524d\u5c07\u98db\u8239\u5f15\u5c0e\u81f3\u9ad8\u4eae\u7684\u5c0d\u61c9\u78bc\u982d\u3002',
+    backToLobby: '\u56de\u5230\u5927\u5ef3',
+    back: '\u8fd4\u56de',
+    coverAlt: '\u5929\u7a7a\u6e2f\u8abf\u5ea6\u52d5\u7269',
+    shiftSelection: '\u73ed\u6b21\u9078\u64c7',
   });
   const flights = [['cargo','cargo'], ['passenger','passenger'], ['repair','repair'], ['festival','passenger'], ['heavy','cargo']];
   const flightLabels = {
@@ -46,9 +54,9 @@
   const t = (key, values = {}) => Object.entries(values).reduce((value, [name, replacement]) => value.replace(`{${name}}`, replacement), strings[locale][key]);
   const persist = () => localStorage.setItem(saveKey, JSON.stringify(save));
   const show = (id) => {
-    ['mainScreen','stageScreen','battleShell','result'].forEach((screen) => $(screen).classList.toggle('hidden', screen !== id));
+    ['mainScreen','stageScreen','battleShell','result'].forEach((screen) => $(screen).classList.toggle('hidden', screen !== id && !(id === 'result' && screen === 'battleShell')));
     $('mainHeader').classList.toggle('hidden', id !== 'mainScreen');
-    document.body.classList.toggle('skyport-playing', id === 'battleShell');
+    document.body.classList.toggle('skyport-playing', id === 'battleShell' || id === 'result');
   };
   function localize() {
     document.documentElement.lang = locale;
@@ -56,6 +64,11 @@
     document.querySelectorAll('[data-i18n]').forEach((node) => { node.textContent = t(node.dataset.i18n); });
     $('localeSelect').value = locale;
     $('localeSelect').options[1].textContent = '\u7e41\u9ad4\u4e2d\u6587';
+    document.querySelector('.home-link').setAttribute('aria-label', t('backToLobby'));
+    document.querySelector('.cover').alt = t('coverAlt');
+    $('stageBack').setAttribute('aria-label', t('back'));
+    $('battleBack').setAttribute('aria-label', t('back'));
+    $('stageRail').setAttribute('aria-label', t('shiftSelection'));
     $('contractText').textContent = locale === 'zh-Hant' ? '\u512a\u5148\u5408\u7d04\uff1a\u7121\u932f\u8aa4\u5b8c\u6210\u6642\u7372\u5f97\u984d\u5916\u5929\u7a7a\u5e63\u3002' : 'Priority contract: finish with no errors for bonus sky coins.';
     $('insuranceBtn').textContent = insuranceActive ? (locale === 'zh-Hant' ? '\u5df2\u6295\u4fdd' : 'Insurance active') : (locale === 'zh-Hant' ? '\u4fdd\u96aa 5 \u947d\u77f3' : 'Insure 5 diamonds');
     renderStages();
@@ -176,6 +189,15 @@
         ? '\u5c07\u98db\u8239\u62d6\u5230\u91d1\u8272\u300c\u62d6\u5230\u9019\u88e1\u300d\u78bc\u982d\u3002'
         : 'Drag the airship to the gold DRAG HERE dock.';
     }
+    const destination = dockLabels[locale][dock];
+    const nextAction = state.storm
+      ? (locale === 'zh-Hant' ? '\u5148\u4f7f\u7528\u7dad\u4fee\u670d\u52d9' : 'Use repair service first')
+      : state.conflict
+        ? (locale === 'zh-Hant' ? '\u5148\u6e05\u9664\u822a\u7dda\u885d\u7a81' : 'Clear the route conflict first')
+        : state.needsCrew
+          ? (locale === 'zh-Hant' ? '\u5148\u6307\u6d3e\u7d44\u54e1' : 'Assign crew first')
+          : (locale === 'zh-Hant' ? `\u5c07\u98db\u8239\u62d6\u5230\u91d1\u8272\u76ee\u6a19\uff1a${destination}` : `Drag the airship to the gold target: ${destination}`);
+    $('feedback').textContent = locale === 'zh-Hant' ? `\u4e0b\u4e00\u6b65\uff1a${nextAction}` : `Next: ${nextAction}`;
     $('routeLine').style.opacity = '0';
     $('routeLine').classList.remove('is-guidance');
   }
@@ -183,9 +205,12 @@
     show('result');
     $('resultTitle').textContent = win ? t('win') : t('lose');
     $('resultCopy').textContent = win ? t('winCopy') : (state.lastError || t('loseCopy'));
+    const resultLabels = locale === 'zh-Hant'
+      ? { reputation: '\u8072\u671b', coins: '\u5929\u7a7a\u5e63', medals: '\u52f3\u7ae0', safe: '\u5b89\u5168\u8abf\u5ea6', errors: '\u932f\u8aa4', protected: '\u5408\u7d04\u734e\u52f5\u5df2\u4fdd\u7559', retry: '\u514d\u8cbb\u91cd\u8a66' }
+      : { reputation: 'Reputation', coins: 'Sky coins', medals: 'Medals', safe: 'Safe routing', errors: 'Errors', protected: 'Contract bonus protected', retry: 'Retry is free' };
     $('resultRewards').innerHTML = win
-      ? `<span>Reputation +${state.done * 5}</span><span>Sky coins +${shiftConfig[state.shift].coin + (state.contract && state.errors === 0 ? 20 : 0)}</span><span>Medals ${save.medals[state.shift] || 1}/3</span>`
-      : `<span>Safe routing ${state.done}/${state.goal}</span><span>Errors ${state.errors}/3</span><span>${insuranceActive ? 'Contract bonus protected' : 'Retry is free'}</span>`;
+      ? `<span>${resultLabels.reputation} +${state.done * 5}</span><span>${resultLabels.coins} +${shiftConfig[state.shift].coin + (state.contract && state.errors === 0 ? 20 : 0)}</span><span>${resultLabels.medals} ${save.medals[state.shift] || 1}/3</span>`
+      : `<span>${resultLabels.safe} ${state.done}/${state.goal}</span><span>${resultLabels.errors} ${state.errors}/3</span><span>${insuranceActive ? resultLabels.protected : resultLabels.retry}</span>`;
     $('nextBtn').textContent = win && state.shift < 5 ? t('next') : t('retry');
     $('nextBtn').onclick = () => { state.shift = win ? Math.min(5, state.shift + 1) : state.shift; startBattle(); };
   }
