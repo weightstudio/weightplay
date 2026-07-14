@@ -857,7 +857,7 @@
         profile.selectedMission = i;
         saveLocalState();
         window.WonderSound?.play("click");
-        renderProgressUI();
+        startRun();
       });
       nodes.stageGrid.appendChild(button);
     });

@@ -221,10 +221,17 @@
     const coordinateScale = railRect.width > 0 ? rail.clientWidth / railRect.width : 1;
     const target = rail.scrollLeft
       + ((cardRect.left + cardRect.width / 2) - (railRect.left + railRect.width / 2)) * coordinateScale;
-    rail.scrollTo({
-      left: Math.max(0, Math.min(target, rail.scrollWidth - rail.clientWidth)),
-      behavior,
-    });
+    const boundedTarget = Math.max(0, Math.min(target, rail.scrollWidth - rail.clientWidth));
+    if (behavior === "auto") {
+      const previousBehavior = rail.style.getPropertyValue("scroll-behavior");
+      const previousPriority = rail.style.getPropertyPriority("scroll-behavior");
+      rail.style.setProperty("scroll-behavior", "auto", "important");
+      rail.scrollLeft = boundedTarget;
+      if (previousBehavior) rail.style.setProperty("scroll-behavior", previousBehavior, previousPriority);
+      else rail.style.removeProperty("scroll-behavior");
+      return;
+    }
+    rail.scrollTo({ left: boundedTarget, behavior });
   }
 
   function scheduleRecommendedCenter(rail, force = false) {
@@ -279,6 +286,7 @@
       previousSnapType = rail.style.getPropertyValue("scroll-snap-type");
       rail.style.setProperty("scroll-behavior", "auto", "important");
       rail.style.setProperty("scroll-snap-type", "none", "important");
+      rail.scrollLeft = startScroll;
     }, true);
 
     rail.addEventListener("pointermove", (event) => {

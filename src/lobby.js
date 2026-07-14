@@ -142,6 +142,10 @@ const lobbyGameFacts = {
   "animal-reef-fisher": { difficulty: "Medium", time: "3-5 minutes" },
   "beast-tactician": { difficulty: "Hard", time: "5-8 minutes" },
   "shadow-wolf": { difficulty: "Hard", time: "5-8 minutes" },
+  "animal-cafe-rush": { difficulty: "Medium", time: "3-5 minutes" },
+  "animal-hero-trials": { difficulty: "Hard", time: "5-8 minutes" },
+  "animal-gearpack-expedition": { difficulty: "Hard", time: "5-8 minutes" },
+  "animal-moonlight-heist": { difficulty: "Medium", time: "5-8 minutes" },
 };
 let activeFilter = "all";
 let activeTopic = "all";

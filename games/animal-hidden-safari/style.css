@@ -570,6 +570,15 @@ body.safari-stage .stage-grid { align-items:center; padding-inline:calc((100% - 
   font-size: 1.5rem;
 }
 
+.result-celebration {
+  display: block;
+  width: min(68vw, 188px);
+  max-height: 156px;
+  margin: -18px auto -8px;
+  object-fit: contain;
+  pointer-events: none;
+}
+
 .stars {
   font-size: 2rem;
   color: #ffb91f;
