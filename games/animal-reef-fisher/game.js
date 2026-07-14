@@ -80,6 +80,13 @@
       castHint: "Hold in the reef to charge, release to cast.",
       charging: "Release when the power reaches the water depth you want.",
       hooked: "Fish hooked. Drag the red knob below, or slide left and right on the sea. Keep the marker in the green SAFE area.",
+      hookedBehavior: "{behavior}: {hint} Keep the marker in SAFE.",
+      behaviorSteady: "Steady swimmer",
+      behaviorSteadyHint: "Follow the smooth pull with small movements.",
+      behaviorDart: "Darting swimmer",
+      behaviorDartHint: "Watch for quick direction changes and slide back gently.",
+      behaviorHeavy: "Heavy swimmer",
+      behaviorHeavyHint: "It pulls for longer. Stay patient near the middle.",
       tensionTitle: "Line Tension",
       tensionLow: "Loose",
       tensionSafe: "Safe",
@@ -151,6 +158,13 @@
       castHint: "按住礁海畫面蓄力，放開即可拋竿。",
       charging: "蓄力到想要的水深時放開。",
       hooked: "魚上鉤了。拖曳下方紅色鈕，或直接在海面左右滑，讓標記留在綠色安全區。",
+      hookedBehavior: "{behavior}：{hint} 讓標記留在安全區。",
+      behaviorSteady: "穩定型魚",
+      behaviorSteadyHint: "拉力平順，用小幅度移動跟著調整。",
+      behaviorDart: "突進型魚",
+      behaviorDartHint: "會快速改變方向，看到突進後輕輕滑回。",
+      behaviorHeavy: "重拉型魚",
+      behaviorHeavyHint: "拉力持續較久，耐心守在中央附近。",
       tensionTitle: "魚線張力",
       tensionLow: "太鬆",
       tensionSafe: "安全",
@@ -248,6 +262,7 @@
   const fish = Array.from({ length: 12 }, (_, index) => {
     const rare = index === 5 || index === 11;
     const tier = Math.floor(index / 2) + 1;
+    const behavior = index < 4 ? "steady" : index < 8 ? "dart" : "heavy";
     return {
       id: `fish-${index + 1}`,
       name: { en: fishNames[index][0], "zh-Hant": fishNames[index][1] },
@@ -255,6 +270,7 @@
       sx: 0,
       sy: index % 6,
       rare,
+      behavior,
       points: tier * 12 + (rare ? 34 : 0),
       notes: tier + (rare ? 5 : 1),
     };
@@ -574,13 +590,14 @@
 
   function hookFish() {
     if (!run.hookFish) run.hookFish = pickHookFish();
+    const behavior = fishBehavior(run.hookFish);
     run.phase = "reel";
     run.tension = 50;
     run.struggle = 0;
-    run.fishPower = 45 + Math.random() * 40;
+    run.fishPower = (45 + Math.random() * 40) * behavior.endurance;
     run.fishTimer = 1.2;
     run.splashTimer = 0.8;
-    nodes.hintText.textContent = t("hooked");
+    nodes.hintText.textContent = hookedHint(run.hookFish);
     updateTensionGuide();
     track("fish_hooked", { fish: run.hookFish.id, zone: run.zone.id });
   }
@@ -845,6 +862,48 @@
     };
   }
 
+  function fishBehavior(item) {
+    const profiles = {
+      steady: {
+        label: "behaviorSteady",
+        hint: "behaviorSteadyHint",
+        endurance: 0.9,
+        pull(now, zoneSpeed) {
+          return Math.sin(now / 460) * zoneSpeed * 18;
+        },
+      },
+      dart: {
+        label: "behaviorDart",
+        hint: "behaviorDartHint",
+        endurance: 1,
+        pull(now, zoneSpeed) {
+          const direction = Math.floor(now / 1250) % 2 === 0 ? 1 : -1;
+          const burstPhase = (now % 1250) / 1250;
+          const burst = burstPhase > 0.72 ? direction * zoneSpeed * 24 : 0;
+          return Math.sin(now / 330) * zoneSpeed * 17 + burst;
+        },
+      },
+      heavy: {
+        label: "behaviorHeavy",
+        hint: "behaviorHeavyHint",
+        endurance: 1.25,
+        pull(now, zoneSpeed) {
+          const direction = Math.floor(now / 2100) % 2 === 0 ? 1 : -1;
+          return direction * zoneSpeed * 13 + Math.sin(now / 620) * zoneSpeed * 12;
+        },
+      },
+    };
+    return profiles[item?.behavior] || profiles.steady;
+  }
+
+  function hookedHint(item) {
+    const behavior = fishBehavior(item);
+    return t("hookedBehavior", {
+      behavior: t(behavior.label),
+      hint: t(behavior.hint),
+    });
+  }
+
   function updateTensionGuide() {
     const range = tensionRange();
     nodes.safeBand.style.left = `${range.safeMin}%`;
@@ -891,7 +950,8 @@
     if (run.phase === "reel") {
       const gearControl = save.gear.reel * 0.4 + save.gear.line * 0.28;
       const target = pointer.down ? Math.max(0, Math.min(100, pointer.tensionPct)) : 50;
-      const pull = Math.sin(performance.now() / 360) * run.zone.speed * 24 + (run.hookFish.rare ? 10 : 0);
+      const behavior = fishBehavior(run.hookFish);
+      const pull = behavior.pull(performance.now(), run.zone.speed) + (run.hookFish.rare ? 6 : 0);
       run.tension += (target - run.tension) * dt * (1.4 + gearControl) + pull * dt;
       run.tension = Math.max(0, Math.min(100, run.tension));
       const { safe } = tensionRange();
@@ -1021,7 +1081,7 @@
     if (run.phase === "reel") {
       pointer.down = true;
       updatePointer(evt);
-      nodes.hintText.textContent = t("hooked");
+      nodes.hintText.textContent = hookedHint(run.hookFish);
       updateTensionGuide();
       return;
     }
