@@ -1,0 +1,65 @@
+{
+  "canvas": [
+    768,
+    1152
+  ],
+  "displayWidthCssPx": 350,
+  "maskEncoding": "RGB region id; alpha 0 marks outlines, outside pixels, and intentionally non-fillable micro-details",
+  "minimumSourceRegionArea": 1800,
+  "pages": [
+    {
+      "id": "puppy",
+      "art": "puppy.webp",
+      "source": "puppy.png",
+      "mask": "puppy-mask.png",
+      "regions": 23,
+      "smallestRegion": 1932,
+      "largestRegion": 206288
+    },
+    {
+      "id": "kitten",
+      "art": "kitten.webp",
+      "source": "kitten.png",
+      "mask": "kitten-mask.png",
+      "regions": 23,
+      "smallestRegion": 1934,
+      "largestRegion": 248668
+    },
+    {
+      "id": "rabbit",
+      "art": "rabbit.webp",
+      "source": "rabbit.png",
+      "mask": "rabbit-mask.png",
+      "regions": 17,
+      "smallestRegion": 2004,
+      "largestRegion": 215562
+    },
+    {
+      "id": "hamster",
+      "art": "hamster.webp",
+      "source": "hamster.png",
+      "mask": "hamster-mask.png",
+      "regions": 22,
+      "smallestRegion": 2597,
+      "largestRegion": 217233
+    },
+    {
+      "id": "bird",
+      "art": "bird.webp",
+      "source": "bird.png",
+      "mask": "bird-mask.png",
+      "regions": 20,
+      "smallestRegion": 1915,
+      "largestRegion": 326878
+    },
+    {
+      "id": "turtle",
+      "art": "turtle.webp",
+      "source": "turtle.png",
+      "mask": "turtle-mask.png",
+      "regions": 37,
+      "smallestRegion": 1856,
+      "largestRegion": 247880
+    }
+  ]
+}
