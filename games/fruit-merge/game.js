@@ -61,6 +61,13 @@
     en: {
       title: "Animal Merge Tower",
       language: "Language",
+      ariaLanguage: "Language selector",
+      ariaLobby: "Back to WeightPlay lobby",
+      ariaBattle: "Animal Merge Tower play screen",
+      ariaBattleBack: "Back to main menu",
+      ariaScore: "Score information",
+      ariaProgress: "Merge progress",
+      ariaBoard: "Animal merge game board",
       score: "Score",
       best: "Best",
       next: "Next",
@@ -130,6 +137,13 @@
     "zh-Hant": {
       title: "動物合成塔",
       language: "語言",
+      ariaLanguage: "語言選擇",
+      ariaLobby: "返回 WeightPlay 大廳",
+      ariaBattle: "動物合成塔遊玩畫面",
+      ariaBattleBack: "返回主選單",
+      ariaScore: "分數資訊",
+      ariaProgress: "合成進度",
+      ariaBoard: "動物合成遊戲盤",
       score: "分數",
       best: "最佳",
       next: "下一顆",
@@ -279,6 +293,13 @@
     document.title = `${t("title")} - WeightPlay`;
     titleText.textContent = t("title");
     languageLabel.textContent = t("language");
+    localeSelect.setAttribute("aria-label", t("ariaLanguage"));
+    document.querySelector(".home-link")?.setAttribute("aria-label", t("ariaLobby"));
+    document.querySelector(".fixed-game-shell")?.setAttribute("aria-label", t("ariaBattle"));
+    backToMenuBtn.setAttribute("aria-label", t("ariaBattleBack"));
+    document.querySelector(".scorebar")?.setAttribute("aria-label", t("ariaScore"));
+    document.querySelector(".merge-goal")?.setAttribute("aria-label", t("ariaProgress"));
+    canvas.setAttribute("aria-label", t("ariaBoard"));
     scoreLabel.textContent = t("score");
     bestLabel.textContent = t("best");
     comboLabel.textContent = t("comboLabel");

@@ -1292,6 +1292,13 @@ function buildWinText(drops, wasChallenge) {
 function renderSettlement(drops, wasChallenge, diamondReward = 0) {
   const dropItems = drops.map((item) => renderRewardItem(item)).join("");
   const diamondItem = diamondReward > 0 ? renderDiamondReward(diamondReward) : "";
+  const coinItem = state.coins > 0
+    ? `<div class="reward-item coin-reward" data-settlement-reward="coins"><img src="assets/coin.png" alt="" /><span>x${state.coins}</span></div>`
+    : "";
+  const unlockItem = wasChallenge && state.levelIndex + 1 < LEVELS.length
+    ? `<div class="reward-item progress-reward" data-settlement-reward="unlock"><span>${t("settlement_unlocked", { id: state.level.id + 1 })}</span></div>`
+    : "";
+  const rewards = [coinItem, diamondItem, dropItems, unlockItem].filter(Boolean).join("");
   return `
     <div class="settlement-panel">
       <div class="settlement-row">
@@ -1299,9 +1306,7 @@ function renderSettlement(drops, wasChallenge, diamondReward = 0) {
         <span>${wasChallenge ? t("settlement_new_clear") : t("settlement_reclear")}</span>
       </div>
       <div class="reward-grid">
-        <div class="reward-item coin-reward"><img src="assets/coin.png" alt="" /><span>x${state.coins}</span></div>
-        ${diamondItem}
-        ${dropItems || `<div class="reward-empty">${diamondReward > 0 ? t("settlement_diamond_hint") : t("settlement_no_drops")}</div>`}
+        ${rewards || `<div class="reward-empty">${diamondReward > 0 ? t("settlement_diamond_hint") : t("settlement_no_drops")}</div>`}
       </div>
       ${renderSkillReport(true)}
       <div class="settlement-actions">
