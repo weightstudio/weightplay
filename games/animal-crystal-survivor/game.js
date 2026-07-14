@@ -3,7 +3,7 @@
   const saveKey = "weightplay_animal_crystal_survivor_v1";
   const localeKey = "weightPlayLocale";
   const W = 1024;
-  const H = 1600;
+  const H = 1760;
   const RUN_SECONDS = 180;
   const crystalCharmCost = 12;
 

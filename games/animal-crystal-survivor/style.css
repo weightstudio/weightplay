@@ -1124,7 +1124,7 @@ body.crystal-playing .crystal-app { width: var(--crystal-vw, 100vw); height: var
 body.crystal-playing .topbar, body.crystal-playing .game-page-info, body.crystal-playing .tutorial-button, body.crystal-playing .wp-tutorial-button, body.crystal-playing .wp-tutorial-backdrop { display: none !important; }
 body.crystal-playing #gamePanel.game-panel, body.crystal-playing #resultPanel.result-panel { position: relative; inset: auto; grid-row: 1; width: min(100%, 612px); height: min(100%, 788px); min-height: 0; max-height: none; margin: 0; transform: none; overflow: hidden; }
 body.crystal-playing #gamePanel.game-panel { display: grid; grid-template-rows: 54px 30px minmax(0, 1fr) 34px; gap: 6px; padding: 8px; align-content: stretch; }
-body.crystal-playing .canvas-wrap { width: 100%; max-width: 100%; height: auto; max-height: none; justify-self: center; align-self: center; aspect-ratio: 16 / 25; }
+body.crystal-playing .canvas-wrap { width: 100%; max-width: 100%; height: auto; max-height: none; justify-self: center; align-self: center; aspect-ratio: 32 / 55; }
 body.crystal-playing #battleAdReserve { position: static; inset: auto; grid-row: 2; display: block; width: min(100%, 612px); height: 56px; min-height: 56px; margin: 0; transform: none; }
 body.crystal-playing #upgradePanel.upgrade-panel { position: fixed; z-index: 100; inset: 4px 4px 60px; width: auto; height: auto; padding: 10px; overflow: hidden; pointer-events: auto; }
 body.crystal-playing .upgrade-card-wrap { max-height: 100%; overflow-y: auto; }

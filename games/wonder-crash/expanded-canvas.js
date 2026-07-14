@@ -5,6 +5,18 @@
   const BATTLE_LOGICAL_HEIGHT = 788;
   const AD_RESERVE_HEIGHT = 56;
 
+  function syncLocalizedAccessibility() {
+    const isTraditionalChinese = document.documentElement.lang === "zh-Hant";
+    const board = document.querySelector("#game");
+    const stageBack = document.querySelector("#wonderStageBack");
+    if (board) {
+      board.setAttribute("aria-label", isTraditionalChinese
+        ? "\u5947\u5e7b\u7345\u5b50\u5b88\u57ce\u904a\u6232\u756b\u9762"
+        : "Fantasy Lion Defense game board");
+    }
+    if (stageBack) stageBack.setAttribute("aria-label", isTraditionalChinese ? "\u8fd4\u56de" : "Back");
+  }
+
   function updateViewport() {
     const viewport = window.visualViewport;
     const width = viewport?.width >= window.innerWidth * 0.75 ? viewport.width : window.innerWidth;
@@ -26,9 +38,11 @@
   }
 
   updateViewport();
+  syncLocalizedAccessibility();
   window.addEventListener("resize", updateViewport, { passive: true });
   window.visualViewport?.addEventListener("resize", updateViewport, { passive: true });
   window.visualViewport?.addEventListener("scroll", updateViewport, { passive: true });
+  window.addEventListener("wonder:locale-change", syncLocalizedAccessibility);
   new MutationObserver(updateViewport).observe(document.body, { attributes: true, attributeFilter: ["class"] });
 
   const stageRail = document.querySelector("#levelGrid");

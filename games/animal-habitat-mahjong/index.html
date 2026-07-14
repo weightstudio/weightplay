@@ -16,6 +16,8 @@
         <section class="public-guide"><h2 data-ui="howTitle">How to play</h2><p data-ui="guide">A tile is free when nothing covers it and at least one side is open. Match two identical free tiles to clear the board.</p><p data-ui="parentNote">A calm local puzzle for focus, logic, and problem solving. Progress stays on this device.</p></section>
       </section>
 
+      <div id="loadingScreen" class="loading-screen hidden" role="status" aria-live="polite"><div><span class="loading-mark" aria-hidden="true"></span><p data-ui="loading">Preparing habitats...</p></div></div>
+
       <section id="stageScreen" class="fixed-screen wp-stage-art-shell hidden" data-wp-stage-art="../../assets/animal-habitat-mahjong-cover.webp" style="--wp-stage-art:url('../../assets/animal-habitat-mahjong-cover.webp')" data-aria="stageScreen" aria-label="Stage selection">
         <div id="stageSlot" class="canvas-slot"><div class="logical-canvas stage-canvas"><header class="play-header"><button class="back-btn" data-back="main" data-wp-return="stage" type="button" data-aria="back" aria-label="Back">&larr;</button><div><b data-ui="stageTitle">Choose a habitat</b><span id="stageProgress"></span></div></header><section class="stage-intro"><img id="stagePreview" alt="" /><div><b id="stageName"></b><p id="stageDescription"></p></div></section><div id="stageRail" class="stage-rail" data-aria="stageRail" aria-label="Habitat stages"></div><p class="rail-hint" data-ui="railHint">Drag to browse habitats. Tap an unlocked card to begin.</p></div></div>
         <div class="ad-reserve" aria-hidden="true"></div>

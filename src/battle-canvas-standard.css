@@ -188,7 +188,7 @@ body.wp-logical-battle-active.crystal-playing #gamePanel.game-panel {
 body.wp-logical-battle-active.crystal-playing .hud-row { grid-column: 1 !important; grid-row: 1 !important; grid-template-columns: 44px repeat(4, minmax(0, 1fr)) !important; grid-template-rows: 54px !important; gap: 4px !important; }
 body.wp-logical-battle-active.crystal-playing .hud-row .play-return { width: 48px !important; min-width: 48px !important; height: 48px !important; min-height: 48px !important; }
 body.wp-logical-battle-active.crystal-playing .xp-row { grid-column: 1 !important; grid-row: 2 !important; }
-body.wp-logical-battle-active.crystal-playing .canvas-wrap { grid-column: 1 !important; grid-row: 3 !important; width: 100% !important; height: auto !important; aspect-ratio: 1 !important; align-self: center !important; justify-self: center !important; }
+body.wp-logical-battle-active.crystal-playing .canvas-wrap { grid-column: 1 !important; grid-row: 3 !important; width: 100% !important; height: auto !important; aspect-ratio: 32 / 55 !important; align-self: center !important; justify-self: center !important; }
 body.wp-logical-battle-active.crystal-playing .hint-text { grid-column: 1 !important; grid-row: 4 !important; height: 34px !important; min-height: 34px !important; margin: 0 !important; white-space: nowrap !important; }
 
 /* Gearpack never turns the logical portrait Canvas into a physical-landscape layout. */
