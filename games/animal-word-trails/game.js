@@ -117,6 +117,7 @@
   let railPointerActive=false;
   let railStartStage=null;
   rail.addEventListener('pointerdown',event=>{
+    if(rail.dataset.wpStageRail==='true') return;
     railStartX=event.clientX;
     railStartScroll=rail.scrollLeft;
     railPointerActive=true;

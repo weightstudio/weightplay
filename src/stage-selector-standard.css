@@ -76,7 +76,7 @@
   scroll-behavior: smooth;
   scrollbar-width: none;
   overscroll-behavior-x: contain;
-  touch-action: pan-x !important;
+  touch-action: none !important;
   cursor: grab;
   user-select: none;
   -webkit-user-select: none;

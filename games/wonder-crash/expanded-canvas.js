@@ -32,7 +32,7 @@
   new MutationObserver(updateViewport).observe(document.body, { attributes: true, attributeFilter: ["class"] });
 
   const stageRail = document.querySelector("#levelGrid");
-  if (stageRail) {
+  if (stageRail && stageRail.dataset.wpStageRail !== "true") {
     stageRail.addEventListener("dragstart", (event) => event.preventDefault());
     let pointerId = null;
     let startX = 0;

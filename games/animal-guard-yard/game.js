@@ -96,11 +96,11 @@
       abilityCat: "Steady shot",
       abilityDog: "Bite slow",
       abilityOwl: "Feather slow",
-      abilityFox: "Cross-lane shot",
+      abilityFox: "Cross-lane volley",
       catTactic: "Steady lane damage for early pressure.",
       dogTactic: "Blocks the lane and briefly slows bites.",
       owlTactic: "Fast shots keep rushing beasts slowed.",
-      foxTactic: "Supports the nearby lanes from one tile.",
+      foxTactic: "Fires a strong leaf shot, then supports a nearby lane with a lighter volley.",
       costShort: "Cost",
       atkShort: "ATK",
       hpShort: "HP",
@@ -208,11 +208,11 @@
       abilityCat: "\u7a69\u5b9a\u5c04\u64ca",
       abilityDog: "\u54ac\u64ca\u6e1b\u901f",
       abilityOwl: "\u7fbd\u7bad\u7de9\u901f",
-      abilityFox: "\u8de8\u7dda\u652f\u63f4",
+      abilityFox: "\u8de8\u7dda\u9023\u5c04",
       catTactic: "\u7a69\u5b9a\u9060\u7a0b\u50b7\u5bb3\uff0c\u9069\u5408\u65e9\u671f\u9632\u7dda\u3002",
       dogTactic: "\u64cb\u4f4f\u540c\u7dda\u91ce\u7378\uff0c\u54ac\u64ca\u6703\u77ed\u66ab\u6e1b\u901f\u3002",
       owlTactic: "\u5feb\u901f\u5c04\u64ca\uff0c\u53ef\u58d3\u4f4f\u885d\u523a\u578b\u91ce\u7378\u3002",
-      foxTactic: "\u5f9e\u4e00\u500b\u683c\u5b50\u652f\u63f4\u9644\u8fd1\u7dda\u8def\u3002",
+      foxTactic: "\u4e3b\u653b\u767c\u5c04\u5f37\u529b\u8449\u5f48\uff0c\u518d\u4ee5\u8f03\u5f31\u7684\u9023\u5c04\u652f\u63f4\u9644\u8fd1\u7dda\u8def\u3002",
       costShort: "\u82b1\u8cbb",
       atkShort: "\u653b\u64ca",
       hpShort: "\u751f\u547d",
@@ -1254,6 +1254,25 @@
       ))[0];
   }
 
+  function findFoxSupportTarget(guard, primaryTarget) {
+    const stage = stages[currentStage];
+    const guardX = cellCenterX(guard.col, stage);
+    const range = guard.data.range / stage.cols;
+    const rangeStart = Math.max(-0.08, guardX - range);
+    const rangeEnd = Math.min(1.08, guardX + range);
+    const rowReach = guard.data.targetRows || 1;
+    return entities
+      .filter((item) => (
+        item.kind === "zombie"
+        && item !== primaryTarget
+        && item.row !== primaryTarget.row
+        && Math.abs(item.row - guard.row) <= rowReach
+        && item.x >= rangeStart
+        && item.x <= rangeEnd
+      ))
+      .sort((a, b) => Math.abs(a.x - guardX) - Math.abs(b.x - guardX))[0];
+  }
+
   function faceTarget(guard, target) {
     const stage = stages[currentStage];
     const guardX = cellCenterX(guard.col, stage);
@@ -1290,6 +1309,15 @@
   function shoot(guard, target) {
     faceTarget(guard, target);
     pulseClass(guard.el, "is-shooting");
+    spawnProjectile(guard, target, guard.data.damage);
+    if (guard.id === "fox") {
+      const supportTarget = findFoxSupportTarget(guard, target);
+      if (supportTarget) spawnProjectile(guard, supportTarget, Math.max(1, Math.round(guard.data.damage * 0.6)), true);
+    }
+    playSound("shoot");
+  }
+
+  function spawnProjectile(guard, target, damage, isSupportShot = false) {
     const stage = stages[currentStage];
     const guardX = cellCenterX(guard.col, stage);
     const direction = target.x >= guardX ? 1 : -1;
@@ -1300,16 +1328,15 @@
       y: laneY,
       vx: 0.00095 * direction,
       direction,
-      damage: guard.data.damage,
+      damage,
       unitId: guard.id,
       target,
       el: document.createElement("div"),
     };
-    projectile.el.className = `projectile ${guard.id} ${direction < 0 ? "left" : "right"}`;
+    projectile.el.className = `projectile ${guard.id} ${isSupportShot ? "support-shot" : ""} ${direction < 0 ? "left" : "right"}`;
     projectile.el.innerHTML = `<img src="${projectileAssets[guard.id] || projectileAssets.cat}" alt="" draggable="false" />`;
     nodes.yardBoard.appendChild(projectile.el);
     projectiles.push(projectile);
-    playSound("shoot");
   }
 
   function applySlow(target, factor, duration) {

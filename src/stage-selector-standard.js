@@ -7,6 +7,7 @@
   const installed = new WeakSet();
   const railVisibility = new WeakMap();
   const pendingRecommendation = new WeakMap();
+  const pendingSettles = new WeakMap();
   const nativeStageScalers = new Set(["bubble-bakery", "color-lunchbox", "garden-tiles", "wonder-crash"]);
   const stageRootByGame = {
     "animal-guard-yard": "#menuPanel",
@@ -135,9 +136,20 @@
     updateStageCanvas();
   }
 
-  function centerNearest(rail) {
+  function cancelPendingSettle(rail, restore = true) {
+    const pending = pendingSettles.get(rail);
+    if (!pending) return;
+    window.cancelAnimationFrame(pending.frame);
+    pendingSettles.delete(rail);
+    if (restore) pending.restore();
+  }
+
+  function centerNearest(rail, restore) {
     const cards = stageCards(rail);
-    if (!cards.length) return;
+    if (!cards.length) {
+      restore();
+      return;
+    }
     const railRect = rail.getBoundingClientRect();
     const coordinateScale = railRect.width > 0 ? rail.clientWidth / railRect.width : 1;
     const center = rail.scrollLeft + rail.clientWidth / 2;
@@ -147,11 +159,42 @@
       const distance = Math.abs(cardCenter - center);
       return !best || distance < best.distance ? { card, distance } : best;
     }, null)?.card;
-    if (!nearest) return;
+    if (!nearest) {
+      restore();
+      return;
+    }
     const cardRect = nearest.getBoundingClientRect();
     const target = rail.scrollLeft + ((cardRect.left + cardRect.width / 2) - (railRect.left + railRect.width / 2)) * coordinateScale;
-    rail.dataset.wpSnapTarget = String(target);
-    rail.scrollTo({ left: Math.max(0, Math.min(target, rail.scrollWidth - rail.clientWidth)), behavior: "smooth" });
+    const boundedTarget = Math.max(0, Math.min(target, rail.scrollWidth - rail.clientWidth));
+    rail.dataset.wpSnapTarget = String(boundedTarget);
+    if (Math.abs(boundedTarget - rail.scrollLeft) < 1) {
+      rail.scrollLeft = boundedTarget;
+      restore();
+      return;
+    }
+    const startedAt = performance.now();
+    const startedLeft = rail.scrollLeft;
+    const distance = boundedTarget - startedLeft;
+    const duration = Math.min(300, Math.max(180, Math.abs(distance) * 1.15));
+    const pending = {
+      restore,
+      frame: 0,
+    };
+    const animate = (now) => {
+      if (pendingSettles.get(rail) !== pending) return;
+      const progress = Math.min(1, (now - startedAt) / duration);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      rail.scrollLeft = startedLeft + distance * eased;
+      if (progress < 1) {
+        pending.frame = window.requestAnimationFrame(animate);
+        return;
+      }
+      rail.scrollLeft = boundedTarget;
+      pendingSettles.delete(rail);
+      restore();
+    };
+    pendingSettles.set(rail, pending);
+    pending.frame = window.requestAnimationFrame(animate);
   }
 
   function stageCards(rail) {
@@ -222,7 +265,9 @@
     let previousSnapType = "";
 
     rail.addEventListener("pointerdown", (event) => {
+      if (event.isPrimary === false) return;
       if (event.button !== undefined && event.button !== 0) return;
+      cancelPendingSettle(rail);
       pointerId = event.pointerId;
       rail.dataset.wpDragDown = String(Number(rail.dataset.wpDragDown || 0) + 1);
       startX = event.clientX;
@@ -234,6 +279,7 @@
       previousSnapType = rail.style.getPropertyValue("scroll-snap-type");
       rail.style.setProperty("scroll-behavior", "auto", "important");
       rail.style.setProperty("scroll-snap-type", "none", "important");
+      rail.setPointerCapture?.(event.pointerId);
     }, true);
 
     rail.addEventListener("pointermove", (event) => {
@@ -244,7 +290,6 @@
       if (!moved && Math.abs(delta) > 8) {
         moved = true;
         rail.classList.add("wp-stage-dragging");
-        rail.setPointerCapture?.(event.pointerId);
       }
       if (!moved) return;
       if (event.cancelable) event.preventDefault();
@@ -258,26 +303,39 @@
       rail.releasePointerCapture?.(pointerId);
       pointerId = null;
       rail.classList.remove("wp-stage-dragging");
-      if (previousScrollBehavior) rail.style.setProperty("scroll-behavior", previousScrollBehavior);
-      else rail.style.removeProperty("scroll-behavior");
-      if (previousSnapType) rail.style.setProperty("scroll-snap-type", previousSnapType);
-      else rail.style.removeProperty("scroll-snap-type");
+      const restore = () => {
+        if (previousScrollBehavior) rail.style.setProperty("scroll-behavior", previousScrollBehavior);
+        else rail.style.removeProperty("scroll-behavior");
+        if (previousSnapType) rail.style.setProperty("scroll-snap-type", previousSnapType);
+        else rail.style.removeProperty("scroll-snap-type");
+      };
       if (moved) {
-        event.preventDefault();
+        if (event.cancelable) event.preventDefault();
         suppressClick = true;
-        window.setTimeout(() => { suppressClick = false; }, 240);
+        rail.dataset.wpSuppressClick = "true";
+        window.setTimeout(() => {
+          suppressClick = false;
+          rail.dataset.wpSuppressClick = "false";
+        }, 240);
+        centerNearest(rail, restore);
+      } else {
+        restore();
       }
-      centerNearest(rail);
     };
     rail.addEventListener("pointerup", finish, true);
     rail.addEventListener("pointercancel", finish, true);
     document.addEventListener("pointerup", finish, true);
     document.addEventListener("pointercancel", finish, true);
     rail.addEventListener("click", (event) => {
-      if (!suppressClick) return;
+      if (!suppressClick) {
+        rail.dataset.wpLastClick = "allowed";
+        return;
+      }
+      rail.dataset.wpLastClick = "suppressed";
       event.preventDefault();
       event.stopImmediatePropagation();
     }, true);
+    rail.addEventListener("dragstart", (event) => event.preventDefault(), true);
     scheduleRecommendedCenter(rail, true);
   }
 

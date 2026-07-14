@@ -462,6 +462,7 @@
     let startScroll = 0;
     let moved = false;
     nodes.stageGrid.addEventListener("pointerdown", (event) => {
+      if (nodes.stageGrid.dataset.wpStageRail === "true") return;
       pointerId = event.pointerId;
       startX = event.clientX;
       startScroll = nodes.stageGrid.scrollLeft;

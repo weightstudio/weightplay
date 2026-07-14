@@ -28,6 +28,7 @@
   let suppressRouteClickUntil = 0;
   const routeRail = $("routeRail");
   routeRail.addEventListener("pointerdown", (event) => {
+    if (routeRail.dataset.wpStageRail === "true") return;
     drag = { id: event.pointerId, x: event.clientX, left: routeRail.scrollLeft, active: false };
   });
   routeRail.addEventListener("pointermove", (event) => {

@@ -289,6 +289,7 @@
     nodes.stageGrid.dataset.dragBound = "1";
     let drag = null;
     nodes.stageGrid.addEventListener("pointerdown", (event) => {
+      if (nodes.stageGrid.dataset.wpStageRail === "true") return;
       drag = { id: event.pointerId, x: event.clientX, scrollLeft: nodes.stageGrid.scrollLeft, moved: false };
     });
     nodes.stageGrid.addEventListener("pointermove", (event) => {

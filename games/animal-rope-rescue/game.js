@@ -264,6 +264,7 @@
     };
     const dragSurface = nodes.stagePanel;
     const beginDrag = (event, id) => {
+      if (rail.dataset.wpStageRail === "true") return;
       if (!event.target.closest(".stage-rail")) return;
       pointerId = id;
       startX = event.clientX;

@@ -1313,6 +1313,15 @@ body.guard-yard-stage .stage-grid { padding-inline: calc((100% - 264px) / 2); to
   transform: scaleX(-1);
 }
 
+.projectile.support-shot img {
+  filter: brightness(1.22) saturate(1.18);
+  transform: scale(0.82);
+}
+
+.projectile.support-shot.left img {
+  transform: scaleX(-1) scale(0.82);
+}
+
 .zombie {
   z-index: 6;
   width: calc(var(--cell-w) * 0.84);
