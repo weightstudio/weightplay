@@ -727,14 +727,14 @@ body.is-bakery-playing .order-progress span {
   height: auto;
   max-height: none;
   margin: 0 auto;
-  aspect-ratio: 1;
+  aspect-ratio: 7 / 10;
   border-radius: 24px;
   padding: clamp(7px, 1.15vw, 10px);
   overflow: hidden;
   position: relative;
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
-  grid-template-rows: repeat(7, minmax(0, 1fr));
+  grid-template-rows: repeat(10, minmax(0, 1fr));
   align-self: center;
   gap: clamp(4px, 0.8vw, 7px);
   background:
@@ -825,7 +825,7 @@ body.is-bakery-playing .order-progress span {
 }
 
 .bubble.is-pop-source {
-  visibility: hidden !important;
+  pointer-events: none;
 }
 
 .bubble-pop-layer {
@@ -1676,13 +1676,13 @@ body.is-bakery-playing.bakery-expanded-canvas .order-chip {
 }
 
 body.is-bakery-playing.bakery-expanded-canvas .bubble-board {
-  width: min(100%, calc(var(--bakery-frame-height, 780px) - 150px));
+  width: min(100%, calc((var(--bakery-frame-height, 780px) - 150px) * 0.7));
   height: auto;
   max-width: 100%;
   max-height: 100%;
   min-width: 0;
   min-height: 0;
-  aspect-ratio: 1;
+  aspect-ratio: 7 / 10;
   align-self: center;
   justify-self: center;
 }
@@ -1699,6 +1699,18 @@ body.is-bakery-playing.bakery-expanded-canvas #battleAdReserve {
   width: auto;
   height: 56px;
   min-height: 56px;
+}
+
+/* Shared Battle scaling owns #playPanel; keep its desktop wrapper from scaling it a second time. */
+body.wp-logical-battle-active.is-bakery-playing:not(.bakery-expanded-canvas) .bakery-game {
+  left: calc(50% - var(--wp-battle-canvas-rendered-width, 390px) / 2);
+  top: var(--wp-battle-canvas-top, 4px);
+  width: var(--wp-battle-canvas-rendered-width, 390px);
+  min-width: 0;
+  height: var(--wp-battle-canvas-rendered-height, 788px);
+  min-height: 0;
+  padding: 0;
+  transform: none;
 }
 
 body.is-bakery-playing .weightplay-version-badge,

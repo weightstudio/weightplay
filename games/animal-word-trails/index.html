@@ -47,10 +47,13 @@
       <div class="battle-ad-reserve" aria-hidden="true"></div>
     </section>
 
-    <section class="screen result-screen hidden" data-screen="result">
-      <img class="leo" src="../../assets/animal-word-trails-lion-guide.webp" alt="">
-      <h2 data-copy="complete">Trail complete</h2><p id="resultSummary"></p><p class="skill" data-copy="skill">Reading &middot; Focus &middot; Logic &middot; Animal knowledge</p>
-      <button class="primary" id="next" data-copy="next">Next trail</button><button class="secondary" id="resultsBack" data-copy="trails">Trail menu</button>
+    <section class="screen result-shell hidden" data-screen="result" data-no-mobile-immersive="true">
+      <div class="battle-canvas result-canvas result-screen">
+        <img class="leo" src="../../assets/animal-word-trails-lion-guide.webp" alt="">
+        <h2 data-copy="complete">Trail complete</h2><p id="resultSummary"></p><p class="skill" data-copy="skill">Reading &middot; Focus &middot; Logic &middot; Animal knowledge</p>
+        <div class="result-actions"><button class="primary" id="next" data-copy="next">Next trail</button><button class="secondary" id="resultsBack" data-wp-return="battle" data-copy="trails">Trail menu</button></div>
+      </div>
+      <div class="battle-ad-reserve" aria-hidden="true"></div>
     </section>
   </main>
   <div id="loadingPanel" class="loading-panel" role="status" aria-live="polite">

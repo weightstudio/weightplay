@@ -186,7 +186,7 @@
     { theme: "themeMasterBakery", moves: 25, palette: ["berry", "sky", "lemon", "mint", "grape"], orders: { berry: 12, sky: 12, grape: 12, mint: 8 } },
   ];
 
-  const rows = 7;
+  const rows = 10;
   const cols = 7;
   const $ = (id) => document.getElementById(id);
   const nodes = {
@@ -738,33 +738,15 @@
     nodes.board.classList.add("is-popping");
     const popKeys = new Set(group.map(([r, c]) => `${r},${c}`));
     const popNodes = Array.from(nodes.board.querySelectorAll(".bubble")).filter((node) => popKeys.has(`${node.dataset.row},${node.dataset.col}`));
-    const boardRect = nodes.board.getBoundingClientRect();
-    const popLayer = document.createElement("div");
-    popLayer.className = "bubble-pop-layer";
 
     nodes.board.querySelectorAll(".bubble").forEach((node) => {
       node.disabled = true;
     });
 
-    nodes.board.appendChild(popLayer);
-
     const animations = popNodes.map((node) => {
-      const rect = node.getBoundingClientRect();
-      const ghost = node.cloneNode(true);
-      ghost.classList.add("bubble-pop-ghost");
-      ghost.classList.remove("pop");
-      ghost.removeAttribute("data-row");
-      ghost.removeAttribute("data-col");
-      ghost.style.left = `${rect.left - boardRect.left}px`;
-      ghost.style.top = `${rect.top - boardRect.top}px`;
-      ghost.style.width = `${rect.width}px`;
-      ghost.style.height = `${rect.height}px`;
-      popLayer.appendChild(ghost);
       node.classList.add("is-pop-source");
       node.getAnimations?.().forEach((animation) => animation.cancel());
-      ghost.getAnimations?.().forEach((animation) => animation.cancel());
-      ghost.classList.add("pop");
-      return playNodeAnimation(ghost, [
+      return playNodeAnimation(node, [
         { opacity: 1, transform: "scale(1)", filter: "brightness(1) saturate(1)" },
         { opacity: 1, transform: "scale(1.16)", filter: "brightness(1.22) saturate(1.16)", offset: 0.38 },
         { opacity: 0.72, transform: "scale(0.34) rotate(10deg)", filter: "brightness(1.38) saturate(1.22)", offset: 0.72 },
@@ -773,13 +755,10 @@
         duration: popMs,
         easing: "cubic-bezier(.14,.78,.2,1)",
         fill: "forwards",
-      }).then(() => {
-        ghost.classList.remove("pop");
       });
     });
 
     return Promise.all(animations).then(() => {
-      popLayer.remove();
       nodes.board.classList.remove("is-popping");
       return wait(30);
     });
