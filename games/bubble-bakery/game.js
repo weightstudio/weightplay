@@ -486,8 +486,9 @@
     const viewport = window.visualViewport;
     const viewportWidth = viewport?.width || innerWidth;
     const viewportHeight = viewport?.height || innerHeight;
+    const touchPhone = navigator.maxTouchPoints > 0 && viewportWidth <= 1024;
     const isPhoneBattle = document.body.classList.contains("is-bakery-playing")
-      && (matchMedia("(pointer: coarse)").matches || viewportWidth <= 600 || viewportHeight <= 430);
+      && (touchPhone || matchMedia("(pointer: coarse)").matches || viewportWidth <= 600 || viewportHeight <= 430);
     document.body.classList.toggle("bakery-expanded-canvas", isPhoneBattle);
     if (isPhoneBattle) {
       const root = document.documentElement.style;

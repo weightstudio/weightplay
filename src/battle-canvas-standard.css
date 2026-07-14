@@ -329,12 +329,12 @@ body.wp-logical-battle-active.fruit-playing .board-shell { grid-column: 1 !impor
 body.wp-logical-battle-active.fruit-playing .controls { grid-column: 1 !important; grid-row: 4 !important; height: 36px !important; min-height: 36px !important; }
 body.wp-logical-battle-active.fruit-playing .controls button { height: 34px !important; min-height: 34px !important; }
 
-/* Bubble Bakery keeps the same seven-pixel logical inset on desktop. */
+/* Bubble Bakery uses the full phone Canvas with only a compact safe inset. */
 body.wp-logical-battle-active.is-bakery-playing #playPanel.play-panel[data-wp-logical-battle-canvas] {
   grid-template-columns: minmax(0, 1fr) !important;
   grid-template-rows: 44px 78px minmax(0, 1fr) !important;
-  gap: 6px !important;
-  padding: 7px !important;
+  gap: 4px !important;
+  padding: 4px !important;
 }
 
 /* Result content remains reachable above the external 56px reserve on short landscape screens. */

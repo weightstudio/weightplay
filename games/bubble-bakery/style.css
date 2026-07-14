@@ -1616,6 +1616,7 @@ body.is-bakery-playing.bakery-expanded-canvas .bakery-game {
   min-height: 0;
   max-height: none;
   transform: none;
+  padding: 4px;
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
 }
@@ -1625,8 +1626,8 @@ body.is-bakery-playing.bakery-expanded-canvas #playPanel.play-panel {
   width: 100% !important;
   max-width: none !important;
   height: 100% !important;
-  padding: 7px;
-  gap: 6px;
+  padding: 4px;
+  gap: 4px;
 }
 
 body.is-bakery-playing.bakery-expanded-canvas .play-return {

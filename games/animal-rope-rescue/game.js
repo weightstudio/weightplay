@@ -583,8 +583,9 @@
     const viewport = window.visualViewport;
     const viewportWidth = viewport?.width || window.innerWidth;
     const viewportHeight = viewport?.height || window.innerHeight;
+    const touchPhone = navigator.maxTouchPoints > 0 && viewportWidth <= 1024;
     const isPhoneBattle = document.body.classList.contains("is-vine-playing")
-      && (window.matchMedia("(pointer: coarse)").matches || viewportWidth <= 600 || viewportHeight <= 430);
+      && (touchPhone || window.matchMedia("(pointer: coarse)").matches || viewportWidth <= 600 || viewportHeight <= 430);
     document.body.classList.toggle("vine-expanded-canvas", isPhoneBattle);
     if (isPhoneBattle) {
       document.documentElement.style.setProperty("--vine-battle-scale", "1");

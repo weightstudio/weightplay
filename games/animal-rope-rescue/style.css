@@ -859,7 +859,7 @@ body.is-vine-playing .battle-ad-reserve {
   box-sizing: border-box;
 }
 
-/* Phone Battle expands its Canvas while the 3:4 playfield keeps its own ratio. */
+/* Phone Battle expands its Canvas while the taller 2:3 playfield uses the scene track. */
 body.is-vine-playing.vine-expanded-canvas main.vine-app #gamePanel.game-panel {
   top: var(--vine-battle-top, 4px) !important;
   left: var(--vine-battle-left, 4px) !important;
@@ -923,11 +923,11 @@ body.is-vine-playing.vine-expanded-canvas .hint-text {
 }
 
 body.is-vine-playing.vine-expanded-canvas main.vine-app #playfield.playfield.play-area {
-  width: min(100%, calc((var(--vine-battle-content-height, 780px) - 166px) * 0.75)) !important;
+  width: min(100%, calc((var(--vine-battle-content-height, 784px) - 166px) * 0.6667)) !important;
   height: auto;
   max-width: 100% !important;
   max-height: 100%;
-  aspect-ratio: 3 / 4;
+  aspect-ratio: 2 / 3;
   align-self: center;
   justify-self: center;
 }
@@ -987,6 +987,6 @@ body.is-vine-playing .wp-tutorial-button {
   }
 
   body.is-vine-playing.vine-expanded-canvas main.vine-app #playfield.playfield.play-area {
-    width: min(100%, calc((var(--vine-battle-content-height, 320px) - 132px) * 0.75)) !important;
+    width: min(100%, calc((var(--vine-battle-content-height, 320px) - 132px) * 0.6667)) !important;
   }
 }
