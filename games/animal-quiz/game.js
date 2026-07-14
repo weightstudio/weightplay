@@ -96,11 +96,13 @@ const dictionary = {
     stageOceanHome: "Stage 3: Ocean & Home Animals",
     stageForest: "Stage 4: Forest Friends",
     stageFarm: "Stage 5: Farm & Night Animals",
+    stageActions: "Stage 6: Animal Actions",
     stageAfricaDesc: "Meet animals from grasslands, rivers, and warm habitats.",
     stageAsiaDesc: "Guess animals from forests, mountains, and nearby nature.",
     stageOceanHomeDesc: "Find animals from the sea and animals kids see often.",
     stageForestDesc: "Practice animals from forests, bamboo groves, ponds, and trees.",
     stageFarmDesc: "Review familiar farm animals and animals that move at night.",
+    stageActionsDesc: "Use movement and behavior clues to identify each animal.",
     lion: "Lion",
     hippo: "Hippo",
     snake: "Snake",
@@ -141,6 +143,16 @@ const dictionary = {
     clueWhale: "I am a huge animal in the ocean.",
     clueOwl: "I am a bird with big eyes.",
     clueCow: "I say moo and give milk.",
+    actionLion: "I rest and travel with a group called a pride.",
+    actionElephant: "I use my trunk to spray water.",
+    actionPenguin: "I huddle close to other penguins to stay warm.",
+    actionMonkey: "I use my hands to climb and explore branches.",
+    actionRabbit: "I thump my back feet when danger is near.",
+    actionTurtle: "I pull my head into my shell when I feel worried.",
+    actionFrog: "I leap and catch insects with my long tongue.",
+    actionOwl: "I fly quietly and hunt after sunset.",
+    actionCow: "I spend much of the day slowly chewing grass.",
+    actionWhale: "I swim to the surface to breathe through my blowhole.",
   },
   "zh-Hant": {
     title: "\u52d5\u7269\u5c0f\u535a\u58eb",
@@ -185,11 +197,13 @@ const dictionary = {
     stageOceanHome: "\u7b2c 3 \u95dc\uff1a\u6d77\u6d0b\u8207\u5bb6\u5ead\u52d5\u7269",
     stageForest: "\u7b2c 4 \u95dc\uff1a\u68ee\u6797\u670b\u53cb",
     stageFarm: "\u7b2c 5 \u95dc\uff1a\u8fb2\u5834\u8207\u591c\u9593\u52d5\u7269",
+    stageActions: "\u7b2c 6 \u95dc\uff1a\u52d5\u7269\u884c\u52d5",
     stageAfricaDesc: "\u8a8d\u8b58\u8349\u539f\u3001\u6cb3\u908a\u548c\u6eab\u6696\u68f2\u5730\u7684\u52d5\u7269\u3002",
     stageAsiaDesc: "\u731c\u731c\u68ee\u6797\u3001\u5c71\u5730\u548c\u5468\u570d\u81ea\u7136\u88e1\u7684\u52d5\u7269\u3002",
     stageOceanHomeDesc: "\u627e\u51fa\u6d77\u88e1\u7684\u52d5\u7269\uff0c\u4ee5\u53ca\u5b69\u5b50\u5e38\u898b\u7684\u52d5\u7269\u3002",
     stageForestDesc: "\u7df4\u7fd2\u68ee\u6797\u3001\u7af9\u6797\u3001\u6c60\u5858\u548c\u6a39\u4e0a\u7684\u52d5\u7269\u3002",
     stageFarmDesc: "\u8907\u7fd2\u719f\u6089\u7684\u8fb2\u5834\u52d5\u7269\uff0c\u548c\u591c\u9593\u6d3b\u52d5\u7684\u52d5\u7269\u3002",
+    stageActionsDesc: "\u6839\u64da\u79fb\u52d5\u548c\u884c\u70ba\u7dda\u7d22\uff0c\u627e\u51fa\u6b63\u78ba\u7684\u52d5\u7269\u3002",
     lion: "\u7345\u5b50",
     hippo: "\u6cb3\u99ac",
     snake: "\u86c7",
@@ -230,6 +244,16 @@ const dictionary = {
     clueWhale: "\u6211\u662f\u751f\u6d3b\u5728\u6d77\u88e1\u7684\u5de8\u5927\u52d5\u7269\u3002",
     clueOwl: "\u6211\u662f\u6709\u5927\u773c\u775b\u7684\u9ce5\u3002",
     clueCow: "\u6211\u6703\u54de\u54de\u53eb\uff0c\u4e5f\u6703\u63d0\u4f9b\u725b\u5976\u3002",
+    actionLion: "\u6211\u6703\u548c\u7345\u7fa4\u4e00\u8d77\u4f11\u606f\u548c\u884c\u52d5\u3002",
+    actionElephant: "\u6211\u6703\u7528\u9577\u9f3b\u5b50\u5674\u6c34\u3002",
+    actionPenguin: "\u6211\u6703\u548c\u5176\u4ed6\u4f01\u9d5d\u64e0\u5728\u4e00\u8d77\u4fdd\u6696\u3002",
+    actionMonkey: "\u6211\u6703\u7528\u96d9\u624b\u722c\u6a39\u548c\u63a2\u7d22\u6a39\u679d\u3002",
+    actionRabbit: "\u767c\u73fe\u5371\u96aa\u6642\uff0c\u6211\u6703\u7528\u5f8c\u8173\u7528\u529b\u8e6c\u5730\u3002",
+    actionTurtle: "\u89ba\u5f97\u5bb3\u6015\u6642\uff0c\u6211\u6703\u628a\u982d\u7e2e\u9032\u6bbc\u88e1\u3002",
+    actionFrog: "\u6211\u6703\u8df3\u8e8d\uff0c\u4e5f\u6703\u7528\u9577\u820c\u982d\u6349\u87f2\u3002",
+    actionOwl: "\u6211\u6703\u5b89\u975c\u98db\u884c\uff0c\u5728\u65e5\u843d\u5f8c\u7375\u98df\u3002",
+    actionCow: "\u6211\u6bcf\u5929\u6703\u82b1\u5f88\u591a\u6642\u9593\u6162\u6162\u5480\u56bc\u7267\u8349\u3002",
+    actionWhale: "\u6211\u6703\u6e38\u5230\u6c34\u9762\uff0c\u7528\u982d\u9802\u7684\u547c\u5438\u5b54\u63db\u6c23\u3002",
   },
 };
 
@@ -283,6 +307,23 @@ const stages = [
     name: "stageFarm",
     description: "stageFarmDesc",
     questions: ["cow", "dog", "cat", "rabbit", "owl", "fox", "frog", "turtle", "penguin", "whale"],
+  },
+  {
+    name: "stageActions",
+    description: "stageActionsDesc",
+    questions: ["lion", "elephant", "penguin", "monkey", "rabbit", "turtle", "frog", "owl", "cow", "whale"],
+    clues: {
+      lion: "actionLion",
+      elephant: "actionElephant",
+      penguin: "actionPenguin",
+      monkey: "actionMonkey",
+      rabbit: "actionRabbit",
+      turtle: "actionTurtle",
+      frog: "actionFrog",
+      owl: "actionOwl",
+      cow: "actionCow",
+      whale: "actionWhale",
+    },
   },
 ];
 
@@ -539,6 +580,10 @@ function currentAnimal() {
   return animalMap.get(currentStage().questions[state.questionIndex]);
 }
 
+function currentClueKey(animal = currentAnimal()) {
+  return currentStage().clues?.[animal.id] || animal.clue;
+}
+
 function buildChoices(answer) {
   const others = shuffle(animals.filter((animal) => animal.id !== answer.id)).slice(0, 2);
   return shuffle([answer, ...others]);
@@ -559,7 +604,7 @@ function renderQuestion(options = {}) {
   levelFill.style.width = `${(state.questionIndex / total) * 100}%`;
   animalImage.src = animal.image;
   animalImage.alt = t(animal.id);
-  clueText.textContent = t(animal.clue);
+  clueText.textContent = t(currentClueKey(animal));
   feedbackText.textContent = t("choose");
 
   choiceGrid.replaceChildren(
@@ -610,7 +655,7 @@ function chooseAnswer(choiceId, answerId, button) {
   feedbackText.textContent = answeredAnimal
     ? t("animalNote", {
         animal: t(answeredAnimal.id),
-        clue: t(answeredAnimal.clue),
+        clue: t(currentClueKey(answeredAnimal)),
       })
     : t("correct");
   button.classList.add("correct");
