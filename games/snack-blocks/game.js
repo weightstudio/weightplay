@@ -1,6 +1,7 @@
 (function () {
   const GAME_ID = "snack-blocks";
-  const size = 7;
+  const columns = 7;
+  const rows = 10;
   const matchClearDuration = 360;
   const snacks = ["ST", "CK", "JM", "GR", "CH", "PR"];
   const snackArt = {
@@ -384,14 +385,14 @@
   }
 
   function getCell(row, col) {
-    return state.board[row * size + col];
+    return state.board[row * columns + col];
   }
 
   function buildCleanBoard() {
     state.board = [];
     state.nextTileId = 1;
-    for (let row = 0; row < size; row += 1) {
-      for (let col = 0; col < size; col += 1) {
+    for (let row = 0; row < rows; row += 1) {
+      for (let col = 0; col < columns; col += 1) {
         let value = randomType();
         let guard = 0;
         while (
@@ -545,10 +546,10 @@
   }
 
   function isNeighbor(a, b) {
-    const ar = Math.floor(a / size);
-    const ac = a % size;
-    const br = Math.floor(b / size);
-    const bc = b % size;
+    const ar = Math.floor(a / columns);
+    const ac = a % columns;
+    const br = Math.floor(b / columns);
+    const bc = b % columns;
     return Math.abs(ar - br) + Math.abs(ac - bc) === 1;
   }
 
@@ -560,25 +561,25 @@
 
   function findMatches() {
     const matched = new Set();
-    for (let row = 0; row < size; row += 1) {
+    for (let row = 0; row < rows; row += 1) {
       let runStart = 0;
-      for (let col = 1; col <= size; col += 1) {
-        const same = col < size && getCell(row, col)?.type === getCell(row, runStart)?.type;
+      for (let col = 1; col <= columns; col += 1) {
+        const same = col < columns && getCell(row, col)?.type === getCell(row, runStart)?.type;
         if (!same) {
           if (col - runStart >= 3) {
-            for (let mark = runStart; mark < col; mark += 1) matched.add(row * size + mark);
+            for (let mark = runStart; mark < col; mark += 1) matched.add(row * columns + mark);
           }
           runStart = col;
         }
       }
     }
-    for (let col = 0; col < size; col += 1) {
+    for (let col = 0; col < columns; col += 1) {
       let runStart = 0;
-      for (let row = 1; row <= size; row += 1) {
-        const same = row < size && getCell(row, col)?.type === getCell(runStart, col)?.type;
+      for (let row = 1; row <= rows; row += 1) {
+        const same = row < rows && getCell(row, col)?.type === getCell(runStart, col)?.type;
         if (!same) {
           if (row - runStart >= 3) {
-            for (let mark = runStart; mark < row; mark += 1) matched.add(mark * size + col);
+            for (let mark = runStart; mark < row; mark += 1) matched.add(mark * columns + col);
           }
           runStart = row;
         }
@@ -597,13 +598,13 @@
 
   function spawnMatchEffects(indices) {
     indices.forEach((index, order) => {
-      const row = Math.floor(index / size);
-      const col = index % size;
+      const row = Math.floor(index / columns);
+      const col = index % columns;
       const effect = document.createElement("span");
       effect.className = "match-spark";
       effect.setAttribute("aria-hidden", "true");
-      effect.style.left = `${((col + 0.5) / size) * 100}%`;
-      effect.style.top = `${((row + 0.5) / size) * 100}%`;
+      effect.style.left = `${((col + 0.5) / columns) * 100}%`;
+      effect.style.top = `${((row + 0.5) / rows) * 100}%`;
       effect.style.setProperty("--burst-image", `url("${effectArt.matchBurst}")`);
       effect.style.animationDelay = `${Math.min(order * 18, 90)}ms`;
       nodes.board.append(effect);
@@ -612,20 +613,20 @@
 
   function collapse(matches) {
     const removed = new Set(matches);
-    const newBoard = new Array(size * size);
+    const newBoard = new Array(columns * rows);
     const dropMap = new Map();
 
-    for (let col = 0; col < size; col += 1) {
+    for (let col = 0; col < columns; col += 1) {
       const survivors = [];
-      for (let row = size - 1; row >= 0; row -= 1) {
-        const index = row * size + col;
+      for (let row = rows - 1; row >= 0; row -= 1) {
+        const index = row * columns + col;
         const tile = state.board[index];
         if (!removed.has(index)) survivors.push({ tile, oldRow: row });
       }
 
-      let targetRow = size - 1;
+      let targetRow = rows - 1;
       survivors.forEach(({ tile, oldRow }) => {
-        newBoard[targetRow * size + col] = tile;
+        newBoard[targetRow * columns + col] = tile;
         const distance = Math.max(0, targetRow - oldRow);
         if (distance > 0) dropMap.set(tile.id, distance);
         targetRow -= 1;
@@ -633,7 +634,7 @@
 
       while (targetRow >= 0) {
         const tile = makeTile(randomType());
-        newBoard[targetRow * size + col] = tile;
+        newBoard[targetRow * columns + col] = tile;
         dropMap.set(tile.id, targetRow + 1);
         targetRow -= 1;
       }
@@ -740,9 +741,9 @@
     if (Math.abs(dx) > Math.abs(dy)) {
       target = start + (dx > 0 ? 1 : -1);
     } else {
-      target = start + (dy > 0 ? size : -size);
+      target = start + (dy > 0 ? columns : -columns);
     }
-    if (target < 0 || target >= size * size || !isNeighbor(start, target)) return;
+    if (target < 0 || target >= columns * rows || !isNeighbor(start, target)) return;
     state.selected = start;
     state.suppressClick = true;
     trySwap(target);

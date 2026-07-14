@@ -1571,64 +1571,6 @@ body.zoo-playing .savanna-stage {
   text-align: right;
 }
 
-.next-goal-card {
-  min-height: 62px;
-  border: 0;
-  border-radius: 18px;
-  padding: 8px 10px;
-  display: grid;
-  grid-template-columns: 48px 1fr auto;
-  grid-template-areas:
-    "icon title status"
-    "icon meta meta";
-  gap: 3px 9px;
-  align-items: center;
-  text-align: left;
-  background: linear-gradient(180deg, #fff8cf 0%, #ffd96d 54%, #eca03a 100%);
-  color: #3d2914;
-  box-shadow: inset 0 2px rgba(255,255,255,.72), 0 6px 0 #95612d, 0 12px 18px rgba(82, 48, 18, .15);
-  font-weight: 950;
-}
-
-.next-goal-card img {
-  grid-area: icon;
-  width: 48px;
-  height: 48px;
-  object-fit: contain;
-  filter: drop-shadow(0 7px 7px rgba(67,43,20,.2));
-  pointer-events: none;
-}
-
-.next-goal-card strong {
-  grid-area: title;
-  font-size: .9rem;
-}
-
-.next-goal-card span {
-  grid-area: status;
-  justify-self: end;
-  padding: 4px 7px;
-  border-radius: 999px;
-  background: rgba(255,255,255,.65);
-  color: #8b4a0b;
-  font-size: .72rem;
-}
-
-.next-goal-card small {
-  grid-area: meta;
-  color: rgba(61, 41, 20, .72);
-  font-size: .72rem;
-}
-
-.next-goal-card.ready {
-  background: linear-gradient(180deg, #ecffd1 0%, #aee978 54%, #5fbd55 100%);
-}
-
-.next-goal-card.complete,
-.next-goal-card:disabled:not(.ready) {
-  opacity: .74;
-}
-
 .animal-shop {
   display: grid;
   grid-auto-flow: column;
@@ -1895,16 +1837,6 @@ body.zoo-playing .animal-shop-head span {
   display: none;
 }
 
-body.zoo-playing .next-goal-card {
-  min-height: 50px;
-  height: 50px;
-  grid-template-columns: 38px 1fr auto;
-  gap: 2px 7px;
-  border-radius: 13px;
-  padding: 6px 8px;
-  box-shadow: inset 0 2px rgba(255,255,255,.72), 0 4px 0 #95612d, 0 8px 12px rgba(82, 48, 18, .12);
-}
-
 body.zoo-playing .facility-board {
   border-radius: 13px;
   padding: 8px 9px;
@@ -1947,20 +1879,6 @@ body.zoo-playing .facility-card em {
   white-space: normal;
   overflow: visible;
   text-overflow: clip;
-}
-
-body.zoo-playing .next-goal-card img {
-  width: 38px;
-  height: 38px;
-}
-
-body.zoo-playing .next-goal-card strong {
-  font-size: clamp(.62rem, 2.5vw, .78rem);
-}
-
-body.zoo-playing .next-goal-card span,
-body.zoo-playing .next-goal-card small {
-  font-size: clamp(.52rem, 2vw, .62rem);
 }
 
 body.zoo-playing .animal-shop {
@@ -2457,16 +2375,12 @@ body.zoo-playing .facility-board {
   flex-shrink: 0;
 }
 
-body.zoo-playing .next-goal-card {
+body.zoo-playing .animal-shop-head {
   order: 4 !important;
 }
 
-body.zoo-playing .animal-shop-head {
-  order: 5 !important;
-}
-
 body.zoo-playing .animal-shop {
-  order: 6 !important;
+  order: 5 !important;
 }
 
 /* Reports are a separate top-level result screen, not a child beneath the Battle Canvas. */
@@ -2530,18 +2444,13 @@ body.zoo-playing .care-route-actions {
   order: 2;
 }
 
-body.zoo-playing .next-goal-card {
-  order: 3;
-  min-height: 58px;
-}
-
 body.zoo-playing .animal-shop-head {
-  order: 4;
+  order: 3;
   margin-top: 4px;
 }
 
 body.zoo-playing .animal-shop {
-  order: 5;
+  order: 4;
 }
 
 /* The active play shell wins over the legacy narrow-screen management rules. */
@@ -2581,14 +2490,8 @@ body.zoo-playing .animal-shop {
     font-size: clamp(.6rem, 2.55vw, .76rem);
   }
 
-  body.zoo-playing .next-goal-card {
-    order: 2;
-    min-height: 56px;
-    height: 56px;
-  }
-
   body.zoo-playing .facility-board {
-    order: 6;
+    order: 5;
   }
 
   body.zoo-playing .resource-row {
@@ -2652,7 +2555,7 @@ body.zoo-playing #battleAdReserve.battle-ad-reserve {
 
 body.zoo-playing .zoo-stage-card {
   height: 100% !important;
-  grid-template-rows: 42px 274px minmax(0, 1fr) !important;
+  grid-template-rows: 42px 330px minmax(0, 1fr) !important;
 }
 
 body.zoo-playing #habitatGrid.habitat-grid {

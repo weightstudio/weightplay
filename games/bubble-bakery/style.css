@@ -295,7 +295,7 @@ body.is-bakery-playing .play-panel {
   border-radius: 18px;
   padding: 12px;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto auto;
+  grid-template-columns: minmax(0, 1fr) auto;
   gap: 10px;
   align-items: center;
   background: linear-gradient(135deg, rgba(255, 248, 220, 0.95), rgba(255, 204, 109, 0.92));
@@ -339,17 +339,6 @@ body.is-bakery-playing .play-panel {
   height: 2rem;
   object-fit: contain;
   filter: drop-shadow(0 3px 3px rgba(76, 38, 18, 0.16));
-}
-
-.recommend-card button {
-  border: 0;
-  border-radius: 14px;
-  min-height: 44px;
-  padding: 0 14px;
-  background: linear-gradient(180deg, #46e083, #13b96b);
-  color: #08351e;
-  font-weight: 950;
-  box-shadow: 0 5px 0 #08783f, 0 10px 16px rgba(19, 130, 75, 0.22);
 }
 
 .bakery-progress {
@@ -1121,7 +1110,7 @@ body.is-bakery-playing .order-progress span {
   }
 
   .coach-card {
-    min-height: 104px;
+    min-height: 96px;
     grid-template-columns: 82px minmax(0, 1fr);
     gap: 10px;
     padding: 10px;
@@ -1134,6 +1123,14 @@ body.is-bakery-playing .order-progress span {
 
   .coach-card span {
     font-size: 0.8rem;
+  }
+
+  .main-panel {
+    gap: 8px;
+  }
+
+  .main-start {
+    min-height: 50px;
   }
 
   .recommend-card {
@@ -1150,14 +1147,6 @@ body.is-bakery-playing .order-progress span {
   .recommend-icons img {
     width: 1.55rem;
     height: 1.55rem;
-  }
-
-  .recommend-card button {
-    grid-column: 2;
-    grid-row: 1 / span 2;
-    align-self: stretch;
-    padding: 0 10px;
-    font-size: 0.8rem;
   }
 
   .bakery-progress {
@@ -1317,14 +1306,6 @@ body.is-bakery-playing .order-progress span {
   body.is-bakery-stage-select .recommend-card em,
   body.is-bakery-stage-select .recommend-icons {
     display: none;
-  }
-
-  body.is-bakery-stage-select .recommend-card button {
-    grid-column: 2;
-    grid-row: 1;
-    min-height: 46px;
-    padding: 0 12px;
-    font-size: 0.76rem;
   }
 
   body.is-bakery-stage-select .bakery-progress {

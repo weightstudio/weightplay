@@ -584,9 +584,87 @@ body.lobby-page {
 
 .library-tabs {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 8px;
   padding: 0 0 8px;
+}
+
+.library-tabs button {
+  width: 100%;
+  min-width: 0;
+  padding-inline: 8px;
+  gap: 5px;
+}
+
+.advanced-filters {
+  margin: 0 0 12px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 14px;
+  background: rgba(7, 22, 31, 0.72);
+  overflow: hidden;
+}
+
+.advanced-filters summary {
+  display: flex;
+  min-height: 48px;
+  padding: 0 14px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: #fff4cf;
+  font-weight: 900;
+  cursor: pointer;
+  list-style: none;
+}
+
+.advanced-filters summary::-webkit-details-marker {
+  display: none;
+}
+
+.advanced-filters summary::after {
+  content: "+";
+  width: 24px;
+  color: #ffcf63;
+  font-size: 24px;
+  line-height: 1;
+  text-align: center;
+}
+
+.advanced-filters[open] summary::after {
+  content: "-";
+}
+
+.advanced-filter-count {
+  min-width: 28px;
+  height: 28px;
+  margin-left: auto;
+  border-radius: 999px;
+  background: #ffbf42;
+  color: #241a08;
+  font-size: 13px;
+  line-height: 28px;
+  text-align: center;
+}
+
+.advanced-filter-count.is-empty {
+  visibility: hidden;
+}
+
+.advanced-filter-groups {
+  padding: 0 8px 8px;
+}
+
+.advanced-filter-groups .topic-filter,
+.advanced-filter-groups .skill-filter {
+  margin-bottom: 8px;
+}
+
+.advanced-filter-groups .availability-filter {
+  padding-bottom: 0;
+}
+
+.filter-status:not(.results-active) {
+  display: none;
 }
 
 .availability-filter {

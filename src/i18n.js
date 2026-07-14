@@ -639,6 +639,8 @@
 
   Object.assign(dictionaries.en, {
     "site.title": "WeightPlay - Free Mobile Web Games for Kids and Families",
+    "filter.more_filters": "More filters",
+    "filter.active_count": "{count} active filters",
     "aria.platform_status": "Platform status",
     "aria.daily_reward": "Daily reward",
     "aria.parent_trust_highlights": "Parent trust highlights",
@@ -652,6 +654,8 @@
 
   Object.assign(dictionaries["zh-Hant"], {
     "site.title": "WeightPlay - \u514d\u8cbb\u5152\u7ae5\u8207\u5bb6\u5ead\u624b\u6a5f\u7db2\u9801\u904a\u6232",
+    "filter.more_filters": "\u66f4\u591a\u7be9\u9078",
+    "filter.active_count": "\u5df2\u555f\u7528 {count} \u500b\u7be9\u9078",
     "language.label": "\u8a9e\u8a00",
     "aria.platform_status": "\u5e73\u53f0\u72c0\u614b",
     "aria.daily_reward": "\u6bcf\u65e5\u7c3d\u5230\u734e\u52f5",

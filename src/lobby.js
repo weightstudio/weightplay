@@ -4,6 +4,8 @@ const topicButtons = document.querySelectorAll("[data-topic-filter]");
 const skillButtons = document.querySelectorAll("[data-skill-filter]");
 const libraryButtons = document.querySelectorAll("[data-library-tab]");
 const availabilityButtons = document.querySelectorAll("[data-availability-filter]");
+const advancedFilters = document.querySelector("#advancedFilters");
+const advancedFilterCount = document.querySelector("#advancedFilterCount");
 const discoverySnapshot = document.querySelector("#discoverySnapshot");
 const gameGrid = document.querySelector("#gameGrid");
 const heroGames = document.querySelector("#heroGames");
@@ -242,6 +244,20 @@ function activeDiscoveryLabels() {
   if (activeAvailability !== "all") labels.push(selectedButtonLabel(availabilityButtons, "availabilityFilter", activeAvailability));
   if (activeSearch) labels.push(i18n.t("status.search_term", { query: activeSearch }));
   return labels.filter(Boolean);
+}
+
+function updateAdvancedFilterState() {
+  const count = Number(activeTopic !== "all") + Number(activeSkill !== "all") + Number(activeAvailability !== "all");
+  if (advancedFilterCount) {
+    advancedFilterCount.textContent = String(count);
+    advancedFilterCount.classList.toggle("is-empty", count === 0);
+    advancedFilterCount.setAttribute("aria-label", i18n.t("filter.active_count", { count }));
+  }
+  advancedFilters?.classList.toggle("has-active", count > 0);
+}
+
+function collapseAdvancedFiltersOnPhone() {
+  if (advancedFilters && window.matchMedia("(max-width: 620px)").matches) advancedFilters.open = false;
 }
 
 function renderFilterStatusSummary(visibleCount, labels) {
@@ -1308,10 +1324,15 @@ function applyFilter({ historyMode = "replace" } = {}) {
   });
 
   heroGamesSection.classList.toggle("hidden", isFiltered);
+  discoverySnapshot?.classList.toggle("hidden", isFiltered);
+  mobilePicksSection?.classList.toggle("hidden", isFiltered);
+  upcomingGamesSection?.classList.toggle("hidden", isFiltered);
   characterShowcaseSection?.classList.toggle("hidden", isFiltered);
   recommendationsSection?.classList.toggle("hidden", isFiltered);
   freshUpdatesSection?.classList.toggle("hidden", isFiltered);
+  challengeSpotlightSection?.classList.toggle("hidden", isFiltered);
   skillPathsSection?.classList.toggle("hidden", isFiltered);
+  filterStatus.classList.toggle("results-active", isFiltered);
   filterStatus.classList.toggle("empty", visibleCount === 0);
   filterStatus.classList.toggle("has-filters", isFiltered && visibleCount > 0);
 
@@ -1337,6 +1358,7 @@ function applyFilter({ historyMode = "replace" } = {}) {
     filterStatus.textContent = i18n.t("status.all_games");
   }
 
+  updateAdvancedFilterState();
   syncDiscoveryFiltersToUrl(historyMode);
 }
 
@@ -1483,6 +1505,7 @@ topicButtons.forEach((button) => {
     window.WonderAnalytics?.track("topic_filter", { topic_filter: activeTopic, locale: i18n.locale() });
     topicButtons.forEach((item) => item.classList.toggle("active", item === button));
     applyFilter({ historyMode: "push" });
+    collapseAdvancedFiltersOnPhone();
   });
 });
 
@@ -1494,6 +1517,7 @@ skillButtons.forEach((button) => {
     window.WonderAnalytics?.track("skill_filter", { skill_filter: activeSkill, locale: i18n.locale() });
     skillButtons.forEach((item) => item.classList.toggle("active", item === button));
     applyFilter({ historyMode: "push" });
+    collapseAdvancedFiltersOnPhone();
   });
 });
 
@@ -1516,6 +1540,7 @@ availabilityButtons.forEach((button) => {
     window.WonderAnalytics?.track("availability_filter", { availability_filter: activeAvailability, locale: i18n.locale() });
     availabilityButtons.forEach((item) => item.classList.toggle("active", item === button));
     applyFilter({ historyMode: "push" });
+    collapseAdvancedFiltersOnPhone();
   });
 });
 

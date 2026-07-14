@@ -840,7 +840,6 @@
         <div class="park-plan-card" aria-live="polite"></div>
         <div class="tour-board" aria-live="polite"></div>
         <div class="habitat-bonus-card" aria-live="polite"></div>
-        <button class="next-goal-card" type="button" data-action="next-goal"></button>
         <div class="facility-board" aria-live="polite"></div>
         <div class="zoo-milestone-board" aria-live="polite"></div>
         <div class="animal-shop-head"><strong>${t("animals")}</strong><span>${t("dragHint")}</span></div>
@@ -859,9 +858,7 @@
     card.querySelector('[data-action="route-cancel"]').addEventListener("click", closeCareRoutes);
     card.querySelector('[data-action="upgrade"]').addEventListener("click", upgradeGate);
     card.querySelector('[data-action="report"]').addEventListener("click", showReport);
-    card.querySelector('[data-action="next-goal"]').addEventListener("click", recruitAnimal);
     renderDailyFocus(card.querySelector(".daily-focus-card"));
-    renderNextGoal(card.querySelector(".next-goal-card"));
     renderParkPlan(card.querySelector(".park-plan-card"));
     renderTourBoard(card.querySelector(".tour-board"));
     renderHabitatBonus(card.querySelector(".habitat-bonus-card"));
@@ -900,7 +897,6 @@
       upgrade.disabled = save.gateLevel >= maxGateLevel;
       upgrade.textContent = upgradeButtonLabel();
     }
-    renderNextGoal(card.querySelector(".next-goal-card"));
     renderTaskBoard(card.querySelector(".zoo-task-board"));
     renderMilestones(card.querySelector(".zoo-milestone-board"));
     renderHabitatBonus(card.querySelector(".habitat-bonus-card"));
@@ -1092,31 +1088,6 @@
     container.querySelectorAll("[data-facility]").forEach((button) => {
       button.addEventListener("click", () => upgradeFacility(button.dataset.facility));
     });
-  }
-
-  function renderNextGoal(container) {
-    if (!container) return;
-    const animal = nextRecruit();
-    if (!animal) {
-      container.disabled = true;
-      container.classList.add("complete");
-      container.classList.remove("ready");
-      container.innerHTML = `
-        <strong>${t("nextGoal")}</strong>
-        <span>${t("nextGoalAll")}</span>
-      `;
-      return;
-    }
-    const missing = Math.max(0, animal.cost - save.coins);
-    container.disabled = save.coins < animal.cost;
-    container.classList.toggle("complete", false);
-    container.classList.toggle("ready", missing <= 0);
-    container.innerHTML = `
-      <img src="${animal.asset}" alt="" draggable="false" />
-      <strong>${t("nextGoal")}: ${t(animal.id)}</strong>
-      <span>${missing <= 0 ? t("nextGoalReady") : t("nextGoalNeed", { coins: formatCost(missing) })}</span>
-      <small>${formatCost(animal.cost)} - ${t("incomeShort", { n: formatNumber(animal.baseIncome) })}</small>
-    `;
   }
 
   function renderDailyFocus(container) {
@@ -1451,12 +1422,6 @@
     playSound("upgrade");
     saveGame();
     render();
-  }
-
-  function recruitAnimal() {
-    const animal = nextRecruit();
-    if (!animal) return;
-    buyAnimal(animal.id);
   }
 
   function buyAnimal(animalId) {

@@ -9,7 +9,18 @@
   const text = {
     en: {
       gameTitle: "Animal Bubble Bakery",
+      pageTitle: "Animal Bubble Bakery - WeightPlay",
       language: "Language",
+      localeSelect: "Language selection",
+      coachCard: "Bakery coach",
+      stageList: "Stage list",
+      orderList: "Bakery orders",
+      bubbleBoard: "Bubble board",
+      bunny: "Bunny",
+      whale: "Whale",
+      chick: "Chick",
+      frog: "Frog",
+      fox: "Fox",
       chooseStage: "Choose Stage",
       menuHint: "Tap 2 or more connected matching bubbles to fill bakery orders.",
       startGame: "Start Game",
@@ -70,7 +81,6 @@
       recommendedNew: "Clear this order to unlock the next bakery tray.",
       recommendedImprove: "Replay this order to earn more stars.",
       recommendedMastered: "Everything is mastered. Replay your newest favorite order.",
-      startRecommended: "Start Pick",
       resultNextTitle: "Next bakery order",
       resultUnlocked: "New tray unlocked: {stage}",
       resultReplay: "Replay goal: earn more stars on {stage}",
@@ -87,7 +97,18 @@
     },
     "zh-Hant": {
       gameTitle: "動物泡泡烘焙坊",
+      pageTitle: "動物泡泡烘焙坊 - WeightPlay",
       language: "語言",
+      localeSelect: "語言選擇",
+      coachCard: "烘焙教練",
+      stageList: "關卡列表",
+      orderList: "烘焙訂單",
+      bubbleBoard: "泡泡棋盤",
+      bunny: "兔兔",
+      whale: "鯨魚",
+      chick: "小雞",
+      frog: "青蛙",
+      fox: "狐狸",
       chooseStage: "選擇關卡",
       menuHint: "點擊 2 個以上相連的相同動物泡泡，完成烘焙訂單。",
       startGame: "開始遊戲",
@@ -148,7 +169,6 @@
       recommendedNew: "完成這張訂單，就能解鎖下一個烘焙盤。",
       recommendedImprove: "重玩這張訂單，試著拿到更多星星。",
       recommendedMastered: "全部都精通了！可以重玩最新喜歡的訂單。",
-      startRecommended: "開始推薦",
       resultNextTitle: "下一張烘焙訂單",
       resultUnlocked: "新烘焙盤解鎖：{stage}",
       resultReplay: "重玩目標：在{stage}拿更多星星",
@@ -166,11 +186,11 @@
   };
 
   const colors = [
-    { id: "berry", label: "Bunny", asset: "../../assets/bubble-bakery-bunny.png" },
-    { id: "sky", label: "Whale", asset: "../../assets/bubble-bakery-whale.png" },
-    { id: "lemon", label: "Chick", asset: "../../assets/bubble-bakery-chick.png" },
-    { id: "mint", label: "Frog", asset: "../../assets/bubble-bakery-frog.png" },
-    { id: "grape", label: "Fox", asset: "../../assets/bubble-bakery-fox.png" },
+    { id: "berry", labelKey: "bunny", asset: "../../assets/bubble-bakery-bunny.png" },
+    { id: "sky", labelKey: "whale", asset: "../../assets/bubble-bakery-whale.png" },
+    { id: "lemon", labelKey: "chick", asset: "../../assets/bubble-bakery-chick.png" },
+    { id: "mint", labelKey: "frog", asset: "../../assets/bubble-bakery-frog.png" },
+    { id: "grape", labelKey: "fox", asset: "../../assets/bubble-bakery-fox.png" },
   ];
 
   const stages = [
@@ -312,6 +332,7 @@
 
   function localizeStatic() {
     document.documentElement.lang = locale === "zh-Hant" ? "zh-Hant" : "en";
+    document.title = t("pageTitle");
     document.querySelectorAll("[data-ui]").forEach((node) => {
       node.textContent = t(node.dataset.ui);
     });
@@ -319,6 +340,11 @@
       node.setAttribute("aria-label", t(node.dataset.uiAriaLabel));
     });
     nodes.localeSelect.value = locale;
+    nodes.localeSelect.setAttribute("aria-label", t("localeSelect"));
+    document.querySelector(".coach-card")?.setAttribute("aria-label", t("coachCard"));
+    nodes.stageGrid.setAttribute("aria-label", t("stageList"));
+    nodes.orderBar.setAttribute("aria-label", t("orderList"));
+    nodes.board.setAttribute("aria-label", t("bubbleBoard"));
   }
 
   function renderStageGrid() {
@@ -382,7 +408,6 @@
         <em>${t(reasonKey)}</em>
       </div>
       <b class="recommend-icons">${orderIcons}</b>
-      <button type="button" data-recommended-stage="${index}">${t("startRecommended")}</button>
     `;
   }
 
@@ -443,6 +468,7 @@
 
   function showMain() {
     document.body.classList.remove("is-bakery-playing", "is-bakery-stage-select", "is-bakery-result", "bakery-expanded-canvas");
+    document.body.classList.remove("wp-stage-select-active");
     window.WEIGHTPLAY_BUBBLE_BAKERY_ACTIVE = false;
     window.dispatchEvent(new CustomEvent("bubble-bakery:play-state", { detail: { playing: false } }));
     nodes.mainPanel.classList.remove("hidden");
@@ -647,7 +673,7 @@
         }
         button.dataset.row = String(r);
         button.dataset.col = String(c);
-        button.setAttribute("aria-label", data.label);
+        button.setAttribute("aria-label", t(data.labelKey));
         button.innerHTML = `<img src="${data.asset}" alt="" draggable="false" /><span class="order-target-ring" aria-hidden="true"></span>`;
         button.addEventListener("click", () => popGroup(r, c));
         nodes.board.appendChild(button);
@@ -991,13 +1017,12 @@
     }
   });
   nodes.startGameBtn.addEventListener("click", showStageSelect);
+  window.addEventListener("weightplay:tutorial-start", (event) => {
+    if (event.detail?.gameId !== GAME_ID || nodes.mainPanel.classList.contains("hidden")) return;
+    showStageSelect();
+  });
   nodes.stageBackBtn.addEventListener("click", showMain);
   nodes.backToStagesBtn.addEventListener("click", showStageSelect);
-  nodes.recommendedOrder.addEventListener("click", (event) => {
-    const button = event.target.closest("[data-recommended-stage]");
-    if (!button) return;
-    startStage(Number(button.dataset.recommendedStage || 0));
-  });
   nodes.resultStagesBtn.addEventListener("click", showStageSelect);
   nodes.retryBtn.addEventListener("click", () => startStage(currentStage));
   nodes.nextStageBtn.addEventListener("click", () => startStage(Math.min(currentStage + 1, stages.length - 1)));

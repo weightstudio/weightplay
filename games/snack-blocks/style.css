@@ -378,18 +378,17 @@ button:active {
 
 .board {
   position: relative;
-  width: min(94vw, 620px, 72svh);
-  aspect-ratio: 1;
+  width: min(94vw, 434px, 50.4svh);
+  aspect-ratio: 7 / 10;
   margin: 0 auto;
-  padding: 8px;
-  border-radius: 8px;
-  background:
-    linear-gradient(180deg, rgba(28, 12, 25, 0.04), rgba(19, 9, 18, 0.14)),
-    url("assets/board-frame.webp") center / cover no-repeat,
-    rgba(18, 21, 31, 0.76);
-  border: 2px solid rgba(255, 255, 255, 0.18);
+  padding: 7px;
+  border-radius: 18px;
+  background: linear-gradient(160deg, #4b2528 0%, #28141c 100%);
+  border: 7px solid #8d4c27;
+  box-shadow: inset 0 0 0 3px #c77a3d, inset 0 12px 28px rgba(12, 5, 10, .46), 0 8px 0 #512716;
   display: grid;
   grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: repeat(10, minmax(0, 1fr));
   gap: 6px;
   touch-action: none;
   overflow: hidden;
@@ -667,7 +666,7 @@ body.snack-playing .hud strong {
 }
 
 body.snack-playing .play-panel {
-  grid-template-rows: 54px 350px 32px !important;
+  grid-template-rows: 54px 500px 32px !important;
   align-content: start;
   min-height: 0;
   gap: 8px;
@@ -675,7 +674,7 @@ body.snack-playing .play-panel {
 
 body.snack-playing .board {
   width: 350px !important;
-  height: 350px !important;
+  height: 500px !important;
   max-width: 350px !important;
 }
 
@@ -704,7 +703,7 @@ body.snack-playing .game-page-info {
   display: none !important;
 }
 
-/* Phone Battle uses an Expanded Canvas; the square board preserves its own ratio. */
+/* Phone Battle uses an Expanded Canvas; the 7x10 board preserves its own ratio. */
 body.snack-playing.snack-expanded-canvas .snack-game,
 body.snack-playing.snack-expanded-canvas.weightplay-active-viewport .snack-game {
   width: var(--snack-frame-width, calc(100vw - 8px)) !important;
@@ -766,14 +765,14 @@ body.snack-playing.snack-expanded-canvas .play-panel {
 }
 
 body.snack-playing.snack-expanded-canvas .board {
-  width: min(100%, calc(var(--snack-frame-height, 780px) - 220px)) !important;
+  width: min(100%, calc((var(--snack-frame-height, 780px) - 220px) * .7)) !important;
   height: auto !important;
   max-width: 100% !important;
   max-height: 100%;
-  aspect-ratio: 1;
+  aspect-ratio: 7 / 10;
   align-self: center;
   justify-self: center;
-  grid-template-rows: repeat(7, minmax(0, 1fr));
+  grid-template-rows: repeat(10, minmax(0, 1fr));
 }
 
 body.snack-playing.snack-expanded-canvas .tile {
@@ -852,7 +851,7 @@ body.snack-playing .wp-tutorial-button {
   }
 
   body.snack-playing.snack-expanded-canvas .board {
-    width: min(100%, calc(var(--snack-frame-height, 320px) - 178px)) !important;
+    width: min(100%, calc((var(--snack-frame-height, 320px) - 178px) * .7)) !important;
   }
 
   body.snack-playing.snack-expanded-canvas .hint {
