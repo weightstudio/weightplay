@@ -170,6 +170,8 @@
       tourBuild: "Build or recruit {count} time",
       tourClaim: "Claim Tour",
       tourComplete: "Park tour complete!",
+      tourReputation: "Park Reputation",
+      tourReputationBonus: "Permanent ticket income +{n}%",
       parkPlan: "Park Growth Plan",
       parkRank: "Gate progress",
       nextUpgrade: "Next gate upgrade",
@@ -313,8 +315,10 @@
     tourCollect: "\u6536\u96c6 {coins} \u9580\u7968",
     tourCare: "\u7167\u9867\u52d5\u7269 {count} \u6b21",
     tourBuild: "\u5efa\u8a2d\u6216\u62db\u52df {count} \u6b21",
-    tourClaim: "\u9818\u53d6\u5de1\u8ff4",
-    tourComplete: "\u5712\u5340\u5de1\u8ff4\u5b8c\u6210\uff01",
+      tourClaim: "\u9818\u53d6\u5de1\u8ff4",
+      tourComplete: "\u5712\u5340\u5de1\u8ff4\u5b8c\u6210\uff01",
+      tourReputation: "\u5712\u5340\u8072\u671b",
+      tourReputationBonus: "\u6c38\u4e45\u9580\u7968\u6536\u5165 +{n}%",
     parkPlan: "\u6a02\u5712\u6210\u9577\u8a08\u756b",
     parkRank: "\u5927\u9580\u9032\u5ea6",
     nextUpgrade: "\u4e0b\u4e00\u6b21\u5927\u9580\u5347\u7d1a",
@@ -398,6 +402,7 @@
     resultPanel: $("resultPanel"),
     reportScore: $("reportScore"),
     reportText: $("reportText"),
+    tourReport: $("tourReport"),
     animalAlbum: $("animalAlbum"),
     focusStars: $("focusStars"),
     logicStars: $("logicStars"),
@@ -550,7 +555,16 @@
     const happyBonus = 0.35 + save.happiness / 240;
     const habitatBonus = 1 + habitatBonusRate();
     const facilityBonus = 1 + facilityIncomeBonus();
-    return Math.max(2, Math.round(animalIncome * gateBonus * happyBonus * habitatBonus * facilityBonus));
+    const reputationBonus = 1 + tourReputationRate();
+    return Math.max(2, Math.round(animalIncome * gateBonus * happyBonus * habitatBonus * facilityBonus * reputationBonus));
+  }
+
+  function completedTours() {
+    return Math.max(0, Number(save.tourRound || 1) - 1);
+  }
+
+  function tourReputationRate() {
+    return Math.min(0.4, completedTours() * 0.02);
   }
 
   function facilityLevel(facility) {
@@ -1275,6 +1289,38 @@
     container.querySelector('[data-action="tour-claim"]')?.addEventListener("click", claimTourReward);
   }
 
+  function renderTourReport(container) {
+    if (!container) return;
+    const targets = tourTargets();
+    const ready = isTourComplete();
+    const rows = [
+      { label: t("tourCollect", { coins: formatCost(targets.collected) }), value: save.tour.collected, target: targets.collected },
+      { label: t("tourCare", { count: targets.cared }), value: save.tour.cared, target: targets.cared },
+      { label: t("tourBuild", { count: targets.built }), value: save.tour.built, target: targets.built },
+    ];
+    container.innerHTML = `
+      <div class="tour-report-head">
+        <strong>${t("tourBoard")}</strong>
+        <span>${t("tourRound", { n: save.tourRound })}</span>
+      </div>
+      <div class="tour-reputation">
+        <b>${t("tourReputation")} ${completedTours()}</b>
+        <span>${t("tourReputationBonus", { n: Math.round(tourReputationRate() * 100) })}</span>
+      </div>
+      <div class="tour-report-list">
+        ${rows.map((row) => `
+          <div>
+            <span>${row.label}</span>
+            <small>${formatNumber(Math.min(row.value, row.target))} / ${formatNumber(row.target)}</small>
+            <i style="--tour-progress:${Math.round(taskProgress(row.value, row.target) * 100)}%"></i>
+          </div>
+        `).join("")}
+      </div>
+      <button type="button" data-action="tour-report-claim" ${ready ? "" : "disabled"}>${ready ? t("tourClaim") : t("tourReward", { coins: formatCost(targets.reward) })}</button>
+    `;
+    container.querySelector('[data-action="tour-report-claim"]')?.addEventListener("click", claimTourReward);
+  }
+
   function renderHabitatBonus(container) {
     if (!container) return;
     const count = unlockedAnimals().length;
@@ -1472,6 +1518,7 @@
     window.WonderAnalytics?.track("zoo_tour_complete", { game_id: GAME_ID, round: save.tourRound - 1 });
     saveGame();
     render();
+    if (!nodes.resultPanel.classList.contains("hidden")) renderTourReport(nodes.tourReport);
   }
 
   function notEnough(cost = 0) {
@@ -1516,6 +1563,7 @@
     nodes.focusStars.textContent = starText(save.careCount * 32 + save.happiness);
     nodes.logicStars.textContent = starText(save.gateLevel * 90 + unlockedAnimals().length * 34);
     nodes.animalStars.textContent = starText(unlockedAnimals().length * 95);
+    renderTourReport(nodes.tourReport);
     renderAnimalAlbum(nodes.animalAlbum);
     nodes.resultPanel.classList.remove("hidden");
     window.WonderAnalytics?.track("game_complete", { game_id: GAME_ID, score, animals: unlockedAnimals().length });

@@ -155,9 +155,11 @@
 
   function centerNearest(rail, restore) {
     const allCards = stageCards(rail);
-    // A locked stage may remain visible in the rail, but ending a drag on it
-    // must not leave the viewport centered on a card the game cannot select.
-    const cards = allCards.filter(isUnlockedCard);
+    // Some games use the rail for browsing future stages as well as choosing
+    // the next playable stage. Those rails opt in to snapping locked cards.
+    const cards = rail.dataset.wpStageSnapLocked === "true"
+      ? [...allCards]
+      : allCards.filter(isUnlockedCard);
     if (!cards.length) cards.push(...allCards);
     if (!cards.length) {
       restore();
@@ -182,6 +184,9 @@
     rail.dataset.wpSnapTarget = String(boundedTarget);
     if (Math.abs(boundedTarget - rail.scrollLeft) < 1) {
       rail.scrollLeft = boundedTarget;
+      rail.dispatchEvent(new CustomEvent("wonder:stage-snap", {
+        detail: { index: Number(nearest.dataset.index ?? nearest.dataset.stageIndex ?? -1) },
+      }));
       restore();
       return;
     }
@@ -204,6 +209,9 @@
       }
       rail.scrollLeft = boundedTarget;
       pendingSettles.delete(rail);
+      rail.dispatchEvent(new CustomEvent("wonder:stage-snap", {
+        detail: { index: Number(nearest.dataset.index ?? nearest.dataset.stageIndex ?? -1) },
+      }));
       restore();
     };
     pendingSettles.set(rail, pending);
@@ -307,6 +315,8 @@
     document.addEventListener("pointermove", (event) => {
       if (event.pointerId !== pointerId) return;
       const delta = event.clientX - startX;
+      const railRect = rail.getBoundingClientRect();
+      const coordinateScale = railRect.width > 0 ? rail.clientWidth / railRect.width : 1;
       rail.dataset.wpDragDelta = String(delta);
       rail.dataset.wpDragMove = String(Number(rail.dataset.wpDragMove || 0) + 1);
       if (!moved && Math.abs(delta) > 8) {
@@ -316,7 +326,7 @@
       }
       if (!moved) return;
       if (event.cancelable) event.preventDefault();
-      rail.scrollLeft = startScroll - delta;
+      rail.scrollLeft = startScroll - delta * coordinateScale;
       rail.dataset.wpDragScroll = String(rail.scrollLeft);
       rail.dataset.wpDragApplied = String(rail.scrollLeft - startScroll);
     }, true);

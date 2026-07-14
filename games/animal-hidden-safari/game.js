@@ -126,13 +126,13 @@
     lion: "../../assets/weightplay-boom-mane-lion.png",
     elephant: "../../assets/animal-zoo-elephant.png",
     giraffe: "../../assets/animal-zoo-idle-giraffe.png",
-    panda: "../../assets/animal-zoo-panda.png",
+    panda: "../../assets/weightplay-character-drum-belly-panda-safe-face-cutout.webp",
     penguin: "../../assets/animal-zoo-penguin.png",
     koala: "../../assets/tiny-weather-animal-koala.png",
-    rabbit: "../../assets/tiny-weather-animal-rabbit.png",
-    fox: "../../assets/tiny-weather-animal-fox.png",
+    rabbit: "../../assets/weightplay-character-rainbow-hop-mimi-clean-cutout.webp",
+    fox: "../../assets/weightplay-character-spark-paw-fox-cutout.webp",
     frog: "../../assets/bubble-bakery-frog.png",
-    owl: "../../assets/animal-guard-owl.png",
+    owl: "../../assets/weightplay-character-moon-cap-owl-cutout.webp",
   };
 
   const coverAssets = {

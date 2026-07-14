@@ -957,7 +957,9 @@ body.zoo-playing .game-page-info {
   display: grid;
   place-items: center;
   background: linear-gradient(145deg, #fff6ad, #7fd873);
-  font-size: 2rem;
+  font-size: 1.25rem;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
   box-shadow: inset 0 -8px rgba(0,0,0,.09);
 }
 
@@ -979,6 +981,52 @@ body.zoo-playing .game-page-info {
 
 .skill-lines b {
   color: #ffae00;
+}
+
+.tour-report {
+  display: grid;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid rgba(83, 128, 62, .25);
+  border-radius: 12px;
+  text-align: left;
+  background: #f4faec;
+}
+
+.tour-report-head,
+.tour-reputation,
+.tour-report-list > div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 3px 8px;
+  align-items: center;
+}
+
+.tour-report-head span,
+.tour-reputation span,
+.tour-report-list small {
+  color: rgba(54, 82, 38, .72);
+  font-size: .72rem;
+}
+
+.tour-report-list {
+  display: grid;
+  gap: 6px;
+}
+
+.tour-report-list i {
+  grid-column: 1 / -1;
+  height: 5px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #75d966 var(--tour-progress, 0%), #dce6d2 var(--tour-progress, 0%));
+}
+
+.tour-report button {
+  min-height: 38px;
+}
+
+.tour-report button:disabled {
+  opacity: .62;
 }
 
 .animal-album {
