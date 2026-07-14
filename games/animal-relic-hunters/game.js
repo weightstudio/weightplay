@@ -462,6 +462,43 @@
     "boots-epic": { slot: "boots", nameKey: "gear_boots_epic", typeKey: "rarity_epic", effectKey: "gear_boots_epic_desc", iconSrc: uiAssets.boots, bonusSpeed: 1.2 },
   };
 
+  const bulletVisualProfiles = Object.freeze({
+    default: Object.freeze({
+      tailStart: "rgba(34, 211, 238, 0)",
+      tailMid: "rgba(103, 232, 249, 0.24)",
+      tailEnd: "rgba(224, 251, 255, 0.82)",
+      shell: "#dffbff",
+      core: "#22d3ee",
+      shadow: "#06b6d4",
+      mote: "#67e8f9",
+      moteShape: "circle",
+    }),
+    "sword-rare": Object.freeze({
+      tailStart: "rgba(249, 115, 22, 0)",
+      tailMid: "rgba(251, 191, 36, 0.3)",
+      tailEnd: "rgba(255, 247, 204, 0.9)",
+      shell: "#fff7cc",
+      core: "#f59e0b",
+      shadow: "#f97316",
+      mote: "#fde047",
+      moteShape: "slash",
+    }),
+    "dagger-epic": Object.freeze({
+      tailStart: "rgba(168, 85, 247, 0)",
+      tailMid: "rgba(216, 180, 254, 0.3)",
+      tailEnd: "rgba(250, 232, 255, 0.9)",
+      shell: "#fae8ff",
+      core: "#d946ef",
+      shadow: "#a855f7",
+      mote: "#f0abfc",
+      moteShape: "diamond",
+    }),
+  });
+
+  function getBulletVisualProfile(weaponKey) {
+    return bulletVisualProfiles[weaponKey] || bulletVisualProfiles.default;
+  }
+
   const expeditionDefs = [
     { id: 1, level: 1, en: "Moss Gate", zh: "\u82d4\u75d5\u4e4b\u9580" },
     { id: 2, level: 4, en: "Echo Gallery", zh: "\u56de\u8072\u9577\u5eca" },
@@ -1266,6 +1303,7 @@
       dmg: stats.dmg,
       size: 6,
       trail: [],
+      visualKey: state.eqWeapon || "default",
     });
     window.WonderSound?.play("shoot");
   }
@@ -1840,12 +1878,13 @@
 
     // 4. Draw Bullets
     state.bullets.forEach((bullet) => {
+      const visual = getBulletVisualProfile(bullet.visualKey);
       const trailStart = bullet.trail[0];
       if (trailStart) {
         const glow = ctx.createLinearGradient(trailStart.x, trailStart.y, bullet.x, bullet.y);
-        glow.addColorStop(0, "rgba(34, 211, 238, 0)");
-        glow.addColorStop(0.56, "rgba(103, 232, 249, 0.22)");
-        glow.addColorStop(1, "rgba(224, 251, 255, 0.78)");
+        glow.addColorStop(0, visual.tailStart);
+        glow.addColorStop(0.56, visual.tailMid);
+        glow.addColorStop(1, visual.tailEnd);
         ctx.save();
         ctx.strokeStyle = glow;
         ctx.lineCap = "round";
@@ -1857,17 +1896,39 @@
         });
         ctx.lineTo(bullet.x, bullet.y);
         ctx.stroke();
+
+        const angle = Math.atan2(bullet.vy, bullet.vx);
+        ctx.fillStyle = visual.mote;
+        bullet.trail.forEach((point, index) => {
+          if (index % 3 !== 1) return;
+          const alpha = (index + 1) / bullet.trail.length;
+          ctx.globalAlpha = 0.2 + alpha * 0.6;
+          ctx.save();
+          ctx.translate(point.x, point.y);
+          if (visual.moteShape === "slash") {
+            ctx.rotate(angle);
+            ctx.fillRect(-3, -1, 6, 2);
+          } else if (visual.moteShape === "diamond") {
+            ctx.rotate(Math.PI / 4);
+            ctx.fillRect(-2, -2, 4, 4);
+          } else {
+            ctx.beginPath();
+            ctx.arc(0, 0, 1.7, 0, Math.PI * 2);
+            ctx.fill();
+          }
+          ctx.restore();
+        });
         ctx.restore();
       }
 
       ctx.save();
-      ctx.fillStyle = "#dffbff";
-      ctx.shadowColor = "#06b6d4";
+      ctx.fillStyle = visual.shell;
+      ctx.shadowColor = visual.shadow;
       ctx.shadowBlur = 14;
       ctx.beginPath();
       ctx.arc(bullet.x, bullet.y, bullet.size, 0, Math.PI * 2);
       ctx.fill();
-      ctx.fillStyle = "#22d3ee";
+      ctx.fillStyle = visual.core;
       ctx.shadowBlur = 0;
       ctx.beginPath();
       ctx.arc(bullet.x, bullet.y, Math.max(2, bullet.size * 0.44), 0, Math.PI * 2);
@@ -2197,6 +2258,34 @@
           updateDiamondShopUI();
           updateHUDText();
           return { ...this.snapshot(), dropResult: result };
+        },
+        bulletVisuals() {
+          return ["default", "sword-rare", "dagger-epic"].map((key) => ({
+            key,
+            ...getBulletVisualProfile(key),
+          }));
+        },
+        previewBulletVisuals() {
+          state.gameActive = false;
+          cancelAnimationFrame(state.gameLoopId);
+          state.enemies = [];
+          state.pickups = [];
+          state.orbs = [];
+          state.bullets = ["default", "sword-rare", "dagger-epic"].map((visualKey, row) => ({
+            x: 590,
+            y: 140 + row * 110,
+            vx: 7.5,
+            vy: 0,
+            dmg: 1,
+            size: 8,
+            visualKey,
+            trail: Array.from({ length: 10 }, (_, index) => ({
+              x: 350 + index * 24,
+              y: 140 + row * 110,
+            })),
+          }));
+          drawCanvasFrame();
+          return state.bullets.map(({ visualKey, trail }) => ({ visualKey, trailPoints: trail.length }));
         },
         snapshot() {
           return {

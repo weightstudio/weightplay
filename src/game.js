@@ -874,6 +874,9 @@ canvas.addEventListener("pointerdown", startDrag);
 canvas.addEventListener("pointermove", moveDrag);
 canvas.addEventListener("pointerup", stopDrag);
 canvas.addEventListener("pointercancel", stopDrag);
+canvas.addEventListener("lostpointercapture", stopDrag);
+document.addEventListener("pointerup", stopDrag);
+document.addEventListener("pointercancel", stopDrag);
 
 function loop(now) {
   const dt = Math.min((now - lastTime) / 1000, 0.033);
@@ -1577,13 +1580,22 @@ function damageWall() {
 }
 
 function draw() {
+  // A pointer/compositor cancellation must not carry transient canvas state
+  // into the next frame. The battle scene is always rebuilt from this baseline.
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.globalAlpha = 1;
+  ctx.globalCompositeOperation = "source-over";
+  ctx.filter = "none";
+  ctx.shadowColor = "transparent";
+  ctx.shadowBlur = 0;
+  ctx.shadowOffsetX = 0;
+  ctx.shadowOffsetY = 0;
   ctx.clearRect(0, 0, W, H);
+  ctx.fillStyle = "#202938";
+  ctx.fillRect(0, 0, W, H);
 
   if (loaded) {
     ctx.drawImage(images.bg, 0, 0, W, H);
-  } else {
-    ctx.fillStyle = "#202938";
-    ctx.fillRect(0, 0, W, H);
   }
 
   drawPlayAreaShade();
@@ -3061,10 +3073,15 @@ function moveDrag(event) {
 
 function stopDrag(event) {
   if (event.pointerId !== drag.pointerId) return;
+  const activePointerId = drag.pointerId;
   drag.active = false;
   drag.pointerId = null;
-  if (canvas.hasPointerCapture(event.pointerId)) {
-    canvas.releasePointerCapture(event.pointerId);
+  try {
+    if (canvas.hasPointerCapture(activePointerId)) {
+      canvas.releasePointerCapture(activePointerId);
+    }
+  } catch {
+    // The browser may release capture before delivering pointercancel.
   }
 }
 

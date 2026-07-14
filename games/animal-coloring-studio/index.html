@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex,nofollow">
+  <meta id="pageDescription" name="description" content="Color friendly animal pages and keep a local gallery.">
+  <title>Animal Coloring Studio - WeightPlay</title>
+  <link rel="stylesheet" href="../../src/game-page-info.css">
+  <link rel="stylesheet" href="../../src/loading-screen.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main id="app" class="studio-app">
+    <section class="main-screen" data-screen="main">
+      <header class="main-topbar">
+        <a class="home-link" href="../../index.html" data-aria="backLobby" aria-label="Back to WeightPlay"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false"></a>
+        <h1 data-copy="title">Animal Coloring Studio</h1>
+        <select id="locale" data-aria="language" aria-label="Language"><option value="en">English</option><option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option></select>
+      </header>
+      <img class="cover" src="../../assets/animal-coloring-studio-cover.webp" alt="">
+      <p class="intro" data-copy="intro">Choose an animal, pick colors, and make it yours.</p>
+      <button id="start" class="primary" data-copy="start">Start Game</button>
+      <section class="guide">
+        <img src="../../assets/animal-coloring-studio-lion-guide.webp" alt="">
+        <div><h2 data-copy="guideTitle">A calm creative studio</h2><p data-copy="guideBody">Tap a region to fill it or use the brush. Your gallery stays on this device.</p></div>
+      </section>
+    </section>
+
+    <section class="play-shell hidden" data-screen="stage">
+      <div class="canvas-slot"><div class="logical-canvas stage-canvas">
+        <header class="stage-header"><button id="stageBack" class="play-return" data-aria="backMain" aria-label="Back to main">&larr;</button><h2 data-copy="choosePage">Choose a page</h2><span id="albumProgress">0/12</span></header>
+        <div class="album-tabs"><button class="tab active" data-pack="all" data-copy="all">All</button><button class="tab" data-pack="safari" data-copy="safari">Safari</button><button class="tab" data-pack="pet" data-copy="pets">Pets</button></div>
+        <div id="pageRail" class="page-rail" data-aria="pages" aria-label="Coloring pages"></div>
+        <p class="stage-note" data-copy="stageNote">Swipe, then tap any page to color it.</p>
+      </div></div>
+      <div class="physical-reserve" aria-hidden="true"></div>
+    </section>
+
+    <section class="play-shell hidden" data-screen="battle">
+      <div class="canvas-slot"><div class="logical-canvas battle-canvas">
+        <header class="battle-header"><button id="battleBack" class="play-return" data-aria="backAlbum" aria-label="Back to album">&larr;</button><h2 id="pageTitle"></h2><span id="regionProgress">0</span></header>
+        <div class="objective" data-copy="objective">Pick a color, then tap the animal.</div>
+        <div class="board-wrap"><canvas id="coloringCanvas" width="768" height="1152" data-aria="board" aria-label="Coloring page"></canvas><div id="boardFeedback" class="board-feedback" aria-live="polite"></div></div>
+        <div id="palette" class="palette" data-aria="palette" aria-label="Colors"></div>
+        <footer class="tools">
+          <button class="tool active" data-mode="fill" data-icon="1"><i></i><span data-copy="fill">Fill</span></button>
+          <button class="tool" data-mode="brush" data-icon="0"><i></i><span data-copy="brush">Brush</span></button>
+          <button class="tool" data-mode="eraser" data-icon="2"><i></i><span data-copy="eraser">Eraser</span></button>
+          <button id="undo" class="tool" data-icon="3"><i></i><span data-copy="undo">Undo</span></button>
+          <button id="clear" class="tool" data-icon="4"><i></i><span data-copy="clear">Clear</span></button>
+          <button id="finish" class="primary finish" data-copy="finish">Finish</button>
+        </footer>
+      </div></div>
+      <div class="physical-reserve" aria-hidden="true"></div>
+    </section>
+
+    <section class="play-shell hidden" data-screen="result">
+      <div class="canvas-slot"><div class="logical-canvas result-canvas">
+        <div class="result-art"><img src="../../assets/animal-coloring-studio-lion-guide.webp" alt=""><i aria-hidden="true"></i></div>
+        <h2 data-copy="complete">Page complete!</h2>
+        <p id="resultSummary"></p>
+        <p class="skill" data-copy="skill">Color Recognition &middot; Focus &middot; Hand-Eye Coordination</p>
+        <div class="result-actions"><button id="nextPage" class="primary" data-copy="next">Next page</button><button id="resultAlbum" class="secondary" data-copy="album">Album</button></div>
+      </div></div>
+      <div class="physical-reserve" aria-hidden="true"></div>
+    </section>
+
+    <section class="game-info">
+      <h2 data-copy="infoTitle">Animal Coloring Studio</h2>
+      <p data-copy="infoBody">A no-fail creative coloring game for short, calm play. Progress is stored only in this browser.</p>
+    </section>
+  </main>
+  <div id="loadingPanel" class="loading-panel" role="status" aria-live="polite"><div class="loading-card"><strong id="loadingTitle">Loading studio</strong><span id="loadingText">0%</span><div><i id="loadingFill"></i></div></div></div>
+  <script src="../../src/site-config.js"></script>
+  <script src="../../src/analytics.js"></script>
+  <script src="../../src/sound.js"></script>
+  <script src="game.js"></script>
+  <script src="../../src/game-page-info.js"></script>
+</body>
+</html>

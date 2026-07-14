@@ -52,7 +52,8 @@
     let startX = 0;
     let startScrollLeft = 0;
     let dragged = false;
-    let suppressClickUntil = 0;
+    let suppressNextClick = false;
+    let suppressClickTimer = 0;
     let wheelSnapTimer = 0;
 
     const snapToNearestCard = (behavior = "smooth") => {
@@ -73,41 +74,64 @@
     stageRail.addEventListener("pointerdown", (event) => {
       if (event.pointerType !== "mouse" || event.button !== 0) return;
       pointerId = event.pointerId;
+      stageRail.dataset.wpDragDown = "1";
       startX = event.clientX;
       startScrollLeft = stageRail.scrollLeft;
       dragged = false;
-      suppressClickUntil = 0;
+      suppressNextClick = false;
+      window.clearTimeout(suppressClickTimer);
       stageRail.classList.add("is-mouse-dragging");
     });
 
-    stageRail.addEventListener("pointermove", (event) => {
+    document.addEventListener("pointermove", (event) => {
       if (event.pointerId !== pointerId) return;
       const delta = event.clientX - startX;
       if (Math.abs(delta) > 5 && !dragged) {
         dragged = true;
-        stageRail.setPointerCapture(pointerId);
+        try {
+          stageRail.setPointerCapture(pointerId);
+        } catch {
+          // Synthetic tests and cancelled browser gestures may not own capture.
+        }
       }
       if (!dragged) return;
       event.preventDefault();
       stageRail.scrollLeft = startScrollLeft - delta;
     });
 
-    const finishMouseDrag = (event) => {
-      if (event.pointerId !== pointerId) return;
-      if (stageRail.hasPointerCapture(pointerId)) stageRail.releasePointerCapture(pointerId);
+    const finishMouseDrag = (event = {}) => {
+      if (pointerId === null) return;
+      if (event.pointerId !== undefined && event.pointerId !== pointerId) return;
+      const activePointerId = pointerId;
+      const didDrag = dragged;
       pointerId = null;
+      dragged = false;
+      stageRail.dataset.wpDragDown = "0";
       stageRail.classList.remove("is-mouse-dragging");
-      suppressClickUntil = dragged ? performance.now() + 90 : 0;
-      if (dragged) requestAnimationFrame(() => snapToNearestCard());
+      try {
+        if (stageRail.hasPointerCapture(activePointerId)) stageRail.releasePointerCapture(activePointerId);
+      } catch {
+        // Pointer capture can already be gone after a cancelled browser gesture.
+      }
+      suppressNextClick = didDrag;
+      if (didDrag) {
+        // The browser's drag-generated click is synchronous with pointerup.
+        // Clear before a deliberate follow-up tap can arrive.
+        suppressClickTimer = window.setTimeout(() => { suppressNextClick = false; }, 0);
+        requestAnimationFrame(() => snapToNearestCard());
+      }
     };
     stageRail.addEventListener("pointerup", finishMouseDrag);
     stageRail.addEventListener("pointercancel", finishMouseDrag);
+    stageRail.addEventListener("lostpointercapture", finishMouseDrag);
+    document.addEventListener("pointerup", finishMouseDrag);
+    document.addEventListener("pointercancel", finishMouseDrag);
     stageRail.addEventListener("click", (event) => {
-      if (performance.now() > suppressClickUntil) return;
+      if (!suppressNextClick) return;
+      suppressNextClick = false;
+      window.clearTimeout(suppressClickTimer);
       event.preventDefault();
-      event.stopPropagation();
-      suppressClickUntil = 0;
-      dragged = false;
+      event.stopImmediatePropagation();
     }, true);
 
     stageRail.addEventListener("wheel", (event) => {

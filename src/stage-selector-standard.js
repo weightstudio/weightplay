@@ -288,7 +288,8 @@
     let startX = 0;
     let startScroll = 0;
     let moved = false;
-    let suppressClick = false;
+    let suppressNextClick = false;
+    let suppressClickTimer = 0;
     let previousScrollBehavior = "";
     let previousSnapType = "";
 
@@ -297,7 +298,7 @@
       if (event.button !== undefined && event.button !== 0) return;
       cancelPendingSettle(rail);
       pointerId = event.pointerId;
-      rail.dataset.wpDragDown = String(Number(rail.dataset.wpDragDown || 0) + 1);
+      rail.dataset.wpDragDown = "1";
       startX = event.clientX;
       startScroll = rail.scrollLeft;
       rail.dataset.wpDragStartScroll = String(startScroll);
@@ -322,7 +323,11 @@
       if (!moved && Math.abs(delta) > 8) {
         moved = true;
         rail.classList.add("wp-stage-dragging");
-        rail.setPointerCapture?.(event.pointerId);
+        try {
+          rail.setPointerCapture?.(event.pointerId);
+        } catch {
+          // Synthetic tests and cancelled browser gestures may not own capture.
+        }
       }
       if (!moved) return;
       if (event.cancelable) event.preventDefault();
@@ -331,21 +336,33 @@
       rail.dataset.wpDragApplied = String(rail.scrollLeft - startScroll);
     }, true);
 
-    const finish = (event) => {
+    const finish = (event = {}) => {
       if (pointerId === null) return;
-      if (rail.hasPointerCapture?.(pointerId)) rail.releasePointerCapture(pointerId);
+      if (event.pointerId !== undefined && event.pointerId !== pointerId) return;
+      const activePointerId = pointerId;
+      const didMove = moved;
       pointerId = null;
+      moved = false;
+      rail.dataset.wpDragDown = "0";
       rail.classList.remove("wp-stage-dragging");
+      try {
+        if (rail.hasPointerCapture?.(activePointerId)) rail.releasePointerCapture(activePointerId);
+      } catch {
+        // Pointer capture may already be gone when the browser cancels a gesture.
+      }
       const restore = () => {
         if (previousScrollBehavior) rail.style.setProperty("scroll-behavior", previousScrollBehavior);
         else rail.style.removeProperty("scroll-behavior");
         if (previousSnapType) rail.style.setProperty("scroll-snap-type", previousSnapType);
         else rail.style.removeProperty("scroll-snap-type");
       };
-      if (moved) {
+      if (didMove) {
         if (event.cancelable) event.preventDefault();
-        suppressClick = true;
-        window.setTimeout(() => { suppressClick = false; }, 240);
+        suppressNextClick = true;
+        window.clearTimeout(suppressClickTimer);
+        // Keep the flag only through the browser's synthetic click dispatched
+        // for this pointerup; a deliberate next tap must never be delayed.
+        suppressClickTimer = window.setTimeout(() => { suppressNextClick = false; }, 0);
         centerNearest(rail, restore);
       } else {
         restore();
@@ -353,10 +370,13 @@
     };
     rail.addEventListener("pointerup", finish, true);
     rail.addEventListener("pointercancel", finish, true);
+    rail.addEventListener("lostpointercapture", finish, true);
     document.addEventListener("pointerup", finish, true);
     document.addEventListener("pointercancel", finish, true);
     rail.addEventListener("click", (event) => {
-      if (!suppressClick) return;
+      if (!suppressNextClick) return;
+      suppressNextClick = false;
+      window.clearTimeout(suppressClickTimer);
       event.preventDefault();
       event.stopImmediatePropagation();
     }, true);
