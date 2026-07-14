@@ -7,6 +7,10 @@ const availabilityButtons = document.querySelectorAll("[data-availability-filter
 const advancedFilters = document.querySelector("#advancedFilters");
 const advancedFilterCount = document.querySelector("#advancedFilterCount");
 const discoverySnapshot = document.querySelector("#discoverySnapshot");
+const continuePlaying = document.querySelector("#continuePlaying");
+const continuePlayingSection = document.querySelector("#continuePlayingSection");
+const continuePlayingTitle = document.querySelector("#continuePlayingTitle");
+const continuePlayingReason = document.querySelector("#continuePlayingReason");
 const gameGrid = document.querySelector("#gameGrid");
 const heroGames = document.querySelector("#heroGames");
 const heroGamesSection = document.querySelector("#heroGamesSection");
@@ -52,6 +56,7 @@ const skillPathsTitle = document.querySelector("#skillPathsTitle");
 const skillPathsReason = document.querySelector("#skillPathsReason");
 const dailyReward = document.querySelector("#dailyReward");
 const gameSearch = document.querySelector("#gameSearch");
+const quickPickBtn = document.querySelector("#quickPickBtn");
 const i18n = window.WonderI18n;
 const favoritesKey = "weightplayFavoriteGames";
 const recentGamesKey = "weightplayRecentGames";
@@ -552,6 +557,13 @@ function playableGames() {
   return lobby.games.filter((game) => game.status === "playable");
 }
 
+function recentPlayableGames(limit = 4) {
+  return recentGameIds
+    .map((id) => lobby.games.find((game) => game.id === id && game.status === "playable"))
+    .filter(Boolean)
+    .slice(0, limit);
+}
+
 function recentlyUpdatedGames(limit = 4) {
   return [...recentlyUpdatedGameIds]
     .map((id) => lobby.games.find((game) => game.id === id && game.status === "playable"))
@@ -662,6 +674,34 @@ function openGame(game, title, ageLabel) {
     from_library: activeLibrary,
   });
   window.location.href = game.href;
+}
+
+function quickPickCandidates() {
+  const visiblePlayableIds = [...gameGrid.querySelectorAll('[data-game-id][data-status="playable"]:not(.hidden)')]
+    .map((card) => card.dataset.gameId)
+    .filter(Boolean);
+  const visibleGames = visiblePlayableIds
+    .map((id) => lobby.games.find((game) => game.id === id && game.status === "playable"))
+    .filter(Boolean);
+  return visibleGames.length
+    ? { games: visibleGames, usedFallback: false }
+    : { games: playableGames(), usedFallback: true };
+}
+
+function openQuickPick() {
+  const { games, usedFallback } = quickPickCandidates();
+  if (!games.length) return;
+  const game = games[Math.floor(Math.random() * games.length)];
+  const title = text(game.title);
+  const ageLabel = text(game.ageLabel);
+  window.WonderAnalytics?.track("quick_pick_open", {
+    game_id: game.id,
+    game_title: title,
+    candidate_count: games.length,
+    used_fallback: usedFallback,
+    locale: i18n.locale(),
+  });
+  openGame(game, title, ageLabel);
 }
 
 function toggleFavorite(game, title) {
@@ -814,6 +854,7 @@ function renderLobby() {
     featuredGame.querySelector("strong").textContent = text(featured.title);
   }
 
+  renderContinuePlaying();
   renderHeroGames();
   renderMobilePicks();
   renderUpcomingGames();
@@ -824,6 +865,43 @@ function renderLobby() {
   renderSkillPaths();
   gameGrid.replaceChildren(...lobby.games.map(createGameCard));
   applyFilter();
+}
+
+function renderContinuePlaying() {
+  if (!continuePlaying || !continuePlayingSection) return;
+  const cards = recentPlayableGames(4).map((game, index) => {
+    const title = text(game.title);
+    const type = text(game.type);
+    const ageLabel = text(game.ageLabel);
+    const card = document.createElement("a");
+    card.className = "continue-playing-card";
+    card.href = game.href;
+    card.dataset.gameId = game.id;
+    card.addEventListener("click", () => {
+      window.WonderAnalytics?.track("continue_playing_open", {
+        game_id: game.id,
+        game_title: title,
+        recent_position: index + 1,
+        locale: i18n.locale(),
+      });
+      recordRecentGame(game.id);
+    });
+    card.innerHTML = `
+      <img src="${game.art?.background || primaryArt(game)}" alt="" />
+      <div class="continue-playing-copy">
+        <span>${ageLabel}</span>
+        <strong>${title}</strong>
+        <small>${type}</small>
+        <b>${i18n.t("action.continue")}</b>
+      </div>
+    `;
+    return card;
+  });
+  continuePlayingTitle.textContent = i18n.t("continue_playing.title");
+  continuePlayingReason.textContent = i18n.t("continue_playing.reason");
+  continuePlayingSection.setAttribute("aria-label", i18n.t("continue_playing.title"));
+  continuePlayingSection.classList.toggle("hidden", cards.length === 0);
+  continuePlaying.replaceChildren(...cards);
 }
 
 function getLocalDateKey(date = new Date()) {
@@ -1325,6 +1403,7 @@ function applyFilter({ historyMode = "replace" } = {}) {
 
   heroGamesSection.classList.toggle("hidden", isFiltered);
   discoverySnapshot?.classList.toggle("hidden", isFiltered);
+  continuePlayingSection?.classList.toggle("filtered-out", isFiltered);
   mobilePicksSection?.classList.toggle("hidden", isFiltered);
   upcomingGamesSection?.classList.toggle("hidden", isFiltered);
   characterShowcaseSection?.classList.toggle("hidden", isFiltered);
@@ -1389,6 +1468,7 @@ function applyStaticTranslations() {
   document.querySelectorAll("[data-i18n-placeholder]").forEach((element) => {
     element.setAttribute("placeholder", i18n.t(element.dataset.i18nPlaceholder));
   });
+  quickPickBtn?.setAttribute("aria-label", i18n.t("quick_pick.label"));
   const ariaLabels = {
     "#localeSelect": "language.label",
     "#lobbyStats": "aria.platform_status",
@@ -1548,6 +1628,8 @@ gameSearch?.addEventListener("input", () => {
   activeSearch = gameSearch.value.trim().toLowerCase();
   applyFilter();
 });
+
+quickPickBtn?.addEventListener("click", openQuickPick);
 
 localeSelect.addEventListener("change", () => {
   window.WonderSound?.play("click");

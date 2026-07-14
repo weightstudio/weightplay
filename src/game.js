@@ -140,6 +140,10 @@ const dictionary = {
     skill_focus: "Focus",
     skill_reaction: "Reaction",
     skill_problem_solving: "Problem Solving",
+    skill_wall_value: "Wall {pct}%",
+    skill_beasts_value: "Beasts {defeated}/{total}",
+    skill_upgrades_value: "Choices {count}",
+    skill_stars_aria: "{count} out of 5 stars",
     skill_report_win_message: "Great defense! Your child kept focus and made strong upgrade choices.",
     skill_report_defeat_message: "Good effort! Try again to protect the wall a little longer.",
     btn_next: "Next Level",
@@ -442,6 +446,10 @@ Object.assign(dictionary["zh-Hant"], {
   skill_focus: "專注",
   skill_reaction: "反應",
   skill_problem_solving: "解決問題",
+  skill_wall_value: "城牆 {pct}%",
+  skill_beasts_value: "擊敗 {defeated}/{total}",
+  skill_upgrades_value: "強化 {count} 次",
+  skill_stars_aria: "5 顆星中的 {count} 顆",
   skill_report_win_message: "守得很好！孩子展現了穩定專注與不錯的升級判斷。",
   skill_report_defeat_message: "很好的嘗試！再挑戰一次，試著讓城牆撐得更久。",
   btn_next: "下一關",
@@ -1375,7 +1383,8 @@ function renderSkillReport(won) {
         ${report.items.map((item) => `
           <div class="skill-report-row">
             <span>${item.label}</span>
-            <b aria-label="${item.stars} out of 5">${renderStars(item.stars)}</b>
+            <small>${item.detail}</small>
+            <b aria-label="${t("skill_stars_aria", { count: item.stars })}">${renderStars(item.stars)}</b>
           </div>
         `).join("")}
       </div>
@@ -1389,15 +1398,16 @@ function buildSkillReport(won) {
   const waveProgress = clamp((state.waveIndex + 1) / Math.max(1, state.level.waves.length), 0.15, 1);
   const defeatProgress = clamp(state.defeatedCount / expectedEnemies, 0, 1);
   const wallRatio = clamp(state.wallHp / Math.max(1, state.maxWallHp), 0, 1);
+  const wallPercent = Math.round(wallRatio * 100);
   const focusStars = clamp(Math.round((won ? 2.2 : 1.2) + waveProgress * 1.4 + wallRatio * 1.4), 1, 5);
   const reactionStars = clamp(Math.round(1.4 + defeatProgress * 3.2 + (won ? 0.4 : 0)), 1, 5);
   const problemStars = clamp(Math.round(1.5 + Math.min(1, state.upgradeChoices / Math.max(1, state.level.waves.length - 1)) * 2.2 + (won ? 1 : 0)), 1, 5);
   return {
     message: won ? t("skill_report_win_message") : t("skill_report_defeat_message"),
     items: [
-      { label: t("skill_focus"), stars: focusStars },
-      { label: t("skill_reaction"), stars: reactionStars },
-      { label: t("skill_problem_solving"), stars: problemStars },
+      { label: t("skill_focus"), detail: t("skill_wall_value", { pct: wallPercent }), stars: focusStars },
+      { label: t("skill_reaction"), detail: t("skill_beasts_value", { defeated: state.defeatedCount, total: expectedEnemies }), stars: reactionStars },
+      { label: t("skill_problem_solving"), detail: t("skill_upgrades_value", { count: state.upgradeChoices }), stars: problemStars },
     ],
   };
 }

@@ -623,6 +623,15 @@
 
   let currentLocale = getSavedLocale();
 
+  Object.assign(dictionaries.en, {
+    "quick_pick.action": "Pick for me",
+    "quick_pick.label": "Pick a playable game from the current filters",
+    "game.start": "Start Game",
+  });
+  Object.assign(dictionaries["zh-Hant"], {
+    "quick_pick.action": "\u5e6b\u6211\u9078\u904a\u6232",
+    "quick_pick.label": "\u5f9e\u76ee\u524d\u7be9\u9078\u7d50\u679c\u4e2d\u6311\u9078\u4e00\u6b3e\u53ef\u73a9\u7684\u904a\u6232",
+  });
   Object.assign(dictionaries.en, { "game.start": "Start Game" });
   Object.assign(dictionaries["zh-Hant"], { "game.start": "\u958b\u59cb\u904a\u6232" });
 
@@ -650,6 +659,8 @@
     "skill.Planning": "Planning",
     "skill.Spatial Reasoning": "Spatial Reasoning",
     "skill.Risk Assessment": "Risk Assessment",
+    "continue_playing.title": "Continue playing",
+    "continue_playing.reason": "Your latest games",
   });
 
   Object.assign(dictionaries["zh-Hant"], {
@@ -666,6 +677,8 @@
     "skill.Planning": "\u898f\u5283\u80fd\u529b",
     "skill.Spatial Reasoning": "\u7a7a\u9593\u63a8\u7406",
     "skill.Risk Assessment": "\u98a8\u96aa\u5224\u65b7",
+    "continue_playing.title": "\u7e7c\u7e8c\u904a\u73a9",
+    "continue_playing.reason": "\u6700\u8fd1\u73a9\u904e\u7684\u904a\u6232",
   });
 
   function interpolate(value, params) {
