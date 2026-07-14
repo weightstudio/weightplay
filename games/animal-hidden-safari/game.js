@@ -142,6 +142,11 @@
     dust: "../../assets/safari-mask-dust.svg",
   };
 
+  const feedbackAssets = {
+    hint: "../../assets/animal-hidden-safari-hint-ring.png",
+    found: "../../assets/animal-hidden-safari-found-burst.png",
+  };
+
   const stages = [
     { habitat: "sunny", targets: [["lion", 48, 65, 66], ["elephant", 18, 72, 58], ["giraffe", 82, 58, 62], ["panda", 66, 80, 48], ["koala", 30, 48, 44], ["owl", 42, 27, 38]] },
     { habitat: "river", theme: "river", targets: [["penguin", 24, 74, 54], ["elephant", 75, 68, 58], ["frog", 43, 82, 40], ["owl", 64, 34, 40], ["panda", 54, 56, 48], ["fox", 35, 64, 42]] },
@@ -433,7 +438,7 @@
       button.style.top = `${y}%`;
       button.style.setProperty("--size", `${size}px`);
       button.setAttribute("aria-label", t(`targets.${id}`));
-      button.innerHTML = `${animalImg(id, "target-animal")}${coverImg(cover)}`;
+      button.innerHTML = `${animalImg(id, "target-animal")}${coverImg(cover)}<img class="hint-feedback" src="${feedbackAssets.hint}" alt="" draggable="false" />`;
       button.addEventListener("click", (event) => {
         event.stopPropagation();
         chooseTarget(index, button);
@@ -464,6 +469,7 @@
     found.add(index);
     button.classList.remove("hint");
     button.classList.add("found");
+    showImageEffect("found", Number.parseFloat(button.style.left), Number.parseFloat(button.style.top), button.offsetWidth);
     showFloatingText(t("found"), Number.parseFloat(button.style.left), Number.parseFloat(button.style.top));
     playSound("coin");
     renderTargetList();
@@ -583,12 +589,26 @@
     window.setTimeout(() => node.remove(), 950);
   }
 
+  function showImageEffect(type, x, y, targetSize = 56) {
+    const node = document.createElement("img");
+    node.className = `image-feedback image-feedback-${type}`;
+    node.src = feedbackAssets[type];
+    node.alt = "";
+    node.draggable = false;
+    node.style.left = `${x}%`;
+    node.style.top = `${y}%`;
+    node.style.setProperty("--feedback-size", `${Math.max(92, targetSize * 2.1)}px`);
+    nodes.floatLayer.appendChild(node);
+    window.setTimeout(() => node.remove(), 760);
+  }
+
   function preloadGameAssets() {
     const urls = [
       "../../assets/animal-hidden-safari-cover.webp",
       "../../assets/animal-hidden-safari-sunny-bg.webp",
       ...new Set(Object.values(targetAssets)),
       ...new Set(Object.values(coverAssets)),
+      ...new Set(Object.values(feedbackAssets)),
     ];
     const laterScenes = [
       "../../assets/animal-hidden-safari-river-bg.webp",

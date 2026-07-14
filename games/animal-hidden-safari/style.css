@@ -447,8 +447,43 @@ body.safari-stage .stage-grid { align-items:center; padding-inline:calc((100% - 
 }
 
 .target.hint {
-  box-shadow: 0 0 0 5px #fff, 0 0 0 12px rgba(255, 207, 72, 0.86), 0 0 24px rgba(255, 207, 72, 0.88);
   animation: hint-pulse 0.72s ease-in-out infinite alternate;
+}
+
+.hint-feedback {
+  display: none;
+  position: absolute;
+  z-index: 4;
+  left: -48%;
+  top: -48%;
+  width: 196%;
+  height: 196%;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  filter: drop-shadow(0 4px 8px rgba(117, 76, 10, 0.28));
+}
+
+.target.hint .hint-feedback {
+  display: block;
+  animation: hint-ring-turn 4.8s linear infinite;
+}
+
+.image-feedback {
+  position: absolute;
+  z-index: 18;
+  width: var(--feedback-size);
+  height: var(--feedback-size);
+  object-fit: contain;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.image-feedback-found {
+  animation: found-burst 0.72s ease-out forwards;
 }
 
 .float-text {
@@ -630,6 +665,36 @@ body.safari-stage .stage-grid { align-items:center; padding-inline:calc((100% - 
   }
   to {
     transform: translate(-50%, -50%) scale(1.08);
+  }
+}
+
+@keyframes hint-ring-turn {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes found-burst {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.45) rotate(-8deg);
+  }
+  24% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.08) rotate(0deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.35) rotate(8deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .target.hint,
+  .target.hint .hint-feedback,
+  .image-feedback-found {
+    animation-duration: 0.01ms;
+    animation-iteration-count: 1;
   }
 }
 
