@@ -23,6 +23,10 @@
     en: {
       gameTitle: "Animal Hidden Safari",
       language: "Language",
+      back: "Back",
+      stageList: "Stage list",
+      backToHabitats: "Back to habitats",
+      hiddenAnimalScene: "Hidden animal scene",
       chooseStage: "Choose Habitat",
       menuHint: "Find animals blended into each natural habitat.",
       stages: "Habitats",
@@ -69,6 +73,10 @@
     "zh-Hant": {
       gameTitle: "\u52d5\u7269\u63a2\u96aa\u627e\u627e\u770b",
       language: "\u8a9e\u8a00",
+      back: "\u8fd4\u56de",
+      stageList: "\u68f2\u5730\u5217\u8868",
+      backToHabitats: "\u8fd4\u56de\u68f2\u5730",
+      hiddenAnimalScene: "\u85cf\u8d77\u4f86\u7684\u52d5\u7269\u5834\u666f",
       chooseStage: "\u9078\u64c7\u68f2\u5730",
       menuHint: "\u5728\u5927\u81ea\u7136\u5834\u666f\u88e1\u627e\u51fa\u85cf\u8d77\u4f86\u7684\u52d5\u7269\uff0c\u7df4\u7fd2\u89c0\u5bdf\u529b\u8207\u5c08\u6ce8\u3002",
       stages: "\u68f2\u5730",
@@ -240,6 +248,9 @@
     document.querySelectorAll("[data-ui]").forEach((node) => {
       node.textContent = t(node.dataset.ui);
     });
+    document.querySelectorAll("[data-aria]").forEach((node) => {
+      node.setAttribute("aria-label", t(node.dataset.aria));
+    });
     nodes.localeSelect.value = locale;
   }
 
@@ -290,6 +301,8 @@
     let drag = null;
     nodes.stageGrid.addEventListener("pointerdown", (event) => {
       if (nodes.stageGrid.dataset.wpStageRail === "true") return;
+      if (event.pointerType === "mouse" && event.button !== 0) return;
+      nodes.stageGrid.setPointerCapture?.(event.pointerId);
       drag = { id: event.pointerId, x: event.clientX, scrollLeft: nodes.stageGrid.scrollLeft, moved: false };
     });
     nodes.stageGrid.addEventListener("pointermove", (event) => {
@@ -306,6 +319,7 @@
       if (!drag || drag.id !== event.pointerId) return;
       const moved = drag.moved;
       drag = null;
+      if (nodes.stageGrid.hasPointerCapture?.(event.pointerId)) nodes.stageGrid.releasePointerCapture(event.pointerId);
       if (!moved) return;
       const frame = nodes.stageGrid.getBoundingClientRect();
       const center = frame.left + frame.width / 2;
@@ -315,6 +329,9 @@
         return !best || distance < best.distance ? { card, distance } : best;
       }, null);
       nearest?.card.scrollIntoView({ block: "nearest", inline: "center", behavior: "smooth" });
+      nodes.stageGrid.querySelectorAll(".stage-card").forEach((card) => {
+        card.toggleAttribute("aria-current", card === nearest?.card);
+      });
       window.setTimeout(() => delete nodes.stageGrid.dataset.draggingClick, 0);
     };
     nodes.stageGrid.addEventListener("pointerup", end);

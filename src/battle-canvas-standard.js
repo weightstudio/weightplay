@@ -7,7 +7,7 @@
     "animal-cafe-rush": ["#playPanel", 382, 780],
     "animal-crystal-survivor": ["#gamePanel", 382, 780],
     "animal-gearpack-expedition": [".battle-canvas", 390, 788],
-    "animal-guard-yard": [".fixed-game-shell", 382, 780],
+    "animal-guard-yard": [".fixed-game-shell", 390, 450],
     "animal-hero-trials": ["#battleView", 390, 788],
     "animal-hidden-safari": ["#playPanel", 382, 780],
     "animal-moonlight-heist": [".battle-canvas", 390, 788],
@@ -95,7 +95,7 @@
     const scale = Math.max(0.01, Math.min(availableWidth / config[1], availableHeight / config[2]));
     const renderedWidth = config[1] * scale;
     const renderedHeight = config[2] * scale;
-    const top = (height - RESERVE_HEIGHT - renderedHeight) / 2;
+    const top = config[3] === "top" ? GUTTER : (height - RESERVE_HEIGHT - renderedHeight) / 2;
     const style = document.documentElement.style;
     style.setProperty("--wp-battle-viewport-height", `${height}px`);
     style.setProperty("--wp-battle-logical-width", `${config[1]}px`);

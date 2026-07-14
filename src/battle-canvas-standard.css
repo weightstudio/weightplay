@@ -112,10 +112,10 @@ body.wp-logical-battle-active.lunch-playing .lunchboxes { grid-template-columns:
 body.wp-logical-battle-active.lunch-playing .lunchbox { min-height: 76px !important; }
 body.wp-logical-battle-active.lunch-playing .food-card { width: 172px !important; min-width: 172px !important; height: 172px !important; min-height: 172px !important; }
 
-/* Guard Yard keeps the approved phone logical padding at every physical ratio. */
+/* Guard Yard keeps a compact defense board instead of stretching lanes to the viewport height. */
 body.wp-logical-battle-active.guard-yard-playing .fixed-game-shell[data-wp-logical-battle-canvas] {
-  padding: 5px !important;
-  grid-template-rows: 34px 24px 66px minmax(0, 1fr) 22px !important;
+  padding: 6px !important;
+  grid-template-rows: 38px 26px 82px 240px 22px !important;
   gap: 4px !important;
   border-width: 3px !important;
   border-radius: 16px !important;
@@ -177,7 +177,7 @@ body.wp-logical-battle-active.relic-playing .canvas-container { width: 346px !im
 body.wp-logical-battle-active.relic-playing .canvas-container canvas { width: 100% !important; height: 100% !important; aspect-ratio: 4 / 5 !important; }
 body.wp-logical-battle-active.relic-playing .inventory-sidebar { grid-column: 1 !important; grid-row: 2 !important; grid-template-rows: auto 96px minmax(0, 1fr) !important; width: 100% !important; }
 
-/* Crystal Survivor keeps the portrait HUD, XP, square arena and hint tracks. */
+/* Crystal Survivor gives the arena the remaining portrait space below its compact HUD. */
 body.wp-logical-battle-active.crystal-playing #gamePanel.game-panel {
   grid-template-columns: minmax(0, 1fr) !important;
   grid-template-rows: 54px 30px auto 34px !important;
@@ -189,7 +189,7 @@ body.wp-logical-battle-active.crystal-playing .hud-row { grid-column: 1 !importa
 body.wp-logical-battle-active.crystal-playing .hud-row .play-return { width: 48px !important; min-width: 48px !important; height: 48px !important; min-height: 48px !important; }
 body.wp-logical-battle-active.crystal-playing .xp-row { grid-column: 1 !important; grid-row: 2 !important; }
 body.wp-logical-battle-active.crystal-playing .canvas-wrap { grid-column: 1 !important; grid-row: 3 !important; width: 100% !important; height: auto !important; aspect-ratio: 32 / 55 !important; align-self: center !important; justify-self: center !important; }
-body.wp-logical-battle-active.crystal-playing .hint-text { grid-column: 1 !important; grid-row: 4 !important; height: 34px !important; min-height: 34px !important; margin: 0 !important; white-space: nowrap !important; }
+body.wp-logical-battle-active.crystal-playing .hint-text { grid-column: 1 !important; grid-row: 4 !important; height: 34px !important; min-height: 34px !important; margin: 0 !important; padding: 2px 4px !important; overflow: hidden !important; white-space: normal !important; line-height: 1.15 !important; }
 
 /* Gearpack never turns the logical portrait Canvas into a physical-landscape layout. */
 body.wp-logical-battle-active.is-game-playing .battle-canvas[data-wp-logical-battle-canvas] {

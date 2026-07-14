@@ -178,7 +178,8 @@ select {
   overflow-y: hidden;
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
-  touch-action: pan-x;
+  /* The rail owns horizontal drags so both directions stay reliable on touch screens. */
+  touch-action: none;
   gap: 10px;
 }
 .stage-grid::-webkit-scrollbar { display: none; }

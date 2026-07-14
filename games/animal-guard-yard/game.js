@@ -363,8 +363,6 @@
     viewportHeight = height;
     document.documentElement.style.setProperty("--guard-yard-vw", `${width}px`);
     document.documentElement.style.setProperty("--guard-yard-vh", `${height}px`);
-    const battleScale = Math.max(0.1, Math.min((width - 8) / 390, (height - 64) / 450));
-    document.documentElement.style.setProperty("--guard-yard-battle-scale", `${battleScale}`);
   }
 
   updateGuardYardViewport();

@@ -89,16 +89,18 @@
   function updateStageCanvas() {
     const activeRails = [...document.querySelectorAll("[data-wp-stage-rail]")]
       .filter((rail) => rail.getClientRects().length && getComputedStyle(rail).visibility !== "hidden");
+    const retainedManagementRoot = [...document.querySelectorAll("[data-wp-logical-stage-canvas]")]
+      .find((root) => root.getClientRects().length && getComputedStyle(root).visibility !== "hidden") || null;
     document.querySelectorAll("[data-wp-logical-stage-canvas]").forEach((root) => {
-      if (!activeRails.some((rail) => root.contains(rail))) root.removeAttribute("data-wp-logical-stage-canvas");
+      if (!activeRails.some((rail) => root.contains(rail)) && root !== retainedManagementRoot) root.removeAttribute("data-wp-logical-stage-canvas");
     });
 
-    const useSharedScaler = activeRails.length > 0 && !nativeStageScalers.has(gameId());
+    const useSharedScaler = (activeRails.length > 0 || retainedManagementRoot) && !nativeStageScalers.has(gameId());
     const reserve = sharedReserve();
     reserve.toggleAttribute("data-wp-stage-reserve-active", useSharedScaler);
     if (!useSharedScaler) return;
 
-    const root = stageRootFor(activeRails[0]);
+    const root = activeRails.length ? stageRootFor(activeRails[0]) : retainedManagementRoot;
     if (!root) return;
     root.setAttribute("data-wp-logical-stage-canvas", "390x788");
     const viewport = window.visualViewport;
@@ -276,6 +278,8 @@
       if (event.button !== undefined && event.button !== 0) return;
       cancelPendingSettle(rail);
       pointerId = event.pointerId;
+      // Keep receiving the gesture when a fast horizontal swipe leaves a card.
+      rail.setPointerCapture?.(event.pointerId);
       rail.dataset.wpDragDown = String(Number(rail.dataset.wpDragDown || 0) + 1);
       startX = event.clientX;
       startScroll = rail.scrollLeft;
