@@ -580,7 +580,7 @@ window.WONDER_LOBBY.games.push({
     en: ["Four Heroes", "Trial Blessings", "Saved Mastery"],
     "zh-Hant": ["四位英雄", "試煉祝福", "永久精通"],
   },
-  art: { kind: "image", background: "assets/animal-hero-trials-cover.png", hideHero: true },
+  art: { kind: "image", background: "assets/animal-hero-trials-cover.webp", hideHero: true },
 });
 
 window.WONDER_LOBBY.games.push({
@@ -618,7 +618,7 @@ window.WONDER_LOBBY.games.push({
     "zh-Hant": "帶領星爪菲亞穿越月光巡邏路線、找回失落文物，並決定是否冒險取得額外寶藏再撤離。",
   },
   meta: { en: ["Five Missions", "Stealth Gadgets", "Safehouse Growth"], "zh-Hant": ["五個任務", "潛行技能", "安全屋成長"] },
-  art: { kind: "image", background: "assets/animal-moonlight-heist-cover.png", hideHero: true },
+  art: { kind: "image", background: "assets/animal-moonlight-heist-cover.webp", hideHero: true },
 });
 
 const cleanZhLobbyCopy = {
