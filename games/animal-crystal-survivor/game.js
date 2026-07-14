@@ -41,6 +41,7 @@
     charmBtn: $("charmBtn"),
     charmCost: $("charmCost"),
     charmStatus: $("charmStatus"),
+    expeditionRecordText: $("expeditionRecordText"),
   };
 
   const text = {
@@ -51,8 +52,8 @@
       language: "Language",
       menuTitle: "Survive the Crystal Grove.",
       menuHint: "Goal: collect golden keys before 3:00. Crystals give XP, and upgrades help the ranger survive longer.",
-      prototypeGoalsTitle: "Prototype test goals",
-      prototypeGoalsText: "In one run, collect at least 1 key, level up once, choose an upgrade, then confirm Retry and Menu both work.",
+      expeditionRecordTitle: "Expedition Record",
+      expeditionRecordText: "Best {keys} keys · Highest level {level} · {runs} runs",
       controlMove: "Tap or drag to move",
       controlKeys: "WASD / Arrow keys",
       controlAttack: "Auto attack",
@@ -115,8 +116,8 @@
       language: "\u8a9e\u8a00",
       menuTitle: "\u5728\u7d50\u6676\u68ee\u6797\u4e2d\u751f\u5b58\u4e0b\u53bb\u3002",
       menuHint: "\u76ee\u6a19\uff1a\u5728 3:00 \u4e4b\u524d\u6536\u96c6\u91d1\u9470\u3002\u6c34\u6676\u6703\u589e\u52a0\u7d93\u9a57\uff0c\u5347\u7d1a\u53ef\u4ee5\u8b93\u5de1\u5b88\u54e1\u6490\u5f97\u66f4\u4e45\u3002",
-      prototypeGoalsTitle: "\u539f\u578b\u6e2c\u8a66\u76ee\u6a19",
-      prototypeGoalsText: "\u4e00\u5c40\u5167\u81f3\u5c11\u6536\u96c6 1 \u628a\u91d1\u9470\u3001\u5347\u7d1a 1 \u6b21\u3001\u9078\u64c7\u4e00\u500b\u5f37\u5316\uff0c\u518d\u78ba\u8a8d\u91cd\u8a66\u548c\u9078\u55ae\u90fd\u80fd\u4f7f\u7528\u3002",
+      expeditionRecordTitle: "\u63a2\u96aa\u7d00\u9304",
+      expeditionRecordText: "\u6700\u4f73 {keys} \u628a\u91d1\u9470 \u00b7 \u6700\u9ad8 {level} \u7d1a \u00b7 \u5df2\u5b8c\u6210 {runs} \u6b21\u9060\u5f81",
       controlMove: "\u9ede\u64ca\u6216\u62d6\u66f3\u79fb\u52d5",
       controlKeys: "WASD / \u65b9\u5411\u9375",
       controlAttack: "\u81ea\u52d5\u653b\u64ca",
@@ -236,6 +237,15 @@
     return Object.entries(data).reduce((out, [name, item]) => out.replaceAll(`{${name}}`, String(item)), value);
   }
 
+  function renderExpeditionRecord() {
+    if (!nodes.expeditionRecordText) return;
+    nodes.expeditionRecordText.textContent = t("expeditionRecordText", {
+      keys: Math.max(0, Number(save.bestKeys) || 0),
+      level: Math.max(1, Number(save.bestLevel) || 1),
+      runs: Math.max(0, Number(save.playCount) || 0),
+    });
+  }
+
   function updatePageMeta() {
     const pageTitle = `${t("title")} - WeightPlay`;
     const description = t("pageDescription");
@@ -344,6 +354,7 @@
     nodes.resultMenuBtn.setAttribute("aria-label", t("backToMenu"));
     updatePageMeta();
     nodes.localeSelect.value = locale;
+    renderExpeditionRecord();
     renderHud();
     updateDiamondShop();
   }
@@ -427,6 +438,7 @@
     prepareSmokeCombatDemo();
     save.playCount += 1;
     persist();
+    renderExpeditionRecord();
     show(nodes.gamePanel);
     window.WeightPlayGame?.exitMobileGameMode?.();
     window.scrollTo?.({ top: 0, left: 0, behavior: "instant" });
@@ -712,6 +724,7 @@
     save.bestKeys = Math.max(save.bestKeys || 0, state.keys);
     save.bestLevel = Math.max(save.bestLevel || 1, state.level);
     persist();
+    renderExpeditionRecord();
     renderResult(reason, previousBestKeys, improved);
     show(nodes.resultPanel);
     playSound(reason === "time" ? "win" : "wrong", 0.4);

@@ -440,7 +440,7 @@ body:not(.crystal-playing) .language-picker select {
   gap: 7px;
 }
 
-.prototype-goals {
+.expedition-record {
   display: grid;
   gap: 4px;
   border: 1px solid rgba(254, 240, 138, 0.38);
@@ -449,13 +449,13 @@ body:not(.crystal-playing) .language-picker select {
   background: rgba(254, 240, 138, 0.12);
 }
 
-.prototype-goals b {
+.expedition-record b {
   color: #ffe76c;
   font-size: 13px;
   line-height: 1.15;
 }
 
-.prototype-goals span {
+.expedition-record span {
   color: #fff9c4;
   font-size: 13px;
   line-height: 1.3;
