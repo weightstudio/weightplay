@@ -23,6 +23,7 @@
   const feedbackText = document.querySelector("#feedbackText");
   const resultPanel = document.querySelector("#resultPanel");
   const resultTitle = document.querySelector("#resultTitle");
+  const rewardParade = document.querySelector("#rewardParade");
   const resultText = document.querySelector("#resultText");
   const nextStageBtn = document.querySelector("#nextStageBtn");
   const againBtn = document.querySelector("#againBtn");
@@ -639,6 +640,18 @@
     resultText.appendChild(note);
   }
 
+  function renderRewardParade() {
+    rewardParade.replaceChildren(
+      ...state.deck.map((food, index) => {
+        const image = document.createElement("img");
+        image.src = food.image;
+        image.alt = "";
+        image.style.setProperty("--reward-order", index);
+        return image;
+      }),
+    );
+  }
+
   function setupBoxes(stage) {
     dropZone.replaceChildren(
       ...getStageBoxes(stage).map((box) => {
@@ -779,6 +792,7 @@
     const skillScores = buildSkillScores();
     const progress = saveProgressRecord(stage, skillScores);
     resultTitle.textContent = isFinalStage ? t("allClearTitle") : t("winTitle");
+    renderRewardParade();
     const message = isFinalStage
       ? t(isPerfect ? "perfectAllClearDesc" : "allClearDesc")
       : t(isPerfect ? "perfectDesc" : "winDesc", { score: state.score });

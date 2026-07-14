@@ -106,11 +106,12 @@
       roleTankMelee: "Tank Melee",
       roleFastRanged: "Fast Ranged",
       roleCrossLane: "Cross-lane",
-      abilityCat: "Steady shot",
+      abilityCat: "Every 4th seed pierces",
       abilityDog: "Bite slow",
       abilityOwl: "Feather slow",
       abilityFox: "Cross-lane volley",
-      catTactic: "Steady lane damage for early pressure.",
+      catTactic: "Every fourth seed pierces through a second beast in the same lane.",
+      pierce: "PIERCE!",
       dogTactic: "Blocks the lane and briefly slows bites.",
       owlTactic: "Fast shots keep rushing beasts slowed.",
       foxTactic: "Fires a strong leaf shot, then supports a nearby lane with a lighter volley.",
@@ -231,11 +232,12 @@
       roleTankMelee: "\u5766\u514b\u8fd1\u6230",
       roleFastRanged: "\u5feb\u901f\u9060\u7a0b",
       roleCrossLane: "\u8de8\u7dda\u5c04\u64ca",
-      abilityCat: "\u7a69\u5b9a\u5c04\u64ca",
+      abilityCat: "\u6bcf 4 \u767c\u7a2e\u5b50\u7a7f\u900f",
       abilityDog: "\u54ac\u64ca\u6e1b\u901f",
       abilityOwl: "\u7fbd\u7bad\u7de9\u901f",
       abilityFox: "\u8de8\u7dda\u9023\u5c04",
-      catTactic: "\u7a69\u5b9a\u9060\u7a0b\u50b7\u5bb3\uff0c\u9069\u5408\u65e9\u671f\u9632\u7dda\u3002",
+      catTactic: "\u6bcf\u7b2c\u56db\u767c\u7a2e\u5b50\u6703\u7a7f\u900f\u540c\u4e00\u8def\u7dda\u7684\u7b2c\u4e8c\u96bb\u91ce\u7378\u3002",
+      pierce: "\u7a7f\u900f\uff01",
       dogTactic: "\u64cb\u4f4f\u540c\u7dda\u91ce\u7378\uff0c\u54ac\u64ca\u6703\u77ed\u66ab\u6e1b\u901f\u3002",
       owlTactic: "\u5feb\u901f\u5c04\u64ca\uff0c\u53ef\u58d3\u4f4f\u885d\u523a\u578b\u91ce\u7378\u3002",
       foxTactic: "\u4e3b\u653b\u767c\u5c04\u5f37\u529b\u8449\u5f48\uff0c\u518d\u4ee5\u8f03\u5f31\u7684\u9023\u5c04\u652f\u63f4\u9644\u8fd1\u7dda\u8def\u3002",
@@ -274,7 +276,7 @@
   };
 
   const units = [
-    { id: "cat", nameKey: "unitCat", roleKey: "roleRanged", abilityKey: "abilityCat", attackStyle: "ranged", cost: 45, hp: 92, damage: 18, cooldown: 930, range: 9, unlockCost: 0 },
+    { id: "cat", nameKey: "unitCat", roleKey: "roleRanged", abilityKey: "abilityCat", attackStyle: "ranged", cost: 45, hp: 92, damage: 18, cooldown: 930, range: 9, pierceEvery: 4, unlockCost: 0 },
     { id: "dog", nameKey: "unitDog", roleKey: "roleTankMelee", abilityKey: "abilityDog", attackStyle: "melee", cost: 58, hp: 350, damage: 42, cooldown: 820, range: 1.5, unlockCost: 0 },
     { id: "owl", nameKey: "unitOwl", roleKey: "roleFastRanged", abilityKey: "abilityOwl", attackStyle: "ranged", cost: 105, hp: 78, damage: 14, cooldown: 680, range: 9, unlockCost: 0 },
     { id: "fox", nameKey: "unitFox", roleKey: "roleCrossLane", abilityKey: "abilityFox", attackStyle: "cross", cost: 120, hp: 128, damage: 34, cooldown: 880, range: 9, targetRows: 1, unlockCost: 5 },
@@ -1141,6 +1143,8 @@
       hp: unit.hp,
       maxHp: unit.hp,
       cooldown: 0,
+      attackCount: 0,
+      piercingShots: 0,
       data: unit,
       el: document.createElement("div"),
       hpEl: document.createElement("span"),
@@ -1353,7 +1357,15 @@
   function shoot(guard, target) {
     faceTarget(guard, target);
     pulseClass(guard.el, "is-shooting");
-    spawnProjectile(guard, target, guard.data.damage);
+    guard.attackCount += 1;
+    guard.el.dataset.attackCount = String(guard.attackCount);
+    const piercing = guard.id === "cat" && guard.attackCount % guard.data.pierceEvery === 0;
+    if (piercing) {
+      guard.piercingShots += 1;
+      guard.el.dataset.piercingShots = String(guard.piercingShots);
+      showBoardText(t("pierce"), cellCenterX(guard.col), laneProjectileY(guard.row) - 0.08, "pierce-pop");
+    }
+    spawnProjectile(guard, target, guard.data.damage, false, piercing);
     if (guard.id === "fox") {
       const supportTarget = findFoxSupportTarget(guard, target);
       if (supportTarget) spawnProjectile(guard, supportTarget, Math.max(1, Math.round(guard.data.damage * 0.6)), true);
@@ -1361,7 +1373,7 @@
     playSound("shoot");
   }
 
-  function spawnProjectile(guard, target, damage, isSupportShot = false) {
+  function spawnProjectile(guard, target, damage, isSupportShot = false, isPiercing = false) {
     const stage = stages[currentStage];
     const guardX = cellCenterX(guard.col, stage);
     const direction = target.x >= guardX ? 1 : -1;
@@ -1375,9 +1387,12 @@
       damage,
       unitId: guard.id,
       target,
+      remainingHits: isPiercing ? 2 : 1,
+      hitTargets: new Set(),
+      isPiercing,
       el: document.createElement("div"),
     };
-    projectile.el.className = `projectile ${guard.id} ${isSupportShot ? "support-shot" : ""} ${direction < 0 ? "left" : "right"}`;
+    projectile.el.className = `projectile ${guard.id} ${isSupportShot ? "support-shot" : ""} ${isPiercing ? "piercing-shot" : ""} ${direction < 0 ? "left" : "right"}`;
     projectile.el.innerHTML = `<img src="${projectileAssets[guard.id] || projectileAssets.cat}" alt="" draggable="false" />`;
     nodes.yardBoard.appendChild(projectile.el);
     projectiles.push(projectile);
@@ -1398,6 +1413,8 @@
       const maxX = Math.max(previousX, shot.x) + 0.035;
       const hit = entities.find((item) => (
         item.kind === "zombie"
+        && !item.dead
+        && !shot.hitTargets.has(item)
         && item.row === shot.row
         && item.x >= minX
         && item.x <= maxX
@@ -1405,7 +1422,14 @@
       if (hit) {
         applyDamage(hit, shot.damage, shot.unitId, shot.y);
         if (shot.unitId === "owl") applySlow(hit, 0.72, 1250);
-        shot.dead = true;
+        shot.hitTargets.add(hit);
+        shot.remainingHits -= 1;
+        if (shot.isPiercing) {
+          hit.catPiercedHits = (hit.catPiercedHits || 0) + 1;
+          hit.el.dataset.catPiercedHits = String(hit.catPiercedHits);
+          pulseClass(hit.el, "is-pierced", 520);
+        }
+        if (shot.remainingHits <= 0) shot.dead = true;
       }
       if (shot.x > 1.08 || shot.x < -0.08) shot.dead = true;
       shot.el.style.transform = `translate(${shot.x * boardRect.width}px, ${shot.y * boardRect.height}px) translate(-50%, -50%)`;

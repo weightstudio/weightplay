@@ -611,6 +611,25 @@ a {
   margin: 0;
 }
 
+.reward-parade {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  width: 100%;
+  min-height: 58px;
+  overflow: hidden;
+}
+
+.reward-parade img {
+  width: 52px;
+  height: 52px;
+  object-fit: contain;
+  animation: reward-food-hop 0.72s cubic-bezier(0.2, 0.8, 0.25, 1.25) both;
+  animation-delay: calc(var(--reward-order) * 90ms);
+  filter: drop-shadow(0 5px 3px rgba(127, 90, 35, 0.2));
+}
+
 .result-report {
   display: grid;
   gap: 10px;
@@ -1099,9 +1118,25 @@ body.lunch-playing .wp-tutorial-button {
   }
 }
 
+@keyframes reward-food-hop {
+  0% {
+    opacity: 0;
+    transform: translateY(28px) scale(0.58);
+  }
+  55% {
+    opacity: 1;
+    transform: translateY(-7px) scale(1.08);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .result-panel,
   .result-card,
+  .reward-parade img,
   .food-card.pop,
   .food-card.shake {
     animation: none;
