@@ -115,7 +115,7 @@ body.wp-logical-battle-active.lunch-playing .food-card { width: 172px !important
 /* Guard Yard keeps a compact defense board instead of stretching lanes to the viewport height. */
 body.wp-logical-battle-active.guard-yard-playing .fixed-game-shell[data-wp-logical-battle-canvas] {
   padding: 6px !important;
-  grid-template-rows: 38px 26px 82px 240px 22px !important;
+  grid-template-rows: 48px 26px 78px 240px 20px !important;
   gap: 4px !important;
   border-width: 3px !important;
   border-radius: 16px !important;

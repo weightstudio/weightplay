@@ -640,6 +640,82 @@ body.fruit-playing #menuPanel {
   filter: drop-shadow(0 4px 7px rgba(0, 0, 0, 0.18));
 }
 
+.chain-step.locked,
+.habitat-album-card.locked {
+  filter: grayscale(0.9);
+  opacity: 0.34;
+}
+
+.chain-step.unlocked::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  z-index: -1;
+  border-radius: 99px;
+  background: rgba(101, 230, 163, 0.34);
+}
+
+.habitat-album {
+  display: grid;
+  gap: 7px;
+}
+
+.habitat-album > strong {
+  color: #172033;
+  font-size: 14px;
+}
+
+.habitat-album-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.habitat-album-card {
+  min-width: 0;
+  min-height: 74px;
+  padding: 5px;
+  border-radius: 8px;
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  column-gap: 4px;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.65);
+  box-shadow: inset 0 0 0 1px rgba(34, 51, 76, 0.1);
+}
+
+.habitat-album-card.unlocked {
+  background: linear-gradient(135deg, rgba(101, 230, 163, 0.3), rgba(255, 211, 93, 0.32));
+}
+
+.habitat-album-card img {
+  grid-row: 1 / -1;
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+.habitat-album-card b,
+.habitat-album-card small {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.habitat-album-card b {
+  color: #405064;
+  font-size: 10px;
+  line-height: 1.1;
+}
+
+.habitat-album-card small {
+  color: rgba(23, 32, 51, 0.62);
+  font-size: 9px;
+  font-weight: 900;
+}
+
 .leaderboard-panel strong,
 .milestone-panel strong {
   color: #172033;
@@ -855,6 +931,10 @@ body.fruit-playing #menuPanel {
 
   .milestone-row {
     grid-template-columns: 1fr;
+  }
+
+  .habitat-album-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .topbar {
@@ -1116,10 +1196,10 @@ body.fruit-playing #backToMenuBtn.play-return {
   top: 5px;
   left: 6px;
   width: 38px;
-  min-width: 38px;
+  min-width: 38px !important;
   max-width: 38px;
   height: 38px;
-  min-height: 38px;
+  min-height: 38px !important;
   max-height: 38px;
   padding: 0;
   display: grid;

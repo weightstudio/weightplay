@@ -95,7 +95,9 @@
     const scale = Math.max(0.01, Math.min(availableWidth / config[1], availableHeight / config[2]));
     const renderedWidth = config[1] * scale;
     const renderedHeight = config[2] * scale;
-    const top = config[3] === "top" ? GUTTER : (height - RESERVE_HEIGHT - renderedHeight) / 2;
+    const top = config[3] === "top"
+      ? GUTTER
+      : Math.max(GUTTER, height - RESERVE_HEIGHT - GUTTER - renderedHeight);
     const style = document.documentElement.style;
     style.setProperty("--wp-battle-viewport-height", `${height}px`);
     style.setProperty("--wp-battle-logical-width", `${config[1]}px`);

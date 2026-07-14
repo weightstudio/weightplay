@@ -77,6 +77,13 @@
       menuDesc: "Drop animal balls carefully. Matching animals merge into the next bigger animal. Keep the tower below the red line.",
       chainTitle: "Merge Path",
       chainHint: "Match two of the same animal to unlock the next one.",
+      albumTitle: "Habitat Album {unlocked}/4",
+      albumUnlocked: "{name} discovered",
+      albumLocked: "Reach {name}",
+      habitatMeadow: "Meadow Friends",
+      habitatForest: "Forest Flight",
+      habitatSavanna: "Savanna Trail",
+      habitatRoyal: "Lion Crown",
       start: "Start",
       gameOver: "Game Over",
       result: "Score {score}  Best {best}",
@@ -139,6 +146,13 @@
       menuDesc: "小心落下動物球。相同動物會合成下一個更大的動物，別讓塔超過紅線。",
       chainTitle: "合成路線",
       chainHint: "兩顆相同動物會合成下一種動物。",
+      albumTitle: "棲地圖鑑 {unlocked}/4",
+      albumUnlocked: "已發現：{name}",
+      albumLocked: "合成至 {name}",
+      habitatMeadow: "草原夥伴",
+      habitatForest: "森林飛行",
+      habitatSavanna: "莽原旅程",
+      habitatRoyal: "獅王冠冕",
       start: "開始",
       gameOver: "遊戲結束",
       result: "分數 {score}  最佳 {best}",
@@ -745,6 +759,7 @@
   function renderChainPreview() {
     if (!chainPreview) return;
     chainPreview.replaceChildren();
+    const highest = Math.max(0, Math.min(fruits.length - 1, Number(readProgress().highestLevel) || 0));
 
     const title = document.createElement("strong");
     title.textContent = t("chainTitle");
@@ -754,13 +769,41 @@
     rail.className = "chain-rail";
     fruits.forEach((_, level) => {
       const item = document.createElement("span");
-      item.className = "chain-step";
-      item.title = t(`fruit${level}`);
-      item.setAttribute("aria-label", t(`fruit${level}`));
+      const unlocked = level <= highest;
+      item.className = `chain-step${unlocked ? " unlocked" : " locked"}`;
+      item.title = unlocked ? t("albumUnlocked", { name: t(`fruit${level}`) }) : t("albumLocked", { name: t(`fruit${level}`) });
+      item.setAttribute("aria-label", item.title);
       item.innerHTML = animalTokenMarkup(level);
       rail.appendChild(item);
     });
     chainPreview.appendChild(rail);
+
+    const habitats = [
+      { key: "habitatMeadow", level: 2 },
+      { key: "habitatForest", level: 5 },
+      { key: "habitatSavanna", level: 8 },
+      { key: "habitatRoyal", level: 10 },
+    ];
+    const unlockedHabitats = habitats.filter((habitat) => highest >= habitat.level).length;
+    const album = document.createElement("section");
+    album.className = "habitat-album";
+    const albumTitle = document.createElement("strong");
+    albumTitle.textContent = t("albumTitle", { unlocked: unlockedHabitats });
+    const albumGrid = document.createElement("div");
+    albumGrid.className = "habitat-album-grid";
+    habitats.forEach((habitat) => {
+      const unlocked = highest >= habitat.level;
+      const card = document.createElement("span");
+      card.className = `habitat-album-card${unlocked ? " unlocked" : " locked"}`;
+      const state = unlocked
+        ? t("albumUnlocked", { name: t(habitat.key) })
+        : t("albumLocked", { name: t(`fruit${habitat.level}`) });
+      card.setAttribute("aria-label", state);
+      card.innerHTML = `${animalTokenMarkup(habitat.level)}<b>${t(habitat.key)}</b><small>${state}</small>`;
+      albumGrid.appendChild(card);
+    });
+    album.append(albumTitle, albumGrid);
+    chainPreview.appendChild(album);
 
     const hint = document.createElement("small");
     hint.textContent = t("chainHint");

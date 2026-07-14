@@ -117,7 +117,7 @@
     const renderedWidth = STAGE_LOGICAL_WIDTH * scale;
     const renderedHeight = STAGE_LOGICAL_HEIGHT * scale;
     const left = (width - renderedWidth) / 2;
-    const top = (height - renderedHeight - STAGE_RESERVE_HEIGHT) / 2;
+    const top = Math.max(4, height - STAGE_RESERVE_HEIGHT - 4 - renderedHeight);
     const style = document.documentElement.style;
     style.setProperty("--wp-stage-canvas-scale", String(scale));
     style.setProperty("--wp-stage-canvas-left", `${left}px`);

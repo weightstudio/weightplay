@@ -1678,6 +1678,7 @@
     nodes.nextStageBtn.classList.toggle("hidden", !won || currentStage >= stages.length - 1);
     document.documentElement.classList.add("guard-yard-playing");
     document.body.classList.add("guard-yard-playing");
+    nodes.playPanel.classList.add("hidden");
     nodes.resultPanel.classList.remove("hidden");
     renderWallet();
     renderKennel();

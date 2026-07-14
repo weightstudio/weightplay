@@ -2458,13 +2458,26 @@ body.guard-yard-playing .fixed-game-shell {
   height: 450px;
   max-height: none;
   aspect-ratio: 13 / 15;
-  grid-template-rows: 38px 26px 82px 240px 22px;
+  grid-template-rows: 48px 26px 78px 240px 20px;
   gap: 4px;
   padding: 6px;
   border-width: 3px;
   border-radius: 16px;
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
+}
+body.guard-yard-playing .play-head {
+  grid-template-columns: 48px minmax(0, 1fr) 48px;
+  gap: 6px;
+}
+body.guard-yard-playing .play-return,
+body.guard-yard-playing .play-settings {
+  width: 48px;
+  min-width: 48px;
+  max-width: 48px;
+  height: 48px;
+  min-height: 48px;
+  max-height: 48px;
 }
 body.guard-yard-playing .unit-bar {
   grid-template-columns: repeat(4, 87px);
@@ -2473,7 +2486,7 @@ body.guard-yard-playing .unit-bar {
 }
 body.guard-yard-playing .unit-card {
   width: 87px;
-  height: 82px;
+  height: 78px;
   grid-template-columns: 34px minmax(0, 1fr);
   grid-template-rows: 1fr;
   padding: 5px;
@@ -2510,10 +2523,12 @@ body.guard-yard-playing .result-panel {
   grid-template-rows: minmax(0, 1fr) 56px;
   place-items: center;
   overflow: hidden;
+  background: rgba(22, 51, 31, 0.76);
 }
 
 body.guard-yard-playing .result-panel .result-card {
   grid-row: 1;
+  align-self: end;
   max-height: 100%;
   overflow: auto;
 }
@@ -2526,7 +2541,7 @@ body.guard-yard-playing .result-panel .result-ad-reserve {
   align-self: stretch;
   pointer-events: none;
   border-top: 1px solid rgba(255, 255, 255, 0.22);
-  background: rgba(35, 77, 49, 0.34);
+  background: #17331f;
 }
 
 /* Guard Yard Stage keeps navigation and resources stable while only tab content scrolls. */
@@ -2542,6 +2557,10 @@ body.guard-yard-stage .menu-shell {
   gap: 8px;
   padding: 8px;
   overflow: hidden;
+}
+
+body.guard-yard-stage .menu-panel {
+  grid-template-rows: minmax(0, 1fr) 64px;
 }
 
 body.guard-yard-stage .stage-screen-head {
@@ -2676,6 +2695,6 @@ body.guard-yard-stage .menu-tabs span { font-size: 0.72rem; }
     height: 450px;
     max-width: none;
     aspect-ratio: 13 / 15;
-    grid-template-rows: 38px 26px 82px 240px 22px;
+    grid-template-rows: 48px 26px 78px 240px 20px;
   }
 }
