@@ -112,22 +112,30 @@
         };
     const flightName = labels.flights[state.kind];
     const dockName = labels.docks[state.dock];
-    const steps = [];
-    if (state.storm && !state.serviced) steps.push(labels.repair);
-    if (state.conflict) steps.push(labels.conflict);
-    if (state.needsCrew && !state.crewAssigned) steps.push(labels.crew);
-    steps.push(labels.drag + dockName);
-    const numberedSteps = steps.map((step, index) => `${index + 1}. ${step}`);
+    const steps = [
+      { id: 'repair', text: labels.repair, complete: !state.storm || state.serviced },
+      { id: 'conflict', text: labels.conflict, complete: !state.conflict },
+      { id: 'crew', text: labels.crew, complete: !state.needsCrew || state.crewAssigned },
+      { id: 'dock', text: labels.drag + dockName, complete: false }
+    ].filter((step) => step.id === 'dock' || !((step.id === 'repair' && !state.storm) || (step.id === 'conflict' && !state.requiresConflict) || (step.id === 'crew' && !state.needsCrew)));
+    const currentStepIndex = Math.max(0, steps.findIndex((step) => !step.complete));
+    const currentStep = steps[currentStepIndex];
+    const stepLabel = locale === 'zh-Hant'
+      ? `步驟 ${currentStepIndex + 1}/${steps.length}：${currentStep.text}`
+      : `Step ${currentStepIndex + 1}/${steps.length}: ${currentStep.text}`;
     document.querySelector('.task-destination').textContent = locale === 'zh-Hant'
       ? `本架：${flightName} → ${dockName}`
       : `Current: ${flightName} -> ${dockName}`;
     // Keep the task strip focused on the action the player can take now. Showing
     // only the final drag step made late flights look like they had skipped rules.
-    document.querySelector('.task-steps').textContent = numberedSteps[0];
-    let nextStep = 1;
-    if (state.storm) $('serviceBtn').textContent = `${nextStep++}. ${locale === 'zh-Hant' ? '維修服務' : 'Repair service'}`;
-    if (state.conflict) $('clearRouteBtn').textContent = `${nextStep++}. ${locale === 'zh-Hant' ? '清除航線衝突' : 'Clear conflict'}`;
-    if (state.needsCrew) $('assignCrewBtn').textContent = `${nextStep}. ${locale === 'zh-Hant' ? '指派組員' : 'Assign crew'}`;
+    document.querySelector('.task-steps').textContent = stepLabel;
+    const actionLabel = (id, text) => {
+      const index = steps.findIndex((step) => step.id === id);
+      return `${locale === 'zh-Hant' ? '步驟' : 'Step'} ${index + 1}/${steps.length}: ${text}`;
+    };
+    if (state.storm) $('serviceBtn').textContent = actionLabel('repair', locale === 'zh-Hant' ? '維修服務' : 'Repair service');
+    if (state.conflict) $('clearRouteBtn').textContent = actionLabel('conflict', locale === 'zh-Hant' ? '清除航線衝突' : 'Clear conflict');
+    if (state.needsCrew) $('assignCrewBtn').textContent = actionLabel('crew', locale === 'zh-Hant' ? '指派組員' : 'Assign crew');
     $('flight').setAttribute('aria-label', locale === 'zh-Hant' ? `${flightName}\uff0c\u76ee\u6a19 ${dockName}` : `${flightName}, target ${dockName}`);
     $('flight').dataset.destination = locale === 'zh-Hant' ? `\u9001\u5f80 ${dockName}` : `TO ${dockName.toUpperCase()}`;
     document.querySelectorAll('.dock').forEach((dock) => {
@@ -171,7 +179,8 @@
     state.kind = kind;
     state.dock = dock;
     state.storm = state.stormEvery > 0 && state.flightIndex % state.stormEvery === 0;
-    state.conflict = state.shift >= 3 && state.flightIndex % 4 === 1;
+    state.requiresConflict = state.shift >= 3 && state.flightIndex % 4 === 1;
+    state.conflict = state.requiresConflict;
     // Shift 1 teaches only matching and routing; crew arrives after the player
     // has a stable mental model of docks.
     state.needsCrew = state.shift >= 2 && ['cargo','repair','festival','heavy'].includes(kind);

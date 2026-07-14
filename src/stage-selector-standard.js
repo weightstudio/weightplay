@@ -175,7 +175,7 @@
     const startedAt = performance.now();
     const startedLeft = rail.scrollLeft;
     const distance = boundedTarget - startedLeft;
-    const duration = Math.min(300, Math.max(180, Math.abs(distance) * 1.15));
+    const duration = Math.min(360, Math.max(240, Math.abs(distance) * 1.35));
     const pending = {
       restore,
       frame: 0,
@@ -183,7 +183,7 @@
     const animate = (now) => {
       if (pendingSettles.get(rail) !== pending) return;
       const progress = Math.min(1, (now - startedAt) / duration);
-      const eased = 1 - Math.pow(1 - progress, 3);
+      const eased = 1 - Math.pow(1 - progress, 2);
       rail.scrollLeft = startedLeft + distance * eased;
       if (progress < 1) {
         pending.frame = window.requestAnimationFrame(animate);
@@ -279,7 +279,6 @@
       previousSnapType = rail.style.getPropertyValue("scroll-snap-type");
       rail.style.setProperty("scroll-behavior", "auto", "important");
       rail.style.setProperty("scroll-snap-type", "none", "important");
-      rail.setPointerCapture?.(event.pointerId);
     }, true);
 
     rail.addEventListener("pointermove", (event) => {
@@ -290,6 +289,7 @@
       if (!moved && Math.abs(delta) > 8) {
         moved = true;
         rail.classList.add("wp-stage-dragging");
+        rail.setPointerCapture?.(event.pointerId);
       }
       if (!moved) return;
       if (event.cancelable) event.preventDefault();
@@ -300,7 +300,7 @@
 
     const finish = (event) => {
       if (pointerId === null) return;
-      rail.releasePointerCapture?.(pointerId);
+      if (rail.hasPointerCapture?.(pointerId)) rail.releasePointerCapture(pointerId);
       pointerId = null;
       rail.classList.remove("wp-stage-dragging");
       const restore = () => {
@@ -312,11 +312,7 @@
       if (moved) {
         if (event.cancelable) event.preventDefault();
         suppressClick = true;
-        rail.dataset.wpSuppressClick = "true";
-        window.setTimeout(() => {
-          suppressClick = false;
-          rail.dataset.wpSuppressClick = "false";
-        }, 240);
+        window.setTimeout(() => { suppressClick = false; }, 240);
         centerNearest(rail, restore);
       } else {
         restore();
@@ -327,11 +323,7 @@
     document.addEventListener("pointerup", finish, true);
     document.addEventListener("pointercancel", finish, true);
     rail.addEventListener("click", (event) => {
-      if (!suppressClick) {
-        rail.dataset.wpLastClick = "allowed";
-        return;
-      }
-      rail.dataset.wpLastClick = "suppressed";
+      if (!suppressClick) return;
       event.preventDefault();
       event.stopImmediatePropagation();
     }, true);
