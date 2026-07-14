@@ -3,7 +3,7 @@
   const saveKey = "weightplay_animal_crystal_survivor_v1";
   const localeKey = "weightPlayLocale";
   const W = 1024;
-  const H = 1024;
+  const H = 1600;
   const RUN_SECONDS = 180;
   const crystalCharmCost = 12;
 
@@ -893,9 +893,19 @@
     ctx.restore();
   }
 
+  function drawImageCover(img, x, y, width, height) {
+    if (!img?.complete || !img.naturalWidth || !img.naturalHeight) return;
+    const scale = Math.max(width / img.naturalWidth, height / img.naturalHeight);
+    const sourceWidth = width / scale;
+    const sourceHeight = height / scale;
+    const sourceX = (img.naturalWidth - sourceWidth) / 2;
+    const sourceY = (img.naturalHeight - sourceHeight) / 2;
+    ctx.drawImage(img, sourceX, sourceY, sourceWidth, sourceHeight, x, y, width, height);
+  }
+
   function draw() {
     ctx.clearRect(0, 0, W, H);
-    if (images.arena?.complete) ctx.drawImage(images.arena, 0, 0, W, H);
+    drawImageCover(images.arena, 0, 0, W, H);
     ctx.save();
     ctx.fillStyle = "rgba(6, 24, 23, 0.18)";
     ctx.fillRect(0, 0, W, H);

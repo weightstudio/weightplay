@@ -363,6 +363,8 @@
     viewportHeight = height;
     document.documentElement.style.setProperty("--guard-yard-vw", `${width}px`);
     document.documentElement.style.setProperty("--guard-yard-vh", `${height}px`);
+    const battleScale = Math.max(0.1, Math.min((width - 8) / 390, (height - 64) / 450));
+    document.documentElement.style.setProperty("--guard-yard-battle-scale", `${battleScale}`);
   }
 
   updateGuardYardViewport();
@@ -1009,7 +1011,7 @@
     nodes.yardBoard.classList.remove("is-danger");
     nodes.yardBoard.style.setProperty("--grid-cols", stage.cols);
     nodes.yardBoard.style.setProperty("--grid-rows", stage.rows);
-    boardRect = nodes.yardBoard.getBoundingClientRect();
+    boardRect = { width: nodes.yardBoard.clientWidth, height: nodes.yardBoard.clientHeight };
     nodes.dangerAlert = document.createElement("div");
     nodes.dangerAlert.id = "dangerAlert";
     nodes.dangerAlert.className = "danger-alert hidden";
@@ -1049,12 +1051,11 @@
       button.innerHTML = `
         <span class="mini-animal">${animalSprite(unit.id)}</span>
         <span class="unit-info">
-          <strong>${t(unit.nameKey)} <em>${t("level", { n: trained.level })}</em></strong>
-          <b class="role-badge" title="${t(trained.roleKey)}">${t(trained.abilityKey)}</b>
+          <strong>${t(unit.nameKey)}</strong>
+          <b class="role-badge" title="${t(trained.abilityKey)}">${t(trained.roleKey)}</b>
           <small class="unit-stats">
             <span>${t("costShort")} ${trained.cost}</span>
-            <span>${t("atkShort")} ${trained.damage}</span>
-            <span>${t("hpShort")} ${trained.hp}</span>
+            <span>${t("level", { n: trained.level })}</span>
           </small>
         </span>
       `;
@@ -1737,7 +1738,7 @@
   nodes.retryBtn.addEventListener("click", () => startStage(currentStage));
   nodes.nextStageBtn.addEventListener("click", () => startStage(Math.min(currentStage + 1, stages.length - 1)));
   window.addEventListener("resize", () => {
-    boardRect = nodes.yardBoard.getBoundingClientRect();
+    boardRect = { width: nodes.yardBoard.clientWidth, height: nodes.yardBoard.clientHeight };
     entities.forEach(updateEntityElement);
   });
 

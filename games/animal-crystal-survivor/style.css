@@ -1123,8 +1123,8 @@ html:has(body.crystal-playing), body.crystal-playing { width: 100%; height: var(
 body.crystal-playing .crystal-app { width: var(--crystal-vw, 100vw); height: var(--crystal-vh, 100dvh); padding: 4px; display: grid; grid-template-rows: minmax(0, 1fr) 56px; gap: 0; place-items: center; overflow: hidden; }
 body.crystal-playing .topbar, body.crystal-playing .game-page-info, body.crystal-playing .tutorial-button, body.crystal-playing .wp-tutorial-button, body.crystal-playing .wp-tutorial-backdrop { display: none !important; }
 body.crystal-playing #gamePanel.game-panel, body.crystal-playing #resultPanel.result-panel { position: relative; inset: auto; grid-row: 1; width: min(100%, 612px); height: min(100%, 788px); min-height: 0; max-height: none; margin: 0; transform: none; overflow: hidden; }
-body.crystal-playing #gamePanel.game-panel { display: grid; grid-template-rows: 54px 30px auto 34px; gap: 6px; padding: 8px; align-content: start; }
-body.crystal-playing .canvas-wrap { width: min(100%, calc(var(--crystal-vh, 100dvh) - 80px)); max-width: 100%; height: auto; max-height: 100%; justify-self: center; align-self: center; aspect-ratio: 1; }
+body.crystal-playing #gamePanel.game-panel { display: grid; grid-template-rows: 54px 30px minmax(0, 1fr) 34px; gap: 6px; padding: 8px; align-content: stretch; }
+body.crystal-playing .canvas-wrap { width: 100%; max-width: 100%; height: auto; max-height: none; justify-self: center; align-self: center; aspect-ratio: 16 / 25; }
 body.crystal-playing #battleAdReserve { position: static; inset: auto; grid-row: 2; display: block; width: min(100%, 612px); height: 56px; min-height: 56px; margin: 0; transform: none; }
 body.crystal-playing #upgradePanel.upgrade-panel { position: fixed; z-index: 100; inset: 4px 4px 60px; width: auto; height: auto; padding: 10px; overflow: hidden; pointer-events: auto; }
 body.crystal-playing .upgrade-card-wrap { max-height: 100%; overflow-y: auto; }
@@ -1165,7 +1165,7 @@ body.crystal-playing .upgrade-card-wrap { max-height: 100%; overflow-y: auto; }
   body.crystal-playing #gamePanel.game-panel { grid-template-columns: 150px minmax(0, 1fr) 190px; grid-template-rows: 34px minmax(0, 1fr); gap: 6px; padding: 6px; }
   body.crystal-playing .hud-row { grid-column: 1; grid-row: 1 / -1; grid-template-columns: 1fr; grid-template-rows: repeat(5, minmax(0, 1fr)); gap: 4px; }
   body.crystal-playing .hud-row .play-return { width: 100%; min-width: 0; min-height: 0; }
-  body.crystal-playing .canvas-wrap { grid-column: 2; grid-row: 1 / -1; }
+  body.crystal-playing .canvas-wrap { grid-column: 2; grid-row: 1 / -1; width: auto; max-width: 100%; height: 100%; max-height: 100%; }
   body.crystal-playing .xp-row { grid-column: 3; grid-row: 1; }
   body.crystal-playing .hint-text { grid-column: 3; grid-row: 2; align-self: stretch; min-height: 0; height: 100%; margin: 0; display: grid; place-items: center; overflow-y: auto; white-space: normal; }
   body.crystal-playing .upgrade-cards { grid-template-columns: repeat(3, minmax(0, 1fr)); }

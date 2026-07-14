@@ -97,13 +97,13 @@
     stagePanel.dataset.wpStageRail = "true";
     stagePanel.dataset.wpStageInitiallyHidden = "true";
     stagePanel.innerHTML = `
-      <header class="wp-standard-stage-heading"><button id="stageBackBtn" data-wp-return="stage" type="button" aria-label="Back">&larr;</button><strong data-ui="stageHubTitle">Mission Preparation</strong></header>
+      <header class="wp-standard-stage-heading"><button id="stageBackBtn" data-wp-return="stage" type="button" data-aria="backToMain" aria-label="Back">&larr;</button><strong data-ui="stageHubTitle">Mission Preparation</strong></header>
       <div class="beast-stage-workspace">
         <section class="beast-stage-view is-active" data-stage-view="missions"></section>
         <section class="beast-stage-view" data-stage-view="deck"></section>
         <section class="beast-stage-view" data-stage-view="shop"></section>
       </div>
-      <nav class="beast-stage-tabs" aria-label="Preparation">
+      <nav class="beast-stage-tabs" data-aria="preparation" aria-label="Preparation">
         <button type="button" class="is-active" data-stage-tab="missions" data-ui="stageTabMissions">Missions</button>
         <button type="button" data-stage-tab="deck" data-ui="stageTabDeck">Deck</button>
         <button type="button" data-stage-tab="shop" data-ui="stageTabShop">Upgrades</button>
@@ -111,7 +111,8 @@
     const missionView = stagePanel.querySelector('[data-stage-view="missions"]');
     const deckView = stagePanel.querySelector('[data-stage-view="deck"]');
     const shopView = stagePanel.querySelector('[data-stage-view="shop"]');
-    missionView.append(stageSelect, nodes.startBtn);
+    missionView.append(stageSelect);
+    nodes.startBtn.remove();
     deckView.append(collectionPanel);
     shopView.append(diamondShop);
     nodes.menuPanel.after(stagePanel);
@@ -132,10 +133,11 @@
   }
 
   function showStage() {
+    profile.selectedMission = profile.unlockedMission;
+    saveLocalState();
     nodes.menuPanel.classList.add("hidden");
     nodes.stagePanel.classList.remove("hidden");
     nodes.stageReserve.classList.remove("hidden");
-    nodes.startBtn.hidden = false;
     document.body.classList.add("wp-standard-stage-page");
     renderProgressUI();
   }
@@ -143,7 +145,6 @@
   function showMainFromStage() {
     nodes.stagePanel.classList.add("hidden");
     nodes.stageReserve.classList.add("hidden");
-    nodes.startBtn.hidden = true;
     nodes.menuPanel.classList.remove("hidden");
     document.body.classList.remove("wp-standard-stage-page");
   }
@@ -198,7 +199,7 @@
       gearStatEnergy: "+{amount} Energy each battle",
       gearStatBlock: "Start each battle with {amount} Block",
       stageSelectTitle: "Choose a Mission",
-      stageSelectHint: "Swipe or drag missions. The center card is selected; press Start below to enter.",
+      stageSelectHint: "Swipe or drag missions, then tap any unlocked mission card to begin.",
       stageHubTitle: "Mission Preparation",
       stageTabMissions: "Missions",
       stageTabDeck: "Deck",
@@ -208,7 +209,7 @@
       missionReward: "{xp} XP",
       missionCoins: "{coins} coins",
       startMissionCard: "Tap to choose",
-      missionSelectedCard: "Selected - start below",
+      missionSelectedCard: "Selected - tap to begin",
       selectedMissionTitle: "Selected Mission",
       selectedMissionReady: "{mission} is ready. Clear reward: {xp} XP + {coins} coins.",
       missionScout: "Scout: {enemies}. First battle: {first}.",
@@ -223,6 +224,10 @@
       amuletOwned: "Owned: every run starts with +10 Max HP.",
       amuletNeed: "Need {cost} diamonds.",
       startRun: "Start Selected Mission",
+      backToLobby: "Back to lobby",
+      backToMain: "Back",
+      backToStage: "Back to missions",
+      preparation: "Preparation",
       menu: "Menu",
       hudStage: "Battle",
       hudMission: "Mission",
@@ -334,7 +339,7 @@
       gearStatEnergy: "每場戰鬥能量 +{amount}",
       gearStatBlock: "每場開始獲得 {amount} 點格擋",
       stageSelectTitle: "選擇任務",
-      stageSelectHint: "左右滑動任務列。中間卡片就是選定任務，再按下方開始。",
+      stageSelectHint: "左右滑動任務列，點擊任一已解鎖任務卡即可開始。",
       stageHubTitle: "任務準備",
       stageTabMissions: "任務",
       stageTabDeck: "牌組",
@@ -344,7 +349,7 @@
       missionReward: "{xp} 經驗",
       missionCoins: "{coins} 金幣",
       startMissionCard: "點擊選擇",
-      missionSelectedCard: "已選擇・按下方開始",
+      missionSelectedCard: "已選擇・點擊開始",
       selectedMissionTitle: "已選任務",
       selectedMissionReady: "{mission} 已準備。通關獎勵：{xp} 經驗 + {coins} 金幣。",
       missionScout: "偵察：{enemies}。首戰：{first}。",
@@ -359,6 +364,10 @@
       amuletOwned: "已擁有：每次出戰生命上限 +10。",
       amuletNeed: "需要 {cost} 鑽石。",
       startRun: "開始選定任務",
+      backToLobby: "返回大廳",
+      backToMain: "返回",
+      backToStage: "返回任務",
+      preparation: "任務準備",
       menu: "選單",
       hudStage: "戰鬥",
       hudMission: "任務",
@@ -612,12 +621,15 @@
   function translateUI() {
     const locale = getLocale();
     document.documentElement.lang = locale;
-    document.title = `${t("title")} - WeightPlay`;
+    const pageTitle = `${t("title")} - WeightPlay`;
+    document.title = pageTitle;
     document.querySelector("meta[name='description']")?.setAttribute("content", metaText[locale]?.description || metaText.en.description);
     document.querySelector("meta[property='og:description']")?.setAttribute("content", metaText[locale]?.ogDescription || metaText.en.ogDescription);
+    document.querySelector("meta[property='og:title']")?.setAttribute("content", pageTitle);
     document.querySelectorAll("[data-ui]").forEach((el) => {
       el.textContent = t(el.dataset.ui);
     });
+    document.querySelectorAll("[data-aria]").forEach((el) => el.setAttribute("aria-label", t(el.dataset.aria)));
     nodes.localeSelect.querySelector('option[value="en"]').textContent = "English";
     nodes.localeSelect.querySelector('option[value="zh-Hant"]').textContent = "\u7e41\u9ad4\u4e2d\u6587";
     nodes.localeSelect.value = getLocale();
@@ -1336,7 +1348,6 @@
   }
 
   function endGame(won) {
-    document.body.classList.remove("beast-deck-playing");
     nodes.gamePanel.classList.add("hidden");
     nodes.resultPanel.classList.remove("hidden");
     const cleared = won ? 3 : Math.max(0, state.battle - 1);
@@ -1401,6 +1412,19 @@
     };
   }
 
+  function positionBattleSoundControl() {
+    requestAnimationFrame(() => {
+      const toggle = document.querySelector("button[data-sound-toggle]");
+      const panel = nodes.gamePanel.getBoundingClientRect();
+      if (!toggle || panel.width <= 0 || panel.height <= 0) return;
+      const size = 42;
+      toggle.style.setProperty("left", `${Math.round(panel.right - size - 12)}px`, "important");
+      toggle.style.setProperty("top", `${Math.round(panel.top + 12)}px`, "important");
+      toggle.style.setProperty("right", "auto", "important");
+      toggle.style.setProperty("bottom", "auto", "important");
+    });
+  }
+
   function startRun() {
     loadLocalState();
     resetRunState();
@@ -1411,6 +1435,7 @@
     nodes.resultPanel.classList.add("hidden");
     nodes.gamePanel.classList.remove("hidden");
     document.body.classList.add("beast-deck-playing");
+    positionBattleSoundControl();
     startNextBattle();
     window.WonderSound?.play("start");
     nodes.gamePanel.scrollIntoView({ behavior: "smooth", block: "start" });

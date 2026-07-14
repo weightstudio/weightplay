@@ -56,14 +56,14 @@
   <body data-tutorial-auto-show="false">
     <main class="beast-deck-app" data-no-mobile-immersive="true">
       <header class="topbar">
-        <a class="icon-btn" data-wp-return="main" href="/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
+        <a class="icon-btn" data-wp-return="main" href="/" data-aria="backToLobby" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
         <div class="brand-title">
           <p>WeightPlay</p>
           <h1 data-ui="title">Beast Deck: The Mist Forest</h1>
         </div>
         <label class="language-picker">
           <span data-ui="language">Language</span>
-                    <select id="localeSelect" aria-label="Language">
+                    <select id="localeSelect" data-aria="language" aria-label="Language">
             <option value="en">English</option>
             <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
           </select>
@@ -165,7 +165,7 @@
 
       <section id="gamePanel" class="game-panel hidden" data-play-viewport>
         <div class="hud-row">
-          <button id="menuBtn" class="soft-btn" data-wp-return="battle" type="button" aria-label="Back to missions">&larr;</button>
+          <button id="menuBtn" class="soft-btn" data-wp-return="battle" type="button" data-aria="backToStage" aria-label="Back to missions">&larr;</button>
           <div><span data-ui="hudStage">Battle</span><b id="stageText">1/3</b></div>
           <div><span data-ui="hudMission">Mission</span><b id="missionText">1</b></div>
           <div><span data-ui="hudHp">Player HP</span><b id="hpText">30/30</b></div>

@@ -2450,18 +2450,50 @@ body.guard-yard-playing .fixed-shell-host {
   display: grid;
   grid-template-rows: minmax(0, 1fr) 56px;
   gap: 0;
-  place-items: center;
+  place-items: start center;
   overflow: hidden;
 }
 body.guard-yard-playing .fixed-game-shell {
-  width: min(calc(var(--guard-yard-vw, 100vw) - 8px), 860px, calc((var(--guard-yard-vh, 100dvh) - 64px) * 4 / 3));
-  height: min(calc(var(--guard-yard-vh, 100dvh) - 64px), 645px, calc((var(--guard-yard-vw, 100vw) - 8px) * 3 / 4));
+  width: 390px;
+  height: 450px;
   max-height: none;
-  aspect-ratio: 4 / 3;
-  grid-template-rows: 34px 24px 66px minmax(0, 1fr) 22px;
+  aspect-ratio: 13 / 15;
+  grid-template-rows: 38px 26px 82px 240px 22px;
   gap: 4px;
+  padding: 6px;
+  border-width: 3px;
+  border-radius: 16px;
+  transform: scale(var(--guard-yard-battle-scale));
+  transform-origin: top center;
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
+}
+body.guard-yard-playing .unit-bar {
+  grid-template-columns: repeat(4, 87px);
+  justify-content: center;
+  gap: 4px;
+}
+body.guard-yard-playing .unit-card {
+  width: 87px;
+  height: 82px;
+  grid-template-columns: 32px minmax(0, 1fr);
+  grid-template-rows: 1fr;
+  padding: 5px;
+  gap: 4px;
+  border-radius: 10px;
+  font-size: 9px;
+}
+body.guard-yard-playing .unit-card .mini-animal { width: 32px; }
+body.guard-yard-playing .unit-info { gap: 2px; }
+body.guard-yard-playing .unit-info strong { font-size: 10px; line-height: 1.15; }
+body.guard-yard-playing .role-badge { padding: 2px 4px; font-size: 8px; line-height: 1.15; }
+body.guard-yard-playing .unit-stats { flex-wrap: nowrap; justify-content: flex-start; gap: 3px; font-size: 8px; line-height: 1.1; }
+body.guard-yard-playing .yard-board {
+  width: 100%;
+  height: 240px;
+  aspect-ratio: 1.55 / 1;
+  border-width: 3px;
+  border-radius: 12px;
 }
 body.guard-yard-playing #playPanel > .battle-ad-reserve {
   width: 100%;
@@ -2474,14 +2506,14 @@ body.guard-yard-playing #playPanel > .battle-ad-reserve {
 
 @media (max-width: 560px), (max-height: 560px) and (pointer: coarse) {
   body.guard-yard-playing .fixed-shell-host {
-    place-items: stretch;
+    place-items: start center;
   }
 
   body.guard-yard-playing .fixed-game-shell {
-    width: 100%;
-    height: 100%;
+    width: 390px;
+    height: 450px;
     max-width: none;
-    aspect-ratio: auto;
-    grid-template-rows: 34px 24px 66px minmax(0, 1fr) 22px;
+    aspect-ratio: 13 / 15;
+    grid-template-rows: 38px 26px 82px 240px 22px;
   }
 }
