@@ -86,11 +86,15 @@
     return reserve;
   }
 
+  function stageRootVisible(root) {
+    return Boolean(root && !root.hidden && !root.classList.contains("hidden") && root.getClientRects().length && getComputedStyle(root).visibility !== "hidden");
+  }
+
   function updateStageCanvas() {
     const activeRails = [...document.querySelectorAll("[data-wp-stage-rail]")]
       .filter((rail) => rail.getClientRects().length && getComputedStyle(rail).visibility !== "hidden");
     const retainedManagementRoot = [...document.querySelectorAll("[data-wp-logical-stage-canvas]")]
-      .find((root) => root.getClientRects().length && getComputedStyle(root).visibility !== "hidden") || null;
+      .find(stageRootVisible) || null;
     document.querySelectorAll("[data-wp-logical-stage-canvas]").forEach((root) => {
       if (!activeRails.some((rail) => root.contains(rail)) && root !== retainedManagementRoot) root.removeAttribute("data-wp-logical-stage-canvas");
     });
@@ -132,8 +136,11 @@
   }
 
   function updateStageState() {
-    const active = [...document.querySelectorAll("[data-wp-stage-rail][data-wp-stage-initially-hidden='true']")]
+    const activeRail = [...document.querySelectorAll("[data-wp-stage-rail][data-wp-stage-initially-hidden='true']")]
       .some((rail) => rail.getClientRects().length && getComputedStyle(rail).visibility !== "hidden");
+    const activeManagementRoot = [...document.querySelectorAll("[data-wp-logical-stage-canvas]")]
+      .some(stageRootVisible);
+    const active = activeRail || activeManagementRoot;
     document.body?.classList.toggle("wp-stage-select-active", active);
     updateStageCanvas();
   }
@@ -278,8 +285,6 @@
       if (event.button !== undefined && event.button !== 0) return;
       cancelPendingSettle(rail);
       pointerId = event.pointerId;
-      // Keep receiving the gesture when a fast horizontal swipe leaves a card.
-      rail.setPointerCapture?.(event.pointerId);
       rail.dataset.wpDragDown = String(Number(rail.dataset.wpDragDown || 0) + 1);
       startX = event.clientX;
       startScroll = rail.scrollLeft;
@@ -293,7 +298,9 @@
       rail.scrollLeft = startScroll;
     }, true);
 
-    rail.addEventListener("pointermove", (event) => {
+    // Listen on document until the drag threshold is crossed. This keeps a
+    // fast swipe alive after it leaves a card without capturing ordinary taps.
+    document.addEventListener("pointermove", (event) => {
       if (event.pointerId !== pointerId) return;
       const delta = event.clientX - startX;
       rail.dataset.wpDragDelta = String(delta);
