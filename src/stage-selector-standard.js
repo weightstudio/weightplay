@@ -154,7 +154,11 @@
   }
 
   function centerNearest(rail, restore) {
-    const cards = stageCards(rail);
+    const allCards = stageCards(rail);
+    // A locked stage may remain visible in the rail, but ending a drag on it
+    // must not leave the viewport centered on a card the game cannot select.
+    const cards = allCards.filter(isUnlockedCard);
+    if (!cards.length) cards.push(...allCards);
     if (!cards.length) {
       restore();
       return;

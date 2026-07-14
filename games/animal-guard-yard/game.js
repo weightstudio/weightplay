@@ -24,6 +24,19 @@
     en: {
       gameTitle: "Animal Guard Yard",
       language: "Language",
+      back: "Back",
+      backToLobby: "Back to lobby",
+      walletAria: "Animal Guard Yard wallet",
+      beastGuideAria: "Beast guide",
+      stageListAria: "Stage list",
+      animalUpgradesAria: "Animal upgrades",
+      animalShopAria: "Animal shop",
+      menuAria: "Animal Guard Yard menu",
+      gameScreenAria: "Animal Guard Yard fixed game screen",
+      sunEnergyAria: "Sun energy",
+      homeHeartsAria: "Home hearts",
+      animalGuardsAria: "Animal guards",
+      defenseLanesAria: "Animal defense lanes",
       chooseStage: "Choose Stage",
       menuHint: "Place animal guards and stop the wild beasts.",
       stages: "Stages",
@@ -136,6 +149,19 @@
     "zh-Hant": {
       gameTitle: "\u52d5\u7269\u5b88\u885b\u5ead\u9662",
       language: "\u8a9e\u8a00",
+      back: "\u8fd4\u56de",
+      backToLobby: "\u8fd4\u56de\u5927\u5ef3",
+      walletAria: "\u52d5\u7269\u5b88\u885b\u5ead\u9662\u9322\u5305",
+      beastGuideAria: "\u91ce\u7378\u5716\u9451",
+      stageListAria: "\u95dc\u5361\u6e05\u55ae",
+      animalUpgradesAria: "\u52d5\u7269\u5347\u7d1a",
+      animalShopAria: "\u52d5\u7269\u5546\u5e97",
+      menuAria: "\u52d5\u7269\u5b88\u885b\u5ead\u9662\u9078\u55ae",
+      gameScreenAria: "\u52d5\u7269\u5b88\u885b\u5ead\u9662\u56fa\u5b9a\u904a\u6232\u756b\u9762",
+      sunEnergyAria: "\u967d\u5149\u80fd\u91cf",
+      homeHeartsAria: "\u5bb6\u5712\u611b\u5fc3",
+      animalGuardsAria: "\u52d5\u7269\u5b88\u885b",
+      defenseLanesAria: "\u52d5\u7269\u9632\u885b\u8def\u7dda",
       chooseStage: "\u9078\u64c7\u95dc\u5361",
       menuHint: "\u653e\u7f6e\u52d5\u7269\u5b88\u885b\uff0c\u64cb\u4f4f\u91ce\u7378\u9032\u653b\u3002",
       stages: "\u95dc\u5361",
@@ -607,6 +633,25 @@
     });
     document.querySelectorAll("[data-ui-aria-label]").forEach((node) => {
       node.setAttribute("aria-label", t(node.dataset.uiAriaLabel));
+    });
+    const ariaLabels = {
+      ".home-link": "backToLobby",
+      "#localeSelect": "language",
+      "#stageBackMainBtn": "back",
+      ".wallet-row": "walletAria",
+      "#beastGuide": "beastGuideAria",
+      "#stageGrid": "stageListAria",
+      "#kennelGrid": "animalUpgradesAria",
+      "#shopGrid": "animalShopAria",
+      "#menuTabs": "menuAria",
+      ".fixed-game-shell": "gameScreenAria",
+      ".resource-pill": "sunEnergyAria",
+      ".base-pill": "homeHeartsAria",
+      "#unitBar": "animalGuardsAria",
+      "#yardBoard": "defenseLanesAria",
+    };
+    Object.entries(ariaLabels).forEach(([selector, key]) => {
+      document.querySelector(selector)?.setAttribute("aria-label", t(key));
     });
     nodes.localeSelect.value = locale;
     renderWallet();
