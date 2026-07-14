@@ -30,9 +30,9 @@
       <header class="stage-header"><button id="stageBackBtn" class="icon-button" type="button" aria-label="Back">&larr;</button><strong data-i18n="chooseRegion">Choose Region</strong><span id="stageGold"></span></header>
       <section class="loadout-preview"><img src="../../assets/animal-gearpack-expedition-rux.webp" alt="Gear Horn Rux" /><div><strong data-i18n="packmaster">Packmaster Rux</strong><span id="loadoutText"></span></div></section>
       <div id="regionRail" class="region-rail" aria-label="Regions">
-        <button class="region-card is-selected" data-region="0" type="button"><img src="../../assets/animal-gearpack-expedition-forest-bg.webp" alt="Gearwood trail" /><strong data-i18n="region1">Gearwood Trail</strong><span data-i18n="region1Meta">5 rooms · Root Guardian</span></button>
-        <button class="region-card" data-region="1" type="button" disabled><span class="locked">🔒</span><strong data-i18n="region2">Moonlit Quarry</strong><span data-i18n="locked">Locked</span></button>
-        <button class="region-card" data-region="2" type="button" disabled><span class="locked">🔒</span><strong data-i18n="region3">Clockwork Hollow</strong><span data-i18n="locked">Locked</span></button>
+        <button class="region-card is-selected" data-region="0" type="button"><img src="../../assets/animal-gearpack-expedition-forest-bg.webp" alt="Gearwood trail" /><strong data-i18n="region1">Gearwood Trail</strong><span data-region-meta data-i18n="region1Meta">5 rooms · Root Guardian</span></button>
+        <button class="region-card" data-region="1" type="button" disabled><span class="locked">🔒</span><strong data-i18n="region2">Moonlit Quarry</strong><span data-region-meta data-i18n="locked">Locked</span></button>
+        <button class="region-card" data-region="2" type="button" disabled><span class="locked">🔒</span><strong data-i18n="region3">Clockwork Hollow</strong><span data-region-meta data-i18n="locked">Locked</span></button>
       </div>
     </div>
     <div class="stage-ad-reserve" aria-hidden="true"></div>
@@ -43,9 +43,9 @@
       <header class="battle-header"><button id="battleBackBtn" class="icon-button" type="button" aria-label="Back to regions">&larr;</button><div class="primary-progress"><span id="roomLabel"></span><strong id="armorLabel"></strong></div><button id="pauseBtn" class="icon-button" type="button" aria-label="Menu">&#9881;</button></header>
       <div class="objective-row"><span id="objectiveText"></span><span id="currencyText"></span></div>
       <section class="encounter-scene">
-        <img id="ruxActor" class="actor rux" src="../../assets/animal-gearpack-expedition-rux.webp" alt="Gear Horn Rux" />
+        <div class="rux-wrap"><div id="playerHpBar" class="hp-bar player-hp-bar" role="meter"><span></span></div><img id="ruxActor" class="actor rux" src="../../assets/animal-gearpack-expedition-rux.webp" alt="Gear Horn Rux" /></div>
         <div class="enemy-wrap"><div id="enemyHpBar" class="hp-bar"><span></span></div><img id="enemyActor" class="actor enemy" alt="Enemy" /></div>
-        <div id="combatFx" class="combat-fx"></div>
+        <div id="combatFx" class="combat-fx enemy-fx"></div><div id="playerCombatFx" class="combat-fx player-fx"></div>
       </section>
       <section class="pack-panel">
         <div class="pack-heading"><strong data-i18n="backpack">Gearpack 5 x 7</strong><span id="statsText"></span></div>
