@@ -342,11 +342,11 @@
   ];
 
   const ENEMY_METADATA = [
-    { id: 0, nameEn: "Shadow Squirrel", nameZht: "影之松鼠", sx: 0, sy: 0 },
-    { id: 1, nameEn: "Shadow Wolf", nameZht: "影之灰狼", sx: 682, sy: 0 },
-    { id: 2, nameEn: "Shadow Boar", nameZht: "影之野豬", sx: 1365, sy: 0 },
-    { id: 3, nameEn: "Shadow Badger", nameZht: "影之獾", sx: 0, sy: 768 },
-    { id: 4, nameEn: "Shadow Golem", nameZht: "影之魔像", sx: 682, sy: 768 }
+    { id: 0, nameEn: "Shadow Squirrel", nameZht: "\u5f71\u4e4b\u677e\u9f20", roleEn: "Quick Strike", roleZht: "\u8fc5\u64ca", sx: 0, sy: 0 },
+    { id: 1, nameEn: "Shadow Wolf", nameZht: "\u5f71\u4e4b\u7070\u72fc", roleEn: "Pack Bite", roleZht: "\u7fa4\u72fc\u54ac\u64ca", sx: 682, sy: 0 },
+    { id: 2, nameEn: "Shadow Boar", nameZht: "\u5f71\u4e4b\u91ce\u8c6c", roleEn: "First Charge", roleZht: "\u9996\u64ca\u885d\u92d2", sx: 1365, sy: 0 },
+    { id: 3, nameEn: "Shadow Badger", nameZht: "\u5f71\u4e4b\u737e", roleEn: "Burrow Guard", roleZht: "\u6398\u5730\u5b88\u8b77", sx: 0, sy: 768 },
+    { id: 4, nameEn: "Shadow Golem", nameZht: "\u5f71\u4e4b\u9b54\u50cf", roleEn: "Stone Ward", roleZht: "\u5ca9\u77f3\u7d50\u754c", sx: 682, sy: 768 }
   ];
 
   // Game UI DOM Nodes
@@ -698,7 +698,7 @@
           status: state.combat.status,
           effects: state.combat.effects.map((fx) => ({ type: fx.type, text: fx.text || "" }))
         };
-        const enemyBackline = enemy(4, 8);
+        const enemyBackline = enemy(1, 8);
         state.combat.playerSquad = [toCombat(createAnimalCard(0)), toCombat(createAnimalCard(1))];
         state.combat.enemySquad = [enemy(0, 12), enemyBackline];
         resolveEnemySlotAction(enemyBackline, 1);
@@ -709,6 +709,38 @@
           activeActor: state.combat.activeActor,
           activeActors: state.combat.activeActors
         };
+      },
+      enemyAbilityPreview: () => {
+        const player = (hp = 12) => ({ id: 99, nameEn: "Test Guard", nameZht: "Test Guard", atk: 2, hp, maxHp: hp, shield: false, shieldHp: 0, level: 1 });
+        const enemy = (id) => {
+          const data = ENEMY_METADATA[id];
+          return { ...data, atk: 2, hp: 8, maxHp: 8, shield: false, shieldHp: 0, level: 1, abilityUsed: false };
+        };
+
+        state.combat.playerSquad = [player()];
+        state.combat.enemySquad = [enemy(1), enemy(1)];
+        const wolfText = resolveEnemySlotAction(state.combat.enemySquad[1], 1);
+        const wolfDamage = 12 - state.combat.playerSquad[0].hp;
+
+        state.combat.playerSquad = [player()];
+        state.combat.enemySquad = [enemy(2)];
+        const boar = state.combat.enemySquad[0];
+        resolveDirectClash(state.combat.playerSquad[0], boar);
+        const firstBoarDamage = 12 - state.combat.playerSquad[0].hp;
+        resolveDirectClash(state.combat.playerSquad[0], boar);
+        const secondBoarDamage = 12 - firstBoarDamage - state.combat.playerSquad[0].hp;
+
+        state.combat.playerSquad = [player()];
+        state.combat.enemySquad = [enemy(0), enemy(3)];
+        const badgerText = resolveEnemySlotAction(state.combat.enemySquad[1], 1);
+        const badgerShield = state.combat.enemySquad[0].shieldHp;
+
+        state.combat.playerSquad = [player()];
+        state.combat.enemySquad = [enemy(0), enemy(4)];
+        const golemText = resolveEnemySlotAction(state.combat.enemySquad[1], 1);
+        const golemShields = state.combat.enemySquad.map((unit) => unit.shieldHp);
+
+        return { wolfText, wolfDamage, firstBoarDamage, secondBoarDamage, badgerText, badgerShield, golemText, golemShields };
       },
       returnToMenu(stage = normalizeSave(save).selectedStage) {
         save = normalizeSave({ ...save, selectedStage: stage });
@@ -2202,6 +2234,8 @@
         id: rand.id,
         nameEn: rand.nameEn,
         nameZht: rand.nameZht,
+        roleEn: rand.roleEn,
+        roleZht: rand.roleZht,
         sx: rand.sx,
         sy: rand.sy,
         atk: stats.atk,
@@ -2209,7 +2243,8 @@
         maxHp: stats.hp,
         shield: false,
         shieldHp: 0,
-        level: stats.level
+        level: stats.level,
+        abilityUsed: false
       });
     }
     return squad;
@@ -2444,8 +2479,9 @@
     const enemyFront = state.combat.enemySquad[0];
     const playerName = playerFront ? (locale === "zh-Hant" ? playerFront.nameZht : playerFront.nameEn) : "-";
     const enemyName = enemyFront ? (locale === "zh-Hant" ? enemyFront.nameZht : enemyFront.nameEn) : "-";
+    const enemyRole = enemyFront ? (locale === "zh-Hant" ? enemyFront.roleZht : enemyFront.roleEn) : "";
     const summary = t("combatSummary", { playerHp, playerMax, enemyHp, enemyMax });
-    const front = t("combatFront", { player: playerName, enemy: enemyName });
+    const front = t("combatFront", { player: playerName, enemy: enemyRole ? `${enemyName} - ${enemyRole}` : enemyName });
     nodes.combatSummary.innerHTML = `<strong>${summary}</strong><span>${front}</span>`;
   }
 
@@ -2619,22 +2655,52 @@
     state.combat.shakeFrames = 10;
     state.combat.shakeTarget = "player";
     markActing("player", 0, "attack");
-    markActing("enemy", 0, "attack");
+    const guardText = triggerEnemyGuardAction(eUnit, 0);
+    markActing("enemy", 0, guardText ? "cast" : "attack");
     const pPoint = combatPoint("player", 0);
     const ePoint = combatPoint("enemy", 0);
-    damageTarget(pUnit, eUnit.atk, pPoint.x, pPoint.y);
+    if (!guardText) damageTarget(pUnit, enemyAttackDamage(eUnit), pPoint.x, pPoint.y);
     damageTarget(eUnit, pUnit.atk, ePoint.x, ePoint.y);
-    combatLog(`${combatUnitName(pUnit)} ${locale === "zh-Hant" ? "\u8207" : "clashes with"} ${combatUnitName(eUnit)}`);
+    combatLog(guardText || enemyAttackText(eUnit, `${combatUnitName(pUnit)} ${locale === "zh-Hant" ? "\u8207" : "clashes with"} ${combatUnitName(eUnit)}`));
+  }
+
+  function triggerEnemyGuardAction(unit, slot) {
+    if (unit.abilityUsed || (unit.id !== 3 && unit.id !== 4)) return "";
+    unit.abilityUsed = true;
+    if (unit.id === 3) {
+      addUnitShield(state.combat.enemySquad[0] || unit, 1, "enemy", 0);
+      return `${combatUnitName(unit)} ${locale === "zh-Hant" ? "\u5b88\u8b77\u524d\u6392" : "guards the front"}`;
+    }
+    state.combat.enemySquad.forEach((ally, index) => addUnitShield(ally, 1, "enemy", index));
+    return `${combatUnitName(unit)} ${locale === "zh-Hant" ? "\u5c55\u958b\u5ca9\u77f3\u7d50\u754c" : "casts Stone Ward"}`;
+  }
+
+  function enemyAttackDamage(unit) {
+    const packBonus = unit.id === 1 && state.combat.enemySquad.some((ally) => ally !== unit && ally.id === 1) ? 1 : 0;
+    const chargeBonus = unit.id === 2 && !unit.abilityUsed ? 1 : 0;
+    unit.lastAttackTrait = packBonus ? "pack" : chargeBonus ? "charge" : "";
+    unit.abilityUsed = true;
+    return unit.atk + packBonus + chargeBonus;
+  }
+
+  function enemyAttackText(unit, fallback) {
+    if (unit.lastAttackTrait === "pack") return `${combatUnitName(unit)} ${locale === "zh-Hant" ? "\u767c\u52d5\u7fa4\u72fc\u54ac\u64ca" : "uses Pack Bite"}`;
+    if (unit.lastAttackTrait === "charge") return `${combatUnitName(unit)} ${locale === "zh-Hant" ? "\u767c\u52d5\u9996\u64ca\u885d\u92d2" : "uses First Charge"}`;
+    return fallback;
   }
 
   function resolveEnemySlotAction(unit, slot) {
-    markActing("enemy", slot, "attack");
+    const isGuardAction = !unit.abilityUsed && (unit.id === 3 || unit.id === 4);
+    markActing("enemy", slot, isGuardAction ? "cast" : "attack");
     const target = state.combat.playerSquad[0];
     if (!target) return "";
+    const guardText = triggerEnemyGuardAction(unit, slot);
+    if (guardText) return guardText;
+
     const targetIndex = Math.max(0, state.combat.playerSquad.indexOf(target));
     const point = combatPoint("player", targetIndex);
-    damageTarget(target, unit.atk, point.x, point.y);
-    return `${combatUnitName(unit)} ${locale === "zh-Hant" ? "\u53cd\u64ca" : "strikes"}`;
+    damageTarget(target, enemyAttackDamage(unit), point.x, point.y);
+    return enemyAttackText(unit, `${combatUnitName(unit)} ${locale === "zh-Hant" ? "\u653b\u64ca\u524d\u6392" : "strikes the front"}`);
   }
 
   function resolveUnitAbility(unit, team, slot) {

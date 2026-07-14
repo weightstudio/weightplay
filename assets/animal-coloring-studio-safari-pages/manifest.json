@@ -1,0 +1,65 @@
+{
+  "canvas": [
+    768,
+    1152
+  ],
+  "displayWidthCssPx": 350,
+  "maskEncoding": "RGB region id; alpha 0 marks outlines, outside pixels, and intentionally non-fillable micro-details",
+  "minimumSourceRegionArea": 1800,
+  "pages": [
+    {
+      "id": "lion",
+      "art": "lion.webp",
+      "source": "lion.png",
+      "mask": "lion-mask.png",
+      "regions": 28,
+      "smallestRegion": 1854,
+      "largestRegion": 131072
+    },
+    {
+      "id": "elephant",
+      "art": "elephant.webp",
+      "source": "elephant.png",
+      "mask": "elephant-mask.png",
+      "regions": 22,
+      "smallestRegion": 1807,
+      "largestRegion": 139612
+    },
+    {
+      "id": "giraffe",
+      "art": "giraffe.webp",
+      "source": "giraffe.png",
+      "mask": "giraffe-mask.png",
+      "regions": 41,
+      "smallestRegion": 1810,
+      "largestRegion": 256086
+    },
+    {
+      "id": "zebra",
+      "art": "zebra.webp",
+      "source": "zebra.png",
+      "mask": "zebra-mask.png",
+      "regions": 35,
+      "smallestRegion": 1839,
+      "largestRegion": 184804
+    },
+    {
+      "id": "hippo",
+      "art": "hippo.webp",
+      "source": "hippo.png",
+      "mask": "hippo-mask.png",
+      "regions": 22,
+      "smallestRegion": 1816,
+      "largestRegion": 216164
+    },
+    {
+      "id": "rhino",
+      "art": "rhino.webp",
+      "source": "rhino.png",
+      "mask": "rhino-mask.png",
+      "regions": 18,
+      "smallestRegion": 2228,
+      "largestRegion": 286838
+    }
+  ]
+}
