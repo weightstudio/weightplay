@@ -6,7 +6,7 @@
   ];
   const names = {
     en:{lion:'Lion',elephant:'Elephant',giraffe:'Giraffe',zebra:'Zebra',hippo:'Hippo',rhino:'Rhino',puppy:'Puppy',kitten:'Kitten',rabbit:'Rabbit',hamster:'Hamster',bird:'Bird',turtle:'Turtle'},
-    'zh-Hant':{lion:'\u7345\u5b50',elephant:'\u5927\u8c61',giraffe:'\u9577\u9838\u9e7f',zebra:'\u6591\u99ac',hippo:'\u6cb3\u99ac',rhino:'\u72a7\u725b',puppy:'\u5c0f\u72d7',kitten:'\u5c0f\u8c93',rabbit:'\u5154\u5b50',hamster:'\u5009\u9f20',bird:'\u5c0f\u9ce5',turtle:'\u70cf\u9f9c'}
+    'zh-Hant':{lion:'\u7345\u5b50',elephant:'\u5927\u8c61',giraffe:'\u9577\u9838\u9e7f',zebra:'\u6591\u99ac',hippo:'\u6cb3\u99ac',rhino:'\u7280\u725b',puppy:'\u5c0f\u72d7',kitten:'\u5c0f\u8c93',rabbit:'\u5154\u5b50',hamster:'\u5009\u9f20',bird:'\u5c0f\u9ce5',turtle:'\u70cf\u9f9c'}
   };
   const copy = {
     en:{title:'Animal Coloring Studio',intro:'Choose an animal, pick colors, and make it yours.',start:'Start Game',guideTitle:'A calm creative studio',guideBody:'Tap a region to fill it or use the brush. Your gallery stays on this device.',choosePage:'Choose a page',all:'All',safari:'Safari',pets:'Pets',stageNote:'Swipe, then tap any page to color it.',objective:'Pick a color, then tap the animal.',fill:'Fill',brush:'Brush',eraser:'Eraser',undo:'Undo',clear:'Clear',finish:'Finish',complete:'Page complete!',next:'Next page',album:'Album',skill:'Color Recognition \u00b7 Focus \u00b7 Hand-Eye Coordination',infoTitle:'Animal Coloring Studio',infoBody:'A no-fail creative coloring game for short, calm play. Progress is stored only in this browser.',backLobby:'Back to WeightPlay',backMain:'Back to main',backAlbum:'Back to album',language:'Language',pages:'Coloring pages',board:'Coloring page',palette:'Colors',pick:'Pick a color first.',colored:'Nice color!',erased:'Area cleared.',empty:'Color at least one area first.',saved:'Saved to your local gallery',clearAsk:'Clear this page?',loading:'Loading studio'},
@@ -63,6 +63,12 @@
   document.querySelectorAll('.tab').forEach(button=>button.onclick=()=>{packFilter=button.dataset.pack;document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===button));renderStages()});
   $('locale').value=lang;$('locale').onchange=()=>{lang=$('locale').value;localStorage.animalColoringStudioLocale=lang;translate();renderStages()};$('start').onclick=()=>{renderStages();setScreen('stage');track('game_start')};$('stageBack').onclick=()=>setScreen('main');$('battleBack').onclick=()=>{renderStages();setScreen('stage')};$('undo').onclick=undo;$('clear').onclick=clearPage;$('finish').onclick=complete;$('resultAlbum').onclick=()=>{renderStages();setScreen('stage')};$('nextPage').onclick=()=>{selectedPage=(selectedPage+1)%pages.length;openPage()};
   setupRail();translate();renderPalette();fitCanvases();window.addEventListener('resize',fitCanvases,{passive:true});window.visualViewport?.addEventListener('resize',fitCanvases,{passive:true});track('game_view');
-  window.__animalColoringStudioTest={pages,getState:()=>({screen:[...document.querySelectorAll('[data-screen]')].find(x=>!x.classList.contains('hidden'))?.dataset.screen,selectedPage,mode,fills:fills.size,strokes:strokes.length,actions:actions.length}),findFillPoint:()=>{if(!maskPixels)return null;for(let y=80;y<1072;y+=4)for(let x=60;x<708;x+=4)if(keyAt(x,y))return{x,y};return null}};
+  window.__animalColoringStudioTest={
+    pages,
+    getState:()=>({screen:[...document.querySelectorAll('[data-screen]')].find(x=>!x.classList.contains('hidden'))?.dataset.screen,selectedPage,pageId:pages[selectedPage]?.id,mode,selectedColor,fills:fills.size,strokes:strokes.length,actions:actions.length}),
+    findFillPoint:()=>{if(!maskPixels)return null;for(let y=80;y<1072;y+=4)for(let x=60;x<708;x+=4)if(keyAt(x,y))return{x,y};return null},
+    getMaskKey:(x,y)=>keyAt(x,y),
+    getFillColor:key=>fills.get(key)||null
+  };
   const done=()=>{$('loadingFill').style.width='100%';$('loadingText').textContent='100%';setTimeout(()=>$('loadingPanel').classList.add('hidden'),100)};$('loadingFill').style.width='70%';$('loadingText').textContent='70%';if(document.readyState==='complete')done();else addEventListener('load',done,{once:true});setTimeout(done,1600);
 })();
