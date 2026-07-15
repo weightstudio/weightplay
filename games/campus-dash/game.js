@@ -209,15 +209,17 @@
       document.documentElement.style.setProperty("--dash-frame-left", "4px");
       document.documentElement.style.setProperty("--dash-frame-top", "4px");
       document.documentElement.style.setProperty("--dash-frame-width", `${Math.max(1, viewportWidth - 8)}px`);
-      document.documentElement.style.setProperty("--dash-frame-height", `${Math.max(1, viewportHeight - 64)}px`);
+      const reserveHeight = window.WeightPlayAudience?.reserveHeight ?? 56;
+      document.documentElement.style.setProperty("--dash-frame-height", `${Math.max(1, viewportHeight - reserveHeight - 8)}px`);
       return;
     }
-    const scale = Math.min(Math.max(1, viewportWidth - 8) / 390, Math.max(1, viewportHeight - 64) / 788);
+    const reserveHeight = window.WeightPlayAudience?.reserveHeight ?? 56;
+    const scale = Math.min(Math.max(1, viewportWidth - 8) / 390, Math.max(1, viewportHeight - reserveHeight - 8) / 788);
     const width = 390 * scale;
     const height = 788 * scale;
     document.documentElement.style.setProperty("--dash-frame-scale", String(scale));
     document.documentElement.style.setProperty("--dash-frame-left", `${(viewportWidth - width) / 2}px`);
-    document.documentElement.style.setProperty("--dash-frame-top", `${(viewportHeight - 56 - height) / 2}px`);
+  document.documentElement.style.setProperty("--dash-frame-top", `${(viewportHeight - reserveHeight - height) / 2}px`);
     document.documentElement.style.setProperty("--dash-frame-width", `${width}px`);
     document.documentElement.style.setProperty("--dash-frame-height", `${height}px`);
   }

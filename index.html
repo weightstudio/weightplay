@@ -9,19 +9,19 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="robots" content="index,follow" />
     <meta name="google-adsense-account" content="ca-pub-5576470284985485" />
-    <meta name="description" content="Play free mobile-friendly animal browser games from WeightStudio, including puzzle games, memory games, runners, and family-friendly arcade games." />
+    <meta name="description" content="Play free mobile-friendly animal browser games from WeightStudio, including strategy, action, puzzle, card, and adventure games." />
     <meta name="copyright" content="Copyright 2026 WeightStudio. All rights reserved." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="WeightPlay - Free Mobile Web Games for Kids and Families" />
-    <meta property="og:description" content="Play free mobile-friendly animal browser games from WeightStudio, including puzzle games, memory games, runners, and family-friendly arcade games." />
+    <meta property="og:title" content="WeightPlay - Free Animal Browser Games" />
+    <meta property="og:description" content="Play free mobile-friendly strategy, action, puzzle, card, and adventure games from WeightStudio." />
     <meta property="og:url" content="https://weightplay.com/" />
     <meta property="og:image" content="https://weightplay.com/assets/animal-guard-yard-poster.png" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="WeightPlay - Free Mobile Web Games for Kids and Families" />
-    <meta name="twitter:description" content="Play free mobile-friendly animal browser games from WeightStudio, including puzzle games, memory games, runners, and family-friendly arcade games." />
+    <meta name="twitter:title" content="WeightPlay - Free Animal Browser Games" />
+    <meta name="twitter:description" content="Play free mobile-friendly strategy, action, puzzle, card, and adventure games from WeightStudio." />
     <meta name="twitter:image" content="https://weightplay.com/assets/animal-guard-yard-poster.png" />
-    <title>WeightPlay - Free Mobile Web Games for Kids and Families</title>
+    <title>WeightPlay - Free Animal Browser Games</title>
     <link rel="canonical" href="https://weightplay.com/" />
     <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png?v=20260702-logo1" />
     <link rel="apple-touch-icon" href="assets/apple-touch-icon.png?v=20260702-logo1" />
@@ -91,11 +91,11 @@
       }
     </script>
   </head>
-  <body class="lobby-page">
+  <body class="lobby-page" data-audience="general">
     <main class="lobby-shell">
       <header class="lobby-hero">
         <div class="lobby-hero-copy">
-          <p id="lobbyKicker" class="lobby-kicker">Kids & Family Games</p>
+          <p id="lobbyKicker" class="lobby-kicker">Browser Game Lobby</p>
           <div class="brand-lockup" aria-label="WeightPlay by WeightStudio">
             <img class="brand-logo" src="assets/weightplay-logo.png?v=20260702-logo1" alt="" />
             <div class="brand-copy">
@@ -131,7 +131,17 @@
 
       <section id="dailyReward" class="daily-reward" aria-label="Daily reward"></section>
 
-      <section class="parent-trust-strip" aria-labelledby="parentTrustTitle">
+      <section class="kids-portal" aria-labelledby="kidsPortalTitle">
+        <img src="assets/animal-bubble-safari-cover.webp" alt="" />
+        <div class="kids-portal-copy">
+          <span data-i18n="kids.portal.kicker">For younger players</span>
+          <h2 id="kidsPortalTitle" data-i18n="kids.portal.title">WeightPlay Kids</h2>
+          <p data-i18n="kids.portal.body">Open a separate ad-free game lobby with 3+, 6+, and 9+ collections.</p>
+          <a href="kids/" data-i18n="kids.portal.action">Enter Kids Games</a>
+        </div>
+      </section>
+
+      <section class="parent-trust-strip general-trust-strip" aria-labelledby="parentTrustTitle">
         <div class="parent-trust-copy">
           <span data-i18n="trust.kicker">Parent Friendly</span>
           <h2 id="parentTrustTitle" data-i18n="trust.title">Built for short, safe skill practice</h2>
@@ -165,15 +175,6 @@
         </label>
         <button id="quickPickBtn" class="quick-pick-btn" type="button" data-i18n="quick_pick.action">Pick for me</button>
       </div>
-
-      <section class="age-filter" aria-label="Age filters">
-        <button class="active" type="button" data-age-filter="all" data-i18n="filter.all_ages">All Ages</button>
-        <button type="button" data-age-filter="3" data-i18n="filter.age_3">3+</button>
-        <button type="button" data-age-filter="6" data-i18n="filter.age_6">6+</button>
-        <button type="button" data-age-filter="9" data-i18n="filter.age_9">9+</button>
-        <button type="button" data-age-filter="13" data-i18n="filter.age_13">13+</button>
-        <button type="button" data-age-filter="family" data-i18n="filter.age_family">Family</button>
-      </section>
 
       <section class="library-tabs" aria-label="Game library tabs">
         <button class="active" type="button" data-library-tab="all" data-i18n="library.all_games">All Games</button>

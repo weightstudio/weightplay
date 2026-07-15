@@ -2,11 +2,13 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="utf-8">
+  <meta name="weightplay-audience" content="kids">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
   <meta name="robots" content="noindex,nofollow">
   <title>動物泡泡探險 | WeightPlay 內部測試</title>
   <link rel="stylesheet" href="../../src/game-page-info.css">
   <link rel="stylesheet" href="../../src/loading-screen.css">
+  <link rel="stylesheet" href="../../src/play-viewport.css?v=20260715-kids-fullscreen1">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -14,7 +16,7 @@
     <div id="canvasSlot" class="canvas-slot">
       <div id="gameCanvas" class="game-canvas">
         <section id="loadingScreen" class="screen loading-screen is-active" aria-labelledby="loadingTitle">
-          <img class="loading-cover" src="../../assets/animal-bubble-safari-cover.webp" alt="" draggable="false">
+          <img id="loadingCover" class="loading-cover" src="../../assets/animal-bubble-safari-cover.webp" alt="" draggable="false">
           <div id="loadingPanel" class="safari-loading" role="status" aria-live="polite">
             <img src="../../assets/animal-bubble-safari-lion-guide.webp" alt="" draggable="false">
             <strong id="loadingTitle" data-i18n="loading">準備探險</strong>
@@ -134,6 +136,7 @@
     </div>
     <div id="adReserve" class="ad-reserve" aria-hidden="true"></div>
   </main>
-  <script src="game.js"></script>
+<script src="../../src/edge-guard.js?v=20260715-kids-fullscreen1"></script>
+<script src="game.js"></script>
 </body>
 </html>

@@ -385,7 +385,7 @@
     if (!document.body.classList.contains("fruit-playing")) return;
     const logicalWidth = 390;
     const logicalHeight = 788;
-    const reserveHeight = 56;
+  const reserveHeight = window.WeightPlayAudience?.reserveHeight ?? 56;
     const viewportWidth = visualViewport?.width || innerWidth;
     const viewportHeight = visualViewport?.height || innerHeight;
     const expandedCanvas = matchMedia("(pointer: coarse)").matches

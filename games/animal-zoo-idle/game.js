@@ -1594,7 +1594,7 @@
     if (!document.body.classList.contains("zoo-playing")) return;
     const logicalWidth = 390;
     const logicalHeight = 788;
-    const reserveHeight = 56;
+  const reserveHeight = window.WeightPlayAudience?.reserveHeight ?? 56;
     const gutter = 8;
     const viewportWidth = window.visualViewport?.width || window.innerWidth;
     const viewportHeight = window.visualViewport?.height || window.innerHeight;

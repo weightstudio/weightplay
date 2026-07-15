@@ -282,6 +282,19 @@
     rewardPermanent: "Permanent growth",
     rewardReviveDesc: "Save 1 revive token. A fallen hero auto-revives in a future fight.",
     reviveTriggered: "{hero} used a revive token and returned to battle.",
+    enemyTraits: "Traits: {traits}",
+    traitWolf: "Pack Fang",
+    traitWolfShort: "Pack",
+    traitWolfDesc: "+1 damage while beside another wolf.",
+    traitRaven: "Weakness Sight",
+    traitRavenShort: "Hunt",
+    traitRavenDesc: "Targets the hero with the lowest health.",
+    traitStag: "Stone Hide",
+    traitStagShort: "Armor",
+    traitStagDesc: "Reduces the first hit each player turn by 1.",
+    wolfPackHit: "Pack Fang: {enemy} dealt +1 damage.",
+    ravenWeakHit: "Weakness Sight: {enemy} hunted the weakest hero.",
+    stagArmorHit: "Stone Hide reduced 1 damage from {hero}.",
   });
 
   Object.assign(text["zh-Hant"], {
@@ -301,6 +314,19 @@
     rewardPermanent: "永久成長",
     rewardReviveDesc: "保存 1 枚復甦代幣，未來戰鬥中英雄倒下會自動復活。",
     reviveTriggered: "{hero} 使用復甦代幣回到戰鬥。",
+    enemyTraits: "敵人特性：{traits}",
+    traitWolf: "狼群利牙",
+    traitWolfShort: "狼群",
+    traitWolfDesc: "與另一隻狼相鄰時，攻擊傷害 +1。",
+    traitRaven: "弱點視線",
+    traitRavenShort: "獵弱",
+    traitRavenDesc: "優先追擊目前生命比例最低的英雄。",
+    traitStag: "石甲",
+    traitStagShort: "石甲",
+    traitStagDesc: "每個玩家回合首次受擊時，傷害減少 1。",
+    wolfPackHit: "狼群利牙：{enemy} 額外造成 1 點傷害。",
+    ravenWeakHit: "弱點視線：{enemy} 追擊生命最低的英雄。",
+    stagArmorHit: "石甲使 {hero} 的傷害減少 1。",
   });
 
   // Keep the production Traditional Chinese dictionary separate from legacy
@@ -335,9 +361,9 @@
   ];
 
   const enemyDefs = [
-    { id: "wolf", name: "wolf", img: "animal-rune-tactics-enemy-wolf.webp", hp: 5, atk: 2 },
-    { id: "raven", name: "raven", img: "animal-rune-tactics-enemy-raven.webp", hp: 4, atk: 2, range: 2 },
-    { id: "stag", name: "stag", img: "animal-rune-tactics-boss-stag.webp", hp: 10, atk: 3 },
+    { id: "wolf", name: "wolf", img: "animal-rune-tactics-enemy-wolf.webp", hp: 5, atk: 2, trait: "traitWolf" },
+    { id: "raven", name: "raven", img: "animal-rune-tactics-enemy-raven.webp", hp: 4, atk: 2, range: 2, trait: "traitRaven" },
+    { id: "stag", name: "stag", img: "animal-rune-tactics-boss-stag.webp", hp: 10, atk: 3, trait: "traitStag" },
   ];
 
   const rewardPool = [
@@ -476,6 +502,9 @@
       btn.disabled = isLocked;
       btn.setAttribute("aria-pressed", String(isActive));
       const enemyNames = mission.enemies.map((id) => t(enemyDefs.find((enemy) => enemy.id === id)?.name || id)).join(" / ");
+      const traitNames = [...new Set(mission.enemies.map((id) => enemyDefs.find((enemy) => enemy.id === id)?.trait).filter(Boolean))]
+        .map((key) => t(key))
+        .join(" / ");
       btn.innerHTML = `
         <span class="mission-card__top">
           <strong>${t("missionCard", { n: mission.id })}</strong>
@@ -483,7 +512,7 @@
         </span>
         <small>${t("missionRewardLabel")}: ${isLocked ? t("locked") : t("missionReward", { xp: mission.xp, runes: mission.runes })}</small>
         <span>${t("missionGoal", { enemies: enemyNames })}</span>
-        <em>${t("missionPlan", { plan: t(mission.tactic) })}</em>`;
+        <em>${t("missionPlan", { plan: t(mission.tactic) })}<b class="mission-card__traits">${t("enemyTraits", { traits: traitNames })}</b></em>`;
       btn.addEventListener("click", () => {
         selectedMission = mission.id;
         startMission(selectedMission);
@@ -675,12 +704,17 @@
 
   function makeEnemies(mission) {
     const missionDef = missionDefs.find((item) => item.id === mission) || missionDefs[0];
+    const formation = [
+      { x: 3, y: 0 },
+      { x: 3, y: 1 },
+      { x: 3, y: 2 },
+      { x: 2, y: 1 },
+    ];
     return missionDef.enemies.map((id, index) => {
       const base = enemyDefs.find((enemy) => enemy.id === id) || enemyDefs[0];
-      const x = index % 2 === 0 ? 3 : 2;
-      const y = Math.min(rows - 1, index);
+      const { x, y } = formation[index] || formation[formation.length - 1];
       const hp = base.hp + mission + Math.floor(mission / 2);
-      return { ...base, x, y, maxHp: hp, hp, atk: base.atk + (mission >= 5 ? 1 : 0), team: "enemy" };
+      return { ...base, x, y, maxHp: hp, hp, atk: base.atk + (mission >= 5 ? 1 : 0), armorReady: base.id === "stag", team: "enemy" };
     });
   }
 
@@ -726,6 +760,13 @@
     hp.className = "hpbar";
     hp.innerHTML = `<span style="width:${Math.max(0, Math.round((unit.hp / unit.maxHp) * 100))}%"></span>`;
     wrap.append(img, hp);
+    if (unit.team === "enemy" && unit.trait) {
+      const trait = document.createElement("span");
+      trait.className = `enemy-trait-badge enemy-trait-badge--${unit.id}${unit.id === "stag" && !unit.armorReady ? " is-spent" : ""}`;
+      trait.textContent = t(`${unit.trait}Short`);
+      trait.title = `${t(unit.trait)}: ${t(`${unit.trait}Desc`)}`;
+      wrap.appendChild(trait);
+    }
     if (unit.team === "hero") {
       const badge = document.createElement("em");
       badge.className = "turn-badge";
@@ -850,11 +891,16 @@
   }
 
   function attack(hero, enemy, isSkill) {
-    const damage = hero.atk + (isSkill ? 2 : 0);
+    let damage = hero.atk + (isSkill ? 2 : 0);
+    const blockedByStoneHide = enemy.id === "stag" && enemy.armorReady;
+    if (blockedByStoneHide) {
+      damage = Math.max(1, damage - 1);
+      enemy.armorReady = false;
+    }
     enemy.hp -= damage;
     markActed(hero);
     playFx(isSkill ? "rune-burst" : "attack-hit", enemy.x, enemy.y);
-    log(isSkill ? "skillUsed" : "attacked", { hero: t(hero.name), enemy: t(enemy.name) });
+    log(blockedByStoneHide ? "stagArmorHit" : isSkill ? "skillUsed" : "attacked", { hero: t(hero.name), enemy: t(enemy.name) });
     if (enemy.hp <= 0) enemy.hp = 0;
     render();
     checkEnd();
@@ -906,14 +952,20 @@
 
   function enemyTurn() {
     livingEnemies().forEach((enemy) => {
-      const target = livingHeroes().sort((a, b) => distance(enemy, a) - distance(enemy, b))[0];
+      const heroes = livingHeroes();
+      const target = enemy.id === "raven"
+        ? heroes.sort((a, b) => (a.hp / a.maxHp) - (b.hp / b.maxHp) || distance(enemy, a) - distance(enemy, b))[0]
+        : heroes.sort((a, b) => distance(enemy, a) - distance(enemy, b))[0];
       if (!target) return;
       const range = enemy.range || 1;
       if (distance(enemy, target) <= range) {
-        const damage = Math.max(1, enemy.atk - (target.guard ? 1 : 0));
+        const packBonus = enemy.id === "wolf" && livingEnemies().some((other) => other !== enemy && other.id === "wolf" && distance(enemy, other) === 1);
+        const damage = Math.max(1, enemy.atk + (packBonus ? 1 : 0) - (target.guard ? 1 : 0));
         target.hp = Math.max(0, target.hp - damage);
         playFx("attack-hit", target.x, target.y);
         tryAutoRevive(target);
+        if (packBonus) log("wolfPackHit", { enemy: t(enemy.name) });
+        if (enemy.id === "raven") log("ravenWeakHit", { enemy: t(enemy.name) });
       } else {
         const dx = Math.sign(target.x - enemy.x);
         const dy = Math.sign(target.y - enemy.y);
@@ -928,6 +980,9 @@
     livingHeroes().forEach((h) => {
       h.guard = false;
       h.energy = Math.min(3, h.energy + 1);
+    });
+    livingEnemies().forEach((enemy) => {
+      if (enemy.id === "stag") enemy.armorReady = true;
     });
     state.turn += 1;
     state.acted = new Set();
@@ -1076,6 +1131,35 @@
       },
       readWallet() {
         return wallet();
+      },
+      readBattleState() {
+        if (!state) return null;
+        return {
+          turn: state.turn,
+          phase: state.phase,
+          heroes: state.heroes.map(({ id, hp, maxHp, x, y }) => ({ id, hp, maxHp, x, y })),
+          enemies: state.enemies.map(({ id, hp, maxHp, x, y, armorReady }) => ({ id, hp, maxHp, x, y, armorReady })),
+        };
+      },
+      setUnitState(team, index, patch) {
+        const unit = state?.[team]?.[index];
+        if (!unit || !patch || typeof patch !== "object") return false;
+        Object.assign(unit, patch);
+        render();
+        return true;
+      },
+      runEnemyTurn() {
+        if (!state) return false;
+        state.phase = "enemy";
+        enemyTurn();
+        return true;
+      },
+      attackEnemy(index = 0) {
+        const hero = selectedHero();
+        const enemy = state?.enemies?.[index];
+        if (!hero || !enemy || enemy.hp <= 0) return false;
+        attack(hero, enemy, false);
+        return true;
       },
     };
   }

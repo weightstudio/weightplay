@@ -458,16 +458,18 @@
       document.documentElement.style.setProperty("--memory-frame-left", "4px");
       document.documentElement.style.setProperty("--memory-frame-top", "4px");
       document.documentElement.style.setProperty("--memory-frame-width", `${Math.max(1, viewportWidth - 8)}px`);
-      document.documentElement.style.setProperty("--memory-frame-height", `${Math.max(1, viewportHeight - 64)}px`);
+      const reserveHeight = window.WeightPlayAudience?.reserveHeight ?? 56;
+      document.documentElement.style.setProperty("--memory-frame-height", `${Math.max(1, viewportHeight - reserveHeight - 8)}px`);
       return;
     }
     const availableWidth = Math.max(1, viewportWidth - 8);
-    const availableHeight = Math.max(1, viewportHeight - 56 - 8);
+  const reserveHeight = window.WeightPlayAudience?.reserveHeight ?? 56;
+  const availableHeight = Math.max(1, viewportHeight - reserveHeight - 8);
     const scale = Math.min(availableWidth / 390, availableHeight / 788);
     const frameWidth = 390 * scale;
     const frameHeight = 788 * scale;
     const frameLeft = (viewportWidth - frameWidth) / 2;
-    const frameTop = (viewportHeight - 56 - frameHeight) / 2;
+  const frameTop = (viewportHeight - reserveHeight - frameHeight) / 2;
     document.documentElement.style.setProperty("--memory-frame-scale", String(scale));
     document.documentElement.style.setProperty("--memory-frame-left", `${frameLeft}px`);
     document.documentElement.style.setProperty("--memory-frame-top", `${frameTop}px`);

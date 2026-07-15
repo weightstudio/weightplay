@@ -1,4 +1,16 @@
 const lobby = window.WONDER_LOBBY;
+const audienceMode = document.body?.dataset.audience === "kids" ? "kids" : "general";
+const generalGameIds = new Set(lobby.audiences?.generalGameIds || []);
+const isKidsLobby = audienceMode === "kids";
+const catalogGames = lobby.games.filter((game) => isKidsLobby ? !generalGameIds.has(game.id) : generalGameIds.has(game.id));
+const showAgeLabels = isKidsLobby;
+const modeHeroGameIds = isKidsLobby
+  ? ["animal-guard-yard", "animal-zoo-idle", "bubble-bakery", "fruit-merge", "snack-blocks"]
+  : ["animal-hero-trials", "animal-relic-hunters", "beast-deck", "animal-rune-tactics", "animal-orb-fortress"];
+const modeFeaturedGameId = isKidsLobby ? "animal-guard-yard" : "animal-hero-trials";
+lobby.games = catalogGames;
+lobby.heroGameIds = modeHeroGameIds;
+lobby.featuredGameId = modeFeaturedGameId;
 const filterButtons = document.querySelectorAll("[data-age-filter]");
 const topicButtons = document.querySelectorAll("[data-topic-filter]");
 const skillButtons = document.querySelectorAll("[data-skill-filter]");
@@ -673,7 +685,7 @@ function openGame(game, title, ageLabel) {
     locale: i18n.locale(),
     from_library: activeLibrary,
   });
-  window.location.href = game.href;
+  window.location.href = new URL(game.href, document.baseURI).href;
 }
 
 function quickPickCandidates() {
@@ -782,7 +794,7 @@ function createGameCard(game) {
   const art =
     game.art.kind === "image"
       ? `<div class="game-card-art image-art"><img class="game-card-bg-blur" src="${game.art.background}" alt="" /><img class="game-card-fg" src="${game.art.background}" alt="" />${showHero ? `<img class="game-card-hero" src="${game.art.hero}" alt="" />` : ""}${comingSoonBadge}</div>`
-      : `<div class="game-card-art ${game.art.className}"><span>${ageLabel}</span>${comingSoonBadge}</div>`;
+      : `<div class="game-card-art ${game.art.className}">${showAgeLabels ? `<span>${ageLabel}</span>` : ""}${comingSoonBadge}</div>`;
   const favoriteAction = i18n.t(favorite ? "action.remove_favorite" : "action.add_favorite");
   const favoriteLabel = i18n.t(favorite ? "action.remove_favorite_title" : "action.add_favorite_title", { title });
   const primaryAction = isPlayable ? i18n.t(recent ? "action.continue" : "action.play") : i18n.t("action.coming_soon");
@@ -800,7 +812,7 @@ function createGameCard(game) {
     </button>
     <div class="game-card-body">
       <div class="game-card-topline">
-        <span class="age-pill">${ageLabel}</span>
+        ${showAgeLabels ? `<span class="age-pill">${ageLabel}</span>` : ""}
         <span class="game-card-badges">
           ${updatedBadge}
           ${popularBadge}
@@ -835,7 +847,7 @@ function createGameCard(game) {
 function renderLobby() {
   applyStaticTranslations();
   platformTitle.textContent = lobby.platform.name;
-  platformSubtitle.textContent = text(lobby.platform.subtitle);
+  platformSubtitle.textContent = i18n.t(isKidsLobby ? "kids.site.subtitle" : "general.site.subtitle");
   renderWallet();
 
   const totalGameCount = lobby.games.length;
@@ -889,7 +901,7 @@ function renderContinuePlaying() {
     card.innerHTML = `
       <img src="${game.art?.background || primaryArt(game)}" alt="" />
       <div class="continue-playing-copy">
-        <span>${ageLabel}</span>
+        ${showAgeLabels ? `<span>${ageLabel}</span>` : ""}
         <strong>${title}</strong>
         <small>${type}</small>
         <b>${i18n.t("action.continue")}</b>
@@ -1036,7 +1048,7 @@ function renderHeroGames() {
         </div>
         <div class="hero-game-copy">
           <strong>${title}</strong>
-          <small>${type} / ${ageLabel}</small>
+          <small>${showAgeLabels ? `${type} / ${ageLabel}` : type}</small>
           <em>${playCountText(game)}</em>
         </div>
       `;
@@ -1071,7 +1083,7 @@ function renderMobilePicks() {
       </div>
       <div class="mobile-pick-copy">
         <strong>${title}</strong>
-        <small>${type} / ${ageLabel}</small>
+        <small>${showAgeLabels ? `${type} / ${ageLabel}` : type}</small>
         <em>${i18n.t("mobile_picks.note")}</em>
         ${skillBadges ? `<div class="mobile-pick-skills" aria-label="${i18n.t("aria.skills_trained")}">${skillBadges}</div>` : ""}
       </div>
@@ -1105,7 +1117,7 @@ function renderUpcomingGames() {
       </div>
       <div class="upcoming-game-copy">
         <strong>${title}</strong>
-        <small>${type} / ${ageLabel}</small>
+        <small>${showAgeLabels ? `${type} / ${ageLabel}` : type}</small>
         ${gameStateCard(game, false)}
         <em>${description}</em>
       </div>
@@ -1171,7 +1183,7 @@ function renderRecommendations() {
     card.innerHTML = `
       <img src="${game.art?.background || primaryArt(game)}" alt="" />
       <div class="recommendation-copy">
-        <span class="recommendation-labels"><span class="recommendation-age">${ageLabel}</span>${updatedBadge}</span>
+        <span class="recommendation-labels">${showAgeLabels ? `<span class="recommendation-age">${ageLabel}</span>` : ""}${updatedBadge}</span>
         <strong>${title}</strong>
         <small>${type}</small>
         <em>${note}</em>
@@ -1212,7 +1224,7 @@ function renderFreshUpdates() {
       </div>
       <div class="fresh-update-copy">
         <strong>${title}</strong>
-        <small>${type} / ${ageLabel}</small>
+        <small>${showAgeLabels ? `${type} / ${ageLabel}` : type}</small>
         <em>${description}</em>
         ${skillBadges ? `<div class="fresh-update-skills" aria-label="${i18n.t("aria.skills_trained")}">${skillBadges}</div>` : ""}
       </div>
@@ -1442,8 +1454,8 @@ function applyFilter({ historyMode = "replace" } = {}) {
 }
 
 function applyStaticTranslations() {
-  document.title = i18n.t("site.title");
-  lobbyKicker.textContent = i18n.t("site.kicker");
+  document.title = i18n.t(isKidsLobby ? "kids.site.title" : "general.site.title");
+  lobbyKicker.textContent = i18n.t(isKidsLobby ? "kids.site.kicker" : "general.site.kicker");
   featuredLabel.textContent = i18n.t("site.featured");
   languageLabel.textContent = i18n.t("language.label");
   heroRankLabel.textContent = i18n.t("section.hero_rank");
@@ -1458,7 +1470,7 @@ function applyStaticTranslations() {
   if (recommendationReason) recommendationReason.textContent = i18n.t("recommend.start_here");
   if (freshUpdatesTitle) freshUpdatesTitle.textContent = i18n.t("fresh_updates.title");
   if (freshUpdatesReason) freshUpdatesReason.textContent = i18n.t("fresh_updates.reason");
-  if (challengeSpotlightTitle) challengeSpotlightTitle.textContent = i18n.t("challenge_spotlight.title");
+  if (challengeSpotlightTitle) challengeSpotlightTitle.textContent = i18n.t(isKidsLobby ? "kids.challenge.title" : "general.challenge.title");
   if (challengeSpotlightReason) challengeSpotlightReason.textContent = i18n.t("challenge_spotlight.reason");
   if (skillPathsTitle) skillPathsTitle.textContent = i18n.t("skill_path.title");
   if (skillPathsReason) skillPathsReason.textContent = i18n.t("skill_path.reason");
@@ -1515,7 +1527,7 @@ function hiddenTrialStorageKey(game) {
 }
 
 function hiddenTrialUrl(game, trialPath) {
-  const gameUrl = new URL(game.href || "", window.location.href);
+  const gameUrl = new URL(game.href || "", document.baseURI);
   return new URL(trialPath, gameUrl).href;
 }
 

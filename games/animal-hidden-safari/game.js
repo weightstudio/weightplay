@@ -405,16 +405,18 @@
       root.setProperty("--safari-frame-left", "4px");
       root.setProperty("--safari-frame-top", "4px");
       root.setProperty("--safari-frame-width", `${Math.max(1, viewportWidth - 8)}px`);
-      root.setProperty("--safari-frame-height", `${Math.max(1, viewportHeight - 64)}px`);
+      const reserveHeight = window.WeightPlayAudience?.reserveHeight ?? 56;
+      root.setProperty("--safari-frame-height", `${Math.max(1, viewportHeight - reserveHeight - 8)}px`);
       return;
     }
     const logicalWidth = 390;
     const logicalHeight = logicalWidth * 16 / 9;
-    const scale = Math.min((viewportWidth - 8) / logicalWidth, (viewportHeight - 64) / logicalHeight);
+    const reserveHeight = window.WeightPlayAudience?.reserveHeight ?? 56;
+    const scale = Math.min((viewportWidth - 8) / logicalWidth, (viewportHeight - reserveHeight - 8) / logicalHeight);
     const frameWidth = logicalWidth * scale;
     const frameHeight = logicalHeight * scale;
     root.setProperty("--safari-frame-left", `${(viewportWidth - frameWidth) / 2}px`);
-    root.setProperty("--safari-frame-top", `${(viewportHeight - 56 - frameHeight) / 2}px`);
+  root.setProperty("--safari-frame-top", `${(viewportHeight - reserveHeight - frameHeight) / 2}px`);
     root.setProperty("--safari-frame-width", `${frameWidth}px`);
     root.setProperty("--safari-frame-height", `${frameHeight}px`);
   }

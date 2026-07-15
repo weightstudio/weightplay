@@ -584,7 +584,8 @@ function updateBattleScale() {
   document.body.classList.toggle("rescue-expanded-canvas", isPhoneBattle);
   if (isPhoneBattle) {
     const width = Math.max(1, viewportWidth - 8);
-    const contentHeight = Math.max(1, viewportHeight - 64);
+    const reserveHeight = window.WeightPlayAudience?.reserveHeight ?? 56;
+    const contentHeight = Math.max(1, viewportHeight - reserveHeight - 8);
     document.documentElement.style.setProperty("--rescue-battle-scale", "1");
     document.documentElement.style.setProperty("--rescue-battle-width", `${width}px`);
     document.documentElement.style.setProperty("--rescue-battle-height", `${contentHeight}px`);
@@ -593,10 +594,11 @@ function updateBattleScale() {
     document.documentElement.style.setProperty("--rescue-battle-top", "4px");
     return;
   }
-  const scale = Math.max(0.1, Math.min((viewportWidth - 8) / 390, (viewportHeight - 64) / 788));
+  const reserveHeight = window.WeightPlayAudience?.reserveHeight ?? 56;
+  const scale = Math.max(0.1, Math.min((viewportWidth - 8) / 390, (viewportHeight - reserveHeight - 8) / 788));
   const width = 390 * scale;
   const contentHeight = 788 * scale;
-  const totalHeight = contentHeight + 56;
+  const totalHeight = contentHeight + reserveHeight;
   document.documentElement.style.setProperty("--rescue-battle-scale", String(scale));
   document.documentElement.style.setProperty("--rescue-battle-width", `${width}px`);
   document.documentElement.style.setProperty("--rescue-battle-height", `${totalHeight}px`);

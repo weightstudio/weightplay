@@ -1,4 +1,40 @@
 (function () {
+  const audience = document.querySelector('meta[name="weightplay-audience"]')?.content === "kids" ? "kids" : "general";
+  const isKidsAudience = audience === "kids";
+  window.WeightPlayAudience = Object.freeze({
+    mode: audience,
+    isKids: isKidsAudience,
+    reserveHeight: isKidsAudience ? 0 : 56,
+  });
+
+  if (isKidsAudience) {
+    const removeAdvertisingGeometry = () => {
+      document.querySelectorAll([
+        "#stageAdReserve",
+        "#battleAdReserve",
+        "#adReserve",
+        ".stage-ad-reserve",
+        ".battle-ad-reserve",
+        ".result-ad-reserve",
+        ".physical-reserve",
+        ".ad-reserve",
+        "[data-ad-reserve]"
+      ].join(",")).forEach((node) => node.remove());
+    };
+    if (document.readyState === "complete") removeAdvertisingGeometry();
+    else window.addEventListener("load", removeAdvertisingGeometry, { once: true });
+  }
+  if (isKidsAudience) {
+    document.documentElement.classList.add("wp-kids-audience");
+    document.documentElement.dataset.audience = "kids";
+    const applyKidsBody = () => {
+      document.body?.classList.add("wp-kids-audience");
+      if (document.body) document.body.dataset.audience = "kids";
+    };
+    applyKidsBody();
+    document.addEventListener("DOMContentLoaded", applyKidsBody, { once: true });
+  }
+
   const edgeSize = 44;
   const minSwipe = 8;
   const mobileGameMaxWidth = 820;

@@ -590,15 +590,17 @@
     if (isPhoneBattle) {
       document.documentElement.style.setProperty("--vine-battle-scale", "1");
       document.documentElement.style.setProperty("--vine-battle-width", `${Math.max(1, viewportWidth - 8)}px`);
-      document.documentElement.style.setProperty("--vine-battle-content-height", `${Math.max(1, viewportHeight - 64)}px`);
+      const reserveHeight = window.WeightPlayAudience?.reserveHeight ?? 56;
+      document.documentElement.style.setProperty("--vine-battle-content-height", `${Math.max(1, viewportHeight - reserveHeight - 8)}px`);
       document.documentElement.style.setProperty("--vine-battle-left", "4px");
       document.documentElement.style.setProperty("--vine-battle-top", "4px");
       return;
     }
-    const scale = Math.max(0.1, Math.min((viewportWidth - 8) / 390, (viewportHeight - 64) / 788));
+    const reserveHeight = window.WeightPlayAudience?.reserveHeight ?? 56;
+    const scale = Math.max(0.1, Math.min((viewportWidth - 8) / 390, (viewportHeight - reserveHeight - 8) / 788));
     const width = 390 * scale;
     const contentHeight = 788 * scale;
-    const totalHeight = contentHeight + 56;
+    const totalHeight = contentHeight + reserveHeight;
     document.documentElement.style.setProperty("--vine-battle-scale", String(scale));
     document.documentElement.style.setProperty("--vine-battle-width", `${width}px`);
     document.documentElement.style.setProperty("--vine-battle-content-height", `${contentHeight}px`);

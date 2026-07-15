@@ -760,7 +760,8 @@
     shell?.classList.remove("weightplay-active-viewport");
     if (isPhoneBattle) {
       const width = Math.max(1, viewportWidth - 8);
-      const height = Math.max(1, viewportHeight - 64);
+      const reserveHeight = window.WeightPlayAudience?.reserveHeight ?? 56;
+      const height = Math.max(1, viewportHeight - reserveHeight - 8);
       document.documentElement.style.setProperty("--snack-frame-scale", "1");
       document.documentElement.style.setProperty("--snack-frame-left", "4px");
       document.documentElement.style.setProperty("--snack-frame-top", "4px");
@@ -777,18 +778,19 @@
       shell?.style.setProperty("transform-origin", "top left", "important");
       return;
     }
-    const scale = Math.min(Math.max(1, viewportWidth - 8) / 390, Math.max(1, viewportHeight - 64) / 788);
+    const reserveHeight = window.WeightPlayAudience?.reserveHeight ?? 56;
+    const scale = Math.min(Math.max(1, viewportWidth - 8) / 390, Math.max(1, viewportHeight - reserveHeight - 8) / 788);
     const width = 390 * scale;
     const height = 788 * scale;
     document.documentElement.style.setProperty("--snack-frame-scale", String(scale));
     document.documentElement.style.setProperty("--snack-frame-left", `${(viewportWidth - width) / 2}px`);
-    document.documentElement.style.setProperty("--snack-frame-top", `${(viewportHeight - 56 - height) / 2}px`);
+  document.documentElement.style.setProperty("--snack-frame-top", `${(viewportHeight - reserveHeight - height) / 2}px`);
     document.documentElement.style.setProperty("--snack-frame-width", `${width}px`);
     document.documentElement.style.setProperty("--snack-frame-height", `${height}px`);
     shell?.style.setProperty("position", "fixed", "important");
     shell?.style.setProperty("inset", "auto", "important");
     shell?.style.setProperty("left", `${(viewportWidth - width) / 2}px`, "important");
-    shell?.style.setProperty("top", `${(viewportHeight - 56 - height) / 2}px`, "important");
+  shell?.style.setProperty("top", `${(viewportHeight - reserveHeight - height) / 2}px`, "important");
     shell?.style.setProperty("width", "390px", "important");
     shell?.style.setProperty("height", "788px", "important");
     shell?.style.setProperty("min-height", "788px", "important");

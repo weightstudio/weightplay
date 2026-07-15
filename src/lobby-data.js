@@ -14,6 +14,14 @@ window.WONDER_LOBBY = {
   },
   featuredGameId: "animal-guard-yard",
   heroGameIds: ["animal-guard-yard", "animal-zoo-idle", "bubble-bakery"],
+  audiences: {
+    generalGameIds: [
+      "animal-crystal-survivor", "beast-deck", "animal-relic-hunters", "animal-rune-tactics",
+      "animal-orb-fortress", "animal-auto-squad", "beast-tactician", "shadow-wolf",
+      "animal-skyport-dispatch", "animal-abyss-diver", "animal-reef-fisher", "animal-hero-trials",
+      "animal-gearpack-expedition", "animal-moonlight-heist",
+    ],
+  },
   games: [
     {
       id: "wonder-crash",
@@ -186,7 +194,7 @@ window.WONDER_LOBBY = {
       type: { en: "Relaxing Match", "zh-Hant": "放鬆配對" },
       categories: ["Animal Games", "Puzzle", "Family"],
       skills: ["Memory", "Focus", "Problem Solving"],
-      ages: ["family"],
+      ages: ["6", "family"],
       ageLabel: { en: "Family", "zh-Hant": "親子" },
       description: {
         en: "A large-print, no-timer pet garden matching game made for calm daily play.",

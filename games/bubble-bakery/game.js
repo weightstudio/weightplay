@@ -504,14 +504,15 @@
       const root = document.documentElement.style;
       root.setProperty("--bakery-frame-scale", "1");
       root.setProperty("--bakery-frame-width", `${Math.max(1, viewportWidth - 8)}px`);
-      root.setProperty("--bakery-frame-height", `${Math.max(1, viewportHeight - 64)}px`);
+      const reserveHeight = window.WeightPlayAudience?.reserveHeight ?? 56;
+      root.setProperty("--bakery-frame-height", `${Math.max(1, viewportHeight - reserveHeight - 8)}px`);
       root.setProperty("--bakery-frame-left", "4px");
       root.setProperty("--bakery-frame-top", "4px");
       return;
     }
     const logicalWidth = 390;
     const logicalHeight = 788;
-    const reserveHeight = 56;
+  const reserveHeight = window.WeightPlayAudience?.reserveHeight ?? 56;
     const scale = Math.max(0.1, Math.min((viewportWidth - 8) / logicalWidth, (viewportHeight - reserveHeight - 8) / logicalHeight));
     const width = logicalWidth * scale;
     const contentHeight = logicalHeight * scale;

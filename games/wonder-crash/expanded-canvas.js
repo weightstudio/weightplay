@@ -3,7 +3,7 @@
   const MENU_LOGICAL_HEIGHT = MENU_LOGICAL_WIDTH * 16 / 9;
   const BATTLE_LOGICAL_WIDTH = 390;
   const BATTLE_LOGICAL_HEIGHT = 788;
-  const AD_RESERVE_HEIGHT = 56;
+  const AD_RESERVE_HEIGHT = window.WeightPlayAudience?.reserveHeight ?? 56;
 
   function syncLocalizedAccessibility() {
     const isTraditionalChinese = document.documentElement.lang === "zh-Hant";

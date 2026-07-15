@@ -1,5 +1,5 @@
 (() => {
-  const LOGICAL_W = 390, LOGICAL_H = 788, RESERVE = 56;
+  const LOGICAL_W = 390, LOGICAL_H = 788, RESERVE = window.WeightPlayAudience?.reserveHeight ?? 56;
   const pages = [
     ...['lion','elephant','giraffe','zebra','hippo','rhino'].map(id => ({ id, pack:'safari' })),
     ...['puppy','kitten','rabbit','hamster','bird','turtle'].map(id => ({ id, pack:'pet' }))

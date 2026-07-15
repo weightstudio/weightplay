@@ -114,3 +114,27 @@ canvas.play-area,
     max-width: 100% !important;
   }
 }
+html.wp-kids-audience,
+html.wp-kids-audience body {
+  --wp-ad-reserve-height: 0px;
+}
+
+html.wp-kids-audience .stage-ad-reserve,
+html.wp-kids-audience .battle-ad-reserve,
+html.wp-kids-audience .result-ad-reserve,
+html.wp-kids-audience .ad-reserve,
+html.wp-kids-audience [id*="AdReserve"],
+html.wp-kids-audience [class*="ad-reserve"] {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  max-height: 0 !important;
+  flex: 0 0 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  overflow: hidden !important;
+  pointer-events: none !important;
+}

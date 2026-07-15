@@ -201,7 +201,7 @@
     if (!document.body.classList.contains("zoo-helper-playing")) return;
     const viewport = window.visualViewport;
     const width = Math.round(Math.min(viewport?.width || window.innerWidth, window.innerWidth));
-    const height = Math.max(0, Math.round(Math.min(viewport?.height || window.innerHeight, window.innerHeight)) - 56);
+  const height = Math.max(0, Math.round(Math.min(viewport?.height || window.innerHeight, window.innerHeight)) - (window.WeightPlayAudience?.reserveHeight ?? 56));
     document.documentElement.classList.remove("wp-mobile-game-mode");
     document.body.classList.remove("wp-mobile-game-mode");
     nodes.gameShell?.classList.remove("weightplay-active-viewport");

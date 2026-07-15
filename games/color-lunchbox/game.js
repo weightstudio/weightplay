@@ -450,13 +450,14 @@
     const viewportHeight = visualViewport?.height || innerHeight;
     const expandedCanvas = document.body.classList.contains("lunch-playing")
       && (matchMedia("(pointer: coarse)").matches || navigator.maxTouchPoints > 0 || viewportWidth <= 600 || viewportHeight <= 430);
-    const scale = expandedCanvas ? 1 : Math.min(Math.max(1, viewportWidth - 8) / 390, Math.max(1, viewportHeight - 64) / 788);
+    const reserveHeight = window.WeightPlayAudience?.reserveHeight ?? 56;
+    const scale = expandedCanvas ? 1 : Math.min(Math.max(1, viewportWidth - 8) / 390, Math.max(1, viewportHeight - reserveHeight - 8) / 788);
     const width = expandedCanvas ? viewportWidth - 8 : 390 * scale;
-    const height = expandedCanvas ? viewportHeight - 64 : 788 * scale;
+    const height = expandedCanvas ? viewportHeight - reserveHeight - 8 : 788 * scale;
     document.body.classList.toggle("lunch-expanded-canvas", expandedCanvas);
     document.documentElement.style.setProperty("--lunch-frame-scale", String(scale));
     document.documentElement.style.setProperty("--lunch-frame-left", `${expandedCanvas ? 4 : (viewportWidth - width) / 2}px`);
-    document.documentElement.style.setProperty("--lunch-frame-top", `${expandedCanvas ? 4 : (viewportHeight - 56 - height) / 2}px`);
+  document.documentElement.style.setProperty("--lunch-frame-top", `${expandedCanvas ? 4 : (viewportHeight - reserveHeight - height) / 2}px`);
     document.documentElement.style.setProperty("--lunch-frame-width", `${width}px`);
     document.documentElement.style.setProperty("--lunch-frame-height", `${height}px`);
   }

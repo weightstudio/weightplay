@@ -1,5 +1,5 @@
 (() => {
-  const LOGICAL_W = 390, LOGICAL_H = 788, RESERVE = 56, saveKey = "weightplay_habitat_mahjong_v1";
+  const LOGICAL_W = 390, LOGICAL_H = 788, RESERVE = window.WeightPlayAudience?.reserveHeight ?? 56, saveKey = "weightplay_habitat_mahjong_v1";
   const $ = (id) => document.getElementById(id);
   const nodes = Object.fromEntries(["mainScreen","stageScreen","battleScreen","resultScreen","loadingScreen","localeSelect","startBtn","stageRail","stagePreview","stageName","stageDescription","stageProgress","board","movesValue","pairsValue","battleStageName","objectiveText","feedback","hintBtn","undoBtn","shuffleBtn","retryBtn","nextBtn","stagesBtn","resultTitle","resultStats","resultBest","resultReport","progressSummary","stageSlot","battleSlot","resultSlot"].map((id) => [id, $(id)]));
   const copy = {

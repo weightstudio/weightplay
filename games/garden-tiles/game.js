@@ -256,7 +256,8 @@
     shell?.classList.remove("weightplay-active-viewport");
     if (isPhoneBattle) {
       const width = Math.max(1, viewportWidth - 8);
-      const contentHeight = Math.max(1, viewportHeight - 64);
+      const reserveHeight = window.WeightPlayAudience?.reserveHeight ?? 56;
+      const contentHeight = Math.max(1, viewportHeight - reserveHeight - 8);
       const root = document.documentElement.style;
       root.setProperty("--garden-frame-scale", "1");
       root.setProperty("--garden-frame-width", `${width}px`);
@@ -277,7 +278,7 @@
     }
     const logicalWidth = 390;
     const logicalHeight = 788;
-    const reserveHeight = 56;
+  const reserveHeight = window.WeightPlayAudience?.reserveHeight ?? 56;
     const scale = Math.max(0.1, Math.min((viewportWidth - 8) / logicalWidth, (viewportHeight - reserveHeight - 8) / logicalHeight));
     const width = logicalWidth * scale;
     const contentHeight = logicalHeight * scale;

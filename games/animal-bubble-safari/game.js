@@ -62,7 +62,7 @@
   ];
 
   const dom = Object.fromEntries([
-    "viewport","gameCanvas","adReserve","loadingScreen","loadingPanel","loadingFill","loadingProgress","mainScreen","stageScreen","battleScreen","resultScreen","guideModal","stageRail","playCanvas",
+    "viewport","gameCanvas","adReserve","loadingScreen","loadingCover","loadingPanel","loadingFill","loadingProgress","mainScreen","stageScreen","battleScreen","resultScreen","guideModal","stageRail","playCanvas",
     "mainProgress","albumCount","starCount","stageSkill","stageGoal","battleStageName","shotsLeft","rescueProgress","scoreValue","battleMessage","battleGoal",
     "currentPreview","nextPreview","resultTitle","resultStars","resultScore","resultShots","resultRescued","rewardStars","rewardCoins","rewardAlbum","skillText","nextStage"
   ].map(id => [id, document.getElementById(id)]));
@@ -111,7 +111,9 @@
     const vv = window.visualViewport;
     const width = vv ? vv.width : window.innerWidth;
     const height = vv ? vv.height : window.innerHeight;
-    const reserve = currentScreen === "stage" || currentScreen === "battle" || currentScreen === "result" ? AD_RESERVE : 0;
+    const reserve = currentScreen === "stage" || currentScreen === "battle" || currentScreen === "result"
+      ? (window.WeightPlayAudience?.reserveHeight ?? AD_RESERVE)
+      : 0;
     const scale = Math.min(width / LOGICAL_WIDTH, Math.max(1, height - reserve) / LOGICAL_HEIGHT);
     dom.gameCanvas.style.setProperty("--scale", String(scale));
     dom.gameCanvas.style.top = reserve === 0 ? "0" : "auto";
@@ -598,6 +600,9 @@
 
   applyLocale();
   fitCanvas();
+  const revealLoadingCover = () => dom.loadingCover.classList.add("is-ready");
+  if (dom.loadingCover.complete && dom.loadingCover.naturalWidth > 0) revealLoadingCover();
+  else dom.loadingCover.addEventListener("load", revealLoadingCover, { once: true });
   preload().then(results => {
     const hasError = results.some(loaded => !loaded);
     if (hasError) {

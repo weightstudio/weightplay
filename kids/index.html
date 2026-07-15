@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>WeightPlay Kids - Free Ad-Free Games for Kids</title>
+    <meta name="description" content="Play ad-free animal browser games selected for ages 3+, 6+, and 9+. No login, pop-ups, or ad breaks." />
+    <meta name="robots" content="index,follow" />
+    <link rel="canonical" href="https://weightplay.com/kids/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="WeightPlay Kids - Ad-Free Kids Games" />
+    <meta property="og:description" content="A calm, ad-free animal game lobby for ages 3+, 6+, and 9+." />
+    <meta property="og:url" content="https://weightplay.com/kids/" />
+    <meta property="og:image" content="https://weightplay.com/assets/animal-bubble-safari-cover.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <base href="../" />
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png" />
+    <link rel="stylesheet" href="src/styles.css?v=20260715-kids-lobby1" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": "WeightPlay Kids",
+        "url": "https://weightplay.com/kids/",
+        "description": "An ad-free collection of animal browser games for ages 3+, 6+, and 9+.",
+        "isPartOf": { "@type": "WebSite", "name": "WeightPlay", "url": "https://weightplay.com/" }
+      }
+    </script>
+  </head>
+  <body class="lobby-page kids-lobby-page" data-audience="kids">
+    <main class="lobby-shell">
+      <header class="lobby-hero kids-lobby-hero">
+        <div class="lobby-hero-copy">
+          <p id="lobbyKicker" class="lobby-kicker">Ad-Free Kids Game Lobby</p>
+          <div class="brand-lockup" aria-label="WeightPlay Kids by WeightStudio">
+            <img class="brand-logo" src="assets/weightplay-logo.png" alt="" />
+            <div class="brand-copy">
+              <h1 id="platformTitle">WeightPlay Kids</h1>
+              <p class="brand-byline">by WeightStudio</p>
+            </div>
+          </div>
+          <p id="platformSubtitle" class="lobby-subtitle">A calm, ad-free collection of animal games for ages 3+, 6+, and 9+.</p>
+        </div>
+        <div class="lobby-mascot" aria-hidden="true">
+          <img class="lobby-mascot-main" src="assets/weightplay-character-rainbow-hop-mimi-clean-cutout.webp" alt="" />
+          <img class="lobby-mascot-side lobby-mascot-fia" src="assets/weightplay-character-spark-paw-fox-cutout.webp" alt="" />
+          <img class="lobby-mascot-side lobby-mascot-nori" src="assets/weightplay-character-drum-belly-panda-safe-face-cutout.webp" alt="" />
+        </div>
+        <label class="language-picker">
+          <span id="languageLabel">Language</span>
+          <select id="localeSelect" aria-label="Language">
+            <option value="en">English</option>
+            <option value="zh-Hant">繁體中文</option>
+          </select>
+        </label>
+        <div id="walletBar" class="lobby-wallet hidden" aria-live="polite"></div>
+        <a id="featuredGame" class="lobby-feature" href="games/animal-guard-yard/">
+          <img src="assets/animal-guard-yard-poster.webp" alt="" />
+          <div><span id="featuredLabel">Featured</span><strong>Animal Guard Yard</strong></div>
+        </a>
+      </header>
+
+      <a class="kids-back-link" href="./" data-i18n="kids.back_general">Back to game lobby</a>
+
+      <section class="kids-promise" aria-labelledby="kidsPromiseTitle">
+        <div>
+          <span data-i18n="kids.promise.kicker">WeightPlay Kids Promise</span>
+          <h2 id="kidsPromiseTitle" data-i18n="kids.promise.title">Play without ads</h2>
+          <p data-i18n="kids.promise.body">Every game in WeightPlay Kids is selected for younger players and opens without display ads, pop-ups, or ad breaks.</p>
+        </div>
+        <ul>
+          <li data-i18n="kids.promise.local">Progress stays on this device</li>
+          <li data-i18n="kids.promise.no_account">No account required</li>
+        </ul>
+      </section>
+
+      <section id="lobbyStats" class="lobby-stats" aria-label="Platform status"></section>
+      <section id="dailyReward" class="daily-reward hidden" aria-label="Daily reward"></section>
+
+      <section class="parent-trust-strip" aria-labelledby="parentTrustTitle">
+        <div class="parent-trust-copy">
+          <span data-i18n="trust.kicker">Parent Friendly</span>
+          <h2 id="parentTrustTitle" data-i18n="trust.title">Built for short, safe skill practice</h2>
+          <p data-i18n="trust.body">WeightPlay games are free to start, do not require login, and use supportive progress messages.</p>
+          <a class="trust-report-link" href="contact.html" data-i18n="trust.report">Report a safety, privacy, or content concern</a>
+        </div>
+        <div class="parent-trust-points" aria-label="Parent trust highlights">
+          <div><strong data-i18n="trust.no_login.title">No login required</strong><small data-i18n="trust.no_login.body">Kids can play without creating an account.</small></div>
+          <div><strong data-i18n="trust.local_progress.title">Local progress</strong><small data-i18n="trust.local_progress.body">Scores and favorites stay on this device.</small></div>
+          <div><strong data-i18n="trust.supportive.title">Supportive reports</strong><small data-i18n="trust.supportive.body">Results focus on effort and improvement.</small></div>
+          <div><strong data-i18n="kids.promise.title">Play without ads</strong><small data-i18n="kids.promise.body">No display ads, pop-ups, or ad breaks.</small></div>
+        </div>
+      </section>
+
+      <div class="lobby-search-row">
+        <label class="lobby-search" for="gameSearch">
+          <span data-i18n="search.label">Search games</span>
+          <input id="gameSearch" type="search" autocomplete="off" data-i18n-placeholder="search.placeholder" placeholder="Search animal, puzzle, memory..." />
+        </label>
+        <button id="quickPickBtn" class="quick-pick-btn" type="button" data-i18n="quick_pick.action">Pick for me</button>
+      </div>
+
+      <section class="age-filter kids-age-filter" aria-label="Age filters">
+        <button class="active" type="button" data-age-filter="all" data-i18n="filter.all_ages">All Ages</button>
+        <button type="button" data-age-filter="3" data-i18n="filter.age_3">3+</button>
+        <button type="button" data-age-filter="6" data-i18n="filter.age_6">6+</button>
+        <button type="button" data-age-filter="9" data-i18n="filter.age_9">9+</button>
+      </section>
+
+      <section class="library-tabs" aria-label="Game library tabs">
+        <button class="active" type="button" data-library-tab="all" data-i18n="library.all_games">All Games</button>
+        <button type="button" data-library-tab="recent" data-i18n="library.recent">Recent</button>
+        <button type="button" data-library-tab="favorites" data-i18n="library.favorites">Favorites</button>
+      </section>
+
+      <details id="advancedFilters" class="advanced-filters">
+        <summary><span data-i18n="filter.more_filters">More filters</span><b id="advancedFilterCount" class="advanced-filter-count" aria-live="polite">0</b></summary>
+        <div class="advanced-filter-groups">
+          <section class="topic-filter" aria-label="Topic filters">
+            <button class="active" type="button" data-topic-filter="all" data-i18n="filter.all_topics">All Topics</button>
+            <button type="button" data-topic-filter="Featured" data-i18n="topic.featured">Featured</button>
+            <button type="button" data-topic-filter="Animal Games" data-i18n="topic.animal">Animal Games</button>
+            <button type="button" data-topic-filter="Puzzle" data-i18n="topic.puzzle">Puzzle</button>
+            <button type="button" data-topic-filter="Arcade" data-i18n="topic.arcade">Arcade</button>
+            <button type="button" data-topic-filter="Education" data-i18n="topic.education">Education</button>
+          </section>
+          <section class="skill-filter" aria-label="Skill filters">
+            <button class="active" type="button" data-skill-filter="all" data-i18n="filter.all_skills">All Skills</button>
+            <button type="button" data-skill-filter="Memory" data-i18n="skill.Memory">Memory</button>
+            <button type="button" data-skill-filter="Logic" data-i18n="skill.Logic">Logic</button>
+            <button type="button" data-skill-filter="Reaction" data-i18n="skill.Reaction">Reaction</button>
+            <button type="button" data-skill-filter="Focus" data-i18n="skill.Focus">Focus</button>
+            <button type="button" data-skill-filter="Problem Solving" data-i18n="skill.Problem Solving">Problem Solving</button>
+            <button type="button" data-skill-filter="Animal Knowledge" data-i18n="skill.Animal Knowledge">Animal Knowledge</button>
+          </section>
+          <section class="availability-filter" aria-label="Game availability filters">
+            <button class="active" type="button" data-availability-filter="all" data-i18n="availability.all">All Status</button>
+            <button type="button" data-availability-filter="playable" data-i18n="availability.playable">Play Now</button>
+            <button type="button" data-availability-filter="preview" data-i18n="availability.preview">Coming Soon</button>
+          </section>
+        </div>
+      </details>
+
+      <div id="filterStatus" class="filter-status" aria-live="polite"></div>
+      <section id="discoverySnapshot" class="discovery-snapshot" aria-label="Game discovery summary"></section>
+      <section id="continuePlayingSection" class="continue-playing-section hidden" aria-label="Continue playing"><div class="section-heading"><span id="continuePlayingReason">Your latest games</span><h2 id="continuePlayingTitle">Continue playing</h2></div><div id="continuePlaying" class="continue-playing"></div></section>
+      <section id="heroGamesSection" class="hero-games-section" aria-label="Popular Games"><div class="section-heading"><span id="heroRankLabel">Top 5</span><h2 id="heroGamesTitle">Popular Games</h2></div><div id="heroGames" class="hero-games"></div></section>
+      <section id="mobilePicksSection" class="mobile-picks-section" aria-label="Mobile friendly games"><div class="section-heading"><span id="mobilePicksReason">Touch friendly</span><h2 id="mobilePicksTitle">Made for phones</h2></div><div id="mobilePicks" class="mobile-picks"></div></section>
+      <section id="upcomingGamesSection" class="upcoming-games-section" aria-label="Coming soon games"><div class="section-heading"><span id="upcomingGamesReason">In production</span><h2 id="upcomingGamesTitle">Coming Soon</h2></div><div id="upcomingGames" class="upcoming-games"></div></section>
+      <section id="characterShowcaseSection" class="character-showcase-section" aria-label="WeightPlay heroes"><div class="section-heading"><span id="characterShowcaseReason">Original IP</span><h2 id="characterShowcaseTitle">WeightPlay Heroes</h2></div><div id="characterShowcase" class="character-showcase"></div></section>
+      <section id="freshUpdatesSection" class="fresh-updates-section" aria-label="Fresh updates"><div class="section-heading"><span id="freshUpdatesReason">Recently improved</span><h2 id="freshUpdatesTitle">Fresh Updates</h2></div><div id="freshUpdates" class="fresh-updates"></div></section>
+      <section id="challengeSpotlightSection" class="challenge-spotlight-section hidden" aria-label="Bigger challenges"><div class="section-heading"><span id="challengeSpotlightReason">Deeper games</span><h2 id="challengeSpotlightTitle">Bigger Challenges</h2></div><div id="challengeSpotlight" class="challenge-spotlight"></div></section>
+      <section id="recommendationsSection" class="recommendations-section" aria-label="Recommended games"><div class="section-heading"><span id="recommendationReason">For you</span><h2 id="recommendationTitle">Recommended next</h2></div><div id="recommendations" class="recommendations"></div></section>
+      <section id="skillPathsSection" class="skill-paths-section" aria-label="Skill practice paths"><div class="section-heading"><span id="skillPathsReason">Pick a skill</span><h2 id="skillPathsTitle">Practice by skill</h2></div><div id="skillPaths" class="skill-paths"></div></section>
+      <section id="gameGrid" class="lobby-grid" aria-label="Kids game list">
+        <noscript>
+          <a href="games/color-lunchbox/">Animal Color Lunchbox</a>
+          <a href="games/bubble-bakery/">Animal Bubble Bakery</a>
+          <a href="games/animal-zoo-idle/">Animal Zoo Idle</a>
+          <a href="games/animal-hidden-safari/">Animal Hidden Safari</a>
+          <a href="games/shape-train/">Animal Shape Train</a>
+        </noscript>
+      </section>
+
+      <footer class="site-footer">
+        <nav aria-label="Site links">
+          <a href="about.html" data-i18n="footer.about">About</a><a href="privacy.html" data-i18n="footer.privacy">Privacy</a><a href="contact.html" data-i18n="footer.contact">Contact</a><a href="terms.html" data-i18n="footer.terms">Terms</a><a href="advertising.html" data-i18n="footer.advertising">Advertising</a>
+        </nav>
+        <p data-i18n="footer.copyright">Copyright 2026 WeightStudio. All rights reserved.</p>
+      </footer>
+    </main>
+    <div id="lobbyToast" class="lobby-toast hidden" role="status" aria-live="polite"></div>
+    <script src="src/site-config.js"></script>
+    <script src="src/version.js"></script>
+    <script src="src/analytics.js"></script>
+    <script src="src/sound.js"></script>
+    <script src="src/edge-guard.js"></script>
+    <script src="src/i18n.js?v=20260715-kids-lobby1"></script>
+    <script src="src/wallet.js"></script>
+    <script src="src/lobby-data.js?v=20260715-audience-split1"></script>
+    <script src="src/lobby.js?v=20260715-audience-split1"></script>
+  </body>
+</html>
