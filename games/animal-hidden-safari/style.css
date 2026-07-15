@@ -615,16 +615,46 @@ body.safari-stage .stage-grid { align-items:center; padding-inline:calc((100% - 
 }
 
 .skill-report {
+  display: grid;
+  gap: 7px;
   border-radius: 18px;
   padding: 12px;
   background: rgba(89, 183, 99, 0.15);
   text-align: left;
 }
 
-.skill-report p {
-  margin: 6px 0 0;
-  line-height: 1.45;
+.skill-report > b {
+  text-align: center;
+}
+
+.skill-report dl {
+  display: grid;
+  gap: 5px;
+  margin: 0;
+}
+
+.skill-report dl div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
+  gap: 8px;
+  align-items: center;
+}
+
+.skill-report dt {
   font-weight: 800;
+}
+
+.skill-report dd {
+  margin: 0;
+  text-align: right;
+}
+
+.skill-report p {
+  margin: 0;
+  padding-top: 6px;
+  border-top: 1px solid rgba(35, 64, 51, 0.22);
+  font-weight: 800;
+  text-align: center;
 }
 
 .result-card button,
@@ -965,8 +995,34 @@ body.safari-playing .result-panel {
 body.safari-playing .result-card {
   width: 100%;
   max-height: 100%;
+  padding: 12px;
+  gap: 7px;
   overflow-x: hidden;
   overflow-y: auto;
+}
+
+body.safari-playing .result-card strong {
+  font-size: 1.25rem;
+}
+
+body.safari-playing .result-celebration {
+  width: 104px;
+  max-height: 72px;
+  margin: -6px auto -3px;
+}
+
+body.safari-playing .stars {
+  font-size: 1.65rem;
+}
+
+body.safari-playing .skill-report {
+  gap: 4px;
+  padding: 8px;
+}
+
+body.safari-playing .result-card button,
+body.safari-playing .result-card a {
+  min-height: 40px;
 }
 
 @media (max-height: 430px) {

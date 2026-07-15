@@ -86,7 +86,7 @@
     mainStart.type = "button";
     mainStart.className = "standard-main-start";
     mainStart.dataset.wpMainStart = "true";
-    mainStart.textContent = "Start Game";
+    mainStart.dataset.ui = "startGame";
     menuCopy.insertBefore(mainStart, menuCopy.querySelector(".prototype-goals"));
     const stagePanel = document.createElement("section");
     stagePanel.id = "stagePanel";
@@ -104,9 +104,9 @@
         <section class="beast-stage-view" data-stage-view="shop"></section>
       </div>
       <nav class="beast-stage-tabs" data-aria="preparation" aria-label="Preparation">
-        <button type="button" class="is-active" data-stage-tab="missions" data-ui="stageTabMissions">Missions</button>
-        <button type="button" data-stage-tab="deck" data-ui="stageTabDeck">Deck</button>
-        <button type="button" data-stage-tab="shop" data-ui="stageTabShop">Upgrades</button>
+        <button type="button" class="is-active" data-stage-tab="missions" data-ui="stageTabMissions" aria-pressed="true">Missions</button>
+        <button type="button" data-stage-tab="deck" data-ui="stageTabDeck" aria-pressed="false">Deck</button>
+        <button type="button" data-stage-tab="shop" data-ui="stageTabShop" aria-pressed="false">Upgrades</button>
       </nav>`;
     const missionView = stagePanel.querySelector('[data-stage-view="missions"]');
     const deckView = stagePanel.querySelector('[data-stage-view="deck"]');
@@ -125,7 +125,9 @@
 
   function selectStageTab(tabName) {
     nodes.stagePanel.querySelectorAll("[data-stage-tab]").forEach((button) => {
-      button.classList.toggle("is-active", button.dataset.stageTab === tabName);
+      const isActive = button.dataset.stageTab === tabName;
+      button.classList.toggle("is-active", isActive);
+      button.setAttribute("aria-pressed", String(isActive));
     });
     nodes.stagePanel.querySelectorAll("[data-stage-view]").forEach((view) => {
       view.classList.toggle("is-active", view.dataset.stageView === tabName);
@@ -167,6 +169,7 @@
       language: "Language",
       menuTitle: "Enter the Mist Forest.",
       menuHint: "Build an animal power deck, read enemy intent, and clear forest missions. Your level, coins, cards, equipment, and unlocked missions are saved on this device.",
+      startGame: "Start Game",
       progressTitle: "Local Progress",
       progressText: "Clear missions to earn XP and Beast Coins. Spend coins on packs, equip cards and gear, then push deeper into the forest.",
       profileLevel: "Level",
@@ -192,6 +195,9 @@
       equipmentTitle: "Equipment",
       equipCard: "Equip",
       unequipCard: "Remove",
+      removeCardLabel: "Remove {card} from Battle Deck, slot {slot} of {count}",
+      allCopiesEquipped: "All copies equipped",
+      deckFull: "Battle Deck full",
       ownedCount: "Owned {count}",
       equippedCount: "Equipped {count}/{max}",
       gearEquipped: "Equipped",
@@ -309,6 +315,7 @@
       language: "語言",
       menuTitle: "進入迷霧森林。",
       menuHint: "建立動物能力牌組、判斷敵人意圖並通關森林任務。等級、金幣、卡牌、裝備與任務進度都會保存在本機。",
+      startGame: "開始遊戲",
       progressTitle: "本地進度",
       progressText: "通關任務可獲得經驗與獸王金幣。用金幣抽卡包、裝備卡牌與道具，再挑戰更深的森林路線。",
       profileLevel: "等級",
@@ -334,6 +341,9 @@
       equipmentTitle: "裝備",
       equipCard: "裝備",
       unequipCard: "移除",
+      removeCardLabel: "從出戰牌組移除 {card}，第 {slot} 張，共 {count} 張",
+      allCopiesEquipped: "持有卡牌皆已裝備",
+      deckFull: "出戰牌組已滿",
       ownedCount: "持有 {count}",
       equippedCount: "已裝備 {count}/{max}",
       gearEquipped: "已裝備",
@@ -737,6 +747,7 @@
         const button = document.createElement("button");
         button.type = "button";
         button.className = `mini-card ${card.type}`;
+        button.setAttribute("aria-label", t("removeCardLabel", { card: cardName(cardId), slot: index + 1, count: profile.equippedCards.length }));
         button.innerHTML = `<img src="${asset(card.image)}" alt=""><span>${cardName(cardId)}</span><small>${t("unequipCard")}</small>`;
         button.addEventListener("click", () => {
           profile.equippedCards.splice(index, 1);
@@ -754,15 +765,23 @@
       const owned = profile.collection[cardId] || 0;
       const equipped = equippedCardCount(cardId);
       const canEquip = canEquipCard(cardId);
+      const cardStatus = canEquip
+        ? t("equipCard")
+        : owned <= equipped && owned > 0
+          ? t("allCopiesEquipped")
+          : owned > 0
+            ? t("deckFull")
+            : t("lockedMission");
       const button = document.createElement("button");
       button.type = "button";
       button.className = `collection-card ${card.type}`;
       button.disabled = !canEquip;
+      button.setAttribute("aria-label", `${cardName(cardId)} · ${t(card.descKey)} · ${t("ownedCount", { count: owned })} · ${t("equippedCount", { count: equipped, max: owned })} · ${cardStatus}`);
       button.innerHTML = `
         <img src="${asset(card.image)}" alt="">
         <strong>${cardName(cardId)}</strong>
         <small>${t("ownedCount", { count: owned })} / ${t("equippedCount", { count: equipped, max: owned })}</small>
-        <span>${canEquip ? t("equipCard") : owned ? t("unequipCard") : t("lockedMission")}</span>
+        <span>${cardStatus}</span>
       `;
       button.addEventListener("click", () => {
         if (!canEquip) return;
@@ -784,14 +803,17 @@
     }
     ownedGearIds.forEach((gearId) => {
       const gear = gearDb[gearId];
+      const isEquipped = profile.equippedGear === gearId;
       const button = document.createElement("button");
       button.type = "button";
-      button.className = `gear-card${profile.equippedGear === gearId ? " equipped" : ""}`;
+      button.className = `gear-card${isEquipped ? " equipped" : ""}`;
+      button.setAttribute("aria-pressed", String(isEquipped));
+      button.setAttribute("aria-label", `${gearName(gearId)} · ${t("gearRank", { rank: gearRank(gearId), maxRank: maxGearRank })} · ${gearBonusText(gearId)} · ${isEquipped ? t("gearEquipped") : t("gearEquip")}`);
       button.innerHTML = `
         <img src="${asset(gear.image)}" alt="">
         <strong>${gearName(gearId)}</strong>
         <small>${t("gearRank", { rank: gearRank(gearId), maxRank: maxGearRank })} · ${gearBonusText(gearId)}</small>
-        <span>${profile.equippedGear === gearId ? t("gearEquipped") : t("gearEquip")}</span>
+        <span>${isEquipped ? t("gearEquipped") : t("gearEquip")}</span>
       `;
       button.addEventListener("click", () => {
         profile.equippedGear = gearId;

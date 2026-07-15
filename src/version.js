@@ -38,6 +38,17 @@
       opacity: 0.58;
       font-size: 10px;
     }
+    body.lobby-page .weightplay-version-badge {
+      position: absolute;
+      z-index: 4;
+      left: 62px;
+      bottom: 18px;
+      display: block;
+      min-width: 0;
+      padding: 3px 7px;
+      opacity: 0.78;
+      font-size: 10px;
+    }
   `;
   document.head.append(style);
 
@@ -45,5 +56,5 @@
   badge.className = "weightplay-version-badge";
   badge.dataset.weightplayVersion = "true";
   badge.textContent = version;
-  document.body.append(badge);
+  (document.querySelector("body.lobby-page .lobby-hero") || document.body).append(badge);
 })();

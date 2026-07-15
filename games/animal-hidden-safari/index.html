@@ -128,10 +128,15 @@
           <strong id="resultTitle">Great find!</strong>
           <div id="starText" class="stars">&#9734;&#9734;&#9734;</div>
           <span id="resultText"></span>
-          <div class="skill-report">
-            <b data-ui="skillReport">Skill Report</b>
-            <p id="skillText"></p>
-          </div>
+          <section class="skill-report" aria-labelledby="skillReportTitle">
+            <b id="skillReportTitle">Skill Report</b>
+            <dl>
+              <div><dt id="focusLabel">Focus</dt><dd id="focusValue"></dd></div>
+              <div><dt id="animalLabel">Animal Knowledge</dt><dd id="animalValue"></dd></div>
+              <div><dt id="solveLabel">Problem Solving</dt><dd id="solveValue"></dd></div>
+            </dl>
+            <p id="progressComparison"></p>
+          </section>
           <button id="nextStageBtn" type="button" data-ui="nextStage">Next Habitat</button>
           <button id="retryBtn" type="button" data-ui="retry">Try Again</button>
           <button id="resultStagesBtn" type="button" data-ui="stages">Habitats</button>

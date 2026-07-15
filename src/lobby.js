@@ -50,6 +50,8 @@ const lobbyKicker = document.querySelector("#lobbyKicker");
 const featuredLabel = document.querySelector("#featuredLabel");
 const languageLabel = document.querySelector("#languageLabel");
 const localeSelect = document.querySelector("#localeSelect");
+const playerLabel = document.querySelector("#playerLabel");
+const playerNameInput = document.querySelector("#playerNameInput");
 const heroRankLabel = document.querySelector("#heroRankLabel");
 const heroGamesTitle = document.querySelector("#heroGamesTitle");
 const mobilePicksTitle = document.querySelector("#mobilePicksTitle");
@@ -73,6 +75,7 @@ const i18n = window.WonderI18n;
 const favoritesKey = "weightplayFavoriteGames";
 const recentGamesKey = "weightplayRecentGames";
 const dailyRewardKey = "weightplayDailyReward";
+const playerNameKey = "weightplayPlayerName";
 const walletBar = document.querySelector("#walletBar");
 const dailyRewardTrack = [5, 6, 8, 10, 12, 15, 25];
 const featuredSkillPaths = ["Memory", "Logic", "Reaction", "Focus", "Problem Solving", "Animal Knowledge"];
@@ -848,6 +851,7 @@ function renderLobby() {
   applyStaticTranslations();
   platformTitle.textContent = isKidsLobby ? "WeightPlay Kids" : lobby.platform.name;
   platformSubtitle.textContent = i18n.t(isKidsLobby ? "kids.site.subtitle" : "general.site.subtitle");
+  renderPlayerName();
   renderWallet();
 
   const totalGameCount = lobby.games.length;
@@ -1021,6 +1025,33 @@ function renderWallet() {
     <span>${i18n.t("wallet.diamonds")}</span>
     <strong><img src="assets/weightplay-diamond.svg" alt="" />${wallet.diamonds}</strong>
   `;
+}
+
+function readPlayerName() {
+  try {
+    return (localStorage.getItem(playerNameKey) || "").trim().slice(0, 18);
+  } catch {
+    return "";
+  }
+}
+
+function renderPlayerName() {
+  if (!playerNameInput || !playerLabel) return;
+  playerLabel.textContent = i18n.t("player.label");
+  playerNameInput.value = readPlayerName() || i18n.t("player.default_name");
+  playerNameInput.setAttribute("aria-label", i18n.t("player.name_label"));
+}
+
+function savePlayerName() {
+  if (!playerNameInput) return;
+  const name = playerNameInput.value.trim().slice(0, 18);
+  try {
+    if (name && name !== i18n.t("player.default_name")) localStorage.setItem(playerNameKey, name);
+    else localStorage.removeItem(playerNameKey);
+  } catch {
+    // A local nickname is optional.
+  }
+  renderPlayerName();
 }
 
 function renderHeroGames() {
@@ -1651,6 +1682,12 @@ localeSelect.addEventListener("change", () => {
 localeSelect.addEventListener("input", () => {
   window.WonderSound?.play("click");
   i18n.setLocale(localeSelect.value);
+});
+
+playerNameInput?.addEventListener("change", savePlayerName);
+playerNameInput?.addEventListener("blur", savePlayerName);
+playerNameInput?.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") playerNameInput.blur();
 });
 
 window.addEventListener("wonder:locale-change", renderLobby);

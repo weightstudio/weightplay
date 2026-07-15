@@ -3904,11 +3904,53 @@ body.general-lobby-page {
 
 .general-lobby-page .lobby-hero-copy {
   position: absolute;
-  top: 54px;
+  top: 82px;
   left: clamp(20px, 4vw, 48px);
   width: min(47%, 500px);
   color: #ffffff;
   text-shadow: 0 3px 12px rgba(4, 13, 12, 0.82);
+}
+
+.general-lobby-page .lobby-player {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 3;
+  display: grid;
+  width: 160px;
+  min-height: 52px;
+  padding: 6px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 7px;
+  background: rgba(18, 34, 31, 0.9);
+  color: #ffffff;
+  box-shadow: 0 5px 0 rgba(5, 15, 13, 0.7);
+}
+
+.general-lobby-page .lobby-player span {
+  color: #f4e9cc;
+  font-size: 10px;
+  font-weight: 900;
+}
+
+.general-lobby-page .lobby-player input {
+  width: 100%;
+  min-width: 0;
+  height: 26px;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  outline: 0;
+  background: transparent;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 900;
+  text-overflow: ellipsis;
+}
+
+.general-lobby-page .lobby-player input:focus {
+  border-bottom-color: #f2bd4e;
 }
 
 .general-lobby-page .lobby-kicker {
@@ -3951,9 +3993,9 @@ body.general-lobby-page {
   top: 14px;
   right: 14px;
   z-index: 2;
-  width: min(150px, 38%);
-  min-height: 52px;
-  padding: 6px 10px;
+  width: 112px;
+  min-height: 44px;
+  padding: 4px 8px;
   border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 7px;
   background: rgba(18, 34, 31, 0.88);
@@ -3966,23 +4008,24 @@ body.general-lobby-page {
 }
 
 .general-lobby-page .language-picker select {
-  min-height: 26px;
+  min-height: 22px;
   padding: 0;
   border: 0;
   background: transparent;
   color: #ffffff;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .general-lobby-page .lobby-wallet {
   position: absolute;
   top: 14px;
-  right: 176px;
+  right: auto;
+  left: 184px;
   z-index: 2;
   width: auto;
-  min-width: 108px;
-  min-height: 52px;
-  padding: 6px 12px;
+  min-width: 82px;
+  min-height: 44px;
+  padding: 4px 8px;
   border: 1px solid rgba(255, 255, 255, 0.34);
   border-radius: 7px;
   background: rgba(18, 34, 31, 0.88);
@@ -3990,11 +4033,17 @@ body.general-lobby-page {
 }
 
 .general-lobby-page .lobby-wallet span {
-  font-size: 10px;
+  font-size: 9px;
 }
 
 .general-lobby-page .lobby-wallet strong {
-  font-size: 18px;
+  gap: 4px;
+  font-size: 15px;
+}
+
+.general-lobby-page .lobby-wallet img {
+  width: 18px;
+  height: 18px;
 }
 
 .general-lobby-page .lobby-feature {
@@ -4378,7 +4427,7 @@ body.general-lobby-page {
 }
 
 .lobby-page .weightplay-version-badge {
-  display: none;
+  display: block;
 }
 
 .general-lobby-page .daily-reward {
@@ -4616,7 +4665,7 @@ body.general-lobby-page {
   }
 
   .general-lobby-page .lobby-hero-copy {
-    top: 78px;
+    top: 76px;
     left: 16px;
     width: 70%;
   }
@@ -4635,14 +4684,17 @@ body.general-lobby-page {
   }
 
   .general-lobby-page .language-picker {
-    width: 142px;
+    width: 112px;
   }
 
   .general-lobby-page .lobby-wallet {
     top: 14px;
-    right: auto;
-    left: 14px;
-    min-width: 92px;
+    left: 162px;
+    min-width: 78px;
+  }
+
+  .general-lobby-page .lobby-player {
+    width: 140px;
   }
 
   .general-lobby-page .lobby-feature {

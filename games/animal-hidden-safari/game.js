@@ -43,7 +43,15 @@
       good: "Nice searching!",
       result: "You found {found}/{total} animals in {time}.",
       skillReport: "Skill Report",
-      skillMessage: "Focus {focus} / Animal Knowledge {animal} / Problem Solving {solve}. Great progress through careful looking.",
+      focus: "Focus",
+      focusValue: "Found {found} · Empty taps {mistakes}",
+      animalKnowledge: "Animal Knowledge",
+      animalValue: "Identified {count} animals",
+      problemSolving: "Problem Solving",
+      solveValue: "Without hints {unaided} · Hints {hints}",
+      firstFinish: "First finish · {time}",
+      newBest: "New best {time} · Previous {previous}",
+      progress: "This time {time} · Best {best}",
       best: "Best {time}",
       noHints: "No hints left",
       found: "Found!",
@@ -93,7 +101,15 @@
       good: "\u5f88\u6703\u627e\u55b2\uff01",
       result: "\u4f60\u5728 {time} \u5167\u627e\u5230 {found}/{total} \u96bb\u52d5\u7269\u3002",
       skillReport: "\u80fd\u529b\u5831\u544a",
-      skillMessage: "\u5c08\u6ce8 {focus} / \u52d5\u7269\u8a8d\u8b58 {animal} / \u89e3\u984c\u80fd\u529b {solve}\u3002\u4f60\u900f\u904e\u4ed4\u7d30\u89c0\u5bdf\u5b8c\u6210\u4e86\u5f88\u68d2\u7684\u9032\u6b65\u3002",
+      focus: "\u5c08\u6ce8",
+      focusValue: "\u627e\u5230 {found} \u96bb \u00b7 \u8aa4\u9ede {mistakes} \u6b21",
+      animalKnowledge: "\u52d5\u7269\u77e5\u8b58",
+      animalValue: "\u8fa8\u8a8d {count} \u96bb\u52d5\u7269",
+      problemSolving: "\u89e3\u984c\u80fd\u529b",
+      solveValue: "\u81ea\u5df1\u627e\u5230 {unaided} \u96bb \u00b7 \u63d0\u793a {hints} \u6b21",
+      firstFinish: "\u7b2c\u4e00\u6b21\u5b8c\u6210 \u00b7 {time}",
+      newBest: "\u65b0\u7684\u6700\u4f73 {time} \u00b7 \u4e4b\u524d {previous}",
+      progress: "\u9019\u6b21 {time} \u00b7 \u6700\u4f73 {best}",
       best: "\u6700\u4f73 {time}",
       noHints: "\u6c92\u6709\u63d0\u793a\u4e86",
       found: "\u627e\u5230\u4e86\uff01",
@@ -180,7 +196,14 @@
     resultTitle: $("resultTitle"),
     starText: $("starText"),
     resultText: $("resultText"),
-    skillText: $("skillText"),
+    skillReportTitle: $("skillReportTitle"),
+    focusLabel: $("focusLabel"),
+    focusValue: $("focusValue"),
+    animalLabel: $("animalLabel"),
+    animalValue: $("animalValue"),
+    solveLabel: $("solveLabel"),
+    solveValue: $("solveValue"),
+    progressComparison: $("progressComparison"),
     nextStageBtn: $("nextStageBtn"),
     retryBtn: $("retryBtn"),
     resultStagesBtn: $("resultStagesBtn"),
@@ -196,6 +219,8 @@
   let found = new Set();
   let hintsLeft = 2;
   let mistakes = 0;
+  let hintedTargets = new Set();
+  let lastResult = null;
   let startTime = 0;
   let timerId = 0;
   let acceptingInput = false;
@@ -374,6 +399,8 @@
     found = new Set();
     hintsLeft = 2;
     mistakes = 0;
+    hintedTargets = new Set();
+    lastResult = null;
     startTime = Date.now();
     acceptingInput = true;
     nodes.resultPanel.classList.add("hidden");
@@ -442,7 +469,7 @@
       nodes.targetsLayer.appendChild(button);
     });
     nodes.scene.onclick = (event) => {
-      if (!acceptingInput || event.target !== nodes.scene) return;
+      if (!acceptingInput || event.target.closest?.(".target")) return;
       mistakes += 1;
       const rect = nodes.scene.getBoundingClientRect();
       showFloatingText(t("tryAgain"), ((event.clientX - rect.left) / rect.width) * 100, ((event.clientY - rect.top) / rect.height) * 100);
@@ -483,6 +510,7 @@
     const next = stages[currentStage].targets.findIndex((_, index) => !found.has(index));
     if (next < 0) return;
     hintsLeft -= 1;
+    hintedTargets.add(next);
     nodes.hintCount.textContent = hintsLeft;
     nodes.hintBtn.disabled = hintsLeft <= 0;
     document.querySelectorAll(".target.hint").forEach((item) => item.classList.remove("hint"));
@@ -533,6 +561,7 @@
     const starCount = mistakes === 0 && hintsLeft === 2 ? 3 : mistakes <= 2 && hintsLeft >= 1 ? 2 : 1;
     const stageNo = currentStage + 1;
     const previous = stars[stageNo] || {};
+    const previousBestTime = previous.bestTime || 0;
     stars[stageNo] = {
       stars: Math.max(previous.stars || 0, starCount),
       bestTime: previous.bestTime ? Math.min(previous.bestTime, seconds) : seconds,
@@ -542,15 +571,10 @@
       unlocked += 1;
       localStorage.setItem(unlockKey, String(unlocked));
     }
-    saveProgress(starCount, seconds);
-    nodes.resultTitle.textContent = starCount >= 3 ? t("perfect") : starCount >= 2 ? t("good") : t("great");
-    nodes.starText.textContent = starIcons(starCount, 3);
-    nodes.resultText.textContent = t("result", { found: total, total, time: formatTime(seconds) });
-    nodes.skillText.textContent = t("skillMessage", {
-      focus: starIcons(starCount, 5),
-      animal: starIcons(3, 5),
-      solve: starIcons(hintsLeft >= 1 ? 3 : 2, 5),
-    });
+    const hintsUsed = 2 - hintsLeft;
+    lastResult = { starCount, seconds, total, previousBestTime, hintsUsed, unaided: total - hintedTargets.size, mistakes };
+    saveProgress(starCount, seconds, hintsUsed);
+    renderResult();
     nodes.nextStageBtn.classList.toggle("hidden", currentStage >= stages.length - 1);
     nodes.resultPanel.classList.remove("hidden");
     document.body.classList.add("safari-result");
@@ -558,7 +582,29 @@
     playSound("success");
   }
 
-  function saveProgress(starCount, seconds) {
+  function renderResult() {
+    if (!lastResult) return;
+    const { starCount, seconds, total, previousBestTime, hintsUsed, unaided, mistakes: emptyTaps } = lastResult;
+    nodes.resultTitle.textContent = starCount >= 3 ? t("perfect") : starCount >= 2 ? t("good") : t("great");
+    nodes.starText.textContent = starIcons(starCount, 3);
+    nodes.resultText.textContent = t("result", { found: total, total, time: formatTime(seconds) });
+    nodes.skillReportTitle.textContent = t("skillReport");
+    nodes.focusLabel.textContent = t("focus");
+    nodes.focusValue.textContent = t("focusValue", { found: total, mistakes: emptyTaps });
+    nodes.animalLabel.textContent = t("animalKnowledge");
+    nodes.animalValue.textContent = t("animalValue", { count: total });
+    nodes.solveLabel.textContent = t("problemSolving");
+    nodes.solveValue.textContent = t("solveValue", { unaided, hints: hintsUsed });
+    nodes.progressComparison.textContent = previousBestTime === 0
+      ? t("firstFinish", { time: formatTime(seconds) })
+      : t(seconds < previousBestTime ? "newBest" : "progress", {
+          time: formatTime(seconds),
+          previous: formatTime(previousBestTime),
+          best: formatTime(Math.min(previousBestTime, seconds)),
+        });
+  }
+
+  function saveProgress(starCount, seconds, hintsUsed) {
     const old = readJson(progressKey, { bestScore: 0, playCount: 0 });
     const score = Math.max(0, starCount * 100 - mistakes * 5 + Math.max(0, 120 - seconds));
     const previousBest = old.bestScore || 0;
@@ -569,9 +615,9 @@
       lastPlayedAt: new Date().toISOString(),
       improvementPercent: previousBest ? Math.round(((score - previousBest) / previousBest) * 100) : 0,
       skillScores: {
-        Focus: starCount,
-        "Animal Knowledge": 3,
-        "Problem Solving": hintsLeft >= 1 ? 3 : 2,
+        Focus: clamp(5 - mistakes, 1, 5),
+        "Animal Knowledge": 5,
+        "Problem Solving": clamp(5 - hintsUsed, 1, 5),
       },
     });
   }
@@ -655,7 +701,9 @@
       localStorage.setItem(localeKey, locale);
       localizeStatic();
       renderStageGrid();
-      if (!nodes.playPanel.classList.contains("hidden")) {
+      if (!nodes.resultPanel.classList.contains("hidden")) {
+        renderResult();
+      } else if (!nodes.playPanel.classList.contains("hidden")) {
         renderTargetList();
         updateHud();
       }
