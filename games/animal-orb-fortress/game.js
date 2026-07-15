@@ -111,7 +111,11 @@
       chooseUpgrade: "Choose a fortress blessing",
       reroll: "Reroll for 3 diamonds",
       rerolled: "Relic choices refreshed.",
-      rerollNeed: "Need 3 diamonds to reroll.",
+      rerollNeed: "Need 3 Diamonds. Current balance {balance}/3.",
+      rerollConfirm: "Confirm 3 · {before}→{after}",
+      rerollDecision: "Refresh all three blessings once this wave. Tap again to confirm: {before} → {after} Diamonds.",
+      rerollLabel: "Refresh all three blessing choices once this wave. Costs 3 Diamonds. Current balance {balance}.",
+      rerollConfirmLabel: "Confirm one blessing reroll. Spend 3 Diamonds. Balance {before} to {after}.",
       retry: "Retry",
       raidClear: "Raid Clear",
       raidFailed: "Raid Failed",
@@ -213,7 +217,11 @@
       chooseUpgrade: "選擇一個要塞祝福",
       reroll: "花 3 鑽石重抽",
       rerolled: "遺物選項已刷新。",
-      rerollNeed: "需要 3 顆鑽石才能重抽。",
+      rerollNeed: "需要 3 顆鑽石。目前餘額 {balance}/3。",
+      rerollConfirm: "確認 3 · {before}→{after}",
+      rerollDecision: "本波一次刷新全部三個祝福。再點一次確認：{before} → {after} 顆鑽石。",
+      rerollLabel: "本波一次刷新全部三個祝福。花費 3 顆鑽石。目前餘額 {balance}。",
+      rerollConfirmLabel: "確認重抽一次祝福。花費 3 顆鑽石。餘額 {before} 變為 {after}。",
       retry: "再試一次",
       raidClear: "突襲成功",
       raidFailed: "突襲失敗",
@@ -371,6 +379,7 @@
       stonesEarned: 0,
       bonusStones: 0,
       rerolled: false,
+      rerollPending: false,
       readyTimer: 0,
       orbCooldown: 0.48,
       split: false,
@@ -886,11 +895,29 @@
     return [0, 1, 2].map((offset) => upgradeDefs[(seed + offset) % upgradeDefs.length]);
   }
 
+  let rerollConfirmTimer = 0;
+
+  function clearRerollConfirmation() {
+    clearTimeout(rerollConfirmTimer);
+    state.rerollPending = false;
+  }
+
   function renderUpgradeCards() {
     if (!nodes.upgradeCards) return;
     const choices = currentUpgradeChoices();
-    nodes.upgradeStatus.textContent = state.rerolled ? t("rerolled") : "";
-    nodes.rerollBtn.textContent = `${t("reroll")} (${walletDiamonds()})`;
+    const balance = walletDiamonds();
+    nodes.upgradeStatus.textContent = state.rerolled
+      ? t("rerolled")
+      : state.rerollPending
+        ? t("rerollDecision", { before: balance, after: Math.max(0, balance - rerollCost) })
+        : "";
+    nodes.rerollBtn.textContent = state.rerollPending
+      ? t("rerollConfirm", { before: balance, after: Math.max(0, balance - rerollCost) })
+      : `${t("reroll")} (${balance})`;
+    nodes.rerollBtn.setAttribute("aria-label", state.rerollPending
+      ? t("rerollConfirmLabel", { before: balance, after: Math.max(0, balance - rerollCost) })
+      : t("rerollLabel", { balance }));
+    nodes.rerollBtn.classList.toggle("is-confirming", state.rerollPending);
     nodes.rerollBtn.disabled = state.rerolled;
     nodes.upgradeCards.innerHTML = choices
       .map(
@@ -906,6 +933,7 @@
 
   function chooseUpgrade(id) {
     if (state.mode !== "upgrade") return;
+    clearRerollConfirmation();
     if (id === "damage") state.baseDamage += 1;
     if (id === "split") state.split = true;
     if (id === "pierce") state.pierce = true;
@@ -925,9 +953,28 @@
 
   function rerollChoices() {
     if (state.mode !== "upgrade" || state.rerolled) return;
+    const balance = walletDiamonds();
+    if (balance < rerollCost) {
+      clearRerollConfirmation();
+      nodes.upgradeStatus.textContent = t("rerollNeed", { balance });
+      nodes.rerollBtn.classList.remove("is-confirming");
+      playSound("wrong", 0.2);
+      return;
+    }
+    if (!state.rerollPending) {
+      state.rerollPending = true;
+      renderUpgradeCards();
+      rerollConfirmTimer = window.setTimeout(() => {
+        if (state.mode !== "upgrade" || state.rerolled) return;
+        state.rerollPending = false;
+        renderUpgradeCards();
+      }, 5000);
+      return;
+    }
+    clearRerollConfirmation();
     const wallet = window.WeightPlayWallet;
     if (!wallet?.spendDiamonds || !wallet.spendDiamonds(rerollCost)) {
-      nodes.upgradeStatus.textContent = t("rerollNeed");
+      nodes.upgradeStatus.textContent = t("rerollNeed", { balance: walletDiamonds() });
       playSound("wrong", 0.2);
       return;
     }

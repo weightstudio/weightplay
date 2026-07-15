@@ -22,6 +22,30 @@ body.wp-standard-stage-page .wp-standard-stage-panel {
   background: #182944;
 }
 
+body.wp-standard-stage-page #stagePanel.wp-standard-stage-panel {
+  position: fixed !important;
+  inset: auto !important;
+  top: var(--zoo-stage-top, 0) !important;
+  left: var(--zoo-stage-left, 0) !important;
+  width: 390px !important;
+  min-width: 390px !important;
+  max-width: 390px !important;
+  height: 844px !important;
+  min-height: 844px !important;
+  max-height: 844px !important;
+  margin: 0 !important;
+  grid-template-rows: 52px minmax(0, 1fr) !important;
+  transform: scale(var(--zoo-stage-scale, 1)) !important;
+  transform-origin: top left !important;
+  overflow: hidden !important;
+}
+
+body.wp-standard-stage-page #stageGrid {
+  height: 100% !important;
+  min-height: 0 !important;
+  touch-action: none !important;
+}
+
 body.wp-standard-stage-page .wp-standard-stage-heading strong {
   color: #fff9dd;
   font-size: 18px;

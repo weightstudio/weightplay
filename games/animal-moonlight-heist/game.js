@@ -3,7 +3,7 @@
   const KEY = "weightplay_moonlight_heist_v1";
   const localeKey = "weightplayLocale";
   const copy = {
-    en:{title:"Animal Moonlight Heist",internal:"Moon Archive Missions",pitch:"Read the patrols, recover the relic, and choose when to extract.",start:"Choose Mission",missions:"Moon Archive",chooseGadget:"Choose Gadget",alert:"Alert",holdRoute:"Hold to preview a route.",objective:"Recover the mission object",locked:"Complete the previous mission",retry:"Retry",next:"Next Mission",victory:"Mission Complete",captured:"Captured",capturedText:"The patrol raised the alarm. Retry is free.",treasure:"Bonus treasure recovered",extraction:"Reach the extraction gate",dash:"Lightning Dash",decoy:"Star Decoy",smoke:"Smoke Leaf",dashEffect:"Fast route: {ms}ms move",decoyEffect:"Patrol pause: {seconds}s",smokeEffect:"Alert reset + {seconds}s cover",coins:"Moon Coins",safehouse:"Safehouse Lv.{n}",mission:"Mission {n}",move:"Release to move",found:"Object secured!",exitReady:"Extraction ready",treasureFound:"Treasure secured",paused:"Paused",diamonds:"Diamonds",reroll:"Reroll 3",insure:"Insure 5",insured:"Insured",alreadyInsured:"Extraction insurance is already active.",confirmReroll:"Spend 3 Diamonds to reroll gadget strength?",confirmInsurance:"Spend 5 Diamonds to preserve bonus treasure after capture?",notEnough:"Not enough Diamonds.",rerolled:"Gadget offers rerolled.",insuranceReady:"Extraction insurance active for the next mission."},
+    en:{title:"Animal Moonlight Heist",internal:"Moon Archive Missions",pitch:"Read the patrols, recover the relic, and choose when to extract.",start:"Choose Mission",missions:"Moon Archive",chooseGadget:"Choose Gadget",alert:"Alert",holdRoute:"Hold to preview a route.",objective:"Recover the mission object",locked:"Complete the previous mission",retry:"Retry",next:"Next Mission",victory:"Mission Complete",captured:"Captured",capturedText:"The patrol raised the alarm. Retry is free.",treasure:"Bonus treasure recovered",extraction:"Reach the extraction gate",dash:"Lightning Dash",decoy:"Star Decoy",smoke:"Smoke Leaf",dashEffect:"Fast route: {ms}ms move",decoyEffect:"Patrol pause: {seconds}s",smokeEffect:"Alert reset + {seconds}s cover",coins:"Moon Coins",safehouse:"Safehouse Lv.{n}",mission:"Mission {n}",move:"Release to move",found:"Object secured!",exitReady:"Extraction ready",treasureFound:"Treasure secured",paused:"Paused",diamonds:"Diamonds",reroll:"Reroll 3",insure:"Insure 5",insured:"Insured",alreadyInsured:"Extraction insurance is already active.",notEnough:"Not enough Diamonds.",rerolled:"Gadget offers rerolled.",insuranceReady:"Extraction insurance active for the next mission.",confirmSpend:"Confirm {cost} · {before}→{after}",rerollDecision:"Reroll all three gadget strengths. Tap again to confirm: {before} → {after} Diamonds.",insuranceDecision:"Keep bonus treasure after one capture in the next mission. Tap again to confirm: {before} → {after} Diamonds.",rerollLabel:"Reroll all three gadget strengths. Costs 3 Diamonds. Current balance {balance}.",insuranceLabel:"Insure bonus treasure for one capture in the next mission. Costs 5 Diamonds. Current balance {balance}.",confirmLabel:"Confirm {action}. Spend {cost} Diamonds. Balance {before} to {after}.",rerollAction:"gadget strength reroll",insuranceAction:"treasure insurance",insuredLabel:"Treasure insurance is active for the next mission."},
     "zh-Hant":{title:"動物月影潛行隊",internal:"月光檔案任務",pitch:"觀察巡邏、找回文物，並決定何時安全撤離。",start:"選擇任務",missions:"月光檔案館",chooseGadget:"選擇技能",alert:"警戒",holdRoute:"按住畫面預覽路線。",objective:"找回任務物件",locked:"先完成上一個任務",retry:"重試",next:"下一關",victory:"任務完成",captured:"被發現了",capturedText:"巡邏隊已拉滿警戒。免費重新挑戰。",treasure:"已取得額外寶藏",extraction:"前往撤離門",dash:"閃電衝刺",decoy:"星光誘餌",smoke:"煙霧葉片",coins:"月光金幣",safehouse:"安全屋 Lv.{n}",mission:"任務 {n}",move:"放開即可移動",found:"已取得任務物件！",exitReady:"撤離門已開啟",treasureFound:"已取得寶藏",paused:"已暫停",diamonds:"鑽石",reroll:"重抽 3",insure:"保險 5",insured:"已投保",alreadyInsured:"撤離保險已啟用。",confirmReroll:"要花費 3 顆鑽石重抽技能強度嗎？",confirmInsurance:"要花費 5 顆鑽石，在被發現後保留額外寶藏嗎？",notEnough:"鑽石不足。",rerolled:"已重抽技能方案。",insuranceReady:"下一個任務已啟用撤離保險。"}
   };
   Object.assign(copy.en, {
@@ -40,18 +40,48 @@
   function spendDiamonds(cost){return Boolean(window.WeightPlayWallet?.spendDiamonds?.(cost))}
   function createOffers(){return Object.keys(gadgets).map(id=>({id,level:1+Math.floor(Math.random()*3)}))}
   function selectedOffer(){return gadgetOffers.find(offer=>offer.id===gadget)||gadgetOffers[0]}
-  let economyFeedbackTimer=0;
+  let economyFeedbackTimer=0,pendingEconomy="",pendingEconomyTimer=0;
   function gadgetEffect(id,level){
     if(id==="dash")return t("dashEffect",{ms:Math.max(180,320-level*45)});
     if(id==="decoy")return t("decoyEffect",{seconds:(2.5+level*.65).toFixed(2).replace(/0$/,"")});
     return t("smokeEffect",{seconds:(.8+level*.5).toFixed(1)});
   }
   function gadgetSummary(id=gadget,level=selectedOffer().level){return `${t(id)} Lv.${level} · ${gadgetEffect(id,level)}`}
+  function clearPendingEconomy({render=true}={}){clearTimeout(pendingEconomyTimer);pendingEconomy="";if(render)renderEconomy()}
   function renderGadgetSummary(){clearTimeout(economyFeedbackTimer);$("#economyFeedback").textContent=gadgetSummary()}
   function economyMessage(message=""){clearTimeout(economyFeedbackTimer);$("#economyFeedback").textContent=message||gadgetSummary();if(message)economyFeedbackTimer=setTimeout(renderGadgetSummary,1600)}
-  function renderEconomy(){const balance=wallet().diamonds;$("#diamondLabel").textContent=`${t("diamonds")}: ${balance}`;$("#rerollBtn").textContent=t("reroll");$("#insuranceBtn").textContent=t(insuranceActive?"insured":"insure");$("#insuranceBtn").classList.toggle("active",insuranceActive)}
-  function rerollOffers(){if(!confirm(t("confirmReroll")))return;if(!spendDiamonds(3)){economyMessage(t("notEnough"));return}gadgetOffers=createOffers();gadget=gadgetOffers[0].id;economyMessage(t("rerolled"));renderGadgets();renderEconomy();updateGadget()}
-  function buyInsurance(){if(insuranceActive){economyMessage(t("alreadyInsured"));return}if(!confirm(t("confirmInsurance")))return;if(!spendDiamonds(5)){economyMessage(t("notEnough"));return}insuranceActive=true;economyMessage(t("insuranceReady"));renderEconomy()}
+  function renderEconomy(){
+    const balance=wallet().diamonds,reroll=$("#rerollBtn"),insurance=$("#insuranceBtn");
+    $("#diamondLabel").textContent=`${t("diamonds")}: ${balance}`;
+    reroll.textContent=pendingEconomy==="reroll"?t("confirmSpend",{cost:3,before:balance,after:Math.max(0,balance-3)}):t("reroll");
+    insurance.textContent=pendingEconomy==="insurance"?t("confirmSpend",{cost:5,before:balance,after:Math.max(0,balance-5)}):t(insuranceActive?"insured":"insure");
+    reroll.setAttribute("aria-label",pendingEconomy==="reroll"?t("confirmLabel",{action:t("rerollAction"),cost:3,before:balance,after:Math.max(0,balance-3)}):t("rerollLabel",{balance}));
+    insurance.setAttribute("aria-label",insuranceActive?t("insuredLabel"):pendingEconomy==="insurance"?t("confirmLabel",{action:t("insuranceAction"),cost:5,before:balance,after:Math.max(0,balance-5)}):t("insuranceLabel",{balance}));
+    reroll.classList.toggle("is-confirming",pendingEconomy==="reroll");
+    insurance.classList.toggle("is-confirming",pendingEconomy==="insurance");
+    insurance.classList.toggle("active",insuranceActive);
+  }
+  function armEconomy(action,cost,messageKey){
+    const balance=wallet().diamonds;
+    if(balance<cost){clearPendingEconomy();economyMessage(`${t("notEnough")} ${t("diamonds")}: ${balance}/${cost}.`);return false}
+    clearTimeout(economyFeedbackTimer);clearTimeout(pendingEconomyTimer);pendingEconomy=action;renderEconomy();
+    $("#economyFeedback").textContent=t(messageKey,{before:balance,after:balance-cost});
+    pendingEconomyTimer=setTimeout(()=>{clearPendingEconomy();renderGadgetSummary()},5000);
+    return true;
+  }
+  function rerollOffers(){
+    if(pendingEconomy!=="reroll"){armEconomy("reroll",3,"rerollDecision");return}
+    clearPendingEconomy({render:false});
+    if(!spendDiamonds(3)){renderEconomy();economyMessage(t("notEnough"));return}
+    gadgetOffers=createOffers();gadget=gadgetOffers[0].id;economyMessage(t("rerolled"));renderGadgets();renderEconomy();updateGadget();
+  }
+  function buyInsurance(){
+    if(insuranceActive){clearPendingEconomy();economyMessage(t("alreadyInsured"));return}
+    if(pendingEconomy!=="insurance"){armEconomy("insurance",5,"insuranceDecision");return}
+    clearPendingEconomy({render:false});
+    if(!spendDiamonds(5)){renderEconomy();economyMessage(t("notEnough"));return}
+    insuranceActive=true;economyMessage(t("insuranceReady"));renderEconomy();
+  }
   function t(key,vars={}){let value=copy[locale]?.[key]||copy.en[key]||key;Object.entries(vars).forEach(([k,v])=>value=value.replace(`{${k}}`,v));return value}
   function localize(){document.documentElement.lang=locale;document.title=`${t("title")} - Internal Trial`;document.querySelectorAll("[data-i18n]").forEach(n=>n.textContent=t(n.dataset.i18n));renderSummary();renderStage();renderGadgets();renderEconomy();updateGadget();renderGadgetSummary()}
   function show(name){document.body.dataset.screen=name;nodes.main.hidden=name!=="main";nodes.stage.hidden=name!=="stage";nodes.battle.hidden=name!=="battle";if(name!=="battle"){playing=false;paused=false}}
@@ -154,6 +184,17 @@
     dashEffect:decodeZh("\\u5feb\\u901f\\u79fb\\u52d5\\uff1a{ms} \\u6beb\\u79d2"),
     decoyEffect:decodeZh("\\u66ab\\u505c\\u5de1\\u908f\\uff1a{seconds} \\u79d2"),
     smokeEffect:decodeZh("\\u8b66\\u5831\\u6b78\\u96f6 + {seconds} \\u79d2\\u63a9\\u8b77")
+  });
+  Object.assign(copy["zh-Hant"],{
+    confirmSpend:decodeZh("\\u78ba\\u8a8d {cost} \\u00b7 {before}\\u2192{after}"),
+    rerollDecision:decodeZh("\\u91cd\\u62bd\\u5168\\u90e8\\u4e09\\u500b\\u88dd\\u7f6e\\u5f37\\u5ea6\\u3002\\u518d\\u9ede\\u4e00\\u6b21\\u78ba\\u8a8d\\uff1a{before} \\u2192 {after} \\u9846\\u947d\\u77f3\\u3002"),
+    insuranceDecision:decodeZh("\\u4e0b\\u4e00\\u500b\\u4efb\\u52d9\\u88ab\\u767c\\u73fe\\u4e00\\u6b21\\u5f8c\\uff0c\\u4fdd\\u7559\\u984d\\u5916\\u5bf6\\u85cf\\u3002\\u518d\\u9ede\\u4e00\\u6b21\\u78ba\\u8a8d\\uff1a{before} \\u2192 {after} \\u9846\\u947d\\u77f3\\u3002"),
+    rerollLabel:decodeZh("\\u91cd\\u62bd\\u5168\\u90e8\\u4e09\\u500b\\u88dd\\u7f6e\\u5f37\\u5ea6\\u3002\\u82b1\\u8cbb 3 \\u9846\\u947d\\u77f3\\u3002\\u76ee\\u524d\\u9918\\u984d {balance}\\u3002"),
+    insuranceLabel:decodeZh("\\u70ba\\u4e0b\\u4e00\\u500b\\u4efb\\u52d9\\u7684\\u4e00\\u6b21\\u88ab\\u767c\\u73fe\\u6295\\u4fdd\\u984d\\u5916\\u5bf6\\u85cf\\u3002\\u82b1\\u8cbb 5 \\u9846\\u947d\\u77f3\\u3002\\u76ee\\u524d\\u9918\\u984d {balance}\\u3002"),
+    confirmLabel:decodeZh("\\u78ba\\u8a8d{action}\\u3002\\u82b1\\u8cbb {cost} \\u9846\\u947d\\u77f3\\u3002\\u9918\\u984d {before} \\u8b8a\\u70ba {after}\\u3002"),
+    rerollAction:decodeZh("\\u88dd\\u7f6e\\u5f37\\u5ea6\\u91cd\\u62bd"),
+    insuranceAction:decodeZh("\\u5bf6\\u85cf\\u4fdd\\u96aa"),
+    insuredLabel:decodeZh("\\u4e0b\\u4e00\\u500b\\u4efb\\u52d9\\u7684\\u5bf6\\u85cf\\u4fdd\\u96aa\\u5df2\\u555f\\u7528\\u3002")
   });
   renderGadgets();bind();bindMissionRailDrag();localize();$("#localeSelect option[value='zh-Hant']").textContent=decodeZh("\\u7e41\\u9ad4\\u4e2d\\u6587");show("main");
 })();

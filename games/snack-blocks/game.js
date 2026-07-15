@@ -87,6 +87,20 @@
       progressImproved: "Nice improvement! Your planning was stronger this time.",
       progressSteady: "Good effort! Try again to improve focus and combo planning.",
       progressNote: "Scores are for fun and local progress tracking only.",
+      boardAria: "Snack Blocks board",
+      tileAria: "{snack}, row {row}, column {column}",
+      homeAria: "Back to Kids lobby",
+      languageAria: "Language",
+      gameStatsAria: "Game stats",
+      stageSelectAria: "Stage selection",
+      stageBackAria: "Back to main",
+      battleBackAria: "Back to stages",
+      snackST: "Strawberry",
+      snackCK: "Cookie",
+      snackJM: "Candy",
+      snackGR: "Grape",
+      snackCH: "Cheese",
+      snackPR: "Pretzel",
     },
     "zh-Hant": {
       brand: "WeightPlay",
@@ -132,6 +146,65 @@
     },
   };
 
+  Object.assign(text["zh-Hant"], {
+    brand: "WeightPlay",
+    title: "動物零食方塊",
+    language: "語言",
+    stage: "關卡",
+    moves: "步數",
+    target: "目標",
+    score: "分數",
+    menuTitle: "選擇零食關卡",
+    menuText: "用完所有步數、達成目標，並挑戰自己的最佳分數。",
+    start: "開始遊戲",
+    stageHelp: "左右滑動，選擇已解鎖的關卡。",
+    stageName: "第 {stage} 關",
+    locked: "尚未解鎖",
+    best: "最佳 {score}",
+    hint: "點選或拖曳零食，和相鄰方塊交換位置。",
+    goalScore: "分數達到 {target}",
+    goalCollect: "收集 {icon} x{target}",
+    goalScoreKind: "分數目標",
+    goalCollectKind: "收集目標",
+    goalProgress: "{count} / {target}",
+    goalReady: "目標達成！用剩餘步數挑戰更高分。",
+    loading: "載入中",
+    clear: "關卡完成！",
+    failed: "再試一次！",
+    clearText: "分數 {score}，目標 {goal}，最佳 {best}。",
+    finalClearText: "分數 {score}，目標 {goal}。所有零食關卡都完成了！",
+    failedText: "分數 {score}，目標 {goal}。再試一次，找出更大的連線。",
+    next: "下一關",
+    again: "再試一次",
+    menu: "關卡",
+    lobby: "大廳",
+    skillReport: "技能報告",
+    todayScore: "本次分數",
+    previousBest: "之前最佳",
+    improvement: "進步幅度",
+    logicSkill: "邏輯",
+    problemSolvingSkill: "解決問題",
+    focusSkill: "專注",
+    progressNewBest: "進步得很棒！你刷新了自己的最佳分數。",
+    progressImproved: "很好的進步！這次的規劃更成熟了。",
+    progressSteady: "做得不錯！再試一次，練習專注與連線規劃。",
+    progressNote: "分數只用於遊戲樂趣與本機進度紀錄。",
+    boardAria: "動物零食方塊棋盤",
+    tileAria: "{snack}，第 {row} 列，第 {column} 欄",
+    homeAria: "返回兒童遊戲大廳",
+    languageAria: "語言",
+    gameStatsAria: "遊戲狀態",
+    stageSelectAria: "關卡選擇",
+    stageBackAria: "返回主畫面",
+    battleBackAria: "返回關卡",
+    snackST: "草莓",
+    snackCK: "餅乾",
+    snackJM: "糖果",
+    snackGR: "葡萄",
+    snackCH: "起司",
+    snackPR: "蝴蝶餅",
+  });
+
   const metadata = {
     en: {
       title: "Snack Blocks - WeightPlay",
@@ -146,6 +219,13 @@
       ogDescription: "交換零食方塊、完成關卡目標，挑戰更好的本機紀錄。",
     },
   };
+
+  Object.assign(metadata["zh-Hant"], {
+    title: "動物零食方塊 - WeightPlay",
+    description: "交換相鄰的動物零食方塊，在限定步數內完成分數或收集目標，練習邏輯、解題與專注力。",
+    ogTitle: "動物零食方塊 - 關卡式消除益智遊戲",
+    ogDescription: "配對動物零食、完成關卡目標，並挑戰自己的最佳分數。",
+  });
 
   const nodes = {
     homeLink: document.getElementById("homeLink"),
@@ -205,6 +285,7 @@
     nextTileId: 1,
     dragStart: null,
     suppressClick: false,
+    focusIndex: null,
   };
 
   function t(key, data = {}) {
@@ -221,7 +302,7 @@
 
   function goalLabel(stage = activeStage()) {
     return stage.goal === "collect"
-      ? t("goalCollect", { icon: snackArt[stage.snack].label, target: stage.target })
+      ? t("goalCollect", { icon: t(`snack${stage.snack}`), target: stage.target })
       : t("goalScore", { target: stage.target });
   }
 
@@ -325,6 +406,7 @@
 
   function setLocale(locale) {
     state.locale = text[locale] ? locale : "en";
+    if (window.WonderI18n?.locale?.() !== state.locale) window.WonderI18n?.setLocale?.(state.locale);
     try {
       localStorage.setItem(localeKey, state.locale);
     } catch {
@@ -355,8 +437,16 @@
     nodes.againBtn.textContent = t("again");
     nodes.menuBtn.textContent = t("menu");
     nodes.lobbyLink.textContent = t("lobby");
+    nodes.homeLink.setAttribute("aria-label", t("homeAria"));
+    nodes.localeSelect.setAttribute("aria-label", t("languageAria"));
+    nodes.hud.setAttribute("aria-label", t("gameStatsAria"));
+    nodes.stagePanel.setAttribute("aria-label", t("stageSelectAria"));
+    nodes.stageBackBtn.setAttribute("aria-label", t("stageBackAria"));
+    nodes.battleBackBtn.setAttribute("aria-label", t("battleBackAria"));
+    nodes.board.setAttribute("aria-label", t("boardAria"));
     renderStageGrid();
     updateHud();
+    if (state.running && !state.busy) renderBoard();
   }
 
   function updateMetadata() {
@@ -518,7 +608,13 @@
       button.innerHTML = `<img class="snack-image" src="${snackArt[tile.type].asset}" alt="" draggable="false" />`;
       button.dataset.index = String(index);
       button.dataset.tileId = String(tile.id);
-      button.setAttribute("aria-label", snackArt[tile.type].label);
+      button.setAttribute("aria-label", t("tileAria", {
+        snack: t(`snack${tile.type}`),
+        row: Math.floor(index / columns) + 1,
+        column: (index % columns) + 1,
+      }));
+      button.setAttribute("aria-pressed", String(state.selected === index));
+      button.disabled = state.busy;
       if (dropMap.has(tile.id)) {
         button.classList.add("dropping");
         button.style.setProperty("--drop", `${-dropMap.get(tile.id) * 112}%`);
@@ -529,6 +625,9 @@
       button.addEventListener("click", onTileClick);
       nodes.board.append(button);
     });
+    if (!state.busy && Number.isInteger(state.focusIndex)) {
+      nodes.board.querySelector(`[data-index="${state.focusIndex}"]`)?.focus({ preventScroll: true });
+    }
   }
 
   function updateHud() {
@@ -679,6 +778,7 @@
 
   function trySwap(target) {
     if (!state.running || state.busy || state.selected === null || target === state.selected) return;
+    state.focusIndex = target;
     if (!isNeighbor(state.selected, target)) {
       state.selected = target;
       renderBoard();
@@ -716,6 +816,7 @@
     }
     if (state.dragStart) return;
     const index = Number(event.currentTarget.dataset.index);
+    state.focusIndex = index;
     if (state.selected === null) {
       state.selected = index;
       renderBoard();
@@ -806,6 +907,7 @@
     state.combo = 1;
     state.goalCount = 0;
     state.goalReady = false;
+    state.focusIndex = 0;
     state.selected = null;
     state.running = true;
     state.busy = false;
@@ -859,6 +961,7 @@
     nodes.hud.classList.add("hidden");
     nodes.playPanel.classList.add("hidden");
     nodes.resultPanel.classList.remove("hidden");
+    requestAnimationFrame(() => nodes.resultPanel.focus());
     window.WonderSound?.play(cleared ? "win" : "wrong");
     window.WonderAnalytics?.track("game_complete", {
       game_id: GAME_ID,
@@ -950,6 +1053,10 @@
       showMenu();
     }
   });
+  window.addEventListener("load", () => {
+    if (window.WonderI18n?.locale?.() !== state.locale) window.WonderI18n?.setLocale?.(state.locale);
+    applyText();
+  }, { once: true });
 
   try {
     setLocale(localStorage.getItem(localeKey) || window.WonderI18n?.locale?.() || "en");

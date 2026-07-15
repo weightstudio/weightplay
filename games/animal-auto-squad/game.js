@@ -100,6 +100,11 @@
       teamBonusTitle: "Permanent team bonus",
       teamBonusValue: "All owned animals enter expeditions with +{atk} ATK and +{hp} HP from Team Level.",
       teamBonusNext: "Next team level in {remaining} XP.",
+      savedProgress: "Saved Progress",
+      resultXpEarned: "Team XP +{earned} · Lv.{level} · XP {xp}/{goal}",
+      resultGoldEarned: "Training Gold +{earned} · Total {total}",
+      resultStageSaved: "Stages unlocked {unlocked}/{total}",
+      resultGrowthNext: "Permanent bonus ATK +{atk} / HP +{hp} · {remaining} XP to next Team Level",
       relicMaple: "Maple Shield: Front unit starts with Melon Shield.",
       relicOak: "Oak Seed: All units gain +1 Health in battle.",
       relicShadow: "Shadow Claw: All units gain +1 Attack in battle.",
@@ -406,6 +411,10 @@
     resultPanel: $("resultPanel"),
     resultTitle: $("resultTitle"),
     resultText: $("resultText"),
+    resultXpText: $("resultXpText"),
+    resultGoldText: $("resultGoldText"),
+    resultStageText: $("resultStageText"),
+    resultGrowthText: $("resultGrowthText"),
     skillReportText: $("skillReportText"),
     retryBtn: $("retryBtn"),
     nextStageBtn: $("nextStageBtn"),
@@ -492,7 +501,12 @@
       noSupplies: "\u9060\u5f81\u7d20\u6750\u4e0d\u8db3\uff01",
       teamBonusTitle: "\u6c38\u4e45\u5718\u968a\u52a0\u6210",
       teamBonusValue: "\u6240\u6709\u5df2\u64c1\u6709\u89d2\u8272\u9032\u5165\u9060\u5f81\u6642\uff0c\u6703\u56e0\u5718\u968a\u7b49\u7d1a\u7372\u5f97 +{atk} \u653b\u64ca\u548c +{hp} \u751f\u547d\u3002",
-      teamBonusNext: "\u8ddd\u96e2\u4e0b\u4e00\u500b\u5718\u968a\u7b49\u7d1a\u9084\u9700 {remaining} XP\u3002",
+    teamBonusNext: "\u8ddd\u96e2\u4e0b\u4e00\u500b\u5718\u968a\u7b49\u7d1a\u9084\u9700 {remaining} XP\u3002",
+    savedProgress: "\u5df2\u5132\u5b58\u9032\u5ea6",
+    resultXpEarned: "\u5718\u968a XP +{earned} \u00b7 Lv.{level} \u00b7 XP {xp}/{goal}",
+    resultGoldEarned: "\u8a13\u7df4\u91d1\u5e63 +{earned} \u00b7 \u7e3d\u8a08 {total}",
+    resultStageSaved: "\u5df2\u89e3\u9396\u95dc\u5361 {unlocked}/{total}",
+    resultGrowthNext: "\u6c38\u4e45\u52a0\u6210 \u653b +{atk} / \u751f +{hp} \u00b7 \u8ddd\u4e0b\u4e00\u5718\u968a\u7b49\u7d1a {remaining} XP",
       stage: "\u95dc\u5361",
       round: "\u6ce2\u6b21",
       chooseStage: "\u9078\u64c7\u95dc\u5361",
@@ -605,6 +619,18 @@
     saveSave();
   }
 
+  function awardTeamXp(amount) {
+    const value = Math.max(0, Number(amount) || 0);
+    state.earnedTeamXp = (state.earnedTeamXp || 0) + value;
+    addTeamXp(value);
+  }
+
+  function awardTrainingCoins(amount) {
+    const value = Math.max(0, Math.floor(Number(amount) || 0));
+    state.earnedTrainingCoins = (state.earnedTrainingCoins || 0) + value;
+    addTrainingCoins(value);
+  }
+
   function formatTeamLevel() {
     const normalized = normalizeSave(save);
     const value = t("teamLevelValue")
@@ -648,6 +674,24 @@
         saveSave();
         renderMenu();
         return animalPermanentLevel(id);
+      },
+      forceStageSettlement: (stage = normalizeSave(save).selectedStage) => {
+        const clearedStage = Math.max(1, Math.min(STAGE_COUNT, Number(stage) || 1));
+        state = makeState();
+        state.stage = clearedStage;
+        state.round = WAVES_PER_STAGE;
+        document.body.classList.add("squad-active");
+        document.body.classList.remove("squad-stage-select");
+        nodes.menuPanel.classList.add("is-hidden");
+        nodes.stagePanel.classList.add("is-hidden");
+        nodes.gamePanel.classList.remove("is-hidden");
+        for (let round = 1; round <= WAVES_PER_STAGE; round += 1) {
+          awardTeamXp(4 + clearedStage * 2 + round);
+          awardTrainingCoins(6 + clearedStage * 2 + round);
+        }
+        completeStageClear(clearedStage);
+        openResultScreen(true);
+        return { save: normalizeSave(save), earnedTeamXp: state.earnedTeamXp, earnedTrainingCoins: state.earnedTrainingCoins };
       },
       runPreview: () => {
         const previewState = makeState();
@@ -813,7 +857,9 @@
         activeActor: null,
         activeActors: [],
         effects: [] // visual particle FX
-      }
+      },
+      earnedTeamXp: 0,
+      earnedTrainingCoins: 0
     };
   }
 
@@ -967,6 +1013,7 @@
     nodes.menuPanel.classList.remove("is-hidden");
     nodes.stagePanel.classList.add("is-hidden");
     nodes.gamePanel.classList.add("is-hidden");
+    nodes.gamePanel.classList.remove("is-result");
     nodes.resultPanel.classList.add("is-hidden");
     nodes.combatSummary?.classList.add("is-hidden");
     nodes.bestRoundsText.textContent = t("stageProgress", { unlocked: save.unlockedStage, total: STAGE_COUNT });
@@ -991,6 +1038,7 @@
     nodes.menuPanel.classList.add("is-hidden");
     nodes.stagePanel.classList.remove("is-hidden");
     nodes.gamePanel.classList.add("is-hidden");
+    nodes.gamePanel.classList.remove("is-result");
     nodes.resultPanel.classList.add("is-hidden");
     save = loadSave();
     renderStageSelector();
@@ -1314,6 +1362,7 @@
     nodes.menuPanel.classList.add("is-hidden");
     nodes.stagePanel.classList.add("is-hidden");
     nodes.gamePanel.classList.remove("is-hidden");
+    nodes.gamePanel.classList.remove("is-result");
     nodes.prepPhaseArea.classList.remove("is-hidden");
     nodes.combatArea.classList.add("is-hidden");
 
@@ -2817,25 +2866,29 @@
   }
 
   // End Battle results
+  function completeStageClear(clearedStage) {
+    state.activeRun = false;
+    save = normalizeSave(save);
+    save.clearedRuns++;
+    save.bestRound = Math.max(save.bestRound, clearedStage * WAVES_PER_STAGE);
+    save.completedStages = [...new Set([...save.completedStages, clearedStage])].sort((a, b) => a - b);
+    save.unlockedStage = Math.max(save.unlockedStage, Math.min(STAGE_COUNT, clearedStage + 1));
+    save.selectedStage = save.unlockedStage;
+    awardTeamXp(12 + clearedStage * 3);
+    saveSave();
+  }
+
   function endBattleRun(result) {
     state.combat.animating = false;
     cancelAnimationFrame(animationId);
 
     if (result === "win") {
-      addTeamXp(4 + state.stage * 2 + state.round);
-      addTrainingCoins(6 + state.stage * 2 + state.round);
+      awardTeamXp(4 + state.stage * 2 + state.round);
+      awardTrainingCoins(6 + state.stage * 2 + state.round);
       state.gold += 4 + Math.floor((state.stage + state.round) / 2);
       if (state.round >= WAVES_PER_STAGE) {
         const clearedStage = state.stage;
-        state.activeRun = false;
-        save = normalizeSave(save);
-        save.clearedRuns++;
-        save.bestRound = Math.max(save.bestRound, clearedStage * WAVES_PER_STAGE);
-        save.completedStages = [...new Set([...save.completedStages, clearedStage])].sort((a, b) => a - b);
-        save.unlockedStage = Math.max(save.unlockedStage, Math.min(STAGE_COUNT, clearedStage + 1));
-        save.selectedStage = save.unlockedStage;
-        addTeamXp(12 + clearedStage * 3);
-        saveSave();
+        completeStageClear(clearedStage);
         openResultScreen(true);
       } else {
         state.round++;
@@ -2850,8 +2903,8 @@
         startRoundPrep();
       }
     } else if (result === "lose") {
-      addTeamXp(Math.max(1, state.round));
-      addTrainingCoins(Math.max(2, state.round));
+      awardTeamXp(Math.max(1, state.round));
+      awardTrainingCoins(Math.max(2, state.round));
       // Defeat: lose 1 Heart
       state.hearts--;
       updateHUD();
@@ -2866,7 +2919,7 @@
         startRoundPrep();
       }
     } else {
-      addTrainingCoins(Math.max(2, Math.ceil(state.round / 2)));
+      awardTrainingCoins(Math.max(2, Math.ceil(state.round / 2)));
       state.gold += 2;
       // Draw: no heart lost, return to shop
       nodes.prepPhaseArea.classList.remove("is-hidden");
@@ -2913,7 +2966,8 @@
 
   // Result Board View
   function openResultScreen(isWin) {
-    nodes.gamePanel.classList.add("is-hidden");
+    nodes.gamePanel.classList.remove("is-hidden");
+    nodes.gamePanel.classList.add("is-result");
     nodes.resultPanel.classList.remove("is-hidden");
 
     nodes.resultTitle.textContent = isWin ? t("expeditionClear") : t("expeditionFail");
@@ -2922,6 +2976,14 @@
         ? t("stageClearText", { stage: state.stage, next: state.stage + 1 })
         : t("allStagesClearText")
       : `${t("failText")} (${stageLabel(state.stage)} - ${t("round")} ${state.round}/${WAVES_PER_STAGE})`;
+    save = normalizeSave(save);
+    const bonus = teamBonus();
+    const goal = teamXpGoal(save.teamLevel);
+    const remaining = Math.max(0, goal - save.teamXp);
+    nodes.resultXpText.textContent = t("resultXpEarned", { earned: state.earnedTeamXp || 0, level: save.teamLevel, xp: save.teamXp, goal });
+    nodes.resultGoldText.textContent = t("resultGoldEarned", { earned: state.earnedTrainingCoins || 0, total: save.coins });
+    nodes.resultStageText.textContent = t("resultStageSaved", { unlocked: save.unlockedStage, total: STAGE_COUNT });
+    nodes.resultGrowthText.textContent = t("resultGrowthNext", { atk: bonus.atk, hp: bonus.hp, remaining });
     nodes.nextStageBtn.classList.toggle("is-hidden", !isWin || state.stage >= STAGE_COUNT);
     nodes.skillReportText.innerHTML = `<strong>${t("skillReport")}</strong><br/>${t("skillsLearned")}`;
     

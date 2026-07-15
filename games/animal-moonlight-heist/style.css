@@ -3,7 +3,7 @@
 .stage-shell,.battle-shell{gap:0}
 @media(max-height:430px){.stage-canvas{grid-template-columns:190px minmax(0,1fr);grid-template-rows:44px minmax(0,1fr)}.stage-header{grid-column:1/-1}.planner{display:grid;grid-template-columns:52px minmax(0,1fr);align-self:stretch}.planner>img{width:52px;height:52px}.gadget-choices{gap:3px}.gadget-choice{width:40px;height:40px;padding:3px}.mission-rail{padding:8px max(12px,calc(50% - 120px))}.mission-card{flex-basis:240px;height:100%}.mission-card div{padding:8px}}
 
-.stage-canvas{grid-template-rows:44px 106px minmax(0,1fr)}
+.stage-canvas{grid-template-rows:44px 116px minmax(0,1fr)}
 .planner-body{min-width:0;display:grid;grid-template-rows:auto 52px auto;gap:3px}
 .planner-heading,.gadget-row{display:flex;align-items:center;gap:6px}
 .planner-heading{justify-content:space-between;font-size:12px}
@@ -12,9 +12,10 @@
 .gadget-level{position:absolute;right:1px;bottom:1px;padding:1px 4px;border-radius:8px;background:#07101fee;color:#ffd765;font-size:9px;font-weight:900}
 .economy-btn{min-height:42px;padding:4px 7px;border:1px solid #56728f;border-radius:9px;background:#17314e;color:#fff;font-size:10px;font-weight:800}
 .economy-btn.active{border-color:#ffd765;color:#ffd765}
-.economy-feedback{min-height:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#ffd765;font-size:10px}
+.economy-btn.is-confirming{border-color:#ffd765;background:#ffd765;color:#241707;box-shadow:0 0 0 2px #ffd76544}
+.economy-feedback{min-height:14px;max-height:24px;overflow:hidden;color:#ffd765;font-size:10px;line-height:12px}
 .patrol-sight{position:absolute;width:36%;height:36%;z-index:2;transform:translate(-50%,-50%);pointer-events:none;border:1px solid rgba(255,215,101,.46);border-radius:50%;background:radial-gradient(ellipse,rgba(255,191,88,.12),rgba(255,191,88,.025) 64%,transparent 70%);transition:left .9s linear,top .9s linear}
-@media(max-height:430px){.stage-canvas{grid-template-columns:250px minmax(0,1fr)}.planner{grid-template-columns:48px minmax(0,1fr)}.planner>img{width:48px;height:48px}.planner-body{grid-template-rows:auto 43px auto}.gadget-row,.planner-heading{gap:3px}.gadget-choices{gap:2px}.gadget-choice{width:38px;height:38px;padding:2px}.economy-btn{min-height:36px;padding:3px 5px;font-size:9px}}
+@media(max-height:430px){.stage-canvas{grid-template-columns:280px minmax(0,1fr)}.planner{grid-template-columns:48px minmax(0,1fr)}.planner>img{width:48px;height:48px}.planner-body{grid-template-rows:auto 43px auto}.gadget-row,.planner-heading{gap:3px}.gadget-choices{gap:2px}.gadget-choice{width:38px;height:38px;padding:2px}.economy-btn{min-height:36px;padding:3px 5px;font-size:9px}}
 
 body[data-screen="battle"] :is(.wp-tutorial-button, .wp-tutorial-backdrop, .sound-toggle, .weightplay-version-badge) {
   display: none !important;

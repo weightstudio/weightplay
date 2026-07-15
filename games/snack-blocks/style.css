@@ -425,6 +425,11 @@ button:active {
   transform: scale(1.06);
 }
 
+.tile:focus-visible {
+  outline: 4px solid #1454c8;
+  outline-offset: -2px;
+}
+
 .tile.matching {
   filter: brightness(1.45);
   opacity: 0.18;

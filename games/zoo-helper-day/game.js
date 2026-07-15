@@ -4,6 +4,8 @@
   const localeKey = "weightPlayLocale";
   const unlockKey = "weightplay_zoo_helper_unlocked";
   const starKey = "weightplay_zoo_helper_stars";
+  const STAGE_LOGICAL_WIDTH = 390;
+  const STAGE_LOGICAL_HEIGHT = 844;
 
   const text = {
     en: {
@@ -40,6 +42,38 @@
       correct: "Nice help!",
       wrong: "Try another item.",
       careItemsAria: "Care item choices",
+      metaTitle: "Zoo Helper Day - WeightPlay",
+      metaDescription: "Help cute zoo animals with food, water, cleaning, and play tasks across 6 gentle stages in Zoo Helper Day, a family-friendly animal care game on WeightPlay.",
+      homeAria: "Back to Kids lobby",
+      languageAria: "Language",
+      stageBackAria: "Back",
+      stageListAria: "Stage list",
+      battleBackAria: "Back to stages",
+      shiftAria: "Zoo shift status",
+      guideAria: "Zoo Helper Day game guide",
+      guideKicker: "WeightPlay Original Game Guide",
+      guideTitle: "Zoo Helper Day - How to Play",
+      guideIntro: "Zoo Helper Day is a gentle zoo workday game where children help different animal zones earn tickets and keep visitors happy. Each stage is framed like a small zoo shift, with simple picture-based care actions, large touch targets, and friendly feedback so young players can understand the goal without heavy reading. It is designed to feel more like running a tiny zoo than only picking a helper item.",
+      guideHowTitle: "How to Play",
+      guideHow1: "Choose a zoo shift from the stage list.",
+      guideHow2: "Look at the animal zone, ticket goal, and happiness meter.",
+      guideHow3: "Choose or drag the helper item that matches the current zoo task.",
+      guideHow4: "Finish the shift to earn tickets, stars, and the next zoo moment.",
+      guideStrategyTitle: "Strategy Tips",
+      guideStrategy1: "Name the animal zone before choosing an item.",
+      guideStrategy2: "Talk about how tickets and visitor happiness grow when animals are cared for.",
+      guideStrategy3: "If the first choice is wrong, look at the station name and picture clue again.",
+      guideParentTitle: "Parent Note",
+      guideParentNote: "This game may help children practice animal recognition, simple care concepts, focus, and hand-eye coordination through picture-first play. It works best as a short guided moment where parents can describe the animal and the care action out loud. Progress and stars are only for encouragement and local play tracking, not for diagnosis, ranking, or formal learning assessment.",
+      guideFaqTitle: "Frequently Asked Questions",
+      guideFaqQ1: "Can a 3-year-old play?",
+      guideFaqA1: "Yes. The game is designed for picture-based preschool play with large buttons, though parent help can make it easier and more meaningful.",
+      guideFaqQ2: "What does it practice?",
+      guideFaqA2: "It can practice animal recognition, focus, hand-eye coordination, and simple care ideas such as food, water, cleaning, and play.",
+      guideFaqQ3: "Does it require reading?",
+      guideFaqA3: "No. The core choices are visual, so young children can play by looking at the animal and item pictures.",
+      guideFaqQ4: "Does it collect child data?",
+      guideFaqA4: "No personal child data is needed to play.",
       items: {
         fruit: "Fruit",
         water: "Water",
@@ -103,6 +137,38 @@
       correct: "幫得真好！",
       wrong: "試試看其他道具。",
       careItemsAria: "照顧道具選項",
+      metaTitle: "動物園幫忙日 - WeightPlay",
+      metaDescription: "在《動物園幫忙日》的 6 個溫和關卡中，幫可愛動物準備食物、水、清潔用品和玩具，享受適合親子的動物照顧遊戲。",
+      homeAria: "返回兒童遊戲大廳",
+      languageAria: "語言",
+      stageBackAria: "返回主畫面",
+      stageListAria: "關卡列表",
+      battleBackAria: "返回關卡",
+      shiftAria: "動物園班次狀態",
+      guideAria: "動物園幫忙日遊戲指南",
+      guideKicker: "WeightPlay 原創遊戲指南",
+      guideTitle: "動物園幫忙日－玩法說明",
+      guideIntro: "《動物園幫忙日》是一款溫和的動物園工作遊戲。孩子會幫不同動物區完成照顧任務、累積票券並讓遊客保持開心。每關都像一個小班次，透過圖像、大型觸控按鈕與友善回饋，讓幼兒不必閱讀大量文字也能理解目標。",
+      guideHowTitle: "遊戲方法",
+      guideHow1: "從關卡列表選擇一個動物園班次。",
+      guideHow2: "看看動物區、票券目標與開心度。",
+      guideHow3: "點選或拖曳符合目前照顧任務的道具。",
+      guideHow4: "完成班次，獲得票券、星星並解鎖下一段動物園時光。",
+      guideStrategyTitle: "小技巧",
+      guideStrategy1: "選道具前，先說出目前的動物區名稱。",
+      guideStrategy2: "一起觀察照顧動物後，票券與遊客開心度如何增加。",
+      guideStrategy3: "第一次選錯時，再看看站區名稱和圖片線索。",
+      guideParentTitle: "給家長的話",
+      guideParentNote: "本遊戲可透過圖像優先的玩法，陪孩子練習辨認動物、簡單照顧概念、專注與手眼協調。家長可以在短時間陪玩時說出動物和照顧動作。進度與星星只用於鼓勵和本機遊玩紀錄，不是診斷、排名或正式學習評量。",
+      guideFaqTitle: "常見問題",
+      guideFaqQ1: "3 歲孩子可以玩嗎？",
+      guideFaqA1: "可以。遊戲以圖片和大型按鈕為主；家長陪玩能讓體驗更容易也更有意義。",
+      guideFaqQ2: "遊戲會練習什麼？",
+      guideFaqA2: "可練習辨認動物、專注、手眼協調，以及食物、飲水、清潔和玩耍等簡單照顧概念。",
+      guideFaqQ3: "需要會閱讀嗎？",
+      guideFaqA3: "不需要。核心選擇都以圖片呈現，孩子可以觀察動物和道具圖片來遊玩。",
+      guideFaqQ4: "遊戲會收集兒童資料嗎？",
+      guideFaqA4: "不會。遊玩不需要提供任何兒童個人資料。",
       items: {
         fruit: "水果",
         water: "水",
@@ -227,6 +293,9 @@
   let currentTaskMistakes = 0;
   let lastResult = null;
   let acceptingInput = false;
+  let stageDrag = null;
+  let stageSettleFrame = 0;
+  let suppressStageClick = false;
 
   function updateBattleViewport() {
     if (!document.body.classList.contains("zoo-helper-playing")) return;
@@ -248,6 +317,18 @@
     nodes.gameShell?.style.setProperty("transform", "translateX(-50%)", "important");
   }
 
+  function clearBattleShellStyles() {
+    for (const property of ["position", "inset", "width", "max-width", "height", "min-height", "max-height", "transform"]) {
+      nodes.gameShell?.style.removeProperty(property);
+    }
+  }
+
+  function restoreStageShell() {
+    if (!document.body.classList.contains("wp-standard-stage-page") || document.body.classList.contains("zoo-helper-playing")) return;
+    clearBattleShellStyles();
+    nodes.gameShell?.style.setProperty("transform", "none", "important");
+  }
+
   function setBattleViewport(active) {
     document.body.classList.toggle("zoo-helper-playing", active);
     if (active) {
@@ -259,14 +340,80 @@
     } else {
       nodes.gameShell?.setAttribute("data-play-viewport", "");
       window.WeightPlayGame?.exitMobileGameMode?.();
-      for (const property of ["position", "inset", "width", "max-width", "height", "min-height", "max-height", "transform"]) {
-        nodes.gameShell?.style.removeProperty(property);
-      }
+      clearBattleShellStyles();
     }
+  }
+
+  function updateStageViewport() {
+    if (!document.body.classList.contains("wp-standard-stage-page")) return;
+    const viewport = window.visualViewport;
+    const width = Math.max(1, Math.min(viewport?.width || window.innerWidth, window.innerWidth));
+    const height = Math.max(1, Math.min(viewport?.height || window.innerHeight, window.innerHeight));
+    const scale = Math.max(0.01, Math.min((width - 8) / STAGE_LOGICAL_WIDTH, (height - 8) / STAGE_LOGICAL_HEIGHT));
+    const renderedWidth = STAGE_LOGICAL_WIDTH * scale;
+    const renderedHeight = STAGE_LOGICAL_HEIGHT * scale;
+    document.documentElement.style.setProperty("--zoo-stage-scale", String(scale));
+    document.documentElement.style.setProperty("--zoo-stage-left", `${(width - renderedWidth) / 2}px`);
+    document.documentElement.style.setProperty("--zoo-stage-top", `${height - 4 - renderedHeight}px`);
+  }
+
+  function centerStageCard(card) {
+    if (!card || !nodes.stageGrid.clientWidth) return;
+    const target = card.offsetLeft - (nodes.stageGrid.clientWidth - card.offsetWidth) / 2;
+    nodes.stageGrid.scrollLeft = Math.max(0, Math.min(target, nodes.stageGrid.scrollWidth - nodes.stageGrid.clientWidth));
+  }
+
+  function centerRecommendedStage() {
+    if (!document.body.classList.contains("wp-standard-stage-page")) return;
+    const cards = [...nodes.stageGrid.querySelectorAll(".stage-card:not(.locked)")];
+    const recommended = cards.at(-1);
+    if (!recommended) return;
+    requestAnimationFrame(() => {
+      centerStageCard(recommended);
+      requestAnimationFrame(() => centerStageCard(recommended));
+    });
+  }
+
+  function settleStageRail() {
+    cancelAnimationFrame(stageSettleFrame);
+    const cards = [...nodes.stageGrid.querySelectorAll(".stage-card")];
+    if (!cards.length) return;
+    const center = nodes.stageGrid.scrollLeft + nodes.stageGrid.clientWidth / 2;
+    const nearest = cards.reduce((best, card) => {
+      const distance = Math.abs(card.offsetLeft + card.offsetWidth / 2 - center);
+      return !best || distance < best.distance ? { card, distance } : best;
+    }, null)?.card;
+    if (!nearest) return;
+    const start = nodes.stageGrid.scrollLeft;
+    const target = Math.max(0, Math.min(
+      nearest.offsetLeft - (nodes.stageGrid.clientWidth - nearest.offsetWidth) / 2,
+      nodes.stageGrid.scrollWidth - nodes.stageGrid.clientWidth
+    ));
+    const distance = target - start;
+    if (Math.abs(distance) < 1) {
+      nodes.stageGrid.scrollLeft = target;
+      nodes.stageGrid.style.removeProperty("scroll-snap-type");
+      return;
+    }
+    const startedAt = performance.now();
+    const duration = Math.min(360, Math.max(240, Math.abs(distance) * 1.35));
+    const step = (now) => {
+      const progress = Math.min(1, (now - startedAt) / duration);
+      nodes.stageGrid.scrollLeft = start + distance * (1 - Math.pow(1 - progress, 2));
+      if (progress < 1) {
+        stageSettleFrame = requestAnimationFrame(step);
+        return;
+      }
+      nodes.stageGrid.scrollLeft = target;
+      nodes.stageGrid.style.removeProperty("scroll-snap-type");
+    };
+    stageSettleFrame = requestAnimationFrame(step);
   }
 
   window.addEventListener("resize", updateBattleViewport);
   window.visualViewport?.addEventListener("resize", updateBattleViewport);
+  window.addEventListener("resize", updateStageViewport);
+  window.visualViewport?.addEventListener("resize", updateStageViewport);
 
   function t(key, data) {
     const parts = key.split(".");
@@ -292,6 +439,40 @@
     localStorage.setItem(starKey, JSON.stringify(stars));
   }
 
+  function localizeGuide() {
+    const guide = document.querySelector(".game-page-info");
+    if (!guide) return;
+    const setText = (selector, key) => {
+      const node = guide.querySelector(selector);
+      if (node) node.textContent = t(key);
+    };
+    guide.setAttribute("aria-label", t("guideAria"));
+    setText(".game-info-kicker", "guideKicker");
+    setText(".game-info-title h2", "guideTitle");
+    setText(".game-info-title p", "guideIntro");
+    setText(".game-info-sections > .game-info-section:first-child h3", "guideHowTitle");
+    [...guide.querySelectorAll(".game-info-sections > .game-info-section:first-child li")].forEach((node, index) => {
+      node.textContent = t(`guideHow${index + 1}`);
+    });
+    setText(".game-info-strategy h3", "guideStrategyTitle");
+    [...guide.querySelectorAll(".game-info-strategy li")].forEach((node, index) => {
+      node.textContent = t(`guideStrategy${index + 1}`);
+    });
+    setText(".game-info-parent h3", "guideParentTitle");
+    setText(".game-info-parent p", "guideParentNote");
+    const faqSection = [...guide.querySelectorAll(".game-info-section")].find((section) => section.querySelector("dl"));
+    if (faqSection) {
+      const heading = faqSection.querySelector("h3");
+      if (heading) heading.textContent = t("guideFaqTitle");
+      [...faqSection.querySelectorAll("dl > div")].slice(0, 4).forEach((row, index) => {
+        const question = row.querySelector("dt");
+        const answer = row.querySelector("dd");
+        if (question) question.textContent = t(`guideFaqQ${index + 1}`);
+        if (answer) answer.textContent = t(`guideFaqA${index + 1}`);
+      });
+    }
+  }
+
   function playSound(name) {
     window.WonderSound?.play?.(name);
   }
@@ -305,6 +486,19 @@
     document.querySelectorAll("[data-ui]").forEach((node) => {
       node.textContent = t(node.dataset.ui);
     });
+    document.title = t("metaTitle");
+    document.querySelector('meta[name="description"]')?.setAttribute("content", t("metaDescription"));
+    document.querySelector('meta[property="og:title"]')?.setAttribute("content", t("metaTitle"));
+    document.querySelector('meta[property="og:description"]')?.setAttribute("content", t("metaDescription"));
+    document.querySelector('meta[name="twitter:title"]')?.setAttribute("content", t("metaTitle"));
+    document.querySelector('meta[name="twitter:description"]')?.setAttribute("content", t("metaDescription"));
+    document.querySelector(".home-link")?.setAttribute("aria-label", t("homeAria"));
+    nodes.localeSelect.setAttribute("aria-label", t("languageAria"));
+    nodes.stageBackBtn.setAttribute("aria-label", t("stageBackAria"));
+    nodes.stageGrid.setAttribute("aria-label", t("stageListAria"));
+    nodes.backToStagesBtn.setAttribute("aria-label", t("battleBackAria"));
+    document.querySelector(".shift-board")?.setAttribute("aria-label", t("shiftAria"));
+    localizeGuide();
     nodes.itemGrid.setAttribute("aria-label", t("careItemsAria"));
     nodes.localeSelect.value = locale;
   }
@@ -316,7 +510,11 @@
       const button = document.createElement("button");
       button.className = "stage-card";
       button.type = "button";
-      if (stageNo > unlocked) button.classList.add("locked");
+      const isLocked = stageNo > unlocked;
+      if (isLocked) button.classList.add("locked");
+      button.dataset.stageIndex = String(index);
+      button.setAttribute("aria-disabled", String(isLocked));
+      button.setAttribute("aria-label", `${t("stage", { n: stageNo })} - ${t(`stations.${stage.station}`)}. ${t("stageGoal", { station: t(`stations.${stage.station}`), tickets: stage.tickets })}${isLocked ? `. ${t("locked")}` : ""}`);
       button.innerHTML = `
         <b class="stage-icon"><img src="${animalAssets[stage.animal]}" alt="" /></b>
         <strong>${t("stage", { n: stageNo })} - ${t(`stations.${stage.station}`)}</strong>
@@ -333,6 +531,7 @@
       });
       nodes.stageGrid.appendChild(button);
     });
+    centerRecommendedStage();
   }
 
   function showMenu() {
@@ -340,15 +539,23 @@
     nodes.stagePanel.classList.remove("hidden");
     nodes.playPanel.classList.add("hidden");
     nodes.resultPanel.classList.add("hidden");
-    setBattleViewport(false);
     document.body.classList.add("wp-standard-stage-page");
+    setBattleViewport(false);
+    restoreStageShell();
     renderStageGrid();
+    updateStageViewport();
+    requestAnimationFrame(() => {
+      restoreStageShell();
+      updateStageViewport();
+    });
+    setTimeout(restoreStageShell, 180);
   }
 
   function showMain() {
     nodes.stagePanel.classList.add("hidden");
     nodes.menuPanel.classList.remove("hidden");
     document.body.classList.remove("wp-standard-stage-page");
+    clearBattleShellStyles();
   }
 
   function startStage(index) {
@@ -598,6 +805,7 @@
       renderStageGrid();
       if (!nodes.resultPanel.classList.contains("hidden")) renderResult();
       else if (!nodes.playPanel.classList.contains("hidden")) renderTask();
+      requestAnimationFrame(localizeStatic);
     });
     window.addEventListener("wonder:locale-change", (event) => {
       const nextLocale = event.detail?.locale || window.WonderI18n?.locale?.() || "en";
@@ -608,6 +816,7 @@
       renderStageGrid();
       if (!nodes.resultPanel.classList.contains("hidden")) renderResult();
       else if (!nodes.playPanel.classList.contains("hidden")) renderTask();
+      requestAnimationFrame(localizeStatic);
     });
     nodes.backToStagesBtn.addEventListener("click", showMenu);
     nodes.resultStagesBtn.addEventListener("click", showMenu);
@@ -616,6 +825,58 @@
       startStage(currentStage);
     });
     nodes.nextStageBtn.addEventListener("click", () => startStage(Math.min(currentStage + 1, stages.length - 1)));
+
+    nodes.stageGrid.addEventListener("pointerdown", (event) => {
+      if (!document.body.classList.contains("wp-standard-stage-page") || event.isPrimary === false || event.button !== 0) return;
+      cancelAnimationFrame(stageSettleFrame);
+      suppressStageClick = false;
+      nodes.stageGrid.style.setProperty("scroll-snap-type", "none", "important");
+      stageDrag = {
+        id: event.pointerId,
+        x: event.clientX,
+        scrollLeft: nodes.stageGrid.scrollLeft,
+        moved: false,
+        card: event.target.closest(".stage-card"),
+      };
+      nodes.stageGrid.setPointerCapture?.(event.pointerId);
+    });
+    nodes.stageGrid.addEventListener("pointermove", (event) => {
+      if (!stageDrag || event.pointerId !== stageDrag.id) return;
+      const delta = event.clientX - stageDrag.x;
+      if (!stageDrag.moved && Math.abs(delta) > 4) stageDrag.moved = true;
+      if (!stageDrag.moved) return;
+      event.preventDefault();
+      const rect = nodes.stageGrid.getBoundingClientRect();
+      const coordinateScale = rect.width > 0 ? nodes.stageGrid.clientWidth / rect.width : 1;
+      nodes.stageGrid.scrollLeft = stageDrag.scrollLeft - delta * coordinateScale;
+    });
+    const finishStageDrag = (event) => {
+      if (!stageDrag || event.pointerId !== stageDrag.id) return;
+      const moved = stageDrag.moved;
+      const tappedCard = stageDrag.card;
+      try { nodes.stageGrid.releasePointerCapture?.(stageDrag.id); } catch { /* Pointer capture may already be released. */ }
+      stageDrag = null;
+      if (!moved) {
+        nodes.stageGrid.style.removeProperty("scroll-snap-type");
+        if (tappedCard && !tappedCard.classList.contains("locked")) {
+          suppressStageClick = true;
+          setTimeout(() => { suppressStageClick = false; }, 0);
+          startStage(Number(tappedCard.dataset.stageIndex));
+        }
+        return;
+      }
+      suppressStageClick = true;
+      setTimeout(() => { suppressStageClick = false; }, 0);
+      settleStageRail();
+    };
+    nodes.stageGrid.addEventListener("pointerup", finishStageDrag);
+    nodes.stageGrid.addEventListener("pointercancel", finishStageDrag);
+    nodes.stageGrid.addEventListener("click", (event) => {
+      if (!suppressStageClick) return;
+      suppressStageClick = false;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+    }, true);
   }
 
   const style = document.createElement("style");
@@ -627,4 +888,5 @@
   initDragDrop();
   renderStageGrid();
   initLoading();
+  window.addEventListener("load", localizeStatic, { once: true });
 })();

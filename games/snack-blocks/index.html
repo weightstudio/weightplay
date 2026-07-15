@@ -55,7 +55,7 @@
               "audience": {
                       "@type": "Audience",
                       "audienceType": "Kids and families",
-                      "suggestedMinAge": 12
+                      "suggestedMinAge": 9
               },
               "learningResourceType": "Skill practice through play",
               "educationalUse": "Practice Logic, Problem Solving, Focus through family-friendly browser gameplay."
@@ -115,7 +115,7 @@
         <p id="hintText" class="hint">Tap or drag a snack to swap with its neighbor.</p>
       </section>
 
-      <section id="resultPanel" class="result-panel hidden">
+      <section id="resultPanel" class="result-panel hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" tabindex="-1">
         <div class="result-card">
           <strong id="resultTitle">Stage Clear!</strong>
           <span id="resultText"></span>

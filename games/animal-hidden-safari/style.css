@@ -392,6 +392,18 @@ body.safari-stage .stage-grid { align-items:center; padding-inline:calc((100% - 
   isolation: isolate;
 }
 
+.target::before {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: inherit;
+}
+
+.target:focus-visible {
+  outline: 3px solid #fff4a8;
+  outline-offset: 4px;
+}
+
 .target-animal {
   position: relative;
   z-index: 1;

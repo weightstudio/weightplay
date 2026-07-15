@@ -167,6 +167,28 @@
         </div>
 
         <div id="hintText" class="hint" data-ui="guideHint">Drag matching animals to combine and level up. Drag food to feed them!</div>
+
+        <!-- Final Run Result Screen: bounded Battle substate -->
+        <section id="resultPanel" class="panel result-panel is-hidden" aria-live="polite">
+          <img class="result-lion" src="../../assets/animal-auto-squad-cover.webp" alt="Result Lion Mascot" />
+          <div class="result-copy">
+            <h2 id="resultTitle" class="result-heading">Expedition Complete!</h2>
+            <p id="resultText" class="result-desc"></p>
+            <div class="result-progress" aria-live="polite">
+              <strong data-ui="savedProgress">Saved Progress</strong>
+              <span id="resultXpText"></span>
+              <span id="resultGoldText"></span>
+              <span id="resultStageText"></span>
+              <em id="resultGrowthText"></em>
+            </div>
+            <p id="skillReportText" class="skill-report"></p>
+            <div class="result-actions" data-wp-return="battle">
+              <button id="nextStageBtn" class="primary-btn is-hidden" type="button">Next Stage</button>
+              <button id="retryBtn" class="primary-btn" type="button" data-ui="retry">Try Again</button>
+              <button id="resultMenuBtn" class="secondary-btn" type="button" data-ui="backToMenu">Main Menu</button>
+            </div>
+          </div>
+        </section>
       </section>
       <div class="battle-ad-reserve" aria-hidden="true"></div>
 
@@ -185,21 +207,6 @@
         <div class="revive-actions">
           <button id="reviveBtn" class="primary-btn" type="button"></button>
           <button id="giveUpBtn" class="secondary-btn" type="button" data-ui="giveUp">Give Up</button>
-        </div>
-      </section>
-
-      <!-- Final Run Result Screen -->
-      <section id="resultPanel" class="panel result-panel is-hidden" aria-live="polite">
-        <img class="result-lion" src="../../assets/animal-auto-squad-cover.webp" alt="Result Lion Mascot" />
-        <div class="result-copy">
-          <h2 id="resultTitle" class="result-heading">Expedition Complete!</h2>
-          <p id="resultText" class="result-desc"></p>
-          <p id="skillReportText" class="skill-report"></p>
-          <div class="result-actions">
-            <button id="nextStageBtn" class="primary-btn is-hidden" type="button">Next Stage</button>
-            <button id="retryBtn" class="primary-btn" type="button" data-ui="retry">Try Again</button>
-            <button id="resultMenuBtn" class="secondary-btn" type="button" data-ui="backToMenu">Main Menu</button>
-          </div>
         </div>
       </section>
 
