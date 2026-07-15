@@ -3,7 +3,6 @@
 
   const LOGICAL_WIDTH = 390;
   const LOGICAL_HEIGHT = 788;
-  const AD_RESERVE = 56;
   const SAVE_KEY = "weightplay:animal-bubble-safari:v1";
   const FIRST_PLAY_KEY = "weightplay:animal-bubble-safari:tutorial:v1";
   const ASSET_ROOT = "../../assets/";
@@ -62,7 +61,7 @@
   ];
 
   const dom = Object.fromEntries([
-    "viewport","gameCanvas","adReserve","loadingScreen","loadingCover","loadingPanel","loadingFill","loadingProgress","mainScreen","stageScreen","battleScreen","resultScreen","guideModal","stageRail","playCanvas",
+    "viewport","gameCanvas","loadingScreen","loadingCover","loadingPanel","loadingFill","loadingProgress","mainScreen","stageScreen","battleScreen","battleLive","resultScreen","guideModal","stageRail","playCanvas",
     "mainProgress","albumCount","starCount","stageSkill","stageGoal","battleStageName","shotsLeft","rescueProgress","scoreValue","battleMessage","battleGoal",
     "currentPreview","nextPreview","resultTitle","resultStars","resultScore","resultShots","resultRescued","rewardStars","rewardCoins","rewardAlbum","skillText","nextStage"
   ].map(id => [id, document.getElementById(id)]));
@@ -111,20 +110,21 @@
     const vv = window.visualViewport;
     const width = vv ? vv.width : window.innerWidth;
     const height = vv ? vv.height : window.innerHeight;
-    const reserve = currentScreen === "stage" || currentScreen === "battle" || currentScreen === "result"
-      ? (window.WeightPlayAudience?.reserveHeight ?? AD_RESERVE)
-      : 0;
-    const scale = Math.min(width / LOGICAL_WIDTH, Math.max(1, height - reserve) / LOGICAL_HEIGHT);
+    const scale = Math.min(width / LOGICAL_WIDTH, height / LOGICAL_HEIGHT);
     dom.gameCanvas.style.setProperty("--scale", String(scale));
-    dom.gameCanvas.style.top = reserve === 0 ? "0" : "auto";
-    dom.gameCanvas.style.bottom = reserve === 0 ? "auto" : "0";
-    dom.viewport.classList.toggle("has-reserve", reserve > 0);
+    dom.gameCanvas.style.top = "auto";
+    dom.gameCanvas.style.bottom = "0";
   }
 
   function showScreen(name) {
     currentScreen = name;
-    document.querySelectorAll(".screen").forEach(screen => screen.classList.remove("is-active"));
-    document.getElementById(name + "Screen").classList.add("is-active");
+    const result = name === "result";
+    dom.loadingScreen.classList.toggle("is-active", name === "loading");
+    dom.mainScreen.classList.toggle("is-active", name === "main");
+    dom.stageScreen.classList.toggle("is-active", name === "stage");
+    dom.battleScreen.classList.toggle("is-active", name === "battle" || result);
+    dom.battleLive.classList.toggle("is-hidden", result);
+    dom.resultScreen.classList.toggle("is-active", result);
     fitCanvas();
     track("screen_view", { screen: name });
   }
@@ -141,10 +141,10 @@
       const card = document.createElement("button");
       card.type = "button";
       card.className = "stage-card" + (stage.id === selectedStage ? " is-selected" : "") + (locked ? " is-locked" : "");
-      card.disabled = locked;
+      card.setAttribute("aria-disabled", String(locked));
       const stars = save.bestStars[stage.id] || 0;
       card.innerHTML = `<img src="${ASSET_ROOT}animal-bubble-safari-bg.webp" alt=""><div><b>${stage.id}. ${stage.title[locale]}</b><span>${t(stage.goalKey)}</span><em>${"★".repeat(stars)}${"☆".repeat(3-stars)}</em><span>${locked ? t("locked") : stars ? t("completed") : t(stage.skillKey)}</span></div>`;
-      card.addEventListener("click", () => startStage(stage.id));
+      card.addEventListener("click", () => { if (!locked) startStage(stage.id); });
       dom.stageRail.appendChild(card);
     });
     updateStageSummary();
@@ -163,6 +163,53 @@
     const card = dom.stageRail.children[selectedStage - 1];
     if (card) card.scrollIntoView({ behavior, inline: "center", block: "nearest" });
   }
+
+  let stageGesture = null;
+  let suppressStageClick = false;
+  const stageScale = () => Math.max(.01, dom.gameCanvas.getBoundingClientRect().width / LOGICAL_WIDTH);
+  dom.stageRail.addEventListener("pointerdown", event => {
+    if (event.button !== 0) return;
+    stageGesture = { id:event.pointerId, x:event.clientX, scroll:dom.stageRail.scrollLeft, moved:false };
+    dom.stageRail.style.scrollSnapType = "none";
+  });
+  dom.stageRail.addEventListener("pointermove", event => {
+    if (!stageGesture || stageGesture.id !== event.pointerId) return;
+    const delta = (event.clientX - stageGesture.x) / stageScale();
+    if (Math.abs(delta) > 8 && !stageGesture.moved) {
+      stageGesture.moved = true;
+      dom.stageRail.setPointerCapture?.(event.pointerId);
+    }
+    if (stageGesture.moved) {
+      event.preventDefault();
+      dom.stageRail.scrollLeft = stageGesture.scroll - delta;
+    }
+  });
+  const finishStageGesture = event => {
+    if (!stageGesture || stageGesture.id !== event.pointerId) return;
+    const moved = stageGesture.moved;
+    stageGesture = null;
+    if (dom.stageRail.hasPointerCapture?.(event.pointerId)) dom.stageRail.releasePointerCapture(event.pointerId);
+    dom.stageRail.style.scrollSnapType = "x mandatory";
+    if (!moved) return;
+    suppressStageClick = true;
+    const railCenter = dom.stageRail.getBoundingClientRect().left + dom.stageRail.getBoundingClientRect().width / 2;
+    const cards = [...dom.stageRail.children];
+    const nearest = cards.reduce((best, card, index) => {
+      const rect = card.getBoundingClientRect();
+      const distance = Math.abs(rect.left + rect.width / 2 - railCenter);
+      return distance < best.distance ? { index, distance } : best;
+    }, { index:0, distance:Infinity });
+    cards[nearest.index]?.scrollIntoView({ behavior:"smooth", inline:"center", block:"nearest" });
+    if (nearest.index + 1 <= save.unlocked) selectStage(nearest.index + 1, false);
+    setTimeout(() => { suppressStageClick = false; }, 360);
+  };
+  dom.stageRail.addEventListener("pointerup", finishStageGesture);
+  dom.stageRail.addEventListener("pointercancel", finishStageGesture);
+  dom.stageRail.addEventListener("click", event => {
+    if (!suppressStageClick) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+  }, true);
 
   function updateStageSummary() {
     const stage = stageDefs[selectedStage - 1];
@@ -559,6 +606,7 @@
 
   window.__animalBubbleSafariTest = {
     stageDefs,
+    showResult: won => { if (game) showResult(Boolean(won)); },
     getState: () => ({
       screen: currentScreen, selectedStage, unlocked: save.unlocked, stageId: game?.def.id || null,
       currentPower: game?.currentPower || null, nextPower: game?.nextPower || null,

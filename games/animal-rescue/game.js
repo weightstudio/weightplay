@@ -17,6 +17,7 @@ const showStageBtn = document.querySelector("#showStageBtn");
 const stageBackBtn = document.querySelector("#stageBackBtn");
 const battleBackBtn = document.querySelector("#battleBackBtn");
 const stageSelectTitle = document.querySelector("#stageSelectTitle");
+const stageSetupText = document.querySelector("#stageSetupText");
 const stageGrid = document.querySelector("#stageGrid");
 const playArea = document.querySelector("#playArea");
 const animalAvatar = document.querySelector("#animalAvatar");
@@ -88,6 +89,20 @@ const dictionary = {
     fruitGoal: "{count} fruit",
     obstacleGoal: "{count} blocks",
     parGoal: "{count} move goal",
+    metaTitle: "Animal Rescue Trail - WeightPlay",
+    metaDescription: "Guide cute animals home in Animal Rescue Trail, a gentle WeightPlay puzzle game for kids and families.",
+    socialTitle: "Animal Rescue Trail - Animal Puzzle Game",
+    backToLobby: "Back to Kids games",
+    back: "Back",
+    backToTrails: "Back to trails",
+    stageSetup: "Choose an unlocked trail and help the next animal home.",
+    board: "Animal rescue board",
+    resultPanel: "Trail result",
+    tile: "Path tile",
+    home: "Home",
+    fruitItem: "Fruit",
+    rock: "Rock",
+    water: "Water",
   },
   "zh-Hant": {
     title: "\u52d5\u7269\u56de\u5bb6\u8def",
@@ -133,6 +148,20 @@ const dictionary = {
     fruitGoal: "{count} \u500b\u6c34\u679c",
     obstacleGoal: "{count} \u500b\u969c\u7919",
     parGoal: "\u5efa\u8b70 {count} \u6b65",
+    metaTitle: "\u52d5\u7269\u56de\u5bb6\u8def - WeightPlay",
+    metaDescription: "\u5728\u300a\u52d5\u7269\u56de\u5bb6\u8def\u300b\u5e6b\u53ef\u611b\u52d5\u7269\u627e\u5230\u56de\u5bb6\u8def\u7dda\uff0c\u9ad4\u9a57\u9069\u5408\u5152\u7ae5\u8207\u5bb6\u5ead\u7684\u6eab\u548c WeightPlay \u89e3\u8b0e\u904a\u6232\u3002",
+    socialTitle: "\u52d5\u7269\u56de\u5bb6\u8def - \u52d5\u7269\u8def\u7dda\u89e3\u8b0e\u904a\u6232",
+    backToLobby: "\u8fd4\u56de Kids \u904a\u6232",
+    back: "\u8fd4\u56de",
+    backToTrails: "\u8fd4\u56de\u8def\u7dda\u9078\u64c7",
+    stageSetup: "\u9078\u64c7\u5df2\u89e3\u9396\u7684\u8def\u7dda\uff0c\u5e6b\u4e0b\u4e00\u96bb\u52d5\u7269\u56de\u5bb6\u3002",
+    board: "\u52d5\u7269\u56de\u5bb6\u8def\u724c\u9762",
+    resultPanel: "\u8def\u7dda\u7d50\u679c",
+    tile: "\u9053\u8def\u683c",
+    home: "\u5bb6",
+    fruitItem: "\u6c34\u679c",
+    rock: "\u5ca9\u77f3",
+    water: "\u6c34\u57df",
   },
 };
 
@@ -235,8 +264,19 @@ function saveProgress() {
 
 function renderStaticText() {
   document.documentElement.lang = locale();
+  document.title = t("metaTitle");
+  document.querySelector('meta[name="description"]')?.setAttribute("content", t("metaDescription"));
+  document.querySelector('meta[property="og:title"]')?.setAttribute("content", t("socialTitle"));
+  document.querySelector('meta[property="og:description"]')?.setAttribute("content", t("metaDescription"));
   localeSelect.value = locale();
   languageLabel.textContent = t("language");
+  localeSelect.setAttribute("aria-label", t("language"));
+  homeLink.setAttribute("aria-label", t("backToLobby"));
+  stageBackBtn.setAttribute("aria-label", t("back"));
+  battleBackBtn.setAttribute("aria-label", t("backToTrails"));
+  stageSetupText.textContent = t("stageSetup");
+  board.setAttribute("aria-label", t("board"));
+  resultPanel.setAttribute("aria-label", t("resultPanel"));
   titleText.textContent = t("title");
   mainTitle.textContent = t("title");
   mainIntro.textContent = t("hint");
@@ -407,7 +447,7 @@ function renderBoard() {
         marker.setAttribute("aria-hidden", "true");
         button.append(marker);
       }
-      button.setAttribute("aria-label", icon?.alt || "tile");
+      button.setAttribute("aria-label", icon?.alt || t("tile"));
       board.append(button);
     }
   }
@@ -425,16 +465,16 @@ function tileClass(key, blockSet, waterSet, pathSet, current) {
 function tileIcon(pos, key, blockSet, waterSet) {
   const level = state.level;
   if (key === keyOf(state.position)) return { asset: animalAssets[level.animal], alt: t(level.animal) };
-  if (key === keyOf(level.home)) return { asset: tileAssets.home, alt: "home" };
-  if (state.fruits.has(key)) return { asset: fruitAssets[(level.id + pos[0] + pos[1]) % fruitAssets.length], alt: "fruit" };
-  if (blockSet.has(key)) return { asset: tileAssets.rock, alt: "rock" };
-  if (waterSet.has(key)) return { asset: tileAssets.water, alt: "water" };
+  if (key === keyOf(level.home)) return { asset: tileAssets.home, alt: t("home") };
+  if (state.fruits.has(key)) return { asset: fruitAssets[(level.id + pos[0] + pos[1]) % fruitAssets.length], alt: t("fruitItem") };
+  if (blockSet.has(key)) return { asset: tileAssets.rock, alt: t("rock") };
+  if (waterSet.has(key)) return { asset: tileAssets.water, alt: t("water") };
   return null;
 }
 
 function assetMarkup(asset, alt) {
   if (!asset) return "";
-  return `<img src="${assetBase}${asset.src}" alt="${escapeHtml(alt || asset.fallback || "")}" loading="lazy" decoding="async" draggable="false" />`;
+  return `<img src="${assetBase}${asset.src}" alt="${escapeHtml(alt || asset.fallback || "")}" loading="eager" decoding="async" draggable="false" />`;
 }
 
 function makeAssetImage(asset, alt) {

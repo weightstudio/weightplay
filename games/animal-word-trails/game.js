@@ -37,7 +37,7 @@
   const app = document.getElementById('app'), locale = document.getElementById('locale'); let lang = localStorage.wordTrailsLocale || 'en', stage = 0, path = [], found = new Set(), hints = 0, dragStartLength = 0;
   const $ = id => document.getElementById(id); const t = key => copy[lang][key];
   const track = (event, details = {}) => window.WonderAnalytics?.track(event, { game_id: 'animal-word-trails', locale: lang, stage: stage + 1, ...details });
-  function screen(name) { document.querySelectorAll('[data-screen]').forEach(x => x.classList.toggle('hidden', x.dataset.screen !== name)); document.body.classList.toggle('wp-mobile-game-mode', name === 'battle' || name === 'result'); if (name === 'battle') document.documentElement.requestFullscreen?.().catch(()=>{}); }
+  function screen(name) { const result=name==='result'; document.querySelector('[data-screen="main"]').classList.toggle('hidden',name!=='main'); document.querySelector('[data-screen="stage"]').classList.toggle('hidden',name!=='stage'); document.querySelector('[data-screen="battle"]').classList.toggle('hidden',name!=='battle'&&!result); $('resultPanel').classList.toggle('hidden',!result); $('battleLive').classList.toggle('hidden',result); document.body.classList.toggle('word-stage',name==='stage'); document.body.classList.toggle('word-playing',name==='battle'||result); document.body.classList.toggle('word-result',result); updateWordFrame(); }
   function translate(){ document.documentElement.lang=lang; document.querySelectorAll('[data-copy]').forEach(el=>el.textContent=t(el.dataset.copy)); }
   function save(){ localStorage.wordTrailsLocale=lang; localStorage.wordTrailsBest = JSON.stringify(JSON.parse(localStorage.wordTrailsBest || '{}')); }
   function renderStages(){ const rail=$('stageRail'); rail.innerHTML=''; const best=JSON.parse(localStorage.wordTrailsBest||'{}'); packs[lang].forEach((item,i)=>{ const card=document.createElement('button'); card.className='stage-card'+(i===stage?' selected':'')+(i>0&&!best[lang+'-'+(i-1)]?' locked':''); card.disabled=i>0&&!best[lang+'-'+(i-1)]; card.innerHTML=`<strong>${i+1}. ${item.name}</strong><span>${item.words.length} ${lang==='en'?'words':'個字詞'}</span>`; card.onclick=()=>{stage=i;renderStages()};rail.append(card); }); $('stageProgress').textContent=`${stage+1} / ${packs[lang].length}`; }
@@ -66,7 +66,7 @@
     packs[lang].forEach((item,i)=>{
       const card=document.createElement('button'), locked=i>0&&!best[lang+'-'+(i-1)];
       card.className='stage-card'+(i===stage?' selected':'')+(locked?' locked':'');
-      card.disabled=locked;
+      card.setAttribute('aria-disabled',String(locked));
       card.dataset.stage=String(i);
       card.innerHTML='<strong>'+String(i+1)+'. '+item.name+'</strong><span>'+String(item.words.length)+' '+(lang==='en'?'words':'\u500b\u5b57\u8a5e')+'</span>';
       card.onclick=()=>{ if(rail.dataset.dragging==='true') return; stage=i; renderBattle(); };
@@ -121,13 +121,14 @@
     railStartX=event.clientX;
     railStartScroll=rail.scrollLeft;
     railPointerActive=true;
-    railStartStage=event.target.closest('.stage-card:not([disabled])')?.dataset.stage ?? null;
+    railStartStage=event.target.closest('.stage-card:not(.locked)')?.dataset.stage ?? null;
     rail.dataset.dragging='false';
     rail.setPointerCapture?.(event.pointerId);
   });
   rail.addEventListener('pointermove',event=>{
     if(!railPointerActive) return;
-    const delta=event.clientX-railStartX;
+    const scale=Number.parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--word-scale'))||1;
+    const delta=(event.clientX-railStartX)/scale;
     if(Math.abs(delta)<=10) return;
     rail.dataset.dragging='true';
     rail.scrollLeft=railStartScroll-delta;
@@ -148,7 +149,7 @@
     setTimeout(()=>{rail.dataset.dragging='false';},0);
   });
   rail.addEventListener('click',event=>{
-    const card=event.target.closest('.stage-card:not([disabled])');
+    const card=event.target.closest('.stage-card:not(.locked)');
     if(!card || rail.dataset.dragging==='true') return;
     stage=Number(card.dataset.stage);
     renderBattle();
@@ -165,5 +166,16 @@
   $('loadingText').textContent='72%';
   if(document.readyState==='complete') finishLoading(); else window.addEventListener('load',finishLoading,{once:true});
   setTimeout(finishLoading,1800);
-  track('game_view'); locale.onchange=()=>{lang=locale.value;stage=0;save();translate();}; $('start').onclick=()=>{track('game_start');renderStages();screen('stage')}; $('stageBack').onclick=()=>screen('main'); $('playStage').onclick=renderBattle; $('battleBack').onclick=()=>{document.exitFullscreen?.();renderStages();screen('stage')}; $('clear').onclick=clear; $('undo').onclick=undo; $('hint').onclick=hint; $('submit').onclick=submit; $('next').onclick=()=>{stage=Math.min(stage+1,packs[lang].length-1);renderBattle()}; $('resultsBack').onclick=()=>{renderStages();screen('stage')}; $('album').onclick=()=>{const album=JSON.parse(localStorage.wordTrailsAlbum||'{}');const words=[...new Set(packs[lang].flatMap(x=>x.words))];$('albumList').innerHTML=words.map((word,index)=>{const x=(index%4)*33.333,y=Math.floor(index/4)*50;return `<span class="${album[lang+'-'+word]?'card':'locked'}" style="background-position:${x}% ${y}%">${album[lang+'-'+word]?word:'?'}</span>`}).join('');$('albumDialog').showModal()};$('closeAlbum').onclick=()=>$('albumDialog').close();
+  function updateWordFrame(){
+    if(!document.body.classList.contains('word-stage')&&!document.body.classList.contains('word-playing'))return;
+    const width=visualViewport?.width||innerWidth,height=visualViewport?.height||innerHeight;
+    const scale=Math.min(Math.max(1,width-8)/390,Math.max(1,height-8)/788);
+    document.documentElement.style.setProperty('--word-scale',String(scale));
+    document.documentElement.style.setProperty('--word-frame-width',`${390*scale}px`);
+    document.documentElement.style.setProperty('--word-frame-height',`${788*scale}px`);
+    document.documentElement.style.setProperty('--word-frame-left',`${(width-390*scale)/2}px`);
+    document.documentElement.style.setProperty('--word-frame-top',`${height-788*scale-4}px`);
+  }
+  addEventListener('resize',updateWordFrame);visualViewport?.addEventListener('resize',updateWordFrame,{passive:true});
+  track('game_view'); locale.onchange=()=>{lang=locale.value;stage=0;save();translate();}; $('start').onclick=()=>{track('game_start');renderStages();screen('stage')}; $('stageBack').onclick=()=>screen('main'); $('playStage').onclick=renderBattle; $('battleBack').onclick=()=>{renderStages();screen('stage')}; $('clear').onclick=clear; $('undo').onclick=undo; $('hint').onclick=hint; $('submit').onclick=submit; $('next').onclick=()=>{stage=Math.min(stage+1,packs[lang].length-1);renderBattle()}; $('resultsBack').onclick=()=>{renderStages();screen('stage')}; $('album').onclick=()=>{const album=JSON.parse(localStorage.wordTrailsAlbum||'{}');const words=[...new Set(packs[lang].flatMap(x=>x.words))];$('albumList').innerHTML=words.map((word,index)=>{const x=(index%4)*33.333,y=Math.floor(index/4)*50;return `<span class="${album[lang+'-'+word]?'card':'locked'}" style="background-position:${x}% ${y}%">${album[lang+'-'+word]?word:'?'}</span>`}).join('');$('albumDialog').showModal()};$('closeAlbum').onclick=()=>$('albumDialog').close();
 })();

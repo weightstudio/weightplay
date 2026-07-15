@@ -237,7 +237,17 @@
     resultFail:u("\\u6c27\\u6c23\\u6b78\\u96f6\\uff0c{n} \\u4ef6\\u6253\\u6488\\u54c1\\u53ea\\u4fdd\\u4f4f\\u4e00\\u534a\\u3002"),
     retry:u("\\u518d\\u8a66\\u4e00\\u6b21")
   });
-  let locale = localStorage.getItem("weightPlayLocale") || "en"; let save = { rank:1, coins:0, unlocked:1, ...JSON.parse(localStorage.getItem(saveKey)||"{}") }; let state = {},fishClock;
+  Object.assign(en,{
+    fishBattle:"Fish encounter",territorialFish:"Territorial fish",shark:"Abyss shark",fishHp:"Enemy HP",diverHp:"Nori HP",attackAction:"Attack",escapeAction:"Escape",fishStrikes:"The fish strikes back!",fishWon:"Enemy defeated!",fishEscaped:"Escaped safely. Oxygen -{n}.",xpGain:"EXP +{n}",levelUp:"Level up! Stat point +{n}",upgradeTitle:"Diver upgrade",statPoints:"Points {n}",hpStat:"Health +8",attackStat:"Attack +2",oxygenStat:"Max oxygen +10",doneUpgrade:"Continue dive",combatDefeat:"Nori was defeated",resultCombat:"Nori lost the encounter. Half of the salvage was secured."
+  });
+  Object.assign(zh,{
+    fishBattle:"魚類遭遇戰",territorialFish:"領域魚",shark:"深淵鯊魚",fishHp:"敵方生命",diverHp:"諾里生命",attackAction:"攻擊",escapeAction:"逃跑",fishStrikes:"魚發動反擊！",fishWon:"戰勝魚類！",fishEscaped:"成功逃跑，氧氣 -{n}。",xpGain:"經驗 +{n}",levelUp:"升級！能力點 +{n}",upgradeTitle:"潛航員升級",statPoints:"剩餘點數 {n}",hpStat:"生命 +8",attackStat:"攻擊 +2",oxygenStat:"氧氣上限 +10",doneUpgrade:"繼續潛航",combatDefeat:"諾里戰敗",resultCombat:"諾里在遭遇戰中落敗，只保住一半打撈品。"
+  });
+  let locale = localStorage.getItem("weightPlayLocale") || "en";
+  const storedSave = JSON.parse(localStorage.getItem(saveKey)||"{}");
+  let save = { rank:1, coins:0, unlocked:1, level:1, xp:0, statPoints:0, ...storedSave };
+  save.stats={hp:0,attack:0,oxygen:0,...storedSave.stats};
+  let state = {},fishClock;
   const routes = [
     {risk:1,zones:5,target:4,fishZones:[3],reaction:3200,encounters:[["relic","hazard"],["current","cache"],["oxygen","relic"],["cache","hazard"],["relic","current"]]},
     {risk:2,zones:6,target:6,fishZones:[3,5],reaction:2600,encounters:[["cache","hazard"],["current","relic"],["oxygen","cache"],["hazard","relic"],["cache","current"],["relic","hazard"]]},
@@ -252,8 +262,14 @@
   };
   const t = (key, values={}) => Object.entries(values).reduce((value,[name,replacement]) => value.replace(`{${name}}`,replacement),(locale === "zh-Hant" ? zh : en)[key]);
   const icon = name => `<i class="ui-icon icon-${name}" aria-hidden="true"></i>`;
+  const maxHealth = () => 30 + save.stats.hp * 8;
+  const diverAttack = () => 6 + save.stats.attack * 2;
+  const maxOxygen = () => 100 + save.stats.oxygen * 10;
+  const xpNeeded = () => 18 + save.level * 12;
   const pips = value => `<span class="pips" aria-hidden="true">${[1,2,3].map(n=>`<i class="${n<=value?"is-on":""}"></i>`).join("")}</span>`;
   const estimateMarkup = outcome => `<span class="metric">${icon("salvage")}<em>${t("shortLoot")}</em>${pips(outcome.intel.loot)}</span><span class="metric">${icon("danger")}<em>${t("shortDanger")}</em>${pips(outcome.intel.danger)}</span><span class="metric metric-oxygen">${icon("oxygen")}<em>${t("shortOxygen")}</em><b>${outcome.intel.cost}</b></span>`;
+  const combatDiver=document.createElement("div");combatDiver.className="combat-diver";combatDiver.innerHTML='<img src="../../assets/animal-abyss-diver-nori.png" alt="Nori">';$("fishEncounter").prepend(combatDiver);
+  const upgradePanel=document.createElement("section");upgradePanel.id="upgradePanel";upgradePanel.className="upgrade-panel hidden";upgradePanel.innerHTML='<h2 id="upgradeTitle"></h2><strong id="upgradePoints"></strong><div><button id="upgradeHp" type="button"></button><button id="upgradeAttack" type="button"></button><button id="upgradeOxygen" type="button"></button></div><button id="upgradeDone" class="primary" type="button"></button>';$("diveField").append(upgradePanel);
   function setFeedback(markup,label){$("feedback").innerHTML=markup;$("feedback").setAttribute("aria-label",label);}
   function renderCoach(){
     $("coachStep1").innerHTML=`<div>${estimateMarkup(outcomes.relic)}</div><small>${t("coachVisual1")}</small>`;$("coachStep1").setAttribute("aria-label",t("coachStep1"));
@@ -271,9 +287,10 @@
     const config=routeConfig();
     $("battleTitle").textContent=t("route",{n:state.route});
     $("zoneText").textContent=t("zoneProgress",{n:state.zone,total:config.zones});
-    $("oxygenText").textContent=`${t("oxygenShort")} ${state.oxygen}%`;
-    $("oxygenBar").style.width=`${state.oxygen}%`;
-    $("oxygenBar").classList.toggle("is-low",state.oxygen<=30);
+    $("oxygenText").textContent=`${t("oxygenShort")} ${state.oxygen}/${maxOxygen()}`;
+    $("oxygenBar").style.width=`${state.oxygen/maxOxygen()*100}%`;
+    $("oxygenBar").classList.toggle("is-low",state.oxygen<=maxOxygen()*.3);
+    $("diveField").classList.toggle("is-fish-combat",!!state.fishActive);
     const objectiveLabel=state.fishActive?t("fishObjective"):state.oxygen<=30?t("objectiveLow"):state.sonar?t("objectiveChoose"):state.zone===1?t("objectiveScan"):t("objectiveContinue");
     $("objectiveText").innerHTML=state.fishActive?`${icon("danger")}<strong>${t("shortReadAttack")}</strong>`:state.oxygen<=30?`${icon("oxygen")}<strong>${t("shortLow")}</strong>`:state.sonar?`${icon("sonar")}<strong>${t("shortConfirmed")}</strong>`:`<strong>${t("shortChoose")}</strong>`;$("objectiveText").setAttribute("aria-label",objectiveLabel);
     $("salvageText").innerHTML=`<span>${icon("salvage")}<em>${t("shortTarget")}</em><b>${state.salvage}/${config.target}</b></span><span>${icon("power")}<em>${t("shortPower")}</em><b>${state.battery}/4</b></span>`;$("salvageText").setAttribute("aria-label",`${t("target",{n:state.salvage,target:config.target})} · ${t("power",{n:state.battery})}`);
@@ -294,6 +311,7 @@
       button.setAttribute("aria-label",`${t(direction)} - ${detail}`);
       button.disabled=!!blocked;
       const gate=$(`${direction}Gate`),image=gate.querySelector("img"),revealed=state.sonar||state.resolvingDirection===direction;
+      gate.setAttribute("role","button");gate.tabIndex=blocked?-1:0;gate.setAttribute("aria-disabled",blocked?"true":"false");gate.onclick=()=>{if(!blocked)move(direction);};
       gate.querySelector("strong").innerHTML=`${direction==="left"?"←":"→"}<em>${t(direction==="left"?"shortLeft":"shortRight")}</em>`;
       gate.querySelector("small").innerHTML=state.sonar?`<span class="exact-result">${outcome.salvage?`${icon("salvage")}<b>+${outcome.salvage}</b>`:""}${icon("oxygen")}<b>${outcome.oxygen>0?"+":""}${outcome.oxygen}</b></span>`:estimateMarkup(outcome);
       image.src=revealed?artFor(outcome):"../../assets/animal-abyss-diver-fx.png";
@@ -308,16 +326,16 @@
     $("beaconBtn").disabled=state.beaconUsed||!!state.busy;
   }
   function setCoach(open){$("diveCoach").classList.toggle("hidden",!open);}
-  function start(route){window.clearTimeout(fishClock);state={route,zone:1,oxygen:100,salvage:0,sonar:false,battery:4,shieldArmed:false,beaconUsed:false,busy:false,fishActive:false,fishResolvedZones:[]};show("battleShell");resetDiveField();$("fishEncounter").classList.add("hidden");renderBattle();setFeedback(`${icon("sonar")}<b>?</b>`,t("objectiveScan"));setCoach(!save.tutorialDone);}
+  function start(route){window.clearTimeout(fishClock);state={route,zone:1,oxygen:maxOxygen(),playerHp:maxHealth(),salvage:0,sonar:false,battery:4,shieldArmed:false,beaconUsed:false,busy:false,fishActive:false,fishResolvedZones:[]};show("battleShell");resetDiveField();$("fishEncounter").classList.add("hidden");$("upgradePanel").classList.add("hidden");renderBattle();setFeedback(`${icon("sonar")}<b>?</b>`,t("objectiveScan"));setCoach(!save.tutorialDone);}
   function finish(mode){
     window.clearTimeout(fishClock);
     const config=routeConfig(),clear=mode==="clear";
-    const earned=mode==="fail"?Math.floor(state.salvage/2):state.salvage+(clear?2:0);
+    const earned=mode==="fail"||mode==="combat"?Math.floor(state.salvage/2):state.salvage+(clear?2:0);
     save.coins+=earned;
     if(clear){save.rank+=1;save.unlocked=Math.max(save.unlocked,Math.min(3,state.route+1));}
     persist();show("result");
-    $("resultTitle").textContent=clear?t("clear"):mode==="fail"?t("oxygenLost"):mode==="miss"?t("missed"):t("partial");
-    const copyKey=clear?"resultClear":mode==="fail"?"resultFail":mode==="miss"?"resultMiss":"resultSurface";
+    $("resultTitle").textContent=clear?t("clear"):mode==="combat"?t("combatDefeat"):mode==="fail"?t("oxygenLost"):mode==="miss"?t("missed"):t("partial");
+    const copyKey=clear?"resultClear":mode==="combat"?"resultCombat":mode==="fail"?"resultFail":mode==="miss"?"resultMiss":"resultSurface";
     $("resultCopy").textContent=t(copyKey,{n:state.salvage,target:config.target,zones:config.zones});
     $("resultRewards").innerHTML=`<span>${t("coins",{n:earned})}</span><span>${t("rank",{n:save.rank})}</span>`;
     $("nextBtn").textContent=clear?t("next"):t("retry");$("menuBtn").textContent=t("menu");
@@ -328,7 +346,7 @@
     const config=routeConfig(),outcome=encounter(direction);
     let oxygenDelta=outcome.oxygen,shielded=false;
     if(!outcome.safe&&state.shieldArmed){oxygenDelta=Math.ceil(oxygenDelta/2);state.shieldArmed=false;shielded=true;}
-    state.oxygen=Math.max(0,Math.min(100,state.oxygen+oxygenDelta));
+    state.oxygen=Math.max(0,Math.min(maxOxygen(),state.oxygen+oxygenDelta));
     if(outcome===outcomes.oxygen)state.battery=Math.min(4,state.battery+1);
     state.salvage+=outcome.salvage;
     state.resolvingDirection=direction;
@@ -354,52 +372,39 @@
     window.setTimeout(()=>applyMove(direction),520);
   }
   function shouldStartFish(){return routeConfig().fishZones.includes(state.zone)&&!state.fishResolvedZones.includes(state.zone);}
-  function fishPattern(){const patterns=["left","glow","right","glow","left","right"];return patterns[(state.route+state.zone+state.fishStep)%patterns.length];}
+  function fishProfile(){const shark=state.route===3&&state.zone>=4;return {name:t(shark?"shark":"territorialFish"),maxHp:(shark?34:16)+state.route*6+state.zone*2,attack:(shark?8:3)+state.route*2+Math.floor(state.zone/2),xp:(shark?36:24)+state.route*6};}
   function renderFish(){
-    const attack=state.fishAttack,blocked=!!state.fishBusy;
-    $("fishEncounter").dataset.attack=attack;
-    for(const kind of ["left","right","glow"])$("fishSprite").classList.toggle(`attack-${kind}`,attack===kind);
-    $("fishTitle").innerHTML=`${icon("danger")}<span>${t("shortReadAttack")}</span>`;$("fishTitle").setAttribute("aria-label",t("fishTitle"));
-    $("fishTell").innerHTML=attack==="glow"?`${icon("pulse")}<strong>${t("shortShockwave")}</strong>`:`<b class="attack-arrow">${attack==="left"?"←":"→"}</b><strong>${t(attack==="left"?"shortLeftCharge":"shortRightCharge")}</strong>`;$("fishTell").setAttribute("aria-label",t(attack==="glow"?"fishTellGlow":attack==="left"?"fishTellLeft":"fishTellRight"));
-    $("fishGuardText").innerHTML=`${icon("shield")}<b>${state.fishWins}/3</b>`;$("fishGuardText").setAttribute("aria-label",t("fishGuard",{n:state.fishWins}));
-    $("fishGuardBar").style.width=`${state.fishWins*100/3}%`;
-    $("fishTimerText").textContent="";$("fishTimerText").setAttribute("aria-label",t("fishTimer"));
-    $("dodgeLeftBtn").innerHTML=`<b>←</b><span>${t("shortDodgeLeft")}</span>`;$("dodgeLeftBtn").ariaLabel=t("dodgeLeft");
-    $("pulseBtn").innerHTML=`${icon("pulse")}<span>${t("shortCounter")}</span><b>1</b>`;$("pulseBtn").ariaLabel=t("pulse");
-    $("dodgeRightBtn").innerHTML=`<b>→</b><span>${t("shortDodgeRight")}</span>`;$("dodgeRightBtn").ariaLabel=t("dodgeRight");
-    $("dodgeLeftBtn").disabled=blocked;$("dodgeRightBtn").disabled=blocked;$("pulseBtn").disabled=blocked||state.battery<1;
-  }
-  function startFishClock(){
-    window.clearTimeout(fishClock);if(!state.fishActive||state.fishBusy||state.fishPaused)return;
-    const duration=routeConfig().reaction,bar=$("fishTimerBar");bar.style.animation="none";void bar.offsetWidth;bar.style.animation=`fish-countdown ${duration}ms linear forwards`;
-    fishClock=window.setTimeout(()=>resolveFishAttack(false,"fishTimeout"),duration);
+    const fish=fishProfile(),blocked=!!state.fishBusy;
+    $("fishEncounter").dataset.enemy=fish.name;
+    $("fishTitle").innerHTML=`${icon("danger")}<span>${t("fishBattle")}</span>`;$("fishTitle").setAttribute("aria-label",`${t("fishBattle")}: ${fish.name}`);
+    $("fishTell").innerHTML=`<strong>${fish.name}</strong><small>Lv.${state.route+state.zone}</small>`;
+    $("fishGuardText").innerHTML=`<span>${t("fishHp")}</span><b>${Math.max(0,state.fishHp)}/${state.fishMaxHp}</b>`;
+    $("fishGuardBar").style.width=`${Math.max(0,state.fishHp/state.fishMaxHp*100)}%`;
+    $("fishTimerText").innerHTML=`<span>${t("diverHp")}</span><b>${Math.max(0,state.playerHp)}/${maxHealth()}</b>`;
+    $("fishTimerBar").style.animation="none";$("fishTimerBar").style.width=`${Math.max(0,state.playerHp/maxHealth()*100)}%`;
+    $("dodgeLeftBtn").innerHTML=`${icon("danger")}<span>${t("attackAction")}</span><b>${diverAttack()}</b>`;$("dodgeLeftBtn").ariaLabel=`${t("attackAction")} ${diverAttack()}`;
+    $("pulseBtn").innerHTML=`${icon("surface")}<span>${t("escapeAction")}</span>`;$("pulseBtn").ariaLabel=t("escapeAction");
+    $("dodgeRightBtn").classList.add("hidden");$("dodgeLeftBtn").disabled=blocked;$("pulseBtn").disabled=blocked;
   }
   function startFishEncounter(){
-    state.fishActive=true;state.fishBusy=false;state.fishPaused=false;state.fishWins=0;state.fishStep=0;state.fishAttack=fishPattern();
-    $("fishEncounter").classList.remove("hidden");renderFish();renderBattle();startFishClock();
+    const fish=fishProfile();state.fishActive=true;state.fishBusy=false;state.fishHp=fish.maxHp;state.fishMaxHp=fish.maxHp;
+    $("fishEncounter").classList.remove("hidden");renderFish();renderBattle();setFeedback(`${icon("danger")}<b>!</b>`,`${t("fishBattle")}: ${fish.name}`);
   }
-  function resolveFishAttack(correct,feedbackKey){
-    if(!state.fishActive||state.fishBusy)return;
-    window.clearTimeout(fishClock);state.fishBusy=true;
-    if(correct){state.fishWins+=1;setFeedback(`<b>✓</b>${feedbackKey==="fishPulsed"?icon("pulse"):icon("shield")}`,t(feedbackKey));$("fishEncounter").classList.add("is-dodged");}
-    else{state.oxygen=Math.max(0,state.oxygen-12);setFeedback(`${icon("oxygen")}<b>-12</b>`,t(feedbackKey));$("fishEncounter").classList.add("is-hit");}
-    renderBattle();renderFish();
-    window.setTimeout(()=>{
-      $("fishEncounter").classList.remove("is-dodged","is-hit");
-      if(state.oxygen<=0)return finish("fail");
-      if(state.fishWins>=3){state.fishActive=false;state.fishBusy=false;state.fishResolvedZones.push(state.zone);state.salvage+=1;state.battery=Math.min(4,state.battery+1);$("fishEncounter").classList.add("hidden");setFeedback(`${icon("salvage")}<b>+1</b>${icon("power")}<b>+1</b>`,t("fishCleared"));renderBattle();return;}
-      state.fishStep+=1;state.fishAttack=fishPattern();state.fishBusy=false;renderFish();startFishClock();
-    },520);
+  function awardFishXp(amount){save.xp+=amount;let gained=0;while(save.xp>=xpNeeded()){save.xp-=xpNeeded();save.level+=1;save.statPoints+=1;gained+=1;}persist();return gained;}
+  function renderUpgrade(){$("upgradeTitle").textContent=t("upgradeTitle");$("upgradePoints").textContent=`Lv.${save.level} · ${t("statPoints",{n:save.statPoints})}`;$("upgradeHp").textContent=t("hpStat");$("upgradeAttack").textContent=t("attackStat");$("upgradeOxygen").textContent=t("oxygenStat");$("upgradeDone").textContent=t("doneUpgrade");for(const id of ["upgradeHp","upgradeAttack","upgradeOxygen"])$(id).disabled=save.statPoints<1;}
+  function openUpgrade(){renderUpgrade();$("upgradePanel").classList.remove("hidden");}
+  function allocateStat(stat){if(save.statPoints<1)return;const oldMaxHp=maxHealth(),oldMaxOxygen=maxOxygen();save.statPoints-=1;save.stats[stat]+=1;if(stat==="hp")state.playerHp+=maxHealth()-oldMaxHp;if(stat==="oxygen")state.oxygen=Math.min(maxOxygen(),state.oxygen+maxOxygen()-oldMaxOxygen);persist();renderUpgrade();renderBattle();}
+  function winFish(){const fish=fishProfile(),levels=awardFishXp(fish.xp);state.fishActive=false;state.fishBusy=false;state.fishResolvedZones.push(state.zone);state.salvage+=1;state.battery=Math.min(4,state.battery+1);$("fishEncounter").classList.add("hidden");setFeedback(`${icon("salvage")}<b>+1</b><b>XP +${fish.xp}</b>`,`${t("fishWon")} ${t("xpGain",{n:fish.xp})}${levels?` ${t("levelUp",{n:levels})}`:""}`);renderBattle();if(levels)openUpgrade();}
+  function attackFish(){
+    if(!state.fishActive||state.fishBusy)return;state.fishBusy=true;state.fishHp-=diverAttack();$("fishEncounter").classList.add("is-hit");setFeedback(`${icon("danger")}<b>-${diverAttack()}</b>`,t("attackAction"));renderFish();
+    window.setTimeout(()=>{$("fishEncounter").classList.remove("is-hit");if(state.fishHp<=0){winFish();return;}const fish=fishProfile();state.playerHp=Math.max(0,state.playerHp-fish.attack);$("fishEncounter").classList.add("is-countering");setFeedback(`<b>-${fish.attack}</b>`,t("fishStrikes"));renderFish();window.setTimeout(()=>{$("fishEncounter").classList.remove("is-countering");if(state.playerHp<=0){finish("combat");return;}state.fishBusy=false;renderFish();},700);},650);
   }
-  function dodgeFish(action){
-    if(!state.fishActive||state.fishBusy)return;
-    if(action==="pulse"&&state.battery<1){setFeedback(`${icon("power")}<b>0</b>`,t("pulseNeed"));return;}
-    if(action==="pulse")state.battery-=1;
-    const correct=state.fishAttack==="glow"?action==="pulse":action!=="pulse"&&action!==state.fishAttack;
-    resolveFishAttack(correct,correct?(action==="pulse"?"fishPulsed":"fishDodged"):"fishHit");
+  function escapeFish(){
+    if(!state.fishActive||state.fishBusy)return;const cost=6+state.route*2;state.oxygen=Math.max(0,state.oxygen-cost);state.fishActive=false;state.fishResolvedZones.push(state.zone);$("fishEncounter").classList.add("is-escaping");setFeedback(`${icon("oxygen")}<b>-${cost}</b>`,t("fishEscaped",{n:cost}));window.setTimeout(()=>{$("fishEncounter").classList.add("hidden");$("fishEncounter").classList.remove("is-escaping");renderBattle();if(state.oxygen<=0)finish("fail");},700);
   }
-  function localize(){document.documentElement.lang=locale;document.title=`${t("title")} - Internal Trial`;$("title").textContent=t("title");$("languageLabel").textContent=t("language");$("localeSelect").value=locale;$("headline").textContent=t("headline");$("intro").textContent=t("intro");$("guideTitle").textContent=t("guideTitle");$("guideCopy").textContent=t("guideCopy");$("startBtn").textContent=t("start");$("stageTitle").textContent=t("stage");$("stageHint").textContent=t("stageHint");$("leftBtn").textContent=t("left");$("rightBtn").textContent=t("right");$("sonarBtn").textContent=t("sonarPowered");$("shieldBtn").textContent=t("shield");$("surfaceBtn").textContent=t("surface");$("coachTitle").textContent=t("coachTitle");$("coachStart").textContent=t("coachStart");renderCoach();$("helpBtn").ariaLabel=t("help");$("stageBack").ariaLabel=t("back");$("battleBack").ariaLabel=t("back");$("progress").textContent=`${t("rank",{n:save.rank})} - ${t("coins",{n:save.coins})}`;renderRoutes();if(state.route){renderBattle();if(state.fishActive)renderFish();}}
-  $("startBtn").onclick=()=>{show("stageScreen");renderRoutes();};$("stageBack").onclick=()=>show("mainScreen");$("battleBack").onclick=()=>{window.clearTimeout(fishClock);show("stageScreen");renderRoutes();};$("menuBtn").onclick=()=>show("mainScreen");$("leftBtn").onclick=()=>move("left");$("rightBtn").onclick=()=>move("right");$("dodgeLeftBtn").onclick=()=>dodgeFish("left");$("pulseBtn").onclick=()=>dodgeFish("pulse");$("dodgeRightBtn").onclick=()=>dodgeFish("right");$("helpBtn").onclick=()=>{if(state.fishActive){window.clearTimeout(fishClock);state.fishPaused=true;$("fishTimerBar").style.animationPlayState="paused";}setCoach(true);};$("coachStart").onclick=()=>{save.tutorialDone=true;persist();setCoach(false);setFeedback(`${icon("sonar")}<b>?</b>`,t("objectiveScan"));if(state.fishActive){state.fishPaused=false;startFishClock();}};$("sonarBtn").onclick=()=>{if(state.sonar){setFeedback(`${icon("sonar")}<b>✓</b>`,sonarMessage());return;}if(state.battery<2){setFeedback(`${icon("power")}<b>0</b>`,t("sonarNeed"));return;}state.battery-=2;state.sonar=true;setFeedback(`${icon("sonar")}<b>✓</b>`,sonarMessage());renderBattle();};$("shieldBtn").onclick=()=>{if(state.shieldArmed)return;if(state.battery<1){setFeedback(`${icon("power")}<b>0</b>`,t("shieldNeed"));return;}state.battery-=1;state.shieldArmed=true;setFeedback(`${icon("shield")}<b>✓</b>`,t("shieldArmed"));renderBattle();};$("surfaceBtn").onclick=()=>finish("surface");$("beaconBtn").onclick=()=>{if(state.beaconUsed)return;if(!window.WeightPlayWallet?.spendDiamonds?.(3)){setFeedback(`${icon("beacon")}<b>3</b>`,t("beaconNeed"));return;}state.beaconUsed=true;state.oxygen=Math.max(state.oxygen,30);setFeedback(`${icon("beacon")}<b>✓</b>${icon("oxygen")}<b>30</b>`,`${t("beaconUsed")}: ${t("beaconHelp")}`);window.WonderAnalytics?.track?.("diamond_spend",{sink:"abyss_emergency_beacon",amount:3});renderBattle();};$("localeSelect").onchange=(event)=>{locale=event.target.value;localStorage.setItem("weightPlayLocale",locale);localize();};
+  function localize(){document.documentElement.lang=locale;document.title=`${t("title")} - Internal Trial`;$("title").textContent=t("title");$("languageLabel").textContent=t("language");$("localeSelect").value=locale;$("headline").textContent=t("headline");$("intro").textContent=t("intro");$("guideTitle").textContent=t("guideTitle");$("guideCopy").textContent=t("guideCopy");$("startBtn").textContent=t("start");$("stageTitle").textContent=t("stage");$("stageHint").textContent=t("stageHint");$("leftBtn").textContent=t("left");$("rightBtn").textContent=t("right");$("sonarBtn").textContent=t("sonarPowered");$("shieldBtn").textContent=t("shield");$("surfaceBtn").textContent=t("surface");$("coachTitle").textContent=t("coachTitle");$("coachStart").textContent=t("coachStart");renderCoach();$("helpBtn").ariaLabel=t("help");$("stageBack").ariaLabel=t("back");$("battleBack").ariaLabel=t("back");$("progress").textContent=`Lv.${save.level} · ${t("rank",{n:save.rank})} - ${t("coins",{n:save.coins})}`;renderRoutes();if(state.route){renderBattle();if(state.fishActive)renderFish();if(!$("upgradePanel").classList.contains("hidden"))renderUpgrade();}}
+  $("startBtn").onclick=()=>{show("stageScreen");renderRoutes();};$("stageBack").onclick=()=>show("mainScreen");$("battleBack").onclick=()=>{window.clearTimeout(fishClock);show("stageScreen");renderRoutes();};$("menuBtn").onclick=()=>show("mainScreen");$("leftBtn").onclick=()=>move("left");$("rightBtn").onclick=()=>move("right");$("dodgeLeftBtn").onclick=attackFish;$("pulseBtn").onclick=escapeFish;$("helpBtn").onclick=()=>setCoach(true);$("coachStart").onclick=()=>{save.tutorialDone=true;persist();setCoach(false);setFeedback(`${icon("sonar")}<b>?</b>`,t("objectiveScan"));};$("sonarBtn").onclick=()=>{if(state.sonar){setFeedback(`${icon("sonar")}<b>✓</b>`,sonarMessage());return;}if(state.battery<2){setFeedback(`${icon("power")}<b>0</b>`,t("sonarNeed"));return;}state.battery-=2;state.sonar=true;setFeedback(`${icon("sonar")}<b>✓</b>`,sonarMessage());renderBattle();};$("shieldBtn").onclick=()=>{if(state.shieldArmed)return;if(state.battery<1){setFeedback(`${icon("power")}<b>0</b>`,t("shieldNeed"));return;}state.battery-=1;state.shieldArmed=true;setFeedback(`${icon("shield")}<b>✓</b>`,t("shieldArmed"));renderBattle();};$("surfaceBtn").onclick=()=>finish("surface");$("beaconBtn").onclick=()=>{if(state.beaconUsed)return;if(!window.WeightPlayWallet?.spendDiamonds?.(3)){setFeedback(`${icon("beacon")}<b>3</b>`,t("beaconNeed"));return;}state.beaconUsed=true;const restored=Math.ceil(maxOxygen()*.3);state.oxygen=Math.max(state.oxygen,restored);setFeedback(`${icon("beacon")}<b>✓</b>${icon("oxygen")}<b>${restored}</b>`,`${t("beaconUsed")}: ${t("beaconHelp")}`);window.WonderAnalytics?.track?.("diamond_spend",{sink:"abyss_emergency_beacon",amount:3});renderBattle();};$("upgradeHp").onclick=()=>allocateStat("hp");$("upgradeAttack").onclick=()=>allocateStat("attack");$("upgradeOxygen").onclick=()=>allocateStat("oxygen");$("upgradeDone").onclick=()=>{$("upgradePanel").classList.add("hidden");renderBattle();};$("localeSelect").onchange=(event)=>{locale=event.target.value;localStorage.setItem("weightPlayLocale",locale);localize();};
+  for(const direction of ["left","right"]){$(`${direction}Gate`).addEventListener("keydown",event=>{if((event.key==="Enter"||event.key===" ")&&$(`${direction}Gate`).getAttribute("aria-disabled")!=="true"){event.preventDefault();move(direction);}});}
   let drag;
   let suppressRouteClickUntil = 0;
   const routeRail = $("routeRail");

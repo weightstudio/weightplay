@@ -16,25 +16,25 @@ h1 { margin: 0; font-size: 32px; } .main-screen p { font-size: 17px; line-height
 .primary, .secondary { min-height: 48px; border: 0; border-radius: 12px; padding: 0 22px; font-weight: 800; cursor: pointer; }
 .primary { background: #e5a72b; color: #342103; box-shadow: inset 0 -3px #ad671c; }.secondary { background: #fff; color: #254c3b; border: 2px solid #699b79; }
 .guide { margin: 20px auto 0; max-width: 500px; padding: 14px; border-radius: 14px; background: #ffffffcc; text-align: left; }.guide h2 { margin: 0; font-size: 18px; }
-.stage-screen { display: grid; grid-template-rows: 52px minmax(0, 1fr) 52px var(--wp-ad-reserve-height, 56px); gap: 12px; background: #eef7de; }.stage-screen header { display: flex; align-items: center; justify-content: space-between; padding-left: 58px; font-size: 19px; }.stage-screen .back { position: absolute; top: 18px; left: 18px; }
-.stage-rail { display: flex; overflow-x: auto; gap: 14px; scroll-snap-type: x mandatory; padding: 24px calc(50% - 132px); align-items: center; touch-action: pan-x; }.stage-card { flex: 0 0 264px; height: 190px; scroll-snap-align: center; border: 3px solid #8aaf79; border-radius: 18px; background: #fffdf3; padding: 18px; text-align: left; cursor: pointer; }.stage-card.selected { border-color: #e5a72b; box-shadow: 0 0 0 4px #ffe39a; }.stage-card.locked { opacity: .55; }.stage-card strong { display: block; font-size: 24px; }.stage-card span { display: block; margin-top: 18px; }.stage-screen .primary { width: min(100%, 340px); margin: 0 auto; }.ad-reserve, .battle-ad-reserve { height: 56px; min-height: 56px; border-top: 1px dashed #86a787; }
-.battle-shell, .result-shell { position: fixed; inset: 0; width: var(--wp-mobile-vw, 100vw); height: var(--wp-mobile-vh, 100dvh); display: grid; grid-template-rows: minmax(0, 1fr) var(--wp-ad-reserve-height, 56px); overflow: hidden; background: #173d32; padding: 4px; color: #fff; text-size-adjust: 100%; -webkit-text-size-adjust: 100%; }
+.stage-screen { display: grid; grid-template-rows: 52px minmax(0, 1fr) 52px; gap: 12px; background: #eef7de; }.stage-screen header { display: flex; align-items: center; justify-content: space-between; padding-left: 58px; font-size: 19px; }.stage-screen .back { position: absolute; top: 18px; left: 18px; }
+.stage-rail { display: flex; overflow-x: auto; gap: 14px; scroll-snap-type: x mandatory; padding: 24px calc(50% - 132px); align-items: center; touch-action: pan-x; }.stage-card { flex: 0 0 264px; height: 190px; scroll-snap-align: center; border: 3px solid #8aaf79; border-radius: 18px; background: #fffdf3; padding: 18px; text-align: left; cursor: pointer; }.stage-card.selected { border-color: #e5a72b; box-shadow: 0 0 0 4px #ffe39a; }.stage-card.locked { opacity: .55; }.stage-card strong { display: block; font-size: 24px; }.stage-card span { display: block; margin-top: 18px; }.stage-screen .primary { width: min(100%, 340px); margin: 0 auto; }
+.battle-shell { position: fixed; inset: 0; display: grid; place-items: end center; overflow: hidden; background: #173d32; padding: 4px; color: #fff; text-size-adjust: 100%; -webkit-text-size-adjust: 100%; }
 .battle-canvas { min-width: 0; min-height: 0; overflow: hidden; display: grid; grid-template-rows: 52px 64px minmax(0, 1fr) 64px; background: #e8f4d4; color: #263a2f; border-radius: 16px; }
 .battle-top { display: grid; grid-template-columns: 52px minmax(0, 1fr) 68px; align-items: center; padding: 0 10px; background: #315a46; color: #fff; }.battle-top .back { width: 38px; height: 38px; border-radius: 10px; font-size: 24px; }.battle-top strong { text-align: center; font-size: 17px; }.battle-top span { text-align: right; font-size: 15px; }
 .objective { min-height: 64px; display: flex; align-items: center; justify-content: space-between; padding: 0 14px; background: #fff8df; font-weight: 800; font-size: 15px; gap: 8px; }.play-scene { min-height: 0; display: grid; grid-template-rows: 46px minmax(0, 1fr) 32px; padding: 8px; background-image: url('../../assets/animal-word-trails-forest-bg.webp'); background-size: cover; background-position: center; }.target-row { display: flex; gap: 6px; overflow: hidden; align-items: center; }.target { background: #fffdf0e8; border: 2px solid #896d35; border-radius: 10px; padding: 5px 8px; font-size: 13px; font-weight: 800; white-space: nowrap; }.target.done { opacity: .55; text-decoration: line-through; }
 .board { width: min(100%, 560px); height: min(100%, 560px); aspect-ratio: 1; place-self: center; display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; padding: 8px; border-radius: 16px; background: #173d32cc; touch-action: none; }.tile { border: 0; border-radius: 12px; background: #f5e8bd url('../../assets/animal-word-trails-letter-tiles.webp') left center / 500% 100% no-repeat; color: #2c452f; font-size: 28px; font-weight: 900; cursor: pointer; }.tile.selected { background-position: 25% center; color: #fff; }.tile.correct { background-position: 50% center; color: #fff; }.feedback { margin: 0; align-self: center; text-align: center; color: #fff; font-size: 14px; font-weight: 800; text-shadow: 0 1px 2px #122; }.actions { display: grid; grid-template-columns: 72px 72px 72px minmax(0, 1fr); gap: 8px; padding: 8px; background: #315a46; }.icon-action { border: 0; border-radius: 10px; color: #fff; background: #244635; font-size: 12px; font-weight: 800; display: grid; grid-template-columns: 26px 1fr; align-items: center; padding: 4px; }.icon { width: 24px; height: 24px; background-image: url('../../assets/animal-word-trails-ui-icons.webp'); background-size: 300% 200%; background-repeat: no-repeat; }.icon.hint { background-position: left top; }.icon.undo { background-position: 33.333% top; }.icon.clear { background-position: 66.67% top; }.compact { min-width: 0; }
 .result-canvas { min-width: 0; min-height: 0; overflow: hidden; display: grid; grid-template-rows: minmax(0, 1fr) auto auto auto; align-content: center; justify-items: center; gap: 12px; padding: 20px; border-radius: 16px; }
-.result-screen { text-align: center; background: #eef7de; color: #263a2f; }.leo { width: min(58%, 260px); max-height: 44%; object-fit: contain; align-self: end; }.result-screen h2, .result-screen p { margin: 0; }.skill { font-weight: 800; }.result-actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; }.result-screen button { margin: 0; }
+.result-screen { text-align: center; background: #eef7de; color: #263a2f; }.leo { width: min(58%, 260px); max-height: 44%; object-fit: contain; align-self: end; }.result-screen h2, .result-screen p { margin: 0; }.skill { font-weight: 800; }.result-actions { width:100%; display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; }.result-screen button { flex:0 0 auto; min-width:124px; margin: 0; white-space:nowrap; }
 .tile.blocked{background-position:75% center;color:#b9c1be;cursor:not-allowed;opacity:.82}
 .word-trails[data-locale="zh-Hant"] .tile { background-image: url('../../assets/animal-word-trails-zh-tiles.webp'); }
 .play-scene[data-habitat="safari"] { background-image: url('../../assets/animal-word-trails-safari-bg.webp'); }
-@media (min-width: 700px) { .word-trails { box-shadow: 0 0 40px #0005; }.battle-shell, .result-shell { padding: 10px max(10px, calc((100vw - 720px) / 2)); }.battle-canvas, .result-canvas { max-width: 720px; width: 100%; justify-self: center; } }
+@media (min-width: 700px) { .word-trails { box-shadow: 0 0 40px #0005; } }
 .mini{border:0;border-radius:8px;background:#315a46;color:#fff;padding:7px 9px;font-weight:800}.stage-screen header{padding-right:4px}.stage-screen header span{margin-left:auto}dialog{width:min(92vw,480px);border:0;border-radius:16px;background:#f6efd8;color:#263a2f;padding:18px;box-shadow:0 14px 50px #0008}dialog::backdrop{background:#173d32aa}dialog .back{float:right}#albumList{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}#albumList span{padding:12px;border-radius:10px;background:#fffdf3;font-weight:800}#albumList .locked{opacity:.45}
 #albumList .card{min-height:76px;background-image:url('../../assets/animal-word-trails-clue-cards.webp');background-size:400% 300%;color:#fff;text-shadow:0 1px 3px #000;display:flex;align-items:end}
 .play-scene { position: relative; }.clue-reveal { position:absolute; inset:58px 18px 42px; z-index:3; display:grid; place-items:center; align-content:center; gap:8px; border-radius:16px; background:#173d32e8; color:#fff; font-size:20px; text-align:center; pointer-events:none; }.clue-reveal i { width:128px; height:128px; background:url('../../assets/animal-word-trails-word-clear-fx.webp') left center / 400% 100% no-repeat; animation:clear-pop .45s ease-out; }.clue-reveal strong { padding:8px 12px; border-radius:10px; background:#ffffff20; }.clue-reveal.hidden { display:none !important; }@keyframes clear-pop{from{opacity:0;transform:scale(.72)}to{opacity:1;transform:scale(1)}}
 
 /* Active play must never use a board's intrinsic width to widen the phone canvas. */
-.stage-screen { grid-template-rows: 52px minmax(0, 1fr) 56px; }
+.stage-screen { grid-template-rows: 52px minmax(0, 1fr) 52px; }
 .battle-canvas > *, .play-scene, .actions, .target-row { min-width: 0; }
 .play-scene { min-width: 0; }
 .board { width: min(100%, 560px); max-width: 100%; min-width: 0; height: auto; max-height: none; grid-template-columns: repeat(4, minmax(0, 1fr)); }
@@ -42,7 +42,7 @@ h1 { margin: 0; font-size: 32px; } .main-screen p { font-size: 17px; line-height
 .target { flex: 0 0 auto; }
 .icon-action { grid-template-columns: 26px minmax(0, 1fr); }
 .icon-action span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.stage-card.locked { pointer-events: none; }
+.stage-card.locked { cursor: not-allowed; }
 @media (max-height: 520px) {
   .battle-canvas { grid-template-rows: 42px 42px minmax(0, 1fr) 50px; }
   .battle-top { grid-template-columns: 42px minmax(0, 1fr) 54px; padding: 0 6px; }
@@ -59,3 +59,27 @@ h1 { margin: 0; font-size: 32px; } .main-screen p { font-size: 17px; line-height
   .icon { width: 18px; height: 18px; }
   .compact { min-height: 40px; padding: 0 10px; font-size: 12px; }
 }
+
+/* Kids owns one invariant 390x788 logical Canvas on Stage, Battle, and Result. */
+body.word-stage .stage-screen { position:fixed; inset:auto; left:var(--word-frame-left,4px); top:var(--word-frame-top,4px); width:390px; min-height:0; height:788px; padding:18px; overflow:hidden; transform:scale(var(--word-scale,1)); transform-origin:top left; }
+.battle-slot { position:relative; width:var(--word-frame-width,390px); height:var(--word-frame-height,788px); }
+body:is(.word-playing,.word-result) .battle-canvas { position:absolute; inset:0 auto auto 0; display:block; width:390px; max-width:none; height:788px; border-radius:16px; transform:scale(var(--word-scale,1)); transform-origin:top left; }
+.battle-live { display:grid; grid-template-rows:52px 64px minmax(0,1fr) 64px; min-width:0; min-height:0; height:100%; }
+.result-overlay { position:absolute; inset:0; z-index:5; width:390px; height:788px; min-width:0; min-height:0; max-height:788px !important; overflow:hidden; display:grid; grid-template-rows:minmax(0,1fr) auto auto auto; align-content:center; justify-items:center; gap:12px; padding:20px; border-radius:16px; }
+body.word-playing #resultPanel { height:788px !important; max-height:788px !important; }
+#resultsBack { width:132px !important; max-width:none !important; }
+body:is(.word-stage,.word-playing) :is(.sound-toggle,.weightplay-version-badge,.wp-tutorial-button) { display:none !important; }
+.battle-live.hidden, .result-overlay.hidden { display:none !important; }
+body.word-playing .battle-top { grid-template-columns:52px minmax(0,1fr) 68px; padding:0 10px; }
+body.word-playing .battle-top .back { width:38px; height:38px; border-radius:10px; font-size:24px; }
+body.word-playing .battle-top strong { font-size:17px; }
+body.word-playing .objective { min-height:64px; padding:0 14px; font-size:15px; }
+body.word-playing .play-scene { grid-template-rows:46px minmax(0,1fr) 32px; padding:8px; }
+body.word-playing .target { padding:5px 8px; font-size:13px; }
+body.word-playing .board { width:min(100%,560px); gap:6px; padding:8px; border-radius:16px; }
+body.word-playing .tile { border-radius:12px; font-size:28px; }
+body.word-playing .feedback { font-size:14px; }
+body.word-playing .actions { grid-template-columns:72px 72px 72px minmax(0,1fr); gap:8px; padding:8px; }
+body.word-playing .icon-action { font-size:12px; grid-template-columns:26px minmax(0,1fr); }
+body.word-playing .icon { width:24px; height:24px; }
+body.word-playing .compact { min-height:48px; padding:0 22px; font-size:inherit; }

@@ -9,7 +9,9 @@
   <link rel="stylesheet" href="../../src/game-page-info.css">
   <link rel="stylesheet" href="../../src/loading-screen.css">
   <link rel="stylesheet" href="../../src/play-viewport.css?v=20260715-kids-fullscreen1">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=20260715-kids-canvas1">
+  <script data-wp-stage-standard>/* Animal Bubble Safari owns its native Kids Stage rail. */</script>
+  <script data-wp-battle-standard>/* Animal Bubble Safari owns its native Kids Battle Canvas. */</script>
 </head>
 <body>
   <main id="viewport" class="viewport" aria-live="polite">
@@ -27,7 +29,7 @@
 
         <section id="mainScreen" class="screen main-screen" aria-labelledby="gameTitle">
           <header class="topbar">
-            <a class="home-link" href="../../index.html" aria-label="返回 WeightPlay 大廳">
+            <a class="home-link" href="/kids/" aria-label="返回 WeightPlay 大廳">
               <span aria-hidden="true">←</span>
               <img src="../../assets/weightplay-logo.png" alt="" draggable="false">
             </a>
@@ -74,6 +76,7 @@
         </section>
 
         <section id="battleScreen" class="screen battle-screen" aria-labelledby="battleStageName">
+          <div id="battleLive" class="battle-live">
           <header class="battle-header">
             <button id="battleBack" class="back-button" type="button" aria-label="返回關卡">←</button>
             <div><span data-i18n="level">關卡</span><strong id="battleStageName">1</strong></div>
@@ -90,9 +93,9 @@
             <div><span data-i18n="nextBubble">下一顆</span><canvas id="nextPreview" width="48" height="48"></canvas></div>
             <strong id="battleGoal">配對 1 組</strong>
           </div>
-        </section>
+          </div>
 
-        <section id="resultScreen" class="screen result-screen" aria-labelledby="resultTitle">
+          <section id="resultScreen" class="result-screen" aria-labelledby="resultTitle">
           <div class="result-panel">
             <img class="result-mascot" src="../../assets/animal-bubble-safari-lion-guide.webp" alt="" draggable="false">
             <h2 id="resultTitle">救援成功！</h2>
@@ -117,6 +120,7 @@
               <button id="backToMap" type="button" data-i18n="backToMap">返回關卡</button>
             </div>
           </div>
+          </section>
         </section>
 
         <div id="guideModal" class="modal" hidden>
@@ -134,10 +138,8 @@
         </div>
       </div>
     </div>
-    <div id="adReserve" class="ad-reserve" aria-hidden="true"></div>
   </main>
 <script src="../../src/edge-guard.js?v=20260715-kids-fullscreen1"></script>
-<script src="../../src/stage-selector-standard.js?v=20260715-stage-swipe2"></script>
-<script src="game.js"></script>
+<script src="game.js?v=20260715-kids-canvas1"></script>
 </body>
 </html>

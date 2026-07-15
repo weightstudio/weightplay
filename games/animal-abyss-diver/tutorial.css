@@ -468,3 +468,36 @@
     font-size: 0.78rem;
   }
 }
+
+/* Direct target selection and slower turn-based fish combat. */
+.lane-controls{display:none}
+.controls{grid-template-rows:42px}
+.lane-gate{grid-template-rows:auto minmax(0,1fr) auto;cursor:pointer}
+.lane-gate strong{grid-row:1}
+.lane-gate img{grid-row:2;width:92%;min-height:72px}
+.lane-gate small{grid-row:3}
+.lane-gate[aria-disabled="true"]{pointer-events:none}
+.dive-field.is-fish-combat .lane-gate-left{opacity:0;transform:translateX(-140%) scale(.8)}
+.dive-field.is-fish-combat .lane-gate-right{opacity:0;transform:translateX(140%) scale(.8)}
+.dive-field.is-fish-combat>.diver-art{opacity:0;transform:translateY(25%) scale(.7)}
+.fish-encounter{inset:6% 5% auto;grid-template-columns:1fr 1fr;grid-template-rows:auto 122px auto auto auto;gap:7px 12px;padding:12px}
+.fish-encounter>strong{grid-column:1/-1;grid-row:1;font-size:.78rem}
+.combat-diver{grid-column:1;grid-row:2;display:grid;place-items:center;min-width:0}
+.combat-diver img{width:100%;height:118px;object-fit:contain;filter:drop-shadow(0 7px 7px #00121c)}
+.fish-sprite{grid-column:2;grid-row:2;width:150px;height:68px;justify-self:center;align-self:center}
+.fish-sprite img{top:-16px;left:-290px;width:720px;height:446px}
+.fish-encounter>p{grid-column:1/-1;grid-row:3;min-height:26px;display:flex;gap:8px}
+.fish-encounter>p small{color:#bcecff}
+.fish-timer{grid-column:1;grid-row:4}.fish-guard{grid-column:2;grid-row:4}
+.fish-timer span,.fish-guard span{display:inline-flex;justify-content:space-between}
+#fishTimerText,#fishGuardText{display:flex!important;justify-content:space-between;gap:4px;white-space:nowrap}
+.fish-timer i,.fish-guard i{height:9px}
+.fish-timer b,.fish-guard b{background:#63dfad}
+.fish-guard b{background:#ff7770}
+.fish-actions{grid-column:1/-1;grid-row:5;grid-template-columns:1fr 1fr}
+.fish-actions button{min-height:48px;font-size:.86rem}
+.fish-encounter.is-countering .combat-diver{animation:fish-hit .24s ease 2 alternate}
+.fish-encounter.is-escaping{animation:fish-dodged .7s ease forwards}
+.upgrade-panel{position:absolute;z-index:8;inset:8%;display:grid;align-content:center;gap:12px;padding:18px;border:2px solid #ffe083;border-radius:18px;background:#06283ef5;text-align:center;box-shadow:0 18px 40px #00131fdd}
+.upgrade-panel h2,.upgrade-panel strong{margin:0}.upgrade-panel>div{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.upgrade-panel button{min-height:52px;border:0;border-radius:10px;background:#e8c45f;color:#142134;font-weight:900}.upgrade-panel button:disabled{opacity:.45}
+@media(max-height:500px){.controls{grid-template-rows:36px}.lane-gate img{min-height:38px}.fish-encounter{inset:3% 7% auto;grid-template-rows:auto 66px auto auto auto;padding:6px}.combat-diver img{height:64px}.fish-sprite{width:96px;height:40px}.fish-sprite img{top:-10px;left:-186px;width:462px;height:286px}.fish-actions button{min-height:30px}.upgrade-panel{inset:3% 12%;padding:8px;gap:6px}.upgrade-panel button{min-height:34px;font-size:.7rem}}

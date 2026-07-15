@@ -745,13 +745,15 @@ body.rescue-playing .wp-tutorial-button {
 }
 
 body.rescue-playing.rescue-result #hud,
-body.rescue-playing.rescue-result #playArea {
+body.rescue-playing.rescue-result #playArea > .animal-panel,
+body.rescue-playing.rescue-result #playArea > #board,
+body.rescue-playing.rescue-result #playArea > .action-row {
   visibility: hidden;
 }
 
 body.rescue-playing .result-panel {
   position: absolute !important;
-  inset: 0 !important;
+  inset: calc(-6px - 59px) -6px -6px !important;
   width: auto !important;
   height: auto !important;
   max-height: none !important;

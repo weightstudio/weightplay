@@ -10,12 +10,14 @@
   <link rel="stylesheet" href="../../src/game-page-info.css">
   <link rel="stylesheet" href="../../src/loading-screen.css">
   <link rel="stylesheet" href="../../src/play-viewport.css">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=20260715-kids-canvas1">
+  <script data-wp-stage-standard>/* Animal Word Trails owns its native Kids Stage rail. */</script>
+  <script data-wp-battle-standard>/* Animal Word Trails owns its native Kids Battle Canvas. */</script>
 </head>
 <body>
   <main class="word-trails" id="app">
     <section class="screen main-screen" data-screen="main">
-      <a class="lobby-return" data-wp-return="main" href="../../index.html" data-aria="backLobby" aria-label="Back to WeightPlay"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false"></a>
+      <a class="lobby-return" data-wp-return="main" href="/kids/" data-aria="backLobby" aria-label="Back to WeightPlay"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false"></a>
       <div class="locale-row"><label for="locale" data-copy="language">Language</label><select id="locale" data-aria="language" aria-label="Language"><option value="en">English</option><option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option></select></div>
       <img class="cover" src="../../assets/animal-word-trails-cover.webp" alt="">
       <h1 data-copy="title">Animal Word Trails</h1>
@@ -29,12 +31,12 @@
       <header><strong data-copy="chooseStage">Choose a trail</strong><span id="stageProgress"></span><button id="album" class="mini" data-copy="album">Album</button></header>
       <div class="stage-rail" id="stageRail" data-aria="stages" aria-label="Stages"></div>
       <button id="playStage" hidden type="button" tabindex="-1" aria-hidden="true"></button>
-      <div class="ad-reserve" aria-hidden="true"></div>
       <dialog id="albumDialog"><button id="closeAlbum" class="back" data-aria="closeAlbum" aria-label="Close">&larr;</button><h2 data-copy="albumTitle">Animal clues</h2><div id="albumList"></div></dialog>
     </section>
 
     <section class="screen battle-shell hidden" data-screen="battle" data-no-mobile-immersive="true">
-      <div class="battle-canvas">
+      <div class="battle-slot"><div class="battle-canvas" data-wp-logical-battle-canvas="390x788">
+        <div id="battleLive" class="battle-live">
         <header class="battle-top"><button class="back" id="battleBack" data-wp-return="battle" data-aria="backStage" aria-label="Back">&larr;</button><strong id="battleTitle"></strong><span id="starCount">&#9733; 0</span></header>
         <section class="objective"><span id="objective"></span><span id="foundCount"></span></section>
         <section class="play-scene" id="playScene">
@@ -44,17 +46,13 @@
           <p class="feedback" id="feedback" aria-live="polite"></p>
         </section>
         <footer class="actions"><button id="hint" class="icon-action"><i class="icon hint"></i><span data-copy="hint">Hint</span></button><button id="undo" class="icon-action"><i class="icon undo"></i><span data-copy="undo">Undo</span></button><button id="clear" class="icon-action"><i class="icon clear"></i><span data-copy="clear">Clear</span></button><button id="submit" class="primary compact" data-copy="check">Check word</button></footer>
-      </div>
-      <div class="battle-ad-reserve" aria-hidden="true"></div>
-    </section>
-
-    <section class="screen result-shell hidden" data-screen="result" data-no-mobile-immersive="true">
-      <div class="battle-canvas result-canvas result-screen">
+        </div>
+        <section id="resultPanel" class="result-overlay result-screen hidden" data-screen="result">
         <img class="leo" src="../../assets/animal-word-trails-lion-guide.webp" alt="">
         <h2 data-copy="complete">Trail complete</h2><p id="resultSummary"></p><p class="skill" data-copy="skill">Reading &middot; Focus &middot; Logic &middot; Animal knowledge</p>
         <div class="result-actions"><button class="primary" id="next" data-copy="next">Next trail</button><button class="secondary" id="resultsBack" data-wp-return="battle" data-copy="trails">Trail menu</button></div>
-      </div>
-      <div class="battle-ad-reserve" aria-hidden="true"></div>
+        </section>
+      </div></div>
     </section>
   </main>
   <div id="loadingPanel" class="loading-panel" role="status" aria-live="polite">
@@ -64,8 +62,7 @@
   <script src="../../src/analytics.js"></script>
   <script src="../../src/sound.js"></script>
   <script src="../../src/edge-guard.js"></script>
-  <script src="../../src/stage-selector-standard.js?v=20260715-stage-swipe2"></script>
-  <script src="game.js"></script>
+  <script src="game.js?v=20260715-kids-canvas1"></script>
   <script src="../../src/game-page-info.js"></script>
 </body>
 </html>
