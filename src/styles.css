@@ -3512,6 +3512,37 @@ body.kids-lobby-page {
   order: 5;
 }
 
+.kids-lobby-page .continue-playing-section > h2 {
+  color: #17324a;
+  text-shadow: 0 1px 0 #ffffff;
+}
+
+.kids-lobby-page .continue-playing-card {
+  border: 2px solid #83bad2;
+  background: #fffdf7;
+  box-shadow: 0 5px 0 #a5d0df;
+}
+
+.kids-lobby-page .continue-playing-copy strong {
+  color: #17324a;
+}
+
+.kids-lobby-page .continue-playing-copy small {
+  color: #48687a;
+}
+
+.kids-lobby-page .continue-playing-copy b {
+  background: #d9f7ed;
+  color: #126a5d;
+}
+
+.kids-lobby-page .continue-playing-card:hover,
+.kids-lobby-page .continue-playing-card:focus-visible {
+  border-color: #267e9e;
+  background: #ffffff;
+  box-shadow: 0 7px 0 #79b7ce;
+}
+
 .kids-lobby-page #filterStatus {
   order: 6;
   color: #17324a;
@@ -3997,7 +4028,7 @@ body.general-lobby-page {
 }
 
 .general-lobby-page .general-play-heading span {
-  color: #b64b36;
+  color: #8e3a2b;
   font-size: 12px;
   font-weight: 1000;
   text-transform: uppercase;
@@ -4101,6 +4132,95 @@ body.general-lobby-page {
 
 .general-lobby-page #upcomingGamesSection {
   order: 10;
+  gap: 14px;
+  padding-bottom: 2px;
+}
+
+.general-lobby-page #upcomingGamesSection .section-heading {
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.general-lobby-page #upcomingGamesSection .section-heading span {
+  color: #a64a35;
+}
+
+.general-lobby-page #upcomingGamesSection .section-heading h2 {
+  color: #172d2a;
+}
+
+.general-lobby-page .upcoming-games {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.general-lobby-page .upcoming-game-card {
+  grid-template-columns: 132px minmax(0, 1fr);
+  min-height: 154px;
+  border-color: #b7c5c0;
+  border-radius: 7px;
+  background: #ffffff;
+  box-shadow: 0 6px 0 #c2d0ca;
+  color: #172d2a;
+}
+
+.general-lobby-page .upcoming-game-art {
+  border: 1px solid #d3ddd9;
+  background: #1c3640;
+}
+
+.general-lobby-page .upcoming-game-copy {
+  gap: 7px;
+}
+
+.general-lobby-page .upcoming-game-copy strong {
+  color: #172d2a;
+  font-size: 18px;
+}
+
+.general-lobby-page .upcoming-game-copy small {
+  color: #45635c;
+}
+
+.general-lobby-page .upcoming-game-copy em {
+  color: #5d4530;
+  -webkit-line-clamp: 2;
+}
+
+.general-lobby-page .upcoming-game-copy .game-card-state,
+.general-lobby-page .upcoming-game-copy .game-card-state strong,
+.general-lobby-page .upcoming-game-copy .game-card-state span {
+  color: #5d4530;
+}
+
+.general-lobby-page .upcoming-game-copy .game-card-state {
+  display: none;
+}
+
+.general-lobby-page .fresh-update-card {
+  border-color: #b7c5c0;
+  border-radius: 7px;
+  background: #ffffff;
+  color: #172d2a;
+  box-shadow: 0 6px 0 #c2d0ca;
+}
+
+.general-lobby-page .fresh-update-copy strong {
+  color: #172d2a;
+}
+
+.general-lobby-page .fresh-update-copy small {
+  color: #45635c;
+}
+
+.general-lobby-page .fresh-update-copy em {
+  color: #5d4530;
+}
+
+.general-lobby-page .fresh-update-skills span {
+  background: #e5f5f1;
+  color: #24534a;
 }
 
 .general-lobby-page .kids-portal {
@@ -4130,7 +4250,7 @@ body.general-lobby-page {
 }
 
 .general-lobby-page .section-heading span {
-  color: #b64b36;
+  color: #8e3a2b;
 }
 
 .general-lobby-page .section-heading h2 {
@@ -4146,7 +4266,59 @@ body.general-lobby-page {
 }
 
 .general-lobby-page .hero-game-card small {
-  color: #5c716c;
+  color: #45635c;
+}
+
+.general-lobby-page .hero-game-card em {
+  border-color: #a8d2ca;
+  background: #e5f5f1;
+  color: #24534a;
+}
+
+.general-lobby-page .daily-reward {
+  border-color: #d5c487;
+  background: #fffdf4;
+  color: #172d2a;
+  box-shadow: 0 6px 0 #d6c993;
+}
+
+.general-lobby-page .daily-reward-copy span {
+  color: #a96118;
+}
+
+.general-lobby-page .daily-reward-copy small {
+  color: #556962;
+}
+
+.general-lobby-page .daily-day {
+  border-color: #c8d6d0;
+  background: #f0f6f3;
+  color: #284940;
+}
+
+.general-lobby-page .daily-day span,
+.general-lobby-page .daily-day small {
+  color: #4c625a;
+}
+
+.general-lobby-page .daily-day b {
+  color: #1e6255;
+}
+
+.general-lobby-page .daily-day.current {
+  border-color: #4aa898;
+  background: #dff3ed;
+  box-shadow: 0 0 0 2px rgba(74, 168, 152, 0.18) inset;
+}
+
+.general-lobby-page .daily-day.claimable {
+  border-color: #d69a2e;
+  background: #fff0bf;
+  box-shadow: 0 0 0 2px rgba(214, 154, 46, 0.16) inset;
+}
+
+.general-lobby-page .daily-day.claimed small {
+  color: #2b7a4d;
 }
 
 .general-lobby-page .lobby-grid {
@@ -4209,7 +4381,7 @@ body.general-lobby-page {
 }
 
 .general-lobby-page .game-card-topline {
-  color: #506b65;
+  color: #3d5b54;
 }
 
 .general-lobby-page .game-card-actions {
@@ -4240,16 +4412,50 @@ body.general-lobby-page {
 }
 
 .general-lobby-page .kids-portal {
-  border: 1px solid #70b8c7;
+  grid-template-columns: minmax(320px, 0.92fr) minmax(0, 1.08fr);
+  min-height: 350px;
+  border: 1px solid #2f7275;
   border-radius: 7px;
-  background: #d8f1f3;
-  color: #173d47;
-  box-shadow: 0 6px 0 #9ccdd4;
+  background: linear-gradient(135deg, #0b3d46, #135864);
+  color: #ffffff;
+  box-shadow: 0 7px 0 #0a3038;
+}
+
+.general-lobby-page .kids-portal > img {
+  min-height: 350px;
+  object-position: center;
+}
+
+.general-lobby-page .kids-portal-copy {
+  gap: 14px;
+  padding: clamp(28px, 5vw, 56px);
+}
+
+.general-lobby-page .kids-portal-copy h2 {
+  color: #ffffff;
+  font-size: clamp(2rem, 4vw, 3.35rem);
+  line-height: 1.06;
 }
 
 .general-lobby-page .kids-portal-copy > span,
 .general-lobby-page .kids-portal-copy p {
-  color: #4b6970;
+  color: #d7eeeb;
+}
+
+.general-lobby-page .kids-portal-copy > span {
+  color: #8fe0c5;
+}
+
+.general-lobby-page .kids-portal-copy p {
+  max-width: 38ch;
+  font-size: 16px;
+}
+
+.general-lobby-page .kids-portal-copy a {
+  border: 1px solid #ffd972;
+  background: #ffd866;
+  color: #21312d;
+  box-shadow: 0 5px 0 #aa711c;
 }
 
 .general-lobby-page .general-trust-strip {
@@ -4261,7 +4467,7 @@ body.general-lobby-page {
 .general-lobby-page .parent-trust-copy span,
 .general-lobby-page .parent-trust-copy p,
 .general-lobby-page .parent-trust-points small {
-  color: #5f6c66;
+  color: #40544e;
 }
 
 .general-lobby-page .parent-trust-points div {
@@ -4270,17 +4476,17 @@ body.general-lobby-page {
 }
 
 .general-lobby-page .parent-trust-points strong {
-  color: #315f56;
+  color: #244b42;
 }
 
 .general-lobby-page .trust-report-link,
 .general-lobby-page .site-footer a {
-  color: #a33f2c;
+  color: #7c3123;
 }
 
 .general-lobby-page .site-footer {
   border-color: #b7c5c0;
-  color: #5c716c;
+  color: #405c55;
 }
 
 @media (max-width: 720px) {
@@ -4345,6 +4551,44 @@ body.general-lobby-page {
 
   .general-lobby-page .hero-games {
     grid-auto-columns: minmax(218px, 72vw);
+  }
+
+  .general-lobby-page .upcoming-games {
+    grid-auto-columns: minmax(250px, 78vw);
+    grid-auto-flow: column;
+    grid-template-columns: none;
+  }
+
+  .general-lobby-page .upcoming-game-card {
+    grid-template-columns: 100px minmax(0, 1fr);
+    min-height: 154px;
+  }
+
+  .general-lobby-page .upcoming-game-copy strong {
+    display: -webkit-box;
+    overflow: hidden;
+    white-space: normal;
+    font-size: 17px;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .general-lobby-page .kids-portal {
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
+
+  .general-lobby-page .kids-portal > img {
+    min-height: 0;
+    aspect-ratio: 16 / 9;
+  }
+
+  .general-lobby-page .kids-portal-copy {
+    padding: 28px 24px 30px;
+  }
+
+  .general-lobby-page .kids-portal-copy h2 {
+    font-size: 34px;
   }
 
   .general-lobby-page .lobby-grid {

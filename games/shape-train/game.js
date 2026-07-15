@@ -100,7 +100,6 @@
     localeSelect: $("localeSelect"),
     menuPanel: $("menuPanel"),
     stagePanel: $("stagePanel"),
-    stageAdReserve: $("stageAdReserve"),
     startGameBtn: $("startGameBtn"),
     stageBackBtn: $("stageBackBtn"),
     stageGrid: $("stageGrid"),
@@ -123,7 +122,6 @@
     loadingPanel: $("loadingPanel"),
     loadingText: $("loadingText"),
     loadingFill: $("loadingFill"),
-    battleAdReserve: $("battleAdReserve"),
   };
 
   let locale = localStorage.getItem(localeKey) || "en";
@@ -248,20 +246,17 @@
   function showMenu() {
     nodes.menuPanel.classList.add("hidden");
     nodes.stagePanel.classList.remove("hidden");
-    nodes.stageAdReserve.classList.remove("hidden");
     nodes.playPanel.classList.add("hidden");
     nodes.resultPanel.classList.add("hidden");
     document.body.classList.remove("shape-playing");
     document.body.classList.add("wp-standard-stage-page");
     document.querySelector(".shape-game")?.setAttribute("data-play-viewport", "");
-    nodes.battleAdReserve.classList.add("hidden");
     selectedPassenger = false;
     renderStageGrid();
   }
 
   function showMain() {
     nodes.stagePanel.classList.add("hidden");
-    nodes.stageAdReserve.classList.add("hidden");
     nodes.menuPanel.classList.remove("hidden");
     document.body.classList.remove("wp-standard-stage-page");
   }
@@ -283,13 +278,11 @@
     selectedPassenger = false;
     nodes.menuPanel.classList.add("hidden");
     nodes.stagePanel.classList.add("hidden");
-    nodes.stageAdReserve.classList.add("hidden");
     nodes.playPanel.classList.remove("hidden");
     nodes.resultPanel.classList.add("hidden");
     document.body.classList.remove("wp-standard-stage-page");
     document.body.classList.add("shape-playing");
     document.querySelector(".shape-game")?.removeAttribute("data-play-viewport");
-    nodes.battleAdReserve.classList.remove("hidden");
     renderCars();
     renderTask();
     exitSharedPlayViewport();

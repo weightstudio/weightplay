@@ -42,6 +42,10 @@
     charmCost: $("charmCost"),
     charmStatus: $("charmStatus"),
     expeditionRecordText: $("expeditionRecordText"),
+    patrolRankText: $("patrolRankText"),
+    patrolRankProgressText: $("patrolRankProgressText"),
+    patrolRankFill: $("patrolRankFill"),
+    resultRankText: $("resultRankText"),
   };
 
   const text = {
@@ -54,6 +58,16 @@
       menuHint: "Goal: collect golden keys before 3:00. Crystals give XP, and upgrades help the ranger survive longer.",
       expeditionRecordTitle: "Expedition Record",
       expeditionRecordText: "Best {keys} keys · Highest level {level} · {runs} runs",
+      patrolRankTitle: "Patrol Rank: {rank}",
+      patrolRankProgress: "{current} / {target} lifetime keys",
+      patrolRankComplete: "Top rank · {current} lifetime keys",
+      patrolRankUp: "Rank up! You are now {rank}.",
+      patrolRankNext: "Patrol progress: {current} / {target} keys toward {rank}.",
+      rankScout: "Crystal Scout",
+      rankKeeper: "Grove Keeper",
+      rankRanger: "Crystal Ranger",
+      rankGuardian: "Grove Guardian",
+      rankWarden: "Crystal Warden",
       controlMove: "Tap or drag to move",
       controlKeys: "WASD / Arrow keys",
       controlAttack: "Auto attack",
@@ -118,6 +132,16 @@
       menuHint: "\u76ee\u6a19\uff1a\u5728 3:00 \u4e4b\u524d\u6536\u96c6\u91d1\u9470\u3002\u6c34\u6676\u6703\u589e\u52a0\u7d93\u9a57\uff0c\u5347\u7d1a\u53ef\u4ee5\u8b93\u5de1\u5b88\u54e1\u6490\u5f97\u66f4\u4e45\u3002",
       expeditionRecordTitle: "\u63a2\u96aa\u7d00\u9304",
       expeditionRecordText: "\u6700\u4f73 {keys} \u628a\u91d1\u9470 \u00b7 \u6700\u9ad8 {level} \u7d1a \u00b7 \u5df2\u5b8c\u6210 {runs} \u6b21\u9060\u5f81",
+      patrolRankTitle: "\u5de1\u5b88\u968e\u7d1a\uff1a{rank}",
+      patrolRankProgress: "\u7d2f\u7a4d\u91d1\u9470 {current} / {target}",
+      patrolRankComplete: "\u6700\u9ad8\u968e\u7d1a \u00b7 \u7d2f\u7a4d {current} \u628a\u91d1\u9470",
+      patrolRankUp: "\u968e\u7d1a\u63d0\u5347\uff01\u4f60\u73fe\u5728\u662f{rank}\u3002",
+      patrolRankNext: "\u5de1\u5b88\u9032\u5ea6\uff1a{current} / {target}\uff0c\u4e0b\u4e00\u968e\u70ba{rank}\u3002",
+      rankScout: "\u6c34\u6676\u898b\u7fd2\u751f",
+      rankKeeper: "\u68ee\u6797\u5b88\u8b77\u54e1",
+      rankRanger: "\u6c34\u6676\u5de1\u5b88\u54e1",
+      rankGuardian: "\u68ee\u6797\u5b88\u885b",
+      rankWarden: "\u6c34\u6676\u76e3\u8b77\u8005",
       controlMove: "\u9ede\u64ca\u6216\u62d6\u66f3\u79fb\u52d5",
       controlKeys: "WASD / \u65b9\u5411\u9375",
       controlAttack: "\u81ea\u52d5\u653b\u64ca",
@@ -202,6 +226,14 @@
     { id: "pickup", icon: "upgradePickup", name: "upgradePickupRadius", desc: "upgradePickupRadiusDesc" },
   ];
 
+  const patrolRanks = [
+    { threshold: 0, name: "rankScout" },
+    { threshold: 10, name: "rankKeeper" },
+    { threshold: 30, name: "rankRanger" },
+    { threshold: 75, name: "rankGuardian" },
+    { threshold: 150, name: "rankWarden" },
+  ];
+
   const images = {};
   let locale = window.WonderI18n?.locale?.() || localStorage.getItem(localeKey) || "en";
   let save = loadSave();
@@ -222,9 +254,9 @@
 
   function loadSave() {
     try {
-      return { bestKeys: 0, bestLevel: 1, playCount: 0, crystalCharm: false, ...JSON.parse(localStorage.getItem(saveKey) || "{}") };
+      return { bestKeys: 0, bestLevel: 1, playCount: 0, totalKeys: 0, crystalCharm: false, ...JSON.parse(localStorage.getItem(saveKey) || "{}") };
     } catch {
-      return { bestKeys: 0, bestLevel: 1, playCount: 0, crystalCharm: false };
+      return { bestKeys: 0, bestLevel: 1, playCount: 0, totalKeys: 0, crystalCharm: false };
     }
   }
 
@@ -244,6 +276,31 @@
       level: Math.max(1, Number(save.bestLevel) || 1),
       runs: Math.max(0, Number(save.playCount) || 0),
     });
+    renderPatrolRank();
+  }
+
+  function patrolRankFor(totalKeys = 0) {
+    const total = Math.max(0, Number(totalKeys) || 0);
+    let index = 0;
+    patrolRanks.forEach((rank, rankIndex) => {
+      if (total >= rank.threshold) index = rankIndex;
+    });
+    const current = patrolRanks[index];
+    const next = patrolRanks[index + 1] || null;
+    const progress = next
+      ? Math.max(0, Math.min(1, (total - current.threshold) / (next.threshold - current.threshold)))
+      : 1;
+    return { index, current, next, total, progress };
+  }
+
+  function renderPatrolRank() {
+    if (!nodes.patrolRankText || !nodes.patrolRankProgressText || !nodes.patrolRankFill) return;
+    const rank = patrolRankFor(save.totalKeys);
+    nodes.patrolRankText.textContent = t("patrolRankTitle", { rank: t(rank.current.name) });
+    nodes.patrolRankProgressText.textContent = rank.next
+      ? t("patrolRankProgress", { current: rank.total, target: rank.next.threshold })
+      : t("patrolRankComplete", { current: rank.total });
+    nodes.patrolRankFill.style.width = `${Math.round(rank.progress * 100)}%`;
   }
 
   function updatePageMeta() {
@@ -720,18 +777,20 @@
     if (state.mode === "result") return;
     state.mode = "result";
     const previousBestKeys = save.bestKeys || 0;
+    const previousRank = patrolRankFor(save.totalKeys);
     const improved = state.keys > previousBestKeys;
     save.bestKeys = Math.max(save.bestKeys || 0, state.keys);
     save.bestLevel = Math.max(save.bestLevel || 1, state.level);
+    save.totalKeys = Math.max(0, Number(save.totalKeys) || 0) + Math.max(0, state.keys);
     persist();
     renderExpeditionRecord();
-    renderResult(reason, previousBestKeys, improved);
+    renderResult(reason, previousBestKeys, improved, previousRank.index);
     show(nodes.resultPanel);
     playSound(reason === "time" ? "win" : "wrong", 0.4);
     window.WonderAnalytics?.track("game_complete", { game_id: GAME_ID, reason, keys: state.keys, level: state.level, prototype: true });
   }
 
-  function renderResult(reason, previousBestKeys, improved) {
+  function renderResult(reason, previousBestKeys, improved, previousRankIndex) {
     const survived = Math.round(state.survived);
     const best = Math.max(previousBestKeys || 0, state.keys);
     const reactionScore = Math.min(5, 2 + Math.floor(survived / 44));
@@ -740,6 +799,12 @@
     nodes.resultTitle.textContent = reason === "time" ? t("timeUp") : t("runFailed");
     nodes.resultScore.textContent = String(state.keys);
     nodes.resultText.textContent = `${t("resultLine", { keys: state.keys, level: state.level, time: survived, best })} ${improved ? t("improved") : t("keepGoing")}`;
+    const rank = patrolRankFor(save.totalKeys);
+    nodes.resultRankText.textContent = rank.index > previousRankIndex
+      ? t("patrolRankUp", { rank: t(rank.current.name) })
+      : rank.next
+        ? t("patrolRankNext", { current: rank.total, target: rank.next.threshold, rank: t(rank.next.name) })
+        : t("patrolRankComplete", { current: rank.total });
     nodes.reactionStars.textContent = stars(reactionScore);
     nodes.focusStars.textContent = stars(focusScore);
     nodes.problemStars.textContent = stars(problemScore);
@@ -789,6 +854,11 @@
         upgradeVisible: !nodes.upgradePanel.classList.contains("hidden"),
         crystalCharm: Boolean(save.crystalCharm),
         diamondBalance: diamondBalance(),
+        totalKeys: Math.max(0, Number(save.totalKeys) || 0),
+        patrolRank: patrolRankFor(save.totalKeys).index,
+        patrolRankText: nodes.patrolRankText?.textContent || "",
+        patrolRankProgressText: nodes.patrolRankProgressText?.textContent || "",
+        resultRankText: nodes.resultRankText?.textContent || "",
       }),
       collectKeyAtPlayer: () => {
         state.key = { x: state.player.x, y: state.player.y };
@@ -799,6 +869,10 @@
         state.xpDrops.push({ x: state.player.x, y: state.player.y, value });
         updateDrops();
         renderHud();
+      },
+      finishRunForTest: (keys = state.keys) => {
+        state.keys = Math.max(0, Number(keys) || 0);
+        endRun("time");
       },
       applyUpgradeForTest: (id) => {
         state.mode = "upgrade";

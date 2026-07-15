@@ -34,10 +34,6 @@ body.wp-standard-stage-page .wp-standard-stage-heading button {
   box-shadow: 0 4px 0 rgba(7, 43, 82, 0.28);
 }
 
-body.wp-standard-stage-page #stageAdReserve {
-  background: #182944;
-}
-
 button,
 select {
   font: inherit;
@@ -411,17 +407,6 @@ select {
   display: none !important;
 }
 
-.battle-ad-reserve {
-  position: fixed;
-  z-index: 20;
-  left: var(--shape-frame-left, 4px);
-  top: calc(var(--shape-frame-top, 4px) + var(--shape-frame-height, 780px));
-  width: var(--shape-frame-width, calc(100vw - 8px));
-  height: 56px;
-  border-top: 1px dashed rgba(23, 49, 79, 0.28);
-  background: rgba(217, 242, 255, 0.94);
-}
-
 html:has(body.shape-playing),
 body.shape-playing {
   position: fixed !important;
@@ -620,7 +605,7 @@ body.shape-playing.weightplay-active-viewport .shape-game {
   width: min(calc(var(--shape-vw, 100vw) - 8px), 612px) !important;
   min-width: 0 !important;
   max-width: none !important;
-  height: min(calc(var(--shape-vh, 100dvh) - var(--wp-ad-reserve-height, 56px) - 8px), 788px) !important;
+  height: min(calc(var(--shape-vh, 100dvh) - 8px), 788px) !important;
   min-height: 0 !important;
   max-height: none !important;
   padding: 8px 10px !important;
@@ -637,9 +622,11 @@ body.shape-playing .topbar {
   grid-template-columns: minmax(0, 1fr) !important;
 }
 
-body.shape-playing .topbar .home-link { display: none !important; }
+body.shape-playing .topbar { display: none !important; }
 
 body.shape-playing .play-panel {
+  height: 100% !important;
+  flex: 0 0 100% !important;
   grid-template-rows: 48px auto minmax(0, 1fr) 30px;
   min-height: 0;
   gap: 6px;
@@ -658,27 +645,15 @@ body.shape-playing .passenger-area {
   overflow: hidden;
 }
 
-body.shape-playing #battleAdReserve {
-  position: fixed;
-  left: 50%;
-  top: auto;
-  bottom: 4px;
-  width: min(calc(var(--shape-vw, 100vw) - 8px), 612px);
-  height: 56px;
-  min-height: 56px;
-  transform: translateX(-50%);
-}
-
 @media (max-width: 560px), (max-height: 560px) {
   body.shape-playing .shape-game,
-  body.shape-playing.weightplay-active-viewport .shape-game,
-  body.shape-playing #battleAdReserve {
+  body.shape-playing.weightplay-active-viewport .shape-game {
     width: calc(var(--shape-vw, 100vw) - 8px) !important;
   }
 
   body.shape-playing .shape-game,
   body.shape-playing.weightplay-active-viewport .shape-game {
-    height: calc(var(--shape-vh, 100dvh) - var(--wp-ad-reserve-height, 56px) - 8px) !important;
+    height: calc(var(--shape-vh, 100dvh) - 8px) !important;
   }
 }
 

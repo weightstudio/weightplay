@@ -158,7 +158,6 @@
     localeSelect: $("localeSelect"),
     menuPanel: $("menuPanel"),
     stagePanel: $("stagePanel"),
-    stageAdReserve: $("stageAdReserve"),
     startGameBtn: $("startGameBtn"),
     stageBackBtn: $("stageBackBtn"),
     stageGrid: $("stageGrid"),
@@ -186,7 +185,6 @@
     loadingText: $("loadingText"),
     loadingFill: $("loadingFill"),
     gameShell: document.querySelector(".zoo-game"),
-    battleAdReserve: $("battleAdReserve"),
   };
 
   let locale = window.WonderI18n?.locale?.() || localStorage.getItem(localeKey) || "en";
@@ -201,7 +199,7 @@
     if (!document.body.classList.contains("zoo-helper-playing")) return;
     const viewport = window.visualViewport;
     const width = Math.round(Math.min(viewport?.width || window.innerWidth, window.innerWidth));
-  const height = Math.max(0, Math.round(Math.min(viewport?.height || window.innerHeight, window.innerHeight)) - (window.WeightPlayAudience?.reserveHeight ?? 56));
+    const height = Math.max(0, Math.round(Math.min(viewport?.height || window.innerHeight, window.innerHeight)));
     document.documentElement.classList.remove("wp-mobile-game-mode");
     document.body.classList.remove("wp-mobile-game-mode");
     nodes.gameShell?.classList.remove("weightplay-active-viewport");
@@ -219,7 +217,6 @@
 
   function setBattleViewport(active) {
     document.body.classList.toggle("zoo-helper-playing", active);
-    nodes.battleAdReserve?.toggleAttribute("data-active", active);
     if (active) {
       nodes.gameShell?.removeAttribute("data-play-viewport");
       window.WeightPlayGame?.exitMobileGameMode?.();
@@ -307,7 +304,6 @@
   function showMenu() {
     nodes.menuPanel.classList.add("hidden");
     nodes.stagePanel.classList.remove("hidden");
-    nodes.stageAdReserve.classList.remove("hidden");
     nodes.playPanel.classList.add("hidden");
     nodes.resultPanel.classList.add("hidden");
     setBattleViewport(false);
@@ -317,7 +313,6 @@
 
   function showMain() {
     nodes.stagePanel.classList.add("hidden");
-    nodes.stageAdReserve.classList.add("hidden");
     nodes.menuPanel.classList.remove("hidden");
     document.body.classList.remove("wp-standard-stage-page");
   }
@@ -329,7 +324,6 @@
     acceptingInput = true;
     nodes.menuPanel.classList.add("hidden");
     nodes.stagePanel.classList.add("hidden");
-    nodes.stageAdReserve.classList.add("hidden");
     document.body.classList.remove("wp-standard-stage-page");
     nodes.playPanel.classList.remove("hidden");
     nodes.resultPanel.classList.add("hidden");
