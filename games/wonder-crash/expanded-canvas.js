@@ -12,6 +12,9 @@
       board.setAttribute("aria-label", isTraditionalChinese
         ? "\u5947\u5e7b\u7345\u5b50\u5b88\u57ce\u904a\u6232\u756b\u9762"
         : "Fantasy Lion Defense game board");
+      board.setAttribute("aria-description", isTraditionalChinese
+        ? "\u4f7f\u7528\u5de6\u53f3\u65b9\u5411\u9375\u79fb\u52d5\u7345\u5b50\uff0c\u6216\u5728\u904a\u6232\u756b\u9762\u4e0a\u62d6\u66f3\u3002"
+        : "Move the lion with Left and Right Arrow keys, or drag across the game board.");
     }
     if (stageBack) stageBack.setAttribute("aria-label", isTraditionalChinese ? "\u8fd4\u56de" : "Back");
   }

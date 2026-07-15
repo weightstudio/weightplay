@@ -84,6 +84,11 @@ body.wonder-playing #game {
   aspect-ratio: 390 / 788;
 }
 
+body.wonder-playing #game:focus-visible {
+  outline: 4px solid #ffe27a;
+  outline-offset: -6px;
+}
+
 body.wonder-playing .battle-hud {
   right: 64px;
   left: 64px;

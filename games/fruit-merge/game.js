@@ -68,6 +68,8 @@
       ariaScore: "Score information",
       ariaProgress: "Merge progress",
       ariaBoard: "Animal merge game board",
+      ariaBoardControls: "Use Left and Right arrows to aim, then Space or Enter to drop.",
+      ariaAim: "Aim {value}%",
       score: "Score",
       best: "Best",
       next: "Next",
@@ -149,6 +151,8 @@
       ariaScore: "分數資訊",
       ariaProgress: "合成進度",
       ariaBoard: "動物合成遊戲盤",
+      ariaBoardControls: "使用左右方向鍵瞄準，再按空白鍵或 Enter 落下。",
+      ariaAim: "瞄準位置 {value}%",
       score: "分數",
       best: "最佳",
       next: "下一顆",
@@ -317,6 +321,7 @@
     document.querySelector(".scorebar")?.setAttribute("aria-label", t("ariaScore"));
     document.querySelector(".merge-goal")?.setAttribute("aria-label", t("ariaProgress"));
     canvas.setAttribute("aria-label", t("ariaBoard"));
+    canvas.setAttribute("aria-description", t("ariaBoardControls"));
     scoreLabel.textContent = t("score");
     bestLabel.textContent = t("best");
     comboLabel.textContent = t("comboLabel");
@@ -330,6 +335,7 @@
     lobbyLink.textContent = t("lobby");
     updateHud();
     updateAimCoach();
+    updateAimAccessibility();
     renderMilestone(menuMilestone, readProgress(), true);
     renderMilestone(resultMilestone, readProgress(), true);
     renderLeaderboard(menuLeaderboard, readLeaderboard());
@@ -377,6 +383,7 @@
     maxReachedLevel = currentLevel;
     mergeBursts = [];
     aimX = W / 2;
+    canvas.dataset.dropCount = "0";
     score = 0;
     mergeCount = 0;
     comboCount = 0;
@@ -388,9 +395,11 @@
     canDropAt = performance.now() + 300;
     updateHud();
     updateAimCoach();
+    updateAimAccessibility();
     if (!showMenu) {
       window.WonderAnalytics?.track?.("game_start", { game_id: GAME_ID, source });
       startAnimationLoop();
+      requestAnimationFrame(() => canvas.focus({ preventScroll: true }));
     } else {
       startBtn.disabled = false;
       stopAnimationLoop();
@@ -461,6 +470,7 @@
     };
     fruit.body = createFruitBody(fruit);
     fruitsOnBoard.push(fruit);
+    canvas.dataset.dropCount = String(Number(canvas.dataset.dropCount || 0) + 1);
     maxReachedLevel = Math.max(maxReachedLevel, currentLevel);
     World.add(world, fruit.body);
     currentLevel = nextLevel;
@@ -469,6 +479,16 @@
     window.WonderSound?.play?.("click");
     updateHud();
     updateAimCoach();
+    updateAimAccessibility();
+  }
+
+  function updateAimAccessibility() {
+    const radius = fruits[currentLevel]?.radius || fruits[0].radius;
+    const min = wallLeft + radius;
+    const max = wallRight - radius;
+    const value = Math.round(((clamp(aimX, min, max) - min) / Math.max(1, max - min)) * 100);
+    canvas.setAttribute("aria-valuenow", String(value));
+    canvas.setAttribute("aria-valuetext", t("ariaAim", { value }));
   }
 
   function initPhysicsWorld() {
@@ -1091,17 +1111,38 @@
 
   canvas.addEventListener("pointermove", (event) => {
     aimX = canvasX(event);
+    updateAimAccessibility();
   });
 
   canvas.addEventListener("pointerdown", (event) => {
     aimX = canvasX(event);
+    updateAimAccessibility();
+    canvas.focus({ preventScroll: true });
     canvas.setPointerCapture?.(event.pointerId);
   });
 
   canvas.addEventListener("pointerup", (event) => {
     aimX = canvasX(event);
+    updateAimAccessibility();
     dropFruit();
     canvas.releasePointerCapture?.(event.pointerId);
+  });
+
+  canvas.addEventListener("keydown", (event) => {
+    if (!running || gameOver) return;
+    const radius = fruits[currentLevel]?.radius || fruits[0].radius;
+    const min = wallLeft + radius;
+    const max = wallRight - radius;
+    if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+      event.preventDefault();
+      aimX = clamp(aimX + (event.key === "ArrowLeft" ? -36 : 36), min, max);
+      updateAimAccessibility();
+      return;
+    }
+    if (event.key === " " || event.key === "Enter") {
+      event.preventDefault();
+      dropFruit();
+    }
   });
 
   restartBtn.addEventListener("click", () => {

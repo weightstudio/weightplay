@@ -289,6 +289,12 @@ body {
   cursor: not-allowed;
 }
 
+.shop-item-btn.is-confirming {
+  border-color: #facc15;
+  background: rgba(250, 204, 21, 0.14);
+  box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.2);
+}
+
 .shop-item-meta {
   display: flex;
   flex-direction: column;
@@ -320,6 +326,9 @@ body {
 }
 
 .shop-status-text {
+  display: grid;
+  place-items: center;
+  min-height: 34px;
   font-size: 0.75rem;
   color: #10b981;
   text-align: center;
@@ -1904,6 +1913,22 @@ body.relic-stage-select .stage-config-mount .menu-shop {
   overflow-y: auto;
   overscroll-behavior: contain;
   background: rgb(9 17 29 / 92%);
+}
+
+body.relic-stage-select .shop-item-btn {
+  height: 84px;
+  min-height: 84px;
+}
+
+body.relic-stage-select .shop-item-meta {
+  min-width: 0;
+}
+
+body.relic-stage-select .shop-item-meta small {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
 }
 
 body.relic-stage-select .stage-config-mount .start-btn {

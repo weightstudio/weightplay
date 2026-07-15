@@ -747,6 +747,7 @@ function startLevel(levelIndex) {
   clearFloatingMessage();
   state = makeState(levelIndex);
   state.running = true;
+  canvas.dataset.heroX = String(state.hero.x);
   setBattleShellActive(true);
   wonderMain.classList.add("hidden");
   wonderStageBack.classList.add("hidden");
@@ -760,10 +761,16 @@ function startLevel(levelIndex) {
   overlay.classList.remove("settlement-screen", "equipment-screen");
   overlay.classList.add("hidden");
   updateHud();
+  requestAnimationFrame(() => canvas.focus({ preventScroll: true }));
   window.WonderSound?.play("start");
 }
 
 window.addEventListener("keydown", (event) => {
+  if (state.running && (event.key === "ArrowLeft" || event.key === "ArrowRight")) {
+    event.preventDefault();
+    moveHeroTo(state.hero.x + (event.key === "ArrowLeft" ? -72 : 72));
+    return;
+  }
   if (event.code === "Space" && !state.running) restart();
 });
 
@@ -3087,6 +3094,7 @@ function stopDrag(event) {
 
 function moveHeroTo(x) {
   state.hero.x = clamp(x, state.hero.width / 2 + 14, W - state.hero.width / 2 - 14);
+  canvas.dataset.heroX = String(state.hero.x);
 }
 
 function canvasPoint(event) {

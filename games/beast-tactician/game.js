@@ -146,6 +146,9 @@
       sell: "Sell",
       revive: "Revive Core (5 Diamonds)",
       rerollReward: "Reroll Reward (3 Diamonds)",
+      rerollRewardConfirm: "Confirm +{points} Points",
+      rerollRewardPreview: "Reroll adds +{points} upgrade points · Diamonds {balance} → {result}. Tap again to confirm.",
+      rerollRewardNeed: "Saved total: {points} upgrade points · {diamonds} diamonds · Need 3 / Have {diamonds}.",
       nextStage: "Next Stage",
       retry: "Retry",
       victory: "Defense Complete!",
@@ -682,6 +685,9 @@
     newRouteUnlocked: "\u65b0\u8def\u7dda\u89e3\u9396\uff1a\u7b2c {stage} \u95dc\u2014{name}",
     nextRouteReady: "\u4e0b\u4e00\u8def\u7dda\u53ef\u9032\u5165\uff1a\u7b2c {stage} \u95dc\u2014{name}",
     campaignComplete: "\u6230\u5f79\u5b8c\u6210\uff1a\u5168\u90e8 10 \u95dc\u5df2\u89e3\u9396\u3002",
+    rerollRewardConfirm: "\u78ba\u8a8d +{points} \u5347\u7d1a\u9ede",
+    rerollRewardPreview: "\u91cd\u62bd\u589e\u52a0 +{points} \u5347\u7d1a\u9ede \u00b7 \u947d\u77f3 {balance} \u2192 {result}\u3002\u518d\u6b21\u9ede\u64ca\u78ba\u8a8d\u3002",
+    rerollRewardNeed: "\u5df2\u4fdd\u5b58\u7e3d\u8a08\uff1a{points} \u5347\u7d1a\u9ede \u00b7 {diamonds} \u947d\u77f3 \u00b7 \u9700\u8981 3 / \u6301\u6709 {diamonds}\u3002",
   });
 
   const state = {
@@ -721,6 +727,7 @@
     impactShake: { life: 0, max: 0, strength: 0 },
     impactFlash: { life: 0, max: 0, color: "255, 209, 102" },
   };
+  let rewardRerollConfirmTimer = 0;
 
   function t(key, values = {}) {
     let value = text[state.locale]?.[key] || text.en[key] || key;
@@ -866,6 +873,7 @@
   }
 
   function setScreen(screen) {
+    if (screen !== "result") clearRewardRerollConfirmation();
     state.screen = screen;
     const resultActive = screen === "result";
     document.body.classList.toggle("guardian-playing", screen === "game" || screen === "result");
@@ -1907,6 +1915,7 @@
       stars,
       newlyUnlocked: stage.id < 10 && previousBestStage < stage.id + 1,
       rerolled: false,
+      rerollPending: false,
     };
     save();
     nodes.resultTitle.textContent = t("victory");
@@ -1970,10 +1979,14 @@
       points: reward.points,
       diamonds: reward.diamonds,
     });
-    nodes.resultProgressText.textContent = t("savedProgress", {
-      points: state.save.upgradePoints,
-      diamonds: state.save.diamonds,
-    });
+    const rerolledPoints = rerollRewardPoints(reward.stageId, reward.points);
+    const pointGain = Math.max(0, rerolledPoints - reward.points);
+    const resultingBalance = Math.max(0, state.save.diamonds - 3);
+    nodes.resultProgressText.textContent = reward.rerollPending
+      ? t("rerollRewardPreview", { points: pointGain, balance: state.save.diamonds, result: resultingBalance })
+      : state.save.diamonds < 3 && !reward.rerolled
+        ? t("rerollRewardNeed", { points: state.save.upgradePoints, diamonds: state.save.diamonds })
+        : t("savedProgress", { points: state.save.upgradePoints, diamonds: state.save.diamonds });
     if (reward.stageId >= 10) {
       nodes.resultUnlockText.textContent = t("campaignComplete");
     } else {
@@ -1985,15 +1998,44 @@
     }
     nodes.rerollRewardBtn.classList.remove("is-hidden");
     nodes.rerollRewardBtn.disabled = reward.rerolled || state.save.diamonds < 3;
-    nodes.rerollRewardBtn.textContent = reward.rerolled ? t("rewardRerollUsed") : t("rerollReward");
+    nodes.rerollRewardBtn.textContent = reward.rerolled
+      ? t("rewardRerollUsed")
+      : reward.rerollPending
+        ? t("rerollRewardConfirm", { points: pointGain })
+        : t("rerollReward");
+    nodes.rerollRewardBtn.classList.toggle("is-confirming", Boolean(reward.rerollPending && !reward.rerolled));
+    nodes.rerollRewardBtn.setAttribute("aria-label", reward.rerollPending
+      ? t("rerollRewardPreview", { points: pointGain, balance: state.save.diamonds, result: resultingBalance })
+      : nodes.resultProgressText.textContent);
+  }
+
+  function clearRewardRerollConfirmation() {
+    clearTimeout(rewardRerollConfirmTimer);
+    rewardRerollConfirmTimer = 0;
+    if (state.resultReward) state.resultReward.rerollPending = false;
   }
 
   function rerollReward() {
     const reward = state.resultReward;
     if (!reward || reward.rerolled) return;
-    if (state.save.diamonds < 3) return showToast(t("noDiamonds"));
+    if (state.save.diamonds < 3) {
+      renderResultReward();
+      return showToast(t("noDiamonds"));
+    }
     const newPoints = rerollRewardPoints(reward.stageId, reward.points);
     const deltaPoints = Math.max(0, newPoints - reward.points);
+    if (!reward.rerollPending) {
+      reward.rerollPending = true;
+      clearTimeout(rewardRerollConfirmTimer);
+      rewardRerollConfirmTimer = setTimeout(() => {
+        if (!state.resultReward?.rerollPending) return;
+        state.resultReward.rerollPending = false;
+        renderResultReward();
+      }, 5000);
+      renderResultReward();
+      return;
+    }
+    clearRewardRerollConfirmation();
     state.save.diamonds -= 3;
     state.save.upgradePoints += deltaPoints;
     reward.points = newPoints;
@@ -3585,6 +3627,25 @@
     const rewardBefore = { ...state.resultReward };
     const diamondsAfterWin = state.save.diamonds;
     const pointsAfterWin = state.save.upgradePoints;
+    state.save.diamonds = 2;
+    renderResultReward();
+    rerollReward();
+    const insufficientState = {
+      diamonds: state.save.diamonds,
+      progress: nodes.resultProgressText.textContent,
+      disabled: nodes.rerollRewardBtn.disabled,
+    };
+    state.save.diamonds = diamondsAfterWin;
+    renderResultReward();
+    rerollReward();
+    const pendingState = {
+      diamonds: state.save.diamonds,
+      points: state.save.upgradePoints,
+      reward: { ...state.resultReward },
+      progress: nodes.resultProgressText.textContent,
+      button: nodes.rerollRewardBtn.textContent,
+      confirming: nodes.rerollRewardBtn.classList.contains("is-confirming"),
+    };
     rerollReward();
     const rewardAfter = { ...state.resultReward };
     const diamondsAfterReroll = state.save.diamonds;
@@ -3601,6 +3662,8 @@
       rewardAfter,
       diamondsAfterWin,
       pointsAfterWin,
+      insufficientState,
+      pendingState,
       diamondsAfterReroll,
       pointsAfterReroll,
       progressAfterReroll,
@@ -4602,6 +4665,7 @@
     loseStage();
     reviveCore();
     winStage();
+    rerollReward();
     rerollReward();
     buyGoldenFrame();
     window.WonderAnalytics = previousAnalytics;

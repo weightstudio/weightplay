@@ -19,7 +19,7 @@
     <meta name="twitter:card" content="summary_large_image" />
     <title>Animal Zoo Idle - WeightPlay</title>
     <link rel="canonical" href="https://weightplay.com/games/animal-zoo-idle/" />
-    <link rel="stylesheet" href="style.css?v=20260712-zoo-shop-spacing1" />
+    <link rel="stylesheet" href="style.css?v=20260716-zoo-kids-full-viewport1" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell2" />
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
@@ -65,7 +65,7 @@
   <body>
     <main class="zoo-app" data-no-mobile-immersive="true">
       <header class="topbar">
-        <a class="home-link icon-btn" data-wp-return="main" href="/" aria-label="Back to lobby" data-ui-aria-label="backToLobby">
+        <a class="home-link icon-btn" data-wp-return="main" href="/kids/" aria-label="Back to Kids lobby" data-ui-aria-label="backToLobby">
           <span aria-hidden="true">&larr;</span>
           <img src="../../assets/weightplay-logo.png" alt="" draggable="false" />
         </a>
@@ -101,13 +101,9 @@
         </div>
         <div id="offlineNotice" class="offline-notice hidden"></div>
       <section id="habitatGrid" class="habitat-grid play-area" aria-label="Safari park" data-ui-aria-label="safariPark"></section>
-      </section>
-      <div id="battleAdReserve" class="battle-ad-reserve hidden" aria-hidden="true"></div>
-
-
-      <div id="resultPanel" class="result-panel hidden">
+      <div id="resultPanel" class="result-panel hidden" role="dialog" aria-modal="true" aria-labelledby="zooReportTitle">
         <section class="result-card">
-          <strong data-ui="reportTitle">Zoo Care Report</strong>
+          <strong id="zooReportTitle" data-ui="reportTitle">Zoo Care Report</strong>
           <div id="reportScore" class="report-score">0</div>
           <p id="reportText"></p>
           <div class="skill-lines">
@@ -120,6 +116,7 @@
           <button id="closeReportBtn" type="button" data-ui="continue">Continue</button>
         </section>
       </div>
+      </section>
 
       <div id="loadingPanel" class="loading-panel">
         <div class="loading-card">
@@ -163,7 +160,7 @@
     <script src="../../src/edge-guard.js?v=20260710-mobile-play-shell2"></script>
     <script src="../../src/i18n.js?v=20260703-i18n-clean1"></script>
     <script src="../../src/tutorial.js?v=20260703-tutorial-start1"></script>
-    <script src="game.js?v=20260712-zoo-shop-spacing1"></script>
+    <script src="game.js?v=20260716-zoo-kids-full-viewport1"></script>
     <script src="../../src/game-page-info.js?v=20260710-zoo-care-first-screen1"></script>
   </body>
 </html>

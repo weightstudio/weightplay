@@ -82,6 +82,8 @@
 
   const amuletCost = 15;
   const draftRerollCost = 3;
+  let amuletPurchasePending = false;
+  let amuletConfirmTimer = 0;
 
   const text = {
     en: {
@@ -425,6 +427,12 @@
     continueLootChoice: "Continue",
     lootAlreadyEquipped: "Already equipped",
     lootDecisionLabel: "Choose whether to equip {gear} or keep the current loadout.",
+    amuletConfirmTitle: "Confirm Mist Amulet",
+    amuletConfirmEffect: "Permanent: every run starts at 40 HP instead of 30 HP. Confirm {before} → {after} Diamonds.",
+    amuletConfirmStatus: "Permanent +10 Max HP every run. Balance {before} → {after} Diamonds.",
+    amuletNeedDiamonds: "Need 15 Diamonds. Current balance {balance}/15.",
+    amuletBuyLabel: "Buy Mist Amulet permanently. Every run starts with 40 HP instead of 30 HP. Costs 15 Diamonds. Current balance {balance}.",
+    amuletConfirmLabel: "Confirm permanent Mist Amulet. Spend 15 Diamonds. Balance {before} to {after}. Every run starts with 40 HP.",
   });
 
   Object.assign(text["zh-Hant"], {
@@ -445,6 +453,12 @@
     continueLootChoice: "\u7e7c\u7e8c",
     lootAlreadyEquipped: "\u5df2\u7a7f\u6234",
     lootDecisionLabel: "\u9078\u64c7\u7a7f\u6234 {gear}\uff0c\u6216\u4fdd\u7559\u76ee\u524d\u914d\u88dd\u3002",
+    amuletConfirmTitle: "\u78ba\u8a8d\u8ff7\u9727\u8b77\u7b26",
+    amuletConfirmEffect: "\u6c38\u4e45\uff1a\u6bcf\u6b21\u63a2\u96aa\u5f9e 30 HP \u63d0\u5347\u70ba 40 HP\u3002\u78ba\u8a8d {before} \u2192 {after} \u9846\u947d\u77f3\u3002",
+    amuletConfirmStatus: "\u6bcf\u6b21\u63a2\u96aa\u6c38\u4e45 +10 \u6700\u5927\u751f\u547d\u3002\u9918\u984d {before} \u2192 {after} \u9846\u947d\u77f3\u3002",
+    amuletNeedDiamonds: "\u9700\u8981 15 \u9846\u947d\u77f3\u3002\u76ee\u524d\u9918\u984d {balance}/15\u3002",
+    amuletBuyLabel: "\u6c38\u4e45\u8cfc\u8cb7\u8ff7\u9727\u8b77\u7b26\u3002\u6bcf\u6b21\u63a2\u96aa\u5f9e 30 HP \u63d0\u5347\u70ba 40 HP\u3002\u82b1\u8cbb 15 \u9846\u947d\u77f3\u3002\u76ee\u524d\u9918\u984d {balance}\u3002",
+    amuletConfirmLabel: "\u78ba\u8a8d\u6c38\u4e45\u8cfc\u8cb7\u8ff7\u9727\u8b77\u7b26\u3002\u82b1\u8cbb 15 \u9846\u947d\u77f3\u3002\u9918\u984d {before} \u8b8a\u70ba {after}\u3002\u6bcf\u6b21\u63a2\u96aa\u5f9e 40 HP \u958b\u59cb\u3002",
   });
 
   // Textures and Sprites
@@ -859,6 +873,7 @@
   }
 
   function showMain() {
+    clearAmuletConfirmation();
     state.gameActive = false;
     cancelAnimationFrame(state.gameLoopId);
     document.body.classList.remove("relic-playing", "relic-stage-select");
@@ -939,19 +954,34 @@
     renderGrowthPrompt();
 
     if (state.amuletUnlocked) {
+      clearAmuletConfirmation();
       nodes.amuletStatus.textContent = t("amuletOwned");
       nodes.amuletBtn.disabled = true;
+      nodes.amuletBtn.classList.remove("is-confirming");
       nodes.amuletBtn.querySelector("strong").textContent = t("amuletName");
       nodes.amuletBtn.querySelector("small").textContent = t("amuletOwned");
       nodes.amuletBtn.querySelector("b").style.display = "none";
+      nodes.amuletBtn.setAttribute("aria-label", t("amuletOwned"));
     } else {
-      nodes.amuletStatus.textContent = "";
-      nodes.amuletBtn.disabled = wallet.diamonds < amuletCost;
-      nodes.amuletBtn.querySelector("strong").textContent = t("amuletName");
-      nodes.amuletBtn.querySelector("small").textContent = t("amuletEffect");
+      const after = Math.max(0, wallet.diamonds - amuletCost);
+      nodes.amuletStatus.textContent = amuletPurchasePending
+        ? t("amuletConfirmStatus", { before: wallet.diamonds, after })
+        : wallet.diamonds < amuletCost
+          ? t("amuletNeedDiamonds", { balance: wallet.diamonds })
+          : "";
+      nodes.amuletBtn.disabled = false;
+      nodes.amuletBtn.classList.toggle("is-confirming", amuletPurchasePending);
+      nodes.amuletBtn.querySelector("strong").textContent = amuletPurchasePending ? t("amuletConfirmTitle") : t("amuletName");
+      nodes.amuletBtn.querySelector("small").textContent = amuletPurchasePending ? t("amuletConfirmEffect", { before: wallet.diamonds, after }) : t("amuletEffect");
       nodes.amuletBtn.querySelector("b").style.display = "flex";
-      nodes.amuletBtn.querySelector("b span").textContent = amuletCost;
+      nodes.amuletBtn.querySelector("b span").textContent = amuletPurchasePending ? `${amuletCost} · ${wallet.diamonds}→${after}` : amuletCost;
+      nodes.amuletBtn.setAttribute("aria-label", amuletPurchasePending ? t("amuletConfirmLabel", { before: wallet.diamonds, after }) : t("amuletBuyLabel", { balance: wallet.diamonds }));
     }
+  }
+
+  function clearAmuletConfirmation() {
+    clearTimeout(amuletConfirmTimer);
+    amuletPurchasePending = false;
   }
 
   function renderTrainingPanel() {
@@ -980,6 +1010,8 @@
   }
 
   function spendTrainingPoint(key) {
+    clearAmuletConfirmation();
+    updateDiamondShopUI();
     const def = trainingDefs.find((item) => item.key === key);
     if (!def || profile.statPoints <= 0 || profile.training[key] >= def.max) return;
     profile.training[key] += 1;
@@ -1196,6 +1228,7 @@
 
   // Combat loop updates
   function startRun() {
+    clearAmuletConfirmation();
     loadLocalState();
     syncStateFromProfile();
     const stats = getStats();
@@ -2247,15 +2280,29 @@
     });
 
     nodes.amuletBtn.addEventListener("click", () => {
+      if (state.amuletUnlocked) return;
       const wallet = window.WeightPlayWallet?.read() || { diamonds: 0 };
-      if (wallet.diamonds >= amuletCost) {
-        const spent = window.WeightPlayWallet?.spendDiamonds(amuletCost);
-        if (spent) {
-          state.amuletUnlocked = true;
-          saveLocalState();
-          window.WonderSound?.play("success");
+      if (wallet.diamonds < amuletCost) {
+        clearAmuletConfirmation();
+        updateDiamondShopUI();
+        return;
+      }
+      if (!amuletPurchasePending) {
+        amuletPurchasePending = true;
+        updateDiamondShopUI();
+        amuletConfirmTimer = window.setTimeout(() => {
+          amuletPurchasePending = false;
           updateDiamondShopUI();
-        }
+        }, 5000);
+        return;
+      }
+      clearAmuletConfirmation();
+      const spent = window.WeightPlayWallet?.spendDiamonds(amuletCost);
+      if (spent) {
+        state.amuletUnlocked = true;
+        saveLocalState();
+        window.WonderSound?.play("success");
+        updateDiamondShopUI();
       }
     });
 
@@ -2311,6 +2358,10 @@
             key,
             ...getBulletVisualProfile(key),
           }));
+        },
+        refreshShopForTest() {
+          updateDiamondShopUI();
+          return this.snapshot();
         },
         previewBulletVisuals() {
           state.gameActive = false;

@@ -163,10 +163,8 @@
   function setPlayingState(isPlaying) {
     document.documentElement.classList.toggle("is-vine-playing", isPlaying);
     document.body.classList.toggle("is-vine-playing", isPlaying);
-    if (!isPlaying) document.body.classList.remove("vine-expanded-canvas");
     window.WEIGHTPLAY_VINE_RESCUE_ACTIVE = isPlaying;
     window.WeightPlayGame?.updateVisualViewportVars?.();
-    requestAnimationFrame(updateBattleScale);
     window.dispatchEvent(new CustomEvent("animal-vine-rescue:play-state", { detail: { playing: isPlaying } }));
   }
 
@@ -175,6 +173,7 @@
     document.body.classList.toggle("is-vine-stage-select", isStage);
     window.WonderSound?.setGameActive?.(isStage);
     window.WeightPlayGame?.updateVisualViewportVars?.();
+    requestAnimationFrame(updateStageScale);
   }
 
   function t(key, data = {}) {
@@ -242,7 +241,7 @@
           </button>
         `;
       })
-      .join("") + `</div><div class="stage-ad-reserve" aria-hidden="true"></div>`;
+      .join("") + `</div>`;
     installStageRailDrag();
   }
 
@@ -433,7 +432,6 @@
   function finish(success) {
     running = false;
     settled = true;
-    setPlayingState(false);
     nodes.aimGuide.classList.remove("active");
     nodes.fallGuide.classList.remove("active");
     nodes.targetGuide.classList.remove("active");
@@ -452,6 +450,7 @@
     nodes.starText.textContent = `${"★".repeat(starCount)}${"☆".repeat(3 - starCount)}`;
     nodes.nextStageBtn.classList.toggle("hidden", !success || currentStage >= stages.length);
     nodes.resultPanel.classList.remove("hidden");
+    (success && currentStage < stages.length ? nodes.nextStageBtn : nodes.retryBtn).focus();
     window.WonderSound?.play?.(success ? "success" : "error");
   }
 
@@ -551,12 +550,10 @@
   });
   nodes.nextStageBtn.addEventListener("click", () => {
     nodes.resultPanel.classList.add("hidden");
-    setPlayingState(true);
     setupStage(currentStage + 1);
   });
   nodes.retryBtn.addEventListener("click", () => {
     nodes.resultPanel.classList.add("hidden");
-    setPlayingState(true);
     setupStage(currentStage);
   });
   nodes.resultStagesBtn.addEventListener("click", () => {
@@ -579,40 +576,20 @@
   nodes.localeSelect.value = locale;
   setLocale(locale);
 
-  function updateBattleScale() {
+  function updateStageScale() {
+    if (!document.body.classList.contains("is-vine-stage-select")) return;
     const viewport = window.visualViewport;
     const viewportWidth = viewport?.width || window.innerWidth;
     const viewportHeight = viewport?.height || window.innerHeight;
-    const touchPhone = navigator.maxTouchPoints > 0 && viewportWidth <= 1024;
-    const isPhoneBattle = document.body.classList.contains("is-vine-playing")
-      && (touchPhone || window.matchMedia("(pointer: coarse)").matches || viewportWidth <= 600 || viewportHeight <= 430);
-    document.body.classList.toggle("vine-expanded-canvas", isPhoneBattle);
-    if (isPhoneBattle) {
-      document.documentElement.style.setProperty("--vine-battle-scale", "1");
-      document.documentElement.style.setProperty("--vine-battle-width", `${Math.max(1, viewportWidth - 8)}px`);
-      const reserveHeight = window.WeightPlayAudience?.reserveHeight ?? 56;
-      document.documentElement.style.setProperty("--vine-battle-content-height", `${Math.max(1, viewportHeight - reserveHeight - 8)}px`);
-      document.documentElement.style.setProperty("--vine-battle-left", "4px");
-      document.documentElement.style.setProperty("--vine-battle-top", "4px");
-      return;
-    }
-    const reserveHeight = window.WeightPlayAudience?.reserveHeight ?? 56;
-    const scale = Math.max(0.1, Math.min((viewportWidth - 8) / 390, (viewportHeight - reserveHeight - 8) / 788));
-    const width = 390 * scale;
-    const contentHeight = 788 * scale;
-    const totalHeight = contentHeight + reserveHeight;
-    document.documentElement.style.setProperty("--vine-battle-scale", String(scale));
-    document.documentElement.style.setProperty("--vine-battle-width", `${width}px`);
-    document.documentElement.style.setProperty("--vine-battle-content-height", `${contentHeight}px`);
-    document.documentElement.style.setProperty("--vine-battle-left", `${(viewportWidth - width) / 2}px`);
-    document.documentElement.style.setProperty("--vine-battle-top", `${(viewportHeight - totalHeight) / 2}px`);
+    const scale = Math.max(0.01, Math.min((viewportWidth - 8) / 390, (viewportHeight - 8) / 788));
+    document.documentElement.style.setProperty("--vine-stage-scale", String(scale));
+    document.documentElement.style.setProperty("--vine-stage-top", `${viewportHeight - 4 - 788 * scale}px`);
   }
 
-  updateBattleScale();
-  window.addEventListener("resize", updateBattleScale);
-  window.addEventListener("orientationchange", updateBattleScale);
-  window.visualViewport?.addEventListener("resize", updateBattleScale);
-  window.visualViewport?.addEventListener("scroll", updateBattleScale);
+  window.addEventListener("resize", updateStageScale);
+  window.addEventListener("orientationchange", updateStageScale);
+  window.visualViewport?.addEventListener("resize", updateStageScale);
+  window.visualViewport?.addEventListener("scroll", updateStageScale);
   setupStage(1);
   preload();
 })();

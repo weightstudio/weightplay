@@ -288,6 +288,10 @@
       intent_defend: "Defending for {amount}",
       intent_poison: "Applying {amount} Poison",
       intent_buff: "Preparing a heavy strike",
+      cardPlayable: "Playable · Cost {cost} · Energy {energy}",
+      cardNeedEnergy: "Need {need} more Energy · Cost {cost} · Energy {energy}",
+      cardWaitTurn: "Wait for your turn · Cost {cost}",
+      cardActionLabel: "{card}. {effect}. {status}",
       log_start: "Battle started against {enemy}.",
       log_play_card: "Played {card}. Cost: {cost}.",
       log_combo: "Combo! {card} deals {damage} damage.",
@@ -440,6 +444,10 @@
       intent_defend: "準備防禦 {amount}",
       intent_poison: "準備施加 {amount} 層中毒",
       intent_buff: "準備蓄力重擊",
+      cardPlayable: "可打出 · 消耗 {cost} · 目前能量 {energy}",
+      cardNeedEnergy: "還需要 {need} 點能量 · 消耗 {cost} · 目前能量 {energy}",
+      cardWaitTurn: "等待玩家回合 · 消耗 {cost}",
+      cardActionLabel: "{card}。{effect}。{status}",
       log_start: "與 {enemy} 的戰鬥開始。",
       log_play_card: "打出 {card}，消耗 {cost}。",
       log_combo: "連擊成功！{card} 造成 {damage} 點傷害。",
@@ -1408,11 +1416,23 @@
     state.hand.forEach((cardId, index) => {
       const card = cardDb[cardId];
       const cardEl = document.createElement("button");
+      const canPlay = state.isPlayerTurn && state.energy >= card.cost;
+      const status = !state.isPlayerTurn
+        ? t("cardWaitTurn", { cost: card.cost })
+        : canPlay
+          ? t("cardPlayable", { cost: card.cost, energy: state.energy })
+          : t("cardNeedEnergy", { need: card.cost - state.energy, cost: card.cost, energy: state.energy });
       cardEl.className = `card ${card.type}`;
       if (state.highlightDraftCard === cardId) cardEl.classList.add("drafted-card");
       cardEl.type = "button";
       cardEl.innerHTML = cardMarkup(card);
-      if (state.energy < card.cost || !state.isPlayerTurn) cardEl.classList.add("disabled");
+      cardEl.disabled = !canPlay;
+      cardEl.classList.toggle("disabled", !canPlay);
+      cardEl.setAttribute("aria-label", t("cardActionLabel", {
+        card: t(card.nameKey),
+        effect: t(card.descKey),
+        status,
+      }));
       cardEl.addEventListener("click", () => playCard(index));
       nodes.handRow.appendChild(cardEl);
     });
@@ -1562,10 +1582,19 @@
         discardPile: [...(state.discardPile || [])],
         energy: state.energy || 0,
         maxEnergy: state.maxEnergy || 0,
+        isPlayerTurn: Boolean(state.isPlayerTurn),
         enemyShield: state.enemyShield || 0,
         playerShield: state.playerShield || 0,
         highlightDraftCard: state.highlightDraftCard || null,
       }),
+      setHandAccessibilityState: ({ energy = state.energy, isPlayerTurn = state.isPlayerTurn, hand = state.hand } = {}) => {
+        state.energy = Math.max(0, Number(energy) || 0);
+        state.isPlayerTurn = Boolean(isPlayerTurn);
+        state.hand = Array.isArray(hand) ? hand.filter((cardId) => cardDb[cardId]) : state.hand;
+        renderStats();
+        renderHand();
+        return window.__beastDeckSmoke.getState();
+      },
       forceDraftChoice: (cardId = "iron-tortoise") => {
         addDraftCardToMission(cardId);
         nodes.draftPanel.classList.add("hidden");

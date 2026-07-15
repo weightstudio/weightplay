@@ -854,6 +854,15 @@ body.guardian-result .game-panel > .command-row {
   font-weight: 850;
 }
 
+.result-progress {
+  height: 64px;
+  min-height: 64px;
+  max-height: 64px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
 .result-unlock {
   border: 1px solid rgba(125, 216, 125, 0.28);
   background: rgba(125, 216, 125, 0.09);
@@ -874,6 +883,11 @@ body.guardian-result .game-panel > .command-row {
 
 #nextStageBtn { grid-column: 1; grid-row: 1; }
 #rerollRewardBtn { grid-column: 2; grid-row: 1; }
+#rerollRewardBtn.is-confirming {
+  border-color: var(--gold);
+  background: rgba(255, 209, 102, 0.18);
+  box-shadow: 0 0 0 2px rgba(255, 209, 102, 0.16);
+}
 #retryBtn { grid-column: 1; grid-row: 2; }
 #resultMenuBtn { grid-column: 2; grid-row: 2; }
 

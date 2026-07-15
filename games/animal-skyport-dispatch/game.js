@@ -17,6 +17,15 @@
     total: 'Total {n}',
     shiftUnlocked: 'Shift {n} unlocked',
     allShiftsComplete: 'All shifts complete',
+    contractDescription: 'Priority contract: finish with no errors for 20 bonus sky coins.',
+    insurance: 'Insure 5 Diamonds',
+    insuranceActive: 'Insurance active',
+    insuranceConfirm: 'Confirm 5 · {before}→{after}',
+    insuranceDecision: 'Protect the 20-coin bonus on failure. Confirm: {before} → {after} Diamonds.',
+    insuranceLabel: 'Protect this run\'s 20-coin contract bonus on failure. Costs 5 Diamonds. Current balance {balance}.',
+    insuranceConfirmLabel: 'Confirm contract insurance. Spend 5 Diamonds. Balance {before} to {after}.',
+    insuranceNeed: 'Need 5 Diamonds. Current balance {balance}/5.',
+    insuranceSelect: 'Select the priority contract before buying insurance.',
   });
   Object.assign(strings['zh-Hant'], {
     guideTitle: '\u5982\u4f55\u8abf\u5ea6',
@@ -30,6 +39,15 @@
     total: '\u7d2f\u7a4d {n}',
     shiftUnlocked: '\u5df2\u89e3\u9396\u7b2c {n} \u73ed',
     allShiftsComplete: '\u4e94\u500b\u73ed\u6b21\u5168\u90e8\u5b8c\u6210',
+    contractDescription: '\u512a\u5148\u5408\u7d04\uff1a\u7121\u932f\u8aa4\u5b8c\u6210\u53ef\u7372\u5f97 20 \u5929\u7a7a\u5e63\u3002',
+    insurance: '\u4fdd\u96aa 5 \u947d\u77f3',
+    insuranceActive: '\u5df2\u6295\u4fdd',
+    insuranceConfirm: '\u78ba\u8a8d 5 \u00b7 {before}\u2192{after}',
+    insuranceDecision: '\u5931\u6557\u6642\u4fdd\u7559 20 \u5929\u7a7a\u5e63\u734e\u52f5\u3002\u78ba\u8a8d\uff1a{before} \u2192 {after} \u9846\u947d\u77f3\u3002',
+    insuranceLabel: '\u5931\u6557\u6642\u4fdd\u7559\u672c\u6b21\u5408\u7d04\u7684 20 \u5929\u7a7a\u5e63\u734e\u52f5\u3002\u82b1\u8cbb 5 \u9846\u947d\u77f3\u3002\u76ee\u524d\u9918\u984d {balance}\u3002',
+    insuranceConfirmLabel: '\u78ba\u8a8d\u8cfc\u8cb7\u5408\u7d04\u4fdd\u96aa\u3002\u82b1\u8cbb 5 \u9846\u947d\u77f3\u3002\u9918\u984d {before} \u8b8a\u70ba {after}\u3002',
+    insuranceNeed: '\u9700\u8981 5 \u9846\u947d\u77f3\u3002\u76ee\u524d\u9918\u984d {balance}/5\u3002',
+    insuranceSelect: '\u8acb\u5148\u52fe\u9078\u512a\u5148\u5408\u7d04\uff0c\u518d\u8cfc\u8cb7\u4fdd\u96aa\u3002',
   });
   const flights = [['cargo','cargo'], ['passenger','passenger'], ['repair','repair'], ['festival','passenger'], ['heavy','cargo']];
   const flightLabels = {
@@ -61,6 +79,8 @@
   let inputMode = '';
   let suppressClick = false;
   let insuranceActive = false;
+  let insurancePending = false;
+  let insuranceConfirmTimer = 0;
   const t = (key, values = {}) => Object.entries(values).reduce((value, [name, replacement]) => value.replace(`{${name}}`, replacement), strings[locale][key]);
   const persist = () => localStorage.setItem(saveKey, JSON.stringify(save));
   const show = (id) => {
@@ -79,9 +99,22 @@
     $('stageBack').setAttribute('aria-label', t('back'));
     $('battleBack').setAttribute('aria-label', t('back'));
     $('stageRail').setAttribute('aria-label', t('shiftSelection'));
-    $('contractText').textContent = locale === 'zh-Hant' ? '\u512a\u5148\u5408\u7d04\uff1a\u7121\u932f\u8aa4\u5b8c\u6210\u6642\u7372\u5f97\u984d\u5916\u5929\u7a7a\u5e63\u3002' : 'Priority contract: finish with no errors for bonus sky coins.';
-    $('insuranceBtn').textContent = insuranceActive ? (locale === 'zh-Hant' ? '\u5df2\u6295\u4fdd' : 'Insurance active') : (locale === 'zh-Hant' ? '\u4fdd\u96aa 5 \u947d\u77f3' : 'Insure 5 diamonds');
+    renderContractControls();
     renderStages();
+  }
+  function clearInsuranceConfirmation() {
+    clearTimeout(insuranceConfirmTimer);
+    insurancePending = false;
+  }
+  function renderContractControls(message = '') {
+    const balance = window.WeightPlayWallet?.read?.().diamonds || 0;
+    $('contractToggle').checked = Boolean(state.contract);
+    $('contractToggle').disabled = insuranceActive;
+    $('contractText').textContent = message || (insurancePending ? t('insuranceDecision', {before:balance, after:Math.max(0,balance-5)}) : state.contract ? t('contractDescription') : t('insuranceSelect'));
+    $('insuranceBtn').textContent = insuranceActive ? t('insuranceActive') : insurancePending ? t('insuranceConfirm', {before:balance, after:Math.max(0,balance-5)}) : t('insurance');
+    $('insuranceBtn').disabled = insuranceActive || !state.contract;
+    $('insuranceBtn').classList.toggle('is-confirming', insurancePending);
+    $('insuranceBtn').setAttribute('aria-label', insurancePending ? t('insuranceConfirmLabel', {before:balance, after:Math.max(0,balance-5)}) : t('insuranceLabel', {balance}));
   }
   function renderStages() {
     if ($('stageScreen').classList.contains('hidden')) return;
@@ -177,6 +210,7 @@
     $('routeLine').classList.add('is-guidance');
   }
   function startBattle() {
+    clearInsuranceConfirmation();
     const shift = state.shift || 1;
     const config = shiftConfig[shift];
     state = {shift, done:0, errors:0, parts:config.parts, crew:2, maxCrew:2, fuel:config.goal+4, goal:config.goal, stormEvery:config.stormEvery, flightIndex:0, matched:0, selected:false, contract:Boolean(state.contract)};
@@ -287,14 +321,24 @@
     finish(nearest <= Math.max(64, target?.getBoundingClientRect().width || 0) ? target?.dataset.dock === state.dock : false);
   }
   $('startBtn').onclick = () => { state.shift = save.unlocked; show('stageScreen'); renderStages(); };
-  $('contractToggle').onchange = (event) => { state.contract = event.target.checked; };
+  $('contractToggle').onchange = (event) => { clearInsuranceConfirmation(); state.contract = event.target.checked; renderContractControls(); };
   $('insuranceBtn').onclick = () => {
-    if (insuranceActive) return;
-    if (!confirm(locale === 'zh-Hant' ? '\u82b1\u8cbb 5 \u947d\u77f3\uff0c\u5728\u5931\u6557\u6642\u4fdd\u7559\u5408\u7d04\u734e\u52f5\u55ce\uff1f' : 'Spend 5 diamonds to protect this run\'s contract bonus on failure?')) return;
-    if (!window.WeightPlayWallet?.spendDiamonds?.(5)) { $('contractText').textContent = locale === 'zh-Hant' ? '\u947d\u77f3\u4e0d\u8db3\u3002' : 'Not enough diamonds.'; return; }
-    insuranceActive = true; localize();
+    if (insuranceActive || !state.contract) return;
+    const balance = window.WeightPlayWallet?.read?.().diamonds || 0;
+    if (balance < 5) { clearInsuranceConfirmation(); renderContractControls(t('insuranceNeed', {balance})); return; }
+    if (!insurancePending) {
+      insurancePending = true;
+      renderContractControls();
+      insuranceConfirmTimer = setTimeout(() => { insurancePending = false; renderContractControls(); }, 5000);
+      return;
+    }
+    clearInsuranceConfirmation();
+    if (!window.WeightPlayWallet?.spendDiamonds?.(5)) { renderContractControls(t('insuranceNeed', {balance:window.WeightPlayWallet?.read?.().diamonds || 0})); return; }
+    insuranceActive = true;
+    state.contract = true;
+    renderContractControls();
   };
-  $('stageBack').onclick = () => show('mainScreen');
+  $('stageBack').onclick = () => { clearInsuranceConfirmation(); renderContractControls(); show('mainScreen'); };
   $('battleBack').onclick = () => { show('stageScreen'); renderStages(); };
   $('menuBtn').onclick = () => show('mainScreen');
   $('serviceBtn').onclick = () => {

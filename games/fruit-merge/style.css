@@ -408,6 +408,11 @@ body.fruit-playing .game-page-info {
   touch-action: none;
 }
 
+#gameCanvas:focus-visible {
+  outline: 5px solid #fff1a6;
+  outline-offset: -8px;
+}
+
 .aim-coach {
   position: absolute;
   left: clamp(12px, 4cqw, 24px);

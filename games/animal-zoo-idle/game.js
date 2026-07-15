@@ -411,7 +411,6 @@
     loadingPanel: $("loadingPanel"),
     loadingText: $("loadingText"),
     loadingFill: $("loadingFill"),
-    battleAdReserve: $("battleAdReserve"),
   };
 
   let locale = window.WonderI18n?.locale?.() || localStorage.getItem(localeKey) || "en";
@@ -1530,8 +1529,20 @@
     nodes.animalStars.textContent = starText(unlockedAnimals().length * 95);
     renderTourReport(nodes.tourReport);
     renderAnimalAlbum(nodes.animalAlbum);
+    nodes.gamePanel.classList.add("report-open");
+    nodes.habitatGrid.inert = true;
+    nodes.gamePanel.querySelector(".resource-row").inert = true;
     nodes.resultPanel.classList.remove("hidden");
+    requestAnimationFrame(() => nodes.closeReportBtn.focus({ preventScroll: true }));
     window.WonderAnalytics?.track("game_complete", { game_id: GAME_ID, score, animals: unlockedAnimals().length });
+  }
+
+  function closeReport() {
+    nodes.resultPanel.classList.add("hidden");
+    nodes.gamePanel.classList.remove("report-open");
+    nodes.habitatGrid.inert = false;
+    nodes.gamePanel.querySelector(".resource-row").inert = false;
+    nodes.gamePanel.querySelector('[data-action="report"]')?.focus({ preventScroll: true });
   }
 
   function renderAnimalAlbum(container) {
@@ -1581,7 +1592,6 @@
     nodes.localeSelect.closest(".language-picker")?.setAttribute("aria-hidden", "true");
     nodes.menuPanel.classList.add("hidden");
     nodes.gamePanel.classList.remove("hidden");
-    nodes.battleAdReserve.classList.remove("hidden");
     updateZooBattleScale();
     applyOffline();
     render();
@@ -1591,29 +1601,8 @@
   }
 
   function updateZooBattleScale() {
-    if (!document.body.classList.contains("zoo-playing")) return;
-    const logicalWidth = 390;
-    const logicalHeight = 788;
-  const reserveHeight = window.WeightPlayAudience?.reserveHeight ?? 56;
-    const gutter = 8;
-    const viewportWidth = window.visualViewport?.width || window.innerWidth;
-    const viewportHeight = window.visualViewport?.height || window.innerHeight;
-    const scale = Math.max(0.1, Math.min((viewportWidth - gutter) / logicalWidth, (viewportHeight - reserveHeight - gutter) / logicalHeight));
-    const width = logicalWidth * scale;
-    const contentHeight = logicalHeight * scale;
-    const top = gutter / 2;
-    const rootStyle = document.documentElement.style;
-    rootStyle.setProperty("--zoo-battle-scale", String(scale));
-    rootStyle.setProperty("--zoo-battle-width", `${width}px`);
-    rootStyle.setProperty("--zoo-battle-content-height", `${contentHeight}px`);
-    rootStyle.setProperty("--zoo-battle-left", `${Math.max(0, (viewportWidth - width) / 2)}px`);
-    rootStyle.setProperty("--zoo-battle-top", `${top}px`);
-    rootStyle.setProperty("--zoo-battle-reserve-top", `${top + contentHeight}px`);
-    nodes.gamePanel.style.setProperty("width", `${logicalWidth}px`, "important");
-    nodes.gamePanel.style.setProperty("max-width", "none", "important");
-    nodes.gamePanel.style.setProperty("height", `${logicalHeight}px`, "important");
-    nodes.gamePanel.style.setProperty("max-height", "none", "important");
-    nodes.gamePanel.style.setProperty("min-height", `${logicalHeight}px`, "important");
+    // The shared Battle Canvas controller is the single viewport-scale owner.
+    // Zoo Idle declares the same 382x780 logical shell in its local CSS.
   }
 
   function showMenu() {
@@ -1623,8 +1612,7 @@
     nodes.localeSelect.closest(".language-picker")?.removeAttribute("aria-hidden");
     nodes.gamePanel.classList.add("hidden");
     nodes.menuPanel.classList.remove("hidden");
-    nodes.battleAdReserve.classList.add("hidden");
-    nodes.resultPanel.classList.add("hidden");
+    closeReport();
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   }
 
@@ -1710,7 +1698,7 @@
     if (event.detail?.gameId === GAME_ID) startGame();
   });
   nodes.reportBtn?.addEventListener("click", showReport);
-  nodes.closeReportBtn.addEventListener("click", () => nodes.resultPanel.classList.add("hidden"));
+  nodes.closeReportBtn.addEventListener("click", closeReport);
   window.addEventListener("beforeunload", saveGame);
 
   localizeStatic();
