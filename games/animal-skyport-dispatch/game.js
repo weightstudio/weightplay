@@ -12,6 +12,7 @@
     back: 'Back',
     coverAlt: 'Skyport dispatch animals',
     shiftSelection: 'Shift selection',
+    medals: 'Medals {n}/3',
   });
   Object.assign(strings['zh-Hant'], {
     guideTitle: '\u5982\u4f55\u8abf\u5ea6',
@@ -20,6 +21,7 @@
     back: '\u8fd4\u56de',
     coverAlt: '\u5929\u7a7a\u6e2f\u8abf\u5ea6\u52d5\u7269',
     shiftSelection: '\u73ed\u6b21\u9078\u64c7',
+    medals: '\u52f3\u7ae0 {n}/3',
   });
   const flights = [['cargo','cargo'], ['passenger','passenger'], ['repair','repair'], ['festival','passenger'], ['heavy','cargo']];
   const flightLabels = {
@@ -83,7 +85,7 @@
       card.className = `stage-card${shift === state.shift ? ' selected' : ''}`;
       card.disabled = shift > save.unlocked;
       const availability = shift > save.unlocked ? 'stageLocked' : shift === save.unlocked ? 'stageReady' : 'stageReplay';
-      card.innerHTML = `<strong>${t('shift', {n:shift})}</strong><span>${t('objective', {done:0, goal:config.goal})}</span><small>${t(availability)}</small>`;
+      card.innerHTML = `<strong>${t('shift', {n:shift})}</strong><span>${t('objective', {done:0, goal:config.goal})}</span><small><span>${t(availability)}</span><span class="stage-medals">${t('medals', {n:save.medals?.[shift] || 0})}</span></small>`;
       card.onclick = () => { state.shift = shift; startBattle(); };
       $('stageRail').append(card);
     }

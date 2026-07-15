@@ -167,6 +167,22 @@
         { icon: "?", en: ["Hint", "Use a hint if one target is hard to see."], "zh-Hant": ["\u63d0\u793a", "\u5982\u679c\u67d0\u500b\u76ee\u6a19\u5f88\u96e3\u627e\uff0c\u53ef\u4ee5\u4f7f\u7528\u63d0\u793a\u3002"] },
       ],
     },
+    "animal-bubble-safari": {
+      title: { en: "Rescue the safari bubbles.", "zh-Hant": "救出泡泡裡的動物。" },
+      steps: [
+        { icon: "1", en: ["Aim", "Drag to aim, then release to shoot."], "zh-Hant": ["瞄準", "拖曳瞄準，放開後發射泡泡。"] },
+        { icon: "2", en: ["Match", "Connect three or more matching animal bubbles."], "zh-Hant": ["配對", "連接三顆以上相同的動物泡泡。"] },
+        { icon: "3", en: ["Rescue", "Use wall bounces and special bubbles to complete the stage goal."], "zh-Hant": ["救援", "利用牆面反彈與特殊泡泡完成關卡目標。"] },
+      ],
+    },
+    "animal-habitat-mahjong": {
+      title: { en: "Clear the animal habitat.", "zh-Hant": "清空動物棲地牌局。" },
+      steps: [
+        { icon: "1", en: ["Find a Pair", "Look for two identical animal tiles."], "zh-Hant": ["尋找配對", "找出兩張相同的動物牌。"] },
+        { icon: "2", en: ["Check Free Tiles", "A tile needs no cover above and an open left or right side."], "zh-Hant": ["確認自由牌", "牌面上方不能被覆蓋，且左右至少一側要開放。"] },
+        { icon: "3", en: ["Clear", "Match every pair; use Hint, Undo, or Shuffle when needed."], "zh-Hant": ["清除", "配對所有牌；需要時可使用提示、復原或洗牌。"] },
+      ],
+    },
     "animal-reef-fisher": {
       title: { en: "Cast and control tension.", "zh-Hant": "拋竿並控制張力。" },
       steps: [

@@ -349,6 +349,13 @@ function renderStageSelect() {
     .join("");
 }
 
+function centerHighestUnlockedTrail(behavior = "auto") {
+  const target = stageGrid.querySelector(`[data-stage="${unlocked}"]`);
+  if (!target) return;
+  const left = target.offsetLeft - (stageGrid.clientWidth - target.offsetWidth) / 2;
+  stageGrid.scrollTo({ left: Math.max(0, Math.min(left, stageGrid.scrollWidth - stageGrid.clientWidth)), behavior });
+}
+
 function stageMetaText(level) {
   return `${t("fruitGoal", { count: level.fruits.length })}, ${t("obstacleGoal", { count: level.blocks.length + (level.water || []).length })}, ${t("parGoal", { count: level.par })}`;
 }
@@ -394,7 +401,10 @@ function showStageSelect() {
   renderStageSelect();
   exitSharedPlayViewport();
   updateBattleScale();
-  requestAnimationFrame(updateBattleScale);
+  requestAnimationFrame(() => {
+    updateBattleScale();
+    requestAnimationFrame(() => centerHighestUnlockedTrail("auto"));
+  });
 }
 
 function showMain() {

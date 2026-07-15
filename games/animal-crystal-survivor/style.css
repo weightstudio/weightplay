@@ -848,7 +848,7 @@ canvas {
   }
 
   .topbar {
-    grid-template-columns: 46px minmax(0, 1fr);
+    grid-template-columns: 58px minmax(0, 1fr);
     grid-template-rows: 46px 42px;
     gap: 6px;
   }

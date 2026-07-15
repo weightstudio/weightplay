@@ -55,8 +55,9 @@ select {
 
 .back-btn {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: 16px 24px;
   place-items: center;
+  gap: 4px;
   width: 54px;
   height: 54px;
   border-radius: 16px;
@@ -75,7 +76,7 @@ select {
 }
 
 .back-btn span {
-  display: none;
+  display: block;
 }
 
 body.is-rune-playing .topbar {
@@ -91,6 +92,8 @@ body.is-rune-playing .game-page-info {
 }
 
 body.is-rune-playing .back-btn {
+  grid-template-columns: 1fr;
+  gap: 0;
   width: 44px;
   height: 44px;
   border-radius: 12px;

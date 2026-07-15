@@ -31,3 +31,4 @@
 /* Feedback is event-only; the two-line task card owns persistent instruction. */
 .feedback{width:min(310px,calc(100% - 24px));max-height:48px;overflow:hidden;color:#fff;line-height:1.25;text-align:center;white-space:normal;pointer-events:none}
 .feedback:empty{display:none}
+.stage-card small{display:flex;justify-content:space-between;gap:10px;align-items:center;color:var(--text-muted);font-size:.72rem}.stage-card .stage-medals{color:#fde68a;font-weight:800;white-space:nowrap}

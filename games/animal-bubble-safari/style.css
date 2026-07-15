@@ -10,6 +10,9 @@
 * { box-sizing: border-box; }
 html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; }
 body { background: #0e1b2c; color: var(--ink); touch-action: none; }
+body.safari-main { height: auto; min-height: 100%; overflow-y: auto; touch-action: pan-y; }
+body.safari-main .viewport { position: relative; height: 100vh; min-height: 568px; }
+body:not(.safari-main) > .game-page-info { display: none; }
 button, a { font: inherit; -webkit-tap-highlight-color: transparent; }
 button { border: 0; cursor: pointer; color: inherit; }
 
@@ -118,7 +121,7 @@ button { border: 0; cursor: pointer; color: inherit; }
 .stage-summary div { display: grid; gap: 7px; text-align: center; }
 .stage-summary span { color: #b9d8e2; font-size: 13px; }
 .stage-summary strong { font-size: 20px; }
-.stage-rail { position: relative; z-index: 2; height: 330px; display: flex; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding: 10px 95px 18px; touch-action: pan-x; }
+.stage-rail { position: relative; z-index: 2; height: 330px; display: flex; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding: 10px 95px 18px; touch-action: none; overscroll-behavior-x: contain; }
 .stage-rail::-webkit-scrollbar { display: none; }
 .stage-card { display: grid; grid-template-columns: 108px minmax(0,1fr); border-radius: 8px; border: 3px solid rgba(255,255,255,.35); overflow: hidden; background: #fff; color: var(--ink); box-shadow: 0 8px 0 rgba(0,0,0,.24); text-align: left; padding: 0; }
 .stage-card.is-selected { border-color: #ffd44f; transform: translateY(-5px); }
@@ -147,7 +150,7 @@ button { border: 0; cursor: pointer; color: inherit; }
 .queue-bar canvas { grid-column: 1 / -1; width: 48px; height: 48px; }
 .queue-bar strong { font-size: 14px; line-height: 1.25; text-align: right; }
 
-.result-screen { position:absolute; inset:0; z-index:4; display:none; overflow:hidden; color: #fff; background: linear-gradient(rgba(9,29,43,.84), rgba(9,29,43,.92)), url("../../assets/animal-bubble-safari-bg.webp") center/cover; }
+.result-screen { position:absolute; inset:0; width:390px !important; height:788px !important; min-height:788px !important; max-height:788px !important; z-index:4; display:none; overflow:hidden; color: #fff; background: linear-gradient(rgba(9,29,43,.84), rgba(9,29,43,.92)), url("../../assets/animal-bubble-safari-bg.webp") center/cover; }
 .result-screen.is-active { display:block; }
 .result-panel { width: 352px; height: 724px; margin: 32px auto; border-radius: 8px; border: 2px solid rgba(255,255,255,.32); background: rgba(21,52,76,.92); padding: 20px; text-align: center; display: grid; grid-template-rows: 148px 42px 42px 78px 64px 68px 1fr; gap: 8px; }
 .result-mascot { width: 170px; height: 148px; object-fit: contain; margin: 0 auto; }

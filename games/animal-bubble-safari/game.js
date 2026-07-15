@@ -9,7 +9,7 @@
 
   const copy = {
     "zh-Hant": {
-      title: "動物泡泡探險", internalTrial: "WeightPlay 內部測試", tagline: "瞄準、反彈，救出泡泡裡的動物！", progressLabel: "探險進度",
+      title: "動物泡泡探險", tagline: "瞄準、反彈，救出泡泡裡的動物！", progressLabel: "探險進度",
       loading: "準備探險", loadingError: "部分圖片未載入，將使用可用素材",
       startGame: "開始遊戲", guide: "玩法", chooseStage: "選擇關卡", album: "救援圖鑑", bestStars: "最佳星星",
       startLevel: "開始關卡", level: "關卡", shots: "剩餘", rescued: "目標", score: "分數",
@@ -27,7 +27,7 @@
       rainbowUsed: "彩虹變色！", lineUsed: "橫掃整排！", burstUsed: "爆破清除！", swapUsed: "顏色交換！"
     },
     en: {
-      title: "Animal Bubble Safari", internalTrial: "WeightPlay Internal Trial", tagline: "Aim, bank shots, and rescue bubble animals!", progressLabel: "Safari progress",
+      title: "Animal Bubble Safari", tagline: "Aim, bank shots, and rescue bubble animals!", progressLabel: "Safari progress",
       loading: "Preparing Safari", loadingError: "Some images could not load; available art will be used",
       startGame: "Start Game", guide: "Guide", chooseStage: "Choose Stage", album: "Rescue Album", bestStars: "Best Stars",
       startLevel: "Start Level", level: "Level", shots: "Shots", rescued: "Goal", score: "Score",
@@ -70,7 +70,8 @@
   const currentCtx = dom.currentPreview.getContext("2d");
   const nextCtx = dom.nextPreview.getContext("2d");
   const images = {};
-  let locale = localStorage.getItem("weightplay:locale") === "en" ? "en" : "zh-Hant";
+  const savedLocale = localStorage.getItem("weightPlayLocale") || localStorage.getItem("weightplay:locale");
+  let locale = savedLocale === "zh-Hant" ? "zh-Hant" : "en";
   let save = loadSave();
   let selectedStage = Math.min(save.unlocked, stageDefs.length);
   let currentScreen = "loading";
@@ -98,12 +99,13 @@
 
   function applyLocale() {
     document.documentElement.lang = locale;
-    document.title = `${t("title")} | ${t("internalTrial")}`;
+    document.title = `${t("title")} - WeightPlay`;
     document.querySelectorAll("[data-i18n]").forEach(el => { el.textContent = t(el.dataset.i18n); });
     document.querySelectorAll("[data-locale]").forEach(button => button.classList.toggle("is-selected", button.dataset.locale === locale));
     renderStageRail();
     updateMainProgress();
     if (game) updateHud();
+    window.dispatchEvent(new CustomEvent("wonder:locale-change", { detail: { locale } }));
   }
 
   function fitCanvas() {
@@ -118,6 +120,7 @@
 
   function showScreen(name) {
     currentScreen = name;
+    document.body.classList.toggle("safari-main", name === "main");
     const result = name === "result";
     dom.loadingScreen.classList.toggle("is-active", name === "loading");
     dom.mainScreen.classList.toggle("is-active", name === "main");
@@ -165,17 +168,48 @@
   }
 
   let stageGesture = null;
+  let stageSettleFrame = 0;
+  let stageSettleTrace = [];
   let suppressStageClick = false;
   const stageScale = () => Math.max(.01, dom.gameCanvas.getBoundingClientRect().width / LOGICAL_WIDTH);
+  function stopStageSettle() {
+    cancelAnimationFrame(stageSettleFrame);
+    stageSettleFrame = 0;
+  }
+  function settleStageCard(card) {
+    stopStageSettle();
+    const rail = dom.stageRail;
+    const start = rail.scrollLeft;
+    const max = Math.max(0, rail.scrollWidth - rail.clientWidth);
+    const target = Math.max(0, Math.min(max, card.offsetLeft + card.offsetWidth / 2 - rail.clientWidth / 2));
+    const distance = target - start;
+    const duration = 220;
+    const started = performance.now();
+    stageSettleTrace = [start];
+    rail.style.scrollSnapType = "none";
+    const step = now => {
+      const progress = Math.min(1, (now - started) / duration);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      rail.scrollLeft = start + distance * eased;
+      stageSettleTrace.push(rail.scrollLeft);
+      if (progress < 1) stageSettleFrame = requestAnimationFrame(step);
+      else {
+        stageSettleFrame = 0;
+        rail.style.scrollSnapType = "x mandatory";
+      }
+    };
+    stageSettleFrame = requestAnimationFrame(step);
+  }
   dom.stageRail.addEventListener("pointerdown", event => {
     if (event.button !== 0) return;
+    stopStageSettle();
     stageGesture = { id:event.pointerId, x:event.clientX, scroll:dom.stageRail.scrollLeft, moved:false };
     dom.stageRail.style.scrollSnapType = "none";
   });
   dom.stageRail.addEventListener("pointermove", event => {
     if (!stageGesture || stageGesture.id !== event.pointerId) return;
     const delta = (event.clientX - stageGesture.x) / stageScale();
-    if (Math.abs(delta) > 8 && !stageGesture.moved) {
+    if (Math.abs(delta) > 4 && !stageGesture.moved) {
       stageGesture.moved = true;
       dom.stageRail.setPointerCapture?.(event.pointerId);
     }
@@ -189,8 +223,10 @@
     const moved = stageGesture.moved;
     stageGesture = null;
     if (dom.stageRail.hasPointerCapture?.(event.pointerId)) dom.stageRail.releasePointerCapture(event.pointerId);
-    dom.stageRail.style.scrollSnapType = "x mandatory";
-    if (!moved) return;
+    if (!moved) {
+      dom.stageRail.style.scrollSnapType = "x mandatory";
+      return;
+    }
     suppressStageClick = true;
     const railCenter = dom.stageRail.getBoundingClientRect().left + dom.stageRail.getBoundingClientRect().width / 2;
     const cards = [...dom.stageRail.children];
@@ -199,7 +235,7 @@
       const distance = Math.abs(rect.left + rect.width / 2 - railCenter);
       return distance < best.distance ? { index, distance } : best;
     }, { index:0, distance:Infinity });
-    cards[nearest.index]?.scrollIntoView({ behavior:"smooth", inline:"center", block:"nearest" });
+    if (cards[nearest.index]) settleStageCard(cards[nearest.index]);
     if (nearest.index + 1 <= save.unlocked) selectStage(nearest.index + 1, false);
     setTimeout(() => { suppressStageClick = false; }, 360);
   };
@@ -249,6 +285,9 @@
     })));
   }
 
+  const PROJECTILE_RADIUS = 22;
+  const CONTACT_DISTANCE = 43;
+  const ATTACH_VECTORS = [[-44,0],[44,0],[-22,-38],[22,-38],[-22,38],[22,38]];
   function makeBubble(x, y, type, extras = {}) { return { x, y, type, radius: 21, alive: true, blocker: false, rescue: false, ...extras }; }
 
   function stageLayout(id) {
@@ -340,7 +379,7 @@
       if (x < 19) { x = 19; dx *= -1; }
       if (x > 341) { x = 341; dx *= -1; }
       points.push({x,y});
-      if (y < 20 || game.bubbles.some(b => b.alive && Math.hypot(b.x-x,b.y-y) < b.radius + 12)) break;
+      if (y < PROJECTILE_RADIUS || game.bubbles.some(b => b.alive && Math.hypot(b.x-x,b.y-y) <= CONTACT_DISTANCE)) break;
     }
     return points;
   }
@@ -348,28 +387,42 @@
   function updateProjectile(dt) {
     const p = game.projectile;
     if (!p) return;
-    p.x += p.vx * dt; p.y += p.vy * dt;
-    if (p.x < 20) { p.x = 20; p.vx = Math.abs(p.vx); p.bounced = true; tone(680,.025); }
-    if (p.x > 340) { p.x = 340; p.vx = -Math.abs(p.vx); p.bounced = true; tone(680,.025); }
-    const hit = game.bubbles.find(b => b.alive && Math.hypot(b.x-p.x,b.y-p.y) < b.radius + 18);
-    if (p.y <= 23 || hit) attachProjectile(hit);
+    const steps = Math.max(1, Math.ceil(Math.hypot(p.vx, p.vy) * dt / 4));
+    const stepTime = dt / steps;
+    for (let step = 0; step < steps && game.projectile; step += 1) {
+      p.x += p.vx * stepTime; p.y += p.vy * stepTime;
+      if (p.x < PROJECTILE_RADIUS) { p.x = PROJECTILE_RADIUS; p.vx = Math.abs(p.vx); p.bounced = true; tone(680,.025); }
+      if (p.x > 360 - PROJECTILE_RADIUS) { p.x = 360 - PROJECTILE_RADIUS; p.vx = -Math.abs(p.vx); p.bounced = true; tone(680,.025); }
+      const hit = game.bubbles
+        .filter(bubble => bubble.alive && Math.hypot(bubble.x-p.x,bubble.y-p.y) <= CONTACT_DISTANCE)
+        .sort((a,b) => Math.hypot(a.x-p.x,a.y-p.y) - Math.hypot(b.x-p.x,b.y-p.y))[0];
+      if (p.y <= PROJECTILE_RADIUS || hit) attachProjectile(hit);
+    }
+  }
+
+  function openAttachmentSpot(p, hit) {
+    const occupied = spot => game.bubbles.some(bubble => bubble.alive && Math.hypot(bubble.x-spot.x,bubble.y-spot.y) < 40);
+    const valid = spot => spot.x >= PROJECTILE_RADIUS && spot.x <= 360 - PROJECTILE_RADIUS && spot.y >= PROJECTILE_RADIUS && spot.y <= 440 && !occupied(spot);
+    let candidates = hit
+      ? ATTACH_VECTORS.map(([dx,dy]) => ({ x:hit.x+dx, y:hit.y+dy })).filter(valid)
+      : [];
+    if (!candidates.length && !hit) {
+      const ceiling = { x:Math.max(PROJECTILE_RADIUS, Math.min(360-PROJECTILE_RADIUS, Math.round(p.x/22)*22)), y:PROJECTILE_RADIUS };
+      if (!occupied(ceiling)) candidates.push(ceiling);
+    }
+    candidates.sort((a,b) => Math.hypot(a.x-p.x,a.y-p.y) - Math.hypot(b.x-p.x,b.y-p.y));
+    return candidates[0] || { x:Math.max(PROJECTILE_RADIUS,Math.min(360-PROJECTILE_RADIUS,p.x)), y:Math.max(PROJECTILE_RADIUS,p.y) };
   }
 
   function attachProjectile(hit) {
     const p = game.projectile;
     if (p.power === "rainbow" && hit && !hit.blocker) p.type = hit.type;
     if (p.power === "swap" && hit && !hit.blocker) [p.type, hit.type] = [hit.type, p.type];
-    const spots = [];
-    for (let row=0;row<11;row++) {
-      const y = 30 + row * 38;
-      const offset = row % 2 ? 22 : 0;
-      for (let col=0;col<8;col++) spots.push({ x: 26 + offset + col*44, y });
-    }
-    const available = spots.filter(spot => !game.bubbles.some(b => b.alive && Math.hypot(b.x-spot.x,b.y-spot.y) < 28));
-    available.sort((a,b) => Math.hypot(a.x-p.x,a.y-p.y) - Math.hypot(b.x-p.x,b.y-p.y));
-    const spot = available[0] || { x: p.x, y: Math.max(24,p.y) };
-    const added = makeBubble(spot.x,spot.y,p.type,{ shotBounced:p.bounced });
+    const impact = { x:p.x, y:p.y };
+    const spot = openAttachmentSpot(p, hit);
+    const added = makeBubble(spot.x,spot.y,p.type,{ shotBounced:p.bounced, settleFromX:impact.x, settleFromY:impact.y, settleProgress:0 });
     game.bubbles.push(added);
+    game.lastAttachment = { impactX:impact.x, impactY:impact.y, x:spot.x, y:spot.y, hitX:hit?.x ?? null, hitY:hit?.y ?? null };
     game.projectile = null;
     game.shots -= 1;
     if (p.power === "line" || p.power === "burst") {
@@ -558,13 +611,17 @@
     }
     game.bubbles.forEach(bubble => {
       if (!bubble.alive) return;
+      const settle = bubble.settleProgress == null ? 1 : bubble.settleProgress;
+      const eased = 1 - Math.pow(1 - settle, 3);
+      const drawX = bubble.settleFromX == null ? bubble.x : bubble.settleFromX + (bubble.x-bubble.settleFromX)*eased;
+      const drawY = bubble.settleFromY == null ? bubble.y : bubble.settleFromY + (bubble.y-bubble.settleFromY)*eased;
       ctx.save(); ctx.shadowColor = "rgba(0,0,0,.26)"; ctx.shadowBlur = 5; ctx.shadowOffsetY = 3;
-      if (bubble.blocker) atlasBlocker(ctx,0,bubble.x,bubble.y,46);
-      else atlasBubble(ctx,bubble.type,bubble.x,bubble.y,46);
+      if (bubble.blocker) atlasBlocker(ctx,0,drawX,drawY,46);
+      else atlasBubble(ctx,bubble.type,drawX,drawY,46);
       ctx.restore();
       if (bubble.rescue) {
-        ctx.save(); ctx.globalAlpha=.96; atlasRescue(ctx,bubble.rescueIndex,bubble.x,bubble.y,35); ctx.restore();
-        ctx.strokeStyle="#fff4a8"; ctx.lineWidth=3; ctx.beginPath(); ctx.arc(bubble.x,bubble.y,22,0,Math.PI*2); ctx.stroke();
+        ctx.save(); ctx.globalAlpha=.96; atlasRescue(ctx,bubble.rescueIndex,drawX,drawY,35); ctx.restore();
+        ctx.strokeStyle="#fff4a8"; ctx.lineWidth=3; ctx.beginPath(); ctx.arc(drawX,drawY,22,0,Math.PI*2); ctx.stroke();
       }
     });
     if (game.projectile) {
@@ -584,6 +641,7 @@
     if (!game || currentScreen !== "battle") return;
     const dt = Math.min(.025,(now-game.elapsed)/1000 || 0); game.elapsed=now;
     if (game.state === "playing") updateProjectile(dt);
+    game.bubbles.forEach(bubble => { if (bubble.settleProgress != null && bubble.settleProgress < 1) bubble.settleProgress = Math.min(1, bubble.settleProgress + dt / .11); });
     game.particles.forEach(p => p.life -= dt); game.particles = game.particles.filter(p => p.life > 0);
     drawGame();
     animationFrame = requestAnimationFrame(loop);
@@ -613,8 +671,11 @@
       matches: game?.matches || 0, rescued: game?.rescued || 0,
       alive: game?.bubbles.filter(bubble => bubble.alive).length || 0,
       blockers: game?.bubbles.filter(bubble => bubble.alive && bubble.blocker).length || 0,
+      shots: game?.shots ?? null,
+      lastAttachment: game?.lastAttachment || null,
       bubbleTypes: game?.bubbles.filter(bubble => bubble.alive && !bubble.blocker).map(bubble => ({ x:bubble.x, y:bubble.y, type:bubble.type })) || []
     }),
+    getStageSettleTrace: () => [...stageSettleTrace],
     getLayoutSummary: id => {
       const bubbles = stageLayout(id);
       return {
@@ -638,7 +699,7 @@
   document.getElementById("guideDone").addEventListener("click", closeGuide);
   document.getElementById("soundMain").addEventListener("click", toggleSound);
   document.getElementById("soundStage").addEventListener("click", toggleSound);
-  document.querySelectorAll("[data-locale]").forEach(button => button.addEventListener("click", () => { locale=button.dataset.locale; localStorage.setItem("weightplay:locale",locale); applyLocale(); }));
+  document.querySelectorAll("[data-locale]").forEach(button => button.addEventListener("click", () => { locale=button.dataset.locale; localStorage.setItem("weightPlayLocale",locale); window.WonderI18n?.setLocale?.(locale); applyLocale(); }));
   dom.playCanvas.addEventListener("pointerdown", beginAim);
   dom.playCanvas.addEventListener("pointermove", updateAim);
   window.addEventListener("pointerup", releaseAim);

@@ -55,7 +55,10 @@
     en: {
       title: "Animal Rune Tactics",
       language: "Language",
+      backToLobby: "Back to lobby",
       backToMenu: "Back to missions",
+      backToMain: "Back to main menu",
+      startGame: "Start Game",
       menuTitle: "Command the Rune Squad.",
       menuHint: "Choose a mission, move animal heroes on the rune grid, and clear enemies with smart positioning.",
       profileLevel: "Level",

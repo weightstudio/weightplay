@@ -1494,7 +1494,7 @@ body.squad-active #gameCanvas {
   }
 
   .topbar {
-    grid-template-columns: 44px 1fr minmax(104px, 132px);
+    grid-template-columns: 58px minmax(0, 1fr) minmax(104px, 132px);
     gap: 8px;
     margin-bottom: 8px;
   }

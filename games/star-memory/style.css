@@ -637,7 +637,7 @@ body:not(.memory-stage):not(.memory-playing) .language-picker select {
 body.memory-result .game-hud,
 body.memory-result .game-board-panel,
 body.memory-result .feedback {
-  visibility: hidden;
+  display: none !important;
   pointer-events: none;
 }
 
@@ -685,6 +685,31 @@ body.memory-result .result-panel {
   margin: 0 0 16px;
 }
 
+.skill-report-title {
+  margin: 0 0 5px;
+  color: #f8fafc;
+  font-size: 16px;
+}
+
+.skill-report-intro,
+.progress-comparison {
+  margin: 0 0 10px;
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.progress-comparison {
+  min-height: 30px;
+  display: grid;
+  place-items: center;
+  padding: 6px 9px;
+  border-radius: 9px;
+  background: rgba(59, 130, 246, 0.13);
+  color: #dbeafe;
+}
+
 .memory-report-item {
   min-width: 0;
   padding: 8px 5px;
@@ -700,7 +725,7 @@ body.memory-result .result-panel {
 
 .memory-report-item span {
   color: var(--text-muted);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   line-height: 1.2;
 }
@@ -708,7 +733,7 @@ body.memory-result .result-panel {
 .memory-report-item strong {
   margin-top: 4px;
   color: #f8fafc;
-  font-size: 14px;
+  font-size: 12px;
   line-height: 1.1;
 }
 

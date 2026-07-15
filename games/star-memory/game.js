@@ -38,6 +38,9 @@
   const reportMovesValue = document.querySelector("#reportMovesValue");
   const reportStreakLabel = document.querySelector("#reportStreakLabel");
   const reportStreakValue = document.querySelector("#reportStreakValue");
+  const skillReportTitle = document.querySelector("#skillReportTitle");
+  const skillReportIntro = document.querySelector("#skillReportIntro");
+  const progressComparison = document.querySelector("#progressComparison");
   
   const nextLevelBtn = document.querySelector("#nextLevelBtn");
   const againBtn = document.querySelector("#againBtn");
@@ -129,9 +132,18 @@
       stage9Desc: "Space, animals, and sweets all mixed together.",
       stage10Desc: "The full 12-pair board for memory experts.",
       highScore: "High Score: {score}",
-      reportPairs: "Pairs found",
-      reportMoves: "Moves used",
-      reportStreak: "Best streak"
+      skillReport: "Skill Report",
+      reportIntroWin: "This round practiced remembering positions, staying focused, and choosing the next pair.",
+      reportIntroTry: "Good effort! Every pair you found was useful memory and focus practice.",
+      reportPairs: "Memory",
+      reportMoves: "Focus",
+      reportStreak: "Problem Solving",
+      reportPairsValue: "{current} / {total} pairs",
+      reportMovesValue: "{moves} moves",
+      reportStreakValue: "Best streak x{streak}",
+      todayScore: "Today's score: {score}",
+      scoreProgress: "Today's score: {score} · Previous best: {previous}",
+      newBest: "New best: {score}! Previous best: {previous}"
     },
     "zh-Hant": {
       title: "\u52d5\u7269\u661f\u661f\u7ffb\u724c",
@@ -190,9 +202,18 @@
       stage9Desc: "\u661f\u7a7a\u3001\u52d5\u7269\u548c\u751c\u9ede\u6df7\u5408\u5728\u4e00\u8d77\u3002",
       stage10Desc: "\u5b8c\u6574 12 \u7d44\u5361\u724c\uff0c\u6311\u6230\u8a18\u61b6\u9ad8\u624b\u3002",
       highScore: "\u6700\u9ad8\u5206\uff1a{score}",
-      reportPairs: "\u5df2\u627e\u5230\u914d\u5c0d",
-      reportMoves: "\u4f7f\u7528\u6b65\u6578",
-      reportStreak: "\u6700\u4f73\u9023\u7e8c\u914d\u5c0d"
+      skillReport: "\u6280\u80fd\u5831\u544a",
+      reportIntroWin: "\u9019\u4e00\u5c40\u7df4\u7fd2\u4e86\u8a18\u4f4f\u4f4d\u7f6e\u3001\u4fdd\u6301\u5c08\u6ce8\uff0c\u4ee5\u53ca\u9078\u64c7\u4e0b\u4e00\u7d44\u914d\u5c0d\u3002",
+      reportIntroTry: "\u5f88\u597d\u7684\u5617\u8a66\uff01\u6bcf\u627e\u5230\u4e00\u7d44\uff0c\u90fd\u662f\u8a18\u61b6\u8207\u5c08\u6ce8\u7df4\u7fd2\u3002",
+      reportPairs: "\u8a18\u61b6",
+      reportMoves: "\u5c08\u6ce8",
+      reportStreak: "\u554f\u984c\u89e3\u6c7a",
+      reportPairsValue: "{current} / {total} \u7d44\u914d\u5c0d",
+      reportMovesValue: "\u4f7f\u7528 {moves} \u6b65",
+      reportStreakValue: "\u6700\u4f73\u9023\u7e8c x{streak}",
+      todayScore: "\u672c\u6b21\u5206\u6578\uff1a{score}",
+      scoreProgress: "\u672c\u6b21\u5206\u6578\uff1a{score} \u00b7 \u4e0a\u6b21\u6700\u4f73\uff1a{previous}",
+      newBest: "\u65b0\u7684\u6700\u4f73\u5206\u6578\uff1a{score}\uff01\u4e0a\u6b21\u6700\u4f73\uff1a{previous}"
     }
   };
 
@@ -763,6 +784,7 @@
   // Game Victory Handling
   function finishGame() {
     const stage = stages[state.stageIndex];
+    const previousBest = getLevelHighScore(stage.id);
     
     // Save progress to unlock next level
     saveProgress(stage.id + 1);
@@ -786,12 +808,7 @@
     // Victory UI
     resultTitle.textContent = stage.id === stages.length ? t("allClear") : t("victory");
     resultText.textContent = stage.id === stages.length ? t("allClearDesc", { count: stages.length }) : t("victoryDesc", { moves: state.moves });
-    reportPairsLabel.textContent = t("reportPairs");
-    reportPairsValue.textContent = `${state.matchedPairsCount} / ${stage.symbols.length}`;
-    reportMovesLabel.textContent = t("reportMoves");
-    reportMovesValue.textContent = state.moves;
-    reportStreakLabel.textContent = t("reportStreak");
-    reportStreakValue.textContent = `x${state.bestCombo}`;
+    renderSkillReport(stage, true, previousBest);
     memoryReport.classList.remove("hidden");
     
     // Stars indicator
@@ -820,9 +837,11 @@
 
   // Game Over Handling
   function gameOver() {
+    const stage = stages[state.stageIndex];
     resultTitle.textContent = t("defeat");
     resultText.textContent = t("defeatDesc");
-    memoryReport.classList.add("hidden");
+    renderSkillReport(stage, false, getLevelHighScore(stage.id));
+    memoryReport.classList.remove("hidden");
     
     // Stars indicator (none)
     document.querySelectorAll("#starContainer .star").forEach((star) => {
@@ -834,6 +853,20 @@
     resultPanel.classList.remove("hidden");
     
     window.WonderSound?.play("wrong");
+  }
+
+  function renderSkillReport(stage, completed, previousBest) {
+    skillReportTitle.textContent = t("skillReport");
+    skillReportIntro.textContent = t(completed ? "reportIntroWin" : "reportIntroTry");
+    reportPairsLabel.textContent = t("reportPairs");
+    reportPairsValue.textContent = t("reportPairsValue", { current: state.matchedPairsCount, total: stage.symbols.length });
+    reportMovesLabel.textContent = t("reportMoves");
+    reportMovesValue.textContent = t("reportMovesValue", { moves: state.moves });
+    reportStreakLabel.textContent = t("reportStreak");
+    reportStreakValue.textContent = t("reportStreakValue", { streak: state.bestCombo });
+    progressComparison.textContent = previousBest > 0
+      ? t(completed && state.score > previousBest ? "newBest" : "scoreProgress", { score: state.score, previous: previousBest })
+      : t("todayScore", { score: state.score });
   }
 
   // Event Listeners

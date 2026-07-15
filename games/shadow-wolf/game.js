@@ -70,6 +70,7 @@
     amuletBtn: $("amuletBtn"),
     amuletCost: $("amuletCost"),
     amuletStatus: $("amuletStatus"),
+    adventureRecordText: $("adventureRecordText"),
     zoneButtons: Array.from(document.querySelectorAll("[data-zone]")),
     attributeButtons: Array.from(document.querySelectorAll("[data-attribute]")),
   };
@@ -81,8 +82,8 @@
       title: "Shadow Wolf",
       menuTitle: "Dungeon Platform Adventure.",
       menuHint: "Move with A/D, jump/double-jump with W/Space, attack with J, and dash with K. Collect keys to open chest upgrades, and clear Room 3.",
-      prototypeGoalsTitle: "Prototype test goals",
-      prototypeGoalsText: "Jump over platforms and spikes, slash bat/wolf enemies, open loot chests, and verify equipped item buffs are active.",
+      adventureRecordTitle: "Adventure Record",
+      adventureRecordText: "Expeditions: {runs} · Best: Room {best}/8 · Behemoth clears: {wins}",
       diamondShopTitle: "Permanent Upgrade",
       amuletName: "Mist Amulet",
       amuletEffect: "Start every run with +10 Max HP (40 HP instead of 30 HP).",
@@ -151,8 +152,6 @@
       title: "影狼傳說",
       menuTitle: "遺跡平台冒險之旅。",
       menuHint: "使用 A/D 移動，W/空白鍵進行跳躍或雙重跳躍，J 鍵揮爪攻擊，K 鍵衝刺。收集鑰匙解鎖裝備，通關 Room 3。",
-      prototypeGoalsTitle: "原型測試目標",
-      prototypeGoalsText: "跨越浮空平台與地底刺針陷阱，揮爪砍殺影怪，打開寶箱並驗證裝備加成屬性數值正常。",
       diamondShopTitle: "永久升級",
       amuletName: "迷霧護符",
       amuletEffect: "每局挑戰開始時最大生命值 +10 HP (以 40 HP 開局，原為 30 HP)。",
@@ -219,6 +218,11 @@
     }
   };
 
+  Object.assign(text["zh-Hant"], {
+    adventureRecordTitle: "\u5192\u96aa\u7d00\u9304",
+    adventureRecordText: "\u51fa\u5f81\u6b21\u6578\uff1a{runs} \u00b7 \u6700\u4f73\uff1a\u623f\u9593 {best}/8 \u00b7 \u5de8\u7378\u901a\u95dc\uff1a{wins}",
+  });
+
   function preloadImage(src) {
     const image = new Image();
     image.src = src;
@@ -270,6 +274,9 @@
   // State Variables
   let state = {
     amuletUnlocked: false,
+    runs: 0,
+    bestRoom: 0,
+    wins: 0,
     playerMaxHp: 30,
     playerHp: 30,
     level: 1,
@@ -340,14 +347,20 @@
     try {
       const data = JSON.parse(localStorage.getItem(saveKey) || "{}");
       state.amuletUnlocked = !!data.amuletUnlocked;
+      state.runs = Math.max(0, Number.parseInt(data.runs, 10) || 0);
+      state.bestRoom = Math.max(0, Math.min(8, Number.parseInt(data.bestRoom, 10) || 0));
+      state.wins = Math.max(0, Number.parseInt(data.wins, 10) || 0);
     } catch {
       state.amuletUnlocked = false;
+      state.runs = 0;
+      state.bestRoom = 0;
+      state.wins = 0;
     }
   }
 
   function saveLocalState() {
     try {
-      localStorage.setItem(saveKey, JSON.stringify({ amuletUnlocked: state.amuletUnlocked }));
+      localStorage.setItem(saveKey, JSON.stringify({ amuletUnlocked: state.amuletUnlocked, runs: state.runs, bestRoom: state.bestRoom, wins: state.wins }));
     } catch {}
   }
 
@@ -363,6 +376,11 @@
 
   function assetImg(src, alt = "") {
     return `<img src="${src}" alt="${alt}" loading="lazy" decoding="async" />`;
+  }
+
+  function renderAdventureRecord() {
+    if (!nodes.adventureRecordText) return;
+    nodes.adventureRecordText.textContent = t("adventureRecordText", { runs: state.runs, best: state.bestRoom, wins: state.wins });
   }
 
   function translateUI() {
@@ -386,6 +404,7 @@
     document.querySelector('meta[property="og:description"]')?.setAttribute("content", publicMeta.description);
     updateDiamondShopUI();
     renderEquippedGear();
+    renderAdventureRecord();
   }
 
   const stageCopy = {
@@ -444,6 +463,7 @@
     nodes.menuPanel.classList.remove("hidden");
     setScreen("main");
     updateDiamondShopUI();
+    renderAdventureRecord();
   }
 
   function updateDiamondShopUI() {
@@ -607,6 +627,8 @@
   // Active game start trigger
   function startRun(startRoom = state.zone) {
     loadLocalState();
+    state.runs += 1;
+    saveLocalState();
     const stats = getStats();
     state.playerMaxHp = stats.maxHp;
     state.playerHp = state.playerMaxHp;
@@ -856,6 +878,10 @@
     nodes.resultScore.textContent = won ? "3" : String(state.room - 1);
 
     const cleared = won ? 3 : (state.room - 1);
+    state.bestRoom = Math.max(state.bestRoom, won ? 8 : Math.max(0, state.room - 1));
+    if (won) state.wins += 1;
+    saveLocalState();
+    renderAdventureRecord();
     let starsStr = "";
     if (cleared === 3) starsStr = "⭐⭐⭐⭐⭐";
     else if (cleared === 2) starsStr = "⭐⭐⭐";
@@ -1637,6 +1663,7 @@
           hp: Math.ceil(state.playerHp),
           maxHp: stats.maxHp,
           keys: state.keys,
+          record: { runs: state.runs, bestRoom: state.bestRoom, wins: state.wins },
           player: {
             x: Math.round(state.x),
             y: Math.round(state.y),
