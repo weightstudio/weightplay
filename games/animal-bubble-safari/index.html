@@ -4,14 +4,26 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
   <meta name="robots" content="noindex,nofollow">
-  <title>動物泡泡探險 | WeightPlay Internal Trial</title>
+  <title>動物泡泡探險 | WeightPlay 內部測試</title>
+  <link rel="stylesheet" href="../../src/game-page-info.css">
+  <link rel="stylesheet" href="../../src/loading-screen.css">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <main id="viewport" class="viewport" aria-live="polite">
     <div id="canvasSlot" class="canvas-slot">
       <div id="gameCanvas" class="game-canvas">
-        <section id="mainScreen" class="screen main-screen is-active" aria-labelledby="gameTitle">
+        <section id="loadingScreen" class="screen loading-screen is-active" aria-labelledby="loadingTitle">
+          <img class="loading-cover" src="../../assets/animal-bubble-safari-cover.webp" alt="" draggable="false">
+          <div id="loadingPanel" class="safari-loading" role="status" aria-live="polite">
+            <img src="../../assets/animal-bubble-safari-lion-guide.webp" alt="" draggable="false">
+            <strong id="loadingTitle" data-i18n="loading">準備探險</strong>
+            <div class="loading-track" aria-hidden="true"><i id="loadingFill"></i></div>
+            <span id="loadingProgress">0%</span>
+          </div>
+        </section>
+
+        <section id="mainScreen" class="screen main-screen" aria-labelledby="gameTitle">
           <header class="topbar">
             <a class="home-link" href="../../index.html" aria-label="返回 WeightPlay 大廳">
               <span aria-hidden="true">←</span>
@@ -57,7 +69,6 @@
             <span id="stageSkill">專注</span>
             <strong id="stageGoal">直接命中同色泡泡</strong>
           </div>
-          <button id="playStage" class="primary-button stage-play" type="button" data-i18n="startLevel">開始關卡</button>
         </section>
 
         <section id="battleScreen" class="screen battle-screen" aria-labelledby="battleStageName">

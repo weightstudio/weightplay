@@ -10,7 +10,8 @@
 
   const copy = {
     "zh-Hant": {
-      title: "動物泡泡探險", tagline: "瞄準、反彈，救出泡泡裡的動物！", progressLabel: "探險進度",
+      title: "動物泡泡探險", internalTrial: "WeightPlay 內部測試", tagline: "瞄準、反彈，救出泡泡裡的動物！", progressLabel: "探險進度",
+      loading: "準備探險", loadingError: "部分圖片未載入，將使用可用素材",
       startGame: "開始遊戲", guide: "玩法", chooseStage: "選擇關卡", album: "救援圖鑑", bestStars: "最佳星星",
       startLevel: "開始關卡", level: "關卡", shots: "剩餘", rescued: "目標", score: "分數",
       currentBubble: "目前", nextBubble: "下一顆", shotsLeft: "剩餘泡泡", rescuedAnimals: "救出動物",
@@ -21,17 +22,25 @@
       directSkill: "專注", bankSkill: "判斷", rescueSkill: "規劃", directHint: "對準上方兩顆藍色泡泡", bankHint: "瞄準左牆，讓泡泡反彈", rescueHint: "消除包住小斑馬的泡泡",
       success: "救援成功！", failed: "泡泡用完了", bounceNeeded: "這一關要先碰牆反彈！", noMatch: "再找找相同的動物泡泡", match: "配對成功！", rescuedNow: "動物得救了！",
       focusReport: "專注 · 手眼協調", logicReport: "空間判斷 · 手眼協調", rescueReport: "規劃 · 邏輯思考", locked: "尚未解鎖", completed: "已完成"
+      ,rescueGoal: "救出動物泡泡", multiGoal: "完成 2 組同色配對", multiBankGoal: "利用反彈完成 2 組配對", doubleRescueGoal: "救出 2 隻動物",
+      directHint: "瞄準同色泡泡完成配對", bankHint: "瞄準側牆，讓泡泡反彈", rescueHint: "消除動物周圍的同色泡泡", multiHint: "規劃射擊順序，完成兩組配對", doubleRescueHint: "先觀察路線，再救出兩隻動物",
+      rainbowHint: "彩虹泡泡會變成撞到的泡泡顏色", lineHint: "橫掃泡泡會清除命中的整排泡泡", burstHint: "爆破泡泡會清除附近泡泡與障礙", swapHint: "交換泡泡會和撞到的泡泡互換顏色",
+      rainbowUsed: "彩虹變色！", lineUsed: "橫掃整排！", burstUsed: "爆破清除！", swapUsed: "顏色交換！"
     },
     en: {
-      title: "Animal Bubble Safari", tagline: "Aim, bank shots, and rescue bubble animals!", progressLabel: "Safari progress",
+      title: "Animal Bubble Safari", internalTrial: "WeightPlay Internal Trial", tagline: "Aim, bank shots, and rescue bubble animals!", progressLabel: "Safari progress",
+      loading: "Preparing Safari", loadingError: "Some images could not load; available art will be used",
       startGame: "Start Game", guide: "Guide", chooseStage: "Choose Stage", album: "Rescue Album", bestStars: "Best Stars",
       startLevel: "Start Level", level: "Level", shots: "Shots", rescued: "Goal", score: "Score",
       currentBubble: "Current", nextBubble: "Next", shotsLeft: "Shots Left", rescuedAnimals: "Animals Rescued",
       skillReport: "Skill Report", retry: "Retry", nextLevel: "Next Level", backToMap: "Back to Map",
       howToPlay: "How to Play", guideAim: "Drag to aim at matching bubbles, then release to shoot.", guideBank: "Bounce shots off a wall to get around rocks.",
       guideRescue: "Connect three or more. Rescue the target before shots run out.", gotIt: "Got It",
-      aim: "Drag to aim, release to shoot", directGoal: "Make 1 matching group", bankGoal: "Make 1 group with a bank shot", rescueGoal: "Rescue the zebra bubble",
-      directSkill: "Focus", bankSkill: "Judgment", rescueSkill: "Planning", directHint: "Aim at the two blue bubbles", bankHint: "Aim at the left wall to bank the shot", rescueHint: "Clear the bubbles around the zebra",
+      aim: "Drag to aim, release to shoot", directGoal: "Make 1 matching group", bankGoal: "Make 1 group with a bank shot", rescueGoal: "Rescue an animal bubble",
+      multiGoal: "Make 2 matching groups", multiBankGoal: "Make 2 groups with bank shots", doubleRescueGoal: "Rescue 2 animals",
+      directSkill: "Focus", bankSkill: "Judgment", rescueSkill: "Planning", directHint: "Aim at matching bubbles to form a group", bankHint: "Aim at a side wall to bank the shot", rescueHint: "Clear matching bubbles around the animal", multiHint: "Plan the shot order and complete two matches", doubleRescueHint: "Study the routes, then rescue both animals",
+      rainbowHint: "Rainbow matches the color of the bubble it hits", lineHint: "Line Clear removes the entire row it hits", burstHint: "Burst removes nearby bubbles and blockers", swapHint: "Swap exchanges colors with the bubble it hits",
+      rainbowUsed: "Rainbow match!", lineUsed: "Row cleared!", burstUsed: "Burst cleared!", swapUsed: "Colors swapped!",
       success: "Rescue Complete!", failed: "Out of bubbles", bounceNeeded: "This level needs a wall bounce!", noMatch: "Look for matching animal bubbles", match: "Match complete!", rescuedNow: "Animal rescued!",
       focusReport: "Focus · Hand-Eye Coordination", logicReport: "Spatial Judgment · Coordination", rescueReport: "Planning · Logic", locked: "Locked", completed: "Complete"
     }
@@ -41,11 +50,20 @@
     { id: 1, title: { "zh-Hant": "草原初遇", en: "Grassland Hello" }, goalKey: "directGoal", skillKey: "directSkill", hintKey: "directHint", shots: 6, target: "match", colors: [0,2,1,3,0,2], stars: [4,2], report: "focusReport" },
     { id: 2, title: { "zh-Hant": "峽谷反彈", en: "Canyon Bank" }, goalKey: "bankGoal", skillKey: "bankSkill", hintKey: "bankHint", shots: 7, target: "bank", colors: [3,1,0,2,3,1], stars: [5,2], report: "logicReport" },
     { id: 3, title: { "zh-Hant": "斑馬救援", en: "Zebra Rescue" }, goalKey: "rescueGoal", skillKey: "rescueSkill", hintKey: "rescueHint", shots: 8, target: "rescue", colors: [2,0,3,1,2,0], stars: [6,3], report: "rescueReport" }
+    ,{ id: 4, title: { "zh-Hant": "河岸石陣", en: "River Stones" }, goalKey: "multiGoal", skillKey: "directSkill", hintKey: "multiHint", shots: 9, target: "match", requiredMatches: 2, colors: [1,3,0,2,1,3,0], stars: [6,3], report: "focusReport" }
+    ,{ id: 5, title: { "zh-Hant": "樹葉岔路", en: "Leafy Fork" }, goalKey: "bankGoal", skillKey: "bankSkill", hintKey: "bankHint", shots: 9, target: "bank", requiredMatches: 1, colors: [0,2,3,1,0,2,3], stars: [6,3], report: "logicReport" }
+    ,{ id: 6, title: { "zh-Hant": "長頸鹿朋友", en: "Giraffe Friend" }, goalKey: "rescueGoal", skillKey: "rescueSkill", hintKey: "rescueHint", shots: 10, target: "rescue", requiredRescues: 1, colors: [3,1,2,0,3,1,2], stars: [7,4], report: "rescueReport" }
+    ,{ id: 7, title: { "zh-Hant": "蜂蜜迷陣", en: "Honey Maze" }, goalKey: "multiGoal", skillKey: "directSkill", hintKey: "multiHint", shots: 10, target: "match", requiredMatches: 2, colors: [2,0,1,3,2,0,1], stars: [7,4], report: "focusReport" }
+    ,{ id: 8, title: { "zh-Hant": "雙壁反彈", en: "Twin Bank" }, goalKey: "multiBankGoal", skillKey: "bankSkill", hintKey: "multiHint", shots: 11, target: "bank", requiredMatches: 2, colors: [1,3,2,0,1,3,2,0], stars: [8,4], report: "logicReport" }
+    ,{ id: 9, title: { "zh-Hant": "象群接力", en: "Elephant Relay" }, goalKey: "doubleRescueGoal", skillKey: "rescueSkill", hintKey: "rainbowHint", shots: 12, target: "rescue", requiredRescues: 2, colors: [0,2,1,3,0,2,1,3], powers: ["rainbow"], stars: [8,5], report: "rescueReport" }
+    ,{ id: 10, title: { "zh-Hant": "雲端通道", en: "Cloud Passage" }, goalKey: "multiGoal", skillKey: "directSkill", hintKey: "lineHint", shots: 11, target: "match", requiredMatches: 2, colors: [3,0,2,1,3,0,2,1], powers: ["line"], stars: [8,5], report: "focusReport" }
+    ,{ id: 11, title: { "zh-Hant": "河馬救援", en: "Hippo Rescue" }, goalKey: "doubleRescueGoal", skillKey: "rescueSkill", hintKey: "burstHint", shots: 13, target: "rescue", requiredRescues: 2, colors: [2,1,3,0,2,1,3,0], powers: ["burst"], stars: [9,5], report: "rescueReport" }
+    ,{ id: 12, title: { "zh-Hant": "森林重聚", en: "Forest Reunion" }, goalKey: "doubleRescueGoal", skillKey: "rescueSkill", hintKey: "swapHint", shots: 14, target: "rescue", requiredRescues: 2, colors: [0,3,1,2,0,3,1,2,0], powers: ["swap"], stars: [10,6], report: "rescueReport" }
   ];
 
   const dom = Object.fromEntries([
-    "viewport","gameCanvas","adReserve","mainScreen","stageScreen","battleScreen","resultScreen","guideModal","stageRail","playCanvas",
-    "mainProgress","albumCount","starCount","stageSkill","stageGoal","playStage","battleStageName","shotsLeft","rescueProgress","scoreValue","battleMessage","battleGoal",
+    "viewport","gameCanvas","adReserve","loadingScreen","loadingPanel","loadingFill","loadingProgress","mainScreen","stageScreen","battleScreen","resultScreen","guideModal","stageRail","playCanvas",
+    "mainProgress","albumCount","starCount","stageSkill","stageGoal","battleStageName","shotsLeft","rescueProgress","scoreValue","battleMessage","battleGoal",
     "currentPreview","nextPreview","resultTitle","resultStars","resultScore","resultShots","resultRescued","rewardStars","rewardCoins","rewardAlbum","skillText","nextStage"
   ].map(id => [id, document.getElementById(id)]));
 
@@ -55,17 +73,18 @@
   const images = {};
   let locale = localStorage.getItem("weightplay:locale") === "en" ? "en" : "zh-Hant";
   let save = loadSave();
-  let selectedStage = Math.min(save.unlocked, 3);
-  let currentScreen = "main";
+  let selectedStage = Math.min(save.unlocked, stageDefs.length);
+  let currentScreen = "loading";
   let audioEnabled = save.audio !== false;
   let audioContext = null;
   let game = null;
   let animationFrame = 0;
+  let resultTimer = 0;
 
   function loadSave() {
     try {
       const parsed = JSON.parse(localStorage.getItem(SAVE_KEY) || "{}");
-      return { unlocked: Math.max(1, Math.min(3, parsed.unlocked || 1)), bestStars: parsed.bestStars || {}, bestScore: parsed.bestScore || {}, rescued: parsed.rescued || {}, audio: parsed.audio !== false };
+      return { unlocked: Math.max(1, Math.min(stageDefs.length, parsed.unlocked || 1)), bestStars: parsed.bestStars || {}, bestScore: parsed.bestScore || {}, rescued: parsed.rescued || {}, audio: parsed.audio !== false };
     } catch (_) {
       return { unlocked: 1, bestStars: {}, bestScore: {}, rescued: {}, audio: true };
     }
@@ -80,6 +99,7 @@
 
   function applyLocale() {
     document.documentElement.lang = locale;
+    document.title = `${t("title")} | ${t("internalTrial")}`;
     document.querySelectorAll("[data-i18n]").forEach(el => { el.textContent = t(el.dataset.i18n); });
     document.querySelectorAll("[data-locale]").forEach(button => button.classList.toggle("is-selected", button.dataset.locale === locale));
     renderStageRail();
@@ -91,11 +111,11 @@
     const vv = window.visualViewport;
     const width = vv ? vv.width : window.innerWidth;
     const height = vv ? vv.height : window.innerHeight;
-    const reserve = currentScreen === "main" ? 0 : AD_RESERVE;
+    const reserve = currentScreen === "stage" || currentScreen === "battle" || currentScreen === "result" ? AD_RESERVE : 0;
     const scale = Math.min(width / LOGICAL_WIDTH, Math.max(1, height - reserve) / LOGICAL_HEIGHT);
     dom.gameCanvas.style.setProperty("--scale", String(scale));
-    dom.gameCanvas.style.top = currentScreen === "main" ? "0" : "auto";
-    dom.gameCanvas.style.bottom = currentScreen === "main" ? "auto" : "0";
+    dom.gameCanvas.style.top = reserve === 0 ? "0" : "auto";
+    dom.gameCanvas.style.bottom = reserve === 0 ? "auto" : "0";
     dom.viewport.classList.toggle("has-reserve", reserve > 0);
   }
 
@@ -109,7 +129,7 @@
 
   function updateMainProgress() {
     const complete = Object.keys(save.bestStars).filter(id => save.bestStars[id] > 0).length;
-    dom.mainProgress.textContent = `${Math.max(1, complete)} / 3`;
+    dom.mainProgress.textContent = `${Math.max(1, complete)} / ${stageDefs.length}`;
   }
 
   function renderStageRail() {
@@ -122,7 +142,7 @@
       card.disabled = locked;
       const stars = save.bestStars[stage.id] || 0;
       card.innerHTML = `<img src="${ASSET_ROOT}animal-bubble-safari-bg.webp" alt=""><div><b>${stage.id}. ${stage.title[locale]}</b><span>${t(stage.goalKey)}</span><em>${"★".repeat(stars)}${"☆".repeat(3-stars)}</em><span>${locked ? t("locked") : stars ? t("completed") : t(stage.skillKey)}</span></div>`;
-      card.addEventListener("click", () => selectStage(stage.id, true));
+      card.addEventListener("click", () => startStage(stage.id));
       dom.stageRail.appendChild(card);
     });
     updateStageSummary();
@@ -146,8 +166,8 @@
     const stage = stageDefs[selectedStage - 1];
     const totalStars = Object.values(save.bestStars).reduce((sum, value) => sum + value, 0);
     const rescued = Object.values(save.rescued).filter(Boolean).length;
-    dom.albumCount.textContent = `${rescued} / 3`;
-    dom.starCount.textContent = `${totalStars} / 9`;
+    dom.albumCount.textContent = `${rescued} / 5`;
+    dom.starCount.textContent = `${totalStars} / ${stageDefs.length * 3}`;
     dom.stageSkill.textContent = t(stage.skillKey);
     dom.stageGoal.textContent = t(stage.goalKey);
   }
@@ -155,38 +175,61 @@
   function preload() {
     const sources = {
       bubbles: "animal-bubble-safari-bubbles.webp", rescue: "animal-bubble-safari-rescue-animals.webp",
-      blockers: "animal-bubble-safari-blockers.webp", launcher: "animal-bubble-safari-launcher.webp", effects: "animal-bubble-safari-shot-effects.webp"
+      blockers: "animal-bubble-safari-blockers.webp", powers: "animal-bubble-safari-power-bubbles.png",
+      launcher: "animal-bubble-safari-launcher.webp", effects: "animal-bubble-safari-shot-effects.webp"
     };
-    return Promise.all(Object.entries(sources).map(([key, src]) => new Promise(resolve => {
-      const image = new Image(); image.onload = () => { images[key] = image; resolve(); }; image.onerror = resolve; image.src = ASSET_ROOT + src;
+    const entries = Object.entries(sources);
+    let settled = 0;
+    const updateProgress = () => {
+      const percent = Math.round(settled / entries.length * 100);
+      dom.loadingFill.style.width = `${percent}%`;
+      dom.loadingProgress.textContent = `${percent}%`;
+    };
+    updateProgress();
+    return Promise.all(entries.map(([key, src]) => new Promise(resolve => {
+      const image = new Image();
+      const finish = loaded => {
+        if (loaded) images[key] = image;
+        settled += 1;
+        updateProgress();
+        resolve(loaded);
+      };
+      image.onload = () => finish(true);
+      image.onerror = () => finish(false);
+      image.src = ASSET_ROOT + src;
     })));
   }
 
   function makeBubble(x, y, type, extras = {}) { return { x, y, type, radius: 21, alive: true, blocker: false, rescue: false, ...extras }; }
 
   function stageLayout(id) {
-    if (id === 1) return [
-      makeBubble(116,70,2), makeBubble(160,70,0), makeBubble(204,70,0), makeBubble(248,70,3),
-      makeBubble(138,108,1), makeBubble(182,108,0), makeBubble(226,108,2)
-    ];
-    if (id === 2) return [
-      makeBubble(92,70,3), makeBubble(136,70,3), makeBubble(224,70,1), makeBubble(268,70,2),
-      makeBubble(114,108,2), makeBubble(158,108,1), makeBubble(246,108,0),
-      makeBubble(180,170,0,{ blocker:true }), makeBubble(224,170,0,{ blocker:true })
-    ];
-    return [
-      makeBubble(94,64,1), makeBubble(138,64,0), makeBubble(182,64,3), makeBubble(226,64,1), makeBubble(270,64,0),
-      makeBubble(116,102,3), makeBubble(160,102,1), makeBubble(204,102,0), makeBubble(248,102,1),
-      makeBubble(116,140,0,{ blocker:true }), makeBubble(158,140,2), makeBubble(202,140,2,{ rescue:true,rescueIndex:2 }), makeBubble(246,140,2), makeBubble(290,140,0,{ blocker:true })
-    ];
+    const layouts = {
+      1: [[116,70,2],[160,70,0],[204,70,0],[248,70,3],[138,108,1],[182,108,0],[226,108,2]],
+      2: [[92,70,3],[136,70,3],[224,70,1],[268,70,2],[114,108,2],[158,108,1],[246,108,0],[180,170,0,"blocker"],[224,170,0,"blocker"]],
+      3: [[94,64,1],[138,64,0],[182,64,3],[226,64,1],[270,64,0],[116,102,3],[160,102,1],[204,102,0],[248,102,1],[116,140,0,"blocker"],[158,140,2],[202,140,2,"rescue",2],[246,140,2],[290,140,0,"blocker"]],
+      4: [[72,64,1],[116,64,1],[160,64,3],[204,64,3],[248,64,0],[292,64,0],[94,102,2],[138,102,0,"blocker"],[182,102,2],[226,102,1,"blocker"],[270,102,2],[116,140,3],[160,140,1],[204,140,0],[248,140,3]],
+      5: [[72,64,0],[116,64,2],[160,64,3],[204,64,1],[248,64,2],[292,64,0],[94,102,3],[138,102,1,"blocker"],[226,102,1,"blocker"],[270,102,3],[116,140,2],[160,140,0,"blocker"],[204,140,2,"blocker"],[248,140,0]],
+      6: [[72,64,3],[116,64,1],[160,64,0],[204,64,2],[248,64,1],[292,64,3],[94,102,0],[138,102,3],[182,102,1],[226,102,2],[270,102,0],[116,140,0,"blocker"],[160,140,3],[204,140,3,"rescue",1],[248,140,3],[292,140,0,"blocker"]],
+      7: [[72,64,2],[116,64,0],[160,64,2],[204,64,1],[248,64,3],[292,64,1],[94,102,1,"blocker"],[138,102,3],[182,102,0,"blocker"],[226,102,2],[270,102,0,"blocker"],[116,140,1],[160,140,2],[204,140,3],[248,140,0]],
+      8: [[72,64,1],[116,64,3],[160,64,2],[204,64,0],[248,64,3],[292,64,1],[94,102,2],[138,102,0,"blocker"],[182,102,1,"blocker"],[226,102,2,"blocker"],[270,102,0],[72,140,3],[116,140,1],[248,140,1],[292,140,3]],
+      9: [[72,64,0],[116,64,2],[160,64,1],[204,64,3],[248,64,2],[292,64,0],[94,102,1],[138,102,0],[182,102,2,"blocker"],[226,102,3],[270,102,1],[116,140,0],[160,140,0,"rescue",3],[204,140,1,"blocker"],[248,140,2,"rescue",0],[292,140,2]],
+      10: [[72,64,3],[116,64,0],[160,64,2],[204,64,1],[248,64,0],[292,64,3],[94,102,2,"blocker"],[138,102,1],[182,102,3,"blocker"],[226,102,0],[270,102,2,"blocker"],[72,140,1],[116,140,3],[160,140,0],[204,140,2],[248,140,1],[292,140,3]],
+      11: [[72,64,2],[116,64,1],[160,64,3],[204,64,0],[248,64,1],[292,64,2],[94,102,3],[138,102,2,"blocker"],[182,102,0],[226,102,3,"blocker"],[270,102,0],[94,140,1],[138,140,1,"rescue",4],[182,140,2,"blocker"],[226,140,3,"rescue",1],[270,140,3]],
+      12: [[72,64,0],[116,64,3],[160,64,1],[204,64,2],[248,64,3],[292,64,0],[94,102,2,"blocker"],[138,102,0],[182,102,3,"blocker"],[226,102,1],[270,102,2,"blocker"],[72,140,1],[116,140,0,"rescue",0],[160,140,0],[204,140,2,"blocker"],[248,140,3,"rescue",4],[292,140,3]]
+    };
+    return (layouts[id] || layouts[1]).map(([x,y,type,kind,rescueIndex]) => makeBubble(x,y,type,{
+      blocker: kind === "blocker", rescue: kind === "rescue", rescueIndex: rescueIndex || 0
+    }));
   }
 
   function startStage(id) {
+    clearTimeout(resultTimer);
     selectedStage = id;
     const def = stageDefs[id - 1];
     game = {
       def, bubbles: stageLayout(id), shots: def.shots, score: 0, rescued: 0, matches: 0,
-      queue: [...def.colors], currentType: def.colors[0], nextType: def.colors[1],
+      queue: [...def.colors], powerQueue: def.colors.map((_, index) => def.powers?.[index] || null),
+      currentType: def.colors[0], nextType: def.colors[1], currentPower: def.powers?.[0] || null, nextPower: def.powers?.[1] || null,
       aiming: false, aimX: 180, aimY: 240, projectile: null, particles: [], state: "playing", elapsed: 0
     };
     dom.battleMessage.textContent = t(def.hintKey);
@@ -229,7 +272,7 @@
     let dy = game.aimY - origin.y;
     if (dy > -40) dy = -40;
     const length = Math.hypot(dx, dy) || 1;
-    game.projectile = { x: origin.x, y: origin.y - 28, vx: dx / length * 420, vy: dy / length * 420, type: game.currentType, bounced: false };
+    game.projectile = { x: origin.x, y: origin.y - 28, vx: dx / length * 420, vy: dy / length * 420, type: game.currentType, power: game.currentPower, bounced: false };
     tone(420, .05);
     track("bubble_shot", { level: game.def.id });
   }
@@ -265,6 +308,8 @@
 
   function attachProjectile(hit) {
     const p = game.projectile;
+    if (p.power === "rainbow" && hit && !hit.blocker) p.type = hit.type;
+    if (p.power === "swap" && hit && !hit.blocker) [p.type, hit.type] = [hit.type, p.type];
     const spots = [];
     for (let row=0;row<11;row++) {
       const y = 30 + row * 38;
@@ -278,6 +323,16 @@
     game.bubbles.push(added);
     game.projectile = null;
     game.shots -= 1;
+    if (p.power === "line" || p.power === "burst") {
+      const effectX = hit?.x ?? added.x;
+      const effectY = hit?.y ?? added.y;
+      const affected = game.bubbles.filter(bubble => bubble.alive && (
+        p.power === "line" ? Math.abs(bubble.y - effectY) <= 25 : Math.hypot(bubble.x - effectX, bubble.y - effectY) <= 82
+      ));
+      clearPower(affected, p.power);
+      updateHud();
+      return;
+    }
     const group = connectedGroup(added);
     let matched = group.length >= 3;
     if (matched && game.def.target === "bank" && !p.bounced) {
@@ -321,22 +376,48 @@
     checkEnd();
   }
 
+  function clearPower(group, power) {
+    let cleared = 0;
+    group.forEach(bubble => {
+      if (!bubble.alive) return;
+      bubble.alive = false;
+      cleared += 1;
+      game.particles.push({ x:bubble.x,y:bubble.y,life:.55,type:power === "burst" ? 2 : 1 });
+      if (bubble.rescue) game.rescued += 1;
+    });
+    game.matches += 1;
+    game.score += cleared * 140 + 260;
+    dom.battleMessage.textContent = t(`${power}Used`);
+    tone(power === "burst" ? 980 : 860, .14);
+    advanceQueue();
+    checkEnd();
+  }
+
   function advanceQueue() {
     game.queue.shift();
+    game.powerQueue.shift();
     if (game.queue.length < 2) game.queue.push((game.currentType + game.shots + 2) % 4);
+    while (game.powerQueue.length < game.queue.length) game.powerQueue.push(null);
     game.currentType = game.queue[0];
     game.nextType = game.queue[1];
+    game.currentPower = game.powerQueue[0] || null;
+    game.nextPower = game.powerQueue[1] || null;
   }
 
   function checkEnd() {
-    const won = game.def.target === "rescue" ? game.rescued >= 1 : game.matches >= 1 && (game.def.target !== "bank" || game.score >= 540);
+    const required = game.def.target === "rescue" ? (game.def.requiredRescues || 1) : (game.def.requiredMatches || 1);
+    const won = game.def.target === "rescue" ? game.rescued >= required : game.matches >= required;
     if (won) return finishStage(true);
     if (game.shots <= 0) finishStage(false);
   }
 
   function finishStage(won) {
     game.state = "finished";
-    setTimeout(() => showResult(won), 520);
+    const completedGame = game;
+    clearTimeout(resultTimer);
+    resultTimer = setTimeout(() => {
+      if (game === completedGame && currentScreen === "battle") showResult(won);
+    }, 520);
   }
 
   function showResult(won) {
@@ -351,13 +432,13 @@
     dom.rewardCoins.textContent = `+${won ? 20 + game.score/60|0 : 0}`;
     dom.rewardAlbum.textContent = `+${game.rescued}`;
     dom.skillText.textContent = t(game.def.report);
-    dom.nextStage.hidden = !won || game.def.id >= 3;
+    dom.nextStage.hidden = !won || game.def.id >= stageDefs.length;
     document.querySelector(".result-actions").classList.toggle("single-primary", dom.nextStage.hidden);
     if (won) {
       save.bestStars[game.def.id] = Math.max(save.bestStars[game.def.id] || 0, stars);
       save.bestScore[game.def.id] = Math.max(save.bestScore[game.def.id] || 0, game.score);
       if (game.rescued) save.rescued[game.def.id] = true;
-      save.unlocked = Math.max(save.unlocked, Math.min(3, game.def.id + 1));
+      save.unlocked = Math.max(save.unlocked, Math.min(stageDefs.length, game.def.id + 1));
       persist();
     }
     showScreen("result");
@@ -369,11 +450,12 @@
     dom.battleStageName.textContent = game.def.id;
     dom.shotsLeft.textContent = game.shots;
     const progress = game.def.target === "rescue" ? game.rescued : game.matches;
-    dom.rescueProgress.textContent = `${progress} / 1`;
+    const required = game.def.target === "rescue" ? (game.def.requiredRescues || 1) : (game.def.requiredMatches || 1);
+    dom.rescueProgress.textContent = `${progress} / ${required}`;
     dom.scoreValue.textContent = game.score;
     dom.battleGoal.textContent = t(game.def.goalKey);
-    drawPreview(currentCtx, game.currentType);
-    drawPreview(nextCtx, game.nextType);
+    drawPreview(currentCtx, game.currentType, game.currentPower);
+    drawPreview(nextCtx, game.nextType, game.nextPower);
   }
 
   function atlasBubble(context, type, x, y, size) {
@@ -395,6 +477,13 @@
     context.drawImage(images.blockers,index*cellW,0,cellW,images.blockers.height,x-size/2,y-size/2,size,size);
   }
 
+  function atlasPower(context, power, x, y, size) {
+    if (!images.powers?.complete) return;
+    const index = { rainbow:0, line:1, burst:2, swap:3 }[power] ?? 0;
+    const cellW = images.powers.width / 4;
+    context.drawImage(images.powers,index*cellW,0,cellW,images.powers.height,x-size/2,y-size/2,size,size);
+  }
+
   function atlasEffect(context, index, x, y, size, alpha) {
     if (!images.effects?.complete) return;
     const cellW = images.effects.width / 4;
@@ -403,7 +492,11 @@
     context.restore();
   }
 
-  function drawPreview(context, type) { context.clearRect(0,0,48,48); atlasBubble(context,type,24,24,46); }
+  function drawPreview(context, type, power) {
+    context.clearRect(0,0,48,48);
+    if (power) atlasPower(context,power,24,24,46);
+    else atlasBubble(context,type,24,24,46);
+  }
 
   function drawGame() {
     ctx.clearRect(0,0,360,548);
@@ -425,10 +518,16 @@
         ctx.strokeStyle="#fff4a8"; ctx.lineWidth=3; ctx.beginPath(); ctx.arc(bubble.x,bubble.y,22,0,Math.PI*2); ctx.stroke();
       }
     });
-    if (game.projectile) atlasBubble(ctx,game.projectile.type,game.projectile.x,game.projectile.y,44);
+    if (game.projectile) {
+      if (game.projectile.power) atlasPower(ctx,game.projectile.power,game.projectile.x,game.projectile.y,44);
+      else atlasBubble(ctx,game.projectile.type,game.projectile.x,game.projectile.y,44);
+    }
     const launcher = launcherPoint();
     if (images.launcher?.complete) ctx.drawImage(images.launcher,launcher.x-53,launcher.y-39,106,106);
-    if (!game.projectile) atlasBubble(ctx,game.currentType,launcher.x,launcher.y-30,42);
+    if (!game.projectile) {
+      if (game.currentPower) atlasPower(ctx,game.currentPower,launcher.x,launcher.y-30,42);
+      else atlasBubble(ctx,game.currentType,launcher.x,launcher.y-30,42);
+    }
     game.particles.forEach(p => atlasEffect(ctx,p.type,p.x,p.y,70,p.life/.45));
   }
 
@@ -456,12 +555,33 @@
   function openGuide() { dom.guideModal.hidden=false; localStorage.setItem(FIRST_PLAY_KEY,"seen"); }
   function closeGuide() { dom.guideModal.hidden=true; }
 
+  window.__animalBubbleSafariTest = {
+    stageDefs,
+    getState: () => ({
+      screen: currentScreen, selectedStage, unlocked: save.unlocked, stageId: game?.def.id || null,
+      currentPower: game?.currentPower || null, nextPower: game?.nextPower || null,
+      matches: game?.matches || 0, rescued: game?.rescued || 0,
+      alive: game?.bubbles.filter(bubble => bubble.alive).length || 0,
+      blockers: game?.bubbles.filter(bubble => bubble.alive && bubble.blocker).length || 0,
+      bubbleTypes: game?.bubbles.filter(bubble => bubble.alive && !bubble.blocker).map(bubble => ({ x:bubble.x, y:bubble.y, type:bubble.type })) || []
+    }),
+    getLayoutSummary: id => {
+      const bubbles = stageLayout(id);
+      return {
+        id,
+        count: bubbles.length,
+        blockers: bubbles.filter(bubble => bubble.blocker).length,
+        rescues: bubbles.filter(bubble => bubble.rescue).length,
+        signature: bubbles.map(bubble => `${bubble.x},${bubble.y},${bubble.type},${bubble.blocker ? "b" : bubble.rescue ? `r${bubble.rescueIndex}` : "n"}`).join("|")
+      };
+    }
+  };
+
   document.getElementById("startGame").addEventListener("click", () => { renderStageRail(); showScreen("stage"); });
   document.getElementById("stageBack").addEventListener("click", () => { showScreen("main"); updateMainProgress(); });
-  document.getElementById("battleBack").addEventListener("click", () => { game=null; cancelAnimationFrame(animationFrame); renderStageRail(); showScreen("stage"); });
-  document.getElementById("playStage").addEventListener("click", () => startStage(selectedStage));
+  document.getElementById("battleBack").addEventListener("click", () => { clearTimeout(resultTimer); game=null; cancelAnimationFrame(animationFrame); renderStageRail(); showScreen("stage"); });
   document.getElementById("retryStage").addEventListener("click", () => startStage(game.def.id));
-  document.getElementById("nextStage").addEventListener("click", () => startStage(Math.min(3,game.def.id+1)));
+  document.getElementById("nextStage").addEventListener("click", () => startStage(Math.min(stageDefs.length,game.def.id+1)));
   document.getElementById("backToMap").addEventListener("click", () => { renderStageRail(); showScreen("stage"); });
   document.getElementById("openGuide").addEventListener("click", openGuide);
   document.getElementById("closeGuide").addEventListener("click", closeGuide);
@@ -476,8 +596,17 @@
   window.addEventListener("resize", fitCanvas);
   window.visualViewport?.addEventListener("resize", fitCanvas);
 
-  preload().then(() => {
-    applyLocale(); fitCanvas();
-    if (!localStorage.getItem(FIRST_PLAY_KEY)) openGuide();
+  applyLocale();
+  fitCanvas();
+  preload().then(results => {
+    const hasError = results.some(loaded => !loaded);
+    if (hasError) {
+      dom.loadingPanel.classList.add("has-error");
+      dom.loadingPanel.querySelector("strong").textContent = t("loadingError");
+    }
+    window.setTimeout(() => {
+      showScreen("main");
+      if (!localStorage.getItem(FIRST_PLAY_KEY)) openGuide();
+    }, hasError ? 700 : 120);
   });
 })();
