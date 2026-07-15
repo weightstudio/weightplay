@@ -13,6 +13,10 @@
     coverAlt: 'Skyport dispatch animals',
     shiftSelection: 'Shift selection',
     medals: 'Medals {n}/3',
+    blueprintStamps: 'Blueprint stamps',
+    total: 'Total {n}',
+    shiftUnlocked: 'Shift {n} unlocked',
+    allShiftsComplete: 'All shifts complete',
   });
   Object.assign(strings['zh-Hant'], {
     guideTitle: '\u5982\u4f55\u8abf\u5ea6',
@@ -22,6 +26,10 @@
     coverAlt: '\u5929\u7a7a\u6e2f\u8abf\u5ea6\u52d5\u7269',
     shiftSelection: '\u73ed\u6b21\u9078\u64c7',
     medals: '\u52f3\u7ae0 {n}/3',
+    blueprintStamps: '\u85cd\u5716\u5370\u7ae0',
+    total: '\u7d2f\u7a4d {n}',
+    shiftUnlocked: '\u5df2\u89e3\u9396\u7b2c {n} \u73ed',
+    allShiftsComplete: '\u4e94\u500b\u73ed\u6b21\u5168\u90e8\u5b8c\u6210',
   });
   const flights = [['cargo','cargo'], ['passenger','passenger'], ['repair','repair'], ['festival','passenger'], ['heavy','cargo']];
   const flightLabels = {
@@ -207,8 +215,10 @@
     const resultLabels = locale === 'zh-Hant'
       ? { reputation: '\u8072\u671b', coins: '\u5929\u7a7a\u5e63', medals: '\u52f3\u7ae0', safe: '\u5b89\u5168\u8abf\u5ea6', errors: '\u932f\u8aa4', protected: '\u5408\u7d04\u734e\u52f5\u5df2\u4fdd\u7559', retry: '\u514d\u8cbb\u91cd\u8a66' }
       : { reputation: 'Reputation', coins: 'Sky coins', medals: 'Medals', safe: 'Safe routing', errors: 'Errors', protected: 'Contract bonus protected', retry: 'Retry is free' };
+    const coinReward = shiftConfig[state.shift].coin + (state.contract && state.errors === 0 ? 20 : 0);
+    const unlockEvidence = state.shift < 5 ? t('shiftUnlocked', {n:state.shift + 1}) : t('allShiftsComplete');
     $('resultRewards').innerHTML = win
-      ? `<span>${resultLabels.reputation} +${state.done * 5}</span><span>${resultLabels.coins} +${shiftConfig[state.shift].coin + (state.contract && state.errors === 0 ? 20 : 0)}</span><span>${resultLabels.medals} ${save.medals[state.shift] || 1}/3</span>`
+      ? `<span>${resultLabels.reputation} +${state.done * 5} \u00b7 ${t('total', {n:save.reputation})}</span><span>${resultLabels.coins} +${coinReward} \u00b7 ${t('total', {n:save.coins})}</span><span>${t('blueprintStamps')} +${shiftConfig[state.shift].stamps} \u00b7 ${t('total', {n:save.stamps})}</span><span>${resultLabels.medals} ${save.medals[state.shift] || 1}/3</span><span>${unlockEvidence}</span>`
       : `<span>${resultLabels.safe} ${state.done}/${state.goal}</span><span>${resultLabels.errors} ${state.errors}/3</span><span>${insuranceActive ? resultLabels.protected : resultLabels.retry}</span>`;
     $('nextBtn').textContent = win && state.shift < 5 ? t('next') : t('retry');
     $('nextBtn').onclick = () => { state.shift = win ? Math.min(5, state.shift + 1) : state.shift; startBattle(); };

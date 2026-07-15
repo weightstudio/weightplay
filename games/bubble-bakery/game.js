@@ -259,6 +259,7 @@
   let largestGroup = 0;
   let bestOrderStreak = 0;
   let busy = false;
+  let lastResult = null;
   const popMs = 620;
   const dropMs = 920;
 
@@ -589,6 +590,7 @@
     largestGroup = 0;
     bestOrderStreak = 0;
     busy = false;
+    lastResult = null;
     board = makeBoard(stage.palette);
     document.body.classList.remove("is-bakery-stage-select", "is-bakery-result");
     document.body.classList.add("is-bakery-playing");
@@ -921,15 +923,21 @@
       }
     }
     const stamp = recordFinishStats(won, stageNo);
-    nodes.resultPanel.classList.remove("hidden");
-    nodes.resultTitle.textContent = won ? t("orderDone") : t("failed");
-    nodes.resultText.textContent = won ? t("resultWin", { moves }) : t("resultLose");
-    nodes.starText.textContent = won ? starIcons(earned, 3) : t("failed");
-    renderResultNextOrder({ won, stageNo, earned, unlockedStageNo, stamp });
-    renderSkillReport({ stageNo, won, earned, previousBest });
-    nodes.nextStageBtn.classList.toggle("hidden", !won || currentStage >= stages.length - 1);
+    const report = recordSkillReport({ stageNo, won, earned, previousBest });
+    lastResult = { won, stageNo, earned, unlockedStageNo, stamp, moves, report };
+    renderResult(lastResult);
     playSound(won ? "success" : "error");
     track("game_complete", { level: stageNo, success: won, score, moves_left: moves });
+  }
+
+  function renderResult(result) {
+    nodes.resultPanel.classList.remove("hidden");
+    nodes.resultTitle.textContent = result.won ? t("orderDone") : t("failed");
+    nodes.resultText.textContent = result.won ? t("resultWin", { moves: result.moves }) : t("resultLose");
+    nodes.starText.textContent = result.won ? starIcons(result.earned, 3) : t("failed");
+    renderResultNextOrder(result);
+    renderSkillReport(result.report);
+    nodes.nextStageBtn.classList.toggle("hidden", !result.won || currentStage >= stages.length - 1);
   }
 
   function renderResultNextOrder({ won, stageNo, earned, unlockedStageNo, stamp }) {
@@ -937,6 +945,7 @@
     const targetStage = stages[targetIndex] || stages[currentStage];
     const targetStageNo = targetIndex + 1;
     const orderIcons = Object.keys(targetStage.orders).map((id) => `<img src="${colorData(id).asset}" alt="" />`).join("");
+    const localizedStamp = stampProgress({ orders: stamp.orders });
     const statusText = won
       ? unlockedStageNo
         ? t("resultUnlocked", { stage: t("stage", { n: unlockedStageNo }) })
@@ -949,12 +958,12 @@
       <strong>${t("resultNextTitle")}</strong>
       <span>${statusText}</span>
       <em>${t("resultNextCopy", { stage: t("stage", { n: targetStageNo }), theme: t(targetStage.theme) })}</em>
-      <small class="result-stamp">${won ? t("resultStampWin", { next: stamp.nextText }) : t("resultStampLose")}</small>
+      <small class="result-stamp">${won ? t("resultStampWin", { next: localizedStamp.nextText }) : t("resultStampLose")}</small>
       <b class="result-order-icons">${orderIcons}</b>
     `;
   }
 
-  function renderSkillReport({ stageNo, won, earned, previousBest }) {
+  function recordSkillReport({ stageNo, won, earned, previousBest }) {
     const stage = stages[currentStage];
     const moveRatio = moves / Math.max(1, stage.moves);
     const orderScore = won ? 5 : Math.max(1, 3 - Object.values(orders).filter((need) => need > 0).length);
@@ -983,17 +992,31 @@
     };
     saveProgress(progress);
 
-    const message = bestScore > previousBest && previousBest > 0 ? t("reportNewBest") : (won ? t("reportGreat") : t("reportGood"));
+    return {
+      previousBest,
+      score,
+      improvementPercent,
+      skillScores,
+      validMovesUsed,
+      orderTargetMoves,
+      largestGroup,
+      bestOrderStreak,
+      messageKey: bestScore > previousBest && previousBest > 0 ? "reportNewBest" : (won ? "reportGreat" : "reportGood"),
+    };
+  }
+
+  function renderSkillReport(report) {
+    const { previousBest, score: resultScore, improvementPercent, skillScores } = report;
     const improvementText = improvementPercent > 0 ? `+${improvementPercent}%` : `${improvementPercent}%`;
     nodes.skillReport.innerHTML = `
       <strong>${t("skillReport")}</strong>
       <div class="skill-score-row"><span>${t("previousBest")}</span><b>${previousBest}</b></div>
-      <div class="skill-score-row"><span>${t("todayScore")}</span><b>${score}</b></div>
+      <div class="skill-score-row"><span>${t("todayScore")}</span><b>${resultScore}</b></div>
       <div class="skill-score-row"><span>${t("improvement")}</span><b>${improvementText}</b></div>
-      <div class="skill-stars"><span>${t("logic")}<small>${t("targetHitEvidence", { hits: orderTargetMoves, moves: validMovesUsed })}</small></span><b>${starIcons(skillScores.logic, 5)}</b></div>
-      <div class="skill-stars"><span>${t("focus")}<small>${t("largestGroupEvidence", { count: largestGroup })}</small></span><b>${starIcons(skillScores.focus, 5)}</b></div>
-      <div class="skill-stars"><span>${t("problemSolving")}<small>${t("bestStreakEvidence", { count: bestOrderStreak })}</small></span><b>${starIcons(skillScores.problemSolving, 5)}</b></div>
-      <p>${message}</p>
+      <div class="skill-stars"><span>${t("logic")}<small>${t("targetHitEvidence", { hits: report.orderTargetMoves, moves: report.validMovesUsed })}</small></span><b>${starIcons(skillScores.logic, 5)}</b></div>
+      <div class="skill-stars"><span>${t("focus")}<small>${t("largestGroupEvidence", { count: report.largestGroup })}</small></span><b>${starIcons(skillScores.focus, 5)}</b></div>
+      <div class="skill-stars"><span>${t("problemSolving")}<small>${t("bestStreakEvidence", { count: report.bestOrderStreak })}</small></span><b>${starIcons(skillScores.problemSolving, 5)}</b></div>
+      <p>${t(report.messageKey)}</p>
     `;
   }
 
@@ -1063,7 +1086,9 @@
     renderRecommendedOrder();
     renderBakeryProgress();
     renderStageGrid();
-    if (!nodes.playPanel.classList.contains("hidden")) {
+    if (!nodes.resultPanel.classList.contains("hidden") && lastResult) {
+      renderResult(lastResult);
+    } else if (!nodes.playPanel.classList.contains("hidden")) {
       nodes.orderBar.dataset.theme = t("theme", { theme: t(stages[currentStage].theme) });
       renderAll();
     }

@@ -28,6 +28,10 @@
       unlockGold: "Unlock {cost} Gold",
       unlockDiamond: "Unlock {cost} Diamonds",
       upgradeGold: "Upgrade {cost} Gold",
+      trainingStatsCurrent: "ATK {atk} · HP {hp}",
+      trainingStatsNext: "ATK {atk} → {nextAtk} · HP {hp} → {nextHp}",
+      trainingUpgradeLabel: "Upgrade {name} to Lv.{level}: ATK {nextAtk}, HP {nextHp} for {cost} Gold",
+      maxLevel: "Max Level",
       freeUnit: "Starter",
       rosterHint: "Unlocked animals appear in your expedition backpack. Permanent levels are saved locally.",
       startExpedition: "Start Expedition",
@@ -474,6 +478,10 @@
     unlockGold: "\u7528 {cost} \u91d1\u5e63\u89e3\u9396",
     unlockDiamond: "\u7528 {cost} \u947d\u77f3\u89e3\u9396",
     upgradeGold: "\u7528 {cost} \u91d1\u5e63\u5347\u7d1a",
+    trainingStatsCurrent: "\u653b {atk} \u00b7 \u751f {hp}",
+    trainingStatsNext: "\u653b {atk} \u2192 {nextAtk} \u00b7 \u751f {hp} \u2192 {nextHp}",
+    trainingUpgradeLabel: "\u5c07 {name} \u5347\u5230 Lv.{level}\uff1a\u653b {nextAtk}\u3001\u751f {nextHp}\uff0c\u82b1\u8cbb {cost} \u91d1\u5e63",
+    maxLevel: "\u5df2\u6eff\u7d1a",
     freeUnit: "\u521d\u59cb\u89d2\u8272",
       rosterHint: "\u5df2\u89e3\u9396\u89d2\u8272\u6703\u51fa\u73fe\u5728\u9060\u5f81\u80cc\u5305\uff0c\u6c38\u4e45\u7b49\u7d1a\u6703\u5b58\u5728\u672c\u6a5f\u3002",
       shopLabel: "\u89d2\u8272\u80cc\u5305",
@@ -634,6 +642,13 @@
         premiumCosts: PREMIUM_ANIMAL_IDS.map((id) => ({ id, cost: premiumUnlockCost(id) })),
         normalUnlockCosts: Object.entries(ANIMAL_UNLOCK_COSTS).map(([id, cost]) => ({ id: Number(id), cost }))
       }),
+      setTrainingLevel: (id, level) => {
+        save = normalizeSave(save);
+        save.animalLevels[id] = Math.max(1, Math.min(20, Math.floor(Number(level) || 1)));
+        saveSave();
+        renderMenu();
+        return animalPermanentLevel(id);
+      },
       runPreview: () => {
         const previewState = makeState();
         previewState.backpack = createBackpackCards();
@@ -1104,12 +1119,18 @@
             ? t("owned")
             : t("locked");
       const statBoost = Math.max(0, level - 1) * (premium ? 2 : 1);
+      const statStep = premium ? 2 : 1;
+      const currentAtk = animal.atk + statBoost;
+      const currentHp = animal.hp + statBoost;
+      const statText = unlocked && level < 20
+        ? t("trainingStatsNext", { atk: currentAtk, hp: currentHp, nextAtk: currentAtk + statStep, nextHp: currentHp + statStep })
+        : t("trainingStatsCurrent", { atk: currentAtk, hp: currentHp });
       card.innerHTML = `
         <div class="training-art" style="background-image:url('${assetsToLoad[animal.imageKey] || assetsToLoad.boomLion}')"></div>
         <div class="training-copy">
           <strong>${name}</strong>
           <span>${status} · ${t("level")}${level}</span>
-          <small>${locale === "zh-Hant" ? "攻" : "ATK"} ${animal.atk + statBoost} / ${locale === "zh-Hant" ? "生" : "HP"} ${animal.hp + statBoost}</small>
+          <small>${statText}</small>
         </div>
       `;
 
@@ -1117,10 +1138,23 @@
       action.type = "button";
       action.className = unlocked ? "training-action upgrade-action" : "training-action unlock-action";
       if (unlocked) {
-        const cost = animalUpgradeCost(animal.id);
-        action.textContent = t("upgradeGold", { cost });
-        action.disabled = save.coins < cost || level >= 20;
-        action.addEventListener("click", () => handleUpgradeAnimal(animal.id));
+        if (level >= 20) {
+          action.textContent = t("maxLevel");
+          action.disabled = true;
+          action.setAttribute("aria-label", `${name}: ${t("maxLevel")}`);
+        } else {
+          const cost = animalUpgradeCost(animal.id);
+          action.textContent = t("upgradeGold", { cost });
+          action.disabled = save.coins < cost;
+          action.setAttribute("aria-label", t("trainingUpgradeLabel", {
+            name,
+            level: level + 1,
+            nextAtk: currentAtk + statStep,
+            nextHp: currentHp + statStep,
+            cost,
+          }));
+          action.addEventListener("click", () => handleUpgradeAnimal(animal.id));
+        }
       } else if (premium) {
         const cost = premiumUnlockCost(animal.id);
         action.textContent = t("unlockDiamond", { cost });
@@ -1132,6 +1166,7 @@
         action.disabled = save.coins < cost;
         action.addEventListener("click", () => handleUnlockAnimal(animal.id));
       }
+      if (!action.hasAttribute("aria-label")) action.setAttribute("aria-label", `${name}: ${action.textContent}`);
       card.appendChild(action);
       nodes.trainingRoster.appendChild(card);
     });

@@ -4,8 +4,8 @@
   const localeKey = "weightPlayLocale";
   const trainingCost = 18;
   const rerollCost = 3;
-  const cols = 4;
-  const rows = 3;
+  const cols = 3;
+  const rows = 4;
   const testMode = new URLSearchParams(window.location.search).get("test") === "1";
 
   const $ = (id) => document.getElementById(id);
@@ -377,6 +377,24 @@
 
   Object.assign(text.en, { stageTabMissions: "Missions", stageTabHeroes: "Heroes", stageTabTraining: "Training" });
   Object.assign(text["zh-Hant"], { stageTabMissions: "\u4efb\u52d9", stageTabHeroes: "\u82f1\u96c4", stageTabTraining: "\u8a13\u7df4" });
+  Object.assign(text.en, {
+    boardLabel: "Rune tactics board",
+    strategyTips: [
+      "Move the lion toward the front first so enemies focus on the tougher hero.",
+      "Use the owl's ranged rune skill to finish enemies before they reach the back row.",
+      "Guard with the turtle before dangerous enemy turns to keep the squad alive.",
+      "Save Diamond rerolls for runs where all reward choices miss your current plan.",
+    ],
+  });
+  Object.assign(text["zh-Hant"], {
+    boardLabel: "\u7b26\u6587\u6230\u8853\u68cb\u76e4",
+    strategyTips: [
+      "\u5148\u8b93\u7345\u738b\u524d\u9032\uff0c\u5438\u5f15\u6575\u4eba\u653b\u64ca\u8f03\u8010\u6253\u7684\u82f1\u96c4\u3002",
+      "\u7528\u8c93\u982d\u9df9\u7684\u9060\u7a0b\u7b26\u6587\u6280\u80fd\uff0c\u5728\u6575\u4eba\u62b5\u9054\u5f8c\u6392\u524d\u64ca\u6557\u5b83\u5011\u3002",
+      "\u5728\u5371\u96aa\u7684\u6575\u65b9\u56de\u5408\u524d\u8b93\u70cf\u9f9c\u9632\u5b88\uff0c\u5e6b\u52a9\u5c0f\u968a\u7e7c\u7e8c\u4f5c\u6230\u3002",
+      "\u7576\u6240\u6709\u734e\u52f5\u90fd\u4e0d\u9069\u5408\u7576\u524d\u6230\u8853\u6642\uff0c\u518d\u4f7f\u7528\u947d\u77f3\u91cd\u62bd\u3002",
+    ],
+  });
 
   const heroDefs = [
     { id: "lion", name: "lion", role: "lionRole", img: "weightplay-boom-mane-lion.png", hp: 7, atk: 3, skillName: "skillLion", skillDesc: "skillLionDesc", skill: "animal-rune-tactics-skill-lion-strike.webp" },
@@ -497,6 +515,7 @@
     });
     nodes.localeSelect.value = locale;
     nodes.localeSelect.setAttribute("aria-label", t("language"));
+    nodes.grid.setAttribute("aria-label", t("boardLabel"));
     if (nodes.mainStartBtn) nodes.mainStartBtn.textContent = t("startGame");
     if (nodes.stagePanel) {
       nodes.stagePanel.querySelector("strong").textContent = t("missionSelect");
@@ -504,6 +523,14 @@
     }
     renderMenu();
     if (state) render();
+    localizeStrategyTips();
+  }
+
+  function localizeStrategyTips() {
+    const tips = text[locale].strategyTips || text.en.strategyTips;
+    document.querySelectorAll(".game-info-strategy li").forEach((item, index) => {
+      if (tips[index]) item.textContent = tips[index];
+    });
   }
 
   function renderMenu() {
@@ -727,10 +754,10 @@
   function makeEnemies(mission) {
     const missionDef = missionDefs.find((item) => item.id === mission) || missionDefs[0];
     const formation = [
-      { x: 3, y: 0 },
-      { x: 3, y: 1 },
-      { x: 3, y: 2 },
+      { x: 2, y: 0 },
       { x: 2, y: 1 },
+      { x: 2, y: 2 },
+      { x: 1, y: 3 },
     ];
     return missionDef.enemies.map((id, index) => {
       const base = enemyDefs.find((enemy) => enemy.id === id) || enemyDefs[0];
@@ -1207,6 +1234,7 @@
   }
 
   function bind() {
+    window.addEventListener("wonder:locale-change", () => requestAnimationFrame(localizeStrategyTips));
     nodes.mainStartBtn.addEventListener("click", showStage);
     nodes.stageBackBtn.addEventListener("click", showMainFromStage);
     nodes.backBtn.addEventListener("click", (event) => {

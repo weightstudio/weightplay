@@ -117,6 +117,9 @@
       raidFailed: "Raid Failed",
       resultWin: "Cleared route {tier}, wave {wave}/3, earned {stones} Star Stones, and protected {core} core HP.",
       resultLose: "Reached route {tier}, wave {wave}/3 and earned {stones} Star Stones. Upgrade rooms and try a safer bounce route.",
+      progressUnlocked: "Progress saved: {total} Star Stones total; route {best} is now unlocked.",
+      progressComplete: "Progress saved: {total} Star Stones total; all 20 routes are cleared.",
+      progressSaved: "Progress saved: {total} Star Stones total; best unlocked route remains {best}.",
       reportWin: "Skill Report: strong logic and reaction. You used bounce planning and upgrade choice to protect the fortress.",
       reportLose: "Skill Report: good practice. Next run, aim earlier and use walls to hit multiple beasts.",
       upgradeDamage: "Bigger Orb",
@@ -216,6 +219,9 @@
       raidFailed: "突襲失敗",
       resultWin: "完成第 {tier} 關、第 {wave}/3 波，獲得 {stones} 顆星石，並保留 {core} 點核心生命。",
       resultLose: "抵達第 {tier} 關、第 {wave}/3 波並獲得 {stones} 顆星石。升級房間後再試更安全的反彈路線。",
+      progressUnlocked: "進度已保存：累積星石 {total} 顆；已解鎖第 {best} 關。",
+      progressComplete: "進度已保存：累積星石 {total} 顆；20 關已全部完成。",
+      progressSaved: "進度已保存：累積星石 {total} 顆；最佳已解鎖第 {best} 關。",
       reportWin: "能力回饋：邏輯與反應很穩。你透過反彈規劃與升級選擇保護了要塞。",
       reportLose: "能力回饋：這是很好的練習。下一局可以更早瞄準，利用牆面一次擊中多隻影獸。",
       upgradeDamage: "巨大星珠",
@@ -939,12 +945,17 @@
     if (win) save.bestRaid = Math.max(1, Math.min(MAX_RAID_TIER, Math.max(save.bestRaid || 1, state.raidTier + 1)));
     persist();
     nodes.resultTitle.textContent = t(win ? "raidClear" : "raidFailed");
-    nodes.resultText.textContent = t(win ? "resultWin" : "resultLose", {
+    const resultSummary = t(win ? "resultWin" : "resultLose", {
       tier: state.raidTier,
       wave: Math.min(3, state.wave),
       stones,
       core: Math.max(0, Math.ceil(state.core)),
     });
+    const progressKey = win ? (state.raidTier < MAX_RAID_TIER ? "progressUnlocked" : "progressComplete") : "progressSaved";
+    nodes.resultText.textContent = `${resultSummary} ${t(progressKey, {
+      total: save.starStones,
+      best: Math.max(1, Math.min(MAX_RAID_TIER, save.bestRaid || 1)),
+    })}`;
     nodes.skillReportText.textContent = t(win ? "reportWin" : "reportLose");
     const hasNextStage = win && state.raidTier < MAX_RAID_TIER;
     nodes.nextStageBtn.classList.toggle("is-unavailable", !hasNextStage);

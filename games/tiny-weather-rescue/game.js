@@ -478,15 +478,15 @@
   }
 
   function weatherEffects(problemKey) {
-    if (problemKey === "rain") return "<span>\u{1F4A7}</span><span>\u{2602}\u{FE0F}</span><span>\u{1F4A7}</span>";
-    if (problemKey === "puddle") return "<span>\u{1F4A6}</span><span>\u{1F9FC}</span>";
-    if (problemKey === "heat") return "<span>\u{2600}\u{FE0F}</span><span>\u{1FAAD}</span>";
-    if (problemKey === "dark") return "<span>\u{1F319}</span><span>\u{1F3EE}</span>";
-    if (problemKey === "thunder") return "<span>\u{26A1}</span><span>\u{1F3E0}</span>";
-    if (problemKey === "muddy") return "<span>\u{1F43E}</span><span>\u{1F97E}</span>";
-    if (problemKey === "cold") return "<span>\u{2744}\u{FE0F}</span><span>\u{1F9E3}</span>";
-    if (problemKey === "windy") return "<span>\u{1F32C}\u{FE0F}</span><span>\u{1F3E0}</span>";
-    return "<span>\u{2764}\u{FE0F}</span><span>\u{1F34E}</span>";
+    if (problemKey === "rain") return "<span>\u{1F4A7}</span><span>\u{2601}\u{FE0F}</span><span>\u{1F4A7}</span>";
+    if (problemKey === "puddle") return "<span>\u{1F4A6}</span><span>\u{1F4A7}</span>";
+    if (problemKey === "heat") return "<span>\u{2600}\u{FE0F}</span><span>\u{1F321}\u{FE0F}</span>";
+    if (problemKey === "dark") return "<span>\u{1F319}</span><span>\u{2728}</span>";
+    if (problemKey === "thunder") return "<span>\u{26A1}</span><span>\u{1F329}\u{FE0F}</span>";
+    if (problemKey === "muddy") return "<span>\u{1F43E}</span><span>\u{1F7E4}</span>";
+    if (problemKey === "cold") return "<span>\u{2744}\u{FE0F}</span><span>\u{1F9CA}</span>";
+    if (problemKey === "windy") return "<span>\u{1F32C}\u{FE0F}</span><span>\u{1F343}</span>";
+    return "<span>\u{1F37D}\u{FE0F}</span><span>\u{2754}</span>";
   }
 
   function installToolControl(button) {

@@ -68,8 +68,16 @@
     heart: "../../assets/star-memory-heart.svg",
     panda: "../../assets/star-memory-panda.svg",
     bear: "../../assets/star-memory-bear.svg",
-    lion: "../../assets/weightplay-boom-mane-lion.png",
+    lion: "../../assets/star-memory-lion.svg",
     cat: "../../assets/star-memory-cat.svg",
+    rabbit: "../../assets/star-memory-rabbit.svg",
+    fox: "../../assets/star-memory-fox.svg",
+    owl: "../../assets/star-memory-owl.svg",
+    frog: "../../assets/star-memory-frog.svg",
+    whale: "../../assets/star-memory-whale.svg",
+    chick: "../../assets/star-memory-chick.svg",
+    penguin: "../../assets/star-memory-penguin.svg",
+    koala: "../../assets/star-memory-koala.svg",
     cardBack: "../../assets/star-memory-card-back.svg"
   };
 
@@ -111,25 +119,25 @@
       tipMismatch: "Not a match. Try again!",
       tipCombo: "Combo x{count}!",
       loading: "Loading",
-      stage1Name: "Level 1: Space Easy",
-      stage2Name: "Level 2: Cosmic Trio",
-      stage3Name: "Level 3: Deep Space",
+      stage1Name: "Level 1: Animal Warm-Up",
+      stage2Name: "Level 2: Forest Trio",
+      stage3Name: "Level 3: Friendly Tracks",
       stage4Name: "Level 4: Animal Friends",
-      stage5Name: "Level 5: Sweet Snacks",
-      stage6Name: "Level 6: Galaxy Masters",
-      stage7Name: "Level 7: Moon Garden",
+      stage5Name: "Level 5: Meadow Friends",
+      stage6Name: "Level 6: Animal World",
+      stage7Name: "Level 7: Forest Recall",
       stage8Name: "Level 8: Animal Parade",
-      stage9Name: "Level 9: Sweet Galaxy",
+      stage9Name: "Level 9: Habitat Mix",
       stage10Name: "Level 10: Memory Master",
       stage1Desc: "Warm up with 2 pairs and unlimited moves.",
       stage2Desc: "Match 3 pairs with 8 moves limit.",
       stage3Desc: "Match 6 pairs under 16 moves.",
       stage4Desc: "Find 8 cute animals in 22 moves.",
-      stage5Desc: "Match 10 delicious treats in 28 moves.",
-      stage6Desc: "Combine space and animals in 35 moves.",
-      stage7Desc: "A tighter space challenge with fewer safe moves.",
+      stage5Desc: "Match 10 animal friends in 28 moves.",
+      stage6Desc: "Remember all 12 animal friends in 35 moves.",
+      stage7Desc: "A tighter six-animal challenge with fewer safe moves.",
       stage8Desc: "More animal pairs with a careful move limit.",
-      stage9Desc: "Space, animals, and sweets all mixed together.",
+      stage9Desc: "Ten animals from different habitats are mixed together.",
       stage10Desc: "The full 12-pair board for memory experts.",
       highScore: "High Score: {score}",
       skillReport: "Skill Report",
@@ -181,25 +189,25 @@
       tipMismatch: "\u9084\u4e0d\u662f\u4e00\u5c0d\uff0c\u518d\u8a18\u4e00\u4e0b\u4f4d\u7f6e\uff01",
       tipCombo: "\u9023\u7e8c\u914d\u5c0d x{count}\uff01",
       loading: "\u8f09\u5165\u4e2d",
-      stage1Name: "\u7b2c 1 \u95dc\uff1a\u661f\u5149\u6696\u8eab",
-      stage2Name: "\u7b2c 2 \u95dc\uff1a\u661f\u7a7a\u4e09\u7d44",
-      stage3Name: "\u7b2c 3 \u95dc\uff1a\u6df1\u7a7a\u8a18\u61b6",
+      stage1Name: "\u7b2c 1 \u95dc\uff1a\u52d5\u7269\u6696\u8eab",
+      stage2Name: "\u7b2c 2 \u95dc\uff1a\u68ee\u6797\u4e09\u7d44",
+      stage3Name: "\u7b2c 3 \u95dc\uff1a\u53cb\u5584\u8db3\u8de1",
       stage4Name: "\u7b2c 4 \u95dc\uff1a\u52d5\u7269\u670b\u53cb",
-      stage5Name: "\u7b2c 5 \u95dc\uff1a\u751c\u9ede\u5c0f\u9ede\u5fc3",
-      stage6Name: "\u7b2c 6 \u95dc\uff1a\u661f\u6cb3\u9ad8\u624b",
-      stage7Name: "\u7b2c 7 \u95dc\uff1a\u6708\u4eae\u82b1\u5712",
+      stage5Name: "\u7b2c 5 \u95dc\uff1a\u8349\u539f\u670b\u53cb",
+      stage6Name: "\u7b2c 6 \u95dc\uff1a\u52d5\u7269\u4e16\u754c",
+      stage7Name: "\u7b2c 7 \u95dc\uff1a\u68ee\u6797\u56de\u61b6",
       stage8Name: "\u7b2c 8 \u95dc\uff1a\u52d5\u7269\u904a\u884c",
-      stage9Name: "\u7b2c 9 \u95dc\uff1a\u751c\u871c\u661f\u6cb3",
+      stage9Name: "\u7b2c 9 \u95dc\uff1a\u68f2\u5730\u6df7\u5408",
       stage10Name: "\u7b2c 10 \u95dc\uff1a\u8a18\u61b6\u5927\u5e2b",
       stage1Desc: "\u5148\u7528 2 \u7d44\u5361\u724c\u6696\u8eab\uff0c\u6b65\u6578\u4e0d\u9650\u3002",
       stage2Desc: "\u7528 8 \u6b65\u914d\u5c0d 3 \u7d44\u5361\u724c\u3002",
       stage3Desc: "\u5728 16 \u6b65\u5167\u5b8c\u6210 6 \u7d44\u914d\u5c0d\u3002",
       stage4Desc: "\u7528 22 \u6b65\u627e\u51fa 8 \u7d44\u53ef\u611b\u52d5\u7269\u3002",
-      stage5Desc: "\u7528 28 \u6b65\u914d\u5c0d 10 \u7d44\u751c\u9ede\u5716\u6848\u3002",
-      stage6Desc: "\u7528 35 \u6b65\u5b8c\u6210\u661f\u7a7a\u8207\u52d5\u7269\u6df7\u5408\u6311\u6230\u3002",
-      stage7Desc: "\u66f4\u7dca\u6e4a\u7684\u661f\u7a7a\u6311\u6230\uff0c\u6b65\u6578\u66f4\u5c11\u3002",
+      stage5Desc: "\u7528 28 \u6b65\u914d\u5c0d 10 \u7d44\u52d5\u7269\u670b\u53cb\u3002",
+      stage6Desc: "\u7528 35 \u6b65\u8a18\u4f4f 12 \u7d44\u52d5\u7269\u670b\u53cb\u3002",
+      stage7Desc: "\u66f4\u7dca\u6e4a\u7684\u516d\u7a2e\u52d5\u7269\u6311\u6230\uff0c\u6b65\u6578\u66f4\u5c11\u3002",
       stage8Desc: "\u66f4\u591a\u52d5\u7269\u914d\u5c0d\uff0c\u9700\u8981\u4ed4\u7d30\u8a18\u4f4d\u7f6e\u3002",
-      stage9Desc: "\u661f\u7a7a\u3001\u52d5\u7269\u548c\u751c\u9ede\u6df7\u5408\u5728\u4e00\u8d77\u3002",
+      stage9Desc: "\u4e0d\u540c\u68f2\u5730\u7684 10 \u7a2e\u52d5\u7269\u6df7\u5408\u5728\u4e00\u8d77\u3002",
       stage10Desc: "\u5b8c\u6574 12 \u7d44\u5361\u724c\uff0c\u6311\u6230\u8a18\u61b6\u9ad8\u624b\u3002",
       highScore: "\u6700\u9ad8\u5206\uff1a{score}",
       skillReport: "\u6280\u80fd\u5831\u544a",
@@ -225,7 +233,7 @@
       descKey: "stage1Desc",
       grid: { r: 2, c: 2 },
       limit: Infinity,
-      symbols: ["sun", "moon"],
+      symbols: ["panda", "cat"],
       stars: [2, 3, Infinity]
     },
     {
@@ -234,7 +242,7 @@
       descKey: "stage2Desc",
       grid: { r: 2, c: 3 },
       limit: 8,
-      symbols: ["sun", "moon", "star"],
+      symbols: ["panda", "cat", "bear"],
       stars: [4, 5, 8]
     },
     {
@@ -243,7 +251,7 @@
       descKey: "stage3Desc",
       grid: { r: 3, c: 4 },
       limit: 16,
-      symbols: ["sun", "moon", "star", "rocket", "ufo", "planet"],
+      symbols: ["panda", "cat", "bear", "lion", "rabbit", "fox"],
       stars: [8, 10, 16]
     },
     {
@@ -252,7 +260,7 @@
       descKey: "stage4Desc",
       grid: { r: 4, c: 4 },
       limit: 22,
-      symbols: ["panda", "bear", "lion", "cat", "sun", "moon", "star", "rocket"],
+      symbols: ["panda", "bear", "lion", "cat", "rabbit", "fox", "owl", "frog"],
       stars: [11, 13, 22]
     },
     {
@@ -261,7 +269,7 @@
       descKey: "stage5Desc",
       grid: { r: 4, c: 5 },
       limit: 28,
-      symbols: ["donut", "heart", "panda", "bear", "lion", "cat", "sun", "moon", "star", "rocket"],
+      symbols: ["panda", "bear", "lion", "cat", "rabbit", "fox", "owl", "frog", "whale", "chick"],
       stars: [14, 17, 28]
     },
     {
@@ -270,7 +278,7 @@
       descKey: "stage6Desc",
       grid: { r: 4, c: 6 },
       limit: 35,
-      symbols: ["donut", "heart", "panda", "bear", "lion", "cat", "sun", "moon", "star", "rocket", "ufo", "planet"],
+      symbols: ["panda", "bear", "lion", "cat", "rabbit", "fox", "owl", "frog", "whale", "chick", "penguin", "koala"],
       stars: [18, 22, 35]
     },
     {
@@ -279,7 +287,7 @@
       descKey: "stage7Desc",
       grid: { r: 3, c: 4 },
       limit: 14,
-      symbols: ["sun", "moon", "star", "rocket", "ufo", "planet"],
+      symbols: ["rabbit", "fox", "owl", "frog", "whale", "chick"],
       stars: [8, 10, 14]
     },
     {
@@ -288,7 +296,7 @@
       descKey: "stage8Desc",
       grid: { r: 4, c: 4 },
       limit: 20,
-      symbols: ["panda", "bear", "lion", "cat", "donut", "heart", "sun", "moon"],
+      symbols: ["panda", "bear", "lion", "cat", "penguin", "koala", "owl", "fox"],
       stars: [11, 14, 20]
     },
     {
@@ -297,7 +305,7 @@
       descKey: "stage9Desc",
       grid: { r: 4, c: 5 },
       limit: 26,
-      symbols: ["donut", "heart", "panda", "bear", "lion", "cat", "sun", "moon", "star", "rocket"],
+      symbols: ["panda", "bear", "lion", "cat", "rabbit", "fox", "owl", "frog", "penguin", "koala"],
       stars: [14, 18, 26]
     },
     {
@@ -306,7 +314,7 @@
       descKey: "stage10Desc",
       grid: { r: 4, c: 6 },
       limit: 32,
-      symbols: ["donut", "heart", "panda", "bear", "lion", "cat", "sun", "moon", "star", "rocket", "ufo", "planet"],
+      symbols: ["panda", "bear", "lion", "cat", "rabbit", "fox", "owl", "frog", "whale", "chick", "penguin", "koala"],
       stars: [18, 23, 32]
     }
   ];

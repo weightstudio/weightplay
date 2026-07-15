@@ -52,6 +52,23 @@
     },
   };
 
+  Object.assign(copy.en, {
+    earnedMarks: "+{gain} Trial Marks · Total {total}.",
+    trialUnlocked: "Trial {next} unlocked.",
+    trialAvailable: "Trial {next} remains available.",
+    allTrialsUnlocked: "All three trials are unlocked.",
+    masteryReady: "Heart Mastery is ready on Main.",
+    masteryNeed: "Heart Mastery needs {remaining} more Trial Marks.",
+  });
+  Object.assign(copy["zh-Hant"], {
+    earnedMarks: "\u7372\u5f97 {gain} \u679a\u8a66\u7149\u5370\u8a18 \u00b7 \u7d2f\u7a4d {total} \u679a\u3002",
+    trialUnlocked: "\u5df2\u89e3\u9396\u8a66\u7149 {next}\u3002",
+    trialAvailable: "\u8a66\u7149 {next} \u4ecd\u53ef\u9032\u5165\u3002",
+    allTrialsUnlocked: "\u4e09\u500b\u8a66\u7149\u5df2\u5168\u90e8\u89e3\u9396\u3002",
+    masteryReady: "\u53ef\u56de\u4e3b\u756b\u9762\u5347\u7d1a\u52c7\u6c23\u7cbe\u901a\u3002",
+    masteryNeed: "\u52c7\u6c23\u7cbe\u901a\u9084\u9700\u8981 {remaining} \u679a\u8a66\u7149\u5370\u8a18\u3002",
+  });
+
   let locale = localStorage.getItem("weightPlayLocale") || "en";
   let selectedHero = localStorage.getItem("aht-selected-hero") || "leo";
   let unlocked = +(localStorage.getItem("aht-unlocked") || 1);
@@ -406,11 +423,20 @@
     cancelAnimationFrame(frame);
     if (won) {
       const gain = 3 + run.stage;
+      const previousUnlocked = unlocked;
       marks += gain;
       unlocked = Math.max(unlocked, Math.min(3, run.stage + 1));
       save();
+      const masteryCost = 5 + mastery * 4;
+      const remaining = Math.max(0, masteryCost - marks);
+      const unlockCopy = run.stage >= 3
+        ? t("allTrialsUnlocked")
+        : interpolate(unlocked > previousUnlocked ? "trialUnlocked" : "trialAvailable", { next: run.stage + 1 });
+      const masteryCopy = remaining === 0
+        ? t("masteryReady")
+        : interpolate("masteryNeed", { remaining });
       $("#resultTitle").textContent = t("win");
-      $("#resultCopy").textContent = `+${gain} ${t("marks")}`;
+      $("#resultCopy").textContent = `${interpolate("earnedMarks", { gain, total: marks })} ${unlockCopy} ${masteryCopy}`;
       $("#resultNext").textContent = run.stage < 3 ? t("next") : t("menu");
       $("#resultNext").onclick = () => run.stage < 3 ? startTrial(run.stage + 1) : (show("main"), localize());
     } else {

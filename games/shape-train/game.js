@@ -163,6 +163,8 @@
   let currentShape = "circle";
   let selectedPassenger = false;
   let acceptingInput = false;
+  let feedbackKey = "";
+  let lastResult = null;
 
   function clamp(value, min, max) {
     return Math.max(min, Math.min(max, value));
@@ -309,6 +311,8 @@
     currentTaskMistakes = 0;
     acceptingInput = true;
     selectedPassenger = false;
+    feedbackKey = "";
+    lastResult = null;
     nodes.menuPanel.classList.add("hidden");
     nodes.stagePanel.classList.add("hidden");
     nodes.playPanel.classList.remove("hidden");
@@ -360,6 +364,7 @@
     nodes.progressFill.style.width = `${(currentTask / stage.tasks.length) * 100}%`;
     nodes.promptText.textContent = t("prompt", { shape: t(`shapes.${currentShape}`) });
     nodes.feedbackText.textContent = "";
+    feedbackKey = "";
     nodes.passengerShape.className = "shape-token";
     nodes.passengerShape.dataset.shape = currentShape;
     nodes.passengerShape.innerHTML = `<img src="${shape.token}" alt="${t(`shapes.${currentShape}`)}" />`;
@@ -377,7 +382,8 @@
     if (shape !== currentShape) {
       mistakes += 1;
       currentTaskMistakes += 1;
-      nodes.feedbackText.textContent = t("wrong");
+      feedbackKey = "wrong";
+      nodes.feedbackText.textContent = t(feedbackKey);
       car.classList.remove("wrong");
       nodes.passengerBtn.classList.remove("wrong");
       void car.offsetWidth;
@@ -391,7 +397,8 @@
     acceptingInput = false;
     if (currentTaskMistakes === 0) firstTryMatches += 1;
     car.classList.add("correct");
-    nodes.feedbackText.textContent = t("correct");
+    feedbackKey = "correct";
+    nodes.feedbackText.textContent = t(feedbackKey);
     playSound("success");
     track("game_answer", { level: currentStage + 1, correct: true, task: currentShape, answer: shape });
     setTimeout(() => {
@@ -424,15 +431,30 @@
       localStorage.setItem(unlockKey, String(unlocked));
     }
     nodes.progressFill.style.width = "100%";
-    nodes.resultTitle.textContent = earned === 3 ? t("perfect") : earned === 2 ? t("good") : t("keep");
-    nodes.starText.textContent = "★".repeat(earned) + "☆".repeat(3 - earned);
-    nodes.resultText.textContent = t("result", { count: stages[currentStage].tasks.length });
-    renderSkillReport(earned, previousBest);
-    nodes.nextStageBtn.classList.toggle("hidden", currentStage >= stages.length - 1);
+    lastResult = { earned, previousBest, count: stages[currentStage].tasks.length };
+    renderResult(lastResult);
     nodes.playPanel.classList.add("is-result");
     nodes.resultPanel.classList.remove("hidden");
     playSound("win");
     track("game_complete", { level: stageNo, stars: earned, mistakes });
+  }
+
+  function renderResult(result) {
+    nodes.resultTitle.textContent = result.earned === 3 ? t("perfect") : result.earned === 2 ? t("good") : t("keep");
+    nodes.starText.textContent = "★".repeat(result.earned) + "☆".repeat(3 - result.earned);
+    nodes.resultText.textContent = t("result", { count: result.count });
+    renderSkillReport(result.earned, result.previousBest);
+    nodes.nextStageBtn.classList.toggle("hidden", currentStage >= stages.length - 1);
+  }
+
+  function refreshActiveTaskLocale() {
+    nodes.stageText.textContent = t("stage", { n: currentStage + 1 });
+    nodes.promptText.textContent = t("prompt", { shape: t(`shapes.${currentShape}`) });
+    nodes.passengerShape.querySelector("img")?.setAttribute("alt", t(`shapes.${currentShape}`));
+    nodes.carGrid.querySelectorAll(".train-car").forEach((car) => {
+      car.querySelector(".car-shape")?.setAttribute("alt", t(`shapes.${car.dataset.shape}`));
+    });
+    if (feedbackKey) nodes.feedbackText.textContent = t(feedbackKey);
   }
 
   function renderSkillReport(earned, previousBest) {
@@ -507,8 +529,10 @@
       localStorage.setItem(localeKey, locale);
       localizeStatic();
       renderStageGrid();
-      if (!nodes.playPanel.classList.contains("hidden")) {
-        renderTask();
+      if (!nodes.resultPanel.classList.contains("hidden") && lastResult) {
+        renderResult(lastResult);
+      } else if (!nodes.playPanel.classList.contains("hidden")) {
+        refreshActiveTaskLocale();
       }
     });
     nodes.backToStagesBtn.addEventListener("click", showMenu);
