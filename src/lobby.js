@@ -816,7 +816,7 @@ function createGameCard(game) {
         <span class="game-card-badges">
           ${updatedBadge}
           ${popularBadge}
-          <span>${text(game.statusText)}</span>
+          <span>${isPlayable ? stateCopy("playableLabel") : text(game.statusText)}</span>
         </span>
       </div>
       <h2>${title}</h2>

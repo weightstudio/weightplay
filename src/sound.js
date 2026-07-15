@@ -225,6 +225,15 @@
       .sound-toggle.muted {
         opacity: 0.54 !important;
       }
+      body.lobby-page :is(.lobby-hero, .kids-lobby-hero) .sound-toggle {
+        position: absolute !important;
+        z-index: 4 !important;
+        left: 12px !important;
+        top: auto !important;
+        right: auto !important;
+        bottom: 12px !important;
+        cursor: pointer !important;
+      }
     `;
     document.head.append(style);
   }
@@ -366,7 +375,8 @@
     button.type = "button";
     button.className = "sound-toggle";
     button.dataset.soundToggle = "true";
-    installDrag(button);
+    const lobbyHost = document.querySelector(".lobby-page :is(.lobby-hero, .kids-lobby-hero)");
+    if (!lobbyHost) installDrag(button);
     button.addEventListener("click", (event) => {
       if (dragState?.moved) {
         event.preventDefault();
@@ -376,12 +386,14 @@
       setMuted(!muted);
       if (!muted) play("click");
     });
-    document.body.append(button);
-    applySavedPosition(button);
-    window.setTimeout(() => ensureFreePosition(button), 250);
-    window.setTimeout(() => ensureFreePosition(button), 900);
-    new MutationObserver(() => window.setTimeout(() => ensureFreePosition(button), 80))
-      .observe(document.body, { attributes: true, attributeFilter: ["class"] });
+    (lobbyHost || document.body).append(button);
+    if (!lobbyHost) {
+      applySavedPosition(button);
+      window.setTimeout(() => ensureFreePosition(button), 250);
+      window.setTimeout(() => ensureFreePosition(button), 900);
+      new MutationObserver(() => window.setTimeout(() => ensureFreePosition(button), 80))
+        .observe(document.body, { attributes: true, attributeFilter: ["class"] });
+    }
     updateToggle();
   }
 

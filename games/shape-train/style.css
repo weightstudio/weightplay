@@ -697,6 +697,23 @@ body.shape-playing .passenger-area {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Battle Canvas ownership: the shared controller uniformly scales #playPanel. */
+body.shape-playing .shape-game,
+body.shape-playing.weightplay-active-viewport .shape-game {
+  position: static !important;
+  inset: auto !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  transform: none !important;
+  overflow: visible !important;
+}
 html,
 body,
 button,

@@ -1,5 +1,5 @@
 (() => {
-  const LOGICAL_W = 390, LOGICAL_H = 788, RESERVE = window.WeightPlayAudience?.reserveHeight ?? 56;
+  const LOGICAL_W = 390, LOGICAL_H = 788;
   const pages = [
     ...['lion','elephant','giraffe','zebra','hippo','rhino'].map(id => ({ id, pack:'safari' })),
     ...['puppy','kitten','rabbit','hamster','bird','turtle'].map(id => ({ id, pack:'pet' }))
@@ -23,7 +23,7 @@
   const writeSave=value=>localStorage.animalColoringStudioSave=JSON.stringify(value);
   const t=key=>copy[lang][key]||key;
   const track=(event,details={})=>window.WonderAnalytics?.track(event,{game_id:'animal-coloring-studio',locale:lang,page_id:pages[selectedPage]?.id,...details});
-  function fitCanvases(){const vv=window.visualViewport;const width=vv?.width||innerWidth,height=vv?.height||innerHeight;const scale=Math.min(width/LOGICAL_W,Math.max(1,height-RESERVE)/LOGICAL_H);document.documentElement.style.setProperty('--scale',String(scale));document.documentElement.style.setProperty('--slot-w',`${LOGICAL_W*scale}px`);document.documentElement.style.setProperty('--slot-h',`${LOGICAL_H*scale}px`)}
+  function fitCanvases(){const vv=window.visualViewport;const width=vv?.width||innerWidth,height=vv?.height||innerHeight;const scale=Math.min(width/LOGICAL_W,height/LOGICAL_H);document.documentElement.style.setProperty('--scale',String(scale));document.documentElement.style.setProperty('--slot-w',`${LOGICAL_W*scale}px`);document.documentElement.style.setProperty('--slot-h',`${LOGICAL_H*scale}px`)}
   function setScreen(name){document.querySelectorAll('[data-screen]').forEach(el=>el.classList.toggle('hidden',el.dataset.screen!==name));document.body.classList.toggle('playing',name!=='main');if(name!=='main')fitCanvases()}
   function translate(){document.documentElement.lang=lang;app.dataset.locale=lang;document.querySelectorAll('[data-copy]').forEach(el=>el.textContent=t(el.dataset.copy));document.querySelectorAll('[data-aria]').forEach(el=>el.setAttribute('aria-label',t(el.dataset.aria)));$('loadingTitle').textContent=t('loading');document.title=`${t('title')} - WeightPlay`}
   function asset(page,kind){const base=`../../assets/animal-coloring-studio-${page.pack}-pages/${page.id}`;return kind==='mask'?`${base}-mask.png`:`${base}.webp`}

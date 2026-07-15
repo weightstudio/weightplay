@@ -448,17 +448,6 @@ body.dash-playing .game-page-info {
   display: none !important;
 }
 
-.battle-ad-reserve {
-  position: fixed;
-  z-index: 20;
-  left: var(--dash-frame-left, 4px);
-  top: calc(var(--dash-frame-top, 4px) + var(--dash-frame-height, 780px));
-  width: var(--dash-frame-width, calc(100vw - 8px));
-  height: 56px;
-  border-top: 1px dashed rgba(147, 197, 253, 0.4);
-  background: rgba(8, 47, 73, 0.92);
-}
-
 body.dash-playing,
 html:has(body.dash-playing) {
   position: fixed !important;
@@ -542,7 +531,7 @@ body.dash-playing.dash-expanded-canvas.weightplay-active-viewport .dash-game {
   width: var(--dash-frame-width, calc(100vw - 8px)) !important;
   min-width: 0 !important;
   max-width: none !important;
-  height: var(--dash-frame-height, calc(100svh - var(--wp-ad-reserve-height, 56px) - 8px)) !important;
+  height: var(--dash-frame-height, calc(100svh - 8px)) !important;
   min-height: 0 !important;
   max-height: none !important;
   padding: 6px 8px !important;
@@ -596,15 +585,6 @@ body.dash-playing.dash-expanded-canvas .canvas-wrap {
 body.dash-playing.dash-expanded-canvas #gameCanvas {
   width: 100%;
   height: 100%;
-}
-
-body.dash-playing.dash-expanded-canvas #battleAdReserve {
-  left: 4px;
-  right: 4px;
-  top: auto;
-  bottom: 4px;
-  width: auto;
-  height: 56px;
 }
 
 body.dash-playing .weightplay-version-badge,

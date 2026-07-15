@@ -133,6 +133,7 @@
   }
 
   function showStage() {
+    nodes.menuBtn.dataset.wpReturn = "battle";
     profile.selectedMission = profile.unlockedMission;
     saveLocalState();
     nodes.menuPanel.classList.add("hidden");
@@ -829,7 +830,7 @@
   }
 
   function awardPackGear(gearId) {
-    profile.gear[gearId] = (profile.gear[gearId] || 0) + 1;
+    profile.gear[gearId] = clamp((profile.gear[gearId] || 0) + 1, 1, maxGearRank);
     const shouldEquip = !profile.equippedGear;
     if (shouldEquip) profile.equippedGear = gearId;
     if (profile.gear[gearId] > 1) {
@@ -1350,6 +1351,7 @@
   function endGame(won) {
     nodes.gamePanel.classList.add("hidden");
     nodes.resultPanel.classList.remove("hidden");
+    positionBattleSoundControl();
     const cleared = won ? 3 : Math.max(0, state.battle - 1);
     const stars = cleared === 3 ? "★★★" : cleared === 2 ? "★★" : cleared === 1 ? "★" : "-";
     nodes.resultTitle.textContent = won ? t("runComplete") : t("runFailed");
@@ -1413,15 +1415,31 @@
   }
 
   function positionBattleSoundControl() {
-    requestAnimationFrame(() => {
+    const applyPosition = () => {
       const toggle = document.querySelector("button[data-sound-toggle]");
-      const panel = nodes.gamePanel.getBoundingClientRect();
+      const activePanel = nodes.resultPanel.classList.contains("hidden") ? nodes.gamePanel : nodes.resultPanel;
+      const panel = activePanel.getBoundingClientRect();
       if (!toggle || panel.width <= 0 || panel.height <= 0) return;
       const size = 42;
       toggle.style.setProperty("left", `${Math.round(panel.right - size - 12)}px`, "important");
       toggle.style.setProperty("top", `${Math.round(panel.top + 12)}px`, "important");
       toggle.style.setProperty("right", "auto", "important");
       toggle.style.setProperty("bottom", "auto", "important");
+    };
+    applyPosition();
+    requestAnimationFrame(applyPosition);
+    window.setTimeout(applyPosition, 120);
+  }
+
+  function leaveStageCanvas() {
+    nodes.menuBtn.removeAttribute("data-wp-return");
+    document.documentElement.classList.remove("wp-stage-select-active");
+    document.body.classList.remove("wp-stage-select-active", "wp-standard-stage-page");
+    document.querySelectorAll("[data-wp-logical-stage-canvas]").forEach((root) => {
+      root.removeAttribute("data-wp-logical-stage-canvas");
+    });
+    document.querySelectorAll("[data-wp-stage-reserve-active]").forEach((reserve) => {
+      reserve.removeAttribute("data-wp-stage-reserve-active");
     });
   }
 
@@ -1431,7 +1449,7 @@
     nodes.menuPanel.classList.add("hidden");
     nodes.stagePanel.classList.add("hidden");
     nodes.stageReserve.classList.add("hidden");
-    document.body.classList.remove("wp-standard-stage-page");
+    leaveStageCanvas();
     nodes.resultPanel.classList.add("hidden");
     nodes.gamePanel.classList.remove("hidden");
     document.body.classList.add("beast-deck-playing");

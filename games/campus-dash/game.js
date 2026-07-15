@@ -14,7 +14,6 @@
   const startPanel = document.querySelector("#startPanel");
   const mainPanel = document.querySelector("#mainPanel");
   const canvasWrap = document.querySelector(".canvas-wrap");
-  const battleAdReserve = document.querySelector("#battleAdReserve");
   const homeLink = document.querySelector(".home-link");
   const startTitle = document.querySelector("#startTitle");
   const startText = document.querySelector("#startText");
@@ -202,24 +201,13 @@
     const viewport = window.visualViewport;
     const viewportWidth = viewport?.width || innerWidth;
     const viewportHeight = viewport?.height || innerHeight;
-    const isPhoneBattle = window.matchMedia("(pointer: coarse)").matches || viewportWidth <= 600 || viewportHeight <= 430;
-    document.body.classList.toggle("dash-expanded-canvas", isPhoneBattle);
-    if (isPhoneBattle) {
-      document.documentElement.style.setProperty("--dash-frame-scale", "1");
-      document.documentElement.style.setProperty("--dash-frame-left", "4px");
-      document.documentElement.style.setProperty("--dash-frame-top", "4px");
-      document.documentElement.style.setProperty("--dash-frame-width", `${Math.max(1, viewportWidth - 8)}px`);
-      const reserveHeight = window.WeightPlayAudience?.reserveHeight ?? 56;
-      document.documentElement.style.setProperty("--dash-frame-height", `${Math.max(1, viewportHeight - reserveHeight - 8)}px`);
-      return;
-    }
-    const reserveHeight = window.WeightPlayAudience?.reserveHeight ?? 56;
-    const scale = Math.min(Math.max(1, viewportWidth - 8) / 390, Math.max(1, viewportHeight - reserveHeight - 8) / 788);
+    document.body.classList.remove("dash-expanded-canvas");
+    const scale = Math.min(Math.max(1, viewportWidth - 8) / 390, Math.max(1, viewportHeight - 8) / 788);
     const width = 390 * scale;
     const height = 788 * scale;
     document.documentElement.style.setProperty("--dash-frame-scale", String(scale));
     document.documentElement.style.setProperty("--dash-frame-left", `${(viewportWidth - width) / 2}px`);
-  document.documentElement.style.setProperty("--dash-frame-top", `${(viewportHeight - reserveHeight - height) / 2}px`);
+    document.documentElement.style.setProperty("--dash-frame-top", `${(viewportHeight - height) / 2}px`);
     document.documentElement.style.setProperty("--dash-frame-width", `${width}px`);
     document.documentElement.style.setProperty("--dash-frame-height", `${height}px`);
   }
@@ -240,7 +228,6 @@
     canvasWrap.classList.add("hidden");
     hud.classList.add("hidden");
     resultPanel.classList.add("hidden");
-    battleAdReserve.classList.add("hidden");
   }
 
   window.addEventListener("resize", updateDashFrame);
@@ -256,7 +243,6 @@
     document.querySelector(".dash-game")?.removeAttribute("data-play-viewport");
     mainPanel.classList.add("hidden");
     canvasWrap.classList.remove("hidden");
-    battleAdReserve.classList.remove("hidden");
     resultPanel.classList.add("hidden");
     hud.classList.remove("hidden");
     lastTime = performance.now();
