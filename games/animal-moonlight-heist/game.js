@@ -6,6 +6,22 @@
     en:{title:"Animal Moonlight Heist",internal:"Moon Archive Missions",pitch:"Read the patrols, recover the relic, and choose when to extract.",start:"Choose Mission",missions:"Moon Archive",chooseGadget:"Choose Gadget",alert:"Alert",holdRoute:"Hold to preview a route.",objective:"Recover the mission object",locked:"Complete the previous mission",retry:"Retry",next:"Next Mission",victory:"Mission Complete",captured:"Captured",capturedText:"The patrol raised the alarm. Retry is free.",treasure:"Bonus treasure recovered",extraction:"Reach the extraction gate",dash:"Lightning Dash",decoy:"Star Decoy",smoke:"Smoke Leaf",dashEffect:"Fast route: {ms}ms move",decoyEffect:"Patrol pause: {seconds}s",smokeEffect:"Alert reset + {seconds}s cover",coins:"Moon Coins",safehouse:"Safehouse Lv.{n}",mission:"Mission {n}",move:"Release to move",found:"Object secured!",exitReady:"Extraction ready",treasureFound:"Treasure secured",paused:"Paused",diamonds:"Diamonds",reroll:"Reroll 3",insure:"Insure 5",insured:"Insured",alreadyInsured:"Extraction insurance is already active.",confirmReroll:"Spend 3 Diamonds to reroll gadget strength?",confirmInsurance:"Spend 5 Diamonds to preserve bonus treasure after capture?",notEnough:"Not enough Diamonds.",rerolled:"Gadget offers rerolled.",insuranceReady:"Extraction insurance active for the next mission."},
     "zh-Hant":{title:"動物月影潛行隊",internal:"月光檔案任務",pitch:"觀察巡邏、找回文物，並決定何時安全撤離。",start:"選擇任務",missions:"月光檔案館",chooseGadget:"選擇技能",alert:"警戒",holdRoute:"按住畫面預覽路線。",objective:"找回任務物件",locked:"先完成上一個任務",retry:"重試",next:"下一關",victory:"任務完成",captured:"被發現了",capturedText:"巡邏隊已拉滿警戒。免費重新挑戰。",treasure:"已取得額外寶藏",extraction:"前往撤離門",dash:"閃電衝刺",decoy:"星光誘餌",smoke:"煙霧葉片",coins:"月光金幣",safehouse:"安全屋 Lv.{n}",mission:"任務 {n}",move:"放開即可移動",found:"已取得任務物件！",exitReady:"撤離門已開啟",treasureFound:"已取得寶藏",paused:"已暫停",diamonds:"鑽石",reroll:"重抽 3",insure:"保險 5",insured:"已投保",alreadyInsured:"撤離保險已啟用。",confirmReroll:"要花費 3 顆鑽石重抽技能強度嗎？",confirmInsurance:"要花費 5 顆鑽石，在被發現後保留額外寶藏嗎？",notEnough:"鑽石不足。",rerolled:"已重抽技能方案。",insuranceReady:"下一個任務已啟用撤離保險。"}
   };
+  Object.assign(copy.en, {
+    notCleared: "Not cleared",
+    bestMedals: "Best {medals}/3 medals",
+    perfectMedals: "Best 3/3 medals · Complete",
+    bonusMedal: "Bonus treasure earns the final medal.",
+    medalCount: "{medals} of 3 medals earned",
+    resultMedals: "{medals}/3 medals",
+  });
+  Object.assign(copy["zh-Hant"], {
+    notCleared: "\u5c1a\u672a\u5b8c\u6210",
+    bestMedals: "\u6700\u4f73 {medals}/3 \u679a\u734e\u7ae0",
+    perfectMedals: "\u6700\u4f73 3/3 \u679a\u734e\u7ae0 \u00b7 \u5df2\u5b8c\u6210",
+    bonusMedal: "\u56de\u6536\u984d\u5916\u5bf6\u85cf\u53ef\u7372\u5f97\u6700\u5f8c\u4e00\u679a\u734e\u7ae0\u3002",
+    medalCount: "\u5df2\u7372\u5f97 {medals}/3 \u679a\u734e\u7ae0",
+    resultMedals: "{medals}/3 \u679a\u734e\u7ae0",
+  });
   const missionObjects=["moon-seal","courier-token","star-map","clockwork-lens","district-relic"];
   const patrolArt=["wolf","rabbit","badger"];
   const missions=[
@@ -40,7 +56,30 @@
   function localize(){document.documentElement.lang=locale;document.title=`${t("title")} - Internal Trial`;document.querySelectorAll("[data-i18n]").forEach(n=>n.textContent=t(n.dataset.i18n));renderSummary();renderStage();renderGadgets();renderEconomy();updateGadget();renderGadgetSummary()}
   function show(name){document.body.dataset.screen=name;nodes.main.hidden=name!=="main";nodes.stage.hidden=name!=="stage";nodes.battle.hidden=name!=="battle";if(name!=="battle"){playing=false;paused=false}}
   function renderSummary(){$("#safehouseSummary").textContent=`${t("safehouse",{n:state.safehouse})} · ${t("coins")}: ${state.coins} · ${Object.keys(state.cleared).length}/5`}
-  function renderStage(){if(!nodes.rail)return;$("#coinLabel").textContent=`${t("coins")}: ${state.coins}`;nodes.rail.innerHTML="";missions.forEach((m,i)=>{const b=document.createElement("button");b.type="button";b.className=`mission-card${i+1>state.unlocked?" locked":""}`;b.innerHTML=`<img src="../../assets/animal-moonlight-heist-archive-background.png" alt=""><div><strong>${t("mission",{n:i+1})}: ${m.name[locale==="zh-Hant"?1:0]}</strong><span>${i+1>state.unlocked?t("locked"):(state.cleared[i]?"★★★":"☆☆☆")}</span></div>`;b.addEventListener("click",()=>{if(i+1<=state.unlocked)startMission(i)});nodes.rail.append(b)})}
+  function medalProgress(index){
+    const medals=Math.max(0,Math.min(3,Number(state.cleared[index])||0));
+    if(!medals)return{visible:`☆☆☆ · ${t("notCleared")}`,accessible:t("notCleared")};
+    const stars="★".repeat(medals)+"☆".repeat(3-medals);
+    const detail=medals===3?t("perfectMedals"):`${t("bestMedals",{medals})} · ${t("bonusMedal")}`;
+    return{visible:`${stars} · ${detail}`,accessible:detail};
+  }
+  function renderStage(){
+    if(!nodes.rail)return;
+    $("#coinLabel").textContent=`${t("coins")}: ${state.coins}`;
+    nodes.rail.innerHTML="";
+    missions.forEach((m,i)=>{
+      const b=document.createElement("button");
+      const missionName=`${t("mission",{n:i+1})}: ${m.name[locale==="zh-Hant"?1:0]}`;
+      const locked=i+1>state.unlocked;
+      const progress=medalProgress(i);
+      b.type="button";
+      b.className=`mission-card${locked?" locked":""}`;
+      b.innerHTML=`<img src="../../assets/animal-moonlight-heist-archive-background.png" alt=""><div><strong>${missionName}</strong><span>${locked?t("locked"):progress.visible}</span></div>`;
+      b.setAttribute("aria-label",`${missionName}. ${locked?t("locked"):progress.accessible}`);
+      b.addEventListener("click",()=>{if(!locked)startMission(i)});
+      nodes.rail.append(b);
+    });
+  }
   function renderGadgets(){const wrap=$("#gadgetChoices");wrap.innerHTML="";gadgetOffers.forEach(({id,level})=>{const g=gadgets[id],b=document.createElement("button");b.className=`gadget-choice${id===gadget?" selected":""}`;b.innerHTML=`<img src="../../assets/animal-moonlight-heist-gadget-${g.art}.webp" alt=""><span class="gadget-level">Lv.${level}</span>`;b.type="button";b.title=`${t(id)} Lv.${level}`;b.setAttribute("aria-label",gadgetSummary(id,level));b.setAttribute("aria-pressed",id===gadget?"true":"false");b.addEventListener("click",()=>{gadget=id;renderGadgets();updateGadget();renderGadgetSummary()});wrap.append(b)})}
   function updateGadget(){if(!$("#gadgetIcon"))return;$("#gadgetIcon").src=`../../assets/animal-moonlight-heist-gadget-${gadgets[gadget].art}.webp`;$("#gadgetLabel").textContent=t(gadget)}
   function startMission(index){selectedMission=index;objectFound=false;treasureFound=preservedTreasure;preservedTreasure=false;caught=false;alert=0;paused=false;smokeUntil=0;const m=missions[index];$("#missionLabel").textContent=`${t("mission",{n:index+1})}: ${m.name[locale==="zh-Hant"?1:0]}`;$("#objectiveLabel").textContent=t("objective");nodes.objective.src=`../../assets/animal-moonlight-heist-object-${missionObjects[index]}.webp`;place(nodes.objective,m.object);place(nodes.treasure,m.treasure);place(nodes.exit,m.exit);nodes.objective.hidden=false;nodes.treasure.hidden=treasureFound;nodes.exit.style.opacity=.5;place(nodes.fia,[50,88]);nodes.patrolLayer.innerHTML="";patrols=m.patrols.map((path,i)=>{const sight=document.createElement("span");sight.className="patrol-sight";sight.setAttribute("aria-hidden","true");const img=document.createElement("img");img.className="patrol";img.src=`../../assets/animal-moonlight-heist-patrol-${patrolArt[i%3]}.webp`;nodes.patrolLayer.append(sight,img);const p={img,sight,path,progress:i*.23,direction:1};updatePatrol(p);return p});nodes.feedback.textContent=t("holdRoute");nodes.alert.style.width="0";$("#coinBattle").textContent=`${t("coins")}: ${state.coins}`;show("battle");playing=true;lastTime=performance.now();requestAnimationFrame(loop)}
@@ -55,7 +94,16 @@
   function useGadget(){if(!playing||paused)return;const level=selectedOffer().level;if(gadget==="decoy"){freezeUntil=performance.now()+(2500+level*650);showFx("pickup")}else if(gadget==="smoke"){alert=0;smokeUntil=performance.now()+(800+level*500);showFx("shadow")}else{nodes.feedback.textContent=t("dash");showFx("pickup")}}
   function fail(){if(caught||performance.now()<smokeUntil)return;caught=true;playing=false;if(insuranceActive&&treasureFound)preservedTreasure=true;insuranceActive=false;showFx("warning");nodes.fia.classList.add("caught");openResult(false)}
   function win(){playing=false;insuranceActive=false;const medals=1+(!caught?1:0)+(treasureFound?1:0);const reward=20+selectedMission*8+(treasureFound?12:0);state.coins+=reward;state.cleared[selectedMission]=Math.max(state.cleared[selectedMission]||0,medals);state.unlocked=Math.max(state.unlocked,Math.min(5,selectedMission+2));state.safehouse=1+Math.floor(Object.keys(state.cleared).length/2);save();openResult(true,medals,reward)}
-  function openResult(ok,medals=0,reward=0){nodes.modal.hidden=false;$("#resultTitle").textContent=t(ok?"victory":"captured");$("#resultText").textContent=ok?`+${reward} ${t("coins")}${treasureFound?` · ${t("treasure")}`:""}`:t("capturedText");$("#medalRow").textContent=ok?"★".repeat(medals)+"☆".repeat(3-medals):"";$("#nextBtn").hidden=!ok||selectedMission>=4}
+  function openResult(ok,medals=0,reward=0){
+    nodes.modal.hidden=false;
+    $("#resultTitle").textContent=t(ok?"victory":"captured");
+    $("#resultText").textContent=ok
+      ? `+${reward} ${t("coins")} · ${t("resultMedals",{medals})}${medals<3?` · ${t("bonusMedal")}`:` · ${t("treasure")}`}`
+      : t("capturedText");
+    $("#medalRow").textContent=ok?"★".repeat(medals)+"☆".repeat(3-medals):"";
+    $("#medalRow").setAttribute("aria-label",ok?t("medalCount",{medals}):"");
+    $("#nextBtn").hidden=!ok||selectedMission>=4;
+  }
   function closeResult(){nodes.modal.hidden=true;nodes.fia.classList.remove("caught")}
   $(".home-link").setAttribute("data-wp-return","main");$("#stageBackBtn").setAttribute("data-wp-return","stage");$("#battleBackBtn").setAttribute("data-wp-return","battle");
   function bind(){$("#localeSelect").value=locale;$("#localeSelect").addEventListener("change",e=>{locale=e.target.value;localStorage.setItem(localeKey,locale);localize()});$("#startBtn").addEventListener("click",()=>{show("stage");renderStage()});$("#stageBackBtn").addEventListener("click",()=>show("main"));$("#battleBackBtn").addEventListener("click",()=>{show("stage");renderStage()});$("#pauseBtn").addEventListener("click",()=>{paused=!paused;nodes.feedback.textContent=t(paused?"paused":"holdRoute")});nodes.field.addEventListener("pointerdown",e=>{if(!playing||paused)return;nodes.field.setPointerCapture(e.pointerId);routeTo(e.clientX,e.clientY)});nodes.field.addEventListener("pointermove",e=>{if(nodes.field.hasPointerCapture(e.pointerId))routeTo(e.clientX,e.clientY)});nodes.field.addEventListener("pointerup",e=>{if(nodes.field.hasPointerCapture(e.pointerId)){routeTo(e.clientX,e.clientY,true);nodes.field.releasePointerCapture(e.pointerId)}});$("#gadgetBtn").addEventListener("click",useGadget);$("#retryBtn").addEventListener("click",()=>{closeResult();startMission(selectedMission)});$("#stagesBtn").addEventListener("click",()=>{closeResult();show("stage");renderStage()});$("#nextBtn").addEventListener("click",()=>{closeResult();startMission(Math.min(4,selectedMission+1))})}

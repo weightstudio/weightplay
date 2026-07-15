@@ -534,6 +534,12 @@ a {
   transition: transform 0.12s ease;
 }
 
+.food-card:focus,
+.lunchbox:focus {
+  outline: 4px solid #1454d8;
+  outline-offset: 4px;
+}
+
 .food-card.dragging {
   z-index: 10;
   opacity: 0.95;

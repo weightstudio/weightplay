@@ -18,7 +18,7 @@
     
     <link rel="stylesheet" href="../../src/loading-screen.css" />
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
-    <link rel="stylesheet" href="style.css?v=20260710-relic-backpack-fit1" />
+    <link rel="stylesheet" href="style.css?v=20260716-relic-loot-choice1" />
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -264,8 +264,12 @@
             <h3 id="lootName">Crystal Sword</h3>
             <p id="lootType">Rare Weapon</p>
             <strong id="lootEffect">+20% Bullet Damage</strong>
+            <small id="lootComparison" class="loot-comparison"></small>
           </div>
-          <button id="equipLootBtn" class="primary-btn equip-loot-btn" type="button" data-ui="equipLoot">Equip Gear</button>
+          <div class="loot-actions">
+            <button id="equipLootBtn" class="primary-btn equip-loot-btn" type="button" data-ui="equipLoot">Equip Gear</button>
+            <button id="keepLootBtn" class="keep-loot-btn" type="button">Keep Current Gear</button>
+          </div>
         </div>
       </section>
 
@@ -357,6 +361,6 @@
     <script src="../../src/game-page-info.js?v=20260706-relic-economy-i18n1"></script>
     <script src="../../src/wallet.js?v=20260706-relic-v1"></script>
     <script src="../../src/tutorial.js?v=20260706-relic-v1"></script>
-    <script src="game.js?v=20260715-relic-gear-compare1"></script>
+    <script src="game.js?v=20260716-relic-loot-choice1"></script>
   </body>
 </html>

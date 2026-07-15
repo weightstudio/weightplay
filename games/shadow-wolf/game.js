@@ -50,6 +50,7 @@
     attrAgility: $("attrAgility"),
     attrConstitution: $("attrConstitution"),
     attrLuck: $("attrLuck"),
+    attributeChoiceDesc: $("attributeChoiceDesc"),
     draftCards: $("draftCards"),
     lootIcon: $("lootIcon"),
     lootName: $("lootName"),
@@ -81,7 +82,7 @@
     en: {
       title: "Shadow Wolf",
       menuTitle: "Dungeon Platform Adventure.",
-      menuHint: "Move with A/D, jump/double-jump with W/Space, attack with J, and dash with K. Collect keys to open chest upgrades, and clear Room 3.",
+      menuHint: "Move with A/D, jump twice with W/Space, attack with J, and dash with K. Defeat elites, choose exact attribute growth, and clear all 8 regions.",
       adventureRecordTitle: "Adventure Record",
       adventureRecordText: "Expeditions: {runs} · Best: Room {best}/8 · Behemoth clears: {wins}",
       diamondShopTitle: "Permanent Upgrade",
@@ -92,7 +93,7 @@
       languageSelector: "Language selector",
       controlLegend: "A/D Move · W/Space Jump · J Attack · K/Shift Dash",
       roomLabel: "Room",
-      keyLabel: "Key",
+      keyLabel: "Points",
       arenaLabel: "Shadow Wolf arena",
       stageEyebrow: "EXPEDITION",
       stageTitle: "Choose an expedition",
@@ -101,6 +102,17 @@
       hudHp: "Wolf HP",
       chooseCard: "Choose a Relic Upgrade",
       chooseCardDesc: "Select one of these ancient relics to empower your wolf.",
+      attributeChoiceTitle: "Level Up: Choose Your Growth",
+      attributeChoiceDesc: "Spend both points before battle resumes. {points} remaining.",
+      attributeStrength: "Strength",
+      attributeAgility: "Agility",
+      attributeConstitution: "Constitution",
+      attributeLuck: "Luck",
+      attributeDamagePreview: "Damage {from} → {to}",
+      attributeSpeedPreview: "Speed {from} → {to}",
+      attributeHpPreview: "Max HP {from} → {to}",
+      attributeCritPreview: "Crit {from}% → {to}%",
+      attributeChoiceAria: "Spend 1 point on {name}: {effect}",
       lootFound: "Relic Chest Unlocked!",
       equipLoot: "Equip Gear",
       tryAgain: "Try Again",
@@ -117,6 +129,7 @@
       skillLogic: "Logic",
       skillFocus: "Focus",
       skillProblem: "Problem Solving",
+      regionsCleared: "Regions cleared",
 
       // Relic Upgrades
       relic_fang: "Sharp Fang",
@@ -145,8 +158,8 @@
       rarity_epic: "Epic Gear",
 
       // Reports
-      report_win: "Legendary Wolf! You conquered the spikes, timed your double jumps, equipped rare teeth/saddles, and clawed the Behemoth.",
-      report_partial: "Decent climber! You reached Room {room}. Level up and equip stronger claws and saddles to clear Room 3.",
+      report_win: "Legendary Wolf! You conquered all 8 regions, timed your double jumps, shaped your attributes, and defeated the Behemoth.",
+      report_partial: "Good expedition! You reached Region {room}. Spend both level-up points and adjust your build for the next attempt.",
     },
     "zh-Hant": {
       title: "影狼傳說",
@@ -221,6 +234,22 @@
   Object.assign(text["zh-Hant"], {
     adventureRecordTitle: "\u5192\u96aa\u7d00\u9304",
     adventureRecordText: "\u51fa\u5f81\u6b21\u6578\uff1a{runs} \u00b7 \u6700\u4f73\uff1a\u623f\u9593 {best}/8 \u00b7 \u5de8\u7378\u901a\u95dc\uff1a{wins}",
+    menuHint: "使用 A/D 移動、W 或空白鍵二段跳、J 攻擊、K 衝刺。擊敗精英、精確分配屬性，通過全部 8 個區域。",
+    keyLabel: "點數",
+    attributeChoiceTitle: "升級：選擇成長方向",
+    attributeChoiceDesc: "分配完兩點後繼續戰鬥。剩餘 {points} 點。",
+    attributeStrength: "力量",
+    attributeAgility: "敏捷",
+    attributeConstitution: "體質",
+    attributeLuck: "幸運",
+    attributeDamagePreview: "傷害 {from} → {to}",
+    attributeSpeedPreview: "速度 {from} → {to}",
+    attributeHpPreview: "最大生命 {from} → {to}",
+    attributeCritPreview: "暴擊 {from}% → {to}%",
+    attributeChoiceAria: "花費 1 點提升{name}：{effect}",
+    report_win: "傳奇影狼！你通過全部 8 個區域、掌握二段跳、完成屬性配置，並擊敗巨獸。",
+    report_partial: "這次抵達區域 {room}。下次記得分配完兩點升級點數，再依路線調整配置。",
+    regionsCleared: "通過區域",
   });
 
   function preloadImage(src) {
@@ -260,6 +289,13 @@
     relic_fang: "../../assets/shadow-wolf-relic-sharp-fang.webp",
     relic_fur: "../../assets/shadow-wolf-relic-thick-fur.webp",
     relic_boots: "../../assets/shadow-wolf-relic-wind-boots.webp",
+  };
+
+  const attributeChoiceIcons = {
+    strength: "../../assets/shadow-wolf-relic-sharp-fang.webp",
+    agility: "../../assets/shadow-wolf-relic-wind-boots.webp",
+    constitution: "../../assets/shadow-wolf-relic-thick-fur.webp",
+    luck: "../../assets/shadow-wolf-relic-shadow-lantern.webp",
   };
 
   const gearDb = {
@@ -515,6 +551,36 @@
 
     nodes.hpText.textContent = `${Math.ceil(state.playerHp)}/${stats.maxHp}`;
     nodes.hpFill.style.width = `${(state.playerHp / stats.maxHp) * 100}%`;
+    nodes.attributeButtons.forEach((button) => {
+      button.disabled = state.attributePoints < 1;
+    });
+  }
+
+  function attributePreview(attribute) {
+    const before = getStats();
+    state[attribute] += 1;
+    const after = getStats();
+    state[attribute] -= 1;
+    if (attribute === "strength") return t("attributeDamagePreview", { from: before.dmg.toFixed(0), to: after.dmg.toFixed(0) });
+    if (attribute === "agility") return t("attributeSpeedPreview", { from: before.speed.toFixed(1), to: after.speed.toFixed(1) });
+    if (attribute === "constitution") return t("attributeHpPreview", { from: before.maxHp.toFixed(0), to: after.maxHp.toFixed(0) });
+    return t("attributeCritPreview", { from: Math.round(before.crit * 100), to: Math.round(after.crit * 100) });
+  }
+
+  function renderAttributeDraft() {
+    const attributes = ["strength", "agility", "constitution", "luck"];
+    nodes.attributeChoiceDesc.textContent = t("attributeChoiceDesc", { points: state.attributePoints });
+    nodes.draftCards.innerHTML = attributes.map((attribute) => {
+      const name = t(`attribute${attribute[0].toUpperCase()}${attribute.slice(1)}`);
+      const effect = attributePreview(attribute);
+      return `
+        <button class="attribute-choice" type="button" data-draft-attribute="${attribute}" aria-label="${t("attributeChoiceAria", { name, effect })}">
+          <img src="${attributeChoiceIcons[attribute]}" alt="" />
+          <span><strong>${name}</strong><small>${effect}</small></span>
+          <b>+1</b>
+        </button>
+      `;
+    }).join("");
   }
 
   function renderEquippedGear() {
@@ -789,9 +855,13 @@
     state.exp -= state.expNeed;
     state.expNeed = Math.floor(90 * Math.pow(state.level, 1.55));
     state.attributePoints += 2;
+    state.gameActive = false;
+    cancelAnimationFrame(state.gameLoopId);
     window.WonderSound?.play("success");
     renderStatsPanel();
     updateHUDText();
+    renderAttributeDraft();
+    nodes.draftPanel.classList.remove("hidden");
   }
 
   function spendAttribute(attribute) {
@@ -801,6 +871,14 @@
     const stats = getStats();
     state.playerHp = Math.min(stats.maxHp, state.playerHp + (attribute === "constitution" ? 8 : 0));
     renderStatsPanel();
+    updateHUDText();
+    if (state.attributePoints > 0) {
+      renderAttributeDraft();
+      return;
+    }
+    nodes.draftPanel.classList.add("hidden");
+    state.gameActive = true;
+    state.gameLoopId = requestAnimationFrame(updateGameEngine);
   }
 
   // Chest looting modal
@@ -871,13 +949,12 @@
     state.gameActive = false;
     cancelAnimationFrame(state.gameLoopId);
 
-    nodes.gamePanel.classList.add("hidden");
     nodes.resultPanel.classList.remove("hidden");
 
     nodes.resultTitle.textContent = won ? t("runComplete") : t("runFailed");
-    nodes.resultScore.textContent = won ? "3" : String(state.room - 1);
+    nodes.resultScore.textContent = won ? "8" : String(Math.max(0, state.room - 1));
 
-    const cleared = won ? 3 : (state.room - 1);
+    const cleared = won ? 8 : Math.max(0, state.room - 1);
     state.bestRoom = Math.max(state.bestRoom, won ? 8 : Math.max(0, state.room - 1));
     if (won) state.wins += 1;
     saveLocalState();
@@ -888,6 +965,7 @@
     else if (cleared === 1) starsStr = "⭐";
     else starsStr = "☆";
 
+    starsStr = cleared >= 8 ? "★★★" : cleared >= 5 ? "★★" : cleared >= 1 ? "★" : "—";
     nodes.logicStars.textContent = starsStr;
     nodes.focusStars.textContent = starsStr;
     nodes.problemStars.textContent = starsStr;
@@ -1568,6 +1646,7 @@
 
   // Init page triggers
   function init() {
+    document.querySelector("#gamePanel .game-layout")?.append(nodes.resultPanel);
     loadLocalState();
     updateDiamondShopUI();
     translateUI();
@@ -1589,6 +1668,10 @@
       showMain();
     });
     nodes.attributeButtons.forEach((button) => button.addEventListener("click", () => spendAttribute(button.dataset.attribute)));
+    nodes.draftCards.addEventListener("click", (event) => {
+      const choice = event.target.closest("[data-draft-attribute]");
+      if (choice) spendAttribute(choice.dataset.draftAttribute);
+    });
 
     nodes.retryBtn.addEventListener("click", () => {
       window.WonderSound?.play("click");
@@ -1631,6 +1714,7 @@
       translateUI();
       updateHUDText();
       renderStatsPanel();
+      if (!nodes.draftPanel.classList.contains("hidden")) renderAttributeDraft();
     });
     setScreen("main");
 
@@ -1659,6 +1743,19 @@
           active: state.gameActive,
           room: state.room,
           level: state.level,
+          attributePoints: state.attributePoints,
+          attributes: {
+            strength: state.strength,
+            agility: state.agility,
+            constitution: state.constitution,
+            luck: state.luck,
+          },
+          stats: {
+            dmg: stats.dmg,
+            speed: stats.speed,
+            maxHp: stats.maxHp,
+            crit: stats.crit,
+          },
           hpText: nodes.hpText.textContent,
           hp: Math.ceil(state.playerHp),
           maxHp: stats.maxHp,

@@ -518,6 +518,9 @@ function escapeHtml(value) {
 
 function isNeighbor(key) {
   if (state.complete) return false;
+  const level = state.level;
+  const obstacles = new Set([...level.blocks, ...(level.water || [])].map(keyOf));
+  if (obstacles.has(key)) return false;
   const [x, y] = key.split(",").map(Number);
   const dx = Math.abs(x - state.position[0]);
   const dy = Math.abs(y - state.position[1]);
@@ -528,10 +531,10 @@ function moveTo(pos) {
   if (state.complete) return;
   const level = state.level;
   const key = keyOf(pos);
-  const blocks = new Set(level.blocks.map(keyOf));
+  const obstacles = new Set([...level.blocks, ...(level.water || [])].map(keyOf));
   const dx = Math.abs(pos[0] - state.position[0]);
   const dy = Math.abs(pos[1] - state.position[1]);
-  if (dx + dy !== 1 || blocks.has(key)) {
+  if (dx + dy !== 1 || obstacles.has(key)) {
     window.WonderSound?.play("wrong");
     hintText.textContent = t("wrongTile");
     setTimeout(() => {

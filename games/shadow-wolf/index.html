@@ -22,7 +22,7 @@
         "alternateName": "影狼傳說",
         "url": "https://weightplay.com/games/shadow-wolf/",
         "image": "https://weightplay.com/assets/shadow-wolf-cover.webp",
-        "description": "Run, jump, dash, and slash shadow beasts. Gain EXP, open gear chests, and defeat the behemoth boss in Shadow Wolf Legend on WeightPlay.",
+        "description": "Run, jump, dash, and slash shadow beasts. Gain EXP, choose exact attribute growth, cross eight regions, and defeat the Behemoth in Shadow Wolf Legend on WeightPlay.",
         "applicationCategory": "Game",
         "operatingSystem": "Web browser",
         "publisher": {
@@ -157,6 +157,30 @@
                 </div>
               </div>
             </div>
+            <section id="draftPanel" class="attribute-draft hidden" aria-live="polite" aria-modal="true" role="dialog">
+              <div class="attribute-draft-card">
+                <h2 data-ui="attributeChoiceTitle">Level Up: Choose Your Growth</h2>
+                <p id="attributeChoiceDesc"></p>
+                <div id="draftCards" class="attribute-draft-grid"></div>
+              </div>
+            </section>
+            <section id="resultPanel" class="result-panel battle-result hidden" aria-live="polite">
+              <h2 id="resultTitle">Expedition Success!</h2>
+              <p><span data-ui="regionsCleared">Regions cleared</span>: <strong id="resultScore">0</strong>/8</p>
+              <p id="resultText"></p>
+              <h3 data-ui="skillReportTitle">Ability Analysis Report</h3>
+              <div class="report-grid">
+                <div><span data-ui="skillLogic">Logic</span><strong id="logicStars">---</strong></div>
+                <div><span data-ui="skillFocus">Focus</span><strong id="focusStars">---</strong></div>
+                <div><span data-ui="skillProblem">Problem Solving</span><strong id="problemStars">---</strong></div>
+              </div>
+              <p id="skillReportText" class="skill-report"></p>
+              <p data-ui="resultDisclaimer"></p>
+              <div class="result-actions">
+                <button id="retryBtn" class="primary-btn" type="button" data-ui="tryAgain">Try Again</button>
+                <button id="resultMenuBtn" class="secondary-btn" type="button" data-ui="backToMenu">Back to Menu</button>
+              </div>
+            </section>
           </div>
 
           <aside class="inventory-sidebar attribute-sidebar">
@@ -176,12 +200,6 @@
         <div class="battle-ad-reserve" aria-hidden="true"></div>
       </section>
 
-      <section id="draftPanel" class="modal-panel hidden" aria-live="polite">
-        <h2 data-ui="chooseCard">Choose a Relic Upgrade</h2>
-        <p data-ui="chooseCardDesc"></p>
-        <div id="draftCards" class="draft-grid"></div>
-      </section>
-
       <section id="lootPanel" class="modal-panel hidden" aria-live="polite">
         <h2 data-ui="lootFound">Relic Chest Unlocked!</h2>
         <div id="lootIcon" class="loot-icon"></div>
@@ -191,23 +209,6 @@
         <button id="equipLootBtn" class="primary-btn" type="button" data-ui="equipLoot">Equip Gear</button>
       </section>
 
-      <section id="resultPanel" class="panel result-panel hidden" aria-live="polite">
-        <h2 id="resultTitle">Expedition Success!</h2>
-        <p>Rooms cleared: <strong id="resultScore">0</strong></p>
-        <p id="resultText"></p>
-        <h3 data-ui="skillReportTitle">Ability Analysis Report</h3>
-        <div class="report-grid">
-          <div><span data-ui="skillLogic">Logic</span><strong id="logicStars">---</strong></div>
-          <div><span data-ui="skillFocus">Focus</span><strong id="focusStars">---</strong></div>
-          <div><span data-ui="skillProblem">Problem Solving</span><strong id="problemStars">---</strong></div>
-        </div>
-        <p id="skillReportText" class="skill-report"></p>
-        <p data-ui="resultDisclaimer"></p>
-        <div class="result-actions">
-          <button id="retryBtn" class="primary-btn" type="button" data-ui="tryAgain">Try Again</button>
-          <button id="resultMenuBtn" class="secondary-btn" type="button" data-ui="backToMenu">Back to Menu</button>
-        </div>
-      </section>
     </main>
     <!-- adsense-static-guide:start -->
     <section class="game-page-info game-page-info-static" aria-label="Shadow Wolf game guide">
@@ -215,13 +216,13 @@
         <div class="game-info-title">
           <span class="game-info-kicker">WeightPlay Original Game Guide</span>
           <h2>Shadow Wolf - How to Play</h2>
-          <p>Shadow Wolf is a 2D Action Platformer RPG. Navigate stone platforms, double jump over spike traps, dash past shadow monsters, level up your attributes, and collect keys to open gear chests. Stand strong in Room 3 and defeat the giant Boss Behemoth.</p>
+          <p>Shadow Wolf is a 2D Action Platformer RPG. Navigate stone platforms, double jump over spike traps, dash past shadow monsters, and spend two exact attribute points whenever you level up. Cross all eight regions and defeat the giant Behemoth.</p>
         </div>
       </div>
       <div class="game-info-sections">
         <div class="game-info-section">
           <h3>How to Play</h3>
-          <ol><li>Use A/D or Arrow keys to run left and right.</li><li>Press W, Up Arrow, or Space to jump. Press it again in mid-air to double jump.</li><li>Press J or left click to execute a claw attack. Press K or Shift to dash.</li><li>Defeat waves of shadow bat/wolf monsters, pick up green experience orbs, and level up to pick passive relics.</li><li>Loot gold keys from elites, open chests, and equip Weapons, Armor, and Boots in the sidebar.</li></ol>
+          <ol><li>Use A/D or Arrow keys to run left and right.</li><li>Press W, Up Arrow, or Space to jump. Press it again in mid-air to double jump.</li><li>Press J or left click to execute a claw attack. Press K or Shift to dash.</li><li>Defeat shadow beasts and collect experience until you level up.</li><li>Spend both points on Strength, Agility, Constitution, or Luck, using the exact current-to-next preview to shape the run.</li></ol>
         </div>
         <div class="game-info-section game-info-strategy">
           <h3>Strategy Tips</h3>

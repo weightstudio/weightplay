@@ -108,7 +108,8 @@
       broke: "Line broke. The tension marker left the safe band too long.",
       escaped: "The fish escaped. Cast again and keep the marker centered.",
       sonarReady: "Sonar is ready for this expedition.",
-      sonarUsed: "Sonar pulse reveals the next rare movement.",
+      sonarScan: "Sonar: {fish} · {rarity} · {behavior}. Next cast locked.",
+      sonarStatus: "Next: {fish}",
       needDiamonds: "Need {cost} diamonds.",
       lureReady: "Rare lure ready for the next expedition.",
       buyLure: "Rare Lure {cost}D",
@@ -189,7 +190,8 @@
       broke: "魚線斷了。張力標記離開安全區太久。",
       escaped: "魚逃走了。再拋一次，讓標記更靠近中央。",
       sonarReady: "聲納已準備在這次遠征使用。",
-      sonarUsed: "聲納脈衝揭示下一段稀有移動。",
+      sonarScan: "聲納：{fish} · {rarity} · {behavior}。已鎖定下次拋竿。",
+      sonarStatus: "下一條：{fish}",
       needDiamonds: "需要 {cost} 顆鑽石。",
       lureReady: "稀有魚餌已準備在下一次遠征使用。",
       buyLure: "稀有魚餌 {cost}鑽",
@@ -487,6 +489,12 @@
     });
   }
 
+  function updateSonarButton() {
+    const canScan = Boolean(run && !run.finished && run.phase === "aim" && run.sonarReady);
+    nodes.sonarBtn.disabled = !canScan;
+    nodes.sonarBtn.setAttribute("aria-disabled", String(!canScan));
+  }
+
   function showPanel(which) {
     nodes.mainPanel.classList.toggle("is-hidden", which !== "main");
     nodes.stagePanel.classList.toggle("is-hidden", which !== "stage");
@@ -556,6 +564,7 @@
     nodes.catchToast.innerHTML = "";
     updateCatchHud();
     updateTensionGuide();
+    updateSonarButton();
     state = "game";
     showPanel("game");
     focusPanel(nodes.gamePanel);
@@ -611,6 +620,7 @@
     run.splashTimer = 0.8;
     nodes.hintText.textContent = hookedHint(run.hookFish);
     updateTensionGuide();
+    updateSonarButton();
     track("fish_hooked", { fish: run.hookFish.id, zone: run.zone.id });
   }
 
@@ -640,6 +650,7 @@
     nodes.goalText.textContent = `${run.catches}/${run.zone.goal}`;
     nodes.hintText.textContent = `${t("landed")} ${caught.name[locale]} +${points}`;
     updateTensionGuide();
+    updateSonarButton();
     if (run.catches >= run.zone.goal) finishRun(true);
   }
 
@@ -860,6 +871,7 @@
     run.splashTimer = 1;
     nodes.hintText.textContent = t("broke");
     updateTensionGuide();
+    updateSonarButton();
     track("line_break", { zone: run.zone.id });
   }
 
@@ -916,6 +928,15 @@
     });
   }
 
+  function sonarScanMessage(item) {
+    const behavior = fishBehavior(item);
+    return t("sonarScan", {
+      fish: item.name[locale],
+      rarity: item.rare ? t("rareFish") : t("commonFish"),
+      behavior: t(behavior.label),
+    });
+  }
+
   function updateTensionGuide() {
     const range = tensionRange();
     nodes.safeBand.style.left = `${range.safeMin}%`;
@@ -927,11 +948,14 @@
     const tensionState = tensionValue < range.safeMin ? t("tensionLow") : tensionValue > range.safeMax ? t("tensionHigh") : t("tensionSafe");
     nodes.tensionLane.setAttribute("aria-valuenow", String(tensionValue));
     nodes.tensionLane.setAttribute("aria-valuetext", `${tensionValue}% - ${tensionState}`);
-    if (!run || run.phase === "aim") nodes.tensionStatus.textContent = t("tensionStatusAim");
+    const hasSonarLock = Boolean(run && run.phase === "aim" && run.hookFish && !run.sonarReady);
+    if (hasSonarLock) nodes.tensionStatus.textContent = t("sonarStatus", { fish: run.hookFish.name[locale] });
+    else if (!run || run.phase === "aim") nodes.tensionStatus.textContent = t("tensionStatusAim");
     else if (run.phase === "charging" || run.phase === "cast") nodes.tensionStatus.textContent = t("tensionStatusCharging");
     else if (run.phase === "reel") nodes.tensionStatus.textContent = range.safe ? t("tensionStatusSafe") : t("tensionStatusDanger");
     else nodes.tensionStatus.textContent = t("tensionStatusHooked");
-    if (!run || run.phase === "aim") nodes.tensionCoach.textContent = t("tensionCoachAim");
+    if (hasSonarLock) nodes.tensionCoach.textContent = sonarScanMessage(run.hookFish);
+    else if (!run || run.phase === "aim") nodes.tensionCoach.textContent = t("tensionCoachAim");
     else if (run.phase === "reel") nodes.tensionCoach.textContent = range.safe ? t("tensionCoachSafe") : t("tensionCoachDanger");
     else nodes.tensionCoach.textContent = t("tensionCoachReel");
   }
@@ -1109,16 +1133,18 @@
     run.castDir = 1;
     nodes.hintText.textContent = t("charging");
     updateTensionGuide();
+    updateSonarButton();
   }
 
   function releaseCast() {
     if (state !== "game" || !run) return;
     pointer.down = false;
     if (run.phase === "charging") {
-      run.hookFish = pickHookFish();
+      if (!run.hookFish) run.hookFish = pickHookFish();
       run.phase = "cast";
       run.fishTimer = Math.max(0.45, 1.45 - run.castPower / 100);
       updateTensionGuide();
+      updateSonarButton();
       track("cast", { power: Math.round(run.castPower), zone: run.zone.id, fish: run.hookFish.id });
     }
   }
@@ -1133,6 +1159,7 @@
     run.castDir = 1;
     nodes.hintText.textContent = t("charging");
     updateTensionGuide();
+    updateSonarButton();
   }
 
   function adjustKeyboardTension(delta) {
@@ -1259,11 +1286,19 @@
   nodes.lureBtn.addEventListener("click", () => buyDiamondItem("lure"));
   nodes.sonarPrepBtn.addEventListener("click", () => buyDiamondItem("sonar"));
   nodes.sonarBtn.addEventListener("click", () => {
-    if (!run || !run.sonarReady) return;
+    if (!run || run.phase !== "aim" || !run.sonarReady) return;
+    if (!run.hookFish) run.hookFish = pickHookFish();
     run.sonarReady = false;
-    run.sonarPulse = 2.6;
-    nodes.hintText.textContent = t("sonarUsed");
-    track("sonar_use", { zone: run.zone.id });
+    run.sonarPulse = 4;
+    nodes.hintText.textContent = sonarScanMessage(run.hookFish);
+    updateTensionGuide();
+    updateSonarButton();
+    track("sonar_use", {
+      zone: run.zone.id,
+      fish: run.hookFish.id,
+      rarity: run.hookFish.rare ? "rare" : "common",
+      behavior: run.hookFish.behavior,
+    });
   });
   nodes.localeSelect.addEventListener("change", () => {
     locale = nodes.localeSelect.value;
@@ -1344,6 +1379,8 @@
                 zone: run.zone.id,
                 hookFish: run.hookFish ? run.hookFish.id : "",
                 visibleFish: run.phase === "reel" && run.hookFish ? run.hookFish.id : "",
+                sonarReady: run.sonarReady,
+                sonarPulse: run.sonarPulse,
               }
             : null,
           pointer: { down: pointer.down, tensionPct: pointer.tensionPct, source: pointer.source },

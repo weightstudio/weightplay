@@ -54,7 +54,9 @@
     lootName: $("lootName"),
     lootType: $("lootType"),
     lootEffect: $("lootEffect"),
+    lootComparison: $("lootComparison"),
     equipLootBtn: $("equipLootBtn"),
+    keepLootBtn: $("keepLootBtn"),
     resultTitle: $("resultTitle"),
     resultScore: $("resultScore"),
     resultText: $("resultText"),
@@ -418,6 +420,11 @@
     gearCompareActive: "Active in this slot.",
     gearCompareEmpty: "Slot empty: equip to activate this effect.",
     gearCompareReplace: "Replaces {gear}: {effect}",
+    equipLootChoice: "Equip {gear}",
+    keepLootChoice: "Keep current gear",
+    continueLootChoice: "Continue",
+    lootAlreadyEquipped: "Already equipped",
+    lootDecisionLabel: "Choose whether to equip {gear} or keep the current loadout.",
   });
 
   Object.assign(text["zh-Hant"], {
@@ -433,6 +440,11 @@
     gearCompareActive: "\u6b64\u88dd\u5099\u6b63\u5728\u751f\u6548\u3002",
     gearCompareEmpty: "\u6b64\u6b04\u4f4d\u70ba\u7a7a\uff1a\u7a7f\u6234\u5f8c\u555f\u7528\u6548\u679c\u3002",
     gearCompareReplace: "\u5c07\u53d6\u4ee3 {gear}\uff1a{effect}",
+    equipLootChoice: "\u7a7f\u6234 {gear}",
+    keepLootChoice: "\u4fdd\u7559\u76ee\u524d\u88dd\u5099",
+    continueLootChoice: "\u7e7c\u7e8c",
+    lootAlreadyEquipped: "\u5df2\u7a7f\u6234",
+    lootDecisionLabel: "\u9078\u64c7\u7a7f\u6234 {gear}\uff0c\u6216\u4fdd\u7559\u76ee\u524d\u914d\u88dd\u3002",
   });
 
   // Textures and Sprites
@@ -1464,6 +1476,30 @@
 
   // Chest Drop Looting Equip
   let currentLootItem = null;
+  function presentLootDecision(pickedKey) {
+    currentLootItem = pickedKey;
+    const g = gearDb[pickedKey];
+    const dropResult = claimGearDrop(pickedKey);
+    const alreadyEquipped = profile.equipped?.[g.slot] === pickedKey;
+    const gearName = t(g.nameKey);
+    nodes.lootIcon.innerHTML = `<img src="${g.iconSrc}" alt="" aria-hidden="true">`;
+    nodes.lootName.textContent = gearName;
+    nodes.lootType.textContent = t(g.typeKey);
+    nodes.lootEffect.textContent = [
+      dropResult.isNew ? t("lootNewGear") : t("lootDuplicateGear", { gold: dropResult.duplicateGold }),
+      t("gearCurrentEffect", { effect: describeGearEffect(pickedKey) }),
+      describeGearNextEffect(pickedKey),
+    ].join(" ");
+    nodes.lootComparison.textContent = describeGearComparison(pickedKey);
+    nodes.equipLootBtn.textContent = alreadyEquipped ? t("lootAlreadyEquipped") : t("equipLootChoice", { gear: gearName });
+    nodes.equipLootBtn.disabled = alreadyEquipped;
+    nodes.keepLootBtn.textContent = alreadyEquipped ? t("continueLootChoice") : t("keepLootChoice");
+    nodes.lootPanel.setAttribute("aria-label", t("lootDecisionLabel", { gear: gearName }));
+    renderEquippedGear();
+    nodes.lootPanel.classList.remove("hidden");
+    return dropResult;
+  }
+
   function triggerChestLoot() {
     state.gameActive = false;
     window.WonderSound?.play("upgrade");
@@ -1477,29 +1513,12 @@
 
     const choices = rolls[state.room] || rolls[1];
     const pickedKey = choices[Math.floor(Math.random() * choices.length)];
-    currentLootItem = pickedKey;
-
-    const g = gearDb[pickedKey];
-    const dropResult = claimGearDrop(pickedKey);
-    nodes.lootIcon.innerHTML = `<img src="${g.iconSrc}" alt="" aria-hidden="true">`;
-    nodes.lootName.textContent = t(g.nameKey);
-    nodes.lootType.textContent = t(g.typeKey);
-    nodes.lootEffect.textContent = [
-      dropResult.isNew ? t("lootNewGear") : t("lootDuplicateGear", { gold: dropResult.duplicateGold }),
-      t("gearCurrentEffect", { effect: describeGearEffect(pickedKey) }),
-      describeGearNextEffect(pickedKey),
-    ].join(" ");
-    renderEquippedGear();
-
-    nodes.lootPanel.classList.remove("hidden");
+    presentLootDecision(pickedKey);
   }
 
-  function equipLoot() {
-    equipGearItem(currentLootItem);
-
+  function finishLootDecision(shouldEquip) {
+    if (shouldEquip) equipGearItem(currentLootItem);
     nodes.lootPanel.classList.add("hidden");
-
-    // Resume loop
     state.gameActive = true;
     renderStatsPanel();
     renderEquippedGear();
@@ -2216,7 +2235,11 @@
     });
 
     nodes.equipLootBtn.addEventListener("click", () => {
-      equipLoot();
+      finishLootDecision(true);
+    });
+
+    nodes.keepLootBtn.addEventListener("click", () => {
+      finishLootDecision(false);
     });
 
     nodes.rerollDraftBtn.addEventListener("click", () => {
@@ -2277,6 +2300,11 @@
           updateDiamondShopUI();
           updateHUDText();
           return { ...this.snapshot(), dropResult: result };
+        },
+        forceLootDecision(key = "dagger-epic") {
+          state.gameActive = false;
+          const dropResult = presentLootDecision(key);
+          return { ...this.snapshot(), dropResult };
         },
         bulletVisuals() {
           return ["default", "sword-rare", "dagger-epic"].map((key) => ({

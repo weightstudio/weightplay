@@ -139,6 +139,7 @@
   let state = makeState();
   let lastTime = 0;
   let pointerStartX = null;
+  let activePointerId = null;
 
   function locale() {
     return window.WonderI18n?.locale() || "en";
@@ -854,10 +855,12 @@
   canvas.addEventListener("pointerdown", (event) => {
     event.preventDefault();
     pointerStartX = event.clientX;
+    activePointerId = event.pointerId;
+    canvas.setPointerCapture?.(event.pointerId);
   });
   canvas.addEventListener("pointerup", (event) => {
     event.preventDefault();
-    if (pointerStartX == null) return;
+    if (pointerStartX == null || event.pointerId !== activePointerId) return;
     const dx = event.clientX - pointerStartX;
     if (Math.abs(dx) > 24) moveLane(dx > 0 ? 1 : -1);
     else {
@@ -865,6 +868,12 @@
       moveLane(event.clientX < rect.left + rect.width / 2 ? -1 : 1);
     }
     pointerStartX = null;
+    activePointerId = null;
+  });
+  canvas.addEventListener("pointercancel", (event) => {
+    if (event.pointerId !== activePointerId) return;
+    pointerStartX = null;
+    activePointerId = null;
   });
 
   renderStaticText();

@@ -90,6 +90,7 @@
       levelLabel: "Level",
       ready: "Drag the food to the matching lunchbox.",
       voicePrompt: "Put {food} into the {color} lunchbox.",
+      lunchboxChoice: "{color} lunchbox",
       correct: "Yum! Correct!",
       wrong: "Try another box!",
       winTitle: "Level Complete!",
@@ -280,6 +281,7 @@
   };
 
   dictionary["zh-Hant"].voicePrompt = "\u628a {food} \u653e\u9032 {color} \u4fbf\u7576\u76d2\u3002";
+  dictionary["zh-Hant"].lunchboxChoice = "{color}\u4fbf\u7576\u76d2";
 
   const pageMetadata = {
     en: {
@@ -717,6 +719,7 @@
         element.type = "button";
         element.dataset.color = box.color;
         element.innerHTML = `<span></span><strong>${t(box.labelKey)}</strong>`;
+        element.setAttribute("aria-label", t("lunchboxChoice", { color: t(box.labelKey) }));
         element.addEventListener("click", () => submitColor(box.color, element));
         return element;
       }),
@@ -761,10 +764,12 @@
   }
 
   function setCurrentPrompt(food) {
-    feedbackText.textContent = t("voicePrompt", {
+    const prompt = t("voicePrompt", {
       food: t(food.nameKey),
       color: t(colorDB[food.color].labelKey),
     });
+    feedbackText.textContent = prompt;
+    foodCard.setAttribute("aria-label", prompt);
   }
 
   function loadFood() {
