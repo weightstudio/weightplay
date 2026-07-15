@@ -80,6 +80,7 @@
       reportGood: "Good effort! Try again to improve focus and choose the best care item.",
       reportTry: "Nice practice! Look at what the animal needs, then try a helpful item.",
       hint: "Tap a care item, or drag it to the animal.",
+      whatHelps: "What helps?",
       correct: "Happy helper!",
       wrong: "Try another care item.",
       goal: "Goal {target}",
@@ -140,6 +141,7 @@
       reportGood: "\u505a\u5f97\u4e0d\u932f\uff01\u518d\u8a66\u4e00\u6b21\u53ef\u4ee5\u66f4\u719f\u6089\u6bcf\u500b\u52d5\u7269\u9700\u8981\u4ec0\u9ebc\u3002",
       reportTry: "\u597d\u52aa\u529b\uff01\u5148\u770b\u770b\u5c0f\u52d5\u7269\u9047\u5230\u4ec0\u9ebc\u554f\u984c\uff0c\u518d\u9078\u7167\u9867\u9053\u5177\u3002",
       hint: "\u9ede\u7167\u9867\u9053\u5177\uff0c\u6216\u62d6\u5230\u5c0f\u52d5\u7269\u8eab\u4e0a\u3002",
+      whatHelps: "\u4ec0\u9ebc\u53ef\u4ee5\u5e6b\u5fd9\uff1f",
       correct: "\u5c0f\u52d5\u7269\u958b\u5fc3\u4e86\uff01",
       wrong: "\u518d\u8a66\u4e00\u500b\u7167\u9867\u9053\u5177\u3002",
       goal: "\u76ee\u6a19 {target}",
@@ -174,7 +176,6 @@
     localeSelect: $("localeSelect"),
     menuPanel: $("menuPanel"),
     stagePanel: $("stagePanel"),
-    stageAdReserve: $("stageAdReserve"),
     startGameBtn: $("startGameBtn"),
     stageBackBtn: $("stageBackBtn"),
     stageGrid: $("stageGrid"),
@@ -196,7 +197,6 @@
     loadingPanel: $("loadingPanel"),
     loadingText: $("loadingText"),
     loadingFill: $("loadingFill"),
-    battleAdReserve: $("battleAdReserve"),
     homeLink: document.querySelector(".home-link"),
   };
 
@@ -308,7 +308,7 @@
   }
 
   function updateWeatherFrame() {
-    if (!document.body.classList.contains("helper-playing")) return;
+    if (!document.body.classList.contains("helper-playing") && !document.body.classList.contains("wp-standard-stage-page")) return;
     const viewport = window.visualViewport;
     const visualWidth = Math.round(viewport?.width || 0);
     const visualHeight = Math.round(viewport?.height || 0);
@@ -316,8 +316,14 @@
       && visualHeight > 0
       && Math.abs(visualWidth - innerWidth) <= 2
       && visualHeight <= innerHeight + 2;
-    document.documentElement.style.setProperty("--weather-vw", `${useVisual ? visualWidth : innerWidth}px`);
-    document.documentElement.style.setProperty("--weather-vh", `${useVisual ? visualHeight : innerHeight}px`);
+    const width = useVisual ? visualWidth : innerWidth;
+    const height = useVisual ? visualHeight : innerHeight;
+    const scale = Math.max(0.1, Math.min((width - 8) / 390, (height - 8) / 788));
+    const renderedWidth = 390 * scale;
+    const renderedHeight = 788 * scale;
+    document.documentElement.style.setProperty("--weather-frame-scale", String(scale));
+    document.documentElement.style.setProperty("--weather-frame-left", `${Math.max(0, (width - renderedWidth) / 2)}px`);
+    document.documentElement.style.setProperty("--weather-frame-top", `${Math.max(0, height - renderedHeight - 4)}px`);
     const shell = document.querySelector(".weather-game");
     ["position", "inset", "left", "top", "width", "height", "min-height", "transform", "transform-origin"].forEach((property) => shell?.style.removeProperty(property));
   }
@@ -333,6 +339,42 @@
   window.addEventListener("orientationchange", updateWeatherFrame);
   window.visualViewport?.addEventListener("resize", updateWeatherFrame, { passive: true });
 
+  let stageDrag = null;
+  const settleStageRail = () => {
+    const cards = [...nodes.stageGrid.querySelectorAll(".stage-card")];
+    const center = nodes.stageGrid.scrollLeft + nodes.stageGrid.clientWidth / 2;
+    const nearest = cards.reduce((best, card) => {
+      const distance = Math.abs(card.offsetLeft + card.offsetWidth / 2 - center);
+      return !best || distance < best.distance ? { card, distance } : best;
+    }, null)?.card;
+    if (nearest) nodes.stageGrid.scrollTo({ left: nearest.offsetLeft - (nodes.stageGrid.clientWidth - nearest.offsetWidth) / 2, behavior: "smooth" });
+  };
+  nodes.stageGrid.addEventListener("pointerdown", (event) => {
+    if (event.button !== 0) return;
+    stageDrag = { id: event.pointerId, x: event.clientX, scrollLeft: nodes.stageGrid.scrollLeft, moved: false };
+    nodes.stageGrid.dataset.dragApplied = "0";
+  });
+  nodes.stageGrid.addEventListener("pointermove", (event) => {
+    if (!stageDrag || event.pointerId !== stageDrag.id) return;
+    const delta = event.clientX - stageDrag.x;
+    if (Math.abs(delta) >= 6 && !stageDrag.moved) {
+      stageDrag.moved = true;
+      nodes.stageGrid.setPointerCapture?.(event.pointerId);
+    }
+    if (!stageDrag.moved) return;
+    event.preventDefault();
+    nodes.stageGrid.scrollLeft = stageDrag.scrollLeft - delta;
+    nodes.stageGrid.dataset.dragApplied = String(delta);
+  });
+  const endStageDrag = (event) => {
+    if (!stageDrag || event.pointerId !== stageDrag.id) return;
+    if (stageDrag.moved) settleStageRail();
+    if (nodes.stageGrid.hasPointerCapture?.(event.pointerId)) nodes.stageGrid.releasePointerCapture?.(event.pointerId);
+    stageDrag = null;
+  };
+  nodes.stageGrid.addEventListener("pointerup", endStageDrag);
+  nodes.stageGrid.addEventListener("pointercancel", endStageDrag);
+
   function startStage(index) {
     currentStage = index;
     roundIndex = 0;
@@ -342,13 +384,11 @@
     busy = false;
     nodes.menuPanel.classList.add("hidden");
     nodes.stagePanel.classList.add("hidden");
-    nodes.stageAdReserve.classList.add("hidden");
     document.body.classList.remove("wp-standard-stage-page");
     nodes.resultPanel.classList.add("hidden");
     nodes.playPanel.classList.remove("hidden");
     document.body.classList.add("helper-playing");
     document.querySelector(".weather-game")?.removeAttribute("data-play-viewport");
-    nodes.battleAdReserve.classList.remove("hidden");
     nodes.hintText.textContent = t("hint");
     renderRound();
     exitSharedPlayViewport();
@@ -381,7 +421,7 @@
       <div class="weather-scene ${stage.theme} ${problem.scene}">
         <div class="rescue-scene">
           <div class="weather-effects" aria-hidden="true">${weatherEffects(problemKey)}</div>
-          <div class="problem-bubble">${problem.icon}</div>
+          <div class="problem-cue" aria-label="${t("whatHelps")}"><span>${problem.icon}</span><b aria-hidden="true">→</b><strong aria-hidden="true">?</strong><small>${t("whatHelps")}</small></div>
           <div class="animal-zone" data-drop-zone="true">
             <div class="animal-shadow"></div>
             <img class="animal-sprite" src="${animalAssets[stage.animalId]}" alt="${t(stage.animalId)}" />
@@ -639,17 +679,15 @@
     nodes.resultPanel.classList.add("hidden");
     nodes.menuPanel.classList.add("hidden");
     nodes.stagePanel.classList.remove("hidden");
-    nodes.stageAdReserve.classList.remove("hidden");
     document.body.classList.remove("helper-playing");
     document.body.classList.add("wp-standard-stage-page");
     document.querySelector(".weather-game")?.setAttribute("data-play-viewport", "");
-    nodes.battleAdReserve.classList.add("hidden");
     renderStageGrid();
+    updateWeatherFrame();
   }
 
   function showMain() {
     nodes.stagePanel.classList.add("hidden");
-    nodes.stageAdReserve.classList.add("hidden");
     nodes.menuPanel.classList.remove("hidden");
     document.body.classList.remove("wp-standard-stage-page");
   }

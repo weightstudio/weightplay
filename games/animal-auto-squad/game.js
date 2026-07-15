@@ -46,7 +46,6 @@
       stageProgress: "Unlocked {unlocked}/{total}",
       stageWaveCount: "{count} waves",
       stageEnemyRange: "Enemies: {first} to {last}",
-      startStage: "Start Stage {stage}",
       nextStage: "Next Stage",
       stageClearText: "Stage {stage} cleared! Stage {next} is now unlocked.",
       allStagesClearText: "All forest stages cleared! Replay any stage to strengthen your squad.",
@@ -372,7 +371,6 @@
     trainingRoster: $("trainingRoster"),
     buySkinBtn: $("buySkinBtn"),
     equipSkinBtn: $("equipSkinBtn"),
-    startBtn: $("stageStartBtn"),
     stageSelectTitle: $("stageSelectTitle"),
     stageProgressText: $("stageProgressText"),
     stageRail: $("stageRail"),
@@ -496,7 +494,6 @@
       stageProgress: "\u5df2\u89e3\u9396 {unlocked}/{total}",
       stageWaveCount: "{count} \u6ce2",
       stageEnemyRange: "\u6575\u4eba\uff1a{first} \u81f3 {last} \u96bb",
-      startStage: "\u6311\u6230\u7b2c {stage} \u95dc",
       nextStage: "\u4e0b\u4e00\u95dc",
       stageClearText: "\u7b2c {stage} \u95dc\u901a\u904e\uff01\u5df2\u89e3\u9396\u7b2c {next} \u95dc\u3002",
       allStagesClearText: "\u5168\u90e8\u68ee\u6797\u95dc\u5361\u5df2\u901a\u95dc\uff01\u53ef\u91cd\u65b0\u6311\u6230\u4efb\u4f55\u95dc\u5361\u4f86\u57f9\u990a\u5c0f\u968a\u3002",
@@ -747,7 +744,7 @@
         saveSave();
         state.activeRun = false;
         renderMenu();
-        return { selectedStage: normalizeSave(save).selectedStage, startText: nodes.startBtn.textContent.trim() };
+        return { selectedStage: normalizeSave(save).selectedStage };
       }
     };
   }
@@ -936,7 +933,7 @@
       booted: true,
       title: document.title,
       language: locale,
-      startText: nodes.startBtn.textContent.trim(),
+      startText: nodes.showStageBtn.textContent.trim(),
       loadingHidden: nodes.loadingPanel.classList.contains("is-hidden"),
       menuHidden: nodes.menuPanel.classList.contains("is-hidden")
     };
@@ -1029,7 +1026,6 @@
       nodes.stageRail.appendChild(card);
     }
 
-    nodes.startBtn.textContent = t("startStage", { stage: save.selectedStage });
     if (shouldScroll) {
       stageScrollLockUntil = performance.now() + 500;
       requestAnimationFrame(() => {
@@ -1220,7 +1216,6 @@
     $("menuHeadingText").textContent = t("menuTitle");
     $("menuSubText").textContent = t("menuHint");
     nodes.showStageBtn.textContent = t("chooseExpedition");
-    nodes.startBtn.textContent = t("startStage", { stage: normalizeSave(save).selectedStage });
     $("bestRoundsText").previousElementSibling.textContent = t("bestExpedition");
     $("clearedRunsText").previousElementSibling.textContent = t("expeditionsCleared");
     if (nodes.teamLevelText?.previousElementSibling) {
@@ -2912,7 +2907,6 @@
   function setupEvents() {
     nodes.showStageBtn.addEventListener("click", showStageSelection);
     nodes.stageBackBtn.addEventListener("click", renderMenu);
-    nodes.startBtn.addEventListener("click", startExpedition);
     nodes.rerollShopBtn.addEventListener("click", rerollShop);
     nodes.startBattleBtn.addEventListener("click", startBattle);
     nodes.quitRunBtn.addEventListener("click", quitRun);

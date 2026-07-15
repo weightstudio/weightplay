@@ -62,7 +62,7 @@ body.is-bakery-playing .bakery-game {
   max-height: var(--wp-mobile-vh, 100svh);
   overflow: hidden;
   align-content: stretch;
-  grid-template-rows: minmax(0, 1fr) var(--wp-ad-reserve-height, 56px);
+  grid-template-rows: minmax(0, 1fr);
   padding-bottom: calc(12px + env(safe-area-inset-bottom));
 }
 
@@ -434,7 +434,7 @@ body.is-bakery-playing .play-panel {
   scroll-snap-type: x mandatory;
   scroll-padding-inline: max(44px, calc((100% - 280px) / 2));
   scrollbar-width: none;
-  touch-action: pan-x;
+  touch-action: none;
 }
 
 .stage-grid::-webkit-scrollbar {
@@ -548,16 +548,6 @@ body.is-bakery-playing .play-panel {
 .play-return:focus-visible {
   outline: 3px solid #ffe37a;
   outline-offset: 2px;
-}
-
-.stage-ad-reserve,
-.battle-ad-reserve {
-  width: min(100%, 640px);
-  height: 56px;
-  margin: 0 auto;
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.18);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.32);
 }
 
 .hud-pill {
@@ -1265,7 +1255,7 @@ body.is-bakery-playing .order-progress span {
 
   body.is-bakery-stage-select .bakery-game {
     display: grid;
-    grid-template-rows: minmax(0, 1fr) var(--wp-ad-reserve-height, 56px);
+    grid-template-rows: minmax(0, 1fr);
     width: 100vw;
     height: var(--wp-mobile-vh, 100svh);
     min-height: var(--wp-mobile-vh, 100svh);
@@ -1362,14 +1352,6 @@ body.is-bakery-playing .order-progress span {
     height: 1.9rem;
   }
 
-  body.is-bakery-stage-select .stage-ad-reserve {
-    display: block;
-    width: calc(100vw - 20px);
-    height: 56px;
-    min-height: 56px;
-    margin: 0 auto;
-  }
-
   body.is-bakery-playing {
     width: 100vw;
     height: var(--wp-mobile-vh, 100svh);
@@ -1380,7 +1362,7 @@ body.is-bakery-playing .order-progress span {
 
   body.is-bakery-playing .bakery-game {
     display: grid;
-    grid-template-rows: minmax(0, 1fr) var(--wp-ad-reserve-height, 56px);
+    grid-template-rows: minmax(0, 1fr);
     width: 100vw;
     height: var(--wp-mobile-vh, 100svh);
     min-height: var(--wp-mobile-vh, 100svh);
@@ -1605,82 +1587,14 @@ body.is-bakery-playing #playPanel.play-panel {
   margin: 0 !important;
 }
 
-body.is-bakery-playing #battleAdReserve,
-body.is-bakery-stage-select #stageAdReserve {
-  position: fixed;
-  z-index: 49;
-  left: var(--bakery-frame-left, 4px);
-  top: calc(var(--bakery-frame-top, 4px) + var(--bakery-frame-height, 788px));
-  display: block;
-  width: var(--bakery-frame-width, 390px);
-  height: 56px;
-  min-height: 56px;
-  margin: 0;
-  border-top: 1px solid rgba(86, 45, 20, 0.22);
-  background: rgba(255, 244, 222, 0.62);
-  pointer-events: none;
-}
-
-/* Expanded Canvas applies to phone Battle only; Stage and desktop keep the bounded shell. */
-body.is-bakery-playing.bakery-expanded-canvas .bakery-game {
-  left: var(--bakery-frame-left, 4px);
-  top: var(--bakery-frame-top, 4px);
-  width: var(--bakery-frame-width, calc(100vw - 8px));
-  min-width: 0;
-  max-width: none;
-  height: var(--bakery-frame-height, calc(100svh - var(--wp-ad-reserve-height, 56px) - 8px));
-  min-height: 0;
-  max-height: none;
-  transform: none;
-  padding: 4px;
-  -webkit-text-size-adjust: 100%;
-  text-size-adjust: 100%;
-}
-
-body.is-bakery-playing.bakery-expanded-canvas #playPanel.play-panel {
-  grid-template-rows: 44px 78px minmax(0, 1fr);
-  width: 100% !important;
-  max-width: none !important;
-  height: 100% !important;
-  padding: 4px;
-  gap: 4px;
-}
-
-body.is-bakery-playing.bakery-expanded-canvas .play-return {
-  width: 44px;
-  height: 36px;
-  min-width: 44px;
-  min-height: 36px;
-  padding: 4px;
-  font-size: 20px;
-  line-height: 24px;
-}
-
-body.is-bakery-playing.bakery-expanded-canvas .hud-pill {
-  min-height: 36px;
-  padding: 4px 8px;
-  font-size: 11px;
-  line-height: 15px;
-}
-
-body.is-bakery-playing.bakery-expanded-canvas .order-title {
-  font-size: 11px;
-  line-height: 13px;
-}
-
-body.is-bakery-playing.bakery-expanded-canvas .order-chip {
-  font-size: 9px;
-  line-height: 12px;
-}
-
-body.is-bakery-playing.bakery-expanded-canvas .bubble-board {
-  width: min(100%, calc((var(--bakery-frame-height, 780px) - 150px) * 0.7));
-  height: auto;
-  max-width: 100%;
-  max-height: 100%;
+body.is-bakery-playing .bubble-board {
+  width: min(100%, 455px) !important;
+  height: auto !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
   min-width: 0;
   min-height: 0;
-  aspect-ratio: 7 / 10;
+  aspect-ratio: 7 / 10 !important;
   align-self: center;
   justify-self: center;
 }
@@ -1689,18 +1603,8 @@ body.is-bakery-playing .hint-text {
   display: none;
 }
 
-body.is-bakery-playing.bakery-expanded-canvas #battleAdReserve {
-  left: 4px;
-  right: 4px;
-  top: auto;
-  bottom: 4px;
-  width: auto;
-  height: 56px;
-  min-height: 56px;
-}
-
 /* Shared Battle scaling owns #playPanel; keep its desktop wrapper from scaling it a second time. */
-body.wp-logical-battle-active.is-bakery-playing:not(.bakery-expanded-canvas) .bakery-game {
+body.wp-logical-battle-active.is-bakery-playing .bakery-game {
   left: calc(50% - var(--wp-battle-canvas-rendered-width, 390px) / 2);
   top: var(--wp-battle-canvas-top, 4px);
   width: var(--wp-battle-canvas-rendered-width, 390px);
@@ -1715,21 +1619,4 @@ body.is-bakery-playing .weightplay-version-badge,
 body.is-bakery-playing .sound-toggle,
 body.is-bakery-playing .wp-tutorial-button {
   display: none !important;
-}
-
-@media (max-height: 430px) {
-  body.is-bakery-playing.bakery-expanded-canvas #playPanel.play-panel {
-    grid-template-rows: 40px 58px minmax(0, 1fr);
-  }
-
-  body.is-bakery-playing.bakery-expanded-canvas .order-bar {
-    height: 58px;
-    max-height: 58px;
-    grid-template-rows: 22px 10px;
-    padding: 4px 7px;
-  }
-
-  body.is-bakery-playing.bakery-expanded-canvas .bubble-board {
-    width: min(100%, calc(var(--bakery-frame-height, 320px) - 126px));
-  }
 }

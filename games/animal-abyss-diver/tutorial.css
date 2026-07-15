@@ -1,0 +1,202 @@
+.route-card {
+  height: 210px;
+}
+
+.route-card em {
+  padding: 8px;
+  border-radius: 8px;
+  background: #f1cd60;
+  color: #10283a;
+  font-style: normal;
+  font-weight: 900;
+  text-align: center;
+}
+
+.route-card:disabled em {
+  background: #526a77;
+  color: #d3e0e5;
+}
+
+.battle-canvas {
+  position: relative;
+  grid-template-rows: 58px 50px minmax(0, 1fr) 112px;
+  overflow: hidden;
+}
+
+.oxygen-meter {
+  width: 74px;
+  display: grid;
+  gap: 3px;
+}
+
+.oxygen-meter span {
+  font-size: 0.68rem;
+}
+
+.oxygen-meter i {
+  display: block;
+  height: 6px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #27465a;
+}
+
+.oxygen-meter b {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: #6de4b2;
+  transition: width 0.2s;
+}
+
+.oxygen-meter b.is-low {
+  background: #ff746d;
+}
+
+.objective span:first-child {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dive-field > p {
+  max-width: 92%;
+}
+
+.help-button {
+  position: absolute;
+  z-index: 3;
+  top: 10px;
+  right: 10px;
+  width: 42px;
+  height: 42px;
+  border: 1px solid #b8e9f4;
+  border-radius: 50%;
+  background: #092b40dd;
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 900;
+}
+
+.controls {
+  display: grid;
+  grid-template-rows: 52px 42px;
+  align-items: stretch;
+  gap: 6px;
+  padding: 6px 10px;
+  background: #0d2b3d;
+}
+
+.lane-controls,
+.utility-controls {
+  display: grid;
+  height: 100%;
+  align-self: stretch;
+  gap: 8px;
+}
+
+.lane-controls {
+  grid-template-columns: 1fr 1fr;
+}
+
+.utility-controls {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.controls button {
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  min-height: 0;
+  font-size: 0.75rem;
+  font-weight: 900;
+}
+
+.lane-controls button {
+  display: grid;
+  align-content: center;
+  gap: 3px;
+  font-size: 0.86rem;
+}
+
+.lane-controls button strong,
+.lane-controls button small {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lane-controls button small {
+  font-size: 0.68rem;
+  font-weight: 800;
+}
+
+.dive-coach {
+  position: absolute;
+  z-index: 6;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: #031521d9;
+}
+
+.coach-card {
+  width: min(100%, 340px);
+  display: grid;
+  gap: 12px;
+  padding: 18px;
+  border: 2px solid #62b9cc;
+  border-radius: 16px;
+  background: #0c3043;
+  box-shadow: 0 18px 45px #0008;
+}
+
+.coach-card h2 {
+  margin: 0;
+  text-align: center;
+}
+
+.coach-card ol {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding-left: 24px;
+}
+
+.coach-card li {
+  padding-left: 4px;
+  line-height: 1.4;
+}
+
+@media (max-height: 500px) {
+  .battle-canvas {
+    grid-template-rows: 46px 38px minmax(0, 1fr) 82px;
+  }
+
+  .controls {
+    grid-template-rows: 36px 32px;
+    gap: 4px;
+    padding: 4px 8px;
+  }
+
+  .oxygen-meter {
+    width: 62px;
+  }
+
+  .help-button {
+    width: 36px;
+    height: 36px;
+  }
+
+  .coach-card {
+    gap: 8px;
+    padding: 12px;
+  }
+
+  .coach-card ol {
+    gap: 5px;
+    font-size: 0.78rem;
+  }
+}

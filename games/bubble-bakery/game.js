@@ -224,10 +224,8 @@
     recommendedOrder: $("recommendedOrder"),
     bakeryProgress: $("bakeryProgress"),
     stageGrid: $("stageGrid"),
-    stageAdReserve: $("stageAdReserve"),
     playPanel: $("playPanel"),
     backToStagesBtn: $("backToStagesBtn"),
-    battleAdReserve: $("battleAdReserve"),
     movesText: $("movesText"),
     orderBar: $("orderBar"),
     board: $("board"),
@@ -386,13 +384,16 @@
       });
       nodes.stageGrid.appendChild(button);
     });
-    window.requestAnimationFrame(() => {
-      nodes.stageGrid.querySelector(".stage-card.is-selected")?.scrollIntoView({
-        block: "nearest",
-        inline: "center",
-        behavior: "instant",
+    const centerSelectedStage = () => {
+      const selected = [...nodes.stageGrid.querySelectorAll(".stage-card:not(.locked)")].at(-1);
+      if (!selected) return;
+      nodes.stageGrid.scrollTo({
+        left: selected.offsetLeft - (nodes.stageGrid.clientWidth - selected.offsetWidth) / 2,
+        behavior: "auto",
       });
-    });
+    };
+    centerSelectedStage();
+    window.requestAnimationFrame(() => window.requestAnimationFrame(centerSelectedStage));
   }
 
   function recommendedStageIndex() {
@@ -477,15 +478,13 @@
   }
 
   function showMain() {
-    document.body.classList.remove("is-bakery-playing", "is-bakery-stage-select", "is-bakery-result", "bakery-expanded-canvas");
+    document.body.classList.remove("is-bakery-playing", "is-bakery-stage-select", "is-bakery-result");
     document.body.classList.remove("wp-stage-select-active");
     window.WEIGHTPLAY_BUBBLE_BAKERY_ACTIVE = false;
     window.dispatchEvent(new CustomEvent("bubble-bakery:play-state", { detail: { playing: false } }));
     nodes.mainPanel.classList.remove("hidden");
     nodes.stagePanel.classList.add("hidden");
-    nodes.stageAdReserve.classList.add("hidden");
     nodes.playPanel.classList.add("hidden");
-    nodes.battleAdReserve.classList.add("hidden");
     nodes.resultPanel.classList.add("hidden");
     busy = false;
     updateBakeryFrame();
@@ -496,24 +495,9 @@
     const viewport = window.visualViewport;
     const viewportWidth = viewport?.width || innerWidth;
     const viewportHeight = viewport?.height || innerHeight;
-    const touchPhone = navigator.maxTouchPoints > 0 && viewportWidth <= 1024;
-    const isPhoneBattle = document.body.classList.contains("is-bakery-playing")
-      && (touchPhone || matchMedia("(pointer: coarse)").matches || viewportWidth <= 600 || viewportHeight <= 430);
-    document.body.classList.toggle("bakery-expanded-canvas", isPhoneBattle);
-    if (isPhoneBattle) {
-      const root = document.documentElement.style;
-      root.setProperty("--bakery-frame-scale", "1");
-      root.setProperty("--bakery-frame-width", `${Math.max(1, viewportWidth - 8)}px`);
-      const reserveHeight = window.WeightPlayAudience?.reserveHeight ?? 56;
-      root.setProperty("--bakery-frame-height", `${Math.max(1, viewportHeight - reserveHeight - 8)}px`);
-      root.setProperty("--bakery-frame-left", "4px");
-      root.setProperty("--bakery-frame-top", "4px");
-      return;
-    }
     const logicalWidth = 390;
     const logicalHeight = 788;
-  const reserveHeight = window.WeightPlayAudience?.reserveHeight ?? 56;
-    const scale = Math.max(0.1, Math.min((viewportWidth - 8) / logicalWidth, (viewportHeight - reserveHeight - 8) / logicalHeight));
+    const scale = Math.max(0.1, Math.min((viewportWidth - 8) / logicalWidth, (viewportHeight - 8) / logicalHeight));
     const width = logicalWidth * scale;
     const contentHeight = logicalHeight * scale;
     const root = document.documentElement.style;
@@ -521,13 +505,59 @@
     root.setProperty("--bakery-frame-width", `${width}px`);
     root.setProperty("--bakery-frame-height", `${contentHeight}px`);
     root.setProperty("--bakery-frame-left", `${Math.max(0, (viewportWidth - width) / 2)}px`);
-    root.setProperty("--bakery-frame-top", `${Math.max(0, (viewportHeight - contentHeight - reserveHeight) / 2)}px`);
+    root.setProperty("--bakery-frame-top", `${Math.max(0, viewportHeight - contentHeight - 4)}px`);
   }
 
   addEventListener("resize", updateBakeryFrame, { passive: true });
   addEventListener("orientationchange", updateBakeryFrame, { passive: true });
   visualViewport?.addEventListener("resize", updateBakeryFrame, { passive: true });
   visualViewport?.addEventListener("scroll", updateBakeryFrame, { passive: true });
+
+  let stageDrag = null;
+
+  function settleStageRail() {
+    const cards = [...nodes.stageGrid.querySelectorAll(".stage-card")];
+    if (!cards.length) return;
+    const railCenter = nodes.stageGrid.scrollLeft + nodes.stageGrid.clientWidth / 2;
+    const nearest = cards.reduce((best, card) => {
+      const center = card.offsetLeft + card.offsetWidth / 2;
+      return !best || Math.abs(center - railCenter) < best.distance ? { card, distance: Math.abs(center - railCenter) } : best;
+    }, null)?.card;
+    if (!nearest) return;
+    nodes.stageGrid.scrollTo({ left: nearest.offsetLeft - (nodes.stageGrid.clientWidth - nearest.offsetWidth) / 2, behavior: "smooth" });
+  }
+
+  nodes.stageGrid.addEventListener("pointerdown", (event) => {
+    if (event.button !== 0 || !document.body.classList.contains("is-bakery-stage-select")) return;
+    stageDrag = { id: event.pointerId, x: event.clientX, scrollLeft: nodes.stageGrid.scrollLeft, moved: false };
+    nodes.stageGrid.dataset.wpDragDown = String(event.clientX);
+    nodes.stageGrid.dataset.wpDragApplied = "0";
+  });
+
+  nodes.stageGrid.addEventListener("pointermove", (event) => {
+    if (!stageDrag || event.pointerId !== stageDrag.id) return;
+    const delta = event.clientX - stageDrag.x;
+    if (Math.abs(delta) >= 6 && !stageDrag.moved) {
+      stageDrag.moved = true;
+      nodes.stageGrid.setPointerCapture?.(event.pointerId);
+    }
+    if (!stageDrag.moved) return;
+    event.preventDefault();
+    nodes.stageGrid.scrollLeft = stageDrag.scrollLeft - delta;
+    nodes.stageGrid.dataset.wpDragApplied = String(delta);
+  });
+
+  function endStageDrag(event) {
+    if (!stageDrag || event.pointerId !== stageDrag.id) return;
+    if (stageDrag.moved) {
+      settleStageRail();
+    }
+    if (nodes.stageGrid.hasPointerCapture?.(event.pointerId)) nodes.stageGrid.releasePointerCapture?.(event.pointerId);
+    stageDrag = null;
+  }
+
+  nodes.stageGrid.addEventListener("pointerup", endStageDrag);
+  nodes.stageGrid.addEventListener("pointercancel", endStageDrag);
 
   function showStageSelect() {
     document.body.classList.remove("is-bakery-playing", "is-bakery-result");
@@ -536,9 +566,7 @@
     window.dispatchEvent(new CustomEvent("bubble-bakery:play-state", { detail: { playing: false } }));
     nodes.mainPanel.classList.add("hidden");
     nodes.stagePanel.classList.remove("hidden");
-    nodes.stageAdReserve.classList.remove("hidden");
     nodes.playPanel.classList.add("hidden");
-    nodes.battleAdReserve.classList.add("hidden");
     nodes.resultPanel.classList.add("hidden");
     updateBakeryFrame();
     busy = false;
@@ -568,9 +596,7 @@
     window.dispatchEvent(new CustomEvent("bubble-bakery:play-state", { detail: { playing: true } }));
     nodes.mainPanel.classList.add("hidden");
     nodes.stagePanel.classList.add("hidden");
-    nodes.stageAdReserve.classList.add("hidden");
     nodes.playPanel.classList.remove("hidden");
-    nodes.battleAdReserve.classList.remove("hidden");
     nodes.resultPanel.classList.add("hidden");
     window.WeightPlayGame?.exitMobileGameMode?.();
     nodes.playPanel.classList.remove("weightplay-active-viewport");
