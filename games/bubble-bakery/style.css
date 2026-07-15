@@ -178,6 +178,8 @@ body.is-bakery-playing .play-panel {
 
 .stage-panel-head strong {
   font-size: clamp(1.2rem, 3vw, 1.65rem);
+  color: #f8fafc;
+  text-shadow: 0 2px 4px rgba(15, 23, 42, 0.72);
 }
 
 .stage-back {

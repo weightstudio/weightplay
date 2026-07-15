@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="robots" content="noindex,nofollow">
+  <title>動物泡泡探險 | WeightPlay Internal Trial</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main id="viewport" class="viewport" aria-live="polite">
+    <div id="canvasSlot" class="canvas-slot">
+      <div id="gameCanvas" class="game-canvas">
+        <section id="mainScreen" class="screen main-screen is-active" aria-labelledby="gameTitle">
+          <header class="topbar">
+            <a class="home-link" href="../../index.html" aria-label="返回 WeightPlay 大廳">
+              <span aria-hidden="true">←</span>
+              <img src="../../assets/weightplay-logo.png" alt="" draggable="false">
+            </a>
+            <h1 id="gameTitle" data-i18n="title">動物泡泡探險</h1>
+            <button id="soundMain" class="icon-button" type="button" aria-label="切換音效">♪</button>
+          </header>
+          <div class="poster-wrap">
+            <img src="../../assets/animal-bubble-safari-cover.webp" alt="" draggable="false">
+            <div class="poster-copy">
+              <strong data-i18n="tagline">瞄準、反彈，救出泡泡裡的動物！</strong>
+              <span data-i18n="progressLabel">探險進度</span>
+              <b id="mainProgress">1 / 3</b>
+            </div>
+          </div>
+          <div class="main-actions">
+            <button id="startGame" class="primary-button" type="button" data-i18n="startGame">開始遊戲</button>
+            <div class="secondary-row">
+              <button id="openGuide" type="button" data-i18n="guide">玩法</button>
+              <div class="language-switch" role="group" aria-label="Language">
+                <button type="button" data-locale="zh-Hant" class="is-selected">繁中</button>
+                <button type="button" data-locale="en">EN</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="stageScreen" class="screen stage-screen" aria-labelledby="stageTitle">
+          <div class="stage-art" aria-hidden="true"></div>
+          <header class="topbar compact-topbar">
+            <button id="stageBack" class="back-button" type="button" aria-label="返回">←</button>
+            <h2 id="stageTitle" data-i18n="chooseStage">選擇關卡</h2>
+            <button id="soundStage" class="icon-button" type="button" aria-label="切換音效">♪</button>
+          </header>
+          <div class="stage-summary">
+            <img src="../../assets/animal-bubble-safari-lion-guide.webp" alt="" draggable="false">
+            <div><span data-i18n="album">救援圖鑑</span><strong id="albumCount">0 / 3</strong></div>
+            <div><span data-i18n="bestStars">最佳星星</span><strong id="starCount">0 / 9</strong></div>
+          </div>
+          <div id="stageRail" class="stage-rail" tabindex="0" aria-label="關卡列表"></div>
+          <div class="stage-detail">
+            <span id="stageSkill">專注</span>
+            <strong id="stageGoal">直接命中同色泡泡</strong>
+          </div>
+          <button id="playStage" class="primary-button stage-play" type="button" data-i18n="startLevel">開始關卡</button>
+        </section>
+
+        <section id="battleScreen" class="screen battle-screen" aria-labelledby="battleStageName">
+          <header class="battle-header">
+            <button id="battleBack" class="back-button" type="button" aria-label="返回關卡">←</button>
+            <div><span data-i18n="level">關卡</span><strong id="battleStageName">1</strong></div>
+            <div><span data-i18n="shots">剩餘</span><strong id="shotsLeft">6</strong></div>
+            <div><span data-i18n="rescued">救援</span><strong id="rescueProgress">0 / 1</strong></div>
+            <div><span data-i18n="score">分數</span><strong id="scoreValue">0</strong></div>
+          </header>
+          <div id="battleMessage" class="battle-message">拖曳瞄準，放開發射</div>
+          <div class="play-frame">
+            <canvas id="playCanvas" width="360" height="548" aria-label="泡泡射擊遊戲區"></canvas>
+          </div>
+          <div class="queue-bar">
+            <div><span data-i18n="currentBubble">目前</span><canvas id="currentPreview" width="48" height="48"></canvas></div>
+            <div><span data-i18n="nextBubble">下一顆</span><canvas id="nextPreview" width="48" height="48"></canvas></div>
+            <strong id="battleGoal">配對 1 組</strong>
+          </div>
+        </section>
+
+        <section id="resultScreen" class="screen result-screen" aria-labelledby="resultTitle">
+          <div class="result-panel">
+            <img class="result-mascot" src="../../assets/animal-bubble-safari-lion-guide.webp" alt="" draggable="false">
+            <h2 id="resultTitle">救援成功！</h2>
+            <div id="resultStars" class="result-stars" aria-label="獲得星星">★★★</div>
+            <div class="result-stats">
+              <div><span data-i18n="score">分數</span><strong id="resultScore">0</strong></div>
+              <div><span data-i18n="shotsLeft">剩餘泡泡</span><strong id="resultShots">0</strong></div>
+              <div><span data-i18n="rescuedAnimals">救出動物</span><strong id="resultRescued">0</strong></div>
+            </div>
+            <div class="reward-row">
+              <div class="reward-icon reward-star"></div><b id="rewardStars">+1</b>
+              <div class="reward-icon reward-coin"></div><b id="rewardCoins">+20</b>
+              <div class="reward-icon reward-album"></div><b id="rewardAlbum">+1</b>
+            </div>
+            <div class="skill-report">
+              <span data-i18n="skillReport">能力報告</span>
+              <strong id="skillText">專注 · 手眼協調</strong>
+            </div>
+            <div class="result-actions">
+              <button id="retryStage" type="button" data-i18n="retry">再試一次</button>
+              <button id="nextStage" class="primary-button" type="button" data-i18n="nextLevel">下一關</button>
+              <button id="backToMap" type="button" data-i18n="backToMap">返回關卡</button>
+            </div>
+          </div>
+        </section>
+
+        <div id="guideModal" class="modal" hidden>
+          <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="guideTitle">
+            <button id="closeGuide" class="modal-close" type="button" aria-label="關閉">×</button>
+            <img src="../../assets/animal-bubble-safari-lion-guide.webp" alt="" draggable="false">
+            <h2 id="guideTitle" data-i18n="howToPlay">怎麼玩</h2>
+            <ol>
+              <li data-i18n="guideAim">拖曳瞄準同色泡泡，放開即可發射。</li>
+              <li data-i18n="guideBank">利用牆面反彈，繞過擋路的岩石。</li>
+              <li data-i18n="guideRescue">三顆以上相連會消除；在泡泡用完前救出目標。</li>
+            </ol>
+            <button id="guideDone" class="primary-button" type="button" data-i18n="gotIt">知道了</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="adReserve" class="ad-reserve" aria-hidden="true"></div>
+  </main>
+  <script src="game.js"></script>
+</body>
+</html>
