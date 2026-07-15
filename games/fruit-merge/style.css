@@ -178,13 +178,12 @@ body.fruit-playing #menuPanel {
   padding: clamp(8px, 1.3vw, 14px);
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  grid-template-rows: auto auto minmax(0, 1fr) auto var(--wp-ad-reserve-height, 56px);
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
   grid-template-areas:
     "score"
     "goal"
     "board"
-    "controls"
-    "reserve";
+    "controls";
   gap: clamp(7px, 1.15vw, 12px);
   overflow: hidden;
   border: clamp(3px, 0.65vw, 5px) solid rgba(255, 255, 255, 0.22);
@@ -216,14 +215,6 @@ body.fruit-playing #menuPanel {
   font-weight: 1000;
   line-height: 1;
   touch-action: manipulation;
-}
-
-.battle-ad-reserve {
-  grid-area: reserve;
-  min-height: 56px;
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(6, 13, 24, 0.28);
-  pointer-events: none;
 }
 
 .scorebar {
@@ -962,7 +953,7 @@ body.fruit-playing #menuPanel {
     aspect-ratio: auto;
     padding: 5px 6px 0;
     grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: 42px 42px minmax(0, 1fr) 36px var(--wp-ad-reserve-height, 56px);
+    grid-template-rows: 42px 42px minmax(0, 1fr) 36px;
     gap: 3px;
     border: 0;
     border-radius: 0;
@@ -1150,10 +1141,10 @@ body.fruit-playing #resultPanel.result-panel {
   z-index: 50;
   left: var(--fruit-battle-left, 4px);
   top: var(--fruit-battle-top, 4px);
-  width: 390px;
+  width: 382px;
   max-width: none;
-  height: 788px;
-  min-height: 788px;
+  height: 780px;
+  min-height: 780px;
   max-height: none;
   margin: 0;
   transform: scale(var(--fruit-battle-scale, 1));
@@ -1167,21 +1158,6 @@ body.fruit-playing .fixed-game-shell {
   gap: 3px;
   padding: 5px 6px;
   aspect-ratio: auto;
-}
-
-body.fruit-playing #battleAdReserve {
-  position: fixed;
-  z-index: 49;
-  left: var(--fruit-battle-left, 4px);
-  top: calc(var(--fruit-battle-top, 4px) + var(--fruit-battle-height, 788px));
-  display: block;
-  width: var(--fruit-battle-width, 390px);
-  height: 56px;
-  min-height: 56px;
-  margin: 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.16);
-  background: rgba(15, 25, 40, 0.72);
-  pointer-events: none;
 }
 
 /* Battle typography is tied to the game shell, never to browser viewport width. */
@@ -1305,17 +1281,9 @@ body.fruit-playing .aim-coach {
 body.fruit-playing.fruit-expanded-canvas .fixed-game-shell,
 body.fruit-playing.fruit-expanded-canvas #resultPanel.result-panel {
   width: var(--fruit-battle-width, calc(var(--wp-mobile-vw, 100vw) - 8px));
-  height: var(--fruit-battle-height, calc(var(--wp-mobile-vh, 100dvh) - var(--wp-ad-reserve-height, 56px) - 8px));
+  height: var(--fruit-battle-height, calc(var(--wp-mobile-vh, 100dvh) - 8px));
   min-height: 0;
   transform: none;
-}
-
-body.fruit-playing.fruit-expanded-canvas #battleAdReserve {
-  left: 4px;
-  right: 4px;
-  top: auto;
-  bottom: 4px;
-  width: auto;
 }
 
 body.fruit-playing.fruit-expanded-canvas .fixed-game-shell {

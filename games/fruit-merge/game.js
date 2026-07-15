@@ -383,25 +383,20 @@
 
   function updateFruitBattleScale() {
     if (!document.body.classList.contains("fruit-playing")) return;
-    const logicalWidth = 390;
-    const logicalHeight = 788;
-  const reserveHeight = window.WeightPlayAudience?.reserveHeight ?? 56;
+    const logicalWidth = 382;
+    const logicalHeight = 780;
     const viewportWidth = visualViewport?.width || innerWidth;
     const viewportHeight = visualViewport?.height || innerHeight;
-    const expandedCanvas = matchMedia("(pointer: coarse)").matches
-      || navigator.maxTouchPoints > 0
-      || viewportWidth <= 600
-      || viewportHeight <= 430;
-    const scale = expandedCanvas ? 1 : Math.max(0.1, Math.min((viewportWidth - 8) / logicalWidth, (viewportHeight - reserveHeight - 8) / logicalHeight));
-    const width = expandedCanvas ? viewportWidth - 8 : logicalWidth * scale;
-    const contentHeight = expandedCanvas ? viewportHeight - reserveHeight - 8 : logicalHeight * scale;
+    const scale = Math.max(0.1, Math.min((viewportWidth - 8) / logicalWidth, (viewportHeight - 8) / logicalHeight));
+    const width = logicalWidth * scale;
+    const contentHeight = logicalHeight * scale;
     const root = document.documentElement.style;
-    document.body.classList.toggle("fruit-expanded-canvas", expandedCanvas);
+    document.body.classList.remove("fruit-expanded-canvas");
     root.setProperty("--fruit-battle-scale", String(scale));
     root.setProperty("--fruit-battle-width", `${width}px`);
     root.setProperty("--fruit-battle-height", `${contentHeight}px`);
     root.setProperty("--fruit-battle-left", `${Math.max(0, (viewportWidth - width) / 2)}px`);
-    root.setProperty("--fruit-battle-top", expandedCanvas ? "4px" : `${Math.max(0, (viewportHeight - contentHeight - reserveHeight) / 2)}px`);
+    root.setProperty("--fruit-battle-top", `${Math.max(4, viewportHeight - contentHeight - 4)}px`);
   }
 
   addEventListener("resize", updateFruitBattleScale, { passive: true });

@@ -202,12 +202,12 @@
     const viewportWidth = viewport?.width || innerWidth;
     const viewportHeight = viewport?.height || innerHeight;
     document.body.classList.remove("dash-expanded-canvas");
-    const scale = Math.min(Math.max(1, viewportWidth - 8) / 390, Math.max(1, viewportHeight - 8) / 788);
-    const width = 390 * scale;
-    const height = 788 * scale;
+    const scale = Math.min(Math.max(1, viewportWidth - 8) / 382, Math.max(1, viewportHeight - 8) / 780);
+    const width = 382 * scale;
+    const height = 780 * scale;
     document.documentElement.style.setProperty("--dash-frame-scale", String(scale));
     document.documentElement.style.setProperty("--dash-frame-left", `${(viewportWidth - width) / 2}px`);
-    document.documentElement.style.setProperty("--dash-frame-top", `${(viewportHeight - height) / 2}px`);
+    document.documentElement.style.setProperty("--dash-frame-top", `${Math.max(4, viewportHeight - 4 - height)}px`);
     document.documentElement.style.setProperty("--dash-frame-width", `${width}px`);
     document.documentElement.style.setProperty("--dash-frame-height", `${height}px`);
   }

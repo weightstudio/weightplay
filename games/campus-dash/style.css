@@ -465,12 +465,12 @@ body.dash-playing.weightplay-active-viewport .dash-game {
   inset: auto !important;
   left: var(--dash-frame-left, 4px) !important;
   top: var(--dash-frame-top, 4px) !important;
-  width: 390px !important;
-  min-width: 390px !important;
-  max-width: 390px !important;
-  height: 788px !important;
-  min-height: 788px !important;
-  max-height: 788px !important;
+  width: 382px !important;
+  min-width: 382px !important;
+  max-width: 382px !important;
+  height: 780px !important;
+  min-height: 780px !important;
+  max-height: 780px !important;
   margin: 0 !important;
   padding: 8px 10px !important;
   grid-template-rows: 56px 58px minmax(0, 1fr) !important;
@@ -638,6 +638,11 @@ body.dash-playing .wp-tutorial-button {
   visibility: hidden;
   pointer-events: none;
 }
+
+/* Logical Battle typography is invariant; viewport fitting scales the whole Canvas. */
+body.dash-playing .hud span { font-size: 12px !important; line-height: 14px !important; }
+body.dash-playing .hud strong { font-size: 25px !important; line-height: 28px !important; }
+body.dash-playing #battleBackBtn { font-size: 22px !important; }
 
 @keyframes dash-panel-pop {
   from {

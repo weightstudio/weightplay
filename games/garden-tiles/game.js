@@ -25,8 +25,6 @@
   const boardPanel = document.querySelector("#boardPanel");
   const board = document.querySelector("#board");
   const battleBackBtn = document.querySelector("#battleBackBtn");
-  const battleAdReserve = document.querySelector("#battleAdReserve");
-  const stageAdReserve = document.querySelector("#stageAdReserve");
   const message = document.querySelector("#message");
   const resultPanel = document.querySelector("#resultPanel");
   const resultTitle = document.querySelector("#resultTitle");
@@ -230,15 +228,13 @@
   }
 
   function showMain() {
-    document.body.classList.remove("garden-stage", "garden-playing", "garden-expanded-canvas");
+    document.body.classList.remove("garden-stage", "garden-playing");
     document.body.classList.add("garden-main");
     resultPanel.classList.add("hidden");
     mainPanel.classList.remove("hidden");
     statusbar.classList.add("hidden");
     levelSelect.classList.add("hidden");
     boardPanel.classList.add("hidden");
-    battleAdReserve.classList.add("hidden");
-    stageAdReserve.classList.add("hidden");
     const shell = document.querySelector(".garden-game");
     for (const property of ["position", "inset", "left", "top", "width", "height", "min-height", "max-height", "transform", "transform-origin"]) shell?.style.removeProperty(property);
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
@@ -249,37 +245,11 @@
     const viewport = window.visualViewport;
     const viewportWidth = viewport?.width || innerWidth;
     const viewportHeight = viewport?.height || innerHeight;
-    const isPhoneBattle = document.body.classList.contains("garden-playing")
-      && (matchMedia("(pointer: coarse)").matches || viewportWidth <= 600 || viewportHeight <= 430);
-    document.body.classList.toggle("garden-expanded-canvas", isPhoneBattle);
     const shell = document.querySelector(".garden-game");
     shell?.classList.remove("weightplay-active-viewport");
-    if (isPhoneBattle) {
-      const width = Math.max(1, viewportWidth - 8);
-      const reserveHeight = window.WeightPlayAudience?.reserveHeight ?? 56;
-      const contentHeight = Math.max(1, viewportHeight - reserveHeight - 8);
-      const root = document.documentElement.style;
-      root.setProperty("--garden-frame-scale", "1");
-      root.setProperty("--garden-frame-width", `${width}px`);
-      root.setProperty("--garden-frame-height", `${contentHeight}px`);
-      root.setProperty("--garden-frame-left", "4px");
-      root.setProperty("--garden-frame-top", "4px");
-      shell?.style.setProperty("position", "fixed", "important");
-      shell?.style.setProperty("inset", "auto", "important");
-      shell?.style.setProperty("left", "4px", "important");
-      shell?.style.setProperty("top", "4px", "important");
-      shell?.style.setProperty("width", `${width}px`, "important");
-      shell?.style.setProperty("height", `${contentHeight}px`, "important");
-      shell?.style.setProperty("min-height", "0", "important");
-      shell?.style.setProperty("max-height", "none", "important");
-      shell?.style.setProperty("transform", "none", "important");
-      shell?.style.setProperty("transform-origin", "top left", "important");
-      return;
-    }
     const logicalWidth = 390;
     const logicalHeight = 788;
-  const reserveHeight = window.WeightPlayAudience?.reserveHeight ?? 56;
-    const scale = Math.max(0.1, Math.min((viewportWidth - 8) / logicalWidth, (viewportHeight - reserveHeight - 8) / logicalHeight));
+    const scale = Math.max(0.1, Math.min((viewportWidth - 8) / logicalWidth, (viewportHeight - 8) / logicalHeight));
     const width = logicalWidth * scale;
     const contentHeight = logicalHeight * scale;
     const root = document.documentElement.style;
@@ -287,7 +257,7 @@
     root.setProperty("--garden-frame-width", `${width}px`);
     root.setProperty("--garden-frame-height", `${contentHeight}px`);
     root.setProperty("--garden-frame-left", `${Math.max(0, (viewportWidth - width) / 2)}px`);
-    root.setProperty("--garden-frame-top", `${Math.max(0, (viewportHeight - contentHeight - reserveHeight) / 2)}px`);
+    root.setProperty("--garden-frame-top", `${Math.max(0, viewportHeight - contentHeight - 4)}px`);
     shell?.style.setProperty("position", "fixed", "important");
     shell?.style.setProperty("inset", "auto", "important");
     shell?.style.setProperty("left", "var(--garden-frame-left)", "important");
@@ -332,8 +302,6 @@
     mainPanel.classList.add("hidden");
     statusbar.classList.add("hidden");
     boardPanel.classList.add("hidden");
-    battleAdReserve.classList.add("hidden");
-    stageAdReserve.classList.remove("hidden");
     levelSelect.classList.remove("hidden");
     message.textContent = "";
     levelMessage.textContent = "";
@@ -373,8 +341,6 @@
     statusbar.classList.remove("hidden");
     levelSelect.classList.add("hidden");
     boardPanel.classList.remove("hidden");
-    battleAdReserve.classList.remove("hidden");
-    stageAdReserve.classList.add("hidden");
     resultPanel.classList.add("hidden");
     renderBoard();
     showMessage(t("selectFirst"));

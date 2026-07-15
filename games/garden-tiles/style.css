@@ -26,7 +26,7 @@ body {
 }
 
 body.garden-playing .garden-game {
-  grid-template-rows: auto minmax(0, 1fr) var(--wp-ad-reserve-height, 56px);
+  grid-template-rows: auto minmax(0, 1fr);
 }
 
 body.garden-playing .topbar,
@@ -198,14 +198,6 @@ body.garden-stage .home-link { grid-template-columns: 1fr; }
   border: 1px solid rgba(49, 91, 53, 0.16);
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.52);
-}
-
-.stage-ad-reserve,
-.battle-ad-reserve {
-  min-height: 56px;
-  width: 100%;
-  border-top: 1px dashed rgba(49, 91, 53, .28);
-  background: rgba(49, 91, 53, .08);
 }
 
 .play-return {
@@ -469,7 +461,7 @@ body.garden-stage .home-link { grid-template-columns: 1fr; }
     height: var(--wp-mobile-vh, 100svh);
     min-height: 0;
     max-height: var(--wp-mobile-vh, 100svh);
-    grid-template-rows: 52px minmax(0, 1fr) var(--wp-ad-reserve-height, 56px);
+    grid-template-rows: 52px minmax(0, 1fr);
     gap: 5px;
     padding: max(4px, env(safe-area-inset-top)) 6px max(5px, env(safe-area-inset-bottom));
     overflow: hidden;
@@ -488,12 +480,10 @@ body.garden-stage .home-link { grid-template-columns: 1fr; }
   }
 
   body.garden-stage .statusbar { display: none; }
-  body.garden-stage .level-select { height: 100%; min-height: 0; grid-template-rows: auto minmax(0, 1fr) var(--wp-ad-reserve-height, 56px); overflow: hidden; padding: 8px 0 0; }
+  body.garden-stage .level-select { height: 100%; min-height: 0; grid-template-rows: auto minmax(0, 1fr); overflow: hidden; padding: 8px 0 0; }
   body.garden-stage .level-grid { display: flex; width: 100%; height: 100%; min-height: 0; overflow-x: auto; overflow-y: hidden; padding-inline: max(47px, calc((100% - 264px) / 2)); scroll-snap-type: x mandatory; scrollbar-width: none; }
   body.garden-stage .level-grid button { flex: 0 0 264px; height: 100%; scroll-snap-align: center; scroll-snap-stop: always; }
   body.garden-stage #levelMessage { display: none; }
-  body.garden-stage .stage-ad-reserve { flex: 0 0 56px; }
-
   .topbar {
     grid-template-columns: 44px minmax(0, 1fr) 126px;
     gap: 8px;
@@ -715,22 +705,6 @@ body.garden-stage .level-grid button {
   scroll-snap-stop: always;
 }
 
-body.garden-playing #battleAdReserve,
-body.garden-stage #stageAdReserve {
-  position: fixed;
-  z-index: 49;
-  left: var(--garden-frame-left, 4px);
-  top: calc(var(--garden-frame-top, 4px) + var(--garden-frame-height, 788px));
-  display: block;
-  width: var(--garden-frame-width, 390px);
-  height: 56px;
-  min-height: 56px;
-  margin: 0;
-  border-top: 1px solid rgba(49, 91, 53, 0.22);
-  background: rgba(239, 250, 214, 0.62);
-  pointer-events: none;
-}
-
 body.garden-playing .statusbar {
   grid-template-columns: 44px repeat(3, minmax(0, 1fr));
   gap: 5px;
@@ -766,7 +740,7 @@ body.garden-playing .play-return {
   line-height: 26px;
 }
 
-body.garden-playing:not(.garden-expanded-canvas) .tile-board {
+body.garden-playing .tile-board {
   grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
   grid-template-rows: repeat(var(--rows), minmax(0, 1fr));
   width: min(100%, calc(678px * var(--board-aspect, 1))) !important;
@@ -779,13 +753,13 @@ body.garden-playing:not(.garden-expanded-canvas) .tile-board {
   align-content: stretch;
 }
 
-body.garden-playing:not(.garden-expanded-canvas) .tile {
+body.garden-playing .tile {
   min-width: 0;
   min-height: 0;
   aspect-ratio: auto;
 }
 
-body.garden-playing:not(.garden-expanded-canvas) .message {
+body.garden-playing .message {
   height: 42px;
   min-height: 42px;
   max-height: 42px;
@@ -795,169 +769,12 @@ body.garden-playing:not(.garden-expanded-canvas) .message {
   line-height: 21px;
 }
 
-/* Phone Battle expands the Canvas; each level board keeps its actual grid ratio. */
-body.garden-playing.garden-expanded-canvas .garden-game,
-body.wp-mobile-game-mode.garden-playing.garden-expanded-canvas .garden-game.weightplay-active-viewport {
-  left: var(--garden-frame-left, 4px) !important;
-  top: var(--garden-frame-top, 4px) !important;
-  width: var(--garden-frame-width, calc(100vw - 8px)) !important;
-  min-width: 0 !important;
-  max-width: none !important;
-  height: var(--garden-frame-height, calc(100svh - var(--wp-ad-reserve-height, 56px) - 8px)) !important;
-  min-height: 0 !important;
-  max-height: none !important;
-  padding: 6px !important;
-  grid-template-rows: 54px minmax(0, 1fr);
-  gap: 5px;
-  transform: none !important;
-  -webkit-text-size-adjust: 100%;
-  text-size-adjust: 100%;
-}
-
-body.garden-playing.garden-expanded-canvas .statusbar {
-  grid-template-columns: 44px repeat(3, minmax(0, 1fr));
-  gap: 5px;
-  min-height: 54px;
-}
-
-body.garden-playing.garden-expanded-canvas .statusbar div {
-  height: 54px;
-  min-height: 54px;
-  padding: 5px 7px;
-  overflow: hidden;
-}
-
-body.garden-playing.garden-expanded-canvas .statusbar span {
-  font-size: 10px;
-  line-height: 13px;
-}
-
-body.garden-playing.garden-expanded-canvas .statusbar strong {
-  margin-top: 2px;
-  font-size: 18px;
-  line-height: 20px;
-  white-space: nowrap;
-}
-
-body.garden-playing.garden-expanded-canvas .play-return {
-  position: static;
-  width: 44px;
-  min-width: 44px;
-  height: 44px;
-  min-height: 44px;
-  align-self: center;
-  font-size: 22px;
-  line-height: 26px;
-}
-
-body.garden-playing.garden-expanded-canvas .board-panel {
-  grid-template-rows: minmax(0, 1fr) 36px;
-  gap: 5px;
-  min-height: 0;
-}
-
-body.garden-playing.garden-expanded-canvas .tile-board {
-  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
-  grid-template-rows: repeat(var(--rows), minmax(0, 1fr));
-  width: min(100%, calc((var(--garden-frame-height, 780px) - 110px) * var(--board-aspect, 1))) !important;
-  height: auto !important;
-  max-width: 100% !important;
-  max-height: 100%;
-  aspect-ratio: var(--board-aspect, 1);
-  align-self: center;
-  justify-self: center;
-  align-content: stretch;
-  padding: 6px;
-  gap: 5px;
-}
-
-body.garden-playing.garden-expanded-canvas .tile {
-  min-width: 0;
-  min-height: 0;
-  aspect-ratio: auto;
-  padding: 3px;
-}
-
-body.garden-playing.garden-expanded-canvas .message {
-  height: 36px;
-  min-height: 36px;
-  padding: 0 8px;
-  overflow: hidden;
-  font-size: 13px;
-  line-height: 17px;
-}
-
-body.garden-playing.garden-expanded-canvas #battleAdReserve {
-  left: 4px;
-  right: 4px;
-  top: auto;
-  bottom: 4px;
-  width: auto;
-  height: 56px;
-}
-
 body.garden-playing .weightplay-version-badge,
 body.garden-playing .sound-toggle,
 body.garden-playing .wp-tutorial-button {
   display: none !important;
 }
 
-@media (max-height: 430px) {
-  body.garden-playing.garden-expanded-canvas .garden-game,
-  body.wp-mobile-game-mode.garden-playing.garden-expanded-canvas .garden-game.weightplay-active-viewport {
-    padding: 4px !important;
-    grid-template-rows: 48px minmax(0, 1fr);
-    gap: 4px;
-  }
-
-  body.garden-playing.garden-expanded-canvas .statusbar {
-    grid-template-columns: 38px repeat(3, minmax(0, 1fr));
-    min-height: 48px;
-    gap: 4px;
-  }
-
-  body.garden-playing.garden-expanded-canvas .statusbar div {
-    height: 48px;
-    min-height: 48px;
-    padding: 3px 6px;
-  }
-
-  body.garden-playing.garden-expanded-canvas .statusbar span {
-    font-size: 9px;
-    line-height: 11px;
-  }
-
-  body.garden-playing.garden-expanded-canvas .statusbar strong {
-    font-size: 16px;
-    line-height: 18px;
-  }
-
-  body.garden-playing.garden-expanded-canvas .play-return {
-    width: 38px;
-    min-width: 38px;
-    height: 38px;
-    min-height: 38px;
-    font-size: 20px;
-  }
-
-  body.garden-playing.garden-expanded-canvas .board-panel {
-    grid-template-rows: minmax(0, 1fr) 30px;
-    gap: 4px;
-  }
-
-  body.garden-playing.garden-expanded-canvas .tile-board {
-    width: min(100%, calc((var(--garden-frame-height, 320px) - 94px) * var(--board-aspect, 1))) !important;
-    padding: 4px;
-    gap: 3px;
-  }
-
-  body.garden-playing.garden-expanded-canvas .message {
-    height: 30px;
-    min-height: 30px;
-    font-size: 11px;
-    line-height: 14px;
-  }
-}
 html,
 body,
 button,

@@ -17,7 +17,7 @@
     upgradePanel: $("upgradePanel"),
     resultPanel: $("resultPanel"),
     startBtn: $("startBtn"),
-    mapBtn: $("mapBtn"),
+    mapBtn: $("battleBackBtn"),
     retryBtn: $("retryBtn"),
     resultMenuBtn: $("resultMenuBtn"),
     roomGrid: $("roomGrid"),
@@ -86,6 +86,9 @@
       roomShieldDesc: "+4 starting core HP per level.",
       roomDen: "Companion Den",
       roomDenDesc: "Adds helper chip damage at level 2+.",
+      companionLocked: "Unlocks helper strikes at Lv.2.",
+      companionCurrent: "Helper strike: {damage} damage every 4s.",
+      companionNext: "Next level: {damage} damage.",
       roomTower: "Scout Tower",
       roomTowerDesc: "+1 bonus Star Stone per raid level.",
       level: "Lv.{n}",
@@ -139,6 +142,9 @@
       roomShieldDesc: "每級提高 4 點起始核心生命。",
       roomDen: "夥伴巢穴",
       roomDenDesc: "2 級後提供輔助傷害。",
+      companionLocked: "升到 Lv.2 解鎖夥伴支援攻擊。",
+      companionCurrent: "夥伴支援：每 4 秒造成 {damage} 傷害。",
+      companionNext: "下一級：{damage} 傷害。",
       roomTower: "偵查高塔",
       roomTowerDesc: "每個突襲等級額外 +1 星石。",
       level: "Lv.{n}",
@@ -246,6 +252,7 @@
   function makeState() {
     const shieldLevel = save?.rooms?.shield || 0;
     const forgeLevel = save?.rooms?.forge || 0;
+    const denLevel = save?.rooms?.den || 0;
     return {
       mode: "menu",
       wave: 1,
@@ -264,6 +271,9 @@
       enemies: [],
       orbs: [],
       sparks: [],
+      companionDamage: companionDamage(denLevel),
+      companionTimer: 1.2,
+      companionHits: 0,
       preview: [],
       launcher: { x: W / 2, y: H - 64 },
     };
@@ -278,6 +288,8 @@
     panel.classList.remove("is-hidden");
     document.body.classList.toggle("orb-fortress-playing", panel !== nodes.menuPanel);
     updateOrbBattleScale();
+    fitOrbArena();
+    window.requestAnimationFrame(fitOrbArena);
   }
 
   function updateOrbBattleScale() {
@@ -291,6 +303,22 @@
     root.setProperty("--orb-vh", `${useVisual ? visualHeight : innerHeight}px`);
   }
 
+  function fitOrbArena() {
+    if (!document.body.classList.contains("orb-fortress-playing") || nodes.gamePanel.classList.contains("is-hidden")) return;
+    const panelStyle = getComputedStyle(nodes.gamePanel);
+    const rows = panelStyle.gridTemplateRows.split(/\s+/).map(Number.parseFloat).filter(Number.isFinite);
+    const columns = panelStyle.gridTemplateColumns.split(/\s+/).map(Number.parseFloat).filter(Number.isFinite);
+    const horizontal = (window.visualViewport?.height || innerHeight) <= 560;
+    const panelWidth = nodes.gamePanel.clientWidth - Number.parseFloat(panelStyle.paddingLeft) - Number.parseFloat(panelStyle.paddingRight);
+    const panelHeight = nodes.gamePanel.clientHeight - Number.parseFloat(panelStyle.paddingTop) - Number.parseFloat(panelStyle.paddingBottom);
+    const trackWidth = horizontal ? (columns[1] || panelWidth) : panelWidth;
+    const trackHeight = horizontal ? (rows[0] || panelHeight) : (rows[1] || panelHeight);
+    const arenaHeight = Math.max(1, Math.min(trackHeight, trackWidth / (W / H)));
+    const arenaWidth = arenaHeight * (W / H);
+    canvas.style.setProperty("width", `${arenaWidth}px`, "important");
+    canvas.style.setProperty("height", `${arenaHeight}px`, "important");
+  }
+
   function configureArena() {
     W = 720;
     H = 1200;
@@ -300,9 +328,15 @@
     document.documentElement.style.setProperty("--orb-arena-ratio", `${W} / ${H}`);
   }
 
-  window.addEventListener?.("resize", updateOrbBattleScale, { passive: true });
-  window.addEventListener?.("orientationchange", updateOrbBattleScale, { passive: true });
-  window.visualViewport?.addEventListener("resize", updateOrbBattleScale, { passive: true });
+  function refreshOrbBattleLayout() {
+    updateOrbBattleScale();
+    fitOrbArena();
+    window.requestAnimationFrame(fitOrbArena);
+  }
+
+  window.addEventListener?.("resize", refreshOrbBattleLayout, { passive: true });
+  window.addEventListener?.("orientationchange", refreshOrbBattleLayout, { passive: true });
+  window.visualViewport?.addEventListener("resize", refreshOrbBattleLayout, { passive: true });
 
   function setLocale(next) {
     locale = next || "en";
@@ -367,6 +401,19 @@
     return 8 + (save.rooms[id] || 0) * 6;
   }
 
+  function companionDamage(level = save.rooms.den || 0) {
+    return level >= 2 ? level - 1 : 0;
+  }
+
+  function roomProgressText(room, level) {
+    if (room.id !== "den") return t(room.desc);
+    const currentDamage = companionDamage(level);
+    if (currentDamage <= 0) return t("companionLocked");
+    const current = t("companionCurrent", { damage: currentDamage });
+    if (level >= 5) return current;
+    return `${current} ${t("companionNext", { damage: companionDamage(level + 1) })}`;
+  }
+
   function renderMenu() {
     nodes.bestRaidText.textContent = String(save.bestRaid || 1);
     nodes.starStoneText.textContent = String(save.starStones || 0);
@@ -381,7 +428,7 @@
             <img src="${room.iconSrc}" alt="" />
             <div>
               <strong>${t(room.name)}</strong>
-              <span>${t("level", { n: level })} - ${t(room.desc)}</span>
+              <span>${t("level", { n: level })} - ${roomProgressText(room, level)}</span>
             </div>
             <button type="button" data-room="${room.id}" ${canUpgrade ? "" : "disabled"}>${level >= 5 ? t("maxed") : t("upgradeRoom", { cost })}</button>
           </div>`;
@@ -570,6 +617,7 @@
         renderHud();
       }
     });
+    updateCompanion(dt);
     state.enemies = state.enemies.filter((enemy) => enemy.hp > 0);
 
     state.orbs.forEach((orb) => updateOrb(orb, dt));
@@ -584,6 +632,30 @@
     } else if (canFireOrb()) {
       nodes.hintText.textContent = t("orbReady");
     }
+  }
+
+  function updateCompanion(dt) {
+    if (state.companionDamage <= 0 || state.enemies.length === 0) return;
+    state.companionTimer = Math.max(0, state.companionTimer - dt);
+    if (state.companionTimer > 0) return;
+    const target = state.enemies
+      .filter((enemy) => enemy.hp > 0)
+      .sort((a, b) => Math.hypot(a.x - state.launcher.x, a.y - state.launcher.y) - Math.hypot(b.x - state.launcher.x, b.y - state.launcher.y))[0];
+    if (!target) return;
+    target.hp -= state.companionDamage;
+    target.hitTimer = 0.22;
+    state.companionHits += 1;
+    state.companionTimer = 4;
+    state.sparks.push({
+      kind: "companion",
+      x: target.x,
+      y: target.y,
+      fromX: state.launcher.x,
+      fromY: state.launcher.y - 44,
+      life: 0.34,
+      maxLife: 0.34,
+    });
+    playSound("hit", 0.08);
   }
 
   function updateOrb(orb, dt) {
@@ -739,7 +811,19 @@
     state.enemies.forEach(drawEnemy);
     state.orbs.forEach((orb) => drawAtlas(images.orbs, orb.skin || 0, 5, orb.x, orb.y, 48));
     state.sparks.forEach((spark) => {
-      ctx.globalAlpha = Math.max(0, spark.life / 0.25);
+      const maxLife = spark.maxLife || 0.25;
+      ctx.globalAlpha = Math.max(0, spark.life / maxLife);
+      if (spark.kind === "companion") {
+        ctx.strokeStyle = "#7dffd0";
+        ctx.lineWidth = 9;
+        ctx.shadowColor = "#f7df62";
+        ctx.shadowBlur = 18;
+        ctx.beginPath();
+        ctx.moveTo(spark.fromX, spark.fromY);
+        ctx.lineTo(spark.x, spark.y);
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+      }
       drawAtlas(images.fx, 1, 4, spark.x, spark.y, 70);
       ctx.globalAlpha = 1;
     });
@@ -866,6 +950,9 @@
       orbs: state.orbs.length,
       activeOrbLimit: activeOrbLimit(),
       stonesEarned: state.stonesEarned,
+      companionDamage: state.companionDamage,
+      companionTimer: state.companionTimer,
+      companionHits: state.companionHits,
       rerolled: state.rerolled,
       walletDiamonds: walletDiamonds(),
       save,
@@ -891,6 +978,27 @@
       const before = enemy.hp;
       updateOrb(orb, 0.016);
       return { before, after: enemy.hp, damage: before - enemy.hp, distance: Math.hypot(orb.x - enemy.x, orb.y - enemy.y) };
+    },
+    setRoomLevel: (id, level) => {
+      if (!roomDefs.some((room) => room.id === id)) return null;
+      save.rooms[id] = Math.max(0, Math.min(5, Math.floor(Number(level) || 0)));
+      persist();
+      renderMenu();
+      return save.rooms[id];
+    },
+    forceCompanionStrike: () => {
+      const target = makeEnemy("skitter", state.launcher.x, state.launcher.y - 180, 8, 0, 42);
+      state.enemies = [target];
+      state.companionTimer = 0;
+      const before = target.hp;
+      updateCompanion(0.016);
+      return {
+        before,
+        after: target.hp,
+        damage: before - target.hp,
+        companionHits: state.companionHits,
+        effect: state.sparks.at(-1)?.kind || "",
+      };
     },
   };
 

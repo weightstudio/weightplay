@@ -486,6 +486,9 @@
     document.body.classList.toggle("reef-fisher-playing", which === "game");
     document.body.classList.toggle("reef-fisher-stage", which === "stage");
     document.body.classList.toggle("reef-fisher-result", which === "result");
+    const guideIsReady = Boolean(document.querySelector(".game-page-info"));
+    document.documentElement.classList.toggle("has-game-page-info", which === "main" && guideIsReady);
+    document.body.classList.toggle("has-game-page-info", which === "main" && guideIsReady);
     document.body.dataset.reefState = which;
     document.documentElement.dataset.reefState = which;
   }
