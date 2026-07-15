@@ -334,6 +334,12 @@ select {
   touch-action: manipulation;
 }
 
+.animal-card:focus,
+.item-card:focus {
+  outline: 4px solid #1454c8;
+  outline-offset: 3px;
+}
+
 .item-card b {
   width: clamp(44px, 8vw, 62px);
   height: clamp(44px, 8vw, 62px);

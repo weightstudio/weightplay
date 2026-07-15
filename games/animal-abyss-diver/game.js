@@ -136,6 +136,12 @@
     resultSurface:"You surfaced with {n} salvage. The route remains uncleared.",
     resultMiss:"The dive ended at {n}/{target} salvage. Try a different signal pattern.",
     resultFail:"Oxygen reached zero. Only half of the {n} salvage was secured.",
+    coinsEarned:"This dive: +{n} salvage coins",
+    coinsSaved:"Saved total: {n} salvage coins",
+    routeUnlocked:"New route unlocked: Route {n} · {name}",
+    routeReady:"Next route ready: Route {n} · {name}",
+    routeComplete:"All 3 dive routes cleared.",
+    routeRetry:"Next target: {target} salvage across {zones} zones",
     retry:"Retry route"
   });
   Object.assign(zh, {
@@ -235,6 +241,12 @@
     resultSurface:u("\\u5df2\\u5e36\\u8457 {n} \\u4ef6\\u6253\\u6488\\u54c1\\u4e0a\\u6d6e\\uff0c\\u4f46\\u672c\\u8def\\u7dda\\u5c1a\\u672a\\u904e\\u95dc\\u3002"),
     resultMiss:u("\\u6f5b\\u822a\\u7d50\\u675f\\u6642\\u53ea\\u6709 {n}/{target} \\u4ef6\\u6253\\u6488\\u54c1\\uff0c\\u8acb\\u5617\\u8a66\\u4e0d\\u540c\\u7684\\u8a0a\\u865f\\u7d44\\u5408\\u3002"),
     resultFail:u("\\u6c27\\u6c23\\u6b78\\u96f6\\uff0c{n} \\u4ef6\\u6253\\u6488\\u54c1\\u53ea\\u4fdd\\u4f4f\\u4e00\\u534a\\u3002"),
+    coinsEarned:u("\\u672c\\u6b21\\u6f5b\\u822a\\uff1a+{n} \\u6253\\u6488\\u5e63"),
+    coinsSaved:u("\\u5df2\\u4fdd\\u5b58\\u7e3d\\u984d\\uff1a{n} \\u6253\\u6488\\u5e63"),
+    routeUnlocked:u("\\u65b0\\u8def\\u7dda\\u89e3\\u9396\\uff1a\\u8def\\u7dda {n} \\u00b7 {name}"),
+    routeReady:u("\\u4e0b\\u4e00\\u8def\\u7dda\\u53ef\\u9032\\u5165\\uff1a\\u8def\\u7dda {n} \\u00b7 {name}"),
+    routeComplete:u("\\u5168\\u90e8 3 \\u689d\\u6f5b\\u822a\\u8def\\u7dda\\u5df2\\u901a\\u95dc\\u3002"),
+    routeRetry:u("\\u4e0b\\u6b21\\u76ee\\u6a19\\uff1a\\u7a7f\\u8d8a {zones} \\u500b\\u6d77\\u57df\\u4e26\\u6253\\u6488 {target} \\u4ef6"),
     retry:u("\\u518d\\u8a66\\u4e00\\u6b21")
   });
   Object.assign(en,{
@@ -331,13 +343,17 @@
     window.clearTimeout(fishClock);
     const config=routeConfig(),clear=mode==="clear";
     const earned=mode==="fail"||mode==="combat"?Math.floor(state.salvage/2):state.salvage+(clear?2:0);
+    const unlockedBefore=save.unlocked;
     save.coins+=earned;
     if(clear){save.rank+=1;save.unlocked=Math.max(save.unlocked,Math.min(3,state.route+1));}
     persist();show("result");
     $("resultTitle").textContent=clear?t("clear"):mode==="combat"?t("combatDefeat"):mode==="fail"?t("oxygenLost"):mode==="miss"?t("missed"):t("partial");
     const copyKey=clear?"resultClear":mode==="combat"?"resultCombat":mode==="fail"?"resultFail":mode==="miss"?"resultMiss":"resultSurface";
     $("resultCopy").textContent=t(copyKey,{n:state.salvage,target:config.target,zones:config.zones});
-    $("resultRewards").innerHTML=`<span>${t("coins",{n:earned})}</span><span>${t("rank",{n:save.rank})}</span>`;
+    let routeEvidence=t("routeRetry",{target:config.target,zones:config.zones});
+    if(clear&&state.route>=routes.length)routeEvidence=t("routeComplete");
+    else if(clear){const nextRoute=Math.min(routes.length,state.route+1),key=save.unlocked>unlockedBefore?"routeUnlocked":"routeReady";routeEvidence=t(key,{n:nextRoute,name:(locale==="zh-Hant"?zh:en).relicNames[nextRoute-1]});}
+    $("resultRewards").innerHTML=`<span>${t("coinsEarned",{n:earned})}</span><span>${t("coinsSaved",{n:save.coins})}</span><span>${t("rank",{n:save.rank})}</span><span>${routeEvidence}</span>`;
     $("nextBtn").textContent=clear?t("next"):t("retry");$("menuBtn").textContent=t("menu");
     $("nextBtn").onclick=()=>clear?(show("stageScreen"),renderRoutes()):start(state.route);
   }

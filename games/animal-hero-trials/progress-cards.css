@@ -37,4 +37,10 @@
 
 .progress-card small {
   grid-column: 2 / 4;
+  line-height: 1.25;
+}
+
+.progress-card button:disabled {
+  cursor: not-allowed;
+  opacity: 0.72;
 }

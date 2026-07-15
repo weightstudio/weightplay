@@ -785,6 +785,25 @@ body.is-rune-playing .back-btn span {
   object-fit: contain;
 }
 
+.result-progress {
+  display: grid;
+  gap: 5px;
+  margin-top: 12px;
+  border: 1px solid rgba(103, 242, 190, 0.28);
+  border-radius: 14px;
+  background: rgba(103, 242, 190, 0.08);
+  padding: 12px;
+}
+
+.result-progress strong,
+.result-progress em {
+  color: var(--mint);
+}
+
+.result-progress em {
+  font-style: normal;
+}
+
 .result-actions {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

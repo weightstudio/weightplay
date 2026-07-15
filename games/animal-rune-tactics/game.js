@@ -45,6 +45,9 @@
     rerollBtn: $("rerollBtn"),
     resultTitle: $("resultTitle"),
     resultText: $("resultText"),
+    resultRewardText: $("resultRewardText"),
+    resultProgressText: $("resultProgressText"),
+    resultNextText: $("resultNextText"),
     skillReportText: $("skillReportText"),
     nextBtn: $("nextBtn"),
     retryBtn: $("retryBtn"),
@@ -304,6 +307,15 @@
     rewardPermanent: "Permanent growth",
     rewardReviveDesc: "Save 1 revive token. A fallen hero auto-revives in a future fight.",
     reviveTriggered: "{hero} used a revive token and returned to battle.",
+    resultProgressTitle: "Saved Progress",
+    resultRewardChosen: "Reward saved: {reward} — {effect}",
+    resultRewardNone: "No rune reward was saved this attempt.",
+    resultProgressLine: "Squad Lv.{level} · {xp}/100 XP · {runes} Runes · Best Mission {best}",
+    resultMissionUnlocked: "Mission {mission} unlocked.",
+    resultMissionReady: "Mission {mission} remains ready.",
+    resultCampaignComplete: "All six missions are unlocked. Replay to refine your squad.",
+    resultUpgradeReady: "{hero} can upgrade now in Heroes.",
+    resultUpgradeNeed: "{hero} needs {need} more Runes to upgrade.",
     enemyTraits: "Traits: {traits}",
     traitWolf: "Pack Fang",
     traitWolfShort: "Pack",
@@ -377,6 +389,17 @@
 
   Object.assign(text.en, { stageTabMissions: "Missions", stageTabHeroes: "Heroes", stageTabTraining: "Training" });
   Object.assign(text["zh-Hant"], { stageTabMissions: "\u4efb\u52d9", stageTabHeroes: "\u82f1\u96c4", stageTabTraining: "\u8a13\u7df4" });
+  Object.assign(text["zh-Hant"], {
+    resultProgressTitle: "\u5df2\u5132\u5b58\u9032\u5ea6",
+    resultRewardChosen: "\u5df2\u5132\u5b58\u734e\u52f5\uff1a{reward} — {effect}",
+    resultRewardNone: "\u9019\u6b21\u5617\u8a66\u6c92\u6709\u5132\u5b58\u7b26\u6587\u734e\u52f5\u3002",
+    resultProgressLine: "\u5c0f\u968a Lv.{level} · {xp}/100 \u7d93\u9a57 · {runes} \u7b26\u6587 · \u6700\u4f73\u4efb\u52d9 {best}",
+    resultMissionUnlocked: "\u5df2\u89e3\u9396\u4efb\u52d9 {mission}\u3002",
+    resultMissionReady: "\u4efb\u52d9 {mission} \u4ecd\u53ef\u6311\u6230\u3002",
+    resultCampaignComplete: "\u516d\u500b\u4efb\u52d9\u5df2\u5168\u90e8\u89e3\u9396\uff0c\u53ef\u91cd\u73a9\u4e26\u7cbe\u9032\u5c0f\u968a\u3002",
+    resultUpgradeReady: "{hero} \u73fe\u5728\u53ef\u5728\u300c\u82f1\u96c4\u300d\u4e2d\u5347\u7d1a\u3002",
+    resultUpgradeNeed: "{hero} \u518d\u9700 {need} \u679a\u7b26\u6587\u5373\u53ef\u5347\u7d1a\u3002",
+  });
   Object.assign(text.en, {
     boardLabel: "Rune tactics board",
     strategyTips: [
@@ -443,6 +466,7 @@
   let selectedMission = 1;
   let profile = loadProfile();
   let state = null;
+  let claimedRewardId = null;
 
   function t(key, vars = {}) {
     let value = (text[locale] && text[locale][key]) || text.en[key] || key;
@@ -707,6 +731,7 @@
   }
 
   function startMission(mission = selectedMission) {
+    claimedRewardId = null;
     const extraEnergy = (profile.training ? 1 : 0) + (profile.bonusEnergy || 0);
     const hpBonus = profile.bonusHp || 0;
     state = {
@@ -1100,6 +1125,7 @@
   }
 
   function claimReward(id) {
+    claimedRewardId = id;
     if (id === "power") profile.bonusAtk = (profile.bonusAtk || 0) + 1;
     if (id === "guard") profile.bonusHp = (profile.bonusHp || 0) + 1;
     if (id === "shard") profile.xp += 35;
@@ -1130,6 +1156,7 @@
       profile.xp -= 100;
       profile.level += 1;
     }
+    const previousUnlockedMission = profile.unlockedMission;
     if (win) {
       profile.bestMission = Math.max(profile.bestMission, state.mission);
       profile.unlockedMission = Math.max(profile.unlockedMission, Math.min(missionDefs.length, state.mission + 1));
@@ -1138,6 +1165,32 @@
     saveProfile();
     nodes.resultTitle.textContent = t(win ? "missionClear" : "missionFailed");
     nodes.resultText.textContent = t(win ? "resultWin" : "resultLose", { mission: state.mission, xp, runes });
+    const claimedReward = rewardPool.find((reward) => reward.id === claimedRewardId);
+    nodes.resultRewardText.textContent = claimedReward
+      ? t("resultRewardChosen", { reward: t(claimedReward.title), effect: t(claimedReward.desc) })
+      : t("resultRewardNone");
+    nodes.resultProgressText.textContent = t("resultProgressLine", {
+      level: profile.level,
+      xp: profile.xp,
+      runes: profile.runes || 0,
+      best: profile.bestMission,
+    });
+    const heroLevels = profile.heroLevels || {};
+    const nextHero = heroDefs
+      .map((hero) => ({ hero, level: heroLevels[hero.id] || 1, cost: heroUpgradeCost(hero.id) }))
+      .filter((item) => item.level < 6)
+      .sort((a, b) => a.cost - b.cost)[0];
+    const missionDirection = profile.unlockedMission >= missionDefs.length && state.mission >= missionDefs.length
+      ? t("resultCampaignComplete")
+      : win && profile.unlockedMission > previousUnlockedMission
+        ? t("resultMissionUnlocked", { mission: profile.unlockedMission })
+        : t("resultMissionReady", { mission: Math.min(profile.unlockedMission, state.mission) });
+    const upgradeDirection = nextHero
+      ? (profile.runes || 0) >= nextHero.cost
+        ? t("resultUpgradeReady", { hero: t(nextHero.hero.name) })
+        : t("resultUpgradeNeed", { hero: t(nextHero.hero.name), need: nextHero.cost - (profile.runes || 0) })
+      : t("heroUpgradeMax");
+    nodes.resultNextText.textContent = `${missionDirection} ${upgradeDirection}`;
     nodes.skillReportText.textContent = t(win ? "reportWin" : "reportLose");
     nodes.nextBtn.disabled = !win || state.mission >= missionDefs.length;
     nodes.resultPanel.classList.remove("is-hidden");

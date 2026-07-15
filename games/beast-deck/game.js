@@ -15,6 +15,9 @@
     gamePanel: $("gamePanel"),
     draftPanel: $("draftPanel"),
     resultPanel: $("resultPanel"),
+    resultRewards: $("resultRewards"),
+    resultSaved: $("resultSaved"),
+    resultUnlock: $("resultUnlock"),
     startBtn: $("startBtn"),
     nextMissionBtn: $("nextMissionBtn"),
     menuBtn: $("menuBtn"),
@@ -308,7 +311,13 @@
       levelUp: "Level up! Reached Level {level}.",
       report_win: "Mission {mission} cleared. You gained {xp} XP and unlocked deeper forest progress.",
       report_partial: "You cleared {count} battle(s) in Mission {mission}. Earned {xp} XP. Try again with a stronger deck plan.",
-      report_no_wins: "No battles cleared yet. Read enemy intent, block large attacks, and build card combos."
+      report_no_wins: "No battles cleared yet. Read enemy intent, block large attacks, and build card combos.",
+      resultRewards: "Run rewards: +{xp} XP · +{coins} Beast Coins",
+      resultSaved: "Saved: Lv.{level} · {xp}/{nextXp} XP · {coins} Beast Coins",
+      resultUnlocked: "New mission unlocked: Mission {mission} — {name}",
+      resultReady: "Next mission ready: Mission {mission} — {name}",
+      resultComplete: "Forest campaign complete: all {count} missions unlocked.",
+      resultRetry: "Saved progress retained. Retry Mission {mission} when ready."
     },
     "zh-Hant": {
       title: "獸王牌組：迷霧森林",
@@ -454,7 +463,13 @@
       levelUp: "升級！達到等級 {level}。",
       report_win: "任務 {mission} 通關，獲得 {xp} 經驗並推進森林進度。",
       report_partial: "任務 {mission} 已通過 {count} 場戰鬥，獲得 {xp} 經驗。調整牌組再挑戰一次。",
-      report_no_wins: "尚未通過戰鬥。觀察敵人意圖、用格擋承受大攻擊，並組出卡牌連擊。"
+      report_no_wins: "尚未通過戰鬥。觀察敵人意圖、用格擋承受大攻擊，並組出卡牌連擊。",
+      resultRewards: "本次獎勵：+{xp} 經驗 · +{coins} 獸王金幣",
+      resultSaved: "已保存：Lv.{level} · {xp}/{nextXp} 經驗 · {coins} 獸王金幣",
+      resultUnlocked: "新任務解鎖：任務 {mission}—{name}",
+      resultReady: "下一任務可進入：任務 {mission}—{name}",
+      resultComplete: "森林戰役完成：全部 {count} 個任務已解鎖。",
+      resultRetry: "已保留進度，可隨時重試任務 {mission}。"
     }
   };
 
@@ -1263,9 +1278,11 @@
     const isBoss = state.battle >= 3;
     const coins = isBoss ? 40 + state.mission * 8 : 16 + state.mission * 3;
     profile.coins += coins;
+    state.coinsEarned += coins;
     log(t("log_coin_gain", { coins }), "system");
     if (isBoss) {
       const mission = getMission(state.mission);
+      state.unlockedBeforeResult = profile.unlockedMission;
       addXp(mission.xp);
       if (state.mission >= profile.unlockedMission && profile.unlockedMission < maxMission) {
         profile.unlockedMission = state.mission + 1;
@@ -1402,8 +1419,12 @@
   }
 
   function endGame(won) {
-    nodes.gamePanel.classList.add("hidden");
+    nodes.gamePanel.classList.add("result-open");
     nodes.resultPanel.classList.remove("hidden");
+    [nodes.gamePanel.querySelector(".hud-row"), nodes.gamePanel.querySelector(".battlefield"), nodes.gamePanel.querySelector(".action-area")].forEach((node) => {
+      node?.setAttribute("inert", "");
+      node?.setAttribute("aria-hidden", "true");
+    });
     positionBattleSoundControl();
     const cleared = won ? 3 : Math.max(0, state.battle - 1);
     const stars = cleared === 3 ? "★★★" : cleared === 2 ? "★★" : cleared === 1 ? "★" : "-";
@@ -1423,6 +1444,17 @@
       nodes.resultText.textContent = t("report_no_wins");
       nodes.skillReportText.textContent = t("report_no_wins");
       window.WonderSound?.play("wrong");
+    }
+    nodes.resultRewards.textContent = t("resultRewards", { xp: state.xpEarned, coins: state.coinsEarned });
+    nodes.resultSaved.textContent = t("resultSaved", { level: profile.level, xp: profile.xp, nextXp: xpToNext(profile.level), coins: profile.coins });
+    if (won && state.mission >= maxMission) {
+      nodes.resultUnlock.textContent = t("resultComplete", { count: maxMission });
+    } else if (won) {
+      const nextMission = Math.min(maxMission, state.mission + 1);
+      const key = state.unlockedBeforeResult < nextMission ? "resultUnlocked" : "resultReady";
+      nodes.resultUnlock.textContent = t(key, { mission: nextMission, name: missionTitle(nextMission) });
+    } else {
+      nodes.resultUnlock.textContent = t("resultRetry", { mission: state.mission });
     }
     const canContinue = won && state.mission < maxMission && profile.selectedMission > state.mission;
     if (nodes.nextMissionBtn) {
@@ -1461,6 +1493,8 @@
       attacksPlayedThisTurn: 0,
       isPlayerTurn: true,
       xpEarned: 0,
+      coinsEarned: 0,
+      unlockedBeforeResult: profile.unlockedMission,
       guaranteedOpeningCard: null,
       lastDraftCard: null,
       highlightDraftCard: null,
@@ -1470,8 +1504,7 @@
   function positionBattleSoundControl() {
     const applyPosition = () => {
       const toggle = document.querySelector("button[data-sound-toggle]");
-      const activePanel = nodes.resultPanel.classList.contains("hidden") ? nodes.gamePanel : nodes.resultPanel;
-      const panel = activePanel.getBoundingClientRect();
+      const panel = nodes.gamePanel.getBoundingClientRect();
       if (!toggle || panel.width <= 0 || panel.height <= 0) return;
       const size = 42;
       toggle.style.setProperty("left", `${Math.round(panel.right - size - 12)}px`, "important");
@@ -1504,6 +1537,11 @@
     nodes.stageReserve.classList.add("hidden");
     leaveStageCanvas();
     nodes.resultPanel.classList.add("hidden");
+    nodes.gamePanel.classList.remove("result-open");
+    [nodes.gamePanel.querySelector(".hud-row"), nodes.gamePanel.querySelector(".battlefield"), nodes.gamePanel.querySelector(".action-area")].forEach((node) => {
+      node?.removeAttribute("inert");
+      node?.removeAttribute("aria-hidden");
+    });
     nodes.gamePanel.classList.remove("hidden");
     document.body.classList.add("beast-deck-playing");
     positionBattleSoundControl();
@@ -1597,7 +1635,11 @@
       },
       forceWinMission: () => {
         const mission = getMission(state.mission || profile.selectedMission);
-        state.xpEarned = mission.xp;
+        state.unlockedBeforeResult = profile.unlockedMission;
+        const coins = 40 + state.mission * 8;
+        profile.coins += coins;
+        state.coinsEarned += coins;
+        addXp(mission.xp);
         if (state.mission >= profile.unlockedMission && profile.unlockedMission < maxMission) {
           profile.unlockedMission = state.mission + 1;
         }
@@ -1609,6 +1651,14 @@
           ...window.__beastDeckSmoke.getState(),
           selectedMission: profile.selectedMission,
           unlockedMission: profile.unlockedMission,
+          level: profile.level,
+          xp: profile.xp,
+          coins: profile.coins,
+          xpEarned: state.xpEarned,
+          coinsEarned: state.coinsEarned,
+          rewardsText: nodes.resultRewards?.textContent || "",
+          savedText: nodes.resultSaved?.textContent || "",
+          unlockText: nodes.resultUnlock?.textContent || "",
           nextMissionVisible: !nodes.nextMissionBtn?.classList.contains("hidden"),
           nextMissionText: nodes.nextMissionBtn?.textContent || "",
         };
@@ -1651,6 +1701,8 @@
       document.body.classList.remove("beast-deck-playing");
       window.WonderSound?.play("click");
       nodes.resultPanel.classList.add("hidden");
+      nodes.gamePanel.classList.add("hidden");
+      nodes.gamePanel.classList.remove("result-open");
       showStage();
       renderProgressUI();
       updateDiamondShopUI();

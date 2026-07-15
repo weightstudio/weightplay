@@ -335,6 +335,11 @@ body.garden-stage .home-link { grid-template-columns: 1fr; }
   background: #fff0b8;
 }
 
+.tile:focus {
+  outline: 4px solid #1555c0;
+  outline-offset: 3px;
+}
+
 .tile.matched {
   pointer-events: none;
   opacity: 0;

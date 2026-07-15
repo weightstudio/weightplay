@@ -423,7 +423,7 @@
     return copy;
   }
 
-  function renderBoard() {
+  function renderBoard(focusIndex = null) {
     board.innerHTML = "";
     for (const tile of tiles) {
       const button = document.createElement("button");
@@ -433,10 +433,18 @@
       button.dataset.tileId = tile.art.id;
       button.innerHTML = `<img class="tile-image" src="${tile.art.asset}" alt="" draggable="false" />`;
       button.setAttribute("aria-label", tileName(tile.art));
-      if (tile.matched) button.classList.add("matched");
-      if (selectedTile?.index === tile.index) button.classList.add("selected");
+      const selected = selectedTile?.index === tile.index;
+      button.setAttribute("aria-pressed", String(selected));
+      if (tile.matched) {
+        button.classList.add("matched");
+        button.disabled = true;
+        button.tabIndex = -1;
+        button.setAttribute("aria-hidden", "true");
+      }
+      if (selected) button.classList.add("selected");
       board.append(button);
     }
+    if (focusIndex != null) requestAnimationFrame(() => board.querySelector(`[data-index="${focusIndex}"]:not(:disabled)`)?.focus());
   }
 
   function selectTile(index) {
@@ -445,13 +453,13 @@
     if (!tile || tile.matched) return;
     if (!selectedTile) {
       selectedTile = tile;
-      renderBoard();
+      renderBoard(tile.index);
       window.WonderSound?.play?.("click");
       return;
     }
     if (selectedTile.index === tile.index) {
       selectedTile = null;
-      renderBoard();
+      renderBoard(tile.index);
       return;
     }
     moves += 1;
@@ -462,7 +470,7 @@
       selectedTile = null;
       showMessage(t("matched"));
       window.WonderSound?.play?.("success");
-      renderBoard();
+      renderBoard(tiles.find((item) => !item.matched)?.index ?? null);
       if (matchedPairs === levels[currentLevelIndex].pairs) finishLevel();
     } else {
       const first = selectedTile.index;
@@ -471,11 +479,11 @@
       busy = true;
       showMessage(t("miss"));
       window.WonderSound?.play?.("wrong");
-      renderBoard();
+      renderBoard(second);
       markWrong(first, second);
       setTimeout(() => {
         busy = false;
-        renderBoard();
+        renderBoard(second);
       }, 360);
     }
     updateHud();

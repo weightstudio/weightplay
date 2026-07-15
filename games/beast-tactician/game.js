@@ -73,6 +73,8 @@
     resultText: $("resultText"),
     resultStars: $("resultStars"),
     resultRewardText: $("resultRewardText"),
+    resultProgressText: $("resultProgressText"),
+    resultUnlockText: $("resultUnlockText"),
     skillReportText: $("skillReportText"),
     nextStageBtn: $("nextStageBtn"),
     rerollRewardBtn: $("rerollRewardBtn"),
@@ -163,6 +165,10 @@
       reviveUsed: "Core revived.",
       rewardSummary: "Reward: +{points} upgrade points, +{diamonds} diamonds",
       rewardRerolled: "Reward rerolled: +{points} upgrade points, +{diamonds} diamonds",
+      savedProgress: "Saved total: {points} upgrade points · {diamonds} diamonds",
+      newRouteUnlocked: "New route unlocked: Stage {stage} — {name}",
+      nextRouteReady: "Next route ready: Stage {stage} — {name}",
+      campaignComplete: "Campaign complete: all 10 stages unlocked.",
       rewardRerollUsed: "Reward rerolled.",
       starRating: "{stars}/3 Stars",
       buildFeedback: "Deployed",
@@ -672,6 +678,10 @@
     publicReleaseBadge: "\u7acb\u5373\u904a\u73a9",
     publicNotice: "\u5efa\u7f6e\u5b88\u885b\u3001\u4fdd\u8b77\u6c34\u6676\u6838\u5fc3\uff0c\u4e26\u89e3\u9396\u5168\u90e8 10 \u500b\u68ee\u6797\u95dc\u5361\u3002\u9032\u5ea6\u6703\u4fdd\u5b58\u5728\u9019\u53f0\u88dd\u7f6e\u3002",
     autoWave: "\u4e0b\u4e00\u6ce2\u5c07\u5728 {seconds} \u79d2\u5f8c\u81ea\u52d5\u958b\u59cb",
+    savedProgress: "\u5df2\u4fdd\u5b58\u7e3d\u8a08\uff1a{points} \u5347\u7d1a\u9ede\u00b7{diamonds} \u947d\u77f3",
+    newRouteUnlocked: "\u65b0\u8def\u7dda\u89e3\u9396\uff1a\u7b2c {stage} \u95dc\u2014{name}",
+    nextRouteReady: "\u4e0b\u4e00\u8def\u7dda\u53ef\u9032\u5165\uff1a\u7b2c {stage} \u95dc\u2014{name}",
+    campaignComplete: "\u6230\u5f79\u5b8c\u6210\uff1a\u5168\u90e8 10 \u95dc\u5df2\u89e3\u9396\u3002",
   });
 
   const state = {
@@ -857,14 +867,24 @@
 
   function setScreen(screen) {
     state.screen = screen;
+    const resultActive = screen === "result";
     document.body.classList.toggle("guardian-playing", screen === "game" || screen === "result");
+    document.body.classList.toggle("guardian-result", resultActive);
     document.body.classList.toggle("guardian-stage", screen === "stages");
+    nodes.gamePanel.querySelectorAll(":scope > .hud-row, :scope > .boss-panel, :scope > .battle-layout, :scope > .command-row").forEach((layer) => {
+      layer.inert = resultActive;
+      if (resultActive) layer.setAttribute("aria-hidden", "true");
+      else layer.removeAttribute("aria-hidden");
+    });
     [nodes.menuPanel, nodes.stagePanel, nodes.techPanel, nodes.gamePanel, nodes.resultPanel].forEach((panel) => panel?.classList.add("is-hidden"));
     if (screen === "menu") nodes.menuPanel.classList.remove("is-hidden");
     if (screen === "stages") nodes.stagePanel.classList.remove("is-hidden");
     if (screen === "tech") nodes.techPanel.classList.remove("is-hidden");
     if (screen === "game") nodes.gamePanel.classList.remove("is-hidden");
-    if (screen === "result") nodes.resultPanel.classList.remove("is-hidden");
+    if (resultActive) {
+      nodes.gamePanel.classList.remove("is-hidden");
+      nodes.resultPanel.classList.remove("is-hidden");
+    }
     updateBattleShell();
   }
 
@@ -1872,6 +1892,7 @@
     state.gameOver = true;
     state.won = true;
     const stage = state.stage;
+    const previousBestStage = state.save.bestStage;
     state.save.bestStage = Math.max(state.save.bestStage, Math.min(10, stage.id + 1));
     state.save.diamonds += stage.reward.diamonds;
     state.save.upgradePoints += stage.reward.points;
@@ -1884,6 +1905,7 @@
       points: stage.reward.points,
       diamonds: stage.reward.diamonds,
       stars,
+      newlyUnlocked: stage.id < 10 && previousBestStage < stage.id + 1,
       rerolled: false,
     };
     save();
@@ -1906,6 +1928,8 @@
     nodes.resultText.textContent = t("defeatText");
     nodes.resultStars.textContent = "";
     nodes.resultRewardText.textContent = "";
+    nodes.resultProgressText.textContent = "";
+    nodes.resultUnlockText.textContent = "";
     nodes.rerollRewardBtn.classList.add("is-hidden");
     nodes.skillReportText.textContent = resultSkillReport(false);
     nodes.nextStageBtn.classList.add("is-hidden");
@@ -1937,6 +1961,8 @@
     const reward = state.resultReward;
     if (!reward) {
       nodes.resultRewardText.textContent = "";
+      nodes.resultProgressText.textContent = "";
+      nodes.resultUnlockText.textContent = "";
       nodes.rerollRewardBtn.classList.add("is-hidden");
       return;
     }
@@ -1944,6 +1970,19 @@
       points: reward.points,
       diamonds: reward.diamonds,
     });
+    nodes.resultProgressText.textContent = t("savedProgress", {
+      points: state.save.upgradePoints,
+      diamonds: state.save.diamonds,
+    });
+    if (reward.stageId >= 10) {
+      nodes.resultUnlockText.textContent = t("campaignComplete");
+    } else {
+      const nextStage = stages[reward.stageId];
+      nodes.resultUnlockText.textContent = t(reward.newlyUnlocked ? "newRouteUnlocked" : "nextRouteReady", {
+        stage: nextStage.id,
+        name: nextStage.name[state.locale],
+      });
+    }
     nodes.rerollRewardBtn.classList.remove("is-hidden");
     nodes.rerollRewardBtn.disabled = reward.rerolled || state.save.diamonds < 3;
     nodes.rerollRewardBtn.textContent = reward.rerolled ? t("rewardRerollUsed") : t("rerollReward");
@@ -3550,6 +3589,8 @@
     const rewardAfter = { ...state.resultReward };
     const diamondsAfterReroll = state.save.diamonds;
     const pointsAfterReroll = state.save.upgradePoints;
+    const progressAfterReroll = nodes.resultProgressText.textContent;
+    const unlockAfterReroll = nodes.resultUnlockText.textContent;
     buyGoldenFrame();
     const diamondsAfterFrame = state.save.diamonds;
     startStage(1);
@@ -3562,6 +3603,8 @@
       pointsAfterWin,
       diamondsAfterReroll,
       pointsAfterReroll,
+      progressAfterReroll,
+      unlockAfterReroll,
       diamondsAfterFrame,
       starsText: nodes.resultStars.textContent,
       starsSaved: state.save.stars?.[1] || 0,
@@ -3666,6 +3709,9 @@
       starsText: nodes.resultStars.textContent,
       starsSaved: state.save.stars?.[10] || 0,
       hasReward: nodes.resultRewardText.textContent.length > 0,
+      progressText: nodes.resultProgressText.textContent,
+      unlockText: nodes.resultUnlockText.textContent,
+      resultParent: nodes.resultPanel.parentElement?.id || "",
       nextHidden: nodes.nextStageBtn.classList.contains("is-hidden"),
     };
   }
@@ -3742,6 +3788,9 @@
       starsText: nodes.resultStars.textContent,
       clearSaved: state.save.clears[3] === true,
       nextUnlocked: state.save.bestStage >= 4,
+      progressText: nodes.resultProgressText.textContent,
+      unlockText: nodes.resultUnlockText.textContent,
+      resultParent: nodes.resultPanel.parentElement?.id || "",
     };
     nodes.nextStageBtn.click();
     const afterClick = {

@@ -59,14 +59,19 @@
     allTrialsUnlocked: "All three trials are unlocked.",
     masteryReady: "Heart Mastery is ready on Main.",
     masteryNeed: "Heart Mastery needs {remaining} more Trial Marks.",
+    masteryUpgradeReady: "All heroes Max HP +{current} → +{next} · Spend {cost} / Have {marks} marks",
+    masteryUpgradeNeed: "All heroes Max HP +{current} → +{next} · Need {cost} / Have {marks} marks",
   });
   Object.assign(copy["zh-Hant"], {
+    mastery: "\u751f\u547d\u7cbe\u901a",
     earnedMarks: "\u7372\u5f97 {gain} \u679a\u8a66\u7149\u5370\u8a18 \u00b7 \u7d2f\u7a4d {total} \u679a\u3002",
     trialUnlocked: "\u5df2\u89e3\u9396\u8a66\u7149 {next}\u3002",
     trialAvailable: "\u8a66\u7149 {next} \u4ecd\u53ef\u9032\u5165\u3002",
     allTrialsUnlocked: "\u4e09\u500b\u8a66\u7149\u5df2\u5168\u90e8\u89e3\u9396\u3002",
     masteryReady: "\u53ef\u56de\u4e3b\u756b\u9762\u5347\u7d1a\u52c7\u6c23\u7cbe\u901a\u3002",
     masteryNeed: "\u52c7\u6c23\u7cbe\u901a\u9084\u9700\u8981 {remaining} \u679a\u8a66\u7149\u5370\u8a18\u3002",
+    masteryUpgradeReady: "\u5168\u82f1\u96c4\u6700\u5927\u751f\u547d +{current} \u2192 +{next} \u00b7 \u6d88\u8017 {cost} / \u6301\u6709 {marks} \u679a",
+    masteryUpgradeNeed: "\u5168\u82f1\u96c4\u6700\u5927\u751f\u547d +{current} \u2192 +{next} \u00b7 \u9700\u8981 {cost} / \u6301\u6709 {marks} \u679a",
   });
 
   let locale = localStorage.getItem("weightPlayLocale") || "en";
@@ -149,7 +154,19 @@
     });
     $("#markCount").textContent = marks;
     $("#masteryLevel").textContent = `Lv.${mastery}`;
-    $("#masteryCost").textContent = `${5 + mastery * 4} marks`;
+    const masteryCost = 5 + mastery * 4;
+    const masteryCurrent = mastery * 12;
+    const masteryNext = (mastery + 1) * 12;
+    const masteryReady = marks >= masteryCost;
+    const masterySummary = interpolate(masteryReady ? "masteryUpgradeReady" : "masteryUpgradeNeed", {
+      current: masteryCurrent,
+      next: masteryNext,
+      cost: masteryCost,
+      marks,
+    });
+    $("#masteryCost").textContent = masterySummary;
+    $("#masteryBtn").disabled = !masteryReady;
+    $("#masteryBtn").setAttribute("aria-label", `${t("mastery")}, Lv.${mastery}. ${masterySummary}`);
     renderHeroPicker();
     renderStages();
   }

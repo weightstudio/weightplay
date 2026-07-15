@@ -109,7 +109,7 @@
           <span><b id="ticketText">0</b></span>
           <span><b id="moodText">100%</b></span>
         </div>
-        <div id="animalCard" class="animal-card">
+        <div id="animalCard" class="animal-card" role="group" tabindex="0">
           <div id="animalEmoji" class="animal-emoji" aria-hidden="true"></div>
           <strong id="animalName">Lion</strong>
           <span id="requestText">Needs food</span>
@@ -118,7 +118,7 @@
         <div id="feedbackText" class="feedback" aria-live="polite"></div>
       </section>
 
-      <div id="resultPanel" class="result-panel hidden">
+      <div id="resultPanel" class="result-panel hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" tabindex="-1">
         <div class="result-card">
           <strong id="resultTitle">Great job!</strong>
           <div id="starText" class="stars">&#9734;&#9734;&#9734;</div>

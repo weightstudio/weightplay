@@ -39,6 +39,7 @@
       mood: "Happiness {count}%",
       correct: "Nice help!",
       wrong: "Try another item.",
+      careItemsAria: "Care item choices",
       items: {
         fruit: "Fruit",
         water: "Water",
@@ -101,6 +102,7 @@
       mood: "開心度 {count}%",
       correct: "幫得真好！",
       wrong: "試試看其他道具。",
+      careItemsAria: "照顧道具選項",
       items: {
         fruit: "水果",
         water: "水",
@@ -303,6 +305,7 @@
     document.querySelectorAll("[data-ui]").forEach((node) => {
       node.textContent = t(node.dataset.ui);
     });
+    nodes.itemGrid.setAttribute("aria-label", t("careItemsAria"));
     nodes.localeSelect.value = locale;
   }
 
@@ -379,14 +382,17 @@
     nodes.animalEmoji.innerHTML = `<img src="${animalAssets[stage.animal]}" alt="" />`;
     nodes.animalName.textContent = t(`animals.${stage.animal}`);
     nodes.requestText.textContent = t("task", { station: t(`stations.${stage.station}`), animal: t(`animals.${stage.animal}`), item: t(`items.${wanted}`) });
+    nodes.animalCard.setAttribute("aria-label", nodes.requestText.textContent);
     nodes.feedbackText.textContent = "";
     renderItems(stage, wanted);
+    requestAnimationFrame(() => nodes.animalCard.focus());
   }
 
   function renderItems(stage, wanted) {
     const choices = [wanted, ...stage.pool.filter((item) => item !== wanted)].slice(0, 4);
     choices.sort(() => Math.random() - 0.5);
     nodes.itemGrid.replaceChildren();
+    nodes.itemGrid.setAttribute("aria-busy", "false");
     choices.forEach((item) => {
       const meta = itemMeta(item);
       const button = document.createElement("button");
@@ -450,6 +456,8 @@
       mistakes += 1;
       currentTaskMistakes += 1;
       nodes.feedbackText.textContent = t("wrong");
+      button?.setAttribute("aria-invalid", "true");
+      setTimeout(() => button?.removeAttribute("aria-invalid"), 900);
       nodes.animalCard.classList.remove("wrong");
       button?.classList.remove("wrong");
       void nodes.animalCard.offsetWidth;
@@ -461,6 +469,8 @@
     }
 
     acceptingInput = false;
+    nodes.itemGrid.setAttribute("aria-busy", "true");
+    nodes.itemGrid.querySelectorAll(".item-card").forEach((choice) => { choice.disabled = true; });
     if (currentTaskMistakes === 0) firstTryTasks += 1;
     button?.classList.add("correct");
     nodes.animalCard.classList.remove("happy");
@@ -498,6 +508,7 @@
     lastResult = { earned, previousBest, tickets, mood, taskCount: stage.tasks.length, firstTryTasks, mistakes };
     renderResult();
     nodes.resultPanel.classList.remove("hidden");
+    requestAnimationFrame(() => nodes.resultPanel.focus());
     playSound("win");
     track("game_complete", { level: stageNo, stars: earned, mistakes });
   }

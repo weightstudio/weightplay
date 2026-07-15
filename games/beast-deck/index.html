@@ -209,6 +209,37 @@
             <button id="endTurnBtn" type="button" class="action-btn" data-ui="endTurn">End Turn</button>
           </div>
         </div>
+
+        <section id="resultPanel" class="result-panel hidden" aria-live="polite">
+          <div class="result-card">
+            <strong id="resultTitle">Mission Complete</strong>
+            <div id="resultScore" class="result-score">0</div>
+            <small class="result-score-label" data-ui="resultScoreLabel">Mission Progress</small>
+            <p id="resultText"></p>
+
+            <div class="result-progress" aria-label="Saved mission progress">
+              <strong id="resultRewards"></strong>
+              <span id="resultSaved"></span>
+              <span id="resultUnlock"></span>
+            </div>
+
+            <div class="skill-lines">
+              <span><span data-ui="skillLogic">Logic</span> <b id="logicStars">-----</b></span>
+              <span><span data-ui="skillFocus">Focus</span> <b id="focusStars">-----</b></span>
+              <span><span data-ui="skillProblem">Problem Solving</span> <b id="problemStars">-----</b></span>
+            </div>
+
+            <div class="skill-report">
+              <strong data-ui="skillReportTitle">Skill Report</strong>
+              <p id="skillReportText"></p>
+              <small data-ui="resultDisclaimer">For fun and local progress tracking only.</small>
+            </div>
+
+            <button id="retryBtn" type="button" data-ui="tryAgain">Try Again</button>
+            <button id="nextMissionBtn" class="action-btn hidden" type="button">Next Mission</button>
+            <button id="resultMenuBtn" type="button" data-ui="backToMenu">Back to Menu</button>
+          </div>
+        </section>
       </section>
       <div class="battle-ad-reserve" aria-hidden="true"></div>
 
@@ -218,31 +249,6 @@
           <p data-ui="chooseCardDesc">Choose one animal power to keep in this mission deck.</p>
           <small data-ui="draftPermanentHint">Mission draft cards last for this mission only. Permanent cards come from Gold Beast Packs on the menu.</small>
           <div id="draftCards" class="draft-cards"></div>
-        </div>
-      </section>
-
-      <section id="resultPanel" class="result-panel hidden">
-        <div class="result-card">
-          <strong id="resultTitle">Mission Complete</strong>
-          <div id="resultScore" class="result-score">0</div>
-          <small class="result-score-label" data-ui="resultScoreLabel">Mission Progress</small>
-          <p id="resultText"></p>
-
-          <div class="skill-lines">
-            <span><span data-ui="skillLogic">Logic</span> <b id="logicStars">-----</b></span>
-            <span><span data-ui="skillFocus">Focus</span> <b id="focusStars">-----</b></span>
-            <span><span data-ui="skillProblem">Problem Solving</span> <b id="problemStars">-----</b></span>
-          </div>
-
-          <div class="skill-report">
-            <strong data-ui="skillReportTitle">Skill Report</strong>
-            <p id="skillReportText"></p>
-            <small data-ui="resultDisclaimer">For fun and local progress tracking only.</small>
-          </div>
-
-          <button id="retryBtn" type="button" data-ui="tryAgain">Try Again</button>
-          <button id="nextMissionBtn" class="action-btn hidden" type="button">Next Mission</button>
-          <button id="resultMenuBtn" type="button" data-ui="backToMenu">Back to Menu</button>
         </div>
       </section>
 

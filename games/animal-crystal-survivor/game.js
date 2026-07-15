@@ -41,6 +41,7 @@
     charmBtn: $("charmBtn"),
     charmCost: $("charmCost"),
     charmStatus: $("charmStatus"),
+    menuSoundBtn: $("menuSoundBtn"),
     expeditionRecordText: $("expeditionRecordText"),
     patrolRankText: $("patrolRankText"),
     patrolRankProgressText: $("patrolRankProgressText"),
@@ -73,11 +74,13 @@
       controlAttack: "Auto attack",
       diamondShopTitle: "Run Boost",
       charmName: "Crystal Charm",
-      charmEffect: "Permanent: start each run with +1 HP and wider crystal pickup.",
-      charmOwned: "Owned: every run starts with the Crystal Charm bonus.",
+      charmEffect: "Permanent run start: Max HP 7 → 8 · pickup radius 54 → 68.",
+      charmOwned: "Owned and saved: Max HP 8 · pickup radius 68 every run.",
       charmBuy: "Unlock for {cost}",
-      charmNeed: "Need {cost} diamonds.",
-      charmBought: "Crystal Charm unlocked.",
+      charmNeed: "Need {cost} diamonds · balance {balance}.",
+      charmBought: "Unlocked and saved · {balance} diamonds remain.",
+      enableSound: "Enable sound",
+      disableSound: "Disable sound",
       startRun: "Start Run",
       menu: "Menu",
       backToLobby: "Back to lobby",
@@ -154,11 +157,13 @@
       controlAttack: "\u81ea\u52d5\u653b\u64ca",
       diamondShopTitle: "\u6311\u6230\u52a0\u6210",
       charmName: "\u6c34\u6676\u8b77\u7b26",
-      charmEffect: "\u6c38\u4e45\uff1a\u6bcf\u5c40\u958b\u59cb\u6642 +1 \u751f\u547d\uff0c\u4e26\u63d0\u9ad8\u6c34\u6676\u62fe\u53d6\u7bc4\u570d\u3002",
-      charmOwned: "\u5df2\u64c1\u6709\uff1a\u6bcf\u5c40\u90fd\u6703\u5957\u7528\u6c34\u6676\u8b77\u7b26\u52a0\u6210\u3002",
+      charmEffect: "\u6c38\u4e45\u958b\u5c40\uff1a\u751f\u547d\u4e0a\u9650 7 → 8 · \u62fe\u53d6\u7bc4\u570d 54 → 68\u3002",
+      charmOwned: "\u5df2\u64c1\u6709\u4e26\u4fdd\u5b58\uff1a\u6bcf\u5c40\u751f\u547d\u4e0a\u9650 8 · \u62fe\u53d6\u7bc4\u570d 68\u3002",
       charmBuy: "\u82b1\u8cbb {cost} \u89e3\u9396",
-      charmNeed: "\u9700\u8981 {cost} \u9846\u947d\u77f3\u3002",
-      charmBought: "\u5df2\u89e3\u9396\u6c34\u6676\u8b77\u7b26\u3002",
+      charmNeed: "\u9700\u8981 {cost} \u9846\u947d\u77f3 · \u76ee\u524d {balance} \u9846\u3002",
+      charmBought: "\u5df2\u89e3\u9396\u4e26\u4fdd\u5b58 · \u5269\u9918 {balance} \u9846\u947d\u77f3\u3002",
+      enableSound: "\u958b\u555f\u97f3\u6548",
+      disableSound: "\u95dc\u9589\u97f3\u6548",
       startRun: "\u958b\u59cb\u6311\u6230",
       menu: "\u9078\u55ae",
       backToLobby: "\u56de\u5230\u5927\u5ef3",
@@ -428,6 +433,7 @@
     renderExpeditionRecord();
     renderHud();
     updateDiamondShop();
+    updateMenuSound();
   }
 
   function getWallet() {
@@ -438,6 +444,14 @@
     return getWallet()?.read?.().diamonds || 0;
   }
 
+  function updateMenuSound() {
+    if (!nodes.menuSoundBtn) return;
+    const muted = Boolean(window.WonderSound?.isMuted?.());
+    nodes.menuSoundBtn.textContent = muted ? "🔇" : "🔊";
+    nodes.menuSoundBtn.setAttribute("aria-label", t(muted ? "enableSound" : "disableSound"));
+    nodes.menuSoundBtn.setAttribute("aria-pressed", String(!muted));
+  }
+
   function updateDiamondShop(message = "") {
     if (!nodes.charmBtn || !nodes.diamondBalance) return;
     const owned = Boolean(save.crystalCharm);
@@ -445,8 +459,13 @@
     nodes.diamondBalance.textContent = String(balance);
     nodes.charmCost.textContent = owned ? "\u2713" : String(crystalCharmCost);
     nodes.charmBtn.disabled = owned || balance < crystalCharmCost;
-    nodes.charmBtn.setAttribute("aria-label", `${t("charmName")} - ${owned ? t("charmOwned") : t("charmBuy", { cost: crystalCharmCost })}`);
-    nodes.charmStatus.textContent = message || (owned ? t("charmOwned") : t("charmBuy", { cost: crystalCharmCost }));
+    const status = message || (owned
+      ? t("charmOwned")
+      : balance < crystalCharmCost
+        ? t("charmNeed", { cost: crystalCharmCost, balance })
+        : t("charmBuy", { cost: crystalCharmCost }));
+    nodes.charmBtn.setAttribute("aria-label", `${t("charmName")} · ${owned ? t("charmOwned") : t("charmEffect")} · ${status}`);
+    nodes.charmStatus.textContent = status;
   }
 
   function buyCrystalCharm() {
@@ -456,13 +475,13 @@
     }
     const wallet = getWallet();
     if (!wallet?.spendDiamonds || !wallet.spendDiamonds(crystalCharmCost)) {
-      updateDiamondShop(t("charmNeed", { cost: crystalCharmCost }));
+      updateDiamondShop(t("charmNeed", { cost: crystalCharmCost, balance: diamondBalance() }));
       playSound("wrong", 0.2);
       return;
     }
     save.crystalCharm = true;
     persist();
-    updateDiamondShop(t("charmBought"));
+    updateDiamondShop(t("charmBought", { balance: diamondBalance() }));
     playSound("success", 0.2);
     window.WonderAnalytics?.track("diamond_spend", { game_id: GAME_ID, item: "crystal_charm", cost: crystalCharmCost, balance: diamondBalance() });
   }
@@ -1191,6 +1210,11 @@
   nodes.localeSelect.addEventListener("change", (event) => setLocale(event.target.value));
   nodes.startBtn.addEventListener("click", startRun);
   nodes.charmBtn?.addEventListener("click", buyCrystalCharm);
+  nodes.menuSoundBtn?.addEventListener("click", () => {
+    const muted = Boolean(window.WonderSound?.isMuted?.());
+    window.WonderSound?.setMuted?.(!muted);
+    updateMenuSound();
+  });
   nodes.retryBtn.addEventListener("click", startRun);
   nodes.menuBtn.addEventListener("click", () => {
     runToken += 1;
