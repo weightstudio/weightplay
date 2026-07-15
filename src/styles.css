@@ -3197,6 +3197,1197 @@ body[data-audience="kids"] .challenge-spotlight-section {
   }
 }
 
+/* Kids lobby: image-first, low-reading-load discovery for younger players. */
+body.kids-lobby-page {
+  color-scheme: light;
+  background: #dff5ff;
+  color: #17324a;
+}
+
+.kids-lobby-page .lobby-shell {
+  display: flex;
+  width: min(100%, 1180px);
+  padding-top: max(10px, env(safe-area-inset-top));
+  flex-direction: column;
+  gap: 0;
+}
+
+.kids-lobby-page .kids-lobby-hero {
+  position: relative;
+  order: 0;
+  display: block;
+  height: clamp(310px, 38vw, 380px);
+  min-height: 0;
+  margin-bottom: 18px;
+  padding: 0;
+  overflow: hidden;
+  border: 4px solid #ffffff;
+  border-radius: 8px;
+  background: #55bce9;
+  box-shadow: 0 10px 0 #84c75d;
+  isolation: isolate;
+}
+
+.kids-lobby-page .kids-hero-scene {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 42%;
+}
+
+.kids-lobby-page .kids-lobby-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: rgba(12, 65, 81, 0.28);
+  pointer-events: none;
+}
+
+.kids-lobby-page .lobby-hero-copy {
+  position: absolute;
+  top: 76px;
+  left: clamp(18px, 4vw, 46px);
+  width: min(50%, 500px);
+  color: #ffffff;
+  text-shadow: 0 3px 10px rgba(9, 45, 61, 0.72);
+}
+
+.kids-lobby-page .lobby-kicker {
+  width: fit-content;
+  margin-bottom: 7px;
+  padding: 5px 9px;
+  border-radius: 6px;
+  background: #ffdc63;
+  color: #513708;
+  font-size: 14px;
+  text-shadow: none;
+}
+
+.kids-lobby-page .brand-lockup {
+  display: block;
+}
+
+.kids-lobby-page .brand-logo,
+.kids-lobby-page .brand-byline,
+.kids-lobby-page .lobby-mascot {
+  display: none;
+}
+
+.kids-lobby-page .lobby-hero h1 {
+  max-width: 440px;
+  font-size: clamp(40px, 7vw, 70px);
+  line-height: 0.94;
+}
+
+.kids-lobby-page .lobby-subtitle {
+  max-width: 430px;
+  margin-top: 10px;
+  color: #ffffff;
+  font-size: clamp(15px, 2vw, 19px);
+  font-weight: 800;
+  line-height: 1.4;
+}
+
+.kids-lobby-page .kids-back-link {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 2;
+  min-height: 48px;
+  padding: 0 14px;
+  border: 3px solid #ffffff;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #16658d;
+  box-shadow: 0 5px 0 #7cc4e3;
+}
+
+.kids-lobby-page .kids-back-link::before {
+  content: "\2190";
+  margin-right: 7px;
+  font-family: Arial, sans-serif;
+  font-size: 24px;
+  line-height: 1;
+}
+
+.kids-lobby-page .language-picker {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 2;
+  width: min(148px, 38%);
+  min-height: 48px;
+  padding: 5px 9px;
+  border: 3px solid #ffffff;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #174c67;
+  box-shadow: 0 5px 0 #7cc4e3;
+}
+
+.kids-lobby-page .language-picker span {
+  font-size: 10px;
+}
+
+.kids-lobby-page .language-picker select {
+  min-height: 24px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #17324a;
+  font-size: 14px;
+}
+
+.kids-lobby-page .lobby-feature {
+  position: absolute;
+  right: clamp(16px, 3vw, 32px);
+  bottom: 18px;
+  z-index: 2;
+  display: grid;
+  width: min(320px, 48%);
+  min-height: 68px;
+  padding: 8px 12px 8px 8px;
+  grid-template-columns: 52px minmax(0, 1fr);
+  gap: 10px;
+  border: 3px solid #ffffff;
+  border-radius: 8px;
+  background: #ff765f;
+  color: #ffffff;
+  box-shadow: 0 6px 0 #b84438;
+}
+
+.kids-lobby-page .lobby-feature img {
+  width: 52px;
+  height: 52px;
+  border-radius: 6px;
+}
+
+.kids-lobby-page .lobby-feature span {
+  color: #fff5c7;
+  font-size: 11px;
+}
+
+.kids-lobby-page .lobby-feature strong {
+  overflow: hidden;
+  font-size: 18px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.kids-lobby-page .kids-play-heading {
+  order: 1;
+  margin: 14px 0 8px;
+  text-align: center;
+}
+
+.kids-lobby-page .kids-play-heading span {
+  color: #ef5d4a;
+  font-size: 13px;
+  font-weight: 1000;
+  text-transform: uppercase;
+}
+
+.kids-lobby-page .kids-play-heading h2 {
+  margin: 3px 0 0;
+  color: #17324a;
+  font-size: clamp(28px, 5vw, 42px);
+  line-height: 1.05;
+}
+
+.kids-lobby-page .kids-age-filter {
+  order: 2;
+  gap: 10px;
+  margin: 0 0 12px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  backdrop-filter: none;
+}
+
+.kids-lobby-page .kids-age-filter button {
+  height: 64px;
+  min-width: 0;
+  max-width: none;
+  padding: 7px;
+  border: 3px solid #ffffff;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #17324a;
+  font-size: 18px;
+  box-shadow: 0 6px 0 #9ec8d8;
+}
+
+.kids-lobby-page .kids-age-filter button:nth-child(2) {
+  background: #ffdf68;
+  box-shadow: 0 6px 0 #d6a728;
+}
+
+.kids-lobby-page .kids-age-filter button:nth-child(3) {
+  background: #9ee68e;
+  box-shadow: 0 6px 0 #56a950;
+}
+
+.kids-lobby-page .kids-age-filter button:nth-child(4) {
+  background: #87d8ff;
+  box-shadow: 0 6px 0 #3799c7;
+}
+
+.kids-lobby-page .kids-age-filter button.active {
+  border-color: #17324a;
+  background: #ff765f;
+  color: #ffffff;
+  box-shadow: 0 6px 0 #8f382f;
+}
+
+.kids-lobby-page .kids-age-filter .filter-copy {
+  align-items: center;
+}
+
+.kids-lobby-page .kids-age-filter .filter-count {
+  display: none;
+}
+
+.kids-lobby-page .lobby-search-row {
+  order: 3;
+  margin: 8px 0 10px;
+}
+
+.kids-lobby-page .lobby-search {
+  color: #254a63;
+}
+
+.kids-lobby-page .lobby-search input {
+  min-height: 54px;
+  border: 3px solid #80bed6;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #17324a;
+  box-shadow: 0 5px 0 #9ec8d8;
+}
+
+.kids-lobby-page .lobby-search input::placeholder {
+  color: #698597;
+}
+
+.kids-lobby-page .quick-pick-btn {
+  min-height: 54px;
+  border: 3px solid #ffffff;
+  border-radius: 8px;
+  background: #ffbd4a;
+  color: #4d3405;
+  box-shadow: 0 5px 0 #c78218;
+}
+
+.kids-lobby-page .library-tabs {
+  order: 4;
+  gap: 8px;
+  padding-bottom: 12px;
+}
+
+.kids-lobby-page .library-tabs button {
+  height: 52px;
+  border: 2px solid #85b7ca;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #284d64;
+  box-shadow: 0 4px 0 #a7ccda;
+}
+
+.kids-lobby-page .library-tabs button.active {
+  border-color: #195f7e;
+  background: #247fa4;
+  color: #ffffff;
+  box-shadow: 0 4px 0 #174c67;
+}
+
+.kids-lobby-page .library-tabs .filter-count {
+  display: none;
+}
+
+.kids-lobby-page #continuePlayingSection {
+  order: 5;
+}
+
+.kids-lobby-page #filterStatus {
+  order: 6;
+  color: #17324a;
+}
+
+.kids-lobby-page #gameGrid {
+  order: 7;
+}
+
+.kids-lobby-page .kids-promise {
+  order: 8;
+}
+
+.kids-lobby-page .parent-trust-strip {
+  order: 9;
+}
+
+.kids-lobby-page .site-footer {
+  order: 10;
+}
+
+.kids-lobby-page #lobbyStats,
+.kids-lobby-page #dailyReward,
+.kids-lobby-page #advancedFilters,
+.kids-lobby-page #discoverySnapshot,
+.kids-lobby-page #heroGamesSection,
+.kids-lobby-page #mobilePicksSection,
+.kids-lobby-page #upcomingGamesSection,
+.kids-lobby-page #characterShowcaseSection,
+.kids-lobby-page #freshUpdatesSection,
+.kids-lobby-page #challengeSpotlightSection,
+.kids-lobby-page #recommendationsSection,
+.kids-lobby-page #skillPathsSection {
+  display: none !important;
+}
+
+.kids-lobby-page .lobby-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  padding-top: 10px;
+}
+
+.kids-lobby-page .game-card {
+  min-height: 0;
+  border: 3px solid #ffffff;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #17324a;
+  box-shadow: 0 7px 0 #9fc8d8;
+}
+
+.kids-lobby-page .game-card-art.image-art {
+  max-height: none;
+  border-bottom: 3px solid #ffffff;
+}
+
+.kids-lobby-page .game-card-bg-blur {
+  display: none;
+}
+
+.kids-lobby-page .game-card-art.image-art .game-card-fg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.kids-lobby-page .game-card-art.image-art .game-card-hero {
+  width: 45%;
+  height: 58%;
+}
+
+.kids-lobby-page .game-card-body {
+  gap: 7px;
+  padding: 11px;
+}
+
+.kids-lobby-page .game-card h2 {
+  color: #17324a;
+  font-size: 20px;
+}
+
+.kids-lobby-page .game-card p,
+.kids-lobby-page .game-card-state,
+.kids-lobby-page .game-card-categories,
+.kids-lobby-page .game-card-skills,
+.kids-lobby-page .game-card-skill-reason,
+.kids-lobby-page .game-card-facts,
+.kids-lobby-page .game-card-meta,
+.kids-lobby-page .game-card-plays,
+.kids-lobby-page .game-card-actions span:last-child,
+.kids-lobby-page .popular-card-badge,
+.kids-lobby-page .updated-card-badge {
+  display: none;
+}
+
+.kids-lobby-page .game-card-topline {
+  color: #4b697b;
+}
+
+.kids-lobby-page .age-pill {
+  min-height: 28px;
+  background: #ffdf68;
+  color: #4d3405;
+}
+
+.kids-lobby-page .game-card-actions {
+  display: block;
+}
+
+.kids-lobby-page .game-card-actions span:first-child {
+  display: grid;
+  min-height: 44px;
+  place-items: center;
+  border-radius: 7px;
+  background: #ff765f;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 1000;
+  box-shadow: 0 4px 0 #b84438;
+}
+
+.kids-lobby-page .favorite-toggle {
+  background: #ffffff;
+  color: #e74f5f;
+}
+
+.kids-lobby-page .kids-promise {
+  margin-top: 28px;
+  border: 0;
+  background: #267e77;
+  color: #ffffff;
+}
+
+.kids-lobby-page .kids-promise span {
+  color: #ffea8a;
+}
+
+.kids-lobby-page .kids-promise p,
+.kids-lobby-page .kids-promise li {
+  color: #ffffff;
+}
+
+.kids-lobby-page .parent-trust-strip {
+  margin-top: 14px;
+  border: 0;
+  background: #fff4ca;
+  color: #17324a;
+}
+
+.kids-lobby-page .parent-trust-copy span,
+.kids-lobby-page .parent-trust-copy p,
+.kids-lobby-page .parent-trust-points small {
+  color: #526d78;
+}
+
+.kids-lobby-page .parent-trust-points div {
+  border-color: #c9dfb0;
+  background: #ffffff;
+}
+
+.kids-lobby-page .parent-trust-points strong {
+  color: #267e77;
+}
+
+.kids-lobby-page .trust-report-link,
+.kids-lobby-page .site-footer a {
+  color: #146c82;
+}
+
+.kids-lobby-page .site-footer {
+  border-color: #9fc8d8;
+  color: #526d78;
+}
+
+@media (max-width: 720px) {
+  .kids-lobby-page .kids-lobby-hero {
+    height: 340px;
+  }
+
+  .kids-lobby-page .kids-hero-scene {
+    object-position: 58% 44%;
+  }
+
+  .kids-lobby-page .lobby-hero-copy {
+    top: 96px;
+    left: 16px;
+    width: 58%;
+  }
+
+  .kids-lobby-page .lobby-hero h1 {
+    font-size: 36px;
+  }
+
+  .kids-lobby-page .lobby-subtitle {
+    display: -webkit-box;
+    overflow: hidden;
+    font-size: 14px;
+    line-height: 1.3;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+
+  .kids-lobby-page .kids-back-link {
+    width: 50px;
+    padding: 0;
+    justify-content: center;
+    overflow: hidden;
+    color: transparent;
+    font-size: 0;
+  }
+
+  .kids-lobby-page .kids-back-link::before {
+    margin: 0;
+    color: #16658d;
+    font-size: 30px;
+  }
+
+  .kids-lobby-page .lobby-feature {
+    right: 12px;
+    bottom: 12px;
+    width: min(245px, 70%);
+    min-height: 58px;
+    grid-template-columns: 42px minmax(0, 1fr);
+  }
+
+  .kids-lobby-page .lobby-feature img {
+    width: 42px;
+    height: 42px;
+  }
+
+  .kids-lobby-page .lobby-feature strong {
+    font-size: 15px;
+  }
+
+  .kids-lobby-page .kids-play-heading {
+    margin-top: 18px;
+  }
+
+  .kids-lobby-page .kids-age-filter {
+    gap: 6px;
+  }
+
+  .kids-lobby-page .kids-age-filter button {
+    height: 60px;
+    font-size: 16px;
+  }
+
+  .kids-lobby-page .kids-age-filter .filter-copy {
+    flex: 1 1 auto;
+  }
+
+  .kids-lobby-page .lobby-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .kids-lobby-page .game-card-body {
+    padding: 9px;
+  }
+
+  .kids-lobby-page .game-card h2 {
+    display: -webkit-box;
+    overflow: hidden;
+    min-height: 38px;
+    font-size: 17px;
+    line-height: 1.12;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .kids-lobby-page .favorite-toggle {
+    top: 7px;
+    right: 7px;
+    width: 40px;
+    height: 40px;
+  }
+
+  .kids-lobby-page .parent-trust-strip,
+  .kids-lobby-page .kids-promise {
+    padding: 18px;
+  }
+}
+
+@media (max-width: 370px) {
+  .kids-lobby-page .lobby-search-row {
+    grid-template-columns: minmax(0, 1fr) 96px;
+  }
+
+  .kids-lobby-page .quick-pick-btn {
+    font-size: 12px;
+  }
+
+  .kids-lobby-page .kids-age-filter button {
+    padding: 4px;
+    font-size: 14px;
+  }
+}
+
+/* General lobby: mature, image-led discovery with the playable catalog first. */
+body.general-lobby-page {
+  color-scheme: light;
+  background: #eaf0ed;
+  color: #172d2a;
+}
+
+.general-lobby-page .lobby-shell {
+  display: flex;
+  width: min(100%, 1180px);
+  padding-top: max(10px, env(safe-area-inset-top));
+  flex-direction: column;
+}
+
+.general-lobby-page .lobby-hero {
+  position: relative;
+  order: 0;
+  display: block;
+  height: clamp(310px, 38vw, 390px);
+  min-height: 0;
+  margin-bottom: 22px;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid #426159;
+  border-radius: 8px;
+  background: #1b302c;
+  box-shadow: 0 10px 0 #b8c7bd;
+  isolation: isolate;
+}
+
+.general-lobby-page .general-hero-scene {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 45%;
+}
+
+.general-lobby-page .lobby-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: rgba(10, 23, 21, 0.38);
+  pointer-events: none;
+}
+
+.general-lobby-page .lobby-hero-copy {
+  position: absolute;
+  top: 54px;
+  left: clamp(20px, 4vw, 48px);
+  width: min(47%, 500px);
+  color: #ffffff;
+  text-shadow: 0 3px 12px rgba(4, 13, 12, 0.82);
+}
+
+.general-lobby-page .lobby-kicker {
+  width: fit-content;
+  margin-bottom: 8px;
+  padding: 5px 9px;
+  border-radius: 5px;
+  background: #f2bd4e;
+  color: #352506;
+  text-shadow: none;
+}
+
+.general-lobby-page .brand-lockup {
+  display: block;
+}
+
+.general-lobby-page .brand-logo,
+.general-lobby-page .brand-byline,
+.general-lobby-page .lobby-mascot {
+  display: none;
+}
+
+.general-lobby-page .lobby-hero h1 {
+  max-width: 460px;
+  font-size: clamp(48px, 7vw, 76px);
+  line-height: 0.94;
+}
+
+.general-lobby-page .lobby-subtitle {
+  max-width: 440px;
+  margin-top: 12px;
+  color: #ffffff;
+  font-size: clamp(15px, 2vw, 18px);
+  font-weight: 750;
+  line-height: 1.45;
+}
+
+.general-lobby-page .language-picker {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 2;
+  width: min(150px, 38%);
+  min-height: 52px;
+  padding: 6px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 7px;
+  background: rgba(18, 34, 31, 0.88);
+  color: #f4e9cc;
+  box-shadow: 0 5px 0 rgba(5, 15, 13, 0.7);
+}
+
+.general-lobby-page .language-picker span {
+  font-size: 10px;
+}
+
+.general-lobby-page .language-picker select {
+  min-height: 26px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #ffffff;
+  font-size: 14px;
+}
+
+.general-lobby-page .lobby-wallet {
+  position: absolute;
+  top: 14px;
+  right: 176px;
+  z-index: 2;
+  width: auto;
+  min-width: 108px;
+  min-height: 52px;
+  padding: 6px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.34);
+  border-radius: 7px;
+  background: rgba(18, 34, 31, 0.88);
+  box-shadow: 0 5px 0 rgba(5, 15, 13, 0.7);
+}
+
+.general-lobby-page .lobby-wallet span {
+  font-size: 10px;
+}
+
+.general-lobby-page .lobby-wallet strong {
+  font-size: 18px;
+}
+
+.general-lobby-page .lobby-feature {
+  position: absolute;
+  right: clamp(16px, 3vw, 34px);
+  bottom: 18px;
+  z-index: 2;
+  display: grid;
+  width: min(330px, 48%);
+  min-height: 70px;
+  padding: 8px 12px 8px 8px;
+  grid-template-columns: 52px minmax(0, 1fr);
+  gap: 11px;
+  border: 1px solid #f6d990;
+  border-radius: 7px;
+  background: #d8654c;
+  color: #ffffff;
+  box-shadow: 0 6px 0 #78372b;
+}
+
+.general-lobby-page .lobby-feature img {
+  width: 52px;
+  height: 52px;
+  border-radius: 5px;
+}
+
+.general-lobby-page .lobby-feature span {
+  color: #ffe5ad;
+  font-size: 11px;
+}
+
+.general-lobby-page .lobby-feature strong {
+  overflow: hidden;
+  font-size: 18px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.general-lobby-page .general-play-heading {
+  order: 1;
+  margin: 15px 0 8px;
+  text-align: center;
+}
+
+.general-lobby-page .general-play-heading span {
+  color: #b64b36;
+  font-size: 12px;
+  font-weight: 1000;
+  text-transform: uppercase;
+}
+
+.general-lobby-page .general-play-heading h2 {
+  margin: 3px 0 0;
+  color: #172d2a;
+  font-size: clamp(28px, 5vw, 40px);
+  line-height: 1.05;
+}
+
+.general-lobby-page .lobby-search-row {
+  order: 2;
+  margin: 8px 0 10px;
+}
+
+.general-lobby-page .lobby-search {
+  color: #35544e;
+}
+
+.general-lobby-page .lobby-search input {
+  min-height: 54px;
+  border: 1px solid #8ba69e;
+  border-radius: 7px;
+  background: #ffffff;
+  color: #172d2a;
+  box-shadow: 0 5px 0 #c2d0ca;
+}
+
+.general-lobby-page .lobby-search input::placeholder {
+  color: #6c817c;
+}
+
+.general-lobby-page .quick-pick-btn {
+  min-height: 54px;
+  border: 1px solid #e0a430;
+  border-radius: 7px;
+  background: #f2bd4e;
+  color: #352506;
+  box-shadow: 0 5px 0 #a66b17;
+}
+
+.general-lobby-page .library-tabs {
+  order: 3;
+  gap: 8px;
+  padding-bottom: 10px;
+}
+
+.general-lobby-page .library-tabs button {
+  height: 50px;
+  border: 1px solid #9bb0a9;
+  border-radius: 7px;
+  background: #ffffff;
+  color: #29453f;
+  box-shadow: 0 4px 0 #c2d0ca;
+}
+
+.general-lobby-page .library-tabs button.active {
+  border-color: #274d45;
+  background: #315f56;
+  color: #ffffff;
+  box-shadow: 0 4px 0 #193a33;
+}
+
+.general-lobby-page .library-tabs .filter-count {
+  display: none;
+}
+
+.general-lobby-page #advancedFilters {
+  order: 4;
+  border-color: #aebdb8;
+  border-radius: 7px;
+  background: #ffffff;
+}
+
+.general-lobby-page #advancedFilters summary {
+  color: #29453f;
+}
+
+.general-lobby-page #filterStatus {
+  order: 5;
+  color: #172d2a;
+}
+
+.general-lobby-page #continuePlayingSection {
+  order: 6;
+}
+
+.general-lobby-page #heroGamesSection {
+  order: 7;
+}
+
+.general-lobby-page #gameGrid {
+  order: 8;
+}
+
+.general-lobby-page #dailyReward {
+  order: 9;
+}
+
+.general-lobby-page #upcomingGamesSection {
+  order: 10;
+}
+
+.general-lobby-page .kids-portal {
+  order: 11;
+}
+
+.general-lobby-page #freshUpdatesSection {
+  order: 12;
+}
+
+.general-lobby-page .general-trust-strip {
+  order: 13;
+}
+
+.general-lobby-page .site-footer {
+  order: 14;
+}
+
+.general-lobby-page #lobbyStats,
+.general-lobby-page #discoverySnapshot,
+.general-lobby-page #mobilePicksSection,
+.general-lobby-page #characterShowcaseSection,
+.general-lobby-page #challengeSpotlightSection,
+.general-lobby-page #recommendationsSection,
+.general-lobby-page #skillPathsSection {
+  display: none !important;
+}
+
+.general-lobby-page .section-heading span {
+  color: #b64b36;
+}
+
+.general-lobby-page .section-heading h2 {
+  color: #172d2a;
+}
+
+.general-lobby-page .hero-game-card {
+  border-color: #b7c5c0;
+  border-radius: 7px;
+  background: #ffffff;
+  color: #172d2a;
+  box-shadow: 0 6px 0 #c2d0ca;
+}
+
+.general-lobby-page .hero-game-card small {
+  color: #5c716c;
+}
+
+.general-lobby-page .lobby-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  padding-top: 12px;
+}
+
+.general-lobby-page .game-card {
+  min-height: 0;
+  border: 1px solid #b7c5c0;
+  border-radius: 7px;
+  background: #ffffff;
+  color: #172d2a;
+  box-shadow: 0 6px 0 #c2d0ca;
+}
+
+.general-lobby-page .game-card-art.image-art {
+  max-height: none;
+  border-bottom: 1px solid #d4ddd9;
+}
+
+.general-lobby-page .game-card-bg-blur {
+  display: none;
+}
+
+.general-lobby-page .game-card-art.image-art .game-card-fg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.general-lobby-page .game-card-art.image-art .game-card-hero {
+  width: 44%;
+  height: 58%;
+}
+
+.general-lobby-page .game-card-body {
+  gap: 8px;
+  padding: 11px;
+}
+
+.general-lobby-page .game-card h2 {
+  color: #172d2a;
+  font-size: 20px;
+}
+
+.general-lobby-page .game-card p,
+.general-lobby-page .game-card-state,
+.general-lobby-page .game-card-categories,
+.general-lobby-page .game-card-skills,
+.general-lobby-page .game-card-skill-reason,
+.general-lobby-page .game-card-facts,
+.general-lobby-page .game-card-meta,
+.general-lobby-page .game-card-plays,
+.general-lobby-page .game-card-actions span:last-child,
+.general-lobby-page .popular-card-badge,
+.general-lobby-page .updated-card-badge {
+  display: none;
+}
+
+.general-lobby-page .game-card-topline {
+  color: #506b65;
+}
+
+.general-lobby-page .game-card-actions {
+  display: block;
+}
+
+.general-lobby-page .game-card-actions span:first-child {
+  display: grid;
+  min-height: 42px;
+  place-items: center;
+  border-radius: 6px;
+  background: #315f56;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 1000;
+  box-shadow: 0 4px 0 #193a33;
+}
+
+.general-lobby-page .favorite-toggle {
+  background: rgba(255, 255, 255, 0.94);
+  color: #b64b36;
+}
+
+.general-lobby-page .daily-reward,
+.general-lobby-page .kids-portal,
+.general-lobby-page .general-trust-strip {
+  margin-top: 28px;
+}
+
+.general-lobby-page .kids-portal {
+  border: 1px solid #70b8c7;
+  border-radius: 7px;
+  background: #d8f1f3;
+  color: #173d47;
+  box-shadow: 0 6px 0 #9ccdd4;
+}
+
+.general-lobby-page .kids-portal-copy > span,
+.general-lobby-page .kids-portal-copy p {
+  color: #4b6970;
+}
+
+.general-lobby-page .general-trust-strip {
+  border: 0;
+  background: #e6e0cc;
+  color: #293f3a;
+}
+
+.general-lobby-page .parent-trust-copy span,
+.general-lobby-page .parent-trust-copy p,
+.general-lobby-page .parent-trust-points small {
+  color: #5f6c66;
+}
+
+.general-lobby-page .parent-trust-points div {
+  border-color: #c6c5b5;
+  background: #ffffff;
+}
+
+.general-lobby-page .parent-trust-points strong {
+  color: #315f56;
+}
+
+.general-lobby-page .trust-report-link,
+.general-lobby-page .site-footer a {
+  color: #a33f2c;
+}
+
+.general-lobby-page .site-footer {
+  border-color: #b7c5c0;
+  color: #5c716c;
+}
+
+@media (max-width: 720px) {
+  .general-lobby-page .lobby-hero {
+    height: 330px;
+  }
+
+  .general-lobby-page .general-hero-scene {
+    object-position: 52% 45%;
+  }
+
+  .general-lobby-page .lobby-hero-copy {
+    top: 78px;
+    left: 16px;
+    width: 70%;
+  }
+
+  .general-lobby-page .lobby-hero h1 {
+    font-size: 40px;
+  }
+
+  .general-lobby-page .lobby-subtitle {
+    display: -webkit-box;
+    overflow: hidden;
+    font-size: 13px;
+    line-height: 1.3;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+  }
+
+  .general-lobby-page .language-picker {
+    width: 142px;
+  }
+
+  .general-lobby-page .lobby-wallet {
+    top: 14px;
+    right: auto;
+    left: 14px;
+    min-width: 92px;
+  }
+
+  .general-lobby-page .lobby-feature {
+    right: 12px;
+    bottom: 12px;
+    width: min(250px, 72%);
+    min-height: 58px;
+    grid-template-columns: 42px minmax(0, 1fr);
+  }
+
+  .general-lobby-page .lobby-feature img {
+    width: 42px;
+    height: 42px;
+  }
+
+  .general-lobby-page .lobby-feature strong {
+    font-size: 15px;
+  }
+
+  .general-lobby-page .general-play-heading {
+    margin-top: 16px;
+  }
+
+  .general-lobby-page .hero-games {
+    grid-auto-columns: minmax(218px, 72vw);
+  }
+
+  .general-lobby-page .lobby-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .general-lobby-page .game-card-body {
+    padding: 9px;
+  }
+
+  .general-lobby-page .game-card h2 {
+    display: -webkit-box;
+    overflow: hidden;
+    min-height: 38px;
+    font-size: 17px;
+    line-height: 1.12;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .general-lobby-page .favorite-toggle {
+    top: 7px;
+    right: 7px;
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@media (max-width: 370px) {
+  .general-lobby-page .lobby-search-row {
+    grid-template-columns: minmax(0, 1fr) 96px;
+  }
+
+  .general-lobby-page .quick-pick-btn {
+    font-size: 12px;
+  }
+
+  .general-lobby-page .lobby-hero-copy {
+    width: 72%;
+  }
+}
+
 .game-shell {
   position: relative;
   width: min(100vw, 56.28dvh);
