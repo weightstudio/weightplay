@@ -63,6 +63,166 @@
   max-width: 92%;
 }
 
+.field-bg {
+  transform: scale(1.04);
+  transition: transform 0.42s ease;
+}
+
+.depth-track {
+  position: absolute;
+  z-index: 2;
+  top: 10px;
+  left: 12%;
+  width: 62%;
+  height: 7px;
+  overflow: hidden;
+  border: 1px solid #b7ecf4aa;
+  border-radius: 999px;
+  background: #062537aa;
+}
+
+.depth-track i {
+  display: block;
+  width: 0;
+  height: 100%;
+  border-radius: inherit;
+  background: #f2ca5b;
+  transition: width 0.35s ease;
+}
+
+.lane-gate {
+  position: absolute;
+  z-index: 2;
+  top: 15%;
+  width: 31%;
+  min-height: 30%;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto auto;
+  justify-items: center;
+  gap: 2px;
+  padding: 7px;
+  border: 2px solid #8ce7f1aa;
+  border-radius: 18px;
+  background: #052c3faa;
+  box-shadow: 0 0 18px #35d8ee44;
+  transition: top 0.52s ease, transform 0.52s ease, opacity 0.25s ease;
+}
+
+.lane-gate-left { left: 8%; }
+.lane-gate-right { right: 8%; }
+
+.lane-gate img {
+  width: 72%;
+  height: 100%;
+  min-height: 54px;
+  object-fit: contain;
+  filter: saturate(0.7) brightness(1.1);
+}
+
+.lane-gate strong,
+.lane-gate small {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lane-gate strong { font-size: 0.72rem; }
+.lane-gate small { font-size: 0.66rem; font-weight: 800; }
+.lane-gate small { min-height: 2.4em; white-space: normal; text-align: center; line-height: 1.2; }
+.lane-gate small span { display: block; }
+.lane-gate small span + span { margin-top: 2px; color: #ffe69b; }
+.lane-gate.is-safe { border-color: #7df0b9; box-shadow: 0 0 22px #55efaa88; }
+.lane-gate.is-risk { border-color: #ff8a82; box-shadow: 0 0 22px #ff665f77; }
+.lane-gate.is-revealed img { filter: none; }
+
+.diver-art {
+  z-index: 3;
+  left: 37%;
+  bottom: 7%;
+  transition: left 0.52s ease, bottom 0.52s ease, transform 0.22s ease;
+}
+
+.dive-field.is-swimming[data-lane="left"] .diver-art { left: 10%; bottom: 40%; transform: rotate(-9deg) scale(0.9); }
+.dive-field.is-swimming[data-lane="right"] .diver-art { left: 64%; bottom: 40%; transform: rotate(9deg) scale(0.9); }
+.dive-field.is-swimming[data-lane="left"] .lane-gate-left,
+.dive-field.is-swimming[data-lane="right"] .lane-gate-right { top: 47%; transform: scale(0.82); }
+.dive-field.is-swimming[data-lane="left"] .lane-gate-right,
+.dive-field.is-swimming[data-lane="right"] .lane-gate-left { opacity: 0.22; transform: scale(0.82); }
+.dive-field.is-resolving .diver-art { animation: diver-impact 0.22s ease 2 alternate; }
+.dive-field.is-advancing .field-bg { transform: scale(1.12) translateY(-3%); }
+
+.impact-text {
+  position: absolute;
+  z-index: 5;
+  left: 50%;
+  top: 47%;
+  transform: translate(-50%, -50%);
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: #071d2ee8;
+  color: #fff3a3;
+  font-weight: 900;
+  animation: impact-pop 0.52s ease both;
+}
+
+.fx-art:not(.hidden) { animation: sonar-pulse 0.7s ease-out infinite alternate; }
+
+.fish-encounter {
+  position: absolute;
+  z-index: 5;
+  inset: 8% 8% auto;
+  display: grid;
+  grid-template-columns: 116px minmax(0, 1fr);
+  gap: 6px 10px;
+  align-items: center;
+  padding: 12px;
+  border: 2px solid #ffd166;
+  border-radius: 18px;
+  background: #06283eee;
+  box-shadow: 0 16px 35px #00131fcc;
+}
+
+.fish-sprite {
+  grid-row: 1 / span 4;
+  position: relative;
+  width: 116px;
+  height: 52px;
+  overflow: hidden;
+}
+
+.fish-sprite img {
+  position: absolute;
+  top: -13px;
+  left: -240px;
+  width: 594px;
+  height: 368px;
+  max-width: none;
+  transition: transform 0.18s ease;
+}
+
+.fish-sprite.attack-left img { transform: scaleX(-1) translateX(-3px) rotate(-5deg); }
+.fish-sprite.attack-right img { transform: translateX(3px) rotate(5deg); }
+.fish-sprite.attack-glow { filter: drop-shadow(0 0 12px #5ff5ff); animation: fish-glow 0.35s ease infinite alternate; }
+.fish-encounter > strong { font-size: 0.82rem; color: #ffe79a; }
+.fish-encounter > p { position: static; transform: none; max-width: none; padding: 0; background: none; text-align: left; font-size: 0.72rem; }
+.fish-guard,.fish-timer { display: grid; gap: 3px; font-size: 0.66rem; font-weight: 900; }
+.fish-guard i,.fish-timer i { height: 6px; overflow: hidden; border-radius: 999px; background: #173d50; }
+.fish-guard b,.fish-timer b { display: block; width: 0; height: 100%; background: #70e2b4; transition: width 0.25s ease; }
+.fish-timer b { width: 100%; background: #ffd166; transform-origin: left; }
+.fish-actions { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.fish-actions button { min-height: 42px; border: 0; border-radius: 10px; background: #f2ca5b; color: #15243a; font-weight: 900; }
+.fish-encounter.is-dodged { animation: fish-dodged 0.5s ease; }
+.fish-encounter.is-hit { animation: fish-hit 0.18s ease 2 alternate; }
+
+@keyframes diver-impact { to { transform: scale(1.08) rotate(-5deg); } }
+@keyframes impact-pop { from { opacity: 0; transform: translate(-50%, 20%); } }
+@keyframes sonar-pulse { to { opacity: 0.35; transform: scale(1.08); } }
+@keyframes fish-dodged { to { transform: translateX(18%); opacity: 0.65; } }
+@keyframes fish-hit { to { transform: translateX(-8px); border-color: #ff6f68; } }
+@keyframes fish-glow { to { filter: drop-shadow(0 0 22px #8affff); transform: scale(1.04); } }
+@keyframes fish-countdown { to { transform: scaleX(0); background: #ff6f68; } }
+
 .help-button {
   position: absolute;
   z-index: 3;
@@ -100,7 +260,7 @@
 }
 
 .utility-controls {
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
 }
 
 .controls button {
@@ -189,6 +349,19 @@
     width: 36px;
     height: 36px;
   }
+
+  .lane-gate {
+    top: 10%;
+    min-height: 34%;
+    padding: 3px;
+  }
+
+  .lane-gate img { min-height: 28px; }
+
+  .fish-encounter { inset: 4% 9% auto; grid-template-columns: 88px minmax(0, 1fr); padding: 7px; }
+  .fish-sprite { width: 88px; height: 40px; }
+  .fish-sprite img { top: -10px; left: -182px; width: 450px; height: 283px; }
+  .fish-actions button { min-height: 30px; font-size: 0.68rem; }
 
   .coach-card {
     gap: 8px;

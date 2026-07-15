@@ -54,6 +54,9 @@
       ogTitle: "Animal Helper Quest - Animal Care Game",
       ogDescription: "Tap or drag the right care item to help cute animals through gentle missions.",
       language: "Language",
+      languageAria: "Language",
+      back: "Back",
+      backToStages: "Back to stages",
       chooseStage: "Choose Help Mission",
       menuHint: "Help the little animal. Tap or drag the right care item to it.",
       stages: "Stages",
@@ -115,6 +118,9 @@
       ogTitle: "\u52d5\u7269\u5e6b\u5e6b\u968a - \u52d5\u7269\u7167\u9867\u904a\u6232",
       ogDescription: "\u9ede\u4e00\u4e0b\u6216\u62d6\u66f3\u6b63\u78ba\u7684\u7167\u9867\u9053\u5177\uff0c\u5e6b\u52a9\u53ef\u611b\u5c0f\u52d5\u7269\u5b8c\u6210\u4efb\u52d9\u3002",
       language: "\u8a9e\u8a00",
+      languageAria: "\u8a9e\u8a00",
+      back: "\u8fd4\u56de",
+      backToStages: "\u8fd4\u56de\u9078\u95dc",
       chooseStage: "\u9078\u64c7\u5e6b\u5fd9\u4efb\u52d9",
       menuHint: "\u5e6b\u5c0f\u52d5\u7269\uff0c\u9ede\u6216\u62d6\u66f3\u6b63\u78ba\u7167\u9867\u9053\u5177\u7d66\u5b83\u3002",
       stages: "\u9078\u95dc",
@@ -263,6 +269,9 @@
     setMeta('meta[property="og:title"]', "content", t("ogTitle"));
     setMeta('meta[property="og:description"]', "content", t("ogDescription"));
     nodes.localeSelect.value = locale;
+    nodes.localeSelect.setAttribute("aria-label", t("languageAria"));
+    nodes.stageBackBtn.setAttribute("aria-label", t("back"));
+    nodes.backToStagesBtn.setAttribute("aria-label", t("backToStages"));
     document.querySelectorAll("[data-ui]").forEach((node) => {
       node.textContent = t(node.dataset.ui);
     });
@@ -386,6 +395,7 @@
     nodes.stagePanel.classList.add("hidden");
     document.body.classList.remove("wp-standard-stage-page");
     nodes.resultPanel.classList.add("hidden");
+    nodes.playPanel.classList.remove("result-active");
     nodes.playPanel.classList.remove("hidden");
     document.body.classList.add("helper-playing");
     document.querySelector(".weather-game")?.removeAttribute("data-play-viewport");
@@ -657,7 +667,7 @@
     records[stage.id] = Math.max(records[stage.id] || 0, stars);
     if (cleared && stage.id < stages.length) unlocked = Math.max(unlocked, stage.id + 1);
     saveRecords();
-    nodes.playPanel.classList.add("hidden");
+    nodes.playPanel.classList.add("result-active");
     nodes.resultPanel.classList.remove("hidden");
     nodes.resultTitle.textContent = cleared ? t("clear") : t("failed");
     nodes.starText.textContent = `${"\u2605".repeat(stars)}${"\u2606".repeat(3 - stars)}`;
@@ -676,6 +686,7 @@
     busy = false;
     cleanupDrag();
     nodes.playPanel.classList.add("hidden");
+    nodes.playPanel.classList.remove("result-active");
     nodes.resultPanel.classList.add("hidden");
     nodes.menuPanel.classList.add("hidden");
     nodes.stagePanel.classList.remove("hidden");

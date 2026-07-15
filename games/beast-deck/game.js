@@ -184,6 +184,8 @@
       packResultGear: "New equipment: {gear}.",
       packResultGearEquipped: "New equipment: {gear}. Equipped now.",
       packDuplicate: "{name} upgraded to Rank {rank}/{maxRank}.",
+      packRewardCardType: "Card Reward",
+      packRewardGearType: "Equipment Reward",
       deckBuildTitle: "Battle Deck",
       deckAnalysis: "Next mission: {total} cards - {attack} Attack / {defense} Defense / {utility} Tactics.",
       collectionOwnedTitle: "Owned Cards",
@@ -324,6 +326,8 @@
       packResultGear: "獲得裝備：{gear}。",
       packResultGearEquipped: "獲得裝備：{gear}，已自動裝備。",
       packDuplicate: "{name} 強化至 {rank}/{maxRank} 階。",
+      packRewardCardType: "卡牌獎勵",
+      packRewardGearType: "裝備獎勵",
       deckBuildTitle: "出戰牌組",
       deckAnalysis: "下次任務：共 {total} 張牌 - 攻擊 {attack} / 防禦 {defense} / 戰術 {utility}。",
       collectionOwnedTitle: "持有卡牌",
@@ -819,27 +823,54 @@
     window.WonderSound?.play("success");
   }
 
+  function showPackReward(image, typeLabel, message) {
+    if (!nodes.packStatus) return;
+    nodes.packStatus.classList.remove("is-reveal");
+    nodes.packStatus.replaceChildren();
+
+    const art = document.createElement("span");
+    art.className = "pack-reward-art";
+    const img = document.createElement("img");
+    img.src = asset(image);
+    img.alt = "";
+    art.appendChild(img);
+
+    const copy = document.createElement("span");
+    copy.className = "pack-reward-copy";
+    const label = document.createElement("small");
+    label.textContent = typeLabel;
+    const detail = document.createElement("strong");
+    detail.textContent = message;
+    copy.append(label, detail);
+    nodes.packStatus.append(art, copy);
+
+    // Restart the short reveal motion even when two packs award the same item.
+    void nodes.packStatus.offsetWidth;
+    nodes.packStatus.classList.add("is-reveal");
+  }
+
   function awardPackCard(cardId) {
     profile.collection[cardId] = (profile.collection[cardId] || 0) + 1;
+    let message;
     if (canEquipCard(cardId)) {
       profile.equippedCards.push(cardId);
-      nodes.packStatus.textContent = t("packResultCardEquipped", { card: cardName(cardId) });
+      message = t("packResultCardEquipped", { card: cardName(cardId) });
     } else {
-      nodes.packStatus.textContent = t("packResultCard", { card: cardName(cardId) });
+      message = t("packResultCard", { card: cardName(cardId) });
     }
+    showPackReward(cardDb[cardId].image, t("packRewardCardType"), message);
   }
 
   function awardPackGear(gearId) {
     profile.gear[gearId] = clamp((profile.gear[gearId] || 0) + 1, 1, maxGearRank);
     const shouldEquip = !profile.equippedGear;
     if (shouldEquip) profile.equippedGear = gearId;
-    if (profile.gear[gearId] > 1) {
-      nodes.packStatus.textContent = t("packDuplicate", { name: gearName(gearId), rank: gearRank(gearId), maxRank: maxGearRank });
-    } else {
-      nodes.packStatus.textContent = shouldEquip
+    const message = profile.gear[gearId] > 1
+      ? t("packDuplicate", { name: gearName(gearId), rank: gearRank(gearId), maxRank: maxGearRank })
+      : shouldEquip
         ? t("packResultGearEquipped", { gear: gearName(gearId) })
         : t("packResultGear", { gear: gearName(gearId) });
-    }
+    showPackReward(gearDb[gearId].image, t("packRewardGearType"), message);
   }
 
   function renderProgressUI() {
@@ -1499,6 +1530,11 @@
         return {
           profile: normalizeProfile(profile),
           packStatus: nodes.packStatus?.textContent || "",
+          packReveal: {
+            visible: nodes.packStatus?.classList.contains("is-reveal") || false,
+            image: nodes.packStatus?.querySelector("img")?.getAttribute("src") || "",
+            label: nodes.packStatus?.querySelector("small")?.textContent || "",
+          },
           equippedText: nodes.deckSlots?.textContent || "",
           selectedSummaryText: nodes.selectedMissionSummary?.textContent || "",
         };
@@ -1512,6 +1548,11 @@
         return {
           profile: normalizeProfile(profile),
           packStatus: nodes.packStatus?.textContent || "",
+          packReveal: {
+            visible: nodes.packStatus?.classList.contains("is-reveal") || false,
+            image: nodes.packStatus?.querySelector("img")?.getAttribute("src") || "",
+            label: nodes.packStatus?.querySelector("small")?.textContent || "",
+          },
           gearText: nodes.gearGrid?.textContent || "",
           bonus: gearBonus(gearId),
         };

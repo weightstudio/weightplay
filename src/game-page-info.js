@@ -97,7 +97,7 @@
     },
     "animal-zoo-idle": {
       title: "Animal Zoo Idle",
-      age: "5+",
+      age: "6+",
       difficulty: "Easy",
       time: "3-8 minutes",
       skills: ["Logic", "Focus", "Animal Knowledge"],
@@ -109,7 +109,7 @@
       faq: [
         ["Is Animal Zoo Idle free?", "Yes. It runs in the browser on WeightPlay."],
         ["Does it require login?", "No. Basic play uses local browser progress only."],
-        ["What age is it for?", "It is recommended for age 5+ and family play."],
+        ["What age is it for?", "It is recommended for age 6+ and family play."],
         ["What skills does it practice?", "It can practice focus, logic, planning, and animal knowledge."],
       ],
     },

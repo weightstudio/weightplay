@@ -29,7 +29,6 @@
     heroUpgradeGrid: $("heroUpgradeGrid"),
     trainingBtn: $("trainingBtn"),
     trainingStatus: $("trainingStatus"),
-    startBtn: $("startBtn"),
     grid: $("grid"),
     fxLayer: $("fxLayer"),
     turnRoster: $("turnRoster"),
@@ -41,7 +40,7 @@
     endTurnBtn: $("endTurnBtn"),
     missionText: $("missionText"),
     turnText: $("turnText"),
-    diamondText: $("diamondText"),
+    enemyCountText: $("enemyCountText"),
     rewardCards: $("rewardCards"),
     rerollBtn: $("rerollBtn"),
     resultTitle: $("resultTitle"),
@@ -87,6 +86,7 @@
       mission: "Mission",
       turn: "Turn",
       wallet: "Diamonds",
+      enemiesLeft: "Enemies",
       attack: "Attack",
       guard: "Guard",
       skill: "Skill",
@@ -174,6 +174,7 @@
       mission: "任務",
       turn: "回合",
       wallet: "鑽石",
+      enemiesLeft: "敵人",
       attack: "攻擊",
       guard: "防禦",
       skill: "技能",
@@ -339,7 +340,7 @@
     lionRole: "前排攻擊手", owlRole: "遠距爆發", turtleRole: "隊伍守護者",
     missionSelect: "選擇任務", missionHint: "已解鎖任務會保存在這台裝置。", missionCard: "任務 {n}", missionGoal: "目標：擊敗 {enemies}", missionReward: "{xp} 經驗值 / {runes} 符文", missionEnemyLine: "敵人：{enemies}", locked: "未解鎖",
     trainingTitle: "訓練欄位", trainingText: "永久效果：英雄每場任務起始能量 +1。", trainingOwned: "已擁有：起始能量 +1。", trainingNeed: "需要 {cost} 顆鑽石。", trainingBuy: "解鎖 {cost}",
-    startMission: "開始任務", mission: "任務", turn: "回合", wallet: "鑽石", attack: "攻擊", guard: "防守", skill: "技能", endTurn: "結束回合", health: "生命", energy: "能量",
+    startMission: "開始任務", mission: "任務", turn: "回合", wallet: "鑽石", enemiesLeft: "敵人", attack: "攻擊", guard: "防守", skill: "技能", endTurn: "結束回合", health: "生命", energy: "能量",
     chooseHero: "選擇一位英雄，再移動或攻擊。", chooseTarget: "{hero}：生命 {hp}/{maxHp}，能量 {energy}。", ready: "可行動", acted: "已行動", fallen: "倒下", turnRosterTitle: "小隊行動", skillInfo: "技能：{skill} - {desc}", skillInfoLabel: "技能",
     skillLion: "獅王撲擊", skillLionDesc: "對最近目標造成重擊。", skillOwl: "符文箭", skillOwlDesc: "以符文魔法攻擊較遠的目標。", skillTurtle: "甲殼守護", skillTurtleDesc: "守護全隊並回復 1 點生命。",
     moved: "{hero} 已移動。", attacked: "{hero} 攻擊了 {enemy}。", guarded: "{hero} 進入防守。", skillUsed: "{hero} 使用了符文技能。", enemyTurn: "敵人正在行動。",
@@ -488,7 +489,6 @@
     nodes.profileBest.textContent = profile.bestMission;
     nodes.profileRunes.textContent = profile.runes || 0;
     renderGrowthSummary();
-    nodes.diamondText.textContent = wallet().diamonds;
     nodes.trainingBtn.disabled = profile.training || wallet().diamonds < trainingCost;
     nodes.trainingStatus.textContent = profile.training ? t("trainingOwned") : wallet().diamonds < trainingCost ? t("trainingNeed", { cost: trainingCost }) : "";
     renderHeroUpgrades();
@@ -519,7 +519,6 @@
       });
       nodes.missionGrid.appendChild(btn);
     });
-    nodes.startBtn.textContent = t("startSelectedMission", { n: selectedMission });
     scrollSelectedMissionIntoView();
   }
 
@@ -626,7 +625,7 @@
         <button type="button" data-rune-stage-tab="heroes" data-ui="stageTabHeroes">Heroes</button>
         <button type="button" data-rune-stage-tab="training" data-ui="stageTabTraining">Training</button>
       </nav>`;
-    stagePanel.querySelector('[data-rune-stage-view="missions"]').append(missionList, nodes.startBtn);
+    stagePanel.querySelector('[data-rune-stage-view="missions"]').append(missionList);
     stagePanel.querySelector('[data-rune-stage-view="heroes"]').append(nodes.growthSummary, heroList);
     stagePanel.querySelector('[data-rune-stage-view="training"]').append(diamondCard);
     nodes.menuPanel.after(stagePanel);
@@ -721,7 +720,7 @@
   function render() {
     nodes.missionText.textContent = state.mission;
     nodes.turnText.textContent = state.turn;
-    nodes.diamondText.textContent = wallet().diamonds;
+    nodes.enemyCountText.textContent = `${livingEnemies().length}/${state.enemies.length}`;
     nodes.grid.innerHTML = "";
     const movable = validMoves();
     const attackable = validTargets();
@@ -1191,7 +1190,6 @@
       const id = event.target?.closest?.("[data-hero-upgrade]")?.dataset?.heroUpgrade;
       if (id) upgradeHero(id);
     });
-    nodes.startBtn.addEventListener("click", () => startMission(selectedMission));
     nodes.attackBtn.addEventListener("click", () => {
       const hero = selectedHero();
       const target = validTargets()[0];

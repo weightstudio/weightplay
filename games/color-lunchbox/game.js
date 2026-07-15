@@ -31,8 +31,6 @@
   const lobbyLink = document.querySelector("#lobbyLink");
   const homeLink = document.querySelector("#homeLink");
   const battleBackBtn = document.querySelector("#battleBackBtn");
-  const stageAdReserve = document.querySelector("#stageAdReserve");
-  const battleAdReserve = document.querySelector("#battleAdReserve");
   const loadingPanel = document.querySelector("#loadingPanel");
   const loadingText = document.querySelector("#loadingText");
   const loadingFill = document.querySelector("#loadingFill");
@@ -448,16 +446,12 @@
     if (!document.body.classList.contains("lunch-stage") && !document.body.classList.contains("lunch-playing")) return;
     const viewportWidth = visualViewport?.width || innerWidth;
     const viewportHeight = visualViewport?.height || innerHeight;
-    const expandedCanvas = document.body.classList.contains("lunch-playing")
-      && (matchMedia("(pointer: coarse)").matches || navigator.maxTouchPoints > 0 || viewportWidth <= 600 || viewportHeight <= 430);
-    const reserveHeight = window.WeightPlayAudience?.reserveHeight ?? 56;
-    const scale = expandedCanvas ? 1 : Math.min(Math.max(1, viewportWidth - 8) / 390, Math.max(1, viewportHeight - reserveHeight - 8) / 788);
-    const width = expandedCanvas ? viewportWidth - 8 : 390 * scale;
-    const height = expandedCanvas ? viewportHeight - reserveHeight - 8 : 788 * scale;
-    document.body.classList.toggle("lunch-expanded-canvas", expandedCanvas);
+    const scale = Math.min(Math.max(1, viewportWidth - 8) / 390, Math.max(1, viewportHeight - 8) / 788);
+    const width = 390 * scale;
+    const height = 788 * scale;
     document.documentElement.style.setProperty("--lunch-frame-scale", String(scale));
-    document.documentElement.style.setProperty("--lunch-frame-left", `${expandedCanvas ? 4 : (viewportWidth - width) / 2}px`);
-  document.documentElement.style.setProperty("--lunch-frame-top", `${expandedCanvas ? 4 : (viewportHeight - reserveHeight - height) / 2}px`);
+    document.documentElement.style.setProperty("--lunch-frame-left", `${(viewportWidth - width) / 2}px`);
+    document.documentElement.style.setProperty("--lunch-frame-top", `${viewportHeight - height - 4}px`);
     document.documentElement.style.setProperty("--lunch-frame-width", `${width}px`);
     document.documentElement.style.setProperty("--lunch-frame-height", `${height}px`);
   }
@@ -482,8 +476,6 @@
     stageSelectPanel.classList.add("hidden");
     gameHud.classList.add("hidden");
     gamePlayContent.classList.add("hidden");
-    stageAdReserve.classList.add("hidden");
-    battleAdReserve.classList.add("hidden");
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   }
 
@@ -495,8 +487,6 @@
     mainPanel.classList.add("hidden");
     gameHud.classList.add("hidden");
     gamePlayContent.classList.add("hidden");
-    battleAdReserve.classList.add("hidden");
-    stageAdReserve.classList.remove("hidden");
     stageSelectPanel.classList.remove("hidden");
     exitSharedPlayViewport();
     renderStageCards();
@@ -511,7 +501,7 @@
         const button = document.createElement("button");
         button.type = "button";
         button.className = `stage-card ${isUnlocked ? "unlocked" : "locked"}`;
-        button.disabled = !isUnlocked;
+        button.setAttribute("aria-disabled", String(!isUnlocked));
         button.innerHTML = `
           <span>${isUnlocked ? t("play") : t("locked")}</span>
           <strong>${t(stage.nameKey)}</strong>
@@ -521,7 +511,10 @@
             ${stage.colors.map((color) => `<i class="${colorDB[color].className}"></i>`).join("")}
           </div>
         `;
-        if (isUnlocked) button.addEventListener("click", () => startStage(index));
+        if (isUnlocked) button.addEventListener("click", () => {
+          if (stageGrid.dataset.dragSuppressed === "1") return;
+          startStage(index);
+        });
         return button;
       }),
     );
@@ -530,6 +523,69 @@
       unlocked?.scrollIntoView({ block: "nearest", inline: "center", behavior: "auto" });
     });
   }
+
+  let stageDrag = null;
+  let stageSettleFrame = 0;
+
+  function settleStageRail() {
+    cancelAnimationFrame(stageSettleFrame);
+    const cards = [...stageGrid.querySelectorAll(".stage-card")];
+    const railCenter = stageGrid.scrollLeft + stageGrid.clientWidth / 2;
+    const nearest = cards.reduce((best, card) => {
+      const target = card.offsetLeft - (stageGrid.clientWidth - card.offsetWidth) / 2;
+      const distance = Math.abs(card.offsetLeft + card.offsetWidth / 2 - railCenter);
+      return !best || distance < best.distance ? { target, distance } : best;
+    }, null);
+    if (!nearest) return;
+    const start = stageGrid.scrollLeft;
+    const change = nearest.target - start;
+    const startedAt = performance.now();
+    const duration = 220;
+    stageGrid.style.scrollSnapType = "none";
+    const step = (now) => {
+      const progress = Math.min(1, (now - startedAt) / duration);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      stageGrid.scrollLeft = start + change * eased;
+      if (progress < 1) {
+        stageSettleFrame = requestAnimationFrame(step);
+      } else {
+        stageGrid.style.removeProperty("scroll-snap-type");
+      }
+    };
+    stageSettleFrame = requestAnimationFrame(step);
+  }
+
+  stageGrid.addEventListener("pointerdown", (event) => {
+    if (event.button !== 0) return;
+    cancelAnimationFrame(stageSettleFrame);
+    stageGrid.style.scrollSnapType = "none";
+    stageDrag = { id: event.pointerId, x: event.clientX, scrollLeft: stageGrid.scrollLeft, moved: false };
+  });
+  stageGrid.addEventListener("pointermove", (event) => {
+    if (!stageDrag || event.pointerId !== stageDrag.id) return;
+    const delta = event.clientX - stageDrag.x;
+    if (!stageDrag.moved && Math.abs(delta) >= 4) {
+      stageDrag.moved = true;
+      stageGrid.setPointerCapture?.(event.pointerId);
+    }
+    if (!stageDrag.moved) return;
+    event.preventDefault();
+    stageGrid.scrollLeft = stageDrag.scrollLeft - delta;
+  });
+  function endStageDrag(event) {
+    if (!stageDrag || event.pointerId !== stageDrag.id) return;
+    if (stageDrag.moved) {
+      stageGrid.dataset.dragSuppressed = "1";
+      settleStageRail();
+      window.setTimeout(() => delete stageGrid.dataset.dragSuppressed, 180);
+    } else {
+      stageGrid.style.removeProperty("scroll-snap-type");
+    }
+    if (stageGrid.hasPointerCapture?.(event.pointerId)) stageGrid.releasePointerCapture?.(event.pointerId);
+    stageDrag = null;
+  }
+  stageGrid.addEventListener("pointerup", endStageDrag);
+  stageGrid.addEventListener("pointercancel", endStageDrag);
 
   function getStageBoxes(stage) {
     return stage.colors.map((color) => ({ color, ...colorDB[color] }));
@@ -680,11 +736,9 @@
     state.deck = shuffle(pool).slice(0, stage.rounds);
 
     stageSelectPanel.classList.add("hidden");
-    stageAdReserve.classList.add("hidden");
     resultPanel.classList.add("hidden");
     gameHud.classList.remove("hidden");
     gamePlayContent.classList.remove("hidden");
-    battleAdReserve.classList.remove("hidden");
     exitSharedPlayViewport();
     updateLunchFrame();
     feedbackText.textContent = t("ready");
@@ -800,6 +854,8 @@
     renderResultReport(message, progress);
     nextStageBtn.classList.toggle("hidden", isFinalStage);
     foodCard.style.pointerEvents = "none";
+    gameHud.classList.add("hidden");
+    gamePlayContent.classList.add("hidden");
     resultPanel.classList.remove("hidden");
     window.WonderSound?.play("win");
     window.WonderAnalytics?.track("game_complete", {

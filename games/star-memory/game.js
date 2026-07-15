@@ -26,8 +26,6 @@
   const feedbackText = document.querySelector("#feedbackText");
   const comboContainer = document.querySelector("#comboContainer");
   const comboText = document.querySelector("#comboText");
-  const stageAdReserve = document.querySelector("#stageAdReserve");
-  const battleAdReserve = document.querySelector("#battleAdReserve");
   
   const resultPanel = document.querySelector("#resultPanel");
   const resultTitle = document.querySelector("#resultTitle");
@@ -450,26 +448,13 @@
     const viewport = window.visualViewport;
     const viewportWidth = viewport?.width || window.innerWidth;
     const viewportHeight = viewport?.height || window.innerHeight;
-    const isPhoneCanvas = (document.body.classList.contains("memory-playing") || document.body.classList.contains("memory-stage"))
-      && (window.matchMedia("(pointer: coarse)").matches || viewportWidth <= 700 || viewportHeight <= 430);
-    document.body.classList.toggle("memory-expanded-canvas", isPhoneCanvas);
-    if (isPhoneCanvas) {
-      document.documentElement.style.setProperty("--memory-frame-scale", "1");
-      document.documentElement.style.setProperty("--memory-frame-left", "4px");
-      document.documentElement.style.setProperty("--memory-frame-top", "4px");
-      document.documentElement.style.setProperty("--memory-frame-width", `${Math.max(1, viewportWidth - 8)}px`);
-      const reserveHeight = window.WeightPlayAudience?.reserveHeight ?? 56;
-      document.documentElement.style.setProperty("--memory-frame-height", `${Math.max(1, viewportHeight - reserveHeight - 8)}px`);
-      return;
-    }
     const availableWidth = Math.max(1, viewportWidth - 8);
-  const reserveHeight = window.WeightPlayAudience?.reserveHeight ?? 56;
-  const availableHeight = Math.max(1, viewportHeight - reserveHeight - 8);
+    const availableHeight = Math.max(1, viewportHeight - 8);
     const scale = Math.min(availableWidth / 390, availableHeight / 788);
     const frameWidth = 390 * scale;
     const frameHeight = 788 * scale;
     const frameLeft = (viewportWidth - frameWidth) / 2;
-  const frameTop = (viewportHeight - reserveHeight - frameHeight) / 2;
+    const frameTop = viewportHeight - frameHeight - 4;
     document.documentElement.style.setProperty("--memory-frame-scale", String(scale));
     document.documentElement.style.setProperty("--memory-frame-left", `${frameLeft}px`);
     document.documentElement.style.setProperty("--memory-frame-top", `${frameTop}px`);
@@ -490,7 +475,7 @@
   window.visualViewport?.addEventListener("scroll", updateMemoryFrame);
 
   function showMain() {
-    document.body.classList.remove("memory-stage", "memory-playing", "memory-expanded-canvas");
+    document.body.classList.remove("memory-stage", "memory-playing", "memory-result");
     document.body.classList.add("memory-main");
     resultPanel.classList.add("hidden");
     mainPanel.classList.remove("hidden");
@@ -498,8 +483,6 @@
     gameHud.classList.add("hidden");
     gameBoardPanel.classList.add("hidden");
     gameFeedback.classList.add("hidden");
-    battleAdReserve.classList.add("hidden");
-    stageAdReserve.classList.add("hidden");
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   }
 
@@ -507,14 +490,13 @@
   function showStageSelect() {
     document.body.classList.remove("memory-main");
     document.body.classList.remove("memory-playing");
+    document.body.classList.remove("memory-result");
     document.body.classList.add("memory-stage");
     resultPanel.classList.add("hidden");
     mainPanel.classList.add("hidden");
     gameHud.classList.add("hidden");
     gameBoardPanel.classList.add("hidden");
     gameFeedback.classList.add("hidden");
-    battleAdReserve.classList.add("hidden");
-    stageAdReserve.classList.remove("hidden");
     stageSelectPanel.classList.remove("hidden");
 
     exitSharedPlayViewport();
@@ -533,7 +515,7 @@
         const button = document.createElement("button");
         button.type = "button";
         button.className = `stage-card ${isUnlocked ? "unlocked" : "locked"}`;
-        button.disabled = !isUnlocked;
+        button.setAttribute("aria-disabled", String(!isUnlocked));
         
         let starsStr = "";
         if (isUnlocked) {
@@ -553,18 +535,57 @@
         `;
         
         if (isUnlocked) {
-          button.addEventListener("click", () => startStage(idx));
+          button.addEventListener("click", () => {
+            if (stageGrid.dataset.dragSuppressed === "1") return;
+            startStage(idx);
+          });
         }
         return button;
       })
     );
-    if (window.matchMedia("(max-width: 700px), (max-height: 430px)").matches) {
-      requestAnimationFrame(() => {
-        const unlocked = [...stageGrid.querySelectorAll(".stage-card.unlocked")].at(-1);
-        unlocked?.scrollIntoView({ block: "nearest", inline: "center", behavior: "auto" });
-      });
-    }
+    requestAnimationFrame(() => {
+      const unlocked = [...stageGrid.querySelectorAll(".stage-card.unlocked")].at(-1);
+      unlocked?.scrollIntoView({ block: "nearest", inline: "center", behavior: "auto" });
+    });
   }
+
+  let stageDrag = null;
+  function settleStageRail() {
+    const cards = [...stageGrid.querySelectorAll(".stage-card")];
+    const center = stageGrid.scrollLeft + stageGrid.clientWidth / 2;
+    const nearest = cards.reduce((best, card) => {
+      const distance = Math.abs(card.offsetLeft + card.offsetWidth / 2 - center);
+      return !best || distance < best.distance ? { card, distance } : best;
+    }, null)?.card;
+    if (nearest) stageGrid.scrollTo({ left: nearest.offsetLeft - (stageGrid.clientWidth - nearest.offsetWidth) / 2, behavior: "smooth" });
+  }
+  stageGrid.addEventListener("pointerdown", (event) => {
+    if (event.button !== 0) return;
+    stageDrag = { id: event.pointerId, x: event.clientX, scrollLeft: stageGrid.scrollLeft, moved: false };
+  });
+  stageGrid.addEventListener("pointermove", (event) => {
+    if (!stageDrag || event.pointerId !== stageDrag.id) return;
+    const delta = event.clientX - stageDrag.x;
+    if (!stageDrag.moved && Math.abs(delta) >= 4) {
+      stageDrag.moved = true;
+      stageGrid.setPointerCapture?.(event.pointerId);
+    }
+    if (!stageDrag.moved) return;
+    event.preventDefault();
+    stageGrid.scrollLeft = stageDrag.scrollLeft - delta;
+  });
+  function endStageDrag(event) {
+    if (!stageDrag || event.pointerId !== stageDrag.id) return;
+    if (stageDrag.moved) {
+      stageGrid.dataset.dragSuppressed = "1";
+      settleStageRail();
+      window.setTimeout(() => delete stageGrid.dataset.dragSuppressed, 180);
+    }
+    if (stageGrid.hasPointerCapture?.(event.pointerId)) stageGrid.releasePointerCapture?.(event.pointerId);
+    stageDrag = null;
+  }
+  stageGrid.addEventListener("pointerup", endStageDrag);
+  stageGrid.addEventListener("pointercancel", endStageDrag);
 
   // Start Gameplay Stage
   function startStage(stageIdx) {
@@ -578,8 +599,8 @@
     state.selectedCards = [];
     state.isLocked = false;
     document.body.classList.remove("memory-stage");
+    document.body.classList.remove("memory-result");
     document.body.classList.add("memory-playing");
-    stageAdReserve.classList.add("hidden");
 
     // Analytics event
     window.WonderAnalytics?.track("game_start", {
@@ -593,7 +614,6 @@
     gameHud.classList.remove("hidden");
     gameBoardPanel.classList.remove("hidden");
     gameFeedback.classList.remove("hidden");
-    battleAdReserve.classList.remove("hidden");
 
     exitSharedPlayViewport();
     updateMemoryFrame();
@@ -782,6 +802,7 @@
     
     // Toggle next level button
     nextLevelBtn.classList.toggle("hidden", stage.id === stages.length);
+    document.body.classList.add("memory-result");
     resultPanel.classList.remove("hidden");
     
     window.WonderSound?.play("win");
@@ -809,6 +830,7 @@
     });
     
     nextLevelBtn.classList.add("hidden");
+    document.body.classList.add("memory-result");
     resultPanel.classList.remove("hidden");
     
     window.WonderSound?.play("wrong");

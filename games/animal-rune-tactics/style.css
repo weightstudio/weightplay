@@ -1133,8 +1133,7 @@ body.is-rune-playing .rune-app[data-wp-logical-battle-canvas] {
 .rune-stage-view.is-active { display: grid; }
 
 .rune-stage-view[data-rune-stage-view="missions"] {
-  grid-template-rows: minmax(0, 1fr) 52px;
-  gap: 8px;
+  grid-template-rows: minmax(0, 1fr);
 }
 
 #stagePanel .mission-list {
@@ -1179,14 +1178,6 @@ body.is-rune-playing .rune-app[data-wp-logical-battle-canvas] {
 #stagePanel .mission-card :is(strong, span, small, em) {
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-#stagePanel .rune-stage-view > #startBtn {
-  width: min(100%, 360px);
-  height: 52px;
-  min-height: 52px;
-  max-height: 52px;
-  justify-self: center;
 }
 
 .rune-stage-view[data-rune-stage-view="heroes"] {
@@ -1255,6 +1246,5 @@ body.is-rune-playing .rune-app[data-wp-logical-battle-canvas] {
   #stagePanel .mission-list { grid-template-rows: 34px 176px; }
   #stagePanel .mission-grid,
   #stagePanel .mission-card { height: 176px; min-height: 176px; max-height: 176px; }
-  .rune-stage-view[data-rune-stage-view="missions"] { grid-template-columns: minmax(0, 1fr) 220px; grid-template-rows: minmax(0, 1fr); }
-  #stagePanel .rune-stage-view > #startBtn { width: 220px; height: 48px; min-height: 48px; max-height: 48px; align-self:end; }
+  .rune-stage-view[data-rune-stage-view="missions"] { grid-template-rows: minmax(0, 1fr); }
 }

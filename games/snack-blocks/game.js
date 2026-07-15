@@ -168,7 +168,6 @@
     battleBackBtn: document.getElementById("battleBackBtn"),
     stageTitle: document.getElementById("stageTitle"),
     stageHelp: document.getElementById("stageHelp"),
-    stageAdReserve: document.getElementById("stageAdReserve"),
     menuTitle: document.getElementById("menuTitle"),
     menuText: document.getElementById("menuText"),
     stageGrid: document.getElementById("stageGrid"),
@@ -176,7 +175,6 @@
     board: document.getElementById("board"),
     hintText: document.getElementById("hintText"),
     resultPanel: document.getElementById("resultPanel"),
-    battleAdReserve: document.getElementById("battleAdReserve"),
     resultTitle: document.getElementById("resultTitle"),
     resultText: document.getElementById("resultText"),
     resultStars: document.getElementById("resultStars"),
@@ -417,7 +415,7 @@
       const isUnlocked = index < unlocked;
       button.type = "button";
       button.className = `stage-card ${isUnlocked ? "" : "locked"}`;
-      button.disabled = !isUnlocked;
+      button.setAttribute("aria-disabled", String(!isUnlocked));
       button.innerHTML = `
         <strong>${stage.id}</strong>
         <small class="stage-goal-kind ${stage.goal}">${goalKindLabel(stage)}</small>
@@ -425,7 +423,7 @@
         <em>${isUnlocked ? `${goalLabel(stage)} · ${t("best", { score: bestScoreFromRecord(records[stage.id]) })}` : t("locked")}</em>
       `;
       button.addEventListener("click", () => {
-        if (nodes.stageGrid.dataset.dragged === "true") return;
+        if (!isUnlocked || nodes.stageGrid.dataset.dragged === "true") return;
         startStage(index);
       });
       nodes.stageGrid.append(button);
@@ -496,16 +494,18 @@
   function showStage() {
     nodes.menuPanel.classList.add("hidden");
     nodes.stagePanel.classList.remove("hidden");
-    nodes.stageAdReserve.classList.remove("hidden");
     document.body.classList.add("snack-stage");
     renderStageGrid();
+    exitSharedPlayViewport();
+    updateSnackFrame();
+    requestAnimationFrame(updateSnackFrame);
   }
 
   function showMain() {
     nodes.stagePanel.classList.add("hidden");
-    nodes.stageAdReserve.classList.add("hidden");
     nodes.menuPanel.classList.remove("hidden");
     document.body.classList.remove("snack-stage");
+    resetSnackFrame();
   }
 
   function renderBoard(dropMap = new Map()) {
@@ -750,52 +750,36 @@
   }
 
   function updateSnackFrame() {
-    if (!document.body.classList.contains("snack-playing")) return;
+    if (!document.body.classList.contains("snack-stage") && !document.body.classList.contains("snack-playing")) return;
     const viewport = window.visualViewport;
     const viewportWidth = viewport?.width || innerWidth;
     const viewportHeight = viewport?.height || innerHeight;
-    const isPhoneBattle = window.matchMedia("(pointer: coarse)").matches || viewportWidth <= 600 || viewportHeight <= 430;
-    document.body.classList.toggle("snack-expanded-canvas", isPhoneBattle);
     const shell = document.querySelector(".snack-game");
     shell?.classList.remove("weightplay-active-viewport");
-    if (isPhoneBattle) {
-      const width = Math.max(1, viewportWidth - 8);
-      const reserveHeight = window.WeightPlayAudience?.reserveHeight ?? 56;
-      const height = Math.max(1, viewportHeight - reserveHeight - 8);
-      document.documentElement.style.setProperty("--snack-frame-scale", "1");
-      document.documentElement.style.setProperty("--snack-frame-left", "4px");
-      document.documentElement.style.setProperty("--snack-frame-top", "4px");
-      document.documentElement.style.setProperty("--snack-frame-width", `${width}px`);
-      document.documentElement.style.setProperty("--snack-frame-height", `${height}px`);
-      shell?.style.setProperty("position", "fixed", "important");
-      shell?.style.setProperty("inset", "auto", "important");
-      shell?.style.setProperty("left", "4px", "important");
-      shell?.style.setProperty("top", "4px", "important");
-      shell?.style.setProperty("width", `${width}px`, "important");
-      shell?.style.setProperty("height", `${height}px`, "important");
-      shell?.style.setProperty("min-height", "0", "important");
-      shell?.style.setProperty("transform", "none", "important");
-      shell?.style.setProperty("transform-origin", "top left", "important");
-      return;
-    }
-    const reserveHeight = window.WeightPlayAudience?.reserveHeight ?? 56;
-    const scale = Math.min(Math.max(1, viewportWidth - 8) / 390, Math.max(1, viewportHeight - reserveHeight - 8) / 788);
+    const scale = Math.min(Math.max(1, viewportWidth - 8) / 390, Math.max(1, viewportHeight - 8) / 788);
     const width = 390 * scale;
     const height = 788 * scale;
+    const left = (viewportWidth - width) / 2;
+    const top = viewportHeight - height - 4;
     document.documentElement.style.setProperty("--snack-frame-scale", String(scale));
-    document.documentElement.style.setProperty("--snack-frame-left", `${(viewportWidth - width) / 2}px`);
-  document.documentElement.style.setProperty("--snack-frame-top", `${(viewportHeight - reserveHeight - height) / 2}px`);
+    document.documentElement.style.setProperty("--snack-frame-left", `${left}px`);
+    document.documentElement.style.setProperty("--snack-frame-top", `${top}px`);
     document.documentElement.style.setProperty("--snack-frame-width", `${width}px`);
     document.documentElement.style.setProperty("--snack-frame-height", `${height}px`);
     shell?.style.setProperty("position", "fixed", "important");
     shell?.style.setProperty("inset", "auto", "important");
-    shell?.style.setProperty("left", `${(viewportWidth - width) / 2}px`, "important");
-  shell?.style.setProperty("top", `${(viewportHeight - reserveHeight - height) / 2}px`, "important");
+    shell?.style.setProperty("left", `${left}px`, "important");
+    shell?.style.setProperty("top", `${top}px`, "important");
     shell?.style.setProperty("width", "390px", "important");
     shell?.style.setProperty("height", "788px", "important");
     shell?.style.setProperty("min-height", "788px", "important");
     shell?.style.setProperty("transform", `scale(${scale})`, "important");
     shell?.style.setProperty("transform-origin", "top left", "important");
+  }
+
+  function resetSnackFrame() {
+    const shell = document.querySelector(".snack-game");
+    for (const property of ["position", "inset", "left", "top", "width", "height", "min-height", "transform", "transform-origin"]) shell?.style.removeProperty(property);
   }
 
   function exitSharedPlayViewport() {
@@ -827,14 +811,12 @@
     buildCleanBoard();
     nodes.menuPanel.classList.add("hidden");
     nodes.stagePanel.classList.add("hidden");
-    nodes.stageAdReserve.classList.add("hidden");
     nodes.resultPanel.classList.add("hidden");
     nodes.hud.classList.remove("hidden");
     nodes.playPanel.classList.remove("hidden");
     document.body.classList.remove("snack-stage");
     document.body.classList.add("snack-playing");
     document.querySelector(".snack-game")?.removeAttribute("data-play-viewport");
-    nodes.battleAdReserve.classList.remove("hidden");
     updateHud();
     renderBoard();
     nodes.hintText.textContent = t("hint");
@@ -923,13 +905,11 @@
     nodes.resultPanel.classList.add("hidden");
     nodes.menuPanel.classList.add("hidden");
     nodes.stagePanel.classList.remove("hidden");
-    nodes.stageAdReserve.classList.remove("hidden");
-    document.body.classList.remove("snack-playing", "snack-expanded-canvas");
+    document.body.classList.remove("snack-playing");
     document.body.classList.add("snack-stage");
     const shell = document.querySelector(".snack-game");
     shell?.setAttribute("data-play-viewport", "");
     for (const property of ["position", "inset", "left", "top", "width", "height", "min-height", "transform", "transform-origin"]) shell?.style.removeProperty(property);
-    nodes.battleAdReserve.classList.add("hidden");
     renderStageGrid();
     window.WonderAnalytics?.track("game_menu", { game_id: GAME_ID });
   }
