@@ -26,7 +26,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png?v=20260702-logo1" />
     <link rel="apple-touch-icon" href="assets/apple-touch-icon.png?v=20260702-logo1" />
     <link rel="manifest" href="manifest.webmanifest?v=20260702-logo1" />
-    <link rel="stylesheet" href="src/styles.css?v=20260715-general-lobby4" />
+    <link rel="stylesheet" href="src/styles.css?v=20260716-general-lobby6" />
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5576470284985485" crossorigin="anonymous"></script>
     <script type="application/ld+json">
       {
@@ -97,12 +97,7 @@
     <main class="lobby-shell">
       <header class="lobby-hero">
         <img class="general-hero-scene" src="assets/animal-hero-trials-cover.webp" alt="" />
-        <label id="playerBar" class="lobby-player">
-          <span id="playerLabel">Player</span>
-          <input id="playerNameInput" type="text" maxlength="18" autocomplete="nickname" value="Adventurer" aria-label="Player name" />
-        </label>
         <div class="lobby-hero-copy">
-          <p id="lobbyKicker" class="lobby-kicker">Browser Game Lobby</p>
           <div class="brand-lockup" aria-label="WeightPlay by WeightStudio">
             <img class="brand-logo" src="assets/weightplay-logo.png?v=20260702-logo1" alt="" />
             <div class="brand-copy">
@@ -124,7 +119,6 @@
             <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
           </select>
         </label>
-        <div id="walletBar" class="lobby-wallet" aria-live="polite"></div>
         <a id="featuredGame" class="lobby-feature" href="games/animal-guard-yard/">
           <img src="assets/animal-guard-yard-poster.png" alt="" />
           <div>
@@ -133,6 +127,14 @@
           </div>
         </a>
       </header>
+
+      <section id="lobbyAccountStrip" class="lobby-account-strip" aria-label="Player status">
+        <div class="lobby-player-summary">
+          <span data-i18n="profile.player">Player</span>
+          <div><strong data-i18n="profile.adventurer">Adventurer</strong><b>Lv.1</b></div>
+        </div>
+        <div id="walletBar" class="lobby-wallet" aria-live="polite"></div>
+      </section>
 
       <section class="kids-portal" aria-labelledby="kidsPortalTitle">
         <img src="assets/animal-bubble-safari-cover.webp" alt="" />
@@ -321,13 +323,13 @@
     <div id="lobbyToast" class="lobby-toast hidden" role="status" aria-live="polite"></div>
 
     <script src="src/site-config.js?v=20260710-lobby-filter-history1"></script>
-    <script src="src/version.js?v=20260630-senior1"></script>
+    <script src="src/version.js?v=20260716-general-lobby1"></script>
     <script src="src/analytics.js?v=20260630-senior1"></script>
     <script src="src/sound.js?v=20260715-lobby-contained1"></script>
     <script src="src/edge-guard.js?v=20260709-mobile-immersive1"></script>
-    <script src="src/i18n.js?v=20260715-general-lobby2"></script>
+    <script src="src/i18n.js?v=20260716-general-lobby3"></script>
     <script src="src/wallet.js?v=20260630-senior1"></script>
     <script src="src/lobby-data.js?v=20260715-catalog-36"></script>
-    <script src="src/lobby.js?v=20260715-general-audit1"></script>
+    <script src="src/lobby.js?v=20260716-general-lobby6"></script>
   </body>
 </html>

@@ -757,6 +757,14 @@ canvas {
   line-height: 1.1;
 }
 
+.upgrade-card em {
+  color: #fef08a;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 900;
+  line-height: 1.15;
+}
+
 .upgrade-card small {
   color: #d9f99d;
   font-weight: 800;
@@ -976,6 +984,7 @@ canvas {
     height: 56px;
   }
 
+  .upgrade-card em,
   .upgrade-card small {
     grid-column: 2;
   }

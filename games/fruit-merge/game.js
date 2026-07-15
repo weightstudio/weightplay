@@ -91,6 +91,11 @@
       habitatForest: "Forest Flight",
       habitatSavanna: "Savanna Trail",
       habitatRoyal: "Lion Crown",
+      nextHabitat: "Next habitat: {habitat}",
+      nextHabitatTarget: "Reach {animal} · {count} animal {steps}",
+      habitatStep: "step",
+      habitatSteps: "steps",
+      habitatAlbumComplete: "Habitat Album complete · Keep merging toward the Lion King!",
       start: "Start",
       gameOver: "Game Over",
       result: "Score {score}  Best {best}",
@@ -117,7 +122,7 @@
       aimDanger: "Too high! Merge quickly or aim away from the red line.",
       dangerLine: "Warning Line",
       leaderboardTitle: "Your Best Runs",
-      noLeaderboard: "Play once to start your local best-run list.",
+      noLeaderboard: "Complete a run to add it to this local best-run list.",
       leaderboardRow: "#{rank}  Score {score}  {animal}",
       playAgain: "Play Again",
       lobby: "Lobby",
@@ -167,6 +172,11 @@
       habitatForest: "森林飛行",
       habitatSavanna: "莽原旅程",
       habitatRoyal: "獅王冠冕",
+      nextHabitat: "下一個棲地：{habitat}",
+      nextHabitatTarget: "合成至 {animal} · 還有 {count} 個動物階段",
+      habitatStep: "階段",
+      habitatSteps: "階段",
+      habitatAlbumComplete: "棲地圖鑑完成 · 繼續向獅王合成！",
       start: "開始",
       gameOver: "遊戲結束",
       result: "分數 {score}  最佳 {best}",
@@ -193,7 +203,7 @@
       aimDanger: "太高了！快合成，或避開紅線附近。",
       dangerLine: "警戒線",
       leaderboardTitle: "你的最佳挑戰",
-      noLeaderboard: "玩一場後，這裡會記錄你的本機最佳成績。",
+      noLeaderboard: "完成一場後，就會加入這份本機最佳紀錄。",
       leaderboardRow: "第 {rank} 名  分數 {score}  {animal}",
       playAgain: "再玩一次",
       lobby: "大廳",
@@ -235,6 +245,13 @@
     { radius: 122, color: "#f5b43b", accent: "#75c95b", score: 118 },
     { radius: 142, color: "#8fd94f", accent: "#fff28a", score: 176 },
     { radius: 166, color: "#2fbd65", accent: "#1d8b45", score: 300 },
+  ];
+
+  const habitatMilestones = [
+    { key: "habitatMeadow", level: 2 },
+    { key: "habitatForest", level: 5 },
+    { key: "habitatSavanna", level: 8 },
+    { key: "habitatRoyal", level: 10 },
   ];
 
   const tokenSources = [
@@ -313,8 +330,8 @@
     lobbyLink.textContent = t("lobby");
     updateHud();
     updateAimCoach();
-    renderMilestone(menuMilestone, readProgress());
-    renderMilestone(resultMilestone, readProgress());
+    renderMilestone(menuMilestone, readProgress(), true);
+    renderMilestone(resultMilestone, readProgress(), true);
     renderLeaderboard(menuLeaderboard, readLeaderboard());
     renderLeaderboard(resultLeaderboard, readLeaderboard());
   }
@@ -668,7 +685,7 @@
     const leaderboard = recordLeaderboard(score, maxReachedLevel);
     resultTitle.textContent = t("gameOver");
     renderResultReport(progress, newBest);
-    renderMilestone(resultMilestone, progress);
+    renderMilestone(resultMilestone, progress, true);
     renderLeaderboard(resultLeaderboard, leaderboard);
     resultPanel.classList.remove("hidden");
     window.WonderAnalytics?.track?.("game_complete", { game_id: GAME_ID, score, best_score: bestScore, new_best: newBest, cleared: false });
@@ -755,7 +772,7 @@
     });
   }
 
-  function renderMilestone(target, progress = readProgress()) {
+  function renderMilestone(target, progress = readProgress(), showHabitatGoal = false) {
     if (!target) return;
     target.replaceChildren();
     const highest = Math.max(0, Math.min(fruits.length - 1, Number(progress.highestLevel) || 0));
@@ -770,6 +787,18 @@
     nextTarget.innerHTML = `${animalTokenMarkup(next)} <b>${highest >= fruits.length - 1 ? t("milestoneComplete") : t("milestoneNext", { name: t(`fruit${next}`) })}</b>`;
     row.append(current, nextTarget);
     target.append(title, row);
+    if (showHabitatGoal) {
+      const habitatGoal = document.createElement("div");
+      habitatGoal.className = "habitat-next-goal";
+      const nextHabitat = habitatMilestones.find((habitat) => highest < habitat.level);
+      if (!nextHabitat) {
+        habitatGoal.textContent = t("habitatAlbumComplete");
+      } else {
+        const steps = nextHabitat.level - highest;
+        habitatGoal.innerHTML = `${animalTokenMarkup(nextHabitat.level)}<span><b>${t("nextHabitat", { habitat: t(nextHabitat.key) })}</b><small>${t("nextHabitatTarget", { animal: t(`fruit${nextHabitat.level}`), count: steps, steps: t(steps === 1 ? "habitatStep" : "habitatSteps") })}</small></span>`;
+      }
+      target.appendChild(habitatGoal);
+    }
   }
 
   function renderChainPreview() {
@@ -794,20 +823,14 @@
     });
     chainPreview.appendChild(rail);
 
-    const habitats = [
-      { key: "habitatMeadow", level: 2 },
-      { key: "habitatForest", level: 5 },
-      { key: "habitatSavanna", level: 8 },
-      { key: "habitatRoyal", level: 10 },
-    ];
-    const unlockedHabitats = habitats.filter((habitat) => highest >= habitat.level).length;
+    const unlockedHabitats = habitatMilestones.filter((habitat) => highest >= habitat.level).length;
     const album = document.createElement("section");
     album.className = "habitat-album";
     const albumTitle = document.createElement("strong");
     albumTitle.textContent = t("albumTitle", { unlocked: unlockedHabitats });
     const albumGrid = document.createElement("div");
     albumGrid.className = "habitat-album-grid";
-    habitats.forEach((habitat) => {
+    habitatMilestones.forEach((habitat) => {
       const unlocked = highest >= habitat.level;
       const card = document.createElement("span");
       card.className = `habitat-album-card${unlocked ? " unlocked" : " locked"}`;

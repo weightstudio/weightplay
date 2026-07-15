@@ -3,6 +3,7 @@
   const columns = 7;
   const rows = 10;
   const matchClearDuration = 360;
+  const dropSettleDuration = 360;
   const snacks = ["ST", "CK", "JM", "GR", "CH", "PR"];
   const snackArt = {
     ST: { label: "Strawberry", asset: "assets/tile-strawberry.png" },
@@ -672,7 +673,7 @@
     window.setTimeout(() => {
       const dropMap = collapse(matches);
       renderBoard(dropMap);
-      window.setTimeout(resolveBoard, 300);
+      window.setTimeout(resolveBoard, dropSettleDuration);
     }, matchClearDuration);
   }
 

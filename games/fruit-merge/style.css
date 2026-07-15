@@ -713,6 +713,46 @@ body.fruit-playing #menuPanel {
   font-size: 15px;
 }
 
+.habitat-next-goal {
+  min-height: 52px;
+  padding: 7px 9px;
+  border-radius: 10px;
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr);
+  gap: 8px;
+  align-items: center;
+  background: linear-gradient(135deg, rgba(101, 230, 163, 0.28), rgba(255, 211, 93, 0.34));
+  color: #33455a;
+}
+
+.habitat-next-goal > img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.habitat-next-goal span {
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+}
+
+.habitat-next-goal b,
+.habitat-next-goal small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.habitat-next-goal b {
+  font-size: 13px;
+}
+
+.habitat-next-goal small {
+  font-size: 11px;
+  font-weight: 900;
+}
+
 .leaderboard-panel span {
   min-height: 28px;
   padding: 6px 8px;

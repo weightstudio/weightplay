@@ -108,6 +108,15 @@
       skillOwlDesc: "Strike from farther away with rune magic.",
       skillTurtle: "Shell Ward",
       skillTurtleDesc: "Guard the whole squad and heal 1 HP.",
+      attackValue: "Attack {value}",
+      guardValue: "Guard -1",
+      guardHelp: "Reduce the next enemy hit by 1 damage.",
+      skillValue: "Skill {value}",
+      actionTarget: "{action} {value} damage to {target}.",
+      heroTileLabel: "{hero}, HP {hp}/{maxHp}, {status}, row {row}, column {column}.",
+      enemyTileLabel: "{enemy}, HP {hp}/{maxHp}, row {row}, column {column}.",
+      moveTileLabel: "Move to row {row}, column {column}.",
+      emptyTileLabel: "Row {row}, column {column}.",
       moved: "{hero} moved.",
       attacked: "{hero} attacked {enemy}.",
       guarded: "{hero} guarded.",
@@ -193,6 +202,15 @@
       skillOwlDesc: "用符文魔法從更遠距離攻擊。",
       skillTurtle: "龜甲守護",
       skillTurtleDesc: "全隊進入防禦並恢復 1 生命。",
+      attackValue: "攻擊 {value}",
+      guardValue: "防守 -1",
+      guardHelp: "下一次受到的敵方傷害減少 1 點。",
+      skillValue: "技能 {value}",
+      actionTarget: "對{target}使用{action}，造成 {value} 點傷害。",
+      heroTileLabel: "{hero}，生命 {hp}/{maxHp}，{status}，第 {row} 列第 {column} 欄。",
+      enemyTileLabel: "{enemy}，生命 {hp}/{maxHp}，第 {row} 列第 {column} 欄。",
+      moveTileLabel: "移動到第 {row} 列第 {column} 欄。",
+      emptyTileLabel: "第 {row} 列第 {column} 欄。",
       moved: "{hero} 移動了。",
       attacked: "{hero} 攻擊 {enemy}。",
       guarded: "{hero} 進入防禦。",
@@ -346,6 +364,8 @@
     startMission: "開始任務", mission: "任務", turn: "回合", wallet: "鑽石", enemiesLeft: "敵人", attack: "攻擊", guard: "防守", skill: "技能", endTurn: "結束回合", health: "生命", energy: "能量",
     chooseHero: "選擇一位英雄，再移動或攻擊。", chooseTarget: "{hero}：生命 {hp}/{maxHp}，能量 {energy}。", ready: "可行動", acted: "已行動", fallen: "倒下", turnRosterTitle: "小隊行動", skillInfo: "技能：{skill} - {desc}", skillInfoLabel: "技能",
     skillLion: "獅王撲擊", skillLionDesc: "對最近目標造成重擊。", skillOwl: "符文箭", skillOwlDesc: "以符文魔法攻擊較遠的目標。", skillTurtle: "甲殼守護", skillTurtleDesc: "守護全隊並回復 1 點生命。",
+    attackValue: "攻擊 {value}", guardValue: "防守 -1", guardHelp: "下一次受到的敵方傷害減少 1 點。", skillValue: "技能 {value}", actionTarget: "對{target}使用{action}，造成 {value} 點傷害。",
+    heroTileLabel: "{hero}，生命 {hp}/{maxHp}，{status}，第 {row} 列第 {column} 欄。", enemyTileLabel: "{enemy}，生命 {hp}/{maxHp}，第 {row} 列第 {column} 欄。", moveTileLabel: "移動到第 {row} 列第 {column} 欄。", emptyTileLabel: "第 {row} 列第 {column} 欄。",
     moved: "{hero} 已移動。", attacked: "{hero} 攻擊了 {enemy}。", guarded: "{hero} 進入防守。", skillUsed: "{hero} 使用了符文技能。", enemyTurn: "敵人正在行動。",
     chooseReward: "選擇符文獎勵", reroll: "重抽 3", rerollNeed: "重抽需要 3 顆鑽石。", missionClear: "任務完成", missionFailed: "任務失敗", resultWin: "完成任務 {mission}，獲得 {xp} 經驗值和 {runes} 符文。", resultLose: "符文小隊在任務 {mission} 倒下。讓烏龜守在前排，集中攻擊同一隻敵人。",
     skillReport: "能力報告", reportWin: "規劃很棒：你用站位、集火和獎勵選擇保護了小隊。", reportLose: "這是很好的練習：敵人回合前先防守，並一次專注一隻野獸。", nextMission: "下一個任務", retry: "再試一次", menu: "選單",
@@ -742,6 +762,17 @@
           if (unit.team === "hero" && state.acted.has(unit.id)) tile.classList.add("is-acted");
           if (unit.team === "hero" && state.selected === unit.id) tile.classList.add("is-selected");
           tile.appendChild(renderUnit(unit));
+          if (unit.team === "hero") {
+            const status = state.acted.has(unit.id) ? t("acted") : t("ready");
+            tile.setAttribute("aria-label", t("heroTileLabel", { hero: t(unit.name), hp: unit.hp, maxHp: unit.maxHp, status, row: y + 1, column: x + 1 }));
+            tile.setAttribute("aria-pressed", String(state.selected === unit.id));
+          } else {
+            tile.setAttribute("aria-label", t("enemyTileLabel", { enemy: t(unit.name), hp: unit.hp, maxHp: unit.maxHp, row: y + 1, column: x + 1 }));
+          }
+        } else if (movable.some((p) => p.x === x && p.y === y)) {
+          tile.setAttribute("aria-label", t("moveTileLabel", { row: y + 1, column: x + 1 }));
+        } else {
+          tile.setAttribute("aria-label", t("emptyTileLabel", { row: y + 1, column: x + 1 }));
         }
         nodes.grid.appendChild(tile);
       }
@@ -806,7 +837,7 @@
       const status = isFallen ? t("fallen") : isDone ? t("acted") : t("ready");
       const className = ["turn-roster-item", isSelected ? "is-selected" : "", isDone ? "is-done" : "", isFallen ? "is-fallen" : ""].filter(Boolean).join(" ");
       return `
-        <button class="${className}" type="button" data-roster-hero="${hero.id}" ${isFallen ? "disabled" : ""}>
+        <button class="${className}" type="button" data-roster-hero="${hero.id}" aria-pressed="${isSelected}" ${isFallen ? "disabled" : ""}>
           <img src="${asset(hero.img)}" alt="" aria-hidden="true" />
           <span>
             <strong>${t(hero.name)}</strong>
@@ -826,7 +857,16 @@
   function updateActionButtons() {
     const hero = selectedHero();
     const canAct = hero && !state.acted.has(hero.id) && state.phase === "player";
-    nodes.attackBtn.disabled = !canAct || !validTargets().length;
+    const targets = hero ? validTargets() : [];
+    const attackTarget = targets[0];
+    const skillTarget = hero && hero.id !== "turtle" ? attackTarget || livingEnemies().sort((a, b) => distance(hero, a) - distance(hero, b))[0] : null;
+    nodes.attackBtn.textContent = hero ? t("attackValue", { value: hero.atk }) : t("attack");
+    nodes.guardBtn.textContent = hero ? t("guardValue") : t("guard");
+    nodes.skillBtn.textContent = hero ? t("skillValue", { value: hero.id === "turtle" ? "+1" : hero.atk + 2 }) : t("skill");
+    nodes.attackBtn.setAttribute("aria-label", attackTarget ? t("actionTarget", { action: t("attack"), value: hero.atk, target: t(attackTarget.name) }) : t("attack"));
+    nodes.guardBtn.setAttribute("aria-label", hero ? `${t("guardValue")}. ${t("guardHelp")}` : t("guard"));
+    nodes.skillBtn.setAttribute("aria-label", skillTarget ? t("actionTarget", { action: t(hero.skillName), value: hero.atk + 2, target: t(skillTarget.name) }) : hero ? t("skillInfo", { skill: t(hero.skillName), desc: t(hero.skillDesc) }) : t("skill"));
+    nodes.attackBtn.disabled = !canAct || !targets.length;
     nodes.guardBtn.disabled = !canAct;
     nodes.skillBtn.disabled = !canAct || hero.energy <= 0;
     nodes.endTurnBtn.disabled = state.phase !== "player";

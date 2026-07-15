@@ -122,6 +122,13 @@
       upgradeAttackSpeedDesc: "Attack more often.",
       upgradePickupRadius: "Crystal Magnet",
       upgradePickupRadiusDesc: "Collect nearby crystals and keys from farther away.",
+      upgradeValue: "{stat}: {current} → {next}",
+      statDamage: "Damage",
+      statRange: "Range",
+      statSpeed: "Move speed",
+      statHp: "Max HP",
+      statCooldown: "Attack interval",
+      statPickup: "Pickup radius",
     },
     "zh-Hant": {
       title: "\u52d5\u7269\u6c34\u6676\u751f\u5b58\u6230",
@@ -196,6 +203,13 @@
       upgradeAttackSpeedDesc: "\u653b\u64ca\u9593\u9694\u7e2e\u77ed\u3002",
       upgradePickupRadius: "\u6c34\u6676\u78c1\u529b",
       upgradePickupRadiusDesc: "\u53ef\u4ee5\u5f9e\u66f4\u9060\u8655\u6536\u96c6\u6c34\u6676\u8207\u91d1\u9470\u3002",
+      upgradeValue: "{stat}\uff1a{current} → {next}",
+      statDamage: "\u50b7\u5bb3",
+      statRange: "\u653b\u64ca\u7bc4\u570d",
+      statSpeed: "\u79fb\u52d5\u901f\u5ea6",
+      statHp: "\u751f\u547d\u4e0a\u9650",
+      statCooldown: "\u653b\u64ca\u9593\u9694",
+      statPickup: "\u62fe\u53d6\u7bc4\u570d",
     },
   };
 
@@ -731,10 +745,34 @@
         <button class="upgrade-card" type="button" data-upgrade="${item.id}">
           <span class="upgrade-icon"><img src="${assetPaths[item.icon]}" alt="" /></span>
           <b>${t(item.name)}</b>
+          <em>${upgradePreview(item.id)}</em>
           <small>${t(item.desc)}</small>
         </button>
       `)
       .join("");
+  }
+
+  function formatUpgradeValue(value, unit = "") {
+    const rounded = Math.round(value * 100) / 100;
+    return `${rounded}${unit}`;
+  }
+
+  function upgradePreview(id) {
+    const p = state.player;
+    const previews = {
+      attack: ["statDamage", p.damage, p.damage + 0.55, ""],
+      range: ["statRange", p.range, p.range + 48, "px"],
+      speed: ["statSpeed", p.speed, p.speed + 32, ""],
+      maxHp: ["statHp", p.maxHp, p.maxHp + 1, ""],
+      cooldown: ["statCooldown", p.cooldown, Math.max(0.34, p.cooldown * 0.86), "s"],
+      pickup: ["statPickup", p.pickup, p.pickup + 24, "px"],
+    };
+    const [stat, current, next, unit] = previews[id];
+    return t("upgradeValue", {
+      stat: t(stat),
+      current: formatUpgradeValue(current, unit),
+      next: formatUpgradeValue(next, unit),
+    });
   }
 
   function applyUpgrade(id) {

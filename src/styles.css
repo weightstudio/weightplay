@@ -3904,53 +3904,11 @@ body.general-lobby-page {
 
 .general-lobby-page .lobby-hero-copy {
   position: absolute;
-  top: 82px;
+  top: 54px;
   left: clamp(20px, 4vw, 48px);
   width: min(47%, 500px);
   color: #ffffff;
   text-shadow: 0 3px 12px rgba(4, 13, 12, 0.82);
-}
-
-.general-lobby-page .lobby-player {
-  position: absolute;
-  top: 14px;
-  left: 14px;
-  z-index: 3;
-  display: grid;
-  width: 160px;
-  min-height: 52px;
-  padding: 6px 10px;
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  border-radius: 7px;
-  background: rgba(18, 34, 31, 0.9);
-  color: #ffffff;
-  box-shadow: 0 5px 0 rgba(5, 15, 13, 0.7);
-}
-
-.general-lobby-page .lobby-player span {
-  color: #f4e9cc;
-  font-size: 10px;
-  font-weight: 900;
-}
-
-.general-lobby-page .lobby-player input {
-  width: 100%;
-  min-width: 0;
-  height: 26px;
-  padding: 0;
-  overflow: hidden;
-  border: 0;
-  border-bottom: 1px solid transparent;
-  outline: 0;
-  background: transparent;
-  color: #ffffff;
-  font-size: 15px;
-  font-weight: 900;
-  text-overflow: ellipsis;
-}
-
-.general-lobby-page .lobby-player input:focus {
-  border-bottom-color: #f2bd4e;
 }
 
 .general-lobby-page .lobby-kicker {
@@ -3993,9 +3951,9 @@ body.general-lobby-page {
   top: 14px;
   right: 14px;
   z-index: 2;
-  width: 112px;
-  min-height: 44px;
-  padding: 4px 8px;
+  width: 96px;
+  min-height: 36px;
+  padding: 3px 7px;
   border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 7px;
   background: rgba(18, 34, 31, 0.88);
@@ -4004,44 +3962,85 @@ body.general-lobby-page {
 }
 
 .general-lobby-page .language-picker span {
-  font-size: 10px;
+  display: none;
 }
 
 .general-lobby-page .language-picker select {
-  min-height: 22px;
+  height: 28px;
+  min-height: 28px;
   padding: 0;
   border: 0;
   background: transparent;
   color: #ffffff;
+  font-size: 11px;
+}
+
+.general-lobby-page .lobby-account-strip {
+  order: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 66px;
+  margin: 0 0 22px;
+  padding: 10px 14px;
+  border: 1px solid #b7c8c1;
+  border-radius: 7px;
+  background: #fffdf5;
+  color: #17342e;
+  box-shadow: 0 6px 0 #c1cec8;
+}
+
+.general-lobby-page .lobby-player-summary > span {
+  display: block;
+  color: #6d7f79;
+  font-size: 10px;
+  font-weight: 900;
+}
+
+.general-lobby-page .lobby-player-summary > div {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.general-lobby-page .lobby-player-summary strong {
+  font-size: 17px;
+}
+
+.general-lobby-page .lobby-player-summary b {
+  color: #a35b18;
   font-size: 12px;
 }
 
-.general-lobby-page .lobby-wallet {
-  position: absolute;
-  top: 14px;
-  right: auto;
-  left: 184px;
-  z-index: 2;
+.general-lobby-page .lobby-account-strip .lobby-wallet {
+  position: static;
+  display: flex;
+  align-items: center;
+  gap: 8px;
   width: auto;
-  min-width: 82px;
-  min-height: 44px;
-  padding: 4px 8px;
-  border: 1px solid rgba(255, 255, 255, 0.34);
+  min-width: 106px;
+  min-height: 42px;
+  padding: 6px 10px;
+  border: 1px solid #b7c8c1;
   border-radius: 7px;
-  background: rgba(18, 34, 31, 0.88);
-  box-shadow: 0 5px 0 rgba(5, 15, 13, 0.7);
+  background: #eef7f3;
+  box-shadow: none;
 }
 
-.general-lobby-page .lobby-wallet span {
-  font-size: 9px;
+.general-lobby-page .lobby-account-strip .lobby-wallet span {
+  color: #587169;
+  font-size: 10px;
 }
 
-.general-lobby-page .lobby-wallet strong {
+.general-lobby-page .lobby-account-strip .lobby-wallet strong {
   gap: 4px;
+  color: #176885;
   font-size: 15px;
 }
 
-.general-lobby-page .lobby-wallet img {
+.general-lobby-page .lobby-account-strip .lobby-wallet img {
   width: 18px;
   height: 18px;
 }
@@ -4665,7 +4664,7 @@ body.general-lobby-page {
   }
 
   .general-lobby-page .lobby-hero-copy {
-    top: 76px;
+    top: 48px;
     left: 16px;
     width: 70%;
   }
@@ -4684,17 +4683,13 @@ body.general-lobby-page {
   }
 
   .general-lobby-page .language-picker {
-    width: 112px;
+    width: 92px;
   }
 
-  .general-lobby-page .lobby-wallet {
-    top: 14px;
-    left: 162px;
-    min-width: 78px;
-  }
-
-  .general-lobby-page .lobby-player {
-    width: 140px;
+  .general-lobby-page .lobby-account-strip {
+    min-height: 62px;
+    margin-bottom: 18px;
+    padding: 8px 10px;
   }
 
   .general-lobby-page .lobby-feature {

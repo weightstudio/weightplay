@@ -238,16 +238,16 @@
     retry:u("\\u518d\\u8a66\\u4e00\\u6b21")
   });
   Object.assign(en,{
-    fishBattle:"Fish encounter",territorialFish:"Territorial fish",shark:"Abyss shark",fishHp:"Enemy HP",diverHp:"Nori HP",attackAction:"Attack",escapeAction:"Escape",fishStrikes:"The fish strikes back!",fishWon:"Enemy defeated!",fishEscaped:"Escaped safely. Oxygen -{n}.",xpGain:"EXP +{n}",levelUp:"Level up! Stat point +{n}",upgradeTitle:"Diver upgrade",statPoints:"Points {n}",hpStat:"Health +8",attackStat:"Attack +2",oxygenStat:"Max oxygen +10",doneUpgrade:"Continue dive",combatDefeat:"Nori was defeated",resultCombat:"Nori lost the encounter. Half of the salvage was secured."
+    fishBattle:"Fish encounter",territorialFish:"Territorial fish",shark:"Abyss shark",fishHp:"Enemy HP",diverHp:"Nori HP",attackAction:"Attack",escapeAction:"Escape",fishStrikes:"The fish strikes back!",fishWon:"Enemy defeated!",fishEscaped:"Escaped safely. Oxygen -{n}.",xpGain:"EXP +{n}",levelUp:"Level up! Stat point +{n}",upgradeTitle:"Diver upgrade",statPoints:"Points {n}",hpStat:"Health",attackStat:"Attack",oxygenStat:"Max oxygen",statPreview:"{name} {current} → {next}",upgradePrompt:"Spend every point before continuing.",upgradeApplied:"{name} upgraded: {before} → {after}.",doneUpgrade:"Continue dive",combatDefeat:"Nori was defeated",resultCombat:"Nori lost the encounter. Half of the salvage was secured."
   });
   Object.assign(zh,{
-    fishBattle:"魚類遭遇戰",territorialFish:"領域魚",shark:"深淵鯊魚",fishHp:"敵方生命",diverHp:"諾里生命",attackAction:"攻擊",escapeAction:"逃跑",fishStrikes:"魚發動反擊！",fishWon:"戰勝魚類！",fishEscaped:"成功逃跑，氧氣 -{n}。",xpGain:"經驗 +{n}",levelUp:"升級！能力點 +{n}",upgradeTitle:"潛航員升級",statPoints:"剩餘點數 {n}",hpStat:"生命 +8",attackStat:"攻擊 +2",oxygenStat:"氧氣上限 +10",doneUpgrade:"繼續潛航",combatDefeat:"諾里戰敗",resultCombat:"諾里在遭遇戰中落敗，只保住一半打撈品。"
+    fishBattle:"魚類遭遇戰",territorialFish:"領域魚",shark:"深淵鯊魚",fishHp:"敵方生命",diverHp:"諾里生命",attackAction:"攻擊",escapeAction:"逃跑",fishStrikes:"魚發動反擊！",fishWon:"戰勝魚類！",fishEscaped:"成功逃跑，氧氣 -{n}。",xpGain:"經驗 +{n}",levelUp:"升級！能力點 +{n}",upgradeTitle:"潛航員升級",statPoints:"剩餘點數 {n}",hpStat:"生命",attackStat:"攻擊",oxygenStat:"氧氣上限",statPreview:"{name} {current} → {next}",upgradePrompt:"請分配所有能力點後再繼續。",upgradeApplied:"{name}已提升：{before} → {after}。",doneUpgrade:"繼續潛航",combatDefeat:"諾里戰敗",resultCombat:"諾里在遭遇戰中落敗，只保住一半打撈品。"
   });
   let locale = localStorage.getItem("weightPlayLocale") || "en";
   const storedSave = JSON.parse(localStorage.getItem(saveKey)||"{}");
   let save = { rank:1, coins:0, unlocked:1, level:1, xp:0, statPoints:0, ...storedSave };
   save.stats={hp:0,attack:0,oxygen:0,...storedSave.stats};
-  let state = {},fishClock;
+  let state = {},fishClock,lastUpgrade=null;
   const routes = [
     {risk:1,zones:5,target:4,fishZones:[3],reaction:3200,encounters:[["relic","hazard"],["current","cache"],["oxygen","relic"],["cache","hazard"],["relic","current"]]},
     {risk:2,zones:6,target:6,fishZones:[3,5],reaction:2600,encounters:[["cache","hazard"],["current","relic"],["oxygen","cache"],["hazard","relic"],["cache","current"],["relic","hazard"]]},
@@ -269,7 +269,7 @@
   const pips = value => `<span class="pips" aria-hidden="true">${[1,2,3].map(n=>`<i class="${n<=value?"is-on":""}"></i>`).join("")}</span>`;
   const estimateMarkup = outcome => `<span class="metric">${icon("salvage")}<em>${t("shortLoot")}</em>${pips(outcome.intel.loot)}</span><span class="metric">${icon("danger")}<em>${t("shortDanger")}</em>${pips(outcome.intel.danger)}</span><span class="metric metric-oxygen">${icon("oxygen")}<em>${t("shortOxygen")}</em><b>${outcome.intel.cost}</b></span>`;
   const combatDiver=document.createElement("div");combatDiver.className="combat-diver";combatDiver.innerHTML='<img src="../../assets/animal-abyss-diver-nori.png" alt="Nori">';$("fishEncounter").prepend(combatDiver);
-  const upgradePanel=document.createElement("section");upgradePanel.id="upgradePanel";upgradePanel.className="upgrade-panel hidden";upgradePanel.innerHTML='<h2 id="upgradeTitle"></h2><strong id="upgradePoints"></strong><div><button id="upgradeHp" type="button"></button><button id="upgradeAttack" type="button"></button><button id="upgradeOxygen" type="button"></button></div><button id="upgradeDone" class="primary" type="button"></button>';$("diveField").append(upgradePanel);
+  const upgradePanel=document.createElement("section");upgradePanel.id="upgradePanel";upgradePanel.className="upgrade-panel hidden";upgradePanel.innerHTML='<h2 id="upgradeTitle"></h2><strong id="upgradePoints"></strong><output id="upgradeSummary" aria-live="polite" aria-atomic="true"></output><div><button id="upgradeHp" type="button"></button><button id="upgradeAttack" type="button"></button><button id="upgradeOxygen" type="button"></button></div><button id="upgradeDone" class="primary" type="button"></button>';$("diveField").append(upgradePanel);
   function setFeedback(markup,label){$("feedback").innerHTML=markup;$("feedback").setAttribute("aria-label",label);}
   function renderCoach(){
     $("coachStep1").innerHTML=`<div>${estimateMarkup(outcomes.relic)}</div><small>${t("coachVisual1")}</small>`;$("coachStep1").setAttribute("aria-label",t("coachStep1"));
@@ -391,9 +391,22 @@
     $("fishEncounter").classList.remove("hidden");renderFish();renderBattle();setFeedback(`${icon("danger")}<b>!</b>`,`${t("fishBattle")}: ${fish.name}`);
   }
   function awardFishXp(amount){save.xp+=amount;let gained=0;while(save.xp>=xpNeeded()){save.xp-=xpNeeded();save.level+=1;save.statPoints+=1;gained+=1;}persist();return gained;}
-  function renderUpgrade(){$("upgradeTitle").textContent=t("upgradeTitle");$("upgradePoints").textContent=`Lv.${save.level} · ${t("statPoints",{n:save.statPoints})}`;$("upgradeHp").textContent=t("hpStat");$("upgradeAttack").textContent=t("attackStat");$("upgradeOxygen").textContent=t("oxygenStat");$("upgradeDone").textContent=t("doneUpgrade");for(const id of ["upgradeHp","upgradeAttack","upgradeOxygen"])$(id).disabled=save.statPoints<1;}
-  function openUpgrade(){renderUpgrade();$("upgradePanel").classList.remove("hidden");}
-  function allocateStat(stat){if(save.statPoints<1)return;const oldMaxHp=maxHealth(),oldMaxOxygen=maxOxygen();save.statPoints-=1;save.stats[stat]+=1;if(stat==="hp")state.playerHp+=maxHealth()-oldMaxHp;if(stat==="oxygen")state.oxygen=Math.min(maxOxygen(),state.oxygen+maxOxygen()-oldMaxOxygen);persist();renderUpgrade();renderBattle();}
+  function statValue(stat){return stat==="hp"?maxHealth():stat==="attack"?diverAttack():maxOxygen();}
+  function statStep(stat){return stat==="hp"?8:stat==="attack"?2:10;}
+  function renderUpgrade(){
+    $("upgradeTitle").textContent=t("upgradeTitle");
+    $("upgradePoints").textContent=`Lv.${save.level} · ${t("statPoints",{n:save.statPoints})}`;
+    for(const [stat,id,key] of [["hp","upgradeHp","hpStat"],["attack","upgradeAttack","attackStat"],["oxygen","upgradeOxygen","oxygenStat"]]){
+      const current=statValue(stat);
+      $(id).textContent=t("statPreview",{name:t(key),current,next:current+statStep(stat)});
+      $(id).disabled=save.statPoints<1;
+    }
+    $("upgradeSummary").textContent=lastUpgrade?t("upgradeApplied",{name:t(`${lastUpgrade.stat}Stat`),before:lastUpgrade.before,after:lastUpgrade.after}):t("upgradePrompt");
+    $("upgradeDone").textContent=t("doneUpgrade");
+    $("upgradeDone").disabled=save.statPoints>0;
+  }
+  function openUpgrade(){lastUpgrade=null;renderUpgrade();$("upgradePanel").classList.remove("hidden");}
+  function allocateStat(stat){if(save.statPoints<1)return;const oldMaxHp=maxHealth(),oldMaxOxygen=maxOxygen(),before=statValue(stat);save.statPoints-=1;save.stats[stat]+=1;if(stat==="hp")state.playerHp+=maxHealth()-oldMaxHp;if(stat==="oxygen")state.oxygen=Math.min(maxOxygen(),state.oxygen+maxOxygen()-oldMaxOxygen);lastUpgrade={stat,before,after:statValue(stat)};persist();renderUpgrade();renderBattle();}
   function winFish(){const fish=fishProfile(),levels=awardFishXp(fish.xp);state.fishActive=false;state.fishBusy=false;state.fishResolvedZones.push(state.zone);state.salvage+=1;state.battery=Math.min(4,state.battery+1);$("fishEncounter").classList.add("hidden");setFeedback(`${icon("salvage")}<b>+1</b><b>XP +${fish.xp}</b>`,`${t("fishWon")} ${t("xpGain",{n:fish.xp})}${levels?` ${t("levelUp",{n:levels})}`:""}`);renderBattle();if(levels)openUpgrade();}
   function attackFish(){
     if(!state.fishActive||state.fishBusy)return;state.fishBusy=true;state.fishHp-=diverAttack();$("fishEncounter").classList.add("is-hit");setFeedback(`${icon("danger")}<b>-${diverAttack()}</b>`,t("attackAction"));renderFish();
