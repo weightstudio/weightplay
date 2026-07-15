@@ -105,7 +105,7 @@
   min-height: 190px !important;
   max-height: 190px !important;
   scroll-snap-align: center !important;
-  scroll-snap-stop: always !important;
+  scroll-snap-stop: normal !important;
   overflow: hidden;
 }
 

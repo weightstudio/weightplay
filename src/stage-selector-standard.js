@@ -142,6 +142,7 @@
       .some(stageRootVisible);
     const active = activeRail || activeManagementRoot;
     document.body?.classList.toggle("wp-stage-select-active", active);
+    document.documentElement.classList.toggle("wp-stage-select-active", active);
     updateStageCanvas();
   }
 
@@ -155,12 +156,8 @@
 
   function centerNearest(rail, restore) {
     const allCards = stageCards(rail);
-    // Some games use the rail for browsing future stages as well as choosing
-    // the next playable stage. Those rails opt in to snapping locked cards.
-    const cards = rail.dataset.wpStageSnapLocked === "true"
-      ? [...allCards]
-      : allCards.filter(isUnlockedCard);
-    if (!cards.length) cards.push(...allCards);
+    // Locking controls entry, not whether future stages may be browsed.
+    const cards = [...allCards];
     if (!cards.length) {
       restore();
       return;
@@ -320,13 +317,13 @@
       const coordinateScale = railRect.width > 0 ? rail.clientWidth / railRect.width : 1;
       rail.dataset.wpDragDelta = String(delta);
       rail.dataset.wpDragMove = String(Number(rail.dataset.wpDragMove || 0) + 1);
-      if (!moved && Math.abs(delta) > 8) {
+      if (!moved && Math.abs(delta) > 4) {
         moved = true;
         rail.classList.add("wp-stage-dragging");
         try {
           rail.setPointerCapture?.(event.pointerId);
         } catch {
-          // Synthetic tests and cancelled browser gestures may not own capture.
+          // Synthetic tests may not own pointer capture.
         }
       }
       if (!moved) return;
@@ -370,7 +367,6 @@
     };
     rail.addEventListener("pointerup", finish, true);
     rail.addEventListener("pointercancel", finish, true);
-    rail.addEventListener("lostpointercapture", finish, true);
     document.addEventListener("pointerup", finish, true);
     document.addEventListener("pointercancel", finish, true);
     rail.addEventListener("click", (event) => {

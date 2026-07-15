@@ -51,6 +51,9 @@
       logic: "Logic",
       focus: "Focus",
       problemSolving: "Problem Solving",
+      targetHitEvidence: "Order hits {hits}/{moves}",
+      largestGroupEvidence: "Largest group {count}",
+      bestStreakEvidence: "Best streak x{count}",
       reportGreat: "Great progress! Your child planned groups well and stayed focused.",
       reportGood: "Good effort! Try again to improve focus and finish more orders.",
       reportNewBest: "Amazing progress! This is a new best score for this stage.",
@@ -139,6 +142,9 @@
       logic: "邏輯",
       focus: "專注",
       problemSolving: "解題",
+      targetHitEvidence: "訂單命中 {hits}/{moves}",
+      largestGroupEvidence: "最大群組 {count}",
+      bestStreakEvidence: "最高連擊 x{count}",
       reportGreat: "很棒的進步！孩子有好好規劃泡泡群組，也維持了專注。",
       reportGood: "努力得很好！再試一次，可以練習更專注並完成更多訂單。",
       reportNewBest: "太棒了！這一關拿到新的最佳分數。",
@@ -250,6 +256,10 @@
   let moves = 0;
   let score = 0;
   let orderStreak = 0;
+  let validMovesUsed = 0;
+  let orderTargetMoves = 0;
+  let largestGroup = 0;
+  let bestOrderStreak = 0;
   let busy = false;
   const popMs = 620;
   const dropMs = 920;
@@ -545,6 +555,10 @@
     moves = stage.moves;
     score = 0;
     orderStreak = 0;
+    validMovesUsed = 0;
+    orderTargetMoves = 0;
+    largestGroup = 0;
+    bestOrderStreak = 0;
     busy = false;
     board = makeBoard(stage.palette);
     document.body.classList.remove("is-bakery-stage-select", "is-bakery-result");
@@ -730,10 +744,14 @@
     busy = true;
     const wasNeeded = (orders[id] || 0) > 0;
     moves -= 1;
+    validMovesUsed += 1;
+    largestGroup = Math.max(largestGroup, group.length);
     const baseScore = group.length * group.length * 5;
     let bonus = 0;
     if (wasNeeded) {
+      orderTargetMoves += 1;
       orderStreak += 1;
+      bestOrderStreak = Math.max(bestOrderStreak, orderStreak);
       bonus = Math.round(group.length * 8 * Math.min(orderStreak, 5));
     } else {
       orderStreak = 0;
@@ -929,6 +947,12 @@
       lastPlayedAt: new Date().toISOString(),
       improvementPercent,
       skillScores,
+      evidence: {
+        validMovesUsed,
+        orderTargetMoves,
+        largestGroup,
+        bestOrderStreak,
+      },
     };
     saveProgress(progress);
 
@@ -939,9 +963,9 @@
       <div class="skill-score-row"><span>${t("previousBest")}</span><b>${previousBest}</b></div>
       <div class="skill-score-row"><span>${t("todayScore")}</span><b>${score}</b></div>
       <div class="skill-score-row"><span>${t("improvement")}</span><b>${improvementText}</b></div>
-      <div class="skill-stars"><span>${t("logic")}</span><b>${starIcons(skillScores.logic, 5)}</b></div>
-      <div class="skill-stars"><span>${t("focus")}</span><b>${starIcons(skillScores.focus, 5)}</b></div>
-      <div class="skill-stars"><span>${t("problemSolving")}</span><b>${starIcons(skillScores.problemSolving, 5)}</b></div>
+      <div class="skill-stars"><span>${t("logic")}<small>${t("targetHitEvidence", { hits: orderTargetMoves, moves: validMovesUsed })}</small></span><b>${starIcons(skillScores.logic, 5)}</b></div>
+      <div class="skill-stars"><span>${t("focus")}<small>${t("largestGroupEvidence", { count: largestGroup })}</small></span><b>${starIcons(skillScores.focus, 5)}</b></div>
+      <div class="skill-stars"><span>${t("problemSolving")}<small>${t("bestStreakEvidence", { count: bestOrderStreak })}</small></span><b>${starIcons(skillScores.problemSolving, 5)}</b></div>
       <p>${message}</p>
     `;
   }

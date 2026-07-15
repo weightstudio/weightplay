@@ -989,6 +989,20 @@ body.is-bakery-playing .order-progress span {
   letter-spacing: 1px;
 }
 
+.skill-stars span {
+  min-width: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.skill-stars small {
+  color: #7d5a43;
+  font-size: 0.68rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
 .skill-report p {
   margin: 2px 0 0;
   text-align: center;
