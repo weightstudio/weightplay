@@ -5,20 +5,28 @@
   let W = 960;
   let H = 540;
   const rerollCost = 3;
+  const MAX_RAID_TIER = 20;
+  const WAVES_PER_RAID = 3;
 
   const $ = (id) => document.getElementById(id);
   const nodes = {
+    lobbyReturn: document.querySelector(".topbar .back-btn"),
     localeSelect: $("localeSelect"),
     loadingPanel: $("loadingPanel"),
     loadingFill: $("loadingFill"),
     loadingText: $("loadingText"),
     menuPanel: $("menuPanel"),
+    stagePanel: $("stagePanel"),
     gamePanel: $("gamePanel"),
     upgradePanel: $("upgradePanel"),
     resultPanel: $("resultPanel"),
     startBtn: $("startBtn"),
+    stageBackBtn: $("stageBackBtn"),
+    stageRail: $("stageRail"),
+    stageProgressText: $("stageProgressText"),
     mapBtn: $("battleBackBtn"),
     retryBtn: $("retryBtn"),
+    nextStageBtn: $("nextStageBtn"),
     resultMenuBtn: $("resultMenuBtn"),
     roomGrid: $("roomGrid"),
     bestRaidText: $("bestRaidText"),
@@ -42,13 +50,56 @@
     en: {
       title: "Animal Orb Fortress",
       language: "Language",
+      backToLobby: "Back to lobby",
+      fortressRooms: "Fortress rooms",
+      arenaLabel: "Animal Orb Fortress arena",
       menuTitle: "Aim the spirit orb through the crystal fortress.",
-      menuHint: "Clear three waves, choose upgrades, earn Star Stones, and grow fortress rooms locally.",
+      menuHint: "Choose a raid route, plan ricochet shots, and protect the fortress core.",
       bestRaid: "Best Raid",
       starStones: "Star Stones",
       diamonds: "Diamonds",
-      startRaid: "Start Raid",
+      openRaidMap: "Choose Raid",
       raidMap: "Raid Map",
+      raidTiers: "Raid tiers",
+      returnMain: "Return to main",
+      fortressWorkshop: "Fortress Workshop",
+      stageProgress: "{unlocked}/20 routes unlocked · 3 waves each",
+      tierLocked: "Locked",
+      enterRaid: "Enter",
+      nextStage: "Next Stage",
+      tier1Name: "Crystal Gate",
+      tier1Desc: "Learn wall bounces against scouting beasts.",
+      tier2Name: "Moss Arcade",
+      tier2Desc: "More enemies arrive with tougher armor.",
+      tier3Name: "Echo Courtyard",
+      tier3Desc: "Survive the strongest assault and final golem.",
+      tier4Name: "Forest Crown",
+      tier5Name: "Thorn Bridge",
+      tier6Name: "Venom Garden",
+      tier7Name: "Root Labyrinth",
+      tier8Name: "Marsh Guardian",
+      tier9Name: "Moon Stair",
+      tier10Name: "Wisp Gallery",
+      tier11Name: "Mirror Ruins",
+      tier12Name: "Lunar Sentinel",
+      tier13Name: "Eclipse Gate",
+      tier14Name: "Black Crystal Hall",
+      tier15Name: "Shadow Furnace",
+      tier16Name: "Eclipse Regent",
+      tier17Name: "Golem Approach",
+      tier18Name: "Core Foundry",
+      tier19Name: "Last Bastion",
+      tier20Name: "Heart of the Fortress",
+      zone1Desc: "Crystal woodland patrols test clean bank shots.",
+      zone2Desc: "Thorn beasts favor armor and crowded lanes.",
+      zone3Desc: "Moon wisps move quickly through ruined halls.",
+      zone4Desc: "Eclipse troops arrive behind crystal shields.",
+      zone5Desc: "Golem guards combine every previous threat.",
+      ruleFormation: "Formation",
+      ruleSwarm: "Swarm",
+      ruleArmored: "Shielded",
+      ruleGuardian: "Elite guard",
+      tierShort: "R{tier}",
       wave: "Wave",
       core: "Core",
       shots: "Shots",
@@ -64,8 +115,8 @@
       retry: "Retry",
       raidClear: "Raid Clear",
       raidFailed: "Raid Failed",
-      resultWin: "Cleared wave {wave}/3, earned {stones} Star Stones, and protected {core} core HP.",
-      resultLose: "Reached wave {wave}/3 and earned {stones} Star Stones. Upgrade rooms and try a safer bounce route.",
+      resultWin: "Cleared route {tier}, wave {wave}/3, earned {stones} Star Stones, and protected {core} core HP.",
+      resultLose: "Reached route {tier}, wave {wave}/3 and earned {stones} Star Stones. Upgrade rooms and try a safer bounce route.",
       reportWin: "Skill Report: strong logic and reaction. You used bounce planning and upgrade choice to protect the fortress.",
       reportLose: "Skill Report: good practice. Next run, aim earlier and use walls to hit multiple beasts.",
       upgradeDamage: "Bigger Orb",
@@ -98,13 +149,56 @@
     "zh-Hant": {
       title: "動物星珠要塞",
       language: "語言",
+      backToLobby: "返回大廳",
+      fortressRooms: "要塞房間",
+      arenaLabel: "動物星珠要塞競技場",
       menuTitle: "瞄準星珠，穿越水晶要塞。",
-      menuHint: "清除三波敵人、選擇升級、獲得星石，並把要塞房間永久升級。",
+      menuHint: "選擇突襲路線、規劃反彈射擊，守住要塞核心。",
       bestRaid: "最佳突襲",
       starStones: "星石",
       diamonds: "鑽石",
-      startRaid: "開始突襲",
+      openRaidMap: "選擇關卡",
       raidMap: "突襲地圖",
+      raidTiers: "突襲關卡",
+      returnMain: "返回主畫面",
+      fortressWorkshop: "要塞工坊",
+      stageProgress: "已解鎖 {unlocked}/20 條路線 · 每關 3 波",
+      tierLocked: "尚未解鎖",
+      enterRaid: "進入",
+      nextStage: "下一關",
+      tier1Name: "水晶門",
+      tier1Desc: "熟悉牆面反彈，擊退偵查影獸。",
+      tier2Name: "苔痕長廊",
+      tier2Desc: "敵人更多，護甲與壓力也更強。",
+      tier3Name: "回音庭院",
+      tier3Desc: "撐過最強攻勢，擊敗最終魔像。",
+      tier4Name: "森林王冠",
+      tier5Name: "荊棘橋",
+      tier6Name: "毒霧花園",
+      tier7Name: "盤根迷宮",
+      tier8Name: "沼澤守衛",
+      tier9Name: "月光階梯",
+      tier10Name: "幽光迴廊",
+      tier11Name: "鏡面遺跡",
+      tier12Name: "月之守衛",
+      tier13Name: "蝕影之門",
+      tier14Name: "黑晶大廳",
+      tier15Name: "暗影熔爐",
+      tier16Name: "蝕影王座",
+      tier17Name: "魔像前線",
+      tier18Name: "核心鑄造場",
+      tier19Name: "最終壁壘",
+      tier20Name: "要塞之心",
+      zone1Desc: "水晶森林的巡邏隊，考驗穩定反彈。",
+      zone2Desc: "荊棘影獸偏重護甲與密集進攻。",
+      zone3Desc: "月光幽靈會高速穿過遺跡。",
+      zone4Desc: "蝕影部隊帶著水晶護盾出擊。",
+      zone5Desc: "魔像守軍會混合先前所有威脅。",
+      ruleFormation: "陣形戰",
+      ruleSwarm: "敵群戰",
+      ruleArmored: "護盾戰",
+      ruleGuardian: "菁英守衛",
+      tierShort: "關{tier}",
       wave: "波次",
       core: "核心",
       shots: "射擊",
@@ -120,8 +214,8 @@
       retry: "再試一次",
       raidClear: "突襲成功",
       raidFailed: "突襲失敗",
-      resultWin: "完成第 {wave}/3 波，獲得 {stones} 顆星石，並保留 {core} 點核心生命。",
-      resultLose: "抵達第 {wave}/3 波並獲得 {stones} 顆星石。升級房間後再試更安全的反彈路線。",
+      resultWin: "完成第 {tier} 關、第 {wave}/3 波，獲得 {stones} 顆星石，並保留 {core} 點核心生命。",
+      resultLose: "抵達第 {tier} 關、第 {wave}/3 波並獲得 {stones} 顆星石。升級房間後再試更安全的反彈路線。",
       reportWin: "能力回饋：邏輯與反應很穩。你透過反彈規劃與升級選擇保護了要塞。",
       reportLose: "能力回饋：這是很好的練習。下一局可以更早瞄準，利用牆面一次擊中多隻影獸。",
       upgradeDamage: "巨大星珠",
@@ -184,6 +278,12 @@
     { id: "den", iconSrc: "../../assets/animal-orb-fortress-room-icon-2.webp", name: "roomDen", desc: "roomDenDesc" },
     { id: "tower", iconSrc: "../../assets/animal-orb-fortress-room-icon-4.webp", name: "roomTower", desc: "roomTowerDesc" },
   ];
+  const raidDefs = Array.from({ length: MAX_RAID_TIER }, (_, index) => {
+    const tier = index + 1;
+    const zone = Math.ceil(tier / 4);
+    const rule = ["ruleFormation", "ruleSwarm", "ruleArmored", "ruleGuardian"][index % 4];
+    return { tier, zone, name: `tier${tier}Name`, desc: `zone${zone}Desc`, rule };
+  });
   const upgradeDefs = [
     { id: "damage", iconSrc: "../../assets/animal-orb-fortress-upgrade-icon-1.webp", name: "upgradeDamage", desc: "upgradeDamageDesc" },
     { id: "split", iconSrc: "../../assets/animal-orb-fortress-upgrade-icon-2.webp", name: "upgradeSplit", desc: "upgradeSplitDesc" },
@@ -196,6 +296,7 @@
   const images = {};
   let locale = window.WonderI18n?.locale?.() || localStorage.getItem(localeKey) || "en";
   let save = loadSave();
+  let selectedTier = 1;
   let state = makeState();
   let lastFrame = 0;
   let raf = 0;
@@ -256,7 +357,7 @@
     return {
       mode: "menu",
       wave: 1,
-      raidTier: Math.max(1, save?.bestRaid || 1),
+      raidTier: selectedTier,
       core: 20 + shieldLevel * 4,
       maxCore: 20 + shieldLevel * 4,
       baseDamage: 2 + forgeLevel,
@@ -284,12 +385,13 @@
   }
 
   function show(panel) {
-    [nodes.menuPanel, nodes.gamePanel, nodes.upgradePanel, nodes.resultPanel].forEach((node) => node.classList.add("is-hidden"));
+    [nodes.menuPanel, nodes.stagePanel, nodes.gamePanel, nodes.upgradePanel, nodes.resultPanel].forEach((node) => node.classList.add("is-hidden"));
     panel.classList.remove("is-hidden");
     document.body.classList.toggle("orb-fortress-playing", panel !== nodes.menuPanel);
     updateOrbBattleScale();
     fitOrbArena();
     window.requestAnimationFrame(fitOrbArena);
+    if (panel === nodes.stagePanel) window.requestAnimationFrame(centerUnlockedStage);
   }
 
   function updateOrbBattleScale() {
@@ -347,6 +449,13 @@
     document.querySelectorAll("[data-ui]").forEach((node) => {
       node.textContent = t(node.dataset.ui);
     });
+    nodes.lobbyReturn.setAttribute("aria-label", t("backToLobby"));
+    nodes.localeSelect.setAttribute("aria-label", t("language"));
+    nodes.roomGrid.setAttribute("aria-label", t("fortressRooms"));
+    nodes.stagePanel.setAttribute("aria-label", t("raidMap"));
+    nodes.stageRail.setAttribute("aria-label", t("raidTiers"));
+    nodes.stageBackBtn.setAttribute("aria-label", t("returnMain"));
+    canvas.setAttribute("aria-label", t("arenaLabel"));
     nodes.mapBtn.setAttribute("aria-label", t("raidMap"));
     nodes.resultMenuBtn.setAttribute("aria-label", t("raidMap"));
     updatePageMeta();
@@ -415,9 +524,23 @@
   }
 
   function renderMenu() {
-    nodes.bestRaidText.textContent = String(save.bestRaid || 1);
+    const unlocked = Math.max(1, Math.min(MAX_RAID_TIER, save.bestRaid || 1));
+    nodes.bestRaidText.textContent = String(unlocked);
     nodes.starStoneText.textContent = String(save.starStones || 0);
     nodes.diamondText.textContent = String(walletDiamonds());
+    nodes.stageProgressText.textContent = t("stageProgress", { unlocked });
+    nodes.stageRail.innerHTML = raidDefs
+      .map((raid) => {
+        const locked = raid.tier > unlocked;
+        return `
+          <button class="raid-card${locked ? " is-locked" : ""}" type="button" data-tier="${raid.tier}" data-zone="${raid.zone}" aria-disabled="${locked}">
+            <span class="raid-number">${raid.tier}</span>
+            <strong>${t(raid.name)}</strong>
+            <span>${t(raid.desc)}</span>
+            <em>${t(raid.rule)} · ${locked ? t("tierLocked") : `${t("enterRaid")} · ${WAVES_PER_RAID} ${t("wave")}`}</em>
+          </button>`;
+      })
+      .join("");
     nodes.roomGrid.innerHTML = roomDefs
       .map((room) => {
         const level = save.rooms[room.id] || 0;
@@ -434,6 +557,15 @@
           </div>`;
       })
       .join("");
+    if (!nodes.stagePanel.classList.contains("is-hidden")) window.requestAnimationFrame(centerUnlockedStage);
+  }
+
+  function centerUnlockedStage() {
+    const unlocked = Math.max(1, Math.min(MAX_RAID_TIER, save.bestRaid || 1));
+    const card = nodes.stageRail.querySelector(`[data-tier="${unlocked}"]`);
+    if (!card) return;
+    const left = card.offsetLeft - (nodes.stageRail.clientWidth - card.offsetWidth) / 2;
+    nodes.stageRail.scrollTo({ left: Math.max(0, left), behavior: "auto" });
   }
 
   function upgradeRoom(id) {
@@ -448,8 +580,9 @@
     window.WonderAnalytics?.track("room_upgrade", { game_id: GAME_ID, room: id, level: save.rooms[id] });
   }
 
-  function startRaid() {
+  function startRaid(tier = selectedTier) {
     cancelAnimationFrame(raf);
+    selectedTier = Math.max(1, Math.min(MAX_RAID_TIER, Number(tier) || 1));
     configureArena();
     state = makeState();
     state.mode = "running";
@@ -466,30 +599,71 @@
     loop(lastFrame);
   }
 
+  function raidProfile(tier) {
+    const zone = Math.ceil(tier / 4);
+    const step = (tier - 1) % 4;
+    return {
+      zone,
+      step,
+      hpScale: 1 + (tier - 1) * 0.06,
+      speedScale: 1 + (tier - 1) * 0.018 + (step === 1 ? 0.08 : 0),
+      countBonus: Math.floor((tier - 1) / 4) + (step === 1 ? 2 : 0),
+      shieldHits: step === 2 ? Math.min(3, Math.ceil(zone / 2)) : zone >= 4 ? 1 : 0,
+      eliteWave: step === 3,
+      bossMinions: Math.max(0, zone - 1),
+      tint: ["rgba(24,80,52,.04)", "rgba(84,74,18,.10)", "rgba(38,48,112,.12)", "rgba(82,28,106,.14)", "rgba(120,32,38,.16)"][zone - 1],
+    };
+  }
+
+  function enemyKindFor(zone, index) {
+    const patterns = [
+      ["skitter", "thorn", "wisp"],
+      ["thorn", "skitter", "thorn", "wisp"],
+      ["wisp", "skitter", "wisp", "thorn"],
+      ["thorn", "wisp", "skitter", "wisp"],
+      ["skitter", "thorn", "wisp", "thorn", "wisp"],
+    ];
+    const pattern = patterns[Math.max(0, Math.min(patterns.length - 1, zone - 1))];
+    return pattern[index % pattern.length];
+  }
+
   function spawnWave() {
     state.enemies = [];
     const tier = state.raidTier;
     const wave = state.wave;
-    if (wave >= 3) {
-      state.enemies.push(makeEnemy("boss", W / 2, Math.max(96, H * 0.09), 20 + tier * 4, 13, 55));
+    const profile = raidProfile(tier);
+    if (wave >= WAVES_PER_RAID) {
+      const bossHp = Math.round((22 + tier * 3) * (1 + (tier - 1) * 0.045));
+      state.enemies.push(makeEnemy("boss", W / 2, Math.max(96, H * 0.09), bossHp, 13 * profile.speedScale, 55, { elite: tier >= 16, shield: profile.shieldHits }));
+      for (let i = 0; i < profile.bossMinions; i += 1) {
+        const x = W * (0.18 + (i / Math.max(1, profile.bossMinions - 1)) * 0.64);
+        const kind = enemyKindFor(profile.zone, i + tier);
+        state.enemies.push(makeEnemy(kind, x, Math.max(190, H * 0.16) + (i % 2) * 62, Math.round((7 + tier * 0.7) * profile.hpScale), (kind === "thorn" ? 9 : 15) * profile.speedScale, kind === "thorn" ? 33 : 27, { shield: Math.max(0, profile.shieldHits - 1) }));
+      }
     } else {
-      const count = 2 + wave + Math.min(2, tier - 1);
+      const count = Math.min(10, 2 + wave + profile.countBonus);
       for (let i = 0; i < count; i += 1) {
-        const kind = i % 3 === 0 ? "skitter" : i % 3 === 1 ? "thorn" : "wisp";
+        const kind = enemyKindFor(profile.zone, i + wave);
         const side = W * 0.14;
         const span = W - side * 2;
-        state.enemies.push(makeEnemy(kind, side + i * (span / Math.max(1, count - 1)), Math.max(82, H * 0.075) + (i % 2) * 54, 4 + wave * 2 + tier, kind === "thorn" ? 9 : 15, kind === "thorn" ? 33 : 27));
+        const hp = Math.round((4 + wave * 2 + tier * 0.62) * profile.hpScale * (kind === "thorn" ? 1.18 : 1));
+        state.enemies.push(makeEnemy(kind, side + i * (span / Math.max(1, count - 1)), Math.max(82, H * 0.075) + (i % 2) * 54, hp, (kind === "thorn" ? 9 : kind === "wisp" ? 16 : 14) * profile.speedScale, kind === "thorn" ? 33 : 27, { shield: profile.shieldHits }));
+      }
+      if (wave === 2 && profile.eliteWave) {
+        const kind = enemyKindFor(profile.zone, tier + 2);
+        state.enemies.push(makeEnemy(kind, W / 2, Math.max(230, H * 0.2), Math.round((12 + tier) * profile.hpScale), 11 * profile.speedScale, 42, { elite: true, shield: profile.shieldHits }));
       }
     }
     renderHud();
   }
 
-  function makeEnemy(kind, x, y, hp, speed, size) {
-    return { kind, x, y, hp, maxHp: hp, speed: speed * (H / 540), size, hitTimer: 0 };
+  function makeEnemy(kind, x, y, hp, speed, size, options = {}) {
+    const shield = Math.max(0, options.shield || 0);
+    return { kind, x, y, hp, maxHp: hp, speed: speed * (H / 540), size, hitTimer: 0, shield, maxShield: shield, elite: Boolean(options.elite) };
   }
 
   function renderHud() {
-    nodes.waveText.textContent = `${Math.min(state.wave, 3)}/3`;
+    nodes.waveText.textContent = `${t("tierShort", { tier: state.raidTier })} · ${Math.min(state.wave, 3)}/3`;
     nodes.coreText.textContent = `${Math.max(0, Math.ceil(state.core))}/${state.maxCore}`;
     nodes.shotText.textContent = String(state.shotCount);
   }
@@ -627,7 +801,7 @@
 
     if (state.core <= 0) finishRaid(false);
     else if (state.enemies.length === 0) {
-      if (state.wave >= 3) finishRaid(true);
+      if (state.wave >= WAVES_PER_RAID) finishRaid(true);
       else showUpgrade();
     } else if (canFireOrb()) {
       nodes.hintText.textContent = t("orbReady");
@@ -642,7 +816,8 @@
       .filter((enemy) => enemy.hp > 0)
       .sort((a, b) => Math.hypot(a.x - state.launcher.x, a.y - state.launcher.y) - Math.hypot(b.x - state.launcher.x, b.y - state.launcher.y))[0];
     if (!target) return;
-    target.hp -= state.companionDamage;
+    if (target.shield > 0) target.shield -= 1;
+    else target.hp -= state.companionDamage;
     target.hitTimer = 0.22;
     state.companionHits += 1;
     state.companionTimer = 4;
@@ -680,7 +855,8 @@
       }
       const enemyVisualRadius = enemy.kind === "boss" ? 76 : enemy.size * 1.05;
       if (Math.hypot(orb.x - enemy.x, orb.y - enemy.y) < orb.r + enemyVisualRadius) {
-        enemy.hp -= orb.damage;
+        if (enemy.shield > 0) enemy.shield -= 1;
+        else enemy.hp -= orb.damage;
         enemy.hitTimer = 0.16;
         orb.hits.set(enemy, state.pierce ? 0.2 : 0.55);
         state.sparks.push({ x: enemy.x, y: enemy.y, life: 0.25 });
@@ -760,15 +936,19 @@
     cancelAnimationFrame(raf);
     const stones = Math.max(1, state.stonesEarned + state.bonusStones + (win ? 5 : 1));
     save.starStones += stones;
-    if (win) save.bestRaid = Math.max(save.bestRaid || 1, state.raidTier + 1);
+    if (win) save.bestRaid = Math.max(1, Math.min(MAX_RAID_TIER, Math.max(save.bestRaid || 1, state.raidTier + 1)));
     persist();
     nodes.resultTitle.textContent = t(win ? "raidClear" : "raidFailed");
     nodes.resultText.textContent = t(win ? "resultWin" : "resultLose", {
+      tier: state.raidTier,
       wave: Math.min(3, state.wave),
       stones,
       core: Math.max(0, Math.ceil(state.core)),
     });
     nodes.skillReportText.textContent = t(win ? "reportWin" : "reportLose");
+    const hasNextStage = win && state.raidTier < MAX_RAID_TIER;
+    nodes.nextStageBtn.classList.toggle("is-unavailable", !hasNextStage);
+    nodes.nextStageBtn.disabled = !hasNextStage;
     show(nodes.resultPanel);
     renderMenu();
     playSound(win ? "success" : "wrong", 0.2);
@@ -786,6 +966,8 @@
     ctx.clearRect(0, 0, W, H);
     if (images.bg?.complete) drawImageCover(images.bg, 0, 0, W, H);
     ctx.fillStyle = "rgba(3, 10, 28, 0.34)";
+    ctx.fillRect(0, 0, W, H);
+    ctx.fillStyle = raidProfile(state.raidTier).tint;
     ctx.fillRect(0, 0, W, H);
     const contrastGlow = ctx.createRadialGradient(W * 0.5, H * 0.35, 80, W * 0.5, H * 0.45, W * 0.7);
     contrastGlow.addColorStop(0, "rgba(24, 41, 84, 0.18)");
@@ -828,8 +1010,8 @@
       ctx.globalAlpha = 1;
     });
 
-    drawAtlas(images.lion, 0, 1, state.launcher.x, state.launcher.y + 8, 86);
     drawCore();
+    drawAtlas(images.lion, 0, 1, state.launcher.x, state.launcher.y + 8, 86);
   }
 
   function drawImageCover(image, x, y, width, height) {
@@ -881,6 +1063,25 @@
     ctx.beginPath();
     ctx.ellipse(enemy.x, enemy.y + size * 0.08, size * 0.54, size * 0.44, 0, 0, Math.PI * 2);
     ctx.stroke();
+    if (enemy.elite) {
+      ctx.strokeStyle = "#ffd86b";
+      ctx.lineWidth = 7;
+      ctx.setLineDash([12, 8]);
+      ctx.beginPath();
+      ctx.arc(enemy.x, enemy.y, size * 0.68, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
+    if (enemy.shield > 0) {
+      ctx.strokeStyle = "rgba(126, 233, 255, 0.96)";
+      ctx.lineWidth = 6;
+      ctx.shadowColor = "#7de9ff";
+      ctx.shadowBlur = 18;
+      ctx.beginPath();
+      ctx.arc(enemy.x, enemy.y, size * 0.76, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+    }
     ctx.restore();
     const barW = Math.max(48, size * 0.58);
     ctx.fillStyle = "rgba(0, 5, 17, 0.96)";
@@ -893,7 +1094,7 @@
 
   function drawCore() {
     const pct = Math.max(0, state.core / state.maxCore);
-    ctx.fillStyle = "rgba(4, 20, 18, 0.78)";
+    ctx.fillStyle = "rgba(4, 20, 18, 0.34)";
     ctx.beginPath();
     ctx.arc(state.launcher.x, state.launcher.y, 42, 0, Math.PI * 2);
     ctx.fill();
@@ -912,16 +1113,27 @@
   }
 
   nodes.localeSelect.addEventListener("change", (event) => setLocale(event.target.value));
-  nodes.startBtn.addEventListener("click", startRaid);
-  nodes.retryBtn.addEventListener("click", startRaid);
+  nodes.startBtn.addEventListener("click", () => {
+    show(nodes.stagePanel);
+    renderMenu();
+  });
+  nodes.stageBackBtn.addEventListener("click", () => show(nodes.menuPanel));
+  nodes.stageRail.addEventListener("click", (event) => {
+    const tier = Number(event.target?.closest?.("[data-tier]")?.dataset?.tier);
+    if (tier && tier <= Math.max(1, Math.min(MAX_RAID_TIER, save.bestRaid || 1))) startRaid(tier);
+  });
+  nodes.retryBtn.addEventListener("click", () => startRaid(state.raidTier));
+  nodes.nextStageBtn.addEventListener("click", () => {
+    if (!nodes.nextStageBtn.disabled && state.raidTier < MAX_RAID_TIER) startRaid(state.raidTier + 1);
+  });
   nodes.mapBtn.addEventListener("click", () => {
-    state.mode = "menu";
+    state.mode = "stage";
     cancelAnimationFrame(raf);
-    show(nodes.menuPanel);
+    show(nodes.stagePanel);
     renderMenu();
   });
   nodes.resultMenuBtn.addEventListener("click", () => {
-    show(nodes.menuPanel);
+    show(nodes.stagePanel);
     renderMenu();
   });
   nodes.roomGrid.addEventListener("click", (event) => {
@@ -942,11 +1154,16 @@
     snapshot: () => ({
       mode: state.mode,
       wave: state.wave,
+      raidTier: state.raidTier,
       core: state.core,
       maxCore: state.maxCore,
       shotCount: state.shotCount,
       enemies: state.enemies.length,
       enemyKinds: state.enemies.map((enemy) => enemy.kind),
+      totalEnemyHp: state.enemies.reduce((total, enemy) => total + enemy.hp, 0),
+      maxEnemySpeed: state.enemies.reduce((max, enemy) => Math.max(max, enemy.speed), 0),
+      shieldedEnemies: state.enemies.filter((enemy) => enemy.shield > 0).length,
+      eliteEnemies: state.enemies.filter((enemy) => enemy.elite).length,
       orbs: state.orbs.length,
       activeOrbLimit: activeOrbLimit(),
       stonesEarned: state.stonesEarned,
@@ -985,6 +1202,12 @@
       persist();
       renderMenu();
       return save.rooms[id];
+    },
+    setBestRaid: (tier) => {
+      save.bestRaid = Math.max(1, Math.min(MAX_RAID_TIER, Math.floor(Number(tier) || 1)));
+      persist();
+      renderMenu();
+      return save.bestRaid;
     },
     forceCompanionStrike: () => {
       const target = makeEnemy("skitter", state.launcher.x, state.launcher.y - 180, 8, 0, 42);

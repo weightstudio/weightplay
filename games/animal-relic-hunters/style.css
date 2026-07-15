@@ -802,6 +802,10 @@ body {
   color: #fde68a;
 }
 
+.backpack-copy .gear-compare-effect {
+  color: #c4b5fd;
+}
+
 .backpack-actions {
   grid-column: 1 / -1;
   display: grid;

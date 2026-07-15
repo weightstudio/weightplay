@@ -357,6 +357,66 @@ canvas {
   width: min(100%, 260px);
 }
 
+.dash-skill-report {
+  display: grid;
+  gap: 6px;
+  width: min(100%, 330px);
+}
+
+.dash-skill-report h3,
+.dash-skill-report p {
+  margin: 0;
+}
+
+.dash-skill-report h3 {
+  font-size: 18px;
+}
+
+.dash-skill-report > p {
+  color: #6b431b;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.dash-skill-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.dash-skill-grid div {
+  min-width: 0;
+  padding: 7px 5px;
+  border-radius: 8px;
+  background: rgba(21, 80, 154, 0.12);
+}
+
+.dash-skill-grid span,
+.dash-skill-grid b {
+  display: block;
+  line-height: 1.15;
+}
+
+.dash-skill-grid span {
+  min-height: 28px;
+  font-size: 11px;
+  font-weight: 1000;
+}
+
+.dash-skill-grid b {
+  margin-top: 4px;
+  font-size: 11px;
+}
+
+#progressComparison {
+  min-height: 28px;
+  display: grid;
+  place-items: center;
+  padding: 5px 8px;
+  border-radius: 8px;
+  background: rgba(250, 204, 21, 0.24);
+}
+
 .leaderboard div {
   display: flex;
   justify-content: space-between;
@@ -521,6 +581,9 @@ body.dash-playing #resultPanel.panel {
   top: 50%;
   left: 50%;
   z-index: 50;
+  max-height: calc(100% - 24px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 
 /* Phone Battle expands the Canvas; the runner camera remains a 3:4 child scene. */

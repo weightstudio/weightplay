@@ -415,6 +415,9 @@
     gearCurrentEffect: "Now: {effect}",
     gearNextEffect: "Next: {effect}",
     gearMaxLevel: "Max level",
+    gearCompareActive: "Active in this slot.",
+    gearCompareEmpty: "Slot empty: equip to activate this effect.",
+    gearCompareReplace: "Replaces {gear}: {effect}",
   });
 
   Object.assign(text["zh-Hant"], {
@@ -427,6 +430,9 @@
     gearCurrentEffect: "\u76ee\u524d\uff1a{effect}",
     gearNextEffect: "\u4e0b\u4e00\u7d1a\uff1a{effect}",
     gearMaxLevel: "\u5df2\u6eff\u7d1a",
+    gearCompareActive: "\u6b64\u88dd\u5099\u6b63\u5728\u751f\u6548\u3002",
+    gearCompareEmpty: "\u6b64\u6b04\u4f4d\u70ba\u7a7a\uff1a\u7a7f\u6234\u5f8c\u555f\u7528\u6548\u679c\u3002",
+    gearCompareReplace: "\u5c07\u53d6\u4ee3 {gear}\uff1a{effect}",
   });
 
   // Textures and Sprites
@@ -765,6 +771,18 @@
     return t("gearNextEffect", { effect: describeGearEffectAtLevel(key, level + 1) });
   }
 
+  function describeGearComparison(key) {
+    const gear = gearDb[key];
+    if (!gear) return "";
+    const equippedKey = profile.equipped?.[gear.slot];
+    if (equippedKey === key) return t("gearCompareActive");
+    if (!equippedKey || !gearDb[equippedKey]) return t("gearCompareEmpty");
+    return t("gearCompareReplace", {
+      gear: t(gearDb[equippedKey].nameKey),
+      effect: describeGearEffect(equippedKey),
+    });
+  }
+
   function duplicateGearGold(key) {
     const g = gearDb[key];
     if (!g) return 0;
@@ -1084,6 +1102,7 @@
         <span class="backpack-copy">
           <strong>${t(g.nameKey)}</strong>
           <small>${t("gearCurrentEffect", { effect: describeGearEffect(key) })}</small>
+          <small class="gear-compare-effect">${describeGearComparison(key)}</small>
           <small class="gear-next-effect">${describeGearNextEffect(key)}</small>
         </span>
         <span class="gear-level-tag">${t("gearLevelLabel", { level })}</span>

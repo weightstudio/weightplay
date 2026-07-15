@@ -77,13 +77,27 @@
         <img class="cover" src="../../assets/animal-orb-fortress-cover.webp" alt="" />
         <div class="menu-copy">
           <strong data-ui="menuTitle">Aim the spirit orb through the crystal fortress.</strong>
-          <span data-ui="menuHint">Clear three waves, choose upgrades, earn Star Stones, and grow fortress rooms locally.</span>
-          <button id="startBtn" class="primary-btn" type="button" data-ui="startRaid">Start Game</button>
+          <span data-ui="menuHint">Choose a raid route, plan ricochet shots, and protect the fortress core.</span>
+          <button id="startBtn" class="primary-btn" type="button" data-ui="openRaidMap">Start Game</button>
+        </div>
+      </section>
+
+      <section id="stagePanel" class="panel stage-panel is-hidden" aria-label="Raid map">
+        <header class="stage-header">
+          <button id="stageBackBtn" class="secondary-btn play-return" type="button" aria-label="Return to main">&larr;</button>
+          <div>
+            <strong data-ui="raidMap">Raid Map</strong>
+            <span id="stageProgressText"></span>
+          </div>
+        </header>
+        <div class="stage-content">
           <div class="profile-grid">
             <div><span data-ui="bestRaid">Best Raid</span><strong id="bestRaidText">1</strong></div>
             <div><span data-ui="starStones">Star Stones</span><strong id="starStoneText">0</strong></div>
             <div><span data-ui="diamonds">Diamonds</span><strong id="diamondText">0</strong></div>
           </div>
+          <div id="stageRail" class="stage-rail" aria-label="Raid tiers"></div>
+          <strong class="workshop-title" data-ui="fortressWorkshop">Fortress Workshop</strong>
           <div id="roomGrid" class="room-grid" aria-label="Fortress rooms"></div>
         </div>
       </section>
@@ -114,6 +128,7 @@
           <p id="skillReportText" class="skill-report"></p>
           <div class="result-actions">
             <button id="retryBtn" class="primary-btn" type="button" data-ui="retry">Retry</button>
+            <button id="nextStageBtn" class="primary-btn is-unavailable" type="button" data-ui="nextStage">Next Stage</button>
             <button id="resultMenuBtn" class="secondary-btn play-return" type="button" aria-label="Return to raid map">&larr;</button>
           </div>
         </div>
@@ -160,7 +175,7 @@
     <script src="../../src/i18n.js?v=20260703-i18n-clean1"></script>
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
     <script src="../../src/wallet.js?v=20260706-crystal-diamond-charm1"></script>
-    <script src="game.js?v=20260709-orb-guide-defer1"></script>
+    <script src="game.js?v=20260715-orb-accessibility1"></script>
     <script>
       (() => {
         const loadGameInfo = () => {

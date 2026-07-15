@@ -950,9 +950,22 @@
       if (!unit) return;
       const affordable = state.coins >= unit.cost;
       const missing = Math.max(0, Math.ceil(unit.cost - state.coins));
+      const traits = unitTraitText(unit);
+      const tacticalSummary = [
+        unitKindLabel(unit),
+        `${t("roleLabel")}: ${unitRoleText(unit)}`,
+        traits ? `${t("traitLabel")}: ${traits}` : "",
+        `${t("hp")}: ${unit.hp}`,
+        `${t("damage")}: ${unit.damage}`,
+        `${t("range")}: ${unit.range}`,
+        `${t("attackSpeed")}: ${formatUnitTempo(unit)}`,
+        `${t("cost")}: ${unit.cost}`,
+        affordable ? t("buildReady") : t("buildNeedCoins", { coins: missing }),
+      ].filter(Boolean);
       card.classList.toggle("is-unaffordable", !affordable);
       card.dataset.affordable = String(affordable);
-      card.setAttribute("aria-label", `${unitName(unit)}. ${t("cost")}: ${unit.cost}. ${affordable ? t("buildReady") : t("buildNeedCoins", { coins: missing })}`);
+      card.setAttribute("aria-pressed", String(state.selectedBuild === unit.id));
+      card.setAttribute("aria-label", `${unitName(unit)}. ${tacticalSummary.join(". ")}`);
       const status = card.querySelector(".build-affordability");
       if (status) status.textContent = affordable ? t("buildReady") : t("buildNeedCoins", { coins: missing });
     });
@@ -3896,10 +3909,13 @@
     const lowState = {
       guardAffordable: guardLow?.dataset.affordable,
       guardText: guardLow?.querySelector(".build-affordability")?.textContent || "",
+      guardPressed: guardLow?.getAttribute("aria-pressed") || "",
+      guardAria: guardLow?.getAttribute("aria-label") || "",
       leoAffordable: leoLow?.dataset.affordable,
       leoText: leoLow?.querySelector(".build-affordability")?.textContent || "",
       leoClass: leoLow?.classList.contains("is-unaffordable") || false,
       leoAria: leoLow?.getAttribute("aria-label") || "",
+      leoPressed: leoLow?.getAttribute("aria-pressed") || "",
     };
     state.coins = 999;
     updateHud();
@@ -3909,9 +3925,16 @@
       leoText: leoHigh?.querySelector(".build-affordability")?.textContent || "",
       leoClass: leoHigh?.classList.contains("is-unaffordable") || false,
       leoAria: leoHigh?.getAttribute("aria-label") || "",
+      leoPressed: leoHigh?.getAttribute("aria-pressed") || "",
     };
     state.manualSimulation = false;
-    return { lowState, highState };
+    return {
+      lowState,
+      highState,
+      selectedInfoRole: nodes.selectedInfo.getAttribute("role") || "",
+      selectedInfoLive: nodes.selectedInfo.getAttribute("aria-live") || "",
+      selectedInfoAtomic: nodes.selectedInfo.getAttribute("aria-atomic") || "",
+    };
   }
 
   function runSelectedActionStateScenario() {

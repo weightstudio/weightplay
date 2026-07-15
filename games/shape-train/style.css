@@ -473,8 +473,7 @@ body.shape-playing .passenger {
   width: 142px;
 }
 
-.loading-panel,
-.result-panel {
+.loading-panel {
   position: fixed;
   inset: 0;
   z-index: 20;
@@ -482,6 +481,22 @@ body.shape-playing .passenger {
   place-items: center;
   padding: 20px;
   background: rgba(24, 48, 72, 0.44);
+  backdrop-filter: blur(8px);
+}
+
+.play-panel {
+  position: relative;
+}
+
+.shape-result-panel {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  padding: 12px;
+  background: rgba(24, 48, 72, 0.44);
+  border-radius: 24px;
   backdrop-filter: blur(8px);
 }
 
@@ -497,6 +512,74 @@ body.shape-playing .passenger {
   text-align: center;
   box-shadow: 0 24px 50px rgba(18, 48, 70, 0.28);
   animation: cardIn 0.28s ease both;
+}
+
+.result-card {
+  width: min(100%, 342px);
+  max-height: calc(100% - 8px);
+  padding: 16px;
+  gap: 8px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.play-panel.is-result > .train-track,
+.play-panel.is-result > .passenger-area,
+.play-panel.is-result > .feedback {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.shape-skill-report {
+  display: grid;
+  gap: 6px;
+}
+
+.shape-skill-report h3,
+.shape-skill-report p {
+  margin: 0;
+}
+
+.shape-skill-report h3 {
+  font-size: 17px;
+}
+
+.shape-skill-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 5px;
+}
+
+.shape-skill-grid div {
+  min-width: 0;
+  padding: 7px 4px;
+  border-radius: 9px;
+  background: rgba(85, 199, 255, 0.14);
+}
+
+.shape-skill-grid span,
+.shape-skill-grid b {
+  display: block;
+  line-height: 1.15;
+}
+
+.shape-skill-grid span {
+  min-height: 30px;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.shape-skill-grid b {
+  margin-top: 3px;
+  font-size: 11px;
+}
+
+#progressComparison {
+  padding: 5px 7px;
+  border-radius: 8px;
+  background: rgba(255, 202, 58, 0.3);
+  font-size: 12px;
+  font-weight: 900;
 }
 
 .result-card strong {

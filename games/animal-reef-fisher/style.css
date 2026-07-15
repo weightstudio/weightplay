@@ -119,6 +119,12 @@ button {
   display: none !important;
 }
 
+#gameCanvas:focus-visible,
+.tension-lane:focus-visible {
+  outline: 3px solid #fff1a8;
+  outline-offset: -4px;
+}
+
 body.reef-fisher-playing .game-page-info,
 body[data-reef-state="game"] .game-page-info,
 html[data-reef-state="game"] .game-page-info {
@@ -1526,32 +1532,23 @@ body.reef-fisher-playing .battle-ad-reserve {
   box-sizing: border-box;
 }
 
-/* Final Expanded Canvas override. */
-html:has(body.reef-fisher-playing), body.reef-fisher-playing { width:100%; height:var(--reef-vh,100dvh); -webkit-text-size-adjust:100%; text-size-adjust:100%; }
-body.reef-fisher-playing .reef-app { width:var(--reef-vw,100vw); height:var(--reef-vh,100dvh); min-height:0; padding:0; overflow:hidden; }
-body.reef-fisher-playing .topbar, body.reef-fisher-playing .game-page-info, body.reef-fisher-playing .wp-tutorial-button, body.reef-fisher-playing .wp-tutorial-backdrop { display:none !important; }
-body.reef-fisher-playing #gamePanel.game-panel, body.wp-mobile-game-mode.reef-fisher-playing #gamePanel.game-panel.weightplay-active-viewport { position:fixed !important; inset:4px auto auto 50% !important; display:grid; grid-template-rows:minmax(0,1fr) 56px; gap:0; width:min(calc(var(--reef-vw,100vw) - 8px),612px) !important; max-width:none !important; height:min(calc(var(--reef-vh,100dvh) - 8px),844px) !important; min-height:0; max-height:none !important; margin:0 !important; padding:0; transform:translateX(-50%); overflow:hidden; border:0; box-shadow:none; }
-body.reef-fisher-playing .battle-shell { position:relative; inset:auto; display:grid; grid-template-rows:56px 366px 52px minmax(156px,1fr); gap:6px; width:100%; height:100%; min-height:0; padding:8px; overflow:hidden; transform:none; container-type:size; background:linear-gradient(180deg,#0d4c61,#082d3d); }
-body.reef-fisher-playing .battle-shell > .hud-row, body.reef-fisher-playing .battle-shell > .play-frame, body.reef-fisher-playing .battle-shell > .catch-hud, body.reef-fisher-playing .battle-shell > .tension-panel { position:relative; inset:auto; width:100%; height:auto; margin:0; }
-body.reef-fisher-playing .battle-shell > .hud-row { grid-row:1; }
-body.reef-fisher-playing .battle-shell > .play-frame { grid-row:2; width:100%; height:366px; aspect-ratio:var(--reef-arena-ratio, 16/9); align-self:start; }
-body.reef-fisher-playing .battle-shell > .catch-hud { grid-row:3; }
-body.reef-fisher-playing .battle-shell > .tension-panel { grid-row:4; height:100%; }
-body.reef-fisher-playing .play-frame, body.reef-fisher-playing canvas { width:100%; height:100%; min-height:0; aspect-ratio:var(--reef-arena-ratio, 16/9); }
-body.reef-fisher-playing .battle-ad-reserve { position:relative; inset:auto; grid-row:2; width:100%; height:56px; min-height:56px; transform:none; }
-
-@media (max-width:560px), (max-height:560px) {
-  body.reef-fisher-playing #gamePanel.game-panel, body.wp-mobile-game-mode.reef-fisher-playing #gamePanel.game-panel.weightplay-active-viewport { width:calc(var(--reef-vw,100vw) - 8px) !important; height:calc(var(--reef-vh,100dvh) - 8px) !important; }
-}
-
-@media (max-height:560px) {
-  body.reef-fisher-playing .battle-shell { grid-template-columns:146px minmax(0,1fr) 214px; grid-template-rows:52px minmax(0,1fr); gap:6px; padding:6px; }
-  body.reef-fisher-playing .battle-shell > .hud-row { grid-column:1; grid-row:1 / -1; grid-template-columns:1fr; grid-template-rows:repeat(4,minmax(0,1fr)); gap:4px; }
-  body.reef-fisher-playing .battle-shell > .play-frame { grid-column:2; grid-row:1 / -1; align-self:center; }
-  body.reef-fisher-playing .battle-shell > .catch-hud { grid-column:3; grid-row:1; }
-  body.reef-fisher-playing .battle-shell > .tension-panel { grid-column:3; grid-row:2; min-height:0; }
-  body.reef-fisher-playing .tension-panel { grid-template-columns:42px minmax(0,1fr); gap:5px; }
-  body.reef-fisher-playing .tension-coach { font-size:10px; }
+/* The shared Battle controller owns the logical Canvas and physical reserve. */
+body.reef-fisher-playing #gamePanel.game-panel,
+body.wp-mobile-game-mode.reef-fisher-playing #gamePanel.game-panel.weightplay-active-viewport {
+  position: fixed !important;
+  inset: 0 !important;
+  display: block;
+  width: 100% !important;
+  max-width: none !important;
+  height: 100% !important;
+  min-height: 0;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  transform: none !important;
+  box-shadow: none;
 }
 
 /* Main -> Stage -> Battle production shell. */

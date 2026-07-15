@@ -26,6 +26,16 @@
       good: "Great matching!",
       keep: "Keep trying!",
       result: "You helped {count} shape friends ride the train.",
+      skillReport: "Skill Report",
+      logic: "Logic",
+      logicValue: "{count} shape matches",
+      focus: "Focus",
+      focusValue: "First try: {firstTry} · Retries: {retries}",
+      coordination: "Hand-Eye Coordination",
+      coordinationValue: "{count} friends boarded",
+      firstFinish: "First finish: {stars} stars",
+      progress: "Today: {stars} stars · Previous best: {previous}",
+      newBest: "New best: {stars} stars · Previous best: {previous}",
       stage: "Stage {n}",
       stageGoal: "{cars} cars / {tasks} passengers",
       prompt: "Send the {shape} to its matching car.",
@@ -60,6 +70,16 @@
       good: "配對很棒！",
       keep: "繼續練習！",
       result: "你幫 {count} 位形狀朋友搭上小火車。",
+      skillReport: "技能報告",
+      logic: "邏輯",
+      logicValue: "完成 {count} 次形狀配對",
+      focus: "專注",
+      focusValue: "一次成功 {firstTry} 次 · 再試 {retries} 次",
+      coordination: "手眼協調",
+      coordinationValue: "送 {count} 位朋友上車",
+      firstFinish: "第一次完成：{stars} 顆星",
+      progress: "本次：{stars} 顆星 · 之前最佳：{previous}",
+      newBest: "新的最佳：{stars} 顆星 · 之前最佳：{previous}",
       stage: "第 {n} 關",
       stageGoal: "{cars} 種車廂 / {tasks} 位乘客",
       prompt: "把{shape}送到相同形狀的車廂。",
@@ -116,6 +136,14 @@
     resultTitle: $("resultTitle"),
     starText: $("starText"),
     resultText: $("resultText"),
+    skillReportTitle: $("skillReportTitle"),
+    logicLabel: $("logicLabel"),
+    logicValue: $("logicValue"),
+    focusLabel: $("focusLabel"),
+    focusValue: $("focusValue"),
+    coordinationLabel: $("coordinationLabel"),
+    coordinationValue: $("coordinationValue"),
+    progressComparison: $("progressComparison"),
     nextStageBtn: $("nextStageBtn"),
     retryBtn: $("retryBtn"),
     resultStagesBtn: $("resultStagesBtn"),
@@ -130,6 +158,8 @@
   let currentStage = 0;
   let currentTask = 0;
   let mistakes = 0;
+  let firstTryMatches = 0;
+  let currentTaskMistakes = 0;
   let currentShape = "circle";
   let selectedPassenger = false;
   let acceptingInput = false;
@@ -248,6 +278,7 @@
     nodes.stagePanel.classList.remove("hidden");
     nodes.playPanel.classList.add("hidden");
     nodes.resultPanel.classList.add("hidden");
+    nodes.playPanel.classList.remove("is-result");
     document.body.classList.remove("shape-playing");
     document.body.classList.add("wp-standard-stage-page");
     document.querySelector(".shape-game")?.setAttribute("data-play-viewport", "");
@@ -274,12 +305,15 @@
     currentStage = index;
     currentTask = 0;
     mistakes = 0;
+    firstTryMatches = 0;
+    currentTaskMistakes = 0;
     acceptingInput = true;
     selectedPassenger = false;
     nodes.menuPanel.classList.add("hidden");
     nodes.stagePanel.classList.add("hidden");
     nodes.playPanel.classList.remove("hidden");
     nodes.resultPanel.classList.add("hidden");
+    nodes.playPanel.classList.remove("is-result");
     document.body.classList.remove("wp-standard-stage-page");
     document.body.classList.add("shape-playing");
     document.querySelector(".shape-game")?.removeAttribute("data-play-viewport");
@@ -327,6 +361,7 @@
     nodes.promptText.textContent = t("prompt", { shape: t(`shapes.${currentShape}`) });
     nodes.feedbackText.textContent = "";
     nodes.passengerShape.className = "shape-token";
+    nodes.passengerShape.dataset.shape = currentShape;
     nodes.passengerShape.innerHTML = `<img src="${shape.token}" alt="${t(`shapes.${currentShape}`)}" />`;
     nodes.passengerBtn.classList.remove("wrong");
     selectedPassenger = false;
@@ -341,6 +376,7 @@
     }
     if (shape !== currentShape) {
       mistakes += 1;
+      currentTaskMistakes += 1;
       nodes.feedbackText.textContent = t("wrong");
       car.classList.remove("wrong");
       nodes.passengerBtn.classList.remove("wrong");
@@ -353,12 +389,14 @@
     }
 
     acceptingInput = false;
+    if (currentTaskMistakes === 0) firstTryMatches += 1;
     car.classList.add("correct");
     nodes.feedbackText.textContent = t("correct");
     playSound("success");
     track("game_answer", { level: currentStage + 1, correct: true, task: currentShape, answer: shape });
     setTimeout(() => {
       currentTask += 1;
+      currentTaskMistakes = 0;
       car.classList.remove("correct");
       if (currentTask >= stages[currentStage].tasks.length) {
         finishStage();
@@ -378,6 +416,7 @@
   function finishStage() {
     const stageNo = currentStage + 1;
     const earned = mistakes === 0 ? 3 : mistakes <= 2 ? 2 : 1;
+    const previousBest = stars[stageNo] || 0;
     stars[stageNo] = Math.max(stars[stageNo] || 0, earned);
     saveStars();
     if (stageNo === unlocked && unlocked < stages.length) {
@@ -388,10 +427,26 @@
     nodes.resultTitle.textContent = earned === 3 ? t("perfect") : earned === 2 ? t("good") : t("keep");
     nodes.starText.textContent = "★".repeat(earned) + "☆".repeat(3 - earned);
     nodes.resultText.textContent = t("result", { count: stages[currentStage].tasks.length });
+    renderSkillReport(earned, previousBest);
     nodes.nextStageBtn.classList.toggle("hidden", currentStage >= stages.length - 1);
+    nodes.playPanel.classList.add("is-result");
     nodes.resultPanel.classList.remove("hidden");
     playSound("win");
     track("game_complete", { level: stageNo, stars: earned, mistakes });
+  }
+
+  function renderSkillReport(earned, previousBest) {
+    const matches = stages[currentStage].tasks.length;
+    nodes.skillReportTitle.textContent = t("skillReport");
+    nodes.logicLabel.textContent = t("logic");
+    nodes.logicValue.textContent = t("logicValue", { count: matches });
+    nodes.focusLabel.textContent = t("focus");
+    nodes.focusValue.textContent = t("focusValue", { firstTry: firstTryMatches, retries: mistakes });
+    nodes.coordinationLabel.textContent = t("coordination");
+    nodes.coordinationValue.textContent = t("coordinationValue", { count: matches });
+    nodes.progressComparison.textContent = previousBest > 0
+      ? t(earned > previousBest ? "newBest" : "progress", { stars: earned, previous: previousBest })
+      : t("firstFinish", { stars: earned });
   }
 
   function showFloatingText(message) {

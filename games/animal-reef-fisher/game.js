@@ -92,8 +92,11 @@
       tensionSafe: "Safe",
       tensionHigh: "Tight",
       tensionMarker: "Drag",
-      tensionCoachAim: "Hold the sea to cast. When a fish bites, drag the red knob or slide on the sea.",
-      tensionCoachReel: "Drag the red knob, or slide on the sea, and keep the marker inside the green SAFE area.",
+      playAreaAria: "Animal Reef Fisher play area. Hold Space to charge and release to cast; use Left and Right arrows to control tension.",
+      tensionLaneAria: "Line tension lane. Use Left and Right arrows to adjust.",
+      sonarAria: "Use sonar",
+      tensionCoachAim: "Hold the sea or Space to cast. When a fish bites, drag the red knob, slide on the sea, or use Left and Right arrows.",
+      tensionCoachReel: "Drag the red knob, slide on the sea, or use Left and Right arrows to stay inside the green SAFE area.",
       tensionCoachSafe: "Good. Keep sliding gently and stay in SAFE until the fish is landed.",
       tensionCoachDanger: "Slide back into SAFE now.",
       tensionStatusAim: "Step 1: hold the sea to charge, then release to cast.",
@@ -170,8 +173,11 @@
       tensionSafe: "安全",
       tensionHigh: "太緊",
       tensionMarker: "拖曳",
-      tensionCoachAim: "先按住海面拋竿；魚咬餌後，拖紅色鈕或在海面左右滑。",
-      tensionCoachReel: "拖曳紅色鈕，或在海面左右滑，讓標記留在綠色安全區。",
+      playAreaAria: "動物珊瑚釣手遊戲區。按住空白鍵蓄力，放開拋竿；用左右方向鍵控制張力。",
+      tensionLaneAria: "魚線張力軌道。使用左右方向鍵調整。",
+      sonarAria: "使用聲納",
+      tensionCoachAim: "按住海面或空白鍵拋竿；魚咬餌後，拖紅色鈕、在海面左右滑，或使用左右方向鍵。",
+      tensionCoachReel: "拖曳紅色鈕、在海面左右滑，或使用左右方向鍵，讓標記留在綠色安全區。",
       tensionCoachSafe: "很好，輕輕左右滑並留在安全區直到魚上岸。",
       tensionCoachDanger: "現在滑回安全區。",
       tensionStatusAim: "步驟1：按住海面蓄力，放開拋竿。",
@@ -409,6 +415,9 @@
       node.textContent = t(node.dataset.ui);
     });
     nodes.mapBtn.setAttribute("aria-label", t("reefMap"));
+    canvas.setAttribute("aria-label", t("playAreaAria"));
+    nodes.tensionLane.setAttribute("aria-label", t("tensionLaneAria"));
+    nodes.sonarBtn.setAttribute("aria-label", t("sonarAria"));
     renderMenu();
     updateTensionGuide();
     updateCatchHud();
@@ -914,6 +923,10 @@
     nodes.tensionLane.classList.toggle("is-active", Boolean(run && run.phase === "reel"));
     nodes.tensionLane.classList.toggle("is-safe", Boolean(run && run.phase === "reel" && range.safe));
     nodes.tensionLane.classList.toggle("is-danger", Boolean(run && run.phase === "reel" && !range.safe));
+    const tensionValue = Math.round(run?.tension ?? 50);
+    const tensionState = tensionValue < range.safeMin ? t("tensionLow") : tensionValue > range.safeMax ? t("tensionHigh") : t("tensionSafe");
+    nodes.tensionLane.setAttribute("aria-valuenow", String(tensionValue));
+    nodes.tensionLane.setAttribute("aria-valuetext", `${tensionValue}% - ${tensionState}`);
     if (!run || run.phase === "aim") nodes.tensionStatus.textContent = t("tensionStatusAim");
     else if (run.phase === "charging" || run.phase === "cast") nodes.tensionStatus.textContent = t("tensionStatusCharging");
     else if (run.phase === "reel") nodes.tensionStatus.textContent = range.safe ? t("tensionStatusSafe") : t("tensionStatusDanger");
@@ -1110,6 +1123,56 @@
     }
   }
 
+  function startKeyboardCharge() {
+    if (state !== "game" || !run || run.phase !== "aim") return;
+    pointer.down = true;
+    pointer.source = "keyboard";
+    pointer.tensionPct = 50;
+    run.phase = "charging";
+    run.castPower = 0;
+    run.castDir = 1;
+    nodes.hintText.textContent = t("charging");
+    updateTensionGuide();
+  }
+
+  function adjustKeyboardTension(delta) {
+    if (state !== "game" || !run || run.phase !== "reel") return;
+    pointer.down = true;
+    pointer.source = "keyboard";
+    pointer.tensionPct = Math.max(0, Math.min(100, pointer.tensionPct + delta));
+    updateTensionGuide();
+  }
+
+  function handleFishingKeyDown(evt) {
+    if (state !== "game" || !run) return;
+    if (evt.code === "Space" && run.phase === "aim") {
+      evt.preventDefault();
+      if (!evt.repeat) startKeyboardCharge();
+      return;
+    }
+    if (run.phase !== "reel") return;
+    const step = evt.shiftKey ? 10 : 5;
+    if (evt.key === "ArrowLeft") {
+      evt.preventDefault();
+      adjustKeyboardTension(-step);
+    } else if (evt.key === "ArrowRight") {
+      evt.preventDefault();
+      adjustKeyboardTension(step);
+    } else if (evt.key === "Home") {
+      evt.preventDefault();
+      adjustKeyboardTension(-100);
+    } else if (evt.key === "End") {
+      evt.preventDefault();
+      adjustKeyboardTension(100);
+    }
+  }
+
+  function handleFishingKeyUp(evt) {
+    if (evt.code !== "Space" || state !== "game" || !run || run.phase !== "charging") return;
+    evt.preventDefault();
+    releaseCast();
+  }
+
   function updatePointer(evt) {
     const point = evt.touches ? evt.touches[0] : evt;
     const rect = canvas.getBoundingClientRect();
@@ -1222,6 +1285,10 @@
   });
   nodes.tensionLane.addEventListener("pointercancel", () => {
     pointer.down = false;
+  });
+  [canvas, nodes.tensionLane].forEach((control) => {
+    control.addEventListener("keydown", handleFishingKeyDown);
+    control.addEventListener("keyup", handleFishingKeyUp);
   });
 
   if (isTestMode) {

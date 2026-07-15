@@ -22,6 +22,16 @@
       good: "Good helper!",
       keep: "Keep helping!",
       result: "Shift complete: {station} earned {tickets} tickets and kept visitor happiness at {mood}%.",
+      skillReport: "Skill Report",
+      animalKnowledge: "Animal Knowledge",
+      animalValue: "{count} care needs matched",
+      focus: "Focus",
+      focusValue: "First try: {firstTry} · Retries: {retries}",
+      coordination: "Hand-Eye Coordination",
+      coordinationValue: "{count} care choices completed",
+      firstFinish: "First finish · {stars} stars",
+      progress: "This time: {stars} · Previous best: {previous}",
+      newBest: "New best: {stars} · Previous best: {previous}",
       stage: "Stage {n}",
       stageGoal: "{station} shift / {tickets} tickets",
       task: "{station}: help {animal} with {item}.",
@@ -74,6 +84,16 @@
       good: "很棒的小幫手！",
       keep: "繼續幫忙！",
       result: "工作日完成：{station} 賺到 {tickets} 張票，遊客開心度保持 {mood}%。",
+      skillReport: "技能報告",
+      animalKnowledge: "動物知識",
+      animalValue: "配對 {count} 個照顧需求",
+      focus: "專注",
+      focusValue: "一次成功 {firstTry} 次 · 重試 {retries} 次",
+      coordination: "手眼協調",
+      coordinationValue: "完成 {count} 次照顧選擇",
+      firstFinish: "第一次完成 · {stars} 顆星",
+      progress: "這次 {stars} 顆星 · 之前最佳 {previous} 顆星",
+      newBest: "新的最佳：{stars} 顆星 · 之前最佳 {previous} 顆星",
       stage: "第 {n} 關",
       stageGoal: "{station} 班次 / {tickets} 張票",
       task: "{station}：幫 {animal} 準備{item}。",
@@ -178,6 +198,14 @@
     resultTitle: $("resultTitle"),
     starText: $("starText"),
     resultText: $("resultText"),
+    skillReportTitle: $("skillReportTitle"),
+    animalKnowledgeLabel: $("animalKnowledgeLabel"),
+    animalKnowledgeValue: $("animalKnowledgeValue"),
+    focusLabel: $("focusLabel"),
+    focusValue: $("focusValue"),
+    coordinationLabel: $("coordinationLabel"),
+    coordinationValue: $("coordinationValue"),
+    progressComparison: $("progressComparison"),
     nextStageBtn: $("nextStageBtn"),
     retryBtn: $("retryBtn"),
     resultStagesBtn: $("resultStagesBtn"),
@@ -193,6 +221,9 @@
   let currentStage = 0;
   let currentTask = 0;
   let mistakes = 0;
+  let firstTryTasks = 0;
+  let currentTaskMistakes = 0;
+  let lastResult = null;
   let acceptingInput = false;
 
   function updateBattleViewport() {
@@ -321,6 +352,9 @@
     currentStage = index;
     currentTask = 0;
     mistakes = 0;
+    firstTryTasks = 0;
+    currentTaskMistakes = 0;
+    lastResult = null;
     acceptingInput = true;
     nodes.menuPanel.classList.add("hidden");
     nodes.stagePanel.classList.add("hidden");
@@ -414,6 +448,7 @@
     const wanted = stage.tasks[currentTask];
     if (item !== wanted) {
       mistakes += 1;
+      currentTaskMistakes += 1;
       nodes.feedbackText.textContent = t("wrong");
       nodes.animalCard.classList.remove("wrong");
       button?.classList.remove("wrong");
@@ -426,6 +461,7 @@
     }
 
     acceptingInput = false;
+    if (currentTaskMistakes === 0) firstTryTasks += 1;
     button?.classList.add("correct");
     nodes.animalCard.classList.remove("happy");
     void nodes.animalCard.offsetWidth;
@@ -438,6 +474,7 @@
       if (currentTask >= stage.tasks.length) {
         finishStage();
       } else {
+        currentTaskMistakes = 0;
         acceptingInput = true;
         renderTask();
       }
@@ -450,6 +487,7 @@
     const earned = mistakes === 0 ? 3 : mistakes <= 2 ? 2 : 1;
     const mood = clamp(100 - mistakes * 12, 40, 100);
     const tickets = Math.max(0, stage.tickets + stage.tasks.length * 3 - mistakes * 4);
+    const previousBest = stars[stageNo] || 0;
     stars[stageNo] = Math.max(stars[stageNo] || 0, earned);
     saveStars();
     if (stageNo === unlocked && unlocked < stages.length) {
@@ -457,10 +495,8 @@
       localStorage.setItem(unlockKey, String(unlocked));
     }
     nodes.progressFill.style.width = "100%";
-    nodes.resultTitle.textContent = earned === 3 ? t("perfect") : earned === 2 ? t("good") : t("keep");
-    nodes.starText.textContent = "★".repeat(earned) + "☆".repeat(3 - earned);
-    nodes.resultText.textContent = t("result", { station: t(`stations.${stage.station}`), tickets, mood });
-    nodes.nextStageBtn.classList.toggle("hidden", currentStage >= stages.length - 1);
+    lastResult = { earned, previousBest, tickets, mood, taskCount: stage.tasks.length, firstTryTasks, mistakes };
+    renderResult();
     nodes.resultPanel.classList.remove("hidden");
     playSound("win");
     track("game_complete", { level: stageNo, stars: earned, mistakes });
@@ -520,6 +556,26 @@
     });
   }
 
+  function renderResult() {
+    if (!lastResult) return;
+    const { earned, previousBest, tickets, mood, taskCount, firstTryTasks: firstTry, mistakes: retries } = lastResult;
+    const stage = stages[currentStage];
+    nodes.resultTitle.textContent = earned === 3 ? t("perfect") : earned === 2 ? t("good") : t("keep");
+    nodes.starText.textContent = "★".repeat(earned) + "☆".repeat(3 - earned);
+    nodes.resultText.textContent = t("result", { station: t(`stations.${stage.station}`), tickets, mood });
+    nodes.skillReportTitle.textContent = t("skillReport");
+    nodes.animalKnowledgeLabel.textContent = t("animalKnowledge");
+    nodes.animalKnowledgeValue.textContent = t("animalValue", { count: taskCount });
+    nodes.focusLabel.textContent = t("focus");
+    nodes.focusValue.textContent = t("focusValue", { firstTry, retries });
+    nodes.coordinationLabel.textContent = t("coordination");
+    nodes.coordinationValue.textContent = t("coordinationValue", { count: taskCount });
+    nodes.progressComparison.textContent = previousBest === 0
+      ? t("firstFinish", { stars: earned })
+      : t(earned > previousBest ? "newBest" : "progress", { stars: earned, previous: previousBest });
+    nodes.nextStageBtn.classList.toggle("hidden", currentStage >= stages.length - 1);
+  }
+
   function bindEvents() {
     nodes.startGameBtn.addEventListener("click", showMenu);
     nodes.stageBackBtn.addEventListener("click", showMain);
@@ -529,7 +585,8 @@
       localStorage.setItem(localeKey, locale);
       localizeStatic();
       renderStageGrid();
-      if (!nodes.playPanel.classList.contains("hidden")) renderTask();
+      if (!nodes.resultPanel.classList.contains("hidden")) renderResult();
+      else if (!nodes.playPanel.classList.contains("hidden")) renderTask();
     });
     window.addEventListener("wonder:locale-change", (event) => {
       const nextLocale = event.detail?.locale || window.WonderI18n?.locale?.() || "en";
@@ -538,7 +595,8 @@
       localStorage.setItem(localeKey, locale);
       localizeStatic();
       renderStageGrid();
-      if (!nodes.playPanel.classList.contains("hidden")) renderTask();
+      if (!nodes.resultPanel.classList.contains("hidden")) renderResult();
+      else if (!nodes.playPanel.classList.contains("hidden")) renderTask();
     });
     nodes.backToStagesBtn.addEventListener("click", showMenu);
     nodes.resultStagesBtn.addEventListener("click", showMenu);

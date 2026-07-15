@@ -23,6 +23,15 @@
   const resultPanel = document.querySelector("#resultPanel");
   const resultTitle = document.querySelector("#resultTitle");
   const resultText = document.querySelector("#resultText");
+  const skillReportTitle = document.querySelector("#skillReportTitle");
+  const skillReportIntro = document.querySelector("#skillReportIntro");
+  const reactionLabel = document.querySelector("#reactionLabel");
+  const reactionValue = document.querySelector("#reactionValue");
+  const focusLabel = document.querySelector("#focusLabel");
+  const focusValue = document.querySelector("#focusValue");
+  const coordinationLabel = document.querySelector("#coordinationLabel");
+  const coordinationValue = document.querySelector("#coordinationValue");
+  const progressComparison = document.querySelector("#progressComparison");
   const leaderboard = document.querySelector("#leaderboard");
   const againBtn = document.querySelector("#againBtn");
   const lobbyLink = document.querySelector("#lobbyLink");
@@ -57,6 +66,17 @@
       start: "Start",
       resultTitle: "Run Complete!",
       resultText: "Score {score}  Best {best}",
+      skillReport: "Skill Report",
+      skillIntro: "This run practiced quick choices, steady focus, and lane control.",
+      reaction: "Reaction",
+      reactionValue: "{count} lane changes",
+      focus: "Focus",
+      focusValue: "{coins} collected · {bumps} bumps",
+      coordination: "Hand-Eye Coordination",
+      coordinationValue: "Best combo x{combo}",
+      firstRun: "Today's score: {score}",
+      progress: "Today's score: {score} · Previous best: {previous}",
+      newBest: "New best: {score}! Previous best: {previous}",
       again: "Run Again",
       lobby: "Lobby",
       loading: "Loading",
@@ -82,6 +102,17 @@
       start: "\u958b\u59cb",
       resultTitle: "\u5954\u8dd1\u5b8c\u6210\uff01",
       resultText: "\u5206\u6578 {score}  \u6700\u4f73 {best}",
+      skillReport: "\u6280\u80fd\u5831\u544a",
+      skillIntro: "\u9019\u6b21\u5954\u8dd1\u7df4\u7fd2\u4e86\u5feb\u901f\u9078\u64c7\u3001\u4fdd\u6301\u5c08\u6ce8\uff0c\u4ee5\u53ca\u63a7\u5236\u8dd1\u9053\u3002",
+      reaction: "\u53cd\u61c9",
+      reactionValue: "\u63db\u9053 {count} \u6b21",
+      focus: "\u5c08\u6ce8",
+      focusValue: "\u6536\u96c6 {coins} \u500b \u00b7 \u78b0\u5230 {bumps} \u6b21",
+      coordination: "\u624b\u773c\u5354\u8abf",
+      coordinationValue: "\u6700\u4f73\u9023\u64ca x{combo}",
+      firstRun: "\u672c\u6b21\u5206\u6578\uff1a{score}",
+      progress: "\u672c\u6b21\u5206\u6578\uff1a{score} \u00b7 \u4e0a\u6b21\u6700\u4f73\uff1a{previous}",
+      newBest: "\u65b0\u7684\u6700\u4f73\u5206\u6578\uff1a{score}\uff01\u4e0a\u6b21\u6700\u4f73\uff1a{previous}",
       again: "\u518d\u8dd1\u4e00\u6b21",
       lobby: "\u5927\u5ef3",
       loading: "\u8f09\u5165\u4e2d",
@@ -131,6 +162,10 @@
       timeLeft: 60,
       score: 0,
       combo: 1,
+      bestCombo: 1,
+      laneChanges: 0,
+      coinsCollected: 0,
+      obstaclesHit: 0,
       speed: 390,
       spawnTimer: 0.4,
       coinTimer: 0.9,
@@ -326,6 +361,7 @@
         obstacle.y = H + 100;
         state.score = Math.max(0, state.score - 80);
         state.combo = 1;
+        state.obstaclesHit += 1;
         addSpark(state.x, state.y - 60, "-80", "#ef4444");
         window.WonderSound?.play("wrong");
       }
@@ -335,6 +371,8 @@
         coin.used = true;
         state.score += 50 * state.combo;
         state.combo = Math.min(9, state.combo + 1);
+        state.bestCombo = Math.max(state.bestCombo, state.combo);
+        state.coinsCollected += 1;
         addSpark(coin.x, coin.y, `+${50 * (state.combo - 1)}`, "#fbbf24");
         window.WonderSound?.play("success");
       }
@@ -354,6 +392,7 @@
     const nextLane = Math.max(0, Math.min(2, state.targetLane + delta));
     if (nextLane === state.targetLane) return;
     state.targetLane = nextLane;
+    state.laneChanges += 1;
     state.lanePulse = 0.36;
     state.lanePulseLane = nextLane;
     state.lanePulseDir = Math.sign(delta);
@@ -364,10 +403,12 @@
     state.running = false;
     state.finished = true;
     hud.classList.add("hidden");
+    const previousBest = getScores()[0] || 0;
     saveScore(state.score);
     const best = getScores()[0] || state.score;
     resultTitle.textContent = t("resultTitle");
     resultText.textContent = t("resultText", { score: state.score, best });
+    renderSkillReport(previousBest);
     renderLeaderboard();
     resultPanel.classList.remove("hidden");
     window.WonderSound?.play("win");
@@ -378,10 +419,24 @@
     });
   }
 
+  function renderSkillReport(previousBest) {
+    skillReportTitle.textContent = t("skillReport");
+    skillReportIntro.textContent = t("skillIntro");
+    reactionLabel.textContent = t("reaction");
+    reactionValue.textContent = t("reactionValue", { count: state.laneChanges });
+    focusLabel.textContent = t("focus");
+    focusValue.textContent = t("focusValue", { coins: state.coinsCollected, bumps: state.obstaclesHit });
+    coordinationLabel.textContent = t("coordination");
+    coordinationValue.textContent = t("coordinationValue", { combo: state.bestCombo });
+    progressComparison.textContent = previousBest > 0
+      ? t(state.score > previousBest ? "newBest" : "progress", { score: state.score, previous: previousBest })
+      : t("firstRun", { score: state.score });
+  }
+
   function exposeSmokeHooks() {
     if (!new URLSearchParams(window.location.search).has("smoke")) return;
     window.__campusDashSmoke = {
-      getState: () => ({ running: state.running, lane: state.targetLane, score: state.score, time: state.time }),
+      getState: () => ({ running: state.running, lane: state.targetLane, score: state.score, time: state.timeLeft, laneChanges: state.laneChanges, coinsCollected: state.coinsCollected, obstaclesHit: state.obstaclesHit, bestCombo: state.bestCombo }),
       spawnSequence: (count = 24) => {
         state = makeState();
         for (let index = 0; index < count; index += 1) {
@@ -403,6 +458,13 @@
           resultBox: { left: box.left, top: box.top, width: box.width, height: box.height },
           animationFrames: resultPanel.getAnimations().flatMap((animation) => animation.effect?.getKeyframes?.() || []),
         };
+      },
+      setReportEvidence: (evidence = {}) => {
+        state.score = Number(evidence.score) || 0;
+        state.laneChanges = Number(evidence.laneChanges) || 0;
+        state.coinsCollected = Number(evidence.coinsCollected) || 0;
+        state.obstaclesHit = Number(evidence.obstaclesHit) || 0;
+        state.bestCombo = Math.max(1, Number(evidence.bestCombo) || 1);
       },
     };
   }

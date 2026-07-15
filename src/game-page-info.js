@@ -210,7 +210,7 @@
       parent:
         "This game is designed for older children and casual players who enjoy fast reaction challenges. It can practice focus and hand-eye coordination, but scores are only for fun.",
       faq: [
-        ["Why is Safari Dash 12+?", "It has faster reactions and score pressure than younger-child games."],
+        ["Why is Safari Dash 9+?", "It has faster reactions and score pressure than games designed for younger children."],
         ["Is there a leaderboard?", "The MVP uses local records for replay value."],
         ["Is it an educational test?", "No. It is a reaction game for entertainment and practice."],
       ],

@@ -401,6 +401,58 @@ body.garden-stage .home-link { grid-template-columns: 1fr; }
   line-height: 1.45;
 }
 
+.garden-skill-report {
+  display: grid;
+  gap: 7px;
+}
+
+.garden-skill-report h3,
+.garden-skill-report p {
+  margin: 0;
+}
+
+.garden-skill-report h3 {
+  font-size: 18px;
+}
+
+.garden-skill-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.garden-skill-grid div {
+  min-width: 0;
+  padding: 8px 5px;
+  border-radius: 8px;
+  background: rgba(119, 187, 86, 0.14);
+}
+
+.garden-skill-grid span,
+.garden-skill-grid b {
+  display: block;
+  line-height: 1.15;
+}
+
+.garden-skill-grid span {
+  min-height: 30px;
+  font-size: 11px;
+  font-weight: 1000;
+}
+
+.garden-skill-grid b {
+  margin-top: 4px;
+  font-size: 11px;
+}
+
+#progressComparison {
+  padding: 6px 8px;
+  border-radius: 8px;
+  background: rgba(242, 184, 75, 0.2);
+  font-size: 12px;
+  line-height: 1.2;
+}
+
 .result-actions {
   display: grid;
   grid-template-columns: 1fr 1fr;

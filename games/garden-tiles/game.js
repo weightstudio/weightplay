@@ -30,6 +30,14 @@
   const resultTitle = document.querySelector("#resultTitle");
   const resultText = document.querySelector("#resultText");
   const stars = document.querySelector("#stars");
+  const skillReportTitle = document.querySelector("#skillReportTitle");
+  const memoryLabel = document.querySelector("#memoryLabel");
+  const memoryValue = document.querySelector("#memoryValue");
+  const focusLabel = document.querySelector("#focusLabel");
+  const focusValue = document.querySelector("#focusValue");
+  const problemLabel = document.querySelector("#problemLabel");
+  const problemValue = document.querySelector("#problemValue");
+  const progressComparison = document.querySelector("#progressComparison");
   const nextBtn = document.querySelector("#nextBtn");
   const againBtn = document.querySelector("#againBtn");
   const levelsBtn = document.querySelector("#levelsBtn");
@@ -58,6 +66,16 @@
       miss: "Try another pair.",
       clear: "Level Clear",
       result: "{moves} moves. {pairs} pairs matched.",
+      skillReport: "Skill Report",
+      memory: "Memory",
+      memoryValue: "{pairs} pairs found",
+      focus: "Focus",
+      focusValue: "{moves} moves · Retries: {retries}",
+      problem: "Problem Solving",
+      problemValue: "{stars} stars earned",
+      firstFinish: "First finish: {stars} stars",
+      progress: "Today: {stars} stars · Previous best: {previous}",
+      newBest: "New best: {stars} stars · Previous best: {previous}",
       next: "Next Level",
       again: "Play Again",
       levels: "Levels",
@@ -94,6 +112,16 @@
       miss: "\u518d\u8a66\u8a66\u53e6\u4e00\u7d44\u3002",
       clear: "\u95dc\u5361\u5b8c\u6210",
       result: "\u7528\u4e86 {moves} \u6b65\uff0c\u5b8c\u6210 {pairs} \u7d44\u914d\u5c0d\u3002",
+      skillReport: "\u6280\u80fd\u5831\u544a",
+      memory: "\u8a18\u61b6",
+      memoryValue: "\u627e\u5230 {pairs} \u7d44\u914d\u5c0d",
+      focus: "\u5c08\u6ce8",
+      focusValue: "{moves} \u6b65 \u00b7 \u91cd\u8a66 {retries} \u6b21",
+      problem: "\u89e3\u984c\u80fd\u529b",
+      problemValue: "\u7372\u5f97 {stars} \u9846\u661f",
+      firstFinish: "\u7b2c\u4e00\u6b21\u5b8c\u6210\uff1a{stars} \u9846\u661f",
+      progress: "\u672c\u6b21\uff1a{stars} \u9846\u661f \u00b7 \u4e4b\u524d\u6700\u4f73\uff1a{previous}",
+      newBest: "\u65b0\u7684\u6700\u4f73\uff1a{stars} \u9846\u661f \u00b7 \u4e4b\u524d\u6700\u4f73\uff1a{previous}",
       next: "\u4e0b\u4e00\u95dc",
       again: "\u518d\u73a9\u4e00\u6b21",
       levels: "\u9078\u95dc",
@@ -159,6 +187,8 @@
   let moves = 0;
   let matchedPairs = 0;
   let busy = false;
+  let resultStarCount = 0;
+  let resultPreviousBest = 0;
 
   function locale() {
     return window.WonderI18n?.locale?.() || "en";
@@ -225,6 +255,7 @@
     renderLevelGrid();
     if (tiles.length) renderBoard();
     updateHud();
+    if (!resultPanel.classList.contains("hidden") && resultStarCount > 0) renderResult(resultStarCount, resultPreviousBest);
   }
 
   function showMain() {
@@ -460,16 +491,38 @@
   function finishLevel() {
     const starCount = getStarsForLevel(currentLevelIndex, moves);
     const levelNumber = currentLevelIndex + 1;
+    const previousBest = starMap[levelNumber] || 0;
     starMap[levelNumber] = Math.max(starMap[levelNumber] || 0, starCount);
     unlocked = Math.max(unlocked, Math.min(levels.length, levelNumber + 1));
     saveProgress();
-    resultTitle.textContent = t("clear");
-    stars.textContent = "\u2605".repeat(starCount) + "\u2606".repeat(3 - starCount);
-    resultText.textContent = t("result", { moves, pairs: matchedPairs });
-    nextBtn.classList.toggle("hidden", currentLevelIndex >= levels.length - 1);
+    resultStarCount = starCount;
+    resultPreviousBest = previousBest;
+    renderResult(starCount, previousBest);
     resultPanel.classList.remove("hidden");
     window.WonderAnalytics?.track?.("game_complete", { game_id: GAME_ID, level: levelNumber, moves, stars: starCount, cleared: true });
     window.WonderAnalytics?.track?.("level_clear", { game_id: GAME_ID, level: levelNumber, moves, stars: starCount });
+  }
+
+  function renderResult(starCount, previousBest) {
+    resultTitle.textContent = t("clear");
+    stars.textContent = "\u2605".repeat(starCount) + "\u2606".repeat(3 - starCount);
+    resultText.textContent = t("result", { moves, pairs: matchedPairs });
+    renderSkillReport(starCount, previousBest);
+    nextBtn.classList.toggle("hidden", currentLevelIndex >= levels.length - 1);
+  }
+
+  function renderSkillReport(starCount, previousBest) {
+    const retries = Math.max(0, moves - matchedPairs);
+    skillReportTitle.textContent = t("skillReport");
+    memoryLabel.textContent = t("memory");
+    memoryValue.textContent = t("memoryValue", { pairs: matchedPairs });
+    focusLabel.textContent = t("focus");
+    focusValue.textContent = t("focusValue", { moves, retries });
+    problemLabel.textContent = t("problem");
+    problemValue.textContent = t("problemValue", { stars: starCount });
+    progressComparison.textContent = previousBest > 0
+      ? t(starCount > previousBest ? "newBest" : "progress", { stars: starCount, previous: previousBest })
+      : t("firstFinish", { stars: starCount });
   }
 
   function getStarsForLevel(index, moveCount) {
