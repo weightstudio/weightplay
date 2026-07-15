@@ -620,7 +620,7 @@ body.shape-playing.weightplay-active-viewport .shape-game {
   width: min(calc(var(--shape-vw, 100vw) - 8px), 612px) !important;
   min-width: 0 !important;
   max-width: none !important;
-  height: min(calc(var(--shape-vh, 100dvh) - 64px), 788px) !important;
+  height: min(calc(var(--shape-vh, 100dvh) - var(--wp-ad-reserve-height, 56px) - 8px), 788px) !important;
   min-height: 0 !important;
   max-height: none !important;
   padding: 8px 10px !important;
@@ -678,7 +678,7 @@ body.shape-playing #battleAdReserve {
 
   body.shape-playing .shape-game,
   body.shape-playing.weightplay-active-viewport .shape-game {
-    height: calc(var(--shape-vh, 100dvh) - 64px) !important;
+    height: calc(var(--shape-vh, 100dvh) - var(--wp-ad-reserve-height, 56px) - 8px) !important;
   }
 }
 

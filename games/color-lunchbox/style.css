@@ -934,7 +934,7 @@ body.lunch-playing.lunch-expanded-canvas.weightplay-active-viewport .lunch-game 
   width: var(--lunch-frame-width, calc(var(--wp-mobile-vw, 100vw) - 8px)) !important;
   min-width: 0 !important;
   max-width: none !important;
-  height: var(--lunch-frame-height, calc(var(--wp-mobile-vh, 100dvh) - 64px)) !important;
+  height: var(--lunch-frame-height, calc(var(--wp-mobile-vh, 100dvh) - var(--wp-ad-reserve-height, 56px) - 8px)) !important;
   min-height: 0 !important;
   max-height: none !important;
   transform: none !important;

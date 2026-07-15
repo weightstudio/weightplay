@@ -208,7 +208,7 @@ select {
 html.safari-stage, body.safari-stage { height:var(--wp-mobile-vh,100dvh); overflow:hidden; }
 body.safari-stage .topbar, body.safari-stage .game-page-info, body.safari-stage .wp-tutorial-button { display:none !important; }
 body.safari-stage .safari-game { height:var(--wp-mobile-vh,100dvh); padding:8px; overflow:hidden; }
-body.safari-stage .stage-panel { height:100%; grid-template-rows:44px minmax(0,1fr) 56px; overflow:hidden; }
+body.safari-stage .stage-panel { height:100%; grid-template-rows:44px minmax(0,1fr) var(--wp-ad-reserve-height,56px); overflow:hidden; }
 body.safari-stage .stage-grid { align-items:center; padding-inline:calc((100% - min(74vw,280px))/2); }
 
 .stage-card.locked {
@@ -702,7 +702,7 @@ body.safari-stage .stage-grid { align-items:center; padding-inline:calc((100% - 
   html:has(body.safari-playing), body.safari-playing { overflow: hidden !important; touch-action: none; }
   body.safari-playing .safari-game { width: 100vw; height: var(--wp-mobile-vh, 100svh); min-height: 0; display:block; padding:7px 10px 0; overflow:hidden; }
   body.safari-playing .topbar, body.safari-playing .menu-panel, body.safari-playing .game-page-info { display: none !important; }
-  body.safari-playing .play-panel { height:100%; min-height:0; display:grid; grid-template-rows:40px minmax(0,1fr) auto 56px; gap:6px; overflow:hidden; }
+  body.safari-playing .play-panel { height:100%; min-height:0; display:grid; grid-template-rows:40px minmax(0,1fr) auto var(--wp-ad-reserve-height,56px); gap:6px; overflow:hidden; }
   body.safari-playing .play-head { grid-template-columns:40px minmax(0,1fr) auto; min-height:0; }
   body.safari-playing .progress-card { grid-column:auto; grid-row:auto; }
   body.safari-playing .scene { min-height:0; height:auto; }
@@ -741,7 +741,7 @@ body.safari-playing .play-panel {
   aspect-ratio:9 / 16;
   min-height:0;
   display:grid;
-  grid-template-rows:40px minmax(0,1fr) auto 56px;
+  grid-template-rows:40px minmax(0,1fr) auto var(--wp-ad-reserve-height,56px);
   gap:6px;
   overflow:hidden;
 }
@@ -783,7 +783,7 @@ html body.wp-mobile-game-mode.safari-playing #playPanel.play-panel.weightplay-ac
   width: var(--safari-frame-width, calc(100vw - 8px)) !important;
   min-width: 0 !important;
   max-width: none !important;
-  height: var(--safari-frame-height, calc(100dvh - 64px)) !important;
+  height: var(--safari-frame-height, calc(100dvh - var(--wp-ad-reserve-height,56px) - 8px)) !important;
   min-height: 0 !important;
   max-height: none !important;
   padding: 0 !important;
@@ -903,7 +903,7 @@ html body.safari-playing > .ad-reserve {
   position: fixed !important;
   z-index: 49;
   left: var(--safari-frame-left, 4px) !important;
-  top: calc(var(--safari-frame-top, 4px) + var(--safari-frame-height, calc(100dvh - 64px))) !important;
+  top: calc(var(--safari-frame-top, 4px) + var(--safari-frame-height, calc(100dvh - var(--wp-ad-reserve-height,56px) - 8px))) !important;
   right: auto !important;
   bottom: auto !important;
   display: block;

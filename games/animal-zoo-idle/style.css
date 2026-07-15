@@ -2052,7 +2052,7 @@ body.zoo-playing .animal-shop-card small {
     min-height: 0;
     max-height: var(--wp-mobile-vh, 100svh);
     padding: calc(8px + env(safe-area-inset-top)) 8px calc(8px + env(safe-area-inset-bottom));
-    grid-template-rows: minmax(0, 1fr) 56px;
+    grid-template-rows: minmax(0, 1fr) var(--wp-ad-reserve-height, 56px);
     gap: 8px;
     overflow: hidden !important;
     align-content: stretch;

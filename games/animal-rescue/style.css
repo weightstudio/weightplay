@@ -283,7 +283,7 @@ body.rescue-stage-select .wp-tutorial-button {
 }
 
 body.rescue-stage-select .rescue-game {
-  grid-template-rows: minmax(0, 1fr) 56px;
+  grid-template-rows: minmax(0, 1fr) var(--wp-ad-reserve-height, 56px);
   width: 100vw;
   height: var(--wp-mobile-vh, 100svh);
   min-height: 0;
@@ -632,7 +632,7 @@ body.rescue-playing .game-page-info {
     height: var(--wp-mobile-vh, 100svh);
     min-height: 0;
     padding: calc(7px + env(safe-area-inset-top)) 9px calc(7px + env(safe-area-inset-bottom));
-    grid-template-rows: 50px minmax(0, 1fr) 56px;
+    grid-template-rows: 50px minmax(0, 1fr) var(--wp-ad-reserve-height, 56px);
     gap: 6px;
   }
 
@@ -954,7 +954,7 @@ html body.wp-mobile-game-mode.rescue-playing.rescue-expanded-canvas main.rescue-
   width: var(--rescue-battle-width, calc(100vw - 8px)) !important;
   min-width: 0 !important;
   max-width: none !important;
-  height: var(--rescue-battle-content-height, calc(100svh - 64px)) !important;
+  height: var(--rescue-battle-content-height, calc(100svh - var(--wp-ad-reserve-height, 56px) - 8px)) !important;
   min-height: 0 !important;
   max-height: none !important;
   margin: 0 !important;

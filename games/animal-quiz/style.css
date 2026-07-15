@@ -809,7 +809,7 @@ a {
   }
 
   body.quiz-stage-select .animal-game {
-    grid-template-rows: minmax(0, 1fr) 56px;
+    grid-template-rows: minmax(0, 1fr) var(--wp-ad-reserve-height, 56px);
     width: 100vw;
     height: var(--wp-mobile-vh, 100svh);
     min-height: var(--wp-mobile-vh, 100svh);
@@ -869,7 +869,7 @@ a {
   }
 
   body.quiz-playing .result-panel {
-    grid-template-rows: minmax(0, 1fr) 56px;
+    grid-template-rows: minmax(0, 1fr) var(--wp-ad-reserve-height, 56px);
     align-items: stretch;
     padding: 8px;
     gap: 6px;
@@ -934,7 +934,7 @@ a {
   body.quiz-playing .animal-game {
     position: fixed;
     inset: 0;
-    grid-template-rows: 38px minmax(0, 1fr) 120px 34px 56px;
+    grid-template-rows: 38px minmax(0, 1fr) 120px 34px var(--wp-ad-reserve-height, 56px);
     width: 100vw;
     height: var(--wp-mobile-vh, 100svh);
     min-height: var(--wp-mobile-vh, 100svh);
@@ -1109,7 +1109,7 @@ body.quiz-stage-select .animal-game {
   top: 4px;
   width: min(calc(var(--quiz-vw, 100vw) - 8px), 612px);
   max-width: none;
-  height: min(calc(var(--quiz-vh, 100dvh) - 64px), 788px);
+  height: min(calc(var(--quiz-vh, 100dvh) - var(--wp-ad-reserve-height, 56px) - 8px), 788px);
   min-height: 0;
   max-height: none;
   margin: 0;
@@ -1161,7 +1161,7 @@ body.quiz-stage-select .wp-tutorial-backdrop {
 
   body.quiz-playing .animal-game,
   body.quiz-stage-select .animal-game {
-    height: calc(var(--quiz-vh, 100dvh) - 64px);
+    height: calc(var(--quiz-vh, 100dvh) - var(--wp-ad-reserve-height, 56px) - 8px);
   }
 }
 

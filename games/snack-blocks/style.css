@@ -709,7 +709,7 @@ body.snack-playing.snack-expanded-canvas.weightplay-active-viewport .snack-game 
   width: var(--snack-frame-width, calc(100vw - 8px)) !important;
   min-width: 0 !important;
   max-width: none !important;
-  height: var(--snack-frame-height, calc(100svh - 64px)) !important;
+  height: var(--snack-frame-height, calc(100svh - var(--wp-ad-reserve-height, 56px) - 8px)) !important;
   min-height: 0 !important;
   max-height: none !important;
   padding: 6px 8px !important;
@@ -1042,7 +1042,7 @@ html body.snack-playing.snack-expanded-canvas main.snack-game.weightplay-active-
   width: var(--snack-frame-width, calc(100vw - 8px)) !important;
   min-width: 0 !important;
   max-width: none !important;
-  height: var(--snack-frame-height, calc(100svh - 64px)) !important;
+  height: var(--snack-frame-height, calc(100svh - var(--wp-ad-reserve-height, 56px) - 8px)) !important;
   min-height: 0 !important;
   max-height: none !important;
   transform: none !important;

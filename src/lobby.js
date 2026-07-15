@@ -846,7 +846,7 @@ function createGameCard(game) {
 
 function renderLobby() {
   applyStaticTranslations();
-  platformTitle.textContent = lobby.platform.name;
+  platformTitle.textContent = isKidsLobby ? "WeightPlay Kids" : lobby.platform.name;
   platformSubtitle.textContent = i18n.t(isKidsLobby ? "kids.site.subtitle" : "general.site.subtitle");
   renderWallet();
 

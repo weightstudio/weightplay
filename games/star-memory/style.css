@@ -967,7 +967,7 @@ body.memory-playing.memory-expanded-canvas.weightplay-active-viewport .memory-ga
   width: var(--memory-frame-width, calc(100vw - 8px)) !important;
   min-width: 0 !important;
   max-width: none !important;
-  height: var(--memory-frame-height, calc(100svh - 64px)) !important;
+  height: var(--memory-frame-height, calc(100svh - var(--wp-ad-reserve-height, 56px) - 8px)) !important;
   min-height: 0 !important;
   max-height: none !important;
   transform: none !important;
@@ -977,7 +977,7 @@ body.memory-playing.memory-expanded-canvas.weightplay-active-viewport .memory-ga
 
 body.memory-stage.memory-expanded-canvas .stage-ad-reserve {
   left: var(--memory-frame-left, 4px);
-  top: calc(var(--memory-frame-top, 4px) + var(--memory-frame-height, calc(100svh - 64px)));
+  top: calc(var(--memory-frame-top, 4px) + var(--memory-frame-height, calc(100svh - var(--wp-ad-reserve-height, 56px) - 8px)));
   width: var(--memory-frame-width, calc(100vw - 8px));
 }
 

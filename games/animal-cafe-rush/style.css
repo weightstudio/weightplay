@@ -84,7 +84,7 @@ body.is-cafe-playing #playPanel.play-panel {
   top: 4px;
   width: min(calc(var(--cafe-vw, 100vw) - 8px), 612px);
   max-width: none;
-  height: min(calc(var(--cafe-vh, 100dvh) - 64px), 788px);
+  height: min(calc(var(--cafe-vh, 100dvh) - var(--wp-ad-reserve-height, 56px) - 8px), 788px);
   min-height: 0;
   max-height: none;
   margin: 0;
@@ -122,7 +122,7 @@ body.is-cafe-playing .sound-toggle {
   }
 
   body.is-cafe-playing #playPanel.play-panel {
-    height: calc(var(--cafe-vh, 100dvh) - 64px);
+    height: calc(var(--cafe-vh, 100dvh) - var(--wp-ad-reserve-height, 56px) - 8px);
   }
 }
 
@@ -180,7 +180,7 @@ body.is-cafe-stage .cafe-app {
   inset: 4px;
   z-index: 40;
   display: grid;
-  grid-template-rows: 52px minmax(0, 1fr) 56px;
+  grid-template-rows: 52px minmax(0, 1fr) var(--wp-ad-reserve-height, 56px);
   gap: 8px;
   width: auto;
   height: auto;
@@ -351,7 +351,7 @@ body.is-cafe-stage .cafe-app {
 
 @media (max-height: 560px) {
   #stagePanel.stage-panel {
-    grid-template-rows: 48px minmax(0, 1fr) 56px;
+    grid-template-rows: 48px minmax(0, 1fr) var(--wp-ad-reserve-height, 56px);
     gap: 6px;
     padding-top: 4px;
   }

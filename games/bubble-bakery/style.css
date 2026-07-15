@@ -62,7 +62,7 @@ body.is-bakery-playing .bakery-game {
   max-height: var(--wp-mobile-vh, 100svh);
   overflow: hidden;
   align-content: stretch;
-  grid-template-rows: minmax(0, 1fr) 56px;
+  grid-template-rows: minmax(0, 1fr) var(--wp-ad-reserve-height, 56px);
   padding-bottom: calc(12px + env(safe-area-inset-bottom));
 }
 
@@ -1265,7 +1265,7 @@ body.is-bakery-playing .order-progress span {
 
   body.is-bakery-stage-select .bakery-game {
     display: grid;
-    grid-template-rows: minmax(0, 1fr) 56px;
+    grid-template-rows: minmax(0, 1fr) var(--wp-ad-reserve-height, 56px);
     width: 100vw;
     height: var(--wp-mobile-vh, 100svh);
     min-height: var(--wp-mobile-vh, 100svh);
@@ -1380,7 +1380,7 @@ body.is-bakery-playing .order-progress span {
 
   body.is-bakery-playing .bakery-game {
     display: grid;
-    grid-template-rows: minmax(0, 1fr) 56px;
+    grid-template-rows: minmax(0, 1fr) var(--wp-ad-reserve-height, 56px);
     width: 100vw;
     height: var(--wp-mobile-vh, 100svh);
     min-height: var(--wp-mobile-vh, 100svh);
@@ -1628,7 +1628,7 @@ body.is-bakery-playing.bakery-expanded-canvas .bakery-game {
   width: var(--bakery-frame-width, calc(100vw - 8px));
   min-width: 0;
   max-width: none;
-  height: var(--bakery-frame-height, calc(100svh - 64px));
+  height: var(--bakery-frame-height, calc(100svh - var(--wp-ad-reserve-height, 56px) - 8px));
   min-height: 0;
   max-height: none;
   transform: none;

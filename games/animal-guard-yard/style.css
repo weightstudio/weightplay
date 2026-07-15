@@ -151,7 +151,7 @@ select {
 html.guard-yard-stage, body.guard-yard-stage { width: 100%; height: var(--wp-mobile-vh, 100dvh); overflow: hidden; }
 body.guard-yard-stage .topbar, body.guard-yard-stage .game-page-info, body.guard-yard-stage .wp-tutorial-button { display: none !important; }
 body.guard-yard-stage .yard-game { width: min(100%, 860px); height: var(--wp-mobile-vh, 100dvh); min-height: 0; padding: 6px 8px; overflow: hidden; }
-body.guard-yard-stage .menu-panel { height: 100%; padding: 0; grid-template-rows: minmax(0, 1fr) 64px 56px; gap: 6px; overflow: hidden; }
+body.guard-yard-stage .menu-panel { height: 100%; padding: 0; grid-template-rows: minmax(0, 1fr) 64px var(--wp-ad-reserve-height, 56px); gap: 6px; overflow: hidden; }
 body.guard-yard-stage .menu-shell { min-height: 0; padding: 8px; gap: 8px; overflow-y: auto; overscroll-behavior: contain; }
 body.guard-yard-stage .menu-tabs { position: static; left: auto; bottom: auto; transform: none; width: 100%; height: 64px; min-height: 64px; }
 body.guard-yard-stage .beast-guide { display: none; }
@@ -2155,7 +2155,7 @@ body.guard-yard-stage .stage-grid { padding-inline: calc((100% - 264px) / 2); to
     height: 100%;
     max-height: none;
     aspect-ratio: auto;
-    grid-template-rows: 34px 24px 66px minmax(0, 1fr) 22px 56px;
+    grid-template-rows: 34px 24px 66px minmax(0, 1fr) 22px var(--wp-ad-reserve-height, 56px);
   }
 
   .yard-game {
@@ -2190,7 +2190,7 @@ body.guard-yard-stage .stage-grid { padding-inline: calc((100% - 264px) / 2); to
     max-height: none;
     aspect-ratio: 3 / 4;
     padding: 5px;
-    grid-template-rows: 32px 22px 62px minmax(0, 1fr) 20px 56px;
+    grid-template-rows: 32px 22px 62px minmax(0, 1fr) 20px var(--wp-ad-reserve-height, 56px);
     gap: 4px;
     border-width: 3px;
     border-radius: 16px;
@@ -2461,7 +2461,7 @@ body.guard-yard-playing .fixed-shell-host {
   height: calc(var(--guard-yard-vh, 100dvh) - 8px);
   min-height: 0;
   display: grid;
-  grid-template-rows: minmax(0, 1fr) 56px;
+  grid-template-rows: minmax(0, 1fr) var(--wp-ad-reserve-height, 56px);
   gap: 0;
   place-items: start center;
   overflow: hidden;
@@ -2533,7 +2533,7 @@ body.guard-yard-playing #playPanel > .battle-ad-reserve {
 /* Result actions occupy the active result track; the physical reserve never receives controls. */
 body.guard-yard-playing .result-panel {
   padding: 4px;
-  grid-template-rows: minmax(0, 1fr) 56px;
+  grid-template-rows: minmax(0, 1fr) var(--wp-ad-reserve-height, 56px);
   place-items: center;
   overflow: hidden;
   background: rgba(22, 51, 31, 0.76);

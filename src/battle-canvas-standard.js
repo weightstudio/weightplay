@@ -1,5 +1,5 @@
 (function () {
-  const RESERVE_HEIGHT = 56;
+  const RESERVE_HEIGHT = window.WeightPlayAudience?.reserveHeight ?? 56;
   const GUTTER = 4;
   const games = {
     "animal-abyss-diver": [".battle-canvas", 390, 788],

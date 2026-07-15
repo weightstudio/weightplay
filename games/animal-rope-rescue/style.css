@@ -77,7 +77,7 @@ body.has-game-page-info.is-vine-playing:not(.wp-mobile-game-mode) {
 body.is-vine-playing .vine-app {
   min-height: 100svh;
   height: 100svh;
-  grid-template-rows: minmax(0, 1fr) 56px;
+  grid-template-rows: minmax(0, 1fr) var(--wp-ad-reserve-height, 56px);
   align-content: start;
   gap: 0;
   padding-bottom: calc(10px + env(safe-area-inset-bottom));
@@ -653,7 +653,7 @@ body.is-vine-playing .game-page-info {
 
   body.is-vine-stage-select .stage-panel {
     grid-template-columns: 1fr;
-    grid-template-rows: 48px minmax(0, 1fr) 56px;
+    grid-template-rows: 48px minmax(0, 1fr) var(--wp-ad-reserve-height, 56px);
     height: 100%;
     min-height: 0;
     overflow: hidden;
@@ -866,7 +866,7 @@ body.is-vine-playing.vine-expanded-canvas main.vine-app #gamePanel.game-panel {
   width: var(--vine-battle-width, calc(100vw - 8px)) !important;
   min-width: 0 !important;
   max-width: none !important;
-  height: var(--vine-battle-content-height, calc(100svh - 64px)) !important;
+  height: var(--vine-battle-content-height, calc(100svh - var(--wp-ad-reserve-height, 56px) - 8px)) !important;
   min-height: 0 !important;
   max-height: none !important;
   transform: none !important;

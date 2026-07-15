@@ -542,7 +542,7 @@ body.dash-playing.dash-expanded-canvas.weightplay-active-viewport .dash-game {
   width: var(--dash-frame-width, calc(100vw - 8px)) !important;
   min-width: 0 !important;
   max-width: none !important;
-  height: var(--dash-frame-height, calc(100svh - 64px)) !important;
+  height: var(--dash-frame-height, calc(100svh - var(--wp-ad-reserve-height, 56px) - 8px)) !important;
   min-height: 0 !important;
   max-height: none !important;
   padding: 6px 8px !important;

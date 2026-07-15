@@ -178,7 +178,7 @@ body.fruit-playing #menuPanel {
   padding: clamp(8px, 1.3vw, 14px);
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  grid-template-rows: auto auto minmax(0, 1fr) auto 56px;
+  grid-template-rows: auto auto minmax(0, 1fr) auto var(--wp-ad-reserve-height, 56px);
   grid-template-areas:
     "score"
     "goal"
@@ -962,7 +962,7 @@ body.fruit-playing #menuPanel {
     aspect-ratio: auto;
     padding: 5px 6px 0;
     grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: 42px 42px minmax(0, 1fr) 36px 56px;
+    grid-template-rows: 42px 42px minmax(0, 1fr) 36px var(--wp-ad-reserve-height, 56px);
     gap: 3px;
     border: 0;
     border-radius: 0;
@@ -1305,7 +1305,7 @@ body.fruit-playing .aim-coach {
 body.fruit-playing.fruit-expanded-canvas .fixed-game-shell,
 body.fruit-playing.fruit-expanded-canvas #resultPanel.result-panel {
   width: var(--fruit-battle-width, calc(var(--wp-mobile-vw, 100vw) - 8px));
-  height: var(--fruit-battle-height, calc(var(--wp-mobile-vh, 100dvh) - 64px));
+  height: var(--fruit-battle-height, calc(var(--wp-mobile-vh, 100dvh) - var(--wp-ad-reserve-height, 56px) - 8px));
   min-height: 0;
   transform: none;
 }
