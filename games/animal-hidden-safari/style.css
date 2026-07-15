@@ -204,11 +204,10 @@ select {
 .stage-head { display:grid; grid-template-columns:44px minmax(0,1fr); align-items:center; gap:10px; }
 .stage-head button, .stage-entry-btn { min-height:44px; border:0; border-radius:12px; background:linear-gradient(180deg,#fff9d6,#ffd56d); font-weight:900; }
 .stage-head button { width:44px; font-size:1.4rem; }
-.stage-ad-reserve { height:56px; min-height:56px; pointer-events:none; }
 html.safari-stage, body.safari-stage { height:var(--wp-mobile-vh,100dvh); overflow:hidden; }
 body.safari-stage .topbar, body.safari-stage .game-page-info, body.safari-stage .wp-tutorial-button { display:none !important; }
-body.safari-stage .safari-game { height:var(--wp-mobile-vh,100dvh); padding:8px; overflow:hidden; }
-body.safari-stage .stage-panel { height:100%; grid-template-rows:44px minmax(0,1fr) var(--wp-ad-reserve-height,56px); overflow:hidden; }
+body.safari-stage .safari-game { position:fixed; left:var(--safari-frame-left,4px); top:var(--safari-frame-top,4px); width:390px; height:788px; min-height:0; max-height:788px; padding:8px; overflow:hidden; transform:scale(var(--safari-frame-scale,1)); transform-origin:top left; }
+body.safari-stage .stage-panel { height:100%; grid-template-rows:44px minmax(0,1fr); overflow:hidden; }
 body.safari-stage .stage-grid { align-items:center; padding-inline:calc((100% - min(74vw,280px))/2); }
 
 .stage-card.locked {
@@ -508,12 +507,6 @@ body.safari-stage .stage-grid { align-items:center; padding-inline:calc((100% - 
   box-shadow: 0 10px 22px rgba(54, 91, 69, 0.16);
 }
 
-.ad-reserve {
-  height: 56px;
-  min-height: 56px;
-  pointer-events: none;
-}
-
 .target-panel > div:first-child {
   display: flex;
   justify-content: space-between;
@@ -702,7 +695,7 @@ body.safari-stage .stage-grid { align-items:center; padding-inline:calc((100% - 
   html:has(body.safari-playing), body.safari-playing { overflow: hidden !important; touch-action: none; }
   body.safari-playing .safari-game { width: 100vw; height: var(--wp-mobile-vh, 100svh); min-height: 0; display:block; padding:7px 10px 0; overflow:hidden; }
   body.safari-playing .topbar, body.safari-playing .menu-panel, body.safari-playing .game-page-info { display: none !important; }
-  body.safari-playing .play-panel { height:100%; min-height:0; display:grid; grid-template-rows:40px minmax(0,1fr) auto var(--wp-ad-reserve-height,56px); gap:6px; overflow:hidden; }
+  body.safari-playing .play-panel { height:100%; min-height:0; display:grid; grid-template-rows:40px minmax(0,1fr) 160px; gap:6px; overflow:hidden; }
   body.safari-playing .play-head { grid-template-columns:40px minmax(0,1fr) auto; min-height:0; }
   body.safari-playing .progress-card { grid-column:auto; grid-row:auto; }
   body.safari-playing .scene { min-height:0; height:auto; }
@@ -741,7 +734,7 @@ body.safari-playing .play-panel {
   aspect-ratio:9 / 16;
   min-height:0;
   display:grid;
-  grid-template-rows:40px minmax(0,1fr) auto var(--wp-ad-reserve-height,56px);
+  grid-template-rows:40px minmax(0,1fr) 160px;
   gap:6px;
   overflow:hidden;
 }
@@ -780,16 +773,17 @@ html body.wp-mobile-game-mode.safari-playing #playPanel.play-panel.weightplay-ac
   grid-template-rows: 40px minmax(0, 1fr) 160px !important;
   align-content: start;
   gap: 6px !important;
-  width: var(--safari-frame-width, calc(100vw - 8px)) !important;
-  min-width: 0 !important;
+  width: 390px !important;
+  min-width: 390px !important;
   max-width: none !important;
-  height: var(--safari-frame-height, calc(100dvh - var(--wp-ad-reserve-height,56px) - 8px)) !important;
+  height: 693.333px !important;
   min-height: 0 !important;
   max-height: none !important;
   padding: 0 !important;
   aspect-ratio: auto !important;
   overflow: hidden !important;
-  transform: none !important;
+  transform: scale(var(--safari-frame-scale, 1)) !important;
+  transform-origin: top left !important;
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
 }
@@ -899,29 +893,80 @@ body.safari-playing .target-chip span {
   overflow-wrap: anywhere;
 }
 
-html body.safari-playing > .ad-reserve {
-  position: fixed !important;
-  z-index: 49;
-  left: var(--safari-frame-left, 4px) !important;
-  top: calc(var(--safari-frame-top, 4px) + var(--safari-frame-height, calc(100dvh - var(--wp-ad-reserve-height,56px) - 8px))) !important;
-  right: auto !important;
-  bottom: auto !important;
-  display: block;
-  width: var(--safari-frame-width, calc(100vw - 8px)) !important;
-  height: 56px !important;
-  min-height: 56px !important;
-  margin: 0 !important;
-  pointer-events: none;
-}
-
-body:not(.safari-playing) > .ad-reserve {
-  display: none;
-}
-
 body.safari-playing .weightplay-version-badge,
 body.safari-playing .sound-toggle,
 body.safari-playing .wp-tutorial-button {
   display: none !important;
+}
+
+/* Kids keeps one logical Battle composition in every orientation. */
+@media (max-height: 430px) {
+  html body.safari-playing #playPanel.play-panel,
+  html body.wp-mobile-game-mode.safari-playing #playPanel.play-panel.weightplay-active-viewport {
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: 40px minmax(0, 1fr) 160px !important;
+    grid-template-areas: none !important;
+  }
+
+  body.safari-playing .play-head,
+  body.safari-playing .scene,
+  body.safari-playing .target-panel {
+    grid-area: auto !important;
+  }
+
+  body.safari-playing .scene {
+    width: min(100%, 430px) !important;
+    height: auto !important;
+  }
+
+  body.safari-playing .target-panel {
+    height: 160px !important;
+  }
+
+  body.safari-playing .target-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+
+  body.safari-playing .target-chip {
+    grid-template-columns: 32px minmax(0, 1fr) !important;
+    min-height: 54px !important;
+    height: 54px !important;
+  }
+
+  body.safari-playing .target-chip b {
+    width: 32px !important;
+    height: 32px !important;
+  }
+
+  body.safari-playing .target-chip span {
+    font-size: 11px !important;
+    line-height: 14px !important;
+  }
+}
+
+body.safari-playing.safari-result #playPanel {
+  visibility: hidden;
+}
+
+body.safari-playing .result-panel {
+  position: fixed !important;
+  inset: auto !important;
+  left: var(--safari-frame-left, 4px) !important;
+  top: var(--safari-frame-top, 4px) !important;
+  width: 390px !important;
+  height: 693.333px !important;
+  max-height: none !important;
+  padding: 18px !important;
+  overflow: hidden !important;
+  transform: scale(var(--safari-frame-scale, 1)) !important;
+  transform-origin: top left !important;
+}
+
+body.safari-playing .result-card {
+  width: 100%;
+  max-height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 @media (max-height: 430px) {
@@ -975,4 +1020,23 @@ body.safari-playing .wp-tutorial-button {
     font-size: 10px;
     line-height: 12px;
   }
+}
+
+@media (max-height: 430px) {
+  html body.safari-playing #playPanel.play-panel,
+  html body.wp-mobile-game-mode.safari-playing #playPanel.play-panel.weightplay-active-viewport {
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: 40px minmax(0, 1fr) 160px !important;
+    grid-template-areas: none !important;
+    gap: 6px !important;
+  }
+  body.safari-playing .play-head,
+  body.safari-playing .scene,
+  body.safari-playing .target-panel { grid-area: auto !important; }
+  body.safari-playing .scene { width:min(100%,430px) !important; height:auto !important; }
+  body.safari-playing .target-panel { height:160px !important; min-height:160px !important; padding:6px !important; }
+  body.safari-playing .target-list { grid-template-columns:repeat(3,minmax(0,1fr)) !important; }
+  body.safari-playing .target-chip { grid-template-columns:32px minmax(0,1fr) !important; min-height:54px !important; height:54px !important; padding:4px !important; gap:4px !important; }
+  body.safari-playing .target-chip b { width:32px !important; height:32px !important; }
+  body.safari-playing .target-chip span { font-size:11px !important; line-height:14px !important; }
 }

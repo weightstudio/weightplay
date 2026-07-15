@@ -23,7 +23,8 @@
   <style>
     .canvas-wrap canvas{position:absolute;left:50%;top:50%;width:auto;height:auto;object-fit:initial;transform:translate(-50%,-50%)}
     .reroll-row{margin-top:10px;display:grid;gap:5px}.reroll-row button{min-height:46px;border:1px solid #8edbb3;border-radius:9px;background:#0c281f;color:#fff;display:flex;align-items:center;justify-content:center;gap:7px;font-weight:900}.reroll-row button:disabled{opacity:.48}.reroll-row img{width:24px;height:24px;object-fit:contain}.reroll-row small{min-height:18px;color:#ffd45f}
-    .hero-picker{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(86px,1fr);gap:7px;overflow-x:auto;scrollbar-width:none}.hero-option{min-height:94px;border:1px solid #4f8b70;border-radius:9px;background:#102d24;color:#fff;padding:5px;display:grid;justify-items:center;align-content:center;gap:2px}.hero-option.selected{border:2px solid #ffd45f;background:#194635}.hero-option img{width:52px;height:52px;object-fit:contain}.hero-option b{font-size:11px}.hero-option small{font-size:9px;color:#bfe6d2;white-space:nowrap}
+    .hero-picker{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(86px,1fr);gap:7px;overflow-x:auto;scrollbar-width:none}.hero-option{height:112px;border:1px solid #4f8b70;border-radius:9px;background:#102d24;color:#fff;padding:5px;display:grid;grid-template-rows:48px auto auto;justify-items:center;align-content:center;gap:2px}.hero-option.selected{border:2px solid #ffd45f;background:#194635}.hero-option img{width:48px;height:48px;object-fit:contain}.hero-option b{font-size:11px;line-height:1.1;text-align:center}.hero-option small{display:grid;gap:1px;font-size:8px;line-height:1.15;color:#bfe6d2;text-align:center}
+    body:not([data-game-view="battle"]) .battle-ad{display:none}
     body[data-game-view="stage"] .game-page-info,body[data-game-view="battle"] .game-page-info{display:none!important}
   </style>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Animal Hero Trials","url":"https://weightplay.com/games/animal-hero-trials/","image":"https://weightplay.com/assets/animal-hero-trials-cover.png","description":"Choose one of four WeightPlay heroes, clear three action rooms, collect blessings, and defeat the Shadow Sovereign.","applicationCategory":"Game","operatingSystem":"Web browser","publisher":{"@type":"Organization","name":"WeightStudio"},"inLanguage":["en","zh-Hant"],"isAccessibleForFree":true,"genre":["Action","Roguelite","Animal"],"audience":{"@type":"Audience","audienceType":"Teens and families","suggestedMinAge":13}}</script>
@@ -78,7 +79,7 @@
     <!-- adsense-static-guide:end -->
   <script src="../../src/site-config.js"></script><script src="../../src/analytics.js"></script><script>window.WonderAnalytics?.track("game_view",{game_id:"animal-hero-trials"});</script>
   <script src="../../src/edge-guard.js"></script><script src="../../src/i18n.js"></script><script src="../../src/tutorial.js"></script>
-  <script src="../../src/wallet.js"></script><script src="fit.js"></script><script src="game.js"></script><script src="locale-runtime.js"></script><script src="../../src/game-page-info.js"></script>
+  <script src="../../src/wallet.js"></script><script src="fit.js"></script><script src="game.js?v=20260715-hero-decision1"></script><script src="locale-runtime.js"></script><script src="../../src/game-page-info.js"></script>
   <script>window.addEventListener("load",()=>document.querySelector("#loadingPanel")?.classList.add("hidden"),{once:true});</script>
 </body>
 </html>

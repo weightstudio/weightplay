@@ -15,7 +15,6 @@ const mainTitle = document.querySelector("#mainTitle");
 const mainIntro = document.querySelector("#mainIntro");
 const showStageBtn = document.querySelector("#showStageBtn");
 const stageBackBtn = document.querySelector("#stageBackBtn");
-const stageAdReserve = document.querySelector("#stageAdReserve");
 const battleBackBtn = document.querySelector("#battleBackBtn");
 const stageSelectTitle = document.querySelector("#stageSelectTitle");
 const stageGrid = document.querySelector("#stageGrid");
@@ -324,11 +323,11 @@ function startLevel(index) {
   state = makeState(level);
   stageSelect.classList.add("hidden");
   mainPanel.classList.add("hidden");
-  stageAdReserve.classList.add("hidden");
   resultPanel.classList.add("hidden");
   playArea.classList.remove("hidden");
   hud.classList.remove("hidden");
   document.body.classList.remove("rescue-stage-select");
+  document.body.classList.remove("rescue-result");
   document.body.classList.add("rescue-playing");
   hud.prepend(battleBackBtn);
   renderAvatar(level.animal);
@@ -349,10 +348,13 @@ function showStageSelect() {
   hud.classList.add("hidden");
   resultPanel.classList.add("hidden");
   stageSelect.classList.remove("hidden");
-  stageAdReserve.classList.remove("hidden");
-  document.body.classList.remove("rescue-playing", "rescue-expanded-canvas");
+  document.body.classList.remove("rescue-playing");
+  document.body.classList.remove("rescue-result");
   document.body.classList.add("rescue-stage-select");
   renderStageSelect();
+  exitSharedPlayViewport();
+  updateBattleScale();
+  requestAnimationFrame(updateBattleScale);
 }
 
 function showMain() {
@@ -360,9 +362,9 @@ function showMain() {
   hud.classList.add("hidden");
   resultPanel.classList.add("hidden");
   stageSelect.classList.add("hidden");
-  stageAdReserve.classList.add("hidden");
   mainPanel.classList.remove("hidden");
-  document.body.classList.remove("rescue-playing", "rescue-stage-select", "rescue-expanded-canvas");
+  document.body.classList.remove("rescue-playing", "rescue-stage-select", "rescue-result");
+  resetRescueFrame();
   renderStaticText();
 }
 
@@ -540,6 +542,7 @@ function finishLevel() {
   starLine.textContent = "\u2605".repeat(stars) + "\u2606".repeat(3 - stars);
   nextBtn.classList.toggle("hidden", level.id >= levels.length);
   resultPanel.classList.remove("hidden");
+  document.body.classList.add("rescue-result");
   window.WonderSound?.play("win");
   window.WonderAnalytics?.track("game_complete", {
     game_id: GAME_ID,
@@ -579,32 +582,59 @@ function updateBattleScale() {
   const viewport = window.visualViewport;
   const viewportWidth = viewport?.width || window.innerWidth;
   const viewportHeight = viewport?.height || window.innerHeight;
-  const isPhoneBattle = document.body.classList.contains("rescue-playing")
-    && (window.matchMedia("(pointer: coarse)").matches || viewportWidth <= 600 || viewportHeight <= 430);
-  document.body.classList.toggle("rescue-expanded-canvas", isPhoneBattle);
-  if (isPhoneBattle) {
-    const width = Math.max(1, viewportWidth - 8);
-    const reserveHeight = window.WeightPlayAudience?.reserveHeight ?? 56;
-    const contentHeight = Math.max(1, viewportHeight - reserveHeight - 8);
-    document.documentElement.style.setProperty("--rescue-battle-scale", "1");
-    document.documentElement.style.setProperty("--rescue-battle-width", `${width}px`);
-    document.documentElement.style.setProperty("--rescue-battle-height", `${contentHeight}px`);
-    document.documentElement.style.setProperty("--rescue-battle-content-height", `${contentHeight}px`);
-    document.documentElement.style.setProperty("--rescue-battle-left", "4px");
-    document.documentElement.style.setProperty("--rescue-battle-top", "4px");
-    return;
-  }
-  const reserveHeight = window.WeightPlayAudience?.reserveHeight ?? 56;
-  const scale = Math.max(0.1, Math.min((viewportWidth - 8) / 390, (viewportHeight - reserveHeight - 8) / 788));
+  if (!document.body.classList.contains("rescue-playing") && !document.body.classList.contains("rescue-stage-select")) return;
+  document.body.classList.remove("rescue-expanded-canvas");
+  const scale = Math.max(0.1, Math.min((viewportWidth - 8) / 390, (viewportHeight - 8) / 788));
   const width = 390 * scale;
   const contentHeight = 788 * scale;
-  const totalHeight = contentHeight + reserveHeight;
   document.documentElement.style.setProperty("--rescue-battle-scale", String(scale));
   document.documentElement.style.setProperty("--rescue-battle-width", `${width}px`);
-  document.documentElement.style.setProperty("--rescue-battle-height", `${totalHeight}px`);
+  document.documentElement.style.setProperty("--rescue-battle-height", `${contentHeight}px`);
   document.documentElement.style.setProperty("--rescue-battle-content-height", `${contentHeight}px`);
   document.documentElement.style.setProperty("--rescue-battle-left", `${(viewportWidth - width) / 2}px`);
-  document.documentElement.style.setProperty("--rescue-battle-top", `${(viewportHeight - totalHeight) / 2}px`);
+  document.documentElement.style.setProperty("--rescue-battle-top", `${viewportHeight - contentHeight - 4}px`);
+}
+
+function resetRescueFrame() {
+  for (const name of ["--rescue-battle-scale", "--rescue-battle-width", "--rescue-battle-height", "--rescue-battle-content-height", "--rescue-battle-left", "--rescue-battle-top"]) document.documentElement.style.removeProperty(name);
+}
+
+function exitSharedPlayViewport() {
+  window.WeightPlayGame?.exitMobileGameMode?.();
+  document.body.classList.remove("weightplay-active-viewport", "wp-mobile-game-mode");
+  document.querySelector(".rescue-game")?.classList.remove("weightplay-active-viewport");
+}
+
+function installStageDrag() {
+  let pointerId = null;
+  let startX = 0;
+  let startScroll = 0;
+  let moved = false;
+  stageGrid.addEventListener("pointerdown", (event) => {
+    pointerId = event.pointerId;
+    startX = event.clientX;
+    startScroll = stageGrid.scrollLeft;
+    moved = false;
+  });
+  stageGrid.addEventListener("pointermove", (event) => {
+    if (event.pointerId !== pointerId) return;
+    const delta = event.clientX - startX;
+    if (Math.abs(delta) > 6) {
+      moved = true;
+      stageGrid.setPointerCapture?.(pointerId);
+      stageGrid.scrollLeft = startScroll - delta;
+    }
+  });
+  const finish = (event) => {
+    if (event.pointerId !== pointerId) return;
+    pointerId = null;
+    if (moved) {
+      stageGrid.dataset.dragged = "true";
+      window.setTimeout(() => delete stageGrid.dataset.dragged, 150);
+    }
+  };
+  stageGrid.addEventListener("pointerup", finish);
+  stageGrid.addEventListener("pointercancel", finish);
 }
 
 updateBattleScale();
@@ -616,6 +646,7 @@ showStageBtn.addEventListener("click", showStageSelect);
 stageBackBtn.addEventListener("click", showMain);
 battleBackBtn.addEventListener("click", showStageSelect);
 stageGrid.addEventListener("click", (event) => {
+  if (stageGrid.dataset.dragged === "true") return;
   const card = event.target.closest("[data-stage]");
   if (!card) return;
   startLevel(Number(card.dataset.stage) - 1);
@@ -641,5 +672,6 @@ retryBtn.addEventListener("click", () => {
 trailsBtn.addEventListener("click", showStageSelect);
 
 renderStaticText();
+installStageDrag();
 showMain();
 preload();

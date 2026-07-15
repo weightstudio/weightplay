@@ -317,7 +317,8 @@
       if (drag.moved) {
         event.preventDefault();
         nodes.stageGrid.dataset.draggingClick = "1";
-        nodes.stageGrid.scrollLeft = drag.scrollLeft - delta;
+        const scale = Number.parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--safari-frame-scale")) || 1;
+        nodes.stageGrid.scrollLeft = drag.scrollLeft - delta / scale;
       }
     });
     const end = (event) => {
@@ -328,7 +329,7 @@
       if (!moved) return;
       const frame = nodes.stageGrid.getBoundingClientRect();
       const center = frame.left + frame.width / 2;
-      const nearest = [...nodes.stageGrid.querySelectorAll(".stage-card:not(.locked)")].reduce((best, card) => {
+      const nearest = [...nodes.stageGrid.querySelectorAll(".stage-card")].reduce((best, card) => {
         const rect = card.getBoundingClientRect();
         const distance = Math.abs(rect.left + rect.width / 2 - center);
         return !best || distance < best.distance ? { card, distance } : best;
@@ -350,10 +351,11 @@
     nodes.playPanel.classList.add("hidden");
     nodes.menuPanel.classList.remove("hidden");
     nodes.mainPanel.classList.add("hidden");
-    document.body.classList.remove("safari-playing", "safari-expanded-canvas");
+    document.body.classList.remove("safari-playing", "safari-result");
     document.documentElement.classList.add("safari-stage");
     document.body.classList.add("safari-stage");
     renderStageGrid();
+    updateSafariFrame();
   }
 
   function showMain() {
@@ -364,7 +366,7 @@
     nodes.playPanel.classList.add("hidden");
     nodes.resultPanel.classList.add("hidden");
     document.documentElement.classList.remove("safari-stage");
-    document.body.classList.remove("safari-stage", "safari-playing", "safari-expanded-canvas");
+    document.body.classList.remove("safari-stage", "safari-playing", "safari-result");
   }
 
   function startStage(index) {
@@ -375,6 +377,7 @@
     startTime = Date.now();
     acceptingInput = true;
     nodes.resultPanel.classList.add("hidden");
+    document.body.classList.remove("safari-result");
     nodes.menuPanel.classList.add("hidden");
     nodes.playPanel.classList.remove("hidden");
     document.body.classList.add("safari-playing");
@@ -394,31 +397,22 @@
   }
 
   function updateSafariFrame() {
-    if (!document.body.classList.contains("safari-playing")) return;
+    const isStage = document.body.classList.contains("safari-stage");
+    if (!isStage && !document.body.classList.contains("safari-playing")) return;
     const viewport = window.visualViewport;
     const viewportWidth = viewport?.width || window.innerWidth;
     const viewportHeight = viewport?.height || window.innerHeight;
-    const expanded = window.matchMedia("(pointer: coarse)").matches || viewportWidth <= 600 || viewportHeight <= 430;
-    document.body.classList.toggle("safari-expanded-canvas", expanded);
     const root = document.documentElement.style;
-    if (expanded) {
-      root.setProperty("--safari-frame-left", "4px");
-      root.setProperty("--safari-frame-top", "4px");
-      root.setProperty("--safari-frame-width", `${Math.max(1, viewportWidth - 8)}px`);
-      const reserveHeight = window.WeightPlayAudience?.reserveHeight ?? 56;
-      root.setProperty("--safari-frame-height", `${Math.max(1, viewportHeight - reserveHeight - 8)}px`);
-      return;
-    }
     const logicalWidth = 390;
-    const logicalHeight = logicalWidth * 16 / 9;
-    const reserveHeight = window.WeightPlayAudience?.reserveHeight ?? 56;
-    const scale = Math.min((viewportWidth - 8) / logicalWidth, (viewportHeight - reserveHeight - 8) / logicalHeight);
+    const logicalHeight = isStage ? 788 : logicalWidth * 16 / 9;
+    const scale = Math.min((viewportWidth - 8) / logicalWidth, (viewportHeight - 8) / logicalHeight);
     const frameWidth = logicalWidth * scale;
     const frameHeight = logicalHeight * scale;
     root.setProperty("--safari-frame-left", `${(viewportWidth - frameWidth) / 2}px`);
-  root.setProperty("--safari-frame-top", `${(viewportHeight - reserveHeight - frameHeight) / 2}px`);
+    root.setProperty("--safari-frame-top", `${viewportHeight - frameHeight - 4}px`);
     root.setProperty("--safari-frame-width", `${frameWidth}px`);
     root.setProperty("--safari-frame-height", `${frameHeight}px`);
+    root.setProperty("--safari-frame-scale", String(scale));
   }
 
   window.addEventListener("resize", updateSafariFrame);
@@ -559,6 +553,7 @@
     });
     nodes.nextStageBtn.classList.toggle("hidden", currentStage >= stages.length - 1);
     nodes.resultPanel.classList.remove("hidden");
+    document.body.classList.add("safari-result");
     track("game_complete", { level: stageNo, score: starCount * 100 - mistakes * 5, time_seconds: seconds });
     playSound("success");
   }

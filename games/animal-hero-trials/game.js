@@ -141,10 +141,10 @@
     const picker = $("#heroPicker");
     if (!picker) return;
     const labels = {
-      leo: ["Boom Mane Leo", locale === "zh-Hant" ? "怒吼爆發" : "Roar burst"],
-      fia: ["Spark Paw Fia", locale === "zh-Hant" ? "無敵衝刺" : "Invulnerable dash"],
-      orla: ["Moon Cap Orla", locale === "zh-Hant" ? "遠距印記" : "Ranged mark"],
-      taro: ["Moss Shell Taro", locale === "zh-Hant" ? "減傷守護" : "Damage guard"],
+      leo: ["Boom Mane Leo", locale === "zh-Hant" ? "均衡 · 100 生命" : "Balanced · 100 HP", locale === "zh-Hant" ? "近距離暈眩" : "Close-range stun"],
+      fia: ["Spark Paw Fia", locale === "zh-Hant" ? "高速 · 86 生命" : "Fast · 86 HP", locale === "zh-Hant" ? "無敵衝刺" : "Invulnerable dash"],
+      orla: ["Moon Cap Orla", locale === "zh-Hant" ? "遠程 · 82 生命" : "Ranged · 82 HP", locale === "zh-Hant" ? "標記增傷" : "Mark bonus damage"],
+      taro: ["Moss Shell Taro", locale === "zh-Hant" ? "耐久 · 126 生命" : "Tank · 126 HP", locale === "zh-Hant" ? "守護減傷" : "Damage guard"],
     };
     picker.innerHTML = "";
     Object.entries(heroes).forEach(([id, hero]) => {
@@ -152,8 +152,9 @@
       button.type = "button";
       button.dataset.hero = id;
       button.setAttribute("aria-label", labels[id].join(" - "));
+      button.setAttribute("aria-pressed", id === selectedHero ? "true" : "false");
       button.className = `hero-option${id === selectedHero ? " selected" : ""}`;
-      button.innerHTML = `<img src="${ASSET_ROOT + hero.asset}" alt=""><b>${labels[id][0]}</b><small>${labels[id][1]}</small>`;
+      button.innerHTML = `<img src="${ASSET_ROOT + hero.asset}" alt=""><b>${labels[id][0]}</b><small><span>${labels[id][1]}</span><span>${labels[id][2]}</span></small>`;
       button.onclick = () => {
         selectedHero = id;
         localStorage.setItem("aht-selected-hero", id);

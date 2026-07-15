@@ -17,6 +17,31 @@
   color: #d3e0e5;
 }
 
+.ui-icon {
+  display: inline-block;
+  flex: 0 0 auto;
+  width: 28px;
+  height: 28px;
+  background-image: url("../../assets/animal-abyss-diver-ui-icons.png");
+  background-repeat: no-repeat;
+  background-size: 300% 300%;
+  vertical-align: middle;
+}
+
+.icon-salvage { background-position: 0 0; }
+.icon-danger { background-position: 50% 0; }
+.icon-oxygen { background-position: 100% 0; }
+.icon-power { background-position: 0 50%; }
+.icon-sonar { background-position: 50% 50%; }
+.icon-shield { background-position: 100% 50%; }
+.icon-surface { background-position: 0 100%; }
+.icon-beacon { background-position: 50% 100%; }
+.icon-pulse { background-position: 100% 100%; }
+
+.pips { display: inline-flex; gap: 2px; }
+.pips i { width: 7px; height: 7px; border: 1px solid #a7d9df; border-radius: 50%; background: #123e50; }
+.pips i.is-on { background: #f4ca59; border-color: #fff0aa; }
+
 .battle-canvas {
   position: relative;
   grid-template-rows: 58px 50px minmax(0, 1fr) 112px;
@@ -58,6 +83,19 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+#objectiveText,
+#salvageText,
+#salvageText span {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+#salvageText { gap: 8px; }
+#objectiveText .ui-icon,#salvageText .ui-icon { width: 24px; height: 24px; }
+#objectiveText strong { font-size: 0.72rem; }
+#salvageText em { font-size: 0.58rem; font-style: normal; }
 
 .dive-field > p {
   max-width: 92%;
@@ -127,11 +165,16 @@
   white-space: nowrap;
 }
 
-.lane-gate strong { font-size: 0.72rem; }
-.lane-gate small { font-size: 0.66rem; font-weight: 800; }
-.lane-gate small { min-height: 2.4em; white-space: normal; text-align: center; line-height: 1.2; }
-.lane-gate small span { display: block; }
-.lane-gate small span + span { margin-top: 2px; color: #ffe69b; }
+.lane-gate strong { display: inline-flex; align-items: center; gap: 3px; font-size: 1.2rem; line-height: 1; }
+.lane-gate strong em { font-size: 0.62rem; font-style: normal; }
+.lane-gate small { min-height: 2.4em; display: grid; grid-template-columns: 1fr 1fr; gap: 2px; align-items: center; font-size: 0.66rem; font-weight: 800; white-space: normal; text-align: center; line-height: 1.2; }
+.lane-gate .metric { display: grid; grid-template-columns: 22px minmax(0,auto); align-items: center; justify-content: center; gap: 1px; }
+.lane-gate .metric em { font-size: 0.56rem; font-style: normal; }
+.lane-gate .metric .pips { grid-column: 1 / -1; justify-content: center; }
+.lane-gate .metric-oxygen,.lane-gate .exact-result { grid-column: 1 / -1; }
+.lane-gate .metric-oxygen { display: inline-flex; }
+.lane-gate .ui-icon { width: 22px; height: 22px; }
+.lane-gate .exact-result { display: inline-flex; align-items: center; justify-content: center; gap: 2px; }
 .lane-gate.is-safe { border-color: #7df0b9; box-shadow: 0 0 22px #55efaa88; }
 .lane-gate.is-risk { border-color: #ff8a82; box-shadow: 0 0 22px #ff665f77; }
 .lane-gate.is-revealed img { filter: none; }
@@ -165,6 +208,19 @@
   font-weight: 900;
   animation: impact-pop 0.52s ease both;
 }
+
+#feedback {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-width: 76px;
+  min-height: 42px;
+  font-size: 1.05rem;
+}
+
+#feedback .ui-icon { width: 30px; height: 30px; }
+.feedback-arrow { font-size: 2rem; }
 
 .fx-art:not(.hidden) { animation: sonar-pulse 0.7s ease-out infinite alternate; }
 
@@ -204,14 +260,22 @@
 .fish-sprite.attack-left img { transform: scaleX(-1) translateX(-3px) rotate(-5deg); }
 .fish-sprite.attack-right img { transform: translateX(3px) rotate(5deg); }
 .fish-sprite.attack-glow { filter: drop-shadow(0 0 12px #5ff5ff); animation: fish-glow 0.35s ease infinite alternate; }
-.fish-encounter > strong { font-size: 0.82rem; color: #ffe79a; }
-.fish-encounter > p { position: static; transform: none; max-width: none; padding: 0; background: none; text-align: left; font-size: 0.72rem; }
+.fish-encounter > strong { display: grid; place-items: center; color: #ffe79a; font-size: 0.66rem; }
+.fish-encounter > p { position: static; display: grid; place-items: center; transform: none; max-width: none; min-height: 38px; padding: 0; background: none; text-align: center; }
+.fish-encounter > strong .ui-icon,.fish-encounter > p .ui-icon { width: 40px; height: 40px; }
+.attack-arrow { font-size: 2.2rem; line-height: 1; }
+.fish-encounter > p strong { font-size: 0.68rem; }
 .fish-guard,.fish-timer { display: grid; gap: 3px; font-size: 0.66rem; font-weight: 900; }
+.fish-guard span { display: inline-flex; align-items: center; justify-content: center; gap: 3px; }
+.fish-guard .ui-icon { width: 22px; height: 22px; }
 .fish-guard i,.fish-timer i { height: 6px; overflow: hidden; border-radius: 999px; background: #173d50; }
 .fish-guard b,.fish-timer b { display: block; width: 0; height: 100%; background: #70e2b4; transition: width 0.25s ease; }
 .fish-timer b { width: 100%; background: #ffd166; transform-origin: left; }
 .fish-actions { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-.fish-actions button { min-height: 42px; border: 0; border-radius: 10px; background: #f2ca5b; color: #15243a; font-weight: 900; }
+.fish-actions button { min-height: 42px; display: inline-flex; align-items: center; justify-content: center; gap: 2px; border: 0; border-radius: 10px; background: #f2ca5b; color: #15243a; font-weight: 900; }
+.fish-actions button .ui-icon { width: 32px; height: 32px; }
+.fish-actions button span { font-size: 0.65rem; }
+.fish-actions button > b { font-size: 1.15rem; }
 .fish-encounter.is-dodged { animation: fish-dodged 0.5s ease; }
 .fish-encounter.is-hit { animation: fish-hit 0.18s ease 2 alternate; }
 
@@ -242,6 +306,7 @@
   display: grid;
   grid-template-rows: 52px 42px;
   align-items: stretch;
+  justify-content: stretch;
   gap: 6px;
   padding: 6px 10px;
   background: #0d2b3d;
@@ -272,12 +337,26 @@
   font-weight: 900;
 }
 
+.utility-controls button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  padding: 2px;
+}
+
+.utility-controls button .ui-icon { width: 24px; height: 24px; }
+.utility-controls button span { font-size: 0.58rem; }
+.utility-controls button b { font-size: 0.7rem; }
+
 .lane-controls button {
   display: grid;
   align-content: center;
   gap: 3px;
   font-size: 0.86rem;
 }
+
+.direction-arrow { font-size: 1.65rem; line-height: 1; }
 
 .lane-controls button strong,
 .lane-controls button small {
@@ -322,13 +401,29 @@
   display: grid;
   gap: 10px;
   margin: 0;
-  padding-left: 24px;
+  padding-left: 0;
+  list-style: none;
 }
 
 .coach-card li {
-  padding-left: 4px;
-  line-height: 1.4;
+  min-height: 54px;
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 6px;
+  border-radius: 10px;
+  background: #061f30aa;
 }
+
+.coach-card li > div { display: flex; align-items: center; justify-content: center; gap: 7px; }
+.coach-card li > small { text-align: center; font-weight: 800; }
+.coach-card li .metric,.coach-card li span { display: inline-flex; align-items: center; gap: 2px; }
+.coach-card li .metric em { font-size: 0.62rem; font-style: normal; }
+.coach-card li .ui-icon { width: 34px; height: 34px; }
+.coach-card li .pips i { width: 8px; height: 8px; }
+.coach-nori { width: 56px; height: 48px; object-fit: contain; }
+.coach-arrow { font-size: 1.65rem; }
 
 @media (max-height: 500px) {
   .battle-canvas {

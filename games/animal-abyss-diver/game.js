@@ -40,7 +40,7 @@
   });
   zh.start = u("\\u958b\\u59cb\\u904a\\u6232");
   Object.assign(en, {
-    guideCopy:"Each zone has a left and right target. Compare their signals, use Sonar when unsure, then tap a side to steer Nori into it. Reach the salvage target and surface safely.",
+    guideCopy:"Compare each lane's loot, danger, oxygen estimate, and environmental clues. Sonar, Shield, and fish counters share 4 power, so plan what to spend before surfacing.",
     stageHint:"Drag routes to compare zones, salvage target, and oxygen risk.",
     zoneProgress:"Zone {n}/{total}",
     target:"Target {n}/{target}",
@@ -76,7 +76,7 @@
     pulseNeed:"No power left for a counter pulse!",
     fishDodged:"Perfect dodge! Its guard drops.",
     fishPulsed:"Pulse countered the shockwave! Its guard drops.",
-    fishHit:"Caught by the charge: oxygen -12.",
+    fishHit:"Counter failed: oxygen -12.",
     fishTimeout:"Too slow: oxygen -12.",
     fishCleared:"The fish retreats. Bonus salvage +1 and power +1!",
     intel:"Loot {loot}/3 · Danger {danger}/3 · O2 {cost}",
@@ -87,6 +87,30 @@
     shieldArmed:"Shield armed",
     shieldNeed:"Need 1 power to arm the shield.",
     shieldBlock:"Shield absorbed half the impact.",
+    shortLoot:"LOOT",
+    shortDanger:"RISK",
+    shortOxygen:"O2",
+    shortPower:"POWER",
+    shortTarget:"TARGET",
+    shortScan:"SCAN",
+    shortShield:"SHIELD",
+    shortSurface:"SURFACE",
+    shortBeacon:"BEACON",
+    shortChoose:"CHOOSE A LANE",
+    shortConfirmed:"RESULTS REVEALED",
+    shortLow:"LOW O2",
+    shortReadAttack:"READ & COUNTER",
+    shortLeft:"LEFT",
+    shortRight:"RIGHT",
+    shortLeftCharge:"LEFT CHARGE",
+    shortRightCharge:"RIGHT CHARGE",
+    shortShockwave:"SHOCKWAVE",
+    shortDodgeLeft:"DODGE LEFT",
+    shortCounter:"COUNTER",
+    shortDodgeRight:"DODGE RIGHT",
+    coachVisual1:"Compare loot, risk, and oxygen.",
+    coachVisual2:"All tools share 4 power.",
+    coachVisual3:"Choose a lane. Surface before O2 runs out.",
     outcomeRelic:"Relic +1 / O2 -10",
     outcomeCache:"Treasure +2 / O2 -16",
     outcomeOxygen:"Air pocket / O2 +18",
@@ -101,7 +125,7 @@
     objectiveScan:"Choose a target to swim into. Compare both signals; use SONAR when unsure.",
     objectiveChoose:"Sonar complete: choose the result you want.",
     objectiveContinue:"Reach the salvage target, or SURFACE to bank a partial haul.",
-    coachTitle:"You steer Nori to each target",
+    coachTitle:"Dive plan",
     coachStep1:"Each zone places one target on the left and one on the right. Nori waits for your choice.",
     coachStep2:"Power is shared: exact Sonar costs 2⚡, a one-hit Shield costs 1⚡, and fish Pulse counters cost 1⚡.",
     coachStep3:"Compare loot, danger, and oxygen estimates. Save enough power for timed fish attacks, reach the target, or SURFACE early.",
@@ -115,7 +139,7 @@
     retry:"Retry route"
   });
   Object.assign(zh, {
-    guideCopy:"每個海域都有左右兩個目標。比較訊號，不確定時使用聲納，再點選一側，親自控制諾里游過去；達成打撈目標後安全上浮。",
+    guideCopy:"比較兩側的收益、危險、氧耗估計與環境線索。聲納、衝擊盾和魚戰反制共用 4 點電力，必須規劃消耗再決定何時上浮。",
     stageHint:u("\\u5de6\\u53f3\\u62d6\\u66f3\\u8def\\u7dda\\uff0c\\u6bd4\\u8f03\\u6d77\\u57df\\u6578\\u3001\\u6253\\u6488\\u76ee\\u6a19\\u8207\\u6c27\\u6c23\\u98a8\\u96aa\\u3002"),
     zoneProgress:u("\\u6d77\\u57df {n}/{total}"),
     target:u("\\u76ee\\u6a19 {n}/{target}"),
@@ -151,7 +175,7 @@
     pulseNeed:"沒有足夠電力使用反制脈衝！",
     fishDodged:"漂亮閃過！領域魚的警戒下降。",
     fishPulsed:"脈衝抵銷震波！領域魚的警戒下降。",
-    fishHit:"被衝撞命中：氧氣 -12。",
+    fishHit:"反制失敗：氧氣 -12。",
     fishTimeout:"反應太慢：氧氣 -12。",
     fishCleared:"領域魚退開了，額外打撈 +1、電力 +1！",
     intel:"收益 {loot}/3 · 危險 {danger}/3 · 氧耗 {cost}",
@@ -162,6 +186,30 @@
     shieldArmed:"衝擊盾已啟動",
     shieldNeed:"啟動衝擊盾需要 1 點電力。",
     shieldBlock:"衝擊盾吸收了一半傷害。",
+    shortLoot:"收益",
+    shortDanger:"危險",
+    shortOxygen:"氧耗",
+    shortPower:"電力",
+    shortTarget:"目標",
+    shortScan:"掃描",
+    shortShield:"護盾",
+    shortSurface:"上浮",
+    shortBeacon:"信標",
+    shortChoose:"選擇航線",
+    shortConfirmed:"結果已確認",
+    shortLow:"氧氣不足",
+    shortReadAttack:"看招式反制",
+    shortLeft:"左側",
+    shortRight:"右側",
+    shortLeftCharge:"左衝",
+    shortRightCharge:"右衝",
+    shortShockwave:"震波",
+    shortDodgeLeft:"左閃",
+    shortCounter:"反制",
+    shortDodgeRight:"右閃",
+    coachVisual1:"比較收益、危險與氧耗",
+    coachVisual2:"所有工具共用 4 點電力",
+    coachVisual3:"選擇航線，氧氣用完前上浮",
     outcomeRelic:u("\\u907a\\u7269 +1 / \\u6c27\\u6c23 -10"),
     outcomeCache:u("\\u5bf6\\u85cf +2 / \\u6c27\\u6c23 -16"),
     outcomeOxygen:u("\\u6c27\\u6c23\\u6ce1 / \\u6c27\\u6c23 +18"),
@@ -176,7 +224,7 @@
     objectiveScan:"選擇要游向的目標；先比較兩側訊號，不確定時再使用聲納。",
     objectiveChoose:u("\\u8072\\u7d0d\\u5b8c\\u6210\\uff1a\\u9078\\u64c7\\u4f60\\u8981\\u7684\\u7d50\\u679c\\u3002"),
     objectiveContinue:u("\\u9054\\u6210\\u6253\\u6488\\u76ee\\u6a19\\uff0c\\u6216\\u63d0\\u524d\\u4e0a\\u6d6e\\u4fdd\\u4f4f\\u90e8\\u5206\\u6210\\u679c\\u3002"),
-    coachTitle:"由你控制諾里游向目標",
+    coachTitle:"潛航計畫",
     coachStep1:"每個海域各有一個左側與右側目標；諾里會停在中央等你選擇。",
     coachStep2:"裝備共用電力：精準聲納消耗 2⚡、一次衝擊盾消耗 1⚡，魚戰的脈衝反制也消耗 1⚡。",
     coachStep3:"比較收益、危險與氧耗估計，還要替限時魚戰保留電力；達成目標，或提早上浮保住成果。",
@@ -203,6 +251,15 @@
     hazard:{oxygen:-28,salvage:0,safe:false,intel:{loot:2,danger:3,cost:"22–32"},signal:"signalStrong",clues:["clueRope","clueSilent"],label:"outcomeHazard",feedback:"hitHazard"}
   };
   const t = (key, values={}) => Object.entries(values).reduce((value,[name,replacement]) => value.replace(`{${name}}`,replacement),(locale === "zh-Hant" ? zh : en)[key]);
+  const icon = name => `<i class="ui-icon icon-${name}" aria-hidden="true"></i>`;
+  const pips = value => `<span class="pips" aria-hidden="true">${[1,2,3].map(n=>`<i class="${n<=value?"is-on":""}"></i>`).join("")}</span>`;
+  const estimateMarkup = outcome => `<span class="metric">${icon("salvage")}<em>${t("shortLoot")}</em>${pips(outcome.intel.loot)}</span><span class="metric">${icon("danger")}<em>${t("shortDanger")}</em>${pips(outcome.intel.danger)}</span><span class="metric metric-oxygen">${icon("oxygen")}<em>${t("shortOxygen")}</em><b>${outcome.intel.cost}</b></span>`;
+  function setFeedback(markup,label){$("feedback").innerHTML=markup;$("feedback").setAttribute("aria-label",label);}
+  function renderCoach(){
+    $("coachStep1").innerHTML=`<div>${estimateMarkup(outcomes.relic)}</div><small>${t("coachVisual1")}</small>`;$("coachStep1").setAttribute("aria-label",t("coachStep1"));
+    $("coachStep2").innerHTML=`<div><span>${icon("sonar")}<b>2</b></span><span>${icon("shield")}<b>1</b></span><span>${icon("pulse")}<b>1</b></span><em>=</em><span>${icon("power")}<b>4</b></span></div><small>${t("coachVisual2")}</small>`;$("coachStep2").setAttribute("aria-label",t("coachStep2"));
+    $("coachStep3").innerHTML=`<div><b class="coach-arrow">←</b><img class="coach-nori" src="../../assets/animal-abyss-diver-nori.png" alt=""><b class="coach-arrow">→</b><em>→</em>${icon("surface")}</div><small>${t("coachVisual3")}</small>`;$("coachStep3").setAttribute("aria-label",t("coachStep3"));
+  }
   const wallet = () => window.WeightPlayWallet?.read?.().diamonds ?? 0, persist = () => localStorage.setItem(saveKey,JSON.stringify(save));
   function show(id){const resultActive=id==="result";$("mainScreen").classList.toggle("hidden",id!=="mainScreen");$("stageScreen").classList.toggle("hidden",id!=="stageScreen");$("battleShell").classList.toggle("hidden",id!=="battleShell"&&!resultActive);$("result").classList.toggle("hidden",!resultActive);$("mainHeader").classList.toggle("hidden",id!=="mainScreen");}
   function renderRoutes(){ $("routeRail").innerHTML=""; routes.forEach((route,index)=>{const n=index+1, card=document.createElement("button"),locked=n>save.unlocked;card.className=`route-card${n===state.route?" is-selected":""}`;card.disabled=locked;card.innerHTML=`<strong>${t("route",{n})}</strong><span>${t("relic")}: ${(locale === "zh-Hant" ? zh : en).relicNames[index]}</span><small>${t("zones",{n:route.zones})} · ${t("stageTarget",{n:route.target})} · ${t("risk",{n:route.risk})}</small><em>${t(locked?"locked":"routeAction")}</em>`;card.onclick=()=>start(n);$("routeRail").append(card);});}
@@ -217,30 +274,33 @@
     $("oxygenText").textContent=`${t("oxygenShort")} ${state.oxygen}%`;
     $("oxygenBar").style.width=`${state.oxygen}%`;
     $("oxygenBar").classList.toggle("is-low",state.oxygen<=30);
-    $("objectiveText").textContent=state.fishActive?t("fishObjective"):state.oxygen<=30?t("objectiveLow"):state.sonar?t("objectiveChoose"):state.zone===1?t("objectiveScan"):t("objectiveContinue");
-    $("salvageText").textContent=`${t("target",{n:state.salvage,target:config.target})} · ${t("power",{n:state.battery})}`;
+    const objectiveLabel=state.fishActive?t("fishObjective"):state.oxygen<=30?t("objectiveLow"):state.sonar?t("objectiveChoose"):state.zone===1?t("objectiveScan"):t("objectiveContinue");
+    $("objectiveText").innerHTML=state.fishActive?`${icon("danger")}<strong>${t("shortReadAttack")}</strong>`:state.oxygen<=30?`${icon("oxygen")}<strong>${t("shortLow")}</strong>`:state.sonar?`${icon("sonar")}<strong>${t("shortConfirmed")}</strong>`:`<strong>${t("shortChoose")}</strong>`;$("objectiveText").setAttribute("aria-label",objectiveLabel);
+    $("salvageText").innerHTML=`<span>${icon("salvage")}<em>${t("shortTarget")}</em><b>${state.salvage}/${config.target}</b></span><span>${icon("power")}<em>${t("shortPower")}</em><b>${state.battery}/4</b></span>`;$("salvageText").setAttribute("aria-label",`${t("target",{n:state.salvage,target:config.target})} · ${t("power",{n:state.battery})}`);
     $("depthProgress").style.width=`${((state.zone-1)/Math.max(1,config.zones-1))*100}%`;
     $("fxArt").classList.toggle("hidden",!state.sonar);
     $("diamondText").querySelector("b").textContent=wallet();
-    $("beaconBtn").textContent=state.beaconUsed?t("beaconUsed"):t("beacon");
+    $("beaconBtn").innerHTML=`${icon("beacon")}<span>${t("shortBeacon")}</span><b>${state.beaconUsed?"✓":"3"}</b>`;$("beaconBtn").ariaLabel=state.beaconUsed?t("beaconUsed"):t("beacon");
     $("beaconBtn").disabled=state.beaconUsed;
-    $("sonarBtn").textContent=t("sonarPowered");
-    $("shieldBtn").textContent=state.shieldArmed?t("shieldArmed"):t("shield");
+    $("sonarBtn").innerHTML=`${icon("sonar")}<span>${t("shortScan")}</span><b>2</b>`;$("sonarBtn").ariaLabel=t("sonarPowered");
+    $("shieldBtn").innerHTML=`${icon("shield")}<span>${t("shortShield")}</span><b>${state.shieldArmed?"✓":"1"}</b>`;$("shieldBtn").ariaLabel=state.shieldArmed?t("shieldArmed"):t("shield");
+    $("surfaceBtn").innerHTML=`${icon("surface")}<span>${t("shortSurface")}</span>`;$("surfaceBtn").ariaLabel=t("surface");
     for(const direction of ["left","right"]){
       const button=$(`${direction}Btn`),outcome=encounter(direction),blocked=state.busy||state.fishActive;
       const estimate=t("intel",outcome.intel),detail=state.sonar?t(outcome.label):`${t(outcome.signal)} · ${estimate}`;
-      button.innerHTML=`<strong>${t(direction)}</strong><small>${detail}</small>`;
+      button.innerHTML=`<strong class="direction-arrow">${direction==="left"?"←":"→"}</strong><small>${t(direction==="left"?"shortLeft":"shortRight")}</small>`;
       button.classList.toggle("is-safe",state.sonar&&outcome.safe);
       button.classList.toggle("is-risk",state.sonar&&!outcome.safe);
       button.setAttribute("aria-label",`${t(direction)} - ${detail}`);
       button.disabled=!!blocked;
       const gate=$(`${direction}Gate`),image=gate.querySelector("img"),revealed=state.sonar||state.resolvingDirection===direction;
-      gate.querySelector("strong").textContent=t(direction==="left"?"laneLeft":"laneRight");
-      gate.querySelector("small").innerHTML=state.sonar?detail:`<span>${t(outcome.clues[0])} · ${t(outcome.clues[1])}</span><span>${estimate}</span>`;
+      gate.querySelector("strong").innerHTML=`${direction==="left"?"←":"→"}<em>${t(direction==="left"?"shortLeft":"shortRight")}</em>`;
+      gate.querySelector("small").innerHTML=state.sonar?`<span class="exact-result">${outcome.salvage?`${icon("salvage")}<b>+${outcome.salvage}</b>`:""}${icon("oxygen")}<b>${outcome.oxygen>0?"+":""}${outcome.oxygen}</b></span>`:estimateMarkup(outcome);
       image.src=revealed?artFor(outcome):"../../assets/animal-abyss-diver-fx.png";
       gate.classList.toggle("is-revealed",revealed);
       gate.classList.toggle("is-safe",revealed&&outcome.safe);
       gate.classList.toggle("is-risk",revealed&&!outcome.safe);
+      gate.setAttribute("aria-label",`${t(direction==="left"?"laneLeft":"laneRight")} · ${t(outcome.clues[0])} · ${t(outcome.clues[1])} · ${detail}`);
     }
     $("sonarBtn").disabled=state.battery<2||!!state.busy||!!state.fishActive;
     $("shieldBtn").disabled=state.battery<1||state.shieldArmed||!!state.busy||!!state.fishActive;
@@ -248,7 +308,7 @@
     $("beaconBtn").disabled=state.beaconUsed||!!state.busy;
   }
   function setCoach(open){$("diveCoach").classList.toggle("hidden",!open);}
-  function start(route){window.clearTimeout(fishClock);state={route,zone:1,oxygen:100,salvage:0,sonar:false,battery:4,shieldArmed:false,beaconUsed:false,busy:false,fishActive:false,fishResolvedZones:[]};show("battleShell");resetDiveField();$("fishEncounter").classList.add("hidden");renderBattle();$("feedback").textContent=t("objectiveScan");setCoach(!save.tutorialDone);}
+  function start(route){window.clearTimeout(fishClock);state={route,zone:1,oxygen:100,salvage:0,sonar:false,battery:4,shieldArmed:false,beaconUsed:false,busy:false,fishActive:false,fishResolvedZones:[]};show("battleShell");resetDiveField();$("fishEncounter").classList.add("hidden");renderBattle();setFeedback(`${icon("sonar")}<b>?</b>`,t("objectiveScan"));setCoach(!save.tutorialDone);}
   function finish(mode){
     window.clearTimeout(fishClock);
     const config=routeConfig(),clear=mode==="clear";
@@ -272,7 +332,7 @@
     if(outcome===outcomes.oxygen)state.battery=Math.min(4,state.battery+1);
     state.salvage+=outcome.salvage;
     state.resolvingDirection=direction;
-    $("feedback").textContent=`${t(outcome.feedback)}${shielded?` ${t("shieldBlock")}`:""}`;
+    setFeedback(`${outcome.salvage?`${icon("salvage")}<b>+${outcome.salvage}</b>`:""}${icon("oxygen")}<b>${oxygenDelta>0?"+":""}${oxygenDelta}</b>${shielded?`${icon("shield")}<b>½</b>`:""}`,`${t(outcome.feedback)}${shielded?` ${t("shieldBlock")}`:""}`);
     const impact=$("impactText");impact.textContent=`${outcome.salvage?`+${outcome.salvage} ${t("salvage",{n:""}).trim()}`:""}${outcome.salvage&&oxygenDelta?" · ":""}${oxygenDelta>0?"+":""}${oxygenDelta} ${t("oxygenShort")}`;impact.classList.remove("hidden");
     $("diveField").classList.add("is-resolving");
     state.sonar=false;
@@ -289,7 +349,7 @@
     if(state.busy)return;
     state.busy=true;
     const field=$("diveField");field.dataset.lane=direction;field.classList.add("is-swimming");
-    $("feedback").textContent=t("swimming",{lane:t(direction)});
+    setFeedback(`<b class="feedback-arrow">${direction==="left"?"←":"→"}</b>`,t("swimming",{lane:t(direction)}));
     renderBattle();
     window.setTimeout(()=>applyMove(direction),520);
   }
@@ -299,14 +359,14 @@
     const attack=state.fishAttack,blocked=!!state.fishBusy;
     $("fishEncounter").dataset.attack=attack;
     for(const kind of ["left","right","glow"])$("fishSprite").classList.toggle(`attack-${kind}`,attack===kind);
-    $("fishTitle").textContent=t("fishTitle");
-    $("fishTell").textContent=t(attack==="glow"?"fishTellGlow":attack==="left"?"fishTellLeft":"fishTellRight");
-    $("fishGuardText").textContent=t("fishGuard",{n:state.fishWins});
+    $("fishTitle").innerHTML=`${icon("danger")}<span>${t("shortReadAttack")}</span>`;$("fishTitle").setAttribute("aria-label",t("fishTitle"));
+    $("fishTell").innerHTML=attack==="glow"?`${icon("pulse")}<strong>${t("shortShockwave")}</strong>`:`<b class="attack-arrow">${attack==="left"?"←":"→"}</b><strong>${t(attack==="left"?"shortLeftCharge":"shortRightCharge")}</strong>`;$("fishTell").setAttribute("aria-label",t(attack==="glow"?"fishTellGlow":attack==="left"?"fishTellLeft":"fishTellRight"));
+    $("fishGuardText").innerHTML=`${icon("shield")}<b>${state.fishWins}/3</b>`;$("fishGuardText").setAttribute("aria-label",t("fishGuard",{n:state.fishWins}));
     $("fishGuardBar").style.width=`${state.fishWins*100/3}%`;
-    $("fishTimerText").textContent=t("fishTimer");
-    $("dodgeLeftBtn").textContent=t("dodgeLeft");
-    $("pulseBtn").textContent=t("pulse");
-    $("dodgeRightBtn").textContent=t("dodgeRight");
+    $("fishTimerText").textContent="";$("fishTimerText").setAttribute("aria-label",t("fishTimer"));
+    $("dodgeLeftBtn").innerHTML=`<b>←</b><span>${t("shortDodgeLeft")}</span>`;$("dodgeLeftBtn").ariaLabel=t("dodgeLeft");
+    $("pulseBtn").innerHTML=`${icon("pulse")}<span>${t("shortCounter")}</span><b>1</b>`;$("pulseBtn").ariaLabel=t("pulse");
+    $("dodgeRightBtn").innerHTML=`<b>→</b><span>${t("shortDodgeRight")}</span>`;$("dodgeRightBtn").ariaLabel=t("dodgeRight");
     $("dodgeLeftBtn").disabled=blocked;$("dodgeRightBtn").disabled=blocked;$("pulseBtn").disabled=blocked||state.battery<1;
   }
   function startFishClock(){
@@ -321,25 +381,25 @@
   function resolveFishAttack(correct,feedbackKey){
     if(!state.fishActive||state.fishBusy)return;
     window.clearTimeout(fishClock);state.fishBusy=true;
-    if(correct){state.fishWins+=1;$("feedback").textContent=t(feedbackKey);$("fishEncounter").classList.add("is-dodged");}
-    else{state.oxygen=Math.max(0,state.oxygen-12);$("feedback").textContent=t(feedbackKey);$("fishEncounter").classList.add("is-hit");}
+    if(correct){state.fishWins+=1;setFeedback(`<b>✓</b>${feedbackKey==="fishPulsed"?icon("pulse"):icon("shield")}`,t(feedbackKey));$("fishEncounter").classList.add("is-dodged");}
+    else{state.oxygen=Math.max(0,state.oxygen-12);setFeedback(`${icon("oxygen")}<b>-12</b>`,t(feedbackKey));$("fishEncounter").classList.add("is-hit");}
     renderBattle();renderFish();
     window.setTimeout(()=>{
       $("fishEncounter").classList.remove("is-dodged","is-hit");
       if(state.oxygen<=0)return finish("fail");
-      if(state.fishWins>=3){state.fishActive=false;state.fishBusy=false;state.fishResolvedZones.push(state.zone);state.salvage+=1;state.battery=Math.min(4,state.battery+1);$("fishEncounter").classList.add("hidden");$("feedback").textContent=t("fishCleared");renderBattle();return;}
+      if(state.fishWins>=3){state.fishActive=false;state.fishBusy=false;state.fishResolvedZones.push(state.zone);state.salvage+=1;state.battery=Math.min(4,state.battery+1);$("fishEncounter").classList.add("hidden");setFeedback(`${icon("salvage")}<b>+1</b>${icon("power")}<b>+1</b>`,t("fishCleared"));renderBattle();return;}
       state.fishStep+=1;state.fishAttack=fishPattern();state.fishBusy=false;renderFish();startFishClock();
     },520);
   }
   function dodgeFish(action){
     if(!state.fishActive||state.fishBusy)return;
-    if(action==="pulse"&&state.battery<1){$("feedback").textContent=t("pulseNeed");return;}
+    if(action==="pulse"&&state.battery<1){setFeedback(`${icon("power")}<b>0</b>`,t("pulseNeed"));return;}
     if(action==="pulse")state.battery-=1;
     const correct=state.fishAttack==="glow"?action==="pulse":action!=="pulse"&&action!==state.fishAttack;
     resolveFishAttack(correct,correct?(action==="pulse"?"fishPulsed":"fishDodged"):"fishHit");
   }
-  function localize(){document.documentElement.lang=locale;document.title=`${t("title")} - Internal Trial`;$("title").textContent=t("title");$("languageLabel").textContent=t("language");$("localeSelect").value=locale;$("headline").textContent=t("headline");$("intro").textContent=t("intro");$("guideTitle").textContent=t("guideTitle");$("guideCopy").textContent=t("guideCopy");$("startBtn").textContent=t("start");$("stageTitle").textContent=t("stage");$("stageHint").textContent=t("stageHint");$("leftBtn").textContent=t("left");$("rightBtn").textContent=t("right");$("sonarBtn").textContent=t("sonarPowered");$("shieldBtn").textContent=t("shield");$("surfaceBtn").textContent=t("surface");$("coachTitle").textContent=t("coachTitle");$("coachStep1").textContent=t("coachStep1");$("coachStep2").textContent=t("coachStep2");$("coachStep3").textContent=t("coachStep3");$("coachStart").textContent=t("coachStart");$("helpBtn").ariaLabel=t("help");$("stageBack").ariaLabel=t("back");$("battleBack").ariaLabel=t("back");$("progress").textContent=`${t("rank",{n:save.rank})} - ${t("coins",{n:save.coins})}`;renderRoutes();if(state.route){renderBattle();if(state.fishActive)renderFish();}}
-  $("startBtn").onclick=()=>{show("stageScreen");renderRoutes();};$("stageBack").onclick=()=>show("mainScreen");$("battleBack").onclick=()=>{window.clearTimeout(fishClock);show("stageScreen");renderRoutes();};$("menuBtn").onclick=()=>show("mainScreen");$("leftBtn").onclick=()=>move("left");$("rightBtn").onclick=()=>move("right");$("dodgeLeftBtn").onclick=()=>dodgeFish("left");$("pulseBtn").onclick=()=>dodgeFish("pulse");$("dodgeRightBtn").onclick=()=>dodgeFish("right");$("helpBtn").onclick=()=>{if(state.fishActive){window.clearTimeout(fishClock);state.fishPaused=true;}setCoach(true);};$("coachStart").onclick=()=>{save.tutorialDone=true;persist();setCoach(false);$("feedback").textContent=t("objectiveScan");if(state.fishActive){state.fishPaused=false;startFishClock();}};$("sonarBtn").onclick=()=>{if(state.sonar){$("feedback").textContent=sonarMessage();return;}if(state.battery<2){$("feedback").textContent=t("sonarNeed");return;}state.battery-=2;state.sonar=true;$("feedback").textContent=sonarMessage();renderBattle();};$("shieldBtn").onclick=()=>{if(state.shieldArmed)return;if(state.battery<1){$("feedback").textContent=t("shieldNeed");return;}state.battery-=1;state.shieldArmed=true;$("feedback").textContent=t("shieldArmed");renderBattle();};$("surfaceBtn").onclick=()=>finish("surface");$("beaconBtn").onclick=()=>{if(state.beaconUsed)return;if(!window.WeightPlayWallet?.spendDiamonds?.(3)){$("feedback").textContent=t("beaconNeed");return;}state.beaconUsed=true;state.oxygen=Math.max(state.oxygen,30);$("feedback").textContent=`${t("beaconUsed")}: ${t("beaconHelp")}`;window.WonderAnalytics?.track?.("diamond_spend",{sink:"abyss_emergency_beacon",amount:3});renderBattle();};$("localeSelect").onchange=(event)=>{locale=event.target.value;localStorage.setItem("weightPlayLocale",locale);localize();};
+  function localize(){document.documentElement.lang=locale;document.title=`${t("title")} - Internal Trial`;$("title").textContent=t("title");$("languageLabel").textContent=t("language");$("localeSelect").value=locale;$("headline").textContent=t("headline");$("intro").textContent=t("intro");$("guideTitle").textContent=t("guideTitle");$("guideCopy").textContent=t("guideCopy");$("startBtn").textContent=t("start");$("stageTitle").textContent=t("stage");$("stageHint").textContent=t("stageHint");$("leftBtn").textContent=t("left");$("rightBtn").textContent=t("right");$("sonarBtn").textContent=t("sonarPowered");$("shieldBtn").textContent=t("shield");$("surfaceBtn").textContent=t("surface");$("coachTitle").textContent=t("coachTitle");$("coachStart").textContent=t("coachStart");renderCoach();$("helpBtn").ariaLabel=t("help");$("stageBack").ariaLabel=t("back");$("battleBack").ariaLabel=t("back");$("progress").textContent=`${t("rank",{n:save.rank})} - ${t("coins",{n:save.coins})}`;renderRoutes();if(state.route){renderBattle();if(state.fishActive)renderFish();}}
+  $("startBtn").onclick=()=>{show("stageScreen");renderRoutes();};$("stageBack").onclick=()=>show("mainScreen");$("battleBack").onclick=()=>{window.clearTimeout(fishClock);show("stageScreen");renderRoutes();};$("menuBtn").onclick=()=>show("mainScreen");$("leftBtn").onclick=()=>move("left");$("rightBtn").onclick=()=>move("right");$("dodgeLeftBtn").onclick=()=>dodgeFish("left");$("pulseBtn").onclick=()=>dodgeFish("pulse");$("dodgeRightBtn").onclick=()=>dodgeFish("right");$("helpBtn").onclick=()=>{if(state.fishActive){window.clearTimeout(fishClock);state.fishPaused=true;$("fishTimerBar").style.animationPlayState="paused";}setCoach(true);};$("coachStart").onclick=()=>{save.tutorialDone=true;persist();setCoach(false);setFeedback(`${icon("sonar")}<b>?</b>`,t("objectiveScan"));if(state.fishActive){state.fishPaused=false;startFishClock();}};$("sonarBtn").onclick=()=>{if(state.sonar){setFeedback(`${icon("sonar")}<b>✓</b>`,sonarMessage());return;}if(state.battery<2){setFeedback(`${icon("power")}<b>0</b>`,t("sonarNeed"));return;}state.battery-=2;state.sonar=true;setFeedback(`${icon("sonar")}<b>✓</b>`,sonarMessage());renderBattle();};$("shieldBtn").onclick=()=>{if(state.shieldArmed)return;if(state.battery<1){setFeedback(`${icon("power")}<b>0</b>`,t("shieldNeed"));return;}state.battery-=1;state.shieldArmed=true;setFeedback(`${icon("shield")}<b>✓</b>`,t("shieldArmed"));renderBattle();};$("surfaceBtn").onclick=()=>finish("surface");$("beaconBtn").onclick=()=>{if(state.beaconUsed)return;if(!window.WeightPlayWallet?.spendDiamonds?.(3)){setFeedback(`${icon("beacon")}<b>3</b>`,t("beaconNeed"));return;}state.beaconUsed=true;state.oxygen=Math.max(state.oxygen,30);setFeedback(`${icon("beacon")}<b>✓</b>${icon("oxygen")}<b>30</b>`,`${t("beaconUsed")}: ${t("beaconHelp")}`);window.WonderAnalytics?.track?.("diamond_spend",{sink:"abyss_emergency_beacon",amount:3});renderBattle();};$("localeSelect").onchange=(event)=>{locale=event.target.value;localStorage.setItem("weightPlayLocale",locale);localize();};
   let drag;
   let suppressRouteClickUntil = 0;
   const routeRail = $("routeRail");

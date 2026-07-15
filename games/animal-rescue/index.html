@@ -19,7 +19,9 @@
     <meta name="twitter:card" content="summary_large_image" />
     <title>Animal Rescue Trail - WeightPlay</title>
     <link rel="canonical" href="https://weightplay.com/games/animal-rescue/" />
-    <link rel="stylesheet" href="style.css?v=20260712-expanded-canvas1" />
+    <link rel="stylesheet" href="style.css?v=20260715-kids-canvas1" data-wp-stage-standard data-wp-battle-standard />
+    <script data-wp-stage-standard>/* Animal Rescue owns its native Kids Stage rail. */</script>
+    <script data-wp-battle-standard>/* Animal Rescue owns its native Kids Battle Canvas. */</script>
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
     <script type="application/ld+json">
 {
@@ -65,7 +67,7 @@
   <body data-tutorial-auto-show="false">
     <main class="rescue-game" data-play-viewport data-no-mobile-immersive="true">
       <header class="topbar">
-        <a id="homeLink" class="home-link" data-wp-return="main" href="/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
+        <a id="homeLink" class="home-link" data-wp-return="main" href="/kids/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
         <div>
           <p>WeightPlay</p>
           <h1 id="titleText">Animal Rescue Trail</h1>
@@ -96,8 +98,6 @@
         <span id="stageSetupText" class="stage-setup-text">Choose an unlocked trail and help the next animal home.</span>
         <div id="stageGrid" class="stage-grid"></div>
       </section>
-      <div id="stageAdReserve" class="stage-ad-reserve hidden" aria-hidden="true"></div>
-
       <section id="playArea" class="play-area hidden">
         <button id="battleBackBtn" class="battle-return" data-wp-return="battle" type="button" aria-label="Back to trails">&larr;</button>
         <div class="animal-panel">
@@ -121,7 +121,7 @@
           <button id="nextBtn" type="button">Next Trail</button>
           <button id="retryBtn" type="button">Play Again</button>
           <button id="trailsBtn" type="button">Trails</button>
-          <a id="lobbyLink" href="/">Lobby</a>
+          <a id="lobbyLink" href="/kids/">Lobby</a>
         </div>
       </section>
 
@@ -158,8 +158,6 @@
       </div>
     </section>
     <!-- adsense-static-guide:end -->
-    <div class="battle-ad-reserve" aria-hidden="true"></div>
-
     <script src="../../src/site-config.js?v=20260710-rescue-mobile-shell1"></script>
     <script src="../../src/version.js?v=20260701-version2"></script>
     <script src="../../src/analytics.js?v=20260701-analytics2"></script>
@@ -170,7 +168,7 @@
     <script src="../../src/edge-guard.js?v=20260710-mobile-play-shell2"></script>
     <script src="../../src/i18n.js?v=20260703-i18n-clean1"></script>
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
-    <script src="game.js?v=20260712-expanded-canvas1"></script>
+    <script src="game.js?v=20260715-kids-canvas1"></script>
     <script>
       (() => {
         const loadGameInfo = () => {
