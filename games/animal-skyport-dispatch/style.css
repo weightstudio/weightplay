@@ -27,3 +27,7 @@
 .result{inset:0 0 56px}
 .route-line.is-guidance{height:3px;background:repeating-linear-gradient(90deg,#ffe980 0 12px,transparent 12px 20px);box-shadow:0 0 12px #ffe980;animation:skyport-guidance 1.1s linear infinite}
 @keyframes skyport-guidance{to{background-position:20px 0}}
+
+/* Feedback is event-only; the two-line task card owns persistent instruction. */
+.feedback{width:min(310px,calc(100% - 24px));max-height:48px;overflow:hidden;color:#fff;line-height:1.25;text-align:center;white-space:normal;pointer-events:none}
+.feedback:empty{display:none}

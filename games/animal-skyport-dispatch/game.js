@@ -2,8 +2,8 @@
   const $ = (id) => document.getElementById(id);
   const saveKey = 'animal_skyport_dispatch_save';
   const strings = {
-    en: { title:'Animal Skyport Dispatch', language:'Language', headline:'Keep Cloudline Skyport moving.', intro:'Draw safe routes, match airships to docks, and protect the shift from congestion.', start:'Start Game', chooseShift:'Choose a shift', best:'Best shift: {n}', shift:'Shift {n}/5', objective:'Serve {done}/{goal} flights', stageReady:'Ready', stageLocked:'Locked', stageReplay:'Replay', service:'Use repair service', dragHint:'Drag the airship to its matching dock.', menu:'Main Menu', next:'Next Shift', retry:'Retry Shift', win:'Shift complete!', lose:'Skyport congested!', winCopy:'Clear routing earns a new skyport record.', loseCopy:'Three unsafe arrivals closed the shift. Retry is free.', repair:'Repair parts {n}' },
-    'zh-Hant': { title:'\u52d5\u7269\u5929\u7a7a\u6e2f\u8abf\u5ea6\u968a', language:'\u8a9e\u8a00', headline:'\u8b93\u96f2\u7dda\u5929\u7a7a\u6e2f\u6301\u7e8c\u904b\u4f5c\u3002', intro:'\u7e6a\u51fa\u5b89\u5168\u822a\u7dda\uff0c\u914d\u5c0d\u98db\u8239\u8207\u78bc\u982d\uff0c\u4fdd\u8b77\u73ed\u6b21\u4e0d\u88ab\u58c5\u585e\u3002', start:'\u958b\u59cb\u904a\u6232', chooseShift:'\u9078\u64c7\u73ed\u6b21', best:'\u6700\u4f73\u73ed\u6b21\uff1a{n}', shift:'\u73ed\u6b21 {n}/5', objective:'\u5b8c\u6210 {done}/{goal} \u67b6\u98db\u8239', stageReady:'\u53ef\u958b\u59cb', stageLocked:'\u672a\u89e3\u9396', stageReplay:'\u53ef\u91cd\u73a9', service:'\u4f7f\u7528\u7dad\u4fee\u670d\u52d9', dragHint:'\u628a\u98db\u8239\u62d6\u66f3\u5230\u5c0d\u61c9\u78bc\u982d\u3002', menu:'\u56de\u4e3b\u9078\u55ae', next:'\u4e0b\u4e00\u73ed', retry:'\u91cd\u8a66\u73ed\u6b21', win:'\u73ed\u6b21\u5b8c\u6210\uff01', lose:'\u5929\u7a7a\u6e2f\u58c5\u585e\uff01', winCopy:'\u6e05\u6670\u8abf\u5ea6\u70ba\u5929\u7a7a\u6e2f\u5beb\u4e0b\u65b0\u7d00\u9304\u3002', loseCopy:'\u4e09\u6b21\u4e0d\u5b89\u5168\u9032\u5834\u95dc\u9589\u4e86\u73ed\u6b21\uff0c\u91cd\u8a66\u514d\u8cbb\u3002', repair:'\u7dad\u4fee\u96f6\u4ef6 {n}' }
+    en: { title:'Animal Skyport Dispatch', language:'Language', headline:'Keep Cloudline Skyport moving.', intro:'Draw safe routes, match airships to docks, and protect the shift from congestion.', start:'Start Game', chooseShift:'Choose a shift', best:'Best shift: {n}', shift:'Shift {n}/5', objective:'Serve {done}/{goal} flights', errors:'Errors {done}/3', stageReady:'Ready', stageLocked:'Locked', stageReplay:'Replay', service:'Use repair service', dragHint:'Drag the airship to its matching dock.', menu:'Main Menu', next:'Next Shift', retry:'Retry Shift', win:'Shift complete!', lose:'Skyport congested!', winCopy:'Clear routing earns a new skyport record.', loseCopy:'Three unsafe arrivals closed the shift. Retry is free.', repair:'Repair parts {n}' },
+    'zh-Hant': { title:'\u52d5\u7269\u5929\u7a7a\u6e2f\u8abf\u5ea6\u968a', language:'\u8a9e\u8a00', headline:'\u8b93\u96f2\u7dda\u5929\u7a7a\u6e2f\u6301\u7e8c\u904b\u4f5c\u3002', intro:'\u7e6a\u51fa\u5b89\u5168\u822a\u7dda\uff0c\u914d\u5c0d\u98db\u8239\u8207\u78bc\u982d\uff0c\u4fdd\u8b77\u73ed\u6b21\u4e0d\u88ab\u58c5\u585e\u3002', start:'\u958b\u59cb\u904a\u6232', chooseShift:'\u9078\u64c7\u73ed\u6b21', best:'\u6700\u4f73\u73ed\u6b21\uff1a{n}', shift:'\u73ed\u6b21 {n}/5', objective:'\u5b8c\u6210 {done}/{goal} \u67b6\u98db\u8239', errors:'\u5931\u8aa4 {done}/3', stageReady:'\u53ef\u958b\u59cb', stageLocked:'\u672a\u89e3\u9396', stageReplay:'\u53ef\u91cd\u73a9', service:'\u4f7f\u7528\u7dad\u4fee\u670d\u52d9', dragHint:'\u628a\u98db\u8239\u62d6\u66f3\u5230\u5c0d\u61c9\u78bc\u982d\u3002', menu:'\u56de\u4e3b\u9078\u55ae', next:'\u4e0b\u4e00\u73ed', retry:'\u91cd\u8a66\u73ed\u6b21', win:'\u73ed\u6b21\u5b8c\u6210\uff01', lose:'\u5929\u7a7a\u6e2f\u58c5\u585e\uff01', winCopy:'\u6e05\u6670\u8abf\u5ea6\u70ba\u5929\u7a7a\u6e2f\u5beb\u4e0b\u65b0\u7d00\u9304\u3002', loseCopy:'\u4e09\u6b21\u4e0d\u5b89\u5168\u9032\u5834\u95dc\u9589\u4e86\u73ed\u6b21\uff0c\u91cd\u8a66\u514d\u8cbb\u3002', repair:'\u7dad\u4fee\u96f6\u4ef6 {n}' }
   };
   Object.assign(strings.en, {
     guideTitle: 'How to dispatch',
@@ -90,7 +90,7 @@
   }
   function renderHud() {
     $('shiftText').textContent = t('shift', {n:state.shift});
-    $('scoreText').textContent = `${state.done}/${state.goal}`;
+    $('scoreText').textContent = `${state.done}/${state.goal} \u00b7 ${t('errors', {done:state.errors})}`;
     $('objectiveText').textContent = t('objective', {done:state.done, goal:state.goal});
     const crewLabel = locale === 'zh-Hant' ? '\u7d44\u54e1' : 'Crew';
     const fuelLabel = locale === 'zh-Hant' ? '\u71c3\u6599' : 'Fuel';
@@ -192,21 +192,9 @@
     $('serviceBtn').classList.toggle('hidden', !state.storm);
     $('clearRouteBtn').classList.toggle('hidden', !state.conflict);
     $('assignCrewBtn').classList.toggle('hidden', !state.needsCrew);
-    $('feedback').textContent = state.storm ? (locale === 'zh-Hant' ? '\u66b4\u98a8\u822a\u7dda\uff1a\u5148\u5b8c\u6210\u7dad\u4fee\u670d\u52d9\u3002' : 'Storm route: service first.') : t('dragHint');
-    if (!state.storm && state.flightIndex <= 3) {
-      $('feedback').textContent = locale === 'zh-Hant'
-        ? '\u5c07\u98db\u8239\u62d6\u5230\u91d1\u8272\u300c\u62d6\u5230\u9019\u88e1\u300d\u78bc\u982d\u3002'
-        : 'Drag the airship to the gold DRAG HERE dock.';
-    }
-    const destination = dockLabels[locale][dock];
-    const nextAction = state.storm
-      ? (locale === 'zh-Hant' ? '\u5148\u4f7f\u7528\u7dad\u4fee\u670d\u52d9' : 'Use repair service first')
-      : state.conflict
-        ? (locale === 'zh-Hant' ? '\u5148\u6e05\u9664\u822a\u7dda\u885d\u7a81' : 'Clear the route conflict first')
-        : state.needsCrew
-          ? (locale === 'zh-Hant' ? '\u5148\u6307\u6d3e\u7d44\u54e1' : 'Assign crew first')
-          : (locale === 'zh-Hant' ? `\u5c07\u98db\u8239\u62d6\u5230\u91d1\u8272\u76ee\u6a19\uff1a${destination}` : `Drag the airship to the gold target: ${destination}`);
-    $('feedback').textContent = locale === 'zh-Hant' ? `\u4e0b\u4e00\u6b65\uff1a${nextAction}` : `Next: ${nextAction}`;
+    // The task card is the durable instruction. Keep the floating layer empty
+    // until an actual success or error needs immediate feedback.
+    $('feedback').textContent = '';
     $('routeLine').style.opacity = '0';
     $('routeLine').classList.remove('is-guidance');
   }
