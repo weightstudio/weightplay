@@ -23,7 +23,7 @@
   <style>.canvas-wrap canvas:focus-visible{outline:5px solid #ffd45f;outline-offset:-5px}</style>
   <style>
     .canvas-wrap canvas{position:absolute;left:50%;top:50%;width:auto;height:auto;object-fit:initial;transform:translate(-50%,-50%)}
-    #resultModal{bottom:56px}
+    #battleView #resultModal{position:absolute;inset:0}
     #resultHome{min-height:50px;margin-left:6px;border:1px solid #8edbb3;border-radius:10px;background:#0c281f;color:#fff;padding:0 14px;font-weight:900}
     .reroll-row{margin-top:10px;display:grid;gap:5px}.reroll-row button{height:46px;min-height:46px;border:1px solid #8edbb3;border-radius:9px;background:#0c281f;color:#fff;display:flex;align-items:center;justify-content:center;gap:7px;font-weight:900}.reroll-row button.is-confirming{border-color:#ffd45f;background:#3b3315;box-shadow:0 0 0 2px #ffd45f33}.reroll-row button:disabled{opacity:.48}.reroll-row img{width:24px;height:24px;object-fit:contain}.reroll-row small{display:grid;place-items:center;min-height:36px;color:#ffd45f}
     .hero-picker{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(86px,1fr);gap:7px;overflow-x:auto;scrollbar-width:none}.hero-option{height:112px;border:1px solid #4f8b70;border-radius:9px;background:#102d24;color:#fff;padding:5px;display:grid;grid-template-rows:48px auto auto;justify-items:center;align-content:center;gap:2px}.hero-option.selected{border:2px solid #ffd45f;background:#194635}.hero-option img{width:48px;height:48px;object-fit:contain}.hero-option b{font-size:11px;line-height:1.1;text-align:center}.hero-option small{display:grid;gap:1px;font-size:8px;line-height:1.15;color:#bfe6d2;text-align:center}
@@ -50,10 +50,10 @@
     <section id="battleView" class="view battle-view hidden" data-play-viewport data-wp-logical-battle-canvas>
       <header class="battle-head"><button id="battleBack" class="icon-btn" data-wp-return="battle" type="button" aria-label="Back">&larr;</button><div class="health"><span id="roomText">Room 1/3</span><div><i id="hpFill"></i></div></div><button id="skillBtn" class="skill-btn" type="button"><img src="../../assets/animal-hero-trials-icon-roaring-mane.webp" alt="" /><span id="cooldownText">ROAR</span></button></header>
       <div class="canvas-wrap"><canvas id="game" width="390" height="560" tabindex="0" aria-describedby="objective"></canvas><div id="joystick" class="joystick"><i></i></div><p id="objective"></p></div>
+      <div id="resultModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultCopy"><section><img id="resultFx" src="../../assets/animal-hero-trials-fx-victory.webp" alt="" /><h2 id="resultTitle"></h2><p id="resultCopy"></p><button id="resultNext" class="primary" type="button"></button><button id="resultHome" type="button" data-t="menu">Main Menu</button></section></div>
     </section>
     <div id="battleAd" class="battle-ad" aria-hidden="true"></div>
     <div id="choiceModal" class="modal hidden"><section><h2 data-t="blessing">Choose a Blessing</h2><div id="choices" class="choices"></div><div class="reroll-row"><button id="rerollBtn" type="button"><img src="../../assets/weightplay-diamond.svg" alt="" /><span id="rerollLabel">Reroll 3</span></button><small id="rerollStatus"></small></div></section></div>
-    <div id="resultModal" class="modal hidden"><section><img id="resultFx" src="../../assets/animal-hero-trials-fx-victory.webp" alt="" /><h2 id="resultTitle"></h2><p id="resultCopy"></p><button id="resultNext" class="primary" type="button"></button><button id="resultHome" type="button" data-t="menu">Main Menu</button></section></div>
   </main>
     <!-- adsense-static-guide:start -->
     <section class="game-page-info game-page-info-static" aria-label="Animal Hero Trials game guide">
@@ -82,7 +82,7 @@
     <!-- adsense-static-guide:end -->
   <script src="../../src/site-config.js"></script><script src="../../src/analytics.js"></script><script>window.WonderAnalytics?.track("game_view",{game_id:"animal-hero-trials"});</script>
   <script src="../../src/edge-guard.js"></script><script src="../../src/i18n.js"></script><script src="../../src/tutorial.js"></script>
-  <script src="../../src/wallet.js"></script><script src="fit.js"></script><script src="game.js?v=20260716-objective1"></script><script src="locale-runtime.js"></script><script src="../../src/game-page-info.js"></script>
+  <script src="../../src/wallet.js"></script><script src="fit.js"></script><script src="game.js?v=20260716-result-ownership1"></script><script src="locale-runtime.js"></script><script src="../../src/game-page-info.js"></script>
   <script>window.addEventListener("load",()=>document.querySelector("#loadingPanel")?.classList.add("hidden"),{once:true});</script>
 </body>
 </html>

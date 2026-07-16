@@ -21,7 +21,7 @@
       selectCharacterHint: "Tap an animal to see its role and skill.",
       battleArena: "Animal Auto Squad Arena",
       menuTitle: "Draft and position your animal squad!",
-      menuHint: "Train your owned animals, choose a squad, and clear balanced five-wave forest stages. Each cleared stage unlocks the next challenge.",
+      menuHint: "Train your animals and conquer 30 five-wave stages across six regions, each ending in a unique boss battle.",
       bestExpedition: "Best Run",
       expeditionsCleared: "Cleared Runs",
       teamLevel: "Team Level",
@@ -44,7 +44,7 @@
       rosterHint: "Unlocked animals appear in your expedition backpack. Permanent levels are saved locally.",
       startExpedition: "Start Expedition",
       chooseExpedition: "Choose Expedition",
-      stageSetup: "Pick an unlocked forest stage, then prepare your squad for the expedition.",
+      stageSetup: "Swipe through six regions, choose an unlocked stage, then prepare your formation.",
       yourSquadLabel: "Active Squad (Top: Front Row | Bottom: Back Row)",
       benchLabel: "Storage Bench",
       shopLabel: "Character Backpack",
@@ -58,9 +58,10 @@
       stageProgress: "Unlocked {unlocked}/{total}",
       stageWaveCount: "{count} waves",
       stageEnemyRange: "Enemies: {first} to {last}",
+      stageBoss: "Boss",
       nextStage: "Next Stage",
       stageClearText: "Stage {stage} cleared! Stage {next} is now unlocked.",
-      allStagesClearText: "All forest stages cleared! Replay any stage to strengthen your squad.",
+      allStagesClearText: "All 30 stages and six region bosses cleared! Replay any stage to refine your squad.",
       gold: "Gold",
       supplies: "Supplies",
       hearts: "Hearts",
@@ -72,8 +73,11 @@
       giveUp: "Give Up",
       retry: "Try Again",
       backToMenu: "Main Menu",
+      backToStages: "Back to Stages",
       quitRun: "Quit Run",
       combatIntro: "Prepare for Battle!",
+      nextWaveCombat: "Wave {round}/{total}: new enemies incoming!",
+      bossIncoming: "BOSS: {boss}",
       combatSummary: "Squad HP {playerHp}/{playerMax} | Enemy HP {enemyHp}/{enemyMax}",
       combatFront: "Front: {player} vs {enemy}",
       foodGuideTitle: "Food effects",
@@ -189,7 +193,7 @@
     en: {
       title: "Animal Auto Squad - Play Free Auto-Battler Game",
       description: "Animal Auto Squad is a free online 13+ strategy auto-battler. Draft chibi animal cards, level up your squad, choose relic buffs, and defeat shadow monsters.",
-      ogDescription: "Draft and position your chibi animal squad. Train permanent units and clear six balanced five-wave forest stages.",
+      ogDescription: "Draft and position your chibi animal squad across 30 five-wave stages, six regions, varied enemies, and six unique bosses.",
       twitterDescription: "Draft animal cards, level up your squad, and defeat the shadow boss in this free online strategy auto-battler."
     },
     "zh-Hant": {
@@ -363,11 +367,75 @@
   ];
 
   const ENEMY_METADATA = [
-    { id: 0, nameEn: "Shadow Squirrel", nameZht: "\u5f71\u4e4b\u677e\u9f20", targetMode: "back", roleEn: "Backline Ambush", roleZht: "\u5f8c\u6392\u5947\u8972", sx: 105, sy: 155, sw: 480, sh: 545 },
-    { id: 1, nameEn: "Shadow Wolf", nameZht: "\u5f71\u4e4b\u7070\u72fc", targetMode: "front", roleEn: "Pack Bite", roleZht: "\u7fa4\u72fc\u54ac\u64ca", sx: 690, sy: 170, sw: 630, sh: 535 },
-    { id: 2, nameEn: "Shadow Boar", nameZht: "\u5f71\u4e4b\u91ce\u8c6c", targetMode: "front", roleEn: "First Charge", roleZht: "\u9996\u64ca\u885d\u92d2", sx: 1350, sy: 155, sw: 630, sh: 540 },
-    { id: 3, nameEn: "Shadow Badger", nameZht: "\u5f71\u4e4b\u737e", targetMode: "back", roleEn: "Burrow Guard", roleZht: "\u6398\u5730\u5b88\u8b77", sx: 300, sy: 870, sw: 670, sh: 500 },
-    { id: 4, nameEn: "Shadow Golem", nameZht: "\u5f71\u4e4b\u9b54\u50cf", targetMode: "row", roleEn: "Stone Sweep", roleZht: "\u5ca9\u77f3\u6a6b\u6383", sx: 1015, sy: 730, sw: 745, sh: 670 }
+    { id: 0, nameEn: "Shadow Squirrel", nameZht: "\u5f71\u4e4b\u677e\u9f20", targetMode: "back", ability: "backstrike", roleEn: "Backline Ambush", roleZht: "\u5f8c\u6392\u5947\u8972", sx: 105, sy: 155, sw: 480, sh: 545, atkMod: 1.05, hpMod: .85 },
+    { id: 1, nameEn: "Shadow Wolf", nameZht: "\u5f71\u4e4b\u7070\u72fc", targetMode: "front", ability: "pack", roleEn: "Pack Bite", roleZht: "\u7fa4\u72fc\u54ac\u64ca", sx: 690, sy: 170, sw: 630, sh: 535 },
+    { id: 2, nameEn: "Shadow Boar", nameZht: "\u5f71\u4e4b\u91ce\u8c6c", targetMode: "front", ability: "charge", roleEn: "First Charge", roleZht: "\u9996\u64ca\u885d\u92d2", sx: 1350, sy: 155, sw: 630, sh: 540, atkMod: 1.15, hpMod: 1.15 },
+    { id: 3, nameEn: "Shadow Badger", nameZht: "\u5f71\u4e4b\u737e", targetMode: "back", ability: "guard", roleEn: "Burrow Guard", roleZht: "\u6398\u5730\u5b88\u8b77", sx: 300, sy: 870, sw: 670, sh: 500, atkMod: .8, hpMod: 1.2 },
+    { id: 4, nameEn: "Shadow Golem", nameZht: "\u5f71\u4e4b\u9b54\u50cf", targetMode: "row", ability: "row", roleEn: "Stone Sweep", roleZht: "\u5ca9\u77f3\u6a6b\u6383", sx: 1015, sy: 730, sw: 745, sh: 670, atkMod: .9, hpMod: 1.35 },
+    { id: 5, nameEn: "Thorn Fox Scout", nameZht: "\u834a\u68d8\u72d0\u5075\u5bdf", targetMode: "back", ability: "double", roleEn: "Twin Daggers", roleZht: "\u96d9\u5203\u5947\u8972", imageKey: "enemyFoxScout", atkMod: 1.1, hpMod: .8 },
+    { id: 6, nameEn: "Prism Crow", nameZht: "\u68f1\u6676\u70cf\u9d09", targetMode: "back", ability: "backstrike", roleEn: "Shard Dive", roleZht: "\u6676\u7fbd\u4fef\u885d", imageKey: "enemyCrystalCrow", atkMod: 1.15, hpMod: .8 },
+    { id: 7, nameEn: "Ironhide Boar", nameZht: "\u9435\u7532\u91ce\u8c6c", targetMode: "front", ability: "charge", roleEn: "Armor Charge", roleZht: "\u91cd\u7532\u885d\u92d2", imageKey: "enemyArmoredBoar", atkMod: 1.05, hpMod: 1.35 },
+    { id: 8, nameEn: "Root Guardian", nameZht: "\u6839\u7cfb\u5b88\u885b", targetMode: "front", ability: "guard", roleEn: "Living Bulwark", roleZht: "\u6d3b\u9ad4\u58c1\u58d8", imageKey: "enemyRootGuardian", atkMod: .75, hpMod: 1.5 },
+    { id: 9, nameEn: "Crystal Shade", nameZht: "\u6676\u5f71\u5e7d\u9b42", targetMode: "back", ability: "drain", roleEn: "Life Drain", roleZht: "\u751f\u547d\u6c72\u53d6", imageKey: "enemyShadowBasic", atkMod: 1.05, hpMod: .9 },
+    { id: 10, nameEn: "Rift Runner", nameZht: "\u88c2\u9699\u8fc5\u7378", targetMode: "back", ability: "double", roleEn: "Rift Flurry", roleZht: "\u88c2\u9699\u9023\u64ca", imageKey: "enemyShadowRunner", atkMod: 1.15, hpMod: .8 },
+    { id: 11, nameEn: "Obsidian Tank", nameZht: "\u9ed1\u66dc\u91cd\u7378", targetMode: "front", ability: "guard", roleEn: "Obsidian Wall", roleZht: "\u9ed1\u66dc\u9632\u58c1", imageKey: "enemyShadowTank", atkMod: .8, hpMod: 1.6 },
+    { id: 12, nameEn: "Night Panther", nameZht: "\u591c\u5f71\u9ed1\u8c79", targetMode: "back", ability: "backstrike", roleEn: "Silent Hunt", roleZht: "\u7121\u8072\u7375\u6bba", imageKey: "enemyShadowPanther", atkMod: 1.3, hpMod: .9 },
+    { id: 13, nameEn: "Rune Wolf", nameZht: "\u7b26\u6587\u72fc", targetMode: "front", ability: "pack", roleEn: "Rune Pack", roleZht: "\u7b26\u6587\u72fc\u7fa4", imageKey: "enemyRuneWolf", atkMod: 1.15 },
+    { id: 14, nameEn: "Rune Raven", nameZht: "\u7b26\u6587\u70cf\u9d09", targetMode: "row", ability: "row", roleEn: "Rune Tempest", roleZht: "\u7b26\u6587\u98a8\u66b4", imageKey: "enemyRuneRaven", atkMod: .9, hpMod: .85 },
+    { id: 15, nameEn: "Eclipse Bat", nameZht: "\u6708\u8755\u8760\u8760", targetMode: "back", ability: "drain", roleEn: "Moon Drain", roleZht: "\u6708\u5f71\u6c72\u53d6", imageKey: "enemyEclipseBat", atkMod: 1.05, hpMod: .75 },
+    { id: 16, nameEn: "Shadow Jaguar", nameZht: "\u6697\u5f71\u7f8e\u6d32\u8c79", targetMode: "back", ability: "double", roleEn: "Dusk Flurry", roleZht: "\u9ec3\u660f\u9023\u64ca", imageKey: "enemyShadowJaguar", atkMod: 1.25, hpMod: .9 }
+  ];
+
+  const BOSS_METADATA = [
+    { id: 100, nameEn: "Thornwood Alpha", nameZht: "\u834a\u68d8\u72fc\u738b", targetMode: "row", ability: "thornBoss", roleEn: "Crown of Thorns", roleZht: "\u834a\u68d8\u738b\u51a0", imageKey: "bossThornwood", isBoss: true, atkMod: 1.25, hpMod: 3 },
+    { id: 101, nameEn: "Prism Basilisk", nameZht: "\u68f1\u6676\u86c7\u7687", targetMode: "back", ability: "crystalBoss", roleEn: "Prism Storm", roleZht: "\u68f1\u93e1\u98a8\u66b4", imageKey: "bossPrism", isBoss: true, atkMod: 1.3, hpMod: 2.8 },
+    { id: 102, nameEn: "Abyss Shell Leviathan", nameZht: "\u6df1\u6df5\u6bbc\u6d77\u7687", targetMode: "front", ability: "abyssBoss", roleEn: "Sunken Fortress", roleZht: "\u6c89\u57ce\u8981\u585e", imageKey: "bossAbyss", isBoss: true, atkMod: 1, hpMod: 3.6 },
+    { id: 103, nameEn: "Magma Tusk Colossus", nameZht: "\u7194\u5ca9\u7360\u7259\u738b", targetMode: "row", ability: "magmaBoss", roleEn: "Caldera Crash", roleZht: "\u706b\u5c71\u53e3\u885d\u64ca", imageKey: "bossMagma", isBoss: true, atkMod: 1.55, hpMod: 3 },
+    { id: 104, nameEn: "Eclipse Archowl", nameZht: "\u6708\u8755\u689f\u7687", targetMode: "back", ability: "eclipseBoss", roleEn: "Twin Moonfall", roleZht: "\u96d9\u6708\u661f\u843d", imageKey: "bossEclipse", isBoss: true, atkMod: 1.4, hpMod: 2.8 },
+    { id: 105, nameEn: "Void Crown Emperor", nameZht: "\u865b\u7a7a\u738b\u51a0\u7345\u7687", targetMode: "row", ability: "voidBoss", roleEn: "End of Night", roleZht: "\u7d42\u591c\u964d\u81e8", imageKey: "bossVoid", isBoss: true, atkMod: 1.65, hpMod: 4.2 }
+  ];
+
+  const REGION_METADATA = [
+    { id: 1, nameEn: "Thornwood", nameZht: "\u834a\u68d8\u6797", overlay: "rgba(31,94,54,.62)" },
+    { id: 2, nameEn: "Crystal Caverns", nameZht: "\u6c34\u6676\u6d1e\u7a9f", overlay: "rgba(45,75,150,.62)" },
+    { id: 3, nameEn: "Sunken Ruins", nameZht: "\u6c89\u6c92\u907a\u8de1", overlay: "rgba(18,112,123,.62)" },
+    { id: 4, nameEn: "Ember Peak", nameZht: "\u71fc\u706b\u5cf0", overlay: "rgba(143,54,25,.64)" },
+    { id: 5, nameEn: "Moonlit Citadel", nameZht: "\u6708\u5149\u57ce\u585e", overlay: "rgba(52,46,123,.66)" },
+    { id: 6, nameEn: "Void Crown", nameZht: "\u865b\u7a7a\u738b\u51a0", overlay: "rgba(65,27,86,.72)" }
+  ];
+
+  const stage = (id, region, nameEn, nameZht, waves, bossId = null) => ({ id, region, nameEn, nameZht, waves, bossId });
+  const STAGE_DEFINITIONS = [
+    stage(1,1,"Mossy Trail","\u82d4\u861a\u5c0f\u5f91",[[0],[0],[0,1],[1,0],[0,1]]),
+    stage(2,1,"Fox Ambush","\u72d0\u5f71\u57cb\u4f0f",[[5],[0,5],[5,1],[0,1,5],[5,5,1]]),
+    stage(3,1,"Wolf Den","\u72fc\u7a74",[[1],[1,0],[1,1],[2,1,0],[1,1,2]]),
+    stage(4,1,"Root Gate","\u6839\u7cfb\u4e4b\u9580",[[8],[3,8],[8,0,5],[8,3,1],[8,8,3,1]]),
+    stage(5,1,"Thornwood Throne","\u834a\u68d8\u738b\u5ea7",[[0,1],[5,8],[1,2,8],[3,5,8,2],[5,100,8]],100),
+    stage(6,2,"Glitter Passage","\u9583\u8000\u901a\u9053",[[6],[6,9],[9,0],[6,9,3],[6,6,9]]),
+    stage(7,2,"Prism Nest","\u68f1\u6676\u5de2\u7a74",[[9],[9,10],[6,10],[9,10,3],[6,9,10,10]]),
+    stage(8,2,"Shard Bridge","\u6676\u788e\u4e4b\u6a4b",[[14],[6,14],[14,9,3],[6,14,10,9],[14,14,6,10]]),
+    stage(9,2,"Azure Vault","\u84bc\u85cd\u5bf6\u5eab",[[4],[4,9],[4,6,10],[4,4,14,9],[4,6,14,10,9]]),
+    stage(10,2,"Prism Heart","\u68f1\u6676\u4e4b\u5fc3",[[6,9],[10,14],[4,6,9],[4,10,14,6],[6,101,14]],101),
+    stage(11,3,"Tide Stair","\u6f6e\u6c50\u968e\u68af",[[7],[7,0],[7,14],[0,7,14],[7,7,8]]),
+    stage(12,3,"Coral Archive","\u73ca\u745a\u66f8\u5eab",[[14],[14,3],[0,14,8],[3,14,7,8],[14,14,3,7]]),
+    stage(13,3,"Drowned Plaza","\u6df9\u6c92\u5ee3\u5834",[[8],[8,7],[8,4,14],[8,8,7,14],[4,8,7,14,3]]),
+    stage(14,3,"Leviathan Gate","\u6d77\u7687\u4e4b\u9580",[[3,14],[7,8],[3,7,14],[4,8,14,7],[3,4,7,8,14]]),
+    stage(15,3,"Sunken Crown","\u6c89\u6c92\u738b\u51a0",[[7,14],[8,3],[4,7,14],[8,3,7,14,4],[14,102,7]],102),
+    stage(16,4,"Ashen Path","\u7070\u71fc\u5c0f\u5f91",[[2],[7,2],[10,2],[7,10,2],[7,7,2]]),
+    stage(17,4,"Cinder Forge","\u71fc\u706b\u935b\u9020\u5ee0",[[10],[10,11],[7,11],[10,7,11],[10,10,7,11]]),
+    stage(18,4,"Lava Causeway","\u7194\u5ca9\u5824\u9053",[[11],[11,2],[11,7,10],[11,11,2,7],[11,10,7,2,2]]),
+    stage(19,4,"Obsidian Ring","\u9ed1\u66dc\u7af6\u6280\u74b0",[[13],[13,7],[13,11,10],[13,13,7,11],[13,11,10,7,2]]),
+    stage(20,4,"Caldera King","\u706b\u5c71\u53e3\u4e4b\u738b",[[7,11],[10,13],[11,7,13],[10,11,13,7,2],[7,103,11]],103),
+    stage(21,5,"Silver Garden","\u9280\u6708\u82b1\u5712",[[3],[6,3],[14,3],[6,14,3],[3,3,14]]),
+    stage(22,5,"Eclipse Hall","\u6708\u8755\u5927\u5ef3",[[15],[15,6],[15,14],[15,15,6,14],[15,12,14,3]]),
+    stage(23,5,"Star Library","\u661f\u8fb0\u66f8\u5eab",[[12],[12,3],[12,14,15],[12,12,3,14],[12,15,14,3,6]]),
+    stage(24,5,"Lunar Spire","\u6708\u8f2a\u9ad8\u5854",[[16],[16,12],[16,14,15],[16,12,14,3],[16,16,12,15,14]]),
+    stage(25,5,"Midnight Court","\u5b50\u591c\u738b\u5ead",[[12,15],[14,16],[3,12,15],[6,14,16,12,15],[15,104,14]],104),
+    stage(26,6,"Broken Skyway","\u7834\u788e\u5929\u8def",[[9],[9,10],[11,9],[9,10,11],[9,12,10,11]]),
+    stage(27,6,"Gravity Well","\u91cd\u529b\u6df1\u4e95",[[12],[12,15],[12,16,15],[12,12,15,16],[12,15,16,9,10]]),
+    stage(28,6,"Null Gallery","\u865b\u7121\u56de\u5eca",[[13],[13,14],[13,12,14],[13,13,12,14],[13,12,14,15,16]]),
+    stage(29,6,"Crown Approach","\u738b\u51a0\u4e4b\u8def",[[11,12],[9,16],[10,13,15],[11,12,14,16],[9,10,11,12,14,16]]),
+    stage(30,6,"End of Night","\u7d42\u591c\u4e4b\u6230",[[9,12],[10,15,16],[11,13,14,16],[9,10,11,12,15,16],[13,105,14,15,16]],105)
   ];
 
   // Game UI DOM Nodes
@@ -457,16 +525,8 @@
     8: 25,
     9: 30
   };
-  const STAGE_COUNT = 6;
+  const STAGE_COUNT = STAGE_DEFINITIONS.length;
   const WAVES_PER_STAGE = 5;
-  const STAGE_ENEMY_COUNTS = [
-    [1, 1, 2, 2, 2],
-    [1, 2, 2, 2, 3],
-    [2, 2, 2, 3, 3],
-    [2, 3, 3, 4, 4],
-    [3, 4, 4, 5, 5],
-    [3, 4, 5, 5, 6]
-  ];
 
   // State Management
   let locale = window.WonderI18n?.locale?.() || localStorage.getItem(localeKey) || "en";
@@ -497,12 +557,16 @@
     selectedSkillTitle: "\u76ee\u524d\u89d2\u8272",
     selectCharacterHint: "\u9ede\u9078\u89d2\u8272\u5373\u53ef\u67e5\u770b\u5b9a\u4f4d\u8207\u6280\u80fd\u3002",
     yourSquadLabel: "\u4f5c\u6230\u5c0f\u968a\uff08\u4e0a\uff1a\u524d\u6392\uff5c\u4e0b\uff1a\u5f8c\u6392\uff09",
+    nextWaveCombat: "\u7b2c {round}/{total} \u6ce2\uff1a\u65b0\u7684\u6575\u4eba\u51fa\u73fe\uff01",
+    backToStages: "\u8fd4\u56de\u95dc\u5361",
+    stageBoss: "\u9996\u9818",
+    bossIncoming: "\u9996\u9818\uff1a{boss}",
     chooseExpedition: "\u9078\u64c7\u9060\u5f81",
     bestExpedition: "\u6700\u4f73\u9060\u5f81",
     expeditionsCleared: "\u5df2\u901a\u904e\u95dc\u5361",
     teamLevel: "\u5718\u968a\u7b49\u7d1a",
     teamLevelValue: "\u7b49\u7d1a {level}  \u7d93\u9a57\u503c {xp}/{goal}",
-    stageSetup: "\u9078\u64c7\u5df2\u89e3\u9396\u7684\u68ee\u6797\u95dc\u5361\uff0c\u518d\u914d\u7f6e\u5c0f\u968a\u51fa\u767c\u9060\u5f81\u3002",
+    stageSetup: "\u6ed1\u52d5\u700f\u89bd\u516d\u5927\u5340\u57df\uff0c\u9078\u64c7\u5df2\u89e3\u9396\u95dc\u5361\u5f8c\u914d\u7f6e\u9663\u5bb9\u3002",
     none: "\u7121",
     attackShort: "\u653b",
     healthShort: "\u751f",
@@ -547,7 +611,7 @@
       stageEnemyRange: "\u6575\u4eba\uff1a{first} \u81f3 {last} \u96bb",
       nextStage: "\u4e0b\u4e00\u95dc",
       stageClearText: "\u7b2c {stage} \u95dc\u901a\u904e\uff01\u5df2\u89e3\u9396\u7b2c {next} \u95dc\u3002",
-      allStagesClearText: "\u5168\u90e8\u68ee\u6797\u95dc\u5361\u5df2\u901a\u95dc\uff01\u53ef\u91cd\u65b0\u6311\u6230\u4efb\u4f55\u95dc\u5361\u4f86\u57f9\u990a\u5c0f\u968a\u3002",
+      allStagesClearText: "30 \u95dc\u8207\u516d\u5927\u5340\u57df\u9996\u9818\u5168\u90e8\u901a\u95dc\uff01\u53ef\u91cd\u65b0\u6311\u6230\u4efb\u4f55\u95dc\u5361\u7cbe\u9032\u968a\u4f0d\u3002",
       menuHint: "\u8a13\u7df4\u5df2\u64c1\u6709\u89d2\u8272\uff0c\u7d44\u6210\u5c0f\u968a\uff0c\u6311\u6230\u6575\u4eba\u6578\u91cf\u5e73\u7a69\u6210\u9577\u7684 5 \u6ce2\u95dc\u5361\u3002\u901a\u95dc\u5f8c\u6703\u6c38\u4e45\u89e3\u9396\u4e0b\u4e00\u95dc\u3002"
   });
 
@@ -692,9 +756,14 @@
         unlockedStage: normalizeSave(save).unlockedStage,
         selectedStage: normalizeSave(save).selectedStage,
         completedStages: normalizeSave(save).completedStages,
-        enemyCounts: STAGE_ENEMY_COUNTS.map((waves) => [...waves]),
+        stageCount: STAGE_COUNT,
+        enemyCounts: STAGE_DEFINITIONS.map((definition) => definition.waves.map((wave) => wave.length)),
+        bossStages: STAGE_DEFINITIONS.filter((definition) => definition.bossId).map((definition) => ({ stage: definition.id, bossId: definition.bossId })),
+        regularEnemyTypes: ENEMY_METADATA.map((enemy) => enemy.id),
+        bossTypes: BOSS_METADATA.map((boss) => ({ id: boss.id, imageKey: boss.imageKey, ability: boss.ability })),
         firstWave: summarizeEnemyWave(1, 1),
-        firstBossWave: summarizeEnemyWave(1, WAVES_PER_STAGE)
+        firstBossWave: summarizeEnemyWave(5, WAVES_PER_STAGE),
+        finalBossWave: summarizeEnemyWave(30, WAVES_PER_STAGE)
       }),
       trainingPreview: () => ({
         unlockedAnimals: normalizeSave(save).unlockedAnimals,
@@ -839,7 +908,7 @@
         formationSlots: 6,
         playerCard: combatLayoutMetrics("player"),
         enemyCard: combatLayoutMetrics("enemy"),
-        enemyCrops: ENEMY_METADATA.map(({ id, sx, sy, sw, sh }) => ({ id, sx, sy, sw, sh }))
+        enemyCrops: ENEMY_METADATA.filter((enemy) => Number.isFinite(enemy.sx)).map(({ id, sx, sy, sw, sh }) => ({ id, sx, sy, sw, sh }))
       }),
       formationPreview: () => {
         const combatCard = (id, formationSlot) => {
@@ -877,6 +946,10 @@
       },
       combatState: () => ({
         runId: state.combat.runId,
+        round: state.round,
+        playerCount: state.combat.playerSquad.length,
+        enemyCount: state.combat.enemySquad.length,
+        playerHp: state.combat.playerSquad.reduce((total, unit) => total + Math.max(0, unit.hp || 0), 0),
         animating: state.combat.animating,
         ending: state.combat.ending,
         resolved: state.combat.resolved,
@@ -893,7 +966,7 @@
         state.combat.animating = false;
         state.combat.resolved = true;
         cancelAnimationFrame(animationId);
-        state.stage = 6;
+        state.stage = 29;
         state.round = 5;
         state.squad = [0, 1, 2, 3, 7, 8].map((id) => createAnimalCard(id));
         nodes.prepPhaseArea.classList.remove("is-hidden");
@@ -903,6 +976,22 @@
         updateHUD();
         nodes.startBattleBtn.disabled = false;
         return state.squad.length;
+      },
+      prepareBossBattle: (stageValue = 30) => {
+        clearScheduledCombatTimers();
+        state.combat.animating = false;
+        state.combat.resolved = true;
+        cancelAnimationFrame(animationId);
+        state.stage = Math.max(1, Math.min(STAGE_COUNT, Number(stageValue) || 30));
+        state.round = WAVES_PER_STAGE;
+        state.squad = [0, 1, 2, 3, 7, 8].map((id) => createAnimalCard(id));
+        nodes.prepPhaseArea.classList.remove("is-hidden");
+        nodes.combatArea.classList.add("is-hidden");
+        nodes.combatSummary?.classList.add("is-hidden");
+        renderPrepScreen();
+        updateHUD();
+        nodes.startBattleBtn.disabled = false;
+        return stageDefinition(state.stage).bossId;
       },
       returnToMenu(stage = normalizeSave(save).selectedStage) {
         save = normalizeSave({ ...save, selectedStage: stage });
@@ -1032,6 +1121,24 @@
     boomLion: "../../assets/weightplay-character-boom-mane-lion-cutout.webp",
     sparkCaptain: "../../assets/weightplay-character-spark-paw-captain-cutout.webp",
     rhinoGuardian: "../../assets/weightplay-character-rhino-guardian-cutout.webp",
+    enemyFoxScout: "../../assets/animal-gearpack-expedition-enemy-fox-scout.webp",
+    enemyCrystalCrow: "../../assets/animal-gearpack-expedition-enemy-crystal-crow.webp",
+    enemyArmoredBoar: "../../assets/animal-gearpack-expedition-enemy-armored-boar.webp",
+    enemyRootGuardian: "../../assets/animal-gearpack-expedition-enemy-root-guardian.webp",
+    enemyShadowBasic: "../../assets/animal-crystal-survivor-shadow-basic.webp",
+    enemyShadowRunner: "../../assets/animal-crystal-survivor-shadow-runner.webp",
+    enemyShadowTank: "../../assets/animal-crystal-survivor-shadow-tank.webp",
+    enemyShadowPanther: "../../assets/animal-crystal-survivor-shadow-panther-v2.webp",
+    enemyRuneWolf: "../../assets/animal-rune-tactics-enemy-wolf.webp",
+    enemyRuneRaven: "../../assets/animal-rune-tactics-enemy-raven.webp",
+    enemyEclipseBat: "../../assets/shadow-wolf-enemy-bat-cutout.webp",
+    enemyShadowJaguar: "../../assets/animal-relic-hunters-shadow-jaguar.webp",
+    bossThornwood: "../../assets/animal-auto-squad-boss-thornwood-alpha.webp",
+    bossPrism: "../../assets/animal-auto-squad-boss-prism-basilisk.webp",
+    bossAbyss: "../../assets/animal-auto-squad-boss-abyss-shell-leviathan.webp",
+    bossMagma: "../../assets/animal-auto-squad-boss-magma-tusk-colossus.webp",
+    bossEclipse: "../../assets/animal-auto-squad-boss-eclipse-archowl.webp",
+    bossVoid: "../../assets/animal-auto-squad-boss-void-crown-emperor.webp",
     foodApple: "assets/food-apple.svg",
     foodHoney: "assets/food-honey.svg",
     foodMelon: "assets/food-melon.svg",
@@ -1180,6 +1287,15 @@
     return locale === "zh-Hant" ? `\u7b2c ${stage} \u95dc` : `Stage ${stage}`;
   }
 
+  function stageDefinition(stageValue) {
+    const safeStage = Math.max(1, Math.min(STAGE_COUNT, Number(stageValue) || 1));
+    return STAGE_DEFINITIONS[safeStage - 1];
+  }
+
+  function regionDefinition(regionValue) {
+    return REGION_METADATA.find((region) => region.id === Number(regionValue)) || REGION_METADATA[0];
+  }
+
   function selectStage(stage, shouldScroll = true) {
     save = normalizeSave(save);
     save.selectedStage = Math.max(1, Math.min(save.unlockedStage, Number(stage) || 1));
@@ -1197,20 +1313,28 @@
     nodes.stageRail.innerHTML = "";
 
     for (let stage = 1; stage <= STAGE_COUNT; stage++) {
+      const definition = stageDefinition(stage);
+      const region = regionDefinition(definition.region);
       const locked = stage > save.unlockedStage;
       const cleared = save.completedStages.includes(stage);
       const card = document.createElement("button");
       card.type = "button";
-      card.className = `stage-card${stage === save.selectedStage ? " is-selected is-browsed" : ""}${cleared ? " is-cleared" : ""}`;
+      card.className = `stage-card${stage === save.selectedStage ? " is-selected is-browsed" : ""}${cleared ? " is-cleared" : ""}${definition.bossId ? " is-boss-stage" : ""}`;
       card.dataset.stage = String(stage);
+      card.dataset.region = String(definition.region);
+      card.dataset.boss = definition.bossId ? "true" : "false";
+      card.style.setProperty("--stage-overlay", region.overlay);
       // Keep locked cards draggable as part of the horizontal rail.
       card.setAttribute("aria-disabled", String(locked));
       if (locked) card.tabIndex = -1;
       const firstWave = enemyWaveStats(stage, 1);
       const finalWave = enemyWaveStats(stage, WAVES_PER_STAGE);
       const enemyRange = t("stageEnemyRange", { first: firstWave.count, last: finalWave.count });
-      card.innerHTML = `<strong>${stageLabel(stage)}</strong><span>${t("stageWaveCount", { count: WAVES_PER_STAGE })}</span><small>${enemyRange}</small><small>${locked ? t("stageLocked") : cleared ? t("stageCleared") : t("stageReady")}</small>`;
-      card.setAttribute("aria-label", `${stageLabel(stage)}. ${t("stageWaveCount", { count: WAVES_PER_STAGE })}. ${enemyRange}. ${locked ? t("stageLocked") : cleared ? t("stageCleared") : t("stageReady")}`);
+      const stageName = locale === "zh-Hant" ? definition.nameZht : definition.nameEn;
+      const regionName = locale === "zh-Hant" ? region.nameZht : region.nameEn;
+      const bossText = definition.bossId ? ` \u00b7 ${t("stageBoss")}` : "";
+      card.innerHTML = `<em>${regionName}</em><strong>${stageLabel(stage)}</strong><span>${stageName}</span><small>${t("stageWaveCount", { count: WAVES_PER_STAGE })}${bossText}</small><small>${enemyRange}</small><small>${locked ? t("stageLocked") : cleared ? t("stageCleared") : t("stageReady")}</small>`;
+      card.setAttribute("aria-label", `${regionName}. ${stageLabel(stage)}. ${stageName}. ${t("stageWaveCount", { count: WAVES_PER_STAGE })}${bossText}. ${enemyRange}. ${locked ? t("stageLocked") : cleared ? t("stageCleared") : t("stageReady")}`);
       card.addEventListener("click", () => {
         if (locked) return;
         selectStage(stage, false);
@@ -1513,7 +1637,7 @@
     nodes.resultTitle.textContent = state.hearts > 0 ? t("expeditionClear") : t("expeditionFail");
     nodes.retryBtn.textContent = t("retry");
     nodes.nextStageBtn.textContent = t("nextStage");
-    nodes.resultMenuBtn.textContent = t("backToMenu");
+    nodes.resultMenuBtn.textContent = t("backToStages");
 
     renderCosmeticSection();
     if (!nodes.stagePanel.classList.contains("is-hidden")) renderStageSelector(false);
@@ -2399,7 +2523,8 @@
     state.combat.effects = [];
     
     canvasCtx = nodes.gameCanvas.getContext("2d");
-    combatLog(t("combatIntro"));
+    const openingBoss = state.combat.enemySquad.find((unit) => unit.isBoss);
+    combatLog(openingBoss ? t("bossIncoming", { boss: combatUnitName(openingBoss) }) : t("combatIntro"));
     updateCombatSummary();
     
     // Start animation loop
@@ -2410,52 +2535,46 @@
   function enemyWaveStats(stage, wave) {
     const safeStage = Math.max(1, Math.min(STAGE_COUNT, Number(stage) || 1));
     const safeWave = Math.max(1, Math.min(WAVES_PER_STAGE, Number(wave) || 1));
-    const scale = 1 + (safeStage - 1) * 0.18 + (safeWave - 1) * 0.08;
+    const definition = stageDefinition(safeStage);
+    const enemyIds = [...definition.waves[safeWave - 1]];
+    const attack = 1 + Math.floor((safeStage - 1) / 6) + Math.floor((safeWave - 1) / 3);
+    const health = 2 + Math.floor((safeStage - 1) / 3) + Math.floor((safeWave - 1) / 2);
     return {
       stage: safeStage,
       wave: safeWave,
-      count: STAGE_ENEMY_COUNTS[safeStage - 1][safeWave - 1],
-      atk: Math.max(1, Math.floor(1.25 * scale)),
-      hp: Math.max(2, Math.round(2 * scale)),
-      tierLimit: Math.min(ENEMY_METADATA.length, 1 + Math.floor((safeStage + safeWave - 2) / 2)),
-      level: Math.max(1, Math.ceil((safeStage + safeWave - 1) / 3))
+      count: enemyIds.length,
+      enemyIds,
+      atk: attack,
+      hp: health,
+      level: Math.max(1, Math.ceil((safeStage + safeWave - 1) / 5)),
+      isBossWave: enemyIds.some((id) => id >= 100)
     };
   }
 
   function summarizeEnemyWave(stage, wave) {
     const stats = enemyWaveStats(stage, wave);
-    return { count: stats.count, atk: stats.atk, hp: stats.hp, level: stats.level };
+    return { count: stats.count, atk: stats.atk, hp: stats.hp, level: stats.level, enemyIds: [...stats.enemyIds], bossIds: stats.enemyIds.filter((id) => id >= 100), isBossWave: stats.isBossWave };
   }
 
   function generateEnemySquad(stage, wave) {
     const stats = enemyWaveStats(stage, wave);
-    const squad = [];
     const formationSlots = formationSlotsForCount(stats.count);
-    for (let i = 0; i < stats.count; i++) {
-      // Pick random enemy matching difficulty tier
-      const rand = ENEMY_METADATA[Math.floor(Math.random() * stats.tierLimit)];
-      squad.push({
-        id: rand.id,
-        nameEn: rand.nameEn,
-        nameZht: rand.nameZht,
-        roleEn: rand.roleEn,
-        roleZht: rand.roleZht,
-        targetMode: rand.targetMode || "front",
+    return stats.enemyIds.map((enemyId, i) => {
+      const enemy = ENEMY_METADATA.find((item) => item.id === enemyId) || BOSS_METADATA.find((item) => item.id === enemyId) || ENEMY_METADATA[0];
+      const hp = Math.max(1, Math.round(stats.hp * (enemy.hpMod || 1)));
+      const atk = Math.max(1, Math.round(stats.atk * (enemy.atkMod || 1)));
+      return {
+        ...enemy,
         formationSlot: formationSlots[i],
-        sx: rand.sx,
-        sy: rand.sy,
-        sw: rand.sw,
-        sh: rand.sh,
-        atk: stats.atk,
-        hp: stats.hp,
-        maxHp: stats.hp,
+        atk,
+        hp,
+        maxHp: hp,
         shield: false,
         shieldHp: 0,
         level: stats.level,
         abilityUsed: false
-      });
-    }
-    return squad;
+      };
+    });
   }
 
   function formationSlotsForCount(countValue) {
@@ -2650,12 +2769,12 @@
       const drawW = w * scale;
       const drawH = h * scale;
       const imageBox = { x: x + 10, y: y + 44, w: w - 20, h: h - 78 };
-      state.combat.layout?.push({ team, index: idx, formationSlot: formation.slot, formationRow: formation.row, x, y, w: drawW, h: drawH, imageBox });
+      state.combat.layout?.push({ team, index: idx, formationSlot: formation.slot, formationRow: formation.row, enemyId: isPlayer ? null : unit.id, imageKey: unit.imageKey || "", isBoss: Boolean(unit.isBoss), x, y, w: drawW, h: drawH, imageBox });
 
       // Draw backdrop
-      canvasCtx.fillStyle = isPlayer ? "rgba(10, 30, 24, 0.9)" : "rgba(35, 12, 12, 0.9)";
-      canvasCtx.strokeStyle = isPlayer ? "var(--mint)" : "var(--danger)";
-      canvasCtx.lineWidth = 2;
+      canvasCtx.fillStyle = isPlayer ? "rgba(10, 30, 24, 0.9)" : unit.isBoss ? "rgba(45, 25, 8, 0.96)" : "rgba(35, 12, 12, 0.9)";
+      canvasCtx.strokeStyle = isPlayer ? "var(--mint)" : unit.isBoss ? "#ffd666" : "var(--danger)";
+      canvasCtx.lineWidth = unit.isBoss ? 4 : 2;
       
       // Draw rounded rectangle
       canvasCtx.beginPath();
@@ -2676,6 +2795,8 @@
       if (isPlayer) {
         const portrait = imageCache[unit.imageKey] || imageCache.boomLion;
         drawContainImage(portrait, imageBox.x, imageBox.y, imageBox.w, imageBox.h);
+      } else if (unit.imageKey && imageCache[unit.imageKey]) {
+        drawContainImage(imageCache[unit.imageKey], imageBox.x, imageBox.y, imageBox.w, imageBox.h);
       } else {
         const sheet = imageCache.enemies;
         if (sheet) {
@@ -2953,7 +3074,7 @@
   }
 
   function triggerEnemyGuardAction(unit, slot) {
-    if (unit.abilityUsed || unit.id !== 3) return "";
+    if (unit.abilityUsed || unit.ability !== "guard") return "";
     unit.abilityUsed = true;
     const protectedUnit = formationTarget(state.combat.enemySquad, "front") || unit;
     addUnitShield(protectedUnit, 1, "enemy", Math.max(0, state.combat.enemySquad.indexOf(protectedUnit)));
@@ -2961,26 +3082,77 @@
   }
 
   function enemyAttackDamage(unit) {
-    const packBonus = unit.id === 1 && state.combat.enemySquad.some((ally) => ally !== unit && ally.id === 1) ? 1 : 0;
-    const chargeBonus = unit.id === 2 && !unit.abilityUsed ? 1 : 0;
+    const packBonus = unit.ability === "pack" && state.combat.enemySquad.some((ally) => ally !== unit && ally.ability === "pack") ? 1 : 0;
+    const chargeBonus = unit.ability === "charge" && !unit.abilityUsed ? 1 : 0;
     unit.lastAttackTrait = packBonus ? "pack" : chargeBonus ? "charge" : "";
     unit.abilityUsed = true;
     return unit.atk + packBonus + chargeBonus;
   }
 
   function enemyAttackText(unit, fallback) {
-    if (unit.lastAttackTrait === "pack") return `${combatUnitName(unit)} ${locale === "zh-Hant" ? "\u767c\u52d5\u7fa4\u72fc\u54ac\u64ca" : "uses Pack Bite"}`;
+    if (unit.lastAttackTrait === "pack") return `${combatUnitName(unit)} ${locale === "zh-Hant" ? "\u767c\u52d5\u7fa4\u9ad4\u54ac\u64ca" : "uses Pack Bite"}`;
     if (unit.lastAttackTrait === "charge") return `${combatUnitName(unit)} ${locale === "zh-Hant" ? "\u767c\u52d5\u9996\u64ca\u885d\u92d2" : "uses First Charge"}`;
     return fallback;
   }
 
+  function resolveBossAction(unit, slot) {
+    const players = state.combat.playerSquad;
+    const enemies = state.combat.enemySquad;
+    const damageRow = (mode, multiplier) => {
+      const targets = formationTargets(players, mode);
+      const damage = Math.max(1, Math.ceil(unit.atk * multiplier));
+      targets.forEach((target) => {
+        const point = formationTargetPoint("player", players, target);
+        damageTarget(target, damage, point.x, point.y);
+      });
+      return targets.length;
+    };
+
+    markActing("enemy", slot, "cast");
+    if (unit.ability === "thornBoss") {
+      damageRow("front", .8);
+      addUnitShield(unit, 1 + Math.floor(unit.level / 3), "enemy", slot);
+      return `${combatUnitName(unit)} ${locale === "zh-Hant" ? "\u91cb\u653e\u834a\u68d8\u98a8\u66b4" : "unleashes Thornstorm"}`;
+    }
+    if (unit.ability === "crystalBoss") {
+      damageRow("back", .85);
+      return `${combatUnitName(unit)} ${locale === "zh-Hant" ? "\u964d\u4e0b\u68f1\u93e1\u98a8\u66b4" : "casts Prism Storm"}`;
+    }
+    if (unit.ability === "abyssBoss") {
+      enemies.forEach((ally, index) => addUnitShield(ally, 1 + Math.floor(unit.level / 4), "enemy", index));
+      unit.hp = Math.min(unit.maxHp, unit.hp + 2);
+      return `${combatUnitName(unit)} ${locale === "zh-Hant" ? "\u5c55\u958b\u6c89\u57ce\u8981\u585e" : "raises the Sunken Fortress"}`;
+    }
+    if (unit.ability === "magmaBoss") {
+      damageRow("front", 1.05);
+      return `${combatUnitName(unit)} ${locale === "zh-Hant" ? "\u767c\u52d5\u706b\u5c71\u53e3\u885d\u64ca" : "uses Caldera Crash"}`;
+    }
+    if (unit.ability === "eclipseBoss") {
+      damageRow("back", .8);
+      const front = formationTarget(players, "front");
+      if (front) {
+        const point = formationTargetPoint("player", players, front);
+        damageTarget(front, Math.max(1, Math.ceil(unit.atk * .5)), point.x, point.y);
+      }
+      return `${combatUnitName(unit)} ${locale === "zh-Hant" ? "\u964d\u4e0b\u96d9\u6708\u661f\u843d" : "casts Twin Moonfall"}`;
+    }
+    players.forEach((target) => {
+      const point = formationTargetPoint("player", players, target);
+      damageTarget(target, Math.max(1, Math.ceil(unit.atk * .7)), point.x, point.y);
+    });
+    unit.hp = Math.min(unit.maxHp, unit.hp + 2);
+    return `${combatUnitName(unit)} ${locale === "zh-Hant" ? "\u4f7f\u7d42\u591c\u964d\u81e8" : "invokes End of Night"}`;
+  }
+
   function resolveEnemySlotAction(unit, slot) {
-    const isGuardAction = !unit.abilityUsed && unit.id === 3;
-    markActing("enemy", slot, isGuardAction ? "cast" : "attack");
+    if (unit.isBoss) return resolveBossAction(unit, slot);
+    const isGuardAction = !unit.abilityUsed && unit.ability === "guard";
+    const isCastAction = isGuardAction || unit.ability === "row" || unit.ability === "heal";
+    markActing("enemy", slot, isCastAction ? "cast" : "attack");
     const guardText = triggerEnemyGuardAction(unit, slot);
     if (guardText) return guardText;
 
-    if (unit.id === 4) {
+    if (unit.ability === "row") {
       const targets = formationTargets(state.combat.playerSquad, "front");
       const damage = Math.max(1, Math.ceil(enemyAttackDamage(unit) * 0.7));
       targets.forEach((target) => {
@@ -2990,11 +3162,24 @@
       return `${combatUnitName(unit)} ${locale === "zh-Hant" ? "\u6a6b\u6383\u6574\u6392" : "sweeps the front row"}`;
     }
 
+    if (unit.ability === "heal") {
+      healWeakestAlly(state.combat.enemySquad, Math.max(1, Math.ceil(unit.atk * .7)), "enemy");
+      return `${combatUnitName(unit)} ${locale === "zh-Hant" ? "\u6cbb\u7652\u968a\u53cb" : "heals an ally"}`;
+    }
+
     const target = formationTarget(state.combat.playerSquad, unit.targetMode || "front");
     if (!target) return "";
     const targetIndex = Math.max(0, state.combat.playerSquad.indexOf(target));
     const point = combatPoint("player", targetIndex);
-    damageTarget(target, enemyAttackDamage(unit), point.x, point.y);
+    if (unit.ability === "double") {
+      const hit = Math.max(1, Math.ceil(unit.atk * .6));
+      damageTarget(target, hit, point.x, point.y);
+      damageTarget(target, hit, point.x, point.y);
+      return `${combatUnitName(unit)} ${locale === "zh-Hant" ? "\u767c\u52d5\u96d9\u91cd\u9023\u64ca" : "strikes twice"}`;
+    }
+    const damage = enemyAttackDamage(unit);
+    damageTarget(target, damage, point.x, point.y);
+    if (unit.ability === "drain") unit.hp = Math.min(unit.maxHp, unit.hp + Math.max(1, Math.ceil(damage * .5)));
     const targetLabel = unit.targetMode === "back" ? (locale === "zh-Hant" ? "\u653b\u64ca\u5f8c\u6392" : "strikes the back row") : (locale === "zh-Hant" ? "\u653b\u64ca\u524d\u6392" : "strikes the front row");
     return enemyAttackText(unit, `${combatUnitName(unit)} ${targetLabel}`);
   }
@@ -3109,8 +3294,35 @@
     saveSave();
   }
 
+  function startNextWaveBattle() {
+    clearScheduledCombatTimers();
+    const runId = ++combatRunSequence;
+    state.combat.enemySquad = generateEnemySquad(state.stage, state.round);
+    state.combat.step = 0;
+    state.combat.log = [];
+    state.combat.status = "";
+    state.combat.animating = true;
+    state.combat.ending = false;
+    state.combat.resolved = false;
+    state.combat.runId = runId;
+    state.combat.timer = 0;
+    state.combat.activeActor = null;
+    state.combat.activeActors = [];
+    state.combat.effects = [];
+    nodes.prepPhaseArea.classList.add("is-hidden");
+    nodes.combatArea.classList.remove("is-hidden");
+    nodes.combatSummary?.classList.remove("is-hidden");
+    updateHUD();
+    const nextBoss = state.combat.enemySquad.find((unit) => unit.isBoss);
+    combatLog(nextBoss ? t("bossIncoming", { boss: combatUnitName(nextBoss) }) : t("nextWaveCombat", { round: state.round, total: WAVES_PER_STAGE }));
+    updateCombatSummary();
+    runCombatAnimation();
+    window.WonderAnalytics?.track("battle_wave_start", { game_id: GAME_ID, stage: state.stage, wave: state.round });
+  }
+
   function endBattleRun(result, runId = state.combat.runId) {
     if (runId !== state.combat.runId || state.combat.resolved) return;
+    const settledRound = state.round;
     state.combat.resolved = true;
     state.combat.ending = false;
     state.combat.animating = false;
@@ -3131,11 +3343,7 @@
           save.bestRound = state.round;
           saveSave();
         }
-        // Return to shop prep
-        nodes.prepPhaseArea.classList.remove("is-hidden");
-        nodes.combatArea.classList.add("is-hidden");
-        nodes.combatSummary?.classList.add("is-hidden");
-        startRoundPrep();
+        startNextWaveBattle();
       }
     } else if (result === "lose") {
       awardTeamXp(Math.max(1, state.round));
@@ -3162,7 +3370,7 @@
       nodes.combatSummary?.classList.add("is-hidden");
       startRoundPrep();
     }
-    window.WonderAnalytics?.track("battle_end", { game_id: GAME_ID, stage: state.stage, wave: state.round, result });
+    window.WonderAnalytics?.track("battle_end", { game_id: GAME_ID, stage: state.stage, wave: settledRound, result });
   }
 
   // Revival Popup (spend 5 diamonds)
@@ -3266,7 +3474,7 @@
       nodes.resultPanel.classList.add("is-hidden");
       startExpedition();
     });
-    nodes.resultMenuBtn.addEventListener("click", renderMenu);
+    nodes.resultMenuBtn.addEventListener("click", showStageSelection);
 
     nodes.localeSelect.addEventListener("change", (e) => {
       setLocale(e.target.value);

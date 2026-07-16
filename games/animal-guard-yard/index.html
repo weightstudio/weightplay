@@ -141,7 +141,7 @@
               <span class="sr-only" data-ui="stages">Stages</span>
             </button>
             <div class="resource-pill" aria-label="Sun energy"><span class="hud-icon sun-icon" aria-hidden="true"></span><b id="energyText">0</b></div>
-            <button id="pauseBtn" class="play-settings" type="button" aria-label="Open stages" data-ui-aria-label="stages"><img src="../../assets/menu-settings.png" alt="" draggable="false" /></button>
+            <button id="pauseBtn" class="play-settings" type="button" aria-label="Pause battle" data-ui-aria-label="openPause"><img src="../../assets/menu-settings.png" alt="" draggable="false" /></button>
           </div>
           <div class="wave-status">
             <span id="waveText" class="wave-text">Stage 1</span>
@@ -162,6 +162,14 @@
             <button id="retryBtn" type="button" data-ui="retry">Try Again</button>
             <button id="resultStagesBtn" type="button" data-ui="stages">Stages</button>
             <a href="/kids/" data-ui="lobby">Lobby</a>
+          </div>
+        </div>
+        <div id="pausePanel" class="pause-panel hidden" role="dialog" aria-modal="true" aria-labelledby="pauseTitle" aria-describedby="pauseHint">
+          <div class="pause-card">
+            <strong id="pauseTitle" data-ui="pauseTitle">Battle paused</strong>
+            <span id="pauseHint" data-ui="pauseHint">Continue when you are ready, or leave this battle.</span>
+            <button id="resumeBtn" type="button" data-ui="resume">Continue</button>
+            <button id="leaveBattleBtn" type="button" data-ui="leaveBattle">Leave Battle</button>
           </div>
         </div>
       </section>

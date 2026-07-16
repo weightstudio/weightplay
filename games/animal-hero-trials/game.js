@@ -151,11 +151,25 @@
       view.classList.toggle("hidden", key !== name);
     });
     $("#choiceModal").classList.add("hidden");
-    $("#resultModal").classList.add("hidden");
+    setResultModal(false, false);
     if (name !== "battle") {
       cancelAnimationFrame(frame);
       if (run) run.active = false;
     }
+  }
+
+  function resultCoveredLayers() {
+    return [...$("#battleView").children].filter((node) => node.id !== "resultModal");
+  }
+
+  function setResultModal(open, focusPrimary = true) {
+    $("#resultModal").classList.toggle("hidden", !open);
+    resultCoveredLayers().forEach((layer) => {
+      layer.inert = open;
+      if (open) layer.setAttribute("aria-hidden", "true");
+      else layer.removeAttribute("aria-hidden");
+    });
+    if (open && focusPrimary) requestAnimationFrame(() => $("#resultNext").focus({ preventScroll: true }));
   }
 
   function localize() {
@@ -509,7 +523,7 @@
       $("#resultNext").textContent = t("retry");
       $("#resultNext").onclick = () => startTrial(run.stage);
     }
-    $("#resultModal").classList.remove("hidden");
+    setResultModal(true);
   }
 
   function loop(now) {
@@ -648,6 +662,12 @@
   $("#skillBtn").onclick = skill;
   $("#rerollBtn").onclick = rerollBlessings;
   $("#resultHome").onclick = () => { show("main"); localize(); };
+  $("#resultModal").addEventListener("keydown", (event) => {
+    if (event.key !== "Tab" || $("#resultModal").classList.contains("hidden")) return;
+    const actions = [$("#resultNext"), $("#resultHome")].filter((button) => !button.disabled);
+    if (event.shiftKey && document.activeElement === actions[0]) { event.preventDefault(); actions.at(-1).focus(); }
+    else if (!event.shiftKey && document.activeElement === actions.at(-1)) { event.preventDefault(); actions[0].focus(); }
+  });
   $("#masteryBtn").onclick = () => {
     const cost = 5 + mastery * 4;
     if (marks >= cost) {

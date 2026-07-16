@@ -1317,6 +1317,26 @@
     state.battle += 1;
   }
 
+  function draftCoveredLayers() {
+    return [
+      nodes.gamePanel.querySelector(".hud-row"),
+      nodes.gamePanel.querySelector(".battlefield"),
+      nodes.gamePanel.querySelector(".action-area"),
+    ].filter(Boolean);
+  }
+
+  function setDraftModalActive(active, focusPrimary = true) {
+    nodes.draftPanel.classList.toggle("hidden", !active);
+    draftCoveredLayers().forEach((layer) => {
+      layer.inert = active;
+      if (active) layer.setAttribute("aria-hidden", "true");
+      else layer.removeAttribute("aria-hidden");
+    });
+    if (active && focusPrimary) {
+      requestAnimationFrame(() => nodes.draftCards.querySelector("button:not(:disabled)")?.focus({ preventScroll: true }));
+    }
+  }
+
   function showDraftScreen() {
     nodes.draftCards.innerHTML = "";
     let draftLocked = false;
@@ -1336,12 +1356,13 @@
           button.classList.toggle("draft-picked", button === cardEl);
         });
         addDraftCardToMission(cardId);
-        nodes.draftPanel.classList.add("hidden");
+        setDraftModalActive(false, false);
         startNextBattle();
+        requestAnimationFrame(() => nodes.handRow.querySelector("button:not(:disabled)")?.focus({ preventScroll: true }));
       });
       nodes.draftCards.appendChild(cardEl);
     });
-    nodes.draftPanel.classList.remove("hidden");
+    setDraftModalActive(true);
   }
 
   function cardMarkup(card) {
@@ -1552,6 +1573,7 @@
   function startRun() {
     loadLocalState();
     resetRunState();
+    setDraftModalActive(false, false);
     nodes.menuPanel.classList.add("hidden");
     nodes.stagePanel.classList.add("hidden");
     nodes.stageReserve.classList.add("hidden");
@@ -1597,8 +1619,12 @@
       },
       forceDraftChoice: (cardId = "iron-tortoise") => {
         addDraftCardToMission(cardId);
-        nodes.draftPanel.classList.add("hidden");
+        setDraftModalActive(false, false);
         startNextBattle();
+        return window.__beastDeckSmoke.getState();
+      },
+      openDraft: () => {
+        showDraftScreen();
         return window.__beastDeckSmoke.getState();
       },
       forceDrawPack: () => {
@@ -1709,6 +1735,20 @@
     nodes.endTurnBtn.addEventListener("click", () => {
       window.WonderSound?.play("click");
       endPlayerTurn();
+    });
+    nodes.draftPanel.addEventListener("keydown", (event) => {
+      if (event.key !== "Tab" || nodes.draftPanel.classList.contains("hidden")) return;
+      const choices = [...nodes.draftCards.querySelectorAll("button:not(:disabled)")];
+      if (choices.length === 0) return;
+      const first = choices[0];
+      const last = choices.at(-1);
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
     });
     nodes.menuBtn.addEventListener("click", () => {
       window.WonderSound?.play("click");

@@ -210,6 +210,15 @@
           </div>
         </div>
 
+        <section id="draftPanel" class="draft-panel hidden" role="dialog" aria-modal="true" aria-labelledby="draftTitle" aria-describedby="draftDescription draftPermanentHint">
+          <div class="draft-card-wrap">
+            <h2 id="draftTitle" data-ui="chooseCard">Draft a Card</h2>
+            <p id="draftDescription" data-ui="chooseCardDesc">Choose one animal power to keep in this mission deck.</p>
+            <small id="draftPermanentHint" data-ui="draftPermanentHint">Mission draft cards last for this mission only. Permanent cards come from Gold Beast Packs on the menu.</small>
+            <div id="draftCards" class="draft-cards"></div>
+          </div>
+        </section>
+
         <section id="resultPanel" class="result-panel hidden" aria-live="polite">
           <div class="result-card">
             <strong id="resultTitle">Mission Complete</strong>
@@ -242,15 +251,6 @@
         </section>
       </section>
       <div class="battle-ad-reserve" aria-hidden="true"></div>
-
-      <section id="draftPanel" class="draft-panel hidden" aria-live="polite">
-        <div class="draft-card-wrap">
-          <h2 data-ui="chooseCard">Draft a Card</h2>
-          <p data-ui="chooseCardDesc">Choose one animal power to keep in this mission deck.</p>
-          <small data-ui="draftPermanentHint">Mission draft cards last for this mission only. Permanent cards come from Gold Beast Packs on the menu.</small>
-          <div id="draftCards" class="draft-cards"></div>
-        </div>
-      </section>
 
       <div id="loadingPanel" class="loading-panel">
         <div class="loading-card">
@@ -299,7 +299,7 @@
     <script src="../../src/i18n.js?v=20260703-i18n-clean1"></script>
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
     <script src="../../src/wallet.js?v=20260706-beast-economy1"></script>
-    <script src="game.js?v=20260712-beast-fixed-width3"></script>
+    <script src="game.js?v=20260716-beast-draft-modal1"></script>
     <script>
       (() => {
         const loadGameInfo = () => {

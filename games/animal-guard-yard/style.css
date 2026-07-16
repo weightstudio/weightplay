@@ -1773,6 +1773,7 @@ body.guard-yard-stage .stage-grid { padding-inline: calc((100% - 264px) / 2); to
 }
 
 .result-panel,
+.pause-panel,
 .loading-panel {
   position: fixed;
   inset: 0;
@@ -1785,6 +1786,7 @@ body.guard-yard-stage .stage-grid { padding-inline: calc((100% - 264px) / 2); to
 }
 
 .result-card,
+.pause-card,
 .loading-card {
   width: min(100%, 390px);
   border-radius: 24px;
@@ -1799,6 +1801,21 @@ body.guard-yard-stage .stage-grid { padding-inline: calc((100% - 264px) / 2); to
 
 .result-card strong {
   font-size: 1.65rem;
+}
+
+.pause-card strong {
+  font-size: 1.45rem;
+}
+
+.pause-card span {
+  color: #31513a;
+  line-height: 1.4;
+}
+
+.pause-card button:focus {
+  outline: 4px solid #fff176;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 3px #315f26;
 }
 
 .result-report {
@@ -2537,6 +2554,23 @@ body.guard-yard-playing .result-panel {
   place-items: center;
   overflow: hidden;
   background: rgba(22, 51, 31, 0.76);
+}
+
+body.guard-yard-playing .pause-panel {
+  position: absolute;
+  inset: 0;
+  width: 390px;
+  height: 450px;
+  padding: 12px;
+  place-items: center;
+  overflow: hidden;
+  background: rgba(22, 51, 31, 0.76);
+}
+
+body.guard-yard-playing .pause-panel .pause-card {
+  width: min(100%, 330px);
+  padding: 18px;
+  gap: 12px;
 }
 
 body.guard-yard-playing .result-panel .result-card {

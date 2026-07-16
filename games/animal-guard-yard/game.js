@@ -40,6 +40,11 @@
       chooseStage: "Choose Stage",
       menuHint: "Place animal guards and stop the wild beasts.",
       stages: "Stages",
+      openPause: "Pause battle",
+      pauseTitle: "Battle paused",
+      pauseHint: "Continue when you are ready, or leave this battle.",
+      resume: "Continue",
+      leaveBattle: "Leave Battle",
       loading: "Loading",
       nextStage: "Next Stage",
       retry: "Try Again",
@@ -166,6 +171,11 @@
       chooseStage: "\u9078\u64c7\u95dc\u5361",
       menuHint: "\u653e\u7f6e\u52d5\u7269\u5b88\u885b\uff0c\u64cb\u4f4f\u91ce\u7378\u9032\u653b\u3002",
       stages: "\u95dc\u5361",
+      openPause: "\u66ab\u505c\u6230\u9b25",
+      pauseTitle: "\u6230\u9b25\u5df2\u66ab\u505c",
+      pauseHint: "\u6e96\u5099\u597d\u5c31\u7e7c\u7e8c\uff0c\u4e5f\u53ef\u4ee5\u96e2\u958b\u9019\u5834\u6230\u9b25\u3002",
+      resume: "\u7e7c\u7e8c",
+      leaveBattle: "\u96e2\u958b\u6230\u9b25",
       loading: "\u8f09\u5165\u4e2d",
       nextStage: "\u4e0b\u4e00\u95dc",
       retry: "\u518d\u8a66\u4e00\u6b21",
@@ -333,6 +343,9 @@
     gameShell: document.querySelector("#playPanel .fixed-game-shell"),
     backToStagesBtn: $("backToStagesBtn"),
     pauseBtn: $("pauseBtn"),
+    pausePanel: $("pausePanel"),
+    resumeBtn: $("resumeBtn"),
+    leaveBattleBtn: $("leaveBattleBtn"),
     energyText: $("energyText"),
     baseText: $("baseText"),
     waveText: $("waveText"),
@@ -359,6 +372,7 @@
   let selectedUnit = units[0].id;
   let activeMenuTab = "stages";
   let running = false;
+  let paused = false;
   let energy = 0;
   let baseHp = 3;
   let spawned = 0;
@@ -994,6 +1008,7 @@
 
   function showMenu() {
     running = false;
+    paused = false;
     cancelAnimationFrame(raf);
     window.WeightPlayGame?.exitMobileGameMode?.();
     document.documentElement.classList.remove("guard-yard-playing");
@@ -1016,13 +1031,16 @@
     nodes.playPanel.classList.add("hidden");
     nodes.gameShell.classList.remove("hidden");
     nodes.gameShell.inert = false;
+    nodes.gameShell.removeAttribute("aria-hidden");
     nodes.resultPanel.classList.add("hidden");
+    nodes.pausePanel.classList.add("hidden");
     showMenuTab(activeMenuTab);
     window.requestAnimationFrame(() => window.scrollTo({ top: 0, left: 0, behavior: "auto" }));
   }
 
   function showMain() {
     running = false;
+    paused = false;
     cancelAnimationFrame(raf);
     window.WeightPlayGame?.exitMobileGameMode?.();
     document.documentElement.classList.remove("guard-yard-playing", "guard-yard-stage");
@@ -1032,7 +1050,9 @@
     nodes.playPanel.classList.add("hidden");
     nodes.gameShell.classList.remove("hidden");
     nodes.gameShell.inert = false;
+    nodes.gameShell.removeAttribute("aria-hidden");
     nodes.resultPanel.classList.add("hidden");
+    nodes.pausePanel.classList.add("hidden");
   }
 
   function startStage(index) {
@@ -1040,6 +1060,7 @@
     currentStage = index;
     const stage = stages[currentStage];
     running = true;
+    paused = false;
     energy = stage.energy;
     baseHp = stage.hp;
     spawned = 0;
@@ -1058,7 +1079,9 @@
     nodes.playPanel.classList.remove("hidden");
     nodes.gameShell.classList.remove("hidden");
     nodes.gameShell.inert = false;
+    nodes.gameShell.removeAttribute("aria-hidden");
     nodes.resultPanel.classList.add("hidden");
+    nodes.pausePanel.classList.add("hidden");
     document.documentElement.classList.add("guard-yard-playing");
     document.body.classList.add("guard-yard-playing");
     document.documentElement.classList.remove("guard-yard-stage");
@@ -1072,6 +1095,29 @@
     playSound("start");
     window.WeightPlayGame?.exitMobileGameMode?.();
     raf = requestAnimationFrame(tick);
+  }
+
+  function showPause() {
+    if (!running || paused) return;
+    running = false;
+    paused = true;
+    cancelAnimationFrame(raf);
+    nodes.gameShell.inert = true;
+    nodes.gameShell.setAttribute("aria-hidden", "true");
+    nodes.pausePanel.classList.remove("hidden");
+    window.requestAnimationFrame(() => nodes.resumeBtn.focus({ preventScroll: true }));
+  }
+
+  function resumeBattle() {
+    if (!paused) return;
+    paused = false;
+    nodes.pausePanel.classList.add("hidden");
+    nodes.gameShell.inert = false;
+    nodes.gameShell.removeAttribute("aria-hidden");
+    running = true;
+    lastTick = performance.now();
+    raf = requestAnimationFrame(tick);
+    window.requestAnimationFrame(() => nodes.pauseBtn.focus({ preventScroll: true }));
   }
 
   function buildBoard(stage) {
@@ -1828,7 +1874,14 @@
   nodes.startGameBtn?.addEventListener("click", showMenu);
   nodes.stageBackMainBtn?.addEventListener("click", showMain);
   nodes.backToStagesBtn.addEventListener("click", showMenu);
-  nodes.pauseBtn.addEventListener("click", showMenu);
+  nodes.pauseBtn.addEventListener("click", showPause);
+  nodes.resumeBtn.addEventListener("click", resumeBattle);
+  nodes.leaveBattleBtn.addEventListener("click", showMenu);
+  nodes.pausePanel.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape") return;
+    event.preventDefault();
+    resumeBattle();
+  });
   nodes.resultStagesBtn.addEventListener("click", showMenu);
   nodes.retryBtn.addEventListener("click", () => startStage(currentStage));
   nodes.nextStageBtn.addEventListener("click", () => startStage(Math.min(currentStage + 1, stages.length - 1)));

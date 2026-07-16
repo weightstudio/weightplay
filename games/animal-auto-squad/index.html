@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="robots" content="index,follow" />
     <meta name="theme-color" content="#0d1b15" />
-    <meta name="description" content="Animal Auto Squad is a 13+ tactical drafting auto-battler. Draft, upgrade, and position animal warriors to defeat shadow beasts in a forest expedition." />
+    <meta name="description" content="Animal Auto Squad is a 13+ tactical auto-battler with 30 stages, six regions, varied enemy formations, and six unique animal bosses." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="game" />
     <meta property="og:title" content="Animal Auto Squad - Tactical Drafting Auto-Battler" />
@@ -46,7 +46,7 @@
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
-  <link rel="stylesheet" href="style.css?v=20260716-auto-squad-visual11" />
+  <link rel="stylesheet" href="style.css?v=20260716-auto-squad-visual12" />
   </head>
   <body data-tutorial-auto-show="false">
     <main class="squad-app">
@@ -79,7 +79,7 @@
         <img class="cover" src="../../assets/animal-auto-squad-cover.webp" alt="Animal Auto Squad Cover" />
         <div class="menu-copy">
           <strong id="menuHeadingText" data-ui="menuTitle">Draft and position your animal squad!</strong>
-          <span id="menuSubText" data-ui="menuHint">Build your permanent squad and clear balanced five-wave forest stages.</span>
+          <span id="menuSubText" data-ui="menuHint">Build your permanent squad and conquer 30 five-wave stages across six regions.</span>
           <button id="showStageBtn" class="primary-btn" type="button">Choose Expedition</button>
           <div class="profile-grid">
             <div><span data-ui="bestExpedition">Best Run</span><strong id="bestRoundsText">Round 0</strong></div>
@@ -104,7 +104,7 @@
         </div>
         <div class="stage-workspace">
           <section id="stageSelectPane" class="stage-pane is-active" role="tabpanel" aria-labelledby="stageTabBtn">
-            <p id="stageSetupText" class="stage-setup-text">Pick an unlocked forest stage, then prepare your squad for the expedition.</p>
+            <p id="stageSetupText" class="stage-setup-text">Swipe through six regions, choose an unlocked stage, then prepare your formation.</p>
             <div id="stageRail" class="stage-rail" aria-label="Stage selection"></div>
             <div class="stage-legend"><span id="stageSwipeText">↔ Swipe</span><span id="stageDeployText">Tap an unlocked stage to deploy</span></div>
           </section>
@@ -191,7 +191,7 @@
             <div class="result-actions" data-wp-return="battle">
               <button id="nextStageBtn" class="primary-btn is-hidden" type="button">Next Stage</button>
               <button id="retryBtn" class="primary-btn" type="button" data-ui="retry">Try Again</button>
-              <button id="resultMenuBtn" class="secondary-btn" type="button" data-ui="backToMenu">Main Menu</button>
+              <button id="resultMenuBtn" class="secondary-btn" type="button" data-ui="backToStages">Back to Stages</button>
             </div>
           </div>
         </section>
@@ -223,13 +223,13 @@
         <div class="game-info-title">
           <span class="game-info-kicker">WeightPlay Original Game Guide</span>
           <h2>Animal Auto Squad - How to Play</h2>
-          <p>Animal Auto Squad is a tactical strategy auto-battler where players train, level up, and position chibi animal warriors to defeat shadow beasts in automated combat. Clear six locally saved forest stages, each with five balanced waves, while building squad synergies and choosing relic buffs. Optional Diamond purchases cover relic rerolls, expedition revives, and cosmetic skins.</p>
+          <p>Animal Auto Squad is a tactical strategy auto-battler where players train, level up, and position chibi animal warriors against varied enemy formations. Clear 30 locally saved stages across six regions, each with five designed waves and a unique regional Boss, while building squad synergies and choosing relic buffs.</p>
         </div>
       </div>
       <div class="game-info-sections">
         <div class="game-info-section">
           <h3>How to Play</h3>
-          <ol><li>Build a six-animal formation: the top three slots are the front row and the bottom three are the back row.</li><li>Tap a backpack animal, then tap a formation slot; scroll the backpack vertically to browse every character.</li><li>Combine front attackers, backline hunters, row sweepers, healers, and guards.</li><li>Use temporary Supplies to strengthen the selected animal, then start the automated battle.</li><li>Losing a wave costs 1 Heart; clear all 5 waves to unlock the next forest stage.</li></ol>
+          <ol><li>Build a six-animal formation: the top three slots are the front row and the bottom three are the back row.</li><li>Tap a backpack animal, then tap a formation slot; scroll the backpack vertically to browse every character.</li><li>Combine front attackers, backline hunters, row sweepers, healers, and guards for each region.</li><li>Use temporary Supplies to strengthen the selected animal, then fight five continuous waves.</li><li>Clear each region's fifth stage to defeat its Boss and unlock the next region.</li></ol>
         </div>
         <div class="game-info-section game-info-strategy">
           <h3>Strategy Tips</h3>
@@ -256,7 +256,7 @@
     <script src="../../src/i18n.js?v=20260703-i18n-clean1"></script>
     <script src="../../src/tutorial.js?v=20260711-auto-squad-guide1"></script>
     <script src="../../src/wallet.js?v=20260706-crystal-diamond-charm1"></script>
-  <script src="game.js?v=20260716-auto-squad-visual12"></script>
+  <script src="game.js?v=20260716-auto-squad-visual15"></script>
     <script>
       (() => {
         const loadGameInfo = () => {

@@ -45,6 +45,7 @@
 
     <section class="play-shell hidden" data-screen="battle">
       <div class="canvas-slot"><div class="logical-canvas battle-canvas">
+        <div id="battleLive" class="battle-live">
         <header class="battle-header"><button id="battleBack" class="play-return" data-aria="backAlbum" aria-label="Back to album">&larr;</button><h2 id="pageTitle"></h2><span id="regionProgress">0</span></header>
         <div class="objective" data-copy="objective">Pick a color, then tap the animal.</div>
         <div class="board-wrap"><canvas id="coloringCanvas" width="768" height="1152" data-aria="board" aria-label="Coloring page"></canvas><div id="boardFeedback" class="board-feedback" aria-live="polite"></div></div>
@@ -57,16 +58,14 @@
           <button id="clear" class="tool" data-icon="4"><i></i><span data-copy="clear">Clear</span></button>
           <button id="finish" class="primary finish" data-copy="finish">Finish</button>
         </footer>
-      </div></div>
-    </section>
-
-    <section class="play-shell hidden" data-screen="result">
-      <div class="canvas-slot"><div class="logical-canvas result-canvas">
-        <div class="result-art"><img src="../../assets/animal-coloring-studio-lion-guide.webp" alt=""><i aria-hidden="true"></i></div>
-        <h2 data-copy="complete">Page complete!</h2>
-        <p id="resultSummary"></p>
-        <p class="skill" data-copy="skill">Color Recognition &middot; Focus &middot; Hand-Eye Coordination</p>
-        <div class="result-actions"><button id="nextPage" class="primary" data-copy="next">Next page</button><button id="resultAlbum" class="secondary" data-copy="album">Album</button></div>
+        </div>
+        <section id="resultPanel" class="result-canvas hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultSummary">
+          <div class="result-art"><img id="resultPreview" src="../../assets/animal-coloring-studio-lion-guide.webp" alt=""><i aria-hidden="true"></i></div>
+          <h2 id="resultTitle" data-copy="complete">Page complete!</h2>
+          <p id="resultSummary"></p>
+          <p class="skill" data-copy="skill">Color Recognition &middot; Focus &middot; Hand-Eye Coordination</p>
+          <div class="result-actions"><button id="nextPage" class="primary" data-copy="next">Next page</button><button id="resultAlbum" class="secondary" data-copy="album">Album</button></div>
+        </section>
       </div></div>
     </section>
 
