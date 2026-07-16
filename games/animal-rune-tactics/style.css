@@ -473,6 +473,11 @@ body.is-rune-playing .back-btn span {
   min-width: 0;
 }
 
+.tile:focus-visible {
+  outline: 4px solid #f8d66a;
+  outline-offset: 2px;
+}
+
 .tile.is-move {
   border-color: rgba(103, 242, 190, 0.85);
   background: rgba(103, 242, 190, 0.15);

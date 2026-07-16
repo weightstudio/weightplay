@@ -179,7 +179,7 @@
 
             <!-- Canvas viewport -->
             <div class="canvas-container">
-              <canvas id="gameCanvas" width="800" height="1000"></canvas>
+              <canvas id="gameCanvas" width="800" height="1000" tabindex="0"></canvas>
               <!-- Mobile Virtual Joystick -->
               <div id="joystickContainer" class="joystick-container">
                 <div id="joystickKnob" class="joystick-knob"></div>
@@ -239,14 +239,15 @@
       </section>
 
       <!-- Relic Draft Panel (Pause Overlay) -->
-      <section id="draftPanel" class="draft-overlay hidden">
+      <section id="draftPanel" class="draft-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="draftTitle" aria-describedby="draftDescription draftShortcutHint">
         <div class="draft-card-box">
-          <h2 data-ui="chooseCard">Choose a Relic Upgrade</h2>
-          <p class="draft-desc" data-ui="chooseCardDesc">Select one of these ancient relics to empower your explorer.</p>
+          <h2 id="draftTitle" data-ui="chooseCard">Choose a Relic Upgrade</h2>
+          <p id="draftDescription" class="draft-desc" data-ui="chooseCardDesc">Select one of these ancient relics to empower your explorer.</p>
+          <p id="draftShortcutHint" class="draft-shortcut-hint" data-ui="draftShortcutHint">Keyboard: press 1, 2, or 3 to choose. Press R to reroll.</p>
           <div id="draftCards" class="draft-cards-row">
             <!-- Rendered by JS -->
           </div>
-          <button id="rerollDraftBtn" class="draft-reroll-btn" type="button">
+          <button id="rerollDraftBtn" class="draft-reroll-btn" type="button" aria-keyshortcuts="R">
             <img class="ui-icon ui-icon--tiny" src="../../assets/weightplay-diamond.svg" alt="" aria-hidden="true">
             <span data-ui="rerollRelics">Reroll relic choices</span>
             <b id="rerollDraftCost">3</b>

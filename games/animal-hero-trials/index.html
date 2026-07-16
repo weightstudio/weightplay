@@ -20,6 +20,7 @@
   <link rel="stylesheet" href="../../src/game-page-info.css" />
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="progress-cards.css" />
+  <style>.canvas-wrap canvas:focus-visible{outline:5px solid #ffd45f;outline-offset:-5px}</style>
   <style>
     .canvas-wrap canvas{position:absolute;left:50%;top:50%;width:auto;height:auto;object-fit:initial;transform:translate(-50%,-50%)}
     #resultModal{bottom:56px}
@@ -48,7 +49,7 @@
     </section>
     <section id="battleView" class="view battle-view hidden" data-play-viewport data-wp-logical-battle-canvas>
       <header class="battle-head"><button id="battleBack" class="icon-btn" data-wp-return="battle" type="button" aria-label="Back">&larr;</button><div class="health"><span id="roomText">Room 1/3</span><div><i id="hpFill"></i></div></div><button id="skillBtn" class="skill-btn" type="button"><img src="../../assets/animal-hero-trials-icon-roaring-mane.webp" alt="" /><span id="cooldownText">ROAR</span></button></header>
-      <div class="canvas-wrap"><canvas id="game" width="390" height="560"></canvas><div id="joystick" class="joystick"><i></i></div><p id="objective"></p></div>
+      <div class="canvas-wrap"><canvas id="game" width="390" height="560" tabindex="0" aria-describedby="objective"></canvas><div id="joystick" class="joystick"><i></i></div><p id="objective"></p></div>
     </section>
     <div id="battleAd" class="battle-ad" aria-hidden="true"></div>
     <div id="choiceModal" class="modal hidden"><section><h2 data-t="blessing">Choose a Blessing</h2><div id="choices" class="choices"></div><div class="reroll-row"><button id="rerollBtn" type="button"><img src="../../assets/weightplay-diamond.svg" alt="" /><span id="rerollLabel">Reroll 3</span></button><small id="rerollStatus"></small></div></section></div>

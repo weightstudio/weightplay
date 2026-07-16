@@ -257,6 +257,17 @@ body:not(.dash-playing) #startPanel {
   box-shadow: 0 22px 50px rgba(8, 47, 73, 0.36);
 }
 
+#gameCanvas:focus-visible {
+  outline: 4px solid #fef08a;
+  outline-offset: -6px;
+}
+
+#resultPanel :is(button, a):focus-visible,
+#resultPanel:not(.hidden) #againBtn:focus {
+  outline: 4px solid #fef08a;
+  outline-offset: 2px;
+}
+
 canvas {
   display: block;
   width: 100%;

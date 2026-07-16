@@ -46,7 +46,7 @@
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
-    <link rel="stylesheet" href="style.css?v=20260715-auto-squad-header1" />
+    <link rel="stylesheet" href="style.css?v=20260716-auto-squad-visual2" />
   </head>
   <body data-tutorial-auto-show="false">
     <main class="squad-app">
@@ -81,31 +81,11 @@
           <strong id="menuHeadingText" data-ui="menuTitle">Draft and position your animal squad!</strong>
           <span id="menuSubText" data-ui="menuHint">Build your permanent squad and clear balanced five-wave forest stages.</span>
           <button id="showStageBtn" class="primary-btn" type="button">Choose Expedition</button>
-          
-          <!-- Cosmetic and Stats Grid -->
           <div class="profile-grid">
             <div><span data-ui="bestExpedition">Best Run</span><strong id="bestRoundsText">Round 0</strong></div>
             <div><span data-ui="expeditionsCleared">Cleared Runs</span><strong id="clearedRunsText">0</strong></div>
             <div><span data-ui="teamLevel">Team Level</span><strong id="teamLevelText">Lv.1</strong></div>
             <div><span data-ui="diamonds">Diamonds</span><strong id="diamondText">0</strong></div>
-          </div>
-          <div id="teamBonusText" class="team-bonus-note" aria-live="polite"></div>
-
-          <!-- Diamond Cosmetic Store Section -->
-          <div class="cosmetic-store">
-            <span data-ui="cosmeticStoreTitle" class="store-label">Mascot Cosmetic Skin (15 Diamonds)</span>
-            <div class="skin-actions">
-              <button id="buySkinBtn" class="store-btn" type="button"></button>
-              <button id="equipSkinBtn" class="secondary-btn is-hidden" type="button"></button>
-            </div>
-          </div>
-
-          <div class="training-store" aria-live="polite">
-            <div class="training-header">
-              <span id="trainingTitleText" class="store-label">Squad Training</span>
-              <strong id="trainingGoldText">0 Gold</strong>
-            </div>
-            <div id="trainingRoster" class="training-roster"></div>
           </div>
         </div>
       </section>
@@ -118,9 +98,34 @@
             <span id="stageProgressText">1 / 6</span>
           </div>
         </div>
-        <p id="stageSetupText" class="stage-setup-text">Pick an unlocked forest stage, then prepare your squad for the expedition.</p>
-        <div id="stageRail" class="stage-rail" aria-label="Stage selection"></div>
-        <div class="stage-ad-reserve" aria-hidden="true"></div>
+        <div class="stage-tabs" role="tablist" aria-label="Expedition management">
+          <button id="stageTabBtn" class="stage-tab is-active" type="button" role="tab" aria-selected="true" aria-controls="stageSelectPane">⚔ <span>Stages</span></button>
+          <button id="trainingTabBtn" class="stage-tab" type="button" role="tab" aria-selected="false" aria-controls="trainingPane">⬆ <span>Training</span></button>
+        </div>
+        <div class="stage-workspace">
+          <section id="stageSelectPane" class="stage-pane is-active" role="tabpanel" aria-labelledby="stageTabBtn">
+            <p id="stageSetupText" class="stage-setup-text">Pick an unlocked forest stage, then prepare your squad for the expedition.</p>
+            <div id="stageRail" class="stage-rail" aria-label="Stage selection"></div>
+            <div class="stage-legend"><span id="stageSwipeText">↔ Swipe</span><span id="stageDeployText">Tap an unlocked stage to deploy</span></div>
+          </section>
+          <section id="trainingPane" class="stage-pane training-pane" role="tabpanel" aria-labelledby="trainingTabBtn" hidden>
+            <div id="teamBonusText" class="team-bonus-note" aria-live="polite"></div>
+            <div class="cosmetic-store">
+              <span data-ui="cosmeticStoreTitle" class="store-label">Mascot Cosmetic Skin (15 Diamonds)</span>
+              <div class="skin-actions">
+                <button id="buySkinBtn" class="store-btn" type="button"></button>
+                <button id="equipSkinBtn" class="secondary-btn is-hidden" type="button"></button>
+              </div>
+            </div>
+            <div class="training-store" aria-live="polite">
+              <div class="training-header">
+                <span id="trainingTitleText" class="store-label">Squad Training</span>
+                <strong id="trainingGoldText">0 Gold</strong>
+              </div>
+              <div id="trainingRoster" class="training-roster"></div>
+            </div>
+          </section>
+        </div>
       </section>
 
       <!-- Active Play Viewport Container -->
@@ -162,7 +167,7 @@
 
         <!-- Combat Canvas Area (Animate Battle step by step) -->
         <div id="combatArea" class="combat-area is-hidden">
-          <canvas id="gameCanvas" width="960" height="540" aria-label="Animal Auto Squad Arena"></canvas>
+          <canvas id="gameCanvas" width="720" height="900" aria-label="Animal Auto Squad Arena"></canvas>
           <div id="combatStatusText" class="combat-status" data-ui="combatIntro">Prepare for Battle!</div>
         </div>
 
@@ -250,7 +255,7 @@
     <script src="../../src/i18n.js?v=20260703-i18n-clean1"></script>
     <script src="../../src/tutorial.js?v=20260711-auto-squad-guide1"></script>
     <script src="../../src/wallet.js?v=20260706-crystal-diamond-charm1"></script>
-    <script src="game.js?v=20260710-auto-squad-stages1"></script>
+    <script src="game.js?v=20260716-auto-squad-visual2"></script>
     <script>
       (() => {
         const loadGameInfo = () => {

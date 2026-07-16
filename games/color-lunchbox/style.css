@@ -757,6 +757,11 @@ a {
   box-shadow: 0 2px 0 #c99b44;
 }
 
+.result-actions :is(button, a):focus {
+  outline: 4px solid #17314f;
+  outline-offset: 2px;
+}
+
 .result-actions a {
   background: #ffffff;
 }

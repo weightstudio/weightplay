@@ -264,6 +264,9 @@
     canvasWrap.classList.add("hidden");
     hud.classList.add("hidden");
     resultPanel.classList.add("hidden");
+    canvasWrap.inert = false;
+    canvasWrap.removeAttribute("aria-hidden");
+    requestAnimationFrame(() => startBtn.focus({ preventScroll: true }));
   }
 
   window.addEventListener("resize", updateDashFrame);
@@ -279,6 +282,8 @@
     document.querySelector(".dash-game")?.removeAttribute("data-play-viewport");
     mainPanel.classList.add("hidden");
     canvasWrap.classList.remove("hidden");
+    canvasWrap.inert = false;
+    canvasWrap.removeAttribute("aria-hidden");
     resultPanel.classList.add("hidden");
     hud.classList.remove("hidden");
     lastTime = performance.now();
@@ -290,6 +295,7 @@
     requestAnimationFrame(() => {
       exitSharedPlayViewport();
       updateDashFrame();
+      canvas.focus({ preventScroll: true });
     });
   }
 
@@ -411,7 +417,10 @@
     resultText.textContent = t("resultText", { score: state.score, best });
     renderSkillReport(previousBest);
     renderLeaderboard();
+    canvasWrap.inert = true;
+    canvasWrap.setAttribute("aria-hidden", "true");
     resultPanel.classList.remove("hidden");
+    requestAnimationFrame(() => againBtn.focus({ preventScroll: true }));
     window.WonderSound?.play("win");
     window.WonderAnalytics?.track("game_complete", {
       game_id: GAME_ID,
@@ -847,13 +856,15 @@
     window.WonderAnalytics?.track("game_restart", { game_id: GAME_ID, score: state.score, locale: locale() });
     startRun();
   });
-  window.addEventListener("keydown", (event) => {
+  canvas.addEventListener("keydown", (event) => {
     const key = event.key.toLowerCase();
-    if (key === "arrowleft" || key === "a") moveLane(-1);
-    if (key === "arrowright" || key === "d") moveLane(1);
+    if (!state.running || !["arrowleft", "arrowright", "a", "d"].includes(key)) return;
+    event.preventDefault();
+    moveLane(key === "arrowleft" || key === "a" ? -1 : 1);
   });
   canvas.addEventListener("pointerdown", (event) => {
     event.preventDefault();
+    canvas.focus({ preventScroll: true });
     pointerStartX = event.clientX;
     activePointerId = event.pointerId;
     canvas.setPointerCapture?.(event.pointerId);

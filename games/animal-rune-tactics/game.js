@@ -467,6 +467,7 @@
   let profile = loadProfile();
   let state = null;
   let claimedRewardId = null;
+  let gridCursor = { x: 0, y: 0 };
 
   function t(key, vars = {}) {
     let value = (text[locale] && text[locale][key]) || text.en[key] || key;
@@ -793,6 +794,11 @@
   }
 
   function render() {
+    const focusedTile = document.activeElement?.closest?.("#grid .tile");
+    const restoreGridFocus = Boolean(focusedTile);
+    if (focusedTile) gridCursor = { x: Number(focusedTile.dataset.x), y: Number(focusedTile.dataset.y) };
+    gridCursor.x = Math.max(0, Math.min(cols - 1, gridCursor.x));
+    gridCursor.y = Math.max(0, Math.min(rows - 1, gridCursor.y));
     nodes.missionText.textContent = state.mission;
     nodes.turnText.textContent = state.turn;
     nodes.enemyCountText.textContent = `${livingEnemies().length}/${state.enemies.length}`;
@@ -806,9 +812,15 @@
         tile.className = "tile";
         tile.dataset.x = x;
         tile.dataset.y = y;
+        tile.tabIndex = x === gridCursor.x && y === gridCursor.y ? 0 : -1;
+        tile.setAttribute("aria-rowindex", String(y + 1));
+        tile.setAttribute("aria-colindex", String(x + 1));
         if (movable.some((p) => p.x === x && p.y === y)) tile.classList.add("is-move");
         if (attackable.some((p) => p.x === x && p.y === y)) tile.classList.add("is-attack");
-        tile.addEventListener("click", () => onTile(x, y));
+        tile.addEventListener("click", () => {
+          gridCursor = { x, y };
+          onTile(x, y);
+        });
         const unit = unitAt(x, y);
         if (unit) {
           if (unit.team === "hero" && state.acted.has(unit.id)) tile.classList.add("is-acted");
@@ -832,6 +844,27 @@
     renderSelected();
     renderTurnRoster();
     updateActionButtons();
+    if (restoreGridFocus) {
+      nodes.grid.querySelector(`.tile[data-x="${gridCursor.x}"][data-y="${gridCursor.y}"]`)?.focus({ preventScroll: true });
+    }
+  }
+
+  function moveGridFocus(key, tile) {
+    const direction = {
+      ArrowLeft: [-1, 0],
+      ArrowRight: [1, 0],
+      ArrowUp: [0, -1],
+      ArrowDown: [0, 1],
+    }[key];
+    if (!direction) return false;
+    const x = Math.max(0, Math.min(cols - 1, Number(tile.dataset.x) + direction[0]));
+    const y = Math.max(0, Math.min(rows - 1, Number(tile.dataset.y) + direction[1]));
+    gridCursor = { x, y };
+    nodes.grid.querySelectorAll(".tile").forEach((item) => {
+      item.tabIndex = Number(item.dataset.x) === x && Number(item.dataset.y) === y ? 0 : -1;
+    });
+    nodes.grid.querySelector(`.tile[data-x="${x}"][data-y="${y}"]`)?.focus({ preventScroll: true });
+    return true;
   }
 
   function renderUnit(unit) {
@@ -1313,6 +1346,10 @@
     nodes.heroUpgradeGrid?.addEventListener("click", (event) => {
       const id = event.target?.closest?.("[data-hero-upgrade]")?.dataset?.heroUpgrade;
       if (id) upgradeHero(id);
+    });
+    nodes.grid.addEventListener("keydown", (event) => {
+      const tile = event.target.closest?.(".tile");
+      if (tile && moveGridFocus(event.key, tile)) event.preventDefault();
     });
     nodes.attackBtn.addEventListener("click", () => {
       const hero = selectedHero();

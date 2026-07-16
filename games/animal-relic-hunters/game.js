@@ -126,6 +126,7 @@
       keysLabel: "Keys",
       chooseCard: "Choose a Relic Upgrade",
       chooseCardDesc: "Select one of these ancient relics to empower your explorer.",
+      draftShortcutHint: "Keyboard: press 1, 2, or 3 to choose. Press R to reroll.",
       rerollRelics: "Reroll relic choices",
       rerollRelicsUsed: "Reroll used for this level.",
       rerollRelicsNeedDiamonds: "Not enough Diamonds for a reroll.",
@@ -236,6 +237,7 @@
       keysLabel: "鑰匙",
       chooseCard: "選擇遺跡能力",
       chooseCardDesc: "選擇古代遺跡之力以強化你的探險家能力。",
+      draftShortcutHint: "鍵盤：按 1、2、3 選擇，按 R 重抽。",
       rerollRelics: "重抽遺跡能力",
       rerollRelicsUsed: "本次升級已使用重抽。",
       rerollRelicsNeedDiamonds: "鑽石不足，無法重抽。",
@@ -343,6 +345,7 @@
     keysLabel: "鑰匙",
     chooseCard: "選擇遺跡能力",
     chooseCardDesc: "選擇一個古代遺跡能力，強化你的探險家。",
+    draftShortcutHint: "鍵盤：按 1、2、3 選擇，按 R 重抽。",
     rerollRelics: "重抽遺跡能力",
     rerollRelicsUsed: "本次升級已使用重抽。",
     rerollRelicsNeedDiamonds: "鑽石不足，無法重抽。",
@@ -729,14 +732,16 @@
       language: "Language selector",
       stageBack: "Back to main",
       regions: "Ruin regions",
-      battleBack: "Back to preparation"
+      battleBack: "Back to preparation",
+      arena: "Battle arena. Move with WASD or arrow keys."
     },
     "zh-Hant": {
       lobby: "\u8fd4\u56de\u5927\u5ef3",
       language: "\u8a9e\u8a00\u9078\u64c7\u5668",
       stageBack: "\u8fd4\u56de\u9996\u9801",
       regions: "\u907a\u8de1\u5340\u57df",
-      battleBack: "\u8fd4\u56de\u884c\u524d\u6e96\u5099"
+      battleBack: "\u8fd4\u56de\u884c\u524d\u6e96\u5099",
+      arena: "\u6230\u9b25\u5340\u57df\u3002\u4f7f\u7528 WASD \u6216\u65b9\u5411\u9375\u79fb\u52d5\u3002"
     }
   };
 
@@ -747,6 +752,7 @@
     nodes.stageBackBtn.setAttribute("aria-label", labels.stageBack);
     nodes.expeditionRail.setAttribute("aria-label", labels.regions);
     nodes.backToStageBtn.setAttribute("aria-label", labels.battleBack);
+    nodes.gameCanvas.setAttribute("aria-label", labels.arena);
   }
 
   const trainingDefs = [
@@ -1408,6 +1414,7 @@
 
     // Pause game loop
     state.gameActive = false;
+    clearMovementInput();
 
     draftRerollUsed = false;
     nodes.rerollDraftStatus.textContent = "";
@@ -1415,6 +1422,17 @@
     renderDraftChoices();
     nodes.draftPanel.classList.remove("hidden");
     updateDraftRerollUI();
+    requestAnimationFrame(() => nodes.draftCards.querySelector(".draft-item-btn")?.focus());
+  }
+
+  function chooseDraftRelic(relicId) {
+    applyRelic(relicId);
+    nodes.draftPanel.classList.add("hidden");
+    state.gameActive = true;
+    renderStatsPanel();
+    updateHUDText();
+    nodes.gameCanvas.focus({ preventScroll: true });
+    state.gameLoopId = requestAnimationFrame(updateGameEngine);
   }
 
   function renderDraftChoices(keepCurrent = false) {
@@ -1426,10 +1444,11 @@
     }
 
     nodes.draftCards.innerHTML = "";
-    currentDraftChoices.forEach((relicId) => {
+    currentDraftChoices.forEach((relicId, index) => {
       const cardEl = document.createElement("button");
       cardEl.className = "draft-item-btn";
       cardEl.type = "button";
+      cardEl.setAttribute("aria-keyshortcuts", String(index + 1));
       
       let iconSrc = uiAssets.magnet;
       if (relicId === "relic_speed") iconSrc = uiAssets.rate;
@@ -1444,13 +1463,7 @@
       `;
 
       cardEl.addEventListener("click", () => {
-        applyRelic(relicId);
-        nodes.draftPanel.classList.add("hidden");
-        // Resume game loop
-        state.gameActive = true;
-        renderStatsPanel();
-        updateHUDText();
-        state.gameLoopId = requestAnimationFrame(updateGameEngine);
+        chooseDraftRelic(relicId);
       });
 
       nodes.draftCards.appendChild(cardEl);
@@ -1487,6 +1500,7 @@
     renderDraftChoices();
     updateDraftRerollUI();
     updateDiamondShopUI();
+    nodes.draftCards.querySelector(".draft-item-btn")?.focus();
     window.WonderSound?.play("upgrade");
   }
 
@@ -2140,13 +2154,36 @@
   }
 
   // Keyboard Event registers
+  function clearMovementInput() {
+    keysPressed = {};
+    moveVector = { x: 0, y: 0 };
+    mouseMoveActive = false;
+    touchStartPos = null;
+    nodes.joystickKnob.style.transform = "translate(0px, 0px)";
+  }
+
   function setupInputs() {
     window.addEventListener("keydown", (e) => {
+      if (!nodes.draftPanel.classList.contains("hidden")) {
+        if (e.ctrlKey || e.metaKey || e.altKey) return;
+        const choiceIndex = ["1", "2", "3"].indexOf(e.key);
+        if (choiceIndex >= 0) {
+          e.preventDefault();
+          nodes.draftCards.querySelectorAll(".draft-item-btn")[choiceIndex]?.click();
+        } else if (e.key.toLowerCase() === "r" && !nodes.rerollDraftBtn.disabled) {
+          e.preventDefault();
+          nodes.rerollDraftBtn.click();
+        }
+        return;
+      }
+      if (!state.gameActive) return;
       keysPressed[e.key] = true;
+      if (["w", "a", "s", "d", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.key)) e.preventDefault();
     });
     window.addEventListener("keyup", (e) => {
       keysPressed[e.key] = false;
     });
+    window.addEventListener("blur", clearMovementInput);
 
     function updateMouseMoveVector(event) {
       const rect = nodes.gameCanvas.getBoundingClientRect();
@@ -2352,6 +2389,14 @@
           state.gameActive = false;
           const dropResult = presentLootDecision(key);
           return { ...this.snapshot(), dropResult };
+        },
+        forceDraft() {
+          state.gameActive = true;
+          handleLevelUp();
+          return {
+            choices: currentDraftChoices.slice(),
+            active: state.gameActive,
+          };
         },
         bulletVisuals() {
           return ["default", "sword-rare", "dagger-epic"].map((key) => ({

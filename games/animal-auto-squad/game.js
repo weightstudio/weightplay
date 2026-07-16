@@ -11,6 +11,10 @@
       back: "Back",
       languageSelection: "Language selection",
       stageSelection: "Stage selection",
+      stageTab: "Stages",
+      trainingTab: "Training",
+      stageSwipe: "↔ Swipe stages",
+      stageDeploy: "Tap an unlocked stage to deploy",
       activeSquadSlots: "Active squad slots",
       shopShelfItems: "Character backpack items",
       battleArena: "Animal Auto Squad Arena",
@@ -372,6 +376,10 @@
     loadingText: $("loadingText"),
     menuPanel: $("menuPanel"),
     stagePanel: $("stagePanel"),
+    stageTabBtn: $("stageTabBtn"),
+    trainingTabBtn: $("trainingTabBtn"),
+    stageSelectPane: $("stageSelectPane"),
+    trainingPane: $("trainingPane"),
     showStageBtn: $("showStageBtn"),
     stageBackBtn: $("stageBackBtn"),
     stageSetupText: $("stageSetupText"),
@@ -475,6 +483,10 @@
 
   Object.assign(zhRuntimeText, {
     language: "\u8a9e\u8a00",
+    stageTab: "\u95dc\u5361",
+    trainingTab: "\u8a13\u7df4",
+    stageSwipe: "\u2194 \u6ed1\u52d5\u95dc\u5361",
+    stageDeploy: "\u9ede\u9078\u5df2\u89e3\u9396\u95dc\u5361\u51fa\u767c",
     chooseExpedition: "\u9078\u64c7\u9060\u5f81",
     bestExpedition: "\u6700\u4f73\u9060\u5f81",
     expeditionsCleared: "\u5df2\u901a\u904e\u95dc\u5361",
@@ -1021,6 +1033,7 @@
     nodes.gamePanel.classList.remove("is-result");
     nodes.resultPanel.classList.add("is-hidden");
     nodes.combatSummary?.classList.add("is-hidden");
+    setStageTab("stages");
     nodes.bestRoundsText.textContent = t("stageProgress", { unlocked: save.unlockedStage, total: STAGE_COUNT });
     nodes.clearedRunsText.textContent = String(save.completedStages.length);
     if (nodes.teamLevelText) {
@@ -1046,7 +1059,22 @@
     nodes.gamePanel.classList.remove("is-result");
     nodes.resultPanel.classList.add("is-hidden");
     save = loadSave();
+    setStageTab("stages");
     renderStageSelector();
+  }
+
+  function setStageTab(tab) {
+    const training = tab === "training";
+    nodes.stageTabBtn?.classList.toggle("is-active", !training);
+    nodes.trainingTabBtn?.classList.toggle("is-active", training);
+    nodes.stageTabBtn?.setAttribute("aria-selected", String(!training));
+    nodes.trainingTabBtn?.setAttribute("aria-selected", String(training));
+    nodes.stageSelectPane?.classList.toggle("is-active", !training);
+    nodes.trainingPane?.classList.toggle("is-active", training);
+    if (nodes.stageSelectPane) nodes.stageSelectPane.hidden = training;
+    if (nodes.trainingPane) nodes.trainingPane.hidden = !training;
+    if (training) renderTrainingRoster();
+    else requestAnimationFrame(() => renderStageSelector(true));
   }
 
   function stageLabel(stage) {
@@ -1293,6 +1321,10 @@
     nodes.backToLobbyBtn.setAttribute("aria-label", t("backToLobby"));
     nodes.localeSelect.setAttribute("aria-label", t("languageSelection"));
     nodes.stageBackBtn.setAttribute("aria-label", t("back"));
+    if (nodes.stageTabBtn) nodes.stageTabBtn.querySelector("span").textContent = t("stageTab");
+    if (nodes.trainingTabBtn) nodes.trainingTabBtn.querySelector("span").textContent = t("trainingTab");
+    if ($("stageSwipeText")) $("stageSwipeText").textContent = t("stageSwipe");
+    if ($("stageDeployText")) $("stageDeployText").textContent = t("stageDeploy");
     nodes.stageRail.setAttribute("aria-label", t("stageSelection"));
     nodes.squadGrid.setAttribute("aria-label", t("activeSquadSlots"));
     nodes.shopRow.setAttribute("aria-label", t("shopShelfItems"));
@@ -2090,7 +2122,7 @@
   function renderShop() {
     nodes.shopRow.innerHTML = "";
 
-    const visibleSlots = Math.max(5, state.backpack.length);
+    const visibleSlots = Math.max(2, state.backpack.length);
     for (let idx = 0; idx < visibleSlots; idx++) {
       const cell = document.createElement("div");
       cell.className = "shop-cell";
@@ -2345,15 +2377,53 @@
     animationId = requestAnimationFrame(runCombatAnimation);
 
     // Clear Canvas
-    canvasCtx.clearRect(0, 0, 960, 540);
+    canvasCtx.clearRect(0, 0, 720, 900);
 
     // Draw battlefield background
     if (imageCache.bg) {
-      canvasCtx.drawImage(imageCache.bg, 0, 0, 960, 540);
+      const image = imageCache.bg;
+      const sourceRatio = image.naturalWidth / image.naturalHeight;
+      const targetRatio = 720 / 900;
+      let sx = 0;
+      let sy = 0;
+      let sw = image.naturalWidth;
+      let sh = image.naturalHeight;
+      if (sourceRatio > targetRatio) {
+        sw = image.naturalHeight * targetRatio;
+        sx = (image.naturalWidth - sw) / 2;
+      } else {
+        sh = image.naturalWidth / targetRatio;
+        sy = (image.naturalHeight - sh) / 2;
+      }
+      canvasCtx.drawImage(image, sx, sy, sw, sh, 0, 0, 720, 900);
+      const shade = canvasCtx.createLinearGradient(0, 0, 0, 900);
+      shade.addColorStop(0, "rgba(9,20,16,.3)");
+      shade.addColorStop(.48, "rgba(9,20,16,.08)");
+      shade.addColorStop(1, "rgba(3,10,8,.46)");
+      canvasCtx.fillStyle = shade;
+      canvasCtx.fillRect(0, 0, 720, 900);
     } else {
       canvasCtx.fillStyle = "#0c1f17";
-      canvasCtx.fillRect(0, 0, 960, 540);
+      canvasCtx.fillRect(0, 0, 720, 900);
     }
+
+    canvasCtx.save();
+    canvasCtx.textAlign = "center";
+    canvasCtx.font = "900 24px Outfit, system-ui";
+    canvasCtx.fillStyle = "rgba(255,255,255,.92)";
+    canvasCtx.strokeStyle = "rgba(0,0,0,.75)";
+    canvasCtx.lineWidth = 5;
+    const enemyLabel = locale === "zh-Hant" ? "\u5f71\u4e4b\u5c0f\u968a" : "SHADOW SQUAD";
+    const playerLabel = locale === "zh-Hant" ? "\u4f60\u7684\u5c0f\u968a" : "YOUR SQUAD";
+    canvasCtx.strokeText(enemyLabel, 360, 112);
+    canvasCtx.fillText(enemyLabel, 360, 112);
+    canvasCtx.strokeText(playerLabel, 360, 822);
+    canvasCtx.fillText(playerLabel, 360, 822);
+    canvasCtx.font = "900 28px Outfit, system-ui";
+    canvasCtx.fillStyle = "#ffd666";
+    canvasCtx.strokeText("VS", 360, 454);
+    canvasCtx.fillText("VS", 360, 454);
+    canvasCtx.restore();
 
     // Step logic every 90 frames
     state.combat.timer++;
@@ -2393,26 +2463,27 @@
     canvasCtx.strokeStyle = "rgba(255, 255, 255, 0.2)";
     canvasCtx.lineWidth = 1;
     canvasCtx.beginPath();
-    canvasCtx.roundRect(x, y, 36, 16, 8);
+    canvasCtx.roundRect(x, y, 44, 20, 10);
     canvasCtx.fill();
     canvasCtx.stroke();
-    canvasCtx.font = "bold 10px Outfit, system-ui";
+    canvasCtx.font = "bold 12px Outfit, system-ui";
     canvasCtx.textAlign = "center";
     canvasCtx.textBaseline = "middle";
     canvasCtx.fillStyle = color;
-    canvasCtx.fillText(textValue, x + 18, y + 8);
+    canvasCtx.fillText(textValue, x + 22, y + 10);
     canvasCtx.restore();
   }
 
   function drawSquadLine(squad, team) {
     const isPlayer = team === "player";
-    const mobileCombat = window.matchMedia?.("(max-width: 640px)")?.matches;
-    const xBase = isPlayer ? (mobileCombat ? 390 : 400) : (mobileCombat ? 570 : 560); // front unit centers
-    const spacing = mobileCombat ? 84 : 100;
+    const count = Math.max(1, squad.length);
+    const spacing = Math.min(126, 600 / count);
+    const rowWidth = spacing * Math.max(0, count - 1);
+    const xBase = 360 - rowWidth / 2;
     
     squad.forEach((unit, idx) => {
       // Slide active slots forward
-      const targetX = xBase + (isPlayer ? -1 : 1) * idx * spacing;
+      const targetX = xBase + idx * spacing;
       
       // Draw card frame
       canvasCtx.save();
@@ -2426,20 +2497,20 @@
         state.combat.shakeFrames--;
       }
       
-      const w = mobileCombat ? 82 : 88;
-      const h = mobileCombat ? 116 : 112;
+      const w = 106;
+      const h = 154;
       const actor = (state.combat.activeActors || []).find((item) => item.team === team && item.index === idx && item.life > 0);
       const isActing = actor?.team === team && actor.index === idx && actor.life > 0;
       const actorProgress = isActing ? 1 - actor.life / Math.max(1, actor.maxLife || 26) : 0;
       const bounce = isActing ? Math.sin(actorProgress * Math.PI) : 0;
       const actorOffset = bounce * (isActing && actor.style === "cast" ? 18 : 12);
       const scale = isActing ? 1 + bounce * 0.08 : 1;
-      const centerY = (mobileCombat ? 286 : 258) - actorOffset;
+      const centerY = (isPlayer ? 676 : 250) + (isPlayer ? -actorOffset : actorOffset);
       const x = targetX + shakeX - (w * scale) / 2;
       const y = centerY - (h * scale) / 2;
       const drawW = w * scale;
       const drawH = h * scale;
-      const imageBox = { x: x + 9, y: y + 24, w: w - 18, h: h - 48 };
+      const imageBox = { x: x + 10, y: y + 30, w: w - 20, h: h - 58 };
       state.combat.layout?.push({ team, index: idx, x, y, w: drawW, h: drawH, imageBox });
 
       // Draw backdrop
@@ -2498,11 +2569,11 @@
         }
       }
 
-      drawStatPill(`A${unit.atk}`, x + 6, y + drawH - 20, "#ffd666");
-      drawStatPill(`H${Math.max(0, Math.round(unit.hp))}`, x + drawW - 42, y + drawH - 20, "#ff7081");
+      drawStatPill(`A${unit.atk}`, x + 6, y + drawH - 25, "#ffd666");
+      drawStatPill(`H${Math.max(0, Math.round(unit.hp))}`, x + drawW - 50, y + drawH - 25, "#ff7081");
 
       if (isPlayer) {
-        drawStatPill(`L${unitLevel(unit)}`, x + drawW / 2 - 18, y + 23, "#ffd666");
+        drawStatPill(`L${unitLevel(unit)}`, x + drawW / 2 - 22, y + 26, "#ffd666");
       }
 
       // Level star indicator for player units
@@ -2524,7 +2595,7 @@
     const hp = Math.max(0, Math.round(unit.hp || 0));
     const maxHp = Math.max(1, Math.round(unit.maxHp || hp || 1));
     const pct = Math.max(0, Math.min(1, hp / maxHp));
-    const barHeight = 12;
+    const barHeight = 16;
 
     canvasCtx.save();
     canvasCtx.fillStyle = "rgba(0, 0, 0, 0.82)";
@@ -2540,7 +2611,7 @@
     canvasCtx.roundRect(x + 2, y + 2, Math.max(4, (width - 4) * pct), barHeight - 4, 5);
     canvasCtx.fill();
 
-    canvasCtx.font = "bold 10px Outfit, system-ui";
+    canvasCtx.font = "bold 12px Outfit, system-ui";
     canvasCtx.textAlign = "center";
     canvasCtx.textBaseline = "middle";
     canvasCtx.lineWidth = 3;
@@ -3009,6 +3080,8 @@
   function setupEvents() {
     nodes.showStageBtn.addEventListener("click", showStageSelection);
     nodes.stageBackBtn.addEventListener("click", renderMenu);
+    nodes.stageTabBtn?.addEventListener("click", () => setStageTab("stages"));
+    nodes.trainingTabBtn?.addEventListener("click", () => setStageTab("training"));
     nodes.rerollShopBtn.addEventListener("click", rerollShop);
     nodes.startBattleBtn.addEventListener("click", startBattle);
     nodes.quitRunBtn.addEventListener("click", quitRun);
@@ -3099,6 +3172,8 @@
     const viewportHeight = viewport?.height >= window.innerHeight * 0.75 ? viewport.height : window.innerHeight;
     document.documentElement.style.setProperty("--squad-vw", `${viewportWidth}px`);
     document.documentElement.style.setProperty("--squad-vh", `${viewportHeight}px`);
+    const scale = Math.min(Math.max(0.1, (viewportWidth - 8) / 390), Math.max(0.1, (viewportHeight - 64) / 780));
+    document.documentElement.style.setProperty("--squad-scale", String(scale));
   }
 
   updateBattleViewport();

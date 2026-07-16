@@ -54,6 +54,7 @@
   };
 
   Object.assign(copy.en, {
+    arenaLabel: "Hero Trials arena. Move with Arrow keys or WASD. Press Space to use the hero skill.",
     earnedMarks: "+{gain} Trial Marks · Total {total}.",
     trialUnlocked: "Trial {next} unlocked.",
     trialAvailable: "Trial {next} remains available.",
@@ -64,6 +65,7 @@
     masteryUpgradeNeed: "All heroes Max HP +{current} → +{next} · Need {cost} / Have {marks} marks",
   });
   Object.assign(copy["zh-Hant"], {
+    arenaLabel: "英雄試煉戰場。使用方向鍵或 WASD 移動，按空白鍵使用英雄技能。",
     mastery: "\u751f\u547d\u7cbe\u901a",
     earnedMarks: "\u7372\u5f97 {gain} \u679a\u8a66\u7149\u5370\u8a18 \u00b7 \u7d2f\u7a4d {total} \u679a\u3002",
     trialUnlocked: "\u5df2\u89e3\u9396\u8a66\u7149 {next}\u3002",
@@ -87,6 +89,7 @@
   let rerollConfirmTimer = 0;
   let pointer = null;
   const keys = {};
+  const battleControlCodes = new Set(["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "KeyA", "KeyD", "KeyW", "KeyS", "Space"]);
   let stick = { x: 0, y: 0 };
 
   const views = {
@@ -140,6 +143,7 @@
 
   function show(name) {
     clearRerollConfirmation();
+    if (name !== "battle") Object.keys(keys).forEach((key) => { keys[key] = false; });
     document.body.dataset.gameView = name;
     Object.entries(views).forEach(([key, view]) => {
       view.classList.toggle("hidden", key !== name);
@@ -154,6 +158,7 @@
 
   function localize() {
     document.documentElement.lang = locale;
+    $("#game").setAttribute("aria-label", t("arenaLabel"));
     $$('[data-t]').forEach((node) => {
       node.textContent = t(node.dataset.t);
     });
@@ -247,6 +252,7 @@
     };
     $("#skillBtn img").src = ASSET_ROOT + hero.asset;
     spawn();
+    $("#game").focus({ preventScroll: true });
     loop(performance.now());
   }
 
@@ -650,10 +656,18 @@
     }
   };
   addEventListener("keydown", (event) => {
+    const battleOwnsInput = document.body.dataset.gameView === "battle"
+      && run?.active
+      && $("#choiceModal").classList.contains("hidden")
+      && $("#resultModal").classList.contains("hidden");
+    const nativeControl = event.target?.closest?.("button, a, input, select, textarea");
+    if (!battleOwnsInput || nativeControl || !battleControlCodes.has(event.code)) return;
+    event.preventDefault();
     keys[event.code] = true;
     if (event.code === "Space") skill();
   });
   addEventListener("keyup", (event) => { keys[event.code] = false; });
+  addEventListener("blur", () => Object.keys(keys).forEach((key) => { keys[key] = false; }));
   bindStick();
   localize();
 })();

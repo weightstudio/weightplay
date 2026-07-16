@@ -16,6 +16,12 @@
       chooseStage: "Choose Stage",
       menuHint: "Match shape friends to the right train cars.",
       previewAction: "Tap or drag the shape friend",
+      back: "Back",
+      stageList: "Stage list",
+      guideStrategy: "Strategy Tips",
+      guideTipName: "Say the shape name out loud before placing it.",
+      guideTipLook: "Look at both the outline and the color when a stage has similar pieces.",
+      guideTipRetry: "If a child misses, encourage another look instead of rushing.",
       stages: "Stages",
       loading: "Loading",
       nextStage: "Next Stage",
@@ -60,6 +66,12 @@
       chooseStage: "選擇關卡",
       menuHint: "把形狀朋友送到正確的小火車車廂。",
       previewAction: "點擊或拖曳形狀朋友",
+      back: "返回",
+      stageList: "關卡列表",
+      guideStrategy: "遊玩小技巧",
+      guideTipName: "放入車廂前，可以先一起說出形狀名稱。",
+      guideTipLook: "遇到相似圖形時，同時看看外框和顏色。",
+      guideTipRetry: "配對錯誤時，鼓勵孩子再看一次，不用急。",
       stages: "關卡",
       loading: "載入中",
       nextStage: "下一關",
@@ -207,6 +219,24 @@
       node.textContent = t(node.dataset.ui);
     });
     nodes.localeSelect.value = locale;
+    nodes.localeSelect.setAttribute("aria-label", t("language"));
+    nodes.stageBackBtn.setAttribute("aria-label", t("back"));
+    nodes.stageGrid.setAttribute("aria-label", t("stageList"));
+    const strategy = document.querySelector(".game-info-strategy");
+    if (strategy) {
+      const heading = strategy.querySelector("h3");
+      const tips = strategy.querySelectorAll("li");
+      if (heading) heading.textContent = t("guideStrategy");
+      ["guideTipName", "guideTipLook", "guideTipRetry"].forEach((key, index) => {
+        if (tips[index]) tips[index].textContent = t(key);
+      });
+    }
+  }
+
+  function preserveGameLocaleAfterSharedGuide() {
+    queueMicrotask(localizeStatic);
+    setTimeout(localizeStatic, 0);
+    setTimeout(localizeStatic, 260);
   }
 
   function updateMetaContent(selector, value) {
@@ -223,6 +253,30 @@
     updateMetaContent('meta[name="twitter:description"]', t("metaOgDescription"));
   }
 
+  function activateStageNumber(stageNo) {
+    if (stageNo > unlocked) {
+      showFloatingText(t("locked"));
+      playSound("click");
+      return;
+    }
+    startStage(stageNo - 1);
+  }
+
+  function centerCurrentStage() {
+    if (!document.body.classList.contains("wp-standard-stage-page")) return;
+    const available = [...nodes.stageGrid.querySelectorAll(".stage-card:not(.locked)")].at(-1);
+    if (!available) return;
+    const target = available.offsetLeft - (nodes.stageGrid.clientWidth - available.offsetWidth) / 2;
+    nodes.stageGrid.style.setProperty("scroll-behavior", "auto", "important");
+    nodes.stageGrid.style.setProperty("scroll-snap-type", "none", "important");
+    nodes.stageGrid.scrollLeft = target;
+    available.classList.add("is-current");
+    requestAnimationFrame(() => {
+      nodes.stageGrid.style.removeProperty("scroll-behavior");
+      nodes.stageGrid.style.removeProperty("scroll-snap-type");
+    });
+  }
+
   function renderStageGrid() {
     nodes.stageGrid.innerHTML = "";
     stages.forEach((stage, index) => {
@@ -230,6 +284,7 @@
       const button = document.createElement("button");
       button.className = "stage-card";
       button.type = "button";
+      button.dataset.stage = String(stageNo);
       if (stageNo > unlocked) button.classList.add("locked");
       button.innerHTML = `
         <b class="stage-shapes">${stage.cars.map((shape) => `<img src="${shapes[shape].token}" alt="" />`).join("")}</b>
@@ -237,20 +292,23 @@
         <em>${t("stageGoal", { cars: stage.cars.length, tasks: stage.tasks.length })}</em>
         <span>${"★".repeat(stars[stageNo] || 0)}${"☆".repeat(3 - (stars[stageNo] || 0))}</span>
       `;
-      button.addEventListener("click", () => {
-        if (stageNo > unlocked) {
-          showFloatingText(t("locked"));
-          playSound("click");
-          return;
-        }
-        startStage(index);
-      });
+      button.addEventListener("click", () => activateStageNumber(stageNo));
       nodes.stageGrid.appendChild(button);
     });
-    requestAnimationFrame(() => {
-      const available = [...nodes.stageGrid.querySelectorAll(".stage-card:not(.locked)")].at(-1);
-      available?.scrollIntoView({ block: "nearest", inline: "center", behavior: "auto" });
-    });
+    requestAnimationFrame(() => requestAnimationFrame(centerCurrentStage));
+    setTimeout(centerCurrentStage, 160);
+  }
+
+  function updateStageFrame() {
+    if (!document.body.classList.contains("wp-standard-stage-page")) return;
+    const viewport = window.visualViewport;
+    const width = Math.round(viewport?.width || innerWidth);
+    const height = Math.round(viewport?.height || innerHeight);
+    const scale = Math.min(width / 390, height / 844);
+    const root = document.documentElement.style;
+    root.setProperty("--shape-stage-scale", String(scale));
+    root.setProperty("--shape-stage-left", `${(width - 390 * scale) / 2}px`);
+    root.setProperty("--shape-stage-top", `${height - 844 * scale}px`);
   }
 
   function updateShapeFrame() {
@@ -274,8 +332,11 @@
   }
 
   window.addEventListener("resize", updateShapeFrame);
+  window.addEventListener("resize", updateStageFrame);
   window.addEventListener("orientationchange", updateShapeFrame);
+  window.addEventListener("orientationchange", updateStageFrame);
   window.visualViewport?.addEventListener("resize", updateShapeFrame, { passive: true });
+  window.visualViewport?.addEventListener("resize", updateStageFrame, { passive: true });
 
   function showMenu() {
     nodes.menuPanel.classList.add("hidden");
@@ -288,6 +349,7 @@
     document.querySelector(".shape-game")?.setAttribute("data-play-viewport", "");
     selectedPassenger = false;
     renderStageGrid();
+    updateStageFrame();
   }
 
   function showMain() {
@@ -558,10 +620,20 @@
     nodes.stageGrid.addEventListener("pointerup", finishDrag);
     nodes.stageGrid.addEventListener("pointercancel", finishDrag);
     nodes.stageGrid.addEventListener("click", (event) => {
-      if (!suppressStageClick) return;
-      suppressStageClick = false;
+      if (suppressStageClick) {
+        suppressStageClick = false;
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        return;
+      }
+      if (event.target.closest?.(".stage-card")) return;
+      const hit = [...nodes.stageGrid.querySelectorAll(".stage-card")].find((card) => {
+        const rect = card.getBoundingClientRect();
+        return event.clientX >= rect.left && event.clientX <= rect.right && event.clientY >= rect.top && event.clientY <= rect.bottom;
+      });
+      if (!hit) return;
       event.preventDefault();
-      event.stopImmediatePropagation();
+      activateStageNumber(Number(hit.dataset.stage));
     }, true);
   }
 
@@ -588,6 +660,7 @@
       locale = nodes.localeSelect.value;
       localStorage.setItem(localeKey, locale);
       localizeStatic();
+      preserveGameLocaleAfterSharedGuide();
       renderStageGrid();
       if (!nodes.resultPanel.classList.contains("hidden") && lastResult) {
         renderResult(lastResult);
@@ -609,6 +682,7 @@
   document.head.appendChild(style);
 
   localizeStatic();
+  window.addEventListener("load", preserveGameLocaleAfterSharedGuide, { once: true });
   bindEvents();
   initPassenger();
   initStageRail();

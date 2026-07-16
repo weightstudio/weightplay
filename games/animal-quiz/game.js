@@ -10,7 +10,6 @@ const stageSelectTitle = document.querySelector("#stageSelectTitle");
 const stageSetupTitle = document.querySelector("#stageSetupTitle");
 const stageSetupText = document.querySelector("#stageSetupText");
 const stageBackBtn = document.querySelector("#stageBackBtn");
-const stageAdReserve = document.querySelector("#stageAdReserve");
 const stageGrid = document.querySelector("#stageGrid");
 const levelLine = document.querySelector(".level-line");
 const levelText = document.querySelector("#levelText");
@@ -336,6 +335,8 @@ const state = {
   completed: false,
   unlockedStage: 0,
 };
+let stageDrag = null;
+let suppressStageClick = false;
 
 function locale() {
   return window.WonderI18n?.locale() || "en";
@@ -480,7 +481,6 @@ function showMain() {
   document.body.classList.add("quiz-main");
   resultPanel.classList.add("hidden");
   mainPanel.classList.remove("hidden");
-  stageAdReserve.classList.add("hidden");
   setQuizVisible(false);
   stageSelectPanel.classList.add("hidden");
   updateQuizFrame();
@@ -496,8 +496,14 @@ function updateQuizFrame() {
     && Math.abs(visualWidth - innerWidth) <= 2
     && visualHeight <= innerHeight + 2;
   const root = document.documentElement.style;
-  root.setProperty("--quiz-vw", `${useVisual ? visualWidth : innerWidth}px`);
-  root.setProperty("--quiz-vh", `${useVisual ? visualHeight : innerHeight}px`);
+  const width = useVisual ? visualWidth : innerWidth;
+  const height = useVisual ? visualHeight : innerHeight;
+  const scale = Math.min(Math.max(1, width - 8) / 390, Math.max(1, height - 8) / 788);
+  root.setProperty("--quiz-vw", `${width}px`);
+  root.setProperty("--quiz-vh", `${height}px`);
+  root.setProperty("--quiz-frame-scale", String(scale));
+  root.setProperty("--quiz-frame-left", `${(width - 390 * scale) / 2}px`);
+  root.setProperty("--quiz-frame-top", `${height - 788 * scale - 4}px`);
 }
 
 window.addEventListener?.("resize", updateQuizFrame, { passive: true });
@@ -511,15 +517,12 @@ function showStageSelect() {
   document.body.classList.remove("quiz-playing", "quiz-main");
   document.body.classList.add("quiz-stage-select");
   mainPanel.classList.add("hidden");
-  stageAdReserve.classList.remove("hidden");
   updateQuizFrame();
   window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   setQuizVisible(false);
   renderStageCards();
-  window.requestAnimationFrame(() => {
-    const unlockedCards = [...stageGrid.querySelectorAll(".stage-card.unlocked")];
-    unlockedCards.at(-1)?.scrollIntoView({ block: "nearest", inline: "center", behavior: "instant" });
-  });
+  centerLatestUnlockedStage();
+  window.requestAnimationFrame(centerLatestUnlockedStage);
 }
 
 function renderStageCards() {
@@ -548,6 +551,66 @@ function renderStageCards() {
   );
 }
 
+function centerLatestUnlockedStage() {
+  const unlockedCards = [...stageGrid.querySelectorAll(".stage-card.unlocked")];
+  const target = unlockedCards.at(-1);
+  if (!target) return;
+  const desired = target.offsetLeft + target.offsetWidth / 2 - stageGrid.clientWidth / 2;
+  stageGrid.scrollLeft = Math.max(0, Math.min(desired, stageGrid.scrollWidth - stageGrid.clientWidth));
+}
+
+function settleStageRail() {
+  const cards = [...stageGrid.querySelectorAll(".stage-card")];
+  if (!cards.length) return;
+  const center = stageGrid.scrollLeft + stageGrid.clientWidth / 2;
+  const nearest = cards.reduce((best, card) => {
+    const distance = Math.abs(card.offsetLeft + card.offsetWidth / 2 - center);
+    return !best || distance < best.distance ? { card, distance } : best;
+  }, null)?.card;
+  nearest?.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+}
+
+function initStageRail() {
+  stageGrid.addEventListener("pointerdown", (event) => {
+    if (!document.body.classList.contains("quiz-stage-select") || event.button !== 0 || event.isPrimary === false) return;
+    stageDrag = { id: event.pointerId, x: event.clientX, scroll: stageGrid.scrollLeft, moved: false };
+  });
+  stageGrid.addEventListener("pointermove", (event) => {
+    if (!stageDrag || stageDrag.id !== event.pointerId) return;
+    const delta = event.clientX - stageDrag.x;
+    if (!stageDrag.moved && Math.abs(delta) < 8) return;
+    if (!stageDrag.moved) {
+      stageDrag.moved = true;
+      stageGrid.setPointerCapture?.(event.pointerId);
+      stageGrid.style.setProperty("scroll-snap-type", "none", "important");
+    }
+    const rect = stageGrid.getBoundingClientRect();
+    const coordinateScale = rect.width > 0 ? stageGrid.clientWidth / rect.width : 1;
+    stageGrid.scrollLeft = stageDrag.scroll - delta * coordinateScale;
+    event.preventDefault();
+  });
+  const finish = (event) => {
+    if (!stageDrag || stageDrag.id !== event.pointerId) return;
+    const moved = stageDrag.moved;
+    if (moved) stageGrid.releasePointerCapture?.(event.pointerId);
+    stageDrag = null;
+    stageGrid.style.removeProperty("scroll-snap-type");
+    if (!moved) return;
+    suppressStageClick = true;
+    settleStageRail();
+    setTimeout(() => { suppressStageClick = false; }, 0);
+  };
+  stageGrid.addEventListener("pointerup", finish);
+  stageGrid.addEventListener("pointercancel", finish);
+  stageGrid.addEventListener("click", (event) => {
+    if (!suppressStageClick) return;
+    suppressStageClick = false;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+  }, true);
+  stageGrid.addEventListener("dragstart", (event) => event.preventDefault());
+}
+
 function startStage(stageIndex) {
   if (!state.ready || stageIndex > state.unlockedStage) return;
   state.stageIndex = stageIndex;
@@ -556,7 +619,6 @@ function startStage(stageIndex) {
   state.completed = false;
   resultPanel.classList.add("hidden");
   mainPanel.classList.add("hidden");
-  stageAdReserve.classList.add("hidden");
   setQuizVisible(true);
   document.body.classList.remove("quiz-main", "quiz-stage-select");
   document.body.classList.add("quiz-playing");
@@ -818,6 +880,7 @@ stageSelectBtn.addEventListener("click", () => {
 });
 
 renderStaticText();
+initStageRail();
 scheduleReadinessFallback();
 preloadGame().catch((error) => {
   console.error(error);

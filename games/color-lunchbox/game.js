@@ -465,6 +465,13 @@
     if (document.webkitFullscreenElement) document.webkitExitFullscreen?.();
   }
 
+  function setBattleCovered(covered) {
+    [gameHud, gamePlayContent].forEach((region) => {
+      region.inert = covered;
+      region.setAttribute("aria-hidden", covered ? "true" : "false");
+    });
+  }
+
   window.addEventListener("resize", updateLunchFrame);
   window.addEventListener("orientationchange", updateLunchFrame);
   visualViewport?.addEventListener("resize", updateLunchFrame, { passive: true });
@@ -478,10 +485,11 @@
     stageSelectPanel.classList.add("hidden");
     gameHud.classList.add("hidden");
     gamePlayContent.classList.add("hidden");
+    setBattleCovered(false);
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   }
 
-  function showStageSelect() {
+  function showStageSelect(focusCurrent = false) {
     document.body.classList.remove("lunch-main");
     document.body.classList.remove("lunch-playing");
     document.body.classList.add("lunch-stage");
@@ -489,9 +497,14 @@
     mainPanel.classList.add("hidden");
     gameHud.classList.add("hidden");
     gamePlayContent.classList.add("hidden");
+    setBattleCovered(false);
     stageSelectPanel.classList.remove("hidden");
     exitSharedPlayViewport();
     renderStageCards();
+    if (focusCurrent) requestAnimationFrame(() => requestAnimationFrame(() => {
+      const unlocked = [...stageGrid.querySelectorAll(".stage-card.unlocked")];
+      unlocked[Math.min(state.stageIndex, unlocked.length - 1)]?.focus({ preventScroll: true });
+    }));
     updateLunchFrame();
     requestAnimationFrame(updateLunchFrame);
   }
@@ -726,7 +739,7 @@
     );
   }
 
-  function startStage(stageIndex) {
+  function startStage(stageIndex, focusChoice = false) {
     document.body.classList.remove("lunch-stage");
     document.body.classList.add("lunch-playing");
     const stage = stages[stageIndex];
@@ -740,6 +753,7 @@
 
     stageSelectPanel.classList.add("hidden");
     resultPanel.classList.add("hidden");
+    setBattleCovered(false);
     gameHud.classList.remove("hidden");
     gamePlayContent.classList.remove("hidden");
     exitSharedPlayViewport();
@@ -750,6 +764,7 @@
     setupBoxes(stage);
     updateHUD();
     loadFood();
+    if (focusChoice) requestAnimationFrame(() => dropZone.querySelector(".lunchbox")?.focus({ preventScroll: true }));
     requestAnimationFrame(updateLunchFrame);
     window.WonderSound?.play("click");
     window.WonderAnalytics?.track("game_start", { game_id: GAME_ID, stage: stage.id, locale: locale() });
@@ -862,6 +877,8 @@
     gameHud.classList.add("hidden");
     gamePlayContent.classList.add("hidden");
     resultPanel.classList.remove("hidden");
+    setBattleCovered(true);
+    (isFinalStage ? againBtn : nextStageBtn).focus({ preventScroll: true });
     window.WonderSound?.play("win");
     window.WonderAnalytics?.track("game_complete", {
       game_id: GAME_ID,
@@ -935,12 +952,12 @@
       stage: stages[state.stageIndex].id,
       locale: locale(),
     });
-    startStage(state.stageIndex);
+    startStage(state.stageIndex, true);
   });
-  nextStageBtn.addEventListener("click", () => startStage(Math.min(state.stageIndex + 1, stages.length - 1)));
+  nextStageBtn.addEventListener("click", () => startStage(Math.min(state.stageIndex + 1, stages.length - 1), true));
   stageSelectBtn.addEventListener("click", () => {
     window.WonderSound?.play("click");
-    showStageSelect();
+    showStageSelect(true);
   });
   battleBackBtn.addEventListener("click", showStageSelect);
 
