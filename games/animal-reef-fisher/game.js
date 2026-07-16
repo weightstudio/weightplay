@@ -119,6 +119,12 @@
       lureReady: "Rare lure ready for the next expedition.",
       buyLure: "Rare Lure {cost}D",
       buySonar: "Sonar Ping {cost}D",
+      confirmLure: "Confirm Lure · {before}→{after}D",
+      confirmSonar: "Confirm Sonar · {before}→{after}D",
+      lureBuyLabel: "Rare Lure improves the chance of one rare marker next expedition. Costs 3 Diamonds. Balance {balance}.",
+      sonarBuyLabel: "Sonar Ping reveals and locks the next fish before casting. Costs 2 Diamonds. Balance {balance}.",
+      lureConfirmLabel: "Confirm Rare Lure. Spend 3 Diamonds. Balance {before} to {after}.",
+      sonarConfirmLabel: "Confirm Sonar Ping. Spend 2 Diamonds. Balance {before} to {after}.",
       sonar: "Sonar",
       upgrade: "Upgrade",
       max: "Max",
@@ -205,6 +211,12 @@
       lureReady: "稀有魚餌已準備在下一次遠征使用。",
       buyLure: "稀有魚餌 {cost}鑽",
       buySonar: "聲納脈衝 {cost}鑽",
+      confirmLure: "確認魚餌 · {before}→{after}鑽",
+      confirmSonar: "確認聲納 · {before}→{after}鑽",
+      lureBuyLabel: "稀有魚餌會提高下次遠征出現一個稀有標記的機會。花費 3 顆鑽石，目前餘額 {balance}。",
+      sonarBuyLabel: "聲納脈衝會在拋竿前揭示並鎖定下一條魚。花費 2 顆鑽石，目前餘額 {balance}。",
+      lureConfirmLabel: "確認購買稀有魚餌。花費 3 顆鑽石，餘額由 {before} 變為 {after}。",
+      sonarConfirmLabel: "確認購買聲納脈衝。花費 2 顆鑽石，餘額由 {before} 變為 {after}。",
       sonar: "聲納",
       upgrade: "升級",
       max: "滿級",
@@ -366,6 +378,8 @@
   let selectedZone = save.selectedZone || "sunny";
   let state = "loading";
   let run = null;
+  let diamondPurchasePending = "";
+  let diamondConfirmTimer = 0;
   let pointer = { down: false, x: 0, y: 0, tensionPct: 50, source: "canvas" };
   let lastTime = performance.now();
   let raf = 0;
@@ -479,7 +493,8 @@
   function renderMenu() {
     nodes.notesText.textContent = Math.floor(save.notes);
     nodes.albumText.textContent = `${save.album.length}/12`;
-    nodes.diamondText.textContent = wallet().diamonds;
+    const diamondBalance = wallet().diamonds;
+    nodes.diamondText.textContent = diamondBalance;
     nodes.zoneRow.innerHTML = zones.map((zone, index) => {
       const locked = index + 1 > save.unlockedZone;
       return `
@@ -502,8 +517,12 @@
         </div>
       `;
     }).join("");
-    nodes.lureBtn.textContent = save.lureReady ? t("lureReady") : t("buyLure", { cost: lureCost });
-    nodes.sonarPrepBtn.textContent = save.sonarReady ? t("sonarReady") : t("buySonar", { cost: sonarCost });
+    nodes.lureBtn.textContent = save.lureReady ? t("lureReady") : diamondPurchasePending === "lure" ? t("confirmLure", { before:diamondBalance, after:Math.max(0,diamondBalance-lureCost) }) : t("buyLure", { cost: lureCost });
+    nodes.sonarPrepBtn.textContent = save.sonarReady ? t("sonarReady") : diamondPurchasePending === "sonar" ? t("confirmSonar", { before:diamondBalance, after:Math.max(0,diamondBalance-sonarCost) }) : t("buySonar", { cost: sonarCost });
+    nodes.lureBtn.setAttribute("aria-label", save.lureReady ? t("lureReady") : diamondPurchasePending === "lure" ? t("lureConfirmLabel", { before:diamondBalance, after:Math.max(0,diamondBalance-lureCost) }) : t("lureBuyLabel", { balance:diamondBalance }));
+    nodes.sonarPrepBtn.setAttribute("aria-label", save.sonarReady ? t("sonarReady") : diamondPurchasePending === "sonar" ? t("sonarConfirmLabel", { before:diamondBalance, after:Math.max(0,diamondBalance-sonarCost) }) : t("sonarBuyLabel", { balance:diamondBalance }));
+    nodes.lureBtn.classList.toggle("is-confirming", diamondPurchasePending === "lure");
+    nodes.sonarPrepBtn.classList.toggle("is-confirming", diamondPurchasePending === "sonar");
     window.requestAnimationFrame(() => {
       const selectedCard = nodes.zoneRow.querySelector(".zone-card.is-selected");
       selectedCard?.scrollIntoView({ block: "nearest", inline: "center", behavior: "auto" });
@@ -551,6 +570,7 @@
   }
 
   async function startRun() {
+    clearDiamondPurchaseConfirmation();
     configureArena();
     const zone = zones.find((z) => z.id === selectedZone) || zones[0];
     run = {
@@ -1270,9 +1290,32 @@
     pointer.y = canvasRect.height * 0.86;
   }
 
+  function clearDiamondPurchaseConfirmation(render = false) {
+    window.clearTimeout(diamondConfirmTimer);
+    diamondConfirmTimer = 0;
+    diamondPurchasePending = "";
+    if (render) renderMenu();
+  }
+
   function buyDiamondItem(type) {
     const cost = type === "lure" ? lureCost : sonarCost;
-    if ((type === "lure" && save.lureReady) || (type === "sonar" && save.sonarReady)) return;
+    if ((type === "lure" && save.lureReady) || (type === "sonar" && save.sonarReady)) { clearDiamondPurchaseConfirmation(); return; }
+    const balance = wallet().diamonds;
+    if (balance < cost) {
+      clearDiamondPurchaseConfirmation();
+      renderMenu();
+      nodes.hintText.textContent = t("needDiamonds", { cost });
+      playSound("wrong");
+      return;
+    }
+    if (diamondPurchasePending !== type) {
+      clearDiamondPurchaseConfirmation();
+      diamondPurchasePending = type;
+      diamondConfirmTimer = window.setTimeout(() => clearDiamondPurchaseConfirmation(true), 5000);
+      renderMenu();
+      return;
+    }
+    clearDiamondPurchaseConfirmation();
     if (!window.WeightPlayWallet || !window.WeightPlayWallet.spendDiamonds(cost)) {
       nodes.hintText.textContent = t("needDiamonds", { cost });
       playSound("wrong");
@@ -1287,6 +1330,7 @@
   }
 
   function upgradeGear(id) {
+    clearDiamondPurchaseConfirmation();
     const item = gear.find((g) => g.id === id);
     const level = Number(save.gear[id]) || 1;
     if (!item || level >= 5) return;
@@ -1309,6 +1353,7 @@
     const zone = zones.find((z) => z.id === btn.dataset.zone);
     const index = zones.indexOf(zone);
     if (index + 1 > save.unlockedZone) return;
+    clearDiamondPurchaseConfirmation();
     selectedZone = zone.id;
     renderMenu();
     startRun();
@@ -1325,6 +1370,7 @@
     focusPanel(nodes.stagePanel);
   });
   nodes.stageBackBtn.addEventListener("click", () => {
+    clearDiamondPurchaseConfirmation();
     playSound("click");
     state = "main";
     showPanel("main");

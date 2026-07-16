@@ -9,12 +9,12 @@
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="game" />
     <meta property="og:title" content="Animal Auto Squad - Tactical Drafting Auto-Battler" />
-    <meta property="og:description" content="Build, combine, and position a squad of chibi animal warriors to fight shadow monsters in automated battles with local progress." />
+    <meta property="og:description" content="Train and position a six-animal squad across 30 five-wave stages, six regions, varied enemy formations, and six unique bosses." />
     <meta property="og:url" content="https://weightplay.com/games/animal-auto-squad/" />
     <meta property="og:image" content="https://weightplay.com/assets/animal-auto-squad-cover.png" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Animal Auto Squad - Tactical Drafting Auto-Battler" />
-    <meta name="twitter:description" content="Draft animal cards, level up your squad, and defeat the shadow boss in this free online strategy auto-battler." />
+    <meta name="twitter:description" content="Build a two-row animal formation, train ten heroes, and defeat six regional bosses across a 30-stage auto-battler campaign." />
     <meta name="twitter:image" content="https://weightplay.com/assets/animal-auto-squad-cover.png" />
     <title>Animal Auto Squad - Tactical Drafting Auto-Battler</title>
     <link rel="canonical" href="https://weightplay.com/games/animal-auto-squad/" />
@@ -26,7 +26,7 @@
         "alternateName": "\u52d5\u7269\u81ea\u8d70\u5c0f\u968a",
         "url": "https://weightplay.com/games/animal-auto-squad/",
         "image": "https://weightplay.com/assets/animal-auto-squad-cover.png",
-        "description": "Animal Auto Squad is a free tactical drafting auto-battler where players recruit, level up, and position chibi animal warriors to clear round-based expeditions against shadow beasts with local progress.",
+        "description": "Animal Auto Squad is a free 13+ formation auto-battler where players unlock, train, and position ten animal heroes to clear 30 five-wave stages and six regional bosses with local progress.",
         "publisher": {
           "@type": "Organization",
           "name": "WeightStudio",
@@ -46,7 +46,7 @@
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
-  <link rel="stylesheet" href="style.css?v=20260716-auto-squad-visual12" />
+  <link rel="stylesheet" href="style.css?v=20260716-auto-squad-main-polish1" />
   </head>
   <body data-tutorial-auto-show="false">
     <main class="squad-app">
@@ -78,11 +78,11 @@
       <section id="menuPanel" class="panel menu-panel">
         <img class="cover" src="../../assets/animal-auto-squad-cover.webp" alt="Animal Auto Squad Cover" />
         <div class="menu-copy">
-          <strong id="menuHeadingText" data-ui="menuTitle">Draft and position your animal squad!</strong>
+          <strong id="menuHeadingText" data-ui="menuTitle">Train and position your animal squad!</strong>
           <span id="menuSubText" data-ui="menuHint">Build your permanent squad and conquer 30 five-wave stages across six regions.</span>
           <button id="showStageBtn" class="primary-btn" type="button">Choose Expedition</button>
           <div class="profile-grid">
-            <div><span data-ui="bestExpedition">Best Run</span><strong id="bestRoundsText">Round 0</strong></div>
+            <div><span data-ui="bestExpedition">Stages Unlocked</span><strong id="bestRoundsText">1/30</strong></div>
             <div><span data-ui="expeditionsCleared">Cleared Runs</span><strong id="clearedRunsText">0</strong></div>
             <div><span data-ui="teamLevel">Team Level</span><strong id="teamLevelText">Lv.1</strong></div>
             <div><span data-ui="diamonds">Diamonds</span><strong id="diamondText">0</strong></div>
@@ -222,26 +222,80 @@
       <div class="game-info-hero">
         <div class="game-info-title">
           <span class="game-info-kicker">WeightPlay Original Game Guide</span>
-          <h2>Animal Auto Squad - How to Play</h2>
-          <p>Animal Auto Squad is a tactical strategy auto-battler where players train, level up, and position chibi animal warriors against varied enemy formations. Clear 30 locally saved stages across six regions, each with five designed waves and a unique regional Boss, while building squad synergies and choosing relic buffs.</p>
+          <h2>Animal Auto Squad - Game Guide</h2>
+          <p>Animal Auto Squad is a 13+ formation strategy game built around decisions made before combat. You unlock and train ten animal heroes, place up to six of them in a two-row squad, choose one expedition relic, and then watch the lineup resolve each clash automatically. The campaign contains 30 stages across Thornwood, Crystal Caverns, Sunken Ruins, Ember Peak, Moonlit Citadel, and Void Crown. Every stage has five authored waves, while stages 5, 10, 15, 20, 25, and 30 end with a different regional Boss.</p>
+        </div>
+        <div class="game-info-facts">
+          <div class="game-info-fact"><span>Gameplay</span><strong>Tactical Auto-Battler</strong></div>
+          <div class="game-info-fact"><span>Genre</span><div class="game-info-tags"><span>Strategy</span><span>Formation</span><span>Animal</span></div></div>
+          <div class="game-info-fact"><span>Recommended Age</span><strong>13+</strong></div>
+          <div class="game-info-fact"><span>Difficulty</span><strong>Medium</strong></div>
+          <div class="game-info-fact"><span>Estimated Play Time</span><strong>5-10 minutes per stage</strong></div>
+          <div class="game-info-fact"><span>Skills Trained</span><div class="game-info-skills"><span>Logic</span><span>Problem Solving</span><span>Strategic Planning</span></div></div>
         </div>
       </div>
       <div class="game-info-sections">
         <div class="game-info-section">
+          <h3>World and Mission</h3>
+          <p>The expedition follows a chain of routes occupied by shadow animals, crystal creatures, armored guardians, rune beasts, and eclipse hunters. The squad begins on Thornwood's Mossy Trail, then pushes through the Prism Heart, Sunken Crown, Caldera King, Midnight Court, and the broken approaches to Void Crown. Each region introduces a different enemy mix and final encounter; clearing all six means breaking the complete chain of regional blockades.</p>
+          <p>You act as the squad commander rather than a fighter on the field. Spark Paw Fox, Bubble Fin Otter, Drum Belly Panda, Moon Cap Owl, Moss Shell Turtle, and the other unlockable heroes each bring a specific targeting or support rule. Your job is to decide which six travel together and whether they belong in the front or back row before the automated clash begins.</p>
+        </div>
+        <div class="game-info-section">
+          <h3>How the Systems Work</h3>
+          <ul>
+            <li><strong>Formation:</strong> the upper three slots are the front row and the lower three are the back row. Targeting matters because some units attack the lead enemy, Moon Cap Owl hunts the back row, and Boom Mane Lion sweeps a full row.</li>
+            <li><strong>Animal roles:</strong> attackers, healers, shields, team buffers, and faint effects resolve automatically. Bubble Fin Otter and Rainbow Hop Rabbit protect weakened allies, while Drum Belly Panda and Moss Shell Turtle build team durability.</li>
+            <li><strong>Expedition relics:</strong> choose Maple Shield, Oak Seed, Shadow Claw, or Clover Leaf for a run-wide rule. A relic choice is free; spending 3 optional Diamonds only rerolls the offered choices.</li>
+            <li><strong>Temporary Supplies:</strong> each expedition starts with 12 Supplies. Select an owned animal during preparation to buy a temporary level that adds Attack and Health for that expedition. Supplies earned during battle remain part of the current run.</li>
+            <li><strong>Permanent growth:</strong> cleared waves award Team XP and Training Gold. Team Levels add shared Attack and Health bonuses, while Training Gold unlocks and upgrades normal heroes up to level 20. Two premium heroes use optional Diamonds instead of Training Gold.</li>
+          </ul>
+        </div>
+        <div class="game-info-section">
           <h3>How to Play</h3>
-          <ol><li>Build a six-animal formation: the top three slots are the front row and the bottom three are the back row.</li><li>Tap a backpack animal, then tap a formation slot; scroll the backpack vertically to browse every character.</li><li>Combine front attackers, backline hunters, row sweepers, healers, and guards for each region.</li><li>Use temporary Supplies to strengthen the selected animal, then fight five continuous waves.</li><li>Clear each region's fifth stage to defeat its Boss and unlock the next region.</li></ol>
+          <ol>
+            <li>Choose an unlocked stage from the horizontal campaign rail; every fifth stage is marked as a Boss stage.</li>
+            <li>Open Training when you want to spend saved Training Gold, unlock another normal hero, or inspect the permanent Team Level bonus.</li>
+            <li>At deployment, tap an owned animal in the vertical backpack and then tap one of the six formation slots. Tap a placed animal to move or replace it.</li>
+            <li>Choose one expedition relic, then spend the run's Supplies on temporary upgrades for the animals you intend to field.</li>
+            <li>Press Start Battle. Attacks, healing, shields, row targeting, and faint abilities resolve automatically according to the chosen formation.</li>
+            <li>A winning squad immediately meets the next wave. A loss costs one Heart and reopens preparation; reaching zero Hearts ends the run unless the optional revive is accepted.</li>
+            <li>Clear the fifth wave to save the stage, Team XP, Training Gold, and the next unlocked stage. Use Next Stage, Retry, or Back to Stages from the Result panel.</li>
+          </ol>
         </div>
         <div class="game-info-section game-info-strategy">
           <h3>Strategy Tips</h3>
-          <ul><li>Combine matching animals early to build high-stat Level 2 units.</li><li>Place tanky animals like Otter or Turtle in the front slots, and damage units like Fox or Bear in the back.</li><li>Utilize Owl&#39;s gold generation or Otter&#39;s buff abilities to optimize shop drafting.</li><li>Collect Melon food items to shield your key damage dealers from enemy boss strikes.</li></ul>
+          <ul>
+            <li>Plan for all five waves before pressing Start Battle: victories continue directly into the next enemy formation, so a balanced opening lineup is safer than a one-wave counter.</li>
+            <li>Use the front row for heroes that can absorb pressure or shield the team. Moss Shell Turtle, Drum Belly Panda, and Gear Horn Rhino can buy time for back-row attackers and healers.</li>
+            <li>Read target rules instead of comparing Attack alone. Moon Cap Owl can reach fragile back-row enemies, while Boom Mane Lion is strongest when several enemies share a row.</li>
+            <li>Boss skills are different. Thornwood Alpha attacks a row and shields itself, Abyss Shell Leviathan protects and heals its side, and Void Crown Emperor damages the whole squad while restoring its own health.</li>
+          </ul>
+        </div>
+        <div class="game-info-section">
+          <h3>Campaign and Difficulty Growth</h3>
+          <p>Stages 1-5 teach lead targeting, back-row threats, guards, and the two-row formation with small Thornwood groups. Thornwood Throne is the first Boss checkpoint. Stages 6-15 add Crystal Cavern and Sunken Ruin enemies that attack the back row, drain health, sweep rows, or hide behind durable guards.</p>
+          <p>Stages 16-25 raise both formation size and ability overlap. Ember Peak combines charging boars, Obsidian Tanks, Rift Runners, and Rune Wolves; Moonlit Citadel adds Night Panthers, Eclipse Bats, Rune Ravens, and Shadow Jaguars. Boss waves are accompanied by other enemies, so defeating the centerpiece is not the only requirement.</p>
+          <p>Stages 26-30 use the full Void Crown roster. Stage 29 can field six enemies at once, matching the player's maximum squad size. The final wave of Stage 30 places the Void Crown Emperor beside rune, eclipse, and shadow escorts, testing row coverage, recovery, damage, and permanent training earned across the campaign.</p>
+        </div>
+        <div class="game-info-section">
+          <h3>Developer Design Note</h3>
+          <p>The automated battle is intentional: execution is short so the important work happens in formation, role coverage, target order, relic selection, and long-term training. A successful wave flows directly into the next one to make the five-wave stage feel like one expedition rather than five disconnected menu visits. Losses reopen preparation so the player can respond instead of watching the same failed setup repeatedly. Tap-select and tap-place support phone play, while the same cards remain usable with mouse input on desktop. Compared with WeightPlay's turn-based Animal Rune Tactics or real-time Animal Crystal Survivor, Animal Auto Squad asks the player to build a plan and then evaluate how that plan performs without issuing attacks during combat.</p>
         </div>
         <div class="game-info-section game-info-parent">
-          <h3>Parent Note</h3>
-          <p>This game is designed for teens and casual players who enjoy logic puzzles and planning. It may help players practice strategic positioning, resources management, and problem solving through automated combat scenarios. Progress and high scores are saved locally in the browser.</p>
+          <h3>Player and Save Information</h3>
+          <p>Animal Auto Squad is designed for 13+ strategy players because later stages combine six-unit formations, specialized targeting, permanent upgrades, combat failure pressure, Boss abilities, and optional Diamond decisions. Campaign progress, Training Gold, Team Level, unlocked animals, permanent animal levels, completed stages, and cosmetic choice are stored locally in this browser; no login is required for basic play. Clearing this site's browser storage may remove that local progress.</p>
         </div>
         <div class="game-info-section">
           <h3>Frequently Asked Questions</h3>
-          <dl><div><dt>Is Animal Auto Squad free to play?</dt><dd>Yes. It runs entirely in the browser on WeightPlay.</dd></div><div><dt>What is the goal of the expedition?</dt><dd>Win 10 consecutive combat rounds to defeat the shadow boss and clear the Forest Stage.</dd></div><div><dt>What do Diamonds do?</dt><dd>Diamonds are used to buy optional relic rerolls, revive after a run defeat, or unlock cosmetic golden warrior skins.</dd></div><div><dt>Does the game support saving?</dt><dd>Yes. Completed runs, best rounds, and custom skins are saved locally in the browser.</dd></div></dl>
+          <dl>
+            <div><dt>Is Animal Auto Squad free to play?</dt><dd>Yes. The 30-stage campaign runs in the browser on WeightPlay without a required purchase or login.</dd></div>
+            <div><dt>What is the goal of each stage?</dt><dd>Build a squad that survives five continuous waves. Clearing wave five saves the stage and unlocks the next one; every fifth stage ends with a regional Boss.</dd></div>
+            <div><dt>Do I control attacks during battle?</dt><dd>No. You control the roster, two-row positions, relic, and temporary upgrades before combat. The animals then attack, heal, shield, and trigger abilities automatically.</dd></div>
+            <div><dt>Can I rearrange the squad between every wave?</dt><dd>Winning moves directly to the next wave. Preparation reopens after a loss or draw while the run still has Hearts, so the initial formation should be able to handle more than one enemy pattern.</dd></div>
+            <div><dt>What happens when I lose a wave?</dt><dd>The run loses one Heart. With Hearts remaining, you can adjust the squad and try that wave again. At zero Hearts, you may end the run or use the optional five-Diamond revive.</dd></div>
+            <div><dt>What do Diamonds do?</dt><dd>Diamonds are optional. They can reroll relic choices, revive a failed expedition, unlock two premium heroes, or unlock the golden cosmetic skin; normal stage progression does not require them.</dd></div>
+            <div><dt>What progress is saved?</dt><dd>The browser stores unlocked and completed stages, Team Level and XP, Training Gold, unlocked animals, permanent animal levels, run records, and cosmetic selection on this device.</dd></div>
+          </dl>
         </div>
       </div>
     </section>
@@ -256,13 +310,13 @@
     <script src="../../src/i18n.js?v=20260703-i18n-clean1"></script>
     <script src="../../src/tutorial.js?v=20260711-auto-squad-guide1"></script>
     <script src="../../src/wallet.js?v=20260706-crystal-diamond-charm1"></script>
-  <script src="game.js?v=20260716-auto-squad-visual15"></script>
+  <script src="game.js?v=20260716-auto-squad-main-polish1"></script>
     <script>
       (() => {
         const loadGameInfo = () => {
           if (document.querySelector("script[data-squad-game-info]")) return;
           const script = document.createElement("script");
-          script.src = "../../src/game-page-info.js?v=20260707-squad-locale1";
+          script.src = "../../src/game-page-info.js?v=20260716-auto-squad-content1";
           script.dataset.squadGameInfo = "internal";
           script.async = true;
           document.body.appendChild(script);

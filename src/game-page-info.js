@@ -612,29 +612,58 @@
       age: "13+",
       difficulty: "Medium",
       time: "5-10 minutes",
+      gameplay: "Tactical Auto-Battler",
+      genre: ["Strategy", "Formation", "Animal"],
       skills: ["Logic", "Problem Solving", "Strategic Planning"],
+      guideKicker: "WeightPlay Original Game Guide",
+      guideTitleSuffix: "Game Guide",
+      noteTitle: "Player and Save Information",
+      hideScoreBands: true,
       intro:
-        "Animal Auto Squad is a tactical strategy auto-battler where players train, level up, and position chibi animal warriors to defeat shadow beasts in automated combat. Clear six locally saved forest stages, each with five balanced waves, while building squad synergies and choosing relic buffs. Optional Diamond purchases cover relic rerolls, expedition revives, and cosmetic skins.",
+        "Animal Auto Squad is a 13+ formation strategy game built around decisions made before combat. You unlock and train ten animal heroes, place up to six of them in a two-row squad, choose one expedition relic, and then watch the lineup resolve each clash automatically. The campaign contains 30 stages across Thornwood, Crystal Caverns, Sunken Ruins, Ember Peak, Moonlit Citadel, and Void Crown. Every stage has five authored waves, while stages 5, 10, 15, 20, 25, and 30 end with a different regional Boss.",
+      story: [
+        "The expedition follows a chain of routes occupied by shadow animals, crystal creatures, armored guardians, rune beasts, and eclipse hunters. The squad begins on Thornwood's Mossy Trail, then pushes through the Prism Heart, Sunken Crown, Caldera King, Midnight Court, and the broken approaches to Void Crown. Each region introduces a different enemy mix and final encounter; clearing all six means breaking the complete chain of regional blockades.",
+        "You act as the squad commander rather than a fighter on the field. Spark Paw Fox, Bubble Fin Otter, Drum Belly Panda, Moon Cap Owl, Moss Shell Turtle, and the other unlockable heroes each bring a specific targeting or support rule. Your job is to decide which six travel together and whether they belong in the front or back row before the automated clash begins.",
+      ],
+      systems: [
+        "Formation: the upper three slots are the front row and the lower three are the back row. Targeting matters because some units attack the lead enemy, Moon Cap Owl hunts the back row, and Boom Mane Lion sweeps a full row.",
+        "Animal roles: attackers, healers, shields, team buffers, and faint effects resolve automatically. Bubble Fin Otter and Rainbow Hop Rabbit protect weakened allies, while Drum Belly Panda and Moss Shell Turtle build team durability.",
+        "Expedition relics: choose Maple Shield, Oak Seed, Shadow Claw, or Clover Leaf for a run-wide rule. A relic choice is free; spending 3 optional Diamonds only rerolls the offered choices.",
+        "Temporary Supplies: each expedition starts with 12 Supplies. Select an owned animal during preparation to buy a temporary level that adds Attack and Health for that expedition. Supplies earned during battle remain part of the current run.",
+        "Permanent growth: cleared waves award Team XP and Training Gold. Team Levels add shared Attack and Health bonuses, while Training Gold unlocks and upgrades normal heroes up to level 20. Two premium heroes use optional Diamonds instead of Training Gold."
+      ],
       how: [
-        "Buy animal cards from the shop using your starting Gold.",
-        "Drag and drop animals onto active squad slots or the storage bench.",
-        "Combine three identical animals to level them up and increase stats.",
-        "Tap Start Battle to run automated round resolution against shadow beasts.",
-        "Losing a wave costs 1 Heart; clear all 5 waves to unlock the next forest stage."
+        "Choose an unlocked stage from the horizontal campaign rail; every fifth stage is marked as a Boss stage.",
+        "Open Training when you want to spend saved Training Gold, unlock another normal hero, or inspect the permanent Team Level bonus.",
+        "At deployment, tap an owned animal in the vertical backpack and then tap one of the six formation slots. Tap a placed animal to move or replace it.",
+        "Choose one expedition relic, then spend the run's Supplies on temporary upgrades for the animals you intend to field.",
+        "Press Start Battle. Attacks, healing, shields, row targeting, and faint abilities resolve automatically according to the chosen formation.",
+        "A winning squad immediately meets the next wave. A loss costs one Heart and reopens preparation; reaching zero Hearts ends the run unless the optional revive is accepted.",
+        "Clear the fifth wave to save the stage, Team XP, Training Gold, and the next unlocked stage. Use Next Stage, Retry, or Back to Stages from the Result panel."
       ],
       strategyTips: [
-        "Combine matching animals early to build high-stat Level 2 units.",
-        "Place tanky animals like Otter or Turtle in the front slots, and damage units like Fox or Bear in the back.",
-        "Utilize Owl's gold generation or Otter's buff abilities to optimize shop drafting.",
-        "Collect Melon food items to shield your key damage dealers from enemy boss strikes."
+        "Plan for all five waves before pressing Start Battle: victories continue directly into the next enemy formation, so a balanced opening lineup is safer than a one-wave counter.",
+        "Use the front row for heroes that can absorb pressure or shield the team. Moss Shell Turtle, Drum Belly Panda, and Gear Horn Rhino can buy time for back-row attackers and healers.",
+        "Read target rules instead of comparing Attack alone. Moon Cap Owl can reach fragile back-row enemies, while Boom Mane Lion is strongest when several enemies share a row.",
+        "Boss skills are different. Thornwood Alpha attacks a row and shields itself, Abyss Shell Leviathan protects and heals its side, and Void Crown Emperor damages the whole squad while restoring its own health."
       ],
+      progression: [
+        "Stages 1-5 teach lead targeting, back-row threats, guards, and the two-row formation with small Thornwood groups. Thornwood Throne is the first Boss checkpoint. Stages 6-15 add Crystal Cavern and Sunken Ruin enemies that attack the back row, drain health, sweep rows, or hide behind durable guards.",
+        "Stages 16-25 raise both formation size and ability overlap. Ember Peak combines charging boars, Obsidian Tanks, Rift Runners, and Rune Wolves; Moonlit Citadel adds Night Panthers, Eclipse Bats, Rune Ravens, and Shadow Jaguars. Boss waves are accompanied by other enemies, so defeating the centerpiece is not the only requirement.",
+        "Stages 26-30 use the full Void Crown roster. Stage 29 can field six enemies at once, matching the player's maximum squad size. The final wave of Stage 30 places the Void Crown Emperor beside rune, eclipse, and shadow escorts, testing row coverage, recovery, damage, and permanent training earned across the campaign."
+      ],
+      designNote:
+        "The automated battle is intentional: execution is short so the important work happens in formation, role coverage, target order, relic selection, and long-term training. A successful wave flows directly into the next one to make the five-wave stage feel like one expedition rather than five disconnected menu visits. Losses reopen preparation so the player can respond instead of watching the same failed setup repeatedly. Tap-select and tap-place support phone play, while the same cards remain usable with mouse input on desktop. Compared with WeightPlay's turn-based Animal Rune Tactics or real-time Animal Crystal Survivor, Animal Auto Squad asks the player to build a plan and then evaluate how that plan performs without issuing attacks during combat.",
       parent:
-        "This game is designed for teens and casual players who enjoy logic puzzles and planning. It may help players practice strategic positioning, resources management, and problem solving through automated combat scenarios. Progress and high scores are saved locally in the browser.",
+        "Animal Auto Squad is designed for 13+ strategy players because later stages combine six-unit formations, specialized targeting, permanent upgrades, combat failure pressure, Boss abilities, and optional Diamond decisions. Campaign progress, Training Gold, Team Level, unlocked animals, permanent animal levels, completed stages, and cosmetic choice are stored locally in this browser; no login is required for basic play. Clearing this site's browser storage may remove that local progress.",
       faq: [
-        ["Is Animal Auto Squad free to play?", "Yes. It runs entirely in the browser on WeightPlay."],
-        ["What is the goal of the expedition?", "Win 10 consecutive combat rounds to defeat the shadow boss and clear the Forest Stage."],
-        ["What do Diamonds do?", "Diamonds are used to buy optional relic rerolls, revive after a run defeat, or unlock cosmetic golden warrior skins."],
-        ["Does the game support saving?", "Yes. Completed runs, best rounds, and custom skins are saved locally in the browser."]
+        ["Is Animal Auto Squad free to play?", "Yes. The 30-stage campaign runs in the browser on WeightPlay without a required purchase or login."],
+        ["What is the goal of each stage?", "Build a squad that survives five continuous waves. Clearing wave five saves the stage and unlocks the next one; every fifth stage ends with a regional Boss."],
+        ["Do I control attacks during battle?", "No. You control the roster, two-row positions, relic, and temporary upgrades before combat. The animals then attack, heal, shield, and trigger abilities automatically."],
+        ["Can I rearrange the squad between every wave?", "Winning moves directly to the next wave. Preparation reopens after a loss or draw while the run still has Hearts, so the initial formation should be able to handle more than one enemy pattern."],
+        ["What happens when I lose a wave?", "The run loses one Heart. With Hearts remaining, you can adjust the squad and try that wave again. At zero Hearts, you may end the run or use the optional five-Diamond revive."],
+        ["What do Diamonds do?", "Diamonds are optional. They can reroll relic choices, revive a failed expedition, unlock two premium heroes, or unlock the golden cosmetic skin; normal stage progression does not require them."],
+        ["What progress is saved?", "The browser stores unlocked and completed stages, Team Level and XP, Training Gold, unlocked animals, permanent animal levels, run records, and cosmetic selection on this device."]
       ],
     },
     "beast-tactician": {
@@ -708,6 +737,10 @@
       difficulty: "Difficulty",
       estimatedTime: "Estimated Play Time",
       skills: "Skills Trained",
+      worldAndMission: "World and Mission",
+      gameSystems: "How the Systems Work",
+      progressionAndDifficulty: "Campaign and Difficulty Growth",
+      developerNote: "Developer Design Note",
       howToPlay: "How to Play",
       strategyTips: "Strategy Tips",
       parentNote: "Parent Note",
@@ -733,6 +766,10 @@
       difficulty: "難度",
       estimatedTime: "預估遊玩時間",
       skills: "練習能力",
+      worldAndMission: "世界與任務",
+      gameSystems: "遊戲系統",
+      progressionAndDifficulty: "關卡與難度成長",
+      developerNote: "開發設計理念",
       howToPlay: "玩法說明",
       strategyTips: "策略提示",
       parentNote: "家長說明",
@@ -1092,6 +1129,65 @@
       "shadow-wolf": zhGuide("影狼傳說", "橫向動作 RPG", ["左右移動並跳過平台陷阱。", "攻擊影獸並收集經驗。", "開啟寶箱、穿戴裝備並挑戰巨獸。"]),
       "animal-hero-trials": zhGuide("動物英雄試煉", "英雄動作試煉", ["選擇一位英雄與已解鎖試煉。", "移動閃避敵人，並掌握英雄技能的使用時機。", "每個房間選擇一項免費祝福，最後擊敗暗影王者。"]),
     },
+  };
+  localizedGames["zh-Hant"]["animal-auto-squad"] = {
+    title: "動物自走小隊",
+    age: "13+",
+    difficulty: "中等",
+    time: "5-10 分鐘",
+    gameplay: "自走小隊編成策略",
+    genre: ["自走戰鬥", "編成策略", "角色成長", "動物"],
+    skills: ["邏輯", "問題解決", "策略規劃"],
+    guideKicker: "WeightPlay 原創遊戲指南",
+    guideTitleSuffix: "遊戲指南",
+    noteTitle: "玩家與存檔說明",
+    hideScoreBands: true,
+    intro:
+      "《動物自走小隊》是一款以戰前決策為核心的 13+ 編成策略遊戲。玩家可以解鎖並訓練十名動物英雄，把最多六名角色配置在前後兩排，選擇一件遠征聖物，再觀看小隊依照站位與能力自動交戰。戰役共有 30 關，依序穿越荊棘林、水晶洞窟、沉沒遺跡、燼火峰、月光城塞與虛空王冠。每關包含五波固定設計的敵人，第 5、10、15、20、25、30 關則各有一名專屬區域 Boss。",
+    story: [
+      "遠征路線被影之獸、水晶生物、重甲守衛、符文獸與月蝕獵手分段占據。小隊從荊棘林的苔蘚小徑出發，接著深入棱晶之心、沉沒王冠、火山口之王、子夜王庭，最後沿著破碎天路抵達虛空王冠。每區都有不同的敵人組合與最終首領；完成六區代表解除整條遠征路線的封鎖。",
+      "玩家扮演的是小隊指揮者，不是在戰鬥中直接操作某一名角色。星爪狐、泡泡鰭水獺、鼓肚熊貓、月帽貓頭鷹、苔殼烏龜與其他可解鎖英雄，都有明確的攻擊、治療、護盾或倒下效果。真正的任務是在交戰前決定由哪六名角色同行，以及誰應站在前排或後排。",
+    ],
+    systems: [
+      "陣形：上方三格是前排，下方三格是後排。攻擊目標會受到站位影響；部分角色攻擊最前方敵人，月帽貓頭鷹會追擊後排，爆鬃獅則能橫掃整排。",
+      "角色定位：攻擊、治療、護盾、全隊增益與倒下效果都會自動觸發。泡泡鰭水獺和彩虹跳兔會照顧受傷隊友，鼓肚熊貓與苔殼烏龜則能提高全隊承受傷害的能力。",
+      "遠征聖物：楓葉盾、橡樹種子、影爪與幸運草會改變整場遠征的規則。正常選擇免費；花費 3 顆鑽石只會重新抽選目前提供的聖物。",
+      "臨時物資：每場遠征以 12 點物資開始。在準備階段選取已擁有角色，可以購買只在本場有效的等級，增加攻擊與生命；戰鬥中取得的物資會保留在這場遠征內。",
+      "永久成長：通過波次可獲得團隊經驗與訓練金幣。團隊等級會提供全員攻擊與生命加成；一般英雄使用訓練金幣解鎖與升級，最高 20 級，另有兩名進階英雄使用可選鑽石解鎖。"
+    ],
+    how: [
+      "在橫向滑動的關卡列選擇已解鎖關卡；每五關會標示一場 Boss 戰。",
+      "需要永久強化時，進入訓練分頁使用訓練金幣、解鎖一般英雄，並查看團隊等級提供的全隊加成。",
+      "出征後，先點角色背包中的動物，再點六個上場格之一完成配置；也可以點已上場角色重新移動或替換。",
+      "選擇一件遠征聖物，並把本場物資用在準備上場的角色，購買臨時攻擊與生命提升。",
+      "按下開始戰鬥後，攻擊、治療、護盾、整排攻擊與倒下能力會依照陣形自動結算。",
+      "勝利後會直接出現下一波；失敗會扣一點生命並重新開放準備。生命歸零且不復活時，本場遠征結束。",
+      "通過第五波後，系統會保存關卡、團隊經驗、訓練金幣與下一個解鎖關卡；結果畫面可選下一關、再試一次或回到關卡。"
+    ],
+    strategyTips: [
+      "按下開始戰鬥前要替完整五波做準備。每波勝利會直接接續下一組敵人，因此能處理多種目標的平衡陣容，比只克制第一波更安全。",
+      "前排適合放能承受壓力或提供護盾的英雄。苔殼烏龜、鼓肚熊貓與齒輪角犀牛，可以替後排攻擊手和治療角色爭取時間。",
+      "不要只比較攻擊數字，也要看目標規則。月帽貓頭鷹能碰到脆弱後排；敵人集中同一排時，爆鬃獅的整排攻擊更有價值。",
+      "六名 Boss 的規則不同：荊棘狼王攻擊整排並替自己加盾，深淵殼海皇會保護與治療敵軍，虛空王冠獅皇則會傷害全隊並恢復自身生命。"
+    ],
+    progression: [
+      "第 1-5 關以較小的荊棘林敵群教導最前目標、後排威脅、守衛與兩排陣形，第 5 關荊棘王座是第一個 Boss 檢查點。第 6-15 關加入水晶洞窟與沉沒遺跡敵人，開始出現後排攻擊、吸血、整排橫掃與高耐久守衛。",
+      "第 16-25 關增加同時上場的敵人數與能力組合。燼火峰會混合衝鋒野豬、黑曜重獸、裂隙迅獸與符文狼；月光城塞則加入夜影黑豹、月蝕蝙蝠、符文烏鴉與暗影美洲豹。Boss 波還帶有護衛，因此不能只處理中央首領。",
+      "第 26-30 關會使用完整的虛空王冠敵人陣容。第 29 關最多同時出現六名敵人，與玩家的最大編隊相同；第 30 關最後一波讓虛空王冠獅皇與符文、月蝕及暗影護衛同場，檢驗整排輸出、恢復、傷害與整段戰役累積的永久訓練。"
+    ],
+    designNote:
+      "自動戰鬥是刻意的設計選擇：戰鬥執行保持精簡，讓主要思考集中在陣形、定位互補、攻擊目標、聖物選擇與永久訓練。勝利後直接銜接下一波，是為了讓五波像一場完整遠征，而不是五次反覆進出選單；失敗後重新開放準備，則讓玩家能回應問題，不必一直觀看同一套失敗配置。手機採點選角色再點格子的方式，桌面也能使用相同卡片操作。相較於回合制的《動物符文戰棋》或需要即時移動的《動物水晶生存者》，本作要求玩家先完成計畫，再從自動戰鬥結果判斷計畫是否有效。",
+    parent:
+      "《動物自走小隊》定位為 13+ 策略遊戲，因為後期會同時組合六人陣形、特殊攻擊目標、永久升級、戰鬥失敗壓力、Boss 能力與可選鑽石決策。關卡進度、訓練金幣、團隊等級、已解鎖角色、角色永久等級、已完成關卡與外觀選擇，都會儲存在目前瀏覽器本機；基本遊玩不需要登入。清除本站的瀏覽器儲存資料可能會移除這些本機進度。",
+    faq: [
+      ["動物自走小隊可以免費玩嗎？", "可以。30 關戰役能直接在 WeightPlay 瀏覽器頁面遊玩，不要求購買或登入。"],
+      ["每一關的目標是什麼？", "配置能撐過五波連續敵人的小隊。通過第五波便會保存關卡並解鎖下一關；每五關的最後一波都有區域 Boss。"],
+      ["戰鬥時需要手動攻擊嗎？", "不用。玩家在戰前決定角色、前後排、聖物與臨時升級，之後動物會依照能力自動攻擊、治療、加盾與觸發效果。"],
+      ["每波之間都能重新排隊嗎？", "勝利會直接進入下一波。只有失敗或平手且仍有生命時，才會回到準備畫面，因此初始陣容要能面對不只一種敵人排列。"],
+      ["輸掉一波會怎樣？", "本場會失去一點生命。生命尚未歸零時，可以調整陣容後再挑戰同一波；生命歸零時可結束遠征，或使用可選的 5 顆鑽石復活。"],
+      ["鑽石可以做什麼？", "鑽石只提供可選功能，包括重抽聖物、遠征復活、解鎖兩名進階英雄與黃金外觀；一般關卡進度不需要鑽石。"],
+      ["哪些進度會保存？", "瀏覽器會在本機保存已解鎖與完成關卡、團隊等級與經驗、訓練金幣、已解鎖角色、角色永久等級、遠征紀錄與外觀選擇。"]
+    ]
   };
   Object.assign(localizedGames["zh-Hant"]["shadow-wolf"], {
     intro: "影狼傳說是一款 13+ 橫向動作 RPG。玩家在遺跡中跳躍、衝刺、攻擊影獸，收集鑰匙與遺物，逐步挑戰古獸首領。",
@@ -1561,8 +1657,8 @@
     section.innerHTML = `
       <div class="game-info-hero">
         <div class="game-info-title">
-          <span class="game-info-kicker">${escapeHtml(uiLabel("kicker"))}</span>
-          <h2>${escapeHtml(game.title)} - ${escapeHtml(uiLabel("titleSuffix"))}</h2>
+          <span class="game-info-kicker">${escapeHtml(game.guideKicker || uiLabel("kicker"))}</span>
+          <h2>${escapeHtml(game.title)} - ${escapeHtml(game.guideTitleSuffix || uiLabel("titleSuffix"))}</h2>
           <p>${escapeHtml(game.intro)}</p>
         </div>
         <div class="game-info-facts">
@@ -1575,6 +1671,26 @@
         </div>
       </div>
       <div class="game-info-sections">
+        ${
+          game.story?.length
+            ? `
+              <div class="game-info-section game-info-story">
+                <h3>${escapeHtml(uiLabel("worldAndMission"))}</h3>
+                ${game.story.map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join("")}
+              </div>
+            `
+            : ""
+        }
+        ${
+          game.systems?.length
+            ? `
+              <div class="game-info-section game-info-systems">
+                <h3>${escapeHtml(uiLabel("gameSystems"))}</h3>
+                <ul>${game.systems.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+              </div>
+            `
+            : ""
+        }
         <div class="game-info-section">
           <h3>${escapeHtml(uiLabel("howToPlay"))}</h3>
           <ol>${game.how.map((step) => `<li>${escapeHtml(step)}</li>`).join("")}</ol>
@@ -1589,28 +1705,54 @@
             `
             : ""
         }
+        ${
+          game.progression?.length
+            ? `
+              <div class="game-info-section game-info-campaign">
+                <h3>${escapeHtml(uiLabel("progressionAndDifficulty"))}</h3>
+                ${game.progression.map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join("")}
+              </div>
+            `
+            : ""
+        }
+        ${
+          game.designNote
+            ? `
+              <div class="game-info-section game-info-design">
+                <h3>${escapeHtml(uiLabel("developerNote"))}</h3>
+                <p>${escapeHtml(game.designNote)}</p>
+              </div>
+            `
+            : ""
+        }
         <div class="game-info-section game-info-parent">
-          <h3>${escapeHtml(uiLabel("parentNote"))}</h3>
+          <h3>${escapeHtml(game.noteTitle || uiLabel("parentNote"))}</h3>
           <p>${escapeHtml(game.parent)}</p>
         </div>
-        <div class="game-info-section game-info-progress">
-          <h3>${escapeHtml(uiLabel("progressGuide"))}</h3>
-          <div class="game-info-bands">
-            ${scoreBands
-              .map(
-                (band) => `
-                  <div class="game-info-band">
-                    <strong>${escapeHtml(localizeAge(band.age))}</strong>
-                    <span>${escapeHtml(uiLabel("beginner"))}: ${escapeHtml(band.beginner)}</span>
-                    <span>${escapeHtml(uiLabel("good"))}: ${escapeHtml(band.good)}</span>
-                    <span>${escapeHtml(uiLabel("excellent"))}: ${escapeHtml(band.excellent)}</span>
-                  </div>
-                `
-              )
-              .join("")}
-          </div>
-          <p>${escapeHtml(uiLabel("progressNote"))}</p>
-        </div>
+        ${
+          game.hideScoreBands
+            ? ""
+            : `
+              <div class="game-info-section game-info-progress">
+                <h3>${escapeHtml(uiLabel("progressGuide"))}</h3>
+                <div class="game-info-bands">
+                  ${scoreBands
+                    .map(
+                      (band) => `
+                        <div class="game-info-band">
+                          <strong>${escapeHtml(localizeAge(band.age))}</strong>
+                          <span>${escapeHtml(uiLabel("beginner"))}: ${escapeHtml(band.beginner)}</span>
+                          <span>${escapeHtml(uiLabel("good"))}: ${escapeHtml(band.good)}</span>
+                          <span>${escapeHtml(uiLabel("excellent"))}: ${escapeHtml(band.excellent)}</span>
+                        </div>
+                      `
+                    )
+                    .join("")}
+                </div>
+                <p>${escapeHtml(uiLabel("progressNote"))}</p>
+              </div>
+            `
+        }
         <div class="game-info-section">
           <h3>${escapeHtml(uiLabel("faq"))}</h3>
           <dl>${game.faq.map(([q, a]) => `<div><dt>${escapeHtml(q)}</dt><dd>${escapeHtml(a)}</dd></div>`).join("")}</dl>

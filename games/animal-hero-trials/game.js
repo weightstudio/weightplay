@@ -150,7 +150,7 @@
     Object.entries(views).forEach(([key, view]) => {
       view.classList.toggle("hidden", key !== name);
     });
-    $("#choiceModal").classList.add("hidden");
+    setChoiceModal(false, false);
     setResultModal(false, false);
     if (name !== "battle") {
       cancelAnimationFrame(frame);
@@ -160,6 +160,20 @@
 
   function resultCoveredLayers() {
     return [...$("#battleView").children].filter((node) => node.id !== "resultModal");
+  }
+
+  function choiceCoveredLayers() {
+    return [...$("#battleView").children].filter((node) => !["choiceModal", "resultModal", "battleAd"].includes(node.id));
+  }
+
+  function setChoiceModal(open, focusPrimary = true) {
+    $("#choiceModal").classList.toggle("hidden", !open);
+    choiceCoveredLayers().forEach((layer) => {
+      layer.inert = open;
+      if (open) layer.setAttribute("aria-hidden", "true");
+      else layer.removeAttribute("aria-hidden");
+    });
+    if (open && focusPrimary) requestAnimationFrame(() => $("#choices .choice")?.focus({ preventScroll: true }));
   }
 
   function setResultModal(open, focusPrimary = true) {
@@ -397,7 +411,7 @@
   function chooseBlessing() {
     run.active = false;
     renderBlessings(false);
-    $("#choiceModal").classList.remove("hidden");
+    setChoiceModal(true);
   }
 
   function blessingPool(rerolled) {
@@ -428,12 +442,13 @@
         clearRerollConfirmation();
         run.bless[option.id] += option.amount;
         if (option.id === "heal") run.hp = Math.min(run.maxHp, run.hp + 24 * option.amount);
-        $("#choiceModal").classList.add("hidden");
+        setChoiceModal(false, false);
         run.room += 1;
         run.active = true;
         spawn();
         run.last = performance.now();
         loop(performance.now());
+        requestAnimationFrame(() => $("#game").focus({ preventScroll: true }));
       };
       box.append(button);
     }
@@ -665,6 +680,13 @@
   $("#resultModal").addEventListener("keydown", (event) => {
     if (event.key !== "Tab" || $("#resultModal").classList.contains("hidden")) return;
     const actions = [$("#resultNext"), $("#resultHome")].filter((button) => !button.disabled);
+    if (event.shiftKey && document.activeElement === actions[0]) { event.preventDefault(); actions.at(-1).focus(); }
+    else if (!event.shiftKey && document.activeElement === actions.at(-1)) { event.preventDefault(); actions[0].focus(); }
+  });
+  $("#choiceModal").addEventListener("keydown", (event) => {
+    if (event.key !== "Tab" || $("#choiceModal").classList.contains("hidden")) return;
+    const actions = [...$("#choiceModal").querySelectorAll("button:not(:disabled)")];
+    if (!actions.length) return;
     if (event.shiftKey && document.activeElement === actions[0]) { event.preventDefault(); actions.at(-1).focus(); }
     else if (!event.shiftKey && document.activeElement === actions.at(-1)) { event.preventDefault(); actions[0].focus(); }
   });

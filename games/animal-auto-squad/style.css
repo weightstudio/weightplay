@@ -82,10 +82,10 @@ button { -webkit-tap-highlight-color: transparent; }
 }
 .primary-btn { color: #231503; background: linear-gradient(180deg, #ffe27c, #f4aa1c); box-shadow: 0 5px 0 #9c650d; }
 .secondary-btn, .shop-action-btn { border: 1px solid var(--line); color: var(--text); background: rgba(255,255,255,.08); }
-.profile-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 6px; }
-.profile-grid > div { min-width: 0; padding: 8px 5px; border: 1px solid rgba(137,239,194,.15); border-radius: 10px; background: rgba(0,0,0,.22); text-align: center; }
-.profile-grid span { display: block; overflow: hidden; color: var(--muted); font-size: .62rem; font-weight: 800; text-overflow: ellipsis; white-space: nowrap; }
-.profile-grid strong { display: block; margin-top: 3px; overflow: hidden; color: var(--mint); font-size: .82rem; text-overflow: ellipsis; white-space: nowrap; }
+.profile-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 8px; }
+.profile-grid > div { min-width: 0; padding: 9px 8px; border: 1px solid rgba(137,239,194,.18); border-radius: 11px; background: rgba(0,0,0,.24); text-align: center; }
+.profile-grid span { display: block; color: var(--muted); font-size: .68rem; font-weight: 800; line-height: 1.2; }
+.profile-grid strong { display: block; margin-top: 4px; color: var(--mint); font-size: .88rem; line-height: 1.2; }
 
 /* Stage/Battle logical Canvas, uniformly fitted as one unit. */
 body.squad-stage-select, body.squad-active { width: 100%; height: var(--squad-vh, 100dvh); overflow: hidden; overscroll-behavior: none; }
@@ -268,6 +268,34 @@ body:not(.squad-active) .battle-ad-reserve { display: none; }
 
 body.squad-stage-select .weightplay-version-badge, body.squad-active .weightplay-version-badge { display:none !important; }
 
+/* Keep Main utilities with the game poster so they scroll away before the guide. */
+body:not(.squad-stage-select):not(.squad-active) .weightplay-version-badge,
+body:not(.squad-stage-select):not(.squad-active) .wp-tutorial-button,
+body:not(.squad-stage-select):not(.squad-active) .sound-toggle {
+  position: absolute !important;
+}
+body:not(.squad-stage-select):not(.squad-active) .weightplay-version-badge {
+  top: max(12px, env(safe-area-inset-top)) !important;
+  left: max(152px, calc(50% - 300px)) !important;
+  right: auto !important;
+  transform: none !important;
+}
+body:not(.squad-stage-select):not(.squad-active) .wp-tutorial-button {
+  top: calc(108px + env(safe-area-inset-top)) !important;
+  right: max(28px, calc(50% - 428px)) !important;
+  left: auto !important;
+  width: 42px !important;
+  height: 42px !important;
+  min-width: 42px !important;
+  min-height: 42px !important;
+}
+body:not(.squad-stage-select):not(.squad-active) .sound-toggle {
+  top: 108px !important;
+  bottom: auto !important;
+  left: max(28px, calc(50% - 428px)) !important;
+  right: auto !important;
+}
+
 @media (max-width: 640px) {
   .squad-app { padding-inline: 8px; }
   .topbar { grid-template-columns:58px minmax(0,1fr) 108px; gap:7px; }
@@ -277,10 +305,10 @@ body.squad-stage-select .weightplay-version-badge, body.squad-active .weightplay
   .menu-copy > strong { font-size:1.28rem; }
   .menu-copy > span { font-size:.79rem; line-height:1.32; }
   #showStageBtn { min-height:52px; }
-  .profile-grid { gap:4px; }
-  .profile-grid > div { padding:6px 3px; }
-  .profile-grid span { font-size:.55rem; }
-  .profile-grid strong { font-size:.7rem; }
+  .profile-grid { gap:6px; }
+  .profile-grid > div { padding:7px 6px; }
+  .profile-grid span { font-size:.62rem; }
+  .profile-grid strong { font-size:.78rem; }
 }
 
 @media (max-height: 470px) and (orientation: landscape) {

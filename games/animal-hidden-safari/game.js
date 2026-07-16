@@ -466,7 +466,7 @@
       button.style.top = `${y}%`;
       button.style.setProperty("--size", `${size}px`);
       button.setAttribute("aria-label", t(`targets.${id}`));
-      button.innerHTML = `${animalImg(id, "target-animal")}${coverImg(cover)}<img class="hint-feedback" src="${feedbackAssets.hint}" alt="" draggable="false" />`;
+      button.innerHTML = `<span class="target-hit-area" aria-hidden="true"></span>${animalImg(id, "target-animal")}${coverImg(cover)}<img class="hint-feedback" src="${feedbackAssets.hint}" alt="" draggable="false" />`;
       button.addEventListener("click", (event) => {
         event.stopPropagation();
         chooseTarget(index, button);

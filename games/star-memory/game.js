@@ -546,10 +546,11 @@
     gameBoardPanel.classList.add("hidden");
     gameFeedback.classList.add("hidden");
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    requestAnimationFrame(() => startBtn.focus({ preventScroll: true }));
   }
 
   // Stage Selection Screen
-  function showStageSelect() {
+  function showStageSelect(focusStageIndex = Math.max(0, Math.min(stages.length, state.unlockedLevel) - 1)) {
     document.body.classList.remove("memory-main");
     document.body.classList.remove("memory-playing");
     document.body.classList.remove("memory-result");
@@ -562,7 +563,7 @@
     stageSelectPanel.classList.remove("hidden");
 
     exitSharedPlayViewport();
-    renderStageGrid();
+    renderStageGrid(focusStageIndex);
     updateMemoryFrame();
     requestAnimationFrame(() => {
       exitSharedPlayViewport();
@@ -570,13 +571,14 @@
     });
   }
 
-  function renderStageGrid() {
+  function renderStageGrid(focusStageIndex = null) {
     stageGrid.replaceChildren(
       ...stages.map((stage, idx) => {
         const isUnlocked = stage.id <= state.unlockedLevel;
         const button = document.createElement("button");
         button.type = "button";
         button.className = `stage-card ${isUnlocked ? "unlocked" : "locked"}`;
+        button.dataset.index = String(idx);
         button.setAttribute("aria-disabled", String(!isUnlocked));
         
         let starsStr = "";
@@ -606,8 +608,12 @@
       })
     );
     requestAnimationFrame(() => {
-      const unlocked = [...stageGrid.querySelectorAll(".stage-card.unlocked")].at(-1);
-      unlocked?.scrollIntoView({ block: "nearest", inline: "center", behavior: "auto" });
+      const unlocked = [...stageGrid.querySelectorAll(".stage-card.unlocked")];
+      const target = Number.isInteger(focusStageIndex)
+        ? stageGrid.querySelector(`.stage-card.unlocked[data-index="${focusStageIndex}"]`) || unlocked.at(-1)
+        : unlocked.at(-1);
+      target?.scrollIntoView({ block: "nearest", inline: "center", behavior: "auto" });
+      if (Number.isInteger(focusStageIndex)) target?.focus({ preventScroll: true });
     });
   }
 
@@ -954,7 +960,7 @@
     showStageSelect();
   });
   stageBackBtn.addEventListener("click", showMain);
-  battleBackBtn.addEventListener("click", showStageSelect);
+  battleBackBtn.addEventListener("click", () => showStageSelect(state.stageIndex));
 
   localeSelect.addEventListener("change", () => {
     window.WonderSound?.play("click");
@@ -997,7 +1003,7 @@
     if (document.body.classList.contains("memory-main")) return;
     event.preventDefault();
     window.WonderSound?.play("click");
-    if (document.body.classList.contains("memory-playing")) showStageSelect();
+    if (document.body.classList.contains("memory-playing")) showStageSelect(state.stageIndex);
     else showMain();
   });
 

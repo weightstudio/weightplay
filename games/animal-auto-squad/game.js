@@ -20,9 +20,9 @@
       selectedSkillTitle: "Selected animal",
       selectCharacterHint: "Tap an animal to see its role and skill.",
       battleArena: "Animal Auto Squad Arena",
-      menuTitle: "Draft and position your animal squad!",
+      menuTitle: "Train and position your animal squad!",
       menuHint: "Train your animals and conquer 30 five-wave stages across six regions, each ending in a unique boss battle.",
-      bestExpedition: "Best Run",
+      bestExpedition: "Stages Unlocked",
       expeditionsCleared: "Cleared Runs",
       teamLevel: "Team Level",
       diamonds: "Diamonds",
@@ -134,7 +134,7 @@
       shopShelfItems: "\u89d2\u8272\u80cc\u5305\u7269\u54c1",
       battleArena: "\u52d5\u7269\u81ea\u8d70\u5c0f\u968a\u7af6\u6280\u5834",
       menuTitle: "挑選並擺放你的動物小隊！",
-      menuHint: "募集松鼠、水獺、貓頭鷹和獅子。餵食蘋果或蜂蜜、購買聖物，並完成10回合的森林遠征！",
+      menuHint: "訓練已擁有角色、配置六人小隊，挑戰六個區域共 30 個五波關卡。",
       bestExpedition: "最佳遠征",
       expeditionsCleared: "通關次數",
       diamonds: "鑽石",
@@ -192,15 +192,15 @@
   const pageMeta = {
     en: {
       title: "Animal Auto Squad - Play Free Auto-Battler Game",
-      description: "Animal Auto Squad is a free online 13+ strategy auto-battler. Draft chibi animal cards, level up your squad, choose relic buffs, and defeat shadow monsters.",
-      ogDescription: "Draft and position your chibi animal squad across 30 five-wave stages, six regions, varied enemies, and six unique bosses.",
-      twitterDescription: "Draft animal cards, level up your squad, and defeat the shadow boss in this free online strategy auto-battler."
+      description: "Animal Auto Squad is a free 13+ formation auto-battler. Train ten animal heroes, build a two-row squad, and clear 30 stages with six unique bosses.",
+      ogDescription: "Train and position a six-animal squad across 30 five-wave stages, six regions, varied enemy formations, and six unique bosses.",
+      twitterDescription: "Build a two-row animal formation, train ten heroes, and defeat six regional bosses across a 30-stage auto-battler campaign."
     },
     "zh-Hant": {
       title: "動物自走小隊 - 免費策略自走棋網頁遊戲",
-      description: "《動物自走小隊》是一款免費的 13+ 策略自走棋遊戲。挑選可愛動物卡牌、合成升級小隊、選擇聖物加成，並擊退暗影野獸完成森林遠征！",
-      ogDescription: "挑選並擺放你的動物小隊。合成相同卡牌升級、購買食物和聖物，挑戰10回合森林遠征。",
-      twitterDescription: "挑選動物卡牌、升級小隊，在免費網頁策略自走棋中擊敗暗影頭目。"
+      description: "《動物自走小隊》是免費的 13+ 編成策略遊戲。訓練十名動物英雄、配置前後兩排，挑戰 30 關與六名區域 Boss。",
+      ogDescription: "訓練並配置六人動物小隊，穿越六個區域、30 個五波關卡與六場專屬 Boss 戰。",
+      twitterDescription: "配置前後兩排、訓練十名動物英雄，在 30 關自走戰役中擊敗六名區域 Boss。"
     }
   };
 
@@ -549,6 +549,7 @@
   };
 
   Object.assign(zhRuntimeText, {
+    menuTitle: "訓練並配置你的動物小隊！",
     language: "\u8a9e\u8a00",
     stageTab: "\u95dc\u5361",
     trainingTab: "\u8a13\u7df4",
@@ -562,7 +563,7 @@
     stageBoss: "\u9996\u9818",
     bossIncoming: "\u9996\u9818\uff1a{boss}",
     chooseExpedition: "\u9078\u64c7\u9060\u5f81",
-    bestExpedition: "\u6700\u4f73\u9060\u5f81",
+    bestExpedition: "\u5df2\u89e3\u9396\u95dc\u5361",
     expeditionsCleared: "\u5df2\u901a\u904e\u95dc\u5361",
     teamLevel: "\u5718\u968a\u7b49\u7d1a",
     teamLevelValue: "\u7b49\u7d1a {level}  \u7d93\u9a57\u503c {xp}/{goal}",
@@ -1260,6 +1261,16 @@
   }
 
   // Render Functions
+  function pinMainSoundToggle() {
+    if (document.body.classList.contains("squad-stage-select") || document.body.classList.contains("squad-active")) return;
+    const soundToggle = document.querySelector(".sound-toggle");
+    if (soundToggle) {
+      const viewportWidth = window.visualViewport?.width || window.innerWidth;
+      const mainLeft = Math.max(28, (viewportWidth - 920) / 2 + 32);
+      soundToggle.style.setProperty("inset", `108px auto auto ${mainLeft}px`, "important");
+    }
+  }
+
   function renderMenu() {
     stopCombatSession();
     selectedSlot = null;
@@ -1274,7 +1285,7 @@
     nodes.resultPanel.classList.add("is-hidden");
     nodes.combatSummary?.classList.add("is-hidden");
     setStageTab("stages");
-    nodes.bestRoundsText.textContent = t("stageProgress", { unlocked: save.unlockedStage, total: STAGE_COUNT });
+    nodes.bestRoundsText.textContent = `${save.unlockedStage}/${STAGE_COUNT}`;
     nodes.clearedRunsText.textContent = String(save.completedStages.length);
     if (nodes.teamLevelText) {
       nodes.teamLevelText.textContent = formatTeamLevel();
@@ -1282,6 +1293,8 @@
     if (nodes.teamBonusText) {
       nodes.teamBonusText.innerHTML = formatTeamBonusNote();
     }
+    pinMainSoundToggle();
+    window.setTimeout(pinMainSoundToggle, 120);
     updateWalletUI();
     renderStageSelector();
     renderTrainingRoster();
@@ -1630,6 +1643,7 @@
     nodes.showStageBtn.textContent = t("chooseExpedition");
     $("bestRoundsText").previousElementSibling.textContent = t("bestExpedition");
     $("clearedRunsText").previousElementSibling.textContent = t("expeditionsCleared");
+    nodes.bestRoundsText.textContent = `${save.unlockedStage}/${STAGE_COUNT}`;
     if (nodes.teamLevelText?.previousElementSibling) {
       nodes.teamLevelText.previousElementSibling.textContent = locale === "zh-Hant" ? "\u5718\u968a\u7b49\u7d1a" : t("teamLevel");
     }
@@ -3541,6 +3555,7 @@
     document.documentElement.style.setProperty("--squad-vh", `${viewportHeight}px`);
     const scale = Math.min(Math.max(0.1, (viewportWidth - 8) / 390), Math.max(0.1, (viewportHeight - 64) / 780));
     document.documentElement.style.setProperty("--squad-scale", String(scale));
+    pinMainSoundToggle();
   }
 
   updateBattleViewport();

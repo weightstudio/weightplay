@@ -29,6 +29,7 @@
     keyboardFlight: 'Press Enter to select this airship, then use arrow keys to choose a dock and Enter to dispatch.',
     keyboardChooseDock: 'Airship selected. Use arrow keys to choose a dock, then press Enter to dispatch. Escape cancels.',
     keyboardDock: '{dock}. Press Enter to dispatch here.',
+    routeCancelled: 'Route cancelled. No error added.',
   });
   Object.assign(strings['zh-Hant'], {
     guideTitle: '\u5982\u4f55\u8abf\u5ea6',
@@ -54,6 +55,7 @@
     keyboardFlight: '\u6309 Enter \u9078\u64c7\u98db\u8239\uff0c\u518d\u7528\u65b9\u5411\u9375\u9078\u78bc\u982d\uff0c\u6309 Enter \u8abf\u5ea6\u3002',
     keyboardChooseDock: '\u5df2\u9078\u64c7\u98db\u8239\u3002\u7528\u65b9\u5411\u9375\u9078\u78bc\u982d\uff0c\u6309 Enter \u8abf\u5ea6\uff1bEscape \u53d6\u6d88\u3002',
     keyboardDock: '{dock}\u3002\u6309 Enter \u8abf\u5ea6\u5230\u9019\u88e1\u3002',
+    routeCancelled: '\u822a\u7dda\u5df2\u53d6\u6d88\uff0c\u4e0d\u8a08\u5165\u932f\u8aa4\u3002',
   });
   const flights = [['cargo','cargo'], ['passenger','passenger'], ['repair','repair'], ['festival','passenger'], ['heavy','cargo']];
   const flightLabels = {
@@ -219,6 +221,7 @@
     $('routeLine').classList.add('is-guidance');
   }
   function startBattle() {
+    cancelRouteGesture({restoreGuidance:false});
     clearInsuranceConfirmation();
     const shift = state.shift || 1;
     const config = shiftConfig[shift];
@@ -254,6 +257,7 @@
     $('routeLine').classList.remove('is-guidance');
   }
   function result(win) {
+    cancelRouteGesture({restoreGuidance:false});
     show('result');
     $('resultTitle').textContent = win ? t('win') : t('lose');
     $('resultCopy').textContent = win ? t('winCopy') : (state.lastError || t('loseCopy'));
@@ -299,6 +303,16 @@
     }
     renderHud();
   }
+  function cancelRouteGesture({announce=false, restoreGuidance=true} = {}) {
+    const wasDragging = dragging;
+    dragging = false;
+    inputMode = '';
+    if (wasDragging) suppressClick = true;
+    $('routeLine').style.opacity = '0';
+    $('routeLine').classList.remove('is-guidance');
+    if (announce && wasDragging) $('feedback').textContent = t('routeCancelled');
+    if (restoreGuidance && wasDragging && state.kind && !$('battleShell').classList.contains('hidden')) renderGuidanceLine();
+  }
   function routePointer(event) {
     const mode = event.type.startsWith('pointer') ? 'pointer' : 'mouse';
     const isStart = event.type === 'pointerdown' || event.type === 'mousedown';
@@ -320,9 +334,6 @@
     $('routeLine').classList.remove('is-guidance');
     Object.assign($('routeLine').style, {left:`${fromX}px`, top:`${fromY}px`, width:`${length}px`, transform:`rotate(${Math.atan2(dy, dx)}rad)`, opacity:'1'});
     if (!isEnd) return;
-    dragging = false;
-    inputMode = '';
-    suppressClick = length > 4;
     let target = null;
     let nearest = Infinity;
     document.querySelectorAll('.dock').forEach((dock) => {
@@ -330,7 +341,15 @@
       const distance = Math.hypot(event.clientX - (box.left + box.width / 2), event.clientY - (box.top + box.height / 2));
       if (distance < nearest) { nearest = distance; target = dock; }
     });
-    finish(nearest <= Math.max(64, target?.getBoundingClientRect().width || 0) ? target?.dataset.dock === state.dock : false);
+    const targetRadius = Math.max(64, target?.getBoundingClientRect().width || 0);
+    if (nearest > targetRadius) {
+      cancelRouteGesture({announce:true});
+      return;
+    }
+    dragging = false;
+    inputMode = '';
+    suppressClick = length > 4;
+    finish(target?.dataset.dock === state.dock);
   }
   function dockNodes() {
     return [...document.querySelectorAll('.dock')];
@@ -383,7 +402,7 @@
     renderContractControls();
   };
   $('stageBack').onclick = () => { clearInsuranceConfirmation(); renderContractControls(); show('mainScreen'); };
-  $('battleBack').onclick = () => { show('stageScreen'); renderStages(); };
+  $('battleBack').onclick = () => { cancelRouteGesture({restoreGuidance:false}); show('stageScreen'); renderStages(); };
   $('menuBtn').onclick = () => show('mainScreen');
   $('serviceBtn').onclick = () => {
     if (state.storm && state.parts) {
@@ -433,8 +452,12 @@
   }));
   window.addEventListener('pointermove', routePointer);
   window.addEventListener('pointerup', routePointer);
+  window.addEventListener('pointercancel', () => { if (dragging) cancelRouteGesture({announce:true}); });
   window.addEventListener('mousemove', routePointer);
   window.addEventListener('mouseup', routePointer);
+  $('flight').addEventListener('lostpointercapture', () => { if (dragging) cancelRouteGesture({announce:true}); });
+  window.addEventListener('blur', () => { if (dragging) cancelRouteGesture({announce:true}); });
+  document.addEventListener('visibilitychange', () => { if (document.hidden && dragging) cancelRouteGesture({announce:true}); });
   $('localeSelect').onchange = (event) => { locale = event.target.value; localStorage.setItem('weightPlayLocale', locale); localize(); };
   localize();
 })();

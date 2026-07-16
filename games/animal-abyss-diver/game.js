@@ -255,14 +255,28 @@
   Object.assign(zh,{
     fishBattle:"魚類遭遇戰",territorialFish:"領域魚",shark:"深淵鯊魚",fishHp:"敵方生命",diverHp:"諾里生命",attackAction:"攻擊",escapeAction:"逃跑",fishStrikes:"魚發動反擊！",fishWon:"戰勝魚類！",fishEscaped:"成功逃跑，氧氣 -{n}。",xpGain:"經驗 +{n}",levelUp:"升級！能力點 +{n}",upgradeTitle:"潛航員升級",statPoints:"剩餘點數 {n}",hpStat:"生命",attackStat:"攻擊",oxygenStat:"氧氣上限",statPreview:"{name} {current} → {next}",upgradePrompt:"請分配所有能力點後再繼續。",upgradeApplied:"{name}已提升：{before} → {after}。",doneUpgrade:"繼續潛航",combatDefeat:"諾里戰敗",resultCombat:"諾里在遭遇戰中落敗，只保住一半打撈品。"
   });
+  Object.assign(en,{
+    beaconConfirmStatus:"Restore oxygen to at least 30% once this dive · {before} → {after} Diamonds. Tap again to confirm.",
+    beaconConfirmLabel:"Confirm Emergency Beacon. Spend 3 Diamonds. Balance {before} to {after}."
+  });
+  Object.assign(zh,{
+    beaconConfirmStatus:u("\u672c\u6b21\u6f5b\u822a\u9650\u7528\u4e00\u6b21\uff0c\u5c07\u6c27\u6c23\u56de\u5fa9\u81f3\u81f3\u5c11 30% \u00b7 \u947d\u77f3 {before} \u2192 {after}\u3002\u518d\u6b21\u9ede\u64ca\u78ba\u8a8d\u3002"),
+    beaconConfirmLabel:u("\u78ba\u8a8d\u4f7f\u7528\u7dca\u6025\u4fe1\u6a19\u3002\u82b1\u8cbb 3 \u9846\u947d\u77f3\uff0c\u9918\u984d\u7531 {before} \u8b8a\u70ba {after}\u3002")
+  });
   let locale = localStorage.getItem("weightPlayLocale") || "en";
   const storedSave = JSON.parse(localStorage.getItem(saveKey)||"{}");
   let save = { rank:1, coins:0, unlocked:1, level:1, xp:0, statPoints:0, ...storedSave };
   save.stats={hp:0,attack:0,oxygen:0,...storedSave.stats};
-  let state = {},lastUpgrade=null;
+  let state = {},lastUpgrade=null,beaconConfirmTimer=0;
   let diveSession=0;
   const diveTimers=new Set();
+  function clearBeaconConfirmation(){
+    window.clearTimeout(beaconConfirmTimer);
+    beaconConfirmTimer=0;
+    if(state)state.beaconPending=false;
+  }
   function cancelDiveAsync(){
+    clearBeaconConfirmation();
     diveSession+=1;
     diveTimers.forEach(timer=>window.clearTimeout(timer));
     diveTimers.clear();
@@ -325,8 +339,9 @@
     $("depthProgress").style.width=`${((state.zone-1)/Math.max(1,config.zones-1))*100}%`;
     $("fxArt").classList.toggle("hidden",!state.sonar);
     $("diamondText").querySelector("b").textContent=wallet();
-    $("beaconBtn").innerHTML=`${icon("beacon")}<span>${t("shortBeacon")}</span><b>${state.beaconUsed?"✓":"3"}</b>`;$("beaconBtn").ariaLabel=state.beaconUsed?t("beaconUsed"):t("beacon");
-    $("beaconBtn").disabled=state.beaconUsed;
+    const beaconBalance=wallet(),beaconAfter=Math.max(0,beaconBalance-3);
+    $("beaconBtn").innerHTML=`${icon("beacon")}<span>${t("shortBeacon")}</span><b>${state.beaconUsed?"✓":state.beaconPending?`${beaconBalance}→${beaconAfter}`:"3"}</b>`;
+    $("beaconBtn").ariaLabel=state.beaconPending?t("beaconConfirmLabel",{before:beaconBalance,after:beaconAfter}):state.beaconUsed?t("beaconUsed"):t("beacon");
     $("sonarBtn").innerHTML=`${icon("sonar")}<span>${t("shortScan")}</span><b>2</b>`;$("sonarBtn").ariaLabel=t("sonarPowered");
     $("shieldBtn").innerHTML=`${icon("shield")}<span>${t("shortShield")}</span><b>${state.shieldArmed?"✓":"1"}</b>`;$("shieldBtn").ariaLabel=state.shieldArmed?t("shieldArmed"):t("shield");
     $("surfaceBtn").innerHTML=`${icon("surface")}<span>${t("shortSurface")}</span>`;$("surfaceBtn").ariaLabel=t("surface");
@@ -367,7 +382,7 @@
       target?.focus({preventScroll:true});
     });
   }
-  function start(route){cancelDiveAsync();state={route,zone:1,oxygen:maxOxygen(),playerHp:maxHealth(),salvage:0,sonar:false,battery:4,shieldArmed:false,beaconUsed:false,busy:false,fishActive:false,fishResolvedZones:[]};show("battleShell");resetDiveField();$("fishEncounter").classList.add("hidden");$("fishEncounter").classList.remove("is-hit","is-countering","is-escaping");setUpgradeModal(false,false);renderBattle();setFeedback(`${icon("sonar")}<b>?</b>`,t("objectiveScan"));setCoach(!save.tutorialDone);}
+  function start(route){cancelDiveAsync();state={route,zone:1,oxygen:maxOxygen(),playerHp:maxHealth(),salvage:0,sonar:false,battery:4,shieldArmed:false,beaconUsed:false,beaconPending:false,busy:false,fishActive:false,fishResolvedZones:[]};show("battleShell");resetDiveField();$("fishEncounter").classList.add("hidden");$("fishEncounter").classList.remove("is-hit","is-countering","is-escaping");setUpgradeModal(false,false);renderBattle();setFeedback(`${icon("sonar")}<b>?</b>`,t("objectiveScan"));setCoach(!save.tutorialDone);}
   function finish(mode){
     cancelDiveAsync();
     const config=routeConfig(),clear=mode==="clear";
@@ -409,6 +424,7 @@
     },520);
   }
   function move(direction){
+    clearBeaconConfirmation();
     if(state.busy)return;
     state.busy=true;
     const field=$("diveField");field.dataset.lane=direction;field.classList.add("is-swimming");
@@ -467,8 +483,36 @@
   function escapeFish(){
     if(!state.fishActive||state.fishBusy)return;const cost=6+state.route*2;state.oxygen=Math.max(0,state.oxygen-cost);state.fishActive=false;state.fishResolvedZones.push(state.zone);$("fishEncounter").classList.add("is-escaping");setFeedback(`${icon("oxygen")}<b>-${cost}</b>`,t("fishEscaped",{n:cost}));scheduleDive(()=>{$("fishEncounter").classList.add("hidden");$("fishEncounter").classList.remove("is-escaping");renderBattle();if(state.oxygen<=0)finish("fail");},700);
   }
+  function useBeacon(){
+    if(state.beaconUsed)return;
+    const balance=wallet();
+    if(!state.beaconPending){
+      if(balance<3){setFeedback(`${icon("beacon")}<b>3</b>`,t("beaconNeed"));return;}
+      state.beaconPending=true;
+      window.clearTimeout(beaconConfirmTimer);
+      beaconConfirmTimer=window.setTimeout(()=>{
+        if(!state?.beaconPending)return;
+        state.beaconPending=false;
+        beaconConfirmTimer=0;
+        renderBattle();
+      },5000);
+      setFeedback(`${icon("beacon")}<b>${balance}→${balance-3}</b>`,t("beaconConfirmStatus",{before:balance,after:balance-3}));
+      renderBattle();
+      return;
+    }
+    window.clearTimeout(beaconConfirmTimer);
+    beaconConfirmTimer=0;
+    state.beaconPending=false;
+    if(!window.WeightPlayWallet?.spendDiamonds?.(3)){setFeedback(`${icon("beacon")}<b>3</b>`,t("beaconNeed"));renderBattle();return;}
+    state.beaconUsed=true;
+    const restored=Math.ceil(maxOxygen()*.3);
+    state.oxygen=Math.max(state.oxygen,restored);
+    setFeedback(`${icon("beacon")}<b>✓</b>${icon("oxygen")}<b>${restored}</b>`,`${t("beaconUsed")}: ${t("beaconHelp")}`);
+    window.WonderAnalytics?.track?.("diamond_spend",{sink:"abyss_emergency_beacon",amount:3});
+    renderBattle();
+  }
   function localize(){document.documentElement.lang=locale;document.title=`${t("title")} - Internal Trial`;$("title").textContent=t("title");$("languageLabel").textContent=t("language");$("localeSelect").value=locale;$("headline").textContent=t("headline");$("intro").textContent=t("intro");$("guideTitle").textContent=t("guideTitle");$("guideCopy").textContent=t("guideCopy");$("startBtn").textContent=t("start");$("stageTitle").textContent=t("stage");$("stageHint").textContent=t("stageHint");$("leftBtn").textContent=t("left");$("rightBtn").textContent=t("right");$("sonarBtn").textContent=t("sonarPowered");$("shieldBtn").textContent=t("shield");$("surfaceBtn").textContent=t("surface");$("coachTitle").textContent=t("coachTitle");$("coachStart").textContent=t("coachStart");renderCoach();$("helpBtn").ariaLabel=t("help");$("stageBack").ariaLabel=t("back");$("battleBack").ariaLabel=t("back");$("progress").textContent=`Lv.${save.level} · ${t("rank",{n:save.rank})} - ${t("coins",{n:save.coins})}`;renderRoutes();if(state.route){renderBattle();if(state.fishActive)renderFish();if(!$("upgradePanel").classList.contains("hidden"))renderUpgrade();}}
-  $("startBtn").onclick=()=>{show("stageScreen");renderRoutes();};$("stageBack").onclick=()=>show("mainScreen");$("battleBack").onclick=()=>{cancelDiveAsync();show("stageScreen");renderRoutes();};$("menuBtn").onclick=()=>show("mainScreen");$("leftBtn").onclick=()=>move("left");$("rightBtn").onclick=()=>move("right");$("dodgeLeftBtn").onclick=attackFish;$("pulseBtn").onclick=escapeFish;$("helpBtn").onclick=()=>setCoach(true);$("coachStart").onclick=()=>{save.tutorialDone=true;persist();setCoach(false);setFeedback(`${icon("sonar")}<b>?</b>`,t("objectiveScan"));};$("sonarBtn").onclick=()=>{if(state.sonar){setFeedback(`${icon("sonar")}<b>✓</b>`,sonarMessage());return;}if(state.battery<2){setFeedback(`${icon("power")}<b>0</b>`,t("sonarNeed"));return;}state.battery-=2;state.sonar=true;setFeedback(`${icon("sonar")}<b>✓</b>`,sonarMessage());renderBattle();};$("shieldBtn").onclick=()=>{if(state.shieldArmed)return;if(state.battery<1){setFeedback(`${icon("power")}<b>0</b>`,t("shieldNeed"));return;}state.battery-=1;state.shieldArmed=true;setFeedback(`${icon("shield")}<b>✓</b>`,t("shieldArmed"));renderBattle();};$("surfaceBtn").onclick=()=>finish("surface");$("beaconBtn").onclick=()=>{if(state.beaconUsed)return;if(!window.WeightPlayWallet?.spendDiamonds?.(3)){setFeedback(`${icon("beacon")}<b>3</b>`,t("beaconNeed"));return;}state.beaconUsed=true;const restored=Math.ceil(maxOxygen()*.3);state.oxygen=Math.max(state.oxygen,restored);setFeedback(`${icon("beacon")}<b>✓</b>${icon("oxygen")}<b>${restored}</b>`,`${t("beaconUsed")}: ${t("beaconHelp")}`);window.WonderAnalytics?.track?.("diamond_spend",{sink:"abyss_emergency_beacon",amount:3});renderBattle();};$("upgradeHp").onclick=()=>allocateStat("hp");$("upgradeAttack").onclick=()=>allocateStat("attack");$("upgradeOxygen").onclick=()=>allocateStat("oxygen");$("upgradeDone").onclick=()=>{setUpgradeModal(false);renderBattle();};$("localeSelect").onchange=(event)=>{locale=event.target.value;localStorage.setItem("weightPlayLocale",locale);localize();};
+  $("startBtn").onclick=()=>{show("stageScreen");renderRoutes();};$("stageBack").onclick=()=>show("mainScreen");$("battleBack").onclick=()=>{cancelDiveAsync();show("stageScreen");renderRoutes();};$("menuBtn").onclick=()=>show("mainScreen");$("leftBtn").onclick=()=>move("left");$("rightBtn").onclick=()=>move("right");$("dodgeLeftBtn").onclick=attackFish;$("pulseBtn").onclick=escapeFish;$("helpBtn").onclick=()=>setCoach(true);$("coachStart").onclick=()=>{save.tutorialDone=true;persist();setCoach(false);setFeedback(`${icon("sonar")}<b>?</b>`,t("objectiveScan"));};$("sonarBtn").onclick=()=>{if(state.sonar){setFeedback(`${icon("sonar")}<b>✓</b>`,sonarMessage());return;}if(state.battery<2){setFeedback(`${icon("power")}<b>0</b>`,t("sonarNeed"));return;}state.battery-=2;state.sonar=true;setFeedback(`${icon("sonar")}<b>✓</b>`,sonarMessage());renderBattle();};$("shieldBtn").onclick=()=>{if(state.shieldArmed)return;if(state.battery<1){setFeedback(`${icon("power")}<b>0</b>`,t("shieldNeed"));return;}state.battery-=1;state.shieldArmed=true;setFeedback(`${icon("shield")}<b>✓</b>`,t("shieldArmed"));renderBattle();};$("surfaceBtn").onclick=()=>finish("surface");$("beaconBtn").onclick=useBeacon;$("upgradeHp").onclick=()=>allocateStat("hp");$("upgradeAttack").onclick=()=>allocateStat("attack");$("upgradeOxygen").onclick=()=>allocateStat("oxygen");$("upgradeDone").onclick=()=>{setUpgradeModal(false);renderBattle();};$("localeSelect").onchange=(event)=>{locale=event.target.value;localStorage.setItem("weightPlayLocale",locale);localize();};
   $("upgradePanel").addEventListener("keydown",event=>{if(event.key!=="Tab"||$("upgradePanel").classList.contains("hidden"))return;const choices=[...$("upgradePanel").querySelectorAll("button:not(:disabled)")];if(!choices.length)return;const first=choices[0],last=choices.at(-1);if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}});
   for(const direction of ["left","right"]){$(`${direction}Gate`).addEventListener("keydown",event=>{if((event.key==="Enter"||event.key===" ")&&$(`${direction}Gate`).getAttribute("aria-disabled")!=="true"){event.preventDefault();move(direction);}});}
   let drag;
@@ -502,6 +546,7 @@
     event.preventDefault();
     event.stopPropagation();
   }, true);
+  for(const id of ["sonarBtn","shieldBtn","helpBtn"]){$(id).addEventListener("click",clearBeaconConfirmation,{capture:true});}
   localize();
   const lobbyLabels = { en: "Back to lobby", "zh-Hant": u("\\u8fd4\\u56de\\u5927\\u5ef3") };
   function syncMetadata() {

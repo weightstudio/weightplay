@@ -392,8 +392,7 @@ body.safari-stage .stage-grid { align-items:center; padding-inline:calc((100% - 
   isolation: isolate;
 }
 
-.target::before {
-  content: "";
+.target-hit-area {
   position: absolute;
   inset: -6px;
   border-radius: inherit;

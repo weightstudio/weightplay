@@ -438,10 +438,10 @@ window.WONDER_LOBBY = {
       ageLabel: { en: "13+", "zh-Hant": "13+" },
       href: "games/animal-auto-squad/",
       description: {
-        en: "Draft, upgrade, and position animal warriors to defeat shadow beasts in automated forest battles.",
-        "zh-Hant": "招募、升級並擺放你的動物小隊，在自動戰鬥中擊退影之獸完成遠征。"
+        en: "Train and position ten animal heroes across 30 five-wave stages, six regions, and six unique boss battles.",
+        "zh-Hant": "訓練並配置十名動物英雄，穿越六個區域、30 個五波關卡與六場專屬 Boss 戰。"
       },
-      meta: { en: ["Strategy", "10 Rounds", "13+ Diamond Sink"], "zh-Hant": ["策略自走", "10 回合", "鑽石經濟"] },
+      meta: { en: ["Formation Strategy", "30 Stages", "Six Bosses"], "zh-Hant": ["編成策略", "30 關", "六名 Boss"] },
       art: { kind: "image", background: "assets/animal-auto-squad-cover.webp", hero: "assets/weightplay-character-gear-horn-rhino-cutout.webp" },
     },
     {
@@ -741,8 +741,8 @@ const cleanZhLobbyCopy = {
     title: "動物自走小隊",
     statusText: "可遊玩",
     type: "自走棋策略",
-    description: "招募、合成並配置動物小隊，用不同角色能力在自動戰鬥中擊敗森林敵人。",
-    meta: ["自走棋", "小隊成長", "13+ 策略"],
+    description: "訓練並配置十名動物英雄，穿越六個區域、30 個五波關卡與六場專屬 Boss 戰。",
+    meta: ["編成策略", "30 關", "六名 Boss"],
   },
   "beast-tactician": {
     title: "獸王守衛",
@@ -861,8 +861,8 @@ const verifiedCleanZhLobbyCopy = {
     title: "動物自走小隊",
     statusText: "可遊玩",
     type: "自走棋策略",
-    description: "招募、升級並擺放你的動物小隊，在自動戰鬥中擊退影之獸完成遠征。",
-    meta: ["策略自走", "10 回合", "鑽石經濟"],
+    description: "訓練並配置十名動物英雄，穿越六個區域、30 個五波關卡與六場專屬 Boss 戰。",
+    meta: ["編成策略", "30 關", "六名 Boss"],
   },
   "beast-tactician": {
     title: "獸王守衛",

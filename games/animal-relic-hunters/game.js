@@ -1196,12 +1196,23 @@
           <button class="gear-upgrade-btn" type="button">${level >= 10 ? t("gearMaxLevel") : `${t("upgradeGearAction")} ${cost}`}</button>
         </span>
       `;
-      item.querySelector(".gear-equip-btn").addEventListener("click", () => equipGearItem(key));
+      item.querySelector(".gear-equip-btn").addEventListener("click", () => equipGearItem(key, true));
       const upgradeBtn = item.querySelector(".gear-upgrade-btn");
       upgradeBtn.disabled = level >= 10 || profile.gold < cost;
       upgradeBtn.title = profile.gold < cost ? t("upgradeNeedGold", { gold: cost }) : "";
-      upgradeBtn.addEventListener("click", () => upgradeGearItem(key));
+      upgradeBtn.addEventListener("click", () => upgradeGearItem(key, true));
       nodes.backpackList.appendChild(item);
+    });
+  }
+
+  function restoreBackpackActionFocus(key, actionClass) {
+    requestAnimationFrame(() => {
+      const item = nodes.backpackList.querySelector(`[data-gear-key="${key}"]`);
+      const preferred = item?.querySelector(actionClass);
+      const target = preferred && !preferred.disabled
+        ? preferred
+        : item?.querySelector("button:not(:disabled)") || nodes.backpackList.querySelector("button:not(:disabled)");
+      target?.focus({ preventScroll: true });
     });
   }
 
@@ -1226,7 +1237,7 @@
     return { isNew: false, duplicateGold };
   }
 
-  function upgradeGearItem(key) {
+  function upgradeGearItem(key, restoreFocus = false) {
     if (!gearDb[key] || !profile.inventory.includes(key)) return;
     const level = gearLevel(key);
     if (level >= 10) return;
@@ -1242,10 +1253,11 @@
     updateDiamondShopUI();
     renderBackpack();
     updateHUDText();
+    if (restoreFocus) restoreBackpackActionFocus(key, ".gear-upgrade-btn");
     window.WonderSound?.play("upgrade");
   }
 
-  function equipGearItem(key) {
+  function equipGearItem(key, restoreFocus = false) {
     const g = gearDb[key];
     if (!g) return;
 
@@ -1262,8 +1274,10 @@
     saveProfile();
     renderStatsPanel();
     renderEquippedGear();
+    renderBackpack();
     renderGrowthPrompt();
     updateHUDText();
+    if (restoreFocus) restoreBackpackActionFocus(key, ".gear-equip-btn");
     window.WonderSound?.play("success");
   }
 

@@ -79,6 +79,8 @@
       charmBuy: "Unlock for {cost}",
       charmNeed: "Need {cost} diamonds · balance {balance}.",
       charmBought: "Unlocked and saved · {balance} diamonds remain.",
+      charmConfirm: "Confirm permanent boost · Diamonds {before} → {after}. Tap again.",
+      charmConfirmLabel: "Confirm Crystal Charm. Spend 12 Diamonds. Balance {before} to {after}.",
       enableSound: "Enable sound",
       disableSound: "Disable sound",
       startRun: "Start Run",
@@ -162,6 +164,8 @@
       charmBuy: "\u82b1\u8cbb {cost} \u89e3\u9396",
       charmNeed: "\u9700\u8981 {cost} \u9846\u947d\u77f3 · \u76ee\u524d {balance} \u9846\u3002",
       charmBought: "\u5df2\u89e3\u9396\u4e26\u4fdd\u5b58 · \u5269\u9918 {balance} \u9846\u947d\u77f3\u3002",
+      charmConfirm: "\u78ba\u8a8d\u6c38\u4e45\u52a0\u6210 · \u947d\u77f3 {before} → {after}\u3002\u518d\u6b21\u9ede\u64ca\u78ba\u8a8d\u3002",
+      charmConfirmLabel: "\u78ba\u8a8d\u8cfc\u8cb7\u6c34\u6676\u8b77\u7b26\u3002\u82b1\u8cbb 12 \u9846\u947d\u77f3\uff0c\u9918\u984d\u7531 {before} \u8b8a\u70ba {after}\u3002",
       enableSound: "\u958b\u555f\u97f3\u6548",
       disableSound: "\u95dc\u9589\u97f3\u6548",
       startRun: "\u958b\u59cb\u6311\u6230",
@@ -257,6 +261,8 @@
   let locale = window.WonderI18n?.locale?.() || localStorage.getItem(localeKey) || "en";
   let save = loadSave();
   let state = makeState();
+  let charmPurchasePending = false;
+  let charmConfirmTimer = 0;
   let lastFrame = 0;
   let battlePanelMetrics = null;
   let pointerDown = false;
@@ -413,6 +419,7 @@
   }
 
   function setLocale(next) {
+    clearCharmConfirmation();
     locale = next || "en";
     localStorage.setItem(localeKey, locale);
     document.documentElement.lang = locale === "zh-Hant" ? "zh-Hant" : "en";
@@ -460,20 +467,46 @@
     nodes.diamondBalance.textContent = String(balance);
     nodes.charmCost.textContent = owned ? "\u2713" : String(crystalCharmCost);
     nodes.charmBtn.disabled = owned || balance < crystalCharmCost;
+    const after = Math.max(0, balance - crystalCharmCost);
     const status = message || (owned
       ? t("charmOwned")
+      : charmPurchasePending
+        ? t("charmConfirm", { before: balance, after })
       : balance < crystalCharmCost
         ? t("charmNeed", { cost: crystalCharmCost, balance })
         : t("charmBuy", { cost: crystalCharmCost }));
-    nodes.charmBtn.setAttribute("aria-label", `${t("charmName")} · ${owned ? t("charmOwned") : t("charmEffect")} · ${status}`);
+    nodes.charmBtn.setAttribute("aria-label", charmPurchasePending ? t("charmConfirmLabel", { before:balance, after }) : `${t("charmName")} · ${owned ? t("charmOwned") : t("charmEffect")} · ${status}`);
+    nodes.charmBtn.classList[charmPurchasePending ? "add" : "remove"]("is-confirming");
     nodes.charmStatus.textContent = status;
+  }
+
+  function clearCharmConfirmation(render = false) {
+    if (typeof clearTimeout === "function") clearTimeout(charmConfirmTimer);
+    charmConfirmTimer = 0;
+    charmPurchasePending = false;
+    if (render) updateDiamondShop();
   }
 
   function buyCrystalCharm() {
     if (save.crystalCharm) {
+      clearCharmConfirmation();
       updateDiamondShop();
       return;
     }
+    const balance = diamondBalance();
+    if (balance < crystalCharmCost) {
+      clearCharmConfirmation();
+      updateDiamondShop(t("charmNeed", { cost: crystalCharmCost, balance }));
+      playSound("wrong", 0.2);
+      return;
+    }
+    if (!charmPurchasePending) {
+      charmPurchasePending = true;
+      charmConfirmTimer = setTimeout(() => clearCharmConfirmation(true), 5000);
+      updateDiamondShop();
+      return;
+    }
+    clearCharmConfirmation();
     const wallet = getWallet();
     if (!wallet?.spendDiamonds || !wallet.spendDiamonds(crystalCharmCost)) {
       updateDiamondShop(t("charmNeed", { cost: crystalCharmCost, balance: diamondBalance() }));
@@ -552,6 +585,7 @@
   }
 
   function startRun() {
+    clearCharmConfirmation();
     setUpgradeModalOpen(false, false);
     runToken += 1;
     clearInput();
@@ -1265,6 +1299,7 @@
   nodes.startBtn.addEventListener("click", startRun);
   nodes.charmBtn?.addEventListener("click", buyCrystalCharm);
   nodes.menuSoundBtn?.addEventListener("click", () => {
+    clearCharmConfirmation(true);
     const muted = Boolean(window.WonderSound?.isMuted?.());
     window.WonderSound?.setMuted?.(!muted);
     updateMenuSound();
