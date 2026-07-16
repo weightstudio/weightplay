@@ -668,32 +668,60 @@
     },
     "beast-tactician": {
       title: "Beast Guardian",
-      age: "13+",
       difficulty: "Hard",
-      time: "8-12 minutes",
+      time: "8-15 minutes per stage",
+      gameplay: "Hero Tower Defense",
+      genre: ["Tower Defense", "Strategy", "Animal"],
       skills: ["Logic", "Problem Solving", "Focus"],
+      guideKicker: "WeightPlay Original Game Guide",
+      guideTitleSuffix: "Game Guide",
+      noteTitle: "Player and Save Information",
+      hideScoreBands: true,
       intro:
-        "Beast Guardian is a 13+ hero tower-defense game. Build ordinary animal soldiers and elite WeightPlay heroes on a tactical forest grid, shape enemy routes, stop boss waves, and protect the crystal core across 10 forest stages.",
+        "Beast Guardian is a 30-stage hero tower-defense campaign built around route construction rather than fixed tower pads. Place four ordinary animal soldier roles and seven WeightPlay heroes on a forest grid, keep at least one route open, and protect the crystal core through six five-stage regions. Wolves, armored boars, flying bats, regenerating packs, wounded sprinters, and eclipse formations ask for different defenses. Stages 5, 10, 15, 20, 25, and 30 end with rule-changing Bosses instead of ordinary enemies with larger health bars.",
+      story: [
+        "The crystal routes connect six parts of the Guardian Forest: the first root paths, crystal air lanes, Ironbark works, the regrowing mistwood, storm ramparts, and the eclipse road to the Voidroot throne. Enemy packs are trying to reach the core at the far side of each battlefield. A cleared stage means the route is secure long enough for the guardians to advance to the next sector.",
+        "You command the defense before and during every wave. Acorn Guards and Moss Shell Taro hold bends, Scout Archers and Moon Cap Orla cover long angles, Rune Sappers slow clustered attackers, Medic Cubs repair injured blockers, and heroes such as Spark Paw Fia provide focused damage. The board is not a decoration: every placed defender changes the route unless the unit is serving as ranged support away from the path."
+      ],
+      systems: [
+        "Route building: defenders occupy normal ground cells. Enemies recalculate a path around them, but a completely sealed route makes ground enemies attack the nearest blocker until a route opens again. Flying bats ignore the ground maze, so a long route alone cannot solve every wave.",
+        "Combat roles: blockers buy time, Archers and Orla cover distance, Sappers apply splash damage and slowing, Medics heal damaged defenders, Fia focuses Boss pressure, and Gear Horn Rux strengthens nearby allies. Selecting a placed unit shows its upgrade cost and sell refund.",
+        "Wave information: before each wave, the HUD names the incoming wolves, boars, bats, escorts, or Boss. Non-final waves continue after a five-second countdown, so the player can read the next composition and use earned coins before pressure resumes.",
+        "Special enemies: Ironbark stages give enemies breakable guard armor; mistwood enemies recover health while moving; storm enemies accelerate after falling below half health; eclipse stages combine armor, recovery, surge behavior, flying routes, and reduced slow effectiveness.",
+        "Permanent progress: victories award stars, upgrade points, and Diamonds. Upgrade points improve hero power, defender health, or starting economy. Diamonds are optional and can confirm a core revive, reroll a result reward, or unlock a cosmetic golden defender frame; normal stage unlocks do not require them."
+      ],
       how: [
         "Choose a stage from the swipe stage rail and read the threat, plan, and reward notes.",
-        "Spend coins to place soldiers or elite heroes on normal ground tiles.",
+        "Spend stage coins to place soldiers or WeightPlay heroes on normal ground tiles. Use the visible range preview before confirming a position.",
         "Keep at least one path open, or blocked enemies will attack the nearest defender until the route reopens.",
-        "Upgrade defenders, unlock permanent tech, and use optional diamonds only for safe support choices such as revive, reroll, or cosmetic frames.",
-        "Win the wave, collect stars, then use the next-stage action to continue the campaign."
+        "Read Wave Intel, start the wave, then upgrade or sell placed units as the enemy mix changes. Non-final cleared waves resume automatically after five seconds.",
+        "Protect the crystal through every wave. Result awards one to three stars according to remaining core health and offers Next Stage, Retry, or Back to Stages.",
+        "Spend saved upgrade points from Stage when permanent power, bulwark health, or starting economy needs improvement. Optional Diamond actions always show their cost and require confirmation."
       ],
       strategyTips: [
-        "Use cheap soldiers to shape the path before spending on elite heroes.",
-        "Moss Shell Taro and Boom Mane Leo are strong blockers, but over-blocking can make enemies attack them directly.",
-        "Moon Cap Orla and Spark Paw Fia help clear pressure before fast enemies reach the core.",
-        "Save diamonds for optional revive, reward reroll, or cosmetics; normal stage progress does not require spending."
+        "Use Acorn Guards to make two or three firing bends before investing in expensive heroes. A longer route increases every ranged unit's useful attack time.",
+        "Do not close every cell. A sealed route turns the maze into a direct fight against the nearest blocker and can remove the timing advantage you were trying to create.",
+        "Keep ranged coverage near the crystal during Bat Crossing and later flying stages because bats bypass ground blockers. Slow boars before their armor breaks on storm stages so their wounded speed surge is less dangerous.",
+        "Against regenerating enemies, concentrate fire inside one kill zone instead of spreading damage. Against armor, sustained or splash damage should remove the guard before hero burst is committed.",
+        "Save role coverage for Boss stages. The final Voidroot Emperor changes phase at two health thresholds, summoning bats first and then armored ground support while rebuilding guard."
       ],
+      progression: [
+        "Stages 1-5 teach route bends, split lanes, early ranged coverage, boar pressure, and the consequence of sealing the path. Shadow Brute attacks blockers faster than ordinary Bosses, so the first finale tests whether the route has a durable anchor instead of only damage units.",
+        "Stages 6-10 introduce bats that fly across the grid and mixed air-ground waves. Forest Behemoth summons wolf and bat support after losing part of its health. Stages 11-15 add breakable Ironbark armor and finish with Ironbark Colossus, which rebuilds a large guard layer midway through the fight.",
+        "Stages 16-20 make unfinished enemies regenerate while moving; Verdant Ancient restores a portion of its own health and calls support. Stages 21-25 add wounded speed surges, ending with Tempest Ravager accelerating its escorts. Stages 26-30 combine every previous rule with reduced slow effectiveness. Voidroot Emperor has two phase changes, so stage 30 requires ground routing, air coverage, armor breaking, finishing damage, healing, and saved Boss focus in one defense."
+      ],
+      designNote:
+        "Beast Guardian uses free placement because the central decision is not simply which tower to buy; it is how each body changes travel time, firing angles, and blocker risk. The five-second transition between waves preserves the feeling of one continuous defense while leaving a short planning window. Thirty stages are organized as six mechanical arcs so difficulty grows through new counters and combinations before raw statistics. Touch players use the same large build cards and grid cells as mouse players, while keyboard controls can move a tile cursor, build, select, upgrade, sell, cycle units, and start waves. This distinguishes the game from Animal Auto Squad: both reward preparation, but Beast Guardian lets the player reshape the battlefield and react during live waves.",
       parent:
-        "This game is designed for teenagers who enjoy planning, route control, timing, and resource decisions. Progress is saved locally in the browser.",
+        "The browser stores the highest unlocked stage, stage clears, best star ratings, permanent technology levels, upgrade points, Diamond balance, and cosmetic ownership on this device. No login is required for basic play, and clearing this site's browser storage may remove that progress. Diamond actions are optional and are not required to unlock the 30 campaign stages.",
       faq: [
-        ["Is Beast Guardian free to play?", "Yes. WeightPlay games run in the browser for free."],
+        ["Is Beast Guardian free to play?", "Yes. The complete 30-stage campaign runs in the browser without a required purchase or login."],
         ["How do I start a stage?", "Choose an unlocked stage from the swipe rail, then begin the defense. Cleared non-final waves start automatically after a five-second countdown."],
-        ["Does Beast Guardian save progress?", "Yes. Stage progress, stars, permanent tech, and optional cosmetics are saved locally in the browser."],
-        ["What can Diamonds do?", "Diamonds are optional and may support revive, reward reroll, or cosmetics. They are not required for normal play."]
+        ["Why do enemies sometimes attack a defender?", "Ground enemies attack a nearby blocker when every legal route to the core is sealed. Sell or reposition a unit on the next attempt, or design a route with one open lane."],
+        ["How are the six Bosses different?", "Shadow Brute attacks blockers quickly, Forest Behemoth summons escorts, Ironbark Colossus rebuilds armor, Verdant Ancient heals, Tempest Ravager hastens allies, and Voidroot Emperor changes phase twice."],
+        ["What do stars measure?", "Stars reflect the crystal core health remaining after victory. A close clear still unlocks the next stage, while replaying with a stronger route can improve the saved rating."],
+        ["Does Beast Guardian save progress?", "Yes. Unlocks, clears, stars, upgrade points, permanent technology, Diamonds, and cosmetic ownership are saved locally in this browser."],
+        ["What can Diamonds do?", "Diamonds optionally confirm a core revive, reroll a result reward, or unlock the golden frame. They are not required for normal campaign progress."]
       ],
     },
     "shadow-wolf": {
@@ -1321,44 +1349,65 @@
   localizedGameplayProfiles["zh-Hant"]["animal-hero-trials"] = { gameplay: "英雄動作試煉", genre: ["動作", "Roguelite", "動物"] };
   localizedGameplayProfiles["zh-Hant"]["animal-gearpack-expedition"] = { gameplay: "空間行囊策略遠征", genre: ["策略", "Roguelite", "動物"] };
   localizedGameplayProfiles["zh-Hant"]["animal-moonlight-heist"] = { gameplay: "潛行撤離冒險", genre: ["潛行", "策略", "冒險", "動物"] };
-  localizedGames["zh-Hant"]["beast-tactician"] = {
-    title: "獸王守衛",
-    age: "13+",
-    difficulty: "困難",
-    time: "8-12 分鐘",
-    gameplay: "英雄塔防",
-    genre: ["塔防", "策略", "動物"],
-    skills: ["邏輯", "解決問題", "專注"],
-    intro:
-      "獸王守衛是一款製作中的 13+ 英雄塔防遊戲。玩家在森林遺跡格子上建造一般動物士兵與 WeightPlay 英雄，調整敵人路線、抵擋 Boss 波次並保護水晶核心。公開頁面仍維持敬請期待，內部試玩路線只用於發行品質測試。",
-    how: [
-      "從可滑動關卡列選擇關卡，先閱讀威脅、建議配置與獎勵。",
-      "花費金幣在普通地格放置士兵或英雄。",
-      "保持至少一條路線可通行；如果完全堵住路線，敵人會攻擊最近的守衛直到路線恢復。",
-      "升級守衛、解鎖永久科技，鑽石只作為復活、獎勵重抽或外觀框等可選支援。",
-      "守住波次後取得星星，並用下一關按鈕繼續推進。"
-    ],
-    strategyTips: [
-      "先用便宜士兵調整路線，再投入高費英雄。",
-      "苔殼塔羅與轟鬃里奧適合擋線，但過度封路會讓敵人直接攻擊他們。",
-      "月帽歐拉與星爪菲亞適合在快速敵人靠近核心前清理壓力。",
-      "鑽石留給可選復活、獎勵重抽或外觀；正常通關不需要強制花費。"
-    ],
-    parent:
-      "這款遊戲設計給喜歡規劃、路線控制、時機與資源選擇的青少年玩家。進度只保存在本機瀏覽器中，正式發行門檻通過前，公開頁面會維持敬請期待。",
-    faq: [
-      ["獸王守衛是免費遊戲嗎？", "是。WeightPlay 的遊戲都可以直接在瀏覽器免費遊玩。"],
-      ["為什麼公開頁面顯示敬請期待？", "獸王守衛目前先作為內部試玩版本驗證品質，通過發行門檻前不會加入公開可玩清單。"],
-      ["可以進入內部試玩嗎？", "只有核准的隱藏試玩路線可以進入；一般公開卡片仍然是敬請期待預告。"],
-      ["鑽石可以做什麼？", "鑽石是可選支援，可用於復活、獎勵重抽或外觀，不是正常遊玩的必要條件。"]
-    ],
-  };
+  localizedGames["zh-Hant"]["beast-tactician"] = {};
 
   Object.assign(localizedGames["zh-Hant"]["beast-tactician"], {
-    title: "\u7378\u738b\u5b88\u885b",
-    gameplay: "\u82f1\u96c4\u5854\u9632",
-    intro: "\u7378\u738b\u5b88\u885b\u662f 13+ \u82f1\u96c4\u5854\u9632\u904a\u6232\u3002\u5728\u68ee\u6797\u68cb\u76e4\u4f48\u7f6e\u52d5\u7269\u5b88\u885b\u8207 WeightPlay \u82f1\u96c4\uff0c\u8abf\u6574\u6575\u4eba\u8def\u7dda\u3001\u64ca\u9000\u738b\u95dc\u6ce2\u6b21\uff0c\u4fdd\u8b77\u6c34\u6676\u6838\u5fc3\u4e26\u6311\u6230 10 \u500b\u95dc\u5361\u3002",
-    parent: "\u9019\u6b3e\u904a\u6232\u9069\u5408\u559c\u6b61\u898f\u5283\u3001\u8def\u7dda\u63a7\u5236\u3001\u6642\u6a5f\u8207\u8cc7\u6e90\u6c7a\u7b56\u7684\u9752\u5c11\u5e74\u3002\u9032\u5ea6\u6703\u5132\u5b58\u5728\u700f\u89bd\u5668\u672c\u6a5f\u3002",
+    title: "獸王守衛",
+    difficulty: "困難",
+    time: "每關 8-15 分鐘",
+    gameplay: "英雄塔防",
+    genre: ["塔防", "策略", "動物"],
+    skills: ["邏輯", "問題解決", "專注"],
+    guideKicker: "WeightPlay 原創遊戲指南",
+    guideTitleSuffix: "遊戲指南",
+    noteTitle: "玩家與存檔說明",
+    hideScoreBands: true,
+    intro:
+      "《獸王守衛》是一套以自由改造路線為核心的 30 關英雄塔防戰役。玩家在森林格子上配置四種動物士兵與七名 WeightPlay 英雄，保留至少一條可通行路線，穿越六個五關區域並守住水晶核心。暗狼、重甲野豬、飛行影蝠、再生敵群、受傷加速者與月蝕混合編隊，都需要不同的防線。第 5、10、15、20、25、30 關各有改變規則的 Boss，不是只把普通敵人的生命放大。",
+    story: [
+      "水晶路線連接守護森林的六個區域：最初的樹根小徑、水晶空中通道、鐵皮木工坊、會再生的霧林、暴風壁壘，以及通往虛根王座的月蝕道路。敵群會從入口穿越玩家安排的防線前往另一端核心；通關代表該段路線已安全到足以讓守衛隊前進。",
+      "玩家是整條防線的指揮者。栗果守衛與苔甲太郎負責撐住轉角，偵查弓手與月帽歐菈覆蓋長距離，符文工兵緩速群體，醫護幼獸修復受傷阻擋者，火花菲雅則負責集中攻擊 Boss。每個角色站的位置都會改變敵人行走距離、射擊角度或阻擋風險。"
+    ],
+    systems: [
+      "路線建置：守衛可以放在一般地格，地面敵人會重新尋找路徑。若完全封死所有道路，敵人不會消失，而是攻擊最近的阻擋者直到路線恢復。飛行影蝠不受地面迷宮影響。",
+      "角色定位：阻擋者爭取時間，弓手與歐菈負責遠程，工兵提供濺射與緩速，醫護修復前線，菲雅專門處理 Boss 壓力，齒角魯克斯則強化附近隊友。點選已部署角色可查看升級費用與出售返還。",
+      "波次情報：每波開始前會列出暗狼、野豬、影蝠、護衛與 Boss 組成。非最終波通過後有五秒倒數，玩家可以讀取下一波、花費剛取得的金幣並調整升級。",
+      "特殊敵人：鐵皮木區的敵人有可擊破護甲；霧林敵人移動時恢復生命；暴風敵人在生命低於一半後加速；月蝕區會同時混合護甲、再生、加速、飛行與較高緩速抗性。",
+      "永久進度：勝利會取得星等、升級點與鑽石。升級點可提高英雄力量、守衛生命或開場經濟；鑽石只用於可選的核心復活、結果獎勵重抽與黃金守衛框，正常解鎖 30 關不需要鑽石。"
+    ],
+    how: [
+      "從可滑動關卡列選擇已解鎖關卡，先閱讀敵情、建議與獎勵。",
+      "花費本關金幣，在一般地格配置動物士兵或 WeightPlay 英雄；確認前可查看攻擊範圍。",
+      "保留至少一條通路。完全封路時，地面敵人會直接攻擊最近守衛。",
+      "閱讀波次情報後開始戰鬥，依照敵人組成升級或出售角色；非最終波會在五秒後自動接續。",
+      "守住全部波次後，系統依剩餘核心生命給予一至三星，結果畫面可以前往下一關、重試或回到關卡。",
+      "需要永久成長時，在關卡頁使用升級點強化英雄力量、守衛生命或開場經濟；鑽石操作會顯示成本並要求確認。"
+    ],
+    strategyTips: [
+      "先用栗果守衛做出兩到三個射擊轉角，再投資昂貴英雄；路線越長，遠程角色就有越多攻擊時間。",
+      "不要封死所有格子。完全封路會讓敵人直接打阻擋者，反而失去拉長路線的優勢。",
+      "影蝠渡口與後續飛行關要在核心附近保留遠程火力；暴風關則應先緩速野豬，再擊破護甲，降低受傷加速的威脅。",
+      "面對再生敵人，要把輸出集中在同一火力區快速收掉；面對護甲敵人，先用持續或濺射火力破防，再投入英雄爆發。",
+      "最終的虛根皇帝會在兩個生命門檻轉換階段：先召喚影蝠，再帶著重甲地面護衛並重建防護。"
+    ],
+    progression: [
+      "第 1-5 關教路線轉角、分線、早期遠程、野豬壓力與封路後果。暗影巨漢的攻城節奏比普通 Boss 更快，第一區最後要測試防線是否有真正能撐住的主坦。",
+      "第 6-10 關加入無視地面路線的影蝠與空地混合波；森林巨獸損失部分生命後會召喚暗狼與影蝠。第 11-15 關加入可擊破的鐵皮護甲，鐵皮巨像則會在戰鬥中重新建立一層大型防護。",
+      "第 16-20 關讓未被擊倒的敵人在移動時再生，翠綠古木會回血並呼叫支援。第 21-25 關加入受傷加速，暴風掠奪者還會提高護衛速度。第 26-30 關把先前規則全部組合並降低緩速效果；虛根皇帝進行兩次階段轉換，要求地面路線、空中覆蓋、破甲、收尾火力、治療與 Boss 集火同時成立。"
+    ],
+    designNote:
+      "本作採自由配置，是因為核心決策不只是買哪座塔，而是每個角色如何改變移動時間、射擊角度與阻擋風險。波次之間保留五秒倒數，讓五波仍像同一場連續防衛，同時給玩家短暫調整時間。30 關分成六個機制區域，難度會先透過新反制與規則組合成長，再增加數值。手機與桌面共用大型建置卡與格子操作，鍵盤也能移動游標、建置、選取、升級、出售、切換角色與開始波次。相較於以戰前編隊為主的《動物自走小隊》，《獸王守衛》允許玩家即時重塑戰場並在波次中回應。",
+    parent:
+      "瀏覽器會在本機保存最高解鎖關卡、已通關關卡、最佳星等、永久科技、升級點、鑽石餘額與外觀所有權；基本遊玩不需要登入。清除本站瀏覽器儲存資料可能會移除這些進度。鑽石操作完全可選，不是解鎖 30 關的必要條件。",
+    faq: [
+      ["獸王守衛可以免費玩嗎？", "可以。完整 30 關戰役能直接在瀏覽器遊玩，不要求購買或登入。"],
+      ["要怎麼開始關卡？", "在滑動關卡列選擇已解鎖關卡後開始防衛；非最終波通過後會在五秒倒數結束時自動接續。"],
+      ["為什麼敵人有時會直接打守衛？", "當所有通往核心的合法路線都被封死時，地面敵人會攻擊附近阻擋者。下一次可出售或換位置，保留一條開放道路。"],
+      ["六個 Boss 有什麼不同？", "暗影巨漢快速攻城、森林巨獸召援、鐵皮巨像重建護甲、翠綠古木回血、暴風掠奪者加速護衛、虛根皇帝則有兩次階段轉換。"],
+      ["星等代表什麼？", "星等依勝利時剩餘核心生命計算。驚險通關仍可解鎖下一關，之後能重玩改進路線與最佳星等。"],
+      ["哪些進度會保存？", "解鎖、通關、星等、升級點、永久科技、鑽石與外觀所有權都會保存在目前瀏覽器本機。"],
+      ["鑽石可以做什麼？", "鑽石可選擇性用於核心復活、結果獎勵重抽或黃金守衛框，不影響正常戰役解鎖。"]
+    ],
   });
 
   function currentGameId() {
@@ -1470,7 +1519,7 @@
       .map(([id, game]) => ({
         id,
         game,
-        score: (game.skills || []).filter((skill) => (activeBaseGame.skills || []).includes(skill)).length + (game.age === activeBaseGame.age ? 1 : 0),
+        score: (game.skills || []).filter((skill) => (activeBaseGame.skills || []).includes(skill)).length + (activeBaseGame.age && game.age === activeBaseGame.age ? 1 : 0),
       }))
       .sort((a, b) => b.score - a.score || (localizedGame(a.id)?.title || a.id).localeCompare(localizedGame(b.id)?.title || b.id))
       .map(({ id }) => id);
@@ -1490,7 +1539,9 @@
       },
       {
         title: uiLabel("relatedByAge", { age: localizeAge(activeBaseGame.age) }),
-        ids: relatedGameEntries(activeId, activeBaseGame, (game) => game.age === activeBaseGame.age).slice(0, 4),
+        ids: activeBaseGame.age
+          ? relatedGameEntries(activeId, activeBaseGame, (game) => game.age === activeBaseGame.age).slice(0, 4)
+          : [],
       },
       {
         title: uiLabel("relatedAnimal"),
@@ -1643,7 +1694,7 @@
     const game = localizedGame(id);
     if (!game) return;
     const gameSkills = game.skills || [];
-    const showRecommendedAge = !/^(12|13)\+$/.test(baseGame.age || "");
+    const showRecommendedAge = Boolean(baseGame.age) && !/^(12|13)\+$/.test(baseGame.age);
 
     document.querySelector(".game-page-info")?.remove();
     document.querySelectorAll("script[data-game-page-info-jsonld]").forEach((node) => node.remove());

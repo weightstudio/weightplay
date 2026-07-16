@@ -98,10 +98,10 @@
       publicReleaseBadge: "Playable Now",
       menuTitle: "Hero Tower Defense",
       menuHint:
-        "Build anywhere on the forest grid, shape enemy routes, and command WeightPlay heroes with balanced animal soldiers through 10 defense stages.",
+        "Build anywhere on the forest grid, shape enemy routes, and command WeightPlay heroes with balanced animal soldiers through 30 defense stages.",
       holdNotice:
         "Public lobby remains Coming Soon until the user approves release. This route is for internal release validation.",
-      publicNotice: "Build defenders, protect the crystal core, and unlock all 10 forest stages. Progress saves on this device.",
+      publicNotice: "Build defenders, protect the crystal core, and unlock all 30 stages across six forest regions. Progress saves on this device.",
       bestStage: "Best Stage",
       upgradePoints: "Upgrade Points",
       diamonds: "Diamonds",
@@ -166,6 +166,7 @@
       lockedStage: "Clear the previous stage first.",
       blocked: "Path blocked: enemies are attacking your defender.",
       bossIncoming: "{boss} is entering the battlefield!",
+      bossPhase: "{boss} changes tactics!",
       blockedBuild: "That tile cannot be built.",
       occupied: "A defender already holds this tile.",
       built: "{name} deployed.",
@@ -177,7 +178,7 @@
       savedProgress: "Saved total: {points} upgrade points · {diamonds} diamonds",
       newRouteUnlocked: "New route unlocked: Stage {stage} — {name}",
       nextRouteReady: "Next route ready: Stage {stage} — {name}",
-      campaignComplete: "Campaign complete: all 10 stages unlocked.",
+      campaignComplete: "Campaign complete: all 30 stages and six Boss routes cleared.",
       rewardRerollUsed: "Reward rerolled.",
       starRating: "{stars}/3 Stars",
       buildFeedback: "Deployed",
@@ -420,95 +421,135 @@
     { id: "economy", max: 5, cost: 1, label: "techEconomy", desc: "techEconomyDesc" },
   ];
 
-  const stageIntel = [
+  const CAMPAIGN_ARCS = [
     {
-      threat: { en: "Basic wolves learn the lane.", "zh-Hant": "基礎狼群測試路線。" },
-      plan: { en: "Guard bends with Archer support.", "zh-Hant": "守衛轉彎，弓手支援。" },
+      mechanic: "pathing",
+      names: {
+        en: ["Forest Gate", "Split Roots", "Broken Bridge", "Moss Yard", "Moonlit Ford"],
+        "zh-Hant": ["森林入口", "分岔樹根", "斷橋", "苔原庭院", "月光淺灘"],
+      },
+      threats: {
+        en: ["Basic wolves test the first bend.", "Two root lanes split the pack.", "Fast scouts punish late builds.", "Boars strain a single blocker.", "Shadow Brute breaks weak front lines."],
+        "zh-Hant": ["基礎狼群測試第一個轉角。", "兩條樹根路線分散狼群。", "快速斥候懲罰太晚建置。", "野豬會壓垮單一阻擋者。", "暗影巨漢會突破薄弱前線。"],
+      },
+      plans: {
+        en: ["Bend the route with Guards.", "Join both lanes before adding range.", "Open with Archer coverage.", "Upgrade one anchor and add healing.", "Use Taro to hold while Fia burns the Boss."],
+        "zh-Hant": ["用守衛拉出轉彎路線。", "先讓雙線匯流，再補遠程。", "先用弓手覆蓋快速敵人。", "升級一名主坦並加入治療。", "太郎定線，菲亞集中攻擊 Boss。"],
+      },
+      boss: { en: "Shadow Brute", "zh-Hant": "暗影巨漢", ability: "siege" },
     },
     {
-      threat: { en: "Split roots pressure two sides.", "zh-Hant": "分岔樹根形成雙線壓力。" },
-      plan: { en: "Shape one long route, then add range.", "zh-Hant": "拉長單一路線，再補遠程。" },
+      mechanic: "flying",
+      names: {
+        en: ["Crystal Bend", "Bat Crossing", "Engineer's Pass", "Echo Grove", "Behemoth Gate"],
+        "zh-Hant": ["水晶彎道", "影蝠渡口", "工程師通道", "回音林", "巨獸之門"],
+      },
+      threats: {
+        en: ["Flying bats ignore the ground maze.", "Two bat bursts cross the center.", "Fast and heavy packs alternate.", "Air and ground waves arrive together.", "Forest Behemoth calls escort waves."],
+        "zh-Hant": ["飛行影蝠不理會地面迷宮。", "兩波影蝠會穿越中央。", "快速與重甲敵人交替出現。", "空中與地面波次同時進攻。", "森林巨獸會召集護衛波次。"],
+      },
+      plans: {
+        en: ["Cover long angles with Archer and Orla.", "Keep ranged damage near the core.", "Slow boars before focusing bats.", "Split damage between route and sky.", "Clear escorts before committing Boss burst."],
+        "zh-Hant": ["用弓手與歐拉覆蓋長距離。", "在核心附近保留遠程火力。", "先緩速野豬，再處理影蝠。", "把輸出分配給地面路線與空中。", "先清護衛，再集中爆發打 Boss。"],
+      },
+      boss: { en: "Forest Behemoth", "zh-Hant": "森林巨獸", ability: "summon" },
     },
     {
-      threat: { en: "Fast runners punish late builds.", "zh-Hant": "快速敵人懲罰太晚建置。" },
-      plan: { en: "Open with Archer and cheap blockers.", "zh-Hant": "先放弓手與便宜阻擋。" },
+      mechanic: "armor",
+      names: {
+        en: ["Ironbark Trail", "Thorn Barricade", "Boar Hollow", "Root Forge", "Colossus Yard"],
+        "zh-Hant": ["鐵皮木徑", "荊棘路障", "野豬谷", "樹根鍛坊", "巨像庭院"],
+      },
+      threats: {
+        en: ["Ironbark guards arrive with breakable armor.", "Shielded packs protect fast followers.", "Boar columns pressure one route.", "Armor and bats demand mixed damage.", "Ironbark Colossus rebuilds its guard."],
+        "zh-Hant": ["鐵皮守衛帶著可擊破護甲進場。", "有護甲的敵人保護快速追兵。", "野豬縱隊集中壓迫一路。", "護甲與影蝠要求混合火力。", "鐵皮巨像會重建防護。"],
+      },
+      plans: {
+        en: ["Use sustained fire to break armor.", "Splash the shield line before runners pass.", "Create two blocker layers.", "Pair Sapper splash with ranged heroes.", "Break the guard before spending burst skills."],
+        "zh-Hant": ["用持續火力擊破護甲。", "先用濺射削弱護甲線，避免快敵通過。", "建立兩層阻擋防線。", "用工兵濺射搭配遠程英雄。", "先破防護，再使用爆發技能。"],
+      },
+      boss: { en: "Ironbark Colossus", "zh-Hant": "鐵皮巨像", ability: "armor" },
     },
     {
-      threat: { en: "Heavy armor strains blockers.", "zh-Hant": "重甲敵人壓迫阻擋者。" },
-      plan: { en: "Upgrade Guard before the last wave.", "zh-Hant": "最後波前先升級守衛。" },
+      mechanic: "regrowth",
+      names: {
+        en: ["Mistwater Path", "Healing Spring", "Spore Circle", "Druid Ruins", "Ancient Heart"],
+        "zh-Hant": ["霧水小徑", "療癒泉", "孢子環地", "德魯伊遺跡", "古木之心"],
+      },
+      threats: {
+        en: ["Mist creatures recover while moving.", "Regrowth rewards unfinished targets.", "Split packs heal on separate lanes.", "Armored regenerators extend every fight.", "Verdant Ancient restores health in phases."],
+        "zh-Hant": ["霧中生物移動時會恢復生命。", "沒有擊倒的目標會持續再生。", "分線敵群會各自在路上恢復。", "帶甲再生敵人會拖長戰鬥。", "翠綠古木會分階段恢復生命。"],
+      },
+      plans: {
+        en: ["Focus one target instead of spreading shots.", "Place burst damage before the final bend.", "Make lanes meet inside one kill zone.", "Break armor, then finish targets quickly.", "Save hero focus for each healing phase."],
+        "zh-Hant": ["集中擊倒一個目標，不要分散攻擊。", "在最後轉角前配置爆發火力。", "讓分線敵人在同一火力區匯合。", "先破甲，再快速收掉目標。", "為每次治療階段保留英雄集火。"],
+      },
+      boss: { en: "Verdant Ancient", "zh-Hant": "翠綠古木", ability: "regrowth" },
     },
     {
-      threat: { en: "Shadow Brute enters with escorts.", "zh-Hant": "暗影巨漢帶護衛進場。" },
-      plan: { en: "Taro anchors; Fia burns the boss.", "zh-Hant": "太郎定線，菲亞打王。" },
+      mechanic: "surge",
+      names: {
+        en: ["Storm Approach", "Thunder Fork", "Gale Rampart", "Lightning Hollow", "Tempest Crown"],
+        "zh-Hant": ["風暴前線", "雷鳴岔路", "強風壁壘", "閃電谷", "暴風王冠"],
+      },
+      threats: {
+        en: ["Wounded enemies enter a speed surge.", "Bat surges punish an empty core lane.", "Boars accelerate after losing armor.", "Mixed surges arrive from every wave.", "Tempest Ravager hastens nearby escorts."],
+        "zh-Hant": ["受傷敵人會進入加速狀態。", "影蝠加速會懲罰空虛的核心防線。", "野豬失去護甲後會加速。", "每波都有不同敵人進入加速。", "暴風掠奪者會加速附近護衛。"],
+      },
+      plans: {
+        en: ["Build finishing damage near the core.", "Keep Orla behind the last bend.", "Slow before breaking armor.", "Stagger damage zones instead of one cluster.", "Separate escorts from the Boss with slows."],
+        "zh-Hant": ["在核心附近配置收尾火力。", "讓歐拉守住最後轉角。", "破甲前先施加緩速。", "分段配置火力區，不要只堆一處。", "用緩速把護衛與 Boss 分開。"],
+      },
+      boss: { en: "Tempest Ravager", "zh-Hant": "暴風掠奪者", ability: "haste" },
     },
     {
-      threat: { en: "Mixed fast and heavy packs.", "zh-Hant": "快速與重甲混合壓力。" },
-      plan: { en: "Use Sapper slow before hero burst.", "zh-Hant": "先用工兵緩速再接英雄爆發。" },
-    },
-    {
-      threat: { en: "Blocked routes are punished harder.", "zh-Hant": "完全堵路會被更重懲罰。" },
-      plan: { en: "Leave one lane open and heal blockers.", "zh-Hant": "保留一路，醫護修復阻擋。" },
-    },
-    {
-      threat: { en: "Bats skip weak single-target plans.", "zh-Hant": "蝙蝠會突破薄弱單體配置。" },
-      plan: { en: "Orla and Deer cover long angles.", "zh-Hant": "歐拉與自然鹿守長角度。" },
-    },
-    {
-      threat: { en: "Dense packs create resource pressure.", "zh-Hant": "密集波次造成資源壓力。" },
-      plan: { en: "Rux buffs Sapper and Archer clusters.", "zh-Hant": "魯克斯強化工兵與弓手群。" },
-    },
-    {
-      threat: { en: "Forest Behemoth arrives after escorts.", "zh-Hant": "森林巨獸在護衛後登場。" },
-      plan: { en: "Full hero line, Medic sustain, boss focus.", "zh-Hant": "全英雄線、醫護續戰、集中打王。" },
+      mechanic: "eclipse",
+      names: {
+        en: ["Eclipse Gate", "Voidroot Maze", "Nightfall Bridge", "Crown Approach", "Emperor's Stand"],
+        "zh-Hant": ["月蝕之門", "虛根迷宮", "夜幕斷橋", "王冠前線", "皇帝終戰"],
+      },
+      threats: {
+        en: ["Eclipse packs combine flight and armor.", "Regrowth returns behind armored fronts.", "Surging bats cover heavy columns.", "Every earlier threat appears in sequence.", "Voidroot Emperor changes phase twice."],
+        "zh-Hant": ["月蝕敵群同時結合飛行與護甲。", "再生敵人躲在重甲前線後方。", "加速影蝠掩護重型縱隊。", "先前所有威脅會依序出現。", "虛根皇帝會進行兩次階段轉換。"],
+      },
+      plans: {
+        en: ["Use a complete ground-and-air formation.", "Focus regenerators after the armor line breaks.", "Keep a second damage zone near the core.", "Upgrade roles, not only one carry.", "Answer each phase: bats, armor, then the Emperor."],
+        "zh-Hant": ["建立完整的地面與空中防線。", "破開護甲線後集中擊倒再生敵人。", "在核心附近保留第二火力區。", "平均升級角色功能，不只養一名主力。", "依序應對影蝠、護甲與皇帝三個階段。"],
+      },
+      boss: { en: "Voidroot Emperor", "zh-Hant": "虛根皇帝", ability: "phase" },
     },
   ];
 
-  const stages = Array.from({ length: 10 }, (_, index) => {
-    const stage = index + 1;
+  const stages = CAMPAIGN_ARCS.flatMap((arc, arcIndex) => arc.names.en.map((name, stageIndex) => {
+    const stage = arcIndex * 5 + stageIndex + 1;
+    const boss = stageIndex === 4;
     return {
       id: stage,
-      name: {
-        en: [
-          "Forest Gate",
-          "Split Roots",
-          "Broken Bridge",
-          "Moss Yard",
-          "Moonlit Ford",
-          "Crystal Bend",
-          "Engineer's Pass",
-          "Echo Grove",
-          "Last Rampart",
-          "Behemoth Gate",
-        ][index],
-        "zh-Hant": [
-          "森林門口",
-          "分岔樹根",
-          "斷橋",
-          "苔原庭院",
-          "月光淺灘",
-          "水晶彎道",
-          "工程師通道",
-          "回音林",
-          "最後壁壘",
-          "巨獸之門",
-        ][index],
-      },
-      waves: stage >= 10 ? 5 : stage >= 5 ? 4 : 3,
+      arc: arcIndex + 1,
+      mechanic: arc.mechanic,
+      name: { en: name, "zh-Hant": arc.names["zh-Hant"][stageIndex] },
+      waves: boss ? 5 : stageIndex <= 1 ? 3 : 4,
       threat: stage,
-      startCoins: 320 + stage * 36,
-      coreHp: 205 + stage * 42 + Math.max(0, stage - 8) * 70,
-      enemyHp: 58 + stage * 20,
-      enemySpeed: 36 + stage * 2.6,
-      reward: { coins: 45 + stage * 12, diamonds: stage % 5 === 0 ? 2 : 1, points: stage % 2 === 0 ? 2 : 1 },
-      intel: stageIntel[index],
-      boss: stage === 5 || stage === 10,
-      bossName: stage === 10 ? "Forest Behemoth" : stage === 5 ? "Shadow Brute" : "",
-      bossHpScale: stage === 10 ? 9.4 : stage === 5 ? 5.6 : 0,
-      bossDamage: stage === 10 ? 42 : stage === 5 ? 28 : 0,
-      finalEscortCount: stage === 10 ? 4 : stage === 5 ? 2 : 0,
-      spawnCadence: Math.max(0.28, 0.9 - stage * 0.035),
+      startCoins: 360 + stage * 42,
+      coreHp: 205 + stage * 24 + (boss ? (arcIndex + 1) * 18 : 0),
+      enemyHp: 58 + stage * 6,
+      enemySpeed: 36 + Math.min(42, stage * 1.4),
+      reward: { coins: 45 + stage * 9, diamonds: boss ? 2 : 1, points: boss || stage % 2 === 0 ? 2 : 1 },
+      intel: {
+        threat: { en: arc.threats.en[stageIndex], "zh-Hant": arc.threats["zh-Hant"][stageIndex] },
+        plan: { en: arc.plans.en[stageIndex], "zh-Hant": arc.plans["zh-Hant"][stageIndex] },
+      },
+      boss,
+      bossName: boss ? arc.boss.en : "",
+      bossNameZht: boss ? arc.boss["zh-Hant"] : "",
+      bossAbility: boss ? arc.boss.ability : "",
+      bossHpScale: boss ? 5.6 + arcIndex * 0.9 : 0,
+      bossDamage: boss ? 28 + arcIndex * 5 : 0,
+      finalEscortCount: boss ? 2 + Math.min(4, arcIndex) : 0,
+      spawnCadence: Math.max(0.3, 0.88 - stage * 0.016),
     };
-  });
+  }));
+  const STAGE_COUNT = stages.length;
 
   function applyCleanTraditionalChineseContent() {
     Object.assign(text["zh-Hant"], {
@@ -522,7 +563,7 @@
       localeName: "繁體中文",
       releaseBadge: "內部 Release 候選版",
       menuTitle: "英雄塔防",
-      menuHint: "在森林戰棋格上自由建置，改變敵人路線，指揮 WeightPlay 頂級英雄與平衡士兵守住 10 個防衛關卡。",
+      menuHint: "在森林戰棋格上自由建置，改變敵人路線，指揮 WeightPlay 英雄與動物士兵守住六區共 30 個防衛關卡。",
       holdNotice: "公開大廳仍維持敬請期待，直到使用者核准發布。此路線只用於內部 Release 驗證。",
       bestStage: "最高關卡",
       upgradePoints: "升級點",
@@ -584,6 +625,7 @@
       lockedStage: "請先通過前一關。",
       blocked: "路線被封鎖：敵人正在攻擊你的守衛。",
       bossIncoming: "{boss} 正在進入戰場！",
+      bossPhase: "{boss} 改變戰術！",
       blockedBuild: "這個格子不能建置。",
       occupied: "這個格子已有守衛。",
       built: "{name} 已部署。",
@@ -656,27 +698,6 @@
       unit.note["zh-Hant"] = zh[1];
     });
 
-    const zhStageIntel = [
-      ["基礎暗狼測試主要路線。", "用守衛轉彎，搭配弓手支援。"],
-      ["分岔樹根壓迫兩側。", "先拉長一條路線，再補遠程火力。"],
-      ["高速奔襲會懲罰太晚建置。", "用弓手與便宜阻擋者開局。"],
-      ["重甲敵人壓迫阻擋者。", "最後一波前先升級守衛。"],
-      ["暗影蠻獸帶著護衛進場。", "太郎守住核心彎道，菲雅專心打王。"],
-      ["高速與重甲混合壓力。", "英雄爆發前先用工兵緩速。"],
-      ["完全封路會被更重懲罰。", "保留一條開放路線，並治療阻擋者。"],
-      ["影蝠會跳過薄弱單體配置。", "歐菈與鹿靈覆蓋長角度。"],
-      ["密集敵群造成資源壓力。", "魯克斯強化工兵與弓手群。"],
-      ["森林巨獸會在護衛後抵達。", "完整英雄線、醫護續航、集中打王。"],
-    ];
-    stageIntel.forEach((intel, index) => {
-      intel.threat["zh-Hant"] = zhStageIntel[index][0];
-      intel.plan["zh-Hant"] = zhStageIntel[index][1];
-    });
-
-    const zhStageNames = ["森林入口", "分岔樹根", "斷裂橋", "苔蘚庭院", "月光淺灘", "水晶彎道", "工程師山徑", "回音林地", "最後壁壘", "巨獸之門"];
-    stages.forEach((stage, index) => {
-      stage.name["zh-Hant"] = zhStageNames[index];
-    });
   }
 
   applyCleanTraditionalChineseContent();
@@ -694,12 +715,12 @@
     sellFeedback: "+{coins} \u91d1\u5e63",
     waveClearFeedback: "\u7b2c {wave} \u6ce2\u5b88\u4f4f\u4e86",
     publicReleaseBadge: "\u7acb\u5373\u904a\u73a9",
-    publicNotice: "\u5efa\u7f6e\u5b88\u885b\u3001\u4fdd\u8b77\u6c34\u6676\u6838\u5fc3\uff0c\u4e26\u89e3\u9396\u5168\u90e8 10 \u500b\u68ee\u6797\u95dc\u5361\u3002\u9032\u5ea6\u6703\u4fdd\u5b58\u5728\u9019\u53f0\u88dd\u7f6e\u3002",
+    publicNotice: "\u5efa\u7f6e\u5b88\u885b\u3001\u4fdd\u8b77\u6c34\u6676\u6838\u5fc3\uff0c\u4e26\u89e3\u9396\u516d\u5340\u5171 30 \u500b\u95dc\u5361\u3002\u9032\u5ea6\u6703\u4fdd\u5b58\u5728\u9019\u53f0\u88dd\u7f6e\u3002",
     autoWave: "\u4e0b\u4e00\u6ce2\u5c07\u5728 {seconds} \u79d2\u5f8c\u81ea\u52d5\u958b\u59cb",
     savedProgress: "\u5df2\u4fdd\u5b58\u7e3d\u8a08\uff1a{points} \u5347\u7d1a\u9ede\u00b7{diamonds} \u947d\u77f3",
     newRouteUnlocked: "\u65b0\u8def\u7dda\u89e3\u9396\uff1a\u7b2c {stage} \u95dc\u2014{name}",
     nextRouteReady: "\u4e0b\u4e00\u8def\u7dda\u53ef\u9032\u5165\uff1a\u7b2c {stage} \u95dc\u2014{name}",
-    campaignComplete: "\u6230\u5f79\u5b8c\u6210\uff1a\u5168\u90e8 10 \u95dc\u5df2\u89e3\u9396\u3002",
+    campaignComplete: "\u6230\u5f79\u5b8c\u6210\uff1a30 \u95dc\u8207\u516d\u689d Boss \u8def\u7dda\u5df2\u901a\u95dc\u3002",
     rerollRewardConfirm: "\u78ba\u8a8d +{points} \u5347\u7d1a\u9ede",
     rerollRewardPreview: "\u91cd\u62bd\u589e\u52a0 +{points} \u5347\u7d1a\u9ede \u00b7 \u947d\u77f3 {balance} \u2192 {result}\u3002\u518d\u6b21\u9ede\u64ca\u78ba\u8a8d\u3002",
     rerollRewardNeed: "\u5df2\u4fdd\u5b58\u7e3d\u8a08\uff1a{points} \u5347\u7d1a\u9ede \u00b7 {diamonds} \u947d\u77f3 \u00b7 \u9700\u8981 3 / \u6301\u6709 {diamonds}\u3002",
@@ -871,7 +892,7 @@
     try {
       const parsed = JSON.parse(localStorage.getItem(saveKey) || "{}");
       return {
-        bestStage: Math.max(1, Number(parsed.bestStage) || 1),
+        bestStage: Math.max(1, Math.min(STAGE_COUNT, Number(parsed.bestStage) || 1)),
         diamonds: Math.max(0, Number(parsed.diamonds) || 12),
         upgradePoints: Math.max(0, Number(parsed.upgradePoints) || 0),
         tech: { power: 0, bulwark: 0, economy: 0, ...(parsed.tech || {}) },
@@ -1073,7 +1094,7 @@
       button.className = "stage-card";
       button.setAttribute("aria-disabled", String(!unlocked));
       button.dataset.stageId = String(stage.id);
-      if (stage.id === Math.min(10, state.save.bestStage)) button.setAttribute("aria-current", "true");
+      if (stage.id === Math.min(STAGE_COUNT, state.save.bestStage)) button.setAttribute("aria-current", "true");
       const bestStars = Number(state.save.stars?.[stage.id] || 0);
       const status = !unlocked ? t("locked") : bestStars ? t("starRating", { stars: bestStars }) : state.save.clears[stage.id] ? t("cleared") : stage.boss ? t("bossStage") : t("stage");
       const rewardText = `+${stage.reward.points} ${t("upgradePoints")} / +${stage.reward.diamonds} ${t("diamonds")}`;
@@ -1084,7 +1105,7 @@
       });
       nodes.stageRail.appendChild(button);
     });
-    requestAnimationFrame(() => centerStageCard(Math.min(10, state.save.bestStage)));
+    requestAnimationFrame(() => centerStageCard(Math.min(STAGE_COUNT, state.save.bestStage)));
   }
 
   function centerStageCard(stageId) {
@@ -1225,7 +1246,7 @@
 
   function updateHud() {
     if (!nodes.stageHudText) return;
-    nodes.stageHudText.textContent = state.stage ? `${state.currentStage}/10` : "-";
+    nodes.stageHudText.textContent = state.stage ? `${state.currentStage}/${STAGE_COUNT}` : "-";
     nodes.coreText.textContent = Math.max(0, Math.ceil(state.coreHp));
     nodes.coinText.textContent = Math.floor(state.coins);
     nodes.waveText.textContent = state.stage ? `${state.wave}/${state.stage.waves}` : "0/0";
@@ -1282,9 +1303,7 @@
 
   function localizedBossName(stage) {
     if (!stage?.boss) return "";
-    if (stage.id === 10) return t("bossForestName");
-    if (stage.id === 5) return t("bossShadowName");
-    return stage.bossName || t("boss");
+    return state.locale === "zh-Hant" ? stage.bossNameZht || stage.bossName || t("boss") : stage.bossName || t("boss");
   }
 
   function updateWaveIntel() {
@@ -1498,17 +1517,23 @@
   }
 
   function waveEnemyCount(stage, wave) {
-    const base = 4 + Math.ceil(stage.id * 0.7) + wave + Math.floor(stage.threat / 4);
+    const positionInArc = (stage.id - 1) % 5;
+    const base = 4 + stage.arc * 2 + wave + Math.floor(positionInArc / 2);
     return base + (stage.boss && wave === stage.waves ? 1 : 0);
   }
 
   function enemyTypeForSpawn(stage, wave, spawnIndex, total, isBoss) {
     if (isBoss) return "boss";
     const remainingBeforeBoss = total - spawnIndex - 1;
-    if (stage.boss && wave === stage.waves && remainingBeforeBoss < stage.finalEscortCount) {
+    if (stage.boss && wave === stage.waves && remainingBeforeBoss <= stage.finalEscortCount) {
       return remainingBeforeBoss % 2 === 0 ? "boar" : "bat";
     }
-    const mix = (spawnIndex + wave + stage.id + stage.threat) % 5;
+    const mix = (spawnIndex + wave + stage.id + stage.threat) % 6;
+    if (stage.mechanic === "flying") return mix <= 2 ? "bat" : mix === 3 ? "boar" : "wolf";
+    if (stage.mechanic === "armor") return mix <= 2 ? "boar" : mix === 3 ? "bat" : "wolf";
+    if (stage.mechanic === "regrowth") return mix <= 2 ? "wolf" : mix <= 4 ? "boar" : "bat";
+    if (stage.mechanic === "surge") return mix % 2 === 0 ? "bat" : "boar";
+    if (stage.mechanic === "eclipse") return ["wolf", "boar", "bat"][mix % 3];
     if (mix === 0 || mix === 4) return "boar";
     if (mix === 1) return "bat";
     return "wolf";
@@ -1532,6 +1557,8 @@
       bossName: localizedBossName(stage),
       bossHp: stage.boss ? Math.round(stage.enemyHp * stage.bossHpScale) : 0,
       bossDamage: stage.bossDamage,
+      mechanic: stage.mechanic,
+      bossAbility: stage.bossAbility,
       finalEscortCount: stage.finalEscortCount,
       spawnCadence: stage.spawnCadence,
     };
@@ -1542,6 +1569,10 @@
     const type = enemyTypeForSpawn(state.stage, state.wave, state.waveSpawned, state.waveToSpawn, isBoss);
     const hpScale = isBoss ? state.stage.bossHpScale : type === "boar" ? 1.75 : type === "bat" ? 0.82 : 1;
     const speedScale = isBoss ? 0.58 : type === "bat" ? 1.35 : type === "boar" ? 0.72 : 1;
+    const maxHp = state.stage.enemyHp * hpScale;
+    const armored = state.stage.mechanic === "armor" || state.stage.mechanic === "eclipse" || state.stage.bossAbility === "armor";
+    const regenerative = state.stage.mechanic === "regrowth" || state.stage.mechanic === "eclipse" || state.stage.bossAbility === "regrowth";
+    const surging = state.stage.mechanic === "surge" || state.stage.mechanic === "eclipse" || state.stage.bossAbility === "haste" || state.stage.bossAbility === "phase";
     const enemy = {
       id: `e-${Date.now()}-${Math.random()}`,
       type,
@@ -1549,8 +1580,8 @@
       sheet: "",
       tile: { ...startTile },
       pos: tileToPoint(startTile),
-      hp: state.stage.enemyHp * hpScale,
-      maxHp: state.stage.enemyHp * hpScale,
+      hp: maxHp,
+      maxHp,
       speed: state.stage.enemySpeed * speedScale,
       damage: isBoss ? state.stage.bossDamage : type === "boar" ? 18 : 11 + state.currentStage,
       attackCd: 0,
@@ -1562,8 +1593,14 @@
       actionFrame: 0,
       hitPulse: 0,
       boss: isBoss,
+      bossAbility: isBoss ? state.stage.bossAbility : "",
       flying: type === "bat",
       slow: 0,
+      guardHp: armored ? maxHp * (isBoss ? 0.5 : 0.24) : 0,
+      regenRate: regenerative ? maxHp * (isBoss ? 0.018 : 0.008) : 0,
+      surgeReady: surging,
+      surged: false,
+      phaseStep: 0,
     };
     setEnemyPath(enemy);
     state.enemies.push(enemy);
@@ -1576,6 +1613,98 @@
     }
     state.waveSpawned += 1;
     return enemy;
+  }
+
+  function spawnBossSupport(type) {
+    const hpScale = type === "boar" ? 1.45 : type === "bat" ? 0.72 : 0.9;
+    const speedScale = type === "bat" ? 1.42 : type === "boar" ? 0.78 : 1.08;
+    const maxHp = state.stage.enemyHp * hpScale;
+    const enemy = {
+      id: `support-${Date.now()}-${Math.random()}`,
+      type,
+      img: type,
+      sheet: "",
+      tile: { ...startTile },
+      pos: tileToPoint(startTile),
+      hp: maxHp,
+      maxHp,
+      speed: state.stage.enemySpeed * speedScale,
+      damage: type === "boar" ? 20 : 12 + state.currentStage,
+      attackCd: 0,
+      path: [],
+      pathIndex: 0,
+      targetDefender: null,
+      animTime: Math.random() * 0.4,
+      actionPulse: 0,
+      actionFrame: 0,
+      hitPulse: 0,
+      boss: false,
+      bossAbility: "",
+      flying: type === "bat",
+      slow: 0,
+      guardHp: state.stage.mechanic === "armor" || state.stage.mechanic === "eclipse" ? maxHp * 0.2 : 0,
+      regenRate: state.stage.mechanic === "regrowth" || state.stage.mechanic === "eclipse" ? maxHp * 0.007 : 0,
+      surgeReady: state.stage.mechanic === "surge" || state.stage.mechanic === "eclipse",
+      surged: false,
+      phaseStep: 0,
+    };
+    setEnemyPath(enemy);
+    state.enemies.push(enemy);
+    addSkillEffect(enemy.pos, skillFxFrames.bossPortal, 0.9, 0.45);
+    return enemy;
+  }
+
+  function damageEnemy(enemy, amount) {
+    let remaining = Math.max(0, Number(amount) || 0);
+    if (enemy.guardHp > 0) {
+      const absorbed = Math.min(enemy.guardHp, remaining);
+      enemy.guardHp -= absorbed;
+      remaining -= absorbed;
+      if (absorbed > 0) addFloatingText(enemy.pos, `-${Math.ceil(absorbed)}`, "#8ee8ff");
+    }
+    enemy.hp -= remaining;
+    return remaining;
+  }
+
+  function triggerBossPhase(enemy, supportTypes = []) {
+    enemy.phaseStep += 1;
+    supportTypes.forEach(spawnBossSupport);
+    showToast(t("bossPhase", { boss: localizedBossName(state.stage) || t("boss") }));
+    addSkillEffect(enemy.pos, skillFxFrames.bossPortal, 1.5, 0.7);
+    triggerImpactFeedback(9, 0.3, "126, 249, 255");
+    playSfx("boss");
+  }
+
+  function updateEnemySpecial(enemy, dt) {
+    const hpRatioBefore = enemy.hp / Math.max(1, enemy.maxHp);
+    if (enemy.regenRate > 0 && enemy.hp > 0 && enemy.hp < enemy.maxHp) {
+      enemy.hp = Math.min(enemy.maxHp, enemy.hp + enemy.regenRate * dt);
+    }
+    if (enemy.surgeReady && !enemy.surged && enemy.hp <= enemy.maxHp * 0.5) {
+      enemy.surged = true;
+      enemy.speed *= enemy.boss ? 1.28 : 1.42;
+      enemy.damage *= enemy.boss ? 1.18 : 1.1;
+      addSkillEffect(enemy.pos, skillFxFrames.gear, enemy.boss ? 1.35 : 0.85, 0.55);
+    }
+    if (!enemy.boss) return;
+    if (enemy.bossAbility === "summon" && enemy.phaseStep === 0 && hpRatioBefore <= 0.62) {
+      triggerBossPhase(enemy, ["wolf", "bat"]);
+    } else if (enemy.bossAbility === "armor" && enemy.phaseStep === 0 && hpRatioBefore <= 0.55) {
+      enemy.guardHp += enemy.maxHp * 0.35;
+      triggerBossPhase(enemy);
+    } else if (enemy.bossAbility === "regrowth" && enemy.phaseStep === 0 && hpRatioBefore <= 0.5) {
+      enemy.hp = Math.min(enemy.maxHp, enemy.hp + enemy.maxHp * 0.2);
+      triggerBossPhase(enemy, ["wolf"]);
+    } else if (enemy.bossAbility === "haste" && enemy.phaseStep === 0 && hpRatioBefore <= 0.58) {
+      state.enemies.filter((other) => other !== enemy).forEach((other) => { other.speed *= 1.25; });
+      triggerBossPhase(enemy, ["bat", "bat"]);
+    } else if (enemy.bossAbility === "phase") {
+      if (enemy.phaseStep === 0 && hpRatioBefore <= 0.67) triggerBossPhase(enemy, ["bat", "bat"]);
+      else if (enemy.phaseStep === 1 && hpRatioBefore <= 0.34) {
+        enemy.guardHp += enemy.maxHp * 0.22;
+        triggerBossPhase(enemy, ["boar", "wolf"]);
+      }
+    }
   }
 
   function findPath(ignoreBlockers = false) {
@@ -1755,19 +1884,19 @@
       if (!target || d.cd > 0) return;
       if (d.damage <= 0) return;
       let damage = d.damage * (1 + (nearbyRuxBuff(d) || 0));
-      target.hp -= damage;
+      const healthDamage = damageEnemy(target, damage);
       target.hitPulse = Math.max(target.hitPulse || 0, target.boss ? 0.28 : 0.22);
-      addFloatingText(target.pos, `-${Math.ceil(damage)}`, target.boss ? "#ffd166" : "#fff3bd");
+      if (healthDamage > 0) addFloatingText(target.pos, `-${Math.ceil(healthDamage)}`, target.boss ? "#ffd166" : "#fff3bd");
       if (d.splash) {
         state.enemies
           .filter((enemy) => enemy !== target && enemy.hp > 0 && tileDistance(enemy.tile, target.tile) <= d.splash)
           .forEach((enemy) => {
             const splashDamage = damage * 0.48;
-            enemy.hp -= splashDamage;
+            const splashHealthDamage = damageEnemy(enemy, splashDamage);
             enemy.hitPulse = Math.max(enemy.hitPulse || 0, enemy.boss ? 0.24 : 0.18);
             enemy.slow = Math.max(enemy.slow, d.slow || 0);
             addSkillEffect(enemy.pos, skillFxFrames.slow, enemy.boss ? 1.15 : 0.82, 0.38);
-            addFloatingText(enemy.pos, `-${Math.ceil(splashDamage)}`, "#93f7ff");
+            if (splashHealthDamage > 0) addFloatingText(enemy.pos, `-${Math.ceil(splashHealthDamage)}`, "#93f7ff");
           });
       }
       if (d.slow) target.slow = Math.max(target.slow, d.slow);
@@ -1802,6 +1931,7 @@
 
   function updateEnemies(dt) {
     state.enemies.forEach((enemy) => {
+      updateEnemySpecial(enemy, dt);
       enemy.animTime = (enemy.animTime || 0) + dt;
       enemy.actionPulse = Math.max(0, (enemy.actionPulse || 0) - dt);
       enemy.hitPulse = Math.max(0, (enemy.hitPulse || 0) - dt);
@@ -1839,7 +1969,9 @@
         return;
       }
       const targetPoint = tileToPoint(targetTile);
-      const speed = enemy.speed * (enemy.slow ? 1 - enemy.slow : 1);
+      const slowResistance = state.stage?.mechanic === "eclipse" ? 0.5 : 0;
+      const effectiveSlow = enemy.slow * (1 - slowResistance);
+      const speed = enemy.speed * (effectiveSlow ? 1 - effectiveSlow : 1);
       enemy.slow = Math.max(0, enemy.slow - dt * 0.35);
       const dx = targetPoint.x - enemy.pos.x;
       const dy = targetPoint.y - enemy.pos.y;
@@ -1850,7 +1982,7 @@
         enemy.tile = { ...targetTile };
         enemy.pathIndex += 1;
         if (sameTile(enemy.tile, coreTile)) {
-          state.coreHp -= enemy.boss ? 35 : 6 + Math.ceil(state.currentStage * 0.45);
+          state.coreHp -= enemy.boss ? 35 : 6 + Math.ceil(Math.min(state.currentStage, 18) * 0.32);
           enemy.hp = 0;
           addSkillEffect(tileToPoint(coreTile), enemy.boss ? skillFxFrames.bossPortal : skillFxFrames.heroStrike, enemy.boss ? 1.45 : 1, 0.55);
           triggerImpactFeedback(enemy.boss ? 14 : 8, enemy.boss ? 0.42 : 0.28, enemy.boss ? "255, 70, 70" : "255, 209, 102");
@@ -1880,7 +2012,7 @@
       enemy.actionFrame = 3;
       d.actionPulse = 0.28;
       d.actionFrame = 2;
-      enemy.attackCd = enemy.boss ? 0.72 : 1.05;
+      enemy.attackCd = enemy.bossAbility === "siege" ? 0.52 : enemy.boss ? 0.72 : 1.05;
       addSkillEffect(tileToPoint(d.tile), enemy.boss ? skillFxFrames.bossPortal : skillFxFrames.heroStrike, enemy.boss ? 1.32 : 0.96, 0.48);
       triggerImpactFeedback(enemy.boss ? 10 : 5, enemy.boss ? 0.34 : 0.18, enemy.boss ? "255, 70, 70" : "255, 209, 102");
       if (d.hp <= 0) {
@@ -1960,7 +2092,7 @@
     state.won = true;
     const stage = state.stage;
     const previousBestStage = state.save.bestStage;
-    state.save.bestStage = Math.max(state.save.bestStage, Math.min(10, stage.id + 1));
+    state.save.bestStage = Math.max(state.save.bestStage, Math.min(STAGE_COUNT, stage.id + 1));
     state.save.diamonds += stage.reward.diamonds;
     state.save.upgradePoints += stage.reward.points;
     state.save.clears[stage.id] = true;
@@ -1972,7 +2104,7 @@
       points: stage.reward.points,
       diamonds: stage.reward.diamonds,
       stars,
-      newlyUnlocked: stage.id < 10 && previousBestStage < stage.id + 1,
+      newlyUnlocked: stage.id < STAGE_COUNT && previousBestStage < stage.id + 1,
       rerolled: false,
       rerollPending: false,
     };
@@ -1981,7 +2113,7 @@
     nodes.resultText.textContent = t("victoryText", { stage: stage.id });
     nodes.resultStars.textContent = t("starRating", { stars });
     nodes.skillReportText.textContent = resultSkillReport(true, stars, state.coreHp, stage);
-    nodes.nextStageBtn.classList.toggle("is-hidden", stage.id >= 10);
+    nodes.nextStageBtn.classList.toggle("is-hidden", stage.id >= STAGE_COUNT);
     nodes.reviveBtn.classList.add("is-hidden");
     renderResultReward();
     setScreen("result");
@@ -2050,7 +2182,7 @@
       : state.save.diamonds < 3 && !reward.rerolled
         ? t("rerollRewardNeed", { points: state.save.upgradePoints, diamonds: state.save.diamonds })
         : t("savedProgress", { points: state.save.upgradePoints, diamonds: state.save.diamonds });
-    if (reward.stageId >= 10) {
+    if (reward.stageId >= STAGE_COUNT) {
       nodes.resultUnlockText.textContent = t("campaignComplete");
     } else {
       const nextStage = stages[reward.stageId];
@@ -2853,7 +2985,7 @@
     });
     nodes.rerollRewardBtn.addEventListener("click", rerollReward);
     nodes.nextStageBtn.addEventListener("click", () => {
-      const nextStage = Math.min(10, state.currentStage + 1);
+      const nextStage = Math.min(STAGE_COUNT, state.currentStage + 1);
       track("game_next_stage", { stage: state.currentStage, next_stage: nextStage });
       startStage(nextStage);
     });
@@ -2977,7 +3109,7 @@
 
   function simulateBalanceStage(stageId, tech, units, priorityTypes, maxSeconds = 360, reinforcements = [], maxUpgrades = 2) {
     state.save = {
-      bestStage: 10,
+      bestStage: STAGE_COUNT,
       diamonds: 99,
       upgradePoints: 99,
       tech: { power: 0, bulwark: 0, economy: 0, ...tech },
@@ -3187,6 +3319,27 @@
         maxUpgrades: 0,
       },
     ];
+    const advancedPlan = {
+      tech: { power: 5, bulwark: 5, economy: 5 },
+      units: [
+        { id: "leo", tile: { x: 3, y: 3 } },
+        { id: "fia", tile: { x: 6, y: 3 } },
+        { id: "orla", tile: { x: 5, y: 2 } },
+        { id: "taro", tile: { x: 4, y: 4 } },
+        { id: "archer", tile: { x: 4, y: 2 } },
+        { id: "sapper", tile: { x: 7, y: 4 } },
+        { id: "medic", tile: { x: 7, y: 2 } },
+      ],
+      priority: ["leo", "fia", "orla", "taro", "sapper", "archer", "medic", "rux", "panko", "deer"],
+      reinforcements: [
+        { wave: 2, id: "rux", tile: { x: 8, y: 2 } },
+        { wave: 3, id: "panko", tile: { x: 8, y: 3 } },
+        { wave: 4, id: "deer", tile: { x: 8, y: 4 } },
+        { wave: 5, id: "guard", tile: { x: 9, y: 3 } },
+      ],
+      maxUpgrades: 2,
+    };
+    for (let stage = 11; stage <= STAGE_COUNT; stage += 1) plans.push({ stage, ...advancedPlan });
     return plans.map((plan) =>
       simulateBalanceStage(
         plan.stage,
@@ -3844,10 +3997,10 @@
     };
   }
 
-  function showResultScreenScenario(stageId = 10, won = true) {
+  function showResultScreenScenario(stageId = STAGE_COUNT, won = true) {
     state.manualSimulation = true;
     state.save = {
-      bestStage: 10,
+      bestStage: STAGE_COUNT,
       diamonds: 20,
       upgradePoints: 8,
       tech: { power: 2, bulwark: 2, economy: 2 },
@@ -3864,7 +4017,7 @@
       screen: state.screen,
       title: nodes.resultTitle.textContent,
       starsText: nodes.resultStars.textContent,
-      starsSaved: state.save.stars?.[10] || 0,
+      starsSaved: state.save.stars?.[stageId] || 0,
       hasReward: nodes.resultRewardText.textContent.length > 0,
       progressText: nodes.resultProgressText.textContent,
       unlockText: nodes.resultUnlockText.textContent,
@@ -4601,6 +4754,69 @@
     return result;
   }
 
+  function runCampaignDepthScenario() {
+    state.manualSimulation = true;
+    state.save = {
+      bestStage: STAGE_COUNT,
+      diamonds: 99,
+      upgradePoints: 99,
+      tech: { power: 5, bulwark: 5, economy: 5 },
+      cosmetics: { goldenFrame: true },
+      clears: {},
+      stars: {},
+    };
+    const mechanicSnapshots = [11, 16, 21, 26].map((stageId) => {
+      startStage(stageId);
+      state.wave = 1;
+      state.waveSpawned = 0;
+      state.waveToSpawn = 2;
+      const enemy = spawnEnemy();
+      const startHp = enemy.hp;
+      const startSpeed = enemy.speed;
+      enemy.hp = enemy.maxHp * 0.45;
+      updateEnemySpecial(enemy, 1);
+      return {
+        stage: stageId,
+        mechanic: state.stage.mechanic,
+        guardHp: Math.round(enemy.guardHp),
+        regenerated: enemy.regenRate > 0 && enemy.hp > enemy.maxHp * 0.45,
+        surged: enemy.surged,
+        speedIncreased: enemy.speed > startSpeed,
+        slowResistance: state.stage.mechanic === "eclipse" ? 0.5 : 0,
+        startHp: Math.round(startHp),
+      };
+    });
+    const bossSnapshots = stages.filter((stage) => stage.boss).map((stage) => {
+      startStage(stage.id);
+      state.wave = stage.waves;
+      state.waveSpawned = 0;
+      state.waveToSpawn = 1;
+      const boss = spawnEnemy();
+      const guardBefore = boss.guardHp;
+      const supportsBefore = state.enemies.length - 1;
+      boss.hp = boss.maxHp * (boss.bossAbility === "phase" ? 0.6 : 0.5);
+      updateEnemySpecial(boss, 0.2);
+      if (boss.bossAbility === "phase") {
+        boss.hp = boss.maxHp * 0.3;
+        updateEnemySpecial(boss, 0.2);
+      }
+      return {
+        stage: stage.id,
+        name: localizedBossName(stage),
+        ability: boss.bossAbility,
+        phaseStep: boss.phaseStep,
+        supportsAdded: state.enemies.length - 1 - supportsBefore,
+        guardAdded: boss.guardHp > guardBefore,
+        regenerated: boss.hp > boss.maxHp * 0.3 && boss.bossAbility === "regrowth",
+        surged: boss.surged,
+      };
+    });
+    state.enemies = [];
+    state.runningWave = false;
+    state.manualSimulation = false;
+    return { mechanicSnapshots, bossSnapshots };
+  }
+
   async function runSmokeScenario() {
     startStage(1);
     state.coins = 999;
@@ -4622,7 +4838,7 @@
     const attackingBlocker = state.enemies.some((enemy) => enemy.targetDefender);
     Object.values(skillFxFrames).forEach((frame, index) => addSkillEffect(tileToPoint({ x: Math.min(grid.cols - 2, index + 2), y: 1 }), frame));
     const skillEffectFrames = state.effects.filter((effect) => effect.type === "skillFx").map((effect) => effect.frame);
-    const bossWaveProfiles = [waveProfile(5, stages[4].waves), waveProfile(10, stages[9].waves)];
+    const bossWaveProfiles = stages.filter((stage) => stage.boss).map((stage) => waveProfile(stage.id, stage.waves));
     state.enemies = [];
     state.runningWave = false;
     return {
@@ -4638,6 +4854,8 @@
       skillFxLoaded: Boolean(assets.skillFx?.complete),
       skillEffectFrames,
       bossWaveProfiles,
+      mechanicFamilies: [...new Set(stages.map((stage) => stage.mechanic))],
+      bossAbilities: stages.filter((stage) => stage.boss).map((stage) => stage.bossAbility),
       stageIntelComplete: stages.every((stage) => stage.intel?.threat?.en && stage.intel?.threat?.["zh-Hant"] && stage.intel?.plan?.en && stage.intel?.plan?.["zh-Hant"]),
       bossIntelStages: stages.filter((stage) => stage.boss && stage.intel?.threat?.en && stage.intel?.plan?.en).map((stage) => stage.id),
       allNormalGroundBuildable,
@@ -4825,6 +5043,7 @@
       runBlockedRouteFallbackScenario,
       runRoutePreviewScenario,
       runTraditionalChineseReadabilityScenario,
+      runCampaignDepthScenario,
       runSoundReadinessScenario,
       runPauseSpeedScenario,
       runAnalyticsScenario,

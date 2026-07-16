@@ -281,6 +281,7 @@
       if (state.needsCrew) state.crew = state.maxCrew;
       $('feedback').textContent = locale === 'zh-Hant' ? '\u78bc\u982d\u914d\u5c0d\u6210\u529f\u3002' : 'Dock matched.';
       if (state.done >= state.goal) {
+        renderHud();
         const config = shiftConfig[state.shift];
         save.best = Math.max(save.best || 1, state.shift);
         save.unlocked = Math.max(save.unlocked || 1, Math.min(5, state.shift + 1));
@@ -447,6 +448,7 @@
       state.selected = false;
       setDockKeyboardMode(false);
       renderFlightTask();
+      $('feedback').textContent = t('routeCancelled');
       $('flight').focus({preventScroll:true});
     }
   }));

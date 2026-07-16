@@ -599,6 +599,7 @@
     window.WeightPlayGame?.exitMobileGameMode?.();
     window.scrollTo?.({ top: 0, left: 0, behavior: "instant" });
     renderHud();
+    requestAnimationFrame(() => canvas.focus({ preventScroll: true }));
     lastFrame = performance.now();
     playSound("start", 0.2);
     window.WonderAnalytics?.track("game_start", { game_id: GAME_ID, locale, prototype: true });
@@ -1305,12 +1306,24 @@
     updateMenuSound();
   });
   nodes.retryBtn.addEventListener("click", startRun);
+  nodes.resultPanel.addEventListener("keydown", (event) => {
+    if (event.key !== "Tab" || nodes.resultPanel.classList.contains("hidden")) return;
+    const actions = [nodes.retryBtn, nodes.resultMenuBtn].filter((button) => !button.disabled);
+    if (event.shiftKey && document.activeElement === actions[0]) {
+      event.preventDefault();
+      actions.at(-1).focus();
+    } else if (!event.shiftKey && document.activeElement === actions.at(-1)) {
+      event.preventDefault();
+      actions[0].focus();
+    }
+  });
   nodes.menuBtn.addEventListener("click", () => {
     runToken += 1;
     clearInput();
     state.mode = "menu";
     playSound("click", 0.1);
     show(nodes.menuPanel);
+    requestAnimationFrame(() => nodes.startBtn.focus({ preventScroll: true }));
   });
   nodes.resultMenuBtn.addEventListener("click", () => {
     runToken += 1;
@@ -1318,6 +1331,7 @@
     state.mode = "menu";
     playSound("click", 0.1);
     show(nodes.menuPanel);
+    requestAnimationFrame(() => nodes.startBtn.focus({ preventScroll: true }));
   });
   nodes.upgradeCards.addEventListener("click", (event) => {
     const card = event.target.closest("[data-upgrade]");

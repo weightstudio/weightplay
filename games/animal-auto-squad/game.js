@@ -823,6 +823,17 @@
             : ""
         };
       },
+      backpackSlotRegression: () => {
+        const ownedCards = createBackpackCards();
+        const compactCards = ownedCards.slice(-2);
+        const normalizedCards = normalizeBackpackSlots(compactCards);
+        return {
+          ownedCount: normalizeSave(save).unlockedAnimals.length,
+          compactCount: compactCards.length,
+          slotCount: normalizedCards.length,
+          occupiedCount: normalizedCards.filter(Boolean).length
+        };
+      },
       combinePreview: () => {
         const base = createAnimalCard(0);
         const copy = createAnimalCard(0);
@@ -1824,6 +1835,14 @@
       .filter(Boolean);
   }
 
+  function normalizeBackpackSlots(cards = []) {
+    save = normalizeSave(save);
+    const ownedSlotCount = save.unlockedAnimals.length;
+    const normalizedCards = Array.isArray(cards) ? cards.slice(0, ownedSlotCount) : [];
+    while (normalizedCards.length < ownedSlotCount) normalizedCards.push(null);
+    return normalizedCards;
+  }
+
   function restoreSavedFormation() {
     save = normalizeSave(save);
     const backpackById = new Map(state.backpack.map((card) => [Number(card.id), card]));
@@ -1833,7 +1852,9 @@
       backpackById.delete(Number(id));
       return card;
     });
-    state.backpack = state.backpack.map((card) => (backpackById.has(Number(card.id)) ? card : null));
+    state.backpack = normalizeBackpackSlots(
+      state.backpack.map((card) => (backpackById.has(Number(card.id)) ? card : null))
+    );
   }
 
   function saveActiveFormation() {
@@ -2346,8 +2367,9 @@
 
   function renderShop() {
     nodes.shopRow.innerHTML = "";
+    state.backpack = normalizeBackpackSlots(state.backpack);
 
-    const visibleSlots = Math.max(2, state.backpack.length);
+    const visibleSlots = Math.max(2, normalizeSave(save).unlockedAnimals.length, state.backpack.length);
     for (let idx = 0; idx < visibleSlots; idx++) {
       const cell = document.createElement("div");
       cell.className = "shop-cell";

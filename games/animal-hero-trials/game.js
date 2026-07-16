@@ -94,6 +94,17 @@
   const battleControlCodes = new Set(["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "KeyA", "KeyD", "KeyW", "KeyS", "Space"]);
   let stick = { x: 0, y: 0 };
 
+  function clearMovementInput() {
+    Object.keys(keys).forEach((key) => { keys[key] = false; });
+    stick = { x: 0, y: 0 };
+    const joystick = $("#joystick");
+    const nub = joystick?.querySelector("i");
+    const ownedPointer = pointer;
+    pointer = null;
+    if (ownedPointer !== null && joystick?.hasPointerCapture?.(ownedPointer)) joystick.releasePointerCapture(ownedPointer);
+    if (nub) nub.style.transform = "";
+  }
+
   const views = {
     main: $("#mainView"),
     stage: $("#stageView"),
@@ -145,7 +156,7 @@
 
   function show(name) {
     clearRerollConfirmation();
-    if (name !== "battle") Object.keys(keys).forEach((key) => { keys[key] = false; });
+    clearMovementInput();
     document.body.dataset.gameView = name;
     Object.entries(views).forEach(([key, view]) => {
       view.classList.toggle("hidden", key !== name);
@@ -167,6 +178,7 @@
   }
 
   function setChoiceModal(open, focusPrimary = true) {
+    if (open) clearMovementInput();
     $("#choiceModal").classList.toggle("hidden", !open);
     choiceCoveredLayers().forEach((layer) => {
       layer.inert = open;
@@ -177,6 +189,7 @@
   }
 
   function setResultModal(open, focusPrimary = true) {
+    if (open) clearMovementInput();
     $("#resultModal").classList.toggle("hidden", !open);
     resultCoveredLayers().forEach((layer) => {
       layer.inert = open;
@@ -652,16 +665,16 @@
       nub.style.transform = `translate(${stick.x * 25}px, ${stick.y * 25}px)`;
     };
     joystick.onpointerdown = (event) => {
+      clearMovementInput();
       pointer = event.pointerId;
       joystick.setPointerCapture(pointer);
       move(event);
     };
     joystick.onpointermove = move;
-    joystick.onpointerup = () => {
-      pointer = null;
-      stick = { x: 0, y: 0 };
-      nub.style.transform = "";
-    };
+    const end = (event) => { if (pointer === event.pointerId) clearMovementInput(); };
+    joystick.onpointerup = end;
+    joystick.onpointercancel = end;
+    joystick.onlostpointercapture = end;
   }
 
   const localeSelect = $("#locale") || $("#localeSelect");
@@ -711,7 +724,9 @@
     if (event.code === "Space") skill();
   });
   addEventListener("keyup", (event) => { keys[event.code] = false; });
-  addEventListener("blur", () => Object.keys(keys).forEach((key) => { keys[key] = false; }));
+  addEventListener("blur", clearMovementInput);
+  document.addEventListener("visibilitychange", () => { if (document.hidden) clearMovementInput(); });
   bindStick();
+  if (new URLSearchParams(location.search).has("smoke")) window.__heroTrialSmoke = { snapshot: () => ({ pointer, stick: { ...stick }, player: run ? { ...run.leo } : null }) };
   localize();
 })();

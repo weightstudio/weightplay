@@ -456,10 +456,10 @@ window.WONDER_LOBBY = {
       ageLabel: { en: "13+", "zh-Hant": "13+" },
       href: "games/beast-tactician/",
       description: {
-        en: "Build animal defenders on the grid, shape enemy routes, and stop boss waves across 10 forest stages.",
-        "zh-Hant": "高品質 10 關英雄塔防大作製作中。你將在格子地形上建置士兵與 WeightPlay 英雄，改變敵人路線並抵擋王關波次。"
+        en: "Shape enemy routes and command animal soldiers and WeightPlay heroes through 30 stages, six regions, and six distinct Boss battles.",
+        "zh-Hant": "改造敵人路線，指揮動物士兵與 WeightPlay 英雄，挑戰六區 30 關與六場不同規則的 Boss 戰。"
       },
-      meta: { en: ["Tower Defense", "10 Stages", "Boss Waves"], "zh-Hant": ["塔防", "10 關", "王關波次"] },
+      meta: { en: ["Tower Defense", "30 Stages", "Six Bosses"], "zh-Hant": ["塔防", "30 關", "六名 Boss"] },
       art: { kind: "image", background: "assets/beast-tactician-cover.webp", hero: "assets/weightplay-character-moss-shell-turtle-cutout.webp" },
     },
     {
@@ -746,14 +746,14 @@ const cleanZhLobbyCopy = {
   },
   "beast-tactician": {
     title: "獸王守衛",
-    statusText: "敬請期待",
+    statusText: "可遊玩",
     type: "英雄塔防",
-    description: "10 關英雄塔防正在內部測試。部署士兵與 WeightPlay 英雄，阻擋 Boss 波次並守住核心。",
-    meta: ["塔防", "10 關", "Boss 波次"],
+    description: "改造敵人路線，指揮動物士兵與 WeightPlay 英雄，挑戰六區 30 關與六場不同規則的 Boss 戰。",
+    meta: ["塔防", "30 關", "六名 Boss"],
   },
   "shadow-wolf": {
     title: "影狼傳說",
-    statusText: "敬請期待",
+    statusText: "可遊玩",
     type: "2D 動作平台 RPG",
     description: "奔跑、跳躍、衝刺並斬擊影獸，累積經驗、打開裝備寶箱，挑戰巨獸 Boss。",
     meta: ["2D 橫向動作", "跳躍操作", "裝備成長"],
@@ -778,11 +778,11 @@ for (const game of window.WONDER_LOBBY.games) {
 }
 
 const beastGuardianPublicCopy = {
-  title: "\u7378\u738b\u5b88\u885b",
-  statusText: "\u53ef\u904a\u73a9",
-  type: "\u82f1\u96c4\u5854\u9632",
-  description: "\u5728 10 \u500b\u68ee\u6797\u95dc\u5361\u4e2d\u4f48\u7f6e\u52d5\u7269\u5b88\u885b\u3001\u8abf\u6574\u8def\u7dda\uff0c\u64ca\u9000\u738b\u95dc\u6ce2\u6b21\u3002",
-  meta: ["\u5854\u9632", "10 \u95dc", "\u738b\u95dc\u6ce2\u6b21"],
+  title: "獸王守衛",
+  statusText: "可遊玩",
+  type: "英雄塔防",
+  description: "改造敵人路線，指揮動物士兵與 WeightPlay 英雄，挑戰六區 30 關與六場不同規則的 Boss 戰。",
+  meta: ["塔防", "30 關", "六名 Boss"],
 };
 const beastGuardian = window.WONDER_LOBBY.games.find((game) => game.id === "beast-tactician");
 if (beastGuardian) {
@@ -866,10 +866,10 @@ const verifiedCleanZhLobbyCopy = {
   },
   "beast-tactician": {
     title: "獸王守衛",
-    statusText: "敬請期待",
+    statusText: "可遊玩",
     type: "英雄塔防",
-    description: "高品質 10 關英雄塔防大作製作中。你將在格子地形上建置士兵與 WeightPlay 英雄，改變敵人路線並抵擋王關波次。",
-    meta: ["塔防", "10 關", "王關波次"],
+    description: "改造敵人路線，指揮動物士兵與 WeightPlay 英雄，挑戰六區 30 關與六場不同規則的 Boss 戰。",
+    meta: ["塔防", "30 關", "六名 Boss"],
   },
   "shadow-wolf": {
     title: "影狼傳說",

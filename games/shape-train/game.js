@@ -351,6 +351,7 @@
     nodes.playPanel.classList.add("hidden");
     nodes.resultPanel.classList.add("hidden");
     nodes.playPanel.classList.remove("is-result");
+    setResultOwnership(false);
     document.body.classList.remove("shape-playing");
     document.body.classList.add("wp-standard-stage-page");
     document.querySelector(".shape-game")?.setAttribute("data-play-viewport", "");
@@ -391,6 +392,7 @@
     nodes.playPanel.classList.remove("hidden");
     nodes.resultPanel.classList.add("hidden");
     nodes.playPanel.classList.remove("is-result");
+    setResultOwnership(false);
     document.body.classList.remove("wp-standard-stage-page");
     document.body.classList.add("shape-playing");
     document.querySelector(".shape-game")?.removeAttribute("data-play-viewport");
@@ -509,6 +511,8 @@
     renderResult(lastResult);
     nodes.playPanel.classList.add("is-result");
     nodes.resultPanel.classList.remove("hidden");
+    setResultOwnership(true);
+    requestAnimationFrame(() => (currentStage < stages.length - 1 ? nodes.nextStageBtn : nodes.retryBtn).focus({ preventScroll: true }));
     playSound("win");
     track("game_complete", { level: stageNo, stars: earned, mistakes });
   }
@@ -519,6 +523,20 @@
     nodes.resultText.textContent = t("result", { count: result.count });
     renderSkillReport(result.earned, result.previousBest);
     nodes.nextStageBtn.classList.toggle("hidden", currentStage >= stages.length - 1);
+  }
+
+  function setResultOwnership(active) {
+    [".play-head", ".train-track", ".passenger-area", ".feedback"].forEach((selector) => {
+      const node = nodes.playPanel.querySelector(selector);
+      if (!node) return;
+      node.inert = active;
+      if (active) node.setAttribute("aria-hidden", "true");
+      else node.removeAttribute("aria-hidden");
+    });
+  }
+
+  function visibleResultActions() {
+    return [...nodes.resultPanel.querySelectorAll("button, a")].filter((node) => !node.classList.contains("hidden") && !node.disabled && node.getClientRects().length > 0);
   }
 
   function refreshActiveTaskLocale() {
@@ -687,6 +705,17 @@
       startStage(currentStage);
     });
     nodes.nextStageBtn.addEventListener("click", () => startStage(Math.min(currentStage + 1, stages.length - 1)));
+    nodes.resultPanel.addEventListener("keydown", (event) => {
+      if (event.key !== "Tab" || nodes.resultPanel.classList.contains("hidden")) return;
+      const actions = visibleResultActions();
+      if (!actions.length) return;
+      const index = actions.indexOf(document.activeElement);
+      const nextIndex = event.shiftKey
+        ? (index <= 0 ? actions.length - 1 : index - 1)
+        : (index < 0 || index >= actions.length - 1 ? 0 : index + 1);
+      event.preventDefault();
+      actions[nextIndex].focus({ preventScroll: true });
+    });
   }
 
   const style = document.createElement("style");

@@ -318,7 +318,7 @@
   let state = makeState();
   let lastFrame = 0;
   let raf = 0;
-  let pointer = { active: false, x: 0, y: 0 };
+  let pointer = { active: false, id: null, x: 0, y: 0 };
   let keyboardAimDeg = -90;
   let soundAt = {};
   let preloadFinished = false;
@@ -405,6 +405,7 @@
   }
 
   function show(panel) {
+    if (panel !== nodes.gamePanel) cancelPointerAim();
     [nodes.menuPanel, nodes.stagePanel, nodes.gamePanel, nodes.upgradePanel, nodes.resultPanel].forEach((node) => node.classList.add("is-hidden"));
     const resultOpen = panel === nodes.resultPanel;
     const upgradeOpen = panel === nodes.upgradePanel;
@@ -607,6 +608,7 @@
   }
 
   function startRaid(tier = selectedTier) {
+    cancelPointerAim();
     cancelAnimationFrame(raf);
     selectedTier = Math.max(1, Math.min(MAX_RAID_TIER, Number(tier) || 1));
     configureArena();
@@ -710,25 +712,42 @@
 
   function onPointerStart(event) {
     if (state.mode !== "running" || !canFireOrb()) return;
+    if (event.button !== undefined && event.button !== 0) return;
+    if (pointer.active) return;
     event.preventDefault();
     pointer.active = true;
+    pointer.id = event.pointerId;
+    canvas.setPointerCapture?.(event.pointerId);
     Object.assign(pointer, canvasPoint(event));
     state.preview = previewPath(pointer.x, pointer.y);
   }
 
   function onPointerMove(event) {
-    if (!pointer.active) return;
+    if (!pointer.active || event.pointerId !== pointer.id) return;
     event.preventDefault();
     Object.assign(pointer, canvasPoint(event));
     state.preview = previewPath(pointer.x, pointer.y);
   }
 
   function onPointerEnd(event) {
-    if (!pointer.active) return;
+    if (!pointer.active || event.pointerId !== pointer.id) return;
     event.preventDefault();
+    const pointerId = pointer.id;
     pointer.active = false;
+    pointer.id = null;
     Object.assign(pointer, canvasPoint(event));
+    if (canvas.hasPointerCapture?.(pointerId)) canvas.releasePointerCapture(pointerId);
     releaseOrb(pointer.x, pointer.y);
+  }
+
+  function cancelPointerAim(event) {
+    if (!pointer.active || (event?.pointerId !== undefined && event.pointerId !== pointer.id)) return;
+    const pointerId = pointer.id;
+    pointer.active = false;
+    pointer.id = null;
+    state.preview = [];
+    if (pointerId !== null && canvas.hasPointerCapture?.(pointerId)) canvas.releasePointerCapture(pointerId);
+    if (state.mode === "running") nodes.hintText.textContent = t("aimHint");
   }
 
   function aimVector(x, y) {
@@ -1261,8 +1280,11 @@
   canvas.addEventListener("pointerdown", onPointerStart);
   canvas.addEventListener("pointermove", onPointerMove);
   canvas.addEventListener("pointerup", onPointerEnd);
-  canvas.addEventListener("pointercancel", onPointerEnd);
+  canvas.addEventListener("pointercancel", cancelPointerAim);
+  canvas.addEventListener("lostpointercapture", cancelPointerAim);
   canvas.addEventListener("keydown", onCanvasKeydown);
+  window.addEventListener("blur", cancelPointerAim);
+  document.addEventListener("visibilitychange", () => { if (document.hidden) cancelPointerAim(); });
 
   window.__animalOrbFortressSmoke = {
     snapshot: () => ({

@@ -576,6 +576,12 @@ body.shape-playing .passenger {
   pointer-events: none;
 }
 
+.shape-result-panel :is(button, a):focus-visible,
+.shape-result-panel:not(.hidden) :is(button, a):focus {
+  outline: 4px solid #17314f;
+  outline-offset: 2px;
+}
+
 .shape-skill-report {
   display: grid;
   gap: 6px;
