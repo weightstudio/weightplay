@@ -2075,7 +2075,7 @@
     const offset = impactOffset();
     ctx.save();
     ctx.translate(offset.x, offset.y);
-    if (assets.bg?.complete) ctx.drawImage(assets.bg, 0, 0, nodes.canvas.width, nodes.canvas.height);
+    if (assets.bg?.complete) drawImageCover(assets.bg);
     ctx.fillStyle = "rgba(3, 8, 12, 0.46)";
     ctx.fillRect(0, 0, nodes.canvas.width, nodes.canvas.height);
     drawGrid(board);
@@ -2090,6 +2090,23 @@
     drawKeyboardCursor(board);
     ctx.restore();
     drawImpactFlash();
+  }
+
+  function drawImageCover(image) {
+    const canvasRatio = nodes.canvas.width / nodes.canvas.height;
+    const imageRatio = image.naturalWidth / image.naturalHeight;
+    let sourceX = 0;
+    let sourceY = 0;
+    let sourceWidth = image.naturalWidth;
+    let sourceHeight = image.naturalHeight;
+    if (imageRatio > canvasRatio) {
+      sourceWidth = image.naturalHeight * canvasRatio;
+      sourceX = (image.naturalWidth - sourceWidth) / 2;
+    } else {
+      sourceHeight = image.naturalWidth / canvasRatio;
+      sourceY = (image.naturalHeight - sourceHeight) / 2;
+    }
+    ctx.drawImage(image, sourceX, sourceY, sourceWidth, sourceHeight, 0, 0, nodes.canvas.width, nodes.canvas.height);
   }
 
   function drawImpactFlash() {

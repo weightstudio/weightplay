@@ -34,6 +34,8 @@
       unlockGold: "Unlock {cost} Gold",
       unlockDiamond: "Unlock {cost} Diamonds",
       upgradeGold: "Upgrade {cost} Gold",
+      currencyUpgrade: "Upgrade",
+      currencyUnlock: "Unlock",
       trainingStatsCurrent: "ATK {atk} · HP {hp}",
       trainingStatsNext: "ATK {atk} → {nextAtk} · HP {hp} → {nextHp}",
       trainingUpgradeLabel: "Upgrade {name} to Lv.{level}: ATK {nextAtk}, HP {nextHp} for {cost} Gold",
@@ -334,16 +336,16 @@
 
   // Asset configuration
   const ANIMAL_METADATA = [
-    { id: 0, nameEn: "Spark Paw Fox", nameZht: "\u661f\u722a\u72d0", imageKey: "sparkFox", tier: 1, atk: 2, hp: 2, roleEn: "Pounce", roleZht: "\u8df3\u64ca", descEn: "Buy: gains +1/+1. Battle: deals Lv damage to the lead enemy before each clash.", descZht: "\u8cfc\u8cb7\uff1a\u7372\u5f97 +1/+1\u3002\u6230\u9b25\uff1a\u6bcf\u6b21\u4ea4\u92d2\u524d\u5c0d\u6700\u524d\u65b9\u6575\u4eba\u9020\u6210\u7b49\u7d1a\u50b7\u5bb3\u3002" },
-    { id: 1, nameEn: "Bubble Fin Otter", nameZht: "\u6ce1\u6ce1\u9c2d\u6c34\u737a", imageKey: "bubbleOtter", tier: 1, atk: 1, hp: 3, roleEn: "Tide Care", roleZht: "\u6f6e\u6c50\u6cbb\u7652", descEn: "Sell: gives a random ally +1 HP. Battle: heals the weakest ally by Lv.", descZht: "\u51fa\u552e\uff1a\u96a8\u6a5f\u968a\u53cb +1 \u751f\u547d\u3002\u6230\u9b25\uff1a\u6cbb\u7652\u751f\u547d\u6700\u4f4e\u7684\u968a\u53cb\u7b49\u7d1a\u9ede\u3002" },
-    { id: 2, nameEn: "Drum Belly Panda", nameZht: "\u9f13\u809a\u718a\u8c93", imageKey: "drumPanda", tier: 2, atk: 3, hp: 2, roleEn: "Rhythm Guard", roleZht: "\u7bc0\u594f\u5b88\u8b77", descEn: "Buy: gives two allies +1 HP. Battle start: gives all allies +Lv HP.", descZht: "\u8cfc\u8cb7\uff1a\u5169\u540d\u968a\u53cb +1 \u751f\u547d\u3002\u958b\u6230\uff1a\u5168\u9ad4\u968a\u53cb +\u7b49\u7d1a \u751f\u547d\u3002" },
-    { id: 3, nameEn: "Moon Cap Owl", nameZht: "\u6708\u5e3d\u8c93\u982d\u9df9", imageKey: "moonOwl", tier: 2, atk: 2, hp: 3, roleEn: "Starfall", roleZht: "\u661f\u843d\u9023\u64ca", descEn: "Sell: gains +1 extra Gold. Battle: randomly strikes two enemies.", descZht: "\u51fa\u552e\uff1a\u984d\u5916\u7372\u5f97 1 \u91d1\u5e63\u3002\u6230\u9b25\uff1a\u96a8\u6a5f\u653b\u64ca\u5169\u540d\u6575\u4eba\u3002" },
-    { id: 4, nameEn: "Moss Shell Turtle", nameZht: "\u82d4\u6bbc\u70cf\u9f9c", imageKey: "mossTurtle", tier: 3, atk: 2, hp: 4, roleEn: "Shell Wall", roleZht: "\u5805\u6bbc\u9632\u7dda", descEn: "Battle start: starts shielded. Faint: gives the ally behind Melon Shield.", descZht: "\u958b\u6230\uff1a\u81ea\u5e36\u8b77\u76fe\u3002\u5012\u4e0b\uff1a\u4f7f\u5f8c\u65b9\u968a\u53cb\u7372\u5f97\u751c\u74dc\u8b77\u76fe\u3002" },
-    { id: 5, nameEn: "Rainbow Hop Rabbit", nameZht: "\u5f69\u8679\u8df3\u5154", imageKey: "rainbowRabbit", tier: 3, atk: 4, hp: 2, roleEn: "Field Medic", roleZht: "\u5feb\u901f\u6cbb\u7652", descEn: "Buy: gives one free shop reroll. Battle: heals an ally for half its attack instead of attacking.", descZht: "\u8cfc\u8cb7\uff1a\u7372\u5f97\u4e00\u6b21\u514d\u8cbb\u5237\u65b0\u3002\u6230\u9b25\uff1a\u4e0d\u653b\u64ca\uff0c\u4ee5\u653b\u64ca\u529b\u4e00\u534a\u6cbb\u7652\u968a\u53cb\u3002" },
-    { id: 6, nameEn: "Gear Horn Rhino", nameZht: "\u9f52\u8f2a\u89d2\u7280\u725b", imageKey: "gearRhino", tier: 4, atk: 3, hp: 4, roleEn: "Shield Wall", roleZht: "\u8b77\u76fe\u9632\u7dda", descEn: "Sell: buffs a random shop card +2/+2. Battle: grants shield equal to half its attack instead of attacking.", descZht: "\u51fa\u552e\uff1a\u96a8\u6a5f\u5546\u5e97\u5361 +2/+2\u3002\u6230\u9b25\uff1a\u4e0d\u653b\u64ca\uff0c\u4ee5\u653b\u64ca\u529b\u4e00\u534a\u8f49\u6210\u8b77\u76fe\u3002" },
-    { id: 7, nameEn: "Boom Mane Lion", nameZht: "\u7206\u9b03\u7345", imageKey: "boomLion", tier: 4, atk: 4, hp: 4, roleEn: "Roar", roleZht: "\u9f13\u821e\u5486\u54ee", descEn: "Faint: gives all allies +Lv/+Lv.", descZht: "\u5012\u4e0b\uff1a\u5168\u9ad4\u968a\u53cb\u7372\u5f97 +\u7b49\u7d1a/+\u7b49\u7d1a\u3002" },
-    { id: 8, nameEn: "Spark Paw Captain", nameZht: "\u661f\u722a\u968a\u9577", imageKey: "sparkFox", tier: 5, atk: 5, hp: 5, roleEn: "Command", roleZht: "\u968a\u9577\u6307\u63ee", descEn: "Buy: gives all allies +2 HP. Battle start: gives all allies +Lv attack.", descZht: "\u8cfc\u8cb7\uff1a\u5168\u9ad4\u968a\u53cb +2 \u751f\u547d\u3002\u958b\u6230\uff1a\u5168\u9ad4\u968a\u53cb +\u7b49\u7d1a \u653b\u64ca\u3002" },
-    { id: 9, nameEn: "Rhino Guardian", nameZht: "\u7280\u725b\u5b88\u885b", imageKey: "gearRhino", tier: 5, atk: 6, hp: 6, roleEn: "Last Stand", roleZht: "\u6700\u5f8c\u9632\u7dda", descEn: "Faint: deals 4 x Lv damage to the lead enemy.", descZht: "\u5012\u4e0b\uff1a\u5c0d\u6700\u524d\u65b9\u6575\u4eba\u9020\u6210 4 x \u7b49\u7d1a\u50b7\u5bb3\u3002" }
+    { id: 0, nameEn: "Spark Paw Fox", nameZht: "\u661f\u722a\u72d0", imageKey: "sparkFox", tier: 1, atk: 2, hp: 2, roleEn: "Pounce", roleZht: "\u8df3\u64ca", descEn: "Before each clash, deals Lv damage to the lead enemy, then performs its normal attack.", descZht: "\u6bcf\u6b21\u4ea4\u92d2\u524d\u5c0d\u6700\u524d\u65b9\u6575\u4eba\u9020\u6210\u7b49\u7d1a\u50b7\u5bb3\uff0c\u63a5\u8457\u9032\u884c\u666e\u901a\u653b\u64ca\u3002" },
+    { id: 1, nameEn: "Bubble Fin Otter", nameZht: "\u6ce1\u6ce1\u9c2d\u6c34\u737a", imageKey: "bubbleOtter", tier: 1, atk: 1, hp: 3, roleEn: "Tide Care", roleZht: "\u6f6e\u6c50\u6cbb\u7652", descEn: "Before each clash, heals the weakest ally by Lv. On its turn, heals the weakest ally for half ATK (at least 1).", descZht: "\u6bcf\u6b21\u4ea4\u92d2\u524d\u6cbb\u7652\u751f\u547d\u6700\u4f4e\u7684\u968a\u53cb\u7b49\u7d1a\u9ede\uff1b\u884c\u52d5\u6642\u518d\u6cbb\u7652\u653b\u64ca\u529b\u4e00\u534a\uff08\u81f3\u5c11 1\uff09\u3002" },
+    { id: 2, nameEn: "Drum Belly Panda", nameZht: "\u9f13\u809a\u718a\u8c93", imageKey: "drumPanda", tier: 2, atk: 3, hp: 2, roleEn: "Rhythm Guard", roleZht: "\u7bc0\u594f\u5b88\u8b77", descEn: "Battle start: all allies gain Lv max HP and HP. On its turn, all allies gain a Lv shield.", descZht: "\u958b\u6230\u6642\u5168\u968a\u7372\u5f97\u7b49\u7d1a\u9ede\u751f\u547d\u4e0a\u9650\u8207\u751f\u547d\uff1b\u884c\u52d5\u6642\u5168\u968a\u7372\u5f97\u7b49\u7d1a\u9ede\u8b77\u76fe\u3002" },
+    { id: 3, nameEn: "Moon Cap Owl", nameZht: "\u6708\u5e3d\u8c93\u982d\u9df9", imageKey: "moonOwl", tier: 2, atk: 2, hp: 3, roleEn: "Starfall", roleZht: "\u661f\u843d\u9023\u64ca", descEn: "On its turn, Starfall strikes the lead enemy and follows with a second hit on another random enemy.", descZht: "\u884c\u52d5\u6642\u4ee5\u661f\u843d\u91cd\u64ca\u524d\u6392\u6575\u4eba\uff0c\u518d\u8ffd\u52a0\u653b\u64ca\u53e6\u4e00\u540d\u96a8\u6a5f\u6575\u4eba\u3002" },
+    { id: 4, nameEn: "Moss Shell Turtle", nameZht: "\u82d4\u6bbc\u70cf\u9f9c", imageKey: "mossTurtle", tier: 3, atk: 2, hp: 4, roleEn: "Shell Wall", roleZht: "\u5805\u6bbc\u9632\u7dda", descEn: "Battle start: gains a Lv shield. On its turn, all allies gain a Lv shield. Faint: shields the next ally.", descZht: "\u958b\u6230\u6642\u81ea\u8eab\u7372\u5f97\u7b49\u7d1a\u9ede\u8b77\u76fe\uff1b\u884c\u52d5\u6642\u5168\u968a\u7372\u5f97\u7b49\u7d1a\u9ede\u8b77\u76fe\uff1b\u5012\u4e0b\u6642\u8b77\u4f4f\u4e0b\u4e00\u540d\u968a\u53cb\u3002" },
+    { id: 5, nameEn: "Rainbow Hop Rabbit", nameZht: "\u5f69\u8679\u8df3\u5154", imageKey: "rainbowRabbit", tier: 3, atk: 4, hp: 2, roleEn: "Field Medic", roleZht: "\u5feb\u901f\u6cbb\u7652", descEn: "On its turn, heals the weakest ally for half ATK (at least 1) instead of attacking.", descZht: "\u884c\u52d5\u6642\u4e0d\u653b\u64ca\uff0c\u6539\u70ba\u6cbb\u7652\u751f\u547d\u6700\u4f4e\u7684\u968a\u53cb\u653b\u64ca\u529b\u4e00\u534a\uff08\u81f3\u5c11 1\uff09\u3002" },
+    { id: 6, nameEn: "Gear Horn Rhino", nameZht: "\u9f52\u8f2a\u89d2\u7280\u725b", imageKey: "gearRhino", tier: 4, atk: 3, hp: 4, roleEn: "Shield Wall", roleZht: "\u8b77\u76fe\u9632\u7dda", descEn: "On its turn, gains a shield equal to half ATK (at least 1) instead of attacking.", descZht: "\u884c\u52d5\u6642\u4e0d\u653b\u64ca\uff0c\u6539\u70ba\u81ea\u8eab\u7372\u5f97\u653b\u64ca\u529b\u4e00\u534a\u7684\u8b77\u76fe\uff08\u81f3\u5c11 1\uff09\u3002" },
+    { id: 7, nameEn: "Boom Mane Lion", nameZht: "\u7206\u9b03\u7345", imageKey: "boomLion", tier: 4, atk: 4, hp: 4, roleEn: "Roar", roleZht: "\u9f13\u821e\u5486\u54ee", descEn: "On its turn, all allies gain Lv ATK and 1 HP. Faint: remaining allies gain Lv ATK and HP.", descZht: "\u884c\u52d5\u6642\u5168\u968a +\u7b49\u7d1a \u653b\u64ca\u8207 +1 \u751f\u547d\uff1b\u5012\u4e0b\u6642\u5176\u9918\u968a\u53cb +\u7b49\u7d1a \u653b\u64ca\u8207\u751f\u547d\u3002" },
+    { id: 8, nameEn: "Spark Paw Captain", nameZht: "\u661f\u722a\u968a\u9577", imageKey: "sparkCaptain", tier: 5, atk: 5, hp: 5, roleEn: "Command", roleZht: "\u968a\u9577\u6307\u63ee", descEn: "Battle start: all allies gain Lv ATK. On its turn, all allies gain Lv ATK and 1 HP.", descZht: "\u958b\u6230\u6642\u5168\u968a +\u7b49\u7d1a \u653b\u64ca\uff1b\u884c\u52d5\u6642\u5168\u968a +\u7b49\u7d1a \u653b\u64ca\u8207 +1 \u751f\u547d\u3002" },
+    { id: 9, nameEn: "Rhino Guardian", nameZht: "\u7280\u725b\u5b88\u885b", imageKey: "rhinoGuardian", tier: 5, atk: 6, hp: 6, roleEn: "Last Stand", roleZht: "\u6700\u5f8c\u9632\u7dda", descEn: "Attacks normally. Faint: deals 4 x Lv damage to the lead enemy.", descZht: "\u9032\u884c\u666e\u901a\u653b\u64ca\uff1b\u5012\u4e0b\u6642\u5c0d\u6700\u524d\u65b9\u6575\u4eba\u9020\u6210 4 x \u7b49\u7d1a\u50b7\u5bb3\u3002" }
   ];
 
   const ITEM_METADATA = [
@@ -361,11 +363,11 @@
   ];
 
   const ENEMY_METADATA = [
-    { id: 0, nameEn: "Shadow Squirrel", nameZht: "\u5f71\u4e4b\u677e\u9f20", roleEn: "Quick Strike", roleZht: "\u8fc5\u64ca", sx: 0, sy: 0 },
-    { id: 1, nameEn: "Shadow Wolf", nameZht: "\u5f71\u4e4b\u7070\u72fc", roleEn: "Pack Bite", roleZht: "\u7fa4\u72fc\u54ac\u64ca", sx: 682, sy: 0 },
-    { id: 2, nameEn: "Shadow Boar", nameZht: "\u5f71\u4e4b\u91ce\u8c6c", roleEn: "First Charge", roleZht: "\u9996\u64ca\u885d\u92d2", sx: 1365, sy: 0 },
-    { id: 3, nameEn: "Shadow Badger", nameZht: "\u5f71\u4e4b\u737e", roleEn: "Burrow Guard", roleZht: "\u6398\u5730\u5b88\u8b77", sx: 0, sy: 768 },
-    { id: 4, nameEn: "Shadow Golem", nameZht: "\u5f71\u4e4b\u9b54\u50cf", roleEn: "Stone Ward", roleZht: "\u5ca9\u77f3\u7d50\u754c", sx: 682, sy: 768 }
+    { id: 0, nameEn: "Shadow Squirrel", nameZht: "\u5f71\u4e4b\u677e\u9f20", roleEn: "Quick Strike", roleZht: "\u8fc5\u64ca", sx: 105, sy: 155, sw: 480, sh: 545 },
+    { id: 1, nameEn: "Shadow Wolf", nameZht: "\u5f71\u4e4b\u7070\u72fc", roleEn: "Pack Bite", roleZht: "\u7fa4\u72fc\u54ac\u64ca", sx: 690, sy: 170, sw: 630, sh: 535 },
+    { id: 2, nameEn: "Shadow Boar", nameZht: "\u5f71\u4e4b\u91ce\u8c6c", roleEn: "First Charge", roleZht: "\u9996\u64ca\u885d\u92d2", sx: 1350, sy: 155, sw: 630, sh: 540 },
+    { id: 3, nameEn: "Shadow Badger", nameZht: "\u5f71\u4e4b\u737e", roleEn: "Burrow Guard", roleZht: "\u6398\u5730\u5b88\u8b77", sx: 300, sy: 870, sw: 670, sh: 500 },
+    { id: 4, nameEn: "Shadow Golem", nameZht: "\u5f71\u4e4b\u9b54\u50cf", roleEn: "Stone Ward", roleZht: "\u5ca9\u77f3\u7d50\u754c", sx: 1015, sy: 730, sw: 745, sh: 670 }
   ];
 
   // Game UI DOM Nodes
@@ -441,6 +443,8 @@
 
   const STARTER_ANIMAL_IDS = [0, 1];
   const PREMIUM_ANIMAL_IDS = [8, 9];
+  const COMBAT_HEALTH_BAR_HEIGHT = 28;
+  const COMBAT_HEALTH_FONT_SIZE = 20;
   const ANIMAL_UNLOCK_COSTS = {
     2: 25,
     3: 30,
@@ -507,6 +511,8 @@
     unlockGold: "\u7528 {cost} \u91d1\u5e63\u89e3\u9396",
     unlockDiamond: "\u7528 {cost} \u947d\u77f3\u89e3\u9396",
     upgradeGold: "\u7528 {cost} \u91d1\u5e63\u5347\u7d1a",
+    currencyUpgrade: "\u5347\u7d1a",
+    currencyUnlock: "\u89e3\u9396",
     trainingStatsCurrent: "\u653b {atk} \u00b7 \u751f {hp}",
     trainingStatsNext: "\u653b {atk} \u2192 {nextAtk} \u00b7 \u751f {hp} \u2192 {nextHp}",
     trainingUpgradeLabel: "\u5c07 {name} \u5347\u5230 Lv.{level}\uff1a\u653b {nextAtk}\u3001\u751f {nextHp}\uff0c\u82b1\u8cbb {cost} \u91d1\u5e63",
@@ -818,6 +824,12 @@
 
         return { wolfText, wolfDamage, firstBoarDamage, secondBoarDamage, badgerText, badgerShield, golemText, golemShields };
       },
+      combatUiPreview: () => ({
+        healthBarHeight: COMBAT_HEALTH_BAR_HEIGHT,
+        healthFontSize: COMBAT_HEALTH_FONT_SIZE,
+        showsLevelBadge: false,
+        enemyCrops: ENEMY_METADATA.map(({ id, sx, sy, sw, sh }) => ({ id, sx, sy, sw, sh }))
+      }),
       returnToMenu(stage = normalizeSave(save).selectedStage) {
         save = normalizeSave({ ...save, selectedStage: stage });
         saveSave();
@@ -915,9 +927,15 @@
   }
 
   function updateWalletUI() {
-    nodes.diamondText.textContent = String(getWalletDiamonds());
+    nodes.diamondText.innerHTML = currencyMarkup("diamond", getWalletDiamonds());
+    nodes.diamondText.setAttribute("aria-label", `${getWalletDiamonds()} ${t("diamonds")}`);
     renderCosmeticSection();
     renderTrainingRoster();
+  }
+
+  function currencyMarkup(type, amount, action = "") {
+    const src = type === "diamond" ? "../../assets/weightplay-diamond.svg" : "../../assets/coin.png";
+    return `<span class="currency-line"><img src="${src}" alt="" aria-hidden="true"><b>${amount}</b>${action ? `<span>${action}</span>` : ""}</span>`;
   }
 
   // Preloading required sheets
@@ -935,6 +953,8 @@
     rainbowRabbit: "../../assets/weightplay-character-rainbow-hop-mimi-clean-cutout.webp",
     gearRhino: "../../assets/weightplay-character-gear-horn-rhino-cutout.webp",
     boomLion: "../../assets/weightplay-character-boom-mane-lion-cutout.webp",
+    sparkCaptain: "../../assets/weightplay-character-spark-paw-captain-cutout.webp",
+    rhinoGuardian: "../../assets/weightplay-character-rhino-guardian-cutout.webp",
     foodApple: "assets/food-apple.svg",
     foodHoney: "assets/food-honey.svg",
     foodMelon: "assets/food-melon.svg",
@@ -1176,7 +1196,8 @@
       }
     } else {
       nodes.buySkinBtn.classList.remove("is-hidden");
-      nodes.buySkinBtn.textContent = t("buySkin");
+      nodes.buySkinBtn.innerHTML = currencyMarkup("diamond", 15, t("currencyUnlock"));
+      nodes.buySkinBtn.setAttribute("aria-label", t("buySkin"));
       nodes.equipSkinBtn.classList.add("is-hidden");
     }
   }
@@ -1209,7 +1230,8 @@
   function renderTrainingRoster() {
     if (!nodes.trainingRoster || !nodes.trainingGoldText) return;
     save = normalizeSave(save);
-    nodes.trainingGoldText.textContent = `${save.coins} ${t("gold")}`;
+    nodes.trainingGoldText.innerHTML = currencyMarkup("gold", save.coins);
+    nodes.trainingGoldText.setAttribute("aria-label", `${save.coins} ${t("gold")}`);
     nodes.trainingRoster.innerHTML = "";
 
     const hint = document.createElement("p");
@@ -1257,7 +1279,7 @@
           action.setAttribute("aria-label", `${name}: ${t("maxLevel")}`);
         } else {
           const cost = animalUpgradeCost(animal.id);
-          action.textContent = t("upgradeGold", { cost });
+          action.innerHTML = currencyMarkup("gold", cost, t("currencyUpgrade"));
           action.disabled = save.coins < cost;
           action.setAttribute("aria-label", t("trainingUpgradeLabel", {
             name,
@@ -1270,12 +1292,12 @@
         }
       } else if (premium) {
         const cost = premiumUnlockCost(animal.id);
-        action.textContent = t("unlockDiamond", { cost });
+        action.innerHTML = currencyMarkup("diamond", cost, t("currencyUnlock"));
         action.disabled = getWalletDiamonds() < cost;
         action.addEventListener("click", () => handleUnlockAnimal(animal.id));
       } else {
         const cost = animalUnlockCost(animal.id);
-        action.textContent = t("unlockGold", { cost });
+        action.innerHTML = currencyMarkup("gold", cost, t("currencyUnlock"));
         action.disabled = save.coins < cost;
         action.addEventListener("click", () => handleUnlockAnimal(animal.id));
       }
@@ -1495,6 +1517,9 @@
 
   // Round Setup and Shop Drafting
   function startRoundPrep() {
+    nodes.prepPhaseArea.classList.remove("is-hidden");
+    nodes.combatArea.classList.add("is-hidden");
+    nodes.combatSummary?.classList.add("is-hidden");
     selectedSlot = null;
     state.freeRerollThisRound = state.relic?.id === 3; // Clover leaf gives free first reroll
     state.rerollsUsedThisRound = 0;
@@ -1903,6 +1928,8 @@
       const targetCard = getCardAt(destArea, destIndex);
       setCardAt(srcArea, srcIndex, targetCard || null);
       setCardAt(destArea, destIndex, card);
+      selectedSlot = null;
+      highlightSelectedCard(false);
       playSynth("click");
       updateHUD();
       renderPrepScreen();
@@ -2179,10 +2206,8 @@
     const name = locale === "zh-Hant" ? (card.nameZht || card.nameEn) : card.nameEn;
     const role = locale === "zh-Hant" ? (card.roleZht || card.roleEn || "") : (card.roleEn || "");
     const desc = locale === "zh-Hant" ? (card.descZht || card.descEn || "") : (card.descEn || "");
-    const attackLabel = locale === "zh-Hant" ? t("attackShort") : "ATK";
-    const healthLabel = locale === "zh-Hant" ? t("healthShort") : "HP";
     nodes.selectedAbilityPanel.classList.add("has-selection");
-    nodes.selectedAbilityPanel.innerHTML = `<strong>${t("selectedSkillTitle")} · ${name}</strong><small>${role}</small><span>${desc}</span><em>${attackLabel} ${card.currentAtk} · ${healthLabel} ${card.currentHp}</em>`;
+    nodes.selectedAbilityPanel.innerHTML = `<strong>${t("selectedSkillTitle")} · ${name}</strong><small>${role}</small><span>${desc}</span>`;
   }
 
   function unitLevel(unit) {
@@ -2409,6 +2434,8 @@
         roleZht: rand.roleZht,
         sx: rand.sx,
         sy: rand.sy,
+        sw: rand.sw,
+        sh: rand.sh,
         atk: stats.atk,
         hp: stats.hp,
         maxHp: stats.hp,
@@ -2518,14 +2545,14 @@
     canvasCtx.strokeStyle = "rgba(255, 255, 255, 0.2)";
     canvasCtx.lineWidth = 1;
     canvasCtx.beginPath();
-    canvasCtx.roundRect(x, y, 44, 20, 10);
+    canvasCtx.roundRect(x, y, 46, 26, 9);
     canvasCtx.fill();
     canvasCtx.stroke();
-    canvasCtx.font = "bold 12px Outfit, system-ui";
+    canvasCtx.font = "bold 16px Outfit, system-ui";
     canvasCtx.textAlign = "center";
     canvasCtx.textBaseline = "middle";
     canvasCtx.fillStyle = color;
-    canvasCtx.fillText(textValue, x + 22, y + 10);
+    canvasCtx.fillText(textValue, x + 23, y + 13);
     canvasCtx.restore();
   }
 
@@ -2566,7 +2593,7 @@
       const y = centerY - (h * scale) / 2;
       const drawW = w * scale;
       const drawH = h * scale;
-      const imageBox = { x: x + 10, y: y + 30, w: w - 20, h: h - 58 };
+      const imageBox = { x: x + 10, y: y + 44, w: w - 20, h: h - 78 };
       state.combat.layout?.push({ team, index: idx, x, y, w: drawW, h: drawH, imageBox });
 
       // Draw backdrop
@@ -2596,8 +2623,8 @@
       } else {
         const sheet = imageCache.enemies;
         if (sheet) {
-          const sw = 682;
-          const sh = 768;
+          const sw = unit.sw || 682;
+          const sh = unit.sh || 768;
           const cropRatio = sw / sh;
           const targetRatio = imageBox.w / imageBox.h;
           let drawW = imageBox.w;
@@ -2621,16 +2648,12 @@
         canvasCtx.arc(x + drawW/2, y + drawH/2 - 10, drawW/2 - 2, 0, Math.PI * 2);
         canvasCtx.stroke();
         if (unit.shieldHp > 0) {
-          drawStatPill(`S${Math.round(unit.shieldHp)}`, x + drawW / 2 - 18, y + drawH - 40, "#9cc8ff");
+          drawStatPill(`S${Math.round(unit.shieldHp)}`, x + drawW / 2 - 23, y + drawH - 52, "#9cc8ff");
         }
       }
 
-      drawStatPill(`A${unit.atk}`, x + 6, y + drawH - 25, "#ffd666");
-      drawStatPill(`H${Math.max(0, Math.round(unit.hp))}`, x + drawW - 50, y + drawH - 25, "#ff7081");
-
-      if (isPlayer) {
-        drawStatPill(`L${unitLevel(unit)}`, x + drawW / 2 - 22, y + 26, "#ffd666");
-      }
+      drawStatPill(`A${unit.atk}`, x + 5, y + drawH - 31, "#ffd666");
+      drawStatPill(`H${Math.max(0, Math.round(unit.hp))}`, x + drawW - 51, y + drawH - 31, "#ff7081");
 
       // Level star indicator for player units
       if (false && isPlayer && unit.level > 1) {
@@ -2651,7 +2674,7 @@
     const hp = Math.max(0, Math.round(unit.hp || 0));
     const maxHp = Math.max(1, Math.round(unit.maxHp || hp || 1));
     const pct = Math.max(0, Math.min(1, hp / maxHp));
-    const barHeight = 16;
+    const barHeight = COMBAT_HEALTH_BAR_HEIGHT;
 
     canvasCtx.save();
     canvasCtx.fillStyle = "rgba(0, 0, 0, 0.82)";
@@ -2667,7 +2690,7 @@
     canvasCtx.roundRect(x + 2, y + 2, Math.max(4, (width - 4) * pct), barHeight - 4, 5);
     canvasCtx.fill();
 
-    canvasCtx.font = "bold 12px Outfit, system-ui";
+    canvasCtx.font = `900 ${COMBAT_HEALTH_FONT_SIZE}px Outfit, system-ui`;
     canvasCtx.textAlign = "center";
     canvasCtx.textBaseline = "middle";
     canvasCtx.lineWidth = 3;

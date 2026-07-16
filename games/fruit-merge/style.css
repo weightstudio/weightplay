@@ -413,6 +413,12 @@ body.fruit-playing .game-page-info {
   outline-offset: -8px;
 }
 
+.result-actions button:focus,
+.result-actions a:focus {
+  outline: 5px solid #fff1a6;
+  outline-offset: 3px;
+}
+
 .aim-coach {
   position: absolute;
   left: clamp(12px, 4cqw, 24px);

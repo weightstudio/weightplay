@@ -488,7 +488,13 @@
 
   function show(panel) {
     [nodes.menuPanel, nodes.gamePanel, nodes.resultPanel, nodes.upgradePanel].forEach((node) => node.classList.add("hidden"));
+    const resultOpen = panel === nodes.resultPanel;
+    if (resultOpen) nodes.gamePanel.classList.remove("hidden");
     panel.classList.remove("hidden");
+    const battleLive = $("battleLive");
+    battleLive.inert = resultOpen;
+    if (resultOpen) battleLive.setAttribute("aria-hidden", "true");
+    else battleLive.removeAttribute("aria-hidden");
     document.body?.classList.toggle("crystal-playing", panel !== nodes.menuPanel);
     updateCrystalBattleViewport();
   }
@@ -505,6 +511,16 @@
     const root = document.documentElement.style;
     root.setProperty("--crystal-vw", `${useVisual ? visualWidth : innerWidth}px`);
     root.setProperty("--crystal-vh", `${useVisual ? visualHeight : innerHeight}px`);
+    if (!nodes.resultPanel.classList.contains("hidden")) {
+      nodes.resultPanel.classList.add("hidden");
+      const panelWidth = nodes.gamePanel.offsetWidth;
+      const panelHeight = nodes.gamePanel.offsetHeight;
+      const panelPaddingTop = Number.parseFloat(getComputedStyle(nodes.gamePanel).paddingTop) || 0;
+      nodes.resultPanel.classList.remove("hidden");
+      nodes.resultPanel.style.width = `${panelWidth}px`;
+      nodes.resultPanel.style.height = `${panelHeight}px`;
+      nodes.resultPanel.style.top = `${-panelPaddingTop}px`;
+    }
   }
 
   window.addEventListener?.("resize", updateCrystalBattleViewport, { passive: true });
@@ -856,6 +872,7 @@
     renderExpeditionRecord();
     renderResult(reason, previousBestKeys, improved, previousRank.index);
     show(nodes.resultPanel);
+    nodes.retryBtn.focus({ preventScroll: true });
     playSound(reason === "time" ? "win" : "wrong", 0.4);
     window.WonderAnalytics?.track("game_complete", { game_id: GAME_ID, reason, keys: state.keys, level: state.level, prototype: true });
   }

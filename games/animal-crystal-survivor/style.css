@@ -1246,3 +1246,42 @@ body.crystal-playing .upgrade-card-wrap { max-height: 100%; overflow-y: auto; }
   body.crystal-playing .hint-text { grid-column: 3; grid-row: 2; align-self: stretch; min-height: 0; height: 100%; margin: 0; display: grid; place-items: center; overflow-y: auto; white-space: normal; }
   body.crystal-playing .upgrade-cards { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
+
+/* Result belongs to the active Battle canvas and replaces its live controls in-place. */
+body.crystal-playing #gamePanel.game-panel > .battle-live {
+  display: contents;
+}
+
+body.crystal-playing #gamePanel.game-panel > #resultPanel.result-panel {
+  position: absolute;
+  z-index: 80;
+  inset: 0;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr);
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  min-height: 0;
+  max-height: none;
+  margin: 0;
+  padding: 12px;
+  transform: none;
+  overflow: hidden;
+}
+
+body.crystal-playing #gamePanel.game-panel > #resultPanel.result-panel.hidden {
+  display: none;
+}
+
+@media (max-height: 560px) {
+  body.crystal-playing #gamePanel.game-panel > #resultPanel.result-panel {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr);
+    padding: 6px;
+  }
+
+  body.crystal-playing #gamePanel.game-panel > #resultPanel.result-panel .result-card {
+    max-width: 680px;
+    padding: 10px;
+  }
+}

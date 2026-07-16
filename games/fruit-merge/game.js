@@ -26,6 +26,7 @@
   const restartBtn = document.querySelector("#restartBtn");
   const startBtn = document.querySelector("#startBtn");
   const menuPanel = document.querySelector("#menuPanel");
+  const playPanel = document.querySelector("#playPanel");
   const menuTitle = document.querySelector("#menuTitle");
   const menuDesc = document.querySelector("#menuDesc");
   const chainPreview = document.querySelector("#chainPreview");
@@ -372,6 +373,8 @@
     document.body.classList.toggle("fruit-playing", !showMenu);
     document.body.classList.toggle("fruit-main", showMenu);
     resultPanel.classList.add("hidden");
+    playPanel.inert = false;
+    playPanel.removeAttribute("aria-hidden");
     menuPanel.classList.toggle("hidden", !showMenu);
     startBtn.disabled = !showMenu;
     updateFruitBattleScale();
@@ -708,6 +711,9 @@
     renderMilestone(resultMilestone, progress, true);
     renderLeaderboard(resultLeaderboard, leaderboard);
     resultPanel.classList.remove("hidden");
+    playPanel.inert = true;
+    playPanel.setAttribute("aria-hidden", "true");
+    requestAnimationFrame(() => playAgainBtn.focus({ preventScroll: true }));
     window.WonderAnalytics?.track?.("game_complete", { game_id: GAME_ID, score, best_score: bestScore, new_best: newBest, cleared: false });
     window.WonderAnalytics?.track?.("score_game_over", { game_id: GAME_ID, score, best_score: bestScore });
     updateHud();
@@ -1162,6 +1168,10 @@
     window.WonderAnalytics?.track?.("game_restart", { game_id: GAME_ID, score, source: "result" });
     resetGame(false, "result");
   });
+
+  if (new URLSearchParams(location.search).has("smoke")) {
+    window.__fruitMergeSmoke = { finishRunForTest: endGame };
+  }
 
   localeSelect.value = locale();
   localeSelect.addEventListener("change", () => setLocale(localeSelect.value));

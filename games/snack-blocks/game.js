@@ -961,7 +961,7 @@
     nodes.hud.classList.add("hidden");
     nodes.playPanel.classList.add("hidden");
     nodes.resultPanel.classList.remove("hidden");
-    requestAnimationFrame(() => nodes.resultPanel.focus());
+    requestAnimationFrame(() => (cleared && !nodes.nextBtn.classList.contains("hidden") ? nodes.nextBtn : nodes.againBtn).focus({ preventScroll: true }));
     window.WonderSound?.play(cleared ? "win" : "wrong");
     window.WonderAnalytics?.track("game_complete", {
       game_id: GAME_ID,

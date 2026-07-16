@@ -153,7 +153,7 @@ body.guardian-playing .wave-intel-panel strong {
 body.guardian-playing .battle-layout {
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 250px minmax(0, 1fr);
+  grid-template-rows: 350px minmax(0, 1fr);
 }
 
 body.guardian-playing .canvas-shell {
@@ -1218,4 +1218,16 @@ body.guardian-playing .hud-row {
 
 body.guardian-playing .command-row {
   grid-template-columns: 110px repeat(3, 77px);
+}
+
+/* Keep the scene-first defense board dominant over the shared compound-game auto track. */
+html body.wp-logical-battle-active.guardian-playing #gamePanel .battle-layout {
+  grid-template-rows: 350px minmax(0, 1fr) !important;
+}
+
+html body.wp-logical-battle-active.guardian-playing #gamePanel .battle-layout > .canvas-shell {
+  width: 100% !important;
+  height: 350px !important;
+  aspect-ratio: auto !important;
+  align-self: stretch !important;
 }

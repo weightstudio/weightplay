@@ -91,6 +91,9 @@
   const persist = () => localStorage.setItem(saveKey, JSON.stringify(save));
   const show = (id) => {
     ['mainScreen','stageScreen','battleShell','result'].forEach((screen) => $(screen).classList.toggle('hidden', screen !== id && !(id === 'result' && screen === 'battleShell')));
+    const resultOpen = id === 'result';
+    $('battleLive').inert = resultOpen;
+    $('battleLive').setAttribute('aria-hidden', resultOpen ? 'true' : 'false');
     $('mainHeader').classList.toggle('hidden', id !== 'mainScreen');
     document.body.classList.toggle('skyport-playing', id === 'battleShell' || id === 'result');
   };
@@ -264,6 +267,7 @@
       : `<span>${resultLabels.safe} ${state.done}/${state.goal}</span><span>${resultLabels.errors} ${state.errors}/3</span><span>${insuranceActive ? resultLabels.protected : resultLabels.retry}</span>`;
     $('nextBtn').textContent = win && state.shift < 5 ? t('next') : t('retry');
     $('nextBtn').onclick = () => { state.shift = win ? Math.min(5, state.shift + 1) : state.shift; startBattle(); };
+    $('nextBtn').focus({ preventScroll: true });
   }
   function finish(ok) {
     if (ok && state.serviced && !state.conflict && state.crewAssigned && state.fuel > 0) {

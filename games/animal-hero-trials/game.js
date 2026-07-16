@@ -19,6 +19,7 @@
       fail: "Trial Failed",
       next: "Next Trial",
       retry: "Try Again",
+      scoutObjective: "Defeat {count} Shadow Scouts",
       bossObjective: "Defeat the Shadow Sovereign",
       reroll: "Reroll 3",
       rerollConfirm: "Spend 3 Diamonds to reroll these blessings?",
@@ -75,6 +76,7 @@
     masteryNeed: "\u52c7\u6c23\u7cbe\u901a\u9084\u9700\u8981 {remaining} \u679a\u8a66\u7149\u5370\u8a18\u3002",
     masteryUpgradeReady: "\u5168\u82f1\u96c4\u6700\u5927\u751f\u547d +{current} \u2192 +{next} \u00b7 \u6d88\u8017 {cost} / \u6301\u6709 {marks} \u679a",
     masteryUpgradeNeed: "\u5168\u82f1\u96c4\u6700\u5927\u751f\u547d +{current} \u2192 +{next} \u00b7 \u9700\u8981 {cost} / \u6301\u6709 {marks} \u679a",
+    scoutObjective: "\u64ca\u6557 {count} \u96bb\u6697\u5f71\u65a5\u5019",
     rerollConfirmStatus: "\u4e09\u500b\u795d\u798f\u5168\u90e8\u91cd\u62bd\u4e00\u6b21 \u00b7 \u947d\u77f3 {balance} \u2192 {result}\u3002\u518d\u6b21\u9ede\u64ca\u78ba\u8a8d\u3002",
     rerollNeed: "\u9700\u8981 3 \u9846\u947d\u77f3 \u00b7 \u6301\u6709 {balance}\u3002\u4ecd\u53ef\u514d\u8cbb\u9078\u64c7\u795d\u798f\u3002",
   });
@@ -270,7 +272,7 @@
       return { x: 80 + index * 110, y: 105 + (index % 2) * 90, hp, max: hp, cd: 0 };
     });
     $("#roomText").textContent = roomLabel(run.room);
-    $("#objective").textContent = `Defeat ${run.enemies.length} Shadow Scouts`;
+    $("#objective").textContent = interpolate("scoutObjective", { count: run.enemies.length });
     updateHud();
   }
 

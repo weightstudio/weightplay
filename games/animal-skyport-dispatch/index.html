@@ -35,6 +35,7 @@
       </section>
       <section id="battleShell" class="battle-shell hidden">
         <section class="battle-canvas">
+          <div id="battleLive" class="battle-live">
           <header class="battle-hud"><button id="battleBack" class="return" data-wp-return="battle" aria-label="Back">&larr;</button><strong id="shiftText"></strong><span id="scoreText"></span></header>
           <div class="objective"><span id="objectiveText"></span><span id="resourceText"></span><strong id="flightTask" aria-live="polite"><span class="task-destination"></span><span class="task-steps"></span></strong></div>
           <div id="routeField" class="route-field">
@@ -48,14 +49,15 @@
             <div id="feedback" class="feedback" aria-live="polite"></div>
           </div>
           <div class="flight-row"><button id="serviceBtn" class="secondary" data-i18n="service">Use repair service</button><button id="assignCrewBtn" class="secondary hidden" type="button">Assign crew</button><button id="clearRouteBtn" class="secondary hidden" type="button">Clear conflict</button><span id="flightHint" data-i18n="dragHint">Drag the airship to its matching dock.</span></div>
+          </div>
+          <section id="result" class="result hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" tabindex="-1"><h2 id="resultTitle"></h2><p id="resultCopy"></p><div id="resultRewards" class="result-rewards" aria-live="polite"></div><button id="nextBtn" class="primary"></button><button id="menuBtn" class="secondary" data-i18n="menu">Main Menu</button></section>
         </section>
         <div class="ad-reserve" aria-hidden="true"></div>
       </section>
-      <section id="result" class="result hidden"><h2 id="resultTitle"></h2><p id="resultCopy"></p><div id="resultRewards" class="result-rewards" aria-live="polite"></div><button id="nextBtn" class="primary"></button><button id="menuBtn" class="secondary" data-i18n="menu">Main Menu</button></section>
     </main>
     <script src="../../src/edge-guard.js"></script>
     <script src="../../src/wallet.js"></script>
-    <script src="game.js?v=20260715-stage-medals1"></script>
+    <script src="game.js?v=20260716-bounded-result1"></script>
     <script src="../../src/game-page-info.js"></script>
     <script>window.addEventListener('load',()=>document.querySelector('#loadingPanel')?.classList.add('hidden'),{once:true});</script>
   </body>

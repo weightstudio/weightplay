@@ -430,6 +430,12 @@ button:active {
   outline-offset: -2px;
 }
 
+.result-card button:focus,
+.result-card a:focus {
+  outline: 4px solid #1454c8;
+  outline-offset: 3px;
+}
+
 .tile.matching {
   filter: brightness(1.45);
   opacity: 0.18;

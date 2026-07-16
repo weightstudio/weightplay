@@ -163,7 +163,7 @@
       timeLeft: 60,
       score: 0,
       combo: 1,
-      bestCombo: 1,
+      bestCombo: 0,
       laneChanges: 0,
       coinsCollected: 0,
       obstaclesHit: 0,
@@ -378,7 +378,7 @@
         coin.used = true;
         state.score += 50 * state.combo;
         state.combo = Math.min(9, state.combo + 1);
-        state.bestCombo = Math.max(state.bestCombo, state.combo);
+        state.bestCombo = Math.max(state.bestCombo, state.combo - 1);
         state.coinsCollected += 1;
         addSpark(coin.x, coin.y, `+${50 * (state.combo - 1)}`, "#fbbf24");
         window.WonderSound?.play("success");
@@ -458,6 +458,24 @@
           coins: state.coins.map(({ lane, y }) => ({ lane, y })),
         };
       },
+      collisionSequence: () => {
+        state = makeState();
+        state.running = true;
+        const collideCoin = () => {
+          state.coins = [{ lane: state.targetLane, x: state.x, y: state.y, size: 42, used: false }];
+          checkCollisions();
+          state.coins = [];
+          return { score: state.score, multiplier: state.combo, bestCombo: state.bestCombo, coins: state.coinsCollected, bumps: state.obstaclesHit };
+        };
+        const firstCoin = collideCoin();
+        const secondCoin = collideCoin();
+        state.obstacles = [{ lane: state.targetLane, x: state.x, y: state.y, size: 82, kind: "cone" }];
+        checkCollisions();
+        state.obstacles = [];
+        const obstacle = { score: state.score, multiplier: state.combo, bestCombo: state.bestCombo, coins: state.coinsCollected, bumps: state.obstaclesHit };
+        const afterResetCoin = collideCoin();
+        return { firstCoin, secondCoin, obstacle, afterResetCoin };
+      },
       finish: () => {
         state.running = false;
         state.finished = true;
@@ -474,7 +492,7 @@
         state.laneChanges = Number(evidence.laneChanges) || 0;
         state.coinsCollected = Number(evidence.coinsCollected) || 0;
         state.obstaclesHit = Number(evidence.obstaclesHit) || 0;
-        state.bestCombo = Math.max(1, Number(evidence.bestCombo) || 1);
+        state.bestCombo = Math.max(0, Number(evidence.bestCombo) || 0);
       },
     };
   }

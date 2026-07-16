@@ -103,6 +103,7 @@
       </section>
 
       <section id="gamePanel" class="panel game-panel is-hidden" data-play-viewport>
+        <div id="battleLive" class="battle-live">
         <div class="hud-row">
           <button id="battleBackBtn" class="secondary-btn play-return" type="button" aria-label="Return to raid map">&larr;</button>
           <div><span data-ui="wave">Wave</span><strong id="waveText">1/3</strong></div>
@@ -111,6 +112,20 @@
         </div>
         <canvas id="gameCanvas" width="960" height="540" tabindex="0" aria-label="Animal Orb Fortress arena" aria-describedby="hintText"></canvas>
         <div id="hintText" class="hint" data-ui="aimHint" aria-live="polite">Drag from the launcher, preview the bounce path, then release.</div>
+        </div>
+        <section id="resultPanel" class="panel result-panel is-hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultText skillReportText">
+          <img class="result-lion" src="../../assets/weightplay-boom-mane-lion.png" alt="" />
+          <div>
+            <h2 id="resultTitle">Raid Clear</h2>
+            <p id="resultText"></p>
+            <p id="skillReportText" class="skill-report"></p>
+            <div class="result-actions">
+              <button id="retryBtn" class="primary-btn" type="button" data-ui="retry">Retry</button>
+              <button id="nextStageBtn" class="primary-btn is-unavailable" type="button" data-ui="nextStage">Next Stage</button>
+              <button id="resultMenuBtn" class="secondary-btn play-return" type="button" aria-label="Return to raid map">&larr;</button>
+            </div>
+          </div>
+        </section>
       </section>
 
       <section id="upgradePanel" class="panel modal-panel is-hidden" aria-live="polite">
@@ -118,20 +133,6 @@
         <p id="upgradeStatus" class="status-line"></p>
         <div id="upgradeCards" class="upgrade-cards"></div>
         <button id="rerollBtn" class="secondary-btn" type="button"></button>
-      </section>
-
-      <section id="resultPanel" class="panel result-panel is-hidden" aria-live="polite">
-        <img class="result-lion" src="../../assets/weightplay-boom-mane-lion.png" alt="" />
-        <div>
-          <h2 id="resultTitle">Raid Clear</h2>
-          <p id="resultText"></p>
-          <p id="skillReportText" class="skill-report"></p>
-          <div class="result-actions">
-            <button id="retryBtn" class="primary-btn" type="button" data-ui="retry">Retry</button>
-            <button id="nextStageBtn" class="primary-btn is-unavailable" type="button" data-ui="nextStage">Next Stage</button>
-            <button id="resultMenuBtn" class="secondary-btn play-return" type="button" aria-label="Return to raid map">&larr;</button>
-          </div>
-        </div>
       </section>
 
       <div id="battleAdReserve" class="battle-ad-reserve result-ad-reserve" aria-hidden="true"></div>
@@ -175,7 +176,7 @@
     <script src="../../src/i18n.js?v=20260703-i18n-clean1"></script>
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
     <script src="../../src/wallet.js?v=20260706-crystal-diamond-charm1"></script>
-    <script src="game.js?v=20260715-orb-accessibility1"></script>
+    <script src="game.js?v=20260716-bounded-result1"></script>
     <script>
       (() => {
         const loadGameInfo = () => {

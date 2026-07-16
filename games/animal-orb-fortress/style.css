@@ -902,6 +902,11 @@ body.orb-fortress-playing #upgradePanel.modal-panel { z-index:80; display:grid; 
 body.orb-fortress-playing #resultPanel.result-panel { z-index:80; display:grid; grid-template-rows:auto minmax(0,1fr); align-items:start; gap:10px; padding:14px; }
 body.orb-fortress-playing #battleAdReserve { position:fixed; z-index:49; left:50%; top:auto; bottom:4px; display:block; width:min(calc(var(--orb-vw,100vw) - 8px),612px); height:56px; min-height:56px; margin:0; transform:translateX(-50%); }
 
+/* Result is a bounded modal substate of the logical Battle canvas. */
+.battle-live{display:contents}
+body.orb-fortress-playing #gamePanel.game-panel{position:fixed}
+body.orb-fortress-playing #gamePanel.game-panel>#resultPanel.result-panel{position:absolute;z-index:80;inset:-1px;width:auto!important;height:auto!important;max-width:none!important;max-height:none!important;margin:0!important;transform:none;overflow:hidden}
+
 @media (max-width:560px), (max-height:560px) {
   body.orb-fortress-playing #gamePanel.game-panel, body.orb-fortress-playing #stagePanel.stage-panel, body.orb-fortress-playing #upgradePanel.modal-panel, body.orb-fortress-playing #resultPanel.result-panel, body.orb-fortress-playing #battleAdReserve { width:calc(var(--orb-vw,100vw) - 8px) !important; }
   body.orb-fortress-playing #gamePanel.game-panel, body.orb-fortress-playing #stagePanel.stage-panel, body.orb-fortress-playing #upgradePanel.modal-panel, body.orb-fortress-playing #resultPanel.result-panel { height:calc(var(--orb-vh,100dvh) - 64px) !important; }
@@ -945,4 +950,20 @@ body.orb-fortress-playing #battleAdReserve { position:fixed; z-index:49; left:50
     min-height: 40px;
     height: 40px;
   }
+}
+
+/* Bottom-align every logical screen against the physical reserve. */
+body.orb-fortress-playing #gamePanel.game-panel,
+body.orb-fortress-playing #stagePanel.stage-panel,
+body.orb-fortress-playing #upgradePanel.modal-panel{top:auto;bottom:60px}
+body.orb-fortress-playing .sound-toggle{display:none!important}
+
+@media (max-height:560px) {
+  body.orb-fortress-playing #gamePanel.game-panel>#resultPanel.result-panel{grid-template-columns:92px minmax(0,1fr);grid-template-rows:minmax(0,1fr);align-items:center;gap:10px;padding:10px}
+  body.orb-fortress-playing #resultPanel .result-lion{width:88px;height:88px;justify-self:center}
+  body.orb-fortress-playing #resultPanel>div{min-height:0;overflow:auto}
+  body.orb-fortress-playing #resultPanel h2{margin:0 0 3px;font-size:1.15rem}
+  body.orb-fortress-playing #resultPanel p{margin:3px 0;font-size:.74rem;line-height:1.25}
+  body.orb-fortress-playing #resultPanel .result-actions{margin-top:6px;gap:6px}
+  body.orb-fortress-playing #resultPanel .result-actions button{min-height:38px;padding:6px 8px}
 }

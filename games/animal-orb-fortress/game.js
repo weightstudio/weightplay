@@ -406,7 +406,11 @@
 
   function show(panel) {
     [nodes.menuPanel, nodes.stagePanel, nodes.gamePanel, nodes.upgradePanel, nodes.resultPanel].forEach((node) => node.classList.add("is-hidden"));
+    const resultOpen = panel === nodes.resultPanel;
+    if (resultOpen) nodes.gamePanel.classList.remove("is-hidden");
     panel.classList.remove("is-hidden");
+    $("battleLive").inert = resultOpen;
+    $("battleLive").setAttribute("aria-hidden", resultOpen ? "true" : "false");
     document.body.classList.toggle("orb-fortress-playing", panel !== nodes.menuPanel);
     updateOrbBattleScale();
     fitOrbArena();
@@ -1054,6 +1058,7 @@
     nodes.nextStageBtn.classList.toggle("is-unavailable", !hasNextStage);
     nodes.nextStageBtn.disabled = !hasNextStage;
     show(nodes.resultPanel);
+    (hasNextStage ? nodes.nextStageBtn : nodes.retryBtn).focus({ preventScroll: true });
     renderMenu();
     playSound(win ? "success" : "wrong", 0.2);
     window.WonderAnalytics?.track("raid_result", { game_id: GAME_ID, win, wave: Math.min(3, state.wave), stones });

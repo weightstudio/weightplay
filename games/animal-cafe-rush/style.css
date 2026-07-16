@@ -50,6 +50,7 @@ body.is-cafe-playing { overflow:hidden; } body.is-cafe-playing .cafe-app { posit
 .station.food-tile { display:grid; place-items:center; min-height:0; border-color:#80cbbd; background:#1c554d; }
 .station.food-tile .food-icon { width:min(44px, 72%); aspect-ratio:1; height:auto; }
 .station.food-tile.is-new { animation:tile-drop .22s ease-out; }
+.queue-customer:focus-visible,.station.food-tile:focus-visible { outline:4px solid #fff4a8; outline-offset:2px; }
 .station img { display:none; }
 .tray { overflow:hidden; }
 .tray > div { display:flex; flex-wrap:wrap; justify-content:center; gap:3px; }
