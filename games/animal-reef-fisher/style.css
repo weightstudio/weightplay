@@ -259,6 +259,12 @@ html[data-reef-state="game"] .game-page-info {
   scrollbar-width: none;
 }
 
+.menu-sound-btn {
+  justify-self: start;
+  min-width: 132px;
+  min-height: 44px;
+}
+
 .zone-row::-webkit-scrollbar {
   display: none;
 }

@@ -390,7 +390,7 @@ function startLevel(index) {
   window.WonderAnalytics?.track("game_start", { game_id: GAME_ID, stage: level.id, locale: locale() });
 }
 
-function showStageSelect() {
+function showStageSelect({ focusTrail = false } = {}) {
   mainPanel.classList.add("hidden");
   playArea.classList.add("hidden");
   hud.classList.add("hidden");
@@ -404,11 +404,14 @@ function showStageSelect() {
   updateBattleScale();
   requestAnimationFrame(() => {
     updateBattleScale();
-    requestAnimationFrame(() => centerHighestUnlockedTrail("auto"));
+    requestAnimationFrame(() => {
+      centerHighestUnlockedTrail("auto");
+      if (focusTrail) stageGrid.querySelector(`[data-stage="${unlocked}"]`)?.focus({ preventScroll: true });
+    });
   });
 }
 
-function showMain() {
+function showMain({ focusStart = false } = {}) {
   playArea.classList.add("hidden");
   hud.classList.add("hidden");
   resultPanel.classList.add("hidden");
@@ -417,6 +420,7 @@ function showMain() {
   document.body.classList.remove("rescue-playing", "rescue-stage-select", "rescue-result");
   resetRescueFrame();
   renderStaticText();
+  if (focusStart) requestAnimationFrame(() => showStageBtn.focus({ preventScroll: true }));
 }
 
 function showLocked() {
@@ -703,9 +707,9 @@ window.addEventListener("resize", updateBattleScale);
 window.addEventListener("orientationchange", updateBattleScale);
 window.visualViewport?.addEventListener("resize", updateBattleScale);
 window.visualViewport?.addEventListener("scroll", updateBattleScale);
-showStageBtn.addEventListener("click", showStageSelect);
-stageBackBtn.addEventListener("click", showMain);
-battleBackBtn.addEventListener("click", showStageSelect);
+showStageBtn.addEventListener("click", () => showStageSelect({ focusTrail: true }));
+stageBackBtn.addEventListener("click", () => showMain({ focusStart: true }));
+battleBackBtn.addEventListener("click", () => showStageSelect({ focusTrail: true }));
 stageGrid.addEventListener("click", (event) => {
   if (stageGrid.dataset.dragged === "true") return;
   const card = event.target.closest("[data-stage]");
@@ -746,7 +750,7 @@ retryBtn.addEventListener("click", () => {
   });
   startLevel(activeIndex);
 });
-trailsBtn.addEventListener("click", showStageSelect);
+trailsBtn.addEventListener("click", () => showStageSelect({ focusTrail: true }));
 
 renderStaticText();
 installStageDrag();

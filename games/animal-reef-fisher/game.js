@@ -24,6 +24,7 @@
     zoneRow: $("zoneRow"),
     gearGrid: $("gearGrid"),
     startBtn: $("startBtn"),
+    menuSoundBtn: $("menuSoundBtn"),
     stageBackBtn: $("stageBackBtn"),
     mapBtn: $("mapBtn"),
     retryBtn: $("retryBtn"),
@@ -69,6 +70,10 @@
       album: "Album",
       diamonds: "Diamonds",
       startGame: "Start Game",
+      soundOn: "Sound: On",
+      soundOff: "Sound: Off",
+      enableSound: "Enable sound",
+      disableSound: "Disable sound",
       chooseZone: "Choose Reef Zone",
       prepareGear: "Prepare Gear",
       startExpedition: "Start Expedition",
@@ -151,6 +156,10 @@
       album: "圖鑑",
       diamonds: "鑽石",
       startGame: "開始遊戲",
+      soundOn: "音效：開",
+      soundOff: "音效：關",
+      enableSound: "開啟音效",
+      disableSound: "關閉音效",
       chooseZone: "選擇礁區",
       prepareGear: "遠征準備",
       startExpedition: "開始遠征",
@@ -375,6 +384,17 @@
     return value;
   }
 
+  function playSound(name) {
+    window.WonderSound?.play(name);
+  }
+
+  function updateSoundButton() {
+    const muted = Boolean(window.WonderSound?.isMuted?.());
+    nodes.menuSoundBtn.textContent = t(muted ? "soundOff" : "soundOn");
+    nodes.menuSoundBtn.setAttribute("aria-label", t(muted ? "enableSound" : "disableSound"));
+    nodes.menuSoundBtn.setAttribute("aria-pressed", String(!muted));
+  }
+
   function loadSave() {
     try {
       const raw = JSON.parse(localStorage.getItem(saveKey) || "{}");
@@ -420,6 +440,7 @@
     canvas.setAttribute("aria-label", t("playAreaAria"));
     nodes.tensionLane.setAttribute("aria-label", t("tensionLaneAria"));
     nodes.sonarBtn.setAttribute("aria-label", t("sonarAria"));
+    updateSoundButton();
     renderMenu();
     updateTensionGuide();
     updateCatchHud();
@@ -553,6 +574,7 @@
       splashTimer: 0,
       sonarPulse: 0,
       catchToastTimer: 0,
+      tensionSafe: true,
       lastCatch: null,
       finished: false,
       lureUsed: save.lureReady,
@@ -583,6 +605,7 @@
       focusPanel(nodes.gamePanel);
     }
     track("game_start", { zone: zone.id });
+    playSound("start");
   }
 
   function finishRun(won) {
@@ -605,6 +628,7 @@
     focusPanel(nodes.resultPanel);
     window.requestAnimationFrame(() => nodes.retryBtn.focus({ preventScroll: true }));
     renderMenu();
+    playSound(won ? "win" : "wrong");
     track("game_complete", { zone: run.zone.id, won, catches: run.catches, newFish: run.newFish, notes: run.notes, score: run.finalScore });
   }
 
@@ -624,10 +648,12 @@
     run.fishPower = (45 + Math.random() * 40) * behavior.endurance;
     run.fishTimer = 1.2;
     run.splashTimer = 0.8;
+    run.tensionSafe = true;
     nodes.hintText.textContent = hookedHint(run.hookFish);
     updateTensionGuide();
     updateSonarButton();
     track("fish_hooked", { fish: run.hookFish.id, zone: run.zone.id });
+    playSound("hit");
   }
 
   function landFish() {
@@ -658,6 +684,7 @@
     updateTensionGuide();
     updateSonarButton();
     if (run.catches >= run.zone.goal) finishRun(true);
+    else playSound(isNew ? "upgrade" : "success");
   }
 
   function fishById(id) {
@@ -878,6 +905,7 @@
     nodes.hintText.textContent = t("broke");
     updateTensionGuide();
     updateSonarButton();
+    playSound("wrong");
     track("line_break", { zone: run.zone.id });
   }
 
@@ -1001,6 +1029,8 @@
       run.tension += (target - run.tension) * dt * (1.4 + gearControl) + pull * dt;
       run.tension = Math.max(0, Math.min(100, run.tension));
       const { safe } = tensionRange();
+      if (!safe && run.tensionSafe) playSound("wallHit");
+      run.tensionSafe = safe;
       if (!safe) run.struggle += dt;
       else run.struggle = Math.max(0, run.struggle - dt * 1.8);
       run.fishPower -= dt * (9 + save.gear.rod * 1.7 + save.gear.bait * 0.9);
@@ -1152,6 +1182,7 @@
       updateTensionGuide();
       updateSonarButton();
       track("cast", { power: Math.round(run.castPower), zone: run.zone.id, fish: run.hookFish.id });
+      playSound("shoot");
     }
   }
 
@@ -1231,12 +1262,14 @@
     if ((type === "lure" && save.lureReady) || (type === "sonar" && save.sonarReady)) return;
     if (!window.WeightPlayWallet || !window.WeightPlayWallet.spendDiamonds(cost)) {
       nodes.hintText.textContent = t("needDiamonds", { cost });
+      playSound("wrong");
       return;
     }
     if (type === "lure") save.lureReady = true;
     else save.sonarReady = true;
     saveProgress();
     renderMenu();
+    playSound("coin");
     track(type === "lure" ? "rare_lure_purchase" : "sonar_purchase", { cost });
   }
 
@@ -1245,11 +1278,15 @@
     const level = Number(save.gear[id]) || 1;
     if (!item || level >= 5) return;
     const cost = item.cost * level;
-    if (save.notes < cost) return;
+    if (save.notes < cost) {
+      playSound("wrong");
+      return;
+    }
     save.notes -= cost;
     save.gear[id] = level + 1;
     saveProgress();
     renderMenu();
+    playSound("upgrade");
     track("gear_upgrade", { gear: id, level: level + 1 });
   }
 
@@ -1268,17 +1305,20 @@
     if (btn) upgradeGear(btn.dataset.gear);
   });
   nodes.startBtn.addEventListener("click", () => {
+    playSound("click");
     state = "stage";
     showPanel("stage");
     renderMenu();
     focusPanel(nodes.stagePanel);
   });
   nodes.stageBackBtn.addEventListener("click", () => {
+    playSound("click");
     state = "main";
     showPanel("main");
     focusPanel(nodes.mainPanel);
   });
   nodes.mapBtn.addEventListener("click", () => {
+    playSound("click");
     state = "stage";
     showPanel("stage");
     renderMenu();
@@ -1288,6 +1328,7 @@
     canvas.focus({ preventScroll: true });
   });
   nodes.resultMenuBtn.addEventListener("click", () => {
+    playSound("click");
     state = "stage";
     showPanel("stage");
     renderMenu();
@@ -1304,6 +1345,7 @@
     nodes.hintText.textContent = sonarScanMessage(run.hookFish);
     updateTensionGuide();
     updateSonarButton();
+    playSound("coin");
     track("sonar_use", {
       zone: run.zone.id,
       fish: run.hookFish.id,
@@ -1315,6 +1357,13 @@
     locale = nodes.localeSelect.value;
     localStorage.setItem(localeKey, locale);
     applyLocale();
+  });
+  nodes.menuSoundBtn.addEventListener("click", () => {
+    window.WonderSound?.unlock?.();
+    const nextMuted = !Boolean(window.WonderSound?.isMuted?.());
+    window.WonderSound?.setMuted?.(nextMuted);
+    updateSoundButton();
+    if (!nextMuted) playSound("click");
   });
   canvas.addEventListener("pointerdown", startCharge);
   canvas.addEventListener("pointermove", (evt) => {

@@ -707,6 +707,7 @@
   // Keyboard Movement Vector
   let keysPressed = {};
   let touchStartPos = null;
+  let joystickPointerId = null;
   let moveVector = { x: 0, y: 0 };
   let mouseMoveActive = false;
   let shootTimer = 0;
@@ -908,6 +909,7 @@
   function showMain() {
     clearAmuletConfirmation();
     state.gameActive = false;
+    clearMovementInput();
     cancelAnimationFrame(state.gameLoopId);
     document.body.classList.remove("relic-playing", "relic-stage-select");
     document.body.classList.remove("relic-result");
@@ -948,6 +950,7 @@
 
   function showStage() {
     state.gameActive = false;
+    clearMovementInput();
     cancelAnimationFrame(state.gameLoopId);
     document.body.classList.remove("relic-playing");
     document.body.classList.remove("relic-result");
@@ -1267,6 +1270,7 @@
   // Combat loop updates
   function startRun() {
     clearAmuletConfirmation();
+    clearMovementInput();
     loadLocalState();
     syncStateFromProfile();
     const stats = getStats();
@@ -1583,6 +1587,7 @@
 
   function triggerChestLoot() {
     state.gameActive = false;
+    clearMovementInput();
     window.WonderSound?.play("upgrade");
 
     // Random roll gear based on current room
@@ -1652,6 +1657,7 @@
   // Complete Game Run
   function endGame(won) {
     state.gameActive = false;
+    clearMovementInput();
     cancelAnimationFrame(state.gameLoopId);
 
     nodes.gamePanel.classList.remove("hidden");
@@ -2212,6 +2218,10 @@
     moveVector = { x: 0, y: 0 };
     mouseMoveActive = false;
     touchStartPos = null;
+    if (joystickPointerId !== null && nodes.joystickContainer.hasPointerCapture?.(joystickPointerId)) {
+      nodes.joystickContainer.releasePointerCapture(joystickPointerId);
+    }
+    joystickPointerId = null;
     nodes.joystickKnob.style.transform = "translate(0px, 0px)";
   }
 
@@ -2237,6 +2247,9 @@
       keysPressed[e.key] = false;
     });
     window.addEventListener("blur", clearMovementInput);
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) clearMovementInput();
+    });
 
     function updateMouseMoveVector(event) {
       const rect = nodes.gameCanvas.getBoundingClientRect();
@@ -2279,22 +2292,24 @@
       moveVector = { x: 0, y: 0 };
     });
 
-    // Touch Virtual Joystick Logic
-    nodes.joystickContainer.addEventListener("touchstart", (e) => {
-      const touch = e.touches[0];
+    // Pointer-based joystick keeps cancellation and pointer capture in one lifecycle.
+    nodes.joystickContainer.addEventListener("pointerdown", (event) => {
+      if (!state.gameActive || joystickPointerId !== null) return;
+      event.preventDefault();
+      joystickPointerId = event.pointerId;
       const rect = nodes.joystickContainer.getBoundingClientRect();
       touchStartPos = {
         x: rect.left + rect.width / 2,
         y: rect.top + rect.height / 2,
       };
+      nodes.joystickContainer.setPointerCapture?.(event.pointerId);
     });
 
-    nodes.joystickContainer.addEventListener("touchmove", (e) => {
-      if (!touchStartPos) return;
-      e.preventDefault();
-      const touch = e.touches[0];
-      const dx = touch.clientX - touchStartPos.x;
-      const dy = touch.clientY - touchStartPos.y;
+    nodes.joystickContainer.addEventListener("pointermove", (event) => {
+      if (!touchStartPos || event.pointerId !== joystickPointerId) return;
+      event.preventDefault();
+      const dx = event.clientX - touchStartPos.x;
+      const dy = event.clientY - touchStartPos.y;
       const dist = Math.sqrt(dx * dx + dy * dy);
 
       const maxRadius = 40;
@@ -2311,11 +2326,16 @@
       moveVector.y = (dy / maxRadius) * ratio;
     });
 
-    nodes.joystickContainer.addEventListener("touchend", () => {
+    const finishJoystickPointer = (event) => {
+      if (event?.pointerId !== undefined && event.pointerId !== joystickPointerId) return;
       touchStartPos = null;
+      joystickPointerId = null;
       nodes.joystickKnob.style.transform = "translate(0px, 0px)";
       moveVector = { x: 0, y: 0 };
-    });
+    };
+    nodes.joystickContainer.addEventListener("pointerup", finishJoystickPointer);
+    nodes.joystickContainer.addEventListener("pointercancel", finishJoystickPointer);
+    nodes.joystickContainer.addEventListener("lostpointercapture", finishJoystickPointer);
   }
 
   // Init handler

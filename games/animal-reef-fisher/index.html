@@ -48,7 +48,7 @@
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
     <link rel="stylesheet" href="style.css?v=20260716-reef-keyboard1" />
   </head>
-  <body data-tutorial-auto-show="false">
+  <body data-tutorial-auto-show="false" data-sound-toggle="off">
     <main class="reef-app" data-no-mobile-immersive="true">
       <header class="topbar">
         <a class="back-btn" data-wp-return="main" href="/" aria-label="Back to lobby"><span>&larr;</span><img src="../../assets/weightplay-logo.png" alt="" /></a>
@@ -78,6 +78,7 @@
         <div class="menu-copy">
           <strong data-ui="menuTitle">Cast into the coral reef and build your sea-creature album.</strong>
           <span data-ui="menuHint">Choose a reef zone, control line tension, earn Reef Notes, and upgrade your gear locally.</span>
+          <button id="menuSoundBtn" class="secondary-btn menu-sound-btn" type="button">Sound: On</button>
           <button id="startBtn" class="primary-btn" type="button" data-ui="startGame">Start Game</button>
         </div>
       </section>
@@ -214,9 +215,10 @@
     <script src="../../src/analytics.js?v=20260630-analytics1"></script>
     <script src="../../src/edge-guard.js?v=20260710-mobile-play-shell2"></script>
     <script src="../../src/i18n.js?v=20260703-i18n-clean1"></script>
+    <script src="../../src/sound.js?v=20260716-reef-sound1"></script>
     <script src="../../src/tutorial.js?v=20260708-reef-tension-clarity1"></script>
     <script src="../../src/wallet.js?v=20260706-diamond1"></script>
-    <script src="game.js?v=20260716-reef-keyboard1"></script>
+    <script src="game.js?v=20260716-reef-sound1"></script>
     <script src="../../src/game-page-info.js?v=20260715-reef-guide-stable1"></script>
   </body>
 </html>

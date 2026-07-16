@@ -379,6 +379,12 @@
   let keysPressed = {};
   let mobileInput = { left: false, right: false };
 
+  function clearActiveInputs() {
+    Object.keys(keysPressed).forEach((key) => { keysPressed[key] = false; });
+    mobileInput.left = false;
+    mobileInput.right = false;
+  }
+
   function loadLocalState() {
     try {
       const data = JSON.parse(localStorage.getItem(saveKey) || "{}");
@@ -482,6 +488,7 @@
   }
 
   function showStage() {
+    clearActiveInputs();
     setResultModalOpen(false, false);
     nodes.menuPanel.classList.add("hidden");
     nodes.gamePanel.classList.add("hidden");
@@ -492,6 +499,7 @@
   }
 
   function showMain() {
+    clearActiveInputs();
     setResultModalOpen(false, false);
     state.gameActive = false;
     cancelAnimationFrame(state.gameLoopId);
@@ -694,6 +702,7 @@
 
   // Active game start trigger
   function startRun(startRoom = state.zone) {
+    clearActiveInputs();
     setResultModalOpen(false, false);
     loadLocalState();
     state.runs += 1;
@@ -860,6 +869,7 @@
     state.expNeed = Math.floor(90 * Math.pow(state.level, 1.55));
     state.attributePoints += 2;
     state.gameActive = false;
+    clearActiveInputs();
     cancelAnimationFrame(state.gameLoopId);
     window.WonderSound?.play("success");
     renderStatsPanel();
@@ -889,6 +899,7 @@
   let currentLootItem = null;
   function triggerChestLoot() {
     state.gameActive = false;
+    clearActiveInputs();
     window.WonderSound?.play("upgrade");
 
     const rolls = {
@@ -967,6 +978,7 @@
 
   function endGame(won) {
     state.gameActive = false;
+    clearActiveInputs();
     cancelAnimationFrame(state.gameLoopId);
 
     nodes.resultTitle.textContent = won ? t("runComplete") : t("runFailed");
@@ -1643,24 +1655,38 @@
     window.addEventListener("keyup", (e) => {
       keysPressed[e.key.toLowerCase()] = false;
     });
-    nodes.gameCanvas.addEventListener("blur", () => {
-      Object.keys(keysPressed).forEach((key) => { keysPressed[key] = false; });
+    nodes.gameCanvas.addEventListener("blur", clearActiveInputs);
+    window.addEventListener("blur", clearActiveInputs);
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) clearActiveInputs();
     });
 
-    // Mobile buttons triggers
-    nodes.btnLeft.addEventListener("touchstart", (e) => { e.preventDefault(); mobileInput.left = true; });
-    nodes.btnLeft.addEventListener("touchend", () => { mobileInput.left = false; });
-    nodes.btnRight.addEventListener("touchstart", (e) => { e.preventDefault(); mobileInput.right = true; });
-    nodes.btnRight.addEventListener("touchend", () => { mobileInput.right = false; });
-    
-    nodes.btnJump.addEventListener("touchstart", (e) => {
-      e.preventDefault();
-      makePlayerJump();
-    });
-    nodes.btnAttack.addEventListener("touchstart", (e) => {
-      e.preventDefault();
-      makePlayerAttack();
-    });
+    // Pointer cancellation, focus loss, and screen changes must never leave movement latched.
+    const bindHoldButton = (button, direction) => {
+      const release = () => { mobileInput[direction] = false; };
+      button.addEventListener("pointerdown", (event) => {
+        event.preventDefault();
+        mobileInput[direction] = true;
+        button.setPointerCapture?.(event.pointerId);
+      });
+      button.addEventListener("pointerup", release);
+      button.addEventListener("pointercancel", release);
+      button.addEventListener("lostpointercapture", release);
+      button.addEventListener("blur", release);
+    };
+    const bindActionButton = (button, action) => {
+      button.addEventListener("pointerdown", (event) => {
+        event.preventDefault();
+        action();
+      });
+      button.addEventListener("click", (event) => {
+        if (event.detail === 0) action();
+      });
+    };
+    bindHoldButton(nodes.btnLeft, "left");
+    bindHoldButton(nodes.btnRight, "right");
+    bindActionButton(nodes.btnJump, makePlayerJump);
+    bindActionButton(nodes.btnAttack, makePlayerAttack);
   }
 
   function shuffle(array) {
@@ -1794,6 +1820,7 @@
             width: state.width,
             height: state.height,
             grounded: state.grounded,
+            doubleJumpAvailable: state.doubleJumpAvailable,
             vx: state.vx,
             vy: state.vy,
             attackTimer: state.attackTimer,

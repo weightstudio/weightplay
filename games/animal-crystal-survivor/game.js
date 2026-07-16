@@ -258,6 +258,7 @@
   let save = loadSave();
   let state = makeState();
   let lastFrame = 0;
+  let battlePanelMetrics = null;
   let pointerDown = false;
   let runToken = 0;
   const soundGate = {};
@@ -497,6 +498,7 @@
     else battleLive.removeAttribute("aria-hidden");
     document.body?.classList.toggle("crystal-playing", panel !== nodes.menuPanel);
     updateCrystalBattleViewport();
+    if (resultOpen) requestAnimationFrame(updateCrystalBattleViewport);
   }
 
   function updateCrystalBattleViewport() {
@@ -511,16 +513,29 @@
     const root = document.documentElement.style;
     root.setProperty("--crystal-vw", `${useVisual ? visualWidth : innerWidth}px`);
     root.setProperty("--crystal-vh", `${useVisual ? visualHeight : innerHeight}px`);
-    if (!nodes.resultPanel.classList.contains("hidden")) {
-      nodes.resultPanel.classList.add("hidden");
-      const panelWidth = nodes.gamePanel.offsetWidth;
-      const panelHeight = nodes.gamePanel.offsetHeight;
-      const panelPaddingTop = Number.parseFloat(getComputedStyle(nodes.gamePanel).paddingTop) || 0;
-      nodes.resultPanel.classList.remove("hidden");
-      nodes.resultPanel.style.width = `${panelWidth}px`;
-      nodes.resultPanel.style.height = `${panelHeight}px`;
-      nodes.resultPanel.style.top = `${-panelPaddingTop}px`;
+    const resultOpen = !nodes.resultPanel.classList.contains("hidden");
+    if (!resultOpen) {
+      battlePanelMetrics = measureBattlePanel();
+    } else if (battlePanelMetrics) {
+      nodes.resultPanel.classList.toggle("transformed-host", battlePanelMetrics.transformed);
+      nodes.resultPanel.style.width = `${battlePanelMetrics.width}px`;
+      nodes.resultPanel.style.height = `${battlePanelMetrics.height}px`;
+      nodes.resultPanel.style.minHeight = `${battlePanelMetrics.height}px`;
+      nodes.resultPanel.style.top = `${-battlePanelMetrics.paddingTop}px`;
     }
+  }
+
+  function measureBattlePanel() {
+    const panelStyle = getComputedStyle(nodes.gamePanel);
+    const panelRect = nodes.gamePanel.getBoundingClientRect();
+    const transform = panelStyle.transform === "none" ? null : new DOMMatrixReadOnly(panelStyle.transform);
+    const scale = Math.abs(transform?.a || 1);
+    return {
+      width: panelRect.width / scale,
+      height: panelRect.height / scale,
+      paddingTop: Number.parseFloat(panelStyle.paddingTop) || 0,
+      transformed: Math.abs(scale - 1) > 0.001,
+    };
   }
 
   window.addEventListener?.("resize", updateCrystalBattleViewport, { passive: true });
@@ -871,6 +886,7 @@
     persist();
     renderExpeditionRecord();
     renderResult(reason, previousBestKeys, improved, previousRank.index);
+    if (document.body) battlePanelMetrics = measureBattlePanel();
     show(nodes.resultPanel);
     nodes.retryBtn.focus({ preventScroll: true });
     playSound(reason === "time" ? "win" : "wrong", 0.4);

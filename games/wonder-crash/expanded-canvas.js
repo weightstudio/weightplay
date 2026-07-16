@@ -149,4 +149,47 @@
       wheelSnapTimer = window.setTimeout(() => snapToNearestCard(), 90);
     }, { passive: false });
   }
+
+  const pausePanel = document.querySelector("#pausePanel");
+  const settingsButton = document.querySelector("#settingsBtn");
+  const resumeButton = document.querySelector("#resumeBtn");
+  const leaveButton = document.querySelector("#leaveBtn");
+  const battleCanvas = document.querySelector("#game");
+  const overlayTitle = document.querySelector("#overlay h1");
+
+  const setPausedBattleCovered = (covered) => {
+    if (!battleCanvas) return;
+    battleCanvas.inert = covered;
+    if (covered) battleCanvas.setAttribute("aria-hidden", "true");
+    else battleCanvas.removeAttribute("aria-hidden");
+  };
+
+  if (pausePanel && settingsButton && resumeButton && leaveButton && battleCanvas && overlayTitle) {
+    overlayTitle.id ||= "wonderPauseTitle";
+    pausePanel.setAttribute("role", "dialog");
+    pausePanel.setAttribute("aria-modal", "true");
+    pausePanel.setAttribute("aria-labelledby", overlayTitle.id);
+
+    settingsButton.addEventListener("click", () => {
+      if (pausePanel.classList.contains("hidden")) return;
+      setPausedBattleCovered(true);
+      requestAnimationFrame(() => resumeButton.focus({ preventScroll: true }));
+    });
+
+    resumeButton.addEventListener("click", () => {
+      setPausedBattleCovered(false);
+      requestAnimationFrame(() => battleCanvas.focus({ preventScroll: true }));
+    });
+
+    leaveButton.addEventListener("click", () => {
+      setPausedBattleCovered(false);
+      requestAnimationFrame(() => document.querySelector("#levelGrid .stage-card-current, #levelGrid button:not(:disabled)")?.focus({ preventScroll: true }));
+    });
+
+    pausePanel.addEventListener("keydown", (event) => {
+      if (event.key !== "Escape" || pausePanel.classList.contains("hidden")) return;
+      event.preventDefault();
+      resumeButton.click();
+    });
+  }
 })();

@@ -45,7 +45,7 @@
       startExpedition: "Start Expedition",
       chooseExpedition: "Choose Expedition",
       stageSetup: "Pick an unlocked forest stage, then prepare your squad for the expedition.",
-      yourSquadLabel: "Active Squad (Left: Frontline | Right: Backline)",
+      yourSquadLabel: "Active Squad (Top: Front Row | Bottom: Back Row)",
       benchLabel: "Storage Bench",
       shopLabel: "Character Backpack",
       startBattle: "Start Battle",
@@ -77,7 +77,7 @@
       combatSummary: "Squad HP {playerHp}/{playerMax} | Enemy HP {enemyHp}/{enemyMax}",
       combatFront: "Front: {player} vs {enemy}",
       foodGuideTitle: "Food effects",
-      guideHint: "Drag or tap owned animals from the backpack into your squad. Expedition upgrades use temporary Supplies and reset after the run.",
+      guideHint: "Tap an owned animal, then tap a squad slot. Scroll the backpack vertically to browse every character.",
       level: "Lv.",
       buy: "Buy",
       sell: "Sell",
@@ -152,7 +152,7 @@
       backToMenu: "主選單",
       quitRun: "放棄遠征",
       combatIntro: "準備戰鬥！",
-      guideHint: "拖曳或點擊卡片選取，再點擊目標欄位來購買、移動、合成或餵食。合成相同動物可升級！",
+      guideHint: "點選背包角色，再點選上方出場格。背包可上下滑動查看所有角色。",
       level: "等級",
       buy: "購買",
       sell: "出售",
@@ -336,14 +336,14 @@
 
   // Asset configuration
   const ANIMAL_METADATA = [
-    { id: 0, nameEn: "Spark Paw Fox", nameZht: "\u661f\u722a\u72d0", imageKey: "sparkFox", tier: 1, atk: 2, hp: 2, roleEn: "Pounce", roleZht: "\u8df3\u64ca", descEn: "Before each clash, deals Lv damage to the lead enemy, then performs its normal attack.", descZht: "\u6bcf\u6b21\u4ea4\u92d2\u524d\u5c0d\u6700\u524d\u65b9\u6575\u4eba\u9020\u6210\u7b49\u7d1a\u50b7\u5bb3\uff0c\u63a5\u8457\u9032\u884c\u666e\u901a\u653b\u64ca\u3002" },
+    { id: 0, nameEn: "Spark Paw Fox", nameZht: "\u661f\u722a\u72d0", imageKey: "sparkFox", tier: 1, atk: 2, hp: 2, targetMode: "front", roleEn: "Front Pounce", roleZht: "\u524d\u6392\u8df3\u64ca", descEn: "Targets the front row and strikes twice: a Lv pounce followed by its normal attack.", descZht: "\u5c08\u9580\u653b\u64ca\u524d\u6392\uff1a\u5148\u9020\u6210\u7b49\u7d1a\u50b7\u5bb3\uff0c\u518d\u9032\u884c\u666e\u901a\u653b\u64ca\u3002" },
     { id: 1, nameEn: "Bubble Fin Otter", nameZht: "\u6ce1\u6ce1\u9c2d\u6c34\u737a", imageKey: "bubbleOtter", tier: 1, atk: 1, hp: 3, roleEn: "Tide Care", roleZht: "\u6f6e\u6c50\u6cbb\u7652", descEn: "Before each clash, heals the weakest ally by Lv. On its turn, heals the weakest ally for half ATK (at least 1).", descZht: "\u6bcf\u6b21\u4ea4\u92d2\u524d\u6cbb\u7652\u751f\u547d\u6700\u4f4e\u7684\u968a\u53cb\u7b49\u7d1a\u9ede\uff1b\u884c\u52d5\u6642\u518d\u6cbb\u7652\u653b\u64ca\u529b\u4e00\u534a\uff08\u81f3\u5c11 1\uff09\u3002" },
     { id: 2, nameEn: "Drum Belly Panda", nameZht: "\u9f13\u809a\u718a\u8c93", imageKey: "drumPanda", tier: 2, atk: 3, hp: 2, roleEn: "Rhythm Guard", roleZht: "\u7bc0\u594f\u5b88\u8b77", descEn: "Battle start: all allies gain Lv max HP and HP. On its turn, all allies gain a Lv shield.", descZht: "\u958b\u6230\u6642\u5168\u968a\u7372\u5f97\u7b49\u7d1a\u9ede\u751f\u547d\u4e0a\u9650\u8207\u751f\u547d\uff1b\u884c\u52d5\u6642\u5168\u968a\u7372\u5f97\u7b49\u7d1a\u9ede\u8b77\u76fe\u3002" },
-    { id: 3, nameEn: "Moon Cap Owl", nameZht: "\u6708\u5e3d\u8c93\u982d\u9df9", imageKey: "moonOwl", tier: 2, atk: 2, hp: 3, roleEn: "Starfall", roleZht: "\u661f\u843d\u9023\u64ca", descEn: "On its turn, Starfall strikes the lead enemy and follows with a second hit on another random enemy.", descZht: "\u884c\u52d5\u6642\u4ee5\u661f\u843d\u91cd\u64ca\u524d\u6392\u6575\u4eba\uff0c\u518d\u8ffd\u52a0\u653b\u64ca\u53e6\u4e00\u540d\u96a8\u6a5f\u6575\u4eba\u3002" },
+    { id: 3, nameEn: "Moon Cap Owl", nameZht: "\u6708\u5e3d\u8c93\u982d\u9df9", imageKey: "moonOwl", tier: 2, atk: 2, hp: 3, targetMode: "back", roleEn: "Backline Starfall", roleZht: "\u5f8c\u6392\u661f\u843d", descEn: "Targets the back row with Starfall, then strikes a second enemy in that row. Falls back to the front row if needed.", descZht: "\u5c08\u9580\u653b\u64ca\u5f8c\u6392\uff1a\u661f\u843d\u9023\u64ca\u5f8c\u6392\u5169\u540d\u6575\u4eba\uff1b\u5f8c\u6392\u7121\u4eba\u6642\u6539\u6253\u524d\u6392\u3002" },
     { id: 4, nameEn: "Moss Shell Turtle", nameZht: "\u82d4\u6bbc\u70cf\u9f9c", imageKey: "mossTurtle", tier: 3, atk: 2, hp: 4, roleEn: "Shell Wall", roleZht: "\u5805\u6bbc\u9632\u7dda", descEn: "Battle start: gains a Lv shield. On its turn, all allies gain a Lv shield. Faint: shields the next ally.", descZht: "\u958b\u6230\u6642\u81ea\u8eab\u7372\u5f97\u7b49\u7d1a\u9ede\u8b77\u76fe\uff1b\u884c\u52d5\u6642\u5168\u968a\u7372\u5f97\u7b49\u7d1a\u9ede\u8b77\u76fe\uff1b\u5012\u4e0b\u6642\u8b77\u4f4f\u4e0b\u4e00\u540d\u968a\u53cb\u3002" },
     { id: 5, nameEn: "Rainbow Hop Rabbit", nameZht: "\u5f69\u8679\u8df3\u5154", imageKey: "rainbowRabbit", tier: 3, atk: 4, hp: 2, roleEn: "Field Medic", roleZht: "\u5feb\u901f\u6cbb\u7652", descEn: "On its turn, heals the weakest ally for half ATK (at least 1) instead of attacking.", descZht: "\u884c\u52d5\u6642\u4e0d\u653b\u64ca\uff0c\u6539\u70ba\u6cbb\u7652\u751f\u547d\u6700\u4f4e\u7684\u968a\u53cb\u653b\u64ca\u529b\u4e00\u534a\uff08\u81f3\u5c11 1\uff09\u3002" },
     { id: 6, nameEn: "Gear Horn Rhino", nameZht: "\u9f52\u8f2a\u89d2\u7280\u725b", imageKey: "gearRhino", tier: 4, atk: 3, hp: 4, roleEn: "Shield Wall", roleZht: "\u8b77\u76fe\u9632\u7dda", descEn: "On its turn, gains a shield equal to half ATK (at least 1) instead of attacking.", descZht: "\u884c\u52d5\u6642\u4e0d\u653b\u64ca\uff0c\u6539\u70ba\u81ea\u8eab\u7372\u5f97\u653b\u64ca\u529b\u4e00\u534a\u7684\u8b77\u76fe\uff08\u81f3\u5c11 1\uff09\u3002" },
-    { id: 7, nameEn: "Boom Mane Lion", nameZht: "\u7206\u9b03\u7345", imageKey: "boomLion", tier: 4, atk: 4, hp: 4, roleEn: "Roar", roleZht: "\u9f13\u821e\u5486\u54ee", descEn: "On its turn, all allies gain Lv ATK and 1 HP. Faint: remaining allies gain Lv ATK and HP.", descZht: "\u884c\u52d5\u6642\u5168\u968a +\u7b49\u7d1a \u653b\u64ca\u8207 +1 \u751f\u547d\uff1b\u5012\u4e0b\u6642\u5176\u9918\u968a\u53cb +\u7b49\u7d1a \u653b\u64ca\u8207\u751f\u547d\u3002" },
+    { id: 7, nameEn: "Boom Mane Lion", nameZht: "\u7206\u9b03\u7345", imageKey: "boomLion", tier: 4, atk: 4, hp: 4, targetMode: "row", roleEn: "Row Roar", roleZht: "\u6574\u6392\u5486\u54ee", descEn: "Sweeps every enemy in the front row for 70% ATK, falling back to the back row. When it faints, remaining allies gain Lv ATK and HP.", descZht: "\u4ee5 70% \u653b\u64ca\u529b\u6a6b\u6383\u6575\u65b9\u6574\u500b\u524d\u6392\uff0c\u7121\u4eba\u6642\u6539\u6383\u5f8c\u6392\uff1b\u5012\u4e0b\u6642\u5176\u9918\u968a\u53cb\u7372\u5f97\u7b49\u7d1a\u9ede\u653b\u64ca\u8207\u751f\u547d\u3002" },
     { id: 8, nameEn: "Spark Paw Captain", nameZht: "\u661f\u722a\u968a\u9577", imageKey: "sparkCaptain", tier: 5, atk: 5, hp: 5, roleEn: "Command", roleZht: "\u968a\u9577\u6307\u63ee", descEn: "Battle start: all allies gain Lv ATK. On its turn, all allies gain Lv ATK and 1 HP.", descZht: "\u958b\u6230\u6642\u5168\u968a +\u7b49\u7d1a \u653b\u64ca\uff1b\u884c\u52d5\u6642\u5168\u968a +\u7b49\u7d1a \u653b\u64ca\u8207 +1 \u751f\u547d\u3002" },
     { id: 9, nameEn: "Rhino Guardian", nameZht: "\u7280\u725b\u5b88\u885b", imageKey: "rhinoGuardian", tier: 5, atk: 6, hp: 6, roleEn: "Last Stand", roleZht: "\u6700\u5f8c\u9632\u7dda", descEn: "Attacks normally. Faint: deals 4 x Lv damage to the lead enemy.", descZht: "\u9032\u884c\u666e\u901a\u653b\u64ca\uff1b\u5012\u4e0b\u6642\u5c0d\u6700\u524d\u65b9\u6575\u4eba\u9020\u6210 4 x \u7b49\u7d1a\u50b7\u5bb3\u3002" }
   ];
@@ -363,11 +363,11 @@
   ];
 
   const ENEMY_METADATA = [
-    { id: 0, nameEn: "Shadow Squirrel", nameZht: "\u5f71\u4e4b\u677e\u9f20", roleEn: "Quick Strike", roleZht: "\u8fc5\u64ca", sx: 105, sy: 155, sw: 480, sh: 545 },
-    { id: 1, nameEn: "Shadow Wolf", nameZht: "\u5f71\u4e4b\u7070\u72fc", roleEn: "Pack Bite", roleZht: "\u7fa4\u72fc\u54ac\u64ca", sx: 690, sy: 170, sw: 630, sh: 535 },
-    { id: 2, nameEn: "Shadow Boar", nameZht: "\u5f71\u4e4b\u91ce\u8c6c", roleEn: "First Charge", roleZht: "\u9996\u64ca\u885d\u92d2", sx: 1350, sy: 155, sw: 630, sh: 540 },
-    { id: 3, nameEn: "Shadow Badger", nameZht: "\u5f71\u4e4b\u737e", roleEn: "Burrow Guard", roleZht: "\u6398\u5730\u5b88\u8b77", sx: 300, sy: 870, sw: 670, sh: 500 },
-    { id: 4, nameEn: "Shadow Golem", nameZht: "\u5f71\u4e4b\u9b54\u50cf", roleEn: "Stone Ward", roleZht: "\u5ca9\u77f3\u7d50\u754c", sx: 1015, sy: 730, sw: 745, sh: 670 }
+    { id: 0, nameEn: "Shadow Squirrel", nameZht: "\u5f71\u4e4b\u677e\u9f20", targetMode: "back", roleEn: "Backline Ambush", roleZht: "\u5f8c\u6392\u5947\u8972", sx: 105, sy: 155, sw: 480, sh: 545 },
+    { id: 1, nameEn: "Shadow Wolf", nameZht: "\u5f71\u4e4b\u7070\u72fc", targetMode: "front", roleEn: "Pack Bite", roleZht: "\u7fa4\u72fc\u54ac\u64ca", sx: 690, sy: 170, sw: 630, sh: 535 },
+    { id: 2, nameEn: "Shadow Boar", nameZht: "\u5f71\u4e4b\u91ce\u8c6c", targetMode: "front", roleEn: "First Charge", roleZht: "\u9996\u64ca\u885d\u92d2", sx: 1350, sy: 155, sw: 630, sh: 540 },
+    { id: 3, nameEn: "Shadow Badger", nameZht: "\u5f71\u4e4b\u737e", targetMode: "back", roleEn: "Burrow Guard", roleZht: "\u6398\u5730\u5b88\u8b77", sx: 300, sy: 870, sw: 670, sh: 500 },
+    { id: 4, nameEn: "Shadow Golem", nameZht: "\u5f71\u4e4b\u9b54\u50cf", targetMode: "row", roleEn: "Stone Sweep", roleZht: "\u5ca9\u77f3\u6a6b\u6383", sx: 1015, sy: 730, sw: 745, sh: 670 }
   ];
 
   // Game UI DOM Nodes
@@ -463,9 +463,9 @@
     [1, 1, 2, 2, 2],
     [1, 2, 2, 2, 3],
     [2, 2, 2, 3, 3],
-    [2, 2, 3, 3, 3],
-    [2, 3, 3, 3, 4],
-    [2, 3, 3, 4, 4]
+    [2, 3, 3, 4, 4],
+    [3, 4, 4, 5, 5],
+    [3, 4, 5, 5, 6]
   ];
 
   // State Management
@@ -473,10 +473,12 @@
   let save = loadSave();
   let state = makeState();
   let selectedSlot = null; // for tap-to-select mobile fallback
-  let pointerDrag = null;
   let imageCache = {};
   let canvasCtx = null;
   let animationId = null;
+  let combatRunSequence = 0;
+  let combatEndTimer = null;
+  const combatStepTimers = new Set();
   let stageRenderVersion = 0;
   let stageBrowseFrame = 0;
 
@@ -494,6 +496,7 @@
     stageDeploy: "\u9ede\u9078\u5df2\u89e3\u9396\u95dc\u5361\u51fa\u767c",
     selectedSkillTitle: "\u76ee\u524d\u89d2\u8272",
     selectCharacterHint: "\u9ede\u9078\u89d2\u8272\u5373\u53ef\u67e5\u770b\u5b9a\u4f4d\u8207\u6280\u80fd\u3002",
+    yourSquadLabel: "\u4f5c\u6230\u5c0f\u968a\uff08\u4e0a\uff1a\u524d\u6392\uff5c\u4e0b\uff1a\u5f8c\u6392\uff09",
     chooseExpedition: "\u9078\u64c7\u9060\u5f81",
     bestExpedition: "\u6700\u4f73\u9060\u5f81",
     expeditionsCleared: "\u5df2\u901a\u904e\u95dc\u5361",
@@ -679,6 +682,11 @@
   function installTestApi() {
     window.__ANIMAL_AUTO_SQUAD_TEST__ = {
       readSave: () => normalizeSave(save),
+      restoreSave: (snapshot) => {
+        save = normalizeSave(snapshot);
+        saveSave();
+        return normalizeSave(save);
+      },
       teamBonus: () => teamBonus(),
       stagePreview: () => ({
         unlockedStage: normalizeSave(save).unlockedStage,
@@ -828,8 +836,74 @@
         healthBarHeight: COMBAT_HEALTH_BAR_HEIGHT,
         healthFontSize: COMBAT_HEALTH_FONT_SIZE,
         showsLevelBadge: false,
+        formationSlots: 6,
+        playerCard: combatLayoutMetrics("player"),
+        enemyCard: combatLayoutMetrics("enemy"),
         enemyCrops: ENEMY_METADATA.map(({ id, sx, sy, sw, sh }) => ({ id, sx, sy, sw, sh }))
       }),
+      formationPreview: () => {
+        const combatCard = (id, formationSlot) => {
+          const card = createAnimalCard(id);
+          return { ...card, formationSlot, atk: card.currentAtk, hp: 20, maxHp: 20, shield: false, shieldHp: 0 };
+        };
+        const enemy = (formationSlot) => ({
+          ...ENEMY_METADATA[0],
+          formationSlot,
+          atk: 1,
+          hp: 20,
+          maxHp: 20,
+          shield: false,
+          shieldHp: 0,
+          level: 1,
+          abilityUsed: false
+        });
+        state.combat.playerSquad = [combatCard(3, 3), combatCard(7, 4)];
+        state.combat.enemySquad = [0, 1, 2, 3, 4, 5].map(enemy);
+        state.combat.effects = [];
+        resolveUnitAbility(state.combat.playerSquad[0], "player", 0);
+        const owlHp = state.combat.enemySquad.map((unit) => unit.hp);
+        state.combat.enemySquad.forEach((unit) => { unit.hp = 20; });
+        resolveUnitAbility(state.combat.playerSquad[1], "player", 1);
+        const lionHp = state.combat.enemySquad.map((unit) => unit.hp);
+        return { owlHp, lionHp };
+      },
+      forceQuickOutcome: (result = "win", delay = 40) => {
+        if (!state.combat.animating || state.combat.ending) return false;
+        if (result === "win") state.combat.enemySquad = [];
+        if (result === "lose") state.combat.playerSquad = [];
+        scheduleCombatEnd(result, Math.max(0, Number(delay) || 0));
+        scheduleCombatEnd(result, Math.max(0, Number(delay) || 0));
+        return true;
+      },
+      combatState: () => ({
+        runId: state.combat.runId,
+        animating: state.combat.animating,
+        ending: state.combat.ending,
+        resolved: state.combat.resolved,
+        prepVisible: !nodes.prepPhaseArea.classList.contains("is-hidden"),
+        combatVisible: !nodes.combatArea.classList.contains("is-hidden")
+      }),
+      pauseCombatPreview: () => {
+        state.combat.animating = false;
+        cancelAnimationFrame(animationId);
+        return state.combat.layout || [];
+      },
+      prepareSixUnitBattle: () => {
+        clearScheduledCombatTimers();
+        state.combat.animating = false;
+        state.combat.resolved = true;
+        cancelAnimationFrame(animationId);
+        state.stage = 6;
+        state.round = 5;
+        state.squad = [0, 1, 2, 3, 7, 8].map((id) => createAnimalCard(id));
+        nodes.prepPhaseArea.classList.remove("is-hidden");
+        nodes.combatArea.classList.add("is-hidden");
+        nodes.combatSummary?.classList.add("is-hidden");
+        renderPrepScreen();
+        updateHUD();
+        nodes.startBattleBtn.disabled = false;
+        return state.squad.length;
+      },
       returnToMenu(stage = normalizeSave(save).selectedStage) {
         save = normalizeSave({ ...save, selectedStage: stage });
         saveSave();
@@ -865,7 +939,7 @@
       relic: null,
       freeRerollThisRound: false,
       rerollsUsedThisRound: 0,
-      squad: [null, null, null, null, null],
+      squad: [null, null, null, null, null, null],
       bench: [null, null, null, null, null],
       backpack: [],
       shop: {
@@ -881,6 +955,9 @@
         log: [],
         status: "",
         animating: false,
+        ending: false,
+        resolved: false,
+        runId: 0,
         timer: 0,
         playerActiveIndex: 0,
         enemyActiveIndex: 0,
@@ -1043,8 +1120,8 @@
 
   // Render Functions
   function renderMenu() {
+    stopCombatSession();
     selectedSlot = null;
-    pointerDrag = null;
     state.activeRun = false;
     document.body.classList.remove("squad-active");
     document.body.classList.remove("squad-stage-select");
@@ -1071,6 +1148,7 @@
   }
 
   function showStageSelection() {
+    stopCombatSession();
     window.WeightPlayGame?.exitMobileGameMode?.();
     document.body.classList.remove("squad-active");
     document.body.classList.add("squad-stage-select");
@@ -1293,11 +1371,13 @@
       } else if (premium) {
         const cost = premiumUnlockCost(animal.id);
         action.innerHTML = currencyMarkup("diamond", cost, t("currencyUnlock"));
+        action.setAttribute("aria-label", `${name}: ${t("unlockDiamond", { cost })}`);
         action.disabled = getWalletDiamonds() < cost;
         action.addEventListener("click", () => handleUnlockAnimal(animal.id));
       } else {
         const cost = animalUnlockCost(animal.id);
         action.innerHTML = currencyMarkup("gold", cost, t("currencyUnlock"));
+        action.setAttribute("aria-label", `${name}: ${t("unlockGold", { cost })}`);
         action.disabled = save.coins < cost;
         action.addEventListener("click", () => handleUnlockAnimal(animal.id));
       }
@@ -1517,6 +1597,7 @@
 
   // Round Setup and Shop Drafting
   function startRoundPrep() {
+    nodes.startBattleBtn.disabled = false;
     nodes.prepPhaseArea.classList.remove("is-hidden");
     nodes.combatArea.classList.add("is-hidden");
     nodes.combatSummary?.classList.add("is-hidden");
@@ -1608,12 +1689,7 @@
       el.dataset.slot = String(index);
       el.dataset.area = sourceArea;
       
-      // Drag/Drop Listeners
-      el.addEventListener("dragover", dragOver);
-      el.addEventListener("dragleave", dragLeave);
-      el.addEventListener("drop", dragDrop);
       el.addEventListener("click", () => handleSlotTap(sourceArea, index));
-      el.addEventListener("pointerup", pointerCardUp);
       return el;
     }
 
@@ -1621,8 +1697,7 @@
     if (save.selectedSkin === "golden" && card.id === 8) {
       el.classList.add("mascot-golden");
     }
-    el.draggable = true;
-    el.dataset.allowNativeDrag = "true";
+    el.draggable = false;
     el.dataset.slot = String(index);
     el.dataset.area = sourceArea;
 
@@ -1716,117 +1791,7 @@
       handleSlotTap(sourceArea, index);
     });
 
-    // Drag listeners
-    el.addEventListener("dragstart", (e) => {
-      initAudio();
-      e.dataTransfer.setData("text/plain", JSON.stringify({ area: sourceArea, index }));
-      el.classList.add("dragging");
-    });
-    el.addEventListener("dragend", () => {
-      el.classList.remove("dragging");
-    });
-    el.addEventListener("dragover", dragOver);
-    el.addEventListener("dragleave", dragLeave);
-    el.addEventListener("drop", dragDrop);
-    if (sourceArea !== "backpack") {
-      el.addEventListener("pointerdown", pointerCardDown);
-      el.addEventListener("pointermove", pointerCardMove);
-      el.addEventListener("pointerup", pointerCardUp);
-      el.addEventListener("pointercancel", pointerCardCancel);
-    }
-
     return el;
-  }
-
-  // Drag and Drop Logic
-  function dragOver(e) {
-    e.preventDefault();
-    this.classList.add("drag-over");
-  }
-
-  function dragLeave() {
-    this.classList.remove("drag-over");
-  }
-
-  function dragDrop(e) {
-    e.preventDefault();
-    this.classList.remove("drag-over");
-    try {
-      const source = JSON.parse(e.dataTransfer.getData("text/plain"));
-      const targetArea = this.dataset.area;
-      const targetIndex = parseInt(this.dataset.slot);
-      
-      executeAction(source.area, source.index, targetArea, targetIndex);
-    } catch (err) {
-      console.warn("Drag drop error:", err);
-    }
-  }
-
-  function pointerCardDown(e) {
-    if (!state.activeRun || e.pointerType === "mouse") return;
-    const area = e.currentTarget.dataset.area;
-    const index = Number(e.currentTarget.dataset.slot);
-    const card = getCardAt(area, index);
-    if (!card) return;
-    pointerDrag = {
-      area,
-      index,
-      startX: e.clientX,
-      startY: e.clientY,
-      active: false,
-      ghost: null
-    };
-    e.currentTarget.setPointerCapture?.(e.pointerId);
-  }
-
-  function pointerCardMove(e) {
-    if (!pointerDrag) return;
-    const dx = e.clientX - pointerDrag.startX;
-    const dy = e.clientY - pointerDrag.startY;
-    if (!pointerDrag.active && Math.hypot(dx, dy) < 10) return;
-    if (!pointerDrag.active) {
-      pointerDrag.active = true;
-      pointerDrag.ghost = e.currentTarget.cloneNode(true);
-      pointerDrag.ghost.classList.add("touch-drag-ghost");
-      document.body.appendChild(pointerDrag.ghost);
-      e.currentTarget.classList.add("dragging");
-      selectedSlot = { area: pointerDrag.area, index: pointerDrag.index };
-    }
-    e.preventDefault();
-    pointerDrag.ghost.style.left = `${e.clientX}px`;
-    pointerDrag.ghost.style.top = `${e.clientY}px`;
-    document.querySelectorAll(".card-item.drag-over").forEach((node) => node.classList.remove("drag-over"));
-    const target = document.elementFromPoint(e.clientX, e.clientY)?.closest?.(".card-item");
-    if (target && target.dataset.area) target.classList.add("drag-over");
-  }
-
-  function pointerCardUp(e) {
-    if (!pointerDrag) return;
-    const drag = pointerDrag;
-    pointerDrag = null;
-    document.querySelectorAll(".card-item.drag-over, .card-item.dragging").forEach((node) => {
-      node.classList.remove("drag-over", "dragging");
-    });
-    drag.ghost?.remove();
-
-    if (!drag.active) return;
-    e.preventDefault();
-    const target = document.elementFromPoint(e.clientX, e.clientY)?.closest?.(".card-item");
-    selectedSlot = null;
-    if (!target || !target.dataset.area) {
-      renderPrepScreen();
-      return;
-    }
-    executeAction(drag.area, drag.index, target.dataset.area, Number(target.dataset.slot));
-  }
-
-  function pointerCardCancel() {
-    if (!pointerDrag) return;
-    pointerDrag.ghost?.remove();
-    pointerDrag = null;
-    document.querySelectorAll(".card-item.drag-over, .card-item.dragging").forEach((node) => {
-      node.classList.remove("drag-over", "dragging");
-    });
   }
 
   // Mobile/Tap Fallback
@@ -2214,12 +2179,21 @@
     return Math.max(1, Number(unit?.level) || 1);
   }
 
-  function combatLayoutMetrics(countValue) {
-    const count = Math.max(1, Number(countValue) || 1);
-    if (count === 1) return { spacing: 0, width: 170, height: 230 };
-    if (count === 2) return { spacing: 180, width: 150, height: 210 };
-    if (count === 3) return { spacing: 150, width: 130, height: 184 };
-    return { spacing: 120, width: 106, height: 154 };
+  function combatLayoutMetrics(team = "player") {
+    return team === "player"
+      ? { width: 174, height: 214 }
+      : { width: 160, height: 198 };
+  }
+
+  function formationPosition(team, formationSlot = 0) {
+    const safeSlot = Math.max(0, Math.min(5, Number(formationSlot) || 0));
+    const column = safeSlot % 3;
+    const row = Math.floor(safeSlot / 3);
+    const x = [145, 360, 575][column];
+    const y = team === "player"
+      ? [800, 1040][row]
+      : [440, 200][row];
+    return { x, y, row, column, slot: safeSlot };
   }
 
   function addCombatEffect(type, x, y, text = "", textColor = "white") {
@@ -2244,19 +2218,42 @@
   }
 
   function combatPoint(team, index = 0) {
-    const isPlayer = team === "player";
-    const squad = isPlayer ? state.combat.playerSquad : state.combat.enemySquad;
-    const count = Math.max(1, squad.length);
-    const { spacing } = combatLayoutMetrics(count);
-    const xBase = 360 - (spacing * Math.max(0, count - 1)) / 2;
-    return {
-      x: xBase + index * spacing,
-      y: isPlayer ? 950 : 330
-    };
+    const squad = team === "player" ? state.combat.playerSquad : state.combat.enemySquad;
+    const slot = squad[index]?.formationSlot ?? index;
+    return formationPosition(team, slot);
   }
 
   function combatUnitName(unit) {
     return unit ? (locale === "zh-Hant" ? (unit.nameZht || unit.nameEn) : unit.nameEn) : "-";
+  }
+
+  function unitFormationSlot(unit, fallbackIndex = 0) {
+    return Math.max(0, Math.min(5, Number.isFinite(Number(unit?.formationSlot)) ? Number(unit.formationSlot) : fallbackIndex));
+  }
+
+  function unitAtFormationSlot(squad, slot) {
+    const exact = squad.find((unit) => unitFormationSlot(unit, -1) === slot);
+    return exact || (!squad.some((unit) => Number.isFinite(Number(unit?.formationSlot))) ? squad[slot] : null);
+  }
+
+  function livingFormationRow(squad, row) {
+    return squad
+      .filter((unit, index) => unit.hp > 0 && Math.floor(unitFormationSlot(unit, index) / 3) === row)
+      .sort((a, b) => unitFormationSlot(a) - unitFormationSlot(b));
+  }
+
+  function formationTargets(squad, mode = "front") {
+    const preferredRow = mode === "back" ? 1 : 0;
+    const preferred = livingFormationRow(squad, preferredRow);
+    return preferred.length ? preferred : livingFormationRow(squad, preferredRow === 0 ? 1 : 0);
+  }
+
+  function formationTarget(squad, mode = "front") {
+    return formationTargets(squad, mode)[0] || null;
+  }
+
+  function formationTargetPoint(team, squad, unit) {
+    return combatPoint(team, Math.max(0, squad.indexOf(unit)));
   }
 
   function healWeakestAlly(squad, amount, team = "player") {
@@ -2339,21 +2336,28 @@
     playSynth("click");
 
     // Gather active players (non-null in squad)
-    const activeSquad = state.squad.filter(Boolean);
+    const activeSquad = state.squad
+      .map((card, formationSlot) => card ? { card, formationSlot } : null)
+      .filter(Boolean);
     if (!activeSquad.length) {
       alert("Position at least one animal in your squad before entering battle!");
       return;
     }
 
+    clearScheduledCombatTimers();
+    const runId = ++combatRunSequence;
+    nodes.startBattleBtn.disabled = true;
+
     // Prepare combatants (deep clone to not alter permanent state)
     const bonus = teamBonus();
-    state.combat.playerSquad = activeSquad.map((c) => ({
-      ...c,
-      hp: c.currentHp + bonus.hp,
-      maxHp: c.maxHp + bonus.hp,
-      atk: c.currentAtk + bonus.atk,
-      shield: c.hasShield,
-      shieldHp: c.hasShield ? Math.max(1, Math.ceil(c.currentHp * 0.35)) : 0
+    state.combat.playerSquad = activeSquad.map(({ card, formationSlot }) => ({
+      ...card,
+      formationSlot,
+      hp: card.currentHp + bonus.hp,
+      maxHp: card.maxHp + bonus.hp,
+      atk: card.currentAtk + bonus.atk,
+      shield: card.hasShield,
+      shieldHp: card.hasShield ? Math.max(1, Math.ceil(card.currentHp * 0.35)) : 0
     }));
 
     // Trigger Maple Shield relic (first unit gets shield)
@@ -2386,6 +2390,9 @@
     state.combat.step = 0;
     state.combat.log = [];
     state.combat.animating = true;
+    state.combat.ending = false;
+    state.combat.resolved = false;
+    state.combat.runId = runId;
     state.combat.timer = 0;
     state.combat.activeActor = null;
     state.combat.activeActors = [];
@@ -2423,6 +2430,7 @@
   function generateEnemySquad(stage, wave) {
     const stats = enemyWaveStats(stage, wave);
     const squad = [];
+    const formationSlots = formationSlotsForCount(stats.count);
     for (let i = 0; i < stats.count; i++) {
       // Pick random enemy matching difficulty tier
       const rand = ENEMY_METADATA[Math.floor(Math.random() * stats.tierLimit)];
@@ -2432,6 +2440,8 @@
         nameZht: rand.nameZht,
         roleEn: rand.roleEn,
         roleZht: rand.roleZht,
+        targetMode: rand.targetMode || "front",
+        formationSlot: formationSlots[i],
         sx: rand.sx,
         sy: rand.sy,
         sw: rand.sw,
@@ -2448,9 +2458,63 @@
     return squad;
   }
 
+  function formationSlotsForCount(countValue) {
+    const layouts = {
+      1: [1],
+      2: [0, 2],
+      3: [0, 1, 2],
+      4: [0, 1, 2, 4],
+      5: [0, 1, 2, 3, 5],
+      6: [0, 1, 2, 3, 4, 5]
+    };
+    const count = Math.max(1, Math.min(6, Number(countValue) || 1));
+    return layouts[count];
+  }
+
   function combatLog(message) {
     state.combat.status = message;
     nodes.combatStatusText.textContent = message;
+  }
+
+  function clearScheduledCombatTimers() {
+    if (combatEndTimer !== null) {
+      clearTimeout(combatEndTimer);
+      combatEndTimer = null;
+    }
+    combatStepTimers.forEach((timerId) => clearTimeout(timerId));
+    combatStepTimers.clear();
+  }
+
+  function stopCombatSession() {
+    clearScheduledCombatTimers();
+    cancelAnimationFrame(animationId);
+    combatRunSequence++;
+    if (!state?.combat) return;
+    state.combat.runId = combatRunSequence;
+    state.combat.animating = false;
+    state.combat.ending = false;
+    state.combat.resolved = true;
+  }
+
+  function scheduleCombatStepCleanup(callback, delay = 220) {
+    const runId = state.combat.runId;
+    const timerId = setTimeout(() => {
+      combatStepTimers.delete(timerId);
+      if (runId !== state.combat.runId || state.combat.resolved) return;
+      callback();
+    }, delay);
+    combatStepTimers.add(timerId);
+  }
+
+  function scheduleCombatEnd(result, delay = 1500) {
+    if (state.combat.ending || state.combat.resolved) return;
+    state.combat.ending = true;
+    const runId = state.combat.runId;
+    combatEndTimer = setTimeout(() => {
+      combatEndTimer = null;
+      if (runId !== state.combat.runId || state.combat.resolved) return;
+      endBattleRun(result, runId);
+    }, delay);
   }
 
   // Rendering Loop for Auto-Battle Canvas
@@ -2495,12 +2559,9 @@
     canvasCtx.fillStyle = "rgba(255,255,255,.92)";
     canvasCtx.strokeStyle = "rgba(0,0,0,.75)";
     canvasCtx.lineWidth = 5;
-    const enemyLabel = locale === "zh-Hant" ? "\u5f71\u4e4b\u5c0f\u968a" : "SHADOW SQUAD";
     const playerLabel = locale === "zh-Hant" ? "\u4f60\u7684\u5c0f\u968a" : "YOUR SQUAD";
-    canvasCtx.strokeText(enemyLabel, 360, 155);
-    canvasCtx.fillText(enemyLabel, 360, 155);
-    canvasCtx.strokeText(playerLabel, 360, 1140);
-    canvasCtx.fillText(playerLabel, 360, 1140);
+    canvasCtx.strokeText(playerLabel, 360, 1210);
+    canvasCtx.fillText(playerLabel, 360, 1210);
     canvasCtx.font = "900 28px Outfit, system-ui";
     canvasCtx.fillStyle = "#ffd666";
     canvasCtx.strokeText("VS", 360, 640);
@@ -2558,15 +2619,10 @@
 
   function drawSquadLine(squad, team) {
     const isPlayer = team === "player";
-    const count = Math.max(1, squad.length);
-    const metrics = combatLayoutMetrics(count);
-    const spacing = metrics.spacing;
-    const rowWidth = spacing * Math.max(0, count - 1);
-    const xBase = 360 - rowWidth / 2;
+    const metrics = combatLayoutMetrics(team);
     
     squad.forEach((unit, idx) => {
-      // Slide active slots forward
-      const targetX = xBase + idx * spacing;
+      const formation = formationPosition(team, unit.formationSlot ?? idx);
       
       // Draw card frame
       canvasCtx.save();
@@ -2588,13 +2644,13 @@
       const bounce = isActing ? Math.sin(actorProgress * Math.PI) : 0;
       const actorOffset = bounce * (isActing && actor.style === "cast" ? 18 : 12);
       const scale = isActing ? 1 + bounce * 0.08 : 1;
-      const centerY = (isPlayer ? 950 : 330) + (isPlayer ? -actorOffset : actorOffset);
-      const x = targetX + shakeX - (w * scale) / 2;
+      const centerY = formation.y + (isPlayer ? -actorOffset : actorOffset);
+      const x = formation.x + shakeX - (w * scale) / 2;
       const y = centerY - (h * scale) / 2;
       const drawW = w * scale;
       const drawH = h * scale;
       const imageBox = { x: x + 10, y: y + 44, w: w - 20, h: h - 78 };
-      state.combat.layout?.push({ team, index: idx, x, y, w: drawW, h: drawH, imageBox });
+      state.combat.layout?.push({ team, index: idx, formationSlot: formation.slot, formationRow: formation.row, x, y, w: drawW, h: drawH, imageBox });
 
       // Draw backdrop
       canvasCtx.fillStyle = isPlayer ? "rgba(10, 30, 24, 0.9)" : "rgba(35, 12, 12, 0.9)";
@@ -2709,8 +2765,8 @@
     const playerMax = sumMax(state.combat.playerSquad);
     const enemyHp = sumHp(state.combat.enemySquad);
     const enemyMax = sumMax(state.combat.enemySquad);
-    const playerFront = state.combat.playerSquad[0];
-    const enemyFront = state.combat.enemySquad[0];
+    const playerFront = formationTarget(state.combat.playerSquad, "front");
+    const enemyFront = formationTarget(state.combat.enemySquad, "front");
     const playerName = playerFront ? (locale === "zh-Hant" ? playerFront.nameZht : playerFront.nameEn) : "-";
     const enemyName = enemyFront ? (locale === "zh-Hant" ? enemyFront.nameZht : enemyFront.nameEn) : "-";
     const enemyRole = enemyFront ? (locale === "zh-Hant" ? enemyFront.roleZht : enemyFront.roleEn) : "";
@@ -2765,6 +2821,7 @@
 
   // Sequential Combat Turn Steps logic
   function resolveCombatStep() {
+    if (state.combat.ending || state.combat.resolved) return;
     const playerSquad = state.combat.playerSquad;
     const enemySquad = state.combat.enemySquad;
 
@@ -2772,19 +2829,19 @@
     if (!playerSquad.length && !enemySquad.length) {
       combatLog(t("drawText"));
       playSynth("fail");
-      setTimeout(() => endBattleRun("draw"), 1500);
+      scheduleCombatEnd("draw");
       return;
     }
     if (!playerSquad.length) {
       combatLog(t("failText"));
       playSynth("fail");
-      setTimeout(() => endBattleRun("lose"), 1500);
+      scheduleCombatEnd("lose");
       return;
     }
     if (!enemySquad.length) {
       combatLog(t("winText"));
       playSynth("win");
-      setTimeout(() => endBattleRun("win"), 1500);
+      scheduleCombatEnd("win");
       return;
     }
 
@@ -2795,7 +2852,7 @@
     if (!enemySquad.length) {
       combatLog(t("winText"));
       playSynth("win");
-      setTimeout(() => endBattleRun("win"), 900);
+      scheduleCombatEnd("win", 900);
       return;
     }
 
@@ -2841,7 +2898,7 @@
     combatLog(`${locale === "zh-Hant" ? pUnit.nameZht : pUnit.nameEn} ⚔️ ${locale === "zh-Hant" ? eUnit.nameZht : eUnit.nameEn}`);
 
     // Check faints
-    setTimeout(() => {
+    scheduleCombatStepCleanup(() => {
       let fainted = false;
       if (pUnit.hp <= 0) {
         playerSquad.shift();
@@ -2862,26 +2919,23 @@
   }
 
   function resolveOrderedCombatStep(playerSquad, enemySquad) {
-    const maxSlots = Math.max(playerSquad.length, enemySquad.length, 1);
-    const slot = state.combat.step % maxSlots;
+    const slot = state.combat.step % 6;
     state.combat.step++;
     playSynth("hit");
 
-    if (slot === 0) {
-      resolveDirectClash(playerSquad[0], enemySquad[0]);
-    } else {
-      const actions = [];
-      if (playerSquad[slot]) actions.push(resolveUnitAbility(playerSquad[slot], "player", slot));
-      if (enemySquad[slot]) actions.push(resolveEnemySlotAction(enemySquad[slot], slot));
-      combatLog(actions.filter(Boolean).join("  |  ") || `${locale === "zh-Hant" ? "\u7b2c" : "Slot"} ${slot + 1}`);
-    }
+    const actions = [];
+    const playerUnit = unitAtFormationSlot(playerSquad, slot);
+    const enemyUnit = unitAtFormationSlot(enemySquad, slot);
+    if (playerUnit) actions.push(resolveUnitAbility(playerUnit, "player", Math.max(0, playerSquad.indexOf(playerUnit))));
+    if (enemyUnit) actions.push(resolveEnemySlotAction(enemyUnit, Math.max(0, enemySquad.indexOf(enemyUnit))));
+    combatLog(actions.filter(Boolean).join("  |  ") || `${locale === "zh-Hant" ? "\u7b2c" : "Slot"} ${slot + 1}`);
 
     setTimeout(() => {
       const before = playerSquad.length + enemySquad.length;
       removeDefeatedUnits(playerSquad, "player");
       removeDefeatedUnits(enemySquad, "enemy");
       if (before !== playerSquad.length + enemySquad.length) playSynth("faint");
-    }, 220);
+    });
   }
 
   function resolveDirectClash(pUnit, eUnit) {
@@ -2899,14 +2953,11 @@
   }
 
   function triggerEnemyGuardAction(unit, slot) {
-    if (unit.abilityUsed || (unit.id !== 3 && unit.id !== 4)) return "";
+    if (unit.abilityUsed || unit.id !== 3) return "";
     unit.abilityUsed = true;
-    if (unit.id === 3) {
-      addUnitShield(state.combat.enemySquad[0] || unit, 1, "enemy", 0);
-      return `${combatUnitName(unit)} ${locale === "zh-Hant" ? "\u5b88\u8b77\u524d\u6392" : "guards the front"}`;
-    }
-    state.combat.enemySquad.forEach((ally, index) => addUnitShield(ally, 1, "enemy", index));
-    return `${combatUnitName(unit)} ${locale === "zh-Hant" ? "\u5c55\u958b\u5ca9\u77f3\u7d50\u754c" : "casts Stone Ward"}`;
+    const protectedUnit = formationTarget(state.combat.enemySquad, "front") || unit;
+    addUnitShield(protectedUnit, 1, "enemy", Math.max(0, state.combat.enemySquad.indexOf(protectedUnit)));
+    return `${combatUnitName(unit)} ${locale === "zh-Hant" ? "\u5b88\u8b77\u524d\u6392" : "guards the front"}`;
   }
 
   function enemyAttackDamage(unit) {
@@ -2924,17 +2975,28 @@
   }
 
   function resolveEnemySlotAction(unit, slot) {
-    const isGuardAction = !unit.abilityUsed && (unit.id === 3 || unit.id === 4);
+    const isGuardAction = !unit.abilityUsed && unit.id === 3;
     markActing("enemy", slot, isGuardAction ? "cast" : "attack");
-    const target = state.combat.playerSquad[0];
-    if (!target) return "";
     const guardText = triggerEnemyGuardAction(unit, slot);
     if (guardText) return guardText;
 
+    if (unit.id === 4) {
+      const targets = formationTargets(state.combat.playerSquad, "front");
+      const damage = Math.max(1, Math.ceil(enemyAttackDamage(unit) * 0.7));
+      targets.forEach((target) => {
+        const point = formationTargetPoint("player", state.combat.playerSquad, target);
+        damageTarget(target, damage, point.x, point.y);
+      });
+      return `${combatUnitName(unit)} ${locale === "zh-Hant" ? "\u6a6b\u6383\u6574\u6392" : "sweeps the front row"}`;
+    }
+
+    const target = formationTarget(state.combat.playerSquad, unit.targetMode || "front");
+    if (!target) return "";
     const targetIndex = Math.max(0, state.combat.playerSquad.indexOf(target));
     const point = combatPoint("player", targetIndex);
     damageTarget(target, enemyAttackDamage(unit), point.x, point.y);
-    return enemyAttackText(unit, `${combatUnitName(unit)} ${locale === "zh-Hant" ? "\u653b\u64ca\u524d\u6392" : "strikes the front"}`);
+    const targetLabel = unit.targetMode === "back" ? (locale === "zh-Hant" ? "\u653b\u64ca\u5f8c\u6392" : "strikes the back row") : (locale === "zh-Hant" ? "\u653b\u64ca\u524d\u6392" : "strikes the front row");
+    return enemyAttackText(unit, `${combatUnitName(unit)} ${targetLabel}`);
   }
 
   function resolveUnitAbility(unit, team, slot) {
@@ -2956,23 +3018,32 @@
       return `${combatUnitName(unit)} ${locale === "zh-Hant" ? "\u6490\u8d77\u8b77\u76fe" : "raises a shield"}`;
     }
     if (unit.id === 3) {
-      const frontTarget = enemies[0];
-      const frontPoint = combatPoint(enemyTeam, 0);
-      addCombatEffect("starfall", frontPoint.x, frontPoint.y, "", "#b9f7ff");
-      damageTarget(frontTarget, Math.max(1, unit.atk + level - 1), frontPoint.x, frontPoint.y);
-      const randomPool = enemies.filter((enemy) => enemy.hp > 0 && enemy !== frontTarget);
-      const randomTarget = randomPool.length ? randomPool[Math.floor(Math.random() * randomPool.length)] : frontTarget;
-      const randomIndex = Math.max(0, enemies.indexOf(randomTarget));
-      const randomPoint = combatPoint(enemyTeam, randomIndex);
-      addCombatEffect("starfall", randomPoint.x, randomPoint.y, "", "#b9f7ff");
-      damageTarget(randomTarget, Math.max(1, Math.ceil(unit.atk * 0.75)), randomPoint.x, randomPoint.y);
+      const backlineTargets = formationTargets(enemies, "back");
+      const primaryTarget = backlineTargets[0];
+      const secondTarget = backlineTargets[1] || primaryTarget;
+      const primaryPoint = formationTargetPoint(enemyTeam, enemies, primaryTarget);
+      addCombatEffect("starfall", primaryPoint.x, primaryPoint.y, "", "#b9f7ff");
+      damageTarget(primaryTarget, Math.max(1, unit.atk + level - 1), primaryPoint.x, primaryPoint.y);
+      const secondPoint = formationTargetPoint(enemyTeam, enemies, secondTarget);
+      addCombatEffect("starfall", secondPoint.x, secondPoint.y, "", "#b9f7ff");
+      damageTarget(secondTarget, Math.max(1, Math.ceil(unit.atk * 0.75)), secondPoint.x, secondPoint.y);
       return `${combatUnitName(unit)} ${locale === "zh-Hant" ? "\u964d\u4e0b\u661f\u843d" : "casts Starfall"}`;
     }
     if (unit.id === 2 || unit.id === 4) {
       allies.forEach((ally, idx) => addUnitShield(ally, Math.max(1, level), team, idx));
       return `${combatUnitName(unit)} ${locale === "zh-Hant" ? "\u5b88\u8b77\u5168\u968a" : "guards the squad"}`;
     }
-    if (unit.id === 7 || unit.id === 8) {
+    if (unit.id === 7) {
+      const targets = formationTargets(enemies, "front");
+      const damage = Math.max(1, Math.ceil(unit.atk * 0.7));
+      targets.forEach((target) => {
+        const point = formationTargetPoint(enemyTeam, enemies, target);
+        addCombatEffect("hit", point.x, point.y, "", "#ffd666");
+        damageTarget(target, damage, point.x, point.y);
+      });
+      return `${combatUnitName(unit)} ${locale === "zh-Hant" ? "\u6a6b\u6383\u6574\u6392" : "sweeps the front row"}`;
+    }
+    if (unit.id === 8) {
       allies.forEach((ally) => {
         ally.atk += Math.max(1, level);
         ally.maxHp += 1;
@@ -2983,10 +3054,15 @@
       return `${combatUnitName(unit)} ${locale === "zh-Hant" ? "\u5f37\u5316\u968a\u53cb" : "rallies allies"}`;
     }
 
-    const target = enemies[0];
-    const point = combatPoint(enemyTeam, 0);
+    const target = formationTarget(enemies, unit.targetMode || "front");
+    const point = formationTargetPoint(enemyTeam, enemies, target);
+    if (unit.id === 0) {
+      damageTarget(target, level, point.x, point.y);
+      damageTarget(target, unit.atk, point.x, point.y);
+      return `${combatUnitName(unit)} ${locale === "zh-Hant" ? "\u9023\u7e8c\u8df3\u64ca\u524d\u6392" : "double-pounces the front row"}`;
+    }
     damageTarget(target, unit.atk, point.x, point.y);
-    return `${combatUnitName(unit)} ${locale === "zh-Hant" ? "\u653b\u64ca\u524d\u6392" : "attacks the front"}`;
+    return `${combatUnitName(unit)} ${unit.targetMode === "back" ? (locale === "zh-Hant" ? "\u653b\u64ca\u5f8c\u6392" : "attacks the back row") : (locale === "zh-Hant" ? "\u653b\u64ca\u524d\u6392" : "attacks the front row")}`;
   }
 
   // Combat Faint triggers
@@ -3033,9 +3109,13 @@
     saveSave();
   }
 
-  function endBattleRun(result) {
+  function endBattleRun(result, runId = state.combat.runId) {
+    if (runId !== state.combat.runId || state.combat.resolved) return;
+    state.combat.resolved = true;
+    state.combat.ending = false;
     state.combat.animating = false;
     cancelAnimationFrame(animationId);
+    clearScheduledCombatTimers();
 
     if (result === "win") {
       awardTeamXp(4 + state.stage * 2 + state.round);

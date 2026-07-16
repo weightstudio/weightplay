@@ -162,6 +162,11 @@ body.squad-stage-select .stage-panel { border: 0 !important; outline: 0; isolati
 .training-action { grid-column: 1/-1; min-height: 32px; border: 0; border-radius: 8px; color: #092016; background: var(--mint); font-size: .7rem; font-weight: 900; }
 .training-action.unlock-action { background: var(--gold); }
 .training-action:disabled { opacity: .42; }
+.currency-line { display:inline-flex; align-items:center; justify-content:center; gap:4px; white-space:nowrap; }
+.currency-line img { width:18px; height:18px; flex:0 0 18px; object-fit:contain; }
+.currency-line b { color:inherit; font:inherit; font-weight:900; }
+.training-header .currency-line img { width:20px; height:20px; flex-basis:20px; }
+.profile-grid .currency-line { width:100%; }
 
 /* General-audience reserve is a separate physical sibling. */
 .stage-ad-reserve { display: none !important; }
@@ -186,7 +191,7 @@ body:not(.squad-active) .battle-ad-reserve { display: none; }
 .combat-summary strong { color: var(--mint); font-size: .73rem; }
 .combat-summary span { color: #dff8ec; font-size: .66rem; font-weight: 800; }
 
-.prep-phase-area { min-height: 0; display: grid; grid-template-rows: 42px 218px minmax(0,1fr); gap: 8px; overflow: hidden; }
+.prep-phase-area { min-height: 0; display: grid; grid-template-rows: 42px 264px minmax(0,1fr); gap: 8px; overflow: hidden; }
 .food-guide { display: flex; align-items: center; gap: 6px; overflow-x: auto; padding: 5px 8px; border: 1px solid rgba(255,214,102,.22); border-radius: 11px; background: rgba(255,214,102,.07); scrollbar-width: none; }
 .food-guide strong, .food-guide span { flex: none; padding: 3px 7px; border-radius: 999px; font-size: .62rem; font-weight: 900; }
 .food-guide strong { color: #231503; background: var(--gold); }
@@ -194,40 +199,37 @@ body:not(.squad-active) .battle-ad-reserve { display: none; }
 .squad-section, .shop-section { min-height: 0; padding: 8px; border: 1px solid rgba(137,239,194,.14); border-radius: 12px; background: rgba(0,0,0,.16); overflow: hidden; }
 .squad-section h3, .shop-section h3 { margin: 0 0 6px; color: var(--muted); font-size: .7rem; letter-spacing: .03em; text-transform: uppercase; }
 .cards-row { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 5px; min-width: 0; }
-.squad-row { height: 180px; }
-.shop-section { display: grid; grid-template-rows: 22px 46px 230px minmax(76px,1fr); row-gap: 6px; }
+.squad-row { grid-template-columns:repeat(3,minmax(0,1fr)); grid-template-rows:repeat(2,110px); height:226px; }
+.shop-section { display: grid; grid-template-rows: 22px 46px minmax(0,1fr) minmax(76px,86px); row-gap: 6px; }
 .shop-controls { display: flex; gap: 6px; }
 .shop-action-btn, .battle-action-btn { min-height: 40px; padding: 7px 10px; font-size: .72rem; }
 .battle-action-btn { flex: 1; }
-.shop-row { grid-auto-flow: column; grid-auto-columns: 30%; grid-template-columns: none; align-items:start; gap: 8px; overflow-x: auto; padding: 2px 12px 5px 1px; scrollbar-width: none; scroll-snap-type: x proximity; touch-action:pan-x; overscroll-behavior-inline:contain; }
-.shop-row::-webkit-scrollbar { display:none; }
-.shop-cell { min-width: 0; scroll-snap-align: start; }
-.shop-row .card-item { height:228px; min-height:228px; }
-.shop-row .card-item { touch-action:pan-x; }
+.shop-row { grid-template-columns:repeat(3,minmax(0,1fr)); grid-auto-flow:row; grid-auto-rows:110px; align-content:start; align-items:start; gap:6px; overflow-x:hidden; overflow-y:auto; padding:2px 3px 6px 1px; scrollbar-width:thin; touch-action:pan-y; overscroll-behavior-block:contain; }
+.shop-cell { min-width:0; height:110px; }
+.squad-row .card-item, .shop-row .card-item { height:110px; min-height:110px; }
+.shop-row .card-item { touch-action:pan-y; }
 .shop-row .empty-slot::after { content:"+"; position:absolute; inset:0; display:grid; place-items:center; color:rgba(137,239,194,.24); font-size:3rem; font-weight:300; }
-.card-item { position: relative; min-width: 0; height: 100%; min-height: 142px; display: flex; flex-direction: column; justify-content: flex-end; padding: 5px; overflow: hidden; border: 2px dashed rgba(137,239,194,.2); border-radius: 11px; background: rgba(13,37,30,.85); box-shadow: inset 0 0 14px rgba(0,0,0,.45); cursor: grab; user-select: none; touch-action: none; }
+.card-item { position: relative; min-width: 0; height: 100%; min-height: 142px; display: flex; flex-direction: column; justify-content: flex-end; padding: 5px; overflow: hidden; border: 2px dashed rgba(137,239,194,.2); border-radius: 11px; background: rgba(13,37,30,.85); box-shadow: inset 0 0 14px rgba(0,0,0,.45); cursor: pointer; user-select: none; touch-action: manipulation; }
 .card-item:not(.empty-slot) { border-style: solid; border-color: rgba(137,239,194,.36); }
 .card-item.is-selected-card { border-color:#b9ffe2 !important; box-shadow:0 0 0 3px var(--mint), 0 0 22px rgba(97,237,179,.78), inset 0 0 18px rgba(97,237,179,.18); }
 .card-graphic { position: absolute; top: 7px; left: 50%; width: 78%; aspect-ratio: 1; transform: translateX(-50%); background: center/contain no-repeat; }
-.card-graphic.character-icon { top: 34%; width: 84%; transform: translate(-50%,-50%); filter: drop-shadow(0 5px 6px rgba(0,0,0,.48)); }
+.card-graphic.character-icon { top: 37%; width: 84%; transform: translate(-50%,-50%); filter: drop-shadow(0 5px 6px rgba(0,0,0,.48)); }
 .card-graphic.food-icon { top: 38%; width: 72%; transform: translate(-50%,-50%); }
 .card-level-tag, .card-frozen-tag { position: absolute; top: 4px; z-index: 3; padding: 1px 4px; border-radius: 5px; font-size: .55rem; font-weight: 900; }
 .card-level-tag { left: 4px; color: var(--gold); background: rgba(0,0,0,.78); }
 .card-frozen-tag { right: 4px; background: #5279dc; }
-.card-name { z-index: 2; min-height: 1.8em; overflow: hidden; color: #fff; font-size: .61rem; font-weight: 900; line-height: 1.05; text-align: center; }
+.card-name { z-index: 2; min-height: 1.8em; overflow: hidden; color: #fff; font-size: .61rem; font-weight: 900; line-height: 1.05; text-align: center; text-shadow:-1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000,0 2px 2px rgba(0,0,0,.95); }
 .card-effect { z-index: 2; min-height: 2.2em; margin: 2px 0; overflow: hidden; color: #d6f7e8; font-size: .52rem; font-weight: 800; line-height: 1.1; text-align: center; }
 .card-ability { display: none; }
 .card-stats { z-index: 2; display: flex; justify-content: space-between; padding: 2px 4px; border-radius: 5px; background: rgba(0,0,0,.78); font-size: .58rem; font-weight: 900; }
 .card-atk { color: var(--gold); } .card-hp { color: var(--danger); }
 .card-cost { position: absolute; right: 4px; bottom: 28px; z-index: 3; width: 20px; height: 20px; display: grid; place-items: center; border-radius: 50%; color: #231503; background: var(--gold); font-size: .62rem; font-weight: 900; }
 .card-shield-tag { position: absolute; left: 50%; bottom: 27px; z-index: 3; transform: translateX(-50%); padding: 1px 4px; border-radius: 5px; background: #5279dc; font-size: .52rem; }
-.drag-over { border-color: var(--mint) !important; box-shadow: 0 0 0 3px rgba(97,237,179,.2) !important; }
 .selected-ability-panel { min-height:0; display:grid; align-content:center; gap:3px; margin-top:6px; padding:8px 10px; overflow-y:auto; overflow-x:hidden; border:1px solid rgba(137,239,194,.2); border-radius:10px; color:var(--muted); background:rgba(2,14,11,.78); font-size:.68rem; line-height:1.22; scrollbar-width:thin; }
 .selected-ability-panel.has-selection { border-color:rgba(97,237,179,.58); background:rgba(18,62,47,.72); }
 .selected-ability-panel strong { color:var(--mint); font-size:.76rem; }
 .selected-ability-panel small { color:var(--gold); font-size:.66rem; font-weight:900; }
 .selected-ability-panel span { display:block; overflow-wrap:anywhere; }
-.touch-drag-ghost { position: fixed; z-index: 9999; width: 82px; height: 124px; opacity: .9; pointer-events:none; transform: translate(-50%,-50%); }
 
 .combat-area { position: relative; min-width: 0; min-height: 0; width: 100%; height: 100%; overflow: hidden; border: 1px solid var(--line); border-radius: 14px; background: #020706; }
 #gameCanvas { display: block; width: 100%; height: 100%; object-fit: contain; background: #071b14; }

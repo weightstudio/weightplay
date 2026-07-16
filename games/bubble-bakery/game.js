@@ -486,6 +486,12 @@
     return stampProgress(stats);
   }
 
+  function setBattleCovered(covered) {
+    nodes.playPanel.inert = covered;
+    if (covered) nodes.playPanel.setAttribute("aria-hidden", "true");
+    else nodes.playPanel.removeAttribute("aria-hidden");
+  }
+
   function showMain() {
     document.body.classList.remove("is-bakery-playing", "is-bakery-stage-select", "is-bakery-result");
     document.body.classList.remove("wp-stage-select-active");
@@ -495,6 +501,7 @@
     nodes.stagePanel.classList.add("hidden");
     nodes.playPanel.classList.add("hidden");
     nodes.resultPanel.classList.add("hidden");
+    setBattleCovered(false);
     busy = false;
     updateBakeryFrame();
   }
@@ -577,6 +584,7 @@
     nodes.stagePanel.classList.remove("hidden");
     nodes.playPanel.classList.add("hidden");
     nodes.resultPanel.classList.add("hidden");
+    setBattleCovered(false);
     updateBakeryFrame();
     busy = false;
     renderRecommendedOrder();
@@ -608,6 +616,7 @@
     nodes.stagePanel.classList.add("hidden");
     nodes.playPanel.classList.remove("hidden");
     nodes.resultPanel.classList.add("hidden");
+    setBattleCovered(false);
     window.WeightPlayGame?.exitMobileGameMode?.();
     nodes.playPanel.classList.remove("weightplay-active-viewport");
     updateBakeryFrame();
@@ -617,6 +626,7 @@
     requestAnimationFrame(() => {
       window.scrollTo({ top: 0, left: 0, behavior: "auto" });
       nodes.playPanel.scrollIntoView?.({ block: "start", inline: "nearest", behavior: "auto" });
+      nodes.board.querySelector(".bubble")?.focus({ preventScroll: true });
     });
     playSound("start");
     track("game_start", { level: index + 1 });
@@ -940,6 +950,7 @@
     const stamp = recordFinishStats(won, stageNo);
     const report = recordSkillReport({ stageNo, won, earned, previousBest });
     lastResult = { won, stageNo, earned, unlockedStageNo, stamp, moves, report };
+    setBattleCovered(true);
     renderResult(lastResult);
     playSound(won ? "success" : "error");
     track("game_complete", { level: stageNo, success: won, score, moves_left: moves });
@@ -1119,6 +1130,16 @@
   nodes.resultStagesBtn.addEventListener("click", showStageSelect);
   nodes.retryBtn.addEventListener("click", () => startStage(currentStage));
   nodes.nextStageBtn.addEventListener("click", () => startStage(Math.min(currentStage + 1, stages.length - 1)));
+  if (new URLSearchParams(location.search).has("smoke")) {
+    window.__bubbleBakerySmoke = {
+      forceFailure() {
+        if (nodes.playPanel.classList.contains("hidden") || !nodes.resultPanel.classList.contains("hidden")) return null;
+        moves = 0;
+        finish(false);
+        return { resultVisible: !nodes.resultPanel.classList.contains("hidden"), moves, boardButtons: nodes.board.querySelectorAll(".bubble").length };
+      },
+    };
+  }
   document.querySelectorAll("img[data-fallback-src]").forEach((image) => {
     image.addEventListener("error", () => {
       const fallback = image.dataset.fallbackSrc;

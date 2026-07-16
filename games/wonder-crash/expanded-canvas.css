@@ -89,6 +89,11 @@ body.wonder-playing #game:focus-visible {
   outline-offset: -6px;
 }
 
+body.wonder-playing #pausePanel :is(button, select):focus-visible {
+  outline: 4px solid #ffe27a;
+  outline-offset: 2px;
+}
+
 body.wonder-playing .battle-hud {
   right: 64px;
   left: 64px;
