@@ -1430,7 +1430,7 @@
   }
 
   function startWave() {
-    if (!state.stage || state.runningWave || state.gameOver) return;
+    if (!state.stage || state.runningWave || state.gameOver || state.nextWaveTimer > 0) return;
     state.nextWaveTimer = 0;
     state.wave += 1;
     state.runningWave = true;
@@ -3608,12 +3608,14 @@
     state.enemies = [];
     showWaveClearFeedback();
     const queued = { timer: state.nextWaveTimer, disabled: nodes.waveBtn.disabled, text: nodes.waveBtn.textContent };
+    nodes.canvas.dispatchEvent(new KeyboardEvent("keydown", { key: "w", bubbles: true }));
+    const keyboardDuringCountdown = { wave: state.wave, runningWave: state.runningWave, timer: state.nextWaveTimer };
     update(4.8);
     const beforeStart = { wave: state.wave, runningWave: state.runningWave, timer: state.nextWaveTimer };
     update(0.3);
     const started = { wave: state.wave, runningWave: state.runningWave, timer: state.nextWaveTimer };
     state.manualSimulation = false;
-    return { queued, beforeStart, started };
+    return { queued, keyboardDuringCountdown, beforeStart, started };
   }
 
   function runDiamondSinkScenario() {

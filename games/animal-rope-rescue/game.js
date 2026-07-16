@@ -12,6 +12,8 @@
       backToStages: "Back to stages",
       playfield: "Animal Vine Rescue playfield",
       cutVine: "Cut vine",
+      leafControl: "Leaf trampoline position",
+      leafPosition: "Leaf at {value} percent",
       menuTitle: "Rescue fruit for hungry animals.",
       menuHint: "Cut the vine, drag the leaf, and bounce fruit into the animal basket.",
       start: "Choose Stage",
@@ -19,8 +21,8 @@
       score: "Score",
       stages: "Stages",
       cut: "Cut",
-      hint: "Drag the leaf under the fruit, then press Cut. Keep dragging the leaf while the fruit falls.",
-      fallHint: "Keep dragging the leaf under the falling fruit and bounce it toward the glowing basket.",
+      hint: "Drag the leaf or use ← →, then press Cut. Keep moving while the fruit falls.",
+      fallHint: "Keep dragging or using ← → under the fruit and bounce it toward the glowing basket.",
       loading: "Loading",
       nextStage: "Next Stage",
       retry: "Try Again",
@@ -49,6 +51,8 @@
       backToStages: "返回選關",
       playfield: "動物藤蔓救援遊玩區",
       cutVine: "剪斷藤蔓",
+      leafControl: "葉子彈墊位置",
+      leafPosition: "葉子在 {value}% 位置",
       menuTitle: "把水果送給肚子餓的動物。",
       menuHint: "切斷藤蔓，拖曳葉子，讓水果彈進動物籃子。",
       start: "選擇關卡",
@@ -56,8 +60,8 @@
       score: "分數",
       stages: "選關",
       cut: "切斷",
-      hint: "先把葉子拖到水果下方，再按切斷。水果掉下來時也可以繼續拖葉子。",
-      fallHint: "水果掉下來時繼續拖葉子，把它彈向發光的籃子。",
+      hint: "拖葉子或按 ← → 移到水果下方，再按切斷；掉落時也要繼續移動。",
+      fallHint: "水果掉下來時，繼續拖葉子或按 ← →，把它彈向發光的籃子。",
       loading: "載入中",
       nextStage: "下一關",
       retry: "再玩一次",
@@ -210,6 +214,8 @@
     nodes.stageBackBtn.setAttribute("aria-label", t("backToStages"));
     nodes.playfield.setAttribute("aria-label", t("playfield"));
     nodes.vineButton.setAttribute("aria-label", t("cutVine"));
+    nodes.leafPaddle.setAttribute("aria-label", t("leafControl"));
+    updatePaddleAccessibility();
     renderStages();
     if (!nodes.gamePanel.classList.contains("hidden")) setupStage(currentStage);
   }
@@ -335,7 +341,14 @@
     nodes.fruit.style.rotate = `${fruit.rot}deg`;
     nodes.fallGuide.style.left = `${fruit.x}%`;
     nodes.leafPaddle.style.left = `${paddleX}%`;
+    updatePaddleAccessibility();
     updateAimGuide(paddleX, stage.targetX);
+  }
+
+  function updatePaddleAccessibility() {
+    const value = Math.round(paddleX);
+    nodes.leafPaddle.setAttribute("aria-valuenow", String(value));
+    nodes.leafPaddle.setAttribute("aria-valuetext", t("leafPosition", { value }));
   }
 
   function updateAimGuide(fromX, toX) {
@@ -361,6 +374,7 @@
     nodes.fallGuide.classList.add("active");
     nodes.targetGuide.classList.add("active");
     nodes.hintText.textContent = t("fallHint");
+    requestAnimationFrame(() => nodes.leafPaddle.focus({ preventScroll: true }));
     lastFrame = performance.now();
     window.WonderSound?.play?.("click");
     requestAnimationFrame(tick);
@@ -460,6 +474,11 @@
     positionElements();
   }
 
+  function setPaddlePosition(value) {
+    paddleX = Math.max(16, Math.min(84, value));
+    positionElements();
+  }
+
   function isVineCutPointer(event) {
     if (running || settled || fruit.cut) return false;
     const rect = nodes.playfield.getBoundingClientRect();
@@ -522,6 +541,7 @@
     }
     setupStage(stageNo);
     show(nodes.gamePanel);
+    requestAnimationFrame(() => nodes.leafPaddle.focus({ preventScroll: true }));
   });
   nodes.vineButton.addEventListener("pointerdown", (event) => {
     event.preventDefault();
@@ -548,13 +568,25 @@
   nodes.playfield.addEventListener("pointermove", (event) => {
     if (event.pressure > 0 || event.buttons) movePaddle(event.clientX);
   });
+  nodes.leafPaddle.addEventListener("keydown", (event) => {
+    if (settled || !nodes.resultPanel.classList.contains("hidden")) return;
+    const key = event.key;
+    if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(key)) return;
+    event.preventDefault();
+    if (key === "Home") setPaddlePosition(16);
+    else if (key === "End") setPaddlePosition(84);
+    else setPaddlePosition(paddleX + (key === "ArrowLeft" ? -4 : 4));
+    window.WonderSound?.play?.("click");
+  });
   nodes.nextStageBtn.addEventListener("click", () => {
     nodes.resultPanel.classList.add("hidden");
     setupStage(currentStage + 1);
+    requestAnimationFrame(() => nodes.leafPaddle.focus({ preventScroll: true }));
   });
   nodes.retryBtn.addEventListener("click", () => {
     nodes.resultPanel.classList.add("hidden");
     setupStage(currentStage);
+    requestAnimationFrame(() => nodes.leafPaddle.focus({ preventScroll: true }));
   });
   nodes.resultStagesBtn.addEventListener("click", () => {
     nodes.resultPanel.classList.add("hidden");

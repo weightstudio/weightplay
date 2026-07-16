@@ -46,7 +46,7 @@
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
-    <link rel="stylesheet" href="style.css?v=20260716-auto-squad-visual2" />
+    <link rel="stylesheet" href="style.css?v=20260716-auto-squad-visual3" />
   </head>
   <body data-tutorial-auto-show="false">
     <main class="squad-app">
@@ -161,13 +161,14 @@
               <button id="startBattleBtn" class="primary-btn battle-action-btn" type="button" data-ui="startBattle">Start Battle</button>
             </div>
             <div id="shopRow" class="cards-row shop-row" aria-label="Shop shelf items"></div>
+            <div id="selectedAbilityPanel" class="selected-ability-panel" aria-live="polite"></div>
           </div>
 
         </div>
 
         <!-- Combat Canvas Area (Animate Battle step by step) -->
         <div id="combatArea" class="combat-area is-hidden">
-          <canvas id="gameCanvas" width="720" height="900" aria-label="Animal Auto Squad Arena"></canvas>
+          <canvas id="gameCanvas" width="720" height="1280" aria-label="Animal Auto Squad Arena"></canvas>
           <div id="combatStatusText" class="combat-status" data-ui="combatIntro">Prepare for Battle!</div>
         </div>
 
@@ -255,7 +256,7 @@
     <script src="../../src/i18n.js?v=20260703-i18n-clean1"></script>
     <script src="../../src/tutorial.js?v=20260711-auto-squad-guide1"></script>
     <script src="../../src/wallet.js?v=20260706-crystal-diamond-charm1"></script>
-    <script src="game.js?v=20260716-auto-squad-visual2"></script>
+    <script src="game.js?v=20260716-auto-squad-visual3"></script>
     <script>
       (() => {
         const loadGameInfo = () => {

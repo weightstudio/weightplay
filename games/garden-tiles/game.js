@@ -190,6 +190,14 @@
   let resultStarCount = 0;
   let resultPreviousBest = 0;
 
+  function setBattleCovered(covered) {
+    for (const node of [statusbar, boardPanel]) {
+      node.inert = covered;
+      if (covered) node.setAttribute("aria-hidden", "true");
+      else node.removeAttribute("aria-hidden");
+    }
+  }
+
   function locale() {
     return window.WonderI18n?.locale?.() || "en";
   }
@@ -262,6 +270,7 @@
     document.body.classList.remove("garden-stage", "garden-playing");
     document.body.classList.add("garden-main");
     resultPanel.classList.add("hidden");
+    setBattleCovered(false);
     mainPanel.classList.remove("hidden");
     statusbar.classList.add("hidden");
     levelSelect.classList.add("hidden");
@@ -330,6 +339,7 @@
     document.body.classList.remove("garden-main", "garden-playing");
     document.body.classList.add("garden-stage");
     resultPanel.classList.add("hidden");
+    setBattleCovered(false);
     mainPanel.classList.add("hidden");
     statusbar.classList.add("hidden");
     boardPanel.classList.add("hidden");
@@ -342,6 +352,7 @@
     if (window.matchMedia("(max-width: 520px)").matches) {
       requestAnimationFrame(() => levelGrid.querySelector("button.challenge")?.scrollIntoView({ block: "nearest", inline: "center", behavior: "auto" }));
     }
+    requestAnimationFrame(() => (levelGrid.querySelector("button.challenge") || levelGrid.querySelector("button:not(.locked)"))?.focus({ preventScroll: true }));
   }
 
   function startLevel(index) {
@@ -373,6 +384,7 @@
     levelSelect.classList.add("hidden");
     boardPanel.classList.remove("hidden");
     resultPanel.classList.add("hidden");
+    setBattleCovered(false);
     renderBoard();
     showMessage(t("selectFirst"));
     updateHud();
@@ -383,6 +395,7 @@
       if (document.webkitFullscreenElement) document.webkitExitFullscreen?.();
       document.querySelector(".garden-game")?.classList.remove("weightplay-active-viewport");
       updateGardenFrame();
+      board.querySelector(".tile:not(:disabled)")?.focus({ preventScroll: true });
     });
     window.WonderAnalytics?.track?.("game_start", { game_id: GAME_ID, level: index + 1 });
     window.WonderAnalytics?.track?.("level_start", { game_id: GAME_ID, level: index + 1 });
@@ -506,7 +519,9 @@
     resultStarCount = starCount;
     resultPreviousBest = previousBest;
     renderResult(starCount, previousBest);
+    setBattleCovered(true);
     resultPanel.classList.remove("hidden");
+    requestAnimationFrame(() => (nextBtn.classList.contains("hidden") ? againBtn : nextBtn).focus({ preventScroll: true }));
     window.WonderAnalytics?.track?.("game_complete", { game_id: GAME_ID, level: levelNumber, moves, stars: starCount, cleared: true });
     window.WonderAnalytics?.track?.("level_clear", { game_id: GAME_ID, level: levelNumber, moves, stars: starCount });
   }

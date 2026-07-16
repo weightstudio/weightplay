@@ -464,6 +464,11 @@ body.garden-stage .home-link { grid-template-columns: 1fr; }
   gap: 10px;
 }
 
+#resultPanel:not(.hidden) :is(button, a):focus {
+  outline: 4px solid #fff3a7;
+  outline-offset: 2px;
+}
+
 .loading-card div {
   height: 10px;
   overflow: hidden;

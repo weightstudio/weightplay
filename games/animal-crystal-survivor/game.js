@@ -307,7 +307,7 @@
     const current = patrolRanks[index];
     const next = patrolRanks[index + 1] || null;
     const progress = next
-      ? Math.max(0, Math.min(1, (total - current.threshold) / (next.threshold - current.threshold)))
+      ? Math.max(0, Math.min(1, total / next.threshold))
       : 1;
     return { index, current, next, total, progress };
   }
@@ -928,8 +928,15 @@
         patrolRank: patrolRankFor(save.totalKeys).index,
         patrolRankText: nodes.patrolRankText?.textContent || "",
         patrolRankProgressText: nodes.patrolRankProgressText?.textContent || "",
+        patrolRankProgressPercent: Math.round(patrolRankFor(save.totalKeys).progress * 100),
         resultRankText: nodes.resultRankText?.textContent || "",
       }),
+      setTotalKeysForTest: (total = 0) => {
+        save.totalKeys = Math.max(0, Number(total) || 0);
+        persist();
+        renderPatrolRank();
+        return patrolRankFor(save.totalKeys);
+      },
       collectKeyAtPlayer: () => {
         state.key = { x: state.player.x, y: state.player.y };
         updateKey();

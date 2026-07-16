@@ -17,6 +17,8 @@
       stageDeploy: "Tap an unlocked stage to deploy",
       activeSquadSlots: "Active squad slots",
       shopShelfItems: "Character backpack items",
+      selectedSkillTitle: "Selected animal",
+      selectCharacterHint: "Tap an animal to see its role and skill.",
       battleArena: "Animal Auto Squad Arena",
       menuTitle: "Draft and position your animal squad!",
       menuHint: "Train your owned animals, choose a squad, and clear balanced five-wave forest stages. Each cleared stage unlocks the next challenge.",
@@ -407,6 +409,7 @@
     squadGrid: $("squadGrid"),
     benchGrid: $("benchGrid"),
     shopRow: $("shopRow"),
+    selectedAbilityPanel: $("selectedAbilityPanel"),
     rerollShopBtn: $("rerollShopBtn"),
     sellCardBtn: $("sellCardBtn"),
     startBattleBtn: $("startBattleBtn"),
@@ -467,13 +470,10 @@
   let state = makeState();
   let selectedSlot = null; // for tap-to-select mobile fallback
   let pointerDrag = null;
-  let stageTapSuppressedUntil = 0;
   let imageCache = {};
   let canvasCtx = null;
   let animationId = null;
-  let stageSnapTimer = null;
   let stageRenderVersion = 0;
-  let stageScrollLockUntil = 0;
 
   const zhRuntimeText = {
     combatSummary: "小隊生命 {playerHp}/{playerMax}｜敵方生命 {enemyHp}/{enemyMax}",
@@ -487,6 +487,8 @@
     trainingTab: "\u8a13\u7df4",
     stageSwipe: "\u2194 \u6ed1\u52d5\u95dc\u5361",
     stageDeploy: "\u9ede\u9078\u5df2\u89e3\u9396\u95dc\u5361\u51fa\u767c",
+    selectedSkillTitle: "\u76ee\u524d\u89d2\u8272",
+    selectCharacterHint: "\u9ede\u9078\u89d2\u8272\u5373\u53ef\u67e5\u770b\u5b9a\u4f4d\u8207\u6280\u80fd\u3002",
     chooseExpedition: "\u9078\u64c7\u9060\u5f81",
     bestExpedition: "\u6700\u4f73\u9060\u5f81",
     expeditionsCleared: "\u5df2\u901a\u904e\u95dc\u5361",
@@ -1020,7 +1022,6 @@
 
   // Render Functions
   function renderMenu() {
-    clearTimeout(stageSnapTimer);
     selectedSlot = null;
     pointerDrag = null;
     state.activeRun = false;
@@ -1049,7 +1050,6 @@
   }
 
   function showStageSelection() {
-    clearTimeout(stageSnapTimer);
     window.WeightPlayGame?.exitMobileGameMode?.();
     document.body.classList.remove("squad-active");
     document.body.classList.add("squad-stage-select");
@@ -1082,7 +1082,6 @@
   }
 
   function selectStage(stage, shouldScroll = true) {
-    clearTimeout(stageSnapTimer);
     save = normalizeSave(save);
     save.selectedStage = Math.max(1, Math.min(save.unlockedStage, Number(stage) || 1));
     saveSave();
@@ -1091,7 +1090,6 @@
 
   function renderStageSelector(shouldScroll = true) {
     if (!nodes.stageRail) return;
-    clearTimeout(stageSnapTimer);
     const renderVersion = ++stageRenderVersion;
     save = normalizeSave(save);
     nodes.stageSelectTitle.textContent = t("chooseStage");
@@ -1115,7 +1113,7 @@
       card.innerHTML = `<strong>${stageLabel(stage)}</strong><span>${t("stageWaveCount", { count: WAVES_PER_STAGE })}</span><small>${enemyRange}</small><small>${locked ? t("stageLocked") : cleared ? t("stageCleared") : t("stageReady")}</small>`;
       card.setAttribute("aria-label", `${stageLabel(stage)}. ${t("stageWaveCount", { count: WAVES_PER_STAGE })}. ${enemyRange}. ${locked ? t("stageLocked") : cleared ? t("stageCleared") : t("stageReady")}`);
       card.addEventListener("click", () => {
-        if (locked || performance.now() < stageTapSuppressedUntil) return;
+        if (locked) return;
         selectStage(stage, false);
         startExpedition();
       });
@@ -1123,7 +1121,6 @@
     }
 
     if (shouldScroll) {
-      stageScrollLockUntil = performance.now() + 500;
       requestAnimationFrame(() => {
         if (renderVersion !== stageRenderVersion) return;
         nodes.stageRail.querySelector(".stage-card.is-selected")?.scrollIntoView({ block: "nearest", inline: "center" });
@@ -1530,6 +1527,7 @@
     renderSquad();
     renderBench();
     renderShop();
+    highlightSelectedCard(Boolean(selectedSlot));
   }
 
   function renderFoodGuide() {
@@ -1670,10 +1668,12 @@
     el.addEventListener("dragover", dragOver);
     el.addEventListener("dragleave", dragLeave);
     el.addEventListener("drop", dragDrop);
-    el.addEventListener("pointerdown", pointerCardDown);
-    el.addEventListener("pointermove", pointerCardMove);
-    el.addEventListener("pointerup", pointerCardUp);
-    el.addEventListener("pointercancel", pointerCardCancel);
+    if (sourceArea !== "backpack") {
+      el.addEventListener("pointerdown", pointerCardDown);
+      el.addEventListener("pointermove", pointerCardMove);
+      el.addEventListener("pointerup", pointerCardUp);
+      el.addEventListener("pointercancel", pointerCardCancel);
+    }
 
     return el;
   }
@@ -1846,20 +1846,13 @@
   }
 
   function highlightSelectedCard(highlight) {
-    // clear all selected outlines
-    document.querySelectorAll(".card-item").forEach((el) => {
-      el.style.borderStyle = "";
-      el.style.borderColor = "";
-    });
+    document.querySelectorAll(".card-item").forEach((el) => el.classList.remove("is-selected-card"));
 
     if (highlight && selectedSlot) {
       const parent = $(`${selectedSlot.area}Grid`) || $("shopRow");
       if (parent) {
         const item = parent.querySelector(`[data-slot="${selectedSlot.index}"][data-area="${selectedSlot.area}"]`);
-        if (item) {
-          item.style.borderStyle = "solid";
-          item.style.borderColor = "var(--mint)";
-        }
+        if (item) item.classList.add("is-selected-card");
       }
     }
   }
@@ -2138,10 +2131,35 @@
     } else {
       nodes.sellCardBtn.classList.add("is-hidden");
     }
+    renderSelectedAbility(selectedCard);
+  }
+
+  function renderSelectedAbility(card) {
+    if (!nodes.selectedAbilityPanel) return;
+    if (!card || card.atk === undefined) {
+      nodes.selectedAbilityPanel.classList.remove("has-selection");
+      nodes.selectedAbilityPanel.innerHTML = `<span>${t("selectCharacterHint")}</span>`;
+      return;
+    }
+    const name = locale === "zh-Hant" ? (card.nameZht || card.nameEn) : card.nameEn;
+    const role = locale === "zh-Hant" ? (card.roleZht || card.roleEn || "") : (card.roleEn || "");
+    const desc = locale === "zh-Hant" ? (card.descZht || card.descEn || "") : (card.descEn || "");
+    const attackLabel = locale === "zh-Hant" ? t("attackShort") : "ATK";
+    const healthLabel = locale === "zh-Hant" ? t("healthShort") : "HP";
+    nodes.selectedAbilityPanel.classList.add("has-selection");
+    nodes.selectedAbilityPanel.innerHTML = `<strong>${t("selectedSkillTitle")} · ${name}</strong><small>${role}</small><span>${desc}</span><em>${attackLabel} ${card.currentAtk} · ${healthLabel} ${card.currentHp}</em>`;
   }
 
   function unitLevel(unit) {
     return Math.max(1, Number(unit?.level) || 1);
+  }
+
+  function combatLayoutMetrics(countValue) {
+    const count = Math.max(1, Number(countValue) || 1);
+    if (count === 1) return { spacing: 0, width: 170, height: 230 };
+    if (count === 2) return { spacing: 180, width: 150, height: 210 };
+    if (count === 3) return { spacing: 150, width: 130, height: 184 };
+    return { spacing: 120, width: 106, height: 154 };
   }
 
   function addCombatEffect(type, x, y, text = "", textColor = "white") {
@@ -2167,12 +2185,13 @@
 
   function combatPoint(team, index = 0) {
     const isPlayer = team === "player";
-    const mobileCombat = window.matchMedia?.("(max-width: 640px)")?.matches;
-    const xBase = isPlayer ? (mobileCombat ? 390 : 400) : (mobileCombat ? 570 : 560);
-    const spacing = mobileCombat ? 84 : 100;
+    const squad = isPlayer ? state.combat.playerSquad : state.combat.enemySquad;
+    const count = Math.max(1, squad.length);
+    const { spacing } = combatLayoutMetrics(count);
+    const xBase = 360 - (spacing * Math.max(0, count - 1)) / 2;
     return {
-      x: xBase + (isPlayer ? -1 : 1) * index * spacing,
-      y: mobileCombat ? 286 : 258
+      x: xBase + index * spacing,
+      y: isPlayer ? 950 : 330
     };
   }
 
@@ -2226,14 +2245,14 @@
           ally.hp += level;
           ally.maxHp += level;
         });
-        addCombatEffect("buff", 320, 245, `+${level} HP`, "#82ffd1");
+        addCombatEffect("buff", 360, 950, `+${level} HP`, "#82ffd1");
       } else if (unit.id === 4) {
         addUnitShield(unit, Math.max(1, level), "player", state.combat.playerSquad.indexOf(unit));
       } else if (unit.id === 8) {
         state.combat.playerSquad.forEach((ally) => {
           ally.atk += level;
         });
-        addCombatEffect("buff", 320, 245, `+${level} ATK`, "#ffd666");
+        addCombatEffect("buff", 360, 950, `+${level} ATK`, "#ffd666");
       }
     });
   }
@@ -2245,7 +2264,8 @@
       if (!enemySquad.length || unit.hp <= 0) return;
       const level = unitLevel(unit);
       if (unit.id === 0) {
-        damageTarget(enemySquad[0], level, 560, 250);
+        const point = combatPoint("enemy", 0);
+        damageTarget(enemySquad[0], level, point.x, point.y);
       } else if (unit.id === 1) {
         healWeakestAlly(playerSquad, level);
       }
@@ -2377,13 +2397,13 @@
     animationId = requestAnimationFrame(runCombatAnimation);
 
     // Clear Canvas
-    canvasCtx.clearRect(0, 0, 720, 900);
+    canvasCtx.clearRect(0, 0, 720, 1280);
 
     // Draw battlefield background
     if (imageCache.bg) {
       const image = imageCache.bg;
       const sourceRatio = image.naturalWidth / image.naturalHeight;
-      const targetRatio = 720 / 900;
+      const targetRatio = 720 / 1280;
       let sx = 0;
       let sy = 0;
       let sw = image.naturalWidth;
@@ -2395,16 +2415,16 @@
         sh = image.naturalWidth / targetRatio;
         sy = (image.naturalHeight - sh) / 2;
       }
-      canvasCtx.drawImage(image, sx, sy, sw, sh, 0, 0, 720, 900);
-      const shade = canvasCtx.createLinearGradient(0, 0, 0, 900);
+      canvasCtx.drawImage(image, sx, sy, sw, sh, 0, 0, 720, 1280);
+      const shade = canvasCtx.createLinearGradient(0, 0, 0, 1280);
       shade.addColorStop(0, "rgba(9,20,16,.3)");
       shade.addColorStop(.48, "rgba(9,20,16,.08)");
       shade.addColorStop(1, "rgba(3,10,8,.46)");
       canvasCtx.fillStyle = shade;
-      canvasCtx.fillRect(0, 0, 720, 900);
+      canvasCtx.fillRect(0, 0, 720, 1280);
     } else {
       canvasCtx.fillStyle = "#0c1f17";
-      canvasCtx.fillRect(0, 0, 720, 900);
+      canvasCtx.fillRect(0, 0, 720, 1280);
     }
 
     canvasCtx.save();
@@ -2415,14 +2435,14 @@
     canvasCtx.lineWidth = 5;
     const enemyLabel = locale === "zh-Hant" ? "\u5f71\u4e4b\u5c0f\u968a" : "SHADOW SQUAD";
     const playerLabel = locale === "zh-Hant" ? "\u4f60\u7684\u5c0f\u968a" : "YOUR SQUAD";
-    canvasCtx.strokeText(enemyLabel, 360, 112);
-    canvasCtx.fillText(enemyLabel, 360, 112);
-    canvasCtx.strokeText(playerLabel, 360, 822);
-    canvasCtx.fillText(playerLabel, 360, 822);
+    canvasCtx.strokeText(enemyLabel, 360, 155);
+    canvasCtx.fillText(enemyLabel, 360, 155);
+    canvasCtx.strokeText(playerLabel, 360, 1140);
+    canvasCtx.fillText(playerLabel, 360, 1140);
     canvasCtx.font = "900 28px Outfit, system-ui";
     canvasCtx.fillStyle = "#ffd666";
-    canvasCtx.strokeText("VS", 360, 454);
-    canvasCtx.fillText("VS", 360, 454);
+    canvasCtx.strokeText("VS", 360, 640);
+    canvasCtx.fillText("VS", 360, 640);
     canvasCtx.restore();
 
     // Step logic every 90 frames
@@ -2477,7 +2497,8 @@
   function drawSquadLine(squad, team) {
     const isPlayer = team === "player";
     const count = Math.max(1, squad.length);
-    const spacing = Math.min(126, 600 / count);
+    const metrics = combatLayoutMetrics(count);
+    const spacing = metrics.spacing;
     const rowWidth = spacing * Math.max(0, count - 1);
     const xBase = 360 - rowWidth / 2;
     
@@ -2497,15 +2518,15 @@
         state.combat.shakeFrames--;
       }
       
-      const w = 106;
-      const h = 154;
+      const w = metrics.width;
+      const h = metrics.height;
       const actor = (state.combat.activeActors || []).find((item) => item.team === team && item.index === idx && item.life > 0);
       const isActing = actor?.team === team && actor.index === idx && actor.life > 0;
       const actorProgress = isActing ? 1 - actor.life / Math.max(1, actor.maxLife || 26) : 0;
       const bounce = isActing ? Math.sin(actorProgress * Math.PI) : 0;
       const actorOffset = bounce * (isActing && actor.style === "cast" ? 18 : 12);
       const scale = isActing ? 1 + bounce * 0.08 : 1;
-      const centerY = (isPlayer ? 676 : 250) + (isPlayer ? -actorOffset : actorOffset);
+      const centerY = (isPlayer ? 950 : 330) + (isPlayer ? -actorOffset : actorOffset);
       const x = targetX + shakeX - (w * scale) / 2;
       const y = centerY - (h * scale) / 2;
       const drawW = w * scale;
@@ -3108,41 +3129,6 @@
     });
     nodes.resultMenuBtn.addEventListener("click", renderMenu);
 
-    nodes.stageRail.addEventListener("scroll", () => {
-      if (performance.now() < stageScrollLockUntil) return;
-      clearTimeout(stageSnapTimer);
-      const renderVersion = stageRenderVersion;
-      stageSnapTimer = setTimeout(() => {
-        if (renderVersion !== stageRenderVersion) return;
-        const railBox = nodes.stageRail.getBoundingClientRect();
-        const railCenter = railBox.left + railBox.width / 2;
-        const cards = [...nodes.stageRail.querySelectorAll(".stage-card:not([aria-disabled='true'])")];
-        const nearest = cards.reduce((best, card) => {
-          const box = card.getBoundingClientRect();
-          const distance = Math.abs(box.left + box.width / 2 - railCenter);
-          return !best || distance < best.distance ? { card, distance } : best;
-        }, null);
-        const nearestStage = Number(nearest?.card.dataset.stage);
-        if (nearestStage && nearestStage !== normalizeSave(save).selectedStage) selectStage(nearestStage, true);
-      }, 120);
-    }, { passive: true });
-
-    let stagePointer = null;
-    const releaseStagePointer = () => {
-      if (!stagePointer) return;
-      if (stagePointer.moved) stageTapSuppressedUntil = performance.now() + 220;
-      stagePointer = null;
-    };
-    nodes.stageRail.addEventListener("pointerdown", (event) => {
-      stagePointer = { x: event.clientX, y: event.clientY, moved: false };
-    }, { passive: true });
-    nodes.stageRail.addEventListener("pointermove", (event) => {
-      if (!stagePointer) return;
-      if (Math.hypot(event.clientX - stagePointer.x, event.clientY - stagePointer.y) > 8) stagePointer.moved = true;
-    }, { passive: true });
-    nodes.stageRail.addEventListener("pointerup", releaseStagePointer, { passive: true });
-    nodes.stageRail.addEventListener("pointercancel", releaseStagePointer, { passive: true });
-    
     nodes.localeSelect.addEventListener("change", (e) => {
       setLocale(e.target.value);
     });

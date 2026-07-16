@@ -409,6 +409,12 @@ body.rescue-stage-select .stage-select {
   z-index: 2;
 }
 
+.tile:focus-visible {
+  outline: 5px solid #ffffff;
+  outline-offset: -3px;
+  box-shadow: 0 0 0 4px #315f26, inset 0 -5px 0 rgba(79, 52, 25, 0.18);
+}
+
 .tile.next {
   outline: 4px solid rgba(255, 255, 255, 0.78);
 }

@@ -1398,7 +1398,7 @@
     nodes.playerHpFill.style.width = `${Math.max(0, (state.playerHp / state.playerMaxHp) * 100)}%`;
     nodes.shieldDisplay.style.display = state.playerShield > 0 ? "flex" : "none";
     nodes.shieldText.textContent = state.playerShield;
-    nodes.energyText.textContent = `${state.energy}/3`;
+    nodes.energyText.textContent = `${state.energy}/${state.maxEnergy || 3}`;
     nodes.enemyHpText.textContent = `${state.enemyHp}/${state.enemyMaxHp}`;
     nodes.enemyHpFill.style.width = `${Math.max(0, (state.enemyHp / state.enemyMaxHp) * 100)}%`;
     nodes.deckText.textContent = state.drawPile.length;

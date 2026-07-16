@@ -558,6 +558,12 @@ body.is-vine-playing .game-page-info {
   backdrop-filter: blur(8px);
 }
 
+.leaf-paddle:focus-visible {
+  outline: 4px solid #fff3a7;
+  outline-offset: 5px;
+  border-radius: 18px;
+}
+
 .result-panel {
   position: absolute !important;
   inset: 0 !important;

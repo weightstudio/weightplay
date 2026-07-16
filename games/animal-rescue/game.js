@@ -55,7 +55,7 @@ const dictionary = {
     start: "Start",
     locked: "Locked",
     complete: "Complete",
-    hint: "Tap the next tile to help the animal go home.",
+    hint: "Tap a nearby tile or use the arrow keys to help the animal go home.",
     loading: "Loading",
     undo: "Undo",
     reset: "Reset",
@@ -114,7 +114,7 @@ const dictionary = {
     start: "\u958b\u59cb",
     locked: "\u672a\u89e3\u9396",
     complete: "\u5b8c\u6210",
-    hint: "\u9ede\u4e0b\u4e00\u683c\u9053\u8def\uff0c\u5e6b\u52d5\u7269\u8d70\u56de\u5bb6\u3002",
+    hint: "\u9ede\u65c1\u908a\u7684\u683c\u5b50\uff0c\u6216\u7528\u65b9\u5411\u9375\u5e6b\u52d5\u7269\u8d70\u56de\u5bb6\u3002",
     loading: "\u8f09\u5165\u4e2d",
     undo: "\u4e0a\u4e00\u6b65",
     reset: "\u91cd\u7f6e",
@@ -263,6 +263,7 @@ function saveProgress() {
 }
 
 function renderStaticText() {
+  const restoreBoardFocus = board?.contains(document.activeElement);
   document.documentElement.lang = locale();
   document.title = t("metaTitle");
   document.querySelector('meta[name="description"]')?.setAttribute("content", t("metaDescription"));
@@ -294,7 +295,7 @@ function renderStaticText() {
   lobbyLink.textContent = t("lobby");
   loadingTitle.textContent = t("loading");
   renderStageSelect();
-  renderBoard();
+  renderBoard(restoreBoardFocus);
   updateHud();
 }
 
@@ -379,7 +380,7 @@ function startLevel(index) {
   hud.prepend(battleBackBtn);
   renderAvatar(level.animal);
   animalName.textContent = t(level.animal);
-  renderBoard();
+  renderBoard(true);
   updateHud();
   window.WeightPlayGame?.exitMobileGameMode?.();
   document.body.classList.remove("wp-mobile-game-mode", "weightplay-active-viewport");
@@ -427,7 +428,7 @@ function showLocked() {
   }, 1200);
 }
 
-function renderBoard() {
+function renderBoard(focusCurrent = false) {
   if (!board) return;
   const level = state.level;
   const blockSet = new Set(level.blocks.map(keyOf));
@@ -444,6 +445,8 @@ function renderBoard() {
       button.className = `tile ${tileClass(key, blockSet, waterSet, pathSet, current)}`;
       button.dataset.x = String(col);
       button.dataset.y = String(row);
+      button.tabIndex = key === current ? 0 : -1;
+      if (key === current) button.setAttribute("aria-current", "step");
       const icon = tileIcon(pos, key, blockSet, waterSet);
       if (icon?.asset) {
         const label = document.createElement("span");
@@ -460,6 +463,9 @@ function renderBoard() {
       button.setAttribute("aria-label", icon?.alt || t("tile"));
       board.append(button);
     }
+  }
+  if (focusCurrent && !state.complete) {
+    requestAnimationFrame(() => board.querySelector(".tile.current")?.focus({ preventScroll: true }));
   }
 }
 
@@ -534,14 +540,7 @@ function moveTo(pos) {
   const obstacles = new Set([...level.blocks, ...(level.water || [])].map(keyOf));
   const dx = Math.abs(pos[0] - state.position[0]);
   const dy = Math.abs(pos[1] - state.position[1]);
-  if (dx + dy !== 1 || obstacles.has(key)) {
-    window.WonderSound?.play("wrong");
-    hintText.textContent = t("wrongTile");
-    setTimeout(() => {
-      hintText.textContent = t("hint");
-    }, 900);
-    return;
-  }
+  if (dx + dy !== 1 || obstacles.has(key)) return rejectMove();
   state.position = pos;
   state.path.push([...pos]);
   state.moves += 1;
@@ -552,7 +551,7 @@ function moveTo(pos) {
     window.WonderSound?.play("click");
   }
   if (key === keyOf(level.home)) finishLevel();
-  renderBoard();
+  renderBoard(!state.complete);
   updateHud();
 }
 
@@ -568,7 +567,7 @@ function undoMove() {
     if (state.fruits.delete(key)) state.collected += 1;
   }
   window.WonderSound?.play("click");
-  renderBoard();
+  renderBoard(true);
   updateHud();
 }
 
@@ -581,6 +580,14 @@ function resetLevel() {
     locale: locale(),
   });
   startLevel(activeIndex);
+}
+
+function rejectMove() {
+  window.WonderSound?.play("wrong");
+  hintText.textContent = t("wrongTile");
+  setTimeout(() => {
+    hintText.textContent = t("hint");
+  }, 900);
 }
 
 function finishLevel() {
@@ -596,6 +603,7 @@ function finishLevel() {
   nextBtn.classList.toggle("hidden", level.id >= levels.length);
   resultPanel.classList.remove("hidden");
   document.body.classList.add("rescue-result");
+  requestAnimationFrame(() => (nextBtn.classList.contains("hidden") ? retryBtn : nextBtn).focus({ preventScroll: true }));
   window.WonderSound?.play("win");
   window.WonderAnalytics?.track("game_complete", {
     game_id: GAME_ID,
@@ -708,6 +716,22 @@ board.addEventListener("click", (event) => {
   const tile = event.target.closest(".tile");
   if (!tile) return;
   moveTo([Number(tile.dataset.x), Number(tile.dataset.y)]);
+});
+board.addEventListener("keydown", (event) => {
+  const current = event.target.closest(".tile.current");
+  if (!current) return;
+  const deltas = {
+    ArrowLeft: [-1, 0],
+    ArrowRight: [1, 0],
+    ArrowUp: [0, -1],
+    ArrowDown: [0, 1],
+  };
+  const delta = deltas[event.key];
+  if (!delta) return;
+  event.preventDefault();
+  const target = [Number(current.dataset.x) + delta[0], Number(current.dataset.y) + delta[1]];
+  if (target.some((value) => value < 0 || value >= SIZE)) return rejectMove();
+  moveTo(target);
 });
 undoBtn.addEventListener("click", undoMove);
 resetBtn.addEventListener("click", resetLevel);

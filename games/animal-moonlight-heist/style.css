@@ -22,3 +22,8 @@
 body[data-screen="battle"] :is(.wp-tutorial-button, .wp-tutorial-backdrop, .sound-toggle, .weightplay-version-badge) {
   display: none !important;
 }
+
+.play-field:focus-visible {
+  outline: 3px solid #67e8f9;
+  outline-offset: -3px;
+}

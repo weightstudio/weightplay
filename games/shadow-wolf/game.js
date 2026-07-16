@@ -1009,11 +1009,11 @@
     // Redundant input values checking
     const stats = getStats();
     let moveDir = 0;
-    if (keysPressed["a"] || keysPressed["ArrowLeft"] || mobileInput.left) {
+    if (keysPressed["a"] || keysPressed["arrowleft"] || mobileInput.left) {
       moveDir = -1;
       state.facing = "left";
     }
-    if (keysPressed["d"] || keysPressed["ArrowRight"] || mobileInput.right) {
+    if (keysPressed["d"] || keysPressed["arrowright"] || mobileInput.right) {
       moveDir = 1;
       state.facing = "right";
     }
@@ -1624,20 +1624,27 @@
   // Registers keyboard input steer
   function setupInputs() {
     window.addEventListener("keydown", (e) => {
-      keysPressed[e.key.toLowerCase()] = true;
-      if (e.key === " " || e.key.toLowerCase() === "w" || e.key === "ArrowUp") {
+      const key = e.key.toLowerCase();
+      const handled = ["a", "d", "arrowleft", "arrowright", "w", "arrowup", " ", "j", "k", "shift"].includes(key);
+      if (!handled || !state.gameActive || document.activeElement !== nodes.gameCanvas) return;
+      e.preventDefault();
+      keysPressed[key] = true;
+      if (key === " " || key === "w" || key === "arrowup") {
         makePlayerJump();
       }
-      if (e.key.toLowerCase() === "j") {
+      if (key === "j") {
         makePlayerAttack();
       }
-      if (e.key.toLowerCase() === "k" || e.key === "Shift") {
+      if (key === "k" || key === "shift") {
         makePlayerDash();
       }
     });
 
     window.addEventListener("keyup", (e) => {
       keysPressed[e.key.toLowerCase()] = false;
+    });
+    nodes.gameCanvas.addEventListener("blur", () => {
+      Object.keys(keysPressed).forEach((key) => { keysPressed[key] = false; });
     });
 
     // Mobile buttons triggers
@@ -1787,6 +1794,11 @@
             width: state.width,
             height: state.height,
             grounded: state.grounded,
+            vx: state.vx,
+            vy: state.vy,
+            attackTimer: state.attackTimer,
+            dashTimer: state.dashTimer,
+            dashCooldown: state.dashCooldown,
           },
           terrain: platforms.map((platform) => ({ x: platform.x, y: platform.y, w: platform.w, h: platform.h, kind: platform.kind })),
           spikes: spikesList.map((spike) => ({ x: spike.x, y: spike.y, w: spike.w, h: spike.h })),
