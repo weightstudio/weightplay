@@ -906,6 +906,7 @@ body.orb-fortress-playing #battleAdReserve { position:fixed; z-index:49; left:50
 .battle-live{display:contents}
 body.orb-fortress-playing #gamePanel.game-panel{position:fixed}
 body.orb-fortress-playing #gamePanel.game-panel>#resultPanel.result-panel{position:absolute;z-index:80;inset:-1px;width:auto!important;height:auto!important;max-width:none!important;max-height:none!important;margin:0!important;transform:none;overflow:hidden}
+body.orb-fortress-playing #gamePanel.game-panel>#upgradePanel.modal-panel{position:absolute;z-index:80;inset:-1px;width:auto!important;height:auto!important;max-width:none!important;max-height:none!important;margin:0!important;transform:none;overflow:hidden}
 
 @media (max-width:560px), (max-height:560px) {
   body.orb-fortress-playing #gamePanel.game-panel, body.orb-fortress-playing #stagePanel.stage-panel, body.orb-fortress-playing #upgradePanel.modal-panel, body.orb-fortress-playing #resultPanel.result-panel, body.orb-fortress-playing #battleAdReserve { width:calc(var(--orb-vw,100vw) - 8px) !important; }

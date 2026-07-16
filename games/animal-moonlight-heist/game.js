@@ -16,6 +16,13 @@
     pauseAction: "Pause mission",
     resumeAction: "Resume mission",
     playFieldLabel: "Stealth route field. Use WASD or arrow keys to move and Space to use the gadget.",
+    languageLabel: "Language",
+    posterAlt: "Animal Moonlight Heist poster",
+    orlaAlt: "Moon Cap Orla",
+    missionRailLabel: "Missions",
+    fiaAlt: "Spark Paw Fia",
+    stageBackLabel: "Back to main menu",
+    battleBackLabel: "Back to missions",
   });
   Object.assign(copy["zh-Hant"], {
     notCleared: "\u5c1a\u672a\u5b8c\u6210",
@@ -27,6 +34,13 @@
     pauseAction: "\u66ab\u505c\u4efb\u52d9",
     resumeAction: "\u7e7c\u7e8c\u4efb\u52d9",
     playFieldLabel: "\u6f5b\u884c\u8def\u7dda\u5340\u3002\u4f7f\u7528 WASD \u6216\u65b9\u5411\u9375\u79fb\u52d5\uff0c\u6309\u7a7a\u767d\u9375\u4f7f\u7528\u88dd\u7f6e\u3002",
+    languageLabel: "\u8a9e\u8a00",
+    posterAlt: "\u52d5\u7269\u6708\u5f71\u6f5b\u884c\u968a\u904a\u6232\u6d77\u5831",
+    orlaAlt: "\u6708\u5e3d\u6b50\u62c9",
+    missionRailLabel: "\u4efb\u52d9\u9078\u64c7",
+    fiaAlt: "\u9583\u722a\u83f2\u4e9e",
+    stageBackLabel: "\u8fd4\u56de\u4e3b\u9078\u55ae",
+    battleBackLabel: "\u8fd4\u56de\u4efb\u52d9\u9078\u64c7",
   });
   const missionObjects=["moon-seal","courier-token","star-map","clockwork-lens","district-relic"];
   const patrolArt=["wolf","rabbit","badger"];
@@ -89,7 +103,7 @@
     insuranceActive=true;economyMessage(t("insuranceReady"));renderEconomy();
   }
   function t(key,vars={}){let value=copy[locale]?.[key]||copy.en[key]||key;Object.entries(vars).forEach(([k,v])=>value=value.replace(`{${k}}`,v));return value}
-  function localize(){document.documentElement.lang=locale;document.title=`${t("title")} - Internal Trial`;document.querySelectorAll("[data-i18n]").forEach(n=>n.textContent=t(n.dataset.i18n));renderSummary();renderStage();renderGadgets();renderEconomy();updateGadget();renderGadgetSummary();updatePauseControl()}
+  function localize(){document.documentElement.lang=locale;const internal=document.querySelector('meta[name="robots"]')?.content.includes("noindex");document.title=`${t("title")} - ${internal?"Internal Trial":"WeightPlay"}`;document.querySelectorAll("[data-i18n]").forEach(n=>n.textContent=t(n.dataset.i18n));$("#localeSelect").setAttribute("aria-label",t("languageLabel"));$(".main-poster").alt=t("posterAlt");$(".planner > img").alt=t("orlaAlt");nodes.rail.setAttribute("aria-label",t("missionRailLabel"));nodes.fia.alt=t("fiaAlt");$("#stageBackBtn").setAttribute("aria-label",t("stageBackLabel"));$("#battleBackBtn").setAttribute("aria-label",t("battleBackLabel"));renderSummary();renderStage();renderGadgets();renderEconomy();updateGadget();renderGadgetSummary();updatePauseControl()}
   function show(name){document.body.dataset.screen=name;nodes.main.hidden=name!=="main";nodes.stage.hidden=name!=="stage";nodes.battle.hidden=name!=="battle";if(name!=="battle"){playing=false;paused=false;cancelPendingMovement();updatePauseControl()}}
   function renderSummary(){$("#safehouseSummary").textContent=`${t("safehouse",{n:state.safehouse})} · ${t("coins")}: ${state.coins} · ${Object.keys(state.cleared).length}/5`}
   function medalProgress(index){
@@ -159,7 +173,7 @@
     else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus()}
   }
   $(".home-link").setAttribute("data-wp-return","main");$("#stageBackBtn").setAttribute("data-wp-return","stage");$("#battleBackBtn").setAttribute("data-wp-return","battle");
-  function bind(){$("#localeSelect").value=locale;$("#localeSelect").addEventListener("change",e=>{locale=e.target.value;localStorage.setItem(localeKey,locale);localize()});$("#startBtn").addEventListener("click",()=>{show("stage");renderStage()});$("#stageBackBtn").addEventListener("click",()=>show("main"));$("#battleBackBtn").addEventListener("click",()=>{show("stage");renderStage()});$("#pauseBtn").addEventListener("click",()=>setPaused(!paused));nodes.field.addEventListener("pointerdown",e=>{if(!playing||paused)return;routePointerId=e.pointerId;nodes.field.setPointerCapture(e.pointerId);routeTo(e.clientX,e.clientY)});nodes.field.addEventListener("pointermove",e=>{if(!paused&&e.pointerId===routePointerId&&nodes.field.hasPointerCapture(e.pointerId))routeTo(e.clientX,e.clientY)});nodes.field.addEventListener("pointerup",e=>{if(e.pointerId!==routePointerId)return;if(!paused&&nodes.field.hasPointerCapture(e.pointerId))routeTo(e.clientX,e.clientY,true);cancelRoutePreview()});nodes.field.addEventListener("pointercancel",cancelRoutePreview);nodes.field.addEventListener("lostpointercapture",()=>{routePointerId=null});nodes.modal.addEventListener("keydown",trapResultFocus);$("#gadgetBtn").addEventListener("click",useGadget);$("#retryBtn").addEventListener("click",()=>{closeResult();startMission(selectedMission)});$("#stagesBtn").addEventListener("click",()=>{closeResult();show("stage");renderStage()});$("#nextBtn").addEventListener("click",()=>{closeResult();startMission(Math.min(4,selectedMission+1))})}
+  function bind(){$("#localeSelect").value=locale;$("#localeSelect").addEventListener("change",e=>{locale=e.target.value;localStorage.setItem(localeKey,locale);localize()});$("#startBtn").addEventListener("click",()=>{show("stage");renderStage()});$("#stageBackBtn").addEventListener("click",()=>show("main"));$("#battleBackBtn").addEventListener("click",()=>{show("stage");renderStage()});$("#pauseBtn").addEventListener("click",()=>setPaused(!paused));nodes.field.addEventListener("pointerdown",e=>{if(!playing||paused)return;routePointerId=e.pointerId;nodes.field.setPointerCapture(e.pointerId);routeTo(e.clientX,e.clientY)});nodes.field.addEventListener("pointermove",e=>{if(!paused&&e.pointerId===routePointerId&&nodes.field.hasPointerCapture(e.pointerId))routeTo(e.clientX,e.clientY)});nodes.field.addEventListener("pointerup",e=>{if(e.pointerId!==routePointerId)return;if(!paused&&preview)routeTo(e.clientX,e.clientY,true);cancelRoutePreview()});nodes.field.addEventListener("pointercancel",cancelRoutePreview);nodes.field.addEventListener("lostpointercapture",e=>{if(e.pointerId===routePointerId)cancelRoutePreview()});nodes.modal.addEventListener("keydown",trapResultFocus);$("#gadgetBtn").addEventListener("click",useGadget);$("#retryBtn").addEventListener("click",()=>{closeResult();startMission(selectedMission)});$("#stagesBtn").addEventListener("click",()=>{closeResult();show("stage");renderStage()});$("#nextBtn").addEventListener("click",()=>{closeResult();startMission(Math.min(4,selectedMission+1))})}
   function bindMissionRailDrag(){
     let pointerId=null,startX=0,startLeft=0,dragged=false,suppressClickUntil=0;
     const rail=nodes.rail;

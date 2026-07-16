@@ -905,7 +905,8 @@
       nodes.resultPanel.classList.remove("is-hidden");
       window.requestAnimationFrame(() => {
         const nextVisible = !nodes.nextStageBtn.classList.contains("is-hidden") && !nodes.nextStageBtn.disabled;
-        (nextVisible ? nodes.nextStageBtn : nodes.retryBtn)?.focus({ preventScroll: true });
+        const reviveAvailable = !nodes.reviveBtn.classList.contains("is-hidden") && !nodes.reviveBtn.disabled;
+        (nextVisible ? nodes.nextStageBtn : reviveAvailable ? nodes.reviveBtn : nodes.retryBtn)?.focus({ preventScroll: true });
       });
     }
     updateBattleShell();
@@ -1943,6 +1944,7 @@
     nodes.resultStars.textContent = t("starRating", { stars });
     nodes.skillReportText.textContent = resultSkillReport(true, stars, state.coreHp, stage);
     nodes.nextStageBtn.classList.toggle("is-hidden", stage.id >= 10);
+    nodes.reviveBtn.classList.add("is-hidden");
     renderResultReward();
     setScreen("result");
     playSfx("victory");
@@ -1960,6 +1962,8 @@
     nodes.resultProgressText.textContent = "";
     nodes.resultUnlockText.textContent = "";
     nodes.rerollRewardBtn.classList.add("is-hidden");
+    nodes.reviveBtn.classList.toggle("is-hidden", state.revived);
+    nodes.reviveBtn.disabled = state.revived || state.save.diamonds < 5;
     nodes.skillReportText.textContent = resultSkillReport(false);
     nodes.nextStageBtn.classList.add("is-hidden");
     setScreen("result");
@@ -1978,6 +1982,7 @@
     save();
     showToast(t("reviveUsed"));
     setScreen("game");
+    window.requestAnimationFrame(() => nodes.canvas.focus({ preventScroll: true }));
     playSfx("revive");
     track("game_spend_virtual_currency", { stage: state.currentStage, item: "core_revive", currency: "diamonds", amount: 5 });
   }
@@ -3805,7 +3810,10 @@
     };
     startStage(stageId);
     if (won) winStage();
-    else loseStage();
+    else {
+      state.coreHp = 0;
+      loseStage();
+    }
     return {
       screen: state.screen,
       title: nodes.resultTitle.textContent,

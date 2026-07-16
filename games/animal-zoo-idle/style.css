@@ -2291,6 +2291,9 @@ body.zoo-playing .animal-shop-card small {
     grid-column: 1 / -1;
   }
 }
+body.zoo-playing .sound-toggle {
+  display: none !important;
+}
 .zoo-actions button:focus-visible,
 .care-route-actions button:focus-visible,
 .tour-report button:focus-visible,

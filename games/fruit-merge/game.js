@@ -38,7 +38,7 @@
   const menuLeaderboard = document.querySelector("#menuLeaderboard");
   const resultLeaderboard = document.querySelector("#resultLeaderboard");
   const playAgainBtn = document.querySelector("#playAgainBtn");
-  const lobbyLink = document.querySelector("#lobbyLink");
+  const menuBtn = document.querySelector("#menuBtn");
   const loadingPanel = document.querySelector("#loadingPanel");
   const loadingText = document.querySelector("#loadingText");
   const loadingFill = document.querySelector("#loadingFill");
@@ -128,7 +128,7 @@
       noLeaderboard: "Complete a run to add it to this local best-run list.",
       leaderboardRow: "#{rank}  Score {score}  {animal}",
       playAgain: "Play Again",
-      lobby: "Lobby",
+      menu: "Game Menu",
       newBest: "New Best!",
       fruit0: "Mouse Ball",
       fruit1: "Rabbit Ball",
@@ -211,7 +211,7 @@
       noLeaderboard: "完成一場後，就會加入這份本機最佳紀錄。",
       leaderboardRow: "第 {rank} 名  分數 {score}  {animal}",
       playAgain: "再玩一次",
-      lobby: "大廳",
+      menu: "遊戲選單",
       newBest: "新紀錄！",
       fruit0: "老鼠球",
       fruit1: "兔兔球",
@@ -333,7 +333,7 @@
     renderChainPreview();
     startBtn.textContent = t("start");
     playAgainBtn.textContent = t("playAgain");
-    lobbyLink.textContent = t("lobby");
+    menuBtn.textContent = t("menu");
     updateHud();
     updateAimCoach();
     updateAimAccessibility();
@@ -407,6 +407,7 @@
       startBtn.disabled = false;
       stopAnimationLoop();
       draw();
+      requestAnimationFrame(() => startBtn.focus({ preventScroll: true }));
     }
   }
 
@@ -1168,6 +1169,7 @@
     window.WonderAnalytics?.track?.("game_restart", { game_id: GAME_ID, score, source: "result" });
     resetGame(false, "result");
   });
+  menuBtn.addEventListener("click", () => resetGame(true, "result-menu"));
 
   if (new URLSearchParams(location.search).has("smoke")) {
     window.__fruitMergeSmoke = { finishRunForTest: endGame };

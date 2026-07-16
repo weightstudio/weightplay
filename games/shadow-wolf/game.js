@@ -593,6 +593,41 @@
     }).join("");
   }
 
+  function draftCoveredRegions() {
+    const siblings = Array.from(nodes.draftPanel.parentElement?.children || [])
+      .filter((node) => node !== nodes.draftPanel && node !== nodes.resultPanel);
+    const sidebar = nodes.gamePanel.querySelector(".attribute-sidebar");
+    return sidebar ? [...siblings, sidebar] : siblings;
+  }
+
+  function setDraftModalOpen(open) {
+    nodes.draftPanel.classList[open ? "remove" : "add"]("hidden");
+    draftCoveredRegions().forEach((region) => {
+      region.inert = open;
+      if (open) region.setAttribute("aria-hidden", "true");
+      else region.removeAttribute("aria-hidden");
+    });
+    window.requestAnimationFrame(() => {
+      const target = open ? nodes.draftCards.querySelector(".attribute-choice") : nodes.gameCanvas;
+      target?.focus({ preventScroll: true });
+    });
+  }
+
+  function trapDraftFocus(event) {
+    if (event.key !== "Tab" || nodes.draftPanel.classList.contains("hidden")) return;
+    const choices = Array.from(nodes.draftCards.querySelectorAll(".attribute-choice:not(:disabled)"));
+    if (!choices.length) return;
+    const first = choices[0];
+    const last = choices.at(-1);
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  }
+
   function renderEquippedGear() {
     // Kept as a harmless compatibility hook for saved sessions from the old gear build.
   }
@@ -875,7 +910,7 @@
     renderStatsPanel();
     updateHUDText();
     renderAttributeDraft();
-    nodes.draftPanel.classList.remove("hidden");
+    setDraftModalOpen(true);
   }
 
   function spendAttribute(attribute) {
@@ -888,9 +923,10 @@
     updateHUDText();
     if (state.attributePoints > 0) {
       renderAttributeDraft();
+      window.requestAnimationFrame(() => nodes.draftCards.querySelector(".attribute-choice")?.focus({ preventScroll: true }));
       return;
     }
-    nodes.draftPanel.classList.add("hidden");
+    setDraftModalOpen(false);
     state.gameActive = true;
     state.gameLoopId = requestAnimationFrame(updateGameEngine);
   }
@@ -1724,6 +1760,7 @@
       const choice = event.target.closest("[data-draft-attribute]");
       if (choice) spendAttribute(choice.dataset.draftAttribute);
     });
+    nodes.draftPanel.addEventListener("keydown", trapDraftFocus);
 
     nodes.retryBtn.addEventListener("click", () => {
       window.WonderSound?.play("click");

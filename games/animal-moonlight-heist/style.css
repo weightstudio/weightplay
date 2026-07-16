@@ -23,6 +23,28 @@ body[data-screen="battle"] :is(.wp-tutorial-button, .wp-tutorial-backdrop, .soun
   display: none !important;
 }
 
+body.wp-stage-select-active[data-screen="stage"] .stage-canvas[data-wp-logical-stage-canvas] {
+  grid-template-columns: none !important;
+  grid-template-rows: 44px 106px minmax(0, 1fr) !important;
+}
+
+body.wp-stage-select-active[data-screen="stage"] #stageScreen.stage-shell > .stage-ad-reserve {
+  position: fixed;
+  z-index: 39;
+  top: var(--wp-stage-reserve-top);
+  left: var(--wp-stage-canvas-left);
+  display: block !important;
+  width: var(--wp-stage-canvas-rendered-width);
+  height: 56px;
+  min-height: 56px;
+  background: #17243a;
+  border-top: 1px solid rgb(255 255 255 / 12%);
+}
+
+html body[data-wp-game-id="animal-moonlight-heist"] > .wp-stage-physical-reserve {
+  display: none !important;
+}
+
 .play-field:focus-visible {
   outline: 3px solid #67e8f9;
   outline-offset: -3px;

@@ -407,10 +407,12 @@
   function show(panel) {
     [nodes.menuPanel, nodes.stagePanel, nodes.gamePanel, nodes.upgradePanel, nodes.resultPanel].forEach((node) => node.classList.add("is-hidden"));
     const resultOpen = panel === nodes.resultPanel;
-    if (resultOpen) nodes.gamePanel.classList.remove("is-hidden");
+    const upgradeOpen = panel === nodes.upgradePanel;
+    const battleCovered = resultOpen || upgradeOpen;
+    if (battleCovered) nodes.gamePanel.classList.remove("is-hidden");
     panel.classList.remove("is-hidden");
-    $("battleLive").inert = resultOpen;
-    $("battleLive").setAttribute("aria-hidden", resultOpen ? "true" : "false");
+    $("battleLive").inert = battleCovered;
+    $("battleLive").setAttribute("aria-hidden", battleCovered ? "true" : "false");
     document.body.classList.toggle("orb-fortress-playing", panel !== nodes.menuPanel);
     updateOrbBattleScale();
     fitOrbArena();
@@ -937,6 +939,7 @@
     nodes.hintText.textContent = t("waveClear");
     renderUpgradeCards();
     show(nodes.upgradePanel);
+    window.requestAnimationFrame(() => nodes.upgradeCards.querySelector(".upgrade-card")?.focus({ preventScroll: true }));
     window.WonderAnalytics?.track("wave_clear", { game_id: GAME_ID, wave: state.wave });
   }
 
@@ -995,6 +998,7 @@
     spawnWave();
     state.mode = "running";
     show(nodes.gamePanel);
+    window.requestAnimationFrame(() => canvas.focus({ preventScroll: true }));
     playSound("success", 0.2);
     window.WonderAnalytics?.track("upgrade_pick", { game_id: GAME_ID, upgrade: id, wave: state.wave });
     lastFrame = performance.now();
