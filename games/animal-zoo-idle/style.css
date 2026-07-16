@@ -2291,6 +2291,14 @@ body.zoo-playing .animal-shop-card small {
     grid-column: 1 / -1;
   }
 }
+.zoo-actions button:focus-visible,
+.care-route-actions button:focus-visible,
+.tour-report button:focus-visible,
+#closeReportBtn:focus-visible {
+  outline: 4px solid #ffe36b;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 3px #173047;
+}
 
 /* Fixed Battle composition: surrounding viewport space letterboxes instead of resizing park UI tracks. */
 html:has(body.zoo-playing),

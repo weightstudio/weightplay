@@ -831,7 +831,7 @@
           <button type="button" data-action="upgrade" ${save.gateLevel >= maxGateLevel ? "disabled" : ""}>${upgradeButtonLabel()}</button>
           <button type="button" data-action="report">${t("report")}</button>
         </div>
-        <div class="care-route-actions hidden" aria-live="polite">
+        <div class="care-route-actions hidden" role="group" aria-label="${t("careAll")}" aria-live="polite">
           <button type="button" data-action="route-habitat"><strong>${t("careRouteHabitat")}</strong><small>${t("careRouteHabitatHint")}</small></button>
           <button type="button" data-action="route-enrichment"><strong>${t("careRouteEnrichment")}</strong><small>${t("careRouteEnrichmentHint", { tickets: formatNumber(careRouteTicketReward()) })}</small></button>
           <button type="button" data-action="route-cancel">${t("careRouteCancel")}</button>
@@ -1377,18 +1377,20 @@
     const card = nodes.habitatGrid.querySelector(".zoo-stage-card");
     card?.querySelector(".zoo-actions")?.classList.add("hidden");
     card?.querySelector(".care-route-actions")?.classList.remove("hidden");
+    requestAnimationFrame(() => card?.querySelector('[data-action="route-habitat"]')?.focus({ preventScroll: true }));
   }
 
-  function closeCareRoutes() {
+  function closeCareRoutes(restoreFocus = true) {
     careRouteChoiceOpen = false;
     const card = nodes.habitatGrid.querySelector(".zoo-stage-card");
     card?.querySelector(".zoo-actions")?.classList.remove("hidden");
     card?.querySelector(".care-route-actions")?.classList.add("hidden");
+    if (restoreFocus) requestAnimationFrame(() => card?.querySelector('[data-action="care"]')?.focus({ preventScroll: true }));
   }
 
   function completeCareRoute(route) {
     if (!careRouteChoiceOpen) return;
-    closeCareRoutes();
+    closeCareRoutes(false);
     save.careCount += 1;
     save.tour.cared += 1;
     const gain = unlockedAnimals().reduce((sum, animal) => sum + animal.care, 0) + facilityCareBonus();
@@ -1407,6 +1409,7 @@
     window.WonderAnalytics?.track("zoo_care_route", { game_id: GAME_ID, route });
     saveGame();
     render();
+    requestAnimationFrame(() => nodes.habitatGrid.querySelector('[data-action="collect"]')?.focus({ preventScroll: true }));
   }
 
   function upgradeGate() {
@@ -1473,6 +1476,7 @@
 
   function claimTourReward() {
     if (!isTourComplete()) return;
+    const reportOpen = !nodes.resultPanel.classList.contains("hidden");
     const targets = tourTargets();
     save.coins += targets.reward;
     save.tourRound += 1;
@@ -1482,7 +1486,10 @@
     window.WonderAnalytics?.track("zoo_tour_complete", { game_id: GAME_ID, round: save.tourRound - 1 });
     saveGame();
     render();
-    if (!nodes.resultPanel.classList.contains("hidden")) renderTourReport(nodes.tourReport);
+    if (reportOpen) {
+      renderTourReport(nodes.tourReport);
+      requestAnimationFrame(() => nodes.closeReportBtn.focus({ preventScroll: true }));
+    }
   }
 
   function notEnough(cost = 0) {

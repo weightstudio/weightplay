@@ -47,9 +47,9 @@
         </section>
         <footer class="actions"><button id="hint" class="icon-action"><i class="icon hint"></i><span data-copy="hint">Hint</span></button><button id="undo" class="icon-action"><i class="icon undo"></i><span data-copy="undo">Undo</span></button><button id="clear" class="icon-action"><i class="icon clear"></i><span data-copy="clear">Clear</span></button><button id="submit" class="primary compact" data-copy="check">Check word</button></footer>
         </div>
-        <section id="resultPanel" class="result-overlay result-screen hidden" data-screen="result">
+        <section id="resultPanel" class="result-overlay result-screen hidden" data-screen="result" role="dialog" aria-modal="true" aria-labelledby="wordResultTitle">
         <img class="leo" src="../../assets/animal-word-trails-lion-guide.webp" alt="">
-        <h2 data-copy="complete">Trail complete</h2><p id="resultSummary"></p><p class="skill" data-copy="skill">Reading &middot; Focus &middot; Logic &middot; Animal knowledge</p>
+        <h2 id="wordResultTitle" data-copy="complete">Trail complete</h2><p id="resultSummary"></p><p class="skill" data-copy="skill">Reading &middot; Focus &middot; Logic &middot; Animal knowledge</p>
         <div class="result-actions"><button class="primary" id="next" data-copy="next">Next trail</button><button class="secondary" id="resultsBack" data-wp-return="battle" data-copy="trails">Trail menu</button></div>
         </section>
       </div></div>

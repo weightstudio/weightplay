@@ -97,7 +97,7 @@
           </header>
           <div id="battleMessage" class="battle-message">Drag to aim, release to shoot</div>
           <div class="play-frame">
-            <canvas id="playCanvas" width="360" height="548" aria-label="Bubble shooter play area" data-i18n-aria="playArea"></canvas>
+            <canvas id="playCanvas" width="360" height="548" tabindex="0" aria-label="Bubble shooter play area" data-i18n-aria="playArea" aria-keyshortcuts="ArrowLeft ArrowRight ArrowUp ArrowDown Enter Space"></canvas>
           </div>
           <div class="queue-bar">
             <div><span data-i18n="currentBubble">Current</span><canvas id="currentPreview" width="48" height="48"></canvas></div>
@@ -106,7 +106,7 @@
           </div>
           </div>
 
-          <section id="resultScreen" class="result-screen" aria-labelledby="resultTitle">
+          <section id="resultScreen" class="result-screen" role="dialog" aria-modal="true" aria-labelledby="resultTitle">
           <div class="result-panel">
             <img class="result-mascot" src="../../assets/animal-bubble-safari-lion-guide.webp" alt="" draggable="false">
             <h2 id="resultTitle">Rescue Complete!</h2>

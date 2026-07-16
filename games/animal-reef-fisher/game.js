@@ -1186,6 +1186,19 @@
     }
   }
 
+  function cancelFishingInput() {
+    pointer.down = false;
+    pointer.source = "canvas";
+    pointer.tensionPct = 50;
+    if (state !== "game" || !run || run.phase !== "charging") return;
+    run.phase = "aim";
+    run.castPower = 0;
+    run.castDir = 1;
+    nodes.hintText.textContent = t("castHint");
+    updateTensionGuide();
+    updateSonarButton();
+  }
+
   function startKeyboardCharge() {
     if (state !== "game" || !run || run.phase !== "aim") return;
     pointer.down = true;
@@ -1370,6 +1383,10 @@
     if (pointer.down) updatePointer(evt);
   });
   window.addEventListener("pointerup", releaseCast);
+  window.addEventListener("pointercancel", cancelFishingInput);
+  window.addEventListener("blur", cancelFishingInput);
+  document.addEventListener("visibilitychange", cancelFishingInput);
+  canvas.addEventListener("pointercancel", cancelFishingInput);
   nodes.tensionLane.addEventListener("pointerdown", (evt) => {
     pointer.down = true;
     nodes.tensionLane.setPointerCapture?.(evt.pointerId);
@@ -1378,9 +1395,7 @@
   nodes.tensionLane.addEventListener("pointermove", (evt) => {
     if (pointer.down) updateLanePointer(evt);
   });
-  nodes.tensionLane.addEventListener("pointercancel", () => {
-    pointer.down = false;
-  });
+  nodes.tensionLane.addEventListener("pointercancel", cancelFishingInput);
   [canvas, nodes.tensionLane].forEach((control) => {
     control.addEventListener("keydown", handleFishingKeyDown);
     control.addEventListener("keyup", handleFishingKeyUp);
@@ -1429,6 +1444,7 @@
           run: run
             ? {
                 phase: run.phase,
+                castPower: run.castPower,
                 catches: run.catches,
                 newFish: run.newFish,
                 score: run.score,

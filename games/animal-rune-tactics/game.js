@@ -617,6 +617,10 @@
     });
   }
 
+  function focusSelectedMission() {
+    requestAnimationFrame(() => nodes.missionGrid.querySelector(".mission-card.is-active:not(:disabled)")?.focus({ preventScroll: true }));
+  }
+
   function heroUpgradeCost(id) {
     const level = profile.heroLevels?.[id] || 1;
     return 18 + level * 12;
@@ -734,6 +738,7 @@
     nodes.stageReserve.classList.remove("is-hidden");
     document.body.classList.add("wp-standard-stage-page");
     renderMenu();
+    focusSelectedMission();
   }
 
   function showMainFromStage() {
@@ -741,6 +746,7 @@
     nodes.stageReserve.classList.add("is-hidden");
     nodes.menuPanel.classList.remove("is-hidden");
     document.body.classList.remove("wp-standard-stage-page");
+    requestAnimationFrame(() => nodes.mainStartBtn.focus({ preventScroll: true }));
   }
 
   function startMission(mission = selectedMission) {
@@ -1285,7 +1291,7 @@
     nodes.stageReserve.classList.remove("is-hidden");
     document.body.classList.add("wp-standard-stage-page");
     renderMenu();
-    focusPanel(nodes.menuPanel);
+    focusSelectedMission();
   }
 
   function installTestHooks() {

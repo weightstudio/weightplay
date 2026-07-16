@@ -144,6 +144,7 @@ button { border: 0; cursor: pointer; color: inherit; }
 .battle-message { height: 35px; display: grid; place-items: center; background: #fff1aa; color: #684719; font-size: 13px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0 12px; }
 .play-frame { width: 372px; height: 558px; margin: 5px auto 0; padding: 5px 6px; border-radius: 8px; background: #fff; box-shadow: 0 4px 0 rgba(23,67,83,.22); overflow: hidden; }
 #playCanvas { display: block; width: 360px; height: 548px; border-radius: 6px; touch-action: none; background: url("../../assets/animal-bubble-safari-bg.webp") center/cover; }
+#playCanvas:focus { outline: 5px solid #ffe676; outline-offset: -5px; }
 .queue-bar { height: 112px; margin: 5px 9px 0; border-radius: 8px; background: #15344c; color: #fff; display: grid; grid-template-columns: 82px 82px 1fr; align-items: center; gap: 7px; padding: 8px 11px; }
 .queue-bar div { display: grid; grid-template-columns: 1fr 48px; grid-template-rows: 16px 48px; place-items: center; }
 .queue-bar span { grid-column: 1 / -1; font-size: 10px; color: #bce7ee; }
@@ -169,6 +170,8 @@ button { border: 0; cursor: pointer; color: inherit; }
 .skill-report span { color: #8ee2d2; font-size: 11px; }
 .result-actions { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 52px 48px; gap: 10px; align-self: end; }
 .result-actions button { border-radius: 8px; background: #fff; color: #173047; font-weight: 900; }
+.result-actions button:focus { outline: 4px solid #ffe676; outline-offset: 3px; box-shadow: 0 0 0 3px #173047; }
+body:not(.safari-main) .wp-tutorial-button { display: none !important; }
 .result-actions .primary-button { background: linear-gradient(#ffe676,#ffc63b); }
 #backToMap { grid-column: 1 / -1; }
 .result-actions.single-primary #retryStage { grid-column: 1 / -1; }

@@ -1259,6 +1259,7 @@
     keys.delete(event.key.toLowerCase());
   });
   window.addEventListener("blur", clearInput);
+  document.addEventListener("visibilitychange", clearInput);
 
   nodes.localeSelect.addEventListener("change", (event) => setLocale(event.target.value));
   nodes.startBtn.addEventListener("click", startRun);

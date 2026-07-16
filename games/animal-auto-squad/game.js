@@ -761,6 +761,8 @@
         bossStages: STAGE_DEFINITIONS.filter((definition) => definition.bossId).map((definition) => ({ stage: definition.id, bossId: definition.bossId })),
         regularEnemyTypes: ENEMY_METADATA.map((enemy) => enemy.id),
         bossTypes: BOSS_METADATA.map((boss) => ({ id: boss.id, imageKey: boss.imageKey, ability: boss.ability })),
+        regions: REGION_METADATA.map((region) => ({ id: region.id, nameEn: region.nameEn })),
+        stages: STAGE_DEFINITIONS.map((definition) => ({ id: definition.id, region: definition.region, nameEn: definition.nameEn, bossId: definition.bossId, waves: definition.waves.map((wave) => [...wave]) })),
         firstWave: summarizeEnemyWave(1, 1),
         firstBossWave: summarizeEnemyWave(5, WAVES_PER_STAGE),
         finalBossWave: summarizeEnemyWave(30, WAVES_PER_STAGE)
@@ -901,6 +903,31 @@
 
         return { wolfText, wolfDamage, firstBoarDamage, secondBoarDamage, badgerText, badgerShield, golemText, golemShields };
       },
+      extendedEnemyPreview: () => {
+        const player = (formationSlot) => ({ id: 90 + formationSlot, nameEn: `Target ${formationSlot}`, nameZht: `Target ${formationSlot}`, formationSlot, atk: 1, hp: 20, maxHp: 20, shield: false, shieldHp: 0, level: 1 });
+        state.combat.playerSquad = [player(0), player(3)];
+        const doubleEnemy = { ...ENEMY_METADATA[5], formationSlot: 1, atk: 4, hp: 8, maxHp: 8, shield: false, shieldHp: 0, level: 1, abilityUsed: false };
+        state.combat.enemySquad = [doubleEnemy];
+        const doubleText = resolveEnemySlotAction(doubleEnemy, 0);
+        const doubleFrontHp = state.combat.playerSquad[0].hp;
+        const doubleBackHp = state.combat.playerSquad[1].hp;
+
+        state.combat.playerSquad = [player(0), player(3)];
+        const drainEnemy = { ...ENEMY_METADATA[9], formationSlot: 1, atk: 4, hp: 5, maxHp: 10, shield: false, shieldHp: 0, level: 1, abilityUsed: false };
+        state.combat.enemySquad = [drainEnemy];
+        const drainText = resolveEnemySlotAction(drainEnemy, 0);
+        return { doubleText, doubleFrontHp, doubleBackHp, drainText, drainHp: drainEnemy.hp, drainFrontHp: state.combat.playerSquad[0].hp, drainBackHp: state.combat.playerSquad[1].hp };
+      },
+      bossAbilityPreview: () => BOSS_METADATA.map((boss) => {
+        const players = [0, 1, 2, 3, 4, 5].map((formationSlot) => ({ id: 80 + formationSlot, nameEn: `Hero ${formationSlot}`, nameZht: `Hero ${formationSlot}`, formationSlot, atk: 2, hp: 30, maxHp: 30, shield: false, shieldHp: 0, level: 1 }));
+        const bossUnit = { ...boss, formationSlot: 1, atk: 6, hp: 18, maxHp: 20, shield: false, shieldHp: 0, level: 5, abilityUsed: false };
+        state.combat.playerSquad = players;
+        state.combat.enemySquad = [bossUnit];
+        state.combat.effects = [];
+        state.combat.activeActors = [];
+        const text = resolveBossAction(bossUnit, 0);
+        return { id: boss.id, text, playerHp: players.map((unit) => unit.hp), bossHp: bossUnit.hp, bossShield: bossUnit.shieldHp, allyShields: state.combat.enemySquad.map((unit) => unit.shieldHp) };
+      }),
       combatUiPreview: () => ({
         healthBarHeight: COMBAT_HEALTH_BAR_HEIGHT,
         healthFontSize: COMBAT_HEALTH_FONT_SIZE,
@@ -909,6 +936,13 @@
         playerCard: combatLayoutMetrics("player"),
         enemyCard: combatLayoutMetrics("enemy"),
         enemyCrops: ENEMY_METADATA.filter((enemy) => Number.isFinite(enemy.sx)).map(({ id, sx, sy, sw, sh }) => ({ id, sx, sy, sw, sh }))
+      }),
+      assetState: () => ({
+        ready: assetsReady,
+        bossKeys: BOSS_METADATA.map((boss) => boss.imageKey),
+        loadedBossKeys: BOSS_METADATA.map((boss) => boss.imageKey).filter((key) => Boolean(imageCache[key])),
+        enemyKeys: [...new Set(ENEMY_METADATA.map((enemy) => enemy.imageKey).filter(Boolean))],
+        loadedEnemyKeys: [...new Set(ENEMY_METADATA.map((enemy) => enemy.imageKey).filter((key) => key && imageCache[key]))]
       }),
       formationPreview: () => {
         const combatCard = (id, formationSlot) => {

@@ -130,6 +130,9 @@
     dom.stageScreen.classList.toggle("is-active", name === "stage");
     dom.battleScreen.classList.toggle("is-active", name === "battle" || result);
     dom.battleLive.classList.toggle("is-hidden", result);
+    dom.battleLive.inert = result;
+    if (result) dom.battleLive.setAttribute("aria-hidden", "true");
+    else dom.battleLive.removeAttribute("aria-hidden");
     dom.resultScreen.classList.toggle("is-active", result);
     fitCanvas();
     track("screen_view", { screen: name });
@@ -329,6 +332,7 @@
     cancelAnimationFrame(animationFrame);
     loop(performance.now());
     track("level_start", { level: id });
+    requestAnimationFrame(() => dom.playCanvas.focus({ preventScroll:true }));
   }
 
   function launcherPoint() { return { x: 180, y: 500 }; }
@@ -354,9 +358,8 @@
     game.aimY = Math.max(30, Math.min(478, point.y));
   }
 
-  function releaseAim(event) {
+  function shootAim() {
     if (!game?.aiming || game.projectile) return;
-    event.preventDefault();
     game.aiming = false;
     const origin = launcherPoint();
     let dx = game.aimX - origin.x;
@@ -366,6 +369,29 @@
     game.projectile = { x: origin.x, y: origin.y - 28, vx: dx / length * 420, vy: dy / length * 420, type: game.currentType, power: game.currentPower, bounced: false };
     tone(420, .05);
     track("bubble_shot", { level: game.def.id });
+  }
+
+  function releaseAim(event) {
+    if (!game?.aiming || game.projectile) return;
+    event.preventDefault();
+    shootAim();
+  }
+
+  function handleBattleKey(event) {
+    if (currentScreen !== "battle" || !game || game.state !== "playing" || game.projectile) return;
+    const direction = { ArrowLeft:[-12,0], ArrowRight:[12,0], ArrowUp:[0,-12], ArrowDown:[0,12] }[event.key];
+    if (direction) {
+      event.preventDefault();
+      game.aiming = true;
+      game.aimX = Math.max(18, Math.min(342, game.aimX + direction[0]));
+      game.aimY = Math.max(30, Math.min(478, game.aimY + direction[1]));
+      return;
+    }
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      if (!game.aiming) { game.aiming = true; game.aimX = 180; game.aimY = 240; }
+      shootAim();
+    }
   }
 
   function trajectory() {
@@ -547,6 +573,7 @@
       persist();
     }
     showScreen("result");
+    requestAnimationFrame(() => (dom.nextStage.hidden ? document.getElementById("retryStage") : dom.nextStage).focus({ preventScroll:true }));
     track("level_complete", { level: game.def.id, won, score: game.score, stars });
   }
 
@@ -675,6 +702,7 @@
       alive: game?.bubbles.filter(bubble => bubble.alive).length || 0,
       blockers: game?.bubbles.filter(bubble => bubble.alive && bubble.blocker).length || 0,
       shots: game?.shots ?? null,
+      aiming: game?.aiming || false, aimX: game?.aimX ?? null, aimY: game?.aimY ?? null,
       lastAttachment: game?.lastAttachment || null,
       bubbleTypes: game?.bubbles.filter(bubble => bubble.alive && !bubble.blocker).map(bubble => ({ x:bubble.x, y:bubble.y, type:bubble.type })) || []
     }),
@@ -693,10 +721,10 @@
 
   document.getElementById("startGame").addEventListener("click", () => { renderStageRail(); showScreen("stage"); });
   document.getElementById("stageBack").addEventListener("click", () => { showScreen("main"); updateMainProgress(); });
-  document.getElementById("battleBack").addEventListener("click", () => { clearTimeout(resultTimer); game=null; cancelAnimationFrame(animationFrame); renderStageRail(); showScreen("stage"); });
+  document.getElementById("battleBack").addEventListener("click", () => { clearTimeout(resultTimer); game=null; cancelAnimationFrame(animationFrame); renderStageRail(); showScreen("stage"); requestAnimationFrame(() => dom.stageRail.querySelector(".is-selected")?.focus({ preventScroll:true })); });
   document.getElementById("retryStage").addEventListener("click", () => startStage(game.def.id));
   document.getElementById("nextStage").addEventListener("click", () => startStage(Math.min(stageDefs.length,game.def.id+1)));
-  document.getElementById("backToMap").addEventListener("click", () => { renderStageRail(); showScreen("stage"); });
+  document.getElementById("backToMap").addEventListener("click", () => { renderStageRail(); showScreen("stage"); requestAnimationFrame(() => dom.stageRail.querySelector(".is-selected")?.focus({ preventScroll:true })); });
   document.getElementById("openGuide").addEventListener("click", openGuide);
   document.getElementById("closeGuide").addEventListener("click", closeGuide);
   document.getElementById("guideDone").addEventListener("click", closeGuide);
@@ -705,6 +733,7 @@
   document.querySelectorAll("[data-locale]").forEach(button => button.addEventListener("click", () => { locale=button.dataset.locale; localStorage.setItem("weightPlayLocale",locale); window.WonderI18n?.setLocale?.(locale); applyLocale(); }));
   dom.playCanvas.addEventListener("pointerdown", beginAim);
   dom.playCanvas.addEventListener("pointermove", updateAim);
+  dom.playCanvas.addEventListener("keydown", handleBattleKey);
   window.addEventListener("pointerup", releaseAim);
   window.addEventListener("pointercancel", () => { if (game) game.aiming=false; });
   window.addEventListener("resize", fitCanvas);
