@@ -13,7 +13,7 @@
   <style>.hero-picker{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(86px,1fr);gap:7px;overflow-x:auto;scrollbar-width:none}.hero-option{height:112px;border:1px solid #4f8b70;border-radius:9px;background:#102d24;color:#fff;padding:5px;display:grid;grid-template-rows:48px auto auto;justify-items:center;align-content:center;gap:2px}.hero-option.selected{border:2px solid #ffd45f;background:#194635}.hero-option img{width:48px;height:48px;object-fit:contain}.hero-option b{font-size:11px;line-height:1.1;text-align:center}.hero-option small{display:grid;gap:1px;font-size:8px;line-height:1.15;color:#bfe6d2;text-align:center}</style>
   <style>body:not([data-game-view="battle"]) .battle-ad{display:none}</style>
 </head>
-<body>
+<body data-sound-toggle="off">
   <main id="app" class="app">
     <section id="mainView" class="view main-view">
       <a class="lobby-return" href="/" aria-label="Back to WeightPlay"><span>&larr;</span><img src="../../assets/weightplay-logo.png" alt="" /></a>
@@ -40,6 +40,7 @@
     </section>
 
   </main>
+  <script src="../../src/sound.js" data-no-floating-toggle="true"></script>
   <script src="../../src/wallet.js"></script>
   <script src="fit.js"></script>
   <script src="game.js?v=20260716-blessing-owner1"></script>

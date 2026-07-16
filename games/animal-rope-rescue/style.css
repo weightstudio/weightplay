@@ -269,6 +269,12 @@ body.is-vine-playing .game-page-info {
   opacity: .62;
 }
 
+.stage-card .stage-card-lock {
+  color: #6f2f1f;
+  font-size: .78rem;
+  font-weight: 1000;
+}
+
 .hud-row {
   display: grid;
   grid-template-columns: auto 1fr 1fr;

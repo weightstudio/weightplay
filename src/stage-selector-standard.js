@@ -2,8 +2,8 @@
   const STAGE_LOGICAL_WIDTH = 390;
   const STAGE_LOGICAL_HEIGHT = 788;
   const STAGE_RESERVE_HEIGHT = 56;
-  const railSelector = ".stage-grid,.stage-rail,.mission-grid,.mission-rail,.region-rail,.level-grid,.route-rail,.day-rail,.zone-row,.expedition-rail,.world-map-grid";
-  const cardSelector = ".stage-card,.mission-card,.region-card,.route-card,.day-card,.zone-card,.expedition-card,.zone-node,button";
+  const railSelector = ".stage-grid,.stage-rail,.page-rail,.mission-grid,.mission-rail,.region-rail,.level-grid,.route-rail,.day-rail,.zone-row,.expedition-rail,.world-map-grid";
+  const cardSelector = ".stage-card,.page-card,.mission-card,.region-card,.route-card,.day-card,.zone-card,.expedition-card,.zone-node,button";
   const installed = new WeakSet();
   const railVisibility = new WeakMap();
   const pendingRecommendation = new WeakMap();
@@ -46,6 +46,10 @@
     "zoo-helper-day": "#startGameBtn",
   };
 
+  function isKidsAudience() {
+    return document.querySelector('meta[name="weightplay-audience"]')?.content?.toLowerCase() === "kids";
+  }
+
   function gameId() {
     return location.pathname.match(/\/games\/([^/]+)/)?.[1] || "";
   }
@@ -76,6 +80,7 @@
   }
 
   function sharedReserve() {
+    if (isKidsAudience()) return null;
     let reserve = document.querySelector(".wp-stage-physical-reserve");
     if (!reserve) {
       reserve = document.createElement("div");
@@ -91,6 +96,7 @@
   }
 
   function updateStageCanvas() {
+    if (isKidsAudience()) return;
     const activeRails = [...document.querySelectorAll("[data-wp-stage-rail]")]
       .filter((rail) => rail.getClientRects().length && getComputedStyle(rail).visibility !== "hidden");
     const retainedManagementRoot = [...document.querySelectorAll("[data-wp-logical-stage-canvas]")]
@@ -128,6 +134,7 @@
   }
 
   function standardizeMainStart() {
+    if (isKidsAudience()) return;
     const button = document.querySelector(mainStartByGame[gameId()] || "[data-wp-main-start]");
     if (!button) return;
     button.dataset.wpMainStart = "true";
@@ -136,6 +143,11 @@
   }
 
   function updateStageState() {
+    if (isKidsAudience()) {
+      document.body?.classList.remove("wp-stage-select-active");
+      document.documentElement.classList.remove("wp-stage-select-active");
+      return;
+    }
     const activeRail = [...document.querySelectorAll("[data-wp-stage-rail][data-wp-stage-initially-hidden='true']")]
       .some((rail) => rail.getClientRects().length && getComputedStyle(rail).visibility !== "hidden");
     const activeManagementRoot = [...document.querySelectorAll("[data-wp-logical-stage-canvas]")]
@@ -306,6 +318,7 @@
       rail.style.setProperty("scroll-behavior", "auto", "important");
       rail.style.setProperty("scroll-snap-type", "none", "important");
       rail.scrollLeft = startScroll;
+      if (isKidsAudience()) event.stopPropagation();
     }, true);
 
     // Listen on document until the drag threshold is crossed. This keeps a
@@ -331,6 +344,7 @@
       rail.scrollLeft = startScroll - delta * coordinateScale;
       rail.dataset.wpDragScroll = String(rail.scrollLeft);
       rail.dataset.wpDragApplied = String(rail.scrollLeft - startScroll);
+      if (isKidsAudience()) event.stopPropagation();
     }, true);
 
     const finish = (event = {}) => {
@@ -365,10 +379,15 @@
         restore();
       }
     };
-    rail.addEventListener("pointerup", finish, true);
-    rail.addEventListener("pointercancel", finish, true);
-    document.addEventListener("pointerup", finish, true);
-    document.addEventListener("pointercancel", finish, true);
+    const finishKidsPointer = (event) => {
+      const ownsPointer = pointerId !== null && (event.pointerId === undefined || event.pointerId === pointerId);
+      finish(event);
+      if (ownsPointer && isKidsAudience()) event.stopPropagation();
+    };
+    rail.addEventListener("pointerup", finishKidsPointer, true);
+    rail.addEventListener("pointercancel", finishKidsPointer, true);
+    document.addEventListener("pointerup", finishKidsPointer, true);
+    document.addEventListener("pointercancel", finishKidsPointer, true);
     rail.addEventListener("click", (event) => {
       if (!suppressNextClick) return;
       suppressNextClick = false;

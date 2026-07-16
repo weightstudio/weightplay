@@ -860,6 +860,7 @@ body {
 
 .combat-feedback.damage { border-color: rgba(251, 113, 133, 0.9); color: #fecdd3; }
 .combat-feedback.block { border-color: rgba(52, 211, 153, 0.9); color: #bbf7d0; }
+.combat-feedback.poison { border-color: rgba(192, 132, 252, 0.95); color: #e9d5ff; background: rgba(88, 28, 135, 0.9); }
 .combat-feedback.card { top: 24%; border-color: rgba(96, 165, 250, 0.9); color: #dbeafe; background: rgba(30, 64, 175, 0.88); }
 
 @keyframes combat-feedback-rise {
@@ -973,6 +974,15 @@ body {
   color: #fca5a5;
   font-weight: 600;
   margin-bottom: 4px;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.enemy-intent .intent-text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .intent-icon {
@@ -983,9 +993,15 @@ body {
 .status-row {
   display: flex;
   gap: 6px;
-  justify-content: center;
+  justify-content: flex-start;
   min-height: 20px;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
 }
+
+.status-row::-webkit-scrollbar { display: none; }
 
 .status-badge {
   background: rgba(0, 0, 0, 0.4);
@@ -997,6 +1013,8 @@ body {
   display: flex;
   align-items: center;
   gap: 3px;
+  flex: 0 0 auto;
+  white-space: nowrap;
 }
 
 .status-badge.poison {
@@ -1190,6 +1208,17 @@ body {
 .card.utility:not(:disabled):hover {
   border-color: #a855f7;
   box-shadow: 0 0 15px rgba(168, 85, 247, 0.35);
+}
+
+.card.curse {
+  border-color: rgba(217, 70, 239, 0.68);
+  background: linear-gradient(180deg, rgba(88, 28, 135, 0.42), rgba(15, 23, 42, 0.96));
+  box-shadow: 0 4px 14px rgba(192, 38, 211, 0.24);
+}
+
+.card.curse .card-cost {
+  background: #e879f9;
+  box-shadow: 0 0 8px rgba(232, 121, 249, 0.55);
 }
 
 .card.drafted-card {

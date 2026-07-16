@@ -235,7 +235,7 @@
         const locked = stageNo > save.unlocked;
         const got = save.stars[stageNo] || 0;
         return `
-          <button class="stage-card ${locked ? "locked" : ""}" type="button" data-stage="${stageNo}">
+          <button class="stage-card ${locked ? "locked" : ""}" type="button" data-stage="${stageNo}" aria-disabled="${locked ? "true" : "false"}">
             <strong>${t("stageLabel", { n: stageNo })}</strong>
             <span class="stage-card-route" aria-hidden="true">
               <img src="${assets[stage.fruit]}" alt="" />
@@ -243,6 +243,7 @@
               <img src="${assets[stage.animal]}" alt="" />
             </span>
             <small>${t(stage.fruit)} → ${t(stage.animal)}</small>
+            ${locked ? `<small class="stage-card-lock">${t("locked")}</small>` : ""}
             <span>${"★".repeat(got)}${"☆".repeat(3 - got)}</span>
           </button>
         `;

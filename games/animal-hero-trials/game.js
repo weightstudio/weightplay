@@ -141,6 +141,10 @@
     return copy[locale]?.[key] || copy.en[key] || key;
   }
 
+  function playSound(cue) {
+    window.WonderSound?.play?.(cue);
+  }
+
   function roomLabel(room, boss = false) {
     if (locale === "zh-Hant") return `\u623f\u9593 ${room}/3${boss ? " \u00b7 \u9996\u9818" : ""}`;
     return interpolate(boss ? "bossRoom" : "room", { room });
@@ -295,6 +299,7 @@
     };
     $("#skillBtn img").src = ASSET_ROOT + hero.asset;
     spawn();
+    playSound("start");
     $("#game").focus({ preventScroll: true });
     loop(performance.now());
   }
@@ -306,6 +311,7 @@
       $("#roomText").textContent = roomLabel(run.room, true);
       $("#objective").textContent = t("bossObjective");
       updateHud();
+      playSound("boss");
       return;
     }
     run.enemies = Array.from({ length: 2 + run.room }, (_, index) => {
@@ -325,6 +331,7 @@
 
   function skill() {
     if (!run?.active || run.cool > 0) return;
+    playSound("shoot");
     if (run.heroId === "leo") {
       run.cool = Math.max(2.5, 5 - run.bless.speed * 0.5);
       run.fx.push({ type: "roar", x: run.leo.x, y: run.leo.y, t: 0.45 });
@@ -423,6 +430,7 @@
 
   function chooseBlessing() {
     run.active = false;
+    playSound("success");
     renderBlessings(false);
     setChoiceModal(true);
   }
@@ -453,6 +461,7 @@
       button.innerHTML = `<img src="${ASSET_ROOT + option.img}" alt=""><span><b>${option.name}</b><br><small>${option.copy}</small></span>`;
       button.onclick = () => {
         clearRerollConfirmation();
+        playSound("upgrade");
         run.bless[option.id] += option.amount;
         if (option.id === "heal") run.hp = Math.min(run.maxHp, run.hp + 24 * option.amount);
         setChoiceModal(false, false);
@@ -512,6 +521,7 @@
       return updateRerollUi(interpolate("rerollNeed", { balance: window.WeightPlayWallet?.read?.().diamonds || 0 }));
     }
     run.rerollUsed = true;
+    playSound("coin");
     renderBlessings(true);
     updateRerollUi(t("rerollDone"));
     window.WonderAnalytics?.track?.("diamond_spend", {
@@ -552,6 +562,7 @@
       $("#resultNext").onclick = () => startTrial(run.stage);
     }
     setResultModal(true);
+    playSound(won ? "win" : "wrong");
   }
 
   function loop(now) {
@@ -684,12 +695,12 @@
     localStorage.setItem("weightPlayLocale", locale);
     localize();
   };
-  $("#startBtn").onclick = () => show("stage");
-  $("#stageBack").onclick = () => show("main");
-  $("#battleBack").onclick = () => show("stage");
+  $("#startBtn").onclick = () => { playSound("click"); show("stage"); };
+  $("#stageBack").onclick = () => { playSound("click"); show("main"); };
+  $("#battleBack").onclick = () => { playSound("click"); show("stage"); };
   $("#skillBtn").onclick = skill;
   $("#rerollBtn").onclick = rerollBlessings;
-  $("#resultHome").onclick = () => { show("main"); localize(); };
+  $("#resultHome").onclick = () => { playSound("click"); show("main"); localize(); };
   $("#resultModal").addEventListener("keydown", (event) => {
     if (event.key !== "Tab" || $("#resultModal").classList.contains("hidden")) return;
     const actions = [$("#resultNext"), $("#resultHome")].filter((button) => !button.disabled);
@@ -710,6 +721,7 @@
       mastery += 1;
       save();
       localize();
+      playSound("upgrade");
     }
   };
   addEventListener("keydown", (event) => {

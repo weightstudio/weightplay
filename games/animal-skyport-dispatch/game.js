@@ -273,6 +273,18 @@
     $('nextBtn').onclick = () => { state.shift = win ? Math.min(5, state.shift + 1) : state.shift; startBattle(); };
     $('nextBtn').focus({ preventScroll: true });
   }
+  function trapResultFocus(event) {
+    if (event.key !== 'Tab' || $('result').classList.contains('hidden')) return;
+    const first = $('nextBtn');
+    const last = $('menuBtn');
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  }
   function finish(ok) {
     if (ok && state.serviced && !state.conflict && state.crewAssigned && state.fuel > 0) {
       state.done += 1;
@@ -405,6 +417,7 @@
   $('stageBack').onclick = () => { clearInsuranceConfirmation(); renderContractControls(); show('mainScreen'); };
   $('battleBack').onclick = () => { cancelRouteGesture({restoreGuidance:false}); show('stageScreen'); renderStages(); };
   $('menuBtn').onclick = () => show('mainScreen');
+  $('result').addEventListener('keydown', trapResultFocus);
   $('serviceBtn').onclick = () => {
     if (state.storm && state.parts) {
       state.parts -= 1;

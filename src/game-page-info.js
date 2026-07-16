@@ -1,15 +1,15 @@
 (function () {
   const sharedAssetBase = new URL(".", document.currentScript?.src || location.href);
-  if (!document.querySelector('link[data-wp-stage-standard], link[href*="stage-selector-standard.css"]')) {
+  if (!document.querySelector('link[href*="stage-selector-standard.css"]')) {
     const link = document.createElement("link");
     link.rel = "stylesheet";
-    link.href = new URL("stage-selector-standard.css?v=20260715-stage-swipe2", sharedAssetBase).href;
+    link.href = new URL("stage-selector-standard.css?v=20260716-kids-stage-swipe3", sharedAssetBase).href;
     link.dataset.wpStageStandard = "true";
     document.head.appendChild(link);
   }
-  if (!document.querySelector('script[data-wp-stage-standard], script[src*="stage-selector-standard.js"]')) {
+  if (!document.querySelector('script[src*="stage-selector-standard.js"]')) {
     const script = document.createElement("script");
-    script.src = new URL("stage-selector-standard.js?v=20260715-stage-swipe2", sharedAssetBase).href;
+    script.src = new URL("stage-selector-standard.js?v=20260716-kids-stage-swipe3", sharedAssetBase).href;
     script.dataset.wpStageStandard = "true";
     document.head.appendChild(script);
   }

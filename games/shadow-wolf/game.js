@@ -1046,6 +1046,17 @@
     if (open && focusPrimary) nodes.retryBtn.focus({ preventScroll: true });
   }
 
+  function trapResultFocus(event) {
+    if (event.key !== "Tab" || nodes.resultPanel.classList.contains("hidden")) return;
+    if (event.shiftKey && document.activeElement === nodes.retryBtn) {
+      event.preventDefault();
+      nodes.resultMenuBtn.focus({ preventScroll: true });
+    } else if (!event.shiftKey && document.activeElement === nodes.resultMenuBtn) {
+      event.preventDefault();
+      nodes.retryBtn.focus({ preventScroll: true });
+    }
+  }
+
   function endGame(won) {
     state.gameActive = false;
     clearActiveInputs();
@@ -1795,6 +1806,7 @@
       if (choice) spendAttribute(choice.dataset.draftAttribute);
     });
     nodes.draftPanel.addEventListener("keydown", trapDraftFocus);
+    nodes.resultPanel.addEventListener("keydown", trapResultFocus);
 
     nodes.retryBtn.addEventListener("click", () => {
       window.WonderSound?.play("click");

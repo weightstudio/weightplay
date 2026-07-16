@@ -1935,6 +1935,7 @@
     el.draggable = false;
     el.dataset.slot = String(index);
     el.dataset.area = sourceArea;
+    el.dataset.cardId = String(card.id);
 
     if (sourceArea === "backpack" && findPlacedCard(card.id)) {
       el.classList.add("is-deployed");

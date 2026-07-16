@@ -377,6 +377,10 @@
     shootAim();
   }
 
+  function cancelAim() {
+    if (game) game.aiming = false;
+  }
+
   function handleBattleKey(event) {
     if (currentScreen !== "battle" || !game || game.state !== "playing" || game.projectile) return;
     const direction = { ArrowLeft:[-12,0], ArrowRight:[12,0], ArrowUp:[0,-12], ArrowDown:[0,12] }[event.key];
@@ -735,7 +739,10 @@
   dom.playCanvas.addEventListener("pointermove", updateAim);
   dom.playCanvas.addEventListener("keydown", handleBattleKey);
   window.addEventListener("pointerup", releaseAim);
-  window.addEventListener("pointercancel", () => { if (game) game.aiming=false; });
+  window.addEventListener("pointercancel", cancelAim);
+  window.addEventListener("blur", cancelAim);
+  window.addEventListener("pagehide", cancelAim);
+  document.addEventListener("visibilitychange", () => { if (document.hidden) cancelAim(); });
   window.addEventListener("resize", fitCanvas);
   window.visualViewport?.addEventListener("resize", fitCanvas);
 

@@ -1859,6 +1859,13 @@
     updateHud();
   }
 
+  function pauseHiddenBattle() {
+    if (!document.hidden || state.screen !== "game" || state.gameOver || state.paused) return;
+    state.paused = true;
+    track("game_speed_change", { stage: state.currentStage, speed: state.speed, paused: true, reason: "page_hidden" });
+    updateHud();
+  }
+
   function updateDefenders(dt) {
     state.defenders.forEach((d) => {
       d.animTime = (d.animTime || 0) + dt;
@@ -2975,6 +2982,7 @@
     nodes.sellBtn.addEventListener("click", sellSelected);
     nodes.reviveBtn.addEventListener("click", reviveCore);
     nodes.speedBtn.addEventListener("click", cycleSpeedControl);
+    document.addEventListener("visibilitychange", pauseHiddenBattle);
     nodes.retryBtn.addEventListener("click", () => {
       track("game_restart", { stage: state.currentStage });
       startStage(state.currentStage);
@@ -4947,6 +4955,52 @@
     return result;
   }
 
+  function runBackgroundPauseScenario() {
+    state.manualSimulation = true;
+    state.save = {
+      bestStage: 1,
+      diamonds: 12,
+      upgradePoints: 0,
+      tech: { power: 0, bulwark: 0, economy: 0 },
+      cosmetics: { goldenFrame: false },
+      clears: {},
+    };
+    startStage(1);
+    startWave();
+    update(0.24);
+    const enemy = state.enemies[0];
+    const before = {
+      waveSpawned: state.waveSpawned,
+      spawnTimer: Number(state.spawnTimer.toFixed(4)),
+      enemyX: Number((enemy?.pos.x || 0).toFixed(4)),
+      coreHp: state.coreHp,
+      effects: state.effects.length,
+    };
+    const hiddenDescriptor = Object.getOwnPropertyDescriptor(document, "hidden");
+    Object.defineProperty(document, "hidden", { configurable: true, value: true });
+    document.dispatchEvent(new Event("visibilitychange"));
+    const pausedText = nodes.speedBtn.textContent;
+    const pausedPressed = nodes.speedBtn.getAttribute("aria-pressed");
+    update(1.2);
+    const after = {
+      waveSpawned: state.waveSpawned,
+      spawnTimer: Number(state.spawnTimer.toFixed(4)),
+      enemyX: Number((enemy?.pos.x || 0).toFixed(4)),
+      coreHp: state.coreHp,
+      effects: state.effects.length,
+    };
+    if (hiddenDescriptor) Object.defineProperty(document, "hidden", hiddenDescriptor);
+    else delete document.hidden;
+    document.dispatchEvent(new Event("visibilitychange"));
+    const stayedPaused = state.paused;
+    cycleSpeedControl();
+    const resumedText = nodes.speedBtn.textContent;
+    const resumedPressed = nodes.speedBtn.getAttribute("aria-pressed");
+    const result = { before, after, pausedText, pausedPressed, stayedPaused, resumedText, resumedPressed, paused: state.paused, speed: state.speed };
+    state.manualSimulation = false;
+    return result;
+  }
+
   function runAnalyticsScenario() {
     const previousAnalytics = window.WonderAnalytics;
     const previousSave = state.save;
@@ -5046,6 +5100,7 @@
       runCampaignDepthScenario,
       runSoundReadinessScenario,
       runPauseSpeedScenario,
+      runBackgroundPauseScenario,
       runAnalyticsScenario,
     };
   }
