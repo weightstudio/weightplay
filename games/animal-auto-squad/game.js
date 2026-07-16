@@ -29,6 +29,7 @@
       trainingTitle: "Squad Training",
       trainingGold: "Training Gold",
       owned: "Owned",
+      deployed: "Deployed",
       locked: "Locked",
       premium: "Premium",
       unlockGold: "Unlock {cost} Gold",
@@ -574,6 +575,7 @@
     trainingTitle: "\u5c0f\u968a\u8a13\u7df4",
     trainingGold: "\u8a13\u7df4\u91d1\u5e63",
     owned: "\u5df2\u64c1\u6709",
+    deployed: "\u5df2\u4e0a\u9663",
     locked: "\u672a\u89e3\u9396",
     premium: "\u83c1\u82f1",
     unlockGold: "\u7528 {cost} \u91d1\u5e63\u89e3\u9396",
@@ -1837,10 +1839,12 @@
 
   function normalizeBackpackSlots(cards = []) {
     save = normalizeSave(save);
-    const ownedSlotCount = save.unlockedAnimals.length;
-    const normalizedCards = Array.isArray(cards) ? cards.slice(0, ownedSlotCount) : [];
-    while (normalizedCards.length < ownedSlotCount) normalizedCards.push(null);
-    return normalizedCards;
+    const cardsById = new Map(
+      (Array.isArray(cards) ? cards : [])
+        .filter(Boolean)
+        .map((card) => [Number(card.id), card])
+    );
+    return save.unlockedAnimals.map((id) => cardsById.get(Number(id)) || createAnimalCard(Number(id)));
   }
 
   function restoreSavedFormation() {
@@ -1848,13 +1852,19 @@
     const backpackById = new Map(state.backpack.map((card) => [Number(card.id), card]));
     state.squad = save.savedSquad.map((id) => {
       if (id === null) return null;
-      const card = backpackById.get(Number(id)) || null;
-      backpackById.delete(Number(id));
-      return card;
+      return backpackById.get(Number(id)) || null;
     });
-    state.backpack = normalizeBackpackSlots(
-      state.backpack.map((card) => (backpackById.has(Number(card.id)) ? card : null))
-    );
+    state.backpack = normalizeBackpackSlots(state.backpack);
+  }
+
+  function findPlacedCard(id) {
+    const normalizedId = Number(id);
+    for (const area of ["squad", "bench"]) {
+      const cards = area === "squad" ? state.squad : state.bench;
+      const index = cards.findIndex((card) => Number(card?.id) === normalizedId);
+      if (index >= 0) return { area, index };
+    }
+    return null;
   }
 
   function saveActiveFormation() {
@@ -1925,6 +1935,14 @@
     el.draggable = false;
     el.dataset.slot = String(index);
     el.dataset.area = sourceArea;
+
+    if (sourceArea === "backpack" && findPlacedCard(card.id)) {
+      el.classList.add("is-deployed");
+      const deployedTag = document.createElement("div");
+      deployedTag.className = "card-deployed-tag";
+      deployedTag.textContent = t("deployed");
+      el.appendChild(deployedTag);
+    }
 
     // Inside details
     const isAnimal = card.atk !== undefined;
@@ -2111,9 +2129,35 @@
   function executeAction(srcArea, srcIndex, destArea, destIndex) {
     const card = getCardAt(srcArea, srcIndex);
     if (!card) return;
-    const placementAreas = ["squad", "bench", "backpack"];
+    const activeAreas = ["squad", "bench"];
 
-    if (placementAreas.includes(srcArea) && placementAreas.includes(destArea)) {
+    if (srcArea === "backpack" && activeAreas.includes(destArea)) {
+      const currentPlacement = findPlacedCard(card.id);
+      const targetCard = getCardAt(destArea, destIndex);
+      if (currentPlacement?.area === destArea && currentPlacement.index === destIndex) return;
+      if (currentPlacement) setCardAt(currentPlacement.area, currentPlacement.index, targetCard || null);
+      setCardAt(destArea, destIndex, card);
+      selectedSlot = null;
+      highlightSelectedCard(false);
+      saveActiveFormation();
+      playSynth("click");
+      updateHUD();
+      renderPrepScreen();
+      return;
+    }
+
+    if (activeAreas.includes(srcArea) && destArea === "backpack") {
+      setCardAt(srcArea, srcIndex, null);
+      selectedSlot = null;
+      highlightSelectedCard(false);
+      saveActiveFormation();
+      playSynth("click");
+      updateHUD();
+      renderPrepScreen();
+      return;
+    }
+
+    if (activeAreas.includes(srcArea) && activeAreas.includes(destArea)) {
       if (srcArea === destArea && srcIndex === destIndex) return;
       const targetCard = getCardAt(destArea, destIndex);
       setCardAt(srcArea, srcIndex, targetCard || null);
@@ -2369,7 +2413,7 @@
     nodes.shopRow.innerHTML = "";
     state.backpack = normalizeBackpackSlots(state.backpack);
 
-    const visibleSlots = Math.max(2, normalizeSave(save).unlockedAnimals.length, state.backpack.length);
+    const visibleSlots = state.backpack.length;
     for (let idx = 0; idx < visibleSlots; idx++) {
       const cell = document.createElement("div");
       cell.className = "shop-cell";

@@ -1407,6 +1407,16 @@
     focusPanel(nodes.stagePanel);
     window.requestAnimationFrame(() => nodes.stagePanel.querySelector(".zone-card.is-selected:not(:disabled)")?.focus({ preventScroll: true }));
   });
+  nodes.resultPanel.addEventListener("keydown", (event) => {
+    if (event.key !== "Tab" || nodes.resultPanel.classList.contains("is-hidden")) return;
+    if (event.shiftKey && document.activeElement === nodes.retryBtn) {
+      event.preventDefault();
+      nodes.resultMenuBtn.focus({ preventScroll: true });
+    } else if (!event.shiftKey && document.activeElement === nodes.resultMenuBtn) {
+      event.preventDefault();
+      nodes.retryBtn.focus({ preventScroll: true });
+    }
+  });
   nodes.lureBtn.addEventListener("click", () => buyDiamondItem("lure"));
   nodes.sonarPrepBtn.addEventListener("click", () => buyDiamondItem("sonar"));
   nodes.sonarBtn.addEventListener("click", () => {

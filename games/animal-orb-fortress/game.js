@@ -5,7 +5,7 @@
   let W = 960;
   let H = 540;
   const rerollCost = 3;
-  const MAX_RAID_TIER = 20;
+  const MAX_RAID_TIER = 30;
   const WAVES_PER_RAID = 3;
 
   const $ = (id) => document.getElementById(id);
@@ -63,7 +63,7 @@
       raidTiers: "Raid tiers",
       returnMain: "Return to main",
       fortressWorkshop: "Fortress Workshop",
-      stageProgress: "{unlocked}/20 routes unlocked · 3 waves each",
+      stageProgress: "{unlocked}/30 routes unlocked · 3 waves each",
       tierLocked: "Locked",
       enterRaid: "Enter",
       nextStage: "Next Stage",
@@ -124,7 +124,23 @@
       resultWin: "Cleared route {tier}, wave {wave}/3, earned {stones} Star Stones, and protected {core} core HP.",
       resultLose: "Reached route {tier}, wave {wave}/3 and earned {stones} Star Stones. Upgrade rooms and try a safer bounce route.",
       progressUnlocked: "Progress saved: {total} Star Stones total; route {best} is now unlocked.",
-      progressComplete: "Progress saved: {total} Star Stones total; all 20 routes are cleared.",
+      progressComplete: "Progress saved: {total} Star Stones total; all 30 routes are cleared.",
+      ruleBank: "Bank route",
+      rulePriority: "Target order",
+      ruleAnchor: "Thorn anchor",
+      ruleArmor: "Break armor",
+      rulePhase: "Phase timing",
+      rulePylon: "Mirror pylons",
+      ruleSplitter: "Crystal splitters",
+      ruleCharge: "Charge lanes",
+      ruleMastery: "Mixed mastery",
+      ruleBoss: "Boss counterplay",
+      bossCueRootbound: "Rootbound guard raised — break it, then strike the exposed chest crystal.",
+      bossCueBramble: "Bramble plates and thorn anchors protect the Colossus.",
+      bossCueLunar: "The Matriarch is phasing — wait for the moon rings to open.",
+      bossCuePrism: "Prism shield rotating — attack while the gold segment faces forward.",
+      bossCueTempest: "Charge lane marked — the Guardian is vulnerable after its rush.",
+      bossCueVoid: "Voidcore phase changed — clear the escort and follow the lit core.",
       progressSaved: "Progress saved: {total} Star Stones total; best unlocked route remains {best}.",
       reportWin: "Skill Report: strong logic and reaction. You used bounce planning and upgrade choice to protect the fortress.",
       reportLose: "Skill Report: good practice. Next run, aim earlier and use walls to hit multiple beasts.",
@@ -171,7 +187,7 @@
       raidTiers: "突襲關卡",
       returnMain: "返回主畫面",
       fortressWorkshop: "要塞工坊",
-      stageProgress: "已解鎖 {unlocked}/20 條路線 · 每關 3 波",
+      stageProgress: "已解鎖 {unlocked}/30 條路線 · 每關 3 波",
       tierLocked: "尚未解鎖",
       enterRaid: "進入",
       nextStage: "下一關",
@@ -232,7 +248,23 @@
       resultWin: "完成第 {tier} 關、第 {wave}/3 波，獲得 {stones} 顆星石，並保留 {core} 點核心生命。",
       resultLose: "抵達第 {tier} 關、第 {wave}/3 波並獲得 {stones} 顆星石。升級房間後再試更安全的反彈路線。",
       progressUnlocked: "進度已保存：累積星石 {total} 顆；已解鎖第 {best} 關。",
-      progressComplete: "進度已保存：累積星石 {total} 顆；20 關已全部完成。",
+      progressComplete: "進度已保存：累積星石 {total} 顆；30 關已全部完成。",
+      ruleBank: "反彈路線",
+      rulePriority: "目標順序",
+      ruleAnchor: "荊棘錨點",
+      ruleArmor: "擊破護甲",
+      rulePhase: "相位時機",
+      rulePylon: "鏡面柱",
+      ruleSplitter: "水晶分裂",
+      ruleCharge: "衝鋒路線",
+      ruleMastery: "綜合精通",
+      ruleBoss: "Boss 反制",
+      bossCueRootbound: "盤根防護升起：先擊破，再攻擊外露的胸口水晶。",
+      bossCueBramble: "荊棘甲片與錨點正在保護巨獸。",
+      bossCueLunar: "月靈女王進入相位：等待月環打開再射擊。",
+      bossCuePrism: "稜晶護盾旋轉中：金色盾片朝前時攻擊。",
+      bossCueTempest: "衝鋒路線已標記：守衛衝刺後會短暫外露。",
+      bossCueVoid: "虛空核心轉換階段：先清護衛，再追蹤發光核心。",
       progressSaved: "進度已保存：累積星石 {total} 顆；最佳已解鎖第 {best} 關。",
       reportWin: "能力回饋：邏輯與反應很穩。你透過反彈規劃與升級選擇保護了要塞。",
       reportLose: "能力回饋：這是很好的練習。下一局可以更早瞄準，利用牆面一次擊中多隻影獸。",
@@ -270,7 +302,12 @@
     lion: "../../assets/weightplay-boom-mane-lion.png",
     orbs: "../../assets/animal-orb-fortress-orb-set.webp",
     beasts: "../../assets/animal-orb-fortress-shadow-beasts.webp",
-    boss: "../../assets/animal-orb-fortress-boss-golem.webp",
+    bossRootbound: "../../assets/animal-orb-fortress-boss-golem.webp",
+    bossBrambleback: "../../assets/animal-orb-fortress-boss-brambleback.webp",
+    bossLunarWisp: "../../assets/animal-orb-fortress-boss-lunar-wisp.webp",
+    bossPrismShell: "../../assets/animal-orb-fortress-boss-prism-shell.webp",
+    bossTempestHorn: "../../assets/animal-orb-fortress-boss-tempest-horn.webp",
+    bossVoidcore: "../../assets/animal-orb-fortress-boss-voidcore-emperor.webp",
     revive: "../../assets/animal-orb-fortress-diamond-revive.webp",
     fx: "../../assets/animal-orb-fortress-fx.webp",
   };
@@ -278,15 +315,15 @@
   const pageMeta = {
     en: {
       title: "Animal Orb Fortress - Free Animal Ricochet Roguelite",
-      description: "Animal Orb Fortress is a 13+ animal ricochet roguelite where players aim spirit orbs, clear boss waves, and grow a crystal fortress locally.",
-      ogDescription: "Aim animal spirit orbs through crystal fortress rooms, clear boss waves, choose upgrades, and grow permanent rooms with local progress.",
-      twitterDescription: "Plan bounce shots, defeat boss waves, and build a crystal animal fortress with local progress.",
+      description: "Aim spirit orbs through 30 ricochet-defense routes with special enemies, moving mirror pylons, six unique Bosses, and local fortress growth.",
+      ogDescription: "Plan wall and pylon bank shots across 30 routes, counter armor, phase, splitters and chargers, then defeat six rule-changing Bosses.",
+      twitterDescription: "Protect the crystal core through 30 authored ricochet routes, six regions, special enemies, and six distinct Boss battles.",
     },
     "zh-Hant": {
       title: "動物星珠要塞 - 免費動物反彈 Roguelite",
-      description: "動物星珠要塞是一款 13+ 動物反彈 Roguelite，玩家瞄準星珠、清除首領波次，並在本機累積水晶要塞進度。",
-      ogDescription: "用動物星珠穿越水晶要塞房間，規劃反彈路線、擊退首領波次、選擇升級並累積永久進度。",
-      twitterDescription: "規劃反彈射擊、擊敗首領波次，並在本機進度中建設水晶動物要塞。",
+      description: "瞄準星珠挑戰 30 關反彈防守路線，反制特殊敵人與移動鏡面柱，擊敗六名獨特 Boss，並累積本機要塞成長。",
+      ogDescription: "規劃牆面與鏡柱反彈，穿越六區 30 關，對抗護甲、相位、分裂與衝鋒敵人，再擊敗六名規則不同的 Boss。",
+      twitterDescription: "守住水晶核心，完成 30 條特製反彈路線、六個區域、特殊敵人與六場不同 Boss 戰。",
     },
   };
 
@@ -296,12 +333,53 @@
     { id: "den", iconSrc: "../../assets/animal-orb-fortress-room-icon-2.webp", name: "roomDen", desc: "roomDenDesc" },
     { id: "tower", iconSrc: "../../assets/animal-orb-fortress-room-icon-4.webp", name: "roomTower", desc: "roomTowerDesc" },
   ];
-  const raidDefs = Array.from({ length: MAX_RAID_TIER }, (_, index) => {
-    const tier = index + 1;
-    const zone = Math.ceil(tier / 4);
-    const rule = ["ruleFormation", "ruleSwarm", "ruleArmored", "ruleGuardian"][index % 4];
-    return { tier, zone, name: `tier${tier}Name`, desc: `zone${zone}Desc`, rule };
+  const route = (tier, zone, enName, zhName, enDesc, zhDesc, rule) => ({
+    tier,
+    zone,
+    name: { en: enName, "zh-Hant": zhName },
+    desc: { en: enDesc, "zh-Hant": zhDesc },
+    rule,
   });
+  const raidDefs = [
+    route(1, 1, "Crystal Gate", "水晶門", "Time direct shots against one slow skitter lane.", "對單一路線的緩慢疾行獸練習直接射擊時機。", "rulePriority"),
+    route(2, 1, "Moss Arcade", "苔痕長廊", "Use the first wall bank around a blocked center lane.", "利用第一次牆面反彈繞過中央阻線。", "ruleBank"),
+    route(3, 1, "Echo Courtyard", "回音庭院", "Choose a left or right bank for separated enemy lanes.", "在分離的敵方路線間選擇左側或右側反彈。", "ruleBank"),
+    route(4, 1, "Split Passage", "分岔通道", "Break the thorn blocker before mobile enemies pass it.", "先打掉荊棘阻擋者，避免移動敵人趁機通過。", "rulePriority"),
+    route(5, 1, "Rootbound Crown", "盤根王冠", "Break the first Boss guard and bank into its weak point.", "擊破第一名 Boss 的防護，再反彈命中弱點。", "ruleBoss"),
+    route(6, 2, "Thorn Bridge", "荊棘橋", "Remove one-hit armor before the backline wisp escapes.", "先解除一擊護甲，再處理即將通過的後排幽光。", "ruleArmor"),
+    route(7, 2, "Venom Garden", "毒霧花園", "Destroy a thorn anchor that protects adjacent beasts.", "摧毀會保護鄰近影獸的荊棘錨點。", "ruleAnchor"),
+    route(8, 2, "Root Labyrinth", "盤根迷宮", "Pick a bank lane between two armored columns.", "在兩列裝甲敵人之間選擇反彈路線。", "ruleArmor"),
+    route(9, 2, "Bramble Wall", "荊棘壁壘", "Counter an anchor and armored charger together.", "同時反制錨點與裝甲衝鋒獸。", "ruleAnchor"),
+    route(10, 2, "Thornworks Throne", "荊棘工坊王座", "Break two Boss armor plates while clearing anchors.", "清除錨點並擊破 Boss 的兩層荊棘甲片。", "ruleBoss"),
+    route(11, 3, "Moon Stair", "月光階梯", "Read the first visible phase and reappearance cue.", "讀懂第一次相位消失與重新出現提示。", "rulePhase"),
+    route(12, 3, "Wisp Gallery", "幽光迴廊", "Track two wisps phasing on alternating rhythms.", "追蹤兩隻交錯進入相位的幽光獸。", "rulePhase"),
+    route(13, 3, "Mirror Ruins", "鏡面遺跡", "Aim through a moving moon gate that changes the bank corridor.", "穿過會移動的月門，因應反彈通道改變。", "rulePylon"),
+    route(14, 3, "Lunar Crossing", "月輪交會", "Combine phase timing with a moving reflection gate.", "把相位時機與移動反射門結合。", "rulePhase"),
+    route(15, 3, "Moonwell Sentinel", "月井守衛", "Strike during the Matriarch's recovery after a moon dash.", "在月靈女王衝刺後的恢復時間攻擊。", "ruleBoss"),
+    route(16, 4, "Eclipse Gate", "蝕影之門", "Use the first fixed mirror pylon as a new bounce surface.", "把第一座固定鏡面柱當作新的反彈面。", "rulePylon"),
+    route(17, 4, "Black Crystal Hall", "黑晶大廳", "Defeat a splitter before its two shards spread.", "在分裂獸化成兩枚碎片前集中擊倒。", "ruleSplitter"),
+    route(18, 4, "Prism Foundry", "稜晶鑄造場", "Choose between two pylon corridors and an armored escort.", "在兩條鏡柱通道與裝甲護衛間做選擇。", "rulePylon"),
+    route(19, 4, "Shard Circuit", "碎晶迴路", "React when moving pylons invalidate the old shot angle.", "鏡柱移動使舊角度失效時重新規劃。", "ruleSplitter"),
+    route(20, 4, "Mirror Vault Regent", "鏡庫攝政王", "Bank into the lit segment of a rotating Boss shield.", "反彈命中 Boss 旋轉護盾上發光的盾片。", "ruleBoss"),
+    route(21, 5, "Storm Causeway", "風暴堤道", "Read the first marked lane before a charger rushes.", "在衝鋒獸突進前讀取第一次路線標記。", "ruleCharge"),
+    route(22, 5, "Thunder Gallery", "雷鳴長廊", "Track two chargers alternating lane marks.", "追蹤兩隻交錯標記路線的衝鋒獸。", "ruleCharge"),
+    route(23, 5, "Gale Foundry", "疾風鑄造場", "Adapt when storm pulses change orb speed.", "風暴脈衝改變星珠速度時調整射擊。", "ruleCharge"),
+    route(24, 5, "Last Bastion", "最終壁壘", "Combine lane shifts, charges, and storm timing.", "結合路線位移、衝鋒與風暴時機。", "ruleMastery"),
+    route(25, 5, "Tempest Crown", "暴風王冠", "Attack after the horned Boss completes its marked rush.", "在角獸 Boss 完成標記衝刺後攻擊。", "ruleBoss"),
+    route(26, 6, "Golem Approach", "魔像前線", "Prioritize armored and phased enemies in one formation.", "在同一陣形中判斷裝甲與相位敵人的優先順序。", "ruleMastery"),
+    route(27, 6, "Core Foundry", "核心鑄造場", "Reach splitters hiding behind thorn anchors.", "穿過荊棘錨點，處理躲在後方的分裂獸。", "ruleMastery"),
+    route(28, 6, "Void Gallery", "虛空迴廊", "Aim through moving pylons while chargers mark lanes.", "衝鋒獸標記路線時，穿過移動鏡柱瞄準。", "ruleMastery"),
+    route(29, 6, "Eclipse Heart", "蝕影核心", "Survive three formations using the full enemy vocabulary.", "運用所有已學規則通過三組完整敵陣。", "ruleMastery"),
+    route(30, 6, "Heart of the Fortress", "要塞之心", "Break three final Boss phases, escorts, and changing pylons.", "擊破最終 Boss 三階段、護衛與變動鏡柱。", "ruleBoss"),
+  ];
+  const bossDefs = [
+    { tier: 5, id: "rootbound", imageKey: "bossRootbound", name: { en: "Rootbound Golem", "zh-Hant": "盤根魔像" }, cue: "bossCueRootbound" },
+    { tier: 10, id: "brambleback", imageKey: "bossBrambleback", name: { en: "Brambleback Colossus", "zh-Hant": "荊背巨獸" }, cue: "bossCueBramble" },
+    { tier: 15, id: "lunar", imageKey: "bossLunarWisp", name: { en: "Lunar Wisp Matriarch", "zh-Hant": "月靈女王" }, cue: "bossCueLunar" },
+    { tier: 20, id: "prism", imageKey: "bossPrismShell", name: { en: "Prism Shell Regent", "zh-Hant": "稜晶甲攝政王" }, cue: "bossCuePrism" },
+    { tier: 25, id: "tempest", imageKey: "bossTempestHorn", name: { en: "Tempest Horn Guardian", "zh-Hant": "暴風角守衛" }, cue: "bossCueTempest" },
+    { tier: 30, id: "voidcore", imageKey: "bossVoidcore", name: { en: "Voidcore Emperor", "zh-Hant": "虛空核心皇" }, cue: "bossCueVoid" },
+  ];
   const upgradeDefs = [
     { id: "damage", iconSrc: "../../assets/animal-orb-fortress-upgrade-icon-1.webp", name: "upgradeDamage", desc: "upgradeDamageDesc" },
     { id: "split", iconSrc: "../../assets/animal-orb-fortress-upgrade-icon-2.webp", name: "upgradeSplit", desc: "upgradeSplitDesc" },
@@ -326,6 +404,11 @@
   function t(key, data = {}) {
     const value = text[locale]?.[key] || text.en[key] || key;
     return Object.entries(data).reduce((out, [name, item]) => out.replaceAll(`{${name}}`, String(item)), value);
+  }
+
+  function localized(value) {
+    if (!value || typeof value !== "object") return String(value || "");
+    return value[locale] || value.en || "";
   }
 
   function setMeta(selector, value) {
@@ -395,6 +478,9 @@
       companionDamage: companionDamage(denLevel),
       companionTimer: 1.2,
       companionHits: 0,
+      pylons: [],
+      spawnedShards: 0,
+      mechanicEvents: [],
       preview: [],
       launcher: { x: W / 2, y: H - 64 },
     };
@@ -562,8 +648,8 @@
         return `
           <button class="raid-card${locked ? " is-locked" : ""}" type="button" data-tier="${raid.tier}" data-zone="${raid.zone}" aria-disabled="${locked}">
             <span class="raid-number">${raid.tier}</span>
-            <strong>${t(raid.name)}</strong>
-            <span>${t(raid.desc)}</span>
+            <strong>${localized(raid.name)}</strong>
+            <span>${localized(raid.desc)}</span>
             <em>${t(raid.rule)} · ${locked ? t("tierLocked") : `${t("enterRaid")} · ${WAVES_PER_RAID} ${t("wave")}`}</em>
           </button>`;
       })
@@ -633,31 +719,54 @@
   }
 
   function raidProfile(tier) {
-    const zone = Math.ceil(tier / 4);
-    const step = (tier - 1) % 4;
+    const zone = Math.ceil(tier / 5);
+    const step = (tier - 1) % 5;
+    const raid = raidDefs[tier - 1] || raidDefs[0];
     return {
+      tier,
       zone,
       step,
+      raid,
+      checkpoint: tier % 5 === 0,
       hpScale: 1 + (tier - 1) * 0.06,
       speedScale: 1 + (tier - 1) * 0.018 + (step === 1 ? 0.08 : 0),
-      countBonus: Math.floor((tier - 1) / 4) + (step === 1 ? 2 : 0),
-      shieldHits: step === 2 ? Math.min(3, Math.ceil(zone / 2)) : zone >= 4 ? 1 : 0,
-      eliteWave: step === 3,
+      countBonus: Math.min(5, zone - 1 + (step === 1 ? 1 : 0)),
+      shieldHits: zone >= 2 ? Math.min(3, Math.ceil((zone - 1) / 2)) : 0,
+      eliteWave: step === 3 || step === 4,
       bossMinions: Math.max(0, zone - 1),
-      tint: ["rgba(24,80,52,.04)", "rgba(84,74,18,.10)", "rgba(38,48,112,.12)", "rgba(82,28,106,.14)", "rgba(120,32,38,.16)"][zone - 1],
+      tint: ["rgba(24,80,52,.04)", "rgba(84,74,18,.10)", "rgba(38,48,112,.12)", "rgba(44,88,126,.13)", "rgba(32,70,128,.15)", "rgba(82,28,106,.17)"][zone - 1],
     };
   }
 
   function enemyKindFor(zone, index) {
     const patterns = [
       ["skitter", "thorn", "wisp"],
-      ["thorn", "skitter", "thorn", "wisp"],
-      ["wisp", "skitter", "wisp", "thorn"],
-      ["thorn", "wisp", "skitter", "wisp"],
-      ["skitter", "thorn", "wisp", "thorn", "wisp"],
+      ["armored", "anchor", "wisp", "thorn"],
+      ["phase", "wisp", "phase", "thorn"],
+      ["splitter", "armored", "phase", "splitter"],
+      ["charger", "wisp", "armored", "charger"],
+      ["anchor", "phase", "splitter", "charger", "armored"],
     ];
     const pattern = patterns[Math.max(0, Math.min(patterns.length - 1, zone - 1))];
     return pattern[index % pattern.length];
+  }
+
+  function bossDefForTier(tier) {
+    return bossDefs.find((boss) => boss.tier === tier) || null;
+  }
+
+  function configurePylons(profile) {
+    const count = profile.tier < 13 ? 0 : profile.tier < 16 ? 1 : 2;
+    state.pylons = Array.from({ length: count }, (_, index) => ({
+      x: W * (count === 1 ? 0.5 : index === 0 ? 0.34 : 0.66),
+      y: H * (0.34 + index * 0.16),
+      r: 31,
+      moving: profile.step >= 3 || profile.zone >= 5,
+      direction: index % 2 ? -1 : 1,
+      minX: W * 0.24,
+      maxX: W * 0.76,
+      speed: 30 + profile.zone * 5,
+    }));
   }
 
   function spawnWave() {
@@ -665,26 +774,36 @@
     const tier = state.raidTier;
     const wave = state.wave;
     const profile = raidProfile(tier);
-    if (wave >= WAVES_PER_RAID) {
+    configurePylons(profile);
+    if (wave >= WAVES_PER_RAID && profile.checkpoint) {
+      const bossDef = bossDefForTier(tier);
       const bossHp = Math.round((22 + tier * 3) * (1 + (tier - 1) * 0.045));
-      state.enemies.push(makeEnemy("boss", W / 2, Math.max(96, H * 0.09), bossHp, 13 * profile.speedScale, 55, { elite: tier >= 16, shield: profile.shieldHits }));
+      const bossShield = bossDef?.id === "brambleback" ? 6 : bossDef?.id === "voidcore" ? 5 : bossDef?.id === "rootbound" || bossDef?.id === "prism" ? 3 : 0;
+      state.enemies.push(makeEnemy("boss", W / 2, Math.max(112, H * 0.1), bossHp, 11 * profile.speedScale, 58, {
+        elite: true,
+        shield: bossShield,
+        bossId: bossDef?.id,
+        imageKey: bossDef?.imageKey,
+        name: bossDef?.name,
+        cue: bossDef?.cue,
+      }));
+      if (bossDef?.cue) nodes.hintText.textContent = `${localized(bossDef.name)} — ${t(bossDef.cue)}`;
       for (let i = 0; i < profile.bossMinions; i += 1) {
         const x = W * (0.18 + (i / Math.max(1, profile.bossMinions - 1)) * 0.64);
         const kind = enemyKindFor(profile.zone, i + tier);
-        state.enemies.push(makeEnemy(kind, x, Math.max(190, H * 0.16) + (i % 2) * 62, Math.round((7 + tier * 0.7) * profile.hpScale), (kind === "thorn" ? 9 : 15) * profile.speedScale, kind === "thorn" ? 33 : 27, { shield: Math.max(0, profile.shieldHits - 1) }));
+        state.enemies.push(makeSpecialEnemy(kind, x, Math.max(220, H * 0.18) + (i % 2) * 62, tier, wave, profile, { shield: Math.max(0, profile.shieldHits - 1) }));
       }
     } else {
-      const count = Math.min(10, 2 + wave + profile.countBonus);
+      const count = Math.min(10, 2 + wave + profile.countBonus + (wave === WAVES_PER_RAID ? 1 : 0));
       for (let i = 0; i < count; i += 1) {
-        const kind = enemyKindFor(profile.zone, i + wave);
+        const kind = enemyKindFor(profile.zone, i + wave + profile.step);
         const side = W * 0.14;
         const span = W - side * 2;
-        const hp = Math.round((4 + wave * 2 + tier * 0.62) * profile.hpScale * (kind === "thorn" ? 1.18 : 1));
-        state.enemies.push(makeEnemy(kind, side + i * (span / Math.max(1, count - 1)), Math.max(82, H * 0.075) + (i % 2) * 54, hp, (kind === "thorn" ? 9 : kind === "wisp" ? 16 : 14) * profile.speedScale, kind === "thorn" ? 33 : 27, { shield: profile.shieldHits }));
+        state.enemies.push(makeSpecialEnemy(kind, side + i * (span / Math.max(1, count - 1)), Math.max(92, H * 0.08) + (i % 2) * 54, tier, wave, profile, { shield: kind === "armored" ? Math.max(1, profile.shieldHits) : 0 }));
       }
-      if (wave === 2 && profile.eliteWave) {
+      if ((wave === 2 && profile.eliteWave) || wave === WAVES_PER_RAID) {
         const kind = enemyKindFor(profile.zone, tier + 2);
-        state.enemies.push(makeEnemy(kind, W / 2, Math.max(230, H * 0.2), Math.round((12 + tier) * profile.hpScale), 11 * profile.speedScale, 42, { elite: true, shield: profile.shieldHits }));
+        state.enemies.push(makeSpecialEnemy(kind, W / 2, Math.max(240, H * 0.2), tier, wave, profile, { elite: true, shield: profile.shieldHits }));
       }
     }
     renderHud();
@@ -692,7 +811,42 @@
 
   function makeEnemy(kind, x, y, hp, speed, size, options = {}) {
     const shield = Math.max(0, options.shield || 0);
-    return { kind, x, y, hp, maxHp: hp, speed: speed * (H / 540), size, hitTimer: 0, shield, maxShield: shield, elite: Boolean(options.elite) };
+    return {
+      kind,
+      x,
+      y,
+      hp,
+      maxHp: hp,
+      speed: speed * (H / 540),
+      baseSpeed: speed * (H / 540),
+      size,
+      hitTimer: 0,
+      shield,
+      maxShield: shield,
+      elite: Boolean(options.elite),
+      bossId: options.bossId || "",
+      imageKey: options.imageKey || "",
+      name: options.name || null,
+      cue: options.cue || "",
+      phaseTimer: kind === "phase" || options.bossId === "lunar" ? 1.15 : 0,
+      phased: false,
+      behaviorTimer: 1.1,
+      chargeState: "approach",
+      stationary: kind === "anchor",
+      splitOnDeath: kind === "splitter",
+      deathHandled: false,
+      bossPhase: 1,
+      summonedPhases: [],
+      weakOpen: options.bossId !== "prism",
+    };
+  }
+
+  function makeSpecialEnemy(kind, x, y, tier, wave, profile, options = {}) {
+    const hpMod = kind === "armored" ? 1.35 : kind === "anchor" ? 1.45 : kind === "splitter" ? 1.15 : kind === "charger" ? 1.2 : kind === "phase" ? 0.9 : kind === "thorn" ? 1.18 : 1;
+    const speedBase = kind === "anchor" ? 0 : kind === "thorn" || kind === "armored" ? 9 : kind === "phase" ? 15 : kind === "charger" ? 12 : kind === "wisp" ? 16 : 14;
+    const size = kind === "anchor" ? 37 : kind === "armored" ? 35 : kind === "charger" ? 34 : 28;
+    const hp = Math.round((4 + wave * 2 + tier * 0.62) * profile.hpScale * hpMod * (options.elite ? 1.5 : 1));
+    return makeEnemy(kind, x, y, hp, speedBase * profile.speedScale, size, options);
   }
 
   function renderHud() {
@@ -862,7 +1016,13 @@
 
   function update(dt) {
     state.readyTimer = Math.max(0, state.readyTimer - dt);
+    updatePylons(dt);
     state.enemies.forEach((enemy) => {
+      updateEnemyBehavior(enemy, dt);
+      if (enemy.stationary || enemy.chargeState === "marked" || enemy.chargeState === "recovery") {
+        enemy.hitTimer = Math.max(0, enemy.hitTimer - dt);
+        return;
+      }
       const dx = state.launcher.x - enemy.x;
       const dy = state.launcher.y - enemy.y;
       const len = Math.max(1, Math.hypot(dx, dy));
@@ -870,7 +1030,7 @@
       enemy.y += (dy / len) * enemy.speed * dt;
       enemy.hitTimer = Math.max(0, enemy.hitTimer - dt);
       if (Math.hypot(enemy.x - state.launcher.x, enemy.y - state.launcher.y) < enemy.size * 0.7) {
-        state.core -= enemy.kind === "boss" ? 4 : enemy.kind === "thorn" ? 3 : 2;
+        state.core -= enemy.kind === "boss" ? 4 : enemy.kind === "thorn" || enemy.kind === "charger" ? 3 : 2;
         enemy.hp = 0;
         nodes.hintText.textContent = t("fortressHit");
         playSound("wrong", 0.2);
@@ -878,10 +1038,11 @@
       }
     });
     updateCompanion(dt);
-    state.enemies = state.enemies.filter((enemy) => enemy.hp > 0);
 
     state.orbs.forEach((orb) => updateOrb(orb, dt));
     state.orbs = state.orbs.filter((orb) => orb.life > 0);
+    resolveEnemyDeaths();
+    state.enemies = state.enemies.filter((enemy) => enemy.hp > 0);
     state.sparks.forEach((spark) => (spark.life -= dt));
     state.sparks = state.sparks.filter((spark) => spark.life > 0);
 
@@ -890,8 +1051,145 @@
       if (state.wave >= WAVES_PER_RAID) finishRaid(true);
       else showUpgrade();
     } else if (canFireOrb()) {
-      nodes.hintText.textContent = t("orbReady");
+      nodes.hintText.textContent = activeEncounterCue() || t("orbReady");
     }
+  }
+
+  function updatePylons(dt) {
+    state.pylons.forEach((pylon) => {
+      if (!pylon.moving) return;
+      pylon.x += pylon.direction * pylon.speed * dt;
+      if (pylon.x <= pylon.minX || pylon.x >= pylon.maxX) {
+        pylon.x = Math.max(pylon.minX, Math.min(pylon.maxX, pylon.x));
+        pylon.direction *= -1;
+      }
+    });
+  }
+
+  function updateEnemyBehavior(enemy, dt) {
+    if (enemy.bossId === "rootbound") {
+      if (enemy.shield <= 0) {
+        enemy.weakOpen = true;
+        enemy.behaviorTimer -= dt;
+        if (enemy.behaviorTimer <= 0) {
+          enemy.shield = 2;
+          enemy.maxShield = Math.max(enemy.maxShield, 2);
+          enemy.weakOpen = false;
+          enemy.behaviorTimer = 2.6;
+          state.mechanicEvents.push("rootbound_guard_rebuilt");
+        }
+      } else {
+        enemy.weakOpen = false;
+      }
+    }
+    if (enemy.kind === "phase" || enemy.bossId === "lunar") {
+      enemy.phaseTimer -= dt;
+      if (enemy.phaseTimer <= 0) {
+        enemy.phased = !enemy.phased;
+        enemy.phaseTimer = enemy.phased ? 0.8 : 1.25;
+        state.mechanicEvents.push(enemy.phased ? "phase_closed" : "phase_open");
+      }
+    }
+
+    if (enemy.kind === "anchor") {
+      enemy.behaviorTimer -= dt;
+      if (enemy.behaviorTimer <= 0) {
+        const ally = state.enemies.filter((unit) => unit !== enemy && unit.hp > 0).sort((a, b) => a.shield - b.shield)[0];
+        if (ally) {
+          ally.shield = Math.min(3, ally.shield + 1);
+          ally.maxShield = Math.max(ally.maxShield, ally.shield);
+          state.mechanicEvents.push("anchor_guard");
+        }
+        enemy.behaviorTimer = 2.4;
+      }
+    }
+
+    const charger = enemy.kind === "charger" || enemy.bossId === "tempest";
+    if (charger) {
+      enemy.behaviorTimer -= dt;
+      if (enemy.behaviorTimer <= 0 && enemy.chargeState === "approach") {
+        enemy.chargeState = "marked";
+        enemy.speed = 0;
+        enemy.behaviorTimer = 0.72;
+        state.mechanicEvents.push("charge_marked");
+      } else if (enemy.behaviorTimer <= 0 && enemy.chargeState === "marked") {
+        enemy.chargeState = "charging";
+        enemy.speed = enemy.baseSpeed * 3.1;
+        enemy.behaviorTimer = 0.68;
+        state.mechanicEvents.push("charge_rush");
+      } else if (enemy.behaviorTimer <= 0 && enemy.chargeState === "charging") {
+        enemy.chargeState = "recovery";
+        enemy.speed = 0;
+        enemy.weakOpen = true;
+        enemy.behaviorTimer = 0.9;
+        state.mechanicEvents.push("charge_recovery");
+      } else if (enemy.behaviorTimer <= 0 && enemy.chargeState === "recovery") {
+        enemy.chargeState = "approach";
+        enemy.speed = enemy.baseSpeed;
+        enemy.weakOpen = false;
+        enemy.behaviorTimer = 1.2;
+      }
+    }
+
+    if (enemy.bossId === "prism") {
+      enemy.behaviorTimer -= dt;
+      if (enemy.behaviorTimer <= 0) {
+        enemy.weakOpen = !enemy.weakOpen;
+        enemy.behaviorTimer = enemy.weakOpen ? 0.9 : 1.25;
+        state.mechanicEvents.push(enemy.weakOpen ? "prism_open" : "prism_closed");
+      }
+    }
+
+    if (enemy.bossId === "brambleback") {
+      maybeSummonBossSupport(enemy, 0.66, "anchor", 2);
+      maybeSummonBossSupport(enemy, 0.33, "armored", 2);
+    }
+    if (enemy.bossId === "voidcore") {
+      maybeSummonBossSupport(enemy, 0.66, "phase", 2);
+      maybeSummonBossSupport(enemy, 0.33, "charger", 2);
+      const hpRatio = enemy.hp / Math.max(1, enemy.maxHp);
+      enemy.bossPhase = hpRatio <= 0.33 ? 3 : hpRatio <= 0.66 ? 2 : 1;
+      if (enemy.bossPhase >= 2 && state.pylons.length < 2) configurePylons({ zone: 6, step: 4 });
+    }
+  }
+
+  function maybeSummonBossSupport(enemy, threshold, kind, count) {
+    if (enemy.hp / Math.max(1, enemy.maxHp) > threshold || enemy.summonedPhases.includes(threshold)) return;
+    enemy.summonedPhases.push(threshold);
+    if (enemy.bossId === "voidcore") {
+      enemy.shield = Math.max(enemy.shield, enemy.bossPhase >= 2 ? 3 : 2);
+      enemy.maxShield = Math.max(enemy.maxShield, enemy.shield);
+    }
+    const profile = raidProfile(state.raidTier);
+    for (let index = 0; index < count; index += 1) {
+      state.enemies.push(makeSpecialEnemy(kind, W * (0.34 + index * 0.32), H * (0.2 + index * 0.05), state.raidTier, state.wave, profile, { shield: kind === "armored" ? 2 : 0 }));
+    }
+    state.mechanicEvents.push(`${enemy.bossId}_summon_${kind}`);
+    if (enemy.cue) nodes.hintText.textContent = `${localized(enemy.name)} — ${t(enemy.cue)}`;
+  }
+
+  function resolveEnemyDeaths() {
+    const additions = [];
+    state.enemies.forEach((enemy) => {
+      if (enemy.hp > 0 || enemy.deathHandled) return;
+      enemy.deathHandled = true;
+      if (enemy.splitOnDeath) {
+        for (const direction of [-1, 1]) {
+          additions.push(makeEnemy("shard", enemy.x + direction * 30, enemy.y + 18, Math.max(2, Math.round(enemy.maxHp * 0.34)), enemy.baseSpeed * 1.35 / (H / 540), 20));
+        }
+        state.spawnedShards += 2;
+        state.mechanicEvents.push("splitter_shards");
+      }
+    });
+    state.enemies.push(...additions);
+  }
+
+  function activeEncounterCue() {
+    const boss = state.enemies.find((enemy) => enemy.kind === "boss" && enemy.hp > 0);
+    if (boss?.cue) return `${localized(boss.name)} — ${t(boss.cue)}`;
+    if (state.enemies.some((enemy) => enemy.phased)) return locale === "zh-Hant" ? "相位關閉：等待敵人重新顯形。" : "Phase closed — wait for the enemy to reappear.";
+    if (state.enemies.some((enemy) => enemy.chargeState === "marked")) return locale === "zh-Hant" ? "衝鋒路線已標記：準備改變角度。" : "Charge lane marked — prepare a different angle.";
+    return "";
   }
 
   function updateCompanion(dt) {
@@ -902,6 +1200,7 @@
       .filter((enemy) => enemy.hp > 0)
       .sort((a, b) => Math.hypot(a.x - state.launcher.x, a.y - state.launcher.y) - Math.hypot(b.x - state.launcher.x, b.y - state.launcher.y))[0];
     if (!target) return;
+    if (!canDamageEnemy(target)) return;
     if (target.shield > 0) target.shield -= 1;
     else target.hp -= state.companionDamage;
     target.hitTimer = 0.22;
@@ -933,6 +1232,28 @@
       orb.y = Math.max(38, Math.min(H - 38, orb.y));
       playSound("click", 0.08);
     }
+    orb.pylonHits ||= new Map();
+    state.pylons.forEach((pylon) => {
+      const cooldown = orb.pylonHits.get(pylon) || 0;
+      if (cooldown > 0) {
+        orb.pylonHits.set(pylon, cooldown - dt);
+        return;
+      }
+      const dx = orb.x - pylon.x;
+      const dy = orb.y - pylon.y;
+      const distance = Math.max(1, Math.hypot(dx, dy));
+      if (distance >= orb.r + pylon.r) return;
+      const nx = dx / distance;
+      const ny = dy / distance;
+      const dot = orb.vx * nx + orb.vy * ny;
+      orb.vx -= 2 * dot * nx;
+      orb.vy -= 2 * dot * ny;
+      orb.x = pylon.x + nx * (orb.r + pylon.r + 2);
+      orb.y = pylon.y + ny * (orb.r + pylon.r + 2);
+      orb.pylonHits.set(pylon, 0.16);
+      state.mechanicEvents.push("pylon_bounce");
+      playSound("click", 0.06);
+    });
     state.enemies.forEach((enemy) => {
       const recent = orb.hits.get(enemy) || 0;
       if (recent > 0) {
@@ -941,14 +1262,25 @@
       }
       const enemyVisualRadius = enemy.kind === "boss" ? 76 : enemy.size * 1.05;
       if (Math.hypot(orb.x - enemy.x, orb.y - enemy.y) < orb.r + enemyVisualRadius) {
-        if (enemy.shield > 0) enemy.shield -= 1;
-        else enemy.hp -= orb.damage;
+        if (canDamageEnemy(enemy)) {
+          if (enemy.shield > 0) enemy.shield -= 1;
+          else enemy.hp -= orb.damage;
+        } else {
+          state.mechanicEvents.push(enemy.phased ? "phase_block" : enemy.bossId === "prism" ? "prism_block" : "charge_block");
+        }
         enemy.hitTimer = 0.16;
         orb.hits.set(enemy, state.pierce ? 0.2 : 0.55);
         state.sparks.push({ x: enemy.x, y: enemy.y, life: 0.25 });
         playSound("hit", 0.06);
       }
     });
+  }
+
+  function canDamageEnemy(enemy) {
+    if (enemy.phased) return false;
+    if (enemy.bossId === "prism" && !enemy.weakOpen) return false;
+    if (enemy.bossId === "tempest" && enemy.chargeState !== "recovery") return false;
+    return true;
   }
 
   function showUpgrade() {
@@ -1122,6 +1454,7 @@
       ctx.setLineDash([]);
     }
 
+    drawPylons();
     state.enemies.forEach(drawEnemy);
     state.orbs.forEach((orb) => drawAtlas(images.orbs, orb.skin || 0, 5, orb.x, orb.y, 48));
     state.sparks.forEach((spark) => {
@@ -1163,11 +1496,45 @@
     ctx.drawImage(image, sourceX, sourceY, sourceWidth, sourceHeight, x, y, width, height);
   }
 
+  function drawPylons() {
+    state.pylons.forEach((pylon) => {
+      ctx.save();
+      ctx.translate(pylon.x, pylon.y);
+      ctx.rotate(performance.now() / 1400);
+      ctx.shadowColor = "#7de9ff";
+      ctx.shadowBlur = 22;
+      ctx.fillStyle = "rgba(13, 63, 94, 0.92)";
+      ctx.strokeStyle = "#b8fff3";
+      ctx.lineWidth = 6;
+      ctx.beginPath();
+      for (let index = 0; index < 6; index += 1) {
+        const angle = -Math.PI / 2 + index * Math.PI / 3;
+        const x = Math.cos(angle) * pylon.r;
+        const y = Math.sin(angle) * pylon.r;
+        if (index === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+      ctx.fillStyle = "#ffe87b";
+      ctx.fillRect(-5, -18, 10, 36);
+      ctx.restore();
+    });
+  }
+
+  function enemySpriteIndex(kind) {
+    if (["thorn", "armored", "anchor", "charger"].includes(kind)) return 1;
+    if (["wisp", "phase"].includes(kind)) return 2;
+    return 0;
+  }
+
   function drawEnemy(enemy) {
-    const size = enemy.kind === "boss" ? 132 : enemy.size * 2.25;
+    const size = enemy.kind === "boss" ? 156 : enemy.size * 2.25;
     ctx.save();
-    const aura = enemy.kind === "thorn" ? "#ffd56a" : enemy.kind === "boss" ? "#ff5f91" : "#8ee7ff";
-    const shadow = enemy.kind === "thorn" ? "rgba(255, 202, 86, 0.9)" : enemy.kind === "boss" ? "rgba(255, 86, 128, 0.9)" : "rgba(132, 210, 255, 0.88)";
+    const aura = enemy.kind === "anchor" ? "#8fff9a" : enemy.kind === "charger" ? "#68c8ff" : enemy.kind === "splitter" ? "#d6a1ff" : enemy.kind === "thorn" || enemy.kind === "armored" ? "#ffd56a" : enemy.kind === "boss" ? "#ff8fcb" : "#8ee7ff";
+    const shadow = enemy.kind === "thorn" || enemy.kind === "armored" ? "rgba(255, 202, 86, 0.9)" : enemy.kind === "boss" ? "rgba(255, 105, 190, 0.9)" : "rgba(132, 210, 255, 0.88)";
     const halo = ctx.createRadialGradient(enemy.x, enemy.y, size * 0.14, enemy.x, enemy.y, size * 0.9);
     halo.addColorStop(0, "rgba(3, 10, 30, 0.18)");
     halo.addColorStop(0.58, "rgba(3, 10, 30, 0.5)");
@@ -1184,11 +1551,11 @@
     ctx.fill();
     ctx.strokeStyle = aura;
     ctx.lineWidth = enemy.kind === "boss" ? 8 : 5;
-    ctx.globalAlpha = enemy.hitTimer > 0 ? 1 : 0.88;
+    ctx.globalAlpha = enemy.phased ? 0.4 : enemy.hitTimer > 0 ? 1 : 0.9;
     ctx.stroke();
+    if (enemy.kind === "boss") drawAtlas(images[enemy.imageKey] || images.bossRootbound, 0, 1, enemy.x, enemy.y, size);
+    else drawAtlas(images.beasts, enemySpriteIndex(enemy.kind), 3, enemy.x, enemy.y, size);
     ctx.globalAlpha = 1;
-    if (enemy.kind === "boss") drawAtlas(images.boss, 0, 1, enemy.x, enemy.y, size);
-    else drawAtlas(images.beasts, enemy.kind === "skitter" ? 0 : enemy.kind === "thorn" ? 1 : 2, 3, enemy.x, enemy.y, size);
     ctx.shadowBlur = 0;
     ctx.strokeStyle = enemy.hitTimer > 0 ? "#fff7a8" : "rgba(244, 255, 236, 0.98)";
     ctx.lineWidth = enemy.kind === "boss" ? 4.5 : 3;
@@ -1214,6 +1581,32 @@
       ctx.stroke();
       ctx.shadowBlur = 0;
     }
+    if (enemy.phased) {
+      ctx.strokeStyle = "rgba(170, 238, 255, 0.95)";
+      ctx.lineWidth = 5;
+      ctx.setLineDash([16, 10]);
+      ctx.beginPath();
+      ctx.arc(enemy.x, enemy.y, size * 0.83, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
+    if (enemy.chargeState === "marked") {
+      ctx.strokeStyle = "rgba(255, 224, 92, 0.94)";
+      ctx.lineWidth = 9;
+      ctx.setLineDash([18, 12]);
+      ctx.beginPath();
+      ctx.moveTo(enemy.x, enemy.y + size * 0.45);
+      ctx.lineTo(state.launcher.x, state.launcher.y - 56);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
+    if (enemy.bossId === "prism") {
+      ctx.strokeStyle = enemy.weakOpen ? "#ffe56b" : "#71dfff";
+      ctx.lineWidth = 10;
+      ctx.beginPath();
+      ctx.arc(enemy.x, enemy.y, size * 0.86, -0.55, 0.55);
+      ctx.stroke();
+    }
     ctx.restore();
     const barW = Math.max(48, size * 0.58);
     ctx.fillStyle = "rgba(0, 5, 17, 0.96)";
@@ -1222,6 +1615,18 @@
     ctx.fillRect(enemy.x - barW / 2 - 1, enemy.y - size * 0.5 - 1, barW + 2, 9);
     ctx.fillStyle = enemy.hitTimer > 0 ? "#fff06a" : "#ff6478";
     ctx.fillRect(enemy.x - barW / 2, enemy.y - size * 0.5, barW * Math.max(0, enemy.hp / enemy.maxHp), 7);
+    if (enemy.kind === "boss" && enemy.name) {
+      ctx.save();
+      ctx.font = "800 18px system-ui, sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "bottom";
+      ctx.lineWidth = 5;
+      ctx.strokeStyle = "rgba(0, 8, 18, 0.95)";
+      ctx.strokeText(localized(enemy.name), enemy.x, enemy.y - size * 0.57);
+      ctx.fillStyle = "#fff3a0";
+      ctx.fillText(localized(enemy.name), enemy.x, enemy.y - size * 0.57);
+      ctx.restore();
+    }
   }
 
   function drawCore() {
@@ -1286,6 +1691,124 @@
   window.addEventListener("blur", cancelPointerAim);
   document.addEventListener("visibilitychange", () => { if (document.hidden) cancelPointerAim(); });
 
+  function runCampaignMechanicScenario() {
+    const priorState = state;
+    const priorSelectedTier = selectedTier;
+    try {
+      selectedTier = 30;
+      state = makeState();
+      const collide = (enemy) => {
+        state.enemies = [enemy];
+        state.pylons = [];
+        const orb = makeOrb(0, -80, 0);
+        orb.x = enemy.x;
+        orb.y = enemy.y;
+        const before = { hp: enemy.hp, shield: enemy.shield };
+        updateOrb(orb, 0.016);
+        return { before, after: { hp: enemy.hp, shield: enemy.shield } };
+      };
+
+      const armored = makeEnemy("armored", 300, 280, 12, 0, 34, { shield: 2 });
+      const armor = collide(armored);
+
+      const phased = makeEnemy("phase", 300, 280, 10, 0, 28);
+      phased.phased = true;
+      const phase = collide(phased);
+
+      const splitter = makeEnemy("splitter", 300, 280, 12, 0, 28);
+      splitter.hp = 0;
+      state.enemies = [splitter];
+      resolveEnemyDeaths();
+      const split = { shards: state.enemies.filter((enemy) => enemy.kind === "shard").length, spawnedShards: state.spawnedShards };
+
+      const ally = makeEnemy("skitter", 280, 300, 8, 0, 28);
+      const anchor = makeEnemy("anchor", 360, 300, 12, 0, 36);
+      anchor.behaviorTimer = 0;
+      state.enemies = [ally, anchor];
+      updateEnemyBehavior(anchor, 0.016);
+      const anchorGuard = { allyShield: ally.shield, stationary: anchor.stationary };
+
+      const charger = makeEnemy("charger", 320, 260, 14, 12, 34);
+      charger.behaviorTimer = 0;
+      updateEnemyBehavior(charger, 0.016);
+      const marked = charger.chargeState;
+      charger.behaviorTimer = 0;
+      updateEnemyBehavior(charger, 0.016);
+      const charging = charger.chargeState;
+      charger.behaviorTimer = 0;
+      updateEnemyBehavior(charger, 0.016);
+      const recovery = charger.chargeState;
+
+      state.enemies = [];
+      state.pylons = [{ x: 360, y: 300, r: 31, moving: false }];
+      const pylonOrb = makeOrb(120, 0, 0);
+      pylonOrb.x = 360 - 48;
+      pylonOrb.y = 300;
+      const beforeVelocity = pylonOrb.vx;
+      updateOrb(pylonOrb, 0.016);
+      const pylon = { beforeVelocity, afterVelocity: pylonOrb.vx, events: [...state.mechanicEvents] };
+
+      const makeBossProbe = (tier) => {
+        const def = bossDefForTier(tier);
+        return makeEnemy("boss", 360, 220, 60, 8, 58, { bossId: def.id, imageKey: def.imageKey, name: def.name, cue: def.cue });
+      };
+      const rootbound = makeBossProbe(5);
+      rootbound.shield = 0;
+      rootbound.behaviorTimer = 0;
+      state.enemies = [rootbound];
+      updateEnemyBehavior(rootbound, 0.016);
+
+      const brambleback = makeBossProbe(10);
+      brambleback.hp = 30;
+      state.enemies = [brambleback];
+      updateEnemyBehavior(brambleback, 0.016);
+      const brambleSummons = state.enemies.filter((enemy) => enemy.kind === "anchor").length;
+
+      const lunar = makeBossProbe(15);
+      lunar.phased = true;
+
+      const prism = makeBossProbe(20);
+      prism.weakOpen = false;
+      const prismClosed = canDamageEnemy(prism);
+      prism.behaviorTimer = 0;
+      state.enemies = [prism];
+      updateEnemyBehavior(prism, 0.016);
+
+      const tempest = makeBossProbe(25);
+      tempest.behaviorTimer = 0;
+      updateEnemyBehavior(tempest, 0.016);
+      tempest.behaviorTimer = 0;
+      updateEnemyBehavior(tempest, 0.016);
+      tempest.behaviorTimer = 0;
+      updateEnemyBehavior(tempest, 0.016);
+
+      const voidcore = makeBossProbe(30);
+      voidcore.hp = 18;
+      state.enemies = [voidcore];
+      updateEnemyBehavior(voidcore, 0.016);
+
+      return {
+        armor,
+        phase,
+        split,
+        anchorGuard,
+        charger: { marked, charging, recovery },
+        pylon,
+        bosses: {
+          rootbound: { rebuiltShield: rootbound.shield },
+          brambleback: { summons: brambleSummons },
+          lunar: { damageableWhilePhased: canDamageEnemy(lunar) },
+          prism: { damageableClosed: prismClosed, damageableOpen: canDamageEnemy(prism) },
+          tempest: { state: tempest.chargeState, damageable: canDamageEnemy(tempest) },
+          voidcore: { phase: voidcore.bossPhase, summons: state.enemies.length - 1, shield: voidcore.shield, pylons: state.pylons.length },
+        },
+      };
+    } finally {
+      state = priorState;
+      selectedTier = priorSelectedTier;
+    }
+  }
+
   window.__animalOrbFortressSmoke = {
     snapshot: () => ({
       mode: state.mode,
@@ -1300,6 +1823,12 @@
       maxEnemySpeed: state.enemies.reduce((max, enemy) => Math.max(max, enemy.speed), 0),
       shieldedEnemies: state.enemies.filter((enemy) => enemy.shield > 0).length,
       eliteEnemies: state.enemies.filter((enemy) => enemy.elite).length,
+      bossIds: state.enemies.filter((enemy) => enemy.kind === "boss").map((enemy) => enemy.bossId),
+      bossNames: state.enemies.filter((enemy) => enemy.kind === "boss").map((enemy) => localized(enemy.name)),
+      phasedEnemies: state.enemies.filter((enemy) => enemy.phased).length,
+      pylons: state.pylons.length,
+      spawnedShards: state.spawnedShards,
+      mechanicEvents: [...state.mechanicEvents],
       orbs: state.orbs.length,
       activeOrbLimit: activeOrbLimit(),
       previewPoints: state.preview.length,
@@ -1313,6 +1842,14 @@
       save,
       title: t("title"),
     }),
+    campaignDepth: () => ({
+      stageCount: raidDefs.length,
+      regions: [...new Set(raidDefs.map((raid) => raid.zone))],
+      routes: raidDefs.map((raid) => ({ tier: raid.tier, zone: raid.zone, name: localized(raid.name), description: localized(raid.desc), rule: raid.rule })),
+      bosses: bossDefs.map((boss) => ({ tier: boss.tier, id: boss.id, imageKey: boss.imageKey, name: localized(boss.name), loaded: Boolean(images[boss.imageKey]?.complete && images[boss.imageKey]?.naturalWidth) })),
+      specialKinds: ["armored", "anchor", "phase", "splitter", "charger"],
+    }),
+    runCampaignMechanicScenario,
     forceClearWave: () => {
       state.enemies = [];
       update(0.016);
@@ -1346,6 +1883,18 @@
       persist();
       renderMenu();
       return save.bestRaid;
+    },
+    forceCheckpoint: (tier) => {
+      const checkpoint = Math.max(5, Math.min(MAX_RAID_TIER, Math.floor(Number(tier) / 5) * 5));
+      selectedTier = checkpoint;
+      state = makeState();
+      state.mode = "running";
+      state.wave = WAVES_PER_RAID;
+      spawnWave();
+      show(nodes.gamePanel);
+      renderHud();
+      draw();
+      return window.__animalOrbFortressSmoke.snapshot();
     },
     forceCompanionStrike: () => {
       const target = makeEnemy("skitter", state.launcher.x, state.launcher.y - 180, 8, 0, 42);

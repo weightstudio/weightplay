@@ -824,6 +824,15 @@ for (const game of window.WONDER_LOBBY.games) {
   delete game.internalTrial;
 }
 
+const orbFortress = window.WONDER_LOBBY.games.find((game) => game.id === "animal-orb-fortress");
+if (orbFortress) {
+  delete orbFortress.ageLabel;
+  orbFortress.description.en = "Plan wall and mirror-pylon bank shots through 30 routes, counter five special enemy rules, and defeat six unique fortress Bosses.";
+  orbFortress.description["zh-Hant"] = "規劃牆面與鏡柱反彈，挑戰 30 關、五種特殊敵人規則與六名獨特要塞 Boss。";
+  orbFortress.meta.en = ["30 Routes", "Mirror Pylons", "Six Bosses"];
+  orbFortress.meta["zh-Hant"] = ["30 關", "鏡面柱", "六名 Boss"];
+}
+
 const shadowWolfPublicCopy = {
   title: "\u5f71\u72fc\u50b3\u8aaa",
   statusText: "\u53ef\u904a\u73a9",

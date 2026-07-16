@@ -509,6 +509,21 @@
     });
   }
 
+  function keepDialogFocus(panel, event) {
+    if (event.key !== "Tab" || panel.classList.contains("is-hidden")) return;
+    const actions = [...panel.querySelectorAll("button:not(:disabled)")];
+    if (!actions.length) return;
+    const first = actions[0];
+    const last = actions[actions.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus({ preventScroll: true });
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus({ preventScroll: true });
+    }
+  }
+
   function loadProfile() {
     try {
       const parsed = JSON.parse(localStorage.getItem(saveKey) || "{}");
@@ -1408,6 +1423,8 @@
     nodes.skillBtn.addEventListener("click", skill);
     nodes.endTurnBtn.addEventListener("click", endTurn);
     nodes.rerollBtn.addEventListener("click", () => renderRewards(true));
+    nodes.rewardPanel.addEventListener("keydown", (event) => keepDialogFocus(nodes.rewardPanel, event));
+    nodes.resultPanel.addEventListener("keydown", (event) => keepDialogFocus(nodes.resultPanel, event));
     nodes.nextBtn.addEventListener("click", () => {
       selectedMission = Math.min(missionDefs.length, state.mission + 1);
       startMission(selectedMission);

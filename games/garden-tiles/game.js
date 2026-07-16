@@ -574,8 +574,14 @@
   });
 
   levelGrid.addEventListener("click", (event) => {
-    const button = event.target.closest("[data-level]");
+    const directHit = event.target.closest?.("[data-level]");
+    const coordinateHit = [...levelGrid.querySelectorAll("[data-level]")].find((card) => {
+      const rect = card.getBoundingClientRect();
+      return event.clientX >= rect.left && event.clientX <= rect.right && event.clientY >= rect.top && event.clientY <= rect.bottom;
+    });
+    const button = directHit || coordinateHit;
     if (!button) return;
+    button.focus({ preventScroll: true });
     startLevel(Number(button.dataset.level));
   });
 

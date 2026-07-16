@@ -888,6 +888,7 @@
   function focusGamePanel() {
     requestAnimationFrame(() => {
       nodes.gamePanel.scrollIntoView({ block: "start", inline: "nearest" });
+      nodes.gameCanvas.focus({ preventScroll: true });
     });
   }
 
@@ -924,7 +925,7 @@
     renderEquippedGear();
   }
 
-  function renderExpeditionStage() {
+  function renderExpeditionStage(focusSelected = false) {
     const currentLocale = getLocale();
     selectedExpedition = Math.max(1, Math.min(profile.unlockedExpedition || 1, selectedExpedition));
     nodes.expeditionRail.innerHTML = expeditionDefs.map((region) => {
@@ -945,7 +946,12 @@
     });
     nodes.stageTitle.textContent = t("chooseExpedition");
     nodes.stageSetupText.textContent = t("expeditionGoal", { level: expeditionDefs[selectedExpedition - 1].level });
-    window.requestAnimationFrame(() => nodes.expeditionRail.querySelector(".is-selected")?.scrollIntoView({ inline: "center", block: "nearest" }));
+    window.requestAnimationFrame(() => {
+      const selected = nodes.expeditionRail.querySelector(".is-selected:not(:disabled)")
+        || nodes.expeditionRail.querySelector(".expedition-card:not(:disabled)");
+      selected?.scrollIntoView({ inline: "center", block: "nearest" });
+      if (focusSelected) selected?.focus({ preventScroll: true });
+    });
   }
 
   function showStage() {
@@ -964,7 +970,7 @@
     updateDiamondShopUI();
     renderTrainingPanel();
     renderEquippedGear();
-    renderExpeditionStage();
+    renderExpeditionStage(true);
   }
 
   function translateUI() {
@@ -2385,6 +2391,21 @@
     nodes.resultMenuBtn.addEventListener("click", () => {
       window.WonderSound?.play("click");
       showStage();
+    });
+
+    nodes.resultPanel.addEventListener("keydown", (event) => {
+      if (event.key !== "Tab" || nodes.resultPanel.classList.contains("hidden")) return;
+      const actions = [nodes.retryBtn, nodes.resultMenuBtn].filter((button) => !button.disabled);
+      if (!actions.length) return;
+      const first = actions[0];
+      const last = actions[actions.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus({ preventScroll: true });
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus({ preventScroll: true });
+      }
     });
 
     nodes.localeSelect.addEventListener("change", (e) => {

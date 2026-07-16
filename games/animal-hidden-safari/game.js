@@ -54,6 +54,7 @@
       progress: "This time {time} · Best {best}",
       best: "Best {time}",
       noHints: "No hints left",
+      hintTarget: "Look for {target}!",
       found: "Found!",
       tryAgain: "Look closely",
       remaining: "{count} left",
@@ -112,6 +113,7 @@
       progress: "\u9019\u6b21 {time} \u00b7 \u6700\u4f73 {best}",
       best: "\u6700\u4f73 {time}",
       noHints: "\u6c92\u6709\u63d0\u793a\u4e86",
+      hintTarget: "\u627e\u627e\u770b\uff1a{target}\uff01",
       found: "\u627e\u5230\u4e86\uff01",
       tryAgain: "\u518d\u4ed4\u7d30\u770b\u770b",
       remaining: "\u9084\u5269 {count} \u500b",
@@ -186,6 +188,7 @@
     progressFill: $("progressFill"),
     hintBtn: $("hintBtn"),
     hintCount: $("hintCount"),
+    hintStatus: $("hintStatus"),
     scene: $("scene"),
     targetsLayer: $("targetsLayer"),
     floatLayer: $("floatLayer"),
@@ -402,6 +405,7 @@
     hintsLeft = 2;
     mistakes = 0;
     hintedTargets = new Set();
+    nodes.hintStatus.textContent = "";
     lastResult = null;
     startTime = Date.now();
     acceptingInput = true;
@@ -519,7 +523,9 @@
       playSound("error");
       return;
     }
-    const next = stages[currentStage].targets.findIndex((_, index) => !found.has(index));
+    const targets = stages[currentStage].targets;
+    let next = targets.findIndex((_, index) => !found.has(index) && !hintedTargets.has(index));
+    if (next < 0) next = targets.findIndex((_, index) => !found.has(index));
     if (next < 0) return;
     hintsLeft -= 1;
     hintedTargets.add(next);
@@ -527,6 +533,10 @@
     nodes.hintBtn.disabled = hintsLeft <= 0;
     document.querySelectorAll(".target.hint").forEach((item) => item.classList.remove("hint"));
     document.querySelector(`.target[data-index="${next}"]`)?.classList.add("hint");
+    const [targetId, x, y] = targets[next];
+    const hintMessage = t("hintTarget", { target: t(`targets.${targetId}`) });
+    nodes.hintStatus.textContent = hintMessage;
+    showFloatingText(hintMessage, x, y, true);
     track("hint_used", { level: currentStage + 1 });
     playSound("select");
   }
@@ -640,10 +650,11 @@
     });
   }
 
-  function showFloatingText(message, x, y) {
+  function showFloatingText(message, x, y, hideFromAssistive = false) {
     const node = document.createElement("div");
     node.className = "float-text";
     node.textContent = message;
+    if (hideFromAssistive) node.setAttribute("aria-hidden", "true");
     node.style.left = `${x}%`;
     node.style.top = `${y}%`;
     nodes.floatLayer.appendChild(node);

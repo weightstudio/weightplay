@@ -59,17 +59,33 @@
     const rule=packs[lang][stage].rule;
     if(rule)$('objective').textContent=rule;
   };
+  function showLockedStage(index){
+    stage=index;
+    renderStages();
+    $('stageFeedback').textContent=t('lockedStage');
+    requestAnimationFrame(()=>document.querySelector('.stage-card.selected')?.focus({preventScroll:true}));
+  }
   renderStages = function(){
     const rail=$('stageRail'), best=JSON.parse(localStorage.wordTrailsBest||'{}'), album=JSON.parse(localStorage.wordTrailsAlbum||'{}');
     const cards=Object.keys(album).filter(key=>key.startsWith(lang+'-')).length;
     rail.innerHTML='';
+    $('stageFeedback').textContent='';
     packs[lang].forEach((item,i)=>{
       const card=document.createElement('button'), locked=i>0&&!best[lang+'-'+(i-1)];
       card.className='stage-card'+(i===stage?' selected':'')+(locked?' locked':'');
       card.setAttribute('aria-disabled',String(locked));
+      if(locked) card.setAttribute('aria-describedby','stageFeedback');
       card.dataset.stage=String(i);
       card.innerHTML='<strong>'+String(i+1)+'. '+item.name+'</strong><span>'+String(item.words.length)+' '+(lang==='en'?'words':'\u500b\u5b57\u8a5e')+'</span>';
-      card.onclick=()=>{ if(rail.dataset.dragging==='true') return; stage=i; renderBattle(); };
+      card.onclick=()=>{
+        if(rail.dataset.dragging==='true') return;
+        if(locked){
+          showLockedStage(i);
+          return;
+        }
+        stage=i;
+        renderBattle();
+      };
       rail.append(card);
     });
     $('stageProgress').textContent=(stage+1)+'/'+packs[lang].length+' · '+(lang==='en'?'Cards ':'\u7dda\u7d22\u5361 ')+cards;
@@ -94,12 +110,14 @@
   Object.assign(copy.en, {
     language:'Language', album:'Album', albumTitle:'Animal clues', undo:'Undo', loading:'Loading trail',
     backLobby:'Back to WeightPlay', backMain:'Back to main', backStage:'Back to trails', closeAlbum:'Close album', stages:'Trails', board:'Word board',
+    lockedStage:'Finish the previous trail to unlock this one.',
     seoTitle:'Animal Word Trails - WeightPlay', seoDescription:'Connect animal and habitat words in a calm reading puzzle.'
   });
   Object.assign(copy['zh-Hant'], {
     language:'\u8a9e\u8a00', album:'\u7dda\u7d22\u5361', albumTitle:'\u52d5\u7269\u7dda\u7d22\u5361', undo:'\u5fa9\u539f', loading:'\u6e96\u5099\u5c0f\u5f91',
     backLobby:'\u8fd4\u56de WeightPlay \u5927\u5ef3', backMain:'\u8fd4\u56de\u9996\u9801', backStage:'\u8fd4\u56de\u5c0f\u5f91\u9078\u55ae', closeAlbum:'\u95dc\u9589\u7dda\u7d22\u5361',
     stages:'\u5c0f\u5f91\u9078\u55ae', board:'\u5b57\u8a5e\u68cb\u76e4', seoTitle:'\u52d5\u7269\u5b57\u8a5e\u5c0f\u5f91 - WeightPlay',
+    lockedStage:'\u5b8c\u6210\u524d\u4e00\u689d\u5c0f\u5f91\uff0c\u5c31\u80fd\u89e3\u9396\u9019\u4e00\u95dc\u3002',
     seoDescription:'\u9023\u7dda\u627e\u51fa\u52d5\u7269\u8207\u68f2\u5730\u5b57\u8a5e\u7684\u8f15\u9b06\u95b1\u8b80\u904a\u6232\u3002'
   });
   translate = function(){
@@ -116,12 +134,16 @@
   let railStartScroll=0;
   let railPointerActive=false;
   let railStartStage=null;
+  const stageCardAtClientX=clientX=>[...rail.querySelectorAll('.stage-card')].find(card=>{
+    const rect=card.getBoundingClientRect();
+    return clientX>=rect.left&&clientX<=rect.right;
+  });
   rail.addEventListener('pointerdown',event=>{
     if(rail.dataset.wpStageRail==='true') return;
     railStartX=event.clientX;
     railStartScroll=rail.scrollLeft;
     railPointerActive=true;
-    railStartStage=event.target.closest('.stage-card:not(.locked)')?.dataset.stage ?? null;
+    railStartStage=stageCardAtClientX(event.clientX)?.dataset.stage ?? null;
     rail.dataset.dragging='false';
     rail.setPointerCapture?.(event.pointerId);
   });
@@ -144,7 +166,11 @@
     const nearest=cards.reduce((best,card)=>Math.abs(card.offsetLeft+card.offsetWidth/2-center)<Math.abs(best.offsetLeft+best.offsetWidth/2-center)?card:best,cards[0]);
     nearest?.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});
     if(tappedStage!==null && !dragged) {
-      setTimeout(()=>{stage=Number(tappedStage);renderBattle();},0);
+      const tappedCard=rail.querySelector(`.stage-card[data-stage="${tappedStage}"]`);
+      setTimeout(()=>{
+        if(tappedCard?.classList.contains('locked')) showLockedStage(Number(tappedStage));
+        else { stage=Number(tappedStage); renderBattle(); }
+      },0);
     }
     setTimeout(()=>{rail.dataset.dragging='false';},0);
   });

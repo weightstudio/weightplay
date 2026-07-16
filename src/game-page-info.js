@@ -578,32 +578,63 @@
     },
     "animal-orb-fortress": {
       title: "Animal Orb Fortress",
-      age: "13+",
       difficulty: "Hard",
-      time: "5-8 minutes",
+      time: "5-8 minutes per route",
+      gameplay: "Ricochet Fortress Roguelite",
+      genre: ["Ricochet", "Action Strategy", "Roguelite", "Animal"],
       skills: ["Logic", "Problem Solving", "Focus"],
+      guideKicker: "WeightPlay Original Game Guide",
+      guideTitleSuffix: "Game Guide",
+      noteTitle: "Player and Save Information",
+      hideScoreBands: true,
       intro:
-        "Animal Orb Fortress is a ricochet roguelite defense game where players aim spirit orbs through a crystal fortress arena, bounce shots off walls, clear three enemy waves, choose run upgrades, and spend Star Stones on permanent fortress rooms. The game is built for older players who enjoy aim planning, boss pressure, and local progression without requiring Diamond spending.",
+        "Animal Orb Fortress is a 30-route ricochet defense campaign about reading an arena before releasing a spirit orb. Each route has three continuous waves. The player drags from the lion keeper to preview a wall-bounce path, releases a volley, and protects the crystal core while shadow beasts advance. Six five-route regions add armor, protective anchors, phasing enemies, splitters, moving mirror pylons, telegraphed chargers, and six mechanically different regional Bosses. Between waves, one fortress blessing changes the current raid; between routes, Star Stones improve four permanent fortress rooms.",
+      story: [
+        "The Crystal Fortress was built where six guardian roads meet: the Crystal Woodland, Thornworks, Moon Ruins, Mirror Vault, Storm Bastion, and Eclipse Heart. When the fortress core began broadcasting an unstable pulse, shadow animals followed those roads inward. The lion orb keeper cannot leave the core unguarded, so every defense is fought from the launcher chamber by redirecting spirit orbs through the surrounding walls and mirrors.",
+        "Clearing a route means its road is stable enough for repair crews to reopen it. Rootbound Golem tests the woodland gate, Brambleback Colossus occupies the thorn forge, Lunar Wisp Matriarch phases through the moon road, Prism Shell Regent controls the mirror vault, Tempest Horn Guardian marks storm lanes, and Voidcore Emperor seals the final chamber with three core phases. Completing Route 30 reconnects all six roads and stops the corrupted pulse from drawing more enemies to the fortress."
+      ],
+      systems: [
+        "Aim and ricochet: drag from the launcher to see the initial path, then release. The main orb and one weaker echo orb travel at related angles. Wall banks can cross multiple lanes or reach a target hidden behind another formation. Split Orb can add a third projectile, while Piercing Shine shortens the delay before one orb can hit the same target again.",
+        "Three-wave route: Waves 1 and 2 establish the route's enemy rule. Wave 3 uses an authored elite formation, except Routes 5, 10, 15, 20, 25, and 30, which end with a named regional Boss. A cleared wave pauses inside Battle for one blessing choice, then resumes the same route with surviving core HP and current upgrades.",
+        "Special enemies: armored beasts absorb a fixed number of hits before losing HP. Stationary thorn anchors periodically give nearby allies a shield. Moon wisps visibly phase out and cannot be damaged until they return. Crystal splitters create two faster shards when defeated. Chargers mark a line, rush, then leave a recovery opening.",
+        "Mirror pylons: later routes place one or two solid hexagonal pylons inside the arena. Orbs physically reflect from them, creating bank paths that do not exist in the early regions. Some pylons move horizontally, so a previously safe angle may stop working during the same wave.",
+        "Boss rules: Rootbound rebuilds a breakable guard; Brambleback summons anchors and armored support at health thresholds; Lunar Wisp alternates visible and phased periods; Prism Shell can only be damaged while its gold shield segment is open; Tempest Horn is vulnerable after a marked charge; Voidcore changes phase twice, adds escorts, rebuilds protection, and activates two mirror pylons.",
+        "Run and permanent growth: each wave offers Bigger Orb, Split Orb, Piercing Shine, Faster Recharge, Core Shield, or Scout Magnet according to the current choice cycle. Star Stones earned at Result improve Orb Forge damage, starting Core Shield HP, Companion Den support strikes, and Scout Tower rewards. A three-Diamond blessing reroll is optional, confirmed in two steps, and never required to unlock routes."
+      ],
       how: [
-        "Start a raid from the fortress map and drag from the launcher to aim the spirit orb.",
-        "Use wall bounces to hit shadow beasts before they reach the core.",
-        "Clear each wave to choose one fortress blessing, or optionally spend 3 Diamonds once to reroll the choices.",
-        "Defeat the wave 3 boss while keeping core HP above zero.",
-        "Spend earned Star Stones on fortress rooms such as Orb Forge, Core Shield, Companion Den, and Scout Tower."
+        "Choose an unlocked route from the horizontal fortress map. Read its name, rule tag, and route-specific warning before entering.",
+        "Drag from the lion keeper toward the desired angle. Use the preview to decide whether a direct shot, one-wall bank, cross-arena bank, or pylon reflection reaches the priority target.",
+        "Release to fire the spirit-orb volley. Watch armor rings, phase outlines, charge marks, anchor protection, and Boss cues before choosing the next shot.",
+        "After Waves 1 and 2, select one blessing. A reroll costs three Diamonds and requires a second confirmation; selecting a blessing immediately continues to the next wave.",
+        "Keep core HP above zero through Wave 3. Victory saves the next route and Star Stones; failure still saves the earned Star Stones and leaves the best unlocked route intact.",
+        "Return to the map to spend Star Stones on fortress rooms, replay cleared routes, or continue with Next Stage from Result."
       ],
       strategyTips: [
-        "Aim for bank shots that cross the center of the arena instead of only shooting straight at the closest enemy.",
-        "Choose shield or recharge upgrades when enemies are getting too close to the core.",
-        "Save Diamond rerolls for runs where all three upgrade choices miss your current plan.",
-        "Upgrade Core Shield and Orb Forge early to make later raid tiers more stable."
+        "Do not always aim at the closest enemy. Anchors, splitters, and backline wisps can create more pressure than a slow front target, so use a bank route to reach the correct priority.",
+        "A phase outline means damage is blocked. Keep the next angle prepared and release when the enemy becomes solid instead of wasting the volley during its closed state.",
+        "Moving pylons are useful surfaces, not only obstacles. Aim slightly ahead of their travel so the orb meets the pylon where it will be, then crosses a lane that wall-only shots cannot reach.",
+        "Against chargers and Tempest Horn Guardian, read the marked line and wait for recovery. Faster Recharge helps only if the shots are released during a useful window.",
+        "Core Shield and Faster Recharge stabilize a route under pressure; Bigger Orb and Piercing Shine shorten dangerous Boss phases. Scout Magnet helps long-term growth but does not stop an immediate breach.",
+        "Save the optional Diamond reroll for a blessing set that genuinely misses the route's rule. Normal route unlocking and all six Bosses remain playable without spending Diamonds."
       ],
+      progression: [
+        "Routes 1-5 teach direct fire, one-wall banks, separated lanes, and target order. Rootbound Crown is the first checkpoint: the Golem rebuilds guard after an exposed interval, so the player must break protection and use the opening rather than fire without timing.",
+        "Routes 6-10 introduce hit-count armor and stationary thorn anchors. Routes 11-15 replace constant firing with phase timing and then add the first moving reflection gate. Brambleback Colossus summons protection during the fight, while Lunar Wisp Matriarch alternates invulnerability with a recovery window.",
+        "Routes 16-20 add physical mirror pylons and splitters whose defeat creates faster shards. Routes 21-25 mark charge lanes and add storm timing. Prism Shell Regent rotates a damage window; Tempest Horn Guardian must complete its rush before it can be hurt.",
+        "Routes 26-30 combine armor, anchors, phase timing, splitters, chargers, and moving pylons in authored formations. Route 29 uses the full ordinary-enemy vocabulary. Route 30 adds two Voidcore phase changes, four support summons, rebuilt shielding, and two active pylons, testing aim planning, target priority, timing, upgrades, and permanent fortress growth together."
+      ],
+      designNote:
+        "The game uses three short waves because a route should feel like one focused aiming problem rather than a long endurance session. Wave breaks preserve core damage and the current build, but provide one compact blessing decision before the next formation. The first regions rely on walls so players can learn predictable geometry; later mirror pylons create new surfaces and invalidate memorized angles. Special enemies communicate their counterplay with rings, shield marks, lane lines, or distinct Boss artwork instead of requiring a long rules panel during Battle. Pointer drag is the primary phone control, while Left and Right adjust the same aim on a keyboard and Space or Enter fires. Compared with Beast Guardian's defender placement or Animal Auto Squad's formation planning, Animal Orb Fortress makes the shot path itself the main strategic resource.",
       parent:
-        "This game is intended for teens and casual strategy-action players. It practices logic, focus, aiming plans, and upgrade decisions through fantasy animal combat. Progress is stored locally on the device and is for entertainment only, not diagnosis, ranking, or formal assessment.",
+        "The browser saves the best unlocked route, Star Stones, play count, and four fortress-room levels on this device. Basic play does not require an account. Clearing this site's browser storage may remove that progress. Diamond blessing rerolls are optional, show the current and resulting balance, and are not required for the 30-route campaign. Scores and Skill Reports describe play only and are not formal ability measurements.",
       faq: [
-        ["Is Animal Orb Fortress free to play?", "Yes. It runs in the browser on WeightPlay."],
-        ["Why is it marked 13+?", "It has real-time aiming, enemy pressure, boss waves, upgrade choices, and optional Diamond rerolls, so it is deeper than younger-child games."],
-        ["Do I need Diamonds to win?", "No. The main raid and fortress upgrades are playable without Diamonds. Diamonds only provide optional rerolls for upgrade choices."],
-        ["Does progress continue between sessions?", "Yes. Star Stones, best raid tier, play count, and fortress room levels are saved locally on the device."]
+        ["What is the goal of a route?", "Protect the crystal core through three waves. Clearing Wave 3 saves the route, awards Star Stones, and unlocks the next route."],
+        ["Does every route use the same Boss?", "No. Only every fifth route is a regional Boss checkpoint. The other routes end with authored elite formations, and all six Bosses have different artwork, cues, and counterplay."],
+        ["Why did my orb pass through a moon enemy?", "A dashed phase outline means that enemy is temporarily intangible. Wait for it to become solid, then release the prepared shot."],
+        ["What do mirror pylons do?", "They are real reflection surfaces inside the arena. Later pylons move, changing the available ricochet path during a wave."],
+        ["Do I need Diamonds to finish the campaign?", "No. Diamonds only reroll the three blessing choices once during a wave after a two-step confirmation."],
+        ["What happens after a failed route?", "The run ends, but earned Star Stones are saved and the best unlocked route is retained. Upgrade a room, change the aim plan, or retry."],
+        ["What progress is stored?", "Best unlocked route, Star Stones, play count, and Orb Forge, Core Shield, Companion Den, and Scout Tower levels are stored locally in this browser."]
       ],
     },
 
@@ -981,33 +1012,61 @@
         faq: [["獸王牌組需要付費嗎？", "不需要。WeightPlay 的遊戲都可以直接在瀏覽器免費遊玩。"], ["鑽石可以做什麼？", "鑽石目前以每日簽到等平台來源取得，可用來解鎖可選永久升級。"]],
       },
       "animal-orb-fortress": {
-        title: "\u52d5\u7269\u661f\u73e0\u8981\u585e",
-        age: "13+",
-        difficulty: "\u56f0\u96e3",
-        time: "5-8 \u5206\u9418",
-        gameplay: "\u53cd\u5f48 Roguelite",
-        genre: ["\u52d5\u4f5c", "Roguelite", "\u52d5\u7269"],
-        skills: ["\u908f\u8f2f", "\u554f\u984c\u89e3\u6c7a", "\u5c08\u6ce8"],
-        intro: "動物星珠要塞是一款 13+ 動物反彈 Roguelite 防守遊戲。玩家從發射器瞄準星珠，利用牆面反彈穿過水晶要塞競技場，擊退三波暗影野獸與首領，並用星石升級永久要塞房間。",
+        title: "動物星珠要塞",
+        difficulty: "困難",
+        time: "每關 5-8 分鐘",
+        gameplay: "反彈射擊要塞 Roguelite",
+        genre: ["反彈射擊", "動作策略", "Roguelite", "動物"],
+        skills: ["邏輯", "問題解決", "專注"],
+        guideKicker: "WeightPlay 原創遊戲指南",
+        guideTitleSuffix: "遊戲指南",
+        noteTitle: "玩家與存檔說明",
+        hideScoreBands: true,
+        intro: "《動物星珠要塞》是一套以閱讀戰場與規劃反彈路線為核心的 30 關防守戰役。每關包含三個連續波次，玩家從獅子守衛旁拖曳瞄準，預覽牆面反彈後放開星珠，在影獸接近水晶核心前擊退牠們。六個五關區域依序加入護甲、荊棘錨點、相位敵人、水晶分裂獸、移動鏡面柱、衝鋒路線，以及六場規則不同的區域 Boss 戰。波次之間選擇本局祝福，關卡之間則用星石升級四個永久要塞房間。",
+        story: [
+          "水晶要塞位在六條守護道路交會的位置：水晶森林、荊棘工坊、月光遺跡、鏡面寶庫、風暴壁壘與蝕影核心。核心開始發出不穩定脈衝後，暗影動物沿著道路靠近。獅子星珠守衛不能離開核心，因此每次防守都必須從發射室把星珠導向牆面、鏡門與敵方路線。",
+          "通過一關代表該段道路已穩定到足以讓修復隊重新開放。盤根魔像守在森林入口，荊背巨獸佔領工坊，月靈女王能穿過月光道路，稜晶甲攝政王控制鏡庫，暴風角守衛標記衝鋒路線，虛空核心皇則以三階段封鎖最後房間。完成第 30 關代表六條道路重新連結，核心也不再吸引新的影獸。"
+        ],
+        systems: [
+          "瞄準與反彈：從發射器拖曳可預覽第一段路線，放開後會射出主星珠與一顆角度相關的弱化回音珠。牆面反彈可以跨越多條路線，或打到被前排遮住的優先目標。分裂星珠能增加第三顆彈體，穿透星芒則縮短同一顆星珠再次命中相同敵人的間隔。",
+          "三波關卡：前兩波先讓玩家理解本關規則。第三波通常是特製菁英陣形；第 5、10、15、20、25、30 關則改為具名區域 Boss。通過一波後仍保留核心損傷與本局升級，只暫停讓玩家選一個祝福，再繼續同一關。",
+          "特殊敵人：裝甲獸要先消耗固定次數的護甲；不移動的荊棘錨點會定期替鄰近隊友加盾；月光幽靈會用虛線提示進入相位，顯形前無法受傷；水晶分裂獸倒下後會產生兩枚更快碎片；衝鋒獸先標記路線，突進後才留下可攻擊空檔。",
+          "鏡面柱：中後期會在競技場內放置一到兩座六角鏡面柱，星珠會真的從柱面反射，形成早期關卡不存在的新路線。有些鏡面柱會左右移動，同一波中原本有效的角度也可能失效。",
+          "Boss 規則：盤根魔像會重建防護；荊背巨獸在生命門檻召喚錨點與裝甲護衛；月靈女王交替顯形與相位；稜晶甲攝政王只在金色盾片打開時受傷；暴風角守衛完成標記衝刺後才會外露；虛空核心皇會兩次換階段、補盾、召喚四名護衛並啟動兩座鏡面柱。",
+          "本局與永久成長：每波可從巨大星珠、分裂星珠、穿透星芒、快速充能、核心護盾、偵查磁力中選擇祝福。結算取得的星石可提升星珠鍛造室傷害、核心護盾室起始生命、夥伴巢穴支援攻擊與偵查高塔獎勵。花三顆鑽石重抽祝福完全可選，需二次確認，也不是解鎖關卡的必要條件。"
+        ],
         how: [
-          "從要塞地圖開始突襲，拖曳發射器預覽星珠反彈路線後放開。",
-          "利用牆面反彈攻擊暗影野獸，避免牠們靠近核心。",
-          "每清除一波敵人可選擇一個要塞祝福，也可以選擇花費 3 顆鑽石重抽一次。",
-          "在核心生命歸零前擊敗第三波首領。",
-          "用獲得的星石升級星珠工坊、核心護盾、夥伴巢穴與偵查塔。"
+          "從水平滑動的要塞地圖選擇已解鎖關卡，先閱讀關卡名稱、規則標籤與專屬警告。",
+          "從獅子守衛旁拖向想要的角度，利用預覽判斷直接射擊、單牆反彈、跨場反彈或鏡柱反射能否命中優先目標。",
+          "放開後射出星珠，觀察護甲圈、相位虛線、衝鋒標記、錨點保護與 Boss 提示，再決定下一次射擊。",
+          "通過前兩波後各選一個祝福。重抽花三顆鑽石並需要再按一次確認；選好祝福就立刻繼續下一波。",
+          "第三波結束前保持核心生命大於零。勝利會保存下一關與星石；失敗仍保存已取得星石，且不會失去最佳已解鎖關卡。",
+          "回到地圖使用星石升級房間、重玩舊關，或從結算畫面直接進入下一關。"
         ],
         strategyTips: [
-          "優先規劃會穿過場中央的反彈路線，不要只直線攻擊最近的敵人。",
-          "當敵人靠近核心時，護盾或加速回充升級通常比單純傷害更穩。",
-          "鑽石重抽保留給三個祝福都不符合目前打法的時候。",
-          "前期先升級核心護盾與星珠工坊，後面突襲會更穩定。"
+          "不要永遠攻擊最近的敵人。錨點、分裂獸與後排幽靈可能比慢速前排更危險，應用反彈路線處理真正優先目標。",
+          "看到相位虛線代表傷害會被擋住。先保留角度，等敵人重新顯形再放開，不要浪費整組星珠。",
+          "移動鏡面柱也是工具，不只是障礙。稍微預判柱子移動位置，讓星珠撞上後穿越牆面無法到達的路線。",
+          "面對衝鋒獸與暴風角守衛，要先看標記路線並等待恢復空檔；快速充能只有在射擊時機正確時才有價值。",
+          "核心護盾與快速充能適合穩住壓力，巨大星珠與穿透星芒能縮短危險 Boss 階段；偵查磁力偏向長期成長，無法立即阻止核心被撞。",
+          "只有三個祝福都不符合本關規則時才考慮可選鑽石重抽。正常解鎖 30 關與六名 Boss 都不要求花鑽石。"
         ],
-        parent: "這款遊戲適合青少年與喜歡策略動作的休閒玩家。它透過瞄準規劃、反彈路線與升級選擇練習邏輯、專注與問題解決。進度只儲存在本機裝置，僅供娛樂與自我進步參考，不是診斷、排名或正式評量。",
+        progression: [
+          "第 1-5 關教直接射擊、單牆反彈、分離路線與目標順序。盤根王冠是第一個檢查點；魔像會在外露一段時間後重建防護，所以玩家要先破防，再利用空檔攻擊。",
+          "第 6-10 關加入固定次數護甲與不移動的荊棘錨點。第 11-15 關把持續射擊改成相位時機，再加入第一座移動反射門。荊背巨獸會在戰鬥中召援，月靈女王則在無敵相位與恢復空檔間切換。",
+          "第 16-20 關加入可實際反射星珠的鏡面柱，以及倒下後產生快速碎片的分裂獸。第 21-25 關加入路線標記、衝鋒與風暴時機。稜晶甲攝政王有旋轉傷害窗口，暴風角守衛必須完成衝刺後才能受傷。",
+          "第 26-30 關把護甲、錨點、相位、分裂、衝鋒與移動鏡柱組成特製陣形。第 29 關使用完整普通敵人語彙；第 30 關加入兩次虛空核心換階段、四名支援、補盾與兩座鏡面柱，同時測試瞄準、目標順序、時機、本局祝福與永久房間成長。"
+        ],
+        designNote: "本作採三個短波次，是為了讓每關像一個集中的反彈問題，而不是過長的耐久戰。波次間保留核心損傷與本局配置，只加入一次簡短祝福決策。前期只使用牆面，讓玩家先理解可預測幾何；後期鏡面柱增加新反射面，也會使背熟的角度失效。特殊敵人用護甲圈、相位虛線、路線標記與獨立 Boss 圖直接傳達反制方式，不要求玩家在戰鬥中閱讀長篇規則。手機以拖曳為主；鍵盤左右鍵調整同一套角度，空白鍵或 Enter 發射。相較《獸王守衛》的配置守衛與《動物自走小隊》的戰前編成，《動物星珠要塞》把射擊路徑本身當作主要策略資源。",
+        parent: "瀏覽器會在本機保存最佳已解鎖關卡、星石、遊玩次數，以及星珠鍛造室、核心護盾室、夥伴巢穴、偵查高塔的等級；基本遊玩不需要登入。清除本站瀏覽器儲存資料可能移除進度。鑽石祝福重抽完全可選，會顯示目前與扣除後餘額，不是完成 30 關的必要條件。分數與能力回饋只描述遊玩表現，不是正式能力測量。",
         faq: [
-          ["動物星珠要塞是免費遊戲嗎？", "是。玩家可以直接在 WeightPlay 的瀏覽器頁面遊玩。"],
-          ["為什麼標示為 13+？", "遊戲包含即時瞄準、敵人壓力、首領波次、升級選擇與可選鑽石重抽，系統比低年齡遊戲更深入。"],
-          ["需要鑽石才能獲勝嗎？", "不需要。主要突襲與要塞升級都能免費遊玩，鑽石只用於可選的祝福重抽。"],
-          ["進度會保留嗎？", "會。星石、最佳突襲層級、遊玩次數與要塞房間等級會儲存在本機裝置。"]
+          ["每關的目標是什麼？", "守住水晶核心並通過三個波次。完成第三波會保存關卡、取得星石並解鎖下一關。"],
+          ["每關都會出現同一隻 Boss 嗎？", "不會。只有每五關是區域 Boss 檢查點；其他關以特製菁英陣形收尾，六名 Boss 的圖像、提示與反制規則都不同。"],
+          ["為什麼星珠穿過月光敵人？", "相位虛線代表敵人暫時沒有實體。等牠重新顯形，再放開已準備好的射擊。"],
+          ["鏡面柱有什麼作用？", "它是競技場內真正的反射面；後期鏡柱會移動，讓同一波中的可用反彈路線改變。"],
+          ["需要鑽石才能完成戰役嗎？", "不需要。鑽石只在二次確認後重抽一次當波的三個祝福。"],
+          ["關卡失敗會怎樣？", "本局會結束，但已取得星石仍會保存，最佳已解鎖關卡不會倒退。可以升級房間、換一條射擊計畫或直接重試。"],
+          ["哪些進度會保存？", "最佳已解鎖關卡、星石、遊玩次數與四個要塞房間等級會保存在目前瀏覽器本機。"]
         ],
       },
 
