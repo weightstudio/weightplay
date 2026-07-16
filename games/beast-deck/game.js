@@ -2498,6 +2498,9 @@
     nodes.stageGrid?.addEventListener("pointerup", endStageDrag);
     nodes.stageGrid?.addEventListener("pointercancel", endStageDrag);
     nodes.stageGrid?.addEventListener("pointerleave", endStageDrag);
+    nodes.packBtn?.addEventListener("keydown", (event) => {
+      if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
+    });
     nodes.packBtn?.addEventListener("click", drawPack);
     nodes.amuletBtn.addEventListener("keydown", (event) => {
       if (event.repeat && (event.key === "Enter" || event.key === " ")) {

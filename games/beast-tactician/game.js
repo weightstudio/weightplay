@@ -1173,6 +1173,9 @@
     button.setAttribute("aria-label", goldenFrameConfirmPending
       ? t("goldenFrameConfirmLabel", { balance: state.save.diamonds, result: resultingBalance })
       : `${t("goldenFrame")}. ${t("goldenFrameDesc")}`);
+    button.addEventListener("keydown", (event) => {
+      if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
+    });
     button.addEventListener("click", buyGoldenFrame);
     card.appendChild(button);
     nodes.techGrid.appendChild(card);

@@ -475,6 +475,9 @@
         <img class="car-art" src="${trainCarAsset}" alt="" />
         <img class="car-shape" src="${shapes[shape].token}" alt="${t(`shapes.${shape}`)}" />
       `;
+      car.addEventListener("keydown", (event) => {
+        if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
+      });
       car.addEventListener("click", () => chooseCar(shape, car));
       car.addEventListener("dragover", (event) => event.preventDefault());
       car.addEventListener("drop", (event) => {

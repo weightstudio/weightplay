@@ -297,18 +297,19 @@
     },
     "animal-moonlight-heist": {
       title: "Animal Moonlight Heist",
-      age: "13+",
-      difficulty: "Medium",
-      time: "4-8 minutes",
+      difficulty: "Medium to Hard",
+      time: "3-8 minutes per mission",
       skills: ["Planning", "Focus", "Risk Assessment"],
       intro:
-        "Animal Moonlight Heist is a phone-first stealth extraction adventure starring Spark Paw Fia and Moon Cap Orla. Preview a route, read moving patrols, recover each archive object, and decide whether optional treasure is worth the extra risk before extraction.",
-      how: ["Choose one of five archive missions and a stealth gadget.", "Hold and drag through the scene to preview Fia's route, then release to move.", "Avoid patrols or use Lightning Dash, Star Decoy, or Smoke Leaf when alert rises.", "Recover the mission object and reach extraction; optional treasure earns an extra medal and moon coins."],
+        "Animal Moonlight Heist is a 30-mission stealth route adventure starring Spark Paw Fia and Moon Cap Orla. Preview deliberate routes, read patrol sight and mission-specific rules, recover each archive object, and decide whether optional treasure is worth the extra risk before extraction.",
+      how: ["Choose an unlocked mission from the 30-card Moon Archive rail and read its rule.", "Hold and drag through the scene to preview Fia's route, then release to move.", "Use shadows and visible warnings to counter patrols, bells, mirrors, clockwork phases, seals, and Guardian sight.", "Recover the valid mission object and reach extraction; optional treasure earns an extra medal and Moon Coins."],
       parent:
-        "This 13+ game may practice route planning, attention, timing, and weighing optional risk. Mission progress, medals, moon coins, and safehouse growth stay in local browser storage. Normal progress and retry are free; optional diamond reroll and insurance always require confirmation.",
+        "Mission unlocks, best medals, Moon Coins, and Safehouse growth stay in local browser storage. Normal progress, every Guardian, all 30 missions, and Retry are free; optional Diamond reroll and insurance always require confirmation. This planning feedback is not a formal ability test.",
       faq: [
-        ["What carries between missions?", "Unlocked missions, medals, moon coins, and safehouse progress are saved locally."],
+        ["How many missions are included?", "There are 30 authored missions and six distinct Guardian checkpoints at Missions 5, 10, 15, 20, 25, and 30."],
+        ["What carries between missions?", "Unlocked missions, best medals, Moon Coins, and Safehouse progress are saved locally."],
         ["Is combat required?", "No. Players read patrol movement and use routes or gadgets to avoid detection."],
+        ["Why can an archive object be unavailable?", "Some sealed missions require optional treasure as the first seal before the mission object becomes valid."],
         ["Are diamonds required?", "No. Diamonds only provide optional confirmed gadget reroll and treasure insurance choices."],
       ],
     },

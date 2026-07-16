@@ -1326,6 +1326,9 @@
 
   nodes.localeSelect.addEventListener("change", (event) => setLocale(event.target.value));
   nodes.startBtn.addEventListener("click", startRun);
+  nodes.charmBtn?.addEventListener("keydown", (event) => {
+    if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
+  });
   nodes.charmBtn?.addEventListener("click", buyCrystalCharm);
   nodes.menuSoundBtn?.addEventListener("click", () => {
     clearCharmConfirmation(true);

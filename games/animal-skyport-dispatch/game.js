@@ -407,6 +407,9 @@
   }
   $('startBtn').onclick = () => { state.shift = save.unlocked; show('stageScreen'); renderStages(); };
   $('contractToggle').onchange = (event) => { clearInsuranceConfirmation(); state.contract = event.target.checked; renderContractControls(); };
+  $('insuranceBtn').addEventListener('keydown', (event) => {
+    if (event.repeat && (event.key === 'Enter' || event.key === ' ')) event.preventDefault();
+  });
   $('insuranceBtn').onclick = () => {
     if (insuranceActive || !state.contract) return;
     const balance = window.WeightPlayWallet?.read?.().diamonds || 0;

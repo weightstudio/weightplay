@@ -1433,6 +1433,11 @@
       nodes.retryBtn.focus({ preventScroll: true });
     }
   });
+  for (const button of [nodes.lureBtn, nodes.sonarPrepBtn]) {
+    button.addEventListener("keydown", (event) => {
+      if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
+    });
+  }
   nodes.lureBtn.addEventListener("click", () => buyDiamondItem("lure"));
   nodes.sonarPrepBtn.addEventListener("click", () => buyDiamondItem("sonar"));
   nodes.sonarBtn.addEventListener("click", () => {

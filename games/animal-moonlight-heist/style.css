@@ -46,9 +46,11 @@ html body[data-wp-game-id="animal-moonlight-heist"] > .wp-stage-physical-reserve
 }
 
 .mission-card .mission-rule{font-size:12px;line-height:1.28;color:#d7e6f4}
-.mission-card .checkpoint-tag{width:max-content;max-width:100%;padding:3px 7px;border-radius:999px;background:#6c4e15;color:#ffe79a;font-size:11px;font-weight:900;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.mission-card.checkpoint{border-color:#ffd765;box-shadow:0 0 0 2px #ffd76533 inset}
-.mission-card.checkpoint img{object-fit:contain;padding:10px;background:radial-gradient(circle at 50% 45%,#284f72,#0c1d31 72%)}
+.mission-card .checkpoint-tag{width:auto;max-width:100%;min-width:0;padding:3px 7px;border-radius:999px;background:#6c4e15;color:#ffe79a;font-size:11px;font-weight:900;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mission-card.checkpoint{position:relative;display:block;border-color:#ffd765;box-shadow:0 0 0 2px #ffd76533 inset;background:radial-gradient(circle at 72% 42%,#284f72,#0c1d31 72%)}
+.mission-card.checkpoint img{position:absolute;top:3%;right:-2%;width:61%;height:94%;object-fit:contain;object-position:right center;padding:2px;background:radial-gradient(circle at 68% 42%,#6b92bd55,transparent 58%);opacity:1;filter:drop-shadow(0 5px 8px #000d) drop-shadow(0 0 7px #9fcfff55)}
+.mission-card.checkpoint div{position:relative;z-index:2;height:100%;min-width:0;align-content:end;padding-right:38%;background:linear-gradient(90deg,#0c1d31fa 0 43%,#0c1d31d8 52%,transparent 67%);text-shadow:0 2px 3px #000}
+.mission-card.checkpoint strong,.mission-card.checkpoint .mission-rule{min-width:0;overflow-wrap:anywhere}
 .safe-zone{position:absolute;width:var(--zone-size);aspect-ratio:1;transform:translate(-50%,-50%);border:2px solid #72d7d4aa;border-radius:50%;background:radial-gradient(circle,#163d4ccc 0 48%,#72d7d433 52%,transparent 70%);box-shadow:0 0 18px #4fded766 inset,0 0 12px #4fded744;z-index:1;pointer-events:none}
 .guardian-patrol{width:92px;height:92px;z-index:6;filter:drop-shadow(0 5px 6px #000b) drop-shadow(0 0 5px #ffd76588)}
 .guardian-sight{border-width:2px;border-color:#ffe16caa;background:radial-gradient(circle,#ffd76522,#f0a52b0d 62%,transparent 70%)}
