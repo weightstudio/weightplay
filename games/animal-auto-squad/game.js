@@ -474,6 +474,7 @@
   let canvasCtx = null;
   let animationId = null;
   let stageRenderVersion = 0;
+  let stageBrowseFrame = 0;
 
   const zhRuntimeText = {
     combatSummary: "小隊生命 {playerHp}/{playerMax}｜敵方生命 {enemyHp}/{enemyMax}",
@@ -1102,7 +1103,7 @@
       const cleared = save.completedStages.includes(stage);
       const card = document.createElement("button");
       card.type = "button";
-      card.className = `stage-card${stage === save.selectedStage ? " is-selected" : ""}${cleared ? " is-cleared" : ""}`;
+      card.className = `stage-card${stage === save.selectedStage ? " is-selected is-browsed" : ""}${cleared ? " is-cleared" : ""}`;
       card.dataset.stage = String(stage);
       // Keep locked cards draggable as part of the horizontal rail.
       card.setAttribute("aria-disabled", String(locked));
@@ -1124,8 +1125,42 @@
       requestAnimationFrame(() => {
         if (renderVersion !== stageRenderVersion) return;
         nodes.stageRail.querySelector(".stage-card.is-selected")?.scrollIntoView({ block: "nearest", inline: "center" });
+        requestAnimationFrame(updateBrowsedStageCard);
       });
     }
+  }
+
+  function updateBrowsedStageCard() {
+    const rail = nodes.stageRail;
+    if (!rail || !rail.getClientRects().length) return;
+    const cards = [...rail.querySelectorAll(".stage-card")];
+    if (!cards.length) return;
+    const railRect = rail.getBoundingClientRect();
+    const railCenter = railRect.left + railRect.width / 2;
+    let nearest = cards[0];
+    let nearestDistance = Infinity;
+    cards.forEach((card) => {
+      const rect = card.getBoundingClientRect();
+      const distance = Math.abs(rect.left + rect.width / 2 - railCenter);
+      if (distance < nearestDistance) {
+        nearest = card;
+        nearestDistance = distance;
+      }
+    });
+    cards.forEach((card) => {
+      const browsed = card === nearest;
+      card.classList.toggle("is-browsed", browsed);
+      if (browsed) card.setAttribute("aria-current", "true");
+      else card.removeAttribute("aria-current");
+    });
+  }
+
+  function scheduleStageBrowseUpdate() {
+    if (stageBrowseFrame) return;
+    stageBrowseFrame = requestAnimationFrame(() => {
+      stageBrowseFrame = 0;
+      updateBrowsedStageCard();
+    });
   }
 
   function renderCosmeticSection() {
@@ -3103,6 +3138,7 @@
     nodes.stageBackBtn.addEventListener("click", renderMenu);
     nodes.stageTabBtn?.addEventListener("click", () => setStageTab("stages"));
     nodes.trainingTabBtn?.addEventListener("click", () => setStageTab("training"));
+    nodes.stageRail.addEventListener("scroll", scheduleStageBrowseUpdate, { passive: true });
     nodes.rerollShopBtn.addEventListener("click", rerollShop);
     nodes.startBattleBtn.addEventListener("click", startBattle);
     nodes.quitRunBtn.addEventListener("click", quitRun);

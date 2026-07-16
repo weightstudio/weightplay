@@ -474,12 +474,20 @@ function setQuizVisible(isVisible) {
   feedback.classList.toggle("hidden", !isVisible);
 }
 
+function setBattleCovered(covered) {
+  [quizStage, choiceGrid, feedback].forEach((region) => {
+    region.inert = covered;
+    region.setAttribute("aria-hidden", String(covered));
+  });
+}
+
 function showMain() {
   renderStaticText();
   state.completed = false;
   document.body.classList.remove("quiz-playing", "quiz-stage-select");
   document.body.classList.add("quiz-main");
   resultPanel.classList.add("hidden");
+  setBattleCovered(false);
   mainPanel.classList.remove("hidden");
   setQuizVisible(false);
   stageSelectPanel.classList.add("hidden");
@@ -514,6 +522,7 @@ function showStageSelect() {
   renderStaticText();
   state.completed = false;
   resultPanel.classList.add("hidden");
+  setBattleCovered(false);
   document.body.classList.remove("quiz-playing", "quiz-main");
   document.body.classList.add("quiz-stage-select");
   mainPanel.classList.add("hidden");
@@ -618,6 +627,7 @@ function startStage(stageIndex) {
   state.score = 0;
   state.completed = false;
   resultPanel.classList.add("hidden");
+  setBattleCovered(false);
   mainPanel.classList.add("hidden");
   setQuizVisible(true);
   document.body.classList.remove("quiz-main", "quiz-stage-select");
@@ -631,7 +641,7 @@ function startStage(stageIndex) {
     stage: stageIndex + 1,
     locale: locale(),
   });
-  renderQuestion();
+  renderQuestion({ focusChoices: true });
 }
 
 function currentStage() {
@@ -653,6 +663,7 @@ function buildChoices(answer) {
 
 function renderQuestion(options = {}) {
   const shouldTrack = options.track !== false;
+  const shouldFocus = options.focusChoices === true;
   renderStaticText();
   const stage = currentStage();
   const animal = currentAnimal();
@@ -668,6 +679,7 @@ function renderQuestion(options = {}) {
   animalImage.alt = t(animal.id);
   clueText.textContent = t(currentClueKey(animal));
   feedbackText.textContent = t("choose");
+  choiceGrid.setAttribute("aria-busy", "false");
 
   choiceGrid.replaceChildren(
     ...buildChoices(animal).map((choice) => {
@@ -678,6 +690,8 @@ function renderQuestion(options = {}) {
       return button;
     }),
   );
+
+  if (shouldFocus) requestAnimationFrame(() => choiceGrid.querySelector("button")?.focus({ preventScroll: true }));
 
   if (shouldTrack) {
     window.WonderAnalytics?.track("level_start", {
@@ -697,7 +711,11 @@ function chooseAnswer(choiceId, answerId, button) {
     window.WonderSound?.play("wrong");
     feedbackText.textContent = t("wrong");
     button.classList.add("wrong");
-    setTimeout(() => button.classList.remove("wrong"), 350);
+    button.setAttribute("aria-invalid", "true");
+    setTimeout(() => {
+      button.classList.remove("wrong");
+      button.removeAttribute("aria-invalid");
+    }, 350);
     window.WonderAnalytics?.track("level_answer", {
       game_id: GAME_ID,
       result: "wrong",
@@ -711,6 +729,8 @@ function chooseAnswer(choiceId, answerId, button) {
   }
 
   state.answered = true;
+  choiceGrid.setAttribute("aria-busy", "true");
+  choiceGrid.querySelectorAll("button").forEach((choice) => { choice.disabled = true; });
   state.score += 1;
   window.WonderSound?.play("success");
   const answeredAnimal = animalMap.get(answerId);
@@ -734,7 +754,7 @@ function chooseAnswer(choiceId, answerId, button) {
     if (state.questionIndex >= currentStage().questions.length) {
       finishStage();
     } else {
-      renderQuestion();
+      renderQuestion({ focusChoices: true });
     }
   }, 620);
 }
@@ -748,6 +768,8 @@ function finishStage() {
   renderResultText();
   nextStageBtn.classList.toggle("hidden", isFinalStage);
   resultPanel.classList.remove("hidden");
+  setBattleCovered(true);
+  requestAnimationFrame(() => (isFinalStage ? againBtn : nextStageBtn).focus({ preventScroll: true }));
   window.WonderSound?.play("win");
   window.WonderAnalytics?.track("game_complete", {
     game_id: GAME_ID,
@@ -826,7 +848,7 @@ function applyLocaleChange() {
     return;
   }
   if (stageSelectPanel.classList.contains("hidden")) {
-    renderQuestion({ track: false });
+    renderQuestion({ track: false, focusChoices: choiceGrid.contains(document.activeElement) });
   } else {
     showStageSelect();
   }
@@ -853,7 +875,7 @@ window.addEventListener("wonder:locale-change", () => {
     return;
   }
   if (stageSelectPanel.classList.contains("hidden")) {
-    renderQuestion({ track: false });
+    renderQuestion({ track: false, focusChoices: choiceGrid.contains(document.activeElement) });
   } else {
     showStageSelect();
   }

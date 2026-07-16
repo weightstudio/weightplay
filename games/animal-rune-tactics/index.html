@@ -143,9 +143,9 @@
           </div>
         </div>
       </section>
-      <section id="rewardPanel" class="panel overlay-panel is-hidden" aria-live="polite">
+      <section id="rewardPanel" class="panel overlay-panel is-hidden" role="dialog" aria-modal="true" aria-labelledby="rewardTitle" aria-live="polite">
         <div class="overlay-card">
-          <h2 data-ui="chooseReward">Choose a Rune Reward</h2>
+          <h2 id="rewardTitle" data-ui="chooseReward">Choose a Rune Reward</h2>
           <div id="rewardCards" class="reward-cards"></div>
           <button id="rerollBtn" class="secondary-btn" type="button">
             <img src="../../assets/weightplay-diamond.svg" alt="" />
@@ -154,7 +154,7 @@
         </div>
       </section>
 
-      <section id="resultPanel" class="panel overlay-panel is-hidden" aria-live="polite">
+      <section id="resultPanel" class="panel overlay-panel is-hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultText" aria-live="polite">
         <div class="overlay-card">
           <h2 id="resultTitle">Mission Clear</h2>
           <p id="resultText"></p>

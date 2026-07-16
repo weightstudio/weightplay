@@ -108,11 +108,13 @@ body.squad-stage-select .squad-app, body.squad-active .squad-app { position: fix
 .stage-panel::before {
   content: "";
   position: absolute;
-  inset: 0;
+  inset: -1px;
   background: linear-gradient(rgba(3,16,12,.76), rgba(3,16,12,.92)), url("../../assets/animal-auto-squad-cover.webp") center/cover;
-  z-index: -1;
+  z-index: 0;
 }
 .stage-panel { display: grid; grid-template-rows: 64px 52px minmax(0,1fr); gap: 10px; padding: 12px; }
+body.squad-stage-select .stage-panel { border: 0 !important; outline: 0; isolation: isolate; background: #061712; box-shadow: none; }
+.stage-panel > * { position: relative; z-index: 1; }
 .stage-panel-head { display: grid; grid-template-columns: 48px minmax(0,1fr); align-items: center; gap: 10px; padding: 0 4px; border: 1px solid var(--line); border-radius: 14px; background: rgba(4,17,14,.88); }
 .stage-panel-head > div { min-width: 0; display: grid; gap: 2px; }
 .stage-panel-head strong { overflow: hidden; font-size: 1.25rem; text-overflow: ellipsis; white-space: nowrap; }
@@ -131,9 +133,10 @@ body.squad-stage-select .squad-app, body.squad-active .squad-app { position: fix
 .stage-card { position: relative; width: 264px; height: 190px; display: grid; align-content: end; gap: 7px; padding: 18px; overflow: hidden; scroll-snap-align: center; scroll-snap-stop: always; border: 2px solid rgba(255,255,255,.22); border-radius: 18px; color: #fff; background: linear-gradient(0deg, rgba(2,10,8,.95), rgba(2,10,8,.18)), url("../../assets/animal-auto-squad-bg.webp") center/cover; text-align: left; box-shadow: 0 12px 30px rgba(0,0,0,.4); }
 .stage-card strong { font-size: 1.5rem; }
 .stage-card span, .stage-card small { color: #def5ea; font-size: .82rem; font-weight: 800; }
-.stage-card.is-selected { border-color: var(--mint); box-shadow: 0 0 0 3px rgba(97,237,179,.16), 0 15px 34px rgba(0,0,0,.5); }
+.stage-card.is-browsed { border-color: var(--mint); box-shadow: 0 0 0 3px rgba(97,237,179,.16), 0 15px 34px rgba(0,0,0,.5); }
 .stage-card.is-cleared::after { content: "★"; position: absolute; top: 12px; right: 14px; color: var(--gold); font-size: 1.55rem; }
 .stage-card[aria-disabled="true"] { filter: grayscale(.78) brightness(.56); }
+.stage-card.is-browsed[aria-disabled="true"] { filter: grayscale(.58) brightness(.7); }
 .stage-legend { display: flex; justify-content: space-between; align-items: center; padding: 0 10px; border-radius: 10px; color: var(--muted); background: rgba(3,15,12,.78); font-size: .72rem; font-weight: 800; }
 
 .training-pane { overflow-y: auto; padding-right: 3px; scrollbar-width: thin; }

@@ -104,23 +104,17 @@ body.guardian-playing .battle-ad-reserve {
 }
 
 body.guardian-playing #menuBtn {
-  width: 44px;
-  min-width: 44px;
+  width: 48px;
+  min-width: 48px;
   padding: 0;
   overflow: hidden;
-  color: transparent;
-  font-size: 0;
-}
-
-body.guardian-playing #menuBtn::before {
-  content: "\2190";
   color: var(--text);
   font-size: 24px;
 }
 
 body.guardian-playing .hud-row {
   display: grid;
-  grid-template-columns: 44px repeat(4, minmax(42px, 1fr)) 44px;
+  grid-template-columns: 48px repeat(4, minmax(42px, 1fr)) 44px;
   grid-template-rows: 42px 38px;
   gap: 4px;
   padding: 6px;
@@ -275,12 +269,20 @@ body.guardian-playing .command-row button {
 }
 
 .back-btn {
-  display: inline-flex;
+  display: grid;
+  grid-template-columns: 16px 28px;
   align-items: center;
   justify-content: center;
-  width: 46px;
-  height: 46px;
+  width: 58px;
+  height: 48px;
+  gap: 4px;
   text-decoration: none;
+}
+
+.back-btn img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
 }
 
 .brand-lockup span,

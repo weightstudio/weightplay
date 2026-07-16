@@ -10,6 +10,7 @@
 
   const $ = (id) => document.getElementById(id);
   const nodes = {
+    mainBack: document.querySelector(".guardian-topbar .back-btn"),
     localeSelect: $("localeSelect"),
     loadingPanel: $("loadingPanel"),
     loadingFill: $("loadingFill"),
@@ -87,6 +88,11 @@
     en: {
       title: "Beast Guardian",
       language: "Language",
+      backToLobby: "Back to WeightPlay General games",
+      languageControl: "Language",
+      backToMain: "Back to main",
+      stageSelector: "Stage selector",
+      backToStages: "Back to stages",
       localeName: "Traditional Chinese",
       releaseBadge: "Internal Release Candidate",
       publicReleaseBadge: "Playable Now",
@@ -506,6 +512,11 @@
     Object.assign(text["zh-Hant"], {
       title: "獸王守衛",
       language: "語言",
+      backToLobby: "返回 WeightPlay 一般遊戲大廳",
+      languageControl: "語言",
+      backToMain: "返回主頁",
+      stageSelector: "關卡選擇列",
+      backToStages: "返回關卡選擇",
       localeName: "繁體中文",
       releaseBadge: "內部 Release 候選版",
       menuTitle: "英雄塔防",
@@ -912,6 +923,11 @@
 
   function updateLocale() {
     document.documentElement.lang = state.locale;
+    nodes.mainBack?.setAttribute("aria-label", t("backToLobby"));
+    nodes.localeSelect.setAttribute("aria-label", t("languageControl"));
+    nodes.stageBackBtn.setAttribute("aria-label", t("backToMain"));
+    nodes.stageRail.setAttribute("aria-label", t("stageSelector"));
+    nodes.menuBtn.setAttribute("aria-label", t("backToStages"));
     nodes.gameTitle.textContent = t("title");
     nodes.languageLabel.textContent = t("language");
     nodes.releaseBadge.textContent = t(isPublicRelease ? "publicReleaseBadge" : "releaseBadge");

@@ -373,6 +373,8 @@
     stopTimer();
     acceptingInput = false;
     nodes.resultPanel.classList.add("hidden");
+    nodes.playPanel.inert = false;
+    nodes.playPanel.removeAttribute("aria-hidden");
     nodes.playPanel.classList.add("hidden");
     nodes.menuPanel.classList.remove("hidden");
     nodes.mainPanel.classList.add("hidden");
@@ -404,6 +406,8 @@
     startTime = Date.now();
     acceptingInput = true;
     nodes.resultPanel.classList.add("hidden");
+    nodes.playPanel.inert = false;
+    nodes.playPanel.removeAttribute("aria-hidden");
     document.body.classList.remove("safari-result");
     nodes.menuPanel.classList.add("hidden");
     nodes.playPanel.classList.remove("hidden");
@@ -416,6 +420,7 @@
     updateHud();
     updateSafariFrame();
     startTimer();
+    requestAnimationFrame(() => nodes.targetsLayer.querySelector(".target:not(:disabled)")?.focus({ preventScroll: true }));
     track("game_start", { level: index + 1 });
     playSound("start");
     window.WeightPlayGame?.exitMobileGameMode?.();
@@ -492,12 +497,19 @@
     found.add(index);
     button.classList.remove("hint");
     button.classList.add("found");
+    button.disabled = true;
+    button.tabIndex = -1;
+    button.setAttribute("aria-hidden", "true");
     showImageEffect("found", Number.parseFloat(button.style.left), Number.parseFloat(button.style.top), button.offsetWidth);
     showFloatingText(t("found"), Number.parseFloat(button.style.left), Number.parseFloat(button.style.top));
     playSound("coin");
     renderTargetList();
     updateHud();
-    if (found.size >= stages[currentStage].targets.length) finishStage();
+    if (found.size >= stages[currentStage].targets.length) {
+      finishStage();
+    } else {
+      setTimeout(() => nodes.targetsLayer.querySelector(".target:not(:disabled)")?.focus({ preventScroll: true }), 0);
+    }
   }
 
   function useHint() {
@@ -577,7 +589,13 @@
     renderResult();
     nodes.nextStageBtn.classList.toggle("hidden", currentStage >= stages.length - 1);
     nodes.resultPanel.classList.remove("hidden");
+    nodes.playPanel.inert = true;
+    nodes.playPanel.setAttribute("aria-hidden", "true");
     document.body.classList.add("safari-result");
+    requestAnimationFrame(() => {
+      const primaryAction = nodes.nextStageBtn.classList.contains("hidden") ? nodes.retryBtn : nodes.nextStageBtn;
+      primaryAction.focus({ preventScroll: true });
+    });
     track("game_complete", { level: stageNo, score: starCount * 100 - mistakes * 5, time_seconds: seconds });
     playSound("success");
   }

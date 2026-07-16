@@ -774,6 +774,13 @@ body.is-rune-playing .back-btn span {
   min-height: 172px;
 }
 
+.reward-card:focus,
+.result-actions button:focus {
+  outline: 3px solid #fff2a1;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 5px #06110d;
+}
+
 .reward-card b {
   width: max-content;
   border-radius: 999px;

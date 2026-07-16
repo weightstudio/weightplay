@@ -7,14 +7,14 @@
     <title>Beast Guardian Defense - Internal Release Candidate</title>
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
-    <link rel="stylesheet" href="defense.css?v=20260710-guardian-clean-cutouts1" />
+    <link rel="stylesheet" href="defense.css?v=20260716-guardian-nav-a11y1" />
     <link rel="stylesheet" href="../../src/stage-selector-standard.css" />
     <link rel="stylesheet" href="../../src/battle-canvas-standard.css" />
   </head>
   <body>
     <main class="guardian-app">
       <header class="guardian-topbar">
-        <a class="back-btn" href="/" aria-label="Back to lobby">&larr;</a>
+        <a class="back-btn" data-wp-return="main" href="/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
         <div class="brand-lockup">
           <span>WeightPlay Internal</span>
           <h1 id="gameTitle">Beast Guardian</h1>
@@ -70,14 +70,14 @@
       <section id="stagePanel" class="stage-panel is-hidden">
         <div class="stage-header">
           <h2 id="stageTitle">Choose Stage</h2>
-          <button id="stageBackBtn" class="secondary-btn" data-wp-return="stage" type="button">Menu</button>
+          <button id="stageBackBtn" class="secondary-btn" data-wp-return="stage" type="button" aria-label="Back">&larr;</button>
         </div>
         <div id="stageRail" class="stage-rail" aria-label="Stage selector"></div>
       </section>
 
       <section id="gamePanel" class="game-panel play-area is-hidden" data-play-viewport>
         <div class="hud-row">
-          <button id="menuBtn" class="secondary-btn" data-wp-return="battle" type="button">Menu</button>
+          <button id="menuBtn" class="secondary-btn" data-wp-return="battle" type="button" aria-label="Back to stages">&larr;</button>
           <div><span id="stageHudLabel">Stage</span><strong id="stageHudText">1</strong></div>
           <div><span id="coreHudLabel">Core</span><strong id="coreText">100</strong></div>
           <div><span id="coinHudLabel">Coins</span><strong id="coinText">0</strong></div>
@@ -142,7 +142,7 @@
     <script src="../../src/site-config.js?v=20260710-guardian-clean-cutouts1"></script>
     <script src="../../src/analytics.js?v=20260701-analytics2"></script>
     <script src="../../src/wallet.js?v=20260706-crystal-diamond-charm1"></script>
-    <script src="game.js?v=20260716-guardian-build-a11y1"></script>
+    <script src="game.js?v=20260716-guardian-nav-a11y1"></script>
     <script src="../../src/stage-selector-standard.js"></script>
     <script src="../../src/battle-canvas-standard.js"></script>
   </body>

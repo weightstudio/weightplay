@@ -507,6 +507,13 @@ a {
   animation: shake 0.24s ease;
 }
 
+.choice-grid button:focus,
+.result-card button:focus,
+.result-card a:focus {
+  outline: 4px solid #fff2a8;
+  outline-offset: 3px;
+}
+
 .feedback {
   grid-row: 5;
   display: grid;

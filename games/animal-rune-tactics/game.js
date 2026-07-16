@@ -483,6 +483,18 @@
     });
   }
 
+  function setBattleCovered(covered) {
+    nodes.gamePanel.inert = covered;
+    if (covered) nodes.gamePanel.setAttribute("aria-hidden", "true");
+    else nodes.gamePanel.removeAttribute("aria-hidden");
+  }
+
+  function focusBattleGrid() {
+    requestAnimationFrame(() => {
+      nodes.grid.querySelector(`.tile[data-x="${gridCursor.x}"][data-y="${gridCursor.y}"]`)?.focus({ preventScroll: true });
+    });
+  }
+
   function loadProfile() {
     try {
       const parsed = JSON.parse(localStorage.getItem(saveKey) || "{}");
@@ -771,10 +783,12 @@
     nodes.backBtn.replaceChildren(document.createTextNode("\u2190"));
     nodes.resultPanel.classList.add("is-hidden");
     nodes.rewardPanel.classList.add("is-hidden");
+    setBattleCovered(false);
     nodes.gamePanel.classList.remove("is-hidden");
     log("chooseHero");
     render();
     focusPanel(nodes.gamePanel);
+    focusBattleGrid();
   }
 
   function makeEnemies(mission) {
@@ -1134,9 +1148,9 @@
 
   function showReward() {
     playFx("mission-clear", 2, 1);
+    setBattleCovered(true);
     nodes.rewardPanel.classList.remove("is-hidden");
     renderRewards(false);
-    focusPanel(nodes.rewardPanel);
   }
 
   function renderRewards(isReroll) {
@@ -1155,6 +1169,7 @@
       btn.addEventListener("click", () => claimReward(reward.id));
       nodes.rewardCards.appendChild(btn);
     });
+    requestAnimationFrame(() => nodes.rewardCards.querySelector(".reward-card")?.focus({ preventScroll: true }));
   }
 
   function claimReward(id) {
@@ -1180,6 +1195,7 @@
   function showResult(win) {
     nodes.rewardPanel.classList.add("is-hidden");
     nodes.gamePanel.classList.add("is-hidden");
+    setBattleCovered(true);
     const missionDef = missionDefs.find((item) => item.id === state.mission) || missionDefs[0];
     const xp = win ? missionDef.xp : 12;
     const runes = win ? missionDef.runes : 3;
@@ -1228,7 +1244,7 @@
     nodes.nextBtn.disabled = !win || state.mission >= missionDefs.length;
     nodes.resultPanel.classList.remove("is-hidden");
     renderMenu();
-    focusPanel(nodes.resultPanel);
+    requestAnimationFrame(() => (nodes.nextBtn.disabled ? nodes.retryBtn : nodes.nextBtn).focus({ preventScroll: true }));
   }
 
   function playFx(name, x, y) {
@@ -1263,6 +1279,7 @@
     nodes.gamePanel.classList.add("is-hidden");
     nodes.rewardPanel.classList.add("is-hidden");
     nodes.resultPanel.classList.add("is-hidden");
+    setBattleCovered(false);
     nodes.menuPanel.classList.add("is-hidden");
     nodes.stagePanel.classList.remove("is-hidden");
     nodes.stageReserve.classList.remove("is-hidden");

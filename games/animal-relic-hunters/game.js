@@ -79,6 +79,7 @@
     rerollDraftCost: $("rerollDraftCost"),
     rerollDraftStatus: $("rerollDraftStatus"),
   };
+  document.querySelector(".game-layout")?.append(nodes.resultPanel);
 
   const amuletCost = 15;
   const draftRerollCost = 3;
@@ -436,6 +437,11 @@
     amuletNeedDiamonds: "Need 15 Diamonds. Current balance {balance}/15.",
     amuletBuyLabel: "Buy Mist Amulet permanently. Every run starts with 40 HP instead of 30 HP. Costs 15 Diamonds. Current balance {balance}.",
     amuletConfirmLabel: "Confirm permanent Mist Amulet. Spend 15 Diamonds. Balance {before} to {after}. Every run starts with 40 HP.",
+    resultSummaryProgress: "Mission Progress",
+    resultUnlocked: "New region unlocked: {region}",
+    resultReady: "Ready: {region}",
+    resultAllCleared: "All 5 ruin regions cleared",
+    nextExpedition: "Next Mission",
   });
 
   Object.assign(text["zh-Hant"], {
@@ -462,6 +468,11 @@
     amuletNeedDiamonds: "\u9700\u8981 15 \u9846\u947d\u77f3\u3002\u76ee\u524d\u9918\u984d {balance}/15\u3002",
     amuletBuyLabel: "\u6c38\u4e45\u8cfc\u8cb7\u8ff7\u9727\u8b77\u7b26\u3002\u6bcf\u6b21\u63a2\u96aa\u5f9e 30 HP \u63d0\u5347\u70ba 40 HP\u3002\u82b1\u8cbb 15 \u9846\u947d\u77f3\u3002\u76ee\u524d\u9918\u984d {balance}\u3002",
     amuletConfirmLabel: "\u78ba\u8a8d\u6c38\u4e45\u8cfc\u8cb7\u8ff7\u9727\u8b77\u7b26\u3002\u82b1\u8cbb 15 \u9846\u947d\u77f3\u3002\u9918\u984d {before} \u8b8a\u70ba {after}\u3002\u6bcf\u6b21\u63a2\u96aa\u5f9e 40 HP \u958b\u59cb\u3002",
+    resultSummaryProgress: "\u4efb\u52d9\u9032\u5ea6",
+    resultUnlocked: "\u65b0\u5340\u57df\u5df2\u89e3\u9396\uff1a{region}",
+    resultReady: "\u53ef\u6311\u6230\uff1a{region}",
+    resultAllCleared: "\u5df2\u5b8c\u6210\u5168\u90e8 5 \u500b\u907a\u8de1\u5340\u57df",
+    nextExpedition: "\u4e0b\u4e00\u4efb\u52d9",
   });
 
   // Textures and Sprites
@@ -589,6 +600,7 @@
 
   let profile = createDefaultProfile();
   let selectedExpedition = 1;
+  let resultNextExpedition = 0;
 
   function createDefaultProfile() {
     return {
@@ -878,12 +890,29 @@
     });
   }
 
+  function setResultModalActive(active) {
+    document.querySelectorAll(".game-layout > .arena-viewport, .game-layout > .inventory-sidebar").forEach((layer) => {
+      layer.inert = active;
+      if (active) layer.setAttribute("aria-hidden", "true");
+      else layer.removeAttribute("aria-hidden");
+    });
+    if (active) requestAnimationFrame(() => nodes.retryBtn.focus({ preventScroll: true }));
+  }
+
+  function updateResultPrimaryAction() {
+    const next = resultNextExpedition > 0 && document.body.classList.contains("relic-result");
+    nodes.retryBtn.textContent = t(next ? "nextExpedition" : "tryAgain");
+    nodes.retryBtn.setAttribute("aria-label", t(next ? "nextExpedition" : "tryAgain"));
+  }
+
   function showMain() {
     clearAmuletConfirmation();
     state.gameActive = false;
     cancelAnimationFrame(state.gameLoopId);
     document.body.classList.remove("relic-playing", "relic-stage-select");
     document.body.classList.remove("relic-result");
+    resultNextExpedition = 0;
+    setResultModalActive(false);
     nodes.gamePanel.classList.add("hidden");
     nodes.stagePanel.classList.add("hidden");
     nodes.resultPanel.classList.add("hidden");
@@ -923,6 +952,8 @@
     document.body.classList.remove("relic-playing");
     document.body.classList.remove("relic-result");
     document.body.classList.add("relic-stage-select");
+    resultNextExpedition = 0;
+    setResultModalActive(false);
     nodes.menuPanel.classList.add("hidden");
     nodes.resultPanel.classList.add("hidden");
     nodes.gamePanel.classList.add("hidden");
@@ -1028,6 +1059,7 @@
     renderStatsPanel();
     renderGrowthPrompt();
     updateHUDText();
+    updateResultPrimaryAction();
     window.WonderSound?.play("upgrade");
   }
 
@@ -1270,6 +1302,8 @@
     document.body.classList.remove("relic-stage-select");
     document.body.classList.remove("relic-result");
     document.body.classList.add("relic-playing");
+    resultNextExpedition = 0;
+    setResultModalActive(false);
     focusGamePanel();
 
     renderStatsPanel();
@@ -1579,14 +1613,26 @@
     return keys.map((key) => t(gearDb[key].nameKey)).join(" / ");
   }
 
-  function renderResultSummary({ cleared }) {
+  function expeditionName(id) {
+    const expedition = expeditionDefs[Math.max(1, Math.min(5, Number(id) || 1)) - 1];
+    return getLocale() === "zh-Hant" ? expedition.zh : expedition.en;
+  }
+
+  function renderResultSummary({ cleared, newlyUnlocked = 0, won = false }) {
     if (!nodes.resultSummary) return;
+    const highestUnlocked = Math.max(1, Math.min(5, Number(profile.unlockedExpedition) || 1));
+    const progressText = newlyUnlocked
+      ? t("resultUnlocked", { region: expeditionName(newlyUnlocked) })
+      : won && (state.expedition || 1) >= 5 && highestUnlocked >= 5
+        ? t("resultAllCleared")
+        : t("resultReady", { region: expeditionName(highestUnlocked) });
     const rows = [
       [t("resultSummaryLevel"), `Lv.${profile.level}`],
       [t("resultSummaryRooms"), `${cleared}/3`],
       [t("resultSummaryKeys"), String(state.runKeys)],
       [t("resultSummaryGold"), String(state.runGold)],
       [t("resultSummaryGear"), equippedGearSummary()],
+      [t("resultSummaryProgress"), progressText],
       [t("resultSummaryNext"), nextGrowthText()],
     ];
 
@@ -1608,10 +1654,10 @@
     state.gameActive = false;
     cancelAnimationFrame(state.gameLoopId);
 
-    nodes.gamePanel.classList.add("hidden");
+    nodes.gamePanel.classList.remove("hidden");
     nodes.resultPanel.classList.remove("hidden");
-    document.body.classList.remove("relic-playing", "relic-stage-select");
-    document.body.classList.add("relic-result");
+    document.body.classList.remove("relic-stage-select");
+    document.body.classList.add("relic-playing", "relic-result");
 
     nodes.resultTitle.textContent = won ? t("runComplete") : t("runFailed");
     nodes.resultScore.textContent = won ? "3" : String(state.room - 1);
@@ -1631,11 +1677,12 @@
     nodes.logicStars.textContent = skillScore;
     nodes.focusStars.textContent = skillScore;
     nodes.problemStars.textContent = skillScore;
-    renderResultSummary({ cleared });
-
+    const previousUnlocked = Math.max(1, Math.min(5, Number(profile.unlockedExpedition) || 1));
+    let newlyUnlocked = 0;
     if (won) {
       profile.bestExpedition = Math.max(profile.bestExpedition || 0, state.expedition || 1);
       profile.unlockedExpedition = Math.min(5, Math.max(profile.unlockedExpedition || 1, (state.expedition || 1) + 1));
+      if (profile.unlockedExpedition > previousUnlocked) newlyUnlocked = profile.unlockedExpedition;
       saveProfile();
       nodes.resultText.textContent = t("report_win");
       nodes.skillReportText.textContent = t("report_win");
@@ -1645,6 +1692,12 @@
       nodes.skillReportText.textContent = t("report_partial", { room: state.room });
       window.WonderSound?.play("wrong");
     }
+    resultNextExpedition = won && (state.expedition || 1) < 5 && profile.unlockedExpedition >= (state.expedition || 1) + 1
+      ? (state.expedition || 1) + 1
+      : 0;
+    renderResultSummary({ cleared, newlyUnlocked, won });
+    updateResultPrimaryAction();
+    setResultModalActive(true);
   }
 
   // Portal Next Stage portal trigger
@@ -2286,6 +2339,7 @@
 
     nodes.retryBtn.addEventListener("click", () => {
       window.WonderSound?.play("click");
+      if (resultNextExpedition) selectedExpedition = resultNextExpedition;
       startRun();
     });
 
@@ -2441,6 +2495,7 @@
             goldText: nodes.goldText?.textContent || "",
             profile: JSON.parse(localStorage.getItem(profileKey) || "{}"),
             wallet: window.WeightPlayWallet?.read?.() || null,
+            expedition: state.expedition,
             player: { x: state.playerX, y: state.playerY, active: state.gameActive },
           };
         },

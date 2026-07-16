@@ -7,6 +7,7 @@ body[data-screen="stage"] .game-page-info,body[data-screen="battle"] .game-page-
 .battle-canvas{grid-template-rows:50px 38px minmax(150px,29%) minmax(0,1fr) 30px 52px}
 .modal-card>p{min-height:44px;display:grid;place-items:center;text-align:center}
 .modal-choices button.is-confirming{color:#261606;border-color:#ffd86e;background:linear-gradient(#fff2a1,#f3be55);box-shadow:0 0 0 3px #f3be5538}
+.modal-choices button:focus-visible{outline:3px solid #fff2a1;outline-offset:2px;box-shadow:0 0 0 5px #071815}
 body[data-screen="battle"] .modal{bottom:56px}
 body[data-screen="battle"] .modal-card{max-height:min(calc(100% - 16px),680px)}
 body[data-screen="battle"] .modal-card>img{width:min(40vw,170px);height:min(40vw,170px)}
