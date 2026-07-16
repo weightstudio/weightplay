@@ -800,6 +800,11 @@ body.is-bakery-playing .order-progress span {
   transform: scale(.92);
 }
 
+.bubble:focus-visible {
+  outline: 4px solid #fff36a;
+  outline-offset: 2px;
+}
+
 .bubble.pop {
   pointer-events: none;
   animation: bubble-pop .62s cubic-bezier(.14,.78,.2,1) both;

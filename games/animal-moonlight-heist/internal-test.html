@@ -7,7 +7,6 @@
   <meta name="theme-color" content="#101b36" />
   <title>Animal Moonlight Heist - Internal Trial</title>
   <link rel="stylesheet" href="style.css" />
-  <style>#resultModal{bottom:56px}</style>
 </head>
 <body data-screen="main">
   <main id="mainScreen" class="screen main-screen">
@@ -39,11 +38,11 @@
         <img id="feedbackFx" class="feedback-fx" alt="" hidden />
       </section>
       <div class="battle-controls"><span id="feedbackText" data-i18n="holdRoute">Hold to preview a route.</span><button id="gadgetBtn" class="gadget-btn" type="button"><img id="gadgetIcon" alt="" /><span id="gadgetLabel"></span></button></div>
+      <div id="resultModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultText" hidden><section class="modal-card"><img id="resultArt" src="../../assets/animal-moonlight-heist-fx-extraction.webp" alt="" /><h2 id="resultTitle"></h2><p id="resultText"></p><div id="medalRow" class="medals"></div><div class="modal-actions"><button id="retryBtn" type="button" data-i18n="retry">Retry</button><button id="stagesBtn" type="button" data-i18n="missions">Missions</button><button id="nextBtn" class="primary" type="button" data-i18n="next">Next Mission</button></div></section></div>
     </div>
     <div class="battle-ad-reserve" aria-hidden="true"></div>
   </section>
 
-  <div id="resultModal" class="modal" hidden><section class="modal-card"><img id="resultArt" src="../../assets/animal-moonlight-heist-fx-extraction.webp" alt="" /><h2 id="resultTitle"></h2><p id="resultText"></p><div id="medalRow" class="medals"></div><div class="modal-actions"><button id="retryBtn" type="button" data-i18n="retry">Retry</button><button id="stagesBtn" type="button" data-i18n="missions">Missions</button><button id="nextBtn" class="primary" type="button" data-i18n="next">Next Mission</button></div></section></div>
   <script src="../../src/wallet.js"></script>
   <script src="game.js?v=20260716-medal-integrity1"></script>
 </body>

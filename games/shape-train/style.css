@@ -203,6 +203,7 @@ select {
   padding: 4px max(28px, calc((100% - 264px) / 2)) 12px;
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
+  touch-action: none;
 }
 
 .stage-card {
@@ -463,6 +464,17 @@ body.shape-playing .play-panel {
 body.shape-playing .train-track {
   min-height: 0;
   height: 270px;
+}
+
+body.shape-playing .car-grid[data-car-count="6"] {
+  height: 150px;
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+}
+
+body.shape-playing .car-grid[data-car-count="6"] .train-car {
+  height: auto;
+  min-height: 0;
+  align-self: stretch;
 }
 
 body.shape-playing .passenger-area {

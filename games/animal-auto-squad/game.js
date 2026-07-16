@@ -195,7 +195,12 @@
   // Sound Synth settings
   let audioCtx = null;
 
+  function isSoundMuted() {
+    return Boolean(window.WonderSound?.isMuted?.());
+  }
+
   function initAudio() {
+    if (isSoundMuted()) return;
     if (!audioCtx) {
       audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     }
@@ -205,7 +210,7 @@
   }
 
   function playSynth(type) {
-    if (!audioCtx) return;
+    if (!audioCtx || isSoundMuted()) return;
     try {
       const osc = audioCtx.createOscillator();
       const gainNode = audioCtx.createGain();

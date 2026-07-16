@@ -16,6 +16,10 @@
       stageList: "Stage list",
       orderList: "Bakery orders",
       bubbleBoard: "Bubble board",
+      bubbleSingle: "{animal}, row {row}, column {column}; connected group of 1, needs 2 to clear",
+      bubbleOrderSingle: "{animal} order target, row {row}, column {column}; connected group of 1, needs 2 to clear",
+      bubbleGroup: "{animal}, row {row}, column {column}; connected group of {count}",
+      bubbleOrderGroup: "{animal} order target, row {row}, column {column}; connected group of {count}",
       bunny: "Bunny",
       whale: "Whale",
       chick: "Chick",
@@ -107,6 +111,10 @@
       stageList: "關卡列表",
       orderList: "烘焙訂單",
       bubbleBoard: "泡泡棋盤",
+      bubbleSingle: "{animal}，第 {row} 列，第 {column} 欄；相連 1 個，需要 2 個才能消除",
+      bubbleOrderSingle: "訂單目標 {animal}，第 {row} 列，第 {column} 欄；相連 1 個，需要 2 個才能消除",
+      bubbleGroup: "{animal}，第 {row} 列，第 {column} 欄；相連 {count} 個",
+      bubbleOrderGroup: "訂單目標 {animal}，第 {row} 列，第 {column} 欄；相連 {count} 個",
       bunny: "兔兔",
       whale: "鯨魚",
       chick: "小雞",
@@ -717,7 +725,11 @@
         }
         button.dataset.row = String(r);
         button.dataset.col = String(c);
-        button.setAttribute("aria-label", t(data.labelKey));
+        button.dataset.bubble = id;
+        const labelValues = { animal: t(data.labelKey), row: r + 1, column: c + 1, count: info?.size || 1 };
+        const isOrderTarget = (orders[id] || 0) > 0;
+        const labelKey = info?.size >= 2 ? (isOrderTarget ? "bubbleOrderGroup" : "bubbleGroup") : (isOrderTarget ? "bubbleOrderSingle" : "bubbleSingle");
+        button.setAttribute("aria-label", t(labelKey, labelValues));
         button.innerHTML = `<img src="${data.asset}" alt="" draggable="false" /><span class="order-target-ring" aria-hidden="true"></span>`;
         button.addEventListener("click", () => popGroup(r, c));
         nodes.board.appendChild(button);
@@ -771,6 +783,7 @@
       return;
     }
     busy = true;
+    nodes.board.setAttribute("aria-busy", "true");
     const wasNeeded = (orders[id] || 0) > 0;
     moves -= 1;
     validMovesUsed += 1;
@@ -804,8 +817,10 @@
     renderAll(dropMap);
     await animateDroppingBubbles();
     busy = false;
+    nodes.board.setAttribute("aria-busy", "false");
     if (isComplete()) return finish(true);
     if (moves <= 0) return finish(false);
+    nodes.board.querySelector(`.bubble[data-row="${r}"][data-col="${c}"]`)?.focus({ preventScroll: true });
   }
 
   function markPopping(group) {
@@ -938,6 +953,7 @@
     renderResultNextOrder(result);
     renderSkillReport(result.report);
     nodes.nextStageBtn.classList.toggle("hidden", !result.won || currentStage >= stages.length - 1);
+    (result.won && currentStage < stages.length - 1 ? nodes.nextStageBtn : nodes.retryBtn).focus({ preventScroll: true });
   }
 
   function renderResultNextOrder({ won, stageNo, earned, unlockedStageNo, stamp }) {

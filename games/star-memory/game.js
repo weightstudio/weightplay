@@ -118,6 +118,21 @@
       tipMatch: "Match found!",
       tipMismatch: "Not a match. Try again!",
       tipCombo: "Combo x{count}!",
+      hiddenCard: "Hidden card, row {row}, column {column}",
+      revealedCard: "Revealed {animal}, row {row}, column {column}",
+      matchedCard: "Matched {animal}, row {row}, column {column}",
+      animalPanda: "panda",
+      animalBear: "bear",
+      animalLion: "lion",
+      animalCat: "cat",
+      animalRabbit: "rabbit",
+      animalFox: "fox",
+      animalOwl: "owl",
+      animalFrog: "frog",
+      animalWhale: "whale",
+      animalChick: "chick",
+      animalPenguin: "penguin",
+      animalKoala: "koala",
       loading: "Loading",
       stage1Name: "Level 1: Animal Warm-Up",
       stage2Name: "Level 2: Forest Trio",
@@ -188,6 +203,21 @@
       tipMatch: "\u914d\u5c0d\u6210\u529f\uff01",
       tipMismatch: "\u9084\u4e0d\u662f\u4e00\u5c0d\uff0c\u518d\u8a18\u4e00\u4e0b\u4f4d\u7f6e\uff01",
       tipCombo: "\u9023\u7e8c\u914d\u5c0d x{count}\uff01",
+      hiddenCard: "\u96b1\u85cf\u724c\uff0c\u7b2c {row} \u5217\uff0c\u7b2c {column} \u6b04",
+      revealedCard: "\u5df2\u7ffb\u958b{animal}\uff0c\u7b2c {row} \u5217\uff0c\u7b2c {column} \u6b04",
+      matchedCard: "\u5df2\u914d\u5c0d{animal}\uff0c\u7b2c {row} \u5217\uff0c\u7b2c {column} \u6b04",
+      animalPanda: "\u718a\u8c93",
+      animalBear: "\u68d5\u718a",
+      animalLion: "\u7345\u5b50",
+      animalCat: "\u8c93\u54aa",
+      animalRabbit: "\u5154\u5b50",
+      animalFox: "\u72d0\u72f8",
+      animalOwl: "\u8c93\u982d\u9df9",
+      animalFrog: "\u9752\u86d9",
+      animalWhale: "\u9be8\u9b5a",
+      animalChick: "\u5c0f\u96de",
+      animalPenguin: "\u4f01\u9d5d",
+      animalKoala: "\u7121\u5c3e\u718a",
       loading: "\u8f09\u5165\u4e2d",
       stage1Name: "\u7b2c 1 \u95dc\uff1a\u52d5\u7269\u6696\u8eab",
       stage2Name: "\u7b2c 2 \u95dc\uff1a\u68ee\u6797\u4e09\u7d44",
@@ -437,6 +467,9 @@
     } else {
       updateHUD();
     }
+    cardGrid.querySelectorAll(".card").forEach((card) => {
+      updateCardAccessibility(card, card.classList.contains("matched") ? "matched" : card.classList.contains("flipped") ? "revealed" : "hidden");
+    });
   }
 
   function setMeta(selector, attr, value) {
@@ -679,7 +712,8 @@
     
     cardGrid.replaceChildren(
       ...shuffledPairs.map((symbolId, cardIdx) => {
-        const card = document.createElement("div");
+        const card = document.createElement("button");
+        card.type = "button";
         card.className = "card";
         card.dataset.symbol = symbolId;
         card.dataset.index = cardIdx;
@@ -692,9 +726,37 @@
         `;
         
         card.addEventListener("click", () => handleCardClick(card));
+        updateCardAccessibility(card, "hidden");
         return card;
       })
     );
+    requestAnimationFrame(() => cardGrid.querySelector(".card:not(:disabled)")?.focus({ preventScroll: true }));
+  }
+
+  function updateCardAccessibility(card, stateName) {
+    const stage = stages[state.stageIndex];
+    const index = Number(card.dataset.index);
+    const animalKey = `animal${card.dataset.symbol[0].toUpperCase()}${card.dataset.symbol.slice(1)}`;
+    const values = {
+      row: Math.floor(index / stage.grid.c) + 1,
+      column: index % stage.grid.c + 1,
+      animal: t(animalKey),
+    };
+    card.setAttribute("aria-pressed", String(stateName !== "hidden"));
+    card.setAttribute("aria-label", t(stateName === "matched" ? "matchedCard" : stateName === "revealed" ? "revealedCard" : "hiddenCard", values));
+    if (stateName === "matched") {
+      card.disabled = true;
+      card.setAttribute("aria-hidden", "true");
+      card.tabIndex = -1;
+    }
+  }
+
+  function focusNextPlayable(afterCard) {
+    const cards = [...cardGrid.querySelectorAll(".card:not(:disabled)")];
+    if (!cards.length) return;
+    const afterIndex = Number(afterCard?.dataset.index ?? -1);
+    const next = cards.find((card) => Number(card.dataset.index) > afterIndex) || cards[0];
+    requestAnimationFrame(() => next.focus({ preventScroll: true }));
   }
 
   // Card Click Handling
@@ -704,6 +766,7 @@
     
     // Flip the card
     card.classList.add("flipped");
+    updateCardAccessibility(card, "revealed");
     window.WonderSound?.play("click");
     state.selectedCards.push(card);
     
@@ -735,6 +798,8 @@
       
       card1.classList.add("matched");
       card2.classList.add("matched");
+      updateCardAccessibility(card1, "matched");
+      updateCardAccessibility(card2, "matched");
       
       // Feedback
       feedbackText.textContent = t("tipMatch");
@@ -760,6 +825,7 @@
       state.selectedCards = [];
       state.isLocked = false;
       updateHUD();
+      focusNextPlayable(card2);
       
       // Check for win
       if (state.matchedPairsCount === stage.symbols.length) {
@@ -776,8 +842,11 @@
       setTimeout(() => {
         card1.classList.remove("flipped");
         card2.classList.remove("flipped");
+        updateCardAccessibility(card1, "hidden");
+        updateCardAccessibility(card2, "hidden");
         state.selectedCards = [];
         state.isLocked = false;
+        card2.focus({ preventScroll: true });
       }, 800);
       
       updateHUD();
@@ -829,6 +898,7 @@
     nextLevelBtn.classList.toggle("hidden", stage.id === stages.length);
     document.body.classList.add("memory-result");
     resultPanel.classList.remove("hidden");
+    (stage.id === stages.length ? againBtn : nextLevelBtn).focus({ preventScroll: true });
     
     window.WonderSound?.play("win");
     
@@ -859,6 +929,7 @@
     nextLevelBtn.classList.add("hidden");
     document.body.classList.add("memory-result");
     resultPanel.classList.remove("hidden");
+    againBtn.focus({ preventScroll: true });
     
     window.WonderSound?.play("wrong");
   }

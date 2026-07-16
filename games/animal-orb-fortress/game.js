@@ -104,6 +104,8 @@
       core: "Core",
       shots: "Shots",
       aimHint: "Drag from the launcher, preview the bounce path, then release.",
+      keyboardAim: "Aim {angle}° from center. Left/Right adjust; Space or Enter fires.",
+      arenaControlLabel: "Animal Orb Fortress arena. Aim {angle} degrees from center. Use Left and Right arrows to adjust; Space or Enter to fire.",
       orbReady: "Orb ready. Bank shots into shadow beasts before they reach the core.",
       orbFlying: "Spirit orb is flying. Watch the bounce route and prepare the next aim.",
       fortressHit: "A shadow beast hit the core. Aim earlier or use wider angles.",
@@ -210,6 +212,8 @@
       core: "核心",
       shots: "射擊",
       aimHint: "從發射器拖曳瞄準，預覽反彈路線後放開。",
+      keyboardAim: "瞄準偏移 {angle}°。左右方向鍵調整，空白鍵或 Enter 發射。",
+      arenaControlLabel: "動物星珠要塞競技場。瞄準偏移 {angle} 度。使用左右方向鍵調整，空白鍵或 Enter 發射。",
       orbReady: "星珠已準備好。用牆面反彈擊中影獸，別讓牠們靠近核心。",
       orbFlying: "星珠正在飛行。觀察反彈路線，準備下一次瞄準。",
       fortressHit: "影獸撞到核心了。更早瞄準，或改用更寬的反彈角度。",
@@ -315,6 +319,7 @@
   let lastFrame = 0;
   let raf = 0;
   let pointer = { active: false, x: 0, y: 0 };
+  let keyboardAimDeg = -90;
   let soundAt = {};
   let preloadFinished = false;
 
@@ -600,6 +605,7 @@
     selectedTier = Math.max(1, Math.min(MAX_RAID_TIER, Number(tier) || 1));
     configureArena();
     state = makeState();
+    keyboardAimDeg = -90;
     state.mode = "running";
     save.playCount += 1;
     persist();
@@ -608,6 +614,10 @@
     window.scrollTo({ top: 0, left: 0, behavior: "instant" });
     nodes.hintText.textContent = t("orbReady");
     renderHud();
+    window.requestAnimationFrame(() => {
+      canvas.focus({ preventScroll: true });
+      updateKeyboardAimPreview();
+    });
     lastFrame = performance.now();
     playSound("start", 0.2);
     window.WonderAnalytics?.track("raid_start", { game_id: GAME_ID, tier: state.raidTier });
@@ -744,6 +754,42 @@
       if (i % 10 === 0) points.push({ x: px, y: py });
     }
     return points;
+  }
+
+  function keyboardAimPoint() {
+    const radians = keyboardAimDeg * Math.PI / 180;
+    const distance = Math.max(W, H);
+    return {
+      x: state.launcher.x + Math.cos(radians) * distance,
+      y: state.launcher.y + Math.sin(radians) * distance,
+    };
+  }
+
+  function updateKeyboardAimPreview() {
+    if (state.mode !== "running") return;
+    const target = keyboardAimPoint();
+    const angle = Math.round(keyboardAimDeg + 90);
+    state.preview = previewPath(target.x, target.y);
+    nodes.hintText.textContent = t("keyboardAim", { angle });
+    canvas.setAttribute("aria-label", t("arenaControlLabel", { angle }));
+  }
+
+  function onCanvasKeydown(event) {
+    if (state.mode !== "running") return;
+    if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+      event.preventDefault();
+      keyboardAimDeg = Math.max(-165, Math.min(-15, keyboardAimDeg + (event.key === "ArrowLeft" ? -6 : 6)));
+      updateKeyboardAimPreview();
+      return;
+    }
+    if (event.key !== " " && event.key !== "Enter") return;
+    event.preventDefault();
+    if (!canFireOrb()) {
+      nodes.hintText.textContent = t("orbFlying");
+      return;
+    }
+    const target = keyboardAimPoint();
+    releaseOrb(target.x, target.y);
   }
 
   function releaseOrb(x, y) {
@@ -1207,6 +1253,7 @@
   canvas.addEventListener("pointermove", onPointerMove);
   canvas.addEventListener("pointerup", onPointerEnd);
   canvas.addEventListener("pointercancel", onPointerEnd);
+  canvas.addEventListener("keydown", onCanvasKeydown);
 
   window.__animalOrbFortressSmoke = {
     snapshot: () => ({
@@ -1224,6 +1271,8 @@
       eliteEnemies: state.enemies.filter((enemy) => enemy.elite).length,
       orbs: state.orbs.length,
       activeOrbLimit: activeOrbLimit(),
+      previewPoints: state.preview.length,
+      keyboardAim: Math.round(keyboardAimDeg + 90),
       stonesEarned: state.stonesEarned,
       companionDamage: state.companionDamage,
       companionTimer: state.companionTimer,

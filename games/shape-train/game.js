@@ -165,6 +165,8 @@
   let acceptingInput = false;
   let feedbackKey = "";
   let lastResult = null;
+  let stageDrag = null;
+  let suppressStageClick = false;
 
   function clamp(value, min, max) {
     return Math.max(min, Math.min(max, value));
@@ -336,6 +338,7 @@
   function renderCars() {
     const stage = stages[currentStage];
     nodes.carGrid.innerHTML = "";
+    nodes.carGrid.dataset.carCount = String(stage.cars.length);
     nodes.carGrid.style.gridTemplateColumns = `repeat(${Math.min(stage.cars.length, 4)}, minmax(0, 1fr))`;
     stage.cars.forEach((shape) => {
       const car = document.createElement("button");
@@ -505,6 +508,56 @@
     });
   }
 
+  function settleStageRail() {
+    const cards = [...nodes.stageGrid.querySelectorAll(".stage-card")];
+    if (!cards.length) return;
+    const center = nodes.stageGrid.scrollLeft + nodes.stageGrid.clientWidth / 2;
+    const nearest = cards.reduce((best, card) => {
+      const distance = Math.abs(card.offsetLeft + card.offsetWidth / 2 - center);
+      return !best || distance < best.distance ? { card, distance } : best;
+    }, null)?.card;
+    if (!nearest) return;
+    nodes.stageGrid.scrollTo({ left: nearest.offsetLeft - (nodes.stageGrid.clientWidth - nearest.offsetWidth) / 2, behavior: "smooth" });
+  }
+
+  function initStageRail() {
+    nodes.stageGrid.addEventListener("pointerdown", (event) => {
+      if (!document.body.classList.contains("wp-standard-stage-page") || event.isPrimary === false || event.button !== 0) return;
+      stageDrag = { id: event.pointerId, x: event.clientX, scrollLeft: nodes.stageGrid.scrollLeft, moved: false };
+    });
+    nodes.stageGrid.addEventListener("pointermove", (event) => {
+      if (!stageDrag || event.pointerId !== stageDrag.id) return;
+      const delta = event.clientX - stageDrag.x;
+      if (!stageDrag.moved && Math.abs(delta) >= 6) {
+        stageDrag.moved = true;
+        nodes.stageGrid.setPointerCapture?.(event.pointerId);
+      }
+      if (!stageDrag.moved) return;
+      event.preventDefault();
+      const rect = nodes.stageGrid.getBoundingClientRect();
+      const coordinateScale = rect.width > 0 ? nodes.stageGrid.clientWidth / rect.width : 1;
+      nodes.stageGrid.scrollLeft = stageDrag.scrollLeft - delta * coordinateScale;
+    });
+    const finishDrag = (event) => {
+      if (!stageDrag || event.pointerId !== stageDrag.id) return;
+      if (stageDrag.moved) {
+        suppressStageClick = true;
+        settleStageRail();
+        setTimeout(() => { suppressStageClick = false; }, 0);
+      }
+      if (nodes.stageGrid.hasPointerCapture?.(event.pointerId)) nodes.stageGrid.releasePointerCapture?.(event.pointerId);
+      stageDrag = null;
+    };
+    nodes.stageGrid.addEventListener("pointerup", finishDrag);
+    nodes.stageGrid.addEventListener("pointercancel", finishDrag);
+    nodes.stageGrid.addEventListener("click", (event) => {
+      if (!suppressStageClick) return;
+      suppressStageClick = false;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+    }, true);
+  }
+
   function initLoading() {
     let progress = 0;
     const timer = setInterval(() => {
@@ -551,6 +604,7 @@
   localizeStatic();
   bindEvents();
   initPassenger();
+  initStageRail();
   renderStageGrid();
   initLoading();
 })();

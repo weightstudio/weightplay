@@ -784,7 +784,7 @@ body.zoo-helper-playing .feedback {
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
+    transition-duration: 0s !important;
   }
 }
 html,

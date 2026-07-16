@@ -480,6 +480,11 @@ body.orb-fortress-playing .game-page-info {
   touch-action: none;
 }
 
+#gameCanvas:focus-visible {
+  outline: 4px solid #ffd970;
+  outline-offset: -5px;
+}
+
 .hint {
   min-height: 38px;
   display: grid;
