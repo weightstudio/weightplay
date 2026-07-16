@@ -64,6 +64,10 @@
       pageTitle: "Animal Reef Fisher - Free Reef Fishing Animal Game | WeightPlay",
       pageDescription: "Animal Reef Fisher is a 13+ WeightPlay browser game about reef expeditions, cast timing, line tension, sea-creature albums, and local gear upgrades.",
       language: "Language",
+      backToLobby: "Back to lobby",
+      back: "Back",
+      reefZones: "Reef zones",
+      gearUpgrades: "Gear upgrades",
       menuTitle: "Cast into the coral reef and build your sea-creature album.",
       menuHint: "Choose a reef zone, control line tension, earn Reef Notes, and upgrade your gear locally.",
       reefNotes: "Reef Notes",
@@ -156,6 +160,10 @@
       pageTitle: "動物珊瑚釣手 | WeightPlay",
       pageDescription: "動物珊瑚釣手是 WeightPlay 的 13+ 瀏覽器遊戲，玩家進行珊瑚礁遠征、掌握拋竿時機與魚線張力、收集海洋生物圖鑑，並在本機升級裝備。",
       language: "語言",
+      backToLobby: "返回大廳",
+      back: "返回",
+      reefZones: "礁區選擇",
+      gearUpgrades: "裝備升級",
       menuTitle: "把釣線拋進珊瑚礁，建立你的海洋生物圖鑑。",
       menuHint: "選擇礁區、控制魚線張力、獲得礁石筆記，並在本機升級裝備。",
       reefNotes: "礁石筆記",
@@ -447,6 +455,11 @@
     const description = document.querySelector('meta[name="description"]');
     if (description) description.setAttribute("content", t("pageDescription"));
     nodes.localeSelect.value = locale;
+    document.querySelector(".back-btn")?.setAttribute("aria-label", t("backToLobby"));
+    nodes.localeSelect.setAttribute("aria-label", t("language"));
+    nodes.stageBackBtn.setAttribute("aria-label", t("back"));
+    nodes.zoneRow.setAttribute("aria-label", t("reefZones"));
+    nodes.gearGrid.setAttribute("aria-label", t("gearUpgrades"));
     document.querySelectorAll("[data-ui]").forEach((node) => {
       node.textContent = t(node.dataset.ui);
     });

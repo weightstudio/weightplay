@@ -443,6 +443,11 @@ body.guardian-playing .command-row button {
   cursor: pointer;
 }
 
+[data-cosmetic-id="goldenFrame"] {
+  min-width: 220px;
+  max-width: 100%;
+}
+
 .primary-btn {
   color: #1b1608;
   background: linear-gradient(180deg, #fff0aa, var(--gold));

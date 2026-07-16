@@ -468,6 +468,20 @@
   let state = null;
   let claimedRewardId = null;
   let gridCursor = { x: 0, y: 0 };
+  let turnTransitionTimer = 0;
+
+  function clearTurnTransition() {
+    clearTimeout(turnTransitionTimer);
+    turnTransitionTimer = 0;
+  }
+
+  function scheduleTurnTransition(callback, delay) {
+    clearTurnTransition();
+    turnTransitionTimer = window.setTimeout(() => {
+      turnTransitionTimer = 0;
+      callback();
+    }, delay);
+  }
 
   function t(key, vars = {}) {
     let value = (text[locale] && text[locale][key]) || text.en[key] || key;
@@ -750,6 +764,7 @@
   }
 
   function startMission(mission = selectedMission) {
+    clearTurnTransition();
     claimedRewardId = null;
     const extraEnergy = (profile.training ? 1 : 0) + (profile.bonusEnergy || 0);
     const hpBonus = profile.bonusHp || 0;
@@ -1091,13 +1106,16 @@
   }
 
   function endTurn() {
+    if (!state || state.phase !== "player") return;
+    clearTurnTransition();
     state.phase = "enemy";
     log("enemyTurn");
     render();
-    setTimeout(enemyTurn, 500);
+    scheduleTurnTransition(enemyTurn, 500);
   }
 
   function enemyTurn() {
+    if (!state || state.phase !== "enemy") return;
     livingEnemies().forEach((enemy) => {
       const heroes = livingHeroes();
       const target = enemy.id === "raven"
@@ -1140,19 +1158,24 @@
   }
 
   function checkEnd() {
+    if (!state) return false;
     if (!livingEnemies().length) {
-      setTimeout(showReward, 450);
+      state.phase = "settling";
+      scheduleTurnTransition(showReward, 450);
       return true;
     }
     if (!livingHeroes().length) {
-      setTimeout(() => showResult(false), 450);
+      state.phase = "settling";
+      scheduleTurnTransition(() => showResult(false), 450);
       return true;
     }
-    if (state.acted.size >= livingHeroes().length) setTimeout(endTurn, 450);
+    if (state.phase === "player" && state.acted.size >= livingHeroes().length) scheduleTurnTransition(endTurn, 450);
     return false;
   }
 
   function showReward() {
+    if (!state || livingEnemies().length) return;
+    clearTurnTransition();
     playFx("mission-clear", 2, 1);
     setBattleCovered(true);
     nodes.rewardPanel.classList.remove("is-hidden");
@@ -1199,6 +1222,7 @@
   }
 
   function showResult(win) {
+    clearTurnTransition();
     nodes.rewardPanel.classList.add("is-hidden");
     nodes.gamePanel.classList.add("is-hidden");
     setBattleCovered(true);
@@ -1273,6 +1297,7 @@
   }
 
   function showMenu() {
+    clearTurnTransition();
     state = null;
     document.body.classList.remove("is-rune-playing");
     nodes.backBtn.setAttribute("href", "/");

@@ -192,6 +192,8 @@
       goldenFrameDesc: "Cosmetic gold frame for every deployed defender. Costs 15 Diamonds.",
       goldenFrameOwned: "Unlocked",
       goldenFrameBuy: "Unlock (15 Diamonds)",
+      goldenFrameConfirm: "Confirm · {balance}→{result}D",
+      goldenFrameConfirmLabel: "Confirm Golden Defender Frame. Spend 15 Diamonds. Balance {balance} to {result}.",
       victoryText: "Stage {stage} cleared. Routes, blockers, upgrades, and hero timing worked together.",
       defeatText: "Good effort. Try a different route shape or upgrade key blockers earlier.",
       skillReport: "Skill Report: Logic, Problem Solving, and Focus practiced through path planning and upgrade timing.",
@@ -601,6 +603,8 @@
       goldenFrameDesc: "為所有已部署守衛加上黃金外框。花費 15 鑽石。",
       goldenFrameOwned: "已解鎖",
       goldenFrameBuy: "解鎖（15 鑽石）",
+      goldenFrameConfirm: "確認 · {balance}→{result}鑽",
+      goldenFrameConfirmLabel: "確認黃金守衛框。花費 15 鑽石。餘額從 {balance} 變為 {result}。",
       victoryText: "第 {stage} 關通關。路線、阻擋、升級與英雄時機配合成功。",
       defeatText: "打得不錯。試著改變路線形狀，或更早升級關鍵阻擋者。",
       skillReport: "能力報告：透過路線規劃與升級時機，練習邏輯、解題與專注力。",
@@ -739,6 +743,8 @@
     impactFlash: { life: 0, max: 0, color: "255, 209, 102" },
   };
   let rewardRerollConfirmTimer = 0;
+  let goldenFrameConfirmPending = false;
+  let goldenFrameConfirmTimer = 0;
 
   function t(key, values = {}) {
     let value = text[state.locale]?.[key] || text.en[key] || key;
@@ -885,6 +891,7 @@
 
   function setScreen(screen) {
     if (screen !== "result") clearRewardRerollConfirmation();
+    if (screen !== "tech") clearGoldenFrameConfirmation();
     state.screen = screen;
     const resultActive = screen === "result";
     document.body.classList.toggle("guardian-playing", screen === "game" || screen === "result");
@@ -923,6 +930,7 @@
   }
 
   function updateLocale() {
+    clearGoldenFrameConfirmation();
     document.documentElement.lang = state.locale;
     nodes.mainBack?.setAttribute("aria-label", t("backToLobby"));
     nodes.localeSelect.setAttribute("aria-label", t("languageControl"));
@@ -1113,6 +1121,7 @@
       button.textContent = t("techBuy");
       button.addEventListener("click", () => {
         if (!canBuy) return;
+        clearGoldenFrameConfirmation();
         state.save.upgradePoints -= tech.cost;
         state.save.tech[tech.id] = level + 1;
         save();
@@ -1130,18 +1139,47 @@
     card.innerHTML = `<strong>${t("goldenFrame")}</strong><span>${t("goldenFrameDesc")}</span>`;
     const button = document.createElement("button");
     button.type = "button";
+    button.dataset.cosmeticId = "goldenFrame";
     button.className = canBuyFrame ? "primary-btn" : "secondary-btn";
     button.disabled = owned || !canBuyFrame;
-    button.textContent = owned ? t("goldenFrameOwned") : t("goldenFrameBuy");
+    const resultingBalance = Math.max(0, state.save.diamonds - 15);
+    button.textContent = owned
+      ? t("goldenFrameOwned")
+      : goldenFrameConfirmPending
+        ? t("goldenFrameConfirm", { balance: state.save.diamonds, result: resultingBalance })
+        : t("goldenFrameBuy");
+    button.classList.toggle("is-confirming", goldenFrameConfirmPending && !owned);
+    button.setAttribute("aria-label", goldenFrameConfirmPending
+      ? t("goldenFrameConfirmLabel", { balance: state.save.diamonds, result: resultingBalance })
+      : `${t("goldenFrame")}. ${t("goldenFrameDesc")}`);
     button.addEventListener("click", buyGoldenFrame);
     card.appendChild(button);
     nodes.techGrid.appendChild(card);
+  }
+
+  function clearGoldenFrameConfirmation() {
+    clearTimeout(goldenFrameConfirmTimer);
+    goldenFrameConfirmTimer = 0;
+    goldenFrameConfirmPending = false;
   }
 
   function buyGoldenFrame() {
     state.save.cosmetics = { goldenFrame: false, ...(state.save.cosmetics || {}) };
     if (state.save.cosmetics.goldenFrame) return;
     if (state.save.diamonds < 15) return showToast(t("noDiamonds"));
+    if (!goldenFrameConfirmPending) {
+      goldenFrameConfirmPending = true;
+      clearTimeout(goldenFrameConfirmTimer);
+      goldenFrameConfirmTimer = setTimeout(() => {
+        if (!goldenFrameConfirmPending) return;
+        clearGoldenFrameConfirmation();
+        renderTech();
+      }, 5000);
+      renderTech();
+      window.requestAnimationFrame(() => nodes.techGrid.querySelector('[data-cosmetic-id="goldenFrame"]')?.focus({ preventScroll: true }));
+      return;
+    }
+    clearGoldenFrameConfirmation();
     state.save.diamonds -= 15;
     state.save.cosmetics.goldenFrame = true;
     save();
@@ -3697,6 +3735,13 @@
     const progressAfterReroll = nodes.resultProgressText.textContent;
     const unlockAfterReroll = nodes.resultUnlockText.textContent;
     buyGoldenFrame();
+    const framePending = {
+      diamonds: state.save.diamonds,
+      owned: Boolean(state.save.cosmetics?.goldenFrame),
+      button: nodes.techGrid.querySelector('[data-cosmetic-id="goldenFrame"]')?.textContent || "",
+      aria: nodes.techGrid.querySelector('[data-cosmetic-id="goldenFrame"]')?.getAttribute("aria-label") || "",
+    };
+    buyGoldenFrame();
     const diamondsAfterFrame = state.save.diamonds;
     startStage(1);
     state.coins = 999;
@@ -3712,6 +3757,7 @@
       pointsAfterReroll,
       progressAfterReroll,
       unlockAfterReroll,
+      framePending,
       diamondsAfterFrame,
       starsText: nodes.resultStars.textContent,
       starsSaved: state.save.stars?.[1] || 0,
@@ -4715,6 +4761,7 @@
     winStage();
     rerollReward();
     rerollReward();
+    buyGoldenFrame();
     buyGoldenFrame();
     window.WonderAnalytics = previousAnalytics;
     state.save = previousSave;

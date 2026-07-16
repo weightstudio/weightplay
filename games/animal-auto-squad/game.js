@@ -192,13 +192,13 @@
   const pageMeta = {
     en: {
       title: "Animal Auto Squad - Play Free Auto-Battler Game",
-      description: "Animal Auto Squad is a free 13+ formation auto-battler. Train ten animal heroes, build a two-row squad, and clear 30 stages with six unique bosses.",
+      description: "Animal Auto Squad is a free formation auto-battler. Train ten animal heroes, build a two-row squad, and clear 30 stages with six unique bosses.",
       ogDescription: "Train and position a six-animal squad across 30 five-wave stages, six regions, varied enemy formations, and six unique bosses.",
       twitterDescription: "Build a two-row animal formation, train ten heroes, and defeat six regional bosses across a 30-stage auto-battler campaign."
     },
     "zh-Hant": {
       title: "動物自走小隊 - 免費策略自走棋網頁遊戲",
-      description: "《動物自走小隊》是免費的 13+ 編成策略遊戲。訓練十名動物英雄、配置前後兩排，挑戰 30 關與六名區域 Boss。",
+      description: "《動物自走小隊》是免費的編成策略遊戲。訓練十名動物英雄、配置前後兩排，挑戰 30 關與六名區域 Boss。",
       ogDescription: "訓練並配置六人動物小隊，穿越六個區域、30 個五波關卡與六場專屬 Boss 戰。",
       twitterDescription: "配置前後兩排、訓練十名動物英雄，在 30 關自走戰役中擊敗六名區域 Boss。"
     }
@@ -632,6 +632,17 @@
     }
     const unlockedStage = Math.max(1, Math.min(STAGE_COUNT, Math.floor(Number(source.unlockedStage) || 1)));
     const selectedStage = Math.max(1, Math.min(unlockedStage, Math.floor(Number(source.selectedStage) || unlockedStage)));
+    const savedSquad = Array(6).fill(null);
+    const savedAnimalIds = new Set();
+    if (Array.isArray(source.savedSquad)) {
+      source.savedSquad.slice(0, 6).forEach((id, slot) => {
+        if (id === null || id === undefined || id === "") return;
+        const normalizedId = Number(id);
+        if (!unlockedAnimals.has(normalizedId) || savedAnimalIds.has(normalizedId)) return;
+        savedSquad[slot] = normalizedId;
+        savedAnimalIds.add(normalizedId);
+      });
+    }
     return {
       bestRound: Math.max(0, Number(source.bestRound) || 0),
       clearedRuns: Math.max(0, Number(source.clearedRuns) || 0),
@@ -646,7 +657,8 @@
         ? [...new Set(source.completedStages.map(Number).filter((stage) => stage >= 1 && stage <= STAGE_COUNT))].sort((a, b) => a - b)
         : [],
       unlockedAnimals: [...unlockedAnimals].sort((a, b) => a - b),
-      animalLevels
+      animalLevels,
+      savedSquad
     };
   }
 
@@ -1699,6 +1711,7 @@
     state = makeState();
     state.stage = normalizeSave(save).selectedStage;
     state.backpack = createBackpackCards();
+    restoreSavedFormation();
     state.activeRun = true;
     document.body.classList.add("squad-active");
     document.body.classList.remove("squad-stage-select");
@@ -1809,6 +1822,25 @@
     return save.unlockedAnimals
       .map((id) => createAnimalCard(Number(id)))
       .filter(Boolean);
+  }
+
+  function restoreSavedFormation() {
+    save = normalizeSave(save);
+    const backpackById = new Map(state.backpack.map((card) => [Number(card.id), card]));
+    state.squad = save.savedSquad.map((id) => {
+      if (id === null) return null;
+      const card = backpackById.get(Number(id)) || null;
+      backpackById.delete(Number(id));
+      return card;
+    });
+    state.backpack = state.backpack.map((card) => (backpackById.has(Number(card.id)) ? card : null));
+  }
+
+  function saveActiveFormation() {
+    if (!state.activeRun) return;
+    save = normalizeSave(save);
+    save.savedSquad = state.squad.map((card) => (card ? Number(card.id) : null));
+    saveSave();
   }
 
   // Legacy shop generator kept for old saves/tests that still call it directly.
@@ -2067,6 +2099,7 @@
       setCardAt(destArea, destIndex, card);
       selectedSlot = null;
       highlightSelectedCard(false);
+      saveActiveFormation();
       playSynth("click");
       updateHUD();
       renderPrepScreen();

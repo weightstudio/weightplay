@@ -518,7 +518,7 @@ window.addEventListener?.("resize", updateQuizFrame, { passive: true });
 window.addEventListener?.("orientationchange", updateQuizFrame, { passive: true });
 window.visualViewport?.addEventListener("resize", updateQuizFrame, { passive: true });
 
-function showStageSelect() {
+function showStageSelect(focusStageIndex = state.unlockedStage) {
   renderStaticText();
   state.completed = false;
   resultPanel.classList.add("hidden");
@@ -530,8 +530,10 @@ function showStageSelect() {
   window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   setQuizVisible(false);
   renderStageCards();
-  centerLatestUnlockedStage();
-  window.requestAnimationFrame(centerLatestUnlockedStage);
+  centerLatestUnlockedStage(focusStageIndex);
+  window.requestAnimationFrame(() => {
+    centerLatestUnlockedStage(focusStageIndex, true);
+  });
 }
 
 function renderStageCards() {
@@ -547,6 +549,7 @@ function renderStageCards() {
       const button = document.createElement("button");
       button.type = "button";
       button.className = `stage-card ${isUnlocked ? "unlocked" : "locked"}`;
+      button.dataset.stageIndex = String(index);
       button.disabled = !isUnlocked;
       button.innerHTML = `
         <span>${isComplete ? t("complete") : isUnlocked ? t("start") : t("locked")}</span>
@@ -560,12 +563,13 @@ function renderStageCards() {
   );
 }
 
-function centerLatestUnlockedStage() {
+function centerLatestUnlockedStage(stageIndex = state.unlockedStage, shouldFocus = false) {
   const unlockedCards = [...stageGrid.querySelectorAll(".stage-card.unlocked")];
-  const target = unlockedCards.at(-1);
+  const target = stageGrid.querySelector(`.stage-card.unlocked[data-stage-index="${stageIndex}"]`) || unlockedCards.at(-1);
   if (!target) return;
   const desired = target.offsetLeft + target.offsetWidth / 2 - stageGrid.clientWidth / 2;
   stageGrid.scrollLeft = Math.max(0, Math.min(desired, stageGrid.scrollWidth - stageGrid.clientWidth));
+  if (shouldFocus) target.focus({ preventScroll: true });
 }
 
 function settleStageRail() {
@@ -858,7 +862,7 @@ localeSelect.addEventListener("change", applyLocaleChange);
 localeSelect.addEventListener("input", applyLocaleChange);
 startGameBtn.addEventListener("click", showStageSelect);
 stageBackBtn.addEventListener("click", showMain);
-backToStagesBtn.addEventListener("click", showStageSelect);
+backToStagesBtn.addEventListener("click", () => showStageSelect(state.stageIndex));
 
 window.addEventListener("wonder:locale-change", () => {
   if (!state.ready) {
@@ -898,7 +902,7 @@ nextStageBtn.addEventListener("click", () => {
 
 stageSelectBtn.addEventListener("click", () => {
   window.WonderSound?.play("click");
-  showStageSelect();
+  showStageSelect(state.stageIndex);
 });
 
 renderStaticText();

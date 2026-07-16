@@ -7,6 +7,8 @@
   const maxGearRank = 3;
   const maxEquippedCards = 6;
   const maxMission = 8;
+  let amuletConfirmPending = false;
+  let amuletConfirmTimer = 0;
 
   const $ = (id) => document.getElementById(id);
   const nodes = {
@@ -127,6 +129,10 @@
   }
 
   function selectStageTab(tabName) {
+    if (tabName !== "shop" && amuletConfirmPending) {
+      clearAmuletConfirmation();
+      updateDiamondShopUI();
+    }
     nodes.stagePanel.querySelectorAll("[data-stage-tab]").forEach((button) => {
       const isActive = button.dataset.stageTab === tabName;
       button.classList.toggle("is-active", isActive);
@@ -138,6 +144,7 @@
   }
 
   function showStage() {
+    clearAmuletConfirmation();
     nodes.menuBtn.dataset.wpReturn = "battle";
     profile.selectedMission = profile.unlockedMission;
     saveLocalState();
@@ -149,6 +156,7 @@
   }
 
   function showMainFromStage() {
+    clearAmuletConfirmation();
     nodes.stagePanel.classList.add("hidden");
     nodes.stageReserve.classList.add("hidden");
     nodes.menuPanel.classList.remove("hidden");
@@ -235,6 +243,9 @@
       amuletEffect: "Start every run with +10 Max HP.",
       amuletOwned: "Owned: every run starts with +10 Max HP.",
       amuletNeed: "Need {cost} diamonds.",
+      amuletNeedExact: "Need {cost} Diamonds · Have {balance}.",
+      amuletConfirm: "Permanent +10 Max HP · Diamonds {balance} → {result}. Activate again to confirm.",
+      amuletConfirmLabel: "Confirm Mist Amulet. Permanent plus 10 Max HP. Spend {cost} Diamonds. Balance {balance} to {result}.",
       startRun: "Start Selected Mission",
       backToLobby: "Back to lobby",
       backToMain: "Back",
@@ -391,6 +402,9 @@
       amuletEffect: "每次出戰生命上限 +10。",
       amuletOwned: "已擁有：每次出戰生命上限 +10。",
       amuletNeed: "需要 {cost} 鑽石。",
+      amuletNeedExact: "需要 {cost} 鑽石 · 持有 {balance}。",
+      amuletConfirm: "永久生命上限 +10 · 鑽石 {balance} → {result}。再次啟用即可確認。",
+      amuletConfirmLabel: "確認迷霧護符。永久生命上限加 10。花費 {cost} 鑽石。餘額從 {balance} 變為 {result}。",
       startRun: "開始選定任務",
       backToLobby: "返回大廳",
       backToMain: "返回",
@@ -657,6 +671,7 @@
   }
 
   function translateUI() {
+    clearAmuletConfirmation();
     const locale = getLocale();
     document.documentElement.lang = locale;
     const pageTitle = `${t("title")} - WeightPlay`;
@@ -682,16 +697,26 @@
 
   function updateDiamondShopUI() {
     const wallet = window.WeightPlayWallet?.read() || { diamonds: 0 };
+    const resultingBalance = Math.max(0, wallet.diamonds - amuletCost);
     nodes.diamondBalance.textContent = wallet.diamonds;
     nodes.amuletBtn.querySelector("strong").textContent = t("amuletName");
     nodes.amuletBtn.querySelector("small").textContent = profile.amuletUnlocked ? t("amuletOwned") : t("amuletEffect");
     if (profile.amuletUnlocked) {
+      clearAmuletConfirmation();
       nodes.amuletStatus.textContent = t("amuletOwned");
       nodes.amuletBtn.disabled = true;
       nodes.amuletBtn.querySelector("b").style.display = "none";
     } else {
-      nodes.amuletStatus.textContent = wallet.diamonds < amuletCost ? t("amuletNeed", { cost: amuletCost }) : "";
+      nodes.amuletStatus.textContent = wallet.diamonds < amuletCost
+        ? t("amuletNeedExact", { cost: amuletCost, balance: wallet.diamonds })
+        : amuletConfirmPending
+          ? t("amuletConfirm", { balance: wallet.diamonds, result: resultingBalance })
+          : "";
       nodes.amuletBtn.disabled = wallet.diamonds < amuletCost;
+      nodes.amuletBtn.classList.toggle("is-confirming", amuletConfirmPending);
+      nodes.amuletBtn.setAttribute("aria-label", amuletConfirmPending
+        ? t("amuletConfirmLabel", { cost: amuletCost, balance: wallet.diamonds, result: resultingBalance })
+        : `${t("amuletName")}. ${t("amuletEffect")} ${t("amuletNeedExact", { cost: amuletCost, balance: wallet.diamonds })}`);
       nodes.amuletBtn.querySelector("b").style.display = "flex";
       nodes.amuletBtn.querySelector("b span").textContent = amuletCost;
     }
@@ -1122,6 +1147,36 @@
     } else if (damage > 0) {
       showCombatFeedback(`-${damage}`, "damage");
     }
+  }
+
+  function clearAmuletConfirmation() {
+    window.clearTimeout(amuletConfirmTimer);
+    amuletConfirmTimer = 0;
+    amuletConfirmPending = false;
+    nodes.amuletBtn?.classList.remove("is-confirming");
+  }
+
+  function buyMistAmulet() {
+    const wallet = window.WeightPlayWallet?.read() || { diamonds: 0 };
+    if (profile.amuletUnlocked || wallet.diamonds < amuletCost) return updateDiamondShopUI();
+    if (!amuletConfirmPending) {
+      amuletConfirmPending = true;
+      window.clearTimeout(amuletConfirmTimer);
+      amuletConfirmTimer = window.setTimeout(() => {
+        if (!amuletConfirmPending) return;
+        clearAmuletConfirmation();
+        updateDiamondShopUI();
+      }, 5000);
+      updateDiamondShopUI();
+      return;
+    }
+    clearAmuletConfirmation();
+    const spent = window.WeightPlayWallet?.spendDiamonds(amuletCost);
+    if (!spent) return updateDiamondShopUI();
+    profile.amuletUnlocked = true;
+    saveLocalState();
+    updateDiamondShopUI();
+    window.WonderSound?.play("success");
   }
 
   function playCard(index) {
@@ -1571,6 +1626,7 @@
   }
 
   function startRun() {
+    clearAmuletConfirmation();
     loadLocalState();
     resetRunState();
     setDraftModalActive(false, false);
@@ -1827,16 +1883,7 @@
     nodes.stageGrid?.addEventListener("pointercancel", endStageDrag);
     nodes.stageGrid?.addEventListener("pointerleave", endStageDrag);
     nodes.packBtn?.addEventListener("click", drawPack);
-    nodes.amuletBtn.addEventListener("click", () => {
-      const wallet = window.WeightPlayWallet?.read() || { diamonds: 0 };
-      if (wallet.diamonds < amuletCost) return;
-      const spent = window.WeightPlayWallet?.spendDiamonds(amuletCost);
-      if (!spent) return;
-      profile.amuletUnlocked = true;
-      saveLocalState();
-      updateDiamondShopUI();
-      window.WonderSound?.play("success");
-    });
+    nodes.amuletBtn.addEventListener("click", buyMistAmulet);
     exposeSmokeHooks();
     window.addEventListener("wonder:locale-change", translateUI);
 

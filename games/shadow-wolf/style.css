@@ -337,6 +337,12 @@ body {
   background: rgba(250, 204, 21, 0.05);
 }
 
+.shop-item-btn.is-confirming {
+  border-color: var(--primary);
+  background: rgba(250, 204, 21, 0.12);
+  box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.12);
+}
+
 .shop-item-meta {
   display: flex;
   flex-direction: column;

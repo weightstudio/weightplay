@@ -251,6 +251,25 @@
     installStageRailDrag();
   }
 
+  function focusStage(stageNo = save.unlocked) {
+    requestAnimationFrame(() => {
+      const rail = nodes.stagePanel.querySelector(".stage-rail");
+      const card = rail?.querySelector(`[data-stage="${Math.max(1, Math.min(stages.length, stageNo))}"]`);
+      if (!rail || !card || nodes.stagePanel.classList.contains("hidden")) return;
+      rail.scrollTo({
+        left: Math.max(0, card.offsetLeft + card.offsetWidth / 2 - rail.clientWidth / 2),
+        behavior: "instant",
+      });
+      card.focus({ preventScroll: true });
+    });
+  }
+
+  function showStages(stageNo = save.unlocked) {
+    renderStages();
+    show(nodes.stagePanel);
+    focusStage(stageNo);
+  }
+
   function installStageRailDrag() {
     const rail = nodes.stagePanel.querySelector(".stage-rail");
     if (!rail) return;
@@ -519,12 +538,10 @@
   }
 
   nodes.startBtn.addEventListener("click", () => {
-    renderStages();
-    show(nodes.stagePanel);
+    showStages(save.unlocked);
   });
   nodes.stageBackBtn.addEventListener("click", () => {
-    renderStages();
-    show(nodes.stagePanel);
+    showStages(currentStage);
   });
   nodes.stagePanel.addEventListener("click", (event) => {
     if (event.target.closest("[data-stage-main]")) {
@@ -590,8 +607,7 @@
   });
   nodes.resultStagesBtn.addEventListener("click", () => {
     nodes.resultPanel.classList.add("hidden");
-    renderStages();
-    show(nodes.stagePanel);
+    showStages(save.unlocked);
   });
   nodes.localeSelect.addEventListener("change", (event) => {
     window.WonderI18n?.setLocale?.(event.target.value);
@@ -600,8 +616,7 @@
   window.addEventListener("wonder:locale-change", (event) => setLocale(event.detail?.locale || window.WonderI18n?.locale?.()));
   window.addEventListener("weightplay:tutorial-start", (event) => {
     if (event.detail?.gameId !== GAME_ID || nodes.menuPanel.classList.contains("hidden")) return;
-    renderStages();
-    show(nodes.stagePanel);
+    showStages(save.unlocked);
   });
   window.addEventListener("resize", positionElements);
 

@@ -620,7 +620,7 @@
       noteTitle: "Player and Save Information",
       hideScoreBands: true,
       intro:
-        "Animal Auto Squad is a 13+ formation strategy game built around decisions made before combat. You unlock and train ten animal heroes, place up to six of them in a two-row squad, choose one expedition relic, and then watch the lineup resolve each clash automatically. The campaign contains 30 stages across Thornwood, Crystal Caverns, Sunken Ruins, Ember Peak, Moonlit Citadel, and Void Crown. Every stage has five authored waves, while stages 5, 10, 15, 20, 25, and 30 end with a different regional Boss.",
+        "Animal Auto Squad is a formation strategy game built around decisions made before combat. You unlock and train ten animal heroes, place up to six of them in a two-row squad, choose one expedition relic, and then watch the lineup resolve each clash automatically. The campaign contains 30 stages across Thornwood, Crystal Caverns, Sunken Ruins, Ember Peak, Moonlit Citadel, and Void Crown. Every stage has five authored waves, while stages 5, 10, 15, 20, 25, and 30 end with a different regional Boss.",
       story: [
         "The expedition follows a chain of routes occupied by shadow animals, crystal creatures, armored guardians, rune beasts, and eclipse hunters. The squad begins on Thornwood's Mossy Trail, then pushes through the Prism Heart, Sunken Crown, Caldera King, Midnight Court, and the broken approaches to Void Crown. Each region introduces a different enemy mix and final encounter; clearing all six means breaking the complete chain of regional blockades.",
         "You act as the squad commander rather than a fighter on the field. Spark Paw Fox, Bubble Fin Otter, Drum Belly Panda, Moon Cap Owl, Moss Shell Turtle, and the other unlockable heroes each bring a specific targeting or support rule. Your job is to decide which six travel together and whether they belong in the front or back row before the automated clash begins.",
@@ -655,7 +655,7 @@
       designNote:
         "The automated battle is intentional: execution is short so the important work happens in formation, role coverage, target order, relic selection, and long-term training. A successful wave flows directly into the next one to make the five-wave stage feel like one expedition rather than five disconnected menu visits. Losses reopen preparation so the player can respond instead of watching the same failed setup repeatedly. Tap-select and tap-place support phone play, while the same cards remain usable with mouse input on desktop. Compared with WeightPlay's turn-based Animal Rune Tactics or real-time Animal Crystal Survivor, Animal Auto Squad asks the player to build a plan and then evaluate how that plan performs without issuing attacks during combat.",
       parent:
-        "Animal Auto Squad is designed for 13+ strategy players because later stages combine six-unit formations, specialized targeting, permanent upgrades, combat failure pressure, Boss abilities, and optional Diamond decisions. Campaign progress, Training Gold, Team Level, unlocked animals, permanent animal levels, completed stages, and cosmetic choice are stored locally in this browser; no login is required for basic play. Clearing this site's browser storage may remove that local progress.",
+        "Later stages combine six-unit formations, specialized targeting, permanent upgrades, combat failure pressure, Boss abilities, and optional Diamond decisions. Campaign progress, the last deployed formation and slot positions, Training Gold, Team Level, unlocked animals, permanent animal levels, completed stages, and cosmetic choice are stored locally in this browser; no login is required for basic play. Clearing this site's browser storage may remove that local progress.",
       faq: [
         ["Is Animal Auto Squad free to play?", "Yes. The 30-stage campaign runs in the browser on WeightPlay without a required purchase or login."],
         ["What is the goal of each stage?", "Build a squad that survives five continuous waves. Clearing wave five saves the stage and unlocks the next one; every fifth stage ends with a regional Boss."],
@@ -663,7 +663,7 @@
         ["Can I rearrange the squad between every wave?", "Winning moves directly to the next wave. Preparation reopens after a loss or draw while the run still has Hearts, so the initial formation should be able to handle more than one enemy pattern."],
         ["What happens when I lose a wave?", "The run loses one Heart. With Hearts remaining, you can adjust the squad and try that wave again. At zero Hearts, you may end the run or use the optional five-Diamond revive."],
         ["What do Diamonds do?", "Diamonds are optional. They can reroll relic choices, revive a failed expedition, unlock two premium heroes, or unlock the golden cosmetic skin; normal stage progression does not require them."],
-        ["What progress is saved?", "The browser stores unlocked and completed stages, Team Level and XP, Training Gold, unlocked animals, permanent animal levels, run records, and cosmetic selection on this device."]
+        ["What progress is saved?", "The browser stores unlocked and completed stages, the last deployed formation and slot positions, Team Level and XP, Training Gold, unlocked animals, permanent animal levels, run records, and cosmetic selection on this device."]
       ],
     },
     "beast-tactician": {
@@ -1143,7 +1143,7 @@
     noteTitle: "玩家與存檔說明",
     hideScoreBands: true,
     intro:
-      "《動物自走小隊》是一款以戰前決策為核心的 13+ 編成策略遊戲。玩家可以解鎖並訓練十名動物英雄，把最多六名角色配置在前後兩排，選擇一件遠征聖物，再觀看小隊依照站位與能力自動交戰。戰役共有 30 關，依序穿越荊棘林、水晶洞窟、沉沒遺跡、燼火峰、月光城塞與虛空王冠。每關包含五波固定設計的敵人，第 5、10、15、20、25、30 關則各有一名專屬區域 Boss。",
+      "《動物自走小隊》是一款以戰前決策為核心的編成策略遊戲。玩家可以解鎖並訓練十名動物英雄，把最多六名角色配置在前後兩排，選擇一件遠征聖物，再觀看小隊依照站位與能力自動交戰。戰役共有 30 關，依序穿越荊棘林、水晶洞窟、沉沒遺跡、燼火峰、月光城塞與虛空王冠。每關包含五波固定設計的敵人，第 5、10、15、20、25、30 關則各有一名專屬區域 Boss。",
     story: [
       "遠征路線被影之獸、水晶生物、重甲守衛、符文獸與月蝕獵手分段占據。小隊從荊棘林的苔蘚小徑出發，接著深入棱晶之心、沉沒王冠、火山口之王、子夜王庭，最後沿著破碎天路抵達虛空王冠。每區都有不同的敵人組合與最終首領；完成六區代表解除整條遠征路線的封鎖。",
       "玩家扮演的是小隊指揮者，不是在戰鬥中直接操作某一名角色。星爪狐、泡泡鰭水獺、鼓肚熊貓、月帽貓頭鷹、苔殼烏龜與其他可解鎖英雄，都有明確的攻擊、治療、護盾或倒下效果。真正的任務是在交戰前決定由哪六名角色同行，以及誰應站在前排或後排。",
@@ -1178,7 +1178,7 @@
     designNote:
       "自動戰鬥是刻意的設計選擇：戰鬥執行保持精簡，讓主要思考集中在陣形、定位互補、攻擊目標、聖物選擇與永久訓練。勝利後直接銜接下一波，是為了讓五波像一場完整遠征，而不是五次反覆進出選單；失敗後重新開放準備，則讓玩家能回應問題，不必一直觀看同一套失敗配置。手機採點選角色再點格子的方式，桌面也能使用相同卡片操作。相較於回合制的《動物符文戰棋》或需要即時移動的《動物水晶生存者》，本作要求玩家先完成計畫，再從自動戰鬥結果判斷計畫是否有效。",
     parent:
-      "《動物自走小隊》定位為 13+ 策略遊戲，因為後期會同時組合六人陣形、特殊攻擊目標、永久升級、戰鬥失敗壓力、Boss 能力與可選鑽石決策。關卡進度、訓練金幣、團隊等級、已解鎖角色、角色永久等級、已完成關卡與外觀選擇，都會儲存在目前瀏覽器本機；基本遊玩不需要登入。清除本站的瀏覽器儲存資料可能會移除這些本機進度。",
+      "後期關卡會同時組合六人陣形、特殊攻擊目標、永久升級、戰鬥失敗壓力、Boss 能力與可選鑽石決策。關卡進度、上次出場陣容與位置、訓練金幣、團隊等級、已解鎖角色、角色永久等級、已完成關卡與外觀選擇，都會儲存在目前瀏覽器本機；基本遊玩不需要登入。清除本站的瀏覽器儲存資料可能會移除這些本機進度。",
     faq: [
       ["動物自走小隊可以免費玩嗎？", "可以。30 關戰役能直接在 WeightPlay 瀏覽器頁面遊玩，不要求購買或登入。"],
       ["每一關的目標是什麼？", "配置能撐過五波連續敵人的小隊。通過第五波便會保存關卡並解鎖下一關；每五關的最後一波都有區域 Boss。"],
@@ -1186,7 +1186,7 @@
       ["每波之間都能重新排隊嗎？", "勝利會直接進入下一波。只有失敗或平手且仍有生命時，才會回到準備畫面，因此初始陣容要能面對不只一種敵人排列。"],
       ["輸掉一波會怎樣？", "本場會失去一點生命。生命尚未歸零時，可以調整陣容後再挑戰同一波；生命歸零時可結束遠征，或使用可選的 5 顆鑽石復活。"],
       ["鑽石可以做什麼？", "鑽石只提供可選功能，包括重抽聖物、遠征復活、解鎖兩名進階英雄與黃金外觀；一般關卡進度不需要鑽石。"],
-      ["哪些進度會保存？", "瀏覽器會在本機保存已解鎖與完成關卡、團隊等級與經驗、訓練金幣、已解鎖角色、角色永久等級、遠征紀錄與外觀選擇。"]
+      ["哪些進度會保存？", "瀏覽器會在本機保存已解鎖與完成關卡、上次出場陣容與位置、團隊等級與經驗、訓練金幣、已解鎖角色、角色永久等級、遠征紀錄與外觀選擇。"]
     ]
   };
   Object.assign(localizedGames["zh-Hant"]["shadow-wolf"], {
@@ -1643,6 +1643,7 @@
     const game = localizedGame(id);
     if (!game) return;
     const gameSkills = game.skills || [];
+    const showRecommendedAge = !/^(12|13)\+$/.test(baseGame.age || "");
 
     document.querySelector(".game-page-info")?.remove();
     document.querySelectorAll("script[data-game-page-info-jsonld]").forEach((node) => node.remove());
@@ -1664,7 +1665,7 @@
         <div class="game-info-facts">
           <div class="game-info-fact"><span>${escapeHtml(uiLabel("gameplay"))}</span><strong>${escapeHtml(game.gameplay || game.title)}</strong></div>
           <div class="game-info-fact"><span>${escapeHtml(uiLabel("genre"))}</span><div class="game-info-tags">${(game.genre || []).map((tag) => `<span>${escapeHtml(tag)}</span>`).join("")}</div></div>
-          <div class="game-info-fact"><span>${escapeHtml(uiLabel("recommendedAge"))}</span><strong>${escapeHtml(localizeAge(game.age))}</strong></div>
+          ${showRecommendedAge ? `<div class="game-info-fact"><span>${escapeHtml(uiLabel("recommendedAge"))}</span><strong>${escapeHtml(localizeAge(game.age))}</strong></div>` : ""}
           <div class="game-info-fact"><span>${escapeHtml(uiLabel("difficulty"))}</span><strong>${escapeHtml(localizeDifficulty(game.difficulty))}</strong></div>
           <div class="game-info-fact"><span>${escapeHtml(uiLabel("estimatedTime"))}</span><strong>${escapeHtml(localizePlayTime(game.time))}</strong></div>
           <div class="game-info-fact"><span>${escapeHtml(uiLabel("skills"))}</span><div class="game-info-skills">${gameSkills.map((skill) => `<span>${escapeHtml(localizeSkill(skill))}</span>`).join("")}</div></div>
