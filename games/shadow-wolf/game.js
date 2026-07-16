@@ -461,11 +461,14 @@
   // Inputs
   let keysPressed = {};
   let mobileInput = { left: false, right: false };
+  const mobilePointerOwners = { left: null, right: null };
 
   function clearActiveInputs() {
     Object.keys(keysPressed).forEach((key) => { keysPressed[key] = false; });
     mobileInput.left = false;
     mobileInput.right = false;
+    mobilePointerOwners.left = null;
+    mobilePointerOwners.right = null;
   }
 
   function loadLocalState() {
@@ -2151,9 +2154,16 @@
 
     // Pointer cancellation, focus loss, and screen changes must never leave movement latched.
     const bindHoldButton = (button, direction) => {
-      const release = () => { mobileInput[direction] = false; };
+      const release = (event) => {
+        if (event?.pointerId !== undefined && event.pointerId !== mobilePointerOwners[direction]) return;
+        mobilePointerOwners[direction] = null;
+        mobileInput[direction] = false;
+      };
       button.addEventListener("pointerdown", (event) => {
+        if (event.isPrimary === false || (event.button !== undefined && event.button !== 0)) return;
+        if (mobilePointerOwners[direction] !== null && mobilePointerOwners[direction] !== event.pointerId) return;
         event.preventDefault();
+        mobilePointerOwners[direction] = event.pointerId;
         mobileInput[direction] = true;
         button.setPointerCapture?.(event.pointerId);
       });
@@ -2164,6 +2174,7 @@
     };
     const bindActionButton = (button, action) => {
       button.addEventListener("pointerdown", (event) => {
+        if (event.isPrimary === false || (event.button !== undefined && event.button !== 0)) return;
         event.preventDefault();
         action();
       });

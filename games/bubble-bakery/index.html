@@ -9,26 +9,26 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="robots" content="index,follow" />
-    <meta name="description" content="Tap matching bubbles, fill bakery orders, and clear cozy puzzle stages in Bubble Bakery on WeightPlay." />
+    <meta name="description" content="Plan connected animal-bubble clears across 30 move-limited bakery puzzles with ordered recipes, multi-tray service, batch bonuses, and Panko checkpoints." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Bubble Bakery - Cozy Bubble Puzzle Game" />
-    <meta property="og:description" content="Tap matching bubbles and fill sweet bakery orders across stage-based puzzle challenges." />
+    <meta property="og:title" content="Animal Bubble Bakery - 30-Stage Puzzle Game" />
+    <meta property="og:description" content="Fill animal recipe trays across 30 connected-group puzzles with ordered queues, large batches, and friendly Panko checkpoints." />
     <meta property="og:url" content="https://weightplay.com/games/bubble-bakery/" />
     <meta property="og:image" content="https://weightplay.com/assets/bubble-bakery-cover.png" />
     <meta name="twitter:card" content="summary_large_image" />
-    <title>Bubble Bakery - WeightPlay</title>
+    <title>Animal Bubble Bakery - WeightPlay</title>
     <link rel="canonical" href="https://weightplay.com/games/bubble-bakery/" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
     <script type="application/ld+json">
 {
               "@context": "https://schema.org",
               "@type": "VideoGame",
-              "name": "Bubble Bakery",
+              "name": "Animal Bubble Bakery",
               "alternateName": "\u52d5\u7269\u6ce1\u6ce1\u70d8\u7119\u574a",
               "url": "https://weightplay.com/games/bubble-bakery/",
               "image": "https://weightplay.com/assets/bubble-bakery-cover.png",
-              "description": "Tap matching bubbles, fill bakery orders, and clear cozy puzzle stages.",
+              "description": "Plan connected animal-bubble clears across 30 move-limited bakery puzzles with ordered recipes, multi-tray service, batch bonuses, and Panko checkpoints.",
               "applicationCategory": "Game",
               "operatingSystem": "Web browser",
               "publisher": {
@@ -51,7 +51,7 @@
               "audience": {
                       "@type": "Audience",
                       "audienceType": "Kids and families",
-                      "suggestedMinAge": 5
+                      "suggestedMinAge": 6
               },
               "learningResourceType": "Skill practice through play",
               "educationalUse": "Practice Logic, Problem Solving, Focus through family-friendly browser gameplay."
@@ -62,7 +62,7 @@
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
     <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20260714-play-area-fill1" data-wp-battle-standard />
     <link rel="stylesheet" href="../../src/stage-selector-standard.css?v=20260715-stage-swipe2" />
-    <link rel="stylesheet" href="style.css?v=20260716-accessible-groups1" />
+    <link rel="stylesheet" href="style.css?v=20260717-bakery-depth30-1" />
     <script data-wp-stage-standard>/* Bubble Bakery owns its native Stage scaler and pointer rail. */</script>
   </head>
   <body>
@@ -74,7 +74,7 @@
         </a>
         <div class="title-block">
           <p>WeightPlay</p>
-          <h1 data-ui="gameTitle">Bubble Bakery</h1>
+          <h1 data-ui="gameTitle">Animal Bubble Bakery</h1>
         </div>
         <label class="language-picker">
           <span data-ui="language">Language</span>
@@ -146,26 +146,81 @@
       </div>
     </main>
     <!-- adsense-static-guide:start -->
-    <section class="game-page-info game-page-info-static" aria-label="Bubble Bakery game guide">
+    <section class="game-page-info game-page-info-static" aria-label="Animal Bubble Bakery game guide">
       <div class="game-info-hero">
         <div class="game-info-title">
           <span class="game-info-kicker">WeightPlay Original Game Guide</span>
-          <h2>Bubble Bakery - How to Play</h2>
-          <p>Bubble Bakery is a cozy puzzle game about tapping matching bubbles to complete bakery orders. Players look for useful groups, manage limited moves, and clear stage goals. The game is simple to start but encourages children and families to think ahead before tapping.</p>
+          <h2>Animal Bubble Bakery - Complete Game Guide</h2>
+          <p>Animal Bubble Bakery is a 30-stage, move-limited matching puzzle led by Panko the Bakery Coach. Each order begins on a seven-column by ten-row counter filled with bunny, whale, chick, frog, and fox bubbles. Players tap connected groups to collect the animals shown on the current recipe tray. Every clear changes the counter: bubbles above fall into the emptied cells and new bubbles arrive from the top, so the best choice is not always the largest group visible right now. Later orders add minimum batch sizes, highlighted queues, two- and three-tray service, large-group goals, and bonus batches. Every fifth stage is a friendly Panko Check that combines the lesson from that group of stages. The game has no timer, no advertising, and no account requirement.</p>
         </div>
       </div>
       <div class="game-info-sections">
         <div class="game-info-section">
+          <h3>Panko's Picture-Recipe Bakery</h3>
+          <p>Panko runs a bakery where animal customers order with picture stamps instead of long written lists. Bunny stamps mark berry treats, whales mark ocean cupcakes, chicks mark sunny pastries, frogs mark garden rolls, and foxes mark bright fruit cakes. A delivery cart reaches the shop after a limited number of moves. The player's job is to help Panko combine matching stamps, finish every visible tray, and send each order out before the cart leaves.</p>
+          <p>The campaign is organized as six bakery lessons. Panko checks the counter at Stages 5, 10, 15, 20, 25, and 30. These checkpoints are not battles; they are friendly recipe tests that combine the rules introduced in the preceding orders. Completing Stage 30, Panko's Master Bakery, means the player has served three queued trays, prepared a six-bubble batch, and opened all 30 orders for replay and star improvement.</p>
+        </div>
+        <div class="game-info-section">
+          <h3>How the Bubble Counter Works</h3>
+          <p>The board always contains 70 native bubble buttons arranged in seven columns and ten rows. Matching animals connect only vertically or horizontally; diagonal neighbors do not belong to the same group. A normal order accepts a group of two or more. When a valid group is tapped, all selected bubbles shrink in their original cells, the bubbles above fall, and new bubbles enter from the masked top edge.</p>
+          <p>One valid clear spends one move. Only animals requested by the active tray reduce its counters, although clearing a different animal can still reshape the board. Consecutive useful clears build an order streak and add score. Result stars depend partly on moves left, while the Skill Report records useful order moves, the largest cleared group, and the best streak from that attempt.</p>
+          <p>Some stages require groups of three or four before any bubbles can clear. Queue stages place a bright outline around the animal that must be served next; clearing another animal changes the board but does not advance its later counter. Bonus-batch stages make a sufficiently large group count extra toward the active order. Group-goal stages require one clear at least as large as the displayed target in addition to finishing all recipe counters.</p>
+          <p>Multi-tray stages keep the same board and remaining moves when a new recipe appears. A cluster saved during the first course may therefore become the key to the second or third. Stage 30 combines three recipes, a four-bubble minimum, ordered targets, a six-bubble bonus threshold, and a largest-group goal of six. Its difficulty comes from coordinating rules rather than merely increasing target numbers.</p>
+        </div>
+        <div class="game-info-section">
           <h3>How to Play</h3>
-          <ol><li>Check the bakery order goal.</li><li>Tap groups of matching bubbles.</li><li>Use each move carefully.</li><li>Clear the order before moves run out.</li></ol>
+          <ol>
+            <li>Choose an unlocked recipe from the horizontal Stage rail.</li>
+            <li>Read the animal order chips and compact rule symbols before making a move.</li>
+            <li>Tap two or more vertically or horizontally connected matching bubbles. A later stage may require a group of three or four.</li>
+            <li>Watch which bubbles will fall into the cleared cells and use non-order groups only when they create a stronger route.</li>
+            <li>Complete every recipe phase and any displayed largest-group goal before the move counter reaches zero.</li>
+            <li>Use the Result actions to continue, retry, return to Stages, or replay an earlier order for more stars.</li>
+          </ol>
+        </div>
+        <div class="game-info-section">
+          <h3>Planning Useful Clears</h3>
+          <ul>
+            <li>Scan from the bottom upward. A low clear moves more bubbles and can connect animals that were separated across several rows.</li>
+            <li>In a queue order, protect clusters for later animals until their chip receives the active outline.</li>
+            <li>On a minimum-batch stage, a pair cannot clear. Reshape a neighboring column so that a third or fourth matching bubble can join it.</li>
+            <li>A large-batch bonus can finish a counter with fewer moves, but a separate group goal still needs one clear of the displayed size.</li>
+            <li>During multi-tray service, inspect the next course and avoid breaking every useful cluster as soon as the current tray is nearly complete.</li>
+          </ul>
+        </div>
+        <div class="game-info-section">
+          <h3>Stages 1-10: Connections and Big Batches</h3>
+          <p>Stages 1-5 establish ordinary connected clears, two-target choices, the first largest-group goal, and a four-bubble bonus. Panko's First Check accepts only groups of three or more and also asks for one group of four. Stages 6-10 concentrate on deliberate cluster building. Minimum groups rise from three to four, bonus thresholds reward saving a larger patch, and Panko's Big-Batch Check requires every useful clear to contain at least four bubbles while also asking for a group of five.</p>
+        </div>
+        <div class="game-info-section">
+          <h3>Stages 11-20: Queues and Continuous Service</h3>
+          <p>Stages 11-15 introduce ordered queues. Only the highlighted animal advances, so a tempting group may be better saved for later. Panko's Queue Check carries the rule across two recipes without resetting the counter. Stages 16-20 introduce two- and three-course service. The board and move total continue between trays, making preparation for the next recipe part of the current decision. Panko's Three-Course Check is the first stage where a short-term clear can noticeably weaken a later course.</p>
+        </div>
+        <div class="game-info-section">
+          <h3>Stages 21-30: Festival and Master Orders</h3>
+          <p>Stages 21-25 combine queues, minimum groups, bonuses, multiple recipes, and largest-group goals. Panko's Festival Check asks for two ordered trays made from groups of at least three. Stages 26-30 are mastery orders. They demand larger planned clusters and three-tray awareness instead of relying on higher counters alone. The final checkpoint visibly combines all major systems, so replaying earlier lessons can teach a specific skill before the player returns to the Master Bakery.</p>
+        </div>
+        <div class="game-info-section">
+          <h3>Design Notes</h3>
+          <p>The board uses a 7-by-10 layout because it fills a portrait phone while keeping the animal bubbles round and leaving enough cells for genuine planning. Tapping is the only Battle action, but each tap changes gravity, future connections, the active order, streak value, and remaining moves. The 30-stage structure was designed around rules that change which group is useful instead of simply adding larger totals.</p>
+          <p>Panko checkpoints create memorable difficulty landmarks without introducing combat into a bakery puzzle. Keyboard and screen-reader players use the same native bubble buttons as touch players; accessible names include the animal, row, column, connected-group size, active-order state, and current minimum. Unlike a direct sorting game, Animal Bubble Bakery keeps one persistent board whose shape must be planned several moves ahead.</p>
         </div>
         <div class="game-info-section game-info-parent">
           <h3>Parent Note</h3>
-          <p>This game may help children practice logic, planning, and focus through short puzzle goals. It is for fun practice and not a formal learning assessment.</p>
+          <p>Animal Bubble Bakery may support visual grouping, counting, planning, focus, and simple problem solving. An adult can ask why clearing a low cluster changes more of the board or which group should be saved for the next tray. There is no timer, advertising, account requirement, or ranking pressure. Stars, scores, customer stamps, stickers, and the Skill Report are playful local feedback, not an intelligence test, diagnosis, or formal school assessment.</p>
         </div>
         <div class="game-info-section">
           <h3>Frequently Asked Questions</h3>
-          <dl><div><dt>Is Bubble Bakery timed?</dt><dd>No. The challenge comes from move planning, not speed.</dd></div><div><dt>What skills does it practice?</dt><dd>It can practice logic, problem solving, and focus.</dd></div><div><dt>Can families play together?</dt><dd>Yes. It is designed to be easy to discuss and replay.</dd></div></dl>
+          <dl>
+            <div><dt>How many stages are included?</dt><dd>There are 30 named stages in six five-stage lessons, with a friendly Panko Check every fifth stage.</dd></div>
+            <div><dt>Which bubbles form one connected group?</dt><dd>Matching bubbles connect vertically and horizontally. A diagonal bubble is not part of the same group.</dd></div>
+            <div><dt>Why did a matching group not fill the order?</dt><dd>The stage may require a larger minimum group or a specific highlighted animal in an ordered queue.</dd></div>
+            <div><dt>What happens between recipe trays?</dt><dd>The next recipe replaces the order counters, but the current board and remaining moves continue.</dd></div>
+            <div><dt>How do bonus batches work?</dt><dd>On a marked stage, reaching the shown group threshold counts extra bubbles toward the active order.</dd></div>
+            <div><dt>What happens when moves reach zero?</dt><dd>An unfinished order opens a supportive retry Result. Earlier unlocks and stars remain saved.</dd></div>
+            <div><dt>Does the game require login or show ads?</dt><dd>No. This Kids game is ad-free and stores progress locally without requiring an account.</dd></div>
+            <div><dt>Is the Skill Report an ability test?</dt><dd>No. It only summarizes this attempt's order hits, largest group, streak, score, and remaining moves.</dd></div>
+          </dl>
         </div>
       </div>
     </section>
@@ -179,7 +234,7 @@
     <script src="../../src/i18n.js?v=20260703-i18n-clean1"></script>
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
     <script src="../../src/battle-canvas-standard.js?v=20260714-play-area-fill1" data-wp-battle-standard></script>
-    <script src="game.js?v=20260716-accessible-groups1"></script>
+    <script src="game.js?v=20260717-bakery-depth30-1"></script>
     <script>
       (() => {
         const loadGameInfo = () => {
@@ -191,7 +246,7 @@
           }
           if (document.querySelector('script[data-bakery-game-info]')) return;
           const script = document.createElement("script");
-          script.src = "../../src/game-page-info.js?v=20260706-guide-age-layers1";
+          script.src = "../../src/game-page-info.js?v=20260717-bakery-depth30-1";
           script.dataset.bakeryGameInfo = "idle";
           document.body.appendChild(script);
         };

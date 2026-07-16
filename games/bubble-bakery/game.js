@@ -5,6 +5,7 @@
   const starKey = "weightplay_bubble_bakery_stars";
   const progressKey = "weightplay_bubble_bakery_progress";
   const statsKey = "weightplay_bubble_bakery_stats";
+  const smokeMode = new URLSearchParams(location.search).has("smoke");
 
   const text = {
     en: {
@@ -328,16 +329,29 @@
   const dropMs = 920;
 
   function wait(ms) {
+    if (smokeMode && typeof MessageChannel === "function") {
+      return new Promise((resolve) => {
+        const startedAt = performance.now();
+        const channel = new MessageChannel();
+        channel.port1.onmessage = () => {
+          if (performance.now() - startedAt >= ms) {
+            channel.port1.close();
+            channel.port2.close();
+            resolve();
+            return;
+          }
+          channel.port2.postMessage(0);
+        };
+        channel.port2.postMessage(0);
+      });
+    }
     return new Promise((resolve) => window.setTimeout(resolve, ms));
   }
 
   function playNodeAnimation(node, keyframes, options) {
     if (!node || typeof node.animate !== "function") return wait(options.duration || 0);
-    const animation = node.animate(keyframes, options);
-    return Promise.race([
-      animation.finished.catch(() => undefined),
-      wait((options.duration || 0) + 90),
-    ]);
+    node.animate(keyframes, options);
+    return wait((options.duration || 0) + 90);
   }
 
   function clamp(value, min, max) {
@@ -405,6 +419,14 @@
 
   function stageOrderIds(stage) {
     return [...new Set(stage.recipes.flatMap((recipe) => Object.keys(recipe)))];
+  }
+
+  function battleRuleSymbols(stage) {
+    const symbols = [];
+    if ((stage.minOrderGroup || 2) > 2) symbols.push(`≥${stage.minOrderGroup}`);
+    if (stage.sequence) symbols.push("→");
+    if (stage.comboThreshold) symbols.push(`+${stage.comboBonus || 0}`);
+    return symbols.join("");
   }
 
   function activeSequenceTarget() {
@@ -701,7 +723,7 @@
     nodes.playPanel.classList.remove("weightplay-active-viewport");
     updateBakeryFrame();
     nodes.hintText.textContent = stageRule(stage);
-    nodes.orderBar.dataset.theme = t("theme", { theme: stageTitle(stage) });
+    nodes.orderBar.dataset.theme = t("stage", { n: index + 1 });
     renderAll();
     requestAnimationFrame(() => {
       window.scrollTo({ top: 0, left: 0, behavior: "auto" });
@@ -758,8 +780,10 @@
     const title = document.createElement("strong");
     title.className = "order-title";
     const stage = stages[currentStage];
-    const recipeLabel = stage.recipes.length > 1 ? ` · ${t("recipeProgress", { current: recipeIndex + 1, total: stage.recipes.length })}` : "";
-    title.textContent = `${nodes.orderBar.dataset.theme || ""}${recipeLabel} · ${progress.done}/${progress.total}`;
+    const recipeLabel = stage.recipes.length > 1 ? ` · ${recipeIndex + 1}/${stage.recipes.length}` : "";
+    const ruleSymbols = battleRuleSymbols(stage);
+    title.textContent = `${nodes.orderBar.dataset.theme || ""}${recipeLabel}${ruleSymbols ? ` · ${ruleSymbols}` : ""} · ${progress.done}/${progress.total}`;
+    title.title = `${stageTitle(stage)} — ${stageRule(stage)}`;
     nodes.orderBar.appendChild(title);
     Object.entries(orders).forEach(([id, need]) => {
       const data = colorData(id);
@@ -963,22 +987,12 @@
       node.disabled = true;
     });
 
-    const animations = popNodes.map((node) => {
-      node.classList.add("is-pop-source");
+    popNodes.forEach((node) => {
       node.getAnimations?.().forEach((animation) => animation.cancel());
-      return playNodeAnimation(node, [
-        { opacity: 1, transform: "scale(1)", filter: "brightness(1) saturate(1)" },
-        { opacity: 1, transform: "scale(1.16)", filter: "brightness(1.22) saturate(1.16)", offset: 0.38 },
-        { opacity: 0.72, transform: "scale(0.34) rotate(10deg)", filter: "brightness(1.38) saturate(1.22)", offset: 0.72 },
-        { opacity: 0, transform: "scale(0.02) rotate(18deg)", filter: "brightness(1.45) saturate(1.25)" },
-      ], {
-        duration: popMs,
-        easing: "cubic-bezier(.14,.78,.2,1)",
-        fill: "forwards",
-      });
+      node.classList.add("is-pop-source", "pop");
     });
 
-    return Promise.all(animations).then(() => {
+    return wait(popMs + 90).then(() => {
       nodes.board.classList.remove("is-popping");
       return wait(30);
     });
@@ -987,10 +1001,10 @@
   function animateDroppingBubbles() {
     const dropping = Array.from(nodes.board.querySelectorAll("[data-drop-distance]"));
     if (!dropping.length) return wait(0);
-    const animations = dropping.map((node) => {
+    dropping.forEach((node) => {
       const distance = Number(node.dataset.dropDistance) || 96;
       node.disabled = true;
-      return playNodeAnimation(node, [
+      playNodeAnimation(node, [
         { opacity: 0.98, transform: `translateY(${-distance}px) scale(.985)` },
         { opacity: 1, transform: "translateY(0) scale(1)", offset: 0.62 },
         { opacity: 1, transform: "translateY(8%) scale(1.04, .95)", offset: 0.74 },
@@ -1004,7 +1018,7 @@
       });
     });
 
-    return Promise.all(animations).then(() => {
+    return wait(dropMs + 90).then(() => {
       nodes.board.querySelectorAll(".bubble").forEach((node) => {
         node.getAnimations?.().forEach((animation) => animation.cancel());
         delete node.dataset.dropDistance;
@@ -1250,7 +1264,7 @@
     if (!nodes.resultPanel.classList.contains("hidden") && lastResult) {
       renderResult(lastResult);
     } else if (!nodes.playPanel.classList.contains("hidden")) {
-      nodes.orderBar.dataset.theme = t("theme", { theme: stageTitle(stages[currentStage]) });
+      nodes.orderBar.dataset.theme = t("stage", { n: currentStage + 1 });
       renderAll();
     }
   });
@@ -1264,7 +1278,7 @@
   nodes.resultStagesBtn.addEventListener("click", showStageSelect);
   nodes.retryBtn.addEventListener("click", () => startStage(currentStage));
   nodes.nextStageBtn.addEventListener("click", () => startStage(Math.min(currentStage + 1, stages.length - 1)));
-  if (new URLSearchParams(location.search).has("smoke")) {
+  if (smokeMode) {
     window.__bubbleBakerySmoke = {
       forceFailure() {
         if (nodes.playPanel.classList.contains("hidden") || !nodes.resultPanel.classList.contains("hidden")) return null;
@@ -1318,6 +1332,9 @@
           resultVisible: !nodes.resultPanel.classList.contains("hidden"),
           resultTitle: nodes.resultTitle.textContent,
           bubbleCount: nodes.board.querySelectorAll(".bubble").length,
+          activeTarget: activeSequenceTarget(),
+          activeSequenceChips: nodes.orderBar.querySelectorAll(".order-chip.is-sequence-active").length,
+          groupGoalText: nodes.orderBar.querySelector(".group-goal")?.textContent || "",
         };
       },
     };

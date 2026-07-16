@@ -337,6 +337,7 @@
     const flight = $('flight');
     const field = $('routeField').getBoundingClientRect();
     if (isStart) {
+      if ((mode === 'pointer' && event.isPrimary === false) || (event.button !== undefined && event.button !== 0)) return;
       if (inputMode && inputMode !== mode) return;
       if (mode === 'pointer' && routePointerId !== null && routePointerId !== event.pointerId) return;
       inputMode = mode;

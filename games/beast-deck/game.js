@@ -2499,6 +2499,11 @@
     nodes.stageGrid?.addEventListener("pointercancel", endStageDrag);
     nodes.stageGrid?.addEventListener("pointerleave", endStageDrag);
     nodes.packBtn?.addEventListener("click", drawPack);
+    nodes.amuletBtn.addEventListener("keydown", (event) => {
+      if (event.repeat && (event.key === "Enter" || event.key === " ")) {
+        event.preventDefault();
+      }
+    });
     nodes.amuletBtn.addEventListener("click", buyMistAmulet);
     exposeSmokeHooks();
     window.addEventListener("wonder:locale-change", translateUI);

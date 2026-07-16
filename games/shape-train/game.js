@@ -188,6 +188,7 @@
   let suppressStageClick = false;
   let stageEntryToken = 0;
   let taskTransitionToken = 0;
+  let taskLifecycleSuspended = document.hidden;
   let floatingToast = null;
   let floatingToastTimer = 0;
 
@@ -199,13 +200,29 @@
 
   function scheduleTaskTransition(task, delay) {
     const token = taskTransitionToken;
-    const startedAt = performance.now();
+    let remaining = delay;
+    let lastFrameAt = null;
     const tick = (now) => {
       if (token !== taskTransitionToken || !document.body.classList.contains("shape-playing")) return;
-      if (now - startedAt >= delay) task();
+      if (taskLifecycleSuspended || document.hidden) {
+        lastFrameAt = null;
+        requestAnimationFrame(tick);
+        return;
+      }
+      if (lastFrameAt !== null) remaining -= Math.max(0, now - lastFrameAt);
+      lastFrameAt = now;
+      if (remaining <= 0) task();
       else requestAnimationFrame(tick);
     };
     requestAnimationFrame(tick);
+  }
+
+  function suspendTaskTransitions() {
+    taskLifecycleSuspended = true;
+  }
+
+  function resumeTaskTransitions() {
+    taskLifecycleSuspended = document.hidden;
   }
 
   function clamp(value, min, max) {
@@ -782,6 +799,12 @@
 
   localizeStatic();
   window.addEventListener("load", preserveGameLocaleAfterSharedGuide, { once: true });
+  window.addEventListener("pagehide", suspendTaskTransitions);
+  window.addEventListener("pageshow", resumeTaskTransitions);
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) suspendTaskTransitions();
+    else resumeTaskTransitions();
+  });
   bindEvents();
   initPassenger();
   initStageRail();

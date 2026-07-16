@@ -1190,6 +1190,7 @@
   }
 
   function startCharge(evt) {
+    if (evt.isPrimary === false || (evt.button !== undefined && evt.button !== 0)) return;
     if (state !== "game" || !run) return;
     if (run.phase !== "aim" && run.phase !== "reel") return;
     if (pointer.down && pointer.source !== "keyboard") return;
@@ -1490,6 +1491,7 @@
   canvas.addEventListener("pointercancel", cancelFishingInput);
   canvas.addEventListener("lostpointercapture", cancelFishingInput);
   nodes.tensionLane.addEventListener("pointerdown", (evt) => {
+    if (evt.isPrimary === false || (evt.button !== undefined && evt.button !== 0)) return;
     if (pointer.down && pointer.source !== "keyboard") return;
     pointer.down = true;
     pointer.id = Number.isFinite(evt.pointerId) ? evt.pointerId : null;

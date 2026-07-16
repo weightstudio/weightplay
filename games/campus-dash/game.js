@@ -138,6 +138,7 @@
 
   let state = makeState();
   let lastTime = 0;
+  let lifecycleSuspended = false;
   let pointerStartX = null;
   let activePointerId = null;
 
@@ -285,6 +286,7 @@
 
   function startRun() {
     clearPointerInput();
+    lifecycleSuspended = document.hidden;
     state = makeState();
     state.running = true;
     document.body.classList.add("dash-playing");
@@ -310,6 +312,11 @@
   }
 
   function loop(now) {
+    if (lifecycleSuspended || document.hidden) {
+      lastTime = now;
+      if (state.running) requestAnimationFrame(loop);
+      return;
+    }
     const elapsed = Math.max(0, (now - lastTime) / 1000 || 0);
     const dt = Math.min(0.033, elapsed);
     lastTime = now;
@@ -918,9 +925,17 @@
     if (event.pointerId === activePointerId) clearPointerInput();
   });
   window.addEventListener("blur", clearPointerInput);
-  window.addEventListener("pagehide", clearPointerInput);
+  window.addEventListener("pagehide", () => {
+    lifecycleSuspended = true;
+    clearPointerInput();
+  });
+  window.addEventListener("pageshow", () => {
+    lifecycleSuspended = document.hidden;
+    if (!lifecycleSuspended && state.running) lastTime = performance.now();
+  });
   document.addEventListener("visibilitychange", () => {
-    if (document.hidden) clearPointerInput();
+    lifecycleSuspended = document.hidden;
+    if (lifecycleSuspended) clearPointerInput();
     else if (state.running) lastTime = performance.now();
   });
 

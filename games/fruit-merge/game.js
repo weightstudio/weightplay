@@ -295,6 +295,47 @@
   let engine = null;
   let world = null;
   let animationFrameId = null;
+  let lifecycleSuspended = document.hidden;
+  let lifecycleSuspendedAt = lifecycleSuspended ? performance.now() : 0;
+
+  function activeNow() {
+    return lifecycleSuspended ? lifecycleSuspendedAt : performance.now();
+  }
+
+  function scheduleComboHudExpiry() {
+    window.clearTimeout(comboHudTimer);
+    comboHudTimer = null;
+    const remaining = comboUntil - activeNow();
+    if (remaining > 0 && !lifecycleSuspended) {
+      comboHudTimer = window.setTimeout(updateHud, remaining + 20);
+    }
+  }
+
+  function suspendRunLifecycle() {
+    if (lifecycleSuspended) return;
+    lifecycleSuspended = true;
+    lifecycleSuspendedAt = performance.now();
+    window.clearTimeout(comboHudTimer);
+    comboHudTimer = null;
+    stopAnimationLoop();
+  }
+
+  function resumeRunLifecycle() {
+    if (!lifecycleSuspended || document.hidden) return;
+    const now = performance.now();
+    const pausedFor = Math.max(0, now - lifecycleSuspendedAt);
+    canDropAt += pausedFor;
+    if (comboUntil > 0) comboUntil += pausedFor;
+    for (const fruit of fruitsOnBoard) fruit.bornAt += pausedFor;
+    lifecycleSuspended = false;
+    lifecycleSuspendedAt = 0;
+    lastTime = now;
+    scheduleComboHudExpiry();
+    updateHud();
+    updateAimCoach();
+    draw();
+    if (running && !gameOver && document.body.classList.contains("fruit-playing")) startAnimationLoop();
+  }
 
   function locale() {
     return window.WonderI18n?.locale?.() || "en";
@@ -451,13 +492,13 @@
   }
 
   function updateComboHud() {
-    const active = running && !gameOver && comboCount > 1 && performance.now() <= comboUntil;
+    const active = running && !gameOver && comboCount > 1 && activeNow() <= comboUntil;
     comboText.textContent = active ? t("comboStatus", { count: comboCount }) : t("comboReady");
     comboBox.classList.toggle("active", active);
   }
 
   function dropFruit() {
-    if (!running || gameOver || performance.now() < canDropAt) return;
+    if (!running || gameOver || lifecycleSuspended || activeNow() < canDropAt) return;
     const spec = fruits[currentLevel];
     const x = clamp(aimX, wallLeft + spec.radius, wallRight - spec.radius);
     const fruit = {
@@ -470,7 +511,7 @@
       radius: spec.radius,
       angle: 0,
       merging: false,
-      bornAt: performance.now(),
+      bornAt: activeNow(),
     };
     fruit.body = createFruitBody(fruit);
     fruitsOnBoard.push(fruit);
@@ -479,7 +520,7 @@
     World.add(world, fruit.body);
     currentLevel = nextLevel;
     nextLevel = randomNextLevel();
-    canDropAt = performance.now() + 520;
+    canDropAt = activeNow() + 520;
     window.WonderSound?.play?.("click");
     updateHud();
     updateAimCoach();
@@ -593,7 +634,7 @@
           radius: next.radius,
           angle: (a.angle + b.angle) / 2,
           pop: 0.24,
-          bornAt: performance.now(),
+          bornAt: activeNow(),
         };
         if (a.body) World.remove(world, a.body);
         if (b.body) World.remove(world, b.body);
@@ -624,14 +665,13 @@
   }
 
   function addMergeScore(baseScore) {
-    const now = performance.now();
+    const now = activeNow();
     comboCount = now <= comboUntil ? comboCount + 1 : 1;
     comboUntil = now + 2200;
     const multiplier = Math.min(5, comboCount);
     score += baseScore * multiplier;
     if (multiplier > 1) showToast(t("combo", { count: multiplier }));
-    window.clearTimeout(comboHudTimer);
-    comboHudTimer = window.setTimeout(updateHud, Math.max(0, comboUntil - performance.now()) + 20);
+    scheduleComboHudExpiry();
     updateComboHud();
   }
 
@@ -656,10 +696,11 @@
   }
 
   function checkGameOver(dt) {
+    const now = activeNow();
     let dangerTime = 0;
     for (const fruit of fruitsOnBoard) {
       const old = fruit.dangerTime || 0;
-      const age = performance.now() - fruit.bornAt;
+      const age = now - fruit.bornAt;
       const topAboveLine = fruit.y - fruit.radius < dangerY;
       const notFreshDrop = age > 1800;
       const stableEnough = fruit.sleeping || Math.hypot(fruit.vx, fruit.vy) < 135 || fruit.vy < 70;
@@ -675,11 +716,12 @@
     aimCoach.classList.toggle("hidden", !running || gameOver);
     if (!running || gameOver) return;
 
+    const now = activeNow();
     const highFruit = fruitsOnBoard.some((fruit) => {
-      const age = performance.now() - fruit.bornAt;
+      const age = now - fruit.bornAt;
       return age > 1200 && fruit.y - fruit.radius < dangerY + 92;
     });
-    const sameLevel = fruitsOnBoard.find((fruit) => fruit.level === currentLevel && performance.now() - fruit.bornAt > 700);
+    const sameLevel = fruitsOnBoard.find((fruit) => fruit.level === currentLevel && now - fruit.bornAt > 700);
 
     if (highFruit) {
       aimCoach.textContent = t("aimDanger");
@@ -1103,7 +1145,7 @@
   }
 
   function startAnimationLoop() {
-    if (animationFrameId !== null) return;
+    if (animationFrameId !== null || lifecycleSuspended) return;
     animationFrameId = requestAnimationFrame((now) => {
       lastTime = now;
       loop(now);
@@ -1186,8 +1228,31 @@
   });
 
   if (new URLSearchParams(location.search).has("smoke")) {
-    window.__fruitMergeSmoke = { finishRunForTest: endGame };
+    window.__fruitMergeSmoke = {
+      finishRunForTest: endGame,
+      lifecycleState: () => {
+        const now = activeNow();
+        return {
+          suspended: lifecycleSuspended,
+          canDropRemaining: Math.max(0, canDropAt - now),
+          comboRemaining: Math.max(0, comboUntil - now),
+          fruits: fruitsOnBoard.map((fruit) => ({
+            age: Math.max(0, now - fruit.bornAt),
+            x: fruit.x,
+            y: fruit.y,
+            dangerTime: fruit.dangerTime || 0,
+          })),
+        };
+      },
+    };
   }
+
+  window.addEventListener("pagehide", suspendRunLifecycle);
+  window.addEventListener("pageshow", resumeRunLifecycle);
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) suspendRunLifecycle();
+    else resumeRunLifecycle();
+  });
 
   localeSelect.value = locale();
   localeSelect.addEventListener("change", () => setLocale(localeSelect.value));

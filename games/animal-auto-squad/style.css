@@ -114,6 +114,12 @@ body.squad-stage-select .squad-app, body.squad-active .squad-app { position: fix
 }
 .stage-panel { display: grid; grid-template-rows: 64px 52px minmax(0,1fr); gap: 10px; padding: 12px; }
 body.squad-stage-select .stage-panel { border: 0 !important; outline: 0; isolation: isolate; background: #061712; box-shadow: none; }
+
+.card-item[role="button"]:focus-visible {
+  outline: 4px solid #fff3a8;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 7px rgba(15, 88, 67, .9), 0 0 18px rgba(255, 243, 168, .8);
+}
 .stage-panel > * { position: relative; z-index: 1; }
 .stage-panel-head { display: grid; grid-template-columns: 48px minmax(0,1fr); align-items: center; gap: 10px; padding: 0 4px; border: 1px solid var(--line); border-radius: 14px; background: rgba(4,17,14,.88); }
 .stage-panel-head > div { min-width: 0; display: grid; gap: 2px; }

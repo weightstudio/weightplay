@@ -126,20 +126,53 @@
       ],
     },
     "bubble-bakery": {
-      title: "Bubble Bakery",
-      age: "5+",
+      title: "Animal Bubble Bakery",
+      age: "6+",
       difficulty: "Easy",
       time: "3-5 minutes",
       skills: ["Logic", "Problem Solving", "Focus"],
       intro:
-        "Bubble Bakery is a cozy puzzle game about tapping matching bubbles to complete bakery orders. Players look for useful groups, manage limited moves, and clear stage goals. The game is simple to start but encourages children and families to think ahead before tapping.",
-      how: ["Check the bakery order goal.", "Tap groups of matching bubbles.", "Use each move carefully.", "Clear the order before moves run out."],
+        "Animal Bubble Bakery is a 30-stage, move-limited matching puzzle led by Panko the Bakery Coach. Players tap connected groups of bunny, whale, chick, frog, or fox bubbles to fill recipe trays. The 7-by-10 board collapses after every clear and drops new bubbles from above. Later stages add minimum batch sizes, ordered queues, two- and three-tray service, large-group goals, and bonus batches. Every fifth stage is a friendly Panko Check, and the Kids version remains permanently ad-free.",
+      story: [
+        "Panko runs a small bakery where each animal customer uses a picture stamp instead of a written ingredient list. Bunny bubbles mark berry treats, whales mark ocean cupcakes, chicks mark sunny pastries, frogs mark garden rolls, and foxes mark berry cakes. A delivery cart arrives after a limited number of moves, so the player helps Panko combine connected stamps and finish each visible tray before the cart leaves.",
+        "The 30 orders form six bakery lessons. Panko reviews the counter at Stages 5, 10, 15, 20, 25, and 30, but these checkpoints are friendly recipe tests rather than battles. Completing Panko's Master Bakery serves three queued trays, proves a six-bubble batch can be prepared, and opens every tray for replay and star mastery."
+      ],
+      systems: [
+        "The board always contains 70 native bubble buttons in seven columns and ten rows. A group clears only when matching bubbles touch vertically or horizontally; diagonal contact does not connect them. Cleared bubbles shrink in their original cells, bubbles above fall, and new bubbles enter from the masked top edge.",
+        "Each valid clear spends one move. Only active order animals reduce the tray counters, while non-order groups can still reshape the board. Consecutive order hits build an order streak and score bonus. Result stars depend on moves left, and the Skill Report records order-hit moves, largest cleared group, and best streak.",
+        "Minimum-batch stages require groups of three or four before a tap can clear. Sequence stages highlight one order animal at a time; clearing a later animal reshapes the board but does not advance its counter. Bonus stages let a group of four, five, or six count extra toward the active order.",
+        "Multi-tray stages keep the same board and remaining moves when the next recipe appears. Group-goal stages require one clear large enough to reach the displayed target as well as completing the order counters. Stage 30 combines three recipes, four-bubble minimums, sequence order, a six-bubble bonus threshold, and a largest-group goal of six.",
+        "Unlocked stages, best stars, stage score evidence, customer stamps, sticker count, play count, and best reached stage are stored locally in this browser. Sign-in is not required; clearing browser site data may remove those records."
+      ],
+      how: ["Choose an unlocked tray from the horizontal Stage rail.", "Read the animal order chips and compact rule symbols before tapping.", "Tap two or more vertically or horizontally connected matching bubbles; later trays may require three or four.", "Use non-order clears only when they create a better route to the highlighted target.", "Complete every recipe phase and any displayed largest-group goal before moves reach zero.", "Use Result to continue, retry, return to Stages, or replay earlier trays for more stars."],
+      strategyTips: [
+        "Scan from the bottom upward. Clearing a low group moves more bubbles and creates more possible connections.",
+        "In a sequence order, protect groups for later animals until their chip receives the bright active outline.",
+        "On minimum-batch stages, do not spend moves on pairs; combine them through a nearby clear until the required size exists.",
+        "Large-batch bonuses can finish an order with fewer moves, but a group-goal stage still needs the displayed largest clear at least once.",
+        "Multi-tray service does not reset the board, so leave useful clusters for animals that appear in the next recipe."
+      ],
+      progression: [
+        "Stages 1-5 establish normal connected clears, two-target choices, the first group-size goal, and a four-bubble bonus. Panko's First Check accepts only groups of three or more and also asks for one group of four.",
+        "Stages 6-10 focus on large batches. The minimum rises from three to four, bonus thresholds reward deliberate clustering, and Panko's Big-Batch Check requires every order clear to use a group of four plus one group of five.",
+        "Stages 11-15 introduce ordered queues. Only the highlighted animal advances, and Panko's Queue Check carries that rule across two recipes without resetting the board.",
+        "Stages 16-20 introduce two- and three-course service. The board and move count continue between trays, so preparation for a later recipe matters before the first is finished.",
+        "Stages 21-25 combine queues, minimum groups, bonuses, multiple recipes, and group goals. Panko's Festival Check asks for two ordered trays using groups of at least three.",
+        "Stages 26-30 are mastery orders. They require larger clusters and three-tray planning rather than just higher counters; the final checkpoint visibly combines a four-bubble minimum, ordered targets, bonus batches, three recipes, and a six-bubble mastery goal."
+      ],
+      designNote:
+        "We kept the board at 7 by 10 because it fills a portrait phone while preserving round bubble proportions and enough space for real group planning. A tap is the only Battle action, but each clear changes gravity, future connections, order streaks, and remaining moves. The 30-stage revision adds rules that change which group is useful instead of merely increasing targets. Panko checkpoints provide memorable difficulty landmarks without introducing combat to a bakery puzzle. Keyboard and screen-reader players receive native buttons with animal, row, column, connected-group size, active-order status, and current minimum. Unlike Animal Color Lunchbox's direct one-item sorting, Bubble Bakery asks players to reshape a persistent board and plan several moves ahead.",
       parent:
-        "This game may help children practice logic, planning, and focus through short puzzle goals. It is for fun practice and not a formal learning assessment.",
+        "Animal Bubble Bakery may support visual grouping, counting, planning, focus, and simple problem solving. Adults can ask why a low clear changes the board or which cluster should be saved for the next tray. There is no timer, advertising, account requirement, or ranking pressure. Stars, scores, stamps, stickers, and the Skill Report are playful local feedback, not an intelligence test, diagnosis, or formal school assessment.",
       faq: [
-        ["Is Bubble Bakery timed?", "No. The challenge comes from move planning, not speed."],
-        ["What skills does it practice?", "It can practice logic, problem solving, and focus."],
-        ["Can families play together?", "Yes. It is designed to be easy to discuss and replay."],
+        ["How many stages are in Animal Bubble Bakery?", "There are 30 named stages in six five-stage lessons, with friendly Panko Checks every fifth stage."],
+        ["Which bubbles form a connected group?", "Matching bubbles connect vertically and horizontally. Diagonal bubbles are not part of the same group."],
+        ["Why did a matching group not fill the order?", "The stage may require a larger minimum group or a specific highlighted animal in an ordered queue."],
+        ["What happens between recipe trays?", "The next recipe replaces the order counters, but the board and remaining moves continue, so saved clusters still matter."],
+        ["How do bonus batches work?", "On marked stages, reaching the shown group threshold counts extra bubbles toward the active order."],
+        ["What happens when moves reach zero?", "An unfinished order opens a supportive retry Result. Saved unlocks and earlier stars remain available."],
+        ["Does the game require login or show ads?", "No. This Kids game is ad-free and uses local browser storage without requiring an account."],
+        ["Is the Skill Report an ability test?", "No. It summarizes this run's order hits, largest group, streak, score, and remaining moves for game feedback only."],
       ],
     },
     "animal-rope-rescue": {
@@ -1952,6 +1985,49 @@
         return { age, beginner: `${b0}-${b1}`, good: `${g0}-${g1}`, excellent: `${e0}+` };
       });
   }
+
+  localizedGames["zh-Hant"]["bubble-bakery"] = {
+    title: "動物泡泡烘焙坊",
+    difficulty: "簡單到中等",
+    time: "3～5 分鐘",
+    gameplay: "泡泡連線訂單益智",
+    genre: ["益智", "烘焙", "動物"],
+    skills: ["邏輯", "問題解決", "專注"],
+    intro: "《動物泡泡烘焙坊》是由 Panko 烘焙教練帶領的 30 關步數制配對益智遊戲。玩家點擊相連的兔兔、鯨魚、小雞、青蛙或狐狸泡泡，完成不同烘焙盤的訂單。7×10 棋盤會在每次消除後向下掉落並從上方補入新泡泡。後段加入群組門檻、依序訂單、雙盤與三盤配送、最大群組目標和大批量加成；每五關還有一次友善 Panko 檢查。Kids 版本永久無廣告。",
+    story: [
+      "Panko 經營一間用動物圖片印章代替文字食材單的小烘焙坊。兔兔代表莓果點心、鯨魚代表海洋杯子蛋糕、小雞代表陽光糕點、青蛙代表花園捲、狐狸代表莓果蛋糕。配送車會在有限步數後抵達，因此玩家要替 Panko 組合相連印章，在車子離開前完成畫面上的烘焙盤。",
+      "30 張訂單分成六堂烘焙課。Panko 會在第 5、10、15、20、25、30 關檢查工作台，但這些是友善食譜測驗，不是戰鬥。完成第 30 關 Panko 大師烘焙坊，代表能依序服務三盤、做出六個泡泡的大批次，並開放所有烘焙盤供玩家重玩與補滿星星。"
+    ],
+    systems: [
+      "棋盤始終有 70 個原生泡泡按鈕，排列為七欄十列。相同泡泡只有上下或左右接觸才算連線，斜角不相連。被選中的泡泡會在原格縮小消失，上方泡泡再掉落，新的泡泡從遮罩上緣進入。",
+      "每次有效消除使用一步。只有目前有效的訂單動物會減少烘焙盤計數，非目標群組仍可用來改變棋盤。連續命中訂單會累積連擊和分數；結算星等依剩餘步數計算，能力報告則記錄訂單命中、最大群組與最高連擊。",
+      "群組門檻關卡要求至少三個或四個泡泡才能消除。依序訂單會一次亮起一種動物；提早消除後面的動物只會改變棋盤，不會推進其數量。加成關卡讓四、五或六個以上的大群組額外計入目前訂單。",
+      "多盤關卡在下一張食譜出現時保留同一棋盤與剩餘步數。最大群組關卡除了完成訂單，還要至少一次達到顯示的群組大小。第 30 關會同時使用三張食譜、四個群組門檻、依序目標、六個加成門檻與最大群組六的要求。",
+      "已解鎖關卡、最佳星等、關卡分數證據、常客印章、貼紙數、遊玩次數與最高到達關卡都存在目前瀏覽器。遊玩不需要登入；清除網站資料可能會移除這些紀錄。"
+    ],
+    how: ["從橫向關卡軌道選擇已解鎖的烘焙盤。", "點擊前先看動物訂單方塊與精簡規則符號。", "點擊兩個以上上下或左右相連的相同泡泡；後段可能要求三個或四個。", "只有需要整理棋盤時，才使用不屬於目前訂單的消除。", "在步數歸零前完成每張食譜，以及畫面顯示的最大群組目標。", "從結算繼續、重試、回關卡，或重玩舊訂單取得更多星星。"],
+    strategyTips: ["先從棋盤底部觀察；消除較低群組會移動更多泡泡，也更容易產生新連線。", "依序訂單中，先保留尚未亮起的動物群組，等輪到它時再使用。", "群組門檻關卡不要浪費步數點小群組；先消除附近泡泡把它們合在一起。", "大批量加成可節省步數，但最大群組關卡仍需至少一次達到指定大小。", "多盤配送不會重置棋盤，因此第一盤結束前就要替下一張食譜保留有用群組。"],
+    progression: [
+      "第 1～5 關建立基本連線、雙目標選擇、第一次群組大小目標與四個泡泡加成；Panko 初次檢查只接受三個以上群組，並要求一次四個群組。",
+      "第 6～10 關專注大型批次，門檻從三個提高到四個；Panko 大批次檢查要求所有訂單都用四個以上群組完成，並做出一次五個群組。",
+      "第 11～15 關加入依序隊列，只有亮框動物會推進；Panko 隊列檢查把相同規則帶進兩張連續食譜。",
+      "第 16～20 關加入雙道與三道服務。棋盤與步數會跨盤延續，因此第一盤完成前就要替下一盤準備。",
+      "第 21～25 關把隊列、群組門檻、加成、多張食譜與群組目標交叉組合；Panko 慶典檢查要求以三個以上群組完成兩張依序烘焙盤。",
+      "第 26～30 關是大師訂單，重點是大型群組與三盤規劃，不只是提高數量；最終關明確結合四個門檻、依序目標、大批量加成、三張食譜與六個群組目標。"
+    ],
+    designNote: "我們把棋盤固定為 7×10，因為它能填滿直向手機，同時保留圓形泡泡比例和真正規劃群組的空間。戰鬥頁只有點擊動作，但每次消除都會改變重力、後續連線、訂單連擊與剩餘步數。本次 30 關改造加入會改變『哪一組值得點』的規則，而不是只提高訂單數。Panko 檢查提供容易記住的難度里程碑，也不會把烘焙益智遊戲變成戰鬥。鍵盤與螢幕閱讀器玩家會取得動物、列、欄、群組大小、有效訂單與目前門檻等完整資訊。與直接單件分類的《動物顏色便當盒》不同，本作要求玩家持續重塑同一棋盤並提前規劃數步。",
+    parent: "《動物泡泡烘焙坊》可陪伴孩子練習視覺分組、計數、規劃、專注與簡單問題解決。成人可以詢問為什麼底部消除會改變棋盤，或哪一組應保留給下一盤。遊戲沒有計時、廣告、帳號要求或排名壓力；星等、分數、印章、貼紙與能力報告只是保存在本機的遊戲回饋，不是智力測驗、診斷或正式學校評量。",
+    faq: [
+      ["一共有多少關？", "共有 30 個具名關卡，分成六堂五關課程，每五關有一次友善 Panko 檢查。"],
+      ["哪些泡泡算相連？", "相同泡泡必須上下或左右接觸；只碰到斜角不算同一群組。"],
+      ["為什麼相同群組沒有填入訂單？", "關卡可能要求更大的最低群組，或正在依序等待另一種有亮框的動物。"],
+      ["切換到下一張食譜會發生什麼？", "訂單計數會換成新食譜，但棋盤與剩餘步數繼續保留。"],
+      ["大批量加成怎麼計算？", "在標記關卡達到顯示門檻時，該群組會替目前有效訂單多計入泡泡。"],
+      ["步數歸零會怎樣？", "未完成訂單會顯示支持性重試結算，已保存的解鎖與舊星等不會消失。"],
+      ["需要登入或會顯示廣告嗎？", "不需要登入；這款 Kids 遊戲沒有廣告，進度只存在目前瀏覽器。"],
+      ["能力報告是正式測驗嗎？", "不是。它只整理本場訂單命中、最大群組、連擊、分數與剩餘步數。"]
+    ]
+  };
 
   localizedGames["zh-Hant"]["wonder-crash"] = {
     title: "奇幻獅子防衛",

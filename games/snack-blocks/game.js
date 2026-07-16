@@ -288,6 +288,7 @@
     focusIndex: null,
   };
   let boardGeneration = 0;
+  let boardLifecycleSuspended = document.hidden;
 
   function invalidateBoardSession() {
     boardGeneration += 1;
@@ -298,13 +299,29 @@
 
   function scheduleBoardTask(task, delay) {
     const generation = boardGeneration;
-    const startedAt = performance.now();
+    let remaining = delay;
+    let lastFrameAt = null;
     const tick = (now) => {
       if (generation !== boardGeneration || !state.running || !document.body.classList.contains("snack-playing")) return;
-      if (now - startedAt >= delay) task();
+      if (boardLifecycleSuspended || document.hidden) {
+        lastFrameAt = null;
+        requestAnimationFrame(tick);
+        return;
+      }
+      if (lastFrameAt !== null) remaining -= Math.max(0, now - lastFrameAt);
+      lastFrameAt = now;
+      if (remaining <= 0) task();
       else requestAnimationFrame(tick);
     };
     requestAnimationFrame(tick);
+  }
+
+  function suspendBoardTasks() {
+    boardLifecycleSuspended = true;
+  }
+
+  function resumeBoardTasks() {
+    boardLifecycleSuspended = document.hidden;
   }
 
   function t(key, data = {}) {
@@ -1080,6 +1097,12 @@
     if (window.WonderI18n?.locale?.() !== state.locale) window.WonderI18n?.setLocale?.(state.locale);
     applyText();
   }, { once: true });
+  window.addEventListener("pagehide", suspendBoardTasks);
+  window.addEventListener("pageshow", resumeBoardTasks);
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) suspendBoardTasks();
+    else resumeBoardTasks();
+  });
 
   try {
     setLocale(localStorage.getItem(localeKey) || window.WonderI18n?.locale?.() || "en");

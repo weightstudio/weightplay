@@ -71,10 +71,10 @@ window.WONDER_LOBBY = {
       ages: ["6", "family"],
       ageLabel: { en: "6+", "zh-Hant": "6+" },
       description: {
-        en: "Help animal bakers tap matching bubbles, fill cozy orders, and clear puzzle stages.",
-        "zh-Hant": "幫動物烘焙師點擊相連泡泡，完成訂單並通過益智關卡。",
+        en: "Plan connected animal-bubble clears across 30 recipe puzzles, multi-tray orders, and friendly Panko checkpoints.",
+        "zh-Hant": "規劃相連動物泡泡的消除順序，完成 30 關食譜、多托盤訂單與友善的 Panko 檢核關。",
       },
-      meta: { en: ["Animal Bakery", "6 Stages", "Tap Groups"], "zh-Hant": ["動物烘焙", "6 關", "點擊群組"] },
+      meta: { en: ["30 Stages", "Recipe Rules", "Panko Checks"], "zh-Hant": ["30 關", "食譜規則", "Panko 檢核"] },
       art: { kind: "image", background: "assets/bubble-bakery-cover.webp", hero: "assets/weightplay-character-drum-belly-panda-safe-face-cutout.webp" },
     },
     {

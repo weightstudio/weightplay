@@ -1884,12 +1884,22 @@
 
   function rebuildOwnedBackpack(cards = [], placedCards = []) {
     save = normalizeSave(save);
-    const cardsById = new Map(
-      [...(Array.isArray(cards) ? cards : []), ...(Array.isArray(placedCards) ? placedCards : [])]
-        .filter(Boolean)
-        .map((card) => [Number(card.id), card])
-    );
-    return save.unlockedAnimals.map((id) => cardsById.get(Number(id)) || createAnimalCard(Number(id)));
+    const liveCards = [...(Array.isArray(cards) ? cards : []), ...(Array.isArray(placedCards) ? placedCards : [])]
+      .filter((card) => card && ANIMAL_METADATA.some((animal) => animal.id === Number(card.id)));
+    const cardsById = new Map(liveCards.map((card) => [Number(card.id), card]));
+
+    // The live formation is also ownership evidence. This covers a stale save
+    // written by older builds where deployed animals were removed from the
+    // backpack array before the owned roster was persisted.
+    const ownedIds = [...new Set([
+      ...save.unlockedAnimals.map(Number),
+      ...liveCards.map((card) => Number(card.id))
+    ])].sort((a, b) => a - b);
+    if (ownedIds.join(",") !== save.unlockedAnimals.join(",")) {
+      save.unlockedAnimals = ownedIds;
+      saveSave();
+    }
+    return ownedIds.map((id) => cardsById.get(id) || createAnimalCard(id));
   }
 
   function restoreSavedFormation() {
@@ -1943,12 +1953,15 @@
     }
   }
 
-  function renderPrepScreen() {
+  function renderPrepScreen(focusTarget = null) {
     renderFoodGuide();
     renderSquad();
     renderBench();
     renderShop();
     highlightSelectedCard(Boolean(selectedSlot));
+    if (focusTarget) {
+      document.querySelector(`.card-item[data-area="${focusTarget.area}"][data-slot="${focusTarget.index}"]`)?.focus();
+    }
   }
 
   function renderFoodGuide() {
@@ -1964,12 +1977,23 @@
   // Cards UI helpers
   function makeCardElement(card, sourceArea, index) {
     const el = document.createElement("div");
+    const activate = (event) => {
+      if (event.type === "keydown") {
+        if (event.repeat || (event.key !== "Enter" && event.key !== " ")) return;
+        event.preventDefault();
+      }
+      event.stopPropagation();
+      handleSlotTap(sourceArea, index);
+    };
+    el.setAttribute("role", "button");
+    el.tabIndex = 0;
     if (!card) {
       el.className = "card-item empty-slot";
       el.dataset.slot = String(index);
       el.dataset.area = sourceArea;
-      
-      el.addEventListener("click", () => handleSlotTap(sourceArea, index));
+      el.setAttribute("aria-label", `${locale === "zh-Hant" ? "空白陣位" : "Empty formation slot"} ${index + 1}`);
+      el.addEventListener("click", activate);
+      el.addEventListener("keydown", activate);
       return el;
     }
 
@@ -1981,6 +2005,9 @@
     el.dataset.slot = String(index);
     el.dataset.area = sourceArea;
     el.dataset.cardId = String(card.id);
+    const cardName = locale === "zh-Hant" ? (card.nameZht || card.nameEn) : card.nameEn;
+    const areaLabel = sourceArea === "backpack" ? (locale === "zh-Hant" ? "遠征背包" : "expedition backpack") : sourceArea;
+    el.setAttribute("aria-label", `${cardName}, ${areaLabel}, ${locale === "zh-Hant" ? `位置 ${index + 1}` : `slot ${index + 1}`}`);
 
     if (sourceArea === "backpack" && findPlacedCard(card.id)) {
       el.classList.add("is-deployed");
@@ -2075,10 +2102,8 @@
     }
 
     // Selection highlight for Tap-to-select mobile UI
-    el.addEventListener("click", (e) => {
-      e.stopPropagation();
-      handleSlotTap(sourceArea, index);
-    });
+    el.addEventListener("click", activate);
+    el.addEventListener("keydown", activate);
 
     return el;
   }
@@ -2095,7 +2120,7 @@
       selectedSlot = { area, index };
       highlightSelectedCard(true);
       playSynth("click");
-      renderPrepScreen();
+      renderPrepScreen({ area, index });
     } else {
       const source = selectedSlot;
       
@@ -2104,7 +2129,7 @@
         selectedSlot = null;
         highlightSelectedCard(false);
         playSynth("click");
-        renderPrepScreen();
+        renderPrepScreen({ area, index });
         return;
       }
 
@@ -2131,7 +2156,7 @@
           selectedSlot = { area, index };
           highlightSelectedCard(true);
           playSynth("click");
-          renderPrepScreen();
+          renderPrepScreen({ area, index });
         }
       } else {
         // Tapped empty slot: execute move/buy action
@@ -2160,13 +2185,19 @@
   }
 
   function highlightSelectedCard(highlight) {
-    document.querySelectorAll(".card-item").forEach((el) => el.classList.remove("is-selected-card"));
+    document.querySelectorAll(".card-item").forEach((el) => {
+      el.classList.remove("is-selected-card");
+      el.setAttribute("aria-pressed", "false");
+    });
 
     if (highlight && selectedSlot) {
       const parent = $(`${selectedSlot.area}Grid`) || $("shopRow");
       if (parent) {
         const item = parent.querySelector(`[data-slot="${selectedSlot.index}"][data-area="${selectedSlot.area}"]`);
-        if (item) item.classList.add("is-selected-card");
+        if (item) {
+          item.classList.add("is-selected-card");
+          item.setAttribute("aria-pressed", "true");
+        }
       }
     }
   }
@@ -2188,7 +2219,7 @@
       saveActiveFormation();
       playSynth("click");
       updateHUD();
-      renderPrepScreen();
+      renderPrepScreen({ area: destArea, index: destIndex });
       return;
     }
 
@@ -2199,7 +2230,7 @@
       saveActiveFormation();
       playSynth("click");
       updateHUD();
-      renderPrepScreen();
+      renderPrepScreen({ area: destArea, index: destIndex });
       return;
     }
 
@@ -2213,7 +2244,7 @@
       saveActiveFormation();
       playSynth("click");
       updateHUD();
-      renderPrepScreen();
+      renderPrepScreen({ area: destArea, index: destIndex });
       return;
     }
 
@@ -2278,7 +2309,7 @@
     }
 
     updateHUD();
-    renderPrepScreen();
+    renderPrepScreen({ area: destArea, index: destIndex });
   }
 
   // Each duplicate directly advances the animal level so merges always feel readable.

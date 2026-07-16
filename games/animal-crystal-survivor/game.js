@@ -265,7 +265,7 @@
   let charmConfirmTimer = 0;
   let lastFrame = 0;
   let battlePanelMetrics = null;
-  let pointerDown = false;
+  let activePointerId = null;
   let runToken = 0;
   const soundGate = {};
   const keys = new Set();
@@ -593,7 +593,9 @@
 
   function clearInput() {
     keys.clear();
-    pointerDown = false;
+    const pointerId = activePointerId;
+    activePointerId = null;
+    if (pointerId !== null && canvas.hasPointerCapture?.(pointerId)) canvas.releasePointerCapture(pointerId);
   }
 
   function resetFrameClock() {
@@ -1285,21 +1287,22 @@
   }
 
   canvas.addEventListener("pointerdown", (event) => {
-    pointerDown = true;
+    if (event.isPrimary === false || (event.button !== undefined && event.button !== 0)) return;
+    if (activePointerId !== null && activePointerId !== event.pointerId) return;
+    activePointerId = event.pointerId;
+    canvas.setPointerCapture?.(event.pointerId);
     moveTarget(event);
   });
   canvas.addEventListener("pointermove", (event) => {
-    if (pointerDown) moveTarget(event);
+    if (activePointerId === event.pointerId) moveTarget(event);
   });
-  window.addEventListener("pointerup", () => {
-    pointerDown = false;
-  });
-  window.addEventListener("pointercancel", () => {
-    pointerDown = false;
-  });
-  canvas.addEventListener("pointerleave", () => {
-    pointerDown = false;
-  });
+  const releasePointer = (event) => {
+    if (activePointerId === event.pointerId) activePointerId = null;
+  };
+  window.addEventListener("pointerup", releasePointer);
+  window.addEventListener("pointercancel", releasePointer);
+  canvas.addEventListener("pointerleave", releasePointer);
+  canvas.addEventListener("lostpointercapture", releasePointer);
   window.addEventListener("keydown", (event) => {
     const key = event.key.toLowerCase();
     if (movementKeys.has(key)) {
