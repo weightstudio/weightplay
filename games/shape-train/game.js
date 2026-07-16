@@ -180,6 +180,24 @@
   let stageDrag = null;
   let suppressStageClick = false;
   let stageEntryToken = 0;
+  let taskTransitionToken = 0;
+
+  function invalidateTaskTransition() {
+    taskTransitionToken += 1;
+    acceptingInput = false;
+    selectedPassenger = false;
+  }
+
+  function scheduleTaskTransition(task, delay) {
+    const token = taskTransitionToken;
+    const startedAt = performance.now();
+    const tick = (now) => {
+      if (token !== taskTransitionToken || !document.body.classList.contains("shape-playing")) return;
+      if (now - startedAt >= delay) task();
+      else requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }
 
   function clamp(value, min, max) {
     return Math.max(min, Math.min(max, value));
@@ -346,6 +364,7 @@
   window.visualViewport?.addEventListener("resize", updateStageFrame, { passive: true });
 
   function showMenu() {
+    invalidateTaskTransition();
     nodes.menuPanel.classList.add("hidden");
     nodes.stagePanel.classList.remove("hidden");
     nodes.playPanel.classList.add("hidden");
@@ -362,6 +381,7 @@
   }
 
   function showMain() {
+    invalidateTaskTransition();
     stageEntryToken += 1;
     nodes.stagePanel.classList.add("hidden");
     nodes.menuPanel.classList.remove("hidden");
@@ -378,6 +398,7 @@
   }
 
   function startStage(index) {
+    invalidateTaskTransition();
     currentStage = index;
     currentTask = 0;
     mistakes = 0;
@@ -477,7 +498,7 @@
     nodes.feedbackText.textContent = t(feedbackKey);
     playSound("success");
     track("game_answer", { level: currentStage + 1, correct: true, task: currentShape, answer: shape });
-    setTimeout(() => {
+    scheduleTaskTransition(() => {
       currentTask += 1;
       currentTaskMistakes = 0;
       car.classList.remove("correct");
@@ -497,6 +518,7 @@
   }
 
   function finishStage() {
+    invalidateTaskTransition();
     const stageNo = currentStage + 1;
     const earned = mistakes === 0 ? 3 : mistakes <= 2 ? 2 : 1;
     const previousBest = stars[stageNo] || 0;

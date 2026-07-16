@@ -472,12 +472,35 @@
     });
   }
 
+  let roundTransitionToken = 0;
+
+  function invalidateRoundTransition() {
+    roundTransitionToken += 1;
+    state.dragging = false;
+    foodCard.classList.remove("dragging", "pop", "shake");
+    foodCard.style.transform = "";
+    foodCard.style.pointerEvents = "";
+    dropZone.querySelectorAll(".hit, .miss").forEach((box) => box.classList.remove("hit", "miss"));
+  }
+
+  function scheduleRoundTask(task, delay) {
+    const token = roundTransitionToken;
+    const startedAt = performance.now();
+    const tick = (now) => {
+      if (token !== roundTransitionToken || !document.body.classList.contains("lunch-playing")) return;
+      if (now - startedAt >= delay) task();
+      else requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }
+
   window.addEventListener("resize", updateLunchFrame);
   window.addEventListener("orientationchange", updateLunchFrame);
   visualViewport?.addEventListener("resize", updateLunchFrame, { passive: true });
   visualViewport?.addEventListener("scroll", updateLunchFrame, { passive: true });
 
   function showMain() {
+    invalidateRoundTransition();
     document.body.classList.remove("lunch-stage", "lunch-playing");
     document.body.classList.add("lunch-main");
     resultPanel.classList.add("hidden");
@@ -490,6 +513,7 @@
   }
 
   function showStageSelect(focusCurrent = false) {
+    invalidateRoundTransition();
     document.body.classList.remove("lunch-main");
     document.body.classList.remove("lunch-playing");
     document.body.classList.add("lunch-stage");
@@ -740,6 +764,7 @@
   }
 
   function startStage(stageIndex, focusChoice = false) {
+    invalidateRoundTransition();
     document.body.classList.remove("lunch-stage");
     document.body.classList.add("lunch-playing");
     const stage = stages[stageIndex];
@@ -823,7 +848,7 @@
       foodCard.offsetWidth;
       foodCard.classList.add("shake");
       target?.classList.add("miss");
-      setTimeout(() => target?.classList.remove("miss"), 260);
+      scheduleRoundTask(() => target?.classList.remove("miss"), 260);
       return;
     }
 
@@ -846,7 +871,7 @@
     foodCard.offsetWidth;
     foodCard.classList.add("pop");
 
-    setTimeout(() => {
+    scheduleRoundTask(() => {
       target?.classList.remove("hit");
       state.index += 1;
       if (state.index >= state.deck.length) finishStage();
@@ -859,6 +884,7 @@
   }
 
   function finishStage() {
+    invalidateRoundTransition();
     progressFill.style.width = "100%";
     const stage = stages[state.stageIndex];
     saveUnlockedStage(stage.id + 1);

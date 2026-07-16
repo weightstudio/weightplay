@@ -258,6 +258,7 @@
   }
   function result(win) {
     cancelRouteGesture({restoreGuidance:false});
+    const insuredRun = insuranceActive;
     show('result');
     $('resultTitle').textContent = win ? t('win') : t('lose');
     $('resultCopy').textContent = win ? t('winCopy') : (state.lastError || t('loseCopy'));
@@ -268,10 +269,11 @@
     const unlockEvidence = state.shift < 5 ? t('shiftUnlocked', {n:state.shift + 1}) : t('allShiftsComplete');
     $('resultRewards').innerHTML = win
       ? `<span>${resultLabels.reputation} +${state.done * 5} \u00b7 ${t('total', {n:save.reputation})}</span><span>${resultLabels.coins} +${coinReward} \u00b7 ${t('total', {n:save.coins})}</span><span>${t('blueprintStamps')} +${shiftConfig[state.shift].stamps} \u00b7 ${t('total', {n:save.stamps})}</span><span>${resultLabels.medals} ${save.medals[state.shift] || 1}/3</span><span>${unlockEvidence}</span>`
-      : `<span>${resultLabels.safe} ${state.done}/${state.goal}</span><span>${resultLabels.errors} ${state.errors}/3</span><span>${insuranceActive ? resultLabels.protected : resultLabels.retry}</span>`;
+      : `<span>${resultLabels.safe} ${state.done}/${state.goal}</span><span>${resultLabels.errors} ${state.errors}/3</span><span>${insuredRun ? resultLabels.protected : resultLabels.retry}</span>`;
     $('nextBtn').textContent = win && state.shift < 5 ? t('next') : t('retry');
     $('nextBtn').onclick = () => { state.shift = win ? Math.min(5, state.shift + 1) : state.shift; startBattle(); };
     $('nextBtn').focus({ preventScroll: true });
+    insuranceActive = false;
   }
   function trapResultFocus(event) {
     if (event.key !== 'Tab' || $('result').classList.contains('hidden')) return;

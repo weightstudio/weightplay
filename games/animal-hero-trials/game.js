@@ -231,6 +231,7 @@
   function renderHeroPicker() {
     const picker = $("#heroPicker");
     if (!picker) return;
+    const focusedHero = document.activeElement?.closest?.(".hero-option")?.dataset.hero || "";
     const labels = {
       leo: ["Boom Mane Leo", locale === "zh-Hant" ? "均衡 · 100 生命" : "Balanced · 100 HP", locale === "zh-Hant" ? "近距離暈眩" : "Close-range stun"],
       fia: ["Spark Paw Fia", locale === "zh-Hant" ? "高速 · 86 生命" : "Fast · 86 HP", locale === "zh-Hant" ? "無敵衝刺" : "Invulnerable dash"],
@@ -252,6 +253,9 @@
         renderHeroPicker();
       };
       picker.append(button);
+    });
+    if (focusedHero) requestAnimationFrame(() => {
+      picker.querySelector(`.hero-option[data-hero="${focusedHero}"]`)?.focus({ preventScroll: true });
     });
   }
 

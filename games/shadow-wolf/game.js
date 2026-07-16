@@ -1058,6 +1058,7 @@
   }
 
   function endGame(won) {
+    if (!state.gameActive) return;
     state.gameActive = false;
     clearActiveInputs();
     cancelAnimationFrame(state.gameLoopId);

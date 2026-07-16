@@ -378,14 +378,12 @@ window.WONDER_LOBBY = {
       type: { en: "Room Action Roguelite", "zh-Hant": "房間動作 Roguelite" },
       categories: ["Featured", "Animal Games", "Puzzle", "Strategy"],
       skills: ["Logic", "Problem Solving", "Focus"],
-      ages: ["13"],
-      ageLabel: { en: "13+", "zh-Hant": "13+" },
       href: "games/animal-relic-hunters/",
       description: {
-        en: "Explore ancient ruin rooms, collect relic orbs, unlock chests, and equip powerful gear to defeat the boss.",
-        "zh-Hant": "探索古代遺跡房間，收集遺跡能量球，解鎖寶箱並穿戴強力裝備，最終擊敗強大首領。"
+        en: "Clear 30 three-room expeditions, master ten special threat behaviors, collect relic gear, and defeat six phase-changing Guardians.",
+        "zh-Hant": "完成 30 個三房遠征，掌握十種特殊威脅、收集遺物裝備，並擊敗六位會轉換階段的守護者。"
       },
-      meta: { en: ["Action Roguelite", "3 Rooms", "Gear Slots"], "zh-Hant": ["動作冒險", "3 個房間", "裝備系統"] },
+      meta: { en: ["30 Expeditions", "Ten Threat Rules", "Six Guardians"], "zh-Hant": ["30 個遠征", "十種威脅規則", "六位守護者"] },
       art: { kind: "image", background: "assets/animal-relic-hunters-cover.png", hero: "assets/weightplay-character-boom-mane-lion-cutout.webp" },
     },
     {
@@ -732,8 +730,8 @@ const cleanZhLobbyCopy = {
     title: "動物遺跡獵人",
     statusText: "可遊玩",
     type: "房間制動作 Roguelike",
-    description: "探索森林遺跡、擊敗怪物、收集金幣與裝備，透過本地進度讓角色越練越強。",
-    meta: ["動作 Roguelike", "裝備成長", "Boss 房間"],
+    description: "完成 30 個三房遠征，掌握十種特殊威脅、收集遺物裝備，並擊敗六位會轉換階段的守護者。",
+    meta: ["30 個遠征", "十種威脅規則", "六位守護者"],
   },
   "animal-auto-squad": {
     title: "動物自走小隊",

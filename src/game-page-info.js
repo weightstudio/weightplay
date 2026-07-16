@@ -521,34 +521,65 @@
     },
     "animal-relic-hunters": {
       title: "Animal Relic Hunters",
-      age: "13+",
       difficulty: "Hard",
-      time: "5-8 minutes",
+      time: "6-12 minutes per expedition",
+      gameplay: "Room Action Roguelite",
+      genre: ["Action", "Roguelite", "Animal Adventure"],
       skills: ["Logic", "Problem Solving", "Focus", "Reaction"],
-      intro:
-        "Animal Relic Hunters is a room-based action Roguelite survivor game. Explore ancient ruin chambers, defeat wave-based shadow beasts, level up to pick relic upgrades, collect golden keys, and unlock treasure chests to equip Weapons, Armor, and Boots to defeat the Boss.",
+      guideKicker: "WeightPlay Original Game Guide",
+      guideTitleSuffix: "Game Guide",
+      noteTitle: "Player and Save Information",
+      hideScoreBands: true,
+      intro: "Animal Relic Hunters is a 30-expedition room-action campaign. Guide the lion explorer through three connected chambers, let the equipped relic weapon fire automatically, and steer around enemies whose behavior changes by ruin region. Relic Orbs create temporary level-up choices during a run, while Gold, training, equipment and mission progress remain on this browser. Six five-mission regions end with six different Guardians rather than one repeated enlarged enemy.",
+      story: [
+        "The Relic Road once connected Moss Gate, Echo Gallery, Crystal Vault, Sunken Shrine, Moon Archive and Crown Court. When the Crown seal failed, its energy did not simply make local beasts stronger. Moss creatures began dividing and charging, gallery sentries attacked from beyond weapon range, crystal keepers formed impact wards, shrine beasts repaired themselves, and archive hunters interrupted relic fire with silence bolts.",
+        "The player guides Boom Mane Lion, a field explorer carrying an automatic relic focus. Every expedition recovers one stretch of the road. Elites in the first two rooms guard Golden Keys; the key opens a chest whose Weapon, Armor or Boots can be kept in the permanent backpack. The third room decides whether the route is safe. Expeditions 5, 10, 15, 20, 25 and 30 lead to the Moss Guardian, Echo Warden, Prism Colossus, Mirecoil Hydra, Archive Keeper and Relic Crown Monarch. Defeating the Monarch means all six archives can exchange relics again instead of remaining isolated behind corrupted chambers."
+      ],
+      systems: [
+        "Expedition flow: choose one unlocked card from the 30-mission rail. Begin Room 1 with full run HP and current equipment. Clear the group and delayed key-carrying Elite, collect its key, open the chest and enter the portal. Room 2 uses a harder mix. Room 3 ends with an Elite guardian or, every fifth mission, a named regional Guardian.",
+        "Movement and attacks: use WASD, arrow keys, a held primary mouse button in the arena, or the phone joystick. The weapon automatically aims at the nearest enemy. A Crystal Sword adds direct damage, a Relic Dagger shortens the firing interval, Armor adds Max HP and Boots add movement speed. Position remains the player's main action: circling a chaser, crossing behind a shooter and leaving an orbiter's preferred ring require different routes.",
+        "Threat rules: rushers alternate a slow stalk with a fast charge; shooters hold range and fire relic bolts; pulsers launch radial rings; splitters release two rushers when defeated; wards cancel a fixed number of projectile hits; regenerators heal after avoiding damage; slowing beasts reduce movement on contact; orbiters travel around the explorer; silencers temporarily stop automatic fire. Region 6 combines these rules instead of introducing a larger copy of a basic animal.",
+        "Guardian phases: each regional Boss changes at 70 and 35 percent HP. Moss calls more rushers. Echo releases larger radial barrages. Crystal restores a hit-count ward. Mire heals and summons slowing beasts. Moon combines orbit movement with silence volleys. Crown adds wards, barrages, summons and recovery. The final mission therefore tests reading several effects, not only surviving a longer health bar.",
+        "Run growth: defeated enemies drop green Relic Orbs. Filling the EXP bar pauses the room and offers three relic upgrades, such as damage, attack rate, Max HP, movement or pickup range. One optional three-Diamond reroll is available per draft. Run relic counts reset when a new expedition starts, so the next build may solve the same threat mix differently.",
+        "Permanent growth: Gold pickups and duplicate gear conversion feed equipment upgrades. Saved character levels grant training points for damage, HP, speed or magnet range. The backpack records collected gear and which item is equipped in each of three slots. The optional Mist Amulet is a confirmed one-time Diamond purchase that changes starting HP from 30 to 40; it is not required for any mission, chest or Guardian."
+      ],
       how: [
-        "Move your explorer using keyboard WASD or virtual joystick controls.",
-        "Your explorer auto-attacks nearby enemies with magic energy bullets.",
-        "Defeat shadow beasts to drop green Relic Orbs (EXP) to level up.",
-        "Collect Golden Keys to unlock chests containing gear, then equip Weapons, Armor, and Boots in your side panel.",
-        "When a level-up draft appears, choose one relic upgrade or spend 3 Diamonds once to reroll the choices.",
-        "Enter Room 3 and defeat the Boss Behemoth to complete your expedition."
+        "Swipe the Stage rail and choose an unlocked expedition; Guardian cards appear at missions 5, 10, 15, 20, 25 and 30.",
+        "Move with WASD, arrow keys, held mouse input or the virtual joystick. Aim is automatic, so steer to control distance and the nearest target.",
+        "Defeat ordinary threats while watching for charges, ranged bolts, shields, regeneration, slow and silence effects.",
+        "Collect Relic Orbs. At level-up, choose one of three temporary upgrades or use the single optional reroll.",
+        "Defeat the delayed Elite in Rooms 1 and 2, collect its Golden Key, open the chest and decide whether to equip the named drop or keep the current loadout.",
+        "Enter Room 3 with the HP and run upgrades that survived the earlier rooms, then defeat its Elite or regional Guardian.",
+        "Use Next Mission after a victory or return to Missions to train, upgrade gear and choose another unlocked route."
       ],
       strategyTips: [
-        "Maneuver and kite enemies in circles to avoid taking melee damage.",
-        "Choose relic upgrades like Magnet Range or Shield early on to boost survivability.",
-        "Save Diamonds for meaningful choices: the Mist Amulet is permanent, while relic rerolls help rescue a difficult run.",
-        "Keep upgrading and equipping better rarity gear to boost your basic attack power and max health.",
-        "Chests contain rare equipment, so prioritize collecting keys from elite enemies."
+        "Do not circle every room in the same direction. Reverse when ranged bolts fill the outside lane, and cut across an orbiter after it commits to its arc.",
+        "A blue ring means a ward is still canceling hits. Keep firing only if the lane is safe; movement and survival do not require breaking it immediately.",
+        "Touch a regenerator often enough to interrupt its recovery window. A slower, high-damage weapon may be better than scattered low damage there.",
+        "Silence bolts stop automatic fire briefly. Use that pause to reposition instead of standing beside a target waiting for the weapon to resume.",
+        "Run HP carries into the next room, with only a small heal at the portal. A defensive relic before Room 3 can be more valuable than another damage choice.",
+        "Chest gear is claimed before the equip decision. Keeping the current loadout does not discard a new item; it remains in the backpack for later comparison.",
+        "Permanent training reduces repetition, but Guardian phases still demand movement. Use the first attempt to learn its pattern rather than spending Diamonds automatically."
       ],
-      parent:
-        "This game is designed for teens, offering practice in reflex reaction, focus, tactical item selection, and logic planning. Progression is stored locally and contains no clinical or diagnosis metrics.",
+      progression: [
+        "Expeditions 1-5 establish nearest-target aiming, ordinary chasers, timed charges and splitting enemies. The Moss Guardian summons rushers at both phase thresholds.",
+        "Expeditions 6-10 turn space into a crossfire problem with shooters and radial pulsers. The Echo Warden's expanding volleys make the room edge dangerous.",
+        "Expeditions 11-15 introduce hit-count wards and shielded mixed groups. The Prism Colossus rebuilds its protection twice, so burst timing matters.",
+        "Expeditions 16-20 combine regeneration, slowing contact and ranged pressure. The Mirecoil Hydra heals and calls slow-field beasts during its phases.",
+        "Expeditions 21-25 add orbit routes and temporary attack silence. The Archive Keeper fires multi-angle silence volleys while circling the explorer.",
+        "Expeditions 26-30 remix all prior threats. Six-Seal Court is the full regular-enemy exam; the Relic Crown Monarch then combines ward, barrage, summons and recovery."
+      ],
+      designNote: "Three rooms let relic drafts and chest gear affect a final test without turning one mission into a long survival session. Auto-fire keeps phone input focused on movement, while mouse hold and keyboard preserve precise desktop control. Expedition 30 Room 3 stays below a 2.3 base scale; difficulty comes from range control, phases and mixed behaviors. Unlike Animal Crystal Survivor's open timed arena or Animal Auto Squad's pre-battle formation, room order, carried HP, gear decisions and live navigation form one connected expedition.",
+      parent: "Mission progress, character level, EXP, Gold, training, owned gear, gear levels, equipped slots and Mist Amulet ownership are stored locally in this browser. No login is required for basic play, and clearing site storage may remove that progress. The game does not award platform Diamonds from battle. Diamonds are optional spending choices for the confirmed Mist Amulet or one relic-draft reroll; all 30 expeditions and six Guardians can be played without them.",
       faq: [
-        ["Is Animal Relic Hunters free to play?", "Yes. All games on the WeightPlay platform run free of cost in the web browser."],
-        ["How does the gear system work?", "Defeating elites drops keys to open chests containing Weapon, Armor, and Boots. Equipping gear increases your active stats."],
-        ["What can Diamonds be used for?", "Diamonds can buy the permanent Mist Amulet and can optionally reroll one level-up relic draft for 3 Diamonds."],
-        ["How do I defeat the Boss?", "Collect relics to increase your health and speed, and equip rare weapons to deal high damage before challenging the Boss Behemoth."]
+        ["Is Animal Relic Hunters free?", "Yes. All 30 expeditions, three-room routes, gear drops and six Guardians are playable in the browser without payment."],
+        ["How many missions and Bosses are there?", "There are 30 expeditions. Missions 5, 10, 15, 20, 25 and 30 end with six mechanically different regional Guardians."],
+        ["What is permanent and what resets?", "Mission unlocks, level, EXP, Gold, training and gear are permanent local progress. Relic choices made during a run reset when a new expedition starts."],
+        ["How do wards, slow and silence work?", "Wards cancel a fixed number of projectile hits, slow reduces movement briefly, and silence pauses automatic attacks. None removes steering control."],
+        ["Do I lose a new item if I keep my current gear?", "No. A new chest item is added to the backpack first. The decision only chooses whether to equip it now."],
+        ["What are Diamonds used for?", "They can confirm the permanent Mist Amulet or reroll one relic draft for three Diamonds. They do not unlock missions, gear or Guardians."],
+        ["Does progress require an account?", "No. Progress is stored in this browser. Clearing its site data or switching devices may start a separate save."],
+        ["Does it support phones and desktop?", "Yes. Phones use a virtual joystick and large decisions; desktop supports keyboard, arrows and held mouse movement in the arena."]
       ],
     },
     "animal-rune-tactics": {
@@ -1202,34 +1233,65 @@
       },
       "animal-relic-hunters": {
         title: "動物遺跡獵人",
-        age: "13+",
         difficulty: "困難",
-        time: "5-8 分鐘",
+        time: "每次遠征 6-12 分鐘",
         gameplay: "房間動作 Roguelite",
-        genre: ["動作", "Roguelite", "動物"],
+        genre: ["動作", "Roguelite", "動物冒險"],
         skills: ["邏輯", "問題解決", "專注", "反應"],
-        intro: "動物遺跡獵人是一款房間制動作 Roguelite 生存遊戲。玩家探索古代遺跡房間，擊敗一波波暗影野獸，升級後選擇遺跡能力，收集金鑰匙，開啟寶箱並穿戴武器、護甲與靴子，最後挑戰遺跡巨獸。",
+        guideKicker: "WeightPlay 原創遊戲指南",
+        guideTitleSuffix: "遊戲指南",
+        noteTitle: "玩家與存檔資訊",
+        hideScoreBands: true,
+        intro: "《動物遺跡獵人》是一款擁有 30 個遠征的房間動作遊戲。玩家帶領獅子探險家穿越三個連續房間，裝備中的遺物武器會自動射擊，玩家則要依照不同遺跡區域的敵人行為調整走位。遺跡能量球會在本輪帶來升級選擇；金幣、訓練、裝備與任務進度則保存在本機。六個五關區域各有一位真正不同的守護者，不是把同一隻敵人放大重複使用。",
+        story: [
+          "遺物之路曾連接六座檔案遺跡：苔痕之門、回聲長廊、水晶地庫、沉沒神殿、月影書庫與王冠宮廷。每座遺跡都負責穩定一種古代動物遺物。王冠封印破裂後，能量沒有只是讓野獸的數字變大；苔原生物開始分裂與衝刺，長廊守衛會在武器射程外攻擊，水晶看守形成擋住固定次數攻擊的護罩，神殿野獸會再生，書庫獵手則用沉默彈暫停遺物射擊。",
+          "玩家操作的爆鬃獅是一名攜帶自動遺物核心的野外探險家。每完成一次遠征，就能重新打通一段道路。前兩房的菁英守著金鑰匙，鑰匙可開啟寶箱，把武器、護甲或靴子收入永久背包。第三房決定這條道路是否安全；遠征 5、10、15、20、25、30 分別由苔原守護者、回聲監守、水晶巨像、澤環多頭獸、書庫守密者與遺物冠冕王鎮守。擊敗最後的冠冕王，代表六座遺跡終於能再次交換遺物，不再被腐化房間隔離。"
+        ],
+        systems: [
+          "遠征流程：在橫向 30 關滑軌選擇已解鎖任務。每次從滿血與目前永久裝備開始。清除基本敵群與稍後出現的持鑰菁英，撿起鑰匙、開寶箱並進入傳送門。第二房加入更複雜的混合敵人，第三房則由任務守衛或每五關一次的區域守護者收尾。",
+          "移動與攻擊：電腦可用 WASD、方向鍵或在場地按住滑鼠；手機使用虛擬搖桿。武器自動瞄準最近敵人。水晶長劍增加直接傷害，遺跡短刃縮短射擊間隔，護甲增加生命上限，靴子提升移動速度。玩家真正控制的是距離與最近目標：繞開追擊者、從射手背後穿越、切入環繞敵人的圓周，需要不同路線。",
+          "特殊敵人：衝刺者會在慢速跟隨後突然加速；射手保持距離並發射遺物彈；脈衝敵人向四周放射；分裂者死亡後產生兩隻衝刺獸；護盾會抵銷固定次數射擊；再生者未受傷一段時間就恢復生命；減速敵人接觸後降低移速；環繞者繞著玩家移動；沉默者暫停自動攻擊。第六區會組合這些規則。",
+          "守護者階段：每隻區域 Boss 在生命 70% 與 35% 時改變戰局。苔原召喚衝刺者，回聲釋放更密集的環形彈幕，水晶重建計次護盾，澤環恢復生命並召喚減速獸，月影一邊環繞一邊發射沉默彈，冠冕則同時使用護盾、彈幕、召喚與恢復。最後一關考的是讀懂多種效果，不只是磨掉更長血條。",
+          "本輪成長：擊敗敵人會掉落綠色遺跡能量球。經驗條填滿時房間暫停，玩家從三個遺物能力選一個，例如傷害、攻速、生命、移速或吸取範圍。每次選擇可自願花 3 顆鑽石重抽一次。本輪遺物在新遠征開始時重置，因此同一關也能用不同配置解題。",
+          "永久成長：金幣掉落與重複裝備轉換可升級背包裝備。角色保存等級提供訓練點，可投入傷害、生命、速度或吸取範圍。背包記錄已取得裝備與三個欄位目前穿戴的物品。可選的迷霧護符會先確認再一次性花費鑽石，把起始生命從 30 改為 40；任何任務、寶箱或守護者都不要求購買。"
+        ],
         how: [
-          "用 WASD、方向鍵或手機搖桿移動角色。",
-          "擊敗敵人並收集遺跡能量，升級後選擇一個能力。",
-          "菁英敵人會掉落金鑰匙，可以用來打開寶箱取得裝備。",
-          "等級提升時可以選擇能力，也可以花 3 顆鑽石重抽一次選項。",
-          "進入第 3 房並擊敗遺跡巨獸即可完成探險。"
+          "滑動關卡軌道並選擇已解鎖遠征；第 5、10、15、20、25、30 關會明確標示守護者。",
+          "用 WASD、方向鍵、按住滑鼠或手機搖桿移動。瞄準會自動完成，走位決定距離與最近攻擊目標。",
+          "清除普通威脅，同時辨識衝刺、遠射、護盾、再生、減速與沉默效果。",
+          "收集遺跡能量球；升級時選擇三個本輪能力之一，或使用一次可選重抽。",
+          "擊敗第一、二房稍後出現的菁英，撿起金鑰匙開寶箱，再決定立即穿戴或保留目前配裝。",
+          "帶著前兩房剩餘生命與本輪能力進入第三房，擊敗任務守衛或區域守護者。",
+          "勝利後前往下一任務，或返回關卡進行永久訓練、裝備升級與路線選擇。"
         ],
         strategyTips: [
-          "繞圈移動並保持距離，可以降低被近戰敵人連續碰到的風險。",
-          "前期優先選擇吸取範圍或護盾類能力，能提高生存率。",
-          "鑽石適合用在有意義的選擇：迷霧護符是永久升級，能力重抽則用來拯救困難的一輪。",
-          "持續升級並穿戴更高稀有度裝備，可以提高基本攻擊力與最大生命值。",
-          "寶箱會給稀有裝備，所以看到菁英敵人掉落鑰匙時要優先收集。"
+          "不要每個房間都固定同方向繞圈。外圈被遠射填滿時要反向，環繞敵人確定弧線後則可切過內側。",
+          "藍色光圈代表護盾仍在抵銷攻擊。若路線不安全，不必站著硬拆；先保持距離再找射擊窗口。",
+          "持續命中再生者可以打斷恢復空窗。面對它時，穩定高傷害通常比四處分散的低傷害更有效。",
+          "沉默彈只會暫停自動射擊，不會奪走移動控制。利用這段時間換位，不要貼著敵人等待武器恢復。",
+          "生命會帶進下一房，傳送門只提供少量恢復。第三房前選一個防禦遺物，有時比再加傷害更重要。",
+          "新裝備在選擇穿戴前就會加入背包。保留目前裝備不會丟掉新物品，之後仍可比較與更換。",
+          "永久訓練能降低重試壓力，但守護者階段仍需要走位。第一次挑戰應先學攻擊規律，不必自動花鑽石。"
         ],
-        parent:
-          "這款遊戲適合青少年練習反應、專注、道具選擇與局勢規劃。進度保存在本機，能力報告只用於遊戲娛樂與自我進步，不是診斷、排名或正式學習評量。",
+        progression: [
+          "遠征 1-5 教會最近目標、自動攻擊、普通追擊、計時衝刺與分裂。苔原守護者會在兩個階段召喚更多衝刺獸。",
+          "遠征 6-10 加入射手與環形脈衝，空間變成彈道問題。回聲監守的彈幕會讓房間外圈不再永遠安全。",
+          "遠征 11-15 加入計次護盾與混合護衛。水晶巨像會兩次重建保護，要求玩家安排爆發時機。",
+          "遠征 16-20 組合再生、接觸減速與遠射壓力。澤環多頭獸會恢復生命並呼叫減速敵人。",
+          "遠征 21-25 加入環繞路線與暫時沉默。書庫守密者會一邊繞行一邊射出多角度沉默彈。",
+          "遠征 26-30 重組之前所有威脅。六印庭院是普通敵人的總驗收，遺物冠冕王則結合護盾、彈幕、召喚與恢復。"
+        ],
+        designNote: "每次遠征設計成三個房間，是因為前兩房的遺物選擇與寶箱裝備必須有機會影響最後考驗，同時不把單一任務拖成過長的生存戰。自動射擊讓手機操作集中在清楚的走位，鍵盤與按住滑鼠則保留桌面精準控制。第 30 關第三房的基礎倍率刻意維持在 2.3 以下，難度主要來自射程控制、敵人混合與 Boss 階段。這和《動物水晶生存者》的開放式三分鐘競分不同，也不同於《動物自走小隊》的戰前擺陣；本作由房間順序、保留生命、裝備決定與即時導航串成完整遠征。",
+        parent: "任務進度、角色等級、經驗、金幣、訓練、已擁有裝備、裝備等級、穿戴欄位與迷霧護符狀態都保存在此瀏覽器。基本遊玩不需要登入；清除網站資料可能移除本機進度。戰鬥不會產生平台鑽石。鑽石只用於可選的迷霧護符確認購買或一次遺物重抽；30 個遠征與六位守護者都不要求鑽石。",
         faq: [
-          ["動物遺跡獵人是免費遊戲嗎？", "是。WeightPlay 的遊戲都可以直接在瀏覽器免費遊玩。"],
-          ["裝備系統怎麼運作？", "擊敗菁英敵人會取得鑰匙，開啟寶箱後可能獲得武器、護甲或靴子。穿戴裝備後會提高目前角色能力。"],
-          ["鑽石可以做什麼？", "鑽石可以購買永久迷霧護符，也可以在升級能力選項不理想時花 3 顆鑽石重抽一次。"],
-          ["要怎麼擊敗 Boss？", "先收集能力提高生命、移動與吸取範圍，並穿戴稀有武器提高傷害，再挑戰遺跡巨獸。"]
+          ["《動物遺跡獵人》可以免費玩嗎？", "可以。30 個遠征、三房路線、裝備掉落與六位守護者都能直接在瀏覽器遊玩。"],
+          ["共有多少關與多少 Boss？", "共有 30 個遠征；第 5、10、15、20、25、30 關各有一位機制不同的區域守護者。"],
+          ["哪些成長永久保存？", "任務解鎖、等級、經驗、金幣、訓練與裝備會保存在本機；本輪選到的遺物會在新遠征開始時重置。"],
+          ["護盾、減速與沉默怎麼運作？", "護盾抵銷固定次數射擊，減速短暫降低移動速度，沉默則暫停自動攻擊；三者都不會拿走走位控制。"],
+          ["保留目前裝備會失去新物品嗎？", "不會。新寶箱物品會先加入背包，選擇只決定是否立刻穿戴。"],
+          ["鑽石可以做什麼？", "鑽石可確認購買永久迷霧護符，或花 3 顆鑽石重抽一次本輪遺物。任務、裝備與守護者不需要鑽石。"],
+          ["需要帳號才能保存嗎？", "不需要。進度保存在目前瀏覽器；清除網站資料或換裝置可能會開始另一份存檔。"],
+          ["手機與電腦都能玩嗎？", "可以。手機使用虛擬搖桿與大型選項，電腦支援鍵盤、方向鍵與按住滑鼠移動。"]
         ],
       },
       "animal-rune-tactics": zhGuide("動物符文戰棋", "回合制小隊戰棋", ["選擇英雄並移動到符文格。", "攻擊或防守來控制戰局。", "完成任務後領取獎勵並保存本機進度。"]),

@@ -287,6 +287,25 @@
     suppressClick: false,
     focusIndex: null,
   };
+  let boardGeneration = 0;
+
+  function invalidateBoardSession() {
+    boardGeneration += 1;
+    state.dragStart = null;
+    state.selected = null;
+    state.suppressClick = false;
+  }
+
+  function scheduleBoardTask(task, delay) {
+    const generation = boardGeneration;
+    const startedAt = performance.now();
+    const tick = (now) => {
+      if (generation !== boardGeneration || !state.running || !document.body.classList.contains("snack-playing")) return;
+      if (now - startedAt >= delay) task();
+      else requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }
 
   function t(key, data = {}) {
     let value = (text[state.locale] && text[state.locale][key]) || text.en[key] || key;
@@ -583,8 +602,15 @@
   }
 
   function showStage() {
+    invalidateBoardSession();
+    state.running = false;
+    state.busy = false;
     nodes.menuPanel.classList.add("hidden");
     nodes.stagePanel.classList.remove("hidden");
+    nodes.resultPanel.classList.add("hidden");
+    nodes.hud.classList.add("hidden");
+    nodes.playPanel.classList.add("hidden");
+    document.body.classList.remove("snack-playing");
     document.body.classList.add("snack-stage");
     renderStageGrid();
     exitSharedPlayViewport();
@@ -593,6 +619,9 @@
   }
 
   function showMain() {
+    invalidateBoardSession();
+    state.running = false;
+    state.busy = false;
     nodes.stagePanel.classList.add("hidden");
     nodes.menuPanel.classList.remove("hidden");
     document.body.classList.remove("snack-stage");
@@ -769,10 +798,10 @@
     markMatches(matches);
     window.WonderSound?.play(matches.length >= 5 ? "success" : "coin");
 
-    window.setTimeout(() => {
+    scheduleBoardTask(() => {
       const dropMap = collapse(matches);
       renderBoard(dropMap);
-      window.setTimeout(resolveBoard, dropSettleDuration);
+      scheduleBoardTask(resolveBoard, dropSettleDuration);
     }, matchClearDuration);
   }
 
@@ -793,7 +822,7 @@
 
     if (!findMatches().length) {
       window.WonderSound?.play("wrong");
-      window.setTimeout(() => {
+      scheduleBoardTask(() => {
         swap(first, target);
         state.combo = 1;
         state.busy = false;
@@ -806,7 +835,7 @@
     state.moves -= 1;
     updateHud();
     window.WonderSound?.play("click");
-    window.setTimeout(resolveBoard, 120);
+    scheduleBoardTask(resolveBoard, 120);
   }
 
   function onTileClick(event) {
@@ -899,6 +928,7 @@
 
   function startStage(index) {
     if (index >= loadUnlocked()) return;
+    invalidateBoardSession();
     window.WonderSound?.unlock();
     window.WonderSound?.play("start");
     state.currentStageIndex = index;
@@ -942,6 +972,7 @@
   }
 
   function finishStage(cleared) {
+    invalidateBoardSession();
     state.running = false;
     state.busy = true;
     const stage = activeStage();
@@ -1002,15 +1033,7 @@
   }
 
   function showMenu() {
-    state.running = false;
-    state.busy = false;
-    nodes.hud.classList.add("hidden");
-    nodes.playPanel.classList.add("hidden");
-    nodes.resultPanel.classList.add("hidden");
-    nodes.menuPanel.classList.add("hidden");
-    nodes.stagePanel.classList.remove("hidden");
-    document.body.classList.remove("snack-playing");
-    document.body.classList.add("snack-stage");
+    showStage();
     const shell = document.querySelector(".snack-game");
     shell?.setAttribute("data-play-viewport", "");
     for (const property of ["position", "inset", "left", "top", "width", "height", "min-height", "transform", "transform-origin"]) shell?.style.removeProperty(property);

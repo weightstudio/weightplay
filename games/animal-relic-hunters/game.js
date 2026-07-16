@@ -486,6 +486,10 @@
     boar: new Image(),
     orb: new Image(),
     key: new Image(),
+    bossMoss: new Image(),
+    bossEcho: new Image(),
+    bossCrystal: new Image(),
+    bossMire: new Image(),
   };
   assets.bg.src = "../../assets/animal-relic-hunters-ruin-room.png";
   assets.hero.src = "../../assets/weightplay-boom-mane-lion.png";
@@ -493,6 +497,10 @@
   assets.boar.src = "../../assets/animal-relic-hunters-stone-boar.png";
   assets.orb.src = "../../assets/animal-relic-hunters-relic-orb.png";
   assets.key.src = "../../assets/animal-relic-hunters-golden-relic-key.png";
+  assets.bossMoss.src = "../../assets/animal-relic-hunters-boss-moss.webp";
+  assets.bossEcho.src = "../../assets/animal-relic-hunters-boss-echo.webp";
+  assets.bossCrystal.src = "../../assets/animal-relic-hunters-boss-crystal.webp";
+  assets.bossMire.src = "../../assets/animal-relic-hunters-boss-mire.webp";
 
   const uiAssets = {
     attack: "../../assets/animal-relic-hunters-skill-attack-crystal.webp",
@@ -923,12 +931,12 @@
 
   const metaText = {
     en: {
-      description: "Explore ancient ruins, level up, collect chests, and equip Weapons, Armor, and Boots in this animal roguelite survivor.",
-      ogDescription: "Defeat shadow beasts, collect keys, and equip rare gear to defeat the Behemoth!"
+      description: "Clear 30 three-room animal relic expeditions, master ten special enemy behaviors, collect gear, and defeat six phase-changing ruin Guardians.",
+      ogDescription: "Explore six ruin regions across 30 missions, build relic gear, counter special threats, and defeat six distinct Guardians."
     },
     "zh-Hant": {
-      description: "遊玩《動物遺跡獵人》，探索古代遺跡、累積等級、開啟寶箱，並穿戴武器、護甲與靴子挑戰遺跡巨獸。",
-      ogDescription: "擊敗暗影野獸、收集鑰匙、穿戴稀有裝備，挑戰遺跡巨獸。"
+      description: "遊玩《動物遺跡獵人》的 30 個三房遠征，掌握十種特殊敵人行為、收集裝備，並擊敗六位會換階段的遺跡守護者。",
+      ogDescription: "探索六個遺跡區域與 30 個任務，建立遺物配裝、破解特殊威脅並擊敗六位不同守護者。"
     }
   };
 
@@ -1405,6 +1413,14 @@
   };
 
   const guardianBehaviors = ["moss", "echo", "crystal", "mire", "moon", "crown"];
+  const guardianNames = {
+    moss: { en: "Moss Guardian", zh: "苔原守護者" },
+    echo: { en: "Echo Warden", zh: "回聲監守" },
+    crystal: { en: "Prism Colossus", zh: "水晶巨像" },
+    mire: { en: "Mirecoil Hydra", zh: "澤環多頭獸" },
+    moon: { en: "Archive Keeper", zh: "書庫守密者" },
+    crown: { en: "Relic Crown Monarch", zh: "遺物冠冕王" },
+  };
 
   function missionDefinition(id = state.expedition) {
     return expeditionDefs[Math.max(1, Math.min(EXPEDITION_COUNT, Number(id) || 1)) - 1];
@@ -1456,7 +1472,7 @@
       hpMultiplier,
       speedMultiplier: checkpoint ? 0.82 : 1,
       size: checkpoint ? 54 : 38,
-      label: checkpoint ? `GUARDIAN ${region}` : "ELITE",
+      label: checkpoint ? guardianNames[behavior][getLocale() === "zh-Hant" ? "zh" : "en"] : (getLocale() === "zh-Hant" ? "菁英" : "ELITE"),
     });
     guardian.type = checkpoint ? "boss" : (region >= 3 ? "boar" : "jaguar");
     guardian.shieldHits = behavior === "crystal" || behavior === "crown" ? (checkpoint ? 6 : 3) : guardian.shieldHits;
@@ -2386,7 +2402,10 @@
         ctx.globalAlpha = 1;
       }
 
-      const sprite = enemy.type === "boar" || enemy.type === "boss" ? assets.boar : assets.jaguar;
+      const guardianSprites = { moss: assets.bossMoss, echo: assets.bossEcho, crystal: assets.bossCrystal, mire: assets.bossMire };
+      const sprite = enemy.isBoss && guardianSprites[enemy.behavior]?.complete
+        ? guardianSprites[enemy.behavior]
+        : enemy.type === "boar" || enemy.type === "boss" ? assets.boar : assets.jaguar;
       if (enemy.type === "boss") {
         // Giant boss uses the premium creature sprite instead of a placeholder circle.
         ctx.shadowColor = "rgba(212, 175, 55, 0.55)";
@@ -2836,6 +2855,35 @@
           state.enemies = previousEnemies;
           state.enemyShots = previousShots;
           return previews;
+        },
+        prepareExpeditionForTest(expedition = EXPEDITION_COUNT, room = ROOMS_PER_EXPEDITION) {
+          selectedExpedition = Math.max(1, Math.min(EXPEDITION_COUNT, Number(expedition) || 1));
+          profile.unlockedExpedition = Math.max(profile.unlockedExpedition || 1, selectedExpedition);
+          saveProfile();
+          startRun();
+          state.room = Math.max(1, Math.min(ROOMS_PER_EXPEDITION, Number(room) || 1));
+          spawnRoomEntities();
+          updateHUDText();
+          return this.snapshot();
+        },
+        spawnGuardianForTest() {
+          clearEliteSpawnTimer();
+          const mission = missionDefinition();
+          const guardian = createGuardian(mission.region, state.room === ROOMS_PER_EXPEDITION && mission.checkpoint);
+          guardian.x = ARENA_WIDTH / 2;
+          guardian.y = 260;
+          state.enemies.push(guardian);
+          state.bossWarningUntil = performance.now() + 2400;
+          drawCanvasFrame();
+          return {
+            mission: mission.id,
+            region: mission.region,
+            checkpoint: mission.checkpoint,
+            behavior: guardian.behavior,
+            isBoss: guardian.isBoss,
+            hp: guardian.hp,
+            shieldHits: guardian.shieldHits,
+          };
         },
         bulletVisuals() {
           return ["default", "sword-rare", "dagger-epic"].map((key) => ({
