@@ -400,7 +400,7 @@
     document.body.classList.add("helper-playing");
     document.querySelector(".weather-game")?.removeAttribute("data-play-viewport");
     nodes.hintText.textContent = t("hint");
-    renderRound();
+    renderRound("", true);
     exitSharedPlayViewport();
     updateWeatherFrame();
     track("game_start", { stage: currentStage + 1 });
@@ -418,7 +418,7 @@
     return Math.round((roundIndex / stage.rounds.length) * 100);
   }
 
-  function renderRound(feedback = "") {
+  function renderRound(feedback = "", focusTool = false) {
     const stage = stages[currentStage];
     const problemKey = stage.rounds[roundIndex];
     const problem = problems[problemKey];
@@ -453,6 +453,7 @@
       </div>
     `;
     nodes.board.querySelectorAll("[data-tool]").forEach((button) => installToolControl(button));
+    if (focusTool) requestAnimationFrame(() => nodes.board.querySelector(".tool-btn")?.focus({ preventScroll: true }));
   }
 
   function toolChoices(stage, problemKey) {
@@ -593,7 +594,7 @@
         finishStage();
         return;
       }
-      renderRound(correct ? "+1" : "");
+      renderRound(correct ? "+1" : "", true);
     }, 760);
   }
 
@@ -676,6 +677,7 @@
       : t("resultFailed");
     renderSkillReport(stage);
     nodes.nextStageBtn.classList.toggle("hidden", !cleared || stage.id >= stages.length);
+    (cleared && stage.id < stages.length ? nodes.nextStageBtn : nodes.retryBtn).focus({ preventScroll: true });
     renderStageGrid();
     playSound(cleared ? "success" : "wrong");
     track("game_complete", { stage: stage.id, score, stars, cleared, mistakes });

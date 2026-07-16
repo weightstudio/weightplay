@@ -337,7 +337,20 @@
     $("surfaceBtn").disabled=!!state.busy;
     $("beaconBtn").disabled=state.beaconUsed||!!state.busy;
   }
-  function setCoach(open){$("diveCoach").classList.toggle("hidden",!open);}
+  let coachReturnFocus=null;
+  function coachBackgroundNodes(){return [...document.querySelectorAll("#battleShell .battle-hud, #battleShell .objective, #battleShell .controls, #diveField > :not(#diveCoach)")];}
+  function setCoach(open){
+    const coach=$("diveCoach");
+    if(open){const active=document.activeElement;coachReturnFocus=active instanceof HTMLElement&&$("battleShell").contains(active)?active:null;}
+    coachBackgroundNodes().forEach(node=>{node.inert=open;});
+    coach.classList.toggle("hidden",!open);
+    window.requestAnimationFrame(()=>{
+      if(open){$("coachStart").focus({preventScroll:true});return;}
+      const target=coachReturnFocus&&coachReturnFocus.isConnected&&coachReturnFocus.getClientRects().length?coachReturnFocus:$("leftGate");
+      coachReturnFocus=null;
+      target?.focus({preventScroll:true});
+    });
+  }
   function start(route){window.clearTimeout(fishClock);state={route,zone:1,oxygen:maxOxygen(),playerHp:maxHealth(),salvage:0,sonar:false,battery:4,shieldArmed:false,beaconUsed:false,busy:false,fishActive:false,fishResolvedZones:[]};show("battleShell");resetDiveField();$("fishEncounter").classList.add("hidden");$("upgradePanel").classList.add("hidden");renderBattle();setFeedback(`${icon("sonar")}<b>?</b>`,t("objectiveScan"));setCoach(!save.tutorialDone);}
   function finish(mode){
     window.clearTimeout(fishClock);

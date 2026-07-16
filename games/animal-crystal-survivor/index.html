@@ -121,14 +121,14 @@
           <div class="xp-track"><i id="xpFill"></i></div>
         </div>
         <div class="canvas-wrap play-area">
-          <canvas id="gameCanvas" width="1024" height="1760" aria-label="Animal Crystal Survivor playfield" data-aria-ui="playfield"></canvas>
+          <canvas id="gameCanvas" width="1024" height="1760" tabindex="-1" aria-label="Animal Crystal Survivor playfield" data-aria-ui="playfield"></canvas>
         </div>
         <p id="hintText" class="hint-text" data-ui="playHint">Goal: collect golden keys before 3:00. Grab crystals to level up, then choose upgrades when the cards appear.</p>
       </section>
 
-      <section id="upgradePanel" class="upgrade-panel hidden" aria-live="polite">
+      <section id="upgradePanel" class="upgrade-panel hidden" role="dialog" aria-modal="true" aria-labelledby="upgradeTitle">
         <div class="upgrade-card-wrap">
-          <strong data-ui="chooseUpgrade">Choose an upgrade</strong>
+          <strong id="upgradeTitle" data-ui="chooseUpgrade">Choose an upgrade</strong>
           <div id="upgradeCards" class="upgrade-cards"></div>
         </div>
       </section>

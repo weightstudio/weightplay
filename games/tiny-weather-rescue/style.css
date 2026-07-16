@@ -494,6 +494,13 @@ select {
   animation: shake 0.28s ease;
 }
 
+.tool-btn:focus,
+.result-card button:focus,
+.result-card a:focus {
+  outline: 4px solid #fff36a;
+  outline-offset: 2px;
+}
+
 .tool-drag-ghost {
   position: fixed;
   z-index: 100;

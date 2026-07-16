@@ -330,6 +330,7 @@
     menuPanel: $("menuPanel"),
     stageGrid: $("stageGrid"),
     playPanel: $("playPanel"),
+    gameShell: document.querySelector("#playPanel .fixed-game-shell"),
     backToStagesBtn: $("backToStagesBtn"),
     pauseBtn: $("pauseBtn"),
     energyText: $("energyText"),
@@ -375,6 +376,7 @@
   let nextSpawnPlan = null;
   let viewportWidth = 0;
   let viewportHeight = 0;
+  let viewportMode = "";
 
   function updateGuardYardViewport() {
     const viewport = window.visualViewport;
@@ -386,11 +388,25 @@
       && visualHeight <= window.innerHeight + 2;
     const width = visualMatchesLayout ? visualWidth : window.innerWidth;
     const height = visualMatchesLayout ? visualHeight : window.innerHeight;
-    if (width === viewportWidth && height === viewportHeight) return;
+    const mode = document.body.classList.contains("guard-yard-stage")
+      ? "stage"
+      : document.body.classList.contains("guard-yard-playing") ? "playing" : "main";
+    if (width === viewportWidth && height === viewportHeight && mode === viewportMode) return;
     viewportWidth = width;
     viewportHeight = height;
+    viewportMode = mode;
     document.documentElement.style.setProperty("--guard-yard-vw", `${width}px`);
     document.documentElement.style.setProperty("--guard-yard-vh", `${height}px`);
+    const isStage = mode === "stage";
+    const isPlaying = mode === "playing";
+    if (isStage || isPlaying) {
+      const logicalWidth = 390;
+      const logicalHeight = isStage ? 788 : 450;
+      const scale = Math.min(Math.max(1, width - 8) / logicalWidth, Math.max(1, height - 8) / logicalHeight);
+      document.documentElement.style.setProperty("--guard-yard-frame-scale", String(scale));
+      document.documentElement.style.setProperty("--guard-yard-frame-left", `${(width - logicalWidth * scale) / 2}px`);
+      document.documentElement.style.setProperty("--guard-yard-frame-top", `${height - logicalHeight * scale - 4}px`);
+    }
   }
 
   updateGuardYardViewport();
@@ -984,6 +1000,7 @@
     document.body.classList.remove("guard-yard-playing");
     document.documentElement.classList.add("guard-yard-stage");
     document.body.classList.add("guard-yard-stage");
+    updateGuardYardViewport();
     if (nodes.spawnWarning) {
       nodes.spawnWarning.remove();
       nodes.spawnWarning = null;
@@ -997,6 +1014,8 @@
     nodes.menuPanel.classList.remove("hidden");
     nodes.mainPanel.classList.add("hidden");
     nodes.playPanel.classList.add("hidden");
+    nodes.gameShell.classList.remove("hidden");
+    nodes.gameShell.inert = false;
     nodes.resultPanel.classList.add("hidden");
     showMenuTab(activeMenuTab);
     window.requestAnimationFrame(() => window.scrollTo({ top: 0, left: 0, behavior: "auto" }));
@@ -1011,6 +1030,8 @@
     nodes.mainPanel.classList.remove("hidden");
     nodes.menuPanel.classList.add("hidden");
     nodes.playPanel.classList.add("hidden");
+    nodes.gameShell.classList.remove("hidden");
+    nodes.gameShell.inert = false;
     nodes.resultPanel.classList.add("hidden");
   }
 
@@ -1035,11 +1056,14 @@
     selectedUnit = units.find((unit) => isOwned(unit.id))?.id || units[0].id;
     nodes.menuPanel.classList.add("hidden");
     nodes.playPanel.classList.remove("hidden");
+    nodes.gameShell.classList.remove("hidden");
+    nodes.gameShell.inert = false;
     nodes.resultPanel.classList.add("hidden");
     document.documentElement.classList.add("guard-yard-playing");
     document.body.classList.add("guard-yard-playing");
     document.documentElement.classList.remove("guard-yard-stage");
     document.body.classList.remove("guard-yard-stage");
+    updateGuardYardViewport();
     nodes.hintText.textContent = t("select");
     buildBoard(stage);
     renderUnits();
@@ -1702,8 +1726,11 @@
     nodes.nextStageBtn.classList.toggle("hidden", !won || currentStage >= stages.length - 1);
     document.documentElement.classList.add("guard-yard-playing");
     document.body.classList.add("guard-yard-playing");
-    nodes.playPanel.classList.add("hidden");
+    nodes.playPanel.classList.remove("hidden");
+    nodes.gameShell.classList.add("hidden");
+    nodes.gameShell.inert = true;
     nodes.resultPanel.classList.remove("hidden");
+    (won && currentStage < stages.length - 1 ? nodes.nextStageBtn : nodes.retryBtn).focus({ preventScroll: true });
     renderWallet();
     renderKennel();
   }

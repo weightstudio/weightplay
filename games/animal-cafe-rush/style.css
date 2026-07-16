@@ -10,7 +10,7 @@ button, select { font: inherit; }
 .upgrade-panel { display:grid; gap:10px; }.upgrade-panel small { display:block; color:#b8dcd4; margin-top:3px; }.upgrade-cards { display:grid; grid-template-columns:repeat(3,1fr); gap:7px; }.upgrade-card { display:grid; grid-template-columns:38px minmax(0,1fr); align-items:center; gap:7px; min-height:82px; border:1px solid #75b8ad; border-radius:10px; background:#194b46; color:#fff; padding:7px; text-align:left; }.upgrade-card:disabled { opacity:.55; }.upgrade-copy { min-width:0; }.upgrade-card b,.upgrade-copy span { display:block; }.upgrade-copy span { color:#fee08a; font-size:11px; margin-top:4px; }.upgrade-icon { width:38px; aspect-ratio:1; display:block; border-radius:10px; background-color:#0e342f; background-position:center; background-repeat:no-repeat; background-size:cover; box-shadow:inset 0 0 0 1px rgb(255 255 255 / 18%); }.upgrade-speed { background-image:url('../../assets/animal-cafe-rush-upgrade-speed.png'); }.upgrade-capacity { background-image:url('../../assets/animal-cafe-rush-upgrade-capacity.png'); }.upgrade-comfort { background-image:url('../../assets/animal-cafe-rush-upgrade-comfort.png'); }
 .primary-btn,.secondary-btn { min-height:48px; border:0; border-radius:12px; font-weight:900; cursor:pointer; }.primary-btn { color:#173532; background:linear-gradient(#ffe68d,#f6aa3c); box-shadow:0 5px 0 #9c5a22; }.secondary-btn { color:#17443e; background:#e6faf4; }.is-hidden { display:none !important; }
 .play-panel { position:relative; display:grid; grid-template-rows:44px 44px minmax(0,1fr) 132px 30px; gap:8px; min-height:calc(var(--wp-mobile-vh, 100svh) - 80px); max-height:calc(var(--wp-mobile-vh, 100svh) - 80px); overflow:hidden; padding:8px; border:2px solid #83d8c5; border-radius:16px; background:#0e332f; }.play-return { position:absolute; z-index:3; top:8px; left:8px; width:40px; height:40px; display:grid; place-items:center; border:0; border-radius:10px; color:#21443f; background:#fff3c3; font-size:24px; font-weight:900; }.play-hud { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; padding-left:48px; }.play-hud>div { padding:5px 8px; border-radius:9px; background:#164943; text-align:center; }.play-hud b { display:block; color:#ffe490; }.objective-row { min-height:44px; display:grid; grid-template-columns:auto minmax(0,1fr) auto; align-items:center; gap:6px; padding:6px 10px; border-radius:10px; background:#fff8de; color:#34524a; font-weight:900; text-align:center; }.objective-copy,.day-rule { min-width:0; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }.day-rule { max-width:116px; padding:3px 6px; border-radius:6px; background:#d8f2dc; color:#285b45; font-size:9px; }.objective-row .food-icon { width:28px; height:28px; }.cafe-scene { position:relative; min-height:0; overflow:hidden; border-radius:13px; border:2px solid #6bb7a8; background:#143f3b; }.cafe-bg { width:100%; height:100%; object-fit:cover; }.customer-row { position:absolute; inset:0; display:flex; align-items:end; justify-content:space-evenly; gap:6px; padding:8px; }.customer { width:30%; max-width:150px; border:2px solid transparent; border-radius:12px; background:#0d342fcc; color:#fff; padding:3px; cursor:pointer; }.customer.is-selected { border-color:#ffe17c; box-shadow:0 0 0 3px #e9a73d88; }.customer img { display:block; width:100%; height:clamp(82px,20vw,120px); object-fit:contain; }.patience { height:7px; overflow:hidden; border-radius:99px; background:#371e1e; }.patience i { display:block; height:100%; background:linear-gradient(90deg,#ff6f70,#f6d365,#64d99b); }.customer small { display:block; min-height:17px; overflow:hidden; text-align:center; white-space:nowrap; text-overflow:ellipsis; font-size:10px; }
-.prep-row { display:grid; grid-template-columns:1fr 130px; gap:8px; min-height:0; }.station-row { display:grid; grid-template-columns:repeat(4,1fr); gap:6px; }.station { min-width:0; border:2px solid #63b6a7; border-radius:10px; overflow:hidden; background:#174641; color:#fff; cursor:pointer; padding:0; }.station img { display:block; width:100%; height:76px; object-fit:cover; }.station span { display:block; padding:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:10px; font-weight:900; }.tray { display:grid; place-items:center; border:2px dashed #e8c264; border-radius:11px; background:#123b37; padding:6px; text-align:center; cursor:pointer; }.tray .food-icon { width:58px; height:58px; }.tray b { font-size:11px; }.food-icon { display:inline-block; flex:0 0 auto; border-radius:14%; background-position:center; background-repeat:no-repeat; background-size:cover; }.food-smoothie { background-image:url('../../assets/animal-cafe-rush-order-smoothie.png'); }.food-sandwich { background-image:url('../../assets/animal-cafe-rush-order-sandwich.png'); }.food-fruit { background-image:url('../../assets/animal-cafe-rush-order-fruit.png'); }.food-cookie { background-image:url('../../assets/animal-cafe-rush-order-cookie.png'); }.food-cake { background-image:url('../../assets/animal-cafe-rush-order-cake.png'); }.food-juice { background-image:url('../../assets/animal-cafe-rush-order-juice.png'); }.food-salad { background-image:url('../../assets/animal-cafe-rush-order-salad.png'); }.food-bread { background-image:url('../../assets/animal-cafe-rush-order-bread.png'); }.play-message { display:grid; place-items:center; min-height:0; color:#d8f5ee; font-size:12px; font-weight:800; text-align:center; }.ad-reserve { height:56px; }
+.prep-row { display:grid; grid-template-columns:1fr 130px; gap:8px; min-height:0; }.station-row { display:grid; grid-template-columns:repeat(4,1fr); gap:6px; }.station { min-width:0; border:2px solid #63b6a7; border-radius:10px; overflow:hidden; background:#174641; color:#fff; cursor:pointer; padding:0; }.station img { display:block; width:100%; height:76px; object-fit:cover; }.station span { display:block; padding:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:10px; font-weight:900; }.tray { display:grid; place-items:center; border:2px dashed #e8c264; border-radius:11px; background:#123b37; padding:6px; text-align:center; cursor:pointer; }.tray .food-icon { width:58px; height:58px; }.tray b { font-size:11px; }.food-icon { display:inline-block; flex:0 0 auto; border-radius:14%; background-position:center; background-repeat:no-repeat; background-size:cover; }.food-smoothie { background-image:url('../../assets/animal-cafe-rush-order-smoothie.png'); }.food-sandwich { background-image:url('../../assets/animal-cafe-rush-order-sandwich.png'); }.food-fruit { background-image:url('../../assets/animal-cafe-rush-order-fruit.png'); }.food-cookie { background-image:url('../../assets/animal-cafe-rush-order-cookie.png'); }.food-cake { background-image:url('../../assets/animal-cafe-rush-order-cake.png'); }.food-juice { background-image:url('../../assets/animal-cafe-rush-order-juice.png'); }.food-salad { background-image:url('../../assets/animal-cafe-rush-order-salad.png'); }.food-bread { background-image:url('../../assets/animal-cafe-rush-order-bread.png'); }.play-message { display:grid; place-items:center; min-height:0; color:#d8f5ee; font-size:12px; font-weight:800; text-align:center; }
 .result-panel { position:fixed; z-index:90; inset:0; display:grid; place-items:center; padding:16px; background:#061815e8; }.result-card { width:min(100%,420px); display:grid; gap:11px; padding:18px; border:2px solid #8ad7c7; border-radius:18px; background:#174943; text-align:center; }.result-card img { width:110px; height:110px; object-fit:contain; margin:auto; }.result-card h2,.result-card p { margin:0; }.result-card p { color:#d1eee7; }.result-card>div { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
 body.is-cafe-playing { overflow:hidden; } body.is-cafe-playing .cafe-app { position:fixed; top:0; bottom:0; left:50%; width:min(100vw,820px); height:var(--wp-mobile-vh,100svh); min-height:var(--wp-mobile-vh,100svh); max-height:var(--wp-mobile-vh,100svh); padding:8px; overflow:hidden; transform:translateX(-50%); } body.is-cafe-playing .topbar,body.is-cafe-playing .menu-panel,body.is-cafe-playing .game-page-info { display:none !important; }
 @media (max-width:620px) { .menu-panel { grid-template-columns:1fr; }.cover { max-height:220px; object-position:center 30%; }.play-panel { grid-template-rows:42px 42px minmax(0,1fr) 124px 28px; }.station img { height:66px; }.prep-row { grid-template-columns:1fr 104px; } }
@@ -61,7 +61,6 @@ body.is-cafe-playing { overflow:hidden; } body.is-cafe-playing .cafe-app { posit
 html:has(body.is-cafe-playing),body.is-cafe-playing { position:fixed; inset:0; width:100vw; height:100vh; min-height:0; overflow:hidden; overscroll-behavior:none; }
 body.is-cafe-playing .cafe-app { position:fixed; inset:0; width:100vw; max-width:none; height:100vh; min-height:0; max-height:none; padding:0; overflow:hidden; transform:none; }
 body.is-cafe-playing #playPanel.play-panel { position:fixed; z-index:50; left:var(--cafe-battle-left,4px); top:var(--cafe-battle-top,4px); width:390px; max-width:none; height:788px; min-height:788px; max-height:none; margin:0; padding:8px; transform:scale(var(--cafe-battle-scale,1)); transform-origin:top left; grid-template-rows:44px 44px minmax(0,1fr) 142px 30px; }
-body.is-cafe-playing #adReserve.ad-reserve { position:fixed; z-index:49; left:var(--cafe-battle-left,4px); top:calc(var(--cafe-battle-top,4px) + var(--cafe-battle-content-height,772px)); display:block; width:var(--cafe-battle-width,382px); height:56px; min-height:56px; margin:0; pointer-events:none; border-top:1px solid #69b5aa; background:#0d2f2caa; }
 
 /* Final Expanded Canvas override. */
 html:has(body.is-cafe-playing),
@@ -84,7 +83,7 @@ body.is-cafe-playing #playPanel.play-panel {
   top: 4px;
   width: min(calc(var(--cafe-vw, 100vw) - 8px), 612px);
   max-width: none;
-  height: min(calc(var(--cafe-vh, 100dvh) - var(--wp-ad-reserve-height, 56px) - 8px), 788px);
+  height: min(calc(var(--cafe-vh, 100dvh) - 8px), 788px);
   min-height: 0;
   max-height: none;
   margin: 0;
@@ -95,20 +94,6 @@ body.is-cafe-playing #playPanel.play-panel {
   text-size-adjust: 100%;
 }
 
-body.is-cafe-playing #adReserve.ad-reserve {
-  position: fixed;
-  z-index: 49;
-  left: 50%;
-  top: auto;
-  bottom: 4px;
-  display: block;
-  width: min(calc(var(--cafe-vw, 100vw) - 8px), 612px);
-  height: 56px;
-  min-height: 56px;
-  margin: 0;
-  transform: translateX(-50%);
-}
-
 body.is-cafe-playing .wp-tutorial-backdrop,
 body.is-cafe-playing .wp-tutorial-button,
 body.is-cafe-playing .sound-toggle {
@@ -116,30 +101,120 @@ body.is-cafe-playing .sound-toggle {
 }
 
 @media (max-width: 560px), (max-height: 560px) {
-  body.is-cafe-playing #playPanel.play-panel,
-  body.is-cafe-playing #adReserve.ad-reserve {
+  body.is-cafe-playing #playPanel.play-panel {
     width: calc(var(--cafe-vw, 100vw) - 8px);
   }
 
   body.is-cafe-playing #playPanel.play-panel {
-    height: calc(var(--cafe-vh, 100dvh) - var(--wp-ad-reserve-height, 56px) - 8px);
+    height: calc(var(--cafe-vh, 100dvh) - 8px);
   }
 }
 
-@media (max-height: 560px) {
-  body.is-cafe-playing #playPanel.play-panel {
-    grid-template-columns: minmax(0, 1fr) 320px;
-    grid-template-rows: 44px 44px minmax(0, 1fr) 30px;
-    gap: 5px;
-    padding: 6px;
-  }
+/* Kids screens share one fixed 390x788 logical Canvas and never reserve ad space. */
+html:has(body.is-cafe-stage),
+body.is-cafe-stage,
+html:has(body.is-cafe-playing),
+body.is-cafe-playing {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  min-height: 0;
+  overflow: hidden;
+}
 
-  body.is-cafe-playing .play-hud { grid-column: 1 / -1; grid-row: 1; }
-  body.is-cafe-playing .objective-row { grid-column: 2; grid-row: 2; }
-  body.is-cafe-playing .cafe-scene { grid-column: 1; grid-row: 2 / 5; }
-  body.is-cafe-playing .prep-row { grid-column: 2; grid-row: 3; min-height: 0; }
-  body.is-cafe-playing .play-message { grid-column: 2; grid-row: 4; }
-  body.is-cafe-playing .queue-customer img { height: clamp(48px, 10vh, 68px); }
+body.is-cafe-stage .cafe-app,
+body.is-cafe-playing .cafe-app {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  max-width: none;
+  height: 100vh;
+  min-height: 0;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  transform: none;
+}
+
+body.is-cafe-stage #stagePanel.stage-panel,
+body.is-cafe-playing #playPanel.play-panel {
+  position: fixed;
+  inset: auto;
+  left: var(--cafe-canvas-left, 4px);
+  top: var(--cafe-canvas-top, 4px);
+  width: 390px;
+  min-width: 390px;
+  max-width: 390px;
+  height: 788px;
+  min-height: 788px;
+  max-height: 788px;
+  margin: 0;
+  transform: scale(var(--cafe-canvas-scale, 1));
+  transform-origin: top left;
+  overflow: hidden;
+}
+
+body.is-cafe-stage #stagePanel.stage-panel {
+  grid-template-columns: 1fr;
+  grid-template-rows: 52px minmax(0, 1fr);
+  gap: 8px;
+  padding: 8px;
+}
+
+body.is-cafe-stage .stage-workspace {
+  grid-template-columns: 1fr;
+  grid-template-rows: 54px 190px minmax(0, 1fr) 52px;
+  gap: 8px;
+}
+
+body.is-cafe-stage :is(.stage-profile, .day-rail, #stagePanel .upgrade-panel, #stagePanel #startBtn) {
+  grid-column: auto;
+  grid-row: auto;
+}
+
+body.is-cafe-stage .day-card {
+  flex: 0 0 264px;
+  width: 264px;
+  min-width: 264px;
+  height: 190px;
+  min-height: 190px;
+  max-height: 190px;
+}
+
+body.is-cafe-playing #playPanel.play-panel {
+  z-index: 50;
+  padding: 8px;
+  grid-template-columns: 1fr;
+  grid-template-rows: 44px 44px minmax(0, 1fr) 142px 30px;
+  gap: 8px;
+}
+
+body.is-cafe-playing :is(.play-hud, .objective-row, .cafe-scene, .prep-row, .play-message) {
+  grid-column: auto;
+  grid-row: auto;
+}
+
+body.is-cafe-playing #resultPanel.result-panel {
+  position: absolute;
+  inset: -2px auto auto -2px;
+  z-index: 90;
+  width: 390px;
+  height: 788px;
+  padding: 12px;
+  overflow: hidden;
+}
+
+body.is-cafe-playing #resultPanel .result-card {
+  width: 100%;
+  max-height: 100%;
+  overflow: auto;
+}
+
+body.is-cafe-stage .sound-toggle,
+body.is-cafe-playing .sound-toggle {
+  display: none !important;
 }
 
 /* Standard Main -> Stage -> Battle ownership. */
@@ -180,7 +255,7 @@ body.is-cafe-stage .cafe-app {
   inset: 4px;
   z-index: 40;
   display: grid;
-  grid-template-rows: 52px minmax(0, 1fr) var(--wp-ad-reserve-height, 56px);
+  grid-template-rows: 52px minmax(0, 1fr);
   gap: 8px;
   width: auto;
   height: auto;
@@ -341,17 +416,9 @@ body.is-cafe-stage .cafe-app {
   justify-self: center;
 }
 
-.stage-ad-reserve {
-  height: 56px;
-  min-height: 56px;
-  margin-inline: -8px;
-  background: #17243a;
-  pointer-events: none;
-}
-
 @media (max-height: 560px) {
   #stagePanel.stage-panel {
-    grid-template-rows: 48px minmax(0, 1fr) var(--wp-ad-reserve-height, 56px);
+    grid-template-rows: 48px minmax(0, 1fr);
     gap: 6px;
     padding-top: 4px;
   }
@@ -406,4 +473,104 @@ body.is-cafe-stage .cafe-app {
     min-height: 48px;
     max-height: 48px;
   }
+}
+
+/* Final Kids Canvas ownership override. */
+body.is-cafe-stage #stagePanel.stage-panel,
+body.is-cafe-playing #playPanel.play-panel {
+  position: fixed;
+  inset: auto;
+  left: var(--cafe-canvas-left, 4px);
+  top: var(--cafe-canvas-top, 4px);
+  width: 390px;
+  min-width: 390px;
+  max-width: 390px;
+  height: 788px;
+  min-height: 788px;
+  max-height: 788px;
+  margin: 0;
+  transform: scale(var(--cafe-canvas-scale, 1));
+  transform-origin: top left;
+  overflow: hidden;
+}
+
+body.is-cafe-stage #stagePanel.stage-panel {
+  grid-template-columns: 1fr;
+  grid-template-rows: 52px minmax(0, 1fr);
+  gap: 8px;
+  padding: 8px;
+}
+
+body.is-cafe-stage .stage-workspace {
+  grid-template-columns: 1fr;
+  grid-template-rows: 54px 190px minmax(0, 1fr) 52px;
+  gap: 8px;
+}
+
+body.is-cafe-stage :is(.stage-profile, .day-rail, #stagePanel .upgrade-panel, #stagePanel #startBtn) {
+  grid-column: auto;
+  grid-row: auto;
+}
+
+body.is-cafe-stage .stage-profile {
+  grid-template-columns: repeat(3, 104px);
+}
+
+body.is-cafe-stage .day-card {
+  flex: 0 0 264px;
+  width: 264px;
+  min-width: 264px;
+  height: 190px;
+  min-height: 190px;
+  max-height: 190px;
+}
+
+body.is-cafe-stage #stagePanel .upgrade-panel {
+  padding: 8px;
+}
+
+body.is-cafe-stage #stagePanel .upgrade-cards {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+body.is-cafe-stage #stagePanel .upgrade-card {
+  height: 82px;
+  min-height: 82px;
+  max-height: 82px;
+}
+
+body.is-cafe-stage #stagePanel #startBtn {
+  width: min(100%, 360px);
+  height: 52px;
+  min-height: 52px;
+  max-height: 52px;
+}
+
+body.is-cafe-playing #playPanel.play-panel {
+  z-index: 50;
+  padding: 8px;
+  grid-template-columns: 1fr;
+  grid-template-rows: 44px 44px minmax(0, 1fr) 142px 30px;
+  gap: 8px;
+}
+
+body.is-cafe-playing :is(.play-hud, .objective-row, .cafe-scene, .prep-row, .play-message) {
+  grid-column: auto;
+  grid-row: auto;
+}
+
+body.is-cafe-playing #resultPanel.result-panel {
+  position: absolute;
+  inset: -2px auto auto -2px;
+  z-index: 90;
+  width: 390px;
+  height: 788px;
+  padding: 12px;
+  overflow: hidden;
+}
+
+body.is-cafe-playing #resultPanel .result-card {
+  width: 100%;
+  max-height: 100%;
+  overflow: auto;
 }

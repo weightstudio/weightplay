@@ -145,7 +145,7 @@
               </div>
             </div>
             <div class="canvas-container">
-              <canvas id="gameCanvas" width="800" height="500" aria-label="Shadow Wolf arena" data-ui-aria="arenaLabel"></canvas>
+              <canvas id="gameCanvas" width="800" height="500" tabindex="-1" aria-label="Shadow Wolf arena" data-ui-aria="arenaLabel"></canvas>
               <div class="mobile-controls-row">
                 <div class="mobile-dpad">
                   <button id="btnLeft" class="ctrl-btn" type="button" aria-label="Move left">&larr;</button>
@@ -164,7 +164,7 @@
                 <div id="draftCards" class="attribute-draft-grid"></div>
               </div>
             </section>
-            <section id="resultPanel" class="result-panel battle-result hidden" aria-live="polite">
+            <section id="resultPanel" class="result-panel battle-result hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultText skillReportText">
               <h2 id="resultTitle">Expedition Success!</h2>
               <p><span data-ui="regionsCleared">Regions cleared</span>: <strong id="resultScore">0</strong>/8</p>
               <p id="resultText"></p>

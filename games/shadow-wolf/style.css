@@ -811,6 +811,10 @@ body[data-shadow-wolf-screen="battle"] .relic-app {
   font-weight: 800;
   cursor: pointer;
 }
+.battle-result .result-actions button:focus-visible {
+  outline: 4px solid #fde68a;
+  outline-offset: 3px;
+}
 .battle-result .result-actions .secondary-btn {
   border: 1px solid rgba(103, 232, 249, .58);
   background: #15314a;

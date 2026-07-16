@@ -892,6 +892,10 @@
     if (resultActive) {
       nodes.gamePanel.classList.remove("is-hidden");
       nodes.resultPanel.classList.remove("is-hidden");
+      window.requestAnimationFrame(() => {
+        const nextVisible = !nodes.nextStageBtn.classList.contains("is-hidden") && !nodes.nextStageBtn.disabled;
+        (nextVisible ? nodes.nextStageBtn : nodes.retryBtn)?.focus({ preventScroll: true });
+      });
     }
     updateBattleShell();
   }
@@ -3754,7 +3758,7 @@
     };
   }
 
-  function showResultScreenScenario() {
+  function showResultScreenScenario(stageId = 10, won = true) {
     state.manualSimulation = true;
     state.save = {
       bestStage: 10,
@@ -3764,8 +3768,9 @@
       cosmetics: { goldenFrame: true },
       clears: {},
     };
-    startStage(10);
-    winStage();
+    startStage(stageId);
+    if (won) winStage();
+    else loseStage();
     return {
       screen: state.screen,
       title: nodes.resultTitle.textContent,

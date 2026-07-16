@@ -2074,30 +2074,6 @@ body.reef-fisher-result .tutorial-card {
   display: none !important;
 }
 
-body.reef-fisher-result .reef-app {
-  width: 100%;
-  height: 100%;
-  min-height: 0;
-  padding: 6px 6px 62px;
-  overflow: hidden;
-}
-
-body.reef-fisher-result #resultPanel {
-  position: fixed;
-  top: 6px;
-  bottom: 62px;
-  left: 50%;
-  width: min(100%, 760px);
-  height: auto;
-  min-height: 0;
-  margin: 0 auto;
-  transform: translateX(-50%);
-  overflow-x: hidden;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  touch-action: pan-y;
-}
-
 .result-actions {
   grid-template-columns: repeat(2, 148px);
   justify-content: center;
@@ -2112,21 +2088,68 @@ body.reef-fisher-result #resultPanel {
   max-height: 48px;
 }
 
-.result-ad-reserve {
+/* Result remains a Battle-owned substate inside the invariant logical Canvas. */
+body.reef-fisher-playing .battle-shell > #resultPanel.result-panel {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  grid-template-columns: 116px minmax(0, 1fr) !important;
+  gap: 12px;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  max-height: none !important;
+  margin: 0;
+  padding: 14px;
+  align-content: stretch !important;
+  align-items: stretch !important;
+  justify-content: stretch !important;
+  justify-items: stretch !important;
+  place-items: stretch !important;
+  overflow: hidden !important;
+  border: 0;
+  border-radius: 18px;
+  background: linear-gradient(180deg, #dffff5 0%, #c5f1f2 100%);
+  transform: none;
+}
+
+body.reef-fisher-playing .battle-shell > #resultPanel.is-hidden {
   display: none;
 }
 
-body.reef-fisher-result .result-ad-reserve {
-  position: fixed;
-  right: 6px;
-  bottom: 0;
-  left: 6px;
-  display: block;
-  height: 56px;
-  min-height: 56px;
-  border-top: 1px solid rgb(255 255 255 / 16%);
-  background: #062f3d;
+body.reef-fisher-playing #resultPanel .result-otter {
+  width: 116px;
+  align-self: start;
 }
+
+body.reef-fisher-playing #resultPanel .result-content {
+  min-width: 0;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+body.reef-fisher-playing #resultPanel h2 {
+  margin: 0 0 6px;
+}
+
+body.reef-fisher-playing #resultPanel p {
+  margin-block: 6px;
+}
+
+body.reef-fisher-playing #resultPanel .result-actions {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  width: 100%;
+}
+
+body.reef-fisher-playing #resultPanel .result-actions button {
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+}
+
 
 @media (max-width: 350px) {
   .result-actions {

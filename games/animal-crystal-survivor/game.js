@@ -521,6 +521,7 @@
   }
 
   function startRun() {
+    setUpgradeModalOpen(false, false);
     runToken += 1;
     clearInput();
     state = makeState();
@@ -752,7 +753,7 @@
     state.level += 1;
     state.mode = "upgrade";
     renderUpgradeCards();
-    nodes.upgradePanel.classList.remove("hidden");
+    setUpgradeModalOpen(true);
     playSound("upgrade", 0.2);
     window.WonderAnalytics?.track("game_level_up", { game_id: GAME_ID, level: state.level, prototype: true });
   }
@@ -769,6 +770,18 @@
         </button>
       `)
       .join("");
+  }
+
+  function setUpgradeModalOpen(open, restoreFocus = true) {
+    nodes.upgradePanel.classList[open ? "remove" : "add"]("hidden");
+    nodes.gamePanel.inert = open;
+    if (open) {
+      nodes.gamePanel.setAttribute("aria-hidden", "true");
+      nodes.upgradeCards.querySelector?.(".upgrade-card")?.focus?.({ preventScroll: true });
+      return;
+    }
+    nodes.gamePanel.removeAttribute?.("aria-hidden");
+    if (restoreFocus && !nodes.gamePanel.classList.contains("hidden")) canvas.focus?.({ preventScroll: true });
   }
 
   function formatUpgradeValue(value, unit = "") {
@@ -807,7 +820,7 @@
     if (id === "cooldown") p.cooldown = Math.max(0.34, p.cooldown * 0.86);
     if (id === "pickup") p.pickup += 24;
     state.mode = "running";
-    nodes.upgradePanel.classList.add("hidden");
+    setUpgradeModalOpen(false);
     playSound("click", 0.1);
     window.WonderAnalytics?.track("game_upgrade_choice", { game_id: GAME_ID, upgrade: id, level: state.level, prototype: true });
     lastFrame = performance.now();

@@ -524,6 +524,9 @@
     nodes.stageGrid.addEventListener("pointerdown", (event) => {
       if (!document.body.classList.contains("wp-standard-stage-page") || event.isPrimary === false || event.button !== 0) return;
       stageDrag = { id: event.pointerId, x: event.clientX, scrollLeft: nodes.stageGrid.scrollLeft, moved: false };
+      nodes.stageGrid.style.setProperty("scroll-snap-type", "none", "important");
+      nodes.stageGrid.dataset.dragDown = String(event.clientX);
+      nodes.stageGrid.dataset.dragApplied = "0";
     });
     nodes.stageGrid.addEventListener("pointermove", (event) => {
       if (!stageDrag || event.pointerId !== stageDrag.id) return;
@@ -537,13 +540,17 @@
       const rect = nodes.stageGrid.getBoundingClientRect();
       const coordinateScale = rect.width > 0 ? nodes.stageGrid.clientWidth / rect.width : 1;
       nodes.stageGrid.scrollLeft = stageDrag.scrollLeft - delta * coordinateScale;
+      nodes.stageGrid.dataset.dragApplied = String(delta);
     });
     const finishDrag = (event) => {
       if (!stageDrag || event.pointerId !== stageDrag.id) return;
       if (stageDrag.moved) {
         suppressStageClick = true;
+        nodes.stageGrid.style.removeProperty("scroll-snap-type");
         settleStageRail();
         setTimeout(() => { suppressStageClick = false; }, 0);
+      } else {
+        nodes.stageGrid.style.removeProperty("scroll-snap-type");
       }
       if (nodes.stageGrid.hasPointerCapture?.(event.pointerId)) nodes.stageGrid.releasePointerCapture?.(event.pointerId);
       stageDrag = null;

@@ -146,12 +146,10 @@ select {
 .main-start-btn, .stage-screen-head button { min-height: 44px; border: 0; border-radius: 12px; padding: 10px 18px; background: linear-gradient(180deg, #fff8d8, #f7c95d); color: #3b2a17; font-weight: 900; }
 .stage-screen-head { min-height: 46px; display: grid; grid-template-columns: 46px minmax(0, 1fr); align-items: center; gap: 10px; }
 .stage-screen-head button { width: 44px; padding: 0; font-size: 1.45rem; }
-.stage-ad-reserve { width: 100%; height: 56px; min-height: 56px; pointer-events: none; border-top: 1px solid rgba(255, 239, 188, 0.24); background: rgba(8, 16, 12, 0.26); }
-
 html.guard-yard-stage, body.guard-yard-stage { width: 100%; height: var(--wp-mobile-vh, 100dvh); overflow: hidden; }
 body.guard-yard-stage .topbar, body.guard-yard-stage .game-page-info, body.guard-yard-stage .wp-tutorial-button { display: none !important; }
 body.guard-yard-stage .yard-game { width: min(100%, 860px); height: var(--wp-mobile-vh, 100dvh); min-height: 0; padding: 6px 8px; overflow: hidden; }
-body.guard-yard-stage .menu-panel { height: 100%; padding: 0; grid-template-rows: minmax(0, 1fr) 64px var(--wp-ad-reserve-height, 56px); gap: 6px; overflow: hidden; }
+body.guard-yard-stage .menu-panel { height: 100%; padding: 0; grid-template-rows: minmax(0, 1fr) 64px; gap: 6px; overflow: hidden; }
 body.guard-yard-stage .menu-shell { min-height: 0; padding: 8px; gap: 8px; overflow-y: auto; overscroll-behavior: contain; }
 body.guard-yard-stage .menu-tabs { position: static; left: auto; bottom: auto; transform: none; width: 100%; height: 64px; min-height: 64px; }
 body.guard-yard-stage .beast-guide { display: none; }
@@ -179,8 +177,7 @@ body.guard-yard-stage .stage-grid { padding-inline: calc((100% - 264px) / 2); to
     clamp(24px, 3.4vw, 34px)
     clamp(58px, 10vw, 92px)
     minmax(0, 1fr)
-    clamp(20px, 3.4vw, 32px)
-    56px;
+    clamp(20px, 3.4vw, 32px);
   gap: clamp(5px, 1vw, 10px);
   overflow: hidden;
   border: 5px solid rgba(93, 58, 31, 0.9);
@@ -1113,11 +1110,6 @@ body.guard-yard-stage .stage-grid { padding-inline: calc((100% - 264px) / 2); to
   text-align: center;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-
-.battle-ad-reserve {
-  min-height: 56px;
-  pointer-events: none;
 }
 
 .yard-board::before,
@@ -2155,7 +2147,7 @@ body.guard-yard-stage .stage-grid { padding-inline: calc((100% - 264px) / 2); to
     height: 100%;
     max-height: none;
     aspect-ratio: auto;
-    grid-template-rows: 34px 24px 66px minmax(0, 1fr) 22px var(--wp-ad-reserve-height, 56px);
+    grid-template-rows: 34px 24px 66px minmax(0, 1fr) 22px;
   }
 
   .yard-game {
@@ -2190,7 +2182,7 @@ body.guard-yard-stage .stage-grid { padding-inline: calc((100% - 264px) / 2); to
     max-height: none;
     aspect-ratio: 3 / 4;
     padding: 5px;
-    grid-template-rows: 32px 22px 62px minmax(0, 1fr) 20px var(--wp-ad-reserve-height, 56px);
+    grid-template-rows: 32px 22px 62px minmax(0, 1fr) 20px;
     gap: 4px;
     border-width: 3px;
     border-radius: 16px;
@@ -2274,12 +2266,6 @@ body.guard-yard-stage .stage-grid { padding-inline: calc((100% - 264px) / 2); to
   .play-return img {
     width: 24px;
     height: 24px;
-  }
-
-  body.guard-yard-playing .battle-ad-reserve {
-    min-height: 56px;
-    border-top: 1px solid rgba(255, 255, 255, 0.22);
-    background: rgba(35, 77, 49, 0.34);
   }
 
   .play-settings img {
@@ -2436,19 +2422,28 @@ body.guard-yard-stage .stage-grid { padding-inline: calc((100% - 264px) / 2); to
   }
 }
 
-/* Battle Canvas and the physical banner reserve are independent sibling tracks. */
+/* Kids Stage, Battle, and Result use game-owned logical Canvases with no ad track. */
 html.guard-yard-playing,
-body.guard-yard-playing {
+body.guard-yard-playing,
+html.guard-yard-stage,
+body.guard-yard-stage {
+  position: fixed;
+  inset: 0;
   width: 100%;
   height: var(--guard-yard-vh, 100dvh);
   overflow: hidden;
   overscroll-behavior: none;
 }
-body.guard-yard-playing .yard-game {
+body.guard-yard-playing .yard-game,
+body.guard-yard-stage .yard-game {
+  position: fixed;
+  inset: 0;
   width: 100%;
   height: var(--guard-yard-vh, 100dvh);
   min-height: 0;
-  padding: 4px;
+  max-width: none;
+  margin: 0;
+  padding: 0;
   overflow: hidden;
 }
 body.guard-yard-playing .topbar,
@@ -2457,13 +2452,24 @@ body.guard-yard-playing .game-page-info,
 body.guard-yard-playing .wp-tutorial-button,
 body.guard-yard-playing .wp-tutorial-backdrop { display: none !important; }
 body.guard-yard-playing .fixed-shell-host {
-  width: 100%;
-  height: calc(var(--guard-yard-vh, 100dvh) - 8px);
-  min-height: 0;
+  position: fixed;
+  inset: auto;
+  left: var(--guard-yard-frame-left, 4px);
+  top: var(--guard-yard-frame-top, 4px);
+  width: 390px;
+  min-width: 390px;
+  max-width: 390px;
+  height: 450px;
+  min-height: 450px;
+  max-height: 450px;
+  margin: 0;
+  padding: 0;
   display: grid;
-  grid-template-rows: minmax(0, 1fr) var(--wp-ad-reserve-height, 56px);
+  grid-template-rows: minmax(0, 1fr);
   gap: 0;
-  place-items: start center;
+  place-items: stretch;
+  transform: scale(var(--guard-yard-frame-scale, 1));
+  transform-origin: top left;
   overflow: hidden;
 }
 body.guard-yard-playing .fixed-game-shell {
@@ -2521,19 +2527,13 @@ body.guard-yard-playing .yard-board {
   border-width: 3px;
   border-radius: 12px;
 }
-body.guard-yard-playing #playPanel > .battle-ad-reserve {
-  width: 100%;
-  height: 56px;
-  min-height: 56px;
-  align-self: stretch;
-  border-top: 1px solid rgba(255, 255, 255, 0.22);
-  background: rgba(35, 77, 49, 0.34);
-}
-
-/* Result actions occupy the active result track; the physical reserve never receives controls. */
 body.guard-yard-playing .result-panel {
-  padding: 4px;
-  grid-template-rows: minmax(0, 1fr) var(--wp-ad-reserve-height, 56px);
+  position: absolute;
+  inset: 0;
+  width: 390px;
+  height: 450px;
+  padding: 6px;
+  grid-template-rows: minmax(0, 1fr);
   place-items: center;
   overflow: hidden;
   background: rgba(22, 51, 31, 0.76);
@@ -2541,27 +2541,23 @@ body.guard-yard-playing .result-panel {
 
 body.guard-yard-playing .result-panel .result-card {
   grid-row: 1;
-  align-self: end;
-  max-height: 100%;
-  overflow: auto;
-}
-
-body.guard-yard-playing .result-panel .result-ad-reserve {
-  grid-row: 2;
   width: 100%;
-  height: 56px;
-  min-height: 56px;
-  align-self: stretch;
-  pointer-events: none;
-  border-top: 1px solid rgba(255, 255, 255, 0.22);
-  background: #17331f;
+  max-height: 100%;
+  padding: 12px;
+  gap: 7px;
+  overflow: auto;
 }
 
 /* Guard Yard Stage keeps navigation and resources stable while only tab content scrolls. */
 body.guard-yard-stage .weightplay-version-badge,
 body.guard-yard-stage .version-badge,
+body.guard-yard-stage .sound-toggle,
 body.guard-yard-playing .weightplay-version-badge,
 body.guard-yard-playing .version-badge {
+  display: none !important;
+}
+
+body.guard-yard-playing .sound-toggle {
   display: none !important;
 }
 
@@ -2573,7 +2569,21 @@ body.guard-yard-stage .menu-shell {
 }
 
 body.guard-yard-stage .menu-panel {
+  position: fixed;
+  inset: auto;
+  left: var(--guard-yard-frame-left, 4px);
+  top: var(--guard-yard-frame-top, 4px);
+  width: 390px;
+  min-width: 390px;
+  max-width: 390px;
+  height: 788px;
+  min-height: 788px;
+  max-height: 788px;
+  margin: 0;
+  padding: 0;
   grid-template-rows: minmax(0, 1fr) 64px;
+  transform: scale(var(--guard-yard-frame-scale, 1));
+  transform-origin: top left;
 }
 
 body.guard-yard-stage .stage-screen-head {

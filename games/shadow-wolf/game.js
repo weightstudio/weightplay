@@ -482,6 +482,7 @@
   }
 
   function showStage() {
+    setResultModalOpen(false, false);
     nodes.menuPanel.classList.add("hidden");
     nodes.gamePanel.classList.add("hidden");
     nodes.resultPanel.classList.add("hidden");
@@ -491,6 +492,7 @@
   }
 
   function showMain() {
+    setResultModalOpen(false, false);
     state.gameActive = false;
     cancelAnimationFrame(state.gameLoopId);
     nodes.gamePanel.classList.add("hidden");
@@ -692,6 +694,7 @@
 
   // Active game start trigger
   function startRun(startRoom = state.zone) {
+    setResultModalOpen(false, false);
     loadLocalState();
     state.runs += 1;
     saveLocalState();
@@ -734,6 +737,7 @@
     updateHUDText();
 
     state.gameActive = true;
+    nodes.gameCanvas.focus({ preventScroll: true });
     window.WonderSound?.play("start");
 
     cancelAnimationFrame(state.gameLoopId);
@@ -945,11 +949,25 @@
   }
 
   // End Expedition
+  function resultCoveredRegions() {
+    const arenaSiblings = Array.from(nodes.resultPanel.parentElement?.children || []).filter((node) => node !== nodes.resultPanel);
+    const sidebar = nodes.gamePanel.querySelector(".attribute-sidebar");
+    return sidebar ? [...arenaSiblings, sidebar] : arenaSiblings;
+  }
+
+  function setResultModalOpen(open, focusPrimary = true) {
+    nodes.resultPanel.classList[open ? "remove" : "add"]("hidden");
+    resultCoveredRegions().forEach((region) => {
+      region.inert = open;
+      if (open) region.setAttribute("aria-hidden", "true");
+      else region.removeAttribute("aria-hidden");
+    });
+    if (open && focusPrimary) nodes.retryBtn.focus({ preventScroll: true });
+  }
+
   function endGame(won) {
     state.gameActive = false;
     cancelAnimationFrame(state.gameLoopId);
-
-    nodes.resultPanel.classList.remove("hidden");
 
     nodes.resultTitle.textContent = won ? t("runComplete") : t("runFailed");
     nodes.resultScore.textContent = won ? "8" : String(Math.max(0, state.room - 1));
@@ -981,6 +999,7 @@
       window.WeightPlayWallet?.addDiamonds(state.room - 1);
       window.WonderSound?.play("wrong");
     }
+    setResultModalOpen(true);
   }
 
   // Physics Loop frame updates
@@ -1686,6 +1705,7 @@
     nodes.resultMenuBtn.addEventListener("click", () => {
       window.WonderSound?.play("click");
       showMain();
+      nodes.startBtn.focus({ preventScroll: true });
     });
 
     nodes.localeSelect.addEventListener("change", (e) => {

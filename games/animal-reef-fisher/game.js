@@ -498,9 +498,14 @@
   function showPanel(which) {
     nodes.mainPanel.classList.toggle("is-hidden", which !== "main");
     nodes.stagePanel.classList.toggle("is-hidden", which !== "stage");
-    nodes.gamePanel.classList.toggle("is-hidden", which !== "game");
+    nodes.gamePanel.classList.toggle("is-hidden", which !== "game" && which !== "result");
     nodes.resultPanel.classList.toggle("is-hidden", which !== "result");
-    document.body.classList.toggle("reef-fisher-playing", which === "game");
+    const resultOpen = which === "result";
+    [...nodes.gamePanel.querySelectorAll(":scope > .battle-shell > .hud-row, :scope > .battle-shell > .play-frame, :scope > .battle-shell > .catch-hud, :scope > .battle-shell > .tension-panel")].forEach((node) => {
+      node.toggleAttribute("inert", resultOpen);
+      node.setAttribute("aria-hidden", String(resultOpen));
+    });
+    document.body.classList.toggle("reef-fisher-playing", which === "game" || resultOpen);
     document.body.classList.toggle("reef-fisher-stage", which === "stage");
     document.body.classList.toggle("reef-fisher-result", which === "result");
     const guideIsReady = Boolean(document.querySelector(".game-page-info"));
@@ -598,6 +603,7 @@
     nodes.skillReportText.textContent = won ? t("reportWin") : t("reportFail");
     showPanel("result");
     focusPanel(nodes.resultPanel);
+    window.requestAnimationFrame(() => nodes.retryBtn.focus({ preventScroll: true }));
     renderMenu();
     track("game_complete", { zone: run.zone.id, won, catches: run.catches, newFish: run.newFish, notes: run.notes, score: run.finalScore });
   }
@@ -1277,11 +1283,16 @@
     showPanel("stage");
     renderMenu();
   });
-  nodes.retryBtn.addEventListener("click", startRun);
+  nodes.retryBtn.addEventListener("click", async () => {
+    await startRun();
+    canvas.focus({ preventScroll: true });
+  });
   nodes.resultMenuBtn.addEventListener("click", () => {
     state = "stage";
     showPanel("stage");
     renderMenu();
+    focusPanel(nodes.stagePanel);
+    window.requestAnimationFrame(() => nodes.stagePanel.querySelector(".zone-card.is-selected:not(:disabled)")?.focus({ preventScroll: true }));
   });
   nodes.lureBtn.addEventListener("click", () => buyDiamondItem("lure"));
   nodes.sonarPrepBtn.addEventListener("click", () => buyDiamondItem("sonar"));

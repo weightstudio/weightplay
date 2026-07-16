@@ -32,7 +32,7 @@
           <img id="loadingCover" class="loading-cover" src="../../assets/animal-bubble-safari-cover.webp" alt="" draggable="false">
           <div id="loadingPanel" class="safari-loading" role="status" aria-live="polite">
             <img src="../../assets/animal-bubble-safari-lion-guide.webp" alt="" draggable="false">
-            <strong id="loadingTitle" data-i18n="loading">準備探險</strong>
+            <strong id="loadingTitle" data-i18n="loading">Preparing Safari</strong>
             <div class="loading-track" aria-hidden="true"><i id="loadingFill"></i></div>
             <span id="loadingProgress">0%</span>
           </div>
@@ -40,28 +40,28 @@
 
         <section id="mainScreen" class="screen main-screen" aria-labelledby="gameTitle">
           <header class="topbar">
-            <a class="home-link" href="/kids/" aria-label="返回 WeightPlay 大廳">
+            <a class="home-link" href="/kids/" aria-label="Back to the WeightPlay Kids lobby" data-i18n-aria="backToLobby">
               <span aria-hidden="true">←</span>
               <img src="../../assets/weightplay-logo.png" alt="" draggable="false">
             </a>
-            <h1 id="gameTitle" data-i18n="title">動物泡泡探險</h1>
-            <button id="soundMain" class="icon-button" type="button" aria-label="切換音效">♪</button>
+            <h1 id="gameTitle" data-i18n="title">Animal Bubble Safari</h1>
+            <button id="soundMain" class="icon-button" type="button" aria-label="Toggle sound" data-i18n-aria="soundToggle">♪</button>
           </header>
           <div class="poster-wrap">
             <img src="../../assets/animal-bubble-safari-cover.webp" alt="" draggable="false">
             <div class="poster-copy">
-              <strong data-i18n="tagline">瞄準、反彈，救出泡泡裡的動物！</strong>
-              <span data-i18n="progressLabel">探險進度</span>
-              <b id="mainProgress">1 / 3</b>
+              <strong data-i18n="tagline">Aim, bank shots, and rescue bubble animals!</strong>
+              <span data-i18n="progressLabel">Safari progress</span>
+              <b id="mainProgress">1 / 12</b>
             </div>
           </div>
           <div class="main-actions">
-            <button id="startGame" class="primary-button" type="button" data-i18n="startGame">開始遊戲</button>
+            <button id="startGame" class="primary-button" type="button" data-i18n="startGame">Start Game</button>
             <div class="secondary-row">
-              <button id="openGuide" type="button" data-i18n="guide">玩法</button>
-              <div id="localeSelect" class="language-switch" role="group" aria-label="Language">
-                <button type="button" data-locale="zh-Hant" class="is-selected">繁中</button>
-                <button type="button" data-locale="en">EN</button>
+              <button id="openGuide" type="button" data-i18n="guide">Guide</button>
+              <div id="localeSelect" class="language-switch" role="group" aria-label="Language" data-i18n-aria="language">
+                <button type="button" data-locale="zh-Hant">繁中</button>
+                <button type="button" data-locale="en" class="is-selected">EN</button>
               </div>
             </div>
           </div>
@@ -70,51 +70,51 @@
         <section id="stageScreen" class="screen stage-screen" aria-labelledby="stageTitle">
           <div class="stage-art" aria-hidden="true"></div>
           <header class="topbar compact-topbar">
-            <button id="stageBack" class="back-button" type="button" aria-label="返回">←</button>
-            <h2 id="stageTitle" data-i18n="chooseStage">選擇關卡</h2>
-            <button id="soundStage" class="icon-button" type="button" aria-label="切換音效">♪</button>
+            <button id="stageBack" class="back-button" type="button" aria-label="Back" data-i18n-aria="back">←</button>
+            <h2 id="stageTitle" data-i18n="chooseStage">Choose Stage</h2>
+            <button id="soundStage" class="icon-button" type="button" aria-label="Toggle sound" data-i18n-aria="soundToggle">♪</button>
           </header>
           <div class="stage-summary">
             <img src="../../assets/animal-bubble-safari-lion-guide.webp" alt="" draggable="false">
-            <div><span data-i18n="album">救援圖鑑</span><strong id="albumCount">0 / 3</strong></div>
-            <div><span data-i18n="bestStars">最佳星星</span><strong id="starCount">0 / 9</strong></div>
+            <div><span data-i18n="album">Rescue Album</span><strong id="albumCount">0 / 5</strong></div>
+            <div><span data-i18n="bestStars">Best Stars</span><strong id="starCount">0 / 36</strong></div>
           </div>
-          <div id="stageRail" class="stage-rail" tabindex="0" aria-label="關卡列表"></div>
+          <div id="stageRail" class="stage-rail" tabindex="0" aria-label="Stage list" data-i18n-aria="stageList"></div>
           <div class="stage-detail">
-            <span id="stageSkill">專注</span>
-            <strong id="stageGoal">直接命中同色泡泡</strong>
+            <span id="stageSkill">Focus</span>
+            <strong id="stageGoal">Make 1 matching group</strong>
           </div>
         </section>
 
         <section id="battleScreen" class="screen battle-screen" aria-labelledby="battleStageName">
           <div id="battleLive" class="battle-live">
           <header class="battle-header">
-            <button id="battleBack" class="back-button" type="button" aria-label="返回關卡">←</button>
-            <div><span data-i18n="level">關卡</span><strong id="battleStageName">1</strong></div>
-            <div><span data-i18n="shots">剩餘</span><strong id="shotsLeft">6</strong></div>
-            <div><span data-i18n="rescued">救援</span><strong id="rescueProgress">0 / 1</strong></div>
-            <div><span data-i18n="score">分數</span><strong id="scoreValue">0</strong></div>
+            <button id="battleBack" class="back-button" type="button" aria-label="Back to stages" data-i18n-aria="backToStage">←</button>
+            <div><span data-i18n="level">Level</span><strong id="battleStageName">1</strong></div>
+            <div><span data-i18n="shots">Shots</span><strong id="shotsLeft">6</strong></div>
+            <div><span data-i18n="rescued">Goal</span><strong id="rescueProgress">0 / 1</strong></div>
+            <div><span data-i18n="score">Score</span><strong id="scoreValue">0</strong></div>
           </header>
-          <div id="battleMessage" class="battle-message">拖曳瞄準，放開發射</div>
+          <div id="battleMessage" class="battle-message">Drag to aim, release to shoot</div>
           <div class="play-frame">
-            <canvas id="playCanvas" width="360" height="548" aria-label="泡泡射擊遊戲區"></canvas>
+            <canvas id="playCanvas" width="360" height="548" aria-label="Bubble shooter play area" data-i18n-aria="playArea"></canvas>
           </div>
           <div class="queue-bar">
-            <div><span data-i18n="currentBubble">目前</span><canvas id="currentPreview" width="48" height="48"></canvas></div>
-            <div><span data-i18n="nextBubble">下一顆</span><canvas id="nextPreview" width="48" height="48"></canvas></div>
-            <strong id="battleGoal">配對 1 組</strong>
+            <div><span data-i18n="currentBubble">Current</span><canvas id="currentPreview" width="48" height="48"></canvas></div>
+            <div><span data-i18n="nextBubble">Next</span><canvas id="nextPreview" width="48" height="48"></canvas></div>
+            <strong id="battleGoal">Make 1 matching group</strong>
           </div>
           </div>
 
           <section id="resultScreen" class="result-screen" aria-labelledby="resultTitle">
           <div class="result-panel">
             <img class="result-mascot" src="../../assets/animal-bubble-safari-lion-guide.webp" alt="" draggable="false">
-            <h2 id="resultTitle">救援成功！</h2>
-            <div id="resultStars" class="result-stars" aria-label="獲得星星">★★★</div>
+            <h2 id="resultTitle">Rescue Complete!</h2>
+            <div id="resultStars" class="result-stars" aria-label="Stars earned" data-i18n-aria="earnedStars">★★★</div>
             <div class="result-stats">
-              <div><span data-i18n="score">分數</span><strong id="resultScore">0</strong></div>
-              <div><span data-i18n="shotsLeft">剩餘泡泡</span><strong id="resultShots">0</strong></div>
-              <div><span data-i18n="rescuedAnimals">救出動物</span><strong id="resultRescued">0</strong></div>
+              <div><span data-i18n="score">Score</span><strong id="resultScore">0</strong></div>
+              <div><span data-i18n="shotsLeft">Shots Left</span><strong id="resultShots">0</strong></div>
+              <div><span data-i18n="rescuedAnimals">Animals Rescued</span><strong id="resultRescued">0</strong></div>
             </div>
             <div class="reward-row">
               <div class="reward-icon reward-star"></div><b id="rewardStars">+1</b>
@@ -122,13 +122,13 @@
               <div class="reward-icon reward-album"></div><b id="rewardAlbum">+1</b>
             </div>
             <div class="skill-report">
-              <span data-i18n="skillReport">能力報告</span>
-              <strong id="skillText">專注 · 手眼協調</strong>
+              <span data-i18n="skillReport">Skill Report</span>
+              <strong id="skillText">Focus · Hand-Eye Coordination</strong>
             </div>
             <div class="result-actions">
-              <button id="retryStage" type="button" data-i18n="retry">再試一次</button>
-              <button id="nextStage" class="primary-button" type="button" data-i18n="nextLevel">下一關</button>
-              <button id="backToMap" type="button" data-i18n="backToMap">返回關卡</button>
+              <button id="retryStage" type="button" data-i18n="retry">Retry</button>
+              <button id="nextStage" class="primary-button" type="button" data-i18n="nextLevel">Next Level</button>
+              <button id="backToMap" type="button" data-i18n="backToMap">Back to Map</button>
             </div>
           </div>
           </section>
@@ -136,15 +136,15 @@
 
         <div id="guideModal" class="modal" hidden>
           <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="guideTitle">
-            <button id="closeGuide" class="modal-close" type="button" aria-label="關閉">×</button>
+            <button id="closeGuide" class="modal-close" type="button" aria-label="Close" data-i18n-aria="close">×</button>
             <img src="../../assets/animal-bubble-safari-lion-guide.webp" alt="" draggable="false">
-            <h2 id="guideTitle" data-i18n="howToPlay">怎麼玩</h2>
+            <h2 id="guideTitle" data-i18n="howToPlay">How to Play</h2>
             <ol>
-              <li data-i18n="guideAim">拖曳瞄準同色泡泡，放開即可發射。</li>
-              <li data-i18n="guideBank">利用牆面反彈，繞過擋路的岩石。</li>
-              <li data-i18n="guideRescue">三顆以上相連會消除；在泡泡用完前救出目標。</li>
+              <li data-i18n="guideAim">Drag to aim at matching bubbles, then release to shoot.</li>
+              <li data-i18n="guideBank">Bounce shots off a wall to get around rocks.</li>
+              <li data-i18n="guideRescue">Connect three or more. Rescue the target before shots run out.</li>
             </ol>
-            <button id="guideDone" class="primary-button" type="button" data-i18n="gotIt">知道了</button>
+            <button id="guideDone" class="primary-button" type="button" data-i18n="gotIt">Got It</button>
           </div>
         </div>
       </div>

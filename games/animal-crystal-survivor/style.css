@@ -744,6 +744,11 @@ canvas {
   box-shadow: inset 0 0 0 2px rgba(183, 244, 215, 0.22);
 }
 
+.upgrade-card:focus-visible {
+  outline: 4px solid #fef08a;
+  outline-offset: 3px;
+}
+
 .upgrade-icon {
   display: grid;
   place-items: center;

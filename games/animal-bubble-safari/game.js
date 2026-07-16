@@ -10,6 +10,7 @@
   const copy = {
     "zh-Hant": {
       title: "動物泡泡探險", tagline: "瞄準、反彈，救出泡泡裡的動物！", progressLabel: "探險進度",
+      backToLobby: "返回 WeightPlay Kids 大廳", soundToggle: "切換音效", language: "語言", back: "返回", stageList: "關卡列表", backToStage: "返回關卡", playArea: "泡泡射擊遊戲區", earnedStars: "獲得星星", close: "關閉",
       loading: "準備探險", loadingError: "部分圖片未載入，將使用可用素材",
       startGame: "開始遊戲", guide: "玩法", chooseStage: "選擇關卡", album: "救援圖鑑", bestStars: "最佳星星",
       startLevel: "開始關卡", level: "關卡", shots: "剩餘", rescued: "目標", score: "分數",
@@ -28,6 +29,7 @@
     },
     en: {
       title: "Animal Bubble Safari", tagline: "Aim, bank shots, and rescue bubble animals!", progressLabel: "Safari progress",
+      backToLobby: "Back to the WeightPlay Kids lobby", soundToggle: "Toggle sound", language: "Language", back: "Back", stageList: "Stage list", backToStage: "Back to stages", playArea: "Bubble shooter play area", earnedStars: "Stars earned", close: "Close",
       loading: "Preparing Safari", loadingError: "Some images could not load; available art will be used",
       startGame: "Start Game", guide: "Guide", chooseStage: "Choose Stage", album: "Rescue Album", bestStars: "Best Stars",
       startLevel: "Start Level", level: "Level", shots: "Shots", rescued: "Goal", score: "Score",
@@ -101,6 +103,7 @@
     document.documentElement.lang = locale;
     document.title = `${t("title")} - WeightPlay`;
     document.querySelectorAll("[data-i18n]").forEach(el => { el.textContent = t(el.dataset.i18n); });
+    document.querySelectorAll("[data-i18n-aria]").forEach(el => { el.setAttribute("aria-label", t(el.dataset.i18nAria)); });
     document.querySelectorAll("[data-locale]").forEach(button => button.classList.toggle("is-selected", button.dataset.locale === locale));
     renderStageRail();
     updateMainProgress();
