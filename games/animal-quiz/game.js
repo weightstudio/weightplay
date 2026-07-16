@@ -337,6 +337,23 @@ const state = {
 };
 let stageDrag = null;
 let suppressStageClick = false;
+let quizGeneration = 0;
+
+function invalidateQuizSession() {
+  quizGeneration += 1;
+  state.answered = false;
+}
+
+function scheduleQuizTask(task, delay) {
+  const generation = quizGeneration;
+  const startedAt = performance.now();
+  const tick = (now) => {
+    if (generation !== quizGeneration || !document.body.classList.contains("quiz-playing")) return;
+    if (now - startedAt >= delay) task();
+    else requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+}
 
 function locale() {
   return window.WonderI18n?.locale() || "en";
@@ -482,6 +499,7 @@ function setBattleCovered(covered) {
 }
 
 function showMain() {
+  invalidateQuizSession();
   renderStaticText();
   state.completed = false;
   document.body.classList.remove("quiz-playing", "quiz-stage-select");
@@ -519,6 +537,7 @@ window.addEventListener?.("orientationchange", updateQuizFrame, { passive: true 
 window.visualViewport?.addEventListener("resize", updateQuizFrame, { passive: true });
 
 function showStageSelect(focusStageIndex = state.unlockedStage) {
+  invalidateQuizSession();
   renderStaticText();
   state.completed = false;
   resultPanel.classList.add("hidden");
@@ -626,6 +645,7 @@ function initStageRail() {
 
 function startStage(stageIndex) {
   if (!state.ready || stageIndex > state.unlockedStage) return;
+  invalidateQuizSession();
   state.stageIndex = stageIndex;
   state.questionIndex = 0;
   state.score = 0;
@@ -666,6 +686,7 @@ function buildChoices(answer) {
 }
 
 function renderQuestion(options = {}) {
+  invalidateQuizSession();
   const shouldTrack = options.track !== false;
   const shouldFocus = options.focusChoices === true;
   renderStaticText();
@@ -716,7 +737,7 @@ function chooseAnswer(choiceId, answerId, button) {
     feedbackText.textContent = t("wrong");
     button.classList.add("wrong");
     button.setAttribute("aria-invalid", "true");
-    setTimeout(() => {
+    scheduleQuizTask(() => {
       button.classList.remove("wrong");
       button.removeAttribute("aria-invalid");
     }, 350);
@@ -753,7 +774,7 @@ function chooseAnswer(choiceId, answerId, button) {
     locale: locale(),
   });
 
-  setTimeout(() => {
+  scheduleQuizTask(() => {
     state.questionIndex += 1;
     if (state.questionIndex >= currentStage().questions.length) {
       finishStage();
@@ -764,6 +785,7 @@ function chooseAnswer(choiceId, answerId, button) {
 }
 
 function finishStage() {
+  invalidateQuizSession();
   const isFinalStage = state.stageIndex >= stages.length - 1;
   state.completed = true;
   levelFill.style.width = "100%";

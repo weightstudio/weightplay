@@ -388,7 +388,7 @@
   let run = null;
   let diamondPurchasePending = "";
   let diamondConfirmTimer = 0;
-  let pointer = { down: false, x: 0, y: 0, tensionPct: 50, source: "canvas" };
+  let pointer = { down: false, id: null, x: 0, y: 0, tensionPct: 50, source: "canvas" };
   let lastTime = performance.now();
   let raf = 0;
   const images = {};
@@ -583,6 +583,7 @@
   }
 
   async function startRun() {
+    cancelFishingInput();
     clearDiamondPurchaseConfirmation();
     configureArena();
     const zone = zones.find((z) => z.id === selectedZone) || zones[0];
@@ -643,6 +644,7 @@
 
   function finishRun(won) {
     if (!run || run.finished) return;
+    cancelFishingInput();
     run.finished = true;
     state = "result";
     const bonus = won ? 12 : 5;
@@ -1187,6 +1189,10 @@
 
   function startCharge(evt) {
     if (state !== "game" || !run) return;
+    if (run.phase !== "aim" && run.phase !== "reel") return;
+    if (pointer.down && pointer.source !== "keyboard") return;
+    pointer.id = Number.isFinite(evt.pointerId) ? evt.pointerId : null;
+    try { evt.currentTarget?.setPointerCapture?.(evt.pointerId); } catch {}
     if (run.phase === "reel") {
       pointer.down = true;
       updatePointer(evt);
@@ -1194,7 +1200,6 @@
       updateTensionGuide();
       return;
     }
-    if (run.phase !== "aim") return;
     pointer.down = true;
     updatePointer(evt);
     run.phase = "charging";
@@ -1205,9 +1210,13 @@
     updateSonarButton();
   }
 
-  function releaseCast() {
+  function releaseCast(evt) {
     if (state !== "game" || !run) return;
+    const pointerRelease = Number.isFinite(evt?.pointerId);
+    if (pointerRelease && (!pointer.down || pointer.source === "keyboard" || pointer.id !== evt.pointerId)) return;
+    if (!pointerRelease && pointer.source !== "keyboard") return;
     pointer.down = false;
+    pointer.id = null;
     if (run.phase === "charging") {
       if (!run.hookFish) run.hookFish = pickHookFish();
       run.phase = "cast";
@@ -1219,8 +1228,10 @@
     }
   }
 
-  function cancelFishingInput() {
+  function cancelFishingInput(evt) {
+    if (Number.isFinite(evt?.pointerId) && pointer.id !== evt.pointerId) return;
     pointer.down = false;
+    pointer.id = null;
     pointer.source = "canvas";
     pointer.tensionPct = 50;
     if (state !== "game" || !run || run.phase !== "charging") return;
@@ -1235,6 +1246,7 @@
   function startKeyboardCharge() {
     if (state !== "game" || !run || run.phase !== "aim") return;
     pointer.down = true;
+    pointer.id = null;
     pointer.source = "keyboard";
     pointer.tensionPct = 50;
     run.phase = "charging";
@@ -1248,6 +1260,7 @@
   function adjustKeyboardTension(delta) {
     if (state !== "game" || !run || run.phase !== "reel") return;
     pointer.down = true;
+    pointer.id = null;
     pointer.source = "keyboard";
     pointer.tensionPct = Math.max(0, Math.min(100, pointer.tensionPct + delta));
     updateTensionGuide();
@@ -1449,7 +1462,7 @@
   });
   canvas.addEventListener("pointerdown", startCharge);
   canvas.addEventListener("pointermove", (evt) => {
-    if (pointer.down) updatePointer(evt);
+    if (pointer.down && pointer.id === evt.pointerId) updatePointer(evt);
   });
   window.addEventListener("pointerup", releaseCast);
   window.addEventListener("pointercancel", cancelFishingInput);
@@ -1457,12 +1470,14 @@
   document.addEventListener("visibilitychange", cancelFishingInput);
   canvas.addEventListener("pointercancel", cancelFishingInput);
   nodes.tensionLane.addEventListener("pointerdown", (evt) => {
+    if (pointer.down && pointer.source !== "keyboard") return;
     pointer.down = true;
+    pointer.id = Number.isFinite(evt.pointerId) ? evt.pointerId : null;
     nodes.tensionLane.setPointerCapture?.(evt.pointerId);
     updateLanePointer(evt);
   });
   nodes.tensionLane.addEventListener("pointermove", (evt) => {
-    if (pointer.down) updateLanePointer(evt);
+    if (pointer.down && pointer.id === evt.pointerId) updateLanePointer(evt);
   });
   nodes.tensionLane.addEventListener("pointercancel", cancelFishingInput);
   [canvas, nodes.tensionLane].forEach((control) => {
@@ -1528,7 +1543,7 @@
                 sonarPulse: run.sonarPulse,
               }
             : null,
-          pointer: { down: pointer.down, tensionPct: pointer.tensionPct, source: pointer.source },
+          pointer: { down: pointer.down, id: pointer.id, tensionPct: pointer.tensionPct, source: pointer.source },
           wallet: wallet(),
         };
       },

@@ -322,15 +322,17 @@
       button.type = "button";
       button.dataset.level = String(index);
       const stars = starMap[index + 1] || 0;
+      const isLocked = index + 1 > unlocked;
       button.innerHTML = `
         <strong>${index + 1}</strong>
         <span>${t("pairCount", { count: level.pairs })}</span>
-        <small>${t("starGoal", { moves: level.starMoves[0] })}</small>
+        <small${isLocked ? ' class="level-lock"' : ""}>${isLocked ? t("locked") : t("starGoal", { moves: level.starMoves[0] })}</small>
       `;
-      if (index + 1 > unlocked) button.classList.add("locked");
+      if (isLocked) button.classList.add("locked");
       if (stars > 0) button.classList.add("completed");
       if (index + 1 === unlocked) button.classList.add("challenge");
-      button.setAttribute("aria-label", `${t("level")} ${index + 1}`);
+      button.setAttribute("aria-disabled", String(isLocked));
+      button.setAttribute("aria-label", `${t("level")} ${index + 1}${isLocked ? `, ${t("locked")}` : ""}`);
       levelGrid.append(button);
     });
   }

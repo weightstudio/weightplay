@@ -632,6 +632,17 @@
         if (ANIMAL_METADATA.some((animal) => animal.id === normalizedId)) unlockedAnimals.add(normalizedId);
       });
     }
+    // Older run saves could retain a deployed character after the backpack list
+    // had been compacted. A valid saved formation is proof that the character is
+    // owned, so recover it before rebuilding the complete roster.
+    if (Array.isArray(source.savedSquad)) {
+      source.savedSquad.forEach((id) => {
+        const normalizedId = Number(id);
+        if (id !== null && id !== undefined && id !== "" && ANIMAL_METADATA.some((animal) => animal.id === normalizedId)) {
+          unlockedAnimals.add(normalizedId);
+        }
+      });
+    }
     const unlockedStage = Math.max(1, Math.min(STAGE_COUNT, Math.floor(Number(source.unlockedStage) || 1)));
     const selectedStage = Math.max(1, Math.min(unlockedStage, Math.floor(Number(source.selectedStage) || unlockedStage)));
     const savedSquad = Array(6).fill(null);
@@ -834,6 +845,17 @@
           compactCount: compactCards.length,
           slotCount: normalizedCards.length,
           occupiedCount: normalizedCards.filter(Boolean).length
+        };
+      },
+      deployedRosterRecovery: () => {
+        const recoveredSave = normalizeSave({
+          ...save,
+          unlockedAnimals: [0, 4],
+          savedSquad: [0, 1, 2, null, null, null]
+        });
+        return {
+          unlockedIds: recoveredSave.unlockedAnimals,
+          squadIds: recoveredSave.savedSquad.filter((id) => id !== null)
         };
       },
       combinePreview: () => {

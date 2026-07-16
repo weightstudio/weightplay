@@ -362,14 +362,12 @@ window.WONDER_LOBBY = {
       type: { en: "Roguelike Deckbuilder", "zh-Hant": "Roguelike 牌組構築" },
       categories: ["Featured", "Animal Games", "Puzzle", "Strategy"],
       skills: ["Logic", "Problem Solving", "Focus"],
-      ages: ["13"],
-      ageLabel: { en: "13+", "zh-Hant": "13+" },
       href: "games/beast-deck/",
       description: {
-        en: "Build animal-power decks, clear missions, level up locally, and unlock deeper routes through the mist forest.",
-        "zh-Hant": "組出動物能力牌組，通過任務、累積本機等級，逐步解鎖迷霧森林深處。"
+        en: "Build animal-power decks across 30 missions, counter ten regional mechanics, and defeat six phase-changing forest Bosses.",
+        "zh-Hant": "用動物能力牌挑戰 30 個任務、破解十種區域機制，並擊敗六隻會換階段的森林首領。"
       },
-      meta: { en: ["Card Roguelike", "Local Level", "Mission Unlock"], "zh-Hant": ["牌組構築", "本機等級", "任務解鎖"] },
+      meta: { en: ["30 Missions", "Card Combos", "Six Bosses"], "zh-Hant": ["30 個任務", "卡牌連動", "六隻首領"] },
       art: { kind: "image", background: "assets/beast-deck-cover.webp", hero: "assets/weightplay-character-moon-cap-owl-cutout.webp" },
     },
     {
@@ -600,8 +598,8 @@ for (const game of window.WONDER_LOBBY.games) {
     game.title["zh-Hant"] = "獸王牌組：迷霧森林";
     game.statusText["zh-Hant"] = "可遊玩";
     game.type["zh-Hant"] = "Roguelike 牌組構築";
-    game.description["zh-Hant"] = "組出動物能力牌組，完成任務、累積本地等級，並解鎖迷霧森林更深的路線。";
-    game.meta["zh-Hant"] = ["牌組 Roguelike", "本地等級", "任務解鎖"];
+    game.description["zh-Hant"] = "用動物能力牌挑戰 30 個任務、破解十種區域機制，並擊敗六隻會換階段的森林首領。";
+    game.meta["zh-Hant"] = ["30 個任務", "卡牌連動", "六隻首領"];
   }
 
   if (game.id === "animal-relic-hunters") {
@@ -724,11 +722,11 @@ window.WONDER_LOBBY.games.push({
 
 const cleanZhLobbyCopy = {
   "beast-deck": {
-    title: "獸王牌組",
+    title: "獸王牌組：迷霧森林",
     statusText: "可遊玩",
     type: "Roguelike 牌組戰鬥",
-    description: "組合野獸卡牌、管理能量與牌庫，在連續戰鬥中擊敗敵人並累積牌組成長。",
-    meta: ["牌組 Roguelike", "關卡戰鬥", "金幣抽卡"],
+    description: "用動物能力牌挑戰 30 個任務、破解十種區域機制，並擊敗六隻會換階段的森林首領。",
+    meta: ["30 個任務", "卡牌連動", "六隻首領"],
   },
   "animal-relic-hunters": {
     title: "動物遺跡獵人",
@@ -856,8 +854,8 @@ const verifiedCleanZhLobbyCopy = {
     title: "獸王牌組：迷霧森林",
     statusText: "可遊玩",
     type: "Roguelike 牌組構築",
-    description: "組出動物能力牌組，完成任務、累積本地等級，並解鎖迷霧森林更深的路線。",
-    meta: ["牌組 Roguelike", "本地等級", "任務解鎖"],
+    description: "用動物能力牌挑戰 30 個任務、破解十種區域機制，並擊敗六隻會換階段的森林首領。",
+    meta: ["30 個任務", "卡牌連動", "六隻首領"],
   },
   "animal-relic-hunters": {
     title: "動物遺跡獵人",

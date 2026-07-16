@@ -504,7 +504,12 @@
     updateOrbBattleScale();
     fitOrbArena();
     window.requestAnimationFrame(fitOrbArena);
-    if (panel === nodes.stagePanel) window.requestAnimationFrame(centerUnlockedStage);
+    if (panel === nodes.stagePanel) {
+      window.requestAnimationFrame(centerUnlockedStage);
+      window.requestAnimationFrame(focusUnlockedStage);
+    } else if (panel === nodes.menuPanel) {
+      window.requestAnimationFrame(() => nodes.startBtn.focus({ preventScroll: true }));
+    }
   }
 
   function updateOrbBattleScale() {
@@ -679,6 +684,11 @@
     if (!card) return;
     const left = card.offsetLeft - (nodes.stageRail.clientWidth - card.offsetWidth) / 2;
     nodes.stageRail.scrollTo({ left: Math.max(0, left), behavior: "auto" });
+  }
+
+  function focusUnlockedStage() {
+    const unlocked = Math.max(1, Math.min(MAX_RAID_TIER, save.bestRaid || 1));
+    nodes.stageRail.querySelector(`[data-tier="${unlocked}"]`)?.focus({ preventScroll: true });
   }
 
   function upgradeRoom(id) {

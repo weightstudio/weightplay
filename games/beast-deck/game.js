@@ -81,6 +81,17 @@
 
   const asset = (name) => `../../assets/${name}`;
 
+  function dockMainUtilities() {
+    const menuCopy = nodes.menuPanel.querySelector(".menu-copy");
+    const sound = document.querySelector("button[data-sound-toggle]");
+    const version = document.querySelector(".weightplay-version-badge");
+    if (sound) {
+      sound.classList.add("beast-main-utility");
+      menuCopy.appendChild(sound);
+    }
+    if (version) menuCopy.appendChild(version);
+  }
+
   function installStandardStageFlow() {
     const menuCopy = nodes.menuPanel.querySelector(".menu-copy");
     const stageSelect = nodes.stageGrid.closest(".stage-select");
@@ -165,12 +176,12 @@
 
   const metaText = {
     en: {
-      description: "Play Beast Deck: The Mist Forest, a turn-based roguelike deckbuilder game on WeightPlay. Build an animal power deck, level up locally, and unlock forest missions.",
-      ogDescription: "Build your animal power deck, choose upgrades, level up, and defeat corrupted beasts in a mysterious mist forest.",
+      description: "Play Beast Deck: The Mist Forest, a 30-mission animal deckbuilder with ten regional mechanics, six phase-changing Bosses, local cards and gear.",
+      ogDescription: "Build animal-power decks, read enemy intent, counter ten regional mechanics, and defeat six distinct Bosses across 30 missions.",
     },
     "zh-Hant": {
-      description: "在 WeightPlay 遊玩獸王牌組：迷霧森林。建立動物牌組、累積本地等級、解鎖森林任務，挑戰回合制 Roguelike 牌組戰鬥。",
-      ogDescription: "組出你的動物能力牌組，判斷敵人意圖，升級並擊敗迷霧森林中的腐化獸王。",
+      description: "在 WeightPlay 遊玩《獸王牌組：迷霧森林》：30 個任務、十種區域機制、六隻換階段首領，以及本機卡冊與裝備成長。",
+      ogDescription: "組合動物能力牌、判讀敵人意圖，破解十種區域機制並挑戰 30 任務與六隻不同首領。",
     },
   };
 
@@ -772,13 +783,25 @@
       maxHp: Math.round(base.hp * scale),
       intents: base.intents.map((intent) => ({
         ...intent,
-        val: ["buff", "fog", "cleanse", "seal"].includes(intent.type) ? intent.val : Math.max(1, Math.round(intent.val * scale)),
+        val: ["buff", "fog", "cleanse", "seal", "armor", "exhaust", "curse"].includes(intent.type) ? intent.val : Math.max(1, Math.round(intent.val * scale)),
       })),
     };
   }
 
   function currentEnemy() {
-    return scaledEnemy(getMission(state.mission).enemies[state.battle - 1], state.mission);
+    const mission = getMission(state.mission);
+    const enemy = scaledEnemy(mission.enemies[state.battle - 1], state.mission);
+    if (state.battle !== 3 || mission.boss) return enemy;
+    enemy.isElite = true;
+    enemy.name = `Elite ${enemy.name}`;
+    enemy.nameZh = `菁英${enemy.nameZh}`;
+    if (mission.arc === 1) enemy.armor = (enemy.armor || 0) + 1;
+    if (mission.arc === 2) enemy.riposteBonus = 2;
+    if (mission.arc === 3) enemy.haste = true;
+    if (mission.arc === 4) enemy.regen = (enemy.regen || 0) + 2;
+    if (mission.arc === 5) enemy.armor = (enemy.armor || 0) + 2;
+    if (mission.arc === 6) enemy.ward = 3;
+    return enemy;
   }
 
   function enemyName(enemy) {
@@ -1236,7 +1259,7 @@
       weak: { icon: "WEK", key: "intent_weak", color: "#d8b4fe", bg: "rgba(147, 51, 234, 0.12)", border: "rgba(147, 51, 234, 0.28)" },
       seal: { icon: "SEA", key: "intent_seal", color: "#c4b5fd", bg: "rgba(124, 58, 237, 0.12)", border: "rgba(124, 58, 237, 0.28)" },
       curse: { icon: "CRS", key: "intent_curse", color: "#e879f9", bg: "rgba(192, 38, 211, 0.12)", border: "rgba(192, 38, 211, 0.28)" },
-      fog: { icon: "???", key: "intent_fog", color: "#cbd5e1", bg: "rgba(71, 85, 105, 0.22)", border: "rgba(148, 163, 184, 0.28)" },
+      fog: { icon: "FOG", key: "intent_fog", color: "#cbd5e1", bg: "rgba(71, 85, 105, 0.22)", border: "rgba(148, 163, 184, 0.28)" },
     };
     const shownIntent = state.intentHidden && intent.type !== "fog" ? { type: "fog", val: 0 } : intent;
     const view = views[shownIntent.type] || views.attack;
@@ -1281,19 +1304,22 @@
     const ratio = state.enemyHp / Math.max(1, state.enemyMaxHp);
     const nextPhase = ratio <= 1 / 3 ? 3 : ratio <= 2 / 3 ? 2 : 1;
     if (nextPhase <= state.bossPhase) return;
-    state.bossPhase = nextPhase;
     const mechanic = state.enemy.phaseMechanic;
-    if (mechanic === "armor") state.enemyArmor += nextPhase;
-    if (mechanic === "riposte") state.enemyRiposteBonus += 2;
-    if (mechanic === "haste") state.enemyHasteStep = Math.min(3, state.enemyHasteStep + 1);
-    if (mechanic === "regen") state.enemyRegen += 2;
-    if (mechanic === "seal") state.enemySeal = ["attack", "defense", "utility"][nextPhase - 1];
-    if (mechanic === "ward") {
-      state.wardTypesPlayed = new Set();
-      state.enemyWard = 3;
+    while (state.bossPhase < nextPhase) {
+      state.bossPhase += 1;
+      const phase = state.bossPhase;
+      if (mechanic === "armor") state.enemyArmor += phase;
+      if (mechanic === "riposte") state.enemyRiposteBonus += 2;
+      if (mechanic === "haste") state.enemyHasteStep = Math.min(3, state.enemyHasteStep + 1);
+      if (mechanic === "regen") state.enemyRegen += 2;
+      if (mechanic === "seal") state.enemySeal = ["attack", "defense", "utility"][phase - 1];
+      if (mechanic === "ward") {
+        state.wardTypesPlayed = new Set();
+        state.enemyWard = 3;
+      }
+      log(t("log_boss_phase", { enemy: enemyName(state.enemy), phase, effect: t(`phase_${mechanic}`) }), "enemy");
+      showCombatFeedback(`PHASE ${phase}`, "poison");
     }
-    log(t("log_boss_phase", { enemy: enemyName(state.enemy), phase: nextPhase, effect: t(`phase_${mechanic}`) }), "enemy");
-    showCombatFeedback(`PHASE ${nextPhase}`, "poison");
   }
 
   function drawCards(count) {
@@ -1467,10 +1493,8 @@
     }
   }
 
-  function endPlayerTurn() {
-    if (!state.isPlayerTurn) return;
-    state.isPlayerTurn = false;
-    nodes.endTurnBtn.disabled = true;
+  function resolveEndTurnHazards() {
+    const hpBefore = state.playerHp;
     if (state.markedCardId && state.hand.includes(state.markedCardId)) {
       const result = applyPlayerDamage(state.markDamage);
       log(t("log_mark_hit", { damage: result.damage }), "enemy");
@@ -1483,6 +1507,14 @@
       const result = applyPlayerDamage(damage);
       log(t("log_curse_hold", { damage: result.damage }), "enemy");
     }
+    return hpBefore - state.playerHp;
+  }
+
+  function endPlayerTurn() {
+    if (!state.isPlayerTurn) return;
+    state.isPlayerTurn = false;
+    nodes.endTurnBtn.disabled = true;
+    resolveEndTurnHazards();
     state.exhaustCardId = null;
     state.intentHidden = false;
     state.discardPile.push(...state.hand);
@@ -1497,15 +1529,7 @@
     return state.drawPile[state.drawPile.length - 1] || state.deck.find((cardId) => cardId !== "mist-curse") || "wolf-pack";
   }
 
-  function executeEnemyTurn() {
-    if (state.enemyShield > 0) {
-      log(t("log_enemy_block_fade", { enemy: enemyName(state.enemy) }), "system");
-      state.enemyShield = 0;
-    }
-    state.enemySeal = null;
-    state.enemyRiposte = 0;
-    const intent = state.enemy.intents[state.enemyIntentIndex];
-    triggerEnemyAnimation("attack");
+  function resolveEnemyIntent(intent) {
     let actionText = "";
     if (intent.type === "attack") {
       const result = applyPlayerDamage(intent.val);
@@ -1569,6 +1593,19 @@
       state.intentHidden = true;
       actionText = t("intent_fog");
     }
+    return actionText;
+  }
+
+  function executeEnemyTurn() {
+    if (state.enemyShield > 0) {
+      log(t("log_enemy_block_fade", { enemy: enemyName(state.enemy) }), "system");
+      state.enemyShield = 0;
+    }
+    state.enemySeal = null;
+    state.enemyRiposte = 0;
+    const intent = state.enemy.intents[state.enemyIntentIndex];
+    triggerEnemyAnimation("attack");
+    const actionText = resolveEnemyIntent(intent);
     log(t("log_enemy_turn", { action: actionText }), "enemy");
 
     if (state.enemyRegen > 0 && state.enemyHp > 0 && state.enemyHp < state.enemyMaxHp) {
@@ -1727,7 +1764,7 @@
   function initializeEnemyMechanics(enemy) {
     state.enemyArmor = Math.max(0, enemy.armor || 0);
     state.enemyRiposte = 0;
-    state.enemyRiposteBonus = 0;
+    state.enemyRiposteBonus = Math.max(0, enemy.riposteBonus || 0);
     state.enemyRegen = Math.max(0, enemy.regen || 0);
     state.enemyHasteStep = enemy.haste ? 2 : 1;
     state.enemyWard = Math.max(0, enemy.ward || 0);
@@ -1768,6 +1805,7 @@
     nodes.stageText.textContent = `${state.battle}/3`;
     nodes.missionText.textContent = String(state.mission);
     nodes.enemyName.textContent = enemyName(state.enemy);
+    nodes.enemyAvatar.classList.toggle("is-boss", Boolean(state.enemy.isBoss));
     nodes.enemyAvatar.innerHTML = `<img src="${asset(state.enemy.image)}" alt="">`;
     nodes.battleLog.innerHTML = "";
     log(t("log_start", { enemy: enemyName(state.enemy) }), "system");
@@ -2024,6 +2062,33 @@
         permanentCardIds: [...permanentCardIds],
         temporaryCardIds: Object.keys(cardDb).filter((cardId) => cardDb[cardId].temporary),
       }),
+      campaignBalance: () => {
+        let level = 1;
+        let xp = 0;
+        const rows = missionTemplates.map((mission, index) => {
+          const missionId = index + 1;
+          const playerMaxHp = 30 + Math.max(0, level - 1) * 2;
+          const enemies = mission.enemies.map((enemyId) => scaledEnemy(enemyId, missionId));
+          const maxAttack = Math.max(...enemies.flatMap((enemy) => enemy.intents.filter((intent) => intent.type === "attack").map((intent) => intent.val)), 0);
+          const maxEnemyHp = Math.max(...enemies.map((enemy) => enemy.maxHp));
+          const gainedXp = mission.xp + 2 * (18 + missionId * 2);
+          xp += gainedXp;
+          while (xp >= xpToNext(level)) {
+            xp -= xpToNext(level);
+            level += 1;
+          }
+          return { mission: missionId, playerMaxHp, maxAttack, maxEnemyHp, oneHitMargin: playerMaxHp - maxAttack, levelAfter: level };
+        });
+        return {
+          rows,
+          minimumOneHitMargin: Math.min(...rows.map((row) => row.oneHitMargin)),
+          maximumEnemyHp: Math.max(...rows.map((row) => row.maxEnemyHp)),
+          maximumAttack: Math.max(...rows.map((row) => row.maxAttack)),
+          finalLevel: level,
+          baseCardTypes: [...new Set(baseDeck.map((cardId) => cardDb[cardId].type))],
+          curseCost: cardDb["mist-curse"].cost,
+        };
+      },
       runCampaignMechanicScenario: () => {
         const originalState = state;
         resetRunState();
@@ -2056,6 +2121,106 @@
         const bossArmor = state.enemyArmor;
         state = originalState;
         return { armorHpBefore, armorHpAfter, armorDamage, wardBeforeFinalType, wardAfterFinalType, playerHpBeforeRiposte, playerHpAfterRiposte, bossPhase, bossArmor };
+      },
+      bossPhasePreviews: () => {
+        const originalState = state;
+        const previews = Object.entries(enemyCatalog).filter(([, enemy]) => enemy.isBoss).map(([id, base]) => {
+          resetRunState();
+          state.enemy = scaledEnemy(id, 30);
+          state.enemyHp = Math.ceil(state.enemy.maxHp * 0.3);
+          state.enemyMaxHp = state.enemy.maxHp;
+          initializeEnemyMechanics(state.enemy);
+          updateBossPhase();
+          return {
+            id,
+            bossId: base.bossId,
+            mechanic: base.phaseMechanic,
+            phase: state.bossPhase,
+            armor: state.enemyArmor,
+            riposteBonus: state.enemyRiposteBonus,
+            hasteStep: state.enemyHasteStep,
+            regen: state.enemyRegen,
+            seal: state.enemySeal,
+            ward: state.enemyWard,
+          };
+        });
+        state = originalState;
+        return previews;
+      },
+      statusMechanicPreviews: () => {
+        const originalState = state;
+        resetRunState();
+        state.enemy = scaledEnemy("crownWolf", 30);
+        state.enemyHp = 60;
+        state.enemyMaxHp = 100;
+        state.playerHp = 40;
+        state.playerMaxHp = 40;
+        state.playerShield = 0;
+        state.enemyShield = 0;
+        state.enemyPoison = 0;
+        state.playerPoison = 0;
+        initializeEnemyMechanics(state.enemy);
+
+        resolveEnemyIntent({ type: "armor", val: 2 });
+        const armor = state.enemyArmor;
+        resolveEnemyIntent({ type: "riposte", val: 4 });
+        const riposte = state.enemyRiposte;
+        state.drawPile = ["guard-bear"];
+        resolveEnemyIntent({ type: "exhaust", val: 1 });
+        const exhaustedCard = state.exhaustCardId;
+        const exhaustedCost = effectiveCardCost(exhaustedCard);
+        resolveEnemyIntent({ type: "mark", val: 6 });
+        state.hand = [state.markedCardId];
+        const markDamage = resolveEndTurnHazards();
+        state.enemyHp = 50;
+        resolveEnemyIntent({ type: "regen", val: 5 });
+        const regenHp = state.enemyHp;
+        state.enemyPoison = 4;
+        resolveEnemyIntent({ type: "cleanse", val: 0 });
+        const poisonAfterCleanse = state.enemyPoison;
+        resolveEnemyIntent({ type: "weak", val: 4 });
+        const weak = state.playerWeak;
+        resolveEnemyIntent({ type: "seal", val: 0, seal: "attack" });
+        state.hand = ["wolf-pack"];
+        state.energy = 3;
+        state.isPlayerTurn = true;
+        renderHand();
+        const sealedAttackDisabled = Boolean(nodes.handRow.querySelector("button")?.disabled);
+        const cursesBefore = state.deck.filter((cardId) => cardId === "mist-curse").length;
+        resolveEnemyIntent({ type: "curse", val: 1 });
+        const cursesInserted = state.deck.filter((cardId) => cardId === "mist-curse").length - cursesBefore;
+        state.hand = ["mist-curse"];
+        state.playerShield = 0;
+        const curseHoldDamage = resolveEndTurnHazards();
+        state.intentHidden = false;
+        resolveEnemyIntent({ type: "fog", val: 0 });
+        displayIntent({ type: "attack", val: 12 });
+        const fogIcon = nodes.intentIcon.textContent;
+        const amber = scaledEnemy("amberLynx", 15);
+        const hasteStep = amber.haste ? 2 : 1;
+        state = originalState;
+        return { armor, riposte, exhaustedCard, exhaustedCost, markDamage, regenHp, poisonAfterCleanse, weak, sealedAttackDisabled, cursesInserted, curseHoldDamage, fogIcon, hasteStep };
+      },
+      unlockCampaignForSmoke: (missionId = 30) => {
+        const mission = clamp(Number(missionId) || 1, 1, maxMission);
+        profile.unlockedMission = mission;
+        profile.selectedMission = mission;
+        saveLocalState();
+        renderProgressUI();
+        return { unlockedMission: profile.unlockedMission, selectedMission: profile.selectedMission };
+      },
+      forceBattle: (battle = 3) => {
+        state.battle = clamp(Number(battle) || 1, 1, 3);
+        startNextBattle();
+        return {
+          battle: state.battle,
+          enemyName: enemyName(state.enemy),
+          enemyImage: state.enemy.image,
+          isBoss: Boolean(state.enemy.isBoss),
+          isElite: Boolean(state.enemy.isElite),
+          bossId: state.enemy.bossId || "",
+          phaseMechanic: state.enemy.phaseMechanic || "",
+        };
       },
       setHandAccessibilityState: ({ energy = state.energy, isPlayerTurn = state.isPlayerTurn, hand = state.hand } = {}) => {
         state.energy = Math.max(0, Number(energy) || 0);
@@ -2171,6 +2336,7 @@
 
   function init() {
     installStandardStageFlow();
+    dockMainUtilities();
     loadLocalState();
     translateUI();
     renderProgressUI();

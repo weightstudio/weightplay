@@ -362,6 +362,24 @@
     isLocked: false,
     ready: false
   };
+  let roundGeneration = 0;
+
+  function scheduleRoundTask(task, delay) {
+    const generation = roundGeneration;
+    const startedAt = performance.now();
+    const tick = (now) => {
+      if (generation !== roundGeneration || !document.body.classList.contains("memory-playing")) return;
+      if (now - startedAt >= delay) task();
+      else requestAnimationFrame(tick);
+    };
+    return requestAnimationFrame(tick);
+  }
+
+  function cancelRoundTasks() {
+    roundGeneration += 1;
+    state.selectedCards = [];
+    state.isLocked = false;
+  }
 
   // Helper Functions
   function locale() {
@@ -537,6 +555,7 @@
   window.visualViewport?.addEventListener("scroll", updateMemoryFrame);
 
   function showMain() {
+    cancelRoundTasks();
     document.body.classList.remove("memory-stage", "memory-playing", "memory-result");
     document.body.classList.add("memory-main");
     resultPanel.classList.add("hidden");
@@ -551,6 +570,7 @@
 
   // Stage Selection Screen
   function showStageSelect(focusStageIndex = Math.max(0, Math.min(stages.length, state.unlockedLevel) - 1)) {
+    cancelRoundTasks();
     document.body.classList.remove("memory-main");
     document.body.classList.remove("memory-playing");
     document.body.classList.remove("memory-result");
@@ -657,6 +677,7 @@
 
   // Start Gameplay Stage
   function startStage(stageIdx) {
+    cancelRoundTasks();
     const stage = stages[stageIdx];
     state.stageIndex = stageIdx;
     state.score = 0;
@@ -835,7 +856,7 @@
       
       // Check for win
       if (state.matchedPairsCount === stage.symbols.length) {
-        setTimeout(finishGame, 600);
+        scheduleRoundTask(finishGame, 600);
       }
     } else {
       // Mismatch
@@ -845,7 +866,7 @@
       
       window.WonderSound?.play("wrong");
       
-      setTimeout(() => {
+      scheduleRoundTask(() => {
         card1.classList.remove("flipped");
         card2.classList.remove("flipped");
         updateCardAccessibility(card1, "hidden");
@@ -859,13 +880,14 @@
       
       // Check for lose (out of moves)
       if (state.moves >= stage.limit) {
-        setTimeout(gameOver, 900);
+        scheduleRoundTask(gameOver, 900);
       }
     }
   }
 
   // Game Victory Handling
   function finishGame() {
+    cancelRoundTasks();
     const stage = stages[state.stageIndex];
     const previousBest = getLevelHighScore(stage.id);
     
@@ -921,6 +943,7 @@
 
   // Game Over Handling
   function gameOver() {
+    cancelRoundTasks();
     const stage = stages[state.stageIndex];
     resultTitle.textContent = t("defeat");
     resultText.textContent = t("defeatDesc");

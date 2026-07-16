@@ -261,6 +261,14 @@ body.garden-stage .home-link { grid-template-columns: 1fr; }
   color: rgba(36, 53, 40, 0.46);
 }
 
+.level-grid button.locked .level-lock {
+  justify-self: center;
+  padding: 4px 9px;
+  border-radius: 99px;
+  background: #fff4c9;
+  color: #624516;
+}
+
 .level-grid button.completed {
   background: #bce58e;
 }

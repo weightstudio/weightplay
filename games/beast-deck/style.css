@@ -1836,6 +1836,7 @@ body.beast-deck-playing .battlefield { padding:10px; gap:6px; }
 body.beast-deck-playing .enemy-container { flex:0 0 auto; gap:3px; }
 body.beast-deck-playing .enemy-intent { margin:0; }
 body.beast-deck-playing .beast-avatar { width:72px; height:72px; }
+body.beast-deck-playing .beast-avatar.is-boss { width:122px; height:122px; }
 body.beast-deck-playing .battle-log { flex:1 1 48px; min-height:48px; max-height:58px; }
 body.beast-deck-playing .player-container { flex:0 0 auto; gap:3px; }
 body.beast-deck-playing .hand-row { min-height:176px; max-height:184px; overflow-x:auto; overflow-y:hidden; }
@@ -1863,6 +1864,7 @@ body.beast-deck-playing #gamePanel.result-open > .action-area { pointer-events:n
   body.beast-deck-playing .enemy-container { gap:3px; }
   body.beast-deck-playing .enemy-intent { margin:0; padding:3px 8px; }
   body.beast-deck-playing .beast-avatar { width:62px; height:62px; }
+  body.beast-deck-playing .beast-avatar.is-boss { width:82px; height:82px; }
   body.beast-deck-playing #enemyName { font-size:13px; }
   body.beast-deck-playing .hp-bar-container { height:16px; }
   body.beast-deck-playing .status-row { min-height:16px; }
@@ -1875,6 +1877,30 @@ body.beast-deck-playing #gamePanel.result-open > .action-area { pointer-events:n
 /* Standard Main and Stage ownership. Battle geometry remains independent. */
 #menuPanel .menu-copy {
   max-width: 520px;
+}
+
+#menuPanel .sound-toggle.beast-main-utility {
+  position: static !important;
+  align-self: center !important;
+  flex: 0 0 42px !important;
+  inset: auto !important;
+  transform: none !important;
+  cursor: pointer !important;
+  touch-action: manipulation !important;
+}
+
+#menuPanel .sound-toggle.beast-main-utility:hover,
+#menuPanel .sound-toggle.beast-main-utility:focus-visible {
+  transform: scale(1.06) !important;
+}
+
+#menuPanel .weightplay-version-badge {
+  position: static !important;
+  align-self: center;
+  flex: 0 0 auto;
+  inset: auto !important;
+  transform: none !important;
+  opacity: .72;
 }
 
 #menuPanel .standard-main-start {

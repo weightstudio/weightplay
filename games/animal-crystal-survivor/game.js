@@ -280,7 +280,19 @@
 
   function loadSave() {
     try {
-      return { bestKeys: 0, bestLevel: 1, playCount: 0, totalKeys: 0, crystalCharm: false, ...JSON.parse(localStorage.getItem(saveKey) || "{}") };
+      const stored = JSON.parse(localStorage.getItem(saveKey) || "{}");
+      const source = stored && typeof stored === "object" && !Array.isArray(stored) ? stored : {};
+      const wholeNumber = (value, fallback, minimum = 0) => {
+        const parsed = Number(value);
+        return Number.isFinite(parsed) ? Math.max(minimum, Math.floor(parsed)) : fallback;
+      };
+      return {
+        bestKeys: wholeNumber(source.bestKeys, 0),
+        bestLevel: wholeNumber(source.bestLevel, 1, 1),
+        playCount: wholeNumber(source.playCount, 0),
+        totalKeys: wholeNumber(source.totalKeys, 0),
+        crystalCharm: source.crystalCharm === true,
+      };
     } catch {
       return { bestKeys: 0, bestLevel: 1, playCount: 0, totalKeys: 0, crystalCharm: false };
     }

@@ -527,10 +527,33 @@
   function loadProfile() {
     try {
       const parsed = JSON.parse(localStorage.getItem(saveKey) || "{}");
+      const source = parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : {};
+      const wholeNumber = (value, fallback, minimum = 0, maximum = Number.MAX_SAFE_INTEGER) => {
+        const number = Number(value);
+        return Number.isFinite(number) ? Math.min(maximum, Math.max(minimum, Math.floor(number))) : fallback;
+      };
+      const rawXp = wholeNumber(source.xp, 0);
+      const heroLevels = source.heroLevels && typeof source.heroLevels === "object" && !Array.isArray(source.heroLevels)
+        ? source.heroLevels
+        : {};
       return {
         ...defaultProfile(),
-        ...parsed,
-        heroLevels: { lion: 1, owl: 1, turtle: 1, ...(parsed.heroLevels || {}) },
+        ...source,
+        level: wholeNumber(source.level, 1, 1) + Math.floor(rawXp / 100),
+        xp: rawXp % 100,
+        runes: wholeNumber(source.runes, 0),
+        bestMission: wholeNumber(source.bestMission, 1, 1, missionDefs.length),
+        unlockedMission: wholeNumber(source.unlockedMission, 1, 1, missionDefs.length),
+        training: source.training === true,
+        heroLevels: {
+          lion: wholeNumber(heroLevels.lion, 1, 1, 6),
+          owl: wholeNumber(heroLevels.owl, 1, 1, 6),
+          turtle: wholeNumber(heroLevels.turtle, 1, 1, 6),
+        },
+        bonusAtk: wholeNumber(source.bonusAtk, 0),
+        bonusHp: wholeNumber(source.bonusHp, 0),
+        bonusEnergy: wholeNumber(source.bonusEnergy, 0),
+        reviveTokens: wholeNumber(source.reviveTokens, 0),
       };
     } catch {
       return defaultProfile();
@@ -549,6 +572,7 @@
       bonusAtk: 0,
       bonusHp: 0,
       bonusEnergy: 0,
+      reviveTokens: 0,
     };
   }
 

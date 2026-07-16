@@ -458,30 +458,65 @@
     },
     "beast-deck": {
       title: "Beast Deck: The Mist Forest",
-      age: "13+",
       difficulty: "Medium",
-      time: "6-10 minutes",
+      time: "8-15 minutes per mission",
+      gameplay: "Turn-Based Roguelike Deckbuilder",
+      genre: ["Card Strategy", "Roguelike", "Animal Adventure"],
       skills: ["Logic", "Problem Solving", "Focus"],
-      intro:
-        "Beast Deck: The Mist Forest is a turn-based Roguelike deckbuilding card game with local progression. Players clear missions, earn XP, level up, unlock deeper forest routes, draft animal-power cards, and spend platform Diamonds on permanent upgrades.",
+      guideKicker: "WeightPlay Original Game Guide",
+      guideTitleSuffix: "Game Guide",
+      noteTitle: "Player and Save Information",
+      hideScoreBands: true,
+      intro: "Beast Deck: The Mist Forest is a 30-mission turn-based deckbuilding campaign built around visible enemy intent and animal-power card combos. Each mission contains three battles and two temporary drafts. Six five-mission regions introduce armor, riposte, Exhaust, marks, regeneration, cleanse, Weak, seals, curses and triad wards. Missions 5, 10, 15, 20, 25 and 30 end with different phase-changing Bosses.",
+      story: [
+        "The Mist Forest was once divided into six routes used by animal wardens: Mist Trail, Ironroot Works, Amber Hunt, Mirecoil Basin, Moon Archive and Mist Crown. When crown mist began moving against the wind, ordinary animals became corrupted and the routes stopped communicating. Shadow Boars and Vipers occupied the first trail, Ironroot creatures built countering armor, Amber hunters marked anything that crossed their territory, and Mirecoil beasts learned to regenerate through poison. The Moon Archive sealed away whole classes of animal powers, while the final court filled clean draws with Mist Curses.",
+        "The player keeps the Beast Deck, a field book that calls on friendly animal strengths. Wolf Pack attacks, Guard Bear and Iron Tortoise create Block, Sky Hawk combines damage with a draw, Cheetah Sprint supplies cards and Energy, Viper Venom builds Poison, and Owl Wisdom searches the deck. Clearing a mission reconnects its route; defeating the Mist Crown Monarch in Mission 30 breaks the source ward and reopens all six."
+      ],
+      systems: [
+        "Turn structure: a player turn restores Energy, clears temporary Block and draws three cards. Played or leftover cards enter the discard pile; when the draw pile empties, the discard pile is shuffled back. Visible intent identifies the enemy's next action unless fog is active.",
+        "Card interactions: Wolf Pack deals 6 damage, or 12 after another Attack. Sky Hawk deals 14 and draws one. Guard Bear grants 6 Block, Iron Tortoise 15, Cheetah Sprint draws two and refunds one Energy, Viper Venom applies three Poison, and Owl Wisdom draws one for free. Poison triggers after the enemy action; enemy Block absorbs a fixed amount.",
+        "Regional mechanics: armor reduces each direct hit; riposte counters the next Attack; Exhaust raises one card's next cost; marks punish ending with a named card; Weak reduces the next Attack. Regeneration heals, cleanse removes Poison, haste skips through intent order, fog hides an intent, and seals disable one card type for a turn.",
+        "Mist Crown rules: temporary curses cost one Energy to remove; holding one at turn end deals damage before it cycles through discard. The triad ward blocks direct damage until Attack, Defense and Utility cards have all been used. Progress crosses turns, but the final Boss can rebuild the ward.",
+        "Mission building: after Battles 1 and 2, choose one temporary card from three; it enters the next opening hand. Permanent Beast Packs cost 80 earned Coins and award a card or equipment, with duplicates raising rank. Up to six owned cards and one equipment item can be prepared before a mission.",
+        "Persistent growth: XP raises level and Max HP. Mist Cloak adds HP, Hunter Charm adds Energy and Forest Banner adds opening Block. Missions, collection, loadout, equipment, level, XP and Coins save locally. The optional 15-Diamond Mist Amulet adds HP, requires confirmation and does not gate the campaign."
+      ],
       how: [
-        "Choose an unlocked mission from the menu. Your level and unlocked missions are saved on this device.",
-        "Play cards from your hand by paying their Energy cost.",
-        "Read the enemy intent before choosing attacks, block, poison, or draw cards.",
-        "Defeat all 3 battles in a mission to earn XP and unlock the next route."
+        "Swipe the Mission Preparation rail and choose any unlocked mission; all 30 route cards remain visible.",
+        "Use Deck to equip six permanent cards and one equipment item. Upgrade contains earned-Coin packs and the optional Mist Amulet.",
+        "Read enemy intent, then tap a card whose Energy can be paid. Disabled cards explain Energy, turn or seal restrictions.",
+        "Order cards carefully: enable Wolf Pack's combo, draw before spending the last Energy, and Block before a large attack.",
+        "After Battles 1 and 2, draft one temporary card for the next opening hand.",
+        "Defeat the third elite or checkpoint Boss before HP reaches zero.",
+        "On victory, continue, retry or return to preparation. Failed missions keep permanent progress."
       ],
       strategyTips: [
-        "Pay attention to enemy intent before deciding to attack or defend.",
-        "Wolf Pack deals double damage when played after another attack card.",
-        "Poison helps against enemies with block, while Guard Bear and Iron Tortoise protect difficult turns.",
-        "Repeat earlier missions to gain XP before pushing into harder routes."
+        "Haste can skip an expected intent; fog removes intent information for one turn.",
+        "Against armor, prefer one large hit over several small ones. Poison ignores armor and wards.",
+        "Do not attack into riposte. Block, draw or apply Poison until the stance changes.",
+        "Play a marked card before ending the turn; drawing more can make it harder to locate.",
+        "Burst through regeneration, and wait until after cleanse before stacking Poison.",
+        "Break a triad ward with Utility and Defense before the Attack meant to deal damage.",
+        "Level and equipment improve safety, but reading the current mechanic matters more than repeated grinding."
       ],
-      parent:
-        "This game is intended for teens and casual players. It practices strategy, logic, planning, and resource coordination. Progress is stored locally on the device and is for fun only.",
+      progression: [
+        "Missions 1-5 teach intent, Block, Poison and armor. Stoneback Behemoth thickens armor at two Boss thresholds.",
+        "Missions 6-10 add riposte and Exhaust. Ironroot Warden raises counter damage at each phase.",
+        "Missions 11-15 add haste, marks and Weak. Amber Huntmaster accelerates as health falls.",
+        "Missions 16-20 combine regeneration, Poison and cleanse. Mirecoil Hydra gains stronger passive healing by phase.",
+        "Missions 21-25 rotate Attack, Defense and Utility seals. Moon Archive Keeper changes the forbidden type by phase.",
+        "Missions 26-30 add curses, fog and triad wards. Mist Crown Monarch reforms its ward in the final phase; Mission 30 ends the authored campaign rather than starting a numeric endless loop."
+      ],
+      designNote: "Three encounters give two draft choices enough time to matter without creating an endurance run. Intent stays visible unless fog is the rule, tying losses to readable decisions. Mission 30's numerical ceiling remains close to the former eight-mission version; difficulty now comes from overlapping mechanics. Phone and desktop use the same card order and tap/click actions. Unlike Animal Auto Squad's pre-battle planning, Beast Deck resolves every turn; unlike Animal Rune Tactics, it replaces grid position with draw order, Energy and discard timing.",
+      parent: "This browser locally stores missions, level, XP, Beast Coins, collection, loadout, equipment ranks and Mist Amulet ownership. No login is required; clearing site storage may remove progress. Earned-Coin packs and all six Bosses require no Diamonds. The optional Mist Amulet confirms the resulting balance before spending. Skill labels are not a formal assessment.",
       faq: [
-        ["Is Beast Deck free to play?", "Yes. Like all games on WeightPlay, it runs free in the browser."],
-        ["Does progress continue between sessions?", "Yes. Player level, XP, best mission, selected mission, and permanent upgrades are saved locally on the device."],
-        ["How do I earn Diamonds?", "Beast Deck does not drop Diamonds from battles. Use platform sources such as daily check-in rewards, then spend Diamonds on optional upgrades like the Mist Amulet."]
+        ["Is Beast Deck free?", "Yes. All 30 missions, drafts, earned-Coin packs and six Bosses run free in the browser."],
+        ["How many Bosses are there?", "Six. Missions 5, 10, 15, 20, 25 and 30 each have a different phase mechanic."],
+        ["What is saved?", "Missions, level, XP, Coins, collection, loadout, equipment ranks and Mist Amulet ownership."],
+        ["Are drafts permanent?", "No. Battle drafts last for one mission; permanent cards come from earned-Coin packs."],
+        ["How do curses work?", "Spend one Energy to remove one. Holding it at turn end deals two damage and cycles it through discard."],
+        ["How is the ward broken?", "Use Attack, Defense and Utility cards. Progress crosses turns, but the final Boss can reform it."],
+        ["Are Diamonds required?", "No. They only unlock the optional confirmed Mist Amulet and never gate missions or Bosses."],
+        ["Does it work on phones?", "Yes. Swipe missions, tap large cards and use the fixed End Turn action."]
       ],
     },
     "animal-relic-hunters": {
@@ -999,17 +1034,66 @@
       "tiny-weather-rescue": zhGuide("動物幫幫隊", "道具選擇", ["觀察動物遇到的情境。", "選擇或拖曳正確道具幫忙。", "答對後完成關卡。"]),
       "beast-deck": {
         title: "獸王牌組：迷霧森林",
-        age: "13+",
         difficulty: "中等",
-        time: "6-10 分鐘",
-        gameplay: "牌組 Roguelike",
-        genre: ["卡牌", "Roguelike", "動物"],
+        time: "每個任務 8-15 分鐘",
+        gameplay: "回合制 Roguelike 牌組構築",
+        genre: ["卡牌策略", "Roguelike", "動物冒險"],
         skills: ["邏輯", "問題解決", "專注"],
-        intro: "獸王牌組：迷霧森林是一款有本機累積進度的回合制 Roguelike 牌組構築遊戲。玩家通過任務、獲得經驗、提升等級、解鎖更深的森林路線，並用動物能力卡對抗腐化野獸。",
-        how: ["選擇任務進入戰鬥。", "每回合打出卡牌攻擊、防守或取得資源。", "打倒敵人後獲得經驗，逐步解鎖更深的任務。"],
-        strategyTips: ["保留防守牌可以避免血量突然降低。", "升級後先確認新卡牌是否能配合既有牌組。", "鑽石升級是選用，不是通關必要條件。"],
-        parent: "這款遊戲適合青少年練習回合規劃、資源管理與風險判斷。進度存在本機，不需要登入。",
-        faq: [["獸王牌組需要付費嗎？", "不需要。WeightPlay 的遊戲都可以直接在瀏覽器免費遊玩。"], ["鑽石可以做什麼？", "鑽石目前以每日簽到等平台來源取得，可用來解鎖可選永久升級。"]],
+        guideKicker: "WeightPlay 原創遊戲指南",
+        guideTitleSuffix: "遊戲指南",
+        noteTitle: "玩家與存檔說明",
+        hideScoreBands: true,
+        intro: "《獸王牌組：迷霧森林》是一套以判讀敵人意圖、安排出牌順序為核心的 30 任務回合制牌組戰役。每個任務有三場連續戰鬥；通過前兩場後各選一張本次任務限定卡並恢復部分生命，擊敗第三場才會保存經驗、獸王金幣與下一個任務。六個五關區域依序加入護甲、反擊、疲勞、標記、再生、淨化、虛弱、牌型封印、詛咒與三相結界。第 5、10、15、20、25、30 任務各有一隻不同首領，生命降到門檻時還會進入新階段。",
+        story: [
+          "迷霧森林原本由動物守望者使用六條道路連結：迷霧小徑、鐵根工坊、琥珀大獵、盤沼深潭、月影典藏與霧冠王座。冠霧開始逆風流動後，普通動物受到腐化，道路也彼此中斷。暗影野豬與毒蛇占據入口；鐵根生物發展出護甲與反擊；琥珀獵手會標記穿越者；盤沼生物能從毒素中再生；月影典藏封印整類動物能力；最後的王庭則用迷霧詛咒污染乾淨的抽牌。",
+          "玩家扮演獸王牌組的保管者。這本行動牌冊會借用友善動物的特長，不需要讓牠們親自承受危險。狼群突襲提供快速攻擊，守衛熊與鐵甲龜建立格擋，天鷹把傷害與抽牌結合，獵豹把速度轉成手牌與能量，毒蛇累積中毒，貓頭鷹則深入搜尋牌庫。通過任務代表該段路線已穩定到能重新接通；在第 30 任務擊敗霧冠獸王，代表迷霧源頭的結界被解除，六條道路全部恢復。"
+        ],
+        systems: [
+          "回合流程：玩家回合會恢復能量、清除暫時格擋並抽三張牌。打出的牌進入棄牌堆；回合結束時，剩餘手牌也會棄掉。抽牌堆用盡後，棄牌堆重新洗回。除非濃霧正在遮蔽，敵人下一個攻擊、防禦、中毒或特殊行動都會顯示在頭頂，所以結束回合是一個可判斷的風險決策。",
+          "卡牌連動：狼群突襲基本造成 6 點傷害，同回合先打過其他攻擊牌後改為 12；天鷹造成 14 點並抽一張；守衛熊取得 6 點格擋，鐵甲龜取得 15 點；獵豹疾跑抽兩張並補回一點能量；毒蛇之牙施加三層中毒；貓頭鷹智慧不耗能抽一張。中毒在敵方行動後造成傷害並減少一層，敵人格擋則先吸收固定傷害。",
+          "區域規則：護甲會削減每一次直接命中；反擊會回敬下一張攻擊牌；疲勞提高一張指定牌在下個玩家回合的能量；標記要求回合結束前打出指定牌；虛弱降低下一次攻擊。再生會在敵方行動後治療，淨化移除中毒，加速會跳過更多意圖位置，濃霧隱藏下一個顯示意圖，封印則在一個玩家回合停用攻擊、防禦或功能牌。",
+          "霧冠規則：詛咒行動會把臨時的迷霧詛咒放入戰鬥牌庫。花一點能量打出可永久清除該張詛咒；回合結束仍握在手中則先受傷，再隨棄牌循環回來。最終三相結界會阻擋直接傷害，直到玩家分別使用過攻擊、防禦與功能牌。結界進度可以跨回合，但最終首領在後期階段會重建結界。",
+          "任務構築：基礎牌組由多張狼群突襲、守衛熊，以及天鷹、獵豹組成。通過第一、第二場後，從三張候選卡選一張加入本次任務；新卡保證出現在下一場開手牌。選單中的永久卡冊是另一套系統：金色獸王卡包花費 80 枚獸王金幣，會給永久卡牌或裝備；重複取得可提高階級，出戰前最多裝備六張額外卡。",
+          "永久成長：經驗提高本機玩家等級與生命上限，獸王金幣用於抽卡包。迷霧披風提高最大生命、獵手護符增加每場起始能量、森林戰旗增加開場格擋，裝備階級會強化效果。任務、卡冊、裝備、等級、經驗、金幣與可選迷霧護符都保存在目前瀏覽器。迷霧護符花 15 顆平台鑽石、需要二次確認，也不是通過 30 任務的必要條件。"
+        ],
+        how: [
+          "進入任務準備後，左右滑動完整的 30 任務軌道，點選任何已解鎖任務；鎖定卡仍會顯示，方便看清整條戰役。",
+          "在牌組分頁裝備最多六張永久卡與一件裝備；升級分頁可用獸王金幣抽卡包，也會顯示可選迷霧護符。",
+          "戰鬥中先閱讀敵人頭上的意圖，再點擊能支付能量的卡牌。不能打出的牌會說明是能量不足、等待回合或受到牌型封印。",
+          "安排同一回合的順序：先用其他攻擊啟動狼群連擊，在花完能量前先抽牌，遇到大攻擊則在結束回合前建立格擋。",
+          "擊敗第一個敵人後選一張臨時卡，它會放進下一場開手牌；第二場結束後再選一次。",
+          "在生命歸零前擊敗第三場。普通任務最後是特製菁英；每五關則由具名區域首領取代。",
+          "勝利後可直接進入下一任務、重試目前任務或返回準備；失敗不會刪除已保存的永久進度。"
+        ],
+        strategyTips: [
+          "把意圖順序當成資源。琥珀敵人的加速會跳過原本預期的下一個行動，濃霧則會刻意讓一個回合失去這項資訊。",
+          "面對護甲前先算每次命中。一次天鷹通常比兩次小攻擊有效；中毒不受護甲與三相結界阻擋。",
+          "不要把所有攻擊牌丟進反擊架勢。反擊存在時可先防禦、抽牌或施毒，等敵人換成下一個行動再進攻。",
+          "牌被標記後，不要盲目抽太多牌。打出指定牌即可解除；回合結束仍握著它，才會承受顯示的傷害。",
+          "面對再生時應保留能量集中爆發，避免零碎傷害立刻被補回；面對淨化則應等淨化行動結束後再疊中毒。",
+          "三相結界是出牌順序題：先用便宜功能牌與防禦牌，再讓應該造成傷害的攻擊牌成為第三種。重複同類型不會增加進度。",
+          "永久等級與裝備能降低容錯壓力，但每區規則仍有戰術答案。重玩舊任務適合取得金幣與經驗，不能取代閱讀目前敵人。"
+        ],
+        progression: [
+          "第 1-5 任務是迷霧小徑。前段教攻擊、格擋與中毒，棘甲雄鹿首次加入護甲。磐背巨獸是第一隻首領，兩次生命門檻都會增厚護甲，因此要把較大攻擊與中毒搭配，而不是反覆使用相同小攻擊。",
+          "第 6-10 任務穿越鐵根工坊。鐵根胡狼帶來反擊與疲勞，後續再把它們與護甲、重擊組合。鐵根守衛每進入一個首領階段都會提高反擊傷害，防禦與功能回合也會成為輸出計畫的一部分。",
+          "第 11-15 任務進入琥珀大獵。琥珀山貓以加速跳躍意圖，並標記必須打出的牌；虛弱則壓低下一次攻擊。琥珀獵主會同時使用標記、虛弱與加速，生命降低後追獵速度再提升。",
+          "第 16-20 任務來到盤沼深潭。盤沼蟾蜍在行動後再生，中毒必須與治療競速，淨化也能清掉準備好的毒蛇戰術。泥沼盤蛇在生命門檻增加被動再生，更鼓勵保留一個完整爆發回合。",
+          "第 21-25 任務探索月影典藏。典藏夜梟輪流封印攻擊、防禦與功能牌，迫使牌組在少一種類型時仍能運作。月典守藏者每個階段都會改變禁用牌型，單一類型無法包辦整場戰鬥。",
+          "第 26-30 任務逼近霧冠王座。冠霧狼放入詛咒並啟動濃霧；第 28 任務預演三種牌型結界；第 29 任務混合先前規則。霧冠獸王以三相結界開場，加入詛咒、輪替封印，並在最後階段重建結界。通過第 30 任務即完成設計好的戰役，不會轉成只增加數字的無限路線。"
+        ],
+        designNote: "每個任務採三場戰鬥，是因為牌組選擇需要足夠時間產生差異，又不應把一次瀏覽器遊玩拖成過長耐久戰。兩次臨時選牌形成明確弧線：用準備牌組解開第一題，調整一次，再於菁英或首領前精煉一次。除非濃霧是當前規則，敵人意圖始終可見，讓失敗能回到一個可理解的決策。數值曲線刻意維持接近舊八任務的上限；第 30 任務的困難來自規則交疊，不是無限制膨脹。手機以大張橫向卡牌與點擊操作為主，桌面沿用相同牌序與資訊層級。相較《動物自走小隊》把決策集中在自動戰鬥前，本作要求逐回合親自解牌；相較《動物符文戰棋》使用格子站位，本作把抽牌順序、能量與棄牌時機當成主要空間。",
+        parent: "目前瀏覽器會在本機保存已解鎖、最佳與選中任務、玩家等級、經驗、獸王金幣、卡牌收藏、裝備卡、裝備與階級，以及迷霧護符。基本遊玩不需要登入；清除本站瀏覽器資料可能移除進度。一般任務、臨時選牌、使用遊戲內獸王金幣的卡包與六場首領戰都不需要鑽石；永久迷霧護符完全可選，扣除前會顯示持有與剩餘鑽石。能力標籤只描述遊玩活動，不是正式評量。",
+        faq: [
+          ["獸王牌組可以免費玩嗎？", "可以。完整 30 任務、臨時選牌、獸王金幣卡包與六場首領戰都能直接在瀏覽器免費遊玩。"],
+          ["總共有多少任務與首領？", "共有六區、30 個設計任務；第 5、10、15、20、25、30 任務各有一隻不同具名首領與階段機制。"],
+          ["哪些進度會保存？", "瀏覽器會保存任務、等級、經驗、獸王金幣、卡冊、裝備卡、裝備階級與迷霧護符。"],
+          ["戰鬥後選的卡會永久保留嗎？", "不會。第一、第二場後選的卡只存在本次任務；永久卡牌來自使用獸王金幣購買的卡包。"],
+          ["迷霧詛咒怎麼處理？", "詛咒會占用抽牌。花一點能量打出即可從目前戰鬥清除；留在手中結束回合會造成兩點傷害並進入棄牌循環。"],
+          ["最終結界怎麼破解？", "分別使用至少一張攻擊、防禦與功能牌。三種牌可以跨回合完成，但最終首領在後期階段會重建結界。"],
+          ["鑽石是必要的嗎？", "不是。鑽石只用於可選迷霧護符，會要求二次確認，也不會阻擋任務、遊玩取得的卡牌或首領。"],
+          ["手機可以玩嗎？", "可以。任務使用水平滑動軌道，戰鬥使用大張點擊卡與固定結束回合按鈕，不需要鍵盤或滑鼠。"]
+        ],
       },
       "animal-orb-fortress": {
         title: "動物星珠要塞",

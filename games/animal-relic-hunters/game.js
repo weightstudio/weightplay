@@ -1,6 +1,9 @@
 (() => {
   const ARENA_WIDTH = 800;
   const ARENA_HEIGHT = 1000;
+  const EXPEDITION_COUNT = 30;
+  const ROOMS_PER_EXPEDITION = 3;
+  const EXPEDITIONS_PER_REGION = 5;
   const GAME_ID = "animal-relic-hunters";
   const saveKey = "weightplay_relic_hunters_v1";
   const profileKey = "weightplay:animal-relic-hunters:profile:v1";
@@ -92,7 +95,7 @@
       menuTitle: "Explore the Ancient Ruins.",
       menuHint: "Move with WASD / virtual joystick. On desktop, hold the left mouse button in the arena to move toward the cursor. Defeat shadow beasts, collect Relic Orbs to level up, and find keys to unlock chests for Weapons, Armor, and Boots.",
       prototypeGoalsTitle: "Expedition Goal",
-      prototypeGoalsText: "Clear Room 3, defeat the Behemoth Boss, collect Relic Orbs, and grow stronger with permanent training and gear upgrades.",
+      prototypeGoalsText: "Clear three rooms in each of 30 expeditions, learn each ruin's hazard, and defeat six regional Guardians while growing through permanent training and gear.",
       diamondShopTitle: "Permanent Upgrade",
       goldLabel: "Gold",
       trainingTitle: "Permanent Training",
@@ -198,17 +201,17 @@
       rarity_epic: "Epic Gear",
 
       // Reports
-      report_win: "Legendary hunter! You defeated the Behemoth, equipped rare relics, and solved the ruin mysteries.",
-      report_partial: "Decent explorer! You reached Room {room}. Level up and equip stronger gear to beat the Behemoth.",
+      report_win: "Expedition clear! You read the ruin's threat pattern, protected your gear route, and defeated its final guardian.",
+      report_partial: "You reached Room {room}. Adjust your relic choices and equipment before challenging this guardian again.",
       report_no_wins: "Keep exploring! Focus on picking up keys and keeping your health up.",
-      bossWarning: "Boss Behemoth approaching!"
+      bossWarning: "Ruin Guardian approaching!"
     },
     "zh-Hant": {
       title: "動物遺跡獵人",
       menuTitle: "探索古代遺跡。",
       menuHint: "使用 WASD 或虛擬搖桿移動。電腦版請在戰鬥場景按住滑鼠左鍵，朝游標方向移動。擊敗怪物，收集能量球升級，並獲得鑰匙以解鎖寶箱獲得武器、防具與鞋子。",
       prototypeGoalsTitle: "遠征目標",
-      prototypeGoalsText: "通過第 3 個房間並擊敗遺跡巨獸 Boss，收集遺跡能量球，透過永久訓練與裝備升級變得更強。",
+      prototypeGoalsText: "完成 30 個遠征的三房戰鬥，辨識不同遺跡威脅，並擊敗六位區域守護者；永久訓練與裝備會陪你繼續前進。",
       diamondShopTitle: "永久升級",
       goldLabel: "金幣",
       trainingTitle: "永久訓練",
@@ -300,8 +303,8 @@
       rarity_epic: "史詩裝備",
 
       // Reports
-      report_win: "傳奇獵人！你擊敗了遺跡巨獸，穿上了頂級裝備，成功解開遺跡核心奧秘。",
-      report_partial: "優秀的探險！你成功深入到第 {room} 間遺跡。多收集裝備與遺物以擊敗巨獸。",
+      report_win: "遠征完成！你辨識了遺跡威脅、守住裝備路線，並擊敗最後的守護者。",
+      report_partial: "你抵達第 {room} 個房間。調整遺物與裝備後，再次挑戰這位守護者。",
       report_no_wins: "繼續加油！多收集鑰匙開啟寶箱，並維持好血量安全。"
     }
   };
@@ -311,7 +314,7 @@
     menuTitle: "探索古代動物遺跡",
     menuHint: "使用 WASD 或虛擬搖桿移動。電腦版請在戰鬥場景按住滑鼠左鍵，朝游標方向移動。擊敗影獸、收集遺跡能量球升級，並找到金鑰開啟寶箱取得武器、防具與靴子。",
     prototypeGoalsTitle: "遠征目標",
-    prototypeGoalsText: "通過第 3 個房間、擊敗遺跡巨獸 Boss、收集遺跡能量球，並透過永久訓練與裝備升級變得更強。",
+    prototypeGoalsText: "完成 30 個遠征的三房戰鬥，辨識不同遺跡威脅，並擊敗六位區域守護者；永久訓練與裝備會陪你繼續前進。",
     diamondShopTitle: "永久升級",
     goldLabel: "金幣",
     trainingTitle: "永久訓練",
@@ -407,17 +410,17 @@
     gear_boots_epic_desc: "+40% 移動速度",
     rarity_rare: "稀有裝備",
     rarity_epic: "史詩裝備",
-    report_win: "傳奇獵人！你擊敗遺跡巨獸、穿戴強力裝備，成功解開古代遺跡的謎團。",
-    report_partial: "不錯的探險家！你抵達第 {room} 個房間。提升等級並換上更強裝備，下次就能挑戰遺跡巨獸。",
+    report_win: "遠征完成！你辨識了遺跡威脅、守住裝備路線，並擊敗最後的守護者。",
+    report_partial: "你抵達第 {room} 個房間。調整遺物與裝備後，再次挑戰這位守護者。",
     report_no_wins: "繼續探索！先專注收集鑰匙、開啟寶箱，並保持生命值。",
-    bossWarning: "遺跡巨獸即將出現！"
+    bossWarning: "遺跡守護者即將出現！"
   });
 
   Object.assign(text.en, {
     startGame: "Start Game",
-    chooseExpedition: "Choose Ruin Region",
+    chooseExpedition: "Choose Expedition",
     expeditionGoal: "3 rooms · Recommended Lv.{level}",
-    expeditionLocked: "Complete Region {region} first",
+    expeditionLocked: "Complete Expedition {region} first",
     lootNewGear: "New gear added to backpack.",
     lootDuplicateGear: "Duplicate gear converted into +{gold} gold.",
     gearCurrentEffect: "Now: {effect}",
@@ -440,15 +443,15 @@
     resultSummaryProgress: "Mission Progress",
     resultUnlocked: "New region unlocked: {region}",
     resultReady: "Ready: {region}",
-    resultAllCleared: "All 5 ruin regions cleared",
+    resultAllCleared: "All 30 expeditions and six ruin Guardians cleared",
     nextExpedition: "Next Mission",
   });
 
   Object.assign(text["zh-Hant"], {
     startGame: "\u958b\u59cb\u904a\u6232",
-    chooseExpedition: "\u9078\u64c7\u907a\u8de1\u5340\u57df",
+    chooseExpedition: "\u9078\u64c7\u9060\u5f81",
     expeditionGoal: "3 \u500b\u623f\u9593\u00b7\u5efa\u8b70 Lv.{level}",
-    expeditionLocked: "\u5148\u5b8c\u6210\u7b2c {region} \u5340",
+    expeditionLocked: "\u5148\u5b8c\u6210\u9060\u5f81 {region}",
     lootNewGear: "\u65b0\u88dd\u5099\u5df2\u52a0\u5165\u80cc\u5305\u3002",
     lootDuplicateGear: "\u91cd\u8907\u88dd\u5099\u5df2\u8f49\u6210 +{gold} \u91d1\u5e63\u3002",
     gearCurrentEffect: "\u76ee\u524d\uff1a{effect}",
@@ -471,7 +474,7 @@
     resultSummaryProgress: "\u4efb\u52d9\u9032\u5ea6",
     resultUnlocked: "\u65b0\u5340\u57df\u5df2\u89e3\u9396\uff1a{region}",
     resultReady: "\u53ef\u6311\u6230\uff1a{region}",
-    resultAllCleared: "\u5df2\u5b8c\u6210\u5168\u90e8 5 \u500b\u907a\u8de1\u5340\u57df",
+    resultAllCleared: "\u5df2\u5b8c\u6210 30 \u500b\u9060\u5f81\u8207\u516d\u5927\u907a\u8de1\u5b88\u8b77\u8005",
     nextExpedition: "\u4e0b\u4e00\u4efb\u52d9",
   });
 
@@ -545,13 +548,48 @@
     return bulletVisualProfiles[weaponKey] || bulletVisualProfiles.default;
   }
 
-  const expeditionDefs = [
-    { id: 1, level: 1, en: "Moss Gate", zh: "\u82d4\u75d5\u4e4b\u9580" },
-    { id: 2, level: 4, en: "Echo Gallery", zh: "\u56de\u8072\u9577\u5eca" },
-    { id: 3, level: 7, en: "Crystal Vault", zh: "\u6c34\u6676\u5730\u5eab" },
-    { id: 4, level: 10, en: "Sunken Shrine", zh: "\u6c89\u6c92\u795e\u6bbf" },
-    { id: 5, level: 13, en: "Behemoth Throne", zh: "\u5de8\u7378\u738b\u5ea7" },
+  const expeditionBlueprints = [
+    ["Moss Gate", "\u82d4\u75d5\u4e4b\u9580", "chase"],
+    ["Rootway Ambush", "\u6839\u9053\u4f0f\u64ca", "rush"],
+    ["Thorn Circle", "\u834a\u68d8\u74b0\u5f91", "swarm"],
+    ["Verdant Reliquary", "\u7fe0\u7da0\u8056\u7269\u5eab", "split"],
+    ["Moss Guardian", "\u82d4\u539f\u5b88\u8b77\u8005", "boss-moss"],
+    ["Echo Gallery", "\u56de\u8072\u9577\u5eca", "ranged"],
+    ["Whisper Steps", "\u4f4e\u8a9e\u77f3\u968e", "crossfire"],
+    ["Resonant Hall", "\u5171\u9cf4\u5927\u5ef3", "pulse"],
+    ["Bell Chamber", "\u9234\u97f3\u5bc6\u5ba4", "ranged-rush"],
+    ["Echo Warden", "\u56de\u97f3\u76e3\u5b88", "boss-echo"],
+    ["Crystal Vault", "\u6c34\u6676\u5730\u5eab", "shield"],
+    ["Prism Crossing", "\u68f1\u93e1\u4ea4\u9053", "shield-rush"],
+    ["Shatter Mine", "\u788e\u6676\u7926\u5751", "split-shield"],
+    ["Facet Labyrinth", "\u6676\u9762\u8ff7\u5bae", "warded"],
+    ["Prism Colossus", "\u68f1\u6676\u5de8\u50cf", "boss-crystal"],
+    ["Sunken Shrine", "\u6c89\u6c92\u795e\u6bbf", "regen"],
+    ["Flooded Nave", "\u6c34\u6df9\u4e2d\u6bbf", "slow"],
+    ["Mire Procession", "\u6fa4\u5730\u968a\u4f0d", "regen-swarm"],
+    ["Drowned Archive", "\u6c89\u6c92\u66f8\u5eab", "slow-ranged"],
+    ["Mirecoil Hydra", "\u6fa4\u74b0\u591a\u982d\u7378", "boss-mire"],
+    ["Moon Archive", "\u6708\u5f71\u66f8\u5eab", "orbit"],
+    ["Ink Observatory", "\u58a8\u8272\u89c0\u6e2c\u5ba4", "ranged-orbit"],
+    ["Lunar Stacks", "\u6708\u5149\u66f8\u67b6", "silence"],
+    ["Astral Index", "\u661f\u754c\u7d22\u5f15", "pulse-orbit"],
+    ["Archive Keeper", "\u66f8\u5eab\u5b88\u5bc6\u8005", "boss-moon"],
+    ["Crown Approach", "\u738b\u51a0\u9032\u8def", "gauntlet"],
+    ["Obsidian Causeway", "\u9ed1\u66dc\u77f3\u9053", "warded-ranged"],
+    ["Relic Furnace", "\u8056\u7269\u7194\u7210", "rush-regen"],
+    ["Six-Seal Court", "\u516d\u5370\u5ead\u9662", "all-specials"],
+    ["Relic Crown Monarch", "\u8056\u7269\u51a0\u5195\u738b", "boss-crown"],
   ];
+
+  const expeditionDefs = expeditionBlueprints.map(([en, zh, rule], index) => ({
+    id: index + 1,
+    level: 1 + Math.floor(index * 0.8),
+    region: Math.floor(index / EXPEDITIONS_PER_REGION) + 1,
+    checkpoint: (index + 1) % EXPEDITIONS_PER_REGION === 0,
+    en,
+    zh,
+    rule,
+  }));
 
   // State Variables
   let state = {
@@ -591,9 +629,12 @@
     // Entities
     enemies: [],
     bullets: [],
+    enemyShots: [],
     orbs: [],
     pickups: [], // keys, chests, portals
     particleSystems: [],
+    slowUntil: 0,
+    silencedUntil: 0,
     bossWarningUntil: 0,
     lastHitSoundAt: 0,
   };
@@ -601,6 +642,12 @@
   let profile = createDefaultProfile();
   let selectedExpedition = 1;
   let resultNextExpedition = 0;
+  let eliteSpawnTimer = 0;
+
+  function clearEliteSpawnTimer() {
+    window.clearTimeout(eliteSpawnTimer);
+    eliteSpawnTimer = 0;
+  }
 
   function createDefaultProfile() {
     return {
@@ -635,8 +682,8 @@
     next.exp = Math.max(0, Math.floor(Number(data.exp) || 0));
     next.expNeed = Math.max(100, Math.floor(Number(data.expNeed) || 100));
     next.gold = Math.max(0, Math.floor(Number(data.gold) || 0));
-    next.unlockedExpedition = Math.max(1, Math.min(5, Math.floor(Number(data.unlockedExpedition) || 1)));
-    next.bestExpedition = Math.max(0, Math.min(5, Math.floor(Number(data.bestExpedition) || 0)));
+    next.unlockedExpedition = Math.max(1, Math.min(EXPEDITION_COUNT, Math.floor(Number(data.unlockedExpedition) || 1)));
+    next.bestExpedition = Math.max(0, Math.min(EXPEDITION_COUNT, Math.floor(Number(data.bestExpedition) || 0)));
 
     const training = data.training && typeof data.training === "object" ? data.training : {};
     for (const key of ["damage", "hp", "speed", "magnet"]) {
@@ -908,6 +955,7 @@
   }
 
   function showMain() {
+    clearEliteSpawnTimer();
     clearAmuletConfirmation();
     state.gameActive = false;
     clearMovementInput();
@@ -928,13 +976,14 @@
   function renderExpeditionStage(focusSelected = false) {
     const currentLocale = getLocale();
     selectedExpedition = Math.max(1, Math.min(profile.unlockedExpedition || 1, selectedExpedition));
-    nodes.expeditionRail.innerHTML = expeditionDefs.map((region) => {
-      const locked = region.id > profile.unlockedExpedition;
-      const name = currentLocale === "zh-Hant" ? region.zh : region.en;
-      return `<button class="expedition-card stage-card ${region.id === selectedExpedition ? "is-selected" : ""} ${locked ? "is-locked" : ""}" data-expedition="${region.id}" type="button" ${locked ? "disabled" : ""}>
-        <span>${currentLocale === "zh-Hant" ? `\u7b2c ${region.id} \u5340` : `Region ${region.id}`}</span>
+    nodes.expeditionRail.innerHTML = expeditionDefs.map((expedition) => {
+      const locked = expedition.id > profile.unlockedExpedition;
+      const name = currentLocale === "zh-Hant" ? expedition.zh : expedition.en;
+      const checkpoint = expedition.checkpoint ? (currentLocale === "zh-Hant" ? "\u5b88\u8b77\u8005" : "Guardian") : (currentLocale === "zh-Hant" ? `\u5340\u57df ${expedition.region}` : `Region ${expedition.region}`);
+      return `<button class="expedition-card stage-card ${expedition.id === selectedExpedition ? "is-selected" : ""} ${locked ? "is-locked" : ""} ${expedition.checkpoint ? "is-checkpoint" : ""}" data-expedition="${expedition.id}" type="button" ${locked ? "disabled" : ""}>
+        <span>${currentLocale === "zh-Hant" ? `\u9060\u5f81 ${expedition.id}` : `Expedition ${expedition.id}`} \u00b7 ${checkpoint}</span>
         <strong>${name}</strong>
-        <small>${locked ? t("expeditionLocked", { region: region.id - 1 }) : t("expeditionGoal", { level: region.level })}</small>
+        <small>${locked ? t("expeditionLocked", { region: expedition.id - 1 }) : t("expeditionGoal", { level: expedition.level })}</small>
       </button>`;
     }).join("");
     nodes.expeditionRail.querySelectorAll(".expedition-card:not(.is-locked)").forEach((button) => {
@@ -955,6 +1004,7 @@
   }
 
   function showStage() {
+    clearEliteSpawnTimer();
     state.gameActive = false;
     clearMovementInput();
     cancelAnimationFrame(state.gameLoopId);
@@ -1289,6 +1339,7 @@
 
   // Combat loop updates
   function startRun() {
+    clearEliteSpawnTimer();
     clearAmuletConfirmation();
     clearMovementInput();
     loadLocalState();
@@ -1312,9 +1363,12 @@
 
     state.enemies = [];
     state.bullets = [];
+    state.enemyShots = [];
     state.orbs = [];
     state.pickups = [];
     state.particleSystems = [];
+    state.slowUntil = 0;
+    state.silencedUntil = 0;
 
     // Wave spawning trigger
     spawnRoomEntities();
@@ -1341,59 +1395,109 @@
     state.gameLoopId = requestAnimationFrame(updateGameEngine);
   }
 
+  const regionThreatPools = {
+    1: ["chaser", "rusher", "splitter"],
+    2: ["chaser", "shooter", "pulser", "rusher"],
+    3: ["tank", "ward", "splitter", "rusher"],
+    4: ["regenerator", "slower", "tank", "shooter"],
+    5: ["orbiter", "shooter", "silencer", "pulser"],
+    6: ["ward", "rusher", "shooter", "regenerator", "orbiter", "silencer"],
+  };
+
+  const guardianBehaviors = ["moss", "echo", "crystal", "mire", "moon", "crown"];
+
+  function missionDefinition(id = state.expedition) {
+    return expeditionDefs[Math.max(1, Math.min(EXPEDITION_COUNT, Number(id) || 1)) - 1];
+  }
+
+  function edgeSpawnPoint() {
+    const side = Math.floor(Math.random() * 4);
+    if (side === 0) return { x: Math.random() * ARENA_WIDTH, y: -40 };
+    if (side === 1) return { x: ARENA_WIDTH + 40, y: Math.random() * ARENA_HEIGHT };
+    if (side === 2) return { x: Math.random() * ARENA_WIDTH, y: ARENA_HEIGHT + 40 };
+    return { x: -40, y: Math.random() * ARENA_HEIGHT };
+  }
+
+  function createThreat(behavior, x, y, options = {}) {
+    const mission = missionDefinition();
+    const room = state.room || 1;
+    const difficulty = 1 + ((mission.id - 1) * 0.035) + ((room - 1) * 0.08);
+    const tankLike = ["tank", "ward", "regenerator", "slower"].includes(behavior);
+    const baseHp = tankLike ? 38 : 22;
+    const baseSpeed = behavior === "rusher" ? 2.35 : behavior === "orbiter" ? 1.75 : tankLike ? 1.05 : 1.65;
+    const maxHp = Math.round((baseHp + mission.region * 4) * difficulty * (options.hpMultiplier || 1));
+    return {
+      x,
+      y,
+      type: tankLike ? "boar" : "jaguar",
+      behavior,
+      hp: maxHp,
+      maxHp,
+      speed: baseSpeed * (options.speedMultiplier || 1),
+      baseSpeed,
+      isElite: Boolean(options.isElite),
+      isBoss: Boolean(options.isBoss),
+      size: options.size || (tankLike ? 25 : 21),
+      shieldHits: behavior === "ward" ? 2 : 0,
+      abilityTimer: Math.random() * 90,
+      shotTimer: 45 + Math.random() * 80,
+      phaseFlags: new Set(),
+      tint: options.tint || "",
+      label: options.label || "",
+    };
+  }
+
+  function createGuardian(region, checkpoint) {
+    const behavior = checkpoint ? guardianBehaviors[region - 1] : guardianBehaviors[Math.max(0, region - 1)];
+    const hpMultiplier = checkpoint ? 8.6 : 4.2;
+    const guardian = createThreat(behavior, ARENA_WIDTH / 2, -70, {
+      isElite: true,
+      isBoss: checkpoint,
+      hpMultiplier,
+      speedMultiplier: checkpoint ? 0.82 : 1,
+      size: checkpoint ? 54 : 38,
+      label: checkpoint ? `GUARDIAN ${region}` : "ELITE",
+    });
+    guardian.type = checkpoint ? "boss" : (region >= 3 ? "boar" : "jaguar");
+    guardian.shieldHits = behavior === "crystal" || behavior === "crown" ? (checkpoint ? 6 : 3) : guardian.shieldHits;
+    return guardian;
+  }
+
   function spawnRoomEntities() {
+    clearEliteSpawnTimer();
     state.enemies = [];
     state.bullets = [];
+    state.enemyShots = [];
     state.orbs = [];
     state.pickups = [];
 
     const room = state.room;
-    const difficulty = 1 + ((state.expedition || 1) - 1) * 0.24;
-    // Spawn basic enemies around borders
-    const enemyCount = 8 + room * 4;
-    for (let i = 0; i < enemyCount; i++) {
-      const side = Math.floor(Math.random() * 4);
-      let ex = 0, ey = 0;
-      if (side === 0) { ex = Math.random() * ARENA_WIDTH; ey = -40; }
-      else if (side === 1) { ex = ARENA_WIDTH + 40; ey = Math.random() * ARENA_HEIGHT; }
-      else if (side === 2) { ex = Math.random() * ARENA_WIDTH; ey = ARENA_HEIGHT + 40; }
-      else { ex = -40; ey = Math.random() * ARENA_HEIGHT; }
-
-      const isBoar = room > 1 && Math.random() > 0.4;
-      state.enemies.push({
-        x: ex,
-        y: ey,
-        type: isBoar ? "boar" : "jaguar",
-        hp: Math.round((isBoar ? 25 + room * 10 : 12 + room * 5) * difficulty),
-        maxHp: Math.round((isBoar ? 25 + room * 10 : 12 + room * 5) * difficulty),
-        speed: isBoar ? 1.0 : 2.0,
-        isElite: false,
-        size: isBoar ? 24 : 20,
-      });
+    const expedition = state.expedition;
+    const mission = missionDefinition(expedition);
+    const threatPool = regionThreatPools[mission.region];
+    const enemyCount = 6 + room * 2 + Math.min(8, Math.floor((mission.id - 1) / 4));
+    for (let i = 0; i < enemyCount; i += 1) {
+      const point = edgeSpawnPoint();
+      const behavior = threatPool[(i + room + mission.id) % threatPool.length];
+      state.enemies.push(createThreat(behavior, point.x, point.y));
     }
 
-    // Spawn 1 Elite enemy in the center to drop the key
-    setTimeout(() => {
-      if (!state.gameActive) return;
-      if (room === 3) {
+    // Every room has one key carrier. Room 3 becomes a named regional Guardian
+    // only at missions 5/10/15/20/25/30; other missions use a smaller Elite.
+    eliteSpawnTimer = window.setTimeout(() => {
+      eliteSpawnTimer = 0;
+      if (state.room !== room || state.expedition !== expedition) return;
+      const checkpoint = room === ROOMS_PER_EXPEDITION && mission.checkpoint;
+      if (room === ROOMS_PER_EXPEDITION) {
         state.bossWarningUntil = performance.now() + 2400;
         window.WonderSound?.play("boss");
       }
-      state.enemies.push({
-        x: 400,
-        y: -50,
-        type: room === 3 ? "boss" : "boar",
-        hp: Math.round((room === 3 ? 400 : 80 + room * 40) * difficulty),
-        maxHp: Math.round((room === 3 ? 400 : 80 + room * 40) * difficulty),
-        speed: room === 3 ? 1.2 : 1.5,
-        isElite: true,
-        size: room === 3 ? 45 : 32,
-      });
+      state.enemies.push(createGuardian(mission.region, checkpoint));
     }, 4000);
   }
 
   function updateHUDText() {
-    nodes.roomText.textContent = `${state.room}/3`;
+    nodes.roomText.textContent = `${state.room}/${ROOMS_PER_EXPEDITION}`;
     nodes.keyText.textContent = state.keys;
     if (nodes.goldText) nodes.goldText.textContent = state.runGold;
     nodes.levelVal.textContent = state.level;
@@ -1639,21 +1743,21 @@
   }
 
   function expeditionName(id) {
-    const expedition = expeditionDefs[Math.max(1, Math.min(5, Number(id) || 1)) - 1];
+    const expedition = expeditionDefs[Math.max(1, Math.min(EXPEDITION_COUNT, Number(id) || 1)) - 1];
     return getLocale() === "zh-Hant" ? expedition.zh : expedition.en;
   }
 
   function renderResultSummary({ cleared, newlyUnlocked = 0, won = false }) {
     if (!nodes.resultSummary) return;
-    const highestUnlocked = Math.max(1, Math.min(5, Number(profile.unlockedExpedition) || 1));
+    const highestUnlocked = Math.max(1, Math.min(EXPEDITION_COUNT, Number(profile.unlockedExpedition) || 1));
     const progressText = newlyUnlocked
       ? t("resultUnlocked", { region: expeditionName(newlyUnlocked) })
-      : won && (state.expedition || 1) >= 5 && highestUnlocked >= 5
+      : won && (state.expedition || 1) >= EXPEDITION_COUNT && highestUnlocked >= EXPEDITION_COUNT
         ? t("resultAllCleared")
         : t("resultReady", { region: expeditionName(highestUnlocked) });
     const rows = [
       [t("resultSummaryLevel"), `Lv.${profile.level}`],
-      [t("resultSummaryRooms"), `${cleared}/3`],
+      [t("resultSummaryRooms"), `${cleared}/${ROOMS_PER_EXPEDITION}`],
       [t("resultSummaryKeys"), String(state.runKeys)],
       [t("resultSummaryGold"), String(state.runGold)],
       [t("resultSummaryGear"), equippedGearSummary()],
@@ -1676,6 +1780,7 @@
 
   // Complete Game Run
   function endGame(won) {
+    clearEliteSpawnTimer();
     state.gameActive = false;
     clearMovementInput();
     cancelAnimationFrame(state.gameLoopId);
@@ -1686,9 +1791,9 @@
     document.body.classList.add("relic-playing", "relic-result");
 
     nodes.resultTitle.textContent = won ? t("runComplete") : t("runFailed");
-    nodes.resultScore.textContent = won ? "3" : String(state.room - 1);
+    nodes.resultScore.textContent = won ? String(ROOMS_PER_EXPEDITION) : String(state.room - 1);
 
-    const cleared = won ? 3 : (state.room - 1);
+    const cleared = won ? ROOMS_PER_EXPEDITION : (state.room - 1);
     let starsStr = "";
     if (cleared === 3) starsStr = "⭐⭐⭐⭐⭐";
     else if (cleared === 2) starsStr = "⭐⭐⭐";
@@ -1703,11 +1808,11 @@
     nodes.logicStars.textContent = skillScore;
     nodes.focusStars.textContent = skillScore;
     nodes.problemStars.textContent = skillScore;
-    const previousUnlocked = Math.max(1, Math.min(5, Number(profile.unlockedExpedition) || 1));
+    const previousUnlocked = Math.max(1, Math.min(EXPEDITION_COUNT, Number(profile.unlockedExpedition) || 1));
     let newlyUnlocked = 0;
     if (won) {
       profile.bestExpedition = Math.max(profile.bestExpedition || 0, state.expedition || 1);
-      profile.unlockedExpedition = Math.min(5, Math.max(profile.unlockedExpedition || 1, (state.expedition || 1) + 1));
+      profile.unlockedExpedition = Math.min(EXPEDITION_COUNT, Math.max(profile.unlockedExpedition || 1, (state.expedition || 1) + 1));
       if (profile.unlockedExpedition > previousUnlocked) newlyUnlocked = profile.unlockedExpedition;
       saveProfile();
       nodes.resultText.textContent = t("report_win");
@@ -1718,7 +1823,7 @@
       nodes.skillReportText.textContent = t("report_partial", { room: state.room });
       window.WonderSound?.play("wrong");
     }
-    resultNextExpedition = won && (state.expedition || 1) < 5 && profile.unlockedExpedition >= (state.expedition || 1) + 1
+    resultNextExpedition = won && (state.expedition || 1) < EXPEDITION_COUNT && profile.unlockedExpedition >= (state.expedition || 1) + 1
       ? (state.expedition || 1) + 1
       : 0;
     renderResultSummary({ cleared, newlyUnlocked, won });
@@ -1751,6 +1856,129 @@
     }
   }
 
+  function launchEnemyShot(enemy, angle, kind = "relic") {
+    const speed = kind === "silence" ? 3.1 : 3.7;
+    state.enemyShots.push({
+      x: enemy.x,
+      y: enemy.y,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed,
+      size: kind === "pulse" ? 9 : 7,
+      damage: enemy.isBoss ? 5 : 3,
+      kind,
+      life: 260,
+    });
+  }
+
+  function radialEnemyShots(enemy, count = 8, kind = "pulse") {
+    for (let index = 0; index < count; index += 1) {
+      launchEnemyShot(enemy, (Math.PI * 2 * index) / count, kind);
+    }
+  }
+
+  function summonThreats(enemy, behavior, count = 2) {
+    for (let index = 0; index < count; index += 1) {
+      const angle = (Math.PI * 2 * index) / count;
+      state.enemies.push(createThreat(
+        behavior,
+        enemy.x + Math.cos(angle) * (enemy.size + 26),
+        enemy.y + Math.sin(angle) * (enemy.size + 26),
+        { hpMultiplier: 0.72 }
+      ));
+    }
+  }
+
+  function updateGuardianPhases(enemy) {
+    if (!enemy.isBoss) return;
+    const ratio = enemy.hp / enemy.maxHp;
+    enemy.phaseFlags ||= new Set();
+    for (const threshold of [0.7, 0.35]) {
+      if (ratio > threshold || enemy.phaseFlags.has(threshold)) continue;
+      enemy.phaseFlags.add(threshold);
+      if (enemy.behavior === "moss") summonThreats(enemy, "rusher", threshold === 0.7 ? 2 : 3);
+      if (enemy.behavior === "echo") radialEnemyShots(enemy, threshold === 0.7 ? 8 : 12, "pulse");
+      if (enemy.behavior === "crystal") enemy.shieldHits += threshold === 0.7 ? 4 : 6;
+      if (enemy.behavior === "mire") {
+        enemy.hp = Math.min(enemy.maxHp, enemy.hp + enemy.maxHp * 0.1);
+        summonThreats(enemy, "slower", 2);
+      }
+      if (enemy.behavior === "moon") {
+        radialEnemyShots(enemy, 10, "silence");
+        summonThreats(enemy, "orbiter", 2);
+      }
+      if (enemy.behavior === "crown") {
+        enemy.shieldHits += 3;
+        radialEnemyShots(enemy, 12, "silence");
+        summonThreats(enemy, threshold === 0.7 ? "rusher" : "regenerator", 3);
+      }
+    }
+  }
+
+  function moveEnemyByBehavior(enemy, dx, dy, dist) {
+    enemy.abilityTimer = (enemy.abilityTimer || 0) + 1;
+    enemy.shotTimer = Math.max(0, (enemy.shotTimer || 0) - 1);
+    updateGuardianPhases(enemy);
+
+    const ranged = ["shooter", "silencer", "echo", "moon", "crown", "pulser"].includes(enemy.behavior);
+    if (ranged && enemy.shotTimer <= 0) {
+      const baseAngle = Math.atan2(dy, dx);
+      if (["echo", "pulser"].includes(enemy.behavior)) radialEnemyShots(enemy, enemy.isBoss ? 10 : 6, "pulse");
+      else if (enemy.behavior === "moon") {
+        [-0.24, 0, 0.24].forEach((offset) => launchEnemyShot(enemy, baseAngle + offset, "silence"));
+      } else if (enemy.behavior === "crown") {
+        [-0.18, 0, 0.18].forEach((offset) => launchEnemyShot(enemy, baseAngle + offset, "silence"));
+      } else {
+        launchEnemyShot(enemy, baseAngle, enemy.behavior === "silencer" ? "silence" : "relic");
+      }
+      enemy.shotTimer = enemy.isBoss ? 100 : 145;
+    }
+
+    if (["regenerator", "mire", "crown"].includes(enemy.behavior) && performance.now() - (enemy.lastHitAt || 0) > 900) {
+      enemy.hp = Math.min(enemy.maxHp, enemy.hp + enemy.maxHp * (enemy.isBoss ? 0.00018 : 0.00028));
+    }
+
+    if (dist <= 10) return;
+    let moveAngle = Math.atan2(dy, dx);
+    let speed = enemy.speed;
+    if (enemy.behavior === "rusher" || enemy.behavior === "moss" || enemy.behavior === "crown") {
+      const cycle = enemy.abilityTimer % 210;
+      speed *= cycle > 145 && cycle < 190 ? 2.15 : 0.82;
+    }
+    if (enemy.behavior === "orbiter" || enemy.behavior === "moon") {
+      moveAngle += dist > 210 ? 0.45 : Math.PI / 2;
+      speed *= dist < 130 ? 0.45 : 1;
+    } else if (ranged && dist < 190) {
+      moveAngle += Math.PI;
+      speed *= 0.8;
+    } else if (ranged && dist < 310) {
+      speed = 0;
+    }
+    enemy.x += Math.cos(moveAngle) * speed;
+    enemy.y += Math.sin(moveAngle) * speed;
+  }
+
+  function updateEnemyShots() {
+    for (let index = state.enemyShots.length - 1; index >= 0; index -= 1) {
+      const shot = state.enemyShots[index];
+      shot.x += shot.vx;
+      shot.y += shot.vy;
+      shot.life -= 1;
+      const dx = state.playerX - shot.x;
+      const dy = state.playerY - shot.y;
+      if (Math.hypot(dx, dy) < shot.size + 15) {
+        state.playerHp = Math.max(0, state.playerHp - shot.damage);
+        if (shot.kind === "silence") state.silencedUntil = performance.now() + 1500;
+        if (shot.kind === "pulse") state.slowUntil = performance.now() + 1200;
+        state.enemyShots.splice(index, 1);
+        window.WonderSound?.play("hit");
+        renderStatsPanel();
+        if (state.playerHp <= 0) endGame(false);
+      } else if (shot.life <= 0 || shot.x < -30 || shot.x > ARENA_WIDTH + 30 || shot.y < -30 || shot.y > ARENA_HEIGHT + 30) {
+        state.enemyShots.splice(index, 1);
+      }
+    }
+  }
+
   // Update Game Physics & Canvas rendering
   function updateGameEngine() {
     if (!state.gameActive) return;
@@ -1773,8 +2001,9 @@
 
     if (moveX !== 0 || moveY !== 0) {
       const angle = Math.atan2(moveY, moveX);
-      state.playerX += Math.cos(angle) * stats.speed;
-      state.playerY += Math.sin(angle) * stats.speed;
+      const movementSpeed = stats.speed * (performance.now() < state.slowUntil ? 0.58 : 1);
+      state.playerX += Math.cos(angle) * movementSpeed;
+      state.playerY += Math.sin(angle) * movementSpeed;
 
       // Keep boundaries
       state.playerX = Math.max(20, Math.min(780, state.playerX));
@@ -1783,7 +2012,7 @@
 
     // 2. Automated Weapon Firing Timer
     shootTimer += 1 / 60;
-    if (shootTimer >= stats.rate) {
+    if (shootTimer >= stats.rate && performance.now() >= state.silencedUntil) {
       shootTimer = 0;
       fireBullet();
     }
@@ -1796,26 +2025,25 @@
       bullet.y += bullet.vy;
 
       // Out of bounds remove
-      if (bullet.x < -10 || bullet.x > 810 || bullet.y < -10 || bullet.y > 510) {
+      if (bullet.x < -10 || bullet.x > ARENA_WIDTH + 10 || bullet.y < -10 || bullet.y > ARENA_HEIGHT + 10) {
         state.bullets.splice(index, 1);
       }
     });
 
     // 4. Move & Check Enemies
     state.enemies.forEach((enemy, eIndex) => {
-      // Pathfind to player
+      // Every threat family owns a real movement or attack rule rather than
+      // sharing one chase loop with larger numbers.
       const dx = state.playerX - enemy.x;
       const dy = state.playerY - enemy.y;
       const dist = Math.sqrt(dx * dx + dy * dy);
-
-      if (dist > 10) {
-        enemy.x += (dx / dist) * enemy.speed;
-        enemy.y += (dy / dist) * enemy.speed;
-      }
+      moveEnemyByBehavior(enemy, dx, dy, dist);
 
       // Check player contact damage
       if (dist < enemy.size + 15) {
-        state.playerHp = Math.max(0, state.playerHp - 0.15); // continuous contact dmg
+        const contactDamage = enemy.isBoss ? 0.24 : enemy.behavior === "rusher" ? 0.2 : 0.15;
+        state.playerHp = Math.max(0, state.playerHp - contactDamage);
+        if (["slower", "mire"].includes(enemy.behavior)) state.slowUntil = performance.now() + 800;
         const now = performance.now();
         if (now - state.lastHitSoundAt > 520) {
           state.lastHitSoundAt = now;
@@ -1835,7 +2063,14 @@
         const bdist = Math.sqrt(bdx * bdx + bdy * bdy);
 
         if (bdist < enemy.size + bullet.size) {
+          if (enemy.shieldHits > 0) {
+            enemy.shieldHits -= 1;
+            state.bullets.splice(bIndex, 1);
+            createDamageSparks(bullet.x, bullet.y, 0);
+            return;
+          }
           enemy.hp -= bullet.dmg;
+          enemy.lastHitAt = performance.now();
           state.bullets.splice(bIndex, 1);
 
           // Spark particle system
@@ -1844,6 +2079,7 @@
           // Enemy Defeated
           if (enemy.hp <= 0) {
             state.enemies.splice(eIndex, 1);
+            if (enemy.behavior === "splitter") summonThreats(enemy, "rusher", 2);
             window.WonderSound?.play("enemyDown");
 
             // Drop Relic Orbs
@@ -1869,7 +2105,7 @@
 
             // Drop key if Elite
             if (enemy.isElite) {
-              if (state.room === 3) {
+              if (state.room === ROOMS_PER_EXPEDITION) {
                 // Boss defeated -> clear game!
                 endGame(true);
               } else {
@@ -1884,6 +2120,8 @@
         }
       });
     });
+
+    updateEnemyShots();
 
     // 5. Relic Orbs Magnet Collection Check
     state.orbs.forEach((orb, oIndex) => {
@@ -2100,10 +2338,53 @@
       ctx.restore();
     });
 
+    state.enemyShots.forEach((shot) => {
+      const silence = shot.kind === "silence";
+      ctx.save();
+      ctx.fillStyle = silence ? "#c084fc" : shot.kind === "pulse" ? "#fb7185" : "#f59e0b";
+      ctx.strokeStyle = silence ? "#f5d0fe" : "#fef3c7";
+      ctx.shadowColor = ctx.fillStyle;
+      ctx.shadowBlur = 10;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(shot.x, shot.y, shot.size, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+      ctx.restore();
+    });
+
     // 5. Draw Enemies
     state.enemies.forEach((enemy) => {
       ctx.save();
       ctx.translate(enemy.x, enemy.y);
+
+      const threatColors = {
+        rusher: "#fb7185",
+        shooter: "#f59e0b",
+        pulser: "#f97316",
+        splitter: "#84cc16",
+        ward: "#38bdf8",
+        regenerator: "#34d399",
+        slower: "#2dd4bf",
+        orbiter: "#818cf8",
+        silencer: "#c084fc",
+        moss: "#84cc16",
+        echo: "#f59e0b",
+        crystal: "#38bdf8",
+        mire: "#34d399",
+        moon: "#818cf8",
+        crown: "#e879f9",
+      };
+      const threatColor = threatColors[enemy.behavior];
+      if (threatColor) {
+        ctx.strokeStyle = threatColor;
+        ctx.globalAlpha = enemy.isBoss ? 0.88 : 0.58;
+        ctx.lineWidth = enemy.isBoss ? 5 : 3;
+        ctx.beginPath();
+        ctx.arc(0, 3, enemy.size + (enemy.isBoss ? 12 : 6), 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.globalAlpha = 1;
+      }
 
       const sprite = enemy.type === "boar" || enemy.type === "boss" ? assets.boar : assets.jaguar;
       if (enemy.type === "boss") {
@@ -2124,13 +2405,22 @@
         ctx.fillStyle = "#fde68a";
         ctx.font = "bold 13px Outfit";
         ctx.textAlign = "center";
-        ctx.fillText("BOSS", 0, -enemy.size - 10);
+        ctx.fillText(enemy.label || "GUARDIAN", 0, -enemy.size - 14);
         ctx.textAlign = "left";
       } else if (sprite.complete) {
         ctx.drawImage(sprite, -enemy.size, -enemy.size, enemy.size * 2, enemy.size * 2);
       } else {
         ctx.fillStyle = enemy.type === "boar" ? "#4b5563" : "#7c3aed";
         ctx.fillRect(-enemy.size, -enemy.size, enemy.size * 2, enemy.size * 2);
+      }
+
+      if (enemy.shieldHits > 0) {
+        ctx.strokeStyle = "#7dd3fc";
+        ctx.lineWidth = 4;
+        ctx.globalAlpha = 0.9;
+        ctx.beginPath();
+        ctx.arc(0, 0, enemy.size + 9, 0, Math.PI * 2);
+        ctx.stroke();
       }
 
       ctx.restore();
@@ -2468,7 +2758,7 @@
         forceResult({ won = false, room = 2, keys = 1 } = {}) {
           loadLocalState();
           syncStateFromProfile();
-          state.room = Math.max(1, Math.min(3, Number(room) || 1));
+          state.room = Math.max(1, Math.min(ROOMS_PER_EXPEDITION, Number(room) || 1));
           state.runKeys = Math.max(0, Math.floor(Number(keys) || 0));
           nodes.menuPanel.classList.add("hidden");
           nodes.draftPanel.classList.add("hidden");
@@ -2506,6 +2796,46 @@
             choices: currentDraftChoices.slice(),
             active: state.gameActive,
           };
+        },
+        replaceRoomForTest(room = 1) {
+          state.room = Math.max(1, Math.min(ROOMS_PER_EXPEDITION, Number(room) || 1));
+          spawnRoomEntities();
+          return this.snapshot();
+        },
+        campaignPreview() {
+          return {
+            count: expeditionDefs.length,
+            ids: expeditionDefs.map((mission) => mission.id),
+            regionCounts: Array.from({ length: 6 }, (_, index) => expeditionDefs.filter((mission) => mission.region === index + 1).length),
+            checkpoints: expeditionDefs.filter((mission) => mission.checkpoint).map((mission) => mission.id),
+            rules: [...new Set(expeditionDefs.map((mission) => mission.rule))],
+            threatTypes: [...new Set(Object.values(regionThreatPools).flat())],
+            guardianBehaviors: guardianBehaviors.slice(),
+            finalScale: 1 + ((EXPEDITION_COUNT - 1) * 0.035) + ((ROOMS_PER_EXPEDITION - 1) * 0.08),
+          };
+        },
+        guardianPhasePreview() {
+          const previousEnemies = state.enemies;
+          const previousShots = state.enemyShots;
+          const previews = guardianBehaviors.map((behavior, index) => {
+            state.enemies = [];
+            state.enemyShots = [];
+            const guardian = createThreat(behavior, 400, 400, { isElite: true, isBoss: true, hpMultiplier: 8, size: 54 });
+            guardian.hp = guardian.maxHp * 0.3;
+            if (behavior === "crystal" || behavior === "crown") guardian.shieldHits = 0;
+            updateGuardianPhases(guardian);
+            return {
+              behavior,
+              summons: state.enemies.length,
+              shots: state.enemyShots.length,
+              shieldHits: guardian.shieldHits,
+              healed: guardian.hp > guardian.maxHp * 0.3,
+              phases: guardian.phaseFlags.size,
+            };
+          });
+          state.enemies = previousEnemies;
+          state.enemyShots = previousShots;
+          return previews;
         },
         bulletVisuals() {
           return ["default", "sword-rare", "dagger-epic"].map((key) => ({
@@ -2551,6 +2881,10 @@
             profile: JSON.parse(localStorage.getItem(profileKey) || "{}"),
             wallet: window.WeightPlayWallet?.read?.() || null,
             expedition: state.expedition,
+            room: state.room,
+            enemyCount: state.enemies.length,
+            eliteCount: state.enemies.filter((enemy) => enemy.isElite).length,
+            eliteSpawnPending: Boolean(eliteSpawnTimer),
             player: { x: state.playerX, y: state.playerY, active: state.gameActive },
           };
         },
