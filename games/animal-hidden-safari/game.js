@@ -226,6 +226,7 @@
   let lastResult = null;
   let startTime = 0;
   let timerId = 0;
+  let hiddenStartedAt = 0;
   let acceptingInput = false;
 
   function clamp(value, min, max) {
@@ -374,6 +375,7 @@
 
   function showMenu() {
     stopTimer();
+    hiddenStartedAt = 0;
     acceptingInput = false;
     nodes.resultPanel.classList.add("hidden");
     nodes.playPanel.inert = false;
@@ -390,6 +392,7 @@
 
   function showMain() {
     stopTimer();
+    hiddenStartedAt = 0;
     acceptingInput = false;
     nodes.mainPanel.classList.remove("hidden");
     nodes.menuPanel.classList.add("hidden");
@@ -408,6 +411,7 @@
     nodes.hintStatus.textContent = "";
     lastResult = null;
     startTime = Date.now();
+    hiddenStartedAt = 0;
     acceptingInput = true;
     nodes.resultPanel.classList.add("hidden");
     nodes.playPanel.inert = false;
@@ -561,6 +565,23 @@
     timerId = 0;
   }
 
+  function pauseSearchTimer() {
+    if (hiddenStartedAt || !acceptingInput || !document.body.classList.contains("safari-playing")) return;
+    hiddenStartedAt = Date.now();
+    stopTimer();
+  }
+
+  function resumeSearchTimer() {
+    if (!hiddenStartedAt) return;
+    if (acceptingInput && document.body.classList.contains("safari-playing") && !document.body.classList.contains("safari-result")) {
+      startTime += Date.now() - hiddenStartedAt;
+      hiddenStartedAt = 0;
+      startTimer();
+      return;
+    }
+    hiddenStartedAt = 0;
+  }
+
   function elapsedSeconds() {
     return Math.max(0, Math.floor((Date.now() - startTime) / 1000));
   }
@@ -578,6 +599,7 @@
   function finishStage() {
     acceptingInput = false;
     stopTimer();
+    hiddenStartedAt = 0;
     const seconds = elapsedSeconds();
     const total = stages[currentStage].targets.length;
     const starCount = mistakes === 0 && hintsLeft === 2 ? 3 : mistakes <= 2 && hintsLeft >= 1 ? 2 : 1;
@@ -745,6 +767,12 @@
     nodes.retryBtn.addEventListener("click", () => startStage(currentStage));
     nodes.nextStageBtn.addEventListener("click", () => startStage(Math.min(stages.length - 1, currentStage + 1)));
     nodes.hintBtn.addEventListener("click", useHint);
+    window.addEventListener("pagehide", pauseSearchTimer);
+    window.addEventListener("pageshow", resumeSearchTimer);
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) pauseSearchTimer();
+      else resumeSearchTimer();
+    });
   }
 
   localizeStatic();

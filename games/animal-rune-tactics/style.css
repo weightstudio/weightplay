@@ -546,6 +546,9 @@ body.is-rune-playing .back-btn span {
   z-index: 2;
 }
 
+.enemy.is-boss .unit { width: min(98%, 86px); }
+.enemy.is-boss .hpbar { left: 4%; right: 4%; height: 9px; }
+
 .hpbar {
   position: absolute;
   left: 10%;

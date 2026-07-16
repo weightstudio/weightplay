@@ -90,6 +90,7 @@
   let frame = 0;
   let rerollConfirmTimer = 0;
   let pointer = null;
+  let backgroundSuspended = false;
   const keys = {};
   const battleControlCodes = new Set(["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "KeyA", "KeyD", "KeyW", "KeyS", "Space"]);
   let stick = { x: 0, y: 0 };
@@ -112,6 +113,24 @@
   };
   const canvas = $("#game");
   const ctx = canvas.getContext("2d");
+
+  function suspendBackgroundBattle() {
+    clearMovementInput();
+    if (!run?.active || document.body.dataset.gameView !== "battle") return;
+    backgroundSuspended = true;
+    run.active = false;
+    cancelAnimationFrame(frame);
+  }
+
+  function resumeBackgroundBattle() {
+    if (!backgroundSuspended || !run || document.hidden || document.body.dataset.gameView !== "battle") return;
+    if (!$("#choiceModal").classList.contains("hidden") || !$("#resultModal").classList.contains("hidden")) return;
+    backgroundSuspended = false;
+    run.active = true;
+    run.last = performance.now();
+    loop(run.last);
+    requestAnimationFrame(() => $("#game").focus({ preventScroll: true }));
+  }
   const images = {
     bg: load("animal-hero-trials-arena.png"),
     leo: load("animal-hero-trials-leo.png"),
@@ -168,6 +187,7 @@
     setChoiceModal(false, false);
     setResultModal(false, false);
     if (name !== "battle") {
+      backgroundSuspended = false;
       cancelAnimationFrame(frame);
       if (run) run.active = false;
     }
@@ -279,6 +299,7 @@
   }
 
   function startTrial(stage) {
+    backgroundSuspended = false;
     show("battle");
     const hero = heroes[selectedHero] || heroes.leo;
     const maxHp = hero.hp + mastery * 12;
@@ -537,6 +558,7 @@
   }
 
   function finish(won) {
+    backgroundSuspended = false;
     run.active = false;
     cancelAnimationFrame(frame);
     if (won) {
@@ -741,8 +763,10 @@
   });
   addEventListener("keyup", (event) => { keys[event.code] = false; });
   addEventListener("blur", clearMovementInput);
-  document.addEventListener("visibilitychange", () => { if (document.hidden) clearMovementInput(); });
+  document.addEventListener("visibilitychange", () => { if (document.hidden) suspendBackgroundBattle(); else resumeBackgroundBattle(); });
+  addEventListener("pagehide", suspendBackgroundBattle);
+  addEventListener("pageshow", resumeBackgroundBattle);
   bindStick();
-  if (new URLSearchParams(location.search).has("smoke")) window.__heroTrialSmoke = { snapshot: () => ({ pointer, stick: { ...stick }, player: run ? { ...run.leo } : null }) };
+  if (new URLSearchParams(location.search).has("smoke")) window.__heroTrialSmoke = { snapshot: () => ({ pointer, stick: { ...stick }, active: Boolean(run?.active), hp: run?.hp ?? null, player: run ? { ...run.leo } : null, enemies: run?.enemies.map((enemy) => ({ x: enemy.x, y: enemy.y, hp: enemy.hp })) || [] }) };
   localize();
 })();

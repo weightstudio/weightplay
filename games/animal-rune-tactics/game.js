@@ -315,7 +315,7 @@
     resultProgressLine: "Squad Lv.{level} · {xp}/100 XP · {runes} Runes · Best Mission {best}",
     resultMissionUnlocked: "Mission {mission} unlocked.",
     resultMissionReady: "Mission {mission} remains ready.",
-    resultCampaignComplete: "All six missions are unlocked. Replay to refine your squad.",
+    resultCampaignComplete: "All 30 missions are complete. Every mission remains replayable.",
     resultUpgradeReady: "{hero} can upgrade now in Heroes.",
     resultUpgradeNeed: "{hero} needs {need} more Runes to upgrade.",
     enemyTraits: "Traits: {traits}",
@@ -398,11 +398,12 @@
     resultProgressLine: "\u5c0f\u968a Lv.{level} · {xp}/100 \u7d93\u9a57 · {runes} \u7b26\u6587 · \u6700\u4f73\u4efb\u52d9 {best}",
     resultMissionUnlocked: "\u5df2\u89e3\u9396\u4efb\u52d9 {mission}\u3002",
     resultMissionReady: "\u4efb\u52d9 {mission} \u4ecd\u53ef\u6311\u6230\u3002",
-    resultCampaignComplete: "\u516d\u500b\u4efb\u52d9\u5df2\u5168\u90e8\u89e3\u9396\uff0c\u53ef\u91cd\u73a9\u4e26\u7cbe\u9032\u5c0f\u968a\u3002",
+    resultCampaignComplete: "30 \u500b\u4efb\u52d9\u5df2\u5168\u90e8\u5b8c\u6210\uff0c\u6240\u6709\u4efb\u52d9\u4ecd\u53ef\u91cd\u73a9\u3002",
     resultUpgradeReady: "{hero} \u73fe\u5728\u53ef\u5728\u300c\u82f1\u96c4\u300d\u4e2d\u5347\u7d1a\u3002",
     resultUpgradeNeed: "{hero} \u518d\u9700 {need} \u679a\u7b26\u6587\u5373\u53ef\u5347\u7d1a\u3002",
   });
   Object.assign(text.en, {
+    menu: "Back to Missions",
     boar: "Thorn Boar", runeFox: "Rune Fox", tideTurtle: "Tide Turtle", heron: "Relic Heron",
     salamander: "Ember Salamander", ram: "Cinder Ram", moth: "Moon Moth", archiveOwl: "Archive Owl",
     mirrorWolf: "Mirror Wolf", sealRaven: "Seal Raven", rhinoBoss: "Ironroot Rhino",
@@ -435,6 +436,7 @@
     resultCampaignComplete: "All 30 missions are complete. Every mission remains replayable.",
   });
   Object.assign(text["zh-Hant"], {
+    menu: "返回任務",
     boar: "荊棘野豬", runeFox: "符步狐狸", tideTurtle: "潮汐烏龜", heron: "遺物蒼鷺",
     salamander: "餘燼蠑螈", ram: "燼角山羊", moth: "月塵飛蛾", archiveOwl: "典藏貓頭鷹",
     mirrorWolf: "鏡影狼", sealRaven: "封印渡鴉", rhinoBoss: "鐵根犀王",
@@ -469,19 +471,25 @@
   Object.assign(text.en, {
     boardLabel: "Rune tactics board",
     strategyTips: [
-      "Move the lion toward the front first so enemies focus on the tougher hero.",
-      "Use the owl's ranged rune skill to finish enemies before they reach the back row.",
-      "Guard with the turtle before dangerous enemy turns to keep the squad alive.",
-      "Save Diamond rerolls for runs where all reward choices miss your current plan.",
+      "Break Wolf adjacency before trading damage; one move can remove Pack Fang from two attacks.",
+      "Use Owl from two cells away so Thorn Boar cannot answer with a melee counter.",
+      "A silenced hero can still move, attack or Guard, so use that turn to leave a charge lane.",
+      "Hit Mirecoil Serpent with two different heroes during the same turn to stop regeneration.",
+      "Use Lion while Eclipse Griffin flies, then spread before its grounded row sweep.",
+      "Remove a one-HP Mirror clone before it blocks the movement lane you need.",
+      "Treat Cooling, Seal and Orbit cells as resources; permanent stats do not replace positioning.",
     ],
   });
   Object.assign(text["zh-Hant"], {
     boardLabel: "\u7b26\u6587\u6230\u8853\u68cb\u76e4",
     strategyTips: [
-      "\u5148\u8b93\u7345\u738b\u524d\u9032\uff0c\u5438\u5f15\u6575\u4eba\u653b\u64ca\u8f03\u8010\u6253\u7684\u82f1\u96c4\u3002",
-      "\u7528\u8c93\u982d\u9df9\u7684\u9060\u7a0b\u7b26\u6587\u6280\u80fd\uff0c\u5728\u6575\u4eba\u62b5\u9054\u5f8c\u6392\u524d\u64ca\u6557\u5b83\u5011\u3002",
-      "\u5728\u5371\u96aa\u7684\u6575\u65b9\u56de\u5408\u524d\u8b93\u70cf\u9f9c\u9632\u5b88\uff0c\u5e6b\u52a9\u5c0f\u968a\u7e7c\u7e8c\u4f5c\u6230\u3002",
-      "\u7576\u6240\u6709\u734e\u52f5\u90fd\u4e0d\u9069\u5408\u7576\u524d\u6230\u8853\u6642\uff0c\u518d\u4f7f\u7528\u947d\u77f3\u91cd\u62bd\u3002",
+      "先拆開暗影狼相鄰關係；一次移動可能同時移除兩次狼群加傷。",
+      "讓貓頭鷹隔兩格攻擊，避免荊棘野豬發動近戰反擊。",
+      "被沉默仍可移動、攻擊或防守，可先離開衝鋒線。",
+      "同一回合用兩名不同英雄命中澤環巨蛇，才能停止再生。",
+      "蝕月獅鷲飛行時用獅王攻擊，落地橫掃前則分散站位。",
+      "盡快清掉 1 生命鏡影分身，避免需要的移動路線被堵住。",
+      "把冷卻、封印與環月格當成資源；永久數值不能取代站位。",
     ],
   });
 
@@ -505,11 +513,11 @@
     { id: "archiveOwl", name: "archiveOwl", img: "animal-auto-squad-boss-eclipse-archowl.webp", hp: 7, atk: 2, range: 2, trait: "traitArchiveOwl" },
     { id: "mirrorWolf", name: "mirrorWolf", img: "animal-crystal-survivor-shadow-fox-v2.webp", hp: 6, atk: 2, trait: "traitMirrorWolf" },
     { id: "sealRaven", name: "sealRaven", img: "animal-rune-tactics-enemy-raven.webp", hp: 6, atk: 2, range: 2, trait: "traitSealRaven" },
-    { id: "rhinoBoss", name: "rhinoBoss", img: "weightplay-character-gear-horn-rhino.png", hp: 18, atk: 3, trait: "traitRhinoBoss", bossKit: "rhino" },
-    { id: "serpentBoss", name: "serpentBoss", img: "shadow-wolf-boss-basilisk.png", hp: 20, atk: 3, range: 2, trait: "traitSerpentBoss", bossKit: "serpent" },
-    { id: "emberLionBoss", name: "emberLionBoss", img: "weightplay-boom-mane-lion.png", hp: 22, atk: 4, trait: "traitEmberLionBoss", bossKit: "emberLion" },
-    { id: "griffinBoss", name: "griffinBoss", img: "animal-auto-squad-boss-eclipse-archowl.webp", hp: 24, atk: 4, range: 2, trait: "traitGriffinBoss", bossKit: "griffin" },
-    { id: "chimeraBoss", name: "chimeraBoss", img: "shadow-wolf-boss-behemoth-cutout.webp", hp: 28, atk: 4, trait: "traitChimeraBoss", bossKit: "chimera" },
+    { id: "rhinoBoss", name: "rhinoBoss", img: "animal-rune-tactics-boss-ironroot-rhino.webp", hp: 18, atk: 3, trait: "traitRhinoBoss", bossKit: "rhino" },
+    { id: "serpentBoss", name: "serpentBoss", img: "animal-rune-tactics-boss-mirecoil-serpent.webp", hp: 20, atk: 3, range: 2, trait: "traitSerpentBoss", bossKit: "serpent" },
+    { id: "emberLionBoss", name: "emberLionBoss", img: "animal-rune-tactics-boss-embermane-lion.webp", hp: 22, atk: 4, trait: "traitEmberLionBoss", bossKit: "emberLion" },
+    { id: "griffinBoss", name: "griffinBoss", img: "animal-rune-tactics-boss-eclipse-griffin.webp", hp: 24, atk: 4, range: 2, trait: "traitGriffinBoss", bossKit: "griffin" },
+    { id: "chimeraBoss", name: "chimeraBoss", img: "animal-rune-tactics-boss-rune-crown-chimera.webp", hp: 28, atk: 4, trait: "traitChimeraBoss", bossKit: "chimera" },
   ];
 
   const rewardPool = [
@@ -702,8 +710,8 @@
     document.documentElement.lang = locale === "zh-Hant" ? "zh-Hant" : "en";
     document.title = `${t("title")} - WeightPlay`;
     const description = locale === "zh-Hant"
-      ? "免費 13+ 動物回合制戰棋遊戲。指揮獅王、貓頭鷹與烏龜，在符文戰場完成任務並保存本機進度。"
-      : "Play Animal Rune Tactics, a free 13+ turn-based animal squad tactics game with rune grid battles, local progress, rewards, and optional diamond rerolls.";
+      ? "指揮獅王、貓頭鷹與烏龜完成 30 個回合制戰棋任務，破解符文地形、特殊敵人與六位階段首領，並保存本機成長。"
+      : "Command three animal heroes through 30 authored rune-grid missions with terrain rules, special enemies, six phased Bosses, permanent upgrades, and local progress.";
     document.querySelector('meta[name="description"]')?.setAttribute("content", description);
     document.querySelector('meta[property="og:title"]')?.setAttribute("content", `${t("title")} - WeightPlay`);
     document.querySelector('meta[property="og:description"]')?.setAttribute("content", description);
@@ -1132,6 +1140,7 @@
   function renderUnit(unit) {
     const wrap = document.createElement("div");
     wrap.className = unit.team === "enemy" ? "enemy" : `hero ${state?.acted?.has(unit.id) ? "has-acted" : "is-ready"}`;
+    if (unit.bossKit) wrap.classList.add("is-boss");
     const img = document.createElement("img");
     img.className = "unit";
     img.src = asset(unit.img);
@@ -1410,7 +1419,7 @@
     const candidates = Math.abs(hero.x - enemy.x) >= Math.abs(hero.y - enemy.y)
       ? [{ x: hero.x + dx, y: hero.y }, { x: hero.x, y: hero.y + dy }]
       : [{ x: hero.x, y: hero.y + dy }, { x: hero.x + dx, y: hero.y }];
-    const cell = candidates.find((candidate) => canOccupy(candidate.x, candidate.y, hero));
+    const cell = candidates.find((candidate) => (candidate.x !== hero.x || candidate.y !== hero.y) && canOccupy(candidate.x, candidate.y, hero));
     if (!cell) return false;
     hero.x = cell.x;
     hero.y = cell.y;
@@ -1823,6 +1832,29 @@
         const enemy = state?.enemies?.[index];
         if (!hero || !enemy || enemy.hp <= 0) return false;
         attack(hero, enemy, false);
+        return true;
+      },
+      beginPlayerTurn(selected = state?.heroes?.find((hero) => hero.hp > 0)?.id) {
+        if (!state) return false;
+        state.phase = "player";
+        state.acted = new Set();
+        state.selected = selected || null;
+        render();
+        return true;
+      },
+      decisionPreview() {
+        return {
+          selected: state?.selected || null,
+          moves: validMoves().map((cell) => ({ ...cell })),
+          targets: validTargets().map((enemy) => enemy.uid || enemy.id),
+          sealWardActive: sealWardActive(),
+        };
+      },
+      moveSelectedTo(x, y) {
+        if (!state) return false;
+        const allowed = validMoves().some((cell) => cell.x === Number(x) && cell.y === Number(y));
+        if (!allowed) return false;
+        onTile(Number(x), Number(y));
         return true;
       },
       damageEnemy(index = 0, amount = 1) {

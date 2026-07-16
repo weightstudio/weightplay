@@ -17,6 +17,9 @@
       menuHint: "Match shape friends to the right train cars.",
       previewAction: "Tap or drag the shape friend",
       back: "Back",
+      battleBack: "Back to stages",
+      trainCars: "Train cars",
+      passenger: "Shape passenger: {shape}",
       stageList: "Stage list",
       guideStrategy: "Strategy Tips",
       guideTipName: "Say the shape name out loud before placing it.",
@@ -67,6 +70,9 @@
       menuHint: "把形狀朋友送到正確的小火車車廂。",
       previewAction: "點擊或拖曳形狀朋友",
       back: "返回",
+      battleBack: "返回關卡",
+      trainCars: "小火車車廂",
+      passenger: "形狀乘客：{shape}",
       stageList: "關卡列表",
       guideStrategy: "遊玩小技巧",
       guideTipName: "放入車廂前，可以先一起說出形狀名稱。",
@@ -140,6 +146,7 @@
     stageText: $("stageText"),
     progressFill: $("progressFill"),
     carGrid: $("carGrid"),
+    trainTrack: document.querySelector(".train-track"),
     promptText: $("promptText"),
     passengerBtn: $("passengerBtn"),
     passengerShape: $("passengerShape"),
@@ -181,6 +188,8 @@
   let suppressStageClick = false;
   let stageEntryToken = 0;
   let taskTransitionToken = 0;
+  let floatingToast = null;
+  let floatingToastTimer = 0;
 
   function invalidateTaskTransition() {
     taskTransitionToken += 1;
@@ -241,6 +250,9 @@
     nodes.localeSelect.setAttribute("aria-label", t("language"));
     nodes.stageBackBtn.setAttribute("aria-label", t("back"));
     nodes.stageGrid.setAttribute("aria-label", t("stageList"));
+    nodes.backToStagesBtn.setAttribute("aria-label", t("battleBack"));
+    nodes.trainTrack?.setAttribute("aria-label", t("trainCars"));
+    nodes.passengerBtn.setAttribute("aria-label", t("passenger", { shape: t(`shapes.${currentShape}`) }));
     const strategy = document.querySelector(".game-info-strategy");
     if (strategy) {
       const heading = strategy.querySelector("h3");
@@ -364,6 +376,7 @@
   window.visualViewport?.addEventListener("resize", updateStageFrame, { passive: true });
 
   function showMenu() {
+    clearFloatingText();
     invalidateTaskTransition();
     nodes.menuPanel.classList.add("hidden");
     nodes.stagePanel.classList.remove("hidden");
@@ -381,6 +394,7 @@
   }
 
   function showMain() {
+    clearFloatingText();
     invalidateTaskTransition();
     stageEntryToken += 1;
     nodes.stagePanel.classList.add("hidden");
@@ -398,6 +412,7 @@
   }
 
   function startStage(index) {
+    clearFloatingText();
     invalidateTaskTransition();
     currentStage = index;
     currentTask = 0;
@@ -465,6 +480,7 @@
     nodes.passengerShape.className = "shape-token";
     nodes.passengerShape.dataset.shape = currentShape;
     nodes.passengerShape.innerHTML = `<img src="${shape.token}" alt="${t(`shapes.${currentShape}`)}" />`;
+    nodes.passengerBtn.setAttribute("aria-label", t("passenger", { shape: t(`shapes.${currentShape}`) }));
     nodes.passengerBtn.classList.remove("wrong");
     selectedPassenger = false;
     markTarget(false);
@@ -565,6 +581,7 @@
     nodes.stageText.textContent = t("stage", { n: currentStage + 1 });
     nodes.promptText.textContent = t("prompt", { shape: t(`shapes.${currentShape}`) });
     nodes.passengerShape.querySelector("img")?.setAttribute("alt", t(`shapes.${currentShape}`));
+    nodes.passengerBtn.setAttribute("aria-label", t("passenger", { shape: t(`shapes.${currentShape}`) }));
     nodes.carGrid.querySelectorAll(".train-car").forEach((car) => {
       car.querySelector(".car-shape")?.setAttribute("alt", t(`shapes.${car.dataset.shape}`));
     });
@@ -585,8 +602,20 @@
       : t("firstFinish", { stars: earned });
   }
 
+  function clearFloatingText() {
+    if (floatingToastTimer) clearTimeout(floatingToastTimer);
+    floatingToastTimer = 0;
+    floatingToast?.remove();
+    floatingToast = null;
+  }
+
   function showFloatingText(message) {
+    clearFloatingText();
     const toast = document.createElement("div");
+    toast.className = "floating-toast";
+    toast.setAttribute("role", "status");
+    toast.setAttribute("aria-live", "polite");
+    toast.setAttribute("aria-atomic", "true");
     toast.textContent = message;
     Object.assign(toast.style, {
       position: "fixed",
@@ -599,10 +628,17 @@
       background: "rgba(23, 49, 79, 0.9)",
       color: "#fff",
       fontWeight: "900",
+      pointerEvents: "none",
       animation: "toastUp 1.15s ease forwards",
     });
     document.body.appendChild(toast);
-    setTimeout(() => toast.remove(), 1200);
+    floatingToast = toast;
+    toast.addEventListener("animationend", () => {
+      if (floatingToast === toast) clearFloatingText();
+    }, { once: true });
+    floatingToastTimer = setTimeout(() => {
+      if (floatingToast === toast) clearFloatingText();
+    }, 1200);
   }
 
   function initPassenger() {

@@ -584,32 +584,68 @@
     },
     "animal-rune-tactics": {
       title: "Animal Rune Tactics",
-      age: "13+",
-      difficulty: "Medium",
-      time: "5-8 minutes",
-      skills: ["Logic", "Problem Solving", "Focus"],
+      difficulty: "Hard",
+      time: "8-15 minutes per mission",
+      gameplay: "Turn-Based Squad Tactics",
+      genre: ["Strategy", "Tactics", "Animal Adventure"],
+      skills: ["Logic", "Problem Solving", "Focus", "Planning"],
+      guideKicker: "WeightPlay Original Game Guide",
+      guideTitleSuffix: "Game Guide",
+      noteTitle: "Player and Save Information",
+      hideScoreBands: true,
       intro:
-        "Animal Rune Tactics is a turn-based animal squad tactics game. Players lead a lion guardian, owl mage, and turtle shield hero across a rune grid, choose movement and skill actions, clear shadow beasts, and collect rune rewards that improve future missions. It is designed for older players who want thoughtful battles, local progression, and optional Diamond rerolls without real-time pressure.",
+        "Animal Rune Tactics is a 30-mission turn-based campaign played on a three-by-four rune board. The Lion Guardian, Owl Mage and Turtle Shield each take one action before the enemy turn: move, attack, guard or spend Energy on a distinct Skill. Six five-mission chapters introduce blocked routes, snares, currents, fire, rotating runes and seals, together with enemies that counter, push, silence, mark, drain Energy or create clones. Missions 5, 10, 15, 20, 25 and 30 end with six different phased Bosses. Mission unlocks, hero training and Rune Rewards are saved in this browser.",
+      story: [
+        "The Rune Roads connect six animal territories to the Crown Archive. Each road carries a different kind of stabilizing script: woodland paths hold living roots in place, forge marks bind ironwood, tide glyphs regulate flooded chambers, ember circles vent heat, moon runes preserve memory, and the Crown seals keep all five systems synchronized. When the central crown fractured, those scripts began acting without their keepers. Bridges hardened into rubble, roots closed around travelers, currents moved occupied stones, and archive seals protected the very creatures that had damaged them.",
+        "The player commands three keepers sent to restore the roads. Lion Guardian is the close-range front fighter, Owl Mage attacks from two cells away, and Turtle Shield guards and heals the group. Clearing a mission means its script is stable enough for the squad to advance. The Stone Stag, Ironroot Rhino, Mirecoil Serpent, Embermane Lion and Eclipse Griffin each control one damaged chapter. Rune Crown Chimera has absorbed parts of every system; defeating it in Mission 30 reconnects the archive without pretending there is an endless Mission 31."
+      ],
+      systems: [
+        "Turn flow: select a living hero, then choose one action. Moving uses an adjacent legal cell. Attack requires the hero's range. Guard reduces the next enemy hit by one. A Skill spends one Energy: Lion strikes harder, Owl reaches a distant target, and Turtle guards every living hero while healing one HP. A hero is marked Done after acting. When every living hero has acted, or End Turn is pressed, all living enemies resolve their behavior and Energy returns by one up to three.",
+        "Enemy rules are positional, not just statistical. Wolves gain Pack Fang while adjacent to another Wolf. Ravens target the hero with the lowest health ratio. Stone Stag restores first-hit armor. Thorn Boar returns one damage after a surviving adjacent melee hit. Rune Fox teleports behind the weakest hero. Tide Turtle gives the nearest ally a one-hit guard, while Relic Heron pushes the hero it strikes. Cinder Ram charges a visible straight line instead of walking normally.",
+        "Later enemies change action planning. Ember Salamander leaves a temporary burn tile when it moves. Moon Moth silences one hero's Skill for the next player turn without removing Move, Attack or Guard. Archive Owl marks a hero so the next ranged hit gains damage. Mirror Wolf creates one adjacent one-HP clone when space permits. Seal Raven drains one Energy but never below zero. These traits remain active when Mission 29 combines one threat from five earlier chapters.",
+        "Board states are part of each authored mission. Rubble cannot be occupied. Root Snare prevents the affected hero's next movement choice. Tide moves a unit one legal cell after the enemy turn. Burn damages a hero standing on it, while a one-use Cooling Rune restores Energy and clears active burn tiles. Orbit Runes rotate units around the outer ring. In Six-Rune Locks, three heroes must occupy linked Seal cells to remove the enemy ward; attacking through the ward loses one damage.",
+        "Boss phases trigger cumulatively at 70 and 35 percent health, so one large hit cannot skip a phase. Stone Stag refreshes armor and charges its lane. Ironroot Rhino braces, strikes a row and leaves rubble. Mirecoil Serpent adds currents, pulls heroes and regenerates unless two heroes hit it during that player turn. Embermane Lion places fire and gains a wounded extra action. Eclipse Griffin alternates flying ranged immunity with a grounded sweep. Rune Crown Chimera combines tide, burn, rubble, flight and a Mirror Wolf summon.",
+        "Permanent growth has three layers. Mission victory grants XP and Runes; XP raises Squad Level in 100-point steps. Runes upgrade Lion, Owl or Turtle up to Level 6, raising their starting health and attack. The post-mission Rune Reward is also saved: Power adds attack, Guardian Medal adds max health, Rune Shard adds 35 XP, Focus adds starting Energy, and Revive Token can automatically return one fallen hero at half health. An optional three-Diamond reward reroll and optional 18-Diamond Training Slot add choice or starting Energy, but neither unlocks a mission or Boss."
+      ],
       how: [
-        "Choose an unlocked mission from the menu.",
-        "Select a hero on the rune grid, then move, attack, guard, or use a skill.",
-        "Watch enemy turns and protect weaker heroes with smart positioning.",
-        "Clear all enemies to choose a rune reward and unlock more mission progress.",
-        "Optional Diamond spending can reroll reward choices or unlock a permanent training slot."
+        "Swipe the complete 30-card mission rail and select an unlocked mission. Every fifth card is a named Boss checkpoint.",
+        "Read the mission name, enemy list, trait list, terrain and tactical plan before entering Battle.",
+        "Select Lion, Owl or Turtle on the board or in the Squad Action roster. Choose an adjacent highlighted cell to move, a highlighted enemy to attack, Guard, or Skill.",
+        "Watch Done markers and the selected hero panel. End Turn early only when preserving position is safer than using every action.",
+        "During the enemy turn, read trait badges and the battle log for counters, guards, pushes, charges, silence, marks, drains, clones and Boss phases.",
+        "Defeat every enemy, choose one permanent Rune Reward, and review the exact saved XP, Runes, best mission and next upgrade gap.",
+        "Use Next Mission when another mission exists, Retry to replay the current board, or return to Missions to train heroes and revisit any unlocked card."
       ],
       strategyTips: [
-        "Move the lion toward the front first so enemies focus on the tougher hero.",
-        "Use the owl's ranged rune skill to finish enemies before they reach the back row.",
-        "Guard with the turtle before dangerous enemy turns to keep the squad alive.",
-        "Save Diamond rerolls for runs where all reward choices miss your current plan."
+        "Break Wolf adjacency before trading damage. Moving one hero can remove Pack Fang from two attacks at once.",
+        "Do not spend Owl's range on Thorn Boar from an adjacent cell. A two-cell hit avoids the melee counter and keeps the back line useful.",
+        "A silenced hero still has three useful actions. Move out of a charge lane, make a normal attack or Guard instead of waiting for Skill to return.",
+        "Against Mirecoil Serpent, two separate heroes must connect during the same player turn. One hero's high-damage Skill alone does not stop regeneration.",
+        "Flying Griffin blocks Owl's ranged damage. Use Lion while it flies, then spread heroes before the grounded row sweep.",
+        "Leave one legal adjacent cell when Mirror Wolf is present, then remove the one-HP clone before it changes movement and targeting lanes.",
+        "Permanent bonuses improve tolerance but do not solve board rules. A lower-level squad using Cooling, Seal and Orbit cells correctly can outperform a stronger squad standing in the wrong lane."
       ],
+      progression: [
+        "Missions 1-5 teach movement, focus fire, Wolf adjacency, Raven targeting and blocked bridge lanes. Stonehorn Trial refreshes first-hit armor at both thresholds and punishes heroes left in its row.",
+        "Missions 6-10 add melee counters, back-line teleporting, Root Snare and pincer formations. Ironroot Rhino turns safe cells into rubble, so the available route changes during the fight.",
+        "Missions 11-15 make position move after decisions through Tide and Heron push. Mirecoil Serpent adds column pull and a two-attacker regeneration check.",
+        "Missions 16-20 combine temporary burn, straight-line charges and one-use Cooling Runes. Embermane Lion alternates board fire, group pressure and a wounded extra action.",
+        "Missions 21-25 restrict Skill timing with silence and ranged marks, then rotate the outer ring. Eclipse Griffin changes which hero can damage it and when a row becomes unsafe.",
+        "Missions 26-30 add clones, Energy drain and linked seals before the Crown Gauntlet remixes five earlier rules. Rune Crown Chimera changes terrain at both visible thresholds and summons a clone for the final target-order test."
+      ],
+      designNote:
+        "The board stays three cells wide and four cells tall so every phone decision remains visible without panning. Depth comes from one-action turns: moving to solve a current hazard means giving up that hero's attack, while guarding can be stronger than chasing damage. Six five-mission chapters introduce one vocabulary at a time and then ask the chapter Boss to recombine it. HP rises only once every eight missions and Attack only once every twelve; later pressure therefore comes mainly from terrain, target order, action denial and phase changes. Pointer, touch and a roving arrow-key grid all operate the same logical cells. Unlike Animal Auto Squad's pre-battle formation or Animal Relic Hunters' live movement, Rune Tactics pauses after every decision so the board state itself is the puzzle.",
       parent:
-        "This game is intended for teens and casual strategy players. It practices planning, step-by-step logic, focus, and resource choices through a fantasy animal battle. Progress is stored locally in the browser and is for entertainment only, not diagnosis, ranking, or formal learning assessment.",
+        "Squad Level, XP, Runes, best mission, unlocked mission, hero levels, Training Slot, saved attack, health and Energy bonuses, and Revive Tokens are stored locally in this browser. No login is required for basic play. Clearing site storage or using another browser may create a separate save. Diamonds are optional platform currency used only for a reward reroll or the confirmed Training Slot; all 30 missions, seven terrain systems, special enemies and six Bosses remain playable without them. Skill Reports describe the completed play session and are not a formal ability test.",
       faq: [
-        ["Is Animal Rune Tactics free to play?", "Yes. It runs in the browser on WeightPlay."],
-        ["Why is it marked 13+?", "The game uses turn-based tactics, enemy pressure, reward choices, and optional Diamond spending, so it is deeper than younger-child games."],
-        ["Does it require fast reactions?", "No. Battles are turn-based, so players can think before choosing movement, attacks, guards, or skills."],
-        ["What can Diamonds be used for?", "Diamonds can optionally reroll rune reward choices or unlock a permanent training slot. The core mission is playable without spending Diamonds."]
+        ["Is Animal Rune Tactics free?", "Yes. All 30 missions, special enemies, terrain rules, permanent Rune growth and six Bosses are playable in the browser without payment."],
+        ["How many missions and Bosses are there?", "There are 30 authored missions. Missions 5, 10, 15, 20, 25 and 30 use six different Bosses with separate artwork, behavior and two health phases."],
+        ["Does it require fast reactions?", "No. It is turn-based. Nothing moves while the player is choosing a hero, cell, attack, Guard or Skill."],
+        ["Why can I not use a Skill?", "The hero may have no Energy, may already be Done, or may be silenced by Moon Moth. Silence lasts for one player turn and does not block movement, normal attacks or Guard."],
+        ["What resets after a mission?", "The Battle board resets. Mission unlocks, Squad Level, XP, Runes, hero levels, chosen Rune Rewards, Training and Revive Tokens remain in local progress."],
+        ["What can Diamonds do?", "Three Diamonds reroll one reward set, and 18 Diamonds confirm the permanent Training Slot. Diamonds do not unlock campaign missions, heroes or Bosses."],
+        ["Can I replay earlier missions?", "Yes. Every unlocked mission remains selectable, including all 30 after the final victory. Mission 30 does not create a false Mission 31."],
+        ["Does progress require an account?", "No. Progress is stored in this browser. Clearing its site data or changing devices may begin a separate local profile."]
       ],
     },
     "animal-reef-fisher": {
@@ -1294,7 +1330,69 @@
           ["手機與電腦都能玩嗎？", "可以。手機使用虛擬搖桿與大型選項，電腦支援鍵盤、方向鍵與按住滑鼠移動。"]
         ],
       },
-      "animal-rune-tactics": zhGuide("動物符文戰棋", "回合制小隊戰棋", ["選擇英雄並移動到符文格。", "攻擊或防守來控制戰局。", "完成任務後領取獎勵並保存本機進度。"]),
+      "animal-rune-tactics": {
+        title: "動物符文戰棋",
+        difficulty: "困難",
+        time: "每個任務 8-15 分鐘",
+        gameplay: "回合制小隊戰棋",
+        genre: ["策略", "戰棋", "動物冒險"],
+        skills: ["邏輯", "問題解決", "專注", "規劃"],
+        guideKicker: "WeightPlay 原創遊戲指南",
+        guideTitleSuffix: "遊戲指南",
+        noteTitle: "玩家與存檔說明",
+        hideScoreBands: true,
+        intro: "《動物符文戰棋》是在 3×4 符文棋盤進行的 30 任務回合制戰役。獅王守護者、貓頭鷹法師與烏龜盾衛在敵方回合前各能行動一次：移動、攻擊、防守，或花能量使用不同技能。六個五關章節依序加入碎石、束縛、潮汐、燃燒、環月轉動與封印，敵人也會反擊、推移、沉默、標記、吸能或製造分身。第 5、10、15、20、25、30 任務各有一位不同的階段首領，任務與永久成長會保存在目前瀏覽器。",
+        story: [
+          "六條符文道路把動物領地連接到王冠典藏庫。林地符文固定活根，鍛林符文束縛鐵木，潮汐符文調節淹水石室，餘燼符文排出地熱，月影符文保存記憶，王冠封印則讓前五套系統維持同步。中央符冠破裂後，這些符文開始在沒有守衛的情況下自行運作：橋面凝固成碎石，樹根纏住旅行者，水流推動站在格上的單位，典藏封印反而保護破壞道路的野獸。",
+          "玩家指揮三位符文守衛修復道路。獅王負責近戰前線，貓頭鷹能隔兩格攻擊，烏龜則保護並治療全隊。通過任務代表該段符文已穩定，可以繼續前進。石角巨鹿、鐵根犀王、澤環巨蛇、燼鬃獅王與蝕月獅鷲各占據一章；符冠奇美拉吸收了所有系統。第 30 任務擊敗牠，代表典藏庫重新連線，而不是再冒出不存在的第 31 任務。"
+        ],
+        systems: [
+          "回合流程：選擇一名存活英雄後執行一個動作。移動只能走到相鄰合法格；攻擊受英雄射程限制；防守使下一次敵方命中少 1 點傷害。技能花 1 點能量：獅王造成重擊，貓頭鷹攻擊遠距目標，烏龜讓所有存活英雄防守並恢復 1 點生命。行動後英雄會標示完成；全員完成或玩家按下結束回合後，敵人依序行動，英雄能量最多恢復到 3。",
+          "敵人差異來自站位規則。暗影狼相鄰時取得狼群加傷；水晶渡鴉瞄準生命比例最低英雄；石角巨鹿會恢復第一次命中的石甲。荊棘野豬在近戰命中後反擊 1 點；符步狐狸行動後繞到最弱英雄後方；潮汐烏龜給最近友軍一次守護；遺物蒼鷺命中後推動英雄；燼角山羊看到同一直線英雄時改用衝鋒。",
+          "後期敵人會改變行動順序。餘燼蠑螈移動後留下暫時燃燒格；月塵飛蛾封鎖一名英雄下一個玩家回合的技能，但不封鎖移動、攻擊與防守；典藏貓頭鷹留下標記，使下一次遠程命中加傷；鏡影狼在有相鄰空格時製造一隻 1 生命分身；封印渡鴉吸收 1 點能量但不會降到零以下。第 29 任務會同時組合五章威脅。",
+          "棋盤狀態屬於任務設計。碎石不能站立；根鬚束縛會取消受影響英雄下一次移動；潮汐在敵方回合後把單位推一格；燃燒傷害停在上面的英雄；一次性冷卻符文恢復能量並清除燃燒；環月符文讓外圈單位順時針轉動。六符封鎖要求三位英雄占據相連封印格，否則敵方護罩會讓每次傷害少 1。",
+          "首領在 70% 與 35% 生命進入累積階段，一次大傷害也不能跳過。石鹿刷新護甲並衝擊同列；犀王架勢防守、打擊整列並留下碎石；巨蛇增加潮汐、拉動英雄，而且同回合未被兩名英雄命中就再生；燼鬃獅放置火焰並在重傷後多行動一次；獅鷲在遠程免疫的飛行與落地橫掃間切換；最終奇美拉組合潮汐、燃燒、碎石、飛行與鏡影召喚。",
+          "永久成長有三層。勝利獲得經驗與符文；經驗每滿 100 提高小隊等級。符文可把獅王、貓頭鷹或烏龜升到 6 級，提高起始生命與攻擊。戰後符文獎勵也會保存：力量增加攻擊，守護增加最大生命，碎片增加 35 經驗，專注增加起始能量，復活代幣則在未來自動讓一位倒下英雄以半血回歸。花 3 顆鑽石重抽獎勵與花 18 顆鑽石解鎖訓練格都是選擇性功能，不會解鎖任務或首領。"
+        ],
+        how: [
+          "左右滑動完整的 30 任務軌道，選擇一張已解鎖卡；每五關會顯示具名首領。",
+          "進場前閱讀任務名稱、敵人、特性、地形與戰術提示。",
+          "在棋盤或小隊行動列選擇獅王、貓頭鷹或烏龜，再點相鄰亮格移動、點可攻擊敵人，或使用防守與技能。",
+          "查看完成標記與英雄資訊。只有在保留站位比多做一個動作更安全時，才提早結束回合。",
+          "敵方回合注意特性徽章與戰鬥訊息，判讀反擊、守護、推移、衝鋒、沉默、標記、吸能、分身與首領階段。",
+          "擊敗所有敵人後選擇一項永久符文獎勵，確認保存的經驗、符文、最佳任務與下一次升級差額。",
+          "仍有下一關時可直接前進，也可重玩目前任務，或返回任務頁升級英雄並選擇任何已解鎖關卡。"
+        ],
+        strategyTips: [
+          "先拆開暗影狼的相鄰關係；移動一位英雄有時能同時移除兩次狼群加傷。",
+          "不要讓貓頭鷹貼著荊棘野豬攻擊。隔兩格射擊能避開近戰反擊。",
+          "被沉默的英雄仍可移動、普通攻擊或防守，可先離開衝鋒線，不必原地等待技能。",
+          "對澤環巨蛇時，同一玩家回合必須有兩名不同英雄命中；單一英雄的大技能無法阻止再生。",
+          "蝕月獅鷲飛行時會擋住貓頭鷹遠攻，改用獅王；落地前則應分散，避開整列橫掃。",
+          "鏡影狼存在時保留一個可控相鄰格，分身出現後立刻清掉 1 生命目標，避免路線被改變。",
+          "永久加成只提高容錯。正確使用冷卻、封印與環月格的低等隊伍，仍可能勝過站錯位置的高等隊伍。"
+        ],
+        progression: [
+          "任務 1-5 教導移動、集火、狼群相鄰、渡鴉瞄準與斷橋路線；石角試煉會兩次刷新護甲並處罰留在同列的英雄。",
+          "任務 6-10 加入近戰反擊、繞後、根鬚束縛與夾擊；鐵根犀王把安全格變成碎石，使路線在戰鬥中改變。",
+          "任務 11-15 用潮汐與蒼鷺推移讓站位在決策後繼續變化；澤環巨蛇再加入欄位拉動與雙英雄止血條件。",
+          "任務 16-20 組合暫時燃燒、直線衝鋒與一次性冷卻符文；燼鬃獅王交替使用棋盤火焰、群體壓力與重傷後額外行動。",
+          "任務 21-25 用沉默與遠程標記限制技能時機，再讓外圈旋轉；蝕月獅鷲改變能傷害牠的英雄與危險列。",
+          "任務 26-30 加入分身、吸能與相連封印，王冠連戰重組五章規則；符冠奇美拉在兩個可見門檻改變地形並召喚鏡影，形成最終目標順序考驗。"
+        ],
+        designNote: "棋盤固定為三格寬、四格高，讓手機不需平移就能看清每個決策。深度來自每名英雄每回合只有一個動作：為了離開危險而移動，就代表放棄該英雄這次攻擊；有時防守也比追求傷害更好。六個五關章節一次教一套規則，再由章末首領重新組合。敵方生命只每八關增加一次、攻擊只每十二關增加一次，後期壓力主要來自地形、目標順序、行動限制與階段變化。觸控、滑鼠與方向鍵焦點都操作相同邏輯格；它與《自走小隊》的戰前配置或《動物遺物獵人》的即時移動不同，每一步都停下來讓棋盤本身成為題目。",
+        parent: "小隊等級、經驗、符文、最佳與已解鎖任務、英雄等級、訓練格、永久攻擊／生命／能量加成與復活代幣都保存在目前瀏覽器。基本遊玩不需要登入；清除網站資料或換瀏覽器可能會建立另一份存檔。鑽石只用於選擇性獎勵重抽或確認訓練格，30 任務、七種地形、特殊敵人與六位首領都不需要鑽石。技能報告只描述本次遊玩，不是正式能力測驗。",
+        faq: [
+          ["動物符文戰棋可以免費玩嗎？", "可以。30 個任務、特殊敵人、地形、永久符文成長與六位首領都能直接在瀏覽器遊玩。"],
+          ["共有多少任務與首領？", "共有 30 個設計任務；第 5、10、15、20、25、30 任務有六位不同圖像、行為與兩階段機制的首領。"],
+          ["需要快速反應嗎？", "不需要。這是回合制遊戲，玩家選擇英雄、格子、攻擊、防守或技能時，棋盤不會自行移動。"],
+          ["為什麼不能使用技能？", "英雄可能沒有能量、已完成行動，或被月塵沉默。沉默只維持一個玩家回合，不會封鎖移動、普通攻擊與防守。"],
+          ["任務結束後哪些會重置？", "戰鬥棋盤會重置；任務解鎖、小隊等級、經驗、符文、英雄等級、符文獎勵、訓練與復活代幣會保存在本機。"],
+          ["鑽石能做什麼？", "3 顆鑽石可重抽一次獎勵，18 顆鑽石可確認永久訓練格。鑽石不會解鎖戰役任務、英雄或首領。"],
+          ["可以重玩前面的任務嗎？", "可以。所有已解鎖任務都能重玩；完成最終任務後 30 關全部保留，也不會出現假的第 31 關。"],
+          ["需要帳號才能保存嗎？", "不需要。進度保存在目前瀏覽器；清除網站資料或更換裝置可能會開始另一份存檔。"]
+        ],
+      },
       "animal-reef-fisher": {
         title: "動物珊瑚釣手",
         age: "13+",

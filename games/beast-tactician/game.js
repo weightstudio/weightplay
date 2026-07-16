@@ -2912,6 +2912,8 @@
     const handled = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "Enter", " ", "w", "W", "u", "U", "s", "S", "q", "Q", "e", "E", "Escape"].includes(key) || /^[1-9]$/.test(key);
     if (!handled) return;
     event.preventDefault();
+    const commitsTransaction = ["Enter", " ", "w", "W", "u", "U", "s", "S"].includes(key);
+    if (event.repeat && commitsTransaction) return;
     if (key === "ArrowUp") moveKeyboardTile(0, -1);
     else if (key === "ArrowDown") moveKeyboardTile(0, 1);
     else if (key === "ArrowLeft") moveKeyboardTile(-1, 0);

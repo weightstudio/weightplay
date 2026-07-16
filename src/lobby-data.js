@@ -394,14 +394,12 @@ window.WONDER_LOBBY = {
       type: { en: "Turn-Based Squad Tactics", "zh-Hant": "回合制小隊戰棋" },
       categories: ["Featured", "Animal Games", "Puzzle", "Strategy"],
       skills: ["Logic", "Problem Solving", "Focus"],
-      ages: ["13"],
-      ageLabel: { en: "13+", "zh-Hant": "13+" },
       href: "games/animal-rune-tactics/",
       description: {
-        en: "Command a lion, owl, and turtle squad across rune-grid battles, clear shadow beasts, save local progress, and choose rewards.",
-        "zh-Hant": "指揮獅子、貓頭鷹與烏龜小隊，在符文格上移動、攻擊、防禦，清除影獸並保存本機進度。"
+        en: "Command three animal heroes through 30 rune-grid missions with seven terrain rules, special enemies, permanent growth, and six phased Bosses.",
+        "zh-Hant": "指揮三名動物英雄完成 30 個符文戰棋任務，破解七種地形、特殊敵人、永久成長與六位階段首領。"
       },
-      meta: { en: ["Turn-Based Tactics", "Rune Rewards", "Local Progress"], "zh-Hant": ["回合制戰棋", "符文獎勵", "本機進度"] },
+      meta: { en: ["30 Missions", "Seven Terrain Rules", "Six Bosses"], "zh-Hant": ["30 個任務", "七種地形規則", "六位首領"] },
       art: { kind: "image", background: "assets/animal-rune-tactics-cover.webp", hero: "assets/weightplay-character-moon-cap-owl-cutout.webp" },
     },
     {

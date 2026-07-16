@@ -2,6 +2,53 @@
   const GAME_ID = "shadow-wolf";
   const saveKey = "weightplay_shadow_wolf_v1";
   const localeKey = "weightPlayLocale";
+  const STAGE_COUNT = 30;
+  const BOSS_STAGES = new Set([5, 10, 15, 20, 25, 30]);
+
+  const stage = (id, nameEn, nameZht, hintEn, hintZht, hazard, enemies, boss = "") => ({
+    id,
+    region: Math.ceil(id / 5),
+    nameEn,
+    nameZht,
+    hintEn,
+    hintZht,
+    hazard,
+    enemies,
+    boss,
+  });
+
+  const STAGE_DEFINITIONS = Object.freeze([
+    stage(1, "Moonshade Gate", "月影之門", "Patrol timing and one spike bed", "巡邏節奏與單一尖刺區", "spikes", ["wolf", "wolf"]),
+    stage(2, "Split Ledge", "分岔岩台", "Double-jump between separated ledges", "以二段跳跨越分離岩台", "ledges", ["wolf", "wolf", "boar"]),
+    stage(3, "Bat Lanterns", "蝙蝠燈徑", "Dodge aimed shots on the upper route", "在上層路線閃避瞄準射擊", "spikes", ["bat", "bat", "wolf"]),
+    stage(4, "Fang Crossing", "尖牙渡口", "Patrol, bat fire, and a moving ledge", "巡邏、蝙蝠火力與移動岩台", "moving", ["wolf", "bat", "boar"]),
+    stage(5, "Basilisk Hollow", "蛇王幽谷", "Venom pools and a tail-sweep Boss", "毒池與甩尾首領", "venom", [], "basilisk"),
+    stage(6, "Crystal Mouth", "水晶裂口", "Move after every falling-crystal warning", "看見落晶警示後立刻移動", "crystal", ["wolf", "crystal-bat"]),
+    stage(7, "Echo Steps", "回音石階", "Cross between crystal spread volleys", "穿過水晶散射彈的空隙", "crystal", ["crystal-bat", "crystal-bat", "wolf"]),
+    stage(8, "Glass Causeway", "琉璃堤道", "Moving platforms under crystal fall", "在落晶下使用移動岩台", "crystal-moving", ["crystal-bat", "boar"]),
+    stage(9, "Shard Ambush", "碎晶伏擊", "Punish an armored boar after its charge", "裝甲野豬衝鋒落空後反擊", "crystal", ["crystal-bat", "armored-boar", "wolf"]),
+    stage(10, "Stone Guardian", "石衛聖堂", "Break frontal guard after a ground slam", "地震後繞過正面防禦", "shockwave", [], "guardian"),
+    stage(11, "Rootwild Verge", "根野邊境", "Bramble lanes slow careless movement", "荊棘帶會拖慢魯莽移動", "bramble", ["wolf", "armored-boar"]),
+    stage(12, "Hanging Vines", "垂藤高台", "Choose between ranged and ground threats", "在遠程與地面威脅間取捨", "moving", ["bat", "bat", "armored-boar"]),
+    stage(13, "Burrow Run", "地穴奔襲", "Opposing boar charges cross both lanes", "兩側野豬交錯衝鋒", "bramble", ["charger-boar", "charger-boar", "bat"]),
+    stage(14, "Thorn Relay", "荊棘封鎖", "Open safe ground before roots spread", "在根刺擴散前打開安全地面", "root", ["armored-boar", "crystal-bat", "wolf"]),
+    stage(15, "Thorn Colossus", "棘根巨像", "Expose the core after a root smash", "根拳重擊落空後核心會暴露", "root", [], "colossus"),
+    stage(16, "Ember Threshold", "餘燼門檻", "Fire lanes cycle on and off", "火焰地帶週期性啟閉", "fire", ["ember-wolf", "bat"]),
+    stage(17, "Cinder Pursuit", "燼火追獵", "Ember wolves leave temporary fire trails", "燼狼會留下短暫火徑", "fire", ["ember-wolf", "ember-wolf", "boar"]),
+    stage(18, "Furnace Lift", "熔爐升台", "Fast platforms pass above flame lanes", "高速岩台穿越火焰地帶", "fire-moving", ["ember-wolf", "crystal-bat"]),
+    stage(19, "Ashwing Roost", "灰翼巢穴", "Prioritize diving and ground threats", "判斷空中俯衝與地面威脅", "fire", ["dive-bat", "dive-bat", "ember-wolf"]),
+    stage(20, "Cinder Wyvern", "燼翼飛龍", "Survive an aerial fan, then punish landing", "躲過空中火扇後反擊落地空檔", "fire", [], "wyvern"),
+    stage(21, "Rift Approach", "裂隙前庭", "Periodic gusts alter horizontal movement", "週期裂風會改變水平移動", "gust", ["wolf", "rift-bat"]),
+    stage(22, "Vanishing Perch", "消逝棲台", "Track blinking bats between marked perches", "追蹤在標記棲台間閃現的蝙蝠", "gust", ["rift-bat", "rift-bat", "boar"]),
+    stage(23, "Mirror Hunt", "鏡影狩獵", "Mirror wolves split into fragile echoes", "鏡狼倒下後會分裂成脆弱殘影", "mirror", ["mirror-wolf", "mirror-wolf", "rift-bat"]),
+    stage(24, "Eclipse Bridge", "蝕月長橋", "Read gusts, blinking shots, and one moving ledge", "依序判讀裂風、閃現射擊與移動岩台", "gust-moving", ["mirror-wolf", "rift-bat", "armored-boar"]),
+    stage(25, "Eclipse Stag", "蝕月靈鹿", "Bait a shielded dash into terrain", "引誘護盾衝鋒撞上地形", "gust", [], "stag"),
+    stage(26, "Crown Path", "王冠之路", "Elite counters return in a mixed encounter", "精英反制規則組合回歸", "mixed", ["armored-boar", "crystal-bat", "ember-wolf"]),
+    stage(27, "Sixfold Trial", "六相試煉", "Six roles arrive in staggered pairs", "六種角色分批成對登場", "mixed", ["wolf", "crystal-bat", "charger-boar", "ember-wolf", "rift-bat", "mirror-wolf"]),
+    stage(28, "Broken Altar", "破碎祭壇", "Four terrain cycles share clear warnings", "四種地形循環各有清楚警示", "all", ["dive-bat", "armored-boar", "mirror-wolf"]),
+    stage(29, "Last Seal", "最後封印", "Three elite counters guard the crown", "三種精英反制守住王冠", "all", ["armored-boar", "rift-bat", "ember-wolf", "crystal-bat"]),
+    stage(30, "Behemoth Crown", "巨獸王冠", "Final Boss combines crystal, roots, and charge", "最終首領結合落晶、根刺與衝鋒", "all", [], "behemoth"),
+  ]);
 
   const $ = (id) => document.getElementById(id);
   const nodes = {
@@ -84,9 +131,9 @@
     en: {
       title: "Shadow Wolf",
       menuTitle: "Dungeon Platform Adventure.",
-      menuHint: "Move with A/D, jump twice with W/Space, attack with J, and dash with K. Defeat elites, choose exact attribute growth, and clear all 8 regions.",
+      menuHint: "Move, double-jump, slash, and dash through 30 saved stages. Learn each hazard and enemy counter, shape exact attributes, and defeat six regional Bosses.",
       adventureRecordTitle: "Adventure Record",
-      adventureRecordText: "Expeditions: {runs} · Best: Room {best}/8 · Behemoth clears: {wins}",
+      adventureRecordText: "Attempts: {runs} · Unlocked: {unlocked}/30 · Cleared: {best}/30 · Crown clears: {wins}",
       diamondShopTitle: "Permanent Upgrade",
       amuletName: "Mist Amulet",
       amuletEffect: "Start every run with +10 Max HP (40 HP instead of 30 HP).",
@@ -104,7 +151,7 @@
       arenaLabel: "Shadow Wolf arena",
       stageEyebrow: "EXPEDITION",
       stageTitle: "Choose an expedition",
-      stageHint: "Drag the rail or choose an unlocked region to begin.",
+      stageHint: "Drag the rail and choose an unlocked stage. Boss checkpoints are 5, 10, 15, 20, 25, and 30.",
       menu: "Menu",
       hudHp: "Wolf HP",
       chooseCard: "Choose a Relic Upgrade",
@@ -123,7 +170,7 @@
       lootFound: "Relic Chest Unlocked!",
       equipLoot: "Equip Gear",
       tryAgain: "Try Again",
-      backToMenu: "Back to Menu",
+      backToMenu: "Back to Stages",
       sidebarInventory: "Equipped Gear",
       sidebarStats: "Character Stats",
       slotWeapon: "WEAPON",
@@ -136,7 +183,7 @@
       skillLogic: "Logic",
       skillFocus: "Focus",
       skillProblem: "Problem Solving",
-      regionsCleared: "Regions cleared",
+      regionsCleared: "Stage progress",
 
       // Relic Upgrades
       relic_fang: "Sharp Fang",
@@ -165,8 +212,8 @@
       rarity_epic: "Epic Gear",
 
       // Reports
-      report_win: "Legendary Wolf! You conquered all 8 regions, timed your double jumps, shaped your attributes, and defeated the Behemoth.",
-      report_partial: "Good expedition! You reached Region {room}. Spend both level-up points and adjust your build for the next attempt.",
+      report_win: "Stage {stage} cleared. The next trail is unlocked, and this stage remains available for replay.",
+      report_partial: "Stage {stage} remains uncleared. Read its hazard warning, adjust your attribute choices, and try again.",
     },
     "zh-Hant": {
       title: "影狼傳說",
@@ -264,6 +311,16 @@
     regionsCleared: "通過區域",
   });
 
+  Object.assign(text["zh-Hant"], {
+    adventureRecordText: "\u6311\u6230\u6b21\u6578\uff1a{runs} \u00b7 \u5df2\u89e3\u9396\uff1a{unlocked}/30 \u00b7 \u5df2\u901a\u95dc\uff1a{best}/30 \u00b7 \u738b\u51a0\u901a\u95dc\uff1a{wins}",
+    menuHint: "\u4f7f\u7528 A/D \u79fb\u52d5\u3001W \u6216\u7a7a\u767d\u9375\u4e8c\u6bb5\u8df3\u3001J \u653b\u64ca\u3001K \u885d\u523a\u3002\u901a\u904e 30 \u500b\u5b58\u6a94\u95dc\u5361\uff0c\u5b78\u6703\u5730\u5f62\u8207\u6575\u4eba\u53cd\u5236\uff0c\u64ca\u6557\u516d\u96bb\u5340\u57df\u9996\u9818\u3002",
+    stageHint: "\u5de6\u53f3\u62d6\u66f3\u9078\u64c7\u5df2\u89e3\u9396\u95dc\u5361\u3002\u9996\u9818\u95dc\u70ba 5\u300110\u300115\u300120\u300125\u300130\u3002",
+    backToMenu: "\u8fd4\u56de\u95dc\u5361",
+    report_win: "\u7b2c {stage} \u95dc\u5df2\u901a\u904e\u3002\u4e0b\u4e00\u689d\u8def\u7dda\u5df2\u89e3\u9396\uff0c\u672c\u95dc\u4ecd\u53ef\u91cd\u65b0\u6311\u6230\u3002",
+    report_partial: "\u7b2c {stage} \u95dc\u5c1a\u672a\u901a\u904e\u3002\u89c0\u5bdf\u5730\u5f62\u8b66\u793a\u3001\u8abf\u6574\u5c6c\u6027\u5f8c\u518d\u8a66\u4e00\u6b21\u3002",
+    regionsCleared: "\u95dc\u5361\u9032\u5ea6",
+  });
+
   function preloadImage(src) {
     const image = new Image();
     image.src = src;
@@ -283,6 +340,9 @@
     boss: "../../assets/shadow-wolf-boss-behemoth-cutout.png",
     bossBasilisk: "../../assets/shadow-wolf-boss-basilisk.png",
     bossGuardian: "../../assets/shadow-wolf-boss-guardian.png",
+    bossColossus: "../../assets/shadow-wolf-boss-thorn-colossus.webp",
+    bossWyvern: "../../assets/shadow-wolf-boss-cinder-wyvern.webp",
+    bossStag: "../../assets/shadow-wolf-boss-eclipse-stag.webp",
     tiles: "../../assets/shadow-wolf-platform-tiles.webp",
     clawFx: "../../assets/shadow-wolf-fx-claw-slash.webp",
     dashFx: "../../assets/shadow-wolf-fx-dash-trail.webp",
@@ -325,12 +385,17 @@
     runs: 0,
     bestRoom: 0,
     wins: 0,
+    unlockedStage: 1,
+    selectedStage: 1,
+    completedStages: [],
     playerMaxHp: 30,
     playerHp: 30,
     level: 1,
     exp: 0,
     expNeed: 100,
     room: 1,
+    stageCleared: false,
+    hazardClock: 0,
     keys: 0,
     gameActive: false,
     gameLoopId: null,
@@ -383,6 +448,7 @@
   // Level platforms geometry lists
   let platforms = [];
   let spikesList = [];
+  let hazardZones = [];
   let damageNumbers = [];
   let selectedStage = 1;
   const stageNames = ["", "月影遺跡", "水晶斷橋", "古獸祭壇"];
@@ -402,19 +468,38 @@
       const data = JSON.parse(localStorage.getItem(saveKey) || "{}");
       state.amuletUnlocked = !!data.amuletUnlocked;
       state.runs = Math.max(0, Number.parseInt(data.runs, 10) || 0);
-      state.bestRoom = Math.max(0, Math.min(8, Number.parseInt(data.bestRoom, 10) || 0));
+      const legacyBestRoom = Math.max(0, Math.min(8, Number.parseInt(data.bestRoom, 10) || 0));
+      const migratedUnlock = legacyBestRoom >= 8 ? STAGE_COUNT : Math.min(STAGE_COUNT, Math.max(1, legacyBestRoom * 4 + 1));
+      state.unlockedStage = Math.max(1, Math.min(STAGE_COUNT, Number.parseInt(data.unlockedStage, 10) || migratedUnlock));
+      state.selectedStage = Math.max(1, Math.min(state.unlockedStage, Number.parseInt(data.selectedStage, 10) || state.unlockedStage));
+      state.completedStages = Array.isArray(data.completedStages)
+        ? [...new Set(data.completedStages.map(Number).filter((value) => value >= 1 && value <= STAGE_COUNT))].sort((a, b) => a - b)
+        : Array.from({ length: Math.max(0, state.unlockedStage - 1) }, (_, index) => index + 1);
+      state.bestRoom = Math.max(state.completedStages.length, Math.min(STAGE_COUNT, Number.parseInt(data.bestStage, 10) || 0));
       state.wins = Math.max(0, Number.parseInt(data.wins, 10) || 0);
     } catch {
       state.amuletUnlocked = false;
       state.runs = 0;
       state.bestRoom = 0;
       state.wins = 0;
+      state.unlockedStage = 1;
+      state.selectedStage = 1;
+      state.completedStages = [];
     }
   }
 
   function saveLocalState() {
     try {
-      localStorage.setItem(saveKey, JSON.stringify({ amuletUnlocked: state.amuletUnlocked, runs: state.runs, bestRoom: state.bestRoom, wins: state.wins }));
+      localStorage.setItem(saveKey, JSON.stringify({
+        amuletUnlocked: state.amuletUnlocked,
+        runs: state.runs,
+        bestRoom: Math.min(8, Math.ceil(state.bestRoom * 8 / STAGE_COUNT)),
+        bestStage: state.bestRoom,
+        wins: state.wins,
+        unlockedStage: state.unlockedStage,
+        selectedStage: state.selectedStage,
+        completedStages: state.completedStages,
+      }));
     } catch {}
   }
 
@@ -434,7 +519,7 @@
 
   function renderAdventureRecord() {
     if (!nodes.adventureRecordText) return;
-    nodes.adventureRecordText.textContent = t("adventureRecordText", { runs: state.runs, best: state.bestRoom, wins: state.wins });
+    nodes.adventureRecordText.textContent = t("adventureRecordText", { runs: state.runs, best: state.bestRoom, wins: state.wins, unlocked: state.unlockedStage });
   }
 
   function translateUI() {
@@ -485,13 +570,34 @@
   };
 
   function renderStageCards() {
-    const copy = stageCopy[getLocale()];
-    nodes.zoneButtons.forEach((button, index) => {
-      const [title, hint] = copy[index];
-      button.querySelector("span").textContent = title;
-      button.querySelector("small").textContent = hint;
-      button.setAttribute("aria-label", String(index + 1) + ". " + title + ": " + hint);
+    const rail = document.querySelector(".world-map-grid.stage-rail");
+    if (!rail) return;
+    rail.innerHTML = "";
+    const locale = getLocale();
+    STAGE_DEFINITIONS.forEach((definition) => {
+      const locked = definition.id > state.unlockedStage;
+      const cleared = state.completedStages.includes(definition.id);
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = `zone-node stage-card${definition.boss ? " boss-zone" : ""}${definition.id === state.selectedStage ? " is-selected" : ""}${cleared ? " is-cleared" : ""}`;
+      button.dataset.zone = String(definition.id);
+      button.disabled = locked;
+      const title = locale === "zh-Hant" ? definition.nameZht : definition.nameEn;
+      const hint = locale === "zh-Hant" ? definition.hintZht : definition.hintEn;
+      const stateLabel = locked ? (locale === "zh-Hant" ? "\u5c1a\u672a\u89e3\u9396" : "Locked") : cleared ? (locale === "zh-Hant" ? "\u5df2\u901a\u95dc" : "Cleared") : (locale === "zh-Hant" ? "\u53ef\u6311\u6230" : "Ready");
+      button.innerHTML = `<b>${String(definition.id).padStart(2, "0")} · ${locale === "zh-Hant" ? `\u5340\u57df ${definition.region}` : `Region ${definition.region}`}</b><span>${title}</span><small>${hint}</small><small>${stateLabel}</small>`;
+      button.setAttribute("aria-label", `${definition.id}. ${title}: ${hint}. ${stateLabel}`);
+      button.addEventListener("click", () => {
+        if (locked) return;
+        window.WonderSound?.play("click");
+        state.selectedStage = definition.id;
+        saveLocalState();
+        startRun(definition.id);
+      });
+      rail.appendChild(button);
     });
+    nodes.zoneButtons = Array.from(rail.querySelectorAll("[data-zone]"));
+    requestAnimationFrame(() => rail.querySelector(".is-selected")?.scrollIntoView({ block: "nearest", inline: "center" }));
   }
 
   function setScreen(screen) {
@@ -703,7 +809,7 @@
   }
 
   // Setup platform configurations per room
-  function buildRoomGeometry() {
+  function buildLegacyRoomGeometry() {
     platforms = [];
     spikesList = [];
     state.enemies = [];
@@ -769,11 +875,117 @@
     }
   }
 
+  function stageDefinition(stageNo = state.room) {
+    return STAGE_DEFINITIONS[Math.max(1, Math.min(STAGE_COUNT, Number(stageNo) || 1)) - 1];
+  }
+
+  function enemyProfile(type, index, stageNo) {
+    const stageBand = Math.floor((stageNo - 1) / 8);
+    const isBat = type.includes("bat");
+    const isBoar = type.includes("boar");
+    const baseType = isBat ? "bat" : isBoar ? "boar" : "wolf";
+    const width = isBoar ? 36 : isBat ? 28 : 30;
+    const height = isBoar ? 34 : isBat ? 28 : 30;
+    const baseHp = isBoar ? 34 : isBat ? 18 : 22;
+    const xPositions = [220, 430, 650, 310, 560, 720];
+    const y = isBat ? (index % 2 ? 190 : 125) : mainFloorY - height;
+    return {
+      x: xPositions[index % xPositions.length],
+      y,
+      width,
+      height,
+      hp: baseHp + stageBand * 4,
+      maxHp: baseHp + stageBand * 4,
+      speed: 1 + stageBand * 0.08 + (type === "charger-boar" ? 0.45 : 0),
+      type,
+      baseType,
+      bounds: { min: 70, max: 770, dir: index % 2 ? -1 : 1 },
+      shootCooldown: 55 + index * 24,
+      actionClock: 30 + index * 18,
+      isElite: type !== baseType,
+      armored: type === "armored-boar",
+      armorOpen: false,
+      hasSplit: type === "mirror-wolf",
+    };
+  }
+
+  function bossProfile(variant, stageNo) {
+    const profiles = {
+      basilisk: { hp: 130, speed: 1.25, width: 98, height: 88 },
+      guardian: { hp: 165, speed: 0.95, width: 110, height: 106 },
+      colossus: { hp: 195, speed: 0.8, width: 120, height: 116 },
+      wyvern: { hp: 210, speed: 1.4, width: 126, height: 110 },
+      stag: { hp: 230, speed: 1.75, width: 128, height: 108 },
+      behemoth: { hp: 270, speed: 1.25, width: 132, height: 122 },
+    };
+    const profile = profiles[variant] || profiles.behemoth;
+    return {
+      x: 590,
+      y: mainFloorY - profile.height,
+      width: profile.width,
+      height: profile.height,
+      hp: profile.hp,
+      maxHp: profile.hp,
+      speed: profile.speed,
+      type: "boss",
+      baseType: "boss",
+      variant,
+      dir: -1,
+      isElite: true,
+      shootCooldown: 90,
+      actionClock: 0,
+      phase: 0,
+      vulnerable: variant !== "guardian" && variant !== "stag" && variant !== "colossus",
+      shielded: variant === "guardian" || variant === "stag",
+      stageNo,
+    };
+  }
+
+  function addStageHazards(definition) {
+    const hazard = definition.hazard;
+    if (["spikes", "ledges", "moving", "mixed"].includes(hazard)) {
+      spikesList.push({ x: 350, y: mainFloorY - 24, w: 100, h: 24, kind: "spike", active: true });
+    }
+    if (hazard.includes("moving") || hazard === "ledges") {
+      platforms.push({ x: 300, y: 275, w: 120, h: 22, kind: "generated", moving: true, minX: 180, maxX: 510, speed: 1, dir: 1 });
+      platforms.push({ x: 585, y: 230, w: 105, h: 22, kind: "generated", moving: false, dir: 1 });
+    }
+    if (["crystal", "crystal-moving", "shockwave", "venom", "bramble", "root", "fire", "fire-moving", "gust", "gust-moving", "mirror", "all"].includes(hazard)) {
+      const kind = hazard.startsWith("crystal") ? "crystal" : hazard.startsWith("fire") ? "fire" : hazard.startsWith("gust") ? "gust" : hazard === "venom" ? "venom" : hazard === "shockwave" ? "shockwave" : "root";
+      hazardZones.push({ kind, x: 330, y: mainFloorY - 22, w: 140, h: 22, active: false, warning: true, clock: 0 });
+    }
+    if (hazard === "all") {
+      hazardZones.push({ kind: "crystal", x: 120, y: mainFloorY - 22, w: 90, h: 22, active: false, warning: true, clock: 45 });
+      hazardZones.push({ kind: "fire", x: 590, y: mainFloorY - 22, w: 100, h: 22, active: false, warning: true, clock: 90 });
+    }
+  }
+
+  function buildRoomGeometry() {
+    platforms = stageTerrain.map((platform) => ({ ...platform }));
+    spikesList = [];
+    hazardZones = [];
+    state.enemies = [];
+    state.bullets = [];
+    state.orbs = [];
+    state.pickups = [];
+    damageNumbers = [];
+    const definition = stageDefinition();
+    addStageHazards(definition);
+    const layout = zoneObstacleLayouts[((definition.id - 1) % 8) + 1] || [];
+    layout.forEach((obstacle) => platforms.push({ ...obstacle, h: 22, kind: "generated", dir: 1 }));
+    if (definition.boss) state.enemies.push(bossProfile(definition.boss, definition.id));
+    else definition.enemies.forEach((type, index) => state.enemies.push(enemyProfile(type, index, definition.id)));
+    state.x = 70;
+    state.y = mainFloorY - state.height;
+  }
+
   // Active game start trigger
-  function startRun(startRoom = state.zone) {
+  function startRun(startStage = state.selectedStage) {
     clearActiveInputs();
     setResultModalOpen(false, false);
     loadLocalState();
+    const playableStage = Math.max(1, Math.min(state.unlockedStage, Number(startStage) || state.selectedStage || 1));
+    state.selectedStage = playableStage;
     state.runs += 1;
     saveLocalState();
     const stats = getStats();
@@ -782,7 +994,9 @@
     state.level = 1;
     state.exp = 0;
     state.expNeed = 100;
-    state.room = startRoom;
+    state.room = playableStage;
+    state.stageCleared = false;
+    state.hazardClock = 0;
     state.keys = 0;
 
     state.eqWeapon = null;
@@ -823,7 +1037,7 @@
   }
 
   function updateHUDText() {
-    nodes.roomText.textContent = `${state.room}/8`;
+    nodes.roomText.textContent = `${state.room}/${STAGE_COUNT}`;
     nodes.keyText.textContent = state.attributePoints;
     nodes.levelVal.textContent = state.level;
     nodes.expText.textContent = `${state.exp}/${state.expNeed}`;
@@ -877,6 +1091,8 @@
         let finalDmg = stats.dmg;
         if (isCrit) finalDmg *= 1.5;
 
+        if (enemy.armored && !enemy.armorOpen) finalDmg *= 0.2;
+        if (enemy.type === "boss" && (enemy.shielded || enemy.vulnerable === false)) finalDmg *= 0.15;
         enemy.hp -= finalDmg;
         enemy.hitTimer = 10;
         damageNumbers.push({ x: enemy.x + enemy.width / 2, y: enemy.y - 4, value: Math.round(finalDmg), crit: isCrit, life: 34 });
@@ -916,18 +1132,16 @@
       });
     }
 
-    // Elite drops golden key
-    if (enemy.isElite) {
-      if (enemy.type === "boss") {
-        // Boss defeated -> win expedition!
-        endGame(true);
-      } else {
-        state.pickups.push({
-          x: enemy.x + enemy.width / 2,
-          y: enemy.y + enemy.height / 2,
-          type: "key",
-        });
-      }
+    if (enemy.hasSplit) {
+      state.enemies.push(
+        { ...enemyProfile("mirror-echo", 3, state.room), x: Math.max(40, enemy.x - 24), hp: 8, maxHp: 8, hasSplit: false },
+        { ...enemyProfile("mirror-echo", 4, state.room), x: Math.min(730, enemy.x + 24), hp: 8, maxHp: 8, hasSplit: false },
+      );
+    }
+
+    const remaining = state.enemies.filter((candidate) => candidate !== enemy && candidate.hp > 0).length;
+    if (enemy.type === "boss" || remaining === 0) {
+      window.setTimeout(() => endGame(true), 260);
     }
   }
 
@@ -1096,6 +1310,110 @@
     setResultModalOpen(true);
   }
 
+  function fireBossFan(enemy, count = 3, speed = 3.8) {
+    const bossCenter = enemy.x + enemy.width / 2;
+    const predictedX = state.x + state.width / 2 + state.vx * 14;
+    const baseAngle = Math.atan2((state.y + state.height / 2) - (enemy.y + enemy.height * 0.45), predictedX - bossCenter);
+    const spread = count === 1 ? [0] : Array.from({ length: count }, (_, index) => (index - (count - 1) / 2) * 0.18);
+    spread.forEach((offset) => state.bullets.push({ x: bossCenter, y: enemy.y + enemy.height * 0.45, vx: Math.cos(baseAngle + offset) * speed, vy: Math.sin(baseAngle + offset) * speed, size: 6, kind: "boss" }));
+  }
+
+  function updateBossEnemy(enemy) {
+    enemy.actionClock = (enemy.actionClock || 0) + 1;
+    const nextPhase = enemy.hp <= enemy.maxHp * 0.35 ? 2 : enemy.hp <= enemy.maxHp * 0.7 ? 1 : 0;
+    if (nextPhase > enemy.phase) {
+      enemy.phase = nextPhase;
+      enemy.shootCooldown = 10;
+      hazardZones.push({ kind: enemy.variant === "wyvern" ? "fire" : enemy.variant === "basilisk" ? "venom" : "root", x: nextPhase === 1 ? 140 : 520, y: mainFloorY - 22, w: 120, h: 22, active: false, warning: true, clock: 0, expires: 260 });
+    }
+    if (enemy.openTimer > 0) {
+      enemy.openTimer--;
+      if (enemy.openTimer === 0) {
+        enemy.shielded = enemy.variant === "guardian" || enemy.variant === "stag";
+        enemy.vulnerable = enemy.variant !== "colossus";
+      }
+    }
+
+    const playerCenter = state.x + state.width / 2;
+    const bossCenter = enemy.x + enemy.width / 2;
+    const gap = playerCenter - bossCenter;
+    enemy.facing = gap < 0 ? "left" : "right";
+    enemy.shootCooldown--;
+
+    if (enemy.variant === "basilisk") {
+      if (Math.abs(gap) > 160) enemy.x += Math.sign(gap) * enemy.speed;
+      if (enemy.shootCooldown <= 0) {
+        fireBossFan(enemy, 3 + enemy.phase * 2, 3.6);
+        hazardZones.push({ kind: "venom", x: Math.max(40, state.x - 35), y: mainFloorY - 22, w: 100, h: 22, active: true, warning: false, clock: 80, expires: 190 });
+        enemy.shootCooldown = 125 - enemy.phase * 18;
+      }
+    } else if (enemy.variant === "guardian") {
+      if (enemy.actionClock % Math.max(115, 175 - enemy.phase * 22) === 0) {
+        enemy.shielded = false;
+        enemy.openTimer = 65;
+        state.bullets.push({ x: enemy.x, y: mainFloorY - 12, vx: -5.2, vy: 0, size: 9, kind: "shockwave" });
+        state.bullets.push({ x: enemy.x + enemy.width, y: mainFloorY - 12, vx: 5.2, vy: 0, size: 9, kind: "shockwave" });
+      }
+    } else if (enemy.variant === "colossus") {
+      if (enemy.actionClock % Math.max(120, 190 - enemy.phase * 28) === 0) {
+        enemy.vulnerable = true;
+        enemy.openTimer = 75;
+        hazardZones.push({ kind: "root", x: Math.max(45, state.x - 45), y: mainFloorY - 24, w: 110, h: 24, active: false, warning: true, clock: 25, expires: 170 });
+      }
+    } else if (enemy.variant === "wyvern") {
+      const airborne = enemy.actionClock % 220 < 130;
+      enemy.y += ((airborne ? 125 : mainFloorY - enemy.height) - enemy.y) * 0.08;
+      enemy.vulnerable = !airborne;
+      if (airborne && enemy.shootCooldown <= 0) {
+        fireBossFan(enemy, 4 + enemy.phase, 4.1);
+        enemy.shootCooldown = 80 - enemy.phase * 10;
+      } else if (!airborne && enemy.actionClock % 220 === 145) {
+        state.bullets.push({ x: enemy.x, y: mainFloorY - 12, vx: -5.8, vy: 0, size: 10, kind: "shockwave" });
+      }
+    } else if (enemy.variant === "stag") {
+      if (!enemy.charging && enemy.actionClock % Math.max(105, 165 - enemy.phase * 20) === 0) {
+        enemy.charging = true;
+        enemy.chargeDir = Math.sign(gap || -1);
+      }
+      if (enemy.charging) {
+        enemy.x += enemy.chargeDir * (8 + enemy.phase * 1.5);
+        if (enemy.x <= 20 || enemy.x >= 650) {
+          enemy.x = Math.max(20, Math.min(650, enemy.x));
+          enemy.charging = false;
+          enemy.shielded = false;
+          enemy.openTimer = 60;
+        }
+      }
+    } else {
+      if (Math.abs(gap) > 180) enemy.x += Math.sign(gap) * enemy.speed;
+      if (enemy.shootCooldown <= 0) {
+        if (enemy.phase === 0) fireBossFan(enemy, 3, 3.8);
+        else if (enemy.phase === 1) hazardZones.push({ kind: "crystal", x: Math.max(50, state.x - 40), y: mainFloorY - 22, w: 100, h: 22, active: false, warning: true, clock: 20, expires: 165 });
+        else {
+          hazardZones.push({ kind: "root", x: 250, y: mainFloorY - 22, w: 120, h: 22, active: false, warning: true, clock: 10, expires: 150 });
+          fireBossFan(enemy, 5, 4.2);
+        }
+        enemy.shootCooldown = 105 - enemy.phase * 15;
+      }
+    }
+
+    enemy.x = Math.max(20, Math.min(670, enemy.x));
+    if (state.x + state.width > enemy.x && state.x < enemy.x + enemy.width && state.y + state.height > enemy.y && state.y < enemy.y + enemy.height) applyPlayerDamage(enemy.charging ? 7 : 4);
+  }
+
+  function updateStageHazards() {
+    state.hazardClock++;
+    hazardZones = hazardZones.filter((zone) => {
+      if (zone.expires !== undefined) zone.expires--;
+      const phase = (state.hazardClock + (zone.clock || 0)) % 180;
+      zone.warning = phase < 55;
+      zone.active = phase >= 55 && phase < 105;
+      if (zone.kind === "gust" && zone.active) state.x += state.room % 2 ? 0.55 : -0.55;
+      if (zone.active && zone.kind !== "gust" && state.x + state.width > zone.x && state.x < zone.x + zone.w && state.y + state.height > zone.y) applyPlayerDamage(zone.kind === "fire" ? 2.5 : 2);
+      return zone.expires === undefined || zone.expires > 0;
+    });
+  }
+
   // Physics Loop frame updates
   function updateGameEngine() {
     if (!state.gameActive) return;
@@ -1121,6 +1439,7 @@
     }
 
     state.vx = moveDir * curSpeed;
+    updateStageHazards();
 
     platforms.forEach((platform) => {
       if (!platform.moving) return;
@@ -1192,10 +1511,21 @@
     state.enemies.forEach((enemy, index) => {
       if (enemy.hitTimer > 0) enemy.hitTimer--;
       // Wolf/Boar walks along platform bounds
-      if (enemy.type === "wolf" || enemy.type === "boar") {
+      if (enemy.baseType === "wolf" || enemy.baseType === "boar") {
+        enemy.actionClock = (enemy.actionClock || 0) + 1;
+        if (enemy.type === "charger-boar" && enemy.actionClock % 150 > 112) enemy.speed = 5.5;
+        else if (enemy.baseType === "boar") enemy.speed = Math.min(enemy.speed, 1.8);
         enemy.x += enemy.speed * (enemy.bounds.dir || 1);
-        if (enemy.x <= enemy.bounds.min) enemy.bounds.dir = 1;
-        if (enemy.x + enemy.width >= enemy.bounds.max) enemy.bounds.dir = -1;
+        if (enemy.x <= enemy.bounds.min) {
+          enemy.bounds.dir = 1;
+          if (enemy.armored) { enemy.armorOpen = true; enemy.openTimer = 70; }
+        }
+        if (enemy.x + enemy.width >= enemy.bounds.max) {
+          enemy.bounds.dir = -1;
+          if (enemy.armored) { enemy.armorOpen = true; enemy.openTimer = 70; }
+        }
+        if (enemy.openTimer > 0 && --enemy.openTimer === 0) enemy.armorOpen = false;
+        if (enemy.type === "ember-wolf" && enemy.actionClock % 90 === 0) hazardZones.push({ kind: "fire", x: enemy.x, y: mainFloorY - 22, w: 72, h: 22, active: false, warning: true, clock: 55, expires: 145 });
 
         // Player Contact Damage check
         if (
@@ -1204,23 +1534,26 @@
           state.y + state.height > enemy.y &&
           state.y < enemy.y + enemy.height
         ) {
-          applyPlayerDamage(enemy.type === "boar" ? 0.25 : 0.15);
+          applyPlayerDamage(enemy.baseType === "boar" ? 3.5 : 2.5);
         }
-      } else if (enemy.type === "bat") {
+      } else if (enemy.baseType === "bat") {
+        enemy.actionClock = (enemy.actionClock || 0) + 1;
+        if (enemy.type === "rift-bat" && enemy.actionClock % 135 === 0) enemy.x = enemy.x < 400 ? 650 : 170;
+        if (enemy.type === "dive-bat" && enemy.actionClock % 150 > 105) {
+          enemy.x += Math.sign(state.x - enemy.x) * 2.8;
+          enemy.y += Math.sign(state.y - enemy.y) * 2.2;
+        }
         // Shoots projectiles
         enemy.shootCooldown--;
         if (enemy.shootCooldown <= 0) {
-          enemy.shootCooldown = 120 + Math.random() * 60; // 2-3s cooldown
+          enemy.shootCooldown = enemy.type === "crystal-bat" ? 105 : 120 + Math.random() * 45;
           const angle = Math.atan2((state.y + state.height / 2) - enemy.y, (state.x + state.width / 2) - enemy.x);
-          state.bullets.push({
-            x: enemy.x + enemy.width / 2,
-            y: enemy.y + enemy.height / 2,
-            vx: Math.cos(angle) * 3.5,
-            vy: Math.sin(angle) * 3.5,
-            size: 5,
-          });
+          const offsets = enemy.type === "crystal-bat" ? [-0.22, 0, 0.22] : [0];
+          offsets.forEach((offset) => state.bullets.push({ x: enemy.x + enemy.width / 2, y: enemy.y + enemy.height / 2, vx: Math.cos(angle + offset) * 3.5, vy: Math.sin(angle + offset) * 3.5, size: 5, kind: enemy.type }));
         }
       } else if (enemy.type === "boss") {
+        updateBossEnemy(enemy);
+        return;
         // Hold a deliberate combat distance and aim at the player's predicted path.
         const playerCenter = state.x + state.width / 2;
         const bossCenter = enemy.x + enemy.width / 2;
@@ -1791,13 +2124,6 @@
       showStage();
     });
 
-    nodes.zoneButtons.forEach((button) => {
-      button.addEventListener("click", () => {
-        window.WonderSound?.play("click");
-        state.zone = Number(button.dataset.zone);
-        startRun(state.zone);
-      });
-    });
     nodes.mapBackBtn.addEventListener("click", () => {
       showMain();
     });

@@ -843,7 +843,7 @@
       backpackSlotRegression: () => {
         const ownedCards = createBackpackCards();
         const compactCards = ownedCards.slice(-2);
-        const normalizedCards = normalizeBackpackSlots(compactCards);
+        const normalizedCards = rebuildOwnedBackpack(compactCards);
         return {
           ownedCount: normalizeSave(save).unlockedAnimals.length,
           compactCount: compactCards.length,
@@ -866,7 +866,7 @@
         const ownedCards = createBackpackCards();
         const deployedCards = ownedCards.slice(0, Math.min(3, ownedCards.length));
         const compactBackpack = ownedCards.slice(deployedCards.length);
-        const recoveredCards = normalizeBackpackSlots(compactBackpack, deployedCards);
+        const recoveredCards = rebuildOwnedBackpack(compactBackpack, deployedCards);
         return {
           ownedIds: ownedCards.map((card) => card.id),
           deployedIds: deployedCards.map((card) => card.id),
@@ -1875,7 +1875,7 @@
       .filter(Boolean);
   }
 
-  function normalizeBackpackSlots(cards = [], placedCards = []) {
+  function rebuildOwnedBackpack(cards = [], placedCards = []) {
     save = normalizeSave(save);
     const cardsById = new Map(
       [...(Array.isArray(cards) ? cards : []), ...(Array.isArray(placedCards) ? placedCards : [])]
@@ -1892,7 +1892,7 @@
       if (id === null) return null;
       return backpackById.get(Number(id)) || null;
     });
-    state.backpack = normalizeBackpackSlots(state.backpack, state.squad.concat(state.bench));
+    state.backpack = rebuildOwnedBackpack(state.backpack, state.squad.concat(state.bench));
   }
 
   function findPlacedCard(id) {
@@ -2453,7 +2453,7 @@
     // The backpack is the permanent owned roster, not a list of animals that
     // happen to be off the field. Rebuild it with deployed cards included so
     // old/compacted run state cannot make formation members disappear here.
-    state.backpack = normalizeBackpackSlots(state.backpack, state.squad.concat(state.bench));
+    state.backpack = rebuildOwnedBackpack(state.backpack, state.squad.concat(state.bench));
 
     const visibleSlots = state.backpack.length;
     for (let idx = 0; idx < visibleSlots; idx++) {

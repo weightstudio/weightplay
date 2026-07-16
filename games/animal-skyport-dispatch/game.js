@@ -85,6 +85,7 @@
   let state = {};
   let dragging = false;
   let inputMode = '';
+  let routePointerId = null;
   let suppressClick = false;
   let insuranceActive = false;
   let insurancePending = false;
@@ -322,6 +323,7 @@
     const wasDragging = dragging;
     dragging = false;
     inputMode = '';
+    routePointerId = null;
     if (wasDragging) suppressClick = true;
     $('routeLine').style.opacity = '0';
     $('routeLine').classList.remove('is-guidance');
@@ -336,11 +338,14 @@
     const field = $('routeField').getBoundingClientRect();
     if (isStart) {
       if (inputMode && inputMode !== mode) return;
+      if (mode === 'pointer' && routePointerId !== null && routePointerId !== event.pointerId) return;
       inputMode = mode;
+      if (mode === 'pointer') routePointerId = event.pointerId;
       dragging = true;
       flight.setPointerCapture?.(event.pointerId);
     }
     if (!dragging || inputMode !== mode) return;
+    if (mode === 'pointer' && event.pointerId !== routePointerId) return;
     const fromX = flight.offsetLeft + 36;
     const fromY = flight.offsetTop + 36;
     const dx = event.clientX - field.left - fromX;
@@ -363,6 +368,7 @@
     }
     dragging = false;
     inputMode = '';
+    routePointerId = null;
     suppressClick = length > 4;
     finish(target?.dataset.dock === state.dock);
   }
@@ -469,10 +475,10 @@
   }));
   window.addEventListener('pointermove', routePointer);
   window.addEventListener('pointerup', routePointer);
-  window.addEventListener('pointercancel', () => { if (dragging) cancelRouteGesture({announce:true}); });
+  window.addEventListener('pointercancel', (event) => { if (dragging && event.pointerId === routePointerId) cancelRouteGesture({announce:true}); });
   window.addEventListener('mousemove', routePointer);
   window.addEventListener('mouseup', routePointer);
-  $('flight').addEventListener('lostpointercapture', () => { if (dragging) cancelRouteGesture({announce:true}); });
+  $('flight').addEventListener('lostpointercapture', (event) => { if (dragging && event.pointerId === routePointerId) cancelRouteGesture({announce:true}); });
   window.addEventListener('blur', () => { if (dragging) cancelRouteGesture({announce:true}); });
   document.addEventListener('visibilitychange', () => { if (document.hidden && dragging) cancelRouteGesture({announce:true}); });
   $('localeSelect').onchange = (event) => { locale = event.target.value; localStorage.setItem('weightPlayLocale', locale); localize(); };

@@ -191,5 +191,17 @@
       event.preventDefault();
       resumeButton.click();
     });
+
+    const pauseHiddenBattle = () => {
+      if (!document.body.classList.contains("wonder-playing")
+        || !pausePanel.classList.contains("hidden")
+        || settingsButton.classList.contains("hidden")
+        || settingsButton.disabled) return;
+      settingsButton.click();
+    };
+    window.addEventListener("pagehide", pauseHiddenBattle);
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) pauseHiddenBattle();
+    });
   }
 })();

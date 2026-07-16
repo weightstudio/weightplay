@@ -269,6 +269,7 @@
   save.stats={hp:0,attack:0,oxygen:0,...storedSave.stats};
   let state = {},lastUpgrade=null,beaconConfirmTimer=0;
   let diveSession=0;
+  let diveSuspended=false;
   const diveTimers=new Set();
   function clearBeaconConfirmation(){
     window.clearTimeout(beaconConfirmTimer);
@@ -278,17 +279,40 @@
   function cancelDiveAsync(){
     clearBeaconConfirmation();
     diveSession+=1;
-    diveTimers.forEach(timer=>window.clearTimeout(timer));
+    diveSuspended=false;
+    diveTimers.forEach(task=>window.clearTimeout(task.timer));
     diveTimers.clear();
   }
+  function armDiveTask(task){
+    task.due=performance.now()+task.remaining;
+    task.timer=window.setTimeout(()=>{
+      task.timer=0;
+      diveTimers.delete(task);
+      if(task.session===diveSession&&!diveSuspended)task.callback();
+    },task.remaining);
+  }
   function scheduleDive(callback,delay){
-    const session=diveSession;
-    const timer=window.setTimeout(()=>{
-      diveTimers.delete(timer);
-      if(session===diveSession)callback();
-    },delay);
-    diveTimers.add(timer);
-    return timer;
+    const task={session:diveSession,callback,remaining:Math.max(0,delay),due:0,timer:0};
+    diveTimers.add(task);
+    if(!diveSuspended)armDiveTask(task);
+    return task;
+  }
+  function suspendDiveAsync(){
+    clearBeaconConfirmation();
+    if(diveSuspended||!diveTimers.size||$("battleShell").classList.contains("hidden")||!$("result").classList.contains("hidden"))return;
+    diveSuspended=true;
+    const now=performance.now();
+    diveTimers.forEach(task=>{
+      if(!task.timer)return;
+      task.remaining=Math.max(0,task.due-now);
+      window.clearTimeout(task.timer);
+      task.timer=0;
+    });
+  }
+  function resumeDiveAsync(){
+    if(!diveSuspended||document.hidden||$("battleShell").classList.contains("hidden")||!$("result").classList.contains("hidden"))return;
+    diveSuspended=false;
+    diveTimers.forEach(task=>{if(task.session===diveSession&&!task.timer)armDiveTask(task);});
   }
   const routes = [
     {risk:1,zones:5,target:4,fishZones:[3],reaction:3200,encounters:[["relic","hazard"],["current","cache"],["oxygen","relic"],["cache","hazard"],["relic","current"]]},
@@ -524,6 +548,9 @@
   $("stageBack").onclick=()=>{show("mainScreen");focusMain();};
   $("battleBack").onclick=()=>{cancelDiveAsync();show("stageScreen");renderRoutes();focusRoute();};
   $("menuBtn").onclick=()=>{show("mainScreen");focusMain();};
+  document.addEventListener("visibilitychange",()=>{if(document.hidden)suspendDiveAsync();else resumeDiveAsync();});
+  window.addEventListener("pagehide",suspendDiveAsync);
+  window.addEventListener("pageshow",resumeDiveAsync);
   $("upgradePanel").addEventListener("keydown",event=>{if(event.key!=="Tab"||$("upgradePanel").classList.contains("hidden"))return;const choices=[...$("upgradePanel").querySelectorAll("button:not(:disabled)")];if(!choices.length)return;const first=choices[0],last=choices.at(-1);if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}});
   $("result").addEventListener("keydown",event=>{if(event.key!=="Tab"||$("result").classList.contains("hidden"))return;const first=$("nextBtn"),last=$("menuBtn");if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}});
   for(const direction of ["left","right"]){$(`${direction}Gate`).addEventListener("keydown",event=>{if((event.key==="Enter"||event.key===" ")&&$(`${direction}Gate`).getAttribute("aria-disabled")!=="true"){event.preventDefault();move(direction);}});}
