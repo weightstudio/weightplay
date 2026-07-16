@@ -973,6 +973,7 @@
     }
     if (event.key !== " " && event.key !== "Enter") return;
     event.preventDefault();
+    if (event.repeat) return;
     if (!canFireOrb()) {
       nodes.hintText.textContent = t("orbFlying");
       return;
@@ -1060,7 +1061,7 @@
     else if (state.enemies.length === 0) {
       if (state.wave >= WAVES_PER_RAID) finishRaid(true);
       else showUpgrade();
-    } else if (canFireOrb()) {
+    } else if (canFireOrb() && state.preview.length === 0) {
       nodes.hintText.textContent = activeEncounterCue() || t("orbReady");
     }
   }
@@ -1919,6 +1920,12 @@
         companionHits: state.companionHits,
         effect: state.sparks.at(-1)?.kind || "",
       };
+    },
+    prepareKeyboardRepeat: () => {
+      state.orbs = [];
+      state.readyTimer = 0;
+      state.enemies = [makeEnemy("skitter", W / 2, 90, 9999, 0, 42)];
+      return window.__animalOrbFortressSmoke.snapshot();
     },
   };
 

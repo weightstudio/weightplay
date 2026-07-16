@@ -441,8 +441,8 @@
     amuletBuyLabel: "Buy Mist Amulet permanently. Every run starts with 40 HP instead of 30 HP. Costs 15 Diamonds. Current balance {balance}.",
     amuletConfirmLabel: "Confirm permanent Mist Amulet. Spend 15 Diamonds. Balance {before} to {after}. Every run starts with 40 HP.",
     resultSummaryProgress: "Mission Progress",
-    resultUnlocked: "New region unlocked: {region}",
-    resultReady: "Ready: {region}",
+    resultUnlocked: "New expedition unlocked: {region}",
+    resultReady: "Ready expedition: {region}",
     resultAllCleared: "All 30 expeditions and six ruin Guardians cleared",
     nextExpedition: "Next Mission",
   });
@@ -472,8 +472,8 @@
     amuletBuyLabel: "\u6c38\u4e45\u8cfc\u8cb7\u8ff7\u9727\u8b77\u7b26\u3002\u6bcf\u6b21\u63a2\u96aa\u5f9e 30 HP \u63d0\u5347\u70ba 40 HP\u3002\u82b1\u8cbb 15 \u9846\u947d\u77f3\u3002\u76ee\u524d\u9918\u984d {balance}\u3002",
     amuletConfirmLabel: "\u78ba\u8a8d\u6c38\u4e45\u8cfc\u8cb7\u8ff7\u9727\u8b77\u7b26\u3002\u82b1\u8cbb 15 \u9846\u947d\u77f3\u3002\u9918\u984d {before} \u8b8a\u70ba {after}\u3002\u6bcf\u6b21\u63a2\u96aa\u5f9e 40 HP \u958b\u59cb\u3002",
     resultSummaryProgress: "\u4efb\u52d9\u9032\u5ea6",
-    resultUnlocked: "\u65b0\u5340\u57df\u5df2\u89e3\u9396\uff1a{region}",
-    resultReady: "\u53ef\u6311\u6230\uff1a{region}",
+    resultUnlocked: "\u65b0\u9060\u5f81\u5df2\u89e3\u9396\uff1a{region}",
+    resultReady: "\u53ef\u6311\u6230\u9060\u5f81\uff1a{region}",
     resultAllCleared: "\u5df2\u5b8c\u6210 30 \u500b\u9060\u5f81\u8207\u516d\u5927\u907a\u8de1\u5b88\u8b77\u8005",
     nextExpedition: "\u4e0b\u4e00\u4efb\u52d9",
   });
@@ -490,6 +490,8 @@
     bossEcho: new Image(),
     bossCrystal: new Image(),
     bossMire: new Image(),
+    bossMoon: new Image(),
+    bossCrown: new Image(),
   };
   assets.bg.src = "../../assets/animal-relic-hunters-ruin-room.png";
   assets.hero.src = "../../assets/weightplay-boom-mane-lion.png";
@@ -501,6 +503,8 @@
   assets.bossEcho.src = "../../assets/animal-relic-hunters-boss-echo.webp";
   assets.bossCrystal.src = "../../assets/animal-relic-hunters-boss-crystal.webp";
   assets.bossMire.src = "../../assets/animal-relic-hunters-boss-mire.webp";
+  assets.bossMoon.src = "../../assets/animal-relic-hunters-boss-moon.webp";
+  assets.bossCrown.src = "../../assets/animal-relic-hunters-boss-crown.webp";
 
   const uiAssets = {
     attack: "../../assets/animal-relic-hunters-skill-attack-crystal.webp",
@@ -1422,6 +1426,17 @@
     crown: { en: "Relic Crown Monarch", zh: "遺物冠冕王" },
   };
 
+  function guardianSpriteForBehavior(behavior) {
+    return {
+      moss: assets.bossMoss,
+      echo: assets.bossEcho,
+      crystal: assets.bossCrystal,
+      mire: assets.bossMire,
+      moon: assets.bossMoon,
+      crown: assets.bossCrown,
+    }[behavior] || null;
+  }
+
   function missionDefinition(id = state.expedition) {
     return expeditionDefs[Math.max(1, Math.min(EXPEDITION_COUNT, Number(id) || 1)) - 1];
   }
@@ -1471,7 +1486,7 @@
       isBoss: checkpoint,
       hpMultiplier,
       speedMultiplier: checkpoint ? 0.82 : 1,
-      size: checkpoint ? 54 : 38,
+      size: checkpoint ? 92 : 38,
       label: checkpoint ? guardianNames[behavior][getLocale() === "zh-Hant" ? "zh" : "en"] : (getLocale() === "zh-Hant" ? "菁英" : "ELITE"),
     });
     guardian.type = checkpoint ? "boss" : (region >= 3 ? "boar" : "jaguar");
@@ -2402,9 +2417,9 @@
         ctx.globalAlpha = 1;
       }
 
-      const guardianSprites = { moss: assets.bossMoss, echo: assets.bossEcho, crystal: assets.bossCrystal, mire: assets.bossMire };
-      const sprite = enemy.isBoss && guardianSprites[enemy.behavior]?.complete
-        ? guardianSprites[enemy.behavior]
+      const guardianSprite = guardianSpriteForBehavior(enemy.behavior);
+      const sprite = enemy.isBoss && guardianSprite?.complete
+        ? guardianSprite
         : enemy.type === "boar" || enemy.type === "boss" ? assets.boar : assets.jaguar;
       if (enemy.type === "boss") {
         // Giant boss uses the premium creature sprite instead of a placeholder circle.
@@ -2830,6 +2845,16 @@
             rules: [...new Set(expeditionDefs.map((mission) => mission.rule))],
             threatTypes: [...new Set(Object.values(regionThreatPools).flat())],
             guardianBehaviors: guardianBehaviors.slice(),
+            guardianAssets: guardianBehaviors.map((behavior) => {
+              const asset = guardianSpriteForBehavior(behavior);
+              return {
+                behavior,
+                src: asset?.src || "",
+                complete: Boolean(asset?.complete),
+                width: Number(asset?.naturalWidth) || 0,
+                height: Number(asset?.naturalHeight) || 0,
+              };
+            }),
             finalScale: 1 + ((EXPEDITION_COUNT - 1) * 0.035) + ((ROOMS_PER_EXPEDITION - 1) * 0.08),
           };
         },

@@ -210,6 +210,7 @@
     <script src="game.js?v=20260716-input-lifecycle1"></script>
     <script>
       (() => {
+        const staticGuide = document.querySelector(".game-page-info-static");
         const loadGameInfo = () => {
           if (document.querySelector("script[data-crystal-game-info]")) return;
           const script = document.createElement("script");
@@ -218,6 +219,12 @@
           script.async = true;
           document.body.appendChild(script);
         };
+        const syncGuideLocale = () => {
+          const activeLocale = window.WonderI18n?.locale?.() || document.documentElement.lang || "en";
+          const needsLocalizedGuide = activeLocale !== "en";
+          if (staticGuide) staticGuide.hidden = needsLocalizedGuide;
+          if (needsLocalizedGuide) loadGameInfo();
+        };
         const schedule = () => {
           if ("requestIdleCallback" in window) {
             window.requestIdleCallback(loadGameInfo, { timeout: 1600 });
@@ -225,6 +232,8 @@
             window.setTimeout(loadGameInfo, 350);
           }
         };
+        window.addEventListener("wonder:locale-change", syncGuideLocale);
+        syncGuideLocale();
         if (document.readyState === "complete") schedule();
         else window.addEventListener("load", schedule, { once: true });
       })();

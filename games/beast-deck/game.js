@@ -9,6 +9,25 @@
   const maxMission = 30;
   let amuletConfirmPending = false;
   let amuletConfirmTimer = 0;
+  let battleTransitionEpoch = 0;
+  const battleTransitionTimers = new Set();
+
+  function cancelBattleTransitions() {
+    battleTransitionEpoch += 1;
+    battleTransitionTimers.forEach((timer) => window.clearTimeout(timer));
+    battleTransitionTimers.clear();
+  }
+
+  function scheduleBattleTransition(callback, delay) {
+    const epoch = battleTransitionEpoch;
+    const timer = window.setTimeout(() => {
+      battleTransitionTimers.delete(timer);
+      if (epoch !== battleTransitionEpoch) return;
+      callback();
+    }, delay);
+    battleTransitionTimers.add(timer);
+    return timer;
+  }
 
   const $ = (id) => document.getElementById(id);
   const nodes = {
@@ -155,6 +174,7 @@
   }
 
   function showStage() {
+    cancelBattleTransitions();
     clearAmuletConfirmation();
     nodes.menuBtn.dataset.wpReturn = "battle";
     profile.selectedMission = profile.unlockedMission;
@@ -1485,11 +1505,11 @@
     renderHand();
     if (state.playerHp <= 0) {
       state.isPlayerTurn = false;
-      setTimeout(() => endGame(false), 500);
+      scheduleBattleTransition(() => endGame(false), 500);
     } else if (state.enemyHp <= 0) {
       state.isPlayerTurn = false;
       window.WonderSound?.play("enemyDown");
-      setTimeout(handleBattleWin, 500);
+      scheduleBattleTransition(handleBattleWin, 500);
     }
   }
 
@@ -1521,8 +1541,8 @@
     state.hand = [];
     renderStats();
     renderHand();
-    if (state.playerHp <= 0) setTimeout(() => endGame(false), 500);
-    else setTimeout(executeEnemyTurn, 500);
+    if (state.playerHp <= 0) scheduleBattleTransition(() => endGame(false), 500);
+    else scheduleBattleTransition(executeEnemyTurn, 500);
   }
 
   function chooseNextDrawCard() {
@@ -1615,7 +1635,7 @@
     }
     renderStats();
     if (state.playerHp <= 0) {
-      setTimeout(() => endGame(false), 500);
+      scheduleBattleTransition(() => endGame(false), 500);
       return;
     }
 
@@ -1628,7 +1648,7 @@
       log(t("log_poison_damage", { enemy: enemyName(state.enemy), damage: poisonDamage }), "system");
       renderStats();
       if (state.enemyHp <= 0) {
-        setTimeout(handleBattleWin, 500);
+        scheduleBattleTransition(handleBattleWin, 500);
         return;
       }
     }
@@ -1640,13 +1660,13 @@
       log(t("playerPoison", { damage: poisonDamage, hp: state.playerHp }), "enemy");
       renderStats();
       if (state.playerHp <= 0) {
-        setTimeout(() => endGame(false), 500);
+        scheduleBattleTransition(() => endGame(false), 500);
         return;
       }
     }
 
     state.enemyIntentIndex = (state.enemyIntentIndex + state.enemyHasteStep) % state.enemy.intents.length;
-    setTimeout(startPlayerTurn, 650);
+    scheduleBattleTransition(startPlayerTurn, 650);
   }
 
   function startPlayerTurn() {
@@ -1685,12 +1705,12 @@
       saveLocalState();
       log(t(state.enemy?.isBoss ? "log_win_boss" : "log_win_mission", { xp: mission.xp }), "system");
       window.WonderSound?.play("win");
-      setTimeout(() => endGame(true), 900);
+      scheduleBattleTransition(() => endGame(true), 900);
     } else {
       addXp(18 + state.mission * 2);
       log(t("log_win_battle", { enemy: enemyName(state.enemy) }), "system");
       window.WonderSound?.play("coin");
-      setTimeout(showDraftScreen, 650);
+      scheduleBattleTransition(showDraftScreen, 650);
     }
   }
 
@@ -2001,6 +2021,7 @@
   }
 
   function startRun() {
+    cancelBattleTransitions();
     clearAmuletConfirmation();
     loadLocalState();
     resetRunState();

@@ -1469,6 +1469,7 @@
   window.addEventListener("blur", cancelFishingInput);
   document.addEventListener("visibilitychange", cancelFishingInput);
   canvas.addEventListener("pointercancel", cancelFishingInput);
+  canvas.addEventListener("lostpointercapture", cancelFishingInput);
   nodes.tensionLane.addEventListener("pointerdown", (evt) => {
     if (pointer.down && pointer.source !== "keyboard") return;
     pointer.down = true;
@@ -1480,6 +1481,7 @@
     if (pointer.down && pointer.id === evt.pointerId) updateLanePointer(evt);
   });
   nodes.tensionLane.addEventListener("pointercancel", cancelFishingInput);
+  nodes.tensionLane.addEventListener("lostpointercapture", cancelFishingInput);
   [canvas, nodes.tensionLane].forEach((control) => {
     control.addEventListener("keydown", handleFishingKeyDown);
     control.addEventListener("keyup", handleFishingKeyUp);

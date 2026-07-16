@@ -141,6 +141,14 @@
   let pointerStartX = null;
   let activePointerId = null;
 
+  function clearPointerInput() {
+    if (activePointerId !== null) {
+      try { canvas.releasePointerCapture?.(activePointerId); } catch { /* Capture may already be gone. */ }
+    }
+    pointerStartX = null;
+    activePointerId = null;
+  }
+
   function locale() {
     return window.WonderI18n?.locale() || "en";
   }
@@ -256,6 +264,7 @@
   }
 
   function showMain() {
+    clearPointerInput();
     state.running = false;
     document.body.classList.remove("dash-playing", "dash-expanded-canvas");
     document.querySelector(".dash-game")?.classList.remove("is-playing");
@@ -275,6 +284,7 @@
   window.visualViewport?.addEventListener("scroll", updateDashFrame);
 
   function startRun() {
+    clearPointerInput();
     state = makeState();
     state.running = true;
     document.body.classList.add("dash-playing");
@@ -300,15 +310,16 @@
   }
 
   function loop(now) {
-    const dt = Math.min(0.033, (now - lastTime) / 1000 || 0);
+    const elapsed = Math.max(0, (now - lastTime) / 1000 || 0);
+    const dt = Math.min(0.033, elapsed);
     lastTime = now;
-    update(dt);
+    update(dt, elapsed);
     draw();
     if (state.running) requestAnimationFrame(loop);
   }
 
-  function update(dt) {
-    state.timeLeft = Math.max(0, state.timeLeft - dt);
+  function update(dt, timerDt = dt) {
+    state.timeLeft = Math.max(0, state.timeLeft - timerDt);
     state.speed += dt * 6;
     state.x += (lanes[state.targetLane] - state.x) * Math.min(1, dt * 12);
     state.spawnTimer -= dt;
@@ -407,6 +418,7 @@
   }
 
   function finishRun() {
+    clearPointerInput();
     state.running = false;
     state.finished = true;
     hud.classList.add("hidden");
@@ -896,13 +908,20 @@
       const rect = canvas.getBoundingClientRect();
       moveLane(event.clientX < rect.left + rect.width / 2 ? -1 : 1);
     }
-    pointerStartX = null;
-    activePointerId = null;
+    clearPointerInput();
   });
   canvas.addEventListener("pointercancel", (event) => {
     if (event.pointerId !== activePointerId) return;
-    pointerStartX = null;
-    activePointerId = null;
+    clearPointerInput();
+  });
+  canvas.addEventListener("lostpointercapture", (event) => {
+    if (event.pointerId === activePointerId) clearPointerInput();
+  });
+  window.addEventListener("blur", clearPointerInput);
+  window.addEventListener("pagehide", clearPointerInput);
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) clearPointerInput();
+    else if (state.running) lastTime = performance.now();
   });
 
   renderStaticText();

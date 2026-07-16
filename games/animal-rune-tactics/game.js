@@ -6,6 +6,8 @@
   const rerollCost = 3;
   const cols = 3;
   const rows = 4;
+  const MISSION_COUNT = 30;
+  const CHAPTER_SIZE = 5;
   const testMode = new URLSearchParams(window.location.search).get("test") === "1";
 
   const $ = (id) => document.getElementById(id);
@@ -401,6 +403,70 @@
     resultUpgradeNeed: "{hero} \u518d\u9700 {need} \u679a\u7b26\u6587\u5373\u53ef\u5347\u7d1a\u3002",
   });
   Object.assign(text.en, {
+    boar: "Thorn Boar", runeFox: "Rune Fox", tideTurtle: "Tide Turtle", heron: "Relic Heron",
+    salamander: "Ember Salamander", ram: "Cinder Ram", moth: "Moon Moth", archiveOwl: "Archive Owl",
+    mirrorWolf: "Mirror Wolf", sealRaven: "Seal Raven", rhinoBoss: "Ironroot Rhino",
+    serpentBoss: "Mirecoil Serpent", emberLionBoss: "Embermane Lion", griffinBoss: "Eclipse Griffin",
+    chimeraBoss: "Rune Crown Chimera",
+    traitBoar: "Thorn Counter", traitBoarShort: "Counter", traitBoarDesc: "Returns 1 damage after an adjacent hero hit.",
+    traitRuneFox: "Foxstep", traitRuneFoxShort: "Blink", traitRuneFoxDesc: "Teleports behind the weakest hero after acting.",
+    traitTideTurtle: "Shell Convoy", traitTideTurtleShort: "Guard", traitTideTurtleDesc: "Gives the nearest ally a one-hit guard.",
+    traitHeron: "Current Wing", traitHeronShort: "Push", traitHeronDesc: "Pushes the hero it strikes one legal cell.",
+    traitSalamander: "Ember Trail", traitSalamanderShort: "Burn", traitSalamanderDesc: "Leaves a damaging burn tile after moving.",
+    traitRam: "Ramline", traitRamShort: "Charge", traitRamDesc: "Charges in a straight line when it sees a hero.",
+    traitMoth: "Moon Dust", traitMothShort: "Silence", traitMothDesc: "Its hit disables that hero's next Skill.",
+    traitArchiveOwl: "Watcher Mark", traitArchiveOwlShort: "Mark", traitArchiveOwlDesc: "Marks a hero so the next ranged hit deals +1 damage.",
+    traitMirrorWolf: "Mirror Split", traitMirrorWolfShort: "Clone", traitMirrorWolfDesc: "Creates one adjacent 1-HP mirror clone.",
+    traitSealRaven: "Seal Drain", traitSealRavenShort: "Drain", traitSealRavenDesc: "Drains 1 Energy from the hero it hits.",
+    traitRhinoBoss: "Ironroot Rush", traitRhinoBossShort: "Boss", traitRhinoBossDesc: "Braces, charges a row, and leaves blocked rubble.",
+    traitSerpentBoss: "Mirecoil", traitSerpentBossShort: "Boss", traitSerpentBossDesc: "Floods and pulls a column; regenerates unless hit twice in one turn.",
+    traitEmberLionBoss: "Ember Cycle", traitEmberLionBossShort: "Boss", traitEmberLionBossDesc: "Alternates roar, leap, and wounded extra actions.",
+    traitGriffinBoss: "Eclipse Flight", traitGriffinBossShort: "Boss", traitGriffinBossDesc: "Switches between flying ranged immunity and grounded sweeps.",
+    traitChimeraBoss: "Sixfold Crown", traitChimeraBossShort: "Final", traitChimeraBossDesc: "Cycles charge, flood, burn, flight, and mirror summons at visible phases.",
+    terrainRubble: "Rubble", terrainSnare: "Root Snare", terrainTide: "Tide", terrainBurn: "Burn",
+    terrainCooling: "Cooling Rune", terrainOrbit: "Orbit Rune", terrainSeal: "Rune Seal",
+    tileTerrainLabel: "{terrain}. {tile}", silenceBlocked: "Moon Dust silenced {hero}'s Skill.",
+    terrainBurnHit: "Burn dealt 1 damage to {hero}.", terrainCoolingUsed: "{hero} restored 1 Energy on a Cooling Rune.",
+    boarCounterHit: "Thorn Counter returned 1 damage to {hero}.", turtleGuarded: "Shell Convoy guarded {enemy}.",
+    heronPushed: "Current Wing pushed {hero}.", foxTeleported: "Foxstep moved behind {hero}.",
+    ramCharged: "Ramline charged {hero}.", mothSilenced: "Moon Dust silenced {hero}.",
+    owlMarked: "Watcher Mark targeted {hero}.", ravenDrained: "Seal Drain removed 1 Energy from {hero}.",
+    mirrorCloned: "Mirror Split created a 1-HP clone.", bossPhase: "{boss} entered phase {phase}.",
+    resultCampaignComplete: "All 30 missions are complete. Every mission remains replayable.",
+  });
+  Object.assign(text["zh-Hant"], {
+    boar: "荊棘野豬", runeFox: "符步狐狸", tideTurtle: "潮汐烏龜", heron: "遺物蒼鷺",
+    salamander: "餘燼蠑螈", ram: "燼角山羊", moth: "月塵飛蛾", archiveOwl: "典藏貓頭鷹",
+    mirrorWolf: "鏡影狼", sealRaven: "封印渡鴉", rhinoBoss: "鐵根犀王",
+    serpentBoss: "澤環巨蛇", emberLionBoss: "燼鬃獅王", griffinBoss: "蝕月獅鷲",
+    chimeraBoss: "符冠奇美拉",
+    traitBoar: "荊棘反擊", traitBoarShort: "反擊", traitBoarDesc: "遭鄰近英雄攻擊後，反擊 1 點傷害。",
+    traitRuneFox: "狐步", traitRuneFoxShort: "閃現", traitRuneFoxDesc: "行動後傳送到生命最低英雄的後方。",
+    traitTideTurtle: "甲殼護送", traitTideTurtleShort: "守護", traitTideTurtleDesc: "給最近的友軍一次抵擋。",
+    traitHeron: "水流之翼", traitHeronShort: "推移", traitHeronDesc: "命中後把英雄推到一格合法位置。",
+    traitSalamander: "餘燼足跡", traitSalamanderShort: "燃燒", traitSalamanderDesc: "移動後留下會造成傷害的燃燒格。",
+    traitRam: "角羊直線", traitRamShort: "衝鋒", traitRamDesc: "看見直線上的英雄時發動衝鋒。",
+    traitMoth: "月塵", traitMothShort: "沉默", traitMothDesc: "命中後封鎖該英雄下一次技能。",
+    traitArchiveOwl: "觀星標記", traitArchiveOwlShort: "標記", traitArchiveOwlDesc: "標記英雄，使下一次遠程命中增加 1 點傷害。",
+    traitMirrorWolf: "鏡像分裂", traitMirrorWolfShort: "分身", traitMirrorWolfDesc: "在相鄰空格產生一隻 1 生命分身。",
+    traitSealRaven: "封印吸能", traitSealRavenShort: "吸能", traitSealRavenDesc: "命中英雄時吸收 1 點能量。",
+    traitRhinoBoss: "鐵根衝陣", traitRhinoBossShort: "首領", traitRhinoBossDesc: "架勢防守、橫衝一列並留下阻擋碎石。",
+    traitSerpentBoss: "澤環", traitSerpentBossShort: "首領", traitSerpentBossDesc: "淹沒並拉動一欄；每回合未被兩名英雄擊中就會再生。",
+    traitEmberLionBoss: "燼火循環", traitEmberLionBossShort: "首領", traitEmberLionBossDesc: "輪流使用咆哮、飛躍與受傷後的額外行動。",
+    traitGriffinBoss: "蝕月飛行", traitGriffinBossShort: "首領", traitGriffinBossDesc: "在免疫遠程的飛行與落地橫掃階段間切換。",
+    traitChimeraBoss: "六重符冠", traitChimeraBossShort: "終王", traitChimeraBossDesc: "在可見階段中輪替衝鋒、水流、燃燒、飛行與鏡像召喚。",
+    terrainRubble: "碎石", terrainSnare: "根鬚束縛", terrainTide: "潮汐", terrainBurn: "燃燒",
+    terrainCooling: "冷卻符文", terrainOrbit: "環月符文", terrainSeal: "符文封印",
+    tileTerrainLabel: "{terrain}。{tile}", silenceBlocked: "月塵封鎖了 {hero} 的技能。",
+    terrainBurnHit: "燃燒對 {hero} 造成 1 點傷害。", terrainCoolingUsed: "{hero} 在冷卻符文恢復 1 點能量。",
+    boarCounterHit: "荊棘反擊對 {hero} 造成 1 點傷害。", turtleGuarded: "甲殼護送守護了 {enemy}。",
+    heronPushed: "水流之翼推動了 {hero}。", foxTeleported: "狐步移動到 {hero} 後方。",
+    ramCharged: "角羊直線衝向 {hero}。", mothSilenced: "月塵沉默了 {hero}。",
+    owlMarked: "觀星標記鎖定了 {hero}。", ravenDrained: "封印吸能從 {hero} 移除 1 點能量。",
+    mirrorCloned: "鏡像分裂產生一隻 1 生命分身。", bossPhase: "{boss} 進入第 {phase} 階段。",
+    resultCampaignComplete: "30 個任務已全部完成，所有任務仍可重玩。",
+  });
+  Object.assign(text.en, {
     boardLabel: "Rune tactics board",
     strategyTips: [
       "Move the lion toward the front first so enemies focus on the tougher hero.",
@@ -428,7 +494,22 @@
   const enemyDefs = [
     { id: "wolf", name: "wolf", img: "animal-rune-tactics-enemy-wolf.webp", hp: 5, atk: 2, trait: "traitWolf" },
     { id: "raven", name: "raven", img: "animal-rune-tactics-enemy-raven.webp", hp: 4, atk: 2, range: 2, trait: "traitRaven" },
-    { id: "stag", name: "stag", img: "animal-rune-tactics-boss-stag.webp", hp: 10, atk: 3, trait: "traitStag" },
+    { id: "stag", name: "stag", img: "animal-rune-tactics-boss-stag.webp", hp: 12, atk: 3, trait: "traitStag", bossKit: "stag" },
+    { id: "boar", name: "boar", img: "animal-gearpack-expedition-enemy-armored-boar.webp", hp: 7, atk: 2, trait: "traitBoar" },
+    { id: "runeFox", name: "runeFox", img: "animal-gearpack-expedition-enemy-fox-scout.webp", hp: 5, atk: 2, trait: "traitRuneFox" },
+    { id: "tideTurtle", name: "tideTurtle", img: "animal-rune-tactics-hero-turtle.webp", hp: 8, atk: 1, trait: "traitTideTurtle" },
+    { id: "heron", name: "heron", img: "animal-rune-tactics-enemy-raven.webp", hp: 5, atk: 2, range: 2, trait: "traitHeron" },
+    { id: "salamander", name: "salamander", img: "shadow-wolf-enemy-bat.webp", hp: 6, atk: 2, trait: "traitSalamander" },
+    { id: "ram", name: "ram", img: "weightplay-character-gear-horn-rhino.png", hp: 8, atk: 3, trait: "traitRam" },
+    { id: "moth", name: "moth", img: "weightplay-character-moon-cap-owl-cutout.webp", hp: 5, atk: 1, range: 2, trait: "traitMoth" },
+    { id: "archiveOwl", name: "archiveOwl", img: "animal-auto-squad-boss-eclipse-archowl.webp", hp: 7, atk: 2, range: 2, trait: "traitArchiveOwl" },
+    { id: "mirrorWolf", name: "mirrorWolf", img: "animal-crystal-survivor-shadow-fox-v2.webp", hp: 6, atk: 2, trait: "traitMirrorWolf" },
+    { id: "sealRaven", name: "sealRaven", img: "animal-rune-tactics-enemy-raven.webp", hp: 6, atk: 2, range: 2, trait: "traitSealRaven" },
+    { id: "rhinoBoss", name: "rhinoBoss", img: "weightplay-character-gear-horn-rhino.png", hp: 18, atk: 3, trait: "traitRhinoBoss", bossKit: "rhino" },
+    { id: "serpentBoss", name: "serpentBoss", img: "shadow-wolf-boss-basilisk.png", hp: 20, atk: 3, range: 2, trait: "traitSerpentBoss", bossKit: "serpent" },
+    { id: "emberLionBoss", name: "emberLionBoss", img: "weightplay-boom-mane-lion.png", hp: 22, atk: 4, trait: "traitEmberLionBoss", bossKit: "emberLion" },
+    { id: "griffinBoss", name: "griffinBoss", img: "animal-auto-squad-boss-eclipse-archowl.webp", hp: 24, atk: 4, range: 2, trait: "traitGriffinBoss", bossKit: "griffin" },
+    { id: "chimeraBoss", name: "chimeraBoss", img: "shadow-wolf-boss-behemoth-cutout.webp", hp: 28, atk: 4, trait: "traitChimeraBoss", bossKit: "chimera" },
   ];
 
   const rewardPool = [
@@ -439,13 +520,42 @@
     { id: "focus", icon: "animal-rune-tactics-reward-training-slot.webp", title: "rewardFocus", desc: "rewardFocusDesc" },
   ];
 
+  const tile = (x, y, type, extra = {}) => ({ x, y, type, ...extra });
+  const mission = (id, nameEn, nameZht, enemies, tacticEn, tacticZht, terrain = [], bossId = null) => ({
+    id, chapter: Math.ceil(id / CHAPTER_SIZE), nameEn, nameZht, enemies, tacticEn, tacticZht, terrain, bossId,
+    xp: 37 + id * 8, runes: 8 + id * 2,
+  });
   const missionDefs = [
-    { id: 1, xp: 45, runes: 10, enemies: ["wolf", "wolf"], tactic: "missionTactic1" },
-    { id: 2, xp: 65, runes: 14, enemies: ["wolf", "raven"], tactic: "missionTactic2" },
-    { id: 3, xp: 90, runes: 18, enemies: ["wolf", "raven", "stag"], tactic: "missionTactic3" },
-    { id: 4, xp: 115, runes: 22, enemies: ["raven", "raven", "stag"], tactic: "missionTactic4" },
-    { id: 5, xp: 140, runes: 28, enemies: ["wolf", "wolf", "raven", "stag"], tactic: "missionTactic5" },
-    { id: 6, xp: 170, runes: 34, enemies: ["raven", "raven", "stag", "stag"], tactic: "missionTactic6" },
+    mission(1, "First Pawprints", "初踏符徑", ["wolf", "wolf"], "Break the Wolves' adjacency before focusing one target.", "先拆開狼群相鄰加成，再集中攻擊一個目標。"),
+    mission(2, "Raven Sightline", "渡鴉視線", ["wolf", "raven"], "Keep the weakest hero outside the Raven's range.", "讓生命最低的英雄離開渡鴉射程。"),
+    mission(3, "Broken Rune Bridge", "斷裂符橋", ["wolf", "raven"], "Choose a lane around the blocked bridge cells.", "繞過斷橋碎石選擇進攻路線。", [tile(1,1,"rubble"), tile(1,2,"rubble")]),
+    mission(4, "Pack Crossroads", "狼群岔路", ["wolf", "wolf", "wolf"], "Hold one lane with Turtle while Lion splits the pack.", "讓烏龜守住一路，獅王拆散狼群。"),
+    mission(5, "Stonehorn Trial", "石角試煉", ["stag", "wolf"], "Break Stone Hide twice and sidestep the Boss lane charge.", "兩次擊破石甲，並避開首領直線衝鋒。", [], "stag"),
+    mission(6, "Bramble Teeth", "荊棘利齒", ["boar", "wolf"], "Use Owl range so Thorn Counter cannot punish every hit.", "用貓頭鷹遠攻，避免每次都被荊棘反擊。"),
+    mission(7, "Foxstep Gate", "狐步之門", ["runeFox", "wolf"], "Protect the weakest hero before Foxstep reaches the back.", "先保護生命最低英雄，防止狐步繞後。"),
+    mission(8, "Root Snare", "根鬚束縛", ["boar", "runeFox"], "Cross the center without ending the wrong hero on a Snare.", "穿越中央時別讓錯誤英雄停在束縛格。", [tile(1,0,"snare"), tile(1,2,"snare")]),
+    mission(9, "Forge Pincer", "鍛林夾擊", ["boar", "runeFox", "runeFox"], "Remove a Fox flank before committing Lion beside the Boar.", "先清掉一側狐狸，再讓獅王接近野豬。"),
+    mission(10, "Ironroot Rhino", "鐵根犀王", ["rhinoBoss", "boar"], "Bait the Rhino rush away from the center before rubble closes the board.", "引走犀王衝鋒，避免碎石封死中央。", [], "rhino"),
+    mission(11, "Flooded Script", "水淹碑文", ["heron", "raven"], "Plan for Tide tiles to shift occupied cells after the enemy turn.", "預判敵方回合後潮汐格會移動站位。", [tile(1,0,"tide",{dx:0,dy:1}), tile(1,2,"tide",{dx:0,dy:1})]),
+    mission(12, "Shell Convoy", "甲殼護送", ["tideTurtle", "wolf", "heron"], "Strip the Turtle's one-hit guard before attacking its protected ally.", "先消耗烏龜的一次守護，再攻擊被保護友軍。", [tile(1,1,"tide",{dx:0,dy:1})]),
+    mission(13, "Heron Current", "蒼鷺水流", ["heron", "heron", "wolf"], "Leave legal landing cells so Current Wing cannot isolate Owl.", "保留合法落點，別讓水流之翼孤立貓頭鷹。", [tile(1,0,"tide",{dx:0,dy:1}), tile(1,3,"tide",{dx:0,dy:-1})]),
+    mission(14, "Drowned Formation", "沉沒陣形", ["tideTurtle", "heron", "raven"], "Choose between breaking Shell Guard and stopping the Heron push.", "在打破甲殼守護與阻止蒼鷺推移間決定順序。", [tile(1,1,"tide",{dx:0,dy:1}), tile(1,2,"tide",{dx:0,dy:-1})]),
+    mission(15, "Mirecoil Serpent", "澤環巨蛇", ["serpentBoss", "heron"], "Hit the Serpent with two heroes each turn to stop regeneration.", "每回合用兩名英雄命中巨蛇，阻止牠再生。", [tile(1,0,"tide",{dx:0,dy:1}), tile(1,2,"tide",{dx:0,dy:1})], "serpent"),
+    mission(16, "Ember Footprints", "餘燼足跡", ["salamander", "wolf"], "Track the Salamander's previous cell before advancing.", "前進前先注意蠑螈上一格留下的餘燼。"),
+    mission(17, "Ramline", "角羊直線", ["ram", "salamander"], "Sidestep the Ram's row instead of absorbing the full charge.", "離開角羊直線，別只靠防守硬接衝鋒。"),
+    mission(18, "Cooling Runes", "冷卻符文", ["salamander", "raven"], "Route a low-Energy hero through a Cooling Rune.", "讓低能量英雄踩過冷卻符文恢復。", [tile(1,0,"cooling"), tile(1,3,"cooling")]),
+    mission(19, "Caldera Split", "火口分隊", ["ram", "salamander", "salamander"], "Keep an escape cell open while charges divide the squad.", "衝鋒分割隊伍時保留一個逃生格。", [tile(1,1,"burn"), tile(1,2,"burn")]),
+    mission(20, "Embermane Lion", "燼鬃獅王", ["emberLionBoss", "ram"], "Read the roar, leap, and wounded extra-action cycle.", "辨認咆哮、飛躍與受傷後額外行動循環。", [tile(1,1,"cooling"), tile(1,2,"burn")], "emberLion"),
+    mission(21, "Moon Dust", "月塵棋盤", ["moth", "raven"], "Spend a Skill before Moon Dust can silence that hero.", "在月塵沉默前先用掉關鍵技能。"),
+    mission(22, "Watcher Perch", "觀星棲台", ["archiveOwl", "moth"], "Move the marked hero before the next ranged strike.", "下一次遠程攻擊前移開被標記英雄。"),
+    mission(23, "Orbit Runes", "環月符陣", ["moth", "archiveOwl"], "Predict the clockwise outer-ring rotation at round end.", "預判回合結束時外圈順時針轉動。", [tile(0,0,"orbit"),tile(1,0,"orbit"),tile(2,0,"orbit"),tile(2,1,"orbit"),tile(2,2,"orbit"),tile(2,3,"orbit"),tile(1,3,"orbit"),tile(0,3,"orbit"),tile(0,2,"orbit"),tile(0,1,"orbit")]),
+    mission(24, "Eclipse Crossfire", "蝕月交火", ["moth", "archiveOwl", "raven"], "Order Skills, movement, and guard before silence and marks overlap.", "在沉默與標記重疊前安排技能、移動與防守順序。"),
+    mission(25, "Eclipse Griffin", "蝕月獅鷲", ["griffinBoss", "moth"], "Use melee while it flies, then spread before its grounded sweep.", "飛行時用近戰，落地橫掃前分散站位。", [tile(0,0,"orbit"),tile(2,0,"orbit"),tile(2,3,"orbit"),tile(0,3,"orbit")], "griffin"),
+    mission(26, "Mirror Pack", "鏡影狼群", ["mirrorWolf", "wolf"], "Reserve an adjacent cell or destroy the 1-HP clone immediately.", "保留相鄰空格，或立刻清除 1 生命分身。"),
+    mission(27, "Sealfeather Court", "封印羽庭", ["sealRaven", "mirrorWolf"], "Protect Energy while controlling the clone's free cell.", "保護能量，同時控制分身可用空格。"),
+    mission(28, "Six-Rune Locks", "六符封鎖", ["sealRaven", "archiveOwl", "mirrorWolf"], "Occupy three linked Seal cells to remove the enemy ward.", "讓三名英雄站上相連封印格，解除敵方護罩。", [tile(0,3,"seal"),tile(1,0,"seal"),tile(1,1,"seal"),tile(1,2,"seal"),tile(1,3,"seal"),tile(2,3,"seal")]),
+    mission(29, "Crown Gauntlet", "王冠連戰", ["boar", "heron", "ram", "moth", "mirrorWolf"], "Answer five earlier mechanics without losing formation control.", "在不失去陣形控制下處理五種先前機制。"),
+    mission(30, "Rune Crown Chimera", "符冠奇美拉", ["chimeraBoss", "sealRaven", "mirrorWolf"], "Adapt as every visible Boss phase changes the board rule.", "每個可見首領階段改變棋盤規則時立即調整。", [tile(1,0,"seal"),tile(1,3,"cooling")], "chimera"),
   ];
 
   let locale = localStorage.getItem(localeKey) || "en";
@@ -645,14 +755,16 @@
       const traitNames = [...new Set(mission.enemies.map((id) => enemyDefs.find((enemy) => enemy.id === id)?.trait).filter(Boolean))]
         .map((key) => t(key))
         .join(" / ");
+      const missionName = locale === "zh-Hant" ? mission.nameZht : mission.nameEn;
+      const missionTactic = locale === "zh-Hant" ? mission.tacticZht : mission.tacticEn;
       btn.innerHTML = `
         <span class="mission-card__top">
-          <strong>${t("missionCard", { n: mission.id })}</strong>
+          <strong>${t("missionCard", { n: mission.id })} · ${missionName}</strong>
           <b>${isLocked ? t("locked") : isActive ? t("missionStatusCurrent") : t("missionStatusUnlocked")}</b>
         </span>
         <small>${t("missionRewardLabel")}: ${isLocked ? t("locked") : t("missionReward", { xp: mission.xp, runes: mission.runes })}</small>
         <span>${t("missionGoal", { enemies: enemyNames })}</span>
-        <em>${t("missionPlan", { plan: t(mission.tactic) })}<b class="mission-card__traits">${t("enemyTraits", { traits: traitNames })}</b></em>`;
+        <em>${t("missionPlan", { plan: missionTactic })}<b class="mission-card__traits">${t("enemyTraits", { traits: traitNames })}</b></em>`;
       btn.addEventListener("click", () => {
         selectedMission = mission.id;
         startMission(selectedMission);
@@ -807,13 +919,18 @@
     claimedRewardId = null;
     const extraEnergy = (profile.training ? 1 : 0) + (profile.bonusEnergy || 0);
     const hpBonus = profile.bonusHp || 0;
+    const missionDef = missionDefs.find((item) => item.id === mission) || missionDefs[0];
     state = {
       mission,
+      missionDef,
       turn: 1,
       selected: "lion",
       acted: new Set(),
       phase: "player",
       rerolled: false,
+      terrain: missionDef.terrain.map((item) => ({ ...item })),
+      coolingUsed: new Set(),
+      phaseEvents: [],
       heroes: heroDefs.map((h, idx) => {
         const level = profile.heroLevels?.[h.id] || 1;
         const maxHp = h.hp + hpBonus + level - 1;
@@ -857,14 +974,71 @@
       { x: 2, y: 0 },
       { x: 2, y: 1 },
       { x: 2, y: 2 },
+      { x: 2, y: 3 },
       { x: 1, y: 3 },
     ];
     return missionDef.enemies.map((id, index) => {
       const base = enemyDefs.find((enemy) => enemy.id === id) || enemyDefs[0];
       const { x, y } = formation[index] || formation[formation.length - 1];
-      const hp = base.hp + mission + Math.floor(mission / 2);
-      return { ...base, x, y, maxHp: hp, hp, atk: base.atk + (mission >= 5 ? 1 : 0), armorReady: base.id === "stag", team: "enemy" };
+      const hp = base.hp + Math.floor((mission - 1) / 8);
+      return {
+        ...base,
+        uid: `${base.id}-${index}`,
+        x,
+        y,
+        maxHp: hp,
+        hp,
+        atk: base.atk + Math.floor((mission - 1) / 12),
+        armorReady: base.id === "stag" || base.id === "rhinoBoss",
+        allyGuard: false,
+        cloneMade: false,
+        hitsThisTurn: 0,
+        phasesTriggered: 0,
+        flying: base.id === "griffinBoss",
+        team: "enemy",
+      };
     });
+  }
+
+  function terrainAt(x, y, type = null) {
+    return state?.terrain?.find((item) => item.x === x && item.y === y && (!type || item.type === type)) || null;
+  }
+
+  function terrainName(type) {
+    const key = { rubble: "terrainRubble", snare: "terrainSnare", tide: "terrainTide", burn: "terrainBurn", cooling: "terrainCooling", orbit: "terrainOrbit", seal: "terrainSeal" }[type];
+    return key ? t(key) : type;
+  }
+
+  function insideBoard(x, y) {
+    return x >= 0 && x < cols && y >= 0 && y < rows;
+  }
+
+  function canOccupy(x, y, ignoreUnit = null) {
+    return insideBoard(x, y) && !terrainAt(x, y, "rubble") && ![...state.heroes, ...state.enemies].some((unit) => unit !== ignoreUnit && unit.hp > 0 && unit.x === x && unit.y === y);
+  }
+
+  function applyHeroTerrain(hero) {
+    const terrain = terrainAt(hero.x, hero.y);
+    if (!terrain) return;
+    const key = `${terrain.x},${terrain.y}`;
+    if (terrain.type === "snare") hero.snared = true;
+    if (terrain.type === "burn") {
+      hero.hp = Math.max(0, hero.hp - 1);
+      playFx("attack-hit", hero.x, hero.y);
+      log("terrainBurnHit", { hero: t(hero.name) });
+      tryAutoRevive(hero);
+    }
+    if (terrain.type === "cooling" && !state.coolingUsed.has(key)) {
+      state.coolingUsed.add(key);
+      hero.energy = Math.min(3, hero.energy + 1);
+      state.terrain = state.terrain.filter((item) => item.type !== "burn");
+      log("terrainCoolingUsed", { hero: t(hero.name) });
+    }
+  }
+
+  function sealWardActive() {
+    if (state?.mission !== 28) return false;
+    return livingHeroes().filter((hero) => terrainAt(hero.x, hero.y, "seal")).length < 3;
   }
 
   function render() {
@@ -889,6 +1063,11 @@
         tile.tabIndex = x === gridCursor.x && y === gridCursor.y ? 0 : -1;
         tile.setAttribute("aria-rowindex", String(y + 1));
         tile.setAttribute("aria-colindex", String(x + 1));
+        const terrain = terrainAt(x, y);
+        if (terrain) {
+          tile.classList.add(`has-terrain-${terrain.type}`);
+          tile.dataset.terrain = terrain.type;
+        }
         if (movable.some((p) => p.x === x && p.y === y)) tile.classList.add("is-move");
         if (attackable.some((p) => p.x === x && p.y === y)) tile.classList.add("is-attack");
         tile.addEventListener("click", () => {
@@ -911,6 +1090,15 @@
           tile.setAttribute("aria-label", t("moveTileLabel", { row: y + 1, column: x + 1 }));
         } else {
           tile.setAttribute("aria-label", t("emptyTileLabel", { row: y + 1, column: x + 1 }));
+        }
+        if (terrain) {
+          const baseLabel = tile.getAttribute("aria-label") || t("emptyTileLabel", { row: y + 1, column: x + 1 });
+          tile.setAttribute("aria-label", t("tileTerrainLabel", { terrain: terrainName(terrain.type), tile: baseLabel }));
+          const terrainMark = document.createElement("i");
+          terrainMark.className = "terrain-mark";
+          terrainMark.textContent = terrainName(terrain.type);
+          terrainMark.setAttribute("aria-hidden", "true");
+          tile.appendChild(terrainMark);
         }
         nodes.grid.appendChild(tile);
       }
@@ -1027,7 +1215,7 @@
     nodes.skillBtn.setAttribute("aria-label", skillTarget ? t("actionTarget", { action: t(hero.skillName), value: hero.atk + 2, target: t(skillTarget.name) }) : hero ? t("skillInfo", { skill: t(hero.skillName), desc: t(hero.skillDesc) }) : t("skill"));
     nodes.attackBtn.disabled = !canAct || !targets.length;
     nodes.guardBtn.disabled = !canAct;
-    nodes.skillBtn.disabled = !canAct || hero.energy <= 0;
+    nodes.skillBtn.disabled = !canAct || hero.energy <= 0 || hero.silenced;
     nodes.endTurnBtn.disabled = state.phase !== "player";
   }
 
@@ -1053,11 +1241,11 @@
 
   function validMoves() {
     const hero = selectedHero();
-    if (!hero || state.acted.has(hero.id)) return [];
+    if (!hero || state.acted.has(hero.id) || hero.snared) return [];
     const dirs = [[1, 0], [-1, 0], [0, 1], [0, -1]];
     return dirs
       .map(([dx, dy]) => ({ x: hero.x + dx, y: hero.y + dy }))
-      .filter((p) => p.x >= 0 && p.x < cols && p.y >= 0 && p.y < rows && !unitAt(p.x, p.y));
+      .filter((p) => canOccupy(p.x, p.y, hero));
   }
 
   function validTargets() {
@@ -1084,6 +1272,7 @@
       hero.x = x;
       hero.y = y;
       markActed(hero);
+      applyHeroTerrain(hero);
       playFx("dust-burst", x, y);
       log("moved", { hero: t(hero.name) });
       render();
@@ -1093,16 +1282,32 @@
 
   function attack(hero, enemy, isSkill) {
     let damage = hero.atk + (isSkill ? 2 : 0);
-    const blockedByStoneHide = enemy.id === "stag" && enemy.armorReady;
+    const blockedByStoneHide = (enemy.id === "stag" || enemy.id === "rhinoBoss") && enemy.armorReady;
+    const blockedByAllyGuard = enemy.allyGuard;
+    const blockedByFlight = enemy.id === "griffinBoss" && enemy.flying && (hero.range || 1) > 1;
+    if (blockedByFlight) damage = 0;
     if (blockedByStoneHide) {
       damage = Math.max(1, damage - 1);
       enemy.armorReady = false;
     }
+    if (blockedByAllyGuard) {
+      damage = Math.max(0, damage - 2);
+      enemy.allyGuard = false;
+    }
+    if (sealWardActive()) damage = Math.max(1, damage - 1);
     enemy.hp -= damage;
+    enemy.hitsThisTurn = (enemy.hitsThisTurn || 0) + 1;
     markActed(hero);
     playFx(isSkill ? "rune-burst" : "attack-hit", enemy.x, enemy.y);
     log(blockedByStoneHide ? "stagArmorHit" : isSkill ? "skillUsed" : "attacked", { hero: t(hero.name), enemy: t(enemy.name) });
     if (enemy.hp <= 0) enemy.hp = 0;
+    if (enemy.id === "boar" && enemy.hp > 0 && distance(hero, enemy) <= 1) {
+      hero.hp = Math.max(0, hero.hp - 1);
+      playFx("attack-hit", hero.x, hero.y);
+      log("boarCounterHit", { hero: t(hero.name) });
+      tryAutoRevive(hero);
+    }
+    resolveBossPhases(enemy);
     render();
     checkEnd();
   }
@@ -1110,6 +1315,7 @@
   function markActed(hero) {
     state.acted.add(hero.id);
     hero.guard = false;
+    if (hero.snared) hero.snared = false;
     state.selected = hero.id;
   }
 
@@ -1127,6 +1333,12 @@
   function skill() {
     const hero = selectedHero();
     if (!hero || hero.energy <= 0 || state.acted.has(hero.id)) return;
+    if (hero.silenced) {
+      hero.silenced = false;
+      log("silenceBlocked", { hero: t(hero.name) });
+      render();
+      return;
+    }
     hero.energy -= 1;
     if (hero.id === "turtle") {
       livingHeroes().forEach((h) => {
@@ -1147,47 +1359,223 @@
   function endTurn() {
     if (!state || state.phase !== "player") return;
     clearTurnTransition();
+    livingHeroes().forEach((hero) => { hero.silenced = false; });
     state.phase = "enemy";
     log("enemyTurn");
     render();
     scheduleTurnTransition(enemyTurn, 500);
   }
 
-  function enemyTurn() {
-    if (!state || state.phase !== "enemy") return;
-    livingEnemies().forEach((enemy) => {
-      const heroes = livingHeroes();
-      const target = enemy.id === "raven"
-        ? heroes.sort((a, b) => (a.hp / a.maxHp) - (b.hp / b.maxHp) || distance(enemy, a) - distance(enemy, b))[0]
-        : heroes.sort((a, b) => distance(enemy, a) - distance(enemy, b))[0];
-      if (!target) return;
-      const range = enemy.range || 1;
-      if (distance(enemy, target) <= range) {
-        const packBonus = enemy.id === "wolf" && livingEnemies().some((other) => other !== enemy && other.id === "wolf" && distance(enemy, other) === 1);
-        const damage = Math.max(1, enemy.atk + (packBonus ? 1 : 0) - (target.guard ? 1 : 0));
-        target.hp = Math.max(0, target.hp - damage);
-        playFx("attack-hit", target.x, target.y);
-        tryAutoRevive(target);
-        if (packBonus) log("wolfPackHit", { enemy: t(enemy.name) });
-        if (enemy.id === "raven") log("ravenWeakHit", { enemy: t(enemy.name) });
-      } else {
-        const dx = Math.sign(target.x - enemy.x);
-        const dy = Math.sign(target.y - enemy.y);
-        const options = [{ x: enemy.x + dx, y: enemy.y }, { x: enemy.x, y: enemy.y + dy }];
-        const move = options.find((p) => p.x >= 0 && p.x < cols && p.y >= 0 && p.y < rows && !unitAt(p.x, p.y));
-        if (move) {
-          enemy.x = move.x;
-          enemy.y = move.y;
+  function bossThresholds(enemy) {
+    return enemy?.bossKit ? [0.7, 0.35] : [];
+  }
+
+  function addTerrain(x, y, type, extra = {}) {
+    if (!insideBoard(x, y)) return false;
+    const existing = terrainAt(x, y);
+    if (existing) Object.assign(existing, { type, ...extra });
+    else state.terrain.push({ x, y, type, ...extra });
+    return true;
+  }
+
+  function firstFreeAdjacent(unit) {
+    return [[-1,0],[1,0],[0,-1],[0,1]]
+      .map(([dx, dy]) => ({ x: unit.x + dx, y: unit.y + dy }))
+      .find((cell) => canOccupy(cell.x, cell.y));
+  }
+
+  function summonMirrorClone(source) {
+    const cell = firstFreeAdjacent(source);
+    if (!cell) return false;
+    const base = enemyDefs.find((enemy) => enemy.id === "mirrorWolf");
+    state.enemies.push({ ...base, uid: `mirror-clone-${state.turn}-${state.enemies.length}`, ...cell, hp: 1, maxHp: 1, atk: 1, team: "enemy", isClone: true, cloneMade: true, hitsThisTurn: 0, phasesTriggered: 0 });
+    log("mirrorCloned");
+    return true;
+  }
+
+  function damageHero(target, amount, enemy, key = null) {
+    const markedBonus = target.marked && (enemy.range || 1) > 1 ? 1 : 0;
+    if (markedBonus) target.marked = false;
+    const damage = Math.max(1, amount + markedBonus - (target.guard ? 1 : 0));
+    target.hp = Math.max(0, target.hp - damage);
+    playFx("attack-hit", target.x, target.y);
+    tryAutoRevive(target);
+    if (key) log(key, { enemy: t(enemy.name), hero: t(target.name) });
+    return damage;
+  }
+
+  function pushHeroAway(enemy, hero) {
+    const dx = Math.sign(hero.x - enemy.x);
+    const dy = Math.sign(hero.y - enemy.y);
+    const candidates = Math.abs(hero.x - enemy.x) >= Math.abs(hero.y - enemy.y)
+      ? [{ x: hero.x + dx, y: hero.y }, { x: hero.x, y: hero.y + dy }]
+      : [{ x: hero.x, y: hero.y + dy }, { x: hero.x + dx, y: hero.y }];
+    const cell = candidates.find((candidate) => canOccupy(candidate.x, candidate.y, hero));
+    if (!cell) return false;
+    hero.x = cell.x;
+    hero.y = cell.y;
+    applyHeroTerrain(hero);
+    log("heronPushed", { hero: t(hero.name) });
+    return true;
+  }
+
+  function chargeEnemy(enemy, target) {
+    const aligned = enemy.x === target.x || enemy.y === target.y;
+    if (!aligned) return false;
+    const dx = Math.sign(target.x - enemy.x);
+    const dy = Math.sign(target.y - enemy.y);
+    let next = { x: enemy.x + dx, y: enemy.y + dy };
+    while (insideBoard(next.x, next.y) && !(next.x === target.x && next.y === target.y) && canOccupy(next.x, next.y, enemy)) {
+      enemy.x = next.x;
+      enemy.y = next.y;
+      next = { x: enemy.x + dx, y: enemy.y + dy };
+    }
+    if (distance(enemy, target) <= 1) damageHero(target, enemy.atk + 1, enemy, "ramCharged");
+    return true;
+  }
+
+  function resolveBossPhases(enemy) {
+    if (!enemy?.bossKit || enemy.hp <= 0) return;
+    const thresholds = bossThresholds(enemy);
+    while ((enemy.phasesTriggered || 0) < thresholds.length && enemy.hp / enemy.maxHp <= thresholds[enemy.phasesTriggered]) {
+      enemy.phasesTriggered += 1;
+      const phase = enemy.phasesTriggered;
+      state.phaseEvents.push({ boss: enemy.id, phase, turn: state.turn });
+      if (enemy.bossKit === "stag") {
+        enemy.armorReady = true;
+        livingHeroes().filter((hero) => hero.y === enemy.y).forEach((hero) => damageHero(hero, 1 + phase, enemy));
+      } else if (enemy.bossKit === "rhino") {
+        enemy.armorReady = true;
+        const rubbleCell = [{x:1,y:enemy.y},{x:1,y:(enemy.y + phase) % rows}].find((cell) => canOccupy(cell.x, cell.y));
+        if (rubbleCell) addTerrain(rubbleCell.x, rubbleCell.y, "rubble");
+        livingHeroes().filter((hero) => hero.y === enemy.y).forEach((hero) => damageHero(hero, 1 + phase, enemy));
+      } else if (enemy.bossKit === "serpent") {
+        addTerrain(1, phase === 1 ? 1 : 2, "tide", { dx: 0, dy: phase === 1 ? 1 : -1 });
+        livingHeroes().forEach((hero) => {
+          const dx = Math.sign(enemy.x - hero.x);
+          if (canOccupy(hero.x + dx, hero.y, hero)) hero.x += dx;
+        });
+        enemy.hp = Math.min(enemy.maxHp, enemy.hp + phase);
+      } else if (enemy.bossKit === "emberLion") {
+        const cell = firstFreeAdjacent(enemy);
+        if (cell) addTerrain(cell.x, cell.y, "burn");
+        livingHeroes().forEach((hero) => damageHero(hero, phase, enemy));
+        if (phase === 2) enemy.extraActions = 1;
+      } else if (enemy.bossKit === "griffin") {
+        enemy.flying = phase === 2;
+        if (!enemy.flying) livingHeroes().filter((hero) => hero.y === enemy.y).forEach((hero) => damageHero(hero, 2, enemy));
+      } else if (enemy.bossKit === "chimera") {
+        if (phase === 1) {
+          addTerrain(1, 1, "tide", { dx: 0, dy: 1 });
+          addTerrain(1, 2, "burn");
+        } else {
+          enemy.flying = true;
+          summonMirrorClone(enemy);
+          addTerrain(1, 0, "rubble");
         }
       }
+      log("bossPhase", { boss: t(enemy.name), phase });
+    }
+  }
+
+  function moveEnemyToward(enemy, target) {
+    const old = { x: enemy.x, y: enemy.y };
+    const dx = Math.sign(target.x - enemy.x);
+    const dy = Math.sign(target.y - enemy.y);
+    const options = [{ x: enemy.x + dx, y: enemy.y }, { x: enemy.x, y: enemy.y + dy }];
+    const move = options.find((cell) => canOccupy(cell.x, cell.y, enemy));
+    if (!move) return false;
+    enemy.x = move.x;
+    enemy.y = move.y;
+    if (enemy.id === "salamander") addTerrain(old.x, old.y, "burn", { expires: state.turn + 1 });
+    return true;
+  }
+
+  function chooseEnemyTarget(enemy) {
+    const heroes = [...livingHeroes()];
+    if (["raven", "runeFox", "sealRaven"].includes(enemy.id)) {
+      return heroes.sort((a, b) => (a.hp / a.maxHp) - (b.hp / b.maxHp) || distance(enemy, a) - distance(enemy, b))[0];
+    }
+    return heroes.sort((a, b) => distance(enemy, a) - distance(enemy, b))[0];
+  }
+
+  function performEnemyAction(enemy) {
+    if (enemy.hp <= 0) return;
+    if (enemy.id === "tideTurtle") {
+      const ally = livingEnemies().filter((other) => other !== enemy).sort((a, b) => distance(enemy, a) - distance(enemy, b))[0];
+      if (ally && !ally.allyGuard) {
+        ally.allyGuard = true;
+        log("turtleGuarded", { enemy: t(ally.name) });
+        return;
+      }
+    }
+    if (enemy.id === "mirrorWolf" && !enemy.cloneMade && !enemy.isClone) {
+      enemy.cloneMade = true;
+      if (summonMirrorClone(enemy)) return;
+    }
+    const target = chooseEnemyTarget(enemy);
+    if (!target) return;
+    if ((enemy.id === "ram" || enemy.id === "rhinoBoss") && chargeEnemy(enemy, target)) return;
+    const range = enemy.range || 1;
+    if (distance(enemy, target) <= range) {
+      const packBonus = enemy.id === "wolf" && livingEnemies().some((other) => other !== enemy && other.id === "wolf" && distance(enemy, other) === 1);
+      damageHero(target, enemy.atk + (packBonus ? 1 : 0), enemy, packBonus ? "wolfPackHit" : enemy.id === "raven" ? "ravenWeakHit" : null);
+      if (enemy.id === "heron") pushHeroAway(enemy, target);
+      if (enemy.id === "moth") { target.silenced = true; log("mothSilenced", { hero: t(target.name) }); }
+      if (enemy.id === "archiveOwl") { target.marked = true; log("owlMarked", { hero: t(target.name) }); }
+      if (enemy.id === "sealRaven") { target.energy = Math.max(0, target.energy - 1); log("ravenDrained", { hero: t(target.name) }); }
+    } else {
+      moveEnemyToward(enemy, target);
+    }
+    if (enemy.id === "runeFox" && target.hp > 0) {
+      const candidates = [{ x: Math.max(0, target.x - 1), y: target.y }, { x: target.x, y: Math.min(rows - 1, target.y + 1) }];
+      const cell = candidates.find((candidate) => canOccupy(candidate.x, candidate.y, enemy));
+      if (cell) { enemy.x = cell.x; enemy.y = cell.y; log("foxTeleported", { hero: t(target.name) }); }
+    }
+  }
+
+  function applyTideAndOrbit() {
+    state.terrain.filter((terrain) => terrain.type === "tide").forEach((terrain) => {
+      const unit = unitAt(terrain.x, terrain.y);
+      if (!unit) return;
+      const next = { x: unit.x + (terrain.dx || 0), y: unit.y + (terrain.dy || 0) };
+      if (canOccupy(next.x, next.y, unit)) { unit.x = next.x; unit.y = next.y; }
     });
+    const ring = [[0,0],[1,0],[2,0],[2,1],[2,2],[2,3],[1,3],[0,3],[0,2],[0,1]];
+    if (!state.terrain.some((terrain) => terrain.type === "orbit")) return;
+    const movers = ring.map(([x,y], index) => ({ unit: unitAt(x,y), from:{x,y}, to:{x:ring[(index + 1) % ring.length][0],y:ring[(index + 1) % ring.length][1]} })).filter((item) => item.unit);
+    const movingUnits = new Set(movers.map((item) => item.unit));
+    movers.forEach((item) => {
+      const blocker = unitAt(item.to.x, item.to.y);
+      if ((!blocker || movingUnits.has(blocker)) && !terrainAt(item.to.x, item.to.y, "rubble")) { item.unit.x = item.to.x; item.unit.y = item.to.y; }
+    });
+  }
+
+  function enemyTurn() {
+    if (!state || state.phase !== "enemy") return;
+    [...livingEnemies()].forEach((enemy) => {
+      performEnemyAction(enemy);
+      if (enemy.extraActions > 0 && enemy.hp > 0) { enemy.extraActions -= 1; performEnemyAction(enemy); }
+    });
+    applyTideAndOrbit();
+    livingHeroes().forEach((hero) => {
+      if (terrainAt(hero.x, hero.y, "burn")) {
+        hero.hp = Math.max(0, hero.hp - 1);
+        tryAutoRevive(hero);
+        log("terrainBurnHit", { hero: t(hero.name) });
+      }
+    });
+    const serpent = livingEnemies().find((enemy) => enemy.id === "serpentBoss");
+    if (serpent && serpent.hitsThisTurn < 2) serpent.hp = Math.min(serpent.maxHp, serpent.hp + 2);
     livingHeroes().forEach((h) => {
       h.guard = false;
       h.energy = Math.min(3, h.energy + 1);
     });
     livingEnemies().forEach((enemy) => {
       if (enemy.id === "stag") enemy.armorReady = true;
+      enemy.hitsThisTurn = 0;
     });
+    state.terrain = state.terrain.filter((terrain) => !terrain.expires || terrain.expires > state.turn);
     state.turn += 1;
     state.acted = new Set();
     state.phase = "player";
@@ -1310,7 +1698,9 @@
       : t("heroUpgradeMax");
     nodes.resultNextText.textContent = `${missionDirection} ${upgradeDirection}`;
     nodes.skillReportText.textContent = t(win ? "reportWin" : "reportLose");
-    nodes.nextBtn.disabled = !win || state.mission >= missionDefs.length;
+    const hasNextMission = win && state.mission < missionDefs.length;
+    nodes.nextBtn.disabled = !hasNextMission;
+    nodes.nextBtn.classList.toggle("is-hidden", !hasNextMission);
     nodes.resultPanel.classList.remove("is-hidden");
     renderMenu();
     requestAnimationFrame(() => (nodes.nextBtn.disabled ? nodes.retryBtn : nodes.nextBtn).focus({ preventScroll: true }));
@@ -1371,6 +1761,32 @@
       readProfile() {
         return { ...profile };
       },
+      restoreProfile(snapshot) {
+        const previous = localStorage.getItem(saveKey);
+        localStorage.setItem(saveKey, JSON.stringify(snapshot || {}));
+        profile = loadProfile();
+        selectedMission = Math.min(profile.unlockedMission, MISSION_COUNT);
+        saveProfile();
+        renderMenu();
+        return { previous, profile: { ...profile } };
+      },
+      campaignPreview() {
+        return {
+          missionCount: missionDefs.length,
+          chapterCount: Math.ceil(missionDefs.length / CHAPTER_SIZE),
+          missions: missionDefs.map((missionDef) => ({
+            id: missionDef.id,
+            chapter: missionDef.chapter,
+            nameEn: missionDef.nameEn,
+            nameZht: missionDef.nameZht,
+            enemies: [...missionDef.enemies],
+            terrain: missionDef.terrain.map((item) => ({ ...item })),
+            bossId: missionDef.bossId,
+          })),
+          enemies: enemyDefs.map((enemy) => ({ id: enemy.id, trait: enemy.trait, bossKit: enemy.bossKit || null, img: enemy.img })),
+          bosses: enemyDefs.filter((enemy) => enemy.bossKit).map((enemy) => ({ id: enemy.id, kit: enemy.bossKit, img: enemy.img })),
+        };
+      },
       readWallet() {
         return wallet();
       },
@@ -1379,9 +1795,15 @@
         return {
           turn: state.turn,
           phase: state.phase,
-          heroes: state.heroes.map(({ id, hp, maxHp, x, y }) => ({ id, hp, maxHp, x, y })),
-          enemies: state.enemies.map(({ id, hp, maxHp, x, y, armorReady }) => ({ id, hp, maxHp, x, y, armorReady })),
+          heroes: state.heroes.map(({ id, hp, maxHp, x, y, energy, guard, snared, silenced, marked }) => ({ id, hp, maxHp, x, y, energy, guard, snared, silenced, marked })),
+          enemies: state.enemies.map(({ id, uid, hp, maxHp, x, y, armorReady, allyGuard, cloneMade, flying, phasesTriggered, hitsThisTurn }) => ({ id, uid, hp, maxHp, x, y, armorReady, allyGuard, cloneMade, flying, phasesTriggered, hitsThisTurn })),
+          terrain: state.terrain.map((item) => ({ ...item })),
+          phaseEvents: state.phaseEvents.map((item) => ({ ...item })),
         };
+      },
+      startMission(mission) {
+        startMission(Math.max(1, Math.min(MISSION_COUNT, Number(mission) || 1)));
+        return this.readBattleState();
       },
       setUnitState(team, index, patch) {
         const unit = state?.[team]?.[index];
@@ -1402,6 +1824,20 @@
         if (!hero || !enemy || enemy.hp <= 0) return false;
         attack(hero, enemy, false);
         return true;
+      },
+      damageEnemy(index = 0, amount = 1) {
+        const enemy = state?.enemies?.[index];
+        if (!enemy) return null;
+        enemy.hp = Math.max(0, enemy.hp - Math.max(0, Number(amount) || 0));
+        resolveBossPhases(enemy);
+        render();
+        return this.readBattleState();
+      },
+      forceMissionResult(mission, win = true) {
+        startMission(Math.max(1, Math.min(MISSION_COUNT, Number(mission) || 1)));
+        claimedRewardId = null;
+        showResult(Boolean(win));
+        return { profile: { ...profile }, mission: state.mission, nextDisabled: nodes.nextBtn.disabled, nextHidden: nodes.nextBtn.classList.contains("is-hidden"), resultText: nodes.resultText.textContent, nextText: nodes.resultNextText.textContent };
       },
     };
   }

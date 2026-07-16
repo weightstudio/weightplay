@@ -460,8 +460,8 @@ body.is-rune-playing .back-btn span {
   position: absolute;
   inset: 8%;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(3, 1fr);
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(4, 1fr);
   gap: 8px;
 }
 
@@ -497,6 +497,42 @@ body.is-rune-playing .back-btn span {
   background: rgba(2, 8, 7, 0.38);
 }
 
+.tile[class*="has-terrain-"]::before {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border-radius: 8px;
+  opacity: 0.72;
+  pointer-events: none;
+}
+
+.tile.has-terrain-rubble::before { background: repeating-linear-gradient(135deg, rgba(82,77,68,.92) 0 8px, rgba(39,38,34,.9) 8px 16px); }
+.tile.has-terrain-snare::before { background: radial-gradient(circle at 50% 50%, transparent 22%, rgba(107,174,75,.8) 24% 31%, transparent 33%), rgba(38,91,44,.28); }
+.tile.has-terrain-tide::before { background: linear-gradient(145deg, rgba(64,191,224,.22), rgba(37,105,188,.78)); }
+.tile.has-terrain-burn::before { background: radial-gradient(circle at 50% 72%, rgba(255,237,90,.9), rgba(244,91,33,.72) 35%, transparent 68%); }
+.tile.has-terrain-cooling::before { background: radial-gradient(circle, rgba(155,247,255,.9), rgba(42,133,197,.54) 42%, transparent 68%); }
+.tile.has-terrain-orbit::before { background: conic-gradient(from 25deg, rgba(188,134,255,.74), transparent 22%, rgba(89,221,226,.72), transparent 55%, rgba(188,134,255,.74)); }
+.tile.has-terrain-seal::before { background: radial-gradient(circle, transparent 25%, rgba(255,206,76,.82) 27% 32%, transparent 34% 48%, rgba(127,85,218,.7) 50% 55%, transparent 57%); }
+
+.terrain-mark {
+  position: absolute;
+  z-index: 1;
+  left: 4px;
+  right: 4px;
+  bottom: 3px;
+  overflow: hidden;
+  color: rgba(255,255,255,.88);
+  font-size: clamp(6px, 1.45vw, 9px);
+  font-style: normal;
+  font-weight: 900;
+  line-height: 1;
+  text-align: center;
+  text-overflow: ellipsis;
+  text-shadow: 0 1px 3px #000, 0 0 2px #000;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
 .unit {
   position: absolute;
   left: 50%;
@@ -507,6 +543,7 @@ body.is-rune-playing .back-btn span {
   object-fit: contain;
   filter: drop-shadow(0 8px 9px rgba(0, 0, 0, 0.45));
   pointer-events: none;
+  z-index: 2;
 }
 
 .hpbar {
@@ -518,6 +555,7 @@ body.is-rune-playing .back-btn span {
   border-radius: 999px;
   overflow: hidden;
   background: rgba(0, 0, 0, 0.45);
+  z-index: 3;
 }
 
 .hpbar span {
@@ -554,6 +592,11 @@ body.is-rune-playing .back-btn span {
 .enemy-trait-badge--raven { background: rgba(56, 54, 151, 0.92); }
 .enemy-trait-badge--stag { background: rgba(84, 71, 47, 0.94); }
 .enemy-trait-badge--stag.is-spent { opacity: 0.42; }
+.enemy-trait-badge--boar, .enemy-trait-badge--rhinoBoss { background: rgba(107,58,30,.94); }
+.enemy-trait-badge--runeFox, .enemy-trait-badge--salamander, .enemy-trait-badge--emberLionBoss { background: rgba(176,69,31,.94); }
+.enemy-trait-badge--tideTurtle, .enemy-trait-badge--heron, .enemy-trait-badge--serpentBoss { background: rgba(27,112,132,.94); }
+.enemy-trait-badge--moth, .enemy-trait-badge--archiveOwl, .enemy-trait-badge--griffinBoss { background: rgba(75,57,145,.94); }
+.enemy-trait-badge--mirrorWolf, .enemy-trait-badge--sealRaven, .enemy-trait-badge--chimeraBoss { background: rgba(122,48,130,.94); }
 
 .hero.has-acted .unit {
   opacity: 0.48;

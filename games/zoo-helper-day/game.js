@@ -293,9 +293,37 @@
   let currentTaskMistakes = 0;
   let lastResult = null;
   let acceptingInput = false;
+  let careTransitionFrame = 0;
+  let careTransitionToken = 0;
+  let wrongFeedbackTimer = 0;
   let stageDrag = null;
   let stageSettleFrame = 0;
   let suppressStageClick = false;
+
+  function cancelCareTransition(restoreTask = false) {
+    careTransitionToken += 1;
+    if (careTransitionFrame) cancelAnimationFrame(careTransitionFrame);
+    careTransitionFrame = 0;
+    if (!restoreTask || nodes.playPanel.classList.contains("hidden") || !nodes.resultPanel.classList.contains("hidden")) return;
+    acceptingInput = true;
+    renderTask();
+  }
+
+  function scheduleCareTransition(callback) {
+    const token = ++careTransitionToken;
+    let startedAt = null;
+    const advance = (now) => {
+      if (token !== careTransitionToken) return;
+      if (startedAt === null) startedAt = now;
+      if (now - startedAt < 520) {
+        careTransitionFrame = requestAnimationFrame(advance);
+        return;
+      }
+      careTransitionFrame = 0;
+      callback();
+    };
+    careTransitionFrame = requestAnimationFrame(advance);
+  }
 
   function updateBattleViewport() {
     if (!document.body.classList.contains("zoo-helper-playing")) return;
@@ -535,6 +563,8 @@
   }
 
   function showMenu() {
+    cancelCareTransition();
+    acceptingInput = false;
     nodes.menuPanel.classList.add("hidden");
     nodes.stagePanel.classList.remove("hidden");
     nodes.playPanel.classList.add("hidden");
@@ -552,6 +582,8 @@
   }
 
   function showMain() {
+    cancelCareTransition();
+    acceptingInput = false;
     nodes.stagePanel.classList.add("hidden");
     nodes.menuPanel.classList.remove("hidden");
     document.body.classList.remove("wp-standard-stage-page");
@@ -559,6 +591,7 @@
   }
 
   function startStage(index) {
+    cancelCareTransition();
     currentStage = index;
     currentTask = 0;
     mistakes = 0;
@@ -578,6 +611,8 @@
   }
 
   function renderTask() {
+    if (wrongFeedbackTimer) clearTimeout(wrongFeedbackTimer);
+    wrongFeedbackTimer = 0;
     const stage = stages[currentStage];
     const wanted = stage.tasks[currentTask];
     const mood = clamp(100 - mistakes * 12, 40, 100);
@@ -664,7 +699,10 @@
       currentTaskMistakes += 1;
       nodes.feedbackText.textContent = t("wrong");
       button?.setAttribute("aria-invalid", "true");
-      setTimeout(() => button?.removeAttribute("aria-invalid"), 900);
+      wrongFeedbackTimer = setTimeout(() => {
+        wrongFeedbackTimer = 0;
+        button?.removeAttribute("aria-invalid");
+      }, 900);
       nodes.animalCard.classList.remove("wrong");
       button?.classList.remove("wrong");
       void nodes.animalCard.offsetWidth;
@@ -678,7 +716,7 @@
     acceptingInput = false;
     nodes.itemGrid.setAttribute("aria-busy", "true");
     nodes.itemGrid.querySelectorAll(".item-card").forEach((choice) => { choice.disabled = true; });
-    if (currentTaskMistakes === 0) firstTryTasks += 1;
+    const wasFirstTry = currentTaskMistakes === 0;
     button?.classList.add("correct");
     nodes.animalCard.classList.remove("happy");
     void nodes.animalCard.offsetWidth;
@@ -686,7 +724,8 @@
     nodes.feedbackText.textContent = t("correct");
     playSound("success");
     track("game_answer", { level: currentStage + 1, correct: true, task: wanted, item });
-    setTimeout(() => {
+    scheduleCareTransition(() => {
+      if (wasFirstTry) firstTryTasks += 1;
       currentTask += 1;
       if (currentTask >= stage.tasks.length) {
         finishStage();
@@ -699,6 +738,8 @@
   }
 
   function finishStage() {
+    cancelCareTransition();
+    acceptingInput = false;
     const stageNo = currentStage + 1;
     const stage = stages[currentStage];
     const earned = mistakes === 0 ? 3 : mistakes <= 2 ? 2 : 1;
@@ -825,6 +866,13 @@
       startStage(currentStage);
     });
     nodes.nextStageBtn.addEventListener("click", () => startStage(Math.min(currentStage + 1, stages.length - 1)));
+
+    const interruptCareTransition = () => cancelCareTransition(true);
+    window.addEventListener("blur", interruptCareTransition);
+    window.addEventListener("pagehide", interruptCareTransition);
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) interruptCareTransition();
+    });
 
     nodes.stageGrid.addEventListener("pointerdown", (event) => {
       if (!document.body.classList.contains("wp-standard-stage-page") || event.isPrimary === false || event.button !== 0) return;

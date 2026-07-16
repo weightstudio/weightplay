@@ -110,6 +110,8 @@
       noDiamonds: "Not enough diamonds!",
       noGold: "Not enough gold!",
       noSupplies: "Not enough supplies!",
+      needSquad: "Position at least one animal in your squad before entering battle!",
+      quitConfirm: "Quit this expedition? All temporary squad progress will be lost.",
       teamBonusTitle: "Permanent team bonus",
       teamBonusValue: "All owned animals enter expeditions with +{atk} ATK and +{hp} HP from Team Level.",
       teamBonusNext: "Next team level in {remaining} XP.",
@@ -182,6 +184,8 @@
       chocolateDesc: "巧克力：獲得 +2 經驗值",
       noDiamonds: "鑽石不足！",
       noGold: "金幣不足！",
+      needSquad: "請先把至少一名動物放進作戰小隊，再開始戰鬥！",
+      quitConfirm: "確定要放棄這次遠征嗎？所有臨時小隊進度都會消失。",
       relicMaple: "楓葉護盾：前線單位戰鬥開始時獲得甜瓜護盾。",
       relicOak: "橡樹種子：全體單位在戰鬥中獲得 +1 生命。",
       relicShadow: "暗影爪痕：全體單位在戰鬥中獲得 +1 攻擊力。",
@@ -856,6 +860,18 @@
         return {
           unlockedIds: recoveredSave.unlockedAnimals,
           squadIds: recoveredSave.savedSquad.filter((id) => id !== null)
+        };
+      },
+      deployedBackpackRecovery: () => {
+        const ownedCards = createBackpackCards();
+        const deployedCards = ownedCards.slice(0, Math.min(3, ownedCards.length));
+        const compactBackpack = ownedCards.slice(deployedCards.length);
+        const recoveredCards = normalizeBackpackSlots(compactBackpack, deployedCards);
+        return {
+          ownedIds: ownedCards.map((card) => card.id),
+          deployedIds: deployedCards.map((card) => card.id),
+          compactIds: compactBackpack.map((card) => card.id),
+          recoveredIds: recoveredCards.map((card) => card.id)
         };
       },
       combinePreview: () => {
@@ -1859,10 +1875,10 @@
       .filter(Boolean);
   }
 
-  function normalizeBackpackSlots(cards = []) {
+  function normalizeBackpackSlots(cards = [], placedCards = []) {
     save = normalizeSave(save);
     const cardsById = new Map(
-      (Array.isArray(cards) ? cards : [])
+      [...(Array.isArray(cards) ? cards : []), ...(Array.isArray(placedCards) ? placedCards : [])]
         .filter(Boolean)
         .map((card) => [Number(card.id), card])
     );
@@ -1876,7 +1892,7 @@
       if (id === null) return null;
       return backpackById.get(Number(id)) || null;
     });
-    state.backpack = normalizeBackpackSlots(state.backpack);
+    state.backpack = normalizeBackpackSlots(state.backpack, state.squad.concat(state.bench));
   }
 
   function findPlacedCard(id) {
@@ -2434,7 +2450,10 @@
 
   function renderShop() {
     nodes.shopRow.innerHTML = "";
-    state.backpack = normalizeBackpackSlots(state.backpack);
+    // The backpack is the permanent owned roster, not a list of animals that
+    // happen to be off the field. Rebuild it with deployed cards included so
+    // old/compacted run state cannot make formation members disappear here.
+    state.backpack = normalizeBackpackSlots(state.backpack, state.squad.concat(state.bench));
 
     const visibleSlots = state.backpack.length;
     for (let idx = 0; idx < visibleSlots; idx++) {
@@ -2634,7 +2653,7 @@
       .map((card, formationSlot) => card ? { card, formationSlot } : null)
       .filter(Boolean);
     if (!activeSquad.length) {
-      alert("Position at least one animal in your squad before entering battle!");
+      alert(t("needSquad"));
       return;
     }
 
@@ -3605,7 +3624,7 @@
   }
 
   function quitRun() {
-    if (confirm("Are you sure you want to quit the current expedition run? All temporary squad progress will be lost.")) {
+    if (confirm(t("quitConfirm"))) {
       initAudio();
       playSynth("sell");
       state.activeRun = false;

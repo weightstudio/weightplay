@@ -1170,6 +1170,20 @@
     resetGame(false, "result");
   });
   menuBtn.addEventListener("click", () => resetGame(true, "result-menu"));
+  resultPanel.addEventListener("keydown", (event) => {
+    if (event.key !== "Tab" || resultPanel.classList.contains("hidden")) return;
+    const actions = [playAgainBtn, menuBtn].filter((button) => !button.hidden && !button.disabled);
+    if (!actions.length) return;
+    const first = actions[0];
+    const last = actions.at(-1);
+    if (event.shiftKey && (document.activeElement === first || !actions.includes(document.activeElement))) {
+      event.preventDefault();
+      last.focus({ preventScroll: true });
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus({ preventScroll: true });
+    }
+  });
 
   if (new URLSearchParams(location.search).has("smoke")) {
     window.__fruitMergeSmoke = { finishRunForTest: endGame };

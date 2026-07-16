@@ -216,6 +216,23 @@
   let running = false;
   let busy = false;
   let dragState = null;
+  let careTransitionToken = 0;
+
+  function invalidateCareTransition() {
+    careTransitionToken += 1;
+    busy = false;
+  }
+
+  function scheduleCareTask(task, delay) {
+    const token = careTransitionToken;
+    const startedAt = performance.now();
+    const tick = (now) => {
+      if (token !== careTransitionToken || !running || !document.body.classList.contains("helper-playing")) return;
+      if (now - startedAt >= delay) task();
+      else requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }
 
   function clamp(value, min, max) {
     return Math.max(min, Math.min(max, value));
@@ -385,6 +402,8 @@
   nodes.stageGrid.addEventListener("pointercancel", endStageDrag);
 
   function startStage(index) {
+    invalidateCareTransition();
+    cleanupDrag();
     currentStage = index;
     roundIndex = 0;
     score = 0;
@@ -419,6 +438,7 @@
   }
 
   function renderRound(feedback = "", focusTool = false) {
+    cleanupDrag();
     const stage = stages[currentStage];
     const problemKey = stage.rounds[roundIndex];
     const problem = problems[problemKey];
@@ -499,6 +519,7 @@
       if (!running || busy) return;
       dragState = {
         tool: button.dataset.tool,
+        pointerId: event.pointerId,
         startX: event.clientX,
         startY: event.clientY,
         moved: false,
@@ -529,6 +550,11 @@
       if (shouldDrop) chooseTool(button.dataset.tool, button);
     });
     button.addEventListener("pointercancel", cleanupDrag);
+    button.addEventListener("lostpointercapture", () => {
+      requestAnimationFrame(() => {
+        if (dragState?.button === button) cleanupDrag();
+      });
+    });
   }
 
   function makeGhost(button, x, y) {
@@ -554,9 +580,13 @@
   }
 
   function cleanupDrag() {
-    nodes.board.querySelector(".animal-zone")?.classList.remove("drag-over");
-    dragState?.ghost?.remove();
+    const activeDrag = dragState;
     dragState = null;
+    nodes.board.querySelector(".animal-zone")?.classList.remove("drag-over");
+    activeDrag?.ghost?.remove();
+    if (activeDrag?.button?.hasPointerCapture?.(activeDrag.pointerId)) {
+      activeDrag.button.releasePointerCapture?.(activeDrag.pointerId);
+    }
   }
 
   function chooseTool(tool, button) {
@@ -582,7 +612,7 @@
       playSound("wrong");
     }
     track("weather_tool", { stage: stage.id, problem: problemKey, tool, correct, mistakes });
-    window.setTimeout(() => {
+    scheduleCareTask(() => {
       busy = false;
       if (!correct) {
         button.classList.remove("wrong");
@@ -660,6 +690,8 @@
   }
 
   function finishStage() {
+    invalidateCareTransition();
+    cleanupDrag();
     running = false;
     const stage = stages[currentStage];
     const stars = starCount(stage);
@@ -684,6 +716,7 @@
   }
 
   function showMenu() {
+    invalidateCareTransition();
     running = false;
     busy = false;
     cleanupDrag();
@@ -700,6 +733,7 @@
   }
 
   function showMain() {
+    cleanupDrag();
     nodes.stagePanel.classList.add("hidden");
     nodes.menuPanel.classList.remove("hidden");
     document.body.classList.remove("wp-standard-stage-page");
@@ -712,6 +746,12 @@
     document.body.append(toast);
     window.setTimeout(() => toast.remove(), 1300);
   }
+
+  window.addEventListener("blur", cleanupDrag);
+  window.addEventListener("pagehide", cleanupDrag);
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) cleanupDrag();
+  });
 
   function installLoading() {
     let progress = 0;
