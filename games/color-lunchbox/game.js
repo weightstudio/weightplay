@@ -360,6 +360,7 @@
     mistakes: 0,
     unlockedStage: 1,
     dragging: false,
+    activePointerId: null,
     boxTransitioning: false,
     startX: 0,
     startY: 0,
@@ -536,9 +537,20 @@
 
   let roundTransitionToken = 0;
 
+  function clearFoodDrag() {
+    const pointerId = state.activePointerId;
+    state.activePointerId = null;
+    state.dragging = false;
+    foodCard.classList.remove("dragging");
+    foodCard.style.transform = "";
+    if (pointerId !== null && foodCard.hasPointerCapture?.(pointerId)) {
+      try { foodCard.releasePointerCapture(pointerId); } catch { /* The browser may already have released it. */ }
+    }
+  }
+
   function invalidateRoundTransition() {
     roundTransitionToken += 1;
-    state.dragging = false;
+    clearFoodDrag();
     state.boxTransitioning = false;
     dropZone.classList.remove("settling");
     foodCard.classList.remove("dragging", "pop", "shake");
@@ -1043,28 +1055,29 @@
   }
 
   function startDrag(event) {
-    if (!state.ready || state.boxTransitioning || foodCard.style.pointerEvents === "none") return;
+    if (!state.ready || state.boxTransitioning || foodCard.style.pointerEvents === "none"
+      || state.activePointerId !== null || event.isPrimary === false || event.button !== 0) return;
     const point = getPoint(event);
     state.dragging = true;
+    state.activePointerId = event.pointerId;
     state.startX = point.x;
     state.startY = point.y;
     foodCard.classList.add("dragging");
+    try { foodCard.setPointerCapture?.(event.pointerId); } catch { /* Synthetic or already-ended pointers cannot be captured. */ }
     event.preventDefault();
   }
 
   function moveDrag(event) {
-    if (!state.dragging) return;
+    if (!state.dragging || event.pointerId !== state.activePointerId) return;
     const point = getPoint(event);
     foodCard.style.transform = `translate(${point.x - state.startX}px, ${point.y - state.startY}px)`;
     event.preventDefault();
   }
 
   function endDrag(event) {
-    if (!state.dragging) return;
+    if (!state.dragging || event.pointerId !== state.activePointerId) return;
     const point = getPoint(event.changedTouches?.[0] || event);
-    state.dragging = false;
-    foodCard.classList.remove("dragging");
-    foodCard.style.transform = "";
+    clearFoodDrag();
     foodCard.style.pointerEvents = "none";
     const target = document.elementFromPoint(point.x, point.y)?.closest(".lunchbox");
     foodCard.style.pointerEvents = "";
@@ -1074,6 +1087,17 @@
   foodCard.addEventListener("pointerdown", startDrag);
   window.addEventListener("pointermove", moveDrag);
   window.addEventListener("pointerup", endDrag);
+  window.addEventListener("pointercancel", (event) => {
+    if (event.pointerId === state.activePointerId) clearFoodDrag();
+  });
+  foodCard.addEventListener("lostpointercapture", (event) => {
+    if (event.pointerId === state.activePointerId) clearFoodDrag();
+  });
+  window.addEventListener("blur", clearFoodDrag);
+  window.addEventListener("pagehide", clearFoodDrag);
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) clearFoodDrag();
+  });
 
   localeSelect.addEventListener("change", () => {
     window.WonderSound?.play("click");

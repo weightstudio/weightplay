@@ -23,6 +23,13 @@
     fiaAlt: "Spark Paw Fia",
     stageBackLabel: "Back to main menu",
     battleBackLabel: "Back to missions",
+    checkpoint: "Guardian Checkpoint",
+    firstSeal: "Recover the treasure seal first.",
+    mirrorWarning: "Mirror shift incoming!",
+    bellWarning: "Bell pulse incoming—reach shadow!",
+    clockSlow: "Blue phase: patrols are slow.",
+    clockSurge: "Amber phase: patrols surge!",
+    guardianCleared: "Guardian route cleared",
   });
   Object.assign(copy["zh-Hant"], {
     notCleared: "\u5c1a\u672a\u5b8c\u6210",
@@ -41,6 +48,13 @@
     fiaAlt: "\u9583\u722a\u83f2\u4e9e",
     stageBackLabel: "\u8fd4\u56de\u4e3b\u9078\u55ae",
     battleBackLabel: "\u8fd4\u56de\u4efb\u52d9\u9078\u64c7",
+    checkpoint: "守衛檢查點",
+    firstSeal: "請先取得寶藏封印。",
+    mirrorWarning: "鏡面即將換位！",
+    bellWarning: "月鐘即將響起，快進入陰影！",
+    clockSlow: "藍色階段：巡邏較慢。",
+    clockSurge: "琥珀階段：巡邏加速！",
+    guardianCleared: "已通過守衛路線",
   });
   const missionObjects=["moon-seal","courier-token","star-map","clockwork-lens","district-relic"];
   const patrolArt=["wolf","rabbit","badger"];
@@ -52,9 +66,58 @@
     {name:["Moon Gate","月之門"],object:[50,42],treasure:[84,76],exit:[50,10],patrols:[[18,30,82,30],[22,62,78,62],[28,78,28,38]]}
   ];
   const gadgets={dash:{art:"lightning-dash"},decoy:{art:"star-decoy"},smoke:{art:"smoke-leaf"}};
-  let state=load(),locale=localStorage.getItem(localeKey)||"en",selectedMission=0,gadget="dash",gadgetOffers=createOffers(),insuranceActive=false,preservedTreasure=false,playing=false,paused=false,alert=0,objectFound=false,treasureFound=false,caught=false,patrols=[],lastTime=0,freezeUntil=0,smokeUntil=0,preview=null,arrivalTimer=0,routePointerId=null;
+  const guardianCatalog={
+    spotlight:{id:"lantern-auditor",name:["Lantern Auditor","提燈審查官"],behavior:"spotlight",path:[18,24,82,24]},
+    bell:{id:"bell-warden",name:["Bell Warden","月鐘守衛"],behavior:"bell",path:[18,50,82,50]},
+    mirror:{id:"mirror-keeper",name:["Mirror Keeper","星鏡看守"],behavior:"mirror",path:[24,30,76,70]},
+    clock:{id:"clockwork-marshal",name:["Clockwork Marshal","發條巡察長"],behavior:"clock",path:[18,42,82,42]},
+    seals:{id:"vault-sealkeeper",name:["Vault Sealkeeper","寶庫封印官"],behavior:"seals",path:[26,34,74,34]},
+    eclipse:{id:"eclipse-curator",name:["Eclipse Curator","日蝕館長"],behavior:"eclipse",path:[18,26,82,70]}
+  };
+  const campaignMission=(en,zh,ruleEn,ruleZh,data)=>({name:[en,zh],rule:[ruleEn,ruleZh],...data});
+  const campaign=[
+    campaignMission("Quiet Threshold","靜謐門廊","Read one patrol, recover the seal, then extract.","觀察單一路線，取得封印後撤離。",{object:[50,42],treasure:[82,36],exit:[50,10],patrols:[[24,32,76,32]],speed:.88}),
+    campaignMission("Lantern Hall","燈火大廳","Cross behind two patrol lines.","從兩條巡邏線的空檔穿過。",{object:[24,30],treasure:[80,72],exit:[50,10],patrols:[[18,52,82,52],[70,24,70,78]],speed:.82}),
+    campaignMission("Split Gallery","分岔畫廊","Choose the quiet side before the routes cross.","在巡邏交會前選擇安靜的一側。",{object:[76,32],treasure:[20,26],exit:[50,10],patrols:[[16,44,84,44],[25,76,75,76]],speed:.9}),
+    campaignMission("Courier Stairs","信使階梯","The bonus treasure sits beyond the direct escape route.","額外寶藏位於直接撤離路線之外。",{object:[28,24],treasure:[82,34],exit:[18,10],patrols:[[18,48,82,48],[36,20,36,78],[70,28,70,76]],speed:.84}),
+    campaignMission("Lantern Audit","提燈審查","The Auditor widens its searchlight; move after the glow shrinks.","審查官會擴大探照光，等光圈縮小再移動。",{object:[52,46],treasure:[84,74],exit:[50,10],patrols:[[20,66,80,66],[28,78,28,40]],guardian:guardianCatalog.spotlight,speed:.84}),
+    campaignMission("Velvet Alcove","天鵝絨暗室","Shadow circles hide Fia from patrol sight.","站進陰影圓圈可避開巡邏視線。",{object:[72,30],treasure:[18,66],exit:[50,10],patrols:[[18,48,82,48],[28,76,74,76]],safeZones:[[30,60,11]],speed:.95}),
+    campaignMission("Twin Shelves","雙層書架","Move from one shadow circle to the next.","依序利用兩個陰影圈前進。",{object:[22,26],treasure:[80,70],exit:[82,10],patrols:[[18,42,82,42],[16,68,84,68],[64,22,64,78]],safeZones:[[28,56,10],[70,56,10]],speed:.9}),
+    campaignMission("Broken Skylight","破損天窗","A narrow shadow lane separates crossing patrols.","狹窄陰影通道位於交叉巡邏之間。",{object:[78,22],treasure:[20,24],exit:[50,10],patrols:[[18,38,82,72],[82,38,18,72],[18,82,82,82]],safeZones:[[50,56,9]],speed:.92}),
+    campaignMission("Whisper Annex","低語側廳","Take the optional treasure before leaving the final shadow.","離開最後陰影前決定是否取得寶藏。",{object:[18,32],treasure:[82,28],exit:[50,10],patrols:[[18,48,82,48],[22,72,78,72],[50,22,50,82]],safeZones:[[26,62,10],[74,62,10]],alertDecay:24,speed:.94}),
+    campaignMission("Bell Warden","月鐘守衛","The bell pulse raises Alert outside shadow circles.","月鐘脈衝會提高陰影圈外的警報。",{object:[74,28],treasure:[20,72],exit:[50,10],patrols:[[18,34,82,34],[22,70,78,70]],safeZones:[[26,52,11],[74,52,11]],guardian:guardianCatalog.bell,speed:.88}),
+    campaignMission("Silver Fork","銀光岔路","The relic and treasure trade places after a warning shimmer.","警示閃光後，任務物與寶藏會交換位置。",{object:[24,28],treasure:[78,30],exit:[50,10],patrols:[[18,54,82,54],[26,76,74,76]],mirrorInterval:7,speed:.95}),
+    campaignMission("Reflected Ledger","倒影帳冊","Wait for the marker swap or commit to the longer route.","等待標記換位，或承擔較長路線。",{object:[80,24],treasure:[20,70],exit:[18,10],patrols:[[18,42,82,42],[62,20,62,78],[18,76,78,76]],mirrorInterval:6.5,speed:.9}),
+    campaignMission("False North","偽北廳","Recover the treasure first so the mirrored relic becomes real.","先取得寶藏，鏡中的任務物才會成真。",{object:[24,22],treasure:[78,72],exit:[82,10],patrols:[[18,38,82,38],[28,58,74,58],[22,78,78,78]],order:"treasure-first",mirrorInterval:7,speed:.92}),
+    campaignMission("Prism Hall","稜鏡大廳","Use shadow while the two markers prepare to swap.","在兩個標記準備交換時利用陰影。",{object:[76,26],treasure:[22,26],exit:[50,10],patrols:[[18,48,82,48],[28,78,72,78]],safeZones:[[50,64,11]],mirrorInterval:6,speed:.96}),
+    campaignMission("Mirror Keeper","星鏡看守","The Keeper swaps both markers quickly; read the shimmer cue.","看守會快速交換兩個標記，注意閃光預告。",{object:[24,26],treasure:[78,72],exit:[50,10],patrols:[[18,50,82,50],[24,78,76,78]],safeZones:[[50,64,10]],mirrorInterval:5,guardian:guardianCatalog.mirror,speed:.9}),
+    campaignMission("Slow Gear Walk","慢齒走廊","Patrols alternate between a slow watch and a fast sweep.","巡邏會在慢速監看與快速掃蕩間交替。",{object:[72,26],treasure:[20,70],exit:[50,10],patrols:[[18,44,82,44],[22,72,78,72]],clockCycle:7,speed:.88}),
+    campaignMission("Fast Pendulum","快擺長廊","Cross during the blue slow phase, not the amber surge.","在藍色慢速階段穿越，避開琥珀加速。",{object:[20,28],treasure:[80,28],exit:[82,10],patrols:[[18,38,82,70],[82,38,18,70],[20,80,80,80]],clockCycle:6.5,speed:.9}),
+    campaignMission("Split Minute","分秒暗室","Combine shadow cover with the clockwork rhythm.","把陰影掩護與發條節奏結合。",{object:[78,24],treasure:[22,72],exit:[18,10],patrols:[[18,46,82,46],[30,22,30,80],[70,22,70,80]],safeZones:[[50,62,10]],clockCycle:6,speed:.92}),
+    campaignMission("Second-Hand Vault","秒針寶庫","Take treasure first while patrol speed keeps changing.","在巡邏速度持續變化時先取得寶藏。",{object:[22,24],treasure:[78,70],exit:[50,10],patrols:[[18,36,82,36],[18,58,82,58],[24,80,76,80]],order:"treasure-first",clockCycle:5.8,speed:.9}),
+    campaignMission("Clockwork Marshal","發條巡察長","The Marshal telegraphs each full-speed pursuit.","巡察長會預告每次全速追蹤。",{object:[76,26],treasure:[20,72],exit:[50,10],patrols:[[18,52,82,52],[24,78,76,78]],safeZones:[[50,66,9]],clockCycle:5.5,guardian:guardianCatalog.clock,speed:.9}),
+    campaignMission("First Seal","第一封印","Treasure is the first seal; the relic unlocks second.","寶藏是第一道封印，之後才能取得任務物。",{object:[76,24],treasure:[22,70],exit:[50,10],patrols:[[18,42,82,42],[24,60,76,60],[22,80,78,80]],order:"treasure-first",speed:.94}),
+    campaignMission("Crossed Keys","交錯鑰匙","Open the two seals across three crossing routes.","穿過三條交錯路線依序開啟兩道封印。",{object:[20,24],treasure:[80,26],exit:[50,10],patrols:[[18,38,82,70],[82,38,18,70],[50,22,50,82]],order:"treasure-first",alertDecay:22,speed:.9}),
+    campaignMission("Locked Moonwell","封鎖月井","Carry the first seal through two shadow shelters.","帶著第一道封印穿過兩處陰影掩護。",{object:[78,24],treasure:[20,72],exit:[82,10],patrols:[[18,36,82,36],[18,58,82,58],[24,80,76,80]],safeZones:[[28,50,9],[70,68,9]],order:"treasure-first",speed:.95}),
+    campaignMission("Double Ward","雙重守望","Seal order and clockwork surges overlap.","封印順序與發條加速同時生效。",{object:[22,24],treasure:[78,72],exit:[18,10],patrols:[[18,42,82,42],[24,62,76,62],[28,80,72,80]],order:"treasure-first",clockCycle:5.8,speed:.92}),
+    campaignMission("Vault Sealkeeper","寶庫封印官","Break both seals in order while the Sealkeeper guards the center.","依序解除兩道封印，同時避開中央封印官。",{object:[78,26],treasure:[20,72],exit:[50,10],patrols:[[18,40,82,40],[24,78,76,78]],safeZones:[[50,62,9]],order:"treasure-first",guardian:guardianCatalog.seals,speed:.9}),
+    campaignMission("Dark Meridian","暗影子午線","A widening searchlight crosses a chain of shadow shelters.","擴張探照光會掃過連續陰影掩護。",{object:[76,24],treasure:[20,72],exit:[50,10],patrols:[[18,44,82,44],[24,78,76,78]],safeZones:[[28,58,9],[70,58,9]],spotlight:true,speed:.96}),
+    campaignMission("Silent Chimes","寂靜月鐘","Bell pulses, shadow timing, and a risky treasure route combine.","月鐘脈衝、陰影時機與高風險寶藏路線同時出現。",{object:[22,24],treasure:[80,28],exit:[82,10],patrols:[[18,38,82,70],[82,38,18,70],[20,80,80,80]],safeZones:[[50,58,10]],bellPulse:5,speed:.94}),
+    campaignMission("Shifting Orrery","位移天球儀","Marker swaps happen inside a changing clockwork rhythm.","標記會在變動的發條節奏中交換。",{object:[78,24],treasure:[20,70],exit:[18,10],patrols:[[18,40,82,40],[18,62,82,62],[28,80,72,80]],mirrorInterval:5.5,clockCycle:5.8,speed:.92}),
+    campaignMission("Triple Lock","三重封鎖","Treasure first, then the relic; extraction relocates after pickup.","先取寶藏再取任務物；取得後撤離門會移位。",{object:[20,24],treasure:[80,72],exit:[50,10],phaseExit:[82,12],patrols:[[18,36,82,36],[18,56,82,56],[22,78,78,78]],safeZones:[[50,66,9]],order:"treasure-first",clockCycle:5.5,speed:.95}),
+    campaignMission("Eclipse Curator","日蝕館長","Master seals, shadows, shifting markers, pulses, and a moving exit.","綜合封印、陰影、標記換位、警報脈衝與移動出口。",{object:[78,24],treasure:[20,72],exit:[50,10],phaseExit:[82,12],patrols:[[18,38,82,38],[18,58,82,58],[24,80,76,80]],safeZones:[[28,50,9],[70,66,9]],order:"treasure-first",mirrorInterval:5.5,clockCycle:5.5,bellPulse:5,guardian:guardianCatalog.eclipse,speed:.94})
+  ];
+  let state=load(),locale=localStorage.getItem(localeKey)||"en",selectedMission=0,gadget="dash",gadgetOffers=createOffers(),insuranceActive=false,preservedTreasure=false,playing=false,paused=false,alert=0,objectFound=false,treasureFound=false,caught=false,patrols=[],lastTime=0,missionStartedAt=0,freezeUntil=0,smokeUntil=0,preview=null,arrivalTimer=0,routePointerId=null,lastPulseCycle=-1,lastMirrorCycle=-1,guardianPhase=1;
   const nodes={main:$("#mainScreen"),stage:$("#stageScreen"),battle:$("#battleScreen"),rail:$("#missionRail"),field:$("#playField"),fia:$("#fiaActor"),objective:$("#objectiveActor"),treasure:$("#treasureActor"),exit:$("#exitActor"),patrolLayer:$("#patrolLayer"),route:$("#routeLine"),feedback:$("#feedbackText"),fx:$("#feedbackFx"),alert:$("#alertFill"),modal:$("#resultModal")};
-  function load(){try{return{unlocked:1,coins:0,safehouse:1,cleared:{},...JSON.parse(localStorage.getItem(KEY)||"{}")}}catch{return{unlocked:1,coins:0,safehouse:1,cleared:{}}}}
+  function load(){
+    try{
+      const loaded={unlocked:1,coins:0,safehouse:1,cleared:{},...JSON.parse(localStorage.getItem(KEY)||"{}")};
+      loaded.unlocked=Math.max(1,Math.min(campaign.length,Math.floor(Number(loaded.unlocked)||1)));
+      loaded.cleared=loaded.cleared&&typeof loaded.cleared==="object"?loaded.cleared:{};
+      loaded.safehouse=Math.max(1,Math.floor(Number(loaded.safehouse)||1));
+      return loaded;
+    }catch{return{unlocked:1,coins:0,safehouse:1,cleared:{}}}
+  }
   function save(){localStorage.setItem(KEY,JSON.stringify(state))}
   function wallet(){return window.WeightPlayWallet?.read?.()||{diamonds:0}}
   function spendDiamonds(cost){return Boolean(window.WeightPlayWallet?.spendDiamonds?.(cost))}
@@ -105,7 +168,7 @@
   function t(key,vars={}){let value=copy[locale]?.[key]||copy.en[key]||key;Object.entries(vars).forEach(([k,v])=>value=value.replace(`{${k}}`,v));return value}
   function localize(){document.documentElement.lang=locale;const internal=document.querySelector('meta[name="robots"]')?.content.includes("noindex");document.title=`${t("title")} - ${internal?"Internal Trial":"WeightPlay"}`;document.querySelectorAll("[data-i18n]").forEach(n=>n.textContent=t(n.dataset.i18n));$("#localeSelect").setAttribute("aria-label",t("languageLabel"));$(".main-poster").alt=t("posterAlt");$(".planner > img").alt=t("orlaAlt");nodes.rail.setAttribute("aria-label",t("missionRailLabel"));nodes.fia.alt=t("fiaAlt");$("#stageBackBtn").setAttribute("aria-label",t("stageBackLabel"));$("#battleBackBtn").setAttribute("aria-label",t("battleBackLabel"));renderSummary();renderStage();renderGadgets();renderEconomy();updateGadget();renderGadgetSummary();updatePauseControl()}
   function show(name){document.body.dataset.screen=name;nodes.main.hidden=name!=="main";nodes.stage.hidden=name!=="stage";nodes.battle.hidden=name!=="battle";if(name!=="battle"){playing=false;paused=false;cancelPendingMovement();updatePauseControl()}}
-  function renderSummary(){$("#safehouseSummary").textContent=`${t("safehouse",{n:state.safehouse})} · ${t("coins")}: ${state.coins} · ${Object.keys(state.cleared).length}/5`}
+  function renderSummary(){$("#safehouseSummary").textContent=`${t("safehouse",{n:state.safehouse})} · ${t("coins")}: ${state.coins} · ${Object.keys(state.cleared).length}/${campaign.length}`}
   function medalProgress(index){
     const medals=Math.max(0,Math.min(3,Number(state.cleared[index])||0));
     if(!medals)return{visible:`☆☆☆ · ${t("notCleared")}`,accessible:t("notCleared")};
@@ -117,22 +180,44 @@
     if(!nodes.rail)return;
     $("#coinLabel").textContent=`${t("coins")}: ${state.coins}`;
     nodes.rail.innerHTML="";
-    missions.forEach((m,i)=>{
+    campaign.forEach((m,i)=>{
       const b=document.createElement("button");
       const missionName=`${t("mission",{n:i+1})}: ${m.name[locale==="zh-Hant"?1:0]}`;
       const locked=i+1>state.unlocked;
       const progress=medalProgress(i);
       b.type="button";
       b.className=`mission-card${locked?" locked":""}`;
-      b.innerHTML=`<img src="../../assets/animal-moonlight-heist-archive-background.png" alt=""><div><strong>${missionName}</strong><span>${locked?t("locked"):progress.visible}</span></div>`;
-      b.setAttribute("aria-label",`${missionName}. ${locked?t("locked"):progress.accessible}`);
+      const guardian=m.guardian;
+      const art=guardian?`../../assets/animal-moonlight-heist-guardian-${guardian.id}.webp`:"../../assets/animal-moonlight-heist-archive-background.png";
+      const checkpoint=guardian?`<span class="checkpoint-tag">${t("checkpoint")} · ${guardian.name[locale==="zh-Hant"?1:0]}</span>`:"";
+      b.classList.toggle("checkpoint",Boolean(guardian));
+      b.innerHTML=`<img src="${art}" alt=""><div><strong>${missionName}</strong>${checkpoint}<span class="mission-rule">${m.rule[locale==="zh-Hant"?1:0]}</span><span>${locked?t("locked"):progress.visible}</span></div>`;
+      b.setAttribute("aria-label",`${missionName}. ${m.rule[locale==="zh-Hant"?1:0]}. ${locked?t("locked"):progress.accessible}`);
       b.addEventListener("click",()=>{if(!locked)startMission(i)});
       nodes.rail.append(b);
     });
   }
   function renderGadgets(focusId=null){const wrap=$("#gadgetChoices");wrap.innerHTML="";gadgetOffers.forEach(({id,level})=>{const g=gadgets[id],b=document.createElement("button");b.className=`gadget-choice${id===gadget?" selected":""}`;b.dataset.gadgetId=id;b.innerHTML=`<img src="../../assets/animal-moonlight-heist-gadget-${g.art}.webp" alt=""><span class="gadget-level">Lv.${level}</span>`;b.type="button";b.title=`${t(id)} Lv.${level}`;b.setAttribute("aria-label",gadgetSummary(id,level));b.setAttribute("aria-pressed",id===gadget?"true":"false");b.addEventListener("click",()=>{gadget=id;renderGadgets(id);updateGadget();renderGadgetSummary()});wrap.append(b)});if(focusId)wrap.querySelector(`[data-gadget-id="${focusId}"]`)?.focus({preventScroll:true})}
   function updateGadget(){if(!$("#gadgetIcon"))return;$("#gadgetIcon").src=`../../assets/animal-moonlight-heist-gadget-${gadgets[gadget].art}.webp`;$("#gadgetLabel").textContent=t(gadget)}
-  function startMission(index){selectedMission=index;objectFound=false;treasureFound=preservedTreasure;preservedTreasure=false;caught=false;alert=0;paused=false;freezeUntil=0;smokeUntil=0;const m=missions[index];$("#missionLabel").textContent=`${t("mission",{n:index+1})}: ${m.name[locale==="zh-Hant"?1:0]}`;$("#objectiveLabel").textContent=t("objective");nodes.objective.src=`../../assets/animal-moonlight-heist-object-${missionObjects[index]}.webp`;place(nodes.objective,m.object);place(nodes.treasure,m.treasure);place(nodes.exit,m.exit);nodes.objective.hidden=false;nodes.treasure.hidden=treasureFound;nodes.exit.style.opacity=.5;place(nodes.fia,[50,88]);nodes.patrolLayer.innerHTML="";patrols=m.patrols.map((path,i)=>{const sight=document.createElement("span");sight.className="patrol-sight";sight.setAttribute("aria-hidden","true");const img=document.createElement("img");img.className="patrol";img.src=`../../assets/animal-moonlight-heist-patrol-${patrolArt[i%3]}.webp`;nodes.patrolLayer.append(sight,img);const p={img,sight,path,progress:i*.23,direction:1};updatePatrol(p);return p});nodes.feedback.textContent=t("holdRoute");nodes.alert.style.width="0";$("#coinBattle").textContent=`${t("coins")}: ${state.coins}`;show("battle");playing=true;lastTime=performance.now();requestAnimationFrame(loop)}
+  function startMission(index){
+    selectedMission=Math.max(0,Math.min(campaign.length-1,index));
+    objectFound=false;treasureFound=preservedTreasure;preservedTreasure=false;caught=false;alert=0;paused=false;freezeUntil=0;smokeUntil=0;lastPulseCycle=-1;lastMirrorCycle=-1;guardianPhase=1;
+    const m=campaign[selectedMission];
+    $("#missionLabel").textContent=`${t("mission",{n:selectedMission+1})}: ${m.name[locale==="zh-Hant"?1:0]}`;
+    $("#objectiveLabel").textContent=m.rule[locale==="zh-Hant"?1:0];
+    nodes.objective.src=`../../assets/animal-moonlight-heist-object-${missionObjects[selectedMission%missionObjects.length]}.webp`;
+    place(nodes.objective,m.object);place(nodes.treasure,m.treasure);place(nodes.exit,m.exit);
+    nodes.objective.hidden=false;nodes.treasure.hidden=treasureFound;nodes.exit.style.opacity=.5;place(nodes.fia,[50,88]);nodes.patrolLayer.innerHTML="";
+    (m.safeZones||[]).forEach(([x,y,size])=>{const zone=document.createElement("span");zone.className="safe-zone";zone.style.left=`${x}%`;zone.style.top=`${y}%`;zone.style.setProperty("--zone-size",`${size*2}%`);zone.setAttribute("aria-hidden","true");nodes.patrolLayer.append(zone)});
+    patrols=m.patrols.map((path,i)=>createPatrol(path,`../../assets/animal-moonlight-heist-patrol-${patrolArt[i%3]}.webp`,i*.23));
+    if(m.guardian){const guardian=createPatrol(m.guardian.path,`../../assets/animal-moonlight-heist-guardian-${m.guardian.id}.webp`,.12,m.guardian);guardian.img.alt=m.guardian.name[locale==="zh-Hant"?1:0];patrols.push(guardian)}
+    nodes.feedback.textContent=t("holdRoute");nodes.alert.style.width="0";$("#coinBattle").textContent=`${t("coins")}: ${state.coins}`;show("battle");playing=true;missionStartedAt=lastTime=performance.now();requestAnimationFrame(loop);
+  }
+  function createPatrol(path,src,progress=0,guardian=null){
+    const sight=document.createElement("span");sight.className=`patrol-sight${guardian?" guardian-sight":""}`;sight.setAttribute("aria-hidden","true");
+    const img=document.createElement("img");img.className=`patrol${guardian?" guardian-patrol":""}`;img.src=src;img.alt="";nodes.patrolLayer.append(sight,img);
+    const patrol={img,sight,path,progress,direction:1,guardian};updatePatrol(patrol);return patrol;
+  }
   function place(el,pos){el.style.left=`${pos[0]}%`;el.style.top=`${pos[1]}%`}
   function point(el){return[parseFloat(el.style.left)||0,parseFloat(el.style.top)||0]}
   function updatePauseControl(){const button=$("#pauseBtn");if(!button)return;button.textContent=paused?"\u25b6":"\u275a\u275a";button.setAttribute("aria-pressed",paused?"true":"false");button.setAttribute("aria-label",t(paused?"resumeAction":"pauseAction"));button.title=t(paused?"resumeAction":"pauseAction");nodes.field.tabIndex=0;nodes.field.setAttribute("aria-label",t("playFieldLabel"))}
@@ -144,13 +229,58 @@
   function scheduleArrival(delay){if(arrivalTimer)clearTimeout(arrivalTimer);arrivalTimer=setTimeout(()=>{arrivalTimer=0;if(playing&&!paused)resolveArrival()},delay)}
   function distance(a,b){return Math.hypot(a[0]-b[0],a[1]-b[1])}
   function updatePatrol(p){const [x1,y1,x2,y2]=p.path;const q=p.direction>0?p.progress:1-p.progress;const position=[x1+(x2-x1)*q,y1+(y2-y1)*q];place(p.img,position);place(p.sight,position)}
-  function loop(now){if(!playing)return;const dt=Math.min(.05,(now-lastTime)/1000);lastTime=now;if(!paused&&now>freezeUntil){patrols.forEach(p=>{p.progress+=dt*(.12+selectedMission*.012);if(p.progress>=1){p.progress=0;p.direction*=-1}updatePatrol(p)});const seen=patrols.some(p=>distance(point(nodes.fia),point(p.img))<18);alert=Math.max(0,Math.min(100,alert+(seen?48:-34)*dt));nodes.alert.style.width=`${alert}%`;if(alert>=100)fail()}requestAnimationFrame(loop)}
+  function activeMission(){return campaign[selectedMission]}
+  function inSafeZone(position=point(nodes.fia)){return(activeMission().safeZones||[]).some(([x,y,size])=>distance(position,[x,y])<=size)}
+  function guardianPatrol(){return patrols.find(p=>p.guardian)}
+  function setGuardianWarning(warning){const guardian=guardianPatrol();guardian?.img.classList.toggle("is-warning",warning);guardian?.sight.classList.toggle("is-warning",warning)}
+  function swapMissionMarkers(){
+    if(objectFound||treasureFound)return;
+    const objectPosition=point(nodes.objective),treasurePosition=point(nodes.treasure);
+    place(nodes.objective,treasurePosition);place(nodes.treasure,objectPosition);
+    [nodes.objective,nodes.treasure].forEach(node=>{node.classList.add("marker-shift");setTimeout(()=>node.classList.remove("marker-shift"),520)});
+  }
+  function updateMissionRules(now){
+    const m=activeMission(),elapsed=(now-missionStartedAt)/1000;
+    let speedFactor=1,warning=false;
+    if(m.clockCycle){const phase=elapsed%m.clockCycle,surge=phase>=m.clockCycle*.62;speedFactor=surge?1.9:.52;warning=surge||phase>=m.clockCycle*.5;nodes.field.classList.toggle("clock-surge",surge);if(!preview)nodes.feedback.textContent=t(surge?"clockSurge":"clockSlow")}
+    else nodes.field.classList.remove("clock-surge");
+    if(m.mirrorInterval){const cycle=Math.floor(elapsed/m.mirrorInterval),phase=elapsed%m.mirrorInterval;warning=warning||phase>=m.mirrorInterval-1;if(cycle>0&&cycle!==lastMirrorCycle){lastMirrorCycle=cycle;swapMissionMarkers()}if(phase>=m.mirrorInterval-1&&!preview)nodes.feedback.textContent=t("mirrorWarning")}
+    const bellInterval=m.bellPulse||(m.guardian?.behavior==="bell"||m.guardian?.behavior==="eclipse"?5:0);
+    if(bellInterval){const cycle=Math.floor(elapsed/bellInterval),phase=elapsed%bellInterval;warning=warning||phase>=bellInterval-1;if(cycle>0&&cycle!==lastPulseCycle){lastPulseCycle=cycle;if(!inSafeZone()){alert=Math.min(100,alert+20);showFx("warning")}}if(phase>=bellInterval-1&&!preview)nodes.feedback.textContent=t("bellWarning")}
+    setGuardianWarning(warning);return speedFactor;
+  }
+  function patrolSightRadius(p,now){
+    const m=activeMission(),elapsed=(now-missionStartedAt)/1000;
+    if(p.guardian?.behavior==="spotlight"||p.guardian?.behavior==="eclipse"||m.spotlight)return 17+10*((Math.sin(elapsed*1.7)+1)/2);
+    return p.guardian?20:18;
+  }
+  function loop(now){
+    if(!playing)return;
+    const dt=Math.min(.05,(now-lastTime)/1000);lastTime=now;
+    if(!paused&&now>freezeUntil){
+      const m=activeMission(),speedFactor=updateMissionRules(now);
+      patrols.forEach(p=>{p.progress+=dt*(.115+(m.speed||1)*.028)*speedFactor;if(p.progress>=1){p.progress=0;p.direction*=-1}updatePatrol(p);const radius=patrolSightRadius(p,now);p.sight.style.setProperty("--sight-size",`${radius*2}%`)});
+      const seen=!inSafeZone()&&patrols.some(p=>distance(point(nodes.fia),point(p.img))<patrolSightRadius(p,now));
+      alert=Math.max(0,Math.min(100,alert+(seen?48:-(m.alertDecay||34))*dt));nodes.alert.style.width=`${alert}%`;if(alert>=100)fail();
+    }
+    requestAnimationFrame(loop);
+  }
   function routeTo(clientX,clientY,commit=false){const r=nodes.field.getBoundingClientRect();const x=Math.max(6,Math.min(94,(clientX-r.left)/r.width*100));const y=Math.max(8,Math.min(92,(clientY-r.top)/r.height*100));const start=point(nodes.fia);const dx=(x-start[0])/100*r.width,dy=(y-start[1])/100*r.height;const len=Math.hypot(dx,dy);nodes.route.hidden=false;nodes.route.style.left=`${start[0]}%`;nodes.route.style.top=`${start[1]}%`;nodes.route.style.width=`${len}px`;nodes.route.style.transform=`rotate(${Math.atan2(dy,dx)}rad)`;const exposed=patrols.some(p=>distance([x,y],point(p.img))<22);nodes.route.classList.toggle("route-exposed",exposed);nodes.feedback.textContent=t(commit?"holdRoute":"move");preview=[x,y];if(commit){const level=selectedOffer().level,dashTime=gadget==="dash"?Math.max(180,320-level*45):650;nodes.route.hidden=true;nodes.fia.style.transitionDuration=`${dashTime}ms`;place(nodes.fia,preview);scheduleArrival(dashTime+20)}}
-  function resolveArrival(){const p=point(nodes.fia);if(!objectFound&&distance(p,point(nodes.objective))<12){objectFound=true;nodes.objective.hidden=true;nodes.exit.style.opacity=1;$("#objectiveLabel").textContent=t("extraction");showFx("pickup");nodes.feedback.textContent=t("found")}if(!treasureFound&&distance(p,point(nodes.treasure))<12){treasureFound=true;nodes.treasure.hidden=true;showFx("pickup");nodes.feedback.textContent=t("treasureFound")}if(objectFound&&distance(p,point(nodes.exit))<13)win()}
+  function resolveArrival(){
+    const p=point(nodes.fia),m=activeMission();
+    if(!treasureFound&&distance(p,point(nodes.treasure))<12){treasureFound=true;nodes.treasure.hidden=true;showFx("pickup");nodes.feedback.textContent=t("treasureFound")}
+    if(!objectFound&&distance(p,point(nodes.objective))<12){
+      if(m.order==="treasure-first"&&!treasureFound){nodes.feedback.textContent=t("firstSeal");showFx("warning");return}
+      objectFound=true;nodes.objective.hidden=true;nodes.exit.style.opacity=1;if(m.phaseExit)place(nodes.exit,m.phaseExit);
+      if(m.guardian?.behavior==="eclipse"){guardianPhase=2;patrols.forEach(p=>p.direction*=-1);alert=Math.max(alert,28)}
+      $("#objectiveLabel").textContent=t("extraction");showFx("pickup");nodes.feedback.textContent=t("found");
+    }
+    if(objectFound&&distance(p,point(nodes.exit))<13)win();
+  }
   function showFx(type){nodes.fx.src=`../../assets/animal-moonlight-heist-fx-${type}.webp`;place(nodes.fx,point(nodes.fia));nodes.fx.hidden=false;nodes.fx.classList.remove("fx-show");void nodes.fx.offsetWidth;nodes.fx.classList.add("fx-show");setTimeout(()=>nodes.fx.hidden=true,650)}
   function useGadget(){if(!playing||paused)return;const level=selectedOffer().level;if(gadget==="decoy"){freezeUntil=performance.now()+(2500+level*650);showFx("pickup")}else if(gadget==="smoke"){alert=0;smokeUntil=performance.now()+(800+level*500);showFx("shadow")}else{nodes.feedback.textContent=t("dash");showFx("pickup")}}
   function fail(){if(caught||performance.now()<smokeUntil)return;caught=true;playing=false;if(insuranceActive&&treasureFound)preservedTreasure=true;insuranceActive=false;showFx("warning");nodes.fia.classList.add("caught");openResult(false)}
-  function win(){playing=false;insuranceActive=false;const medals=1+(!caught?1:0)+(treasureFound?1:0);const reward=20+selectedMission*8+(treasureFound?12:0);state.coins+=reward;state.cleared[selectedMission]=Math.max(state.cleared[selectedMission]||0,medals);state.unlocked=Math.max(state.unlocked,Math.min(5,selectedMission+2));state.safehouse=1+Math.floor(Object.keys(state.cleared).length/2);save();openResult(true,medals,reward)}
+  function win(){playing=false;insuranceActive=false;const m=activeMission(),medals=1+(!caught?1:0)+(treasureFound?1:0);const reward=20+selectedMission*4+(treasureFound?12:0)+(m.guardian?30:0);state.coins+=reward;state.cleared[selectedMission]=Math.max(state.cleared[selectedMission]||0,medals);state.unlocked=Math.max(state.unlocked,Math.min(campaign.length,selectedMission+2));state.safehouse=1+Math.floor(Object.keys(state.cleared).length/5);save();openResult(true,medals,reward)}
   function openResult(ok,medals=0,reward=0){
     $("#resultTitle").textContent=t(ok?"victory":"captured");
     $("#resultText").textContent=ok
@@ -158,7 +288,7 @@
       : t("capturedText");
     $("#medalRow").textContent=ok?"★".repeat(medals)+"☆".repeat(3-medals):"";
     $("#medalRow").setAttribute("aria-label",ok?t("medalCount",{medals}):"");
-    $("#nextBtn").hidden=!ok||selectedMission>=4;
+    $("#nextBtn").hidden=!ok||selectedMission>=campaign.length-1;
     [...nodes.modal.parentElement.children].filter(node=>node!==nodes.modal).forEach(node=>{node.inert=true;node.setAttribute("aria-hidden","true")});
     nodes.modal.hidden=false;
     (ok&&!$("#nextBtn").hidden?$("#nextBtn"):$("#retryBtn")).focus({preventScroll:true});
@@ -173,7 +303,24 @@
     else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus()}
   }
   $(".home-link").setAttribute("data-wp-return","main");$("#stageBackBtn").setAttribute("data-wp-return","stage");$("#battleBackBtn").setAttribute("data-wp-return","battle");
-  function bind(){$("#localeSelect").value=locale;$("#localeSelect").addEventListener("change",e=>{locale=e.target.value;localStorage.setItem(localeKey,locale);localize()});$("#startBtn").addEventListener("click",()=>{show("stage");renderStage()});$("#stageBackBtn").addEventListener("click",()=>show("main"));$("#battleBackBtn").addEventListener("click",()=>{show("stage");renderStage()});$("#pauseBtn").addEventListener("click",()=>setPaused(!paused));document.addEventListener("visibilitychange",()=>{if(document.hidden&&playing&&!paused)setPaused(true)});nodes.field.addEventListener("pointerdown",e=>{if(!playing||paused||(routePointerId!==null&&routePointerId!==e.pointerId))return;routePointerId=e.pointerId;nodes.field.setPointerCapture(e.pointerId);routeTo(e.clientX,e.clientY)});nodes.field.addEventListener("pointermove",e=>{if(!paused&&e.pointerId===routePointerId&&nodes.field.hasPointerCapture(e.pointerId))routeTo(e.clientX,e.clientY)});nodes.field.addEventListener("pointerup",e=>{if(e.pointerId!==routePointerId)return;if(!paused&&preview)routeTo(e.clientX,e.clientY,true);cancelRoutePreview()});nodes.field.addEventListener("pointercancel",e=>{if(e.pointerId===routePointerId)cancelRoutePreview()});nodes.field.addEventListener("lostpointercapture",e=>{if(e.pointerId===routePointerId)cancelRoutePreview()});nodes.modal.addEventListener("keydown",trapResultFocus);$("#gadgetBtn").addEventListener("click",useGadget);$("#retryBtn").addEventListener("click",()=>{closeResult();startMission(selectedMission)});$("#stagesBtn").addEventListener("click",()=>{closeResult();show("stage");renderStage()});$("#nextBtn").addEventListener("click",()=>{closeResult();startMission(Math.min(4,selectedMission+1))})}
+  function bind(){
+    $("#localeSelect").value=locale;
+    $("#localeSelect").addEventListener("change",e=>{locale=e.target.value;localStorage.setItem(localeKey,locale);localize()});
+    $("#startBtn").addEventListener("click",()=>{show("stage");renderStage()});
+    $("#stageBackBtn").addEventListener("click",()=>show("main"));
+    $("#battleBackBtn").addEventListener("click",()=>{show("stage");renderStage()});
+    $("#pauseBtn").addEventListener("click",()=>setPaused(!paused));
+    document.addEventListener("visibilitychange",()=>{if(document.hidden&&playing&&!paused)setPaused(true)});
+    nodes.field.addEventListener("pointerdown",e=>{if(!playing||paused||(routePointerId!==null&&routePointerId!==e.pointerId))return;routePointerId=e.pointerId;nodes.field.setPointerCapture(e.pointerId);routeTo(e.clientX,e.clientY)});
+    nodes.field.addEventListener("pointermove",e=>{if(!paused&&e.pointerId===routePointerId&&nodes.field.hasPointerCapture(e.pointerId))routeTo(e.clientX,e.clientY)});
+    nodes.field.addEventListener("pointerup",e=>{if(e.pointerId!==routePointerId)return;if(!paused&&preview)routeTo(e.clientX,e.clientY,true);cancelRoutePreview()});
+    nodes.field.addEventListener("pointercancel",e=>{if(e.pointerId===routePointerId)cancelRoutePreview()});
+    nodes.field.addEventListener("lostpointercapture",e=>{if(e.pointerId===routePointerId)cancelRoutePreview()});
+    nodes.modal.addEventListener("keydown",trapResultFocus);$("#gadgetBtn").addEventListener("click",useGadget);
+    $("#retryBtn").addEventListener("click",()=>{closeResult();startMission(selectedMission)});
+    $("#stagesBtn").addEventListener("click",()=>{closeResult();show("stage");renderStage()});
+    $("#nextBtn").addEventListener("click",()=>{closeResult();startMission(Math.min(campaign.length-1,selectedMission+1))});
+  }
   function bindMissionRailDrag(){
     let pointerId=null,startX=0,startLeft=0,dragged=false,suppressClickUntil=0;
     const rail=nodes.rail;
@@ -209,6 +356,7 @@
     const current=point(nodes.fia),next=[Math.max(6,Math.min(94,current[0]+direction[0]*6)),Math.max(8,Math.min(92,current[1]+direction[1]*6))];
     nodes.route.hidden=true;nodes.fia.style.transitionDuration="120ms";place(nodes.fia,next);scheduleArrival(140);
   });
+  [$("#rerollBtn"),$("#insuranceBtn")].forEach(button=>button.addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault()}));
   $("#rerollBtn").addEventListener("click",rerollOffers);
   $("#insuranceBtn").addEventListener("click",buyInsurance);
   // Keep the public Traditional Chinese runtime dictionary ASCII-safe so it cannot be damaged by a legacy editor encoding.
@@ -233,5 +381,17 @@
     insuranceAction:decodeZh("\\u5bf6\\u85cf\\u4fdd\\u96aa"),
     insuredLabel:decodeZh("\\u4e0b\\u4e00\\u500b\\u4efb\\u52d9\\u7684\\u5bf6\\u85cf\\u4fdd\\u96aa\\u5df2\\u555f\\u7528\\u3002")
   });
+  const checkpointStages=campaign.map((mission,index)=>mission.guardian?index+1:null).filter(Boolean);
+  if(campaign.length!==30||new Set(campaign.map(mission=>mission.name[0])).size!==30||checkpointStages.join(",")!=="5,10,15,20,25,30")throw new Error("Moonlight Heist campaign depth contract failed.");
+  if(location.hostname==="localhost"||location.hostname==="127.0.0.1"||new URLSearchParams(location.search).has("wp_test")){
+    window.__ANIMAL_MOONLIGHT_HEIST_TEST__={
+      campaign:()=>campaign.map((mission,index)=>({stage:index+1,name:[...mission.name],rule:[...mission.rule],patrols:mission.patrols.length,safeZones:mission.safeZones?.length||0,order:mission.order||"any",mirror:Boolean(mission.mirrorInterval),clock:Boolean(mission.clockCycle),bell:Boolean(mission.bellPulse||mission.guardian?.behavior==="bell"||mission.guardian?.behavior==="eclipse"),spotlight:Boolean(mission.spotlight||mission.guardian?.behavior==="spotlight"||mission.guardian?.behavior==="eclipse"),guardian:mission.guardian?{id:mission.guardian.id,name:[...mission.guardian.name],behavior:mission.guardian.behavior}:null})),
+      unlockAll:()=>{state.unlocked=campaign.length;save();renderStage();return state.unlocked},
+      openMission:index=>{startMission(Math.max(0,Math.min(campaign.length-1,Number(index)||0)));return selectedMission+1},
+      placeFia:position=>{place(nodes.fia,position);resolveArrival();return{objectFound,treasureFound,exit:point(nodes.exit)}},
+      tickRules:seconds=>{missionStartedAt=performance.now()-Number(seconds)*1000;const factor=updateMissionRules(performance.now());return{factor,alert,object:point(nodes.objective),treasure:point(nodes.treasure),warning:Boolean(guardianPatrol()?.img.classList.contains("is-warning"))}},
+      snapshot:()=>({stage:selectedMission+1,unlocked:state.unlocked,screen:document.body.dataset.screen,objectFound,treasureFound,guardianPhase,patrols:patrols.length,guardian:guardianPatrol()?.guardian?.id||null,safeZones:document.querySelectorAll(".safe-zone").length,resultOpen:!nodes.modal.hidden})
+    };
+  }
   renderGadgets();bind();bindMissionRailDrag();localize();$("#localeSelect option[value='zh-Hant']").textContent=decodeZh("\\u7e41\\u9ad4\\u4e2d\\u6587");show("main");
 })();

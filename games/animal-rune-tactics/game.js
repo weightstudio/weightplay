@@ -1904,6 +1904,9 @@
         renderMenu();
       }
     });
+    nodes.heroUpgradeGrid?.addEventListener("keydown", (event) => {
+      if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
+    });
     nodes.heroUpgradeGrid?.addEventListener("click", (event) => {
       const id = event.target?.closest?.("[data-hero-upgrade]")?.dataset?.heroUpgrade;
       if (id) upgradeHero(id);

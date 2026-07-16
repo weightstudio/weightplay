@@ -1697,6 +1697,9 @@
     const id = event.target?.closest?.("[data-upgrade]")?.dataset?.upgrade;
     if (id) chooseUpgrade(id);
   });
+  nodes.rerollBtn.addEventListener("keydown", (event) => {
+    if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
+  });
   nodes.rerollBtn.addEventListener("click", rerollChoices);
   canvas.addEventListener("pointerdown", onPointerStart);
   canvas.addEventListener("pointermove", onPointerMove);

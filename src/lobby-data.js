@@ -89,10 +89,10 @@ window.WONDER_LOBBY = {
       ages: ["6", "family"],
       ageLabel: { en: "6+", "zh-Hant": "6+" },
       description: {
-        en: "Cut vines, drag the leaf trampoline, and bounce fruit into animal baskets through short physics stages.",
-        "zh-Hant": "切斷藤蔓並移動葉子彈床，把水果彈進動物籃子裡。",
+        en: "Guide fruit through 30 physics rescues with moving baskets, layered winds, double bounces, and Panko checkpoints.",
+        "zh-Hant": "引導水果通過 30 關物理救援，挑戰移動籃、分層風、雙重彈跳與 Panko 檢核。",
       },
-      meta: { en: ["Animal Physics", "8 Stages", "Vine Timing"], "zh-Hant": ["動物物理", "8 關", "藤蔓時機"] },
+      meta: { en: ["30 Stages", "Physics Routes", "Panko Checks"], "zh-Hant": ["30 關", "物理路線", "Panko 檢核"] },
       art: { kind: "image", background: "assets/animal-vine-rescue-cover.webp", hero: "assets/weightplay-character-spark-paw-fox-cutout.webp" },
     },
     {
@@ -896,6 +896,18 @@ for (const game of window.WONDER_LOBBY.games) {
   game.type["zh-Hant"] = clean.type;
   game.description["zh-Hant"] = clean.description;
   game.meta["zh-Hant"] = clean.meta;
+}
+
+const moonlightHeist = window.WONDER_LOBBY.games.find((game) => game.id === "animal-moonlight-heist");
+if (moonlightHeist) {
+  delete moonlightHeist.ageLabel;
+  moonlightHeist.title["zh-Hant"] = "動物月影潛行隊";
+  moonlightHeist.statusText["zh-Hant"] = "可遊玩";
+  moonlightHeist.type["zh-Hant"] = "潛行路線冒險";
+  moonlightHeist.description.en = "Plan routes across 30 Moon Archive missions, master shadow, mirror, clockwork, bell, seal, and spotlight rules, then outwit six guardians.";
+  moonlightHeist.description["zh-Hant"] = "規劃 30 個月光檔案任務，掌握陰影、鏡面、發條、月鐘、封印與探照規則，並通過六位守衛。";
+  moonlightHeist.meta.en = ["30 Missions", "Six Stealth Rules", "Six Guardians"];
+  moonlightHeist.meta["zh-Hant"] = ["30 個任務", "六種潛行規則", "六位守衛"];
 }
 
 if (beastGuardian) {

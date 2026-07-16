@@ -177,19 +177,53 @@
     },
     "animal-rope-rescue": {
       title: "Animal Vine Rescue",
-      age: "5+",
-      difficulty: "Easy",
-      time: "3-5 minutes",
+      age: "6+",
+      difficulty: "Easy to Medium",
+      time: "2-6 minutes",
       skills: ["Hand-Eye Coordination", "Problem Solving", "Focus"],
       intro:
-        "Animal Vine Rescue is a short animal physics puzzle where players cut vines, move a leaf trampoline, and bounce fruit into the animal basket. The game is designed to be understandable quickly while still giving players real control through timing and position. Each stage changes the fruit start, target animal, wind, and gravity so it feels more like a playable rescue challenge than a one-click animation.",
-      how: ["Drag the leaf trampoline left and right.", "Tap Cut to release the fruit from the vine.", "Bounce the fruit toward the animal basket.", "Clear stages to unlock harder rescue routes."],
+        "Animal Vine Rescue is a 30-stage animal physics puzzle about cutting a hanging fruit free, steering a leaf trampoline, and landing the fruit in a waiting animal's basket. The campaign is divided into six five-stage rescue lessons. Later routes add moving baskets, upper and lower wind layers, wind that reverses after a bounce, two-bounce deliveries, narrower catch zones, and two- or three-fruit picnic orders. Every fifth stage is a friendly Panko Check that combines the current lesson without adding combat or time pressure.",
+      story: [
+        "The orchard delivery vines have grown across a forest clearing, leaving apples, bananas, and berries hanging far from the animals who requested them. Panko organizes the rescue map while rabbits, lions, pandas, foxes, and koalas wait beside their baskets. The player is the leaf guide: they choose where the trampoline waits, decide when to cut, and keep steering while the fruit is airborne.",
+        "Clearing all 30 routes restores six delivery paths through the orchard. The final Panko Grand Rescue serves three animals in one Battle and combines layered wind, a moving basket, and a two-bounce route. Victory represents a complete picnic delivery rather than defeating an enemy."
+      ],
+      systems: [
+        "Every route begins with a fruit attached to a visible vine, a movable leaf trampoline, and a basket target. The leaf can move before and after Cut. A falling fruit must contact the leaf at least once before the basket accepts it, so simply releasing a fruit directly above the animal is not enough.",
+        "Fruit acceleration uses the route's gravity and active wind. The leaf adds upward velocity and horizontal direction based on where the fruit hits its surface. A centered contact creates a straighter bounce; an edge contact sends the fruit farther sideways. Missing the basket or leaving the playfield opens a supportive Retry Result without removing saved progress.",
+        "Moving-basket routes update the catch position continuously after Cut. Layered-wind routes apply different force above and below the displayed height split. Reverse-wind routes switch direction after the first leaf contact. Two-bounce routes keep the basket locked until the required second bounce, and soft-leaf routes reduce bounce height so the player must stay closer to the falling fruit.",
+        "Multi-delivery routes keep the player inside the same Battle. The next fruit, animal, and route appear after a successful catch, while the delivery counter advances from 1/2 or 1/3. Result appears only after every listed fruit reaches its basket.",
+        "The highest unlocked stage, best stars per stage, best score, and play count are saved locally in the current browser. No sign-in is required; clearing browser site data may remove that local progress."
+      ],
+      how: ["Choose an unlocked rescue card from the horizontal Stage rail.", "Read the stage name, fruit-to-animal route, and visible rule clue.", "Move the leaf with touch, pointer, or Left/Right keys, then press Cut.", "Keep steering while the fruit falls and use the leaf contact point to change its direction.", "Complete the required bounce count and follow a moving basket or changing wind when shown.", "Deliver every fruit in the route to unlock the next Stage."],
+      strategyTips: [
+        "Place the leaf under the first falling path before pressing Cut, then make smaller corrections while the fruit is moving.",
+        "Hit near the middle of the leaf for height. Use the left or right edge only when the basket is far across the clearing.",
+        "For a moving basket, aim for where it will be after the bounce rather than where it was at Cut.",
+        "On layered-wind routes, compare the fruit's direction before and after it crosses the middle of the clearing.",
+        "A two-bounce route needs control after the first contact; do not send the fruit so far sideways that the second leaf catch becomes impossible.",
+        "During picnic orders, read the next delivery instead of assuming the second fruit uses the same wind or bounce rule."
+      ],
+      progression: [
+        "Stages 1-5 teach calm, rightward, leftward, and long-crossing bounces. Panko's Balance Check adds the first gently moving basket.",
+        "Stages 6-10 focus on moving targets. Basket speed, direction, and opening size change, and Panko's Moving-Basket Check requires two leaf contacts before the catch.",
+        "Stages 11-15 introduce wind that changes by height or reverses after a bounce. Panko's Wind Check combines layered force with a moving basket.",
+        "Stages 16-20 require two bounces and introduce a softer leaf that produces a lower arc. Panko's Twin-Bounce Check also reverses the wind and moves the basket.",
+        "Stages 21-25 introduce two-fruit picnic deliveries without leaving Battle. The two routes may use opposite winds, different bounce counts, or one shared moving basket.",
+        "Stages 26-30 combine narrow catches, moving targets, layered and reversing winds, two-bounce control, and two- or three-fruit service. Panko's Grand Rescue uses three different deliveries rather than a numeric-only finale."
+      ],
+      designNote:
+        "The game uses one cut action plus continuous leaf steering so the player remains responsible after the fruit is released. The 30-stage structure changes the information a player must read—target motion, altitude-based wind, bounce count, leaf power, catch width, and delivery sequence—rather than relying only on faster gravity. The portrait playfield gives a falling fruit enough travel time for visible correction on phones, while the same logical Canvas scales uniformly on tablets and landscape screens. Panko checkpoints create memorable Kids-friendly milestones without turning a fruit-delivery puzzle into combat.",
       parent:
-        "This game may help children practice timing, focus, hand-eye coordination, and simple problem solving. Scores and stars are for fun progress tracking only, not a formal test or diagnosis.",
+        "Animal Vine Rescue may support timing, visual prediction, hand-eye coordination, focus, and simple problem solving. Adults can ask where the basket will move or why the second bounce needs a different leaf position. There is no timer, advertising, account requirement, ranking pressure, or hostile combat. Stars and saved progress are playful local feedback, not a formal ability test, diagnosis, or school assessment.",
       faq: [
-        ["Is Animal Vine Rescue free?", "Yes. It runs in the browser on WeightPlay."],
-        ["What does this game practice?", "It can practice timing, focus, hand-eye coordination, and problem solving through playful physics."],
-        ["Does it copy another game?", "No. It uses an original animal rescue theme, custom stage goals, and WeightPlay art direction."],
+        ["How many stages are in Animal Vine Rescue?", "There are 30 named stages in six five-stage lessons, with friendly Panko Checks every fifth stage."],
+        ["Can I move the leaf after cutting the vine?", "Yes. Continuous steering during the fall and after each bounce is the main player action."],
+        ["Why did the fruit pass the basket?", "Every delivery requires at least one leaf bounce, and marked routes may require two bounces or use a narrower opening."],
+        ["How do moving baskets and wind layers work?", "Moving baskets change horizontal position after Cut. Wind-layer routes apply different force in the upper and lower parts of the clearing."],
+        ["What happens in a picnic delivery?", "Two or three fruit routes continue inside the same Battle. Result waits until every delivery is complete."],
+        ["What happens when a fruit misses?", "A supportive Result offers Try Again, Stages, or Lobby without deleting unlocked progress."],
+        ["Does the game require login or show ads?", "No. This Kids game is ad-free and stores basic progress locally without requiring an account."],
+        ["Are stars a formal ability score?", "No. Stars are only game progress feedback and are not a diagnosis or assessment."],
       ],
     },
     "animal-zoo-idle": {
@@ -1986,6 +2020,50 @@
       });
   }
 
+  localizedGames["zh-Hant"]["animal-rope-rescue"] = {
+    title: "動物藤蔓救援",
+    age: "6+",
+    difficulty: "簡單到中等",
+    time: "2～6 分鐘",
+    gameplay: "藤蔓物理解謎",
+    genre: ["物理", "益智", "動物"],
+    skills: ["手眼協調", "問題解決", "專注"],
+    intro: "《動物藤蔓救援》是一款 30 關動物物理解謎遊戲。玩家要切斷掛著水果的藤蔓、持續移動葉子彈墊，最後把水果送進等待動物的籃子。六組五關課程會逐步加入移動籃子、上下分層風向、彈跳後反轉的風、雙重彈跳、較窄入口，以及兩份或三份連續野餐配送。每五關有一次友善 Panko 檢核，不加入戰鬥或計時壓力。",
+    story: [
+      "果園裡的配送藤蔓長過了森林空地，讓蘋果、香蕉和莓果掛在離訂購動物很遠的地方。Panko 負責整理救援地圖，兔子、獅子、熊貓、狐狸和無尾熊則在籃子旁等待。玩家扮演葉子引導員，決定彈墊放在哪裡、何時切斷藤蔓，並在水果飛行時持續修正位置。",
+      "完成全部 30 關代表重新打通六條果園配送路線。最終 Panko 終極救援會在同一個遊玩畫面服務三隻動物，並結合分層風、移動籃與雙重彈跳。勝利代表完成整場野餐配送，而不是打敗敵人。"
+    ],
+    systems: [
+      "每條路線開始時都有掛在藤蔓上的水果、可移動的葉子彈墊與籃子目標。切斷前後都能移動葉子。水果至少要碰到葉子一次，籃子才會接受它，因此只把水果直接落在動物上方並不能過關。",
+      "水果會受到該關重力與目前風力影響。葉子依照接觸位置提供向上速度與水平推力：碰在中央會彈得較直，碰到左右邊緣則會飛得更遠。飛出場外或錯過籃子會進入友善重試結算，不會刪除已保存的進度。",
+      "移動籃關卡會在切斷後持續改變接取位置。分層風關卡在空地上半部與下半部使用不同推力；反轉風會在第一次碰葉後改變方向。雙彈關卡會鎖住籃子直到完成第二次彈跳，柔葉關卡則降低彈跳高度，要求玩家更貼近水果。",
+      "連續配送會把玩家留在同一個遊玩畫面。每次成功後會換成下一份水果、動物與路線，配送數從 1/2 或 1/3 前進；只有全部水果都進籃，才會顯示結算。",
+      "最高解鎖關卡、各關最佳星等、最佳分數與遊玩次數保存在目前瀏覽器。不需登入；清除網站資料可能移除這些本機紀錄。"
+    ],
+    how: ["從橫向關卡軌道選擇已解鎖的救援卡。", "先閱讀關卡名稱、水果到動物的路線，以及規則提示。", "用觸控、滑鼠或左右方向鍵移動葉子，再按切斷。", "水果落下時持續移動葉子，利用接觸位置改變飛行方向。", "依提示完成彈跳次數，並追蹤移動籃或變化風向。", "完成路線中的每份水果配送，解鎖下一關。"],
+    strategyTips: ["切斷前先把葉子放到第一次掉落路線下方，水果移動後再做小幅修正。", "碰葉子中央可以取得高度；只有籃子在遠方時，才使用葉子左右邊緣增加水平距離。", "面對移動籃時，要瞄準水果彈回來時籃子將到達的位置。", "分層風關卡可比較水果越過空地中段前後的方向變化。", "雙彈關卡第一次接觸後仍需保持控制，不要把水果送得太遠而接不到第二次。", "野餐配送要閱讀下一份規則，不要假設第二顆水果使用相同風向或彈跳次數。"],
+    progression: [
+      "第 1～5 關教導平靜、右風、左風與長距離彈跳；Panko 平衡檢核首次加入緩慢移動籃。",
+      "第 6～10 關專注移動目標，改變籃子速度、方向與入口大小；Panko 移動籃檢核還要求兩次葉子接觸。",
+      "第 11～15 關加入依高度變化或彈跳後反轉的風；Panko 風向檢核把分層風與移動籃結合。",
+      "第 16～20 關要求雙重彈跳，並加入會產生較低弧線的柔葉；Panko 雙彈檢核同時使用反向風與移動籃。",
+      "第 21～25 關加入不離開遊玩畫面的雙水果野餐配送。兩條路線可能使用相反風、不同彈跳次數，或共用一個移動籃。",
+      "第 26～30 關結合窄入口、移動目標、分層與反轉風、雙彈控制，以及兩份或三份配送；Panko 終極救援使用三種不同路線，不是只增加數字。"
+    ],
+    designNote: "遊戲採用一次切斷加上持續葉子控制，讓玩家在水果釋放後仍然負責。30 關會改變玩家必須判讀的資訊，包括目標移動、不同高度風向、彈跳次數、葉子彈力、入口寬度與配送順序，而不只是讓重力越來越快。直向遊玩區讓手機上的水果有足夠飛行時間可修正，同一邏輯畫布也會在平板與橫向畫面等比例縮放。Panko 檢核提供適合 Kids 的難度里程碑，不會把水果配送益智變成戰鬥。",
+    parent: "《動物藤蔓救援》可陪伴孩子練習時機、視覺預測、手眼協調、專注與簡單問題解決。成人可以詢問籃子接下來會移到哪裡，或第二次彈跳為何需要不同葉子位置。遊戲沒有計時、廣告、帳號要求、排名壓力或敵對戰鬥；星等與進度只是本機遊戲回饋，不是正式能力測驗、診斷或學校評量。",
+    faq: [
+      ["一共有多少關？", "共有 30 個具名關卡，分成六組五關課程，每五關有一次友善 Panko 檢核。"],
+      ["切斷藤蔓後還能移動葉子嗎？", "可以。水果下落與每次彈跳後持續控制葉子，是遊戲的主要操作。"],
+      ["為什麼水果穿過籃子？", "每份配送至少需要一次葉子彈跳；標記關卡可能要求兩次彈跳或使用較窄入口。"],
+      ["移動籃與分層風怎麼運作？", "移動籃會在切斷後改變水平位置；分層風會在空地上半部與下半部施加不同推力。"],
+      ["野餐配送會發生什麼？", "兩顆或三顆水果會留在同一個遊玩畫面連續配送，全部完成後才顯示結算。"],
+      ["水果沒接到會怎樣？", "友善結算會提供再玩一次、選關或大廳，不會刪除已解鎖進度。"],
+      ["需要登入或會顯示廣告嗎？", "不需要登入；這款 Kids 遊戲沒有廣告，基本進度只存在目前瀏覽器。"],
+      ["星等是正式能力分數嗎？", "不是。星等只是遊戲進度回饋，不是診斷或評量。"]
+    ]
+  };
+
   localizedGames["zh-Hant"]["bubble-bakery"] = {
     title: "動物泡泡烘焙坊",
     difficulty: "簡單到中等",
@@ -2112,6 +2190,96 @@
       ["這款 Kids 遊戲有廣告嗎？", "沒有。本作不發出廣告請求，也不保留廣告空間。"],
       ["分數是能力評量嗎？", "不是。分數與進度只是遊戲回饋，不代表孩子的發展或能力。"]
     ]
+  };
+
+  games["animal-moonlight-heist"] = {
+    title: "Animal Moonlight Heist",
+    difficulty: "Medium to Hard",
+    time: "3-8 minutes per mission",
+    gameplay: "Stealth Route Adventure",
+    genre: ["Stealth", "Route Planning", "Adventure", "Animal"],
+    skills: ["Planning", "Focus", "Risk Assessment"],
+    guideKicker: "WeightPlay Original Game Guide",
+    guideTitleSuffix: "Game Guide",
+    intro:
+      "Animal Moonlight Heist is a 30-mission stealth route adventure starring Spark Paw Fia and Moon Cap Orla. Every mission asks the player to read moving patrols, preview one deliberate route at a time, recover a real archive object, and reach extraction before Alert fills. Optional treasure offers a third medal and more Moon Coins, but later missions turn that choice into a route-planning problem through shadow shelters, ordered seals, shifting markers, clockwork patrol rhythms, warning bells, and six named archive guardians.",
+    story: [
+      "The Moon Archive is not one room. It is a chain of galleries, vaults, observatories, courier halls, and sealed collections that preserve the navigation records of the WeightPlay animal world. A broken eclipse mechanism has placed its security system into permanent lockdown. Ordinary patrols now treat every moving shape as an intruder, archive markers slide between mirrored pedestals, and the extraction gates obey old seal routines instead of Orla's safehouse clearance.",
+      "Moon Cap Orla plans each entry while Spark Paw Fia enters the archive. Fia is not fighting the guards: the job is to recover the misplaced seals, courier tokens, star maps, clockwork lenses, and district relics without escalating the lockdown. Clearing a mission restores one route to the archive map. Passing the Lantern Auditor, Bell Warden, Mirror Keeper, Clockwork Marshal, Vault Sealkeeper, and Eclipse Curator proves that an entire five-mission wing is safe. Mission 30 ends the lockdown by completing the Curator's full eclipse route; it does not invent a false Mission 31."
+    ],
+    systems: [
+      "Route movement is committed in short decisions. Hold or drag inside the archive to preview a dashed line, then release to send Fia to that point. On desktop, WASD or the arrow keys move in bounded steps. Patrols continue to travel while the player plans, and their visible sight circles show the detection distance. Remaining near a patrol raises Alert; reaching open space or a shadow shelter lets it fall. A full Alert meter ends the attempt, but Retry is free.",
+      "Each route contains a mission object, an extraction gate, and optional treasure. The object must be secured before extraction becomes active. Treasure is a deliberate detour that supplies the third medal and extra Moon Coins. In nine sealed-vault missions, treasure becomes the first seal and must be collected before the object. Triple Lock and Eclipse Curator then move extraction to a new location after the object is recovered, so memorizing the opening route is not enough.",
+      "The three gadgets support different approaches. Lightning Dash shortens committed movement time, useful when crossing a patrol line. Star Decoy pauses patrol movement for a level-based duration. Smoke Leaf resets Alert and grants a short cover window. Gadget strengths are rolled from Level 1 to Level 3 before a mission. A confirmed three-Diamond reroll changes those strengths, while confirmed five-Diamond insurance preserves optional treasure through one capture. Neither purchase unlocks a mission or replaces free Retry.",
+      "The campaign has six nonnumeric rule families. Shadow circles temporarily hide Fia from sight. Bell pulses add Alert outside shadow after a visible warning. Mirror shimmer swaps the live object and treasure markers. Clockwork wings alternate a blue slow phase with an amber pursuit surge. Ordered seals change which marker is valid first. Spotlight guardians expand and contract their sight radius. The final missions combine these rules rather than relying on patrol speed alone.",
+      "A victory awards one medal for extraction, one for avoiding capture, and one for optional treasure. The best medal count for every mission, the highest unlocked mission, Moon Coins, and Safehouse level are stored locally. Safehouse level rises as groups of five different missions are cleared. Cleared cards remain replayable, and the next mission unlocks permanently. Result stays inside the Battle screen and offers Retry, Missions, or Next Mission when another stage exists."
+    ],
+    how: [
+      "Open the 30-card Moon Archive rail and select any unlocked mission. Guardian checkpoints appear at Missions 5, 10, 15, 20, 25, and 30.",
+      "Read the mission-specific rule and inspect the guardian portrait before choosing Lightning Dash, Star Decoy, or Smoke Leaf.",
+      "Hold and drag in the archive to preview a route. Release to move Fia, or use WASD and arrow keys for shorter desktop steps.",
+      "Watch patrol sight circles and the Alert meter. Enter a cyan shadow circle when a bell, spotlight, or crossing patrol makes open movement unsafe.",
+      "Collect the mission object and then reach the active extraction marker. When a rule says treasure is the first seal, the object cannot be collected until that seal is open.",
+      "Decide whether the optional treasure is worth its longer route. It supplies the third medal and extra Moon Coins, but ordinary progress never requires it."
+    ],
+    strategyTips: [
+      "Preview from the position where Fia actually stands. A safe destination can still be a poor choice if the movement line remains exposed for too long.",
+      "Use Lightning Dash for crossings, Star Decoy when several patrol paths overlap, and Smoke Leaf when Alert is already high. Their purposes differ even when their levels are equal.",
+      "Bell warnings are decisions, not decoration. If a pulse is near, enter a shadow circle before taking the next long route; the pulse raises Alert only outside cover.",
+      "During mirror missions, watch the shimmer instead of chasing the old marker. Waiting one second can turn a long dangerous route into a short one.",
+      "Clockwork patrols are easiest to cross during the blue slow phase. The amber border and guardian glow warn that the faster sweep has begun.",
+      "In sealed missions, plan three legs before moving: treasure seal, mission object, then extraction. Missions 29 and 30 relocate the last leg after pickup, so keep Alert capacity for the changed exit."
+    ],
+    progression: [
+      "Missions 1-5 teach direct routes, crossing patrols, optional treasure, and extraction. Lantern Auditor ends the wing with a searchlight whose sight radius visibly expands and contracts.",
+      "Missions 6-10 introduce cyan shadow shelters. Routes begin to connect cover points, and Bell Warden ends the wing with a telegraphed pulse that raises Alert whenever Fia remains outside shadow.",
+      "Missions 11-15 make information unstable. Object and treasure markers exchange positions after a shimmer; False North also requires treasure first. Mirror Keeper shortens the swap interval at the checkpoint.",
+      "Missions 16-20 add clockwork rhythm. Patrols alternate between a readable slow watch and a fast amber surge. Clockwork Marshal combines that timing with central cover and announces every pursuit phase.",
+      "Missions 21-25 turn treasure into the first of two archive seals. Crossed routes, shadow shelters, and changing speed make collection order matter. Vault Sealkeeper physically guards the center while both seals are opened.",
+      "Missions 26-30 recombine the full vocabulary. Spotlight, bell, mirror, clockwork, shadow, and seal rules overlap. Eclipse Curator uses all of them, reverses patrol direction after the relic, and relocates extraction for the final route."
+    ],
+    designNote:
+      "We designed Moonlight Heist around repeated small commitments instead of continuous joystick movement. A route preview gives touch players time to read the board, but patrol motion means waiting still has consequences. The same field accepts pointer routes, touch routes, and keyboard steps without changing its logical geometry. Six five-mission wings introduce one decision language at a time, and each guardian uses unique art, a visible warning, and a counter that reuses something already learned. Difficulty therefore grows through information, timing, order, and route shape before raw speed. Unlike Animal Hero Trials, there is no attack loop, and unlike Animal Auto Squad, there is no prebuilt combat formation: mastery comes from observing when a path is safe and deciding how much optional risk to accept.",
+    parent:
+      "Animal Moonlight Heist runs in the browser without requiring an account for basic play. Mission unlocks, best medals, Moon Coins, and Safehouse level are stored in this browser; clearing site data or moving to another browser may start a separate profile. Normal progression, every guardian, Retry, and all 30 missions are free. Diamonds are optional platform currency used only for a clearly confirmed gadget-strength reroll or one-capture treasure insurance. The game does not present its planning or focus feedback as a formal ability test.",
+    faq: [
+      ["How many missions and guardians are included?", "There are 30 authored missions in six wings. Missions 5, 10, 15, 20, 25, and 30 use six separately illustrated guardians with different rules and counters."],
+      ["Why can I not collect the mission object?", "In treasure-first seal missions, the treasure marker is the first seal. Collect it before returning to the mission object."],
+      ["What do the cyan circles do?", "They are shadow shelters. Fia is hidden from patrol sight and protected from bell pulses while inside one."],
+      ["Why did the object and treasure move?", "Mirror missions warn with a shimmer and then exchange the two live markers. Their new positions are real, not a visual decoy."],
+      ["What changes in clockwork missions?", "Patrols alternate between a blue slow phase and an amber surge. The field border and guardian glow provide the warning."],
+      ["Are Diamonds required?", "No. Diamonds only reroll gadget strengths or insure optional treasure after explicit confirmation. They do not unlock missions, guardians, medals, or Retry."],
+      ["Does progress save without an account?", "Yes. Unlocks, best medals, Moon Coins, and Safehouse level are stored locally in this browser. Clearing local site data may remove them."],
+      ["Can Mission 30 be replayed?", "Yes. Every unlocked mission remains replayable. Finishing Eclipse Curator ends the current 30-mission campaign and does not display a nonexistent next mission."]
+    ]
+  };
+  localizedGames["zh-Hant"]["animal-moonlight-heist"] = {
+    title: "動物月影潛行隊",
+    difficulty: "中等至困難",
+    time: "每個任務約 3 至 8 分鐘",
+    gameplay: "潛行路線冒險",
+    genre: ["潛行", "路線規劃", "冒險", "動物"],
+    skills: ["規劃", "專注", "風險判斷"],
+    guideKicker: "WeightPlay 原創遊戲指南",
+    guideTitleSuffix: "遊戲指南",
+    intro: "《動物月影潛行隊》是由閃爪菲亞與月帽歐拉主演的 30 任務潛行路線遊戲。每個任務都要觀察移動巡邏、預覽一次移動路線、回收真正的檔案物件，並在警報填滿前抵達撤離點。額外寶藏可帶來第三枚獎章與更多月光幣；後期則加入陰影掩護、封印順序、鏡面換位、發條節奏、月鐘警報與六位檔案守衛。",
+    story: [
+      "月光檔案庫由畫廊、寶庫、天文室、信使大廳與封印收藏區組成，保存 WeightPlay 動物世界的導航紀錄。故障的日蝕機關讓保全系統永久封鎖：巡邏員把任何移動身影視為入侵者，鏡面基座會交換標記，撤離門也只遵循古老封印程序。",
+      "月帽歐拉負責規劃，閃爪菲亞進入檔案庫。任務不是攻擊守衛，而是在不升高封鎖的情況下回收月之封印、信使徽記、星圖、發條透鏡與區域遺物。每通過一位守衛，就代表一整個五任務區域恢復安全；第 30 關通過日蝕館長的完整路線後，封鎖正式結束，不會假裝還有第 31 關。"
+    ],
+    systems: [
+      "按住或拖曳可預覽虛線路線，放開後菲亞才會前往該點；桌面也可用 WASD 或方向鍵短距離移動。巡邏不會因玩家思考而停止，視野圈會顯示偵測距離。靠近巡邏會提高警報，離開視線或進入陰影則會降低；警報全滿會被發現，但可免費重試。",
+      "每關都有任務物、撤離門與選擇性的寶藏。先取得任務物，撤離門才會啟動；寶藏會提供第三枚獎章與更多月光幣。九個封印任務會把寶藏改為第一道封印，必須先取寶藏再取任務物。第 29、30 關取得任務物後，撤離門還會移到新位置。",
+      "閃電衝刺會縮短移動時間，適合穿越巡邏線；星光誘餌會暫停巡邏；煙霧葉會清空警報並短暫掩護。任務前會出現 1 至 3 級強度。花費 3 顆鑽石可在確認後重抽強度，5 顆鑽石保險可在一次被發現後保留額外寶藏；兩者都不會解鎖關卡，也不會取代免費重試。",
+      "六種非數值規則會真正改變路線：陰影圈可隱藏菲亞；月鐘預告後會提高陰影外的警報；鏡光會交換任務物與寶藏；發條區會在藍色慢速與琥珀加速間交替；封印關改變收集順序；探照守衛的視野會擴張與收縮。最終任務把這些規則組合起來。",
+      "成功撤離獲得一枚獎章、未被發現再得一枚、帶回寶藏得到第三枚。每關最佳獎章、最高解鎖任務、月光幣與安全屋等級都保存在本機。每完成五個不同任務，安全屋會成長；已解鎖任務可重玩，Result 會提供重試、任務列表，以及存在時的下一任務。"
+    ],
+    how: ["在 30 張任務卡中選擇已解鎖關卡；第 5、10、15、20、25、30 關是守衛檢查點。", "先閱讀關卡規則與守衛圖像，再選擇閃電衝刺、星光誘餌或煙霧葉。", "在檔案庫內按住拖曳預覽路線，放開移動；桌面可用 WASD 或方向鍵。", "觀察視野圈與警報；月鐘、探照光或交叉巡邏造成壓力時，可先進入青色陰影圈。", "取得任務物後前往亮起的撤離門；若規則寫著寶藏是第一道封印，就必須先取寶藏。", "自行判斷是否繞路取得額外寶藏；它提供第三枚獎章與更多月光幣，但不是普通進度的必要條件。"],
+    strategyTips: ["路線安全不只看終點，還要看菲亞在移動途中會暴露多久。", "閃電衝刺適合穿越，星光誘餌適合多條巡邏交會，煙霧葉適合警報已高時使用。", "月鐘預告出現時先進陰影，脈衝只會傷害掩護外的路線。", "鏡面關要看閃光，不要追著舊標記；等待一秒可能讓長路線變短。", "發條關在藍色慢速階段穿越，琥珀邊框與守衛發光代表加速已開始。", "封印關先規劃寶藏、任務物、撤離三段路；第 29、30 關還要保留警報空間應付移動出口。"],
+    progression: ["任務 1 至 5 教導基本路線、交叉巡邏、寶藏與撤離；提燈審查官以擴張探照光收尾。", "任務 6 至 10 加入陰影掩護；月鐘守衛會預告脈衝，陰影外的菲亞將增加警報。", "任務 11 至 15 讓資訊改變，任務物與寶藏會換位；星鏡看守會縮短換位間隔。", "任務 16 至 20 加入藍色慢速與琥珀加速；發條巡察長會預告每次全速追蹤。", "任務 21 至 25 把寶藏變成第一道封印；寶庫封印官守住中央，必須依序解除兩道封印。", "任務 26 至 30 組合探照、月鐘、鏡面、發條、陰影與封印。日蝕館長在取物後反轉巡邏並移動撤離門。"],
+    designNote: "本作採用一次次短路線承諾，而不是持續搖桿移動。預覽讓觸控玩家有時間讀圖，但巡邏持續移動，因此等待也有代價。觸控、滑鼠與鍵盤共用同一個固定邏輯畫面。六個五任務區域逐步引入決策語言，每位守衛都有專屬完成品角色圖、可見預告與已教過的反制方式。難度優先來自資訊、時機、順序與路線形狀，不只是速度。它沒有《動物英雄試煉》的攻擊循環，也沒有《自走小隊》的戰前陣型；核心是觀察安全時機與選擇額外風險。",
+    parent: "《動物月影潛行隊》可直接在瀏覽器遊玩，基本進度不需要帳號。任務解鎖、最佳獎章、月光幣與安全屋等級保存在目前瀏覽器；清除網站資料或更換瀏覽器可能建立另一份進度。全部 30 關、六位守衛、普通進度與重試皆免費。鑽石只用於明確確認的裝置強度重抽或一次寶藏保險。遊戲不把規劃與專注回饋當成正式能力測驗。",
+    faq: [["共有多少任務與守衛？", "共有 30 個原創任務；第 5、10、15、20、25、30 關各有一位不同圖像、規則與反制方式的守衛。"], ["為什麼無法取得任務物？", "在寶藏優先的封印關，寶藏是第一道封印；先取得它，再回到任務物。"], ["青色圓圈有什麼作用？", "它們是陰影掩護。菲亞位於其中時不會被巡邏視野或月鐘脈衝偵測。"], ["為什麼任務物和寶藏移動了？", "鏡面關會先出現閃光預告，再交換兩個仍存在的標記；新位置就是實際目標。"], ["發條關有什麼不同？", "巡邏會在藍色慢速與琥珀加速間交替，畫面邊框與守衛光芒會提示階段。"], ["一定要使用鑽石嗎？", "不用。鑽石只在確認後重抽裝置強度或替選擇性寶藏投保，不會解鎖任務、守衛、獎章或重試。"], ["不登入也會保存嗎？", "會。解鎖、最佳獎章、月光幣與安全屋保存在目前瀏覽器；清除本機網站資料可能移除它們。"], ["第 30 關可以重玩嗎？", "可以。所有已解鎖任務都能重玩；通過日蝕館長後不會顯示不存在的下一任務。"]]
   };
 
   function localizedGame(id) {

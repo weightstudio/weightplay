@@ -2753,6 +2753,12 @@
       rerollDraftChoices();
     });
 
+    nodes.amuletBtn.addEventListener("keydown", (event) => {
+      if (event.repeat && (event.key === "Enter" || event.key === " ")) {
+        event.preventDefault();
+      }
+    });
+
     nodes.amuletBtn.addEventListener("click", () => {
       if (state.amuletUnlocked) return;
       const wallet = window.WeightPlayWallet?.read() || { diamonds: 0 };

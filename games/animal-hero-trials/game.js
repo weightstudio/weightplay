@@ -727,6 +727,7 @@
   $("#stageBack").onclick = () => { playSound("click"); show("main"); };
   $("#battleBack").onclick = () => { playSound("click"); show("stage"); };
   $("#skillBtn").onclick = skill;
+  $("#rerollBtn").addEventListener("keydown",(event)=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault()});
   $("#rerollBtn").onclick = rerollBlessings;
   $("#resultHome").onclick = () => { playSound("click"); show("main"); localize(); };
   $("#resultModal").addEventListener("keydown", (event) => {

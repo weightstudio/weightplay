@@ -145,6 +145,16 @@
       amuletNeed: "Need 15 Diamonds. Current balance: {balance}.",
       startRun: "Start Game",
       languageSelector: "Language selector",
+      backToLobby: "Back to lobby",
+      coverAlt: "Shadow Wolf Legend cover",
+      stageSelection: "Stage selection",
+      backToMain: "Back to main",
+      stageRail: "Stage rail",
+      backToStages: "Back to stages",
+      moveLeft: "Move left",
+      moveRight: "Move right",
+      jumpAction: "Jump",
+      attackAction: "Attack",
       controlLegend: "A/D Move · W/Space Jump · J Attack · K/Shift Dash",
       roomLabel: "Stage",
       keyLabel: "Points",
@@ -227,6 +237,16 @@
       amuletOwned: "已擁有：以 40 Max HP 開局。",
       startRun: "開始遊戲",
       languageSelector: "語言選擇",
+      backToLobby: "返回遊戲大廳",
+      coverAlt: "影狼傳說封面",
+      stageSelection: "關卡選擇",
+      backToMain: "返回主畫面",
+      stageRail: "關卡滑軌",
+      backToStages: "返回關卡選擇",
+      moveLeft: "向左移動",
+      moveRight: "向右移動",
+      jumpAction: "跳躍",
+      attackAction: "攻擊",
       controlLegend: "A/D 移動 · W/空白鍵 跳躍 · J 攻擊 · K/Shift 衝刺",
       roomLabel: "房間",
       keyLabel: "鑰匙",
@@ -419,6 +439,7 @@
     dashTimer: 0,
     attackTimer: 0,
     invincibilityTimer: 0,
+    entryGraceFrames: 0,
 
     // Base Stats
     baseDmg: 10,
@@ -539,6 +560,9 @@
     }
     for (const el of document.querySelectorAll("[data-ui-aria]")) {
       el.setAttribute("aria-label", t(el.dataset.uiAria));
+    }
+    for (const el of document.querySelectorAll("[data-ui-alt]")) {
+      el.setAttribute("alt", t(el.dataset.uiAlt));
     }
     nodes.localeSelect.value = getLocale();
     renderStageCards();
@@ -988,6 +1012,7 @@
     else definition.enemies.forEach((type, index) => state.enemies.push(enemyProfile(type, index, definition.id)));
     state.x = 70;
     state.y = mainFloorY - state.height;
+    state.entryGraceFrames = 90;
   }
 
   // Active game start trigger
@@ -1467,6 +1492,7 @@
   // Physics Loop frame updates
   function updateGameEngine() {
     if (!state.gameActive) return;
+    if (state.entryGraceFrames > 0) state.entryGraceFrames--;
 
     // Redundant input values checking
     const stats = getStats();
@@ -1539,7 +1565,7 @@
         state.y + state.height > spike.y
       ) {
         // Fall into spikes respawns with penalty!
-        if (state.invincibilityTimer === 0) {
+        if (state.invincibilityTimer === 0 && state.entryGraceFrames <= 0) {
           state.playerHp -= 5;
           state.invincibilityTimer = 40;
           state.x = 80;
@@ -1700,6 +1726,8 @@
       }
     });
 
+    if (!state.gameActive) return;
+
     // Pickups Contact Check
     state.pickups.forEach((pickup, index) => {
       const pdx = (state.x + state.width / 2) - pickup.x;
@@ -1727,11 +1755,11 @@
     // Render Canvas Frame
     drawCanvasFrame();
 
-    state.gameLoopId = requestAnimationFrame(updateGameEngine);
+    if (state.gameActive) state.gameLoopId = requestAnimationFrame(updateGameEngine);
   }
 
   function applyPlayerDamage(amt) {
-    if (state.invincibilityTimer > 0) return;
+    if (!state.gameActive || state.entryGraceFrames > 0 || state.invincibilityTimer > 0) return;
     const stats = getStats();
     if (Math.random() < stats.dodge) return;
     state.playerHp = Math.max(0, state.playerHp - Math.max(0.5, amt - stats.defense));
@@ -1844,7 +1872,12 @@
   // Draw 2D Canvas side-scroller elements
   function drawCanvasFrame() {
     const ctx = nodes.gameCanvas.getContext("2d");
-    ctx.clearRect(0, 0, 800, 500);
+    const viewportWidth = nodes.gameCanvas.width;
+    const viewportHeight = nodes.gameCanvas.height;
+    const cameraX = Math.max(0, Math.min(800 - viewportWidth, state.x + state.width / 2 - viewportWidth / 2));
+    ctx.clearRect(0, 0, viewportWidth, viewportHeight);
+    ctx.save();
+    ctx.translate(-cameraX, 0);
 
     // 1. Background image
     const region = Math.ceil(state.room / 5);
@@ -2009,6 +2042,7 @@
     // 10. Update & Draw sparks particles
     updateSparksParticles(ctx);
     drawDamageNumbers(ctx);
+    ctx.restore();
   }
 
   function drawDamageNumbers(ctx) {
@@ -2321,6 +2355,7 @@
           hpText: nodes.hpText.textContent,
           hp: Math.ceil(state.playerHp),
           maxHp: stats.maxHp,
+          entryGraceFrames: state.entryGraceFrames,
           keys: state.keys,
           record: { runs: state.runs, bestRoom: state.bestRoom, wins: state.wins, unlockedStage: state.unlockedStage, selectedStage: state.selectedStage, completedStages: [...state.completedStages] },
           player: {
@@ -2437,6 +2472,10 @@
         damageNumbers.push({ x: enemy.x + enemy.width / 2, y: enemy.y - 4, value: 18, crit: true, life: 34 });
         drawCanvasFrame();
         return { ...this.readState(), damageNumbers: damageNumbers.length, enemyHitTimer: enemy.hitTimer };
+      },
+      forcePlayerDamage(amount = 5) {
+        applyPlayerDamage(Math.max(0.5, Number(amount) || 5));
+        return this.readState();
       },
       forceLoot(itemId = "sword-rare") {
         currentLootItem = gearDb[itemId] ? itemId : "sword-rare";

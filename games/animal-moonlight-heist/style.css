@@ -16,7 +16,7 @@
 .economy-btn.active{border-color:#ffd765;color:#ffd765}
 .economy-btn.is-confirming{border-color:#ffd765;background:#ffd765;color:#241707;box-shadow:0 0 0 2px #ffd76544}
 .economy-feedback{min-height:14px;max-height:24px;overflow:hidden;color:#ffd765;font-size:10px;line-height:12px}
-.patrol-sight{position:absolute;width:36%;height:36%;z-index:2;transform:translate(-50%,-50%);pointer-events:none;border:1px solid rgba(255,215,101,.46);border-radius:50%;background:radial-gradient(ellipse,rgba(255,191,88,.12),rgba(255,191,88,.025) 64%,transparent 70%);transition:left .9s linear,top .9s linear}
+.patrol-sight{position:absolute;width:var(--sight-size,36%);height:var(--sight-size,36%);z-index:2;transform:translate(-50%,-50%);pointer-events:none;border:1px solid rgba(255,215,101,.46);border-radius:50%;background:radial-gradient(ellipse,rgba(255,191,88,.12),rgba(255,191,88,.025) 64%,transparent 70%);transition:left .9s linear,top .9s linear,width .25s,height .25s}
 @media(max-height:430px){.stage-canvas{grid-template-columns:280px minmax(0,1fr)}.planner{grid-template-columns:48px minmax(0,1fr)}.planner>img{width:48px;height:48px}.planner-body{grid-template-rows:auto 43px auto}.gadget-row,.planner-heading{gap:3px}.gadget-choices{gap:2px}.gadget-choice{width:38px;height:38px;padding:2px}.economy-btn{min-height:36px;padding:3px 5px;font-size:9px}}
 
 body[data-screen="battle"] :is(.wp-tutorial-button, .wp-tutorial-backdrop, .sound-toggle, .weightplay-version-badge) {
@@ -44,6 +44,20 @@ body.wp-stage-select-active[data-screen="stage"] #stageScreen.stage-shell > .sta
 html body[data-wp-game-id="animal-moonlight-heist"] > .wp-stage-physical-reserve {
   display: none !important;
 }
+
+.mission-card .mission-rule{font-size:12px;line-height:1.28;color:#d7e6f4}
+.mission-card .checkpoint-tag{width:max-content;max-width:100%;padding:3px 7px;border-radius:999px;background:#6c4e15;color:#ffe79a;font-size:11px;font-weight:900;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mission-card.checkpoint{border-color:#ffd765;box-shadow:0 0 0 2px #ffd76533 inset}
+.mission-card.checkpoint img{object-fit:contain;padding:10px;background:radial-gradient(circle at 50% 45%,#284f72,#0c1d31 72%)}
+.safe-zone{position:absolute;width:var(--zone-size);aspect-ratio:1;transform:translate(-50%,-50%);border:2px solid #72d7d4aa;border-radius:50%;background:radial-gradient(circle,#163d4ccc 0 48%,#72d7d433 52%,transparent 70%);box-shadow:0 0 18px #4fded766 inset,0 0 12px #4fded744;z-index:1;pointer-events:none}
+.guardian-patrol{width:92px;height:92px;z-index:6;filter:drop-shadow(0 5px 6px #000b) drop-shadow(0 0 5px #ffd76588)}
+.guardian-sight{border-width:2px;border-color:#ffe16caa;background:radial-gradient(circle,#ffd76522,#f0a52b0d 62%,transparent 70%)}
+.guardian-patrol.is-warning{animation:guardian-warning .62s ease-in-out infinite alternate;filter:drop-shadow(0 5px 6px #000b) drop-shadow(0 0 14px #ffb12d)}
+.guardian-sight.is-warning{border-color:#ff9e48;background:radial-gradient(circle,#ff78442b,#ffba2b12 62%,transparent 70%)}
+.marker-shift{animation:marker-shift .52s ease}
+.play-field.clock-surge{box-shadow:0 0 0 3px #f3a82c88 inset}
+@keyframes guardian-warning{to{scale:1.08}}
+@keyframes marker-shift{50%{filter:drop-shadow(0 0 14px #c6f8ff);scale:1.22}}
 
 .play-field:focus-visible {
   outline: 3px solid #67e8f9;

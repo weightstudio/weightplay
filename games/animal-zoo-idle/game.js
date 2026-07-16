@@ -919,6 +919,7 @@
     const animalLayer = card.querySelector(".animal-layer");
     const animalIds = unlockedAnimals().map((animal) => animal.id).join(",");
     if (animalLayer && animalLayer.dataset.animalIds !== animalIds) {
+      cancelAnimalDrag();
       animalLayer.innerHTML = "";
       renderAnimals(animalLayer);
       animalLayer.dataset.animalIds = animalIds;
@@ -1308,37 +1309,72 @@
     `;
   }
 
+  let activeAnimalDrag = null;
+
+  function cancelAnimalDrag() {
+    activeAnimalDrag?.cancel();
+  }
+
   function attachAnimalDrag(element, animal) {
     element.addEventListener("pointerdown", (event) => {
-      if (!save.unlocked[animal.id]) return;
+      if (!save.unlocked[animal.id] || activeAnimalDrag || event.isPrimary === false || event.button !== 0) return;
       const stage = element.closest(".savanna-stage");
       if (!stage) return;
       event.preventDefault();
-      element.setPointerCapture?.(event.pointerId);
+      try { element.setPointerCapture?.(event.pointerId); } catch { /* Synthetic pointers cannot always be captured. */ }
       element.classList.add("dragging");
+      const pointerId = event.pointerId;
+      const startPosition = { ...animalPosition(animal) };
+      let pendingPosition = startPosition;
+      let settled = false;
       const move = (moveEvent) => {
+        if (moveEvent.pointerId !== pointerId) return;
         const rect = stage.getBoundingClientRect();
         const bounds = animalBounds(animal);
         const x = clamp(((moveEvent.clientX - rect.left) / rect.width) * 100, bounds.minX, bounds.maxX);
         const y = clamp(((rect.bottom - moveEvent.clientY) / rect.height) * 100, bounds.minY, bounds.maxY);
-        element.style.left = `${x}%`;
-        element.style.bottom = `${y}%`;
-        save.positions[animal.id] = { x, y };
+        element.style.left = x + "%";
+        element.style.bottom = y + "%";
+        pendingPosition = { x, y };
       };
-      const end = () => {
+      const cleanup = () => {
+        if (settled) return;
+        settled = true;
         element.classList.remove("dragging");
-        element.releasePointerCapture?.(event.pointerId);
-        saveGame();
         document.removeEventListener("pointermove", move);
         document.removeEventListener("pointerup", end);
-        document.removeEventListener("pointercancel", end);
+        document.removeEventListener("pointercancel", cancel);
+        element.removeEventListener("lostpointercapture", cancel);
+        activeAnimalDrag = null;
+        if (element.hasPointerCapture?.(pointerId)) {
+          try { element.releasePointerCapture(pointerId); } catch { /* Capture may already be gone. */ }
+        }
       };
-      move(event);
+      const end = (endEvent) => {
+        if (settled || endEvent.pointerId !== pointerId) return;
+        save.positions[animal.id] = pendingPosition;
+        cleanup();
+        saveGame();
+      };
+      const cancel = (cancelEvent) => {
+        if (settled || (cancelEvent?.type?.startsWith("pointer") && cancelEvent.pointerId !== pointerId)) return;
+        element.style.left = startPosition.x + "%";
+        element.style.bottom = startPosition.y + "%";
+        cleanup();
+      };
+      activeAnimalDrag = { pointerId, cancel };
       document.addEventListener("pointermove", move);
-      document.addEventListener("pointerup", end, { once: true });
-      document.addEventListener("pointercancel", end, { once: true });
+      document.addEventListener("pointerup", end);
+      document.addEventListener("pointercancel", cancel);
+      element.addEventListener("lostpointercapture", cancel);
     });
   }
+
+  window.addEventListener("blur", cancelAnimalDrag);
+  window.addEventListener("pagehide", cancelAnimalDrag);
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) cancelAnimalDrag();
+  });
 
   function collectTickets() {
     const amount = Math.floor(save.ticketBox);
@@ -1523,6 +1559,7 @@
   }
 
   function showReport() {
+    cancelAnimalDrag();
     const score = Math.round(save.coins / 12 + save.ticketBox / 10 + save.careCount * 16 + save.gateLevel * 55 + unlockedAnimals().length * 80);
     const previous = Number(save.bestScore || 0);
     save.playCount += 1;
@@ -1614,6 +1651,7 @@
 
   function showMenu() {
     if (nodes.gamePanel.classList.contains("hidden")) return;
+    cancelAnimalDrag();
     document.body.classList.remove("zoo-playing");
     document.querySelector(".zoo-app")?.classList.remove("is-playing");
     nodes.localeSelect.closest(".language-picker")?.removeAttribute("aria-hidden");

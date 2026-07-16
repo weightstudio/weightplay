@@ -9,11 +9,11 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="robots" content="index,follow" />
-    <meta name="description" content="Cut vines, move the leaf trampoline, and guide fruit to hungry animals in Animal Vine Rescue, a family-friendly animal physics puzzle on WeightPlay." />
+    <meta name="description" content="Guide fruit through 30 vine-rescue physics puzzles with moving baskets, layered winds, double bounces, and friendly Panko checkpoints." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Animal Vine Rescue - WeightPlay" />
-    <meta property="og:description" content="A mobile-friendly animal physics puzzle with vine timing, bouncing fruit, and stage goals." />
+    <meta property="og:description" content="Cut, steer, and bounce fruit through 30 animal rescue routes with moving targets, changing winds, and multi-fruit deliveries." />
     <meta property="og:url" content="https://weightplay.com/games/animal-rope-rescue/" />
     <meta property="og:image" content="https://weightplay.com/assets/animal-vine-rescue-cover.png" />
     <meta name="twitter:card" content="summary_large_image" />
@@ -24,7 +24,7 @@
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
     <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20260714-play-area-fill1" data-wp-battle-standard />
-    <link rel="stylesheet" href="style.css?v=20260716-keyboard-leaf1" />
+    <link rel="stylesheet" href="style.css?v=20260717-vine-depth30-1" />
     <link rel="stylesheet" href="../../src/stage-selector-standard.css?v=20260715-stage-swipe2" data-wp-stage-standard />
     <script type="application/ld+json">
       {
@@ -33,14 +33,14 @@
         "name": "Animal Vine Rescue",
         "url": "https://weightplay.com/games/animal-rope-rescue/",
         "image": "https://weightplay.com/assets/animal-vine-rescue-cover.png",
-        "description": "Cut vines, move the leaf trampoline, and guide fruit to hungry animals in a family-friendly animal physics puzzle.",
+        "description": "Guide fruit through 30 vine-rescue physics puzzles with moving baskets, layered winds, double bounces, and friendly Panko checkpoints.",
         "applicationCategory": "Game",
         "operatingSystem": "Web browser",
         "publisher": { "@type": "Organization", "name": "WeightStudio" },
         "inLanguage": ["en", "zh-Hant"],
         "isAccessibleForFree": true,
         "genre": ["Animal Games", "Physics Puzzle", "Family Browser Game"],
-        "audience": { "@type": "Audience", "audienceType": "Kids and families", "suggestedMinAge": 5 },
+        "audience": { "@type": "Audience", "audienceType": "Kids and families", "suggestedMinAge": 6 },
         "learningResourceType": "Skill practice through play",
         "educationalUse": "Practice timing, focus, hand-eye coordination, and problem solving through family-friendly gameplay."
       }
@@ -78,7 +78,7 @@
         <div class="hud-row">
           <button id="stageBackBtn" type="button" class="soft-btn" data-wp-return="battle" aria-label="Back to stages">&larr;</button>
           <div class="hud-pill"><span data-ui="stage">Stage</span><b id="stageText">1</b></div>
-          <div class="hud-pill"><span data-ui="score">Score</span><b id="scoreText">0</b></div>
+          <div class="hud-pill"><span data-ui="score">Delivery</span><b id="scoreText">1/1</b></div>
         </div>
         <div id="playfield" class="playfield play-area" aria-label="Animal vine rescue playfield">
           <div id="targetGuide" class="target-guide" aria-hidden="true"></div>
@@ -125,22 +125,85 @@
       <div class="game-info-hero">
         <div class="game-info-title">
           <span class="game-info-kicker">WeightPlay Original Game Guide</span>
-          <h2>Animal Vine Rescue - How to Play</h2>
-          <p>Animal Vine Rescue is a short animal physics puzzle where players cut vines, move a leaf trampoline, and bounce fruit into the animal basket. The game is designed to be understandable quickly while still giving players real control through timing and position. Each stage changes the fruit start, target animal, wind, and gravity so it feels more like a playable rescue challenge than a one-click animation.</p>
+          <h2>Animal Vine Rescue - Complete Game Guide</h2>
+          <p>Animal Vine Rescue is a 30-stage physics puzzle about cutting a hanging fruit free, steering a leaf trampoline, and landing the fruit in an animal's basket. Six five-stage lessons add moving baskets, wind layers, reversing wind, two-bounce deliveries, narrow catches, soft leaves, and multi-fruit picnic orders. Every fifth stage is a friendly Panko Check without combat or time pressure. The leaf remains movable after Cut, so success depends on continuous guidance.</p>
         </div>
       </div>
       <div class="game-info-sections">
         <div class="game-info-section">
+          <h3>The Orchard Delivery Rescue</h3>
+          <p>The orchard's delivery vines have grown across a forest clearing, leaving apples, bananas, and berries hanging far from the animals who requested them. Panko organizes the rescue map while rabbits, lions, pandas, foxes, and koalas wait beside their baskets. The player is the leaf guide. They choose where the trampoline waits, decide when to cut the vine, and continue steering while the fruit is falling or rising from a bounce.</p>
+          <p>Each completed stage restores one delivery route through the orchard. The six Panko Checks at Stages 5, 10, 15, 20, 25, and 30 are friendly practical reviews rather than battles. Clearing the final Panko Grand Rescue serves three animals during one Battle and restores the complete picnic route. Victory means every requested fruit reached its basket, not that an opponent was defeated.</p>
+        </div>
+        <div class="game-info-section">
+          <h3>How the Physics Route Works</h3>
+          <p>Every route begins with a visible fruit attached to a vine, a leaf trampoline near the bottom of the clearing, and an animal waiting behind a basket. The leaf can move before and after Cut. Every delivery requires at least one leaf contact before the basket accepts the fruit, so releasing a fruit directly over the target is not a shortcut.</p>
+          <p>Gravity pulls the fruit down while the active wind changes its horizontal speed. When the fruit touches the leaf, the contact point determines the new route. A centered hit produces a straighter upward arc. A hit near the left or right edge adds more sideways force. The leaf can be moved again before the fruit returns, allowing a second correction instead of locking the player into the first aim.</p>
+          <p>A fruit succeeds when it has completed the required bounce count and enters the active basket opening. Leaving the playfield or passing the basket without the required bounce opens a supportive Result with Try Again, Stages, and Lobby actions. Earlier unlocks and star records remain saved, so experimenting with a difficult route has no lasting penalty.</p>
+        </div>
+        <div class="game-info-section">
+          <h3>Special Rescue Rules</h3>
+          <p>Moving-basket stages update the catch position continuously after Cut. The glowing target guide follows the animal and basket, so the player can aim for where the basket will arrive after the fruit's arc. Narrow-basket stages use a smaller horizontal catch zone and reward a more centered approach.</p>
+          <p>Layered-wind stages apply different force above and below the middle of the clearing. The fruit may begin toward the animal, then drift away as it descends. Reverse-wind stages switch direction after the first leaf contact.</p>
+          <p>Two-bounce stages keep the basket inactive until the second leaf contact. Soft-leaf stages reduce the rebound height, which shortens the time available to move underneath the next fall. Multi-delivery picnic stages keep the same Battle open while a second or third fruit, animal, and rule appear. The Delivery counter advances, and Result waits until every listed route is complete.</p>
+        </div>
+        <div class="game-info-section">
           <h3>How to Play</h3>
-          <ol><li>Drag the leaf trampoline left and right.</li><li>Tap Cut to release the fruit from the vine.</li><li>Bounce the fruit toward the animal basket.</li><li>Clear stages to unlock harder rescue routes.</li></ol>
+          <ol>
+            <li>Choose an unlocked rescue card from the horizontal Stage rail.</li>
+            <li>Read the stage name, fruit-to-animal route, and short rule clue before entering Battle.</li>
+            <li>Move the leaf with touch, pointer, or Left and Right keys, then press Cut when it is under the expected fall path.</li>
+            <li>Keep steering while the fruit moves. Use the center of the leaf for height or an edge to add sideways distance.</li>
+            <li>Complete the shown bounce requirement and follow any moving basket, layered wind, or reversing wind.</li>
+            <li>On a picnic stage, deliver every fruit shown by the 1/2 or 1/3 counter before Result appears.</li>
+          </ol>
+        </div>
+        <div class="game-info-section">
+          <h3>Planning Better Bounces</h3>
+          <ul>
+            <li>Move the leaf below the first falling path before cutting. Small corrections are easier than racing across the whole clearing after release.</li>
+            <li>Use a centered first contact when the basket is nearby. An edge hit is useful when the fruit must cross to the opposite side.</li>
+            <li>For a moving basket, watch its direction and aim at the position it will occupy when the fruit comes down, not its position at Cut.</li>
+            <li>In layered wind, compare the fruit's drift above and below the middle of the clearing before choosing the leaf edge.</li>
+            <li>On a two-bounce route, keep the first arc controlled. Sending the fruit too far sideways can make the required second contact impossible.</li>
+            <li>Read every picnic delivery separately. The next fruit may reverse the wind, change the target side, or require another bounce.</li>
+          </ul>
+        </div>
+        <div class="game-info-section">
+          <h3>Stages 1-10: Leaf Control and Moving Baskets</h3>
+          <p>Stages 1-5 introduce a calm vertical drop, rightward breeze, leftward breeze, and a long crossing to the far side. Panko's Balance Check adds the first gently moving basket. Stages 6-10 then focus on target motion. Rabbit's Rolling Cart moves steadily, Lion's Return Cart starts partway through its cycle, Fox Cart Chase moves faster, and Narrow Panda Basket reduces the catch opening. Panko's Moving-Basket Check requires two leaf contacts before the moving target can accept the fruit.</p>
+        </div>
+        <div class="game-info-section">
+          <h3>Stages 11-20: Changing Winds and Twin Bounces</h3>
+          <p>Stages 11-15 introduce forces that change during one flight. High Wind, Low Calm loses most of its push below the treetops; Calm Then Crosswind begins pushing only after the fruit descends; Reversing Breeze changes direction after the leaf contact; and Two-Layer Orchard uses opposite upper and lower winds. Panko's Wind Check combines layered force with a moving basket.</p>
+          <p>Stages 16-20 require the player to catch the same fruit twice. Double-Leaf Lesson establishes the rule, Two-Bounce Crosswind asks for a second correction, Drifting Double Bounce adds a moving target, and Soft Leaf Control lowers the rebound height. Panko's Twin-Bounce Check combines two contacts, reversing wind, and basket motion.</p>
+        </div>
+        <div class="game-info-section">
+          <h3>Stages 21-30: Picnic Orders and Master Routes</h3>
+          <p>Stages 21-25 introduce consecutive service. Two-Fruit Picnic begins with two straightforward routes, Breeze Picnic uses opposite winds, Rolling-Cart Picnic shares one moving basket, and Mixed-Bounce Picnic changes from one required bounce to two. Panko's Picnic Check combines two deliveries with layered wind.</p>
+          <p>Stages 26-30 are mastery routes. Narrow Current combines a smaller opening with reversing wind. Moving Double Mastery requires two contacts into a quick basket. Layered Delivery Pair gives each fruit a different wind plan. Grand Rehearsal serves three routes. Panko's Grand Rescue then combines three fruits, layered wind, reversing wind, twin-bounce control, a moving basket, and a narrow catch. The finale changes decisions several times instead of only increasing gravity.</p>
+        </div>
+        <div class="game-info-section">
+          <h3>Development and Design Notes</h3>
+          <p>The game uses one Cut action plus continuous leaf steering so the player remains responsible after release. The 30-stage revision changes the information a player must read—target motion, altitude-based wind, bounce count, leaf power, catch width, and delivery sequence—instead of relying only on larger numbers. Panko checkpoints make each five-stage lesson easy to remember while preserving the non-hostile orchard theme.</p>
+          <p>The portrait playfield gives the fruit enough travel time for correction on a phone. The logical Canvas scales uniformly across other viewports. Keyboard players use a slider-style leaf: Left and Right move it, Home and End reach safe limits, and Cut returns focus for continued steering.</p>
         </div>
         <div class="game-info-section game-info-parent">
           <h3>Parent Note</h3>
-          <p>This game may help children practice timing, focus, hand-eye coordination, and simple problem solving. Scores and stars are for fun progress tracking only, not a formal test or diagnosis.</p>
+          <p>Animal Vine Rescue may support timing, visual prediction, hand-eye coordination, focus, and simple problem solving. An adult can ask where a moving basket will be when the fruit returns or why a second bounce needs a different leaf position. There is no timer, advertising, account requirement, ranking pressure, or hostile combat. Stars and saved progress are playful local feedback, not a formal ability test, diagnosis, or school assessment.</p>
         </div>
         <div class="game-info-section">
           <h3>Frequently Asked Questions</h3>
-          <dl><div><dt>Is Animal Vine Rescue free?</dt><dd>Yes. It runs in the browser on WeightPlay.</dd></div><div><dt>What does this game practice?</dt><dd>It can practice timing, focus, hand-eye coordination, and problem solving through playful physics.</dd></div><div><dt>Does it copy another game?</dt><dd>No. It uses an original animal rescue theme, custom stage goals, and WeightPlay art direction.</dd></div></dl>
+          <dl>
+            <div><dt>How many stages are included?</dt><dd>There are 30 named stages in six five-stage lessons, with a friendly Panko Check every fifth stage.</dd></div>
+            <div><dt>Can I move the leaf after cutting the vine?</dt><dd>Yes. Continuous steering during the fall and after each bounce is the main player action.</dd></div>
+            <div><dt>Why did the fruit pass through the basket?</dt><dd>Every delivery needs at least one leaf bounce, and marked routes may require two bounces or use a narrower opening.</dd></div>
+            <div><dt>How do moving baskets and wind layers work?</dt><dd>A moving basket changes horizontal position after Cut. A layered-wind route applies different force in the upper and lower clearing.</dd></div>
+            <div><dt>What happens in a picnic delivery?</dt><dd>Two or three fruit routes continue inside one Battle. Result waits until every delivery is complete.</dd></div>
+            <div><dt>What happens when a fruit misses?</dt><dd>A supportive Result offers Try Again, Stages, or Lobby without deleting unlocked progress.</dd></div>
+            <div><dt>Does the game require login or show ads?</dt><dd>No. This Kids game is ad-free and saves basic progress locally without requiring an account.</dd></div>
+            <div><dt>Are stars a formal ability score?</dt><dd>No. Stars are game progress feedback only and are not a diagnosis or assessment.</dd></div>
+          </dl>
         </div>
       </div>
     </section>
@@ -156,7 +219,7 @@
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
     <script data-wp-stage-standard data-wp-native-stage>/* This Kids route owns its zero-reserve Stage Canvas. */</script>
     <script src="../../src/battle-canvas-standard.js?v=20260714-play-area-fill1" data-wp-battle-standard></script>
-    <script src="game.js?v=20260716-keyboard-leaf1"></script>
+    <script src="game.js?v=20260717-vine-depth30-1"></script>
     <script>
       window.addEventListener(
         "load",
@@ -170,7 +233,7 @@
             }
             if (document.querySelector('script[data-vine-game-info]')) return;
             const script = document.createElement("script");
-            script.src = "../../src/game-page-info.js?v=20260706-guide-age-layers1";
+            script.src = "../../src/game-page-info.js?v=20260717-vine-depth30-1";
             script.async = true;
             script.dataset.vineGameInfo = "idle";
             document.body.appendChild(script);

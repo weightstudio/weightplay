@@ -324,7 +324,7 @@
       def, bubbles: stageLayout(id), shots: def.shots, score: 0, rescued: 0, matches: 0,
       queue: [...def.colors], powerQueue: def.colors.map((_, index) => def.powers?.[index] || null),
       currentType: def.colors[0], nextType: def.colors[1], currentPower: def.powers?.[0] || null, nextPower: def.powers?.[1] || null,
-      aiming: false, aimX: 180, aimY: 240, projectile: null, particles: [], state: "playing", elapsed: 0
+      aiming: false, aimPointerId: null, aimX: 180, aimY: 240, projectile: null, particles: [], state: "playing", elapsed: 0
     };
     dom.battleMessage.textContent = t(def.hintKey);
     showScreen("battle");
@@ -343,15 +343,26 @@
     return { x: (source.clientX - rect.left) * 360 / rect.width, y: (source.clientY - rect.top) * 548 / rect.height };
   }
 
+  function clearAimPointer() {
+    const pointerId = game?.aimPointerId;
+    if (game) game.aimPointerId = null;
+    if (pointerId != null && dom.playCanvas.hasPointerCapture?.(pointerId)) {
+      try { dom.playCanvas.releasePointerCapture(pointerId); } catch { /* Capture may already be gone. */ }
+    }
+  }
+
   function beginAim(event) {
-    if (!game || game.state !== "playing" || game.projectile) return;
+    if (!game || game.state !== "playing" || game.projectile || game.aimPointerId != null
+      || event.isPrimary === false || event.button !== 0) return;
     event.preventDefault();
+    game.aimPointerId = event.pointerId;
     game.aiming = true;
+    try { dom.playCanvas.setPointerCapture?.(event.pointerId); } catch { /* Synthetic pointers cannot always be captured. */ }
     updateAim(event);
   }
 
   function updateAim(event) {
-    if (!game?.aiming) return;
+    if (!game?.aiming || event.pointerId !== game.aimPointerId) return;
     event.preventDefault();
     const point = pointerPosition(event);
     game.aimX = Math.max(18, Math.min(342, point.x));
@@ -360,6 +371,7 @@
 
   function shootAim() {
     if (!game?.aiming || game.projectile) return;
+    clearAimPointer();
     game.aiming = false;
     const origin = launcherPoint();
     let dx = game.aimX - origin.x;
@@ -372,13 +384,15 @@
   }
 
   function releaseAim(event) {
-    if (!game?.aiming || game.projectile) return;
+    if (!game?.aiming || game.projectile || event.pointerId !== game.aimPointerId) return;
     event.preventDefault();
     shootAim();
   }
 
-  function cancelAim() {
-    if (game) game.aiming = false;
+  function cancelAim(event) {
+    if (!game || (event?.type?.startsWith("pointer") && event.pointerId !== game.aimPointerId)) return;
+    clearAimPointer();
+    game.aiming = false;
   }
 
   function handleBattleKey(event) {
@@ -707,6 +721,7 @@
       blockers: game?.bubbles.filter(bubble => bubble.alive && bubble.blocker).length || 0,
       shots: game?.shots ?? null,
       aiming: game?.aiming || false, aimX: game?.aimX ?? null, aimY: game?.aimY ?? null,
+      projectile: Boolean(game?.projectile), aimPointerId: game?.aimPointerId ?? null,
       lastAttachment: game?.lastAttachment || null,
       bubbleTypes: game?.bubbles.filter(bubble => bubble.alive && !bubble.blocker).map(bubble => ({ x:bubble.x, y:bubble.y, type:bubble.type })) || []
     }),
@@ -740,6 +755,7 @@
   dom.playCanvas.addEventListener("keydown", handleBattleKey);
   window.addEventListener("pointerup", releaseAim);
   window.addEventListener("pointercancel", cancelAim);
+  dom.playCanvas.addEventListener("lostpointercapture", cancelAim);
   window.addEventListener("blur", cancelAim);
   window.addEventListener("pagehide", cancelAim);
   document.addEventListener("visibilitychange", () => { if (document.hidden) cancelAim(); });
