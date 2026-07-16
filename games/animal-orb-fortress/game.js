@@ -396,6 +396,7 @@
   let state = makeState();
   let lastFrame = 0;
   let raf = 0;
+  let backgroundSuspended = false;
   let pointer = { active: false, id: null, x: 0, y: 0 };
   let keyboardAimDeg = -90;
   let soundAt = {};
@@ -706,6 +707,7 @@
   function startRaid(tier = selectedTier) {
     cancelPointerAim();
     cancelAnimationFrame(raf);
+    backgroundSuspended = false;
     selectedTier = Math.max(1, Math.min(MAX_RAID_TIER, Number(tier) || 1));
     configureArena();
     state = makeState();
@@ -1016,6 +1018,7 @@
   }
 
   function loop(now) {
+    if (backgroundSuspended) return;
     const dt = Math.min(0.033, (now - lastFrame) / 1000 || 0.016);
     lastFrame = now;
     if (state.mode === "running") {
@@ -1359,6 +1362,7 @@
     state.rerolled = false;
     spawnWave();
     state.mode = "running";
+    backgroundSuspended = false;
     show(nodes.gamePanel);
     window.requestAnimationFrame(() => canvas.focus({ preventScroll: true }));
     playSound("success", 0.2);
@@ -1402,6 +1406,7 @@
   function finishRaid(win) {
     if (state.mode === "result") return;
     state.mode = "result";
+    backgroundSuspended = false;
     cancelAnimationFrame(raf);
     const stones = Math.max(1, state.stonesEarned + state.bonusStones + (win ? 5 : 1));
     save.starStones += stones;
@@ -1700,7 +1705,25 @@
   canvas.addEventListener("lostpointercapture", cancelPointerAim);
   canvas.addEventListener("keydown", onCanvasKeydown);
   window.addEventListener("blur", cancelPointerAim);
-  document.addEventListener("visibilitychange", () => { if (document.hidden) cancelPointerAim(); });
+  function suspendBackgroundRaid() {
+    cancelPointerAim();
+    if (state.mode !== "running" || backgroundSuspended) return;
+    backgroundSuspended = true;
+    cancelAnimationFrame(raf);
+  }
+  function resumeBackgroundRaid() {
+    if (!backgroundSuspended) return;
+    backgroundSuspended = false;
+    if (state.mode !== "running") return;
+    lastFrame = performance.now();
+    raf = requestAnimationFrame(loop);
+  }
+  window.addEventListener("pagehide", suspendBackgroundRaid);
+  window.addEventListener("pageshow", resumeBackgroundRaid);
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) suspendBackgroundRaid();
+    else resumeBackgroundRaid();
+  });
 
   function runCampaignMechanicScenario() {
     const priorState = state;
@@ -1848,6 +1871,13 @@
       companionDamage: state.companionDamage,
       companionTimer: state.companionTimer,
       companionHits: state.companionHits,
+      simulation: {
+        readyTimer: state.readyTimer,
+        companionTimer: state.companionTimer,
+        enemies: state.enemies.map((enemy) => ({ x: enemy.x, y: enemy.y, hp: enemy.hp })),
+        orbs: state.orbs.map((orb) => ({ x: orb.x, y: orb.y, life: orb.life })),
+        pylons: state.pylons.map((pylon) => ({ x: pylon.x, y: pylon.y })),
+      },
       rerolled: state.rerolled,
       walletDiamonds: walletDiamonds(),
       save,

@@ -1539,7 +1539,7 @@
     renderCosmeticSection();
   }
 
-  function renderTrainingRoster() {
+  function renderTrainingRoster(focusAnimalId = null) {
     if (!nodes.trainingRoster || !nodes.trainingGoldText) return;
     save = normalizeSave(save);
     nodes.trainingGoldText.innerHTML = currencyMarkup("gold", save.coins);
@@ -1583,6 +1583,7 @@
 
       const action = document.createElement("button");
       action.type = "button";
+      action.dataset.animalId = String(animal.id);
       action.className = unlocked ? "training-action upgrade-action" : "training-action unlock-action";
       if (unlocked) {
         if (level >= 20) {
@@ -1619,6 +1620,12 @@
       card.appendChild(action);
       nodes.trainingRoster.appendChild(card);
     });
+
+    if (focusAnimalId !== null) {
+      const preferred = nodes.trainingRoster.querySelector(`button[data-animal-id="${focusAnimalId}"]:not(:disabled)`);
+      const fallback = nodes.trainingRoster.querySelector("button:not(:disabled)") || nodes.trainingTabBtn;
+      (preferred || fallback)?.focus({ preventScroll: true });
+    }
   }
 
   function handleUnlockAnimal(id) {
@@ -1644,7 +1651,7 @@
     save.unlockedAnimals = [...new Set([...save.unlockedAnimals, Number(id)])].sort((a, b) => a - b);
     saveSave();
     playSynth("buy");
-    renderTrainingRoster();
+    renderTrainingRoster(id);
   }
 
   function handleUpgradeAnimal(id) {
@@ -1663,7 +1670,7 @@
     save.animalLevels[id] = currentLevel + 1;
     saveSave();
     playSynth("combine");
-    renderTrainingRoster();
+    renderTrainingRoster(id);
   }
 
   // Language Setup

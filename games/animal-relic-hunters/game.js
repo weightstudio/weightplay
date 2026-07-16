@@ -1,6 +1,7 @@
 (() => {
   const ARENA_WIDTH = 800;
   const ARENA_HEIGHT = 1000;
+  const ROOM_ENTRY_GRACE_MS = 1500;
   const EXPEDITION_COUNT = 30;
   const ROOMS_PER_EXPEDITION = 3;
   const EXPEDITIONS_PER_REGION = 5;
@@ -649,6 +650,7 @@
     silencedUntil: 0,
     bossWarningUntil: 0,
     lastHitSoundAt: 0,
+    roomGraceUntil: 0,
   };
 
   let profile = createDefaultProfile();
@@ -1501,6 +1503,7 @@
     state.enemyShots = [];
     state.orbs = [];
     state.pickups = [];
+    state.roomGraceUntil = performance.now() + ROOM_ENTRY_GRACE_MS;
 
     const room = state.room;
     const expedition = state.expedition;
@@ -2013,6 +2016,7 @@
   // Update Game Physics & Canvas rendering
   function updateGameEngine() {
     if (!state.gameActive) return;
+    const roomInGrace = performance.now() < state.roomGraceUntil;
 
     // 1. Move Player
     const stats = getStats();
@@ -2068,10 +2072,10 @@
       const dx = state.playerX - enemy.x;
       const dy = state.playerY - enemy.y;
       const dist = Math.sqrt(dx * dx + dy * dy);
-      moveEnemyByBehavior(enemy, dx, dy, dist);
+      if (!roomInGrace) moveEnemyByBehavior(enemy, dx, dy, dist);
 
       // Check player contact damage
-      if (dist < enemy.size + 15) {
+      if (!roomInGrace && dist < enemy.size + 15) {
         const contactDamage = enemy.isBoss ? 0.24 : enemy.behavior === "rusher" ? 0.2 : 0.15;
         state.playerHp = Math.max(0, state.playerHp - contactDamage);
         if (["slower", "mire"].includes(enemy.behavior)) state.slowUntil = performance.now() + 800;
@@ -2152,7 +2156,7 @@
       });
     });
 
-    updateEnemyShots();
+    if (!roomInGrace) updateEnemyShots();
 
     // 5. Relic Orbs Magnet Collection Check
     state.orbs.forEach((orb, oIndex) => {
@@ -2836,6 +2840,13 @@
           spawnRoomEntities();
           return this.snapshot();
         },
+        forceOpeningContactForTest() {
+          state.enemies.forEach((enemy) => {
+            enemy.x = state.playerX;
+            enemy.y = state.playerY;
+          });
+          return this.snapshot();
+        },
         campaignPreview() {
           return {
             count: expeditionDefs.length,
@@ -2958,7 +2969,8 @@
             enemyCount: state.enemies.length,
             eliteCount: state.enemies.filter((enemy) => enemy.isElite).length,
             eliteSpawnPending: Boolean(eliteSpawnTimer),
-            player: { x: state.playerX, y: state.playerY, active: state.gameActive },
+            player: { x: state.playerX, y: state.playerY, hp: state.playerHp, maxHp: state.playerMaxHp, active: state.gameActive },
+            roomGraceRemaining: Math.max(0, state.roomGraceUntil - performance.now()),
           };
         },
       };

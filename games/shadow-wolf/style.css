@@ -128,7 +128,7 @@ body {
   margin: 0 auto;
 }
 
-.world-map-panel { position: relative; max-width: 1120px; min-height: 720px; margin: 0 auto; padding: 28px; border: 1px solid rgba(103,232,249,.35); border-radius: 8px; background: #091827 url("../../assets/shadow-wolf-world-map.png") center / cover; overflow: hidden; box-shadow: inset 0 0 0 999px rgba(5,13,25,.16); }
+.world-map-panel { position: relative; max-width: 1120px; min-height: 720px; margin: 0 auto; padding: 28px; border: 1px solid rgba(103,232,249,.35); border-radius: 8px; background: #091827 url("../../assets/shadow-wolf-world-map.webp") center / cover; overflow: hidden; box-shadow: inset 0 0 0 999px rgba(5,13,25,.16); }
 .world-map-heading { position: relative; z-index: 2; text-align: center; margin-bottom: 0; text-shadow: 0 2px 8px #020617; }
 .world-map-heading > span { color: var(--accent-cyan); font-weight: 800; }
 .world-map-heading h2 { margin: 6px 0; font-size: 1.8rem; }
@@ -665,7 +665,7 @@ body[data-shadow-wolf-screen="battle"] .relic-app {
   padding: 12px 12px 0;
   border: 0;
   border-radius: 0;
-  background: #091827 url("../../assets/shadow-wolf-world-map.png") center / cover;
+  background: #091827 url("../../assets/shadow-wolf-world-map.webp") center / cover;
   box-shadow: inset 0 0 0 999px rgba(5,13,25,.62);
   animation: none;
 }
@@ -708,6 +708,8 @@ body[data-shadow-wolf-screen="battle"] .relic-app {
 .world-map-grid.stage-rail .stage-card b { font-size: .76rem; }
 .world-map-grid.stage-rail .stage-card span { margin: 18px 0 8px; font-size: 1.1rem; color: #fff; }
 .world-map-grid.stage-rail .stage-card small { font-size: .84rem; color: #cbd5e1; }
+.world-map-grid.stage-rail .stage-card.is-cleared { border-color:#6ee7b7; box-shadow:inset 0 0 0 1px rgba(110,231,183,.3); }
+.world-map-grid.stage-rail .stage-card:disabled { opacity:.48; cursor:not-allowed; filter:saturate(.45); }
 .stage-ad-reserve,
 .battle-ad-reserve { height: 56px; min-height: 56px; pointer-events: none; background: #081320; }
 
@@ -800,7 +802,9 @@ body[data-shadow-wolf-screen="battle"] .relic-app {
 .battle-result h2,
 .battle-result h3,
 .battle-result p { margin: 0; }
-.battle-result .report-grid { margin: 0; }
+.battle-result .report-grid { display:grid; gap:3px; margin:0; }
+.battle-result .report-grid > div { display:flex; align-items:center; justify-content:space-between; gap:10px; }
+.battle-result .report-grid strong { color:#fde68a; letter-spacing:.08em; }
 .battle-result .result-actions {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));

@@ -10,23 +10,55 @@
   let amuletConfirmPending = false;
   let amuletConfirmTimer = 0;
   let battleTransitionEpoch = 0;
-  const battleTransitionTimers = new Set();
+  let backgroundSuspended = document.hidden;
+  const battleTransitions = new Set();
+
+  function armBattleTransition(transition) {
+    if (backgroundSuspended || transition.epoch !== battleTransitionEpoch) return;
+    transition.dueAt = performance.now() + transition.remaining;
+    transition.timer = window.setTimeout(() => {
+      transition.timer = 0;
+      battleTransitions.delete(transition);
+      if (transition.epoch !== battleTransitionEpoch || backgroundSuspended) return;
+      transition.callback();
+    }, transition.remaining);
+  }
 
   function cancelBattleTransitions() {
     battleTransitionEpoch += 1;
-    battleTransitionTimers.forEach((timer) => window.clearTimeout(timer));
-    battleTransitionTimers.clear();
+    battleTransitions.forEach((transition) => window.clearTimeout(transition.timer));
+    battleTransitions.clear();
   }
 
   function scheduleBattleTransition(callback, delay) {
-    const epoch = battleTransitionEpoch;
-    const timer = window.setTimeout(() => {
-      battleTransitionTimers.delete(timer);
-      if (epoch !== battleTransitionEpoch) return;
-      callback();
-    }, delay);
-    battleTransitionTimers.add(timer);
-    return timer;
+    const transition = {
+      callback,
+      remaining: Math.max(0, Number(delay) || 0),
+      dueAt: 0,
+      timer: 0,
+      epoch: battleTransitionEpoch,
+    };
+    battleTransitions.add(transition);
+    armBattleTransition(transition);
+    return transition;
+  }
+
+  function suspendBackgroundBattle() {
+    if (backgroundSuspended) return;
+    backgroundSuspended = true;
+    const now = performance.now();
+    battleTransitions.forEach((transition) => {
+      if (!transition.timer) return;
+      window.clearTimeout(transition.timer);
+      transition.timer = 0;
+      transition.remaining = Math.max(0, transition.dueAt - now);
+    });
+  }
+
+  function resumeBackgroundBattle() {
+    if (!backgroundSuspended || document.hidden) return;
+    backgroundSuspended = false;
+    battleTransitions.forEach(armBattleTransition);
   }
 
   const $ = (id) => document.getElementById(id);
@@ -2057,6 +2089,11 @@
         energy: state.energy || 0,
         maxEnergy: state.maxEnergy || 0,
         isPlayerTurn: Boolean(state.isPlayerTurn),
+        playerHp: state.playerHp || 0,
+        enemyHp: state.enemyHp || 0,
+        enemyIntentIndex: state.enemyIntentIndex || 0,
+        pendingBattleTransitions: battleTransitions.size,
+        backgroundSuspended,
         enemyShield: state.enemyShield || 0,
         enemyArmor: state.enemyArmor || 0,
         enemyRiposte: state.enemyRiposte || 0,
@@ -2465,6 +2502,12 @@
     nodes.amuletBtn.addEventListener("click", buyMistAmulet);
     exposeSmokeHooks();
     window.addEventListener("wonder:locale-change", translateUI);
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) suspendBackgroundBattle();
+      else resumeBackgroundBattle();
+    });
+    window.addEventListener("pagehide", suspendBackgroundBattle);
+    window.addEventListener("pageshow", resumeBackgroundBattle);
 
     let progress = 0;
     const interval = setInterval(() => {

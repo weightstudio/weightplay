@@ -596,6 +596,10 @@
     pointerDown = false;
   }
 
+  function resetFrameClock() {
+    lastFrame = performance.now();
+  }
+
   function startRun() {
     clearCharmConfirmation();
     setUpgradeModalOpen(false, false);
@@ -648,15 +652,16 @@
 
   function loop(now, token = runToken) {
     if (token !== runToken) return;
-    const dt = Math.min(0.033, (now - lastFrame) / 1000 || 0);
+    const elapsedDt = Math.max(0, (now - lastFrame) / 1000 || 0);
+    const physicsDt = Math.min(0.033, elapsedDt);
     lastFrame = now;
-    if (state.mode === "running") update(dt);
+    if (state.mode === "running") update(physicsDt, elapsedDt);
     draw();
     if (state.mode === "running") scheduleLoop(token);
   }
 
-  function update(dt) {
-    state.timeLeft = Math.max(0, state.timeLeft - dt);
+  function update(dt, elapsedDt = dt) {
+    state.timeLeft = Math.max(0, state.timeLeft - elapsedDt);
     state.survived = RUN_SECONDS - state.timeLeft;
     movePlayer(dt);
     spawnEnemies(dt);
@@ -1306,7 +1311,15 @@
     keys.delete(event.key.toLowerCase());
   });
   window.addEventListener("blur", clearInput);
-  document.addEventListener("visibilitychange", clearInput);
+  window.addEventListener("pagehide", () => {
+    clearInput();
+    resetFrameClock();
+  });
+  window.addEventListener("pageshow", resetFrameClock);
+  document.addEventListener("visibilitychange", () => {
+    clearInput();
+    resetFrameClock();
+  });
 
   nodes.localeSelect.addEventListener("change", (event) => setLocale(event.target.value));
   nodes.startBtn.addEventListener("click", startRun);

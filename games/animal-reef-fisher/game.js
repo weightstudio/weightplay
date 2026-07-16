@@ -391,6 +391,7 @@
   let pointer = { down: false, id: null, x: 0, y: 0, tensionPct: 50, source: "canvas" };
   let lastTime = performance.now();
   let raf = 0;
+  let backgroundSuspended = false;
   const images = {};
   const fishThumbCache = {};
   const fishCropCache = {};
@@ -1180,6 +1181,7 @@
   }
 
   function tick(now) {
+    if (backgroundSuspended) return;
     const dt = Math.min(0.05, (now - lastTime) / 1000);
     lastTime = now;
     update(dt);
@@ -1467,7 +1469,24 @@
   window.addEventListener("pointerup", releaseCast);
   window.addEventListener("pointercancel", cancelFishingInput);
   window.addEventListener("blur", cancelFishingInput);
-  document.addEventListener("visibilitychange", cancelFishingInput);
+  function suspendBackgroundFishing() {
+    cancelFishingInput();
+    if (backgroundSuspended) return;
+    backgroundSuspended = true;
+    cancelAnimationFrame(raf);
+  }
+  function resumeBackgroundFishing() {
+    if (!backgroundSuspended) return;
+    backgroundSuspended = false;
+    lastTime = performance.now();
+    raf = requestAnimationFrame(tick);
+  }
+  window.addEventListener("pagehide", suspendBackgroundFishing);
+  window.addEventListener("pageshow", resumeBackgroundFishing);
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) suspendBackgroundFishing();
+    else resumeBackgroundFishing();
+  });
   canvas.addEventListener("pointercancel", cancelFishingInput);
   canvas.addEventListener("lostpointercapture", cancelFishingInput);
   nodes.tensionLane.addEventListener("pointerdown", (evt) => {
@@ -1530,7 +1549,11 @@
           run: run
             ? {
                 phase: run.phase,
+                time: run.time,
                 castPower: run.castPower,
+                tension: run.tension,
+                fishPower: run.fishPower,
+                struggle: run.struggle,
                 catches: run.catches,
                 newFish: run.newFish,
                 score: run.score,

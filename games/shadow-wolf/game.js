@@ -146,7 +146,7 @@
       startRun: "Start Game",
       languageSelector: "Language selector",
       controlLegend: "A/D Move · W/Space Jump · J Attack · K/Shift Dash",
-      roomLabel: "Room",
+      roomLabel: "Stage",
       keyLabel: "Points",
       arenaLabel: "Shadow Wolf arena",
       stageEyebrow: "EXPEDITION",
@@ -214,6 +214,8 @@
       // Reports
       report_win: "Stage {stage} cleared. The next trail is unlocked, and this stage remains available for replay.",
       report_partial: "Stage {stage} remains uncleared. Read its hazard warning, adjust your attribute choices, and try again.",
+      report_skill_win: "You read the stage rule, controlled the route, and finished the encounter.",
+      report_skill_partial: "The route is still open: watch the warning cycle and save dash or double-jump for the counter window.",
     },
     "zh-Hant": {
       title: "影狼傳說",
@@ -318,7 +320,10 @@
     backToMenu: "\u8fd4\u56de\u95dc\u5361",
     report_win: "\u7b2c {stage} \u95dc\u5df2\u901a\u904e\u3002\u4e0b\u4e00\u689d\u8def\u7dda\u5df2\u89e3\u9396\uff0c\u672c\u95dc\u4ecd\u53ef\u91cd\u65b0\u6311\u6230\u3002",
     report_partial: "\u7b2c {stage} \u95dc\u5c1a\u672a\u901a\u904e\u3002\u89c0\u5bdf\u5730\u5f62\u8b66\u793a\u3001\u8abf\u6574\u5c6c\u6027\u5f8c\u518d\u8a66\u4e00\u6b21\u3002",
+    report_skill_win: "\u4f60\u8b80\u61c2\u95dc\u5361\u898f\u5247\u3001\u63a7\u5236\u79fb\u52d5\u8def\u7dda\uff0c\u4e26\u5b8c\u6210\u6574\u5834\u5c0d\u6230\u3002",
+    report_skill_partial: "\u8def\u7dda\u9084\u6c92\u6709\u95dc\u9589\uff1a\u89c0\u5bdf\u8b66\u793a\u5faa\u74b0\uff0c\u628a\u885d\u523a\u6216\u4e8c\u6bb5\u8df3\u7559\u7d66\u53cd\u64ca\u7a97\u53e3\u3002",
     regionsCleared: "\u95dc\u5361\u9032\u5ea6",
+    roomLabel: "\u95dc\u5361",
   });
 
   function preloadImage(src) {
@@ -329,17 +334,17 @@
 
   const shadowAssetPaths = {
     bg: "../../assets/shadow-wolf-stage-bg.webp",
-    bgCrystal: "../../assets/shadow-wolf-bg-crystal-cavern.png",
-    bgJungle: "../../assets/shadow-wolf-bg-vine-jungle.png",
-    bgRift: "../../assets/shadow-wolf-bg-shadow-rift.png",
-    bgVolcanic: "../../assets/shadow-wolf-bg-volcanic-altar.png",
+    bgCrystal: "../../assets/shadow-wolf-bg-crystal-cavern.webp",
+    bgJungle: "../../assets/shadow-wolf-bg-vine-jungle.webp",
+    bgRift: "../../assets/shadow-wolf-bg-shadow-rift.webp",
+    bgVolcanic: "../../assets/shadow-wolf-bg-volcanic-altar.webp",
     wolf: "../../assets/shadow-wolf-hero.webp",
-    enemyWolf: "../../assets/shadow-wolf-enemy-hunter.png",
+    enemyWolf: "../../assets/shadow-wolf-enemy-hunter.webp",
     bat: "../../assets/shadow-wolf-enemy-bat-cutout.png",
     boar: "../../assets/shadow-wolf-enemy-boar-cutout.png",
     boss: "../../assets/shadow-wolf-boss-behemoth-cutout.png",
-    bossBasilisk: "../../assets/shadow-wolf-boss-basilisk.png",
-    bossGuardian: "../../assets/shadow-wolf-boss-guardian.png",
+    bossBasilisk: "../../assets/shadow-wolf-boss-basilisk.webp",
+    bossGuardian: "../../assets/shadow-wolf-boss-guardian.webp",
     bossColossus: "../../assets/shadow-wolf-boss-thorn-colossus.webp",
     bossWyvern: "../../assets/shadow-wolf-boss-cinder-wyvern.webp",
     bossStag: "../../assets/shadow-wolf-boss-eclipse-stag.webp",
@@ -534,9 +539,10 @@
     }
     nodes.localeSelect.value = getLocale();
     renderStageCards();
-    const publicMeta = locale === "zh-Hant"
+    let publicMeta = locale === "zh-Hant"
       ? { title: "影狼傳說 - WeightPlay", description: "探索影狼遺跡、收集遺物並挑戰首領的 13+ 動作冒險。" }
-      : { title: "Shadow Wolf Legend - WeightPlay", description: "Explore Shadow Wolf ruins, collect relics, and challenge the boss in this 13+ action adventure." };
+      : { title: "Shadow Wolf Legend - WeightPlay", description: "Master 30 platform-action stages, counter special enemies, shape four attributes, and defeat six distinct Shadow Wolf Bosses." };
+    if (locale === "zh-Hant") publicMeta = { title: "\u5f71\u72fc\u50b3\u8aaa - WeightPlay", description: "\u638c\u63e1 30 \u500b\u5e73\u53f0\u52d5\u4f5c\u95dc\u5361\u3001\u53cd\u5236\u7279\u6b8a\u6575\u4eba\u3001\u914d\u7f6e\u56db\u7a2e\u5c6c\u6027\uff0c\u4e26\u64ca\u6557\u516d\u96bb\u4e0d\u540c\u9996\u9818\u3002" };
     document.title = publicMeta.title;
     document.querySelector('meta[name="description"]')?.setAttribute("content", publicMeta.description);
     document.querySelector('meta[property="og:title"]')?.setAttribute("content", publicMeta.title);
@@ -608,6 +614,8 @@
   function showStage() {
     clearAmuletConfirmation();
     clearActiveInputs();
+    state.gameActive = false;
+    cancelAnimationFrame(state.gameLoopId);
     setResultModalOpen(false, false);
     nodes.menuPanel.classList.add("hidden");
     nodes.gamePanel.classList.add("hidden");
@@ -1271,7 +1279,7 @@
     }
   }
 
-  function endGame(won) {
+  function legacyEndGame(won) {
     if (!state.gameActive) return;
     state.gameActive = false;
     clearActiveInputs();
@@ -1307,6 +1315,45 @@
       window.WeightPlayWallet?.addDiamonds(state.room - 1);
       window.WonderSound?.play("wrong");
     }
+    setResultModalOpen(true);
+  }
+
+  function endGame(won) {
+    if (!state.gameActive) return;
+    state.gameActive = false;
+    clearActiveInputs();
+    cancelAnimationFrame(state.gameLoopId);
+    const clearedStage = state.room;
+    state.stageCleared = Boolean(won);
+    nodes.resultTitle.textContent = won ? t("runComplete") : t("runFailed");
+    nodes.resultScore.textContent = `${clearedStage}/${STAGE_COUNT}`;
+
+    if (won) {
+      if (!state.completedStages.includes(clearedStage)) state.completedStages.push(clearedStage);
+      state.completedStages.sort((a, b) => a - b);
+      state.bestRoom = Math.max(state.bestRoom, clearedStage);
+      state.unlockedStage = Math.max(state.unlockedStage, Math.min(STAGE_COUNT, clearedStage + 1));
+      if (clearedStage === STAGE_COUNT) state.wins += 1;
+      window.WeightPlayWallet?.addDiamonds(BOSS_STAGES.has(clearedStage) ? (clearedStage === STAGE_COUNT ? 8 : 2) : 1);
+      nodes.resultText.textContent = t("report_win", { stage: clearedStage });
+      nodes.skillReportText.textContent = t("report_skill_win", { stage: clearedStage });
+      nodes.retryBtn.textContent = clearedStage < STAGE_COUNT ? (getLocale() === "zh-Hant" ? "\u4e0b\u4e00\u95dc" : "Next Stage") : (getLocale() === "zh-Hant" ? "\u518d\u73a9\u4e00\u6b21" : "Replay Stage");
+      nodes.retryBtn.dataset.resultAction = clearedStage < STAGE_COUNT ? "next" : "retry";
+      window.WonderSound?.play("win");
+    } else {
+      nodes.resultText.textContent = t("report_partial", { stage: clearedStage });
+      nodes.skillReportText.textContent = t("report_skill_partial", { stage: clearedStage });
+      nodes.retryBtn.textContent = t("tryAgain");
+      nodes.retryBtn.dataset.resultAction = "retry";
+      window.WonderSound?.play("wrong");
+    }
+
+    nodes.logicStars.textContent = won ? "\u2605\u2605\u2605" : "\u2605";
+    nodes.focusStars.textContent = won ? "\u2605\u2605\u2605" : "\u2605";
+    nodes.problemStars.textContent = won ? "\u2605\u2605\u2605" : "\u2605";
+    state.selectedStage = won && clearedStage < STAGE_COUNT ? clearedStage + 1 : clearedStage;
+    saveLocalState();
+    renderAdventureRecord();
     setResultModalOpen(true);
   }
 
@@ -1797,7 +1844,8 @@
     ctx.clearRect(0, 0, 800, 500);
 
     // 1. Background image
-    const background = state.room <= 2 ? assets.bg : state.room <= 4 ? assets.bgCrystal : state.room <= 6 ? assets.bgJungle : state.room === 7 ? assets.bgRift : assets.bgVolcanic;
+    const region = Math.ceil(state.room / 5);
+    const background = region === 1 ? assets.bg : region === 2 ? assets.bgCrystal : region === 3 ? assets.bgJungle : region === 4 ? assets.bgVolcanic : region === 5 ? assets.bgRift : assets.bgVolcanic;
     if (background.complete) {
       ctx.drawImage(background, 0, 0, 800, 500);
     } else {
@@ -1833,6 +1881,19 @@
         ctx.stroke();
       }
       ctx.shadowBlur = 0;
+    });
+
+    hazardZones.forEach((zone) => {
+      const colors = { crystal: "#67e8f9", fire: "#fb923c", venom: "#a3e635", root: "#84cc16", shockwave: "#facc15", gust: "#c4b5fd" };
+      ctx.save();
+      ctx.globalAlpha = zone.active ? 0.72 : 0.28;
+      ctx.fillStyle = colors[zone.kind] || "#a78bfa";
+      ctx.fillRect(zone.x, zone.y, zone.w, zone.h);
+      ctx.strokeStyle = zone.active ? "#ffffff" : colors[zone.kind] || "#a78bfa";
+      ctx.lineWidth = zone.active ? 3 : 2;
+      ctx.setLineDash(zone.warning ? [8, 6] : []);
+      ctx.strokeRect(zone.x, zone.y, zone.w, zone.h);
+      ctx.restore();
     });
 
     // 4. Draw pickups (key, chest, portal)
@@ -1876,8 +1937,9 @@
       }
 
       if (enemy.type === "boss") {
-        const bossSprite = enemy.variant === "basilisk" ? assets.bossBasilisk : enemy.variant === "guardian" ? assets.bossGuardian : assets.boss;
-        const bossY = enemy.variant === "basilisk" ? spriteAnchors.basiliskY : enemy.variant === "guardian" ? spriteAnchors.guardianY : spriteAnchors.behemothY;
+        const bossSprites = { basilisk: assets.bossBasilisk, guardian: assets.bossGuardian, colossus: assets.bossColossus, wyvern: assets.bossWyvern, stag: assets.bossStag, behemoth: assets.boss };
+        const bossSprite = bossSprites[enemy.variant] || assets.boss;
+        const bossY = enemy.variant === "basilisk" ? spriteAnchors.basiliskY : enemy.variant === "guardian" ? spriteAnchors.guardianY : enemy.variant === "behemoth" ? spriteAnchors.behemothY : -18;
         const drewBoss = drawImageContain(ctx, bossSprite, -12, bossY, enemy.width + 24, enemy.height + 62);
         if (enemy.hitTimer > 0) {
           ctx.save(); ctx.globalAlpha = 0.72; ctx.globalCompositeOperation = "screen";
@@ -1885,8 +1947,8 @@
         }
         if (!drewBoss) drawEnemyFallback(ctx, enemy);
       } else {
-        const sprite = enemy.type === "boar" ? assets.boar : enemy.type === "wolf" ? assets.enemyWolf : assets.bat;
-        const visualY = enemy.type === "wolf" ? spriteAnchors.hunterY : enemy.type === "boar" ? spriteAnchors.boarY : -10;
+        const sprite = enemy.baseType === "boar" ? assets.boar : enemy.baseType === "wolf" ? assets.enemyWolf : assets.bat;
+        const visualY = enemy.baseType === "wolf" ? spriteAnchors.hunterY : enemy.baseType === "boar" ? spriteAnchors.boarY : -10;
         const drewEnemy = drawImageContain(ctx, sprite, -22, visualY, enemy.width + 44, enemy.height + 60);
         if (enemy.hitTimer > 0) {
           ctx.save(); ctx.globalAlpha = 0.72; ctx.globalCompositeOperation = "screen";
@@ -1895,6 +1957,17 @@
         if (!drewEnemy) drawEnemyFallback(ctx, enemy);
       }
       ctx.restore();
+
+      if (enemy.shielded || enemy.vulnerable === false || (enemy.armored && !enemy.armorOpen)) {
+        ctx.save();
+        ctx.strokeStyle = enemy.shielded ? "#93c5fd" : "#facc15";
+        ctx.lineWidth = 3;
+        ctx.globalAlpha = 0.8;
+        ctx.beginPath();
+        ctx.ellipse(enemy.x + enemy.width / 2, enemy.y + enemy.height / 2, enemy.width * 0.62, enemy.height * 0.62, 0, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.restore();
+      }
 
       // Enemy HP Bar
       if (enemy.hp < enemy.maxHp) {
@@ -2147,8 +2220,8 @@
 
     nodes.resultMenuBtn.addEventListener("click", () => {
       window.WonderSound?.play("click");
-      showMain();
-      nodes.startBtn.focus({ preventScroll: true });
+      showStage();
+      requestAnimationFrame(() => document.querySelector(".stage-card.is-selected")?.focus({ preventScroll: true }));
     });
 
     nodes.localeSelect.addEventListener("change", (e) => {
@@ -2238,7 +2311,7 @@
           hp: Math.ceil(state.playerHp),
           maxHp: stats.maxHp,
           keys: state.keys,
-          record: { runs: state.runs, bestRoom: state.bestRoom, wins: state.wins },
+          record: { runs: state.runs, bestRoom: state.bestRoom, wins: state.wins, unlockedStage: state.unlockedStage, selectedStage: state.selectedStage, completedStages: [...state.completedStages] },
           player: {
             x: Math.round(state.x),
             y: Math.round(state.y),
@@ -2254,7 +2327,9 @@
           },
           terrain: platforms.map((platform) => ({ x: platform.x, y: platform.y, w: platform.w, h: platform.h, kind: platform.kind })),
           spikes: spikesList.map((spike) => ({ x: spike.x, y: spike.y, w: spike.w, h: spike.h })),
-          enemies: state.enemies.map((enemy) => ({ type: enemy.type, hp: Math.ceil(enemy.hp), x: Math.round(enemy.x), y: Math.round(enemy.y) })),
+          hazards: hazardZones.map((zone) => ({ kind: zone.kind, active: zone.active, warning: zone.warning })),
+          bullets: state.bullets.map((bullet) => ({ kind: bullet.kind || "normal", x: Math.round(bullet.x), y: Math.round(bullet.y) })),
+          enemies: state.enemies.map((enemy) => ({ type: enemy.type, baseType: enemy.baseType, variant: enemy.variant || "", hp: Math.ceil(enemy.hp), maxHp: enemy.maxHp, phase: enemy.phase || 0, shielded: Boolean(enemy.shielded), vulnerable: enemy.vulnerable !== false, armored: Boolean(enemy.armored), armorOpen: Boolean(enemy.armorOpen), x: Math.round(enemy.x), y: Math.round(enemy.y) })),
           equipment: {
             weapon: state.eqWeapon,
             armor: state.eqArmor,
@@ -2284,6 +2359,60 @@
       },
       startRun() {
         startRun();
+        return this.readState();
+      },
+      campaignDefinition() {
+        return STAGE_DEFINITIONS.map((definition) => ({ ...definition, enemies: [...definition.enemies] }));
+      },
+      restoreSave(snapshot = {}) {
+        localStorage.setItem(saveKey, JSON.stringify(snapshot));
+        loadLocalState();
+        renderAdventureRecord();
+        renderStageCards();
+        return this.readState();
+      },
+      startStage(stageNo) {
+        state.unlockedStage = Math.max(state.unlockedStage, Math.max(1, Math.min(STAGE_COUNT, Number(stageNo) || 1)));
+        state.selectedStage = Math.max(1, Math.min(state.unlockedStage, Number(stageNo) || 1));
+        saveLocalState();
+        startRun(state.selectedStage);
+        return this.readState();
+      },
+      forceDefeatStage() {
+        const enemies = [...state.enemies];
+        enemies.forEach((enemy) => {
+          enemy.hp = 0;
+          handleEnemyDefeated(enemy);
+          const index = state.enemies.indexOf(enemy);
+          if (index >= 0) state.enemies.splice(index, 1);
+        });
+        return this.readState();
+      },
+      forceBossPhase(phase = 1) {
+        const boss = state.enemies.find((enemy) => enemy.type === "boss");
+        if (!boss) return this.readState();
+        boss.hp = boss.maxHp * (Number(phase) >= 2 ? 0.3 : 0.65);
+        updateBossEnemy(boss);
+        return this.readState();
+      },
+      primeEnemyBehavior(type) {
+        const enemy = state.enemies.find((candidate) => candidate.type === type);
+        if (!enemy) return this.readState();
+        enemy.shootCooldown = 1;
+        if (type === "ember-wolf") enemy.actionClock = 89;
+        if (type === "rift-bat") enemy.actionClock = 134;
+        if (type === "dive-bat") enemy.actionClock = 106;
+        if (type === "charger-boar") enemy.actionClock = 112;
+        if (type === "armored-boar") enemy.x = enemy.bounds.min;
+        return this.readState();
+      },
+      defeatEnemyByType(type) {
+        const enemy = state.enemies.find((candidate) => candidate.type === type);
+        if (!enemy) return this.readState();
+        enemy.hp = 0;
+        handleEnemyDefeated(enemy);
+        const index = state.enemies.indexOf(enemy);
+        if (index >= 0) state.enemies.splice(index, 1);
         return this.readState();
       },
       forceLevelUp() {

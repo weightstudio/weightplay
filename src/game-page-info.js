@@ -858,32 +858,65 @@
       ],
     },
     "shadow-wolf": {
-      title: "Shadow Wolf",
-      age: "13+",
+      title: "Shadow Wolf Legend",
       difficulty: "Hard",
-      time: "5-8 minutes",
+      time: "3-8 minutes per stage",
+      gameplay: "Side-Scrolling Action Platformer RPG",
+      genre: ["Action", "Platformer", "Animal", "RPG"],
       skills: ["Logic", "Problem Solving", "Focus"],
+      guideKicker: "WeightPlay Original Game Guide",
+      guideTitleSuffix: "Game Guide",
+      noteTitle: "Player and Save Information",
+      hideScoreBands: true,
       intro:
-        "Shadow Wolf is a 2D Action Platformer RPG. Navigate stone platforms, double jump over spike traps, dash past shadow monsters, level up your attributes, and collect keys to open gear chests. Stand strong in Room 3 and defeat the giant Boss Behemoth.",
+        "Shadow Wolf Legend is a 30-stage side-scrolling action-platform campaign. Guide the explorer wolf across ruined ledges, read visible hazard warnings, fight shadow creatures, collect EXP, and spend two exact attribute points whenever a level is gained. Every fifth stage ends with a regional Boss whose defense or attack pattern requires a different response.",
+      story: [
+        "Six seals once kept the Moonshade route open between the forest frontier and the Behemoth Crown. Their fracture changed each region: crystals fall in the caverns, roots close paths in the Rootwild, furnace vents ignite the Ember Vault, rift winds distort the Eclipse Bridge, and the Crown Road combines threats carried forward from every region.",
+        "You play the rune-marked Shadow Wolf explorer. A stage is restored only after every assigned creature is defeated. A clear saves that route section and unlocks the next card; Stage 30 represents breaking the final Behemoth seal, while every completed stage remains available for replay."
+      ],
+      systems: [
+        "Movement and combat: run, double-jump, slash in the facing direction, and dash through danger for a brief protected moment. Enemy contact, projectiles, spikes, and active terrain reduce Wolf HP. Falling returns the wolf to stable ground with a five-HP penalty.",
+        "EXP and attributes: ordinary and special enemies release EXP orbs. Level-up pauses Battle and grants two mandatory points. Strength raises Damage, Agility raises Speed, Constitution raises Max HP, and Luck raises Critical chance; every choice shows exact current-to-next values.",
+        "Special enemies: Crystal Bats fire spreads, Armored Boars open after a missed patrol turn, Charger Boars burst across lanes, Ember Wolves leave fire, Dive Bats pursue vertically, Rift Bats blink between perches, and Mirror Wolves split once into two fragile echoes.",
+        "Terrain: crystal fall, venom, roots, fire, shockwaves, and rift gusts use a warning period before becoming active. Moving ledges change the jump route, while permanent spikes remain dangerous whenever touched.",
+        "Optional permanent support: the Mist Amulet costs 15 Diamonds and changes starting Max HP from 30 to 40. Its two-step confirmation shows the exact balance. Normal stage unlocks do not require Diamonds."
+      ],
       how: [
-        "Use A/D or Arrow keys to run left and right.",
-        "Press W, Up Arrow, or Space to jump. Press it again in mid-air to double jump.",
-        "Press J or left click to execute a claw attack. Press K or Shift to dash.",
-        "Defeat waves of shadow bat/wolf monsters, pick up green experience orbs, and level up to pick passive relics.",
-        "Loot gold keys from elites, open chests, and equip Weapons, Armor, and Boots in the sidebar."
+        "Choose an unlocked card from the horizontal 30-stage rail; every fifth card is a Boss checkpoint.",
+        "Use A/D or Left/Right Arrow to move. Press W, Up Arrow, or Space to jump, then press once more before landing for the second jump.",
+        "Press J to slash and K or Shift to dash. Touch players use the visible direction, Jump, and Attack controls.",
+        "Read dashed terrain warnings before they become active, and treat a visible armor or shield ring as a counter prompt rather than a request to trade damage.",
+        "Collect EXP and spend both exact-value attribute points whenever growth pauses the same Battle screen.",
+        "Defeat the complete encounter. Victory saves the stage and unlocks the next one; defeat offers retry without deleting prior clears."
       ],
       strategyTips: [
-        "Time your double jumps carefully to avoid landing on spike traps, which deal constant damage.",
-        "If you fall off a platform, don't panic! You will respawn on the nearest stable ground with a minor penalty of -5 HP.",
-        "Dash grants brief invincibility frames. Use it to dodge bats shooting red projectiles.",
-        "Unlock the permanent Mist Amulet from the Diamond Shop to start the platform run with +10 Max HP."
+        "Keep the second jump until a moving ledge, spread shot, or hazard cycle confirms the safe landing.",
+        "Use dash through the last part of a projectile fan or charge, then turn and slash during recovery instead of using dash only for travel.",
+        "Remove ranged threats before committing to a slow Armored Boar punish window.",
+        "Strength shortens fights, Constitution forgives mistakes, Agility improves positioning, and Luck creates variable burst; choose for the current stage rule.",
+        "Leave space before defeating a Mirror Wolf because two echoes appear around the split point."
       ],
+      progression: [
+        "Stages 1-5 teach patrols, ledges, aimed shots, moving platforms, and spikes. Basilisk Hollow adds venom zones and a widening projectile fan.",
+        "Stages 6-10 add falling-crystal warnings, Crystal Bat spreads, and Armored Boars. Stone Guardian blocks frontal claws and exposes itself after a ground slam with two jumpable shockwaves.",
+        "Stages 11-15 combine bramble lanes, charges, armor, and ranged priority. Thorn Colossus protects its core until a missed root smash opens a short damage window.",
+        "Stages 16-20 cycle fire lanes, add Ember Wolf trails and Dive Bats, then end with Cinder Wyvern: survive its protected aerial fan and punish the vulnerable landing.",
+        "Stages 21-25 add gusts, blinking Rift Bats, and splitting Mirror Wolves. Eclipse Stag reflects most damage until its dash hits an arena edge and breaks the shield.",
+        "Stages 26-30 mix earlier counter rules with visible warnings. Behemoth Crown changes at two health thresholds, adding crystal fall and then root pressure plus a denser fan without creating a hidden Stage 31."
+      ],
+      designNote:
+        "The campaign uses six five-stage teaching arcs because platform-action difficulty should grow through recognition and counterplay, not only larger health bars. Four stages introduce or combine a regional rule; the fifth asks for that rule against a Boss with a visible defense state and punishable opening. A warning-to-active terrain rhythm supports deliberate touch play while retaining pressure. One fixed logical Battle canvas keeps ledges, HUD, controls, growth Draft, and Result in the same geometry across phone and desktop. Unlike WeightPlay auto-battlers, every dodge, jump, target priority choice, and attack time remains under direct player control.",
       parent:
-        "This game helps teenagers practice spatial calculations, real-time motor reflexes, hand-eye coordination, and inventory optimization. All progression metrics are saved locally and are non-clinical.",
+        "This browser stores the highest unlocked stage, selected stage, completed-stage list, attempts, best clear, final Crown clears, and Mist Amulet ownership locally. A legacy eight-room save migrates forward without relocking earned progress. No login is required for basic play; clearing site storage or changing browsers may remove this record. Diamonds are optional support currency.",
       faq: [
-        ["Is Shadow Wolf free to play?", "Yes. All games on the WeightPlay platform run free of cost in the web browser."],
-        ["What happens if I fall into a pit?", "You respawn on the nearest edge with a minor health penalty of -5 HP."],
-        ["How do I defeat the Boss?", "Stay active, dodge its charge attacks by jumping onto higher platforms, and attack from behind."]
+        ["Is Shadow Wolf Legend free to play?", "Yes. The full 30-stage campaign runs in the browser without a required purchase or login."],
+        ["How do stages unlock?", "A new save begins with Stage 1. Clearing the complete encounter saves that stage and unlocks the next card; cleared stages remain replayable."],
+        ["What happens if the wolf falls?", "The wolf returns to stable ground and loses five HP. The attempt ends only if that penalty reduces HP to zero."],
+        ["Why does an armored enemy take very little damage?", "Its defense state is active. Trigger the visible counter window after a missed charge, slam, root smash, landing, or wall impact."],
+        ["Do I have to spend both attribute points?", "Yes. Battle resumes only after both points have been assigned to Strength, Agility, Constitution, or Luck."],
+        ["Are Diamonds required?", "No. They only provide the optional Mist Amulet; normal progress through all 30 stages does not require it."],
+        ["What progress is saved?", "Stage unlocks and clears, selected stage, attempts, best clear, Crown clears, and Mist Amulet ownership are saved locally in this browser."],
+        ["How are the six Bosses different?", "Basilisk controls ground with venom, Guardian drops its guard after slams, Colossus exposes a core, Wyvern alternates flight and landing, Stag breaks its shield on a failed dash, and Behemoth combines phase-based crystal and root pressure."]
       ],
     },
   };
@@ -1644,6 +1677,69 @@
       ["為什麼標示為 13+？", "遊戲包含張力控制、裝備選擇、收集進度與選擇性鑽石消耗，比低年齡層遊戲更深入。"],
       ["一定要使用鑽石才能進度嗎？", "不用。礁區、裝備與圖鑑都能不花鑽石推進；鑽石只提供選擇性的魚餌或聲納工具。"],
       ["進度會保存嗎？", "會。解鎖礁區、圖鑑項目、裝備等級與最佳紀錄會保存在本機裝置。"],
+    ],
+  };
+
+  localizedGames["zh-Hant"]["shadow-wolf"] = {
+    title: "影狼傳說",
+    difficulty: "困難",
+    time: "每關 3–8 分鐘",
+    gameplay: "橫向動作平台 RPG",
+    genre: ["動作", "平台", "動物", "RPG"],
+    skills: ["邏輯", "問題解決", "專注"],
+    guideKicker: "WeightPlay 原創遊戲指南",
+    guideTitleSuffix: "遊戲指南",
+    noteTitle: "玩家與存檔說明",
+    hideScoreBands: true,
+    intro:
+      "《影狼傳說》是一款 30 關橫向動作平台戰役。玩家帶領探險影狼穿越遺跡岩台、判讀地形警示、迎戰影獸、收集經驗，並在升級時精確分配兩點屬性。每五關會遇到一名區域首領；牠們的防禦狀態與攻擊規則各不相同。",
+    story: [
+      "六道封印原本維持月影邊境到巨獸王冠之間的道路。封印破裂後，水晶洞窟會落下碎晶，根野會長出封路荊棘，燼火寶庫週期燃燒，蝕月裂隙會吹動角色，而王冠之路會重新組合前五區學過的威脅。",
+      "玩家扮演刻有月光符文的探險影狼。必須擊敗目前關卡安排的全部敵人，才算修復這一段道路。勝利會保存通關並解鎖下一張卡；第 30 關代表解除最後的巨獸封印，所有已完成關卡仍可重玩。"
+    ],
+    systems: [
+      "移動與戰鬥：左右奔跑、地面跳躍後再二段跳、朝面向方向揮爪，並用衝刺短暫穿越危險。接觸敵人、投射物、尖刺與啟動地形會扣除影狼生命；掉落路線會回到穩定地面並損失 5 點生命。",
+      "經驗與屬性：普通與特殊敵人會掉落經驗光珠。升級會暫停同一個戰鬥畫面並給予兩點必須分配的屬性。力量提高傷害、敏捷提高速度、體質提高生命上限、幸運提高爆擊率，每個按鈕都顯示目前值與下一個值。",
+      "特殊敵人：水晶蝙蝠使用三向散射，裝甲野豬在巡邏撞牆後開放防禦，衝鋒野豬快速穿越路線，燼狼留下火徑，俯衝蝙蝠追蹤高度，裂隙蝙蝠在棲台間閃現，鏡狼倒下後只會分裂一次並產生兩個脆弱殘影。",
+      "地形：落晶、毒池、根刺、火焰、震波與裂風都先出現警示再進入危險期。移動岩台會改變跳躍路線，固定尖刺則在任何時候都不能碰觸。",
+      "可選永久支援：霧影護符需要 15 顆鑽石，會把每次挑戰的初始生命上限從 30 提高到 40。第一次點擊只顯示扣除前後餘額，第二次才確認；正常關卡解鎖不需要鑽石。"
+    ],
+    how: [
+      "從橫向 30 關卡列選擇已解鎖關卡；每第五張卡是首領檢查點。",
+      "用 A/D 或左右方向鍵移動，W、上方向鍵或空白鍵跳躍；落地前再按一次即可二段跳。",
+      "按 J 揮爪、K 或 Shift 衝刺。手機使用可見的左右、跳躍與攻擊按鈕。",
+      "看到虛線地形時先決定退路；看到敵人外圍的護甲或護盾圈時，先觸發牠的反制空檔再攻擊。",
+      "收集經驗並在升級畫面分配完兩點屬性，戰鬥才會繼續。",
+      "擊敗完整敵人組合即可通關。勝利會保存進度並解鎖下一關；失敗可直接重試，不會刪除舊通關。"
+    ],
+    strategyTips: [
+      "先保留第二段跳，等移動岩台、散射彈或地形循環確認安全落點後再使用。",
+      "衝刺適合穿過投射物扇形或衝鋒尾端，之後立即轉身利用敵人的恢復時間揮爪。",
+      "準備處理裝甲野豬前，先清除會干擾反擊空檔的遠程敵人。",
+      "力量縮短戰鬥、體質容許更多失誤、敏捷改善走位、幸運提供不固定爆發；依關卡規則選擇，不存在唯一升級順序。",
+      "擊敗鏡狼前先離開分裂點，避免兩個殘影同時在角色身旁出現。"
+    ],
+    progression: [
+      "第 1–5 關教學巡邏、上下岩台、蝙蝠瞄準、移動平台與尖刺；蛇王幽谷加入毒池與逐漸擴大的投射扇形。",
+      "第 6–10 關加入落晶警示、水晶蝙蝠散射與裝甲野豬；石衛會擋住正面揮爪，地震後放出兩道可跳過的震波並暫時解除防禦。",
+      "第 11–15 關混合荊棘路線、衝鋒、裝甲與遠程優先順序；棘根巨像平時保護核心，根拳重擊落空後才出現短暫傷害窗口。",
+      "第 16–20 關循環火焰地帶，加入燼狼火徑與俯衝蝙蝠；燼翼飛龍在空中受到保護並發射火扇，落地震波之後才可有效反擊。",
+      "第 21–25 關加入裂風、閃現蝙蝠與分裂鏡狼；蝕月靈鹿會反射大部分傷害，必須誘導衝鋒撞上競技場邊緣才能破盾。",
+      "第 26–30 關把前面的反制規則組成清楚的混合挑戰；巨獸王冠在兩個生命門檻加入落晶、根刺與更密集射擊，但完成後不會產生不存在的第 31 關。"
+    ],
+    designNote:
+      "戰役採六組五關教學弧線，因為動作平台遊戲應透過辨識與反制增加難度，而不是只提高生命與速度。每區前四關介紹或組合一條規則，第五關則用有清楚防禦狀態與攻擊空檔的首領驗收。地形先警示再啟動，讓觸控玩家能作出有意識的按鍵選擇，同時保留壓力。手機與桌面共用固定邏輯畫布，因此岩台、HUD、操作、升級與結果的相對位置一致。與 WeightPlay 自走戰鬥不同，本作的閃避、跳躍、目標優先與攻擊時機都由玩家直接控制。",
+    parent:
+      "目前瀏覽器會在本機保存最高解鎖關卡、選定關卡、通關清單、挑戰次數、最佳通關、王冠通關次數與霧影護符。舊八區存檔會向前遷移，不會重新鎖住已取得進度。基本遊玩不需要登入；清除網站資料或更換瀏覽器可能移除紀錄。鑽石只是可選支援資源。",
+    faq: [
+      ["《影狼傳說》可以免費玩嗎？", "可以。完整 30 關戰役可直接在瀏覽器遊玩，不需要購買或登入。"],
+      ["關卡如何解鎖？", "新存檔從第 1 關開始。擊敗完整敵人組合後會保存該關並解鎖下一張卡；已通關關卡仍可重玩。"],
+      ["影狼掉下去會怎樣？", "影狼會回到穩定地面並損失 5 點生命；只有這次損失讓生命歸零時才會結束挑戰。"],
+      ["為什麼裝甲敵人只受到很少傷害？", "目前防禦狀態仍在。要利用衝鋒落空、地震、根拳、落地或撞牆等可見事件打開反擊窗口。"],
+      ["一定要分配完兩點屬性嗎？", "是。兩點都分配到力量、敏捷、體質或幸運之後，戰鬥才會繼續。"],
+      ["完成 30 關需要鑽石嗎？", "不需要。鑽石只用於可選霧影護符，正常戰役進度不需要它。"],
+      ["哪些進度會保存？", "關卡解鎖與通關、選定關卡、挑戰次數、最佳通關、王冠通關與護符會保存在目前瀏覽器。"],
+      ["六名首領有什麼不同？", "蛇王控制毒池、石衛震地後開盾、巨像暴露核心、飛龍交替飛行與落地、靈鹿撞牆破盾、巨獸則依生命階段加入落晶與根刺。"]
     ],
   };
 

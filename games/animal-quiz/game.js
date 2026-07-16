@@ -338,6 +338,8 @@ const state = {
 let stageDrag = null;
 let suppressStageClick = false;
 let quizGeneration = 0;
+let quizLifecycleSuspended = document.hidden;
+const quizTasks = new Set();
 
 function invalidateQuizSession() {
   quizGeneration += 1;
@@ -345,14 +347,42 @@ function invalidateQuizSession() {
 }
 
 function scheduleQuizTask(task, delay) {
-  const generation = quizGeneration;
-  const startedAt = performance.now();
+  const scheduled = {
+    generation: quizGeneration,
+    lastFrameAt: null,
+    remaining: delay,
+  };
+  quizTasks.add(scheduled);
   const tick = (now) => {
-    if (generation !== quizGeneration || !document.body.classList.contains("quiz-playing")) return;
-    if (now - startedAt >= delay) task();
-    else requestAnimationFrame(tick);
+    if (scheduled.generation !== quizGeneration || !document.body.classList.contains("quiz-playing")) {
+      quizTasks.delete(scheduled);
+      return;
+    }
+    if (quizLifecycleSuspended || document.hidden) {
+      scheduled.lastFrameAt = null;
+      requestAnimationFrame(tick);
+      return;
+    }
+    if (scheduled.lastFrameAt !== null) scheduled.remaining -= Math.max(0, now - scheduled.lastFrameAt);
+    scheduled.lastFrameAt = now;
+    if (scheduled.remaining <= 0) {
+      quizTasks.delete(scheduled);
+      task();
+    } else {
+      requestAnimationFrame(tick);
+    }
   };
   requestAnimationFrame(tick);
+}
+
+function suspendQuizTasks() {
+  quizLifecycleSuspended = true;
+  quizTasks.forEach((task) => { task.lastFrameAt = null; });
+}
+
+function resumeQuizTasks() {
+  quizLifecycleSuspended = document.hidden;
+  quizTasks.forEach((task) => { task.lastFrameAt = null; });
 }
 
 function locale() {
@@ -882,6 +912,12 @@ function applyLocaleChange() {
 
 localeSelect.addEventListener("change", applyLocaleChange);
 localeSelect.addEventListener("input", applyLocaleChange);
+window.addEventListener("pagehide", suspendQuizTasks);
+window.addEventListener("pageshow", resumeQuizTasks);
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) suspendQuizTasks();
+  else resumeQuizTasks();
+});
 startGameBtn.addEventListener("click", showStageSelect);
 stageBackBtn.addEventListener("click", showMain);
 backToStagesBtn.addEventListener("click", () => showStageSelect(state.stageIndex));

@@ -363,16 +363,46 @@
     ready: false
   };
   let roundGeneration = 0;
+  let roundLifecycleSuspended = document.hidden;
+  const roundTasks = new Set();
 
   function scheduleRoundTask(task, delay) {
-    const generation = roundGeneration;
-    const startedAt = performance.now();
+    const scheduled = {
+      generation: roundGeneration,
+      lastFrameAt: null,
+      remaining: delay
+    };
+    roundTasks.add(scheduled);
     const tick = (now) => {
-      if (generation !== roundGeneration || !document.body.classList.contains("memory-playing")) return;
-      if (now - startedAt >= delay) task();
-      else requestAnimationFrame(tick);
+      if (scheduled.generation !== roundGeneration || !document.body.classList.contains("memory-playing")) {
+        roundTasks.delete(scheduled);
+        return;
+      }
+      if (roundLifecycleSuspended || document.hidden) {
+        scheduled.lastFrameAt = null;
+        requestAnimationFrame(tick);
+        return;
+      }
+      if (scheduled.lastFrameAt !== null) scheduled.remaining -= Math.max(0, now - scheduled.lastFrameAt);
+      scheduled.lastFrameAt = now;
+      if (scheduled.remaining <= 0) {
+        roundTasks.delete(scheduled);
+        task();
+      } else {
+        requestAnimationFrame(tick);
+      }
     };
     return requestAnimationFrame(tick);
+  }
+
+  function suspendRoundTasks() {
+    roundLifecycleSuspended = true;
+    roundTasks.forEach((task) => { task.lastFrameAt = null; });
+  }
+
+  function resumeRoundTasks() {
+    roundLifecycleSuspended = document.hidden;
+    roundTasks.forEach((task) => { task.lastFrameAt = null; });
   }
 
   function cancelRoundTasks() {
@@ -380,6 +410,13 @@
     state.selectedCards = [];
     state.isLocked = false;
   }
+
+  window.addEventListener("pagehide", suspendRoundTasks);
+  window.addEventListener("pageshow", resumeRoundTasks);
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) suspendRoundTasks();
+    else resumeRoundTasks();
+  });
 
   // Helper Functions
   function locale() {

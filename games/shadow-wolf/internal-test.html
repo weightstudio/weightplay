@@ -6,7 +6,7 @@
     <meta name="robots" content="noindex,nofollow" />
     <title>Shadow Wolf Legend Internal Test | WeightPlay</title>
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
-    <link rel="stylesheet" href="style.css?v=20260710-shadow-wolf-worldmap5" />
+    <link rel="stylesheet" href="style.css?v=20260717-shadow-wolf-campaign1" />
   </head>
   <body>
     <header class="top-nav">
@@ -78,7 +78,7 @@
 
       <section id="mapPanel" class="panel world-map-panel hidden" aria-label="探索地圖">
         <div class="world-map-heading"><span>影狼遠征</span><h2>選擇探索區域</h2><p>目前等級 Lv.<strong id="mapLevel">1</strong></p></div>
-        <div class="world-map-grid">
+        <div class="world-map-grid stage-rail">
           <button type="button" class="zone-node" data-zone="1"><b>01</b><span>月影入口</span><small>巡邏狼群</small></button><button type="button" class="zone-node" data-zone="2"><b>02</b><span>苔石斷崖</span><small>高台伏擊</small></button><button type="button" class="zone-node" data-zone="3"><b>03</b><span>螢晶洞口</span><small>水晶尖刺</small></button><button type="button" class="zone-node" data-zone="4"><b>04</b><span>暮影橋頭</span><small>飛蝠群</small></button><button type="button" class="zone-node" data-zone="5"><b>05</b><span>藤蔓回廊</span><small>雙重陷阱</small></button><button type="button" class="zone-node" data-zone="6"><b>06</b><span>古樹祭階</span><small>戰豬守衛</small></button><button type="button" class="zone-node" data-zone="7"><b>07</b><span>裂谷深處</span><small>精英狩獵</small></button><button type="button" class="zone-node boss-zone" data-zone="8"><b>08</b><span>古獸祭壇</span><small>首領戰</small></button>
         </div>
         <button id="mapBackBtn" type="button" class="secondary-btn">返回</button>
@@ -101,7 +101,7 @@
                 <div class="bar-bg"><div id="expFill" class="bar-fill exp" style="width: 0%"></div></div>
               </div>
               <div class="hud-meta-row">
-                <div class="meta-badge">Room <strong id="roomText">1/3</strong></div>
+                <div class="meta-badge">Stage <strong id="roomText">1/30</strong></div>
                 <div class="meta-badge">Key: <strong id="keyText">0</strong></div>
               </div>
             </div>
@@ -155,7 +155,7 @@
 
       <section id="resultPanel" class="panel result-panel hidden" aria-live="polite">
         <h2 id="resultTitle">Expedition Success!</h2>
-        <p>Rooms cleared: <strong id="resultScore">0</strong></p>
+        <p>Stage progress: <strong id="resultScore">0/30</strong></p>
         <p id="resultText"></p>
         <h3 data-ui="skillReportTitle">Ability Analysis Report</h3>
         <div class="report-grid">
@@ -177,6 +177,6 @@
     <script src="../../src/sound.js?v=20260701-labels1"></script>
     <script src="../../src/i18n.js?v=20260703-i18n-clean1"></script>
     <script src="../../src/wallet.js?v=20260706-crystal-diamond-charm1"></script>
-    <script src="game.js?v=20260716-draft-owner1"></script>
+    <script src="game.js?v=20260717-shadow-wolf-campaign1"></script>
   </body>
 </html>

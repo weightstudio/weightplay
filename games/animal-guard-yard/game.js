@@ -1878,9 +1878,21 @@
   nodes.resumeBtn.addEventListener("click", resumeBattle);
   nodes.leaveBattleBtn.addEventListener("click", showMenu);
   nodes.pausePanel.addEventListener("keydown", (event) => {
-    if (event.key !== "Escape") return;
-    event.preventDefault();
-    resumeBattle();
+    if (event.key === "Tab") {
+      const actions = [nodes.resumeBtn, nodes.leaveBattleBtn].filter((button) => !button.disabled && button.getClientRects().length > 0);
+      if (!actions.length) return;
+      const index = actions.indexOf(document.activeElement);
+      const nextIndex = event.shiftKey
+        ? (index <= 0 ? actions.length - 1 : index - 1)
+        : (index < 0 || index >= actions.length - 1 ? 0 : index + 1);
+      event.preventDefault();
+      actions[nextIndex].focus({ preventScroll: true });
+      return;
+    }
+    if (event.key === "Escape") {
+      event.preventDefault();
+      resumeBattle();
+    }
   });
   nodes.resultStagesBtn.addEventListener("click", showMenu);
   nodes.retryBtn.addEventListener("click", () => startStage(currentStage));

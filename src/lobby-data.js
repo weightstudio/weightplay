@@ -464,14 +464,12 @@ window.WONDER_LOBBY = {
       type: { en: "2D Action Platformer RPG", "zh-Hant": "2D 動作平台 RPG" },
       categories: ["Featured", "Animal Games"],
       skills: ["Logic", "Problem Solving", "Focus"],
-      ages: ["13"],
-      ageLabel: { en: "13+", "zh-Hant": "13+" },
       href: "games/shadow-wolf/",
       description: {
-        en: "Run, jump, dash, and slash shadow beasts. Gain EXP, open gear chests, and defeat the behemoth boss.",
-        "zh-Hant": "奔跑、跳躍、衝刺並斬擊影獸。累積經驗、開啟裝備寶箱，最後擊敗巨獸首領。"
+        en: "Master 30 platform-action stages, counter special shadow beasts, shape four attributes, and defeat six distinct regional Bosses.",
+        "zh-Hant": "挑戰 30 關平台動作戰役、反制特殊影獸、配置四種屬性，並擊敗六名不同區域首領。"
       },
-      meta: { en: ["2D Side-Scroller", "Jumping Physics", "Equip Gear"], "zh-Hant": ["2D 橫向卷軸", "跳躍操作", "裝備養成"] },
+      meta: { en: ["30 Stages", "Special Enemies", "Six Bosses"], "zh-Hant": ["30 關", "特殊敵人", "六名首領"] },
       art: { kind: "image", background: "assets/shadow-wolf-cover.webp", hero: "assets/weightplay-character-spark-paw-fox-cutout.webp" },
     },
     {
@@ -749,8 +747,8 @@ const cleanZhLobbyCopy = {
     title: "影狼傳說",
     statusText: "可遊玩",
     type: "2D 動作平台 RPG",
-    description: "奔跑、跳躍、衝刺並斬擊影獸，累積經驗、打開裝備寶箱，挑戰巨獸 Boss。",
-    meta: ["2D 橫向動作", "跳躍操作", "裝備成長"],
+    description: "挑戰 30 關平台動作戰役、反制特殊影獸、配置四種屬性，並擊敗六名不同區域首領。",
+    meta: ["30 關", "特殊敵人", "六名首領"],
   },
   "animal-reef-fisher": {
     title: "動物珊瑚釣手",
