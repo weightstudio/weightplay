@@ -690,9 +690,16 @@
     renderMasterySummary();
   }
 
+  function clearFloatingText() {
+    document.querySelectorAll(".floating").forEach((bubble) => bubble.remove());
+  }
+
   function showFloatingText(message) {
+    clearFloatingText();
     const bubble = document.createElement("div");
     bubble.className = "floating";
+    bubble.setAttribute("role", "status");
+    bubble.setAttribute("aria-live", "polite");
     bubble.textContent = message;
     document.body.appendChild(bubble);
     window.setTimeout(() => bubble.remove(), 1200);
@@ -717,11 +724,14 @@
     const selectedStageIndex = clamp(Math.max(currentStage, unlocked - 1), 0, stages.length - 1);
     stages.forEach((stage, index) => {
       const stageNo = index + 1;
+      const locked = stageNo > unlocked;
       const button = document.createElement("button");
       button.className = "stage-card";
       button.type = "button";
       button.dataset.stageIndex = String(index);
-      if (stageNo > unlocked) button.classList.add("locked");
+      if (locked) button.classList.add("locked");
+      button.setAttribute("aria-disabled", String(locked));
+      button.setAttribute("aria-label", `${t("stage", { n: stageNo })}. ${t(stage.titleKey)}${locked ? `. ${t("locked")}` : ""}`);
       if (index === selectedStageIndex) button.classList.add("selected");
       const stageRecord = typeof stageRecords[String(stageNo)] === "object" && stageRecords[String(stageNo)] ? stageRecords[String(stageNo)] : {};
       const cleared = Boolean(stageRecord.cleared) || stageNo <= legacyBestStage;
@@ -729,7 +739,9 @@
       const bestScore = Number(stageRecord.bestScore) || 0;
       if (cleared) button.classList.add("cleared");
       const iconUnit = units[Math.min(index, units.length - 1)]?.id || "cat";
-      const progressMeta = cleared || bestScore > 0
+      const progressMeta = locked
+        ? `<div class="stage-progress"><em class="stage-lock">${t("locked")}</em></div>`
+        : cleared || bestScore > 0
         ? `<div class="stage-progress">${cleared ? `<em>${t("stageCleared")}</em>` : ""}${perfect ? `<em class="perfect">${t("perfectBadge")}</em>` : ""}${bestScore > 0 ? `<small>${t("stageBest", { score: bestScore })}</small>` : ""}</div>`
         : "";
       button.innerHTML = `
@@ -1007,6 +1019,7 @@
   }
 
   function showMenu() {
+    clearFloatingText();
     running = false;
     paused = false;
     cancelAnimationFrame(raf);
@@ -1039,6 +1052,7 @@
   }
 
   function showMain() {
+    clearFloatingText();
     running = false;
     paused = false;
     cancelAnimationFrame(raf);
@@ -1056,6 +1070,7 @@
   }
 
   function startStage(index) {
+    clearFloatingText();
     updateGuardYardViewport();
     currentStage = index;
     const stage = stages[currentStage];
@@ -1897,6 +1912,7 @@
   nodes.resultStagesBtn.addEventListener("click", showMenu);
   nodes.retryBtn.addEventListener("click", () => startStage(currentStage));
   nodes.nextStageBtn.addEventListener("click", () => startStage(Math.min(currentStage + 1, stages.length - 1)));
+  if (new URLSearchParams(location.search).has("test")) window.__AnimalGuardYardTest = { finish };
   window.addEventListener("resize", () => {
     boardRect = { width: nodes.yardBoard.clientWidth, height: nodes.yardBoard.clientHeight };
     entities.forEach(updateEntityElement);

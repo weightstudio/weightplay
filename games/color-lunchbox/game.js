@@ -94,6 +94,7 @@
       levelLabel: "Level",
       ready: "Drag the food to the matching lunchbox.",
       voicePrompt: "Put {food} into the {color} lunchbox.",
+      picturePrompt: "Match the picture!",
       lunchboxChoice: "{color} lunchbox",
       correct: "Yum! Correct!",
       wrong: "Try another box!",
@@ -197,6 +198,7 @@
     roundLabel: "進度",
     levelLabel: "關卡",
     ready: "把食物拖到相同顏色的便當盒。",
+    picturePrompt: "看圖片配對！",
     correct: "答對了！好棒！",
     wrong: "再試試另一個盒子。",
     boxesMoving: "便當盒正在交換位置。",
@@ -295,12 +297,12 @@
     en: {
       title: "Animal Color Lunchbox - WeightPlay",
       metaTitle: "Animal Color Lunchbox - Color Matching Game",
-      description: "Clear 12 gentle color matching stages in Animal Color Lunchbox, a WeightPlay game for kids and families.",
+      description: "Clear 30 short color-sorting levels with picture clues, safe moving boxes, friendly animal Guardians, and supportive retries.",
     },
     "zh-Hant": {
       title: "動物顏色便當盒 - WeightPlay",
       metaTitle: "動物顏色便當盒 - 顏色分類遊戲",
-      description: "在動物顏色便當盒完成 12 個溫和的顏色配對關卡，適合孩子與親子一起在 WeightPlay 遊玩。",
+      description: "在動物顏色便當盒完成 30 個短篇顏色分類關卡，包含圖片提示、安全換位、友善動物守護員與溫和重試。",
     },
   };
 
@@ -456,8 +458,8 @@
     titleText.textContent = t("title");
     mainTitle.textContent = t("title");
     mainIntro.textContent = locale() === "zh-Hant"
-      ? "把每一種彩色食物放進相同顏色的便當盒，完成全部十二個關卡。"
-      : "Sort each colorful food into the matching lunchbox, then clear all twelve stages.";
+      ? "把彩色食物放進相同顏色的便當盒，完成 30 個短篇關卡與六次友善守護員檢查。"
+      : "Sort colorful foods through 30 short levels and six friendly Guardian checks.";
     startBtn.textContent = t("chooseLevel");
     stageSelectTitle.textContent = t("chooseLevel");
     document.querySelector("#scoreLabel").textContent = t("scoreLabel");
@@ -829,7 +831,7 @@
     guardianBanner.classList.remove("hidden");
     guardianImage.src = guardian.image;
     guardianImage.alt = localizedGuardianName(guardian);
-    guardianName.textContent = `${t("guardianCheckpoint")} · ${localizedGuardianName(guardian)}`;
+    guardianName.textContent = localizedGuardianName(guardian);
     guardianRule.textContent = stageDescription(stage);
   }
 
@@ -849,7 +851,10 @@
     state.boxTransitioning = true;
     dropZone.classList.add("settling");
     feedbackText.textContent = t("boxesMoving");
-    const boxes = shuffle([...dropZone.querySelectorAll(".lunchbox")]);
+    const currentBoxes = [...dropZone.querySelectorAll(".lunchbox")];
+    const currentOrder = currentBoxes.map((box) => box.dataset.color).join("|");
+    const boxes = shuffle(currentBoxes);
+    if (boxes.length > 1 && boxes.map((box) => box.dataset.color).join("|") === currentOrder) boxes.push(boxes.shift());
     boxes.forEach((box) => dropZone.appendChild(box));
     scheduleRoundTask(() => {
       dropZone.classList.remove("settling");
@@ -901,7 +906,7 @@
     setupBoxes(stage);
     updateHUD();
     loadFood();
-    if (focusChoice) requestAnimationFrame(() => dropZone.querySelector(".lunchbox")?.focus({ preventScroll: true }));
+    if (focusChoice) dropZone.querySelector(".lunchbox")?.focus({ preventScroll: true });
     requestAnimationFrame(updateLunchFrame);
     window.WonderSound?.play("click");
     window.WonderAnalytics?.track("game_start", { game_id: GAME_ID, stage: stage.id, locale: locale() });
@@ -920,7 +925,7 @@
       food: t(food.nameKey),
       color: t(colorDB[food.color].labelKey),
     });
-    feedbackText.textContent = prompt;
+    feedbackText.textContent = stages[state.stageIndex].pictureOnly ? t("picturePrompt") : prompt;
     foodCard.setAttribute("aria-label", prompt);
   }
 
@@ -942,7 +947,7 @@
 
     if (color !== food.color) {
       state.mistakes += 1;
-      feedbackText.textContent = `${t("wrong")} ${t("voicePrompt", {
+      feedbackText.textContent = stages[state.stageIndex].pictureOnly ? t("wrong") : `${t("wrong")} ${t("voicePrompt", {
         food: t(food.nameKey),
         color: t(colorDB[food.color].labelKey),
       })}`;

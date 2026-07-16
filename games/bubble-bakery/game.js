@@ -16,10 +16,10 @@
       stageList: "Stage list",
       orderList: "Bakery orders",
       bubbleBoard: "Bubble board",
-      bubbleSingle: "{animal}, row {row}, column {column}; connected group of 1, needs 2 to clear",
-      bubbleOrderSingle: "{animal} order target, row {row}, column {column}; connected group of 1, needs 2 to clear",
-      bubbleGroup: "{animal}, row {row}, column {column}; connected group of {count}",
-      bubbleOrderGroup: "{animal} order target, row {row}, column {column}; connected group of {count}",
+      bubbleSingle: "{animal}, row {row}, column {column}; connected group of 1, needs {minimum} to clear",
+      bubbleOrderSingle: "{animal} order target, row {row}, column {column}; connected group of 1, needs {minimum} to clear",
+      bubbleGroup: "{animal}, row {row}, column {column}; connected group of {count}, minimum {minimum}",
+      bubbleOrderGroup: "{animal} order target, row {row}, column {column}; connected group of {count}, minimum {minimum}",
       bunny: "Bunny",
       whale: "Whale",
       chick: "Chick",
@@ -101,6 +101,12 @@
       stickerReady: "Sticker ready!",
       resultStampWin: "Stamp +1 · {next}",
       resultStampLose: "Finish the order to earn a stamp.",
+      groupTooSmall: "This tray needs a connected group of {count}.",
+      sequenceNext: "Next order: {animal}.",
+      recipeNext: "Tray {current}/{total} is ready!",
+      recipeProgress: "Tray {current}/{total}",
+      groupGoal: "Largest group {done}/{need}",
+      pankoCheck: "Panko Check",
     },
     "zh-Hant": {
       gameTitle: "動物泡泡烘焙坊",
@@ -111,10 +117,10 @@
       stageList: "關卡列表",
       orderList: "烘焙訂單",
       bubbleBoard: "泡泡棋盤",
-      bubbleSingle: "{animal}，第 {row} 列，第 {column} 欄；相連 1 個，需要 2 個才能消除",
-      bubbleOrderSingle: "訂單目標 {animal}，第 {row} 列，第 {column} 欄；相連 1 個，需要 2 個才能消除",
-      bubbleGroup: "{animal}，第 {row} 列，第 {column} 欄；相連 {count} 個",
-      bubbleOrderGroup: "訂單目標 {animal}，第 {row} 列，第 {column} 欄；相連 {count} 個",
+      bubbleSingle: "{animal}，第 {row} 列，第 {column} 欄；相連 1 個，需要 {minimum} 個才能消除",
+      bubbleOrderSingle: "訂單目標 {animal}，第 {row} 列，第 {column} 欄；相連 1 個，需要 {minimum} 個才能消除",
+      bubbleGroup: "{animal}，第 {row} 列，第 {column} 欄；相連 {count} 個，最低 {minimum} 個",
+      bubbleOrderGroup: "訂單目標 {animal}，第 {row} 列，第 {column} 欄；相連 {count} 個，最低 {minimum} 個",
       bunny: "兔兔",
       whale: "鯨魚",
       chick: "小雞",
@@ -196,6 +202,12 @@
       stickerReady: "可以換貼紙了！",
       resultStampWin: "印章 +1 · {next}",
       resultStampLose: "完成訂單就能拿印章。",
+      groupTooSmall: "這個烘焙盤需要至少 {count} 個相連泡泡。",
+      sequenceNext: "下一個訂單：{animal}。",
+      recipeNext: "第 {current}/{total} 盤準備好了！",
+      recipeProgress: "第 {current}/{total} 盤",
+      groupGoal: "最大群組 {done}/{need}",
+      pankoCheck: "Panko 檢查",
     },
   };
 
@@ -207,18 +219,61 @@
     { id: "grape", labelKey: "fox", asset: "../../assets/bubble-bakery-fox.png" },
   ];
 
+  const bakeryStage = (titleEn, titleZh, ruleEn, ruleZh, moves, palette, orders, rules = {}) => ({
+    titleEn, titleZh, ruleEn, ruleZh, moves, palette, orders, recipes: rules.recipes || [orders], ...rules,
+  });
+
   const stages = [
-    { theme: "themeCozyStart", moves: 16, palette: ["berry", "sky", "lemon"], orders: { berry: 8, sky: 8 } },
-    { theme: "themeOceanCupcakes", moves: 17, palette: ["berry", "sky", "lemon", "mint"], orders: { sky: 10, lemon: 8 } },
-    { theme: "themeSunnyChickTray", moves: 18, palette: ["berry", "sky", "lemon", "mint"], orders: { lemon: 12, berry: 8, mint: 6 } },
-    { theme: "themeGardenMix", moves: 19, palette: ["berry", "sky", "lemon", "mint", "grape"], orders: { mint: 10, sky: 8, grape: 6 } },
-    { theme: "themeFoxBerryCake", moves: 20, palette: ["berry", "sky", "lemon", "mint", "grape"], orders: { grape: 10, berry: 12 } },
-    { theme: "themeWhaleMintRolls", moves: 21, palette: ["sky", "lemon", "mint", "grape"], orders: { sky: 12, mint: 12, lemon: 8 } },
-    { theme: "themeRainbowCookies", moves: 22, palette: ["berry", "sky", "lemon", "mint", "grape"], orders: { berry: 10, lemon: 10, grape: 10 } },
-    { theme: "themeForestPicnic", moves: 23, palette: ["berry", "lemon", "mint", "grape"], orders: { mint: 14, grape: 10, berry: 8 } },
-    { theme: "themePartyTray", moves: 24, palette: ["berry", "sky", "lemon", "mint", "grape"], orders: { sky: 12, lemon: 12, mint: 12 } },
-    { theme: "themeMasterBakery", moves: 25, palette: ["berry", "sky", "lemon", "mint", "grape"], orders: { berry: 12, sky: 12, grape: 12, mint: 8 } },
+    bakeryStage("Cozy Bunny Box", "兔兔暖心盒", "Clear connected groups of two or more.", "消除兩個以上相連泡泡。", 16, ["berry", "sky", "lemon"], { berry: 8, sky: 8 }),
+    bakeryStage("Ocean Cupcakes", "海洋杯子蛋糕", "Choose between two order animals.", "在兩種訂單動物間選擇。", 17, ["berry", "sky", "lemon", "mint"], { sky: 10, lemon: 8 }),
+    bakeryStage("Sunny Group Tray", "陽光群組盤", "Finish the order and make one group of three.", "完成訂單並做出三個相連群組。", 18, ["berry", "sky", "lemon", "mint"], { lemon: 10, berry: 8, mint: 6 }, { groupGoal: 3 }),
+    bakeryStage("Garden Double Batch", "花園雙倍批次", "Groups of four earn two extra order bubbles.", "四個以上群組可多算兩個訂單泡泡。", 18, ["berry", "sky", "lemon", "mint"], { mint: 10, sky: 8 }, { comboThreshold: 4, comboBonus: 2 }),
+    bakeryStage("Panko's First Check", "Panko 初次檢查", "Only groups of three or more fill the order.", "只有三個以上群組能填入訂單。", 19, ["berry", "sky", "lemon", "mint"], { berry: 9, lemon: 9, mint: 6 }, { minOrderGroup: 3, groupGoal: 4, checkpoint: true }),
+    bakeryStage("Whale Mint Rolls", "鯨魚薄荷捲", "Build a group of four while filling three targets.", "完成三種目標並組出四個群組。", 20, ["sky", "lemon", "mint", "grape"], { sky: 10, mint: 10, lemon: 6 }, { groupGoal: 4 }),
+    bakeryStage("Berry Cluster Cake", "莓果群組蛋糕", "Target groups need at least three bubbles.", "目標群組至少需要三個泡泡。", 20, ["berry", "sky", "lemon", "grape"], { berry: 12, grape: 9 }, { minOrderGroup: 3 }),
+    bakeryStage("Fox Double Cookies", "狐狸雙倍餅乾", "Large fox and bunny groups fill orders faster.", "大型狐狸與兔兔群組能更快完成訂單。", 20, ["berry", "sky", "mint", "grape"], { grape: 12, berry: 10 }, { comboThreshold: 4, comboBonus: 2 }),
+    bakeryStage("Rainbow Big Batches", "彩虹大批次", "Use groups of three; groups of five gain a bonus.", "使用三個群組，五個群組可再加成。", 21, ["berry", "sky", "lemon", "mint", "grape"], { berry: 9, lemon: 9, grape: 9 }, { minOrderGroup: 3, comboThreshold: 5, comboBonus: 2 }),
+    bakeryStage("Panko's Big-Batch Check", "Panko 大批次檢查", "Fill every order with groups of four or more.", "所有訂單都要用四個以上群組完成。", 22, ["berry", "sky", "lemon", "mint"], { sky: 12, lemon: 12, mint: 8 }, { minOrderGroup: 4, groupGoal: 5, checkpoint: true }),
+    bakeryStage("Bunny-First Queue", "兔兔優先隊列", "Orders must be filled in the shown sequence.", "必須依顯示順序完成訂單。", 19, ["berry", "sky", "lemon", "mint"], { berry: 8, sky: 8, lemon: 6 }, { sequence: true }),
+    bakeryStage("Ocean Order Queue", "海洋訂單隊列", "Whale, frog, then fox orders take turns.", "鯨魚、青蛙、狐狸訂單依序輪流。", 20, ["berry", "sky", "mint", "grape"], { sky: 8, mint: 8, grape: 6 }, { sequence: true }),
+    bakeryStage("Garden Order Queue", "花園訂單隊列", "Follow the queue and make a group of four.", "依序完成並做出四個群組。", 21, ["berry", "lemon", "mint", "grape"], { mint: 9, lemon: 8, grape: 6 }, { sequence: true, groupGoal: 4 }),
+    bakeryStage("Fox Bonus Queue", "狐狸加成隊列", "Follow the queue; groups of four gain two extra.", "依序完成，四個群組可多算兩個。", 21, ["berry", "sky", "lemon", "grape"], { grape: 10, berry: 8, sky: 6 }, { sequence: true, comboThreshold: 4, comboBonus: 2 }),
+    bakeryStage("Panko's Queue Check", "Panko 隊列檢查", "Complete two trays in order without resetting the board.", "不重置棋盤，依序完成兩盤訂單。", 24, ["berry", "sky", "lemon", "mint"], { berry: 6, sky: 6 }, { sequence: true, recipes: [{ berry: 6, sky: 6 }, { lemon: 7, mint: 7 }], checkpoint: true }),
+    bakeryStage("Two-Tray Brunch", "雙盤早午餐", "A second recipe appears after the first tray.", "第一盤完成後會出現第二張食譜。", 22, ["berry", "sky", "lemon", "mint"], { berry: 7, lemon: 7 }, { recipes: [{ berry: 7, lemon: 7 }, { sky: 7, mint: 7 }] }),
+    bakeryStage("Garden Two-Course", "花園雙道餐", "Plan one board across two different recipes.", "在同一棋盤規劃兩張不同食譜。", 23, ["berry", "lemon", "mint", "grape"], { mint: 8, grape: 6 }, { recipes: [{ mint: 8, grape: 6 }, { berry: 7, lemon: 7 }] }),
+    bakeryStage("Berry Course Pair", "莓果雙道餐", "Two recipes also require a group of four.", "兩張食譜還要完成四個群組。", 24, ["berry", "sky", "lemon", "grape"], { berry: 8, grape: 7 }, { recipes: [{ berry: 8, grape: 7 }, { sky: 7, lemon: 7 }], groupGoal: 4 }),
+    bakeryStage("Rainbow Course Pair", "彩虹雙道餐", "Large batches help finish both recipes.", "大型批次能加速完成兩張食譜。", 24, ["berry", "sky", "lemon", "mint", "grape"], { sky: 7, mint: 7 }, { recipes: [{ sky: 7, mint: 7 }, { berry: 7, lemon: 7, grape: 6 }], comboThreshold: 4, comboBonus: 2 }),
+    bakeryStage("Panko's Three-Course Check", "Panko 三道餐檢查", "Serve three short recipes on one continuing board.", "在同一棋盤連續完成三張短食譜。", 27, ["berry", "sky", "lemon", "mint", "grape"], { berry: 6, sky: 6 }, { recipes: [{ berry: 6, sky: 6 }, { lemon: 6, mint: 6 }, { grape: 7, berry: 5 }], checkpoint: true }),
+    bakeryStage("Big Queue", "大型隊列", "Follow the order using groups of three or more.", "依序使用三個以上群組完成。", 22, ["berry", "sky", "lemon", "mint"], { berry: 9, sky: 9, mint: 6 }, { sequence: true, minOrderGroup: 3 }),
+    bakeryStage("Double-Course Bonus", "雙道加成餐", "Large groups earn bonuses across two recipes.", "大型群組在兩張食譜中都能取得加成。", 24, ["berry", "sky", "mint", "grape"], { sky: 8, grape: 7 }, { recipes: [{ sky: 8, grape: 7 }, { berry: 7, mint: 7 }], comboThreshold: 4, comboBonus: 2 }),
+    bakeryStage("Careful Rainbow", "彩虹精準盤", "Groups need three; one group must reach five.", "群組至少三個，並要有一次達到五個。", 24, ["berry", "sky", "lemon", "mint", "grape"], { berry: 9, lemon: 9, grape: 6 }, { minOrderGroup: 3, groupGoal: 5 }),
+    bakeryStage("Switching Trays", "切換烘焙盤", "Each recipe has its own ordered queue.", "每張食譜都有自己的依序隊列。", 25, ["berry", "sky", "lemon", "mint"], { berry: 7, lemon: 7 }, { sequence: true, recipes: [{ berry: 7, lemon: 7 }, { sky: 7, mint: 7 }] }),
+    bakeryStage("Panko's Festival Check", "Panko 慶典檢查", "Two queued trays use three-bubble groups and bonuses.", "兩張依序烘焙盤結合三個群組與加成。", 27, ["berry", "sky", "lemon", "mint", "grape"], { berry: 7, sky: 7 }, { sequence: true, minOrderGroup: 3, recipes: [{ berry: 7, sky: 7 }, { lemon: 7, mint: 7, grape: 5 }], comboThreshold: 5, comboBonus: 2, checkpoint: true }),
+    bakeryStage("Master Clusters", "大師群組", "Order groups need four and one must reach six.", "訂單群組至少四個，且要有一次達到六個。", 25, ["berry", "sky", "lemon", "mint"], { berry: 12, sky: 12, mint: 8 }, { minOrderGroup: 4, groupGoal: 6 }),
+    bakeryStage("Master Queue", "大師隊列", "Queued groups need three; groups of five earn extra.", "依序群組至少三個，五個群組可加成。", 26, ["berry", "sky", "lemon", "grape"], { berry: 9, sky: 9, grape: 7 }, { sequence: true, minOrderGroup: 3, comboThreshold: 5, comboBonus: 2 }),
+    bakeryStage("Triple Service", "三盤服務", "Three recipes share a five-group mastery target.", "三張食譜共用一次五個群組目標。", 29, ["berry", "sky", "lemon", "mint", "grape"], { berry: 6, sky: 6 }, { recipes: [{ berry: 6, sky: 6 }, { lemon: 6, mint: 6 }, { grape: 7, berry: 5 }], groupGoal: 5 }),
+    bakeryStage("Grand Rehearsal", "慶典總彩排", "Two queued recipes combine minimum groups and bonuses.", "兩張依序食譜結合群組門檻與加成。", 28, ["berry", "sky", "lemon", "mint", "grape"], { berry: 7, lemon: 7 }, { sequence: true, minOrderGroup: 3, recipes: [{ berry: 7, lemon: 7 }, { sky: 7, mint: 7, grape: 5 }], comboThreshold: 5, comboBonus: 2 }),
+    bakeryStage("Panko's Master Bakery", "Panko 大師烘焙坊", "Serve three queued trays with four-bubble groups and a group of six.", "用四個群組依序完成三盤，並做出一次六個群組。", 32, ["berry", "sky", "lemon", "mint", "grape"], { berry: 6, sky: 6 }, { sequence: true, minOrderGroup: 4, recipes: [{ berry: 6, sky: 6 }, { lemon: 6, mint: 6 }, { grape: 7, berry: 5 }], comboThreshold: 6, comboBonus: 2, groupGoal: 6, checkpoint: true }),
   ];
+
+  function validateStages() {
+    if (stages.length !== 30) throw new Error(`Bubble Bakery requires 30 stages; found ${stages.length}.`);
+    if (new Set(stages.map((stage) => stage.titleEn)).size !== stages.length) throw new Error("Bubble Bakery English stage titles must be unique.");
+    const checkpoints = [];
+    stages.forEach((stage, index) => {
+      if (stage.checkpoint) checkpoints.push(index + 1);
+      if (!Array.isArray(stage.recipes) || stage.recipes.length < 1) throw new Error(`Bubble Bakery Stage ${index + 1} needs a recipe.`);
+      if (!Number.isFinite(stage.moves) || stage.moves < 1) throw new Error(`Bubble Bakery Stage ${index + 1} needs moves.`);
+      if ((stage.minOrderGroup || 2) > 7) throw new Error(`Bubble Bakery Stage ${index + 1} minimum group is too large.`);
+      stage.recipes.forEach((recipe) => Object.keys(recipe).forEach((id) => {
+        if (!stage.palette.includes(id)) throw new Error(`Bubble Bakery Stage ${index + 1} recipe uses ${id} outside its palette.`);
+        if (!Number.isFinite(recipe[id]) || recipe[id] < 1) throw new Error(`Bubble Bakery Stage ${index + 1} has an invalid ${id} target.`);
+      }));
+    });
+    if (checkpoints.join() !== "5,10,15,20,25,30") throw new Error(`Bubble Bakery Panko checkpoints are invalid: ${checkpoints.join()}.`);
+  }
+
+  validateStages();
 
   const rows = 10;
   const cols = 7;
@@ -259,6 +314,7 @@
   let board = [];
   let orders = {};
   let initialOrders = {};
+  let recipeIndex = 0;
   let moves = 0;
   let score = 0;
   let orderStreak = 0;
@@ -339,6 +395,27 @@
     return colors.find((item) => item.id === id) || colors[0];
   }
 
+  function stageTitle(stage) {
+    return locale === "zh-Hant" ? stage.titleZh : stage.titleEn;
+  }
+
+  function stageRule(stage) {
+    return locale === "zh-Hant" ? stage.ruleZh : stage.ruleEn;
+  }
+
+  function stageOrderIds(stage) {
+    return [...new Set(stage.recipes.flatMap((recipe) => Object.keys(recipe)))];
+  }
+
+  function activeSequenceTarget() {
+    return Object.keys(orders).find((id) => orders[id] > 0) || "";
+  }
+
+  function isActiveOrderTarget(id) {
+    if ((orders[id] || 0) <= 0) return false;
+    return !stages[currentStage].sequence || id === activeSequenceTarget();
+  }
+
   function playSound(name) {
     window.WonderSound?.play?.(name);
   }
@@ -373,15 +450,17 @@
       button.className = "stage-card";
       if (stageNo > unlocked) button.classList.add("locked");
       if (index === recommendedStageIndex()) button.classList.add("is-selected");
-      const orderIcons = Object.keys(stage.orders).map((id) => `<img src="${colorData(id).asset}" alt="" />`).join("");
+      const orderIcons = stageOrderIds(stage).map((id) => `<img src="${colorData(id).asset}" alt="" />`).join("");
       const got = stars[stageNo] || 0;
       const badgeKey = got >= 3 ? "stageMastered" : got > 0 ? "stageImprove" : "stageNew";
       button.innerHTML = `
         <b class="stage-icons">${orderIcons}</b>
         <strong>${t("stage", { n: stageNo })}</strong>
-        <small>${t(stage.theme)} · ${t("movesCount", { n: stage.moves })}</small>
+        <small>${stageTitle(stage)} · ${t("movesCount", { n: stage.moves })}</small>
+        <span class="stage-rule">${stageRule(stage)}</span>
         <span class="stage-stars">${starIcons(got, 3)}</span>
         <span class="stage-badge">${t(badgeKey)}</span>
+        ${stage.checkpoint ? `<em class="panko-check"><img src="../../assets/weightplay-character-drum-belly-panda-safe-face-cutout.webp" alt="" />${t("pankoCheck")}</em>` : ""}
       `;
       button.addEventListener("click", () => {
         if (stageNo > unlocked) {
@@ -420,11 +499,11 @@
     const stage = stages[index];
     const got = stars[stageNo] || 0;
     const reasonKey = got >= 3 ? "recommendedMastered" : got > 0 ? "recommendedImprove" : "recommendedNew";
-    const orderIcons = Object.keys(stage.orders).map((id) => `<img src="${colorData(id).asset}" alt="" />`).join("");
+    const orderIcons = stageOrderIds(stage).map((id) => `<img src="${colorData(id).asset}" alt="" />`).join("");
     nodes.recommendedOrder.innerHTML = `
       <div>
         <strong>${t("recommendedTitle")}</strong>
-        <span>${t("recommendedCopy", { stage: t("stage", { n: stageNo }), theme: t(stage.theme) })}</span>
+        <span>${t("recommendedCopy", { stage: t("stage", { n: stageNo }), theme: stageTitle(stage) })}</span>
         <em>${t(reasonKey)}</em>
       </div>
       <b class="recommend-icons">${orderIcons}</b>
@@ -596,8 +675,9 @@
   function startStage(index) {
     currentStage = index;
     const stage = stages[index];
-    orders = { ...stage.orders };
-    initialOrders = { ...stage.orders };
+    recipeIndex = 0;
+    orders = { ...stage.recipes[recipeIndex] };
+    initialOrders = { ...stage.recipes[recipeIndex] };
     moves = stage.moves;
     score = 0;
     orderStreak = 0;
@@ -607,7 +687,7 @@
     bestOrderStreak = 0;
     busy = false;
     lastResult = null;
-    board = makeBoard(stage.palette);
+    board = makeBoard(stage.palette, stage.minOrderGroup || 2);
     document.body.classList.remove("is-bakery-stage-select", "is-bakery-result");
     document.body.classList.add("is-bakery-playing");
     window.WEIGHTPLAY_BUBBLE_BAKERY_ACTIVE = true;
@@ -620,8 +700,8 @@
     window.WeightPlayGame?.exitMobileGameMode?.();
     nodes.playPanel.classList.remove("weightplay-active-viewport");
     updateBakeryFrame();
-    nodes.hintText.textContent = t("smallGroup");
-    nodes.orderBar.dataset.theme = t("theme", { theme: t(stage.theme) });
+    nodes.hintText.textContent = stageRule(stage);
+    nodes.orderBar.dataset.theme = t("theme", { theme: stageTitle(stage) });
     renderAll();
     requestAnimationFrame(() => {
       window.scrollTo({ top: 0, left: 0, behavior: "auto" });
@@ -632,11 +712,11 @@
     track("game_start", { level: index + 1 });
   }
 
-  function makeBoard(palette) {
+  function makeBoard(palette, requiredGroup = 2) {
     const next = Array.from({ length: rows }, () => Array.from({ length: cols }, () => randomFrom(palette)));
-    if (!hasPlayableGroup(next)) {
-      next[0][0] = palette[0];
-      next[0][1] = palette[0];
+    if (!hasPlayableGroup(next, requiredGroup)) {
+      const seed = palette[0];
+      for (let index = 0; index < requiredGroup; index += 1) next[0][index] = seed;
     }
     return next;
   }
@@ -645,11 +725,21 @@
     return items[Math.floor(Math.random() * items.length)];
   }
 
-  function hasPlayableGroup(nextBoard) {
+  function hasPlayableGroup(nextBoard, requiredGroup = 2) {
     for (let r = 0; r < rows; r++) {
       for (let c = 0; c < cols; c++) {
-        const id = nextBoard[r][c];
-        if (nextBoard[r + 1]?.[c] === id || nextBoard[r]?.[c + 1] === id) return true;
+        const id = nextBoard[r]?.[c];
+        if (!id) continue;
+        const seen = new Set();
+        const stack = [[r, c]];
+        while (stack.length) {
+          const [row, col] = stack.pop();
+          const key = `${row},${col}`;
+          if (seen.has(key) || nextBoard[row]?.[col] !== id) continue;
+          seen.add(key);
+          if (seen.size >= requiredGroup) return true;
+          stack.push([row - 1, col], [row + 1, col], [row, col - 1], [row, col + 1]);
+        }
       }
     }
     return false;
@@ -667,17 +757,26 @@
     nodes.orderBar.classList.toggle("is-complete", progress.total > 0 && progress.done >= progress.total);
     const title = document.createElement("strong");
     title.className = "order-title";
-    title.textContent = `${nodes.orderBar.dataset.theme || ""} · ${progress.done}/${progress.total}`;
+    const stage = stages[currentStage];
+    const recipeLabel = stage.recipes.length > 1 ? ` · ${t("recipeProgress", { current: recipeIndex + 1, total: stage.recipes.length })}` : "";
+    title.textContent = `${nodes.orderBar.dataset.theme || ""}${recipeLabel} · ${progress.done}/${progress.total}`;
     nodes.orderBar.appendChild(title);
     Object.entries(orders).forEach(([id, need]) => {
       const data = colorData(id);
       const remaining = Math.max(0, need);
       const chip = document.createElement("div");
       chip.className = "order-chip";
-      chip.setAttribute("aria-label", `${data.label}: ${remaining}/${initialOrders[id]}`);
+      if (stage.sequence && id === activeSequenceTarget()) chip.classList.add("is-sequence-active");
+      chip.setAttribute("aria-label", `${t(data.labelKey)}: ${remaining}/${initialOrders[id]}`);
       chip.innerHTML = `<img class="order-icon" src="${data.asset}" alt="" /><span>${remaining}/${initialOrders[id]}</span>`;
       nodes.orderBar.appendChild(chip);
     });
+    if (stage.groupGoal) {
+      const goal = document.createElement("div");
+      goal.className = "order-chip group-goal";
+      goal.textContent = t("groupGoal", { done: Math.min(largestGroup, stage.groupGoal), need: stage.groupGoal });
+      nodes.orderBar.appendChild(goal);
+    }
     const meter = document.createElement("div");
     meter.className = "order-progress";
     meter.setAttribute("aria-hidden", "true");
@@ -720,14 +819,14 @@
         button.style.visibility = "visible";
         button.style.opacity = "1";
         button.style.transform = "none";
-        if ((orders[id] || 0) > 0) {
+        if (isActiveOrderTarget(id)) {
           button.classList.add("order-target");
         }
         const info = groupInfo.get(key);
         if (info?.size >= 2) {
           button.classList.add("match-ready");
           button.dataset.groupSize = String(info.size);
-          if ((orders[id] || 0) > 0) button.classList.add("order-ready");
+          if (isActiveOrderTarget(id)) button.classList.add("order-ready");
         }
         if (dropMap.has(key)) {
           const rowsToFall = dropMap.get(key);
@@ -736,8 +835,8 @@
         button.dataset.row = String(r);
         button.dataset.col = String(c);
         button.dataset.bubble = id;
-        const labelValues = { animal: t(data.labelKey), row: r + 1, column: c + 1, count: info?.size || 1 };
-        const isOrderTarget = (orders[id] || 0) > 0;
+        const labelValues = { animal: t(data.labelKey), row: r + 1, column: c + 1, count: info?.size || 1, minimum: stages[currentStage].minOrderGroup || 2 };
+        const isOrderTarget = isActiveOrderTarget(id);
         const labelKey = info?.size >= 2 ? (isOrderTarget ? "bubbleOrderGroup" : "bubbleGroup") : (isOrderTarget ? "bubbleOrderSingle" : "bubbleSingle");
         button.setAttribute("aria-label", t(labelKey, labelValues));
         button.innerHTML = `<img src="${data.asset}" alt="" draggable="false" /><span class="order-target-ring" aria-hidden="true"></span>`;
@@ -787,20 +886,28 @@
   async function popGroup(r, c) {
     if (busy || moves <= 0) return;
     const { id, group } = groupFrom(r, c);
+    const stage = stages[currentStage];
     if (group.length < 2) {
       nodes.hintText.textContent = t("smallGroup");
+      playSound("error");
+      return;
+    }
+    const minimum = stage.minOrderGroup || 2;
+    if (group.length < minimum) {
+      nodes.hintText.textContent = t("groupTooSmall", { count: minimum });
       playSound("error");
       return;
     }
     busy = true;
     nodes.board.setAttribute("aria-busy", "true");
     const wasNeeded = (orders[id] || 0) > 0;
+    const countsForOrder = wasNeeded && (!stage.sequence || id === activeSequenceTarget());
     moves -= 1;
     validMovesUsed += 1;
     largestGroup = Math.max(largestGroup, group.length);
     const baseScore = group.length * group.length * 5;
     let bonus = 0;
-    if (wasNeeded) {
+    if (countsForOrder) {
       orderTargetMoves += 1;
       orderStreak += 1;
       bestOrderStreak = Math.max(bestOrderStreak, orderStreak);
@@ -809,12 +916,17 @@
       orderStreak = 0;
     }
     score += baseScore + bonus;
-    if (orders[id] > 0) orders[id] = Math.max(0, orders[id] - group.length);
+    if (countsForOrder) {
+      const batchBonus = stage.comboThreshold && group.length >= stage.comboThreshold ? stage.comboBonus || 0 : 0;
+      orders[id] = Math.max(0, orders[id] - group.length - batchBonus);
+    }
     if (bonus > 0) {
       nodes.hintText.textContent = t("orderStreak", { streak: Math.min(orderStreak, 5), bonus });
       showFloat(t("orderStreak", { streak: Math.min(orderStreak, 5), bonus }), window.innerWidth / 2, window.innerHeight * 0.5);
     } else {
-      nodes.hintText.textContent = wasNeeded ? t("smallGroup") : t("notOrderTarget");
+      nodes.hintText.textContent = wasNeeded && stage.sequence
+        ? t("sequenceNext", { animal: t(colorData(activeSequenceTarget()).labelKey) })
+        : wasNeeded ? stageRule(stage) : t("notOrderTarget");
       showFloat(`+${baseScore}`, window.innerWidth / 2, window.innerHeight * 0.5);
     }
     playSound("pop");
@@ -828,6 +940,15 @@
     await animateDroppingBubbles();
     busy = false;
     nodes.board.setAttribute("aria-busy", "false");
+    if (ordersFinished() && recipeIndex + 1 < stage.recipes.length) {
+      recipeIndex += 1;
+      orders = { ...stage.recipes[recipeIndex] };
+      initialOrders = { ...stage.recipes[recipeIndex] };
+      nodes.hintText.textContent = t("recipeNext", { current: recipeIndex + 1, total: stage.recipes.length });
+      renderAll();
+      nodes.board.querySelector(`.bubble[data-row="${r}"][data-col="${c}"]`)?.focus({ preventScroll: true });
+      return;
+    }
     if (isComplete()) return finish(true);
     if (moves <= 0) return finish(false);
     nodes.board.querySelector(`.bubble[data-row="${r}"][data-col="${c}"]`)?.focus({ preventScroll: true });
@@ -917,11 +1038,24 @@
       }
     }
     board = next;
+    const requiredGroup = stages[currentStage].minOrderGroup || 2;
+    if (!hasPlayableGroup(board, requiredGroup)) {
+      const seed = activeSequenceTarget() || stages[currentStage].palette[0];
+      for (let index = 0; index < requiredGroup; index += 1) {
+        board[0][index] = seed;
+        dropMap.set(`0,${index}`, rows + 1);
+      }
+    }
     return dropMap;
   }
 
-  function isComplete() {
+  function ordersFinished() {
     return Object.values(orders).every((need) => need <= 0);
+  }
+
+  function isComplete() {
+    const stage = stages[currentStage];
+    return ordersFinished() && recipeIndex === stage.recipes.length - 1 && (!stage.groupGoal || largestGroup >= stage.groupGoal);
   }
 
   function updateHud() {
@@ -971,7 +1105,7 @@
     const targetIndex = won ? recommendedStageIndex() : currentStage;
     const targetStage = stages[targetIndex] || stages[currentStage];
     const targetStageNo = targetIndex + 1;
-    const orderIcons = Object.keys(targetStage.orders).map((id) => `<img src="${colorData(id).asset}" alt="" />`).join("");
+    const orderIcons = stageOrderIds(targetStage).map((id) => `<img src="${colorData(id).asset}" alt="" />`).join("");
     const localizedStamp = stampProgress({ orders: stamp.orders });
     const statusText = won
       ? unlockedStageNo
@@ -984,7 +1118,7 @@
     nodes.resultNextOrder.innerHTML = `
       <strong>${t("resultNextTitle")}</strong>
       <span>${statusText}</span>
-      <em>${t("resultNextCopy", { stage: t("stage", { n: targetStageNo }), theme: t(targetStage.theme) })}</em>
+      <em>${t("resultNextCopy", { stage: t("stage", { n: targetStageNo }), theme: stageTitle(targetStage) })}</em>
       <small class="result-stamp">${won ? t("resultStampWin", { next: localizedStamp.nextText }) : t("resultStampLose")}</small>
       <b class="result-order-icons">${orderIcons}</b>
     `;
@@ -1116,7 +1250,7 @@
     if (!nodes.resultPanel.classList.contains("hidden") && lastResult) {
       renderResult(lastResult);
     } else if (!nodes.playPanel.classList.contains("hidden")) {
-      nodes.orderBar.dataset.theme = t("theme", { theme: t(stages[currentStage].theme) });
+      nodes.orderBar.dataset.theme = t("theme", { theme: stageTitle(stages[currentStage]) });
       renderAll();
     }
   });
@@ -1137,6 +1271,54 @@
         moves = 0;
         finish(false);
         return { resultVisible: !nodes.resultPanel.classList.contains("hidden"), moves, boardButtons: nodes.board.querySelectorAll(".bubble").length };
+      },
+      stages() {
+        return stages.map((stage, index) => ({
+          id: index + 1,
+          titleEn: stage.titleEn,
+          titleZh: stage.titleZh,
+          ruleEn: stage.ruleEn,
+          recipes: stage.recipes.map((recipe) => ({ ...recipe })),
+          minOrderGroup: stage.minOrderGroup || 2,
+          sequence: Boolean(stage.sequence),
+          comboThreshold: stage.comboThreshold || 0,
+          groupGoal: stage.groupGoal || 0,
+          checkpoint: Boolean(stage.checkpoint),
+        }));
+      },
+      start(stageId) {
+        startStage(clamp(Number(stageId) - 1, 0, stages.length - 1));
+        return this.snapshot();
+      },
+      setBoard(nextBoard) {
+        if (!Array.isArray(nextBoard) || nextBoard.length !== rows || nextBoard.some((row) => !Array.isArray(row) || row.length !== cols)) throw new Error("Smoke board must be 10x7.");
+        board = nextBoard.map((row) => row.slice());
+        renderAll();
+        return this.snapshot();
+      },
+      setOrders(nextOrders) {
+        orders = { ...nextOrders };
+        initialOrders = { ...nextOrders };
+        renderAll();
+        return this.snapshot();
+      },
+      async popAt(row, column) {
+        await popGroup(row, column);
+        return this.snapshot();
+      },
+      snapshot() {
+        return {
+          stage: currentStage + 1,
+          recipeIndex,
+          orders: { ...orders },
+          initialOrders: { ...initialOrders },
+          moves,
+          largestGroup,
+          busy,
+          resultVisible: !nodes.resultPanel.classList.contains("hidden"),
+          resultTitle: nodes.resultTitle.textContent,
+          bubbleCount: nodes.board.querySelectorAll(".bubble").length,
+        };
       },
     };
   }

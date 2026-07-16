@@ -2675,3 +2675,48 @@ window.WONDER_DATA = {
     }
   ]
 };
+
+(() => {
+  const authoredStages = [
+    ["Boar Gate", "野豬城門", "Learn the center lanes with fast boars.", "從中央路線認識快速野豬。", [0], "lanes"],
+    ["Split Hooves", "分岔蹄印", "Boars alternate between the left and right approach.", "野豬會在左右路線交替進攻。", [0], "alternating"],
+    ["Trickster Trail", "鬣狗詭徑", "Zigzag hyenas enter from the outer paths.", "左右擺動的鬣狗從外側出現。", [0, 1], "edges"],
+    ["Crossing Pack", "交錯獸群", "Boars hold lanes while hyenas weave across them.", "野豬守住直線，鬣狗在其間穿梭。", [0, 1], "lanes"],
+    ["Boar Pursuit", "野豬追擊王", "A fast Boss fires quick pursuit shots behind mixed escorts.", "高速王在混合護衛後方連續發射追擊彈。", [0, 1, 2], "alternating", "pursuit", "Quick aimed shots", "快速瞄準彈"],
+    ["Rhino Screen", "犀牛屏障", "Armored rhinos occupy the center while boars slip around them.", "重甲犀牛守中央，野豬從周圍穿過。", [0, 2], "center"],
+    ["Breaker Escort", "破牆護衛", "Buffalo wall breakers advance between armored escorts.", "水牛破牆者在重甲護衛間推進。", [0, 2, 3], "alternating"],
+    ["Caster Maze", "黑熊迷陣", "Zigzag bears and hyenas pull aim toward both edges.", "黑熊與鬣狗左右擺動，迫使玩家兼顧兩側。", [1, 2, 5], "edges"],
+    ["Sky Rush", "天空急襲", "Hawks and tigers dash through fixed ground lanes.", "猛鷹與老虎穿越固定地面路線衝刺。", [0, 4, 6], "lanes"],
+    ["Hyena Crossfire", "鬣狗交叉火網", "The Boss sends paired crossfire while a mixed pack changes lanes.", "王會發射成對交叉彈，混合獸群同時換線。", [1, 3, 5, 7], "edges", "crossfire", "Paired crossfire", "成對交叉彈"],
+    ["Rhino Column", "犀牛縱隊", "A pure armored column rewards piercing and sustained damage.", "純重甲縱隊考驗穿透與持續傷害。", [2], "center"],
+    ["Twin Sprinters", "雙側快攻", "Boars and tigers race down opposite sides.", "野豬與老虎沿兩側高速前進。", [0, 6], "edges"],
+    ["Breaker Line", "破牆戰線", "Buffalo and crocodile breakers fill three committed lanes.", "水牛與鱷魚破牆者佔據三條固定路線。", [3, 7], "lanes"],
+    ["Trickster Weave", "詭徑編隊", "Hyenas and bears alternate unpredictable curves.", "鬣狗與黑熊輪流走出難預測的曲線。", [1, 5], "alternating"],
+    ["Rhino Bulwark", "犀牛護盾王", "Six shield hits must be broken before the armored Boss takes full damage.", "必須先打破六層護盾，才能有效傷害重甲王。", [0, 2, 3], "center", "bulwark", "Six-hit shield and heavy orb", "六層護盾與重型彈"],
+    ["Hawk Dive", "猛鷹俯衝", "Hawks dash from alternating outer launch points.", "猛鷹從左右外側起點交替俯衝。", [0, 4], "edges"],
+    ["Tiger Relay", "老虎接力", "Tigers, boars, and hawks hand off repeated speed pressure.", "老虎、野豬與猛鷹輪流施加高速壓力。", [0, 4, 6], "alternating"],
+    ["Sky over Armor", "空地夾擊", "Armored rhinos anchor lanes beneath diving hawks.", "重甲犀牛穩住路線，猛鷹從上方俯衝。", [2, 4], "lanes"],
+    ["Crosswind Pack", "側風獸群", "Zigzag casters and hawks attack from shifting edges.", "擺動施法獸與猛鷹從變換的外側進攻。", [1, 4, 5], "edges"],
+    ["Buffalo Siege", "水牛攻城王", "A heavy siege orb targets the wall center while breakers advance.", "重型攻城彈直擊城牆中央，破牆獸同時推進。", [2, 3, 7], "center", "siege", "Heavy center siege orb", "中央重型攻城彈"],
+    ["Guarded Rush", "護甲快攻", "Runners hide behind alternating rhino and buffalo lanes.", "跑者躲在交替出現的犀牛與水牛路線後方。", [0, 2, 3], "lanes"],
+    ["Zigzag Sprint", "曲線衝刺", "Curving casters and straight sprinters demand rapid retargeting.", "曲線施法獸與直線快攻獸要求快速換目標。", [1, 5, 6], "alternating"],
+    ["Heavy Gate", "重獸城門", "Only armored and breaker beasts press the center.", "只有重甲與破牆獸從中央施壓。", [2, 3, 7], "center"],
+    ["Flank and Break", "側翼破牆", "Dashers pull aim outward while crocodiles threaten the wall.", "衝刺獸把瞄準拉向外側，鱷魚則威脅城牆。", [4, 6, 7], "edges"],
+    ["Hawk Dive Squadron", "猛鷹俯衝王", "The Boss dives repeatedly and releases a fast two-shot spread.", "王會反覆俯衝並發射高速雙彈。", [1, 4, 6], "alternating", "dive", "Dash and twin fast shots", "俯衝與高速雙彈"],
+    ["Eight-Beast Review", "八獸總複習", "All roles return in readable three-lane waves.", "八種角色在清楚的三路波次中再次登場。", [0, 1, 2, 3, 4, 5, 6, 7], "lanes"],
+    ["Caster Screen", "施法獸屏障", "Casters curve behind alternating armor and dive escorts.", "施法獸在交替的重甲與俯衝護衛後方走曲線。", [1, 2, 4, 5], "alternating"],
+    ["Crocodile Siege", "鱷魚攻城", "A center-heavy breaker formation tests splash and wall repair.", "中央重型破牆陣考驗濺射與城牆修補。", [0, 2, 3, 7], "center"],
+    ["Festival Gauntlet", "慶典試煉", "Every beast role rotates through the two outer gates.", "所有野獸角色輪流通過左右外門。", [0, 1, 2, 3, 4, 5, 6, 7], "edges"],
+    ["Bear Starfall", "黑熊星落王", "The final Boss casts a three-orb starfall over the complete roster.", "最終王在完整獸群上方施放三連星落彈。", [0, 1, 2, 3, 4, 5, 6, 7], "alternating", "starfall", "Three-orb starfall", "三連星落彈"]
+  ];
+
+  window.WONDER_DATA.levels.forEach((level, index) => {
+    const [titleEn, titleZh, ruleEn, ruleZh, typePool, spawnPattern, bossPattern, bossRuleEn, bossRuleZh] = authoredStages[index];
+    Object.assign(level, { titleEn, titleZh, ruleEn, ruleZh, typePool, spawnPattern });
+    level.waves.forEach((wave) => {
+      wave.typePool = typePool.slice();
+      wave.spawnPattern = spawnPattern;
+      if (wave.boss) Object.assign(wave, { bossPattern, bossRuleEn, bossRuleZh });
+    });
+  });
+})();

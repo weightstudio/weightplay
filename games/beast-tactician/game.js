@@ -2843,6 +2843,7 @@
 
   function onCanvasClick(event) {
     if (state.screen !== "game" || state.gameOver) return;
+    if (event.isPrimary === false || (event.button !== undefined && event.button !== 0)) return;
     state.keyboardMode = false;
     const p = canvasPointer(event);
     const tile = pointToTile(p.x, p.y);
@@ -2858,6 +2859,7 @@
 
   function onCanvasPointerMove(event) {
     if (state.screen !== "game" || state.gameOver) return;
+    if (event.isPrimary === false) return;
     const p = canvasPointer(event);
     const tile = pointToTile(p.x, p.y);
     state.pointerTile = isInside(tile) ? tile : null;

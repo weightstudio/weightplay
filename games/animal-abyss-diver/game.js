@@ -396,7 +396,7 @@
     }
     $("sonarBtn").disabled=state.battery<2||!!state.busy||!!state.fishActive;
     $("shieldBtn").disabled=state.battery<1||state.shieldArmed||!!state.busy||!!state.fishActive;
-    $("surfaceBtn").disabled=!!state.busy;
+    $("surfaceBtn").disabled=!!state.busy||!!state.fishActive;
     $("beaconBtn").disabled=state.beaconUsed||!!state.busy;
   }
   let coachReturnFocus=null;

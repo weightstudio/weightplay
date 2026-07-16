@@ -34,14 +34,47 @@
       time: "5-8 minutes",
       skills: ["Reaction", "Focus", "Hand-Eye Coordination"],
       intro:
-        "Fantasy Lion Defense is a mobile-friendly animal defense game where players move a brave lion hero, launch playful magic-supply weapons, and protect a fantasy wall from fierce wild beasts. The game uses short stages, weapon cooldowns, upgrades, boss beasts, and clear win or retry moments so players can practice timing and attention in a playful fantasy setting. It is designed as a fun action game first, with progress tracking and upgrades that make each session feel meaningful without creating pressure.",
-      how: ["Move the lion hero left and right.", "Weapons fire automatically when their cooldowns finish.", "Defeat each wave of wild beasts before the wall is destroyed.", "Use coins and diamonds to improve long-term power."],
+        "Fantasy Lion Defense is a 30-stage animal defense game starring Boom Mane Leo. The lion moves along a fantasy wall while equipped erasers, pencils, and rulers fire on separate cooldowns. Eight beast roles attack in authored lane, alternating, edge, and center formations, and every fifth stage ends with a different Boss pattern. Between waves, the player chooses temporary Battle upgrades; after settlement, saved coins improve Leo, equipment, or the wall. Kids can retry without a timer, and the game remains permanently ad-free.",
+      story: [
+        "Boom Mane Leo guards the wall outside WeightPlay's enchanted school-supply vault. Wild boars, trickster hyenas, armored rhinos, charging buffalo, hawks, bears, tigers, and crocodiles are drawn toward the magic stored inside its pencils, rulers, and erasers. Leo cannot leave the wall unprotected, so the player patrols its width, keeps the automatic weapons aligned with incoming lanes, and repairs damage between expeditions.",
+        "The campaign crosses six five-stage defense routes. Each route ends when a named beast commander is defeated at Stages 5, 10, 15, 20, 25, or 30. A first clear opens the next stage; a Boss first clear also grants the recorded diamond bonus. Clearing Bear Starfall at Stage 30 means the full beast roster has been driven away and the vault can reopen safely."
+      ],
+      systems: [
+        "Leo moves horizontally by dragging or tapping the battlefield; a focused keyboard can also use Left and Right Arrow. Equipped weapons fire automatically, but each slot owns its cooldown, so duplicate weapons still produce separate shots. Pencil, ruler, and eraser builds differ in speed, damage, size, and firing rhythm.",
+        "Every stage contains three to seven waves. Defeated beasts award coins, and the wall must retain at least one HP until the last enemy is gone. Between waves, three temporary choices can improve damage, cooldown, projectile count, side shots, bursts, size, piercing, splash, defeat healing, coin gain, slowing, or immediate wall repair.",
+        "The eight enemies are mechanical roles rather than cosmetic swaps: boars and tigers rush, hyenas and bears curve sideways, rhinos reduce an opening hit with armor, buffalo and crocodiles punish the wall, and hawks dash. Authored type pools and formation positions make later stages emphasize different target priorities instead of drawing every beast randomly.",
+        "Bosses keep their beast identity and add a unique projectile rule. The Boar Captain fires quick pursuit shots; the Hyena creates paired crossfire; the Rhino begins behind six shield hits and throws a heavy orb; the Buffalo aims a large siege orb at wall center; the Hawk combines repeated dashes with twin fast shots; and the Bear casts three-orb starfall.",
+        "Stage unlocks, permanent upgrades, equipped weapons, coins, and claimed Boss diamond bonuses are stored in this browser. Result shows remaining wall HP, defeated beasts, upgrade choices, rewards, and either the next stage or a replay/menu route."
+      ],
+      how: ["Open Battle and swipe the horizontal rail to an unlocked stage.", "Read the stage name, enemy portraits, formation clue, wave count, and Boss badge before starting.", "Move Leo beneath the lane that most needs weapon coverage; firing is automatic.", "Choose one upgrade after each completed wave and adapt it to the next enemy mix.", "Keep the wall above zero HP until every normal beast and Boss is defeated.", "Use settlement rewards for permanent hero, equipment, or wall upgrades, then continue or replay."],
+      strategyTips: [
+        "Piercing and splash are strongest against fixed lanes or center-heavy formations; side shots cover alternating and edge attacks.",
+        "Do not chase every fast beast. Hold a useful firing lane and move early when a hawk or tiger begins a dash.",
+        "Against the Rhino Bulwark, rapid multi-shot attacks remove six shield hits efficiently before heavier damage matters.",
+        "Save wall repair and defeat-healing choices for breaker-heavy stages such as Buffalo Siege and Crocodile Siege.",
+        "The final Bear Starfall spreads three weaker orbs. Broad damage can control its mixed escort while movement keeps Leo aligned with dangerous lanes."
+      ],
+      progression: [
+        "Stages 1-5 teach straight lanes, alternating entrances, and zigzag hyenas. Boar Pursuit closes the route with quick aimed shots behind a mixed escort.",
+        "Stages 6-10 introduce armored center screens, wall breakers, curving casters, and sky rushes. Hyena Crossfire adds paired projectiles while mixed enemies enter from both edges.",
+        "Stages 11-15 isolate enemy roles so the player can compare piercing against a Rhino Column, speed coverage against Twin Sprinters, and repair against a Breaker Line. Rhino Bulwark requires six shield hits before full Boss damage.",
+        "Stages 16-20 combine diving hawks with armor and curved routes. Buffalo Siege focuses heavy enemies in the center and adds a large, slow, high-damage siege orb aimed at the wall.",
+        "Stages 21-25 mix guarded runners, zigzag sprinters, heavy gates, and flank attacks. Hawk Dive Squadron repeatedly accelerates and fires two fast projectiles, rewarding early repositioning.",
+        "Stages 26-30 review all eight roles through lane, alternating, center, and edge formations. Bear Starfall finishes the campaign with the complete roster and a three-projectile casting pattern rather than another numeric copy of an earlier Boss."
+      ],
+      designNote:
+        "We use automatic weapon fire so the player's continuous decision is where Leo should stand, not whether a small fire button registered on a phone. Separate slot cooldowns preserve equipment-building value, while between-wave upgrades create short tactical pauses. The 30-stage revision replaces the old late-game all-beast randomness with authored compositions and four readable spawn formations. Six Boss projectile patterns provide checkpoints without adding hostile imagery beyond the existing fantasy animal defense tone. Phone drag, tap movement, and desktop Arrow keys all control the same bounded logical battlefield. Unlike Animal Color Lunchbox, this game asks for reaction and build choices, but it keeps the Kids contract: no ads, no countdown pressure, supportive retry, and no claim that the Skill Report is a formal assessment.",
       parent:
-        "This game is designed for short action practice sessions. It may help children practice reaction, focus, and hand-eye coordination through simple movement and timing. Scores and progress are for fun and local progress tracking only.",
+        "Fantasy Lion Defense uses cartoon animal combat, automatic school-supply weapons, wall HP, and upgrade decisions. It may support reaction, focus, planning, and hand-eye coordination during short sessions, but the Skill Report and stars are playful summaries rather than a developmental, medical, or school assessment. The Kids page is ad-free, sign-in is not required, and progress stays in the current browser unless its storage is cleared.",
       faq: [
-        ["Is Fantasy Lion Defense free to play?", "Yes. Fantasy Lion Defense runs in the browser on WeightPlay."],
-        ["What age is Fantasy Lion Defense for?", "It is recommended for age 5+ because it uses timing, upgrades, and simple action choices."],
-        ["Does this game measure ability?", "No. It is a game for fun practice and local progress tracking, not a test or diagnosis."],
+        ["How many stages are in Fantasy Lion Defense?", "There are 30 authored stages in six five-stage routes, with Boss battles at Stages 5, 10, 15, 20, 25, and 30."],
+        ["Do the weapons fire by themselves?", "Yes. Every equipped slot fires on its own cooldown while the player moves Leo and chooses between-wave upgrades."],
+        ["Why do later stages feel different?", "They use specified beast compositions and lane, alternating, edge, or center formations. Later Bosses also use different projectile patterns."],
+        ["What happens if the wall reaches zero HP?", "The run ends with a retry and stage-select choice. Permanent progress already saved in the browser remains available."],
+        ["How are Boss diamonds earned?", "Each Boss stage grants its recorded diamond bonus only on the first clear; replaying still provides normal stage rewards."],
+        ["Can the game be played without a mouse?", "Yes. Touch supports tapping and dragging, and a focused desktop Battle supports Left and Right Arrow keys."],
+        ["Does this Kids game show ads or require an account?", "No. It requests no advertising and does not require sign-in; progress is stored locally in the browser."],
+        ["Does the Skill Report measure ability?", "No. Wall HP, defeated beasts, choices, stars, and scores are game feedback only, not a test or diagnosis."],
       ],
     },
     "color-lunchbox": {
@@ -51,14 +84,45 @@
       time: "1-3 minutes",
       skills: ["Color Recognition", "Focus", "Hand-Eye Coordination"],
       intro:
-        "Animal Color Lunchbox is a gentle preschool matching game where children place foods into lunchboxes by color. Each stage uses a small set of clear objects and a simple drag or tap interaction. The goal is to make color practice feel like play, with short rounds that parents can understand quickly and children can retry without pressure.",
-      how: ["Look at the food item.", "Find the lunchbox with the matching color.", "Drag or tap the item into the correct lunchbox.", "Finish the stage to unlock the next theme."],
+        "Animal Color Lunchbox is a gentle picture-led sorting game with 30 five-food levels. Children help six animal Guardians prepare picnic, breakfast, garden, and festival lunchboxes by matching each food to its real color. Later levels add close color choices, harmless empty boxes, picture-only clues, and boxes that settle into new positions only after a correct match. There is no timer, advertising, or losing screen: an incorrect choice simply invites another try.",
+      story: [
+        "The Rainbow Pantry supplies meals for animal friends across six neighborhood routes. Its labels have blown loose, so strawberries, rice, fish, vegetables, drinks, and treats must be placed in the right colored lunchboxes before each delivery leaves. The player is the pantry helper. Completing five matches packs one delivery and opens the next stop.",
+        "Mimi, Orla, Nori, Pogo, Taro, and Fia wait at Levels 5, 10, 15, 20, 25, and 30. These Guardians do not fight or punish mistakes. Each introduces a friendly check: a one-time box move, repeated safe shuffles, picture-first matching, extra unused boxes, a halfway mirror, or a final combination. Finishing Fia's festival check means every route has received a correctly sorted lunchbox."
+      ],
+      systems: [
+        "Every level contains exactly five food prompts. The current food appears as a large picture, and the available lunchboxes show color swatches. Players may tap a box or drag the food onto it; both inputs use the same answer rule.",
+        "Correct matches fill one fifth of the progress bar and award a food sticker for the result parade. A wrong box stays available and gives supportive feedback, so the child can look again without losing a life or restarting the level.",
+        "Picture-only levels visually remove printed food and color names while keeping accessible labels for screen readers. Decoy levels add one or two unused boxes, but the correct color is always present. Moving-box levels rearrange choices only after a correct answer and never while a drag is active.",
+        "The highest unlocked level is stored locally in the browser. A returning player can replay any unlocked card; clearing a level unlocks the next one, and Level 30 remains replayable after the festival is complete."
+      ],
+      how: ["Choose an unlocked level from the horizontal level path.", "Look at the large food picture and compare it with the lunchbox colors.", "Tap the matching lunchbox, or drag the food onto it.", "If a box moves after a match, wait for it to settle before choosing again.", "Pack all five foods to see the sticker parade and unlock the next level."],
+      strategyTips: [
+        "Name the food first, then check its visible color; this helps when two warm or cool colors appear together.",
+        "In picture-only levels, use the food itself and the large color swatches rather than searching for text.",
+        "When an extra box has no matching food, treat it as a looking clue rather than guessing quickly.",
+        "After boxes settle into new places, pause and scan the full row again. Their colors do not change."
+      ],
+      progression: [
+        "Levels 1-5 establish fixed-box matching with familiar fruit, vegetables, and pantry foods. Mimi closes the first route by moving the boxes once after the third correct food.",
+        "Levels 6-10 compare warm, cool, light, and dark colors. A picture-only picnic removes visible words, and Orla's check rearranges boxes after every successful match.",
+        "Levels 11-15 introduce close pairs such as red and pink or blue and cyan, plus one harmless unused box. Nori combines picture-first clues with a decoy choice.",
+        "Levels 16-20 group foods by vegetable, fruit, breakfast, and snack themes. Pogo's buffet presents seven boxes for five foods, requiring careful elimination without extending the session.",
+        "Levels 21-25 revisit moving boxes and picture matching in stronger combinations. Taro mirrors the box order once halfway through the garden check.",
+        "Levels 26-30 use six-box rainbows, warm-and-cool alternation, two decoys, and repeated safe movement. Fia's festival combines picture-only clues, one unused box, and a shuffle after each correct answer."
+      ],
+      designNote:
+        "We kept every level to five foods so a young player can finish a complete task in a short sitting. The game supports both tapping and dragging because either movement may be more comfortable on a particular phone, tablet, mouse, or accessibility setup. Difficulty comes from observation rather than speed: close colors, unused boxes, and position changes are introduced one idea at a time, with visible settling animations and locked input during motion. The Guardian checkpoints give the 30-level path memorable landmarks without turning a preschool sorting game into combat. Unlike WeightPlay's action games, Animal Color Lunchbox has no timer, lives, ads, or failure state; its purpose is calm repeated practice and a clear sense of completion.",
       parent:
-        "This game may help children practice color recognition, focus, and hand-eye coordination. It is meant for short, relaxed sessions and does not evaluate a child's development.",
+        "This game may help children practice color recognition, visual comparison, focus, and hand-eye coordination. Adults can ask the child to name the food or explain why two colors look different, but reading is not required. Progress and scores stay in the local browser and are for play only; they are not a developmental test, diagnosis, or school assessment.",
       faq: [
-        ["Can young children play without reading?", "Yes. The first stages rely mostly on colors and pictures."],
-        ["What does this game practice?", "It practices color recognition, attention, and simple matching."],
-        ["Are scores formal assessments?", "No. Scores are only for fun and progress tracking."],
+        ["Can young children play without reading?", "Yes. Food pictures and color swatches carry the core instructions, and picture-only levels deliberately avoid visible answer words."],
+        ["How many levels are included?", "There are 30 levels, each containing exactly five food matches, with Guardian checkpoints every five levels."],
+        ["Why do some lunchboxes move?", "Selected later levels rearrange boxes after a correct match. Input is paused during the short settling animation, and boxes never move during a drag."],
+        ["Can an extra box make a level impossible?", "No. Decoy boxes are unused colors; the correct lunchbox for every food is always present."],
+        ["Is the game timed or can a child lose?", "There is no timer, life limit, or losing screen. A wrong choice gives supportive feedback and another try."],
+        ["Does progress carry over?", "The highest unlocked level is saved in this browser. Clearing browser storage may remove that local progress."],
+        ["Does Animal Color Lunchbox show ads?", "No. This Kids game does not request ads or reserve advertising space."],
+        ["Are scores formal assessments?", "No. Scores and progress are playful feedback, not a measure of development or ability."],
       ],
     },
     "bubble-bakery": {
@@ -1888,6 +1952,91 @@
         return { age, beginner: `${b0}-${b1}`, good: `${g0}-${g1}`, excellent: `${e0}+` };
       });
   }
+
+  localizedGames["zh-Hant"]["wonder-crash"] = {
+    title: "奇幻獅子防衛",
+    difficulty: "中等",
+    time: "5～8 分鐘",
+    gameplay: "橫向移動自動射擊防衛",
+    genre: ["動作", "守城", "動物"],
+    skills: ["反應", "專注", "手眼協調"],
+    intro: "《奇幻獅子防衛》是由爆鬃獅雷歐擔任主角的 30 關動物守城遊戲。玩家沿著奇幻城牆左右移動，裝備的橡皮擦、鉛筆與尺會依各自冷卻時間自動攻擊。八種野獸依直線、左右交替、外側與中央四種編隊進攻，每五關還有一種不同攻擊規則的王。波次之間可選本場強化，結算後再用保存的金幣提升雷歐、裝備或城牆。Kids 版本沒有計時壓力，也永久無廣告。",
+    story: [
+      "爆鬃獅雷歐守護 WeightPlay 魔法文具庫外的城牆。野豬、鬣狗、犀牛、水牛、猛鷹、黑熊、老虎與鱷魚受到鉛筆、尺和橡皮擦中的魔力吸引而來。雷歐不能離開城牆，因此玩家要在牆前巡守，讓自動武器對準危險路線，並在一場防衛結束後修補長期傷害。",
+      "戰役分成六條、每條五關的防衛路線。第 5、10、15、20、25、30 關各有一位野獸指揮者；首次通關會開啟下一關，王關首次通過還會取得已記錄的鑽石獎勵。擊退第 30 關黑熊星落王與完整獸群，代表文具庫可以重新安全開放。"
+    ],
+    systems: [
+      "玩家可在戰場點擊或拖曳，讓雷歐水平移動；桌面鍵盤聚焦後也能用左右方向鍵。每個裝備欄有獨立冷卻，即使裝備重複武器也會分別射擊。鉛筆、尺與橡皮擦在速度、傷害、大小與節奏上各有差異。",
+      "每關有三到七波。擊敗野獸可取得金幣，城牆必須在最後一隻敵人倒下前保留至少一點生命。波次之間可從三個選項挑一項，強化傷害、冷卻、數量、側射、連射、大小、穿透、濺射、擊敗回復、金幣、減速或立即修牆。",
+      "八種敵人不是只換圖片：野豬與老虎高速前進，鬣狗與黑熊左右走曲線，犀牛用護甲降低第一次傷害，水牛與鱷魚擅長破牆，猛鷹會突然俯衝。每關指定敵人編成與進場位置，後段不再只是所有野獸隨機出現。",
+      "六位王各有獨立規則：野豬王快速追擊；鬣狗王發射成對交叉彈；犀牛王先用六層護盾吸收攻擊並投出重彈；水牛王向城牆中央發射大型攻城彈；猛鷹王俯衝並連射兩發高速彈；黑熊王施放三連星落。",
+      "最高關卡、永久強化、裝備、金幣與已領取的王關鑽石都存在目前瀏覽器。結算會顯示剩餘牆血、擊敗數、強化選擇與獎勵，再提供下一關、重玩或回選單。"
+    ],
+    how: ["開啟戰鬥頁，左右滑動關卡軌道並選擇已解鎖關卡。", "開戰前查看關卡名稱、敵人圖片、編隊提示、波數與王關標記。", "把雷歐移到最需要火力的路線下方；武器會自動射擊。", "每波結束選一個強化，依下一波敵人編成調整打法。", "在所有普通野獸與王被擊敗前，讓城牆生命保持在零以上。", "用結算獎勵永久提升角色、裝備或城牆，再繼續或重玩。"],
+    strategyTips: ["穿透與濺射適合固定直線或中央重兵；側射適合左右交替與外側進攻。", "不用追逐每一隻快獸；守住有效射線，看到猛鷹或老虎加速時提早移動。", "對抗犀牛護盾王時，先用快速多發攻擊拆掉六層護盾，再讓高傷害武器發揮。", "水牛攻城與鱷魚攻城等破牆關卡，修牆與擊敗回復的價值更高。", "最終黑熊星落王會分散三發較弱投射物；廣域傷害可控制混合護衛，移動則用來維持危險路線的火力。"],
+    progression: [
+      "第 1～5 關教直線、左右入口與鬣狗曲線；野豬追擊王在混合護衛後方快速瞄準射擊。",
+      "第 6～10 關加入中央重甲、破牆獸、曲線施法獸與天空急襲；鬣狗交叉火網王會在雙側獸群間發射成對投射物。",
+      "第 11～15 關刻意分離敵人角色，讓玩家比較穿透、速度覆蓋與修牆。犀牛護盾王必須先承受六次破盾攻擊。",
+      "第 16～20 關把俯衝猛鷹與重甲、曲線路線混合；水牛攻城王用大型慢速重彈直接威脅城牆中央。",
+      "第 21～25 關組合護甲快攻、曲線衝刺、重獸城門與側翼破牆；猛鷹王會反覆加速並射出兩發高速彈。",
+      "第 26～30 關用四種編隊複習八種角色；黑熊星落王以三發投射物和完整獸群收尾，不是前一位王的數值放大版本。"
+    ],
+    designNote: "我們採用自動射擊，讓玩家持續思考雷歐該站在哪裡，而不是在手機上反覆確認小型射擊按鈕是否按到。每個裝備欄的獨立冷卻保留配裝價值，波次強化則提供短暫的策略停頓。本次 30 關改造以指定敵人編成與四種清楚的進場陣形取代舊後段的全種類隨機，再用六種王的投射物規則建立里程碑。手機點擊、拖曳與桌面方向鍵都控制同一個有邊界的邏輯戰場。本作比《動物顏色便當盒》更要求反應與配裝，但仍遵守 Kids 規則：無廣告、無倒數壓力、可支持性重試，能力報告也不是正式評量。",
+    parent: "本作包含卡通動物攻城、自動文具武器、城牆生命與強化選擇，可陪伴孩子練習反應、專注、規劃與手眼協調。能力報告與星等只是依本場牆血、擊敗數與選擇整理的遊戲回饋，不是發展、醫療或學校測驗。Kids 頁面沒有廣告，也不需要登入；進度保存在目前瀏覽器，清除網站資料可能會移除紀錄。",
+    faq: [
+      ["一共有多少關？", "共有 30 個具名關卡，分成六條五關路線，王關位於第 5、10、15、20、25、30 關。"],
+      ["武器會自動攻擊嗎？", "會。每個裝備欄依自己的冷卻時間射擊，玩家負責移動雷歐與選擇波次強化。"],
+      ["後段關卡為什麼不同？", "各關指定敵人編成與直線、交替、外側或中央陣形，六位王也有不同投射物規則。"],
+      ["城牆生命歸零會怎樣？", "本次防衛結束，可選擇重試或回關卡；已保存的永久進度不會因此消失。"],
+      ["王關鑽石怎麼取得？", "每個王關只有首次通關會取得記錄中的鑽石獎勵，重玩仍會有一般關卡收益。"],
+      ["不用滑鼠也能玩嗎？", "可以。觸控支援點擊與拖曳，桌面戰鬥聚焦後可用左右方向鍵。"],
+      ["Kids 版本有廣告或需要帳號嗎？", "沒有廣告請求，也不需要登入；進度只存在目前瀏覽器。"],
+      ["能力報告是正式測驗嗎？", "不是。牆血、擊敗數、選擇、星等與分數只代表這一場遊戲。"]
+    ]
+  };
+
+  localizedGames["zh-Hant"]["color-lunchbox"] = {
+    title: "動物顏色便當盒",
+    difficulty: "簡單",
+    time: "1～3 分鐘",
+    gameplay: "圖片顏色分類",
+    genre: ["幼兒", "教育", "動物"],
+    skills: ["顏色辨識", "專注力", "手眼協調"],
+    intro: "《動物顏色便當盒》是一款以圖片為主的溫和分類遊戲，共有 30 個、每關固定五份食物的短關卡。孩子要協助六位動物守護員準備野餐、早餐、花園與慶典便當，把食物放進符合實際顏色的盒子。後段會加入相近顏色、無害的空盒、只看圖片的提示，以及答對後才安全換位的便當盒。遊戲沒有計時、廣告或失敗畫面，選錯只會得到友善提示並再次嘗試。",
+    story: [
+      "彩虹食材庫負責替六條社區路線的動物朋友準備餐點。食材標籤被風吹散後，草莓、米飯、魚、蔬菜、飲料和點心都需要依顏色放回正確便當盒。玩家扮演食材庫小幫手；完成五次配對，就能裝好一份配送便當並開啟下一站。",
+      "咪咪、歐拉、諾里、波哥、塔羅與菲亞分別在第 5、10、15、20、25、30 關等候。他們不會戰鬥，也不會因錯誤處罰玩家，而是帶來一次換位、每題安全換位、圖片優先、額外空盒、中途鏡像與綜合規則。完成菲亞的彩虹慶典檢查，代表六條路線都收到分類正確的便當。"
+    ],
+    systems: [
+      "每關固定出現五份食物。畫面中央顯示大型食物圖片，便當盒以清楚色塊呈現；玩家可以點盒子，也可以把食物拖到盒子上，兩種操作使用完全相同的判定。",
+      "答對會推進五分之一進度，並把食物貼紙加入結算遊行。答錯不扣生命、不重置關卡，盒子仍可繼續選擇。",
+      "圖片模式只在視覺上隱藏食物與顏色名稱，螢幕閱讀器仍保留完整標籤。干擾盒只是本關沒有食物使用的顏色，正確答案一定存在。會移動的盒子只在答對後換位，拖曳進行中絕不移動。",
+      "最高解鎖關卡只儲存在目前瀏覽器。玩家可重玩任何已解鎖關卡；完成第 30 關後不會產生不存在的第 31 關，彩虹慶典仍可再次挑戰。"
+    ],
+    how: ["在橫向關卡路徑選擇已解鎖的關卡。", "觀察大型食物圖片，對照各便當盒的顏色色塊。", "點選正確盒子，或把食物拖到盒子上。", "若盒子在答對後換位，先等動畫停穩再選下一題。", "完成五份食物即可觀看貼紙遊行並解鎖下一關。"],
+    strategyTips: ["先說出食物名稱，再觀察它的實際顏色；遇到相近暖色或冷色時會更容易比較。", "圖片關卡不必尋找文字，直接看食物外形與大型色塊。", "看到額外空盒時先逐一排除，不需要快速猜測。", "盒子換位後重新掃視整排；位置改變，但顏色不會改變。"],
+    progression: [
+      "第 1～5 關以固定盒位與熟悉食物建立基本配對；咪咪會在第三次答對後進行一次換位。",
+      "第 6～10 關比較暖色、冷色、明色與暗色，並加入圖片野餐；歐拉會在每次答對後重新排列盒子。",
+      "第 11～15 關加入紅與粉紅、藍與青等相近顏色，以及一個無害空盒；諾里把圖片提示與干擾盒結合。",
+      "第 16～20 關依蔬菜、水果、早餐與點心分組；波哥的自助餐用七個盒子搭配五份食物，增加觀察而不延長局數。",
+      "第 21～25 關進一步組合換位與圖片配對；塔羅會在花園檢查中途把盒位鏡像交換一次。",
+      "第 26～30 關加入六盒彩虹、暖冷交替、兩個空盒與連續安全換位；菲亞的最終慶典同時使用圖片提示、一個空盒和每題換位。"
+    ],
+    designNote: "我們把每關固定為五份食物，讓幼兒能在短時間內完成一個有開始與結束的任務。點擊與拖曳並存，是為了兼顧手機、平板、滑鼠與不同操作習慣。難度來自觀察而不是速度：相近顏色、額外空盒與位置變化會逐項加入，盒子移動時也會鎖定輸入並顯示清楚動畫。六位守護員替 30 關提供容易記住的里程碑，但不把幼兒分類遊戲變成戰鬥。與 WeightPlay 的動作遊戲不同，本作沒有計時、生命、廣告或失敗狀態，重點是安靜重複練習與清楚的完成感。",
+    parent: "本遊戲可陪伴孩子練習顏色辨識、視覺比較、專注與手眼協調。成人可以請孩子說出食物名稱，或比較兩種相近顏色，但遊玩不需要閱讀。進度與分數只保存在目前瀏覽器，僅供遊戲回饋，不是發展測驗、診斷或學校評量。",
+    faq: [
+      ["不識字也可以玩嗎？", "可以。食物圖片與顏色色塊就是主要指示，圖片模式還會刻意隱藏可見答案文字。"],
+      ["一共有多少關？", "共有 30 關，每關固定五份食物，並在每五關安排一次動物守護員檢查。"],
+      ["為什麼有些便當盒會移動？", "部分後段關卡會在答對後換位。動畫期間會暫停輸入，拖曳途中也絕不移動。"],
+      ["額外盒子會讓關卡無解嗎？", "不會。干擾盒只是沒有食物使用的顏色，每一題的正確盒子一定存在。"],
+      ["遊戲有計時或失敗嗎？", "沒有計時、生命限制或失敗畫面；答錯會得到友善提示並再次嘗試。"],
+      ["關卡進度會保留嗎？", "最高解鎖關卡會存在目前瀏覽器；清除網站儲存資料可能會移除進度。"],
+      ["這款 Kids 遊戲有廣告嗎？", "沒有。本作不發出廣告請求，也不保留廣告空間。"],
+      ["分數是能力評量嗎？", "不是。分數與進度只是遊戲回饋，不代表孩子的發展或能力。"]
+    ]
+  };
 
   function localizedGame(id) {
     const base = games[id];

@@ -442,6 +442,7 @@ body.is-bakery-playing .play-panel {
 }
 
 .stage-card {
+  position: relative;
   flex: 0 0 min(280px, 100%);
   min-height: 164px;
   border: 0;
@@ -468,6 +469,40 @@ body.is-bakery-playing .play-panel {
   color: rgba(74, 41, 24, 0.72);
   font-size: 0.72rem;
   line-height: 1.12;
+}
+
+.stage-rule {
+  max-width: 100%;
+  min-height: 2.2em;
+  overflow: hidden;
+  display: -webkit-box;
+  color: rgba(74, 41, 24, 0.78);
+  font-size: 0.66rem;
+  line-height: 1.12;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.panko-check {
+  position: absolute;
+  top: 7px;
+  right: 7px;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 3px 5px;
+  border-radius: 999px;
+  background: #6b3ed1;
+  color: #fff;
+  font-size: 0.58rem;
+  font-style: normal;
+  line-height: 1;
+}
+
+.panko-check img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
 }
 
 .stage-stars {
@@ -681,6 +716,17 @@ body.is-bakery-playing .order-chip {
   padding: 2px 5px;
   font-size: 0.56rem;
   white-space: nowrap;
+}
+
+body.is-bakery-playing .order-chip.is-sequence-active {
+  box-shadow: 0 0 0 3px #ffe45c;
+}
+
+body.is-bakery-playing .order-chip.group-goal {
+  max-width: 78px;
+  overflow: hidden;
+  font-size: 0.5rem;
+  text-overflow: ellipsis;
 }
 
 body.is-bakery-playing .order-progress {

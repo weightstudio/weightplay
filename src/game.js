@@ -50,6 +50,10 @@ function t(key, params = {}) {
   }, val);
 }
 
+function escapeHtml(value) {
+  return String(value ?? "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]);
+}
+
 function translateStaticUI() {
   document.documentElement.lang = locale();
   document.title = t("browser_title");
@@ -632,6 +636,7 @@ function makeState(levelIndex) {
     spawnTimer: 0.7,
     waveIndex: 0,
     waveSpawnRemaining: level.waves[0].count,
+    waveSpawnedCount: 0,
     waveBreakTimer: 0,
     bossSpawnedForWave: -1,
     bossMinionTimer: 2.2,
@@ -1077,6 +1082,7 @@ function updateWaves(dt) {
 function prepareNextWave() {
   state.waveIndex += 1;
   state.waveSpawnRemaining = state.level.waves[state.waveIndex].count;
+  state.waveSpawnedCount = 0;
   state.spawnTimer = 0.65;
   state.waveBreakTimer = 1.1;
   state.bossMinionTimer = 2.2;
@@ -1087,16 +1093,33 @@ function hasActiveBoss() {
 }
 
 function spawnEnemy(wave) {
-  const typeIndex = Math.floor(random(0, Math.min(wave.maxEnemyType + 1, ENEMY_TYPES.length)));
+  const availableTypes = (Array.isArray(wave.typePool) ? wave.typePool : [])
+    .filter((index) => Number.isInteger(index) && index >= 0 && index <= wave.maxEnemyType && index < ENEMY_TYPES.length);
+  const typeIndex = availableTypes.length
+    ? availableTypes[Math.floor(random(0, availableTypes.length))]
+    : Math.floor(random(0, Math.min(wave.maxEnemyType + 1, ENEMY_TYPES.length)));
   const type = ENEMY_TYPES[typeIndex];
-  addEnemy(type, wave, false);
+  const spawnX = getPatternSpawnX(wave.spawnPattern, state.waveSpawnedCount);
+  state.waveSpawnedCount += 1;
+  addEnemy(type, wave, false, spawnX);
+}
+
+function getPatternSpawnX(pattern, ordinal) {
+  const positions = {
+    lanes: [W * 0.25, W * 0.5, W * 0.75],
+    alternating: [W * 0.22, W * 0.78],
+    edges: [W * 0.16, W * 0.84],
+    center: [W * 0.38, W * 0.5, W * 0.62],
+  }[pattern];
+  return positions ? positions[ordinal % positions.length] : null;
 }
 
 function spawnBoss(wave) {
   const type = ENEMY_TYPES[Math.min(wave.bossType ?? wave.maxEnemyType, ENEMY_TYPES.length - 1)];
   addEnemy(type, wave, true);
   state.bossMinionTimer = 1.8;
-  state.bossBanner = { text: t("boss_spawned", { name: t("enemy_" + type.id) }), life: 2.6 };
+  const bossRule = locale() === "zh-Hant" ? wave.bossRuleZh : wave.bossRuleEn;
+  state.bossBanner = { text: t("boss_spawned", { name: t("enemy_" + type.id) }), rule: bossRule || "", life: 2.6 };
   window.WonderSound?.play("boss");
 }
 
@@ -1105,7 +1128,7 @@ function spawnBossMinions(wave) {
   for (let i = 0; i < count; i += 1) spawnEnemy(wave);
 }
 
-function addEnemy(type, wave, isBoss) {
+function addEnemy(type, wave, isBoss, authoredX = null) {
   const image = enemyImages[type.imageIndex];
   const bossScale = isBoss ? getBossScale(type) : null;
   const size = (isBoss ? wave.sizeMax * bossScale.size : random(wave.sizeMin, wave.sizeMax)) * type.sizeScale;
@@ -1114,7 +1137,7 @@ function addEnemy(type, wave, isBoss) {
     type,
     image,
     isBoss,
-    x: isBoss ? W / 2 : random(size / 2 + 20, W - size / 2 - 20),
+    x: isBoss ? W / 2 : authoredX === null ? random(size / 2 + 20, W - size / 2 - 20) : clamp(authoredX, size / 2 + 20, W - size / 2 - 20),
     y: -size,
     baseX: 0,
     size,
@@ -1125,6 +1148,7 @@ function addEnemy(type, wave, isBoss) {
     bossAttackTimer: isBoss ? random(1.4, 2.4) : 0,
     bossAttackInterval: bossScale?.attackInterval || 2.8,
     bossBallDamage: Math.max(1, Math.ceil(wave.damage * type.damageScale * DIFFICULTY.enemyDamage * (bossScale?.ballDamage || 1.2))),
+    bossPattern: isBoss ? wave.bossPattern || "pursuit" : "",
     speed: (isBoss ? wave.speedMin * 0.42 : random(wave.speedMin, wave.speedMax)) * type.speedScale * DIFFICULTY.enemySpeed * (bossScale?.speed || 1),
     damage: Math.max(1, Math.ceil(wave.damage * type.damageScale * DIFFICULTY.enemyDamage * (bossScale?.damage || 1))),
     coinReward: Math.max(1, Math.ceil(wave.coinReward * type.coinScale * (bossScale?.coin || 1))),
@@ -1175,18 +1199,35 @@ function updateEnemyAbility(enemy, dt) {
 function updateBossAbility(enemy, dt) {
   enemy.bossAttackTimer -= dt;
   if (enemy.bossAttackTimer > 0) return;
-  throwBossBall(enemy);
-  enemy.bossAttackTimer = enemy.bossAttackInterval;
+  const pattern = enemy.bossPattern;
+  if (pattern === "crossfire") {
+    throwBossBall(enemy, { targetOffset: -120, damageScale: 0.62, sizeScale: 0.82 });
+    throwBossBall(enemy, { targetOffset: 120, damageScale: 0.62, sizeScale: 0.82 });
+  } else if (pattern === "bulwark") {
+    throwBossBall(enemy, { speedScale: 0.76, damageScale: 1.18, sizeScale: 1.34, jitter: 30 });
+  } else if (pattern === "siege") {
+    throwBossBall(enemy, { targetX: W / 2, speedScale: 0.82, damageScale: 1.5, sizeScale: 1.42, jitter: 0 });
+  } else if (pattern === "dive") {
+    throwBossBall(enemy, { targetOffset: -55, speedScale: 1.42, damageScale: 0.58, sizeScale: 0.74, jitter: 18 });
+    throwBossBall(enemy, { targetOffset: 55, speedScale: 1.42, damageScale: 0.58, sizeScale: 0.74, jitter: 18 });
+  } else if (pattern === "starfall") {
+    [-125, 0, 125].forEach((targetOffset) => throwBossBall(enemy, { targetOffset, damageScale: 0.48, sizeScale: 0.78, jitter: 12 }));
+  } else {
+    throwBossBall(enemy, { speedScale: 1.24, damageScale: 0.86, sizeScale: 0.86, jitter: 34 });
+  }
+  const intervalScale = { pursuit: 0.76, crossfire: 1.04, bulwark: 1.14, siege: 1.2, dive: 0.82, starfall: 1.16 }[pattern] || 1;
+  enemy.bossAttackTimer = enemy.bossAttackInterval * intervalScale;
 }
 
-function throwBossBall(enemy) {
+function throwBossBall(enemy, options = {}) {
   const startX = enemy.x;
   const startY = enemy.y + enemy.size * 0.22;
-  const targetX = clamp(state.hero.x + random(-65, 65), 70, W - 70);
-  const speed = 440 + state.level.id * 5;
+  const jitter = options.jitter ?? 65;
+  const targetX = clamp(options.targetX ?? state.hero.x + (options.targetOffset || 0) + random(-jitter, jitter), 70, W - 70);
+  const speed = (440 + state.level.id * 5) * (options.speedScale || 1);
   const travelTime = Math.max(0.45, (wallY - startY) / speed);
   const dx = clamp((targetX - startX) / travelTime, -520, 520);
-  const size = Math.max(34, Math.min(74, enemy.size * 0.18));
+  const size = Math.max(28, Math.min(94, enemy.size * 0.18 * (options.sizeScale || 1)));
   state.bossProjectiles.push({
     x: startX,
     y: startY,
@@ -1194,7 +1235,7 @@ function throwBossBall(enemy) {
     speed,
     targetX,
     size,
-    damage: enemy.bossBallDamage,
+    damage: Math.max(1, Math.ceil(enemy.bossBallDamage * (options.damageScale || 1))),
     rotation: 0,
     spin: 5,
     color: getBossBallColor(enemy),
@@ -1715,6 +1756,13 @@ function drawBossUi() {
     ctx.fillStyle = "#ffdf57";
     ctx.strokeText(state.bossBanner.text, W / 2, H * 0.32);
     ctx.fillText(state.bossBanner.text, W / 2, H * 0.32);
+    if (state.bossBanner.rule) {
+      ctx.font = "900 28px 'Microsoft JhengHei', system-ui, sans-serif";
+      ctx.lineWidth = 7;
+      ctx.fillStyle = "#fff4bd";
+      ctx.strokeText(state.bossBanner.rule, W / 2, H * 0.32 + 52);
+      ctx.fillText(state.bossBanner.rule, W / 2, H * 0.32 + 52);
+    }
     ctx.restore();
   }
 }
@@ -1983,13 +2031,16 @@ function renderLevelGrid() {
     button.type = "button";
     button.dataset.level = String(level.id - 1);
     const summary = getLevelSummary(level);
+    const stageTitle = locale() === "zh-Hant" ? level.titleZh : level.titleEn;
+    const stageRule = locale() === "zh-Hant" ? level.ruleZh : level.ruleEn;
     button.innerHTML = `
       <strong>${level.id}</strong>
       <div class="level-beast-row" aria-label="${t("beast_guide_title")}">
         ${summary.enemyTypes.map((type) => `<img src="${enemyFiles[type.imageIndex]}" alt="${t("enemy_" + type.id)}" title="${t("enemy_" + type.id)}" />`).join("")}
       </div>
-      <span>${t("stage_waves", { count: summary.waves })}</span>
-      <small>${t("stage_reward", { coins: summary.coins })}</small>
+      <span title="${escapeHtml(stageTitle || "")}">${escapeHtml(stageTitle || t("stage_waves", { count: summary.waves }))}</span>
+      <small title="${escapeHtml(stageRule || "")}">${escapeHtml(stageRule || t("stage_reward", { coins: summary.coins }))}</small>
+      <small>${t("stage_waves", { count: summary.waves })} · ${t("stage_reward", { coins: summary.coins })}</small>
       ${summary.hasBoss ? `<em>${t("stage_boss")}</em>` : ""}
     `;
     button.className = "";
@@ -3146,6 +3197,41 @@ translateStaticUI();
 
 wonderMainStart.addEventListener("click", () => showMainMenu("battle"));
 wonderStageBack.addEventListener("click", showWonderMain);
+
+if ((location.hostname === "127.0.0.1" || location.hostname === "localhost") && new URLSearchParams(location.search).get("wp_test") === "1") {
+  window.WonderCrashTest = {
+    prepareBoss(stageId) {
+      const levelIndex = clamp(Number(stageId) - 1, 0, LEVELS.length - 1);
+      startLevel(levelIndex);
+      state.running = false;
+      state.enemies.length = 0;
+      state.bossProjectiles.length = 0;
+      const bossWave = state.level.waves.find((wave) => wave.boss);
+      if (!bossWave) throw new Error(`Stage ${state.level.id} has no Boss wave.`);
+      spawnBoss(bossWave);
+      const boss = state.enemies.find((enemy) => enemy.isBoss);
+      if (boss) boss.y = H * 0.28;
+      return this.snapshot();
+    },
+    fireBossAttack() {
+      const boss = state.enemies.find((enemy) => enemy.isBoss);
+      if (!boss) throw new Error("No prepared Boss.");
+      state.bossProjectiles.length = 0;
+      boss.bossAttackTimer = 0;
+      updateBossAbility(boss, 0);
+      return this.snapshot();
+    },
+    snapshot() {
+      const boss = state.enemies.find((enemy) => enemy.isBoss);
+      return {
+        stage: state.level.id,
+        running: state.running,
+        boss: boss ? { id: boss.type.id, pattern: boss.bossPattern, shieldHits: boss.bossShieldHits, attackInterval: boss.bossAttackInterval } : null,
+        projectiles: state.bossProjectiles.map(({ targetX, size, speed, damage }) => ({ targetX, size, speed, damage })),
+      };
+    },
+  };
+}
 
 preload().catch((error) => {
   if (loadingText) loadingText.textContent = t("load_fail");

@@ -741,7 +741,7 @@
     });
   }
 
-  function renderMenu() {
+  function renderMenu(focusHeroId = null) {
     nodes.profileLevel.textContent = profile.level;
     nodes.profileXp.textContent = `${profile.xp}/100`;
     nodes.profileBest.textContent = profile.bestMission;
@@ -780,6 +780,12 @@
       nodes.missionGrid.appendChild(btn);
     });
     scrollSelectedMissionIntoView();
+    if (focusHeroId !== null) {
+      const preferred = nodes.heroUpgradeGrid.querySelector(`[data-hero-upgrade="${focusHeroId}"]:not(:disabled)`);
+      const fallback = nodes.heroUpgradeGrid.querySelector("[data-hero-upgrade]:not(:disabled)")
+        || nodes.stagePanel?.querySelector('[data-rune-stage-tab="heroes"]');
+      (preferred || fallback)?.focus({ preventScroll: true });
+    }
   }
 
   function scrollSelectedMissionIntoView() {
@@ -858,7 +864,7 @@
     profile.runes -= cost;
     profile.heroLevels[id] = level + 1;
     saveProfile();
-    renderMenu();
+    renderMenu(id);
   }
 
   function installStandardStageFlow() {

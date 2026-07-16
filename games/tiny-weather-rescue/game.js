@@ -217,6 +217,7 @@
   let busy = false;
   let dragState = null;
   let careTransitionToken = 0;
+  let careLifecycleSuspended = document.hidden;
 
   function invalidateCareTransition() {
     careTransitionToken += 1;
@@ -225,13 +226,29 @@
 
   function scheduleCareTask(task, delay) {
     const token = careTransitionToken;
-    const startedAt = performance.now();
+    let remaining = delay;
+    let lastFrameAt = null;
     const tick = (now) => {
       if (token !== careTransitionToken || !running || !document.body.classList.contains("helper-playing")) return;
-      if (now - startedAt >= delay) task();
+      if (careLifecycleSuspended || document.hidden) {
+        lastFrameAt = null;
+        requestAnimationFrame(tick);
+        return;
+      }
+      if (lastFrameAt !== null) remaining -= Math.max(0, now - lastFrameAt);
+      lastFrameAt = now;
+      if (remaining <= 0) task();
       else requestAnimationFrame(tick);
     };
     requestAnimationFrame(tick);
+  }
+
+  function suspendCareTransitions() {
+    careLifecycleSuspended = true;
+  }
+
+  function resumeCareTransitions() {
+    careLifecycleSuspended = document.hidden;
   }
 
   function clamp(value, min, max) {
@@ -748,9 +765,18 @@
   }
 
   window.addEventListener("blur", cleanupDrag);
-  window.addEventListener("pagehide", cleanupDrag);
+  window.addEventListener("pagehide", () => {
+    cleanupDrag();
+    suspendCareTransitions();
+  });
+  window.addEventListener("pageshow", resumeCareTransitions);
   document.addEventListener("visibilitychange", () => {
-    if (document.hidden) cleanupDrag();
+    if (document.hidden) {
+      cleanupDrag();
+      suspendCareTransitions();
+    } else {
+      resumeCareTransitions();
+    }
   });
 
   function installLoading() {

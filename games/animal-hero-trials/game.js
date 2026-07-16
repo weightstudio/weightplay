@@ -702,6 +702,8 @@
       nub.style.transform = `translate(${stick.x * 25}px, ${stick.y * 25}px)`;
     };
     joystick.onpointerdown = (event) => {
+      if (pointer !== null && pointer !== event.pointerId) return;
+      if (event.button !== undefined && event.button !== 0) return;
       clearMovementInput();
       pointer = event.pointerId;
       joystick.setPointerCapture(pointer);

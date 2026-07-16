@@ -189,6 +189,56 @@
   let busy = false;
   let resultStarCount = 0;
   let resultPreviousBest = 0;
+  let roundGeneration = 0;
+  let roundLifecycleSuspended = document.hidden;
+  const roundTasks = new Set();
+
+  function invalidateRoundTasks() {
+    roundGeneration += 1;
+    roundTasks.clear();
+    busy = false;
+  }
+
+  function scheduleRoundTask(callback, delay) {
+    const task = {
+      generation: roundGeneration,
+      lastFrameAt: null,
+      remaining: delay,
+    };
+    roundTasks.add(task);
+
+    const tick = (now) => {
+      if (task.generation !== roundGeneration || !document.body.classList.contains("garden-playing")) {
+        roundTasks.delete(task);
+        return;
+      }
+      if (roundLifecycleSuspended || document.hidden) {
+        task.lastFrameAt = null;
+        requestAnimationFrame(tick);
+        return;
+      }
+      if (task.lastFrameAt !== null) task.remaining -= Math.max(0, now - task.lastFrameAt);
+      task.lastFrameAt = now;
+      if (task.remaining > 0) {
+        requestAnimationFrame(tick);
+        return;
+      }
+      roundTasks.delete(task);
+      callback();
+    };
+
+    requestAnimationFrame(tick);
+  }
+
+  function suspendRoundTasks() {
+    roundLifecycleSuspended = true;
+    for (const task of roundTasks) task.lastFrameAt = null;
+  }
+
+  function resumeRoundTasks() {
+    roundLifecycleSuspended = document.hidden;
+    for (const task of roundTasks) task.lastFrameAt = null;
+  }
 
   function setBattleCovered(covered) {
     for (const node of [statusbar, boardPanel]) {
@@ -267,6 +317,7 @@
   }
 
   function showMain() {
+    invalidateRoundTasks();
     document.body.classList.remove("garden-stage", "garden-playing");
     document.body.classList.add("garden-main");
     resultPanel.classList.add("hidden");
@@ -338,6 +389,7 @@
   }
 
   function showLevelSelect() {
+    invalidateRoundTasks();
     document.body.classList.remove("garden-main", "garden-playing");
     document.body.classList.add("garden-stage");
     resultPanel.classList.add("hidden");
@@ -363,6 +415,7 @@
       window.WonderSound?.play?.("wrong");
       return;
     }
+    invalidateRoundTasks();
     currentLevelIndex = index;
     const level = levels[index];
     selectedTile = null;
@@ -496,7 +549,7 @@
       window.WonderSound?.play?.("wrong");
       renderBoard(second);
       markWrong(first, second);
-      setTimeout(() => {
+      scheduleRoundTask(() => {
         busy = false;
         renderBoard(second);
       }, 360);
@@ -612,6 +665,12 @@
   });
   window.addEventListener("weightplay:tutorial-start", (event) => {
     if (event.detail?.gameId === GAME_ID && document.body.classList.contains("garden-main")) showLevelSelect();
+  });
+  window.addEventListener("pagehide", suspendRoundTasks);
+  window.addEventListener("pageshow", resumeRoundTasks);
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) suspendRoundTasks();
+    else resumeRoundTasks();
   });
 
   localeSelect.value = locale();

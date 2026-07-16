@@ -25,20 +25,20 @@ window.WONDER_LOBBY = {
   games: [
     {
       id: "wonder-crash",
-      title: { en: "Fantasy Lion Defense", "zh-Hant": "奇幻獅子守城" },
+      title: { en: "Fantasy Lion Defense", "zh-Hant": "奇幻獅子防衛" },
       status: "playable",
       statusText: { en: "Playable", "zh-Hant": "可遊玩" },
       type: { en: "Animal Defense", "zh-Hant": "動物防守" },
       categories: ["Featured", "Animal Games", "Arcade"],
       skills: ["Reaction", "Focus", "Hand-Eye Coordination"],
-      ages: ["6"],
-      ageLabel: "6+",
+      ages: ["5", "family"],
+      ageLabel: "5+",
       href: "games/wonder-crash/",
       description: {
-        en: "Help the lion hero guard a fantasy wall from fierce wild beasts with playful magic-supply weapons.",
-        "zh-Hant": "幫助獅子英雄用有趣的魔法文具武器，守住城牆並擊退兇猛野獸。",
+        en: "Move Boom Mane Leo across 30 authored defenses with four formations, eight beast roles, and six different Boss attacks.",
+        "zh-Hant": "移動爆鬃獅雷歐，挑戰 30 個具名守城關卡、四種編隊、八種野獸角色與六種王攻擊。",
       },
-      meta: { en: ["Lion Hero", "Wild Beasts", "30 Levels"], "zh-Hant": ["獅子英雄", "野獸來襲", "30 關"] },
+      meta: { en: ["Four Formations", "Six Bosses", "30 Stages"], "zh-Hant": ["四種編隊", "六位王", "30 關"] },
       art: { kind: "image", background: "assets/wonder-crash-cover.webp", hero: "assets/weightplay-character-boom-mane-lion-cutout.webp" },
     },
     {
@@ -53,10 +53,10 @@ window.WONDER_LOBBY = {
       ageLabel: "3+",
       href: "games/color-lunchbox/",
       description: {
-        en: "Help little animals sort colorful foods through themed lunchbox challenges.",
-        "zh-Hant": "幫小動物把不同顏色的食物放進正確便當盒，練習顏色辨識。",
+        en: "Sort five foods per level across 30 picture-led lunchbox challenges and six friendly Guardian checks.",
+        "zh-Hant": "在 30 個圖片便當盒關卡分類食物，並完成六位友善守護員的顏色檢查。",
       },
-      meta: { en: ["Animal Theme", "12 Levels", "Drag Match"], "zh-Hant": ["動物主題", "12 關", "拖曳配對"] },
+      meta: { en: ["Picture Match", "30 Levels", "Six Guardians"], "zh-Hant": ["圖片配對", "30 關", "六位守護員"] },
       art: { kind: "image", background: "assets/lunchbox-cover.webp", hero: "assets/weightplay-character-rainbow-hop-mimi-clean-cutout.webp" },
     },
     {

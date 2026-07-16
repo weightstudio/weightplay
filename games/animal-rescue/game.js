@@ -277,7 +277,6 @@ function renderStaticText() {
   battleBackBtn.setAttribute("aria-label", t("backToTrails"));
   stageSetupText.textContent = t("stageSetup");
   board.setAttribute("aria-label", t("board"));
-  resultPanel.setAttribute("aria-label", t("resultPanel"));
   titleText.textContent = t("title");
   mainTitle.textContent = t("title");
   mainIntro.textContent = t("hint");
@@ -372,6 +371,7 @@ function startLevel(index) {
   stageSelect.classList.add("hidden");
   mainPanel.classList.add("hidden");
   resultPanel.classList.add("hidden");
+  setResultOwnership(false);
   playArea.classList.remove("hidden");
   hud.classList.remove("hidden");
   document.body.classList.remove("rescue-stage-select");
@@ -395,6 +395,7 @@ function showStageSelect({ focusTrail = false } = {}) {
   playArea.classList.add("hidden");
   hud.classList.add("hidden");
   resultPanel.classList.add("hidden");
+  setResultOwnership(false);
   stageSelect.classList.remove("hidden");
   document.body.classList.remove("rescue-playing");
   document.body.classList.remove("rescue-result");
@@ -415,6 +416,7 @@ function showMain({ focusStart = false } = {}) {
   playArea.classList.add("hidden");
   hud.classList.add("hidden");
   resultPanel.classList.add("hidden");
+  setResultOwnership(false);
   stageSelect.classList.add("hidden");
   mainPanel.classList.remove("hidden");
   document.body.classList.remove("rescue-playing", "rescue-stage-select", "rescue-result");
@@ -606,6 +608,7 @@ function finishLevel() {
   starLine.textContent = "\u2605".repeat(stars) + "\u2606".repeat(3 - stars);
   nextBtn.classList.toggle("hidden", level.id >= levels.length);
   resultPanel.classList.remove("hidden");
+  setResultOwnership(true);
   document.body.classList.add("rescue-result");
   requestAnimationFrame(() => (nextBtn.classList.contains("hidden") ? retryBtn : nextBtn).focus({ preventScroll: true }));
   window.WonderSound?.play("win");
@@ -616,6 +619,15 @@ function finishLevel() {
     moves: state.moves,
     fruit: state.collected,
     locale: locale(),
+  });
+}
+
+function setResultOwnership(owned) {
+  [hud, playArea.querySelector(".animal-panel"), board, playArea.querySelector(".action-row")].forEach((region) => {
+    if (!region) return;
+    region.inert = owned;
+    if (owned) region.setAttribute("aria-hidden", "true");
+    else region.removeAttribute("aria-hidden");
   });
 }
 
@@ -751,6 +763,17 @@ retryBtn.addEventListener("click", () => {
   startLevel(activeIndex);
 });
 trailsBtn.addEventListener("click", () => showStageSelect({ focusTrail: true }));
+resultPanel.addEventListener("keydown", (event) => {
+  if (event.key !== "Tab" || resultPanel.classList.contains("hidden")) return;
+  const actions = [nextBtn, retryBtn, trailsBtn, lobbyLink].filter((action) => !action.classList.contains("hidden") && !action.disabled);
+  if (!actions.length) return;
+  const currentIndex = actions.indexOf(document.activeElement);
+  const nextIndex = event.shiftKey
+    ? (currentIndex <= 0 ? actions.length - 1 : currentIndex - 1)
+    : (currentIndex < 0 || currentIndex >= actions.length - 1 ? 0 : currentIndex + 1);
+  event.preventDefault();
+  actions[nextIndex].focus({ preventScroll: true });
+});
 
 renderStaticText();
 installStageDrag();
