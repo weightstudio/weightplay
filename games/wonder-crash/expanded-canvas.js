@@ -4,7 +4,7 @@
   const BATTLE_LOGICAL_WIDTH = 390;
   const BATTLE_LOGICAL_HEIGHT = 788;
 
-  const lockedStageText = () => document.documentElement.lang === "zh-Hant"
+  const lockedStageText = () => ["zh-Hant", "zh-Hans"].includes(document.documentElement.lang)
     ? "\u95dc\u5361\u5c1a\u672a\u89e3\u9396\u3002"
     : "Stage locked.";
 
@@ -15,7 +15,7 @@
   }
 
   function syncLocalizedAccessibility() {
-    const isTraditionalChinese = document.documentElement.lang === "zh-Hant";
+    const isTraditionalChinese = ["zh-Hant", "zh-Hans"].includes(document.documentElement.lang);
     const board = document.querySelector("#game");
     const stageBack = document.querySelector("#wonderStageBack");
     if (board) {

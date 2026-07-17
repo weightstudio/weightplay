@@ -32,7 +32,7 @@
           "name": "WeightStudio",
           "url": "https://weightplay.com/"
         },
-        "inLanguage": ["en", "zh-Hant"],
+        "inLanguage": ["en", "zh-Hant", "zh-Hans"],
         "isAccessibleForFree": true,
         "operatingSystem": "Web Browser",
         "genre": ["Auto-Battler", "Strategy", "RPG", "Animal Game"],
@@ -61,6 +61,7 @@
           <select id="localeSelect" aria-label="Language selection">
             <option value="en">English</option>
             <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
+            <option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option>
           </select>
         </label>
       </header>
@@ -174,6 +175,23 @@
 
         <div id="hintText" class="hint" data-ui="guideHint">Tap a character, then tap a destination slot to move it.</div>
 
+        <!-- Run decisions are Battle-owned modal substates inside the logical Canvas. -->
+        <section id="relicDraftPanel" class="panel modal-panel is-hidden" role="dialog" aria-modal="true" aria-labelledby="relicDraftTitle" aria-live="polite">
+          <h2 id="relicDraftTitle" data-ui="chooseRelic">Choose an Expedition Relic</h2>
+          <p data-ui="relicDesc" class="status-line">Select one relic to buff your squad for the entire expedition run.</p>
+          <div id="relicChoices" class="relic-choices"></div>
+          <button id="rerollRelicsBtn" class="secondary-btn reroll-relic-btn" type="button"></button>
+        </section>
+
+        <section id="defeatRevivePanel" class="panel modal-panel is-hidden" role="dialog" aria-modal="true" aria-labelledby="defeatReviveTitle" aria-live="polite">
+          <h2 id="defeatReviveTitle" data-ui="defeatTitle">Expedition Failed!</h2>
+          <p data-ui="reviveHint" class="status-line">Your Hearts reached 0. Spend 5 Diamonds to revive with 2 Hearts and continue your expedition?</p>
+          <div class="revive-actions">
+            <button id="reviveBtn" class="primary-btn" type="button"></button>
+            <button id="giveUpBtn" class="secondary-btn" type="button" data-ui="giveUp">Give Up</button>
+          </div>
+        </section>
+
         <!-- Final Run Result Screen: bounded Battle substate -->
         <section id="resultPanel" class="panel result-panel is-hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-live="polite">
           <img class="result-lion" src="../../assets/animal-auto-squad-cover.webp" alt="Result Lion Mascot" />
@@ -197,24 +215,6 @@
         </section>
       </section>
       <div class="battle-ad-reserve" aria-hidden="true"></div>
-
-      <!-- Relic Draft Modal (Spend 3 Diamonds to reroll relics) -->
-      <section id="relicDraftPanel" class="panel modal-panel is-hidden" aria-live="polite">
-        <h2 data-ui="chooseRelic">Choose an Expedition Relic</h2>
-        <p data-ui="relicDesc" class="status-line">Select one relic to buff your squad for the entire expedition run.</p>
-        <div id="relicChoices" class="relic-choices"></div>
-        <button id="rerollRelicsBtn" class="secondary-btn reroll-relic-btn" type="button"></button>
-      </section>
-
-      <!-- Defeat / Fail Modal (Spend 5 Diamonds to revive) -->
-      <section id="defeatRevivePanel" class="panel modal-panel is-hidden" aria-live="polite">
-        <h2 data-ui="defeatTitle">Expedition Failed!</h2>
-        <p data-ui="reviveHint" class="status-line">Your Hearts reached 0. Spend 5 Diamonds to revive with 2 Hearts and continue your expedition?</p>
-        <div class="revive-actions">
-          <button id="reviveBtn" class="primary-btn" type="button"></button>
-          <button id="giveUpBtn" class="secondary-btn" type="button" data-ui="giveUp">Give Up</button>
-        </div>
-      </section>
 
     </main>
     <!-- adsense-static-guide:start -->

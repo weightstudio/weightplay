@@ -312,7 +312,7 @@
     loadingFill: $("loadingFill"),
   };
 
-  let locale = text[localStorage.getItem(localeKey)] ? localStorage.getItem(localeKey) : "en";
+  let locale = window.WonderI18n?.locale?.() || (text[localStorage.getItem(localeKey)] ? localStorage.getItem(localeKey) : "en");
   let unlocked = clamp(Number(localStorage.getItem(unlockKey)) || 1, 1, stages.length);
   let stars = readStars();
   let currentStage = 0;
@@ -411,8 +411,9 @@
 
   function syncSharedLocale() {
     try {
-      localStorage.setItem(localeKey, locale);
-      localStorage.setItem(sharedLocaleKey, locale);
+      const storedLocale = window.WonderI18n?.actualLocale?.() || locale;
+      localStorage.setItem(localeKey, storedLocale);
+      localStorage.setItem(sharedLocaleKey, storedLocale);
     } catch {
       // Locale storage is optional; the in-memory locale remains authoritative.
     }
@@ -1314,7 +1315,9 @@
   }
 
   nodes.localeSelect.addEventListener("change", () => {
-    locale = nodes.localeSelect.value;
+    const requested = nodes.localeSelect.value;
+    window.WonderI18n?.setLocale?.(requested);
+    locale = window.WonderI18n?.locale?.() || requested;
     syncSharedLocale();
     localizeStatic();
     renderRecommendedOrder();

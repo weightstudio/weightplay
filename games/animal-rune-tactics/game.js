@@ -571,7 +571,7 @@
     mission(30, "Rune Crown Chimera", "符冠奇美拉", ["chimeraBoss", "sealRaven", "mirrorWolf"], "Adapt as every visible Boss phase changes the board rule.", "每個可見首領階段改變棋盤規則時立即調整。", [tile(1,0,"seal"),tile(1,3,"cooling")], "chimera"),
   ];
 
-  let locale = localStorage.getItem(localeKey) || "en";
+  let locale = window.WonderI18n?.locale?.() || localStorage.getItem(localeKey) || "en";
 
   function updateBattleScale() {
     const viewport = window.visualViewport;
@@ -1950,9 +1950,10 @@
       showMenu();
     });
     nodes.localeSelect.addEventListener("change", () => {
-      locale = nodes.localeSelect.value;
-      localStorage.setItem(localeKey, locale);
-      window.WonderI18n?.setLocale?.(locale);
+      const requested = nodes.localeSelect.value;
+      window.WonderI18n?.setLocale?.(requested);
+      locale = window.WonderI18n?.locale?.() || requested;
+      localStorage.setItem(localeKey, requested);
       applyLocale();
       window.dispatchEvent(new CustomEvent("wonder:locale-change", { detail: { locale } }));
     });

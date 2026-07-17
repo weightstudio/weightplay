@@ -829,7 +829,7 @@
   }
 
   function getLocale() {
-    return localStorage.getItem(localeKey) === "zh-Hant" ? "zh-Hant" : "en";
+    return window.WonderI18n?.locale?.() || (localStorage.getItem(localeKey) === "zh-Hant" ? "zh-Hant" : "en");
   }
 
   function t(key, params = {}) {

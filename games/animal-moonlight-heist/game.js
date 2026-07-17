@@ -107,7 +107,7 @@
     campaignMission("Triple Lock","三重封鎖","Treasure first, then the relic; extraction relocates after pickup.","先取寶藏再取任務物；取得後撤離門會移位。",{object:[20,24],treasure:[80,72],exit:[50,10],phaseExit:[82,12],patrols:[[18,36,82,36],[18,56,82,56],[22,78,78,78]],safeZones:[[50,66,9]],order:"treasure-first",clockCycle:5.5,speed:.95}),
     campaignMission("Eclipse Curator","日蝕館長","Master seals, shadows, shifting markers, pulses, and a moving exit.","綜合封印、陰影、標記換位、警報脈衝與移動出口。",{object:[78,24],treasure:[20,72],exit:[50,10],phaseExit:[82,12],patrols:[[18,38,82,38],[18,58,82,58],[24,80,76,80]],safeZones:[[28,50,9],[70,66,9]],order:"treasure-first",mirrorInterval:5.5,clockCycle:5.5,bellPulse:5,guardian:guardianCatalog.eclipse,speed:.94})
   ];
-  let state=load(),locale=localStorage.getItem(localeKey)||localStorage.getItem(legacyLocaleKey)||"en",selectedMission=0,gadget="dash",gadgetOffers=createOffers(),insuranceActive=false,preservedTreasure=false,playing=false,paused=false,alert=0,objectFound=false,treasureFound=false,caught=false,patrols=[],lastTime=0,missionStartedAt=0,freezeUntil=0,smokeUntil=0,preview=null,arrivalTimer=0,routePointerId=null,lastPulseCycle=-1,lastMirrorCycle=-1,guardianPhase=1;
+  let state=load(),locale=window.WonderI18n?.locale?.()||localStorage.getItem(localeKey)||localStorage.getItem(legacyLocaleKey)||"en",selectedMission=0,gadget="dash",gadgetOffers=createOffers(),insuranceActive=false,preservedTreasure=false,playing=false,paused=false,alert=0,objectFound=false,treasureFound=false,caught=false,patrols=[],lastTime=0,missionStartedAt=0,freezeUntil=0,smokeUntil=0,preview=null,arrivalTimer=0,routePointerId=null,lastPulseCycle=-1,lastMirrorCycle=-1,guardianPhase=1;
   const nodes={main:$("#mainScreen"),stage:$("#stageScreen"),battle:$("#battleScreen"),rail:$("#missionRail"),field:$("#playField"),fia:$("#fiaActor"),objective:$("#objectiveActor"),treasure:$("#treasureActor"),exit:$("#exitActor"),patrolLayer:$("#patrolLayer"),route:$("#routeLine"),feedback:$("#feedbackText"),fx:$("#feedbackFx"),alert:$("#alertFill"),modal:$("#resultModal")};
   function load(){
     try{
@@ -311,7 +311,7 @@
   $(".home-link").setAttribute("data-wp-return","main");$("#stageBackBtn").setAttribute("data-wp-return","stage");$("#battleBackBtn").setAttribute("data-wp-return","battle");
   function bind(){
     $("#localeSelect").value=locale;
-    $("#localeSelect").addEventListener("change",e=>{locale=e.target.value;localStorage.setItem(localeKey,locale);localize()});
+    $("#localeSelect").addEventListener("change",e=>{const requested=e.target.value;window.WonderI18n?.setLocale?.(requested);locale=window.WonderI18n?.locale?.()||requested;localStorage.setItem(localeKey,requested);localize()});
     $("#startBtn").addEventListener("click",()=>{show("stage");renderStage();focusMission()});
     $("#stageBackBtn").addEventListener("click",()=>{show("main");focusMain()});
     $("#battleBackBtn").addEventListener("click",()=>{show("stage");renderStage();focusMission(selectedMission)});

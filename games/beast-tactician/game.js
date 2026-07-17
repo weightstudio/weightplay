@@ -2984,8 +2984,10 @@
       if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
     });
     nodes.localeSelect.addEventListener("change", () => {
-      state.locale = nodes.localeSelect.value;
-      localStorage.setItem(localeKey, state.locale);
+      const requested = nodes.localeSelect.value;
+      window.WonderI18n?.setLocale?.(requested);
+      state.locale = window.WonderI18n?.locale?.() || requested;
+      localStorage.setItem(localeKey, requested);
       updateLocale();
     });
     nodes.startBtn.addEventListener("keydown", (event) => {
@@ -5095,7 +5097,7 @@
   }
 
   async function init() {
-    state.locale = localStorage.getItem(localeKey) || "en";
+    state.locale = window.WonderI18n?.locale?.() || localStorage.getItem(localeKey) || "en";
     if (!text[state.locale]) state.locale = "en";
     const zhOption = nodes.localeSelect.querySelector('option[value="zh-Hant"]');
     if (zhOption) zhOption.textContent = text["zh-Hant"].localeName;

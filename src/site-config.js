@@ -1,9 +1,10 @@
 window.WONDER_SITE = {
-    version: "v0.17.10",
+    version: "v0.17.11",
   localization: {
     defaultLocale: "en",
     fallbackLocale: "en",
-    phaseOneLocales: ["en", "zh-Hant"],
+    phaseOneLocales: ["en", "zh-Hant", "zh-Hans"],
+    plannedLocales: ["zh-Hans"],
   },
   analytics: {
     gaMeasurementId: "G-PP4XJGHCD3",

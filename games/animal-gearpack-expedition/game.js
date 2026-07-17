@@ -118,7 +118,7 @@
   };
   const $ = (selector) => document.querySelector(selector);
   const screens = {main:$("#mainScreen"),stage:$("#stageScreen"),battle:$("#battleScreen")};
-  let locale = localStorage.getItem("weightPlayLocale") === "zh-Hant" ? "zh-Hant" : "en";
+  let locale = window.WonderI18n?.locale?.() || (localStorage.getItem("weightPlayLocale") === "zh-Hant" ? "zh-Hant" : "en");
   function normalizeProgress(source){
     const data=source&&typeof source==="object"?source:{};
     const migratedStage=data.unlockedStage===undefined?(Math.max(0,Number(data.unlockedRegion)||0)*5+1):Number(data.unlockedStage);
@@ -177,7 +177,7 @@
   }
   function showScreen(name,focusTarget=false){Object.entries(screens).forEach(([key,node])=>node.hidden=key!==name);document.body.dataset.screen=name;document.body.classList.toggle("is-game-playing",name==="battle");if(name==="stage")renderStage();if(name==="battle")renderBattle();if(focusTarget)requestAnimationFrame(()=>{const target=name==="main"?$("#startBtn"):name==="stage"?$(".region-card.is-selected:not(:disabled)"):$(".pack-cell[tabindex='0']");target?.focus({preventScroll:true});});}
 
-  function applyLocale(next){locale=copy[next]?next:"en";localStorage.setItem("weightPlayLocale",locale);document.documentElement.lang=locale;document.title=`${t("title")} - WeightPlay`;$("#localeSelect").value=locale;document.querySelectorAll("[data-i18n]").forEach((node)=>{node.textContent=t(node.dataset.i18n)});document.querySelectorAll("[data-ui-aria]").forEach((node)=>node.setAttribute("aria-label",t(node.dataset.uiAria)));document.querySelectorAll("[data-ui-alt]").forEach((node)=>node.setAttribute("alt",t(node.dataset.uiAlt)));renderMain();if(!screens.stage.hidden)renderStage();if(!screens.battle.hidden)renderBattle();}
+  function applyLocale(next){const current=window.WonderI18n?.actualLocale?.();const requested=next==="zh-Hant"&&current==="zh-Hans"?current:next||"en";if(current!==requested)window.WonderI18n?.setLocale?.(requested);locale=window.WonderI18n?.legacyLocale?.(requested)||requested;locale=copy[locale]?locale:"en";localStorage.setItem("weightPlayLocale",requested);document.documentElement.lang=requested;document.title=`${t("title")} - WeightPlay`;$("#localeSelect").value=requested;document.querySelectorAll("[data-i18n]").forEach((node)=>{node.textContent=t(node.dataset.i18n)});document.querySelectorAll("[data-ui-aria]").forEach((node)=>node.setAttribute("aria-label",t(node.dataset.uiAria)));document.querySelectorAll("[data-ui-alt]").forEach((node)=>node.setAttribute("alt",t(node.dataset.uiAlt)));renderMain();if(!screens.stage.hidden)renderStage();if(!screens.battle.hidden)renderBattle();}
   function renderMain(){$("#workshopSummary").textContent=`${t("workshop")} Lv.${1+Math.floor(progress.workshopXp/40)} · ${progress.workshopXp} XP`;$("#discoverySummary").textContent=`${t("discoveries")} ${progress.discoveries.length}/12`;}
   function localized(pair){return pair?.[locale==="zh-Hant"?1:0]||pair?.[0]||"";}
   function renderStage(){

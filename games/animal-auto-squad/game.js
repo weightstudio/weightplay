@@ -851,6 +851,11 @@
         openResultScreen(true);
         return { save: normalizeSave(save), earnedTeamXp: state.earnedTeamXp, earnedTrainingCoins: state.earnedTrainingCoins };
       },
+      openReviveDecision: () => {
+        state.hearts = 0;
+        openRevivePopup();
+        return true;
+      },
       runPreview: () => {
         const previewState = makeState();
         previewState.backpack = createBackpackCards();
@@ -1706,14 +1711,12 @@
 
   // Language Setup
   function setLocale(next) {
-    locale = next || "en";
-    localStorage.setItem(localeKey, locale);
-    document.documentElement.lang = locale === "zh-Hant" ? "zh-Hant" : "en";
-    if (window.WonderI18n?.locale?.() !== locale) {
-      window.WonderI18n?.setLocale?.(locale);
-    } else {
-      window.dispatchEvent(new CustomEvent("wonder:locale-change", { detail: { locale } }));
-    }
+    const current = window.WonderI18n?.actualLocale?.();
+    const requested = next === "zh-Hant" && current === "zh-Hans" ? current : next || "en";
+    if (current !== requested) window.WonderI18n?.setLocale?.(requested);
+    locale = window.WonderI18n?.legacyLocale?.(requested) || requested;
+    localStorage.setItem(localeKey, requested);
+    document.documentElement.lang = requested;
     translateUI();
     updatePageMeta();
   }
@@ -1721,7 +1724,10 @@
   function translateUI() {
     // Top headings
     nodes.mainGameTitle.textContent = t("title");
-    nodes.localeSelect.value = locale;
+    const actualLocale = window.WonderI18n?.actualLocale?.() || locale;
+    nodes.localeSelect.value = [...nodes.localeSelect.options].some((option) => option.value === actualLocale)
+      ? actualLocale
+      : locale;
     const languageLabel = document.querySelector(".locale > span");
     if (languageLabel) languageLabel.textContent = t("language");
     nodes.backToLobbyBtn.setAttribute("aria-label", t("backToLobby"));
@@ -1818,6 +1824,7 @@
     nodes.gamePanel.classList.remove("is-result");
     nodes.prepPhaseArea.classList.remove("is-hidden");
     nodes.combatArea.classList.add("is-hidden");
+    nodes.defeatRevivePanel.classList.add("is-hidden");
 
     // Initial Relic draft
     openRelicDraft();
@@ -1827,6 +1834,8 @@
   function openRelicDraft() {
     nodes.relicDraftPanel.classList.remove("is-hidden");
     renderRelicChoices();
+    setBattleDecisionOwnership(nodes.relicDraftPanel, true);
+    requestAnimationFrame(() => nodes.relicChoices.querySelector(".relic-card")?.focus({ preventScroll: true }));
   }
 
   function renderRelicChoices() {
@@ -1837,7 +1846,8 @@
     const choices = shuffled.slice(0, 2);
 
     choices.forEach((relic) => {
-      const card = document.createElement("div");
+      const card = document.createElement("button");
+      card.type = "button";
       card.className = "relic-card";
       card.innerHTML = `
         <div class="relic-icon-art relic-icon-${relic.id}" aria-hidden="true"><span></span></div>
@@ -1857,11 +1867,13 @@
   function selectRelic(relic) {
     state.relic = relic;
     nodes.relicText.textContent = locale === "zh-Hant" ? relic.nameZht : relic.nameEn;
+    setBattleDecisionOwnership(nodes.relicDraftPanel, false);
     nodes.relicDraftPanel.classList.add("is-hidden");
     playSynth("buy");
 
     // First round preparation
     startRoundPrep();
+    requestAnimationFrame(focusPreparationOwner);
   }
 
   function rerollRelics() {
@@ -3696,6 +3708,8 @@
   function openRevivePopup() {
     nodes.defeatRevivePanel.classList.remove("is-hidden");
     nodes.reviveBtn.textContent = t("reviveAction");
+    setBattleDecisionOwnership(nodes.defeatRevivePanel, true);
+    requestAnimationFrame(() => nodes.reviveBtn.focus({ preventScroll: true }));
   }
 
   function handleRevive() {
@@ -3706,6 +3720,7 @@
       return;
     }
     if (spendWalletDiamonds(5)) {
+      setBattleDecisionOwnership(nodes.defeatRevivePanel, false);
       nodes.defeatRevivePanel.classList.add("is-hidden");
       state.hearts = 2;
       playSynth("revive");
@@ -3714,6 +3729,7 @@
       nodes.prepPhaseArea.classList.remove("is-hidden");
       nodes.combatArea.classList.add("is-hidden");
       startRoundPrep();
+      requestAnimationFrame(focusPreparationOwner);
       window.WonderAnalytics?.track("expedition_revive", { game_id: GAME_ID, cost: 5 });
     }
   }
@@ -3721,12 +3737,52 @@
   function handleGiveUp() {
     initAudio();
     playSynth("click");
+    setBattleDecisionOwnership(nodes.defeatRevivePanel, false);
     nodes.defeatRevivePanel.classList.add("is-hidden");
     state.activeRun = false;
     openResultScreen(false);
   }
 
   // Result Board View
+  function battleDecisionActions(panel) {
+    return [...panel.querySelectorAll("button:not(:disabled)")]
+      .filter((button) => !button.classList.contains("is-hidden"));
+  }
+
+  function setBattleDecisionOwnership(panel, active) {
+    [...nodes.gamePanel.children].forEach((child) => {
+      if (child === panel) return;
+      child.inert = active;
+      if (active) child.setAttribute("aria-hidden", "true");
+      else child.removeAttribute("aria-hidden");
+    });
+  }
+
+  function trapBattleDecisionFocus(panel, event) {
+    if (event.repeat && (event.key === "Enter" || event.key === " ")) {
+      event.preventDefault();
+      event.stopPropagation();
+      return;
+    }
+    if (event.key !== "Tab") return;
+    const actions = battleDecisionActions(panel);
+    if (!actions.length) return;
+    const first = actions[0];
+    const last = actions[actions.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  }
+
+  function focusPreparationOwner() {
+    const owner = nodes.shopRow.querySelector(".card-item:not(.empty-slot)") || nodes.startBattleBtn;
+    owner?.focus({ preventScroll: true });
+  }
+
   function setResultOwnership(active) {
     [...nodes.gamePanel.children].forEach((child) => {
       if (child === nodes.resultPanel) return;
@@ -3792,6 +3848,8 @@
         event.stopPropagation();
       }
     });
+    nodes.relicDraftPanel.addEventListener("keydown", (event) => trapBattleDecisionFocus(nodes.relicDraftPanel, event));
+    nodes.defeatRevivePanel.addEventListener("keydown", (event) => trapBattleDecisionFocus(nodes.defeatRevivePanel, event));
     nodes.startBattleBtn.addEventListener("click", startBattle);
     nodes.quitRunBtn.addEventListener("click", quitRun);
     

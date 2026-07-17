@@ -1010,9 +1010,10 @@
     nodes.startGameBtn.addEventListener("click", showMenu);
     nodes.stageBackBtn.addEventListener("click", showMain);
     nodes.localeSelect.addEventListener("change", () => {
-      locale = nodes.localeSelect.value;
-      window.WonderI18n?.setLocale?.(locale);
-      localStorage.setItem(localeKey, locale);
+      const requested = nodes.localeSelect.value;
+      window.WonderI18n?.setLocale?.(requested);
+      locale = window.WonderI18n?.locale?.() || requested;
+      localStorage.setItem(localeKey, requested);
       localizeStatic();
       renderStageGrid();
       if (!nodes.resultPanel.classList.contains("hidden")) renderResult();
@@ -1022,8 +1023,8 @@
     window.addEventListener("wonder:locale-change", (event) => {
       const nextLocale = event.detail?.locale || window.WonderI18n?.locale?.() || "en";
       if (nextLocale === locale) return;
-      locale = nextLocale;
-      localStorage.setItem(localeKey, locale);
+      locale = window.WonderI18n?.legacyLocale?.(nextLocale) || nextLocale;
+      localStorage.setItem(localeKey, event.detail?.locale || nextLocale);
       localizeStatic();
       renderStageGrid();
       if (!nodes.resultPanel.classList.contains("hidden")) renderResult();

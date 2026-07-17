@@ -260,7 +260,7 @@
     homeLink: document.querySelector(".home-link"),
   };
 
-  let locale = localStorage.getItem(localeKey) || window.WonderI18n?.locale?.() || "en";
+  let locale = window.WonderI18n?.locale?.() || localStorage.getItem(localeKey) || "en";
   let unlocked = clamp(Number(localStorage.getItem(unlockKey)) || 1, 1, stages.length);
   let records = readRecords();
   let currentStage = 0;
@@ -915,9 +915,10 @@
   nodes.startGameBtn.addEventListener("click", () => showMenu(Math.max(0, unlocked - 1)));
   nodes.stageBackBtn.addEventListener("click", () => showMain(true));
   nodes.localeSelect.addEventListener("change", (event) => {
-    locale = event.target.value;
-    localStorage.setItem(localeKey, locale);
-    window.WonderI18n?.setLocale?.(locale);
+    const requested = event.target.value;
+    window.WonderI18n?.setLocale?.(requested);
+    locale = window.WonderI18n?.locale?.() || requested;
+    localStorage.setItem(localeKey, requested);
     localizeStatic();
     renderStageGrid();
     if (running) renderRound();

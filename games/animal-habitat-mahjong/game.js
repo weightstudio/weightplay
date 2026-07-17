@@ -41,7 +41,7 @@
     habitatData("forest","bridge","dual",{ sealedPairs:[4,7], rescuePairs:[6,8] }), habitatData("safari","wings","dual",{ sealedPairs:[5,8], rescuePairs:[6,9] }), habitatData("ocean","crown","dual",{ sealedPairs:[6,9], rescuePairs:[8,10] }), habitatData("arctic","pyramid","dual",{ sealedPairs:[7,10], rescuePairs:[9,11] }), habitatData("forest","sanctuary","dual",{ sealedPairs:[7,10], rescuePairs:[9,11], checkpoint:true }),
     habitatData("safari","towers","grand",{ sealedPairs:[4,7], rescuePairs:[6,9] }), habitatData("ocean","pyramid","grand",{ sealedPairs:[7,10], rescuePairs:[9,11] }), habitatData("arctic","sanctuary","grand",{ sealedPairs:[7,10], rescuePairs:[9,11] }), habitatData("forest","pyramid","grand",{ sealedPairs:[6,9], rescuePairs:[10,11] }), habitatData("ocean","sanctuary","grand",{ sealedPairs:[7,10], rescuePairs:[9,11], checkpoint:true })
   ];
-  let locale = localStorage.getItem("weightPlayLocale") || "en", save = loadSave(), stageIndex = 0, selected = null, state = null, drag = null, suppressStageClick = false;
+  let locale = window.WonderI18n?.locale?.() || localStorage.getItem("weightPlayLocale") || "en", save = loadSave(), stageIndex = 0, selected = null, state = null, drag = null, suppressStageClick = false;
   const t = (key, values = {}) => Object.entries(values).reduce((out, [name, value]) => out.replaceAll(`{${name}}`, value), (copy[locale] || copy.en)[key] || copy.en[key] || key);
   function loadSave() { try { return { unlocked:1, bestPairs:0, playCount:0, bestByStage:{}, ...JSON.parse(localStorage.getItem(saveKey) || "{}") }; } catch { return { unlocked:1, bestPairs:0, playCount:0, bestByStage:{} }; } }
   const persist = () => localStorage.setItem(saveKey, JSON.stringify(save));
@@ -167,7 +167,7 @@
     if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
   };
   const focusCurrentStage = () => requestAnimationFrame(() => nodes.stageRail.querySelector(`.stage-card[data-index="${stageIndex}"]`)?.focus({ preventScroll:true }));
-  nodes.localeSelect.addEventListener("change", (event) => { locale = event.target.value; localStorage.setItem("weightPlayLocale", locale); applyLocale(); });
+  nodes.localeSelect.addEventListener("change", (event) => { const requested = event.target.value; window.WonderI18n?.setLocale?.(requested); locale = window.WonderI18n?.locale?.() || requested; localStorage.setItem("weightPlayLocale", requested); applyLocale(); });
   nodes.startBtn.addEventListener("keydown", rejectRepeatedActivation);
   nodes.stageRail.addEventListener("keydown", (event) => { if (event.target.closest(".stage-card")) rejectRepeatedActivation(event); });
   nodes.startBtn.addEventListener("click", openStageFromMain);

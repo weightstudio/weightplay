@@ -204,7 +204,7 @@
     loadingFill: $("loadingFill"),
   };
 
-  let locale = localStorage.getItem(localeKey) || "en";
+  let locale = window.WonderI18n?.locale?.() || localStorage.getItem(localeKey) || "en";
   let unlocked = clamp(Number(localStorage.getItem(unlockKey)) || 1, 1, stages.length);
   let stars = readStars();
   let currentStage = 0;
@@ -863,8 +863,10 @@
     nodes.startGameBtn.addEventListener("click", () => showMenu(true));
     nodes.stageBackBtn.addEventListener("click", () => showMain(true));
     nodes.localeSelect.addEventListener("change", () => {
-      locale = nodes.localeSelect.value;
-      localStorage.setItem(localeKey, locale);
+      const requested = nodes.localeSelect.value;
+      window.WonderI18n?.setLocale?.(requested);
+      locale = window.WonderI18n?.locale?.() || requested;
+      localStorage.setItem(localeKey, requested);
       localizeStatic();
       preserveGameLocaleAfterSharedGuide();
       renderStageGrid();

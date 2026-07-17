@@ -292,9 +292,11 @@
   }
 
   function setLocale(next) {
-    locale = next || "en";
-    localStorage.setItem(localeKey, locale);
-    document.documentElement.lang = locale === "zh-Hant" ? "zh-Hant" : "en";
+    const current = window.WonderI18n?.actualLocale?.();
+    const requested = next === "zh-Hant" && current === "zh-Hans" ? current : next || "en";
+    locale = window.WonderI18n?.legacyLocale?.(requested) || requested;
+    localStorage.setItem(localeKey, requested);
+    document.documentElement.lang = requested;
     document.querySelectorAll("[data-ui]").forEach((node) => {
       node.textContent = t(node.dataset.ui);
     });
@@ -768,7 +770,7 @@
   });
   window.addEventListener("resize", positionElements);
 
-  nodes.localeSelect.value = locale;
+    nodes.localeSelect.value = requested;
   setLocale(locale);
 
   function updateStageScale() {

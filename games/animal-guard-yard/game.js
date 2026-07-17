@@ -455,7 +455,7 @@
     loadingFill: $("loadingFill"),
   };
 
-  let locale = localStorage.getItem(localeKey) || "en";
+  let locale = window.WonderI18n?.locale?.() || localStorage.getItem(localeKey) || "en";
   let unlocked = clamp(Number(localStorage.getItem(unlockKey)) || 1, 1, stages.length);
   let profile = loadProfile();
   let currentStage = 0;
@@ -863,6 +863,20 @@
     nodes.stageGrid.scrollTo({ left: nodes.stageGrid.scrollLeft + horizontalDelta, behavior });
   }
 
+  function rejectRepeatedScreenActivation(event) {
+    if (event.repeat && (event.key === "Enter" || event.key === " ")) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+    }
+  }
+
+  function focusSelectedStage() {
+    const card = nodes.stageGrid.querySelector(".stage-card.selected:not(.locked)")
+      || nodes.stageGrid.querySelector(".stage-card:not(.locked)");
+    card?.focus({ preventScroll: true });
+    centerStageCard(card);
+  }
+
   function bindStageGridDrag() {
     if (nodes.stageGrid.dataset.dragBound === "1") return;
     nodes.stageGrid.dataset.dragBound = "1";
@@ -1154,7 +1168,10 @@
     nodes.resultPanel.classList.add("hidden");
     nodes.pausePanel.classList.add("hidden");
     showMenuTab(activeMenuTab);
-    window.requestAnimationFrame(() => window.scrollTo({ top: 0, left: 0, behavior: "auto" }));
+    window.requestAnimationFrame(() => {
+      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      focusSelectedStage();
+    });
   }
 
   function showMain() {
@@ -1173,6 +1190,7 @@
     nodes.gameShell.removeAttribute("aria-hidden");
     nodes.resultPanel.classList.add("hidden");
     nodes.pausePanel.classList.add("hidden");
+    nodes.startGameBtn?.focus({ preventScroll: true });
   }
 
   function startStage(index) {
@@ -2057,8 +2075,10 @@
   }
 
   nodes.localeSelect.addEventListener("change", () => {
-    locale = nodes.localeSelect.value;
-    localStorage.setItem(localeKey, locale);
+    const requested = nodes.localeSelect.value;
+    window.WonderI18n?.setLocale?.(requested);
+    locale = window.WonderI18n?.locale?.() || requested;
+    localStorage.setItem(localeKey, requested);
     localizeStatic();
     renderStageGrid();
     renderKennel();
@@ -2081,7 +2101,9 @@
     showMenuTab(button.dataset.menuTab);
     playSound("click");
   });
-  nodes.startGameBtn?.addEventListener("click", showMenu);
+  nodes.startGameBtn?.addEventListener("keydown", rejectRepeatedScreenActivation, true);
+  nodes.stageGrid.addEventListener("keydown", rejectRepeatedScreenActivation, true);
+  nodes.startGameBtn?.addEventListener("click", () => showMenu());
   nodes.stageBackMainBtn?.addEventListener("click", showMain);
   nodes.backToStagesBtn.addEventListener("click", showMenu);
   nodes.pauseBtn.addEventListener("keydown", (event) => {

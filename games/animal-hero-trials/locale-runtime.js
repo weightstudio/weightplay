@@ -1,7 +1,7 @@
 (() => {
   const select = document.querySelector("#locale, #localeSelect");
   let scheduled = false;
-  const zh = () => select?.value === "zh-Hant";
+  const zh = () => ["zh-Hant", "zh-Hans"].includes(select?.value);
   const set = (selector, value) => {
     const node = document.querySelector(selector);
     if (node && value != null) node.textContent = value;
@@ -9,7 +9,7 @@
   function translate() {
     scheduled = false;
     if (!select) return;
-    document.documentElement.lang = zh() ? "zh-Hant" : "en";
+    document.documentElement.lang = select?.value || "en";
     document.title = zh() ? "動物英雄試煉 - 內部測試" : "Animal Hero Trials - Internal Test";
     if (!zh()) return;
     set('[data-t="title"]', "動物英雄試煉");

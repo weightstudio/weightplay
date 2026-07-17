@@ -1930,9 +1930,10 @@
   }
 
   nodes.localeSelect.addEventListener("change", () => {
-    locale = nodes.localeSelect.value;
-    window.WonderI18n?.setLocale?.(locale);
-    localStorage.setItem(localeKey, locale);
+    const requested = nodes.localeSelect.value;
+    window.WonderI18n?.setLocale?.(requested);
+    locale = window.WonderI18n?.locale?.() || requested;
+    localStorage.setItem(localeKey, requested);
     window.dispatchEvent(new CustomEvent("wonder:locale-change", { detail: { locale } }));
     localizeStatic();
     render();
@@ -1940,10 +1941,9 @@
   });
   window.addEventListener("wonder:locale-change", (event) => {
     if (event.detail?.locale && event.detail.locale !== locale) {
-      locale = event.detail.locale;
-      nodes.localeSelect.value = locale;
-      window.WonderI18n?.setLocale?.(locale);
-      localStorage.setItem(localeKey, locale);
+      locale = window.WonderI18n?.legacyLocale?.(event.detail.locale) || event.detail.locale;
+      nodes.localeSelect.value = event.detail.locale;
+      localStorage.setItem(localeKey, event.detail.locale);
       localizeStatic();
       render();
       if (!nodes.stagePanel.classList.contains("hidden")) renderChallengeRail();

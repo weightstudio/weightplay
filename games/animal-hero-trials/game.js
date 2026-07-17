@@ -135,7 +135,7 @@
   };
   const trials = Array.from({length:TRIAL_COUNT},(_,index)=>{ const stage=index+1; const region=Math.floor(index/5); return { stage, region, titleEn:trialTitles[index][0], titleZh:trialTitles[index][1], checkpoint:stage%5===0, enemies:[...regions[region].enemies], recommended:regions[region].hero, reward:Math.min(9,3+stage), boss:stage%5===0?bosses[region]:null }; });
 
-  let locale = localStorage.getItem("weightPlayLocale") || "en";
+  let locale = window.WonderI18n?.locale?.() || localStorage.getItem("weightPlayLocale") || "en";
   let selectedHero = localStorage.getItem("aht-selected-hero") || "leo";
   let unlocked = Math.max(1, Math.min(TRIAL_COUNT, +(localStorage.getItem("aht-unlocked") || 1)));
   let marks = +(localStorage.getItem("aht-marks") || 0);
@@ -850,8 +850,10 @@
   const localeSelect = $("#locale") || $("#localeSelect");
   localeSelect.value = locale;
   localeSelect.onchange = (event) => {
-    locale = event.target.value;
-    localStorage.setItem("weightPlayLocale", locale);
+    const requested = event.target.value;
+    window.WonderI18n?.setLocale?.(requested);
+    locale = window.WonderI18n?.locale?.() || requested;
+    localStorage.setItem("weightPlayLocale", requested);
     localize();
   };
   $("#startBtn").addEventListener("keydown", (event) => { if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault(); });

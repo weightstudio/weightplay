@@ -93,7 +93,7 @@
   const nextCtx = dom.nextPreview.getContext("2d");
   const images = {};
   const savedLocale = localStorage.getItem("weightPlayLocale") || localStorage.getItem("weightplay:locale");
-  let locale = savedLocale === "zh-Hant" ? "zh-Hant" : "en";
+  let locale = window.WonderI18n?.locale?.() || (savedLocale === "zh-Hant" ? "zh-Hant" : "en");
   let save = loadSave();
   let selectedStage = Math.min(save.unlocked, stageDefs.length);
   let currentScreen = "loading";
@@ -925,7 +925,7 @@
   document.getElementById("guideDone").addEventListener("click", closeGuide);
   document.getElementById("soundMain").addEventListener("click", toggleSound);
   document.getElementById("soundStage").addEventListener("click", toggleSound);
-  document.querySelectorAll("[data-locale]").forEach(button => button.addEventListener("click", () => { locale=button.dataset.locale; localStorage.setItem("weightPlayLocale",locale); window.WonderI18n?.setLocale?.(locale); applyLocale(); }));
+  document.querySelectorAll("[data-locale]").forEach(button => button.addEventListener("click", () => { const requested=button.dataset.locale; window.WonderI18n?.setLocale?.(requested); locale=window.WonderI18n?.locale?.()||requested; localStorage.setItem("weightPlayLocale",requested); applyLocale(); }));
   dom.playCanvas.addEventListener("pointerdown", beginAim);
   dom.playCanvas.addEventListener("pointermove", updateAim);
   dom.playCanvas.addEventListener("keydown", handleBattleKey);

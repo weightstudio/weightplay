@@ -451,7 +451,7 @@
     ],
   };
 
-  let locale = localStorage.getItem(localeKey) || "en";
+  let locale = window.WonderI18n?.locale?.() || localStorage.getItem(localeKey) || "en";
   if (!text[locale]) locale = "en";
   let save = loadSave();
   const legacyZoneMission = { sunny:"mission-1", kelp:"mission-6", coral:"mission-11", moon:"mission-16", deep:"mission-26" };
@@ -1687,8 +1687,10 @@
     });
   });
   nodes.localeSelect.addEventListener("change", () => {
-    locale = nodes.localeSelect.value;
-    localStorage.setItem(localeKey, locale);
+    const requested = nodes.localeSelect.value;
+    window.WonderI18n?.setLocale?.(requested);
+    locale = window.WonderI18n?.locale?.() || requested;
+    localStorage.setItem(localeKey, requested);
     applyLocale();
   });
   nodes.menuSoundBtn.addEventListener("click", () => {

@@ -556,14 +556,12 @@
 
   function setLocale(next) {
     clearCharmConfirmation();
-    locale = next || "en";
-    localStorage.setItem(localeKey, locale);
-    document.documentElement.lang = locale === "zh-Hant" ? "zh-Hant" : "en";
-    if (window.WonderI18n?.locale?.() !== locale) {
-      window.WonderI18n?.setLocale?.(locale);
-    } else {
-      window.dispatchEvent(new CustomEvent("wonder:locale-change", { detail: { locale } }));
-    }
+    const current = window.WonderI18n?.actualLocale?.();
+    const requested = next === "zh-Hant" && current === "zh-Hans" ? current : next || "en";
+    if (current !== requested) window.WonderI18n?.setLocale?.(requested);
+    locale = window.WonderI18n?.legacyLocale?.(requested) || requested;
+    localStorage.setItem(localeKey, requested);
+    document.documentElement.lang = requested;
     document.querySelectorAll("[data-ui]").forEach((node) => {
       node.textContent = t(node.dataset.ui);
     });
@@ -573,7 +571,7 @@
     nodes.menuBtn.setAttribute("aria-label", t("menu"));
     nodes.resultMenuBtn.setAttribute("aria-label", t("backToStages"));
     updatePageMeta();
-    nodes.localeSelect.value = locale;
+    nodes.localeSelect.value = requested;
     renderExpeditionRecord();
     renderHud();
     updateDiamondShop();

@@ -524,16 +524,19 @@
     `;
   }
 
-  function setLocale(locale) {
-    state.locale = text[locale] ? locale : "en";
-    if (window.WonderI18n?.locale?.() !== state.locale) window.WonderI18n?.setLocale?.(state.locale);
+  function setLocale(next) {
+    const current = window.WonderI18n?.actualLocale?.();
+    const requested = next === "zh-Hant" && current === "zh-Hans" ? current : next || "en";
+    if (current !== requested) window.WonderI18n?.setLocale?.(requested);
+    const displayLocale = window.WonderI18n?.legacyLocale?.(requested) || requested;
+    state.locale = text[displayLocale] ? displayLocale : "en";
     try {
-      localStorage.setItem(localeKey, state.locale);
+      localStorage.setItem(localeKey, requested);
     } catch {
       // Locale persistence is optional.
     }
-    document.documentElement.lang = state.locale;
-    nodes.localeSelect.value = state.locale;
+    document.documentElement.lang = requested;
+    nodes.localeSelect.value = requested;
     applyText();
   }
 
@@ -618,7 +621,7 @@
     }
   }
 
-  function renderStageGrid() {
+  function renderStageGrid(focusIndex = null) {
     const unlocked = loadUnlocked();
     const records = loadRecords();
     nodes.stageGrid.innerHTML = "";
@@ -626,6 +629,7 @@
       const button = document.createElement("button");
       const isUnlocked = index < unlocked;
       button.type = "button";
+      button.dataset.stageIndex = String(index);
       button.className = `stage-card ${stage.checkpoint ? "checkpoint" : ""} ${isUnlocked ? "" : "locked"}`;
       button.setAttribute("aria-disabled", String(!isUnlocked));
       button.innerHTML = `
@@ -643,7 +647,19 @@
     requestAnimationFrame(() => {
       const unlockedCard = [...nodes.stageGrid.querySelectorAll(".stage-card:not(.locked)")].at(-1);
       scrollStageCardToCenter(unlockedCard, "auto");
+      if (Number.isInteger(focusIndex)) {
+        const focusCard = nodes.stageGrid.querySelector(`.stage-card:not(.locked)[data-stage-index="${focusIndex}"]`) || unlockedCard;
+        focusCard?.focus({ preventScroll: true });
+        scrollStageCardToCenter(focusCard, "auto");
+      }
     });
+  }
+
+  function rejectRepeatedScreenActivation(event) {
+    if (event.repeat && (event.key === "Enter" || event.key === " ")) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+    }
   }
 
   function scrollStageCardToCenter(card, behavior = "smooth") {
@@ -703,7 +719,11 @@
     nodes.stageGrid.addEventListener("pointercancel", finish);
   }
 
-  function showStage() {
+  function showStage(focusIndex = null) {
+    const unlocked = loadUnlocked();
+    const stageToFocus = Number.isInteger(focusIndex)
+      ? Math.max(0, Math.min(unlocked - 1, focusIndex))
+      : Math.max(0, unlocked - 1);
     invalidateBoardSession();
     state.running = false;
     state.busy = false;
@@ -714,7 +734,7 @@
     nodes.playPanel.classList.add("hidden");
     document.body.classList.remove("snack-playing");
     document.body.classList.add("snack-stage");
-    renderStageGrid();
+    renderStageGrid(stageToFocus);
     exitSharedPlayViewport();
     updateSnackFrame();
     requestAnimationFrame(updateSnackFrame);
@@ -728,6 +748,7 @@
     nodes.menuPanel.classList.remove("hidden");
     document.body.classList.remove("snack-stage");
     resetSnackFrame();
+    nodes.startBtn.focus({ preventScroll: true });
   }
 
   function renderBoard(dropMap = new Map()) {
@@ -1131,11 +1152,10 @@
   }
 
   function showMenu() {
-    showStage();
+    showStage(state.currentStageIndex);
     const shell = document.querySelector(".snack-game");
     shell?.setAttribute("data-play-viewport", "");
     for (const property of ["position", "inset", "left", "top", "width", "height", "min-height", "transform", "transform-origin"]) shell?.style.removeProperty(property);
-    renderStageGrid();
     window.WonderAnalytics?.track("game_menu", { game_id: GAME_ID });
   }
 
@@ -1181,9 +1201,11 @@
     startStage(state.currentStageIndex);
   });
   nodes.menuBtn.addEventListener("click", showMenu);
-  nodes.startBtn.addEventListener("click", showStage);
+  nodes.startBtn.addEventListener("keydown", rejectRepeatedScreenActivation, true);
+  nodes.stageGrid.addEventListener("keydown", rejectRepeatedScreenActivation, true);
+  nodes.startBtn.addEventListener("click", () => showStage());
   nodes.stageBackBtn.addEventListener("click", showMain);
-  nodes.battleBackBtn.addEventListener("click", showStage);
+  nodes.battleBackBtn.addEventListener("click", () => showStage(state.currentStageIndex));
   nodes.localeSelect.addEventListener("change", (event) => setLocale(event.target.value));
   nodes.homeLink.addEventListener("click", (event) => {
     if (state.running || !nodes.resultPanel.classList.contains("hidden")) {

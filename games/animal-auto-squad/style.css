@@ -247,7 +247,7 @@ body:not(.squad-active) .battle-ad-reserve { display: none; }
 .combat-status { position: absolute; top: 10px; left: 50%; width: min(90%,330px); transform: translateX(-50%); padding: 6px 10px; overflow: hidden; border: 1px solid rgba(137,239,194,.36); border-radius: 9px; color: var(--mint); background: rgba(1,8,6,.82); font-size: .72rem; font-weight: 900; text-align: center; text-overflow: ellipsis; white-space: nowrap; }
 .hint { display: none; }
 
-.modal-panel { position: fixed; z-index: 100; top: 50%; left: 50%; width: min(352px,92vw); display: grid; gap: 12px; padding: 18px; transform: translate(-50%,-50%); border-radius: 18px; backdrop-filter: blur(18px); }
+.modal-panel { position: absolute; z-index: 100; top: 50%; left: 50%; width: min(352px,calc(100% - 36px)); max-height: calc(100% - 36px); display: grid; gap: 12px; padding: 18px; overflow: auto; transform: translate(-50%,-50%); border-radius: 18px; backdrop-filter: blur(18px); }
 .modal-panel h2 { margin: 0; font-size: 1.25rem; text-align:center; }
 .status-line { margin:0; color:var(--muted); font-size:.82rem; line-height:1.4; text-align:center; }
 .relic-choices { display:grid; grid-template-columns:1fr 1fr; gap:8px; }

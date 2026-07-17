@@ -812,13 +812,62 @@ for (const game of window.WONDER_LOBBY.games) {
   delete game.internalTrial;
 }
 
+window.WONDER_LOBBY.platform.tagline["zh-Hans"] = "畅玩适合各年龄层的原创动物游戏。";
+window.WONDER_LOBBY.platform.subtitle["zh-Hans"] = "一个持续成长的动物网页游戏世界，适合儿童、家庭与休闲玩家。";
+
+const verifiedSimplifiedLobbyCopy = {
+  "wonder-crash": ["幻想狮王防线", "动物防守", "操控爆鬃雷欧完成 30 场精心设计的防守，面对四种阵型、八类野兽与六种不同的 Boss 攻击。", ["四种阵型", "六个 Boss", "30 关"]],
+  "color-lunchbox": ["动物彩色便当", "颜色配对", "在 30 个图像引导的便当挑战中，每关分类五种食物，并完成六次友善的守护者检查。", ["图像配对", "30 关", "六位守护者"]],
+  "bubble-bakery": ["动物泡泡烘焙坊", "泡泡益智", "规划相连的动物泡泡消除，完成 30 个配方谜题、多托盘订单与友善的 Panko 检查点。", ["30 关", "配方规则", "Panko 检查"]],
+  "animal-rope-rescue": ["动物藤蔓救援", "物理益智", "引导水果通过 30 场物理救援，处理移动篮子、多层风向、双重反弹与 Panko 检查点。", ["30 关", "物理路线", "Panko 检查"]],
+  "animal-zoo-idle": ["动物园经营", "动物园经营", "通过 30 个保存进度的挑战建立友善动物园，安排照护选择、栖地、设施与六次园区评审。", ["30 个挑战", "园区照护", "六次评审"]],
+  "star-memory": ["动物星光记忆", "记忆益智", "在 30 个保存进度的关卡中修复动物星图，掌握预览、月光洗牌、顺序配对与星座旋转。", ["30 关", "记忆规则", "六次守护者检查"]],
+  "campus-dash": ["动物草原冲刺", "反应跑酷", "完成 30 条草原路线，挑战星光路径、双车道门、黏性泥地、五种目标与六次守护者检查。", ["30 条路线", "五类规则", "六次守护者检查"]],
+  "snack-blocks": ["动物零食方块", "消除益智", "规划 30 个保存进度的关卡，完成得分、收集、配对、连锁、大型消除与双重检查点目标。", ["30 关", "六类目标", "六个检查点"]],
+  "fruit-merge": ["动物合成塔", "得分益智", "完成 30 个物理合成挑战，处理狭窄瞄准、河风、重力、固定队列与六个庆典检查点。", ["30 个挑战", "五种物理规则", "六个检查点"]],
+  "garden-tiles": ["宠物花园方块", "轻松配对", "完成 30 个无计时记忆挑战，面对预览、薄雾、移动卡片与六个花园检查点。", ["30 个挑战", "四种记忆规则", "无计时"]],
+  "animal-rescue": ["动物回家路", "动物益智", "引导动物走过 30 条路线，收集水果并处理泥地、钥匙、闸门、脆弱路径与六个救援检查点。", ["30 条路线", "四种路线规则", "无计时"]],
+  "animal-hidden-safari": ["动物寻踪之旅", "寻找物品", "搜索 30 个栖地，处理顺序目标、动物配对、伪装、访客、移动巡逻与六个检查点。", ["30 个栖地", "六种搜索规则", "无计时失败"]],
+  "animal-guard-yard": ["动物守护庭院", "路线防守", "用动物守卫保卫 30 个花园关卡，识别特殊野兽、保存训练进度，并迎战六个不同的 Boss。", ["英雄防守", "动物升级", "Boss 战"]],
+  "animal-crystal-survivor": ["动物水晶生存者", "动作生存", "巡逻 30 条三分钟水晶林路线，收集每关钥匙、选择升级、判断变化中的危险，并击败六个原创动物 Boss。", ["30 关", "6 个 Boss", "自动战斗"]],
+  "animal-quiz": ["动物问答", "动物知识问答", "通过图片、栖地、特征、行为、食物、神秘图像与剪影线索，完成 30 场动物调查。", ["30 关", "6 个章节", "动物知识"]],
+  "zoo-helper-day": ["动物园帮手日", "动物园工作模拟", "完成 30 个温和的动物园班次，使用图像工具、照护分类、记忆请求与有顺序的工作流程。", ["30 个班次", "6 次饲养员检查", "图像照护"]],
+  "shape-train": ["动物形状列车", "形状益智", "帮助六位形状朋友登车，完成 30 条含轮廓、移动、记忆与登车证规则的路线。", ["30 条路线", "6 次检查", "形状记忆"]],
+  "tiny-weather-rescue": ["动物帮手任务", "工具选择益智", "使用图像工具、成对线索、记忆需求与变化托盘，解决 30 个动物求助任务。", ["30 个任务", "6 次帮手检查", "场景线索"]],
+  "beast-deck": ["兽灵牌组：迷雾森林", "Roguelike 牌组构筑", "在 30 个任务中构筑动物力量牌组，破解十种区域机制并击败六个会改变阶段的森林 Boss。", ["30 个任务", "卡牌组合", "六个 Boss"]],
+  "animal-relic-hunters": ["动物遗物猎人", "房间动作 Roguelite", "完成 30 次三房间远征，掌握十种特殊威胁行为，收集遗物装备并击败六位会改变阶段的守护者。", ["30 次远征", "十种威胁规则", "六位守护者"]],
+  "animal-rune-tactics": ["动物符文战术", "回合制小队战术", "指挥三位动物英雄完成 30 个符文格任务，处理七种地形、特殊敌人、永久成长与六个多阶段 Boss。", ["30 个任务", "七种地形规则", "六个 Boss"]],
+  "animal-orb-fortress": ["动物星珠要塞", "弹射 Roguelite", "在 30 条路线中规划墙面与镜像柱的反弹射击，破解五种特殊敌人规则并击败六个独特要塞 Boss。", ["30 条路线", "镜像柱", "六个 Boss"]],
+  "animal-auto-squad": ["动物自走小队", "自动战斗", "训练并布置十位动物英雄，完成六个区域的 30 个五波关卡与六场独特 Boss 战。", ["阵型策略", "30 关", "六个 Boss"]],
+  "beast-tactician": ["野兽守护者", "英雄塔防", "改变敌人路线并指挥动物士兵与 WeightPlay 英雄，完成 30 关、六个区域与六场不同的 Boss 战。", ["塔防", "30 关", "六个 Boss"]],
+  "shadow-wolf": ["影狼传说", "2D 动作平台 RPG", "掌握 30 个平台动作关卡，破解特殊暗影兽，培养四项属性并击败六个不同区域 Boss。", ["30 关", "特殊敌人", "六个 Boss"]],
+  "animal-bubble-safari": ["动物泡泡探险", "瞄准射击泡泡益智", "瞄准通过 30 个救援关卡，处理会反应的障碍、风、移动行与四种能力泡泡。", ["30 关", "6 次探险检查", "反弹与能力射击"]],
+  "animal-habitat-mahjong": ["动物栖地麻将消消", "麻将接龙益智", "清除 30 个分层动物牌面，处理路线封印、家族救援、交替巡逻路线与六次栖地终章。", ["30 个牌面", "路线封印", "家族救援"]],
+  "animal-reef-fisher": ["动物珊瑚礁钓手", "钓鱼张力任务", "完成 30 个珊瑚礁任务，适应六种海况，记录 12 个物种，升级六种工具并钓起六条守护者鱼。", ["30 个任务", "六种海况规则", "六位守护者"]],
+  "animal-cafe-rush": ["动物咖啡馆冲刺", "动物咖啡馆时间管理", "经营 30 个咖啡馆营业日，处理图像订单、编号配方、VIP 优先级、交替桌位与六次咖啡馆评审。", ["30 个营业日", "六个规则章节", "保存升级"]],
+  "animal-hero-trials": ["动物英雄试炼", "英雄动作 Roguelite", "从四位英雄中选择一位，完成 30 个三房间试炼，面对五类敌人、保存精通成长并击败六个不同 Boss。", ["30 个试炼", "六种 Boss 对策", "保存精通"]],
+  "animal-gearpack-expedition": ["动物行囊远征", "空间行囊 Roguelite", "整理鲁克斯的 11×7 装备背包，破解特殊敌人并完成 30 关与六位不同守护者。", ["30 次远征", "背包联动", "六位守护者"]],
+  "animal-moonlight-heist": ["动物月光盗宝", "潜行撤离冒险", "规划 30 个月光档案馆任务的路线，掌握阴影、镜像、发条、铃声、封印与聚光灯规则，并智胜六位守护者。", ["30 个任务", "六种潜行规则", "六位守护者"]],
+};
+
+for (const game of window.WONDER_LOBBY.games) {
+  const simplified = verifiedSimplifiedLobbyCopy[game.id];
+  if (!simplified) continue;
+  const [title, type, description, meta] = simplified;
+  game.title["zh-Hans"] = title;
+  game.statusText["zh-Hans"] = "可玩";
+  game.type["zh-Hans"] = type;
+  game.description["zh-Hans"] = description;
+  game.meta["zh-Hans"] = meta;
+}
+
 const animalHeroTrialsPublicCopy = window.WONDER_LOBBY.games.find((game) => game.id === "animal-hero-trials");
 if (animalHeroTrialsPublicCopy) {
-  animalHeroTrialsPublicCopy.title = { en:"Animal Hero Trials", "zh-Hant":"動物英雄試煉" };
-  animalHeroTrialsPublicCopy.statusText = { en:"Play Now", "zh-Hant":"立即遊玩" };
-  animalHeroTrialsPublicCopy.type = { en:"Hero Action Roguelite", "zh-Hant":"英雄動作 Roguelite" };
-  animalHeroTrialsPublicCopy.description = { en:"Choose one of four heroes for 30 three-room trials with five enemy families, saved mastery, and six distinct Bosses.", "zh-Hant":"選擇四位英雄之一，挑戰 30 個三房間試煉、五種敵人、永久精通與六個不同 Boss。" };
-  animalHeroTrialsPublicCopy.meta = { en:["30 Trials","Six Boss Counters","Saved Mastery"], "zh-Hant":["30 個試煉","六種 Boss 反制","存檔精通"] };
+  animalHeroTrialsPublicCopy.title = { en:"Animal Hero Trials", "zh-Hant":"動物英雄試煉", "zh-Hans":"动物英雄试炼" };
+  animalHeroTrialsPublicCopy.statusText = { en:"Play Now", "zh-Hant":"立即遊玩", "zh-Hans":"立即游玩" };
+  animalHeroTrialsPublicCopy.type = { en:"Hero Action Roguelite", "zh-Hant":"英雄動作 Roguelite", "zh-Hans":"英雄动作 Roguelite" };
+  animalHeroTrialsPublicCopy.description = { en:"Choose one of four heroes for 30 three-room trials with five enemy families, saved mastery, and six distinct Bosses.", "zh-Hant":"選擇四位英雄之一，挑戰 30 個三房間試煉、五種敵人、永久精通與六個不同 Boss。", "zh-Hans":"从四位英雄中选择一位，完成 30 个三房间试炼，面对五类敌人、保存精通成长并击败六个不同 Boss。" };
+  animalHeroTrialsPublicCopy.meta = { en:["30 Trials","Six Boss Counters","Saved Mastery"], "zh-Hant":["30 個試煉","六種 Boss 反制","存檔精通"], "zh-Hans":["30 个试炼","六种 Boss 对策","保存精通"] };
   delete animalHeroTrialsPublicCopy.ages;
   delete animalHeroTrialsPublicCopy.ageLabel;
 }
