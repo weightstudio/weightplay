@@ -20,7 +20,7 @@
     <title>Animal Rescue Trail - WeightPlay</title>
     <link rel="canonical" href="https://weightplay.com/games/animal-rescue/" />
     <link rel="stylesheet" href="style.css?v=20260717-depth30" data-wp-stage-standard data-wp-battle-standard />
-    <script data-wp-stage-standard>/* Animal Rescue owns its native Kids Stage rail. */</script>
+    <script data-wp-stage-standard>/* Shared Kids Stage selector owns pointer drag and settle; Animal Rescue owns stage activation. */</script>
     <script data-wp-battle-standard>/* Animal Rescue owns its native Kids Battle Canvas. */</script>
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
     <script type="application/ld+json">
@@ -97,7 +97,7 @@
       <section id="stageSelect" class="stage-select hidden">
         <div class="stage-shell-head"><button id="stageBackBtn" class="stage-return" data-wp-return="stage" type="button" aria-label="Back">&larr;</button><strong id="stageSelectTitle" role="status" aria-live="polite" aria-atomic="true">Choose Trail</strong></div>
         <span id="stageSetupText" class="stage-setup-text">Choose an unlocked trail and help the next animal home.</span>
-        <div id="stageGrid" class="stage-grid"></div>
+        <div id="stageGrid" class="stage-grid" data-wp-stage-settle-duration="360" data-wp-stage-settle-easing="smoothstep"></div>
       </section>
       <section id="playArea" class="play-area hidden">
         <button id="battleBackBtn" class="battle-return" data-wp-return="battle" type="button" aria-label="Back to trails">&larr;</button>

@@ -800,38 +800,6 @@ function exitSharedPlayViewport() {
   document.querySelector(".rescue-game")?.classList.remove("weightplay-active-viewport");
 }
 
-function installStageDrag() {
-  let pointerId = null;
-  let startX = 0;
-  let startScroll = 0;
-  let moved = false;
-  stageGrid.addEventListener("pointerdown", (event) => {
-    pointerId = event.pointerId;
-    startX = event.clientX;
-    startScroll = stageGrid.scrollLeft;
-    moved = false;
-  });
-  stageGrid.addEventListener("pointermove", (event) => {
-    if (event.pointerId !== pointerId) return;
-    const delta = event.clientX - startX;
-    if (Math.abs(delta) > 6) {
-      moved = true;
-      stageGrid.setPointerCapture?.(pointerId);
-      stageGrid.scrollLeft = startScroll - delta;
-    }
-  });
-  const finish = (event) => {
-    if (event.pointerId !== pointerId) return;
-    pointerId = null;
-    if (moved) {
-      stageGrid.dataset.dragged = "true";
-      window.setTimeout(() => delete stageGrid.dataset.dragged, 150);
-    }
-  };
-  stageGrid.addEventListener("pointerup", finish);
-  stageGrid.addEventListener("pointercancel", finish);
-}
-
 updateBattleScale();
 window.addEventListener("resize", updateBattleScale);
 window.addEventListener("orientationchange", updateBattleScale);
@@ -848,7 +816,6 @@ showStageBtn.addEventListener("click", () => showStageSelect({ focusTrail: true 
 stageBackBtn.addEventListener("click", () => showMain({ focusStart: true }));
 battleBackBtn.addEventListener("click", () => showStageSelect({ focusTrail: true }));
 stageGrid.addEventListener("click", (event) => {
-  if (stageGrid.dataset.dragged === "true") return;
   const card = event.target.closest("[data-stage]");
   if (!card) return;
   startLevel(Number(card.dataset.stage) - 1);

@@ -633,7 +633,6 @@
           </div>
         `;
         button.addEventListener("click", () => {
-          if (stageGrid.dataset.dragSuppressed === "1") return;
           if (isUnlocked) startStage(index);
           else rejectLockedStage(button, index);
         });
@@ -646,8 +645,6 @@
     });
   }
 
-  let stageDrag = null;
-  let stageSettleFrame = 0;
   let lockedStagePointer = null;
 
   function rejectLockedStage(button, index) {
@@ -681,66 +678,6 @@
   };
   document.addEventListener("pointerup", finishLockedStagePointer, true);
   document.addEventListener("pointercancel", finishLockedStagePointer, true);
-
-  function settleStageRail() {
-    cancelAnimationFrame(stageSettleFrame);
-    const cards = [...stageGrid.querySelectorAll(".stage-card")];
-    const railCenter = stageGrid.scrollLeft + stageGrid.clientWidth / 2;
-    const nearest = cards.reduce((best, card) => {
-      const target = card.offsetLeft - (stageGrid.clientWidth - card.offsetWidth) / 2;
-      const distance = Math.abs(card.offsetLeft + card.offsetWidth / 2 - railCenter);
-      return !best || distance < best.distance ? { target, distance } : best;
-    }, null);
-    if (!nearest) return;
-    const start = stageGrid.scrollLeft;
-    const change = nearest.target - start;
-    const startedAt = performance.now();
-    const duration = 220;
-    stageGrid.style.scrollSnapType = "none";
-    const step = (now) => {
-      const progress = Math.min(1, (now - startedAt) / duration);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      stageGrid.scrollLeft = start + change * eased;
-      if (progress < 1) {
-        stageSettleFrame = requestAnimationFrame(step);
-      } else {
-        stageGrid.style.removeProperty("scroll-snap-type");
-      }
-    };
-    stageSettleFrame = requestAnimationFrame(step);
-  }
-
-  stageGrid.addEventListener("pointerdown", (event) => {
-    if (event.button !== 0) return;
-    cancelAnimationFrame(stageSettleFrame);
-    stageGrid.style.scrollSnapType = "none";
-    stageDrag = { id: event.pointerId, x: event.clientX, scrollLeft: stageGrid.scrollLeft, moved: false };
-  });
-  stageGrid.addEventListener("pointermove", (event) => {
-    if (!stageDrag || event.pointerId !== stageDrag.id) return;
-    const delta = event.clientX - stageDrag.x;
-    if (!stageDrag.moved && Math.abs(delta) >= 4) {
-      stageDrag.moved = true;
-      stageGrid.setPointerCapture?.(event.pointerId);
-    }
-    if (!stageDrag.moved) return;
-    event.preventDefault();
-    stageGrid.scrollLeft = stageDrag.scrollLeft - delta;
-  });
-  function endStageDrag(event) {
-    if (!stageDrag || event.pointerId !== stageDrag.id) return;
-    if (stageDrag.moved) {
-      stageGrid.dataset.dragSuppressed = "1";
-      settleStageRail();
-      window.setTimeout(() => delete stageGrid.dataset.dragSuppressed, 180);
-    } else {
-      stageGrid.style.removeProperty("scroll-snap-type");
-    }
-    if (stageGrid.hasPointerCapture?.(event.pointerId)) stageGrid.releasePointerCapture?.(event.pointerId);
-    stageDrag = null;
-  }
-  stageGrid.addEventListener("pointerup", endStageDrag);
-  stageGrid.addEventListener("pointercancel", endStageDrag);
 
   function getStageBoxes(stage) {
     return stage.colors.map((color) => ({ color, ...colorDB[color] }));
