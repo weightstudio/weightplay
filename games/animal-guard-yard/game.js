@@ -811,7 +811,6 @@
 
   function renderStageGrid() {
     nodes.stageGrid.innerHTML = "";
-    delete nodes.stageGrid.dataset.draggingClick;
     const progress = loadProgress();
     const stageRecords = typeof progress.stageRecords === "object" && progress.stageRecords ? progress.stageRecords : {};
     const legacyBestStage = Number(localStorage.getItem(bestKey)) || 0;
@@ -848,7 +847,7 @@
       `;
       nodes.stageGrid.appendChild(button);
     });
-    bindStageGridDrag();
+    bindStageGridSelection();
     window.requestAnimationFrame(() => {
       centerStageCard(nodes.stageGrid.querySelector(".stage-card.selected"));
     });
@@ -877,88 +876,22 @@
     centerStageCard(card);
   }
 
-  function bindStageGridDrag() {
-    if (nodes.stageGrid.dataset.dragBound === "1") return;
-    nodes.stageGrid.dataset.dragBound = "1";
-    let drag = null;
-
-    nodes.stageGrid.addEventListener("pointerdown", (event) => {
-      if (nodes.stageGrid.dataset.wpStageRail === "true") return;
-      if (event.button !== 0 || nodes.stageGrid.scrollWidth <= nodes.stageGrid.clientWidth) return;
-      drag = {
-        id: event.pointerId,
-        x: event.clientX,
-        scrollLeft: nodes.stageGrid.scrollLeft,
-        moved: false,
-        captured: false,
-      };
-    });
-
-    nodes.stageGrid.addEventListener("pointermove", (event) => {
-      if (!drag || drag.id !== event.pointerId) return;
-      const deltaX = event.clientX - drag.x;
-      if (Math.abs(deltaX) > 6) {
-        drag.moved = true;
-        if (!drag.captured) {
-          nodes.stageGrid.setPointerCapture?.(event.pointerId);
-          drag.captured = true;
-        }
-        nodes.stageGrid.classList.add("dragging");
-        nodes.stageGrid.dataset.draggingClick = "1";
-      }
-      if (drag.moved) {
-        event.preventDefault();
-        nodes.stageGrid.scrollLeft = drag.scrollLeft - deltaX;
-      }
-    });
-
-    const endDrag = (event) => {
-      if (!drag || drag.id !== event.pointerId) return;
-      if (drag.captured) nodes.stageGrid.releasePointerCapture?.(event.pointerId);
-      nodes.stageGrid.classList.remove("dragging");
-      const moved = drag.moved;
-      drag = null;
-      if (moved) {
-        const gridRect = nodes.stageGrid.getBoundingClientRect();
-        const center = gridRect.left + gridRect.width / 2;
-        const nearest = [...nodes.stageGrid.querySelectorAll(".stage-card")].reduce((best, card) => {
-          const rect = card.getBoundingClientRect();
-          const distance = Math.abs(rect.left + rect.width / 2 - center);
-          return !best || distance < best.distance ? { card, distance } : best;
-        }, null);
-        if (nearest) {
-          nodes.stageGrid.querySelectorAll(".stage-card").forEach((card) => card.classList.toggle("selected", card === nearest.card));
-          if (!nearest.card.classList.contains("locked")) currentStage = Number(nearest.card.dataset.stageIndex) || 0;
-          centerStageCard(nearest.card, "smooth");
-        }
-        window.setTimeout(() => delete nodes.stageGrid.dataset.draggingClick, 0);
-      }
-    };
-
-    nodes.stageGrid.addEventListener("pointerup", endDrag);
-    nodes.stageGrid.addEventListener("pointercancel", endDrag);
+  function bindStageGridSelection() {
+    if (nodes.stageGrid.dataset.selectionBound === "1") return;
+    nodes.stageGrid.dataset.selectionBound = "1";
     nodes.stageGrid.addEventListener("dragstart", (event) => event.preventDefault());
-    let scrollSyncTimer = 0;
-    nodes.stageGrid.addEventListener("scroll", () => {
-      if (drag) return;
-      window.clearTimeout(scrollSyncTimer);
-      scrollSyncTimer = window.setTimeout(() => {
-        const gridRect = nodes.stageGrid.getBoundingClientRect();
-        const center = gridRect.left + gridRect.width / 2;
-        const nearest = [...nodes.stageGrid.querySelectorAll(".stage-card:not(.locked)")].reduce((best, card) => {
-          const rect = card.getBoundingClientRect();
-          const distance = Math.abs(rect.left + rect.width / 2 - center);
-          return !best || distance < best.distance ? { card, distance } : best;
-        }, null);
-        if (!nearest) return;
-        nodes.stageGrid.querySelectorAll(".stage-card").forEach((card) => card.classList.toggle("selected", card === nearest.card));
-        currentStage = Number(nearest.card.dataset.stageIndex) || 0;
-      }, 120);
-    }, { passive: true });
+    nodes.stageGrid.addEventListener("wonder:stage-snap", (event) => {
+      const index = Number(event.detail?.index);
+      const card = Number.isInteger(index)
+        ? nodes.stageGrid.querySelector(`.stage-card[data-stage-index="${index}"]`)
+        : null;
+      if (!card || card.classList.contains("locked")) return;
+      nodes.stageGrid.querySelectorAll(".stage-card").forEach((item) => item.classList.toggle("selected", item === card));
+      currentStage = index;
+    });
     nodes.stageGrid.addEventListener("click", (event) => {
       const button = event.target.closest(".stage-card");
       if (!button || !nodes.stageGrid.contains(button)) return;
-      if (nodes.stageGrid.dataset.draggingClick === "1") return;
       const index = Number(button.dataset.stageIndex);
       if (!Number.isInteger(index)) return;
       if (index + 1 > unlocked) {

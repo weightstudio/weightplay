@@ -330,7 +330,7 @@
   }
 
   function renderStages() {
-    nodes.stagePanel.innerHTML = `<div class="stage-shell-head"><button type="button" class="stage-return" data-wp-return="stage" data-stage-main aria-label="${t("backToMain")}">&larr;</button><div><strong>${t("stages")}</strong><span>${t("menuHint")}</span></div></div><div class="stage-rail">` + stages
+    nodes.stagePanel.innerHTML = `<div class="stage-shell-head"><button type="button" class="stage-return" data-wp-return="stage" data-stage-main aria-label="${t("backToMain")}">&larr;</button><div><strong>${t("stages")}</strong><span>${t("menuHint")}</span></div></div><div class="stage-rail" data-wp-stage-settle-duration="360" data-wp-stage-settle-easing="smoothstep">` + stages
       .map((stage, index) => {
         const stageNo = index + 1;
         const locked = stageNo > save.unlocked;
@@ -353,7 +353,6 @@
         `;
       })
       .join("") + `</div>`;
-    installStageRailDrag();
   }
 
   function focusStage(stageNo = save.unlocked) {
@@ -373,60 +372,6 @@
     renderStages();
     show(nodes.stagePanel);
     focusStage(stageNo);
-  }
-
-  function installStageRailDrag() {
-    const rail = nodes.stagePanel.querySelector(".stage-rail");
-    if (!rail) return;
-    let pointerId = null;
-    let startX = 0;
-    let startScroll = 0;
-    let dragged = false;
-    const snapNearest = () => {
-      const cards = [...rail.querySelectorAll(".stage-card")];
-      const railCenter = rail.scrollLeft + rail.clientWidth / 2;
-      const nearest = cards.reduce((best, card) => {
-        const distance = Math.abs(card.offsetLeft + card.offsetWidth / 2 - railCenter);
-        return !best || distance < best.distance ? { card, distance } : best;
-      }, null);
-      if (nearest) rail.scrollTo({ left: Math.max(0, nearest.card.offsetLeft + nearest.card.offsetWidth / 2 - rail.clientWidth / 2), behavior: "smooth" });
-    };
-    const dragSurface = nodes.stagePanel;
-    const beginDrag = (event, id) => {
-      if (rail.dataset.wpStageRail === "true") return;
-      if (!event.target.closest(".stage-rail")) return;
-      pointerId = id;
-      startX = event.clientX;
-      startScroll = rail.scrollLeft;
-      dragged = false;
-      rail.style.scrollSnapType = "none";
-    };
-    const moveDrag = (event, id) => {
-      if (id !== pointerId) return;
-      const delta = event.clientX - startX;
-      if (!dragged && Math.abs(delta) < 5) return;
-      dragged = true;
-      rail.scrollLeft = startScroll - delta;
-      event.preventDefault();
-    };
-    const finishDrag = (id) => {
-      if (id !== pointerId) return;
-      if (dragged) {
-        rail.dataset.suppressClick = "true";
-        rail.style.scrollSnapType = "";
-        snapNearest();
-        window.setTimeout(() => delete rail.dataset.suppressClick, 0);
-      }
-      if (!dragged) rail.style.scrollSnapType = "";
-      pointerId = null;
-    };
-    dragSurface.addEventListener("pointerdown", (event) => beginDrag(event, `pointer-${event.pointerId}`), true);
-    dragSurface.addEventListener("pointermove", (event) => moveDrag(event, `pointer-${event.pointerId}`), true);
-    dragSurface.addEventListener("pointerup", (event) => finishDrag(`pointer-${event.pointerId}`), true);
-    dragSurface.addEventListener("pointercancel", (event) => finishDrag(`pointer-${event.pointerId}`), true);
-    dragSurface.addEventListener("mousedown", (event) => beginDrag(event, "mouse"), true);
-    dragSurface.addEventListener("mousemove", (event) => moveDrag(event, "mouse"), true);
-    dragSurface.addEventListener("mouseup", () => finishDrag("mouse"), true);
   }
 
   function setupStage(stageNo) {
@@ -701,7 +646,6 @@
     }
     const button = event.target.closest("[data-stage]");
     if (!button) return;
-    if (nodes.stagePanel.querySelector(".stage-rail")?.dataset.suppressClick) return;
     const stageNo = Number(button.dataset.stage);
     if (stageNo > save.unlocked) {
       showToast(t("locked"));

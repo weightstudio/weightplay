@@ -20,7 +20,7 @@
     <title>Animal Guard Yard - WeightPlay</title>
     <link rel="canonical" href="https://weightplay.com/games/animal-guard-yard/" />
     <link rel="stylesheet" href="style.css?v=20260717-guard-campaign1" data-wp-stage-standard data-wp-battle-standard />
-    <script data-wp-stage-standard>/* Animal Guard Yard owns its native Kids Stage rail. */</script>
+    <script data-wp-stage-standard>/* Shared Kids Stage selector owns pointer drag and settle; Animal Guard Yard owns selection state and activation. */</script>
     <script data-wp-battle-standard>/* Animal Guard Yard owns its native Kids Battle Canvas. */</script>
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
     <script type="application/ld+json">
@@ -106,7 +106,7 @@
             </div>
             <div id="masterySummary" class="mastery-summary" aria-live="polite"></div>
             <div id="beastGuide" class="beast-guide" aria-label="Beast guide"></div>
-            <div id="stageGrid" class="stage-grid" aria-label="Stage list"></div>
+            <div id="stageGrid" class="stage-grid" data-wp-stage-settle-duration="360" data-wp-stage-settle-easing="smoothstep" aria-label="Stage list"></div>
           </section>
           <section id="animalTabPanel" class="menu-tab-panel hidden" data-tab-panel="animals">
             <div class="kennel-panel">
