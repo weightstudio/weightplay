@@ -104,14 +104,28 @@
             <span data-ui="controlKeys">WASD / Arrow keys</span>
             <span data-ui="controlAttack">Auto attack</span>
           </div>
-          <button id="startBtn" type="button" data-ui="startRun">Start Run</button>
+          <button id="startBtn" type="button" data-ui="chooseStage">Choose Stage</button>
         </div>
+      </section>
+
+      <section id="stagePanel" class="stage-panel hidden" aria-labelledby="stageSelectTitle">
+        <div class="stage-panel-head">
+          <button id="stageBackBtn" class="stage-back-btn" data-wp-return="stage" type="button" aria-label="Back">&larr;</button>
+          <div>
+            <strong id="stageSelectTitle">Choose a Crystal Route</strong>
+            <span id="stageProgressText">1 / 30 unlocked</span>
+          </div>
+        </div>
+        <p id="stageSetupText" class="stage-setup-text">Swipe through six regions. Every fifth stage is a Boss checkpoint with a different survival rule.</p>
+        <div id="stageRail" class="stage-rail" aria-label="Stage selection"></div>
+        <div class="stage-legend"><span id="stageSwipeText">&harr; Swipe</span><span id="stageDeployText">Tap an unlocked stage to patrol</span></div>
       </section>
 
       <section id="gamePanel" class="game-panel hidden">
         <div id="battleLive" class="battle-live">
         <div class="hud-row">
           <button id="menuBtn" class="soft-btn play-return" data-wp-return="battle" type="button" aria-label="Back to menu">&larr;</button>
+          <div><span data-ui="stage">Stage</span><b id="stageText">1/30</b></div>
           <div><span data-ui="time">Time</span><b id="timeText">3:00</b></div>
           <div><span data-ui="keys">Keys</span><b id="keyText">0</b></div>
           <div><span data-ui="level">Level</span><b id="levelText">1</b></div>
@@ -144,8 +158,9 @@
               <p id="skillReportText"></p>
               <small data-ui="resultDisclaimer">For fun and local progress tracking only.</small>
             </div>
+            <button id="nextStageBtn" type="button" data-ui="nextStage">Next Stage</button>
             <button id="retryBtn" type="button" data-ui="tryAgain">Try Again</button>
-            <button id="resultMenuBtn" class="play-return" type="button" aria-label="Back to menu">&larr;</button>
+            <button id="resultMenuBtn" class="play-return" type="button" aria-label="Back to stages">&larr;</button>
           </div>
         </section>
         </div>
@@ -158,6 +173,7 @@
         </div>
       </section>
 
+      <div id="stageAdReserve" class="stage-ad-reserve" aria-hidden="true"></div>
       <div id="battleAdReserve" class="battle-ad-reserve result-ad-reserve" aria-hidden="true"></div>
 
       <div id="loadingPanel" class="loading-panel">
@@ -207,7 +223,7 @@
     <script src="../../src/i18n.js?v=20260703-i18n-clean1"></script>
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
     <script src="../../src/wallet.js?v=20260706-crystal-diamond-charm1"></script>
-    <script src="game.js?v=20260716-input-lifecycle1"></script>
+    <script src="game.js?v=20260717-crystal-campaign1"></script>
     <script>
       (() => {
         const staticGuide = document.querySelector(".game-page-info-static");

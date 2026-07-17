@@ -1,6 +1,7 @@
 ﻿(() => {
   const GAME_ID = "bubble-bakery";
   const localeKey = "weightplayLocale";
+  const sharedLocaleKey = "weightPlayLocale";
   const unlockKey = "weightplay_bubble_bakery_unlocked";
   const starKey = "weightplay_bubble_bakery_stars";
   const progressKey = "weightplay_bubble_bakery_progress";
@@ -36,6 +37,7 @@
       retry: "Try Again",
       lobby: "Lobby",
       locked: "Stage locked",
+      unlockRequirement: "Complete {stage} to unlock this tray.",
       moves: "Moves",
       score: "Score",
       stage: "Stage {n}",
@@ -137,6 +139,7 @@
       retry: "再玩一次",
       lobby: "大廳",
       locked: "關卡尚未解鎖",
+      unlockRequirement: "完成{stage}即可解鎖這個烘焙盤。",
       moves: "步數",
       score: "分數",
       stage: "第 {n} 關",
@@ -288,6 +291,7 @@
     recommendedOrder: $("recommendedOrder"),
     bakeryProgress: $("bakeryProgress"),
     stageGrid: $("stageGrid"),
+    stageFeedback: $("stageFeedback"),
     playPanel: $("playPanel"),
     backToStagesBtn: $("backToStagesBtn"),
     movesText: $("movesText"),
@@ -308,7 +312,7 @@
     loadingFill: $("loadingFill"),
   };
 
-  let locale = localStorage.getItem(localeKey) || "en";
+  let locale = text[localStorage.getItem(localeKey)] ? localStorage.getItem(localeKey) : "en";
   let unlocked = clamp(Number(localStorage.getItem(unlockKey)) || 1, 1, stages.length);
   let stars = readStars();
   let currentStage = 0;
@@ -405,6 +409,20 @@
     return Object.entries(data).reduce((out, [name, item]) => out.replaceAll(`{${name}}`, String(item)), value);
   }
 
+  function syncSharedLocale() {
+    try {
+      localStorage.setItem(localeKey, locale);
+      localStorage.setItem(sharedLocaleKey, locale);
+    } catch {
+      // Locale storage is optional; the in-memory locale remains authoritative.
+    }
+    if (window.WonderI18n?.locale?.() !== locale) {
+      window.WonderI18n?.setLocale?.(locale);
+    } else {
+      window.dispatchEvent(new CustomEvent("wonder:locale-change", { detail: { locale } }));
+    }
+  }
+
   function colorData(id) {
     return colors.find((item) => item.id === id) || colors[0];
   }
@@ -470,11 +488,16 @@
       const button = document.createElement("button");
       button.type = "button";
       button.className = "stage-card";
-      if (stageNo > unlocked) button.classList.add("locked");
+      const isLocked = stageNo > unlocked;
+      if (isLocked) {
+        button.classList.add("locked");
+        button.setAttribute("aria-disabled", "true");
+      }
       if (index === recommendedStageIndex()) button.classList.add("is-selected");
       const orderIcons = stageOrderIds(stage).map((id) => `<img src="${colorData(id).asset}" alt="" />`).join("");
       const got = stars[stageNo] || 0;
-      const badgeKey = got >= 3 ? "stageMastered" : got > 0 ? "stageImprove" : "stageNew";
+      const badgeKey = isLocked ? "locked" : got >= 3 ? "stageMastered" : got > 0 ? "stageImprove" : "stageNew";
+      const unlockRequirement = isLocked ? t("unlockRequirement", { stage: t("stage", { n: stageNo - 1 }) }) : "";
       button.innerHTML = `
         <b class="stage-icons">${orderIcons}</b>
         <strong>${t("stage", { n: stageNo })}</strong>
@@ -482,12 +505,16 @@
         <span class="stage-rule">${stageRule(stage)}</span>
         <span class="stage-stars">${starIcons(got, 3)}</span>
         <span class="stage-badge">${t(badgeKey)}</span>
+        ${isLocked ? `<span class="stage-lock-requirement">${unlockRequirement}</span>` : ""}
         ${stage.checkpoint ? `<em class="panko-check"><img src="../../assets/weightplay-character-drum-belly-panda-safe-face-cutout.webp" alt="" />${t("pankoCheck")}</em>` : ""}
       `;
+      if (isLocked) {
+        button.setAttribute("aria-label", `${t("stage", { n: stageNo })}，${stageTitle(stage)}。${t("locked")}。${unlockRequirement}`);
+      }
+      button.dataset.unlockAfter = String(stageNo - 1);
       button.addEventListener("click", () => {
-        if (stageNo > unlocked) {
-          showFloat(t("locked"));
-          playSound("click");
+        if (isLocked) {
+          announceLockedStage(stageNo);
           return;
         }
         startStage(index);
@@ -631,6 +658,17 @@
   visualViewport?.addEventListener("scroll", updateBakeryFrame, { passive: true });
 
   let stageDrag = null;
+  let lockedAnnouncementAt = 0;
+
+  function announceLockedStage(stageNo) {
+    const now = performance.now();
+    if (now - lockedAnnouncementAt < 120) return;
+    lockedAnnouncementAt = now;
+    const unlockRequirement = t("unlockRequirement", { stage: t("stage", { n: Math.max(1, stageNo - 1) }) });
+    nodes.stageFeedback.textContent = `${t("locked")}。${unlockRequirement}`;
+    showFloat(unlockRequirement);
+    playSound("error");
+  }
 
   function settleStageRail() {
     const cards = [...nodes.stageGrid.querySelectorAll(".stage-card")];
@@ -646,7 +684,13 @@
 
   nodes.stageGrid.addEventListener("pointerdown", (event) => {
     if (event.button !== 0 || !document.body.classList.contains("is-bakery-stage-select")) return;
-    stageDrag = { id: event.pointerId, x: event.clientX, scrollLeft: nodes.stageGrid.scrollLeft, moved: false };
+    stageDrag = {
+      id: event.pointerId,
+      x: event.clientX,
+      scrollLeft: nodes.stageGrid.scrollLeft,
+      moved: false,
+      lockedStageNo: Number(event.target.closest?.(".stage-card.locked")?.dataset.unlockAfter || 0) + 1,
+    };
     nodes.stageGrid.dataset.wpDragDown = String(event.clientX);
     nodes.stageGrid.dataset.wpDragApplied = "0";
   });
@@ -668,6 +712,8 @@
     if (!stageDrag || event.pointerId !== stageDrag.id) return;
     if (stageDrag.moved) {
       settleStageRail();
+    } else if (stageDrag.lockedStageNo > 1) {
+      announceLockedStage(stageDrag.lockedStageNo);
     }
     if (nodes.stageGrid.hasPointerCapture?.(event.pointerId)) nodes.stageGrid.releasePointerCapture?.(event.pointerId);
     stageDrag = null;
@@ -688,6 +734,7 @@
     setBattleCovered(false);
     updateBakeryFrame();
     busy = false;
+    nodes.stageFeedback.textContent = "";
     renderRecommendedOrder();
     renderBakeryProgress();
     renderStageGrid();
@@ -955,15 +1002,17 @@
     }
     playSound("pop");
 
-    await markPopping(group);
-    group.forEach(([gr, gc]) => {
-      board[gr][gc] = null;
-    });
-    const dropMap = collapseBoard(stages[currentStage].palette);
-    renderAll(dropMap);
-    await animateDroppingBubbles();
-    busy = false;
-    nodes.board.setAttribute("aria-busy", "false");
+    try {
+      await markPopping(group);
+      group.forEach(([gr, gc]) => {
+        board[gr][gc] = null;
+      });
+      const dropMap = collapseBoard(stages[currentStage].palette);
+      renderAll(dropMap);
+      await animateDroppingBubbles();
+    } finally {
+      releaseBoardInput();
+    }
     if (ordersFinished() && recipeIndex + 1 < stage.recipes.length) {
       recipeIndex += 1;
       orders = { ...stage.recipes[recipeIndex] };
@@ -976,6 +1025,21 @@
     if (isComplete()) return finish(true);
     if (moves <= 0) return finish(false);
     nodes.board.querySelector(`.bubble[data-row="${r}"][data-col="${c}"]`)?.focus({ preventScroll: true });
+  }
+
+  function releaseBoardInput() {
+    nodes.board.classList.remove("is-popping");
+    nodes.board.querySelectorAll(".bubble").forEach((node) => {
+      node.getAnimations?.().forEach((animation) => animation.cancel());
+      node.classList.remove("is-pop-source", "pop", "drop");
+      delete node.dataset.dropDistance;
+      node.style.transform = "none";
+      node.style.opacity = "1";
+      node.style.visibility = "visible";
+      node.disabled = false;
+    });
+    nodes.board.setAttribute("aria-busy", "false");
+    busy = false;
   }
 
   function markPopping(group) {
@@ -1251,12 +1315,7 @@
 
   nodes.localeSelect.addEventListener("change", () => {
     locale = nodes.localeSelect.value;
-    localStorage.setItem(localeKey, locale);
-    if (window.WonderI18n?.locale?.() !== locale) {
-      window.WonderI18n?.setLocale?.(locale);
-    } else {
-      window.dispatchEvent(new CustomEvent("wonder:locale-change", { detail: { locale } }));
-    }
+    syncSharedLocale();
     localizeStatic();
     renderRecommendedOrder();
     renderBakeryProgress();
@@ -1346,6 +1405,7 @@
     }, { once: true });
   });
 
+  syncSharedLocale();
   localizeStatic();
   showMain();
   renderRecommendedOrder();

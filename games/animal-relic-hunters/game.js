@@ -1111,15 +1111,24 @@
       `;
       const button = document.createElement("button");
       button.type = "button";
+      button.dataset.trainingKey = def.key;
       button.textContent = level >= def.max ? t("trainMax") : t("trainAction");
       button.disabled = level >= def.max || profile.statPoints <= 0;
-      button.addEventListener("click", () => spendTrainingPoint(def.key));
+      button.addEventListener("click", (event) => spendTrainingPoint(def.key, event.detail === 0));
       row.appendChild(button);
       nodes.trainingList.appendChild(row);
     });
   }
 
-  function spendTrainingPoint(key) {
+  function restoreTrainingFocus(key) {
+    window.requestAnimationFrame(() => {
+      const preferred = nodes.trainingList.querySelector(`[data-training-key="${key}"]:not(:disabled)`);
+      const fallback = nodes.trainingList.querySelector("button:not(:disabled)");
+      (preferred || fallback)?.focus();
+    });
+  }
+
+  function spendTrainingPoint(key, restoreFocus = false) {
     clearAmuletConfirmation();
     updateDiamondShopUI();
     const def = trainingDefs.find((item) => item.key === key);
@@ -1129,6 +1138,7 @@
     saveProfile();
     syncStateFromProfile();
     renderTrainingPanel();
+    if (restoreFocus) restoreTrainingFocus(key);
     renderStatsPanel();
     renderGrowthPrompt();
     updateHUDText();
@@ -2751,6 +2761,10 @@
 
     nodes.rerollDraftBtn.addEventListener("click", () => {
       rerollDraftChoices();
+    });
+
+    nodes.trainingList?.addEventListener("keydown", (event) => {
+      if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
     });
 
     nodes.amuletBtn.addEventListener("keydown", (event) => {

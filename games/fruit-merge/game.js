@@ -1190,6 +1190,7 @@
     }
     if (event.key === " " || event.key === "Enter") {
       event.preventDefault();
+      if (event.repeat) return;
       dropFruit();
     }
   });

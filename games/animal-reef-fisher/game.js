@@ -1389,7 +1389,14 @@
   });
   nodes.gearGrid.addEventListener("click", (evt) => {
     const btn = evt.target.closest("[data-gear]");
-    if (btn) upgradeGear(btn.dataset.gear);
+    if (!btn) return;
+    const gearId = btn.dataset.gear;
+    const restoreKeyboardFocus = evt.detail === 0;
+    upgradeGear(gearId);
+    if (restoreKeyboardFocus) window.requestAnimationFrame(() => nodes.gearGrid.querySelector(`[data-gear="${gearId}"]`)?.focus({ preventScroll: true }));
+  });
+  nodes.gearGrid.addEventListener("keydown", (event) => {
+    if (event.repeat && (event.key === "Enter" || event.key === " ") && event.target.closest("[data-gear]")) event.preventDefault();
   });
   nodes.startBtn.addEventListener("click", () => {
     playSound("click");

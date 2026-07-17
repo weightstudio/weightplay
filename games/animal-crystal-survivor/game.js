@@ -5,6 +5,7 @@
   const W = 1024;
   const H = 1760;
   const RUN_SECONDS = 180;
+  const STAGE_COUNT = 30;
   const crystalCharmCost = 12;
 
   const $ = (id) => document.getElementById(id);
@@ -13,12 +14,20 @@
   const nodes = {
     localeSelect: $("localeSelect"),
     menuPanel: $("menuPanel"),
+    stagePanel: $("stagePanel"),
     gamePanel: $("gamePanel"),
     upgradePanel: $("upgradePanel"),
     resultPanel: $("resultPanel"),
     startBtn: $("startBtn"),
+    stageBackBtn: $("stageBackBtn"),
+    stageSelectTitle: $("stageSelectTitle"),
+    stageProgressText: $("stageProgressText"),
+    stageSetupText: $("stageSetupText"),
+    stageRail: $("stageRail"),
+    stageText: $("stageText"),
     menuBtn: $("menuBtn"),
     retryBtn: $("retryBtn"),
+    nextStageBtn: $("nextStageBtn"),
     resultMenuBtn: $("resultMenuBtn"),
     timeText: $("timeText"),
     keyText: $("keyText"),
@@ -72,6 +81,19 @@
       controlMove: "Tap or drag to move",
       controlKeys: "WASD / Arrow keys",
       controlAttack: "Auto attack",
+      chooseStage: "Choose Stage",
+      stage: "Stage",
+      stageProgress: "{unlocked} / 30 unlocked",
+      stageSetup: "Swipe through six regions. Every fifth stage is a Boss checkpoint with a different survival rule.",
+      stageSwipe: "↔ Swipe",
+      stageDeploy: "Tap an unlocked stage to patrol",
+      stageLocked: "Locked",
+      stageReady: "Ready",
+      stageCleared: "Cleared",
+      bossCheckpoint: "Boss checkpoint",
+      objective: "Collect {keys} keys · survive 3:00{boss}",
+      bossObjective: " · defeat the Boss",
+      nextStage: "Next Stage",
       diamondShopTitle: "Run Boost",
       charmName: "Crystal Charm",
       charmEffect: "Permanent run start: Max HP 7 → 8 · pickup radius 54 → 68.",
@@ -101,11 +123,16 @@
       chooseUpgrade: "Choose an upgrade",
       tryAgain: "Try Again",
       backToMenu: "Back to Menu",
+      backToStages: "Back to stages",
       reaction: "Reaction",
       focus: "Focus",
       problemSolving: "Problem Solving",
       timeUp: "Time Up!",
       runFailed: "Run Ended",
+      stageClear: "Stage Clear!",
+      objectiveMissed: "Objective Incomplete",
+      objectiveMissedLine: "Reach {keys} keys{boss} before time expires to clear this stage.",
+      bossStillActive: " and calm the Boss",
       resultLine: "Keys {keys} | Level {level} | Time {time}s | Best {best}",
       resultScoreLabel: "Golden Keys Collected",
       improved: "Great progress! You improved your best key score.",
@@ -157,6 +184,19 @@
       controlMove: "\u9ede\u64ca\u6216\u62d6\u66f3\u79fb\u52d5",
       controlKeys: "WASD / \u65b9\u5411\u9375",
       controlAttack: "\u81ea\u52d5\u653b\u64ca",
+      chooseStage: "\u9078\u64c7\u95dc\u5361",
+      stage: "\u95dc\u5361",
+      stageProgress: "\u5df2\u89e3\u9396 {unlocked} / 30",
+      stageSetup: "\u5de6\u53f3\u6ed1\u904e\u516d\u500b\u5340\u57df\u3002\u6bcf\u7b2c\u4e94\u95dc\u90fd\u662f\u5177\u6709\u7368\u7279\u751f\u5b58\u898f\u5247\u7684\u9996\u9818\u6aa2\u67e5\u9ede\u3002",
+      stageSwipe: "\u2194 \u6ed1\u52d5",
+      stageDeploy: "\u9ede\u64ca\u5df2\u89e3\u9396\u95dc\u5361\u51fa\u767c",
+      stageLocked: "\u672a\u89e3\u9396",
+      stageReady: "\u53ef\u6311\u6230",
+      stageCleared: "\u5df2\u901a\u95dc",
+      bossCheckpoint: "\u9996\u9818\u6aa2\u67e5\u9ede",
+      objective: "\u6536\u96c6 {keys} \u628a\u91d1\u9470\u00b7\u751f\u5b58 3:00{boss}",
+      bossObjective: "\u00b7\u64ca\u6557\u9996\u9818",
+      nextStage: "\u4e0b\u4e00\u95dc",
       diamondShopTitle: "\u6311\u6230\u52a0\u6210",
       charmName: "\u6c34\u6676\u8b77\u7b26",
       charmEffect: "\u6c38\u4e45\u958b\u5c40\uff1a\u751f\u547d\u4e0a\u9650 7 → 8 · \u62fe\u53d6\u7bc4\u570d 54 → 68\u3002",
@@ -186,11 +226,16 @@
       chooseUpgrade: "\u9078\u64c7\u4e00\u500b\u5347\u7d1a",
       tryAgain: "\u518d\u8a66\u4e00\u6b21",
       backToMenu: "\u56de\u5230\u9078\u55ae",
+      backToStages: "\u56de\u5230\u95dc\u5361",
       reaction: "\u53cd\u61c9",
       focus: "\u5c08\u6ce8",
       problemSolving: "\u554f\u984c\u89e3\u6c7a",
       timeUp: "\u6642\u9593\u5230\uff01",
       runFailed: "\u6311\u6230\u7d50\u675f",
+      stageClear: "\u95dc\u5361\u5b8c\u6210\uff01",
+      objectiveMissed: "\u76ee\u6a19\u672a\u5b8c\u6210",
+      objectiveMissedLine: "\u6642\u9593\u5167\u6536\u96c6 {keys} \u628a\u91d1\u9470{boss}\u624d\u80fd\u901a\u95dc\u3002",
+      bossStillActive: "\u4e26\u5b89\u64ab\u9996\u9818",
       resultLine: "\u91d1\u9470 {keys} | \u7b49\u7d1a {level} | \u5b58\u6d3b {time} \u79d2 | \u6700\u4f73 {best}",
       resultScoreLabel: "\u6536\u96c6\u5230\u7684\u91d1\u9470",
       improved: "\u9032\u6b65\u5f88\u597d\uff01\u4f60\u5237\u65b0\u4e86\u81ea\u5df1\u7684\u91d1\u9470\u7d00\u9304\u3002",
@@ -238,6 +283,12 @@
     upgradeMaxHp: "../../assets/animal-crystal-survivor-upgrade-max-hp.png",
     upgradeCooldown: "../../assets/animal-crystal-survivor-upgrade-cooldown.png",
     upgradePickup: "../../assets/animal-crystal-survivor-upgrade-pickup.png",
+    bossRoot: "../../assets/animal-crystal-survivor-boss-root-stalker.webp",
+    bossPrism: "../../assets/animal-crystal-survivor-boss-prism-moth-queen.webp",
+    bossBriar: "../../assets/animal-crystal-survivor-boss-briar-boar-king.webp",
+    bossCinder: "../../assets/animal-crystal-survivor-boss-cinder-panther.webp",
+    bossTempest: "../../assets/animal-crystal-survivor-boss-tempest-roc.webp",
+    bossEclipse: "../../assets/animal-crystal-survivor-boss-eclipse-colossus.webp",
   };
 
   const upgrades = [
@@ -248,6 +299,60 @@
     { id: "cooldown", icon: "upgradeCooldown", name: "upgradeAttackSpeed", desc: "upgradeAttackSpeedDesc" },
     { id: "pickup", icon: "upgradePickup", name: "upgradePickupRadius", desc: "upgradePickupRadiusDesc" },
   ];
+
+  const regions = [
+    { en: "Crystal Grove", zh: "\u6c34\u6676\u6797\u5730", color: "rgba(32,103,67,.2)" },
+    { en: "Moon Shards", zh: "\u6708\u5149\u788e\u5883", color: "rgba(86,62,154,.24)" },
+    { en: "Briar Maze", zh: "\u834a\u68d8\u8ff7\u5bae", color: "rgba(126,74,32,.24)" },
+    { en: "Ember Rift", zh: "\u9918\u71fc\u88c2\u8c37", color: "rgba(164,55,24,.25)" },
+    { en: "Storm Crown", zh: "\u98a8\u66b4\u4e4b\u51a0", color: "rgba(27,78,153,.27)" },
+    { en: "Eclipse Heart", zh: "\u65e5\u8755\u6838\u5fc3", color: "rgba(70,27,95,.3)" },
+  ];
+
+  const stageRows = [
+    ["First Patrol", "\u521d\u6b21\u5de1\u908f", "Learn key routes while ordinary shadow foxes approach.", "\u5728\u666e\u901a\u5f71\u72d0\u903c\u8fd1\u6642\u719f\u6089\u91d1\u9470\u8def\u7dda\u3002", "basic"],
+    ["Crystal Current", "\u6c34\u6676\u6d41", "Loose crystals drift toward the nearest shadow.", "\u6389\u843d\u7684\u6c34\u6676\u6703\u7de9\u6162\u98c4\u5411\u6700\u8fd1\u7684\u5f71\u7378\u3002", "drift"],
+    ["Panther Dusk", "\u9ed1\u8c79\u66ae\u8272", "Fast panthers arrive in marked rush groups.", "\u5feb\u901f\u9ed1\u8c79\u6703\u6210\u7fa4\u885d\u5165\u3002", "runnerRush"],
+    ["Boar Ring", "\u91ce\u8c6c\u74b0\u9663", "Armored boars close the arena from opposite edges.", "\u88dd\u7532\u91ce\u8c6c\u5f9e\u76f8\u5c0d\u908a\u7de3\u58d3\u7e2e\u7a7a\u9593\u3002", "tankRing"],
+    ["Root Stalker", "\u6839\u7cfb\u8ffd\u7375\u8005", "Root circles slow movement; defeat the guardian before time expires.", "\u6839\u7cfb\u5708\u6703\u6e1b\u901f\uff1b\u6642\u9593\u5167\u64ca\u6557\u5b88\u885b\u3002", "root", "bossRoot"],
+    ["Moth Lanterns", "\u98db\u86fe\u71c8\u706b", "Prism pulses force wide turns around the arena.", "\u68f1\u93e1\u8108\u885d\u8feb\u4f7f\u73a9\u5bb6\u4ee5\u5927\u5f27\u7dda\u8ff4\u907f\u3002", "prismPulse"],
+    ["Mirrored Trail", "\u93e1\u50cf\u5c0f\u5f91", "Two warning circles appear at mirrored positions.", "\u5169\u500b\u8b66\u793a\u5708\u6703\u5728\u93e1\u50cf\u4f4d\u7f6e\u51fa\u73fe\u3002", "mirror"],
+    ["Shard Orbit", "\u788e\u7247\u8ecc\u9053", "Rotating shard zones make the center unsafe in intervals.", "\u65cb\u8f49\u788e\u7247\u5340\u6703\u9593\u6b47\u5c01\u9396\u4e2d\u592e\u3002", "orbit"],
+    ["Veiled Pack", "\u68f1\u5149\u7378\u7fa4", "Every third enemy enters with a temporary crystal shield.", "\u6bcf\u7b2c\u4e09\u96bb\u6575\u4eba\u6703\u5e36\u8457\u77ed\u66ab\u6c34\u6676\u8b77\u76fe\u3002", "shielded"],
+    ["Prism Moth Queen", "\u68f1\u93e1\u98db\u86fe\u5973\u738b", "The Queen alternates a crystal shield with radial prism bursts.", "\u5973\u738b\u5728\u6c34\u6676\u8b77\u76fe\u8207\u653e\u5c04\u68f1\u5149\u9593\u8f2a\u66ff\u3002", "prism", "bossPrism"],
+    ["Root Patches", "\u6839\u7cfb\u6591\u584a", "Telegraphed roots punish standing still.", "\u6709\u9810\u544a\u7684\u6839\u7cfb\u6703\u61f2\u7f70\u505c\u7559\u4e0d\u52d5\u3002", "rootPatches"],
+    ["Thorn Lanes", "\u834a\u68d8\u8d70\u5eca", "Alternating thorn lanes leave one readable escape route.", "\u4ea4\u66ff\u834a\u68d8\u8d70\u5eca\u6703\u7559\u4e0b\u4e00\u689d\u53ef\u8b80\u7684\u9003\u751f\u8def\u3002", "thornLanes"],
+    ["Bramble Surge", "\u85e4\u68d8\u5954\u6d41", "Boars pause, flash, then charge instead of walking steadily.", "\u91ce\u8c6c\u6703\u5148\u505c\u9813\u767c\u5149\uff0c\u518d\u767c\u52d5\u885d\u92d2\u3002", "charge"],
+    ["Crossing Tusks", "\u4ea4\u932f\u7360\u7259", "Chargers enter from four sides while roots mark the center.", "\u885d\u92d2\u7378\u5f9e\u56db\u908a\u9032\u5165\uff0c\u6839\u7cfb\u540c\u6642\u6a19\u8a18\u4e2d\u592e\u3002", "chargeRoots"],
+    ["Briar Boar King", "\u834a\u68d8\u91ce\u8c6c\u738b", "The King announces long charges and leaves thorn patches behind.", "\u91ce\u8c6c\u738b\u6703\u9810\u544a\u9577\u8ddd\u96e2\u885d\u92d2\uff0c\u4e26\u7559\u4e0b\u834a\u68d8\u3002", "briar", "bossBriar"],
+    ["Scorch Marks", "\u7126\u71b1\u5370\u8a18", "Orange warning circles ignite after a clear delay.", "\u6a59\u8272\u8b66\u793a\u5708\u6703\u5728\u660e\u78ba\u5ef6\u9072\u5f8c\u9ede\u71c3\u3002", "scorch"],
+    ["Ember Trail", "\u9918\u71fc\u8db3\u8de1", "Fast enemies leave short-lived hot ground when defeated.", "\u5feb\u901f\u6575\u4eba\u88ab\u64ca\u6557\u5f8c\u7559\u4e0b\u77ed\u66ab\u71b1\u5340\u3002", "emberTrail"],
+    ["Furnace Edges", "\u7194\u7210\u908a\u7de3", "The safe area shifts away from one glowing edge.", "\u5b89\u5168\u5340\u6703\u96e2\u958b\u767c\u5149\u908a\u7de3\u79fb\u52d5\u3002", "hotEdge"],
+    ["Cinder Hunt", "\u71fc\u5f71\u7375\u5834", "Cinder panthers blink, then reappear beside warning marks.", "\u71fc\u5f71\u9ed1\u8c79\u6703\u9583\u73fe\uff0c\u518d\u5f9e\u8b66\u793a\u5370\u8a18\u65c1\u51fa\u73fe\u3002", "blink"],
+    ["Cinder Panther", "\u71fc\u706b\u9ed1\u8c79", "The Panther blinks across the grove and burns each landing point.", "\u9ed1\u8c79\u6703\u8de8\u5834\u9583\u73fe\uff0c\u4e26\u9ede\u71c3\u6bcf\u500b\u843d\u9ede\u3002", "cinder", "bossCinder"],
+    ["Lightning Signs", "\u9583\u96fb\u5fb5\u5146", "Blue circles mark each lightning strike before impact.", "\u85cd\u8272\u5708\u6703\u5728\u9583\u96fb\u843d\u4e0b\u524d\u6a19\u8a18\u4f4d\u7f6e\u3002", "lightning"],
+    ["Gale Drift", "\u5f37\u98a8\u504f\u79fb", "A changing wind pushes loose drops, changing collection routes.", "\u8b8a\u5316\u7684\u98a8\u6703\u63a8\u52d5\u6389\u843d\u7269\uff0c\u6539\u8b8a\u6536\u96c6\u8def\u7dda\u3002", "gale"],
+    ["Chain Thunder", "\u9023\u9396\u96f7\u9cf4", "Lightning strikes the player mark, then two mirrored marks.", "\u9583\u96fb\u5148\u653b\u64ca\u73a9\u5bb6\u5370\u8a18\uff0c\u518d\u653b\u64ca\u5169\u500b\u93e1\u50cf\u9ede\u3002", "chainLightning"],
+    ["Roc Scouts", "\u96f7\u9ce5\u65a5\u5019", "Runner waves arrive between alternating lightning lanes.", "\u5feb\u901f\u7378\u6f6e\u6703\u5728\u4ea4\u66ff\u9583\u96fb\u8d70\u5eca\u4e4b\u9593\u51fa\u73fe\u3002", "stormLanes"],
+    ["Tempest Roc", "\u66b4\u98a8\u5de8\u9d6c", "The Roc dives through a marked lane and calls three lightning zones.", "\u5de8\u9d6c\u6703\u7a7f\u8d8a\u6a19\u8a18\u8d70\u5eca\u4fef\u885d\uff0c\u4e26\u53ec\u559a\u4e09\u500b\u96f7\u5340\u3002", "tempest", "bossTempest"],
+    ["Eclipse Ring", "\u65e5\u8755\u4e4b\u74b0", "Stay inside the slowly moving light ring when darkness pulses.", "\u9ed1\u6697\u8108\u885d\u6642\u8981\u7559\u5728\u7de9\u6162\u79fb\u52d5\u7684\u5149\u74b0\u5167\u3002", "eclipseRing"],
+    ["Rotating Seal", "\u65cb\u8f49\u5c01\u5370", "Root, scorch, and lightning warnings rotate one at a time.", "\u6839\u7cfb\u3001\u71b1\u5340\u8207\u9583\u96fb\u8b66\u793a\u6703\u4f9d\u5e8f\u8f2a\u66ff\u3002", "rotatingSeal"],
+    ["Shadow Convergence", "\u6697\u5f71\u532f\u6d41", "Shielded enemies and charge waves demand target priority.", "\u5e36\u76fe\u6575\u4eba\u8207\u885d\u92d2\u6f6e\u8981\u6c42\u6b63\u78ba\u76ee\u6a19\u9806\u5e8f\u3002", "convergence"],
+    ["Last Key Road", "\u6700\u5f8c\u91d1\u9470\u8def", "Keys move between safe pockets while combined hazards return.", "\u7d44\u5408\u5371\u96aa\u91cd\u73fe\u6642\uff0c\u91d1\u9470\u6703\u5728\u5b89\u5168\u7a7a\u9593\u9593\u79fb\u52d5\u3002", "lastRoad"],
+    ["Eclipse Colossus", "\u65e5\u8755\u5de8\u50cf", "The final guardian rotates all three warnings around a moving safe ring.", "\u6700\u7d42\u5b88\u885b\u5728\u79fb\u52d5\u5b89\u5168\u74b0\u5468\u570d\u8f2a\u66ff\u4e09\u7a2e\u8b66\u793a\u3002", "eclipse", "bossEclipse"],
+  ];
+
+  const stages = stageRows.map((row, index) => ({
+    number: index + 1,
+    region: Math.floor(index / 5),
+    nameEn: row[0],
+    nameZh: row[1],
+    ruleEn: row[2],
+    ruleZh: row[3],
+    modifier: row[4],
+    bossImage: row[5] || null,
+    targetKeys: 2 + Math.floor(index / 6),
+  }));
 
   const patrolRanks = [
     { threshold: 0, name: "rankScout" },
@@ -286,15 +391,23 @@
         const parsed = Number(value);
         return Number.isFinite(parsed) ? Math.max(minimum, Math.floor(parsed)) : fallback;
       };
+      const unlockedStage = Math.min(STAGE_COUNT, wholeNumber(source.unlockedStage, 1, 1));
+      const selectedStage = Math.min(unlockedStage, wholeNumber(source.selectedStage, unlockedStage, 1));
       return {
         bestKeys: wholeNumber(source.bestKeys, 0),
         bestLevel: wholeNumber(source.bestLevel, 1, 1),
         playCount: wholeNumber(source.playCount, 0),
         totalKeys: wholeNumber(source.totalKeys, 0),
         crystalCharm: source.crystalCharm === true,
+        unlockedStage,
+        selectedStage,
+        completedStages: Array.isArray(source.completedStages)
+          ? [...new Set(source.completedStages.map(Number).filter((stage) => stage >= 1 && stage <= STAGE_COUNT))].sort((a, b) => a - b)
+          : [],
+        stageBestKeys: source.stageBestKeys && typeof source.stageBestKeys === "object" ? { ...source.stageBestKeys } : {},
       };
     } catch {
-      return { bestKeys: 0, bestLevel: 1, playCount: 0, totalKeys: 0, crystalCharm: false };
+      return { bestKeys: 0, bestLevel: 1, playCount: 0, totalKeys: 0, crystalCharm: false, unlockedStage: 1, selectedStage: 1, completedStages: [], stageBestKeys: {} };
     }
   }
 
@@ -371,8 +484,11 @@
   }
 
   function makeState() {
+    const stageNumber = Math.max(1, Math.min(STAGE_COUNT, Number(save?.selectedStage) || 1));
     return {
       mode: "menu",
+      stage: stageNumber,
+      stageConfig: stages[stageNumber - 1],
       timeLeft: RUN_SECONDS,
       player: makePlayer(),
       level: 1,
@@ -382,12 +498,19 @@
       calmed: 0,
       survived: 0,
       spawnTimer: 0.95,
+      spawnCount: 0,
       key: randomPoint(120),
       enemies: [],
       xpDrops: [],
       shots: [],
       sparks: [],
       floaters: [],
+      hazards: [],
+      mechanicTimer: 2.8,
+      mechanicStep: 0,
+      hazardDamageTimer: 0,
+      bossSpawned: false,
+      bossDefeated: false,
     };
   }
 
@@ -447,13 +570,14 @@
       node.setAttribute("aria-label", t(node.dataset.ariaUi));
     });
     nodes.menuBtn.setAttribute("aria-label", t("menu"));
-    nodes.resultMenuBtn.setAttribute("aria-label", t("backToMenu"));
+    nodes.resultMenuBtn.setAttribute("aria-label", t("backToStages"));
     updatePageMeta();
     nodes.localeSelect.value = locale;
     renderExpeditionRecord();
     renderHud();
     updateDiamondShop();
     updateMenuSound();
+    if (!nodes.stagePanel.classList.contains("hidden")) renderStageSelector(false);
   }
 
   function getWallet() {
@@ -533,7 +657,7 @@
   }
 
   function show(panel) {
-    [nodes.menuPanel, nodes.gamePanel, nodes.resultPanel, nodes.upgradePanel].forEach((node) => node.classList.add("hidden"));
+    [nodes.menuPanel, nodes.stagePanel, nodes.gamePanel, nodes.resultPanel, nodes.upgradePanel].forEach((node) => node.classList.add("hidden"));
     const resultOpen = panel === nodes.resultPanel;
     if (resultOpen) nodes.gamePanel.classList.remove("hidden");
     panel.classList.remove("hidden");
@@ -541,13 +665,17 @@
     battleLive.inert = resultOpen;
     if (resultOpen) battleLive.setAttribute("aria-hidden", "true");
     else battleLive.removeAttribute("aria-hidden");
-    document.body?.classList.toggle("crystal-playing", panel !== nodes.menuPanel);
+    const stageOpen = panel === nodes.stagePanel;
+    document.body?.classList.toggle("crystal-stage-select", stageOpen);
+    document.body?.classList.toggle("crystal-playing", panel !== nodes.menuPanel && !stageOpen);
     updateCrystalBattleViewport();
     if (resultOpen) requestAnimationFrame(updateCrystalBattleViewport);
   }
 
   function updateCrystalBattleViewport() {
-    if (!document.body?.classList.contains("crystal-playing")) return;
+    const battleOpen = document.body?.classList.contains("crystal-playing");
+    const stageOpen = document.body?.classList.contains("crystal-stage-select");
+    if (!battleOpen && !stageOpen) return;
     const viewport = window.visualViewport;
     const visualWidth = Math.round(viewport?.width || 0);
     const visualHeight = Math.round(viewport?.height || 0);
@@ -558,6 +686,7 @@
     const root = document.documentElement.style;
     root.setProperty("--crystal-vw", `${useVisual ? visualWidth : innerWidth}px`);
     root.setProperty("--crystal-vh", `${useVisual ? visualHeight : innerHeight}px`);
+    if (stageOpen) return;
     const resultOpen = !nodes.resultPanel.classList.contains("hidden");
     if (!resultOpen) {
       battlePanelMetrics = measureBattlePanel();
@@ -602,12 +731,99 @@
     lastFrame = performance.now();
   }
 
+  function stageName(config) {
+    return locale === "zh-Hant" ? config.nameZh : config.nameEn;
+  }
+
+  function stageRule(config) {
+    return locale === "zh-Hant" ? config.ruleZh : config.ruleEn;
+  }
+
+  function showStageSelection(shouldScroll = true) {
+    runToken += 1;
+    clearInput();
+    setUpgradeModalOpen(false, false);
+    state.mode = "stage";
+    show(nodes.stagePanel);
+    renderStageSelector(shouldScroll);
+    requestAnimationFrame(() => nodes.stageRail.querySelector(".stage-card.is-selected")?.focus({ preventScroll: true }));
+  }
+
+  function renderStageSelector(shouldScroll = true) {
+    if (!nodes.stageRail) return;
+    nodes.stageSelectTitle.textContent = locale === "zh-Hant" ? "\u9078\u64c7\u6c34\u6676\u8def\u7dda" : "Choose a Crystal Route";
+    nodes.stageProgressText.textContent = t("stageProgress", { unlocked: save.unlockedStage });
+    nodes.stageSetupText.textContent = t("stageSetup");
+    $("stageSwipeText").textContent = t("stageSwipe");
+    $("stageDeployText").textContent = t("stageDeploy");
+    nodes.stageRail.innerHTML = "";
+    stages.forEach((config) => {
+      const locked = config.number > save.unlockedStage;
+      const cleared = save.completedStages.includes(config.number);
+      const selected = config.number === save.selectedStage;
+      const region = regions[config.region];
+      const card = document.createElement("button");
+      card.type = "button";
+      card.className = `stage-card${selected ? " is-selected is-browsed" : ""}${cleared ? " is-cleared" : ""}${config.bossImage ? " is-boss-stage" : ""}`;
+      card.dataset.stage = String(config.number);
+      card.setAttribute("aria-disabled", String(locked));
+      card.style.setProperty("--stage-overlay", region.color);
+      if (locked) card.tabIndex = -1;
+      const regionName = locale === "zh-Hant" ? region.zh : region.en;
+      const bossText = config.bossImage ? `<small>${t("bossCheckpoint")}</small>` : "";
+      const objective = t("objective", { keys: config.targetKeys, boss: config.bossImage ? t("bossObjective") : "" });
+      card.innerHTML = `<em>${regionName}</em><strong>${locale === "zh-Hant" ? `\u7b2c ${config.number} \u95dc` : `Stage ${config.number}`}</strong><span>${stageName(config)}</span><small>${stageRule(config)}</small>${bossText}<small>${objective}</small><small>${locked ? t("stageLocked") : cleared ? t("stageCleared") : t("stageReady")}</small>`;
+      card.setAttribute("aria-label", `${regionName}. ${stageName(config)}. ${stageRule(config)}. ${objective}. ${locked ? t("stageLocked") : cleared ? t("stageCleared") : t("stageReady")}`);
+      card.addEventListener("click", () => {
+        if (locked) return;
+        if (save.selectedStage !== config.number) {
+          save.selectedStage = config.number;
+          persist();
+          renderStageSelector(true);
+          return;
+        }
+        startRun();
+      });
+      nodes.stageRail.appendChild(card);
+    });
+    if (shouldScroll) requestAnimationFrame(() => nodes.stageRail.querySelector(".stage-card.is-selected")?.scrollIntoView({ block: "nearest", inline: "center" }));
+  }
+
+  let stageScrollTimer = 0;
+  function syncStageFromRail() {
+    clearTimeout(stageScrollTimer);
+    stageScrollTimer = setTimeout(() => {
+      if (nodes.stagePanel.classList.contains("hidden")) return;
+      const railRect = nodes.stageRail.getBoundingClientRect();
+      const center = railRect.left + railRect.width / 2;
+      const cards = [...nodes.stageRail.querySelectorAll(".stage-card")];
+      const nearest = cards.reduce((best, card) => {
+        const rect = card.getBoundingClientRect();
+        const distance = Math.abs(rect.left + rect.width / 2 - center);
+        return !best || distance < best.distance ? { card, distance } : best;
+      }, null)?.card;
+      const stageNumber = Number(nearest?.dataset.stage);
+      if (!stageNumber || stageNumber > save.unlockedStage) return;
+      save.selectedStage = stageNumber;
+      persist();
+      cards.forEach((card) => {
+        const active = card === nearest;
+        card.classList.toggle("is-selected", active);
+        card.classList.toggle("is-browsed", active);
+        if (active) card.setAttribute("aria-current", "true");
+        else card.removeAttribute("aria-current");
+      });
+    }, 90);
+  }
+
   function startRun() {
     clearCharmConfirmation();
     setUpgradeModalOpen(false, false);
     runToken += 1;
     clearInput();
     state = makeState();
+    state.stage = save.selectedStage;
+    state.stageConfig = stages[state.stage - 1];
     state.mode = "running";
     prepareSmokeCombatDemo();
     save.playCount += 1;
@@ -666,6 +882,7 @@
     state.timeLeft = Math.max(0, state.timeLeft - elapsedDt);
     state.survived = RUN_SECONDS - state.timeLeft;
     movePlayer(dt);
+    updateStageMechanics(dt);
     spawnEnemies(dt);
     updateEnemies(dt);
     updateShots(dt);
@@ -677,8 +894,154 @@
     if (state.player.hp <= 0) endRun("fail");
   }
 
+  function addHazard(kind, options = {}) {
+    state.hazards.push({
+      kind,
+      x: options.x ?? state.player.x,
+      y: options.y ?? state.player.y,
+      r: options.r ?? 100,
+      width: options.width ?? 150,
+      height: options.height ?? H,
+      warn: options.warn ?? 1.15,
+      life: options.life ?? 2.5,
+      damage: options.damage ?? 0.75,
+      color: options.color || "#f59e0b",
+      tick: 0,
+    });
+  }
+
+  function spawnBoss() {
+    const config = state.stageConfig;
+    if (!config?.bossImage || state.bossSpawned) return;
+    state.bossSpawned = true;
+    const edge = config.modifier === "tempest" ? 0 : 1;
+    const hp = 22 + state.stage * 1.25;
+    state.enemies.push({
+      x: edge ? W + 120 : W / 2,
+      y: edge ? H * 0.34 : -120,
+      hp,
+      maxHp: hp,
+      speed: 34 + config.region * 3,
+      baseSpeed: 34 + config.region * 3,
+      size: 148,
+      damage: 0.9,
+      image: config.bossImage,
+      hit: 0,
+      touch: 0,
+      isBoss: true,
+      shielded: config.modifier === "prism",
+      abilityTimer: 2.2,
+      chargeTimer: 2.8,
+    });
+    addFloater(locale === "zh-Hant" ? "\u9996\u9818\u73fe\u8eab" : "BOSS ARRIVES", W / 2, 130, "#ffe76c");
+  }
+
+  function updateStageMechanics(dt) {
+    const config = state.stageConfig || stages[0];
+    if (config.bossImage && state.survived >= 18 && !state.bossSpawned) spawnBoss();
+    state.mechanicTimer -= dt;
+    state.hazardDamageTimer = Math.max(0, state.hazardDamageTimer - dt);
+    const interval = Math.max(2.1, 5.2 - config.region * 0.38);
+    if (state.mechanicTimer <= 0) {
+      state.mechanicTimer = interval;
+      state.mechanicStep += 1;
+      triggerStageMechanic(config.modifier);
+    }
+    const p = state.player;
+    state.hazards = state.hazards.filter((hazard) => {
+      hazard.warn -= dt;
+      hazard.life -= dt;
+      hazard.tick = Math.max(0, hazard.tick - dt);
+      const active = hazard.warn <= 0;
+      const inside = hazard.kind === "lane"
+        ? Math.abs(p.x - hazard.x) <= hazard.width / 2 && Math.abs(p.y - hazard.y) <= hazard.height / 2
+        : Math.hypot(p.x - hazard.x, p.y - hazard.y) <= hazard.r;
+      if (active && inside && hazard.tick <= 0) {
+        p.hp = Math.max(0, p.hp - hazard.damage);
+        hazard.tick = 0.82;
+        addSpark(p.x, p.y, hazard.color);
+        playSound("hit", 0.3);
+      }
+      return hazard.life > 0;
+    });
+    if (state.safeZone) {
+      state.safeZone.angle += dt * 0.42;
+      state.safeZone.x = W / 2 + Math.cos(state.safeZone.angle) * 190;
+      state.safeZone.y = H / 2 + Math.sin(state.safeZone.angle * 0.7) * 300;
+      state.safeZone.pulse -= dt;
+      if (state.safeZone.pulse <= 0) {
+        state.safeZone.pulse = 2.4;
+        if (Math.hypot(p.x - state.safeZone.x, p.y - state.safeZone.y) > state.safeZone.r) {
+          p.hp = Math.max(0, p.hp - 0.8);
+          addFloater("-1", p.x, p.y - 60, "#d8b4fe");
+          playSound("hit", 0.3);
+        }
+      }
+    }
+    if (["gale", "lastRoad"].includes(config.modifier)) {
+      const direction = Math.sin(state.survived / 5) >= 0 ? 1 : -1;
+      state.xpDrops.forEach((drop) => { drop.x = Math.max(20, Math.min(W - 20, drop.x + direction * 24 * dt)); });
+    }
+    updateBossMechanics(dt);
+  }
+
+  function triggerStageMechanic(modifier) {
+    const p = state.player;
+    const mirrorCircle = (color = "#a78bfa") => {
+      addHazard("circle", { x: p.x, y: p.y, r: 95, color });
+      addHazard("circle", { x: W - p.x, y: H - p.y, r: 95, color });
+    };
+    if (["root", "rootPatches", "chargeRoots", "briar"].includes(modifier)) addHazard("circle", { x: p.x, y: p.y, r: 110, color: "#65a30d", damage: 0.55, life: 3.4 });
+    if (["prismPulse", "mirror", "prism"].includes(modifier)) mirrorCircle();
+    if (modifier === "orbit") {
+      for (let i = 0; i < 3; i += 1) {
+        const angle = state.mechanicStep * 0.7 + i * Math.PI * 2 / 3;
+        addHazard("circle", { x: W / 2 + Math.cos(angle) * 230, y: H / 2 + Math.sin(angle) * 360, r: 82, color: "#c084fc" });
+      }
+    }
+    if (["thornLanes", "stormLanes"].includes(modifier)) {
+      const vertical = state.mechanicStep % 2 === 0;
+      addHazard("lane", { x: vertical ? W * 0.25 : W / 2, y: vertical ? H / 2 : H * 0.34, width: vertical ? 150 : W, height: vertical ? H : 150, color: modifier === "stormLanes" ? "#60a5fa" : "#84cc16" });
+      addHazard("lane", { x: vertical ? W * 0.75 : W / 2, y: vertical ? H / 2 : H * 0.66, width: vertical ? 150 : W, height: vertical ? H : 150, color: modifier === "stormLanes" ? "#60a5fa" : "#84cc16" });
+    }
+    if (["scorch", "emberTrail", "blink", "cinder"].includes(modifier)) addHazard("circle", { x: p.x, y: p.y, r: 105, color: "#f97316", damage: 0.7, life: 3.8 });
+    if (modifier === "hotEdge") {
+      const left = state.mechanicStep % 2 === 0;
+      addHazard("lane", { x: left ? 90 : W - 90, y: H / 2, width: 180, height: H, color: "#fb923c", life: 4.4 });
+    }
+    if (["lightning", "chainLightning", "tempest"].includes(modifier)) {
+      addHazard("circle", { x: p.x, y: p.y, r: 90, color: "#60a5fa", warn: 1.35, life: 2.6, damage: 0.9 });
+      if (modifier !== "lightning") mirrorCircle("#60a5fa");
+    }
+    if (["eclipseRing", "rotatingSeal", "lastRoad", "eclipse"].includes(modifier) && !state.safeZone) state.safeZone = { x: W / 2, y: H / 2, r: modifier === "eclipse" ? 190 : 220, angle: 0, pulse: 2.4 };
+    if (["rotatingSeal", "convergence", "lastRoad", "eclipse"].includes(modifier)) {
+      const modes = ["rootPatches", "scorch", "lightning"];
+      triggerStageMechanic(modes[state.mechanicStep % modes.length]);
+    }
+  }
+
+  function updateBossMechanics(dt) {
+    const boss = state.enemies.find((enemy) => enemy.isBoss);
+    if (!boss) return;
+    boss.abilityTimer -= dt;
+    boss.chargeTimer -= dt;
+    if (state.stageConfig.modifier === "prism") boss.shielded = Math.floor(state.survived / 3) % 2 === 0;
+    if (["briar", "tempest"].includes(state.stageConfig.modifier)) {
+      boss.speed = boss.chargeTimer <= 0 ? boss.baseSpeed * 4.2 : boss.baseSpeed;
+      if (boss.chargeTimer <= -0.75) boss.chargeTimer = 4.6;
+    }
+    if (["cinder", "blink"].includes(state.stageConfig.modifier) && boss.abilityTimer <= 0) {
+      addHazard("circle", { x: boss.x, y: boss.y, r: 112, color: "#f97316", warn: 0.7, life: 3.6 });
+      boss.x = Math.max(100, Math.min(W - 100, state.player.x + (Math.random() < 0.5 ? -210 : 210)));
+      boss.y = Math.max(120, Math.min(H - 120, state.player.y + (Math.random() < 0.5 ? -230 : 230)));
+      boss.abilityTimer = 5.4;
+    }
+  }
+
   function movePlayer(dt) {
     const p = state.player;
+    const rooted = state.hazards.some((hazard) => hazard.warn <= 0 && hazard.color === "#65a30d" && Math.hypot(p.x - hazard.x, p.y - hazard.y) <= hazard.r);
+    const moveSpeed = p.speed * (rooted ? 0.55 : 1);
     let dx = 0;
     let dy = 0;
     if (keys.has("arrowleft") || keys.has("a")) dx -= 1;
@@ -687,8 +1050,8 @@
     if (keys.has("arrowdown") || keys.has("s")) dy += 1;
     if (dx || dy) {
       const len = Math.hypot(dx, dy) || 1;
-      p.x += (dx / len) * p.speed * dt;
-      p.y += (dy / len) * p.speed * dt;
+      p.x += (dx / len) * moveSpeed * dt;
+      p.y += (dy / len) * moveSpeed * dt;
       p.tx = p.x;
       p.ty = p.y;
     } else {
@@ -696,7 +1059,7 @@
       const my = p.ty - p.y;
       const dist = Math.hypot(mx, my);
       if (dist > 3) {
-        const step = Math.min(dist, p.speed * dt);
+        const step = Math.min(dist, moveSpeed * dt);
         p.x += (mx / dist) * step;
         p.y += (my / dist) * step;
       }
@@ -715,20 +1078,30 @@
       return;
     }
     const elapsed = RUN_SECONDS - state.timeLeft;
-    const type = elapsed > 65 && Math.random() < 0.23 ? "tank" : elapsed > 35 && Math.random() < 0.34 ? "runner" : "basic";
+    const config = state.stageConfig || stages[0];
+    const runnerChance = ["runnerRush", "blink", "cinder", "stormLanes"].includes(config.modifier) ? 0.58 : 0.26 + config.region * 0.035;
+    const tankChance = ["tankRing", "charge", "chargeRoots", "briar", "convergence"].includes(config.modifier) ? 0.5 : 0.16 + config.region * 0.025;
+    const roll = Math.random();
+    const type = ["basic", "drift"].includes(config.modifier)
+      ? elapsed > 65 && roll < 0.23 ? "tank" : elapsed > 35 && roll < 0.34 ? "runner" : "basic"
+      : elapsed > 42 && roll < tankChance ? "tank" : elapsed > 22 && roll < tankChance + runnerChance ? "runner" : "basic";
     const edge = Math.floor(Math.random() * 4);
     const pos = randomPoint(0);
     if (edge === 0) pos.y = -54;
     if (edge === 1) pos.x = W + 54;
     if (edge === 2) pos.y = H + 54;
     if (edge === 3) pos.x = -54;
+    const stageHp = 1 + Math.floor((state.stage - 1) / 10) * 0.35;
     const stats = {
       basic: { hp: 2, speed: 68, size: 62, damage: 0.32, image: "basic" },
       runner: { hp: 1.5, speed: 102, size: 58, damage: 0.28, image: "runner" },
       tank: { hp: 5, speed: 44, size: 82, damage: 0.55, image: "tank" },
     }[type];
-    state.enemies.push({ ...pos, ...stats, maxHp: stats.hp, hit: 0, touch: 0 });
-    state.spawnTimer = Math.max(0.85, 1.85 - elapsed * 0.0038);
+    state.spawnCount += 1;
+    const hp = stats.hp * stageHp;
+    const shielded = ["shielded", "convergence"].includes(config.modifier) && state.spawnCount % 3 === 0;
+    state.enemies.push({ ...pos, ...stats, hp, maxHp: hp, baseSpeed: stats.speed, hit: 0, touch: 0, shielded, shieldHp: shielded ? 1.5 + config.region * 0.4 : 0, chargeTimer: Math.random() * 2 + 1.2 });
+    state.spawnTimer = Math.max(0.72, 1.9 - elapsed * 0.0035 - config.region * 0.06);
   }
 
   function updateEnemies(dt) {
@@ -737,6 +1110,11 @@
       const dx = p.x - enemy.x;
       const dy = p.y - enemy.y;
       const dist = Math.hypot(dx, dy) || 1;
+      if (!enemy.isBoss && ["charge", "chargeRoots", "briar", "convergence"].includes(state.stageConfig?.modifier)) {
+        enemy.chargeTimer -= dt;
+        enemy.speed = enemy.chargeTimer <= 0 ? (enemy.baseSpeed || enemy.speed) * 2.8 : (enemy.baseSpeed || enemy.speed);
+        if (enemy.chargeTimer <= -0.55) enemy.chargeTimer = 3.1 + Math.random() * 1.6;
+      }
       enemy.x += (dx / dist) * enemy.speed * dt;
       enemy.y += (dy / dist) * enemy.speed * dt;
       enemy.hit = Math.max(0, enemy.hit - dt);
@@ -779,7 +1157,15 @@
       shot.x += (dx / dist) * step;
       shot.y += (dy / dist) * step;
       if (dist <= 24) {
-        shot.target.hp -= shot.damage;
+        if (shot.target.shielded && (shot.target.shieldHp > 0 || shot.target.isBoss)) {
+          if (!shot.target.isBoss) {
+            shot.target.shieldHp = Math.max(0, shot.target.shieldHp - shot.damage);
+            if (shot.target.shieldHp <= 0) shot.target.shielded = false;
+          }
+          addFloater(locale === "zh-Hant" ? "\u8b77\u76fe" : "SHIELD", shot.target.x, shot.target.y - 58, "#c4b5fd");
+        } else {
+          shot.target.hp -= shot.damage;
+        }
         shot.target.hit = 0.16;
         addSpark(shot.target.x, shot.target.y, "#67e8f9");
         if (shot.target.hp <= 0) calmEnemy(shot.target);
@@ -796,13 +1182,24 @@
 
   function calmEnemy(enemy) {
     state.calmed += 1;
-    state.xpDrops.push({ x: enemy.x, y: enemy.y, value: 1 });
+    if (enemy.isBoss) {
+      state.bossDefeated = true;
+      state.keys += 2;
+      addFloater(locale === "zh-Hant" ? "\u9996\u9818\u64ca\u7834 +2" : "BOSS CALMED +2", enemy.x, enemy.y - 80, "#ffe76c");
+    }
+    state.xpDrops.push({ x: enemy.x, y: enemy.y, value: enemy.isBoss ? 4 : 1 });
     state.enemies = state.enemies.filter((item) => item !== enemy);
+    if (state.stageConfig?.modifier === "emberTrail") addHazard("circle", { x: enemy.x, y: enemy.y, r: 78, warn: 0.15, life: 2.5, color: "#f97316", damage: 0.45 });
   }
 
   function updateDrops() {
     const p = state.player;
     state.xpDrops = state.xpDrops.filter((drop) => {
+      if (state.stageConfig?.modifier === "drift" && state.enemies.length) {
+        const target = state.enemies.reduce((best, enemy) => Math.hypot(enemy.x - drop.x, enemy.y - drop.y) < Math.hypot(best.x - drop.x, best.y - drop.y) ? enemy : best, state.enemies[0]);
+        drop.x += (target.x - drop.x) * 0.0018;
+        drop.y += (target.y - drop.y) * 0.0018;
+      }
       const dist = Math.hypot(drop.x - p.x, drop.y - p.y);
       if (dist < p.pickup) {
         state.xp += drop.value;
@@ -934,28 +1331,41 @@
     const previousBestKeys = save.bestKeys || 0;
     const previousRank = patrolRankFor(save.totalKeys);
     const improved = state.keys > previousBestKeys;
+    const stageCleared = reason === "time"
+      && state.keys >= state.stageConfig.targetKeys
+      && (!state.stageConfig.bossImage || state.bossDefeated);
     save.bestKeys = Math.max(save.bestKeys || 0, state.keys);
     save.bestLevel = Math.max(save.bestLevel || 1, state.level);
     save.totalKeys = Math.max(0, Number(save.totalKeys) || 0) + Math.max(0, state.keys);
+    save.stageBestKeys[state.stage] = Math.max(Number(save.stageBestKeys[state.stage]) || 0, state.keys);
+    if (stageCleared) {
+      if (!save.completedStages.includes(state.stage)) save.completedStages.push(state.stage);
+      save.completedStages.sort((a, b) => a - b);
+      save.unlockedStage = Math.max(save.unlockedStage, Math.min(STAGE_COUNT, state.stage + 1));
+    }
     persist();
     renderExpeditionRecord();
-    renderResult(reason, previousBestKeys, improved, previousRank.index);
+    renderResult(reason, previousBestKeys, improved, previousRank.index, stageCleared);
     if (document.body) battlePanelMetrics = measureBattlePanel();
     show(nodes.resultPanel);
     nodes.retryBtn.focus({ preventScroll: true });
-    playSound(reason === "time" ? "win" : "wrong", 0.4);
+    playSound(stageCleared ? "win" : "wrong", 0.4);
     window.WonderAnalytics?.track("game_complete", { game_id: GAME_ID, reason, keys: state.keys, level: state.level, prototype: true });
   }
 
-  function renderResult(reason, previousBestKeys, improved, previousRankIndex) {
+  function renderResult(reason, previousBestKeys, improved, previousRankIndex, stageCleared = false) {
     const survived = Math.round(state.survived);
     const best = Math.max(previousBestKeys || 0, state.keys);
     const reactionScore = Math.min(5, 2 + Math.floor(survived / 44));
     const focusScore = Math.min(5, 1 + state.keys);
     const problemScore = Math.min(5, Math.max(1, state.level));
-    nodes.resultTitle.textContent = reason === "time" ? t("timeUp") : t("runFailed");
+    nodes.resultTitle.textContent = stageCleared ? t("stageClear") : reason === "time" ? t("objectiveMissed") : t("runFailed");
     nodes.resultScore.textContent = String(state.keys);
-    nodes.resultText.textContent = `${t("resultLine", { keys: state.keys, level: state.level, time: survived, best })} ${improved ? t("improved") : t("keepGoing")}`;
+    const objectiveLine = !stageCleared && reason === "time"
+      ? t("objectiveMissedLine", { keys: state.stageConfig.targetKeys, boss: state.stageConfig.bossImage ? t("bossStillActive") : "" })
+      : improved ? t("improved") : t("keepGoing");
+    nodes.resultText.textContent = `${t("resultLine", { keys: state.keys, level: state.level, time: survived, best })} ${objectiveLine}`;
+    nodes.nextStageBtn.classList.toggle("hidden", !stageCleared || state.stage >= STAGE_COUNT);
     const rank = patrolRankFor(save.totalKeys);
     nodes.resultRankText.textContent = rank.index > previousRankIndex
       ? t("patrolRankUp", { rank: t(rank.current.name) })
@@ -1024,6 +1434,11 @@
         renderPatrolRank();
         return patrolRankFor(save.totalKeys);
       },
+      startStageForTest: (stageNumber = 1) => {
+        save.selectedStage = Math.max(1, Math.min(save.unlockedStage, Number(stageNumber) || 1));
+        persist();
+        startRun();
+      },
       collectKeyAtPlayer: () => {
         state.key = { x: state.player.x, y: state.player.y };
         updateKey();
@@ -1080,6 +1495,7 @@
   }
 
   function renderHud() {
+    nodes.stageText.textContent = `${state.stage}/${STAGE_COUNT}`;
     nodes.timeText.textContent = formatTime(state.timeLeft);
     nodes.keyText.textContent = String(state.keys);
     nodes.levelText.textContent = String(state.level);
@@ -1145,9 +1561,10 @@
     ctx.clearRect(0, 0, W, H);
     drawImageCover(images.arena, 0, 0, W, H);
     ctx.save();
-    ctx.fillStyle = "rgba(6, 24, 23, 0.18)";
+    ctx.fillStyle = regions[state.stageConfig?.region || 0]?.color || "rgba(6, 24, 23, 0.18)";
     ctx.fillRect(0, 0, W, H);
     ctx.restore();
+    drawStageHazards();
     drawKey();
     state.xpDrops.forEach((drop) => drawImageCentered(images.xp, drop.x, drop.y, 34));
     state.enemies.forEach(drawEnemy);
@@ -1168,6 +1585,49 @@
       ctx.restore();
     });
     state.floaters.forEach(drawFloater);
+  }
+
+  function drawStageHazards() {
+    if (state.safeZone) {
+      ctx.save();
+      ctx.fillStyle = "rgba(24,8,38,.28)";
+      ctx.fillRect(0, 0, W, H);
+      ctx.globalCompositeOperation = "destination-out";
+      ctx.beginPath();
+      ctx.arc(state.safeZone.x, state.safeZone.y, state.safeZone.r, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.globalCompositeOperation = "source-over";
+      ctx.strokeStyle = "rgba(254,240,138,.92)";
+      ctx.lineWidth = 8;
+      ctx.beginPath();
+      ctx.arc(state.safeZone.x, state.safeZone.y, state.safeZone.r, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.restore();
+    }
+    state.hazards.forEach((hazard) => {
+      const active = hazard.warn <= 0;
+      const pulse = 0.58 + Math.sin(performance.now() / 100) * 0.18;
+      ctx.save();
+      ctx.globalAlpha = active ? 0.34 : pulse;
+      ctx.fillStyle = hazard.color;
+      ctx.strokeStyle = hazard.color;
+      ctx.lineWidth = active ? 8 : 5;
+      ctx.setLineDash(active ? [] : [18, 14]);
+      if (hazard.kind === "lane") {
+        ctx.fillRect(hazard.x - hazard.width / 2, hazard.y - hazard.height / 2, hazard.width, hazard.height);
+        ctx.strokeRect(hazard.x - hazard.width / 2, hazard.y - hazard.height / 2, hazard.width, hazard.height);
+      } else {
+        if (active) {
+          ctx.beginPath();
+          ctx.arc(hazard.x, hazard.y, hazard.r, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.beginPath();
+        ctx.arc(hazard.x, hazard.y, hazard.r, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+      ctx.restore();
+    });
   }
 
   function drawFloater(floater) {
@@ -1240,14 +1700,25 @@
 
   function drawEnemy(enemy) {
     const hpPct = Math.max(0, enemy.hp / enemy.maxHp);
-    const visualSize = enemy.image === "tank" ? enemy.size * 1.9 : enemy.image === "runner" ? enemy.size * 1.65 : enemy.size * 1.55;
+    const visualSize = enemy.isBoss ? enemy.size * 2.25 : enemy.image === "tank" ? enemy.size * 1.9 : enemy.image === "runner" ? enemy.size * 1.65 : enemy.size * 1.55;
     drawEnemyDanger(enemy);
+    if (enemy.shielded) {
+      ctx.save();
+      ctx.strokeStyle = "rgba(196,181,253,.9)";
+      ctx.lineWidth = enemy.isBoss ? 12 : 7;
+      ctx.beginPath();
+      ctx.arc(enemy.x, enemy.y, enemy.size * (enemy.isBoss ? 1.15 : .72), 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.restore();
+    }
     drawImageCentered(images[enemy.image], enemy.x, enemy.y, visualSize, 0, enemy.hit > 0 ? 0.72 : 1);
     ctx.save();
     ctx.fillStyle = "rgba(15, 23, 42, 0.58)";
-    ctx.fillRect(enemy.x - 28, enemy.y - visualSize * 0.34 - 12, 56, 7);
+    const barWidth = enemy.isBoss ? 150 : 56;
+    const barHeight = enemy.isBoss ? 14 : 7;
+    ctx.fillRect(enemy.x - barWidth / 2, enemy.y - visualSize * 0.34 - 18, barWidth, barHeight);
     ctx.fillStyle = "#8ef28b";
-    ctx.fillRect(enemy.x - 28, enemy.y - visualSize * 0.34 - 12, 56 * hpPct, 7);
+    ctx.fillRect(enemy.x - barWidth / 2, enemy.y - visualSize * 0.34 - 18, barWidth * hpPct, barHeight);
     ctx.restore();
   }
 
@@ -1325,7 +1796,13 @@
   });
 
   nodes.localeSelect.addEventListener("change", (event) => setLocale(event.target.value));
-  nodes.startBtn.addEventListener("click", startRun);
+  nodes.startBtn.addEventListener("click", () => showStageSelection(true));
+  nodes.stageBackBtn.addEventListener("click", () => {
+    state.mode = "menu";
+    show(nodes.menuPanel);
+    nodes.startBtn.focus({ preventScroll: true });
+  });
+  nodes.stageRail.addEventListener("scroll", syncStageFromRail, { passive: true });
   nodes.charmBtn?.addEventListener("keydown", (event) => {
     if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
   });
@@ -1337,9 +1814,14 @@
     updateMenuSound();
   });
   nodes.retryBtn.addEventListener("click", startRun);
+  nodes.nextStageBtn.addEventListener("click", () => {
+    save.selectedStage = Math.min(save.unlockedStage, state.stage + 1);
+    persist();
+    showStageSelection(true);
+  });
   nodes.resultPanel.addEventListener("keydown", (event) => {
     if (event.key !== "Tab" || nodes.resultPanel.classList.contains("hidden")) return;
-    const actions = [nodes.retryBtn, nodes.resultMenuBtn].filter((button) => !button.disabled);
+    const actions = [nodes.nextStageBtn, nodes.retryBtn, nodes.resultMenuBtn].filter((button) => !button.disabled && !button.classList.contains("hidden"));
     if (event.shiftKey && document.activeElement === actions[0]) {
       event.preventDefault();
       actions.at(-1).focus();
@@ -1351,18 +1833,16 @@
   nodes.menuBtn.addEventListener("click", () => {
     runToken += 1;
     clearInput();
-    state.mode = "menu";
+    state.mode = "stage";
     playSound("click", 0.1);
-    show(nodes.menuPanel);
-    requestAnimationFrame(() => nodes.startBtn.focus({ preventScroll: true }));
+    showStageSelection(true);
   });
   nodes.resultMenuBtn.addEventListener("click", () => {
     runToken += 1;
     clearInput();
-    state.mode = "menu";
+    state.mode = "stage";
     playSound("click", 0.1);
-    show(nodes.menuPanel);
-    requestAnimationFrame(() => nodes.startBtn.focus({ preventScroll: true }));
+    showStageSelection(true);
   });
   nodes.upgradeCards.addEventListener("click", (event) => {
     const card = event.target.closest("[data-upgrade]");

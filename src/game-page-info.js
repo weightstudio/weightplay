@@ -2193,6 +2193,119 @@
     ]
   };
 
+  games["animal-gearpack-expedition"] = {
+    title: "Animal Gearpack Expedition",
+    difficulty: "Medium to Hard",
+    time: "5-12 minutes per expedition",
+    gameplay: "Spatial Inventory Expedition",
+    genre: ["Strategy", "Spatial Inventory", "Roguelite", "Animal"],
+    skills: ["Planning", "Spatial Reasoning", "Adaptation"],
+    guideKicker: "WeightPlay Original Game Guide",
+    guideTitleSuffix: "Game Guide",
+    noteTitle: "Player and Save Information",
+    hideScoreBands: true,
+    intro: "Animal Gearpack Expedition is a 30-stage spatial-inventory strategy adventure starring Gear Horn Rux. Fit equipment into an eleven-column, seven-row pack, connect Forge, Nature, Crystal, and Moon materials, and survive five encounters per stage. Six regions introduce different packing pressures, and every fifth stage ends with a Guardian whose mechanic changes what a safe build looks like.",
+    story: [
+      "Gearwood's caravan road once linked six workshops. The route failed when its vaults reacted to the cargo: roots blocked the forest, crystals split the quarry, machines restarted in Clockwork Hollow, the foundry overheated, storm coils charged the observatory, and the Eclipse Vault sealed every recovered shipment behind a final mechanical army.",
+      "Gear Horn Rux is the caravan packmaster, while Moon Cap Orla follows with a travelling shop. Clearing a stage reopens one section of road. Defeating the Root Guardian, Crystal Warden, Hollow Colossus, Furnace Leviathan, Tempest Archon, and Eclipse Hoardmaster restores all six regions and releases the stored cargo."
+    ],
+    systems: [
+      "The gearpack has eleven columns and seven rows. Items use different cell shapes and may be rotated before placement. Attack deals damage, Armor reduces a counterattack, and Heal restores Health before incoming damage. Two different pieces create a material link when matching-tag cells touch horizontally or vertically; every active link adds two Attack and one Defense.",
+      "Health persists through the five encounters in one expedition, but every item can be picked up and rearranged between fights. The tray and placed gear share a twelve-item limit. After a victory, take one of three loot items or continue without loot. Gold earned in that expedition buys Orla's stock or comes from selling unwanted gear.",
+      "Special enemies change the layout problem. Shields absorb opening damage, Ambushers strike before the normal exchange, isolation adds damage for unlinked items, corrosion removes Defense over time, top-row heat punishes occupied ventilation cells, overload suppresses the pack's most common tag, and rotating seals cycle among all four materials.",
+      "Workshop XP, discoveries, completed stages, and the next unlocked stage are stored locally. Workshop levels provide a modest Health benefit. Diamonds are optional shared currency used only for one separately confirmed replacement of Orla's three shop offers; free progression does not require them."
+    ],
+    how: [
+      "Choose an unlocked card from the 30-stage horizontal expedition rail and read its route rule.",
+      "Select equipment from the tray, rotate it when useful, and place it on a valid green cell in the 11 x 7 pack.",
+      "Connect matching Forge, Nature, Crystal, or Moon pieces, then start the encounter when the current build is ready.",
+      "After each victory, choose or skip loot and rebuild the pack before the next enemy. Visit Orla when the route reaches its shop stop.",
+      "Defeat the fifth encounter to save the stage. Stages 5, 10, 15, 20, 25, and 30 are Guardian checkpoints."
+    ],
+    strategyTips: [
+      "Read the route rule before building. One large same-tag cluster is weak when that material is suppressed or overloaded.",
+      "Against isolation, make every important item touch a matching tag. Against top-row heat, keep the first row open and link lower in the pack.",
+      "Corrosion rewards a shorter fight because Defense loses value each turn. Shields instead reward one large opening strike after the barrier is removed.",
+      "Do not accept every loot item. Empty space can be more valuable than a weak object when Orla's shop or a Guardian is still ahead."
+    ],
+    progression: [
+      "Stages 1-5 teach links, rotation, shields, opening strikes, and isolation. The Root Guardian regrows Health unless the pack contains an active Nature link.",
+      "Stages 6-10 add Moon suppression and larger prism barriers. Crystal Warden begins behind an eighteen-point shield and reflects shards after its core is exposed.",
+      "Stages 11-15 combine rage, isolation, and corrosion. Hollow Colossus alternates a braced phase that reduces Rux's strike with a rage phase that strengthens its counterattack.",
+      "Stages 16-20 add top-row heat and stronger corrosion. Furnace Leviathan requires ventilation space, recovery, and enough damage to avoid a long degrading fight.",
+      "Stages 21-25 combine opening strikes with overload of the most common material. Tempest Archon adds chain-lightning damage for every isolated item.",
+      "Stages 26-30 rotate material seals and mix all previous pressures. Eclipse Hoardmaster combines seal rotation with isolation, so the final pack needs several useful link families and no loose equipment."
+    ],
+    designNote: "Five encounters give one pack enough time to evolve without making each attempt excessively long. Combat resolves automatically so touch, pointer, and keyboard players can focus on the distinctive decision: fitting shapes and links around the next enemy rule. Difficulty grows through six mechanical families rather than one numeric curve. Each Guardian tests a learned spatial habit—Nature links, shield breaking, phase timing, ventilation, compact linking, or seal adaptation—so later stages ask for new plans instead of only larger statistics.",
+    parent: "Basic play does not require an account. Unlocked and completed stages, Workshop XP, discoveries, and best encounter progress are stored in this browser; clearing site storage or changing devices may remove that profile. Gold and the current loadout are temporary. Diamonds are optional and require confirmation at Orla's refresh.",
+    faq: [
+      ["How many stages are included?", "There are 30 authored stages across six regions, with Guardian checkpoints at Stages 5, 10, 15, 20, 25, and 30."],
+      ["How do material links work?", "Matching-tag cells from two different pieces must touch horizontally or vertically. Active links add Attack and Defense."],
+      ["Why did a link stop working?", "Moon suppression, overload, and rotating seals can disable one material. The active rule appears above the Battle."],
+      ["Can I repack between enemies?", "Yes. Loot is followed by a free preparation phase before the next encounter."],
+      ["What happens when the pack is full?", "Continue without loot or sell a tray item. A full pack never blocks progress."],
+      ["Are Diamonds required?", "No. They only replace Orla's current stock after a separate confirmation."],
+      ["What progress is saved?", "Unlocked and completed stages, Workshop XP, discoveries, and best progress are stored locally."],
+      ["Does it support keyboard play?", "Yes. The pack exposes a labelled 7-row by 11-column grid with arrow-key navigation."]
+    ]
+  };
+  localizedGames["zh-Hant"]["animal-gearpack-expedition"] = {
+    title: "動物裝備行囊遠征",
+    difficulty: "中等至困難",
+    time: "每次遠征約 5 至 12 分鐘",
+    gameplay: "空間行囊策略遠征",
+    genre: ["策略", "空間行囊", "Roguelite", "動物"],
+    skills: ["規劃", "空間推理", "應變"],
+    guideKicker: "WeightPlay 原創遊戲指南",
+    guideTitleSuffix: "遊戲指南",
+    noteTitle: "玩家與存檔說明",
+    hideScoreBands: true,
+    intro: "《動物裝備行囊遠征》是由齒輪角魯克斯主演的 30 關空間行囊策略遊戲。玩家要把裝備排入 11 欄、7 排的旅行行囊，連結鍛造、自然、水晶與月光材質，並在每關通過五場固定遭遇。六個區域各自加入不同的配裝壓力，每五關則由一位會真正改變安全排法的守關首領收尾。",
+    story: [
+      "齒輪森林的商隊道路原本連接六座工坊。儲藏庫開始對貨物產生異常反應後，樹根封住森林、水晶裂開礦場、發條空谷重新啟動、熔爐外洩高熱、風暴線圈充滿觀測站，日蝕寶庫則把回收貨物與最後一批機械軍一同封鎖。",
+      "齒輪角魯克斯負責整理行囊，月帽歐拉則帶著商店跟隨路線。通過一關代表重新打開一段道路；擊敗樹根守衛、水晶守衛、發條巨像、熔爐巨獸、風暴統領與日蝕藏主，才算恢復六區運輸並取回全部貨物。"
+    ],
+    systems: [
+      "行囊共有 11 欄、7 排。裝備形狀各不相同，可在放置前旋轉。攻擊決定魯克斯造成的傷害，防禦會降低反擊，治療則在承受傷害前恢復生命。兩件不同裝備只要同材質格子上下或左右相鄰，就會形成連結；每個有效連結增加 2 攻擊與 1 防禦。",
+      "生命會延續整個五場遭遇，但每次勝利後都能把裝備拿回、旋轉並重新排列。待放區與已放裝備合計最多十二件；戰利品可以選一件，也可保留空間直接繼續。遠征金幣用於歐拉商店或來自出售裝備，只在目前遠征有效。",
+      "特殊敵人會改變排法：護盾吸收開場傷害，伏擊手會先攻，孤立懲罰依沒有連結的裝備增加傷害，腐蝕會逐回合削弱防禦，頂排熱浪會依第一排占用格數加傷，過載會關閉最常見材質，輪替封印則會在四種材質間切換。",
+      "工坊經驗、圖鑑、已完成關卡與下一個解鎖關卡會保存在本機。工坊等級提供少量生命成長。鑽石只用於確認後更換一次歐拉的三件商品，不是免費關卡進度的必要條件。"
+    ],
+    how: [
+      "在 30 張橫向滑動關卡卡片中選擇已解鎖遠征，先讀取路線規則。",
+      "選擇待放裝備，需要時旋轉，再點擊 11×7 行囊中的有效綠色格。",
+      "讓鍛造、自然、水晶或月光裝備互相連結，準備好後開始遭遇。",
+      "每次勝利後選擇或略過戰利品，再重新配裝；抵達商店停靠點時可向歐拉購買或出售。",
+      "擊敗第五場遭遇即可保存通關；第 5、10、15、20、25、30 關都是首領檢查點。"
+    ],
+    strategyTips: [
+      "先讀關卡規則。材質被封印或過載時，只堆一種連結會立刻失去優勢。",
+      "面對孤立懲罰時，讓每件重要裝備至少接上一件同材質；面對頂排熱浪時，把連結往下排。",
+      "腐蝕會讓長期防禦逐漸失效，應提高輸出縮短戰鬥；護盾敵人則需要先準備足夠破盾傷害。",
+      "不要自動拿走每件戰利品。商店或首領還在前方時，空間本身就是資源。"
+    ],
+    progression: [
+      "第 1～5 關教導連結、旋轉、護盾、先攻與孤立；樹根守衛會持續再生，除非行囊保有自然連結。",
+      "第 6～10 關加入月光封鎖與稜鏡護盾；水晶守衛帶有 18 點護盾，核心受傷後還會反射碎片。",
+      "第 11～15 關組合狂怒、孤立與腐蝕；發條巨像會在減傷的防守階段與強化反擊的狂怒階段間交替。",
+      "第 16～20 關加入頂排熱浪；熔爐巨獸同時使用熱浪與腐蝕，需要保留散熱空間並縮短戰鬥。",
+      "第 21～25 關把開場突襲與材質過載組合；風暴統領會依孤立裝備數量追加連鎖傷害。",
+      "第 26～30 關輪替材質封印並重組前面學過的壓力；日蝕藏主要求多種可用連結，而且不能留下鬆散裝備。"
+    ],
+    designNote: "每關固定五場遭遇，讓同一個行囊有足夠時間變化，又不讓一次挑戰過長。戰鬥採自動結算，是為了讓手機、滑鼠與鍵盤玩家都把注意力放在本作最獨特的決策：裝備形狀、材質連結、空白格與下一隻敵人的規則。30 關依六套機制成長，而不是只提高數字；六位首領分別檢查自然連結、破盾、階段判讀、散熱、消除孤立與適應輪替封印。",
+    parent: "基本遊玩不需要帳號。解鎖與完成關卡、工坊經驗、圖鑑與最佳遭遇進度保存在目前瀏覽器；清除網站資料或更換裝置可能移除本機進度。金幣與當次行囊是臨時資源；鑽石只用於歐拉商店的確認式刷新。",
+    faq: [
+      ["一共有多少關？", "共有 30 關、六個區域；第 5、10、15、20、25、30 關是守關首領。"],
+      ["材質連結怎麼計算？", "兩件不同裝備的同材質格子必須上下或左右相鄰；有效連結會增加攻擊與防禦。"],
+      ["為什麼連結突然失效？", "月光封鎖、過載與輪替封印會關閉一種材質；目前規則會顯示在戰鬥上方。"],
+      ["每隻敵人之間可以重排嗎？", "可以。選擇或略過戰利品後，會回到可自由拿回、旋轉與放置裝備的準備階段。"],
+      ["行囊滿了怎麼辦？", "可以不拿戰利品直接繼續，或出售待放裝備；行囊滿不會卡住流程。"],
+      ["一定要使用鑽石嗎？", "不用。鑽石只會在再次確認後更換歐拉目前的商品。"],
+      ["哪些進度會保存？", "解鎖與完成關卡、工坊經驗、圖鑑與最佳進度會保存在本機。"],
+      ["支援鍵盤嗎？", "支援。行囊提供有標籤的 7 排、11 欄鍵盤格，可用方向鍵移動。"]
+    ]
+  };
+
   games["animal-moonlight-heist"] = {
     title: "Animal Moonlight Heist",
     difficulty: "Medium to Hard",

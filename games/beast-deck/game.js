@@ -970,6 +970,14 @@
     }, { attack: 0, defense: 0, utility: 0 });
   }
 
+  function restoreLoadoutFocus(cardId, target) {
+    window.requestAnimationFrame(() => {
+      const matches = [...target.querySelectorAll(`[data-card-id="${cardId}"]`)];
+      const button = matches.find((candidate) => !candidate.disabled) || matches.at(-1);
+      button?.focus();
+    });
+  }
+
   function renderCollectionUI() {
     if (!nodes.collectionGrid) return;
     nodes.profileCoinText.textContent = String(profile.coins);
@@ -998,12 +1006,15 @@
         const button = document.createElement("button");
         button.type = "button";
         button.className = `mini-card ${card.type}`;
+        button.dataset.cardId = cardId;
         button.setAttribute("aria-label", t("removeCardLabel", { card: cardName(cardId), slot: index + 1, count: profile.equippedCards.length }));
         button.innerHTML = `<img src="${asset(card.image)}" alt=""><span>${cardName(cardId)}</span><small>${t("unequipCard")}</small>`;
-        button.addEventListener("click", () => {
+        button.addEventListener("click", (event) => {
+          const keyboardActivation = event.detail === 0;
           profile.equippedCards.splice(index, 1);
           saveLocalState();
           renderCollectionUI();
+          if (keyboardActivation) restoreLoadoutFocus(cardId, nodes.collectionGrid);
           window.WonderSound?.play("click");
         });
         nodes.deckSlots.appendChild(button);
@@ -1026,6 +1037,7 @@
       const button = document.createElement("button");
       button.type = "button";
       button.className = `collection-card ${card.type}`;
+      button.dataset.cardId = cardId;
       button.disabled = !canEquip;
       button.setAttribute("aria-label", `${cardName(cardId)} · ${t(card.descKey)} · ${t("ownedCount", { count: owned })} · ${t("equippedCount", { count: equipped, max: owned })} · ${cardStatus}`);
       button.innerHTML = `
@@ -1034,11 +1046,15 @@
         <small>${t("ownedCount", { count: owned })} / ${t("equippedCount", { count: equipped, max: owned })}</small>
         <span>${cardStatus}</span>
       `;
-      button.addEventListener("click", () => {
+      button.addEventListener("click", (event) => {
         if (!canEquip) return;
+        const keyboardActivation = event.detail === 0;
         profile.equippedCards.push(cardId);
         saveLocalState();
         renderCollectionUI();
+        if (keyboardActivation) {
+          restoreLoadoutFocus(cardId, canEquipCard(cardId) ? nodes.collectionGrid : nodes.deckSlots);
+        }
         window.WonderSound?.play("click");
       });
       nodes.collectionGrid.appendChild(button);
@@ -2498,6 +2514,11 @@
     nodes.stageGrid?.addEventListener("pointerup", endStageDrag);
     nodes.stageGrid?.addEventListener("pointercancel", endStageDrag);
     nodes.stageGrid?.addEventListener("pointerleave", endStageDrag);
+    const rejectRepeatedLoadoutActivation = (event) => {
+      if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
+    };
+    nodes.deckSlots?.addEventListener("keydown", rejectRepeatedLoadoutActivation);
+    nodes.collectionGrid?.addEventListener("keydown", rejectRepeatedLoadoutActivation);
     nodes.packBtn?.addEventListener("keydown", (event) => {
       if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
     });

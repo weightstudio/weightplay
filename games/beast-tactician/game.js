@@ -1139,14 +1139,20 @@
       button.type = "button";
       button.className = canBuy ? "primary-btn" : "secondary-btn";
       button.disabled = !canBuy;
+      button.dataset.techId = tech.id;
       button.textContent = t("techBuy");
-      button.addEventListener("click", () => {
+      button.addEventListener("keydown", (event) => {
+        if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
+      });
+      button.addEventListener("click", (event) => {
         if (!canBuy) return;
+        const restoreKeyboardFocus = event.detail === 0;
         clearGoldenFrameConfirmation();
         state.save.upgradePoints -= tech.cost;
         state.save.tech[tech.id] = level + 1;
         save();
         renderTech();
+        if (restoreKeyboardFocus) window.requestAnimationFrame(() => nodes.techGrid.querySelector(`[data-tech-id="${tech.id}"]`)?.focus({ preventScroll: true }));
         playSfx("upgrade");
         track("game_permanent_upgrade", { tech: tech.id, level: level + 1, cost: tech.cost });
       });

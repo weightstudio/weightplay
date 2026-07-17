@@ -789,6 +789,11 @@
           </div>
         `;
         
+        card.addEventListener("keydown", (event) => {
+          if (event.repeat && (event.key === "Enter" || event.key === " ")) {
+            event.preventDefault();
+          }
+        });
         card.addEventListener("click", () => handleCardClick(card));
         updateCardAccessibility(card, "hidden");
         return card;

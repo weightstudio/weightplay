@@ -684,14 +684,12 @@ window.WONDER_LOBBY.games.push({
   type: { en: "Spatial Inventory Roguelite", "zh-Hant": "空間行囊策略遠征" },
   categories: ["Featured", "Animal Games"],
   skills: ["Logic", "Problem Solving", "Focus"],
-  ages: ["13"],
-  ageLabel: { en: "13+", "zh-Hant": "13+" },
   href: "games/animal-gearpack-expedition/",
   description: {
-    en: "Arrange Rux's equipment inside a travel pack, connect item synergies, and prepare for short Gearwood expeditions.",
-    "zh-Hant": "把魯克斯的裝備排進旅行行囊，連結道具效果，準備展開短程齒輪森林遠征。",
+    en: "Arrange Rux's 11 x 7 equipment pack, counter special enemies, and clear 30 stages with six distinct Guardians.",
+    "zh-Hant": "替魯克斯排列 11×7 裝備行囊，反制特殊敵人，完成 30 關與六位不同首領。",
   },
-  meta: { en: ["Gear Horn Rux", "Pack Synergies", "Workshop Growth"], "zh-Hant": ["齒輪角魯克斯", "行囊連鎖", "工坊成長"] },
+  meta: { en: ["30 Expeditions", "Pack Synergies", "Six Guardians"], "zh-Hant": ["30 關遠征", "行囊連鎖", "六位首領"] },
   art: { kind: "image", background: "assets/animal-gearpack-expedition-cover.webp", hideHero: true },
 });
 
@@ -792,8 +790,8 @@ const verifiedPublicLobbyCopy = {
     title: "\u52d5\u7269\u88dd\u5099\u884c\u56ca\u9060\u5f81",
     statusText: "\u53ef\u904a\u73a9",
     type: "\u7a7a\u9593\u884c\u56ca\u7b56\u7565\u9060\u5f81",
-    description: "\u70ba\u9f52\u8f2a\u89d2\u9b6f\u514b\u65af\u6392\u597d\u65c5\u884c\u884c\u56ca\uff0c\u9023\u7d50\u88dd\u5099\u7d44\u5408\uff0c\u5b8c\u6210\u9f52\u8f2a\u6797\u5730\u9060\u5f81\u3002",
-    meta: ["\u9f52\u8f2a\u89d2\u9b6f\u514b\u65af", "\u884c\u56ca\u9023\u9396", "\u5de5\u574a\u6210\u9577"],
+    description: "\u66ff\u9b6f\u514b\u65af\u6392\u5217 11\u00d77 \u88dd\u5099\u884c\u56ca\uff0c\u53cd\u5236\u7279\u6b8a\u6575\u4eba\uff0c\u5b8c\u6210 30 \u95dc\u8207\u516d\u4f4d\u4e0d\u540c\u9996\u9818\u3002",
+    meta: ["30 \u95dc\u9060\u5f81", "\u884c\u56ca\u9023\u9396", "\u516d\u4f4d\u9996\u9818"],
   },
   "shadow-wolf": {
     title: "\u5f71\u72fc\u50b3\u8aaa",

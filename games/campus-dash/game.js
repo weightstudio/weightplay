@@ -897,6 +897,7 @@
     const key = event.key.toLowerCase();
     if (!state.running || !["arrowleft", "arrowright", "a", "d"].includes(key)) return;
     event.preventDefault();
+    if (event.repeat) return;
     moveLane(key === "arrowleft" || key === "a" ? -1 : 1);
   });
   canvas.addEventListener("pointerdown", (event) => {
