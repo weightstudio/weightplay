@@ -197,6 +197,10 @@
       nodes.rail.append(b);
     });
   }
+  function focusMission(index=Math.max(0,Math.min(campaign.length-1,state.unlocked-1))){
+    requestAnimationFrame(()=>nodes.rail.querySelectorAll(".mission-card")[index]?.focus({preventScroll:true}));
+  }
+  function focusMain(){requestAnimationFrame(()=>$("#startBtn")?.focus({preventScroll:true}))}
   function renderGadgets(focusId=null){const wrap=$("#gadgetChoices");wrap.innerHTML="";gadgetOffers.forEach(({id,level})=>{const g=gadgets[id],b=document.createElement("button");b.className=`gadget-choice${id===gadget?" selected":""}`;b.dataset.gadgetId=id;b.innerHTML=`<img src="../../assets/animal-moonlight-heist-gadget-${g.art}.webp" alt=""><span class="gadget-level">Lv.${level}</span>`;b.type="button";b.title=`${t(id)} Lv.${level}`;b.setAttribute("aria-label",gadgetSummary(id,level));b.setAttribute("aria-pressed",id===gadget?"true":"false");b.addEventListener("click",()=>{gadget=id;renderGadgets(id);updateGadget();renderGadgetSummary()});wrap.append(b)});if(focusId)wrap.querySelector(`[data-gadget-id="${focusId}"]`)?.focus({preventScroll:true})}
   function updateGadget(){if(!$("#gadgetIcon"))return;$("#gadgetIcon").src=`../../assets/animal-moonlight-heist-gadget-${gadgets[gadget].art}.webp`;$("#gadgetLabel").textContent=t(gadget)}
   function startMission(index){
@@ -212,6 +216,7 @@
     patrols=m.patrols.map((path,i)=>createPatrol(path,`../../assets/animal-moonlight-heist-patrol-${patrolArt[i%3]}.webp`,i*.23));
     if(m.guardian){const guardian=createPatrol(m.guardian.path,`../../assets/animal-moonlight-heist-guardian-${m.guardian.id}.webp`,.12,m.guardian);guardian.img.alt=m.guardian.name[locale==="zh-Hant"?1:0];patrols.push(guardian)}
     nodes.feedback.textContent=t("holdRoute");nodes.alert.style.width="0";$("#coinBattle").textContent=`${t("coins")}: ${state.coins}`;show("battle");playing=true;missionStartedAt=lastTime=performance.now();requestAnimationFrame(loop);
+    requestAnimationFrame(()=>nodes.field.focus({preventScroll:true}));
   }
   function createPatrol(path,src,progress=0,guardian=null){
     const sight=document.createElement("span");sight.className=`patrol-sight${guardian?" guardian-sight":""}`;sight.setAttribute("aria-hidden","true");
@@ -307,9 +312,9 @@
   function bind(){
     $("#localeSelect").value=locale;
     $("#localeSelect").addEventListener("change",e=>{locale=e.target.value;localStorage.setItem(localeKey,locale);localize()});
-    $("#startBtn").addEventListener("click",()=>{show("stage");renderStage()});
-    $("#stageBackBtn").addEventListener("click",()=>show("main"));
-    $("#battleBackBtn").addEventListener("click",()=>{show("stage");renderStage()});
+    $("#startBtn").addEventListener("click",()=>{show("stage");renderStage();focusMission()});
+    $("#stageBackBtn").addEventListener("click",()=>{show("main");focusMain()});
+    $("#battleBackBtn").addEventListener("click",()=>{show("stage");renderStage();focusMission(selectedMission)});
     $("#pauseBtn").addEventListener("click",()=>setPaused(!paused));
     document.addEventListener("visibilitychange",()=>{if(document.hidden&&playing&&!paused)setPaused(true)});
     nodes.field.addEventListener("pointerdown",e=>{if(!playing||paused||(routePointerId!==null&&routePointerId!==e.pointerId))return;routePointerId=e.pointerId;nodes.field.setPointerCapture(e.pointerId);routeTo(e.clientX,e.clientY)});
@@ -319,12 +324,13 @@
     nodes.field.addEventListener("lostpointercapture",e=>{if(e.pointerId===routePointerId)cancelRoutePreview()});
     nodes.modal.addEventListener("keydown",trapResultFocus);$("#gadgetBtn").addEventListener("click",useGadget);
     $("#retryBtn").addEventListener("click",()=>{closeResult();startMission(selectedMission)});
-    $("#stagesBtn").addEventListener("click",()=>{closeResult();show("stage");renderStage()});
+    $("#stagesBtn").addEventListener("click",()=>{closeResult();show("stage");renderStage();focusMission(selectedMission)});
     $("#nextBtn").addEventListener("click",()=>{closeResult();startMission(Math.min(campaign.length-1,selectedMission+1))});
   }
   function bindMissionRailDrag(){
     let pointerId=null,startX=0,startLeft=0,dragged=false,suppressClickUntil=0;
     const rail=nodes.rail;
+    rail.addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault()});
     rail.addEventListener("pointerdown",event=>{
       if(event.button!==undefined&&event.button!==0)return;
       pointerId=event.pointerId;startX=event.clientX;startLeft=rail.scrollLeft;dragged=false;suppressClickUntil=0;
@@ -358,6 +364,7 @@
     nodes.route.hidden=true;nodes.fia.style.transitionDuration="120ms";place(nodes.fia,next);scheduleArrival(140);
   });
   [$("#rerollBtn"),$("#insuranceBtn")].forEach(button=>button.addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault()}));
+  $("#startBtn").addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault()});
   $("#rerollBtn").addEventListener("click",rerollOffers);
   $("#insuranceBtn").addEventListener("click",buyInsurance);
   // Keep the public Traditional Chinese runtime dictionary ASCII-safe so it cannot be damaged by a legacy editor encoding.

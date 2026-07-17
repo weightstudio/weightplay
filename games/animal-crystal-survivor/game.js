@@ -1828,11 +1828,17 @@
   });
 
   nodes.localeSelect.addEventListener("change", (event) => setLocale(event.target.value));
+  nodes.startBtn.addEventListener("keydown", (event) => {
+    if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
+  });
   nodes.startBtn.addEventListener("click", () => showStageSelection(true));
   nodes.stageBackBtn.addEventListener("click", () => {
     state.mode = "menu";
     show(nodes.menuPanel);
     nodes.startBtn.focus({ preventScroll: true });
+  });
+  nodes.stageRail.addEventListener("keydown", (event) => {
+    if (event.repeat && (event.key === "Enter" || event.key === " ") && event.target.closest(".stage-card")) event.preventDefault();
   });
   nodes.stageRail.addEventListener("scroll", syncStageFromRail, { passive: true });
   nodes.charmBtn?.addEventListener("keydown", (event) => {

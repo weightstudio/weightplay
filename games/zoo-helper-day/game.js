@@ -299,6 +299,8 @@
   let stageDrag = null;
   let stageSettleFrame = 0;
   let suppressStageClick = false;
+  let itemPointerDrag = null;
+  let suppressItemClick = null;
 
   function cancelCareTransition(restoreTask = false) {
     careTransitionToken += 1;
@@ -653,6 +655,8 @@
   }
 
   function renderItems(stage, wanted) {
+    itemPointerDrag = null;
+    suppressItemClick = null;
     const choices = [wanted, ...stage.pool.filter((item) => item !== wanted)].slice(0, 4);
     choices.sort(() => Math.random() - 0.5);
     nodes.itemGrid.replaceChildren();
@@ -662,7 +666,7 @@
       const button = document.createElement("button");
       button.className = "item-card";
       button.type = "button";
-      button.draggable = true;
+      button.draggable = false;
       button.dataset.item = meta.id;
       button.dataset.icon = meta.icon;
       button.dataset.label = meta.label;
@@ -685,10 +689,45 @@
       label.textContent = meta.label;
       button.replaceChildren(iconBox, label);
 
-      button.addEventListener("click", () => chooseItem(meta.id, button));
-      button.addEventListener("dragstart", (event) => {
-        event.dataTransfer.setData("text/plain", meta.id);
+      button.addEventListener("click", (event) => {
+        if (suppressItemClick === button) {
+          suppressItemClick = null;
+          event.preventDefault();
+          return;
+        }
+        chooseItem(meta.id, button);
       });
+      button.addEventListener("pointerdown", (event) => {
+        if (!acceptingInput || event.isPrimary === false || event.button !== 0) return;
+        itemPointerDrag = { id: event.pointerId, button, item: meta.id, x: event.clientX, y: event.clientY, moved: false };
+      });
+      button.addEventListener("pointermove", (event) => {
+        if (!itemPointerDrag || itemPointerDrag.id !== event.pointerId || itemPointerDrag.button !== button) return;
+        const distance = Math.hypot(event.clientX - itemPointerDrag.x, event.clientY - itemPointerDrag.y);
+        if (!itemPointerDrag.moved && distance >= 6) {
+          itemPointerDrag.moved = true;
+          button.setPointerCapture?.(event.pointerId);
+          button.classList.add("dragging");
+        }
+        if (itemPointerDrag.moved) event.preventDefault();
+      });
+      const finishPointerDrag = (event) => {
+        if (!itemPointerDrag || itemPointerDrag.id !== event.pointerId || itemPointerDrag.button !== button) return;
+        const moved = itemPointerDrag.moved;
+        itemPointerDrag = null;
+        button.classList.remove("dragging");
+        if (button.hasPointerCapture?.(event.pointerId)) button.releasePointerCapture?.(event.pointerId);
+        if (!moved || event.type === "pointercancel") return;
+        event.preventDefault();
+        suppressItemClick = button;
+        setTimeout(() => { if (suppressItemClick === button) suppressItemClick = null; }, 0);
+        const target = nodes.animalCard.getBoundingClientRect();
+        if (event.clientX >= target.left && event.clientX <= target.right && event.clientY >= target.top && event.clientY <= target.bottom) {
+          chooseItem(meta.id, button);
+        }
+      };
+      button.addEventListener("pointerup", finishPointerDrag);
+      button.addEventListener("pointercancel", finishPointerDrag);
       nodes.itemGrid.appendChild(button);
     });
     requestAnimationFrame(syncItemCards);

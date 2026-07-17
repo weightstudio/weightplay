@@ -1108,6 +1108,10 @@
     requestAnimationFrame(() => centerStageCard(Math.min(STAGE_COUNT, state.save.bestStage)));
   }
 
+  function focusCurrentStage() {
+    window.requestAnimationFrame(() => nodes.stageRail.querySelector('[aria-current="true"]')?.focus({ preventScroll: true }));
+  }
+
   function centerStageCard(stageId) {
     const card = nodes.stageRail.querySelector(`[data-stage-id="${stageId}"]`);
     card?.scrollIntoView?.({ behavior: "auto", inline: "center", block: "nearest" });
@@ -1250,6 +1254,7 @@
     renderBuildCards();
     renderSelectedInfo();
     updateHud();
+    window.requestAnimationFrame(() => nodes.canvas.focus({ preventScroll: true }));
     track("game_start", { stage: id });
   }
 
@@ -2974,6 +2979,7 @@
   }
 
   function bindEvents() {
+    let mainEntryKeyboardKey = "";
     nodes.resultPanel.addEventListener("keydown", (event) => {
       if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
     });
@@ -2982,17 +2988,28 @@
       localStorage.setItem(localeKey, state.locale);
       updateLocale();
     });
+    nodes.startBtn.addEventListener("keydown", (event) => {
+      if (!event.repeat && (event.key === "Enter" || event.key === " ")) mainEntryKeyboardKey = event.key;
+    });
     nodes.startBtn.addEventListener("click", () => {
       setScreen("stages");
       renderStages();
+      focusCurrentStage();
     });
     nodes.techBtn.addEventListener("click", () => {
       renderTech();
       setScreen("tech");
     });
     nodes.techBackBtn.addEventListener("click", () => setScreen("menu"));
-    nodes.stageBackBtn.addEventListener("click", () => setScreen("menu"));
-    nodes.menuBtn.addEventListener("click", () => setScreen("stages"));
+    nodes.stageBackBtn.addEventListener("click", () => {
+      setScreen("menu");
+      window.requestAnimationFrame(() => nodes.startBtn.focus({ preventScroll: true }));
+    });
+    nodes.menuBtn.addEventListener("click", () => {
+      setScreen("stages");
+      renderStages();
+      focusCurrentStage();
+    });
     nodes.waveBtn.addEventListener("click", startWave);
     nodes.upgradeBtn.addEventListener("click", upgradeSelected);
     nodes.sellBtn.addEventListener("click", sellSelected);
@@ -3006,6 +3023,8 @@
     nodes.resultMenuBtn.addEventListener("click", () => {
       track("game_result_menu", { stage: state.currentStage, won: state.won });
       setScreen("stages");
+      renderStages();
+      focusCurrentStage();
     });
     nodes.rerollRewardBtn.addEventListener("click", rerollReward);
     nodes.nextStageBtn.addEventListener("click", () => {
@@ -3024,6 +3043,15 @@
     nodes.canvas.addEventListener("focus", () => {
       state.keyboardMode = true;
       updateCanvasAccessibility();
+    });
+    nodes.stageRail.addEventListener("keydown", (event) => {
+      if (event.repeat && event.key === mainEntryKeyboardKey) event.preventDefault();
+    });
+    document.addEventListener("keyup", (event) => {
+      if (event.key === mainEntryKeyboardKey) mainEntryKeyboardKey = "";
+    });
+    window.addEventListener("blur", () => {
+      mainEntryKeyboardKey = "";
     });
     let stageSnapTimer = 0;
     nodes.stageRail.addEventListener("scroll", () => {

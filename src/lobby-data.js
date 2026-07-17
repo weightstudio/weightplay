@@ -164,7 +164,7 @@ window.WONDER_LOBBY = {
         en: "Match animal snacks, use every move, clear collection goals, and chase your best score.",
         "zh-Hant": "消除動物零食方塊，用有限步數完成收集目標並挑戰最佳分數。",
       },
-      meta: { en: ["Animal Snacks", "20 Stages", "Match Puzzle"], "zh-Hant": ["動物零食", "20 關", "消除益智"] },
+      meta: { en: ["30 Stages", "Six Goal Families", "Six Checkpoints"], "zh-Hant": ["30 關", "六種目標", "六個檢查關"] },
       art: { kind: "image", background: "assets/snack-blocks-cover.webp", hero: "assets/weightplay-character-drum-belly-panda-safe-face-cutout.webp" },
     },
     {
@@ -179,10 +179,10 @@ window.WONDER_LOBBY = {
       ages: ["6", "family"],
       ageLabel: { en: "6+", "zh-Hant": "6+" },
       description: {
-        en: "Drop animal balls, merge matching pairs, and chase your best score all the way to the Lion King.",
+        en: "Clear 30 saved physics challenges with narrow aim windows, river wind, heavy gravity, fixed queues, and six Festival Checkpoints.",
         "zh-Hant": "落下動物球並合成相同動物，一路挑戰到獅王球與最佳分數。",
       },
-      meta: { en: ["Animal Merge", "Physics Puzzle", "Best Record"], "zh-Hant": ["動物合成", "物理益智", "最佳紀錄"] },
+      meta: { en: ["30 Challenges", "Five Physics Rules", "Six Checkpoints"], "zh-Hant": ["30 個挑戰", "五種物理規則", "六個檢查關"] },
       art: { kind: "image", background: "assets/fruit-merge-cover.webp", hero: "assets/weightplay-character-moss-shell-turtle-cutout.webp" },
     },
     {
@@ -197,10 +197,10 @@ window.WONDER_LOBBY = {
       ages: ["6", "family"],
       ageLabel: { en: "Family", "zh-Hant": "親子" },
       description: {
-        en: "A large-print, no-timer pet garden matching game made for calm daily play.",
-        "zh-Hant": "大圖示、無倒數的寵物花園配對遊戲，適合每天輕鬆遊玩。",
+        en: "Clear 30 no-timer memory challenges with previews, mist, moving cards, and six Garden Checkpoints.",
+        "zh-Hant": "完成 30 個無倒數的記憶挑戰，應對預覽、薄霧、移動卡牌與 6 個花園檢查點。",
       },
-      meta: { en: ["Pet Garden", "Large Tiles", "No Timer"], "zh-Hant": ["寵物花園", "大方塊", "無倒數"] },
+      meta: { en: ["30 Challenges", "Four Memory Rules", "No Timer"], "zh-Hant": ["30 個挑戰", "4 種記憶規則", "無倒數"] },
       art: { kind: "image", background: "assets/garden-tiles-cover.webp", hero: "assets/weightplay-character-rainbow-hop-mimi-clean-cutout.webp" },
     },
     {
@@ -840,6 +840,20 @@ if (shadowWolf) {
 }
 
 const verifiedCleanZhLobbyCopy = {
+  "fruit-merge": {
+    title: "動物合成塔",
+    statusText: "可遊玩",
+    type: "物理合成挑戰",
+    description: "挑戰 30 個可存檔物理關卡，運用窄窗、河風、重力、固定隊列與六個祭典檢查關完成合成目標。",
+    meta: ["30 個挑戰", "五種物理規則", "六個檢查關"],
+  },
+  "snack-blocks": {
+    title: "動物零食方塊",
+    statusText: "可遊玩",
+    type: "三消關卡益智",
+    description: "規劃 30 個可存檔關卡，挑戰分數、收集、雙零食、連鎖、大消除與六個雙目標檢查關。",
+    meta: ["30 關", "六種目標", "六個檢查關"],
+  },
   "campus-dash": {
     title: "\u8349\u539f\u9583\u96fb\u8dd1",
     statusText: "\u53ef\u904a\u73a9",
@@ -899,6 +913,18 @@ for (const game of window.WONDER_LOBBY.games) {
   game.type["zh-Hant"] = clean.type;
   game.description["zh-Hant"] = clean.description;
   game.meta["zh-Hant"] = clean.meta;
+}
+
+const campusDash = window.WONDER_LOBBY.games.find((game) => game.id === "campus-dash");
+if (campusDash) {
+  campusDash.description.en = "Clear 30 saved safari routes with star trails, two-lane gates, sticky mud, five objective types, and six Guardian Checks.";
+  campusDash.meta.en = ["30 Routes", "Five Rule Families", "Six Guardian Checks"];
+}
+
+const snackBlocks = window.WONDER_LOBBY.games.find((game) => game.id === "snack-blocks");
+if (snackBlocks) {
+  snackBlocks.description.en = "Plan 30 saved stages with score, collection, pair, cascade, big-match, and dual checkpoint goals.";
+  snackBlocks.meta.en = ["30 Stages", "Six Goal Families", "Six Checkpoints"];
 }
 
 const moonlightHeist = window.WONDER_LOBBY.games.find((game) => game.id === "animal-moonlight-heist");

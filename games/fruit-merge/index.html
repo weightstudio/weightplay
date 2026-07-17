@@ -9,17 +9,19 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="robots" content="index,follow" />
-    <meta name="description" content="Drop animal balls, merge matching pairs, and chase a high score from mouse to Lion King on WeightPlay." />
+    <meta name="description" content="Clear 30 saved Animal Merge Tower challenges with changing aim windows, river wind, gravity, fixed queues, and six Festival Checkpoints." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Animal Merge Tower - Animal Merge Game" />
-    <meta property="og:description" content="Drop animal balls, merge matching pairs, and chase a high score from mouse to Lion King on WeightPlay." />
+    <meta property="og:description" content="Plan physics merges across 30 saved challenges, five executable rule families, and six Festival Checkpoints." />
     <meta property="og:url" content="https://weightplay.com/games/fruit-merge/" />
     <meta property="og:image" content="https://weightplay.com/assets/fruit-merge-cover.png" />
     <meta name="twitter:card" content="summary_large_image" />
     <title>Animal Merge Tower - WeightPlay</title>
     <link rel="canonical" href="https://weightplay.com/games/fruit-merge/" />
-    <link rel="stylesheet" href="style.css?v=20260716-result-focus1" />
+    <link rel="stylesheet" href="style.css?v=20260717-depth30-1" data-wp-stage-standard data-wp-battle-standard />
+    <script data-wp-stage-standard>/* Animal Merge Tower owns its native Kids Stage rail. */</script>
+    <script data-wp-battle-standard>/* Animal Merge Tower owns its native Kids Battle Canvas. */</script>
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
     <script type="application/ld+json">
 {
@@ -29,7 +31,7 @@
               "alternateName": "\u52d5\u7269\u5408\u6210\u5854",
               "url": "https://weightplay.com/games/fruit-merge/",
               "image": "https://weightplay.com/assets/fruit-merge-cover.png",
-              "description": "Drop animal balls, merge matching pairs, and chase a high score from mouse to Lion King in Animal Merge Tower on WeightPlay.",
+              "description": "Clear 30 saved Animal Merge Tower challenges with changing aim windows, river wind, gravity, fixed queues, and six Festival Checkpoints.",
               "applicationCategory": "Game",
               "operatingSystem": "Web browser",
               "publisher": {
@@ -52,7 +54,7 @@
               "audience": {
                       "@type": "Audience",
                       "audienceType": "Kids and families",
-                      "suggestedMinAge": 5
+                      "suggestedMinAge": 6
               },
               "learningResourceType": "Skill practice through play",
               "educationalUse": "Practice Logic, Problem Solving, Hand-Eye Coordination through family-friendly browser gameplay."
@@ -129,10 +131,24 @@
           <h2 id="menuTitle">Merge to the Lion King</h2>
           <p id="menuDesc">Drop animal balls carefully. Matching animals merge into the next bigger animal.</p>
           <button id="startBtn" type="button">Start Game</button>
+          <button id="freePlayBtn" class="secondary-action" type="button">Free Play</button>
           <div id="chainPreview" class="chain-preview" aria-live="polite"></div>
           <div id="menuMilestone" class="milestone-panel" aria-live="polite"></div>
           <div id="menuLeaderboard" class="leaderboard-panel" aria-live="polite"></div>
         </div>
+      </section>
+
+      <section id="stagePanel" class="merge-stage-panel hidden" aria-label="Challenge selection">
+        <div class="merge-stage-heading">
+          <button id="stageBackBtn" type="button" aria-label="Back">&larr;</button>
+          <div>
+            <strong id="stageTitle">Festival Challenges</strong>
+            <span id="stageHelp">Drag sideways and choose an unlocked challenge.</span>
+          </div>
+        </div>
+        <div id="stageRail" class="merge-stage-rail"></div>
+        <div id="stageDots" class="merge-stage-dots" aria-hidden="true"></div>
+        <div class="merge-stage-art" aria-hidden="true"></div>
       </section>
 
       <section id="resultPanel" class="result-panel hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle">
@@ -162,21 +178,86 @@
         <div class="game-info-title">
           <span class="game-info-kicker">WeightPlay Original Game Guide</span>
           <h2>Animal Merge Tower - How to Play</h2>
-          <p>Animal Merge Tower is a physics puzzle where matching animal balls combine into larger animal balls. Players choose where to drop each animal, watch the pile shift, and try to keep space open. It is easy to understand and gives families a calm score challenge.</p>
+          <p>Animal Merge Tower is a 30-challenge physics puzzle built around animal-ball placement. Two identical animals merge into the next tier, from Mouse Ball through Lion King Ball. Six festival chapters change the aim space, sideways force, gravity, generation queue, and success condition. A separate Free Play mode keeps the original endless best-score challenge available.</p>
         </div>
       </div>
       <div class="game-info-sections">
         <div class="game-info-section">
-          <h3>How to Play</h3>
-          <ol><li>Move the animal ball above the box.</li><li>Drop it into a good spot.</li><li>Merge matching animals into the next animal.</li><li>Keep the pile below the danger line.</li></ol>
+          <h3>Festival Story and World</h3>
+          <p>The Animal Festival is rebuilding its Crown Tower after the parade scattered animal lanterns across six districts. Each lantern begins as a small animal ball. When two matching lanterns touch, their light combines into the next animal in the chain. The player is the tower arranger, choosing where each lantern enters the box so the animals can reunite without pushing the stack above the red warning line.</p>
+          <p>The route begins at Meadow Steps, passes through the narrow Forest Window, follows the River Current, climbs Mountain Weight, joins the Moon Parade, and reaches the Crown Festival. Every fifth challenge is a Festival Checkpoint. Clearing Challenge 30 means the mixed-rule tower is stable enough to carry the Lion Crown Table into the final parade.</p>
+        </div>
+        <div class="game-info-section">
+          <h3>Complete Play Flow</h3>
+          <ol>
+            <li>Choose Start Game to open the horizontal challenge rail, or choose Free Play for the original unlimited score run.</li>
+            <li>Read the challenge card's animal or score goal, active physics rules, and drop limit.</li>
+            <li>Move the preview ball with touch, pointer movement, or Left and Right. Press Space or Enter, or release a touch, to drop.</li>
+            <li>Place identical animal balls together. They merge into the next tier and award points.</li>
+            <li>Keep the pile below the red line while working toward the current tier, merge-count, combo, score, or dual checkpoint goal.</li>
+            <li>A clear saves the challenge and unlocks the next card. Running out of drops or holding a settled ball above the warning line produces a retry.</li>
+          </ol>
+        </div>
+        <div class="game-info-section">
+          <h3>Animal Chain, Scoring, and Failure</h3>
+          <p>The chain contains eleven tiers: Mouse, Rabbit, Fox, Penguin, Koala, Owl, Panda, Lion Cub, Giraffe, Elephant, and Lion King. Larger merges award more points. Merges completed within the short combo window raise the multiplier up to x5, so a prepared chain can be worth more than isolated pairs.</p>
+          <p>Physics remains active after every drop. Balls can roll, push neighboring stacks, or trigger delayed merges. A fresh falling ball does not immediately count as danger; game over requires a settled or slow-moving ball to remain above the red line. Challenge mode also has a declared drop budget. After the final ball settles, the goal is checked. Free Play has no drop limit and ends only when the tower stays too high.</p>
+        </div>
+        <div class="game-info-section">
+          <h3>Five Executable Rule Families</h3>
+          <ul>
+            <li><strong>Open Box:</strong> the full horizontal aim range and normal gravity introduce the core placement rule.</li>
+            <li><strong>Narrow Window:</strong> both sides of the aim range close inward, forcing central stacking and making escape space more valuable.</li>
+            <li><strong>River Wind:</strong> a repeating sideways force changes direction over time and nudges moving balls after they enter the box.</li>
+            <li><strong>Heavy Gravity:</strong> the Matter.js world gravity increases from 1.45 to 2.05, giving drops less time to slide across unstable surfaces.</li>
+            <li><strong>Fixed Queue:</strong> the next animals follow an authored Mouse-Rabbit-Fox rhythm, allowing deliberate plans instead of adapting to a random preview.</li>
+          </ul>
+          <p>Crown Festival challenges combine rules. The finale uses Narrow Window, River Wind, Heavy Gravity, and Fixed Queue together; this changes spatial planning, motion prediction, landing time, and future-piece knowledge in the same run.</p>
+        </div>
+        <div class="game-info-section">
+          <h3>Thirty Challenges in Six Chapters</h3>
+          <ul>
+            <li><strong>Challenges 1-5, Meadow Steps:</strong> learn pair merges, animal tiers, short combos, and score before Meadow Drum combines a Penguin goal with points.</li>
+            <li><strong>Challenges 6-10, Forest Window:</strong> solve the same kinds of goals through a reduced aim range, ending at Owl Gate.</li>
+            <li><strong>Challenges 11-15, River Current:</strong> account for alternating wind while building merges, Koala and Owl tiers, and combos before Panda Ferry.</li>
+            <li><strong>Challenges 16-20, Mountain Weight:</strong> faster heavy-gravity landings reduce correction time and culminate at Lion Cub Peak.</li>
+            <li><strong>Challenges 21-25, Moon Parade:</strong> use the known queue to plan several drops ahead, ending with the Panda Lantern dual goal.</li>
+            <li><strong>Challenges 26-30, Crown Festival:</strong> mix two advanced rules at a time, then combine all four in the Lion Crown Table checkpoint.</li>
+          </ul>
+        </div>
+        <div class="game-info-section">
+          <h3>Placement Strategies</h3>
+          <ul>
+            <li>Keep matching small animals on the same side, but preserve one open lane for pieces that do not fit the current chain.</li>
+            <li>Place large balls low and toward the center. A large ball near a wall can trap several small balls above it.</li>
+            <li>Under wind, watch the current direction before dropping onto a narrow target; the force affects moving balls, not just the preview.</li>
+            <li>Under heavy gravity, aim earlier and avoid relying on a slow roll across the top of the pile.</li>
+            <li>In Fixed Queue challenges, use the visible Next ball and remembered rhythm to prepare the landing area two or three drops ahead.</li>
+            <li>Checkpoint goals require both an animal tier and points. A single large merge may satisfy the tier while a planned combo supplies the remaining score.</li>
+          </ul>
+        </div>
+        <div class="game-info-section">
+          <h3>Development and Design</h3>
+          <p>The game uses one contained 720-by-1040 Matter.js board inside a uniformly scaled Kids Canvas. Touch, pointer, and keyboard controls all update the same logical aim coordinate, so the physical simulation does not change with screen size. A held Space or Enter key produces only one drop until released, protecting the drop budget from key-repeat accidents.</p>
+          <p>The original Free Play mode remains because open-ended pile management has its own replay value. The 30-challenge campaign adds structured learning without replacing it. Depth comes from executable physics and queue changes plus five different goal families, not only rising score targets. Kids pages stay ad-free, create no advertising reserve, and save challenge unlocks only in the current browser.</p>
         </div>
         <div class="game-info-section game-info-parent">
           <h3>Parent Note</h3>
-          <p>This game may help children practice planning, spatial reasoning, and hand-eye coordination. It is a casual game and does not measure intelligence.</p>
+          <p>Animal Merge Tower is intended for ages 6+ and family play. Later challenges ask players to predict motion, remember a fixed queue, and adjust to changing physical conditions. The Skill Report and local records describe only this game session; they are not an intelligence test, diagnosis, developmental assessment, school grade, or comparison with other children. The game is free, needs no account, and makes no advertising request in the Kids section.</p>
         </div>
         <div class="game-info-section">
           <h3>Frequently Asked Questions</h3>
-          <dl><div><dt>What is the goal?</dt><dd>Merge animal balls and score as high as possible before the box fills.</dd></div><div><dt>Is it timed?</dt><dd>No. Players can think before dropping.</dd></div><div><dt>Can adults enjoy it too?</dt><dd>Yes. It is family-friendly and replayable.</dd></div></dl>
+          <dl>
+            <div><dt>How many challenges are there?</dt><dd>There are 30 saved challenges in six chapters, with Festival Checkpoints at 5, 10, 15, 20, 25, and 30.</dd></div>
+            <div><dt>What is different from Free Play?</dt><dd>Challenge mode adds a goal, drop budget, saved unlock path, and authored physics or queue rules. Free Play remains an unlimited best-score run.</dd></div>
+            <div><dt>How does River Wind work?</dt><dd>It applies a repeating sideways force to moving balls inside the physics box, and its direction changes over time.</dd></div>
+            <div><dt>What changes under Heavy Gravity?</dt><dd>The physical world gravity increases, so balls land faster and have less time to roll into place.</dd></div>
+            <div><dt>What is a Fixed Queue?</dt><dd>The generated animals follow a known Mouse-Rabbit-Fox pattern, allowing plans across several future drops.</dd></div>
+            <div><dt>How is challenge progress saved?</dt><dd>Unlocked, completed, selected, and best-score data stay in this browser. Clearing browser storage removes them.</dd></div>
+            <div><dt>Can I play on a phone and computer?</dt><dd>Yes. Phones support touch aiming and dropping; computers support pointer controls and Left, Right, Space, and Enter.</dd></div>
+            <div><dt>Does the game require login or payment?</dt><dd>No. It is free, account-free, and the Kids build makes no advertising request.</dd></div>
+            <div><dt>Is the Skill Report a formal test?</dt><dd>No. It is supportive local feedback based only on the current run.</dd></div>
+          </dl>
         </div>
       </div>
     </section>
@@ -194,13 +275,13 @@
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
     <script src="../../src/vendor/matter.min.js?v=20260630-matter1"></script>
     <script src="../../src/vendor/matter-global.js?v=20260630-matter1"></script>
-    <script src="game.js?v=20260716-result-focus1"></script>
+    <script src="game.js?v=20260717-depth30-1"></script>
     <script>
       (() => {
         const loadGameInfo = () => {
           if (document.querySelector("script[data-merge-game-info]")) return;
           const script = document.createElement("script");
-          script.src = "../../src/game-page-info.js?v=20260710-merge-wide-mobile1";
+          script.src = "../../src/game-page-info.js?v=20260717-merge-depth30-1";
           script.dataset.mergeGameInfo = "idle";
           document.body.appendChild(script);
         };

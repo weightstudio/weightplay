@@ -1155,6 +1155,23 @@
     }, 70);
   }
 
+  window.__snackBlocksSmoke = {
+    stageCatalog() {
+      return stages.map((stage) => ({ ...stage, pool: [...stage.pool], snacks: stage.snacks ? [...stage.snacks] : undefined }));
+    },
+    readState() {
+      return {
+        stage: activeStage().id,
+        score: state.score,
+        moves: state.moves,
+        goalCount: state.goalCount,
+        bestCascade: state.bestCascade,
+        bestBurst: state.bestBurst,
+        goal: goalLabel(),
+      };
+    },
+  };
+
   nodes.nextBtn.addEventListener("click", () => startStage(Math.min(state.currentStageIndex + 1, stages.length - 1)));
   nodes.againBtn.addEventListener("click", () => {
     window.WonderAnalytics?.track("game_restart", {

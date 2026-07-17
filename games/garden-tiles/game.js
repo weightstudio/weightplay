@@ -50,15 +50,24 @@
     en: {
       title: "Pet Garden Tiles",
       pageTitle: "Pet Garden Tiles - WeightPlay",
-      pageDescription: "Relax with large-print pet garden tile matching. Match animals, flowers, birds, tools, and cozy garden items across gentle levels on WeightPlay.",
+      pageDescription: "Match hidden animal and garden pictures through 30 calm memory challenges with previews, mist, gusts, parades, and six saved checkpoints.",
       language: "Language",
-      mainIntro: "Remember the garden pictures and match every pair across ten levels.",
+      mainIntro: "Remember the garden pictures and clear 30 calm challenges across six garden chapters.",
       start: "Choose Level",
       level: "Level",
       moves: "Moves",
       pairs: "Pairs",
       pairCount: "{count} pairs",
       starGoal: "3-star: {moves} moves",
+      chapter: "Chapter {chapter}: {name}",
+      checkpoint: "Garden Checkpoint",
+      rules: {
+        classic: "Classic Memory",
+        preview: "Morning Preview",
+        mist: "Garden Mist",
+        gust: "Playful Gust",
+        parade: "Garden Parade",
+      },
       chooseLevel: "Choose Level",
       locked: "Level locked",
       selectFirst: "Pick a tile, then find its matching pair.",
@@ -96,15 +105,24 @@
     "zh-Hant": {
       title: "\u5bf5\u7269\u82b1\u5712\u65b9\u584a",
       pageTitle: "\u5bf5\u7269\u82b1\u5712\u65b9\u584a - WeightPlay",
-      pageDescription: "\u5728 WeightPlay \u7528\u5927\u5b57\u9ad4\u8f15\u9b06\u914d\u5c0d\u5bf5\u7269\u82b1\u5712\u65b9\u584a\uff0c\u5728\u6eab\u548c\u7684\u95dc\u5361\u4e2d\u627e\u51fa\u52d5\u7269\u3001\u82b1\u6735\u3001\u9ce5\u985e\u3001\u5de5\u5177\u8207\u82b1\u5712\u7269\u4ef6\u7684\u914d\u5c0d\u3002",
+      pageDescription: "\u5728 30 \u500b\u7121\u5012\u6578\u7684\u82b1\u5712\u8a18\u61b6\u6311\u6230\u4e2d\uff0c\u7ffb\u627e\u52d5\u7269\u8207\u82b1\u5712\u5716\u6848\uff0c\u61c9\u5c0d\u9810\u89bd\u3001\u8584\u9727\u3001\u5fae\u98a8\u8207\u904a\u884c\u898f\u5247\u3002",
       language: "\u8a9e\u8a00",
-      mainIntro: "\u8a18\u4f4f\u82b1\u5712\u5716\u6848\u7684\u4f4d\u7f6e\uff0c\u5728 10 \u500b\u95dc\u5361\u4e2d\u627e\u51fa\u6240\u6709\u76f8\u540c\u914d\u5c0d\u3002",
+      mainIntro: "\u8a18\u4f4f\u82b1\u5712\u5716\u6848\u7684\u4f4d\u7f6e\uff0c\u9010\u6b65\u5b8c\u6210 6 \u500b\u82b1\u5712\u7bc7\u7ae0\u3001\u5171 30 \u500b\u6eab\u548c\u6311\u6230\u3002",
       start: "\u9078\u64c7\u95dc\u5361",
       level: "\u95dc\u5361",
       moves: "\u6b65\u6578",
       pairs: "\u914d\u5c0d",
       pairCount: "{count} \u7d44\u914d\u5c0d",
       starGoal: "\u4e09\u661f\uff1a{moves} \u6b65",
+      chapter: "\u7b2c {chapter} \u7ae0\uff1a{name}",
+      checkpoint: "\u82b1\u5712\u6aa2\u67e5\u9ede",
+      rules: {
+        classic: "\u7d93\u5178\u8a18\u61b6",
+        preview: "\u6668\u5149\u9810\u89bd",
+        mist: "\u82b1\u5712\u8584\u9727",
+        gust: "\u8abf\u76ae\u5fae\u98a8",
+        parade: "\u82b1\u5712\u904a\u884c",
+      },
       chooseLevel: "\u9078\u64c7\u95dc\u5361",
       locked: "\u95dc\u5361\u5c1a\u672a\u89e3\u9396",
       selectFirst: "\u5148\u9078\u4e00\u5f35\u65b9\u584a\uff0c\u518d\u627e\u51fa\u76f8\u540c\u7684\u914d\u5c0d\u3002",
@@ -166,18 +184,25 @@
     { id: "ticket", label: "Ticket Booth", asset: "../../assets/animal-zoo-idle-ticket-booth.png" },
     { id: "basket", label: "Basket", asset: "../../assets/animal-vine-basket.png" },
   ];
-  const levels = [
-    { pairs: 6, cols: 4, starMoves: [12, 15] },
-    { pairs: 8, cols: 4, starMoves: [16, 20] },
-    { pairs: 10, cols: 5, starMoves: [20, 25] },
-    { pairs: 12, cols: 4, starMoves: [24, 30] },
-    { pairs: 14, cols: 4, starMoves: [28, 35] },
-    { pairs: 15, cols: 5, starMoves: [30, 38] },
-    { pairs: 16, cols: 4, starMoves: [32, 41] },
-    { pairs: 18, cols: 6, starMoves: [36, 46] },
-    { pairs: 20, cols: 5, starMoves: [40, 52] },
-    { pairs: 24, cols: 6, starMoves: [48, 62] },
+  const chapterNames = {
+    en: ["Seedling Walk", "Morning Greenhouse", "Misty Pond", "Breezy Orchard", "Animal Parade", "Moonlit Conservatory"],
+    "zh-Hant": ["\u5ae9\u82bd\u5c0f\u5f91", "\u6668\u5149\u6eab\u5ba4", "\u8584\u9727\u6c60\u5858", "\u5fae\u98a8\u679c\u5712", "\u52d5\u7269\u904a\u884c", "\u6708\u5149\u82b1\u623f"],
+  };
+  const levelBlueprints = [
+    [4, ["classic"]], [5, ["classic"]], [6, ["classic"]], [7, ["classic"]], [8, ["classic", "preview"]],
+    [6, ["preview"]], [7, ["preview"]], [8, ["preview"]], [9, ["preview"]], [10, ["preview", "classic"]],
+    [6, ["mist"]], [7, ["mist"]], [8, ["mist"]], [9, ["mist", "preview"]], [10, ["mist", "preview"]],
+    [7, ["gust"]], [8, ["gust"]], [9, ["gust"]], [10, ["gust", "preview"]], [11, ["gust", "mist"]],
+    [8, ["parade"]], [9, ["parade"]], [10, ["parade"]], [11, ["parade", "preview"]], [12, ["parade", "mist"]],
+    [9, ["gust", "parade"]], [10, ["mist", "parade"]], [11, ["preview", "gust", "parade"]], [12, ["mist", "gust", "parade"]], [14, ["preview", "mist", "gust", "parade"]],
   ];
+  const levels = levelBlueprints.map(([pairs, rules], index) => ({
+    pairs,
+    rules,
+    chapter: Math.floor(index / 5) + 1,
+    checkpoint: (index + 1) % 5 === 0,
+    starMoves: [pairs + Math.ceil(pairs * 0.35), pairs + Math.ceil(pairs * 0.8)],
+  }));
 
   let unlocked = readNumber(UNLOCK_KEY, 1);
   let starMap = readJson(STARS_KEY, {});
@@ -191,12 +216,16 @@
   let resultPreviousBest = 0;
   let roundGeneration = 0;
   let roundLifecycleSuspended = document.hidden;
+  let previewing = false;
+  let firstPickTaskToken = 0;
   const roundTasks = new Set();
 
   function invalidateRoundTasks() {
     roundGeneration += 1;
     roundTasks.clear();
     busy = false;
+    previewing = false;
+    firstPickTaskToken += 1;
   }
 
   function scheduleRoundTask(callback, delay) {
@@ -265,6 +294,10 @@
   function tileName(art) {
     const names = dictionary[locale()]?.tileNames || dictionary.en.tileNames;
     return names[art.id] || art.label;
+  }
+
+  function ruleLabel(rule) {
+    return dictionary[locale()]?.rules?.[rule] || dictionary.en.rules[rule] || rule;
   }
 
   function readNumber(key, fallback) {
@@ -375,8 +408,11 @@
       const stars = starMap[index + 1] || 0;
       const isLocked = index + 1 > unlocked;
       button.innerHTML = `
+        <em>${t("chapter", { chapter: level.chapter, name: chapterNames[locale()]?.[level.chapter - 1] || chapterNames.en[level.chapter - 1] })}</em>
         <strong>${index + 1}</strong>
         <span>${t("pairCount", { count: level.pairs })}</span>
+        <span class="level-rules">${level.rules.map(ruleLabel).join(" + ")}</span>
+        ${level.checkpoint ? `<b>${t("checkpoint")}</b>` : ""}
         <small${isLocked ? ' class="level-lock"' : ""}>${isLocked ? t("locked") : t("starGoal", { moves: level.starMoves[0] })}</small>
       `;
       if (isLocked) button.classList.add("locked");
@@ -423,6 +459,7 @@
     matchedPairs = 0;
     busy = false;
     tiles = makeTiles(level.pairs, index);
+    previewing = level.rules.includes("preview");
     const totalCards = level.pairs * 2;
     const columns = chooseBattleColumns(totalCards);
     board.style.setProperty("--cols", columns);
@@ -441,7 +478,7 @@
     resultPanel.classList.add("hidden");
     setBattleCovered(false);
     renderBoard();
-    showMessage(t("selectFirst"));
+    showMessage(previewing ? ruleLabel("preview") : t("selectFirst"));
     updateHud();
     updateGardenFrame();
     requestAnimationFrame(() => {
@@ -452,6 +489,16 @@
       updateGardenFrame();
       board.querySelector(".tile:not(:disabled)")?.focus({ preventScroll: true });
     });
+    if (previewing) {
+      busy = true;
+      scheduleRoundTask(() => {
+        previewing = false;
+        busy = false;
+        renderBoard();
+        showMessage(t("selectFirst"));
+        board.querySelector(".tile:not(:disabled)")?.focus({ preventScroll: true });
+      }, 1100);
+    }
     window.WonderAnalytics?.track?.("game_start", { game_id: GAME_ID, level: index + 1 });
     window.WonderAnalytics?.track?.("level_start", { game_id: GAME_ID, level: index + 1 });
   }
@@ -510,6 +557,7 @@
         button.setAttribute("aria-hidden", "true");
       }
       if (selected) button.classList.add("selected");
+      if (previewing) button.classList.add("preview");
       board.append(button);
     }
     if (focusIndex != null) requestAnimationFrame(() => board.querySelector(`[data-index="${focusIndex}"]:not(:disabled)`)?.focus());
@@ -523,6 +571,15 @@
       selectedTile = tile;
       renderBoard(tile.index);
       window.WonderSound?.play?.("click");
+      if (levels[currentLevelIndex].rules.includes("mist")) {
+        const token = ++firstPickTaskToken;
+        scheduleRoundTask(() => {
+          if (token !== firstPickTaskToken || selectedTile?.index !== tile.index) return;
+          selectedTile = null;
+          renderBoard(tile.index);
+          showMessage(ruleLabel("mist"));
+        }, 1200);
+      }
       return;
     }
     if (selectedTile.index === tile.index) {
@@ -531,6 +588,7 @@
       return;
     }
     moves += 1;
+    firstPickTaskToken += 1;
     if (selectedTile.art.id === tile.art.id) {
       selectedTile.matched = true;
       tile.matched = true;
@@ -539,6 +597,10 @@
       showMessage(t("matched"));
       window.WonderSound?.play?.("success");
       renderBoard(tiles.find((item) => !item.matched)?.index ?? null);
+      if (levels[currentLevelIndex].rules.includes("parade") && matchedPairs < levels[currentLevelIndex].pairs) {
+        rotateUnmatchedTiles();
+        renderBoard(tiles.find((item) => !item.matched)?.index ?? null);
+      }
       if (matchedPairs === levels[currentLevelIndex].pairs) finishLevel();
     } else {
       const first = selectedTile.index;
@@ -550,11 +612,28 @@
       renderBoard(second);
       markWrong(first, second);
       scheduleRoundTask(() => {
+        if (levels[currentLevelIndex].rules.includes("gust")) shuffleUnmatchedTiles();
         busy = false;
         renderBoard(second);
       }, 360);
     }
     updateHud();
+  }
+
+  function reorderUnmatched(nextUnmatched) {
+    const positions = tiles.filter((tile) => !tile.matched).map((tile) => tile.index);
+    nextUnmatched.forEach((tile, position) => { tile.index = positions[position]; });
+    tiles.sort((a, b) => a.index - b.index);
+  }
+
+  function shuffleUnmatchedTiles() {
+    reorderUnmatched(shuffle(tiles.filter((tile) => !tile.matched)));
+  }
+
+  function rotateUnmatchedTiles() {
+    const unmatched = tiles.filter((tile) => !tile.matched);
+    if (unmatched.length > 1) unmatched.unshift(unmatched.pop());
+    reorderUnmatched(unmatched);
   }
 
   function markWrong(first, second) {

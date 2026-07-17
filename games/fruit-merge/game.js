@@ -3,6 +3,7 @@
   const BEST_KEY = "fruitMergeBestScore";
   const PROGRESS_KEY = "weightplay_fruit_merge_progress";
   const LEADERBOARD_KEY = "weightplay_fruit_merge_leaderboard";
+  const CHALLENGE_KEY = "weightplay_fruit_merge_challenges_v1";
   const canvas = document.querySelector("#gameCanvas");
   const ctx = canvas.getContext("2d");
   const localeSelect = document.querySelector("#localeSelect");
@@ -25,6 +26,13 @@
   const backToMenuBtn = document.querySelector("#backToMenuBtn");
   const restartBtn = document.querySelector("#restartBtn");
   const startBtn = document.querySelector("#startBtn");
+  const freePlayBtn = document.querySelector("#freePlayBtn");
+  const stagePanel = document.querySelector("#stagePanel");
+  const stageBackBtn = document.querySelector("#stageBackBtn");
+  const stageTitle = document.querySelector("#stageTitle");
+  const stageHelp = document.querySelector("#stageHelp");
+  const stageRail = document.querySelector("#stageRail");
+  const stageDots = document.querySelector("#stageDots");
   const menuPanel = document.querySelector("#menuPanel");
   const playPanel = document.querySelector("#playPanel");
   const menuTitle = document.querySelector("#menuTitle");
@@ -99,7 +107,25 @@
       habitatStep: "step",
       habitatSteps: "steps",
       habitatAlbumComplete: "Habitat Album complete · Keep merging toward the Lion King!",
-      start: "Start",
+      start: "Start Game",
+      freePlay: "Free Play",
+      stageTitle: "Festival Challenges",
+      stageHelp: "Drag sideways and choose an unlocked challenge.",
+      stageBack: "Back to main",
+      stageLabel: "Challenge {stage}",
+      stageLocked: "Locked",
+      stageBest: "Best {score}",
+      goalScore: "Reach {score} points",
+      goalTier: "Merge a {animal}",
+      goalMerges: "Complete {count} merges",
+      goalCombo: "Reach combo x{count}",
+      goalDual: "Merge {animal} and score {score}",
+      dropsRule: "{count} drops",
+      clearTitle: "Challenge Clear!",
+      failedTitle: "Challenge Retry",
+      nextChallenge: "Next Challenge",
+      retryChallenge: "Try Again",
+      challengeMenu: "Challenges",
       gameOver: "Game Over",
       result: "Score {score}  Best {best}",
       resultScore: "Score {score}",
@@ -182,7 +208,25 @@
       habitatStep: "階段",
       habitatSteps: "階段",
       habitatAlbumComplete: "棲地圖鑑完成 · 繼續向獅王合成！",
-      start: "開始",
+      start: "開始遊戲",
+      freePlay: "自由模式",
+      stageTitle: "動物祭典挑戰",
+      stageHelp: "左右滑動，選擇已解鎖的挑戰。",
+      stageBack: "返回主畫面",
+      stageLabel: "挑戰 {stage}",
+      stageLocked: "尚未解鎖",
+      stageBest: "最佳 {score}",
+      goalScore: "取得 {score} 分",
+      goalTier: "合成 {animal}",
+      goalMerges: "完成 {count} 次合成",
+      goalCombo: "達成連擊 x{count}",
+      goalDual: "合成 {animal} 並取得 {score} 分",
+      dropsRule: "{count} 次落下",
+      clearTitle: "挑戰完成！",
+      failedTitle: "再試一次",
+      nextChallenge: "下一個挑戰",
+      retryChallenge: "重新挑戰",
+      challengeMenu: "挑戰關卡",
       gameOver: "遊戲結束",
       result: "分數 {score}  最佳 {best}",
       resultScore: "分數 {score}",
@@ -225,6 +269,39 @@
       fruit9: "大象球",
       fruit10: "獅王球",
     },  };
+
+  const challenges = [
+    { id: 1, chapter: ["Meadow Steps", "草原起步"], name: ["First Pair", "第一對夥伴"], goal: "merges", target: 3, drops: 12, rules: ["classic"] },
+    { id: 2, chapter: ["Meadow Steps", "草原起步"], name: ["Fox Picnic", "狐狸野餐"], goal: "tier", target: 2, drops: 14, rules: ["classic"] },
+    { id: 3, chapter: ["Meadow Steps", "草原起步"], name: ["Quick Friends", "快速夥伴"], goal: "combo", target: 2, drops: 16, rules: ["classic"] },
+    { id: 4, chapter: ["Meadow Steps", "草原起步"], name: ["Meadow Score", "草原得分"], goal: "score", target: 90, drops: 18, rules: ["classic"] },
+    { id: 5, chapter: ["Meadow Steps", "草原起步"], name: ["Meadow Drum", "草原鼓檢查"], checkpoint: true, goal: "dual", target: 3, scoreTarget: 120, drops: 20, rules: ["classic"] },
+    { id: 6, chapter: ["Forest Window", "森林窄窗"], name: ["Narrow Landing", "窄道落點"], goal: "merges", target: 5, drops: 18, rules: ["narrow"] },
+    { id: 7, chapter: ["Forest Window", "森林窄窗"], name: ["Penguin Window", "企鵝窗口"], goal: "tier", target: 3, drops: 20, rules: ["narrow"] },
+    { id: 8, chapter: ["Forest Window", "森林窄窗"], name: ["Center Stack", "中央堆疊"], goal: "score", target: 180, drops: 21, rules: ["narrow"] },
+    { id: 9, chapter: ["Forest Window", "森林窄窗"], name: ["Window Chain", "窄窗連擊"], goal: "combo", target: 3, drops: 22, rules: ["narrow"] },
+    { id: 10, chapter: ["Forest Window", "森林窄窗"], name: ["Owl Gate", "貓頭鷹門檢查"], checkpoint: true, goal: "dual", target: 4, scoreTarget: 240, drops: 24, rules: ["narrow"] },
+    { id: 11, chapter: ["River Current", "河流氣流"], name: ["West Breeze", "西風落球"], goal: "merges", target: 7, drops: 22, rules: ["wind"] },
+    { id: 12, chapter: ["River Current", "河流氣流"], name: ["Drifting Koala", "漂流無尾熊"], goal: "tier", target: 4, drops: 24, rules: ["wind"] },
+    { id: 13, chapter: ["River Current", "河流氣流"], name: ["Breeze Score", "風中得分"], goal: "score", target: 320, drops: 25, rules: ["wind"] },
+    { id: 14, chapter: ["River Current", "河流氣流"], name: ["Current Combo", "水流連擊"], goal: "combo", target: 3, drops: 26, rules: ["wind"] },
+    { id: 15, chapter: ["River Current", "河流氣流"], name: ["Panda Ferry", "熊貓渡口檢查"], checkpoint: true, goal: "dual", target: 5, scoreTarget: 380, drops: 28, rules: ["wind"] },
+    { id: 16, chapter: ["Mountain Weight", "山岳重力"], name: ["Heavy Landing", "重力落點"], goal: "merges", target: 9, drops: 25, rules: ["heavy"] },
+    { id: 17, chapter: ["Mountain Weight", "山岳重力"], name: ["Owl Summit", "貓頭鷹山頂"], goal: "tier", target: 5, drops: 28, rules: ["heavy"] },
+    { id: 18, chapter: ["Mountain Weight", "山岳重力"], name: ["Fast Collapse", "快速坍落"], goal: "combo", target: 4, drops: 29, rules: ["heavy"] },
+    { id: 19, chapter: ["Mountain Weight", "山岳重力"], name: ["Mountain Score", "山岳得分"], goal: "score", target: 520, drops: 30, rules: ["heavy"] },
+    { id: 20, chapter: ["Mountain Weight", "山岳重力"], name: ["Lion Cub Peak", "小獅子峰檢查"], checkpoint: true, goal: "dual", target: 6, scoreTarget: 560, drops: 32, rules: ["heavy"] },
+    { id: 21, chapter: ["Moon Parade", "月光隊列"], name: ["Mouse-Rabbit Rhythm", "鼠兔節奏"], goal: "merges", target: 11, drops: 28, rules: ["fixed"] },
+    { id: 22, chapter: ["Moon Parade", "月光隊列"], name: ["Known Next", "已知下一顆"], goal: "tier", target: 5, drops: 30, rules: ["fixed"] },
+    { id: 23, chapter: ["Moon Parade", "月光隊列"], name: ["Parade Chain", "隊列連擊"], goal: "combo", target: 4, drops: 31, rules: ["fixed"] },
+    { id: 24, chapter: ["Moon Parade", "月光隊列"], name: ["Planned Score", "規劃得分"], goal: "score", target: 650, drops: 32, rules: ["fixed"] },
+    { id: 25, chapter: ["Moon Parade", "月光隊列"], name: ["Panda Lantern", "熊貓燈檢查"], checkpoint: true, goal: "dual", target: 6, scoreTarget: 650, drops: 34, rules: ["fixed"] },
+    { id: 26, chapter: ["Crown Festival", "皇冠祭典"], name: ["Wind Window", "風之窄窗"], goal: "merges", target: 13, drops: 31, rules: ["narrow", "wind"] },
+    { id: 27, chapter: ["Crown Festival", "皇冠祭典"], name: ["Heavy Parade", "重力隊列"], goal: "tier", target: 6, drops: 34, rules: ["heavy", "fixed"] },
+    { id: 28, chapter: ["Crown Festival", "皇冠祭典"], name: ["Festival Combo", "祭典連擊"], goal: "combo", target: 5, drops: 35, rules: ["wind", "fixed"] },
+    { id: 29, chapter: ["Crown Festival", "皇冠祭典"], name: ["Crown Score", "皇冠得分"], goal: "score", target: 900, drops: 36, rules: ["narrow", "heavy"] },
+    { id: 30, chapter: ["Crown Festival", "皇冠祭典"], name: ["Lion Crown Table", "獅王餐桌檢查"], checkpoint: true, goal: "dual", target: 6, scoreTarget: 800, drops: 40, rules: ["narrow", "wind", "heavy", "fixed"] },
+  ];
 
   const imageLoadTasks = [];
 
@@ -297,6 +374,13 @@
   let animationFrameId = null;
   let lifecycleSuspended = document.hidden;
   let lifecycleSuspendedAt = lifecycleSuspended ? performance.now() : 0;
+  let activeChallengeIndex = null;
+  let bestCombo = 0;
+  let fixedQueueIndex = 0;
+  let challengeLastDropAt = 0;
+  let lastChallengeCleared = false;
+  let windApplications = 0;
+  const fixedQueue = [0, 1, 0, 2, 1, 0, 1, 2, 0, 1, 3, 0];
 
   function activeNow() {
     return lifecycleSuspended ? lifecycleSuspendedAt : performance.now();
@@ -351,6 +435,71 @@
     return value;
   }
 
+  function activeChallenge() {
+    return Number.isInteger(activeChallengeIndex) ? challenges[activeChallengeIndex] : null;
+  }
+
+  function localeSlot() {
+    return locale() === "zh-Hant" ? 1 : 0;
+  }
+
+  function challengeGoalLabel(challenge = activeChallenge()) {
+    if (!challenge) return t("goal", { name: t("fruit10") });
+    if (challenge.goal === "score") return t("goalScore", { score: challenge.target });
+    if (challenge.goal === "tier") return t("goalTier", { animal: t(`fruit${challenge.target}`) });
+    if (challenge.goal === "merges") return t("goalMerges", { count: challenge.target });
+    if (challenge.goal === "combo") return t("goalCombo", { count: challenge.target });
+    return t("goalDual", { animal: t(`fruit${challenge.target}`), score: challenge.scoreTarget });
+  }
+
+  function challengeGoalMet(challenge = activeChallenge()) {
+    if (!challenge) return false;
+    if (challenge.goal === "score") return score >= challenge.target;
+    if (challenge.goal === "tier") return maxReachedLevel >= challenge.target;
+    if (challenge.goal === "merges") return mergeCount >= challenge.target;
+    if (challenge.goal === "combo") return bestCombo >= challenge.target;
+    return maxReachedLevel >= challenge.target && score >= challenge.scoreTarget;
+  }
+
+  function challengeProgressValue(challenge = activeChallenge()) {
+    if (!challenge) return maxReachedLevel / (fruits.length - 1);
+    if (challenge.goal === "score") return score / challenge.target;
+    if (challenge.goal === "tier") return maxReachedLevel / challenge.target;
+    if (challenge.goal === "merges") return mergeCount / challenge.target;
+    if (challenge.goal === "combo") return bestCombo / challenge.target;
+    return Math.min(maxReachedLevel / challenge.target, score / challenge.scoreTarget);
+  }
+
+  function readChallengeProgress() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(CHALLENGE_KEY) || "{}");
+      return {
+        unlocked: clamp(Number(saved.unlocked) || 1, 1, challenges.length),
+        selected: clamp(Number(saved.selected) || 1, 1, challenges.length),
+        completed: Array.isArray(saved.completed) ? saved.completed.filter((id) => Number.isInteger(id) && id >= 1 && id <= challenges.length) : [],
+        best: saved.best && typeof saved.best === "object" ? saved.best : {},
+      };
+    } catch {
+      return { unlocked: 1, selected: 1, completed: [], best: {} };
+    }
+  }
+
+  function saveChallengeProgress(progress) {
+    try {
+      localStorage.setItem(CHALLENGE_KEY, JSON.stringify(progress));
+    } catch {
+      // Challenge progress remains optional when storage is unavailable.
+    }
+  }
+
+  function aimBounds(level = currentLevel) {
+    const radius = fruits[level]?.radius || fruits[0].radius;
+    const challenge = activeChallenge();
+    const narrow = challenge?.rules.includes("narrow");
+    const inset = narrow ? 92 : 0;
+    return { min: wallLeft + radius + inset, max: wallRight - radius - inset };
+  }
+
   function applyText() {
     document.documentElement.lang = locale();
     document.title = `${t("title")} - WeightPlay`;
@@ -373,8 +522,13 @@
     menuDesc.textContent = t("menuDesc");
     renderChainPreview();
     startBtn.textContent = t("start");
+    freePlayBtn.textContent = t("freePlay");
+    stageTitle.textContent = t("stageTitle");
+    stageHelp.textContent = t("stageHelp");
+    stageBackBtn.setAttribute("aria-label", t("stageBack"));
     playAgainBtn.textContent = t("playAgain");
     menuBtn.textContent = t("menu");
+    renderChallengeRail(false);
     updateHud();
     updateAimCoach();
     updateAimAccessibility();
@@ -406,13 +560,50 @@
   }
 
   function randomNextLevel() {
+    const challenge = activeChallenge();
+    if (challenge?.rules.includes("fixed")) {
+      const value = fixedQueue[fixedQueueIndex % fixedQueue.length];
+      fixedQueueIndex += 1;
+      return value;
+    }
     const poolMax = score > 900 ? 4 : score > 320 ? 3 : 2;
     return Math.floor(Math.random() * (poolMax + 1));
   }
 
+  function showStage() {
+    running = false;
+    gameOver = true;
+    stopAnimationLoop();
+    resultPanel.classList.add("hidden");
+    menuPanel.classList.add("hidden");
+    stagePanel.classList.remove("hidden");
+    playPanel.inert = false;
+    playPanel.removeAttribute("aria-hidden");
+    document.body.classList.remove("fruit-main", "fruit-playing");
+    document.body.classList.add("fruit-stage");
+    renderChallengeRail(true);
+    updateFruitBattleScale();
+  }
+
+  function startChallenge(id) {
+    const progress = readChallengeProgress();
+    if (id > progress.unlocked) return;
+    activeChallengeIndex = id - 1;
+    progress.selected = id;
+    saveChallengeProgress(progress);
+    stagePanel.classList.add("hidden");
+    document.body.classList.remove("fruit-stage", "fruit-main");
+    document.body.classList.add("fruit-playing");
+    window.WonderSound?.play?.("start");
+    resetGame(false, `challenge-${id}`);
+  }
+
   function resetGame(showMenu = false, source = "menu") {
+    if (showMenu) activeChallengeIndex = null;
     document.body.classList.toggle("fruit-playing", !showMenu);
     document.body.classList.toggle("fruit-main", showMenu);
+    document.body.classList.remove("fruit-stage");
+    stagePanel.classList.add("hidden");
     resultPanel.classList.add("hidden");
     playPanel.inert = false;
     playPanel.removeAttribute("aria-hidden");
@@ -431,7 +622,12 @@
     score = 0;
     mergeCount = 0;
     comboCount = 0;
+    bestCombo = 0;
     comboUntil = 0;
+    fixedQueueIndex = 0;
+    challengeLastDropAt = 0;
+    lastChallengeCleared = false;
+    windApplications = 0;
     window.clearTimeout(comboHudTimer);
     fruitId = 1;
     running = !showMenu;
@@ -441,7 +637,7 @@
     updateAimCoach();
     updateAimAccessibility();
     if (!showMenu) {
-      window.WonderAnalytics?.track?.("game_start", { game_id: GAME_ID, source });
+      window.WonderAnalytics?.track?.("game_start", { game_id: GAME_ID, source, challenge: activeChallenge()?.id || null });
       startAnimationLoop();
       requestAnimationFrame(() => canvas.focus({ preventScroll: true }));
     } else {
@@ -453,7 +649,7 @@
   }
 
   function updateFruitBattleScale() {
-    if (!document.body.classList.contains("fruit-playing")) return;
+    if (!document.body.classList.contains("fruit-playing") && !document.body.classList.contains("fruit-stage")) return;
     const logicalWidth = 382;
     const logicalHeight = 780;
     const viewportWidth = visualViewport?.width || innerWidth;
@@ -485,8 +681,11 @@
     largestFruitText.textContent = t(`fruit${maxReachedLevel}`);
     largestFruitToken.innerHTML = animalTokenMarkup(maxReachedLevel);
     largestFruitToken.setAttribute("aria-label", t(`fruit${maxReachedLevel}`));
-    goalText.textContent = t("goal", { name: t("fruit10") });
-    goalFill.style.width = `${Math.round((maxReachedLevel / (fruits.length - 1)) * 100)}%`;
+    const challenge = activeChallenge();
+    goalText.textContent = challenge
+      ? `${t("stageLabel", { stage: challenge.id })} · ${challengeGoalLabel(challenge)} · ${Number(canvas.dataset.dropCount || 0)}/${challenge.drops}`
+      : t("goal", { name: t("fruit10") });
+    goalFill.style.width = `${Math.round(clamp(challengeProgressValue(challenge), 0, 1) * 100)}%`;
     updateComboHud();
     updateAimCoach();
   }
@@ -499,8 +698,11 @@
 
   function dropFruit() {
     if (!running || gameOver || lifecycleSuspended || activeNow() < canDropAt) return;
+    const challenge = activeChallenge();
+    if (challenge && Number(canvas.dataset.dropCount || 0) >= challenge.drops) return;
     const spec = fruits[currentLevel];
-    const x = clamp(aimX, wallLeft + spec.radius, wallRight - spec.radius);
+    const bounds = aimBounds(currentLevel);
+    const x = clamp(aimX, bounds.min, bounds.max);
     const fruit = {
       id: fruitId++,
       level: currentLevel,
@@ -516,6 +718,7 @@
     fruit.body = createFruitBody(fruit);
     fruitsOnBoard.push(fruit);
     canvas.dataset.dropCount = String(Number(canvas.dataset.dropCount || 0) + 1);
+    challengeLastDropAt = activeNow();
     maxReachedLevel = Math.max(maxReachedLevel, currentLevel);
     World.add(world, fruit.body);
     currentLevel = nextLevel;
@@ -527,10 +730,92 @@
     updateAimAccessibility();
   }
 
+  function ruleLabel(rule) {
+    const labels = {
+      en: { classic: "Open Box", narrow: "Narrow Window", wind: "River Wind", heavy: "Heavy Gravity", fixed: "Fixed Queue" },
+      "zh-Hant": { classic: "開放箱", narrow: "窄窗", wind: "河風", heavy: "重力加強", fixed: "固定隊列" },
+    };
+    return labels[locale()]?.[rule] || rule;
+  }
+
+  function renderChallengeRail(centerLatest = true) {
+    if (!stageRail || !stageDots) return;
+    const progress = readChallengeProgress();
+    const selected = Math.min(progress.unlocked, progress.selected || progress.unlocked);
+    stageRail.innerHTML = "";
+    stageDots.innerHTML = "";
+    challenges.forEach((challenge) => {
+      const unlocked = challenge.id <= progress.unlocked;
+      const card = document.createElement("button");
+      card.type = "button";
+      card.className = `merge-stage-card${challenge.checkpoint ? " is-checkpoint" : ""}${unlocked ? "" : " is-locked"}${challenge.id === selected ? " is-selected" : ""}`;
+      card.dataset.stage = String(challenge.id);
+      card.setAttribute("aria-disabled", String(!unlocked));
+      card.innerHTML = `
+        <b>${t("stageLabel", { stage: challenge.id })}</b>
+        <strong>${challenge.name[localeSlot()]}</strong>
+        <span>${challengeGoalLabel(challenge)}</span>
+        <small>${challenge.rules.map(ruleLabel).join(" · ")} · ${t("dropsRule", { count: challenge.drops })}</small>
+        <em>${unlocked ? t("stageBest", { score: Number(progress.best[challenge.id]) || 0 }) : t("stageLocked")}</em>
+      `;
+      card.addEventListener("click", () => {
+        if (!unlocked || stageRail.dataset.dragged === "true") return;
+        startChallenge(challenge.id);
+      });
+      stageRail.append(card);
+      const dot = document.createElement("i");
+      dot.className = challenge.id === selected ? "active" : "";
+      stageDots.append(dot);
+    });
+    if (centerLatest) requestAnimationFrame(() => centerChallengeCard(selected, "auto"));
+  }
+
+  function centerChallengeCard(id, behavior = "smooth") {
+    const card = stageRail.querySelector(`[data-stage="${id}"]`);
+    if (!card) return;
+    const left = Math.max(0, Math.min(card.offsetLeft + card.offsetWidth / 2 - stageRail.clientWidth / 2, stageRail.scrollWidth - stageRail.clientWidth));
+    stageRail.scrollTo({ left, behavior });
+    stageRail.querySelectorAll(".merge-stage-card").forEach((item) => item.classList.toggle("is-selected", item === card));
+    [...stageDots.children].forEach((dot, index) => dot.classList.toggle("active", index === id - 1));
+  }
+
+  function installChallengeRail() {
+    let pointerId = null;
+    let startX = 0;
+    let startScroll = 0;
+    let moved = false;
+    stageRail.addEventListener("pointerdown", (event) => {
+      pointerId = event.pointerId;
+      startX = event.clientX;
+      startScroll = stageRail.scrollLeft;
+      moved = false;
+    });
+    stageRail.addEventListener("pointermove", (event) => {
+      if (event.pointerId !== pointerId) return;
+      const delta = event.clientX - startX;
+      if (Math.abs(delta) > 6) moved = true;
+      if (moved) stageRail.scrollLeft = startScroll - delta;
+    });
+    const finish = (event) => {
+      if (event.pointerId !== pointerId) return;
+      pointerId = null;
+      if (!moved) return;
+      stageRail.dataset.dragged = "true";
+      const center = stageRail.scrollLeft + stageRail.clientWidth / 2;
+      const cards = [...stageRail.querySelectorAll(".merge-stage-card")];
+      const nearest = cards.reduce((best, card) => {
+        const distance = Math.abs(card.offsetLeft + card.offsetWidth / 2 - center);
+        return !best || distance < best.distance ? { card, distance } : best;
+      }, null)?.card;
+      centerChallengeCard(Number(nearest?.dataset.stage || 1));
+      setTimeout(() => delete stageRail.dataset.dragged, 140);
+    };
+    stageRail.addEventListener("pointerup", finish);
+    stageRail.addEventListener("pointercancel", finish);
+  }
+
   function updateAimAccessibility() {
-    const radius = fruits[currentLevel]?.radius || fruits[0].radius;
-    const min = wallLeft + radius;
-    const max = wallRight - radius;
+    const { min, max } = aimBounds(currentLevel);
     const value = Math.round(((clamp(aimX, min, max) - min) / Math.max(1, max - min)) * 100);
     canvas.setAttribute("aria-valuenow", String(value));
     canvas.setAttribute("aria-valuetext", t("ariaAim", { value }));
@@ -548,7 +833,7 @@
       constraintIterations: 4,
     });
     world = engine.world;
-    engine.gravity.y = 1.45;
+    engine.gravity.y = activeChallenge()?.rules.includes("heavy") ? 2.05 : 1.45;
 
     const wallOptions = {
       isStatic: true,
@@ -594,10 +879,38 @@
   function step(dt) {
     Engine.update(engine, Math.min(33.33, dt * 1000));
     syncFruitsFromBodies();
+    applyChallengeForces();
     resolveMerges();
     syncFruitsFromBodies();
     updateMergeBursts(dt);
+    if (checkChallengeSettlement()) return;
     checkGameOver(dt);
+  }
+
+  function applyChallengeForces() {
+    const challenge = activeChallenge();
+    if (!challenge?.rules.includes("wind")) return;
+    const direction = Math.sin(activeNow() / 1450);
+    for (const fruit of fruitsOnBoard) {
+      if (!fruit.body || fruit.body.isSleeping) continue;
+      Body.applyForce(fruit.body, fruit.body.position, { x: direction * fruit.body.mass * 0.000055, y: 0 });
+      windApplications += 1;
+    }
+  }
+
+  function checkChallengeSettlement() {
+    const challenge = activeChallenge();
+    if (!challenge || gameOver) return false;
+    if (challengeGoalMet(challenge)) {
+      endGame(true);
+      return true;
+    }
+    const dropsUsed = Number(canvas.dataset.dropCount || 0);
+    if (dropsUsed < challenge.drops || activeNow() - challengeLastDropAt < 1800) return false;
+    const settled = fruitsOnBoard.every((fruit) => fruit.sleeping || Math.hypot(fruit.vx, fruit.vy) < 48);
+    if (!settled) return false;
+    endGame(false);
+    return true;
   }
 
   function resolveMerges() {
@@ -667,6 +980,7 @@
   function addMergeScore(baseScore) {
     const now = activeNow();
     comboCount = now <= comboUntil ? comboCount + 1 : 1;
+    bestCombo = Math.max(bestCombo, comboCount);
     comboUntil = now + 2200;
     const multiplier = Math.min(5, comboCount);
     score += baseScore * multiplier;
@@ -735,7 +1049,7 @@
     }
   }
 
-  function endGame() {
+  function endGame(cleared = false) {
     if (gameOver) return;
     running = false;
     gameOver = true;
@@ -749,7 +1063,21 @@
     }
     const progress = saveProgress(score, previousBest, bestScore);
     const leaderboard = recordLeaderboard(score, maxReachedLevel);
-    resultTitle.textContent = t("gameOver");
+    const challenge = activeChallenge();
+    lastChallengeCleared = Boolean(challenge && cleared);
+    if (challenge) {
+      const challengeProgress = readChallengeProgress();
+      challengeProgress.best[challenge.id] = Math.max(Number(challengeProgress.best[challenge.id]) || 0, score);
+      if (cleared) {
+        if (!challengeProgress.completed.includes(challenge.id)) challengeProgress.completed.push(challenge.id);
+        challengeProgress.unlocked = Math.max(challengeProgress.unlocked, Math.min(challenges.length, challenge.id + 1));
+        challengeProgress.selected = Math.min(challenges.length, challenge.id + 1);
+      } else {
+        challengeProgress.selected = challenge.id;
+      }
+      saveChallengeProgress(challengeProgress);
+    }
+    resultTitle.textContent = challenge ? t(cleared ? "clearTitle" : "failedTitle") : t("gameOver");
     renderResultReport(progress, newBest);
     renderMilestone(resultMilestone, progress, true);
     renderLeaderboard(resultLeaderboard, leaderboard);
@@ -757,7 +1085,9 @@
     playPanel.inert = true;
     playPanel.setAttribute("aria-hidden", "true");
     requestAnimationFrame(() => playAgainBtn.focus({ preventScroll: true }));
-    window.WonderAnalytics?.track?.("game_complete", { game_id: GAME_ID, score, best_score: bestScore, new_best: newBest, cleared: false });
+    playAgainBtn.textContent = challenge ? t(cleared && challenge.id < challenges.length ? "nextChallenge" : "retryChallenge") : t("playAgain");
+    menuBtn.textContent = challenge ? t("challengeMenu") : t("menu");
+    window.WonderAnalytics?.track?.("game_complete", { game_id: GAME_ID, score, best_score: bestScore, new_best: newBest, challenge: challenge?.id || null, cleared: challenge ? cleared : false });
     window.WonderAnalytics?.track?.("score_game_over", { game_id: GAME_ID, score, best_score: bestScore });
     updateHud();
   }
@@ -936,7 +1266,10 @@
 
     const summary = document.createElement("p");
     summary.className = "result-summary";
-    summary.textContent = t("result", { score: progress.lastScore, best: progress.bestScore });
+    const challenge = activeChallenge();
+    summary.textContent = challenge
+      ? `${t("stageLabel", { stage: challenge.id })} · ${challenge.name[localeSlot()]} · ${challengeGoalLabel(challenge)} · ${t("resultScore", { score: progress.lastScore })}`
+      : t("result", { score: progress.lastScore, best: progress.bestScore });
     resultText.appendChild(summary);
 
     const stats = document.createElement("div");
@@ -1029,7 +1362,8 @@
 
   function drawDropPreview() {
     const spec = fruits[currentLevel];
-    const x = clamp(aimX, wallLeft + spec.radius, wallRight - spec.radius);
+    const bounds = aimBounds(currentLevel);
+    const x = clamp(aimX, bounds.min, bounds.max);
     ctx.strokeStyle = "rgba(41, 54, 77, 0.24)";
     ctx.lineWidth = 4;
     ctx.setLineDash([12, 12]);
@@ -1179,9 +1513,7 @@
 
   canvas.addEventListener("keydown", (event) => {
     if (!running || gameOver) return;
-    const radius = fruits[currentLevel]?.radius || fruits[0].radius;
-    const min = wallLeft + radius;
-    const max = wallRight - radius;
+    const { min, max } = aimBounds(currentLevel);
     if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
       event.preventDefault();
       aimX = clamp(aimX + (event.key === "ArrowLeft" ? -36 : 36), min, max);
@@ -1199,20 +1531,27 @@
     window.WonderAnalytics?.track?.("game_restart", { game_id: GAME_ID, score, source: "button" });
     resetGame(false, "restart");
   });
-  backToMenuBtn.addEventListener("click", () => resetGame(true, "battle-return"));
+  backToMenuBtn.addEventListener("click", () => activeChallenge() ? showStage() : resetGame(true, "battle-return"));
   startBtn.addEventListener("click", () => {
     if (startBtn.disabled) return;
+    showStage();
+  });
+  freePlayBtn.addEventListener("click", () => {
+    activeChallengeIndex = null;
     menuPanel.classList.add("hidden");
-    document.body.classList.remove("fruit-main");
+    document.body.classList.remove("fruit-main", "fruit-stage");
     document.body.classList.add("fruit-playing");
     window.WonderSound?.play?.("start");
-    resetGame(false, "start");
+    resetGame(false, "free-play");
   });
+  stageBackBtn.addEventListener("click", () => resetGame(true, "stage-return"));
   playAgainBtn.addEventListener("click", () => {
     window.WonderAnalytics?.track?.("game_restart", { game_id: GAME_ID, score, source: "result" });
-    resetGame(false, "result");
+    const challenge = activeChallenge();
+    if (challenge && lastChallengeCleared && challenge.id < challenges.length) startChallenge(challenge.id + 1);
+    else resetGame(false, "result");
   });
-  menuBtn.addEventListener("click", () => resetGame(true, "result-menu"));
+  menuBtn.addEventListener("click", () => activeChallenge() ? showStage() : resetGame(true, "result-menu"));
   resultPanel.addEventListener("keydown", (event) => {
     if (event.key !== "Tab" || resultPanel.classList.contains("hidden")) return;
     const actions = [playAgainBtn, menuBtn].filter((button) => !button.hidden && !button.disabled);
@@ -1231,6 +1570,23 @@
   if (new URLSearchParams(location.search).has("smoke")) {
     window.__fruitMergeSmoke = {
       finishRunForTest: endGame,
+      challengeCatalog: () => challenges.map((challenge) => ({ ...challenge, rules: [...challenge.rules] })),
+      challengeProgress: readChallengeProgress,
+      startChallenge,
+      completeChallengeForTest: () => endGame(true),
+      getChallengeState: () => ({
+        stage: activeChallenge()?.id || null,
+        rules: activeChallenge()?.rules || [],
+        gravity: engine?.gravity?.y || 0,
+        goal: challengeGoalLabel(),
+        aim: aimBounds(),
+        drops: Number(canvas.dataset.dropCount || 0),
+        currentLevel,
+        nextLevel,
+        windApplications,
+        fruitPositions: fruitsOnBoard.map((fruit) => ({ x: fruit.x, y: fruit.y })),
+      }),
+      dropForTest: dropFruit,
       lifecycleState: () => {
         const now = activeNow();
         return {
@@ -1263,6 +1619,7 @@
   });
 
   applyText();
+  installChallengeRail();
   if (!Matter) {
     showToast("Physics loading failed");
     loadingPanel.classList.add("hidden");

@@ -285,11 +285,20 @@
     for (let stage = 1; stage <= 3; stage += 1) {
       const button = document.createElement("button");
       button.className = `stage-card${stage > unlocked ? " locked" : ""}`;
+      button.dataset.stage = String(stage);
       const detail = stage > unlocked ? t("locked") : `3 rooms · +${3 + stage} marks`;
       button.innerHTML = `<img src="${ASSET_ROOT}animal-hero-trials-arena.png" alt=""><strong>Trial ${stage}</strong><span>${detail}</span>`;
       button.onclick = () => stage <= unlocked && startTrial(stage);
       rail.append(button);
     }
+  }
+
+  function focusStage(stage = Math.min(3, unlocked)) {
+    requestAnimationFrame(() => $(`#stageRail .stage-card[data-stage="${stage}"]`)?.focus({ preventScroll: true }));
+  }
+
+  function focusMain() {
+    requestAnimationFrame(() => $("#startBtn").focus({ preventScroll: true }));
   }
 
   function save() {
@@ -578,7 +587,10 @@
       $("#resultTitle").textContent = t("win");
       $("#resultCopy").textContent = `${interpolate("earnedMarks", { gain, total: marks })} ${unlockCopy} ${masteryCopy}`;
       $("#resultNext").textContent = run.stage < 3 ? t("next") : t("menu");
-      $("#resultNext").onclick = () => run.stage < 3 ? startTrial(run.stage + 1) : (show("main"), localize());
+      $("#resultNext").onclick = () => {
+        if (run.stage < 3) startTrial(run.stage + 1);
+        else { show("main"); localize(); focusMain(); }
+      };
     } else {
       $("#resultTitle").textContent = t("fail");
       $("#resultCopy").textContent = locale === "zh-Hant"
@@ -723,13 +735,15 @@
     localStorage.setItem("weightPlayLocale", locale);
     localize();
   };
-  $("#startBtn").onclick = () => { playSound("click"); show("stage"); };
-  $("#stageBack").onclick = () => { playSound("click"); show("main"); };
-  $("#battleBack").onclick = () => { playSound("click"); show("stage"); };
+  $("#startBtn").addEventListener("keydown", (event) => { if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault(); });
+  $("#stageRail").addEventListener("keydown", (event) => { if (event.repeat && (event.key === "Enter" || event.key === " ") && event.target.closest(".stage-card")) event.preventDefault(); });
+  $("#startBtn").onclick = () => { playSound("click"); show("stage"); focusStage(); };
+  $("#stageBack").onclick = () => { playSound("click"); show("main"); focusMain(); };
+  $("#battleBack").onclick = () => { const stage = run?.stage || Math.min(3, unlocked); playSound("click"); show("stage"); focusStage(stage); };
   $("#skillBtn").onclick = skill;
   $("#rerollBtn").addEventListener("keydown",(event)=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault()});
   $("#rerollBtn").onclick = rerollBlessings;
-  $("#resultHome").onclick = () => { playSound("click"); show("main"); localize(); };
+  $("#resultHome").onclick = () => { playSound("click"); show("main"); localize(); focusMain(); };
   $("#resultModal").addEventListener("keydown", (event) => {
     if (event.repeat && (event.key === "Enter" || event.key === " ")) {
       event.preventDefault();

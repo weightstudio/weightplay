@@ -543,6 +543,14 @@
     });
   }
 
+  function focusSelectedZone() {
+    nodes.zoneRow.querySelector(".zone-card.is-selected:not(:disabled)")?.focus({ preventScroll: true });
+  }
+
+  function focusMainAction() {
+    nodes.startBtn.focus({ preventScroll: true });
+  }
+
   function updateSonarButton() {
     const canScan = Boolean(run && !run.finished && run.phase === "aim" && run.sonarReady);
     nodes.sonarBtn.disabled = !canScan;
@@ -641,6 +649,7 @@
     }
     track("game_start", { zone: zone.id });
     playSound("start");
+    canvas.focus({ preventScroll: true });
   }
 
   function finishRun(won) {
@@ -1404,6 +1413,7 @@
     showPanel("stage");
     renderMenu();
     focusPanel(nodes.stagePanel);
+    focusSelectedZone();
   });
   nodes.stageBackBtn.addEventListener("click", () => {
     clearDiamondPurchaseConfirmation();
@@ -1411,16 +1421,17 @@
     state = "main";
     showPanel("main");
     focusPanel(nodes.mainPanel);
+    focusMainAction();
   });
   nodes.mapBtn.addEventListener("click", () => {
     playSound("click");
     state = "stage";
     showPanel("stage");
     renderMenu();
+    focusSelectedZone();
   });
   nodes.retryBtn.addEventListener("click", async () => {
     await startRun();
-    canvas.focus({ preventScroll: true });
   });
   nodes.resultMenuBtn.addEventListener("click", () => {
     playSound("click");
@@ -1443,6 +1454,12 @@
       event.preventDefault();
       nodes.retryBtn.focus({ preventScroll: true });
     }
+  });
+  nodes.startBtn.addEventListener("keydown", (event) => {
+    if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
+  });
+  nodes.zoneRow.addEventListener("keydown", (event) => {
+    if (event.repeat && (event.key === "Enter" || event.key === " ") && event.target.closest("[data-zone]")) event.preventDefault();
   });
   for (const button of [nodes.lureBtn, nodes.sonarPrepBtn]) {
     button.addEventListener("keydown", (event) => {

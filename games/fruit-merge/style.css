@@ -1464,6 +1464,196 @@ body.fruit-playing.fruit-expanded-canvas #nextFruitText {
   }
 }
 
+/* Native 30-challenge Stage Canvas. */
+html:has(body.fruit-stage),
+body.fruit-stage {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden !important;
+  background: #0d1925;
+}
+
+body.fruit-stage .fruit-game {
+  position: fixed;
+  left: var(--fruit-battle-left, 4px);
+  top: var(--fruit-battle-top, 4px);
+  width: 382px;
+  height: 780px;
+  min-height: 780px;
+  transform: scale(var(--fruit-battle-scale, 1));
+  transform-origin: top left;
+  overflow: hidden;
+  border: 2px solid rgba(125, 242, 192, 0.48);
+  border-radius: 18px;
+  background: linear-gradient(180deg, #102d2b 0%, #163c36 40%, #10251f 100%);
+}
+
+body.fruit-stage .topbar,
+body.fruit-stage #playPanel,
+body.fruit-stage #menuPanel,
+body.fruit-stage #resultPanel,
+body.fruit-stage .game-page-info,
+body.fruit-stage .wp-tutorial-button,
+body.fruit-stage .weightplay-version-badge,
+body.fruit-stage .sound-toggle {
+  display: none !important;
+}
+
+.merge-stage-panel {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  display: grid;
+  grid-template-rows: 76px 214px 18px minmax(0, 1fr);
+  gap: 8px;
+  padding: 10px 8px 8px;
+  color: #f6fff9;
+  overflow: hidden;
+}
+
+.merge-stage-panel.hidden {
+  display: none !important;
+}
+
+.merge-stage-heading {
+  display: grid;
+  grid-template-columns: 54px minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  padding: 7px;
+  border-radius: 14px;
+  background: rgba(3, 19, 18, 0.84);
+  box-shadow: inset 0 0 0 1px rgba(128, 240, 193, 0.28);
+}
+
+.merge-stage-heading button {
+  width: 48px;
+  height: 48px;
+  min-height: 48px;
+  padding: 0;
+  font-size: 26px;
+}
+
+.merge-stage-heading div {
+  min-width: 0;
+  display: grid;
+  gap: 3px;
+}
+
+.merge-stage-heading strong {
+  font-size: 20px;
+  line-height: 1.05;
+}
+
+.merge-stage-heading span {
+  color: #c8e8d9;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.merge-stage-rail {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 8px 55px 12px;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  touch-action: pan-y;
+  overscroll-behavior-x: contain;
+  mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+}
+
+.merge-stage-rail::-webkit-scrollbar {
+  display: none;
+}
+
+.merge-stage-card {
+  flex: 0 0 256px;
+  height: 188px;
+  scroll-snap-align: center;
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  gap: 5px;
+  padding: 12px;
+  text-align: left;
+  color: #193126;
+  border: 3px solid rgba(255, 255, 255, 0.55);
+  border-radius: 18px;
+  background: linear-gradient(145deg, #fff7d2, #f3cf75);
+  box-shadow: 0 7px 0 #8d6426, 0 14px 24px rgba(0, 0, 0, 0.28);
+}
+
+.merge-stage-card.is-selected {
+  border-color: #72ffd0;
+  box-shadow: 0 0 0 4px rgba(114, 255, 208, 0.28), 0 7px 0 #33775f, 0 14px 24px rgba(0, 0, 0, 0.3);
+}
+
+.merge-stage-card.is-checkpoint {
+  background: linear-gradient(145deg, #fff1a6, #ed9a45);
+}
+
+.merge-stage-card.is-locked {
+  filter: grayscale(0.7);
+  opacity: 0.58;
+}
+
+.merge-stage-card b {
+  font-size: 22px;
+}
+
+.merge-stage-card strong {
+  color: #643b12;
+  font-size: 16px;
+}
+
+.merge-stage-card span,
+.merge-stage-card small {
+  font-size: 12px;
+  font-weight: 850;
+  line-height: 1.25;
+}
+
+.merge-stage-card em {
+  align-self: end;
+  color: #5e421f;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.merge-stage-dots {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+}
+
+.merge-stage-dots i {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.merge-stage-dots i.active {
+  width: 18px;
+  border-radius: 999px;
+  background: #72ffd0;
+}
+
+.merge-stage-art {
+  min-height: 0;
+  border-radius: 16px;
+  background:
+    linear-gradient(180deg, rgba(13, 36, 31, 0.02), rgba(13, 36, 31, 0.72)),
+    url("../../assets/fruit-merge-cover.webp") center 28% / cover no-repeat;
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.18);
+}
+
 @media (max-height: 430px) {
   body.fruit-playing {
     -webkit-text-size-adjust: 100%;

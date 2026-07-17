@@ -1337,6 +1337,12 @@
   nodes.resultStagesBtn.addEventListener("click", showStageSelect);
   nodes.retryBtn.addEventListener("click", () => startStage(currentStage));
   nodes.nextStageBtn.addEventListener("click", () => startStage(Math.min(currentStage + 1, stages.length - 1)));
+  nodes.resultPanel.addEventListener("keydown", (event) => {
+    if (event.repeat && (event.key === "Enter" || event.key === " ")) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+    }
+  }, true);
   if (smokeMode) {
     window.__bubbleBakerySmoke = {
       forceFailure() {
