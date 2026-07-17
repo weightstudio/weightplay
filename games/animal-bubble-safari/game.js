@@ -217,12 +217,7 @@
     if (card) card.scrollIntoView({ behavior, inline: "center", block: "nearest" });
   }
 
-  let stageGesture = null;
   let lockedStageActivation = null;
-  let stageSettleFrame = 0;
-  let stageSettleTrace = [];
-  let suppressStageClick = false;
-  const stageScale = () => Math.max(.01, dom.gameCanvas.getBoundingClientRect().width / LOGICAL_WIDTH);
   const lockedCardAtPoint = (x, y) => [...dom.stageRail.querySelectorAll(".stage-card.is-locked")].find(card => {
     const rect = card.getBoundingClientRect();
     return x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
@@ -253,80 +248,6 @@
   };
   document.addEventListener("pointerup", finishLockedStageActivation, true);
   document.addEventListener("pointercancel", finishLockedStageActivation, true);
-  function stopStageSettle() {
-    cancelAnimationFrame(stageSettleFrame);
-    stageSettleFrame = 0;
-  }
-  function settleStageCard(card) {
-    stopStageSettle();
-    const rail = dom.stageRail;
-    const start = rail.scrollLeft;
-    const max = Math.max(0, rail.scrollWidth - rail.clientWidth);
-    const target = Math.max(0, Math.min(max, card.offsetLeft + card.offsetWidth / 2 - rail.clientWidth / 2));
-    const distance = target - start;
-    const duration = 220;
-    const started = performance.now();
-    stageSettleTrace = [start];
-    rail.style.scrollSnapType = "none";
-    const step = now => {
-      const progress = Math.min(1, (now - started) / duration);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      rail.scrollLeft = start + distance * eased;
-      stageSettleTrace.push(rail.scrollLeft);
-      if (progress < 1) stageSettleFrame = requestAnimationFrame(step);
-      else {
-        stageSettleFrame = 0;
-        rail.style.scrollSnapType = "x mandatory";
-      }
-    };
-    stageSettleFrame = requestAnimationFrame(step);
-  }
-  dom.stageRail.addEventListener("pointerdown", event => {
-    if (event.button !== 0) return;
-    stopStageSettle();
-    stageGesture = { id:event.pointerId, x:event.clientX, scroll:dom.stageRail.scrollLeft, moved:false };
-    dom.stageRail.style.scrollSnapType = "none";
-  });
-  dom.stageRail.addEventListener("pointermove", event => {
-    if (!stageGesture || stageGesture.id !== event.pointerId) return;
-    const delta = (event.clientX - stageGesture.x) / stageScale();
-    if (Math.abs(delta) > 4 && !stageGesture.moved) {
-      stageGesture.moved = true;
-      dom.stageRail.setPointerCapture?.(event.pointerId);
-    }
-    if (stageGesture.moved) {
-      event.preventDefault();
-      dom.stageRail.scrollLeft = stageGesture.scroll - delta;
-    }
-  });
-  const finishStageGesture = event => {
-    if (!stageGesture || stageGesture.id !== event.pointerId) return;
-    const moved = stageGesture.moved;
-    stageGesture = null;
-    if (dom.stageRail.hasPointerCapture?.(event.pointerId)) dom.stageRail.releasePointerCapture(event.pointerId);
-    if (!moved) {
-      dom.stageRail.style.scrollSnapType = "x mandatory";
-      return;
-    }
-    suppressStageClick = true;
-    const railCenter = dom.stageRail.getBoundingClientRect().left + dom.stageRail.getBoundingClientRect().width / 2;
-    const cards = [...dom.stageRail.children];
-    const nearest = cards.reduce((best, card, index) => {
-      const rect = card.getBoundingClientRect();
-      const distance = Math.abs(rect.left + rect.width / 2 - railCenter);
-      return distance < best.distance ? { index, distance } : best;
-    }, { index:0, distance:Infinity });
-    if (cards[nearest.index]) settleStageCard(cards[nearest.index]);
-    if (nearest.index + 1 <= save.unlocked) selectStage(nearest.index + 1, false);
-    setTimeout(() => { suppressStageClick = false; }, 360);
-  };
-  dom.stageRail.addEventListener("pointerup", finishStageGesture);
-  dom.stageRail.addEventListener("pointercancel", finishStageGesture);
-  dom.stageRail.addEventListener("click", event => {
-    if (!suppressStageClick) return;
-    event.preventDefault();
-    event.stopImmediatePropagation();
-  }, true);
 
   function updateStageSummary() {
     const stage = stageDefs[selectedStage - 1];
@@ -860,7 +781,6 @@
       blockerTypes: game?.bubbles.filter(bubble => bubble.alive && bubble.blocker).map(bubble => ({ type:bubble.blockerType,hits:bubble.blockerHits,x:bubble.x,y:bubble.y })) || [],
       bubbleTypes: game?.bubbles.filter(bubble => bubble.alive && !bubble.blocker).map(bubble => ({ x:bubble.x, y:bubble.y, type:bubble.type })) || []
     }),
-    getStageSettleTrace: () => [...stageSettleTrace],
     getLayoutSummary: id => {
       const bubbles = stageLayout(id);
       return {

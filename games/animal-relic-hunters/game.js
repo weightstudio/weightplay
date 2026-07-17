@@ -2771,7 +2771,7 @@
 
     // Pointer-based joystick keeps cancellation and pointer capture in one lifecycle.
     nodes.joystickContainer.addEventListener("pointerdown", (event) => {
-      if (!state.gameActive || joystickPointerId !== null) return;
+      if (!state.gameActive || joystickPointerId !== null || event.isPrimary === false || (event.button !== undefined && event.button !== 0)) return;
       event.preventDefault();
       joystickPointerId = event.pointerId;
       const rect = nodes.joystickContainer.getBoundingClientRect();

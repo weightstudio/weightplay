@@ -203,7 +203,11 @@
     const startedAt = performance.now();
     const startedLeft = rail.scrollLeft;
     const distance = boundedTarget - startedLeft;
-    const duration = Math.min(360, Math.max(240, Math.abs(distance) * 1.35));
+    const configuredDuration = Number(rail.dataset.wpStageSettleDuration);
+    const minimumDuration = Number.isFinite(configuredDuration)
+      ? Math.min(480, Math.max(240, configuredDuration))
+      : 240;
+    const duration = Math.min(480, Math.max(minimumDuration, Math.abs(distance) * 1.35));
     const pending = {
       restore,
       frame: 0,
@@ -211,7 +215,9 @@
     const animate = (now) => {
       if (pendingSettles.get(rail) !== pending) return;
       const progress = Math.min(1, (now - startedAt) / duration);
-      const eased = 1 - Math.pow(1 - progress, 2);
+      const eased = rail.dataset.wpStageSettleEasing === "smoothstep"
+        ? progress * progress * (3 - 2 * progress)
+        : 1 - Math.pow(1 - progress, 2);
       rail.scrollLeft = startedLeft + distance * eased;
       if (progress < 1) {
         pending.frame = window.requestAnimationFrame(animate);

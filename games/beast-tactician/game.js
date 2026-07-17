@@ -228,6 +228,12 @@
       techEconomy: "Forest Economy",
       techEconomyDesc: "+20 starting coins per level.",
       techBuy: "Upgrade",
+      techBuyLabel: "Upgrade {name} from Lv.{current} to Lv.{next}. {effect}. Cost {cost} upgrade point. Balance {balance} to {result}.",
+      techNeedLabel: "{name} Lv.{current} to Lv.{next}. {effect}. Need {cost} upgrade point; balance {balance}.",
+      techMaxLabel: "{name} is at maximum Lv.{max}. {effect}.",
+      techPowerEffect: "Hero damage bonus {current}% to {next}%",
+      techBulwarkEffect: "Defender HP bonus {current} to {next}",
+      techEconomyEffect: "Starting coin bonus {current} to {next}",
       loadFailed: "Load failed",
     },
     "zh-Hant": {},
@@ -675,6 +681,12 @@
       techEconomy: "森林經濟",
       techEconomyDesc: "每級起始金幣 +20。",
       techBuy: "升級",
+      techBuyLabel: "升級{name}，Lv.{current} 到 Lv.{next}。{effect}。花費 {cost} 升級點，餘額 {balance} 到 {result}。",
+      techNeedLabel: "{name}，Lv.{current} 到 Lv.{next}。{effect}。需要 {cost} 升級點，目前餘額 {balance}。",
+      techMaxLabel: "{name}已達最高 Lv.{max}。{effect}。",
+      techPowerEffect: "英雄傷害加成 {current}% 到 {next}%",
+      techBulwarkEffect: "守衛生命加成 {current} 到 {next}",
+      techEconomyEffect: "起始金幣加成 {current} 到 {next}",
       loadFailed: "載入失敗",
     });
 
@@ -1131,6 +1143,13 @@
     nearest?.scrollIntoView?.({ behavior, inline: "center", block: "nearest" });
   }
 
+  function techEffectPreview(tech, level) {
+    const nextLevel = Math.min(tech.max, level + 1);
+    if (tech.id === "power") return t("techPowerEffect", { current: level * 10, next: nextLevel * 10 });
+    if (tech.id === "bulwark") return t("techBulwarkEffect", { current: level * 12, next: nextLevel * 12 });
+    return t("techEconomyEffect", { current: level * 20, next: nextLevel * 20 });
+  }
+
   function renderTech() {
     nodes.techGrid.innerHTML = "";
     techs.forEach((tech) => {
@@ -1145,6 +1164,21 @@
       button.disabled = !canBuy;
       button.dataset.techId = tech.id;
       button.textContent = t("techBuy");
+      const labelData = {
+        name: t(tech.label),
+        current: level,
+        next: Math.min(tech.max, level + 1),
+        max: tech.max,
+        effect: techEffectPreview(tech, level),
+        cost: tech.cost,
+        balance: state.save.upgradePoints,
+        result: Math.max(0, state.save.upgradePoints - tech.cost),
+      };
+      button.setAttribute("aria-label", level >= tech.max
+        ? t("techMaxLabel", labelData)
+        : canBuy
+          ? t("techBuyLabel", labelData)
+          : t("techNeedLabel", labelData));
       button.addEventListener("keydown", (event) => {
         if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
       });

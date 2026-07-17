@@ -1864,6 +1864,11 @@
       cardEl.className = `card ${card.type}`;
       cardEl.type = "button";
       cardEl.innerHTML = cardMarkup(card);
+      cardEl.setAttribute("aria-label", t("cardActionLabel", {
+        card: t(card.nameKey),
+        effect: t(card.descKey),
+        status: t("chooseCardDesc"),
+      }));
       cardEl.addEventListener("click", () => {
         if (draftLocked) return;
         draftLocked = true;
