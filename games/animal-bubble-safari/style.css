@@ -131,6 +131,8 @@ button { border: 0; cursor: pointer; color: inherit; }
 .stage-card b { font-size: 16px; line-height: 1.15; }
 .stage-card span { font-size: 12px; line-height: 1.25; }
 .stage-card em { color: #e2a516; font-style: normal; letter-spacing: 2px; }
+.stage-status { position: absolute; z-index: 3; left: 35px; right: 35px; bottom: 96px; min-height: 44px; margin: 0; padding: 10px 14px; border: 2px solid #ffd44f; border-radius: 8px; background: rgba(18,37,56,.96); color: #fff3a6; font-size: 14px; font-weight: 900; line-height: 20px; text-align: center; opacity: 0; visibility: hidden; pointer-events: none; }
+.stage-status.is-visible { opacity: 1; visibility: visible; }
 .stage-detail { position: absolute; z-index: 2; left: 18px; right: 18px; bottom: 18px; height: 67px; border-radius: 8px; background: rgba(18,37,56,.9); display: grid; grid-template-columns: 74px 1fr; align-items: center; padding: 10px 14px; gap: 10px; }
 .stage-detail span { color: #8ee2d2; font-weight: 800; }
 .stage-detail strong { font-size: 15px; line-height: 1.25; }

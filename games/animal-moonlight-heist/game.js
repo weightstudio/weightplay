@@ -295,6 +295,7 @@
   }
   function closeResult(){nodes.modal.hidden=true;[...nodes.modal.parentElement.children].filter(node=>node!==nodes.modal).forEach(node=>{node.inert=false;node.removeAttribute("aria-hidden")});nodes.fia.classList.remove("caught")}
   function trapResultFocus(event){
+    if(event.repeat&&(event.key==="Enter"||event.key===" ")){event.preventDefault();return}
     if(event.key!=="Tab"||nodes.modal.hidden)return;
     const actions=[...nodes.modal.querySelectorAll("button:not(:disabled)")].filter(node=>node.getClientRects().length);
     if(!actions.length){event.preventDefault();nodes.modal.focus();return}

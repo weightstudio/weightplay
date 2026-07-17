@@ -9,17 +9,17 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="robots" content="index,follow" />
-    <meta name="description" content="Flip animal and star cards, remember their positions, and clear 10 short memory stages in Animal Star Memory on WeightPlay." />
+    <meta name="description" content="Clear 30 saved animal memory stages with previews, moon shuffles, ordered pairs, rotating constellations, and six friendly Star Keeper checks." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Animal Star Memory - Memory Matching Game" />
-    <meta property="og:description" content="Flip animal and star cards, remember their positions, and clear 10 short memory stages in Animal Star Memory on WeightPlay." />
+    <meta property="og:description" content="Clear 30 animal memory stages with preview, shuffle, order, and rotating-board rules across six Star Keeper checks." />
     <meta property="og:url" content="https://weightplay.com/games/star-memory/" />
     <meta property="og:image" content="https://weightplay.com/assets/memory-cover.png" />
     <meta name="twitter:card" content="summary_large_image" />
     <title>Animal Star Memory - WeightPlay</title>
     <link rel="canonical" href="https://weightplay.com/games/star-memory/" />
-    <link rel="stylesheet" href="style.css?v=20260715-skill-report1" />
+    <link rel="stylesheet" href="style.css?v=20260717-depth30-1" />
     <script data-wp-stage-standard>/* Animal Star Memory owns its native Kids Stage rail. */</script>
     <script data-wp-battle-standard>/* Animal Star Memory owns its native Kids Battle Canvas. */</script>
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
@@ -31,7 +31,7 @@
               "alternateName": "\u52d5\u7269\u661f\u661f\u7ffb\u724c",
               "url": "https://weightplay.com/games/star-memory/",
               "image": "https://weightplay.com/assets/memory-cover.png",
-              "description": "Flip animal and star cards, remember their positions, and clear 10 short memory stages in Animal Star Memory on WeightPlay.",
+              "description": "Clear 30 saved animal memory stages with previews, moon shuffles, ordered pairs, rotating constellations, and six friendly Star Keeper checks.",
               "applicationCategory": "Game",
               "operatingSystem": "Web browser",
               "publisher": {
@@ -88,8 +88,8 @@
         <img class="main-poster" src="../../assets/memory-cover.webp" alt="" />
         <div class="main-copy">
           <h2 id="mainTitle">Animal Star Memory</h2>
-          <p id="mainIntro">Remember where each animal and star is hiding, then clear all ten matching stages.</p>
-          <button id="startBtn" type="button">Choose Level</button>
+          <p id="mainIntro">Follow 30 starlight trails where previews, shuffles, ordered pairs, and rotating constellations change how each board is remembered.</p>
+          <button id="startBtn" type="button">Start Game</button>
         </div>
       </section>
 
@@ -97,7 +97,7 @@
       <section id="gameHud" class="game-hud hidden" aria-label="Game stats">
         <button id="battleBackBtn" data-wp-return="battle" type="button" aria-label="Back to levels">&larr;</button>
         <div class="hud-item">
-          <span id="levelIndicator">Level 1 / 10</span>
+        <span id="levelIndicator">Level 1 / 30</span>
           <div><i id="levelFill"></i></div>
         </div>
         <div class="hud-item-score">
@@ -184,21 +184,44 @@
         <div class="game-info-title">
           <span class="game-info-kicker">WeightPlay Original Game Guide</span>
           <h2>Animal Star Memory - How to Play</h2>
-          <p>Animal Star Memory is a card matching game where players remember animal and star card positions and find pairs. Stages gradually add more cards and different themes, making it a calm way to practice attention and recall. The short stage format makes it suitable for quick play sessions on phones or tablets.</p>
+          <p>Animal Star Memory is a 30-stage picture-matching journey through the night sky. Players help six friendly Star Keepers reconnect animal constellations by finding matching cards. The campaign begins with classic pairs, then changes how memory works through opening previews, moon shuffles after mistakes, required animal order, and constellation shifts after successful matches. Every fifth stage is a Keeper Check, and Stage 30 combines all four advanced rules on a full twelve-pair board.</p>
         </div>
       </div>
       <div class="game-info-sections">
         <div class="game-info-section">
+          <h3>Story and Star Map Mission</h3>
+          <p>The Animal Star Map once helped forest, river, meadow, and polar animals find their way home after sunset. A gentle meteor shower did not destroy the map, but separated every animal light into two hidden cards. The player becomes the Keepers' young map reader. Reconnecting a pair restores one small route in the sky; clearing a board repairs the complete constellation for that stage.</p>
+          <p>Cat, Bear, Owl, Lion, Penguin, and Koala each guard one five-stage lesson. Passing their Keeper Check repairs a new section of the sky. Completing the Koala Grand Star Check at Stage 30 means panda, cat, bear, lion, rabbit, fox, owl, frog, whale, chick, penguin, and koala lights can guide their animal friends again.</p>
+        </div>
+        <div class="game-info-section">
           <h3>How to Play</h3>
-          <ol><li>Flip a card to reveal its symbol.</li><li>Remember where each symbol appears.</li><li>Find the matching card pair.</li><li>Clear every pair to finish the stage.</li></ol>
+          <ol><li>Choose any unlocked stage from the horizontal card rail.</li><li>Read its rule badge before entering the board.</li><li>Flip two cards and remember both positions.</li><li>A matching pair stays cleared; a mismatch remains visible briefly and then hides again.</li><li>Follow any preview, shuffle, order, or constellation-shift instruction shown by the stage.</li><li>Clear every pair within the move limit to earn stars and unlock the next stage.</li></ol>
+        </div>
+        <div class="game-info-section">
+          <h3>Memory Systems</h3>
+          <ul><li><strong>Classic pairs:</strong> hidden symbols never move, so careful position recall is enough.</li><li><strong>Opening preview:</strong> the complete board is shown briefly. Input is locked until every card hides, and the preview costs no moves.</li><li><strong>Moon shuffle:</strong> after a wrong guess, all still-unmatched symbols move among the hidden positions. The same pairs remain, but their old locations are no longer reliable.</li><li><strong>Ordered pairs:</strong> the feedback names the animal that must be found next. Another matching pair will be shown and hidden again without advancing.</li><li><strong>Constellation shift:</strong> every successful match rotates the remaining hidden symbols one position, so success changes the next memory problem.</li><li><strong>Progress:</strong> pairs, moves, best streak, score, stars, stage unlocks, and best stage scores are saved locally. There is no public leaderboard.</li></ul>
+        </div>
+        <div class="game-info-section">
+          <h3>Thirty-Stage Progression</h3>
+          <p>Stages 1–5 teach two-card selection and stable position recall, ending with Cat's opening-preview check. Stages 6–10 shorten the preview as boards grow, then Bear briefly reveals and reshuffles an eight-pair board.</p>
+          <p>Stages 11–15 introduce Moon Shuffle after mistakes, requiring players to replace an old mental map with new information. Stages 16–20 add a named animal order: knowing several pairs is useful, but the requested pair controls progress. Lion's check combines order with shuffling.</p>
+          <p>Stages 21–25 introduce Constellation Shift after successful matches, including a full twelve-pair Penguin check that rotates on success and shuffles on failure. Stages 26–30 mix the earlier lessons. The finale previews twelve pairs, requires animal order, shuffles after mistakes, and rotates after correct matches.</p>
+        </div>
+        <div class="game-info-section">
+          <h3>Strategy Tips</h3>
+          <ul><li>During a preview, scan in rows or small groups instead of trying to name the entire board at once.</li><li>Use the mismatch pause to compare both pictures before they turn over.</li><li>After a Moon Shuffle, discard old locations and rebuild the map from new reveals.</li><li>In ordered stages, find the requested animal before spending moves on other known pairs.</li><li>After a Constellation Shift, remember which animals remain, but do not trust their previous positions.</li><li>Replaying an unlocked stage can improve its local score and star result without removing progress.</li></ul>
+        </div>
+        <div class="game-info-section">
+          <h3>Design Notes</h3>
+          <p>The campaign starts with a familiar matching rule so children can understand the controls immediately. Its depth comes from changing which information remains reliable. Preview tests the first impression, shuffling asks the player to update memory, order changes target priority, and rotation makes a successful choice alter the next decision. These systems reuse the same large animal pictures rather than adding complicated controls, so touch, mouse, and keyboard play remain consistent. Friendly Keeper Checks replace combat because the story is about repairing a shared map. Move limits give each stage a clear finish, while immediate retries and saved unlocks keep mistakes low-pressure.</p>
         </div>
         <div class="game-info-section game-info-parent">
           <h3>Parent Note</h3>
-          <p>This game may help children practice memory and focus through simple matching. Progress feedback is for encouragement and local tracking only.</p>
+          <p>Animal Star Memory may support visual recall, attention, flexible updating, and following a short sequence. Adults can ask which locations are still reliable after a shuffle or why an ordered pair should be found first. The game has no combat, account requirement, public ranking, or advertising request on this Kids page. Stars and the Skill Report are encouraging local game feedback, not an intelligence, school, health, or developmental assessment.</p>
         </div>
         <div class="game-info-section">
           <h3>Frequently Asked Questions</h3>
-          <dl><div><dt>What age is Animal Star Memory for?</dt><dd>It is recommended for age 6+ and family play.</dd></div><div><dt>Does it require fast reactions?</dt><dd>No. It focuses on remembering positions.</dd></div><div><dt>Can children replay stages?</dt><dd>Yes. Replaying can help practice memory in a low-pressure way.</dd></div></dl>
+          <dl><div><dt>How many stages are there?</dt><dd>There are 30 named stages in six lessons, with Keeper Checks at Stages 5, 10, 15, 20, 25, and 30.</dd></div><div><dt>What happens in a Moon Shuffle stage?</dt><dd>After a mismatch, the same unmatched symbols move to different hidden positions.</dd></div><div><dt>Why did a matching pair hide again?</dt><dd>In an ordered stage, the feedback names which animal pair must be cleared next.</dd></div><div><dt>What does Constellation Shift do?</dt><dd>After a successful pair, all remaining hidden symbols rotate one position.</dd></div><div><dt>Does an opening preview use moves?</dt><dd>No. Input is locked during the preview and play begins only after the cards hide.</dd></div><div><dt>Can children replay stages?</dt><dd>Yes. Any unlocked stage can be replayed to improve its local score or stars.</dd></div><div><dt>Does progress require login?</dt><dd>No. Stage unlocks, stars, and best scores are stored in this browser.</dd></div><div><dt>Does the Kids page show ads?</dt><dd>No. This game makes no advertising request and has no ad reserve.</dd></div><div><dt>Is the Skill Report a formal memory test?</dt><dd>No. It only summarizes pairs, moves, and streaks from the current game.</dd></div></dl>
         </div>
       </div>
     </section>
@@ -214,7 +237,7 @@
     <script src="../../src/edge-guard.js?v=20260710-mobile-play-shell2"></script>
     <script src="../../src/i18n.js?v=20260703-i18n-clean1"></script>
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
-    <script src="game.js?v=20260716-accessible-cards1"></script>
-    <script src="../../src/game-page-info.js?v=20260706-guide-age-layers1"></script>
+    <script src="game.js?v=20260717-depth30-1"></script>
+    <script src="../../src/game-page-info.js?v=20260717-star-memory-depth30-1"></script>
   </body>
 </html>

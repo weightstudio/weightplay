@@ -21,7 +21,7 @@
       aim: "拖曳瞄準，放開發射", directGoal: "配對 1 組同色泡泡", bankGoal: "用反彈射擊配對 1 組", rescueGoal: "救出泡泡裡的小斑馬",
       directSkill: "專注", bankSkill: "判斷", rescueSkill: "規劃", directHint: "對準上方兩顆藍色泡泡", bankHint: "瞄準左牆，讓泡泡反彈", rescueHint: "消除包住小斑馬的泡泡",
       success: "救援成功！", failed: "泡泡用完了", bounceNeeded: "這一關要先碰牆反彈！", noMatch: "再找找相同的動物泡泡", match: "配對成功！", rescuedNow: "動物得救了！",
-      focusReport: "專注 · 手眼協調", logicReport: "空間判斷 · 手眼協調", rescueReport: "規劃 · 邏輯思考", locked: "尚未解鎖", completed: "已完成"
+      focusReport: "專注 · 手眼協調", logicReport: "空間判斷 · 手眼協調", rescueReport: "規劃 · 邏輯思考", locked: "尚未解鎖", lockedFeedback: "{stage}：尚未解鎖。先完成前一關吧！", completed: "已完成"
       ,rescueGoal: "救出動物泡泡", multiGoal: "完成 2 組同色配對", multiBankGoal: "利用反彈完成 2 組配對", doubleRescueGoal: "救出 2 隻動物",
       directHint: "瞄準同色泡泡完成配對", bankHint: "瞄準側牆，讓泡泡反彈", rescueHint: "消除動物周圍的同色泡泡", multiHint: "規劃射擊順序，完成兩組配對", doubleRescueHint: "先觀察路線，再救出兩隻動物",
       rainbowHint: "彩虹泡泡會變成撞到的泡泡顏色", lineHint: "橫掃泡泡會清除命中的整排泡泡", burstHint: "爆破泡泡會清除附近泡泡與障礙", swapHint: "交換泡泡會和撞到的泡泡互換顏色",
@@ -43,7 +43,7 @@
       rainbowHint: "Rainbow matches the color of the bubble it hits", lineHint: "Line Clear removes the entire row it hits", burstHint: "Burst removes nearby bubbles and blockers", swapHint: "Swap exchanges colors with the bubble it hits",
       rainbowUsed: "Rainbow match!", lineUsed: "Row cleared!", burstUsed: "Burst cleared!", swapUsed: "Colors swapped!",
       success: "Rescue Complete!", failed: "Out of bubbles", bounceNeeded: "This level needs a wall bounce!", noMatch: "Look for matching animal bubbles", match: "Match complete!", rescuedNow: "Animal rescued!",
-      focusReport: "Focus · Hand-Eye Coordination", logicReport: "Spatial Judgment · Coordination", rescueReport: "Planning · Logic", locked: "Locked", completed: "Complete"
+      focusReport: "Focus · Hand-Eye Coordination", logicReport: "Spatial Judgment · Coordination", rescueReport: "Planning · Logic", locked: "Locked", lockedFeedback: "{stage}: Locked. Complete the previous stage first!", completed: "Complete"
     }
   };
 
@@ -63,7 +63,7 @@
   ];
 
   const dom = Object.fromEntries([
-    "viewport","gameCanvas","loadingScreen","loadingCover","loadingPanel","loadingFill","loadingProgress","mainScreen","stageScreen","battleScreen","battleLive","resultScreen","guideModal","stageRail","playCanvas",
+    "viewport","gameCanvas","loadingScreen","loadingCover","loadingPanel","loadingFill","loadingProgress","mainScreen","stageScreen","battleScreen","battleLive","resultScreen","guideModal","stageRail","stageStatus","playCanvas",
     "mainProgress","albumCount","starCount","stageSkill","stageGoal","battleStageName","shotsLeft","rescueProgress","scoreValue","battleMessage","battleGoal",
     "currentPreview","nextPreview","resultTitle","resultStars","resultScore","resultShots","resultRescued","rewardStars","rewardCoins","rewardAlbum","skillText","nextStage"
   ].map(id => [id, document.getElementById(id)]));
@@ -82,6 +82,7 @@
   let game = null;
   let animationFrame = 0;
   let resultTimer = 0;
+  let stageStatusTimer = 0;
 
   function loadSave() {
     try {
@@ -98,6 +99,23 @@
   }
 
   function t(key) { return copy[locale][key] || key; }
+
+  function clearStageStatus() {
+    clearTimeout(stageStatusTimer);
+    stageStatusTimer = 0;
+    dom.stageStatus.classList.remove("is-visible");
+    dom.stageStatus.textContent = "";
+  }
+
+  function showLockedStage(stage, card) {
+    clearStageStatus();
+    const stageName = `${stage.id}. ${stage.title[locale]}`;
+    dom.stageStatus.textContent = t("lockedFeedback").replace("{stage}", stageName);
+    dom.stageStatus.classList.add("is-visible");
+    card.focus({ preventScroll: true });
+    requestAnimationFrame(() => card.focus({ preventScroll: true }));
+    stageStatusTimer = window.setTimeout(clearStageStatus, 1800);
+  }
 
   function applyLocale() {
     document.documentElement.lang = locale;
@@ -122,6 +140,7 @@
   }
 
   function showScreen(name) {
+    if (name !== "stage") clearStageStatus();
     currentScreen = name;
     document.body.classList.toggle("safari-main", name === "main");
     const result = name === "result";
@@ -144,6 +163,7 @@
   }
 
   function renderStageRail() {
+    clearStageStatus();
     dom.stageRail.innerHTML = "";
     stageDefs.forEach(stage => {
       const locked = stage.id > save.unlocked;
@@ -153,7 +173,10 @@
       card.setAttribute("aria-disabled", String(locked));
       const stars = save.bestStars[stage.id] || 0;
       card.innerHTML = `<img src="${ASSET_ROOT}animal-bubble-safari-bg.webp" alt=""><div><b>${stage.id}. ${stage.title[locale]}</b><span>${t(stage.goalKey)}</span><em>${"★".repeat(stars)}${"☆".repeat(3-stars)}</em><span>${locked ? t("locked") : stars ? t("completed") : t(stage.skillKey)}</span></div>`;
-      card.addEventListener("click", () => { if (!locked) startStage(stage.id); });
+      card.addEventListener("click", () => {
+        if (locked) showLockedStage(stage, card);
+        else startStage(stage.id);
+      });
       dom.stageRail.appendChild(card);
     });
     updateStageSummary();
@@ -174,10 +197,41 @@
   }
 
   let stageGesture = null;
+  let lockedStageActivation = null;
   let stageSettleFrame = 0;
   let stageSettleTrace = [];
   let suppressStageClick = false;
   const stageScale = () => Math.max(.01, dom.gameCanvas.getBoundingClientRect().width / LOGICAL_WIDTH);
+  const lockedCardAtPoint = (x, y) => [...dom.stageRail.querySelectorAll(".stage-card.is-locked")].find(card => {
+    const rect = card.getBoundingClientRect();
+    return x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
+  });
+  dom.stageRail.addEventListener("pointerdown", event => {
+    const card = lockedCardAtPoint(event.clientX, event.clientY);
+    if (!card || event.isPrimary === false || event.button !== 0) {
+      lockedStageActivation = null;
+      return;
+    }
+    lockedStageActivation = { id:event.pointerId, x:event.clientX, y:event.clientY, card, moved:false };
+  }, true);
+  document.addEventListener("pointermove", event => {
+    if (!lockedStageActivation || event.pointerId !== lockedStageActivation.id) return;
+    if (Math.hypot(event.clientX - lockedStageActivation.x, event.clientY - lockedStageActivation.y) > 6) lockedStageActivation.moved = true;
+  }, true);
+  const finishLockedStageActivation = event => {
+    if (!lockedStageActivation || event.pointerId !== lockedStageActivation.id) return;
+    const activation = lockedStageActivation;
+    lockedStageActivation = null;
+    if (event.type === "pointercancel" || activation.moved) return;
+    const stageIndex = [...dom.stageRail.children].indexOf(activation.card);
+    const stage = stageDefs[stageIndex];
+    if (stage) {
+      event.preventDefault();
+      showLockedStage(stage, activation.card);
+    }
+  };
+  document.addEventListener("pointerup", finishLockedStageActivation, true);
+  document.addEventListener("pointercancel", finishLockedStageActivation, true);
   function stopStageSettle() {
     cancelAnimationFrame(stageSettleFrame);
     stageSettleFrame = 0;

@@ -731,6 +731,10 @@
   $("#rerollBtn").onclick = rerollBlessings;
   $("#resultHome").onclick = () => { playSound("click"); show("main"); localize(); };
   $("#resultModal").addEventListener("keydown", (event) => {
+    if (event.repeat && (event.key === "Enter" || event.key === " ")) {
+      event.preventDefault();
+      return;
+    }
     if (event.key !== "Tab" || $("#resultModal").classList.contains("hidden")) return;
     const actions = [$("#resultNext"), $("#resultHome")].filter((button) => !button.disabled);
     if (event.shiftKey && document.activeElement === actions[0]) { event.preventDefault(); actions.at(-1).focus(); }

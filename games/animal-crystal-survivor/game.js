@@ -1852,6 +1852,10 @@
     showStageSelection(true);
   });
   nodes.resultPanel.addEventListener("keydown", (event) => {
+    if (event.repeat && (event.key === "Enter" || event.key === " ")) {
+      event.preventDefault();
+      return;
+    }
     if (event.key !== "Tab" || nodes.resultPanel.classList.contains("hidden")) return;
     const actions = [nodes.retryBtn, nodes.nextStageBtn, nodes.resultMenuBtn].filter((button) => !button.disabled && !button.classList.contains("hidden"));
     if (event.shiftKey && document.activeElement === actions[0]) {

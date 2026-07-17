@@ -86,6 +86,7 @@
       whatHelps: "What helps?",
       correct: "Happy helper!",
       wrong: "Try another care item.",
+      moveOn: "Let's help the next animal.",
       goal: "Goal {target}",
       rain: "It is raining.",
       puddle: "The animal is wet.",
@@ -150,6 +151,7 @@
       whatHelps: "\u4ec0\u9ebc\u53ef\u4ee5\u5e6b\u5fd9\uff1f",
       correct: "\u5c0f\u52d5\u7269\u958b\u5fc3\u4e86\uff01",
       wrong: "\u518d\u8a66\u4e00\u500b\u7167\u9867\u9053\u5177\u3002",
+      moveOn: "\u6211\u5011\u5148\u53bb\u5e6b\u4e0b\u4e00\u96bb\u5c0f\u52d5\u7269\u3002",
       goal: "\u76ee\u6a19 {target}",
       rain: "\u5916\u9762\u5728\u4e0b\u96e8\u3002",
       puddle: "\u5c0f\u52d5\u7269\u6fd5\u6fd5\u7684\u3002",
@@ -213,6 +215,7 @@
   let roundIndex = 0;
   let score = 0;
   let mistakes = 0;
+  let roundMistakes = 0;
   let running = false;
   let busy = false;
   let dragState = null;
@@ -323,7 +326,12 @@
       const button = document.createElement("button");
       button.type = "button";
       button.className = "stage-card";
-      if (stageNo > unlocked) button.classList.add("locked");
+      const locked = stageNo > unlocked;
+      if (locked) {
+        button.classList.add("locked");
+        button.setAttribute("aria-disabled", "true");
+        button.setAttribute("aria-label", `${t("stage", { n: stageNo })}: ${t(stage.animalId)}. ${t("locked")}`);
+      }
       const best = records[stageNo] || 0;
       const firstProblem = problems[stage.rounds[0]];
       button.innerHTML = `
@@ -425,6 +433,7 @@
     roundIndex = 0;
     score = 0;
     mistakes = 0;
+    roundMistakes = 0;
     running = true;
     busy = false;
     nodes.menuPanel.classList.add("hidden");
@@ -617,6 +626,7 @@
     const stage = stages[currentStage];
     const problemKey = stage.rounds[roundIndex];
     const correct = problems[problemKey].tool === tool;
+    const skipped = !correct && roundMistakes + 1 >= 3;
     const zone = nodes.board.querySelector(".animal-zone");
     if (correct) {
       score += 1;
@@ -627,26 +637,28 @@
       playSound("success");
     } else {
       mistakes += 1;
+      roundMistakes += 1;
       button.classList.add("wrong");
       zone?.classList.add("sad");
       showFace("\u{1F622}", "sad");
-      nodes.hintText.textContent = t("wrong");
+      nodes.hintText.textContent = t(skipped ? "moveOn" : "wrong");
       playSound("wrong");
     }
-    track("weather_tool", { stage: stage.id, problem: problemKey, tool, correct, mistakes });
+    track("weather_tool", { stage: stage.id, problem: problemKey, tool, correct, skipped, mistakes, roundMistakes });
     scheduleCareTask(() => {
       busy = false;
-      if (!correct) {
+      if (!correct && !skipped) {
         button.classList.remove("wrong");
         zone?.classList.remove("sad");
         return;
       }
+      roundMistakes = 0;
       roundIndex += 1;
       if (roundIndex >= stage.rounds.length) {
         finishStage();
         return;
       }
-      renderRound(correct ? "+1" : "", true);
+      renderRound(correct ? "+1" : t("moveOn"), true);
     }, 760);
   }
 

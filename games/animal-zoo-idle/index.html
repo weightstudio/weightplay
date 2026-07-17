@@ -9,21 +9,22 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="robots" content="index,follow" />
-    <meta name="description" content="Run a lively animal park where visitors buy tickets while you care for animals, upgrade the zoo gate, recruit new animals, and grow your zoo in Animal Zoo Idle on WeightPlay." />
+    <meta name="description" content="Build a friendly animal park across 30 saved challenges. Collect tickets, choose care activities, arrange habitats, improve facilities, and prepare six park reviews." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Animal Zoo Idle - WeightPlay" />
-    <meta property="og:description" content="A family-friendly zoo management game with visitor income, animal care, gate upgrades, animal recruitment, and local progress." />
+    <meta property="og:description" content="Build a friendly animal park across 30 saved challenges with ticket income, animal care, habitat arranging, facilities, and six park reviews." />
     <meta property="og:url" content="https://weightplay.com/games/animal-zoo-idle/" />
     <meta property="og:image" content="https://weightplay.com/assets/animal-zoo-idle-cover.png" />
     <meta name="twitter:card" content="summary_large_image" />
     <title>Animal Zoo Idle - WeightPlay</title>
     <link rel="canonical" href="https://weightplay.com/games/animal-zoo-idle/" />
-    <link rel="stylesheet" href="style.css?v=20260716-zoo-kids-full-viewport1" />
+    <link rel="stylesheet" href="style.css?v=20260717-zoo-depth30-1" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell2" />
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
+    <link rel="stylesheet" href="../../src/stage-selector-standard.css?v=20260716-kids-stage-swipe3" data-wp-stage-standard />
     <script type="application/ld+json">
 {
               "@context": "https://schema.org",
@@ -32,7 +33,7 @@
               "alternateName": "\u52d5\u7269\u5c0f\u5c0f\u6a02\u5712",
               "url": "https://weightplay.com/games/animal-zoo-idle/",
               "image": "https://weightplay.com/assets/animal-zoo-idle-cover.png",
-              "description": "Run a lively animal park where visitors buy tickets while you care for animals, upgrade the zoo gate, recruit new animals, and grow your zoo.",
+              "description": "Build a friendly animal park across 30 saved challenges. Collect visitor tickets, choose animal care activities, arrange habitats, improve facilities, and prepare six park reviews.",
               "applicationCategory": "Game",
               "operatingSystem": "Web browser",
               "publisher": {
@@ -62,7 +63,7 @@
       }
     </script>
   </head>
-  <body>
+  <body data-wp-game-id="animal-zoo-idle">
     <main class="zoo-app" data-no-mobile-immersive="true">
       <header class="topbar">
         <a class="home-link icon-btn" data-wp-return="main" href="/kids/" aria-label="Back to Kids lobby" data-ui-aria-label="backToLobby">
@@ -87,21 +88,21 @@
         <div class="menu-copy">
           <strong data-ui="menuTitle">Build a lively safari park.</strong>
           <span data-ui="menuHint">Visitors buy tickets while animals play. Care for animals, upgrade the zoo gate, recruit new animals, and collect the ticket box.</span>
-          <button id="startBtn" type="button" data-ui="start">Open Park</button>
+          <button id="startBtn" type="button" data-ui="start">Start Game</button>
         </div>
       </section>
 
       <section id="stagePanel" class="challenge-stage-panel hidden" data-wp-logical-stage-canvas>
         <div class="challenge-stage-head">
-          <button id="stageBackBtn" type="button" aria-label="Back">&larr;</button>
+          <button id="stageBackBtn" type="button" aria-label="Back to park menu" data-ui-aria-label="backToMenu">&larr;</button>
           <strong data-ui="chooseChallenge">Choose Park Challenge</strong>
         </div>
-        <div id="challengeRail" class="challenge-rail" aria-label="Park challenges"></div>
+        <div id="challengeRail" class="challenge-rail stage-rail" data-wp-stage-rail aria-label="Park challenges"></div>
       </section>
 
       <section id="gamePanel" class="game-panel hidden">
         <div class="resource-row">
-          <button id="backToMenuBtn" class="play-return" data-wp-return="battle" type="button" aria-label="Back to menu" data-ui-aria-label="backToMenu">&larr;</button>
+          <button id="backToMenuBtn" class="play-return" data-wp-return="battle" type="button" aria-label="Back to challenges" data-ui-aria-label="backToChallenges">&larr;</button>
           <div class="resource-card">
             <img src="../../assets/coin.png" alt="" class="coin-icon" draggable="false" />
             <b id="coinText">0</b>
@@ -142,21 +143,43 @@
         <div class="game-info-title">
           <span class="game-info-kicker">WeightPlay Original Game Guide</span>
           <h2>Animal Zoo Idle - How to Play</h2>
-          <p>Animal Zoo Idle is a gentle zoo growth game where visitors walk in, buy tickets, and leave coins in the ticket box while animals play around the park. Players care for animals, collect ticket income, upgrade the zoo gate, and recruit more animals such as giraffes, elephants, pandas, and penguins. As the gate improves and more animals join, the park becomes livelier and earns more coins. It is designed as a return-friendly idle game with visible growth instead of an instant button-click reward loop.</p>
+          <p>Animal Zoo Idle is a gentle park-management game built around 30 saved challenges. Visitors enter the meadow, buy tickets, and gradually fill a ticket box while the player cares for animals, improves three facilities, expands the gate, and arranges habitats. Lions, giraffes, elephants, pandas, penguins, rabbits, foxes, koalas, tigers, rhinos, crocodiles, and bears can eventually join the park. Every fifth challenge is a friendly park review, so growth has a clear purpose instead of becoming an endless waiting loop.</p>
         </div>
       </div>
       <div class="game-info-sections">
         <div class="game-info-section">
-          <h3>How to Play</h3>
-          <ol><li>Open the animal park from the menu.</li><li>Wait for visitors to buy tickets and fill the ticket box.</li><li>Care for animals to raise happiness and keep income stable.</li><li>Use coins to upgrade the gate and recruit more animals.</li></ol>
+          <h3>Story and Park Mission</h3>
+          <p>The meadow begins as a small animal park with a simple gate, a few residents, and room to grow. The player is its young park keeper. Visitors are curious, but a lasting park needs more than a busy entrance: animals need regular care, habitat spaces must be thoughtfully arranged, and guest facilities must keep pace with the growing crowd.</p>
+          <p>The 30 challenges follow the park from its first ticket box to the Grand Safari Festival. Mimi, Panko, an otter inspector, a rhino keeper, and the penguin parade team visit at five-stage checkpoints. Passing a review means the park has demonstrated a new kind of readiness: basic care, picnic service, viewing space, keeper support, parade capacity, and finally a balanced festival park.</p>
+        </div>
+        <div class="game-info-section">
+          <h3>How a Challenge Works</h3>
+          <ol><li>Choose any unlocked challenge from the horizontal Stage rail.</li><li>Read its picture, title, and goals before entering the park.</li><li>Collect the ticket box when it fills, or deliberately leave it ready when a goal asks for a full box.</li><li>Choose Tidy Habitat to raise happiness, or Enrichment Time to earn tickets; each care action has a short cooldown.</li><li>Spend tickets on the gate, one of three facilities, or a new animal when the current goal requires it.</li><li>Drag animals to new habitat positions for arrangement goals.</li><li>When every goal is complete, claim the reward and continue to the next challenge.</li></ol>
+        </div>
+        <div class="game-info-section">
+          <h3>Park Systems</h3>
+          <ul><li><strong>Visitors and tickets:</strong> visitors continuously contribute to the ticket box. A larger park earns faster, and each unique challenge clear adds a small permanent income bonus.</li><li><strong>Care choices:</strong> tidying improves happiness, while enrichment produces tickets. Choosing the route that matches the current goals saves time.</li><li><strong>Gate and animals:</strong> eight gate levels support expansion, while recruited animals permanently remain in this browser save.</li><li><strong>Facilities:</strong> the Snack Stand, View Deck, and Keeper Post each have four upgrade levels and appear in different challenge arcs.</li><li><strong>Habitat arrangement:</strong> animal cards can be moved around the meadow. Some challenges count real rearrangements rather than button presses.</li><li><strong>Reports and rewards:</strong> the Growth Report summarizes the park, while a cleared challenge unlocks the next Stage and awards coins.</li></ul>
+        </div>
+        <div class="game-info-section">
+          <h3>30-Challenge Progression</h3>
+          <p>Challenges 1–5 introduce ticket collection, one care action, habitat movement, and the first Mimi review. Challenges 6–10 ask players to compare care routes, hold a ready ticket box, and improve the Snack Stand before Panko's picnic review.</p>
+          <p>Challenges 11–15 add the View Deck, larger arrangements, and happiness targets. Challenges 16–20 bring in the Keeper Post and require care, animal count, and facility planning together. Challenges 21–25 focus on gate growth, a busier animal roster, and the penguin parade. Challenges 26–30 combine careful spending, all three facilities, happiness, arrangement, and income in the Grand Safari Festival finale.</p>
+        </div>
+        <div class="game-info-section">
+          <h3>Strategy Tips</h3>
+          <ul><li>Read all goals before spending; a facility goal and an animal-count goal may compete for the same tickets.</li><li>Use Tidy Habitat when happiness is low, but choose Enrichment Time when the challenge needs income rather than mood.</li><li>Do not collect a full ticket box if the current challenge specifically asks you to keep it ready.</li><li>Move animals far enough to count as a real habitat arrangement.</li><li>Permanent upgrades carry into later challenges, so earlier improvements make advanced reviews quicker without removing their mixed goals.</li><li>Replay cleared challenges to practice a route; unique-clear bonuses are awarded only once.</li></ul>
+        </div>
+        <div class="game-info-section">
+          <h3>Design Notes</h3>
+          <p>The game uses a calm, continuing economy so children can see cause and effect without a harsh timer or combat. Waiting alone is not the whole activity: each challenge asks for a specific combination of collecting, choosing care, arranging animals, recruiting, and upgrading. The Stage rail gives the park a visible 30-step journey, while local saving prevents the same review from needing to be rebuilt each visit. Large buttons and direct dragging support touch screens; the same controls also work with a mouse. Friendly checkpoint reviews replace boss fights because the central fantasy is improving a shared animal space.</p>
         </div>
         <div class="game-info-section game-info-parent">
           <h3>Parent Note</h3>
-          <p>This game may help children practice focus, simple planning, responsibility, and animal knowledge through a gentle zoo-care loop. Progress is stored locally in the browser and is for fun only, not a formal assessment.</p>
+          <p>This game may support simple planning, attention, sequencing, and discussion about animal care. Adults can ask why the player saved tickets, selected one care activity, or moved an animal to a different habitat position. There is no combat, ranking pressure, account requirement, or advertising request on this Kids page. Challenge progress, upgrades, and reports are playful feedback stored in the local browser; they are not a school, health, or developmental assessment.</p>
         </div>
         <div class="game-info-section">
           <h3>Frequently Asked Questions</h3>
-          <dl><div><dt>Is Animal Zoo Idle free?</dt><dd>Yes. It runs in the browser on WeightPlay.</dd></div><div><dt>Does it require login?</dt><dd>No. Basic play uses local browser progress only.</dd></div><div><dt>What age is it for?</dt><dd>It is recommended for age 6+ and family play.</dd></div><div><dt>What skills does it practice?</dt><dd>It can practice focus, logic, planning, and animal knowledge.</dd></div></dl>
+          <dl><div><dt>How many challenges are there?</dt><dd>There are 30 saved park challenges in six five-stage arcs, with friendly reviews at Stages 5, 10, 15, 20, 25, and 30.</dd></div><div><dt>Why should I leave the ticket box full?</dt><dd>Some challenges test whether the park can prepare income without immediately spending it. Collect only after that goal is satisfied.</dd></div><div><dt>What is the difference between the two care actions?</dt><dd>Tidy Habitat raises happiness. Enrichment Time awards tickets. Both use the same short care cooldown.</dd></div><div><dt>How does habitat arranging count?</dt><dd>Drag an animal to a noticeably different position in the meadow. Tiny accidental movements do not count.</dd></div><div><dt>Does clearing a challenge reset my park?</dt><dd>No. Animals, gate levels, facilities, coins, and unlocked challenges remain in the local save.</dd></div><div><dt>Can I replay an earlier challenge?</dt><dd>Yes. Any unlocked Stage can be selected again, although the permanent unique-clear income bonus is awarded once per challenge.</dd></div><div><dt>Does it require login or show ads?</dt><dd>No. This Kids game requires no account and makes no advertising request.</dd></div><div><dt>Where is progress stored?</dt><dd>It is stored in this browser. Clearing browser site data or switching devices may remove or separate the save.</dd></div><div><dt>Is the Growth Report an ability test?</dt><dd>No. It is only an in-game summary and is not a formal learning or developmental assessment.</dd></div></dl>
         </div>
       </div>
     </section>
@@ -170,7 +193,8 @@
     <script src="../../src/edge-guard.js?v=20260710-mobile-play-shell2"></script>
     <script src="../../src/i18n.js?v=20260703-i18n-clean1"></script>
     <script src="../../src/tutorial.js?v=20260703-tutorial-start1"></script>
-    <script src="game.js?v=20260716-zoo-kids-full-viewport1"></script>
-    <script src="../../src/game-page-info.js?v=20260710-zoo-care-first-screen1"></script>
+    <script src="../../src/stage-selector-standard.js?v=20260716-kids-stage-swipe3"></script>
+    <script src="game.js?v=20260717-zoo-depth30-1"></script>
+    <script src="../../src/game-page-info.js?v=20260717-zoo-depth30-1"></script>
   </body>
 </html>

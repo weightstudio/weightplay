@@ -2597,3 +2597,154 @@ body.zoo-playing .care-panel {
     max-height: 88px !important;
   }
 }
+
+/* 30-challenge Stage: one fixed Kids Canvas with the shared rail controller. */
+body.zoo-stage {
+  width: 100%;
+  height: 100dvh;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+body.zoo-stage .topbar,
+body.zoo-stage .menu-panel,
+body.zoo-stage .game-panel,
+body.zoo-stage .game-page-info,
+body.zoo-stage .language-picker,
+body.zoo-stage .sound-toggle,
+body.zoo-stage .help-button,
+body.zoo-stage .wp-tutorial-button {
+  display: none !important;
+}
+
+body.zoo-stage .challenge-stage-panel {
+  position: fixed !important;
+  left: var(--zoo-stage-left, 0) !important;
+  top: var(--zoo-stage-top, 0) !important;
+  z-index: 60;
+  width: 390px !important;
+  height: 788px !important;
+  min-width: 390px !important;
+  min-height: 788px !important;
+  display: grid !important;
+  grid-template-rows: 64px minmax(0, 1fr);
+  gap: 12px;
+  padding: 12px 0 18px;
+  overflow: hidden;
+  color: #f8fafc;
+  background:
+    linear-gradient(rgba(8, 27, 22, .76), rgba(8, 27, 22, .9)),
+    url("../../assets/animal-zoo-idle-cover.webp") center / cover no-repeat;
+  box-shadow: inset 0 0 0 2px rgba(255,255,255,.22);
+  transform: scale(var(--zoo-stage-scale, 1)) !important;
+  transform-origin: top left !important;
+}
+
+.challenge-stage-head {
+  margin: 0 12px;
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  padding: 7px;
+  border: 1px solid rgba(255,255,255,.26);
+  border-radius: 14px;
+  background: rgba(4, 17, 14, .9);
+}
+
+.challenge-stage-head button {
+  width: 48px;
+  height: 48px;
+  border: 0;
+  border-radius: 12px;
+  color: #1677bb;
+  background: #f8fafc;
+  font-size: 1.5rem;
+  font-weight: 950;
+}
+
+.challenge-stage-head strong {
+  overflow: hidden;
+  font-size: 1.2rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.challenge-rail.stage-rail {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 264px;
+  align-items: center;
+  gap: 14px;
+  height: 100%;
+  padding: 0 63px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  touch-action: pan-x;
+  overscroll-behavior-inline: contain;
+}
+
+.challenge-rail::-webkit-scrollbar { display: none; }
+
+.challenge-card {
+  position: relative;
+  width: 264px !important;
+  height: 190px !important;
+  min-width: 264px !important;
+  min-height: 190px !important;
+  display: grid;
+  grid-template-columns: 78px minmax(0, 1fr);
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
+  column-gap: 10px;
+  align-content: end;
+  padding: 12px;
+  overflow: hidden;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+  border: 2px solid rgba(255,255,255,.34);
+  border-radius: 18px;
+  color: #fff;
+  background: linear-gradient(155deg, rgba(20,70,51,.96), rgba(4,24,18,.98));
+  box-shadow: 0 12px 30px rgba(0,0,0,.42);
+  text-align: left;
+}
+
+.challenge-card img {
+  grid-row: 1 / 5;
+  width: 78px;
+  height: 126px;
+  align-self: center;
+  object-fit: contain;
+  filter: drop-shadow(0 7px 8px rgba(0,0,0,.38));
+}
+
+.challenge-card > strong { color: #ffd966; font-size: .72rem; }
+.challenge-card > b { font-size: 1.02rem; line-height: 1.08; }
+.challenge-card > span { overflow: hidden; color: #dff7e8; font-size: .69rem; line-height: 1.25; }
+.challenge-card > small { color: #fff1a9; font-weight: 900; }
+.challenge-card > em { position: absolute; right: 10px; top: 9px; padding: 3px 7px; border-radius: 999px; color: #09251b; background: #79f0ba; font-size: .62rem; font-style: normal; font-weight: 950; }
+.challenge-card.locked { filter: grayscale(.72) brightness(.72); }
+.challenge-card.selected,
+.challenge-card.is-browsed { border-color: #73f1bc; box-shadow: 0 0 0 4px rgba(115,241,188,.22), 0 15px 34px rgba(0,0,0,.48); }
+
+/* Keep the active challenge visible while the care panel remains the one
+   vertical scroll owner for park management. */
+body.zoo-playing .tour-board {
+  display: grid !important;
+  order: 2 !important;
+  flex-shrink: 0;
+  min-height: 122px;
+  padding: 7px !important;
+}
+
+body.zoo-playing .happy-meter { order: 0 !important; }
+body.zoo-playing .zoo-actions,
+body.zoo-playing .care-route-actions { order: 1 !important; }
+body.zoo-playing .facility-board { order: 3 !important; }
+body.zoo-playing .animal-shop-head { order: 4 !important; }
+body.zoo-playing .animal-shop { order: 5 !important; }
+body.zoo-playing .tour-list { gap: 4px !important; }
+body.zoo-playing .tour-list span { min-height: 29px !important; padding: 4px 6px !important; }
+body.zoo-playing .tour-board button { min-height: 34px !important; height: 34px !important; }

@@ -133,7 +133,7 @@
       animalShop: "Animal shop",
       menuTitle: "Build a growing animal park.",
       menuHint: "Welcome visitors, collect tickets, upgrade the zoo gate, and recruit more animals to grow your park.",
-      start: "Open Park",
+      start: "Start Game",
       chooseChallenge: "Choose Park Challenge",
       challenge: "Challenge {n}",
       challengeLocked: "Locked",
@@ -308,7 +308,7 @@
     animalShop: "\u52d5\u7269\u5546\u5e97",
     menuTitle: "\u5efa\u8a2d\u4e00\u5ea7\u6703\u6210\u9577\u7684\u52d5\u7269\u6a02\u5712\u3002",
     menuHint: "\u6b61\u8fce\u53c3\u89c0\u8005\u3001\u6536\u96c6\u9580\u7968\u6536\u5165\u3001\u5347\u7d1a\u5927\u9580\uff0c\u4e26\u62db\u52df\u66f4\u591a\u52d5\u7269\u4f86\u64f4\u5efa\u6a02\u5712\u3002",
-    start: "\u958b\u5712",
+    start: "\u958b\u59cb\u904a\u6232",
     chooseChallenge: "\u9078\u64c7\u5712\u5340\u6311\u6230",
     challenge: "\u7b2c {n} \u95dc",
     challengeLocked: "\u5c1a\u672a\u89e3\u9396",
@@ -476,15 +476,15 @@
   const pageMeta = {
     en: {
       title: "Animal Zoo Idle - WeightPlay",
-      description: "Run a lively animal park where visitors buy tickets while you care for animals, upgrade the zoo gate, recruit new animals, and grow your zoo in Animal Zoo Idle on WeightPlay.",
+      description: "Build a friendly animal park across 30 saved challenges. Collect tickets, choose care activities, arrange habitats, improve facilities, and prepare six park reviews.",
       ogTitle: "Animal Zoo Idle - WeightPlay",
-      ogDescription: "A family-friendly zoo management game with visitor income, animal care, gate upgrades, animal recruitment, and local progress.",
+      ogDescription: "Build a friendly animal park across 30 saved challenges with ticket income, animal care, habitat arranging, facilities, and six park reviews.",
     },
     "zh-Hant": {
       title: "\u52d5\u7269\u5c0f\u5c0f\u6a02\u5712 - WeightPlay",
-      description: "\u5728 WeightPlay \u7d93\u71df\u71b1\u9b27\u7684\u52d5\u7269\u5712\uff0c\u6536\u53d6\u904a\u5ba2\u9580\u7968\u3001\u7167\u9867\u52d5\u7269\u3001\u5347\u7d1a\u5927\u9580\u4e26\u62db\u52df\u65b0\u52d5\u7269\uff0c\u8b93\u6a02\u5712\u6301\u7e8c\u6210\u9577\u3002",
+      description: "\u5b8c\u6210 30 \u500b\u6709\u5b58\u6a94\u7684\u6a02\u5712\u6311\u6230\uff0c\u6536\u53d6\u9580\u7968\u3001\u9078\u64c7\u7167\u9867\u65b9\u5f0f\u3001\u5b89\u6392\u68f2\u5730\u3001\u5347\u7d1a\u8a2d\u65bd\uff0c\u4e26\u901a\u904e\u516d\u6b21\u53cb\u5584\u6a02\u5712\u5be9\u67e5\u3002",
       ogTitle: "\u52d5\u7269\u5c0f\u5c0f\u6a02\u5712 - WeightPlay",
-      ogDescription: "\u9069\u5408\u89aa\u5b50\u7684\u52d5\u7269\u5712\u7d93\u71df\u904a\u6232\uff0c\u5305\u542b\u9580\u7968\u6536\u5165\u3001\u52d5\u7269\u7167\u9867\u3001\u5927\u9580\u5347\u7d1a\u3001\u52d5\u7269\u62db\u52df\u8207\u672c\u5730\u9032\u5ea6\u3002",
+      ogDescription: "30 \u500b\u52d5\u7269\u6a02\u5712\u6311\u6230\uff0c\u5305\u542b\u9580\u7968\u6536\u5165\u3001\u7167\u9867\u9078\u64c7\u3001\u68f2\u5730\u5b89\u6392\u3001\u8a2d\u65bd\u5347\u7d1a\u8207\u516d\u6b21\u53cb\u5584\u5be9\u67e5\u3002",
     },
   };
   const nodes = {
@@ -504,6 +504,7 @@
     resultPanel: $("resultPanel"),
     reportScore: $("reportScore"),
     reportText: $("reportText"),
+    reportTitle: $("zooReportTitle"),
     tourReport: $("tourReport"),
     animalAlbum: $("animalAlbum"),
     focusStars: $("focusStars"),
@@ -1678,6 +1679,7 @@
     save.lastScore = score;
     save.bestScore = Math.max(previous, score);
     saveGame();
+    nodes.reportTitle.textContent = t("reportTitle");
     nodes.reportScore.textContent = score;
     nodes.reportText.textContent = score >= previous ? t("reportGood") : t("reportTry");
     nodes.resultStagesBtn.classList.add("hidden");
@@ -1699,8 +1701,7 @@
   function showChallengeResult() {
     showReport();
     const challenge = activeChallenge();
-    nodes.resultText = nodes.reportText;
-    document.getElementById("zooReportTitle").textContent = t("challengeCompleteTitle");
+    nodes.reportTitle.textContent = t("challengeCompleteTitle");
     nodes.reportText.textContent = challenge.id >= zooChallenges.length
       ? t("challengeFinalText")
       : t("challengeCompleteText", { n: challenge.id });
@@ -1710,12 +1711,12 @@
     requestAnimationFrame(() => (challenge.id < zooChallenges.length ? nodes.nextChallengeBtn : nodes.resultStagesBtn).focus({ preventScroll: true }));
   }
 
-  function closeReport() {
+  function closeReport(restoreFocus = true) {
     nodes.resultPanel.classList.add("hidden");
     nodes.gamePanel.classList.remove("report-open");
     nodes.habitatGrid.inert = false;
     nodes.gamePanel.querySelector(".resource-row").inert = false;
-    nodes.gamePanel.querySelector('[data-action="report"]')?.focus({ preventScroll: true });
+    if (restoreFocus) nodes.gamePanel.querySelector('[data-action="report"]')?.focus({ preventScroll: true });
   }
 
   function renderChallengeRail() {
@@ -1725,7 +1726,7 @@
       const cleared = Boolean(save.challengeCleared[String(challenge.id)]);
       const selected = index === activeChallengeIndex;
       const art = challenge.checkpointAsset || animals[index % animals.length].asset;
-      return `<button type="button" class="challenge-card ${locked ? "locked" : ""} ${cleared ? "cleared" : ""} ${selected ? "selected" : ""}" data-challenge-index="${index}" aria-disabled="${locked}">
+      return `<button type="button" class="challenge-card ${locked ? "locked" : ""} ${cleared ? "cleared" : ""} ${selected ? "selected" : ""}" data-challenge-index="${index}" data-stage-index="${index}" data-challenge-id="${challenge.id}" data-checkpoint="${Boolean(challenge.checkpointAsset)}" data-goal-types="${challenge.goals.map((goal) => goal.type).join(",")}" aria-disabled="${locked}">
         <img src="${art}" alt="" draggable="false" />
         <strong>${t("challenge", { n: challenge.id })}</strong>
         <b>${challengeCopy(challenge, "title")}</b>
@@ -1784,19 +1785,66 @@
     window.WonderSound?.play?.(name);
   }
 
-  function startGame() {
-    if (!nodes.gamePanel.classList.contains("hidden")) return;
+  function updateZooStageScale() {
+    const viewport = window.visualViewport;
+    const width = viewport?.width || window.innerWidth;
+    const height = viewport?.height || window.innerHeight;
+    const offsetLeft = viewport?.offsetLeft || 0;
+    const offsetTop = viewport?.offsetTop || 0;
+    const scale = Math.min(width / 390, height / 788);
+    document.documentElement.style.setProperty("--zoo-stage-scale", String(scale));
+    document.documentElement.style.setProperty("--zoo-stage-left", `${offsetLeft + (width - 390 * scale) / 2}px`);
+    document.documentElement.style.setProperty("--zoo-stage-top", `${offsetTop + height - 788 * scale}px`);
+  }
+
+  function showStages() {
+    cancelAnimalDrag();
+    closeReport(false);
+    document.body.classList.remove("zoo-playing");
+    document.body.classList.add("zoo-stage");
+    document.querySelector(".zoo-app")?.classList.remove("is-playing");
+    nodes.localeSelect.closest(".language-picker")?.setAttribute("aria-hidden", "true");
+    nodes.menuPanel.classList.add("hidden");
+    nodes.gamePanel.classList.add("hidden");
+    nodes.stagePanel.classList.remove("hidden");
+    activeChallengeIndex = clamp(save.challengeUnlocked - 1, 0, zooChallenges.length - 1);
+    save.tourRound = activeChallengeIndex + 1;
+    saveGame();
+    renderChallengeRail();
+    updateZooStageScale();
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    window.dispatchEvent(new CustomEvent("weightplay:stage-open", { detail: { gameId: GAME_ID } }));
+  }
+
+  function startChallenge(index) {
+    const nextIndex = clamp(Number(index) || 0, 0, zooChallenges.length - 1);
+    if (nextIndex + 1 > save.challengeUnlocked) {
+      popToast(t("challengeLocked"));
+      return;
+    }
+    if (nextIndex !== activeChallengeIndex) {
+      save.tour = { collected: 0, cared: 0, built: 0, habitat: 0, enrichment: 0, arranged: 0 };
+    }
+    activeChallengeIndex = nextIndex;
+    save.tourRound = nextIndex + 1;
+    saveGame();
+    document.body.classList.remove("zoo-stage");
     document.body.classList.add("zoo-playing");
     document.querySelector(".zoo-app")?.classList.add("is-playing");
     nodes.localeSelect.closest(".language-picker")?.setAttribute("aria-hidden", "true");
     nodes.menuPanel.classList.add("hidden");
+    nodes.stagePanel.classList.add("hidden");
     nodes.gamePanel.classList.remove("hidden");
     updateZooBattleScale();
     applyOffline();
     render();
     requestAnimationFrame(render);
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-    window.WonderAnalytics?.track("game_start", { game_id: GAME_ID });
+    window.WonderAnalytics?.track("game_start", { game_id: GAME_ID, challenge: nextIndex + 1 });
+  }
+
+  function startGame() {
+    showStages();
   }
 
   function updateZooBattleScale() {
@@ -1805,21 +1853,27 @@
   }
 
   function showMenu() {
-    if (nodes.gamePanel.classList.contains("hidden")) return;
     cancelAnimalDrag();
     document.body.classList.remove("zoo-playing");
+    document.body.classList.remove("zoo-stage");
     document.querySelector(".zoo-app")?.classList.remove("is-playing");
     nodes.localeSelect.closest(".language-picker")?.removeAttribute("aria-hidden");
     nodes.gamePanel.classList.add("hidden");
+    nodes.stagePanel.classList.add("hidden");
     nodes.menuPanel.classList.remove("hidden");
-    closeReport();
+    closeReport(false);
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   }
 
-  window.addEventListener("resize", updateZooBattleScale, { passive: true });
-  window.addEventListener("orientationchange", updateZooBattleScale, { passive: true });
-  window.visualViewport?.addEventListener("resize", updateZooBattleScale, { passive: true });
-  window.visualViewport?.addEventListener("scroll", updateZooBattleScale, { passive: true });
+  function updateZooViewportScales() {
+    updateZooBattleScale();
+    if (document.body.classList.contains("zoo-stage")) updateZooStageScale();
+  }
+
+  window.addEventListener("resize", updateZooViewportScales, { passive: true });
+  window.addEventListener("orientationchange", updateZooViewportScales, { passive: true });
+  window.visualViewport?.addEventListener("resize", updateZooViewportScales, { passive: true });
+  window.visualViewport?.addEventListener("scroll", updateZooViewportScales, { passive: true });
 
   function tickPark() {
     if (nodes.gamePanel.classList.contains("hidden")) return;
@@ -1877,6 +1931,7 @@
     window.dispatchEvent(new CustomEvent("wonder:locale-change", { detail: { locale } }));
     localizeStatic();
     render();
+    if (!nodes.stagePanel.classList.contains("hidden")) renderChallengeRail();
   });
   window.addEventListener("wonder:locale-change", (event) => {
     if (event.detail?.locale && event.detail.locale !== locale) {
@@ -1886,6 +1941,7 @@
       localStorage.setItem(localeKey, locale);
       localizeStatic();
       render();
+      if (!nodes.stagePanel.classList.contains("hidden")) renderChallengeRail();
     }
   });
   nodes.startBtn.addEventListener("click", (event) => {
@@ -1893,12 +1949,28 @@
     event.stopPropagation();
     startGame();
   });
-  nodes.backToMenuBtn.addEventListener("click", showMenu);
+  nodes.stageBackBtn.addEventListener("click", showMenu);
+  nodes.challengeRail.addEventListener("wonder:stage-snap", (event) => {
+    const index = Number(event.detail?.index);
+    if (!Number.isInteger(index) || index < 0) return;
+    nodes.challengeRail.querySelectorAll(".challenge-card.selected").forEach((card) => card.classList.remove("selected"));
+    nodes.challengeRail.querySelector(`[data-challenge-index="${index}"]`)?.classList.add("selected");
+  });
+  nodes.backToMenuBtn.addEventListener("click", showStages);
   window.addEventListener("weightplay:tutorial-start", (event) => {
     if (event.detail?.gameId === GAME_ID) startGame();
   });
   nodes.reportBtn?.addEventListener("click", showReport);
   nodes.closeReportBtn.addEventListener("click", closeReport);
+  nodes.resultStagesBtn.addEventListener("click", () => {
+    closeReport(false);
+    showStages();
+  });
+  nodes.nextChallengeBtn.addEventListener("click", () => {
+    const nextIndex = Math.min(zooChallenges.length - 1, activeChallengeIndex + 1);
+    closeReport(false);
+    startChallenge(nextIndex);
+  });
   window.addEventListener("beforeunload", saveGame);
 
   localizeStatic();

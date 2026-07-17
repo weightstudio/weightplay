@@ -2732,6 +2732,10 @@
     });
 
     nodes.resultPanel.addEventListener("keydown", (event) => {
+      if (event.repeat && (event.key === "Enter" || event.key === " ")) {
+        event.preventDefault();
+        return;
+      }
       if (event.key !== "Tab" || nodes.resultPanel.classList.contains("hidden")) return;
       const actions = [nodes.retryBtn, nodes.resultMenuBtn].filter((button) => !button.disabled);
       if (!actions.length) return;

@@ -4,6 +4,16 @@
   const BATTLE_LOGICAL_WIDTH = 390;
   const BATTLE_LOGICAL_HEIGHT = 788;
 
+  const lockedStageText = () => document.documentElement.lang === "zh-Hant"
+    ? "\u95dc\u5361\u5c1a\u672a\u89e3\u9396\u3002"
+    : "Stage locked.";
+
+  function syncLockedStageSemantics() {
+    document.querySelectorAll("#levelGrid button[data-level]").forEach((button) => {
+      button.setAttribute("aria-disabled", String(button.classList.contains("locked")));
+    });
+  }
+
   function syncLocalizedAccessibility() {
     const isTraditionalChinese = document.documentElement.lang === "zh-Hant";
     const board = document.querySelector("#game");
@@ -17,6 +27,9 @@
         : "Move the lion with Left and Right Arrow keys, or drag across the game board.");
     }
     if (stageBack) stageBack.setAttribute("aria-label", isTraditionalChinese ? "\u8fd4\u56de" : "Back");
+    const stageStatus = document.querySelector("#wonderStageStatus");
+    if (stageStatus?.textContent) stageStatus.textContent = lockedStageText();
+    syncLockedStageSemantics();
   }
 
   function updateViewport() {
@@ -51,6 +64,64 @@
   new MutationObserver(settleViewportAfterSceneChange).observe(document.body, { attributes: true, attributeFilter: ["class"] });
 
   const stageRail = document.querySelector("#levelGrid");
+  const stageStatus = document.querySelector("#wonderStageStatus");
+  if (stageRail) {
+    const announceLockedStage = (button) => {
+      if (!button?.classList.contains("locked")) return;
+      if (stageStatus) {
+        stageStatus.textContent = "";
+        requestAnimationFrame(() => { stageStatus.textContent = lockedStageText(); });
+      }
+      requestAnimationFrame(() => button.focus({ preventScroll: true }));
+    };
+
+    stageRail.addEventListener("click", (event) => {
+      announceLockedStage(event.target.closest("button.locked[data-level]"));
+    });
+
+    let lockedPointer = null;
+    const lockedCardAtPoint = (x, y) => [...stageRail.querySelectorAll("button.locked[data-level]")]
+      .find((button) => {
+        const rect = button.getBoundingClientRect();
+        return x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
+      });
+
+    stageRail.addEventListener("pointerdown", (event) => {
+      if (event.isPrimary === false || (event.button !== undefined && event.button !== 0)) {
+        lockedPointer = null;
+        return;
+      }
+      const button = lockedCardAtPoint(event.clientX, event.clientY);
+      lockedPointer = button ? {
+        button,
+        pointerId: event.pointerId,
+        startX: event.clientX,
+        startY: event.clientY,
+        moved: false,
+      } : null;
+    }, true);
+
+    document.addEventListener("pointermove", (event) => {
+      if (!lockedPointer || event.pointerId !== lockedPointer.pointerId) return;
+      if (Math.hypot(event.clientX - lockedPointer.startX, event.clientY - lockedPointer.startY) > 6) {
+        lockedPointer.moved = true;
+      }
+    }, true);
+
+    const finishLockedPointer = (event) => {
+      if (!lockedPointer || event.pointerId !== lockedPointer.pointerId) return;
+      const activation = lockedPointer;
+      lockedPointer = null;
+      if (event.type === "pointercancel" || activation.moved) return;
+      if (event.cancelable) event.preventDefault();
+      activation.button.click();
+    };
+    document.addEventListener("pointerup", finishLockedPointer, true);
+    document.addEventListener("pointercancel", finishLockedPointer, true);
+
+    new MutationObserver(syncLockedStageSemantics).observe(stageRail, { childList: true });
+    syncLockedStageSemantics();
+  }
   if (stageRail && stageRail.dataset.wpStageRail !== "true") {
     stageRail.addEventListener("dragstart", (event) => event.preventDefault());
     let pointerId = null;

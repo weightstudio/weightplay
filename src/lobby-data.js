@@ -107,10 +107,10 @@ window.WONDER_LOBBY = {
       ages: ["6", "family"],
       ageLabel: { en: "6+", "zh-Hant": "6+" },
       description: {
-        en: "Run a safari meadow where visitors buy tickets while you feed animals and upgrade the park.",
-        "zh-Hant": "經營草原動物園，餵食動物、收取門票並升級樂園設施。",
+        en: "Build a friendly animal park through 30 saved challenges with care choices, habitat arranging, facilities, and six park reviews.",
+        "zh-Hant": "完成 30 個有存檔的樂園挑戰，選擇照顧方式、安排棲地、升級設施，並通過六次友善審查。",
       },
-      meta: { en: ["Idle Zoo", "Ticket Income", "Animal Feeding"], "zh-Hant": ["放置動物園", "門票收入", "餵食動物"] },
+      meta: { en: ["30 Challenges", "Park Care", "Six Reviews"], "zh-Hant": ["30 個挑戰", "樂園照顧", "六次審查"] },
       art: { kind: "image", background: "assets/animal-zoo-idle-cover.webp", hero: "assets/weightplay-character-rainbow-hop-mimi-clean-cutout.webp" },
     },
     {
@@ -125,10 +125,10 @@ window.WONDER_LOBBY = {
       ages: ["6", "family"],
       ageLabel: "6+",
       description: {
-        en: "Clear memory stages by matching stars, animals, and friendly picture cards.",
-        "zh-Hant": "翻開星星與動物圖卡，找出相同配對並完成記憶關卡。",
+        en: "Repair the Animal Star Map across 30 saved stages with previews, moon shuffles, ordered pairs, and rotating constellations.",
+        "zh-Hant": "完成 30 個有存檔的動物星圖關卡，面對預覽、月光洗牌、順序配對與星座移位。",
       },
-      meta: { en: ["Animal Cards", "10 Levels", "Memory"], "zh-Hant": ["動物卡片", "10 關", "記憶"] },
+      meta: { en: ["30 Stages", "Memory Rules", "Six Keeper Checks"], "zh-Hant": ["30 關", "記憶規則", "六次守護者檢查"] },
       art: { kind: "image", background: "assets/memory-cover.webp", hero: "assets/weightplay-character-moon-cap-owl-cutout.webp" },
     },
     {

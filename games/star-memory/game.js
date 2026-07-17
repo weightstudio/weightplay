@@ -86,16 +86,16 @@
     en: {
       title: "Animal Star Memory",
       seoTitle: "Animal Star Memory - WeightPlay",
-      seoDescription: "Flip animal and star cards, remember their positions, and clear 10 short memory stages in Animal Star Memory on WeightPlay.",
+      seoDescription: "Clear 30 saved animal memory stages with previews, moon shuffles, ordered pairs, rotating constellations, and six friendly Star Keeper checks.",
       ogTitle: "Animal Star Memory - Memory Matching Game",
-      ogDescription: "Flip animal and star cards, remember their positions, and clear 10 short memory stages in Animal Star Memory on WeightPlay.",
+      ogDescription: "Clear 30 animal memory stages with preview, shuffle, order, and rotating-board rules across six Star Keeper checks.",
       language: "Language",
       languageAria: "Choose language",
       stageBackAria: "Back to main page",
       battleBackAria: "Back to levels",
       gameStatsAria: "Game stats",
-      mainIntro: "Remember where each animal and star is hiding, then clear all ten matching stages.",
-      start: "Choose Level",
+      mainIntro: "Follow 30 starlight trails where previews, shuffles, ordered pairs, and rotating constellations change how each board is remembered.",
+      start: "Start Game",
       chooseLevel: "Choose Level",
       level: "Level {current} / {total}",
       score: "Score",
@@ -154,6 +154,16 @@
       stage8Desc: "More animal pairs with a careful move limit.",
       stage9Desc: "Ten animals from different habitats are mixed together.",
       stage10Desc: "The full 12-pair board for memory experts.",
+      parkCheck: "Star Keeper Check",
+      ruleNormal: "Classic pairs",
+      rulePreview: "Opening preview",
+      ruleShuffle: "Moon shuffle after a miss",
+      ruleOrder: "Match the shown animal next",
+      ruleRotate: "Constellation shifts after a match",
+      ruleFinal: "Mixed starlight rules",
+      previewing: "Watch closely. The cards will hide soon!",
+      orderTarget: "Find the {animal} pair next.",
+      wrongOrder: "That pair matches, but another animal comes first.",
       highScore: "High Score: {score}",
       skillReport: "Skill Report",
       reportIntroWin: "This round practiced remembering positions, staying focused, and choosing the next pair.",
@@ -179,8 +189,8 @@
       stageBackAria: "\u8fd4\u56de\u9996\u9801",
       battleBackAria: "\u8fd4\u56de\u95dc\u5361",
       gameStatsAria: "\u904a\u6232\u72c0\u614b",
-      mainIntro: "\u8a18\u4f4f\u6bcf\u5f35\u52d5\u7269\u8207\u661f\u661f\u5361\u724c\u7684\u4f4d\u7f6e\uff0c\u5b8c\u6210\u5168\u90e8 10 \u500b\u914d\u5c0d\u95dc\u5361\u3002",
-      start: "\u9078\u64c7\u95dc\u5361",
+      mainIntro: "\u8ddf\u8457 30 \u689d\u661f\u5149\u8def\u7dda\u524d\u9032，\u9810\u89bd\u3001\u6d17\u724c\u3001\u9806\u5e8f\u8207\u661f\u5ea7\u79fb\u52d5\u6703\u6539\u8b8a\u6bcf\u4e00\u76e4\u7684\u8a18\u61b6\u65b9\u5f0f\u3002",
+      start: "\u958b\u59cb\u904a\u6232",
       chooseLevel: "\u9078\u64c7\u95dc\u5361",
       level: "\u7b2c {current} / {total} \u95dc",
       score: "\u5206\u6578",
@@ -239,6 +249,16 @@
       stage8Desc: "\u66f4\u591a\u52d5\u7269\u914d\u5c0d\uff0c\u9700\u8981\u4ed4\u7d30\u8a18\u4f4d\u7f6e\u3002",
       stage9Desc: "\u4e0d\u540c\u68f2\u5730\u7684 10 \u7a2e\u52d5\u7269\u6df7\u5408\u5728\u4e00\u8d77\u3002",
       stage10Desc: "\u5b8c\u6574 12 \u7d44\u5361\u724c\uff0c\u6311\u6230\u8a18\u61b6\u9ad8\u624b\u3002",
+      parkCheck: "\u661f\u5149\u5b88\u8b77\u8005\u6aa2\u67e5",
+      ruleNormal: "\u7d93\u5178\u914d\u5c0d",
+      rulePreview: "\u958b\u5834\u9810\u89bd",
+      ruleShuffle: "\u7b54\u932f\u5f8c\u6708\u5149\u6d17\u724c",
+      ruleOrder: "\u4f9d\u63d0\u793a\u9806\u5e8f\u914d\u5c0d",
+      ruleRotate: "\u914d\u5c0d\u5f8c\u661f\u5ea7\u79fb\u52d5",
+      ruleFinal: "\u6df7\u5408\u661f\u5149\u898f\u5247",
+      previewing: "\u4ed4\u7d30\u770b，\u5361\u724c\u5f88\u5feb\u6703\u84cb\u8d77\u4f86！",
+      orderTarget: "\u4e0b\u4e00\u7d44請找 {animal}。",
+      wrongOrder: "\u9019\u7d44\u5716\u6848\u76f8\u540c，\u4f46\u8981\u5148\u627e\u53e6\u4e00\u7a2e\u52d5\u7269\u3002",
       highScore: "\u6700\u9ad8\u5206\uff1a{score}",
       skillReport: "\u6280\u80fd\u5831\u544a",
       reportIntroWin: "\u9019\u4e00\u5c40\u7df4\u7fd2\u4e86\u8a18\u4f4f\u4f4d\u7f6e\u3001\u4fdd\u6301\u5c08\u6ce8\uff0c\u4ee5\u53ca\u9078\u64c7\u4e0b\u4e00\u7d44\u914d\u5c0d\u3002",
@@ -255,98 +275,60 @@
     }
   };
 
-  // Levels Configurations
+  // Thirty authored memory routes in six five-stage lessons.
+  const symbolSets = {
+    p2: ["panda", "cat"],
+    p3: ["panda", "cat", "bear"],
+    p4: ["panda", "cat", "bear", "lion"],
+    p5: ["panda", "cat", "bear", "lion", "rabbit"],
+    p6: ["panda", "cat", "bear", "lion", "rabbit", "fox"],
+    p8: ["panda", "bear", "lion", "cat", "rabbit", "fox", "owl", "frog"],
+    p10: ["panda", "bear", "lion", "cat", "rabbit", "fox", "owl", "frog", "whale", "chick"],
+    p12: ["panda", "bear", "lion", "cat", "rabbit", "fox", "owl", "frog", "whale", "chick", "penguin", "koala"],
+  };
+  const grids = { p2: { r: 2, c: 2 }, p3: { r: 3, c: 2 }, p4: { r: 4, c: 2 }, p5: { r: 5, c: 2 }, p6: { r: 4, c: 3 }, p8: { r: 4, c: 4 }, p10: { r: 5, c: 4 }, p12: { r: 6, c: 4 } };
+  function memoryStage(id, en, zh, descEn, descZh, set, limit, rules = {}) {
+    const pairCount = symbolSets[set].length;
+    return {
+      id, title: { en, "zh-Hant": zh }, description: { en: descEn, "zh-Hant": descZh },
+      grid: grids[set], symbols: symbolSets[set], limit,
+      stars: [pairCount + Math.ceil(pairCount * 0.35), pairCount + Math.ceil(pairCount * 0.8), limit],
+      checkpoint: id % 5 === 0,
+      checkpointSymbol: ["cat", "bear", "owl", "lion", "penguin", "koala"][Math.floor((id - 1) / 5)],
+      ...rules,
+    };
+  }
   const stages = [
-    {
-      id: 1,
-      nameKey: "stage1Name",
-      descKey: "stage1Desc",
-      grid: { r: 2, c: 2 },
-      limit: Infinity,
-      symbols: ["panda", "cat"],
-      stars: [2, 3, Infinity]
-    },
-    {
-      id: 2,
-      nameKey: "stage2Name",
-      descKey: "stage2Desc",
-      grid: { r: 2, c: 3 },
-      limit: 8,
-      symbols: ["panda", "cat", "bear"],
-      stars: [4, 5, 8]
-    },
-    {
-      id: 3,
-      nameKey: "stage3Name",
-      descKey: "stage3Desc",
-      grid: { r: 3, c: 4 },
-      limit: 16,
-      symbols: ["panda", "cat", "bear", "lion", "rabbit", "fox"],
-      stars: [8, 10, 16]
-    },
-    {
-      id: 4,
-      nameKey: "stage4Name",
-      descKey: "stage4Desc",
-      grid: { r: 4, c: 4 },
-      limit: 22,
-      symbols: ["panda", "bear", "lion", "cat", "rabbit", "fox", "owl", "frog"],
-      stars: [11, 13, 22]
-    },
-    {
-      id: 5,
-      nameKey: "stage5Name",
-      descKey: "stage5Desc",
-      grid: { r: 4, c: 5 },
-      limit: 28,
-      symbols: ["panda", "bear", "lion", "cat", "rabbit", "fox", "owl", "frog", "whale", "chick"],
-      stars: [14, 17, 28]
-    },
-    {
-      id: 6,
-      nameKey: "stage6Name",
-      descKey: "stage6Desc",
-      grid: { r: 4, c: 6 },
-      limit: 35,
-      symbols: ["panda", "bear", "lion", "cat", "rabbit", "fox", "owl", "frog", "whale", "chick", "penguin", "koala"],
-      stars: [18, 22, 35]
-    },
-    {
-      id: 7,
-      nameKey: "stage7Name",
-      descKey: "stage7Desc",
-      grid: { r: 3, c: 4 },
-      limit: 14,
-      symbols: ["rabbit", "fox", "owl", "frog", "whale", "chick"],
-      stars: [8, 10, 14]
-    },
-    {
-      id: 8,
-      nameKey: "stage8Name",
-      descKey: "stage8Desc",
-      grid: { r: 4, c: 4 },
-      limit: 20,
-      symbols: ["panda", "bear", "lion", "cat", "penguin", "koala", "owl", "fox"],
-      stars: [11, 14, 20]
-    },
-    {
-      id: 9,
-      nameKey: "stage9Name",
-      descKey: "stage9Desc",
-      grid: { r: 4, c: 5 },
-      limit: 26,
-      symbols: ["panda", "bear", "lion", "cat", "rabbit", "fox", "owl", "frog", "penguin", "koala"],
-      stars: [14, 18, 26]
-    },
-    {
-      id: 10,
-      nameKey: "stage10Name",
-      descKey: "stage10Desc",
-      grid: { r: 4, c: 6 },
-      limit: 32,
-      symbols: ["panda", "bear", "lion", "cat", "rabbit", "fox", "owl", "frog", "whale", "chick", "penguin", "koala"],
-      stars: [18, 23, 32]
-    }
+    memoryStage(1, "First Pawprints", "第一道腳印", "Learn two calm pairs with no move limit.", "用兩組配對認識基本翻牌，步數不限。", "p2", Infinity),
+    memoryStage(2, "Three Friends", "三位朋友", "Remember three pairs on a wide beginner board.", "在橫向入門牌面記住三組動物。", "p3", 8),
+    memoryStage(3, "Riverside Four", "河岸四夥伴", "Four pairs introduce a longer left-to-right scan.", "四組配對練習由左到右觀察。", "p4", 12),
+    memoryStage(4, "Forest Footpath", "森林小徑", "Six pairs fill the first taller memory board.", "六組配對第一次填滿較高的牌面。", "p6", 18),
+    memoryStage(5, "Cat Keeper Check", "貓咪守護者檢查", "A brief opening preview prepares the first six-pair review.", "先短暫預覽全部卡牌，再完成第一次六組檢查。", "p6", 17, { previewMs: 1800 }),
+    memoryStage(6, "Dawn Preview", "晨光預覽", "Watch four pairs before every card turns over.", "先看清四組卡牌，再讓全部卡牌蓋起來。", "p4", 11, { previewMs: 1800 }),
+    memoryStage(7, "Short Starlight", "短暫星光", "Five pairs are visible for a shorter opening moment.", "五組卡牌只在開場短暫出現。", "p5", 15, { previewMs: 1400 }),
+    memoryStage(8, "Cloud Window", "雲間窗口", "Six previewed pairs test a complete first impression.", "預覽六組卡牌，測試一次完整觀察。", "p6", 18, { previewMs: 1200 }),
+    memoryStage(9, "Fading Meadow", "漸暗草原", "Eight pairs appear briefly before the meadow darkens.", "八組卡牌短暫出現後，草原會恢復遮蓋。", "p8", 24, { previewMs: 1100 }),
+    memoryStage(10, "Bear Keeper Check", "熊熊守護者檢查", "Remember eight pairs, then the moon shuffles them once.", "記住八組卡牌後，月光會在開場重新洗牌一次。", "p8", 25, { previewMs: 1600, shuffleAfterPreview: true }),
+    memoryStage(11, "Moonlit Mix", "月光混牌", "A missed guess shuffles the remaining hidden symbols.", "每次猜錯後，尚未配對的圖案會重新洗牌。", "p6", 22, { mismatchShuffle: true }),
+    memoryStage(12, "Moving Burrows", "移動洞穴", "Eight pairs change places after every miss.", "八組卡牌會在每次猜錯後改變位置。", "p8", 29, { mismatchShuffle: true }),
+    memoryStage(13, "Firefly Confusion", "螢火蟲迷陣", "Ten hidden pairs make every moon shuffle matter.", "十組隱藏配對讓每次月光洗牌都必須重新判斷。", "p10", 37, { mismatchShuffle: true }),
+    memoryStage(14, "Remember, Then Move", "先記住再移動", "An opening preview is followed by shuffles after mistakes.", "開場先預覽，之後猜錯就會洗牌。", "p8", 28, { previewMs: 1300, mismatchShuffle: true }),
+    memoryStage(15, "Owl Keeper Check", "貓頭鷹守護者檢查", "Ten previewed pairs face the Owl Keeper's moon shuffles.", "十組預覽卡牌接受貓頭鷹守護者的月光洗牌檢查。", "p10", 36, { previewMs: 1500, mismatchShuffle: true }),
+    memoryStage(16, "Panda Comes First", "貓熊先出發", "Match six animal pairs in the order shown.", "依提示順序完成六組動物配對。", "p6", 24, { ordered: true }),
+    memoryStage(17, "Forest Roll Call", "森林點名", "Eight pairs must follow the keeper's animal list.", "八組卡牌必須依照守護者的動物名單完成。", "p8", 31, { ordered: true }),
+    memoryStage(18, "Ten-Star Parade", "十星遊行", "A ten-animal parade rewards careful ordered recall.", "十種動物依序遊行，需要仔細記住位置。", "p10", 40, { ordered: true }),
+    memoryStage(19, "Previewed Parade", "預覽遊行", "Preview eight pairs, then follow their required order.", "先預覽八組卡牌，再依指定順序配對。", "p8", 30, { previewMs: 1500, ordered: true }),
+    memoryStage(20, "Lion Keeper Check", "獅子守護者檢查", "Ordered pairs and moon shuffles combine in one review.", "順序配對與答錯洗牌在同一次檢查中結合。", "p10", 44, { ordered: true, mismatchShuffle: true }),
+    memoryStage(21, "Turning Sky", "轉動星空", "After each match, the remaining constellation shifts one place.", "每次配對後，其餘星座圖案會移動一格。", "p8", 29, { matchRotate: true }),
+    memoryStage(22, "Orbit of Ten", "十星軌道", "Ten pairs keep rotating after successful matches.", "十組圖案會在每次成功配對後持續轉動。", "p10", 38, { matchRotate: true }),
+    memoryStage(23, "Wide Constellation", "廣闊星座", "The full twelve-pair sky shifts as it becomes emptier.", "完整十二組星空會隨著配對完成而改變。", "p12", 47, { matchRotate: true }),
+    memoryStage(24, "Seen in Motion", "看見移動", "Preview ten pairs before the constellation begins to turn.", "先預覽十組卡牌，再面對持續轉動的星座。", "p10", 38, { previewMs: 1500, matchRotate: true }),
+    memoryStage(25, "Penguin Keeper Check", "企鵝守護者檢查", "Twelve pairs rotate after matches and shuffle after misses.", "十二組卡牌答對會轉動、答錯會洗牌。", "p12", 52, { matchRotate: true, mismatchShuffle: true }),
+    memoryStage(26, "Ordered Dawn", "晨光順序", "Preview eight pairs, then match the named animals in order.", "預覽八組卡牌後，依提示動物順序完成。", "p8", 32, { previewMs: 1400, ordered: true }),
+    memoryStage(27, "Changing Orbit", "變化軌道", "Ten pairs rotate on success and shuffle on mistakes.", "十組卡牌答對轉動、答錯洗牌。", "p10", 44, { matchRotate: true, mismatchShuffle: true }),
+    memoryStage(28, "Vanishing Star Map", "消失星圖", "Preview all twelve pairs before moon shuffles begin.", "先預覽全部十二組卡牌，再開始月光洗牌。", "p12", 50, { previewMs: 1300, mismatchShuffle: true }),
+    memoryStage(29, "Keeper's Orbit", "守護者軌道", "Ordered twelve-pair recall continues while the sky rotates.", "十二組配對必須依序完成，星空還會持續轉動。", "p12", 54, { ordered: true, matchRotate: true }),
+    memoryStage(30, "Koala Grand Star Check", "無尾熊終極星光檢查", "Preview, order, moon shuffles, and constellation shifts meet in the finale.", "預覽、順序、答錯洗牌與星座移動在最終檢查中全部出現。", "p12", 60, { previewMs: 1600, ordered: true, mismatchShuffle: true, matchRotate: true }),
   ];
 
   // Game State
@@ -359,6 +341,7 @@
     unlockedLevel: 1,
     selectedCards: [],
     matchedPairsCount: 0,
+    orderIndex: 0,
     isLocked: false,
     ready: false
   };
@@ -430,6 +413,23 @@
     return Object.entries(params).reduce((str, [name, val]) => {
       return str.replaceAll(`{${name}}`, String(val));
     }, text);
+  }
+
+  function stageCopy(stage, field) {
+    return stage[field]?.[locale()] || stage[field]?.en || "";
+  }
+
+  function stageRuleKey(stage) {
+    if ((stage.previewMs || stage.shuffleAfterPreview) && (stage.ordered || stage.mismatchShuffle || stage.matchRotate)) return "ruleFinal";
+    if (stage.ordered) return "ruleOrder";
+    if (stage.matchRotate) return "ruleRotate";
+    if (stage.mismatchShuffle || stage.shuffleAfterPreview) return "ruleShuffle";
+    if (stage.previewMs) return "rulePreview";
+    return "ruleNormal";
+  }
+
+  function animalName(symbol) {
+    return t(`animal${symbol[0].toUpperCase()}${symbol.slice(1)}`);
   }
 
   function shuffle(arr) {
@@ -637,6 +637,9 @@
         button.className = `stage-card ${isUnlocked ? "unlocked" : "locked"}`;
         button.dataset.index = String(idx);
         button.setAttribute("aria-disabled", String(!isUnlocked));
+        button.dataset.stageId = String(stage.id);
+        button.dataset.checkpoint = String(stage.checkpoint);
+        button.dataset.rules = [stage.previewMs && "preview", stage.mismatchShuffle && "shuffle", stage.shuffleAfterPreview && "opening-shuffle", stage.ordered && "order", stage.matchRotate && "rotate"].filter(Boolean).join(",") || "classic";
         
         let starsStr = "";
         if (isUnlocked) {
@@ -648,9 +651,11 @@
         const scoreStr = highScoreVal > 0 ? `<br><small>${t("highScore", { score: highScoreVal })}</small>` : "";
 
         button.innerHTML = `
-          <span>${isUnlocked ? t("play") : t("locked")}</span>
-          <strong>${t(stage.nameKey)}</strong>
-          <small>${t(stage.descKey)}</small>
+          ${stage.checkpoint ? `<img class="stage-keeper" src="${assetLibrary[stage.checkpointSymbol]}" alt="" draggable="false" />` : ""}
+          <span>${stage.checkpoint ? `${isUnlocked ? "" : `${t("locked")} · `}${t("parkCheck")}` : isUnlocked ? t("play") : t("locked")}</span>
+          <strong>${stageCopy(stage, "title")}</strong>
+          <small>${stageCopy(stage, "description")}</small>
+          <em>${t(stageRuleKey(stage))}</em>
           ${scoreStr}
           ${starsStr ? `<div class="stars-badge">${starsStr}</div>` : ""}
         `;
@@ -669,6 +674,8 @@
       const target = Number.isInteger(focusStageIndex)
         ? stageGrid.querySelector(`.stage-card.unlocked[data-index="${focusStageIndex}"]`) || unlocked.at(-1)
         : unlocked.at(-1);
+      stageGrid.querySelectorAll(".stage-card.selected").forEach((card) => card.classList.remove("selected"));
+      target?.classList.add("selected");
       target?.scrollIntoView({ block: "nearest", inline: "center", behavior: "auto" });
       if (Number.isInteger(focusStageIndex)) target?.focus({ preventScroll: true });
     });
@@ -682,7 +689,11 @@
       const distance = Math.abs(card.offsetLeft + card.offsetWidth / 2 - center);
       return !best || distance < best.distance ? { card, distance } : best;
     }, null)?.card;
-    if (nearest) stageGrid.scrollTo({ left: nearest.offsetLeft - (stageGrid.clientWidth - nearest.offsetWidth) / 2, behavior: "smooth" });
+    if (nearest) {
+      stageGrid.querySelectorAll(".stage-card.selected").forEach((card) => card.classList.remove("selected"));
+      nearest.classList.add("selected");
+      stageGrid.scrollTo({ left: nearest.offsetLeft - (stageGrid.clientWidth - nearest.offsetWidth) / 2, behavior: "smooth" });
+    }
   }
   stageGrid.addEventListener("pointerdown", (event) => {
     if (event.button !== 0) return;
@@ -722,6 +733,7 @@
     state.combo = 0;
     state.bestCombo = 0;
     state.matchedPairsCount = 0;
+    state.orderIndex = 0;
     state.selectedCards = [];
     state.isLocked = false;
     document.body.classList.remove("memory-stage");
@@ -743,11 +755,12 @@
 
     exitSharedPlayViewport();
     updateMemoryFrame();
-    feedbackText.textContent = t("tipTap");
+    feedbackText.textContent = t(stageRuleKey(stage));
     comboContainer.classList.add("hidden");
     
     updateHUD();
     generateGameBoard(stage);
+    beginStagePreview(stage);
     requestAnimationFrame(updateMemoryFrame);
   }
 
@@ -800,6 +813,50 @@
       })
     );
     requestAnimationFrame(() => cardGrid.querySelector(".card:not(:disabled)")?.focus({ preventScroll: true }));
+  }
+
+  function setRoundInstruction(stage) {
+    if (stage.ordered && state.orderIndex < stage.symbols.length) {
+      feedbackText.textContent = t("orderTarget", { animal: animalName(stage.symbols[state.orderIndex]) });
+    } else {
+      feedbackText.textContent = t(stageRuleKey(stage));
+    }
+  }
+
+  function remapHiddenSymbols(mode = "shuffle") {
+    const cards = [...cardGrid.querySelectorAll(".card:not(.matched):not(.flipped)")];
+    if (cards.length < 2) return;
+    const symbols = cards.map((card) => card.dataset.symbol);
+    const mapped = mode === "rotate" ? [symbols.at(-1), ...symbols.slice(0, -1)] : shuffle(symbols);
+    cards.forEach((card, index) => {
+      const symbol = mapped[index];
+      card.dataset.symbol = symbol;
+      card.querySelector(".card-front img").src = assetLibrary[symbol];
+      updateCardAccessibility(card, "hidden");
+    });
+  }
+
+  function beginStagePreview(stage) {
+    if (!stage.previewMs) {
+      setRoundInstruction(stage);
+      return;
+    }
+    state.isLocked = true;
+    feedbackText.textContent = t("previewing");
+    cardGrid.querySelectorAll(".card").forEach((card) => {
+      card.classList.add("flipped", "preview-card");
+      updateCardAccessibility(card, "revealed");
+    });
+    scheduleRoundTask(() => {
+      cardGrid.querySelectorAll(".card.preview-card").forEach((card) => {
+        card.classList.remove("flipped", "preview-card");
+        updateCardAccessibility(card, "hidden");
+      });
+      if (stage.shuffleAfterPreview) remapHiddenSymbols("shuffle");
+      state.isLocked = false;
+      setRoundInstruction(stage);
+      cardGrid.querySelector(".card:not(:disabled)")?.focus({ preventScroll: true });
+    }, stage.previewMs);
   }
 
   function updateCardAccessibility(card, stateName) {
@@ -855,9 +912,11 @@
     
     const stage = stages[state.stageIndex];
     
-    if (symbol1 === symbol2) {
+    const followsOrder = !stage.ordered || symbol1 === stage.symbols[state.orderIndex];
+    if (symbol1 === symbol2 && followsOrder) {
       // It's a match!
       state.matchedPairsCount += 1;
+      if (stage.ordered) state.orderIndex += 1;
       state.combo += 1;
       state.bestCombo = Math.max(state.bestCombo, state.combo);
       
@@ -893,7 +952,9 @@
       
       state.selectedCards = [];
       state.isLocked = false;
+      if (stage.matchRotate) remapHiddenSymbols("rotate");
       updateHUD();
+      setRoundInstruction(stage);
       focusNextPlayable(card2);
       
       // Check for win
@@ -904,7 +965,7 @@
       // Mismatch
       state.combo = 0;
       comboContainer.classList.add("hidden");
-      feedbackText.textContent = t("tipMismatch");
+      feedbackText.textContent = symbol1 === symbol2 && !followsOrder ? t("wrongOrder") : t("tipMismatch");
       
       window.WonderSound?.play("wrong");
       
@@ -913,8 +974,10 @@
         card2.classList.remove("flipped");
         updateCardAccessibility(card1, "hidden");
         updateCardAccessibility(card2, "hidden");
+        if (stage.mismatchShuffle) remapHiddenSymbols("shuffle");
         state.selectedCards = [];
         state.isLocked = false;
+        setRoundInstruction(stage);
         card2.focus({ preventScroll: true });
       }, 800);
       
