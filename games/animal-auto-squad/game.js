@@ -106,6 +106,8 @@
       equipSkin: "Equip Golden Skin",
       unequipSkin: "Equip Normal Skin",
       relicReroll: "Reroll Relics (3 💎)",
+      relicRerollDecision: "Reroll both relic choices. Spend 3 Diamonds. Balance {before} to {after}.",
+      relicRerollNeed: "Reroll both relic choices. Requires 3 Diamonds. Current balance {balance}.",
       reviveAction: "Revive (5 💎)",
       winText: "Victory! You defeated the shadow beasts.",
       failText: "Defeat! Your squad fainted.",
@@ -630,6 +632,8 @@
     resultGoldEarned: "\u8a13\u7df4\u91d1\u5e63 +{earned} \u00b7 \u7e3d\u8a08 {total}",
     resultStageSaved: "\u5df2\u89e3\u9396\u95dc\u5361 {unlocked}/{total}",
     resultGrowthNext: "\u6c38\u4e45\u52a0\u6210 \u653b +{atk} / \u751f +{hp} \u00b7 \u8ddd\u4e0b\u4e00\u5718\u968a\u7b49\u7d1a {remaining} XP",
+      relicRerollDecision: "\u91cd\u62bd\u5169\u500b\u8056\u7269\u9078\u64c7\u3002\u82b1\u8cbb 3 \u947d\u77f3\u3002\u9918\u984d {before} \u5230 {after}\u3002",
+      relicRerollNeed: "\u91cd\u62bd\u5169\u500b\u8056\u7269\u9078\u64c7\u9700\u8981 3 \u947d\u77f3\u3002\u76ee\u524d\u9918\u984d {balance}\u3002",
       stage: "\u95dc\u5361",
       round: "\u6ce2\u6b21",
       chooseStage: "\u9078\u64c7\u95dc\u5361",
@@ -1838,6 +1842,13 @@
     requestAnimationFrame(() => nodes.relicChoices.querySelector(".relic-card")?.focus({ preventScroll: true }));
   }
 
+  function updateRelicRerollDecision() {
+    const before = getWalletDiamonds();
+    nodes.rerollRelicsBtn.setAttribute("aria-label", before >= 3
+      ? t("relicRerollDecision", { before, after: before - 3 })
+      : t("relicRerollNeed", { balance: before }));
+  }
+
   function renderRelicChoices() {
     nodes.relicChoices.innerHTML = "";
     // Pick 2 random relics
@@ -1861,6 +1872,7 @@
     });
 
     nodes.rerollRelicsBtn.textContent = t("relicReroll");
+    updateRelicRerollDecision();
     nodes.rerollRelicsBtn.onclick = rerollRelics;
   }
 
@@ -3848,6 +3860,7 @@
         event.stopPropagation();
       }
     });
+    nodes.rerollRelicsBtn.addEventListener("focus", updateRelicRerollDecision);
     nodes.relicDraftPanel.addEventListener("keydown", (event) => trapBattleDecisionFocus(nodes.relicDraftPanel, event));
     nodes.defeatRevivePanel.addEventListener("keydown", (event) => trapBattleDecisionFocus(nodes.defeatRevivePanel, event));
     nodes.startBattleBtn.addEventListener("click", startBattle);

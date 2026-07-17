@@ -217,8 +217,6 @@
   let acceptingInput = false;
   let feedbackKey = "";
   let lastResult = null;
-  let stageDrag = null;
-  let suppressStageClick = false;
   let stageEntryToken = 0;
   let taskTransitionToken = 0;
   let taskLifecycleSuspended = document.hidden;
@@ -766,63 +764,12 @@
     });
   }
 
-  function settleStageRail() {
-    const cards = [...nodes.stageGrid.querySelectorAll(".stage-card")];
-    if (!cards.length) return;
-    const center = nodes.stageGrid.scrollLeft + nodes.stageGrid.clientWidth / 2;
-    const nearest = cards.reduce((best, card) => {
-      const distance = Math.abs(card.offsetLeft + card.offsetWidth / 2 - center);
-      return !best || distance < best.distance ? { card, distance } : best;
-    }, null)?.card;
-    if (!nearest) return;
-    nodes.stageGrid.scrollTo({ left: nearest.offsetLeft - (nodes.stageGrid.clientWidth - nearest.offsetWidth) / 2, behavior: "smooth" });
-  }
-
   function initStageRail() {
     nodes.stageGrid.addEventListener("pointerdown", (event) => {
       if (!document.body.classList.contains("wp-standard-stage-page") || event.isPrimary === false || event.button !== 0) return;
       stageEntryToken += 1;
-      stageDrag = { id: event.pointerId, x: event.clientX, scrollLeft: nodes.stageGrid.scrollLeft, moved: false };
-      nodes.stageGrid.style.setProperty("scroll-snap-type", "none", "important");
-      nodes.stageGrid.dataset.dragDown = String(event.clientX);
-      nodes.stageGrid.dataset.dragApplied = "0";
-    });
-    nodes.stageGrid.addEventListener("pointermove", (event) => {
-      if (!stageDrag || event.pointerId !== stageDrag.id) return;
-      const delta = event.clientX - stageDrag.x;
-      if (!stageDrag.moved && Math.abs(delta) >= 6) {
-        stageDrag.moved = true;
-        nodes.stageGrid.setPointerCapture?.(event.pointerId);
-      }
-      if (!stageDrag.moved) return;
-      event.preventDefault();
-      const rect = nodes.stageGrid.getBoundingClientRect();
-      const coordinateScale = rect.width > 0 ? nodes.stageGrid.clientWidth / rect.width : 1;
-      nodes.stageGrid.scrollLeft = stageDrag.scrollLeft - delta * coordinateScale;
-      nodes.stageGrid.dataset.dragApplied = String(delta);
-    });
-    const finishDrag = (event) => {
-      if (!stageDrag || event.pointerId !== stageDrag.id) return;
-      if (stageDrag.moved) {
-        suppressStageClick = true;
-        nodes.stageGrid.style.removeProperty("scroll-snap-type");
-        settleStageRail();
-        setTimeout(() => { suppressStageClick = false; }, 0);
-      } else {
-        nodes.stageGrid.style.removeProperty("scroll-snap-type");
-      }
-      if (nodes.stageGrid.hasPointerCapture?.(event.pointerId)) nodes.stageGrid.releasePointerCapture?.(event.pointerId);
-      stageDrag = null;
-    };
-    nodes.stageGrid.addEventListener("pointerup", finishDrag);
-    nodes.stageGrid.addEventListener("pointercancel", finishDrag);
+    }, true);
     nodes.stageGrid.addEventListener("click", (event) => {
-      if (suppressStageClick) {
-        suppressStageClick = false;
-        event.preventDefault();
-        event.stopImmediatePropagation();
-        return;
-      }
       const directHit = event.target.closest?.(".stage-card");
       const coordinateHit = [...nodes.stageGrid.querySelectorAll(".stage-card")].find((card) => {
         const rect = card.getBoundingClientRect();

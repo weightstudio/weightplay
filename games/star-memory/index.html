@@ -20,7 +20,7 @@
     <title>Animal Star Memory - WeightPlay</title>
     <link rel="canonical" href="https://weightplay.com/games/star-memory/" />
     <link rel="stylesheet" href="style.css?v=20260717-depth30-1" />
-    <script data-wp-stage-standard>/* Animal Star Memory owns its native Kids Stage rail. */</script>
+    <script data-wp-stage-standard>/* Shared Kids Stage selector owns pointer drag and settle; the game owns selected-card highlighting and activation. */</script>
     <script data-wp-battle-standard>/* Animal Star Memory owns its native Kids Battle Canvas. */</script>
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
     <script type="application/ld+json">
@@ -114,7 +114,7 @@
       <!-- Stage Selection Screen -->
       <section id="stageSelectPanel" class="stage-select hidden">
         <header class="wp-standard-stage-heading"><button id="stageBackBtn" data-wp-return="stage" type="button" aria-label="Back">&larr;</button><h2 id="stageSelectTitle">Choose Level</h2></header>
-        <div id="stageGrid" class="stage-grid"></div>
+        <div id="stageGrid" class="stage-grid" data-wp-stage-settle-duration="360" data-wp-stage-settle-easing="smoothstep"></div>
       </section>
 
       <!-- Main Game Board -->

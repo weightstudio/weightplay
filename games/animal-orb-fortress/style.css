@@ -875,7 +875,7 @@ body.orb-fortress-playing #resultPanel.result-panel {
   padding: 14px;
 }
 
-body.orb-fortress-playing #battleAdReserve {
+body.orb-fortress-playing #gamePanel:not(.is-hidden) ~ #battleAdReserve {
   position: fixed;
   z-index: 49;
   left: var(--orb-battle-left, 4px);
@@ -900,7 +900,8 @@ body.orb-fortress-playing #stagePanel.stage-panel { display:grid; }
 body.orb-fortress-playing #gameCanvas { width:auto; max-width:100%; height:100%; max-height:100%; align-self:center; justify-self:center; aspect-ratio:var(--orb-arena-ratio,3/5); object-fit:contain; }
 body.orb-fortress-playing #upgradePanel.modal-panel { z-index:80; display:grid; place-items:center; padding:10px; }
 body.orb-fortress-playing #resultPanel.result-panel { z-index:80; display:grid; grid-template-rows:auto minmax(0,1fr); align-items:start; gap:10px; padding:14px; }
-body.orb-fortress-playing #battleAdReserve { position:fixed; z-index:49; left:50%; top:auto; bottom:4px; display:block; width:min(calc(var(--orb-vw,100vw) - 8px),612px); height:56px; min-height:56px; margin:0; transform:translateX(-50%); }
+body.orb-fortress-playing #gamePanel:not(.is-hidden) ~ #battleAdReserve { position:fixed; z-index:49; left:50%; top:auto; bottom:4px; display:block; width:min(calc(var(--orb-vw,100vw) - 8px),612px); height:56px; min-height:56px; margin:0; transform:translateX(-50%); }
+body.orb-fortress-playing #gamePanel.is-hidden ~ #battleAdReserve { display:none !important; width:0 !important; height:0 !important; min-height:0 !important; }
 
 /* Result is a bounded modal substate of the logical Battle canvas. */
 .battle-live{display:contents}

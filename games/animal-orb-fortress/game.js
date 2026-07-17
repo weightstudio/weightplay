@@ -238,7 +238,7 @@
       arenaControlReadyLabel: "動物星珠要塞競技場。瞄準偏移 {angle} 度。使用左右方向鍵調整。星珠已準備好；空白鍵或 Enter 現在可以發射。",
       arenaControlCooldownLabel: "動物星珠要塞競技場。瞄準偏移 {angle} 度。星珠冷卻約剩 {seconds} 秒；空白鍵或 Enter 尚無法發射。",
       arenaControlLimitLabel: "動物星珠要塞競技場。瞄準偏移 {angle} 度。目前有 {active}/{limit} 顆星珠飛行中，已達飛行上限；空白鍵或 Enter 尚無法發射。",
-      orbReady: "星珠已準備好。用牆面反彈擊中影獸，別讓牠們靠近核心。",
+      orbReady: "星珠已準備好。用牆面反彈擊中影獸，別讓它們靠近核心。",
       orbFlying: "星珠正在飛行。觀察反彈路線，準備下一次瞄準。",
       fortressHit: "影獸撞到核心了。更早瞄準，或改用更寬的反彈角度。",
       waveClear: "波次完成。選擇一個祝福後進入下一波。",

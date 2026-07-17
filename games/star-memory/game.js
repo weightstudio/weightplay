@@ -621,10 +621,7 @@
         `;
         
         if (isUnlocked) {
-          button.addEventListener("click", () => {
-            if (stageGrid.dataset.dragSuppressed === "1") return;
-            startStage(idx);
-          });
+          button.addEventListener("click", () => startStage(idx));
         }
         return button;
       })
@@ -641,7 +638,6 @@
     });
   }
 
-  let stageDrag = null;
   function nearestStageCard() {
     const cards = [...stageGrid.querySelectorAll(".stage-card")];
     const center = stageGrid.scrollLeft + stageGrid.clientWidth / 2;
@@ -658,45 +654,7 @@
     }
     return nearest;
   }
-  function settleStageRail() {
-    const nearest = highlightNearestStage();
-    if (nearest) {
-      stageGrid.scrollTo({ left: nearest.offsetLeft - (stageGrid.clientWidth - nearest.offsetWidth) / 2, behavior: "smooth" });
-    }
-  }
-  let stageHighlightFrame = 0;
-  stageGrid.addEventListener("scroll", () => {
-    cancelAnimationFrame(stageHighlightFrame);
-    stageHighlightFrame = requestAnimationFrame(highlightNearestStage);
-  }, { passive: true });
-  stageGrid.addEventListener("pointerdown", (event) => {
-    if (event.button !== 0) return;
-    stageDrag = { id: event.pointerId, x: event.clientX, scrollLeft: stageGrid.scrollLeft, moved: false };
-  });
-  stageGrid.addEventListener("pointermove", (event) => {
-    if (!stageDrag || event.pointerId !== stageDrag.id) return;
-    const delta = event.clientX - stageDrag.x;
-    if (!stageDrag.moved && Math.abs(delta) >= 4) {
-      stageDrag.moved = true;
-      stageGrid.setPointerCapture?.(event.pointerId);
-    }
-    if (!stageDrag.moved) return;
-    event.preventDefault();
-    stageGrid.scrollLeft = stageDrag.scrollLeft - delta;
-  });
-  function endStageDrag(event) {
-    if (!stageDrag || event.pointerId !== stageDrag.id) return;
-    if (stageDrag.moved) {
-      stageGrid.dataset.dragSuppressed = "1";
-      settleStageRail();
-      window.setTimeout(() => delete stageGrid.dataset.dragSuppressed, 180);
-    }
-    if (stageGrid.hasPointerCapture?.(event.pointerId)) stageGrid.releasePointerCapture?.(event.pointerId);
-    stageDrag = null;
-  }
-  stageGrid.addEventListener("pointerup", endStageDrag);
-  stageGrid.addEventListener("pointercancel", endStageDrag);
-
+  stageGrid.addEventListener("wonder:stage-snap", highlightNearestStage);
   // Start Gameplay Stage
   function startStage(stageIdx) {
     cancelRoundTasks();
