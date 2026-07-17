@@ -61,8 +61,8 @@
   const text = {
     en: {
       title: "Animal Crystal Survivor",
-      pageDescription: "Play Animal Crystal Survivor, a 3-minute animal action survival score game where you collect keys, gain XP, and choose upgrades.",
-      ogDescription: "Survive a 3-minute crystal grove run, collect golden keys, gather XP, and choose upgrades while shadow beasts close in.",
+      pageDescription: "Animal Crystal Survivor is a 30-stage Crystal Grove campaign with key objectives, six upgrades, changing hazards, and six original animal Bosses.",
+      ogDescription: "A 30-stage action-survival campaign with six regions, readable hazards, auto-attacks, build choices, and six distinct animal Bosses.",
       language: "Language",
       menuTitle: "Survive the Crystal Grove.",
       menuHint: "Goal: collect golden keys before 3:00. Crystals give XP, and upgrades help the ranger survive longer.",
@@ -164,8 +164,8 @@
     },
     "zh-Hant": {
       title: "\u52d5\u7269\u6c34\u6676\u751f\u5b58\u6230",
-      pageDescription: "\u904a\u73a9\u300a\u52d5\u7269\u6c34\u6676\u751f\u5b58\u6230\u300b\uff0c\u5728 3 \u5206\u9418\u7684\u52d5\u4f5c\u751f\u5b58\u6311\u6230\u4e2d\u6536\u96c6\u91d1\u9470\u3001\u62fe\u53d6\u6c34\u6676\u3001\u5347\u7d1a\u80fd\u529b\u4e26\u8eb2\u958b\u5f71\u7378\u3002",
-      ogDescription: "\u5728\u7d50\u6676\u68ee\u6797\u4e2d\u9032\u884c 3 \u5206\u9418\u751f\u5b58\u6311\u6230\uff0c\u6536\u96c6\u91d1\u9470\u3001\u7372\u5f97\u7d93\u9a57\u4e26\u9078\u64c7\u5f37\u5316\u80fd\u529b\u3002",
+      pageDescription: "\u300a\u52d5\u7269\u6c34\u6676\u751f\u5b58\u6230\u300b\u662f 30 \u95dc\u6c34\u6676\u6797\u5730\u6230\u5f79\uff0c\u5305\u542b\u91d1\u9470\u76ee\u6a19\u3001\u516d\u7a2e\u5347\u7d1a\u3001\u8b8a\u5316\u5371\u96aa\u8207\u516d\u96bb\u539f\u5275\u52d5\u7269\u9996\u9818\u3002",
+      ogDescription: "30 \u95dc\u52d5\u4f5c\u751f\u5b58\u6230\u5f79\uff0c\u5305\u542b\u516d\u500b\u5340\u57df\u3001\u53ef\u8b80\u5371\u96aa\u3001\u81ea\u52d5\u653b\u64ca\u3001\u5efa\u69cb\u9078\u64c7\u8207\u516d\u96bb\u7368\u7279\u9996\u9818\u3002",
       language: "\u8a9e\u8a00",
       menuTitle: "\u5728\u7d50\u6676\u68ee\u6797\u4e2d\u751f\u5b58\u4e0b\u53bb\u3002",
       menuHint: "\u76ee\u6a19\uff1a\u5728 3:00 \u4e4b\u524d\u6536\u96c6\u91d1\u9470\u3002\u6c34\u6676\u6703\u589e\u52a0\u7d93\u9a57\uff0c\u5347\u7d1a\u53ef\u4ee5\u8b93\u5de1\u5b88\u54e1\u6490\u5f97\u66f4\u4e45\u3002",
@@ -1081,10 +1081,12 @@
     const config = state.stageConfig || stages[0];
     const runnerChance = ["runnerRush", "blink", "cinder", "stormLanes"].includes(config.modifier) ? 0.58 : 0.26 + config.region * 0.035;
     const tankChance = ["tankRing", "charge", "chargeRoots", "briar", "convergence"].includes(config.modifier) ? 0.5 : 0.16 + config.region * 0.025;
-    const roll = Math.random();
     const type = ["basic", "drift"].includes(config.modifier)
-      ? elapsed > 65 && roll < 0.23 ? "tank" : elapsed > 35 && roll < 0.34 ? "runner" : "basic"
-      : elapsed > 42 && roll < tankChance ? "tank" : elapsed > 22 && roll < tankChance + runnerChance ? "runner" : "basic";
+      ? elapsed > 65 && Math.random() < 0.23 ? "tank" : elapsed > 35 && Math.random() < 0.34 ? "runner" : "basic"
+      : (() => {
+          const roll = Math.random();
+          return elapsed > 42 && roll < tankChance ? "tank" : elapsed > 22 && roll < tankChance + runnerChance ? "runner" : "basic";
+        })();
     const edge = Math.floor(Math.random() * 4);
     const pos = randomPoint(0);
     if (edge === 0) pos.y = -54;
@@ -1157,18 +1159,9 @@
       shot.x += (dx / dist) * step;
       shot.y += (dy / dist) * step;
       if (dist <= 24) {
-        if (shot.target.shielded && (shot.target.shieldHp > 0 || shot.target.isBoss)) {
-          if (!shot.target.isBoss) {
-            shot.target.shieldHp = Math.max(0, shot.target.shieldHp - shot.damage);
-            if (shot.target.shieldHp <= 0) shot.target.shielded = false;
-          }
-          addFloater(locale === "zh-Hant" ? "\u8b77\u76fe" : "SHIELD", shot.target.x, shot.target.y - 58, "#c4b5fd");
-        } else {
-          shot.target.hp -= shot.damage;
-        }
+        damageEnemy(shot.target, shot.damage);
         shot.target.hit = 0.16;
         addSpark(shot.target.x, shot.target.y, "#67e8f9");
-        if (shot.target.hp <= 0) calmEnemy(shot.target);
         return false;
       }
       return true;
@@ -1190,6 +1183,21 @@
     state.xpDrops.push({ x: enemy.x, y: enemy.y, value: enemy.isBoss ? 4 : 1 });
     state.enemies = state.enemies.filter((item) => item !== enemy);
     if (state.stageConfig?.modifier === "emberTrail") addHazard("circle", { x: enemy.x, y: enemy.y, r: 78, warn: 0.15, life: 2.5, color: "#f97316", damage: 0.45 });
+  }
+
+  function damageEnemy(enemy, damage) {
+    if (!enemy) return { blocked: false, hp: 0 };
+    if (enemy.shielded && (enemy.shieldHp > 0 || enemy.isBoss)) {
+      if (!enemy.isBoss) {
+        enemy.shieldHp = Math.max(0, enemy.shieldHp - damage);
+        if (enemy.shieldHp <= 0) enemy.shielded = false;
+      }
+      addFloater(locale === "zh-Hant" ? "\u8b77\u76fe" : "SHIELD", enemy.x, enemy.y - 58, "#c4b5fd");
+      return { blocked: true, hp: enemy.hp };
+    }
+    enemy.hp -= damage;
+    if (enemy.hp <= 0) calmEnemy(enemy);
+    return { blocked: false, hp: Math.max(0, enemy.hp) };
   }
 
   function updateDrops() {
@@ -1394,6 +1402,9 @@
     window.__animalCrystalSurvivorSmoke = {
       snapshot: () => ({
         mode: state.mode,
+        stage: state.stage,
+        stageName: stageName(state.stageConfig),
+        stageModifier: state.stageConfig.modifier,
         keys: state.keys,
         key: { ...state.key },
         player: { ...state.player },
@@ -1410,6 +1421,9 @@
           speed: enemy.speed,
           damage: enemy.damage,
           size: enemy.size,
+          image: enemy.image,
+          isBoss: Boolean(enemy.isBoss),
+          shielded: Boolean(enemy.shielded),
           danger: Math.hypot(enemy.x - state.player.x, enemy.y - state.player.y) <= 170,
         })),
         shots: state.shots.map((shot) => ({ x: shot.x, y: shot.y, px: shot.px, py: shot.py, damage: shot.damage, image: shot.image })),
@@ -1427,6 +1441,10 @@
         patrolRankProgressText: nodes.patrolRankProgressText?.textContent || "",
         patrolRankProgressPercent: Math.round(patrolRankFor(save.totalKeys).progress * 100),
         resultRankText: nodes.resultRankText?.textContent || "",
+        hazards: state.hazards.map((hazard) => ({ kind: hazard.kind, x: hazard.x, y: hazard.y, warn: hazard.warn, life: hazard.life, color: hazard.color })),
+        safeZone: state.safeZone ? { ...state.safeZone } : null,
+        bossSpawned: state.bossSpawned,
+        bossDefeated: state.bossDefeated,
       }),
       setTotalKeysForTest: (total = 0) => {
         save.totalKeys = Math.max(0, Number(total) || 0);
@@ -1435,9 +1453,23 @@
         return patrolRankFor(save.totalKeys);
       },
       startStageForTest: (stageNumber = 1) => {
+        save.unlockedStage = Math.max(save.unlockedStage, Math.min(STAGE_COUNT, Number(stageNumber) || 1));
         save.selectedStage = Math.max(1, Math.min(save.unlockedStage, Number(stageNumber) || 1));
         persist();
         startRun();
+      },
+      triggerMechanicForTest: () => {
+        state.mechanicStep += 1;
+        triggerStageMechanic(state.stageConfig.modifier);
+        return state.hazards.length;
+      },
+      spawnBossForTest: () => {
+        spawnBoss();
+        return state.enemies.find((enemy) => enemy.isBoss) || null;
+      },
+      strikeBossForTest: (damage = 3) => {
+        const boss = state.enemies.find((enemy) => enemy.isBoss);
+        return boss ? damageEnemy(boss, Number(damage) || 0) : null;
       },
       collectKeyAtPlayer: () => {
         state.key = { x: state.player.x, y: state.player.y };
@@ -1821,7 +1853,7 @@
   });
   nodes.resultPanel.addEventListener("keydown", (event) => {
     if (event.key !== "Tab" || nodes.resultPanel.classList.contains("hidden")) return;
-    const actions = [nodes.nextStageBtn, nodes.retryBtn, nodes.resultMenuBtn].filter((button) => !button.disabled && !button.classList.contains("hidden"));
+    const actions = [nodes.retryBtn, nodes.nextStageBtn, nodes.resultMenuBtn].filter((button) => !button.disabled && !button.classList.contains("hidden"));
     if (event.shiftKey && document.activeElement === actions[0]) {
       event.preventDefault();
       actions.at(-1).focus();

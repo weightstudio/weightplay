@@ -2246,6 +2246,9 @@
       showMain();
     });
     nodes.attributeButtons.forEach((button) => button.addEventListener("click", () => spendAttribute(button.dataset.attribute)));
+    nodes.draftCards.addEventListener("keydown", (event) => {
+      if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
+    });
     nodes.draftCards.addEventListener("click", (event) => {
       const choice = event.target.closest("[data-draft-attribute]");
       if (choice) spendAttribute(choice.dataset.draftAttribute);

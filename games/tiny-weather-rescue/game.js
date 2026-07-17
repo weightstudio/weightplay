@@ -528,6 +528,11 @@
   }
 
   function installToolControl(button) {
+    button.addEventListener("keydown", (event) => {
+      if (event.repeat && (event.key === "Enter" || event.key === " ")) {
+        event.preventDefault();
+      }
+    });
     button.addEventListener("click", () => {
       if (button.dataset.skipClick === "1") return;
       chooseTool(button.dataset.tool, button);

@@ -315,7 +315,7 @@
     },
     "star-memory": {
       title: "Animal Star Memory",
-      age: "5+",
+      age: "6+",
       difficulty: "Easy",
       time: "3-5 minutes",
       skills: ["Memory", "Focus", "Problem Solving"],
@@ -325,7 +325,7 @@
       parent:
         "This game may help children practice memory and focus through simple matching. Progress feedback is for encouragement and local tracking only.",
       faq: [
-        ["What age is Animal Star Memory for?", "It is recommended for age 5+ and family play."],
+        ["What age is Animal Star Memory for?", "It is recommended for age 6+ and family play."],
         ["Does it require fast reactions?", "No. It focuses on remembering positions."],
         ["Can children replay stages?", "Yes. Replaying can help practice memory in a low-pressure way."],
       ],
@@ -469,30 +469,51 @@
     },
     "animal-crystal-survivor": {
       title: "Animal Crystal Survivor",
-      age: "13+",
       difficulty: "Medium",
-      time: "3 minutes",
+      time: "3 minutes per stage",
       skills: ["Reaction", "Focus", "Problem Solving"],
+      guideKicker: "WeightPlay Original Game Guide",
+      guideTitleSuffix: "30-Stage Campaign Guide",
+      noteTitle: "Player and Save Information",
+      hideScoreBands: true,
       intro:
-        "Animal Crystal Survivor is a deeper 3-minute action score game set in WeightPlay's Crystal Grove. Players guide an animal ranger through a square arena, collect golden keys for score, pick up crystals for experience, and choose upgrades while shadow beasts move closer. The game is designed for older players who want an active survival loop with movement, risk, upgrades, and a clear final score.",
+        "Animal Crystal Survivor is a 30-stage real-time patrol campaign built around movement, automatic attacks, temporary upgrades, readable hazards, and six original animal Bosses. Every route lasts up to three minutes and has a named rule, key target, and saved unlock.",
+      story: [
+        "Six crystal beacons keep the Crystal Grove's paths open. An Eclipse pulse has scattered their golden tuning keys and changed familiar animals into shadow beasts. The Crystal Ranger carries the keys, calms affected animals, and reconnects one route at a time.",
+        "Stages 5, 10, 15, 20, 25, and 30 are guardian checkpoints. Defeating Root Stalker, Prism Moth Queen, Briar Boar King, Cinder Panther, Tempest Roc, and Eclipse Colossus reconnects the six regions and ends the feedback loop beneath the grove."
+      ],
+      systems: [
+        "Move with touch, pointer, WASD, or arrow keys. The Ranger automatically targets the nearest enemy inside the visible range circle, leaving the player responsible for spacing, collection routes, and hazard timing.",
+        "Golden keys satisfy the current stage objective and add to lifetime Patrol Rank. Calmed enemies drop temporary XP crystals; each level pauses play and offers three choices from damage, range, speed, max HP, attack interval, and pickup radius.",
+        "Shadow foxes apply steady pressure, panthers close quickly, and crystal boars absorb more attacks. Later stages add breakable shields, announced charges, scorch ground, drifting drops, mirrored strikes, and a moving Eclipse safe ring.",
+        "A stage clears at 3:00 only when its printed key target is complete. Boss stages also require the guardian to be calmed. Missing an objective records local statistics but does not unlock the next route."
+      ],
       how: [
-        "Tap, drag, or use WASD / arrow keys to move the ranger.",
-        "Collect golden keys before the 3:00 timer ends.",
-        "Pick up crystals to level up and choose stronger abilities.",
-        "Keep moving when shadow beasts get close and use upgrades to survive longer.",
+        "Choose an unlocked card from the horizontal 30-stage rail and read its rule.",
+        "Move the Ranger while auto-attack handles the nearest target inside range.",
+        "Collect the displayed number of keys and XP crystals before the timer ends.",
+        "Leave dashed warning shapes before they become solid roots, flame, lightning, or lanes.",
+        "At every fifth stage, defeat the named Boss as well as completing the key target.",
+        "Use Result to retry, continue, or return to the Stage rail."
       ],
       strategyTips: [
-        "Collect early crystals so the first upgrade arrives quickly.",
-        "Move toward keys when the path is safe, but avoid getting trapped by close enemies.",
-        "Range and movement upgrades help new players stay alive, while attack upgrades help clear pressure faster.",
+        "Collect early XP so the first upgrade changes more of the patrol.",
+        "Treat the pale attack ring as a spacing guide and stay near its outer edge.",
+        "Move across a charge path, not directly away from the charging beast.",
+        "Wait out Prism Moth Queen's visible shield and attack during the opening.",
+        "Follow the Eclipse safe ring before chasing a key outside it."
       ],
       parent:
-        "This game is intended for older children and casual players who enjoy real-time action. It may practice reaction, focus, planning, and flexible decision-making through play. Results are for fun and local progress tracking only, not a test, diagnosis, ranking, or school assessment.",
+        "Stage unlocks, clears, best key counts, lifetime keys, Patrol Rank, and optional Crystal Charm ownership stay in this browser. Clearing site storage or switching devices may remove them. The confirmed Crystal Charm purchase is optional and no stage requires it. Result feedback is entertainment and local progress information, not a test or diagnosis.",
       faq: [
-        ["Why is Animal Crystal Survivor marked 13+?", "It uses real-time movement, enemies approaching from multiple directions, survival pressure, and upgrade choices, so it is more intense than WeightPlay's younger-child games."],
-        ["What is the main goal?", "Collect as many golden keys as possible before the 3-minute run ends while surviving the shadow beasts."],
+        ["How many stages are included?", "There are 30 named stages across six regions, with Boss checkpoints every fifth stage."],
+        ["What clears a stage?", "Survive three minutes and meet the printed key target; a checkpoint also requires its Boss to be defeated."],
         ["Does the player aim manually?", "No. The ranger attacks automatically. The player focuses on movement, collecting, and upgrade choices."],
-        ["Is this a formal skill test?", "No. Skill Report text is supportive local feedback for fun play only."],
+        ["Why did Prism Moth Queen take no damage?", "Her visible shield blocks attacks during one phase. Damage resumes when it disappears."],
+        ["Is progress saved?", "Yes. Unlocks, clears, best keys, lifetime rank, and Charm ownership are saved locally."],
+        ["Is Crystal Charm required?", "No. It is an optional confirmed boost from seven to eight HP and pickup radius 54 to 68."],
+        ["Does it work on mobile and desktop?", "Yes. Touch dragging and keyboard movement use the same campaign rules."],
+        ["Is the Skill Report a test?", "No. It is supportive game feedback for this local run only."],
       ],
     },
     "animal-guard-yard": {
@@ -1149,7 +1170,7 @@
     "animal-bubble-safari": { gameplay: "Bubble Shooter Puzzle", genre: ["Puzzle", "Bubble Shooter", "Animal"] },
     "animal-habitat-mahjong": { gameplay: "Mahjong Solitaire", genre: ["Puzzle", "Logic", "Animal"] },
     "animal-hidden-safari": { gameplay: "Hidden Object", genre: ["Puzzle", "Safari", "Animal"] },
-    "animal-crystal-survivor": { gameplay: "Action Survival Score Run", genre: ["Action", "Survival", "Animal"] },
+    "animal-crystal-survivor": { gameplay: "30-Stage Action Survival Campaign", genre: ["Action", "Survival", "Campaign", "Boss Battle", "Animal"] },
     "animal-guard-yard": { gameplay: "Lane Defense", genre: ["Strategy", "Tower Defense", "Animal"] },
     "animal-quiz": { gameplay: "Animal Quiz", genre: ["Quiz", "Education", "Animal"] },
     "zoo-helper-day": { gameplay: "Zoo Workday", genre: ["Preschool", "Simulation", "Animal"] },
@@ -1214,7 +1235,7 @@
       "animal-bubble-safari": { gameplay: "泡泡射擊解謎", genre: ["益智", "泡泡射擊", "動物"] },
       "animal-habitat-mahjong": { gameplay: "麻將牌配對", genre: ["益智", "邏輯", "動物"] },
       "animal-hidden-safari": { gameplay: "找找看", genre: ["益智", "自然探索", "動物"] },
-      "animal-crystal-survivor": { gameplay: "動作生存挑戰", genre: ["動作", "生存", "動物"] },
+      "animal-crystal-survivor": { gameplay: "30 關動作生存戰役", genre: ["動作", "生存", "戰役", "首領戰", "動物"] },
       "animal-guard-yard": { gameplay: "路線防守", genre: ["策略", "防守", "動物"] },
       "animal-quiz": { gameplay: "動物問答", genre: ["問答", "教育", "動物"] },
       "zoo-helper-day": { gameplay: "動物園工作日", genre: ["幼兒", "經營", "動物"] },
@@ -1592,32 +1613,64 @@
       },
       "animal-crystal-survivor": {
         title: "動物水晶生存戰",
-        age: "13+",
         difficulty: "中等",
-        time: "3 minutes",
-        gameplay: "動作生存挑戰",
-        genre: ["動作", "生存", "動物"],
+        time: "每關 3 分鐘",
+        gameplay: "30 關動作生存戰役",
+        genre: ["動作", "生存", "戰役", "動物"],
         skills: ["反應", "專注", "問題解決"],
+        guideKicker: "WeightPlay 原創遊戲指南",
+        guideTitleSuffix: "30 關戰役指南",
+        noteTitle: "玩家與存檔說明",
+        hideScoreBands: true,
         intro:
-          "動物水晶生存戰是 WeightPlay 的 3 分鐘動作生存分數遊戲。玩家要操作動物巡守員在結晶森林中移動，收集金鑰提高分數，撿取水晶獲得經驗，並在升級時選擇能力來撐過逐漸靠近的影獸。這款遊戲適合喜歡移動、風險判斷、升級選擇與短局挑戰的 13+ 玩家。",
+          "《動物水晶生存戰》是一款以移動、自動攻擊、臨時升級與可讀危險為核心的 30 關實時巡邏戰役。每關最多三分鐘，都有專屬名稱、金鑰目標與區域規則。每第五關會出現一隻擁有獨立角色圖、警示與反制方式的首領，不是把普通敵人放大。",
+        story: [
+          "水晶林地原本依靠六座水晶燈塔維持通道，金鑰則是調律燈塔的工具。日蝕核心從地底送出暗影脈衝後，金鑰散落在各條路線，熟悉的動物也變成影獸。水晶巡守員必須收回金鑰、安撫影獸，並讓每條通道在三分鐘內穩定下來。",
+          "第 5、10、15、20、25、30 關是六個守衛檢查點。依序安撫根系追獵者、棱鏡飛蛾女王、荊棘野豬王、燼火黑豹、暴風巨鵬與日蝕巨像，才能重新連結六個區域。完成第 30 關代表六座燈塔重新同步，林地不再把暗影能量送回自己的根系。"
+        ],
+        systems: [
+          "巡邏流程：先在橫向關卡列選擇已解鎖路線，關卡卡片會列出區域規則、金鑰目標與首領標記。點擊、拖曳、WASD 或方向鍵都可移動巡守員。角色會自動攻擊淡色範圍內最近的敵人，玩家主要負責間距、收集路線與閃避時機。",
+          "金鑰與經驗：本關金鑰數是通關目標，同時會累積到主選單的巡守階級。影獸被安撫後會掉落本局經驗水晶；升級時遊戲會暫停，並從傷害、射程、速度、生命上限、攻擊間隔與拾取範圍中提供三個選項。",
+          "敵人定位：影狐提供穩定壓力，黑豹追得較快，水晶野豬需要更多次攻擊。後期規則會讓特定敵人帶著可打破護盾、先預告再衝鋒、在倒下點留下熱區，或讓掉落水晶被風推移。",
+          "成功與失敗：普通關必須在 3:00 結束時仍有生命，並收集卡片顯示的金鑰數。首領關還必須安撫該區守衛。生命歸零或漏掉目標都不會解鎖下一關，但本機紀錄與先前進度不會被刪除。"
+        ],
         how: [
-          "點擊、拖曳，或使用 WASD / 方向鍵移動巡守員。",
-          "在 3:00 倒數結束前盡量收集金鑰。",
-          "撿取水晶累積經驗，升級後選擇更強的能力。",
-          "影獸靠近時保持移動，善用升級讓自己存活更久。",
+          "在 30 張橫向卡片中選擇已解鎖關卡，先讀取規則。",
+          "用觸控、滑鼠、WASD 或方向鍵移動；攻擊會自動鎖定範圍內目標。",
+          "收集本關要求的金鑰，並撿取經驗水晶選擇升級。",
+          "虛線警示變成實心危險前，離開根系、火焰、閃電或走廊。",
+          "每第五關除了金鑰目標，還要擊敗專屬首領。",
+          "結果可以重試、繼續或回到關卡列。"
         ],
         strategyTips: [
-          "先收集附近的水晶，讓第一個升級更快出現。",
-          "路線安全時再靠近金鑰，避免被太近的影獸包圍。",
-          "射程與移動速度升級能幫新玩家撐更久，攻擊升級則能更快清掉壓力。",
+          "先收集附近經驗，讓第一個升級影響更長的巡邏時間。",
+          "把淡色攻擊環當成間距工具，讓目標保持在邊緣，不要站在影獸旁邊。",
+          "面對衝鋒要橫向穿過它的路徑，不要沿直線往後逃。",
+          "棱鏡飛蛾女王發亮時護盾會擋住攻擊，先存活再等待護盾消失。",
+          "日蝕核心以跟隨移動安全環為優先，環外金鑰可等下一次脈衝再取。"
         ],
+        progression: [
+          "第 1-5 關建立金鑰路線、黑豹衝入與野豬夾擊。根系追獵者會在玩家位置放下綠色根系圈，留在裡面會減速並反覆受傷。",
+          "第 6-10 關加入鏡像圈、旋轉碎片與可打破護盾。棱鏡飛蛾女王會在護盾與可受傷階段間輪替，並使用成對棱光警示。",
+          "第 11-15 關以荊棘走廊、根系斑塊與有預告的野豬衝鋒改變移動。荊棘野豬王結合長距離衝鋒與根系圈。",
+          "第 16-20 關使用橙色燃燒預告、高溫邊緣與倒下留火。燼火黑豹會跨場閃現，並燃燒每個落點。",
+          "第 21-25 關以藍色圈預告閃電，強風還會推動掉落物。暴風巨鵬同時使用三個雷區與高速俯衝。",
+          "第 26-30 關要跟隨移動光環，並輪流處理根系、火焰與閃電。日蝕巨像把三種警示放在安全環周圍，是全部移動與傷害時機的最終檢查。"
+        ],
+        designNote:
+          "三分鐘足以讓一局出現數次升級選擇，又不會讓失敗後的重試代價過高。自動鎖定是為了移除手機上細小的瞄準控制，但玩家仍要持續決定距離、收集順序、逃生方向與首領可攻擊窗口。六個五關區域會依序導入、組合、再由首領檢查新規則。難度雖然提高，但主要變化來自護盾、衝鋒時機、警示圈、走廊、飄移資源與安全環，而不是只把敵人生命變大。",
         parent:
-          "這款遊戲是給較年長兒童與休閒玩家的即時動作挑戰。遊玩過程可能練習反應、專注、路線規劃與彈性決策。成績只作為遊戲樂趣與本機進度紀錄，不是測驗、診斷、排名或學校評量。",
+          "本機會保存已解鎖關卡、已通關關卡、各關最佳金鑰、累積金鑰、巡守階級與可選水晶護符。清除網站儲存或更換裝置可能會移除進度。水晶護符需二次確認，只會把起始生命從 7 提高到 8，並把拾取範圍從 54 提高到 68；它不是任何關卡的必要條件。結果回饋只是娛樂與本機進度資訊，不是能力測驗或診斷。",
         faq: [
-          ["為什麼動物水晶生存戰標示 13+？", "它包含即時移動、多方向敵人靠近、生存壓力與升級選擇，比低年齡層遊戲更刺激。"],
-          ["主要目標是什麼？", "在 3 分鐘內一邊躲避影獸，一邊收集越多金鑰越好。"],
+          ["動物水晶生存戰有幾關？", "共有 30 個命名關卡與六個區域，每第五關都是首領檢查點。"],
+          ["如何才算通關？", "生存到三分鐘結束並完成卡片的金鑰目標；首領關還要擊敗該區守衛。"],
           ["玩家需要手動瞄準嗎？", "不用。巡守員會自動攻擊，玩家主要負責移動、收集與升級選擇。"],
-          ["這是正式能力測驗嗎？", "不是。能力回饋只是支援性的本機遊戲提示，僅供娛樂參考。"],
+          ["為什麼攻擊沒有傷害棱鏡飛蛾女王？", "她發亮時有可見護盾，會擋住攻擊。護盾消失後才會扣除生命。"],
+          ["漏掉金鑰目標會怎樣？", "這局金鑰與累積資料仍會記錄，但不會解鎖下一關，可立即重試。"],
+          ["進度會保存嗎？", "會。關卡、金鑰、巡守階級與護符會保存在目前瀏覽器。"],
+          ["水晶護符是必要的嗎？", "不是。它只是需要確認的可選起始屬性加成，30 關都可不使用。"],
+          ["手機與電腦都能玩嗎？", "可以。手機使用點擊或拖曳，電腦還可使用 WASD 與方向鍵，關卡規則完全相同。"],
+          ["這是正式能力測驗嗎？", "不是。能力回饋只是本機遊戲回饋，僅供娛樂參考。"],
         ],
       },
       "animal-gearpack-expedition": zhGuide("動物裝備行囊遠征", "空間行囊策略遠征", ["選擇齒輪森林路線。", "選擇、旋轉並把裝備放入行囊空格。", "讓相同材質的裝備彼此相鄰取得連結加成。", "通過五場遭遇並擊敗樹根守衛。"]),

@@ -743,6 +743,9 @@
     if (event.shiftKey && document.activeElement === actions[0]) { event.preventDefault(); actions.at(-1).focus(); }
     else if (!event.shiftKey && document.activeElement === actions.at(-1)) { event.preventDefault(); actions[0].focus(); }
   });
+  $("#masteryBtn").addEventListener("keydown", (event) => {
+    if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
+  });
   $("#masteryBtn").onclick = () => {
     const cost = 5 + mastery * 4;
     if (marks >= cost) {

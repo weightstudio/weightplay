@@ -745,6 +745,7 @@ board.addEventListener("keydown", (event) => {
   const delta = deltas[event.key];
   if (!delta) return;
   event.preventDefault();
+  if (event.repeat) return;
   const target = [Number(current.dataset.x) + delta[0], Number(current.dataset.y) + delta[1]];
   if (target.some((value) => value < 0 || value >= SIZE)) return rejectMove();
   moveTo(target);

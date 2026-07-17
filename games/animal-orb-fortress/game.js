@@ -692,7 +692,15 @@
     nodes.stageRail.querySelector(`[data-tier="${unlocked}"]`)?.focus({ preventScroll: true });
   }
 
-  function upgradeRoom(id) {
+  function restoreRoomUpgradeFocus(id) {
+    window.requestAnimationFrame(() => {
+      const preferred = nodes.roomGrid.querySelector(`[data-room="${id}"]:not(:disabled)`);
+      const fallback = nodes.roomGrid.querySelector("button:not(:disabled)");
+      (preferred || fallback)?.focus({ preventScroll: true });
+    });
+  }
+
+  function upgradeRoom(id, restoreFocus = false) {
     const level = save.rooms[id] || 0;
     const cost = roomCost(id);
     if (level >= 5 || save.starStones < cost) return;
@@ -701,6 +709,7 @@
     persist();
     playSound("success", 0.2);
     renderMenu();
+    if (restoreFocus) restoreRoomUpgradeFocus(id);
     window.WonderAnalytics?.track("room_upgrade", { game_id: GAME_ID, room: id, level: save.rooms[id] });
   }
 
@@ -1691,7 +1700,10 @@
   });
   nodes.roomGrid.addEventListener("click", (event) => {
     const id = event.target?.dataset?.room;
-    if (id) upgradeRoom(id);
+    if (id) upgradeRoom(id, event.detail === 0);
+  });
+  nodes.roomGrid.addEventListener("keydown", (event) => {
+    if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
   });
   nodes.upgradeCards.addEventListener("click", (event) => {
     const id = event.target?.closest?.("[data-upgrade]")?.dataset?.upgrade;

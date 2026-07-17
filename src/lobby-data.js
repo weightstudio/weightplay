@@ -265,16 +265,14 @@ window.WONDER_LOBBY = {
       type: { en: "Action Survival", "zh-Hant": "動作生存" },
       categories: ["Featured", "Animal Games", "Arcade"],
       skills: ["Reaction", "Focus", "Hand-Eye Coordination"],
-      ages: ["13"],
-      ageLabel: { en: "13+", "zh-Hant": "13+" },
       href: "games/animal-crystal-survivor/",
       description: {
-        en: "Survive a 3-minute crystal grove run, collect golden keys, gather XP, and choose upgrades while shadow beasts close in.",
-        "zh-Hant": "在 3 分鐘的水晶森林中閃避暗影猛獸，收集金鑰匙、獲得經驗值，並選擇升級能力挑戰高分。",
+        en: "Patrol 30 three-minute Crystal Grove routes, collect each stage's keys, choose upgrades, read changing hazards, and defeat six original animal Bosses.",
+        "zh-Hant": "巡邏 30 條三分鐘水晶林地路線，完成各關金鑰目標、選擇升級、判讀變化危險，並擊敗六隻原創動物首領。",
       },
       meta: {
-        en: ["3-Min Run", "Auto Combat", "Diamond Boost"],
-        "zh-Hant": ["3 分鐘挑戰", "自動戰鬥", "升級選擇"],
+        en: ["30 Stages", "6 Bosses", "Auto Combat"],
+        "zh-Hant": ["30 關", "6 隻首領", "自動戰鬥"],
       },
       art: {
         kind: "image",

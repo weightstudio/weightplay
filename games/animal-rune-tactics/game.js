@@ -1924,8 +1924,14 @@
     nodes.skillBtn.addEventListener("click", skill);
     nodes.endTurnBtn.addEventListener("click", endTurn);
     nodes.rerollBtn.addEventListener("click", () => renderRewards(true));
-    nodes.rewardPanel.addEventListener("keydown", (event) => keepDialogFocus(nodes.rewardPanel, event));
-    nodes.resultPanel.addEventListener("keydown", (event) => keepDialogFocus(nodes.resultPanel, event));
+    nodes.rewardPanel.addEventListener("keydown", (event) => {
+      if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
+      keepDialogFocus(nodes.rewardPanel, event);
+    });
+    nodes.resultPanel.addEventListener("keydown", (event) => {
+      if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
+      keepDialogFocus(nodes.resultPanel, event);
+    });
     nodes.nextBtn.addEventListener("click", () => {
       selectedMission = Math.min(missionDefs.length, state.mission + 1);
       startMission(selectedMission);

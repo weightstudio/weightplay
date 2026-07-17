@@ -1302,6 +1302,11 @@ body.crystal-playing .weightplay-version-badge {
   display: none !important;
 }
 
+/* Keep the Main version visible without pinning it over the long public guide. */
+html body:not(.crystal-playing) .weightplay-version-badge {
+  position: absolute !important;
+}
+
 body.crystal-playing #gamePanel.game-panel > .battle-live {
   display: contents;
 }

@@ -766,6 +766,11 @@
     nodes.resultStagesBtn.addEventListener("click", showMenu);
     nodes.retryBtn.addEventListener("click", () => startStage(currentStage));
     nodes.nextStageBtn.addEventListener("click", () => startStage(Math.min(stages.length - 1, currentStage + 1)));
+    nodes.hintBtn.addEventListener("keydown", (event) => {
+      if (event.repeat && (event.key === "Enter" || event.key === " ")) {
+        event.preventDefault();
+      }
+    });
     nodes.hintBtn.addEventListener("click", useHint);
     window.addEventListener("pagehide", pauseSearchTimer);
     window.addEventListener("pageshow", resumeSearchTimer);
