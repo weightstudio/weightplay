@@ -409,6 +409,8 @@
   });
   Object.assign(text.en, {
     menu: "Back to Missions",
+    endTurnDecision: "End turn. {count} heroes are still ready: {heroes}. Enemies will act next.",
+    endTurnDecisionNone: "End turn. All living heroes have acted. Enemies will act next.",
     boar: "Thorn Boar", runeFox: "Rune Fox", tideTurtle: "Tide Turtle", heron: "Relic Heron",
     salamander: "Ember Salamander", ram: "Cinder Ram", moth: "Moon Moth", archiveOwl: "Archive Owl",
     mirrorWolf: "Mirror Wolf", sealRaven: "Seal Raven", rhinoBoss: "Ironroot Rhino",
@@ -442,6 +444,8 @@
   });
   Object.assign(text["zh-Hant"], {
     menu: "返回任務",
+    endTurnDecision: "結束回合。仍有 {count} 位英雄可行動：{heroes}。接著敵人將行動。",
+    endTurnDecisionNone: "結束回合。所有存活英雄都已行動，接著敵人將行動。",
     boar: "荊棘野豬", runeFox: "符步狐狸", tideTurtle: "潮汐烏龜", heron: "遺物蒼鷺",
     salamander: "餘燼蠑螈", ram: "燼角山羊", moth: "月塵飛蛾", archiveOwl: "典藏貓頭鷹",
     mirrorWolf: "鏡影狼", sealRaven: "封印渡鴉", rhinoBoss: "鐵根犀王",
@@ -1281,6 +1285,21 @@
     nodes.guardBtn.disabled = !canAct;
     nodes.skillBtn.disabled = !canAct || hero.energy <= 0 || hero.silenced;
     nodes.endTurnBtn.disabled = state.phase !== "player";
+    const readyHeroNames = state.heroes
+      .filter((candidate) => candidate.hp > 0 && !state.acted.has(candidate.id))
+      .map((candidate) => t(candidate.name));
+    let readyHeroList = readyHeroNames.join(", ");
+    try {
+      readyHeroList = new Intl.ListFormat(document.documentElement.lang || locale, { style: "long", type: "conjunction" }).format(readyHeroNames);
+    } catch {
+      // The comma-separated fallback remains complete in older browsers.
+    }
+    nodes.endTurnBtn.setAttribute(
+      "aria-label",
+      readyHeroNames.length
+        ? t("endTurnDecision", { count: readyHeroNames.length, heroes: readyHeroList })
+        : t("endTurnDecisionNone"),
+    );
   }
 
   function selectedHero() {

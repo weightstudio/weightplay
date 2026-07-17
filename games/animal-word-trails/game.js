@@ -150,13 +150,14 @@
   };
   const rail=$('stageRail');
   const rejectRepeatedActivation=event=>{
-    if(event.repeat&&(event.key==='Enter'||event.key===' '))event.preventDefault();
+    if(event.repeat&&(event.key==='Enter'||event.key===' ')){event.preventDefault();event.stopImmediatePropagation();}
   };
   const focusSelectedStage=()=>requestAnimationFrame(()=>document.querySelector('.stage-card.selected')?.focus({preventScroll:true}));
   $('start').addEventListener('keydown',rejectRepeatedActivation);
   rail.addEventListener('keydown',event=>{
     if(event.target.closest('.stage-card'))rejectRepeatedActivation(event);
   });
+  $('resultPanel').addEventListener('keydown',rejectRepeatedActivation,true);
   let railStartX=0;
   let railStartScroll=0;
   let railPointerActive=false;

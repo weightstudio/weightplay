@@ -311,6 +311,7 @@
     nodes.playfield.setAttribute("aria-label", t("playfield"));
     nodes.vineButton.setAttribute("aria-label", t("cutVine"));
     nodes.leafPaddle.setAttribute("aria-label", t("leafControl"));
+    nodes.localeSelect.value = requested;
     updatePaddleAccessibility();
     renderStages();
     if (!nodes.gamePanel.classList.contains("hidden")) setupStage(currentStage);
@@ -770,7 +771,7 @@
   });
   window.addEventListener("resize", positionElements);
 
-    nodes.localeSelect.value = requested;
+  nodes.localeSelect.value = window.WonderI18n?.actualLocale?.() || locale;
   setLocale(locale);
 
   function updateStageScale() {

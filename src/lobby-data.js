@@ -408,8 +408,6 @@ window.WONDER_LOBBY = {
       type: { en: "Ricochet Roguelite", "zh-Hant": "\u53cd\u5f48 Roguelite" },
       categories: ["Featured", "Animal Games", "Arcade"],
       skills: ["Logic", "Problem Solving", "Focus"],
-      ages: ["13"],
-      ageLabel: { en: "13+", "zh-Hant": "13+" },
       href: "games/animal-orb-fortress/",
       description: {
         en: "Aim animal orbs through crystal fortress rooms, plan bounce routes, grow your base, and prepare for boss waves.",
@@ -426,8 +424,6 @@ window.WONDER_LOBBY = {
       type: { en: "Auto-Battler", "zh-Hant": "自走棋策略" },
       categories: ["Featured", "Animal Games", "Puzzle", "Strategy"],
       skills: ["Logic", "Problem Solving", "Focus"],
-      ages: ["13"],
-      ageLabel: { en: "13+", "zh-Hant": "13+" },
       href: "games/animal-auto-squad/",
       description: {
         en: "Train and position ten animal heroes across 30 five-wave stages, six regions, and six unique boss battles.",
@@ -444,8 +440,6 @@ window.WONDER_LOBBY = {
       type: { en: "Hero Tower Defense", "zh-Hant": "英雄塔防" },
       categories: ["Featured", "Animal Games", "Puzzle", "Strategy"],
       skills: ["Logic", "Problem Solving", "Focus"],
-      ages: ["13"],
-      ageLabel: { en: "13+", "zh-Hant": "13+" },
       href: "games/beast-tactician/",
       description: {
         en: "Shape enemy routes and command animal soldiers and WeightPlay heroes through 30 stages, six regions, and six distinct Boss battles.",
@@ -478,8 +472,6 @@ window.WONDER_LOBBY = {
       type: { en: "Route Management Strategy", "zh-Hant": "\u822a\u7dda\u8abf\u5ea6\u7b56\u7565" },
       categories: ["Animal Games", "Strategy"],
       skills: ["Logic", "Focus", "Problem Solving"],
-      ages: ["13"],
-      ageLabel: "13+",
       href: "games/animal-skyport-dispatch/",
       internalTrial: "index.html?trial=1",
       description: {
@@ -497,8 +489,6 @@ window.WONDER_LOBBY = {
       type: { en: "Route Risk Adventure", "zh-Hant": "深海路線冒險" },
       categories: ["Animal Games", "Strategy", "Adventure"],
       skills: ["Logic", "Focus", "Problem Solving"],
-      ages: ["13"],
-      ageLabel: { en: "13+", "zh-Hant": "13+" },
       href: "games/animal-abyss-diver/",
       internalTrial: "index.html?trial=1",
       description: {
@@ -612,8 +602,6 @@ window.WONDER_LOBBY.games.push({
   type: { en: "Fishing Collection Sim", "zh-Hant": "釣魚收集模擬" },
   categories: ["Featured", "Animal Games", "Arcade"],
   skills: ["Focus", "Reaction", "Problem Solving"],
-  ages: ["13"],
-  ageLabel: { en: "13+", "zh-Hant": "13+" },
   href: "games/animal-reef-fisher/",
   description: {
     en: "Run reef expeditions with an otter fishing team, time casts, manage line tension, fill a sea-creature album, and upgrade gear locally.",
@@ -699,8 +687,6 @@ window.WONDER_LOBBY.games.push({
   type: { en: "Stealth Extraction Adventure", "zh-Hant": "潛行撤離冒險" },
   categories: ["Featured", "Animal Games", "Arcade"],
   skills: ["Logic", "Focus", "Problem Solving"],
-  ages: ["13"],
-  ageLabel: { en: "13+", "zh-Hant": "13+" },
   href: "games/animal-moonlight-heist/",
   description: {
     en: "Guide Spark Paw Fia through moonlit patrol routes, recover lost relics, and decide whether to risk optional treasure before extraction.",

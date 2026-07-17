@@ -174,6 +174,7 @@
   .stage-screen-head,
   .stage-shell-head,
   .stage-header,
+  .stage-panel-head,
   .stage-select-head
 ) {
   position: relative;
@@ -189,10 +190,27 @@
   .stage-screen-head,
   .stage-shell-head,
   .stage-header,
+  .stage-panel-head,
   .stage-select-head
-) :is(h1, h2, h3, strong, span) {
+) :is(h1, h2, h3, strong, span, small, em) {
   color: #f8fafc !important;
+  line-height: 1.5 !important;
   text-shadow: 0 1px 2px rgb(0 0 0 / 55%);
+}
+
+/* Keep localized glyphs inside the fixed Stage heading track even when a
+   game uses the standard logical Canvas without the artwork-shell class. */
+[data-wp-logical-stage-canvas] :is(
+  .wp-standard-stage-heading,
+  .stage-head,
+  .stage-heading,
+  .stage-screen-head,
+  .stage-shell-head,
+  .stage-header,
+  .stage-panel-head,
+  .stage-select-head
+) :is(h1, h2, h3, strong, span, small, em) {
+  line-height: 1.5 !important;
 }
 
 .wp-stage-art-shell .menu-copy {
@@ -511,7 +529,21 @@ body[data-wp-game-id="animal-rune-tactics"] [data-wp-logical-stage-canvas] .rune
 }
 
 body[data-wp-game-id="beast-deck"] [data-wp-logical-stage-canvas] .beast-stage-view[data-stage-view="missions"] .stage-select {
-  grid-template-rows: 34px 190px !important;
+  grid-template-rows: 58px 190px minmax(52px, 1fr) !important;
+}
+
+body[data-wp-game-id="beast-deck"] [data-wp-logical-stage-canvas] .stage-select-head {
+  display: grid !important;
+  grid-template-rows: 21px 27px !important;
+  align-content: center !important;
+  align-items: center !important;
+  gap: 0 !important;
+  padding: 5px 8px !important;
+}
+
+body[data-wp-game-id="beast-deck"] [data-wp-logical-stage-canvas] .stage-select-head :is(strong, small) {
+  min-width: 0;
+  line-height: 1.3 !important;
 }
 
 body[data-wp-game-id="beast-deck"] [data-wp-logical-stage-canvas] #stagePanel :is(.stage-grid, .stage-card) {

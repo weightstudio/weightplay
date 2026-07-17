@@ -109,6 +109,7 @@
       menu: "Menu",
       backToLobby: "Back to lobby",
       playfield: "Animal Crystal Survivor playfield",
+      playfieldState: "Stage {stage}/{stageCount}. Time {time}. Golden keys {keys}/{target}. HP {hp}/{maxHp}. Level {level}. Move with WASD or arrow keys, or click, tap, and drag. The ranger automatically attacks the nearest enemy in range. Stage rule: {rule}",
       time: "Time",
       keys: "Keys",
       level: "Level",
@@ -212,6 +213,7 @@
       menu: "\u9078\u55ae",
       backToLobby: "\u56de\u5230\u5927\u5ef3",
       playfield: "\u52d5\u7269\u6c34\u6676\u751f\u5b58\u6230\u904a\u73a9\u5340",
+      playfieldState: "\u95dc\u5361 {stage}/{stageCount}\u3002\u5269\u9918\u6642\u9593 {time}\u3002\u91d1\u9470 {keys}/{target}\u3002\u751f\u547d {hp}/{maxHp}\u3002\u7b49\u7d1a {level}\u3002\u4f7f\u7528 WASD \u6216\u65b9\u5411\u9375\u79fb\u52d5\uff0c\u4e5f\u53ef\u9ede\u64ca\u3001\u89f8\u63a7\u6216\u62d6\u66f3\u3002\u5de1\u5b88\u54e1\u6703\u81ea\u52d5\u653b\u64ca\u7bc4\u570d\u5167\u6700\u8fd1\u7684\u6575\u4eba\u3002\u95dc\u5361\u898f\u5247\uff1a{rule}",
       time: "\u6642\u9593",
       keys: "\u91d1\u9470",
       level: "\u7b49\u7d1a",
@@ -366,6 +368,7 @@
   let locale = window.WonderI18n?.locale?.() || localStorage.getItem(localeKey) || "en";
   let save = loadSave();
   let state = makeState();
+  let playfieldLabelSignature = "";
   let charmPurchasePending = false;
   let charmConfirmTimer = 0;
   let lastFrame = 0;
@@ -568,6 +571,7 @@
     document.querySelectorAll("[data-aria-ui]").forEach((node) => {
       node.setAttribute("aria-label", t(node.dataset.ariaUi));
     });
+    playfieldLabelSignature = "";
     nodes.menuBtn.setAttribute("aria-label", t("menu"));
     nodes.resultMenuBtn.setAttribute("aria-label", t("backToStages"));
     updatePageMeta();
@@ -1527,12 +1531,29 @@
   }
 
   function renderHud() {
+    const time = formatTime(state.timeLeft);
+    const hp = Math.max(0, Math.ceil(state.player.hp));
     nodes.stageText.textContent = `${state.stage}/${STAGE_COUNT}`;
-    nodes.timeText.textContent = formatTime(state.timeLeft);
+    nodes.timeText.textContent = time;
     nodes.keyText.textContent = String(state.keys);
     nodes.levelText.textContent = String(state.level);
-    nodes.hpText.textContent = `${Math.ceil(state.player.hp)}/${state.player.maxHp}`;
+    nodes.hpText.textContent = `${hp}/${state.player.maxHp}`;
     nodes.xpFill.style.width = `${Math.min(100, (state.xp / state.xpNeed) * 100)}%`;
+    const playfieldSignature = [locale, state.stage, time, state.keys, hp, state.player.maxHp, state.level, state.stageConfig?.modifier].join("|");
+    if (playfieldSignature !== playfieldLabelSignature) {
+      playfieldLabelSignature = playfieldSignature;
+      canvas.setAttribute("aria-label", t("playfieldState", {
+        stage: state.stage,
+        stageCount: STAGE_COUNT,
+        time,
+        keys: state.keys,
+        target: state.stageConfig?.targetKeys || 0,
+        hp,
+        maxHp: state.player.maxHp,
+        level: state.level,
+        rule: stageRule(state.stageConfig || stages[0]),
+      }));
+    }
     renderActionHint();
   }
 

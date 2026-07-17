@@ -6844,9 +6844,4 @@
       window.WonderI18n?.setLocale?.(event.target.value);
     }
   });
-  document.addEventListener("input", (event) => {
-    if (event.target?.id === "localeSelect") {
-      window.WonderI18n?.setLocale?.(event.target.value);
-    }
-  });
 })();

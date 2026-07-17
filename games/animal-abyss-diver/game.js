@@ -249,6 +249,8 @@
     routeRetry:u("\\u4e0b\\u6b21\\u76ee\\u6a19\\uff1a\\u7a7f\\u8d8a {zones} \\u500b\\u6d77\\u57df\\u4e26\\u6253\\u6488 {target} \\u4ef6"),
     retry:u("\\u518d\\u8a66\\u4e00\\u6b21")
   });
+  Object.assign(en,{routeSelect:"Dive routes"});
+  Object.assign(zh,{routeSelect:"潛航路線"});
   Object.assign(en,{
     fishBattle:"Fish encounter",territorialFish:"Territorial fish",shark:"Abyss shark",fishHp:"Enemy HP",diverHp:"Nori HP",attackAction:"Attack",escapeAction:"Escape",fishStrikes:"The fish strikes back!",fishWon:"Enemy defeated!",fishEscaped:"Escaped safely. Oxygen -{n}.",xpGain:"EXP +{n}",levelUp:"Level up! Stat point +{n}",upgradeTitle:"Diver upgrade",statPoints:"Points {n}",hpStat:"Health",attackStat:"Attack",oxygenStat:"Max oxygen",statPreview:"{name} {current} → {next}",upgradePrompt:"Spend every point before continuing.",upgradeApplied:"{name} upgraded: {before} → {after}.",doneUpgrade:"Continue dive",combatDefeat:"Nori was defeated",resultCombat:"Nori lost the encounter. Half of the salvage was secured."
   });
@@ -416,7 +418,7 @@
   function start(route){cancelDiveAsync();state={route,zone:1,oxygen:maxOxygen(),playerHp:maxHealth(),salvage:0,sonar:false,battery:4,shieldArmed:false,beaconUsed:false,beaconPending:false,busy:false,fishActive:false,fishResolvedZones:[]};show("battleShell");resetDiveField();$("fishEncounter").classList.add("hidden");$("fishEncounter").classList.remove("is-hit","is-countering","is-escaping");setUpgradeModal(false,false);renderBattle();setFeedback(`${icon("sonar")}<b>?</b>`,t("objectiveScan"));setCoach(!save.tutorialDone);}
   function finish(mode){
     cancelDiveAsync();
-    const config=routeConfig(),clear=mode==="clear";
+    const config=routeConfig(),clear=mode==="clear",finalClear=clear&&state.route>=routes.length;
     const earned=mode==="fail"||mode==="combat"?Math.floor(state.salvage/2):state.salvage+(clear?2:0);
     const unlockedBefore=save.unlocked;
     save.coins+=earned;
@@ -426,11 +428,11 @@
     const copyKey=clear?"resultClear":mode==="combat"?"resultCombat":mode==="fail"?"resultFail":mode==="miss"?"resultMiss":"resultSurface";
     $("resultCopy").textContent=t(copyKey,{n:state.salvage,target:config.target,zones:config.zones});
     let routeEvidence=t("routeRetry",{target:config.target,zones:config.zones});
-    if(clear&&state.route>=routes.length)routeEvidence=t("routeComplete");
+    if(finalClear)routeEvidence=t("routeComplete");
     else if(clear){const nextRoute=Math.min(routes.length,state.route+1),key=save.unlocked>unlockedBefore?"routeUnlocked":"routeReady";routeEvidence=t(key,{n:nextRoute,name:(locale==="zh-Hant"?zh:en).relicNames[nextRoute-1]});}
     $("resultRewards").innerHTML=`<span>${t("coinsEarned",{n:earned})}</span><span>${t("coinsSaved",{n:save.coins})}</span><span>${t("rank",{n:save.rank})}</span><span>${routeEvidence}</span>`;
-    $("nextBtn").textContent=clear?t("next"):t("retry");$("menuBtn").textContent=t("menu");
-    $("nextBtn").onclick=()=>{if(!clear)return start(state.route);show("stageScreen");renderRoutes();focusRoute(Math.min(routes.length,state.route+1));};
+    $("nextBtn").textContent=finalClear?t("routeSelect"):clear?t("next"):t("retry");$("menuBtn").textContent=t("menu");
+    $("nextBtn").onclick=()=>{if(!clear)return start(state.route);show("stageScreen");renderRoutes();focusRoute(finalClear?state.route:Math.min(routes.length,state.route+1));};
   }
   function resetDiveField(){const field=$("diveField");field.classList.remove("is-swimming","is-resolving","is-advancing");delete field.dataset.lane;delete state.resolvingDirection;$("impactText").classList.add("hidden");}
   function applyMove(direction){
@@ -547,7 +549,7 @@
   $("startBtn").onclick=()=>{show("stageScreen");renderRoutes();focusRoute(save.unlocked);};
   $("stageBack").onclick=()=>{show("mainScreen");focusMain();};
   $("battleBack").onclick=()=>{cancelDiveAsync();show("stageScreen");renderRoutes();focusRoute();};
-  $("menuBtn").onclick=()=>{show("mainScreen");focusMain();};
+  $("menuBtn").onclick=()=>{localize();show("mainScreen");focusMain();};
   document.addEventListener("visibilitychange",()=>{if(document.hidden)suspendDiveAsync();else resumeDiveAsync();});
   window.addEventListener("pagehide",suspendDiveAsync);
   window.addEventListener("pageshow",resumeDiveAsync);

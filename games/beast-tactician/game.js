@@ -3058,73 +3058,9 @@
     window.addEventListener("blur", () => {
       mainEntryKeyboardKey = "";
     });
-    let stageSnapTimer = 0;
-    nodes.stageRail.addEventListener("scroll", () => {
-      if (nodes.stageRail.classList.contains("is-mouse-dragging")) return;
-      window.clearTimeout(stageSnapTimer);
-      stageSnapTimer = window.setTimeout(snapStageRailToNearest, 120);
-    });
-    let stageMouseStartX = 0;
-    let stageMouseStartLeft = 0;
-    let stageMouseDragged = false;
-    let stageMouseDelta = 0;
-    let stageMouseCard = null;
-    let suppressStageClick = false;
-    let stageMouseActive = false;
-    nodes.stageRail.addEventListener("mousedown", (event) => {
-      if (event.button !== 0) return;
-      event.preventDefault();
-      stageMouseActive = true;
-      nodes.stageRail.dataset.mouseDown = "true";
-      stageMouseStartX = event.clientX;
-      stageMouseStartLeft = nodes.stageRail.scrollLeft;
-      stageMouseDragged = false;
-      stageMouseDelta = 0;
-      stageMouseCard = event.target.closest(".stage-card");
-      suppressStageClick = false;
-      nodes.stageRail.classList.add("is-mouse-dragging");
-    });
-    window.addEventListener("mousemove", (event) => {
-      if (!stageMouseActive) return;
-      const delta = event.clientX - stageMouseStartX;
-      stageMouseDelta = delta;
-      if (Math.abs(delta) > 5) stageMouseDragged = true;
-      if (!stageMouseDragged) return;
-      nodes.stageRail.dataset.mouseDelta = String(Math.round(delta));
-      event.preventDefault();
-      nodes.stageRail.scrollLeft = stageMouseStartLeft - delta;
-    });
-    window.addEventListener("mouseup", () => {
-      if (!stageMouseActive) return;
-      stageMouseActive = false;
-      suppressStageClick = true;
-      if (stageMouseDragged) {
-        const intendedLeft = stageMouseStartLeft - stageMouseDelta;
-        const cards = Array.from(nodes.stageRail.querySelectorAll(".stage-card"));
-        const nearest = cards
-          .map((card) => ({
-            card,
-            left: card.offsetLeft - (nodes.stageRail.clientWidth - card.offsetWidth) / 2,
-          }))
-          .sort((a, b) => Math.abs(a.left - intendedLeft) - Math.abs(b.left - intendedLeft))[0];
-        nodes.stageRail.scrollTo({ left: nearest?.left || 0, behavior: "smooth" });
-        window.setTimeout(() => nodes.stageRail.classList.remove("is-mouse-dragging"), 320);
-      } else if (stageMouseCard) {
-        nodes.stageRail.classList.remove("is-mouse-dragging");
-        const stageId = Number(stageMouseCard.dataset.stageId || 0);
-        if (stageMouseCard.getAttribute("aria-disabled") === "true") showToast(t("lockedStage"));
-        else if (stageId) startStage(stageId);
-      }
-      stageMouseCard = null;
-      window.setTimeout(() => {
-        suppressStageClick = false;
-      }, 0);
-    });
-    nodes.stageRail.addEventListener("click", (event) => {
-      if (!suppressStageClick) return;
-      event.preventDefault();
-      event.stopPropagation();
-    }, true);
+    // The shared Stage controller owns pointer tracking, click suppression,
+    // and nearest-card settling. A second scroll timer or mouse drag handler
+    // here makes touch compatibility events fight that controller mid-gesture.
     nodes.stageRail.addEventListener("wheel", (event) => {
       if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
       event.preventDefault();

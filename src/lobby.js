@@ -1648,11 +1648,6 @@ localeSelect.addEventListener("change", () => {
   i18n.setLocale(localeSelect.value);
 });
 
-localeSelect.addEventListener("input", () => {
-  window.WonderSound?.play("click");
-  i18n.setLocale(localeSelect.value);
-});
-
 window.addEventListener("wonder:locale-change", renderLobby);
 
 window.addEventListener("popstate", () => {

@@ -2,7 +2,7 @@
   const config = window.WONDER_SITE?.localization || {};
   const localeKey = "weightPlayLocale";
   const fallbackLocale = config.fallbackLocale || "en";
-  const supportedLocales = config.phaseOneLocales || ["en", "zh-Hant"];
+  const supportedLocales = config.phaseOneLocales || ["en", "zh-Hant", "zh-Hans"];
 
   const dictionaries = {
     en: {
@@ -934,17 +934,30 @@
   const zhHansPhraseMap = Object.freeze([
     ["點選", "点击"],
     ["點擊", "点击"],
+    ["接著", "接着"],
+    ["沿著", "沿着"],
+    ["跟著", "跟着"],
+    ["紀錄", "记录"],
+    ["纪录", "记录"],
+    ["取得", "获得"],
+    ["圖卡", "卡片"],
+    ["图卡", "卡片"],
+    ["物件", "物品"],
+    ["儲存", "保存"],
+    ["储存", "保存"],
     ["滑鼠", "鼠标"],
     ["行動裝置", "移动设备"],
     ["儲存在這台裝置", "保存在此设备"],
     ["儲存在本機", "保存在本设备"],
     ["儲存於本機", "保存在本设备"],
     ["本機", "本设备"],
+    ["本机", "本设备"],
     ["載入", "加载"],
     ["重新整理", "刷新"],
     ["列印", "打印"],
     ["影片", "视频"],
     ["資訊", "信息"],
+    ["资料", "数据"],
     ["網路", "网络"],
     ["帳號", "账号"],
     ["登入", "登录"],
@@ -959,6 +972,9 @@
     ["觸控", "触控"],
     ["大廳", "大厅"],
     ["選單", "菜单"],
+    ["选单", "菜单"],
+    ["分頁", "标签页"],
+    ["分页", "标签页"],
   ].sort((a, b) => b[0].length - a[0].length));
 
   const zhHansCharMap = Object.freeze({
@@ -1729,8 +1745,9 @@
   }
 
   function syncLocaleCompatibility() {
-    document.documentElement.lang = currentLocale;
-    document.querySelectorAll("#localeSelect").forEach((select) => {
+    if (document.documentElement.lang !== currentLocale) document.documentElement.lang = currentLocale;
+    document.documentElement.dataset.weightPlayLocale = currentLocale;
+    document.querySelectorAll("select").forEach((select) => {
       if (select.querySelector(`option[value="${currentLocale}"]`)) select.value = currentLocale;
     });
     if (currentLocale === "zh-Hans") translateTree(document.documentElement);
@@ -1762,6 +1779,7 @@
   }
 
   document.documentElement.lang = currentLocale;
+  document.documentElement.dataset.weightPlayLocale = currentLocale;
 
   window.WonderI18n = {
     t,
@@ -1790,7 +1808,7 @@
         else if (record.type === "attributes") translateElementAttributes(record.target);
         else record.addedNodes.forEach(translateTree);
       });
-      document.documentElement.lang = currentLocale;
+      if (document.documentElement.lang !== currentLocale) document.documentElement.lang = currentLocale;
       window.setTimeout(syncLocaleCompatibility, 0);
     });
     localeBridgeObserver.observe(document.documentElement, {

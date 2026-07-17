@@ -132,6 +132,9 @@
       sonar: "Sonar",
       upgrade: "Upgrade",
       max: "Max",
+      gearUpgradeLabel: "Upgrade {gear} from Level {beforeLevel} to Level {afterLevel}. Spend {cost} Reef Notes. Balance {before} to {after}.",
+      gearUpgradeNeedLabel: "{gear} Level {beforeLevel}. Level {afterLevel} costs {cost} Reef Notes. Balance {balance}; need {need} more.",
+      gearMaxLabel: "{gear} Level {level}. Maximum level.",
       locked: "Locked",
       complete: "Complete",
       expeditionWin: "Expedition Complete",
@@ -228,6 +231,9 @@
       sonar: "聲納",
       upgrade: "升級",
       max: "滿級",
+      gearUpgradeLabel: "將{gear}從等級 {beforeLevel} 升到等級 {afterLevel}。花費 {cost} 點礁石筆記，餘額由 {before} 變為 {after}。",
+      gearUpgradeNeedLabel: "{gear}目前等級 {beforeLevel}。升到等級 {afterLevel} 需要 {cost} 點礁石筆記；目前有 {balance} 點，還差 {need} 點。",
+      gearMaxLabel: "{gear}目前等級 {level}，已達滿級。",
       locked: "未解鎖",
       complete: "完成",
       expeditionWin: "遠征完成",
@@ -606,6 +612,18 @@
         </div>
       `;
     }).join("");
+    nodes.gearGrid.querySelectorAll("[data-gear]").forEach((button) => {
+      const item = gear.find((candidate) => candidate.id === button.dataset.gear);
+      const level = Number(save.gear[button.dataset.gear]) || 1;
+      const balance = Math.floor(save.notes);
+      const cost = item.cost * level;
+      const label = level >= 5
+        ? t("gearMaxLabel", { gear: item.name[locale], level })
+        : balance >= cost
+          ? t("gearUpgradeLabel", { gear: item.name[locale], beforeLevel: level, afterLevel: level + 1, cost, before: balance, after: balance - cost })
+          : t("gearUpgradeNeedLabel", { gear: item.name[locale], beforeLevel: level, afterLevel: level + 1, cost, balance, need: cost - balance });
+      button.setAttribute("aria-label", label);
+    });
     const lureUnavailable = !save.lureReady && diamondPurchasePending !== "lure" && diamondBalance < lureCost;
     const sonarUnavailable = !save.sonarReady && diamondPurchasePending !== "sonar" && diamondBalance < sonarCost;
     nodes.lureBtn.textContent = save.lureReady ? t("lureReady") : diamondPurchasePending === "lure" ? t("confirmLure", { before:diamondBalance, after:Math.max(0,diamondBalance-lureCost) }) : lureUnavailable ? t("needDiamonds", { cost: lureCost }) : t("buyLure", { cost: lureCost });

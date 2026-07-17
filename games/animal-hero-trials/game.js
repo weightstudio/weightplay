@@ -93,6 +93,22 @@
     rerollConfirmStatus: "\u4e09\u500b\u795d\u798f\u5168\u90e8\u91cd\u62bd\u4e00\u6b21 \u00b7 \u947d\u77f3 {balance} \u2192 {result}\u3002\u518d\u6b21\u9ede\u64ca\u78ba\u8a8d\u3002",
     rerollNeed: "\u9700\u8981 3 \u9846\u947d\u77f3 \u00b7 \u6301\u6709 {balance}\u3002\u4ecd\u53ef\u514d\u8cbb\u9078\u64c7\u795d\u798f\u3002",
   });
+  Object.assign(copy.en, {
+    skillReadyLabel: "{skill} ready. {effect} Press to use.",
+    skillCooldownLabel: "{skill} unavailable for {seconds} seconds. {effect}",
+    leoSkillEffect: "Deal {damage} damage to nearby enemies.",
+    fiaSkillEffect: "Dash toward the nearest enemy, become invulnerable for 0.55 seconds, and deal {damage} close-range damage.",
+    orlaSkillEffect: "Deal {damage} damage to the nearest enemy and mark its next automatic hit for +18 damage.",
+    taroSkillEffect: "Guard for 3.5 seconds, heal up to {heal} HP, and deal {damage} damage in a wide area.",
+  });
+  Object.assign(copy["zh-Hant"], {
+    skillReadyLabel: "{skill}已可使用。{effect}按下即可施放。",
+    skillCooldownLabel: "{skill}尚有 {seconds} 秒無法使用。{effect}",
+    leoSkillEffect: "對附近敵人造成 {damage} 點傷害。",
+    fiaSkillEffect: "衝向最近敵人、獲得 0.55 秒無敵，並造成 {damage} 點近距離傷害。",
+    orlaSkillEffect: "對最近敵人造成 {damage} 點傷害，並使下一次自動攻擊追加 18 點傷害。",
+    taroSkillEffect: "防護 3.5 秒、最多恢復 {heal} 點生命，並對大範圍敵人造成 {damage} 點傷害。",
+  });
 
   const TRIAL_COUNT = 30;
   const trialTitles = [
@@ -430,10 +446,22 @@
     if(elite) playSound("boss");
   }
 
+  function skillEffectLabel() {
+    if (run.heroId === "leo") return interpolate("leoSkillEffect", { damage: 24 + run.bless.power * 7 });
+    if (run.heroId === "fia") return interpolate("fiaSkillEffect", { damage: 30 + run.bless.power * 6 });
+    if (run.heroId === "orla") return interpolate("orlaSkillEffect", { damage: 24 + run.bless.power * 5 });
+    return interpolate("taroSkillEffect", { heal: 8 + run.bless.heal * 2, damage: 20 + run.bless.power * 4 });
+  }
+
   function updateHud() {
     $("#hpFill").style.width = `${Math.max(0, (run.hp / run.maxHp) * 100)}%`;
     const skillName = locale === "zh-Hant" ? heroes[run.heroId].skill.zh : heroes[run.heroId].skill.en;
     $("#cooldownText").textContent = run.cool > 0 ? run.cool.toFixed(1) : skillName;
+    $("#skillBtn").setAttribute("aria-label", interpolate(run.cool > 0 ? "skillCooldownLabel" : "skillReadyLabel", {
+      skill: skillName,
+      seconds: Math.max(0.1, run.cool).toFixed(1),
+      effect: skillEffectLabel(),
+    }));
   }
 
   function damageEnemy(enemy,amount,source="auto") {

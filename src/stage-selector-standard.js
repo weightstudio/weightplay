@@ -6,6 +6,7 @@
   const cardSelector = ".stage-card,.page-card,.mission-card,.region-card,.route-card,.day-card,.zone-card,.expedition-card,.zone-node,button";
   const installed = new WeakSet();
   const railVisibility = new WeakMap();
+  const railHadCards = new WeakMap();
   const pendingRecommendation = new WeakMap();
   const pendingSettles = new WeakMap();
   const nativeStageScalers = new Set(["bubble-bakery", "color-lunchbox", "garden-tiles", "wonder-crash"]);
@@ -293,6 +294,7 @@
     rail.dataset.wpStageRail = "true";
     rail.dataset.wpStageInitiallyHidden = rail.getClientRects().length ? "false" : "true";
     railVisibility.set(rail, Boolean(rail.getClientRects().length));
+    railHadCards.set(rail, stageCards(rail).length > 0);
     let pointerId = null;
     let startX = 0;
     let startScroll = 0;
@@ -417,7 +419,16 @@
     requestAnimationFrame(() => {
       standardizeMainStart();
       updateStageState();
-      document.querySelectorAll(railSelector).forEach((rail) => scheduleRecommendedCenter(rail, records.some((record) => record.type === "childList" && rail.contains(record.target))));
+      document.querySelectorAll(railSelector).forEach((rail) => {
+        const hasCards = stageCards(rail).length > 0;
+        const gainedInitialCards = hasCards && !railHadCards.get(rail);
+        railHadCards.set(rail, hasCards);
+        // Replacing a label or lock marker inside an active rail must not pull
+        // the player back to the recommended stage. Recenter only when the
+        // rail receives its first usable card set; visibility transitions are
+        // handled by scheduleRecommendedCenter itself.
+        scheduleRecommendedCenter(rail, gainedInitialCards);
+      });
     });
   }).observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ["class", "hidden", "lang"] });
   window.addEventListener("wonder:locale-change", standardizeMainStart);

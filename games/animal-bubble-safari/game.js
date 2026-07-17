@@ -138,11 +138,12 @@
   }
 
   function applyLocale() {
-    document.documentElement.lang = locale;
+    const activeLocale = window.WonderI18n?.actualLocale?.() || locale;
+    document.documentElement.lang = activeLocale;
     document.title = `${t("title")} - WeightPlay`;
     document.querySelectorAll("[data-i18n]").forEach(el => { el.textContent = t(el.dataset.i18n); });
     document.querySelectorAll("[data-i18n-aria]").forEach(el => { el.setAttribute("aria-label", t(el.dataset.i18nAria)); });
-    document.querySelectorAll("[data-locale]").forEach(button => button.classList.toggle("is-selected", button.dataset.locale === locale));
+    document.querySelectorAll("[data-locale]").forEach(button => button.classList.toggle("is-selected", button.dataset.locale === activeLocale));
     renderStageRail();
     updateMainProgress();
     if (game) updateHud();
