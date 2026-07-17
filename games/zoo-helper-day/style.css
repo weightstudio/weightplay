@@ -239,7 +239,7 @@ select {
 
 .shift-board {
   display: grid;
-  grid-template-columns: 1.2fr 1fr 1fr;
+  grid-template-columns: 1.15fr 0.85fr 1.15fr;
   gap: 8px;
 }
 
@@ -417,6 +417,27 @@ select {
   font-size: 0.76rem;
 }
 
+.item-grid.picture-only .item-card span {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.item-grid.picture-only .item-card b {
+  width: clamp(58px, 11vw, 76px);
+  height: clamp(58px, 11vw, 76px);
+}
+
+#requestText.memory-hidden {
+  color: #6b4d14;
+  background: rgba(255, 246, 188, 0.92);
+  border-radius: 999px;
+  padding: 4px 12px;
+}
+
 .item-card.correct {
   animation: pop 0.34s ease;
   background: #d6ffd7;
@@ -513,6 +534,10 @@ body.zoo-helper-playing .shift-board span {
   min-height: 40px;
   padding: 5px 7px;
   border-radius: 12px;
+}
+
+body.zoo-helper-playing .shift-board b {
+  font-size: clamp(0.68rem, 3vw, 0.78rem);
 }
 
 body.zoo-helper-playing .animal-card {

@@ -678,6 +678,13 @@
     });
   }
 
+  const rejectRepeatedActivation = (event) => {
+    if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
+  };
+  nodes.startBtn.addEventListener("keydown", rejectRepeatedActivation);
+  nodes.stagePanel.addEventListener("keydown", (event) => {
+    if (event.target.closest("[data-stage]")) rejectRepeatedActivation(event);
+  });
   nodes.startBtn.addEventListener("click", () => {
     showStages(save.unlocked);
   });

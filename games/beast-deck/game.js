@@ -9,6 +9,8 @@
   const maxMission = 30;
   let amuletConfirmPending = false;
   let amuletConfirmTimer = 0;
+  let amuletConfirmRemaining = 0;
+  let amuletConfirmDueAt = 0;
   let battleTransitionEpoch = 0;
   let backgroundSuspended = document.hidden;
   const battleTransitions = new Set();
@@ -43,10 +45,26 @@
     return transition;
   }
 
+  function armAmuletConfirmation() {
+    if (!amuletConfirmPending || backgroundSuspended || amuletConfirmTimer) return;
+    amuletConfirmDueAt = performance.now() + amuletConfirmRemaining;
+    amuletConfirmTimer = window.setTimeout(() => {
+      amuletConfirmTimer = 0;
+      if (!amuletConfirmPending || backgroundSuspended) return;
+      clearAmuletConfirmation();
+      updateDiamondShopUI();
+    }, amuletConfirmRemaining);
+  }
+
   function suspendBackgroundBattle() {
     if (backgroundSuspended) return;
     backgroundSuspended = true;
     const now = performance.now();
+    if (amuletConfirmTimer) {
+      window.clearTimeout(amuletConfirmTimer);
+      amuletConfirmTimer = 0;
+      amuletConfirmRemaining = Math.max(0, amuletConfirmDueAt - now);
+    }
     battleTransitions.forEach((transition) => {
       if (!transition.timer) return;
       window.clearTimeout(transition.timer);
@@ -58,6 +76,7 @@
   function resumeBackgroundBattle() {
     if (!backgroundSuspended || document.hidden) return;
     backgroundSuspended = false;
+    armAmuletConfirmation();
     battleTransitions.forEach(armBattleTransition);
   }
 
@@ -216,6 +235,7 @@
     nodes.stageReserve.classList.remove("hidden");
     document.body.classList.add("wp-standard-stage-page");
     renderProgressUI();
+    requestAnimationFrame(() => nodes.stageGrid.querySelector(".stage-card.selected:not(:disabled)")?.focus({ preventScroll: true }));
   }
 
   function showMainFromStage() {
@@ -224,6 +244,7 @@
     nodes.stageReserve.classList.add("hidden");
     nodes.menuPanel.classList.remove("hidden");
     document.body.classList.remove("wp-standard-stage-page");
+    requestAnimationFrame(() => nodes.mainStartBtn.focus({ preventScroll: true }));
   }
 
   const metaText = {
@@ -256,6 +277,8 @@
       packTitle: "Draw Beast Pack",
       packHint: "Spend coins for a card or equipment for future runs.",
       packNeed: "Need {cost} coins.",
+      packActionLabel: "Draw Beast Pack. Spend {cost} Beast Coins. Balance {balance} to {result}.",
+      packInsufficientLabel: "Draw Beast Pack. Need {cost} Beast Coins. Balance {balance}.",
       packResultCard: "New card: {card}.",
       packResultCardEquipped: "New card: {card}. Added to Battle Deck.",
       packResultGear: "New equipment: {gear}.",
@@ -381,6 +404,11 @@
       cardWaitTurn: "Wait for your turn · Cost {cost}",
       cardSealed: "{type} cards are sealed this turn",
       cardActionLabel: "{card}. {effect}. {status}",
+      endTurnSafe: "No held-card damage",
+      endTurnMarkHazard: "Marked {card}: {damage} HP",
+      endTurnCurseHazard: "{count} Mist Curse card(s): {damage} HP",
+      endTurnHazardSummary: "{details}. Total held-card damage {damage} HP",
+      endTurnActionLabel: "End turn. {hazard}. Next enemy action: {intent}.",
       log_start: "Battle started against {enemy}.",
       log_play_card: "Played {card}. Cost: {cost}.",
       log_combo: "Combo! {card} deals {damage} damage.",
@@ -460,6 +488,8 @@
       packTitle: "金幣抽卡包",
       packHint: "消耗金幣，獲得未來出戰可用的卡牌或裝備。",
       packNeed: "需要 {cost} 金幣。",
+      packActionLabel: "抽取獸王牌組卡包。花費 {cost} 獸王金幣。餘額從 {balance} 變為 {result}。",
+      packInsufficientLabel: "抽取獸王牌組卡包。需要 {cost} 獸王金幣，目前持有 {balance}。",
       packResultCard: "獲得卡牌：{card}。",
       packResultCardEquipped: "獲得卡牌：{card}，已加入出戰牌組。",
       packResultGear: "獲得裝備：{gear}。",
@@ -585,6 +615,11 @@
       cardWaitTurn: "等待玩家回合 · 消耗 {cost}",
       cardSealed: "本回合{type}牌遭到封印",
       cardActionLabel: "{card}。{effect}。{status}",
+      endTurnSafe: "不會受到手牌傷害",
+      endTurnMarkHazard: "標記牌 {card}：{damage} 點生命",
+      endTurnCurseHazard: "{count} 張迷霧詛咒：{damage} 點生命",
+      endTurnHazardSummary: "{details}。手牌傷害合計 {damage} 點生命",
+      endTurnActionLabel: "結束回合。{hazard}。下一個敵方行動：{intent}。",
       log_start: "與 {enemy} 的戰鬥開始。",
       log_play_card: "打出 {card}，消耗 {cost}。",
       log_combo: "連擊成功！{card} 造成 {damage} 點傷害。",
@@ -983,6 +1018,9 @@
     nodes.profileCoinText.textContent = String(profile.coins);
     nodes.packCost.textContent = String(packCost);
     nodes.packBtn.disabled = profile.coins < packCost;
+    nodes.packBtn.setAttribute("aria-label", profile.coins < packCost
+      ? t("packInsufficientLabel", { cost: packCost, balance: profile.coins })
+      : t("packActionLabel", { cost: packCost, balance: profile.coins, result: profile.coins - packCost }));
     if (profile.coins < packCost && !nodes.packStatus.textContent) {
       nodes.packStatus.textContent = t("packNeed", { cost: packCost });
     }
@@ -1338,6 +1376,31 @@
     nodes.enemyIntent.style.color = view.color;
     nodes.enemyIntent.style.background = view.bg;
     nodes.enemyIntent.style.borderColor = view.border;
+    updateEndTurnDecisionLabel();
+  }
+
+  function updateEndTurnDecisionLabel() {
+    if (!nodes.endTurnBtn || !state.enemy) return;
+    const hazards = [];
+    let damage = 0;
+    if (state.markedCardId && state.hand?.includes(state.markedCardId)) {
+      const markDamage = Math.max(0, Number(state.markDamage) || 0);
+      damage += markDamage;
+      hazards.push(t("endTurnMarkHazard", { card: cardName(state.markedCardId), damage: markDamage }));
+    }
+    const curseCount = state.hand?.filter((cardId) => cardId === "mist-curse").length || 0;
+    if (curseCount > 0) {
+      const curseDamage = curseCount * 2;
+      damage += curseDamage;
+      hazards.push(t("endTurnCurseHazard", { count: curseCount, damage: curseDamage }));
+    }
+    const hazard = damage > 0
+      ? t("endTurnHazardSummary", { details: hazards.join(" · "), damage })
+      : t("endTurnSafe");
+    nodes.endTurnBtn.setAttribute("aria-label", t("endTurnActionLabel", {
+      hazard,
+      intent: nodes.intentText?.textContent?.trim() || "-",
+    }));
   }
 
   function effectiveCardCost(cardId) {
@@ -1441,6 +1504,8 @@
   function clearAmuletConfirmation() {
     window.clearTimeout(amuletConfirmTimer);
     amuletConfirmTimer = 0;
+    amuletConfirmRemaining = 0;
+    amuletConfirmDueAt = 0;
     amuletConfirmPending = false;
     nodes.amuletBtn?.classList.remove("is-confirming");
   }
@@ -1451,11 +1516,9 @@
     if (!amuletConfirmPending) {
       amuletConfirmPending = true;
       window.clearTimeout(amuletConfirmTimer);
-      amuletConfirmTimer = window.setTimeout(() => {
-        if (!amuletConfirmPending) return;
-        clearAmuletConfirmation();
-        updateDiamondShopUI();
-      }, 5000);
+      amuletConfirmTimer = 0;
+      amuletConfirmRemaining = 5000;
+      armAmuletConfirmation();
       updateDiamondShopUI();
       return;
     }
@@ -1941,6 +2004,7 @@
       cardEl.addEventListener("click", () => playCard(index));
       nodes.handRow.appendChild(cardEl);
     });
+    updateEndTurnDecisionLabel();
   }
 
   function endGame(won) {
@@ -2089,6 +2153,7 @@
     document.body.classList.add("beast-deck-playing");
     positionBattleSoundControl();
     startNextBattle();
+    requestAnimationFrame(() => nodes.handRow.querySelector("button:not(:disabled)")?.focus({ preventScroll: true }));
     window.WonderSound?.play("start");
     nodes.gamePanel.scrollIntoView({ behavior: "smooth", block: "start" });
   }
@@ -2305,6 +2370,14 @@
         renderHand();
         return window.__beastDeckSmoke.getState();
       },
+      setEndTurnDecisionState: ({ hand = state.hand, markedCardId = null, markDamage = 0 } = {}) => {
+        state.hand = Array.isArray(hand) ? hand.filter((cardId) => cardDb[cardId]) : state.hand;
+        state.markedCardId = markedCardId && cardDb[markedCardId] ? markedCardId : null;
+        state.markDamage = Math.max(0, Number(markDamage) || 0);
+        renderStats();
+        renderHand();
+        return nodes.endTurnBtn.getAttribute("aria-label") || "";
+      },
       forceDraftChoice: (cardId = "iron-tortoise") => {
         addDraftCardToMission(cardId);
         setDraftModalActive(false, false);
@@ -2426,6 +2499,10 @@
       endPlayerTurn();
     });
     nodes.draftPanel.addEventListener("keydown", (event) => {
+      if (event.repeat && (event.key === "Enter" || event.key === " ")) {
+        event.preventDefault();
+        return;
+      }
       if (event.key !== "Tab" || nodes.draftPanel.classList.contains("hidden")) return;
       const choices = [...nodes.draftCards.querySelectorAll("button:not(:disabled)")];
       if (choices.length === 0) return;
@@ -2486,6 +2563,12 @@
       }
     });
     nodes.mainStartBtn.addEventListener("click", showStage);
+    nodes.mainStartBtn.addEventListener("keydown", (event) => {
+      if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
+    });
+    nodes.stageGrid.addEventListener("keydown", (event) => {
+      if (event.repeat && (event.key === "Enter" || event.key === " ") && event.target.closest(".stage-card")) event.preventDefault();
+    });
     nodes.stageBackBtn.addEventListener("click", showMainFromStage);
     nodes.stagePanel.querySelectorAll("[data-stage-tab]").forEach((button) => {
       button.addEventListener("click", () => selectStageTab(button.dataset.stageTab));

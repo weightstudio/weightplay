@@ -37,13 +37,26 @@
       stage: "Stage {n}",
       stageGoal: "{station} shift / {tickets} tickets",
       task: "{station}: help {animal} with {item}.",
+      categoryTask: "{station}: choose something for {animal}'s {category} need.",
+      routineTask: "{station}: routine step {step}/{total} for {animal} is {item}.",
+      memoryHidden: "Tap the animal to see the request again.",
+      checkpoint: "Keeper Check",
+      rules: {
+        exact: "Care Match",
+        picture: "Picture Tools",
+        category: "Care Categories",
+        memory: "Remember & Help",
+        routine: "Two-Step Routine",
+        expert: "Keeper Mix",
+      },
+      categories: { food: "food", drink: "drink", clean: "cleaning", play: "play" },
       tickets: "Tickets {count}",
       mood: "Happiness {count}%",
       correct: "Nice help!",
       wrong: "Try another item.",
       careItemsAria: "Care item choices",
       metaTitle: "Zoo Helper Day - WeightPlay",
-      metaDescription: "Help cute zoo animals with food, water, cleaning, and play tasks across 6 gentle stages in Zoo Helper Day, a family-friendly animal care game on WeightPlay.",
+      metaDescription: "Complete 30 gentle zoo shifts with picture tools, care categories, memory requests, and two-step routines in Zoo Helper Day on WeightPlay.",
       homeAria: "Back to Kids lobby",
       languageAria: "Language",
       stageBackAria: "Back",
@@ -132,13 +145,26 @@
       stage: "第 {n} 關",
       stageGoal: "{station} 班次 / {tickets} 張票",
       task: "{station}：幫 {animal} 準備{item}。",
+      categoryTask: "{station}：選一個能照顧 {animal}「{category}」需求的道具。",
+      routineTask: "{station}：{animal} 的照顧步驟 {step}/{total} 是{item}。",
+      memoryHidden: "點一下動物，就能再看一次需求。",
+      checkpoint: "保育員檢核",
+      rules: {
+        exact: "照顧配對",
+        picture: "圖片道具",
+        category: "照顧分類",
+        memory: "記住需求",
+        routine: "兩步驟照顧",
+        expert: "保育員綜合",
+      },
+      categories: { food: "食物", drink: "飲水", clean: "清潔", play: "玩耍" },
       tickets: "票券 {count}",
       mood: "開心度 {count}%",
       correct: "幫得真好！",
       wrong: "試試看其他道具。",
       careItemsAria: "照顧道具選項",
       metaTitle: "動物園幫忙日 - WeightPlay",
-      metaDescription: "在《動物園幫忙日》的 6 個溫和關卡中，幫可愛動物準備食物、水、清潔用品和玩具，享受適合親子的動物照顧遊戲。",
+      metaDescription: "在《動物園幫忙日》完成 30 個溫和班次，練習圖片道具、照顧分類、記住需求與兩步驟照顧。",
       homeAria: "返回兒童遊戲大廳",
       languageAria: "語言",
       stageBackAria: "返回主畫面",
@@ -232,13 +258,45 @@
     koala: "../../assets/tiny-weather-animal-koala.png",
   };
 
+  const categoryTask = (need, items) => ({ need, items });
+  const routineStep = (item, step, total = 2) => ({ item, step, total });
+  const makeStage = (animal, station, tickets, tasks, pool, options = {}) => ({ animal, station, tickets, tasks, pool, rule: "exact", ...options });
   const stages = [
-    { animal: "lion", station: "savanna", tickets: 45, tasks: ["fruit", "water", "brush", "toy"], pool: ["fruit", "water", "brush", "toy", "leaf"] },
-    { animal: "panda", station: "bamboo", tickets: 58, tasks: ["leaf", "water", "brush", "ball"], pool: ["leaf", "water", "brush", "ball", "fish"] },
-    { animal: "elephant", station: "bath", tickets: 72, tasks: ["shower", "fruit", "water", "toy", "brush"], pool: ["shower", "fruit", "water", "toy", "brush"] },
-    { animal: "penguin", station: "ice", tickets: 86, tasks: ["fish", "water", "ball", "brush", "fruit"], pool: ["fish", "water", "ball", "brush", "fruit"] },
-    { animal: "giraffe", station: "lookout", tickets: 98, tasks: ["leaf", "water", "fruit", "brush", "toy"], pool: ["leaf", "water", "fruit", "brush", "toy"] },
-    { animal: "koala", station: "nursery", tickets: 112, tasks: ["leaf", "water", "brush", "toy", "fruit"], pool: ["leaf", "water", "brush", "toy", "fruit", "ball"] },
+    makeStage("lion", "savanna", 45, ["fruit", "water", "brush", "toy"], ["fruit", "water", "brush", "toy", "leaf"]),
+    makeStage("panda", "bamboo", 58, ["leaf", "water", "brush", "ball"], ["leaf", "water", "brush", "ball", "fish"]),
+    makeStage("elephant", "bath", 72, ["shower", "fruit", "water", "toy", "brush"], ["shower", "fruit", "water", "toy", "brush"]),
+    makeStage("penguin", "ice", 86, ["fish", "water", "ball", "brush", "fruit"], ["fish", "water", "ball", "brush", "fruit"]),
+    makeStage("giraffe", "lookout", 98, ["leaf", "water", "fruit", "brush", "toy"], ["leaf", "water", "fruit", "brush", "toy"], { checkpoint: true }),
+
+    makeStage("koala", "nursery", 106, ["leaf", "water", "brush", "toy"], ["leaf", "water", "brush", "toy", "fruit"], { rule: "picture", pictureOnly: true }),
+    makeStage("lion", "savanna", 112, ["water", "toy", "fruit", "brush"], ["water", "toy", "fruit", "brush", "ball"], { rule: "picture", pictureOnly: true }),
+    makeStage("panda", "bamboo", 118, ["brush", "leaf", "ball", "water"], ["brush", "leaf", "ball", "water", "shower"], { rule: "picture", pictureOnly: true }),
+    makeStage("elephant", "bath", 124, ["fruit", "shower", "toy", "water", "brush"], ["fruit", "shower", "toy", "water", "brush"], { rule: "picture", pictureOnly: true }),
+    makeStage("penguin", "ice", 130, ["ball", "fish", "brush", "water", "toy"], ["ball", "fish", "brush", "water", "toy"], { rule: "picture", pictureOnly: true, checkpoint: true }),
+
+    makeStage("giraffe", "lookout", 136, [categoryTask("food", ["leaf", "fruit"]), categoryTask("drink", ["water"]), categoryTask("clean", ["brush", "shower"]), categoryTask("play", ["toy", "ball"])], ["leaf", "fruit", "water", "brush", "toy", "ball"], { rule: "category" }),
+    makeStage("koala", "nursery", 142, [categoryTask("food", ["leaf", "fruit"]), categoryTask("clean", ["brush"]), categoryTask("drink", ["water"]), categoryTask("play", ["toy", "ball"])], ["leaf", "fruit", "brush", "water", "toy", "ball"], { rule: "category" }),
+    makeStage("lion", "savanna", 148, [categoryTask("play", ["toy", "ball"]), categoryTask("food", ["fruit"]), categoryTask("clean", ["brush", "shower"]), categoryTask("drink", ["water"])], ["toy", "ball", "fruit", "brush", "shower", "water"], { rule: "category" }),
+    makeStage("panda", "bamboo", 154, [categoryTask("clean", ["brush", "shower"]), categoryTask("food", ["leaf", "fruit"]), categoryTask("play", ["ball", "toy"]), categoryTask("drink", ["water"])], ["brush", "shower", "leaf", "fruit", "ball", "water"], { rule: "category" }),
+    makeStage("elephant", "bath", 160, [categoryTask("drink", ["water"]), categoryTask("clean", ["shower", "brush"]), categoryTask("food", ["fruit", "leaf"]), categoryTask("play", ["toy", "ball"]), categoryTask("clean", ["shower", "brush"])], ["water", "shower", "brush", "fruit", "leaf", "toy", "ball"], { rule: "category", checkpoint: true }),
+
+    makeStage("penguin", "ice", 166, ["fish", "water", "ball", "brush"], ["fish", "water", "ball", "brush", "fruit"], { rule: "memory", memory: true }),
+    makeStage("giraffe", "lookout", 172, ["leaf", "brush", "water", "toy"], ["leaf", "brush", "water", "toy", "fish"], { rule: "memory", memory: true }),
+    makeStage("koala", "nursery", 178, ["water", "leaf", "toy", "brush"], ["water", "leaf", "toy", "brush", "ball"], { rule: "memory", memory: true }),
+    makeStage("lion", "savanna", 184, ["toy", "fruit", "brush", "water", "ball"], ["toy", "fruit", "brush", "water", "ball"], { rule: "memory", memory: true }),
+    makeStage("panda", "bamboo", 190, ["leaf", "ball", "water", "brush", "fruit"], ["leaf", "ball", "water", "brush", "fruit"], { rule: "memory", memory: true, checkpoint: true }),
+
+    makeStage("elephant", "bath", 196, [routineStep("shower", 1), routineStep("brush", 2), routineStep("water", 1), routineStep("fruit", 2)], ["shower", "brush", "water", "fruit", "toy"], { rule: "routine" }),
+    makeStage("penguin", "ice", 202, [routineStep("fish", 1), routineStep("water", 2), routineStep("ball", 1), routineStep("brush", 2)], ["fish", "water", "ball", "brush", "fruit"], { rule: "routine" }),
+    makeStage("giraffe", "lookout", 208, [routineStep("leaf", 1), routineStep("water", 2), routineStep("brush", 1), routineStep("toy", 2)], ["leaf", "water", "brush", "toy", "ball"], { rule: "routine" }),
+    makeStage("koala", "nursery", 214, [routineStep("leaf", 1), routineStep("brush", 2), routineStep("water", 1), routineStep("toy", 2)], ["leaf", "brush", "water", "toy", "fruit"], { rule: "routine" }),
+    makeStage("lion", "savanna", 220, [routineStep("fruit", 1), routineStep("water", 2), routineStep("brush", 1), routineStep("ball", 2), routineStep("toy", 1), routineStep("water", 2)], ["fruit", "water", "brush", "ball", "toy"], { rule: "routine", checkpoint: true }),
+
+    makeStage("panda", "bamboo", 226, [categoryTask("food", ["leaf", "fruit"]), categoryTask("clean", ["brush", "shower"]), categoryTask("play", ["ball", "toy"]), categoryTask("drink", ["water"])], ["leaf", "fruit", "brush", "shower", "ball", "water"], { rule: "expert", pictureOnly: true }),
+    makeStage("elephant", "bath", 232, [categoryTask("clean", ["shower", "brush"]), categoryTask("drink", ["water"]), categoryTask("food", ["fruit", "leaf"]), categoryTask("play", ["toy", "ball"])], ["shower", "brush", "water", "fruit", "leaf", "toy"], { rule: "expert", memory: true }),
+    makeStage("penguin", "ice", 238, [routineStep("fish", 1), routineStep("water", 2), routineStep("brush", 1), routineStep("ball", 2)], ["fish", "water", "brush", "ball", "fruit"], { rule: "expert", pictureOnly: true }),
+    makeStage("giraffe", "lookout", 244, [routineStep("leaf", 1), routineStep("water", 2), routineStep("brush", 1), routineStep("toy", 2), routineStep("fruit", 1), routineStep("water", 2)], ["leaf", "water", "brush", "toy", "fruit"], { rule: "expert", memory: true }),
+    makeStage("koala", "nursery", 250, [categoryTask("food", ["leaf", "fruit"]), categoryTask("drink", ["water"]), categoryTask("clean", ["brush", "shower"]), categoryTask("play", ["toy", "ball"]), categoryTask("food", ["leaf", "fruit"]), categoryTask("clean", ["brush", "shower"])], ["leaf", "fruit", "water", "brush", "shower", "toy", "ball"], { rule: "expert", pictureOnly: true, memory: true, checkpoint: true }),
   ];
 
   const $ = (id) => document.getElementById(id);
@@ -301,8 +359,49 @@
   let suppressStageClick = false;
   let itemPointerDrag = null;
   let suppressItemClick = null;
+  let memoryFrame = 0;
+  let memoryToken = 0;
+
+  function cancelMemoryCue() {
+    memoryToken += 1;
+    if (memoryFrame) cancelAnimationFrame(memoryFrame);
+    memoryFrame = 0;
+    nodes.requestText.classList.remove("memory-hidden");
+  }
+
+  function scheduleMemoryCue() {
+    cancelMemoryCue();
+    const stage = stages[currentStage];
+    if (!stage?.memory) return;
+    const token = ++memoryToken;
+    let elapsed = 0;
+    let previous = null;
+    const step = (now) => {
+      if (token !== memoryToken || nodes.playPanel.classList.contains("hidden")) return;
+      if (previous !== null && !document.hidden) elapsed += Math.min(48, now - previous);
+      previous = now;
+      if (elapsed < 1500) {
+        memoryFrame = requestAnimationFrame(step);
+        return;
+      }
+      memoryFrame = 0;
+      nodes.requestText.textContent = t("memoryHidden");
+      nodes.requestText.classList.add("memory-hidden");
+    };
+    memoryFrame = requestAnimationFrame(step);
+  }
+
+  function taskInfo(stage, task) {
+    if (typeof task === "string") return { primary: task, accepted: [task], kind: "exact", value: task };
+    if (task?.need) {
+      const accepted = task.items.filter((item) => stage.pool.includes(item));
+      return { primary: accepted[0], accepted, kind: "category", value: task.need };
+    }
+    return { primary: task.item, accepted: [task.item], kind: "routine", value: task.item, step: task.step, total: task.total };
+  }
 
   function cancelCareTransition(restoreTask = false) {
+    cancelMemoryCue();
     careTransitionToken += 1;
     if (careTransitionFrame) cancelAnimationFrame(careTransitionFrame);
     careTransitionFrame = 0;
@@ -544,11 +643,13 @@
       if (isLocked) button.classList.add("locked");
       button.dataset.stageIndex = String(index);
       button.setAttribute("aria-disabled", String(isLocked));
-      button.setAttribute("aria-label", `${t("stage", { n: stageNo })} - ${t(`stations.${stage.station}`)}. ${t("stageGoal", { station: t(`stations.${stage.station}`), tickets: stage.tickets })}${isLocked ? `. ${t("locked")}` : ""}`);
+      const rule = t(`rules.${stage.rule}`);
+      const checkpoint = stage.checkpoint ? ` · ${t("checkpoint")}` : "";
+      button.setAttribute("aria-label", `${t("stage", { n: stageNo })} - ${t(`stations.${stage.station}`)}. ${rule}${checkpoint}. ${t("stageGoal", { station: t(`stations.${stage.station}`), tickets: stage.tickets })}${isLocked ? `. ${t("locked")}` : ""}`);
       button.innerHTML = `
         <b class="stage-icon"><img src="${animalAssets[stage.animal]}" alt="" /></b>
         <strong>${t("stage", { n: stageNo })} - ${t(`stations.${stage.station}`)}</strong>
-        <em>${t("stageGoal", { station: t(`stations.${stage.station}`), tickets: stage.tickets })}</em>
+        <em>${rule}${checkpoint}</em>
         <span>${"★".repeat(stars[stageNo] || 0)}${"☆".repeat(3 - (stars[stageNo] || 0))}</span>
       `;
       button.addEventListener("click", () => {
@@ -638,7 +739,7 @@
     if (wrongFeedbackTimer) clearTimeout(wrongFeedbackTimer);
     wrongFeedbackTimer = 0;
     const stage = stages[currentStage];
-    const wanted = stage.tasks[currentTask];
+    const task = taskInfo(stage, stage.tasks[currentTask]);
     const mood = clamp(100 - mistakes * 12, 40, 100);
     nodes.stageText.textContent = t("stage", { n: currentStage + 1 });
     nodes.progressFill.style.width = `${(currentTask / stage.tasks.length) * 100}%`;
@@ -647,19 +748,27 @@
     nodes.moodText.textContent = t("mood", { count: mood });
     nodes.animalEmoji.innerHTML = `<img src="${animalAssets[stage.animal]}" alt="" />`;
     nodes.animalName.textContent = t(`animals.${stage.animal}`);
-    nodes.requestText.textContent = t("task", { station: t(`stations.${stage.station}`), animal: t(`animals.${stage.animal}`), item: t(`items.${wanted}`) });
+    nodes.requestText.textContent = task.kind === "category"
+      ? t("categoryTask", { station: t(`stations.${stage.station}`), animal: t(`animals.${stage.animal}`), category: t(`categories.${task.value}`) })
+      : task.kind === "routine"
+        ? t("routineTask", { station: t(`stations.${stage.station}`), animal: t(`animals.${stage.animal}`), item: t(`items.${task.value}`), step: task.step, total: task.total })
+        : t("task", { station: t(`stations.${stage.station}`), animal: t(`animals.${stage.animal}`), item: t(`items.${task.value}`) });
+    nodes.requestText.dataset.fullText = nodes.requestText.textContent;
+    nodes.requestText.classList.remove("memory-hidden");
     nodes.animalCard.setAttribute("aria-label", nodes.requestText.textContent);
     nodes.feedbackText.textContent = "";
-    renderItems(stage, wanted);
+    renderItems(stage, task);
+    scheduleMemoryCue();
     requestAnimationFrame(() => nodes.animalCard.focus());
   }
 
-  function renderItems(stage, wanted) {
+  function renderItems(stage, task) {
     itemPointerDrag = null;
     suppressItemClick = null;
-    const choices = [wanted, ...stage.pool.filter((item) => item !== wanted)].slice(0, 4);
+    const choices = [task.primary, ...stage.pool.filter((item) => item !== task.primary)].slice(0, 4);
     choices.sort(() => Math.random() - 0.5);
     nodes.itemGrid.replaceChildren();
+    nodes.itemGrid.classList.toggle("picture-only", Boolean(stage.pictureOnly));
     nodes.itemGrid.setAttribute("aria-busy", "false");
     choices.forEach((item) => {
       const meta = itemMeta(item);
@@ -754,8 +863,8 @@
   function chooseItem(item, button) {
     if (!acceptingInput) return;
     const stage = stages[currentStage];
-    const wanted = stage.tasks[currentTask];
-    if (item !== wanted) {
+    const task = taskInfo(stage, stage.tasks[currentTask]);
+    if (!task.accepted.includes(item)) {
       mistakes += 1;
       currentTaskMistakes += 1;
       nodes.feedbackText.textContent = t("wrong");
@@ -770,7 +879,7 @@
       nodes.animalCard.classList.add("wrong");
       button?.classList.add("wrong");
       playSound("wrong");
-      track("game_answer", { level: currentStage + 1, correct: false, task: wanted, item });
+      track("game_answer", { level: currentStage + 1, correct: false, task: task.value, item });
       return;
     }
 
@@ -784,7 +893,7 @@
     nodes.animalCard.classList.add("happy");
     nodes.feedbackText.textContent = t("correct");
     playSound("success");
-    track("game_answer", { level: currentStage + 1, correct: true, task: wanted, item });
+    track("game_answer", { level: currentStage + 1, correct: true, task: task.value, item });
     scheduleCareTransition(() => {
       if (wasFirstTry) firstTryTasks += 1;
       currentTask += 1;
@@ -928,6 +1037,13 @@
       startStage(currentStage);
     });
     nodes.nextStageBtn.addEventListener("click", () => startStage(Math.min(currentStage + 1, stages.length - 1)));
+    nodes.animalCard.addEventListener("click", () => {
+      const stage = stages[currentStage];
+      if (!stage?.memory || !nodes.requestText.dataset.fullText || nodes.playPanel.classList.contains("hidden")) return;
+      nodes.requestText.textContent = nodes.requestText.dataset.fullText;
+      nodes.requestText.classList.remove("memory-hidden");
+      scheduleMemoryCue();
+    });
     nodes.resultPanel.addEventListener("keydown", (event) => {
       if (event.repeat && (event.key === "Enter" || event.key === " ")) {
         event.preventDefault();
@@ -1017,5 +1133,30 @@
   initDragDrop();
   renderStageGrid();
   initLoading();
+  if (new URLSearchParams(location.search).has("smoke")) {
+    window.__zooHelperDaySmoke = {
+      stages: stages.map((stage, index) => ({
+        id: index + 1,
+        animal: stage.animal,
+        station: stage.station,
+        rule: stage.rule,
+        checkpoint: Boolean(stage.checkpoint),
+        pictureOnly: Boolean(stage.pictureOnly),
+        memory: Boolean(stage.memory),
+        tasks: stage.tasks.map((task) => typeof task === "string" ? task : { ...task, items: task.items ? [...task.items] : undefined }),
+      })),
+      unlockAll() {
+        unlocked = stages.length;
+        localStorage.setItem(unlockKey, String(unlocked));
+        showMenu();
+      },
+      startStage(number) { startStage(clamp(Number(number) || 1, 1, stages.length) - 1); },
+      snapshot() {
+        const stage = stages[currentStage];
+        const task = currentTask < stage.tasks.length ? taskInfo(stage, stage.tasks[currentTask]) : null;
+        return { stage: currentStage + 1, task: currentTask, taskInfo: task, acceptingInput };
+      },
+    };
+  }
   window.addEventListener("load", localizeStatic, { once: true });
 })();

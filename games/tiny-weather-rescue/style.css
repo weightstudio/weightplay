@@ -484,6 +484,22 @@ select {
   opacity: 0.58;
 }
 
+.tool-btn .visual-only-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+.need-line.is-memory-hidden {
+  font-weight: 800;
+  letter-spacing: 0;
+}
+
 .tool-btn.correct {
   background: #d8ffcb;
   animation: pop 0.32s ease;
@@ -1237,4 +1253,9 @@ body.helper-playing .rescue-scene {
   font-size: 0.68rem;
   font-weight: 1000;
   line-height: 1;
+}
+
+.problem-cue.multi-clue {
+  min-width: 188px;
+  grid-template-columns: 38px 38px 20px 34px;
 }

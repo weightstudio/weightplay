@@ -211,14 +211,14 @@ window.WONDER_LOBBY = {
       type: { en: "Animal Puzzle", "zh-Hant": "動物益智" },
       categories: ["Animal Games", "Puzzle", "Family"],
       skills: ["Logic", "Problem Solving", "Animal Knowledge"],
-      ages: ["3", "6", "family"],
+      ages: ["6", "family"],
       ageLabel: { en: "Family", "zh-Hant": "親子" },
       href: "games/animal-rescue/",
       description: {
-        en: "Tap gentle paths and guide cute animals back home.",
-        "zh-Hant": "點選安全路線，帶可愛動物回到自己的家。",
+        en: "Guide animals through 30 routes with fruit, mud, keys, gates, fragile paths, and six Rescue Checkpoints.",
+        "zh-Hant": "引導動物完成 30 條路線，應對水果、黏泥、鑰匙門、脆弱小路與 6 個救援檢查點。",
       },
-      meta: { en: ["Animal Games", "12 Trails", "No Pressure"], "zh-Hant": ["動物遊戲", "12 條路線", "無壓力"] },
+      meta: { en: ["30 Trails", "Four Route Rules", "No Timer"], "zh-Hant": ["30 條路線", "4 種路線規則", "無倒數"] },
       art: { kind: "image", background: "assets/animal-rescue-cover.webp", hero: "assets/weightplay-character-boom-mane-lion-cutout.webp" },
     },
     {
@@ -233,10 +233,10 @@ window.WONDER_LOBBY = {
       ageLabel: { en: "3+", "zh-Hant": "3+" },
       href: "games/animal-hidden-safari/",
       description: {
-        en: "Search playful safari scenes and find hidden animals, tracks, and habitat clues.",
-        "zh-Hant": "觀察自然探險場景，找出藏起來的動物、足跡與棲地線索。",
+        en: "Search 30 habitats with ordered targets, animal pairs, camouflage, visitors, moving patrols, and six checkpoints.",
+        "zh-Hant": "搜尋 30 個棲地，應對指定順序、動物雙雙、偽裝、訪客、移動巡遊與六個檢查點。",
       },
-      meta: { en: ["Seek & Find", "6 Habitats", "No Pressure"], "zh-Hant": ["找找看", "6 個棲地", "無壓力"] },
+      meta: { en: ["30 Habitats", "Six Search Rules", "No Timer Failure"], "zh-Hant": ["30 個棲地", "6 種搜尋規則", "無倒數失敗"] },
       art: { kind: "image", background: "assets/animal-hidden-safari-cover.webp", hero: "assets/weightplay-character-moon-cap-owl-cutout.webp" },
     },
     {
@@ -285,17 +285,17 @@ window.WONDER_LOBBY = {
       title: { en: "Animal Quiz", "zh-Hant": "動物小博士" },
       status: "playable",
       statusText: { en: "Playable", "zh-Hant": "可遊玩" },
-      type: { en: "Family Quiz", "zh-Hant": "親子問答" },
+      type: { en: "Animal Knowledge Quiz", "zh-Hant": "動物知識問答" },
       categories: ["Animal Games", "Education", "Family"],
       skills: ["Animal Knowledge", "Memory", "Reading"],
       ages: ["3", "6", "family"],
-      ageLabel: { en: "Family", "zh-Hant": "親子" },
+      ageLabel: { en: "6+", "zh-Hant": "6+" },
       href: "games/animal-quiz/",
       description: {
-        en: "Clear animal stages with short, friendly quiz questions.",
-        "zh-Hant": "回答簡短友善的動物問題，完成一關關的小博士挑戰。",
+        en: "Solve 30 animal investigations with picture, habitat, feature, behavior, food, mystery-image, and silhouette clues.",
+        "zh-Hant": "完成 30 個動物觀察任務，從圖片、棲地、外觀、行為、食物、神祕圖片與剪影線索找出答案。",
       },
-      meta: { en: ["Animal Games", "5 Stages", "Quiz"], "zh-Hant": ["動物遊戲", "5 關", "問答"] },
+      meta: { en: ["30 Stages", "6 Chapters", "Animal Facts"], "zh-Hant": ["30 關", "6 章節", "動物知識"] },
       art: { kind: "image", background: "assets/quiz-cover.webp", hero: "assets/weightplay-character-moon-cap-owl-cutout.webp" },
     },
     {
@@ -310,10 +310,10 @@ window.WONDER_LOBBY = {
       ageLabel: { en: "3+", "zh-Hant": "3+" },
       href: "games/zoo-helper-day/",
       description: {
-        en: "Manage a gentle zoo workday: collect tickets, guide visitors, and care for animal zones.",
-        "zh-Hant": "經營一整天的動物園：收票、引導遊客，照顧不同動物園區。",
+        en: "Complete 30 gentle zoo shifts with picture tools, care categories, memory requests, and ordered routines.",
+        "zh-Hant": "完成 30 個溫和動物園班次，練習圖片道具、照顧分類、記住需求與順序照顧。",
       },
-      meta: { en: ["Ticket Loop", "Animal Zones", "Care Tasks"], "zh-Hant": ["收票經營", "動物園區", "照顧任務"] },
+      meta: { en: ["30 Shifts", "6 Keeper Checks", "Picture Care"], "zh-Hant": ["30 關", "6 次檢核", "圖片照顧"] },
       art: { kind: "image", background: "assets/zoo-helper-day-cover.webp", hero: "assets/weightplay-character-gear-horn-rhino-cutout.webp" },
     },
     {
@@ -328,10 +328,10 @@ window.WONDER_LOBBY = {
       ageLabel: { en: "3+", "zh-Hant": "3+" },
       href: "games/shape-train/",
       description: {
-        en: "Tap or drag smiling shape friends onto the matching train cars.",
-        "zh-Hant": "點擊或拖曳可愛形狀朋友，把它們放到相同形狀的小火車車廂。",
+        en: "Board six shape friends across 30 routes with outline, moving, memory, and Boarding Pass rules.",
+        "zh-Hant": "讓六種形狀朋友完成 30 條路線，挑戰輪廓、移動、記憶與驗票規則。",
       },
-      meta: { en: ["Tap or Drag", "Shape Train", "3+"], "zh-Hant": ["點擊或拖曳", "形狀火車", "3+"] },
+      meta: { en: ["30 Routes", "6 Checks", "Shape Memory"], "zh-Hant": ["30 路線", "6 次檢查", "形狀記憶"] },
       art: { kind: "image", background: "assets/shape-train-cover.webp", hero: "assets/weightplay-character-rainbow-hop-mimi-clean-cutout.webp" },
     },
     {
@@ -346,10 +346,10 @@ window.WONDER_LOBBY = {
       ageLabel: { en: "6+", "zh-Hant": "6+" },
       href: "games/tiny-weather-rescue/",
       description: {
-        en: "Choose the right helper item for each animal scene; every level is a quick picture puzzle.",
-        "zh-Hant": "看懂每個動物情境，從道具中選出最適合的幫忙方式。",
+        en: "Solve 30 animal-help missions with picture tools, paired clues, memory needs, and changing trays.",
+        "zh-Hant": "完成 30 個動物幫忙任務，挑戰圖片道具、雙線索、記憶需求與換位工具。",
       },
-      meta: { en: ["Tool Choices", "Scene Clues", "5+"], "zh-Hant": ["道具選擇", "看圖線索", "5+"] },
+      meta: { en: ["30 Missions", "6 Helper Checks", "Scene Clues"], "zh-Hant": ["30 任務", "6 次幫手檢查", "情境線索"] },
       art: { kind: "image", background: "assets/tiny-weather-rescue-cover.webp", hero: "assets/weightplay-character-gear-horn-rhino-cutout.webp" },
     },
     {
@@ -520,10 +520,10 @@ window.WONDER_LOBBY = {
       ageLabel: { en: "6+", "zh-Hant": "6+" },
       href: "games/animal-bubble-safari/",
       description: {
-        en: "Aim direct and bank shots, match animal bubbles, and rescue safari friends through compact puzzle stages.",
-        "zh-Hant": "瞄準直射與反彈路線，消除動物泡泡，在短篇關卡中救出草原夥伴。",
+        en: "Aim through 30 rescue levels with reactive blockers, wind, moving rows, and four power bubbles.",
+        "zh-Hant": "挑戰 30 個救援關卡，運用反應式障礙、風、移動列與四種力量泡泡。",
       },
-      meta: { en: ["Bank Shots", "Animal Rescue", "Puzzle Stages"], "zh-Hant": ["反彈射擊", "動物救援", "泡泡關卡"] },
+      meta: { en: ["30 Levels", "6 Safari Checks", "Bank & Power Shots"], "zh-Hant": ["30 關", "6 次草原檢查", "反彈與力量泡泡"] },
       art: { kind: "image", background: "assets/animal-bubble-safari-cover.webp", hideHero: true },
     },
     {
@@ -557,10 +557,10 @@ window.WONDER_LOBBY = {
       ageLabel: { en: "9+", "zh-Hant": "9+" },
       href: "games/animal-habitat-mahjong/",
       description: {
-        en: "Match free animal tiles, uncover layered habitat boards, and open a calm local habitat album.",
-        "zh-Hant": "配對可移除的動物牌，解開層疊棲地牌局，逐步開啟本機棲地圖鑑。",
+        en: "Clear 30 layered animal-tile boards with trail seals, family rescues, alternating patrol routes, and six Habitat Finales.",
+        "zh-Hant": "挑戰 30 個立體動物牌局，解開路徑封印、救援家族、跟隨交替巡守路徑並完成六個棲地終局。",
       },
-      meta: { en: ["Free-Tile Rules", "Layered Boards", "Habitat Album"], "zh-Hant": ["自由牌規則", "層疊牌局", "棲地圖鑑"] },
+      meta: { en: ["30 Boards", "Trail Seals", "Family Rescue"], "zh-Hant": ["30 關", "路徑封印", "家族救援"] },
       art: { kind: "image", background: "assets/animal-habitat-mahjong-cover.webp", hideHero: true },
     },
     {
@@ -642,12 +642,12 @@ window.WONDER_LOBBY.games.push({
   ageLabel: { en: "6+", "zh-Hant": "6+" },
   href: "games/animal-cafe-rush/",
   description: {
-    en: "Match pictured food tiles to a growing queue of animal customers before their patience runs out.",
-    "zh-Hant": "\u6839\u64da\u5ba2\u4eba\u6c23\u6ce1\u88e1\u7684\u5716\u793a\u9078\u51fa\u9910\u9ede\uff0c\u5728\u52d5\u7269\u968a\u4f0d\u8d8a\u4f86\u8d8a\u9577\u524d\u5feb\u901f\u51fa\u9910\u3002",
+    en: "Run 30 cafe days with picture orders, numbered recipes, VIP priority, alternating tables, and six Cafe Reviews.",
+    "zh-Hant": "\u7d93\u71df 30 \u500b\u5496\u5561\u9928\u71df\u696d\u65e5\uff0c\u6311\u6230\u5716\u50cf\u8a02\u55ae\u3001\u6578\u5b57\u98df\u8b5c\u3001VIP \u512a\u5148\u3001\u96d9\u684c\u8f2a\u66ff\u8207\u516d\u6b21\u5be9\u67e5\u3002",
   },
   meta: {
-    en: ["Growing Queue", "Picture Orders", "Cafe Upgrades"],
-    "zh-Hant": ["\u8d8a\u4f86\u8d8a\u9577\u7684\u968a\u4f0d", "\u5716\u793a\u8a02\u55ae", "\u5496\u5561\u9928\u5347\u7d1a"],
+    en: ["30 Cafe Days", "Six Rule Chapters", "Saved Upgrades"],
+    "zh-Hant": ["30 \u500b\u71df\u696d\u65e5", "\u516d\u7ae0\u898f\u5247", "\u5b58\u6a94\u5347\u7d1a"],
   },
   art: { kind: "image", background: "assets/animal-cafe-rush-cover.webp", hideHero: true },
 });
@@ -810,6 +810,30 @@ for (const game of window.WONDER_LOBBY.games) {
   game.description["zh-Hant"] = clean.description;
   game.meta["zh-Hant"] = clean.meta;
   delete game.internalTrial;
+}
+
+const animalHeroTrialsPublicCopy = window.WONDER_LOBBY.games.find((game) => game.id === "animal-hero-trials");
+if (animalHeroTrialsPublicCopy) {
+  animalHeroTrialsPublicCopy.title = { en:"Animal Hero Trials", "zh-Hant":"動物英雄試煉" };
+  animalHeroTrialsPublicCopy.statusText = { en:"Play Now", "zh-Hant":"立即遊玩" };
+  animalHeroTrialsPublicCopy.type = { en:"Hero Action Roguelite", "zh-Hant":"英雄動作 Roguelite" };
+  animalHeroTrialsPublicCopy.description = { en:"Choose one of four heroes for 30 three-room trials with five enemy families, saved mastery, and six distinct Bosses.", "zh-Hant":"選擇四位英雄之一，挑戰 30 個三房間試煉、五種敵人、永久精通與六個不同 Boss。" };
+  animalHeroTrialsPublicCopy.meta = { en:["30 Trials","Six Boss Counters","Saved Mastery"], "zh-Hant":["30 個試煉","六種 Boss 反制","存檔精通"] };
+  delete animalHeroTrialsPublicCopy.ages;
+  delete animalHeroTrialsPublicCopy.ageLabel;
+}
+
+const animalReefFisher = window.WONDER_LOBBY.games.find((game) => game.id === "animal-reef-fisher");
+if (animalReefFisher) {
+  delete animalReefFisher.ageLabel;
+  animalReefFisher.title["zh-Hant"] = "\u52d5\u7269\u73ca\u745a\u91e3\u624b";
+  animalReefFisher.statusText["zh-Hant"] = "\u7acb\u5373\u904a\u73a9";
+  animalReefFisher.type.en = "Fishing Tension Campaign";
+  animalReefFisher.type["zh-Hant"] = "\u91e3\u9b5a\u5f35\u529b\u4efb\u52d9";
+  animalReefFisher.description.en = "Clear 30 reef missions with six changing sea conditions, document 12 species, upgrade six tools, and land six Guardian fish.";
+  animalReefFisher.description["zh-Hant"] = "\u6311\u6230 30 \u500b\u7901\u5340\u4efb\u52d9\u8207\u516d\u7a2e\u6d77\u6cc1\uff0c\u8a18\u9304 12 \u7a2e\u751f\u7269\u3001\u5347\u7d1a\u516d\u7a2e\u88dd\u5099\uff0c\u4e26\u91e3\u8d77\u516d\u96bb\u5b88\u8b77\u9b5a\u3002";
+  animalReefFisher.meta.en = ["30 Missions", "Six Sea Rules", "Six Guardians"];
+  animalReefFisher.meta["zh-Hant"] = ["30 \u500b\u4efb\u52d9", "\u516d\u7a2e\u6d77\u6cc1", "\u516d\u96bb\u5b88\u8b77\u9b5a"];
 }
 
 const orbFortress = window.WONDER_LOBBY.games.find((game) => game.id === "animal-orb-fortress");

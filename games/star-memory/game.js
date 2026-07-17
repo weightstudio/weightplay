@@ -1057,6 +1057,15 @@
   }
 
   // Event Listeners
+  const rejectRepeatedActivation = (event) => {
+    if (event.repeat && (event.key === "Enter" || event.key === " ")) {
+      event.preventDefault();
+    }
+  };
+  startBtn.addEventListener("keydown", rejectRepeatedActivation);
+  stageGrid.addEventListener("keydown", (event) => {
+    if (event.target.closest(".stage-card")) rejectRepeatedActivation(event);
+  });
   startBtn.addEventListener("click", () => {
     window.WonderSound?.play("click");
     showStageSelect();

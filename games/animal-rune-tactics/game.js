@@ -118,6 +118,10 @@
       guardHelp: "Reduce the next enemy hit by 1 damage.",
       skillValue: "Skill {value}",
       actionTarget: "{action} {value} damage to {target}.",
+      skillSquadResult: "{skill}: guard all heroes and heal up to 1 HP each.",
+      skillEnergyChange: "Costs 1 Energy. Energy {energy} to {remaining}.",
+      skillEnergyNeed: "Requires 1 Energy; current {energy}.",
+      skillSilenced: "Unavailable while silenced.",
       heroTileLabel: "{hero}, HP {hp}/{maxHp}, {status}, row {row}, column {column}.",
       enemyTileLabel: "{enemy}, HP {hp}/{maxHp}, row {row}, column {column}.",
       moveTileLabel: "Move to row {row}, column {column}.",
@@ -379,6 +383,7 @@
     chooseHero: "選擇一位英雄，再移動或攻擊。", chooseTarget: "{hero}：生命 {hp}/{maxHp}，能量 {energy}。", ready: "可行動", acted: "已行動", fallen: "倒下", turnRosterTitle: "小隊行動", skillInfo: "技能：{skill} - {desc}", skillInfoLabel: "技能",
     skillLion: "獅王撲擊", skillLionDesc: "對最近目標造成重擊。", skillOwl: "符文箭", skillOwlDesc: "以符文魔法攻擊較遠的目標。", skillTurtle: "甲殼守護", skillTurtleDesc: "守護全隊並回復 1 點生命。",
     attackValue: "攻擊 {value}", guardValue: "防守 -1", guardHelp: "下一次受到的敵方傷害減少 1 點。", skillValue: "技能 {value}", actionTarget: "對{target}使用{action}，造成 {value} 點傷害。",
+    skillSquadResult: "{skill}：全隊進入防守，並各自最多回復 1 點生命。", skillEnergyChange: "消耗 1 點能量；能量 {energy} → {remaining}。", skillEnergyNeed: "需要 1 點能量；目前為 {energy}。", skillSilenced: "沉默期間無法使用。",
     heroTileLabel: "{hero}，生命 {hp}/{maxHp}，{status}，第 {row} 列第 {column} 欄。", enemyTileLabel: "{enemy}，生命 {hp}/{maxHp}，第 {row} 列第 {column} 欄。", moveTileLabel: "移動到第 {row} 列第 {column} 欄。", emptyTileLabel: "第 {row} 列第 {column} 欄。",
     moved: "{hero} 已移動。", attacked: "{hero} 攻擊了 {enemy}。", guarded: "{hero} 進入防守。", skillUsed: "{hero} 使用了符文技能。", enemyTurn: "敵人正在行動。",
     chooseReward: "選擇符文獎勵", reroll: "重抽 3", rerollNeed: "重抽需要 3 顆鑽石。", missionClear: "任務完成", missionFailed: "任務失敗", resultWin: "完成任務 {mission}，獲得 {xp} 經驗值和 {runes} 符文。", resultLose: "符文小隊在任務 {mission} 倒下。讓烏龜守在前排，集中攻擊同一隻敵人。",
@@ -587,19 +592,49 @@
   let claimedRewardId = null;
   let gridCursor = { x: 0, y: 0 };
   let turnTransitionTimer = 0;
+  let turnTransitionTask = null;
+  let turnTransitionDueAt = 0;
   let endTurnKeyboardFocusRequested = false;
 
   function clearTurnTransition() {
     clearTimeout(turnTransitionTimer);
     turnTransitionTimer = 0;
+    turnTransitionTask = null;
+    turnTransitionDueAt = 0;
+  }
+
+  function armTurnTransition() {
+    if (!turnTransitionTask || turnTransitionTimer || document.hidden) return;
+    const task = turnTransitionTask;
+    turnTransitionDueAt = performance.now() + task.delay;
+    turnTransitionTimer = window.setTimeout(() => {
+      turnTransitionTimer = 0;
+      turnTransitionDueAt = 0;
+      if (document.hidden) {
+        if (turnTransitionTask === task) task.delay = 0;
+        return;
+      }
+      if (turnTransitionTask !== task) return;
+      turnTransitionTask = null;
+      task.callback();
+    }, task.delay);
   }
 
   function scheduleTurnTransition(callback, delay) {
     clearTurnTransition();
-    turnTransitionTimer = window.setTimeout(() => {
-      turnTransitionTimer = 0;
-      callback();
-    }, delay);
+    turnTransitionTask = { callback, delay };
+    armTurnTransition();
+  }
+
+  function suspendTurnTransition() {
+    if (turnTransitionTask && turnTransitionTimer) turnTransitionTask.delay = Math.max(0, turnTransitionDueAt - performance.now());
+    clearTimeout(turnTransitionTimer);
+    turnTransitionTimer = 0;
+    turnTransitionDueAt = 0;
+  }
+
+  function resumeTurnTransition() {
+    armTurnTransition();
   }
 
   function t(key, vars = {}) {
@@ -1229,7 +1264,19 @@
     nodes.skillBtn.textContent = hero ? t("skillValue", { value: hero.id === "turtle" ? "+1" : hero.atk + 2 }) : t("skill");
     nodes.attackBtn.setAttribute("aria-label", attackTarget ? t("actionTarget", { action: t("attack"), value: hero.atk, target: t(attackTarget.name) }) : t("attack"));
     nodes.guardBtn.setAttribute("aria-label", hero ? `${t("guardValue")}. ${t("guardHelp")}` : t("guard"));
-    nodes.skillBtn.setAttribute("aria-label", skillTarget ? t("actionTarget", { action: t(hero.skillName), value: hero.atk + 2, target: t(skillTarget.name) }) : hero ? t("skillInfo", { skill: t(hero.skillName), desc: t(hero.skillDesc) }) : t("skill"));
+    if (hero) {
+      const skillResult = hero.id === "turtle"
+        ? t("skillSquadResult", { skill: t(hero.skillName) })
+        : skillTarget
+          ? t("actionTarget", { action: t(hero.skillName), value: hero.atk + 2, target: t(skillTarget.name) })
+          : t("skillInfo", { skill: t(hero.skillName), desc: t(hero.skillDesc) });
+      const energyResult = hero.energy > 0
+        ? t("skillEnergyChange", { energy: hero.energy, remaining: hero.energy - 1 })
+        : t("skillEnergyNeed", { energy: hero.energy });
+      nodes.skillBtn.setAttribute("aria-label", `${skillResult} ${energyResult}${hero.silenced ? ` ${t("skillSilenced")}` : ""}`);
+    } else {
+      nodes.skillBtn.setAttribute("aria-label", t("skill"));
+    }
     nodes.attackBtn.disabled = !canAct || !targets.length;
     nodes.guardBtn.disabled = !canAct;
     nodes.skillBtn.disabled = !canAct || hero.energy <= 0 || hero.silenced;
@@ -1888,6 +1935,12 @@
   }
 
   function bind() {
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) suspendTurnTransition();
+      else resumeTurnTransition();
+    });
+    window.addEventListener("pagehide", suspendTurnTransition);
+    window.addEventListener("pageshow", resumeTurnTransition);
     window.addEventListener("wonder:locale-change", () => requestAnimationFrame(localizeStrategyTips));
     nodes.mainStartBtn.addEventListener("click", showStage);
     nodes.stageBackBtn.addEventListener("click", showMainFromStage);

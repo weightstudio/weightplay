@@ -317,7 +317,9 @@ body.garden-stage .home-link { grid-template-columns: 1fr; }
   border-radius: 8px;
   display: grid;
   place-items: center;
-  background: #fffdf1;
+  background:
+    linear-gradient(rgba(255, 253, 241, .42), rgba(49, 91, 53, .2)),
+    url("../../assets/garden-tiles-cover.webp") center / cover no-repeat;
   color: #243528;
   padding: clamp(5px, 1.4vw, 10px);
   overflow: hidden;
@@ -339,14 +341,6 @@ body.garden-stage .home-link { grid-template-columns: 1fr; }
   transition: opacity .14s ease, transform .14s ease;
 }
 
-.tile::after {
-  content: "\273F";
-  position: absolute;
-  color: #315b35;
-  font-size: clamp(24px, 8vw, 52px);
-  text-shadow: 0 2px 0 #fff;
-}
-
 .tile.selected .tile-image,
 .tile.preview .tile-image,
 .tile.wrong .tile-image {
@@ -354,9 +348,8 @@ body.garden-stage .home-link { grid-template-columns: 1fr; }
   transform: scale(1) rotate(0);
 }
 
-.tile.selected::after,
-.tile.preview::after,
-.tile.wrong::after { opacity: 0; }
+.tile.preview,
+.tile.wrong { background: #fff0b8; }
 
 .tile:active,
 .tile.selected {
@@ -797,7 +790,8 @@ body.garden-stage .level-grid button {
   scroll-snap-stop: always;
   grid-template-rows: auto auto auto auto auto 1fr;
   align-content: center;
-  gap: 10px;
+  gap: 6px;
+  padding: 14px 12px;
 }
 
 body.garden-stage .level-grid button em,
@@ -807,15 +801,23 @@ body.garden-stage .level-grid button b {
   color: #315b35;
 }
 
+body.garden-stage .level-grid button em {
+  font-size: 14px;
+  line-height: 17px;
+  white-space: nowrap;
+}
+
 body.garden-stage .level-grid button b {
   justify-self: center;
-  padding: 5px 10px;
+  padding: 3px 9px;
+  font-size: 14px;
   border-radius: 999px;
   background: #ffe071;
 }
 
 body.garden-stage .level-grid .level-rules {
-  min-height: 42px;
+  min-height: 30px;
+  font-size: 12px;
   font-weight: 900;
   color: #754a16;
 }

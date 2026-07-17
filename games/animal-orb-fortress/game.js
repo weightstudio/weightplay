@@ -106,6 +106,9 @@
       aimHint: "Drag from the launcher, preview the bounce path, then release.",
       keyboardAim: "Aim {angle}° from center. Left/Right adjust; Space or Enter fires.",
       arenaControlLabel: "Animal Orb Fortress arena. Aim {angle} degrees from center. Use Left and Right arrows to adjust; Space or Enter to fire.",
+      arenaControlReadyLabel: "Animal Orb Fortress arena. Aim {angle} degrees from center. Use Left and Right arrows to adjust. Orb ready; Space or Enter fires now.",
+      arenaControlCooldownLabel: "Animal Orb Fortress arena. Aim {angle} degrees from center. Orb cooling down for about {seconds} seconds; Space or Enter cannot fire yet.",
+      arenaControlLimitLabel: "Animal Orb Fortress arena. Aim {angle} degrees from center. {active}/{limit} spirit orbs are flying, the active limit; Space or Enter cannot fire yet.",
       orbReady: "Orb ready. Bank shots into shadow beasts before they reach the core.",
       orbFlying: "Spirit orb is flying. Watch the bounce route and prepare the next aim.",
       fortressHit: "A shadow beast hit the core. Aim earlier or use wider angles.",
@@ -169,6 +172,8 @@
       roomTowerDesc: "+1 bonus Star Stone per raid level.",
       level: "Lv.{n}",
       upgradeRoom: "Upgrade {cost}",
+      upgradeRoomLabel: "{name}: upgrade to Lv.{level} for {cost} Star Stones. Result: {effect}",
+      maxRoomLabel: "{name}: maximum level Lv.{level}. {effect}",
       maxed: "Max",
     },
     "zh-Hant": {
@@ -230,6 +235,9 @@
       aimHint: "從發射器拖曳瞄準，預覽反彈路線後放開。",
       keyboardAim: "瞄準偏移 {angle}°。左右方向鍵調整，空白鍵或 Enter 發射。",
       arenaControlLabel: "動物星珠要塞競技場。瞄準偏移 {angle} 度。使用左右方向鍵調整，空白鍵或 Enter 發射。",
+      arenaControlReadyLabel: "動物星珠要塞競技場。瞄準偏移 {angle} 度。使用左右方向鍵調整。星珠已準備好；空白鍵或 Enter 現在可以發射。",
+      arenaControlCooldownLabel: "動物星珠要塞競技場。瞄準偏移 {angle} 度。星珠冷卻約剩 {seconds} 秒；空白鍵或 Enter 尚無法發射。",
+      arenaControlLimitLabel: "動物星珠要塞競技場。瞄準偏移 {angle} 度。目前有 {active}/{limit} 顆星珠飛行中，已達飛行上限；空白鍵或 Enter 尚無法發射。",
       orbReady: "星珠已準備好。用牆面反彈擊中影獸，別讓牠們靠近核心。",
       orbFlying: "星珠正在飛行。觀察反彈路線，準備下一次瞄準。",
       fortressHit: "影獸撞到核心了。更早瞄準，或改用更寬的反彈角度。",
@@ -293,6 +301,8 @@
       roomTowerDesc: "每個突襲等級額外 +1 星石。",
       level: "Lv.{n}",
       upgradeRoom: "升級 {cost}",
+      upgradeRoomLabel: "{name}：升到 Lv.{level}，花費 {cost} 顆星石。升級後：{effect}",
+      maxRoomLabel: "{name}：已達最高 Lv.{level}。{effect}",
       maxed: "已滿",
     },
   };
@@ -399,6 +409,7 @@
   let backgroundSuspended = false;
   let pointer = { active: false, id: null, x: 0, y: 0 };
   let keyboardAimDeg = -90;
+  let arenaControlSignature = "";
   let soundAt = {};
   let preloadFinished = false;
 
@@ -574,7 +585,7 @@
     nodes.stagePanel.setAttribute("aria-label", t("raidMap"));
     nodes.stageRail.setAttribute("aria-label", t("raidTiers"));
     nodes.stageBackBtn.setAttribute("aria-label", t("returnMain"));
-    canvas.setAttribute("aria-label", t("arenaLabel"));
+    updateArenaControlLabel(true);
     nodes.mapBtn.setAttribute("aria-label", t("raidMap"));
     nodes.resultMenuBtn.setAttribute("aria-label", t("raidMap"));
     updatePageMeta();
@@ -665,6 +676,9 @@
         const level = save.rooms[room.id] || 0;
         const cost = roomCost(room.id);
         const canUpgrade = level < 5 && save.starStones >= cost;
+        const actionLabel = level >= 5
+          ? t("maxRoomLabel", { name: t(room.name), level, effect: roomProgressText(room, level) })
+          : t("upgradeRoomLabel", { name: t(room.name), level: level + 1, cost, effect: roomProgressText(room, level + 1) });
         return `
           <div class="room-card">
             <img src="${room.iconSrc}" alt="" />
@@ -672,7 +686,7 @@
               <strong>${t(room.name)}</strong>
               <span>${t("level", { n: level })} - ${roomProgressText(room, level)}</span>
             </div>
-            <button type="button" data-room="${room.id}" ${canUpgrade ? "" : "disabled"}>${level >= 5 ? t("maxed") : t("upgradeRoom", { cost })}</button>
+            <button type="button" data-room="${room.id}" aria-label="${actionLabel}" ${canUpgrade ? "" : "disabled"}>${level >= 5 ? t("maxed") : t("upgradeRoom", { cost })}</button>
           </div>`;
       })
       .join("");
@@ -971,7 +985,30 @@
     const angle = Math.round(keyboardAimDeg + 90);
     state.preview = previewPath(target.x, target.y);
     nodes.hintText.textContent = t("keyboardAim", { angle });
-    canvas.setAttribute("aria-label", t("arenaControlLabel", { angle }));
+    updateArenaControlLabel(true);
+  }
+
+  function updateArenaControlLabel(force = false) {
+    const angle = Math.round(keyboardAimDeg + 90);
+    let status = "inactive";
+    let label = t("arenaLabel");
+    if (state.mode === "running") {
+      if (canFireOrb()) {
+        status = "ready";
+        label = t("arenaControlReadyLabel", { angle });
+      } else if (state.readyTimer > 0) {
+        status = "cooldown";
+        const seconds = Math.max(0.1, Math.ceil(state.readyTimer * 10) / 10).toFixed(1);
+        label = t("arenaControlCooldownLabel", { angle, seconds });
+      } else {
+        status = "limit";
+        label = t("arenaControlLimitLabel", { angle, active: state.orbs.length, limit: activeOrbLimit() });
+      }
+    }
+    const signature = `${locale}:${angle}:${status}`;
+    if (!force && signature === arenaControlSignature) return;
+    arenaControlSignature = signature;
+    canvas.setAttribute("aria-label", label);
   }
 
   function onCanvasKeydown(event) {
@@ -1009,6 +1046,7 @@
     state.shotCount += 1;
     state.readyTimer = state.orbCooldown;
     nodes.hintText.textContent = t("orbFlying");
+    updateArenaControlLabel(true);
     playSound("pop", 0.08);
     window.WonderAnalytics?.track("shot_fired", { game_id: GAME_ID, wave: state.wave, split: state.split });
     renderHud();
@@ -1064,6 +1102,7 @@
 
     state.orbs.forEach((orb) => updateOrb(orb, dt));
     state.orbs = state.orbs.filter((orb) => orb.life > 0);
+    updateArenaControlLabel();
     resolveEnemyDeaths();
     state.enemies = state.enemies.filter((enemy) => enemy.hp > 0);
     state.sparks.forEach((spark) => (spark.life -= dt));
@@ -1323,10 +1362,43 @@
   }
 
   let rerollConfirmTimer = 0;
+  let rerollConfirmRemaining = 0;
+  let rerollConfirmDueAt = 0;
 
   function clearRerollConfirmation() {
     clearTimeout(rerollConfirmTimer);
+    rerollConfirmTimer = 0;
+    rerollConfirmRemaining = 0;
+    rerollConfirmDueAt = 0;
     state.rerollPending = false;
+  }
+
+  function armRerollConfirmation(delay = rerollConfirmRemaining) {
+    if (!state.rerollPending || document.hidden) return;
+    clearTimeout(rerollConfirmTimer);
+    rerollConfirmRemaining = Math.max(0, Number(delay) || 0);
+    rerollConfirmDueAt = performance.now() + rerollConfirmRemaining;
+    rerollConfirmTimer = window.setTimeout(() => {
+      rerollConfirmTimer = 0;
+      rerollConfirmRemaining = 0;
+      rerollConfirmDueAt = 0;
+      if (state.mode !== "upgrade" || state.rerolled || document.hidden) return;
+      state.rerollPending = false;
+      renderUpgradeCards();
+    }, rerollConfirmRemaining);
+  }
+
+  function suspendRerollConfirmation() {
+    if (!state.rerollPending || !rerollConfirmTimer) return;
+    rerollConfirmRemaining = Math.max(0, rerollConfirmDueAt - performance.now());
+    clearTimeout(rerollConfirmTimer);
+    rerollConfirmTimer = 0;
+    rerollConfirmDueAt = 0;
+  }
+
+  function resumeRerollConfirmation() {
+    if (!state.rerollPending || rerollConfirmTimer || document.hidden) return;
+    armRerollConfirmation();
   }
 
   function renderUpgradeCards() {
@@ -1393,11 +1465,7 @@
     if (!state.rerollPending) {
       state.rerollPending = true;
       renderUpgradeCards();
-      rerollConfirmTimer = window.setTimeout(() => {
-        if (state.mode !== "upgrade" || state.rerolled) return;
-        state.rerollPending = false;
-        renderUpgradeCards();
-      }, 5000);
+      armRerollConfirmation(5000);
       return;
     }
     clearRerollConfirmation();
@@ -1679,7 +1747,13 @@
     show(nodes.stagePanel);
     renderMenu();
   });
+  nodes.startBtn.addEventListener("keydown", (event) => {
+    if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
+  });
   nodes.stageBackBtn.addEventListener("click", () => show(nodes.menuPanel));
+  nodes.stageRail.addEventListener("keydown", (event) => {
+    if (event.repeat && (event.key === "Enter" || event.key === " ") && event.target.closest(".raid-card")) event.preventDefault();
+  });
   nodes.stageRail.addEventListener("click", (event) => {
     const tier = Number(event.target?.closest?.("[data-tier]")?.dataset?.tier);
     if (tier && tier <= Math.max(1, Math.min(MAX_RAID_TIER, save.bestRaid || 1))) startRaid(tier);
@@ -1708,6 +1782,9 @@
   nodes.roomGrid.addEventListener("keydown", (event) => {
     if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
   });
+  nodes.upgradeCards.addEventListener("keydown", (event) => {
+    if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
+  });
   nodes.upgradeCards.addEventListener("click", (event) => {
     const id = event.target?.closest?.("[data-upgrade]")?.dataset?.upgrade;
     if (id) chooseUpgrade(id);
@@ -1725,11 +1802,13 @@
   window.addEventListener("blur", cancelPointerAim);
   function suspendBackgroundRaid() {
     cancelPointerAim();
+    suspendRerollConfirmation();
     if (state.mode !== "running" || backgroundSuspended) return;
     backgroundSuspended = true;
     cancelAnimationFrame(raf);
   }
   function resumeBackgroundRaid() {
+    resumeRerollConfirmation();
     if (!backgroundSuspended) return;
     backgroundSuspended = false;
     if (state.mode !== "running") return;
@@ -1973,7 +2052,14 @@
       state.orbs = [];
       state.readyTimer = 0;
       state.enemies = [makeEnemy("skitter", W / 2, 90, 9999, 0, 42)];
+      updateArenaControlLabel(true);
       return window.__animalOrbFortressSmoke.snapshot();
+    },
+    prepareKeyboardOrbLimit: () => {
+      state.readyTimer = 0;
+      state.orbs = Array.from({ length: activeOrbLimit() }, (_, index) => makeOrb(index * 8, -80, index % 5));
+      updateArenaControlLabel(true);
+      return canvas.getAttribute("aria-label") || "";
     },
   };
 

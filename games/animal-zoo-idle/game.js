@@ -1813,6 +1813,7 @@
     renderChallengeRail();
     updateZooStageScale();
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    requestAnimationFrame(() => nodes.challengeRail.querySelector(".challenge-card.selected")?.focus({ preventScroll: true }));
     window.dispatchEvent(new CustomEvent("weightplay:stage-open", { detail: { gameId: GAME_ID } }));
   }
 
@@ -1838,7 +1839,10 @@
     updateZooBattleScale();
     applyOffline();
     render();
-    requestAnimationFrame(render);
+    requestAnimationFrame(() => {
+      render();
+      nodes.habitatGrid.querySelector('[data-action="collect"]')?.focus({ preventScroll: true });
+    });
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
     window.WonderAnalytics?.track("game_start", { game_id: GAME_ID, challenge: nextIndex + 1 });
   }
@@ -1863,6 +1867,7 @@
     nodes.menuPanel.classList.remove("hidden");
     closeReport(false);
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    requestAnimationFrame(() => nodes.startBtn.focus({ preventScroll: true }));
   }
 
   function updateZooViewportScales() {
@@ -1949,6 +1954,14 @@
     event.stopPropagation();
     startGame();
   });
+  const suppressRepeatedActivation = (event) => {
+    if (!event.repeat || !["Enter", " "].includes(event.key) || !event.target.closest("button")) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+  };
+  nodes.startBtn.addEventListener("keydown", suppressRepeatedActivation, true);
+  nodes.challengeRail.addEventListener("keydown", suppressRepeatedActivation, true);
+  nodes.gamePanel.addEventListener("keydown", suppressRepeatedActivation, true);
   nodes.stageBackBtn.addEventListener("click", showMenu);
   nodes.challengeRail.addEventListener("wonder:stage-snap", (event) => {
     const index = Number(event.detail?.index);

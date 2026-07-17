@@ -202,8 +202,8 @@
 }
 
 body[data-wp-game-id="animal-hero-trials"] .wp-stage-art-shell .stage-card {
-  grid-template-rows: 112px 20px 18px;
-  gap: 6px;
+  grid-template-rows: 56px 30px 66px;
+  gap: 4px;
 }
 
 body[data-wp-game-id="animal-hero-trials"] .wp-stage-art-shell .stage-card img {
@@ -212,8 +212,19 @@ body[data-wp-game-id="animal-hero-trials"] .wp-stage-art-shell .stage-card img {
 
 body[data-wp-game-id="animal-hero-trials"] .wp-stage-art-shell .stage-card :is(strong, span) {
   overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  white-space: normal;
+  text-overflow: clip;
+}
+
+body[data-wp-game-id="animal-hero-trials"] .wp-stage-art-shell .stage-card strong {
+  font-size: 14px;
+  line-height: 1.08;
+}
+
+body[data-wp-game-id="animal-hero-trials"] .wp-stage-art-shell .stage-card span {
+  min-height: 0;
+  font-size: 11px;
+  line-height: 1.18;
 }
 
 .wp-standard-stage-panel:has(> header + :is(.stage-select, .mission-list) + button) {

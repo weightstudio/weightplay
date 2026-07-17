@@ -255,6 +255,14 @@ body.safari-stage .stage-grid { align-items:center; padding-inline:calc((100% - 
   color: rgba(33, 66, 51, 0.68);
 }
 
+.stage-card em {
+  display: block;
+  color: #2f7650;
+  font-size: 0.72rem;
+  font-style: normal;
+  font-weight: 900;
+}
+
 .play-head {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;
@@ -490,6 +498,48 @@ body.safari-stage .stage-grid { align-items:center; padding-inline:calc((100% - 
 .target.hint .hint-feedback {
   display: block;
   animation: hint-ring-turn 4.8s linear infinite;
+}
+
+.scene.is-ordered .target.is-current:not(.found) {
+  box-shadow: 0 0 0 3px rgba(255, 244, 168, 0.94), 0 0 18px rgba(255, 214, 77, 0.72);
+}
+
+.scene.is-ordered .target.is-waiting:not(:focus-visible) {
+  opacity: 0.82;
+}
+
+.target.wrong-order {
+  animation: safari-wrong-order 0.34s ease-in-out;
+}
+
+.target.is-decoy:not(.found) .target-animal {
+  filter: saturate(0.72) contrast(0.9);
+}
+
+.scene.is-camouflage .target:not(:focus-visible):not(.hint) .target-animal {
+  opacity: 0.76;
+  filter: saturate(0.78) contrast(0.9);
+}
+
+.scene.is-camouflage .target-cover {
+  width: 110%;
+  height: 56%;
+  opacity: 0.92;
+}
+
+.scene.is-drift .target:not(.found):not(.hint) {
+  animation: safari-drift 3.4s ease-in-out var(--drift-delay, 0s) infinite alternate;
+}
+
+@keyframes safari-drift {
+  from { transform: translate(calc(-50% - 5px), calc(-50% + 2px)); }
+  to { transform: translate(calc(-50% + 5px), calc(-50% - 2px)); }
+}
+
+@keyframes safari-wrong-order {
+  0%, 100% { transform: translate(-50%, -50%); }
+  33% { transform: translate(calc(-50% - 5px), -50%); }
+  66% { transform: translate(calc(-50% + 5px), -50%); }
 }
 
 .image-feedback {
@@ -738,7 +788,9 @@ body.safari-stage .stage-grid { align-items:center; padding-inline:calc((100% - 
 @media (prefers-reduced-motion: reduce) {
   .target.hint,
   .target.hint .hint-feedback,
-  .image-feedback-found {
+  .image-feedback-found,
+  .scene.is-drift .target:not(.found):not(.hint),
+  .target.wrong-order {
     animation-duration: 0.01ms;
     animation-iteration-count: 1;
   }

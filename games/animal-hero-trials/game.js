@@ -55,23 +55,36 @@
   };
 
   Object.assign(copy.en, {
+    pitch: "Choose one of four heroes and clear a 30-trial shadow campaign.",
     arenaLabel: "Hero Trials arena. Move with Arrow keys or WASD. Press Space to use the hero skill.",
     earnedMarks: "+{gain} Trial Marks · Total {total}.",
     trialUnlocked: "Trial {next} unlocked.",
     trialAvailable: "Trial {next} remains available.",
-    allTrialsUnlocked: "All three trials are unlocked.",
+    allTrialsUnlocked: "All 30 trials are unlocked.",
+    enemyObjective: "Defeat {count} {enemy}",
+    eliteObjective: "Defeat the {enemy} captain",
+    bossObjectiveNamed: "Defeat {boss}",
+    recommended: "Recommended: {hero}",
+    roomsAndMarks: "3 rooms · +{marks} marks",
     masteryReady: "Heart Mastery is ready on Main.",
     masteryNeed: "Heart Mastery needs {remaining} more Trial Marks.",
     masteryUpgradeReady: "All heroes Max HP +{current} → +{next} · Spend {cost} / Have {marks} marks",
     masteryUpgradeNeed: "All heroes Max HP +{current} → +{next} · Need {cost} / Have {marks} marks",
   });
   Object.assign(copy["zh-Hant"], {
+    title: "動物英雄試煉",
+    pitch: "選擇四位英雄之一，完成 30 個暗影試煉。",
     arenaLabel: "英雄試煉戰場。使用方向鍵或 WASD 移動，按空白鍵使用英雄技能。",
     mastery: "\u751f\u547d\u7cbe\u901a",
     earnedMarks: "\u7372\u5f97 {gain} \u679a\u8a66\u7149\u5370\u8a18 \u00b7 \u7d2f\u7a4d {total} \u679a\u3002",
     trialUnlocked: "\u5df2\u89e3\u9396\u8a66\u7149 {next}\u3002",
     trialAvailable: "\u8a66\u7149 {next} \u4ecd\u53ef\u9032\u5165\u3002",
-    allTrialsUnlocked: "\u4e09\u500b\u8a66\u7149\u5df2\u5168\u90e8\u89e3\u9396\u3002",
+    allTrialsUnlocked: "30 \u500b\u8a66\u7149\u5df2\u5168\u90e8\u89e3\u9396\u3002",
+    enemyObjective: "擊敗 {count} 隻{enemy}",
+    eliteObjective: "擊敗{enemy}隊長",
+    bossObjectiveNamed: "擊敗{boss}",
+    recommended: "建議英雄：{hero}",
+    roomsAndMarks: "3 個房間 · +{marks} 印記",
     masteryReady: "\u53ef\u56de\u4e3b\u756b\u9762\u5347\u7d1a\u52c7\u6c23\u7cbe\u901a\u3002",
     masteryNeed: "\u52c7\u6c23\u7cbe\u901a\u9084\u9700\u8981 {remaining} \u679a\u8a66\u7149\u5370\u8a18\u3002",
     masteryUpgradeReady: "\u5168\u82f1\u96c4\u6700\u5927\u751f\u547d +{current} \u2192 +{next} \u00b7 \u6d88\u8017 {cost} / \u6301\u6709 {marks} \u679a",
@@ -81,9 +94,50 @@
     rerollNeed: "\u9700\u8981 3 \u9846\u947d\u77f3 \u00b7 \u6301\u6709 {balance}\u3002\u4ecd\u53ef\u514d\u8cbb\u9078\u64c7\u795d\u798f\u3002",
   });
 
+  const TRIAL_COUNT = 30;
+  const trialTitles = [
+    ["First Footprints","初始足跡"],["Scout Ring","斥候包圍"],["Bramble Pursuit","荊棘追逐"],["Root Ambush","樹根伏擊"],["Prowler Gate","潛影者之門"],
+    ["Prism Wings","稜晶之翼"],["Raven Crosswind","渡鴉側風"],["Crystal Guard","水晶護衛"],["Refraction Pack","折光群襲"],["Basilisk Mirror","蛇王之鏡"],
+    ["Ember Hooves","餘燼蹄聲"],["Boar Warning","野豬預警"],["Furnace Charge","熔爐衝鋒"],["Cinder Stampede","燼火奔襲"],["Colossus Forge","巨獸熔爐"],
+    ["Moon Bow","月影獵弓"],["Hunter Distance","獵手距離"],["Twin Volley","雙重齊射"],["Eclipse Wings","蝕月之翼"],["Archowl Court","大梟王庭"],
+    ["Abyss Armor","深淵護甲"],["Shell Patrol","甲殼巡行"],["Sunken Pack","沉沒獸群"],["Leviathan Call","巨獸召喚"],["Abyss Throne","深淵王座"],
+    ["Crown Mixture","王冠混戰"],["Sixfold Hunt","六相狩獵"],["Sovereign Guard","君王護衛"],["Last Shadow Line","最後暗影線"],["Void Crown Trial","虛空王冠試煉"]
+  ];
+  const regions = [
+    { name:["Rootwood","根木林"], rule:["Chasing packs","追逐獸群"], enemies:["scout"], hero:"Leo" },
+    { name:["Prism Ravine","稜晶峽谷"], rule:["Flying and guarded foes","飛行與護盾敵人"], enemies:["raven","armored","scout"], hero:"Orla" },
+    { name:["Ember Forge","餘燼熔爐"], rule:["Warned charges","有預警的衝鋒"], enemies:["boar","scout","armored"], hero:"Fia" },
+    { name:["Moon Range","月影長廊"], rule:["Ranged volleys","遠程齊射"], enemies:["hunter","raven","scout"], hero:"Orla" },
+    { name:["Abyss Shell","深淵甲殼"], rule:["Armor and reinforcements","護甲與增援"], enemies:["armored","boar","hunter"], hero:"Taro" },
+    { name:["Void Crown","虛空王冠"], rule:["Combined enemy rules","敵人規則組合"], enemies:["scout","raven","boar","hunter","armored"], hero:"Any hero" }
+  ];
+  const bosses = [
+    { id:"prowler", name:["Shadow Prowler","暗影潛行者"], asset:"animal-hero-trials-shadow-boss.webp", rule:"shockwave" },
+    { id:"basilisk", name:["Prism Basilisk","稜晶蛇王"], asset:"animal-auto-squad-boss-prism-basilisk.webp", rule:"prism" },
+    { id:"colossus", name:["Magma Tusk Colossus","熔岩巨牙獸"], asset:"animal-auto-squad-boss-magma-tusk-colossus.webp", rule:"charge" },
+    { id:"archowl", name:["Eclipse Archowl","蝕月大梟"], asset:"animal-auto-squad-boss-eclipse-archowl.webp", rule:"volley" },
+    { id:"leviathan", name:["Abyss Shell Leviathan","深淵甲殼巨獸"], asset:"animal-auto-squad-boss-abyss-shell-leviathan.webp", rule:"summon" },
+    { id:"emperor", name:["Void Crown Emperor","虛空王冠帝"], asset:"animal-auto-squad-boss-void-crown-emperor.webp", rule:"crown" }
+  ];
+  const enemyProfiles = {
+    scout:{ name:["Shadow Scouts","暗影斥候"], asset:"animal-hero-trials-shadow-scout.png", speed:32, damage:4, range:48 },
+    raven:{ name:["Prism Ravens","稜晶渡鴉"], asset:"animal-rune-tactics-enemy-raven.webp", speed:42, damage:4, range:62 },
+    boar:{ name:["Ember Boars","餘燼野豬"], asset:"animal-gearpack-expedition-enemy-armored-boar.webp", speed:25, damage:7, range:52 },
+    hunter:{ name:["Moon Hunters","月影獵手"], asset:"shadow-wolf-enemy-hunter.webp", speed:27, damage:5, range:210 },
+    armored:{ name:["Abyss Guards","深淵護衛"], asset:"animal-rune-tactics-enemy-wolf.webp", speed:23, damage:6, range:48, guard:2 }
+  };
+  const heroNames = {
+    Leo: ["Boom Mane Leo", "爆鬃里歐"],
+    Fia: ["Spark Paw Fia", "星爪菲亞"],
+    Orla: ["Moon Cap Orla", "月帽奧拉"],
+    Taro: ["Moss Shell Taro", "苔甲塔羅"],
+    "Any hero": ["Any hero", "任一英雄"],
+  };
+  const trials = Array.from({length:TRIAL_COUNT},(_,index)=>{ const stage=index+1; const region=Math.floor(index/5); return { stage, region, titleEn:trialTitles[index][0], titleZh:trialTitles[index][1], checkpoint:stage%5===0, enemies:[...regions[region].enemies], recommended:regions[region].hero, reward:Math.min(9,3+stage), boss:stage%5===0?bosses[region]:null }; });
+
   let locale = localStorage.getItem("weightPlayLocale") || "en";
   let selectedHero = localStorage.getItem("aht-selected-hero") || "leo";
-  let unlocked = +(localStorage.getItem("aht-unlocked") || 1);
+  let unlocked = Math.max(1, Math.min(TRIAL_COUNT, +(localStorage.getItem("aht-unlocked") || 1)));
   let marks = +(localStorage.getItem("aht-marks") || 0);
   let mastery = +(localStorage.getItem("aht-mastery") || 0);
   let run = null;
@@ -138,11 +192,12 @@
     orla: load("animal-hero-trials-orla.webp"),
     taro: load("animal-hero-trials-taro.webp"),
     enemy: load("animal-hero-trials-shadow-scout.png"),
-    boss: load("animal-hero-trials-shadow-boss.webp"),
     roar: load("animal-hero-trials-fx-roar.webp"),
     hit: load("animal-hero-trials-fx-hit.webp"),
     shadow: load("animal-hero-trials-fx-shadow-hit.webp"),
   };
+  Object.entries(enemyProfiles).forEach(([id,profile])=>{ images[`enemy-${id}`]=load(profile.asset); });
+  bosses.forEach((boss)=>{ images[`boss-${boss.id}`]=load(boss.asset); });
   const heroes = {
     leo: { image: "leo", asset: "animal-hero-trials-leo.png", hp: 100, speed: 125, attack: 10, range: 76, skill: { en: "ROAR", zh: "怒吼" } },
     fia: { image: "fia", asset: "animal-hero-trials-fia.webp", hp: 86, speed: 145, attack: 11, range: 72, skill: { en: "DASH", zh: "彗星衝刺" } },
@@ -176,6 +231,9 @@
   function heroName(heroId) {
     return heroId.charAt(0).toUpperCase() + heroId.slice(1);
   }
+
+  function localizedPair(pair) { return pair[locale === "zh-Hant" ? 1 : 0]; }
+  function trialDefinition(stage) { return trials[Math.max(0,Math.min(TRIAL_COUNT-1,Number(stage)-1))] || trials[0]; }
 
   function show(name) {
     clearRerollConfirmation();
@@ -225,6 +283,7 @@
 
   function localize() {
     document.documentElement.lang = locale;
+    document.title = locale === "zh-Hant" ? "動物英雄試煉 - WeightPlay" : "Animal Hero Trials - WeightPlay";
     $("#game").setAttribute("aria-label", t("arenaLabel"));
     $$('[data-t]').forEach((node) => {
       node.textContent = t(node.dataset.t);
@@ -253,10 +312,10 @@
     if (!picker) return;
     const focusedHero = document.activeElement?.closest?.(".hero-option")?.dataset.hero || "";
     const labels = {
-      leo: ["Boom Mane Leo", locale === "zh-Hant" ? "均衡 · 100 生命" : "Balanced · 100 HP", locale === "zh-Hant" ? "近距離暈眩" : "Close-range stun"],
-      fia: ["Spark Paw Fia", locale === "zh-Hant" ? "高速 · 86 生命" : "Fast · 86 HP", locale === "zh-Hant" ? "無敵衝刺" : "Invulnerable dash"],
-      orla: ["Moon Cap Orla", locale === "zh-Hant" ? "遠程 · 82 生命" : "Ranged · 82 HP", locale === "zh-Hant" ? "標記增傷" : "Mark bonus damage"],
-      taro: ["Moss Shell Taro", locale === "zh-Hant" ? "耐久 · 126 生命" : "Tank · 126 HP", locale === "zh-Hant" ? "守護減傷" : "Damage guard"],
+      leo: [localizedPair(heroNames.Leo), locale === "zh-Hant" ? "均衡 · 100 生命" : "Balanced · 100 HP", locale === "zh-Hant" ? "近距離暈眩" : "Close-range stun"],
+      fia: [localizedPair(heroNames.Fia), locale === "zh-Hant" ? "高速 · 86 生命" : "Fast · 86 HP", locale === "zh-Hant" ? "無敵衝刺" : "Invulnerable dash"],
+      orla: [localizedPair(heroNames.Orla), locale === "zh-Hant" ? "遠程 · 82 生命" : "Ranged · 82 HP", locale === "zh-Hant" ? "標記增傷" : "Mark bonus damage"],
+      taro: [localizedPair(heroNames.Taro), locale === "zh-Hant" ? "耐久 · 126 生命" : "Tank · 126 HP", locale === "zh-Hant" ? "守護減傷" : "Damage guard"],
     };
     picker.innerHTML = "";
     Object.entries(heroes).forEach(([id, hero]) => {
@@ -282,18 +341,23 @@
   function renderStages() {
     const rail = $("#stageRail");
     rail.innerHTML = "";
-    for (let stage = 1; stage <= 3; stage += 1) {
+    for (let stage = 1; stage <= TRIAL_COUNT; stage += 1) {
+      const definition=trialDefinition(stage);
+      const region=regions[definition.region];
       const button = document.createElement("button");
-      button.className = `stage-card${stage > unlocked ? " locked" : ""}`;
+      button.className = `stage-card${stage > unlocked ? " locked" : ""}${definition.checkpoint ? " checkpoint" : ""}`;
       button.dataset.stage = String(stage);
-      const detail = stage > unlocked ? t("locked") : `3 rooms · +${3 + stage} marks`;
-      button.innerHTML = `<img src="${ASSET_ROOT}animal-hero-trials-arena.png" alt=""><strong>Trial ${stage}</strong><span>${detail}</span>`;
+      const detail = stage > unlocked ? t("locked") : interpolate("roomsAndMarks",{marks:definition.reward});
+      const title=locale==="zh-Hant"?definition.titleZh:definition.titleEn;
+      const rule=localizedPair(region.rule);
+      const boss=definition.boss?` · ${localizedPair(definition.boss.name)}`:"";
+      button.innerHTML = `<img src="${ASSET_ROOT}${definition.boss?.asset || "animal-hero-trials-arena.png"}" alt=""><strong>${locale==="zh-Hant"?"試煉":"Trial"} ${stage} · ${title}</strong><span>${detail}<br>${rule}${boss}<br>${interpolate("recommended",{hero:localizedPair(heroNames[definition.recommended])})}</span>`;
       button.onclick = () => stage <= unlocked && startTrial(stage);
       rail.append(button);
     }
   }
 
-  function focusStage(stage = Math.min(3, unlocked)) {
+  function focusStage(stage = Math.min(TRIAL_COUNT, unlocked)) {
     requestAnimationFrame(() => $(`#stageRail .stage-card[data-stage="${stage}"]`)?.focus({ preventScroll: true }));
   }
 
@@ -314,7 +378,8 @@
     const maxHp = hero.hp + mastery * 12;
     run = {
       active: true,
-      stage,
+      stage:Math.max(1,Math.min(unlocked,Number(stage)||1)),
+      definition:trialDefinition(Math.max(1,Math.min(unlocked,Number(stage)||1))),
       room: 1,
       hp: maxHp,
       maxHp,
@@ -339,28 +404,49 @@
   }
 
   function spawn() {
-    if (run.room === 3) {
-      const hp = 145 + run.stage * 25;
-      run.enemies = [{ x: 195, y: 125, hp, max: hp, cd: 0, boss: true, special: 2.8, warning: 0 }];
+    const definition=run.definition;
+    if (run.room === 3 && definition.checkpoint) {
+      const boss=definition.boss;
+      const hp = 190 + definition.region * 44;
+      run.enemies = [{ x:195,y:125,hp,max:hp,cd:0,boss:true,bossId:boss.id,bossRule:boss.rule,type:"boss",special:2.8,warning:0,phase:0,guard:boss.rule==="prism"||boss.rule==="crown"?3:0,summoned:false }];
       $("#roomText").textContent = roomLabel(run.room, true);
-      $("#objective").textContent = t("bossObjective");
+      $("#objective").textContent = interpolate("bossObjectiveNamed",{boss:localizedPair(boss.name)});
       updateHud();
       playSound("boss");
       return;
     }
-    run.enemies = Array.from({ length: 2 + run.room }, (_, index) => {
-      const hp = 28 + run.stage * 7 + run.room * 5;
-      return { x: 80 + index * 110, y: 105 + (index % 2) * 90, hp, max: hp, cd: 0 };
+    const elite=run.room===3;
+    const count=elite?1:2+run.room;
+    run.enemies = Array.from({ length:count }, (_, index) => {
+      const type=definition.enemies[(run.room+index-1)%definition.enemies.length];
+      const profile=enemyProfiles[type];
+      const hp=(elite?92:30)+definition.region*9+run.room*6;
+      return { x:elite?195:70+index*(250/Math.max(1,count-1)), y:elite?125:105+(index%2)*90, hp, max:hp, cd:0, type, elite, special:1.6+index*.3, warning:0, guard:(profile.guard||0)+(elite?1:0), phase:0 };
     });
-    $("#roomText").textContent = roomLabel(run.room);
-    $("#objective").textContent = interpolate("scoutObjective", { count: run.enemies.length });
+    $("#roomText").textContent = roomLabel(run.room,elite);
+    const firstProfile=enemyProfiles[run.enemies[0].type];
+    $("#objective").textContent = elite?interpolate("eliteObjective",{enemy:localizedPair(firstProfile.name)}):interpolate("enemyObjective",{count:run.enemies.length,enemy:localizedPair(firstProfile.name)});
     updateHud();
+    if(elite) playSound("boss");
   }
 
   function updateHud() {
     $("#hpFill").style.width = `${Math.max(0, (run.hp / run.maxHp) * 100)}%`;
     const skillName = locale === "zh-Hant" ? heroes[run.heroId].skill.zh : heroes[run.heroId].skill.en;
     $("#cooldownText").textContent = run.cool > 0 ? run.cool.toFixed(1) : skillName;
+  }
+
+  function damageEnemy(enemy,amount,source="auto") {
+    if(!enemy||enemy.hp<=0) return 0;
+    let applied=amount;
+    if(enemy.guard>0){
+      applied*=source==="skill"?.65:.25;
+      if(source==="skill") enemy.guard=Math.max(0,enemy.guard-1);
+    }
+    if(enemy.bossRule==="charge"&&!enemy.open) applied*=.35;
+    if(enemy.bossRule==="crown"&&enemy.phase===1&&source!=="skill") applied*=.3;
+    enemy.hp-=applied;
+    return applied;
   }
 
   function skill() {
@@ -371,7 +457,7 @@
       run.fx.push({ type: "roar", x: run.leo.x, y: run.leo.y, t: 0.45 });
       for (const enemy of run.enemies) {
         if (Math.hypot(enemy.x - run.leo.x, enemy.y - run.leo.y) < 145) {
-          enemy.hp -= 24 + run.bless.power * 7;
+          damageEnemy(enemy,24 + run.bless.power * 7,"skill");
           run.fx.push({ type: "hit", x: enemy.x, y: enemy.y, t: 0.3 });
         }
       }
@@ -402,12 +488,12 @@
           dashTarget = enemy;
         }
         if (distance < 105) {
-          enemy.hp -= 30 + run.bless.power * 6;
+          damageEnemy(enemy,30 + run.bless.power * 6,"skill");
           run.fx.push({ type: "hit", x: enemy.x, y: enemy.y, t: 0.25 });
         }
       }
       if (dashTarget && dashDistance >= 105 && dashDistance < 190) {
-        dashTarget.hp -= 22 + run.bless.power * 5;
+        damageEnemy(dashTarget,22 + run.bless.power * 5,"skill");
         run.fx.push({ type: "hit", x: dashTarget.x, y: dashTarget.y, t: 0.25 });
       }
       return;
@@ -416,7 +502,7 @@
       run.cool = Math.max(2.5, 4.8 - run.bless.speed * 0.45);
       const target = [...run.enemies].sort((a, b) => Math.hypot(a.x - run.leo.x, a.y - run.leo.y) - Math.hypot(b.x - run.leo.x, b.y - run.leo.y))[0];
       if (target) {
-        target.hp -= 24 + run.bless.power * 5;
+        damageEnemy(target,24 + run.bless.power * 5,"skill");
         target.marked = true;
         run.fx.push({ type: "roar", x: target.x, y: target.y, t: 0.4 });
       }
@@ -428,7 +514,7 @@
     run.fx.push({ type: "roar", x: run.leo.x, y: run.leo.y, t: 0.55 });
     for (const enemy of run.enemies) {
       if (Math.hypot(enemy.x - run.leo.x, enemy.y - run.leo.y) < 220) {
-        enemy.hp -= 20 + run.bless.power * 4;
+        damageEnemy(enemy,20 + run.bless.power * 4,"skill");
         run.fx.push({ type: "hit", x: enemy.x, y: enemy.y, t: 0.3 });
       }
     }
@@ -457,7 +543,7 @@
       damage += 18;
       target.marked = false;
     }
-    target.hp -= damage;
+    damageEnemy(target,damage,"auto");
     run.attackCool = 0.58;
     run.fx.push({ type: "hit", x: target.x, y: target.y, t: 0.22 });
   }
@@ -571,14 +657,14 @@
     run.active = false;
     cancelAnimationFrame(frame);
     if (won) {
-      const gain = 3 + run.stage;
+      const gain = run.definition.reward;
       const previousUnlocked = unlocked;
       marks += gain;
-      unlocked = Math.max(unlocked, Math.min(3, run.stage + 1));
+      unlocked = Math.max(unlocked, Math.min(TRIAL_COUNT, run.stage + 1));
       save();
       const masteryCost = 5 + mastery * 4;
       const remaining = Math.max(0, masteryCost - marks);
-      const unlockCopy = run.stage >= 3
+      const unlockCopy = run.stage >= TRIAL_COUNT
         ? t("allTrialsUnlocked")
         : interpolate(unlocked > previousUnlocked ? "trialUnlocked" : "trialAvailable", { next: run.stage + 1 });
       const masteryCopy = remaining === 0
@@ -586,9 +672,9 @@
         : interpolate("masteryNeed", { remaining });
       $("#resultTitle").textContent = t("win");
       $("#resultCopy").textContent = `${interpolate("earnedMarks", { gain, total: marks })} ${unlockCopy} ${masteryCopy}`;
-      $("#resultNext").textContent = run.stage < 3 ? t("next") : t("menu");
+      $("#resultNext").textContent = run.stage < TRIAL_COUNT ? t("next") : t("menu");
       $("#resultNext").onclick = () => {
-        if (run.stage < 3) startTrial(run.stage + 1);
+        if (run.stage < TRIAL_COUNT) startTrial(run.stage + 1);
         else { show("main"); localize(); focusMain(); }
       };
     } else {
@@ -618,34 +704,64 @@
     run.invulnerable = Math.max(0, run.invulnerable - dt);
     run.guard = Math.max(0, run.guard - dt);
 
+    const reinforcements=[];
     for (const enemy of run.enemies) {
       const ex = run.leo.x - enemy.x;
       const ey = run.leo.y - enemy.y;
       const distance = Math.hypot(ex, ey) || 1;
-      const moveSpeed = enemy.boss ? 24 : 32;
-      enemy.x += (ex / distance) * moveSpeed * dt;
-      enemy.y += (ey / distance) * moveSpeed * dt;
       enemy.cd -= dt;
-      if (enemy.boss) {
-        enemy.special -= dt;
-        if (enemy.warning > 0) {
-          enemy.warning -= dt;
-          if (enemy.warning <= 0) {
-            if (distance < 155) hurt(11);
-            run.fx.push({ type: "shadow", x: run.leo.x, y: run.leo.y, t: 0.38 });
-          }
-        } else if (enemy.special <= 0) {
-          enemy.warning = 0.7;
-          enemy.special = 4.2;
-          run.fx.push({ type: "roar", x: enemy.x, y: enemy.y, t: 0.7 });
+      enemy.special=(enemy.special||0)-dt;
+      enemy.open=Math.max(0,(enemy.open||0)-dt);
+      const profile=enemy.boss?null:enemyProfiles[enemy.type]||enemyProfiles.scout;
+      let moveX=ex/distance; let moveY=ey/distance; let moveSpeed=enemy.boss?22:profile.speed;
+
+      if(enemy.type==="raven"){
+        const side=(Math.floor(enemy.x+enemy.y)%2?1:-1);
+        moveX=(ex/distance)*.72-(ey/distance)*.55*side;
+        moveY=(ey/distance)*.72+(ex/distance)*.55*side;
+      }
+      if(enemy.type==="hunter"){
+        if(distance<128){ moveX=-ex/distance; moveY=-ey/distance; }
+        else if(distance<188){ moveX=0; moveY=0; }
+        if(distance<profile.range&&enemy.cd<=0){ hurt(profile.damage); enemy.cd=1.7; run.fx.push({type:"shadow",x:run.leo.x,y:run.leo.y,t:.3}); }
+      }
+      if(enemy.type==="boar"){
+        if(enemy.warning>0){ enemy.warning-=dt; moveSpeed=0; if(enemy.warning<=0){ enemy.open=.9; enemy.special=3.2; moveSpeed=105; } }
+        else if(enemy.special<=0){ enemy.warning=.65; run.fx.push({type:"roar",x:enemy.x,y:enemy.y,t:.65}); moveSpeed=0; }
+        else if(enemy.open>0) moveSpeed=105;
+      }
+
+      if(enemy.boss){
+        const rule=enemy.bossRule;
+        if(rule==="prism"){
+          if(enemy.special<=0){ enemy.guard=enemy.guard>0?0:3; enemy.special=enemy.guard>0?3.2:1.8; run.fx.push({type:"roar",x:enemy.x,y:enemy.y,t:.45}); }
+        } else if(rule==="charge"){
+          if(enemy.warning>0){ enemy.warning-=dt; moveSpeed=0; if(enemy.warning<=0){ enemy.open=1.1; enemy.special=3.4; moveSpeed=118; } }
+          else if(enemy.special<=0){ enemy.warning=.8; moveSpeed=0; run.fx.push({type:"roar",x:enemy.x,y:enemy.y,t:.8}); }
+          else if(enemy.open>0) moveSpeed=118;
+        } else if(rule==="volley"){
+          moveSpeed=18;
+          if(enemy.special<=0){ if(distance<285) hurt(8); enemy.special=2.5; run.fx.push({type:"shadow",x:run.leo.x,y:run.leo.y,t:.45}); }
+        } else if(rule==="summon"){
+          if(!enemy.summoned&&enemy.hp/enemy.max<.55){ enemy.summoned=true; for(let i=0;i<2;i+=1) reinforcements.push({x:90+i*210,y:120,hp:54,max:54,cd:0,type:i?"boar":"scout",special:1.4,warning:0,guard:0,phase:0}); }
+          if(enemy.special<=0){ if(distance<170) hurt(9); enemy.special=3.2; run.fx.push({type:"roar",x:enemy.x,y:enemy.y,t:.55}); }
+        } else if(rule==="crown"){
+          const ratio=enemy.hp/enemy.max;
+          if(ratio<.66&&enemy.phase===0){ enemy.phase=1; enemy.guard=2; enemy.special=1.4; }
+          if(ratio<.33&&enemy.phase===1){ enemy.phase=2; enemy.guard=0; reinforcements.push({x:85,y:120,hp:62,max:62,cd:0,type:"raven",special:1,warning:0,guard:0,phase:0},{x:305,y:120,hp:62,max:62,cd:0,type:"armored",special:1,warning:0,guard:2,phase:0}); }
+          if(enemy.special<=0){ if(distance<210) hurt(enemy.phase===2?12:9); enemy.special=enemy.phase===2?2.2:3; run.fx.push({type:"shadow",x:run.leo.x,y:run.leo.y,t:.5}); }
+        } else {
+          if(enemy.warning>0){ enemy.warning-=dt; if(enemy.warning<=0){ if(distance<155) hurt(11); run.fx.push({type:"shadow",x:run.leo.x,y:run.leo.y,t:.38}); } }
+          else if(enemy.special<=0){ enemy.warning = 0.7; enemy.special=4.2; run.fx.push({type:"roar",x:enemy.x,y:enemy.y,t:.7}); }
         }
       }
-      if (distance < 48 && enemy.cd <= 0) {
-        hurt(enemy.boss ? 7 : 4);
-        enemy.cd = 1;
-        run.fx.push({ type: "shadow", x: run.leo.x, y: run.leo.y, t: 0.3 });
-      }
+
+      enemy.x=Math.max(32,Math.min(358,enemy.x+moveX*moveSpeed*dt));
+      enemy.y=Math.max(70,Math.min(525,enemy.y+moveY*moveSpeed*dt));
+      const contactRange=enemy.boss?54:profile.range;
+      if(enemy.type!=="hunter"&&distance<contactRange&&enemy.cd<=0){ hurt(enemy.boss?7:profile.damage); enemy.cd=1; run.fx.push({type:"shadow",x:run.leo.x,y:run.leo.y,t:.3}); }
     }
+    if(reinforcements.length) run.enemies.push(...reinforcements);
     autoAttack();
     run.enemies = run.enemies.filter((enemy) => enemy.hp > 0);
     run.fx.forEach((effect) => { effect.t -= dt; });
@@ -661,8 +777,8 @@
     ctx.clearRect(0, 0, 390, 560);
     ctx.drawImage(images.bg, 0, 0, 390, 560);
     for (const enemy of run.enemies) {
-      const enemyImage = enemy.boss ? images.boss : images.enemy;
-      const size = enemy.boss ? 118 : 68;
+      const enemyImage = enemy.boss ? images[`boss-${enemy.bossId}`] : images[`enemy-${enemy.type}`] || images.enemy;
+      const size = enemy.boss ? 126 : enemy.elite ? 82 : 68;
       ctx.drawImage(enemyImage, enemy.x - size / 2, enemy.y - size / 2, size, size);
       ctx.fillStyle = "#17231f";
       const barWidth = enemy.boss ? 100 : 56;
@@ -670,6 +786,8 @@
       ctx.fillRect(enemy.x - barWidth / 2, barY, barWidth, 6);
       ctx.fillStyle = "#7be0b1";
       ctx.fillRect(enemy.x - barWidth / 2, barY, (barWidth * enemy.hp) / enemy.max, 6);
+      if(enemy.guard>0){ ctx.strokeStyle="#78e9ff"; ctx.lineWidth=3; ctx.beginPath(); ctx.arc(enemy.x,enemy.y,size*.48,0,Math.PI*2); ctx.stroke(); }
+      if(enemy.warning>0){ ctx.strokeStyle="#ffd45f"; ctx.lineWidth=4; ctx.beginPath(); ctx.arc(enemy.x,enemy.y,size*.58,0,Math.PI*2); ctx.stroke(); }
       if (enemy.marked) {
         ctx.strokeStyle = "#7cecff";
         ctx.lineWidth = 3;
@@ -714,6 +832,7 @@
       nub.style.transform = `translate(${stick.x * 25}px, ${stick.y * 25}px)`;
     };
     joystick.onpointerdown = (event) => {
+      if (event.isPrimary === false) return;
       if (pointer !== null && pointer !== event.pointerId) return;
       if (event.button !== undefined && event.button !== 0) return;
       clearMovementInput();
@@ -739,7 +858,7 @@
   $("#stageRail").addEventListener("keydown", (event) => { if (event.repeat && (event.key === "Enter" || event.key === " ") && event.target.closest(".stage-card")) event.preventDefault(); });
   $("#startBtn").onclick = () => { playSound("click"); show("stage"); focusStage(); };
   $("#stageBack").onclick = () => { playSound("click"); show("main"); focusMain(); };
-  $("#battleBack").onclick = () => { const stage = run?.stage || Math.min(3, unlocked); playSound("click"); show("stage"); focusStage(stage); };
+  $("#battleBack").onclick = () => { const stage = run?.stage || Math.min(TRIAL_COUNT, unlocked); playSound("click"); show("stage"); focusStage(stage); };
   $("#skillBtn").onclick = skill;
   $("#rerollBtn").addEventListener("keydown",(event)=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault()});
   $("#rerollBtn").onclick = rerollBlessings;
@@ -791,6 +910,12 @@
   addEventListener("pagehide", suspendBackgroundBattle);
   addEventListener("pageshow", resumeBackgroundBattle);
   bindStick();
-  if (new URLSearchParams(location.search).has("smoke")) window.__heroTrialSmoke = { snapshot: () => ({ pointer, stick: { ...stick }, active: Boolean(run?.active), hp: run?.hp ?? null, player: run ? { ...run.leo } : null, enemies: run?.enemies.map((enemy) => ({ x: enemy.x, y: enemy.y, hp: enemy.hp })) || [] }) };
+  if (new URLSearchParams(location.search).has("smoke")) window.__heroTrialSmoke = {
+    definitions:()=>trials.map((trial)=>({stage:trial.stage,region:trial.region,titleEn:trial.titleEn,titleZh:trial.titleZh,checkpoint:trial.checkpoint,enemies:[...trial.enemies],recommended:trial.recommended,reward:trial.reward,boss:trial.boss?{id:trial.boss.id,nameEn:trial.boss.name[0],nameZh:trial.boss.name[1],asset:trial.boss.asset,rule:trial.boss.rule}:null})),
+    prepare:(stage,room=1)=>{ unlocked=TRIAL_COUNT; startTrial(stage); run.room=Math.max(1,Math.min(3,room)); spawn(); return window.__heroTrialSmoke.snapshot(); },
+    damageFirst:(amount=20,source="auto")=>{ const enemy=run?.enemies[0]; return enemy?{applied:damageEnemy(enemy,amount,source),enemy:{...enemy}}:null; },
+    forceRoomClear:()=>{ if(!run) return null; run.enemies=[]; if(run.room>=3) finish(true); else chooseBlessing(); return window.__heroTrialSmoke.snapshot(); },
+    snapshot: () => ({ pointer, stick: { ...stick }, active: Boolean(run?.active), hp: run?.hp ?? null, player: run ? { ...run.leo } : null, run:run?{stage:run.stage,room:run.room,checkpoint:run.definition.checkpoint,boss:run.definition.boss?.id||null}:null, unlocked,marks, enemies: run?.enemies.map((enemy) => ({ x: enemy.x, y: enemy.y, hp: enemy.hp,max:enemy.max,type:enemy.type,bossId:enemy.bossId||null,bossRule:enemy.bossRule||null,guard:enemy.guard||0,warning:enemy.warning||0,phase:enemy.phase||0 })) || [] })
+  };
   localize();
 })();

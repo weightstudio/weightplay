@@ -37,14 +37,50 @@
     koala: "../../assets/tiny-weather-animal-koala.png",
   };
 
-  const stages = [
+  const openingStages = [
     { animalId: "rabbit", theme: "garden", rounds: ["rain", "puddle", "hungry", "heat"], choices: ["umbrella", "towel", "apple", "fan"], target: 3 },
     { animalId: "fox", theme: "forest", rounds: ["dark", "thunder", "rain", "cold"], choices: ["lantern", "house", "umbrella", "blanket"], target: 3 },
     { animalId: "panda", theme: "bamboo", rounds: ["muddy", "puddle", "heat", "hungry", "rain"], choices: ["boots", "towel", "fan", "apple", "umbrella"], target: 4 },
     { animalId: "penguin", theme: "ice", rounds: ["cold", "dark", "windy", "thunder", "puddle"], choices: ["blanket", "lantern", "house", "towel", "umbrella"], target: 4 },
     { animalId: "lion", theme: "savanna", rounds: ["heat", "hungry", "muddy", "thunder", "rain", "cold"], choices: ["fan", "apple", "boots", "house", "umbrella", "blanket"], target: 5 },
     { animalId: "koala", theme: "tree", rounds: ["rain", "dark", "windy", "puddle", "hungry", "cold"], choices: ["umbrella", "lantern", "house", "towel", "apple", "blanket", "fan"], target: 5 },
-  ].map((stage, index) => ({ ...stage, id: index + 1 }));
+  ];
+
+  const animalCycle = ["rabbit", "fox", "panda", "penguin", "lion", "koala"];
+  const themeCycle = ["garden", "forest", "bamboo", "ice", "savanna", "tree"];
+  const problemCycle = ["rain", "puddle", "heat", "dark", "thunder", "hungry", "muddy", "cold", "windy"];
+  const combinedRounds = [
+    { problem: "rain", clues: ["rain", "windy"], answer: "house" },
+    { problem: "puddle", clues: ["rain", "puddle"], answer: "towel" },
+    { problem: "cold", clues: ["cold", "windy"], answer: "blanket" },
+    { problem: "dark", clues: ["dark", "windy"], answer: "lantern" },
+    { problem: "hungry", clues: ["hungry", "heat"], answer: "apple" },
+    { problem: "muddy", clues: ["muddy", "rain"], answer: "boots" },
+  ];
+  const makeRounds = (stageNo, count, combined = false) => Array.from({ length: count }, (_, index) => {
+    if (combined) return { ...combinedRounds[(stageNo + index) % combinedRounds.length] };
+    return problemCycle[(stageNo * 2 + index) % problemCycle.length];
+  });
+  const stages = Array.from({ length: 30 }, (_, index) => {
+    const id = index + 1;
+    if (id <= openingStages.length) {
+      const rule = id <= 5 ? "direct" : "picture";
+      return { ...openingStages[index], id, rule, checkpoint: id === 5 };
+    }
+    const chapter = Math.floor((id - 1) / 5);
+    const rule = ["direct", "picture", "combined", "memory", "changing", "expert"][chapter];
+    const count = id >= 26 ? 6 : id >= 16 ? 5 : 4 + (id % 2);
+    return {
+      id,
+      animalId: animalCycle[index % animalCycle.length],
+      theme: themeCycle[index % themeCycle.length],
+      rounds: makeRounds(id, count, rule === "combined" || rule === "expert"),
+      choices: Object.keys(tools),
+      target: Math.max(3, count - 1),
+      rule,
+      checkpoint: id % 5 === 0,
+    };
+  });
 
   const text = {
     en: {
@@ -88,6 +124,14 @@
       wrong: "Try another care item.",
       moveOn: "Let's help the next animal.",
       goal: "Goal {target}",
+      checkpoint: "Helper Check",
+      ruleDirect: "One clear need",
+      rulePicture: "Picture tools",
+      ruleCombined: "Two clues, one priority",
+      ruleMemory: "Remember the need",
+      ruleChanging: "Tools change places",
+      ruleExpert: "Helper mix",
+      rememberNeed: "What did the animal need? Tap the animal to look again.",
       rain: "It is raining.",
       puddle: "The animal is wet.",
       heat: "It is too hot.",
@@ -153,6 +197,14 @@
       wrong: "\u518d\u8a66\u4e00\u500b\u7167\u9867\u9053\u5177\u3002",
       moveOn: "\u6211\u5011\u5148\u53bb\u5e6b\u4e0b\u4e00\u96bb\u5c0f\u52d5\u7269\u3002",
       goal: "\u76ee\u6a19 {target}",
+      checkpoint: "\u5e6b\u624b\u6aa2\u67e5",
+      ruleDirect: "\u4e00\u500b\u6e05\u695a\u9700\u6c42",
+      rulePicture: "\u5716\u7247\u9053\u5177",
+      ruleCombined: "\u5169\u500b\u7dda\u7d22\u3001\u4e00\u500b\u512a\u5148\u9700\u6c42",
+      ruleMemory: "\u8a18\u4f4f\u9700\u6c42",
+      ruleChanging: "\u9053\u5177\u6703\u63db\u4f4d",
+      ruleExpert: "\u5e6b\u624b\u7d9c\u5408",
+      rememberNeed: "\u525b\u624d\u9700\u8981\u4ec0\u9ebc\uff1f\u9ede\u5c0f\u52d5\u7269\u53ef\u4ee5\u518d\u770b\u4e00\u6b21\u3002",
       rain: "\u5916\u9762\u5728\u4e0b\u96e8\u3002",
       puddle: "\u5c0f\u52d5\u7269\u6fd5\u6fd5\u7684\u3002",
       heat: "\u592a\u967d\u592a\u71b1\u4e86\u3002",
@@ -216,6 +268,8 @@
   let score = 0;
   let mistakes = 0;
   let roundMistakes = 0;
+  let choiceAttempt = 0;
+  let memoryHidden = false;
   let running = false;
   let busy = false;
   let dragState = null;
@@ -319,13 +373,14 @@
     if (node) node.setAttribute(attr, value);
   }
 
-  function renderStageGrid() {
+  function renderStageGrid(focusIndex = null) {
     nodes.stageGrid.innerHTML = "";
     stages.forEach((stage, index) => {
       const stageNo = index + 1;
       const button = document.createElement("button");
       button.type = "button";
       button.className = "stage-card";
+      button.dataset.stage = String(stageNo);
       const locked = stageNo > unlocked;
       if (locked) {
         button.classList.add("locked");
@@ -333,14 +388,15 @@
         button.setAttribute("aria-label", `${t("stage", { n: stageNo })}: ${t(stage.animalId)}. ${t("locked")}`);
       }
       const best = records[stageNo] || 0;
-      const firstProblem = problems[stage.rounds[0]];
+      const firstKey = typeof stage.rounds[0] === "string" ? stage.rounds[0] : stage.rounds[0].problem;
+      const firstProblem = problems[firstKey];
       button.innerHTML = `
         <b class="stage-animal">
           <img src="${animalAssets[stage.animalId]}" alt="" />
           <span>${firstProblem.icon}</span>
         </b>
-        <strong>${t("stage", { n: stageNo })}</strong>
-        <span>${t(stage.animalId)} \u00b7 ${t("goal", { target: stage.target })} \u00b7 ${"\u2605".repeat(best)}${"\u2606".repeat(3 - best)}</span>
+        <strong>${t("stage", { n: stageNo })}${stage.checkpoint ? ` \u00b7 ${t("checkpoint")}` : ""}</strong>
+        <span>${t(stage.animalId)} \u00b7 ${ruleLabel(stage)} \u00b7 ${"\u2605".repeat(best)}${"\u2606".repeat(3 - best)}</span>
       `;
       button.addEventListener("click", () => {
         if (stageNo > unlocked) {
@@ -354,7 +410,10 @@
     });
     requestAnimationFrame(() => {
       const unlockedCard = [...nodes.stageGrid.querySelectorAll(".stage-card:not(.locked)")].at(-1);
-      unlockedCard?.scrollIntoView({ block: "nearest", inline: "center", behavior: "auto" });
+      const focusCard = focusIndex === null ? null : nodes.stageGrid.querySelector(`[data-stage="${clamp(focusIndex + 1, 1, unlocked)}"]`);
+      const target = focusCard || unlockedCard;
+      target?.scrollIntoView({ block: "nearest", inline: "center", behavior: "auto" });
+      focusCard?.focus({ preventScroll: true });
     });
   }
 
@@ -434,6 +493,8 @@
     score = 0;
     mistakes = 0;
     roundMistakes = 0;
+    choiceAttempt = 0;
+    memoryHidden = false;
     running = true;
     busy = false;
     nodes.menuPanel.classList.add("hidden");
@@ -463,26 +524,38 @@
     return Math.round((roundIndex / stage.rounds.length) * 100);
   }
 
+  function roundData(stage = stages[currentStage]) {
+    const raw = stage.rounds[roundIndex];
+    if (typeof raw === "string") return { problem: raw, clues: [raw], answer: problems[raw].tool };
+    return { problem: raw.problem, clues: raw.clues || [raw.problem], answer: raw.answer || problems[raw.problem].tool };
+  }
+
+  function ruleLabel(stage) {
+    const suffix = `${stage.rule[0].toUpperCase()}${stage.rule.slice(1)}`;
+    return t(`rule${suffix}`);
+  }
+
   function renderRound(feedback = "", focusTool = false) {
     cleanupDrag();
     const stage = stages[currentStage];
-    const problemKey = stage.rounds[roundIndex];
+    const task = roundData(stage);
+    const problemKey = task.problem;
     const problem = problems[problemKey];
     const percent = progressPercent(stage);
-    const choices = toolChoices(stage, problemKey);
+    const choices = toolChoices(stage, task.answer);
     nodes.stageText.textContent = t("stage", { n: stage.id });
     nodes.movesText.innerHTML = `<b>${t("progress", { done: roundIndex + 1, total: stage.rounds.length })}</b><i style="width:${percent}%"></i>`;
     nodes.starsText.textContent = t("calm", { score });
     nodes.board.innerHTML = `
       <div class="weather-scene ${stage.theme} ${problem.scene}">
         <div class="rescue-scene">
-          <div class="weather-effects" aria-hidden="true">${weatherEffects(problemKey)}</div>
-          <div class="problem-cue" aria-label="${t("whatHelps")}"><span>${problem.icon}</span><b aria-hidden="true">→</b><strong aria-hidden="true">?</strong><small>${t("whatHelps")}</small></div>
+          <div class="weather-effects" aria-hidden="true">${task.clues.map((key) => weatherEffects(key)).join("")}</div>
+          <div class="problem-cue${task.clues.length > 1 ? " multi-clue" : ""}" aria-label="${t("whatHelps")}">${task.clues.map((key) => `<span>${problems[key].icon}</span>`).join("")}<b aria-hidden="true">→</b><strong aria-hidden="true">?</strong><small>${t("whatHelps")} · ${ruleLabel(stage)}</small></div>
           <div class="animal-zone" data-drop-zone="true">
             <div class="animal-shadow"></div>
             <img class="animal-sprite" src="${animalAssets[stage.animalId]}" alt="${t(stage.animalId)}" />
           </div>
-          <div class="need-line">${t(problemKey)}</div>
+          <div class="need-line${memoryHidden ? " is-memory-hidden" : ""}">${memoryHidden ? t("rememberNeed") : task.clues.map((key) => t(key)).join(" + ")}</div>
         </div>
         <div class="tool-grid">
           ${choices.map((key) => {
@@ -490,7 +563,7 @@
             return `
             <button class="tool-btn ${tool.className}" type="button" data-tool="${key}" aria-label="${t(key)}">
               <i><img src="${tool.icon}" alt="" /></i>
-              <span>${t(key)}</span>
+              <span${stage.rule === "picture" || stage.rule === "expert" ? ' class="visual-only-label"' : ""}>${t(key)}</span>
             </button>
           `;
           }).join("")}
@@ -499,13 +572,25 @@
       </div>
     `;
     nodes.board.querySelectorAll("[data-tool]").forEach((button) => installToolControl(button));
+    nodes.board.querySelector(".animal-zone")?.addEventListener("click", () => {
+      if (!memoryHidden) return;
+      memoryHidden = false;
+      renderRound(feedback, true);
+    });
+    if ((stage.rule === "memory" || stage.rule === "expert") && !memoryHidden) {
+      scheduleCareTask(() => {
+        if (busy || !running) return;
+        memoryHidden = true;
+        const line = nodes.board.querySelector(".need-line");
+        if (line) { line.classList.add("is-memory-hidden"); line.textContent = t("rememberNeed"); }
+      }, 1500);
+    }
     if (focusTool) requestAnimationFrame(() => nodes.board.querySelector(".tool-btn")?.focus({ preventScroll: true }));
   }
 
-  function toolChoices(stage, problemKey) {
+  function toolChoices(stage, correctTool) {
     const choices = stage.choices || Object.keys(tools);
-    const shuffled = seededShuffle(choices, stage.id * 97 + roundIndex * 31);
-    const correctTool = problems[problemKey]?.tool;
+    const shuffled = seededShuffle(choices, stage.id * 97 + roundIndex * 31 + choiceAttempt * 53);
     if (shuffled.length > 1 && shuffled[0] === correctTool) {
       const offset = ((stage.id + roundIndex) % (shuffled.length - 1)) + 1;
       return [...shuffled.slice(offset), ...shuffled.slice(0, offset)];
@@ -624,8 +709,9 @@
     if (!running || busy) return;
     busy = true;
     const stage = stages[currentStage];
-    const problemKey = stage.rounds[roundIndex];
-    const correct = problems[problemKey].tool === tool;
+    const task = roundData(stage);
+    const problemKey = task.problem;
+    const correct = task.answer === tool;
     const skipped = !correct && roundMistakes + 1 >= 3;
     const zone = nodes.board.querySelector(".animal-zone");
     if (correct) {
@@ -638,6 +724,7 @@
     } else {
       mistakes += 1;
       roundMistakes += 1;
+      choiceAttempt += 1;
       button.classList.add("wrong");
       zone?.classList.add("sad");
       showFace("\u{1F622}", "sad");
@@ -648,11 +735,16 @@
     scheduleCareTask(() => {
       busy = false;
       if (!correct && !skipped) {
-        button.classList.remove("wrong");
-        zone?.classList.remove("sad");
+        if (stage.rule === "changing" || stage.rule === "expert") renderRound(t("wrong"), true);
+        else {
+          button.classList.remove("wrong");
+          zone?.classList.remove("sad");
+        }
         return;
       }
       roundMistakes = 0;
+      choiceAttempt = 0;
+      memoryHidden = false;
       roundIndex += 1;
       if (roundIndex >= stage.rounds.length) {
         finishStage();
@@ -749,7 +841,7 @@
     track("game_complete", { stage: stage.id, score, stars, cleared, mistakes });
   }
 
-  function showMenu() {
+  function showMenu(focusIndex = Math.max(0, unlocked - 1)) {
     invalidateCareTransition();
     running = false;
     busy = false;
@@ -762,15 +854,16 @@
     document.body.classList.remove("helper-playing");
     document.body.classList.add("wp-standard-stage-page");
     document.querySelector(".weather-game")?.setAttribute("data-play-viewport", "");
-    renderStageGrid();
+    renderStageGrid(focusIndex);
     updateWeatherFrame();
   }
 
-  function showMain() {
+  function showMain(focusStart = false) {
     cleanupDrag();
     nodes.stagePanel.classList.add("hidden");
     nodes.menuPanel.classList.remove("hidden");
     document.body.classList.remove("wp-standard-stage-page");
+    if (focusStart) nodes.startGameBtn.focus({ preventScroll: true });
   }
 
   function showFloatingText(message) {
@@ -812,8 +905,15 @@
     }, 80);
   }
 
-  nodes.startGameBtn.addEventListener("click", showMenu);
-  nodes.stageBackBtn.addEventListener("click", showMain);
+  const rejectRepeatedScreenActivation = (event) => {
+    if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
+  };
+  nodes.startGameBtn.addEventListener("keydown", rejectRepeatedScreenActivation);
+  nodes.stageGrid.addEventListener("keydown", (event) => {
+    if (event.target.closest(".stage-card")) rejectRepeatedScreenActivation(event);
+  });
+  nodes.startGameBtn.addEventListener("click", () => showMenu(Math.max(0, unlocked - 1)));
+  nodes.stageBackBtn.addEventListener("click", () => showMain(true));
   nodes.localeSelect.addEventListener("change", (event) => {
     locale = event.target.value;
     localStorage.setItem(localeKey, locale);
@@ -822,18 +922,52 @@
     renderStageGrid();
     if (running) renderRound();
   });
-  nodes.backToStagesBtn.addEventListener("click", showMenu);
+  nodes.backToStagesBtn.addEventListener("click", () => showMenu(currentStage));
   nodes.homeLink.addEventListener("click", (event) => {
     if (!document.body.classList.contains("helper-playing")) return;
     event.preventDefault();
-    showMenu();
+    showMenu(currentStage);
   });
-  nodes.resultStagesBtn.addEventListener("click", showMenu);
+  nodes.resultStagesBtn.addEventListener("click", () => showMenu(currentStage));
   nodes.retryBtn.addEventListener("click", () => {
     track("game_restart", { stage: currentStage + 1 });
     startStage(currentStage);
   });
   nodes.nextStageBtn.addEventListener("click", () => startStage(Math.min(currentStage + 1, stages.length - 1)));
+  nodes.resultPanel.addEventListener("keydown", (event) => {
+    if (event.repeat && (event.key === "Enter" || event.key === " ")) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+    }
+  }, true);
+
+  if (new URLSearchParams(location.search).has("smoke")) {
+    window.__helperQuestSmoke = {
+      stages,
+      startStage(stageNo) {
+        unlocked = stages.length;
+        renderStageGrid();
+        startStage(clamp(Number(stageNo) || 1, 1, stages.length) - 1);
+      },
+      unlockAll() {
+        unlocked = stages.length;
+        saveRecords();
+        renderStageGrid();
+      },
+      snapshot() {
+        const task = running ? roundData() : null;
+        return { stage: currentStage + 1, round: roundIndex, score, mistakes, busy, running, task };
+      },
+      chooseAnswer() {
+        if (!running || busy) return false;
+        const answer = roundData().answer;
+        const button = nodes.board.querySelector(`.tool-btn[data-tool="${answer}"]`);
+        if (!button) return false;
+        chooseTool(answer, button);
+        return true;
+      },
+    };
+  }
 
   localizeStatic();
   renderStageGrid();

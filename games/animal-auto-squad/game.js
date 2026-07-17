@@ -17,6 +17,17 @@
       stageDeploy: "Tap an unlocked stage to deploy",
       activeSquadSlots: "Active squad slots",
       shopShelfItems: "Character backpack items",
+      emptyFormationSlot: "Empty formation slot",
+      emptySlot: "Empty slot",
+      activeSquad: "active squad",
+      expeditionBackpack: "expedition backpack",
+      formationFrontRow: "front row",
+      formationBackRow: "back row",
+      formationLeftPosition: "left position",
+      formationCenterPosition: "center position",
+      formationRightPosition: "right position",
+      slotPosition: "slot {index}",
+      deployedTo: "deployed to",
       selectedSkillTitle: "Selected animal",
       selectCharacterHint: "Tap an animal to see its role and skill.",
       battleArena: "Animal Auto Squad Arena",
@@ -544,6 +555,7 @@
   let combatRunSequence = 0;
   let combatEndTimer = null;
   const combatStepTimers = new Set();
+  let combatSuspendedForBackground = false;
   let stageRenderVersion = 0;
   let stageBrowseFrame = 0;
 
@@ -562,6 +574,17 @@
     stageDeploy: "\u9ede\u9078\u5df2\u89e3\u9396\u95dc\u5361\u51fa\u767c",
     selectedSkillTitle: "\u76ee\u524d\u89d2\u8272",
     selectCharacterHint: "\u9ede\u9078\u89d2\u8272\u5373\u53ef\u67e5\u770b\u5b9a\u4f4d\u8207\u6280\u80fd\u3002",
+    emptyFormationSlot: "\u7a7a\u767d\u9663\u4f4d",
+    emptySlot: "\u7a7a\u767d\u4f4d\u7f6e",
+    activeSquad: "\u4e0a\u5834\u5c0f\u968a",
+    expeditionBackpack: "\u9060\u5f81\u80cc\u5305",
+    formationFrontRow: "\u524d\u6392",
+    formationBackRow: "\u5f8c\u6392",
+    formationLeftPosition: "\u5de6\u5074\u4f4d\u7f6e",
+    formationCenterPosition: "\u4e2d\u592e\u4f4d\u7f6e",
+    formationRightPosition: "\u53f3\u5074\u4f4d\u7f6e",
+    slotPosition: "\u4f4d\u7f6e {index}",
+    deployedTo: "\u5df2\u4e0a\u9663\u81f3",
     yourSquadLabel: "\u4f5c\u6230\u5c0f\u968a\uff08\u4e0a\uff1a\u524d\u6392\uff5c\u4e0b\uff1a\u5f8c\u6392\uff09",
     nextWaveCombat: "\u7b2c {round}/{total} \u6ce2\uff1a\u65b0\u7684\u6575\u4eba\u51fa\u73fe\uff01",
     backToStages: "\u8fd4\u56de\u95dc\u5361",
@@ -1336,6 +1359,7 @@
 
   function renderMenu() {
     stopCombatSession();
+    setResultOwnership(false);
     selectedSlot = null;
     state.activeRun = false;
     document.body.classList.remove("squad-active");
@@ -1366,6 +1390,7 @@
 
   function showStageSelection() {
     stopCombatSession();
+    setResultOwnership(false);
     window.WeightPlayGame?.exitMobileGameMode?.();
     document.body.classList.remove("squad-active");
     document.body.classList.add("squad-stage-select");
@@ -1585,6 +1610,12 @@
       action.type = "button";
       action.dataset.animalId = String(animal.id);
       action.className = unlocked ? "training-action upgrade-action" : "training-action unlock-action";
+      action.addEventListener("keydown", (event) => {
+        if (event.repeat && (event.key === "Enter" || event.key === " ")) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+      });
       if (unlocked) {
         if (level >= 20) {
           action.textContent = t("maxLevel");
@@ -1738,6 +1769,13 @@
     nodes.startBattleBtn.textContent = t("startBattle");
     nodes.hintText.textContent = t("guideHint");
     renderFoodGuide();
+    if (state.activeRun && !nodes.prepPhaseArea.classList.contains("is-hidden")) {
+      const focusedCard = document.activeElement?.closest?.(".card-item");
+      const focusTarget = focusedCard?.dataset?.area !== undefined && focusedCard?.dataset?.slot !== undefined
+        ? { area: focusedCard.dataset.area, index: Number(focusedCard.dataset.slot) }
+        : null;
+      renderPrepScreen(focusTarget);
+    }
 
     nodes.rerollShopBtn.classList.add("is-hidden");
 
@@ -1766,6 +1804,7 @@
   function startExpedition() {
     initAudio();
     playSynth("click");
+    setResultOwnership(false);
     state = makeState();
     state.stage = normalizeSave(save).selectedStage;
     state.backpack = createBackpackCards();
@@ -1844,16 +1883,28 @@
     nodes.prepPhaseArea.classList.remove("is-hidden");
     nodes.combatArea.classList.add("is-hidden");
     nodes.combatSummary?.classList.add("is-hidden");
-    // A new expedition must reopen the owned roster from its first row. The
-    // scroll container survives screen changes, so leaving it at the bottom
-    // made a five-animal roster look like it contained only the final two.
-    if (state.round === 1) nodes.shopRow.scrollTop = 0;
     selectedSlot = null;
     state.freeRerollThisRound = state.relic?.id === 3; // Clover leaf gives free first reroll
     state.rerollsUsedThisRound = 0;
     translateUI();
     updateHUD();
     renderPrepScreen();
+    resetBackpackScroll();
+  }
+
+  let backpackScrollResetFrame = 0;
+  function resetBackpackScroll() {
+    cancelAnimationFrame(backpackScrollResetFrame);
+    nodes.shopRow.scrollTop = 0;
+    // Mobile browsers can restore the old scroll anchor after a hidden grid is
+    // shown and rebuilt. Reset again after layout so row one cannot remain
+    // above the clipped backpack viewport and masquerade as missing cards.
+    backpackScrollResetFrame = requestAnimationFrame(() => {
+      nodes.shopRow.scrollTop = 0;
+      backpackScrollResetFrame = requestAnimationFrame(() => {
+        nodes.shopRow.scrollTop = 0;
+      });
+    });
   }
 
   function updateHUD() {
@@ -1978,6 +2029,13 @@
     return locale === "zh-Hant" ? (card.descZht || card.descEn || "") : (card.descEn || "");
   }
 
+  function formationActionPosition(index) {
+    const safeIndex = Math.max(0, Math.min(5, Number(index) || 0));
+    const row = t(safeIndex < 3 ? "formationFrontRow" : "formationBackRow");
+    const columns = [t("formationLeftPosition"), t("formationCenterPosition"), t("formationRightPosition")];
+    return `${row}, ${columns[safeIndex % 3]}`;
+  }
+
   // Cards UI helpers
   function makeCardElement(card, sourceArea, index) {
     const el = document.createElement("div");
@@ -1995,7 +2053,10 @@
       el.className = "card-item empty-slot";
       el.dataset.slot = String(index);
       el.dataset.area = sourceArea;
-      el.setAttribute("aria-label", `${locale === "zh-Hant" ? "空白陣位" : "Empty formation slot"} ${index + 1}`);
+      const emptyArea = sourceArea === "squad"
+        ? `${t("emptyFormationSlot")}, ${formationActionPosition(index)}`
+        : `${t("emptySlot")} ${index + 1}`;
+      el.setAttribute("aria-label", emptyArea);
       el.addEventListener("click", activate);
       el.addEventListener("keydown", activate);
       return el;
@@ -2010,8 +2071,19 @@
     el.dataset.area = sourceArea;
     el.dataset.cardId = String(card.id);
     const cardName = locale === "zh-Hant" ? (card.nameZht || card.nameEn) : card.nameEn;
-    const areaLabel = sourceArea === "backpack" ? (locale === "zh-Hant" ? "遠征背包" : "expedition backpack") : sourceArea;
-    el.setAttribute("aria-label", `${cardName}, ${areaLabel}, ${locale === "zh-Hant" ? `位置 ${index + 1}` : `slot ${index + 1}`}`);
+    const placement = sourceArea === "backpack" ? findPlacedCard(card.id) : null;
+    let actionPosition = t("slotPosition", { index: index + 1 });
+    let areaLabel = sourceArea;
+    if (sourceArea === "squad") {
+      areaLabel = t("activeSquad");
+      actionPosition = formationActionPosition(index);
+    } else if (sourceArea === "backpack") {
+      areaLabel = t("expeditionBackpack");
+      if (placement?.area === "squad") {
+        actionPosition += `, ${t("deployedTo")} ${formationActionPosition(placement.index)}`;
+      }
+    }
+    el.setAttribute("aria-label", `${cardName}, ${areaLabel}, ${actionPosition}`);
 
     if (sourceArea === "backpack" && findPlacedCard(card.id)) {
       el.classList.add("is-deployed");
@@ -2838,6 +2910,7 @@
   function stopCombatSession() {
     clearScheduledCombatTimers();
     cancelAnimationFrame(animationId);
+    combatSuspendedForBackground = false;
     combatRunSequence++;
     if (!state?.combat) return;
     state.combat.runId = combatRunSequence;
@@ -2851,6 +2924,10 @@
     const timerId = setTimeout(() => {
       combatStepTimers.delete(timerId);
       if (runId !== state.combat.runId || state.combat.resolved) return;
+      if (document.hidden) {
+        scheduleCombatStepCleanup(callback, 80);
+        return;
+      }
       callback();
     }, delay);
     combatStepTimers.add(timerId);
@@ -2860,16 +2937,26 @@
     if (state.combat.ending || state.combat.resolved) return;
     state.combat.ending = true;
     const runId = state.combat.runId;
-    combatEndTimer = setTimeout(() => {
+    const finish = () => {
       combatEndTimer = null;
       if (runId !== state.combat.runId || state.combat.resolved) return;
+      if (document.hidden) {
+        combatEndTimer = setTimeout(finish, 80);
+        return;
+      }
       endBattleRun(result, runId);
-    }, delay);
+    };
+    combatEndTimer = setTimeout(finish, delay);
   }
 
   // Rendering Loop for Auto-Battle Canvas
   function runCombatAnimation() {
     if (!state.combat.animating) return;
+    if (document.hidden) {
+      combatSuspendedForBackground = true;
+      return;
+    }
+    combatSuspendedForBackground = false;
     animationId = requestAnimationFrame(runCombatAnimation);
 
     // Clear Canvas
@@ -3282,12 +3369,12 @@
     if (enemyUnit) actions.push(resolveEnemySlotAction(enemyUnit, Math.max(0, enemySquad.indexOf(enemyUnit))));
     combatLog(actions.filter(Boolean).join("  |  ") || `${locale === "zh-Hant" ? "\u7b2c" : "Slot"} ${slot + 1}`);
 
-    setTimeout(() => {
+    scheduleCombatStepCleanup(() => {
       const before = playerSquad.length + enemySquad.length;
       removeDefeatedUnits(playerSquad, "player");
       removeDefeatedUnits(enemySquad, "enemy");
       if (before !== playerSquad.length + enemySquad.length) playSynth("faint");
-    });
+    }, 0);
   }
 
   function resolveDirectClash(pUnit, eUnit) {
@@ -3527,6 +3614,7 @@
 
   function startNextWaveBattle() {
     clearScheduledCombatTimers();
+    combatSuspendedForBackground = false;
     const runId = ++combatRunSequence;
     state.combat.enemySquad = generateEnemySquad(state.stage, state.round);
     state.combat.step = 0;
@@ -3639,6 +3727,20 @@
   }
 
   // Result Board View
+  function setResultOwnership(active) {
+    [...nodes.gamePanel.children].forEach((child) => {
+      if (child === nodes.resultPanel) return;
+      child.inert = active;
+      if (active) child.setAttribute("aria-hidden", "true");
+      else child.removeAttribute("aria-hidden");
+    });
+  }
+
+  function visibleResultActions() {
+    return [...nodes.resultPanel.querySelectorAll("button:not(:disabled)")]
+      .filter((button) => !button.classList.contains("is-hidden"));
+  }
+
   function openResultScreen(isWin) {
     nodes.gamePanel.classList.remove("is-hidden");
     nodes.gamePanel.classList.add("is-result");
@@ -3660,6 +3762,8 @@
     nodes.resultGrowthText.textContent = t("resultGrowthNext", { atk: bonus.atk, hp: bonus.hp, remaining });
     nodes.nextStageBtn.classList.toggle("is-hidden", !isWin || state.stage >= STAGE_COUNT);
     nodes.skillReportText.innerHTML = `<strong>${t("skillReport")}</strong><br/>${t("skillsLearned")}`;
+    setResultOwnership(true);
+    requestAnimationFrame(() => (isWin && state.stage < STAGE_COUNT ? nodes.nextStageBtn : nodes.retryBtn).focus({ preventScroll: true }));
     
     playSynth(isWin ? "win" : "fail");
     window.WonderAnalytics?.track("expedition_end", { game_id: GAME_ID, stage: state.stage, wave: state.round, cleared: isWin });
@@ -3682,6 +3786,12 @@
     nodes.trainingTabBtn?.addEventListener("click", () => setStageTab("training"));
     nodes.stageRail.addEventListener("scroll", scheduleStageBrowseUpdate, { passive: true });
     nodes.rerollShopBtn.addEventListener("click", rerollShop);
+    nodes.rerollRelicsBtn.addEventListener("keydown", (event) => {
+      if (event.repeat && (event.key === "Enter" || event.key === " ")) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+    });
     nodes.startBattleBtn.addEventListener("click", startBattle);
     nodes.quitRunBtn.addEventListener("click", quitRun);
     
@@ -3706,6 +3816,42 @@
       startExpedition();
     });
     nodes.resultMenuBtn.addEventListener("click", showStageSelection);
+    nodes.resultPanel.addEventListener("keydown", (event) => {
+      if (event.repeat && (event.key === "Enter" || event.key === " ")) {
+        event.preventDefault();
+        event.stopPropagation();
+        return;
+      }
+      if (event.key !== "Tab") return;
+      const actions = visibleResultActions();
+      if (!actions.length) return;
+      const first = actions[0];
+      const last = actions.at(-1);
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    });
+
+    const suspendBackgroundCombat = () => {
+      if (!state.combat.animating) return;
+      combatSuspendedForBackground = true;
+      cancelAnimationFrame(animationId);
+    };
+    const resumeBackgroundCombat = () => {
+      if (!combatSuspendedForBackground || !state.combat.animating || document.hidden) return;
+      combatSuspendedForBackground = false;
+      animationId = requestAnimationFrame(runCombatAnimation);
+    };
+    window.addEventListener("pagehide", suspendBackgroundCombat);
+    window.addEventListener("pageshow", resumeBackgroundCombat);
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) suspendBackgroundCombat();
+      else resumeBackgroundCombat();
+    });
 
     nodes.localeSelect.addEventListener("change", (e) => {
       setLocale(e.target.value);

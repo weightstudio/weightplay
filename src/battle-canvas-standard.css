@@ -153,16 +153,18 @@ body.wp-logical-battle-active.is-rune-playing .battle-log { height: 34px !import
 
 /* Reef Fisher retains the portrait HUD, scene, catch and tension tracks. */
 body.wp-logical-battle-active.reef-fisher-playing .battle-shell[data-wp-logical-battle-canvas] {
+  display: grid !important;
   grid-template-columns: minmax(0, 1fr) !important;
-  grid-template-rows: 56px 366px 64px minmax(176px, 1fr) !important;
+  grid-template-rows: 56px minmax(0, 1fr) 64px 176px !important;
   gap: 6px !important;
   padding: 8px !important;
 }
-body.wp-logical-battle-active.reef-fisher-playing .battle-shell > .hud-row { grid-column: 1 !important; grid-row: 1 !important; grid-template-columns: 48px minmax(0, 1fr) 88px 88px !important; grid-template-rows: 56px !important; }
-body.wp-logical-battle-active.reef-fisher-playing .battle-shell > .play-frame { grid-column: 1 !important; grid-row: 2 !important; width: 100% !important; height: 366px !important; aspect-ratio: var(--reef-arena-ratio, 16 / 9) !important; align-self: start !important; }
+body.wp-logical-battle-active.reef-fisher-playing .battle-shell > :is(.hud-row, .play-frame, .catch-hud, .tension-panel) { position: static !important; inset: auto !important; margin: 0 !important; }
+body.wp-logical-battle-active.reef-fisher-playing .battle-shell > .hud-row { grid-column: 1 !important; grid-row: 1 !important; grid-template-columns: 48px minmax(0, 1fr) 88px 88px !important; grid-template-rows: 56px !important; width: 100% !important; height: 56px !important; }
+body.wp-logical-battle-active.reef-fisher-playing .battle-shell > .play-frame { grid-column: 1 !important; grid-row: 2 !important; width: 100% !important; height: 100% !important; aspect-ratio: var(--reef-arena-ratio, 16 / 9) !important; align-self: stretch !important; }
 body.wp-logical-battle-active.reef-fisher-playing .battle-shell > .play-frame > canvas { width: 100% !important; height: 100% !important; max-height: none !important; aspect-ratio: var(--reef-arena-ratio, 16 / 9) !important; }
 body.wp-logical-battle-active.reef-fisher-playing .battle-shell > .catch-hud { grid-column: 1 !important; grid-row: 3 !important; width: 100% !important; height: 64px !important; }
-body.wp-logical-battle-active.reef-fisher-playing .battle-shell > .tension-panel { grid-column: 1 !important; grid-row: 4 !important; width: 100% !important; height: 176px !important; align-self: center !important; }
+body.wp-logical-battle-active.reef-fisher-playing .battle-shell > .tension-panel { grid-column: 1 !important; grid-row: 4 !important; width: 100% !important; height: 176px !important; align-self: stretch !important; }
 
 /* Relic Hunters keeps arena and inventory stacked in its portrait Canvas. */
 body.wp-logical-battle-active.relic-playing .game-layout[data-wp-logical-battle-canvas] {

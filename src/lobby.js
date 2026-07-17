@@ -739,7 +739,7 @@ function createGameCard(game) {
   const favorite = isFavorite(game.id);
   const recent = isRecent(game.id);
   card.className = `game-card ${isPlayable ? "playable" : "coming-soon"}`;
-  card.dataset.age = game.ages.join(" ");
+  card.dataset.age = (game.ages || []).join(" ");
   card.dataset.topic = (game.categories || []).join("|");
   card.dataset.skill = (game.skills || []).join("|");
   card.dataset.status = game.status;

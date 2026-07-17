@@ -26,6 +26,7 @@
       directHint: "瞄準同色泡泡完成配對", bankHint: "瞄準側牆，讓泡泡反彈", rescueHint: "消除動物周圍的同色泡泡", multiHint: "規劃射擊順序，完成兩組配對", doubleRescueHint: "先觀察路線，再救出兩隻動物",
       rainbowHint: "彩虹泡泡會變成撞到的泡泡顏色", lineHint: "橫掃泡泡會清除命中的整排泡泡", burstHint: "爆破泡泡會清除附近泡泡與障礙", swapHint: "交換泡泡會和撞到的泡泡互換顏色",
       rainbowUsed: "彩虹變色！", lineUsed: "橫掃整排！", burstUsed: "爆破清除！", swapUsed: "顏色交換！"
+      ,blockerGoal: "清除障礙並完成配對", windGoal: "在風中完成反彈配對", guardianGoal: "完成救援檢查", leafHint: "葉球要由相鄰配對一起帶走", honeyHint: "蜂蜜球需要碰兩次才會打開", cloudHint: "雲球被碰到會清除同一排", windHint: "注意風向，泡泡飛行中會偏移", shiftingHint: "每次發射後，泡泡列會左右移動", guardianHint: "綜合運用這一區學到的技巧", leafUsed: "葉片散開了！", honeyUsed: "蜂蜜裂開了！", cloudUsed: "雲層散開了！"
     },
     en: {
       title: "Animal Bubble Safari", tagline: "Aim, bank shots, and rescue bubble animals!", progressLabel: "Safari progress",
@@ -43,6 +44,7 @@
       rainbowHint: "Rainbow matches the color of the bubble it hits", lineHint: "Line Clear removes the entire row it hits", burstHint: "Burst removes nearby bubbles and blockers", swapHint: "Swap exchanges colors with the bubble it hits",
       rainbowUsed: "Rainbow match!", lineUsed: "Row cleared!", burstUsed: "Burst cleared!", swapUsed: "Colors swapped!",
       success: "Rescue Complete!", failed: "Out of bubbles", bounceNeeded: "This level needs a wall bounce!", noMatch: "Look for matching animal bubbles", match: "Match complete!", rescuedNow: "Animal rescued!",
+      blockerGoal: "Clear obstacles and make the match", windGoal: "Complete a bank match in the wind", guardianGoal: "Complete the rescue check", leafHint: "Leaf bubbles drop with an adjacent match", honeyHint: "Honey bubbles need two direct hits", cloudHint: "Hit a cloud to clear its row", windHint: "Watch the wind; flying bubbles drift sideways", shiftingHint: "Bubble rows shift after every shot", guardianHint: "Combine the skills from this region", leafUsed: "Leaves cleared!", honeyUsed: "Honey cracked!", cloudUsed: "Cloud row cleared!",
       focusReport: "Focus · Hand-Eye Coordination", logicReport: "Spatial Judgment · Coordination", rescueReport: "Planning · Logic", locked: "Locked", lockedFeedback: "{stage}: Locked. Complete the previous stage first!", completed: "Complete"
     }
   };
@@ -52,14 +54,32 @@
     { id: 2, title: { "zh-Hant": "峽谷反彈", en: "Canyon Bank" }, goalKey: "bankGoal", skillKey: "bankSkill", hintKey: "bankHint", shots: 7, target: "bank", colors: [3,1,0,2,3,1], stars: [5,2], report: "logicReport" },
     { id: 3, title: { "zh-Hant": "斑馬救援", en: "Zebra Rescue" }, goalKey: "rescueGoal", skillKey: "rescueSkill", hintKey: "rescueHint", shots: 8, target: "rescue", colors: [2,0,3,1,2,0], stars: [6,3], report: "rescueReport" }
     ,{ id: 4, title: { "zh-Hant": "河岸石陣", en: "River Stones" }, goalKey: "multiGoal", skillKey: "directSkill", hintKey: "multiHint", shots: 9, target: "match", requiredMatches: 2, colors: [1,3,0,2,1,3,0], stars: [6,3], report: "focusReport" }
-    ,{ id: 5, title: { "zh-Hant": "樹葉岔路", en: "Leafy Fork" }, goalKey: "bankGoal", skillKey: "bankSkill", hintKey: "bankHint", shots: 9, target: "bank", requiredMatches: 1, colors: [0,2,3,1,0,2,3], stars: [6,3], report: "logicReport" }
+    ,{ id: 5, title: { "zh-Hant": "樹葉岔路", en: "Leafy Fork" }, goalKey: "bankGoal", skillKey: "bankSkill", hintKey: "bankHint", shots: 9, target: "bank", requiredMatches: 1, checkpoint: true, colors: [0,2,3,1,0,2,3], stars: [6,3], report: "logicReport" }
     ,{ id: 6, title: { "zh-Hant": "長頸鹿朋友", en: "Giraffe Friend" }, goalKey: "rescueGoal", skillKey: "rescueSkill", hintKey: "rescueHint", shots: 10, target: "rescue", requiredRescues: 1, colors: [3,1,2,0,3,1,2], stars: [7,4], report: "rescueReport" }
     ,{ id: 7, title: { "zh-Hant": "蜂蜜迷陣", en: "Honey Maze" }, goalKey: "multiGoal", skillKey: "directSkill", hintKey: "multiHint", shots: 10, target: "match", requiredMatches: 2, colors: [2,0,1,3,2,0,1], stars: [7,4], report: "focusReport" }
     ,{ id: 8, title: { "zh-Hant": "雙壁反彈", en: "Twin Bank" }, goalKey: "multiBankGoal", skillKey: "bankSkill", hintKey: "multiHint", shots: 11, target: "bank", requiredMatches: 2, colors: [1,3,2,0,1,3,2,0], stars: [8,4], report: "logicReport" }
     ,{ id: 9, title: { "zh-Hant": "象群接力", en: "Elephant Relay" }, goalKey: "doubleRescueGoal", skillKey: "rescueSkill", hintKey: "rainbowHint", shots: 12, target: "rescue", requiredRescues: 2, colors: [0,2,1,3,0,2,1,3], powers: ["rainbow"], stars: [8,5], report: "rescueReport" }
-    ,{ id: 10, title: { "zh-Hant": "雲端通道", en: "Cloud Passage" }, goalKey: "multiGoal", skillKey: "directSkill", hintKey: "lineHint", shots: 11, target: "match", requiredMatches: 2, colors: [3,0,2,1,3,0,2,1], powers: ["line"], stars: [8,5], report: "focusReport" }
+    ,{ id: 10, title: { "zh-Hant": "雲端通道", en: "Cloud Passage" }, goalKey: "multiGoal", skillKey: "directSkill", hintKey: "lineHint", shots: 11, target: "match", requiredMatches: 2, checkpoint: true, colors: [3,0,2,1,3,0,2,1], powers: ["line"], stars: [8,5], report: "focusReport" }
     ,{ id: 11, title: { "zh-Hant": "河馬救援", en: "Hippo Rescue" }, goalKey: "doubleRescueGoal", skillKey: "rescueSkill", hintKey: "burstHint", shots: 13, target: "rescue", requiredRescues: 2, colors: [2,1,3,0,2,1,3,0], powers: ["burst"], stars: [9,5], report: "rescueReport" }
     ,{ id: 12, title: { "zh-Hant": "森林重聚", en: "Forest Reunion" }, goalKey: "doubleRescueGoal", skillKey: "rescueSkill", hintKey: "swapHint", shots: 14, target: "rescue", requiredRescues: 2, colors: [0,3,1,2,0,3,1,2,0], powers: ["swap"], stars: [10,6], report: "rescueReport" }
+    ,{ id: 13, title: { "zh-Hant": "葉幕入口", en: "Leaf Curtain" }, goalKey: "blockerGoal", skillKey: "bankSkill", hintKey: "leafHint", shots: 11, target: "match", requiredMatches: 2, mechanic: "leaf", colors: [1,2,1,0,3,1,2], stars: [7,4], report: "logicReport" }
+    ,{ id: 14, title: { "zh-Hant": "蜂蜜雙鎖", en: "Honey Double Lock" }, goalKey: "blockerGoal", skillKey: "directSkill", hintKey: "honeyHint", shots: 12, target: "match", requiredMatches: 2, mechanic: "honey", colors: [2,0,2,3,1,2,0,3], stars: [8,4], report: "focusReport" }
+    ,{ id: 15, title: { "zh-Hant": "雲橋檢查", en: "Cloudbridge Check" }, goalKey: "guardianGoal", skillKey: "rescueSkill", hintKey: "cloudHint", shots: 13, target: "rescue", requiredRescues: 2, mechanic: "cloud", checkpoint: true, colors: [3,1,0,2,3,1,0,2], stars: [8,5], report: "rescueReport" }
+    ,{ id: 16, title: { "zh-Hant": "東風草原", en: "Eastwind Grassland" }, goalKey: "windGoal", skillKey: "bankSkill", hintKey: "windHint", shots: 11, target: "bank", requiredMatches: 1, mechanic: "wind-east", wind: 32, colors: [0,2,0,1,3,2,0], stars: [7,4], report: "logicReport" }
+    ,{ id: 17, title: { "zh-Hant": "西風峽谷", en: "Westwind Canyon" }, goalKey: "windGoal", skillKey: "bankSkill", hintKey: "windHint", shots: 12, target: "bank", requiredMatches: 2, mechanic: "wind-west", wind: -38, colors: [3,1,3,2,0,1,3,2], stars: [8,4], report: "logicReport" }
+    ,{ id: 18, title: { "zh-Hant": "漂移葉群", en: "Drifting Leaves" }, goalKey: "blockerGoal", skillKey: "directSkill", hintKey: "shiftingHint", shots: 12, target: "match", requiredMatches: 2, mechanic: "shift-leaf", shiftRows: true, colors: [1,0,2,1,3,0,2,1], stars: [8,5], report: "focusReport" }
+    ,{ id: 19, title: { "zh-Hant": "風中雙救援", en: "Wind Pair Rescue" }, goalKey: "doubleRescueGoal", skillKey: "rescueSkill", hintKey: "windHint", shots: 14, target: "rescue", requiredRescues: 2, mechanic: "wind-rescue", wind: 28, colors: [2,3,1,0,2,3,1,0,2], stars: [9,5], report: "rescueReport" }
+    ,{ id: 20, title: { "zh-Hant": "季風檢查", en: "Monsoon Check" }, goalKey: "guardianGoal", skillKey: "rescueSkill", hintKey: "guardianHint", shots: 15, target: "rescue", requiredRescues: 2, mechanic: "wind-mix", wind: -24, shiftRows: true, checkpoint: true, powers: ["rainbow"], colors: [0,2,1,3,0,2,1,3,0], stars: [10,6], report: "rescueReport" }
+    ,{ id: 21, title: { "zh-Hant": "彩虹葉徑", en: "Rainbow Leaf Trail" }, goalKey: "multiGoal", skillKey: "directSkill", hintKey: "rainbowHint", shots: 12, target: "match", requiredMatches: 3, mechanic: "leaf", powers: ["rainbow"], colors: [1,2,0,3,1,2,0,3], stars: [8,5], report: "focusReport" }
+    ,{ id: 22, title: { "zh-Hant": "橫掃蜂巢", en: "Honey Line" }, goalKey: "blockerGoal", skillKey: "bankSkill", hintKey: "lineHint", shots: 13, target: "match", requiredMatches: 2, mechanic: "honey", powers: ["line"], colors: [2,0,3,1,2,0,3,1], stars: [9,5], report: "logicReport" }
+    ,{ id: 23, title: { "zh-Hant": "雲層爆破", en: "Cloud Burst" }, goalKey: "doubleRescueGoal", skillKey: "rescueSkill", hintKey: "burstHint", shots: 14, target: "rescue", requiredRescues: 2, mechanic: "cloud", powers: ["burst"], colors: [3,1,2,0,3,1,2,0,3], stars: [9,5], report: "rescueReport" }
+    ,{ id: 24, title: { "zh-Hant": "交換迷航", en: "Swap Detour" }, goalKey: "multiBankGoal", skillKey: "bankSkill", hintKey: "swapHint", shots: 14, target: "bank", requiredMatches: 2, mechanic: "shift", shiftRows: true, powers: ["swap"], colors: [0,3,1,2,0,3,1,2], stars: [9,6], report: "logicReport" }
+    ,{ id: 25, title: { "zh-Hant": "力量泡泡檢查", en: "Power Bubble Check" }, goalKey: "guardianGoal", skillKey: "rescueSkill", hintKey: "guardianHint", shots: 16, target: "rescue", requiredRescues: 3, mechanic: "power-mix", checkpoint: true, powers: ["rainbow","line","burst","swap"], colors: [0,3,2,1,0,3,2,1,0,3], stars: [11,7], report: "rescueReport" }
+    ,{ id: 26, title: { "zh-Hant": "葉石交錯", en: "Leafstone Cross" }, goalKey: "blockerGoal", skillKey: "directSkill", hintKey: "leafHint", shots: 13, target: "match", requiredMatches: 3, mechanic: "leaf-stone", colors: [1,0,2,3,1,0,2,3], stars: [8,5], report: "focusReport" }
+    ,{ id: 27, title: { "zh-Hant": "蜂蜜逆風", en: "Honey Headwind" }, goalKey: "windGoal", skillKey: "bankSkill", hintKey: "honeyHint", shots: 15, target: "bank", requiredMatches: 2, mechanic: "honey-wind", wind: -34, colors: [2,3,0,1,2,3,0,1,2], stars: [10,6], report: "logicReport" }
+    ,{ id: 28, title: { "zh-Hant": "雲列漂移", en: "Drifting Cloud Rows" }, goalKey: "blockerGoal", skillKey: "directSkill", hintKey: "shiftingHint", shots: 15, target: "match", requiredMatches: 3, mechanic: "cloud-shift", shiftRows: true, colors: [3,0,1,2,3,0,1,2,3], stars: [10,6], report: "focusReport" }
+    ,{ id: 29, title: { "zh-Hant": "三獸救援", en: "Three Animal Rescue" }, goalKey: "doubleRescueGoal", skillKey: "rescueSkill", hintKey: "guardianHint", shots: 17, target: "rescue", requiredRescues: 3, mechanic: "rescue-mix", wind: 22, powers: ["rainbow","burst"], colors: [0,2,3,1,0,2,3,1,0,2], stars: [11,7], report: "rescueReport" }
+    ,{ id: 30, title: { "zh-Hant": "大草原重聚", en: "Grand Safari Reunion" }, goalKey: "guardianGoal", skillKey: "rescueSkill", hintKey: "guardianHint", shots: 18, target: "rescue", requiredRescues: 3, mechanic: "grand-mix", wind: -20, shiftRows: true, checkpoint: true, powers: ["rainbow","line","burst","swap"], colors: [0,3,1,2,0,3,1,2,0,3,1], stars: [12,8], report: "rescueReport" }
   ];
 
   const dom = Object.fromEntries([
@@ -365,8 +385,33 @@
       11: [[72,64,2],[116,64,1],[160,64,3],[204,64,0],[248,64,1],[292,64,2],[94,102,3],[138,102,2,"blocker"],[182,102,0],[226,102,3,"blocker"],[270,102,0],[94,140,1],[138,140,1,"rescue",4],[182,140,2,"blocker"],[226,140,3,"rescue",1],[270,140,3]],
       12: [[72,64,0],[116,64,3],[160,64,1],[204,64,2],[248,64,3],[292,64,0],[94,102,2,"blocker"],[138,102,0],[182,102,3,"blocker"],[226,102,1],[270,102,2,"blocker"],[72,140,1],[116,140,0,"rescue",0],[160,140,0],[204,140,2,"blocker"],[248,140,3,"rescue",4],[292,140,3]]
     };
+    if (!layouts[id]) {
+      const def = stageDefs[id - 1];
+      const rows = [];
+      for (let row = 0; row < 4; row += 1) {
+        const offset = row % 2 ? 94 : 72;
+        const count = row % 2 ? 5 : 6;
+        for (let col = 0; col < count; col += 1) rows.push([offset + col * 44 + (id - 12), 64 + row * 38, (id + row * 2 + col) % 4]);
+      }
+      rows[0][2] = def.colors[0];
+      rows[1][2] = def.colors[0];
+      const mechanic = def.mechanic || "stone";
+      const blockerKind = mechanic.includes("honey") ? "honey" : mechanic.includes("cloud") ? "cloud" : mechanic.includes("leaf") ? "leaf" : "blocker";
+      const blockerSlots = def.checkpoint ? [7, 9, 12, 14] : [8, 12, 15];
+      const mixedBlockers = mechanic === "power-mix" || mechanic === "grand-mix" ? ["leaf", "honey", "cloud", "blocker"] : null;
+      blockerSlots.forEach((slot, index) => { if (rows[slot]) rows[slot][3] = mixedBlockers?.[index % mixedBlockers.length] || (index === blockerSlots.length - 1 && mechanic.includes("stone") ? "blocker" : blockerKind); });
+      const rescueCount = def.target === "rescue" ? (def.requiredRescues || 1) : 0;
+      for (let index = 0; index < rescueCount; index += 1) {
+        const slot = rows.length - 1 - index * 2;
+        rows[slot][2] = def.colors[(index + 1) % def.colors.length];
+        rows[slot][3] = "rescue";
+        rows[slot][4] = (id + index) % 5;
+      }
+      layouts[id] = rows;
+    }
     return (layouts[id] || layouts[1]).map(([x,y,type,kind,rescueIndex]) => makeBubble(x,y,type,{
-      blocker: kind === "blocker", rescue: kind === "rescue", rescueIndex: rescueIndex || 0
+      blocker: ["blocker", "leaf", "honey", "cloud"].includes(kind), blockerType: kind === "blocker" ? "stone" : kind,
+      blockerHits: kind === "honey" ? 2 : 1, rescue: kind === "rescue", rescueIndex: rescueIndex || 0
     }));
   }
 
@@ -491,6 +536,8 @@
     const steps = Math.max(1, Math.ceil(Math.hypot(p.vx, p.vy) * dt / 4));
     const stepTime = dt / steps;
     for (let step = 0; step < steps && game.projectile; step += 1) {
+      p.vx += (game.def.wind || 0) * stepTime;
+      p.vx = Math.max(-500, Math.min(500, p.vx));
       p.x += p.vx * stepTime; p.y += p.vy * stepTime;
       if (p.x < PROJECTILE_RADIUS) { p.x = PROJECTILE_RADIUS; p.vx = Math.abs(p.vx); p.bounced = true; tone(680,.025); }
       if (p.x > 360 - PROJECTILE_RADIUS) { p.x = 360 - PROJECTILE_RADIUS; p.vx = -Math.abs(p.vx); p.bounced = true; tone(680,.025); }
@@ -517,6 +564,26 @@
 
   function attachProjectile(hit) {
     const p = game.projectile;
+    if (hit?.blocker && (hit.blockerType === "honey" || hit.blockerType === "cloud")) {
+      game.projectile = null;
+      game.shots -= 1;
+      if (hit.blockerType === "honey") {
+        hit.blockerHits -= 1;
+        if (hit.blockerHits <= 0) hit.alive = false;
+        dom.battleMessage.textContent = t("honeyUsed");
+      } else {
+        game.bubbles.filter((bubble) => bubble.alive && Math.abs(bubble.y - hit.y) <= 24).forEach((bubble) => {
+          bubble.alive = false;
+          if (bubble.rescue) game.rescued += 1;
+        });
+        game.matches += 1;
+        dom.battleMessage.textContent = t("cloudUsed");
+      }
+      advanceQueue();
+      checkEnd();
+      updateHud();
+      return;
+    }
     if (p.power === "rainbow" && hit && !hit.blocker) p.type = hit.type;
     if (p.power === "swap" && hit && !hit.blocker) [p.type, hit.type] = [hit.type, p.type];
     const impact = { x:p.x, y:p.y };
@@ -572,8 +639,10 @@
       if (bubble.rescue) game.rescued += 1;
     });
     game.matches += 1;
+    const leaves = game.bubbles.filter((bubble) => bubble.alive && bubble.blockerType === "leaf" && group.some((matched) => Math.hypot(matched.x - bubble.x, matched.y - bubble.y) <= 55));
+    leaves.forEach((leaf) => { leaf.alive = false; });
     game.score += group.length * 120 + (bounced ? 180 : 0) + game.rescued * 300;
-    dom.battleMessage.textContent = game.rescued ? t("rescuedNow") : t("match");
+    dom.battleMessage.textContent = leaves.length ? t("leafUsed") : game.rescued ? t("rescuedNow") : t("match");
     tone(game.rescued ? 920 : 760, .12);
     advanceQueue();
     checkEnd();
@@ -597,6 +666,15 @@
   }
 
   function advanceQueue() {
+    if (game.def.shiftRows) {
+      game.shiftDirection = -(game.shiftDirection || -1);
+      game.bubbles.forEach((bubble) => {
+        if (!bubble.alive) return;
+        const row = Math.round((bubble.y - 64) / 38);
+        const direction = row % 2 ? -game.shiftDirection : game.shiftDirection;
+        bubble.x = Math.max(28, Math.min(332, bubble.x + direction * 14));
+      });
+    }
     game.queue.shift();
     game.powerQueue.shift();
     if (game.queue.length < 2) game.queue.push((game.currentType + game.shots + 2) % 4);
@@ -718,7 +796,7 @@
       const drawX = bubble.settleFromX == null ? bubble.x : bubble.settleFromX + (bubble.x-bubble.settleFromX)*eased;
       const drawY = bubble.settleFromY == null ? bubble.y : bubble.settleFromY + (bubble.y-bubble.settleFromY)*eased;
       ctx.save(); ctx.shadowColor = "rgba(0,0,0,.26)"; ctx.shadowBlur = 5; ctx.shadowOffsetY = 3;
-      if (bubble.blocker) atlasBlocker(ctx,0,drawX,drawY,46);
+      if (bubble.blocker) atlasBlocker(ctx,{ stone:0, leaf:1, honey:2, cloud:3 }[bubble.blockerType] ?? 0,drawX,drawY,46);
       else atlasBubble(ctx,bubble.type,drawX,drawY,46);
       ctx.restore();
       if (bubble.rescue) {
@@ -777,6 +855,8 @@
       aiming: game?.aiming || false, aimX: game?.aimX ?? null, aimY: game?.aimY ?? null,
       projectile: Boolean(game?.projectile), aimPointerId: game?.aimPointerId ?? null,
       lastAttachment: game?.lastAttachment || null,
+      mechanic: game?.def.mechanic || null, wind: game?.def.wind || 0, shiftRows: Boolean(game?.def.shiftRows),
+      blockerTypes: game?.bubbles.filter(bubble => bubble.alive && bubble.blocker).map(bubble => ({ type:bubble.blockerType,hits:bubble.blockerHits,x:bubble.x,y:bubble.y })) || [],
       bubbleTypes: game?.bubbles.filter(bubble => bubble.alive && !bubble.blocker).map(bubble => ({ x:bubble.x, y:bubble.y, type:bubble.type })) || []
     }),
     getStageSettleTrace: () => [...stageSettleTrace],
@@ -786,18 +866,60 @@
         id,
         count: bubbles.length,
         blockers: bubbles.filter(bubble => bubble.blocker).length,
+        blockerTypes: bubbles.filter(bubble => bubble.blocker).map(bubble => bubble.blockerType),
         rescues: bubbles.filter(bubble => bubble.rescue).length,
-        signature: bubbles.map(bubble => `${bubble.x},${bubble.y},${bubble.type},${bubble.blocker ? "b" : bubble.rescue ? `r${bubble.rescueIndex}` : "n"}`).join("|")
+        signature: bubbles.map(bubble => `${bubble.x},${bubble.y},${bubble.type},${bubble.blocker ? `b:${bubble.blockerType}:${bubble.blockerHits}` : bubble.rescue ? `r${bubble.rescueIndex}` : "n"}`).join("|")
       };
+    },
+    startStage,
+    exerciseMechanic(kind) {
+      if (!game) return null;
+      if (kind === "honey" || kind === "cloud") {
+        const blocker = game.bubbles.find((bubble) => bubble.alive && bubble.blockerType === kind);
+        if (!blocker) return null;
+        const before = { alive:blocker.alive, hits:blocker.blockerHits, shots:game.shots, matches:game.matches };
+        game.projectile = { x:blocker.x, y:blocker.y, vx:0, vy:-1, type:game.currentType, power:null, bounced:false };
+        attachProjectile(blocker);
+        return { before, after:{ alive:blocker.alive, hits:blocker.blockerHits, shots:game.shots, matches:game.matches } };
+      }
+      if (kind === "leaf") {
+        const leaf = game.bubbles.find((bubble) => bubble.alive && bubble.blockerType === "leaf");
+        const matches = game.bubbles.filter((bubble) => bubble.alive && !bubble.blocker).slice(0,3);
+        if (!leaf || matches.length < 3) return null;
+        matches.forEach((bubble,index) => { bubble.type=0; bubble.x=leaf.x+(index-1)*20; bubble.y=leaf.y+34; });
+        clearGroup(matches,false);
+        return { leafAlive:leaf.alive };
+      }
+      if (kind === "shift") {
+        const before = game.bubbles.filter((bubble) => bubble.alive).map((bubble) => bubble.x);
+        advanceQueue();
+        return { before, after:game.bubbles.filter((bubble) => bubble.alive).map((bubble) => bubble.x) };
+      }
+      if (kind === "wind") {
+        game.projectile = { x:180,y:430,vx:0,vy:-300,type:0,power:null,bounced:false };
+        const before = game.projectile.vx;
+        updateProjectile(.05);
+        return { before, after:game.projectile?.vx ?? null };
+      }
+      return null;
     }
   };
 
-  document.getElementById("startGame").addEventListener("click", () => { renderStageRail(); showScreen("stage"); });
-  document.getElementById("stageBack").addEventListener("click", () => { showScreen("main"); updateMainProgress(); });
-  document.getElementById("battleBack").addEventListener("click", () => { clearTimeout(resultTimer); game=null; cancelAnimationFrame(animationFrame); renderStageRail(); showScreen("stage"); requestAnimationFrame(() => dom.stageRail.querySelector(".is-selected")?.focus({ preventScroll:true })); });
+  const startGameButton = document.getElementById("startGame");
+  const rejectRepeatedActivation = event => {
+    if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
+  };
+  const focusSelectedStage = () => requestAnimationFrame(() => dom.stageRail.querySelector(".is-selected")?.focus({ preventScroll:true }));
+  startGameButton.addEventListener("keydown", rejectRepeatedActivation);
+  dom.stageRail.addEventListener("keydown", event => {
+    if (event.target.closest(".stage-card")) rejectRepeatedActivation(event);
+  });
+  startGameButton.addEventListener("click", () => { renderStageRail(); showScreen("stage"); focusSelectedStage(); });
+  document.getElementById("stageBack").addEventListener("click", () => { showScreen("main"); updateMainProgress(); requestAnimationFrame(() => startGameButton.focus({ preventScroll:true })); });
+  document.getElementById("battleBack").addEventListener("click", () => { clearTimeout(resultTimer); game=null; cancelAnimationFrame(animationFrame); renderStageRail(); showScreen("stage"); focusSelectedStage(); });
   document.getElementById("retryStage").addEventListener("click", () => startStage(game.def.id));
   document.getElementById("nextStage").addEventListener("click", () => startStage(Math.min(stageDefs.length,game.def.id+1)));
-  document.getElementById("backToMap").addEventListener("click", () => { renderStageRail(); showScreen("stage"); requestAnimationFrame(() => dom.stageRail.querySelector(".is-selected")?.focus({ preventScroll:true })); });
+  document.getElementById("backToMap").addEventListener("click", () => { renderStageRail(); showScreen("stage"); focusSelectedStage(); });
   document.getElementById("openGuide").addEventListener("click", openGuide);
   document.getElementById("closeGuide").addEventListener("click", closeGuide);
   document.getElementById("guideDone").addEventListener("click", closeGuide);

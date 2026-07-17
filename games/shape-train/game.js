@@ -47,6 +47,10 @@
       newBest: "New best: {stars} stars · Previous best: {previous}",
       stage: "Stage {n}",
       stageGoal: "{cars} cars / {tasks} passengers",
+      checkpoint: "Conductor Check",
+      rules: { direct: "Shape Match", outline: "Outline Cars", moving: "Switching Cars", memory: "Remember Passenger", ticket: "Boarding Pass", expert: "Conductor Mix" },
+      selectFirst: "Tap the passenger before choosing a car.",
+      rememberPassenger: "Tap to see the passenger again.",
       prompt: "Send the {shape} to its matching car.",
       correct: "All aboard!",
       wrong: "Try the matching car.",
@@ -100,6 +104,10 @@
       newBest: "新的最佳：{stars} 顆星 · 之前最佳：{previous}",
       stage: "第 {n} 關",
       stageGoal: "{cars} 種車廂 / {tasks} 位乘客",
+      checkpoint: "列車長檢核",
+      rules: { direct: "形狀配對", outline: "輪廓車廂", moving: "換位車廂", memory: "記住乘客", ticket: "上車票", expert: "列車長綜合" },
+      selectFirst: "先點一下形狀乘客，再選擇車廂。",
+      rememberPassenger: "點一下就能再看乘客。",
       prompt: "把{shape}送到相同形狀的車廂。",
       correct: "上車成功！",
       wrong: "找找相同形狀的車廂。",
@@ -124,13 +132,38 @@
     heart: { token: "../../assets/shape-token-heart.svg" },
   };
 
+  const makeStage = (cars, tasks, options = {}) => ({ cars, tasks, rule: "direct", ...options });
   const stages = [
-    { cars: ["circle", "square"], tasks: ["circle", "square", "circle", "square"] },
-    { cars: ["circle", "square", "triangle"], tasks: ["triangle", "circle", "square", "triangle", "circle"] },
-    { cars: ["circle", "square", "triangle", "star"], tasks: ["star", "triangle", "circle", "square", "star", "circle"] },
-    { cars: ["square", "triangle", "star", "diamond"], tasks: ["diamond", "square", "star", "triangle", "diamond", "star"] },
-    { cars: ["circle", "star", "diamond", "heart"], tasks: ["heart", "circle", "diamond", "star", "heart", "diamond"] },
-    { cars: ["circle", "square", "triangle", "star", "diamond", "heart"], tasks: ["circle", "heart", "triangle", "diamond", "square", "star", "heart", "circle"] },
+    makeStage(["circle", "square"], ["circle", "square", "circle", "square"]),
+    makeStage(["circle", "square", "triangle"], ["triangle", "circle", "square", "triangle", "circle"]),
+    makeStage(["circle", "square", "triangle", "star"], ["star", "triangle", "circle", "square", "star", "circle"]),
+    makeStage(["square", "triangle", "star", "diamond"], ["diamond", "square", "star", "triangle", "diamond", "star"]),
+    makeStage(["circle", "star", "diamond", "heart"], ["heart", "circle", "diamond", "star", "heart", "diamond"], { checkpoint: true }),
+    makeStage(["circle", "square", "triangle", "star", "diamond", "heart"], ["circle", "heart", "triangle", "diamond", "square", "star", "heart", "circle"], { rule: "outline", outline: true }),
+    makeStage(["circle", "square", "triangle"], ["square", "triangle", "circle", "square", "triangle"], { rule: "outline", outline: true }),
+    makeStage(["triangle", "star", "diamond"], ["diamond", "triangle", "star", "diamond", "star"], { rule: "outline", outline: true }),
+    makeStage(["circle", "diamond", "heart", "square"], ["heart", "diamond", "circle", "square", "heart", "circle"], { rule: "outline", outline: true }),
+    makeStage(["circle", "square", "triangle", "star", "diamond", "heart"], ["star", "circle", "heart", "triangle", "diamond", "square", "heart", "star"], { rule: "outline", outline: true, checkpoint: true }),
+    makeStage(["circle", "square", "triangle"], ["circle", "triangle", "square", "circle", "square"], { rule: "moving", moving: true }),
+    makeStage(["star", "diamond", "heart"], ["heart", "star", "diamond", "heart", "diamond"], { rule: "moving", moving: true }),
+    makeStage(["circle", "triangle", "star", "heart"], ["triangle", "heart", "circle", "star", "triangle", "heart"], { rule: "moving", moving: true }),
+    makeStage(["square", "star", "diamond", "heart"], ["diamond", "square", "heart", "star", "diamond", "square"], { rule: "moving", moving: true }),
+    makeStage(["circle", "square", "triangle", "star", "diamond", "heart"], ["heart", "circle", "diamond", "triangle", "star", "square", "circle", "heart"], { rule: "moving", moving: true, checkpoint: true }),
+    makeStage(["circle", "square", "triangle"], ["triangle", "square", "circle", "triangle", "circle"], { rule: "memory", memory: true }),
+    makeStage(["star", "diamond", "heart"], ["diamond", "heart", "star", "diamond", "heart"], { rule: "memory", memory: true }),
+    makeStage(["circle", "star", "heart", "square"], ["star", "circle", "heart", "square", "star", "heart"], { rule: "memory", memory: true }),
+    makeStage(["triangle", "star", "diamond", "heart"], ["heart", "triangle", "diamond", "star", "heart", "diamond"], { rule: "memory", memory: true }),
+    makeStage(["circle", "square", "triangle", "star", "diamond", "heart"], ["square", "heart", "circle", "diamond", "triangle", "star", "square", "heart"], { rule: "memory", memory: true, checkpoint: true }),
+    makeStage(["circle", "square", "triangle"], ["circle", "triangle", "square", "triangle", "circle"], { rule: "ticket", requireSelect: true }),
+    makeStage(["star", "diamond", "heart"], ["heart", "diamond", "star", "heart", "star"], { rule: "ticket", requireSelect: true }),
+    makeStage(["circle", "triangle", "diamond", "heart"], ["diamond", "circle", "heart", "triangle", "diamond", "heart"], { rule: "ticket", requireSelect: true }),
+    makeStage(["square", "triangle", "star", "heart"], ["star", "square", "triangle", "heart", "star", "square"], { rule: "ticket", requireSelect: true }),
+    makeStage(["circle", "square", "triangle", "star", "diamond", "heart"], ["triangle", "heart", "square", "diamond", "circle", "star", "heart", "triangle"], { rule: "ticket", requireSelect: true, checkpoint: true }),
+    makeStage(["circle", "square", "triangle", "star"], ["star", "circle", "triangle", "square", "star", "triangle"], { rule: "expert", outline: true, moving: true }),
+    makeStage(["circle", "star", "diamond", "heart"], ["heart", "diamond", "circle", "star", "heart", "circle"], { rule: "expert", memory: true, requireSelect: true }),
+    makeStage(["square", "triangle", "star", "diamond"], ["diamond", "triangle", "square", "star", "diamond", "square"], { rule: "expert", outline: true, requireSelect: true }),
+    makeStage(["circle", "square", "triangle", "star", "diamond"], ["triangle", "diamond", "circle", "star", "square", "diamond", "triangle"], { rule: "expert", moving: true, memory: true }),
+    makeStage(["circle", "square", "triangle", "star", "diamond", "heart"], ["heart", "circle", "diamond", "triangle", "square", "star", "heart", "diamond"], { rule: "expert", outline: true, moving: true, memory: true, requireSelect: true, checkpoint: true }),
   ];
 
   const $ = (id) => document.getElementById(id);
@@ -191,8 +224,39 @@
   let taskLifecycleSuspended = document.hidden;
   let floatingToast = null;
   let floatingToastTimer = 0;
+  let memoryFrame = 0;
+  let memoryToken = 0;
+
+  function cancelMemoryPassenger() {
+    memoryToken += 1;
+    if (memoryFrame) cancelAnimationFrame(memoryFrame);
+    memoryFrame = 0;
+    nodes.passengerBtn.classList.remove("is-memory-hidden");
+  }
+
+  function scheduleMemoryPassenger() {
+    cancelMemoryPassenger();
+    if (!stages[currentStage]?.memory) return;
+    const token = ++memoryToken;
+    let elapsed = 0;
+    let previous = null;
+    const step = (now) => {
+      if (token !== memoryToken || !document.body.classList.contains("shape-playing")) return;
+      if (previous !== null && !document.hidden) elapsed += Math.min(48, now - previous);
+      previous = now;
+      if (elapsed < 1500) {
+        memoryFrame = requestAnimationFrame(step);
+        return;
+      }
+      memoryFrame = 0;
+      nodes.passengerBtn.classList.add("is-memory-hidden");
+      nodes.promptText.textContent = t("rememberPassenger");
+    };
+    memoryFrame = requestAnimationFrame(step);
+  }
 
   function invalidateTaskTransition() {
+    cancelMemoryPassenger();
     taskTransitionToken += 1;
     acceptingInput = false;
     selectedPassenger = false;
@@ -334,6 +398,11 @@
     document.fonts?.ready?.then(() => centerCurrentStage(token));
   }
 
+  function focusCurrentStage() {
+    const available = [...nodes.stageGrid.querySelectorAll(".stage-card:not(.locked)")].at(-1);
+    available?.focus({ preventScroll: true });
+  }
+
   function renderStageGrid() {
     nodes.stageGrid.innerHTML = "";
     stages.forEach((stage, index) => {
@@ -346,7 +415,7 @@
       button.innerHTML = `
         <b class="stage-shapes">${stage.cars.map((shape) => `<img src="${shapes[shape].token}" alt="" />`).join("")}</b>
         <strong>${t("stage", { n: stageNo })}</strong>
-        <em>${t("stageGoal", { cars: stage.cars.length, tasks: stage.tasks.length })}</em>
+        <em>${t(`rules.${stage.rule}`)}${stage.checkpoint ? ` · ${t("checkpoint")}` : ""}</em>
         <span>${"★".repeat(stars[stageNo] || 0)}${"☆".repeat(3 - (stars[stageNo] || 0))}</span>
       `;
       nodes.stageGrid.appendChild(button);
@@ -392,7 +461,7 @@
   window.visualViewport?.addEventListener("resize", updateShapeFrame, { passive: true });
   window.visualViewport?.addEventListener("resize", updateStageFrame, { passive: true });
 
-  function showMenu() {
+  function showMenu(focusStage = true) {
     clearFloatingText();
     invalidateTaskTransition();
     nodes.menuPanel.classList.add("hidden");
@@ -408,15 +477,17 @@
     renderStageGrid();
     updateStageFrame();
     scheduleCurrentStageCenter();
+    if (focusStage) requestAnimationFrame(focusCurrentStage);
   }
 
-  function showMain() {
+  function showMain(focusStart = false) {
     clearFloatingText();
     invalidateTaskTransition();
     stageEntryToken += 1;
     nodes.stagePanel.classList.add("hidden");
     nodes.menuPanel.classList.remove("hidden");
     document.body.classList.remove("wp-standard-stage-page");
+    if (focusStart) nodes.startGameBtn.focus({ preventScroll: true });
   }
 
   function focusPlayPanel() {
@@ -448,6 +519,7 @@
     setResultOwnership(false);
     document.body.classList.remove("wp-standard-stage-page");
     document.body.classList.add("shape-playing");
+    nodes.playPanel.classList.toggle("is-outline", Boolean(stages[index].outline));
     document.querySelector(".shape-game")?.removeAttribute("data-play-viewport");
     renderCars();
     renderTask();
@@ -466,7 +538,9 @@
     nodes.carGrid.innerHTML = "";
     nodes.carGrid.dataset.carCount = String(stage.cars.length);
     nodes.carGrid.style.gridTemplateColumns = `repeat(${Math.min(stage.cars.length, 4)}, minmax(0, 1fr))`;
-    stage.cars.forEach((shape) => {
+    const offset = stage.moving ? currentTask % stage.cars.length : 0;
+    const carOrder = [...stage.cars.slice(offset), ...stage.cars.slice(0, offset)];
+    carOrder.forEach((shape) => {
       const car = document.createElement("button");
       car.className = "train-car";
       car.type = "button";
@@ -504,10 +578,21 @@
     nodes.passengerBtn.classList.remove("wrong");
     selectedPassenger = false;
     markTarget(false);
+    scheduleMemoryPassenger();
   }
 
   function chooseCar(shape, car) {
     if (!acceptingInput) return;
+    const stage = stages[currentStage];
+    if (stage.requireSelect && !selectedPassenger) {
+      mistakes += 1;
+      currentTaskMistakes += 1;
+      feedbackKey = "selectFirst";
+      nodes.feedbackText.textContent = t(feedbackKey);
+      nodes.passengerBtn.classList.add("wrong");
+      playSound("wrong");
+      return;
+    }
     if (!selectedPassenger) {
       selectedPassenger = true;
       markTarget(true);
@@ -542,6 +627,7 @@
         finishStage();
       } else {
         acceptingInput = true;
+        if (stages[currentStage].moving) renderCars();
         renderTask();
       }
     }, 520);
@@ -664,6 +750,11 @@
   function initPassenger() {
     nodes.passengerBtn.addEventListener("click", () => {
       if (!acceptingInput) return;
+      if (nodes.passengerBtn.classList.contains("is-memory-hidden")) {
+        nodes.passengerBtn.classList.remove("is-memory-hidden");
+        nodes.promptText.textContent = t("prompt", { shape: t(`shapes.${currentShape}`) });
+        scheduleMemoryPassenger();
+      }
       selectedPassenger = true;
       markTarget(true);
       playSound("click");
@@ -762,8 +853,15 @@
   }
 
   function bindEvents() {
-    nodes.startGameBtn.addEventListener("click", showMenu);
-    nodes.stageBackBtn.addEventListener("click", showMain);
+    const rejectRepeatedScreenActivation = (event) => {
+      if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
+    };
+    nodes.startGameBtn.addEventListener("keydown", rejectRepeatedScreenActivation);
+    nodes.stageGrid.addEventListener("keydown", (event) => {
+      if (event.target.closest(".stage-card")) rejectRepeatedScreenActivation(event);
+    });
+    nodes.startGameBtn.addEventListener("click", () => showMenu(true));
+    nodes.stageBackBtn.addEventListener("click", () => showMain(true));
     nodes.localeSelect.addEventListener("change", () => {
       locale = nodes.localeSelect.value;
       localStorage.setItem(localeKey, locale);
@@ -776,8 +874,8 @@
         refreshActiveTaskLocale();
       }
     });
-    nodes.backToStagesBtn.addEventListener("click", showMenu);
-    nodes.resultStagesBtn.addEventListener("click", showMenu);
+    nodes.backToStagesBtn.addEventListener("click", () => showMenu(true));
+    nodes.resultStagesBtn.addEventListener("click", () => showMenu(true));
     nodes.retryBtn.addEventListener("click", () => {
       track("game_restart", { level: currentStage + 1, mistakes });
       startStage(currentStage);
@@ -818,4 +916,16 @@
   initStageRail();
   renderStageGrid();
   initLoading();
+  if (new URLSearchParams(location.search).has("smoke")) {
+    window.__shapeTrainSmoke = {
+      stages: stages.map((stage, index) => ({ id: index + 1, cars: [...stage.cars], tasks: [...stage.tasks], rule: stage.rule, checkpoint: Boolean(stage.checkpoint), outline: Boolean(stage.outline), moving: Boolean(stage.moving), memory: Boolean(stage.memory), requireSelect: Boolean(stage.requireSelect) })),
+      unlockAll() {
+        unlocked = stages.length;
+        localStorage.setItem(unlockKey, String(unlocked));
+        showMenu();
+      },
+      startStage(number) { startStage(clamp(Number(number) || 1, 1, stages.length) - 1); },
+      snapshot() { return { stage: currentStage + 1, task: currentTask, shape: currentShape, selectedPassenger, mistakes, acceptingInput }; },
+    };
+  }
 })();

@@ -59,11 +59,31 @@ const dictionary = {
     startGame: "Start Game",
     chooseStage: "Choose Stage",
     stageSetupTitle: "Pick an animal topic",
-    stageSetupText: "Choose an unlocked topic to begin.",
+    stageSetupText: "Choose one of 30 animal investigations. Every fifth stage is a Junior Expert Check.",
     start: "Start",
     locked: "Locked",
     complete: "Complete",
     stageBest: "Best {score} / {total}",
+    stageLabel: "Stage {n}: {chapter}",
+    checkpoint: "Junior Expert Check",
+    chapterPicture: "Picture Introductions",
+    chapterHabitat: "Habitat Homes",
+    chapterFeatures: "Feature Detectives",
+    chapterActions: "Animal Actions",
+    chapterFood: "Food & Families",
+    chapterExpert: "Junior Expert Mix",
+    chapterPictureDesc: "Match clear animal portraits with a familiar feature clue.",
+    chapterHabitatDesc: "Use home and climate clues to identify each animal.",
+    chapterFeaturesDesc: "Recognize silhouettes, body shapes, and visible features.",
+    chapterActionsDesc: "Use movement and behavior clues instead of only appearance.",
+    chapterFoodDesc: "Compare food clues with animal families and body features.",
+    chapterExpertDesc: "Combine two clue types, silhouettes, and four answer choices.",
+    rulePicture: "Picture + Feature",
+    ruleHabitat: "Habitat Clue",
+    ruleSilhouette: "Silhouette Clue",
+    ruleAction: "Behavior Clue",
+    ruleFood: "Food Clue",
+    ruleMixed: "Two-Clue Mix",
     prompt: "Who is this animal?",
     choose: "Choose one",
     correct: "Correct!",
@@ -72,6 +92,7 @@ const dictionary = {
     loading: "Loading",
     loadingFailed: "Load failed. Please refresh and try again.",
     question: "{stage}  {current} / {total}",
+    battleQuestion: "Stage {n} · {current}/{total}",
     winTitle: "Stage Clear!",
     winText: "You answered {score} / {total}.",
     allClearTitle: "All Clear!",
@@ -90,18 +111,6 @@ const dictionary = {
     reportGreat: "Great job! Your animal recognition was strong, and you used the clues well.",
     reportGood: "Good effort! Try again to become more familiar with animal features.",
     reportTry: "Nice practice! Look slowly at the picture and clue, then try again.",
-    stageAfrica: "Stage 1: African Animals",
-    stageAsia: "Stage 2: Asian Animals",
-    stageOceanHome: "Stage 3: Ocean & Home Animals",
-    stageForest: "Stage 4: Forest Friends",
-    stageFarm: "Stage 5: Farm & Night Animals",
-    stageActions: "Stage 6: Animal Actions",
-    stageAfricaDesc: "Meet animals from grasslands, rivers, and warm habitats.",
-    stageAsiaDesc: "Guess animals from forests, mountains, and nearby nature.",
-    stageOceanHomeDesc: "Find animals from the sea and animals kids see often.",
-    stageForestDesc: "Practice animals from forests, bamboo groves, ponds, and trees.",
-    stageFarmDesc: "Review familiar farm animals and animals that move at night.",
-    stageActionsDesc: "Use movement and behavior clues to identify each animal.",
     lion: "Lion",
     hippo: "Hippo",
     snake: "Snake",
@@ -152,6 +161,56 @@ const dictionary = {
     actionOwl: "I fly quietly and hunt after sunset.",
     actionCow: "I spend much of the day slowly chewing grass.",
     actionWhale: "I swim to the surface to breathe through my blowhole.",
+    actionHippo: "I spend hot days cooling in rivers and pools.",
+    actionSnake: "I move by bending my long body from side to side.",
+    actionBear: "I use a powerful nose to search for food.",
+    actionCat: "I clean my fur with my rough tongue.",
+    actionDog: "I sniff, bark, and use my tail to communicate.",
+    actionFox: "I listen for small animals before making a quick pounce.",
+    actionGiraffe: "I spread my front legs to reach water on the ground.",
+    actionZebra: "I stay close to my herd and run when danger approaches.",
+    actionPanda: "I hold bamboo with my front paws while I eat.",
+    actionKoala: "I climb slowly and sleep for much of the day.",
+    habitatLion: "I live in African grasslands and open woodland.",
+    habitatHippo: "I stay near African rivers, lakes, and wetlands.",
+    habitatSnake: "Different kinds of me live in forests, deserts, grasslands, and water.",
+    habitatRabbit: "I shelter in grasslands, woods, farms, and underground burrows.",
+    habitatTurtle: "My relatives live in oceans, ponds, rivers, and on land.",
+    habitatElephant: "I live in African or Asian grasslands and forests.",
+    habitatPenguin: "I live along cool southern coasts and islands.",
+    habitatMonkey: "Many of my relatives live in warm forests and tree canopies.",
+    habitatBear: "Different bears live in forests, mountains, tundra, and icy coasts.",
+    habitatCat: "I often share homes and neighborhoods with people.",
+    habitatDog: "I live with people in many kinds of homes around the world.",
+    habitatFox: "I can live in forests, grasslands, deserts, and even cities.",
+    habitatGiraffe: "I live in African savannas and open woodland.",
+    habitatZebra: "I live in African grasslands and savannas.",
+    habitatPanda: "I live in cool mountain bamboo forests in China.",
+    habitatKoala: "I live in eucalyptus woodland in eastern Australia.",
+    habitatFrog: "I need damp places such as ponds, streams, forests, or wetlands.",
+    habitatWhale: "I live in oceans and travel through wide areas of seawater.",
+    habitatOwl: "Different owls live in forests, grasslands, deserts, and farms.",
+    habitatCow: "I live with people on farms and graze in fields.",
+    dietLion: "I am a meat eater that hunts or shares food with my pride.",
+    dietHippo: "I leave the water to graze mainly on grass.",
+    dietSnake: "I swallow animal food whole instead of chewing it.",
+    dietRabbit: "I eat grasses, leaves, and other plants.",
+    dietTurtle: "Depending on my kind, I may eat plants, insects, or small water animals.",
+    dietElephant: "I eat grasses, leaves, bark, fruit, and roots.",
+    dietPenguin: "I catch fish, krill, and squid in the water.",
+    dietMonkey: "Many of my relatives eat fruit, leaves, seeds, and insects.",
+    dietBear: "Many bears eat a mix of plants, insects, fish, and other food.",
+    dietCat: "I am built to eat animal protein and need a meat-based diet.",
+    dietDog: "I can eat a varied balanced diet prepared for dogs.",
+    dietFox: "I eat small animals, insects, fruit, and other available food.",
+    dietGiraffe: "I use my long tongue to pull leaves from tall trees.",
+    dietZebra: "I spend much of the day grazing on tough grasses.",
+    dietPanda: "Most of my food is bamboo stems and leaves.",
+    dietKoala: "I eat selected eucalyptus leaves.",
+    dietFrog: "I catch insects and other small animals with a quick tongue.",
+    dietWhale: "Different whales filter tiny prey or hunt fish and squid.",
+    dietOwl: "I hunt small animals and swallow many bites whole.",
+    dietCow: "I graze on plants and chew cud to digest tough grass.",
   },
   "zh-Hant": {
     title: "\u52d5\u7269\u5c0f\u535a\u58eb",
@@ -160,11 +219,31 @@ const dictionary = {
     startGame: "\u958b\u59cb\u904a\u6232",
     chooseStage: "\u9078\u64c7\u95dc\u5361",
     stageSetupTitle: "\u9078\u4e00\u500b\u52d5\u7269\u4e3b\u984c",
-    stageSetupText: "\u9078\u64c7\u5df2\u89e3\u9396\u7684\u4e3b\u984c\u958b\u59cb\u7b54\u984c\u3002",
+    stageSetupText: "\u5f9e 30 \u500b\u52d5\u7269\u8abf\u67e5\u4e2d\u9078\u64c7\u5df2\u89e3\u9396\u95dc\u5361\uff0c\u6bcf\u7b2c\u4e94\u95dc\u662f\u5c0f\u5c0f\u5c08\u5bb6\u6aa2\u67e5\u3002",
     start: "\u958b\u59cb",
     locked: "\u672a\u89e3\u9396",
     complete: "\u5df2\u5b8c\u6210",
     stageBest: "\u6700\u4f73 {score} / {total}",
+    stageLabel: "\u7b2c {n} \u95dc\uff1a{chapter}",
+    checkpoint: "\u5c0f\u5c0f\u5c08\u5bb6\u6aa2\u67e5",
+    chapterPicture: "\u5716\u7247\u521d\u8a8d\u8b58",
+    chapterHabitat: "\u68f2\u5730\u4f4f\u8655",
+    chapterFeatures: "\u7279\u5fb5\u5075\u63a2",
+    chapterActions: "\u52d5\u7269\u884c\u52d5",
+    chapterFood: "\u98df\u7269\u8207\u5bb6\u65cf",
+    chapterExpert: "\u5c0f\u5c0f\u5c08\u5bb6\u6df7\u5408",
+    chapterPictureDesc: "\u7528\u6e05\u695a\u52d5\u7269\u5716\u548c\u719f\u6089\u5916\u5f62\u7dda\u7d22\u627e\u7b54\u6848\u3002",
+    chapterHabitatDesc: "\u6839\u64da\u4f4f\u8655\u8207\u6c23\u5019\u7dda\u7d22\u8fa8\u8a8d\u52d5\u7269\u3002",
+    chapterFeaturesDesc: "\u8fa8\u8a8d\u526a\u5f71\u3001\u8eab\u9ad4\u8f2a\u5ed3\u8207\u53ef\u898b\u7279\u5fb5\u3002",
+    chapterActionsDesc: "\u4f7f\u7528\u79fb\u52d5\u8207\u884c\u70ba\u7dda\u7d22\uff0c\u4e0d\u53ea\u770b\u5916\u8868\u3002",
+    chapterFoodDesc: "\u628a\u98df\u7269\u7dda\u7d22\u548c\u52d5\u7269\u5bb6\u65cf\u3001\u8eab\u9ad4\u7279\u5fb5\u4e00\u8d77\u6bd4\u8f03\u3002",
+    chapterExpertDesc: "\u540c\u6642\u4f7f\u7528\u5169\u7a2e\u7dda\u7d22\u3001\u526a\u5f71\u8207\u56db\u500b\u7b54\u6848\u9078\u9805\u3002",
+    rulePicture: "\u5716\u7247\uff0b\u5916\u5f62",
+    ruleHabitat: "\u68f2\u5730\u7dda\u7d22",
+    ruleSilhouette: "\u526a\u5f71\u7dda\u7d22",
+    ruleAction: "\u884c\u70ba\u7dda\u7d22",
+    ruleFood: "\u98df\u7269\u7dda\u7d22",
+    ruleMixed: "\u96d9\u7dda\u7d22\u6df7\u5408",
     prompt: "\u9019\u662f\u4ec0\u9ebc\u52d5\u7269\uff1f",
     choose: "\u9078\u4e00\u500b\u7b54\u6848",
     correct: "\u7b54\u5c0d\u4e86\uff01",
@@ -173,6 +252,7 @@ const dictionary = {
     loading: "\u8f09\u5165\u4e2d",
     loadingFailed: "\u8f09\u5165\u5931\u6557\uff0c\u8acb\u91cd\u65b0\u6574\u7406\u5f8c\u518d\u8a66\u3002",
     question: "{stage}  {current} / {total}",
+    battleQuestion: "\u7b2c {n} \u95dc \u00b7 {current}/{total}",
     winTitle: "\u95dc\u5361\u5b8c\u6210\uff01",
     winText: "\u4f60\u7b54\u5c0d {score} / {total} \u984c\u3002",
     allClearTitle: "\u5168\u90e8\u5b8c\u6210\uff01",
@@ -191,18 +271,6 @@ const dictionary = {
     reportGreat: "\u592a\u68d2\u4e86\uff01\u4f60\u5f88\u6703\u8fa8\u8a8d\u52d5\u7269\uff0c\u4e5f\u6709\u597d\u597d\u4f7f\u7528\u63d0\u793a\u7dda\u7d22\u3002",
     reportGood: "\u5f88\u597d\u7684\u7df4\u7fd2\uff01\u518d\u73a9\u4e00\u6b21\uff0c\u4f60\u6703\u66f4\u719f\u6089\u52d5\u7269\u7279\u5fb5\u3002",
     reportTry: "\u4e0d\u932f\u7684\u7df4\u7fd2\uff01\u6162\u6162\u770b\u5716\u7247\u548c\u7dda\u7d22\uff0c\u518d\u8a66\u4e00\u6b21\u3002",
-    stageAfrica: "\u7b2c 1 \u95dc\uff1a\u975e\u6d32\u52d5\u7269",
-    stageAsia: "\u7b2c 2 \u95dc\uff1a\u4e9e\u6d32\u52d5\u7269",
-    stageOceanHome: "\u7b2c 3 \u95dc\uff1a\u6d77\u6d0b\u8207\u5bb6\u5ead\u52d5\u7269",
-    stageForest: "\u7b2c 4 \u95dc\uff1a\u68ee\u6797\u670b\u53cb",
-    stageFarm: "\u7b2c 5 \u95dc\uff1a\u8fb2\u5834\u8207\u591c\u9593\u52d5\u7269",
-    stageActions: "\u7b2c 6 \u95dc\uff1a\u52d5\u7269\u884c\u52d5",
-    stageAfricaDesc: "\u8a8d\u8b58\u8349\u539f\u3001\u6cb3\u908a\u548c\u6eab\u6696\u68f2\u5730\u7684\u52d5\u7269\u3002",
-    stageAsiaDesc: "\u731c\u731c\u68ee\u6797\u3001\u5c71\u5730\u548c\u5468\u570d\u81ea\u7136\u88e1\u7684\u52d5\u7269\u3002",
-    stageOceanHomeDesc: "\u627e\u51fa\u6d77\u88e1\u7684\u52d5\u7269\uff0c\u4ee5\u53ca\u5b69\u5b50\u5e38\u898b\u7684\u52d5\u7269\u3002",
-    stageForestDesc: "\u7df4\u7fd2\u68ee\u6797\u3001\u7af9\u6797\u3001\u6c60\u5858\u548c\u6a39\u4e0a\u7684\u52d5\u7269\u3002",
-    stageFarmDesc: "\u8907\u7fd2\u719f\u6089\u7684\u8fb2\u5834\u52d5\u7269\uff0c\u548c\u591c\u9593\u6d3b\u52d5\u7684\u52d5\u7269\u3002",
-    stageActionsDesc: "\u6839\u64da\u79fb\u52d5\u548c\u884c\u70ba\u7dda\u7d22\uff0c\u627e\u51fa\u6b63\u78ba\u7684\u52d5\u7269\u3002",
     lion: "\u7345\u5b50",
     hippo: "\u6cb3\u99ac",
     snake: "\u86c7",
@@ -253,77 +321,131 @@ const dictionary = {
     actionOwl: "\u6211\u6703\u5b89\u975c\u98db\u884c\uff0c\u5728\u65e5\u843d\u5f8c\u7375\u98df\u3002",
     actionCow: "\u6211\u6bcf\u5929\u6703\u82b1\u5f88\u591a\u6642\u9593\u6162\u6162\u5480\u56bc\u7267\u8349\u3002",
     actionWhale: "\u6211\u6703\u6e38\u5230\u6c34\u9762\uff0c\u7528\u982d\u9802\u7684\u547c\u5438\u5b54\u63db\u6c23\u3002",
+    actionHippo: "天氣炎熱時，我會待在河流或水池裡降溫。",
+    actionSnake: "我會左右彎曲長長的身體向前移動。",
+    actionBear: "我會用靈敏的鼻子尋找食物。",
+    actionCat: "我會用粗糙的舌頭整理毛髮。",
+    actionDog: "我會聞氣味、吠叫，也會用尾巴傳達訊息。",
+    actionFox: "我會先聽小動物的位置，再快速撲過去。",
+    actionGiraffe: "我要張開前腳，才能低頭喝地面的水。",
+    actionZebra: "我會靠近斑馬群，危險來時一起奔跑。",
+    actionPanda: "我吃東西時會用前掌握住竹子。",
+    actionKoala: "我慢慢爬樹，一天中有很長時間都在睡覺。",
+    habitatLion: "我住在非洲草原與開闊林地。",
+    habitatHippo: "我住在非洲的河流、湖泊與濕地附近。",
+    habitatSnake: "不同種類的我住在森林、沙漠、草原或水域。",
+    habitatRabbit: "我會在草地、林地、農場與地下洞穴躲藏。",
+    habitatTurtle: "我的親戚分別住在海洋、池塘、河流或陸地。",
+    habitatElephant: "我住在非洲或亞洲的草原與森林。",
+    habitatPenguin: "我住在南方較寒冷的海岸與島嶼。",
+    habitatMonkey: "許多猴子住在溫暖森林與樹冠層。",
+    habitatBear: "不同種類的熊住在森林、山地、苔原或冰冷海岸。",
+    habitatCat: "我常和人們一起住在家庭與社區。",
+    habitatDog: "我和人們一起住在世界各地不同的家庭。",
+    habitatFox: "我可以住在森林、草地、沙漠，甚至城市。",
+    habitatGiraffe: "我住在非洲稀樹草原與開闊林地。",
+    habitatZebra: "我住在非洲草原與稀樹草原。",
+    habitatPanda: "我住在中國涼爽的高山竹林。",
+    habitatKoala: "我住在澳洲東部的尤加利樹林。",
+    habitatFrog: "我需要池塘、溪流、森林或濕地等潮濕環境。",
+    habitatWhale: "我住在海洋，會穿越很廣大的海域。",
+    habitatOwl: "不同貓頭鷹住在森林、草地、沙漠或農場。",
+    habitatCow: "我和人們住在農場，也會在田野吃草。",
+    dietLion: "我是吃肉動物，會狩獵或和獅群分享食物。",
+    dietHippo: "我會離開水域，主要到陸地吃草。",
+    dietSnake: "我不會咀嚼，而是把動物性食物整個吞下。",
+    dietRabbit: "我吃青草、葉子與其他植物。",
+    dietTurtle: "依種類不同，我可能吃植物、昆蟲或小型水生動物。",
+    dietElephant: "我吃青草、樹葉、樹皮、水果與根。",
+    dietPenguin: "我會在水中捕捉魚、磷蝦與魷魚。",
+    dietMonkey: "許多猴子吃水果、葉子、種子與昆蟲。",
+    dietBear: "許多熊會吃植物、昆蟲、魚與其他食物。",
+    dietCat: "我的身體適合攝取動物性蛋白質，需要以肉類為主的飲食。",
+    dietDog: "我可以吃為狗準備、營養均衡的多樣食物。",
+    dietFox: "我會吃小動物、昆蟲、水果與環境中可取得的食物。",
+    dietGiraffe: "我用長舌頭拉取高樹上的葉子。",
+    dietZebra: "我一天中有很長時間會啃食較粗硬的草。",
+    dietPanda: "我的大部分食物是竹莖與竹葉。",
+    dietKoala: "我會挑選某些尤加利樹葉來吃。",
+    dietFrog: "我用快速伸出的舌頭捕捉昆蟲與小動物。",
+    dietWhale: "不同鯨魚會濾食小型獵物，或捕捉魚與魷魚。",
+    dietOwl: "我會捕捉小動物，許多食物會整口吞下。",
+    dietCow: "我吃植物，也會反芻來消化較粗硬的草。",
   },
 };
 
 const animals = [
-  { id: "lion", image: "assets/premium/lion.webp", clue: "clueLion" },
-  { id: "hippo", image: "assets/premium/hippo.webp", clue: "clueHippo" },
-  { id: "snake", image: "assets/premium/snake.webp", clue: "clueSnake" },
-  { id: "rabbit", image: "assets/premium/rabbit.webp", clue: "clueRabbit" },
-  { id: "turtle", image: "assets/premium/turtle.webp", clue: "clueTurtle" },
-  { id: "elephant", image: "assets/premium/elephant.webp", clue: "clueElephant" },
-  { id: "penguin", image: "assets/premium/penguin.webp", clue: "cluePenguin" },
-  { id: "monkey", image: "assets/premium/monkey.webp", clue: "clueMonkey" },
-  { id: "bear", image: "assets/premium/bear.webp", clue: "clueBear" },
-  { id: "cat", image: "assets/premium/cat.webp", clue: "clueCat" },
-  { id: "dog", image: "assets/premium/dog.webp", clue: "clueDog" },
-  { id: "fox", image: "assets/premium/fox.webp", clue: "clueFox" },
-  { id: "giraffe", image: "assets/premium/giraffe.webp", clue: "clueGiraffe" },
-  { id: "zebra", image: "assets/premium/zebra.webp", clue: "clueZebra" },
-  { id: "panda", image: "assets/premium/panda.webp", clue: "cluePanda" },
-  { id: "koala", image: "assets/premium/koala.webp", clue: "clueKoala" },
-  { id: "frog", image: "assets/premium/frog.webp", clue: "clueFrog" },
-  { id: "whale", image: "assets/premium/whale.webp", clue: "clueWhale" },
-  { id: "owl", image: "assets/premium/owl.webp", clue: "clueOwl" },
-  { id: "cow", image: "assets/premium/cow.webp", clue: "clueCow" },
+  { id: "lion", image: "assets/premium/lion.webp", clue: "clueLion", action: "actionLion", habitat: "habitatLion", diet: "dietLion" },
+  { id: "hippo", image: "assets/premium/hippo.webp", clue: "clueHippo", action: "actionHippo", habitat: "habitatHippo", diet: "dietHippo" },
+  { id: "snake", image: "assets/premium/snake.webp", clue: "clueSnake", action: "actionSnake", habitat: "habitatSnake", diet: "dietSnake" },
+  { id: "rabbit", image: "assets/premium/rabbit.webp", clue: "clueRabbit", action: "actionRabbit", habitat: "habitatRabbit", diet: "dietRabbit" },
+  { id: "turtle", image: "assets/premium/turtle.webp", clue: "clueTurtle", action: "actionTurtle", habitat: "habitatTurtle", diet: "dietTurtle" },
+  { id: "elephant", image: "assets/premium/elephant.webp", clue: "clueElephant", action: "actionElephant", habitat: "habitatElephant", diet: "dietElephant" },
+  { id: "penguin", image: "assets/premium/penguin.webp", clue: "cluePenguin", action: "actionPenguin", habitat: "habitatPenguin", diet: "dietPenguin" },
+  { id: "monkey", image: "assets/premium/monkey.webp", clue: "clueMonkey", action: "actionMonkey", habitat: "habitatMonkey", diet: "dietMonkey" },
+  { id: "bear", image: "assets/premium/bear.webp", clue: "clueBear", action: "actionBear", habitat: "habitatBear", diet: "dietBear" },
+  { id: "cat", image: "assets/premium/cat.webp", clue: "clueCat", action: "actionCat", habitat: "habitatCat", diet: "dietCat" },
+  { id: "dog", image: "assets/premium/dog.webp", clue: "clueDog", action: "actionDog", habitat: "habitatDog", diet: "dietDog" },
+  { id: "fox", image: "assets/premium/fox.webp", clue: "clueFox", action: "actionFox", habitat: "habitatFox", diet: "dietFox" },
+  { id: "giraffe", image: "assets/premium/giraffe.webp", clue: "clueGiraffe", action: "actionGiraffe", habitat: "habitatGiraffe", diet: "dietGiraffe" },
+  { id: "zebra", image: "assets/premium/zebra.webp", clue: "clueZebra", action: "actionZebra", habitat: "habitatZebra", diet: "dietZebra" },
+  { id: "panda", image: "assets/premium/panda.webp", clue: "cluePanda", action: "actionPanda", habitat: "habitatPanda", diet: "dietPanda" },
+  { id: "koala", image: "assets/premium/koala.webp", clue: "clueKoala", action: "actionKoala", habitat: "habitatKoala", diet: "dietKoala" },
+  { id: "frog", image: "assets/premium/frog.webp", clue: "clueFrog", action: "actionFrog", habitat: "habitatFrog", diet: "dietFrog" },
+  { id: "whale", image: "assets/premium/whale.webp", clue: "clueWhale", action: "actionWhale", habitat: "habitatWhale", diet: "dietWhale" },
+  { id: "owl", image: "assets/premium/owl.webp", clue: "clueOwl", action: "actionOwl", habitat: "habitatOwl", diet: "dietOwl" },
+  { id: "cow", image: "assets/premium/cow.webp", clue: "clueCow", action: "actionCow", habitat: "habitatCow", diet: "dietCow" },
 ];
 
 const animalMap = new Map(animals.map((animal) => [animal.id, animal]));
 
+const makeQuizStage = (chapter, description, rule, questions, clueKinds, options = {}) => ({
+  chapter,
+  description,
+  rule,
+  questions,
+  clueKinds,
+  choiceCount: options.choiceCount || 3,
+  mode: options.mode || "picture",
+  checkpoint: Boolean(options.checkpoint),
+});
+
 const stages = [
-  {
-    name: "stageAfrica",
-    description: "stageAfricaDesc",
-    questions: ["lion", "hippo", "elephant", "giraffe", "zebra", "monkey", "snake", "turtle", "frog", "owl"],
-  },
-  {
-    name: "stageAsia",
-    description: "stageAsiaDesc",
-    questions: ["panda", "elephant", "monkey", "snake", "turtle", "rabbit", "bear", "fox", "owl", "frog"],
-  },
-  {
-    name: "stageOceanHome",
-    description: "stageOceanHomeDesc",
-    questions: ["whale", "penguin", "frog", "turtle", "cow", "cat", "dog", "rabbit", "owl", "fox"],
-  },
-  {
-    name: "stageForest",
-    description: "stageForestDesc",
-    questions: ["bear", "fox", "owl", "frog", "rabbit", "panda", "koala", "monkey", "snake", "turtle"],
-  },
-  {
-    name: "stageFarm",
-    description: "stageFarmDesc",
-    questions: ["cow", "dog", "cat", "rabbit", "owl", "fox", "frog", "turtle", "penguin", "whale"],
-  },
-  {
-    name: "stageActions",
-    description: "stageActionsDesc",
-    questions: ["lion", "elephant", "penguin", "monkey", "rabbit", "turtle", "frog", "owl", "cow", "whale"],
-    clues: {
-      lion: "actionLion",
-      elephant: "actionElephant",
-      penguin: "actionPenguin",
-      monkey: "actionMonkey",
-      rabbit: "actionRabbit",
-      turtle: "actionTurtle",
-      frog: "actionFrog",
-      owl: "actionOwl",
-      cow: "actionCow",
-      whale: "actionWhale",
-    },
-  },
+  makeQuizStage("chapterPicture", "chapterPictureDesc", "rulePicture", ["lion", "hippo", "elephant", "giraffe", "zebra", "monkey", "snake", "turtle", "frog", "owl"], ["clue"]),
+  makeQuizStage("chapterPicture", "chapterPictureDesc", "rulePicture", ["panda", "elephant", "monkey", "snake", "turtle", "rabbit", "bear", "fox", "owl", "frog"], ["clue"]),
+  makeQuizStage("chapterPicture", "chapterPictureDesc", "rulePicture", ["whale", "penguin", "frog", "turtle", "cow", "cat", "dog", "rabbit", "owl", "fox"], ["clue"]),
+  makeQuizStage("chapterPicture", "chapterPictureDesc", "rulePicture", ["bear", "fox", "owl", "frog", "rabbit", "panda", "koala", "monkey", "snake", "turtle"], ["clue"]),
+  makeQuizStage("chapterPicture", "chapterPictureDesc", "ruleMixed", ["cow", "dog", "cat", "rabbit", "owl", "fox", "frog", "turtle", "penguin", "whale"], ["clue", "action"], { choiceCount: 4, checkpoint: true }),
+
+  makeQuizStage("chapterHabitat", "chapterHabitatDesc", "ruleHabitat", ["lion", "zebra", "giraffe", "hippo", "elephant", "penguin", "panda", "koala", "whale", "frog"], ["habitat"], { mode: "mystery" }),
+  makeQuizStage("chapterHabitat", "chapterHabitatDesc", "ruleHabitat", ["fox", "bear", "owl", "rabbit", "snake", "monkey", "turtle", "cow", "cat", "dog"], ["habitat"], { mode: "mystery" }),
+  makeQuizStage("chapterHabitat", "chapterHabitatDesc", "ruleHabitat", ["penguin", "whale", "turtle", "frog", "hippo", "lion", "zebra", "giraffe", "panda", "koala"], ["habitat"], { mode: "mystery" }),
+  makeQuizStage("chapterHabitat", "chapterHabitatDesc", "ruleHabitat", ["cat", "dog", "cow", "fox", "owl", "bear", "rabbit", "snake", "elephant", "monkey"], ["habitat"], { mode: "mystery" }),
+  makeQuizStage("chapterHabitat", "chapterHabitatDesc", "ruleMixed", ["koala", "panda", "frog", "whale", "penguin", "elephant", "lion", "fox", "bear", "owl"], ["habitat", "clue"], { mode: "mystery", choiceCount: 4, checkpoint: true }),
+
+  makeQuizStage("chapterFeatures", "chapterFeaturesDesc", "ruleSilhouette", ["giraffe", "zebra", "elephant", "lion", "hippo", "rabbit", "turtle", "snake", "owl", "frog"], ["clue"], { mode: "silhouette" }),
+  makeQuizStage("chapterFeatures", "chapterFeaturesDesc", "ruleSilhouette", ["panda", "koala", "bear", "monkey", "fox", "cat", "dog", "cow", "penguin", "whale"], ["clue"], { mode: "silhouette" }),
+  makeQuizStage("chapterFeatures", "chapterFeaturesDesc", "ruleSilhouette", ["snake", "turtle", "frog", "rabbit", "owl", "penguin", "whale", "giraffe", "zebra", "hippo"], ["clue"], { mode: "silhouette" }),
+  makeQuizStage("chapterFeatures", "chapterFeaturesDesc", "ruleSilhouette", ["dog", "fox", "cat", "bear", "panda", "koala", "monkey", "cow", "lion", "elephant"], ["clue"], { mode: "silhouette" }),
+  makeQuizStage("chapterFeatures", "chapterFeaturesDesc", "ruleMixed", ["lion", "panda", "giraffe", "penguin", "turtle", "owl", "elephant", "koala", "fox", "frog"], ["clue", "habitat"], { mode: "silhouette", choiceCount: 4, checkpoint: true }),
+
+  makeQuizStage("chapterActions", "chapterActionsDesc", "ruleAction", ["lion", "elephant", "penguin", "monkey", "rabbit", "turtle", "frog", "owl", "cow", "whale"], ["action"]),
+  makeQuizStage("chapterActions", "chapterActionsDesc", "ruleAction", ["hippo", "snake", "bear", "cat", "dog", "fox", "giraffe", "zebra", "panda", "koala"], ["action"]),
+  makeQuizStage("chapterActions", "chapterActionsDesc", "ruleAction", ["rabbit", "fox", "owl", "penguin", "frog", "snake", "monkey", "koala", "cat", "dog"], ["action"]),
+  makeQuizStage("chapterActions", "chapterActionsDesc", "ruleAction", ["elephant", "giraffe", "zebra", "lion", "hippo", "bear", "panda", "turtle", "cow", "whale"], ["action"]),
+  makeQuizStage("chapterActions", "chapterActionsDesc", "ruleMixed", ["koala", "panda", "fox", "owl", "frog", "penguin", "rabbit", "elephant", "lion", "whale"], ["action", "habitat"], { choiceCount: 4, checkpoint: true }),
+
+  makeQuizStage("chapterFood", "chapterFoodDesc", "ruleFood", ["lion", "hippo", "elephant", "giraffe", "zebra", "panda", "koala", "penguin", "frog", "owl"], ["diet"], { choiceCount: 4 }),
+  makeQuizStage("chapterFood", "chapterFoodDesc", "ruleFood", ["snake", "rabbit", "turtle", "monkey", "bear", "cat", "dog", "fox", "whale", "cow"], ["diet"], { choiceCount: 4 }),
+  makeQuizStage("chapterFood", "chapterFoodDesc", "ruleFood", ["panda", "giraffe", "zebra", "elephant", "cow", "rabbit", "koala", "hippo", "monkey", "bear"], ["diet"], { choiceCount: 4 }),
+  makeQuizStage("chapterFood", "chapterFoodDesc", "ruleFood", ["penguin", "whale", "frog", "owl", "snake", "fox", "cat", "dog", "turtle", "lion"], ["diet"], { choiceCount: 4 }),
+  makeQuizStage("chapterFood", "chapterFoodDesc", "ruleMixed", ["elephant", "penguin", "monkey", "bear", "fox", "giraffe", "panda", "frog", "owl", "cow"], ["diet", "clue"], { choiceCount: 4, checkpoint: true }),
+
+  makeQuizStage("chapterExpert", "chapterExpertDesc", "ruleMixed", ["lion", "panda", "penguin", "frog", "rabbit", "elephant", "owl", "fox", "turtle", "whale"], ["habitat", "action"], { mode: "mystery", choiceCount: 4 }),
+  makeQuizStage("chapterExpert", "chapterExpertDesc", "ruleMixed", ["giraffe", "zebra", "koala", "bear", "monkey", "snake", "cat", "dog", "cow", "hippo"], ["clue", "diet"], { mode: "silhouette", choiceCount: 4 }),
+  makeQuizStage("chapterExpert", "chapterExpertDesc", "ruleMixed", ["whale", "penguin", "turtle", "frog", "hippo", "elephant", "lion", "giraffe", "zebra", "owl"], ["habitat", "diet"], { mode: "mystery", choiceCount: 4 }),
+  makeQuizStage("chapterExpert", "chapterExpertDesc", "ruleMixed", ["panda", "koala", "bear", "fox", "rabbit", "monkey", "cat", "dog", "cow", "snake"], ["action", "diet"], { mode: "silhouette", choiceCount: 4 }),
+  makeQuizStage("chapterExpert", "chapterExpertDesc", "ruleMixed", ["lion", "elephant", "giraffe", "zebra", "panda", "koala", "penguin", "whale", "frog", "owl"], ["clue", "habitat", "action"], { mode: "silhouette", choiceCount: 4, checkpoint: true }),
 ];
 
 const state = {
@@ -602,8 +724,9 @@ function renderStageCards() {
       button.disabled = !isUnlocked;
       button.innerHTML = `
         <span>${isComplete ? t("complete") : isUnlocked ? t("start") : t("locked")}</span>
-        <strong>${t(stage.name)}</strong>
+        <strong>${stageTitle(stage, index)}</strong>
         <small>${t(stage.description)}</small>
+        <b class="stage-rule">${t(stage.rule)}${stage.checkpoint ? ` · ${t("checkpoint")}` : ""}</b>
         ${isComplete ? `<em>${t("stageBest", { score: bestScore, total })} ${stars(scoreStars(bestScore, total))}</em>` : ""}
       `;
       button.addEventListener("click", () => startStage(index));
@@ -702,16 +825,24 @@ function currentStage() {
   return stages[state.stageIndex];
 }
 
+function stageTitle(stage = currentStage(), index = state.stageIndex) {
+  return t("stageLabel", { n: index + 1, chapter: t(stage.chapter) });
+}
+
 function currentAnimal() {
   return animalMap.get(currentStage().questions[state.questionIndex]);
 }
 
-function currentClueKey(animal = currentAnimal()) {
-  return currentStage().clues?.[animal.id] || animal.clue;
+function currentClueKeys(animal = currentAnimal()) {
+  return currentStage().clueKinds.map((kind) => animal[kind] || animal.clue);
 }
 
-function buildChoices(answer) {
-  const others = shuffle(animals.filter((animal) => animal.id !== answer.id)).slice(0, 2);
+function currentClueText(animal = currentAnimal()) {
+  return currentClueKeys(animal).map((key) => t(key)).join(" · ");
+}
+
+function buildChoices(answer, count = 3) {
+  const others = shuffle(animals.filter((animal) => animal.id !== answer.id)).slice(0, Math.max(2, count - 1));
   return shuffle([answer, ...others]);
 }
 
@@ -724,20 +855,23 @@ function renderQuestion(options = {}) {
   const animal = currentAnimal();
   const total = stage.questions.length;
   state.answered = false;
-  levelText.textContent = t("question", {
-    stage: t(stage.name),
+  levelText.textContent = t("battleQuestion", {
+    n: state.stageIndex + 1,
     current: state.questionIndex + 1,
     total,
   });
   levelFill.style.width = `${(state.questionIndex / total) * 100}%`;
   animalImage.src = animal.image;
   animalImage.alt = t(animal.id);
-  clueText.textContent = t(currentClueKey(animal));
+  animalImage.classList.toggle("is-mystery", stage.mode === "mystery");
+  animalImage.classList.toggle("is-silhouette", stage.mode === "silhouette");
+  quizStage.dataset.rule = t(stage.rule);
+  clueText.textContent = currentClueText(animal);
   feedbackText.textContent = t("choose");
   choiceGrid.setAttribute("aria-busy", "false");
 
   choiceGrid.replaceChildren(
-    ...buildChoices(animal).map((choice) => {
+    ...buildChoices(animal, stage.choiceCount).map((choice) => {
       const button = document.createElement("button");
       button.type = "button";
       button.textContent = t(choice.id);
@@ -792,7 +926,7 @@ function chooseAnswer(choiceId, answerId, button) {
   feedbackText.textContent = answeredAnimal
     ? t("animalNote", {
         animal: t(answeredAnimal.id),
-        clue: t(currentClueKey(answeredAnimal)),
+        clue: currentClueText(answeredAnimal),
       })
     : t("correct");
   button.classList.add("correct");
@@ -918,6 +1052,14 @@ document.addEventListener("visibilitychange", () => {
   if (document.hidden) suspendQuizTasks();
   else resumeQuizTasks();
 });
+const rejectRepeatedScreenActivation = (event) => {
+  if (!event.repeat || !["Enter", " "].includes(event.key)) return;
+  event.preventDefault();
+};
+startGameBtn.addEventListener("keydown", rejectRepeatedScreenActivation);
+stageGrid.addEventListener("keydown", (event) => {
+  if (event.target.closest("button")) rejectRepeatedScreenActivation(event);
+});
 startGameBtn.addEventListener("click", showStageSelect);
 stageBackBtn.addEventListener("click", showMain);
 backToStagesBtn.addEventListener("click", () => showStageSelect(state.stageIndex));
@@ -925,6 +1067,11 @@ choiceGrid.addEventListener("keydown", (event) => {
   if (!event.repeat || !["Enter", " "].includes(event.key) || !event.target.closest("button")) return;
   event.preventDefault();
 });
+resultPanel.addEventListener("keydown", (event) => {
+  if (!event.repeat || !["Enter", " "].includes(event.key)) return;
+  event.preventDefault();
+  event.stopImmediatePropagation();
+}, true);
 
 window.addEventListener("wonder:locale-change", () => {
   if (!state.ready) {
@@ -966,6 +1113,28 @@ stageSelectBtn.addEventListener("click", () => {
   window.WonderSound?.play("click");
   showStageSelect(state.stageIndex);
 });
+
+if (new URLSearchParams(window.location.search).get("smoke") === "1") {
+  window.__animalQuizSmoke = {
+    stages: stages.map((stage, index) => ({
+      id: index + 1,
+      chapter: stage.chapter,
+      rule: stage.rule,
+      clueKinds: [...stage.clueKinds],
+      choiceCount: stage.choiceCount,
+      mode: stage.mode,
+      checkpoint: stage.checkpoint,
+      questions: [...stage.questions],
+    })),
+    unlockAll: () => {
+      state.unlockedStage = stages.length - 1;
+      localStorage.setItem(UNLOCK_KEY, String(state.unlockedStage));
+      showStageSelect(state.unlockedStage);
+    },
+    startStage: (stageNo) => startStage(Math.max(0, Math.min(stages.length - 1, Number(stageNo) - 1))),
+    state: () => ({ ...state, stage: state.stageIndex + 1, clues: currentClueKeys().map((key) => t(key)) }),
+  };
+}
 
 renderStaticText();
 initStageRail();

@@ -9,17 +9,17 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="robots" content="index,follow" />
-    <meta name="description" content="Guide cute animals home in Animal Rescue Trail, a gentle WeightPlay puzzle game for kids, families, and older players." />
+    <meta name="description" content="Guide animals through 30 saved route puzzles with fruit goals, mud, keys, gates, fragile paths, and six Rescue Checkpoints." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Animal Rescue Trail - Animal Puzzle Game" />
-    <meta property="og:description" content="Guide cute animals home in Animal Rescue Trail, a gentle WeightPlay puzzle game for kids, families, and older players." />
+    <meta property="og:description" content="Guide animals through 30 saved route puzzles with fruit goals, mud, keys, gates, fragile paths, and six Rescue Checkpoints." />
     <meta property="og:url" content="https://weightplay.com/games/animal-rescue/" />
     <meta property="og:image" content="https://weightplay.com/assets/animal-rescue-cover.png" />
     <meta name="twitter:card" content="summary_large_image" />
     <title>Animal Rescue Trail - WeightPlay</title>
     <link rel="canonical" href="https://weightplay.com/games/animal-rescue/" />
-    <link rel="stylesheet" href="style.css?v=20260716-keyboard-route1" data-wp-stage-standard data-wp-battle-standard />
+    <link rel="stylesheet" href="style.css?v=20260717-depth30" data-wp-stage-standard data-wp-battle-standard />
     <script data-wp-stage-standard>/* Animal Rescue owns its native Kids Stage rail. */</script>
     <script data-wp-battle-standard>/* Animal Rescue owns its native Kids Battle Canvas. */</script>
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
@@ -31,7 +31,7 @@
               "alternateName": "\u52d5\u7269\u56de\u5bb6\u8def",
               "url": "https://weightplay.com/games/animal-rescue/",
               "image": "https://weightplay.com/assets/animal-rescue-cover.png",
-              "description": "Guide cute animals home in Animal Rescue Trail, a gentle WeightPlay puzzle game for kids, families, and older players.",
+              "description": "Guide animals through 30 saved route puzzles with fruit goals, mud, keys, gates, fragile paths, and six Rescue Checkpoints.",
               "applicationCategory": "Game",
               "operatingSystem": "Web browser",
               "publisher": {
@@ -54,7 +54,7 @@
               "audience": {
                       "@type": "Audience",
                       "audienceType": "Kids and families",
-                      "suggestedMinAge": 3
+                      "suggestedMinAge": 6
               },
               "learningResourceType": "Skill practice through play",
               "educationalUse": "Practice Logic, Problem Solving, Animal Knowledge through family-friendly browser gameplay."
@@ -82,7 +82,7 @@
       </header>
 
       <section id="hud" class="hud hidden">
-        <div><span id="stageLabel">Stage</span><strong id="stageText">1 / 12</strong></div>
+        <div><span id="stageLabel">Stage</span><strong id="stageText">1 / 30</strong></div>
         <div><span id="moveLabel">Moves</span><strong id="moveText">0</strong></div>
         <div><span id="fruitLabel">Fruit</span><strong id="fruitText">0 / 2</strong></div>
       </section>
@@ -139,21 +139,46 @@
         <div class="game-info-title">
           <span class="game-info-kicker">WeightPlay Original Game Guide</span>
           <h2>Animal Rescue Trail - How to Play</h2>
-          <p>Animal Rescue Trail is a gentle path puzzle where players guide animals home. Each stage asks the player to choose safe routes and think through simple choices. It is designed as a flagship animal game for family-friendly play and channel promotion.</p>
+          <p>Animal Rescue Trail is a 30-stage, no-timer route puzzle. Move one neighboring tile at a time, collect fruit, avoid rock and water barriers, and guide each animal to its home. Later chapters add mud, trail keys, locked gates, fragile one-use paths, and six saved Rescue Checkpoints.</p>
         </div>
       </div>
       <div class="game-info-sections">
         <div class="game-info-section">
+          <h3>The Missing Trail Signs</h3>
+          <p>The six paths around Homecoming Valley once used painted fruit signs to guide visiting animals from the forest, meadow, river, ridge, farms, and festival grounds. A week of wind and rain scattered those signs, covered shortcuts with mud, washed away stepping stones, and locked several garden gates. Lion Cub, Panda, Elephant, Turtle, Rabbit, Penguin, Fox, Monkey, Koala, Giraffe, Dolphin, and Cow are now waiting at different trail entrances.</p>
+          <p>You play as the valley's junior route keeper. Each board is a small map of one animal's trip. Fruit marks useful stops and supplies for the walk; home is the destination; rocks and water define the safe corridors. Every fifth trail is a Rescue Checkpoint where the keeper must combine the lesson from that region. Completing Trail 30 means the final Penguin reaches the Homecoming Festival with the route system restored for everyone.</p>
+        </div>
+        <div class="game-info-section">
           <h3>How to Play</h3>
-          <ol><li>Look at the animal and the route choices.</li><li>Choose a safe path.</li><li>Help the animal reach home.</li><li>Earn stars by making careful choices.</li></ol>
+          <ol><li>Choose an unlocked trail from the horizontal Stage rail.</li><li>Tap a highlighted neighboring tile, or use one arrow-key press, to move one square.</li><li>Collect fruit and route keys while avoiding rocks, water, closed gates, and unusable fragile tiles.</li><li>Reach home after satisfying the current trail's required objectives.</li><li>Use Undo to reverse one move or Reset to rebuild the current route, then earn stars and unlock the next trail.</li></ol>
+          <p>The HUD shows the trail number, weighted move total, and collected fruit. Normal ground costs one move. Sticky Mud costs two, so the shortest route in squares may not be the best scoring route. A clear always saves progress. Three stars require all fruit within the authored move goal; two stars reward nearly complete fruit collection; one star still recognizes reaching home and keeps the journey moving.</p>
+        </div>
+        <div class="game-info-section">
+          <h3>Route Rules and Objects</h3>
+          <ul><li><strong>Rock and Water:</strong> permanent barriers. They never receive the next-step highlight and cannot be entered.</li><li><strong>All Fruit:</strong> on marked trails, home refuses entry until every fruit has been collected. The animal may continue exploring and return later.</li><li><strong>Sticky Mud:</strong> passable terrain that adds two moves instead of one. It creates a choice between a direct muddy shortcut and a longer clean path.</li><li><strong>Trail Key and Gate:</strong> collect the golden key before entering its matching gate. An early gate tap gives a clear hint and preserves the route.</li><li><strong>Fragile Path:</strong> a fragile square can be used once. After the animal leaves, it crumbles and cannot be entered again unless Undo removes that visit or Reset starts over.</li></ul>
+          <p>Undo recomputes fruit, keys, opened gates, fragile visits, and weighted move cost from the retained route. It does not merely move the animal image backward. This keeps planning information truthful after a mistake.</p>
+        </div>
+        <div class="game-info-section">
+          <h3>Thirty Trails in Six Regions</h3>
+          <p><strong>Forest Steps, 1-5:</strong> introduces neighboring movement, barriers, fruit detours, and the first all-fruit checkpoint. <strong>Meadow Detours, 6-10:</strong> adds Sticky Mud and asks whether a cleaner route saves weighted moves. <strong>River Keys, 11-15:</strong> places keys and gates on maps with water corridors, ending with a gate plus all-fruit checkpoint.</p>
+          <p><strong>Fragile Ridge, 16-20:</strong> introduces one-use path squares, then combines a fragile corridor with a key gate. <strong>Harvest Routes, 21-25:</strong> makes fruit mandatory while mixing mud, gates, and fragile choices. <strong>Homecoming Festival, 26-30:</strong> combines the learned systems. The final Penguin route requires all three fruit, uses mud, includes a key gate, and contains fragile squares around the icy barriers.</p>
+        </div>
+        <div class="game-info-section">
+          <h3>Strategy Tips</h3>
+          <ul><li>Before the first move, trace a route that includes required fruit and still leaves a legal approach to home.</li><li>Count mud as two moves when comparing paths. A one-square shortcut through mud may tie a two-square clean detour.</li><li>When a gate is visible, locate its key first and make sure the route from key to gate is not cut off by water.</li><li>Do not enter a fragile square simply because it is highlighted. Decide which side you want to leave from, because returning is not allowed.</li><li>Use Undo for a recent wrong turn; use Reset when the entire route plan needs to change.</li><li>Replaying an earlier trail can improve its stars without removing later unlocks or lowering the stored best.</li></ul>
+        </div>
+        <div class="game-info-section">
+          <h3>Design Notes</h3>
+          <p>The game uses a fixed 5 by 5 board because every square can remain large on a phone while the full route stays visible. Movement is discrete rather than joystick-based, so a tap, mouse click, or arrow press always represents the same decision. The single current tile is the keyboard tab stop, repeated held arrow events are ignored, and focus follows the animal after every accepted move, Undo, Reset, or locale change.</p>
+          <p>Difficulty grows by changing route logic rather than adding speed. Mud changes cost, gates change order, fragile paths change reversibility, and required fruit changes when home is valid. The 390 by 788 Kids canvas keeps Stage, Battle, and Result stable across devices. There is no timer, combat, leaderboard, account, purchase, or advertising request; the challenge comes from reading a small map and committing to a route.</p>
         </div>
         <div class="game-info-section game-info-parent">
           <h3>Parent Note</h3>
-          <p>This game may help children practice simple logic, animal familiarity, and problem solving. It is gentle and designed for short family sessions.</p>
+          <p>Animal Rescue Trail is intended for ages 6+ and family play. It may support simple route planning, attention, and flexible problem solving, but stars describe only local game performance. They are not an intelligence test, school grade, diagnosis, developmental assessment, or comparison with other children. Progress stays in this browser, and the Kids build has no ads, login, chat, or purchase request.</p>
         </div>
         <div class="game-info-section">
           <h3>Frequently Asked Questions</h3>
-          <dl><div><dt>What age is Animal Rescue Trail for?</dt><dd>It supports 3+, 5+, and family play.</dd></div><div><dt>Is reading required?</dt><dd>The game is designed to rely heavily on pictures and choices.</dd></div><div><dt>What skills does it practice?</dt><dd>It practices simple route planning and animal knowledge.</dd></div></dl>
+          <dl><div><dt>How many trails are included?</dt><dd>There are 30 trails in six regions, with Rescue Checkpoints at 5, 10, 15, 20, 25, and 30.</dd></div><div><dt>Do I always need every fruit?</dt><dd>Marked All Fruit trails require every fruit before home opens. Other trails allow a clear with fewer fruit but award fewer stars.</dd></div><div><dt>Why did mud add two moves?</dt><dd>Sticky Mud uses a weighted cost of two, so route efficiency is not always the same as square count.</dd></div><div><dt>How do keys and gates work?</dt><dd>Collect the golden route key, then enter its matching gate. A closed gate never consumes a move.</dd></div><div><dt>Can I cross a fragile tile twice?</dt><dd>No. It crumbles after use, but Undo or Reset can restore it by removing that visit.</dd></div><div><dt>Is progress saved?</dt><dd>Unlocked trails and best stars are stored locally in this browser.</dd></div><div><dt>Can I play on a phone or with a keyboard?</dt><dd>Yes. Touch, pointer, and single arrow-key presses use the same route rules.</dd></div><div><dt>Is the game free and ad-free?</dt><dd>Yes. It requires no account or purchase, and the Kids version makes no advertising request.</dd></div></dl>
         </div>
       </div>
     </section>
@@ -168,7 +193,7 @@
     <script src="../../src/edge-guard.js?v=20260710-mobile-play-shell2"></script>
     <script src="../../src/i18n.js?v=20260703-i18n-clean1"></script>
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
-    <script src="game.js?v=20260716-keyboard-route1"></script>
+    <script src="game.js?v=20260717-depth30"></script>
     <script>
       (() => {
         const loadGameInfo = () => {

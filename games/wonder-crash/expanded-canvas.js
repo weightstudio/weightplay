@@ -258,10 +258,15 @@
     });
 
     pausePanel.addEventListener("keydown", (event) => {
+      if (event.repeat && (event.key === "Enter" || event.key === " ")) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        return;
+      }
       if (event.key !== "Escape" || pausePanel.classList.contains("hidden")) return;
       event.preventDefault();
       resumeButton.click();
-    });
+    }, true);
 
     const pauseHiddenBattle = () => {
       if (!document.body.classList.contains("wonder-playing")

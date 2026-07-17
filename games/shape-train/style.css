@@ -426,6 +426,27 @@ select {
   pointer-events: none;
 }
 
+.play-panel.is-outline .car-shape,
+.play-panel.is-outline .shape-token img {
+  filter: grayscale(1) contrast(1.55) drop-shadow(0 3px 4px rgba(0, 0, 0, 0.18));
+}
+
+.passenger.is-memory-hidden .shape-token img {
+  opacity: 0;
+}
+
+.passenger.is-memory-hidden::after {
+  content: "?";
+  position: absolute;
+  font-size: 3rem;
+  font-weight: 900;
+  color: #396b91;
+}
+
+.passenger {
+  position: relative;
+}
+
 .feedback {
   min-height: 28px;
   text-align: center;

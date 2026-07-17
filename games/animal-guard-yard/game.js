@@ -2084,10 +2084,17 @@
   nodes.startGameBtn?.addEventListener("click", showMenu);
   nodes.stageBackMainBtn?.addEventListener("click", showMain);
   nodes.backToStagesBtn.addEventListener("click", showMenu);
+  nodes.pauseBtn.addEventListener("keydown", (event) => {
+    if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
+  });
   nodes.pauseBtn.addEventListener("click", showPause);
   nodes.resumeBtn.addEventListener("click", resumeBattle);
   nodes.leaveBattleBtn.addEventListener("click", showMenu);
   nodes.pausePanel.addEventListener("keydown", (event) => {
+    if (event.repeat && (event.key === "Enter" || event.key === " ")) {
+      event.preventDefault();
+      return;
+    }
     if (event.key === "Tab") {
       const actions = [nodes.resumeBtn, nodes.leaveBattleBtn].filter((button) => !button.disabled && button.getClientRects().length > 0);
       if (!actions.length) return;

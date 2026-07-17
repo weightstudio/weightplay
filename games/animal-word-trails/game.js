@@ -37,7 +37,26 @@
   const app = document.getElementById('app'), locale = document.getElementById('locale'); let lang = localStorage.wordTrailsLocale || 'en', stage = 0, path = [], found = new Set(), hints = 0, dragStartLength = 0;
   const $ = id => document.getElementById(id); const t = key => copy[lang][key];
   const track = (event, details = {}) => window.WonderAnalytics?.track(event, { game_id: 'animal-word-trails', locale: lang, stage: stage + 1, ...details });
-  function screen(name) { const result=name==='result'; document.querySelector('[data-screen="main"]').classList.toggle('hidden',name!=='main'); document.querySelector('[data-screen="stage"]').classList.toggle('hidden',name!=='stage'); document.querySelector('[data-screen="battle"]').classList.toggle('hidden',name!=='battle'&&!result); $('resultPanel').classList.toggle('hidden',!result); $('battleLive').classList.toggle('hidden',result); $('battleLive').inert=result;if(result)$('battleLive').setAttribute('aria-hidden','true');else $('battleLive').removeAttribute('aria-hidden'); document.body.classList.toggle('word-stage',name==='stage'); document.body.classList.toggle('word-playing',name==='battle'||result); document.body.classList.toggle('word-result',result); updateWordFrame(); }
+  const battleTasks = new Map();
+  let battleTasksPaused = document.hidden;
+  function cancelBattleTask(key) { const task=battleTasks.get(key); if(!task)return; if(task.frame)cancelAnimationFrame(task.frame); battleTasks.delete(key); }
+  function cancelBattleTasks() { [...battleTasks.keys()].forEach(cancelBattleTask); }
+  function scheduleBattleTask(key, delay, callback) {
+    cancelBattleTask(key);
+    const task={remaining:delay,last:null,frame:0,step:null};
+    task.step=now=>{
+      task.frame=0;
+      if(!battleTasks.has(key)||battleTasksPaused||document.hidden){task.last=null;return;}
+      if(task.last===null)task.last=now;else{task.remaining-=Math.max(0,now-task.last);task.last=now;}
+      if(task.remaining<=0){battleTasks.delete(key);callback();return;}
+      task.frame=requestAnimationFrame(task.step);
+    };
+    battleTasks.set(key,task);
+    if(!battleTasksPaused&&!document.hidden)task.frame=requestAnimationFrame(task.step);
+  }
+  function pauseBattleTasks(){ if(battleTasksPaused)return; battleTasksPaused=true; const now=performance.now(); battleTasks.forEach(task=>{if(task.last!==null)task.remaining-=Math.max(0,now-task.last);task.last=null;if(task.frame)cancelAnimationFrame(task.frame);task.frame=0;}); }
+  function resumeBattleTasks(){ if(!battleTasksPaused)return; battleTasksPaused=false; battleTasks.forEach(task=>{if(!task.frame)task.frame=requestAnimationFrame(task.step);}); }
+  function screen(name) { const result=name==='result'; if(name!=='battle'){cancelBattleTasks();$('clueReveal')?.classList.add('hidden');} document.querySelector('[data-screen="main"]').classList.toggle('hidden',name!=='main'); document.querySelector('[data-screen="stage"]').classList.toggle('hidden',name!=='stage'); document.querySelector('[data-screen="battle"]').classList.toggle('hidden',name!=='battle'&&!result); $('resultPanel').classList.toggle('hidden',!result); $('battleLive').classList.toggle('hidden',result); $('battleLive').inert=result;if(result)$('battleLive').setAttribute('aria-hidden','true');else $('battleLive').removeAttribute('aria-hidden'); document.body.classList.toggle('word-stage',name==='stage'); document.body.classList.toggle('word-playing',name==='battle'||result); document.body.classList.toggle('word-result',result); updateWordFrame(); }
   function translate(){ document.documentElement.lang=lang; document.querySelectorAll('[data-copy]').forEach(el=>el.textContent=t(el.dataset.copy)); }
   function save(){ localStorage.wordTrailsLocale=lang; localStorage.wordTrailsBest = JSON.stringify(JSON.parse(localStorage.wordTrailsBest || '{}')); }
   function renderStages(){ const rail=$('stageRail'); rail.innerHTML=''; const best=JSON.parse(localStorage.wordTrailsBest||'{}'); packs[lang].forEach((item,i)=>{ const card=document.createElement('button'); card.className='stage-card'+(i===stage?' selected':'')+(i>0&&!best[lang+'-'+(i-1)]?' locked':''); card.disabled=i>0&&!best[lang+'-'+(i-1)]; card.innerHTML=`<strong>${i+1}. ${item.name}</strong><span>${item.words.length} ${lang==='en'?'words':'個字詞'}</span>`; card.onclick=()=>{stage=i;renderStages()};rail.append(card); }); $('stageProgress').textContent=`${stage+1} / ${packs[lang].length}`; }
@@ -49,8 +68,8 @@
   function hint(){ const data=packs[lang][stage], word=data.words.find(w=>!found.has(w)); if(!word)return; hints++; track('word_trails_hint_used', { hints_used: hints }); window.WonderSound?.play('click'); const ix=data.board.findIndex(l=>l===word[0]); clear(); select(ix); $('feedback').textContent=`${t('hint')}: ${word[0]}`; }
   function result(){ const key=lang+'-'+stage, best=JSON.parse(localStorage.wordTrailsBest||'{}'), stars=Math.max(1,3-hints); best[key]=Math.max(best[key]||0,stars);localStorage.wordTrailsBest=JSON.stringify(best); $('resultSummary').textContent=`${found.size} ${t('found')} · ★ ${stars}`; screen('result'); }
   function renderStages(){ const rail=$('stageRail'); rail.innerHTML=''; const best=JSON.parse(localStorage.wordTrailsBest||'{}'); const album=JSON.parse(localStorage.wordTrailsAlbum||'{}'); const cards=Object.keys(album).filter(key=>key.startsWith(lang+'-')).length; packs[lang].forEach((item,i)=>{ const card=document.createElement('button'); const locked=i>0&&!best[lang+'-'+(i-1)]; card.className='stage-card'+(i===stage?' selected':'')+(locked?' locked':''); card.disabled=locked; card.innerHTML=`<strong>${i+1}. ${item.name}</strong><span>${item.words.length} ${lang==='en'?'words':'\u500b\u5b57\u8a5e'}</span>`; card.onclick=()=>{stage=i;renderStages()};rail.append(card); }); $('stageProgress').textContent=lang==='en'?`${stage+1}/${packs[lang].length} · Cards ${cards}`:`${stage+1}/${packs[lang].length} · \u7dda\u7d22\u5361 ${cards}`; }
-  function renderBattle(){ const data=packs[lang][stage]; path=[]; found=new Set(); hints=0; $('battleTitle').textContent=data.name; $('objective').textContent=lang==='en'?'Find the animal words':'\u627e\u51fa\u52d5\u7269\u5b57\u8a5e'; $('foundCount').textContent=`0/${data.words.length}`; $('starCount').textContent='\u2605 0'; $('targets').innerHTML=data.words.map(w=>`<span class="target" data-word="${w}">${w}</span>`).join(''); const board=$('board'); board.innerHTML=''; data.board.forEach((letter,i)=>{const b=document.createElement('button');b.className='tile'+(data.blocked?.includes(i)?' blocked':'');b.disabled=Boolean(data.blocked?.includes(i));b.dataset.index=i;b.textContent=letter;b.addEventListener('click',()=>select(i));board.append(b)}); board.onpointerdown=e=>{if(e.target.matches('.tile')){dragStartLength=path.length;board.setPointerCapture(e.pointerId);select(+e.target.dataset.index)}}; board.onpointermove=e=>{if(!board.hasPointerCapture?.(e.pointerId))return;const tile=document.elementFromPoint(e.clientX,e.clientY)?.closest('.tile');if(tile&&board.contains(tile))select(+tile.dataset.index)}; board.onpointerup=e=>{if(board.hasPointerCapture?.(e.pointerId))board.releasePointerCapture(e.pointerId);if(path.length-dragStartLength>1)submit()}; board.onpointercancel=e=>{if(board.hasPointerCapture?.(e.pointerId))board.releasePointerCapture(e.pointerId);clear()}; $('feedback').textContent=lang==='en'?'Connect adjacent tiles.':'\u9023\u63a5\u76f8\u9130\u7684\u5b57\u8a5e\u683c\u3002'; screen('battle'); requestAnimationFrame(()=>board.querySelector('.tile:not(:disabled)')?.focus({preventScroll:true})); }
-  function submit(){ const data=packs[lang][stage], word=path.map(i=>data.board[i]).join(''); if(!data.words.includes(word)||found.has(word)){ $('feedback').textContent=t('try'); clear(); return; } found.add(word); document.querySelector(`[data-word="${word}"]`).classList.add('done'); path.forEach(i=>document.querySelector(`.tile[data-index="${i}"]`).classList.add('correct')); $('feedback').textContent=t('great'); $('foundCount').textContent=`${found.size}/${data.words.length}`; $('starCount').textContent=`\u2605 ${Math.max(1,3-hints)}`; if(found.size===data.words.length) setTimeout(result,450); else setTimeout(clear,420); }
+  function renderBattle(){ cancelBattleTasks(); $('clueReveal')?.classList.add('hidden'); const data=packs[lang][stage]; path=[]; found=new Set(); hints=0; $('battleTitle').textContent=data.name; $('objective').textContent=lang==='en'?'Find the animal words':'\u627e\u51fa\u52d5\u7269\u5b57\u8a5e'; $('foundCount').textContent=`0/${data.words.length}`; $('starCount').textContent='\u2605 0'; $('targets').innerHTML=data.words.map(w=>`<span class="target" data-word="${w}">${w}</span>`).join(''); const board=$('board'); board.innerHTML=''; data.board.forEach((letter,i)=>{const b=document.createElement('button');b.className='tile'+(data.blocked?.includes(i)?' blocked':'');b.disabled=Boolean(data.blocked?.includes(i));b.dataset.index=i;b.textContent=letter;b.addEventListener('click',()=>select(i));board.append(b)}); board.onpointerdown=e=>{if(e.target.matches('.tile')){dragStartLength=path.length;board.setPointerCapture(e.pointerId);select(+e.target.dataset.index)}}; board.onpointermove=e=>{if(!board.hasPointerCapture?.(e.pointerId))return;const tile=document.elementFromPoint(e.clientX,e.clientY)?.closest('.tile');if(tile&&board.contains(tile))select(+tile.dataset.index)}; board.onpointerup=e=>{if(board.hasPointerCapture?.(e.pointerId))board.releasePointerCapture(e.pointerId);if(path.length-dragStartLength>1)submit()}; board.onpointercancel=e=>{if(board.hasPointerCapture?.(e.pointerId))board.releasePointerCapture(e.pointerId);clear()}; $('feedback').textContent=lang==='en'?'Connect adjacent tiles.':'\u9023\u63a5\u76f8\u9130\u7684\u5b57\u8a5e\u683c\u3002'; screen('battle'); requestAnimationFrame(()=>board.querySelector('.tile:not(:disabled)')?.focus({preventScroll:true})); }
+  function submit(){ const data=packs[lang][stage], word=path.map(i=>data.board[i]).join(''); if(!data.words.includes(word)||found.has(word)){ $('feedback').textContent=t('try'); clear(); return; } found.add(word); document.querySelector(`[data-word="${word}"]`).classList.add('done'); path.forEach(i=>document.querySelector(`.tile[data-index="${i}"]`).classList.add('correct')); $('feedback').textContent=t('great'); $('foundCount').textContent=`${found.size}/${data.words.length}`; $('starCount').textContent=`\u2605 ${Math.max(1,3-hints)}`; scheduleBattleTask('transition',found.size===data.words.length?450:420,found.size===data.words.length?result:clear); }
   function result(){ const key=lang+'-'+stage, best=JSON.parse(localStorage.wordTrailsBest||'{}'), stars=Math.max(1,3-hints); best[key]=Math.max(best[key]||0,stars);localStorage.wordTrailsBest=JSON.stringify(best); track('word_trails_stage_complete', { words_found: found.size, hints_used: hints, stars }); window.WonderSound?.play('win'); $('resultSummary').textContent=`${found.size} ${t('found')} \u00b7 \u2605 ${stars}`; $('next').classList.toggle('hidden',stage>=packs[lang].length-1); screen('result'); requestAnimationFrame(()=>($('next').classList.contains('hidden')?$('resultsBack'):$('next')).focus({preventScroll:true})); }
   const baseRenderBattle = renderBattle;
   renderBattle = function(){
@@ -96,7 +115,7 @@
     $('clueTitle').textContent=lang==='en'?`Clue found: ${word}`:`\u627e\u5230\u52d5\u7269\u7dda\u7d22\uff1a${word}`;
     $('clearFx').style.backgroundPosition=`${effectPositions[(found.size-1)%effectPositions.length]} center`;
     panel.classList.remove('hidden');
-    setTimeout(()=>panel.classList.add('hidden'),850);
+    scheduleBattleTask('reveal',850,()=>panel.classList.add('hidden'));
   }
   function undo(){
     if(!path.length) return;
@@ -130,6 +149,14 @@
     $('loadingTitle').textContent=t('loading');
   };
   const rail=$('stageRail');
+  const rejectRepeatedActivation=event=>{
+    if(event.repeat&&(event.key==='Enter'||event.key===' '))event.preventDefault();
+  };
+  const focusSelectedStage=()=>requestAnimationFrame(()=>document.querySelector('.stage-card.selected')?.focus({preventScroll:true}));
+  $('start').addEventListener('keydown',rejectRepeatedActivation);
+  rail.addEventListener('keydown',event=>{
+    if(event.target.closest('.stage-card'))rejectRepeatedActivation(event);
+  });
   let railStartX=0;
   let railStartScroll=0;
   let railPointerActive=false;
@@ -203,5 +230,19 @@
     document.documentElement.style.setProperty('--word-frame-top',`${height-788*scale-4}px`);
   }
   addEventListener('resize',updateWordFrame);visualViewport?.addEventListener('resize',updateWordFrame,{passive:true});
-  track('game_view'); locale.onchange=()=>{lang=locale.value;stage=0;save();translate();}; $('start').onclick=()=>{track('game_start');renderStages();screen('stage')}; $('stageBack').onclick=()=>screen('main'); $('playStage').onclick=renderBattle; $('battleBack').onclick=()=>{renderStages();screen('stage')}; $('clear').onclick=clear; $('undo').onclick=undo; $('hint').onclick=hint; $('submit').onclick=submit; $('next').onclick=()=>{stage=Math.min(stage+1,packs[lang].length-1);renderBattle()}; $('resultsBack').onclick=()=>{renderStages();screen('stage');requestAnimationFrame(()=>document.querySelector('.stage-card.selected')?.focus({preventScroll:true}))}; $('album').onclick=()=>{const album=JSON.parse(localStorage.wordTrailsAlbum||'{}');const words=[...new Set(packs[lang].flatMap(x=>x.words))];$('albumList').innerHTML=words.map((word,index)=>{const x=(index%4)*33.333,y=Math.floor(index/4)*50;return `<span class="${album[lang+'-'+word]?'card':'locked'}" style="background-position:${x}% ${y}%">${album[lang+'-'+word]?word:'?'}</span>`}).join('');$('albumDialog').showModal()};$('closeAlbum').onclick=()=>$('albumDialog').close();
+  addEventListener('pagehide',pauseBattleTasks);addEventListener('pageshow',resumeBattleTasks);document.addEventListener('visibilitychange',()=>{if(document.hidden)pauseBattleTasks();else resumeBattleTasks();});
+  track('game_view');
+  locale.onchange=()=>{lang=locale.value;stage=0;save();translate();};
+  $('start').onclick=()=>{track('game_start');renderStages();screen('stage');focusSelectedStage();};
+  $('stageBack').onclick=()=>{screen('main');requestAnimationFrame(()=>$('start').focus({preventScroll:true}));};
+  $('playStage').onclick=renderBattle;
+  $('battleBack').onclick=()=>{renderStages();screen('stage');focusSelectedStage();};
+  $('clear').onclick=clear;
+  $('undo').onclick=undo;
+  $('hint').onclick=hint;
+  $('submit').onclick=submit;
+  $('next').onclick=()=>{stage=Math.min(stage+1,packs[lang].length-1);renderBattle();};
+  $('resultsBack').onclick=()=>{renderStages();screen('stage');focusSelectedStage();};
+  $('album').onclick=()=>{const album=JSON.parse(localStorage.wordTrailsAlbum||'{}');const words=[...new Set(packs[lang].flatMap(x=>x.words))];$('albumList').innerHTML=words.map((word,index)=>{const x=(index%4)*33.333,y=Math.floor(index/4)*50;return `<span class="${album[lang+'-'+word]?'card':'locked'}" style="background-position:${x}% ${y}%">${album[lang+'-'+word]?word:'?'}</span>`}).join('');$('albumDialog').showModal();};
+  $('closeAlbum').onclick=()=>$('albumDialog').close();
 })();

@@ -3011,6 +3011,9 @@
       focusCurrentStage();
     });
     nodes.waveBtn.addEventListener("click", startWave);
+    nodes.upgradeBtn.addEventListener("keydown", (event) => {
+      if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
+    });
     nodes.upgradeBtn.addEventListener("click", upgradeSelected);
     nodes.sellBtn.addEventListener("click", sellSelected);
     nodes.reviveBtn.addEventListener("click", reviveCore);

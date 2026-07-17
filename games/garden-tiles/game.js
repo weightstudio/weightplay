@@ -96,6 +96,7 @@
       stageBackAria: "Back",
       battleBackAria: "Back to levels",
       boardAria: "Garden tile board",
+      hiddenTile: "Hidden garden card",
       tileNames: {
         cat: "Cat", dog: "Dog", fox: "Fox", owl: "Owl", rabbit: "Rabbit", panda: "Panda", penguin: "Penguin", koala: "Koala",
         lion: "Lion", elephant: "Elephant", giraffe: "Giraffe", whale: "Whale", chick: "Chick", frog: "Frog", apple: "Apple", banana: "Banana",
@@ -151,6 +152,7 @@
       stageBackAria: "\u8fd4\u56de",
       battleBackAria: "\u8fd4\u56de\u9078\u95dc",
       boardAria: "\u82b1\u5712\u65b9\u584a\u914d\u5c0d\u76e4\u9762",
+      hiddenTile: "\u84cb\u4f4f\u7684\u82b1\u5712\u5716\u5361",
       tileNames: {
         cat: "\u8c93\u54aa", dog: "\u5c0f\u72d7", fox: "\u72d0\u72f8", owl: "\u8c93\u982d\u9df9", rabbit: "\u5154\u5b50", panda: "\u8c93\u718a", penguin: "\u4f01\u9d5d", koala: "\u7121\u5c3e\u718a",
         lion: "\u7345\u5b50", elephant: "\u5927\u8c61", giraffe: "\u9577\u9818\u9e7f", whale: "\u9be8\u9b5a", chick: "\u5c0f\u96de", frog: "\u9752\u86d9", apple: "\u860b\u679c", banana: "\u9999\u8549",
@@ -547,8 +549,8 @@
       button.dataset.index = String(tile.index);
       button.dataset.tileId = tile.art.id;
       button.innerHTML = `<img class="tile-image" src="${tile.art.asset}" alt="" draggable="false" />`;
-      button.setAttribute("aria-label", tileName(tile.art));
       const selected = selectedTile?.index === tile.index;
+      button.setAttribute("aria-label", selected || previewing ? tileName(tile.art) : t("hiddenTile"));
       button.setAttribute("aria-pressed", String(selected));
       if (tile.matched) {
         button.classList.add("matched");
@@ -640,6 +642,8 @@
     for (const index of [first, second]) {
       const button = board.querySelector(`[data-index="${index}"]`);
       button?.classList.add("wrong");
+      const tile = tiles.find((item) => item.index === index);
+      if (button && tile) button.setAttribute("aria-label", tileName(tile.art));
     }
   }
 

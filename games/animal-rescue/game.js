@@ -90,7 +90,7 @@ const dictionary = {
     obstacleGoal: "{count} blocks",
     parGoal: "{count} move goal",
     metaTitle: "Animal Rescue Trail - WeightPlay",
-    metaDescription: "Guide cute animals home in Animal Rescue Trail, a gentle WeightPlay puzzle game for kids and families.",
+    metaDescription: "Guide animals through 30 saved route puzzles with fruit goals, mud, keys, gates, fragile paths, and six Rescue Checkpoints.",
     socialTitle: "Animal Rescue Trail - Animal Puzzle Game",
     backToLobby: "Back to Kids games",
     back: "Back",
@@ -103,6 +103,16 @@ const dictionary = {
     fruitItem: "Fruit",
     rock: "Rock",
     water: "Water",
+    key: "Trail key",
+    gate: "Locked gate",
+    mud: "Sticky mud",
+    fragile: "Fragile path",
+    needKey: "Find the trail key before crossing this gate.",
+    needFruit: "Collect every fruit before entering home.",
+    usedFragile: "That fragile tile has already crumbled. Choose another route.",
+    checkpoint: "Rescue Checkpoint",
+    chapters: ["Forest Steps", "Meadow Detours", "River Keys", "Fragile Ridge", "Harvest Routes", "Homecoming Festival"],
+    ruleLabels: { classic: "Open Trail", fruit: "All Fruit", mud: "Sticky Mud", key: "Key Gate", fragile: "Fragile Path" },
   },
   "zh-Hant": {
     title: "\u52d5\u7269\u56de\u5bb6\u8def",
@@ -149,7 +159,7 @@ const dictionary = {
     obstacleGoal: "{count} \u500b\u969c\u7919",
     parGoal: "\u5efa\u8b70 {count} \u6b65",
     metaTitle: "\u52d5\u7269\u56de\u5bb6\u8def - WeightPlay",
-    metaDescription: "\u5728\u300a\u52d5\u7269\u56de\u5bb6\u8def\u300b\u5e6b\u53ef\u611b\u52d5\u7269\u627e\u5230\u56de\u5bb6\u8def\u7dda\uff0c\u9ad4\u9a57\u9069\u5408\u5152\u7ae5\u8207\u5bb6\u5ead\u7684\u6eab\u548c WeightPlay \u89e3\u8b0e\u904a\u6232\u3002",
+    metaDescription: "\u5f15\u5c0e\u52d5\u7269\u5b8c\u6210 30 \u689d\u5b58\u6a94\u8def\u7dda\uff0c\u6536\u96c6\u6c34\u679c\uff0c\u61c9\u5c0d\u9ecf\u6ce5\u3001\u9470\u5319\u9580\u3001\u8106\u5f31\u5c0f\u8def\u8207 6 \u500b\u6551\u63f4\u6aa2\u67e5\u9ede\u3002",
     socialTitle: "\u52d5\u7269\u56de\u5bb6\u8def - \u52d5\u7269\u8def\u7dda\u89e3\u8b0e\u904a\u6232",
     backToLobby: "\u8fd4\u56de Kids \u904a\u6232",
     back: "\u8fd4\u56de",
@@ -162,6 +172,16 @@ const dictionary = {
     fruitItem: "\u6c34\u679c",
     rock: "\u5ca9\u77f3",
     water: "\u6c34\u57df",
+    key: "\u8def\u7dda\u9470\u5319",
+    gate: "\u4e0a\u9396\u7684\u5927\u9580",
+    mud: "\u9ecf\u6ce5",
+    fragile: "\u8106\u5f31\u5c0f\u8def",
+    needKey: "\u5148\u627e\u5230\u8def\u7dda\u9470\u5319\uff0c\u624d\u80fd\u901a\u904e\u9019\u6247\u9580\u3002",
+    needFruit: "\u9032\u5bb6\u9580\u524d\u8981\u5148\u6536\u96c6\u6240\u6709\u6c34\u679c\u3002",
+    usedFragile: "\u9019\u683c\u8106\u5f31\u5c0f\u8def\u5df2\u7d93\u584c\u4e0b\uff0c\u8acb\u63db\u4e00\u689d\u8def\u3002",
+    checkpoint: "\u6551\u63f4\u6aa2\u67e5\u9ede",
+    chapters: ["\u68ee\u6797\u8d77\u6b65", "\u8349\u5730\u7e5e\u8def", "\u6cb3\u7554\u9470\u5319", "\u8106\u5f31\u5c71\u810a", "\u8c50\u6536\u8def\u7dda", "\u56de\u5bb6\u6176\u5178"],
+    ruleLabels: { classic: "\u958b\u653e\u5c0f\u8def", fruit: "\u5168\u90e8\u6c34\u679c", mud: "\u9ecf\u6ce5", key: "\u9470\u5319\u9580", fragile: "\u8106\u5f31\u5c0f\u8def" },
   },
 };
 
@@ -194,9 +214,11 @@ const tileAssets = {
   home: { src: "tiny-weather-tool-house.svg", fallback: "Home" },
   rock: { src: "shape-token-diamond.svg", fallback: "Rock" },
   water: { src: "safari-mask-water.svg", fallback: "Water" },
+  key: { src: "animal-crystal-survivor-golden-key.png", fallback: "Key" },
+  gate: { src: "animal-hero-trials-icon-trial-gate.png", fallback: "Gate" },
 };
 
-const levels = [
+const baseLevels = [
   { animal: "lion", biome: "forest", start: [0, 4], home: [4, 0], blocks: [[1, 3], [2, 3], [3, 1]], fruits: [[0, 2], [3, 2]], par: 9 },
   { animal: "panda", biome: "bamboo", start: [4, 4], home: [0, 0], blocks: [[1, 1], [2, 1], [3, 3]], fruits: [[4, 2], [1, 4]], par: 13 },
   { animal: "elephant", biome: "river", start: [0, 0], home: [4, 4], blocks: [[2, 0], [2, 1], [2, 3]], fruits: [[1, 2], [3, 2]], par: 9, water: [[2, 2]] },
@@ -209,7 +231,36 @@ const levels = [
   { animal: "giraffe", biome: "meadow", start: [0, 4], home: [4, 0], blocks: [[0, 2], [2, 2], [4, 2], [3, 1]], fruits: [[1, 1], [4, 4]], par: 15 },
   { animal: "dolphin", biome: "river", start: [0, 0], home: [4, 4], blocks: [[1, 0], [1, 3], [3, 1], [3, 4]], fruits: [[0, 3], [2, 2]], par: 11, water: [[2, 1], [2, 3]] },
   { animal: "cow", biome: "farm", start: [4, 4], home: [0, 0], blocks: [[1, 2], [2, 1], [2, 3], [3, 2]], fruits: [[4, 0], [0, 4]], par: 17 },
-].map((level, index) => ({ ...level, id: index + 1 }));
+  { animal: "lion", biome: "forest", start: [0, 4], home: [4, 0], blocks: [[1, 1], [1, 3], [3, 1]], fruits: [[0, 1], [3, 3]], par: 11 },
+  { animal: "panda", biome: "bamboo", start: [4, 4], home: [0, 0], blocks: [[3, 3], [2, 1], [1, 3]], fruits: [[4, 1], [1, 2]], par: 12 },
+  { animal: "elephant", biome: "river", start: [0, 2], home: [4, 2], blocks: [[2, 0], [2, 4]], water: [[2, 1], [2, 3]], fruits: [[1, 0], [3, 4]], par: 15 },
+  { animal: "turtle", biome: "meadow", start: [2, 4], home: [2, 0], blocks: [[0, 2], [4, 2], [2, 2]], fruits: [[0, 1], [4, 1]], par: 14 },
+  { animal: "rabbit", biome: "meadow", start: [0, 0], home: [4, 4], blocks: [[1, 2], [3, 2]], fruits: [[0, 4], [4, 0]], par: 14 },
+  { animal: "penguin", biome: "ice", start: [4, 0], home: [0, 4], blocks: [[3, 1], [1, 3]], water: [[2, 1], [2, 3]], fruits: [[4, 3], [0, 1]], par: 12 },
+  { animal: "fox", biome: "forest", start: [0, 4], home: [4, 0], blocks: [[1, 0], [3, 4], [2, 2]], fruits: [[0, 0], [4, 4]], par: 16 },
+  { animal: "monkey", biome: "bamboo", start: [2, 0], home: [2, 4], blocks: [[0, 1], [4, 1], [0, 3], [4, 3]], fruits: [[1, 2], [3, 2]], par: 10 },
+  { animal: "koala", biome: "forest", start: [4, 2], home: [0, 2], blocks: [[1, 1], [1, 3], [3, 1], [3, 3]], fruits: [[2, 0], [2, 4]], par: 13 },
+  { animal: "giraffe", biome: "meadow", start: [0, 0], home: [4, 4], blocks: [[1, 3], [2, 1], [3, 3]], fruits: [[0, 4], [4, 0]], par: 15 },
+  { animal: "dolphin", biome: "river", start: [0, 4], home: [4, 0], blocks: [[1, 1], [3, 3]], water: [[2, 1], [2, 3]], fruits: [[0, 0], [4, 4]], par: 16 },
+  { animal: "cow", biome: "farm", start: [4, 4], home: [0, 0], blocks: [[1, 1], [2, 3], [3, 1]], fruits: [[4, 0], [0, 4], [2, 2]], par: 17 },
+  { animal: "lion", biome: "forest", start: [0, 2], home: [4, 2], blocks: [[2, 0], [2, 4]], fruits: [[1, 4], [3, 0]], par: 14 },
+  { animal: "panda", biome: "bamboo", start: [4, 2], home: [0, 2], blocks: [[2, 0], [2, 4], [3, 2]], fruits: [[4, 0], [0, 4]], par: 15 },
+  { animal: "elephant", biome: "river", start: [0, 0], home: [4, 4], blocks: [[1, 3], [3, 1]], water: [[2, 2]], fruits: [[0, 4], [4, 0]], par: 16 },
+  { animal: "turtle", biome: "meadow", start: [2, 4], home: [2, 0], blocks: [[0, 2], [4, 2]], fruits: [[0, 0], [4, 0]], par: 14 },
+  { animal: "rabbit", biome: "meadow", start: [0, 4], home: [4, 0], blocks: [[1, 1], [2, 3], [3, 1]], fruits: [[0, 0], [4, 4]], par: 16 },
+  { animal: "penguin", biome: "ice", start: [4, 4], home: [0, 0], blocks: [[1, 2], [3, 3]], water: [[2, 1]], fruits: [[4, 0], [0, 4], [2, 2]], par: 18 },
+];
+
+const ruleSets = [
+  {}, {}, {}, {}, { requiredFruit: true },
+  { mud: [[2, 2]] }, { mud: [[1, 2], [3, 2]] }, { mud: [[2, 1], [2, 3]] }, { mud: [[1, 1], [3, 3]] }, { mud: [[1, 2], [2, 2], [3, 2]], requiredFruit: true },
+  { keys: [[0, 4]], gates: [[1, 2]] }, { keys: [[3, 4]], gates: [[1, 1]] }, { keys: [[1, 0]], gates: [[3, 4]] }, { keys: [[4, 2]], gates: [[2, 3]] }, { keys: [[0, 4]], gates: [[3, 1]], requiredFruit: true },
+  { fragile: [[1, 4], [2, 4], [3, 4]] }, { fragile: [[4, 1], [4, 2], [4, 3]] }, { fragile: [[1, 2], [2, 2], [3, 2]] }, { fragile: [[2, 1], [2, 2], [2, 3]] }, { fragile: [[1, 0], [2, 0], [3, 0]], keys: [[1, 1]], gates: [[3, 1]] },
+  { requiredFruit: true, mud: [[2, 1], [2, 3]] }, { requiredFruit: true, keys: [[3, 4]], gates: [[1, 2]] }, { requiredFruit: true, fragile: [[1, 4], [2, 4], [3, 4]] }, { requiredFruit: true, mud: [[2, 4]], keys: [[3, 3]], gates: [[1, 3]] }, { requiredFruit: true, mud: [[2, 2]], fragile: [[1, 2], [3, 2]] },
+  { mud: [[1, 2], [3, 2]], keys: [[4, 1]], gates: [[2, 2]] }, { requiredFruit: true, fragile: [[1, 1], [3, 3]], keys: [[2, 0]], gates: [[3, 4]] }, { mud: [[2, 1], [2, 3]], fragile: [[1, 2], [3, 2]], requiredFruit: true }, { keys: [[0, 3]], gates: [[4, 1]], mud: [[2, 2]], fragile: [[1, 3], [3, 3]] }, { requiredFruit: true, keys: [[4, 1]], gates: [[1, 1]], mud: [[2, 2]], fragile: [[1, 3], [3, 1]] },
+];
+
+const levels = baseLevels.map((level, index) => ({ ...level, ...ruleSets[index], id: index + 1, chapter: Math.floor(index / 5) + 1, checkpoint: (index + 1) % 5 === 0 }));
 
 let unlocked = loadNumber(UNLOCK_KEY, 1);
 let bestStars = loadBestStars();
@@ -232,6 +283,9 @@ function makeState(level) {
     position: [...level.start],
     path: [[...level.start]],
     fruits: new Set(level.fruits.map(keyOf)),
+    keys: new Set((level.keys || []).map(keyOf)),
+    keysCollected: 0,
+    openedGates: new Set(),
     collected: 0,
     moves: 0,
     complete: false,
@@ -335,6 +389,7 @@ function renderStageSelect() {
         <button class="stage-card ${locked ? "locked" : ""}" type="button" data-stage="${level.id}">
           <span class="mini-animal">${assetMarkup(animal, t(level.animal))}</span>
           <span>
+            <em class="stage-chapter">${chapterName(level.chapter)}</em>
             <strong>${level.id}. ${t(level.animal)}</strong>
             <span>${t(level.biome)} - ${locked ? t("locked") : stars ? t("complete") : t("start")}</span>
           </span>
@@ -342,7 +397,9 @@ function renderStageSelect() {
             <i>${t("fruitGoal", { count: level.fruits.length })}</i>
             <i>${t("obstacleGoal", { count: level.blocks.length + (level.water || []).length })}</i>
             <i>${t("parGoal", { count: level.par })}</i>
+            <i>${levelRuleLabels(level).join(" + ")}</i>
           </span>
+          ${level.checkpoint ? `<b class="stage-checkpoint">${t("checkpoint")}</b>` : ""}
           <span class="stage-stars">${"\u2605".repeat(stars)}${"\u2606".repeat(3 - stars)}</span>
         </button>
       `;
@@ -358,7 +415,24 @@ function centerHighestUnlockedTrail(behavior = "auto") {
 }
 
 function stageMetaText(level) {
-  return `${t("fruitGoal", { count: level.fruits.length })}, ${t("obstacleGoal", { count: level.blocks.length + (level.water || []).length })}, ${t("parGoal", { count: level.par })}`;
+  return `${t("fruitGoal", { count: level.fruits.length })}, ${t("obstacleGoal", { count: level.blocks.length + (level.water || []).length })}, ${t("parGoal", { count: level.par })}, ${levelRuleLabels(level).join(", ")}`;
+}
+
+function ruleLabel(key) {
+  return dictionary[locale()]?.ruleLabels?.[key] || dictionary.en.ruleLabels[key] || key;
+}
+
+function chapterName(chapter) {
+  return dictionary[locale()]?.chapters?.[chapter - 1] || dictionary.en.chapters[chapter - 1] || "";
+}
+
+function levelRuleLabels(level) {
+  const labels = [];
+  if (level.requiredFruit) labels.push(ruleLabel("fruit"));
+  if (level.mud?.length) labels.push(ruleLabel("mud"));
+  if (level.keys?.length) labels.push(ruleLabel("key"));
+  if (level.fragile?.length) labels.push(ruleLabel("fragile"));
+  return labels.length ? labels : [ruleLabel("classic")];
 }
 
 function startLevel(index) {
@@ -441,6 +515,9 @@ function renderBoard(focusCurrent = false) {
   const level = state.level;
   const blockSet = new Set(level.blocks.map(keyOf));
   const waterSet = new Set((level.water || []).map(keyOf));
+  const mudSet = new Set((level.mud || []).map(keyOf));
+  const fragileSet = new Set((level.fragile || []).map(keyOf));
+  const gateSet = new Set((level.gates || []).map(keyOf));
   const pathSet = new Set(state.path.map(keyOf));
   const current = keyOf(state.position);
   board.innerHTML = "";
@@ -450,12 +527,12 @@ function renderBoard(focusCurrent = false) {
       const key = keyOf(pos);
       const button = document.createElement("button");
       button.type = "button";
-      button.className = `tile ${tileClass(key, blockSet, waterSet, pathSet, current)}`;
+      button.className = `tile ${tileClass(key, blockSet, waterSet, mudSet, fragileSet, gateSet, pathSet, current)}`;
       button.dataset.x = String(col);
       button.dataset.y = String(row);
       button.tabIndex = key === current ? 0 : -1;
       if (key === current) button.setAttribute("aria-current", "step");
-      const icon = tileIcon(pos, key, blockSet, waterSet);
+      const icon = tileIcon(pos, key, blockSet, waterSet, gateSet);
       if (icon?.asset) {
         const label = document.createElement("span");
         label.className = "tile-label";
@@ -477,20 +554,26 @@ function renderBoard(focusCurrent = false) {
   }
 }
 
-function tileClass(key, blockSet, waterSet, pathSet, current) {
+function tileClass(key, blockSet, waterSet, mudSet, fragileSet, gateSet, pathSet, current) {
   const classes = [];
   classes.push(waterSet.has(key) ? "water" : blockSet.has(key) ? "rock blocked" : "path");
+  if (mudSet.has(key)) classes.push("mud");
+  if (fragileSet.has(key)) classes.push("fragile");
+  if (gateSet.has(key) && !state.openedGates.has(key)) classes.push("gate");
+  if (fragileSet.has(key) && pathSet.has(key) && key !== current) classes.push("crumbled");
   if (key === current) classes.push("current");
   if (pathSet.has(key) && key !== current) classes.push("visited");
   if (isNeighbor(key)) classes.push("next");
   return classes.join(" ");
 }
 
-function tileIcon(pos, key, blockSet, waterSet) {
+function tileIcon(pos, key, blockSet, waterSet, gateSet) {
   const level = state.level;
   if (key === keyOf(state.position)) return { asset: animalAssets[level.animal], alt: t(level.animal) };
   if (key === keyOf(level.home)) return { asset: tileAssets.home, alt: t("home") };
   if (state.fruits.has(key)) return { asset: fruitAssets[(level.id + pos[0] + pos[1]) % fruitAssets.length], alt: t("fruitItem") };
+  if (state.keys.has(key)) return { asset: tileAssets.key, alt: t("key") };
+  if (gateSet.has(key) && !state.openedGates.has(key)) return { asset: tileAssets.gate, alt: t("gate") };
   if (blockSet.has(key)) return { asset: tileAssets.rock, alt: t("rock") };
   if (waterSet.has(key)) return { asset: tileAssets.water, alt: t("water") };
   return null;
@@ -532,33 +615,46 @@ function escapeHtml(value) {
 
 function isNeighbor(key) {
   if (state.complete) return false;
-  const level = state.level;
-  const obstacles = new Set([...level.blocks, ...(level.water || [])].map(keyOf));
-  if (obstacles.has(key)) return false;
   const [x, y] = key.split(",").map(Number);
   const dx = Math.abs(x - state.position[0]);
   const dy = Math.abs(y - state.position[1]);
-  return dx + dy === 1;
+  return dx + dy === 1 && !entryRejection(key);
+}
+
+function entryRejection(key) {
+  const level = state.level;
+  const obstacles = new Set([...level.blocks, ...(level.water || [])].map(keyOf));
+  if (obstacles.has(key)) return "wrongTile";
+  const gateIndex = (level.gates || []).findIndex((position) => keyOf(position) === key);
+  if (gateIndex >= 0 && !state.openedGates.has(key) && state.keysCollected <= gateIndex) return "needKey";
+  if ((level.fragile || []).some((position) => keyOf(position) === key) && state.path.some((position) => keyOf(position) === key)) return "usedFragile";
+  if (key === keyOf(level.home) && level.requiredFruit && state.collected < level.fruits.length) return "needFruit";
+  return "";
 }
 
 function moveTo(pos) {
   if (state.complete) return;
   const level = state.level;
   const key = keyOf(pos);
-  const obstacles = new Set([...level.blocks, ...(level.water || [])].map(keyOf));
   const dx = Math.abs(pos[0] - state.position[0]);
   const dy = Math.abs(pos[1] - state.position[1]);
-  if (dx + dy !== 1 || obstacles.has(key)) return rejectMove();
+  if (dx + dy !== 1) return rejectMove();
+  const rejection = entryRejection(key);
+  if (rejection) return rejectMove(rejection);
   restoreRouteHint();
   state.position = pos;
   state.path.push([...pos]);
-  state.moves += 1;
+  state.moves += (level.mud || []).some((position) => keyOf(position) === key) ? 2 : 1;
   if (state.fruits.delete(key)) {
     state.collected += 1;
+    window.WonderSound?.play("coin");
+  } else if (state.keys.delete(key)) {
+    state.keysCollected += 1;
     window.WonderSound?.play("coin");
   } else {
     window.WonderSound?.play("click");
   }
+  if ((level.gates || []).some((position) => keyOf(position) === key)) state.openedGates.add(key);
   if (key === keyOf(level.home)) finishLevel();
   renderBoard(!state.complete);
   updateHud();
@@ -569,16 +665,27 @@ function undoMove() {
   restoreRouteHint();
   state.path.pop();
   state.position = [...state.path[state.path.length - 1]];
-  state.moves = Math.max(0, state.moves - 1);
-  state.fruits = new Set(state.level.fruits.map(keyOf));
-  state.collected = 0;
-  for (const pos of state.path) {
-    const key = keyOf(pos);
-    if (state.fruits.delete(key)) state.collected += 1;
-  }
+  recomputePathState();
   window.WonderSound?.play("click");
   renderBoard(true);
   updateHud();
+}
+
+function recomputePathState() {
+  const level = state.level;
+  state.fruits = new Set(level.fruits.map(keyOf));
+  state.keys = new Set((level.keys || []).map(keyOf));
+  state.collected = 0;
+  state.keysCollected = 0;
+  state.openedGates = new Set();
+  state.moves = 0;
+  for (const pos of state.path.slice(1)) {
+    const key = keyOf(pos);
+    state.moves += (level.mud || []).some((position) => keyOf(position) === key) ? 2 : 1;
+    if (state.fruits.delete(key)) state.collected += 1;
+    if (state.keys.delete(key)) state.keysCollected += 1;
+    if ((level.gates || []).some((position) => keyOf(position) === key)) state.openedGates.add(key);
+  }
 }
 
 function resetLevel() {
@@ -592,10 +699,10 @@ function resetLevel() {
   startLevel(activeIndex);
 }
 
-function rejectMove() {
+function rejectMove(messageKey = "wrongTile") {
   window.WonderSound?.play("wrong");
   window.clearTimeout(hintResetTimer);
-  hintText.textContent = t("wrongTile");
+  hintText.textContent = t(messageKey);
   hintResetTimer = window.setTimeout(() => {
     restoreRouteHint();
   }, 900);
@@ -730,6 +837,13 @@ window.addEventListener("resize", updateBattleScale);
 window.addEventListener("orientationchange", updateBattleScale);
 window.visualViewport?.addEventListener("resize", updateBattleScale);
 window.visualViewport?.addEventListener("scroll", updateBattleScale);
+const rejectRepeatedScreenActivation = (event) => {
+  if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
+};
+showStageBtn.addEventListener("keydown", rejectRepeatedScreenActivation);
+stageGrid.addEventListener("keydown", (event) => {
+  if (event.target.closest("[data-stage]")) rejectRepeatedScreenActivation(event);
+});
 showStageBtn.addEventListener("click", () => showStageSelect({ focusTrail: true }));
 stageBackBtn.addEventListener("click", () => showMain({ focusStart: true }));
 battleBackBtn.addEventListener("click", () => showStageSelect({ focusTrail: true }));
@@ -788,6 +902,23 @@ resultPanel.addEventListener("keydown", (event) => {
 });
 
 renderStaticText();
-installStageDrag();
 showMain();
 preload();
+
+if (new URLSearchParams(location.search).has("smoke")) {
+  window.__animalRescueSmoke = {
+    levels: structuredClone(levels),
+    startLevel: (index) => {
+      unlocked = levels.length;
+      startLevel(index);
+    },
+    state: () => ({
+      level: state.level.id,
+      position: [...state.position],
+      moves: state.moves,
+      collected: state.collected,
+      keysCollected: state.keysCollected,
+      openedGates: [...state.openedGates],
+    }),
+  };
+}

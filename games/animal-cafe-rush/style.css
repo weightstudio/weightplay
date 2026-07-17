@@ -40,8 +40,11 @@ body.is-cafe-playing { overflow:hidden; } body.is-cafe-playing .cafe-app { posit
 .queue-customer.is-leaving { pointer-events:none; animation:customer-leave .45s ease-in forwards; }
 .queue-customer.is-priority { border-color:#f7cd63; box-shadow:0 0 0 2px #f7cd6355; }
 .queue-customer.is-priority small { color:#ffe17c; font-weight:900; }
+.queue-customer.is-next-table { background:#12534fcc; box-shadow:0 0 0 3px #79ead488; }
 .order-cloud { top:-24px; display:flex; width:max-content; min-width:38px; max-width:none; height:34px; gap:3px; padding:3px 6px; white-space:nowrap; }
 .order-item { position:relative; z-index:1; display:grid; place-items:center; flex:0 0 auto; width:22px; height:22px; }
+.order-item.is-sequence { margin-top:2px; }
+.recipe-step { position:absolute; z-index:3; top:-8px; left:-7px; display:grid; place-items:center; width:14px; height:14px; border-radius:50%; color:#fff; background:#296b8f; box-shadow:0 1px 2px #1238; font-size:9px; line-height:1; }
 .order-cloud .food-icon { width:21px; height:21px; }
 .order-count { position:absolute; right:-5px; bottom:-5px; z-index:2; display:grid; place-items:center; min-width:16px; height:16px; padding:0 3px; border-radius:8px; background:#e9564f; color:#fff; box-shadow:0 1px 0 #802b28; font-size:10px; line-height:1; }
 .order-cloud::after { left:calc(50% - 5px); }
@@ -363,7 +366,7 @@ body.is-cafe-stage .cafe-app {
 
 .day-card {
   display: grid;
-  grid-template-rows: 18px 62px 32px 28px;
+  grid-template-rows: 22px 48px 28px 34px;
   align-content: center;
   flex: 0 0 264px;
   width: 264px;
@@ -383,10 +386,11 @@ body.is-cafe-stage .cafe-app {
   text-align: center;
 }
 
-.day-card strong { font-size: 48px; line-height: 64px; color: #9c5a22; }
+.day-card strong { display:grid; place-items:center; overflow:hidden; color:#9c5a22; font-size:22px; line-height:24px; }
 .day-card span,.day-card small,.day-card em { overflow: hidden; font-weight: 900; text-overflow: ellipsis; }
 .day-card em { align-self:center; padding:4px 8px; border-radius:6px; background:#d8f2dc; color:#285b45; font-size:12px; font-style:normal; white-space:nowrap; }
 .day-card.is-selected { border-color: #f7cd63; box-shadow: inset 0 0 0 3px rgb(247 205 99 / 35%); }
+.day-card.is-checkpoint { border-color:#f7cd63; background:linear-gradient(180deg,#fff4c9,#eefcf7); box-shadow:inset 0 0 0 2px rgb(247 205 99 / 32%); }
 .day-card.is-locked { opacity: .58; }
 
 #stagePanel .upgrade-panel {

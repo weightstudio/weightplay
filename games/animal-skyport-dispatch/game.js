@@ -28,7 +28,9 @@
     insuranceSelect: 'Select the priority contract before buying insurance.',
     keyboardFlight: 'Press Enter to select this airship, then use arrow keys to choose a dock and Enter to dispatch.',
     keyboardChooseDock: 'Airship selected. Use arrow keys to choose a dock, then press Enter to dispatch. Escape cancels.',
-    keyboardDock: '{dock}. Press Enter to dispatch here.',
+    keyboardDockCorrect: '{dock}. Correct target for {flight}. Press Enter to dispatch. Fuel {fuel} to {remaining}.',
+    keyboardDockWrong: '{dock}. Wrong target for {flight}; the correct target is {target}. Pressing Enter now adds 1 Error.',
+    keyboardDockBlocked: '{dock}. Correct target for {flight}, but {step}. Pressing Enter now adds 1 Error.',
     routeCancelled: 'Route cancelled. No error added.',
   });
   Object.assign(strings['zh-Hant'], {
@@ -54,7 +56,9 @@
     insuranceSelect: '\u8acb\u5148\u52fe\u9078\u512a\u5148\u5408\u7d04\uff0c\u518d\u8cfc\u8cb7\u4fdd\u96aa\u3002',
     keyboardFlight: '\u6309 Enter \u9078\u64c7\u98db\u8239\uff0c\u518d\u7528\u65b9\u5411\u9375\u9078\u78bc\u982d\uff0c\u6309 Enter \u8abf\u5ea6\u3002',
     keyboardChooseDock: '\u5df2\u9078\u64c7\u98db\u8239\u3002\u7528\u65b9\u5411\u9375\u9078\u78bc\u982d\uff0c\u6309 Enter \u8abf\u5ea6\uff1bEscape \u53d6\u6d88\u3002',
-    keyboardDock: '{dock}\u3002\u6309 Enter \u8abf\u5ea6\u5230\u9019\u88e1\u3002',
+    keyboardDockCorrect: '{dock}\u3002\u9019\u662f{flight}\u7684\u6b63\u78ba\u76ee\u6a19\u3002\u6309 Enter \u8abf\u5ea6\uff1b\u71c3\u6599 {fuel} \u2192 {remaining}\u3002',
+    keyboardDockWrong: '{dock}\u3002\u9019\u4e0d\u662f{flight}\u7684\u6b63\u78ba\u76ee\u6a19\uff1b\u6b63\u78ba\u76ee\u6a19\u662f{target}\u3002\u73fe\u5728\u6309 Enter \u6703\u589e\u52a0 1 \u6b21\u5931\u8aa4\u3002',
+    keyboardDockBlocked: '{dock}\u3002\u9019\u662f{flight}\u7684\u6b63\u78ba\u76ee\u6a19\uff0c\u4f46{step}\u3002\u73fe\u5728\u6309 Enter \u6703\u589e\u52a0 1 \u6b21\u5931\u8aa4\u3002',
     routeCancelled: '\u822a\u7dda\u5df2\u53d6\u6d88\uff0c\u4e0d\u8a08\u5165\u932f\u8aa4\u3002',
   });
   const flights = [['cargo','cargo'], ['passenger','passenger'], ['repair','repair'], ['festival','passenger'], ['heavy','cargo']];
@@ -90,6 +94,8 @@
   let insuranceActive = false;
   let insurancePending = false;
   let insuranceConfirmTimer = 0;
+  let insuranceConfirmDueAt = 0;
+  let insuranceConfirmRemaining = 0;
   const t = (key, values = {}) => Object.entries(values).reduce((value, [name, replacement]) => value.replace(`{${name}}`, replacement), strings[locale][key]);
   const persist = () => localStorage.setItem(saveKey, JSON.stringify(save));
   const show = (id) => {
@@ -99,6 +105,17 @@
     $('battleLive').setAttribute('aria-hidden', resultOpen ? 'true' : 'false');
     $('mainHeader').classList.toggle('hidden', id !== 'mainScreen');
     document.body.classList.toggle('skyport-playing', id === 'battleShell' || id === 'result');
+    requestAnimationFrame(() => {
+      if ($(id)?.classList.contains('hidden')) return;
+      const target = id === 'mainScreen'
+        ? $('startBtn')
+        : id === 'stageScreen'
+          ? document.querySelector('.stage-card.selected:not(:disabled)') || document.querySelector('.stage-card:not(:disabled)')
+          : id === 'result'
+            ? $('nextBtn')
+            : $('flight');
+      target?.focus({preventScroll:true});
+    });
   };
   function localize() {
     document.documentElement.lang = locale;
@@ -116,7 +133,32 @@
   }
   function clearInsuranceConfirmation() {
     clearTimeout(insuranceConfirmTimer);
+    insuranceConfirmTimer = 0;
+    insuranceConfirmDueAt = 0;
+    insuranceConfirmRemaining = 0;
     insurancePending = false;
+  }
+  function armInsuranceConfirmation(delay) {
+    insuranceConfirmRemaining = Math.max(0, Number(delay) || 0);
+    insuranceConfirmDueAt = performance.now() + insuranceConfirmRemaining;
+    insuranceConfirmTimer = setTimeout(() => {
+      insuranceConfirmTimer = 0;
+      insuranceConfirmDueAt = 0;
+      insuranceConfirmRemaining = 0;
+      insurancePending = false;
+      renderContractControls();
+    }, insuranceConfirmRemaining);
+  }
+  function suspendInsuranceConfirmation() {
+    if (!insurancePending || !insuranceConfirmTimer) return;
+    insuranceConfirmRemaining = Math.max(0, insuranceConfirmDueAt - performance.now());
+    clearTimeout(insuranceConfirmTimer);
+    insuranceConfirmTimer = 0;
+    insuranceConfirmDueAt = 0;
+  }
+  function resumeInsuranceConfirmation() {
+    if (!insurancePending || insuranceConfirmTimer || document.hidden) return;
+    armInsuranceConfirmation(insuranceConfirmRemaining);
   }
   function renderContractControls(message = '') {
     const balance = window.WeightPlayWallet?.read?.().diamonds || 0;
@@ -196,8 +238,22 @@
     document.querySelectorAll('.dock').forEach((dock) => {
       const label = labels.docks[dock.dataset.dock];
       const isTarget = dock.dataset.dock === state.dock;
+      const blockingStep = state.storm && !state.serviced
+        ? labels.repair
+        : state.conflict
+          ? labels.conflict
+          : !state.crewAssigned
+            ? labels.crew
+            : state.fuel <= 0
+              ? (locale === 'zh-Hant' ? '\u5fc5\u9808\u5148\u88dc\u5145\u71c3\u6599' : 'Fuel must be restored first')
+              : '';
+      const keyboardLabel = !isTarget
+        ? t('keyboardDockWrong', {dock:label, flight:flightName, target:dockName})
+        : blockingStep
+          ? t('keyboardDockBlocked', {dock:label, flight:flightName, step:blockingStep})
+          : t('keyboardDockCorrect', {dock:label, flight:flightName, fuel:state.fuel, remaining:Math.max(0, state.fuel - 1)});
       dock.querySelector('.dock-label').textContent = label;
-      dock.setAttribute('aria-label', state.selected ? t('keyboardDock', {dock:label}) : label);
+      dock.setAttribute('aria-label', state.selected ? keyboardLabel : label);
       dock.classList.toggle('is-target', isTarget);
       dock.querySelector('.dock-target-badge').textContent = isTarget
         ? (locale === 'zh-Hant' ? `前往 ${dockName.at(-1)}` : `GO: ${dockName.at(-1)}`)
@@ -421,7 +477,7 @@
     if (!insurancePending) {
       insurancePending = true;
       renderContractControls();
-      insuranceConfirmTimer = setTimeout(() => { insurancePending = false; renderContractControls(); }, 5000);
+      armInsuranceConfirmation(5000);
       return;
     }
     clearInsuranceConfirmation();
@@ -455,6 +511,7 @@
   $('flight').addEventListener('keydown', (event) => {
     if (event.key !== 'Enter' && event.key !== ' ') return;
     event.preventDefault();
+    if (event.repeat) return;
     selectFlightWithKeyboard();
   });
   document.querySelectorAll('.dock').forEach((dock) => dock.addEventListener('click', () => {
@@ -489,7 +546,14 @@
   window.addEventListener('mouseup', routePointer);
   $('flight').addEventListener('lostpointercapture', (event) => { if (dragging && event.pointerId === routePointerId) cancelRouteGesture({announce:true}); });
   window.addEventListener('blur', () => { if (dragging) cancelRouteGesture({announce:true}); });
-  document.addEventListener('visibilitychange', () => { if (document.hidden && dragging) cancelRouteGesture({announce:true}); });
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      if (dragging) cancelRouteGesture({announce:true});
+      suspendInsuranceConfirmation();
+    } else resumeInsuranceConfirmation();
+  });
+  window.addEventListener('pagehide', suspendInsuranceConfirmation);
+  window.addEventListener('pageshow', resumeInsuranceConfirmation);
   $('localeSelect').onchange = (event) => { locale = event.target.value; localStorage.setItem('weightPlayLocale', locale); localize(); };
   localize();
 })();

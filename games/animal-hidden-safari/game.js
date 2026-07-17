@@ -55,9 +55,22 @@
       best: "Best {time}",
       noHints: "No hints left",
       hintTarget: "Look for {target}!",
+      findFirst: "Find {target} first!",
+      decoyTap: "That animal is not on this list.",
+      decoyAnimal: "{target}, habitat visitor, not on the find list",
       found: "Found!",
       tryAgain: "Look closely",
       remaining: "{count} left",
+      checkpoint: "Habitat Checkpoint",
+      rules: {
+        open: "Open Search",
+        order: "Ranger Order",
+        twins: "Animal Pairs",
+        camouflage: "Deep Camouflage",
+        decoys: "Habitat Visitors",
+        drift: "Moving Patrol",
+        grand: "Grand Safari Mix",
+      },
       targets: {
         lion: "Lion",
         elephant: "Elephant",
@@ -114,9 +127,22 @@
       best: "\u6700\u4f73 {time}",
       noHints: "\u6c92\u6709\u63d0\u793a\u4e86",
       hintTarget: "\u627e\u627e\u770b\uff1a{target}\uff01",
+      findFirst: "\u8acb\u5148\u627e {target}\uff01",
+      decoyTap: "\u9019\u96bb\u52d5\u7269\u4e0d\u5728\u9019\u6b21\u7684\u6e05\u55ae\u4e0a\u3002",
+      decoyAnimal: "{target}\uff0c\u68f2\u5730\u8a2a\u5ba2\uff0c\u4e0d\u5728\u5c0b\u627e\u6e05\u55ae\u4e0a",
       found: "\u627e\u5230\u4e86\uff01",
       tryAgain: "\u518d\u4ed4\u7d30\u770b\u770b",
       remaining: "\u9084\u5269 {count} \u500b",
+      checkpoint: "\u68f2\u5730\u6aa2\u67e5\u9ede",
+      rules: {
+        open: "\u81ea\u7531\u641c\u5c0b",
+        order: "\u5de1\u8b77\u9806\u5e8f",
+        twins: "\u52d5\u7269\u96d9\u96d9",
+        camouflage: "\u6df1\u5c64\u507d\u88dd",
+        decoys: "\u68f2\u5730\u8a2a\u5ba2",
+        drift: "\u79fb\u52d5\u5de1\u904a",
+        grand: "\u7d42\u6975\u63a2\u96aa\u6df7\u5408",
+      },
       targets: {
         lion: "\u7345\u5b50",
         elephant: "\u5927\u8c61",
@@ -166,12 +192,41 @@
   };
 
   const stages = [
-    { habitat: "sunny", targets: [["lion", 48, 65, 66], ["elephant", 18, 72, 58], ["giraffe", 82, 58, 62], ["panda", 66, 80, 48], ["koala", 30, 48, 44], ["owl", 42, 27, 38]] },
-    { habitat: "river", theme: "river", targets: [["penguin", 24, 74, 54], ["elephant", 75, 68, 58], ["frog", 43, 82, 40], ["owl", 64, 34, 40], ["panda", 54, 56, 48], ["fox", 35, 64, 42]] },
-    { habitat: "sunset", theme: "sunset", targets: [["giraffe", 18, 54, 62], ["koala", 78, 44, 46], ["lion", 64, 73, 58], ["rabbit", 48, 32, 38], ["fox", 28, 82, 42], ["owl", 38, 42, 38]] },
-    { habitat: "pond", theme: "pond", targets: [["frog", 18, 75, 44], ["penguin", 50, 73, 58], ["panda", 78, 66, 54], ["owl", 84, 32, 40], ["rabbit", 36, 84, 40], ["koala", 56, 54, 42]] },
-    { habitat: "jungle", theme: "jungle", targets: [["koala", 22, 43, 50], ["owl", 54, 29, 40], ["rabbit", 76, 35, 42], ["panda", 70, 74, 56], ["lion", 42, 70, 58], ["fox", 34, 86, 42]] },
-    { habitat: "lookout", theme: "lookout", targets: [["lion", 21, 68, 58], ["elephant", 46, 72, 60], ["giraffe", 78, 54, 62], ["panda", 64, 82, 50], ["frog", 34, 84, 42], ["owl", 54, 30, 40]] },
+    { habitat: "sunny", rule: "open", targets: [["lion", 18, 67, 58], ["elephant", 48, 72, 54], ["giraffe", 79, 58, 58], ["panda", 65, 83, 44], ["koala", 30, 45, 42], ["owl", 52, 27, 36]] },
+    { habitat: "sunny", rule: "open", targets: [["rabbit", 16, 37, 40], ["fox", 39, 76, 44], ["frog", 72, 83, 38], ["penguin", 84, 50, 46], ["lion", 58, 59, 52], ["owl", 34, 24, 36]] },
+    { habitat: "sunny", rule: "open", targets: [["giraffe", 17, 55, 54], ["panda", 44, 82, 44], ["koala", 72, 42, 42], ["elephant", 82, 72, 52], ["rabbit", 54, 31, 38], ["frog", 29, 74, 38]] },
+    { habitat: "sunny", rule: "open", targets: [["fox", 18, 80, 42], ["owl", 42, 33, 36], ["lion", 65, 67, 54], ["penguin", 84, 77, 44], ["koala", 72, 39, 40], ["rabbit", 28, 52, 38]] },
+    { habitat: "sunny", rule: "open", checkpoint: true, targets: [["elephant", 15, 72, 54], ["giraffe", 36, 51, 56], ["lion", 62, 76, 56], ["panda", 84, 66, 46], ["frog", 74, 31, 38], ["owl", 26, 27, 36]] },
+
+    { habitat: "river", theme: "river", rule: "order", ordered: true, targets: [["penguin", 18, 75, 48], ["frog", 42, 83, 38], ["elephant", 76, 70, 54], ["owl", 67, 31, 36], ["panda", 50, 56, 44], ["fox", 29, 57, 42]] },
+    { habitat: "river", theme: "river", rule: "order", ordered: true, targets: [["rabbit", 17, 36, 38], ["koala", 38, 55, 42], ["penguin", 64, 79, 46], ["giraffe", 84, 53, 54], ["frog", 76, 35, 38], ["lion", 28, 77, 52]] },
+    { habitat: "river", theme: "river", rule: "order", ordered: true, targets: [["owl", 16, 29, 36], ["elephant", 31, 73, 52], ["fox", 53, 54, 42], ["panda", 77, 69, 44], ["rabbit", 83, 34, 38], ["frog", 58, 84, 38]] },
+    { habitat: "river", theme: "river", rule: "order", ordered: true, targets: [["giraffe", 18, 53, 54], ["koala", 40, 34, 40], ["lion", 58, 72, 52], ["penguin", 82, 78, 46], ["owl", 74, 27, 36], ["rabbit", 31, 82, 38]] },
+    { habitat: "river", theme: "river", rule: "order", ordered: true, checkpoint: true, targets: [["frog", 15, 82, 38], ["fox", 31, 58, 42], ["panda", 52, 76, 44], ["elephant", 78, 70, 54], ["owl", 69, 29, 36], ["penguin", 43, 35, 46]] },
+
+    { habitat: "sunset", theme: "sunset", rule: "twins", twins: true, targets: [["fox", 17, 79, 40], ["fox", 70, 69, 40], ["rabbit", 32, 36, 38], ["rabbit", 83, 42, 38], ["owl", 45, 27, 36], ["owl", 58, 53, 36]] },
+    { habitat: "sunset", theme: "sunset", rule: "twins", twins: true, targets: [["lion", 17, 69, 50], ["lion", 67, 78, 50], ["koala", 34, 43, 40], ["koala", 81, 36, 40], ["frog", 45, 83, 38], ["frog", 59, 30, 38]] },
+    { habitat: "sunset", theme: "sunset", rule: "twins", twins: true, targets: [["panda", 15, 78, 42], ["panda", 61, 64, 42], ["penguin", 33, 53, 44], ["penguin", 82, 74, 44], ["giraffe", 48, 42, 52], ["giraffe", 78, 36, 52]] },
+    { habitat: "sunset", theme: "sunset", rule: "twins", twins: true, targets: [["elephant", 18, 74, 50], ["elephant", 70, 72, 50], ["fox", 35, 57, 40], ["fox", 83, 42, 40], ["rabbit", 48, 31, 38], ["rabbit", 55, 84, 38]] },
+    { habitat: "sunset", theme: "sunset", rule: "twins", twins: true, ordered: true, checkpoint: true, targets: [["owl", 16, 30, 36], ["owl", 74, 29, 36], ["lion", 31, 73, 50], ["lion", 82, 69, 50], ["koala", 47, 49, 40], ["koala", 58, 83, 40]] },
+
+    { habitat: "pond", theme: "pond", rule: "camouflage", camouflage: true, targets: [["frog", 16, 77, 38], ["penguin", 45, 75, 44], ["panda", 79, 68, 42], ["owl", 83, 29, 36], ["rabbit", 34, 83, 38], ["koala", 57, 52, 40]] },
+    { habitat: "pond", theme: "pond", rule: "camouflage", camouflage: true, targets: [["elephant", 17, 70, 50], ["fox", 38, 53, 40], ["frog", 61, 82, 38], ["giraffe", 82, 49, 52], ["owl", 69, 27, 36], ["rabbit", 31, 32, 38]] },
+    { habitat: "pond", theme: "pond", rule: "camouflage", camouflage: true, targets: [["koala", 15, 42, 40], ["panda", 31, 76, 42], ["penguin", 55, 68, 44], ["lion", 80, 76, 50], ["frog", 75, 34, 38], ["owl", 45, 27, 36]] },
+    { habitat: "pond", theme: "pond", rule: "camouflage", camouflage: true, ordered: true, targets: [["rabbit", 18, 83, 38], ["frog", 39, 75, 38], ["fox", 58, 52, 40], ["elephant", 80, 69, 50], ["owl", 71, 28, 36], ["panda", 31, 39, 42]] },
+    { habitat: "pond", theme: "pond", rule: "camouflage", camouflage: true, twins: true, ordered: true, checkpoint: true, targets: [["frog", 16, 80, 38], ["frog", 70, 77, 38], ["penguin", 34, 66, 44], ["penguin", 83, 54, 44], ["koala", 48, 38, 40], ["koala", 70, 29, 40]] },
+
+    { habitat: "jungle", theme: "jungle", rule: "decoys", decoys: [["rabbit", 82, 38, 38], ["penguin", 47, 29, 42]], targets: [["koala", 17, 43, 40], ["owl", 33, 29, 36], ["panda", 70, 75, 44], ["lion", 42, 72, 50], ["fox", 27, 84, 40], ["frog", 83, 81, 38]] },
+    { habitat: "jungle", theme: "jungle", rule: "decoys", decoys: [["lion", 75, 75, 46], ["frog", 39, 82, 36]], targets: [["elephant", 16, 70, 50], ["giraffe", 36, 48, 52], ["rabbit", 57, 31, 38], ["fox", 82, 43, 40], ["koala", 63, 68, 40], ["owl", 26, 27, 36]] },
+    { habitat: "jungle", theme: "jungle", rule: "decoys", decoys: [["panda", 18, 78, 40], ["owl", 72, 28, 34]], targets: [["lion", 17, 65, 50], ["penguin", 36, 82, 44], ["frog", 57, 73, 38], ["rabbit", 82, 36, 38], ["fox", 75, 80, 40], ["koala", 43, 39, 40]] },
+    { habitat: "jungle", theme: "jungle", rule: "decoys", ordered: true, decoys: [["elephant", 80, 68, 46], ["fox", 31, 80, 38]], targets: [["owl", 16, 30, 36], ["rabbit", 35, 39, 38], ["giraffe", 54, 53, 52], ["panda", 75, 77, 42], ["frog", 83, 34, 38], ["lion", 30, 67, 50]] },
+    { habitat: "jungle", theme: "jungle", rule: "decoys", ordered: true, camouflage: true, checkpoint: true, decoys: [["koala", 18, 42, 38], ["penguin", 81, 78, 40], ["rabbit", 68, 31, 36]], targets: [["fox", 16, 81, 40], ["owl", 34, 28, 36], ["panda", 48, 71, 42], ["elephant", 77, 68, 50], ["frog", 70, 82, 38], ["lion", 54, 43, 50]] },
+
+    { habitat: "lookout", theme: "lookout", rule: "drift", drift: true, targets: [["lion", 17, 69, 50], ["elephant", 43, 74, 50], ["giraffe", 79, 52, 52], ["panda", 67, 83, 42], ["frog", 30, 83, 38], ["owl", 52, 28, 36]] },
+    { habitat: "lookout", theme: "lookout", rule: "drift", drift: true, ordered: true, targets: [["rabbit", 16, 35, 38], ["fox", 34, 77, 40], ["koala", 55, 48, 40], ["penguin", 80, 76, 44], ["owl", 72, 28, 36], ["lion", 27, 59, 50]] },
+    { habitat: "lookout", theme: "lookout", rule: "drift", drift: true, twins: true, targets: [["panda", 17, 76, 42], ["panda", 70, 69, 42], ["fox", 35, 59, 40], ["fox", 82, 38, 40], ["owl", 48, 27, 36], ["owl", 57, 83, 36]] },
+    { habitat: "lookout", theme: "lookout", rule: "drift", drift: true, camouflage: true, decoys: [["lion", 80, 72, 46], ["rabbit", 34, 36, 36]], targets: [["elephant", 16, 70, 50], ["giraffe", 38, 48, 52], ["frog", 57, 82, 38], ["penguin", 82, 46, 44], ["koala", 68, 29, 40], ["panda", 31, 80, 42]] },
+    { habitat: "lookout", theme: "lookout", rule: "grand", drift: true, camouflage: true, ordered: true, twins: true, checkpoint: true, decoys: [["elephant", 15, 70, 46], ["rabbit", 83, 36, 36], ["penguin", 52, 79, 40]], targets: [["lion", 17, 61, 48], ["lion", 73, 71, 48], ["fox", 31, 82, 38], ["fox", 78, 48, 38], ["owl", 39, 28, 34], ["owl", 62, 31, 34]] },
   ];
 
   const $ = (id) => document.getElementById(id);
@@ -301,6 +356,14 @@
     return best ? ` / ${t("best", { time: formatTime(best) })}` : "";
   }
 
+  function stageRuleLabel(stage) {
+    return t(`rules.${stage.rule || "open"}`);
+  }
+
+  function nextRequiredTargetIndex() {
+    return stages[currentStage].targets.findIndex((_, index) => !found.has(index));
+  }
+
   function renderStageGrid() {
     nodes.stageGrid.innerHTML = "";
     stages.forEach((stage, index) => {
@@ -313,6 +376,7 @@
       button.innerHTML = `
         <b>${animalImg(stage.targets[0][0], "stage-animal")}</b>
         <strong>${t("stage", { n: stageNo })} - ${t(`habitat.${stage.habitat}`)}</strong>
+        <em>${stageRuleLabel(stage)}${stage.checkpoint ? ` · ${t("checkpoint")}` : ""}</em>
         <span>${starsFor(stageNo)}${bestLine(stageNo)}</span>
       `;
       button.addEventListener("click", () => {
@@ -373,7 +437,21 @@
     nodes.stageGrid.addEventListener("pointercancel", end);
   }
 
-  function showMenu() {
+  function rejectRepeatedScreenActivation(event) {
+    if (event.repeat && (event.key === "Enter" || event.key === " ")) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+    }
+  }
+
+  function focusStageCard(index = Math.max(0, Math.min(stages.length - 1, unlocked - 1))) {
+    const card = nodes.stageGrid.querySelector(`[data-stage-index="${index}"]`)
+      || nodes.stageGrid.querySelector(".stage-card:not(.locked)");
+    card?.focus({ preventScroll: true });
+    card?.scrollIntoView({ block: "nearest", inline: "center" });
+  }
+
+  function showMenu(focusIndex) {
     stopTimer();
     hiddenStartedAt = 0;
     acceptingInput = false;
@@ -388,6 +466,7 @@
     document.body.classList.add("safari-stage");
     renderStageGrid();
     updateSafariFrame();
+    requestAnimationFrame(() => focusStageCard(focusIndex));
   }
 
   function showMain() {
@@ -400,6 +479,7 @@
     nodes.resultPanel.classList.add("hidden");
     document.documentElement.classList.remove("safari-stage");
     document.body.classList.remove("safari-stage", "safari-playing", "safari-result");
+    nodes.startGameBtn.focus({ preventScroll: true });
   }
 
   function startStage(index) {
@@ -409,6 +489,7 @@
     mistakes = 0;
     hintedTargets = new Set();
     nodes.hintStatus.textContent = "";
+    nodes.floatLayer.replaceChildren();
     lastResult = null;
     startTime = Date.now();
     hiddenStartedAt = 0;
@@ -423,12 +504,15 @@
     document.documentElement.classList.remove("safari-stage");
     document.body.classList.remove("safari-stage");
     nodes.scene.dataset.theme = stages[index].theme || "sunny";
+    nodes.scene.classList.toggle("is-camouflage", Boolean(stages[index].camouflage));
+    nodes.scene.classList.toggle("is-drift", Boolean(stages[index].drift));
+    nodes.scene.classList.toggle("is-ordered", Boolean(stages[index].ordered));
     renderScene();
     renderTargetList();
     updateHud();
     updateSafariFrame();
     startTimer();
-    requestAnimationFrame(() => nodes.targetsLayer.querySelector(".target:not(:disabled)")?.focus({ preventScroll: true }));
+    requestAnimationFrame(() => nodes.targetsLayer.querySelector(".target[data-index]:not(:disabled)")?.focus({ preventScroll: true }));
     track("game_start", { level: index + 1 });
     playSound("start");
     window.WeightPlayGame?.exitMobileGameMode?.();
@@ -470,6 +554,7 @@
       button.className = "target";
       button.dataset.index = String(index);
       button.dataset.id = id;
+      button.style.setProperty("--drift-delay", `${-index * 0.43}s`);
       button.style.left = `${x}%`;
       button.style.top = `${y}%`;
       button.style.setProperty("--size", `${size}px`);
@@ -481,6 +566,31 @@
       });
       nodes.targetsLayer.appendChild(button);
     });
+    (stage.decoys || []).forEach(([id, x, y, size], index) => {
+      const cover = coverForTarget(stage, y);
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "target is-decoy";
+      button.dataset.id = id;
+      button.style.left = `${x}%`;
+      button.style.top = `${y}%`;
+      button.style.setProperty("--size", `${size}px`);
+      button.style.setProperty("--drift-delay", `${-(index + stage.targets.length) * 0.43}s`);
+      button.setAttribute("aria-label", t("decoyAnimal", { target: t(`targets.${id}`) }));
+      button.innerHTML = `<span class="target-hit-area" aria-hidden="true"></span>${animalImg(id, "target-animal")}${coverImg(cover)}`;
+      button.addEventListener("click", (event) => {
+        event.stopPropagation();
+        if (!acceptingInput || button.disabled) return;
+        mistakes += 1;
+        button.disabled = true;
+        button.tabIndex = -1;
+        button.classList.add("found");
+        showFloatingText(t("decoyTap"), x, y);
+        playSound("error");
+      });
+      nodes.targetsLayer.appendChild(button);
+    });
+    updateOrderedTargets();
     nodes.scene.onclick = (event) => {
       if (!acceptingInput || event.target.closest?.(".target")) return;
       mistakes += 1;
@@ -492,16 +602,39 @@
 
   function renderTargetList() {
     nodes.targetList.innerHTML = "";
-    stages[currentStage].targets.forEach(([id], index) => {
+    const stage = stages[currentStage];
+    const requiredIndex = stage.ordered ? nextRequiredTargetIndex() : -1;
+    stage.targets.forEach(([id], index) => {
       const chip = document.createElement("div");
-      chip.className = `target-chip ${found.has(index) ? "done" : ""}`;
+      chip.className = `target-chip ${found.has(index) ? "done" : ""}${index === requiredIndex ? " is-current" : ""}`;
+      if (index === requiredIndex) chip.setAttribute("aria-current", "step");
       chip.innerHTML = `<b>${animalImg(id, "chip-animal")}</b><span>${t(`targets.${id}`)}</span>`;
       nodes.targetList.appendChild(chip);
     });
   }
 
+  function updateOrderedTargets() {
+    const stage = stages[currentStage];
+    const requiredIndex = stage.ordered ? nextRequiredTargetIndex() : -1;
+    nodes.targetsLayer.querySelectorAll(".target[data-index]").forEach((button) => {
+      const index = Number(button.dataset.index);
+      button.classList.toggle("is-current", index === requiredIndex);
+      button.classList.toggle("is-waiting", stage.ordered && !found.has(index) && index !== requiredIndex);
+    });
+  }
+
   function chooseTarget(index, button) {
     if (!acceptingInput || found.has(index)) return;
+    const stage = stages[currentStage];
+    if (stage.ordered && index !== nextRequiredTargetIndex()) {
+      mistakes += 1;
+      const requiredId = stage.targets[nextRequiredTargetIndex()]?.[0];
+      showFloatingText(t("findFirst", { target: t(`targets.${requiredId}`) }), Number.parseFloat(button.style.left), Number.parseFloat(button.style.top));
+      button.classList.add("wrong-order");
+      window.setTimeout(() => button.classList.remove("wrong-order"), 360);
+      playSound("error");
+      return;
+    }
     found.add(index);
     button.classList.remove("hint");
     button.classList.add("found");
@@ -512,11 +645,12 @@
     showFloatingText(t("found"), Number.parseFloat(button.style.left), Number.parseFloat(button.style.top));
     playSound("coin");
     renderTargetList();
+    updateOrderedTargets();
     updateHud();
     if (found.size >= stages[currentStage].targets.length) {
       finishStage();
     } else {
-      setTimeout(() => nodes.targetsLayer.querySelector(".target:not(:disabled)")?.focus({ preventScroll: true }), 0);
+      setTimeout(() => nodes.targetsLayer.querySelector(".target[data-index]:not(:disabled)")?.focus({ preventScroll: true }), 0);
     }
   }
 
@@ -547,7 +681,7 @@
 
   function updateHud() {
     const stage = stages[currentStage];
-    nodes.stageText.textContent = `${t("stage", { n: currentStage + 1 })} - ${t(`habitat.${stage.habitat}`)}`;
+    nodes.stageText.textContent = `${t("stage", { n: currentStage + 1 })} · ${stageRuleLabel(stage)}`;
     nodes.progressFill.style.width = `${(found.size / stage.targets.length) * 100}%`;
     nodes.remainingText.textContent = t("remaining", { count: Math.max(0, stage.targets.length - found.size) });
     nodes.hintCount.textContent = hintsLeft;
@@ -768,10 +902,12 @@
       }
       window.dispatchEvent(new CustomEvent("wonder:locale-change", { detail: { locale } }));
     });
-    nodes.backToStagesBtn.addEventListener("click", showMenu);
-    nodes.startGameBtn.addEventListener("click", showMenu);
+    nodes.startGameBtn.addEventListener("keydown", rejectRepeatedScreenActivation, true);
+    nodes.stageGrid.addEventListener("keydown", rejectRepeatedScreenActivation, true);
+    nodes.backToStagesBtn.addEventListener("click", () => showMenu(currentStage));
+    nodes.startGameBtn.addEventListener("click", () => showMenu());
     nodes.stageBackMainBtn.addEventListener("click", showMain);
-    nodes.resultStagesBtn.addEventListener("click", showMenu);
+    nodes.resultStagesBtn.addEventListener("click", () => showMenu(currentStage));
     nodes.retryBtn.addEventListener("click", () => startStage(currentStage));
     nodes.nextStageBtn.addEventListener("click", () => startStage(Math.min(stages.length - 1, currentStage + 1)));
     nodes.resultPanel.addEventListener("keydown", (event) => {
@@ -807,8 +943,46 @@
     });
   }
 
+  function installSmokeApi() {
+    if (new URLSearchParams(window.location.search).get("smoke") !== "1") return;
+    window.__animalHiddenSafariSmoke = {
+      stages: stages.map((stage, index) => ({
+        id: index + 1,
+        habitat: stage.habitat,
+        theme: stage.theme || "sunny",
+        rule: stage.rule || "open",
+        ordered: Boolean(stage.ordered),
+        twins: Boolean(stage.twins),
+        camouflage: Boolean(stage.camouflage),
+        drift: Boolean(stage.drift),
+        checkpoint: Boolean(stage.checkpoint),
+        targets: stage.targets.map((target) => [...target]),
+        decoys: (stage.decoys || []).map((target) => [...target]),
+      })),
+      unlockAll: () => {
+        unlocked = stages.length;
+        localStorage.setItem(unlockKey, String(unlocked));
+        showMenu();
+      },
+      startStage: (stageNo) => startStage(clamp(Number(stageNo) || 1, 1, stages.length) - 1),
+      refreshTimer: () => {
+        updateTimer();
+        return elapsedSeconds();
+      },
+      state: () => ({
+        stage: currentStage + 1,
+        found: [...found],
+        hintsLeft,
+        mistakes,
+        acceptingInput,
+        unlocked,
+      }),
+    };
+  }
+
   localizeStatic();
   bind();
+  installSmokeApi();
   showMain();
   scheduleAssetPreload();
 })();

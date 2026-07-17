@@ -62,14 +62,14 @@
     en: {
       title: "Animal Reef Fisher",
       pageTitle: "Animal Reef Fisher - Free Reef Fishing Animal Game | WeightPlay",
-      pageDescription: "Animal Reef Fisher is a 13+ WeightPlay browser game about reef expeditions, cast timing, line tension, sea-creature albums, and local gear upgrades.",
+      pageDescription: "Clear 30 reef fishing missions by timing casts, controlling changing line-tension zones, documenting 12 sea creatures, upgrading six tools, and landing six Guardian fish.",
       language: "Language",
       backToLobby: "Back to lobby",
       back: "Back",
       reefZones: "Reef zones",
       gearUpgrades: "Gear upgrades",
-      menuTitle: "Cast into the coral reef and build your sea-creature album.",
-      menuHint: "Choose a reef zone, control line tension, earn Reef Notes, and upgrade your gear locally.",
+      menuTitle: "Chart 30 reef missions and land six Guardian fish.",
+      menuHint: "Control changing line-tension rules, document 12 species, earn Reef Notes, and upgrade six tools locally.",
       reefNotes: "Reef Notes",
       album: "Album",
       diamonds: "Diamonds",
@@ -78,7 +78,7 @@
       soundOff: "Sound: Off",
       enableSound: "Enable sound",
       disableSound: "Disable sound",
-      chooseZone: "Choose Reef Zone",
+      chooseZone: "Choose Reef Mission",
       prepareGear: "Prepare Gear",
       startExpedition: "Start Expedition",
       reefMap: "Reef Map",
@@ -111,7 +111,7 @@
       tensionStatusAim: "Step 1: hold the sea to charge, then release to cast.",
       tensionStatusCharging: "Release to cast. Step 2 starts when a fish bites.",
       tensionStatusHooked: "Step 2: drag the red knob, or slide on the sea, into SAFE.",
-      tensionStatusSafe: "Good. Keep the marker inside SAFE.",
+      tensionStatusSafe: "Inside SAFE. Hold steady.",
       tensionStatusDanger: "Move the red knob back into SAFE before the line breaks.",
       landed: "Catch landed! Keep going before time runs out.",
       broke: "Line broke. The tension marker left the safe band too long.",
@@ -158,14 +158,14 @@
     "zh-Hant": {
       title: "動物珊瑚釣手",
       pageTitle: "動物珊瑚釣手 | WeightPlay",
-      pageDescription: "動物珊瑚釣手是 WeightPlay 的 13+ 瀏覽器遊戲，玩家進行珊瑚礁遠征、掌握拋竿時機與魚線張力、收集海洋生物圖鑑，並在本機升級裝備。",
+      pageDescription: "挑戰 30 個珊瑚礁釣魚任務，掌握變化中的魚線安全區、記錄 12 種海洋生物、升級六種裝備，並釣起六隻守護魚。",
       language: "語言",
       backToLobby: "返回大廳",
       back: "返回",
       reefZones: "礁區選擇",
       gearUpgrades: "裝備升級",
-      menuTitle: "把釣線拋進珊瑚礁，建立你的海洋生物圖鑑。",
-      menuHint: "選擇礁區、控制魚線張力、獲得礁石筆記，並在本機升級裝備。",
+      menuTitle: "完成 30 個礁區任務，釣起六隻守護魚。",
+      menuHint: "控制會變化的魚線安全區、記錄 12 種生物、獲得礁石筆記，並在本機升級六種裝備。",
       reefNotes: "礁石筆記",
       album: "圖鑑",
       diamonds: "鑽石",
@@ -174,7 +174,7 @@
       soundOff: "音效：關",
       enableSound: "開啟音效",
       disableSound: "關閉音效",
-      chooseZone: "選擇礁區",
+      chooseZone: "選擇礁區任務",
       prepareGear: "遠征準備",
       startExpedition: "開始遠征",
       reefMap: "礁區地圖",
@@ -207,7 +207,7 @@
       tensionStatusAim: "步驟1：按住海面蓄力，放開拋竿。",
       tensionStatusCharging: "放開即可拋竿；魚咬餌後進入步驟2。",
       tensionStatusHooked: "步驟2：拖紅色鈕，或在海面左右滑，拉進綠色安全區。",
-      tensionStatusSafe: "很好，讓標記留在安全區。",
+      tensionStatusSafe: "已在安全區，保持穩定。",
       tensionStatusDanger: "快把紅色鈕拖回安全區，不然魚線會斷。",
       landed: "成功收線！趁時間結束前繼續挑戰。",
       broke: "魚線斷了。張力標記離開安全區太久。",
@@ -253,6 +253,33 @@
     },
   };
 
+  Object.assign(text.en, {
+    mission: "Mission {stage}",
+    bossMission: "Guardian Catch",
+    ruleOpen: "Open Water · steady safe band",
+    ruleDrift: "Kelp Drift · safe band moves smoothly",
+    ruleSnag: "Coral Snags · safe band breathes narrower",
+    ruleTide: "Moon Tide · safe band changes sides",
+    ruleStorm: "Storm Gust · three-second line bursts",
+    ruleAbyss: "Abyss Trial · drift, pressure, and gusts",
+    bossHooked: "GUARDIAN · {fish}: {rule}",
+    bossShieldOpen: "OPEN: hold SAFE to damage the Guardian.",
+    bossShieldClosed: "SHIELDED: stay SAFE until it opens.",
+  });
+  Object.assign(text["zh-Hant"], {
+    mission: "第 {stage} 關",
+    bossMission: "守護魚挑戰",
+    ruleOpen: "開放海面 · 固定安全區",
+    ruleDrift: "海藻漂流 · 安全區平順移動",
+    ruleSnag: "珊瑚纏線 · 安全區週期收窄",
+    ruleTide: "月潮換向 · 安全區左右切換",
+    ruleStorm: "風暴突流 · 每三秒衝擊魚線",
+    ruleAbyss: "深淵試煉 · 漂移、壓力與突流",
+    bossHooked: "守護魚 · {fish}：{rule}",
+    bossShieldOpen: "破綻：留在安全區攻破守護魚。",
+    bossShieldClosed: "護甲中：留在安全區等待開啟。",
+  });
+
   const assetPaths = {
     bg: "../../assets/animal-reef-fisher-reef-bg.webp",
     otter: "../../assets/animal-reef-fisher-otter-fisher.webp",
@@ -264,13 +291,57 @@
     sonar: "../../assets/animal-reef-fisher-fx-sonar-pulse.webp",
   };
 
-  const zones = [
-    { id: "sunny", name: { en: "Sunny Shore", "zh-Hant": "陽光淺灘" }, img: "../../assets/animal-reef-fisher-zone-sunny-shore.webp", goal: 2, unlock: 1, speed: 0.65 },
-    { id: "kelp", name: { en: "Kelp Garden", "zh-Hant": "海藻花園" }, img: "../../assets/animal-reef-fisher-zone-kelp-garden.webp", goal: 3, unlock: 2, speed: 0.85 },
-    { id: "coral", name: { en: "Coral Gate", "zh-Hant": "珊瑚門" }, img: "../../assets/animal-reef-fisher-zone-coral-gate.webp", goal: 3, unlock: 3, speed: 1.05 },
-    { id: "moon", name: { en: "Moon Tide", "zh-Hant": "月潮礁" }, img: "../../assets/animal-reef-fisher-zone-moon-tide.webp", goal: 4, unlock: 4, speed: 1.22 },
-    { id: "deep", name: { en: "Deep Blue", "zh-Hant": "深藍海域" }, img: "../../assets/animal-reef-fisher-zone-deep-blue.webp", goal: 4, unlock: 5, speed: 1.42 },
+  const regionDefinitions = [
+    {
+      id:"sunny", rule:"open", img:"../../assets/animal-reef-fisher-zone-sunny-shore.webp",
+      names:[["Training Cove","練習海灣"],["Shellbank Channel","貝岸水道"],["Lagoon Crossing","潟湖航線"],["Sunbeam Shelf","日光礁棚"],["Crown Koi Court","日冠錦魚庭"]],
+      boss:{ fishId:"fish-6", profile:"crown", name:{ en:"Sun Crown Guardian", "zh-Hant":"日冠守護錦魚" }, rule:{ en:"Follow three smooth crown pulses.", "zh-Hant":"跟隨三段平順冠潮。" } },
+    },
+    {
+      id:"kelp", rule:"drift", img:"../../assets/animal-reef-fisher-zone-kelp-garden.webp",
+      names:[["Ribbon Kelp Entry","帶狀海藻入口"],["Green Current","翠綠海流"],["Tangled Garden","纏繞花園"],["Drifting Arch","漂流拱門"],["Kelp Leviathan Hollow","海藻巨魚穴"]],
+      boss:{ fishId:"fish-5", profile:"kelp", name:{ en:"Kelp Leviathan", "zh-Hant":"海藻巨笛鯛" }, rule:{ en:"The safe band drifts while its pull stays heavy.", "zh-Hant":"安全區持續漂移，拉力維持沉重。" } },
+    },
+    {
+      id:"coral", rule:"snag", img:"../../assets/animal-reef-fisher-zone-coral-gate.webp",
+      names:[["Coral Needle Pass","珊瑚針道"],["Glass Reef Window","琉璃礁窗"],["Branch Maze","枝珊瑚迷宮"],["Red Fan Corridor","紅扇走廊"],["Ram Ray Bastion","角魟堡壘"]],
+      boss:{ fishId:"fish-4", profile:"coral", name:{ en:"Coral Ram Ray", "zh-Hant":"珊瑚角魟" }, rule:{ en:"Its coral guard opens and closes every two seconds.", "zh-Hant":"珊瑚護甲每兩秒開合一次。" } },
+    },
+    {
+      id:"moon", rule:"tide", img:"../../assets/animal-reef-fisher-zone-moon-tide.webp",
+      names:[["Moonlit Inlet","月光灣口"],["Silver Tide","銀色潮流"],["Jelly Lantern Way","水母燈道"],["Eclipse Pool","蝕月池"],["Moon Manta Ring","月魟環礁"]],
+      boss:{ fishId:"fish-11", profile:"moon", name:{ en:"Eclipse Manta", "zh-Hant":"蝕月鬼蝠魟" }, rule:{ en:"Feints reverse the pull before each tide change.", "zh-Hant":"每次潮向改變前會假動作反拉。" } },
+    },
+    {
+      id:"storm", rule:"storm", img:"../../assets/animal-reef-fisher-zone-deep-blue.webp",
+      names:[["Rainline Shelf","雨線礁棚"],["Thunder Buoy","雷鳴浮標"],["Crosswind Trench","側風海溝"],["Whitecap Run","白浪航道"],["Storm Lantern Eye","風暴燈眼"]],
+      boss:{ fishId:"fish-10", profile:"storm", name:{ en:"Storm Lantern Warden", "zh-Hant":"風暴礁燈守衛" }, rule:{ en:"A sharp gust strikes the line every three seconds.", "zh-Hant":"每三秒有一次強烈突流衝擊魚線。" } },
+    },
+    {
+      id:"abyss", rule:"abyss", img:"../../assets/animal-reef-fisher-zone-deep-blue.webp",
+      names:[["Blue Pressure Gate","深藍壓力門"],["Crystal Drop","水晶落差"],["Silent Thermocline","寂靜溫躍層"],["Abyss Beacon","深淵信標"],["Crystal Crown Throne","水晶冠王座"]],
+      boss:{ fishId:"fish-12", profile:"abyss", name:{ en:"Crystal Crown Sovereign", "zh-Hant":"水晶冠魚王" }, rule:{ en:"Drift, shield windows, and abyss gusts combine.", "zh-Hant":"漂移、護甲破綻與深淵突流同時出現。" } },
+    },
   ];
+
+  const schoolPattern = ["steady", "mixed", "dart", "heavy", "guardian"];
+  const zones = regionDefinitions.flatMap((region, regionIndex) => region.names.map(([en, zh], missionIndex) => {
+    const stage = regionIndex * 5 + missionIndex + 1;
+    return {
+      id:`mission-${stage}`,
+      stage,
+      region:region.id,
+      name:{ en, "zh-Hant":zh },
+      img:region.img,
+      goal:missionIndex === 0 ? 2 : missionIndex === 4 ? 3 : 3,
+      unlock:stage,
+      speed:0.62 + regionIndex * 0.13 + missionIndex * 0.035,
+      rule:region.rule,
+      school:schoolPattern[missionIndex],
+      checkpoint:missionIndex === 4,
+      boss:missionIndex === 4 ? region.boss : null,
+    };
+  }));
 
   const gear = [
     { id: "rod", name: { en: "Rod Strength", "zh-Hant": "釣竿強度" }, img: "../../assets/animal-reef-fisher-gear-rod-strength.webp", cost: 18 },
@@ -293,7 +364,7 @@
     ["Pearl Seahorse", "珍珠海馬"],
     ["Reef Lantern", "礁燈魚"],
     ["Storm Manta", "風暴鬼蝠魟"],
-    ["Crystal Whale", "水晶鯨"],
+    ["Crystal Crownfish", "水晶冠魚"],
   ];
 
   const fish = Array.from({ length: 12 }, (_, index) => {
@@ -383,7 +454,9 @@
   let locale = localStorage.getItem(localeKey) || "en";
   if (!text[locale]) locale = "en";
   let save = loadSave();
-  let selectedZone = save.selectedZone || "sunny";
+  const legacyZoneMission = { sunny:"mission-1", kelp:"mission-6", coral:"mission-11", moon:"mission-16", deep:"mission-26" };
+  let selectedZone = legacyZoneMission[save.selectedZone] || save.selectedZone || "mission-1";
+  if (!zones.some((zone) => zone.id === selectedZone)) selectedZone = "mission-1";
   let state = "loading";
   let run = null;
   let diamondPurchasePending = "";
@@ -423,16 +496,16 @@
       const raw = JSON.parse(localStorage.getItem(saveKey) || "{}");
       return {
         notes: Math.max(0, Number(raw.notes) || 0),
-        unlockedZone: Math.max(1, Number(raw.unlockedZone) || 1),
+        unlockedZone: Math.max(1, Math.min(30, Number(raw.unlockedZone) || 1)),
         bestCatches: Math.max(0, Number(raw.bestCatches) || 0),
         album: Array.isArray(raw.album) ? raw.album : [],
         gear: { rod: 1, reel: 1, line: 1, bait: 1, boat: 1, scan: 1, ...(raw.gear || {}) },
-        selectedZone: raw.selectedZone || "sunny",
+        selectedZone: raw.selectedZone || "mission-1",
         lureReady: Boolean(raw.lureReady),
         sonarReady: Boolean(raw.sonarReady),
       };
     } catch {
-      return { notes: 0, unlockedZone: 1, bestCatches: 0, album: [], gear: { rod: 1, reel: 1, line: 1, bait: 1, boat: 1, scan: 1 }, selectedZone: "sunny", lureReady: false, sonarReady: false };
+      return { notes: 0, unlockedZone: 1, bestCatches: 0, album: [], gear: { rod: 1, reel: 1, line: 1, bait: 1, boat: 1, scan: 1 }, selectedZone: "mission-1", lureReady: false, sonarReady: false };
     }
   }
 
@@ -511,11 +584,13 @@
     nodes.diamondText.textContent = diamondBalance;
     nodes.zoneRow.innerHTML = zones.map((zone, index) => {
       const locked = index + 1 > save.unlockedZone;
+      const missionLabel = t("mission", { stage:zone.stage });
+      const ruleLabel = t(`rule${zone.rule[0].toUpperCase()}${zone.rule.slice(1)}`);
       return `
-        <button class="zone-card stage-card ${zone.id === selectedZone ? "is-selected" : ""} ${locked ? "is-locked" : ""}" data-zone="${zone.id}" type="button">
+        <button class="zone-card stage-card region-${zone.region} ${zone.checkpoint ? "is-checkpoint" : ""} ${zone.id === selectedZone ? "is-selected" : ""} ${locked ? "is-locked" : ""}" data-zone="${zone.id}" data-stage="${zone.stage}" type="button" aria-label="${missionLabel} · ${zone.name[locale]} · ${zone.checkpoint ? t("bossMission") : ruleLabel} · ${locked ? t("locked") : `${t("goal")} ${zone.goal}`}">
           <span class="zone-art"><img src="${zone.img}" alt="" /></span>
-          <strong>${zone.name[locale]}</strong>
-          <span>${locked ? t("locked") : `${t("goal")} ${zone.goal}`}</span>
+          <strong>${missionLabel} · ${zone.name[locale]}</strong>
+          <span>${locked ? t("locked") : `${zone.checkpoint ? t("bossMission") : ruleLabel} · ${t("goal")} ${zone.goal}`}</span>
         </button>
       `;
     }).join("");
@@ -531,8 +606,12 @@
         </div>
       `;
     }).join("");
-    nodes.lureBtn.textContent = save.lureReady ? t("lureReady") : diamondPurchasePending === "lure" ? t("confirmLure", { before:diamondBalance, after:Math.max(0,diamondBalance-lureCost) }) : t("buyLure", { cost: lureCost });
-    nodes.sonarPrepBtn.textContent = save.sonarReady ? t("sonarReady") : diamondPurchasePending === "sonar" ? t("confirmSonar", { before:diamondBalance, after:Math.max(0,diamondBalance-sonarCost) }) : t("buySonar", { cost: sonarCost });
+    const lureUnavailable = !save.lureReady && diamondPurchasePending !== "lure" && diamondBalance < lureCost;
+    const sonarUnavailable = !save.sonarReady && diamondPurchasePending !== "sonar" && diamondBalance < sonarCost;
+    nodes.lureBtn.textContent = save.lureReady ? t("lureReady") : diamondPurchasePending === "lure" ? t("confirmLure", { before:diamondBalance, after:Math.max(0,diamondBalance-lureCost) }) : lureUnavailable ? t("needDiamonds", { cost: lureCost }) : t("buyLure", { cost: lureCost });
+    nodes.sonarPrepBtn.textContent = save.sonarReady ? t("sonarReady") : diamondPurchasePending === "sonar" ? t("confirmSonar", { before:diamondBalance, after:Math.max(0,diamondBalance-sonarCost) }) : sonarUnavailable ? t("needDiamonds", { cost: sonarCost }) : t("buySonar", { cost: sonarCost });
+    nodes.lureBtn.disabled = lureUnavailable;
+    nodes.sonarPrepBtn.disabled = sonarUnavailable;
     nodes.lureBtn.setAttribute("aria-label", save.lureReady ? t("lureReady") : diamondPurchasePending === "lure" ? t("lureConfirmLabel", { before:diamondBalance, after:Math.max(0,diamondBalance-lureCost) }) : t("lureBuyLabel", { balance:diamondBalance }));
     nodes.sonarPrepBtn.setAttribute("aria-label", save.sonarReady ? t("sonarReady") : diamondPurchasePending === "sonar" ? t("sonarConfirmLabel", { before:diamondBalance, after:Math.max(0,diamondBalance-sonarCost) }) : t("sonarBuyLabel", { balance:diamondBalance }));
     nodes.lureBtn.classList.toggle("is-confirming", diamondPurchasePending === "lure");
@@ -598,7 +677,8 @@
     const zone = zones.find((z) => z.id === selectedZone) || zones[0];
     run = {
       zone,
-      time: expeditionSeconds,
+      time: expeditionSeconds + Math.max(0, (Number(save.gear.boat) || 1) - 1) * 5,
+      duration: expeditionSeconds + Math.max(0, (Number(save.gear.boat) || 1) - 1) * 5,
       catches: 0,
       newFish: 0,
       notes: 0,
@@ -618,16 +698,22 @@
       sonarPulse: 0,
       catchToastTimer: 0,
       tensionSafe: true,
+      reelElapsed: 0,
+      lastGustCycle: 0,
+      bossShieldOpen: true,
+      hazardFlash: 0,
       lastCatch: null,
       finished: false,
       lureUsed: save.lureReady,
+      lureCharges: save.lureReady ? 1 : 0,
       sonarReady: save.sonarReady,
     };
     save.lureReady = false;
     save.sonarReady = false;
     save.selectedZone = selectedZone;
     saveProgress();
-    nodes.zoneText.textContent = zone.name[locale];
+    nodes.zoneText.textContent = t("mission", { stage:zone.stage });
+    nodes.zoneText.setAttribute("title", zone.name[locale]);
     nodes.goalText.textContent = `${run.catches}/${zone.goal}`;
     nodes.hintText.textContent = t("castHint");
     nodes.catchToast.classList.add("is-hidden");
@@ -663,7 +749,7 @@
     run.finalScore = run.score + run.catches * 20 + (won ? 100 : 25);
     save.notes += run.notes;
     save.bestCatches = Math.max(save.bestCatches, run.catches);
-    if (won) save.unlockedZone = Math.min(5, Math.max(save.unlockedZone, zones.indexOf(run.zone) + 2));
+    if (won) save.unlockedZone = Math.min(zones.length, Math.max(save.unlockedZone, zones.indexOf(run.zone) + 2));
     saveProgress();
     nodes.resultTitle.textContent = won ? t("expeditionWin") : t("expeditionFail");
     nodes.resultText.textContent = t("result", { catches: run.catches, newFish: run.newFish, notes: run.notes });
@@ -678,10 +764,36 @@
   }
 
   function pickHookFish() {
-    const zoneIndex = zones.indexOf(run.zone);
-    let pool = fish.slice(0, Math.min(12, 4 + zoneIndex * 2));
-    if (run.lureUsed) pool = pool.concat(fish.filter((f) => f.rare));
+    if (run.zone.boss && run.catches >= run.zone.goal - 1) return bossFishForZone(run.zone);
+    const regionIndex = Math.floor((run.zone.stage - 1) / 5);
+    const poolLimit = Math.min(12, ([4, 6, 8, 10, 11, 12][regionIndex] || 12) + Math.max(0, (Number(save.gear.scan) || 1) - 1));
+    let pool = fish.slice(0, poolLimit).filter((item) => item.id !== run.zone.boss?.fishId);
+    if (run.zone.school === "steady") pool = pool.filter((item) => item.behavior === "steady");
+    if (run.zone.school === "dart") pool = pool.filter((item) => item.behavior === "dart");
+    if (run.zone.school === "heavy") pool = pool.filter((item) => item.behavior === "heavy");
+    if (!pool.length) pool = fish.slice(0, poolLimit).filter((item) => item.id !== run.zone.boss?.fishId);
+    if (run.lureCharges > 0) {
+      run.lureCharges -= 1;
+      const rarePool = fish.filter((item) => item.rare && item.id !== run.zone.boss?.fishId);
+      return rarePool[Math.floor(Math.random() * rarePool.length)] || pool[0] || fish[0];
+    }
     return pool[Math.floor(Math.random() * pool.length)] || fish[0];
+  }
+
+  function bossFishForZone(zone) {
+    const definition = zone?.boss;
+    const base = fish.find((item) => item.id === definition?.fishId) || fish.at(-1);
+    if (!definition || !base) return base || fish[0];
+    return {
+      ...base,
+      name:definition.name,
+      rare:true,
+      boss:true,
+      bossProfile:definition.profile,
+      bossRule:definition.rule,
+      points:base.points + 90,
+      notes:base.notes + 10,
+    };
   }
 
   function hookFish() {
@@ -691,6 +803,10 @@
     run.tension = 50;
     run.struggle = 0;
     run.fishPower = (45 + Math.random() * 40) * behavior.endurance;
+    run.reelElapsed = 0;
+    run.lastGustCycle = 0;
+    run.bossShieldOpen = true;
+    run.hazardFlash = 0;
     run.fishTimer = 1.2;
     run.splashTimer = 0.8;
     run.tensionSafe = true;
@@ -954,10 +1070,29 @@
     track("line_break", { zone: run.zone.id });
   }
 
+  function missionTensionWindow(zone, elapsed = 0, gearValues = save.gear) {
+    const baseMin = 38 - (Number(gearValues?.rod) || 1);
+    const baseMax = 62 + (Number(gearValues?.line) || 1);
+    let center = (baseMin + baseMax) / 2;
+    let halfWidth = (baseMax - baseMin) / 2;
+    if (zone?.rule === "drift") center += Math.sin(elapsed * 0.82) * 10;
+    if (zone?.rule === "snag") halfWidth -= 1 + (Math.sin(elapsed * 1.35) + 1) * 4;
+    if (zone?.rule === "tide") center += Math.floor(elapsed / 4) % 2 === 0 ? 11 : -11;
+    if (zone?.rule === "storm") halfWidth -= 3;
+    if (zone?.rule === "abyss") {
+      center += Math.sin(elapsed * 1.05) * 9;
+      halfWidth -= 5;
+    }
+    if (zone?.boss?.profile === "kelp") center += Math.sin(elapsed * 1.25) * 4;
+    halfWidth = Math.max(7, halfWidth);
+    center = Math.max(halfWidth + 2, Math.min(98 - halfWidth, center));
+    return { safeMin:center - halfWidth, safeMax:center + halfWidth };
+  }
+
   function tensionRange() {
     if (!run) return { safeMin: 38, safeMax: 62, safe: true };
-    const safeMin = 38 - save.gear.rod;
-    const safeMax = 62 + save.gear.line;
+    const elapsed = Math.max(0, (run.duration || expeditionSeconds) - run.time);
+    const { safeMin, safeMax } = missionTensionWindow(run.zone, elapsed);
     return {
       safeMin,
       safeMax,
@@ -995,11 +1130,36 @@
           return direction * zoneSpeed * 13 + Math.sin(now / 620) * zoneSpeed * 12;
         },
       },
+      crown: {
+        label: "bossMission", hint: "behaviorSteadyHint", endurance: 1.45,
+        pull(now, zoneSpeed) { return Math.sin(now / 420) * zoneSpeed * 21 + Math.sin(now / 1050) * 9; },
+      },
+      kelp: {
+        label: "bossMission", hint: "behaviorHeavyHint", endurance: 1.6,
+        pull(now, zoneSpeed) { return Math.sin(now / 690) * zoneSpeed * 23 + Math.sin(now / 190) * 5; },
+      },
+      coral: {
+        label: "bossMission", hint: "behaviorDartHint", endurance: 1.7,
+        pull(now, zoneSpeed) { return (Math.floor(now / 900) % 2 ? 1 : -1) * zoneSpeed * 18 + Math.sin(now / 260) * 8; },
+      },
+      moon: {
+        label: "bossMission", hint: "behaviorDartHint", endurance: 1.8,
+        pull(now, zoneSpeed) { const feint = Math.floor(now / 620) % 3 === 2 ? -1 : 1; return feint * Math.sin(now / 230) * zoneSpeed * 27; },
+      },
+      storm: {
+        label: "bossMission", hint: "behaviorHeavyHint", endurance: 1.9,
+        pull(now, zoneSpeed) { return Math.sin(now / 330) * zoneSpeed * 25 + Math.sin(now / 95) * 5; },
+      },
+      abyss: {
+        label: "bossMission", hint: "behaviorHeavyHint", endurance: 2.15,
+        pull(now, zoneSpeed) { return Math.sin(now / 370) * zoneSpeed * 28 + (Math.floor(now / 1150) % 2 ? 10 : -10); },
+      },
     };
-    return profiles[item?.behavior] || profiles.steady;
+    return profiles[item?.bossProfile] || profiles[item?.behavior] || profiles.steady;
   }
 
   function hookedHint(item) {
+    if (item?.boss) return t("bossHooked", { fish:item.name[locale], rule:item.bossRule?.[locale] || "" });
     const behavior = fishBehavior(item);
     return t("hookedBehavior", {
       behavior: t(behavior.label),
@@ -1035,6 +1195,7 @@
     else nodes.tensionStatus.textContent = t("tensionStatusHooked");
     if (hasSonarLock) nodes.tensionCoach.textContent = sonarScanMessage(run.hookFish);
     else if (!run || run.phase === "aim") nodes.tensionCoach.textContent = t("tensionCoachAim");
+    else if (run.hookFish?.boss && ["coral", "abyss"].includes(run.hookFish.bossProfile)) nodes.tensionCoach.textContent = t(run.bossShieldOpen ? "bossShieldOpen" : "bossShieldClosed");
     else if (run.phase === "reel") nodes.tensionCoach.textContent = range.safe ? t("tensionCoachSafe") : t("tensionCoachDanger");
     else nodes.tensionCoach.textContent = t("tensionCoachReel");
   }
@@ -1067,18 +1228,32 @@
     }
 
     if (run.phase === "reel") {
+      run.reelElapsed += dt;
       const gearControl = save.gear.reel * 0.4 + save.gear.line * 0.28;
       const target = pointer.down ? Math.max(0, Math.min(100, pointer.tensionPct)) : 50;
       const behavior = fishBehavior(run.hookFish);
-      const pull = behavior.pull(performance.now(), run.zone.speed) + (run.hookFish.rare ? 6 : 0);
+      const pull = behavior.pull(run.reelElapsed * 1000, run.zone.speed) + (run.hookFish.rare ? 6 : 0);
       run.tension += (target - run.tension) * dt * (1.4 + gearControl) + pull * dt;
+      if (["storm", "abyss"].includes(run.zone.rule)) {
+        const gustCycle = Math.floor(run.reelElapsed / 3);
+        if (gustCycle > run.lastGustCycle) {
+          run.lastGustCycle = gustCycle;
+          run.tension += (gustCycle % 2 ? 1 : -1) * (run.zone.rule === "abyss" ? 18 : 13);
+          run.hazardFlash = 1.1;
+          playSound("wallHit");
+        }
+      }
       run.tension = Math.max(0, Math.min(100, run.tension));
       const { safe } = tensionRange();
       if (!safe && run.tensionSafe) playSound("wallHit");
       run.tensionSafe = safe;
       if (!safe) run.struggle += dt;
       else run.struggle = Math.max(0, run.struggle - dt * 1.8);
-      run.fishPower -= dt * (9 + save.gear.rod * 1.7 + save.gear.bait * 0.9);
+      const shieldProfile = ["coral", "abyss"].includes(run.hookFish?.bossProfile);
+      run.bossShieldOpen = !shieldProfile || Math.floor(run.reelElapsed / 2) % 2 === 0;
+      const baseProgress = 9 + save.gear.rod * 1.7 + save.gear.bait * 0.9;
+      const bossProgress = run.hookFish?.boss ? (safe && run.bossShieldOpen ? baseProgress : 0) : baseProgress;
+      run.fishPower -= dt * bossProgress;
       if (run.struggle > 2.2) lineBreak();
       if (run.fishPower <= 0 && run.phase === "reel") landFish();
     }
@@ -1086,6 +1261,7 @@
     run.splashTimer = Math.max(0, run.splashTimer - dt);
     run.sonarPulse = Math.max(0, run.sonarPulse - dt);
     run.catchToastTimer = Math.max(0, run.catchToastTimer - dt);
+    run.hazardFlash = Math.max(0, run.hazardFlash - dt);
     if (run.catchToastTimer <= 0) nodes.catchToast.classList.add("is-hidden");
     nodes.castFill.style.width = `${run.phase === "charging" ? run.castPower : 0}%`;
     nodes.tensionMarker.style.left = `${run.tension}%`;
@@ -1115,7 +1291,10 @@
   }
 
   function configureArena() {
-    H = 960;
+    // The shared logical Battle canvas gives the water scene a 366 x 450
+    // track. Match that portrait ratio internally so the scene fills without
+    // stretching fish or creating a false band below the water.
+    H = 1180;
     canvas.width = W;
     canvas.height = H;
     canvas.style.setProperty("--reef-arena-ratio", `${W} / ${H}`);
@@ -1174,9 +1353,32 @@
         const y = 240 + Math.cos(t * 1.1) * 45;
         const f = run.hookFish;
         if (f) {
-          drawFishSprite(f, x - 78, y - 38, f.rare ? 174 : 156, f.rare ? 90 : 76);
+          const fishWidth = f.boss ? 224 : f.rare ? 174 : 156;
+          const fishHeight = f.boss ? 116 : f.rare ? 90 : 76;
+          drawFishSprite(f, x - fishWidth / 2, y - fishHeight / 2, fishWidth, fishHeight);
           if (f.rare || run.sonarPulse > 0) drawSpriteSheet(images.shimmer, 1, 1, 0, x - 18, y - 18, 150, 110);
+          if (f.boss) {
+            ctx.save();
+            ctx.fillStyle = run.bossShieldOpen ? "rgba(7, 76, 67, .9)" : "rgba(92, 34, 18, .92)";
+            ctx.strokeStyle = run.bossShieldOpen ? "#9fffd2" : "#ffd08a";
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.roundRect(354, 104, 350, 48, 16);
+            ctx.fill();
+            ctx.stroke();
+            ctx.fillStyle = "#fff";
+            ctx.font = "900 22px Arial, sans-serif";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText(f.name[locale], 529, 128, 326);
+            ctx.restore();
+          }
         }
+      }
+
+      if (run.hazardFlash > 0) {
+        ctx.fillStyle = `rgba(174, 226, 255, ${Math.min(.3, run.hazardFlash * .24)})`;
+        ctx.fillRect(0, 0, W, 540);
       }
 
       if (run.splashTimer > 0) {
@@ -1539,11 +1741,64 @@
   [canvas, nodes.tensionLane].forEach((control) => {
     control.addEventListener("keydown", handleFishingKeyDown);
     control.addEventListener("keyup", handleFishingKeyUp);
+    control.addEventListener("focusout", () => {
+      if (pointer.source === "keyboard" && run?.phase === "charging") cancelFishingInput();
+    });
   });
 
   if (isTestMode) {
     window.__AnimalReefFisherTest = {
       startRun,
+      definitions() {
+        return zones.map((zone) => ({
+          stage:zone.stage,
+          id:zone.id,
+          region:zone.region,
+          rule:zone.rule,
+          school:zone.school,
+          goal:zone.goal,
+          checkpoint:zone.checkpoint,
+          boss:zone.boss ? { fishId:zone.boss.fishId, profile:zone.boss.profile, name:zone.boss.name } : null,
+        }));
+      },
+      tensionWindow(stage, elapsed) {
+        const zone = zones[Math.max(0, Math.min(zones.length - 1, Number(stage) - 1))];
+        return missionTensionWindow(zone, Number(elapsed) || 0, { rod:1, line:1 });
+      },
+      async selectMission(stage) {
+        const index = Math.max(0, Math.min(zones.length - 1, Number(stage) - 1));
+        save.unlockedZone = Math.max(save.unlockedZone, index + 1);
+        selectedZone = zones[index].id;
+        save.selectedZone = selectedZone;
+        saveProgress();
+        renderMenu();
+        await startRun();
+        return this.readState();
+      },
+      async prepareBoss(stage) {
+        const index = Math.max(0, Math.min(zones.length - 1, Number(stage) - 1));
+        if (!zones[index].boss) return null;
+        await this.selectMission(index + 1);
+        run.catches = Math.max(0, run.zone.goal - 1);
+        run.hookFish = null;
+        hookFish();
+        return this.readState();
+      },
+      advance(seconds, tensionTarget = 50) {
+        if (!run || run.finished) return this.readState();
+        pointer.down = true;
+        pointer.source = "test";
+        pointer.tensionPct = Math.max(0, Math.min(100, Number(tensionTarget) || 50));
+        let remaining = Math.max(0, Number(seconds) || 0);
+        while (remaining > 0 && run && !run.finished) {
+          const step = Math.min(0.05, remaining);
+          update(step);
+          remaining -= step;
+        }
+        pointer.down = false;
+        pointer.source = "canvas";
+        return this.readState();
+      },
       forceWin() {
         if (!run || run.finished) startRun();
         const firstFish = fish[0];
@@ -1597,7 +1852,17 @@
                 catchLog: run.catchLog,
                 finished: run.finished,
                 zone: run.zone.id,
+                stage: run.zone.stage,
+                rule: run.zone.rule,
+                checkpoint: run.zone.checkpoint,
                 hookFish: run.hookFish ? run.hookFish.id : "",
+                hookFishName: run.hookFish ? run.hookFish.name[locale] : "",
+                bossProfile: run.hookFish?.bossProfile || "",
+                bossShieldOpen: run.bossShieldOpen,
+                reelElapsed: run.reelElapsed,
+                lastGustCycle: run.lastGustCycle,
+                hazardFlash: run.hazardFlash,
+                safeRange: tensionRange(),
                 visibleFish: run.phase === "reel" && run.hookFish ? run.hookFish.id : "",
                 sonarReady: run.sonarReady,
                 sonarPulse: run.sonarPulse,

@@ -76,6 +76,7 @@
     btnRight: $("btnRight"),
     btnJump: $("btnJump"),
     btnAttack: $("btnAttack"),
+    btnDash: $("btnDash"),
     eqWeaponName: $("eqWeaponName"),
     eqWeaponEffect: $("eqWeaponEffect"),
     eqWeaponIcon: $("eqWeaponIcon"),
@@ -126,6 +127,8 @@
   const amuletCost = 15;
   let amuletConfirmPending = false;
   let amuletConfirmTimer = 0;
+  let amuletConfirmRemaining = 0;
+  let amuletConfirmDueAt = 0;
 
   const text = {
     en: {
@@ -155,6 +158,7 @@
       moveRight: "Move right",
       jumpAction: "Jump",
       attackAction: "Attack",
+      dashAction: "Dash",
       controlLegend: "A/D Move · W/Space Jump · J Attack · K/Shift Dash",
       roomLabel: "Stage",
       keyLabel: "Points",
@@ -247,6 +251,7 @@
       moveRight: "向右移動",
       jumpAction: "跳躍",
       attackAction: "攻擊",
+      dashAction: "衝刺",
       controlLegend: "A/D 移動 · W/空白鍵 跳躍 · J 攻擊 · K/Shift 衝刺",
       roomLabel: "房間",
       keyLabel: "鑰匙",
@@ -470,6 +475,7 @@
     pickups: [],
     particles: [],
   };
+  let backgroundBattleSuspended = false;
 
   // Level platforms geometry lists
   let platforms = [];
@@ -670,8 +676,38 @@
   function clearAmuletConfirmation() {
     clearTimeout(amuletConfirmTimer);
     amuletConfirmTimer = 0;
+    amuletConfirmRemaining = 0;
+    amuletConfirmDueAt = 0;
     amuletConfirmPending = false;
     nodes.amuletBtn?.classList.remove("is-confirming");
+  }
+
+  function armAmuletConfirmation(delay = amuletConfirmRemaining) {
+    if (!amuletConfirmPending || document.hidden) return;
+    clearTimeout(amuletConfirmTimer);
+    amuletConfirmRemaining = Math.max(0, Number(delay) || 0);
+    amuletConfirmDueAt = performance.now() + amuletConfirmRemaining;
+    amuletConfirmTimer = window.setTimeout(() => {
+      amuletConfirmTimer = 0;
+      amuletConfirmRemaining = 0;
+      amuletConfirmDueAt = 0;
+      if (!amuletConfirmPending || document.hidden) return;
+      clearAmuletConfirmation();
+      updateDiamondShopUI();
+    }, amuletConfirmRemaining);
+  }
+
+  function suspendAmuletConfirmation() {
+    if (!amuletConfirmPending || !amuletConfirmTimer) return;
+    amuletConfirmRemaining = Math.max(0, amuletConfirmDueAt - performance.now());
+    clearTimeout(amuletConfirmTimer);
+    amuletConfirmTimer = 0;
+    amuletConfirmDueAt = 0;
+  }
+
+  function resumeAmuletConfirmation() {
+    if (!amuletConfirmPending || amuletConfirmTimer || document.hidden) return;
+    armAmuletConfirmation();
   }
 
   function updateDiamondShopUI() {
@@ -1496,6 +1532,10 @@
   // Physics Loop frame updates
   function updateGameEngine() {
     if (!state.gameActive) return;
+    if (document.hidden) {
+      suspendBackgroundBattle();
+      return;
+    }
     if (state.entryGraceFrames > 0) state.entryGraceFrames--;
 
     // Redundant input values checking
@@ -1760,6 +1800,23 @@
     drawCanvasFrame();
 
     if (state.gameActive) state.gameLoopId = requestAnimationFrame(updateGameEngine);
+  }
+
+  function suspendBackgroundBattle() {
+    clearActiveInputs();
+    suspendAmuletConfirmation();
+    if (!state.gameActive) return;
+    backgroundBattleSuspended = true;
+    cancelAnimationFrame(state.gameLoopId);
+  }
+
+  function resumeBackgroundBattle() {
+    resumeAmuletConfirmation();
+    if (!backgroundBattleSuspended) return;
+    backgroundBattleSuspended = false;
+    if (!state.gameActive) return;
+    cancelAnimationFrame(state.gameLoopId);
+    state.gameLoopId = requestAnimationFrame(updateGameEngine);
   }
 
   function applyPlayerDamage(amt) {
@@ -2187,7 +2244,12 @@
     nodes.gameCanvas.addEventListener("blur", clearActiveInputs);
     window.addEventListener("blur", clearActiveInputs);
     document.addEventListener("visibilitychange", () => {
-      if (document.hidden) clearActiveInputs();
+      if (document.hidden) suspendBackgroundBattle();
+      else resumeBackgroundBattle();
+    });
+    window.addEventListener("pagehide", suspendBackgroundBattle);
+    window.addEventListener("pageshow", () => {
+      if (!document.hidden) resumeBackgroundBattle();
     });
 
     // Pointer cancellation, focus loss, and screen changes must never leave movement latched.
@@ -2211,6 +2273,12 @@
       button.addEventListener("blur", release);
     };
     const bindActionButton = (button, action) => {
+      button.addEventListener("keydown", (event) => {
+        if (event.repeat && (event.key === "Enter" || event.key === " ")) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+      });
       button.addEventListener("pointerdown", (event) => {
         if (event.isPrimary === false || (event.button !== undefined && event.button !== 0)) return;
         event.preventDefault();
@@ -2224,6 +2292,7 @@
     bindHoldButton(nodes.btnRight, "right");
     bindActionButton(nodes.btnJump, makePlayerJump);
     bindActionButton(nodes.btnAttack, makePlayerAttack);
+    bindActionButton(nodes.btnDash, makePlayerDash);
   }
 
   function shuffle(array) {
@@ -2295,10 +2364,7 @@
       if (!amuletConfirmPending) {
         amuletConfirmPending = true;
         updateDiamondShopUI();
-        amuletConfirmTimer = window.setTimeout(() => {
-          clearAmuletConfirmation();
-          updateDiamondShopUI();
-        }, 5000);
+        armAmuletConfirmation(5000);
         window.WonderSound?.play("click");
         return;
       }

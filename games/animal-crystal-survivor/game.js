@@ -372,6 +372,7 @@
   let battlePanelMetrics = null;
   let activePointerId = null;
   let runToken = 0;
+  let battleSuspended = false;
   const soundGate = {};
   const keys = new Set();
   const movementKeys = new Set(["arrowleft", "arrowright", "arrowup", "arrowdown", "a", "d", "w", "s"]);
@@ -825,6 +826,7 @@
     state.stage = save.selectedStage;
     state.stageConfig = stages[state.stage - 1];
     state.mode = "running";
+    battleSuspended = Boolean(document.hidden);
     prepareSmokeCombatDemo();
     save.playCount += 1;
     persist();
@@ -873,7 +875,7 @@
     const elapsedDt = Math.max(0, (now - lastFrame) / 1000 || 0);
     const physicsDt = Math.min(0.033, elapsedDt);
     lastFrame = now;
-    if (state.mode === "running") update(physicsDt, elapsedDt);
+    if (state.mode === "running" && !battleSuspended) update(physicsDt, elapsedDt);
     draw();
     if (state.mode === "running") scheduleLoop(token);
   }
@@ -1819,11 +1821,16 @@
   window.addEventListener("blur", clearInput);
   window.addEventListener("pagehide", () => {
     clearInput();
+    battleSuspended = true;
     resetFrameClock();
   });
-  window.addEventListener("pageshow", resetFrameClock);
+  window.addEventListener("pageshow", () => {
+    battleSuspended = false;
+    resetFrameClock();
+  });
   document.addEventListener("visibilitychange", () => {
     clearInput();
+    battleSuspended = Boolean(document.hidden);
     resetFrameClock();
   });
 

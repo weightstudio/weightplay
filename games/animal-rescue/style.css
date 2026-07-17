@@ -167,7 +167,7 @@ body:not(.rescue-playing):not(.rescue-stage-select) .rescue-game { height: auto;
   overflow: hidden;
 }
 
-.stage-shell-head { display:grid; grid-template-columns:48px minmax(0,1fr); align-items:center; gap:10px; }.stage-shell-head > strong { font-size:clamp(20px,5vw,27px); }.stage-return,.battle-return { display:grid; place-items:center; width:44px; height:44px; padding:0; border:3px solid #3e702d; border-radius:10px; color:#24351b; background:#fffbea; font-size:1.4rem; font-weight:1000; }.stage-setup-text { color:#496b2e; font-size:.82rem; font-weight:900; }.battle-return { position:absolute; z-index:3; top:8px; left:8px; }
+.stage-shell-head { display:grid; grid-template-columns:48px minmax(0,1fr); align-items:center; gap:10px; }.stage-shell-head > strong { font-size:clamp(20px,5vw,27px); }.stage-return,.battle-return { display:grid; place-items:center; width:44px; height:44px; padding:0; border:3px solid #3e702d; border-radius:10px; color:#24351b; background:#fffbea; font-size:1.4rem; font-weight:1000; }.stage-setup-text { margin:0 2px; padding:6px 9px; border-radius:8px; background:rgba(255,251,234,.9); color:#315b35; font-size:.78rem; font-weight:900; line-height:1.2; }.battle-return { position:absolute; z-index:3; top:8px; left:8px; }
 
 .stage-select > strong {
   font-size: clamp(28px, 8vw, 42px);
@@ -182,7 +182,7 @@ body:not(.rescue-playing):not(.rescue-stage-select) .rescue-game { height: auto;
   overflow-x: auto;
   overflow-y: hidden;
   padding: 2px max(44px, calc((100% - 264px) / 2)) 10px;
-  scroll-snap-type: x mandatory;
+  scroll-snap-type: x mandatory !important;
   scrollbar-width: none;
   touch-action: pan-x;
   overscroll-behavior-x: contain;
@@ -245,6 +245,15 @@ body:not(.rescue-playing):not(.rescue-stage-select) .rescue-game { height: auto;
   line-height: 1.25;
 }
 
+.stage-card .stage-chapter {
+  display: block;
+  margin-bottom: 2px;
+  color: #315b35;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 1000;
+}
+
 .stage-stars {
   grid-column: 1 / -1;
   align-self: center;
@@ -273,6 +282,17 @@ body:not(.rescue-playing):not(.rescue-stage-select) .rescue-game { height: auto;
   font-style: normal;
   font-weight: 1000;
   line-height: 1.1;
+}
+
+.stage-checkpoint {
+  grid-column: 1 / -1;
+  justify-self: start;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: #ffe075;
+  color: #315b35;
+  font-size: 11px;
+  line-height: 1;
 }
 
 /* Stage is a self-contained rail on every viewport, not a resized Main page. */
@@ -403,6 +423,24 @@ body.rescue-stage-select .stage-select {
 
 .tile.rock {
   background: linear-gradient(180deg, #a5a6a1, #696f70);
+}
+
+.tile.mud {
+  background: #8a633f;
+  box-shadow: inset 0 0 0 5px rgba(75, 43, 22, .22);
+}
+
+.tile.fragile {
+  border: 3px dashed rgba(105, 70, 31, .72);
+}
+
+.tile.crumbled {
+  opacity: .44;
+  filter: grayscale(.65);
+}
+
+.tile.gate {
+  background: #d9b66c;
 }
 
 .tile.blocked {

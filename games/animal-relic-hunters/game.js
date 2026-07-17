@@ -89,6 +89,8 @@
   const draftRerollCost = 3;
   let amuletPurchasePending = false;
   let amuletConfirmTimer = 0;
+  let amuletConfirmRemaining = 0;
+  let amuletConfirmDueAt = 0;
 
   const text = {
     en: {
@@ -657,10 +659,66 @@
   let selectedExpedition = 1;
   let resultNextExpedition = 0;
   let eliteSpawnTimer = 0;
+  let eliteSpawnDueAt = 0;
+  let eliteSpawnCallback = null;
+  let eliteSpawnRemaining = 0;
+  let backgroundSuspendedAt = 0;
+  let backgroundBattleSuspended = false;
 
   function clearEliteSpawnTimer() {
     window.clearTimeout(eliteSpawnTimer);
     eliteSpawnTimer = 0;
+    eliteSpawnDueAt = 0;
+    eliteSpawnCallback = null;
+    eliteSpawnRemaining = 0;
+  }
+
+  function armEliteSpawn(callback, delay) {
+    const wait = Math.max(0, Number(delay) || 0);
+    eliteSpawnCallback = callback;
+    eliteSpawnRemaining = wait;
+    eliteSpawnDueAt = performance.now() + wait;
+    eliteSpawnTimer = window.setTimeout(() => {
+      eliteSpawnTimer = 0;
+      eliteSpawnDueAt = 0;
+      eliteSpawnRemaining = 0;
+      const task = eliteSpawnCallback;
+      eliteSpawnCallback = null;
+      task?.();
+    }, wait);
+  }
+
+  function suspendBackgroundBattle() {
+    clearMovementInput();
+    suspendAmuletConfirmation();
+    if (backgroundSuspendedAt || (!state.gameActive && !eliteSpawnTimer)) return;
+    backgroundSuspendedAt = performance.now();
+    backgroundBattleSuspended = state.gameActive;
+    cancelAnimationFrame(state.gameLoopId);
+    if (eliteSpawnTimer) {
+      eliteSpawnRemaining = Math.max(0, eliteSpawnDueAt - backgroundSuspendedAt);
+      window.clearTimeout(eliteSpawnTimer);
+      eliteSpawnTimer = 0;
+    }
+  }
+
+  function resumeBackgroundBattle() {
+    resumeAmuletConfirmation();
+    if (!backgroundSuspendedAt || document.hidden) return;
+    const elapsed = Math.max(0, performance.now() - backgroundSuspendedAt);
+    backgroundSuspendedAt = 0;
+    ["roomGraceUntil", "slowUntil", "silencedUntil", "bossWarningUntil", "lastHitSoundAt"].forEach((key) => {
+      if (state[key] > 0) state[key] += elapsed;
+    });
+    state.enemies.forEach((enemy) => {
+      if (enemy.lastHitAt > 0) enemy.lastHitAt += elapsed;
+    });
+    if (eliteSpawnCallback && !eliteSpawnTimer) armEliteSpawn(eliteSpawnCallback, eliteSpawnRemaining);
+    if (backgroundBattleSuspended && state.gameActive) {
+      cancelAnimationFrame(state.gameLoopId);
+      state.gameLoopId = requestAnimationFrame(updateGameEngine);
+    }
+    backgroundBattleSuspended = false;
   }
 
   function createDefaultProfile() {
@@ -962,6 +1020,22 @@
     if (active) requestAnimationFrame(() => nodes.retryBtn.focus({ preventScroll: true }));
   }
 
+  function setLootModalActive(active, restoreBattleFocus = true) {
+    document.querySelectorAll(".game-layout > .arena-viewport, .game-layout > .inventory-sidebar").forEach((layer) => {
+      layer.inert = active;
+      if (active) layer.setAttribute("aria-hidden", "true");
+      else layer.removeAttribute("aria-hidden");
+    });
+    if (active) {
+      nodes.lootPanel.setAttribute("role", "dialog");
+      nodes.lootPanel.setAttribute("aria-modal", "true");
+      const primary = nodes.equipLootBtn.disabled ? nodes.keepLootBtn : nodes.equipLootBtn;
+      primary.focus({ preventScroll: true });
+    } else if (restoreBattleFocus) {
+      nodes.gameCanvas.focus({ preventScroll: true });
+    }
+  }
+
   function updateResultPrimaryAction() {
     const next = resultNextExpedition > 0 && document.body.classList.contains("relic-result");
     nodes.retryBtn.textContent = t(next ? "nextExpedition" : "tryAgain");
@@ -978,6 +1052,7 @@
     document.body.classList.remove("relic-result");
     resultNextExpedition = 0;
     setResultModalActive(false);
+    setLootModalActive(false, false);
     nodes.gamePanel.classList.add("hidden");
     nodes.stagePanel.classList.add("hidden");
     nodes.resultPanel.classList.add("hidden");
@@ -985,6 +1060,7 @@
     updateDiamondShopUI();
     renderTrainingPanel();
     renderEquippedGear();
+    requestAnimationFrame(() => nodes.showStageBtn.focus({ preventScroll: true }));
   }
 
   function renderExpeditionStage(focusSelected = false) {
@@ -1027,6 +1103,7 @@
     document.body.classList.add("relic-stage-select");
     resultNextExpedition = 0;
     setResultModalActive(false);
+    setLootModalActive(false, false);
     nodes.menuPanel.classList.add("hidden");
     nodes.resultPanel.classList.add("hidden");
     nodes.gamePanel.classList.add("hidden");
@@ -1091,7 +1168,38 @@
 
   function clearAmuletConfirmation() {
     clearTimeout(amuletConfirmTimer);
+    amuletConfirmTimer = 0;
+    amuletConfirmRemaining = 0;
+    amuletConfirmDueAt = 0;
     amuletPurchasePending = false;
+  }
+
+  function armAmuletConfirmation(delay = amuletConfirmRemaining) {
+    if (!amuletPurchasePending || document.hidden) return;
+    clearTimeout(amuletConfirmTimer);
+    amuletConfirmRemaining = Math.max(0, Number(delay) || 0);
+    amuletConfirmDueAt = performance.now() + amuletConfirmRemaining;
+    amuletConfirmTimer = window.setTimeout(() => {
+      amuletConfirmTimer = 0;
+      amuletConfirmRemaining = 0;
+      amuletConfirmDueAt = 0;
+      if (!amuletPurchasePending || document.hidden) return;
+      amuletPurchasePending = false;
+      updateDiamondShopUI();
+    }, amuletConfirmRemaining);
+  }
+
+  function suspendAmuletConfirmation() {
+    if (!amuletPurchasePending || !amuletConfirmTimer) return;
+    amuletConfirmRemaining = Math.max(0, amuletConfirmDueAt - performance.now());
+    clearTimeout(amuletConfirmTimer);
+    amuletConfirmTimer = 0;
+    amuletConfirmDueAt = 0;
+  }
+
+  function resumeAmuletConfirmation() {
+    if (!amuletPurchasePending || amuletConfirmTimer || document.hidden) return;
+    armAmuletConfirmation();
   }
 
   function renderTrainingPanel() {
@@ -1406,6 +1514,7 @@
     document.body.classList.add("relic-playing");
     resultNextExpedition = 0;
     setResultModalActive(false);
+    setLootModalActive(false, false);
     focusGamePanel();
 
     renderStatsPanel();
@@ -1528,8 +1637,7 @@
 
     // Every room has one key carrier. Room 3 becomes a named regional Guardian
     // only at missions 5/10/15/20/25/30; other missions use a smaller Elite.
-    eliteSpawnTimer = window.setTimeout(() => {
-      eliteSpawnTimer = 0;
+    armEliteSpawn(() => {
       if (state.room !== room || state.expedition !== expedition) return;
       const checkpoint = room === ROOMS_PER_EXPEDITION && mission.checkpoint;
       if (room === ROOMS_PER_EXPEDITION) {
@@ -1750,6 +1858,7 @@
     nodes.lootPanel.setAttribute("aria-label", t("lootDecisionLabel", { gear: gearName }));
     renderEquippedGear();
     nodes.lootPanel.classList.remove("hidden");
+    setLootModalActive(true);
     return dropResult;
   }
 
@@ -1774,6 +1883,7 @@
     if (shouldEquip) equipGearItem(currentLootItem);
     nodes.lootPanel.classList.add("hidden");
     state.gameActive = true;
+    setLootModalActive(false);
     renderStatsPanel();
     renderEquippedGear();
     updateHUDText();
@@ -1828,6 +1938,8 @@
     state.gameActive = false;
     clearMovementInput();
     cancelAnimationFrame(state.gameLoopId);
+    nodes.lootPanel.classList.add("hidden");
+    setLootModalActive(false, false);
 
     nodes.gamePanel.classList.remove("hidden");
     nodes.resultPanel.classList.remove("hidden");
@@ -2026,6 +2138,10 @@
   // Update Game Physics & Canvas rendering
   function updateGameEngine() {
     if (!state.gameActive) return;
+    if (document.hidden) {
+      suspendBackgroundBattle();
+      return;
+    }
     const roomInGrace = performance.now() < state.roomGraceUntil;
 
     // 1. Move Player
@@ -2606,8 +2722,11 @@
     });
     window.addEventListener("blur", clearMovementInput);
     document.addEventListener("visibilitychange", () => {
-      if (document.hidden) clearMovementInput();
+      if (document.hidden) suspendBackgroundBattle();
+      else resumeBackgroundBattle();
     });
+    window.addEventListener("pagehide", suspendBackgroundBattle);
+    window.addEventListener("pageshow", resumeBackgroundBattle);
 
     function updateMouseMoveVector(event) {
       const rect = nodes.gameCanvas.getBoundingClientRect();
@@ -2709,6 +2828,12 @@
       window.WonderSound?.play("click");
       showStage();
     });
+    nodes.showStageBtn.addEventListener("keydown", (event) => {
+      if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
+    });
+    nodes.expeditionRail.addEventListener("keydown", (event) => {
+      if (event.repeat && (event.key === "Enter" || event.key === " ") && event.target.closest(".expedition-card")) event.preventDefault();
+    });
 
     nodes.stageBackBtn.addEventListener("click", () => {
       window.WonderSound?.play("click");
@@ -2763,12 +2888,37 @@
       finishLootDecision(false);
     });
 
+    nodes.lootPanel.addEventListener("keydown", (event) => {
+      if (event.repeat && (event.key === "Enter" || event.key === " ")) {
+        event.preventDefault();
+        return;
+      }
+      if (event.key !== "Tab" || nodes.lootPanel.classList.contains("hidden")) return;
+      const actions = [nodes.equipLootBtn, nodes.keepLootBtn].filter((button) => !button.disabled);
+      if (!actions.length) return;
+      const first = actions[0];
+      const last = actions[actions.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus({ preventScroll: true });
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus({ preventScroll: true });
+      }
+    });
+
     nodes.rerollDraftBtn.addEventListener("click", () => {
       rerollDraftChoices();
     });
 
     nodes.trainingList?.addEventListener("keydown", (event) => {
       if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
+    });
+
+    nodes.backpackList?.addEventListener("keydown", (event) => {
+      if (event.repeat && (event.key === "Enter" || event.key === " ") && event.target.closest(".gear-upgrade-btn")) {
+        event.preventDefault();
+      }
     });
 
     nodes.amuletBtn.addEventListener("keydown", (event) => {
@@ -2788,10 +2938,7 @@
       if (!amuletPurchasePending) {
         amuletPurchasePending = true;
         updateDiamondShopUI();
-        amuletConfirmTimer = window.setTimeout(() => {
-          amuletPurchasePending = false;
-          updateDiamondShopUI();
-        }, 5000);
+        armAmuletConfirmation(5000);
         return;
       }
       clearAmuletConfirmation();
@@ -2992,9 +3139,9 @@
             room: state.room,
             enemyCount: state.enemies.length,
             eliteCount: state.enemies.filter((enemy) => enemy.isElite).length,
-            eliteSpawnPending: Boolean(eliteSpawnTimer),
+            eliteSpawnPending: Boolean(eliteSpawnTimer || eliteSpawnCallback),
             player: { x: state.playerX, y: state.playerY, hp: state.playerHp, maxHp: state.playerMaxHp, active: state.gameActive },
-            roomGraceRemaining: Math.max(0, state.roomGraceUntil - performance.now()),
+            roomGraceRemaining: Math.max(0, state.roomGraceUntil - (backgroundSuspendedAt || performance.now())),
           };
         },
       };

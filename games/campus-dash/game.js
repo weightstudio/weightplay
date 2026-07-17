@@ -496,7 +496,7 @@
     renderStageSelector(true);
     exitSharedPlayViewport();
     updateDashFrame();
-    requestAnimationFrame(() => stageBackBtn.focus({ preventScroll: true }));
+    requestAnimationFrame(() => stageRail.querySelector(".stage-card.is-selected:not(:disabled)")?.focus({ preventScroll: true }));
   }
 
   window.addEventListener("resize", updateDashFrame);
@@ -1195,6 +1195,13 @@
     if (event.detail?.gameId === GAME_ID && !state.running) startRun();
   });
   startBtn.addEventListener("click", showStageSelection);
+  const suppressRepeatedActivation = (event) => {
+    if (!event.repeat || !["Enter", " "].includes(event.key) || !event.target.closest("button")) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+  };
+  startBtn.addEventListener("keydown", suppressRepeatedActivation, true);
+  stageRail.addEventListener("keydown", suppressRepeatedActivation, true);
   stageBackBtn.addEventListener("click", showMain);
   battleBackBtn.addEventListener("click", showStageSelection);
   homeLink.addEventListener("click", (event) => {
