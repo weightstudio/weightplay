@@ -9,17 +9,17 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="robots" content="index,follow" />
-    <meta name="description" content="Swipe lanes, dodge safari obstacles, collect stars, and chase a local high score in Safari Dash." />
+    <meta name="description" content="Clear 30 saved Safari Dash routes with star trails, two-lane gates, sticky mud, five objective types, and six Guardian Checks." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Safari Dash - Animal Lane Runner Game" />
-    <meta property="og:description" content="Swipe lanes, dodge safari obstacles, collect stars, and chase a local high score in Safari Dash." />
+    <meta property="og:description" content="Clear 30 saved animal runner routes across six regions, five route-rule families, and six Guardian Checks." />
     <meta property="og:url" content="https://weightplay.com/games/campus-dash/" />
     <meta property="og:image" content="https://weightplay.com/assets/campus-dash-cover.png" />
     <meta name="twitter:card" content="summary_large_image" />
     <title>Safari Dash - WeightPlay</title>
     <link rel="canonical" href="https://weightplay.com/games/campus-dash/" />
-    <link rel="stylesheet" href="style.css?v=20260716-result-focus1" />
+    <link rel="stylesheet" href="style.css?v=20260717-depth30-1" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
     <script type="application/ld+json">
 {
@@ -29,7 +29,7 @@
               "alternateName": "\u8349\u539f\u9583\u96fb\u8dd1",
               "url": "https://weightplay.com/games/campus-dash/",
               "image": "https://weightplay.com/assets/campus-dash-cover.png",
-              "description": "Swipe lanes, dodge safari obstacles, collect stars, and chase a local high score in Safari Dash.",
+              "description": "Clear 30 saved Safari Dash routes with star trails, two-lane gates, sticky mud, five objective types, and six Guardian Checks.",
               "applicationCategory": "Game",
               "operatingSystem": "Web browser",
               "publisher": {
@@ -82,10 +82,23 @@
         <img class="main-poster" src="../../assets/campus-dash-cover.webp" alt="" />
         <section id="startPanel" class="panel">
           <strong id="startTitle">Swipe. Dodge. Score.</strong>
-          <p id="startText">Move left and right, collect stars, and survive 60 seconds.</p>
+          <p id="startText">Clear 30 saved routes where trail rules, objectives, and Guardian patterns change how you run.</p>
           <div id="controlChips" class="control-chips" aria-label="Controls"></div>
-          <button id="startBtn" type="button">Start</button>
+          <button id="startBtn" type="button">Start Game</button>
         </section>
+      </section>
+
+      <section id="stagePanel" class="stage-panel hidden" aria-labelledby="stageTitle">
+        <header class="stage-header">
+          <button id="stageBackBtn" type="button" aria-label="Back to main">&larr;</button>
+          <div>
+            <strong id="stageTitle">Choose a Safari Route</strong>
+            <span id="stageProgress">1 / 30 unlocked</span>
+          </div>
+        </header>
+        <p id="stageHint" class="stage-hint">Swipe the route cards. Every fifth route is a Guardian Check.</p>
+        <div id="stageRail" class="stage-rail" role="list" aria-label="Safari routes"></div>
+        <div id="stageDots" class="stage-dots" aria-hidden="true"></div>
       </section>
 
       <section id="hud" class="hud hidden">
@@ -114,7 +127,7 @@
         </section>
         <div id="leaderboard" class="leaderboard"></div>
         <button id="againBtn" type="button">Run Again</button>
-        <a id="lobbyLink" href="/kids/">Lobby</a>
+        <button id="lobbyLink" type="button">Routes</button>
       </section>
 
       <div id="loadingPanel" class="loading-panel">
@@ -131,21 +144,68 @@
         <div class="game-info-title">
           <span class="game-info-kicker">WeightPlay Original Game Guide</span>
           <h2>Safari Dash - How to Play</h2>
-          <p>Safari Dash is a fast animal lane runner where players move left and right to dodge safari trail obstacles and collect points. It is a score-attack game for older players who enjoy quick reactions and replaying to improve. The short timer makes each attempt fast, while local records give players a reason to try again.</p>
+          <p>Safari Dash is a three-lane animal runner with 30 saved routes, six regions, five kinds of route objectives, and six Guardian Checks. Spark Paw Fox carries guide stars between protected trails while players read safe lanes, collect star tokens, and decide when a tempting star line is worth crossing into danger. The campaign begins with open paths, then adds two-lane gates, sticky mud, guided star trails, and authored Guardian patterns that change the route rather than merely increasing speed.</p>
         </div>
       </div>
       <div class="game-info-sections">
         <div class="game-info-section">
-          <h3>How to Play</h3>
-          <ol><li>Move between lanes.</li><li>Avoid obstacles.</li><li>Collect score items when it is safe.</li><li>Try to improve your local best score.</li></ol>
+          <h3>Story and Safari World</h3>
+          <p>Six wildlife regions share one chain of marked trails: Sunrise Savanna, Acacia Crossing, Marshlight Bend, Red Canyon Run, Moonwater Reserve, and Crown Safari. Their guide stars keep travelers on paths that do not disturb watering places or nesting grounds. A season of scattered satchels, book crates, safety cones, and flooded track markers has broken that chain. Spark Paw Fox volunteers to carry fresh stars through every route so each local keeper can confirm that the trail is safe again.</p>
+          <p>Every fifth route ends at a named Guardian Check. Zebra Pathfinder tests readable lane rhythm, Rhino Trailkeeper closes two lanes at once, Hippo Waterwarden watches the mud paths, Eagle Skykeeper combines gates with a star-marked escape lane, Lion Pridekeeper reviews recovery under pressure, and Elephant Crownkeeper combines every advanced rule. Clearing Route 30 means the complete six-region trail can reopen; it is a defined campaign ending, not an endless score screen disguised as progress.</p>
+        </div>
+        <div class="game-info-section">
+          <h3>Complete Play Flow</h3>
+          <ol>
+            <li>Select an unlocked route from the horizontal Stage rail. The card states its objective and active route rules before play begins.</li>
+            <li>Move one lane at a time by tapping the left or right side, swiping, or pressing A, D, or the arrow keys.</li>
+            <li>Read incoming objects. Stars are collectibles; cones, satchels, book stacks, and puddles are hazards.</li>
+            <li>Collect consecutive stars to raise the next-star multiplier. A collision removes 80 points and resets that multiplier.</li>
+            <li>Stay on the route until its timer reaches zero, then satisfy the card's finish, star, combo, clean-run, or score objective.</li>
+            <li>A successful result saves the clear and unlocks the next route. Run Again retries the current route; Routes returns to Stage Select.</li>
+          </ol>
+        </div>
+        <div class="game-info-section">
+          <h3>Route Rules and Objectives</h3>
+          <p>Open Trail uses individually spaced hazards and is the clearest place to learn lane timing. Star Trail creates more frequent star lines and sometimes places a star in the safe opening of a gate. Two-Lane Gates send two hazards together, leaving one readable escape lane. Sticky Mud favors puddles; touching one still costs points and also slows the fox's lane transition briefly, so a late swipe can affect the next decision. Guardian Pattern uses a fixed safe-lane sequence rather than ordinary random drops, making observation and anticipation important.</p>
+          <p>The five objective families ask for different decisions. Finish routes reward reaching the end. Star routes require a stated collection total. Combo routes require an uninterrupted star chain. Clean routes limit collisions, so abandoning a risky star is often correct. Score routes allow more freedom but reward multiplier control. Stars increase score by 50 times the current multiplier, the multiplier rises after a collection, and collisions reset it to x1. The local Top 5 stores scores on this device, while campaign progress separately stores unlocked, selected, and completed routes.</p>
+        </div>
+        <div class="game-info-section">
+          <h3>Thirty-Route Difficulty Growth</h3>
+          <p>Routes 1-5 teach ordinary hazards, star lines, first gates, and combo timing before Zebra Pathfinder's rhythm check. Routes 6-10 make Acacia Crossing alternate between collection paths and tighter two-lane decisions, ending with Rhino Trailkeeper's clean-run gate test. Routes 11-15 introduce sticky mud and combine slow recovery with stars and gates before Hippo Waterwarden.</p>
+          <p>Routes 16-20 move into Red Canyon, where score and combo goals meet repeated Guardian patterns; Eagle Skykeeper adds a star cue to the only open lane. Routes 21-25 combine mud, gates, and night star chains across Moonwater Reserve, ending with Lion Pridekeeper's low-collision check. Routes 26-30 revisit every learned rule in Crown Safari. Route 29 is the all-trail gauntlet, while Elephant Crownkeeper uses mud, star trails, two-lane gates, and Guardian sequencing together and asks for 15 collected stars.</p>
+        </div>
+        <div class="game-info-section">
+          <h3>Strategy Tips</h3>
+          <ul>
+            <li>Look at the gap between two gate hazards, not at the objects themselves; the empty lane is the instruction.</li>
+            <li>On clean-run routes, protect the collision allowance before chasing score. A star is optional unless the route specifically requires stars.</li>
+            <li>Move early after touching mud. Lane transitions are temporarily slower, but the input direction is unchanged.</li>
+            <li>Guardian sequences repeat a deliberate safe-lane rhythm. Use the first two gates to identify the pattern.</li>
+            <li>A collision resets the next-star multiplier but does not erase the best combo already achieved during the route.</li>
+          </ul>
+        </div>
+        <div class="game-info-section">
+          <h3>Development and Design Notes</h3>
+          <p>Safari Dash uses three lanes so a choice remains readable on a phone without shrinking the fox or hazards into tiny targets. Each input moves exactly one lane; a held keyboard key cannot skip across two lanes, and a captured touch swipe can finish even if the finger crosses the Canvas edge. Route timers range from 28 to 45 seconds so a retry is short, while the 30-route campaign supplies longer-term structure.</p>
+          <p>The campaign was designed around information changes rather than a single speed curve. Gates alter spatial reading, star trails alter risk and reward, mud alters recovery timing, objectives alter what counts as success, and Guardians use authored sequences. Main, Stage, Battle, and Battle-owned Result share fixed logical layouts across phone, tablet, and landscape screens. As a Kids game, Safari Dash creates no advertising reserve or advertising request.</p>
         </div>
         <div class="game-info-section game-info-parent">
           <h3>Parent Note</h3>
-          <p>This game is designed for older children and casual players who enjoy fast reaction challenges. It can practice focus and hand-eye coordination, but scores are only for fun.</p>
+          <p>Safari Dash is intended for ages 9+ because later routes combine faster visual decisions, route objectives, and score pressure. The Result reports real evidence from the run: lane changes, stars collected, obstacle bumps, and best uninterrupted combo. These values describe one play session only. They are not a developmental assessment, diagnosis, or comparison with other children. Progress and the local Top 5 remain in this browser's local storage.</p>
         </div>
         <div class="game-info-section">
           <h3>Frequently Asked Questions</h3>
-          <dl><div><dt>Why is Safari Dash 9+?</dt><dd>It has faster reactions and score pressure than games designed for younger children.</dd></div><div><dt>Is there a leaderboard?</dt><dd>The MVP uses local records for replay value.</dd></div><div><dt>Is it an educational test?</dt><dd>No. It is a reaction game for entertainment and practice.</dd></div></dl>
+          <dl>
+            <div><dt>How many routes are in Safari Dash?</dt><dd>There are 30 saved routes across six five-route regions. Routes 5, 10, 15, 20, 25, and 30 are Guardian Checks.</dd></div>
+            <div><dt>Do all routes use the same goal?</dt><dd>No. Routes can require reaching the finish, collecting stars, reaching a combo, staying under a collision limit, or earning a target score.</dd></div>
+            <div><dt>What does sticky mud do?</dt><dd>A puddle collision costs 80 points and resets the multiplier like other hazards. On mud routes it also slows the next lane transition briefly.</dd></div>
+            <div><dt>How do I pass a two-lane gate?</dt><dd>Two hazards arrive together and leave one lane open. Move toward the empty lane; a star may mark that opening on some later routes.</dd></div>
+            <div><dt>What progress is saved?</dt><dd>The browser stores unlocked and completed routes, the selected route, and a local Top 5 score list on this device.</dd></div>
+            <div><dt>Can I play on a phone or computer?</dt><dd>Yes. Phones support taps and swipes, while desktop play supports A, D, Left Arrow, and Right Arrow.</dd></div>
+            <div><dt>Does the game require an account or payment?</dt><dd>No. Safari Dash is free to play in a browser and does not require an account.</dd></div>
+            <div><dt>Why is Safari Dash 9+?</dt><dd>Later combinations require quick lane reading and objective planning. The age label is guidance, not an ability rating.</dd></div>
+            <div><dt>Is the Skill Report a formal test?</dt><dd>No. It summarizes events from the current run and does not compare, diagnose, or grade the player.</dd></div>
+          </dl>
         </div>
       </div>
     </section>
@@ -160,13 +220,13 @@
     <script src="../../src/edge-guard.js?v=20260710-mobile-play-shell2"></script>
     <script src="../../src/i18n.js?v=20260703-i18n-clean1"></script>
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
-    <script src="game.js?v=20260716-result-focus1"></script>
+    <script src="game.js?v=20260717-depth30-1"></script>
     <script>
       (() => {
         const loadGameInfo = () => {
           if (document.querySelector("script[data-dash-game-info]")) return;
           const script = document.createElement("script");
-          script.src = "../../src/game-page-info.js?v=20260715-campus-dash-age1";
+          script.src = "../../src/game-page-info.js?v=20260717-campus-dash-depth30-1";
           script.dataset.dashGameInfo = "idle";
           script.async = true;
           document.body.appendChild(script);

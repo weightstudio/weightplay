@@ -784,6 +784,11 @@
     });
     nodes.nextStageBtn.addEventListener("click", () => startStage(Math.min(currentStage + 1, stages.length - 1)));
     nodes.resultPanel.addEventListener("keydown", (event) => {
+      if (event.repeat && (event.key === "Enter" || event.key === " ")) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        return;
+      }
       if (event.key !== "Tab" || nodes.resultPanel.classList.contains("hidden")) return;
       const actions = visibleResultActions();
       if (!actions.length) return;
@@ -793,7 +798,7 @@
         : (index < 0 || index >= actions.length - 1 ? 0 : index + 1);
       event.preventDefault();
       actions[nextIndex].focus({ preventScroll: true });
-    });
+    }, true);
   }
 
   const style = document.createElement("style");

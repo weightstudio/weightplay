@@ -1297,6 +1297,10 @@
   }
 
   function trapResultFocus(event) {
+    if (event.repeat && (event.key === "Enter" || event.key === " ")) {
+      event.preventDefault();
+      return;
+    }
     if (event.key !== "Tab" || nodes.resultPanel.classList.contains("hidden")) return;
     if (event.shiftKey && document.activeElement === nodes.retryBtn) {
       event.preventDefault();

@@ -21,26 +21,36 @@
   const recordKey = "snackBlocksRecords";
 
   const stages = [
-    { id: 1, goal: "score", target: 650, moves: 18, types: 4 },
-    { id: 2, goal: "score", target: 900, moves: 20, types: 4 },
-    { id: 3, goal: "score", target: 1200, moves: 22, types: 5 },
-    { id: 4, goal: "score", target: 1500, moves: 24, types: 5 },
-    { id: 5, goal: "collect", snack: "ST", target: 10, moves: 24, types: 5 },
-    { id: 6, goal: "score", target: 1900, moves: 25, types: 6 },
-    { id: 7, goal: "collect", snack: "CK", target: 12, moves: 25, types: 6 },
-    { id: 8, goal: "score", target: 2400, moves: 26, types: 6 },
-    { id: 9, goal: "collect", snack: "JM", target: 13, moves: 26, types: 6 },
-    { id: 10, goal: "score", target: 2850, moves: 27, types: 6 },
-    { id: 11, goal: "collect", snack: "GR", target: 14, moves: 27, types: 6 },
-    { id: 12, goal: "score", target: 3300, moves: 28, types: 6 },
-    { id: 13, goal: "collect", snack: "CH", target: 15, moves: 28, types: 6 },
-    { id: 14, goal: "score", target: 3800, moves: 29, types: 6 },
-    { id: 15, goal: "collect", snack: "PR", target: 16, moves: 29, types: 6 },
-    { id: 16, goal: "score", target: 4300, moves: 30, types: 6 },
-    { id: 17, goal: "collect", snack: "ST", target: 18, moves: 30, types: 6 },
-    { id: 18, goal: "score", target: 4850, moves: 31, types: 6 },
-    { id: 19, goal: "collect", snack: "CK", target: 20, moves: 31, types: 6 },
-    { id: 20, goal: "score", target: 5500, moves: 32, types: 6 },
+    { id: 1, chapter: "Picnic Path", goal: "score", target: 650, moves: 18, pool: ["ST", "CK", "JM", "GR"] },
+    { id: 2, chapter: "Picnic Path", goal: "collect", snack: "ST", target: 9, moves: 19, pool: ["ST", "CK", "JM", "GR"] },
+    { id: 3, chapter: "Picnic Path", goal: "burst", target: 4, moves: 20, pool: ["ST", "CK", "JM", "GR"] },
+    { id: 4, chapter: "Picnic Path", goal: "score", target: 1300, moves: 21, pool: ["ST", "CK", "JM", "GR", "CH"] },
+    { id: 5, chapter: "Picnic Path", checkpoint: "Picnic Bell", goal: "dual", snack: "ST", collectTarget: 10, scoreTarget: 1000, moves: 22, pool: ["ST", "CK", "JM", "GR", "CH"] },
+    { id: 6, chapter: "Cookie Crossing", goal: "collect", snack: "CK", target: 11, moves: 22, pool: ["CK", "JM", "GR", "CH"] },
+    { id: 7, chapter: "Cookie Crossing", goal: "cascade", target: 2, moves: 22, pool: ["CK", "JM", "GR", "CH", "PR"] },
+    { id: 8, chapter: "Cookie Crossing", goal: "burst", target: 5, moves: 23, pool: ["ST", "CK", "GR", "CH", "PR"] },
+    { id: 9, chapter: "Cookie Crossing", goal: "collectPair", snacks: ["CK", "JM"], target: 16, moves: 24, pool: ["ST", "CK", "JM", "CH", "PR"] },
+    { id: 10, chapter: "Cookie Crossing", checkpoint: "Bakery Gate", goal: "dual", snack: "CK", collectTarget: 14, scoreTarget: 1500, moves: 25, pool: ["ST", "CK", "JM", "GR", "CH", "PR"] },
+    { id: 11, chapter: "Grape Garden", goal: "collect", snack: "GR", target: 13, moves: 24, pool: ["ST", "JM", "GR", "CH"] },
+    { id: 12, chapter: "Grape Garden", goal: "score", target: 2300, moves: 25, pool: ["ST", "CK", "GR", "CH", "PR"] },
+    { id: 13, chapter: "Grape Garden", goal: "cascade", target: 2, moves: 25, pool: ["ST", "CK", "JM", "GR", "PR"] },
+    { id: 14, chapter: "Grape Garden", goal: "collectPair", snacks: ["GR", "CH"], target: 18, moves: 26, pool: ["ST", "CK", "GR", "CH", "PR"] },
+    { id: 15, chapter: "Grape Garden", checkpoint: "Garden Drum", goal: "dual", snack: "GR", collectTarget: 15, scoreTarget: 2100, moves: 27, pool: ["ST", "CK", "JM", "GR", "CH", "PR"] },
+    { id: 16, chapter: "Cheese Workshop", goal: "burst", target: 5, moves: 25, pool: ["ST", "CK", "JM", "CH"] },
+    { id: 17, chapter: "Cheese Workshop", goal: "collect", snack: "CH", target: 15, moves: 26, pool: ["CK", "JM", "GR", "CH", "PR"] },
+    { id: 18, chapter: "Cheese Workshop", goal: "cascade", target: 3, moves: 27, pool: ["ST", "CK", "JM", "GR", "CH"] },
+    { id: 19, chapter: "Cheese Workshop", goal: "collectPair", snacks: ["CH", "PR"], target: 20, moves: 28, pool: ["ST", "CK", "GR", "CH", "PR"] },
+    { id: 20, chapter: "Cheese Workshop", checkpoint: "Workshop Clock", goal: "dual", snack: "CH", collectTarget: 17, scoreTarget: 2800, moves: 29, pool: ["ST", "CK", "JM", "GR", "CH", "PR"] },
+    { id: 21, chapter: "Pretzel Bridge", goal: "collect", snack: "PR", target: 16, moves: 27, pool: ["ST", "JM", "GR", "CH", "PR"] },
+    { id: 22, chapter: "Pretzel Bridge", goal: "burst", target: 6, moves: 28, pool: ["CK", "JM", "GR", "CH", "PR"] },
+    { id: 23, chapter: "Pretzel Bridge", goal: "score", target: 3900, moves: 29, pool: ["ST", "CK", "JM", "GR", "CH", "PR"] },
+    { id: 24, chapter: "Pretzel Bridge", goal: "collectPair", snacks: ["ST", "PR"], target: 22, moves: 30, pool: ["ST", "CK", "JM", "GR", "CH", "PR"] },
+    { id: 25, chapter: "Pretzel Bridge", checkpoint: "Bridge Banquet", goal: "dual", snack: "PR", collectTarget: 19, scoreTarget: 3400, moves: 31, pool: ["ST", "CK", "JM", "GR", "CH", "PR"] },
+    { id: 26, chapter: "Crown Feast", goal: "cascade", target: 3, moves: 29, pool: ["ST", "CK", "JM", "GR", "CH"] },
+    { id: 27, chapter: "Crown Feast", goal: "burst", target: 6, moves: 30, pool: ["ST", "CK", "JM", "GR", "PR"] },
+    { id: 28, chapter: "Crown Feast", goal: "collectPair", snacks: ["JM", "CH"], target: 24, moves: 31, pool: ["ST", "CK", "JM", "GR", "CH", "PR"] },
+    { id: 29, chapter: "Crown Feast", goal: "score", target: 5000, moves: 32, pool: ["ST", "CK", "JM", "GR", "CH", "PR"] },
+    { id: 30, chapter: "Crown Feast", checkpoint: "Crown Table", goal: "dual", snack: "JM", collectTarget: 22, scoreTarget: 4300, moves: 34, pool: ["ST", "CK", "JM", "GR", "CH", "PR"] },
   ];
 
   const text = {
@@ -62,8 +72,16 @@
       hint: "Tap or drag a snack to swap with its neighbor.",
       goalScore: "Score {target}",
       goalCollect: "Collect {icon} x{target}",
+      goalCollectPair: "Collect {first} + {second} x{target}",
+      goalCascade: "Reach a x{target} cascade",
+      goalBurst: "Clear {target} at once",
+      goalDual: "{icon} x{collect} and {score} points",
       goalScoreKind: "Score goal",
       goalCollectKind: "Collect goal",
+      goalCollectPairKind: "Pair goal",
+      goalCascadeKind: "Cascade goal",
+      goalBurstKind: "Big-match goal",
+      goalDualKind: "Checkpoint",
       goalProgress: "{count} / {target}",
       goalReady: "Goal reached! Use remaining moves for a higher score.",
       loading: "Loading",
@@ -205,12 +223,40 @@
     snackPR: "蝴蝶餅",
   });
 
+  Object.assign(text["zh-Hant"], {
+    goalCollectPair: "收集 {first} + {second} x{target}",
+    goalCascade: "達成 x{target} 連鎖",
+    goalBurst: "單次消除 {target} 個",
+    goalDual: "{icon} x{collect} 並取得 {score} 分",
+    goalCollectPairKind: "雙零食目標",
+    goalCascadeKind: "連鎖目標",
+    goalBurstKind: "大消除目標",
+    goalDualKind: "檢查關",
+  });
+
+  const stageNameTranslations = {
+    "zh-Hant": {
+      "Picnic Path": "野餐小徑",
+      "Cookie Crossing": "餅乾渡口",
+      "Grape Garden": "葡萄花園",
+      "Cheese Workshop": "起司工坊",
+      "Pretzel Bridge": "蝴蝶餅橋",
+      "Crown Feast": "皇冠盛宴",
+      "Picnic Bell": "野餐鈴檢查",
+      "Bakery Gate": "烘焙坊大門",
+      "Garden Drum": "花園鼓檢查",
+      "Workshop Clock": "工坊鐘檢查",
+      "Bridge Banquet": "橋上宴會",
+      "Crown Table": "皇冠餐桌",
+    },
+  };
+
   const metadata = {
     en: {
       title: "Snack Blocks - WeightPlay",
-      description: "Clear snack matching stages, beat move goals, and unlock new levels in Snack Blocks, a mobile-friendly puzzle game on WeightPlay.",
-      ogTitle: "Snack Blocks - Stage Match Puzzle Game",
-      ogDescription: "Clear snack matching stages, beat move goals, and unlock new levels in Snack Blocks, a mobile-friendly puzzle game on WeightPlay.",
+      description: "Clear 30 saved Snack Blocks stages with score, collection, cascade, big-match, pair, and checkpoint goals.",
+      ogTitle: "Snack Blocks - 30-Stage Match Puzzle Game",
+      ogDescription: "Plan every swap across 30 saved stages and six distinct puzzle chapters in WeightPlay's animal snack match game.",
     },
     "zh-Hant": {
       title: "動物零食方塊 - WeightPlay",
@@ -278,6 +324,8 @@
     moves: 0,
     combo: 1,
     goalCount: 0,
+    bestCascade: 0,
+    bestBurst: 0,
     goalReady: false,
     running: false,
     busy: false,
@@ -337,19 +385,42 @@
   }
 
   function goalLabel(stage = activeStage()) {
-    return stage.goal === "collect"
-      ? t("goalCollect", { icon: t(`snack${stage.snack}`), target: stage.target })
-      : t("goalScore", { target: stage.target });
+    if (stage.goal === "collect") return t("goalCollect", { icon: t(`snack${stage.snack}`), target: stage.target });
+    if (stage.goal === "collectPair") return t("goalCollectPair", {
+      first: t(`snack${stage.snacks[0]}`),
+      second: t(`snack${stage.snacks[1]}`),
+      target: stage.target,
+    });
+    if (stage.goal === "cascade") return t("goalCascade", { target: stage.target });
+    if (stage.goal === "burst") return t("goalBurst", { target: stage.target });
+    if (stage.goal === "dual") return t("goalDual", {
+      icon: t(`snack${stage.snack}`),
+      collect: stage.collectTarget,
+      score: stage.scoreTarget,
+    });
+    return t("goalScore", { target: stage.target });
   }
 
   function goalProgress(stage = activeStage()) {
-    return stage.goal === "collect"
-      ? t("goalProgress", { count: state.goalCount, target: stage.target })
-      : `${state.score} / ${stage.target}`;
+    if (stage.goal === "collect" || stage.goal === "collectPair") return t("goalProgress", { count: state.goalCount, target: stage.target });
+    if (stage.goal === "cascade") return t("goalProgress", { count: state.bestCascade, target: stage.target });
+    if (stage.goal === "burst") return t("goalProgress", { count: state.bestBurst, target: stage.target });
+    if (stage.goal === "dual") return `${state.goalCount}/${stage.collectTarget} · ${state.score}/${stage.scoreTarget}`;
+    return `${state.score} / ${stage.target}`;
   }
 
   function goalMet(stage = activeStage()) {
-    return stage.goal === "collect" ? state.goalCount >= stage.target : state.score >= stage.target;
+    if (stage.goal === "collect" || stage.goal === "collectPair") return state.goalCount >= stage.target;
+    if (stage.goal === "cascade") return state.bestCascade >= stage.target;
+    if (stage.goal === "burst") return state.bestBurst >= stage.target;
+    if (stage.goal === "dual") return state.goalCount >= stage.collectTarget && state.score >= stage.scoreTarget;
+    return state.score >= stage.target;
+  }
+
+  function scoreBenchmark(stage = activeStage()) {
+    if (stage.goal === "dual") return stage.scoreTarget;
+    if (stage.goal === "score") return stage.target;
+    return Math.max(650, stage.moves * 75);
   }
 
   function loadUnlocked() {
@@ -384,7 +455,7 @@
     const bestScore = Math.max(previousBest, score);
     const playCount = (typeof previous === "object" && Number(previous.playCount)) || 0;
     const improvementPercent = previousBest > 0 ? Math.round(((score - previousBest) / previousBest) * 100) : score > 0 ? 100 : 0;
-    const scoreRatio = score / Math.max(1, activeStage().target);
+    const scoreRatio = score / Math.max(1, scoreBenchmark());
     const moveBonus = Math.min(1, Math.max(0, state.moves / Math.max(1, activeStage().moves)));
     records[stageId] = {
       lastScore: score,
@@ -408,7 +479,20 @@
   }
 
   function goalKindLabel(stage = activeStage()) {
-    return stage.goal === "collect" ? t("goalCollectKind") : t("goalScoreKind");
+    const keys = {
+      collect: "goalCollectKind",
+      collectPair: "goalCollectPairKind",
+      cascade: "goalCascadeKind",
+      burst: "goalBurstKind",
+      dual: "goalDualKind",
+      score: "goalScoreKind",
+    };
+    return t(keys[stage.goal] || "goalScoreKind");
+  }
+
+  function stageDisplayName(stage) {
+    const name = stage.checkpoint || stage.chapter;
+    return stageNameTranslations[state.locale]?.[name] || name;
   }
 
   function bestScoreFromRecord(record) {
@@ -506,7 +590,8 @@
   }
 
   function randomType() {
-    return snacks[Math.floor(Math.random() * activeStage().types)];
+    const pool = activeStage().pool || snacks.slice(0, activeStage().types || snacks.length);
+    return pool[Math.floor(Math.random() * pool.length)];
   }
 
   function getCell(row, col) {
@@ -541,12 +626,12 @@
       const button = document.createElement("button");
       const isUnlocked = index < unlocked;
       button.type = "button";
-      button.className = `stage-card ${isUnlocked ? "" : "locked"}`;
+      button.className = `stage-card ${stage.checkpoint ? "checkpoint" : ""} ${isUnlocked ? "" : "locked"}`;
       button.setAttribute("aria-disabled", String(!isUnlocked));
       button.innerHTML = `
         <strong>${stage.id}</strong>
         <small class="stage-goal-kind ${stage.goal}">${goalKindLabel(stage)}</small>
-        <span>${t("stageName", { stage: stage.id })}</span>
+        <span>${stageDisplayName(stage)}</span>
         <em>${isUnlocked ? `${goalLabel(stage)} · ${t("best", { score: bestScoreFromRecord(records[stage.id]) })}` : t("locked")}</em>
       `;
       button.addEventListener("click", () => {
@@ -803,8 +888,12 @@
 
     const stage = activeStage();
     state.score += matches.length * 12 * state.combo;
-    if (stage.goal === "collect") {
+    state.bestCascade = Math.max(state.bestCascade, state.combo);
+    state.bestBurst = Math.max(state.bestBurst, matches.length);
+    if (stage.goal === "collect" || stage.goal === "dual") {
       state.goalCount += matches.filter((index) => state.board[index]?.type === stage.snack).length;
+    } else if (stage.goal === "collectPair") {
+      state.goalCount += matches.filter((index) => stage.snacks.includes(state.board[index]?.type)).length;
     }
     state.combo += 1;
     updateHud();
@@ -953,6 +1042,8 @@
     state.moves = activeStage().moves;
     state.combo = 1;
     state.goalCount = 0;
+    state.bestCascade = 0;
+    state.bestBurst = 0;
     state.goalReady = false;
     state.focusIndex = 0;
     state.selected = null;
@@ -1022,18 +1113,8 @@
 
   function ratingStars() {
     const stage = activeStage();
-    const value =
-      stage.goal === "collect"
-        ? state.goalCount >= stage.target + 8
-          ? 3
-          : state.goalCount >= stage.target + 4
-            ? 2
-            : 1
-        : state.score >= stage.target * 1.55
-          ? 3
-          : state.score >= stage.target * 1.25
-            ? 2
-            : 1;
+    const benchmark = scoreBenchmark(stage);
+    const value = state.score >= benchmark * 1.55 ? 3 : state.score >= benchmark * 1.25 ? 2 : 1;
     return "\u2605".repeat(value);
   }
 

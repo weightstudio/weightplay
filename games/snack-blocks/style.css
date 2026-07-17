@@ -323,6 +323,26 @@ body.snack-stage .weightplay-version-badge {
   background: linear-gradient(180deg, #40c484, #19754d);
 }
 
+.stage-goal-kind.collectPair,
+.stage-goal-kind.dual {
+  background: linear-gradient(180deg, #9b67e8, #5b349c);
+}
+
+.stage-goal-kind.cascade,
+.stage-goal-kind.burst {
+  background: linear-gradient(180deg, #3fa9e8, #176aa3);
+}
+
+.stage-card.checkpoint {
+  outline: 4px solid #fff1a6;
+  outline-offset: -5px;
+  background: linear-gradient(180deg, #ffe98a, #f39a39);
+}
+
+.stage-card.checkpoint strong {
+  background: #7b3bb2;
+}
+
 .stage-card span {
   color: #322113;
   font-size: 0.78rem;

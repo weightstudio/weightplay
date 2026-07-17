@@ -10,6 +10,7 @@
   const stageSelectTitle = document.querySelector("#stageSelectTitle");
   const stageBackBtn = document.querySelector("#stageBackBtn");
   const stageGrid = document.querySelector("#stageGrid");
+  const stageStatus = document.querySelector("#stageStatus");
   const gameHud = document.querySelector("#gameHud");
   const levelIndicator = document.querySelector("#levelIndicator");
   const progressFill = document.querySelector("#progressFill");
@@ -111,6 +112,7 @@
       levels: "Levels",
       lobby: "Lobby",
       locked: "Locked",
+      lockedFeedback: "{stage} is locked. Finish Level {required} first.",
       play: "Play",
       loading: "Loading",
       stageMeta: "{foods} foods / {colors} colors",
@@ -214,6 +216,7 @@
     levels: "關卡",
     lobby: "大廳",
     locked: "未解鎖",
+    lockedFeedback: "{stage} 尚未解鎖，請先完成第 {required} 關。",
     play: "開始玩",
     loading: "載入中",
     stageMeta: "{foods} 題 / {colors} 種顏色",
@@ -610,11 +613,13 @@
   }
 
   function renderStageCards() {
+    stageStatus.textContent = "";
     stageGrid.replaceChildren(
       ...stages.map((stage, index) => {
         const isUnlocked = stage.id <= state.unlockedStage;
         const button = document.createElement("button");
         button.type = "button";
+        button.dataset.stageIndex = String(index);
         button.className = `stage-card ${isUnlocked ? "unlocked" : "locked"}`;
         button.setAttribute("aria-disabled", String(!isUnlocked));
         button.innerHTML = `
@@ -627,9 +632,10 @@
             ${stage.colors.map((color) => `<i class="${colorDB[color].className}"></i>`).join("")}
           </div>
         `;
-        if (isUnlocked) button.addEventListener("click", () => {
+        button.addEventListener("click", () => {
           if (stageGrid.dataset.dragSuppressed === "1") return;
-          startStage(index);
+          if (isUnlocked) startStage(index);
+          else rejectLockedStage(button, index);
         });
         return button;
       }),
@@ -642,6 +648,39 @@
 
   let stageDrag = null;
   let stageSettleFrame = 0;
+  let lockedStagePointer = null;
+
+  function rejectLockedStage(button, index) {
+    stageStatus.textContent = t("lockedFeedback", { stage: stageName(stages[index]), required: index });
+    requestAnimationFrame(() => button.focus({ preventScroll: true }));
+  }
+
+  function lockedStageAtPoint(x, y) {
+    return [...stageGrid.querySelectorAll(".stage-card.locked")].find((card) => {
+      const rect = card.getBoundingClientRect();
+      return x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
+    });
+  }
+
+  stageGrid.addEventListener("pointerdown", (event) => {
+    if (event.isPrimary === false || event.button !== 0) return;
+    const button = lockedStageAtPoint(event.clientX, event.clientY);
+    lockedStagePointer = button ? { button, id: event.pointerId, x: event.clientX, y: event.clientY, moved: false } : null;
+  }, true);
+  document.addEventListener("pointermove", (event) => {
+    if (!lockedStagePointer || event.pointerId !== lockedStagePointer.id) return;
+    lockedStagePointer.moved ||= Math.hypot(event.clientX - lockedStagePointer.x, event.clientY - lockedStagePointer.y) > 6;
+  }, true);
+  const finishLockedStagePointer = (event) => {
+    if (!lockedStagePointer || event.pointerId !== lockedStagePointer.id) return;
+    const activation = lockedStagePointer;
+    lockedStagePointer = null;
+    if (event.type === "pointercancel" || activation.moved) return;
+    if (event.cancelable) event.preventDefault();
+    rejectLockedStage(activation.button, Number(activation.button.dataset.stageIndex));
+  };
+  document.addEventListener("pointerup", finishLockedStagePointer, true);
+  document.addEventListener("pointercancel", finishLockedStagePointer, true);
 
   function settleStageRail() {
     cancelAnimationFrame(stageSettleFrame);

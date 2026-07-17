@@ -877,3 +877,159 @@ select,
     align-content: center;
   }
 }
+
+/* Thirty-route Stage Select uses one fixed logical 382x780 Kids canvas. */
+body.dash-stage-select,
+body.has-game-page-info.dash-stage-select {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  touch-action: none;
+  background: #062d25;
+}
+
+body.dash-stage-select .game-page-info,
+body.dash-stage-select .topbar,
+body.dash-stage-select .sound-toggle,
+body.dash-stage-select .wp-tutorial-button,
+body.dash-stage-select .weightplay-version-badge {
+  display: none !important;
+}
+
+body.dash-stage-select .dash-game,
+body.dash-stage-select.weightplay-active-viewport .dash-game {
+  position: fixed !important;
+  inset: auto !important;
+  left: var(--dash-frame-left, 4px) !important;
+  top: var(--dash-frame-top, 4px) !important;
+  display: block !important;
+  width: 382px !important;
+  min-width: 382px !important;
+  max-width: 382px !important;
+  height: 780px !important;
+  min-height: 780px !important;
+  max-height: 780px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  transform: scale(var(--dash-frame-scale, 1)) !important;
+  transform-origin: top left !important;
+  border: 2px solid rgba(150, 255, 214, 0.42);
+  border-radius: 18px;
+  background:
+    linear-gradient(rgba(4, 30, 23, 0.74), rgba(4, 25, 20, 0.94)),
+    url("../../assets/campus-dash-cover.webp") center / cover;
+}
+
+.stage-panel {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-rows: 68px 46px 190px 26px minmax(0, 1fr);
+  align-content: start;
+  gap: 12px;
+  padding: 12px 0 16px;
+  overflow: hidden;
+}
+
+.stage-header {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  margin: 0 12px;
+  padding: 7px;
+  border: 1px solid rgba(167, 243, 208, 0.35);
+  border-radius: 14px;
+  background: rgba(4, 31, 25, 0.9);
+}
+
+.stage-header button {
+  width: 48px;
+  height: 48px;
+  border: 0;
+  border-radius: 12px;
+  color: #0b5d80;
+  background: #fff;
+  font-size: 27px;
+  font-weight: 1000;
+}
+
+.stage-header div { min-width: 0; display: grid; gap: 3px; }
+.stage-header strong { overflow: hidden; font-size: 19px; line-height: 1.1; text-overflow: ellipsis; white-space: nowrap; }
+.stage-header span { color: #8bf1c8; font-size: 12px; font-weight: 900; }
+
+.stage-hint {
+  margin: 0 14px;
+  align-self: center;
+  color: #e9fff6;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.35;
+  text-align: center;
+}
+
+.stage-rail {
+  display: flex;
+  width: 100%;
+  height: 190px;
+  align-items: stretch;
+  gap: 12px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0 59px;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  touch-action: pan-x;
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 44px, #000 calc(100% - 44px), transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0, #000 44px, #000 calc(100% - 44px), transparent 100%);
+}
+.stage-rail::-webkit-scrollbar { display: none; }
+
+.stage-card {
+  position: relative;
+  flex: 0 0 264px;
+  height: 190px;
+  display: grid;
+  align-content: end;
+  gap: 4px;
+  padding: 13px 15px;
+  overflow: hidden;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+  border: 2px solid rgba(255,255,255,.3);
+  border-radius: 18px;
+  color: #fff;
+  background:
+    linear-gradient(0deg, rgba(1, 12, 9, .96), rgba(3, 28, 20, .1)),
+    url("../../assets/campus-dash-savanna-runway.jpg") center / cover;
+  box-shadow: 0 12px 28px rgba(0,0,0,.42);
+  text-align: left;
+}
+
+.stage-card.is-selected {
+  border-color: #72f6c4;
+  box-shadow: 0 0 0 3px rgba(114,246,196,.42), 0 12px 28px rgba(0,0,0,.5);
+}
+.stage-card.is-checkpoint { background-image: linear-gradient(0deg, rgba(16, 7, 2, .97), rgba(104, 54, 5, .18)), url("../../assets/campus-dash-cover.webp"); }
+.stage-card:disabled { filter: grayscale(.78) brightness(.62); }
+.stage-card .stage-region { color: #a7f3d0; font-size: 11px; font-weight: 900; text-transform: uppercase; }
+.stage-card strong { font-size: 19px; line-height: 1.08; }
+.stage-card em { color: #ffd86b; font-size: 10px; font-style: normal; font-weight: 1000; }
+.stage-card small { color: #f5fff9; font-size: 12px; font-weight: 900; }
+.stage-card .stage-rule { overflow: hidden; color: #bdf8df; font-size: 10px; font-weight: 800; text-overflow: ellipsis; white-space: nowrap; }
+.stage-card b { color: #ffd86b; font-size: 10px; }
+
+.stage-dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 0 12px;
+}
+.stage-dots i { width: 5px; height: 5px; border-radius: 50%; background: rgba(255,255,255,.28); }
+.stage-dots i.is-selected { width: 14px; border-radius: 5px; background: #72f6c4; }
+.stage-dots i.is-checkpoint { outline: 1px solid #ffd86b; }

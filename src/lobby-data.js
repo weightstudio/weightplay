@@ -143,7 +143,7 @@ window.WONDER_LOBBY = {
       ages: ["9"],
       ageLabel: "9+",
       description: {
-        en: "Swipe left and right, dodge safari trail obstacles, and chase a high score.",
+        en: "Clear 30 saved safari routes with star trails, two-lane gates, sticky mud, five objective types, and six Guardian Checks.",
         "zh-Hant": "左右切換跑道，閃避草原障礙並挑戰高分。",
       },
       meta: { en: ["Safari", "Score Attack", "60 Sec"], "zh-Hant": ["草原跑酷", "分數挑戰", "60 秒"] },
@@ -840,6 +840,13 @@ if (shadowWolf) {
 }
 
 const verifiedCleanZhLobbyCopy = {
+  "campus-dash": {
+    title: "\u8349\u539f\u9583\u96fb\u8dd1",
+    statusText: "\u53ef\u904a\u73a9",
+    type: "\u8def\u7dda\u9583\u907f\u8dd1\u9177",
+    description: "\u6311\u6230 30 \u689d\u53ef\u5b58\u6a94\u8349\u539f\u8def\u7dda\uff0c\u904b\u7528\u661f\u661f\u8ecc\u8de1\u3001\u96d9\u8def\u969c\u7919\u9580\u3001\u9ecf\u6ed1\u6ce5\u6f25\u3001\u4e94\u7a2e\u76ee\u6a19\u8207\u516d\u5834\u5b88\u8b77\u8005\u6aa2\u67e5\u3002",
+    meta: ["30 \u689d\u8def\u7dda", "\u4e94\u7a2e\u898f\u5247", "\u516d\u5834\u5b88\u8b77\u8005\u6aa2\u67e5"],
+  },
   "beast-deck": {
     title: "獸王牌組：迷霧森林",
     statusText: "可遊玩",

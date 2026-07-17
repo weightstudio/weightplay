@@ -19,6 +19,13 @@
   const startText = document.querySelector("#startText");
   const controlChips = document.querySelector("#controlChips");
   const startBtn = document.querySelector("#startBtn");
+  const stagePanel = document.querySelector("#stagePanel");
+  const stageBackBtn = document.querySelector("#stageBackBtn");
+  const stageTitle = document.querySelector("#stageTitle");
+  const stageProgress = document.querySelector("#stageProgress");
+  const stageHint = document.querySelector("#stageHint");
+  const stageRail = document.querySelector("#stageRail");
+  const stageDots = document.querySelector("#stageDots");
   const battleBackBtn = document.querySelector("#battleBackBtn");
   const resultPanel = document.querySelector("#resultPanel");
   const resultTitle = document.querySelector("#resultTitle");
@@ -42,6 +49,7 @@
 
   const GAME_ID = "campus-dash";
   const LEADERBOARD_KEY = "campusDashLeaderboard";
+  const PROGRESS_KEY = "campusDashProgressV2";
   const W = canvas.width;
   const H = canvas.height;
   const lanes = [W * 0.26, W * 0.5, W * 0.74];
@@ -54,16 +62,40 @@
       controls: "Controls",
       backToMenu: "Back to menu",
       gameLabel: "Safari Dash game",
-      description: "Swipe lanes, dodge safari obstacles, collect stars, and chase a local high score in Safari Dash.",
+      description: "Clear 30 saved Safari Dash routes with star trails, two-lane gates, sticky mud, five objective types, and six Guardian Checks.",
       score: "Score",
       time: "Time",
       combo: "Combo",
       startTitle: "Pick a lane. Dash fast.",
-      startText: "Tap the left or right side, or swipe, to dodge between the three lanes.",
+      startText: "Clear 30 saved routes where trail rules, objectives, and Guardian patterns change how you run.",
       controlTap: "Tap left / right",
       controlSwipe: "Swipe lanes",
       controlKeyboard: "A/D or Left/Right",
-      start: "Start",
+      start: "Start Game",
+      chooseRoute: "Choose a Safari Route",
+      stageProgress: "{unlocked} / 30 unlocked",
+      stageHint: "Swipe the route cards. Every fifth route is a Guardian Check.",
+      stageSelection: "Safari routes",
+      stageLocked: "Clear the previous route",
+      stageReady: "Ready",
+      stageCleared: "Cleared",
+      guardianCheck: "Guardian Check",
+      routeRules: "Route rules",
+      objectiveCoins: "Collect {target} stars",
+      objectiveCombo: "Reach combo x{target}",
+      objectiveClean: "Finish with at most {target} bumps",
+      objectiveScore: "Score {target} points",
+      objectiveFinish: "Reach the finish",
+      routeClear: "Route {stage} cleared!",
+      routeFailed: "Route goal missed. Try this route again.",
+      nextRoute: "Next route unlocked: {stage}",
+      allRoutesClear: "All 30 safari routes are clear!",
+      routes: "Routes",
+      ruleClassic: "Open trail",
+      ruleTrail: "Star trail",
+      ruleGate: "Two-lane gates",
+      ruleMud: "Sticky mud",
+      rulePulse: "Guardian pattern",
       resultTitle: "Run Complete!",
       resultText: "Score {score}  Best {best}",
       skillReport: "Skill Report",
@@ -90,16 +122,40 @@
       controls: "\u64cd\u4f5c\u65b9\u5f0f",
       backToMenu: "\u8fd4\u56de\u9078\u55ae",
       gameLabel: "\u8349\u539f\u9583\u96fb\u8dd1\u904a\u6232",
-      description: "\u5728\u4e09\u689d\u8dd1\u9053\u4e4b\u9593\u9583\u907f\u8349\u539f\u969c\u7919\u3001\u6536\u96c6\u661f\u661f\uff0c\u6311\u6230\u672c\u6a5f\u6700\u9ad8\u5206\u3002",
+      description: "\u5b8c\u6210 30 \u689d\u53ef\u5b58\u6a94\u7684\u8349\u539f\u8def\u7dda\uff0c\u6311\u6230\u661f\u661f\u8ecc\u8de1\u3001\u96d9\u8def\u969c\u7919\u9580\u3001\u9ecf\u6ed1\u6ce5\u6f25\u3001\u4e94\u7a2e\u76ee\u6a19\u8207\u516d\u5834\u5b88\u8b77\u8005\u6aa2\u67e5\u3002",
       score: "\u5206\u6578",
       time: "\u6642\u9593",
       combo: "\u9023\u64ca",
       startTitle: "\u9078\u597d\u8dd1\u9053\uff0c\u5feb\u901f\u885d\u523a\u3002",
-      startText: "\u9ede\u756b\u9762\u5de6\u53f3\u5074\u6216\u6ed1\u52d5\uff0c\u5728\u4e09\u689d\u8dd1\u9053\u9593\u9583\u907f\u969c\u7919\u3002",
+      startText: "\u6311\u6230 30 \u689d\u53ef\u5b58\u6a94\u8def\u7dda\uff0c\u6bcf\u95dc\u7684\u8ecc\u8de1\u898f\u5247\u3001\u76ee\u6a19\u8207\u5b88\u8b77\u8005\u9663\u578b\u90fd\u6703\u6539\u8b8a\u8dd1\u6cd5\u3002",
       controlTap: "\u9ede\u5de6\u908a / \u53f3\u908a",
       controlSwipe: "\u5de6\u53f3\u6ed1\u52d5",
       controlKeyboard: "A/D \u6216 \u2190/\u2192",
-      start: "\u958b\u59cb",
+      start: "\u958b\u59cb\u904a\u6232",
+      chooseRoute: "\u9078\u64c7\u8349\u539f\u8def\u7dda",
+      stageProgress: "\u5df2\u89e3\u9396 {unlocked} / 30",
+      stageHint: "\u5de6\u53f3\u6ed1\u52d5\u8def\u7dda\u5361\uff0c\u6bcf 5 \u95dc\u6703\u9047\u5230\u5b88\u8b77\u8005\u6aa2\u67e5\u3002",
+      stageSelection: "\u8349\u539f\u8def\u7dda",
+      stageLocked: "\u5148\u901a\u904e\u524d\u4e00\u689d\u8def\u7dda",
+      stageReady: "\u53ef\u6311\u6230",
+      stageCleared: "\u5df2\u5b8c\u6210",
+      guardianCheck: "\u5b88\u8b77\u8005\u6aa2\u67e5",
+      routeRules: "\u8def\u7dda\u898f\u5247",
+      objectiveCoins: "\u6536\u96c6 {target} \u9846\u661f\u661f",
+      objectiveCombo: "\u9054\u5230\u9023\u64ca x{target}",
+      objectiveClean: "\u78b0\u649e\u4e0d\u8d85\u904e {target} \u6b21",
+      objectiveScore: "\u53d6\u5f97 {target} \u5206",
+      objectiveFinish: "\u62b5\u9054\u7d42\u9ede",
+      routeClear: "\u7b2c {stage} \u689d\u8def\u7dda\u5b8c\u6210\uff01",
+      routeFailed: "\u5c1a\u672a\u9054\u6210\u8def\u7dda\u76ee\u6a19\uff0c\u518d\u8a66\u4e00\u6b21\u3002",
+      nextRoute: "\u5df2\u89e3\u9396\u7b2c {stage} \u689d\u8def\u7dda",
+      allRoutesClear: "30 \u689d\u8349\u539f\u8def\u7dda\u5168\u90e8\u5b8c\u6210\uff01",
+      routes: "\u8def\u7dda",
+      ruleClassic: "\u958b\u653e\u8349\u5f91",
+      ruleTrail: "\u661f\u661f\u8ecc\u8de1",
+      ruleGate: "\u96d9\u8def\u969c\u7919\u9580",
+      ruleMud: "\u9ecf\u6ed1\u6ce5\u6f25",
+      rulePulse: "\u5b88\u8b77\u8005\u9663\u578b",
       resultTitle: "\u5954\u8dd1\u5b8c\u6210\uff01",
       resultText: "\u5206\u6578 {score}  \u6700\u4f73 {best}",
       skillReport: "\u6280\u80fd\u5831\u544a",
@@ -120,6 +176,83 @@
       emptyRank: "\u9084\u6c92\u6709\u7d00\u9304",
     },
   };
+
+  const regionNames = [
+    ["Sunrise Savanna", "\u6668\u66e6\u8349\u539f"],
+    ["Acacia Crossing", "\u91d1\u5408\u6b61\u8def\u53e3"],
+    ["Marshlight Bend", "\u6fa4\u5149\u5f4e\u9053"],
+    ["Red Canyon Run", "\u8d64\u5cfd\u8dd1\u9053"],
+    ["Moonwater Reserve", "\u6708\u6c34\u4fdd\u8b77\u5340"],
+    ["Crown Safari", "\u738b\u51a0\u8349\u539f"],
+  ];
+
+  function route(id, nameEn, nameZht, mechanics, objective, duration, bossEn = "", bossZht = "") {
+    return {
+      id,
+      region: Math.ceil(id / 5),
+      nameEn,
+      nameZht,
+      mechanics,
+      objective,
+      duration,
+      checkpoint: id % 5 === 0,
+      bossEn,
+      bossZht,
+    };
+  }
+
+  const ROUTES = [
+    route(1, "First Pawprints", "\u7b2c\u4e00\u9053\u8db3\u8de1", ["classic"], ["finish", 0], 28),
+    route(2, "Golden Star Trail", "\u91d1\u8272\u661f\u8ecc", ["trail"], ["coins", 6], 30),
+    route(3, "Cone Weave", "\u4ea4\u932f\u8def\u9310", ["classic", "gate"], ["clean", 2], 30),
+    route(4, "Three-Lane Rhythm", "\u4e09\u7dda\u7bc0\u594f", ["trail", "gate"], ["combo", 4], 32),
+    route(5, "Zebra Stripe Check", "\u6591\u99ac\u689d\u7d0b\u6aa2\u67e5", ["gate", "pulse"], ["score", 300], 34, "Zebra Pathfinder", "\u6591\u99ac\u5c0b\u8def\u8005"),
+    route(6, "Acacia Star Line", "\u91d1\u5408\u6b61\u661f\u7dda", ["trail"], ["coins", 8], 32),
+    route(7, "Satchel Switchback", "\u884c\u56ca\u5f4e\u9053", ["gate"], ["clean", 2], 34),
+    route(8, "Bookstack Gates", "\u66f8\u5806\u96d9\u9580", ["gate", "classic"], ["score", 350], 34),
+    route(9, "Acacia Zigzag", "\u91d1\u5408\u6b61\u4e4b\u5b57\u8def", ["trail", "gate"], ["combo", 5], 35),
+    route(10, "Rhino Rush Check", "\u72a7\u725b\u885d\u523a\u6aa2\u67e5", ["gate", "pulse"], ["clean", 1], 36, "Rhino Trailkeeper", "\u72a7\u725b\u5b88\u5f91\u8005"),
+    route(11, "Marsh Star Steps", "\u6fa4\u5730\u661f\u6b65", ["mud", "trail"], ["coins", 9], 34),
+    route(12, "Puddle Patience", "\u6c34\u6f25\u8010\u5fc3\u8def", ["mud"], ["clean", 2], 35),
+    route(13, "Crocodile Crossing", "\u9c77\u9b5a\u6e21\u53e3", ["mud", "gate"], ["score", 400], 36),
+    route(14, "Reedbed Star Chain", "\u8606\u82c7\u661f\u93c8", ["mud", "trail", "gate"], ["combo", 6], 37),
+    route(15, "Hippo Pool Check", "\u6cb3\u99ac\u6c34\u6f6d\u6aa2\u67e5", ["mud", "pulse"], ["coins", 10], 38, "Hippo Waterwarden", "\u6cb3\u99ac\u5b88\u6c34\u8005"),
+    route(16, "Red Rock Sprint", "\u8d64\u5ca9\u885d\u523a", ["classic", "gate"], ["score", 450], 36),
+    route(17, "Echoing Star Trail", "\u56de\u8072\u661f\u8ecc", ["trail", "gate"], ["coins", 11], 38),
+    route(18, "Twin Canyon Gates", "\u96d9\u5cfd\u8c37\u9580", ["gate", "pulse"], ["clean", 1], 38),
+    route(19, "Cliffside Combo", "\u61f8\u5d16\u9023\u64ca", ["trail", "gate", "pulse"], ["combo", 7], 40),
+    route(20, "Eagle Shadow Check", "\u98db\u9df9\u4e4b\u5f71\u6aa2\u67e5", ["gate", "pulse", "trail"], ["score", 550], 40, "Eagle Skykeeper", "\u98db\u9df9\u5929\u969b\u5b88\u8b77\u8005"),
+    route(21, "Moonwater Drift", "\u6708\u6c34\u6f02\u79fb", ["mud", "gate"], ["clean", 1], 38),
+    route(22, "Firefly Star Chain", "\u87a2\u706b\u661f\u93c8", ["trail", "mud"], ["coins", 12], 40),
+    route(23, "Night Gate Rhythm", "\u591c\u8272\u96d9\u9580\u7bc0\u594f", ["gate", "pulse"], ["combo", 7], 40),
+    route(24, "Reserve Relay", "\u4fdd\u8b77\u5340\u63a5\u529b", ["mud", "trail", "gate"], ["score", 600], 42),
+    route(25, "Lion Pride Check", "\u7345\u7fa4\u6aa2\u67e5", ["mud", "gate", "pulse"], ["clean", 1], 42, "Lion Pridekeeper", "\u7345\u7fa4\u5b88\u8b77\u8005"),
+    route(26, "Crown Gate Entry", "\u738b\u51a0\u5165\u53e3", ["gate", "trail"], ["coins", 13], 40),
+    route(27, "Royal Mud Maze", "\u738b\u5bb6\u6ce5\u6f25\u8ff7\u5bae", ["mud", "gate"], ["clean", 1], 42),
+    route(28, "Keeper Star Relay", "\u5b88\u8b77\u661f\u63a5\u529b", ["trail", "pulse", "gate"], ["combo", 8], 42),
+    route(29, "All-Trail Gauntlet", "\u5168\u8def\u7dda\u8a66\u7149", ["mud", "trail", "gate", "pulse"], ["score", 700], 44),
+    route(30, "Elephant Crown Check", "\u8c61\u738b\u4e4b\u51a0\u6aa2\u67e5", ["mud", "trail", "gate", "pulse"], ["coins", 15], 45, "Elephant Crownkeeper", "\u8c61\u738b\u51a0\u5b88\u8b77\u8005"),
+  ];
+
+  function loadProgress() {
+    try {
+      const source = JSON.parse(localStorage.getItem(PROGRESS_KEY) || "{}");
+      const unlocked = Math.max(1, Math.min(30, Number(source.unlocked) || 1));
+      return {
+        unlocked,
+        selected: Math.max(1, Math.min(unlocked, Number(source.selected) || unlocked)),
+        completed: [...new Set(Array.isArray(source.completed) ? source.completed.map(Number).filter((id) => id >= 1 && id <= 30) : [])],
+      };
+    } catch {
+      return { unlocked: 1, selected: 1, completed: [] };
+    }
+  }
+
+  function saveProgress() {
+    localStorage.setItem(PROGRESS_KEY, JSON.stringify(progress));
+  }
+
+  let progress = loadProgress();
   function loadImage(src) {
     const image = new Image();
     image.src = src;
@@ -141,6 +274,7 @@
   let lifecycleSuspended = false;
   let pointerStartX = null;
   let activePointerId = null;
+  let routeScrollTimer = 0;
 
   function clearPointerInput() {
     if (activePointerId !== null) {
@@ -162,6 +296,7 @@
   }
 
   function makeState() {
+    const routeConfig = ROUTES[Math.max(0, Math.min(29, (progress?.selected || 1) - 1))] || ROUTES[0];
     return {
       running: false,
       finished: false,
@@ -169,7 +304,9 @@
       targetLane: 1,
       x: lanes[1],
       y: H - 155,
-      timeLeft: 60,
+      stage: routeConfig.id,
+      route: routeConfig,
+      timeLeft: routeConfig.duration,
       score: 0,
       combo: 1,
       bestCombo: 0,
@@ -179,6 +316,9 @@
       speed: 390,
       spawnTimer: 0.4,
       coinTimer: 0.9,
+      patternTimer: 2.6,
+      patternStep: 0,
+      mudSlow: 0,
       lanePulse: 0,
       lanePulseLane: 1,
       lanePulseDir: 0,
@@ -208,10 +348,15 @@
     startText.textContent = t("startText");
     controlChips.innerHTML = [t("controlTap"), t("controlSwipe"), t("controlKeyboard")].map((item) => `<span>${item}</span>`).join("");
     startBtn.textContent = t("start");
+    stageBackBtn.setAttribute("aria-label", t("backToMenu"));
+    stageTitle.textContent = t("chooseRoute");
+    stageHint.textContent = t("stageHint");
+    stageRail.setAttribute("aria-label", t("stageSelection"));
     resultTitle.textContent = t("resultTitle");
     againBtn.textContent = t("again");
-    lobbyLink.textContent = t("lobby");
+    lobbyLink.textContent = t("routes");
     loadingTitle.textContent = t("loading");
+    if (!stagePanel.classList.contains("hidden")) renderStageSelector(false);
   }
 
   function preloadGame() {
@@ -242,7 +387,7 @@
   }
 
   function updateDashFrame() {
-    if (!document.body.classList.contains("dash-playing")) return;
+    if (!document.body.classList.contains("dash-playing") && !document.body.classList.contains("dash-stage-select")) return;
     const viewport = window.visualViewport;
     const viewportWidth = viewport?.width || innerWidth;
     const viewportHeight = viewport?.height || innerHeight;
@@ -267,16 +412,91 @@
   function showMain() {
     clearPointerInput();
     state.running = false;
-    document.body.classList.remove("dash-playing", "dash-expanded-canvas");
+    document.body.classList.remove("dash-playing", "dash-stage-select", "dash-expanded-canvas");
     document.querySelector(".dash-game")?.classList.remove("is-playing");
     document.querySelector(".dash-game")?.setAttribute("data-play-viewport", "");
     mainPanel.classList.remove("hidden");
+    stagePanel.classList.add("hidden");
     canvasWrap.classList.add("hidden");
     hud.classList.add("hidden");
     resultPanel.classList.add("hidden");
     canvasWrap.inert = false;
     canvasWrap.removeAttribute("aria-hidden");
     requestAnimationFrame(() => startBtn.focus({ preventScroll: true }));
+  }
+
+  function objectiveText(config) {
+    const [type, target] = config.objective;
+    return t(`objective${type[0].toUpperCase()}${type.slice(1)}`, { target });
+  }
+
+  function ruleText(mechanic) {
+    return t(`rule${mechanic[0].toUpperCase()}${mechanic.slice(1)}`);
+  }
+
+  function routeName(config) {
+    return locale() === "zh-Hant" ? config.nameZht : config.nameEn;
+  }
+
+  function renderStageSelector(centerSelected = true) {
+    stageProgress.textContent = t("stageProgress", { unlocked: progress.unlocked });
+    stageRail.innerHTML = "";
+    stageDots.innerHTML = "";
+    ROUTES.forEach((config) => {
+      const locked = config.id > progress.unlocked;
+      const cleared = progress.completed.includes(config.id);
+      const card = document.createElement("button");
+      card.type = "button";
+      card.className = `stage-card${config.id === progress.selected ? " is-selected" : ""}${config.checkpoint ? " is-checkpoint" : ""}`;
+      card.dataset.stage = String(config.id);
+      card.dataset.stageIndex = String(config.id - 1);
+      card.dataset.rules = config.mechanics.join(",");
+      card.disabled = locked;
+      card.setAttribute("role", "listitem");
+      card.innerHTML = `
+        <span class="stage-region">${locale() === "zh-Hant" ? regionNames[config.region - 1][1] : regionNames[config.region - 1][0]}</span>
+        <strong>${config.id}. ${routeName(config)}</strong>
+        ${config.checkpoint ? `<em>${t("guardianCheck")} · ${locale() === "zh-Hant" ? config.bossZht : config.bossEn}</em>` : ""}
+        <small>${objectiveText(config)}</small>
+        <span class="stage-rule">${config.mechanics.map(ruleText).join(" · ")}</span>
+        <b>${locked ? t("stageLocked") : cleared ? t("stageCleared") : t("stageReady")}</b>`;
+      card.addEventListener("click", () => {
+        if (locked) return;
+        progress.selected = config.id;
+        saveProgress();
+        renderStageSelector(false);
+        startRun();
+      });
+      stageRail.appendChild(card);
+      const dot = document.createElement("i");
+      dot.className = `${config.id === progress.selected ? "is-selected " : ""}${config.checkpoint ? "is-checkpoint" : ""}`.trim();
+      stageDots.appendChild(dot);
+    });
+    if (centerSelected) {
+      requestAnimationFrame(() => {
+        const selectedCard = stageRail.querySelector(".stage-card.is-selected");
+        if (selectedCard && !stageRail.hasAttribute("data-wp-stage-rail")) {
+          stageRail.scrollLeft = selectedCard.offsetLeft - (stageRail.clientWidth - selectedCard.offsetWidth) / 2;
+        }
+      });
+    }
+  }
+
+  function showStageSelection() {
+    clearPointerInput();
+    state.running = false;
+    document.body.classList.remove("dash-playing", "dash-expanded-canvas");
+    document.body.classList.add("dash-stage-select");
+    document.querySelector(".dash-game")?.classList.remove("is-playing");
+    mainPanel.classList.add("hidden");
+    canvasWrap.classList.add("hidden");
+    hud.classList.add("hidden");
+    resultPanel.classList.add("hidden");
+    stagePanel.classList.remove("hidden");
+    renderStageSelector(true);
+    exitSharedPlayViewport();
+    updateDashFrame();
+    requestAnimationFrame(() => stageBackBtn.focus({ preventScroll: true }));
   }
 
   window.addEventListener("resize", updateDashFrame);
@@ -289,10 +509,12 @@
     lifecycleSuspended = document.hidden;
     state = makeState();
     state.running = true;
+    document.body.classList.remove("dash-stage-select");
     document.body.classList.add("dash-playing");
     document.querySelector(".dash-game")?.classList.add("is-playing");
     document.querySelector(".dash-game")?.removeAttribute("data-play-viewport");
     mainPanel.classList.add("hidden");
+    stagePanel.classList.add("hidden");
     canvasWrap.classList.remove("hidden");
     canvasWrap.inert = false;
     canvasWrap.removeAttribute("aria-hidden");
@@ -328,18 +550,26 @@
   function update(dt, timerDt = dt) {
     state.timeLeft = Math.max(0, state.timeLeft - timerDt);
     state.speed += dt * 6;
-    state.x += (lanes[state.targetLane] - state.x) * Math.min(1, dt * 12);
+    state.mudSlow = Math.max(0, state.mudSlow - dt);
+    const laneResponse = state.mudSlow > 0 ? 5.4 : 12;
+    state.x += (lanes[state.targetLane] - state.x) * Math.min(1, dt * laneResponse);
     state.spawnTimer -= dt;
     state.coinTimer -= dt;
+    state.patternTimer -= dt;
     state.lanePulse = Math.max(0, state.lanePulse - dt);
 
     if (state.spawnTimer <= 0) {
       spawnObstacle();
-      state.spawnTimer = Math.max(0.38, 1.05 - (60 - state.timeLeft) * 0.009);
+      const elapsed = state.route.duration - state.timeLeft;
+      state.spawnTimer = Math.max(0.46, 1.16 - elapsed * 0.006 - state.stage * 0.006);
     }
     if (state.coinTimer <= 0) {
       spawnCoin();
-      state.coinTimer = 0.9 + Math.random() * 0.45;
+      state.coinTimer = state.route.mechanics.includes("trail") ? 0.58 + Math.random() * 0.22 : 0.92 + Math.random() * 0.4;
+    }
+    if (state.patternTimer <= 0 && (state.route.mechanics.includes("gate") || state.route.mechanics.includes("pulse"))) {
+      spawnRoutePattern();
+      state.patternTimer = state.route.mechanics.includes("pulse") ? 2.15 : 3.15;
     }
 
     for (const item of [...state.obstacles, ...state.coins]) item.y += state.speed * dt;
@@ -359,24 +589,43 @@
   function spawnObstacle() {
     const lane = chooseClearDropLane(-90, 154);
     if (lane < 0) return;
-    const kinds = ["bag", "cone", "books", "puddle"];
+    const kinds = state.route.mechanics.includes("mud") ? ["puddle", "puddle", "bag", "books"] : ["bag", "cone", "books"];
     const kind = kinds[Math.floor(Math.random() * kinds.length)];
     state.obstacles.push({ lane, x: lanes[lane], y: -90, size: 82, kind });
   }
 
   function spawnCoin() {
-    const lane = chooseClearDropLane(-65, 138);
+    let lane = chooseClearDropLane(-65, 138);
+    if (state.route.mechanics.includes("trail")) {
+      const preferred = state.patternStep % 4 < 2 ? state.patternStep % 3 : 2 - (state.patternStep % 3);
+      const preferredClear = chooseClearDropLane(-65, 138, [preferred]);
+      if (preferredClear >= 0) lane = preferredClear;
+      state.patternStep += 1;
+    }
     if (lane < 0) return;
     state.coins.push({ lane, x: lanes[lane], y: -65, size: 42, used: false });
   }
 
-  function chooseClearDropLane(y, clearance) {
-    const candidates = [0, 1, 2].filter((lane) => {
+  function chooseClearDropLane(y, clearance, preferred = [0, 1, 2]) {
+    const candidates = preferred.filter((lane) => {
       const drops = [...state.obstacles, ...state.coins.filter((coin) => !coin.used)];
       return drops.every((drop) => drop.lane !== lane || Math.abs(drop.y - y) >= clearance);
     });
     if (!candidates.length) return -1;
     return candidates[Math.floor(Math.random() * candidates.length)];
+  }
+
+  function spawnRoutePattern() {
+    const sequence = state.route.checkpoint ? [1, 0, 2, 1, 2, 0] : [0, 2, 1, 0, 1, 2];
+    const safeLane = sequence[state.patternStep % sequence.length];
+    const kind = state.route.mechanics.includes("mud") && state.patternStep % 2 ? "puddle" : state.route.checkpoint ? "cone" : "books";
+    [0, 1, 2].filter((lane) => lane !== safeLane).forEach((lane) => {
+      state.obstacles.push({ lane, x: lanes[lane], y: -120, size: 82, kind, pattern: true });
+    });
+    if (state.route.mechanics.includes("trail")) {
+      state.coins.push({ lane: safeLane, x: lanes[safeLane], y: -70, size: 42, used: false, pattern: true });
+    }
+    state.patternStep += 1;
   }
 
   function checkCollisions() {
@@ -387,6 +636,7 @@
         state.score = Math.max(0, state.score - 80);
         state.combo = 1;
         state.obstaclesHit += 1;
+        if (obstacle.kind === "puddle" && state.route.mechanics.includes("mud")) state.mudSlow = 1.25;
         addSpark(state.x, state.y - 60, "-80", "#ef4444");
         window.WonderSound?.play("wrong");
       }
@@ -432,8 +682,18 @@
     const previousBest = getScores()[0] || 0;
     saveScore(state.score);
     const best = getScores()[0] || state.score;
-    resultTitle.textContent = t("resultTitle");
-    resultText.textContent = t("resultText", { score: state.score, best });
+    const cleared = routeSucceeded();
+    if (cleared) {
+      progress.completed = [...new Set([...progress.completed, state.stage])].sort((a, b) => a - b);
+      if (state.stage < 30) progress.unlocked = Math.max(progress.unlocked, state.stage + 1);
+      progress.selected = state.stage;
+      saveProgress();
+    }
+    resultTitle.textContent = cleared ? t("routeClear", { stage: state.stage }) : t("routeFailed");
+    const routeUpdate = cleared
+      ? state.stage >= 30 ? t("allRoutesClear") : t("nextRoute", { stage: state.stage + 1 })
+      : objectiveText(state.route);
+    resultText.textContent = `${t("resultText", { score: state.score, best })} · ${routeUpdate}`;
     renderSkillReport(previousBest);
     renderLeaderboard();
     canvasWrap.inert = true;
@@ -444,8 +704,19 @@
     window.WonderAnalytics?.track("game_complete", {
       game_id: GAME_ID,
       score: state.score,
+      stage: state.stage,
+      cleared,
       locale: locale(),
     });
+  }
+
+  function routeSucceeded() {
+    const [type, target] = state.route.objective;
+    if (type === "coins") return state.coinsCollected >= target;
+    if (type === "combo") return state.bestCombo >= target;
+    if (type === "clean") return state.obstaclesHit <= target;
+    if (type === "score") return state.score >= target;
+    return true;
   }
 
   function renderSkillReport(previousBest) {
@@ -465,7 +736,43 @@
   function exposeSmokeHooks() {
     if (!new URLSearchParams(window.location.search).has("smoke")) return;
     window.__campusDashSmoke = {
-      getState: () => ({ running: state.running, lane: state.targetLane, score: state.score, time: state.timeLeft, laneChanges: state.laneChanges, coinsCollected: state.coinsCollected, obstaclesHit: state.obstaclesHit, bestCombo: state.bestCombo }),
+      getState: () => ({ running: state.running, lane: state.targetLane, score: state.score, time: state.timeLeft, stage: state.stage, laneChanges: state.laneChanges, coinsCollected: state.coinsCollected, obstaclesHit: state.obstaclesHit, bestCombo: state.bestCombo }),
+      routeCatalog: () => ROUTES.map((config) => ({
+        id: config.id,
+        region: config.region,
+        checkpoint: config.checkpoint,
+        mechanics: [...config.mechanics],
+        objective: [...config.objective],
+        duration: config.duration,
+        bossEn: config.bossEn,
+      })),
+      restoreProgress: (snapshot = {}) => {
+        progress = {
+          unlocked: Math.max(1, Math.min(30, Number(snapshot.unlocked) || 1)),
+          selected: Math.max(1, Math.min(Number(snapshot.unlocked) || 1, Number(snapshot.selected) || 1)),
+          completed: [...new Set(Array.isArray(snapshot.completed) ? snapshot.completed.map(Number).filter((id) => id >= 1 && id <= 30) : [])],
+        };
+        saveProgress();
+        return { ...progress, completed: [...progress.completed] };
+      },
+      readProgress: () => ({ ...progress, completed: [...progress.completed] }),
+      selectRoute: (id) => {
+        progress.selected = Math.max(1, Math.min(progress.unlocked, Number(id) || 1));
+        saveProgress();
+        state = makeState();
+        return { stage: state.stage, mechanics: [...state.route.mechanics], objective: [...state.route.objective] };
+      },
+      routePattern: (id) => {
+        progress.unlocked = 30;
+        progress.selected = Math.max(1, Math.min(30, Number(id) || 1));
+        state = makeState();
+        spawnRoutePattern();
+        return {
+          stage: state.stage,
+          obstacles: state.obstacles.map(({ lane, kind, pattern }) => ({ lane, kind, pattern })),
+          coins: state.coins.map(({ lane, pattern }) => ({ lane, pattern })),
+        };
+      },
       spawnSequence: (count = 24) => {
         state = makeState();
         for (let index = 0; index < count; index += 1) {
@@ -870,7 +1177,12 @@
     window.WonderI18n?.setLocale(localeSelect.value);
     renderStaticText();
     if (state.finished) {
-      resultText.textContent = t("resultText", { score: state.score, best: getScores()[0] || state.score });
+      const cleared = progress.completed.includes(state.stage);
+      const routeUpdate = cleared
+        ? state.stage >= 30 ? t("allRoutesClear") : t("nextRoute", { stage: Math.min(30, state.stage + 1) })
+        : objectiveText(state.route);
+      resultTitle.textContent = cleared ? t("routeClear", { stage: state.stage }) : t("routeFailed");
+      resultText.textContent = `${t("resultText", { score: state.score, best: getScores()[0] || state.score })} · ${routeUpdate}`;
       renderLeaderboard();
     }
   });
@@ -882,8 +1194,9 @@
   window.addEventListener("weightplay:tutorial-start", (event) => {
     if (event.detail?.gameId === GAME_ID && !state.running) startRun();
   });
-  startBtn.addEventListener("click", startRun);
-  battleBackBtn.addEventListener("click", showMain);
+  startBtn.addEventListener("click", showStageSelection);
+  stageBackBtn.addEventListener("click", showMain);
+  battleBackBtn.addEventListener("click", showStageSelection);
   homeLink.addEventListener("click", (event) => {
     if (!document.body.classList.contains("dash-playing")) return;
     event.preventDefault();
@@ -893,6 +1206,37 @@
     window.WonderAnalytics?.track("game_restart", { game_id: GAME_ID, score: state.score, locale: locale() });
     startRun();
   });
+  lobbyLink.addEventListener("click", showStageSelection);
+  stageRail.addEventListener("wonder:stage-snap", (event) => {
+    const stage = Number(event.detail?.index) + 1;
+    if (stage < 1 || stage > 30) return;
+    stageRail.querySelectorAll(".stage-card").forEach((card) => card.classList.toggle("is-selected", Number(card.dataset.stage) === stage));
+    [...stageDots.children].forEach((dot, index) => dot.classList.toggle("is-selected", index + 1 === stage));
+    if (stage <= progress.unlocked) {
+      progress.selected = stage;
+      saveProgress();
+    }
+  });
+  stageRail.addEventListener("scroll", () => {
+    window.clearTimeout(routeScrollTimer);
+    routeScrollTimer = window.setTimeout(() => {
+      const railBox = stageRail.getBoundingClientRect();
+      const center = railBox.left + railBox.width / 2;
+      const nearest = [...stageRail.querySelectorAll(".stage-card")].reduce((best, card) => {
+        const box = card.getBoundingClientRect();
+        const distance = Math.abs(box.left + box.width / 2 - center);
+        return !best || distance < best.distance ? { card, distance } : best;
+      }, null)?.card;
+      if (!nearest) return;
+      const stage = Number(nearest.dataset.stage);
+      stageRail.querySelectorAll(".stage-card").forEach((card) => card.classList.toggle("is-selected", card === nearest));
+      [...stageDots.children].forEach((dot, index) => dot.classList.toggle("is-selected", index + 1 === stage));
+      if (stage <= progress.unlocked) {
+        progress.selected = stage;
+        saveProgress();
+      }
+    }, 160);
+  }, { passive: true });
   canvas.addEventListener("keydown", (event) => {
     const key = event.key.toLowerCase();
     if (!state.running || !["arrowleft", "arrowright", "a", "d"].includes(key)) return;

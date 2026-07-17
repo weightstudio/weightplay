@@ -1988,6 +1988,7 @@
     }
     renderProgressUI();
     updateDiamondShopUI();
+    (canContinue ? nodes.nextMissionBtn : nodes.retryBtn).focus({ preventScroll: true });
   }
 
   function resetRunState() {
@@ -2464,6 +2465,25 @@
       renderProgressUI();
       updateDiamondShopUI();
       renderCollectionUI();
+    });
+    nodes.resultPanel.addEventListener("keydown", (event) => {
+      if (event.repeat && (event.key === "Enter" || event.key === " ")) {
+        event.preventDefault();
+        return;
+      }
+      if (event.key !== "Tab" || nodes.resultPanel.classList.contains("hidden")) return;
+      const actions = [...nodes.resultPanel.querySelectorAll("button:not(:disabled)")]
+        .filter((button) => !button.classList.contains("hidden") && button.getClientRects().length);
+      if (!actions.length) return;
+      const first = actions[0];
+      const last = actions.at(-1);
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
     });
     nodes.mainStartBtn.addEventListener("click", showStage);
     nodes.stageBackBtn.addEventListener("click", showMainFromStage);

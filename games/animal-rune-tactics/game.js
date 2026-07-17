@@ -587,6 +587,7 @@
   let claimedRewardId = null;
   let gridCursor = { x: 0, y: 0 };
   let turnTransitionTimer = 0;
+  let endTurnKeyboardFocusRequested = false;
 
   function clearTurnTransition() {
     clearTimeout(turnTransitionTimer);
@@ -930,6 +931,7 @@
 
   function startMission(mission = selectedMission) {
     clearTurnTransition();
+    endTurnKeyboardFocusRequested = false;
     claimedRewardId = null;
     const extraEnergy = (profile.training ? 1 : 0) + (profile.bonusEnergy || 0);
     const hpBonus = profile.bonusHp || 0;
@@ -1596,7 +1598,11 @@
     state.phase = "player";
     state.selected = livingHeroes()[0]?.id || null;
     render();
-    checkEnd();
+    const ended = checkEnd();
+    if (!ended && endTurnKeyboardFocusRequested && state?.phase === "player") {
+      requestAnimationFrame(() => nodes.endTurnBtn.focus({ preventScroll: true }));
+    }
+    endTurnKeyboardFocusRequested = false;
   }
 
   function checkEnd() {
@@ -1742,6 +1748,7 @@
 
   function showMenu() {
     clearTurnTransition();
+    endTurnKeyboardFocusRequested = false;
     state = null;
     document.body.classList.remove("is-rune-playing");
     nodes.backBtn.setAttribute("href", "/");
@@ -1922,7 +1929,13 @@
     });
     nodes.guardBtn.addEventListener("click", guard);
     nodes.skillBtn.addEventListener("click", skill);
-    nodes.endTurnBtn.addEventListener("click", endTurn);
+    nodes.endTurnBtn.addEventListener("keydown", (event) => {
+      if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
+    });
+    nodes.endTurnBtn.addEventListener("click", (event) => {
+      endTurnKeyboardFocusRequested = event.detail === 0;
+      endTurn();
+    });
     nodes.rerollBtn.addEventListener("click", () => renderRewards(true));
     nodes.rewardPanel.addEventListener("keydown", (event) => {
       if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();

@@ -944,6 +944,29 @@ body.lunch-stage .stage-select h2 {
   margin-bottom: 10px;
 }
 
+body.lunch-stage .stage-status {
+  flex: 0 0 48px;
+  width: calc(100% - 24px);
+  min-height: 48px;
+  margin: 0 12px 8px;
+  padding: 6px 12px;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  color: transparent;
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1.2;
+  text-align: center;
+}
+
+body.lunch-stage .stage-status:not(:empty) {
+  border-color: #f59e0b;
+  background: #fff7d6;
+  color: #5b3510;
+}
+
 body.lunch-stage .stage-grid {
   display: flex;
   flex: 1 1 auto;

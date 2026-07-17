@@ -235,6 +235,7 @@
 
   const packFocus={x:0,y:0};
   let restorePackFocus=false;
+  let stageEntryKeyboardKey="";
   function focusPackCell(){const cell=$(`.pack-cell[data-x="${packFocus.x}"][data-y="${packFocus.y}"]`);if(cell&&!cell.disabled)cell.focus({preventScroll:true});}
   function enhancePackKeyboard(){
     if(!run)return;
@@ -247,9 +248,12 @@
   const packObserver=new MutationObserver(enhancePackKeyboard);
   packObserver.observe($("#packGrid"),{childList:true});packObserver.observe($("#itemTray"),{childList:true});
   $("#packGrid").addEventListener("focusin",(event)=>{const cell=event.target.closest(".pack-cell");if(cell){packFocus.x=Number(cell.dataset.x);packFocus.y=Number(cell.dataset.y);}});
-  $("#packGrid").addEventListener("keydown",(event)=>{const cell=event.target.closest(".pack-cell");if(!cell)return;if(event.key==="Enter"||event.key===" "){packFocus.x=Number(cell.dataset.x);packFocus.y=Number(cell.dataset.y);restorePackFocus=true;return;}const move={ArrowLeft:[-1,0],ArrowRight:[1,0],ArrowUp:[0,-1],ArrowDown:[0,1]}[event.key];if(!move)return;event.preventDefault();packFocus.x=Math.max(0,Math.min(PACK_COLS-1,Number(cell.dataset.x)+move[0]));packFocus.y=Math.max(0,Math.min(PACK_ROWS-1,Number(cell.dataset.y)+move[1]));enhancePackKeyboard();focusPackCell();});
+  $("#packGrid").addEventListener("keydown",(event)=>{const cell=event.target.closest(".pack-cell");if(!cell)return;if(event.key==="Enter"||event.key===" "){if(event.repeat&&stageEntryKeyboardKey===event.key){event.preventDefault();return;}packFocus.x=Number(cell.dataset.x);packFocus.y=Number(cell.dataset.y);restorePackFocus=true;return;}const move={ArrowLeft:[-1,0],ArrowRight:[1,0],ArrowUp:[0,-1],ArrowDown:[0,1]}[event.key];if(!move)return;event.preventDefault();packFocus.x=Math.max(0,Math.min(PACK_COLS-1,Number(cell.dataset.x)+move[0]));packFocus.y=Math.max(0,Math.min(PACK_ROWS-1,Number(cell.dataset.y)+move[1]));enhancePackKeyboard();focusPackCell();});
   $("#packGrid").addEventListener("click",(event)=>{const cell=event.target.closest(".pack-cell");if(cell&&event.detail===0){packFocus.x=Number(cell.dataset.x);packFocus.y=Number(cell.dataset.y);restorePackFocus=true;}});
   $("#itemTray").addEventListener("click",(event)=>{if(event.target.closest(".tray-item")&&event.detail===0){packFocus.x=0;packFocus.y=0;restorePackFocus=true;}});
+  $("#regionRail").addEventListener("keydown",(event)=>{if(!event.repeat&&(event.key==="Enter"||event.key===" ")&&event.target.closest(".region-card:not(:disabled)"))stageEntryKeyboardKey=event.key;});
+  document.addEventListener("keyup",(event)=>{if(event.key===stageEntryKeyboardKey)stageEntryKeyboardKey="";});
+  window.addEventListener("blur",()=>{stageEntryKeyboardKey="";});
   $("#modal").addEventListener("keydown",trapModalFocus);
   document.addEventListener("visibilitychange",()=>{if(document.hidden)pauseCombat();else if(combatPaused)requestAnimationFrame(()=>$("#fightBtn")?.focus({preventScroll:true}));});
   window.addEventListener("pagehide",pauseCombat);

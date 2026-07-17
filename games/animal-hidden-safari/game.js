@@ -654,6 +654,14 @@
         });
   }
 
+  function visibleResultActions() {
+    return [...nodes.resultPanel.querySelectorAll("button, a[href]")].filter((action) => {
+      if (action.disabled || action.classList.contains("hidden")) return false;
+      const style = getComputedStyle(action);
+      return style.display !== "none" && style.visibility !== "hidden";
+    });
+  }
+
   function saveProgress(starCount, seconds, hintsUsed) {
     const old = readJson(progressKey, { bestScore: 0, playCount: 0 });
     const score = Math.max(0, starCount * 100 - mistakes * 5 + Math.max(0, 120 - seconds));
@@ -766,6 +774,25 @@
     nodes.resultStagesBtn.addEventListener("click", showMenu);
     nodes.retryBtn.addEventListener("click", () => startStage(currentStage));
     nodes.nextStageBtn.addEventListener("click", () => startStage(Math.min(stages.length - 1, currentStage + 1)));
+    nodes.resultPanel.addEventListener("keydown", (event) => {
+      if (event.repeat && (event.key === "Enter" || event.key === " ")) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        return;
+      }
+      if (event.key !== "Tab" || nodes.resultPanel.classList.contains("hidden")) return;
+      const actions = visibleResultActions();
+      if (!actions.length) return;
+      const first = actions[0];
+      const last = actions[actions.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    }, true);
     nodes.hintBtn.addEventListener("keydown", (event) => {
       if (event.repeat && (event.key === "Enter" || event.key === " ")) {
         event.preventDefault();

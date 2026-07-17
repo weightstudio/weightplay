@@ -562,9 +562,29 @@
     centerRecommendedStage();
   }
 
+  function setResultOwnership(active) {
+    nodes.playPanel.inert = active;
+    if (active) nodes.playPanel.setAttribute("aria-hidden", "true");
+    else nodes.playPanel.removeAttribute("aria-hidden");
+  }
+
+  function visibleResultActions() {
+    return [...nodes.resultPanel.querySelectorAll("button, a[href]")].filter((action) => {
+      if (action.disabled || action.classList.contains("hidden")) return false;
+      const style = getComputedStyle(action);
+      return style.display !== "none" && style.visibility !== "hidden";
+    });
+  }
+
+  function focusResultAction() {
+    const preferred = !nodes.nextStageBtn.classList.contains("hidden") ? nodes.nextStageBtn : nodes.retryBtn;
+    preferred.focus();
+  }
+
   function showMenu() {
     cancelCareTransition();
     acceptingInput = false;
+    setResultOwnership(false);
     nodes.menuPanel.classList.add("hidden");
     nodes.stagePanel.classList.remove("hidden");
     nodes.playPanel.classList.add("hidden");
@@ -584,6 +604,7 @@
   function showMain() {
     cancelCareTransition();
     acceptingInput = false;
+    setResultOwnership(false);
     nodes.stagePanel.classList.add("hidden");
     nodes.menuPanel.classList.remove("hidden");
     document.body.classList.remove("wp-standard-stage-page");
@@ -592,6 +613,7 @@
 
   function startStage(index) {
     cancelCareTransition();
+    setResultOwnership(false);
     currentStage = index;
     currentTask = 0;
     mistakes = 0;
@@ -755,8 +777,9 @@
     nodes.progressFill.style.width = "100%";
     lastResult = { earned, previousBest, tickets, mood, taskCount: stage.tasks.length, firstTryTasks, mistakes };
     renderResult();
+    setResultOwnership(true);
     nodes.resultPanel.classList.remove("hidden");
-    requestAnimationFrame(() => nodes.resultPanel.focus());
+    requestAnimationFrame(focusResultAction);
     playSound("win");
     track("game_complete", { level: stageNo, stars: earned, mistakes });
   }
@@ -866,6 +889,25 @@
       startStage(currentStage);
     });
     nodes.nextStageBtn.addEventListener("click", () => startStage(Math.min(currentStage + 1, stages.length - 1)));
+    nodes.resultPanel.addEventListener("keydown", (event) => {
+      if (event.repeat && (event.key === "Enter" || event.key === " ")) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        return;
+      }
+      if (event.key !== "Tab" || nodes.resultPanel.classList.contains("hidden")) return;
+      const actions = visibleResultActions();
+      if (!actions.length) return;
+      const first = actions[0];
+      const last = actions[actions.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    }, true);
 
     const interruptCareTransition = () => cancelCareTransition(true);
     window.addEventListener("blur", interruptCareTransition);

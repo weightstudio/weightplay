@@ -134,26 +134,6 @@
       animalPenguin: "penguin",
       animalKoala: "koala",
       loading: "Loading",
-      stage1Name: "Level 1: Animal Warm-Up",
-      stage2Name: "Level 2: Forest Trio",
-      stage3Name: "Level 3: Friendly Tracks",
-      stage4Name: "Level 4: Animal Friends",
-      stage5Name: "Level 5: Meadow Friends",
-      stage6Name: "Level 6: Animal World",
-      stage7Name: "Level 7: Forest Recall",
-      stage8Name: "Level 8: Animal Parade",
-      stage9Name: "Level 9: Habitat Mix",
-      stage10Name: "Level 10: Memory Master",
-      stage1Desc: "Warm up with 2 pairs and unlimited moves.",
-      stage2Desc: "Match 3 pairs with 8 moves limit.",
-      stage3Desc: "Match 6 pairs under 16 moves.",
-      stage4Desc: "Find 8 cute animals in 22 moves.",
-      stage5Desc: "Match 10 animal friends in 28 moves.",
-      stage6Desc: "Remember all 12 animal friends in 35 moves.",
-      stage7Desc: "A tighter six-animal challenge with fewer safe moves.",
-      stage8Desc: "More animal pairs with a careful move limit.",
-      stage9Desc: "Ten animals from different habitats are mixed together.",
-      stage10Desc: "The full 12-pair board for memory experts.",
       parkCheck: "Star Keeper Check",
       ruleNormal: "Classic pairs",
       rulePreview: "Opening preview",
@@ -181,16 +161,16 @@
     "zh-Hant": {
       title: "\u52d5\u7269\u661f\u661f\u7ffb\u724c",
       seoTitle: "\u52d5\u7269\u661f\u661f\u7ffb\u724c - WeightPlay",
-      seoDescription: "\u7ffb\u958b\u52d5\u7269\u8207\u661f\u661f\u5361\u724c\uff0c\u8a18\u4f4f\u4f4d\u7f6e\u4e26\u5b8c\u6210 10 \u500b\u77ed\u95dc\u5361\uff0c\u5728 WeightPlay \u7df4\u7fd2\u8a18\u61b6\u8207\u5c08\u6ce8\u3002",
+      seoDescription: "\u5b8c\u6210 30 \u500b\u52d5\u7269\u8a18\u61b6\u95dc\u5361\uff0c\u6311\u6230\u958b\u5834\u9810\u89bd\u3001\u6708\u5149\u6d17\u724c\u3001\u6307\u5b9a\u9806\u5e8f\u3001\u661f\u5ea7\u79fb\u52d5\u8207\u516d\u5834\u5b88\u8b77\u8005\u6aa2\u67e5\u3002",
       ogTitle: "\u52d5\u7269\u661f\u661f\u7ffb\u724c - \u8a18\u61b6\u914d\u5c0d\u904a\u6232",
-      ogDescription: "\u7ffb\u958b\u52d5\u7269\u8207\u661f\u661f\u5361\u724c\uff0c\u8a18\u4f4f\u4f4d\u7f6e\u4e26\u5b8c\u6210 10 \u500b\u77ed\u95dc\u5361\uff0c\u5728 WeightPlay \u7df4\u7fd2\u8a18\u61b6\u8207\u5c08\u6ce8\u3002",
+      ogDescription: "\u901a\u904e 30 \u500b\u52d5\u7269\u8a18\u61b6\u95dc\u5361\uff0c\u904b\u7528\u9810\u89bd\u3001\u6d17\u724c\u3001\u9806\u5e8f\u8207\u661f\u5ea7\u79fb\u52d5\u898f\u5247\uff0c\u5b8c\u6210\u516d\u5834\u661f\u5149\u5b88\u8b77\u8005\u6aa2\u67e5\u3002",
       language: "\u8a9e\u8a00",
       languageAria: "\u9078\u64c7\u8a9e\u8a00",
       stageBackAria: "\u8fd4\u56de\u9996\u9801",
       battleBackAria: "\u8fd4\u56de\u95dc\u5361",
       gameStatsAria: "\u904a\u6232\u72c0\u614b",
-      mainIntro: "\u8ddf\u8457 30 \u689d\u661f\u5149\u8def\u7dda\u524d\u9032，\u9810\u89bd\u3001\u6d17\u724c\u3001\u9806\u5e8f\u8207\u661f\u5ea7\u79fb\u52d5\u6703\u6539\u8b8a\u6bcf\u4e00\u76e4\u7684\u8a18\u61b6\u65b9\u5f0f\u3002",
       start: "\u958b\u59cb\u904a\u6232",
+      mainIntro: "\u8ddf\u8457 30 \u689d\u661f\u5149\u8def\u7dda\u524d\u9032\uff0c\u9810\u89bd\u3001\u6d17\u724c\u3001\u9806\u5e8f\u8207\u661f\u5ea7\u79fb\u52d5\u6703\u6539\u8b8a\u6bcf\u4e00\u76e4\u7684\u8a18\u61b6\u65b9\u5f0f\u3002",
       chooseLevel: "\u9078\u64c7\u95dc\u5361",
       level: "\u7b2c {current} / {total} \u95dc",
       score: "\u5206\u6578",
@@ -229,26 +209,6 @@
       animalPenguin: "\u4f01\u9d5d",
       animalKoala: "\u7121\u5c3e\u718a",
       loading: "\u8f09\u5165\u4e2d",
-      stage1Name: "\u7b2c 1 \u95dc\uff1a\u52d5\u7269\u6696\u8eab",
-      stage2Name: "\u7b2c 2 \u95dc\uff1a\u68ee\u6797\u4e09\u7d44",
-      stage3Name: "\u7b2c 3 \u95dc\uff1a\u53cb\u5584\u8db3\u8de1",
-      stage4Name: "\u7b2c 4 \u95dc\uff1a\u52d5\u7269\u670b\u53cb",
-      stage5Name: "\u7b2c 5 \u95dc\uff1a\u8349\u539f\u670b\u53cb",
-      stage6Name: "\u7b2c 6 \u95dc\uff1a\u52d5\u7269\u4e16\u754c",
-      stage7Name: "\u7b2c 7 \u95dc\uff1a\u68ee\u6797\u56de\u61b6",
-      stage8Name: "\u7b2c 8 \u95dc\uff1a\u52d5\u7269\u904a\u884c",
-      stage9Name: "\u7b2c 9 \u95dc\uff1a\u68f2\u5730\u6df7\u5408",
-      stage10Name: "\u7b2c 10 \u95dc\uff1a\u8a18\u61b6\u5927\u5e2b",
-      stage1Desc: "\u5148\u7528 2 \u7d44\u5361\u724c\u6696\u8eab\uff0c\u6b65\u6578\u4e0d\u9650\u3002",
-      stage2Desc: "\u7528 8 \u6b65\u914d\u5c0d 3 \u7d44\u5361\u724c\u3002",
-      stage3Desc: "\u5728 16 \u6b65\u5167\u5b8c\u6210 6 \u7d44\u914d\u5c0d\u3002",
-      stage4Desc: "\u7528 22 \u6b65\u627e\u51fa 8 \u7d44\u53ef\u611b\u52d5\u7269\u3002",
-      stage5Desc: "\u7528 28 \u6b65\u914d\u5c0d 10 \u7d44\u52d5\u7269\u670b\u53cb\u3002",
-      stage6Desc: "\u7528 35 \u6b65\u8a18\u4f4f 12 \u7d44\u52d5\u7269\u670b\u53cb\u3002",
-      stage7Desc: "\u66f4\u7dca\u6e4a\u7684\u516d\u7a2e\u52d5\u7269\u6311\u6230\uff0c\u6b65\u6578\u66f4\u5c11\u3002",
-      stage8Desc: "\u66f4\u591a\u52d5\u7269\u914d\u5c0d\uff0c\u9700\u8981\u4ed4\u7d30\u8a18\u4f4d\u7f6e\u3002",
-      stage9Desc: "\u4e0d\u540c\u68f2\u5730\u7684 10 \u7a2e\u52d5\u7269\u6df7\u5408\u5728\u4e00\u8d77\u3002",
-      stage10Desc: "\u5b8c\u6574 12 \u7d44\u5361\u724c\uff0c\u6311\u6230\u8a18\u61b6\u9ad8\u624b\u3002",
       parkCheck: "\u661f\u5149\u5b88\u8b77\u8005\u6aa2\u67e5",
       ruleNormal: "\u7d93\u5178\u914d\u5c0d",
       rulePreview: "\u958b\u5834\u9810\u89bd",
@@ -256,9 +216,9 @@
       ruleOrder: "\u4f9d\u63d0\u793a\u9806\u5e8f\u914d\u5c0d",
       ruleRotate: "\u914d\u5c0d\u5f8c\u661f\u5ea7\u79fb\u52d5",
       ruleFinal: "\u6df7\u5408\u661f\u5149\u898f\u5247",
-      previewing: "\u4ed4\u7d30\u770b，\u5361\u724c\u5f88\u5feb\u6703\u84cb\u8d77\u4f86！",
-      orderTarget: "\u4e0b\u4e00\u7d44請找 {animal}。",
-      wrongOrder: "\u9019\u7d44\u5716\u6848\u76f8\u540c，\u4f46\u8981\u5148\u627e\u53e6\u4e00\u7a2e\u52d5\u7269\u3002",
+      previewing: "\u4ed4\u7d30\u770b\uff0c\u5361\u724c\u5f88\u5feb\u6703\u84cb\u8d77\u4f86\uff01",
+      orderTarget: "\u4e0b\u4e00\u7d44\u8acb\u627e {animal}\uff01",
+      wrongOrder: "\u9019\u7d44\u5716\u6848\u76f8\u540c\uff0c\u4f46\u8981\u5148\u627e\u53e6\u4e00\u7a2e\u52d5\u7269\u3002",
       highScore: "\u6700\u9ad8\u5206\uff1a{score}",
       skillReport: "\u6280\u80fd\u5831\u544a",
       reportIntroWin: "\u9019\u4e00\u5c40\u7df4\u7fd2\u4e86\u8a18\u4f4f\u4f4d\u7f6e\u3001\u4fdd\u6301\u5c08\u6ce8\uff0c\u4ee5\u53ca\u9078\u64c7\u4e0b\u4e00\u7d44\u914d\u5c0d\u3002",
@@ -682,19 +642,33 @@
   }
 
   let stageDrag = null;
-  function settleStageRail() {
+  function nearestStageCard() {
     const cards = [...stageGrid.querySelectorAll(".stage-card")];
     const center = stageGrid.scrollLeft + stageGrid.clientWidth / 2;
-    const nearest = cards.reduce((best, card) => {
+    return cards.reduce((best, card) => {
       const distance = Math.abs(card.offsetLeft + card.offsetWidth / 2 - center);
       return !best || distance < best.distance ? { card, distance } : best;
     }, null)?.card;
+  }
+  function highlightNearestStage() {
+    const nearest = nearestStageCard();
     if (nearest) {
       stageGrid.querySelectorAll(".stage-card.selected").forEach((card) => card.classList.remove("selected"));
       nearest.classList.add("selected");
+    }
+    return nearest;
+  }
+  function settleStageRail() {
+    const nearest = highlightNearestStage();
+    if (nearest) {
       stageGrid.scrollTo({ left: nearest.offsetLeft - (stageGrid.clientWidth - nearest.offsetWidth) / 2, behavior: "smooth" });
     }
   }
+  let stageHighlightFrame = 0;
+  stageGrid.addEventListener("scroll", () => {
+    cancelAnimationFrame(stageHighlightFrame);
+    stageHighlightFrame = requestAnimationFrame(highlightNearestStage);
+  }, { passive: true });
   stageGrid.addEventListener("pointerdown", (event) => {
     if (event.button !== 0) return;
     stageDrag = { id: event.pointerId, x: event.clientX, scrollLeft: stageGrid.scrollLeft, moved: false };

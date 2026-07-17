@@ -277,6 +277,10 @@
     insuranceActive = false;
   }
   function trapResultFocus(event) {
+    if (event.repeat && (event.key === 'Enter' || event.key === ' ')) {
+      event.preventDefault();
+      return;
+    }
     if (event.key !== 'Tab' || $('result').classList.contains('hidden')) return;
     const first = $('nextBtn');
     const last = $('menuBtn');

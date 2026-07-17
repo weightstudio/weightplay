@@ -382,19 +382,58 @@
     },
     "campus-dash": {
       title: "Safari Dash",
-      age: "12+",
-      difficulty: "Hard",
-      time: "1-3 minutes",
+      age: "9+",
+      difficulty: "Progressive",
+      time: "1-4 minutes",
       skills: ["Reaction", "Focus", "Hand-Eye Coordination"],
       intro:
-        "Safari Dash is a fast animal lane runner where players move left and right to dodge safari trail obstacles and collect points. It is a score-attack game for older players who enjoy quick reactions and replaying to improve. The short timer makes each attempt fast, while local records give players a reason to try again.",
-      how: ["Move between lanes.", "Avoid obstacles.", "Collect score items when it is safe.", "Try to improve your local best score."],
+        "Safari Dash is a three-lane animal runner with 30 saved routes across six regions. Spark Paw Fox restores guide stars while route cards announce five objective types and the active rules. Star trails, two-lane gates, sticky mud, and authored Guardian patterns make later routes require different reading and recovery decisions instead of only increasing speed.",
+      story: [
+        "Sunrise Savanna, Acacia Crossing, Marshlight Bend, Red Canyon Run, Moonwater Reserve, and Crown Safari share a marked trail network. Scattered trail gear and flooded markers have broken its guide-star chain.",
+        "Spark Paw Fox carries replacement stars through every route. Zebra Pathfinder, Rhino Trailkeeper, Hippo Waterwarden, Eagle Skykeeper, Lion Pridekeeper, and Elephant Crownkeeper each test one five-route region before reopening it. Clearing Route 30 reconnects all six regions.",
+      ],
+      how: [
+        "Choose an unlocked route from the horizontal Stage rail and read its objective and rules.",
+        "Tap left or right, swipe, or use A, D, and the arrow keys to move exactly one lane.",
+        "Collect stars for score and combo while avoiding cones, satchels, book stacks, and puddles.",
+        "Reach zero time and satisfy the route's finish, star, combo, clean-run, or score objective.",
+        "A successful route saves its clear and unlocks the next route; Run Again retries the current route.",
+      ],
+      systems: [
+        "Open Trail spaces ordinary hazards so players can learn lane timing. Star Trail increases collectible lines. Two-Lane Gates leave one readable escape lane. Sticky Mud briefly slows lane transitions after a puddle collision. Guardian Pattern uses a deliberate safe-lane sequence.",
+        "Stars score 50 times the current multiplier. Consecutive collections raise the multiplier; any hazard collision removes 80 points and resets the next-star multiplier to x1.",
+        "Objectives change success conditions: finish the route, collect a target number of stars, reach a best combo, stay under a collision limit, or reach a target score.",
+        "Campaign progress and the local Top 5 are stored separately in this browser. No account is required.",
+      ],
+      progression: [
+        "Routes 1-5 teach ordinary hazards, star trails, gates, and combo timing before Zebra Pathfinder.",
+        "Routes 6-10 alternate collection and clean gate decisions at Acacia Crossing before Rhino Trailkeeper.",
+        "Routes 11-15 introduce sticky mud and combine slow recovery with stars and gates before Hippo Waterwarden.",
+        "Routes 16-20 combine score, combo, repeated gates, and safe-lane star cues before Eagle Skykeeper.",
+        "Routes 21-25 mix mud, gates, and night star chains before Lion Pridekeeper's low-collision check.",
+        "Routes 26-30 review every rule. Elephant Crownkeeper combines mud, trails, gates, and Guardian sequencing while requiring 15 stars.",
+      ],
+      strategyTips: [
+        "Read the empty lane between two gate hazards; the gap is the instruction.",
+        "On clean-run routes, skip optional stars when collecting one would spend the collision allowance.",
+        "Move earlier after touching mud because the lane transition is temporarily slower.",
+        "Use the first Guardian gates to identify the authored safe-lane rhythm.",
+        "A collision resets the next multiplier but does not erase the best combo already achieved.",
+      ],
+      designNote:
+        "Three lanes keep choices readable on phones, and every input moves exactly one lane. Captured swipes remain reliable across the Canvas edge, while held keyboard input cannot skip lanes. Route timers range from 28 to 45 seconds for quick retries. Depth comes from information changes: gates alter spatial reading, star trails alter risk and reward, mud alters recovery timing, objectives alter success, and Guardians use authored sequences. The Kids build is ad-free and creates no ad reserve.",
       parent:
-        "This game is designed for older children and casual players who enjoy fast reaction challenges. It can practice focus and hand-eye coordination, but scores are only for fun.",
+        "Safari Dash is intended for ages 9+ because later routes combine quick lane reading, objectives, and score pressure. The Skill Report uses only current-run evidence: lane changes, stars, bumps, and best combo. It is not a diagnosis, developmental assessment, or comparison with other children.",
       faq: [
-        ["Why is Safari Dash 9+?", "It has faster reactions and score pressure than games designed for younger children."],
-        ["Is there a leaderboard?", "The MVP uses local records for replay value."],
-        ["Is it an educational test?", "No. It is a reaction game for entertainment and practice."],
+        ["How many routes are there?", "There are 30 saved routes in six regions, with Guardian Checks at 5, 10, 15, 20, 25, and 30."],
+        ["Do all routes use the same goal?", "No. Routes use finish, star collection, combo, clean-run, or score objectives."],
+        ["What does sticky mud do?", "A puddle collision costs points and resets the multiplier; on mud routes it also slows the next lane transition briefly."],
+        ["How do two-lane gates work?", "Two hazards arrive together and leave one escape lane. Some later routes mark the safe opening with a star."],
+        ["What progress is saved?", "Unlocked and completed routes, the selected route, and the local Top 5 are stored in this browser."],
+        ["Does it work on phones and computers?", "Yes. Phones support taps and swipes; desktop play supports A, D, and arrow keys."],
+        ["Is Safari Dash free and account-free?", "Yes. It is free in the browser and does not require login."],
+        ["Why is it 9+?", "Later routes combine faster visual decisions, route objectives, and score pressure."],
+        ["Is the Skill Report a formal test?", "No. It only summarizes events from the current run."],
       ],
     },
     "snack-blocks": {
@@ -1876,11 +1915,64 @@
   gameplayProfiles["animal-reef-fisher"] = { gameplay: "Fishing Collection Sim", genre: ["Fishing", "Collection", "Simulation", "Animal"] };
   coverImages["animal-reef-fisher"] = "animal-reef-fisher-cover.webp";
   localizedGameplayProfiles["zh-Hant"]["animal-reef-fisher"] = { gameplay: "釣魚收集模擬", genre: ["釣魚", "收集", "模擬", "動物"] };
-  localizedGames["zh-Hant"]["campus-dash"] = zhGuide("\u8349\u539f\u9583\u96fb\u8dd1", "\u8def\u7dda\u9583\u907f\u8dd1\u9177", [
-    "\u5de6\u53f3\u79fb\u52d5\u5207\u63db\u8dd1\u9053\u3002",
-    "\u907f\u958b\u969c\u7919\u4e26\u6536\u96c6\u661f\u661f\u3002",
-    "\u4fdd\u6301\u53cd\u61c9\u901f\u5ea6\u5b8c\u6210\u6311\u6230\u3002",
-  ]);
+  localizedGames["zh-Hant"]["campus-dash"] = {
+    title: "\u8349\u539f\u9583\u96fb\u8dd1",
+    age: "9+",
+    difficulty: "\u6f38\u9032\u6311\u6230",
+    time: "1-4 \u5206\u9418",
+    gameplay: "\u8def\u7dda\u9583\u907f\u8dd1\u9177",
+    genre: ["\u8dd1\u9177", "\u53cd\u61c9", "\u52d5\u7269"],
+    skills: ["\u53cd\u61c9", "\u5c08\u6ce8", "\u624b\u773c\u5354\u8abf"],
+    intro:
+      "\u8349\u539f\u9583\u96fb\u8dd1\u662f\u4e00\u6b3e\u64c1\u6709 30 \u689d\u53ef\u5b58\u6a94\u8def\u7dda\u3001\u516d\u5927\u5340\u57df\u7684\u4e09\u7dda\u52d5\u7269\u8dd1\u9177\u3002\u661f\u722a\u72d0\u8981\u6062\u5fa9\u8349\u539f\u5c0e\u822a\u661f\uff0c\u73a9\u5bb6\u5fc5\u9808\u6839\u64da\u661f\u661f\u8ecc\u8de1\u3001\u96d9\u8def\u969c\u7919\u9580\u3001\u9ecf\u6ed1\u6ce5\u6f25\u8207\u5b88\u8b77\u8005\u9663\u578b\u6539\u8b8a\u8dd1\u6cd5\uff0c\u4e0d\u662f\u53ea\u6709\u901f\u5ea6\u4e0a\u5347\u3002",
+    story: [
+      "\u6668\u66e6\u8349\u539f\u3001\u91d1\u5408\u6b61\u8def\u53e3\u3001\u6fa4\u5149\u5f4e\u9053\u3001\u8d64\u5cfd\u8dd1\u9053\u3001\u6708\u6c34\u4fdd\u8b77\u5340\u8207\u738b\u51a0\u8349\u539f\u5171\u7528\u4e00\u689d\u5c0e\u822a\u661f\u8def\u7db2\u3002",
+      "\u661f\u722a\u72d0\u5e36\u8457\u65b0\u661f\u661f\u901a\u904e\u6bcf\u689d\u8def\u7dda\uff0c\u4e26\u63a5\u53d7\u6591\u99ac\u3001\u72a7\u725b\u3001\u6cb3\u99ac\u3001\u98db\u9df9\u3001\u7345\u7fa4\u8207\u8c61\u738b\u51a0\u5b88\u8b77\u8005\u7684\u6aa2\u67e5\u3002\u901a\u904e\u7b2c 30 \u95dc\u4ee3\u8868\u516d\u5927\u5340\u57df\u91cd\u65b0\u9023\u7dda\u3002",
+    ],
+    how: [
+      "\u5728\u6c34\u5e73 Stage \u8def\u7dda\u4e0a\u9078\u64c7\u5df2\u89e3\u9396\u95dc\u5361\uff0c\u5148\u95b1\u8b80\u76ee\u6a19\u8207\u8def\u7dda\u898f\u5247\u3002",
+      "\u9ede\u64ca\u756b\u9762\u5de6\u53f3\u5074\u3001\u6ed1\u52d5\uff0c\u6216\u4f7f\u7528 A\u3001D \u8207\u65b9\u5411\u9375\uff0c\u6bcf\u6b21\u79fb\u52d5\u4e00\u689d\u8dd1\u9053\u3002",
+      "\u6536\u96c6\u661f\u661f\u7d2f\u7a4d\u5206\u6578\u8207\u9023\u64ca\uff0c\u907f\u958b\u8def\u9310\u3001\u884c\u56ca\u3001\u66f8\u5806\u8207\u6c34\u6f25\u3002",
+      "\u8a08\u6642\u7d50\u675f\u5f8c\uff0c\u9054\u6210\u5230\u9054\u7d42\u9ede\u3001\u6536\u96c6\u661f\u661f\u3001\u9023\u64ca\u3001\u4f4e\u78b0\u649e\u6216\u76ee\u6a19\u5206\u6578\u4e4b\u4e00\u3002",
+      "\u6210\u529f\u6703\u5b58\u6a94\u4e26\u89e3\u9396\u4e0b\u4e00\u95dc\uff1b\u518d\u8dd1\u4e00\u6b21\u6703\u91cd\u8a66\u76ee\u524d\u95dc\u5361\u3002",
+    ],
+    systems: [
+      "\u958b\u653e\u8349\u5f91\u7528\u55ae\u500b\u969c\u7919\u6559\u5b78\uff1b\u661f\u661f\u8ecc\u8de1\u589e\u52a0\u6536\u96c6\u7dda\uff1b\u96d9\u8def\u969c\u7919\u9580\u53ea\u7559\u4e00\u689d\u5b89\u5168\u8def\uff1b\u9ecf\u6ed1\u6ce5\u6f25\u6703\u77ed\u66ab\u653e\u6162\u63db\u9053\uff1b\u5b88\u8b77\u8005\u9663\u578b\u6709\u53ef\u89c0\u5bdf\u7684\u56fa\u5b9a\u5b89\u5168\u7bc0\u594f\u3002",
+      "\u661f\u661f\u57fa\u790e\u5206\u6578\u70ba 50 \u4e58\u4ee5\u76ee\u524d\u500d\u7387\u3002\u9023\u7e8c\u6536\u96c6\u6703\u63d0\u9ad8\u4e0b\u4e00\u9846\u661f\u7684\u500d\u7387\uff1b\u78b0\u5230\u969c\u7919\u6703\u6263 80 \u5206\u4e26\u91cd\u7f6e\u70ba x1\u3002",
+      "\u95dc\u5361\u76ee\u6a19\u5305\u542b\u5230\u9054\u7d42\u9ede\u3001\u661f\u661f\u6578\u91cf\u3001\u6700\u4f73\u9023\u64ca\u3001\u78b0\u649e\u4e0a\u9650\u8207\u76ee\u6a19\u5206\u6578\u4e94\u7a2e\u3002",
+      "\u95dc\u5361\u9032\u5ea6\u8207\u672c\u6a5f\u524d 5 \u540d\u5206\u958b\u5132\u5b58\u5728\u9019\u500b\u700f\u89bd\u5668\uff0c\u4e0d\u9700\u8981\u767b\u5165\u3002",
+    ],
+    progression: [
+      "\u7b2c 1-5 \u95dc\u6559\u5b78\u969c\u7919\u3001\u661f\u8ecc\u3001\u96d9\u9580\u8207\u9023\u64ca\uff0c\u6700\u5f8c\u662f\u6591\u99ac\u6aa2\u67e5\u3002",
+      "\u7b2c 6-10 \u95dc\u4ea4\u66ff\u6536\u96c6\u8207\u4f4e\u78b0\u649e\u9580\u9663\uff0c\u6700\u5f8c\u662f\u72a7\u725b\u6aa2\u67e5\u3002",
+      "\u7b2c 11-15 \u95dc\u52a0\u5165\u9ecf\u6ed1\u6ce5\u6f25\uff0c\u6700\u5f8c\u662f\u6cb3\u99ac\u6c34\u9053\u6aa2\u67e5\u3002",
+      "\u7b2c 16-20 \u95dc\u7d50\u5408\u5206\u6578\u3001\u9023\u64ca\u3001\u91cd\u8907\u9580\u9663\u8207\u5b89\u5168\u661f\u63d0\u793a\uff0c\u6700\u5f8c\u662f\u98db\u9df9\u6aa2\u67e5\u3002",
+      "\u7b2c 21-25 \u95dc\u6df7\u5408\u6ce5\u6f25\u3001\u9580\u9663\u8207\u591c\u9593\u661f\u93c8\uff0c\u6700\u5f8c\u662f\u7345\u7fa4\u6aa2\u67e5\u3002",
+      "\u7b2c 26-30 \u95dc\u5fa9\u7fd2\u5168\u90e8\u898f\u5247\uff1b\u8c61\u738b\u51a0\u5b88\u8b77\u8005\u6703\u6df7\u5408\u56db\u7a2e\u9032\u968e\u898f\u5247\u4e26\u8981\u6c42\u6536\u96c6 15 \u9846\u661f\u661f\u3002",
+    ],
+    strategyTips: [
+      "\u770b\u96d9\u9580\u4e2d\u9593\u7684\u7a7a\u8def\uff0c\u4e0d\u8981\u53ea\u76ef\u8457\u969c\u7919\u3002",
+      "\u4f4e\u78b0\u649e\u95dc\u5361\u8981\u5148\u4fdd\u7559\u5bb9\u932f\uff0c\u4e0d\u5fc5\u70ba\u4e86\u975e\u5fc5\u8981\u661f\u661f\u5192\u96aa\u3002",
+      "\u78b0\u5230\u6ce5\u6f25\u5f8c\u8981\u66f4\u65e9\u8f38\u5165\u63db\u9053\uff0c\u56e0\u70ba\u79fb\u52d5\u6703\u77ed\u66ab\u8b8a\u6162\u3002",
+      "\u7528\u5b88\u8b77\u8005\u7684\u524d\u5169\u7d44\u9580\u9663\u627e\u51fa\u5b89\u5168\u8dd1\u9053\u7bc0\u594f\u3002",
+      "\u78b0\u649e\u6703\u91cd\u7f6e\u4e0b\u4e00\u9846\u661f\u7684\u500d\u7387\uff0c\u4f46\u4e0d\u6703\u522a\u9664\u672c\u5c40\u5df2\u9054\u6210\u7684\u6700\u4f73\u9023\u64ca\u3002",
+    ],
+    designNote:
+      "\u4e09\u689d\u8dd1\u9053\u8b93\u624b\u6a5f\u4e0a\u7684\u5b89\u5168\u8def\u5bb9\u6613\u8fa8\u8b58\uff0c\u6bcf\u6b21\u8f38\u5165\u53ea\u79fb\u4e00\u683c\u3002\u8def\u7dda\u6642\u9593\u70ba 28-45 \u79d2\uff0c\u65b9\u4fbf\u5feb\u901f\u91cd\u8a66\u3002\u6df1\u5ea6\u4f86\u81ea\u9580\u9663\u7684\u7a7a\u9593\u95b1\u8b80\u3001\u661f\u8ecc\u7684\u98a8\u96aa\u53d6\u6368\u3001\u6ce5\u6f25\u7684\u6062\u5fa9\u6642\u6a5f\u3001\u4e0d\u540c\u901a\u95dc\u76ee\u6a19\u8207\u5b88\u8b77\u8005\u7684\u7de8\u6392\u9663\u578b\u3002\u9019\u662f Kids \u7121\u5ee3\u544a\u904a\u6232\uff0c\u4e0d\u6703\u5efa\u7acb\u5ee3\u544a\u4fdd\u7559\u5340\u3002",
+    parent:
+      "\u9019\u6b3e\u904a\u6232\u5efa\u8b70 9+\uff0c\u56e0\u70ba\u5f8c\u671f\u6703\u7d50\u5408\u5feb\u901f\u8dd1\u9053\u5224\u65b7\u3001\u95dc\u5361\u76ee\u6a19\u8207\u5206\u6578\u58d3\u529b\u3002\u6280\u80fd\u5831\u544a\u53ea\u986f\u793a\u672c\u5c40\u771f\u5be6\u63db\u9053\u3001\u661f\u661f\u3001\u78b0\u649e\u8207\u6700\u4f73\u9023\u64ca\uff0c\u4e0d\u662f\u8a3a\u65b7\u3001\u767c\u5c55\u8a55\u91cf\u6216\u5152\u7ae5\u9593\u6bd4\u8f03\u3002",
+    faq: [
+      ["\u4e00\u5171\u6709\u5e7e\u95dc\uff1f", "\u5171\u6709 30 \u689d\u53ef\u5b58\u6a94\u8def\u7dda\uff0c\u7b2c 5\u300110\u300115\u300120\u300125\u300130 \u95dc\u662f\u5b88\u8b77\u8005\u6aa2\u67e5\u3002"],
+      ["\u6bcf\u95dc\u76ee\u6a19\u90fd\u4e00\u6a23\u55ce\uff1f", "\u4e0d\u4e00\u6a23\u3002\u6709\u5230\u9054\u7d42\u9ede\u3001\u661f\u661f\u6578\u91cf\u3001\u9023\u64ca\u3001\u4f4e\u78b0\u649e\u8207\u76ee\u6a19\u5206\u6578\u4e94\u7a2e\u3002"],
+      ["\u9ecf\u6ed1\u6ce5\u6f25\u6709\u4ec0\u9ebc\u5f71\u97ff\uff1f", "\u6703\u6263\u5206\u3001\u91cd\u7f6e\u500d\u7387\uff0c\u4e26\u5728\u6ce5\u6f25\u8def\u7dda\u4e0a\u77ed\u66ab\u653e\u6162\u63db\u9053\u3002"],
+      ["\u96d9\u8def\u969c\u7919\u9580\u600e\u9ebc\u901a\u904e\uff1f", "\u5169\u500b\u969c\u7919\u6703\u540c\u6642\u51fa\u73fe\uff0c\u53ea\u7559\u4e00\u689d\u7a7a\u8def\uff1b\u5f8c\u671f\u6709\u4e9b\u8def\u7dda\u6703\u7528\u661f\u661f\u6a19\u793a\u5b89\u5168\u53e3\u3002"],
+      ["\u6703\u5b58\u54ea\u4e9b\u9032\u5ea6\uff1f", "\u9019\u500b\u700f\u89bd\u5668\u6703\u5b58\u5df2\u89e3\u9396\u3001\u5df2\u5b8c\u6210\u8207\u76ee\u524d\u8def\u7dda\uff0c\u4ee5\u53ca\u672c\u6a5f\u524d 5 \u540d\u5206\u6578\u3002"],
+      ["\u624b\u6a5f\u548c\u96fb\u8166\u90fd\u80fd\u73a9\u55ce\uff1f", "\u53ef\u4ee5\u3002\u624b\u6a5f\u652f\u63f4\u9ede\u64ca\u8207\u6ed1\u52d5\uff0c\u96fb\u8166\u652f\u63f4 A\u3001D \u8207\u65b9\u5411\u9375\u3002"],
+      ["\u9700\u8981\u767b\u5165\u6216\u4ed8\u8cbb\u55ce\uff1f", "\u4e0d\u9700\u8981\u3002\u904a\u6232\u53ef\u514d\u8cbb\u5728\u700f\u89bd\u5668\u904a\u73a9\u3002"],
+      ["\u70ba\u4ec0\u9ebc\u5efa\u8b70 9+\uff1f", "\u5f8c\u671f\u540c\u6642\u6709\u5feb\u901f\u5224\u65b7\u3001\u95dc\u5361\u76ee\u6a19\u8207\u5206\u6578\u58d3\u529b\uff1b\u5e74\u9f61\u53ea\u662f\u5efa\u8b70\uff0c\u4e0d\u662f\u80fd\u529b\u5206\u7d1a\u3002"],
+      ["\u6280\u80fd\u5831\u544a\u662f\u6b63\u5f0f\u6e2c\u9a57\u55ce\uff1f", "\u4e0d\u662f\uff0c\u5b83\u53ea\u6574\u7406\u672c\u5c40\u771f\u5be6\u904a\u6232\u4e8b\u4ef6\u3002"],
+    ],
+  };
   localizedGames["zh-Hant"]["animal-reef-fisher"] = {
     title: "動物珊瑚釣手",
     age: "13+",

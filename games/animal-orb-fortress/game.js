@@ -1698,6 +1698,9 @@
     show(nodes.stagePanel);
     renderMenu();
   });
+  nodes.resultPanel.addEventListener("keydown", (event) => {
+    if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
+  });
   nodes.roomGrid.addEventListener("click", (event) => {
     const id = event.target?.dataset?.room;
     if (id) upgradeRoom(id, event.detail === 0);
