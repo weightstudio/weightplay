@@ -215,6 +215,7 @@ let unlocked = loadNumber(UNLOCK_KEY, 1);
 let bestStars = loadBestStars();
 let activeIndex = 0;
 let state = makeState(levels[0]);
+let hintResetTimer = 0;
 
 function locale() {
   return window.WonderI18n?.locale() || "en";
@@ -366,6 +367,7 @@ function startLevel(index) {
     showLocked();
     return;
   }
+  restoreRouteHint();
   activeIndex = index;
   state = makeState(level);
   stageSelect.classList.add("hidden");
@@ -547,6 +549,7 @@ function moveTo(pos) {
   const dx = Math.abs(pos[0] - state.position[0]);
   const dy = Math.abs(pos[1] - state.position[1]);
   if (dx + dy !== 1 || obstacles.has(key)) return rejectMove();
+  restoreRouteHint();
   state.position = pos;
   state.path.push([...pos]);
   state.moves += 1;
@@ -563,6 +566,7 @@ function moveTo(pos) {
 
 function undoMove() {
   if (state.complete || state.path.length <= 1) return;
+  restoreRouteHint();
   state.path.pop();
   state.position = [...state.path[state.path.length - 1]];
   state.moves = Math.max(0, state.moves - 1);
@@ -590,10 +594,17 @@ function resetLevel() {
 
 function rejectMove() {
   window.WonderSound?.play("wrong");
+  window.clearTimeout(hintResetTimer);
   hintText.textContent = t("wrongTile");
-  setTimeout(() => {
-    hintText.textContent = t("hint");
+  hintResetTimer = window.setTimeout(() => {
+    restoreRouteHint();
   }, 900);
+}
+
+function restoreRouteHint() {
+  window.clearTimeout(hintResetTimer);
+  hintResetTimer = 0;
+  hintText.textContent = t("hint");
 }
 
 function finishLevel() {

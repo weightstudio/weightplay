@@ -921,6 +921,10 @@ document.addEventListener("visibilitychange", () => {
 startGameBtn.addEventListener("click", showStageSelect);
 stageBackBtn.addEventListener("click", showMain);
 backToStagesBtn.addEventListener("click", () => showStageSelect(state.stageIndex));
+choiceGrid.addEventListener("keydown", (event) => {
+  if (!event.repeat || !["Enter", " "].includes(event.key) || !event.target.closest("button")) return;
+  event.preventDefault();
+});
 
 window.addEventListener("wonder:locale-change", () => {
   if (!state.ready) {

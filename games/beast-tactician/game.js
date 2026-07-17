@@ -2974,6 +2974,9 @@
   }
 
   function bindEvents() {
+    nodes.resultPanel.addEventListener("keydown", (event) => {
+      if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
+    });
     nodes.localeSelect.addEventListener("change", () => {
       state.locale = nodes.localeSelect.value;
       localStorage.setItem(localeKey, state.locale);

@@ -251,8 +251,8 @@ window.WONDER_LOBBY = {
       ageLabel: { en: "6+", "zh-Hant": "6+" },
       href: "games/animal-guard-yard/",
       description: {
-        en: "Place full-body animal guards, earn coins, upgrade your team, and fight through 8 wild-beast stages with boss battles.",
-        "zh-Hant": "配置完整動物守衛、賺取金幣、升級隊伍，挑戰 8 個含 Boss 的防守關卡。",
+        en: "Defend 30 garden stages with animal guards, readable special beasts, saved training, and six distinct Boss encounters.",
+        "zh-Hant": "配置動物守衛，挑戰 30 個花園關卡、可判斷的特殊野獸與六場獨立首領戰。",
       },
       meta: { en: ["Hero Defense", "Animal Upgrades", "Boss Battles"], "zh-Hant": ["英雄防守", "動物升級", "Boss 戰"] },
       art: { kind: "image", background: "assets/animal-guard-yard-poster.webp", hero: "assets/weightplay-character-moss-shell-turtle-cutout.webp" },

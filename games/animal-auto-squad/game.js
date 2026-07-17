@@ -1844,6 +1844,10 @@
     nodes.prepPhaseArea.classList.remove("is-hidden");
     nodes.combatArea.classList.add("is-hidden");
     nodes.combatSummary?.classList.add("is-hidden");
+    // A new expedition must reopen the owned roster from its first row. The
+    // scroll container survives screen changes, so leaving it at the bottom
+    // made a five-animal roster look like it contained only the final two.
+    if (state.round === 1) nodes.shopRow.scrollTop = 0;
     selectedSlot = null;
     state.freeRerollThisRound = state.relic?.id === 3; // Clover leaf gives free first reroll
     state.rerollsUsedThisRound = 0;

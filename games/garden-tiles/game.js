@@ -622,6 +622,11 @@
     levelMessage.textContent = text;
   }
 
+  board.addEventListener("keydown", (event) => {
+    if (!event.repeat || !["Enter", " "].includes(event.key) || !event.target.closest("[data-index]")) return;
+    event.preventDefault();
+  });
+
   board.addEventListener("click", (event) => {
     const button = event.target.closest("[data-index]");
     if (!button) return;

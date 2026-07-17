@@ -1085,6 +1085,10 @@
   }
 
   foodCard.addEventListener("pointerdown", startDrag);
+  dropZone.addEventListener("keydown", (event) => {
+    if (!event.repeat || !["Enter", " "].includes(event.key) || !event.target.closest(".lunchbox")) return;
+    event.preventDefault();
+  });
   window.addEventListener("pointermove", moveDrag);
   window.addEventListener("pointerup", endDrag);
   window.addEventListener("pointercancel", (event) => {

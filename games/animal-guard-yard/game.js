@@ -129,12 +129,26 @@
       threatNormal: "Normal",
       threatFast: "Fast",
       threatShield: "Shield",
+      threatHealer: "Healer",
+      threatBurrow: "Burrower",
+      threatThief: "Sun thief",
       threatBoss: "Boss",
       beastNormalDesc: "Balanced beasts. Stop them with early cats or dogs.",
       beastFastDesc: "Fast beasts rush lanes. Place guards before they appear.",
       beastShieldDesc: "Shield beasts have high HP. Use stronger trained guards.",
+      beastHealerDesc: "Healers restore the beast in front. Focus them before the lane recovers.",
+      beastBurrowDesc: "Burrowers warn before moving to a nearby lane. Keep two lanes covered.",
+      beastThiefDesc: "Sun thieves take 12 sun unless they are stopped before their pouch glows.",
       beastBossDesc: "Boss beasts roar and slow nearby guards. Build a layered defense.",
       bossRoar: "Boss roar!",
+      bossShell: "Shell closed!",
+      bossShellOpen: "Shell open!",
+      bossBurrow: "Changing lane!",
+      bossRush: "Rush coming!",
+      bossGale: "Gale push!",
+      bossMoon: "Moon pulse!",
+      healerPulse: "HEAL",
+      thiefPulse: "-12 SUN",
       fast: "Fast beasts",
       shield: "Shield beasts",
       swarm: "Swarm night",
@@ -260,12 +274,26 @@
       threatNormal: "\u4e00\u822c",
       threatFast: "\u5feb\u901f",
       threatShield: "\u76fe\u724c",
+      threatHealer: "\u7642\u7652",
+      threatBurrow: "\u947d\u5730",
+      threatThief: "\u5077\u967d\u5149",
       threatBoss: "Boss",
       beastNormalDesc: "\u5e73\u8861\u578b\u91ce\u7378\uff0c\u65e9\u9ede\u653e\u8c93\u9a0e\u58eb\u6216\u72d7\u6230\u58eb\u5c31\u80fd\u64cb\u4f4f\u3002",
       beastFastDesc: "\u5feb\u901f\u7a81\u9032\u7684\u91ce\u7378\uff0c\u51fa\u73fe\u524d\u5c31\u8981\u5148\u5e03\u9632\u3002",
       beastShieldDesc: "\u751f\u547d\u5f88\u9ad8\u7684\u91cd\u7532\u91ce\u7378\uff0c\u9700\u8981\u8a13\u7df4\u904e\u7684\u5b88\u885b\u96c6\u4e2d\u653b\u64ca\u3002",
+      beastHealerDesc: "\u7642\u7652\u7378\u6703\u56de\u5fa9\u524d\u65b9\u540c\u8def\u91ce\u7378\uff0c\u5148\u96c6\u706b\u5b83\u624d\u4e0d\u6703\u8b93\u9632\u7dda\u767d\u6253\u3002",
+      beastBurrowDesc: "\u947d\u5730\u7378\u6703\u5148\u9810\u8b66\u518d\u63db\u5230\u76f8\u9130\u8def\u7dda\uff0c\u8acb\u540c\u6642\u7167\u9867\u5169\u8def\u3002",
+      beastThiefDesc: "\u967d\u5149\u76dc\u6703\u5077\u8d70 12 \u9ede\u967d\u5149\uff0c\u5728\u888b\u5b50\u767c\u4eae\u524d\u64cb\u4f4f\u5b83\u3002",
       beastBossDesc: "Boss \u6703\u5486\u54ee\u4e26\u8b93\u9644\u8fd1\u5b88\u885b\u8b8a\u6162\uff0c\u8acb\u63d0\u524d\u5efa\u7acb\u591a\u5c64\u9632\u7dda\u3002",
       bossRoar: "Boss \u5486\u54ee\uff01",
+      bossShell: "\u6676\u6bbc\u5408\u8d77\uff01",
+      bossShellOpen: "\u6676\u6bbc\u6253\u958b\uff01",
+      bossBurrow: "\u6e96\u5099\u63db\u7dda\uff01",
+      bossRush: "\u885d\u523a\u8981\u4f86\u4e86\uff01",
+      bossGale: "\u75be\u98a8\u63a8\u9032\uff01",
+      bossMoon: "\u6708\u5149\u8108\u885d\uff01",
+      healerPulse: "\u7642\u7652",
+      thiefPulse: "-12 \u967d\u5149",
       fast: "\u5feb\u901f\u91ce\u7378",
       shield: "\u91cd\u7532\u91ce\u7378",
       swarm: "\u591c\u665a\u7fa4\u8972",
@@ -300,12 +328,21 @@
     normal: "../../assets/animal-guard-beast-normal.webp",
     fast: "../../assets/animal-guard-beast-fast.webp",
     shield: "../../assets/animal-guard-beast-shield.webp",
+    healer: "../../assets/animal-guard-beast-normal.webp",
+    burrow: "../../assets/animal-guard-beast-fast.webp",
+    thief: "../../assets/animal-guard-beast-shield.webp",
     boss: "../../assets/animal-guard-beast-boss.webp",
+    bossRhino: "../../assets/animal-guard-beast-boss.webp",
+    bossTortoise: "../../assets/animal-guard-yard-boss-prism-shell-tortoise.webp",
+    bossBadger: "../../assets/animal-guard-yard-boss-burrow-badger-chief.webp",
+    bossBoar: "../../assets/animal-guard-yard-boss-ember-mane-boar.webp",
+    bossEagle: "../../assets/animal-guard-yard-boss-gale-wing-eagle.webp",
+    bossElk: "../../assets/animal-guard-yard-boss-moon-crown-elk.webp",
   };
   const diamondIcon = "../../assets/weightplay-diamond.svg?v=20260704-blue-diamond1";
   const heartIcon = "../../assets/weightplay-heart.svg";
   const impactFxAsset = "../../assets/animal-guard-beast-impact-fx.webp";
-  const masteryMilestones = new Map([[3, 30], [6, 55], [8, 90]]);
+  const masteryMilestones = new Map([[5, 45], [15, 120], [30, 260]]);
 
   const projectileAssets = {
     cat: "../../assets/animal-guard-projectile-seed.svg",
@@ -313,16 +350,69 @@
     fox: "../../assets/animal-guard-projectile-leaf.svg",
   };
 
-  const stages = [
-    { titleKey: "basic", planKey: "stagePlan1", theme: "sunny", energy: 155, hp: 4, rows: 5, cols: 9, total: 9, interval: 2850, zombies: [{ type: "normal", hp: 82, speed: 8.2, damage: 12 }] },
-    { titleKey: "fast", planKey: "stagePlan2", theme: "sunset", energy: 170, hp: 4, rows: 5, cols: 9, total: 12, interval: 2600, zombies: [{ type: "normal", hp: 95, speed: 9.2, damage: 13 }, { type: "fast", hp: 70, speed: 14.4, damage: 10 }] },
-    { titleKey: "shield", planKey: "stagePlan3", theme: "rain", energy: 185, hp: 4, rows: 5, cols: 9, total: 15, interval: 2380, zombies: [{ type: "normal", hp: 108, speed: 9.6, damage: 15 }, { type: "fast", hp: 82, speed: 14.8, damage: 12 }, { type: "shield", hp: 170, speed: 7.2, damage: 20 }] },
-    { titleKey: "swarm", planKey: "stagePlan4", theme: "swamp", energy: 205, hp: 5, rows: 5, cols: 9, total: 18, interval: 2180, zombies: [{ type: "normal", hp: 118, speed: 10.4, damage: 15 }, { type: "fast", hp: 90, speed: 16.2, damage: 13 }, { type: "shield", hp: 190, speed: 7.8, damage: 21 }] },
-    { titleKey: "boss", planKey: "stagePlan5", theme: "boss", energy: 230, hp: 5, rows: 5, cols: 9, total: 21, interval: 2080, zombies: [{ type: "normal", hp: 128, speed: 10.6, damage: 16 }, { type: "fast", hp: 98, speed: 16.8, damage: 14 }, { type: "shield", hp: 210, speed: 8, damage: 22 }], plan: [{ row: 2, type: "normal" }, { row: 1, type: "fast" }, { row: 3, type: "fast" }, { row: 0, type: "shield" }, { row: 4, type: "shield" }, { row: 2, type: "normal" }], boss: { type: "boss", hp: 650, speed: 4.8, damage: 34 } },
-    { titleKey: "crossfire", planKey: "stagePlan6", theme: "sunset", energy: 245, hp: 5, rows: 5, cols: 9, total: 24, interval: 1960, zombies: [{ type: "normal", hp: 142, speed: 11, damage: 17 }, { type: "fast", hp: 108, speed: 17.4, damage: 15 }, { type: "shield", hp: 228, speed: 8.3, damage: 23 }], plan: [{ row: 0, type: "fast" }, { row: 4, type: "fast" }, { row: 1, type: "normal" }, { row: 3, type: "normal" }, { row: 2, type: "shield" }, { row: 0, type: "normal" }, { row: 4, type: "shield" }, { row: 2, type: "fast" }] },
-    { titleKey: "tankTrial", planKey: "stagePlan7", theme: "rain", energy: 260, hp: 6, rows: 5, cols: 9, total: 26, interval: 1880, zombies: [{ type: "normal", hp: 154, speed: 11.4, damage: 18 }, { type: "shield", hp: 270, speed: 8.3, damage: 26 }, { type: "shield", hp: 300, speed: 7.3, damage: 29 }], plan: [{ row: 2, type: "shield" }, { row: 1, type: "normal" }, { row: 3, type: "shield" }, { row: 0, type: "normal" }, { row: 4, type: "shield" }, { row: 2, type: "shield" }, { row: 1, type: "shield" }, { row: 3, type: "normal" }] },
-    { titleKey: "grandBoss", planKey: "stagePlan8", theme: "boss", energy: 285, hp: 6, rows: 5, cols: 9, total: 28, interval: 1800, zombies: [{ type: "normal", hp: 168, speed: 11.8, damage: 19 }, { type: "fast", hp: 122, speed: 18.2, damage: 16 }, { type: "shield", hp: 300, speed: 8.6, damage: 30 }], plan: [{ row: 2, type: "shield" }, { row: 0, type: "fast" }, { row: 4, type: "fast" }, { row: 1, type: "normal" }, { row: 3, type: "normal" }, { row: 2, type: "shield" }, { row: 0, type: "shield" }, { row: 4, type: "shield" }, { row: 1, type: "fast" }, { row: 3, type: "fast" }], boss: { type: "boss", hp: 1020, speed: 5.1, damage: 42 } },
+  const stageBlueprints = [
+    ["First Sun", "\u521d\u967d\u8349\u5730", "Learn Cat range before the first quick beast arrives.", "\u5148\u8a8d\u8b58\u8c93\u9a0e\u58eb\u5c04\u7a0b\uff0c\u518d\u64cb\u4f4f\u7b2c\u4e00\u96bb\u5feb\u7378\u3002", ["normal"]],
+    ["Two-Lane Footprints", "\u96d9\u8def\u8173\u5370", "Cover the two marked lanes instead of filling one row.", "\u540c\u6642\u5b88\u5169\u689d\u9810\u544a\u8def\u7dda\uff0c\u4e0d\u8981\u53ea\u64e0\u4e00\u8def\u3002", ["normal", "fast"]],
+    ["Shield in the Clover", "\u82dc\u84ff\u76fe\u5f71", "Put a Dog in front and ranged guards behind it.", "\u72d7\u6230\u58eb\u653e\u524d\u9762\uff0c\u9060\u7a0b\u5b88\u885b\u653e\u5f8c\u9762\u3002", ["normal", "shield"]],
+    ["Dusk Dash", "\u9ec3\u660f\u5feb\u8dd1", "Watch the lane warning and prepare before fast beasts enter.", "\u770b\u6e05\u8def\u7dda\u9810\u8b66\uff0c\u5feb\u7378\u51fa\u73fe\u524d\u5148\u5e03\u9632\u3002", ["fast", "shield"]],
+    ["Moss Horn Gate", "\u82d4\u89d2\u5927\u9580", "Moss Horn Rhino roars; split guards across front and back positions.", "\u82d4\u89d2\u7280\u725b\u6703\u5486\u54ee\uff0c\u524d\u5f8c\u5169\u5c64\u90fd\u8981\u6709\u5b88\u885b\u3002", ["normal", "shield"]],
+    ["Healing Leaves", "\u7642\u7652\u8449\u5f91", "Focus the healer before it restores the beast ahead.", "\u5148\u96c6\u706b\u7642\u7652\u7378\uff0c\u5225\u8b93\u5b83\u56de\u5fa9\u524d\u65b9\u91ce\u7378\u3002", ["normal", "healer"]],
+    ["Patient Shield", "\u8010\u5fc3\u7834\u76fe", "Layer Cat shots behind a Dog while the healer is exposed.", "\u7528\u72d7\u6230\u58eb\u64cb\u4f4f\uff0c\u8c93\u9a0e\u58eb\u5728\u5f8c\u65b9\u96c6\u706b\u7642\u7652\u7378\u3002", ["shield", "healer"]],
+    ["Rainy Recovery", "\u96e8\u4e2d\u56de\u5fa9", "Owl slow gives time to finish healers between shield waves.", "\u8c93\u982d\u9df9\u6e1b\u901f\u53ef\u722d\u53d6\u6642\u9593\uff0c\u8d95\u5728\u76fe\u7378\u9593\u96d9\u89e3\u6c7a\u7642\u7652\u7378\u3002", ["fast", "healer", "shield"]],
+    ["Prism Procession", "\u68f1\u93e1\u968a\u4f0d", "Save sun for two complete lanes rather than many weak guards.", "\u4fdd\u7559\u967d\u5149\u5b8c\u6210\u5169\u689d\u9632\u7dda\uff0c\u4e0d\u8981\u5230\u8655\u653e\u5f31\u5c0f\u5b88\u885b\u3002", ["healer", "shield", "fast"]],
+    ["Prism Shell Court", "\u6676\u6bbc\u4e4b\u5ead", "The tortoise closes its shell; save burst damage for the open window.", "\u6676\u6bbc\u9678\u9f9c\u6703\u5408\u4e0a\u5916\u6bbc\uff0c\u7b49\u5b83\u6253\u958b\u518d\u96c6\u4e2d\u8f38\u51fa\u3002", ["healer", "shield"]],
+    ["Loose Soil", "\u9b06\u8edf\u571f\u5f91", "A burrower warns before changing one lane up or down.", "\u947d\u5730\u7378\u6703\u9810\u8b66\u5f8c\u4e0a\u4e0b\u63db\u7dda\uff0c\u76f8\u9130\u8def\u4e5f\u8981\u5e03\u9632\u3002", ["normal", "burrow"]],
+    ["Crossed Tunnels", "\u4ea4\u932f\u5730\u9053", "Use Fox or spread ranged guards across neighboring lanes.", "\u7528\u72d0\u72f8\u8de8\u7dda\u652f\u63f4\uff0c\u6216\u628a\u9060\u7a0b\u5b88\u885b\u5206\u6563\u5230\u76f8\u9130\u8def\u3002", ["burrow", "fast"]],
+    ["Burrow and Shield", "\u947d\u5730\u8207\u76fe", "Do not let one blocker carry the whole center lane.", "\u4e0d\u8981\u53ea\u9760\u4e00\u96bb\u72d7\u6230\u58eb\u5b88\u6574\u689d\u4e2d\u8def\u3002", ["burrow", "shield"]],
+    ["Underleaf Ambush", "\u8449\u5e95\u5947\u8972", "Read the warning icon; a burrower may leave its starting lane.", "\u770b\u6e05\u9810\u8b66\u5716\u793a\uff0c\u947d\u5730\u7378\u4e0d\u4e00\u5b9a\u7559\u5728\u539f\u8def\u3002", ["burrow", "healer", "fast"]],
+    ["Badger Tunnel Hall", "\u737e\738b\u5730\u9053", "The chief changes lanes twice; keep the middle three lanes ready.", "\u737e\738b\u6703\u5169\u6b21\u63db\u7dda\uff0c\u4e2d\u9593\u4e09\u8def\u90fd\u8981\u4fdd\u7559\u9632\u5b88\u3002", ["burrow", "shield"]],
+    ["Empty Sun Pouch", "\u7a7a\u967d\u5149\u888b", "Stop sun thieves before their pouch glows and removes 12 sun.", "\u967d\u5149\u76dc\u7684\u888b\u5b50\u767c\u4eae\u524d\u64cb\u4f4f\u5b83\uff0c\u5426\u5247\u6703\u5931\u53bb 12 \u9ede\u967d\u5149\u3002", ["normal", "thief"]],
+    ["Guard the Harvest", "\u5b88\u4f4f\u6536\u6210", "Collect drops promptly and spend before a thief can take them.", "\u53ca\u6642\u6536\u967d\u5149\u4e26\u5148\u82b1\u5728\u95dc\u9375\u5b88\u885b\u4e0a\u3002", ["thief", "fast"]],
+    ["Hot Footprints", "\u71b1\u6c23\u8173\u5370", "Block thieves while Owl slows the fast escort.", "\u72d7\u6230\u58eb\u64cb\u76dc\u7378\uff0c\u8c93\u982d\u9df9\u62d6\u6162\u5feb\u901f\u8b77\u885b\u3002", ["thief", "fast", "shield"]],
+    ["Ember Crossing", "\u9918\u71fc\u4ea4\u53c9\u53e3", "Keep a spare blocker for the lane marked by the rush warning.", "\u70ba\u885d\u523a\u9810\u8b66\u7684\u8def\u7dda\u4fdd\u7559\u4e00\u96bb\u64cb\u8def\u5b88\u885b\u3002", ["thief", "burrow", "fast"]],
+    ["Ember Mane Arena", "\u71fc\u9b03\u7af6\u6280\u5834", "The boar announces a rush; a Dog absorbs it while ranged guards fire.", "\u71fc\u9b03\u91ce\u8c6c\u6703\u9810\u544a\u885d\u523a\uff0c\u7528\u72d7\u6230\u58eb\u627f\u53d7\uff0c\u5f8c\u6392\u96c6\u706b\u3002", ["thief", "fast"]],
+    ["Wind-Tossed Seeds", "\u98a8\u4e2d\u7a2e\u5b50", "Fast beasts arrive in alternating outer lanes.", "\u5feb\u7378\u6703\u5728\u5169\u689d\u5916\u8def\u4ea4\u66ff\u51fa\u73fe\u3002", ["fast", "normal"]],
+    ["Feather and Shell", "\u98db\u7fbd\u8207\u786c\u6bbc", "Combine Owl slow with Cat pierce against packed shields.", "\u7528\u8c93\u982d\u9df9\u6e1b\u901f\u642d\u914d\u8c93\u9a0e\u58eb\u7a7f\u900f\u5c04\u64ca\u3002", ["shield", "fast", "healer"]],
+    ["Gusty Tunnels", "\u9663\u98a8\u5730\u9053", "Burrowers and fast beasts test neighboring-lane coverage.", "\u947d\u5730\u7378\u8207\u5feb\u7378\u6703\u6aa2\u9a57\u76f8\u9130\u8def\u652f\u63f4\u3002", ["burrow", "fast"]],
+    ["High Perch Alarm", "\u9ad8\u68f2\u8b66\u5831", "Build from the middle outward before the gale arrives.", "\u75be\u98a8\u4f86\u81e8\u524d\uff0c\u5f9e\u4e2d\u9593\u5411\u5916\u5efa\u7acb\u9632\u7dda\u3002", ["burrow", "thief", "shield"]],
+    ["Gale Wing Summit", "\u75be\u7ffc\u5c71\u9802", "The eagle pushes guards' attack timing back; stagger strong guards across lanes.", "\u75be\u7ffc\u9df9\u6703\u5ef6\u5f8c\u5b88\u885b\u653b\u64ca\uff0c\u5f37\u529b\u5b88\u885b\u8981\u5206\u6563\u914d\u7f6e\u3002", ["fast", "shield"]],
+    ["Moonlit Mix", "\u6708\u4e0b\u6df7\u7de8", "Identify the icon first: healer, thief, or burrower needs a different answer.", "\u5148\u8fa8\u8a8d\u5716\u793a\uff1a\u7642\u7652\u3001\u5077\u967d\u5149\u8207\u947d\u5730\u90fd\u6709\u4e0d\u540c\u89e3\u6cd5\u3002", ["healer", "thief", "burrow"]],
+    ["Three Quiet Lanes", "\u4e09\u689d\u975c\u8def", "Prepare three complete defenses before the mixed escort arrives.", "\u6df7\u5408\u8b77\u885b\u5230\u4f86\u524d\uff0c\u5148\u5b8c\u6210\u4e09\u689d\u9632\u7dda\u3002", ["shield", "healer", "fast"]],
+    ["Starlight Switch", "\u661f\u5149\u63db\u7dda", "Expect burrowers to move while thieves pressure your sun reserve.", "\u947d\u5730\u7378\u6703\u63db\u7dda\uff0c\u967d\u5149\u76dc\u540c\u6642\u58d3\u7e2e\u8cc7\u6e90\u3002", ["burrow", "thief", "fast"]],
+    ["Crown Approach", "\u738b\u51a0\u4e4b\u8def", "Save one full lane of sun for the final guardian's moon pulse.", "\u70ba\u6700\u7d42\u5b88\u8b77\u8005\u7684\u6708\u5149\u8108\u885d\u4fdd\u7559\u4e00\u689d\u5b8c\u6574\u9632\u7dda\u7684\u967d\u5149\u3002", ["healer", "shield", "thief"]],
+    ["Moon Crown Garden", "\u6708\u51a0\u82b1\u5712", "The elk delays every guard and restores itself with a moon pulse; use every guard role.", "\u6708\u51a0\u9e7f\u7684\u6708\u5149\u8108\u885d\u6703\u5ef6\u5f8c\u5168\u9ad4\u5b88\u885b\u4e26\u56de\u5fa9\u81ea\u5df1\uff0c\u56db\u7a2e\u5b88\u885b\u90fd\u6709\u7528\u9014\u3002", ["healer", "burrow", "thief", "shield"]],
   ];
+
+  const bossCheckpoints = {
+    5: { id: "bossRhino", mechanic: "roar", hp: 700, speed: 4.8, damage: 34 },
+    10: { id: "bossTortoise", mechanic: "shell", hp: 980, speed: 4.3, damage: 36 },
+    15: { id: "bossBadger", mechanic: "burrow", hp: 1180, speed: 5.2, damage: 39 },
+    20: { id: "bossBoar", mechanic: "rush", hp: 1420, speed: 5.4, damage: 43 },
+    25: { id: "bossEagle", mechanic: "gale", hp: 1680, speed: 5.8, damage: 46 },
+    30: { id: "bossElk", mechanic: "moon", hp: 2050, speed: 5.6, damage: 50 },
+  };
+
+  const enemyBase = {
+    normal: { hp: 82, speed: 8.4, damage: 12 }, fast: { hp: 68, speed: 14.6, damage: 10 },
+    shield: { hp: 160, speed: 7.2, damage: 19 }, healer: { hp: 100, speed: 7.8, damage: 11, ability: "heal" },
+    burrow: { hp: 112, speed: 10.2, damage: 14, ability: "burrow" }, thief: { hp: 122, speed: 10.8, damage: 13, ability: "steal" },
+  };
+
+  const stages = stageBlueprints.map(([en, zh, planEn, planZh, threats], index) => {
+    const stageNo = index + 1;
+    const region = Math.floor(index / 5);
+    const scale = 1 + index * 0.055;
+    const zombies = threats.map((type) => ({ type, ...enemyBase[type], hp: Math.round(enemyBase[type].hp * scale), damage: Math.round(enemyBase[type].damage * (1 + index * 0.025)) }));
+    const checkpoint = bossCheckpoints[stageNo];
+    return {
+      title: { en, "zh-Hant": zh }, plan: { en: planEn, "zh-Hant": planZh },
+      theme: ["sunny", "rain", "swamp", "sunset", "boss", "boss"][region], energy: 155 + region * 18 + (index % 5) * 8,
+      hp: 4 + Math.floor(index / 10), rows: 5, cols: 9, total: 9 + region * 3 + (index % 5) * 2,
+      interval: Math.max(1780, 2820 - index * 36), zombies,
+      planRows: stageNo <= 2 ? [0, 0, 0, 1, 3, 2, 4, 0, 0, 2] : [2, 1, 3, 0, 4, 2, 0, 4, 1, 3],
+      boss: checkpoint ? { type: checkpoint.id, isBoss: true, ...checkpoint } : null,
+    };
+  });
 
   const $ = (id) => document.getElementById(id);
   const nodes = {
@@ -433,6 +523,10 @@
     for (const part of parts) value = value?.[part];
     if (typeof value !== "string") value = key;
     return Object.entries(data || {}).reduce((out, [name, item]) => out.replaceAll(`{${name}}`, item), value);
+  }
+
+  function stageCopy(stage, field) {
+    return stage?.[field]?.[locale] || stage?.[field]?.en || "";
   }
 
   function clamp(value, min, max) {
@@ -731,7 +825,7 @@
       button.dataset.stageIndex = String(index);
       if (locked) button.classList.add("locked");
       button.setAttribute("aria-disabled", String(locked));
-      button.setAttribute("aria-label", `${t("stage", { n: stageNo })}. ${t(stage.titleKey)}${locked ? `. ${t("locked")}` : ""}`);
+      button.setAttribute("aria-label", `${t("stage", { n: stageNo })}. ${stageCopy(stage, "title")}${locked ? `. ${t("locked")}` : ""}`);
       if (index === selectedStageIndex) button.classList.add("selected");
       const stageRecord = typeof stageRecords[String(stageNo)] === "object" && stageRecords[String(stageNo)] ? stageRecords[String(stageNo)] : {};
       const cleared = Boolean(stageRecord.cleared) || stageNo <= legacyBestStage;
@@ -747,8 +841,8 @@
       button.innerHTML = `
         <b class="stage-animal">${animalSprite(iconUnit)}</b>
         <strong>${t("stage", { n: stageNo })}</strong>
-        <span>${t(stage.titleKey)}</span>
-        ${stage.planKey ? `<small class="stage-plan">${t(stage.planKey)}</small>` : ""}
+        <span>${stageCopy(stage, "title")}</span>
+        <small class="stage-plan">${stageCopy(stage, "plan")}</small>
         ${progressMeta}
         ${stageThreatPreview(stage)}
       `;
@@ -868,6 +962,9 @@
       ["normal", "threatNormal", "beastNormalDesc"],
       ["fast", "threatFast", "beastFastDesc"],
       ["shield", "threatShield", "beastShieldDesc"],
+      ["healer", "threatHealer", "beastHealerDesc"],
+      ["burrow", "threatBurrow", "beastBurrowDesc"],
+      ["thief", "threatThief", "beastThiefDesc"],
       ["boss", "threatBoss", "beastBossDesc"],
     ];
     nodes.beastGuide.innerHTML = `
@@ -925,7 +1022,7 @@
 
   function stageThreatPreview(stage) {
     const types = [...new Set(stage.zombies.map((item) => item.type))];
-    if (stage.boss) types.push("boss");
+    if (stage.boss) types.unshift(stage.boss.type);
     const icons = types.slice(0, 4).map((type) => {
       const label = stageThreatLabel(type);
       return `<span class="stage-threat" title="${label}">${zombieSprite(type)}<em>${label}</em></span>`;
@@ -938,6 +1035,15 @@
       normal: "threatNormal",
       fast: "threatFast",
       shield: "threatShield",
+      healer: "threatHealer",
+      burrow: "threatBurrow",
+      thief: "threatThief",
+      bossRhino: "threatBoss",
+      bossTortoise: "threatBoss",
+      bossBadger: "threatBoss",
+      bossBoar: "threatBoss",
+      bossEagle: "threatBoss",
+      bossElk: "threatBoss",
       boss: "threatBoss",
     }[type] || "threatNormal";
     return t(key);
@@ -1273,6 +1379,8 @@
     const zombie = {
       kind: "zombie",
       type: data.type,
+      isBoss: Boolean(data.isBoss),
+      mechanic: data.mechanic || data.ability || "",
       row,
       x: 1.04,
       hp: data.hp,
@@ -1280,12 +1388,15 @@
       speed: data.speed / 100000,
       damage: data.damage,
       biteCooldown: 0,
-      bossRoarCooldown: data.type === "boss" ? 1800 : 0,
+      abilityCooldown: data.isBoss ? 2200 : data.ability === "heal" ? 3000 : data.ability === "burrow" ? 3600 : 0,
+      bossRoarCooldown: data.isBoss ? 1800 : 0,
+      shellClosed: false,
+      rushMs: 0,
       warned: false,
       el: document.createElement("div"),
       hpEl: document.createElement("span"),
     };
-    zombie.el.className = `zombie ${data.type}`;
+    zombie.el.className = `zombie ${data.type}${data.isBoss ? " is-boss" : ""}`;
     zombie.el.innerHTML = zombieSprite(data.type);
     zombie.hpEl.className = "hp-bar zombie-hp";
     zombie.hpEl.innerHTML = "<i></i>";
@@ -1414,14 +1525,15 @@
   }
 
   function applyDamage(target, damage, impactType, impactY) {
+    if (target.shellClosed) damage = Math.max(1, Math.round(damage * 0.22));
     target.hp -= damage;
     pulseClass(target.el, "is-hit");
     spawnImpact(target.x, impactY, impactType);
     showBoardText(`-${damage}`, target.x, Math.max(0.06, impactY - 0.08));
     if (target.hp <= 0 && !target.rewarded) {
       target.rewarded = true;
-      const coinGain = target.type === "boss" ? 30 : target.type === "shield" ? 8 : target.type === "fast" ? 5 : 6;
-      const energyGain = target.type === "boss" ? 24 : target.type === "shield" ? 9 : target.type === "fast" ? 6 : 5;
+      const coinGain = target.isBoss ? 30 : target.type === "shield" ? 8 : target.type === "fast" ? 5 : 6;
+      const energyGain = target.isBoss ? 24 : target.type === "shield" ? 9 : target.type === "fast" ? 6 : 5;
       coinsEarned += coinGain;
       energy += energyGain;
       showBoardText(`+${coinGain}`, target.x, impactY + 0.02, "coin-pop");
@@ -1530,7 +1642,15 @@
       zombie.slowMs = Math.max(0, (Number(zombie.slowMs) || 0) - dt);
       if (zombie.slowMs <= 0) zombie.slowFactor = 1;
       zombie.el.classList.toggle("is-slowed", zombie.slowMs > 0);
-      if (zombie.type === "boss") updateBossRoar(zombie, dt);
+      updateEnemyAbility(zombie, dt);
+      if ((zombie.rushChargeMs || 0) > 0) {
+        zombie.rushChargeMs = Math.max(0, zombie.rushChargeMs - dt);
+        if (zombie.rushChargeMs === 0) {
+          zombie.el.classList.remove("is-burrow-warning");
+          zombie.rushMs = 1050;
+          pulseClass(zombie.el, "is-rushing", 1050);
+        }
+      }
       const blocking = entities.find((item) => item.kind === "guard" && item.row === zombie.row && Math.abs(cellCenterX(item.col) - zombie.x) < 0.065);
       if (blocking) {
         zombie.biteCooldown -= dt;
@@ -1543,7 +1663,8 @@
           playSound("hit");
         }
       } else {
-        zombie.x -= zombie.speed * dt * (zombie.slowFactor || 1);
+        zombie.rushMs = Math.max(0, (zombie.rushMs || 0) - dt);
+        zombie.x -= zombie.speed * dt * (zombie.slowFactor || 1) * (zombie.rushMs > 0 ? 2.35 : 1);
       }
       zombie.el.classList.toggle("near-home", zombie.x < 0.24);
       if (!zombie.warned && zombie.x < 0.26) {
@@ -1558,6 +1679,80 @@
       }
       updateEntityElement(zombie);
     });
+  }
+
+  function updateEnemyAbility(zombie, dt) {
+    if (zombie.dead) return;
+    if (zombie.isBoss) return updateBossAbility(zombie, dt);
+    if (zombie.mechanic === "heal") {
+      zombie.abilityCooldown -= dt;
+      if (zombie.abilityCooldown <= 0) {
+        const target = entities
+          .filter((item) => item.kind === "zombie" && item !== zombie && !item.dead && item.row === zombie.row && item.x < zombie.x && item.hp < item.maxHp)
+          .sort((a, b) => b.x - a.x)[0];
+        if (target) {
+          target.hp = Math.min(target.maxHp, target.hp + Math.max(18, Math.round(target.maxHp * 0.12)));
+          pulseClass(zombie.el, "is-casting", 520);
+          showBoardText(t("healerPulse"), zombie.x, Math.max(0.08, laneProjectileY(zombie.row) - 0.1), "heal-pop");
+        }
+        zombie.abilityCooldown = 3400;
+      }
+    } else if (zombie.mechanic === "burrow") {
+      zombie.abilityCooldown -= dt;
+      if (zombie.abilityCooldown < 700 && !zombie.burrowWarned) {
+        zombie.burrowWarned = true;
+        pulseClass(zombie.el, "is-burrow-warning", 650);
+      }
+      if (zombie.abilityCooldown <= 0) {
+        const direction = zombie.row === 0 ? 1 : zombie.row === stages[currentStage].rows - 1 ? -1 : (Math.random() < 0.5 ? -1 : 1);
+        zombie.row = clamp(zombie.row + direction, 0, stages[currentStage].rows - 1);
+        zombie.burrowWarned = false;
+        zombie.abilityCooldown = 4400;
+        pulseClass(zombie.el, "is-entering", 480);
+      }
+    } else if (zombie.mechanic === "steal" && !zombie.stoleSun && zombie.x < 0.72) {
+      zombie.stoleSun = true;
+      energy = Math.max(0, energy - 12);
+      pulseClass(zombie.el, "is-casting", 520);
+      showBoardText(t("thiefPulse"), zombie.x, Math.max(0.08, laneProjectileY(zombie.row) - 0.1), "thief-pop");
+    }
+  }
+
+  function updateBossAbility(zombie, dt) {
+    if (zombie.mechanic === "roar") return updateBossRoar(zombie, dt);
+    zombie.abilityCooldown -= dt;
+    if (zombie.abilityCooldown > 0 || zombie.x <= 0.1) return;
+    if (zombie.mechanic === "shell") {
+      zombie.shellClosed = !zombie.shellClosed;
+      zombie.el.classList.toggle("is-shell-closed", zombie.shellClosed);
+      showBoardText(t(zombie.shellClosed ? "bossShell" : "bossShellOpen"), zombie.x, Math.max(0.08, laneProjectileY(zombie.row) - 0.12), "roar-pop");
+      zombie.abilityCooldown = zombie.shellClosed ? 1900 : 2700;
+      return;
+    }
+    if (zombie.mechanic === "burrow") {
+      showBoardText(t("bossBurrow"), zombie.x, Math.max(0.08, laneProjectileY(zombie.row) - 0.12), "roar-pop");
+      zombie.row = (zombie.row + (zombie.row >= 3 ? -2 : 2)) % stages[currentStage].rows;
+      pulseClass(zombie.el, "is-entering", 520);
+      zombie.abilityCooldown = 4200;
+      return;
+    }
+    if (zombie.mechanic === "rush") {
+      showBoardText(t("bossRush"), zombie.x, Math.max(0.08, laneProjectileY(zombie.row) - 0.12), "roar-pop");
+      zombie.rushChargeMs = 700;
+      zombie.el.classList.add("is-burrow-warning");
+      zombie.abilityCooldown = 5000;
+      return;
+    }
+    const guards = entities.filter((item) => item.kind === "guard" && !item.dead && (zombie.mechanic === "moon" || Math.abs(item.row - zombie.row) <= 1));
+    guards.forEach((guard) => {
+      guard.cooldown += zombie.mechanic === "moon" ? 1150 : 850;
+      guard.roarSlowMs = Math.max(guard.roarSlowMs || 0, zombie.mechanic === "moon" ? 1400 : 700);
+      pulseClass(guard.el, "is-roar-hit", 520);
+    });
+    if (zombie.mechanic === "moon") zombie.hp = Math.min(zombie.maxHp, zombie.hp + Math.round(zombie.maxHp * 0.045));
+    showBoardText(t(zombie.mechanic === "moon" ? "bossMoon" : "bossGale"), zombie.x, Math.max(0.08, laneProjectileY(zombie.row) - 0.12), "roar-pop");
+    pulseClass(zombie.el, "is-roaring", 620);
+    zombie.abilityCooldown = zombie.mechanic === "moon" ? 5200 : 4600;
   }
 
   function updateBossRoar(zombie, dt) {
@@ -1677,8 +1872,8 @@
   function makeSpawnPlan(nextSpawnNumber = spawned + 1) {
     const stage = stages[currentStage];
     if (!stage || nextSpawnNumber > stage.total) return null;
-    const scripted = Array.isArray(stage.plan) && stage.plan.length > 0
-      ? stage.plan[(nextSpawnNumber - 1) % stage.plan.length]
+    const scripted = Array.isArray(stage.planRows) && stage.planRows.length > 0
+      ? { row: stage.planRows[(nextSpawnNumber - 1) % stage.planRows.length] }
       : null;
     const data = stage.boss && nextSpawnNumber === stage.total
       ? stage.boss
@@ -1912,7 +2107,17 @@
   nodes.resultStagesBtn.addEventListener("click", showMenu);
   nodes.retryBtn.addEventListener("click", () => startStage(currentStage));
   nodes.nextStageBtn.addEventListener("click", () => startStage(Math.min(currentStage + 1, stages.length - 1)));
-  if (new URLSearchParams(location.search).has("test")) window.__AnimalGuardYardTest = { finish };
+  if (new URLSearchParams(location.search).has("test")) {
+    window.__AnimalGuardYardTest = {
+      finish,
+      campaign: stages.map((stage, index) => ({
+        stage: index + 1,
+        title: stage.title.en,
+        threats: stage.zombies.map((enemy) => enemy.type),
+        boss: stage.boss ? { type: stage.boss.type, mechanic: stage.boss.mechanic, asset: spriteAssets[stage.boss.type] } : null,
+      })),
+    };
+  }
   window.addEventListener("resize", () => {
     boardRect = { width: nodes.yardBoard.clientWidth, height: nodes.yardBoard.clientHeight };
     entities.forEach(updateEntityElement);

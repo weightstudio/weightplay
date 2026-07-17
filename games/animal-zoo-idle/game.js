@@ -74,6 +74,55 @@
 
   const visitorAssets = [ASSETS.visitorMimi, ASSETS.visitorPanko, ASSETS.visitorOtter];
 
+  const challengeCheckpoints = {
+    5: ASSETS.visitorMimi,
+    10: ASSETS.visitorPanko,
+    15: ASSETS.visitorOtter,
+    20: ASSETS.keeper,
+    25: ASSETS.penguin,
+    30: ASSETS.bear,
+  };
+
+  const zooChallenges = [
+    ["First Ticket Morning", "\u7b2c\u4e00\u500b\u552e\u7968\u65e9\u6668", "Collect a small ticket box and learn where park income waits.", "\u6536\u53d6\u7b2c\u4e00\u7bb1\u9580\u7968\uff0c\u8a8d\u8b58\u5712\u5340\u6536\u5165\u7684\u4f4d\u7f6e\u3002", [["collected", 12]]],
+    ["Fresh Grass Route", "\u65b0\u9bae\u8349\u5730\u8def\u7dda", "Choose Tidy Habitat once and keep happiness above 78.", "\u9078\u64c7\u4e00\u6b21\u6574\u7406\u68f2\u5730\uff0c\u4e26\u628a\u5feb\u6a02\u5ea6\u7dad\u6301\u5728 78 \u4ee5\u4e0a\u3002", [["habitat", 1], ["happiness", 78]]],
+    ["Enrichment Basket", "\u8c50\u5bcc\u6d3b\u52d5\u7c43", "Choose Enrichment Time and collect its extra tickets.", "\u9078\u64c7\u8c50\u5bcc\u6d3b\u52d5\uff0c\u518d\u6536\u53d6\u984d\u5916\u9580\u7968\u3002", [["enrichment", 1], ["collected", 18]]],
+    ["A Place for Giraffe", "\u9577\u9838\u9e7f\u7684\u4f4d\u7f6e", "Build or recruit once, then move an animal to a new meadow spot.", "\u5efa\u8a2d\u6216\u62db\u52df\u4e00\u6b21\uff0c\u518d\u628a\u4e00\u96bb\u52d5\u7269\u79fb\u5230\u65b0\u7684\u8349\u5730\u4f4d\u7f6e\u3002", [["built", 1], ["arranged", 1]]],
+    ["Mimi's Welcome Review", "Mimi \u7684\u6b61\u8fce\u8a55\u9451", "Mimi checks tickets, one tidy habitat, and a cheerful park together.", "Mimi \u6703\u540c\u6642\u6aa2\u67e5\u9580\u7968\u3001\u4e00\u6b21\u68f2\u5730\u6574\u7406\u8207\u958b\u5fc3\u5712\u5340\u3002", [["collected", 25], ["habitat", 1], ["happiness", 82]]],
+    ["Two Care Choices", "\u5169\u7a2e\u7167\u9867\u9078\u64c7", "Use both care routes during one challenge.", "\u5728\u540c\u4e00\u6311\u6230\u4e2d\u5404\u4f7f\u7528\u4e00\u6b21\u5169\u7a2e\u7167\u9867\u8def\u7dda\u3002", [["habitat", 1], ["enrichment", 1]]],
+    ["Save the Ticket Box", "\u4fdd\u7559\u7968\u7bb1", "Let tickets remain in the box instead of collecting immediately.", "\u5148\u8b93\u9580\u7968\u7559\u5728\u7968\u7bb1\uff0c\u4e0d\u8981\u7acb\u523b\u6536\u53d6\u3002", [["ticketBox", 24]]],
+    ["Snack Stand Plan", "\u9ede\u5fc3\u4ead\u8a08\u756b", "Upgrade the Snack Stand and collect tickets after the income change.", "\u5347\u7d1a\u9ede\u5fc3\u4ead\uff0c\u518d\u6536\u53d6\u6536\u5165\u63d0\u5347\u5f8c\u7684\u9580\u7968\u3002", [["facility:snackStand", 1], ["collected", 30]]],
+    ["Picnic Crowd", "\u91ce\u9910\u4eba\u6f6e", "Use enrichment twice and keep a full ticket box ready.", "\u9032\u884c\u5169\u6b21\u8c50\u5bcc\u6d3b\u52d5\uff0c\u4e26\u4fdd\u7559\u4e00\u7bb1\u9580\u7968\u3002", [["enrichment", 2], ["ticketBox", 32]]],
+    ["Panko's Picnic Day", "Panko \u7684\u91ce\u9910\u65e5", "Panko wants a Snack Stand, enrichment, and a lively ticket box.", "Panko \u5e0c\u671b\u770b\u5230\u9ede\u5fc3\u4ead\u3001\u8c50\u5bcc\u6d3b\u52d5\u8207\u71b1\u9b27\u7968\u7bb1\u3002", [["facility:snackStand", 1], ["enrichment", 1], ["ticketBox", 40]]],
+    ["View from the Hill", "\u5c71\u4e18\u4e0a\u7684\u98a8\u666f", "Upgrade the View Deck and arrange an animal near a new viewpoint.", "\u5347\u7d1a\u89c0\u666f\u53f0\uff0c\u518d\u91cd\u65b0\u5b89\u6392\u4e00\u96bb\u52d5\u7269\u7684\u4f4d\u7f6e\u3002", [["facility:viewDeck", 1], ["arranged", 1]]],
+    ["Quiet Viewing Hour", "\u5b89\u975c\u89c0\u8cde\u6642\u9593", "Hold happiness at 85 while tickets wait in the box.", "\u628a\u5feb\u6a02\u5ea6\u7dad\u6301\u5728 85\uff0c\u540c\u6642\u8b93\u9580\u7968\u7559\u5728\u7968\u7bb1\u3002", [["happiness", 85], ["ticketBox", 44]]],
+    ["Neighbor Habitats", "\u76f8\u9130\u68f2\u5730", "Welcome three animals and make two layout changes.", "\u6b61\u8fce\u4e09\u96bb\u52d5\u7269\uff0c\u4e26\u9032\u884c\u5169\u6b21\u4f4d\u7f6e\u8abf\u6574\u3002", [["animals", 3], ["arranged", 2]]],
+    ["Balanced Lookout", "\u5e73\u8861\u7684\u89c0\u666f\u53f0", "Combine the View Deck with both care routes.", "\u540c\u6642\u5b8c\u6210\u89c0\u666f\u53f0\u8207\u5169\u7a2e\u7167\u9867\u8def\u7dda\u3002", [["facility:viewDeck", 1], ["habitat", 1], ["enrichment", 1]]],
+    ["Otter's Route Review", "\u6c34\u737a\u7684\u8def\u7dda\u8a55\u9451", "Otter checks the View Deck, animal layout, and park happiness.", "\u6c34\u737a\u6703\u6aa2\u67e5\u89c0\u666f\u53f0\u3001\u52d5\u7269\u4f4d\u7f6e\u8207\u5712\u5340\u5feb\u6a02\u5ea6\u3002", [["facility:viewDeck", 1], ["arranged", 2], ["happiness", 86]]],
+    ["Keeper Tools", "\u4fdd\u80b2\u54e1\u5de5\u5177", "Upgrade the Keeper Post before choosing Tidy Habitat.", "\u5148\u5347\u7d1a\u4fdd\u80b2\u5c0f\u7ad9\uff0c\u518d\u9078\u64c7\u6574\u7406\u68f2\u5730\u3002", [["facility:keeperPost", 1], ["habitat", 1]]],
+    ["Care Before Crowds", "\u4eba\u6f6e\u524d\u7684\u7167\u9867", "Raise happiness first, then collect a larger ticket total.", "\u5148\u63d0\u5347\u5feb\u6a02\u5ea6\uff0c\u518d\u6536\u53d6\u8f03\u591a\u9580\u7968\u3002", [["happiness", 88], ["collected", 55]]],
+    ["Four-Animal Morning", "\u56db\u96bb\u52d5\u7269\u7684\u65e9\u6668", "Welcome four animals and tidy their shared habitat twice.", "\u6b61\u8fce\u56db\u96bb\u52d5\u7269\uff0c\u4e26\u5169\u6b21\u6574\u7406\u5171\u7528\u68f2\u5730\u3002", [["animals", 4], ["habitat", 2]]],
+    ["Tools and Treats", "\u5de5\u5177\u8207\u9ede\u5fc3", "Maintain two facility upgrades and complete one enrichment route.", "\u7dad\u6301\u5169\u7d1a\u8a2d\u65bd\u5347\u7d1a\uff0c\u4e26\u5b8c\u6210\u4e00\u6b21\u8c50\u5bcc\u6d3b\u52d5\u3002", [["facilityTotal", 2], ["enrichment", 1]]],
+    ["Rhino Keeper Audit", "\u7280\u725b\u4fdd\u80b2\u54e1\u7a3d\u6838", "The keeper checks tools, two tidy rounds, and high happiness.", "\u4fdd\u80b2\u54e1\u6703\u6aa2\u67e5\u5de5\u5177\u3001\u5169\u6b21\u68f2\u5730\u6574\u7406\u8207\u9ad8\u5feb\u6a02\u5ea6\u3002", [["facility:keeperPost", 1], ["habitat", 2], ["happiness", 90]]],
+    ["Growing Gate", "\u6210\u9577\u4e2d\u7684\u5927\u9580", "Reach Gate Level 2 and collect after the income boost.", "\u628a\u5927\u9580\u5347\u5230 2 \u7d1a\uff0c\u518d\u6536\u53d6\u52a0\u6210\u5f8c\u7684\u9580\u7968\u3002", [["gate", 2], ["collected", 70]]],
+    ["Five Animal Map", "\u4e94\u96bb\u52d5\u7269\u5730\u5716", "Welcome five animals and rearrange two meadow positions.", "\u6b61\u8fce\u4e94\u96bb\u52d5\u7269\uff0c\u4e26\u91cd\u65b0\u5b89\u6392\u5169\u500b\u8349\u5730\u4f4d\u7f6e\u3002", [["animals", 5], ["arranged", 2]]],
+    ["Three-Facility Choice", "\u4e09\u8a2d\u65bd\u9078\u64c7", "Build three total facility levels in any combination.", "\u4ee5\u4efb\u610f\u7d44\u5408\u5efa\u8a2d\u4e09\u7d1a\u5712\u5340\u8a2d\u65bd\u3002", [["facilityTotal", 3]]],
+    ["Parade Preparation", "\u904a\u884c\u6e96\u5099", "Balance animals, enrichment, and a saved ticket box.", "\u5e73\u8861\u52d5\u7269\u6578\u3001\u8c50\u5bcc\u6d3b\u52d5\u8207\u4fdd\u7559\u7968\u7bb1\u3002", [["animals", 5], ["enrichment", 2], ["ticketBox", 65]]],
+    ["Penguin Parade Day", "\u4f01\u9d5d\u904a\u884c\u65e5", "The parade needs five animals, a stronger gate, and a cheerful crowd.", "\u904a\u884c\u9700\u8981\u4e94\u96bb\u52d5\u7269\u3001\u66f4\u5f37\u5927\u9580\u8207\u958b\u5fc3\u4eba\u6f6e\u3002", [["animals", 5], ["gate", 2], ["happiness", 90]]],
+    ["Festival Budget", "\u6176\u5178\u9810\u7b97", "Collect tickets, then leave a second amount waiting in the box.", "\u5148\u6536\u53d6\u9580\u7968\uff0c\u518d\u8b93\u7b2c\u4e8c\u7b46\u6536\u5165\u7559\u5728\u7968\u7bb1\u3002", [["collected", 80], ["ticketBox", 70]]],
+    ["Whole-Park Care", "\u5168\u5712\u7167\u9867", "Use both care routes twice across a longer session.", "\u5728\u8f03\u9577\u56de\u5408\u4e2d\uff0c\u5169\u7a2e\u7167\u9867\u8def\u7dda\u5404\u4f7f\u7528\u5169\u6b21\u3002", [["habitat", 2], ["enrichment", 2]]],
+    ["Festival Layout", "\u6176\u5178\u914d\u7f6e", "Arrange three animals and maintain three facility levels.", "\u5b89\u6392\u4e09\u6b21\u52d5\u7269\u4f4d\u7f6e\uff0c\u4e26\u7dad\u6301\u4e09\u7d1a\u8a2d\u65bd\u3002", [["arranged", 3], ["facilityTotal", 3]]],
+    ["Final Guest Rehearsal", "\u6700\u7d42\u8cb4\u8cd3\u9810\u6f14", "Prepare animals, happiness, and both care routes before the finale.", "\u6700\u7d42\u8a55\u9451\u524d\uff0c\u6e96\u5099\u52d5\u7269\u6578\u3001\u5feb\u6a02\u5ea6\u8207\u5169\u7a2e\u7167\u9867\u3002", [["animals", 6], ["happiness", 92], ["care", 2]]],
+    ["Grand Safari Festival", "\u91ce\u751f\u6a02\u5712\u5927\u6176\u5178", "The final review combines collection, care, facilities, animals, and happiness.", "\u6700\u7d42\u8a55\u9451\u7d50\u5408\u6536\u7968\u3001\u7167\u9867\u3001\u8a2d\u65bd\u3001\u52d5\u7269\u8207\u5feb\u6a02\u5ea6\u3002", [["collected", 100], ["care", 2], ["facilityTotal", 3], ["animals", 6], ["happiness", 92]]],
+  ].map(([en, zh, planEn, planZh, goals], index) => ({
+    id: index + 1,
+    title: { en, "zh-Hant": zh },
+    plan: { en: planEn, "zh-Hant": planZh },
+    goals: goals.map(([type, target]) => ({ type, target })),
+    checkpointAsset: challengeCheckpoints[index + 1] || "",
+    reward: 90 + index * 35 + (challengeCheckpoints[index + 1] ? 180 : 0),
+  }));
+
   const text = {
     en: {
       title: "Animal Zoo Idle",
@@ -85,6 +134,31 @@
       menuTitle: "Build a growing animal park.",
       menuHint: "Welcome visitors, collect tickets, upgrade the zoo gate, and recruit more animals to grow your park.",
       start: "Open Park",
+      chooseChallenge: "Choose Park Challenge",
+      challenge: "Challenge {n}",
+      challengeLocked: "Locked",
+      challengeCleared: "Cleared",
+      challengeCheckpoint: "Park Review",
+      challengeReward: "+{coins} coins",
+      nextChallenge: "Next Challenge",
+      backToChallenges: "Challenges",
+      challengeCompleteTitle: "Park challenge complete!",
+      challengeCompleteText: "Challenge {n} is complete. The next park plan is ready.",
+      challengeFinalText: "All 30 park challenges are complete. The Grand Safari Festival is open!",
+      goalCollected: "Collect {n} tickets",
+      goalCare: "Complete {n} care choices",
+      goalHabitat: "Tidy Habitat {n} time",
+      goalEnrichment: "Enrichment Time {n} time",
+      goalBuilt: "Build or recruit {n} time",
+      goalArranged: "Move animals {n} time",
+      goalHappiness: "Reach {n}% happiness",
+      goalAnimals: "Welcome {n} animals",
+      goalGate: "Reach Gate Lv.{n}",
+      goalTicketBox: "Keep {n} tickets in the box",
+      goalFacilityTotal: "Build {n} facility levels",
+      goalFacilitySnackStand: "Snack Stand Lv.{n}",
+      goalFacilityViewDeck: "View Deck Lv.{n}",
+      goalFacilityKeeperPost: "Keeper Post Lv.{n}",
       coins: "Coins",
       tickets: "Ticket Box",
       visitors: "Visitors",
@@ -235,6 +309,31 @@
     menuTitle: "\u5efa\u8a2d\u4e00\u5ea7\u6703\u6210\u9577\u7684\u52d5\u7269\u6a02\u5712\u3002",
     menuHint: "\u6b61\u8fce\u53c3\u89c0\u8005\u3001\u6536\u96c6\u9580\u7968\u6536\u5165\u3001\u5347\u7d1a\u5927\u9580\uff0c\u4e26\u62db\u52df\u66f4\u591a\u52d5\u7269\u4f86\u64f4\u5efa\u6a02\u5712\u3002",
     start: "\u958b\u5712",
+    chooseChallenge: "\u9078\u64c7\u5712\u5340\u6311\u6230",
+    challenge: "\u7b2c {n} \u95dc",
+    challengeLocked: "\u5c1a\u672a\u89e3\u9396",
+    challengeCleared: "\u5df2\u5b8c\u6210",
+    challengeCheckpoint: "\u5712\u5340\u8a55\u9451",
+    challengeReward: "+{coins} \u91d1\u5e63",
+    nextChallenge: "\u4e0b\u4e00\u95dc",
+    backToChallenges: "\u95dc\u5361",
+    challengeCompleteTitle: "\u5712\u5340\u6311\u6230\u5b8c\u6210\uff01",
+    challengeCompleteText: "\u7b2c {n} \u95dc\u5df2\u5b8c\u6210\uff0c\u4e0b\u4e00\u4efd\u5712\u5340\u8a08\u756b\u5df2\u6e96\u5099\u3002",
+    challengeFinalText: "30 \u500b\u5712\u5340\u6311\u6230\u5168\u90e8\u5b8c\u6210\uff0c\u91ce\u751f\u6a02\u5712\u5927\u6176\u5178\u958b\u5e55\uff01",
+    goalCollected: "\u6536\u96c6 {n} \u9580\u7968",
+    goalCare: "\u5b8c\u6210 {n} \u6b21\u7167\u9867\u9078\u64c7",
+    goalHabitat: "\u6574\u7406\u68f2\u5730 {n} \u6b21",
+    goalEnrichment: "\u8c50\u5bcc\u6d3b\u52d5 {n} \u6b21",
+    goalBuilt: "\u5efa\u8a2d\u6216\u62db\u52df {n} \u6b21",
+    goalArranged: "\u79fb\u52d5\u52d5\u7269 {n} \u6b21",
+    goalHappiness: "\u5feb\u6a02\u5ea6\u9054 {n}%",
+    goalAnimals: "\u6b61\u8fce {n} \u96bb\u52d5\u7269",
+    goalGate: "\u5927\u9580\u9054 Lv.{n}",
+    goalTicketBox: "\u7968\u7bb1\u4fdd\u7559 {n} \u9580\u7968",
+    goalFacilityTotal: "\u5efa\u8a2d {n} \u7d1a\u8a2d\u65bd",
+    goalFacilitySnackStand: "\u9ede\u5fc3\u4ead Lv.{n}",
+    goalFacilityViewDeck: "\u89c0\u666f\u53f0 Lv.{n}",
+    goalFacilityKeeperPost: "\u4fdd\u80b2\u5c0f\u7ad9 Lv.{n}",
     coins: "\u91d1\u5e63",
     tickets: "\u7968\u7bb1",
     visitors: "\u53c3\u89c0\u8005",
@@ -391,6 +490,9 @@
   const nodes = {
     localeSelect: $("localeSelect"),
     menuPanel: $("menuPanel"),
+    stagePanel: $("stagePanel"),
+    stageBackBtn: $("stageBackBtn"),
+    challengeRail: $("challengeRail"),
     gamePanel: $("gamePanel"),
     startBtn: $("startBtn"),
     backToMenuBtn: $("backToMenuBtn"),
@@ -408,6 +510,8 @@
     logicStars: $("logicStars"),
     animalStars: $("animalStars"),
     closeReportBtn: $("closeReportBtn"),
+    nextChallengeBtn: $("nextChallengeBtn"),
+    resultStagesBtn: $("resultStagesBtn"),
     loadingPanel: $("loadingPanel"),
     loadingText: $("loadingText"),
     loadingFill: $("loadingFill"),
@@ -419,6 +523,7 @@
   let newlyRecruitedAnimalId = "";
   let facilityScrollLeft = 0;
   let careRouteChoiceOpen = false;
+  let activeChallengeIndex = clamp(Number(save.tourRound || 1) - 1, 0, zooChallenges.length - 1);
 
   function t(key, data = {}) {
     const value = text[locale]?.[key] || text.en[key] || key;
@@ -437,7 +542,9 @@
       lifetimeTickets: 0,
       claimedMilestones: {},
       tourRound: 1,
-      tour: { collected: 0, cared: 0, built: 0 },
+      tour: { collected: 0, cared: 0, built: 0, habitat: 0, enrichment: 0, arranged: 0 },
+      challengeUnlocked: 1,
+      challengeCleared: {},
       careRoutes: { habitat: 0, enrichment: 0 },
       layoutVersion,
       bestScore: 0,
@@ -497,11 +604,16 @@
     data.careReadyAt = Math.max(0, Number(data.careReadyAt || 0));
     data.lifetimeTickets = Math.max(0, Number(data.lifetimeTickets || 0));
     data.claimedMilestones = { ...(data.claimedMilestones || {}) };
-    data.tourRound = clamp(Math.floor(Number(data.tourRound || 1)), 1, 999);
+    data.tourRound = clamp(Math.floor(Number(data.tourRound || 1)), 1, zooChallenges.length);
+    data.challengeUnlocked = clamp(Math.floor(Number(data.challengeUnlocked || data.tourRound || 1)), 1, zooChallenges.length);
+    data.challengeCleared = { ...(data.challengeCleared || {}) };
     data.tour = {
       collected: Math.max(0, Number(data.tour?.collected || 0)),
       cared: Math.max(0, Number(data.tour?.cared || 0)),
       built: Math.max(0, Number(data.tour?.built || 0)),
+      habitat: Math.max(0, Number(data.tour?.habitat || 0)),
+      enrichment: Math.max(0, Number(data.tour?.enrichment || 0)),
+      arranged: Math.max(0, Number(data.tour?.arranged || 0)),
     };
     data.careRoutes = {
       habitat: Math.max(0, Number(data.careRoutes?.habitat || 0)),
@@ -559,7 +671,7 @@
   }
 
   function completedTours() {
-    return Math.max(0, Number(save.tourRound || 1) - 1);
+    return Object.values(save.challengeCleared || {}).filter(Boolean).length;
   }
 
   function tourReputationRate() {
@@ -661,33 +773,59 @@
     return candidates.sort((a, b) => Math.max(0, a.cost - save.coins) - Math.max(0, b.cost - save.coins))[0];
   }
 
-  function tourTargets(round = save.tourRound) {
-    return {
-      collected: 260 + (round - 1) * 180,
-      cared: Math.min(6, 1 + Math.floor((round - 1) / 2)),
-      built: Math.min(3, 1 + Math.floor((round - 1) / 4)),
-      reward: 360 + (round - 1) * 170,
-    };
+  function activeChallenge() {
+    return zooChallenges[activeChallengeIndex] || zooChallenges[0];
+  }
+
+  function challengeCopy(challenge, field) {
+    return challenge?.[field]?.[locale] || challenge?.[field]?.en || "";
+  }
+
+  function goalValue(goal) {
+    if (goal.type === "collected") return save.tour.collected;
+    if (goal.type === "care") return save.tour.cared;
+    if (goal.type === "habitat") return save.tour.habitat;
+    if (goal.type === "enrichment") return save.tour.enrichment;
+    if (goal.type === "built") return save.tour.built;
+    if (goal.type === "arranged") return save.tour.arranged;
+    if (goal.type === "happiness") return save.happiness;
+    if (goal.type === "animals") return unlockedAnimals().length;
+    if (goal.type === "gate") return save.gateLevel;
+    if (goal.type === "ticketBox") return save.ticketBox;
+    if (goal.type === "facilityTotal") return facilities.reduce((sum, facility) => sum + facilityLevel(facility), 0);
+    if (goal.type.startsWith("facility:")) {
+      const facility = facilities.find((item) => item.id === goal.type.split(":")[1]);
+      return facility ? facilityLevel(facility) : 0;
+    }
+    return 0;
+  }
+
+  function goalLabel(goal) {
+    const key = {
+      collected: "goalCollected", care: "goalCare", habitat: "goalHabitat", enrichment: "goalEnrichment",
+      built: "goalBuilt", arranged: "goalArranged", happiness: "goalHappiness", animals: "goalAnimals",
+      gate: "goalGate", ticketBox: "goalTicketBox", facilityTotal: "goalFacilityTotal",
+      "facility:snackStand": "goalFacilitySnackStand", "facility:viewDeck": "goalFacilityViewDeck",
+      "facility:keeperPost": "goalFacilityKeeperPost",
+    }[goal.type] || "goalCollected";
+    return t(key, { n: goal.target });
+  }
+
+  function tourTargets() {
+    const challenge = activeChallenge();
+    return { goals: challenge.goals, reward: challenge.reward };
   }
 
   function tourProgress() {
-    const targets = tourTargets();
-    return {
-      collected: taskProgress(save.tour.collected, targets.collected),
-      cared: taskProgress(save.tour.cared, targets.cared),
-      built: taskProgress(save.tour.built, targets.built),
-    };
+    return activeChallenge().goals.map((goal) => taskProgress(goalValue(goal), goal.target));
   }
 
   function isTourComplete() {
-    const targets = tourTargets();
-    return save.tour.collected >= targets.collected
-      && save.tour.cared >= targets.cared
-      && save.tour.built >= targets.built;
+    return activeChallenge().goals.every((goal) => goalValue(goal) >= goal.target);
   }
 
   function todayGoal() {
-    const targets = tourTargets();
+    const challenge = activeChallenge();
     if (isTourComplete()) {
       return {
         label: t("todayGoalTour"),
@@ -696,27 +834,12 @@
         ready: true,
       };
     }
-    const buildGoal = nextBuildGoal();
-    const options = [
-      {
-        label: t("todayGoalCollect"),
-        status: `${formatNumber(save.tour.collected)} / ${formatNumber(targets.collected)}`,
-        progress: taskProgress(save.tour.collected, targets.collected),
-        ready: save.tour.collected >= targets.collected,
-      },
-      {
-        label: t("todayGoalCare"),
-        status: `${formatNumber(save.tour.cared)} / ${formatNumber(targets.cared)}`,
-        progress: taskProgress(save.tour.cared, targets.cared),
-        ready: save.tour.cared >= targets.cared,
-      },
-      {
-        label: buildGoal.type === "complete" ? t("todayGoalComplete") : t("todayGoalBuild"),
-        status: `${formatNumber(save.tour.built)} / ${formatNumber(targets.built)}`,
-        progress: taskProgress(save.tour.built, targets.built),
-        ready: save.tour.built >= targets.built,
-      },
-    ];
+    const options = challenge.goals.map((goal) => ({
+      label: goalLabel(goal),
+      status: `${formatNumber(Math.min(goalValue(goal), goal.target))} / ${formatNumber(goal.target)}`,
+      progress: taskProgress(goalValue(goal), goal.target),
+      ready: goalValue(goal) >= goal.target,
+    }));
     return options.find((goal) => !goal.ready) || options[0];
   }
 
@@ -1232,28 +1355,19 @@
     const targets = tourTargets();
     const progress = tourProgress();
     const ready = isTourComplete();
+    const challenge = activeChallenge();
     container.classList.toggle("ready", ready);
     container.innerHTML = `
       <div class="tour-head">
-        <strong>${t("tourBoard")}</strong>
-        <span>${t("tourRound", { n: save.tourRound })}</span>
+        <strong>${challengeCopy(challenge, "title")}</strong>
+        <span>${t("challenge", { n: challenge.id })}</span>
       </div>
       <div class="tour-list">
-        <span>
-          <b>${t("tourCollect", { coins: formatCost(targets.collected) })}</b>
-          <small>${formatNumber(save.tour.collected)} / ${formatNumber(targets.collected)}</small>
-          <i style="--tour-progress:${Math.round(progress.collected * 100)}%"></i>
-        </span>
-        <span>
-          <b>${t("tourCare", { count: targets.cared })}</b>
-          <small>${formatNumber(save.tour.cared)} / ${formatNumber(targets.cared)}</small>
-          <i style="--tour-progress:${Math.round(progress.cared * 100)}%"></i>
-        </span>
-        <span>
-          <b>${t("tourBuild", { count: targets.built })}</b>
-          <small>${formatNumber(save.tour.built)} / ${formatNumber(targets.built)}</small>
-          <i style="--tour-progress:${Math.round(progress.built * 100)}%"></i>
-        </span>
+        ${targets.goals.map((goal, index) => `<span>
+          <b>${goalLabel(goal)}</b>
+          <small>${formatNumber(Math.min(goalValue(goal), goal.target))} / ${formatNumber(goal.target)}</small>
+          <i style="--tour-progress:${Math.round(progress[index] * 100)}%"></i>
+        </span>`).join("")}
       </div>
       <button type="button" data-action="tour-claim" ${ready ? "" : "disabled"}>${ready ? t("tourClaim") : t("tourReward", { coins: formatCost(targets.reward) })}</button>
     `;
@@ -1264,15 +1378,12 @@
     if (!container) return;
     const targets = tourTargets();
     const ready = isTourComplete();
-    const rows = [
-      { label: t("tourCollect", { coins: formatCost(targets.collected) }), value: save.tour.collected, target: targets.collected },
-      { label: t("tourCare", { count: targets.cared }), value: save.tour.cared, target: targets.cared },
-      { label: t("tourBuild", { count: targets.built }), value: save.tour.built, target: targets.built },
-    ];
+    const challenge = activeChallenge();
+    const rows = targets.goals.map((goal) => ({ label: goalLabel(goal), value: goalValue(goal), target: goal.target }));
     container.innerHTML = `
       <div class="tour-report-head">
-        <strong>${t("tourBoard")}</strong>
-        <span>${t("tourRound", { n: save.tourRound })}</span>
+        <strong>${challengeCopy(challenge, "title")}</strong>
+        <span>${t("challenge", { n: challenge.id })}</span>
       </div>
       <div class="tour-reputation">
         <b>${t("tourReputation")} ${completedTours()}</b>
@@ -1353,6 +1464,7 @@
       const end = (endEvent) => {
         if (settled || endEvent.pointerId !== pointerId) return;
         save.positions[animal.id] = pendingPosition;
+        if (Math.hypot(pendingPosition.x - startPosition.x, pendingPosition.y - startPosition.y) >= 2) save.tour.arranged += 1;
         cleanup();
         saveGame();
       };
@@ -1429,6 +1541,7 @@
     closeCareRoutes(false);
     save.careCount += 1;
     save.tour.cared += 1;
+    save.tour[route] += 1;
     const gain = unlockedAnimals().reduce((sum, animal) => sum + animal.care, 0) + facilityCareBonus();
     const habitatBoost = route === "habitat" ? 8 : 0;
     const ticketReward = route === "enrichment" ? careRouteTicketReward() : 0;
@@ -1512,20 +1625,19 @@
 
   function claimTourReward() {
     if (!isTourComplete()) return;
-    const reportOpen = !nodes.resultPanel.classList.contains("hidden");
     const targets = tourTargets();
+    const challenge = activeChallenge();
+    const firstClear = !save.challengeCleared[String(challenge.id)];
     save.coins += targets.reward;
-    save.tourRound += 1;
-    save.tour = { collected: 0, cared: 0, built: 0 };
+    save.challengeCleared[String(challenge.id)] = true;
+    save.challengeUnlocked = Math.max(save.challengeUnlocked, Math.min(zooChallenges.length, challenge.id + 1));
+    save.tour = { collected: 0, cared: 0, built: 0, habitat: 0, enrichment: 0, arranged: 0 };
     popToast(t("tourComplete"));
     playSound("success");
-    window.WonderAnalytics?.track("zoo_tour_complete", { game_id: GAME_ID, round: save.tourRound - 1 });
+    window.WonderAnalytics?.track("zoo_tour_complete", { game_id: GAME_ID, round: challenge.id, first_clear: firstClear });
     saveGame();
     render();
-    if (reportOpen) {
-      renderTourReport(nodes.tourReport);
-      requestAnimationFrame(() => nodes.closeReportBtn.focus({ preventScroll: true }));
-    }
+    showChallengeResult();
   }
 
   function notEnough(cost = 0) {
@@ -1568,6 +1680,9 @@
     saveGame();
     nodes.reportScore.textContent = score;
     nodes.reportText.textContent = score >= previous ? t("reportGood") : t("reportTry");
+    nodes.resultStagesBtn.classList.add("hidden");
+    nodes.nextChallengeBtn.classList.add("hidden");
+    nodes.closeReportBtn.classList.remove("hidden");
     nodes.focusStars.textContent = starText(save.careCount * 32 + save.happiness);
     nodes.logicStars.textContent = starText(save.gateLevel * 90 + unlockedAnimals().length * 34);
     nodes.animalStars.textContent = starText(unlockedAnimals().length * 95);
@@ -1581,12 +1696,52 @@
     window.WonderAnalytics?.track("game_complete", { game_id: GAME_ID, score, animals: unlockedAnimals().length });
   }
 
+  function showChallengeResult() {
+    showReport();
+    const challenge = activeChallenge();
+    nodes.resultText = nodes.reportText;
+    document.getElementById("zooReportTitle").textContent = t("challengeCompleteTitle");
+    nodes.reportText.textContent = challenge.id >= zooChallenges.length
+      ? t("challengeFinalText")
+      : t("challengeCompleteText", { n: challenge.id });
+    nodes.closeReportBtn.classList.add("hidden");
+    nodes.resultStagesBtn.classList.remove("hidden");
+    nodes.nextChallengeBtn.classList.toggle("hidden", challenge.id >= zooChallenges.length);
+    requestAnimationFrame(() => (challenge.id < zooChallenges.length ? nodes.nextChallengeBtn : nodes.resultStagesBtn).focus({ preventScroll: true }));
+  }
+
   function closeReport() {
     nodes.resultPanel.classList.add("hidden");
     nodes.gamePanel.classList.remove("report-open");
     nodes.habitatGrid.inert = false;
     nodes.gamePanel.querySelector(".resource-row").inert = false;
     nodes.gamePanel.querySelector('[data-action="report"]')?.focus({ preventScroll: true });
+  }
+
+  function renderChallengeRail() {
+    if (!nodes.challengeRail) return;
+    nodes.challengeRail.innerHTML = zooChallenges.map((challenge, index) => {
+      const locked = challenge.id > save.challengeUnlocked;
+      const cleared = Boolean(save.challengeCleared[String(challenge.id)]);
+      const selected = index === activeChallengeIndex;
+      const art = challenge.checkpointAsset || animals[index % animals.length].asset;
+      return `<button type="button" class="challenge-card ${locked ? "locked" : ""} ${cleared ? "cleared" : ""} ${selected ? "selected" : ""}" data-challenge-index="${index}" aria-disabled="${locked}">
+        <img src="${art}" alt="" draggable="false" />
+        <strong>${t("challenge", { n: challenge.id })}</strong>
+        <b>${challengeCopy(challenge, "title")}</b>
+        <span>${challengeCopy(challenge, "plan")}</span>
+        <small>${challenge.checkpointAsset ? `${t("challengeCheckpoint")} · ` : ""}${t("challengeReward", { coins: formatCost(challenge.reward) })}</small>
+        ${cleared ? `<em>${t("challengeCleared")}</em>` : locked ? `<em>${t("challengeLocked")}</em>` : ""}
+      </button>`;
+    }).join("");
+    nodes.challengeRail.querySelectorAll("[data-challenge-index]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const index = Number(button.dataset.challengeIndex);
+        if (index + 1 > save.challengeUnlocked) return popToast(t("challengeLocked"));
+        startChallenge(index);
+      });
+    });
+    requestAnimationFrame(() => nodes.challengeRail.querySelector(".challenge-card.selected")?.scrollIntoView({ block: "nearest", inline: "center" }));
   }
 
   function renderAnimalAlbum(container) {

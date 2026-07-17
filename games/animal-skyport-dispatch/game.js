@@ -431,9 +431,10 @@
   $('menuBtn').onclick = () => show('mainScreen');
   $('result').addEventListener('keydown', trapResultFocus);
   $('serviceBtn').onclick = () => {
-    if (state.storm && state.parts) {
+    if (state.storm && !state.serviced && state.parts) {
       state.parts -= 1;
       state.serviced = true;
+      $('serviceBtn').classList.add('hidden');
       $('feedback').textContent = locale === 'zh-Hant' ? '\u98db\u8239\u5df2\u53ef\u5b89\u5168\u9032\u5834\u3002' : 'Flight cleared for safe approach.';
       renderHud();
     }

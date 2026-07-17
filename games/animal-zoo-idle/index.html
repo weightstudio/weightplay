@@ -91,6 +91,14 @@
         </div>
       </section>
 
+      <section id="stagePanel" class="challenge-stage-panel hidden" data-wp-logical-stage-canvas>
+        <div class="challenge-stage-head">
+          <button id="stageBackBtn" type="button" aria-label="Back">&larr;</button>
+          <strong data-ui="chooseChallenge">Choose Park Challenge</strong>
+        </div>
+        <div id="challengeRail" class="challenge-rail" aria-label="Park challenges"></div>
+      </section>
+
       <section id="gamePanel" class="game-panel hidden">
         <div class="resource-row">
           <button id="backToMenuBtn" class="play-return" data-wp-return="battle" type="button" aria-label="Back to menu" data-ui-aria-label="backToMenu">&larr;</button>
@@ -114,6 +122,8 @@
           <section id="tourReport" class="tour-report" aria-live="polite"></section>
           <section id="animalAlbum" class="animal-album" aria-live="polite"></section>
           <button id="closeReportBtn" type="button" data-ui="continue">Continue</button>
+          <button id="nextChallengeBtn" class="hidden" type="button" data-ui="nextChallenge">Next Challenge</button>
+          <button id="resultStagesBtn" class="hidden" type="button" data-ui="backToChallenges">Challenges</button>
         </section>
       </div>
       </section>

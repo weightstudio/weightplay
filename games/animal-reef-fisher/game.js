@@ -1431,6 +1431,10 @@
     window.requestAnimationFrame(() => nodes.stagePanel.querySelector(".zone-card.is-selected:not(:disabled)")?.focus({ preventScroll: true }));
   });
   nodes.resultPanel.addEventListener("keydown", (event) => {
+    if (event.repeat && (event.key === "Enter" || event.key === " ")) {
+      event.preventDefault();
+      return;
+    }
     if (event.key !== "Tab" || nodes.resultPanel.classList.contains("is-hidden")) return;
     if (event.shiftKey && document.activeElement === nodes.retryBtn) {
       event.preventDefault();

@@ -1345,6 +1345,31 @@ body.guard-yard-stage .stage-grid { padding-inline: calc((100% - 264px) / 2); to
   filter: drop-shadow(0 15px 12px rgba(29, 50, 32, 0.38));
 }
 
+.zombie.is-boss {
+  width: calc((100% / var(--grid-cols)) * 1.32);
+  height: calc((100% / var(--grid-rows)) * 1.36);
+  z-index: 8;
+}
+
+.zombie.healer .zombie-sprite img,
+.zombie-sprite.healer img { filter: hue-rotate(78deg) saturate(1.2) drop-shadow(0 0 5px rgba(112, 255, 166, 0.9)); }
+.zombie.burrow .zombie-sprite img,
+.zombie-sprite.burrow img { filter: sepia(0.38) saturate(1.35) drop-shadow(0 2px 3px rgba(76, 42, 18, 0.72)); }
+.zombie.thief .zombie-sprite img,
+.zombie-sprite.thief img { filter: hue-rotate(238deg) saturate(1.1) drop-shadow(0 0 5px rgba(255, 220, 74, 0.82)); }
+.zombie.is-shell-closed { filter: brightness(0.82) saturate(1.25); }
+.zombie.is-shell-closed::after {
+  content: "";
+  position: absolute;
+  inset: 7% 5%;
+  border: 3px solid rgba(132, 235, 255, 0.95);
+  border-radius: 50%;
+  box-shadow: 0 0 12px rgba(104, 225, 255, 0.85);
+}
+.zombie.is-casting { animation: boss-roar 0.52s ease-out; }
+.zombie.is-burrow-warning { animation: warning-pulse 0.34s ease-in-out 2 alternate; }
+.zombie.is-rushing { animation: zombie-bite 0.25s ease-out infinite alternate; }
+
 .actor.is-shooting {
   animation: guard-shoot 0.24s ease-out;
 }
