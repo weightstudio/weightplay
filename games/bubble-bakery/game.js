@@ -213,6 +213,34 @@
       groupGoal: "最大群組 {done}/{need}",
       pankoCheck: "Panko 檢查",
     },
+    es: {
+      gameTitle: "Pastelería de Burbujas Animales", pageTitle: "Pastelería de Burbujas Animales - WeightPlay", language: "Idioma", localeSelect: "Selección de idioma",
+      coachCard: "Entrenador de pastelería", stageList: "Lista de niveles", orderList: "Pedidos de pastelería", bubbleBoard: "Tablero de burbujas",
+      bubbleSingle: "{animal}, fila {row}, columna {column}; grupo conectado de 1, necesita {minimum} para eliminarse",
+      bubbleOrderSingle: "Objetivo del pedido: {animal}, fila {row}, columna {column}; grupo conectado de 1, necesita {minimum} para eliminarse",
+      bubbleGroup: "{animal}, fila {row}, columna {column}; grupo conectado de {count}, mínimo {minimum}",
+      bubbleOrderGroup: "Objetivo del pedido: {animal}, fila {row}, columna {column}; grupo conectado de {count}, mínimo {minimum}",
+      bunny: "Conejo", whale: "Ballena", chick: "Pollito", frog: "Rana", fox: "Zorro",
+      chooseStage: "Elegir nivel", menuHint: "Toca 2 o más burbujas iguales conectadas para completar los pedidos.", startGame: "Empezar", back: "Volver", stages: "Niveles", loading: "Cargando",
+      nextStage: "Siguiente nivel", retry: "Intentar de nuevo", lobby: "Sala de juegos", locked: "Nivel bloqueado", unlockRequirement: "Completa {stage} para desbloquear esta bandeja.",
+      moves: "Movimientos", score: "Puntuación", stage: "Nivel {n}", theme: "Pedido: {theme}", movesCount: "{n} movimientos", orderDone: "¡Pedido completado!", failed: "Intenta de nuevo este pedido.",
+      resultWin: "Completaste todos los pedidos con {moves} movimientos restantes.", resultLose: "Recoge las burbujas necesarias antes de quedarte sin movimientos.",
+      smallGroup: "Toca 2 o más burbujas iguales conectadas.", notOrderTarget: "Buen grupo, pero el pedido necesita las burbujas animales iluminadas.", orderStreak: "¡Racha de pedidos x{streak}! +{bonus}", collect: "Recoge {n}",
+      skillReport: "Informe de habilidades", previousBest: "Mejor anterior", todayScore: "Hoy", improvement: "Mejora", logic: "Lógica", focus: "Concentración", problemSolving: "Resolución de problemas",
+      targetHitEvidence: "Aciertos de pedido {hits}/{moves}", largestGroupEvidence: "Grupo mayor: {count}", bestStreakEvidence: "Mejor racha x{count}",
+      reportGreat: "¡Gran progreso! Se planificaron bien los grupos y se mantuvo la concentración.", reportGood: "¡Buen esfuerzo! Inténtalo de nuevo para completar más pedidos.", reportNewBest: "¡Progreso increíble! Es una nueva mejor puntuación para este nivel.",
+      themeCozyStart: "Caja acogedora del conejo", themeOceanCupcakes: "Cupcakes del océano", themeSunnyChickTray: "Bandeja soleada del pollito", themeGardenMix: "Mezcla del jardín", themeFoxBerryCake: "Pastel de bayas del zorro",
+      themeWhaleMintRolls: "Rollos de menta de la ballena", themeRainbowCookies: "Galletas arcoíris", themeForestPicnic: "Pícnic del bosque", themePartyTray: "Bandeja de fiesta", themeMasterBakery: "Pastelería maestra",
+      bakeryProgress: "Progreso de la pastelería", clearedStages: "Completados {done}/{total}", totalStars: "Estrellas {stars}/{total}", nextGoal: "Siguiente: completa {stage}", perfectOrders: "Dominados {done}/{total}",
+      nextPerfectGoal: "Repetir: domina {stage}", allOrdersDone: "¡Todos los pedidos completados!", stageNew: "Nuevo", stageImprove: "Mejorar", stageMastered: "Dominado",
+      coachName: "Panko, entrenador de pastelería", coachTip: "Planifica primero el grupo más grande y guarda movimientos para las burbujas iluminadas del pedido.", recommendedTitle: "Elección de Panko", recommendedCopy: "{stage} · {theme}",
+      recommendedNew: "Completa este pedido para abrir la siguiente bandeja.", recommendedImprove: "Repite este pedido para ganar más estrellas.", recommendedMastered: "Todo está dominado. Repite tu pedido favorito más reciente.",
+      resultNextTitle: "Siguiente pedido", resultUnlocked: "Nueva bandeja desbloqueada: {stage}", resultReplay: "Objetivo al repetir: gana más estrellas en {stage}", resultNextCopy: "{stage} · {theme}",
+      resultAllClear: "Todas las bandejas están abiertas. Repite cualquier pedido para dominar todas las estrellas.", resultTryAgainGoal: "Inténtalo de nuevo: {stage} aún necesita estas burbujas.",
+      customerStamps: "Sellos de cliente", stampOrders: "Pedidos {orders}", stampStickers: "Pegatinas {stickers}", nextSticker: "{n} para la siguiente pegatina", stickerReady: "¡Pegatina lista!",
+      resultStampWin: "Sello +1 · {next}", resultStampLose: "Completa el pedido para ganar un sello.", groupTooSmall: "Esta bandeja necesita un grupo conectado de {count}.", sequenceNext: "Siguiente pedido: {animal}.",
+      recipeNext: "¡La bandeja {current}/{total} está lista!", recipeProgress: "Bandeja {current}/{total}", groupGoal: "Grupo mayor {done}/{need}", pankoCheck: "Prueba de Panko",
+    },
   };
 
   const colors = [
@@ -259,6 +287,43 @@
     bakeryStage("Grand Rehearsal", "慶典總彩排", "Two queued recipes combine minimum groups and bonuses.", "兩張依序食譜結合群組門檻與加成。", 28, ["berry", "sky", "lemon", "mint", "grape"], { berry: 7, lemon: 7 }, { sequence: true, minOrderGroup: 3, recipes: [{ berry: 7, lemon: 7 }, { sky: 7, mint: 7, grape: 5 }], comboThreshold: 5, comboBonus: 2 }),
     bakeryStage("Panko's Master Bakery", "Panko 大師烘焙坊", "Serve three queued trays with four-bubble groups and a group of six.", "用四個群組依序完成三盤，並做出一次六個群組。", 32, ["berry", "sky", "lemon", "mint", "grape"], { berry: 6, sky: 6 }, { sequence: true, minOrderGroup: 4, recipes: [{ berry: 6, sky: 6 }, { lemon: 6, mint: 6 }, { grape: 7, berry: 5 }], comboThreshold: 6, comboBonus: 2, groupGoal: 6, checkpoint: true }),
   ];
+
+  const spanishStageCopy = [
+    ["Caja acogedora del conejo", "Elimina grupos conectados de dos o más."],
+    ["Cupcakes del océano", "Elige entre dos animales del pedido."],
+    ["Bandeja soleada de grupos", "Completa el pedido y forma un grupo de tres."],
+    ["Lote doble del jardín", "Los grupos de cuatro suman dos burbujas extra al pedido."],
+    ["Primera prueba de Panko", "Solo los grupos de tres o más completan el pedido."],
+    ["Rollos de menta de la ballena", "Forma un grupo de cuatro mientras completas tres objetivos."],
+    ["Pastel de grupos de bayas", "Los grupos objetivo necesitan al menos tres burbujas."],
+    ["Galletas dobles del zorro", "Los grupos grandes de zorro y conejo completan pedidos más rápido."],
+    ["Grandes lotes arcoíris", "Usa grupos de tres; los de cinco reciben una bonificación."],
+    ["Prueba de grandes lotes de Panko", "Completa cada pedido con grupos de cuatro o más."],
+    ["Cola del conejo primero", "Completa los pedidos en la secuencia mostrada."],
+    ["Cola de pedidos del océano", "Ballena, rana y zorro se turnan en los pedidos."],
+    ["Cola de pedidos del jardín", "Sigue la cola y forma un grupo de cuatro."],
+    ["Cola con premio del zorro", "Sigue la cola; los grupos de cuatro suman dos extra."],
+    ["Prueba de colas de Panko", "Completa dos bandejas en orden sin reiniciar el tablero."],
+    ["Brunch de dos bandejas", "Tras la primera bandeja aparece una segunda receta."],
+    ["Menú de dos platos del jardín", "Planifica dos recetas distintas en un solo tablero."],
+    ["Pareja de platos de bayas", "Las dos recetas también exigen un grupo de cuatro."],
+    ["Pareja de platos arcoíris", "Los lotes grandes ayudan a completar ambas recetas."],
+    ["Prueba de tres platos de Panko", "Sirve tres recetas breves en un tablero continuo."],
+    ["Cola grande", "Sigue el orden usando grupos de tres o más."],
+    ["Bonificación de dos platos", "Los grupos grandes dan premios en dos recetas."],
+    ["Arcoíris cuidadoso", "Los grupos necesitan tres y uno debe alcanzar cinco."],
+    ["Cambio de bandejas", "Cada receta tiene su propia cola ordenada."],
+    ["Prueba del festival de Panko", "Dos bandejas en cola combinan grupos de tres y bonificaciones."],
+    ["Grupos maestros", "Los grupos del pedido necesitan cuatro y uno debe alcanzar seis."],
+    ["Cola maestra", "Los grupos en cola necesitan tres; los de cinco suman extra."],
+    ["Servicio triple", "Tres recetas comparten el objetivo maestro de un grupo de cinco."],
+    ["Gran ensayo", "Dos recetas en cola combinan mínimos de grupo y bonificaciones."],
+    ["Pastelería maestra de Panko", "Sirve tres bandejas en cola con grupos de cuatro y uno de seis."],
+  ];
+  if (spanishStageCopy.length !== stages.length) throw new Error("Spanish bakery-stage coverage must match all stages.");
+  stages.forEach((stage, index) => {
+    [stage.titleEs, stage.ruleEs] = spanishStageCopy[index];
+  });
 
   function validateStages() {
     if (stages.length !== 30) throw new Error(`Bubble Bakery requires 30 stages; found ${stages.length}.`);
@@ -434,11 +499,15 @@
   }
 
   function stageTitle(stage) {
-    return locale === "zh-Hant" ? stage.titleZh : stage.titleEn;
+    if (locale === "zh-Hant") return stage.titleZh;
+    if (locale === "es") return stage.titleEs;
+    return stage.titleEn;
   }
 
   function stageRule(stage) {
-    return locale === "zh-Hant" ? stage.ruleZh : stage.ruleEn;
+    if (locale === "zh-Hant") return stage.ruleZh;
+    if (locale === "es") return stage.ruleEs;
+    return stage.ruleEn;
   }
 
   function stageOrderIds(stage) {
@@ -471,7 +540,7 @@
   }
 
   function localizeStatic() {
-    document.documentElement.lang = locale === "zh-Hant" ? "zh-Hant" : "en";
+    document.documentElement.lang = locale === "zh-Hant" ? "zh-Hant" : locale === "es" ? "es" : "en";
     document.title = t("pageTitle");
     document.querySelectorAll("[data-ui]").forEach((node) => {
       node.textContent = t(node.dataset.ui);

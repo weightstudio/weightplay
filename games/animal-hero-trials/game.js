@@ -904,6 +904,10 @@
     else if (!event.shiftKey && document.activeElement === actions.at(-1)) { event.preventDefault(); actions[0].focus(); }
   });
   $("#choiceModal").addEventListener("keydown", (event) => {
+    if (event.repeat && (event.key === "Enter" || event.key === " ")) {
+      event.preventDefault();
+      return;
+    }
     if (event.key !== "Tab" || $("#choiceModal").classList.contains("hidden")) return;
     const actions = [...$("#choiceModal").querySelectorAll("button:not(:disabled)")];
     if (!actions.length) return;

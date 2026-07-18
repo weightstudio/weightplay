@@ -3,7 +3,7 @@
   const legacyLocaleKey = "weightplayLocale";
   const canonicalSavedLocale = localStorage.getItem(canonicalLocaleKey);
   const legacySavedLocale = localStorage.getItem(legacyLocaleKey);
-  if (!canonicalSavedLocale && ["en", "zh-Hant", "zh-Hans"].includes(legacySavedLocale)) {
+  if (!canonicalSavedLocale && ["en", "zh-Hant", "zh-Hans", "es"].includes(legacySavedLocale)) {
     window.WonderI18n?.setLocale?.(legacySavedLocale);
   }
 
@@ -183,6 +183,17 @@
       leaderboard: "\u672c\u6a5f\u524d 5 \u540d",
       emptyRank: "\u9084\u6c92\u6709\u7d00\u9304",
     },
+    es: {
+      title: "Carrera Relámpago de Safari", language: "Idioma", backToLobby: "Volver a la sala de WeightPlay", controls: "Controles", backToMenu: "Volver al menú", gameLabel: "Juego Carrera Relámpago de Safari",
+      description: "Completa 30 rutas guardadas con senderos de estrellas, puertas de dos carriles, barro pegajoso, cinco tipos de objetivo y seis pruebas de guardianes.", score: "Puntuación", time: "Tiempo", combo: "Combo",
+      startTitle: "Elige un carril. Corre rápido.", startText: "Completa 30 rutas guardadas cuyas reglas, objetivos y patrones de guardianes cambian tu forma de correr.", controlTap: "Toca izquierda / derecha", controlSwipe: "Desliza entre carriles", controlKeyboard: "A/D o ←/→", start: "Empezar",
+      chooseRoute: "Elegir una ruta de safari", stageProgress: "{unlocked} / 30 desbloqueadas", stageHint: "Desliza las tarjetas. Cada quinta ruta es una prueba de guardián.", stageSelection: "Rutas de safari", stageLocked: "Completa la ruta anterior", stageReady: "Lista", stageCleared: "Completada", guardianCheck: "Prueba de guardián", routeRules: "Reglas de la ruta",
+      objectiveCoins: "Recoge {target} estrellas", objectiveCombo: "Alcanza un combo x{target}", objectiveClean: "Termina con un máximo de {target} choques", objectiveScore: "Consigue {target} puntos", objectiveFinish: "Llega a la meta",
+      routeClear: "¡Ruta {stage} completada!", routeFailed: "No se alcanzó el objetivo. Intenta la ruta otra vez.", nextRoute: "Siguiente ruta desbloqueada: {stage}", allRoutesClear: "¡Las 30 rutas están completadas!", routes: "Rutas",
+      ruleClassic: "Sendero abierto", ruleTrail: "Rastro de estrellas", ruleGate: "Puertas de dos carriles", ruleMud: "Barro pegajoso", rulePulse: "Patrón del guardián",
+      resultTitle: "¡Carrera completada!", resultText: "Puntuación {score}  Mejor {best}", skillReport: "Informe de habilidades", skillIntro: "Esta carrera practicó decisiones rápidas, atención constante y control de carriles.", reaction: "Reacción", reactionValue: "{count} cambios de carril", focus: "Concentración", focusValue: "{coins} recogidas · {bumps} choques", coordination: "Coordinación visual", coordinationValue: "Mejor combo x{combo}",
+      firstRun: "Puntuación de hoy: {score}", progress: "Puntuación de hoy: {score} · Mejor anterior: {previous}", newBest: "¡Nuevo récord: {score}! Mejor anterior: {previous}", again: "Correr de nuevo", lobby: "Sala de juegos", loading: "Cargando", leaderboard: "5 mejores locales", emptyRank: "Aún no hay carreras",
+    },
   };
 
   const regionNames = [
@@ -193,6 +204,8 @@
     ["Moonwater Reserve", "\u6708\u6c34\u4fdd\u8b77\u5340"],
     ["Crown Safari", "\u738b\u51a0\u8349\u539f"],
   ];
+  ["Sabana del amanecer", "Cruce de acacias", "Curva del pantano luminoso", "Carrera del cañón rojo", "Reserva de aguas lunares", "Safari de la corona"]
+    .forEach((name, index) => regionNames[index].push(name));
 
   function route(id, nameEn, nameZht, mechanics, objective, duration, bossEn = "", bossZht = "") {
     return {
@@ -241,6 +254,19 @@
     route(29, "All-Trail Gauntlet", "\u5168\u8def\u7dda\u8a66\u7149", ["mud", "trail", "gate", "pulse"], ["score", 700], 44),
     route(30, "Elephant Crown Check", "\u8c61\u738b\u4e4b\u51a0\u6aa2\u67e5", ["mud", "trail", "gate", "pulse"], ["coins", 15], 45, "Elephant Crownkeeper", "\u8c61\u738b\u51a0\u5b88\u8b77\u8005"),
   ];
+
+  const spanishRouteCopy = [
+    ["Primeras huellas", ""], ["Rastro de estrellas doradas", ""], ["Zigzag de conos", ""], ["Ritmo de tres carriles", ""], ["Prueba de rayas de cebra", "Cebra exploradora"],
+    ["Línea estelar de acacias", ""], ["Curva de la mochila", ""], ["Puertas de libros", ""], ["Zigzag de acacias", ""], ["Prueba de embestida del rinoceronte", "Rinoceronte guardasenderos"],
+    ["Pasos estelares del pantano", ""], ["Paciencia entre charcos", ""], ["Cruce del cocodrilo", ""], ["Cadena estelar de juncos", ""], ["Prueba de la charca del hipopótamo", "Hipopótamo guardián del agua"],
+    ["Carrera de roca roja", ""], ["Rastro de estrellas con eco", ""], ["Puertas gemelas del cañón", ""], ["Combo junto al acantilado", ""], ["Prueba de la sombra del águila", "Águila guardiana del cielo"],
+    ["Deriva de aguas lunares", ""], ["Cadena estelar de luciérnagas", ""], ["Ritmo de puertas nocturnas", ""], ["Relevo de la reserva", ""], ["Prueba de la manada de leones", "León guardián de la manada"],
+    ["Entrada de la puerta de la corona", ""], ["Laberinto de barro real", ""], ["Relevo estelar del guardián", ""], ["Desafío de todos los senderos", ""], ["Prueba de la corona del elefante", "Elefante guardián de la corona"],
+  ];
+  if (spanishRouteCopy.length !== ROUTES.length) throw new Error("Spanish safari-route coverage must match all routes.");
+  ROUTES.forEach((config, index) => {
+    [config.nameEs, config.bossEs] = spanishRouteCopy[index];
+  });
 
   function loadProgress() {
     try {
@@ -443,7 +469,9 @@
   }
 
   function routeName(config) {
-    return locale() === "zh-Hant" ? config.nameZht : config.nameEn;
+    if (locale() === "zh-Hant") return config.nameZht;
+    if (locale() === "es") return config.nameEs;
+    return config.nameEn;
   }
 
   function renderStageSelector(centerSelected = true) {
@@ -462,9 +490,9 @@
       card.disabled = locked;
       card.setAttribute("role", "listitem");
       card.innerHTML = `
-        <span class="stage-region">${locale() === "zh-Hant" ? regionNames[config.region - 1][1] : regionNames[config.region - 1][0]}</span>
+        <span class="stage-region">${regionNames[config.region - 1][locale() === "zh-Hant" ? 1 : locale() === "es" ? 2 : 0]}</span>
         <strong>${config.id}. ${routeName(config)}</strong>
-        ${config.checkpoint ? `<em>${t("guardianCheck")} · ${locale() === "zh-Hant" ? config.bossZht : config.bossEn}</em>` : ""}
+        ${config.checkpoint ? `<em>${t("guardianCheck")} · ${locale() === "zh-Hant" ? config.bossZht : locale() === "es" ? config.bossEs : config.bossEn}</em>` : ""}
         <small>${objectiveText(config)}</small>
         <span class="stage-rule">${config.mechanics.map(ruleText).join(" · ")}</span>
         <b>${locked ? t("stageLocked") : cleared ? t("stageCleared") : t("stageReady")}</b>`;

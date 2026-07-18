@@ -165,6 +165,18 @@
         lookout: "\u9060\u773a\u5c71\u4e18",
       },
     },
+    es: {
+      gameTitle: "Safari de Animales Ocultos", language: "Idioma", back: "Volver", stageList: "Lista de hábitats", backToHabitats: "Volver a los hábitats", hiddenAnimalScene: "Escena de animales ocultos",
+      chooseStage: "Elegir hábitat", menuHint: "Encuentra los animales camuflados en cada hábitat natural.", stages: "Hábitats", loading: "Cargando", hint: "Pista", findList: "Busca estos",
+      nextStage: "Siguiente hábitat", retry: "Intentar de nuevo", lobby: "Sala de juegos", locked: "Hábitat bloqueado", stage: "Hábitat {n}", great: "¡Gran hallazgo!", perfect: "¡Vista de safari excelente!", good: "¡Buena búsqueda!",
+      result: "Encontraste {found}/{total} animales en {time}.", skillReport: "Informe de habilidades", focus: "Concentración", focusValue: "Encontrados {found} · Toques vacíos {mistakes}",
+      animalKnowledge: "Conocimiento animal", animalValue: "{count} animales identificados", problemSolving: "Resolución de problemas", solveValue: "Sin pistas {unaided} · Pistas {hints}",
+      firstFinish: "Primera victoria · {time}", newBest: "Nuevo récord {time} · Anterior {previous}", progress: "Esta vez {time} · Mejor {best}", best: "Mejor {time}", noHints: "No quedan pistas",
+      hintTarget: "¡Busca {target}!", findFirst: "¡Encuentra primero {target}!", decoyTap: "Ese animal no está en esta lista.", decoyAnimal: "{target}, visitante del hábitat, no está en la lista", found: "¡Encontrado!", tryAgain: "Mira con atención", remaining: "Quedan {count}", checkpoint: "Punto de control del hábitat",
+      rules: { open: "Búsqueda libre", order: "Orden del guardabosques", twins: "Parejas de animales", camouflage: "Camuflaje profundo", decoys: "Visitantes del hábitat", drift: "Patrulla móvil", grand: "Gran mezcla de safari" },
+      targets: { lion: "León", elephant: "Elefante", giraffe: "Jirafa", panda: "Panda", penguin: "Pingüino", koala: "Koala", rabbit: "Conejo", fox: "Zorro", frog: "Rana", owl: "Búho" },
+      habitat: { sunny: "Pradera soleada", river: "Cruce del río", sunset: "Árboles al atardecer", pond: "Vigilancia del estanque", jungle: "Borde de la selva", lookout: "Colina mirador" },
+    },
   };
 
   const targetAssets = {
@@ -273,7 +285,7 @@
 
   const legacySavedLocale = localStorage.getItem(localeKey);
   const canonicalSavedLocale = localStorage.getItem(canonicalLocaleKey);
-  if (!canonicalSavedLocale && ["en", "zh-Hant", "zh-Hans"].includes(legacySavedLocale)) {
+  if (!canonicalSavedLocale && ["en", "zh-Hant", "zh-Hans", "es"].includes(legacySavedLocale)) {
     window.WonderI18n?.setLocale?.(legacySavedLocale);
   }
   let locale = window.WonderI18n?.locale?.() || canonicalSavedLocale || legacySavedLocale || "en";
@@ -338,7 +350,7 @@
   }
 
   function localizeStatic() {
-    document.documentElement.lang = locale === "zh-Hant" ? "zh-Hant" : "en";
+    document.documentElement.lang = locale === "zh-Hant" ? "zh-Hant" : locale === "es" ? "es" : "en";
     document.title = `${t("gameTitle")} - WeightPlay`;
     document.querySelectorAll("[data-ui]").forEach((node) => {
       node.textContent = t(node.dataset.ui);

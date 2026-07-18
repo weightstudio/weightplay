@@ -92,6 +92,50 @@
       fox: "狐狸",
       koala: "無尾熊",
     },
+    es: {
+      title: "Rescate Animal entre Lianas",
+      language: "Idioma",
+      backToLobby: "Volver a la sala de WeightPlay",
+      backToMain: "Volver al menú principal",
+      backToStages: "Volver a los niveles",
+      playfield: "Zona de juego de Rescate Animal entre Lianas",
+      cutVine: "Cortar la liana",
+      leafControl: "Posición del trampolín de hoja",
+      leafPosition: "Hoja al {value} por ciento",
+      menuTitle: "Rescata fruta para los animales hambrientos.",
+      menuHint: "Corta la liana, mueve la hoja y haz rebotar la fruta hasta la cesta del animal.",
+      start: "Elegir nivel",
+      stage: "Nivel",
+      score: "Entrega",
+      stages: "Niveles",
+      cut: "Cortar",
+      hint: "Mueve la hoja o usa ← → y pulsa Cortar. Sigue moviéndola mientras cae la fruta.",
+      readyHint: "Mueve la hoja y luego corta.",
+      fallHint: "Sigue moviendo la hoja con el dedo o ← → bajo la fruta y hazla rebotar hacia la cesta iluminada.",
+      loading: "Cargando",
+      nextStage: "Siguiente nivel",
+      retry: "Intentar de nuevo",
+      lobby: "Sala de juegos",
+      locked: "Nivel bloqueado",
+      successTitle: "¡Fruta rescatada!",
+      failTitle: "¡Prueba otra vez ese rebote!",
+      successText: "¡Buen ritmo! El animal recibió la fruta.",
+      failText: "Sigue moviendo la hoja mientras cae la fruta y hazla rebotar hacia la cesta.",
+      completeText: "¡Rescate increíble! Has completado todos los niveles de lianas.",
+      stageLabel: "Nivel {n}",
+      deliveryProgress: "Entrega {current}/{total}",
+      bounceProgress: "Rebote {current}/{total}",
+      nextDelivery: "¡Buena recepción! Prepárate para la entrega {current}/{total}.",
+      checkpoint: "Prueba de Panko",
+      apple: "Manzana",
+      banana: "Plátano",
+      berry: "Baya",
+      lion: "León",
+      rabbit: "Conejo",
+      panda: "Panda",
+      fox: "Zorro",
+      koala: "Koala",
+    },
   };
   const assets = {
     cover: "../../assets/animal-vine-rescue-cover.png",
@@ -117,6 +161,10 @@
     "zh-Hant": {
       title: "動物藤蔓救援 - WeightPlay",
       description: "在動物藤蔓救援中剪斷藤蔓、移動葉子彈墊，把水果送進飢餓動物的籃子；這是一款適合家庭遊玩的動物物理益智遊戲。",
+    },
+    es: {
+      title: "Rescate Animal entre Lianas - WeightPlay",
+      description: "Corta lianas, mueve el trampolín de hoja y lleva la fruta a animales hambrientos en este rompecabezas de física familiar de WeightPlay.",
     },
   };
 
@@ -168,8 +216,45 @@
     rescueStage("Panko's Grand Rescue", "Panko 終極救援", "Three fruit, layered wind, twin bounce, moving basket", "三水果、分層風、雙彈與移動籃", { paddleX: 50, basketMotion: { amplitude: 10, speed: 1.75 }, targetTolerance: 11, deliveries: [{ fruit: "apple", animal: "rabbit", startX: 30, targetX: 66, windZones: { splitY: 48, top: 30, bottom: -18 } }, { fruit: "banana", animal: "panda", startX: 70, targetX: 34, wind: -28, afterBounceWind: 24, requiredBounces: 2 }, { fruit: "berry", animal: "koala", startX: 34, targetX: 64, windZones: { splitY: 52, top: 22, bottom: -24 }, requiredBounces: 2, bouncePower: .88 }], checkpoint: true }),
   ];
 
+  const spanishStageCopy = [
+    ["Primera manzana", "Un rebote tranquilo"],
+    ["Arco soleado de plátano", "Guía una brisa hacia la derecha"],
+    ["Regreso de la baya", "Guía una brisa hacia la izquierda"],
+    ["La cesta lejana del zorro", "Cruza todo el claro"],
+    ["Prueba de equilibrio de Panko", "Sigue una cesta que se mueve despacio"],
+    ["El carro rodante del conejo", "La cesta se desplaza de lado a lado"],
+    ["El carro de regreso del león", "Encuentra la cesta cuando regrese"],
+    ["Persecución del carro del zorro", "Apunta por delante de una cesta rápida"],
+    ["La cesta estrecha del panda", "Cesta móvil con una abertura menor"],
+    ["Prueba de cesta móvil de Panko", "Dos rebotes hasta una cesta móvil"],
+    ["Viento arriba, calma abajo", "El viento se debilita bajo las copas"],
+    ["Calma y luego viento lateral", "El viento empieza a media caída"],
+    ["Brisa que cambia", "El viento se invierte tras el rebote"],
+    ["Huerto de dos capas", "Lee los vientos opuestos de arriba y abajo"],
+    ["Prueba de viento de Panko", "Viento por capas y una cesta móvil"],
+    ["Lección de doble hoja", "Rebota dos veces antes de entregar"],
+    ["Dos rebotes con viento lateral", "Corrige la ruta en el segundo rebote"],
+    ["Doble rebote a la deriva", "Dos rebotes y una cesta móvil"],
+    ["Control de hoja suave", "Una hoja más suave exige dirigir de cerca"],
+    ["Prueba de doble rebote de Panko", "Dos rebotes, viento inverso y cesta móvil"],
+    ["Pícnic de dos frutas", "Entrega dos frutas sin salir de la partida"],
+    ["Pícnic con brisa", "Dos frutas con vientos opuestos"],
+    ["Pícnic del carro rodante", "Dos frutas comparten una cesta móvil"],
+    ["Pícnic de rebotes mixtos", "Primero un rebote y luego dos"],
+    ["Prueba de pícnic de Panko", "Dos entregas con viento por capas"],
+    ["Corriente estrecha", "Cesta estrecha y viento inverso"],
+    ["Maestría del doble rebote móvil", "Dos rebotes hasta una cesta rápida"],
+    ["Pareja de entregas por capas", "Dos entregas y dos planes de viento"],
+    ["Gran ensayo", "Tres rutas de rescate diferentes"],
+    ["El gran rescate de Panko", "Tres frutas, viento por capas, doble rebote y cesta móvil"],
+  ];
+  stages.forEach((stage, index) => {
+    [stage.titleEs, stage.ruleEs] = spanishStageCopy[index];
+  });
+
   function validateStages() {
     if (stages.length !== 30) throw new Error(`Animal Vine Rescue requires 30 stages, found ${stages.length}.`);
+    if (spanishStageCopy.length !== stages.length) throw new Error(`Animal Vine Rescue requires ${stages.length} Spanish stage translations.`);
     if (new Set(stages.map((stage) => stage.titleEn)).size !== 30) throw new Error("Animal Vine Rescue stage titles must be unique.");
     const checkpoints = stages.map((stage, index) => stage.checkpoint ? index + 1 : 0).filter(Boolean);
     if (checkpoints.join(",") !== "5,10,15,20,25,30") throw new Error(`Unexpected Panko checkpoints: ${checkpoints.join(",")}`);
@@ -247,11 +332,15 @@
   }
 
   function stageTitle(stage) {
-    return locale === "zh-Hant" ? stage.titleZh : stage.titleEn;
+    if (locale === "zh-Hant") return stage.titleZh;
+    if (locale === "es") return stage.titleEs;
+    return stage.titleEn;
   }
 
   function stageRule(stage) {
-    return locale === "zh-Hant" ? stage.ruleZh : stage.ruleEn;
+    if (locale === "zh-Hant") return stage.ruleZh;
+    if (locale === "es") return stage.ruleEs;
+    return stage.ruleEn;
   }
 
   function stageRoutes(stage) {

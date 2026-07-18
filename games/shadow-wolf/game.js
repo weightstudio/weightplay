@@ -159,6 +159,7 @@
       jumpAction: "Jump",
       attackAction: "Attack",
       dashAction: "Dash",
+      desktopControlsLabel: "Desktop controls: A/D move, W or Space jump, J attack, K or Shift dash.",
       controlLegend: "A/D Move · W/Space Jump · J Attack · K/Shift Dash",
       roomLabel: "Stage",
       keyLabel: "Points",
@@ -252,6 +253,7 @@
       jumpAction: "跳躍",
       attackAction: "攻擊",
       dashAction: "衝刺",
+      desktopControlsLabel: "桌面操作：A/D 移動，W 或空白鍵跳躍，J 攻擊，K 或 Shift 衝刺。",
       controlLegend: "A/D 移動 · W/空白鍵 跳躍 · J 攻擊 · K/Shift 衝刺",
       roomLabel: "房間",
       keyLabel: "鑰匙",
@@ -1048,7 +1050,7 @@
     else definition.enemies.forEach((type, index) => state.enemies.push(enemyProfile(type, index, definition.id)));
     state.x = 70;
     state.y = mainFloorY - state.height;
-    state.entryGraceFrames = 90;
+    state.entryGraceFrames = 300;
   }
 
   // Active game start trigger

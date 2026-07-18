@@ -259,6 +259,14 @@
     },
   };
 
+  text.es = {
+    title:"Pescador del Arrecife Animal",pageTitle:"Pescador del Arrecife Animal - Juego de pesca | WeightPlay",pageDescription:"Completa 30 misiones de pesca, controla zonas de tensión cambiantes, documenta 12 criaturas marinas, mejora seis herramientas y captura seis peces Guardianes.",language:"Idioma",backToLobby:"Volver al vestíbulo",back:"Volver",reefZones:"Zonas del arrecife",gearUpgrades:"Mejoras de equipo",menuTitle:"Traza 30 misiones y captura seis peces Guardianes.",menuHint:"Controla reglas de tensión cambiantes, documenta 12 especies, gana Notas del Arrecife y mejora seis herramientas.",reefNotes:"Notas del Arrecife",album:"Álbum",diamonds:"Diamantes",startGame:"Empezar",soundOn:"Sonido: Sí",soundOff:"Sonido: No",enableSound:"Activar sonido",disableSound:"Desactivar sonido",chooseZone:"Elegir misión del arrecife",prepareGear:"Preparar equipo",startExpedition:"Empezar expedición",reefMap:"Mapa del arrecife",zone:"Zona",time:"Tiempo",goal:"Objetivo",retry:"Reintentar",
+    castHint:"Mantén pulsado el mar para cargar y suelta para lanzar.",charging:"Suelta al alcanzar la profundidad deseada.",hooked:"El pez ha picado. Arrastra el control rojo, desliza en el mar o usa Izquierda y Derecha para mantener el indicador en la zona verde.",hookedBehavior:"{behavior}: {hint} Mantén el indicador en la zona segura.",behaviorSteady:"Pez estable",behaviorSteadyHint:"La fuerza es suave; sigue con movimientos pequeños.",behaviorDart:"Pez veloz",behaviorDartHint:"Cambia de dirección rápido; corrige suavemente tras cada impulso.",behaviorHeavy:"Pez pesado",behaviorHeavyHint:"Tira durante más tiempo; ten paciencia cerca del centro.",tensionTitle:"Tensión de línea",tensionLow:"Muy floja",tensionSafe:"SEGURA",tensionHigh:"Muy tensa",tensionMarker:"Arrastrar",playAreaAria:"Zona de pesca. Mantén Espacio para cargar, suelta para lanzar y usa las flechas para controlar la tensión.",tensionLaneAria:"Carril de tensión. Ajusta con las flechas izquierda y derecha.",sonarAria:"Usar sonar",
+    tensionCoachAim:"Mantén el mar o Espacio para lanzar. Cuando pique, arrastra el control rojo, desliza o usa las flechas.",tensionCoachReel:"Arrastra el control rojo, desliza en el mar o usa las flechas para permanecer en la zona verde.",tensionCoachSafe:"Bien. Desliza suavemente y permanece en SEGURA hasta capturarlo.",tensionCoachDanger:"Vuelve ahora a la zona segura.",tensionStatusAim:"Paso 1: mantén pulsado para cargar y suelta para lanzar.",tensionStatusCharging:"Suelta para lanzar. El paso 2 empieza cuando pique un pez.",tensionStatusHooked:"Paso 2: arrastra el control rojo o desliza para entrar en la zona verde.",tensionStatusSafe:"En zona segura. Mantén el control.",tensionStatusDanger:"Devuelve el control rojo a la zona segura o se romperá la línea.",landed:"¡Captura lograda! Sigue antes de que termine el tiempo.",broke:"La línea se rompió. El indicador estuvo demasiado tiempo fuera de la zona segura.",escaped:"El pez escapó. Lanza otra vez y mantén el indicador centrado.",
+    sonarReady:"El sonar está preparado para esta expedición.",sonarScan:"Sonar: {fish} · {rarity} · {behavior}. Próximo lanzamiento fijado.",sonarStatus:"Siguiente: {fish}",needDiamonds:"Necesitas {cost} diamantes.",lureReady:"El cebo raro está preparado para la próxima expedición.",buyLure:"Cebo raro {cost}💎",buySonar:"Pulso sonar {cost}💎",confirmLure:"Confirmar cebo · {before}→{after}💎",confirmSonar:"Confirmar sonar · {before}→{after}💎",lureBuyLabel:"El Cebo raro aumenta la posibilidad de una marca rara en la próxima expedición. Cuesta 3 diamantes. Saldo {balance}.",sonarBuyLabel:"El Pulso sonar revela y fija el próximo pez antes de lanzar. Cuesta 2 diamantes. Saldo {balance}.",lureConfirmLabel:"Confirma el Cebo raro. Gasta 3 diamantes. Saldo de {before} a {after}.",sonarConfirmLabel:"Confirma el Pulso sonar. Gasta 2 diamantes. Saldo de {before} a {after}.",sonar:"Sonar",upgrade:"Mejorar",max:"Máx.",gearUpgradeLabel:"Mejora {gear} del nivel {beforeLevel} al {afterLevel}. Gasta {cost} Notas. Saldo de {before} a {after}.",gearUpgradeNeedLabel:"{gear} nivel {beforeLevel}. El nivel {afterLevel} cuesta {cost} Notas. Saldo {balance}; faltan {need}.",gearMaxLabel:"{gear} nivel {level}. Nivel máximo.",locked:"Bloqueado",complete:"Completado",
+    expeditionWin:"Expedición completada",expeditionFail:"Expedición terminada",result:"Lograste {catches} capturas, descubriste {newFish} entradas nuevas y ganaste {notes} Notas del Arrecife.",score:"Puntuación",catchValue:"Valor de captura",runScore:"Puntuación",runCatchValue:"Notas del Arrecife",lastCatch:"Última captura",noCatchYet:"Sin capturas",newAlbum:"Álbum nuevo",catchSummary:"Capturas de esta expedición",catchToast:"Capturaste {fish}",catchToastMeta:"+{points} pts · +{notes} notas{newTag}",catchHudMeta:"{rarity} · +{points} pts · +{notes} notas{newTag}",newTag:" · ¡Nuevo en el álbum!",noCatch:"Aún no capturaste peces. Haz un lanzamiento más seguro y mantén la línea en SEGURA.",rareFish:"Raro",commonFish:"Común",reportWin:"Informe: buena atención y reacción. Controlaste la tensión mientras elegías lanzamientos seguros.",reportFail:"Informe: buena práctica. Mejora el equipo y devuelve antes el indicador a la zona segura."
+  };
+
   Object.assign(text.en, {
     mission: "Mission {stage}",
     bossMission: "Guardian Catch",
@@ -284,6 +292,9 @@
     bossHooked: "守護魚 · {fish}：{rule}",
     bossShieldOpen: "破綻：留在安全區攻破守護魚。",
     bossShieldClosed: "護甲中：留在安全區等待開啟。",
+  });
+  Object.assign(text.es, {
+    mission:"Misión {stage}",bossMission:"Captura del Guardián",ruleOpen:"Mar abierto · zona segura estable",ruleDrift:"Deriva de algas · la zona se mueve suavemente",ruleSnag:"Enganches de coral · la zona se estrecha",ruleTide:"Marea lunar · la zona cambia de lado",ruleStorm:"Ráfaga de tormenta · tirones cada tres segundos",ruleAbyss:"Prueba abisal · deriva, presión y ráfagas",bossHooked:"GUARDIÁN · {fish}: {rule}",bossShieldOpen:"ABIERTO: permanece en SEGURA para dañar al Guardián.",bossShieldClosed:"PROTEGIDO: permanece en SEGURA hasta que se abra."
   });
 
   const assetPaths = {
@@ -329,15 +340,36 @@
       boss:{ fishId:"fish-12", profile:"abyss", name:{ en:"Crystal Crown Sovereign", "zh-Hant":"水晶冠魚王" }, rule:{ en:"Drift, shield windows, and abyss gusts combine.", "zh-Hant":"漂移、護甲破綻與深淵突流同時出現。" } },
     },
   ];
+  const spanishMissionNames = [
+    "Ensenada de entrenamiento","Canal del banco de conchas","Cruce de la laguna","Plataforma solar","Corte de la carpa corona",
+    "Entrada de algas cinta","Corriente verde","Jardín enredado","Arco a la deriva","Guarida del Leviatán de algas",
+    "Paso de agujas de coral","Ventana de arrecife de cristal","Laberinto de ramas","Corredor del abanico rojo","Bastión de la raya carnero",
+    "Entrada iluminada por la luna","Marea plateada","Camino de faroles medusa","Poza del eclipse","Anillo de la manta lunar",
+    "Plataforma de lluvia","Boya del trueno","Fosa de viento cruzado","Ruta de espuma blanca","Ojo del farol de tormenta",
+    "Puerta de presión azul","Caída de cristal","Termoclina silenciosa","Faro del abismo","Trono de la corona de cristal"
+  ];
+  const spanishBosses = [
+    ["Guardián Corona Solar","Sigue tres pulsos suaves de la corona."],
+    ["Leviatán de Algas","La zona segura deriva mientras su tirón sigue pesado."],
+    ["Raya Carnero de Coral","Su defensa de coral se abre y cierra cada dos segundos."],
+    ["Manta del Eclipse","Sus fintas invierten el tirón antes de cada cambio de marea."],
+    ["Guardián Farol de Tormenta","Una ráfaga fuerte golpea la línea cada tres segundos."],
+    ["Soberano Corona de Cristal","Se combinan deriva, ventanas de escudo y ráfagas abisales."]
+  ];
+  regionDefinitions.forEach((region,regionIndex)=>{
+    region.names.forEach((name,missionIndex)=>name.push(spanishMissionNames[regionIndex*5+missionIndex]));
+    region.boss.name.es=spanishBosses[regionIndex][0];
+    region.boss.rule.es=spanishBosses[regionIndex][1];
+  });
 
   const schoolPattern = ["steady", "mixed", "dart", "heavy", "guardian"];
-  const zones = regionDefinitions.flatMap((region, regionIndex) => region.names.map(([en, zh], missionIndex) => {
+  const zones = regionDefinitions.flatMap((region, regionIndex) => region.names.map(([en, zh, es], missionIndex) => {
     const stage = regionIndex * 5 + missionIndex + 1;
     return {
       id:`mission-${stage}`,
       stage,
       region:region.id,
-      name:{ en, "zh-Hant":zh },
+      name:{ en, "zh-Hant":zh, es },
       img:region.img,
       goal:missionIndex === 0 ? 2 : missionIndex === 4 ? 3 : 3,
       unlock:stage,
@@ -357,6 +389,7 @@
     { id: "boat", name: { en: "Boat Range", "zh-Hant": "小船航程" }, img: "../../assets/animal-reef-fisher-gear-boat-range.webp", cost: 22 },
     { id: "scan", name: { en: "Reef Scanner", "zh-Hant": "礁區掃描" }, img: "../../assets/animal-reef-fisher-gear-reef-scanner.webp", cost: 20 },
   ];
+  ["Fuerza de caña","Control del carrete","Resistencia de línea","Calidad del cebo","Alcance del barco","Escáner de arrecife"].forEach((name,index)=>{gear[index].name.es=name;});
 
   const fishNames = [
     ["Lagoon Stripe", "潟湖條紋魚"],
@@ -389,6 +422,7 @@
       notes: tier + (rare ? 5 : 1),
     };
   });
+  ["Rayado de laguna","Pez globo burbuja","Pinzón de coral","Raya de cristal","Pargo de algas","Carpa Corona Solar","Medusa lunar","Corredor de aleta azul","Caballito de mar perla","Farol del arrecife","Manta de tormenta","Pez Corona de Cristal"].forEach((name,index)=>{fish[index].name.es=name;});
 
   const fishFrameCrops = {
     fishA: [
@@ -530,7 +564,7 @@
   }
 
   function applyLocale() {
-    document.documentElement.lang = locale === "zh-Hant" ? "zh-Hant" : "en";
+    document.documentElement.lang = locale === "zh-Hant" ? "zh-Hant" : locale === "es" ? "es" : "en";
     document.title = t("pageTitle");
     const description = document.querySelector('meta[name="description"]');
     if (description) description.setAttribute("content", t("pageDescription"));

@@ -575,7 +575,7 @@
     mission(30, "Rune Crown Chimera", "符冠奇美拉", ["chimeraBoss", "sealRaven", "mirrorWolf"], "Adapt as every visible Boss phase changes the board rule.", "每個可見首領階段改變棋盤規則時立即調整。", [tile(1,0,"seal"),tile(1,3,"cooling")], "chimera"),
   ];
 
-  let locale = window.WonderI18n?.locale?.() || localStorage.getItem(localeKey) || "en";
+  let locale = window.WonderI18n?.actualLocale?.() || window.WonderI18n?.locale?.() || localStorage.getItem(localeKey) || "en";
 
   function updateBattleScale() {
     const viewport = window.visualViewport;
@@ -642,11 +642,12 @@
   }
 
   function t(key, vars = {}) {
-    let value = (text[locale] && text[locale][key]) || text.en[key] || key;
+    const sourceLocale = locale === "zh-Hans" ? "zh-Hant" : locale;
+    let value = (text[sourceLocale] && text[sourceLocale][key]) || text.en[key] || key;
     Object.entries(vars).forEach(([name, val]) => {
       value = value.replaceAll(`{${name}}`, val);
     });
-    return value;
+    return locale === "zh-Hans" ? window.WonderI18n?.simplifyChineseText?.(value) || value : value;
   }
 
   function focusPanel(node) {
@@ -747,11 +748,14 @@
   }
 
   function applyLocale() {
-    document.documentElement.lang = locale === "zh-Hant" ? "zh-Hant" : "en";
+    document.documentElement.lang = locale;
     document.title = `${t("title")} - WeightPlay`;
-    const description = locale === "zh-Hant"
-      ? "指揮獅王、貓頭鷹與烏龜完成 30 個回合制戰棋任務，破解符文地形、特殊敵人與六位階段首領，並保存本機成長。"
-      : "Command three animal heroes through 30 authored rune-grid missions with terrain rules, special enemies, six phased Bosses, permanent upgrades, and local progress.";
+    const chineseDescription = "指揮獅王、貓頭鷹與烏龜完成 30 個回合制戰棋任務，破解符文地形、特殊敵人與六位階段首領，並保存本機成長。";
+    const description = locale === "zh-Hans"
+      ? window.WonderI18n?.simplifyChineseText?.(chineseDescription) || chineseDescription
+      : locale === "zh-Hant"
+        ? chineseDescription
+        : "Command three animal heroes through 30 authored rune-grid missions with terrain rules, special enemies, six phased Bosses, permanent upgrades, and local progress.";
     document.querySelector('meta[name="description"]')?.setAttribute("content", description);
     document.querySelector('meta[property="og:title"]')?.setAttribute("content", `${t("title")} - WeightPlay`);
     document.querySelector('meta[property="og:description"]')?.setAttribute("content", description);
@@ -775,9 +779,10 @@
   }
 
   function localizeStrategyTips() {
-    const tips = text[locale].strategyTips || text.en.strategyTips;
+    const sourceLocale = locale === "zh-Hans" ? "zh-Hant" : locale;
+    const tips = text[sourceLocale]?.strategyTips || text.en.strategyTips;
     document.querySelectorAll(".game-info-strategy li").forEach((item, index) => {
-      if (tips[index]) item.textContent = tips[index];
+      if (tips[index]) item.textContent = locale === "zh-Hans" ? window.WonderI18n?.simplifyChineseText?.(tips[index]) || tips[index] : tips[index];
     });
   }
 
@@ -794,6 +799,7 @@
     missionDefs.forEach((mission) => {
       const btn = document.createElement("button");
       btn.type = "button";
+      btn.dataset.missionId = String(mission.id);
       const isLocked = mission.id > profile.unlockedMission;
       const isActive = selectedMission === mission.id;
       btn.className = `mission-card ${isActive ? "is-active" : ""}`;
@@ -803,8 +809,10 @@
       const traitNames = [...new Set(mission.enemies.map((id) => enemyDefs.find((enemy) => enemy.id === id)?.trait).filter(Boolean))]
         .map((key) => t(key))
         .join(" / ");
-      const missionName = locale === "zh-Hant" ? mission.nameZht : mission.nameEn;
-      const missionTactic = locale === "zh-Hant" ? mission.tacticZht : mission.tacticEn;
+      const missionNameSource = locale === "zh-Hant" || locale === "zh-Hans" ? mission.nameZht : mission.nameEn;
+      const missionTacticSource = locale === "zh-Hant" || locale === "zh-Hans" ? mission.tacticZht : mission.tacticEn;
+      const missionName = locale === "zh-Hans" ? window.WonderI18n?.simplifyChineseText?.(missionNameSource) || missionNameSource : missionNameSource;
+      const missionTactic = locale === "zh-Hans" ? window.WonderI18n?.simplifyChineseText?.(missionTacticSource) || missionTacticSource : missionTacticSource;
       btn.innerHTML = `
         <span class="mission-card__top">
           <strong>${t("missionCard", { n: mission.id })} · ${missionName}</strong>
@@ -952,6 +960,7 @@
   }
 
   function showStage() {
+    selectedMission = Math.min(profile.unlockedMission, MISSION_COUNT);
     nodes.menuPanel.classList.add("is-hidden");
     nodes.stagePanel.classList.remove("is-hidden");
     nodes.stageReserve.classList.remove("is-hidden");
@@ -1971,7 +1980,7 @@
     nodes.localeSelect.addEventListener("change", () => {
       const requested = nodes.localeSelect.value;
       window.WonderI18n?.setLocale?.(requested);
-      locale = window.WonderI18n?.locale?.() || requested;
+      locale = window.WonderI18n?.actualLocale?.() || window.WonderI18n?.locale?.() || requested;
       localStorage.setItem(localeKey, requested);
       applyLocale();
       window.dispatchEvent(new CustomEvent("wonder:locale-change", { detail: { locale } }));

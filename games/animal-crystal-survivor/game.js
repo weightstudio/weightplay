@@ -268,6 +268,15 @@
       statPickup: "\u62fe\u53d6\u7bc4\u570d",
     },
   };
+  text.es = {
+    title:"Superviviente de Cristal Animal",pageDescription:"Campaña de 30 niveles en la Arboleda de Cristal con objetivos de llaves, seis mejoras, peligros cambiantes y seis jefes animales originales.",ogDescription:"Campaña de supervivencia de 30 niveles con seis regiones, peligros legibles, ataque automático, elecciones de mejora y seis jefes distintos.",language:"Idioma",
+    menuTitle:"Sobrevive en la Arboleda de Cristal.",menuHint:"Objetivo: recoge llaves doradas antes de 3:00. Los cristales dan XP y las mejoras ayudan al guardabosques.",expeditionRecordTitle:"Registro de expedición",expeditionRecordText:"Mejor: {keys} llaves · Nivel máximo {level} · {runs} partidas",patrolRankTitle:"Rango de patrulla: {rank}",patrolRankProgress:"{current} / {target} llaves acumuladas",patrolRankComplete:"Rango máximo · {current} llaves acumuladas",patrolRankUp:"¡Subes de rango! Ahora eres {rank}.",patrolRankNext:"Progreso: {current} / {target} llaves para {rank}.",rankScout:"Explorador de cristal",rankKeeper:"Cuidador de la arboleda",rankRanger:"Guardabosques de cristal",rankGuardian:"Guardián de la arboleda",rankWarden:"Custodio de cristal",
+    controlMove:"Toca o arrastra para moverte",controlKeys:"WASD / Flechas",controlAttack:"Ataque automático",chooseStage:"Elegir nivel",stage:"Nivel",stageProgress:"{unlocked} / 30 desbloqueados",stageSetup:"Desliza por seis regiones. Cada quinto nivel es un jefe con una regla de supervivencia distinta.",stageSwipe:"↔ Desliza",stageDeploy:"Toca un nivel desbloqueado para patrullar",stageLocked:"Bloqueado",stageReady:"Listo",stageCleared:"Completado",bossCheckpoint:"Punto de jefe",objective:"Recoge {keys} llaves · sobrevive 3:00{boss}",bossObjective:" · derrota al jefe",nextStage:"Siguiente nivel",
+    diamondShopTitle:"Mejora de partida",charmName:"Amuleto de cristal",charmEffect:"Inicio permanente: Vida máx. 7 → 8 · radio de recogida 54 → 68.",charmOwned:"En propiedad y guardado: Vida máx. 8 · radio 68 en cada partida.",charmBuy:"Desbloquear por {cost}",charmNeed:"Necesitas {cost} diamantes · saldo {balance}.",charmBought:"Desbloqueado y guardado · quedan {balance} diamantes.",charmConfirm:"Confirma la mejora permanente · Diamantes {before} → {after}. Toca otra vez.",charmConfirmLabel:"Confirma el Amuleto de cristal. Gasta 12 diamantes. Saldo de {before} a {after}.",enableSound:"Activar sonido",disableSound:"Desactivar sonido",startRun:"Empezar partida",menu:"Menú",backToLobby:"Volver al vestíbulo",
+    playfield:"Zona de juego de Superviviente de Cristal Animal",playfieldState:"Nivel {stage}/{stageCount}. Tiempo {time}. Llaves {keys}/{target}. Vida {hp}/{maxHp}. Nivel {level}. Muévete con WASD, flechas, clic, toque o arrastre. El guardabosques ataca al enemigo más cercano dentro del alcance. Regla: {rule}",time:"Tiempo",keys:"Llaves",level:"Nivel",hp:"Vida",crystals:"Cristales",playHint:"Recoge llaves antes de 3:00. Toma cristales para subir de nivel y elige mejoras cuando aparezcan.",hintKeyClose:"Llave dorada cerca: atraviésala para aumentar tu puntuación.",hintCrystal:"Hay cristales en el suelo: recógelos para llenar la barra de XP.",hintCombat:"El ataque automático funciona: mantén las sombras dentro del círculo verde.",hintUpgradeSoon:"Casi subes de nivel: recoge otro cristal y elige una habilidad más fuerte.",loading:"Cargando",chooseUpgrade:"Elige una mejora",
+    tryAgain:"Reintentar",backToMenu:"Volver al menú",backToStages:"Volver a niveles",reaction:"Reacción",focus:"Atención",problemSolving:"Resolución de problemas",timeUp:"¡Tiempo!",runFailed:"Partida terminada",stageClear:"¡Nivel completado!",objectiveMissed:"Objetivo incompleto",objectiveMissedLine:"Consigue {keys} llaves{boss} antes de que acabe el tiempo.",bossStillActive:" y calma al jefe",resultLine:"Llaves {keys} | Nivel {level} | Tiempo {time} s | Mejor {best}",resultScoreLabel:"Llaves doradas recogidas",improved:"¡Gran progreso! Mejoraste tu récord de llaves.",keepGoing:"Buen intento. La práctica breve ayuda a la reacción y atención.",skillReportTitle:"Informe de habilidades",skillReportStrong:"Partida sólida: seguiste moviéndote, alcanzaste el nivel {level} y recogiste {keys} llaves mientras vigilabas las sombras.",skillReportFocus:"Buena práctica de atención: recoge antes los cristales para obtener mejoras más pronto.",skillReportRecover:"Valiente intento: observa los círculos de peligro y muévete antes de que se acerquen las sombras.",resultDisclaimer:"Solo para diversión y seguimiento local del progreso.",
+    upgradeAttack:"Poder de cristal",upgradeAttackDesc:"Los proyectiles calman sombras más rápido.",upgradeRange:"Mayor alcance",upgradeRangeDesc:"El guardabosques apunta a sombras más lejanas.",upgradeSpeed:"Patas veloces",upgradeSpeedDesc:"Muévete más rápido por la arboleda.",upgradeMaxHp:"Corazón guardián",upgradeMaxHpDesc:"Aumenta la vida máxima y cura.",upgradeAttackSpeed:"Semillas rápidas",upgradeAttackSpeedDesc:"Ataca con más frecuencia.",upgradePickupRadius:"Imán de cristal",upgradePickupRadiusDesc:"Recoge cristales y llaves desde más lejos.",upgradeValue:"{stat}: {current} → {next}",statDamage:"Daño",statRange:"Alcance",statSpeed:"Velocidad",statHp:"Vida máxima",statCooldown:"Intervalo de ataque",statPickup:"Radio de recogida"
+  };
 
   const assetPaths = {
     arena: "../../assets/animal-crystal-survivor-forest-arena.webp",
@@ -355,6 +364,41 @@
     bossImage: row[5] || null,
     targetKeys: 2 + Math.floor(index / 6),
   }));
+  const spanishRegionNames = ["Arboleda de Cristal","Fragmentos Lunares","Laberinto de Zarzas","Grieta de Brasas","Corona de Tormenta","Corazón del Eclipse"];
+  regions.forEach((region,index)=>{region.es=spanishRegionNames[index];});
+  const spanishStageRows = [
+    ["Primera patrulla","Aprende las rutas de llaves mientras se acercan zorros de sombra."],
+    ["Corriente de cristal","Los cristales sueltos derivan hacia la sombra más cercana."],
+    ["Ocaso de panteras","Panteras rápidas llegan en grupos de carga marcados."],
+    ["Anillo de jabalíes","Jabalíes acorazados cierran la arena desde lados opuestos."],
+    ["Acechador de raíces","Los círculos de raíces ralentizan; derrota al guardián antes del tiempo."],
+    ["Faroles de polilla","Pulsos prisma obligan a dar giros amplios por la arena."],
+    ["Sendero reflejado","Dos círculos de aviso aparecen en posiciones reflejadas."],
+    ["Órbita de fragmentos","Zonas giratorias vuelven inseguro el centro por intervalos."],
+    ["Manada velada","Cada tercer enemigo entra con un escudo temporal de cristal."],
+    ["Reina Polilla Prisma","La Reina alterna escudo de cristal y explosiones radiales."],
+    ["Zonas de raíces","Raíces anunciadas castigan quedarse quieto."],
+    ["Carriles de espinas","Carriles alternos dejan una ruta de escape legible."],
+    ["Oleada de zarzas","Los jabalíes paran, destellan y luego cargan."],
+    ["Colmillos cruzados","Cargadores llegan de cuatro lados mientras las raíces marcan el centro."],
+    ["Rey Jabalí de Zarzas","El Rey anuncia cargas largas y deja espinas detrás."],
+    ["Marcas ardientes","Círculos naranjas se encienden tras una demora clara."],
+    ["Rastro de brasas","Enemigos rápidos dejan suelo caliente al caer."],
+    ["Bordes del horno","La zona segura se aleja de un borde brillante."],
+    ["Caza de ceniza","Panteras de ceniza parpadean y reaparecen junto a las marcas."],
+    ["Pantera de Ceniza","La Pantera cruza la arboleda y quema cada lugar donde cae."],
+    ["Señales de relámpago","Círculos azules marcan cada impacto antes de caer."],
+    ["Deriva del vendaval","El viento empuja los objetos y cambia las rutas de recogida."],
+    ["Trueno encadenado","El rayo golpea tu marca y luego dos marcas reflejadas."],
+    ["Exploradores del Roc","Oleadas rápidas llegan entre carriles alternos de rayos."],
+    ["Roc de la Tempestad","El Roc atraviesa un carril marcado y llama tres zonas de rayos."],
+    ["Anillo del eclipse","Quédate dentro del anillo móvil cuando pulse la oscuridad."],
+    ["Sello giratorio","Avisos de raíces, fuego y rayos se alternan uno por uno."],
+    ["Convergencia de sombras","Enemigos con escudo y cargas exigen priorizar objetivos."],
+    ["Camino de la última llave","Las llaves se mueven entre zonas seguras mientras vuelven los peligros."],
+    ["Coloso del Eclipse","El guardián final rota los tres avisos alrededor de un anillo seguro móvil."]
+  ];
+  stages.forEach((stage,index)=>{stage.nameEs=spanishStageRows[index][0];stage.ruleEs=spanishStageRows[index][1];});
 
   const patrolRanks = [
     { threshold: 0, name: "rankScout" },
@@ -735,11 +779,11 @@
   }
 
   function stageName(config) {
-    return locale === "zh-Hant" ? config.nameZh : config.nameEn;
+    return locale === "zh-Hant" ? config.nameZh : locale === "es" ? config.nameEs : config.nameEn;
   }
 
   function stageRule(config) {
-    return locale === "zh-Hant" ? config.ruleZh : config.ruleEn;
+    return locale === "zh-Hant" ? config.ruleZh : locale === "es" ? config.ruleEs : config.ruleEn;
   }
 
   function showStageSelection(shouldScroll = true) {
@@ -754,7 +798,7 @@
 
   function renderStageSelector(shouldScroll = true) {
     if (!nodes.stageRail) return;
-    nodes.stageSelectTitle.textContent = locale === "zh-Hant" ? "\u9078\u64c7\u6c34\u6676\u8def\u7dda" : "Choose a Crystal Route";
+    nodes.stageSelectTitle.textContent = locale === "zh-Hant" ? "\u9078\u64c7\u6c34\u6676\u8def\u7dda" : locale === "es" ? "Elige una ruta de cristal" : "Choose a Crystal Route";
     nodes.stageProgressText.textContent = t("stageProgress", { unlocked: save.unlockedStage });
     nodes.stageSetupText.textContent = t("stageSetup");
     $("stageSwipeText").textContent = t("stageSwipe");
@@ -772,10 +816,10 @@
       card.setAttribute("aria-disabled", String(locked));
       card.style.setProperty("--stage-overlay", region.color);
       if (locked) card.tabIndex = -1;
-      const regionName = locale === "zh-Hant" ? region.zh : region.en;
+      const regionName = locale === "zh-Hant" ? region.zh : locale === "es" ? region.es : region.en;
       const bossText = config.bossImage ? `<small>${t("bossCheckpoint")}</small>` : "";
       const objective = t("objective", { keys: config.targetKeys, boss: config.bossImage ? t("bossObjective") : "" });
-      card.innerHTML = `<em>${regionName}</em><strong>${locale === "zh-Hant" ? `\u7b2c ${config.number} \u95dc` : `Stage ${config.number}`}</strong><span>${stageName(config)}</span><small>${stageRule(config)}</small>${bossText}<small>${objective}</small><small>${locked ? t("stageLocked") : cleared ? t("stageCleared") : t("stageReady")}</small>`;
+      card.innerHTML = `<em>${regionName}</em><strong>${locale === "zh-Hant" ? `\u7b2c ${config.number} \u95dc` : `${t("stage")} ${config.number}`}</strong><span>${stageName(config)}</span><small>${stageRule(config)}</small>${bossText}<small>${objective}</small><small>${locked ? t("stageLocked") : cleared ? t("stageCleared") : t("stageReady")}</small>`;
       card.setAttribute("aria-label", `${regionName}. ${stageName(config)}. ${stageRule(config)}. ${objective}. ${locked ? t("stageLocked") : cleared ? t("stageCleared") : t("stageReady")}`);
       card.addEventListener("click", () => {
         if (locked) return;
@@ -937,7 +981,7 @@
       abilityTimer: 2.2,
       chargeTimer: 2.8,
     });
-    addFloater(locale === "zh-Hant" ? "\u9996\u9818\u73fe\u8eab" : "BOSS ARRIVES", W / 2, 130, "#ffe76c");
+    addFloater(locale === "zh-Hant" ? "\u9996\u9818\u73fe\u8eab" : locale === "es" ? "LLEGA EL JEFE" : "BOSS ARRIVES", W / 2, 130, "#ffe76c");
   }
 
   function updateStageMechanics(dt) {
@@ -1182,7 +1226,7 @@
     if (enemy.isBoss) {
       state.bossDefeated = true;
       state.keys += 2;
-      addFloater(locale === "zh-Hant" ? "\u9996\u9818\u64ca\u7834 +2" : "BOSS CALMED +2", enemy.x, enemy.y - 80, "#ffe76c");
+      addFloater(locale === "zh-Hant" ? "\u9996\u9818\u64ca\u7834 +2" : locale === "es" ? "JEFE CALMADO +2" : "BOSS CALMED +2", enemy.x, enemy.y - 80, "#ffe76c");
     }
     state.xpDrops.push({ x: enemy.x, y: enemy.y, value: enemy.isBoss ? 4 : 1 });
     state.enemies = state.enemies.filter((item) => item !== enemy);
@@ -1196,7 +1240,7 @@
         enemy.shieldHp = Math.max(0, enemy.shieldHp - damage);
         if (enemy.shieldHp <= 0) enemy.shielded = false;
       }
-      addFloater(locale === "zh-Hant" ? "\u8b77\u76fe" : "SHIELD", enemy.x, enemy.y - 58, "#c4b5fd");
+      addFloater(locale === "zh-Hant" ? "\u8b77\u76fe" : locale === "es" ? "ESCUDO" : "SHIELD", enemy.x, enemy.y - 58, "#c4b5fd");
       return { blocked: true, hp: enemy.hp };
     }
     enemy.hp -= damage;

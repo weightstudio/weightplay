@@ -235,6 +235,20 @@
     goalDualKind: "檢查關",
   });
 
+  text.es = {
+    brand: "WeightPlay", title: "Bloques de Merienda Animal", language: "Idioma", stage: "Nivel", moves: "Movimientos", target: "Objetivo", score: "Puntuación",
+    menuTitle: "Elige un nivel de meriendas.", menuText: "Usa todos los movimientos, alcanza el objetivo y supera tu mejor puntuación.", start: "Empezar", stageHelp: "Desliza a los lados y elige un nivel desbloqueado.",
+    stageName: "Nivel {stage}", locked: "Bloqueado", best: "Mejor {score}", hint: "Toca o arrastra una merienda para intercambiarla con una vecina.",
+    goalScore: "Consigue {target} puntos", goalCollect: "Recoge {icon} x{target}", goalCollectPair: "Recoge {first} + {second} x{target}", goalCascade: "Alcanza una cascada x{target}", goalBurst: "Elimina {target} de una vez", goalDual: "{icon} x{collect} y {score} puntos",
+    goalScoreKind: "Objetivo de puntos", goalCollectKind: "Objetivo de recogida", goalCollectPairKind: "Objetivo doble", goalCascadeKind: "Objetivo de cascada", goalBurstKind: "Objetivo de grupo grande", goalDualKind: "Punto de control",
+    goalProgress: "{count} / {target}", goalReady: "¡Objetivo alcanzado! Usa los movimientos restantes para ganar más puntos.", loading: "Cargando", clear: "¡Nivel completado!", failed: "¡Inténtalo de nuevo!",
+    clearText: "Puntuación {score}. Objetivo {goal}. Mejor {best}.", finalClearText: "Puntuación {score}. Objetivo {goal}. ¡Todos los niveles completados!", failedText: "Puntuación {score}. Objetivo {goal}. Prueba un combo mayor.",
+    next: "Siguiente nivel", again: "Intentar de nuevo", menu: "Niveles", lobby: "Sala de juegos", skillReport: "Informe de habilidades", todayScore: "Puntuación de hoy", previousBest: "Mejor anterior", improvement: "Mejora",
+    logicSkill: "Lógica", problemSolvingSkill: "Resolución de problemas", focusSkill: "Concentración", progressNewBest: "¡Gran progreso! Mejoraste tu récord.", progressImproved: "¡Buena mejora! Esta vez planificaste mejor.", progressSteady: "¡Buen esfuerzo! Inténtalo otra vez para mejorar la atención y los combos.", progressNote: "Las puntuaciones solo sirven para divertirse y seguir el progreso local.",
+    boardAria: "Tablero de Bloques de Merienda", tileAria: "{snack}, fila {row}, columna {column}", homeAria: "Volver a la sala Kids", languageAria: "Idioma", gameStatsAria: "Estadísticas del juego", stageSelectAria: "Selección de nivel", stageBackAria: "Volver al inicio", battleBackAria: "Volver a los niveles",
+    snackST: "Fresa", snackCK: "Galleta", snackJM: "Caramelo", snackGR: "Uva", snackCH: "Queso", snackPR: "Pretzel",
+  };
+
   const stageNameTranslations = {
     "zh-Hant": {
       "Picnic Path": "野餐小徑",
@@ -250,6 +264,10 @@
       "Bridge Banquet": "橋上宴會",
       "Crown Table": "皇冠餐桌",
     },
+    es: {
+      "Picnic Path": "Sendero del pícnic", "Cookie Crossing": "Cruce de galletas", "Grape Garden": "Jardín de uvas", "Cheese Workshop": "Taller de queso", "Pretzel Bridge": "Puente de pretzels", "Crown Feast": "Banquete de la corona",
+      "Picnic Bell": "Campana del pícnic", "Bakery Gate": "Puerta de la pastelería", "Garden Drum": "Tambor del jardín", "Workshop Clock": "Reloj del taller", "Bridge Banquet": "Banquete del puente", "Crown Table": "Mesa de la corona",
+    },
   };
 
   const metadata = {
@@ -264,6 +282,12 @@
       description: "遊玩動物零食方塊，交換相鄰零食圖案，在限定步數內完成分數或收集目標，練習邏輯、解題與專注力。",
       ogTitle: "動物零食方塊 - 關卡式三消益智遊戲",
       ogDescription: "交換零食方塊、完成關卡目標，挑戰更好的本機紀錄。",
+    },
+    es: {
+      title: "Bloques de Merienda Animal - WeightPlay",
+      description: "Completa 30 niveles guardados con objetivos de puntuación, recogida, cascada, grupos grandes, parejas y puntos de control.",
+      ogTitle: "Bloques de Merienda Animal - Rompecabezas de 30 niveles",
+      ogDescription: "Planifica cada intercambio en 30 niveles y seis capítulos de combinaciones de meriendas animales.",
     },
   };
 

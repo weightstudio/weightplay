@@ -161,7 +161,18 @@
   rail.addEventListener('keydown',event=>{
     if(event.target.closest('.stage-card'))rejectRepeatedActivation(event);
   });
-  $('resultPanel').addEventListener('keydown',rejectRepeatedActivation,true);
+  $('resultPanel').addEventListener('keydown',event=>{
+    rejectRepeatedActivation(event);
+    if(event.defaultPrevented||event.key!=='Tab'||$('resultPanel').classList.contains('hidden'))return;
+    const actions=[...$('resultPanel').querySelectorAll('button:not(.hidden):not(:disabled)')]
+      .filter(action=>action.getClientRects().length>0);
+    if(actions.length===0)return;
+    const first=actions[0],last=actions[actions.length-1];
+    if((event.shiftKey&&document.activeElement===first)||(!event.shiftKey&&document.activeElement===last)){
+      event.preventDefault();
+      (event.shiftKey?last:first).focus({preventScroll:true});
+    }
+  },true);
   let railStartX=0;
   let railStartScroll=0;
   let railPointerActive=false;

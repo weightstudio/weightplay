@@ -2710,13 +2710,47 @@ window.WONDER_DATA = {
     ["Bear Starfall", "黑熊星落王", "The final Boss casts a three-orb starfall over the complete roster.", "最終王在完整獸群上方施放三連星落彈。", [0, 1, 2, 3, 4, 5, 6, 7], "alternating", "starfall", "Three-orb starfall", "三連星落彈"]
   ];
 
+  const spanishAuthoredStages = [
+    ["Puerta del Jabalí", "Aprende los carriles centrales con jabalíes rápidos."],
+    ["Pezuñas Divididas", "Los jabalíes alternan entre los accesos izquierdo y derecho."],
+    ["Sendero del Embaucador", "Hienas en zigzag entran por los caminos exteriores."],
+    ["Manada Cruzada", "Los jabalíes ocupan carriles mientras las hienas los cruzan."],
+    ["Persecución del Jabalí", "Un jefe rápido dispara proyectiles de persecución tras escoltas mixtos.", "Disparos rápidos dirigidos"],
+    ["Pantalla de Rinocerontes", "Rinocerontes acorazados ocupan el centro mientras pasan jabalíes."],
+    ["Escolta Rompemuros", "Búfalos rompemuros avanzan entre escoltas acorazados."],
+    ["Laberinto de Lanzadores", "Osos e hienas en zigzag desvían la puntería hacia ambos lados."],
+    ["Asalto Celeste", "Halcones y tigres atraviesan carriles fijos."],
+    ["Fuego Cruzado de Hienas", "El jefe lanza fuego cruzado doble mientras la manada cambia de carril.", "Fuego cruzado doble"],
+    ["Columna de Rinocerontes", "Una columna acorazada premia la penetración y el daño continuo."],
+    ["Velocistas Gemelos", "Jabalíes y tigres corren por lados opuestos."],
+    ["Línea Rompemuros", "Búfalos y cocodrilos llenan tres carriles fijos."],
+    ["Tejido Embaucador", "Hienas y osos alternan curvas impredecibles."],
+    ["Baluarte Rinoceronte", "Rompe seis impactos de escudo antes de dañar por completo al jefe acorazado.", "Escudo de seis impactos y orbe pesado"],
+    ["Picado del Halcón", "Halcones atacan desde puntos exteriores alternos."],
+    ["Relevo de Tigres", "Tigres, jabalíes y halcones alternan una presión veloz."],
+    ["Cielo sobre Armadura", "Rinocerontes acorazados fijan carriles bajo halcones en picado."],
+    ["Manada de Viento Cruzado", "Lanzadores en zigzag y halcones atacan desde bordes móviles."],
+    ["Asedio del Búfalo", "Un orbe pesado apunta al centro del muro mientras avanzan los rompemuros.", "Orbe pesado de asedio central"],
+    ["Asalto Protegido", "Corredores se ocultan tras carriles alternos de rinocerontes y búfalos."],
+    ["Carrera en Zigzag", "Lanzadores curvos y velocistas rectos exigen cambiar rápido de objetivo."],
+    ["Puerta de Bestias Pesadas", "Solo bestias acorazadas y rompemuros presionan el centro."],
+    ["Flanco y Ruptura", "Los atacantes desvían la mira mientras los cocodrilos amenazan el muro."],
+    ["Escuadrón de Halcones", "El jefe pica repetidamente y lanza dos disparos rápidos.", "Picado y dos disparos rápidos"],
+    ["Repaso de Ocho Bestias", "Todos los roles regresan en oleadas claras de tres carriles."],
+    ["Pantalla de Lanzadores", "Lanzadores curvos avanzan tras escoltas acorazados y en picado."],
+    ["Asedio del Cocodrilo", "Una formación pesada central pone a prueba el daño de área y la reparación."],
+    ["Desafío del Festival", "Todos los roles rotan por las dos puertas exteriores."],
+    ["Lluvia Estelar del Oso", "El jefe final lanza tres orbes sobre toda la formación.", "Lluvia estelar de tres orbes"]
+  ];
+
   window.WONDER_DATA.levels.forEach((level, index) => {
     const [titleEn, titleZh, ruleEn, ruleZh, typePool, spawnPattern, bossPattern, bossRuleEn, bossRuleZh] = authoredStages[index];
-    Object.assign(level, { titleEn, titleZh, ruleEn, ruleZh, typePool, spawnPattern });
+    const [titleEs, ruleEs, bossRuleEs] = spanishAuthoredStages[index];
+    Object.assign(level, { titleEn, titleZh, titleEs, ruleEn, ruleZh, ruleEs, typePool, spawnPattern });
     level.waves.forEach((wave) => {
       wave.typePool = typePool.slice();
       wave.spawnPattern = spawnPattern;
-      if (wave.boss) Object.assign(wave, { bossPattern, bossRuleEn, bossRuleZh });
+      if (wave.boss) Object.assign(wave, { bossPattern, bossRuleEn, bossRuleZh, bossRuleEs });
     });
   });
 })();

@@ -313,6 +313,152 @@
     },
   };
 
+  text.es = {
+    gameTitle: "Guardianes Animales del Jardín",
+    language: "Idioma",
+    back: "Volver",
+    backToLobby: "Volver al vestíbulo",
+    walletAria: "Monedero de Guardianes Animales del Jardín",
+    beastGuideAria: "Guía de bestias",
+    stageListAria: "Lista de niveles",
+    animalUpgradesAria: "Mejoras de animales",
+    animalShopAria: "Tienda de animales",
+    menuAria: "Menú de Guardianes Animales del Jardín",
+    gameScreenAria: "Pantalla fija de Guardianes Animales del Jardín",
+    sunEnergyAria: "Energía solar",
+    homeHeartsAria: "Corazones del hogar",
+    animalGuardsAria: "Guardianes animales",
+    defenseLanesAria: "Carriles de defensa animal",
+    chooseStage: "Elegir nivel",
+    menuHint: "Coloca guardianes animales y detén a las bestias salvajes.",
+    stages: "Niveles",
+    openPause: "Pausar batalla",
+    pauseTitle: "Batalla en pausa",
+    pauseHint: "Continúa cuando estés listo o abandona esta batalla.",
+    resume: "Continuar",
+    leaveBattle: "Abandonar batalla",
+    loading: "Cargando",
+    nextStage: "Siguiente nivel",
+    retry: "Intentar de nuevo",
+    lobby: "Vestíbulo",
+    locked: "Nivel bloqueado",
+    victory: "¡Jardín protegido!",
+    defeat: "¡Las bestias llegaron al jardín!",
+    resultWin: "Completaste el nivel {n} con {hp} corazones del hogar.",
+    resultLose: "Coloca guardianes antes y recoge cada sol.",
+    resultScore: "Puntuación {score}",
+    previousBest: "Récord anterior {score}",
+    newBest: "¡Nuevo récord!",
+    improvement: "Mejora {value}%",
+    perfectClear: "¡Defensa perfecta!",
+    perfectBadge: "Perfecto",
+    perfectBonus: "Bonificación por defensa perfecta: +{coins} monedas",
+    masteryTitle: "Medallas del Jardín",
+    masteryProgress: "{current}/{total} defensas perfectas",
+    masteryNext: "Siguiente premio con {count} medallas",
+    masteryComplete: "¡Conseguiste todas las medallas del jardín!",
+    masteryNewMedal: "¡Nueva medalla del jardín!",
+    masteryMilestone: "Hito de medallas: +{coins} monedas",
+    stageCleared: "Completado",
+    stageBest: "Récord {score}",
+    skillReport: "Informe de habilidades",
+    planning: "Planificación",
+    focusSkill: "Concentración",
+    problemSolving: "Resolución de problemas",
+    progressNew: "¡Gran progreso! La defensa del jardín alcanzó un nuevo récord.",
+    progressSteady: "Buen esfuerzo. Coloca guardianes antes para mejorar el próximo intento.",
+    progressNote: "Las puntuaciones solo sirven para divertirse y registrar el progreso local.",
+    stage: "Nivel {n}",
+    wave: "Nivel {n} - Bestias {left}",
+    select: "Elige un animal y toca una casilla de césped.",
+    noEnergy: "Necesitas más sol.",
+    noCoins: "Necesitas más monedas.",
+    noDiamonds: "Necesitas más diamantes.",
+    occupied: "Esta casilla ya tiene un guardián.",
+    started: "¡Defiende el jardín!",
+    danger: "⚠️ ¡Las bestias están cerca!",
+    kennelTitle: "Entrenamiento animal",
+    kennelHint: "Mejora guardianes con monedas. Desbloquea animales raros con diamantes.",
+    shopTitle: "Tienda de animales raros",
+    shopHint: "Usa los diamantes compartidos de WeightPlay para conseguir guardianes especiales.",
+    tabStages: "Niveles",
+    tabAnimals: "Animales",
+    tabShop: "Tienda",
+    level: "Nv. {n}",
+    upgrade: "Mejorar",
+    unlock: "Desbloquear",
+    owned: "Obtenido",
+    nextLevel: "Siguiente: Nv. {n}",
+    nextStats: "+{damage} ATQ / +{hp} PV / {cooldown} s más rápido",
+    unlockHint: "Desbloquea este guardián para entrenarlo.",
+    coinToken: "monedas",
+    diamondToken: "diamantes",
+    sunToken: "sol",
+    reward: "Premio: +{coins} monedas",
+    unitCat: "Gato",
+    unitDog: "Perro",
+    unitOwl: "Búho",
+    unitFox: "Zorro",
+    roleRanged: "A distancia",
+    roleTankMelee: "Tanque cuerpo a cuerpo",
+    roleFastRanged: "Ataque rápido a distancia",
+    roleCrossLane: "Ataque entre carriles",
+    abilityCat: "Cada 4.ª semilla atraviesa",
+    abilityDog: "Mordisco ralentizador",
+    abilityOwl: "Pluma ralentizadora",
+    abilityFox: "Descarga entre carriles",
+    catTactic: "Cada cuarta semilla atraviesa y alcanza a una segunda bestia del mismo carril.",
+    pierce: "¡ATRAVIESA!",
+    dogTactic: "Bloquea el carril y sus mordiscos ralentizan brevemente.",
+    owlTactic: "Sus disparos rápidos mantienen lentas a las bestias veloces.",
+    foxTactic: "Lanza una hoja potente y apoya un carril cercano con una descarga más ligera.",
+    costShort: "Coste",
+    atkShort: "ATQ",
+    hpShort: "PV",
+    beastGuideTitle: "Guía de bestias",
+    beastGuideHint: "Aprende qué hace cada bestia salvaje antes de elegir nivel.",
+    threatPreview: "Amenazas del nivel",
+    threatNormal: "Normal",
+    threatFast: "Veloz",
+    threatShield: "Escudo",
+    threatHealer: "Sanador",
+    threatBurrow: "Excavador",
+    threatThief: "Ladrón de sol",
+    threatBoss: "Jefe",
+    beastNormalDesc: "Bestias equilibradas. Deténlas pronto con gatos o perros.",
+    beastFastDesc: "Bestias veloces que recorren los carriles. Coloca guardianes antes de que aparezcan.",
+    beastShieldDesc: "Bestias con escudo y muchos PV. Usa guardianes entrenados más fuertes.",
+    beastHealerDesc: "Los sanadores restauran a la bestia de delante. Concéntrate en ellos antes de que recuperen el carril.",
+    beastBurrowDesc: "Los excavadores avisan antes de cambiar a un carril cercano. Protege dos carriles.",
+    beastThiefDesc: "Los ladrones roban 12 de sol si no los detienes antes de que brille su bolsa.",
+    beastBossDesc: "Los jefes rugen y ralentizan a los guardianes cercanos. Construye una defensa en capas.",
+    bossRoar: "¡Rugido del jefe!",
+    bossShell: "¡Caparazón cerrado!",
+    bossShellOpen: "¡Caparazón abierto!",
+    bossBurrow: "¡Cambio de carril!",
+    bossRush: "¡Se acerca una embestida!",
+    bossGale: "¡Empuje del vendaval!",
+    bossMoon: "¡Pulso lunar!",
+    healerPulse: "CURA",
+    thiefPulse: "-12 SOL",
+    fast: "Bestias veloces",
+    shield: "Bestias con escudo",
+    swarm: "Enjambre nocturno",
+    boss: "Jefe en la puerta",
+    basic: "Primera defensa",
+    crossfire: "Emboscada entre carriles",
+    tankTrial: "Estampida acorazada",
+    grandBoss: "Jardín del gran jefe",
+    stagePlan1: "Empieza con el daño del Gato y añade un Perro antes de las últimas bestias.",
+    stagePlan2: "Las bestias veloces atacan los carriles exteriores. Coloca pronto un Perro.",
+    stagePlan3: "Las bestias con escudo resisten mucho. Concentra Gatos y añade la ralentización del Búho.",
+    stagePlan4: "Los carriles centrales se llenan. Defiende primero el centro y después los lados.",
+    stagePlan5: "Nivel de jefe. Bloquea su carril y ralentízalo con Búhos.",
+    stagePlan6: "Hay más carriles y velocidad. Mejora Perros y reparte el daño de los Gatos.",
+    stagePlan7: "Muchos escudos. Usa la ralentización del Búho y el daño explosivo del Zorro.",
+    stagePlan8: "Gran jefe. Reserva sol para los carriles centrales y más bloqueadores."
+  };
+
   const units = [
     { id: "cat", nameKey: "unitCat", roleKey: "roleRanged", abilityKey: "abilityCat", attackStyle: "ranged", cost: 45, hp: 92, damage: 18, cooldown: 930, range: 9, pierceEvery: 4, unlockCost: 0 },
     { id: "dog", nameKey: "unitDog", roleKey: "roleTankMelee", abilityKey: "abilityDog", attackStyle: "melee", cost: 58, hp: 350, damage: 42, cooldown: 820, range: 1.5, unlockCost: 0 },
@@ -383,6 +529,39 @@
     ["Moon Crown Garden", "\u6708\u51a0\u82b1\u5712", "The elk delays every guard and restores itself with a moon pulse; use every guard role.", "\u6708\u51a0\u9e7f\u7684\u6708\u5149\u8108\u885d\u6703\u5ef6\u5f8c\u5168\u9ad4\u5b88\u885b\u4e26\u56de\u5fa9\u81ea\u5df1\uff0c\u56db\u7a2e\u5b88\u885b\u90fd\u6709\u7528\u9014\u3002", ["healer", "burrow", "thief", "shield"]],
   ];
 
+  const spanishStageCopy = [
+    ["Primer Sol", "Aprende el alcance del Gato antes de que llegue la primera bestia veloz."],
+    ["Huellas en Dos Carriles", "Protege los dos carriles marcados en vez de llenar una sola fila."],
+    ["Escudo entre Tréboles", "Coloca un Perro delante y guardianes a distancia detrás."],
+    ["Carrera al Anochecer", "Observa el aviso de carril y prepárate antes de que entren las bestias veloces."],
+    ["Puerta del Cuerno Musgoso", "El Rinoceronte de Cuerno Musgoso ruge; reparte guardianes entre posiciones delanteras y traseras."],
+    ["Hojas Curativas", "Concéntrate en el sanador antes de que restaure a la bestia de delante."],
+    ["Escudo Paciente", "Acumula disparos de Gato tras un Perro mientras el sanador esté expuesto."],
+    ["Recuperación bajo la Lluvia", "La ralentización del Búho da tiempo para eliminar sanadores entre oleadas de escudos."],
+    ["Procesión Prismática", "Reserva sol para dos carriles completos en vez de colocar muchos guardianes débiles."],
+    ["Corte del Caparazón Prismático", "La tortuga cierra su caparazón; reserva el daño explosivo para cuando lo abra."],
+    ["Tierra Suelta", "Un excavador avisa antes de subir o bajar un carril."],
+    ["Túneles Cruzados", "Usa al Zorro o reparte guardianes a distancia entre carriles vecinos."],
+    ["Excavador y Escudo", "No dejes que un solo bloqueador sostenga todo el carril central."],
+    ["Emboscada bajo las Hojas", "Lee el icono de aviso; un excavador puede abandonar su carril inicial."],
+    ["Salón del Jefe Tejón", "El jefe cambia dos veces de carril; mantén preparados los tres carriles centrales."],
+    ["Bolsa de Sol Vacía", "Detén a los ladrones antes de que brille su bolsa y se lleven 12 de sol."],
+    ["Protege la Cosecha", "Recoge pronto las caídas y gasta el sol antes de que un ladrón pueda llevárselo."],
+    ["Huellas Ardientes", "Bloquea a los ladrones mientras el Búho ralentiza a sus escoltas veloces."],
+    ["Cruce de Brasas", "Guarda un bloqueador para el carril marcado por el aviso de embestida."],
+    ["Arena de la Melena de Brasas", "El jabalí anuncia su embestida; un Perro la absorbe mientras disparan los guardianes traseros."],
+    ["Semillas al Viento", "Las bestias veloces llegan alternando entre los carriles exteriores."],
+    ["Pluma y Caparazón", "Combina la ralentización del Búho con las semillas perforantes del Gato contra escudos agrupados."],
+    ["Túneles Ventosos", "Excavadores y bestias veloces ponen a prueba la cobertura de carriles vecinos."],
+    ["Alarma en la Atalaya", "Construye desde el centro hacia fuera antes de que llegue el vendaval."],
+    ["Cumbre del Ala Vendaval", "El águila retrasa los ataques; distribuye guardianes fuertes entre los carriles."],
+    ["Mezcla bajo la Luna", "Identifica primero el icono: sanador, ladrón y excavador necesitan respuestas distintas."],
+    ["Tres Carriles Tranquilos", "Prepara tres defensas completas antes de que llegue la escolta mixta."],
+    ["Cambio de Luz Estelar", "Los excavadores cambiarán de carril mientras los ladrones presionan tu reserva de sol."],
+    ["Camino a la Corona", "Reserva suficiente sol para un carril completo ante el pulso lunar del guardián final."],
+    ["Jardín de la Corona Lunar", "El alce retrasa a todos los guardianes y se cura con un pulso lunar; utiliza los cuatro roles."]
+  ];
+
   const bossCheckpoints = {
     5: { id: "bossRhino", mechanic: "roar", hp: 700, speed: 4.8, damage: 34 },
     10: { id: "bossTortoise", mechanic: "shell", hp: 980, speed: 4.3, damage: 36 },
@@ -400,12 +579,13 @@
 
   const stages = stageBlueprints.map(([en, zh, planEn, planZh, threats], index) => {
     const stageNo = index + 1;
+    const [es, planEs] = spanishStageCopy[index];
     const region = Math.floor(index / 5);
     const scale = 1 + index * 0.055;
     const zombies = threats.map((type) => ({ type, ...enemyBase[type], hp: Math.round(enemyBase[type].hp * scale), damage: Math.round(enemyBase[type].damage * (1 + index * 0.025)) }));
     const checkpoint = bossCheckpoints[stageNo];
     return {
-      title: { en, "zh-Hant": zh }, plan: { en: planEn, "zh-Hant": planZh },
+      title: { en, "zh-Hant": zh, es }, plan: { en: planEn, "zh-Hant": planZh, es: planEs },
       theme: ["sunny", "rain", "swamp", "sunset", "boss", "boss"][region], energy: 155 + region * 18 + (index % 5) * 8,
       hp: 4 + Math.floor(index / 10), rows: 5, cols: 9, total: 9 + region * 3 + (index % 5) * 2,
       interval: Math.max(1780, 2820 - index * 36), zombies,
@@ -752,7 +932,7 @@
   }
 
   function localizeStatic() {
-    document.documentElement.lang = locale === "zh-Hant" ? "zh-Hant" : "en";
+    document.documentElement.lang = locale === "zh-Hant" ? "zh-Hant" : locale === "es" ? "es" : "en";
     document.title = `${t("gameTitle")} - WeightPlay`;
     document.querySelectorAll("[data-ui]").forEach((node) => {
       node.textContent = t(node.dataset.ui);
@@ -2064,6 +2244,11 @@
     if (event.key === "Escape") {
       event.preventDefault();
       resumeBattle();
+    }
+  });
+  nodes.resultPanel.addEventListener("keydown", (event) => {
+    if (event.repeat && (event.key === "Enter" || event.key === " ")) {
+      event.preventDefault();
     }
   });
   nodes.resultStagesBtn.addEventListener("click", showMenu);

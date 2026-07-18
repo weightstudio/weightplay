@@ -33,6 +33,22 @@
   Object.assign(copy.en,{chooseExpedition:"Choose Expedition",stage:"Stage",encounter:"Encounter",checkpoint:"Guardian",completed:"Cleared",unlocked:"unlocked",stageRule:"Route rule",nextExpedition:"Next Expedition",allStagesCleared:"All 30 expeditions cleared",stageCleared:"Expedition cleared",retryStage:"Retry Expedition",backToStages:"Back to Stages",openingStrike:"Opening strike",shielded:"Shield",reflected:"Reflected shard",regrowth:"Guardian regrew",seal:"Sealed",isolated:"isolated items",corrosion:"corrosion",heat:"top-row heat",overload:"overload",bossPhase:"Boss phase"});
   Object.assign(copy["zh-Hant"],{chooseExpedition:"選擇遠征",stage:"關卡",encounter:"遭遇",checkpoint:"守關首領",completed:"已通關",unlocked:"已解鎖",stageRule:"路線規則",nextExpedition:"下一關",allStagesCleared:"30 關遠征全部完成",stageCleared:"遠征完成",retryStage:"重試本關",backToStages:"返回關卡",openingStrike:"開場突襲",shielded:"護盾",reflected:"反射碎片",regrowth:"守衛再生",seal:"封印",isolated:"件孤立裝備",corrosion:"腐蝕",heat:"頂排熱浪",overload:"過載",bossPhase:"首領階段"});
 
+  copy.es = {
+    title:"Expedición de la Mochila Animal",internal:"Prueba interna",pitch:"Coloca equipo, crea enlaces adyacentes y guía a Rux por la ruta del Bosque Engranaje.",start:"Empezar expedición",chooseRegion:"Elegir región",packmaster:"Rux, maestro de la mochila",
+    region1:"Sendero del Bosque Engranaje",region1Meta:"5 encuentros · Guardián Raíz",region2:"Cantera Lunar",region2Meta:"5 encuentros · Guardián de Cristal",region3:"Hueco Mecánico",region3Meta:"5 encuentros · Coloso del Hueco",locked:"Bloqueado",
+    backpack:"Mochila de equipo 11 x 7",rotate:"Girar",sell:"Vender",fight:"Empezar encuentro",strike:"Resolver choque",room:"Encuentro",armor:"Armadura",objective:"Coloca equipo y derrota al guardián de la ruta.",workshop:"Taller",discoveries:"Descubrimientos",gold:"Monedas",diamonds:"Diamantes",items:"objetos",
+    selected:"Seleccionado",placed:"Colocado",blocked:"Esa forma no cabe ahí.",rotated:"Objeto girado.",needGear:"Coloca al menos un objeto antes de luchar.",victory:"Ruta completada",defeat:"Caravana derrotada",continue:"Continuar",retry:"Reintentar ruta",regions:"Volver a regiones",chooseLoot:"Elige un objeto",merchant:"Tienda de la caravana de Orla",buy:"Comprar",leave:"Salir de la tienda",
+    refresh:"Renovar por 3 diamantes",confirmRefresh:"¿Gastar 3 diamantes para renovar la tienda de Orla?",notEnough:"No tienes suficiente moneda.",boss:"Guardián Raíz",scout:"Explorador zorro de sombra",boar:"Jabalí acorazado",crow:"Cuervo de cristal",reward:"Recompensa",saved:"Progreso del taller guardado.",full:"No hay espacio en la mochila.",pickedUp:"Devuelto a la bandeja",sold:"Vendido",adventure:"Aventura del Bosque Engranaje",
+    refreshConfirm:"Confirmar 3 · {before}→{after}",refreshDecision:"Sustituye los tres objetos una vez. Toca de nuevo para confirmar: {before} → {after} diamantes.",refreshLabel:"Sustituye los tres objetos. Cuesta 3 diamantes. Saldo actual: {balance}.",refreshConfirmLabel:"Confirmar una renovación. Gasta 3 diamantes. Saldo de {before} a {after}.",refreshNeed:"Necesitas 3 diamantes. Saldo actual: {balance}/3.",refreshUsed:"Ya renovaste en esta parada.",
+    leaveLoot:"Continuar sin botín",fullLoot:"La mochila está llena. Continúa sin tomar un objeto.",battleSteps:"1 Elige equipo  2 Toca una celda verde  3 Empieza el encuentro",attack:"Ataque",defense:"Defensa",healing:"Curación",links:"Enlaces",attackHint:"Toca Ataque para resolver el choque.",health:"Vida",
+    tagForge:"Forja",tagNature:"Naturaleza",tagCrystal:"Cristal",tagMoon:"Luna",sameTagBonus:"Misma etiqueta +2 ATQ / +1 DEF",sellValue:"Venta",autoFighting:"Combate automático...",combatPaused:"Combate en pausa. Continúa cuando quieras.",resumeCombat:"Continuar encuentro",repack:"Enemigo derrotado. Reorganiza el equipo para el siguiente.",newRegionUnlocked:"Nueva región desbloqueada",
+    packGridLabel:"Cuadrícula de mochila, 7 filas por 11 columnas",cellLabel:"Fila {row}, columna {column}. {action}",placeItem:"Coloca {item} aquí.",pickUpItem:"Recoge {item}.",cannotPlace:"{item} no cabe aquí.",emptyCell:"Espacio vacío. Elige equipo de la bandeja.",selectItem:"Elegir {item}.",selectedItem:"{item} seleccionado.",
+    backToLobby:"Volver a WeightPlay",language:"Idioma",coverAlt:"Póster de Expedición de la Mochila Animal",backToMain:"Volver al inicio",ruxAlt:"Rux Cuerno Engranaje",regionRail:"Regiones",gearwoodTrailAlt:"Sendero del Bosque Engranaje",backToRegions:"Volver a las regiones",objectiveHelp:"Mostrar objetivo",itemTrayLabel:"Equipo disponible",
+    rotateItemLabel:"Girar {item} a {width} × {height}",sellItemLabel:"Vender {item} por {value} monedas",fightBlockedLabel:"Encuentro no disponible. Coloca al menos un objeto.",fightReadyLabel:"Empieza el encuentro automático contra {enemy}, vida enemiga {hp}. Tu ataque {attack}, defensa {defense}. {mechanic}. El combate continúa hasta que un lado caiga.",
+    chooseExpedition:"Elegir expedición",stage:"Nivel",encounter:"Encuentro",checkpoint:"Guardián",completed:"Completado",unlocked:"desbloqueado",stageRule:"Regla de ruta",nextExpedition:"Siguiente expedición",allStagesCleared:"Las 30 expediciones están completadas",stageCleared:"Expedición completada",retryStage:"Reintentar expedición",backToStages:"Volver a niveles",
+    openingStrike:"Ataque inicial",shielded:"Escudo",reflected:"Fragmento reflejado",regrowth:"El guardián se regeneró",seal:"Sellado",isolated:"objetos aislados",corrosion:"corrosión",heat:"calor en la fila superior",overload:"sobrecarga",bossPhase:"Fase del jefe",
+  };
+
   const PACK_COLS = 11;
   const PACK_ROWS = 7;
   const STAGE_COUNT = 30;
@@ -52,6 +68,12 @@
     {id:"scout-lantern",name:{en:"Scout Lantern","zh-Hant":"斥候提燈"},shape:[[0,0]],atk:2,armor:1,heal:0,tag:"moon",gold:5},
     {id:"caravan-badge",name:{en:"Caravan Badge","zh-Hant":"商隊徽章"},shape:[[0,0]],atk:1,armor:2,heal:1,tag:"moon",gold:5}
   ];
+  const spanishItemNames = [
+    "Martillo de forja", "Broquel de hojas", "Lente de cristal", "Poción de bayas",
+    "Botas de engranajes", "Amuleto lunar", "Látigo de espinas", "Armadura de musgo",
+    "Bobina de chispas", "Kit de reparación", "Farol de explorador", "Insignia de caravana"
+  ];
+  items.forEach((item,index)=>{item.name.es=spanishItemNames[index];});
   const regions = [
     {name:["Gearwood Trail","齒輪森林小徑"],background:"../../assets/animal-gearpack-expedition-forest-bg.webp",boss:"Root Guardian"},
     {name:["Moonlit Quarry","月光礦場"],background:"../../assets/animal-gearpack-expedition-bg-moonlit-quarry.webp",boss:"Crystal Warden"},
@@ -60,6 +82,15 @@
     {name:["Storm Observatory","風暴觀測台"],background:"../../assets/animal-gearpack-expedition-bg-storm-observatory.webp",boss:"Tempest Archon"},
     {name:["Eclipse Vault","日蝕寶庫"],background:"../../assets/animal-gearpack-expedition-bg-eclipse-vault.webp",boss:"Eclipse Hoardmaster"}
   ];
+  const spanishRegions = [
+    ["Sendero del Bosque Engranaje","Guardián Raíz"],
+    ["Cantera Lunar","Guardián de Cristal"],
+    ["Hueco Mecánico","Coloso del Hueco"],
+    ["Fundición de Brasas","Leviatán del Horno"],
+    ["Observatorio de Tormentas","Arconte de la Tempestad"],
+    ["Bóveda del Eclipse","Maestro del Tesoro del Eclipse"]
+  ];
+  regions.forEach((region,index)=>{region.name.push(spanishRegions[index][0]);region.bossEs=spanishRegions[index][1];});
   const stage = (en,zh,ruleEn,ruleZh,enemies,merchantAfter=3) => ({name:[en,zh],rule:[ruleEn,ruleZh],enemies,merchantAfter});
   const stages = [
     stage("Workshop Gate","工坊入口","Learn the five-room rhythm and build one material link.","熟悉五場遭遇，先建立一組材質連結。",["scout","scout","boar","crow","scout"]),
@@ -93,6 +124,40 @@
     stage("Packbreaker Hall","破囊者大廳","Every known pressure appears before the final vault.","最終寶庫前會重新組合所有已知壓力。",["galeScout","magnetBeetle","tagSealer","eclipseMimic","coilLynx"]),
     stage("Eclipse Hoardmaster","日蝕藏主","The Hoardmaster rotates seals, locks links, and punishes isolation.","藏主會輪替封印、鎖住連結並懲罰孤立裝備。",["tagSealer","eclipseMimic","furnaceBoar","coilLynx","eclipseHoardmaster"])
   ];
+  const spanishStages = [
+    ["Puerta del taller","Aprende el ritmo de cinco encuentros y crea un enlace de material."],
+    ["Bifurcación de exploradores","Los zorros exploradores atacan primero a las mochilas sin preparar."],
+    ["Cruce de raíz de hierro","Los jabalíes blindados absorben el primer golpe con armadura."],
+    ["Dosel de cristal","Los cuervos de cristal castigan cada objeto aislado."],
+    ["Guardián Raíz","Los enlaces de Naturaleza impiden que el Guardián regenere armadura."],
+    ["Descenso plateado","Las polillas lunares suprimen los enlaces de Luna durante el encuentro."],
+    ["Veta de eco","Los cuervos prisma penalizan el equipo aislado; compacta la mochila."],
+    ["Elevador de prisma","Las barreras premian un fuerte ataque inicial."],
+    ["Galería quebrada","La supresión y las barreras exigen un plan de materiales mixtos."],
+    ["Guardián de Cristal","Rompe el escudo prisma y resiste su fragmento reflejado."],
+    ["Sendero sinuoso","Los chacales mecánicos ganan fuerza con cada contraataque."],
+    ["Sala magnética","Los escarabajos magnéticos castigan cada objeto sin enlace."],
+    ["Taller del péndulo","La rabia rápida y el aislamiento favorecen un ataque compacto."],
+    ["Relevo oxidado","La corrosión reduce la defensa tras cada turno enemigo."],
+    ["Coloso del Hueco","El Coloso alterna entre fases de defensa y rabia."],
+    ["Transportador de cenizas","La corrosión del sapo de vapor vuelve peligrosos los combates largos."],
+    ["Pasarela de calderas","El calor de la fila superior convierte celdas ocupadas en daño recibido."],
+    ["Curva de la fundición","Deja espacio arriba sin perder enlaces útiles."],
+    ["Bóveda de vapor","Calor, corrosión y armadura exigen curación y daño explosivo."],
+    ["Leviatán del Horno","Mantén libre la fila superior para ventilar su pulso de horno."],
+    ["Puente del vendaval","Los exploradores del vendaval golpean antes de la curación."],
+    ["Cámara de bobinas","Los linces de bobina sobrecargan el enlace de material más grande."],
+    ["Lente del trueno","Reparte los enlaces entre dos materiales para resistir la sobrecarga."],
+    ["Matriz del aerocarril","Los ataques iniciales y la sobrecarga prueban una defensa equilibrada."],
+    ["Arconte de la Tempestad","El rayo encadenado aumenta con el equipo aislado."],
+    ["Libro mayor de sombras","Los mímicos del eclipse copian el valor mayor entre Ataque y Defensa."],
+    ["Constelación rota","Los sellos rotan entre Forja, Naturaleza, Cristal y Luna."],
+    ["Sello de la corona","Un sello giratorio y el calor superior cambian la disposición segura."],
+    ["Sala Rompemochilas","Todas las presiones conocidas aparecen antes de la bóveda final."],
+    ["Maestro del Tesoro del Eclipse","El Maestro rota sellos, bloquea enlaces y castiga el aislamiento."]
+  ];
+  stages.forEach((definition,index)=>{definition.name.push(spanishStages[index][0]);definition.rule.push(spanishStages[index][1]);});
+
   const enemyCatalog = {
     scout:{name:["Shadow Fox Scout","暗影狐斥候"],hp:18,damage:5,asset:"../../assets/animal-gearpack-expedition-enemy-fox-scout.webp"},
     ambusher:{name:["Thorn Fox Ambusher","荊棘狐伏擊手"],hp:20,damage:5,asset:"../../assets/animal-gearpack-expedition-enemy-fox-scout.webp",openingHit:3},
@@ -118,9 +183,20 @@
     tempestArchon:{name:["Tempest Archon","風暴統領"],hp:102,damage:11,asset:"../../assets/animal-gearpack-expedition-boss-tempest-archon.webp",boss:true,isolation:3,openingHit:4},
     eclipseHoardmaster:{name:["Eclipse Hoardmaster","日蝕藏主"],hp:116,damage:12,asset:"../../assets/animal-gearpack-expedition-boss-eclipse-hoardmaster.webp",boss:true,isolation:2,rotatingSeal:true,phase:"vault"}
   };
+  const spanishEnemyNames = {
+    scout:"Explorador zorro de sombra",ambusher:"Emboscador zorro de espinas",boar:"Jabalí acorazado",platedBoar:"Jabalí de placas de hierro",
+    crow:"Cuervo de cristal",linkCrow:"Cuervo recaudador prisma",moonMoth:"Polilla del velo lunar",prismRam:"Carnero prisma",
+    gearJackal:"Chacal mecánico",magnetBeetle:"Escarabajo magnético",rustCrow:"Cuervo oxidado",steamToad:"Sapo de vapor",
+    furnaceBoar:"Jabalí del horno",galeScout:"Explorador del vendaval",coilLynx:"Lince de bobina",eclipseMimic:"Mímico del eclipse",
+    tagSealer:"Sellador de etiquetas de la bóveda",rootGuardian:"Guardián Raíz",crystalWarden:"Guardián de Cristal",
+    hollowColossus:"Coloso del Hueco",furnaceLeviathan:"Leviatán del Horno",tempestArchon:"Arconte de la Tempestad",
+    eclipseHoardmaster:"Maestro del Tesoro del Eclipse"
+  };
+  Object.entries(enemyCatalog).forEach(([id,enemy])=>{enemy.name.push(spanishEnemyNames[id]);});
   const $ = (selector) => document.querySelector(selector);
   const screens = {main:$("#mainScreen"),stage:$("#stageScreen"),battle:$("#battleScreen")};
-  let locale = window.WonderI18n?.locale?.() || (localStorage.getItem("weightPlayLocale") === "zh-Hant" ? "zh-Hant" : "en");
+  const storedLocale = localStorage.getItem("weightPlayLocale");
+  let locale = window.WonderI18n?.locale?.() || (["zh-Hant","es"].includes(storedLocale) ? storedLocale : "en");
   function normalizeProgress(source){
     const data=source&&typeof source==="object"?source:{};
     const migratedStage=data.unlockedStage===undefined?(Math.max(0,Number(data.unlockedRegion)||0)*5+1):Number(data.unlockedStage);
@@ -181,7 +257,7 @@
 
   function applyLocale(next){const current=window.WonderI18n?.actualLocale?.();const requested=next==="zh-Hant"&&current==="zh-Hans"?current:next||"en";if(current!==requested)window.WonderI18n?.setLocale?.(requested);locale=window.WonderI18n?.legacyLocale?.(requested)||requested;locale=copy[locale]?locale:"en";localStorage.setItem("weightPlayLocale",requested);document.documentElement.lang=requested;document.title=`${t("title")} - WeightPlay`;$("#localeSelect").value=requested;document.querySelectorAll("[data-i18n]").forEach((node)=>{node.textContent=t(node.dataset.i18n)});document.querySelectorAll("[data-ui-aria]").forEach((node)=>node.setAttribute("aria-label",t(node.dataset.uiAria)));document.querySelectorAll("[data-ui-alt]").forEach((node)=>node.setAttribute("alt",t(node.dataset.uiAlt)));renderMain();if(!screens.stage.hidden)renderStage();if(!screens.battle.hidden)renderBattle();}
   function renderMain(){$("#workshopSummary").textContent=`${t("workshop")} Lv.${1+Math.floor(progress.workshopXp/40)} · ${progress.workshopXp} XP`;$("#discoverySummary").textContent=`${t("discoveries")} ${progress.discoveries.length}/12`;}
-  function localized(pair){return pair?.[locale==="zh-Hant"?1:0]||pair?.[0]||"";}
+  function localized(pair){const index=locale==="zh-Hant"?1:locale==="es"?2:0;return pair?.[index]||pair?.[0]||"";}
   function renderStage(){
     const unlocked=Math.max(1,Math.min(STAGE_COUNT,Number(progress.unlockedStage)||1));
     selectedStage=Math.max(0,Math.min(unlocked-1,selectedStage));

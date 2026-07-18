@@ -4,7 +4,7 @@
   const legacyLocaleKey = "weightplayLocale";
   const canonicalSavedLocale = localStorage.getItem(localeKey);
   const legacySavedLocale = localStorage.getItem(legacyLocaleKey);
-  if (!canonicalSavedLocale && ["en", "zh-Hant", "zh-Hans"].includes(legacySavedLocale)) window.WonderI18n?.setLocale?.(legacySavedLocale);
+  if (!canonicalSavedLocale && ["en", "zh-Hant", "zh-Hans", "es"].includes(legacySavedLocale)) window.WonderI18n?.setLocale?.(legacySavedLocale);
   const saveKey = "weightplay_animal_zoo_idle_save_v3";
   const oldSaveKeys = ["weightplay_animal_zoo_idle_save_v2", "weightplay_animal_zoo_idle_save_v1"];
 
@@ -126,6 +126,39 @@
     checkpointAsset: challengeCheckpoints[index + 1] || "",
     reward: 90 + index * 35 + (challengeCheckpoints[index + 1] ? 180 : 0),
   }));
+  const spanishZooChallenges = [
+    ["Primera mañana de entradas","Recoge una pequeña caja de entradas y descubre dónde espera el ingreso del parque."],
+    ["Ruta de hierba fresca","Elige Ordenar hábitat una vez y mantén la felicidad por encima de 78."],
+    ["Cesta de enriquecimiento","Elige Tiempo de enriquecimiento y recoge sus entradas adicionales."],
+    ["Un lugar para la jirafa","Construye o recluta una vez y mueve un animal a otro lugar de la pradera."],
+    ["Revisión de bienvenida de Mimi","Mimi revisa a la vez las entradas, un hábitat ordenado y un parque alegre."],
+    ["Dos opciones de cuidado","Usa las dos rutas de cuidado durante un mismo desafío."],
+    ["Reserva la caja de entradas","Deja las entradas en la caja en vez de recogerlas de inmediato."],
+    ["Plan del puesto de aperitivos","Mejora el Puesto de aperitivos y recoge entradas después del aumento de ingresos."],
+    ["Público de pícnic","Usa enriquecimiento dos veces y deja preparada una caja llena de entradas."],
+    ["Día de pícnic de Panko","Panko quiere un Puesto de aperitivos, enriquecimiento y una caja de entradas animada."],
+    ["Vista desde la colina","Mejora el Mirador y coloca un animal cerca de un nuevo punto de observación."],
+    ["Hora de observación tranquila","Mantén la felicidad en 85 mientras las entradas esperan en la caja."],
+    ["Hábitats vecinos","Da la bienvenida a tres animales y cambia dos veces la distribución."],
+    ["Mirador equilibrado","Combina el Mirador con las dos rutas de cuidado."],
+    ["Revisión de ruta de la nutria","La nutria revisa el Mirador, la distribución de animales y la felicidad del parque."],
+    ["Herramientas del cuidador","Mejora el Puesto del cuidador antes de elegir Ordenar hábitat."],
+    ["Cuidado antes del público","Aumenta primero la felicidad y luego recoge una cantidad mayor de entradas."],
+    ["Mañana de cuatro animales","Da la bienvenida a cuatro animales y ordena dos veces su hábitat compartido."],
+    ["Herramientas y premios","Mantén dos niveles de instalaciones y completa una ruta de enriquecimiento."],
+    ["Inspección del cuidador rinoceronte","El cuidador revisa las herramientas, dos rondas de orden y una felicidad alta."],
+    ["Entrada en crecimiento","Alcanza el nivel 2 de la entrada y recoge después del aumento de ingresos."],
+    ["Mapa de cinco animales","Da la bienvenida a cinco animales y reorganiza dos lugares de la pradera."],
+    ["Elección de tres instalaciones","Construye tres niveles de instalaciones en cualquier combinación."],
+    ["Preparación del desfile","Equilibra animales, enriquecimiento y una caja de entradas reservada."],
+    ["Día del desfile de pingüinos","El desfile necesita cinco animales, una entrada mejor y un público feliz."],
+    ["Presupuesto del festival","Recoge entradas y deja una segunda cantidad esperando en la caja."],
+    ["Cuidado de todo el parque","Usa dos veces ambas rutas de cuidado durante una sesión más larga."],
+    ["Distribución del festival","Reorganiza tres animales y mantén tres niveles de instalaciones."],
+    ["Ensayo de invitados final","Prepara animales, felicidad y ambas rutas de cuidado antes de la final."],
+    ["Gran Festival Safari","La revisión final combina recaudación, cuidado, instalaciones, animales y felicidad."]
+  ];
+  zooChallenges.forEach((challenge,index)=>{challenge.title.es=spanishZooChallenges[index][0];challenge.plan.es=spanishZooChallenges[index][1];});
 
   const text = {
     en: {
@@ -476,6 +509,24 @@
     bear: "\u718a",
   };
 
+  text.es = {
+    title:"Parque Animal",language:"Idioma",backToLobby:"Volver al vestíbulo de WeightPlay.",backToMenu:"Volver al menú del parque.",safariPark:"Parque safari",animalShop:"Tienda de animales",
+    menuTitle:"Construye un parque animal en crecimiento.",menuHint:"Recibe visitantes, recoge entradas, mejora la puerta y recluta más animales para ampliar el parque.",start:"Empezar",chooseChallenge:"Elegir desafío del parque",challenge:"Desafío {n}",challengeLocked:"Bloqueado",challengeCleared:"Completado",challengeCheckpoint:"Revisión del parque",challengeReward:"+{coins} monedas",nextChallenge:"Siguiente desafío",backToChallenges:"Desafíos",
+    challengeCompleteTitle:"¡Desafío del parque completado!",challengeCompleteText:"El desafío {n} está completo. El siguiente plan del parque está listo.",challengeFinalText:"Has completado los 30 desafíos. ¡El Gran Festival Safari está abierto!",
+    goalCollected:"Recoge {n} entradas",goalCare:"Completa {n} cuidados",goalHabitat:"Ordena el hábitat {n} vez",goalEnrichment:"Haz enriquecimiento {n} vez",goalBuilt:"Construye o recluta {n} vez",goalArranged:"Mueve animales {n} vez",goalHappiness:"Alcanza {n}% de felicidad",goalAnimals:"Recibe {n} animales",goalGate:"Alcanza Puerta Nv.{n}",goalTicketBox:"Guarda {n} entradas en la caja",goalFacilityTotal:"Construye {n} niveles de instalaciones",goalFacilitySnackStand:"Puesto de aperitivos Nv.{n}",goalFacilityViewDeck:"Mirador Nv.{n}",goalFacilityKeeperPost:"Puesto del cuidador Nv.{n}",
+    coins:"Monedas",tickets:"Caja de entradas",visitors:"Visitantes",report:"Informe",reportTitle:"Informe de crecimiento del parque",animalAlbum:"Álbum de animales",animalAlbumProgress:"{count}/{total} animales recibidos",animalAlbumLocked:"Sigue ampliando el parque",animalAlbumIncome:"+{n} entradas/10 s",skillFocus:"Atención",skillLogic:"Lógica",skillAnimalKnowledge:"Conocimiento animal",continue:"Continuar",loading:"Cargando",
+    collect:"Recoger",careAll:"Cuidar",upgradeGate:"Mejorar puerta",recruit:"Reclutar",gate:"Puerta Nv.{n}",income:"{n}/10 s",happiness:"Felicidad",animals:"Animales",offline:"¡Bienvenido de nuevo! Los visitantes dejaron {coins} monedas en la caja.",notEnough:"Faltan {coins} monedas.",noTickets:"La caja de entradas aún está vacía.",collected:"Has recogido {coins} monedas.",cared:"Los animales están más felices. Llegan más visitantes.",careWait:"El cuidado descansa durante {n} s.",
+    careRouteHabitat:"Ordenar hábitat",careRouteHabitatHint:"+8 felicidad",careRouteEnrichment:"Tiempo de enriquecimiento",careRouteEnrichmentHint:"+{tickets} entradas",careRouteCancel:"Volver",careRouteHabitatDone:"El hábitat está reluciente. Felicidad +8.",careRouteEnrichmentDone:"A los animales les encantó. +{tickets} entradas.",upgraded:"La puerta se ve mejor. ¡Aumentaron los ingresos!",recruited:"¡{name} se unió al parque!",maxGate:"Puerta al máximo",buyAnimal:"Comprar",owned:"En propiedad",incomeShort:"+{n}/10 s",careShort:"Cuidado +{n}",
+    nextGoal:"Siguiente objetivo",nextGoalReady:"Listo para reclutar",nextGoalNeed:"Faltan {coins}",nextGoalAll:"Todos los animales reclutados",todayGoal:"Hoy",todayGoalReady:"Listo",todayGoalCollect:"Recoge la caja de entradas",todayGoalCare:"Cuida a los animales",todayGoalBuild:"Construye la siguiente mejora",todayGoalTour:"Reclama la recompensa del recorrido",todayGoalComplete:"Recorrido del parque completado",
+    taskBoard:"Tareas del parque",taskCollect:"Recoge {coins} de la caja",taskCollectReady:"La caja está lista",taskCare:"Cuida a los animales",taskCareReady:"Los animales están listos",taskCareWait:"El cuidado descansa {n} s",taskGate:"Mejora la puerta",taskGateReady:"La mejora de puerta está lista",taskGateMax:"Puerta totalmente mejorada",
+    milestones:"Hitos del parque",claim:"Reclamar",claimed:"Reclamado",milestoneReward:"+{coins} monedas",milestoneCollect500:"Recoge 500 entradas en total",milestoneCare3:"Cuida animales 3 veces",milestoneGate3:"Mejora la puerta a Nv.3",milestoneAnimals4:"Recluta 4 animales",milestoneCollect5000:"Recoge 5.000 entradas en total",milestoneCare12:"Cuida animales 12 veces",milestoneGate6:"Mejora la puerta a Nv.6",milestoneAnimals8:"Recluta 8 animales",milestoneCollect25000:"Recoge 25.000 entradas en total",milestoneAnimals12:"Recluta todos los animales",milestoneClaimed:"¡Recompensa de hito reclamada!",
+    tourBoard:"Recorrido diario del parque",tourRound:"Recorrido {n}",tourReward:"Recompensa +{coins} monedas",tourCollect:"Recoge {coins} entradas",tourCare:"Cuida animales {count} veces",tourBuild:"Construye o recluta {count} vez",tourClaim:"Reclamar recorrido",tourComplete:"¡Recorrido del parque completado!",tourReputation:"Reputación del parque",tourReputationBonus:"Ingresos permanentes +{n}%",
+    parkPlan:"Plan de crecimiento",parkRank:"Progreso de la puerta",nextUpgrade:"Siguiente mejora de puerta",nextUpgradeMax:"Todas las mejoras de puerta completas",incomeBoost:"+{n}/10 s tras mejorar",buildFocus:"Siguiente construcción",buildUpgradeGateTitle:"Mejorar la entrada",buildUpgradeGateDesc:"Una puerta mejor atrae más visitantes y aumenta los ingresos.",buildRecruitTitle:"Abrir un hábitat nuevo",buildRecruitDesc:"Recluta a {name} para añadir una zona animal y ampliar el parque.",buildHabitatTitle:"Desbloquear bonificación de hábitat",buildHabitatDesc:"Recluta {count} animales para activar la siguiente bonificación de ingresos.",buildCompleteTitle:"Plan del parque completo",buildCompleteDesc:"Todos los animales y mejoras actuales están construidos.",buildReady:"Listo ahora",buildNeed:"Faltan {coins}",
+    facilityBoard:"Instalaciones del parque",facilityLevel:"Nv.{n}",facilityMax:"Máx.",facilityUpgrade:"Mejorar",facilitySnackStand:"Puesto de aperitivos",facilitySnackStandDesc:"Mejores aperitivos aumentan los ingresos.",facilityViewDeck:"Mirador",facilityViewDeckDesc:"Una vista mejor atrae más visitantes.",facilityKeeperPost:"Puesto del cuidador",facilityKeeperPostDesc:"Las herramientas mejoran el cuidado animal.",facilityIncomeBoost:"+{n}% entradas",facilityCareBoost:"+{n} cuidado",facilityVisitorBoost:"+{n} visitante",facilityBuilt:"¡{name} mejorado!",
+    habitatBonus:"Bonificación de hábitat",habitatBonusCurrent:"+{n}% ingresos",habitatBonusNext:"Recluta {count} animales para +{n}%",habitatBonusMax:"Todas las bonificaciones activas",dragHint:"Arrastra los animales por la pradera para organizar el parque.",reportGood:"¡Gran cuidado! El parque crece y los animales están felices.",reportTry:"Buen esfuerzo. Recluta animales y mejora la puerta para crecer más rápido.",
+    lion:"León",giraffe:"Jirafa",elephant:"Elefante",panda:"Panda",penguin:"Pingüino",rabbit:"Conejo",fox:"Zorro",koala:"Koala",tiger:"Tigre",rhino:"Rinoceronte",crocodile:"Cocodrilo",bear:"Oso"
+  };
+
   const $ = (id) => document.getElementById(id);
   const pageMeta = {
     en: {
@@ -489,6 +540,12 @@
       description: "\u5b8c\u6210 30 \u500b\u6709\u5b58\u6a94\u7684\u6a02\u5712\u6311\u6230\uff0c\u6536\u53d6\u9580\u7968\u3001\u9078\u64c7\u7167\u9867\u65b9\u5f0f\u3001\u5b89\u6392\u68f2\u5730\u3001\u5347\u7d1a\u8a2d\u65bd\uff0c\u4e26\u901a\u904e\u516d\u6b21\u53cb\u5584\u6a02\u5712\u5be9\u67e5\u3002",
       ogTitle: "\u52d5\u7269\u5c0f\u5c0f\u6a02\u5712 - WeightPlay",
       ogDescription: "30 \u500b\u52d5\u7269\u6a02\u5712\u6311\u6230\uff0c\u5305\u542b\u9580\u7968\u6536\u5165\u3001\u7167\u9867\u9078\u64c7\u3001\u68f2\u5730\u5b89\u6392\u3001\u8a2d\u65bd\u5347\u7d1a\u8207\u516d\u6b21\u53cb\u5584\u5be9\u67e5\u3002",
+    },
+    es: {
+      title: "Parque Animal - WeightPlay",
+      description: "Construye un parque animal en 30 desafíos guardados. Recoge entradas, elige cuidados, organiza hábitats, mejora instalaciones y supera seis revisiones.",
+      ogTitle: "Parque Animal - WeightPlay",
+      ogDescription: "Completa 30 desafíos de gestión con ingresos, cuidado animal, organización de hábitats, instalaciones y seis revisiones amistosas.",
     },
   };
   const nodes = {
@@ -523,6 +580,7 @@
   };
 
   let locale = window.WonderI18n?.locale?.() || localStorage.getItem(localeKey) || "en";
+  if (!text[locale]) locale = "en";
   let save = loadSave();
   let tickCount = 0;
   let newlyRecruitedAnimalId = "";
@@ -865,7 +923,7 @@
   }
 
   function formatCost(value) {
-    return Math.floor(Number(value || 0)).toLocaleString(locale === "zh-Hant" ? "zh-TW" : "en-US");
+    return Math.floor(Number(value || 0)).toLocaleString(locale === "zh-Hant" ? "zh-TW" : locale === "es" ? "es-ES" : "en-US");
   }
 
   function careWaitSeconds() {
@@ -894,7 +952,7 @@
   }
 
   function localizeStatic() {
-    document.documentElement.lang = locale === "zh-Hant" ? "zh-Hant" : "en";
+    document.documentElement.lang = locale === "zh-Hant" ? "zh-Hant" : locale === "es" ? "es" : "en";
     document.querySelectorAll("[data-ui]").forEach((node) => {
       node.textContent = t(node.dataset.ui);
     });
@@ -1966,6 +2024,18 @@
   nodes.startBtn.addEventListener("keydown", suppressRepeatedActivation, true);
   nodes.challengeRail.addEventListener("keydown", suppressRepeatedActivation, true);
   nodes.gamePanel.addEventListener("keydown", suppressRepeatedActivation, true);
+  nodes.resultPanel.addEventListener("keydown", (event) => {
+    if (event.key !== "Tab" || nodes.resultPanel.classList.contains("hidden")) return;
+    const actions = [...nodes.resultPanel.querySelectorAll("button, a[href]")]
+      .filter((action) => !action.disabled && action.getClientRects().length > 0);
+    if (!actions.length) return;
+    const index = actions.indexOf(document.activeElement);
+    const nextIndex = event.shiftKey
+      ? (index <= 0 ? actions.length - 1 : index - 1)
+      : (index < 0 || index >= actions.length - 1 ? 0 : index + 1);
+    event.preventDefault();
+    actions[nextIndex].focus({ preventScroll: true });
+  }, true);
   nodes.stageBackBtn.addEventListener("click", showMenu);
   nodes.challengeRail.addEventListener("wonder:stage-snap", (event) => {
     const index = Number(event.detail?.index);

@@ -260,6 +260,10 @@
       description: "在 WeightPlay 游玩《兽王牌组：迷雾森林》：30 个任务、十种区域机制、六只会切换阶段的首领，以及保存在本机的卡册与装备成长。",
       ogDescription: "组合动物能力牌、判断敌人意图，破解十种区域机制并挑战 30 个任务与六只不同首领。",
     },
+    es: {
+      description: "Juega Beast Deck: El Bosque de Niebla, un juego de construcción de mazos con 30 misiones, diez mecánicas regionales y seis jefes por fases.",
+      ogDescription: "Crea mazos de poderes animales, interpreta las intenciones enemigas y derrota a seis jefes distintos en 30 misiones.",
+    },
   };
 
   const text = {
@@ -697,6 +701,218 @@
     "iron-tortoise": { cost: 2, type: "defense", image: "wonder-beast-rhino.png", nameKey: "card_iron_tortoise", descKey: "card_iron_tortoise_desc" },
     "mist-curse": { cost: 1, type: "curse", image: "beast-deck-boss-mist-crown.webp", nameKey: "card_mist_curse", descKey: "card_mist_curse_desc", draftable: false, temporary: true },
   };
+
+  text.es = {
+    title: "Beast Deck: El Bosque de Niebla",
+    language: "Idioma",
+    menuTitle: "Entra en el Bosque de Niebla.",
+    menuHint: "Crea un mazo de poderes animales, interpreta la intención enemiga y completa misiones. Tu nivel, monedas, cartas, equipo y misiones se guardan en este dispositivo.",
+    startGame: "Empezar",
+    progressTitle: "Progreso local",
+    progressText: "Completa misiones para ganar XP y Monedas Bestia. Compra sobres, equipa cartas y objetos, y avanza por el bosque.",
+    profileLevel: "Nivel",
+    profileXp: "XP",
+    profileBest: "Récord",
+    profileCoins: "Monedas",
+    profileBonus: "+{hp} PV máximos por nivel",
+    collectionTitle: "Colección de cartas",
+    collectionHint: "Equipa hasta 6 cartas adicionales antes de una misión.",
+    packTitle: "Abrir Sobre Bestia",
+    packHint: "Gasta monedas para conseguir una carta o equipo para futuras partidas.",
+    packNeed: "Necesitas {cost} monedas.",
+    packActionLabel: "Abrir Sobre Bestia. Gasta {cost} Monedas Bestia. Saldo de {balance} a {result}.",
+    packInsufficientLabel: "Abrir Sobre Bestia. Necesitas {cost} Monedas Bestia. Saldo {balance}.",
+    packResultCard: "Nueva carta: {card}.",
+    packResultCardEquipped: "Nueva carta: {card}. Añadida al mazo de batalla.",
+    packResultGear: "Nuevo equipo: {gear}.",
+    packResultGearEquipped: "Nuevo equipo: {gear}. Equipado ahora.",
+    packDuplicate: "{name} mejoró al rango {rank}/{maxRank}.",
+    packRewardCardType: "Premio de carta",
+    packRewardGearType: "Premio de equipo",
+    deckBuildTitle: "Mazo de batalla",
+    deckAnalysis: "Siguiente misión: {total} cartas - {attack} Ataque / {defense} Defensa / {utility} Táctica.",
+    collectionOwnedTitle: "Cartas obtenidas",
+    equipmentTitle: "Equipo",
+    equipCard: "Equipar",
+    unequipCard: "Quitar",
+    removeCardLabel: "Quitar {card} del mazo de batalla, espacio {slot} de {count}",
+    allCopiesEquipped: "Todas las copias equipadas",
+    deckFull: "Mazo de batalla lleno",
+    ownedCount: "Tienes {count}",
+    equippedCount: "Equipadas {count}/{max}",
+    gearEquipped: "Equipado",
+    gearEquip: "Equipar",
+    gearNone: "Aún no hay equipo",
+    gearRank: "Rango {rank}/{maxRank}",
+    gearStatHp: "+{amount} PV máximos",
+    gearStatEnergy: "+{amount} de energía en cada batalla",
+    gearStatBlock: "Empieza cada batalla con {amount} de bloqueo",
+    stageSelectTitle: "Elegir misión",
+    stageSelectHint: "Desliza o arrastra las misiones y toca una desbloqueada para comenzar.",
+    stageHubTitle: "Preparación de misión",
+    stageTabMissions: "Misiones",
+    stageTabDeck: "Mazo",
+    stageTabShop: "Mejoras",
+    lockedMission: "Bloqueada",
+    missionLabel: "Misión {mission}",
+    missionReward: "{xp} XP",
+    missionCoins: "{coins} monedas",
+    startMissionCard: "Toca para elegir",
+    missionSelectedCard: "Elegida: toca para comenzar",
+    selectedMissionTitle: "Misión elegida",
+    selectedMissionReady: "{mission} está lista. Premio: {xp} XP + {coins} monedas.",
+    missionScout: "Exploración: {enemies}. Primera batalla: {first}.",
+    loadoutReady: "Equipo: {cards}/{max} cartas extra · Objeto: {gear}.",
+    noGear: "Ninguno",
+    controlCombat: "Estrategia por turnos",
+    controlUpgrades: "Elección de cartas",
+    controlDeck: "Nivel permanente",
+    diamondShopTitle: "Mejora permanente",
+    amuletName: "Amuleto de Niebla",
+    amuletEffect: "Empieza cada partida con +10 PV máximos.",
+    amuletOwned: "Obtenido: cada partida empieza con +10 PV máximos.",
+    amuletNeed: "Necesitas {cost} diamantes.",
+    amuletNeedExact: "Necesitas {cost} diamantes · Tienes {balance}.",
+    amuletConfirm: "+10 PV máximos permanentes · Diamantes {balance} → {result}. Activa otra vez para confirmar.",
+    amuletConfirmLabel: "Confirmar Amuleto de Niebla. Más 10 PV máximos permanentes. Gasta {cost} diamantes. Saldo de {balance} a {result}.",
+    startRun: "Empezar misión elegida",
+    backToLobby: "Volver al vestíbulo",
+    backToMain: "Volver",
+    backToStage: "Volver a misiones",
+    preparation: "Preparación",
+    menu: "Menú",
+    hudStage: "Batalla",
+    hudMission: "Misión",
+    hudHp: "PV del jugador",
+    hudEnergy: "Energía",
+    hudDeck: "Mazo",
+    hudDiscard: "Descarte",
+    combatBlock: "Bloqueo",
+    combatGainBlock: "Bloqueo +{amount}",
+    combatApplyPoison: "Veneno +{amount}",
+    shieldLabel: "Bloqueo",
+    chooseCard: "Elige una carta",
+    chooseCardDesc: "Elige un poder animal para el mazo de esta misión. La carta elegida aparecerá en la próxima mano inicial.",
+    draftPermanentHint: "Las cartas elegidas duran solo esta misión. Las permanentes salen en Sobres Bestia de Oro del menú.",
+    tryAgain: "Intentar de nuevo",
+    backToMenu: "Volver al menú",
+    skillLogic: "Lógica",
+    skillFocus: "Concentración",
+    skillProblem: "Resolución de problemas",
+    endTurn: "Terminar turno",
+    runComplete: "¡Misión completada!",
+    runFailed: "Misión fallida",
+    resultScoreLabel: "Progreso de misión",
+    resultDisclaimer: "Solo para divertirse y registrar el progreso local.",
+    skillReportTitle: "Informe de habilidades",
+    loading: "Cargando",
+    card_wolf_pack: "Manada de Lobos",
+    card_wolf_pack_desc: "Inflige 6 de daño. Si jugaste otro ataque este turno, inflige 12.",
+    card_guard_bear: "Oso Guardián",
+    card_guard_bear_desc: "Obtén 6 de bloqueo.",
+    card_sky_hawk: "Halcón Celeste",
+    card_sky_hawk_desc: "Inflige 14 de daño y roba 1 carta.",
+    card_cheetah_sprint: "Carrera del Guepardo",
+    card_cheetah_sprint_desc: "Roba 2 cartas y obtén 1 de energía.",
+    card_viper_venom: "Veneno de Víbora",
+    card_viper_venom_desc: "Aplica 3 de veneno al enemigo.",
+    card_owl_wisdom: "Sabiduría del Búho",
+    card_owl_wisdom_desc: "Roba 1 carta.",
+    card_iron_tortoise: "Tortuga de Hierro",
+    card_iron_tortoise_desc: "Obtén 15 de bloqueo.",
+    card_mist_curse: "Maldición de Niebla",
+    card_mist_curse_desc: "Cuesta 1 de energía eliminarla. Si la conservas al terminar el turno, recibes 2 de daño.",
+    gear_mist_cloak: "Capa de Niebla",
+    gear_mist_cloak_desc: "+6 PV máximos.",
+    gear_hunter_charm: "Talismán del Cazador",
+    gear_hunter_charm_desc: "+1 de energía en cada batalla.",
+    gear_forest_banner: "Estandarte del Bosque",
+    gear_forest_banner_desc: "Empieza con 4 de bloqueo.",
+    intent_attack: "Ataca por {amount}",
+    intent_defend: "Se defiende por {amount}",
+    intent_poison: "Aplica {amount} de veneno",
+    intent_buff: "Prepara un golpe fuerte",
+    intent_armor: "Refuerza la armadura en {amount}",
+    intent_riposte: "Contraataca el próximo ataque por {amount}",
+    intent_exhaust: "Aumenta en {amount} el coste de una carta",
+    intent_mark: "Marca una carta para infligir {amount} de daño",
+    intent_regen: "Regenera {amount} PV",
+    intent_cleanse: "Elimina el veneno",
+    intent_weak: "Reduce el próximo ataque en {amount}",
+    intent_seal: "Sella cartas de {type}",
+    intent_curse: "Añade {amount} Maldición de Niebla",
+    intent_fog: "Oculta la siguiente intención en la niebla real",
+    cardPlayable: "Se puede jugar · Coste {cost} · Energía {energy}",
+    cardNeedEnergy: "Faltan {need} de energía · Coste {cost} · Energía {energy}",
+    cardWaitTurn: "Espera tu turno · Coste {cost}",
+    cardSealed: "Las cartas de {type} están selladas este turno",
+    cardActionLabel: "{card}. {effect}. {status}",
+    endTurnSafe: "Sin daño por cartas conservadas",
+    endTurnMarkHazard: "{card} marcada: {damage} PV",
+    endTurnCurseHazard: "Maldiciones de Niebla: {count}; daño: {damage} PV",
+    endTurnHazardSummary: "{details}. Daño total por cartas conservadas: {damage} PV",
+    endTurnActionLabel: "Terminar turno. {hazard}. Siguiente acción enemiga: {intent}.",
+    log_start: "Comienza la batalla contra {enemy}.",
+    log_play_card: "Jugaste {card}. Coste: {cost}.",
+    log_combo: "¡Combo! {card} inflige {damage} de daño.",
+    log_poison_damage: "{enemy} recibe {damage} de daño de veneno.",
+    log_enemy_turn: "Turno enemigo: {action}.",
+    log_enemy_blocked: "El bloqueo de {enemy} absorbió {blocked} de daño.",
+    log_enemy_damage_after_block: "El bloqueo de {enemy} absorbió {blocked}. Pasaron {damage} de daño.",
+    log_player_turn: "Tu turno. Robaste {count} cartas. Energía restaurada a {energy}.",
+    log_player_block: "Obtuviste {amount} de bloqueo. Absorberá daño enemigo este turno.",
+    log_enemy_block_fade: "El bloqueo restante de {enemy} desapareció.",
+    log_draft_added: "{card} se unió al mazo de esta misión y aparecerá en la mano inicial.",
+    enemyBlockStatus: "DEF {amount} absorbe tu próximo daño.",
+    enemyArmorStatus: "ARM {amount} reduce cada golpe directo.",
+    enemyRiposteStatus: "CON {amount} responde a la próxima carta de ataque.",
+    enemyWardStatus: "BARRERA: juega {amount} tipo(s) de carta más.",
+    enemyRegenStatus: "REG {amount} cura tras las acciones enemigas.",
+    playerWeakStatus: "DÉBIL {amount} reduce tu próximo ataque.",
+    playerExhaustStatus: "AGOT aumenta en 1 el coste de {card}.",
+    playerMarkStatus: "MARCA: juega {card} o recibe {amount} de daño.",
+    playerSealStatus: "SELLADO: {type}",
+    log_armor_absorb: "La armadura de {enemy} reduce el golpe en {blocked}.",
+    log_riposte: "{enemy} contraataca por {damage} de daño.",
+    log_exhaust: "{card} queda agotada y cuesta 1 de energía más este turno.",
+    log_mark: "{card} está marcada. Juégala antes de terminar el turno o recibe {damage} de daño.",
+    log_mark_hit: "La marca no jugada inflige {damage} de daño.",
+    log_regen: "{enemy} regenera {amount} PV.",
+    log_cleanse: "{enemy} elimina todo el veneno.",
+    log_weak: "Tu próximo ataque pierde {amount} de daño.",
+    log_seal: "Las cartas de {type} quedan selladas hasta la siguiente acción enemiga.",
+    log_curse: "{count} Maldición(es) de Niebla entran en el descarte.",
+    log_curse_hold: "Una Maldición de Niebla sin eliminar inflige {damage} de daño.",
+    log_curse_clear: "Maldición de Niebla eliminada de esta batalla.",
+    log_ward_progress: "La barrera reconoce {type}. Faltan {remaining} tipo(s).",
+    log_ward_break: "Ataque, defensa y táctica resuenan juntos. La barrera se rompe.",
+    log_boss_phase: "{enemy} entra en la fase {phase}: {effect}.",
+    phase_armor: "la armadura se engrosa",
+    phase_riposte: "el contraataque se vuelve más fuerte",
+    phase_haste: "la cacería se acelera",
+    phase_regen: "la regeneración se intensifica",
+    phase_seal: "cambia el tipo de carta prohibido",
+    phase_ward: "la barrera triple se restaura",
+    log_win_battle: "Derrotaste a {enemy}. Elige una carta nueva.",
+    log_win_mission: "Élite de misión derrotada. Ganaste {xp} XP.",
+    log_win_boss: "Jefe de misión derrotado. Ganaste {xp} XP.",
+    log_coin_gain: "Ganaste {coins} Monedas Bestia.",
+    log_loss: "{enemy} te derrotó.",
+    log_reshuffle: "Mazo vacío: se barajó el descarte.",
+    shieldAbsorbed: "El bloqueo absorbió todo el daño. Queda {shield} de bloqueo.",
+    playerDamage: "Recibiste {damage} de daño. Quedan {hp} PV.",
+    playerPoison: "Recibiste {damage} de daño de veneno. Quedan {hp} PV.",
+    levelUp: "¡Subiste de nivel! Alcanzaste el nivel {level}.",
+    report_win: "Misión {mission} completada. Ganaste {xp} XP y desbloqueaste más bosque.",
+    report_partial: "Superaste {count} batalla(s) de la misión {mission}. Ganaste {xp} XP. Inténtalo con un plan de mazo más fuerte.",
+    report_no_wins: "Aún no superaste ninguna batalla. Lee la intención enemiga, bloquea ataques fuertes y crea combos.",
+    resultRewards: "Premios: +{xp} XP · +{coins} Monedas Bestia",
+    resultSaved: "Guardado: Nv.{level} · {xp}/{nextXp} XP · {coins} Monedas Bestia",
+    resultUnlocked: "Nueva misión desbloqueada: misión {mission} — {name}",
+    resultReady: "Siguiente misión disponible: misión {mission} — {name}",
+    resultComplete: "Campaña del bosque completada: {count} misiones desbloqueadas.",
+    resultRetry: "Progreso guardado. Repite la misión {mission} cuando quieras."
+  };
   const permanentCardIds = Object.keys(cardDb).filter((cardId) => cardDb[cardId].draftable !== false);
 
   const baseDeck = [
@@ -738,6 +954,29 @@
     moonBoss: { name: "Moon Archive Keeper", nameZh: "月典守藏者", image: "beast-deck-boss-moon-archive.webp", hp: 82, isBoss: true, bossId: "moon", phaseMechanic: "seal", intents: [{ type: "seal", val: 0, seal: "attack" }, { type: "attack", val: 12 }, { type: "seal", val: 0, seal: "defense" }, { type: "defend", val: 12 }, { type: "seal", val: 0, seal: "utility" }] },
     mistCrownBoss: { name: "Mist Crown Monarch", nameZh: "霧冠獸王", image: "beast-deck-boss-mist-crown.webp", hp: 92, ward: 3, isBoss: true, bossId: "mist-crown", phaseMechanic: "ward", intents: [{ type: "curse", val: 2 }, { type: "attack", val: 14 }, { type: "fog", val: 0 }, { type: "attack", val: 19 }, { type: "seal", val: 0, seal: "utility" }] },
   };
+  const enemyNamesEs = {
+    boar: "Jabalí Sombrío",
+    viper: "Víbora Corrupta",
+    behemoth: "Behemot del Bosque",
+    rhino: "Rinoceronte de Hierro",
+    tiger: "Tigre Ámbar",
+    bear: "Oso Ancestral",
+    thornStag: "Ciervo de Placas Espinosas",
+    ironJackal: "Chacal Raíz de Hierro",
+    amberLynx: "Lince Ámbar",
+    mireToad: "Sapo Espiral del Pantano",
+    archiveOwl: "Búho del Archivo",
+    crownWolf: "Lobo de Niebla Coronada",
+    stonebackBoss: "Behemot Lomo de Piedra",
+    ironrootBoss: "Guardián Raíz de Hierro",
+    amberBoss: "Maestro de la Cacería Ámbar",
+    mirecoilBoss: "Hidra Espiral del Pantano",
+    moonBoss: "Custodio del Archivo Lunar",
+    mistCrownBoss: "Monarca de la Corona de Niebla"
+  };
+  Object.entries(enemyNamesEs).forEach(([id, nameEs]) => {
+    if (enemyCatalog[id]) enemyCatalog[id].nameEs = nameEs;
+  });
 
   const missionTemplates = [
     { title: "Misty Trail", titleZh: "迷霧小徑", subtitle: "Read simple attack and guard intents.", subtitleZh: "判讀基本攻擊與防禦意圖。", enemies: ["boar", "viper", "behemoth"], xp: 70, arc: 1 },
@@ -771,6 +1010,41 @@
     { title: "Monarch Stair", titleZh: "獸王長階", subtitle: "Every prior mechanic returns together.", subtitleZh: "所有先前機制同時回歸。", enemies: ["ironJackal", "mireToad", "crownWolf"], xp: 397, arc: 6 },
     { title: "Mist Crown", titleZh: "霧冠王座", subtitle: "Final Boss: wards, curses and rotating seals.", subtitleZh: "最終首領：結界、詛咒與輪替封印。", enemies: ["crownWolf", "archiveOwl", "mistCrownBoss"], xp: 450, arc: 6, boss: true },
   ];
+  const missionCopyEs = [
+    ["Sendero Brumoso", "Interpreta intenciones sencillas de ataque y defensa."],
+    ["Bifurcación de Zarzas", "El veneno cambia cuál es el turno seguro."],
+    ["Muralla de Musgo", "La armadura reduce cada golpe directo."],
+    ["Huellas de Piedra", "Rompe la armadura antes del golpe pesado."],
+    ["Hondonada Lomo de Piedra", "Jefe: la armadura se refuerza en cada fase."],
+    ["Puerta Raíz de Hierro", "Las posturas de contraataque castigan los ataques descuidados."],
+    ["Paso del Martillo", "El agotamiento aumenta el próximo coste de una carta."],
+    ["Forja de Raíces", "Defiéndete de los contraataques y después concentra el daño."],
+    ["Escaleras del Guardián", "Armadura y contraataque se superponen."],
+    ["Ciudadela Raíz de Hierro", "Jefe: los contraataques se fortalecen en cada fase."],
+    ["Senda Ámbar", "La rapidez salta pasos del patrón de intenciones."],
+    ["Marca del Cazador", "Juega la carta marcada o recibe daño."],
+    ["Cresta Garra Solar", "La debilidad reduce tu próximo ataque."],
+    ["Círculo de Depredadores", "Las marcas y la rapidez exigen planificar la mano."],
+    ["Gran Cacería Ámbar", "Jefe: las fases aceleran la cacería."],
+    ["Orilla Espiral del Pantano", "La regeneración premia el daño decisivo."],
+    ["Charcas Venenosas", "La curación y el veneno compiten entre sí."],
+    ["Juncos Hundidos", "La purificación puede borrar un plan de veneno."],
+    ["Estela Triple", "Debilidad, veneno y curación se combinan."],
+    ["Cuenca Espiral del Pantano", "Jefe: cada fase regenera más rápido."],
+    ["Archivo Lunar", "Los sellos desactivan temporalmente un tipo de carta."],
+    ["Índice Silencioso", "Adapta tus turnos a los sellos rotatorios."],
+    ["Torres de Tomos Lunares", "Los sellos de defensa y táctica se alternan."],
+    ["Sello del Custodio", "Se ponen a prueba los tres tipos de carta."],
+    ["Corazón del Archivo", "Jefe: cada fase cambia el tipo prohibido."],
+    ["Frontera de la Niebla Coronada", "Las maldiciones ocupan robos hasta que las eliminas."],
+    ["Corte Velada", "La niebla oculta el siguiente ritmo seguro."],
+    ["Barrera Triple", "Usa ataque, defensa y táctica para romper barreras."],
+    ["Escalera del Monarca", "Todas las mecánicas anteriores regresan juntas."],
+    ["Corona de Niebla", "Jefe final: barreras, maldiciones y sellos rotatorios."]
+  ];
+  missionTemplates.forEach((mission, index) => {
+    [mission.titleEs, mission.subtitleEs] = missionCopyEs[index];
+  });
   let profile = normalizeProfile();
   let state = {};
   let isAutoPositioningStage = false;
@@ -834,7 +1108,7 @@
 
   function getLocale() {
     const stored = localStorage.getItem(localeKey);
-    return window.WonderI18n?.locale?.() || (["zh-Hant", "zh-Hans"].includes(stored) ? stored : "en");
+    return window.WonderI18n?.locale?.() || (["zh-Hant", "zh-Hans", "es"].includes(stored) ? stored : "en");
   }
 
   function localizeChinese(value, locale = getLocale()) {
@@ -862,18 +1136,21 @@
 
   function nextMissionLabel(missionId) {
     const locale = getLocale();
+    if (locale === "es") return `Siguiente misión: ${missionId}`;
     return locale === "en" ? `Next Mission: ${missionId}` : localizeChinese(`下一關：任務 ${missionId}`, locale);
   }
 
   function missionTitle(id) {
     const mission = getMission(id);
     const locale = getLocale();
+    if (locale === "es") return mission.titleEs;
     return locale === "en" ? mission.title : localizeChinese(mission.titleZh, locale);
   }
 
   function missionSubtitle(id) {
     const mission = getMission(id);
     const locale = getLocale();
+    if (locale === "es") return mission.subtitleEs;
     return locale === "en" ? mission.subtitle : localizeChinese(mission.subtitleZh, locale);
   }
 
@@ -897,6 +1174,7 @@
     enemy.isElite = true;
     enemy.name = `Elite ${enemy.name}`;
     enemy.nameZh = `菁英${enemy.nameZh}`;
+    enemy.nameEs = `Élite ${enemy.nameEs}`;
     if (mission.arc === 1) enemy.armor = (enemy.armor || 0) + 1;
     if (mission.arc === 2) enemy.riposteBonus = 2;
     if (mission.arc === 3) enemy.haste = true;
@@ -908,6 +1186,7 @@
 
   function enemyName(enemy) {
     const locale = getLocale();
+    if (locale === "es") return enemy.nameEs || enemy.name;
     return locale === "en" ? enemy.name : localizeChinese(enemy.nameZh, locale);
   }
 
@@ -1364,7 +1643,9 @@
     const locale = getLocale();
     const labels = locale === "en"
       ? { attack: "Attack", defense: "Defense", utility: "Utility", curse: "Curse" }
-      : { attack: "攻擊", defense: "防禦", utility: "功能", curse: "詛咒" };
+      : locale === "es"
+        ? { attack: "Ataque", defense: "Defensa", utility: "Táctica", curse: "Maldición" }
+        : { attack: "攻擊", defense: "防禦", utility: "功能", curse: "詛咒" };
     return localizeChinese(labels[type] || String(type || ""), locale);
   }
 

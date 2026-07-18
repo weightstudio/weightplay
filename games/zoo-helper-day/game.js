@@ -231,6 +231,28 @@
         nursery: "無尾熊育幼區",
       },
     },
+    es: {
+      gameTitle: "Un Día como Ayudante del Zoo", language: "Idioma", chooseStage: "Elegir nivel", menuHint: "Ayuda a los animales con tareas tranquilas de cuidado.", stages: "Niveles", loading: "Cargando", nextStage: "Siguiente nivel", retry: "Intentar de nuevo", lobby: "Sala de juegos", locked: "Nivel bloqueado",
+      great: "¡Gran trabajo!", perfect: "¡Ayudante perfecto!", good: "¡Buen ayudante!", keep: "¡Sigue ayudando!", result: "Turno completado: {station} ganó {tickets} entradas y mantuvo la felicidad de los visitantes en {mood}%.",
+      skillReport: "Informe de habilidades", animalKnowledge: "Conocimiento animal", animalValue: "{count} necesidades de cuidado relacionadas", focus: "Concentración", focusValue: "A la primera: {firstTry} · Reintentos: {retries}", coordination: "Coordinación visual", coordinationValue: "{count} elecciones de cuidado completadas",
+      firstFinish: "Primera victoria · {stars} estrellas", progress: "Esta vez: {stars} · Mejor anterior: {previous}", newBest: "Nuevo récord: {stars} · Mejor anterior: {previous}", stage: "Nivel {n}", stageGoal: "Turno de {station} / {tickets} entradas",
+      task: "{station}: ayuda a {animal} con {item}.", categoryTask: "{station}: elige algo para la necesidad de {category} de {animal}.", routineTask: "{station}: el paso {step}/{total} de la rutina de {animal} es {item}.", memoryHidden: "Toca el animal para volver a ver la petición.", checkpoint: "Prueba del cuidador",
+      rules: { exact: "Pareja de cuidado", picture: "Herramientas con imágenes", category: "Categorías de cuidado", memory: "Recuerda y ayuda", routine: "Rutina de dos pasos", expert: "Mezcla del cuidador" },
+      categories: { food: "comida", drink: "bebida", clean: "limpieza", play: "juego" }, tickets: "Entradas {count}", mood: "Felicidad {count}%", correct: "¡Buena ayuda!", wrong: "Prueba otro objeto.", careItemsAria: "Opciones de objetos de cuidado",
+      metaTitle: "Un Día como Ayudante del Zoo - WeightPlay", metaDescription: "Completa 30 turnos tranquilos de zoo con herramientas visuales, categorías de cuidado, peticiones de memoria y rutinas de dos pasos.",
+      homeAria: "Volver a la sala Kids", languageAria: "Idioma", stageBackAria: "Volver", stageListAria: "Lista de niveles", battleBackAria: "Volver a los niveles", shiftAria: "Estado del turno del zoo",
+      guideAria: "Guía de Un Día como Ayudante del Zoo", guideKicker: "Guía de juego original de WeightPlay", guideTitle: "Un Día como Ayudante del Zoo - Cómo jugar",
+      guideIntro: "Un Día como Ayudante del Zoo es un juego tranquilo de trabajo en el zoo. Los niños ayudan a distintas zonas de animales a ganar entradas y mantener felices a los visitantes. Cada nivel es un turno pequeño con acciones visuales, objetivos táctiles grandes y comentarios amables, para entender la meta sin leer demasiado.",
+      guideHowTitle: "Cómo jugar", guideHow1: "Elige un turno del zoo en la lista de niveles.", guideHow2: "Observa la zona animal, el objetivo de entradas y el medidor de felicidad.", guideHow3: "Toca o arrastra el objeto que corresponde a la tarea actual.", guideHow4: "Completa el turno para ganar entradas, estrellas y el siguiente momento del zoo.",
+      guideStrategyTitle: "Consejos", guideStrategy1: "Di en voz alta el objeto o la categoría antes de tocar una herramienta.", guideStrategy2: "En los turnos con imágenes, compara la forma y el color en lugar de buscar una etiqueta.", guideStrategy3: "Si olvidas la petición, toca el animal para verla de nuevo en vez de adivinar.",
+      guideStrategy4: "En una tarea de categoría, decide si la imagen es comida, bebida, limpieza o juego; puede haber dos respuestas válidas.", guideStrategy5: "Mira la marca 1/2 o 2/2 para usar cada objeto en el momento correcto.", guideStrategy6: "Usa el reintento para comparar con calma las cuatro imágenes.",
+      guideParentTitle: "Nota para familias", guideParentNote: "Este juego puede ayudar a practicar el reconocimiento de animales, ideas sencillas de cuidado, atención y coordinación mediante imágenes. Funciona bien en sesiones cortas acompañadas. El progreso y las estrellas son solo estímulos y registros locales, no una evaluación formal.",
+      guideFaqTitle: "Preguntas frecuentes", guideFaqQ1: "¿Puede jugar un niño de 3 años?", guideFaqA1: "Sí. Usa imágenes y botones grandes; la compañía de un adulto puede facilitar y enriquecer la experiencia.", guideFaqQ2: "¿Qué permite practicar?", guideFaqA2: "Reconocimiento animal, atención, coordinación e ideas sencillas como comida, agua, limpieza y juego.",
+      guideFaqQ3: "¿Hace falta saber leer?", guideFaqA3: "No. Las decisiones principales son visuales y se pueden tomar observando al animal y los objetos.", guideFaqQ4: "¿Recoge datos infantiles?", guideFaqA4: "No se necesita ningún dato personal infantil para jugar.",
+      items: { fruit: "Fruta", water: "Agua", brush: "Cepillo", toy: "Juguete", leaf: "Hojas", shower: "Ducha", fish: "Pescado", ball: "Pelota" },
+      animals: { lion: "León", panda: "Panda", elephant: "Elefante", penguin: "Pingüino", giraffe: "Jirafa", monkey: "Mono", koala: "Koala", zebra: "Cebra" },
+      stations: { savanna: "Alimentación en la sabana", bamboo: "Bosque de bambú", bath: "Baño del elefante", ice: "Piscina de pingüinos", lookout: "Mirador de jirafas", nursery: "Guardería de koalas" },
+    },
   };
 
   const itemIcons = {
@@ -350,7 +372,7 @@
 
   const legacySavedLocale = localStorage.getItem(legacyLocaleKey);
   const canonicalSavedLocale = localStorage.getItem(localeKey);
-  if (!canonicalSavedLocale && ["en", "zh-Hant", "zh-Hans"].includes(legacySavedLocale)) {
+  if (!canonicalSavedLocale && ["en", "zh-Hant", "zh-Hans", "es"].includes(legacySavedLocale)) {
     window.WonderI18n?.setLocale?.(legacySavedLocale);
   }
   let locale = window.WonderI18n?.locale?.() || canonicalSavedLocale || legacySavedLocale || "en";
@@ -584,7 +606,7 @@
   }
 
   function localizeStatic() {
-    document.documentElement.lang = locale === "zh-Hant" ? "zh-Hant" : "en";
+    document.documentElement.lang = locale === "zh-Hant" ? "zh-Hant" : locale === "es" ? "es" : "en";
     document.querySelectorAll("[data-ui]").forEach((node) => {
       node.textContent = t(node.dataset.ui);
     });

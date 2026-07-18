@@ -4,7 +4,7 @@
   const legacyLocaleKey = "weightplayLocale";
   const canonicalSavedLocale = localStorage.getItem(canonicalLocaleKey);
   const legacySavedLocale = localStorage.getItem(legacyLocaleKey);
-  if (!canonicalSavedLocale && ["en", "zh-Hant", "zh-Hans"].includes(legacySavedLocale)) {
+  if (!canonicalSavedLocale && ["en", "zh-Hant", "zh-Hans", "es"].includes(legacySavedLocale)) {
     window.WonderI18n?.setLocale?.(legacySavedLocale);
   }
 
@@ -276,7 +276,25 @@
       fruit8: "長頸鹿球",
       fruit9: "大象球",
       fruit10: "獅王球",
-    },  };
+    },
+    es: {
+      title: "Torre de Fusión Animal", language: "Idioma", ariaLanguage: "Selector de idioma", ariaLobby: "Volver a la sala de WeightPlay", ariaBattle: "Pantalla de Torre de Fusión Animal", ariaBattleBack: "Volver al menú principal",
+      ariaScore: "Información de puntuación", ariaProgress: "Progreso de fusión", ariaBoard: "Tablero de fusión animal", ariaBoardControls: "Usa las flechas izquierda y derecha para apuntar y Espacio o Enter para soltar.", ariaAim: "Puntería {value}%",
+      score: "Puntuación", best: "Mejor", next: "Siguiente", comboLabel: "Combo", comboReady: "Listo", comboStatus: "x{count}", largest: "Mayor", goal: "Objetivo: {name}", bestAnimal: "Mejor animal: {name}", combo: "¡Combo x{count}!", drop: "Soltar", restart: "Reiniciar",
+      menuTitle: "Fusiona hasta llegar al Rey León", menuDesc: "Suelta las bolas con cuidado. Dos animales iguales se fusionan en uno mayor. Mantén la torre bajo la línea roja.", chainTitle: "Ruta de fusión", chainHint: "Une dos animales iguales para desbloquear el siguiente.",
+      albumTitle: "Álbum de hábitats {unlocked}/4", albumUnlocked: "{name} descubierto", albumLocked: "Alcanza {name}", habitatMeadow: "Amigos de la pradera", habitatForest: "Vuelo del bosque", habitatSavanna: "Ruta de la sabana", habitatRoyal: "Corona del león",
+      nextHabitat: "Siguiente hábitat: {habitat}", nextHabitatTarget: "Alcanza {animal} · {count} {steps}", habitatStep: "paso animal", habitatSteps: "pasos animales", habitatAlbumComplete: "Álbum completo · ¡Sigue fusionando hacia el Rey León!",
+      start: "Empezar", freePlay: "Juego libre", stageTitle: "Desafíos del festival", stageHelp: "Desliza a los lados y elige un desafío desbloqueado.", stageBack: "Volver al inicio", stageLabel: "Desafío {stage}", stageLocked: "Bloqueado", stageBest: "Mejor {score}",
+      goalScore: "Consigue {score} puntos", goalTier: "Fusiona un {animal}", goalMerges: "Completa {count} fusiones", goalCombo: "Alcanza un combo x{count}", goalDual: "Fusiona {animal} y consigue {score} puntos", dropsRule: "{count} lanzamientos",
+      clearTitle: "¡Desafío completado!", failedTitle: "Reintentar desafío", nextChallenge: "Siguiente desafío", retryChallenge: "Intentar de nuevo", challengeMenu: "Desafíos", gameOver: "Fin de la partida", result: "Puntuación {score}  Mejor {best}", resultScore: "Puntuación {score}",
+      previousBest: "Mejor anterior {score}", todayScore: "Puntuación de hoy {score}", improvement: "Mejora {value}%", skillReport: "Informe de habilidades", logicSkill: "Lógica", problemSolvingSkill: "Resolución de problemas", coordinationSkill: "Coordinación visual",
+      progressNewBest: "¡Progreso increíble! Mejoraste tu récord.", progressImproved: "¡Gran progreso! Superaste tu mejor marca anterior.", progressSteady: "¡Buen esfuerzo! Inténtalo otra vez para planificar mejor los lanzamientos.", progressNote: "Las puntuaciones solo sirven para divertirse y seguir el progreso local.",
+      milestoneTitle: "Hito de fusión", milestoneUnlocked: "Mejor desbloqueado: {name}", milestoneNext: "Siguiente objetivo: {name}", milestoneComplete: "¡Todos los animales desbloqueados! Busca un nuevo récord.", milestoneNew: "¡Nuevo animal desbloqueado: {name}!",
+      aimStart: "Toca o arrastra el tablero para apuntar. Fusiona animales iguales bajo la línea roja.", aimMatch: "Apunta cerca de otro {name} para fusionarlos.", aimSafe: "Mantén la torre bajo la línea roja de aviso.", aimDanger: "¡Demasiado alto! Fusiona rápido o aléjate de la línea roja.", dangerLine: "Línea de aviso",
+      leaderboardTitle: "Tus mejores partidas", noLeaderboard: "Completa una partida para añadirla a esta lista local.", leaderboardRow: "#{rank}  Puntuación {score}  {animal}", playAgain: "Jugar de nuevo", menu: "Menú del juego", newBest: "¡Nuevo récord!",
+      fruit0: "Bola ratón", fruit1: "Bola conejo", fruit2: "Bola zorro", fruit3: "Bola pingüino", fruit4: "Bola koala", fruit5: "Bola búho", fruit6: "Bola panda", fruit7: "Bola cachorro de león", fruit8: "Bola jirafa", fruit9: "Bola elefante", fruit10: "Bola Rey León",
+    },
+  };
 
   const challenges = [
     { id: 1, chapter: ["Meadow Steps", "草原起步"], name: ["First Pair", "第一對夥伴"], goal: "merges", target: 3, drops: 12, rules: ["classic"] },
@@ -310,6 +328,20 @@
     { id: 29, chapter: ["Crown Festival", "皇冠祭典"], name: ["Crown Score", "皇冠得分"], goal: "score", target: 900, drops: 36, rules: ["narrow", "heavy"] },
     { id: 30, chapter: ["Crown Festival", "皇冠祭典"], name: ["Lion Crown Table", "獅王餐桌檢查"], checkpoint: true, goal: "dual", target: 6, scoreTarget: 800, drops: 40, rules: ["narrow", "wind", "heavy", "fixed"] },
   ];
+
+  const spanishChallengeCopy = [
+    ["Pasos de la pradera", "Primera pareja"], ["Pasos de la pradera", "Pícnic del zorro"], ["Pasos de la pradera", "Amigos rápidos"], ["Pasos de la pradera", "Puntos de la pradera"], ["Pasos de la pradera", "Tambor de la pradera"],
+    ["Ventana del bosque", "Aterrizaje estrecho"], ["Ventana del bosque", "Ventana del pingüino"], ["Ventana del bosque", "Torre central"], ["Ventana del bosque", "Combo en la ventana"], ["Ventana del bosque", "Puerta del búho"],
+    ["Corriente del río", "Brisa del oeste"], ["Corriente del río", "Koala a la deriva"], ["Corriente del río", "Puntos con brisa"], ["Corriente del río", "Combo de corriente"], ["Corriente del río", "Ferry del panda"],
+    ["Peso de la montaña", "Aterrizaje pesado"], ["Peso de la montaña", "Cima del búho"], ["Peso de la montaña", "Caída rápida"], ["Peso de la montaña", "Puntos de montaña"], ["Peso de la montaña", "Pico del cachorro de león"],
+    ["Desfile lunar", "Ritmo de ratón y conejo"], ["Desfile lunar", "Siguiente conocido"], ["Desfile lunar", "Combo del desfile"], ["Desfile lunar", "Puntuación planificada"], ["Desfile lunar", "Farol del panda"],
+    ["Festival de la corona", "Ventana con viento"], ["Festival de la corona", "Desfile pesado"], ["Festival de la corona", "Combo del festival"], ["Festival de la corona", "Puntos de la corona"], ["Festival de la corona", "Mesa de la corona del león"],
+  ];
+  if (spanishChallengeCopy.length !== challenges.length) throw new Error("Spanish merge-challenge coverage must match all challenges.");
+  challenges.forEach((challenge, index) => {
+    challenge.chapter.push(spanishChallengeCopy[index][0]);
+    challenge.name.push(spanishChallengeCopy[index][1]);
+  });
 
   const imageLoadTasks = [];
 
@@ -448,7 +480,9 @@
   }
 
   function localeSlot() {
-    return locale() === "zh-Hant" ? 1 : 0;
+    if (locale() === "zh-Hant") return 1;
+    if (locale() === "es") return 2;
+    return 0;
   }
 
   function challengeGoalLabel(challenge = activeChallenge()) {
@@ -742,6 +776,7 @@
     const labels = {
       en: { classic: "Open Box", narrow: "Narrow Window", wind: "River Wind", heavy: "Heavy Gravity", fixed: "Fixed Queue" },
       "zh-Hant": { classic: "開放箱", narrow: "窄窗", wind: "河風", heavy: "重力加強", fixed: "固定隊列" },
+      es: { classic: "Caja abierta", narrow: "Ventana estrecha", wind: "Viento del río", heavy: "Gravedad fuerte", fixed: "Cola fija" },
     };
     return labels[locale()]?.[rule] || rule;
   }

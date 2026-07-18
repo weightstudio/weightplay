@@ -296,6 +296,23 @@
   dictionary["zh-Hant"].voicePrompt = "\u628a {food} \u653e\u9032 {color} \u4fbf\u7576\u76d2\u3002";
   dictionary["zh-Hant"].lunchboxChoice = "{color}\u4fbf\u7576\u76d2";
 
+  dictionary.es = {
+    title: "Fiambrera de Colores Animales", language: "Idioma", chooseLevel: "Elegir nivel",
+    scoreLabel: "Puntuación", roundLabel: "Progreso", levelLabel: "Nivel",
+    ready: "Arrastra la comida hasta la fiambrera del mismo color.", voicePrompt: "Pon {food} en la fiambrera {color}.", picturePrompt: "¡Relaciona la imagen!", lunchboxChoice: "Fiambrera {color}",
+    correct: "¡Bien! ¡Correcto!", wrong: "¡Prueba con otra caja!", boxesMoving: "Las fiambreras están cambiando de lugar.", guardianCheckpoint: "Prueba amistosa del guardián",
+    winTitle: "¡Nivel completado!", winDesc: "Puntuación: {score}. Has desbloqueado la siguiente fiambrera.", perfectDesc: "¡Clasificación perfecta! Puntuación: {score}. Has desbloqueado la siguiente fiambrera.",
+    allClearTitle: "¡Todo completado!", allClearDesc: "Has completado todos los niveles de fiambreras. ¡Genial!", perfectAllClearDesc: "¡Clasificación perfecta! Has completado todos los niveles. ¡Genial!",
+    nextStage: "Siguiente nivel", again: "Jugar de nuevo", levels: "Niveles", lobby: "Sala de juegos", locked: "Bloqueado", lockedFeedback: "{stage} está bloqueado. Completa primero el nivel {required}.", play: "Jugar", loading: "Cargando",
+    stageMeta: "{foods} comidas / {colors} colores", resultScore: "Puntuación: {score}", previousBest: "Mejor anterior: {score}", newBest: "¡Nuevo récord!", improvement: "Mejora: {value}%",
+    skillReport: "Informe de habilidades", colorRecognition: "Reconocimiento de colores", focusSkill: "Concentración", handEye: "Coordinación visual",
+    progressMessageNew: "¡Gran progreso! Has mejorado tu mejor puntuación.", progressMessageSteady: "¡Buen esfuerzo! Juega otra vez para practicar la atención y los colores.", progressNote: "Las puntuaciones solo sirven para divertirse y seguir el progreso.",
+    food_strawberry: "Fresa", food_tomato: "Tomate", food_banana: "Plátano", food_cheese: "Queso", food_milk: "Leche", food_blueberry: "Arándano", food_broccoli: "Brócoli", food_apple: "Manzana",
+    food_carrot: "Zanahoria", food_orange: "Naranja", food_eggplant: "Berenjena", food_grapes: "Uvas", food_rice: "Arroz", food_yogurt: "Yogur", food_bread: "Pan", food_chocolate: "Chocolate",
+    food_watermelon: "Sandía", food_corn: "Maíz", food_cucumber: "Pepino", food_fish: "Pescado", food_peach: "Melocotón", food_black_sesame: "Sésamo negro", food_soda: "Refresco", food_purple_potato: "Batata morada",
+    color_red: "roja", color_yellow: "amarilla", color_blue: "azul", color_green: "verde", color_orange: "naranja", color_purple: "morada", color_white: "blanca", color_brown: "marrón", color_gray: "gris", color_pink: "rosa", color_black: "negra", color_cyan: "cian",
+  };
+
   const pageMetadata = {
     en: {
       title: "Animal Color Lunchbox - WeightPlay",
@@ -307,15 +324,20 @@
       metaTitle: "動物顏色便當盒 - 顏色分類遊戲",
       description: "在動物顏色便當盒完成 30 個短篇顏色分類關卡，包含圖片提示、安全換位、友善動物守護員與溫和重試。",
     },
+    es: {
+      title: "Fiambrera de Colores Animales - WeightPlay",
+      metaTitle: "Fiambrera de Colores Animales - Juego de clasificación",
+      description: "Completa 30 niveles breves de clasificación por color con pistas visuales, cajas móviles seguras, guardianes animales amistosos y reintentos amables.",
+    },
   };
 
   const guardians = Object.freeze({
-    mimi: { nameEn: "Rainbow Hop Mimi", nameZh: "彩虹跳跳咪咪", image: "../../assets/weightplay-character-rainbow-hop-mimi-clean-cutout.webp" },
-    orla: { nameEn: "Moon Cap Orla", nameZh: "月帽歐拉", image: "../../assets/weightplay-character-moon-cap-owl-cutout.webp" },
-    nori: { nameEn: "Bubble Fin Nori", nameZh: "泡泡鰭諾里", image: "../../assets/weightplay-character-bubble-fin-otter-cutout.webp" },
-    pogo: { nameEn: "Drum Belly Pogo", nameZh: "鼓肚波哥", image: "../../assets/weightplay-character-drum-belly-panda-clean-cutout.webp" },
-    taro: { nameEn: "Moss Shell Taro", nameZh: "苔殼塔羅", image: "../../assets/weightplay-character-moss-shell-turtle-cutout.webp" },
-    fia: { nameEn: "Spark Paw Fia", nameZh: "星爪菲亞", image: "../../assets/weightplay-character-spark-paw-fox-cutout.webp" },
+    mimi: { nameEn: "Rainbow Hop Mimi", nameZh: "彩虹跳跳咪咪", nameEs: "Mimi Salto Arcoíris", image: "../../assets/weightplay-character-rainbow-hop-mimi-clean-cutout.webp" },
+    orla: { nameEn: "Moon Cap Orla", nameZh: "月帽歐拉", nameEs: "Orla Gorro Lunar", image: "../../assets/weightplay-character-moon-cap-owl-cutout.webp" },
+    nori: { nameEn: "Bubble Fin Nori", nameZh: "泡泡鰭諾里", nameEs: "Nori Aleta Burbuja", image: "../../assets/weightplay-character-bubble-fin-otter-cutout.webp" },
+    pogo: { nameEn: "Drum Belly Pogo", nameZh: "鼓肚波哥", nameEs: "Pogo Barriga Tambor", image: "../../assets/weightplay-character-drum-belly-panda-clean-cutout.webp" },
+    taro: { nameEn: "Moss Shell Taro", nameZh: "苔殼塔羅", nameEs: "Taro Caparazón de Musgo", image: "../../assets/weightplay-character-moss-shell-turtle-cutout.webp" },
+    fia: { nameEn: "Spark Paw Fia", nameZh: "星爪菲亞", nameEs: "Fia Pata Chispa", image: "../../assets/weightplay-character-spark-paw-fox-cutout.webp" },
   });
 
   const stage = (id, nameEn, nameZh, descEn, descZh, colors, foods, rules = {}) => ({ id, nameEn, nameZh, descEn, descZh, colors, foods, rounds: 5, ...rules });
@@ -352,6 +374,43 @@
     stage(29, "Festival Practice", "慶典練習", "Six close-color boxes settle after every match.", "六個相近色盒子在每次配對後換位。", ["red", "pink", "orange", "yellow", "green", "purple"], ["watermelon", "peach", "orange", "corn", "grapes"], { shuffle: "each", decoys: 1 }),
     stage(30, "Fia's Rainbow Festival", "菲亞的彩虹慶典", "Fia combines pictures, decoys, and safe box shuffles.", "菲亞結合圖片、干擾盒與安全換位。", ["red", "pink", "orange", "yellow", "green", "purple"], ["strawberry", "peach", "carrot", "banana", "cucumber"], { guardian: "fia", pictureOnly: true, shuffle: "each", decoys: 1 }),
   ];
+
+  const spanishStageCopy = [
+    ["Inicio con frutas", "Cuatro colores claros y cajas fijas."],
+    ["Fiambrera de desayuno", "Conoce el naranja, morado, blanco y marrón."],
+    ["Pícnic en el jardín", "Frutas y verduras comparten cuatro cajas."],
+    ["Merienda dulce", "Compara rosa, negro, blanco y marrón."],
+    ["Prueba de pícnic de Mimi", "Mimi intercambia las cajas una vez tras tres comidas."],
+    ["Mesa de colores cálidos", "Rojo, rosa, naranja y amarillo aparecen juntos."],
+    ["Mesa de bebidas frías", "Azul, cian, blanco y morado aparecen juntos."],
+    ["Claro y oscuro", "Clasifica comidas blancas, grises, marrones y negras."],
+    ["Pícnic solo con imágenes", "Usa imágenes y muestras de color en lugar de nombres."],
+    ["Prueba matinal de Orla", "Orla coloca las cajas en nuevos lugares tras cada acierto."],
+    ["¿Rojo o rosa?", "Observa con cuidado los colores cálidos parecidos."],
+    ["¿Azul o cian?", "Seis cajas incluyen colores fríos parecidos."],
+    ["Neutros de la despensa", "Compara alimentos blancos, grises, marrones y negros."],
+    ["Una caja vacía extra", "Una caja visible no tiene comida correspondiente."],
+    ["Prueba fría de Nori", "Nori usa imágenes de colores fríos y una caja señuelo."],
+    ["Cesta de verduras", "Las formas de las verduras son la pista principal."],
+    ["Cesta de frutas", "Cinco frutas recorren colores cálidos y verdes."],
+    ["Cesta de desayuno", "Los alimentos del desayuno mezclan cinco familias de color."],
+    ["Cesta de meriendas", "Los dulces mezclan colores claros, oscuros y cálidos."],
+    ["Prueba de bufé de Pogo", "Pogo añade dos cajas sin usar que no causan daño."],
+    ["Fiambreras móviles", "Las cajas cambian de lugar después de cada acierto."],
+    ["Imágenes de colores cálidos", "Relaciona colores cálidos usando primero las imágenes."],
+    ["Imágenes de colores fríos", "Relaciona por imagen colores fríos y neutros."],
+    ["Sigue el cambio", "Los colores parecidos solo se mueven tras una respuesta correcta."],
+    ["Prueba del jardín de Taro", "Taro refleja la posición de las cajas una vez a mitad del nivel."],
+    ["Arcoíris de seis cajas", "Seis cajas amplían las opciones sin alargar la partida."],
+    ["Relevo cálido y frío", "Las comidas alternan entre grupos cálidos y fríos."],
+    ["Señuelos útiles", "Dos cajas sin usar permanecen para fomentar una mirada cuidadosa."],
+    ["Práctica del festival", "Seis cajas de colores cercanos cambian tras cada acierto."],
+    ["Festival arcoíris de Fia", "Fia combina imágenes, señuelos y cambios seguros de cajas."],
+  ];
+  if (spanishStageCopy.length !== stages.length) throw new Error("Spanish lunchbox-stage coverage must match all stages.");
+  stages.forEach((item, index) => {
+    [item.nameEs, item.descEs] = spanishStageCopy[index];
+  });
 
   validateStageData();
 
@@ -429,11 +488,15 @@
   }
 
   function stageName(stage) {
-    return locale() === "zh-Hant" ? stage.nameZh : stage.nameEn;
+    if (locale() === "zh-Hant") return stage.nameZh;
+    if (locale() === "es") return stage.nameEs;
+    return stage.nameEn;
   }
 
   function stageDescription(stage) {
-    return locale() === "zh-Hant" ? stage.descZh : stage.descEn;
+    if (locale() === "zh-Hant") return stage.descZh;
+    if (locale() === "es") return stage.descEs;
+    return stage.descEn;
   }
 
   function loadUnlockedStage() {
@@ -463,7 +526,9 @@
     mainTitle.textContent = t("title");
     mainIntro.textContent = locale() === "zh-Hant"
       ? "把彩色食物放進相同顏色的便當盒，完成 30 個短篇關卡與六次友善守護員檢查。"
-      : "Sort colorful foods through 30 short levels and six friendly Guardian checks.";
+      : locale() === "es"
+        ? "Clasifica alimentos de colores en 30 niveles breves y seis pruebas amistosas de guardianes."
+        : "Sort colorful foods through 30 short levels and six friendly Guardian checks.";
     startBtn.textContent = t("chooseLevel");
     stageSelectTitle.textContent = t("chooseLevel");
     document.querySelector("#scoreLabel").textContent = t("scoreLabel");
@@ -802,7 +867,9 @@
   }
 
   function localizedGuardianName(guardian) {
-    return locale() === "zh-Hant" ? guardian.nameZh : guardian.nameEn;
+    if (locale() === "zh-Hant") return guardian.nameZh;
+    if (locale() === "es") return guardian.nameEs;
+    return guardian.nameEn;
   }
 
   function applyStagePresentation(stage) {

@@ -46,6 +46,25 @@
       success: "Rescue Complete!", failed: "Out of bubbles", bounceNeeded: "This level needs a wall bounce!", noMatch: "Look for matching animal bubbles", match: "Match complete!", rescuedNow: "Animal rescued!",
       blockerGoal: "Clear obstacles and make the match", windGoal: "Complete a bank match in the wind", guardianGoal: "Complete the rescue check", leafHint: "Leaf bubbles drop with an adjacent match", honeyHint: "Honey bubbles need two direct hits", cloudHint: "Hit a cloud to clear its row", windHint: "Watch the wind; flying bubbles drift sideways", shiftingHint: "Bubble rows shift after every shot", guardianHint: "Combine the skills from this region", leafUsed: "Leaves cleared!", honeyUsed: "Honey cracked!", cloudUsed: "Cloud row cleared!",
       focusReport: "Focus · Hand-Eye Coordination", logicReport: "Spatial Judgment · Coordination", rescueReport: "Planning · Logic", locked: "Locked", lockedFeedback: "{stage}: Locked. Complete the previous stage first!", completed: "Complete"
+    },
+    es: {
+      title: "Safari de Burbujas Animales", tagline: "¡Apunta, rebota y rescata animales atrapados en burbujas!", progressLabel: "Progreso del safari",
+      backToLobby: "Volver a la sala Kids de WeightPlay", soundToggle: "Activar o desactivar sonido", language: "Idioma", back: "Volver", stageList: "Lista de niveles", backToStage: "Volver a los niveles", playArea: "Zona de lanzamiento de burbujas", earnedStars: "Estrellas obtenidas", close: "Cerrar",
+      loading: "Preparando el safari", loadingError: "Algunas imágenes no se cargaron; se usarán los recursos disponibles",
+      startGame: "Empezar", guide: "Guía", chooseStage: "Elegir nivel", album: "Álbum de rescate", bestStars: "Mejores estrellas",
+      startLevel: "Empezar nivel", level: "Nivel", shots: "Tiros", rescued: "Objetivo", score: "Puntuación",
+      currentBubble: "Actual", nextBubble: "Siguiente", shotsLeft: "Tiros restantes", rescuedAnimals: "Animales rescatados",
+      skillReport: "Informe de habilidades", retry: "Reintentar", nextLevel: "Siguiente nivel", backToMap: "Volver al mapa",
+      howToPlay: "Cómo jugar", guideAim: "Arrastra para apuntar a burbujas iguales y suelta para disparar.", guideBank: "Haz rebotar el tiro en una pared para rodear las rocas.",
+      guideRescue: "Une tres o más. Rescata el objetivo antes de quedarte sin tiros.", gotIt: "Entendido",
+      aim: "Arrastra para apuntar y suelta para disparar", directGoal: "Forma 1 grupo del mismo color", bankGoal: "Forma 1 grupo con un rebote en la pared", rescueGoal: "Rescata una burbuja animal",
+      multiGoal: "Forma 2 grupos del mismo color", multiBankGoal: "Forma 2 grupos con rebotes en la pared", doubleRescueGoal: "Rescata 2 animales",
+      directSkill: "Concentración", bankSkill: "Cálculo", rescueSkill: "Planificación", directHint: "Apunta a burbujas iguales para formar un grupo", bankHint: "Apunta a una pared lateral para hacer rebotar el tiro", rescueHint: "Elimina las burbujas iguales alrededor del animal", multiHint: "Planifica el orden de los tiros y completa dos grupos", doubleRescueHint: "Estudia las rutas y rescata a los dos animales",
+      rainbowHint: "Arcoíris adopta el color de la burbuja que toca", lineHint: "Línea elimina toda la fila que alcanza", burstHint: "Explosión elimina burbujas y obstáculos cercanos", swapHint: "Intercambio cambia de color con la burbuja que toca",
+      rainbowUsed: "¡Coincidencia arcoíris!", lineUsed: "¡Fila eliminada!", burstUsed: "¡Explosión completada!", swapUsed: "¡Colores intercambiados!",
+      success: "¡Rescate completado!", failed: "Sin burbujas", bounceNeeded: "¡Este nivel necesita un rebote en la pared!", noMatch: "Busca burbujas animales iguales", match: "¡Grupo completado!", rescuedNow: "¡Animal rescatado!",
+      blockerGoal: "Elimina los obstáculos y completa el grupo", windGoal: "Completa un grupo con rebote pese al viento", guardianGoal: "Completa la prueba de rescate", leafHint: "Las burbujas de hojas caen al completar un grupo adyacente", honeyHint: "Las burbujas de miel necesitan dos impactos directos", cloudHint: "Golpea una nube para limpiar su fila", windHint: "Observa el viento: las burbujas se desvían al volar", shiftingHint: "Las filas se desplazan después de cada tiro", guardianHint: "Combina las habilidades aprendidas en esta región", leafUsed: "¡Hojas eliminadas!", honeyUsed: "¡Miel agrietada!", cloudUsed: "¡Fila de nubes eliminada!",
+      focusReport: "Concentración · Coordinación visual", logicReport: "Cálculo espacial · Coordinación", rescueReport: "Planificación · Lógica", locked: "Bloqueado", lockedFeedback: "{stage}: bloqueado. ¡Completa primero el nivel anterior!", completed: "Completado"
     }
   };
 
@@ -82,6 +101,17 @@
     ,{ id: 30, title: { "zh-Hant": "大草原重聚", en: "Grand Safari Reunion" }, goalKey: "guardianGoal", skillKey: "rescueSkill", hintKey: "guardianHint", shots: 18, target: "rescue", requiredRescues: 3, mechanic: "grand-mix", wind: -20, shiftRows: true, checkpoint: true, powers: ["rainbow","line","burst","swap"], colors: [0,3,1,2,0,3,1,2,0,3,1], stars: [12,8], report: "rescueReport" }
   ];
 
+  const spanishStageTitles = [
+    "Saludo en la pradera", "Rebote en el cañón", "Rescate de la cebra", "Piedras del río", "Bifurcación de hojas",
+    "Amiga jirafa", "Laberinto de miel", "Doble rebote", "Relevo de elefantes", "Paso entre nubes",
+    "Rescate del hipopótamo", "Reencuentro en el bosque", "Cortina de hojas", "Doble cierre de miel", "Prueba del puente de nubes",
+    "Pradera del viento este", "Cañón del viento oeste", "Hojas a la deriva", "Rescate doble con viento", "Prueba del monzón",
+    "Sendero de hojas arcoíris", "Línea de miel", "Explosión de nubes", "Desvío de intercambio", "Prueba de burbujas de poder",
+    "Cruce de hojas y piedras", "Miel contra el viento", "Filas de nubes a la deriva", "Rescate de tres animales", "Gran reencuentro del safari",
+  ];
+  if (spanishStageTitles.length !== stageDefs.length) throw new Error("Spanish stage-title coverage must match all safari stages.");
+  stageDefs.forEach((stage, index) => { stage.title.es = spanishStageTitles[index]; });
+
   const dom = Object.fromEntries([
     "viewport","gameCanvas","loadingScreen","loadingCover","loadingPanel","loadingFill","loadingProgress","mainScreen","stageScreen","battleScreen","battleLive","resultScreen","guideModal","stageRail","stageStatus","playCanvas",
     "mainProgress","albumCount","starCount","stageSkill","stageGoal","battleStageName","shotsLeft","rescueProgress","scoreValue","battleMessage","battleGoal",
@@ -94,7 +124,7 @@
   const images = {};
   const canonicalLocaleKey = "weightPlayLocale";
   const legacySavedLocale = localStorage.getItem("weightplayLocale");
-  if (!localStorage.getItem(canonicalLocaleKey) && ["en", "zh-Hant", "zh-Hans"].includes(legacySavedLocale)) window.WonderI18n?.setLocale?.(legacySavedLocale);
+  if (!localStorage.getItem(canonicalLocaleKey) && ["en", "zh-Hant", "zh-Hans", "es"].includes(legacySavedLocale)) window.WonderI18n?.setLocale?.(legacySavedLocale);
   const savedLocale = localStorage.getItem(canonicalLocaleKey) || legacySavedLocale || localStorage.getItem("weightplay:locale");
   let locale = window.WonderI18n?.locale?.() || (savedLocale === "zh-Hant" ? "zh-Hant" : "en");
   let save = loadSave();

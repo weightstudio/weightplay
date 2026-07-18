@@ -307,6 +307,16 @@
     },
   };
 
+  text.es = {
+    title:"Fortaleza de Orbes Animal",language:"Idioma",backToLobby:"Volver al vestíbulo",fortressRooms:"Salas de la fortaleza",arenaLabel:"Arena de Fortaleza de Orbes Animal",menuTitle:"Apunta el orbe espiritual por la fortaleza de cristal.",menuHint:"Planifica rebotes, protege el núcleo y mejora cuatro salas con Piedras Estelares.",bestRaid:"Mejor ruta",starStones:"Piedras Estelares",diamonds:"Diamantes",openRaidMap:"Abrir mapa",raidMap:"Mapa de rutas",raidTiers:"Rutas de incursión",returnMain:"Volver al inicio",fortressWorkshop:"Taller de la fortaleza",stageProgress:"{unlocked}/30 rutas desbloqueadas · 3 oleadas cada una",tierLocked:"Bloqueado",enterRaid:"Entrar",nextStage:"Siguiente nivel",
+    tier1Name:"Puerta de Cristal",tier1Desc:"Aprende los rebotes contra exploradores lentos.",tier2Name:"Galería de Musgo",tier2Desc:"Más enemigos, armadura y presión.",tier3Name:"Patio del Eco",tier3Desc:"Supera el ataque más fuerte y derrota al gólem.",tier4Name:"Corona del Bosque",tier5Name:"Puente de Espinas",tier6Name:"Jardín Venenoso",tier7Name:"Laberinto de Raíces",tier8Name:"Guardián del Pantano",tier9Name:"Escalera Lunar",tier10Name:"Galería de Luces",tier11Name:"Ruinas de Espejos",tier12Name:"Guardián Lunar",tier13Name:"Puerta del Eclipse",tier14Name:"Salón de Cristal Negro",tier15Name:"Fundición de Sombras",tier16Name:"Trono del Eclipse",tier17Name:"Frente del Gólem",tier18Name:"Fundición del Núcleo",tier19Name:"Último Bastión",tier20Name:"Corazón de la Fortaleza",
+    zone1Desc:"Patrullas del bosque de cristal que prueban rebotes estables.",zone2Desc:"Bestias de espinas con armadura y ataques densos.",zone3Desc:"Espíritus lunares atraviesan rápido las ruinas.",zone4Desc:"Fuerzas del eclipse atacan con escudos de cristal.",zone5Desc:"La guardia del gólem combina todas las amenazas.",ruleFormation:"Formación",ruleSwarm:"Enjambre",ruleArmored:"Armadura",ruleGuardian:"Guardián",tierShort:"Ruta {tier}",wave:"Oleada",core:"Núcleo",shots:"Disparos",
+    aimHint:"Arrastra desde el lanzador, revisa la ruta de rebote y suelta.",keyboardAim:"Ángulo {angle}°. Ajusta con flechas y dispara con Espacio o Enter.",arenaControlLabel:"Arena de Fortaleza de Orbes Animal. Ángulo {angle} grados. Ajusta con flechas y dispara con Espacio o Enter.",arenaControlReadyLabel:"Arena de Fortaleza de Orbes Animal. Ángulo {angle} grados. El orbe está listo; Espacio o Enter dispara.",arenaControlCooldownLabel:"Arena de Fortaleza de Orbes Animal. Ángulo {angle} grados. Recarga aproximada {seconds} s; aún no puedes disparar.",arenaControlLimitLabel:"Arena de Fortaleza de Orbes Animal. Ángulo {angle} grados. Hay {active}/{limit} orbes volando, el límite activo; aún no puedes disparar.",orbReady:"Orbe listo. Rebota contra los muros antes de que las bestias alcancen el núcleo.",orbFlying:"El orbe está volando. Observa la ruta y prepara el siguiente ángulo.",fortressHit:"Una bestia golpeó el núcleo. Apunta antes o usa un rebote más amplio.",waveClear:"Oleada completada. Elige una bendición para continuar.",chooseUpgrade:"Elige una bendición",reroll:"Repetir por 3 diamantes",rerolled:"Opciones renovadas.",rerollNeed:"Necesitas 3 diamantes. Saldo {balance}/3.",rerollConfirm:"Confirmar 3 · {before}→{after}",rerollDecision:"Renueva las tres bendiciones una vez. Toca otra vez: {before} → {after} diamantes.",rerollLabel:"Renueva las tres bendiciones una vez. Cuesta 3 diamantes. Saldo {balance}.",rerollConfirmLabel:"Confirma una renovación. Gasta 3 diamantes. Saldo de {before} a {after}.",retry:"Reintentar",
+    raidClear:"Incursión completada",raidFailed:"Incursión fallida",resultWin:"Completaste la ruta {tier}, oleada {wave}/3, ganaste {stones} piedras y conservaste {core} de núcleo.",resultLose:"Llegaste a la ruta {tier}, oleada {wave}/3 y ganaste {stones} piedras. Mejora salas e intenta un rebote más seguro.",progressUnlocked:"Progreso guardado: {total} piedras; ruta {best} desbloqueada.",progressComplete:"Progreso guardado: {total} piedras; las 30 rutas están completas.",ruleBank:"Ruta de rebote",rulePriority:"Prioridad de objetivos",ruleAnchor:"Ancla de espinas",ruleArmor:"Romper armadura",rulePhase:"Momento de fase",rulePylon:"Pilar espejo",ruleSplitter:"División de cristal",ruleCharge:"Carril de carga",ruleMastery:"Dominio combinado",ruleBoss:"Contraataque de jefe",
+    bossCueRootbound:"Defensa de raíces elevada: rómpela y golpea el cristal del pecho.",bossCueBramble:"Placas de zarzas y anclas protegen al Coloso.",bossCueLunar:"La Matriarca cambia de fase: espera a que se abran los anillos lunares.",bossCuePrism:"Escudo prisma girando: ataca cuando el segmento dorado mire al frente.",bossCueTempest:"Carril de carga marcado: el Guardián queda expuesto tras correr.",bossCueVoid:"Cambió la fase del núcleo vacío: elimina la escolta y sigue el núcleo iluminado.",progressSaved:"Progreso guardado: {total} piedras; mejor ruta desbloqueada {best}.",reportWin:"Informe: lógica y reacción sólidas. Protegiste la fortaleza con rebotes y mejoras.",reportLose:"Informe: buena práctica. Apunta antes y usa el muro para golpear varias bestias.",
+    upgradeDamage:"Orbe gigante",upgradeDamageDesc:"+1 de daño de orbe.",upgradeSplit:"Orbe dividido",upgradeSplitDesc:"Añade un tercer orbe eco a cada disparo.",upgradePierce:"Luz penetrante",upgradePierceDesc:"El orbe puede volver a golpear antes a la misma bestia.",upgradeRecharge:"Carga rápida",upgradeRechargeDesc:"Prepara antes el siguiente disparo.",upgradeShield:"Escudo del núcleo",upgradeShieldDesc:"Restaura 4 de vida del núcleo.",upgradeMagnet:"Imán explorador",upgradeMagnetDesc:"+2 Piedras Estelares al terminar.",roomForge:"Forja de orbes",roomForgeDesc:"+1 de daño base por nivel.",roomShield:"Sala del escudo",roomShieldDesc:"+4 de vida inicial del núcleo por nivel.",roomDen:"Guarida de compañeros",roomDenDesc:"Daño de apoyo desde nivel 2.",companionLocked:"Alcanza Nv.2 para desbloquear ataques de apoyo.",companionCurrent:"Apoyo: {damage} de daño cada 4 segundos.",companionNext:"Siguiente nivel: {damage} de daño.",roomTower:"Torre de exploración",roomTowerDesc:"+1 Piedra Estelar por ruta y nivel.",level:"Nv.{n}",upgradeRoom:"Mejorar {cost}",upgradeRoomLabel:"{name}: subir a Nv.{level} por {cost} piedras. Después: {effect}",maxRoomLabel:"{name}: nivel máximo {level}. {effect}",maxed:"Máximo"
+  };
+
   const assets = {
     bg: "../../assets/animal-orb-fortress-arena-bg.webp",
     lion: "../../assets/weightplay-boom-mane-lion.png",
@@ -334,6 +344,12 @@
       description: "瞄準星珠挑戰 30 關反彈防守路線，反制特殊敵人與移動鏡面柱，擊敗六名獨特 Boss，並累積本機要塞成長。",
       ogDescription: "規劃牆面與鏡柱反彈，穿越六區 30 關，對抗護甲、相位、分裂與衝鋒敵人，再擊敗六名規則不同的 Boss。",
       twitterDescription: "守住水晶核心，完成 30 條特製反彈路線、六個區域、特殊敵人與六場不同 Boss 戰。",
+    },
+    es: {
+      title: "Fortaleza de Orbes Animal - Juego de rebotes",
+      description: "Apunta orbes espirituales por 30 rutas defensivas con enemigos especiales, pilares espejo móviles, seis jefes únicos y crecimiento local.",
+      ogDescription: "Planifica rebotes contra muros y pilares en 30 rutas, contrarresta armadura, fases, divisores y cargadores, y derrota seis jefes.",
+      twitterDescription: "Protege el núcleo de cristal en 30 rutas de rebote, seis regiones, enemigos especiales y seis jefes distintos.",
     },
   };
 
@@ -382,6 +398,15 @@
     route(29, 6, "Eclipse Heart", "蝕影核心", "Survive three formations using the full enemy vocabulary.", "運用所有已學規則通過三組完整敵陣。", "ruleMastery"),
     route(30, 6, "Heart of the Fortress", "要塞之心", "Break three final Boss phases, escorts, and changing pylons.", "擊破最終 Boss 三階段、護衛與變動鏡柱。", "ruleBoss"),
   ];
+  const spanishRaidDefs = [
+    ["Puerta de Cristal","Calcula disparos directos contra un carril lento."],["Galería de Musgo","Usa el primer rebote para rodear el centro bloqueado."],["Patio del Eco","Elige un rebote izquierdo o derecho para carriles separados."],["Pasaje Dividido","Rompe el bloqueador antes de que pasen los enemigos móviles."],["Corona Enraizada","Rompe la defensa del primer jefe y rebota hacia su punto débil."],
+    ["Puente de Espinas","Quita la armadura de un golpe antes de que escape la retaguardia."],["Jardín Venenoso","Destruye un ancla que protege bestias cercanas."],["Laberinto de Raíces","Elige un rebote entre dos columnas acorazadas."],["Muro de Zarzas","Contrarresta a la vez un ancla y un cargador acorazado."],["Trono del Taller de Espinas","Rompe dos placas del jefe mientras eliminas anclas."],
+    ["Escalera Lunar","Lee la primera desaparición de fase y su regreso."],["Galería de Luces","Sigue dos espíritus que alternan sus fases."],["Ruinas de Espejos","Apunta por una puerta lunar móvil que cambia el rebote."],["Cruce Lunar","Combina el momento de fase con una puerta reflectante móvil."],["Centinela del Pozo Lunar","Ataca durante la recuperación de la Matriarca tras su carrera."],
+    ["Puerta del Eclipse","Usa el primer pilar fijo como nueva superficie de rebote."],["Salón de Cristal Negro","Derrota al divisor antes de que libere dos fragmentos."],["Fundición Prisma","Elige entre dos corredores de pilares y una escolta acorazada."],["Circuito de Fragmentos","Replantea el disparo cuando los pilares invaliden el ángulo."],["Regente de la Bóveda Espejo","Rebota hacia el segmento iluminado del escudo giratorio."],
+    ["Calzada de Tormenta","Lee el carril marcado antes de la carga."],["Galería del Trueno","Sigue dos cargadores que alternan marcas."],["Fundición del Vendaval","Adáptate cuando los pulsos cambien la velocidad del orbe."],["Último Bastión","Combina cambios de carril, cargas y ritmo de tormenta."],["Corona de la Tempestad","Ataca después de la carrera marcada del jefe cornudo."],
+    ["Acceso del Gólem","Prioriza enemigos acorazados y en fase en una formación."],["Fundición del Núcleo","Alcanza divisores ocultos tras anclas de espinas."],["Galería del Vacío","Apunta por pilares móviles mientras se marcan carriles."],["Corazón del Eclipse","Supera tres formaciones usando todas las reglas aprendidas."],["Corazón de la Fortaleza","Rompe tres fases finales, escoltas y pilares cambiantes."]
+  ];
+  raidDefs.forEach((raid,index)=>{raid.name.es=spanishRaidDefs[index][0];raid.desc.es=spanishRaidDefs[index][1];});
   const bossDefs = [
     { tier: 5, id: "rootbound", imageKey: "bossRootbound", name: { en: "Rootbound Golem", "zh-Hant": "盤根魔像" }, cue: "bossCueRootbound" },
     { tier: 10, id: "brambleback", imageKey: "bossBrambleback", name: { en: "Brambleback Colossus", "zh-Hant": "荊背巨獸" }, cue: "bossCueBramble" },
@@ -390,6 +415,7 @@
     { tier: 25, id: "tempest", imageKey: "bossTempestHorn", name: { en: "Tempest Horn Guardian", "zh-Hant": "暴風角守衛" }, cue: "bossCueTempest" },
     { tier: 30, id: "voidcore", imageKey: "bossVoidcore", name: { en: "Voidcore Emperor", "zh-Hant": "虛空核心皇" }, cue: "bossCueVoid" },
   ];
+  ["Gólem Enraizado","Coloso Lomo de Zarzas","Matriarca Espíritu Lunar","Regente de Caparazón Prisma","Guardián Cuerno de Tempestad","Emperador del Núcleo Vacío"].forEach((name,index)=>{bossDefs[index].name.es=name;});
   const upgradeDefs = [
     { id: "damage", iconSrc: "../../assets/animal-orb-fortress-upgrade-icon-1.webp", name: "upgradeDamage", desc: "upgradeDamageDesc" },
     { id: "split", iconSrc: "../../assets/animal-orb-fortress-upgrade-icon-2.webp", name: "upgradeSplit", desc: "upgradeSplitDesc" },
@@ -1250,8 +1276,8 @@
   function activeEncounterCue() {
     const boss = state.enemies.find((enemy) => enemy.kind === "boss" && enemy.hp > 0);
     if (boss?.cue) return `${localized(boss.name)} — ${t(boss.cue)}`;
-    if (state.enemies.some((enemy) => enemy.phased)) return locale === "zh-Hant" ? "相位關閉：等待敵人重新顯形。" : "Phase closed — wait for the enemy to reappear.";
-    if (state.enemies.some((enemy) => enemy.chargeState === "marked")) return locale === "zh-Hant" ? "衝鋒路線已標記：準備改變角度。" : "Charge lane marked — prepare a different angle.";
+    if (state.enemies.some((enemy) => enemy.phased)) return locale === "zh-Hant" ? "相位關閉：等待敵人重新顯形。" : locale === "es" ? "Fase cerrada: espera a que reaparezca." : "Phase closed — wait for the enemy to reappear.";
+    if (state.enemies.some((enemy) => enemy.chargeState === "marked")) return locale === "zh-Hant" ? "衝鋒路線已標記：準備改變角度。" : locale === "es" ? "Carril de carga marcado: prepara otro ángulo." : "Charge lane marked — prepare a different angle.";
     return "";
   }
 

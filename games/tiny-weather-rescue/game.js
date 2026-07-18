@@ -230,6 +230,21 @@
       boots: "\u96e8\u9774",
       blanket: "\u6bef\u5b50",
     },
+    es: {
+      gameTitle: "Misión de Ayuda Animal", seoTitle: "Misión de Ayuda Animal - WeightPlay", seoDescription: "Ayuda a animales adorables con lluvia, hambre, barro, oscuridad y otras misiones tranquilas de cuidado.",
+      ogTitle: "Misión de Ayuda Animal - Juego de cuidados", ogDescription: "Toca o arrastra el objeto adecuado para ayudar a los animales en misiones tranquilas.",
+      language: "Idioma", languageAria: "Idioma", back: "Volver", backToStages: "Volver a los niveles", chooseStage: "Elegir misión de ayuda", menuHint: "Ayuda al animal. Toca o arrastra hasta él el objeto de cuidado adecuado.",
+      stages: "Niveles", loading: "Cargando", nextStage: "Siguiente nivel", retry: "Intentar de nuevo", lobby: "Sala de juegos", locked: "Nivel bloqueado", stage: "Nivel {n}", progress: "{done}/{total}", calm: "Ayudas {score}",
+      clear: "¡Ayuda completada!", failed: "¡Necesita más cuidados!", result: "{score} ayudas completadas. Mejor: {best} estrellas.", resultFailed: "Inténtalo otra vez y ayuda a más animales.",
+      reportTitle: "Informe de habilidades", previousBest: "Mejor anterior", todayScore: "Puntuación de hoy", improvement: "Mejora", problemSolving: "Resolución de problemas", focus: "Concentración", animalCare: "Cuidado animal",
+      reportGreat: "¡Gran progreso! Elegiste con atención los objetos útiles y resolviste la misión.", reportGood: "¡Buen esfuerzo! Inténtalo de nuevo para elegir mejor los objetos de cuidado.", reportTry: "¡Buena práctica! Mira qué necesita el animal y prueba un objeto útil.",
+      hint: "Toca un objeto de cuidado o arrástralo hasta el animal.", whatHelps: "¿Qué puede ayudar?", correct: "¡Ayudante feliz!", wrong: "Prueba otro objeto de cuidado.", moveOn: "Ayudemos al siguiente animal.", goal: "Objetivo {target}", checkpoint: "Prueba de ayudante",
+      ruleDirect: "Una necesidad clara", rulePicture: "Herramientas con imágenes", ruleCombined: "Dos pistas, una prioridad", ruleMemory: "Recuerda la necesidad", ruleChanging: "Las herramientas cambian de lugar", ruleExpert: "Mezcla de ayudante",
+      rememberNeed: "¿Qué necesitaba el animal? Tócalo para verlo otra vez.", rain: "Está lloviendo.", puddle: "El animal está mojado.", heat: "Hace demasiado calor.", dark: "Está demasiado oscuro.", thunder: "Hay truenos cerca.",
+      hungry: "El animal tiene hambre.", muddy: "El camino está embarrado.", cold: "Hace demasiado frío.", windy: "El viento es demasiado fuerte.",
+      rabbit: "Conejo", fox: "Zorro", panda: "Panda", penguin: "Pingüino", lion: "León", koala: "Koala",
+      umbrella: "Paraguas", towel: "Toalla", fan: "Ventilador", lantern: "Lámpara", house: "Casa", apple: "Manzana", boots: "Botas", blanket: "Manta",
+    },
   };
 
   const $ = (id) => document.getElementById(id);
@@ -263,7 +278,7 @@
 
   const legacySavedLocale = localStorage.getItem(localeKey);
   const canonicalSavedLocale = localStorage.getItem(canonicalLocaleKey);
-  if (!canonicalSavedLocale && ["en", "zh-Hant", "zh-Hans"].includes(legacySavedLocale)) {
+  if (!canonicalSavedLocale && ["en", "zh-Hant", "zh-Hans", "es"].includes(legacySavedLocale)) {
     window.WonderI18n?.setLocale?.(legacySavedLocale);
   }
   let locale = window.WonderI18n?.locale?.() || canonicalSavedLocale || legacySavedLocale || "en";
@@ -360,7 +375,7 @@
   }
 
   function localizeStatic() {
-    document.documentElement.lang = locale === "zh-Hant" ? "zh-Hant" : "en";
+    document.documentElement.lang = locale === "zh-Hant" ? "zh-Hant" : locale === "es" ? "es" : "en";
     document.title = t("seoTitle");
     setMeta('meta[name="description"]', "content", t("seoDescription"));
     setMeta('meta[property="og:title"]', "content", t("ogTitle"));

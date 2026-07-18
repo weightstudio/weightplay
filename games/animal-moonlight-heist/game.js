@@ -6,6 +6,7 @@
     en:{title:"Animal Moonlight Heist",internal:"Moon Archive Missions",pitch:"Read the patrols, recover the relic, and choose when to extract.",start:"Choose Mission",missions:"Moon Archive",chooseGadget:"Choose Gadget",alert:"Alert",holdRoute:"Hold to preview a route.",objective:"Recover the mission object",locked:"Complete the previous mission",retry:"Retry",next:"Next Mission",victory:"Mission Complete",captured:"Captured",capturedText:"The patrol raised the alarm. Retry is free.",treasure:"Bonus treasure recovered",extraction:"Reach the extraction gate",dash:"Lightning Dash",decoy:"Star Decoy",smoke:"Smoke Leaf",dashEffect:"Fast route: {ms}ms move",decoyEffect:"Patrol pause: {seconds}s",smokeEffect:"Alert reset + {seconds}s cover",coins:"Moon Coins",safehouse:"Safehouse Lv.{n}",mission:"Mission {n}",move:"Release to move",found:"Object secured!",exitReady:"Extraction ready",treasureFound:"Treasure secured",paused:"Paused",diamonds:"Diamonds",reroll:"Reroll 3",insure:"Insure 5",insured:"Insured",alreadyInsured:"Extraction insurance is already active.",notEnough:"Not enough Diamonds.",rerolled:"Gadget offers rerolled.",insuranceReady:"Extraction insurance active for the next mission.",confirmSpend:"Confirm {cost} · {before}→{after}",rerollDecision:"Reroll all three gadget strengths. Tap again to confirm: {before} → {after} Diamonds.",insuranceDecision:"Keep bonus treasure after one capture in the next mission. Tap again to confirm: {before} → {after} Diamonds.",rerollLabel:"Reroll all three gadget strengths. Costs 3 Diamonds. Current balance {balance}.",insuranceLabel:"Insure bonus treasure for one capture in the next mission. Costs 5 Diamonds. Current balance {balance}.",confirmLabel:"Confirm {action}. Spend {cost} Diamonds. Balance {before} to {after}.",rerollAction:"gadget strength reroll",insuranceAction:"treasure insurance",insuredLabel:"Treasure insurance is active for the next mission."},
     "zh-Hant":{title:"動物月影潛行隊",internal:"月光檔案任務",pitch:"觀察巡邏、找回文物，並決定何時安全撤離。",start:"選擇任務",missions:"月光檔案館",chooseGadget:"選擇技能",alert:"警戒",holdRoute:"按住畫面預覽路線。",objective:"找回任務物件",locked:"先完成上一個任務",retry:"重試",next:"下一關",victory:"任務完成",captured:"被發現了",capturedText:"巡邏隊已拉滿警戒。免費重新挑戰。",treasure:"已取得額外寶藏",extraction:"前往撤離門",dash:"閃電衝刺",decoy:"星光誘餌",smoke:"煙霧葉片",coins:"月光金幣",safehouse:"安全屋 Lv.{n}",mission:"任務 {n}",move:"放開即可移動",found:"已取得任務物件！",exitReady:"撤離門已開啟",treasureFound:"已取得寶藏",paused:"已暫停",diamonds:"鑽石",reroll:"重抽 3",insure:"保險 5",insured:"已投保",alreadyInsured:"撤離保險已啟用。",confirmReroll:"要花費 3 顆鑽石重抽技能強度嗎？",confirmInsurance:"要花費 5 顆鑽石，在被發現後保留額外寶藏嗎？",notEnough:"鑽石不足。",rerolled:"已重抽技能方案。",insuranceReady:"下一個任務已啟用撤離保險。"}
   };
+  copy.es={title:"Golpe Animal a la Luz de la Luna",internal:"Misiones del Archivo Lunar",pitch:"Observa las patrullas, recupera la reliquia y decide cuándo evacuar.",start:"Elegir misión",missions:"Archivo Lunar",chooseGadget:"Elegir dispositivo",alert:"Alerta",holdRoute:"Mantén pulsado para previsualizar una ruta.",objective:"Recupera el objeto de la misión",locked:"Completa la misión anterior",retry:"Reintentar",next:"Siguiente misión",victory:"Misión completada",captured:"Descubierto",capturedText:"La patrulla dio la alarma. Reintentar es gratis.",treasure:"Tesoro adicional recuperado",extraction:"Llega a la puerta de evacuación",dash:"Impulso relámpago",decoy:"Señuelo estelar",smoke:"Hoja de humo",dashEffect:"Ruta rápida: movimiento de {ms} ms",decoyEffect:"Pausa de patrulla: {seconds} s",smokeEffect:"Alerta reiniciada + {seconds} s de cobertura",coins:"Monedas lunares",safehouse:"Refugio Nv.{n}",mission:"Misión {n}",move:"Suelta para moverte",found:"¡Objeto asegurado!",exitReady:"Evacuación preparada",treasureFound:"Tesoro asegurado",paused:"En pausa",diamonds:"Diamantes",reroll:"Cambiar 3",insure:"Asegurar 5",insured:"Asegurado",alreadyInsured:"El seguro de evacuación ya está activo.",notEnough:"No tienes suficientes diamantes.",rerolled:"Se cambiaron las opciones de dispositivo.",insuranceReady:"Seguro de evacuación activo para la próxima misión.",confirmSpend:"Confirmar {cost} · {before}→{after}",rerollDecision:"Cambia la potencia de los tres dispositivos. Toca otra vez para confirmar: {before} → {after} diamantes.",insuranceDecision:"Conserva el tesoro adicional tras ser descubierto una vez en la próxima misión. Toca otra vez para confirmar: {before} → {after} diamantes.",rerollLabel:"Cambiar la potencia de los tres dispositivos. Cuesta 3 diamantes. Saldo actual: {balance}.",insuranceLabel:"Asegura el tesoro adicional frente a una captura en la próxima misión. Cuesta 5 diamantes. Saldo actual: {balance}.",confirmLabel:"Confirma {action}. Gasta {cost} diamantes. Saldo de {before} a {after}.",rerollAction:"cambio de potencia de dispositivos",insuranceAction:"seguro del tesoro",insuredLabel:"El seguro del tesoro está activo para la próxima misión."};
   Object.assign(copy.en, {
     notCleared: "Not cleared",
     bestMedals: "Best {medals}/3 medals",
@@ -55,6 +56,9 @@
     clockSlow: "藍色階段：巡邏較慢。",
     clockSurge: "琥珀階段：巡邏加速！",
     guardianCleared: "已通過守衛路線",
+  });
+  Object.assign(copy.es, {
+    notCleared:"Sin completar", bestMedals:"Mejor: {medals}/3 medallas", perfectMedals:"Mejor: 3/3 medallas · Completada", bonusMedal:"El tesoro adicional concede la última medalla.", medalCount:"{medals} de 3 medallas obtenidas", resultMedals:"{medals}/3 medallas", pauseAction:"Pausar misión", resumeAction:"Continuar misión", playFieldLabel:"Ruta de sigilo. Usa WASD o las flechas para moverte y Espacio para usar el dispositivo.", languageLabel:"Idioma", posterAlt:"Cartel de Golpe Animal a la Luz de la Luna", orlaAlt:"Orla Sombrero Lunar", missionRailLabel:"Misiones", fiaAlt:"Fia Garra Chispeante", stageBackLabel:"Volver al menú principal", battleBackLabel:"Volver a las misiones", checkpoint:"Puesto del guardián", firstSeal:"Recupera primero el sello del tesoro.", mirrorWarning:"¡Se acerca un cambio de espejos!", bellWarning:"¡Se acerca el pulso de la campana! ¡Busca una sombra!", clockSlow:"Fase azul: las patrullas van despacio.", clockSurge:"¡Fase ámbar: las patrullas aceleran!", guardianCleared:"Ruta del guardián completada"
   });
   const missionObjects=["moon-seal","courier-token","star-map","clockwork-lens","district-relic"];
   const patrolArt=["wolf","rabbit","badger"];
@@ -107,7 +111,46 @@
     campaignMission("Triple Lock","三重封鎖","Treasure first, then the relic; extraction relocates after pickup.","先取寶藏再取任務物；取得後撤離門會移位。",{object:[20,24],treasure:[80,72],exit:[50,10],phaseExit:[82,12],patrols:[[18,36,82,36],[18,56,82,56],[22,78,78,78]],safeZones:[[50,66,9]],order:"treasure-first",clockCycle:5.5,speed:.95}),
     campaignMission("Eclipse Curator","日蝕館長","Master seals, shadows, shifting markers, pulses, and a moving exit.","綜合封印、陰影、標記換位、警報脈衝與移動出口。",{object:[78,24],treasure:[20,72],exit:[50,10],phaseExit:[82,12],patrols:[[18,38,82,38],[18,58,82,58],[24,80,76,80]],safeZones:[[28,50,9],[70,66,9]],order:"treasure-first",mirrorInterval:5.5,clockCycle:5.5,bellPulse:5,guardian:guardianCatalog.eclipse,speed:.94})
   ];
+  const campaignEs = [
+    ["Umbral silencioso","Observa una patrulla, recupera el sello y evacúa."],
+    ["Sala de faroles","Cruza por detrás de dos líneas de patrulla."],
+    ["Galería dividida","Elige el lado tranquilo antes de que se crucen las rutas."],
+    ["Escaleras del mensajero","El tesoro adicional está más allá de la ruta directa de escape."],
+    ["Auditoría de faroles","El Auditor ensancha su foco; muévete cuando el resplandor se reduzca."],
+    ["Alcoba de terciopelo","Los círculos de sombra ocultan a Fia de las patrullas."],
+    ["Estantes gemelos","Pasa de un círculo de sombra al siguiente."],
+    ["Claraboya rota","Un estrecho corredor de sombra separa las patrullas que se cruzan."],
+    ["Anexo de susurros","Recoge el tesoro opcional antes de abandonar la última sombra."],
+    ["Guardián de la campana","El pulso de la campana aumenta la alerta fuera de los círculos de sombra."],
+    ["Bifurcación plateada","La reliquia y el tesoro intercambian posiciones tras un destello de aviso."],
+    ["Registro reflejado","Espera al cambio de marcadores o comprométete con la ruta larga."],
+    ["Falso norte","Recoge primero el tesoro para que la reliquia reflejada se vuelva real."],
+    ["Sala prismática","Usa la sombra mientras los dos marcadores se preparan para cambiar."],
+    ["Guardián del espejo","El Guardián cambia ambos marcadores con rapidez; fíjate en el destello."],
+    ["Paseo de engranaje lento","Las patrullas alternan entre vigilancia lenta y barrido rápido."],
+    ["Péndulo veloz","Cruza durante la fase azul lenta, no durante el impulso ámbar."],
+    ["Minuto dividido","Combina la cobertura de las sombras con el ritmo mecánico."],
+    ["Cámara del segundero","Recoge primero el tesoro mientras cambia la velocidad de las patrullas."],
+    ["Mariscal mecánico","El Mariscal anuncia cada persecución a máxima velocidad."],
+    ["Primer sello","El tesoro es el primer sello; la reliquia se desbloquea después."],
+    ["Llaves cruzadas","Abre los dos sellos entre tres rutas que se cruzan."],
+    ["Pozo lunar cerrado","Lleva el primer sello a través de dos refugios de sombra."],
+    ["Doble resguardo","El orden de los sellos se combina con los impulsos mecánicos."],
+    ["Guardasellos de la cámara","Rompe ambos sellos en orden mientras el Guardasellos protege el centro."],
+    ["Meridiano oscuro","Un foco cada vez más ancho cruza una cadena de refugios de sombra."],
+    ["Campanas silenciosas","Combina pulsos de campana, tiempos de sombra y una ruta de tesoro arriesgada."],
+    ["Planetario cambiante","Los marcadores cambian dentro de un ritmo mecánico variable."],
+    ["Triple cerradura","Primero el tesoro y después la reliquia; la salida cambia al recogerla."],
+    ["Conservador del eclipse","Domina sellos, sombras, cambios de marcador, pulsos y una salida móvil."]
+  ];
+  campaign.forEach((mission, index) => { mission.name[2] = campaignEs[index][0]; mission.rule[2] = campaignEs[index][1]; });
+  [
+    [guardianCatalog.spotlight,"Auditor de faroles"], [guardianCatalog.bell,"Guardián de la campana"],
+    [guardianCatalog.mirror,"Guardián del espejo"], [guardianCatalog.clock,"Mariscal mecánico"],
+    [guardianCatalog.seals,"Guardasellos de la cámara"], [guardianCatalog.eclipse,"Conservador del eclipse"]
+  ].forEach(([guardian, name]) => { guardian.name[2] = name; });
   let state=load(),locale=window.WonderI18n?.locale?.()||localStorage.getItem(localeKey)||localStorage.getItem(legacyLocaleKey)||"en",selectedMission=0,gadget="dash",gadgetOffers=createOffers(),insuranceActive=false,preservedTreasure=false,playing=false,paused=false,alert=0,objectFound=false,treasureFound=false,caught=false,patrols=[],lastTime=0,missionStartedAt=0,freezeUntil=0,smokeUntil=0,preview=null,arrivalTimer=0,routePointerId=null,lastPulseCycle=-1,lastMirrorCycle=-1,guardianPhase=1;
+  const localeArrayIndex = () => locale === "zh-Hant" ? 1 : locale === "es" ? 2 : 0;
   const nodes={main:$("#mainScreen"),stage:$("#stageScreen"),battle:$("#battleScreen"),rail:$("#missionRail"),field:$("#playField"),fia:$("#fiaActor"),objective:$("#objectiveActor"),treasure:$("#treasureActor"),exit:$("#exitActor"),patrolLayer:$("#patrolLayer"),route:$("#routeLine"),feedback:$("#feedbackText"),fx:$("#feedbackFx"),alert:$("#alertFill"),modal:$("#resultModal")};
   function load(){
     try{
@@ -182,17 +225,17 @@
     nodes.rail.innerHTML="";
     campaign.forEach((m,i)=>{
       const b=document.createElement("button");
-      const missionName=`${t("mission",{n:i+1})}: ${m.name[locale==="zh-Hant"?1:0]}`;
+      const missionName=`${t("mission",{n:i+1})}: ${m.name[localeArrayIndex()]}`;
       const locked=i+1>state.unlocked;
       const progress=medalProgress(i);
       b.type="button";
       b.className=`mission-card${locked?" locked":""}`;
       const guardian=m.guardian;
       const art=guardian?`../../assets/animal-moonlight-heist-guardian-${guardian.id}.webp`:"../../assets/animal-moonlight-heist-archive-background.png";
-      const checkpoint=guardian?`<span class="checkpoint-tag">${t("checkpoint")} · ${guardian.name[locale==="zh-Hant"?1:0]}</span>`:"";
+      const checkpoint=guardian?`<span class="checkpoint-tag">${t("checkpoint")} · ${guardian.name[localeArrayIndex()]}</span>`:"";
       b.classList.toggle("checkpoint",Boolean(guardian));
-      b.innerHTML=`<img src="${art}" alt=""><div><strong>${missionName}</strong>${checkpoint}<span class="mission-rule">${m.rule[locale==="zh-Hant"?1:0]}</span><span>${locked?t("locked"):progress.visible}</span></div>`;
-      b.setAttribute("aria-label",`${missionName}. ${m.rule[locale==="zh-Hant"?1:0]}. ${locked?t("locked"):progress.accessible}`);
+      b.innerHTML=`<img src="${art}" alt=""><div><strong>${missionName}</strong>${checkpoint}<span class="mission-rule">${m.rule[localeArrayIndex()]}</span><span>${locked?t("locked"):progress.visible}</span></div>`;
+      b.setAttribute("aria-label",`${missionName}. ${m.rule[localeArrayIndex()]}. ${locked?t("locked"):progress.accessible}`);
       b.addEventListener("click",()=>{if(!locked)startMission(i)});
       nodes.rail.append(b);
     });
@@ -207,14 +250,14 @@
     selectedMission=Math.max(0,Math.min(campaign.length-1,index));
     objectFound=false;treasureFound=preservedTreasure;preservedTreasure=false;caught=false;alert=0;paused=false;freezeUntil=0;smokeUntil=0;lastPulseCycle=-1;lastMirrorCycle=-1;guardianPhase=1;
     const m=campaign[selectedMission];
-    $("#missionLabel").textContent=`${t("mission",{n:selectedMission+1})}: ${m.name[locale==="zh-Hant"?1:0]}`;
-    $("#objectiveLabel").textContent=m.rule[locale==="zh-Hant"?1:0];
+    $("#missionLabel").textContent=`${t("mission",{n:selectedMission+1})}: ${m.name[localeArrayIndex()]}`;
+    $("#objectiveLabel").textContent=m.rule[localeArrayIndex()];
     nodes.objective.src=`../../assets/animal-moonlight-heist-object-${missionObjects[selectedMission%missionObjects.length]}.webp`;
     place(nodes.objective,m.object);place(nodes.treasure,m.treasure);place(nodes.exit,m.exit);
     nodes.objective.hidden=false;nodes.treasure.hidden=treasureFound;nodes.exit.style.opacity=.5;place(nodes.fia,[50,88]);nodes.patrolLayer.innerHTML="";
     (m.safeZones||[]).forEach(([x,y,size])=>{const zone=document.createElement("span");zone.className="safe-zone";zone.style.left=`${x}%`;zone.style.top=`${y}%`;zone.style.setProperty("--zone-size",`${size*2}%`);zone.setAttribute("aria-hidden","true");nodes.patrolLayer.append(zone)});
     patrols=m.patrols.map((path,i)=>createPatrol(path,`../../assets/animal-moonlight-heist-patrol-${patrolArt[i%3]}.webp`,i*.23));
-    if(m.guardian){const guardian=createPatrol(m.guardian.path,`../../assets/animal-moonlight-heist-guardian-${m.guardian.id}.webp`,.12,m.guardian);guardian.img.alt=m.guardian.name[locale==="zh-Hant"?1:0];patrols.push(guardian)}
+    if(m.guardian){const guardian=createPatrol(m.guardian.path,`../../assets/animal-moonlight-heist-guardian-${m.guardian.id}.webp`,.12,m.guardian);guardian.img.alt=m.guardian.name[localeArrayIndex()];patrols.push(guardian)}
     nodes.feedback.textContent=t("holdRoute");nodes.alert.style.width="0";$("#coinBattle").textContent=`${t("coins")}: ${state.coins}`;show("battle");playing=true;missionStartedAt=lastTime=performance.now();requestAnimationFrame(loop);
     requestAnimationFrame(()=>nodes.field.focus({preventScroll:true}));
   }

@@ -3,7 +3,7 @@
   const legacyLocaleKey = "weightplayLocale";
   const canonicalSavedLocale = localStorage.getItem(canonicalLocaleKey);
   const legacySavedLocale = localStorage.getItem(legacyLocaleKey);
-  if (!canonicalSavedLocale && ["en", "zh-Hant", "zh-Hans"].includes(legacySavedLocale)) {
+  if (!canonicalSavedLocale && ["en", "zh-Hant", "zh-Hans", "es"].includes(legacySavedLocale)) {
     window.WonderI18n?.setLocale?.(legacySavedLocale);
   }
 
@@ -240,6 +240,72 @@
       todayScore: "\u672c\u6b21\u5206\u6578\uff1a{score}",
       scoreProgress: "\u672c\u6b21\u5206\u6578\uff1a{score} \u00b7 \u4e0a\u6b21\u6700\u4f73\uff1a{previous}",
       newBest: "\u65b0\u7684\u6700\u4f73\u5206\u6578\uff1a{score}\uff01\u4e0a\u6b21\u6700\u4f73\uff1a{previous}"
+    },
+    es: {
+      title: "Memoria Estelar Animal",
+      seoTitle: "Memoria Estelar Animal - WeightPlay",
+      seoDescription: "Completa 30 niveles guardados de memoria animal con vistas previas, barajados lunares, parejas ordenadas, constelaciones giratorias y seis pruebas amistosas de guardianes.",
+      ogTitle: "Memoria Estelar Animal - Juego de parejas",
+      ogDescription: "Completa 30 niveles de memoria animal con reglas de vista previa, barajado, orden y tablero giratorio en seis pruebas estelares.",
+      language: "Idioma",
+      languageAria: "Elegir idioma",
+      stageBackAria: "Volver a la página principal",
+      battleBackAria: "Volver a los niveles",
+      gameStatsAria: "Estadísticas del juego",
+      mainIntro: "Sigue 30 rutas de luz estelar donde las vistas previas, los barajados, el orden y las constelaciones móviles cambian la forma de recordar cada tablero.",
+      start: "Empezar",
+      chooseLevel: "Elegir nivel",
+      level: "Nivel {current} / {total}",
+      score: "Puntuación",
+      moves: "Movimientos",
+      movesLimit: "{current} / {limit}",
+      movesInfinite: "{current} / Sin límite",
+      locked: "Bloqueado",
+      play: "Jugar",
+      victory: "¡Nivel completado!",
+      defeat: "¡Sin movimientos!",
+      allClear: "¡Todos los niveles completados!",
+      victoryDesc: "¡Completaste el nivel en {moves} movimientos!",
+      defeatDesc: "Inténtalo de nuevo para desbloquear el siguiente nivel.",
+      allClearDesc: "¡Fantástico! ¡Completaste los {count} niveles!",
+      nextLevel: "Siguiente nivel",
+      again: "Jugar de nuevo",
+      levels: "Niveles",
+      lobby: "Sala de juegos",
+      tipTap: "¡Toca las cartas para encontrar las parejas!",
+      tipMatch: "¡Pareja encontrada!",
+      tipMismatch: "No forman pareja. ¡Prueba otra vez!",
+      tipCombo: "¡Combo x{count}!",
+      hiddenCard: "Carta oculta, fila {row}, columna {column}",
+      revealedCard: "{animal} visible, fila {row}, columna {column}",
+      matchedCard: "{animal} emparejado, fila {row}, columna {column}",
+      animalPanda: "panda", animalBear: "oso", animalLion: "león", animalCat: "gato",
+      animalRabbit: "conejo", animalFox: "zorro", animalOwl: "búho", animalFrog: "rana",
+      animalWhale: "ballena", animalChick: "pollito", animalPenguin: "pingüino", animalKoala: "koala",
+      loading: "Cargando",
+      parkCheck: "Prueba del guardián estelar",
+      ruleNormal: "Parejas clásicas",
+      rulePreview: "Vista previa inicial",
+      ruleShuffle: "Barajado lunar tras un fallo",
+      ruleOrder: "Encuentra ahora el animal indicado",
+      ruleRotate: "La constelación se mueve tras una pareja",
+      ruleFinal: "Reglas estelares combinadas",
+      previewing: "Observa bien. ¡Las cartas se ocultarán pronto!",
+      orderTarget: "Encuentra ahora la pareja de {animal}.",
+      wrongOrder: "La pareja es correcta, pero antes va otro animal.",
+      highScore: "Récord: {score}",
+      skillReport: "Informe de habilidades",
+      reportIntroWin: "Esta ronda practicó recordar posiciones, mantener la atención y elegir la siguiente pareja.",
+      reportIntroTry: "¡Buen intento! Cada pareja encontrada ejercitó la memoria y la atención.",
+      reportPairs: "Memoria",
+      reportMoves: "Concentración",
+      reportStreak: "Resolución de problemas",
+      reportPairsValue: "{current} / {total} parejas",
+      reportMovesValue: "{moves} movimientos",
+      reportStreakValue: "Mejor racha x{streak}",
+      todayScore: "Puntuación de hoy: {score}",
+      scoreProgress: "Puntuación de hoy: {score} · Mejor anterior: {previous}",
+      newBest: "¡Nuevo récord: {score}! Mejor anterior: {previous}"
     }
   };
 
@@ -298,6 +364,43 @@
     memoryStage(29, "Keeper's Orbit", "守護者軌道", "Ordered twelve-pair recall continues while the sky rotates.", "十二組配對必須依序完成，星空還會持續轉動。", "p12", 54, { ordered: true, matchRotate: true }),
     memoryStage(30, "Koala Grand Star Check", "無尾熊終極星光檢查", "Preview, order, moon shuffles, and constellation shifts meet in the finale.", "預覽、順序、答錯洗牌與星座移動在最終檢查中全部出現。", "p12", 60, { previewMs: 1600, ordered: true, mismatchShuffle: true, matchRotate: true }),
   ];
+
+  const spanishStageCopy = [
+    ["Primeras huellas", "Aprende dos parejas tranquilas sin límite de movimientos."],
+    ["Tres amigos", "Recuerda tres parejas en un tablero inicial ancho."],
+    ["Cuatro junto al río", "Cuatro parejas introducen una observación más larga de izquierda a derecha."],
+    ["Sendero del bosque", "Seis parejas llenan el primer tablero alto de memoria."],
+    ["Prueba del guardián gato", "Una breve vista previa prepara la primera prueba de seis parejas."],
+    ["Vista previa al amanecer", "Observa cuatro parejas antes de que se oculten todas las cartas."],
+    ["Luz estelar breve", "Cinco parejas aparecen durante un instante más corto."],
+    ["Ventana entre nubes", "Seis parejas visibles ponen a prueba tu primera impresión completa."],
+    ["Pradera que se apaga", "Ocho parejas aparecen brevemente antes de que la pradera se oscurezca."],
+    ["Prueba del guardián oso", "Recuerda ocho parejas y luego deja que la luna las baraje una vez."],
+    ["Mezcla a la luz de la luna", "Cada fallo baraja los símbolos ocultos que quedan."],
+    ["Madrigueras móviles", "Ocho parejas cambian de lugar después de cada fallo."],
+    ["Confusión de luciérnagas", "Diez parejas ocultas hacen importante cada barajado lunar."],
+    ["Recuerda y luego muévete", "Tras una vista previa inicial, los fallos vuelven a barajar las cartas."],
+    ["Prueba del guardián búho", "Diez parejas vistas antes afrontan los barajados lunares del búho."],
+    ["El panda va primero", "Encuentra seis parejas animales en el orden indicado."],
+    ["Lista del bosque", "Ocho parejas deben seguir la lista de animales del guardián."],
+    ["Desfile de diez estrellas", "Un desfile de diez animales premia el recuerdo ordenado."],
+    ["Desfile en vista previa", "Observa ocho parejas y después sigue el orden requerido."],
+    ["Prueba del guardián león", "Las parejas ordenadas y los barajados por fallo se combinan en una prueba."],
+    ["Cielo giratorio", "Tras cada pareja, la constelación restante se mueve un lugar."],
+    ["Órbita de diez", "Diez parejas siguen girando después de cada acierto."],
+    ["Constelación extensa", "El cielo completo de doce parejas se mueve mientras se vacía."],
+    ["Vista en movimiento", "Observa diez parejas antes de que la constelación empiece a girar."],
+    ["Prueba del guardián pingüino", "Doce parejas giran al acertar y se barajan al fallar."],
+    ["Amanecer ordenado", "Observa ocho parejas y encuentra los animales nombrados en orden."],
+    ["Órbita cambiante", "Diez parejas giran con los aciertos y se barajan con los fallos."],
+    ["Mapa estelar fugaz", "Observa las doce parejas antes de que comiencen los barajados lunares."],
+    ["Órbita del guardián", "El recuerdo ordenado de doce parejas continúa mientras gira el cielo."],
+    ["Gran prueba estelar del koala", "La vista previa, el orden, los barajados y los movimientos de constelación se unen en la final."],
+  ];
+  if (spanishStageCopy.length !== stages.length) throw new Error("Spanish memory-stage coverage must match all stages.");
+  stages.forEach((stage, index) => {
+    [stage.title.es, stage.description.es] = spanishStageCopy[index];
+  });
 
   // Game State
   const state = {

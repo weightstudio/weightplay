@@ -2,7 +2,7 @@ const canonicalLocaleKey = "weightPlayLocale";
 const legacyLocaleKey = "weightplayLocale";
 const canonicalSavedLocale = localStorage.getItem(canonicalLocaleKey);
 const legacySavedLocale = localStorage.getItem(legacyLocaleKey);
-if (!canonicalSavedLocale && ["en", "zh-Hant", "zh-Hans"].includes(legacySavedLocale)) {
+if (!canonicalSavedLocale && ["en", "zh-Hant", "zh-Hans", "es"].includes(legacySavedLocale)) {
   window.WonderI18n?.setLocale?.(legacySavedLocale);
 }
 
@@ -52,6 +52,10 @@ const pageMeta = {
   "zh-Hant": {
     title: "\u52d5\u7269\u5c0f\u535a\u58eb - WeightPlay",
     description: "\u5728 WeightPlay \u904a\u73a9\u52d5\u7269\u5c0f\u535a\u58eb\uff0c\u900f\u904e\u5716\u7247\u984c\u76ee\u8a8d\u8b58\u52d5\u7269\u68f2\u606f\u5730\u3001\u5916\u5f62\u7279\u5fb5\u8207\u751f\u6d3b\u5c0f\u77e5\u8b58\u3002",
+  },
+  es: {
+    title: "Cuestionario de Animales - WeightPlay",
+    description: "Juega al Cuestionario de Animales de WeightPlay con preguntas ilustradas sobre hábitats, rasgos, comportamientos y alimentación.",
   },
 };
 
@@ -380,6 +384,44 @@ const dictionary = {
     dietOwl: "我會捕捉小動物，許多食物會整口吞下。",
     dietCow: "我吃植物，也會反芻來消化較粗硬的草。",
   },
+};
+
+dictionary.es = {
+  title: "Cuestionario de Animales", language: "Idioma", mainIntro: "Lee las pistas ilustradas y descubre datos sobre los animales.", startGame: "Empezar",
+  chooseStage: "Elegir nivel", stageSetupTitle: "Elige un tema animal", stageSetupText: "Elige una de 30 investigaciones. Cada quinto nivel es una prueba de joven experto.",
+  start: "Empezar", locked: "Bloqueado", complete: "Completado", stageBest: "Mejor {score} / {total}", stageLabel: "Nivel {n}: {chapter}", checkpoint: "Prueba de joven experto",
+  chapterPicture: "Primeras imágenes", chapterHabitat: "Hogares y hábitats", chapterFeatures: "Detectives de rasgos", chapterActions: "Acciones animales", chapterFood: "Alimentos y familias", chapterExpert: "Mezcla de joven experto",
+  chapterPictureDesc: "Relaciona retratos claros con una pista sobre un rasgo conocido.", chapterHabitatDesc: "Usa pistas de hogar y clima para identificar cada animal.", chapterFeaturesDesc: "Reconoce siluetas, formas corporales y rasgos visibles.",
+  chapterActionsDesc: "Usa pistas de movimiento y comportamiento, no solo la apariencia.", chapterFoodDesc: "Compara la alimentación con la familia y los rasgos del animal.", chapterExpertDesc: "Combina dos tipos de pista, siluetas y cuatro respuestas.",
+  rulePicture: "Imagen + rasgo", ruleHabitat: "Pista de hábitat", ruleSilhouette: "Pista de silueta", ruleAction: "Pista de comportamiento", ruleFood: "Pista de alimentación", ruleMixed: "Mezcla de dos pistas",
+  prompt: "¿Qué animal es?", choose: "Elige uno", correct: "¡Correcto!", wrong: "Inténtalo de nuevo", animalNote: "Dato animal: {animal} - {clue}", loading: "Cargando", loadingFailed: "No se pudo cargar. Actualiza la página e inténtalo de nuevo.",
+  question: "{stage}  {current} / {total}", battleQuestion: "Nivel {n} · {current}/{total}", winTitle: "¡Nivel completado!", winText: "Respondiste {score} / {total}.", allClearTitle: "¡Todo completado!", allClearText: "Completaste los {count} niveles de animales.",
+  again: "Jugar de nuevo", nextStage: "Siguiente nivel", stages: "Niveles", lobby: "Sala de juegos", reportTitle: "Informe de habilidades", previousBest: "Mejor anterior", todayScore: "Puntuación de hoy", improvement: "Mejora",
+  animalKnowledge: "Conocimiento animal", memory: "Memoria", reading: "Lectura", reportGreat: "¡Excelente! Reconociste bien los animales y usaste las pistas con atención.", reportGood: "¡Buen esfuerzo! Juega otra vez para conocer mejor los rasgos animales.", reportTry: "¡Buena práctica! Mira despacio la imagen y la pista e inténtalo otra vez.",
+  lion: "León", hippo: "Hipopótamo", snake: "Serpiente", rabbit: "Conejo", turtle: "Tortuga", elephant: "Elefante", penguin: "Pingüino", monkey: "Mono", bear: "Oso", cat: "Gato", dog: "Perro", fox: "Zorro", giraffe: "Jirafa", zebra: "Cebra", panda: "Panda", koala: "Koala", frog: "Rana", whale: "Ballena", owl: "Búho", cow: "Vaca",
+
+  clueLion: "Tengo una gran melena.", clueHippo: "Me encanta el agua y tengo una boca enorme.", clueSnake: "Me deslizo por el suelo.", clueRabbit: "Tengo orejas largas y salto.", clueTurtle: "Llevo un caparazón en la espalda.",
+  clueElephant: "Tengo una trompa larga.", cluePenguin: "Soy un ave que camina balanceándose.", clueMonkey: "Trepo y me balanceo.", clueBear: "Soy grande, peludo y fuerte.", clueCat: "Maúllo y tengo bigotes.", clueDog: "Ladro y muevo la cola.",
+  clueFox: "Tengo pelaje naranja y una cola esponjosa.", clueGiraffe: "Tengo el cuello muy largo.", clueZebra: "Tengo rayas blancas y negras.", cluePanda: "Soy blanco y negro y me encanta el bambú.", clueKoala: "Abrazo árboles y tengo orejas redondas.",
+  clueFrog: "Salto y croo.", clueWhale: "Soy un animal enorme del océano.", clueOwl: "Soy un ave con ojos grandes.", clueCow: "Hago «muuu» y doy leche.",
+
+  actionLion: "Descanso y viajo con un grupo llamado manada.", actionElephant: "Uso la trompa para rociar agua.", actionPenguin: "Me junto con otros pingüinos para mantener el calor.", actionMonkey: "Uso las manos para trepar y explorar ramas.",
+  actionRabbit: "Golpeo el suelo con las patas traseras cuando hay peligro.", actionTurtle: "Escondo la cabeza en el caparazón cuando tengo miedo.", actionFrog: "Salto y atrapo insectos con mi lengua larga.", actionOwl: "Vuelo en silencio y cazo después del atardecer.",
+  actionCow: "Paso gran parte del día masticando hierba despacio.", actionWhale: "Subo a la superficie para respirar por el espiráculo.", actionHippo: "Paso los días calurosos refrescándome en ríos y charcas.", actionSnake: "Avanzo doblando mi cuerpo largo de lado a lado.",
+  actionBear: "Uso mi potente olfato para buscar comida.", actionCat: "Limpio mi pelaje con mi lengua áspera.", actionDog: "Olfateo, ladro y uso la cola para comunicarme.", actionFox: "Escucho a pequeños animales antes de saltar rápidamente.",
+  actionGiraffe: "Separo las patas delanteras para alcanzar el agua del suelo.", actionZebra: "Me mantengo cerca de la manada y corro cuando aparece peligro.", actionPanda: "Sujeto el bambú con las patas delanteras mientras como.", actionKoala: "Trepo despacio y duermo gran parte del día.",
+
+  habitatLion: "Vivo en praderas y bosques abiertos de África.", habitatHippo: "Permanezco cerca de ríos, lagos y humedales africanos.", habitatSnake: "Mis distintas especies viven en bosques, desiertos, praderas y agua.", habitatRabbit: "Me refugio en praderas, bosques, granjas y madrigueras.",
+  habitatTurtle: "Mis parientes viven en océanos, estanques, ríos y tierra firme.", habitatElephant: "Vivo en praderas y bosques de África o Asia.", habitatPenguin: "Vivo en costas e islas frías del sur.", habitatMonkey: "Muchos de mis parientes viven en bosques cálidos y copas de árboles.",
+  habitatBear: "Distintos osos viven en bosques, montañas, tundra y costas heladas.", habitatCat: "Suelo compartir hogares y barrios con las personas.", habitatDog: "Vivo con personas en muchos tipos de hogar por todo el mundo.", habitatFox: "Puedo vivir en bosques, praderas, desiertos e incluso ciudades.",
+  habitatGiraffe: "Vivo en sabanas y bosques abiertos de África.", habitatZebra: "Vivo en praderas y sabanas africanas.", habitatPanda: "Vivo en bosques frescos de bambú de las montañas de China.", habitatKoala: "Vivo en bosques de eucalipto del este de Australia.",
+  habitatFrog: "Necesito lugares húmedos como estanques, arroyos, bosques o humedales.", habitatWhale: "Vivo en océanos y recorro grandes zonas de agua marina.", habitatOwl: "Distintos búhos viven en bosques, praderas, desiertos y granjas.", habitatCow: "Vivo con las personas en granjas y pasto en campos.",
+
+  dietLion: "Como carne y cazo o comparto comida con mi manada.", dietHippo: "Salgo del agua para comer principalmente hierba.", dietSnake: "Trago animales enteros en lugar de masticarlos.", dietRabbit: "Como hierbas, hojas y otras plantas.",
+  dietTurtle: "Según mi especie, puedo comer plantas, insectos o pequeños animales acuáticos.", dietElephant: "Como hierbas, hojas, corteza, fruta y raíces.", dietPenguin: "Atrapo peces, kril y calamares en el agua.", dietMonkey: "Muchos de mis parientes comen fruta, hojas, semillas e insectos.",
+  dietBear: "Muchos osos comen plantas, insectos, peces y otros alimentos.", dietCat: "Necesito proteína animal y una alimentación basada en carne.", dietDog: "Puedo comer una dieta variada y equilibrada preparada para perros.", dietFox: "Como pequeños animales, insectos, fruta y otros alimentos disponibles.",
+  dietGiraffe: "Uso mi lengua larga para arrancar hojas de árboles altos.", dietZebra: "Paso gran parte del día comiendo hierbas duras.", dietPanda: "Casi toda mi comida son tallos y hojas de bambú.", dietKoala: "Como determinadas hojas de eucalipto.",
+  dietFrog: "Atrapo insectos y otros animales pequeños con una lengua rápida.", dietWhale: "Algunas ballenas filtran presas diminutas y otras cazan peces y calamares.", dietOwl: "Cazo animales pequeños y trago muchos bocados enteros.", dietCow: "Como plantas y rumio para digerir la hierba dura.",
 };
 
 const animals = [

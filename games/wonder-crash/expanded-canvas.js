@@ -127,7 +127,15 @@
   const resumeButton = document.querySelector("#resumeBtn");
   const leaveButton = document.querySelector("#leaveBtn");
   const battleCanvas = document.querySelector("#game");
+  const resultOverlay = document.querySelector("#overlay");
+  const profilePanel = document.querySelector("#profilePanel");
   const overlayTitle = document.querySelector("#overlay h1");
+  const focusCurrentStage = () => {
+    const buttons = [...document.querySelectorAll("#levelGrid button[data-level]")]
+      .filter((button) => button.getClientRects().length > 0 && !button.classList.contains("locked"));
+    const target = buttons.find((button) => button.classList.contains("challenge")) || buttons.at(-1) || buttons[0];
+    target?.focus({ preventScroll: true });
+  };
 
   const setPausedBattleCovered = (covered) => {
     if (!battleCanvas) return;
@@ -155,7 +163,7 @@
 
     leaveButton.addEventListener("click", () => {
       setPausedBattleCovered(false);
-      requestAnimationFrame(() => document.querySelector("#levelGrid .stage-card-current, #levelGrid button:not(:disabled)")?.focus({ preventScroll: true }));
+      requestAnimationFrame(focusCurrentStage);
     });
 
     pausePanel.addEventListener("keydown", (event) => {
@@ -180,5 +188,81 @@
     document.addEventListener("visibilitychange", () => {
       if (document.hidden) pauseHiddenBattle();
     });
+  }
+
+  if (resultOverlay && profilePanel && battleCanvas && overlayTitle) {
+    const resultActions = () => [...profilePanel.querySelectorAll("[data-settlement-action]")]
+      .filter((button) => !button.disabled && button.getClientRects().length > 0);
+    const resultVisible = () => resultOverlay.classList.contains("settlement-screen")
+      && !resultOverlay.classList.contains("hidden");
+    let resultOwned = false;
+    const syncResultOwnership = () => {
+      if (resultVisible()) {
+        resultOwned = true;
+        resultOverlay.setAttribute("role", "dialog");
+        resultOverlay.setAttribute("aria-modal", "true");
+        resultOverlay.setAttribute("aria-labelledby", overlayTitle.id);
+        setPausedBattleCovered(true);
+        const actions = resultActions();
+        if (actions.length && !actions.includes(document.activeElement)) {
+          requestAnimationFrame(() => actions[0]?.focus({ preventScroll: true }));
+        }
+        return;
+      }
+      if (!resultOwned) return;
+      resultOwned = false;
+      resultOverlay.removeAttribute("role");
+      resultOverlay.removeAttribute("aria-modal");
+      resultOverlay.removeAttribute("aria-labelledby");
+      if (!pausePanel || pausePanel.classList.contains("hidden")) setPausedBattleCovered(false);
+      requestAnimationFrame(() => {
+        if (document.body.classList.contains("wonder-playing")) {
+          battleCanvas.focus({ preventScroll: true });
+          return;
+        }
+        if (document.body.classList.contains("wonder-stage-select")) {
+          focusCurrentStage();
+        }
+      });
+    };
+
+    resultOverlay.addEventListener("keydown", (event) => {
+      if (!resultVisible()) return;
+      if (event.repeat && (event.key === "Enter" || event.key === " ")) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        return;
+      }
+      if (event.key !== "Tab") return;
+      const actions = resultActions();
+      if (!actions.length) return;
+      const index = actions.indexOf(document.activeElement);
+      const nextIndex = event.shiftKey
+        ? (index <= 0 ? actions.length - 1 : index - 1)
+        : (index < 0 || index >= actions.length - 1 ? 0 : index + 1);
+      event.preventDefault();
+      actions[nextIndex].focus({ preventScroll: true });
+    }, true);
+
+    resultOverlay.addEventListener("click", (event) => {
+      const action = event.target.closest("[data-settlement-action]");
+      if (!action) return;
+      resultOverlay.dataset.wpSettlementExit = action.dataset.settlementAction || "";
+      const restoreResultExitFocus = () => {
+        if (document.body.classList.contains("wonder-playing")) {
+          battleCanvas.focus({ preventScroll: true });
+          return;
+        }
+        if (document.body.classList.contains("wonder-stage-select")) {
+          focusCurrentStage();
+        }
+      };
+      requestAnimationFrame(() => requestAnimationFrame(restoreResultExitFocus));
+      setTimeout(restoreResultExitFocus, 50);
+    }, true);
+
+    new MutationObserver(syncResultOwnership).observe(resultOverlay, { attributes: true, attributeFilter: ["class"] });
+    new MutationObserver(syncResultOwnership).observe(profilePanel, { childList: true });
+    syncResultOwnership();
   }
 })();

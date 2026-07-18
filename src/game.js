@@ -539,6 +539,17 @@ Object.assign(dictionary["zh-Hant"], {
   crit_label: "爆擊",
 });
 
+dictionary.es = {
+  game_title:"Defensa del León Fantástico",browser_title:"Defensa del León Fantástico - WeightPlay",menu_title:"Menú principal",hud_stage:"Nivel",hud_wave:"Oleada",hud_coins:"Monedas",tab_character:"Héroe",tab_equipment:"Armas",tab_battle:"Niveles",tab_wall:"Muro",tab_settings:"Ajustes",menu_character:"Atributos del héroe",menu_equipment:"Mejorar armas",menu_battle:"Elegir nivel",menu_wall:"Mejorar muro",menu_settings:"Ajustes",
+  hero_title:"Héroe león Nv.{lvl}",hero_subtitle:"Mejora al león para defender el muro y recoger más monedas.",heroCoin_title:"Suerte de bolsillo Nv.{lvl}",heroCoin_desc:"Monedas +{pct}%",heroAttack_title:"Lanzamiento fuerte Nv.{lvl}",heroAttack_desc:"Ataque base +{bonus}",heroCrit_title:"Vista de puntos débiles Nv.{lvl}",heroCrit_desc:"Probabilidad crítica {pct}%",heroCritDamage_title:"Fuerza crítica Nv.{lvl}",heroCritDamage_desc:"Daño crítico x{mul}",heroSpeed_title:"Tacto rápido Nv.{lvl}",heroSpeed_desc:"Velocidad de proyectil +{bonus}",diamondPower_title:"Concentración de diamante Nv.{lvl}",diamondPower_desc:"Ataque base +{bonus}, pagado con diamantes",
+  equip_weapons:"8 armas equipadas",equip_backpack:"Mochila",wallHp_title:"Vida del muro Nv.{lvl}",wallHp_desc:"Vida máxima {val}",wallGuard_title:"Fortificar muro Nv.{lvl}",wallGuard_desc:"Daño al muro -{val}",wallRegen_title:"Reparación automática Nv.{lvl}",wallRegen_desc:"Recupera {val} de vida cada {sec} s",settings_progress:"Progreso",settings_unlocked_stages:"Desbloqueado hasta el nivel {count}",settings_pause_question:"¿Continuar o salir de la batalla?",language:"Idioma",language_desc:"Elige el idioma",back_lobby:"Volver al vestíbulo",
+  upgrade_panel_title:"Elegir mejora",upgrade_wave_complete:"Oleada {wave} completada",settlement_title:"Resumen de batalla",settlement_new_clear:"¡Primer desafío completado!",settlement_reclear:"¡Nivel repetido completado!",settlement_unlocked:"¡Nivel {id} desbloqueado!",settlement_no_drops:"Esta vez no cayó ningún arma",settlement_diamond_reward:"Bono por primer jefe",settlement_diamond_hint:"Completa cada nivel de jefe una vez para ganar diamantes.",skill_report_title:"Informe de habilidades",skill_focus:"Atención",skill_reaction:"Reacción",skill_problem_solving:"Resolución de problemas",skill_wall_value:"Muro {pct}%",skill_beasts_value:"Bestias {defeated}/{total}",skill_upgrades_value:"Elecciones {count}",skill_stars_aria:"{count} de 5 estrellas",skill_report_win_message:"¡Gran defensa! Mantuviste la atención y elegiste buenas mejoras.",skill_report_defeat_message:"¡Buen intento! Prueba de nuevo para proteger el muro más tiempo.",
+  btn_next:"Siguiente nivel",btn_confirm:"Volver al menú",btn_resume:"Continuar",btn_leave:"Salir de la batalla",btn_start:"Empezar",btn_play_again:"Jugar otra vez",btn_stage_select:"Elegir nivel",stage_waves:"{count} oleadas",stage_reward:"~{coins} monedas",stage_boss:"Jefe",beast_guide_title:"Guía de bestias",beast_guide_hint:"Conoce cada bestia antes de elegir nivel.",beast_role_runner:"Corredor rápido",beast_role_wobbler:"Zigzag",beast_role_tank:"Armadura pesada",beast_role_breaker:"Rompe muros",beast_role_dasher:"Ataque veloz",beast_role_caster:"Ruta engañosa",beast_role_sprinter:"Muy rápido",beast_role_bruiser:"Golpe pesado",beast_stat_hp:"Vida",beast_stat_speed:"Velocidad",beast_stat_damage:"Daño",
+  weapon_modal_empty:"Elige un arma para ver daño, recarga y detalles de fusión.",weapon_upgrade_tip:"Fusiona objetos iguales de la mochila para mejorar.",weapon_stats_dmg:"Daño {val}",weapon_stats_cd:"Recarga {val} s",weapon_stats_spd:"Velocidad {val}",weapon_stats_size:"Tamaño {val}",weapon_max_tier:"Nivel máximo alcanzado",weapon_next_tier_preview:"x{lvl} -> x{next}: Daño {dmg} / Recarga {cd}s / Tamaño {size}",upgrade_preview:"{current} -> {next}",upgrade_none:"Sin mejorar",defeat_title:"Muro destruido",defeat_desc:"Nivel {lvl}  Monedas: {coins}",victory_title:"¡Victoria!",victory_challenge_success:"¡Desafío completado!",victory_stage_clear:"¡Nivel completado!",loading_progress:"Cargando {pct}%",load_fail:"Error al cargar recursos",load_fail_desc:"No se pudo cargar. Actualiza la página.",locked:"Nivel bloqueado.",
+  enemy_boar:"Jabalí",enemy_hyena:"Hiena embaucadora",enemy_rhino:"Rinoceronte acorazado",enemy_buffalo:"Búfalo cargador",enemy_hawk:"Halcón celeste",enemy_bear:"Oso negro",enemy_tiger:"Tigre veloz",enemy_crocodile:"Rey cocodrilo",boss_spawned:"¡Apareció el jefe {name}!",boss_label:"Jefe {name} -{pct}%{shield}",boss_shield:"Escudo {count}",weapon_eraser:"Goma",weapon_pencil:"Lápiz",weapon_ruler:"Regla",
+  upgrade_damage_name:"Goma afilada",upgrade_damage_desc:"Daño de arma +1",upgrade_cooldown_name:"Manos rápidas",upgrade_cooldown_desc:"Recarga de arma -15%",upgrade_double_name:"Lanzamiento doble",upgrade_double_desc:"Lanza 1 arma adicional",upgrade_sideShot_name:"Disparo lateral",upgrade_sideShot_desc:"Lanza 2 armas adicionales en diagonal",upgrade_burst_name:"Ráfaga de lanzamientos",upgrade_burst_desc:"Cada lanzamiento dispara una oleada adicional",upgrade_size_name:"Material gigante",upgrade_size_desc:"Tamaño de arma +20%",upgrade_wallHp_name:"Reparar muro",upgrade_wallHp_desc:"Restaura 12 de vida del muro",upgrade_coinMultiplier_name:"Bono de paga",upgrade_coinMultiplier_desc:"Monedas ganadas +35%",upgrade_pierce_name:"Lanzamiento penetrante",upgrade_pierce_desc:"Las armas atraviesan 1 enemigo más",upgrade_explode_name:"Material explosivo",upgrade_explode_desc:"Los golpes dañan a enemigos cercanos",upgrade_lifeSteal_name:"Espíritu guardián",upgrade_lifeSteal_desc:"Las derrotas restauran 3 de vida del muro",upgrade_slow_name:"Rugido de león",upgrade_slow_desc:"Los golpes pueden ralentizar brevemente",roar_label:"¡RUGIDO!",crit_label:"CRÍTICO"
+};
+
 const W = canvas.width;
 const H = canvas.height;
 const wallY = 1200;
@@ -1118,7 +1129,12 @@ function spawnBoss(wave) {
   const type = ENEMY_TYPES[Math.min(wave.bossType ?? wave.maxEnemyType, ENEMY_TYPES.length - 1)];
   addEnemy(type, wave, true);
   state.bossMinionTimer = 1.8;
-  const bossRule = locale() === "zh-Hant" ? wave.bossRuleZh : wave.bossRuleEn;
+  const activeLocale = locale();
+  const bossRule = activeLocale === "zh-Hant"
+    ? wave.bossRuleZh
+    : activeLocale === "es"
+      ? wave.bossRuleEs
+      : wave.bossRuleEn;
   state.bossBanner = { text: t("boss_spawned", { name: t("enemy_" + type.id) }), rule: bossRule || "", life: 2.6 };
   window.WonderSound?.play("boss");
 }
@@ -2031,8 +2047,9 @@ function renderLevelGrid() {
     button.type = "button";
     button.dataset.level = String(level.id - 1);
     const summary = getLevelSummary(level);
-    const stageTitle = locale() === "zh-Hant" ? level.titleZh : level.titleEn;
-    const stageRule = locale() === "zh-Hant" ? level.ruleZh : level.ruleEn;
+    const activeLocale = locale();
+    const stageTitle = activeLocale === "zh-Hant" ? level.titleZh : activeLocale === "es" ? level.titleEs : level.titleEn;
+    const stageRule = activeLocale === "zh-Hant" ? level.ruleZh : activeLocale === "es" ? level.ruleEs : level.ruleEn;
     button.innerHTML = `
       <strong>${level.id}</strong>
       <div class="level-beast-row" aria-label="${t("beast_guide_title")}">
@@ -2078,7 +2095,8 @@ function renderCampaignSummary() {
 }
 
 function campaignText(key, params = {}) {
-  const table = locale() === "zh-Hant" ? {
+  const activeLocale = locale();
+  const table = activeLocale === "zh-Hant" ? {
     title: "\u7345\u5b50\u6230\u5f79\u9032\u5ea6",
     next: "\u4e0b\u4e00\u95dc\uff1a\u7b2c {stage} \u95dc",
     complete: "\u6240\u6709\u95dc\u5361\u5df2\u5b8c\u6210",
@@ -2088,6 +2106,16 @@ function campaignText(key, params = {}) {
     wallet: "\u91d1\u5e63 {coins} / \u947d\u77f3 {diamonds}",
     continue: "\u7e7c\u7e8c\u6311\u6230\u7b2c {stage} \u95dc",
     replay: "\u91cd\u73a9\u6700\u7d42\u95dc",
+  } : activeLocale === "es" ? {
+    title: "Progreso de la campaña del león",
+    next: "Siguiente nivel: {stage}",
+    complete: "Todos los niveles completados",
+    cleared: "Completados {cleared}/{total}",
+    boss: "Siguiente jefe: nivel {stage}",
+    bossDone: "Todos los jefes derrotados",
+    wallet: "Monedas {coins} / Diamantes {diamonds}",
+    continue: "Continuar con el nivel {stage}",
+    replay: "Repetir el nivel final",
   } : {
     title: "Lion Campaign Progress",
     next: "Next Stage: Stage {stage}",
