@@ -541,8 +541,8 @@
         album: Array.isArray(raw.album) ? raw.album : [],
         gear: { rod: 1, reel: 1, line: 1, bait: 1, boat: 1, scan: 1, ...(raw.gear || {}) },
         selectedZone: raw.selectedZone || "mission-1",
-        lureReady: Boolean(raw.lureReady),
-        sonarReady: Boolean(raw.sonarReady),
+        lureReady: raw.lureReady === true,
+        sonarReady: raw.sonarReady === true,
       };
     } catch {
       return { notes: 0, unlockedZone: 1, bestCatches: 0, album: [], gear: { rod: 1, reel: 1, line: 1, bait: 1, boat: 1, scan: 1 }, selectedZone: "mission-1", lureReady: false, sonarReady: false };

@@ -133,6 +133,7 @@
             <div><span data-i18n="shots">Shots</span><strong id="shotsLeft">6</strong></div>
             <div><span data-i18n="rescued">Goal</span><strong id="rescueProgress">0 / 1</strong></div>
             <div><span data-i18n="score">Score</span><strong id="scoreValue">0</strong></div>
+            <button id="pauseButton" class="battle-utility-button" type="button" aria-label="Pause game" data-i18n-aria="pause">Ⅱ</button>
           </header>
           <div id="battleMessage" class="battle-message">Drag to aim, release to shoot</div>
           <div class="play-frame">
@@ -144,6 +145,18 @@
             <strong id="battleGoal">Make 1 matching group</strong>
           </div>
           </div>
+
+          <section id="pauseOverlay" class="pause-overlay" role="dialog" aria-modal="true" aria-labelledby="pauseTitle" hidden>
+            <div class="pause-panel">
+              <span class="pause-symbol" aria-hidden="true">Ⅱ</span>
+              <h2 id="pauseTitle" data-i18n="paused">Paused</h2>
+              <p data-i18n="pauseMessage">Take a breath. Your safari is waiting.</p>
+              <div class="pause-actions">
+                <button id="pauseResume" class="primary-button" type="button" data-i18n="resume">Resume</button>
+                <button id="pauseBack" type="button" data-i18n="backToMap">Back to Map</button>
+              </div>
+            </div>
+          </section>
 
           <section id="resultScreen" class="result-screen" role="dialog" aria-modal="true" aria-labelledby="resultTitle">
           <div class="result-panel">

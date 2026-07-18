@@ -686,10 +686,10 @@
     if (isStage || isPlaying) {
       const logicalWidth = 390;
       const logicalHeight = isStage ? 788 : 450;
-      const scale = Math.min(Math.max(1, width - 8) / logicalWidth, Math.max(1, height - 8) / logicalHeight);
+      const scale = Math.min(Math.max(1, width) / logicalWidth, Math.max(1, height) / logicalHeight);
       document.documentElement.style.setProperty("--guard-yard-frame-scale", String(scale));
       document.documentElement.style.setProperty("--guard-yard-frame-left", `${(width - logicalWidth * scale) / 2}px`);
-      document.documentElement.style.setProperty("--guard-yard-frame-top", `${height - logicalHeight * scale - 4}px`);
+      document.documentElement.style.setProperty("--guard-yard-frame-top", `${height - logicalHeight * scale}px`);
     }
   }
 

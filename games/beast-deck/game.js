@@ -1108,7 +1108,7 @@
 
   function getLocale() {
     const stored = localStorage.getItem(localeKey);
-    return window.WonderI18n?.locale?.() || (["zh-Hant", "zh-Hans", "es"].includes(stored) ? stored : "en");
+    return window.WonderI18n?.actualLocale?.() || window.WonderI18n?.locale?.() || (["zh-Hant", "zh-Hans", "es"].includes(stored) ? stored : "en");
   }
 
   function localizeChinese(value, locale = getLocale()) {
@@ -2436,7 +2436,7 @@
   }
 
   function leaveStageCanvas() {
-    nodes.menuBtn.removeAttribute("data-wp-return");
+    nodes.menuBtn.setAttribute("data-wp-return", "battle");
     document.documentElement.classList.remove("wp-stage-select-active");
     document.body.classList.remove("wp-stage-select-active", "wp-standard-stage-page");
     document.querySelectorAll("[data-wp-logical-stage-canvas]").forEach((root) => {

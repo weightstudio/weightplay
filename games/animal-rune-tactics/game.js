@@ -90,6 +90,9 @@
       trainingOwned: "Owned: +1 starting energy.",
       trainingNeed: "Need {cost} diamonds.",
       trainingBuy: "Unlock for {cost}",
+      trainingConfirm: "Press again to unlock permanent +1 starting Energy. Diamonds {before} → {after}.",
+      trainingConfirmAction: "Confirm permanent Training Slot. Diamonds {before} to {after}.",
+      trainingPurchased: "Unlocked: +1 starting Energy. Diamonds {before} → {after}.",
       startMission: "Start Mission",
       mission: "Mission",
       turn: "Turn",
@@ -191,6 +194,9 @@
       trainingOwned: "已擁有：起始能量 +1。",
       trainingNeed: "需要 {cost} 顆鑽石。",
       trainingBuy: "花費 {cost} 解鎖",
+      trainingConfirm: "再按一次解鎖永久起始能量 +1。鑽石 {before} → {after}。",
+      trainingConfirmAction: "確認永久訓練欄位。鑽石 {before} 到 {after}。",
+      trainingPurchased: "已解鎖：起始能量 +1。鑽石 {before} → {after}。",
       startMission: "開始任務",
       mission: "任務",
       turn: "回合",
@@ -378,7 +384,7 @@
     heroTrainingTitle: "英雄訓練", heroTrainingHint: "花費符文，永久提升每位動物英雄。", heroLevel: "Lv.{level}", heroUpgradeCost: "升級 {cost}", heroUpgradeMax: "最高等級",
     lionRole: "前排攻擊手", owlRole: "遠距爆發", turtleRole: "隊伍守護者",
     missionSelect: "選擇任務", missionHint: "已解鎖任務會保存在這台裝置。", missionCard: "任務 {n}", missionGoal: "目標：擊敗 {enemies}", missionReward: "{xp} 經驗值 / {runes} 符文", missionEnemyLine: "敵人：{enemies}", locked: "未解鎖",
-    trainingTitle: "訓練欄位", trainingText: "永久效果：英雄每場任務起始能量 +1。", trainingOwned: "已擁有：起始能量 +1。", trainingNeed: "需要 {cost} 顆鑽石。", trainingBuy: "解鎖 {cost}",
+    trainingTitle: "訓練欄位", trainingText: "永久效果：英雄每場任務起始能量 +1。", trainingOwned: "已擁有：起始能量 +1。", trainingNeed: "需要 {cost} 顆鑽石。", trainingBuy: "解鎖 {cost}", trainingConfirm: "再按一次解鎖永久起始能量 +1。鑽石 {before} → {after}。", trainingConfirmAction: "確認永久訓練欄位。鑽石 {before} 到 {after}。", trainingPurchased: "已解鎖：起始能量 +1。鑽石 {before} → {after}。",
     startMission: "開始任務", mission: "任務", turn: "回合", wallet: "鑽石", enemiesLeft: "敵人", attack: "攻擊", guard: "防守", skill: "技能", endTurn: "結束回合", health: "生命", energy: "能量",
     chooseHero: "選擇一位英雄，再移動或攻擊。", chooseTarget: "{hero}：生命 {hp}/{maxHp}，能量 {energy}。", ready: "可行動", acted: "已行動", fallen: "倒下", turnRosterTitle: "小隊行動", skillInfo: "技能：{skill} - {desc}", skillInfoLabel: "技能",
     skillLion: "獅王撲擊", skillLionDesc: "對最近目標造成重擊。", skillOwl: "符文箭", skillOwlDesc: "以符文魔法攻擊較遠的目標。", skillTurtle: "甲殼守護", skillTurtleDesc: "守護全隊並回復 1 點生命。",
@@ -441,6 +447,9 @@
     trainingOwned: "Obtenido: +1 de energía inicial.",
     trainingNeed: "Necesitas {cost} diamantes.",
     trainingBuy: "Desbloquear por {cost}",
+    trainingConfirm: "Pulsa otra vez para obtener +1 de energía inicial permanente. Diamantes {before} → {after}.",
+    trainingConfirmAction: "Confirmar espacio de entrenamiento permanente. Diamantes {before} a {after}.",
+    trainingPurchased: "Obtenido: +1 de energía inicial. Diamantes {before} → {after}.",
     startMission: "Empezar misión",
     mission: "Misión",
     turn: "Turno",
@@ -881,6 +890,9 @@
   let turnTransitionTask = null;
   let turnTransitionDueAt = 0;
   let endTurnKeyboardFocusRequested = false;
+  let trainingIntentUntil = 0;
+  let trainingMessage = "";
+  let trainingMessageTimer = 0;
 
   function clearTurnTransition() {
     clearTimeout(turnTransitionTimer);
@@ -1070,14 +1082,71 @@
     });
   }
 
+  function resetTrainingIntent({ clearMessage = true } = {}) {
+    trainingIntentUntil = 0;
+    window.clearTimeout(trainingMessageTimer);
+    trainingMessageTimer = 0;
+    if (clearMessage) trainingMessage = "";
+  }
+
+  function renderTrainingChoice() {
+    const balance = Number(wallet().diamonds) || 0;
+    nodes.trainingBtn.disabled = profile.training || balance < trainingCost;
+    nodes.trainingStatus.textContent = trainingMessage || (profile.training
+      ? t("trainingOwned")
+      : balance < trainingCost
+        ? t("trainingNeed", { cost: trainingCost })
+        : "");
+    nodes.trainingBtn.setAttribute("aria-label", trainingIntentUntil > Date.now()
+      ? t("trainingConfirmAction", { before: balance, after: balance - trainingCost })
+      : profile.training
+        ? t("trainingOwned")
+        : t("trainingBuy", { cost: trainingCost }));
+  }
+
+  function activateTraining() {
+    if (profile.training) return;
+    const before = Number(wallet().diamonds) || 0;
+    if (before < trainingCost) {
+      resetTrainingIntent();
+      renderTrainingChoice();
+      return;
+    }
+    if (trainingIntentUntil <= Date.now()) {
+      trainingIntentUntil = Date.now() + 5000;
+      trainingMessage = t("trainingConfirm", { before, after: before - trainingCost });
+      renderTrainingChoice();
+      trainingMessageTimer = window.setTimeout(() => {
+        resetTrainingIntent();
+        renderTrainingChoice();
+      }, 5000);
+      return;
+    }
+    resetTrainingIntent({ clearMessage: false });
+    if (!spendDiamonds(trainingCost)) {
+      trainingMessage = "";
+      renderTrainingChoice();
+      return;
+    }
+    const after = Number(wallet().diamonds) || 0;
+    profile.training = true;
+    saveProfile();
+    trainingMessage = t("trainingPurchased", { before, after });
+    renderMenu();
+    trainingMessageTimer = window.setTimeout(() => {
+      trainingMessage = "";
+      renderTrainingChoice();
+    }, 5000);
+    requestAnimationFrame(() => nodes.stagePanel?.querySelector('[data-rune-stage-tab="training"]')?.focus({ preventScroll: true }));
+  }
+
   function renderMenu(focusHeroId = null) {
     nodes.profileLevel.textContent = profile.level;
     nodes.profileXp.textContent = `${profile.xp}/100`;
     nodes.profileBest.textContent = profile.bestMission;
     nodes.profileRunes.textContent = profile.runes || 0;
     renderGrowthSummary();
-    nodes.trainingBtn.disabled = profile.training || wallet().diamonds < trainingCost;
-    nodes.trainingStatus.textContent = profile.training ? t("trainingOwned") : wallet().diamonds < trainingCost ? t("trainingNeed", { cost: trainingCost }) : "";
+    renderTrainingChoice();
     renderHeroUpgrades();
     nodes.missionGrid.innerHTML = "";
     missionDefs.forEach((mission) => {
@@ -1238,12 +1307,14 @@
     Object.assign(nodes, { stagePanel, stageReserve: reserve, mainStartBtn: mainStart, stageBackBtn: stagePanel.querySelector("#stageBackBtn") });
     stagePanel.querySelectorAll("[data-rune-stage-tab]").forEach((button) => button.addEventListener("click", () => {
       const tab = button.dataset.runeStageTab;
+      if (tab !== "training") resetTrainingIntent();
       stagePanel.querySelectorAll("[data-rune-stage-tab]").forEach((item) => item.classList.toggle("is-active", item === button));
       stagePanel.querySelectorAll("[data-rune-stage-view]").forEach((view) => view.classList.toggle("is-active", view.dataset.runeStageView === tab));
     }));
   }
 
   function showStage() {
+    resetTrainingIntent();
     selectedMission = Math.min(profile.unlockedMission, MISSION_COUNT);
     nodes.menuPanel.classList.add("is-hidden");
     nodes.stagePanel.classList.remove("is-hidden");
@@ -1254,6 +1325,7 @@
   }
 
   function showMainFromStage() {
+    resetTrainingIntent();
     nodes.stagePanel.classList.add("is-hidden");
     nodes.stageReserve.classList.add("is-hidden");
     nodes.menuPanel.classList.remove("is-hidden");
@@ -1262,6 +1334,7 @@
   }
 
   function startMission(mission = selectedMission) {
+    resetTrainingIntent();
     clearTurnTransition();
     endTurnKeyboardFocusRequested = false;
     claimedRewardId = null;
@@ -2106,6 +2179,7 @@
   }
 
   function showMenu() {
+    resetTrainingIntent();
     clearTurnTransition();
     endTurnKeyboardFocusRequested = false;
     state = null;
@@ -2262,6 +2336,7 @@
       showMenu();
     });
     nodes.localeSelect.addEventListener("change", () => {
+      resetTrainingIntent();
       const requested = nodes.localeSelect.value;
       window.WonderI18n?.setLocale?.(requested);
       locale = window.WonderI18n?.actualLocale?.() || window.WonderI18n?.locale?.() || requested;
@@ -2269,14 +2344,10 @@
       applyLocale();
       window.dispatchEvent(new CustomEvent("wonder:locale-change", { detail: { locale } }));
     });
-    nodes.trainingBtn.addEventListener("click", () => {
-      if (profile.training) return;
-      if (spendDiamonds(trainingCost)) {
-        profile.training = true;
-        saveProfile();
-        renderMenu();
-      }
+    nodes.trainingBtn.addEventListener("keydown", (event) => {
+      if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
     });
+    nodes.trainingBtn.addEventListener("click", activateTraining);
     nodes.heroUpgradeGrid?.addEventListener("keydown", (event) => {
       if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
     });

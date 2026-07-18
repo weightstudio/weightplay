@@ -139,10 +139,12 @@ button { border: 0; cursor: pointer; color: inherit; }
 .battle-screen { background: #d9f8f6; }
 .battle-live { height: 100%; }
 .battle-live.is-hidden { display: none; }
-.battle-header { height: 70px; display: grid; grid-template-columns: 44px repeat(4,1fr); gap: 5px; align-items: center; padding: 9px 10px; background: #15344c; color: #fff; }
+.battle-header { height: 70px; display: grid; grid-template-columns: 44px repeat(4,minmax(0,1fr)) 44px; gap: 5px; align-items: center; padding: 9px 10px; background: #15344c; color: #fff; }
 .battle-header > div { min-width: 0; display: grid; text-align: center; gap: 2px; }
 .battle-header span { font-size: 10px; color: #bce7ee; }
 .battle-header strong { font-size: 16px; white-space: nowrap; }
+.battle-utility-button { width: 44px; height: 44px; border-radius: 8px; background: rgba(255,255,255,.14); color: #fff; font-size: 20px; font-weight: 900; }
+.battle-utility-button:focus { outline: 4px solid #ffe676; outline-offset: 2px; }
 .battle-message { height: 35px; display: grid; place-items: center; background: #fff1aa; color: #684719; font-size: 13px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0 12px; }
 .play-frame { width: 372px; height: 558px; margin: 5px auto 0; padding: 5px 6px; border-radius: 8px; background: #fff; box-shadow: 0 4px 0 rgba(23,67,83,.22); overflow: hidden; }
 #playCanvas { display: block; width: 360px; height: 548px; border-radius: 6px; touch-action: none; background: url("../../assets/animal-bubble-safari-bg.webp") center/cover; }
@@ -152,6 +154,17 @@ button { border: 0; cursor: pointer; color: inherit; }
 .queue-bar span { grid-column: 1 / -1; font-size: 10px; color: #bce7ee; }
 .queue-bar canvas { grid-column: 1 / -1; width: 48px; height: 48px; }
 .queue-bar strong { font-size: 14px; line-height: 1.25; text-align: right; }
+
+.pause-overlay { position: absolute; inset: 0; z-index: 3; display: grid; place-items: center; padding: 24px; background: rgba(9,29,43,.82); }
+.pause-overlay[hidden] { display: none; }
+.pause-panel { width: 342px; min-height: 360px; display: grid; grid-template-rows: 86px auto auto 1fr; align-items: center; gap: 14px; padding: 28px 24px; border: 2px solid rgba(255,255,255,.32); border-radius: 8px; background: #15344c; color: #fff; text-align: center; box-shadow: 0 14px 34px rgba(0,0,0,.38); }
+.pause-symbol { width: 76px; height: 76px; display: grid; place-items: center; justify-self: center; border-radius: 50%; background: #ffe676; color: #173047; font-size: 34px; font-weight: 900; }
+.pause-panel h2 { margin: 0; font-size: 30px; }
+.pause-panel p { margin: 0; color: #d8f4f5; font-size: 16px; line-height: 1.45; }
+.pause-actions { align-self: end; width: 100%; display: grid; gap: 12px; }
+.pause-actions button { width: 100%; height: 54px; border-radius: 8px; background: #fff; color: #173047; font-weight: 900; }
+.pause-actions .primary-button { background: linear-gradient(#ffe676,#ffc63b); }
+.pause-actions button:focus { outline: 4px solid #ffe676; outline-offset: 3px; box-shadow: 0 0 0 3px #173047; }
 
 .result-screen { position:absolute; inset:0; width:390px !important; height:788px !important; min-height:788px !important; max-height:788px !important; z-index:4; display:none; overflow:hidden; color: #fff; background: linear-gradient(rgba(9,29,43,.84), rgba(9,29,43,.92)), url("../../assets/animal-bubble-safari-bg.webp") center/cover; }
 .result-screen.is-active { display:block; }

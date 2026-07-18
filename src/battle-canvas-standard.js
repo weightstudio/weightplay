@@ -1,6 +1,6 @@
 (function () {
   const RESERVE_HEIGHT = window.WeightPlayAudience?.reserveHeight ?? 56;
-  const GUTTER = 4;
+  const GUTTER = 0;
   const games = {
     "animal-abyss-diver": [".battle-canvas", 390, 788],
     "animal-auto-squad": ["#gamePanel", 382, 780],
@@ -37,6 +37,7 @@
   };
   const gameId = location.pathname.match(/\/games\/([^/]+)/)?.[1] || "";
   const config = games[gameId];
+  document.documentElement.dataset.wpBattleRuntime = gameId;
   if (!config) return;
 
   const visible = (node) => {
@@ -46,7 +47,7 @@
     return style.display !== "none" && style.visibility !== "hidden" && Number(style.opacity) > 0.02 && rect.width > 4 && rect.height > 4;
   };
   const findRoot = () => [...document.querySelectorAll(config[0])].find(visible) || null;
-  const findBack = () => [...document.querySelectorAll('[data-wp-return="battle"]')].find(visible) || null;
+  const findBack = (root) => root?.querySelector('[data-wp-return="battle"]') || null;
   const findReserve = () => [...document.querySelectorAll(".battle-ad-reserve,.battle-ad,.ad-reserve,.result-ad-reserve,#battleAdReserve,#battleAd")]
     .find((node) => visible(node) && !node.closest("[data-wp-logical-battle-canvas]")) || null;
 
@@ -76,7 +77,9 @@
 
   function update() {
     const root = findRoot();
-    const active = Boolean(root && findBack());
+    const back = findBack(root);
+    const active = Boolean(root && back);
+    document.documentElement.dataset.wpBattleActive = `${root?.id || "no-root"}:${back?.id || "no-back"}:${active ? "active" : "inactive"}`;
     document.body.classList.toggle("wp-logical-battle-active", active);
     if (!active) {
       restore(activeRoot);
@@ -167,5 +170,7 @@
   window.addEventListener("resize", queueUpdate, { passive: true });
   window.visualViewport?.addEventListener("resize", queueUpdate, { passive: true });
   window.visualViewport?.addEventListener("scroll", queueUpdate, { passive: true });
+  document.addEventListener("click", () => window.setTimeout(queueUpdate, 0), true);
+  window.addEventListener("weightplay:battle-open", queueUpdate);
   queueUpdate();
 })();

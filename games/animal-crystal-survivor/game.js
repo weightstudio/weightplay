@@ -1960,6 +1960,22 @@
     const card = event.target.closest("[data-upgrade]");
     if (card) applyUpgrade(card.dataset.upgrade);
   });
+  nodes.upgradePanel.addEventListener("keydown", (event) => {
+    if (event.repeat && (event.key === "Enter" || event.key === " ")) {
+      event.preventDefault();
+      return;
+    }
+    if (event.key !== "Tab" || nodes.upgradePanel.classList.contains("hidden")) return;
+    const actions = [...nodes.upgradeCards.querySelectorAll(".upgrade-card:not(:disabled)")];
+    if (!actions.length) return;
+    if (event.shiftKey && document.activeElement === actions[0]) {
+      event.preventDefault();
+      actions.at(-1).focus({ preventScroll: true });
+    } else if (!event.shiftKey && document.activeElement === actions.at(-1)) {
+      event.preventDefault();
+      actions[0].focus({ preventScroll: true });
+    }
+  });
   window.addEventListener("weightplay:locale-change", (event) => setLocale(event.detail?.locale || locale));
 
   setLocale(locale);

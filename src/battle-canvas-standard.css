@@ -11,7 +11,7 @@ body.wp-logical-battle-active {
 body.wp-logical-battle-active [data-wp-logical-battle-canvas] {
   position: fixed !important;
   inset: auto !important;
-  top: var(--wp-battle-canvas-top, 4px) !important;
+  top: var(--wp-battle-canvas-top, 0px) !important;
   left: 50% !important;
   width: var(--wp-battle-logical-width, 390px) !important;
   min-width: var(--wp-battle-logical-width, 390px) !important;
@@ -35,9 +35,9 @@ body.wp-logical-battle-active :is(
 )[data-wp-battle-physical-reserve] {
   position: fixed !important;
   z-index: 49 !important;
-  inset: auto auto 4px 50% !important;
+  inset: auto auto 0 50% !important;
   display: block !important;
-  width: var(--wp-battle-canvas-rendered-width, calc(100vw - 8px)) !important;
+  width: var(--wp-battle-canvas-rendered-width, 100vw) !important;
   min-width: 0 !important;
   max-width: none !important;
   height: 56px !important;

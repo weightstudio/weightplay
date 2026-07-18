@@ -425,50 +425,6 @@
 .coach-nori { width: 56px; height: 48px; object-fit: contain; }
 .coach-arrow { font-size: 1.65rem; }
 
-@media (max-height: 500px) {
-  .battle-canvas {
-    grid-template-rows: 46px 38px minmax(0, 1fr) 82px;
-  }
-
-  .controls {
-    grid-template-rows: 36px 32px;
-    gap: 4px;
-    padding: 4px 8px;
-  }
-
-  .oxygen-meter {
-    width: 62px;
-  }
-
-  .help-button {
-    width: 36px;
-    height: 36px;
-  }
-
-  .lane-gate {
-    top: 10%;
-    min-height: 34%;
-    padding: 3px;
-  }
-
-  .lane-gate img { min-height: 28px; }
-
-  .fish-encounter { inset: 4% 9% auto; grid-template-columns: 88px minmax(0, 1fr); padding: 7px; }
-  .fish-sprite { width: 88px; height: 40px; }
-  .fish-sprite img { top: -10px; left: -182px; width: 450px; height: 283px; }
-  .fish-actions button { min-height: 30px; font-size: 0.68rem; }
-
-  .coach-card {
-    gap: 8px;
-    padding: 12px;
-  }
-
-  .coach-card ol {
-    gap: 5px;
-    font-size: 0.78rem;
-  }
-}
-
 /* Direct target selection and slower turn-based fish combat. */
 .lane-controls{display:none}
 .controls{grid-template-rows:42px}
@@ -500,4 +456,3 @@
 .fish-encounter.is-escaping{animation:fish-dodged .7s ease forwards}
 .upgrade-panel{position:absolute;z-index:8;inset:8%;display:grid;align-content:center;gap:12px;padding:18px;border:2px solid #ffe083;border-radius:18px;background:#06283ef5;text-align:center;box-shadow:0 18px 40px #00131fdd}
 .upgrade-panel h2,.upgrade-panel strong,.upgrade-panel output{margin:0}.upgrade-panel output{display:block;min-height:1.35em;color:#d9f7ff;font-weight:700}.upgrade-panel>div{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.upgrade-panel button{min-height:52px;border:0;border-radius:10px;background:#e8c45f;color:#142134;font-weight:900}.upgrade-panel button:disabled{opacity:.45}
-@media(max-height:500px){.controls{grid-template-rows:36px}.lane-gate img{min-height:38px}.fish-encounter{inset:3% 7% auto;grid-template-rows:auto 66px auto auto auto;padding:6px}.combat-diver img{height:64px}.fish-sprite{width:96px;height:40px}.fish-sprite img{top:-10px;left:-186px;width:462px;height:286px}.fish-actions button{min-height:30px}.upgrade-panel{inset:3% 12%;padding:8px;gap:6px}.upgrade-panel button{min-height:34px;font-size:.7rem}}

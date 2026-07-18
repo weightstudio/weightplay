@@ -504,11 +504,11 @@
     const root = document.documentElement.style;
     const logicalWidth = 390;
     const logicalHeight = isStage ? 788 : logicalWidth * 16 / 9;
-    const scale = Math.min((viewportWidth - 8) / logicalWidth, (viewportHeight - 8) / logicalHeight);
+    const scale = Math.min(viewportWidth / logicalWidth, viewportHeight / logicalHeight);
     const frameWidth = logicalWidth * scale;
     const frameHeight = logicalHeight * scale;
     root.setProperty("--safari-frame-left", `${(viewportWidth - frameWidth) / 2}px`);
-    root.setProperty("--safari-frame-top", `${viewportHeight - frameHeight - 4}px`);
+    root.setProperty("--safari-frame-top", `${viewportHeight - frameHeight}px`);
     root.setProperty("--safari-frame-width", `${frameWidth}px`);
     root.setProperty("--safari-frame-height", `${frameHeight}px`);
     root.setProperty("--safari-frame-scale", String(scale));

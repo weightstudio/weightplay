@@ -999,6 +999,13 @@
 
   function installTestApi() {
     window.__ANIMAL_AUTO_SQUAD_TEST__ = {
+      setLocaleForTest: (requested) => {
+        locale = window.WonderI18n?.legacyLocale?.(requested) || requested || "en";
+        document.documentElement.lang = requested || "en";
+        translateUI();
+        updatePageMeta();
+        return locale;
+      },
       readSave: () => normalizeSave(save),
       restoreSave: (snapshot) => {
         save = normalizeSave(snapshot);

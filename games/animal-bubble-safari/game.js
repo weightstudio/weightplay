@@ -10,7 +10,7 @@
   const copy = {
     "zh-Hant": {
       title: "動物泡泡探險", tagline: "瞄準、反彈，救出泡泡裡的動物！", progressLabel: "探險進度",
-      backToLobby: "返回 WeightPlay Kids 大廳", soundToggle: "切換音效", language: "語言", back: "返回", stageList: "關卡列表", backToStage: "返回關卡", playArea: "泡泡射擊遊戲區", earnedStars: "獲得星星", close: "關閉",
+      backToLobby: "返回 WeightPlay Kids 大廳", soundToggle: "切換音效", language: "語言", back: "返回", stageList: "關卡列表", backToStage: "返回關卡", playArea: "泡泡射擊遊戲區", earnedStars: "獲得星星", close: "關閉", pause: "暫停遊戲", paused: "遊戲暫停", pauseMessage: "休息一下，探險進度會留在這裡。", resume: "繼續遊戲",
       loading: "準備探險", loadingError: "部分圖片未載入，將使用可用素材",
       startGame: "開始遊戲", guide: "玩法", chooseStage: "選擇關卡", album: "救援圖鑑", bestStars: "最佳星星",
       startLevel: "開始關卡", level: "關卡", shots: "剩餘", rescued: "目標", score: "分數",
@@ -30,7 +30,7 @@
     },
     en: {
       title: "Animal Bubble Safari", tagline: "Aim, bank shots, and rescue bubble animals!", progressLabel: "Safari progress",
-      backToLobby: "Back to the WeightPlay Kids lobby", soundToggle: "Toggle sound", language: "Language", back: "Back", stageList: "Stage list", backToStage: "Back to stages", playArea: "Bubble shooter play area", earnedStars: "Stars earned", close: "Close",
+      backToLobby: "Back to the WeightPlay Kids lobby", soundToggle: "Toggle sound", language: "Language", back: "Back", stageList: "Stage list", backToStage: "Back to stages", playArea: "Bubble shooter play area", earnedStars: "Stars earned", close: "Close", pause: "Pause game", paused: "Paused", pauseMessage: "Take a breath. Your safari is waiting.", resume: "Resume",
       loading: "Preparing Safari", loadingError: "Some images could not load; available art will be used",
       startGame: "Start Game", guide: "Guide", chooseStage: "Choose Stage", album: "Rescue Album", bestStars: "Best Stars",
       startLevel: "Start Level", level: "Level", shots: "Shots", rescued: "Goal", score: "Score",
@@ -49,7 +49,7 @@
     },
     es: {
       title: "Safari de Burbujas Animales", tagline: "¡Apunta, rebota y rescata animales atrapados en burbujas!", progressLabel: "Progreso del safari",
-      backToLobby: "Volver a la sala Kids de WeightPlay", soundToggle: "Activar o desactivar sonido", language: "Idioma", back: "Volver", stageList: "Lista de niveles", backToStage: "Volver a los niveles", playArea: "Zona de lanzamiento de burbujas", earnedStars: "Estrellas obtenidas", close: "Cerrar",
+      backToLobby: "Volver a la sala Kids de WeightPlay", soundToggle: "Activar o desactivar sonido", language: "Idioma", back: "Volver", stageList: "Lista de niveles", backToStage: "Volver a los niveles", playArea: "Zona de lanzamiento de burbujas", earnedStars: "Estrellas obtenidas", close: "Cerrar", pause: "Pausar el juego", paused: "Juego en pausa", pauseMessage: "Tómate un respiro. Tu safari te espera.", resume: "Continuar",
       loading: "Preparando el safari", loadingError: "Algunas imágenes no se cargaron; se usarán los recursos disponibles",
       startGame: "Empezar", guide: "Guía", chooseStage: "Elegir nivel", album: "Álbum de rescate", bestStars: "Mejores estrellas",
       startLevel: "Empezar nivel", level: "Nivel", shots: "Tiros", rescued: "Objetivo", score: "Puntuación",
@@ -112,8 +112,18 @@
   if (spanishStageTitles.length !== stageDefs.length) throw new Error("Spanish stage-title coverage must match all safari stages.");
   stageDefs.forEach((stage, index) => { stage.title.es = spanishStageTitles[index]; });
 
+  const battleHeader = document.querySelector(".battle-header");
+  if (battleHeader && !document.getElementById("pauseButton")) {
+    battleHeader.insertAdjacentHTML("beforeend", '<button id="pauseButton" class="battle-utility-button" type="button" aria-label="Pause game" data-i18n-aria="pause">Ⅱ</button>');
+  }
+  const battleScreen = document.getElementById("battleScreen");
+  const resultScreen = document.getElementById("resultScreen");
+  if (battleScreen && resultScreen && !document.getElementById("pauseOverlay")) {
+    resultScreen.insertAdjacentHTML("beforebegin", '<section id="pauseOverlay" class="pause-overlay" role="dialog" aria-modal="true" aria-labelledby="pauseTitle" hidden><div class="pause-panel"><span class="pause-symbol" aria-hidden="true">Ⅱ</span><h2 id="pauseTitle" data-i18n="paused">Paused</h2><p data-i18n="pauseMessage">Take a breath. Your safari is waiting.</p><div class="pause-actions"><button id="pauseResume" class="primary-button" type="button" data-i18n="resume">Resume</button><button id="pauseBack" type="button" data-i18n="backToMap">Back to Map</button></div></div></section>');
+  }
+
   const dom = Object.fromEntries([
-    "viewport","gameCanvas","loadingScreen","loadingCover","loadingPanel","loadingFill","loadingProgress","mainScreen","stageScreen","battleScreen","battleLive","resultScreen","guideModal","stageRail","stageStatus","playCanvas",
+    "viewport","gameCanvas","loadingScreen","loadingCover","loadingPanel","loadingFill","loadingProgress","mainScreen","stageScreen","battleScreen","battleLive","pauseButton","pauseOverlay","pauseResume","resultScreen","guideModal","stageRail","stageStatus","playCanvas",
     "mainProgress","albumCount","starCount","stageSkill","stageGoal","battleStageName","shotsLeft","rescueProgress","scoreValue","battleMessage","battleGoal",
     "currentPreview","nextPreview","resultTitle","resultStars","resultScore","resultShots","resultRescued","rewardStars","rewardCoins","rewardAlbum","skillText","nextStage"
   ].map(id => [id, document.getElementById(id)]));
@@ -136,6 +146,7 @@
   let animationFrame = 0;
   let resultTimer = 0;
   let stageStatusTimer = 0;
+  let isPaused = false;
 
   function loadSave() {
     try {
@@ -372,6 +383,9 @@
 
   function startStage(id) {
     clearTimeout(resultTimer);
+    isPaused = false;
+    dom.pauseOverlay.hidden = true;
+    dom.pauseButton.disabled = false;
     selectedStage = id;
     const def = stageDefs[id - 1];
     game = {
@@ -649,6 +663,7 @@
 
   function finishStage(won) {
     game.state = "finished";
+    dom.pauseButton.disabled = true;
     const completedGame = game;
     clearTimeout(resultTimer);
     resultTimer = setTimeout(() => {
@@ -773,7 +788,7 @@
   }
 
   function loop(now) {
-    if (!game || currentScreen !== "battle") return;
+    if (!game || currentScreen !== "battle" || isPaused) return;
     const dt = Math.min(.025,(now-game.elapsed)/1000 || 0); game.elapsed=now;
     if (game.state === "playing") updateProjectile(dt);
     game.bubbles.forEach(bubble => { if (bubble.settleProgress != null && bubble.settleProgress < 1) bubble.settleProgress = Math.min(1, bubble.settleProgress + dt / .11); });
@@ -797,6 +812,41 @@
   function openGuide() { dom.guideModal.hidden=false; localStorage.setItem(FIRST_PLAY_KEY,"seen"); }
   function closeGuide() { dom.guideModal.hidden=true; }
 
+  function pauseGame() {
+    if (!game || currentScreen !== "battle" || game.state !== "playing" || isPaused) return;
+    isPaused = true;
+    cancelAim();
+    cancelAnimationFrame(animationFrame);
+    dom.battleLive.inert = true;
+    dom.battleLive.setAttribute("aria-hidden", "true");
+    dom.pauseOverlay.hidden = false;
+    requestAnimationFrame(() => dom.pauseResume.focus({ preventScroll: true }));
+    track("game_pause", { level: game.def.id });
+  }
+
+  function resumeGame() {
+    if (!game || currentScreen !== "battle" || !isPaused) return;
+    isPaused = false;
+    dom.pauseOverlay.hidden = true;
+    dom.battleLive.inert = false;
+    dom.battleLive.removeAttribute("aria-hidden");
+    game.elapsed = performance.now();
+    animationFrame = requestAnimationFrame(loop);
+    requestAnimationFrame(() => dom.playCanvas.focus({ preventScroll: true }));
+    track("game_resume", { level: game.def.id });
+  }
+
+  function returnToStage() {
+    clearTimeout(resultTimer);
+    isPaused = false;
+    dom.pauseOverlay.hidden = true;
+    game = null;
+    cancelAnimationFrame(animationFrame);
+    renderStageRail();
+    showScreen("stage");
+    focusSelectedStage();
+  }
+
   window.__animalBubbleSafariTest = {
     stageDefs,
     showResult: won => { if (game) showResult(Boolean(won)); },
@@ -808,7 +858,7 @@
       blockers: game?.bubbles.filter(bubble => bubble.alive && bubble.blocker).length || 0,
       shots: game?.shots ?? null,
       aiming: game?.aiming || false, aimX: game?.aimX ?? null, aimY: game?.aimY ?? null,
-      projectile: Boolean(game?.projectile), aimPointerId: game?.aimPointerId ?? null,
+      projectile: Boolean(game?.projectile), aimPointerId: game?.aimPointerId ?? null, paused: isPaused,
       lastAttachment: game?.lastAttachment || null,
       mechanic: game?.def.mechanic || null, wind: game?.def.wind || 0, shiftRows: Boolean(game?.def.shiftRows),
       blockerTypes: game?.bubbles.filter(bubble => bubble.alive && bubble.blocker).map(bubble => ({ type:bubble.blockerType,hits:bubble.blockerHits,x:bubble.x,y:bubble.y })) || [],
@@ -870,7 +920,28 @@
   });
   startGameButton.addEventListener("click", () => { renderStageRail(); showScreen("stage"); focusSelectedStage(); });
   document.getElementById("stageBack").addEventListener("click", () => { showScreen("main"); updateMainProgress(); requestAnimationFrame(() => startGameButton.focus({ preventScroll:true })); });
-  document.getElementById("battleBack").addEventListener("click", () => { clearTimeout(resultTimer); game=null; cancelAnimationFrame(animationFrame); renderStageRail(); showScreen("stage"); focusSelectedStage(); });
+  document.getElementById("battleBack").addEventListener("click", returnToStage);
+  dom.pauseButton.addEventListener("click", pauseGame);
+  dom.pauseResume.addEventListener("click", resumeGame);
+  document.getElementById("pauseBack").addEventListener("click", returnToStage);
+  dom.pauseOverlay.addEventListener("keydown", event => {
+    if (event.repeat && (event.key === "Enter" || event.key === " ")) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      return;
+    }
+    if (event.key === "Escape") {
+      event.preventDefault();
+      resumeGame();
+      return;
+    }
+    if (event.key !== "Tab") return;
+    const actions = [...dom.pauseOverlay.querySelectorAll("button:not([disabled])")];
+    const first = actions[0];
+    const last = actions.at(-1);
+    if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+    else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+  }, true);
   document.getElementById("retryStage").addEventListener("click", () => startStage(game.def.id));
   document.getElementById("nextStage").addEventListener("click", () => startStage(Math.min(stageDefs.length,game.def.id+1)));
   document.getElementById("backToMap").addEventListener("click", () => { renderStageRail(); showScreen("stage"); focusSelectedStage(); });

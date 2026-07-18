@@ -1179,6 +1179,16 @@
     if (active) requestAnimationFrame(() => nodes.retryBtn.focus({ preventScroll: true }));
   }
 
+  function setDraftModalActive(active, restoreBattleFocus = true) {
+    document.querySelectorAll(".game-layout > .arena-viewport, .game-layout > .inventory-sidebar").forEach((layer) => {
+      layer.inert = active;
+      if (active) layer.setAttribute("aria-hidden", "true");
+      else layer.removeAttribute("aria-hidden");
+    });
+    if (active) requestAnimationFrame(() => nodes.draftCards.querySelector(".draft-item-btn")?.focus({ preventScroll: true }));
+    else if (restoreBattleFocus) nodes.gameCanvas.focus({ preventScroll: true });
+  }
+
   function setLootModalActive(active, restoreBattleFocus = true) {
     document.querySelectorAll(".game-layout > .arena-viewport, .game-layout > .inventory-sidebar").forEach((layer) => {
       layer.inert = active;
@@ -1905,7 +1915,7 @@
     renderDraftChoices();
     nodes.draftPanel.classList.remove("hidden");
     updateDraftRerollUI();
-    requestAnimationFrame(() => nodes.draftCards.querySelector(".draft-item-btn")?.focus());
+    setDraftModalActive(true);
   }
 
   function chooseDraftRelic(relicId) {
@@ -1914,7 +1924,7 @@
     state.gameActive = true;
     renderStatsPanel();
     updateHUDText();
-    nodes.gameCanvas.focus({ preventScroll: true });
+    setDraftModalActive(false);
     state.gameLoopId = requestAnimationFrame(updateGameEngine);
   }
 
@@ -3049,6 +3059,25 @@
       window.WonderI18n?.setLocale?.(e.target.value);
     });
 
+    nodes.draftPanel.addEventListener("keydown", (event) => {
+      if (event.repeat && (event.key === "Enter" || event.key === " ")) {
+        event.preventDefault();
+        return;
+      }
+      if (event.key !== "Tab" || nodes.draftPanel.classList.contains("hidden")) return;
+      const actions = [...nodes.draftCards.querySelectorAll(".draft-item-btn"), nodes.rerollDraftBtn].filter((button) => !button.disabled);
+      if (!actions.length) return;
+      const first = actions[0];
+      const last = actions[actions.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus({ preventScroll: true });
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus({ preventScroll: true });
+      }
+    });
+
     nodes.equipLootBtn.addEventListener("click", () => {
       finishLootDecision(true);
     });
@@ -3140,6 +3169,7 @@
           state.runKeys = Math.max(0, Math.floor(Number(keys) || 0));
           nodes.menuPanel.classList.add("hidden");
           nodes.draftPanel.classList.add("hidden");
+          setDraftModalActive(false, false);
           nodes.lootPanel.classList.add("hidden");
           nodes.gamePanel.classList.remove("hidden");
           endGame(Boolean(won));

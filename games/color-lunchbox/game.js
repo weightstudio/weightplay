@@ -579,12 +579,12 @@
     if (!document.body.classList.contains("lunch-stage") && !document.body.classList.contains("lunch-playing")) return;
     const viewportWidth = visualViewport?.width || innerWidth;
     const viewportHeight = visualViewport?.height || innerHeight;
-    const scale = Math.min(Math.max(1, viewportWidth - 8) / 390, Math.max(1, viewportHeight - 8) / 788);
+    const scale = Math.min(Math.max(1, viewportWidth) / 390, Math.max(1, viewportHeight) / 788);
     const width = 390 * scale;
     const height = 788 * scale;
     document.documentElement.style.setProperty("--lunch-frame-scale", String(scale));
     document.documentElement.style.setProperty("--lunch-frame-left", `${(viewportWidth - width) / 2}px`);
-    document.documentElement.style.setProperty("--lunch-frame-top", `${viewportHeight - height - 4}px`);
+    document.documentElement.style.setProperty("--lunch-frame-top", `${viewportHeight - height}px`);
     document.documentElement.style.setProperty("--lunch-frame-width", `${width}px`);
     document.documentElement.style.setProperty("--lunch-frame-height", `${height}px`);
   }

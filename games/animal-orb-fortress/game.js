@@ -587,12 +587,10 @@
     if (!document.body.classList.contains("orb-fortress-playing") || nodes.gamePanel.classList.contains("is-hidden")) return;
     const panelStyle = getComputedStyle(nodes.gamePanel);
     const rows = panelStyle.gridTemplateRows.split(/\s+/).map(Number.parseFloat).filter(Number.isFinite);
-    const columns = panelStyle.gridTemplateColumns.split(/\s+/).map(Number.parseFloat).filter(Number.isFinite);
-    const horizontal = (window.visualViewport?.height || innerHeight) <= 560;
     const panelWidth = nodes.gamePanel.clientWidth - Number.parseFloat(panelStyle.paddingLeft) - Number.parseFloat(panelStyle.paddingRight);
     const panelHeight = nodes.gamePanel.clientHeight - Number.parseFloat(panelStyle.paddingTop) - Number.parseFloat(panelStyle.paddingBottom);
-    const trackWidth = horizontal ? (columns[1] || panelWidth) : panelWidth;
-    const trackHeight = horizontal ? (rows[0] || panelHeight) : (rows[1] || panelHeight);
+    const trackWidth = panelWidth;
+    const trackHeight = rows[1] || panelHeight;
     const arenaHeight = Math.max(1, Math.min(trackHeight, trackWidth / (W / H)));
     const arenaWidth = arenaHeight * (W / H);
     canvas.style.setProperty("width", `${arenaWidth}px`, "important");

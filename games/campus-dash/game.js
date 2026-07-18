@@ -4,6 +4,7 @@
   const canonicalSavedLocale = localStorage.getItem(canonicalLocaleKey);
   const legacySavedLocale = localStorage.getItem(legacyLocaleKey);
   if (!canonicalSavedLocale && ["en", "zh-Hant", "zh-Hans", "es"].includes(legacySavedLocale)) {
+    localStorage.setItem(canonicalLocaleKey, legacySavedLocale);
     window.WonderI18n?.setLocale?.(legacySavedLocale);
   }
 
@@ -1250,6 +1251,26 @@
     startRun();
   });
   lobbyLink.addEventListener("click", showStageSelection);
+  resultPanel.addEventListener("keydown", (event) => {
+    if (event.repeat && ["Enter", " "].includes(event.key)) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      return;
+    }
+    if (event.key !== "Tab") return;
+    const actions = [...resultPanel.querySelectorAll('button:not([disabled]), a[href]')]
+      .filter((action) => !action.classList.contains("hidden") && action.getClientRects().length);
+    const first = actions[0];
+    const last = actions.at(-1);
+    if (!first || !last) return;
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  }, true);
   stageRail.addEventListener("wonder:stage-snap", (event) => {
     const stage = Number(event.detail?.index) + 1;
     if (stage < 1 || stage > 30) return;

@@ -238,12 +238,12 @@
   function updateWordFrame(){
     if(!document.body.classList.contains('word-stage')&&!document.body.classList.contains('word-playing'))return;
     const width=visualViewport?.width||innerWidth,height=visualViewport?.height||innerHeight;
-    const scale=Math.min(Math.max(1,width-8)/390,Math.max(1,height-8)/788);
+    const scale=Math.min(Math.max(1,width)/390,Math.max(1,height)/788);
     document.documentElement.style.setProperty('--word-scale',String(scale));
     document.documentElement.style.setProperty('--word-frame-width',`${390*scale}px`);
     document.documentElement.style.setProperty('--word-frame-height',`${788*scale}px`);
     document.documentElement.style.setProperty('--word-frame-left',`${(width-390*scale)/2}px`);
-    document.documentElement.style.setProperty('--word-frame-top',`${height-788*scale-4}px`);
+    document.documentElement.style.setProperty('--word-frame-top',`${height-788*scale}px`);
   }
   addEventListener('resize',updateWordFrame);visualViewport?.addEventListener('resize',updateWordFrame,{passive:true});
   addEventListener('pagehide',pauseBattleTasks);addEventListener('pageshow',resumeBattleTasks);document.addEventListener('visibilitychange',()=>{if(document.hidden)pauseBattleTasks();else resumeBattleTasks();});

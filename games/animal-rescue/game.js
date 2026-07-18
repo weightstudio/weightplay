@@ -856,7 +856,7 @@ function updateBattleScale() {
   const viewportHeight = viewport?.height || window.innerHeight;
   if (!document.body.classList.contains("rescue-playing") && !document.body.classList.contains("rescue-stage-select")) return;
   document.body.classList.remove("rescue-expanded-canvas");
-  const scale = Math.max(0.1, Math.min((viewportWidth - 8) / 390, (viewportHeight - 8) / 788));
+  const scale = Math.max(0.1, Math.min(viewportWidth / 390, viewportHeight / 788));
   const width = 390 * scale;
   const contentHeight = 788 * scale;
   document.documentElement.style.setProperty("--rescue-battle-scale", String(scale));
@@ -864,7 +864,7 @@ function updateBattleScale() {
   document.documentElement.style.setProperty("--rescue-battle-height", `${contentHeight}px`);
   document.documentElement.style.setProperty("--rescue-battle-content-height", `${contentHeight}px`);
   document.documentElement.style.setProperty("--rescue-battle-left", `${(viewportWidth - width) / 2}px`);
-  document.documentElement.style.setProperty("--rescue-battle-top", `${viewportHeight - contentHeight - 4}px`);
+  document.documentElement.style.setProperty("--rescue-battle-top", `${viewportHeight - contentHeight}px`);
 }
 
 function resetRescueFrame() {

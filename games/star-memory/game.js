@@ -1129,12 +1129,14 @@
   const rejectRepeatedActivation = (event) => {
     if (event.repeat && (event.key === "Enter" || event.key === " ")) {
       event.preventDefault();
+      event.stopImmediatePropagation();
     }
   };
   startBtn.addEventListener("keydown", rejectRepeatedActivation);
   stageGrid.addEventListener("keydown", (event) => {
     if (event.target.closest(".stage-card")) rejectRepeatedActivation(event);
   });
+  resultPanel.addEventListener("keydown", rejectRepeatedActivation, true);
   startBtn.addEventListener("click", () => {
     window.WonderSound?.play("click");
     showStageSelect();
