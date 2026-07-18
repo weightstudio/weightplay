@@ -2078,14 +2078,14 @@ body.beast-deck-playing #gamePanel.result-open > .action-area { pointer-events:n
 
 @media (max-height: 560px) {
   body.wp-stage-select-active[data-wp-game-id="beast-deck"] [data-wp-logical-stage-canvas] .beast-stage-view[data-stage-view="missions"] .stage-select {
-    grid-template-rows: 34px 176px !important;
+    grid-template-rows: 34px 190px !important;
   }
 
   body.wp-stage-select-active[data-wp-game-id="beast-deck"] [data-wp-logical-stage-canvas] #stagePanel .stage-grid,
   body.wp-stage-select-active[data-wp-game-id="beast-deck"] [data-wp-logical-stage-canvas] #stagePanel .stage-card {
-    height: 176px !important;
-    min-height: 176px !important;
-    max-height: 176px !important;
+    height: 190px !important;
+    min-height: 190px !important;
+    max-height: 190px !important;
   }
 
   #stagePanel .selected-mission-summary {

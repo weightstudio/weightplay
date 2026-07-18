@@ -699,11 +699,12 @@
 
   function updateFruitBattleScale() {
     if (!document.body.classList.contains("fruit-playing") && !document.body.classList.contains("fruit-stage")) return;
-    const logicalWidth = 382;
-    const logicalHeight = 780;
+    const isStage = document.body.classList.contains("fruit-stage");
+    const logicalWidth = isStage ? 390 : 382;
+    const logicalHeight = isStage ? 788 : 780;
     const viewportWidth = visualViewport?.width || innerWidth;
     const viewportHeight = visualViewport?.height || innerHeight;
-    const scale = Math.max(0.1, Math.min((viewportWidth - 8) / logicalWidth, (viewportHeight - 8) / logicalHeight));
+    const scale = Math.max(0.1, Math.min(viewportWidth / logicalWidth, viewportHeight / logicalHeight));
     const width = logicalWidth * scale;
     const contentHeight = logicalHeight * scale;
     const root = document.documentElement.style;
@@ -712,7 +713,7 @@
     root.setProperty("--fruit-battle-width", `${width}px`);
     root.setProperty("--fruit-battle-height", `${contentHeight}px`);
     root.setProperty("--fruit-battle-left", `${Math.max(0, (viewportWidth - width) / 2)}px`);
-    root.setProperty("--fruit-battle-top", `${Math.max(4, viewportHeight - contentHeight - 4)}px`);
+    root.setProperty("--fruit-battle-top", `${Math.max(0, viewportHeight - contentHeight)}px`);
   }
 
   addEventListener("resize", updateFruitBattleScale, { passive: true });

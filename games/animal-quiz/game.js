@@ -3,6 +3,7 @@ const legacyLocaleKey = "weightplayLocale";
 const canonicalSavedLocale = localStorage.getItem(canonicalLocaleKey);
 const legacySavedLocale = localStorage.getItem(legacyLocaleKey);
 if (!canonicalSavedLocale && ["en", "zh-Hant", "zh-Hans", "es"].includes(legacySavedLocale)) {
+  localStorage.setItem(canonicalLocaleKey, legacySavedLocale);
   window.WonderI18n?.setLocale?.(legacySavedLocale);
 }
 
@@ -1118,9 +1119,20 @@ choiceGrid.addEventListener("keydown", (event) => {
   event.preventDefault();
 });
 resultPanel.addEventListener("keydown", (event) => {
-  if (!event.repeat || !["Enter", " "].includes(event.key)) return;
-  event.preventDefault();
-  event.stopImmediatePropagation();
+  if (event.repeat && ["Enter", " "].includes(event.key)) {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    return;
+  }
+  if (event.key !== "Tab") return;
+  const actions = [...resultPanel.querySelectorAll("button:not([disabled]), a[href]")]
+    .filter((action) => !action.classList.contains("hidden") && getComputedStyle(action).display !== "none");
+  if (!actions.length) return;
+  const currentIndex = actions.indexOf(document.activeElement);
+  if (currentIndex === -1 || (!event.shiftKey && currentIndex === actions.length - 1) || (event.shiftKey && currentIndex === 0)) {
+    event.preventDefault();
+    actions[event.shiftKey ? actions.length - 1 : 0].focus({ preventScroll: true });
+  }
 }, true);
 
 window.addEventListener("wonder:locale-change", () => {

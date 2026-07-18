@@ -29,6 +29,17 @@
   display: none;
 }
 
+/* Stage and Battle reserve every visible control for the declared logical
+   Canvas. The help entry remains available on Main without becoming a
+   fixed physical overlay that can cover cards on short landscape screens. */
+html.wp-stage-select-active .wp-tutorial-button,
+body.wp-stage-select-active .wp-tutorial-button,
+body.wp-logical-battle-active .wp-tutorial-button,
+body:has(#stageScreen:not(.hidden):not([hidden])) .wp-tutorial-button,
+body:has([data-screen="stage"]:not(.hidden):not([hidden])) .wp-tutorial-button {
+  display: none;
+}
+
 .wp-tutorial-backdrop {
   position: fixed;
   inset: 0;

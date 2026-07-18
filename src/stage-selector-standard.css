@@ -327,10 +327,10 @@ body.wp-stage-select-active :is(.topbar, .game-page-info, .wp-tutorial-button, .
 body.wp-stage-select-active [data-wp-logical-stage-canvas] {
   position: fixed !important;
   z-index: 40 !important;
-  top: var(--wp-stage-canvas-top, 4px) !important;
+  top: var(--wp-stage-canvas-top, 0px) !important;
   right: auto !important;
   bottom: auto !important;
-  left: var(--wp-stage-canvas-left, 4px) !important;
+  left: var(--wp-stage-canvas-left, 0px) !important;
   box-sizing: border-box !important;
   width: 390px !important;
   min-width: 390px !important;
@@ -361,9 +361,9 @@ body.wp-stage-select-active [data-wp-logical-stage-canvas] :is(
   position: fixed;
   z-index: 39;
   top: var(--wp-stage-reserve-top, calc(100dvh - 60px));
-  left: var(--wp-stage-canvas-left, 4px);
+  left: var(--wp-stage-canvas-left, 0px);
   display: block;
-  width: var(--wp-stage-canvas-rendered-width, calc(100vw - 8px));
+  width: var(--wp-stage-canvas-rendered-width, 100vw);
   height: 56px;
   min-height: 56px;
   pointer-events: none;

@@ -591,7 +591,7 @@ body {
   font-weight: 700;
 }
 
-/* Screen-flow contract: Main owns lobby/link/guide; Stage and Battle own a fixed play shell. */
+/* Screen-flow contract: Main owns lobby/link/guide; Stage and Battle fill their safe rectangle. */
 .home-link {
   width: 58px;
   min-height: 44px;
@@ -790,7 +790,8 @@ body[data-shadow-wolf-screen="battle"] .relic-app {
   gap: 9px;
   width: 100%;
   max-width: none;
-  height: 788px !important;
+  height: 100%;
+  max-height: 100%;
   margin: 0;
   padding: 58px 18px 14px;
   overflow: auto;
@@ -836,8 +837,8 @@ body[data-shadow-wolf-screen="battle"] .relic-app {
   outline: 3px solid rgba(103, 232, 249, .2);
 }
 body[data-shadow-wolf-screen="battle"].wp-logical-battle-active #resultPanel.battle-result:not(.hidden) {
-  height: 788px !important;
-  max-height: 788px !important;
+  height: 100% !important;
+  max-height: 100% !important;
 }
 .battle-return { position: absolute; top: 8px; left: 8px; z-index: 4; }
 .arena-hud { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px; }

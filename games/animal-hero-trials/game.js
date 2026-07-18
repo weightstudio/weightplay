@@ -219,7 +219,9 @@
   const trials = Array.from({length:TRIAL_COUNT},(_,index)=>{ const stage=index+1; const region=Math.floor(index/5); return { stage, region, titleEn:trialTitles[index][0], titleZh:trialTitles[index][1], titleEs:trialTitles[index][2], checkpoint:stage%5===0, enemies:[...regions[region].enemies], recommended:regions[region].hero, reward:Math.min(9,3+stage), boss:stage%5===0?bosses[region]:null }; });
 
   let locale = window.WonderI18n?.locale?.() || localStorage.getItem("weightPlayLocale") || "en";
-  let selectedHero = localStorage.getItem("aht-selected-hero") || "leo";
+  const savedHero = localStorage.getItem("aht-selected-hero");
+  let selectedHero = ["leo", "fia", "orla", "taro"].includes(savedHero) ? savedHero : "leo";
+  if (savedHero && savedHero !== selectedHero) localStorage.setItem("aht-selected-hero", selectedHero);
   let unlocked = Math.max(1, Math.min(TRIAL_COUNT, +(localStorage.getItem("aht-unlocked") || 1)));
   let marks = +(localStorage.getItem("aht-marks") || 0);
   let mastery = +(localStorage.getItem("aht-mastery") || 0);

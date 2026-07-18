@@ -23,6 +23,12 @@
     stageSetupText: $("stageSetupText"),
     gamePanel: $("gamePanel"),
     backToStageBtn: $("backToStageBtn"),
+    pauseBtn: $("pauseBtn"),
+    pausePanel: $("pausePanel"),
+    resumeBtn: $("resumeBtn"),
+    pauseStageBtn: $("pauseStageBtn"),
+    pauseTitle: $("pauseTitle"),
+    pauseMessage: $("pauseMessage"),
     draftPanel: $("draftPanel"),
     lootPanel: $("lootPanel"),
     resultPanel: $("resultPanel"),
@@ -810,6 +816,7 @@
   let eliteSpawnRemaining = 0;
   let backgroundSuspendedAt = 0;
   let backgroundBattleSuspended = false;
+  let manualPauseActive = false;
 
   function clearEliteSpawnTimer() {
     window.clearTimeout(eliteSpawnTimer);
@@ -1032,6 +1039,27 @@
     }
   };
 
+  const pauseText = {
+    en: {
+      action: "Pause",
+      title: "Expedition Paused",
+      message: "The room clock and all movement are frozen.",
+      resume: "Resume",
+    },
+    "zh-Hant": {
+      action: "\u66ab\u505c",
+      title: "\u9060\u5f81\u5df2\u66ab\u505c",
+      message: "\u623f\u9593\u8a08\u6642\u8207\u6240\u6709\u79fb\u52d5\u5747\u5df2\u51cd\u7d50\u3002",
+      resume: "\u7e7c\u7e8c",
+    },
+    es: {
+      action: "Pausa",
+      title: "Expedici\u00f3n en pausa",
+      message: "El reloj de la sala y todo movimiento est\u00e1n detenidos.",
+      resume: "Reanudar",
+    },
+  };
+
   function translateAriaLabels(locale) {
     const labels = ariaText[locale] || ariaText.en;
     nodes.menuBtn.setAttribute("aria-label", labels.lobby);
@@ -1073,10 +1101,10 @@
     const g = gearDb[key];
     if (!g) return "";
     const scale = gearScaleAtLevel(level);
-    if (g.bonusDmg) return `+${(g.bonusDmg * scale).toFixed(1)} ${t("statDamage").replace(":", "")}`;
-    if (g.bonusRate) return `-${Math.round(g.bonusRate * scale * 100)}% ${t("statAttackRate").replace(":", "")}`;
+    if (g.bonusDmg) return `+${(g.bonusDmg * scale).toFixed(1)} ${t("statDamage").replace(/[:：]\s*$/, "")}`;
+    if (g.bonusRate) return `-${Math.round(g.bonusRate * scale * 100)}% ${t("statAttackRate").replace(/[:：]\s*$/, "")}`;
     if (g.bonusHp) return `+${Math.round(g.bonusHp * scale)} ${t("statMaxHp") || "Max HP"}`;
-    if (g.bonusSpeed) return `+${(g.bonusSpeed * scale).toFixed(1)} ${t("statSpeed").replace(":", "")}`;
+    if (g.bonusSpeed) return `+${(g.bonusSpeed * scale).toFixed(1)} ${t("statSpeed").replace(/[:：]\s*$/, "")}`;
     return t(g.effectKey);
   }
 
@@ -1171,7 +1199,7 @@
   }
 
   function setResultModalActive(active) {
-    document.querySelectorAll(".game-layout > .arena-viewport, .game-layout > .inventory-sidebar").forEach((layer) => {
+    document.querySelectorAll(".game-layout > .arena-viewport, .game-layout > .inventory-sidebar, .game-layout > #pauseBtn").forEach((layer) => {
       layer.inert = active;
       if (active) layer.setAttribute("aria-hidden", "true");
       else layer.removeAttribute("aria-hidden");
@@ -1180,7 +1208,7 @@
   }
 
   function setDraftModalActive(active, restoreBattleFocus = true) {
-    document.querySelectorAll(".game-layout > .arena-viewport, .game-layout > .inventory-sidebar").forEach((layer) => {
+    document.querySelectorAll(".game-layout > .arena-viewport, .game-layout > .inventory-sidebar, .game-layout > #pauseBtn").forEach((layer) => {
       layer.inert = active;
       if (active) layer.setAttribute("aria-hidden", "true");
       else layer.removeAttribute("aria-hidden");
@@ -1190,7 +1218,7 @@
   }
 
   function setLootModalActive(active, restoreBattleFocus = true) {
-    document.querySelectorAll(".game-layout > .arena-viewport, .game-layout > .inventory-sidebar").forEach((layer) => {
+    document.querySelectorAll(".game-layout > .arena-viewport, .game-layout > .inventory-sidebar, .game-layout > #pauseBtn").forEach((layer) => {
       layer.inert = active;
       if (active) layer.setAttribute("aria-hidden", "true");
       else layer.removeAttribute("aria-hidden");
@@ -1205,6 +1233,30 @@
     }
   }
 
+  function setPauseModalActive(active, restoreBattleFocus = true) {
+    if (active) {
+      if (manualPauseActive || !state.gameActive || !nodes.draftPanel.classList.contains("hidden") || !nodes.lootPanel.classList.contains("hidden") || document.body.classList.contains("relic-result")) return;
+      manualPauseActive = true;
+      clearMovementInput();
+      suspendBackgroundBattle();
+      nodes.pausePanel.classList.remove("hidden");
+      document.body.classList.add("relic-paused");
+    } else {
+      const wasPaused = manualPauseActive;
+      manualPauseActive = false;
+      nodes.pausePanel.classList.add("hidden");
+      document.body.classList.remove("relic-paused");
+      if (wasPaused) resumeBackgroundBattle();
+    }
+    document.querySelectorAll(".game-layout > .arena-viewport, .game-layout > .inventory-sidebar, .game-layout > #pauseBtn").forEach((layer) => {
+      layer.inert = active;
+      if (active) layer.setAttribute("aria-hidden", "true");
+      else layer.removeAttribute("aria-hidden");
+    });
+    if (active) requestAnimationFrame(() => nodes.resumeBtn.focus({ preventScroll: true }));
+    else if (restoreBattleFocus && state.gameActive) nodes.gameCanvas.focus({ preventScroll: true });
+  }
+
   function updateResultPrimaryAction() {
     const next = resultNextExpedition > 0 && document.body.classList.contains("relic-result");
     nodes.retryBtn.textContent = t(next ? "nextExpedition" : "tryAgain");
@@ -1215,6 +1267,7 @@
     clearEliteSpawnTimer();
     clearAmuletConfirmation();
     state.gameActive = false;
+    setPauseModalActive(false, false);
     clearMovementInput();
     cancelAnimationFrame(state.gameLoopId);
     document.body.classList.remove("relic-playing", "relic-stage-select");
@@ -1267,8 +1320,10 @@
   function showStage() {
     clearEliteSpawnTimer();
     state.gameActive = false;
+    setPauseModalActive(false, false);
     clearMovementInput();
     cancelAnimationFrame(state.gameLoopId);
+    document.body.classList.remove("wp-logical-battle-active");
     document.body.classList.remove("relic-playing");
     document.body.classList.remove("relic-result");
     document.body.classList.add("relic-stage-select");
@@ -1298,6 +1353,13 @@
     }
     nodes.localeSelect.value = locale;
     translateAriaLabels(locale);
+    const pauseCopy = pauseText[locale] || pauseText.en;
+    nodes.pauseBtn.setAttribute("aria-label", pauseCopy.action);
+    nodes.pauseBtn.setAttribute("title", pauseCopy.action);
+    nodes.pauseTitle.textContent = pauseCopy.title;
+    nodes.pauseMessage.textContent = pauseCopy.message;
+    nodes.resumeBtn.textContent = pauseCopy.resume;
+    nodes.pauseStageBtn.textContent = t("backToStage");
     updateDiamondShopUI();
     renderTrainingPanel();
     renderEquippedGear();
@@ -1643,6 +1705,8 @@
   // Combat loop updates
   function startRun() {
     clearEliteSpawnTimer();
+    state.gameActive = false;
+    setPauseModalActive(false, false);
     clearAmuletConfirmation();
     clearMovementInput();
     loadLocalState();
@@ -2115,6 +2179,7 @@
   function endGame(won) {
     clearEliteSpawnTimer();
     state.gameActive = false;
+    setPauseModalActive(false, false);
     clearMovementInput();
     cancelAnimationFrame(state.gameLoopId);
     nodes.lootPanel.classList.add("hidden");
@@ -2880,6 +2945,7 @@
 
   function setupInputs() {
     window.addEventListener("keydown", (e) => {
+      if (manualPauseActive) return;
       if (!nodes.draftPanel.classList.contains("hidden")) {
         if (e.ctrlKey || e.metaKey || e.altKey) return;
         const choiceIndex = ["1", "2", "3"].indexOf(e.key);
@@ -2902,10 +2968,12 @@
     window.addEventListener("blur", clearMovementInput);
     document.addEventListener("visibilitychange", () => {
       if (document.hidden) suspendBackgroundBattle();
-      else resumeBackgroundBattle();
+      else if (!manualPauseActive) resumeBackgroundBattle();
     });
     window.addEventListener("pagehide", suspendBackgroundBattle);
-    window.addEventListener("pageshow", resumeBackgroundBattle);
+    window.addEventListener("pageshow", () => {
+      if (!manualPauseActive) resumeBackgroundBattle();
+    });
 
     function updateMouseMoveVector(event) {
       const rect = nodes.gameCanvas.getBoundingClientRect();
@@ -3028,6 +3096,45 @@
     nodes.backToStageBtn.addEventListener("click", () => {
       window.WonderSound?.play("click");
       showStage();
+    });
+
+    nodes.pauseBtn.addEventListener("click", () => {
+      window.WonderSound?.play("click");
+      setPauseModalActive(true);
+    });
+    nodes.pauseBtn.addEventListener("keydown", (event) => {
+      if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
+    });
+    nodes.resumeBtn.addEventListener("click", () => {
+      window.WonderSound?.play("click");
+      setPauseModalActive(false);
+    });
+    nodes.pauseStageBtn.addEventListener("click", () => {
+      window.WonderSound?.play("click");
+      showStage();
+    });
+    nodes.pausePanel.addEventListener("keydown", (event) => {
+      if (event.repeat && (event.key === "Enter" || event.key === " ")) {
+        event.preventDefault();
+        return;
+      }
+      if (event.key === "Escape") {
+        event.preventDefault();
+        event.stopPropagation();
+        nodes.resumeBtn.click();
+        return;
+      }
+      if (event.key !== "Tab" || nodes.pausePanel.classList.contains("hidden")) return;
+      const actions = [nodes.resumeBtn, nodes.pauseStageBtn].filter((button) => !button.disabled);
+      const first = actions[0];
+      const last = actions[actions.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
     });
 
     nodes.resultMenuBtn.addEventListener("click", () => {
@@ -3341,6 +3448,7 @@
             eliteSpawnPending: Boolean(eliteSpawnTimer || eliteSpawnCallback),
             player: { x: state.playerX, y: state.playerY, hp: state.playerHp, maxHp: state.playerMaxHp, active: state.gameActive },
             roomGraceRemaining: Math.max(0, state.roomGraceUntil - (backgroundSuspendedAt || performance.now())),
+            paused: manualPauseActive,
           };
         },
       };

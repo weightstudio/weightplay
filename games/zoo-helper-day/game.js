@@ -373,6 +373,7 @@
   const legacySavedLocale = localStorage.getItem(legacyLocaleKey);
   const canonicalSavedLocale = localStorage.getItem(localeKey);
   if (!canonicalSavedLocale && ["en", "zh-Hant", "zh-Hans", "es"].includes(legacySavedLocale)) {
+    localStorage.setItem(localeKey, legacySavedLocale);
     window.WonderI18n?.setLocale?.(legacySavedLocale);
   }
   let locale = window.WonderI18n?.locale?.() || canonicalSavedLocale || legacySavedLocale || "en";

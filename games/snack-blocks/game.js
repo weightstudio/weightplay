@@ -1040,11 +1040,11 @@
     const viewportHeight = viewport?.height || innerHeight;
     const shell = document.querySelector(".snack-game");
     shell?.classList.remove("weightplay-active-viewport");
-    const scale = Math.min(Math.max(1, viewportWidth - 8) / 390, Math.max(1, viewportHeight - 8) / 788);
+    const scale = Math.min(Math.max(1, viewportWidth) / 390, Math.max(1, viewportHeight) / 788);
     const width = 390 * scale;
     const height = 788 * scale;
     const left = (viewportWidth - width) / 2;
-    const top = viewportHeight - height - 4;
+    const top = viewportHeight - height;
     document.documentElement.style.setProperty("--snack-frame-scale", String(scale));
     document.documentElement.style.setProperty("--snack-frame-left", `${left}px`);
     document.documentElement.style.setProperty("--snack-frame-top", `${top}px`);

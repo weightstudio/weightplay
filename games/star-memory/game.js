@@ -636,13 +636,13 @@
     const viewport = window.visualViewport;
     const viewportWidth = viewport?.width || window.innerWidth;
     const viewportHeight = viewport?.height || window.innerHeight;
-    const availableWidth = Math.max(1, viewportWidth - 8);
-    const availableHeight = Math.max(1, viewportHeight - 8);
+    const availableWidth = Math.max(1, viewportWidth);
+    const availableHeight = Math.max(1, viewportHeight);
     const scale = Math.min(availableWidth / 390, availableHeight / 788);
     const frameWidth = 390 * scale;
     const frameHeight = 788 * scale;
     const frameLeft = (viewportWidth - frameWidth) / 2;
-    const frameTop = viewportHeight - frameHeight - 4;
+    const frameTop = viewportHeight - frameHeight;
     document.documentElement.style.setProperty("--memory-frame-scale", String(scale));
     document.documentElement.style.setProperty("--memory-frame-left", `${frameLeft}px`);
     document.documentElement.style.setProperty("--memory-frame-top", `${frameTop}px`);

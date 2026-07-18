@@ -383,31 +383,8 @@
     $("#nextBtn").addEventListener("click",()=>{closeResult();startMission(Math.min(campaign.length-1,selectedMission+1))});
   }
   function bindMissionRailDrag(){
-    let pointerId=null,startX=0,startLeft=0,dragged=false,suppressClickUntil=0;
     const rail=nodes.rail;
     rail.addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault()});
-    rail.addEventListener("pointerdown",event=>{
-      if(event.button!==undefined&&event.button!==0)return;
-      pointerId=event.pointerId;startX=event.clientX;startLeft=rail.scrollLeft;dragged=false;suppressClickUntil=0;
-    });
-    rail.addEventListener("pointermove",event=>{
-      if(event.pointerId!==pointerId)return;
-      const delta=event.clientX-startX;
-      if(Math.abs(delta)>6&&!dragged){dragged=true;rail.setPointerCapture(pointerId)}
-      if(!dragged)return;
-      event.preventDefault();rail.scrollLeft=startLeft-delta;
-    });
-    const finish=event=>{
-      if(event.pointerId!==pointerId)return;
-      if(rail.hasPointerCapture(pointerId))rail.releasePointerCapture(pointerId);
-      suppressClickUntil=dragged?performance.now()+90:0;pointerId=null;
-    };
-    rail.addEventListener("pointerup",finish);
-    rail.addEventListener("pointercancel",finish);
-    rail.addEventListener("click",event=>{
-      if(performance.now()>suppressClickUntil)return;
-      event.preventDefault();event.stopPropagation();suppressClickUntil=0;
-    },true);
   }
   window.addEventListener("keydown",event=>{
     if(!playing||paused||event.target.matches("button,select,input,textarea"))return;

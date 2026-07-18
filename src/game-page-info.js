@@ -6618,6 +6618,8 @@
     const artUrl = stageArtworkUrl();
     if (!artUrl) return;
     const shellSelector = [
+      "[data-screen='stage']",
+      "[data-wp-logical-stage-canvas]",
       "[data-wp-standard-stage-screen]",
       "#stagePanel",
       "#stageScreen",

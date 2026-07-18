@@ -152,13 +152,23 @@
         </div>
         <div id="expeditionRail" class="expedition-rail stage-rail" aria-label="Ruin regions"></div>
         <div id="stageConfigMount" class="stage-config-mount"></div>
-        <div class="stage-ad-reserve" aria-hidden="true"></div>
       </section>
 
       <!-- Active Game / Canvas Viewport -->
       <section id="gamePanel" class="panel game-panel hidden" data-play-viewport data-no-mobile-immersive="true">
         <div class="game-layout">
           <button id="backToStageBtn" class="play-return battle-return" data-wp-return="battle" type="button" aria-label="Back to preparation">&larr;</button>
+          <button id="pauseBtn" class="battle-pause" type="button" aria-label="Pause" title="Pause">&#8545;</button>
+          <section id="pausePanel" class="pause-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="pauseTitle" aria-describedby="pauseMessage">
+            <div class="pause-card">
+              <h2 id="pauseTitle">Expedition Paused</h2>
+              <p id="pauseMessage">The room clock and all movement are frozen.</p>
+              <div class="pause-actions">
+                <button id="resumeBtn" class="primary-btn" type="button">Resume</button>
+                <button id="pauseStageBtn" class="menu-btn" type="button">Back to Missions</button>
+              </div>
+            </div>
+          </section>
           <!-- Main Arena Canvas -->
           <div class="arena-viewport">
             <div class="arena-hud">

@@ -37,7 +37,6 @@
   };
   const gameId = location.pathname.match(/\/games\/([^/]+)/)?.[1] || "";
   const config = games[gameId];
-  document.documentElement.dataset.wpBattleRuntime = gameId;
   if (!config) return;
 
   const visible = (node) => {
@@ -79,7 +78,6 @@
     const root = findRoot();
     const back = findBack(root);
     const active = Boolean(root && back);
-    document.documentElement.dataset.wpBattleActive = `${root?.id || "no-root"}:${back?.id || "no-back"}:${active ? "active" : "inactive"}`;
     document.body.classList.toggle("wp-logical-battle-active", active);
     if (!active) {
       restore(activeRoot);

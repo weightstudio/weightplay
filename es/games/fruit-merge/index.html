@@ -25,8 +25,7 @@
     <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/fruit-merge/" />
     <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/fruit-merge/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/fruit-merge/" />
-    <link rel="stylesheet" href="style.css?v=20260717-depth30-1" data-wp-stage-standard data-wp-battle-standard />
-    <script data-wp-stage-standard>/* Animal Merge Tower owns its native Kids Stage rail. */</script>
+    <link rel="stylesheet" href="style.css?v=20260717-depth30-1" data-wp-battle-standard />
     <script data-wp-battle-standard>/* Animal Merge Tower owns its native Kids Battle Canvas. */</script>
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
     <script type="application/ld+json">
@@ -63,6 +62,7 @@
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
+    <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard />
     <meta name="twitter:title" content="Torre de Fusión Animal | WeightPlay" />
     <meta name="twitter:description" content="Animal Merge Tower combina un modo de puntuación de juego libre original con 30 desafíos de física guardados. Seis capítulos cambian el espacio objetivo,..." />
   </head>
@@ -141,7 +141,7 @@
         </div>
       </section>
 
-      <section id="stagePanel" class="merge-stage-panel hidden" aria-label="Challenge selection">
+      <section id="stagePanel" class="merge-stage-panel wp-stage-art-shell hidden" data-wp-logical-stage-canvas data-wp-stage-art="../../assets/fruit-merge-cover.webp" style="--wp-stage-art:url('../../assets/fruit-merge-cover.webp')" aria-label="Challenge selection">
         <div class="merge-stage-heading">
           <button id="stageBackBtn" type="button" aria-label="Back">&larr;</button>
           <div>
@@ -149,7 +149,7 @@
             <span id="stageHelp">Drag sideways and choose an unlocked challenge.</span>
           </div>
         </div>
-        <div id="stageRail" class="merge-stage-rail"></div>
+        <div id="stageRail" class="merge-stage-rail stage-rail" data-wp-stage-rail></div>
         <div id="stageDots" class="merge-stage-dots" aria-hidden="true"></div>
         <div class="merge-stage-art" aria-hidden="true"></div>
       </section>
@@ -216,6 +216,7 @@
     <script src="../../src/vendor/matter.min.js?v=20260630-matter1"></script>
     <script src="../../src/vendor/matter-global.js?v=20260630-matter1"></script>
     <script src="game.js?v=20260717-zh-hans1"></script>
+    <script src="../../src/stage-selector-standard.js" data-wp-stage-standard></script>
     <script>
       (() => {
         const loadGameInfo = () => {

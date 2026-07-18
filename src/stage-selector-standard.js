@@ -2,7 +2,7 @@
   const STAGE_LOGICAL_WIDTH = 390;
   const STAGE_LOGICAL_HEIGHT = 788;
   const STAGE_RESERVE_HEIGHT = 56;
-  const railSelector = ".stage-grid,.stage-rail,.page-rail,.mission-grid,.mission-rail,.region-rail,.level-grid,.route-rail,.day-rail,.zone-row,.expedition-rail,.world-map-grid";
+  const railSelector = "[data-wp-stage-rail],.stage-grid,.stage-rail,.page-rail,.mission-grid,.mission-rail,.region-rail,.level-grid,.route-rail,.day-rail,.zone-row,.expedition-rail,.world-map-grid";
   const cardSelector = ".stage-card,.page-card,.mission-card,.region-card,.route-card,.day-card,.zone-card,.expedition-card,.zone-node,button";
   const installed = new WeakSet();
   const railVisibility = new WeakMap();
@@ -26,6 +26,7 @@
     "animal-hero-trials": "#startBtn",
     "animal-hidden-safari": "#startGameBtn",
     "animal-moonlight-heist": "#startBtn",
+    "animal-orb-fortress": "#startBtn",
     "animal-quiz": "#startGameBtn",
     "animal-reef-fisher": "#startBtn",
     "animal-relic-hunters": "#showStageBtn",
@@ -34,10 +35,12 @@
     "animal-rune-tactics": "#mainStartBtn",
     "animal-skyport-dispatch": "#startBtn",
     "animal-word-trails": "#start",
+    "animal-zoo-idle": "#startBtn",
     "beast-deck": "#mainStartBtn",
     "beast-tactician": "#startBtn",
     "bubble-bakery": "#startGameBtn",
     "color-lunchbox": "#startBtn",
+    "fruit-merge": "#startBtn",
     "garden-tiles": "#startBtn",
     "shadow-wolf": "#startBtn",
     "shape-train": "#startGameBtn",
@@ -120,13 +123,13 @@
     const width = Math.max(1, viewport?.width || window.innerWidth);
     const height = Math.max(1, viewport?.height || window.innerHeight);
     const scale = Math.max(0.01, Math.min(
-      Math.max(1, width - 8) / STAGE_LOGICAL_WIDTH,
-      Math.max(1, height - STAGE_RESERVE_HEIGHT - 8) / STAGE_LOGICAL_HEIGHT
+      Math.max(1, width) / STAGE_LOGICAL_WIDTH,
+      Math.max(1, height - STAGE_RESERVE_HEIGHT) / STAGE_LOGICAL_HEIGHT
     ));
     const renderedWidth = STAGE_LOGICAL_WIDTH * scale;
     const renderedHeight = STAGE_LOGICAL_HEIGHT * scale;
     const left = (width - renderedWidth) / 2;
-    const top = Math.max(4, height - STAGE_RESERVE_HEIGHT - 4 - renderedHeight);
+    const top = Math.max(0, height - STAGE_RESERVE_HEIGHT - renderedHeight);
     const style = document.documentElement.style;
     style.setProperty("--wp-stage-canvas-scale", String(scale));
     style.setProperty("--wp-stage-canvas-left", `${left}px`);
@@ -218,7 +221,10 @@
     };
     const animate = (now) => {
       if (pendingSettles.get(rail) !== pending) return;
-      const progress = Math.min(1, (now - startedAt) / duration);
+      // The first rAF timestamp can represent the start of the current frame
+      // and be a few milliseconds earlier than performance.now() above.
+      // Clamp both bounds so easing never produces a brief reverse movement.
+      const progress = Math.max(0, Math.min(1, (now - startedAt) / duration));
       const eased = rail.dataset.wpStageSettleEasing === "smoothstep"
         ? progress * progress * (3 - 2 * progress)
         : 1 - Math.pow(1 - progress, 2);
@@ -381,6 +387,10 @@
       };
       if (didMove) {
         if (event.cancelable) event.preventDefault();
+        // A drag that starts on a card may leave that card focused. Blurring it
+        // prevents the browser from scrolling the old card back into view,
+        // while avoiding the small reverse jump caused by focusing the rail.
+        if (rail.contains(document.activeElement)) document.activeElement?.blur?.();
         suppressNextClick = true;
         window.clearTimeout(suppressClickTimer);
         // Keep the flag only through the browser's synthetic click dispatched
