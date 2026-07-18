@@ -198,7 +198,6 @@ body.squad-stage-select .stage-panel { border: 0 !important; outline: 0; isolati
 
 /* General-audience reserve is a separate physical sibling. */
 .battle-ad-reserve, .wp-stage-physical-reserve[data-wp-stage-reserve-active] { position: fixed; left: 0; right: 0; bottom: 0; width: 100%; height: 56px; min-height: 56px; border: 0; background: #071a14; pointer-events: none; }
-body.squad-stage-select .wp-stage-physical-reserve[data-wp-stage-reserve-active] { top: auto; right: auto; left: 50%; bottom: 0; width: var(--squad-stage-rendered-width); transform: translateX(-50%); }
 body:not(.squad-active) .battle-ad-reserve { display: none; }
 
 /* Battle / preparation logical Canvas. */

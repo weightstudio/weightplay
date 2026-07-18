@@ -90,7 +90,7 @@
       ariaLanguage: "Language selector",
       ariaLobby: "Back to WeightPlay lobby",
       ariaBattle: "Animal Merge Tower play screen",
-      ariaBattleBack: "Back to main menu",
+      ariaBattleBack: "Back to challenges",
       ariaScore: "Score information",
       ariaProgress: "Merge progress",
       ariaBoard: "Animal merge game board",
@@ -127,6 +127,7 @@
       start: "Start Game",
       freePlay: "Free Play",
       stageTitle: "Festival Challenges",
+      ariaStage: "Challenge selection",
       stageHelp: "Drag sideways and choose an unlocked challenge.",
       stageBack: "Back to main",
       stageLabel: "Challenge {stage}",
@@ -191,7 +192,7 @@
       ariaLanguage: "語言選擇",
       ariaLobby: "返回 WeightPlay 大廳",
       ariaBattle: "動物合成塔遊玩畫面",
-      ariaBattleBack: "返回主選單",
+      ariaBattleBack: "返回挑戰關卡",
       ariaScore: "分數資訊",
       ariaProgress: "合成進度",
       ariaBoard: "動物合成遊戲盤",
@@ -228,6 +229,7 @@
       start: "開始遊戲",
       freePlay: "自由模式",
       stageTitle: "動物祭典挑戰",
+      ariaStage: "挑戰關卡選擇",
       stageHelp: "左右滑動，選擇已解鎖的挑戰。",
       stageBack: "返回主畫面",
       stageLabel: "挑戰 {stage}",
@@ -287,13 +289,13 @@
       fruit10: "獅王球",
     },
     es: {
-      title: "Torre de Fusión Animal", language: "Idioma", ariaLanguage: "Selector de idioma", ariaLobby: "Volver a la sala de WeightPlay", ariaBattle: "Pantalla de Torre de Fusión Animal", ariaBattleBack: "Volver al menú principal",
+      title: "Torre de Fusión Animal", language: "Idioma", ariaLanguage: "Selector de idioma", ariaLobby: "Volver a la sala de WeightPlay", ariaBattle: "Pantalla de Torre de Fusión Animal", ariaBattleBack: "Volver a los desafíos",
       ariaScore: "Información de puntuación", ariaProgress: "Progreso de fusión", ariaBoard: "Tablero de fusión animal", ariaBoardControls: "Usa las flechas izquierda y derecha para apuntar y Espacio o Enter para soltar.", ariaAim: "Puntería {value}%",
       score: "Puntuación", best: "Mejor", next: "Siguiente", comboLabel: "Combo", comboReady: "Listo", comboStatus: "x{count}", largest: "Mayor", goal: "Objetivo: {name}", bestAnimal: "Mejor animal: {name}", combo: "¡Combo x{count}!", drop: "Soltar", restart: "Reiniciar",
       menuTitle: "Fusiona hasta llegar al Rey León", menuDesc: "Suelta las bolas con cuidado. Dos animales iguales se fusionan en uno mayor. Mantén la torre bajo la línea roja.", chainTitle: "Ruta de fusión", chainHint: "Une dos animales iguales para desbloquear el siguiente.",
       albumTitle: "Álbum de hábitats {unlocked}/4", albumUnlocked: "{name} descubierto", albumLocked: "Alcanza {name}", habitatMeadow: "Amigos de la pradera", habitatForest: "Vuelo del bosque", habitatSavanna: "Ruta de la sabana", habitatRoyal: "Corona del león",
       nextHabitat: "Siguiente hábitat: {habitat}", nextHabitatTarget: "Alcanza {animal} · {count} {steps}", habitatStep: "paso animal", habitatSteps: "pasos animales", habitatAlbumComplete: "Álbum completo · ¡Sigue fusionando hacia el Rey León!",
-      start: "Empezar", freePlay: "Juego libre", stageTitle: "Desafíos del festival", stageHelp: "Desliza a los lados y elige un desafío desbloqueado.", stageBack: "Volver al inicio", stageLabel: "Desafío {stage}", stageLocked: "Bloqueado", stageBest: "Mejor {score}",
+      start: "Empezar", freePlay: "Juego libre", stageTitle: "Desafíos del festival", ariaStage: "Selección de desafíos", stageHelp: "Desliza a los lados y elige un desafío desbloqueado.", stageBack: "Volver al inicio", stageLabel: "Desafío {stage}", stageLocked: "Bloqueado", stageBest: "Mejor {score}",
       goalScore: "Consigue {score} puntos", goalTier: "Fusiona un {animal}", goalMerges: "Completa {count} fusiones", goalCombo: "Alcanza un combo x{count}", goalDual: "Fusiona {animal} y consigue {score} puntos", dropsRule: "{count} lanzamientos",
       clearTitle: "¡Desafío completado!", failedTitle: "Reintentar desafío", nextChallenge: "Siguiente desafío", retryChallenge: "Intentar de nuevo", challengeMenu: "Desafíos", gameOver: "Fin de la partida", result: "Puntuación {score}  Mejor {best}", resultScore: "Puntuación {score}",
       previousBest: "Mejor anterior {score}", todayScore: "Puntuación de hoy {score}", improvement: "Mejora {value}%", skillReport: "Informe de habilidades", logicSkill: "Lógica", problemSolvingSkill: "Resolución de problemas", coordinationSkill: "Coordinación visual",
@@ -582,6 +584,7 @@
     startBtn.textContent = t("start");
     freePlayBtn.textContent = t("freePlay");
     stageTitle.textContent = t("stageTitle");
+    stagePanel.setAttribute("aria-label", t("ariaStage"));
     stageHelp.textContent = t("stageHelp");
     stageBackBtn.setAttribute("aria-label", t("stageBack"));
     playAgainBtn.textContent = t("playAgain");

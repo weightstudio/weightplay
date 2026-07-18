@@ -1843,8 +1843,6 @@ body.beast-deck-playing .hand-row { min-height:176px; max-height:184px; overflow
 body.beast-deck-playing .action-area { width:100%; min-width:100%; max-width:100%; height:238px; min-height:238px; grid-template-rows:184px 48px; justify-self:stretch; align-self:stretch; }
 body.beast-deck-playing .hand-row { width:100%; min-width:100%; max-width:100%; height:184px; min-height:184px; max-height:184px; flex:0 0 184px; align-self:stretch; }
 body.beast-deck-playing .battle-log { max-height:58px; overflow-y:auto; }
-body.beast-deck-playing #menuBtn { font-size:0; }
-body.beast-deck-playing #menuBtn::before { content:"\2190"; font-size:1.45rem; line-height:1; }
 body.beast-deck-playing .battle-ad-reserve { position:fixed; top:auto; right:auto !important; bottom:4px; left:50%; display:block; width:min(calc(100vw - 8px),612px); height:56px; min-height:56px; transform:translateX(-50%) !important; }
 body.beast-deck-playing .draft-panel { position:absolute; z-index:80; inset:0; }
 body.beast-deck-playing #gamePanel.result-open { isolation:isolate; }

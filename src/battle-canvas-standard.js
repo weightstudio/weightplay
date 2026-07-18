@@ -127,6 +127,7 @@
     const renderedWidth = availableWidth;
     const renderedHeight = availableHeight;
     const top = GUTTER;
+    const left = GUTTER;
     const style = document.documentElement.style;
     style.setProperty("--wp-battle-viewport-height", `${height}px`);
     style.setProperty("--wp-battle-logical-width", `${logicalWidth}px`);
@@ -145,7 +146,7 @@
       position: "fixed",
       inset: "auto",
       top: `${top}px`,
-      left: `${GUTTER}px`,
+      left: `${left}px`,
       width: `${logicalWidth}px`,
       "min-width": `${logicalWidth}px`,
       "max-width": `${logicalWidth}px`,
@@ -164,7 +165,7 @@
       const reserveTop = availableHeight;
       rememberAndSet(reserve, {
         position: "fixed",
-        inset: `${reserveTop}px auto auto ${GUTTER}px`,
+        inset: `${reserveTop}px auto auto ${left}px`,
         display: "block",
         width: `${renderedWidth}px`,
         "min-width": "0",

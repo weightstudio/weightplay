@@ -4,13 +4,19 @@
   const localeKey = "weightPlayLocale";
   const W = 1024;
   const H = 1760;
+  const MAX_BACKING_PIXELS = 900000;
+  const MIN_BACKING_SCALE = 0.25;
   const RUN_SECONDS = 180;
   const STAGE_COUNT = 30;
   const crystalCharmCost = 12;
 
   const $ = (id) => document.getElementById(id);
   const canvas = $("gameCanvas");
-  const ctx = canvas.getContext("2d");
+  const displayCtx = canvas.getContext("2d");
+  const renderCanvas = document.createElement("canvas");
+  const ctx = renderCanvas.getContext("2d");
+  const arenaLayer = document.createElement("canvas");
+  const arenaCtx = arenaLayer.getContext("2d");
   const nodes = {
     localeSelect: $("localeSelect"),
     menuPanel: $("menuPanel"),
@@ -413,6 +419,12 @@
   let save = loadSave();
   let state = makeState();
   let playfieldLabelSignature = "";
+  let hudValues = Object.create(null);
+  let hintValue = "";
+  let nextHintUpdate = 0;
+  let backingScale = 1;
+  let arenaLayerSignature = "";
+  const renderMetrics = { arenaLayerBuilds: 0, hudWrites: 0, hintEvaluations: 0 };
   let charmPurchasePending = false;
   let charmConfirmTimer = 0;
   let lastFrame = 0;
@@ -621,7 +633,7 @@
     updatePageMeta();
     nodes.localeSelect.value = requested;
     renderExpeditionRecord();
-    renderHud();
+    renderHud(true);
     updateDiamondShop();
     updateMenuSound();
     if (!nodes.stagePanel.classList.contains("hidden")) renderStageSelector(false);
@@ -744,6 +756,28 @@
       nodes.resultPanel.style.minHeight = `${battlePanelMetrics.height}px`;
       nodes.resultPanel.style.top = `${-battlePanelMetrics.paddingTop}px`;
     }
+    requestAnimationFrame(() => syncCanvasBackingStore());
+  }
+
+  function syncCanvasBackingStore(force = false) {
+    if (!document.body?.classList.contains("crystal-playing")) return;
+    const rect = canvas.getBoundingClientRect();
+    if (rect.width <= 0 || rect.height <= 0) return;
+    const deviceScale = Math.min(2, Math.max(1, Number(window.devicePixelRatio) || 1));
+    const displayScale = Math.min(rect.width / W, rect.height / H) * deviceScale;
+    const pixelBudgetScale = Math.sqrt(MAX_BACKING_PIXELS / (W * H));
+    const nextScale = Math.max(MIN_BACKING_SCALE, Math.min(1, displayScale, pixelBudgetScale));
+    const width = Math.max(1, Math.floor(W * nextScale));
+    const height = Math.max(1, Math.floor(H * nextScale));
+    if (!force && renderCanvas.width === width && renderCanvas.height === height) return;
+    renderCanvas.width = width;
+    renderCanvas.height = height;
+    backingScale = Math.min(width / W, height / H);
+    ctx.setTransform(backingScale, 0, 0, backingScale, 0, 0);
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = "high";
+    arenaLayerSignature = "";
+    ensureArenaLayer();
   }
 
   function measureBattlePanel() {
@@ -880,8 +914,18 @@
     show(nodes.gamePanel);
     window.WeightPlayGame?.exitMobileGameMode?.();
     window.scrollTo?.({ top: 0, left: 0, behavior: "instant" });
-    renderHud();
-    requestAnimationFrame(() => canvas.focus({ preventScroll: true }));
+    hudValues = Object.create(null);
+    hintValue = "";
+    nextHintUpdate = 0;
+    renderMetrics.arenaLayerBuilds = 0;
+    renderMetrics.hudWrites = 0;
+    renderMetrics.hintEvaluations = 0;
+    syncCanvasBackingStore(true);
+    renderHud(true);
+    requestAnimationFrame(() => {
+      syncCanvasBackingStore();
+      canvas.focus({ preventScroll: true });
+    });
     lastFrame = performance.now();
     playSound("start", 0.2);
     window.WonderAnalytics?.track("game_start", { game_id: GAME_ID, locale, prototype: true });
@@ -1493,6 +1537,13 @@
         safeZone: state.safeZone ? { ...state.safeZone } : null,
         bossSpawned: state.bossSpawned,
         bossDefeated: state.bossDefeated,
+        renderMetrics: {
+          ...renderMetrics,
+          backingWidth: renderCanvas.width,
+          backingHeight: renderCanvas.height,
+          backingPixels: renderCanvas.width * renderCanvas.height,
+          backingScale,
+        },
       }),
       setTotalKeysForTest: (total = 0) => {
         save.totalKeys = Math.max(0, Number(total) || 0);
@@ -1574,15 +1625,23 @@
     return "*".repeat(count) + "-".repeat(Math.max(0, 5 - count));
   }
 
-  function renderHud() {
+  function writeHudValue(key, node, value, property = "textContent") {
+    if (hudValues[key] === value) return;
+    hudValues[key] = value;
+    node[property] = value;
+    renderMetrics.hudWrites += 1;
+  }
+
+  function renderHud(force = false) {
     const time = formatTime(state.timeLeft);
     const hp = Math.max(0, Math.ceil(state.player.hp));
-    nodes.stageText.textContent = `${state.stage}/${STAGE_COUNT}`;
-    nodes.timeText.textContent = time;
-    nodes.keyText.textContent = String(state.keys);
-    nodes.levelText.textContent = String(state.level);
-    nodes.hpText.textContent = `${hp}/${state.player.maxHp}`;
-    nodes.xpFill.style.width = `${Math.min(100, (state.xp / state.xpNeed) * 100)}%`;
+    if (force) hudValues = Object.create(null);
+    writeHudValue("stage", nodes.stageText, `${state.stage}/${STAGE_COUNT}`);
+    writeHudValue("time", nodes.timeText, time);
+    writeHudValue("keys", nodes.keyText, String(state.keys));
+    writeHudValue("level", nodes.levelText, String(state.level));
+    writeHudValue("hp", nodes.hpText, `${hp}/${state.player.maxHp}`);
+    writeHudValue("xp", nodes.xpFill.style, `${Math.min(100, (state.xp / state.xpNeed) * 100)}%`, "width");
     const playfieldSignature = [locale, state.stage, time, state.keys, hp, state.player.maxHp, state.level, state.stageConfig?.modifier].join("|");
     if (playfieldSignature !== playfieldLabelSignature) {
       playfieldLabelSignature = playfieldSignature;
@@ -1598,12 +1657,20 @@
         rule: stageRule(state.stageConfig || stages[0]),
       }));
     }
-    renderActionHint();
+    renderActionHint(force);
   }
 
-  function renderActionHint() {
+  function renderActionHint(force = false) {
+    if (!force && state.mode === "running" && state.survived < nextHintUpdate) return;
+    nextHintUpdate = state.survived + 0.25;
+    renderMetrics.hintEvaluations += 1;
     if (state.mode !== "running") {
-      nodes.hintText.textContent = t("playHint");
+      const value = t("playHint");
+      if (hintValue !== value) {
+        hintValue = value;
+        nodes.hintText.textContent = value;
+        renderMetrics.hudWrites += 1;
+      }
       return;
     }
 
@@ -1621,7 +1688,12 @@
               ? "hintCombat"
               : "playHint";
 
-    nodes.hintText.textContent = t(nextHint);
+    const value = t(nextHint);
+    if (hintValue !== value) {
+      hintValue = value;
+      nodes.hintText.textContent = value;
+      renderMetrics.hudWrites += 1;
+    }
   }
 
   function formatTime(value) {
@@ -1644,23 +1716,35 @@
     ctx.restore();
   }
 
-  function drawImageCover(img, x, y, width, height) {
+  function drawImageCover(img, x, y, width, height, target = ctx) {
     if (!img?.complete || !img.naturalWidth || !img.naturalHeight) return;
     const scale = Math.max(width / img.naturalWidth, height / img.naturalHeight);
     const sourceWidth = width / scale;
     const sourceHeight = height / scale;
     const sourceX = (img.naturalWidth - sourceWidth) / 2;
     const sourceY = (img.naturalHeight - sourceHeight) / 2;
-    ctx.drawImage(img, sourceX, sourceY, sourceWidth, sourceHeight, x, y, width, height);
+    target.drawImage(img, sourceX, sourceY, sourceWidth, sourceHeight, x, y, width, height);
+  }
+
+  function ensureArenaLayer() {
+    const color = regions[state.stageConfig?.region || 0]?.color || "rgba(6, 24, 23, 0.18)";
+    const signature = `${renderCanvas.width}x${renderCanvas.height}|${color}|${images.arena?.naturalWidth || 0}`;
+    if (signature === arenaLayerSignature || !images.arena?.complete || !images.arena.naturalWidth) return;
+    arenaLayer.width = renderCanvas.width;
+    arenaLayer.height = renderCanvas.height;
+    arenaCtx.setTransform(backingScale, 0, 0, backingScale, 0, 0);
+    arenaCtx.clearRect(0, 0, W, H);
+    drawImageCover(images.arena, 0, 0, W, H, arenaCtx);
+    arenaCtx.fillStyle = color;
+    arenaCtx.fillRect(0, 0, W, H);
+    arenaLayerSignature = signature;
+    renderMetrics.arenaLayerBuilds += 1;
   }
 
   function draw() {
     ctx.clearRect(0, 0, W, H);
-    drawImageCover(images.arena, 0, 0, W, H);
-    ctx.save();
-    ctx.fillStyle = regions[state.stageConfig?.region || 0]?.color || "rgba(6, 24, 23, 0.18)";
-    ctx.fillRect(0, 0, W, H);
-    ctx.restore();
+    ensureArenaLayer();
+    if (arenaLayer.width && arenaLayer.height) ctx.drawImage(arenaLayer, 0, 0, arenaLayer.width, arenaLayer.height, 0, 0, W, H);
     drawStageHazards();
     drawKey();
     state.xpDrops.forEach((drop) => drawImageCentered(images.xp, drop.x, drop.y, 34));
@@ -1682,6 +1766,8 @@
       ctx.restore();
     });
     state.floaters.forEach(drawFloater);
+    displayCtx.clearRect(0, 0, canvas.width, canvas.height);
+    displayCtx.drawImage(renderCanvas, 0, 0, renderCanvas.width, renderCanvas.height, 0, 0, canvas.width, canvas.height);
   }
 
   function drawStageHazards() {

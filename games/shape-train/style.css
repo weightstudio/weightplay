@@ -50,12 +50,12 @@ body.wp-standard-stage-page #stagePanel.wp-standard-stage-panel {
   inset: auto !important;
   left: var(--shape-stage-left, 0) !important;
   top: var(--shape-stage-top, 0) !important;
-  width: 390px !important;
-  min-width: 390px !important;
-  max-width: 390px !important;
-  height: 844px !important;
-  min-height: 844px !important;
-  max-height: 844px !important;
+  width: var(--shape-stage-logical-width, 390px) !important;
+  min-width: var(--shape-stage-logical-width, 390px) !important;
+  max-width: var(--shape-stage-logical-width, 390px) !important;
+  height: var(--shape-stage-logical-height, 844px) !important;
+  min-height: var(--shape-stage-logical-height, 844px) !important;
+  max-height: var(--shape-stage-logical-height, 844px) !important;
   padding: 8px !important;
   transform: scale(var(--shape-stage-scale, 1)) !important;
   transform-origin: top left !important;
@@ -558,6 +558,8 @@ body.shape-playing .passenger {
 .shape-result-panel {
   position: absolute;
   inset: 0;
+  grid-column: 1 / -1;
+  grid-row: 1 / -1;
   z-index: 20;
   display: grid;
   place-items: center;
@@ -786,7 +788,7 @@ body.shape-playing .play-panel {
   grid-template-rows: 48px auto minmax(0, 1fr) 30px;
   min-height: 0;
   gap: 6px;
-  overflow: hidden;
+  overflow: clip !important;
 }
 
 body.shape-playing .train-track {
@@ -843,19 +845,6 @@ body.shape-playing .passenger-area {
   body.shape-playing .passenger-area { grid-column: 2; grid-row: 2; }
   body.shape-playing .feedback { grid-column: 1 / -1; grid-row: 3; }
   body.shape-playing .passenger { width: min(112px, 70%); }
-}
-
-@media (max-height: 560px) {
-  body.shape-playing .play-panel {
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: 48px auto minmax(0, 1fr) 30px;
-  }
-
-  body.shape-playing .play-head { grid-column: 1; grid-row: 1; }
-  body.shape-playing .train-track { grid-column: 1; grid-row: 2; width: 100%; height: auto; max-width: none; justify-self: stretch; }
-  body.shape-playing .passenger-area { grid-column: 1; grid-row: 3; }
-  body.shape-playing .feedback { grid-column: 1; grid-row: 4; }
-  body.shape-playing .passenger { width: 142px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

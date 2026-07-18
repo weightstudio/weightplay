@@ -89,7 +89,7 @@ body {
 .stage-config-mount { display: grid; min-height: 0; overflow: auto; }
 .stage-config-mount .menu-shop { min-width: 0; padding: 14px; }
 .stage-config-mount .start-btn { width: min(100%, 360px); justify-self: center; margin-top: 12px; }
-.battle-ad-reserve { height: 56px; min-height: 56px; border-top: 1px solid rgba(212, 175, 55, 0.24); background: rgba(0, 0, 0, 0.24); pointer-events: none; }
+body > .battle-ad-reserve { display: none; height: 56px; min-height: 56px; border-top: 1px solid rgba(212, 175, 55, 0.24); background: rgba(0, 0, 0, 0.24); pointer-events: none; }
 
 .menu-main {
   flex: 2;
@@ -1733,6 +1733,7 @@ body.relic-playing .battle-ad-reserve {
 /* Final Expanded Canvas override. */
 html:has(body.relic-playing), body.relic-playing { width:100%; height:100dvh; -webkit-text-size-adjust:100%; text-size-adjust:100%; }
 body.relic-playing .relic-app { width:100vw; height:100dvh; min-height:0; padding:0; overflow:hidden; }
+body.relic-playing > .battle-ad-reserve { display:block; }
 body.relic-playing .top-nav, body.relic-playing .game-guide-wrapper, body.relic-playing .wp-tutorial-button, body.relic-playing .wp-tutorial-backdrop { display:none !important; }
 body.relic-stage-select .sound-toggle, body.relic-playing .sound-toggle { display:none !important; }
 body.relic-playing #gamePanel.game-panel, body.wp-mobile-game-mode.relic-playing #gamePanel.game-panel.weightplay-active-viewport { position:fixed !important; inset:4px auto auto 50% !important; display:grid; grid-template-rows:minmax(0,1fr) 56px; gap:0; width:min(calc(100vw - 8px),612px) !important; max-width:none !important; height:min(calc(100dvh - 8px),844px) !important; min-height:0; max-height:none !important; margin:0 !important; padding:0; transform:translateX(-50%); overflow:hidden; border:0; box-shadow:none; }
@@ -2133,7 +2134,31 @@ body.wp-logical-battle-active.relic-playing #gamePanel[data-wp-logical-battle-ca
 /* Keep the 4:5 arena above the 92% portrait occupancy floor without changing
    the shared logical Canvas scale or consuming the independent reserve. */
 body.wp-logical-battle-active.relic-playing #gamePanel[data-wp-logical-battle-canvas] .canvas-container {
-  width: 354px !important;
+  width: 360px !important;
+}
+
+@media (orientation: landscape) {
+  body.wp-logical-battle-active.relic-playing #gamePanel[data-wp-logical-battle-canvas] > .game-layout {
+    grid-template-columns: minmax(0, 1fr) 310px !important;
+    grid-template-rows: minmax(0, 1fr) !important;
+    padding: 48px 6px 6px !important;
+  }
+
+  body.wp-logical-battle-active.relic-playing #gamePanel[data-wp-logical-battle-canvas] .arena-viewport {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    grid-template-rows: 52px minmax(0, 1fr) !important;
+  }
+
+  body.wp-logical-battle-active.relic-playing #gamePanel[data-wp-logical-battle-canvas] .canvas-container {
+    align-self: center !important;
+  }
+
+  body.wp-logical-battle-active.relic-playing #gamePanel[data-wp-logical-battle-canvas] .inventory-sidebar {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    grid-template-rows: auto 98px minmax(0, 1fr) !important;
+  }
 }
 
 body.wp-logical-battle-active.relic-playing > .battle-ad-reserve[data-wp-battle-physical-reserve] {

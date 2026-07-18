@@ -358,14 +358,17 @@ body.wp-stage-select-active [data-wp-logical-stage-canvas] :is(
 }
 
 .wp-stage-physical-reserve[data-wp-stage-reserve-active] {
-  position: fixed;
+  position: fixed !important;
   z-index: 39;
-  top: var(--wp-stage-reserve-top, calc(100dvh - 60px));
-  left: var(--wp-stage-canvas-left, 0px);
-  display: block;
-  width: var(--wp-stage-canvas-rendered-width, 100vw);
-  height: 56px;
-  min-height: 56px;
+  inset: var(--wp-stage-reserve-top, calc(100dvh - 56px)) auto auto 0 !important;
+  display: block !important;
+  width: 100vw !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  height: 56px !important;
+  min-height: 56px !important;
+  max-height: 56px !important;
+  transform: none !important;
   pointer-events: none;
   background: #17243a;
   border-top: 1px solid rgb(255 255 255 / 12%);

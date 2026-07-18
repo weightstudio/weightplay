@@ -13,9 +13,11 @@
   metrics.stageObserverFlushes ||= 0;
   metrics.stageCanvasApplied ||= 0;
   let appliedStageRoot = null;
+  let appliedStageReserve = null;
   let appliedStageWidth = 0;
   let appliedStageHeight = 0;
   const savedStageStyles = new WeakMap();
+  const savedReserveStyles = new WeakMap();
   const nativeStageScalers = new Set();
   const stageRootByGame = {
     "animal-guard-yard": "#menuPanel",
@@ -115,6 +117,22 @@
     root.removeAttribute("data-wp-logical-stage-canvas");
   }
 
+  function rememberReserveStyles(reserve) {
+    if (!reserve || savedReserveStyles.has(reserve)) return;
+    const properties = ["position", "inset", "top", "right", "bottom", "left", "width", "min-width", "max-width", "height", "min-height", "transform"];
+    savedReserveStyles.set(reserve, Object.fromEntries(properties.map((property) => [property, [reserve.style.getPropertyValue(property), reserve.style.getPropertyPriority(property)]])));
+  }
+
+  function restoreReserveStyles(reserve) {
+    const saved = reserve && savedReserveStyles.get(reserve);
+    if (!saved) return;
+    Object.entries(saved).forEach(([property, [value, priority]]) => {
+      if (value) reserve.style.setProperty(property, value, priority);
+      else reserve.style.removeProperty(property);
+    });
+    savedReserveStyles.delete(reserve);
+  }
+
   function sharedReserve() {
     if (isKidsAudience()) return null;
     let reserve = document.querySelector(".wp-stage-physical-reserve");
@@ -147,7 +165,9 @@
     reserve?.toggleAttribute("data-wp-stage-reserve-active", useSharedScaler);
     if (!useSharedScaler) {
       restoreStageStyles(appliedStageRoot);
+      restoreReserveStyles(appliedStageReserve);
       appliedStageRoot = null;
+      appliedStageReserve = null;
       return;
     }
 
@@ -190,6 +210,15 @@
       transform: `scale(${scale})`, "transform-origin": "top left",
     };
     Object.entries(declarations).forEach(([property, value]) => root.style.setProperty(property, value, "important"));
+    if (reserve) {
+      rememberReserveStyles(reserve);
+      const reserveDeclarations = {
+        position: "fixed", inset: "auto", top: `${availableHeight}px`, right: "auto", bottom: "auto", left: `${left}px`,
+        width: `${renderedWidth}px`, "min-width": "0", "max-width": "none", height: `${reserveHeight}px`, "min-height": `${reserveHeight}px`, transform: "none",
+      };
+      Object.entries(reserveDeclarations).forEach(([property, value]) => reserve.style.setProperty(property, value, "important"));
+      appliedStageReserve = reserve;
+    }
     appliedStageRoot = root;
     appliedStageWidth = width;
     appliedStageHeight = height;

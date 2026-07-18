@@ -202,11 +202,7 @@
     deckView.append(collectionPanel);
     shopView.append(diamondShop);
     nodes.menuPanel.after(stagePanel);
-    const reserve = document.createElement("div");
-    reserve.className = "wp-standard-stage-reserve hidden";
-    reserve.setAttribute("aria-hidden", "true");
-    stagePanel.after(reserve);
-    Object.assign(nodes, { stagePanel, stageReserve: reserve, mainStartBtn: mainStart, stageBackBtn: stagePanel.querySelector("#stageBackBtn") });
+    Object.assign(nodes, { stagePanel, mainStartBtn: mainStart, stageBackBtn: stagePanel.querySelector("#stageBackBtn") });
   }
 
   function selectStageTab(tabName) {
@@ -227,12 +223,12 @@
   function showStage() {
     cancelBattleTransitions();
     clearAmuletConfirmation();
+    document.body.classList.remove("beast-deck-playing");
     nodes.menuBtn.dataset.wpReturn = "battle";
     profile.selectedMission = profile.unlockedMission;
     saveLocalState();
     nodes.menuPanel.classList.add("hidden");
     nodes.stagePanel.classList.remove("hidden");
-    nodes.stageReserve.classList.remove("hidden");
     document.body.classList.add("wp-standard-stage-page");
     renderProgressUI();
     requestAnimationFrame(() => nodes.stageGrid.querySelector(".stage-card.selected:not(:disabled)")?.focus({ preventScroll: true }));
@@ -241,7 +237,6 @@
   function showMainFromStage() {
     clearAmuletConfirmation();
     nodes.stagePanel.classList.add("hidden");
-    nodes.stageReserve.classList.add("hidden");
     nodes.menuPanel.classList.remove("hidden");
     document.body.classList.remove("wp-standard-stage-page");
     requestAnimationFrame(() => nodes.mainStartBtn.focus({ preventScroll: true }));
@@ -274,6 +269,7 @@
       menuHint: "Build an animal power deck, read enemy intent, and clear forest missions. Your level, coins, cards, equipment, and unlocked missions are saved on this device.",
       startGame: "Start Game",
       progressTitle: "Local Progress",
+      missionSelection: "Mission selection",
       progressText: "Clear missions to earn XP and Beast Coins. Spend coins on packs, equip cards and gear, then push deeper into the forest.",
       profileLevel: "Level",
       profileXp: "XP",
@@ -485,6 +481,7 @@
       menuHint: "建立動物能力牌組、判斷敵人意圖並通關森林任務。等級、金幣、卡牌、裝備與任務進度都會保存在本機。",
       startGame: "開始遊戲",
       progressTitle: "本地進度",
+      missionSelection: "任務選擇",
       progressText: "通關任務可獲得經驗與獸王金幣。用金幣抽卡包、裝備卡牌與道具，再挑戰更深的森林路線。",
       profileLevel: "等級",
       profileXp: "經驗",
@@ -709,6 +706,7 @@
     menuHint: "Crea un mazo de poderes animales, interpreta la intención enemiga y completa misiones. Tu nivel, monedas, cartas, equipo y misiones se guardan en este dispositivo.",
     startGame: "Empezar",
     progressTitle: "Progreso local",
+    missionSelection: "Selección de misiones",
     progressText: "Completa misiones para ganar XP y Monedas Bestia. Compra sobres, equipa cartas y objetos, y avanza por el bosque.",
     profileLevel: "Nivel",
     profileXp: "XP",
@@ -1203,14 +1201,24 @@
     return t("missionScout", { enemies, first: `${enemyName(firstEnemy)} ${firstAction}` });
   }
 
+  function syncPublicMetadata(locale = getLocale()) {
+    const metadata = metaText[locale] || metaText.en;
+    const description = document.querySelector("meta[name='description']");
+    const ogDescription = document.querySelector("meta[property='og:description']");
+    if (description?.content !== metadata.description) description?.setAttribute("content", metadata.description);
+    if (ogDescription?.content !== metadata.ogDescription) ogDescription?.setAttribute("content", metadata.ogDescription);
+  }
+
   function translateUI() {
     clearAmuletConfirmation();
     const locale = getLocale();
     document.documentElement.lang = locale;
     const pageTitle = `${t("title")} - WeightPlay`;
     document.title = pageTitle;
-    document.querySelector("meta[name='description']")?.setAttribute("content", metaText[locale]?.description || metaText.en.description);
-    document.querySelector("meta[property='og:description']")?.setAttribute("content", metaText[locale]?.ogDescription || metaText.en.ogDescription);
+    syncPublicMetadata(locale);
+    requestAnimationFrame(() => syncPublicMetadata(locale));
+    window.setTimeout(() => syncPublicMetadata(locale), 180);
+    window.setTimeout(() => syncPublicMetadata(locale), 1200);
     document.querySelector("meta[property='og:title']")?.setAttribute("content", pageTitle);
     document.querySelectorAll("[data-ui]").forEach((el) => {
       el.textContent = t(el.dataset.ui);
@@ -2455,7 +2463,6 @@
     setDraftModalActive(false, false);
     nodes.menuPanel.classList.add("hidden");
     nodes.stagePanel.classList.add("hidden");
-    nodes.stageReserve.classList.add("hidden");
     leaveStageCanvas();
     nodes.resultPanel.classList.add("hidden");
     nodes.gamePanel.classList.remove("result-open");

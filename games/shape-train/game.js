@@ -491,10 +491,17 @@
     const width = Math.round(viewport?.width || innerWidth);
     const height = Math.round(viewport?.height || innerHeight);
     const scale = Math.min(width / 390, height / 844);
+    const logicalWidth = width / scale;
+    const logicalHeight = height / scale;
     const root = document.documentElement.style;
     root.setProperty("--shape-stage-scale", String(scale));
-    root.setProperty("--shape-stage-left", `${(width - 390 * scale) / 2}px`);
-    root.setProperty("--shape-stage-top", `${height - 844 * scale}px`);
+    root.setProperty("--shape-stage-left", "0px");
+    root.setProperty("--shape-stage-top", "0px");
+    root.setProperty("--shape-stage-logical-width", `${logicalWidth}px`);
+    root.setProperty("--shape-stage-logical-height", `${logicalHeight}px`);
+    nodes.stagePanel.dataset.wpCommonScale = String(scale);
+    nodes.stagePanel.dataset.wpLogicalWidth = String(logicalWidth);
+    nodes.stagePanel.dataset.wpLogicalHeight = String(logicalHeight);
   }
 
   function updateShapeFrame() {
@@ -508,6 +515,12 @@
       && visualHeight <= innerHeight + 2;
     document.documentElement.style.setProperty("--shape-vw", `${useVisual ? visualWidth : innerWidth}px`);
     document.documentElement.style.setProperty("--shape-vh", `${useVisual ? visualHeight : innerHeight}px`);
+    const width = useVisual ? visualWidth : innerWidth;
+    const height = useVisual ? visualHeight : innerHeight;
+    const scale = Math.min(width / 362, height / 710);
+    nodes.playPanel.dataset.wpCommonScale = String(scale);
+    nodes.playPanel.dataset.wpLogicalWidth = String(width / scale);
+    nodes.playPanel.dataset.wpLogicalHeight = String(height / scale);
   }
 
   function exitSharedPlayViewport() {
@@ -719,7 +732,13 @@
     nodes.playPanel.classList.add("is-result");
     nodes.resultPanel.classList.remove("hidden");
     setResultOwnership(true);
-    requestAnimationFrame(() => (currentStage < stages.length - 1 ? nodes.nextStageBtn : nodes.retryBtn).focus({ preventScroll: true }));
+    nodes.playPanel.scrollTop = 0;
+    nodes.playPanel.scrollLeft = 0;
+    requestAnimationFrame(() => {
+      nodes.playPanel.scrollTop = 0;
+      nodes.playPanel.scrollLeft = 0;
+      (currentStage < stages.length - 1 ? nodes.nextStageBtn : nodes.retryBtn).focus({ preventScroll: true });
+    });
     playSound("win");
     track("game_complete", { level: stageNo, stars: earned, mistakes });
   }
