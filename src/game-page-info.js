@@ -6656,25 +6656,58 @@
         shell.dataset.wpStageArt = artUrl;
         shell.style.setProperty("--wp-stage-art", `url("${artUrl.replaceAll('"', '\\"')}")`);
       }
-      shell.classList.add("wp-stage-art-shell");
+      if (!shell.classList.contains("wp-stage-art-shell")) shell.classList.add("wp-stage-art-shell");
     });
   }
 
   function installStageArtworkSync() {
     document.body.dataset.wpGameId = currentGameId();
+    const metrics = window.__weightPlayLayoutMetrics ||= {};
+    metrics.stageArtworkSyncs ||= 0;
+    const artworkWatchSelector = [
+      ".stage-grid", ".stage-rail", ".mission-grid", ".mission-rail",
+      ".region-rail", ".route-rail", ".level-grid",
+      "[data-screen='stage']", "[data-wp-logical-stage-canvas]",
+      "[data-wp-standard-stage-screen]", "#stagePanel", "#stageScreen",
+      "#stageSelectPanel", "#stageSelect", "#stageView", "#mapPanel",
+      "#levelSelect", "#menuPanel", ".stage-panel", ".stage-screen",
+      ".stage-shell", ".stage-select", ".world-map-panel", ".level-select",
+      ".menu-shell", "#overlay", ".main-poster", ".main-cover",
+      ".wonder-main-cover", "img.cover", "img[class*='poster']", "img[class*='cover']",
+    ].join(",");
     let queued = false;
     const queueSync = () => {
       if (queued) return;
       queued = true;
       requestAnimationFrame(() => {
         queued = false;
+        metrics.stageArtworkSyncs += 1;
         syncStageArtwork();
       });
     };
-    const observer = new MutationObserver(queueSync);
+    const onlyDragClassChanged = (record) => {
+      if (record.attributeName !== "class") return false;
+      const before = new Set(String(record.oldValue || "").split(/\s+/).filter(Boolean));
+      const after = new Set(record.target.classList);
+      const changed = new Set([...before, ...after].filter((name) => before.has(name) !== after.has(name)));
+      return changed.size > 0 && [...changed].every((name) => name === "wp-stage-dragging");
+    };
+    const relevantMutation = (record) => {
+      if (record.type === "attributes") {
+        if (onlyDragClassChanged(record)) return false;
+        return record.target.matches?.(artworkWatchSelector)
+          || Boolean(record.target.querySelector?.(artworkWatchSelector));
+      }
+      return [...record.addedNodes, ...record.removedNodes].some((node) => node instanceof Element
+        && (node.matches(artworkWatchSelector) || Boolean(node.querySelector(artworkWatchSelector))));
+    };
+    const observer = new MutationObserver((records) => {
+      if (records.some(relevantMutation)) queueSync();
+    });
     observer.observe(document.body, {
       attributes: true,
-      attributeFilter: ["class", "hidden", "style"],
+      attributeOldValue: true,
+      attributeFilter: ["class", "hidden", "src"],
       childList: true,
       subtree: true,
     });

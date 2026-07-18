@@ -2447,7 +2447,7 @@
 
   // Init page triggers
   function init() {
-    document.querySelector("#gamePanel .game-layout")?.append(nodes.resultPanel);
+    document.querySelector("#gamePanel .shadow-game-layout")?.append(nodes.resultPanel);
     loadLocalState();
     updateDiamondShopUI();
     translateUI();

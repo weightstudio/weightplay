@@ -9,6 +9,12 @@
   const railHadCards = new WeakMap();
   const pendingRecommendation = new WeakMap();
   const pendingSettles = new WeakMap();
+  const metrics = window.__weightPlayLayoutMetrics ||= {};
+  metrics.stageObserverFlushes ||= 0;
+  metrics.stageCanvasApplied ||= 0;
+  let appliedStageRoot = null;
+  let appliedStageWidth = 0;
+  let appliedStageHeight = 0;
   const nativeStageScalers = new Set(["animal-auto-squad", "bubble-bakery", "color-lunchbox", "garden-tiles", "wonder-crash"]);
   const stageRootByGame = {
     "animal-guard-yard": "#menuPanel",
@@ -114,7 +120,10 @@
     const nativeReserveActive = gameId() === "animal-auto-squad"
       && document.body.classList.contains("squad-stage-select");
     reserve.toggleAttribute("data-wp-stage-reserve-active", useSharedScaler || nativeReserveActive);
-    if (!useSharedScaler) return;
+    if (!useSharedScaler) {
+      appliedStageRoot = null;
+      return;
+    }
 
     const root = activeRails.length ? stageRootFor(activeRails[0]) : retainedManagementRoot;
     if (!root) return;
@@ -122,6 +131,9 @@
     const viewport = window.visualViewport;
     const width = Math.max(1, viewport?.width || window.innerWidth);
     const height = Math.max(1, viewport?.height || window.innerHeight);
+    if (root === appliedStageRoot
+      && Math.abs(width - appliedStageWidth) < 0.5
+      && Math.abs(height - appliedStageHeight) < 0.5) return;
     const scale = Math.max(0.01, Math.min(
       Math.max(1, width) / STAGE_LOGICAL_WIDTH,
       Math.max(1, height - STAGE_RESERVE_HEIGHT) / STAGE_LOGICAL_HEIGHT
@@ -137,6 +149,10 @@
     style.setProperty("--wp-stage-canvas-rendered-width", `${renderedWidth}px`);
     style.setProperty("--wp-stage-canvas-rendered-height", `${renderedHeight}px`);
     style.setProperty("--wp-stage-reserve-top", `${top + renderedHeight}px`);
+    appliedStageRoot = root;
+    appliedStageWidth = width;
+    appliedStageHeight = height;
+    metrics.stageCanvasApplied += 1;
   }
 
   function standardizeMainStart() {
@@ -430,29 +446,71 @@
   }
 
   scan();
-  new MutationObserver((records) => {
-    records.forEach((record) => record.addedNodes.forEach((node) => {
-      if (!(node instanceof Element)) return;
-      if (node.matches(railSelector)) install(node);
-      scan(node);
-    }));
+  const stageStateSelector = [
+    railSelector,
+    "[data-wp-logical-stage-canvas]",
+    "[data-wp-standard-stage-screen]",
+    "[data-screen='stage']",
+    "#stageScreen",
+    "#stageView",
+    "#stagePanel",
+    "#stageSelectPanel",
+    "#stageSelect",
+    "#levelSelect",
+    "#mapPanel",
+    ".stage-screen",
+    ".stage-shell",
+    ".stage-panel",
+    ".stage-select",
+    ".level-select",
+    ".world-map-panel",
+  ].join(",");
+  let observerQueued = false;
+  let observerNeedsState = false;
+  let observerNeedsLocale = false;
+  const observerRails = new Set();
+  const queueObserverFlush = () => {
+    if (observerQueued) return;
+    observerQueued = true;
     requestAnimationFrame(() => {
-      standardizeMainStart();
-      updateStageState();
-      document.querySelectorAll(railSelector).forEach((rail) => {
+      observerQueued = false;
+      metrics.stageObserverFlushes += 1;
+      if (observerNeedsLocale || observerNeedsState) standardizeMainStart();
+      if (observerNeedsState) updateStageState();
+      const rails = observerNeedsState ? document.querySelectorAll(railSelector) : observerRails;
+      rails.forEach((rail) => {
         const hasCards = stageCards(rail).length > 0;
         const gainedInitialCards = hasCards && !railHadCards.get(rail);
         railHadCards.set(rail, hasCards);
-        // Replacing a label or lock marker inside an active rail must not pull
-        // the player back to the recommended stage. Recenter only when the
-        // rail receives its first usable card set; visibility transitions are
-        // handled by scheduleRecommendedCenter itself.
         scheduleRecommendedCenter(rail, gainedInitialCards);
       });
+      observerNeedsState = false;
+      observerNeedsLocale = false;
+      observerRails.clear();
     });
+  };
+  new MutationObserver((records) => {
+    records.forEach((record) => {
+      if (record.type === "attributes") {
+        if (record.attributeName === "lang") observerNeedsLocale = true;
+        const target = record.target;
+        if (target === document.documentElement || target === document.body
+          || target.matches?.(stageStateSelector)
+          || target.querySelector?.(railSelector)) observerNeedsState = true;
+        return;
+      }
+      const owningRail = record.target.closest?.(railSelector);
+      if (owningRail) observerRails.add(owningRail);
+      [...record.addedNodes, ...record.removedNodes].forEach((node) => {
+        if (!(node instanceof Element)) return;
+        if (node.matches(railSelector)) install(node);
+        node.querySelectorAll?.(railSelector).forEach(install);
+        if (node.matches(stageStateSelector) || node.querySelector?.(stageStateSelector)) observerNeedsState = true;
+      });
+    });
+    if (observerNeedsState || observerNeedsLocale || observerRails.size) queueObserverFlush();
   }).observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ["class", "hidden", "lang"] });
   window.addEventListener("wonder:locale-change", standardizeMainStart);
   window.addEventListener("resize", updateStageCanvas, { passive: true });
   window.visualViewport?.addEventListener("resize", updateStageCanvas, { passive: true });
-  window.visualViewport?.addEventListener("scroll", updateStageCanvas, { passive: true });
 })();

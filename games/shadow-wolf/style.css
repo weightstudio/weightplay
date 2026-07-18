@@ -383,14 +383,14 @@ body {
   margin: 0 auto;
 }
 
-.game-layout {
+.shadow-game-layout {
   display: grid;
   grid-template-columns: minmax(640px, 4fr) minmax(220px, 1fr);
   gap: 1.5rem;
 }
 
 @media (max-width: 900px) {
-  .game-layout {
+  .shadow-game-layout {
     grid-template-columns: 1fr;
   }
 }
@@ -724,7 +724,7 @@ body[data-shadow-wolf-screen="battle"] .relic-app {
   margin: 0;
   animation: none;
 }
-.game-layout { position: relative; min-height: 0; grid-template-columns: 1fr; gap: 0; }
+.shadow-game-layout { position: relative; min-height: 0; grid-template-columns: 1fr; gap: 0; }
 .attribute-sidebar { display: none; }
 .arena-viewport {
   position: relative;

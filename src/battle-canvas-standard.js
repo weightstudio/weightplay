@@ -38,6 +38,10 @@
   const gameId = location.pathname.match(/\/games\/([^/]+)/)?.[1] || "";
   const config = games[gameId];
   if (!config) return;
+  const reserveSelector = ".battle-ad-reserve,.battle-ad,.ad-reserve,.result-ad-reserve,#battleAdReserve,#battleAd";
+  const metrics = window.__weightPlayLayoutMetrics ||= {};
+  metrics.battleQueued ||= 0;
+  metrics.battleApplied ||= 0;
 
   const visible = (node) => {
     if (!node || node.hidden || node.classList.contains("hidden")) return false;
@@ -47,12 +51,14 @@
   };
   const findRoot = () => [...document.querySelectorAll(config[0])].find(visible) || null;
   const findBack = (root) => root?.querySelector('[data-wp-return="battle"]') || null;
-  const findReserve = () => [...document.querySelectorAll(".battle-ad-reserve,.battle-ad,.ad-reserve,.result-ad-reserve,#battleAdReserve,#battleAd")]
+  const findReserve = () => [...document.querySelectorAll(reserveSelector)]
     .find((node) => visible(node) && !node.closest("[data-wp-logical-battle-canvas]")) || null;
 
   const savedStyles = new WeakMap();
   let activeRoot = null;
   let activeReserve = null;
+  let appliedViewportWidth = 0;
+  let appliedViewportHeight = 0;
   const rememberAndSet = (node, declarations) => {
     if (!node) return;
     if (!savedStyles.has(node)) {
@@ -90,6 +96,11 @@
     const viewport = window.visualViewport;
     const width = Math.max(1, viewport?.width || innerWidth);
     const height = Math.max(1, viewport?.height || innerHeight);
+    const reserve = findReserve();
+    if (root === activeRoot
+      && reserve === activeReserve
+      && Math.abs(width - appliedViewportWidth) < 0.5
+      && Math.abs(height - appliedViewportHeight) < 0.5) return;
     const availableWidth = Math.max(1, width - GUTTER * 2);
     const availableHeight = Math.max(1, height - RESERVE_HEIGHT - GUTTER * 2);
     const heightScale = Math.max(0.01, availableHeight / config[2]);
@@ -111,6 +122,9 @@
     style.setProperty("--wp-battle-canvas-top", `${top}px`);
     if (activeRoot && activeRoot !== root) restore(activeRoot);
     activeRoot = root;
+    appliedViewportWidth = width;
+    appliedViewportHeight = height;
+    metrics.battleApplied += 1;
     rememberAndSet(root, {
       position: "fixed",
       inset: "auto",
@@ -127,7 +141,6 @@
       "transform-origin": "top center",
       overflow: "hidden",
     });
-    const reserve = findReserve();
     if (activeReserve && activeReserve !== reserve) restore(activeReserve);
     activeReserve = reserve;
     if (reserve) {
@@ -154,12 +167,27 @@
   const queueUpdate = () => {
     if (queued) return;
     queued = true;
+    metrics.battleQueued += 1;
     requestAnimationFrame(() => {
       queued = false;
       update();
     });
   };
-  new MutationObserver(queueUpdate).observe(document.body, {
+  const geometrySelector = `${config[0]},[data-wp-return="battle"],${reserveSelector}`;
+  const containsGeometryNode = (node) => node instanceof Element
+    && (node.matches(geometrySelector) || Boolean(node.querySelector(geometrySelector)));
+  const mutationAffectsGeometry = (record) => {
+    if (record.type === "childList") {
+      return [...record.addedNodes, ...record.removedNodes].some(containsGeometryNode);
+    }
+    const target = record.target;
+    if (!(target instanceof Element)) return false;
+    if (target === document.body || target.matches(geometrySelector)) return true;
+    return [...document.querySelectorAll(config[0])].some((root) => target.contains(root));
+  };
+  new MutationObserver((records) => {
+    if (records.some(mutationAffectsGeometry)) queueUpdate();
+  }).observe(document.body, {
     subtree: true,
     attributes: true,
     attributeFilter: ["class", "hidden", "data-wp-return"],
@@ -167,7 +195,6 @@
   });
   window.addEventListener("resize", queueUpdate, { passive: true });
   window.visualViewport?.addEventListener("resize", queueUpdate, { passive: true });
-  window.visualViewport?.addEventListener("scroll", queueUpdate, { passive: true });
   document.addEventListener("click", () => window.setTimeout(queueUpdate, 0), true);
   window.addEventListener("weightplay:battle-open", queueUpdate);
   queueUpdate();

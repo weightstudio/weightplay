@@ -199,7 +199,15 @@
     const width = vv ? vv.width : window.innerWidth;
     const height = vv ? vv.height : window.innerHeight;
     const scale = Math.min(width / LOGICAL_WIDTH, height / LOGICAL_HEIGHT);
+    const responsivePlay = currentScreen === "stage" || currentScreen === "battle" || currentScreen === "result";
+    const logicalWidth = responsivePlay ? width / scale : LOGICAL_WIDTH;
+    const logicalHeight = responsivePlay ? height / scale : LOGICAL_HEIGHT;
     dom.gameCanvas.style.setProperty("--scale", String(scale));
+    dom.gameCanvas.style.width = `${logicalWidth}px`;
+    dom.gameCanvas.style.height = `${logicalHeight}px`;
+    dom.gameCanvas.dataset.logicalWidth = logicalWidth.toFixed(3);
+    dom.gameCanvas.dataset.logicalHeight = logicalHeight.toFixed(3);
+    dom.gameCanvas.dataset.commonScale = scale.toFixed(6);
     dom.gameCanvas.style.top = "auto";
     dom.gameCanvas.style.bottom = "0";
   }
