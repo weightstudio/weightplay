@@ -435,7 +435,8 @@ body {
 }
 .pause-panel.hidden { display: none; }
 .pause-card {
-  width: min(440px, 100%);
+  width: 358px;
+  max-width: 100%;
   max-height: 100%;
   overflow: auto;
   padding: 22px;
@@ -449,10 +450,9 @@ body {
 .pause-card h2 { margin: 8px 0 6px; color: #f8fafc; font-size: 1.35rem; }
 .pause-card p { margin: 0; color: #b6d8e3; line-height: 1.5; }
 .pause-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-top: 18px; }
-.pause-actions button { min-height: 44px; }
+.pause-actions button { height: 53px; min-height: 53px; max-height: 53px; }
 @media (max-width: 520px), (max-height: 430px) {
-  .pause-card { padding: 16px; }
-  .pause-actions { grid-template-columns: 1fr; }
+  .pause-card { padding: 22px; }
 }
 
 .arena-hud {

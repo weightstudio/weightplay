@@ -7,6 +7,7 @@
   <meta name="theme-color" content="#101b36" />
   <title>Animal Moonlight Heist - Internal Trial</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="../../src/battle-canvas-standard.css" />
 </head>
 <body data-screen="main">
   <main id="mainScreen" class="screen main-screen">
@@ -26,7 +27,7 @@
 
   <section id="battleScreen" class="screen battle-shell" hidden>
     <div class="battle-canvas">
-      <header class="battle-header"><button id="battleBackBtn" class="icon-btn" type="button">&larr;</button><div><strong id="missionLabel"></strong><span id="objectiveLabel"></span></div><button id="pauseBtn" class="icon-btn" type="button">&#10074;&#10074;</button></header>
+      <header class="battle-header"><button id="battleBackBtn" class="icon-btn" type="button" data-wp-return="battle">&larr;</button><div><strong id="missionLabel"></strong><span id="objectiveLabel"></span></div><button id="pauseBtn" class="icon-btn" type="button">&#10074;&#10074;</button></header>
       <div class="alert-row"><span data-i18n="alert">Alert</span><div class="alert-track"><i id="alertFill"></i></div><span id="coinBattle"></span></div>
       <section id="playField" class="play-field">
         <div id="routeLine" class="route-line" hidden></div>
@@ -45,5 +46,6 @@
 
   <script src="../../src/wallet.js"></script>
   <script src="game.js?v=20260716-local-a11y1"></script>
+  <script src="../../src/battle-canvas-standard.js"></script>
 </body>
 </html>

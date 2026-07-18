@@ -2535,7 +2535,27 @@
   }
 
   // Init page triggers
+  function installResponsiveBattleOwner() {
+    const root = document.querySelector("#gamePanel .shadow-game-layout");
+    if (!root) return;
+    root.classList.add("game-layout");
+    if (!document.querySelector("link[data-shadow-wolf-battle-standard]")) {
+      const stylesheet = document.createElement("link");
+      stylesheet.rel = "stylesheet";
+      stylesheet.href = "../../src/battle-canvas-standard.css";
+      stylesheet.dataset.shadowWolfBattleStandard = "";
+      document.head.append(stylesheet);
+    }
+    if (!document.querySelector("script[data-shadow-wolf-battle-standard]")) {
+      const script = document.createElement("script");
+      script.src = "../../src/battle-canvas-standard.js";
+      script.dataset.shadowWolfBattleStandard = "";
+      document.body.append(script);
+    }
+  }
+
   function init() {
+    installResponsiveBattleOwner();
     document.querySelector("#gamePanel .shadow-game-layout")?.append(nodes.resultPanel);
     loadLocalState();
     updateDiamondShopUI();

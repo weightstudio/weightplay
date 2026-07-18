@@ -2,6 +2,17 @@
   const GAME_ID = "garden-tiles";
   const UNLOCK_KEY = "gardenTilesUnlocked";
   const STARS_KEY = "gardenTilesStars";
+  if (!document.querySelector("#leaveConfirmPanel")) {
+    const panel = document.createElement("section");
+    panel.id = "leaveConfirmPanel";
+    panel.className = "leave-confirm-panel hidden";
+    panel.setAttribute("role", "dialog");
+    panel.setAttribute("aria-modal", "true");
+    panel.setAttribute("aria-labelledby", "leaveConfirmTitle");
+    panel.setAttribute("aria-describedby", "leaveConfirmText");
+    panel.innerHTML = `<div class="leave-confirm-card"><h2 id="leaveConfirmTitle"></h2><p id="leaveConfirmText"></p><div class="leave-confirm-actions"><button id="keepPlayingBtn" type="button"></button><button id="leaveLevelBtn" type="button"></button></div></div>`;
+    document.querySelector(".garden-game")?.append(panel);
+  }
   const titleText = document.querySelector("#titleText");
   const languageLabel = document.querySelector("#languageLabel");
   const localeSelect = document.querySelector("#localeSelect");
@@ -43,6 +54,11 @@
   const levelsBtn = document.querySelector("#levelsBtn");
   const lobbyLink = document.querySelector("#lobbyLink");
   const loadingPanel = document.querySelector("#loadingPanel");
+  const leaveConfirmPanel = document.querySelector("#leaveConfirmPanel");
+  const leaveConfirmTitle = document.querySelector("#leaveConfirmTitle");
+  const leaveConfirmText = document.querySelector("#leaveConfirmText");
+  const keepPlayingBtn = document.querySelector("#keepPlayingBtn");
+  const leaveLevelBtn = document.querySelector("#leaveLevelBtn");
 
   statusbar?.prepend(battleBackBtn);
 
@@ -95,6 +111,10 @@
       statusAria: "Game status",
       stageBackAria: "Back",
       battleBackAria: "Back to levels",
+      leaveTitle: "Leave this level?",
+      leaveText: "Your pairs and moves in this level will be lost.",
+      keepPlaying: "Keep Playing",
+      leaveLevel: "Leave Level",
       boardAria: "Garden tile board",
       hiddenTile: "Hidden garden card",
       tileNames: {
@@ -151,6 +171,10 @@
       statusAria: "\u904a\u6232\u72c0\u614b",
       stageBackAria: "\u8fd4\u56de",
       battleBackAria: "\u8fd4\u56de\u9078\u95dc",
+      leaveTitle: "\u8981\u96e2\u958b\u9019\u4e00\u95dc\u55ce\uff1f",
+      leaveText: "\u9019\u4e00\u95dc\u7684\u914d\u5c0d\u8207\u6b65\u6578\u6703\u6d88\u5931\u3002",
+      keepPlaying: "\u7e7c\u7e8c\u914d\u5c0d",
+      leaveLevel: "\u96e2\u958b\u9019\u95dc",
       boardAria: "\u82b1\u5712\u65b9\u584a\u914d\u5c0d\u76e4\u9762",
       hiddenTile: "\u84cb\u4f4f\u7684\u82b1\u5712\u5716\u5361",
       tileNames: {
@@ -207,6 +231,10 @@
       statusAria: "Estado del juego",
       stageBackAria: "Volver",
       battleBackAria: "Volver a los niveles",
+      leaveTitle: "¿Salir de este nivel?",
+      leaveText: "Perderás las parejas y los movimientos de este nivel.",
+      keepPlaying: "Seguir jugando",
+      leaveLevel: "Salir del nivel",
       boardAria: "Tablero de fichas del jardín",
       hiddenTile: "Ficha del jardín oculta",
       tileNames: {
@@ -277,6 +305,7 @@
   let roundLifecycleSuspended = document.hidden;
   let previewing = false;
   let firstPickTaskToken = 0;
+  let leaveConfirmOpen = false;
   const roundTasks = new Set();
 
   function invalidateRoundTasks() {
@@ -402,6 +431,10 @@
     levelBackBtn.setAttribute("aria-label", t("stageBackAria"));
     battleBackBtn.setAttribute("aria-label", t("battleBackAria"));
     board.setAttribute("aria-label", t("boardAria"));
+    leaveConfirmTitle.textContent = t("leaveTitle");
+    leaveConfirmText.textContent = t("leaveText");
+    keepPlayingBtn.textContent = t("keepPlaying");
+    leaveLevelBtn.textContent = t("leaveLevel");
     renderLevelGrid();
     if (tiles.length) renderBoard();
     updateHud();
@@ -413,6 +446,8 @@
     document.body.classList.remove("garden-stage", "garden-playing");
     document.body.classList.add("garden-main");
     resultPanel.classList.add("hidden");
+    leaveConfirmPanel.classList.add("hidden");
+    leaveConfirmOpen = false;
     setBattleCovered(false);
     mainPanel.classList.remove("hidden");
     statusbar.classList.add("hidden");
@@ -506,6 +541,8 @@
     document.body.classList.remove("garden-main", "garden-playing");
     document.body.classList.add("garden-stage");
     resultPanel.classList.add("hidden");
+    leaveConfirmPanel.classList.add("hidden");
+    leaveConfirmOpen = false;
     setBattleCovered(false);
     mainPanel.classList.add("hidden");
     statusbar.classList.add("hidden");
@@ -780,6 +817,37 @@
     levelMessage.textContent = text;
   }
 
+  function focusCurrentTile() {
+    const target = selectedTile
+      ? board.querySelector(`[data-index="${selectedTile.index}"]`)
+      : board.querySelector(".tile:not(:disabled)");
+    target?.focus({ preventScroll: true });
+  }
+
+  function openLeaveConfirm() {
+    if (leaveConfirmOpen || !document.body.classList.contains("garden-playing") || !resultPanel.classList.contains("hidden")) return;
+    leaveConfirmOpen = true;
+    suspendRoundTasks();
+    leaveConfirmPanel.classList.remove("hidden");
+    setBattleCovered(true);
+    requestAnimationFrame(() => keepPlayingBtn.focus({ preventScroll: true }));
+  }
+
+  function closeLeaveConfirm(restoreFocus = true) {
+    if (!leaveConfirmOpen) return;
+    leaveConfirmOpen = false;
+    leaveConfirmPanel.classList.add("hidden");
+    setBattleCovered(false);
+    resumeRoundTasks();
+    if (restoreFocus) requestAnimationFrame(focusCurrentTile);
+  }
+
+  function leaveCurrentLevel() {
+    if (!leaveConfirmOpen) return;
+    closeLeaveConfirm(false);
+    showLevelSelect();
+  }
+
   board.addEventListener("keydown", (event) => {
     if (!event.repeat || !["Enter", " "].includes(event.key) || !event.target.closest("[data-index]")) return;
     event.preventDefault();
@@ -830,7 +898,30 @@
   levelsBtn.addEventListener("click", showLevelSelect);
   startBtn.addEventListener("click", showLevelSelect);
   levelBackBtn.addEventListener("click", showMain);
-  battleBackBtn.addEventListener("click", showLevelSelect);
+  battleBackBtn.addEventListener("click", openLeaveConfirm);
+  keepPlayingBtn.addEventListener("click", () => closeLeaveConfirm(true));
+  leaveLevelBtn.addEventListener("click", leaveCurrentLevel);
+  leaveConfirmPanel.addEventListener("keydown", (event) => {
+    if (event.repeat && ["Enter", " "].includes(event.key)) {
+      event.preventDefault();
+      return;
+    }
+    if (event.key === "Escape") {
+      event.preventDefault();
+      closeLeaveConfirm(true);
+      return;
+    }
+    if (event.key !== "Tab" || !leaveConfirmOpen) return;
+    const actions = [keepPlayingBtn, leaveLevelBtn];
+    const index = actions.indexOf(document.activeElement);
+    if (event.shiftKey && index <= 0) {
+      event.preventDefault();
+      leaveLevelBtn.focus({ preventScroll: true });
+    } else if (!event.shiftKey && index === actions.length - 1) {
+      event.preventDefault();
+      keepPlayingBtn.focus({ preventScroll: true });
+    }
+  });
   homeLink.addEventListener("click", (event) => {
     if (document.body.classList.contains("garden-main")) return;
     event.preventDefault();

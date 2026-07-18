@@ -439,5 +439,6 @@
       snapshot:()=>({stage:selectedMission+1,unlocked:state.unlocked,screen:document.body.dataset.screen,objectFound,treasureFound,guardianPhase,patrols:patrols.length,guardian:guardianPatrol()?.guardian?.id||null,safeZones:document.querySelectorAll(".safe-zone").length,resultOpen:!nodes.modal.hidden,freezeRemaining:Math.max(0,freezeUntil-performance.now())})
     };
   }
+  $("#battleBackBtn")?.setAttribute("data-wp-return","battle");
   renderGadgets();bind();bindMissionRailDrag();localize();$("#localeSelect option[value='zh-Hant']").textContent=decodeZh("\\u7e41\\u9ad4\\u4e2d\\u6587");show("main");
 })();
