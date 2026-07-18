@@ -6,6 +6,10 @@
     'zh-Hant': { title:'\u52d5\u7269\u5929\u7a7a\u6e2f\u8abf\u5ea6\u968a', language:'\u8a9e\u8a00', headline:'\u8b93\u96f2\u7dda\u5929\u7a7a\u6e2f\u6301\u7e8c\u904b\u4f5c\u3002', intro:'\u7e6a\u51fa\u5b89\u5168\u822a\u7dda\uff0c\u914d\u5c0d\u98db\u8239\u8207\u78bc\u982d\uff0c\u4fdd\u8b77\u73ed\u6b21\u4e0d\u88ab\u58c5\u585e\u3002', start:'\u958b\u59cb\u904a\u6232', chooseShift:'\u9078\u64c7\u73ed\u6b21', best:'\u6700\u4f73\u73ed\u6b21\uff1a{n}', shift:'\u73ed\u6b21 {n}/5', objective:'\u5b8c\u6210 {done}/{goal} \u67b6\u98db\u8239', errors:'\u5931\u8aa4 {done}/3', stageReady:'\u53ef\u958b\u59cb', stageLocked:'\u672a\u89e3\u9396', stageReplay:'\u53ef\u91cd\u73a9', service:'\u4f7f\u7528\u7dad\u4fee\u670d\u52d9', dragHint:'\u62d6\u66f3\u98db\u8239，\u6216\u6309 Enter \u5f8c\u7528\u65b9\u5411\u9375\u9078\u64c7\u78bc\u982d\u3002', menu:'\u56de\u4e3b\u9078\u55ae', next:'\u4e0b\u4e00\u73ed', retry:'\u91cd\u8a66\u73ed\u6b21', win:'\u73ed\u6b21\u5b8c\u6210\uff01', lose:'\u5929\u7a7a\u6e2f\u58c5\u585e\uff01', winCopy:'\u6e05\u6670\u8abf\u5ea6\u70ba\u5929\u7a7a\u6e2f\u5beb\u4e0b\u65b0\u7d00\u9304\u3002', loseCopy:'\u4e09\u6b21\u4e0d\u5b89\u5168\u9032\u5834\u95dc\u9589\u4e86\u73ed\u6b21\uff0c\u91cd\u8a66\u514d\u8cbb\u3002', repair:'\u7dad\u4fee\u96f6\u4ef6 {n}' }
   };
   Object.assign(strings.en, {
+    leaveTitle: 'Leave this shift?',
+    leaveCopy: 'Current shift progress will be lost. Your saved medals and rewards are safe.',
+    keepPlaying: 'Keep Playing',
+    leaveShift: 'Leave Shift',
     guideTitle: 'How to dispatch',
     guideBody: 'Choose a shift, read each flight request, then guide the airship to the highlighted matching dock before congestion builds.',
     backToLobby: 'Back to lobby',
@@ -35,6 +39,10 @@
     routeCancelled: 'Route cancelled. No error added.',
   });
   Object.assign(strings['zh-Hant'], {
+    leaveTitle: '\u96e2\u958b\u9019\u500b\u73ed\u6b21？',
+    leaveCopy: '\u672c\u5c40\u9032\u5ea6\u6703\u6d88\u5931，\u5df2\u5132\u5b58\u7684\u52f3\u7ae0\u8207\u734e\u52f5\u4e0d\u53d7\u5f71\u97ff\u3002',
+    keepPlaying: '\u7e7c\u7e8c\u8abf\u5ea6',
+    leaveShift: '\u96e2\u958b\u73ed\u6b21',
     guideTitle: '\u5982\u4f55\u8abf\u5ea6',
     guideBody: '\u9078\u64c7\u73ed\u6b21\u3001\u8b80\u61c2\u6bcf\u67b6\u98db\u8239\u7684\u9700\u6c42\uff0c\u518d\u65bc\u58c5\u585e\u524d\u5c07\u98db\u8239\u5f15\u5c0e\u81f3\u9ad8\u4eae\u7684\u5c0d\u61c9\u78bc\u982d\u3002',
     backToLobby: '\u56de\u5230\u5927\u5ef3',
@@ -356,6 +364,47 @@
       first.focus();
     }
   }
+  function closeLeaveConfirm({restoreFocus=true} = {}) {
+    $('leaveConfirm').classList.add('hidden');
+    $('battleLive').inert = false;
+    $('battleLive').setAttribute('aria-hidden', 'false');
+    if (restoreFocus) requestAnimationFrame(() => $('flight').focus({preventScroll:true}));
+  }
+  function openLeaveConfirm() {
+    cancelRouteGesture({restoreGuidance:false});
+    state.selected = false;
+    setDockKeyboardMode(false);
+    $('leaveTitle').textContent = t('leaveTitle');
+    $('leaveCopy').textContent = t('leaveCopy');
+    $('leaveCancel').textContent = t('keepPlaying');
+    $('leaveConfirmBtn').textContent = t('leaveShift');
+    $('battleLive').inert = true;
+    $('battleLive').setAttribute('aria-hidden', 'true');
+    $('leaveConfirm').classList.remove('hidden');
+    requestAnimationFrame(() => $('leaveCancel').focus({preventScroll:true}));
+  }
+  function trapLeaveFocus(event) {
+    if ($('leaveConfirm').classList.contains('hidden')) return;
+    if (event.repeat && (event.key === 'Enter' || event.key === ' ')) {
+      event.preventDefault();
+      return;
+    }
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      closeLeaveConfirm();
+      return;
+    }
+    if (event.key !== 'Tab') return;
+    const first = $('leaveCancel');
+    const last = $('leaveConfirmBtn');
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  }
   function finish(ok) {
     if (ok && state.serviced && !state.conflict && state.crewAssigned && state.fuel > 0) {
       state.done += 1;
@@ -512,7 +561,10 @@
     });
   };
   $('stageBack').onclick = () => { clearInsuranceConfirmation(); renderContractControls(); show('mainScreen'); };
-  $('battleBack').onclick = () => { cancelRouteGesture({restoreGuidance:false}); show('stageScreen'); renderStages(); };
+  $('battleBack').onclick = openLeaveConfirm;
+  $('leaveCancel').onclick = () => closeLeaveConfirm();
+  $('leaveConfirmBtn').onclick = () => { closeLeaveConfirm({restoreFocus:false}); show('stageScreen'); renderStages(); };
+  $('leaveConfirm').addEventListener('keydown', trapLeaveFocus);
   $('menuBtn').onclick = () => show('mainScreen');
   $('result').addEventListener('keydown', trapResultFocus);
   $('serviceBtn').onclick = () => {

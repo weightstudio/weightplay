@@ -346,6 +346,8 @@
     animalCard: $("animalCard"),
     animalEmoji: $("animalEmoji"),
     animalName: $("animalName"),
+    requestLine: $("requestLine"),
+    requestIcon: $("requestIcon"),
     requestText: $("requestText"),
     itemGrid: $("itemGrid"),
     feedbackText: $("feedbackText"),
@@ -399,6 +401,7 @@
     if (memoryFrame) cancelAnimationFrame(memoryFrame);
     memoryFrame = 0;
     nodes.requestText.classList.remove("memory-hidden");
+    nodes.requestIcon.classList.remove("memory-hidden");
   }
 
   function scheduleMemoryCue() {
@@ -419,6 +422,7 @@
       memoryFrame = 0;
       nodes.requestText.textContent = t("memoryHidden");
       nodes.requestText.classList.add("memory-hidden");
+      nodes.requestIcon.classList.add("memory-hidden");
     };
     memoryFrame = requestAnimationFrame(step);
   }
@@ -760,6 +764,13 @@
         : t("task", { station: t(`stations.${stage.station}`), animal: t(`animals.${stage.animal}`), item: t(`items.${task.value}`) });
     nodes.requestText.dataset.fullText = nodes.requestText.textContent;
     nodes.requestText.classList.remove("memory-hidden");
+    const picturedItem = task.kind === "category" ? "" : task.value;
+    nodes.requestLine.classList.toggle("has-picture", Boolean(picturedItem));
+    nodes.requestIcon.classList.toggle("hidden", !picturedItem);
+    nodes.requestIcon.classList.remove("memory-hidden");
+    nodes.requestIcon.dataset.item = picturedItem;
+    if (picturedItem) nodes.requestIcon.src = iconSrc(picturedItem);
+    else nodes.requestIcon.removeAttribute("src");
     nodes.animalCard.setAttribute("aria-label", nodes.requestText.textContent);
     nodes.feedbackText.textContent = "";
     renderItems(stage, task);
@@ -1048,6 +1059,7 @@
       if (!stage?.memory || !nodes.requestText.dataset.fullText || nodes.playPanel.classList.contains("hidden")) return;
       nodes.requestText.textContent = nodes.requestText.dataset.fullText;
       nodes.requestText.classList.remove("memory-hidden");
+      nodes.requestIcon.classList.remove("memory-hidden");
       scheduleMemoryCue();
     });
     nodes.resultPanel.addEventListener("keydown", (event) => {

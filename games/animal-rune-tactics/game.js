@@ -433,6 +433,13 @@
     resume: "\u7e7c\u7e8c",
     pauseMenu: "\u8fd4\u56de\u4efb\u52d9",
   });
+  Object.assign(text.en, { battleDetails: "Battle details" });
+  Object.assign(text["zh-Hant"], { battleDetails: "\u6230\u9b25\u8a73\u7d30\u8cc7\u8a0a" });
+  text["zh-Hans"] = {
+    battleDetails: "\u6218\u6597\u8be6\u7ec6\u4fe1\u606f",
+    pauseHint: "\u654c\u65b9\u56de\u5408\u548c\u6240\u6709\u5f85\u5904\u7406\u52a8\u4f5c\u90fd\u4f1a\u6682\u505c，\u76f4\u5230\u4f60\u7ee7\u7eed\u6e38\u620f\u3002",
+  };
+
   text.es = {
     title: "Tácticas de Runas Animales",
     language: "Idioma",
@@ -995,7 +1002,7 @@
 
   function t(key, vars = {}) {
     const sourceLocale = locale === "zh-Hans" ? "zh-Hant" : locale;
-    let value = (text[sourceLocale] && text[sourceLocale][key]) || text.en[key] || key;
+    let value = text[locale]?.[key] || text[sourceLocale]?.[key] || text.en[key] || key;
     Object.entries(vars).forEach(([name, val]) => {
       value = value.replaceAll(`{${name}}`, val);
     });
@@ -1155,6 +1162,7 @@
     nodes.localeSelect.setAttribute("aria-label", t("language"));
     nodes.pauseBtn.setAttribute("aria-label", t("pause"));
     nodes.grid.setAttribute("aria-label", t("boardLabel"));
+    document.querySelector(".battle-secondary")?.setAttribute("aria-label", t("battleDetails"));
     if (nodes.mainStartBtn) nodes.mainStartBtn.textContent = t("startGame");
     if (nodes.stagePanel) {
       nodes.stagePanel.querySelector("strong").textContent = t("missionSelect");
@@ -1406,6 +1414,7 @@
         <button type="button" data-rune-stage-tab="heroes" data-ui="stageTabHeroes">Heroes</button>
         <button type="button" data-rune-stage-tab="training" data-ui="stageTabTraining">Training</button>
       </nav>`;
+    missionList.querySelector(":scope > .section-head")?.remove();
     stagePanel.querySelector('[data-rune-stage-view="missions"]').append(missionList);
     const missionBriefing = document.createElement("section");
     missionBriefing.className = "mission-briefing";
@@ -1414,11 +1423,7 @@
     stagePanel.querySelector('[data-rune-stage-view="heroes"]').append(nodes.growthSummary, heroList);
     stagePanel.querySelector('[data-rune-stage-view="training"]').append(diamondCard);
     nodes.menuPanel.after(stagePanel);
-    const reserve = document.createElement("div");
-    reserve.className = "wp-standard-stage-reserve is-hidden";
-    reserve.setAttribute("aria-hidden", "true");
-    stagePanel.after(reserve);
-    Object.assign(nodes, { stagePanel, stageReserve: reserve, mainStartBtn: mainStart, stageBackBtn: stagePanel.querySelector("#stageBackBtn"), missionBriefing });
+    Object.assign(nodes, { stagePanel, mainStartBtn: mainStart, stageBackBtn: stagePanel.querySelector("#stageBackBtn"), missionBriefing });
     stagePanel.querySelectorAll("[data-rune-stage-tab]").forEach((button) => button.addEventListener("click", () => {
       const tab = button.dataset.runeStageTab;
       if (tab !== "training") resetTrainingIntent();
@@ -1432,7 +1437,6 @@
     selectedMission = Math.min(profile.unlockedMission, MISSION_COUNT);
     nodes.menuPanel.classList.add("is-hidden");
     nodes.stagePanel.classList.remove("is-hidden");
-    nodes.stageReserve.classList.remove("is-hidden");
     document.body.classList.add("wp-standard-stage-page");
     renderMenu();
     focusSelectedMission();
@@ -1441,7 +1445,6 @@
   function showMainFromStage() {
     resetTrainingIntent();
     nodes.stagePanel.classList.add("is-hidden");
-    nodes.stageReserve.classList.add("is-hidden");
     nodes.menuPanel.classList.remove("is-hidden");
     document.body.classList.remove("wp-standard-stage-page");
     requestAnimationFrame(() => nodes.mainStartBtn.focus({ preventScroll: true }));
@@ -1489,7 +1492,6 @@
     };
     nodes.menuPanel.classList.add("is-hidden");
     nodes.stagePanel.classList.add("is-hidden");
-    nodes.stageReserve.classList.add("is-hidden");
     document.body.classList.remove("wp-standard-stage-page");
     document.body.classList.add("is-rune-playing");
     nodes.backBtn.setAttribute("href", "#stage");
@@ -2389,7 +2391,6 @@
     setBattleCovered(false);
     nodes.menuPanel.classList.add("is-hidden");
     nodes.stagePanel.classList.remove("is-hidden");
-    nodes.stageReserve.classList.remove("is-hidden");
     document.body.classList.add("wp-standard-stage-page");
     renderMenu();
     focusSelectedMission();

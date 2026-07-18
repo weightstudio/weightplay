@@ -60,7 +60,7 @@
   }
   function pauseBattleTasks(){ if(battleTasksPaused)return; battleTasksPaused=true; const now=performance.now(); battleTasks.forEach(task=>{if(task.last!==null)task.remaining-=Math.max(0,now-task.last);task.last=null;if(task.frame)cancelAnimationFrame(task.frame);task.frame=0;}); }
   function resumeBattleTasks(){ if(!battleTasksPaused)return; battleTasksPaused=false; battleTasks.forEach(task=>{if(!task.frame)task.frame=requestAnimationFrame(task.step);}); }
-  function screen(name) { const result=name==='result'; if(name!=='battle'){cancelBattleTasks();$('clueReveal')?.classList.add('hidden');} document.querySelector('[data-screen="main"]').classList.toggle('hidden',name!=='main'); document.querySelector('[data-screen="stage"]').classList.toggle('hidden',name!=='stage'); document.querySelector('[data-screen="battle"]').classList.toggle('hidden',name!=='battle'&&!result); $('resultPanel').classList.toggle('hidden',!result); $('battleLive').classList.toggle('hidden',result); $('battleLive').inert=result;if(result)$('battleLive').setAttribute('aria-hidden','true');else $('battleLive').removeAttribute('aria-hidden'); document.body.classList.toggle('word-stage',name==='stage'); document.body.classList.toggle('word-playing',name==='battle'||result); document.body.classList.toggle('word-result',result); updateWordFrame(); }
+  function screen(name) { const result=name==='result'; if(name!=='battle'){cancelBattleTasks();$('clueReveal')?.classList.add('hidden');} document.querySelector('[data-screen="main"]').classList.toggle('hidden',name!=='main'); document.querySelector('[data-screen="stage"]').classList.toggle('hidden',name!=='stage'); document.querySelector('[data-screen="battle"]').classList.toggle('hidden',name!=='battle'&&!result); $('resultPanel').classList.toggle('hidden',!result); $('battleLive').classList.toggle('hidden',result); $('battleLive').inert=result;if(result)$('battleLive').setAttribute('aria-hidden','true');else $('battleLive').removeAttribute('aria-hidden'); document.body.classList.toggle('word-stage',name==='stage'); document.body.classList.toggle('word-playing',name==='battle'||result); document.body.classList.toggle('word-result',result); }
   function translate(){ document.documentElement.lang=lang; document.querySelectorAll('[data-copy]').forEach(el=>el.textContent=t(el.dataset.copy)); }
   function save(){ localStorage.setItem('wordTrailsLocale',lang); localStorage.setItem('weightPlayLocale',lang); localStorage.wordTrailsBest = JSON.stringify(JSON.parse(localStorage.wordTrailsBest || '{}')); }
   function renderStages(){ const rail=$('stageRail'); rail.innerHTML=''; const best=JSON.parse(localStorage.wordTrailsBest||'{}'); packs[lang].forEach((item,i)=>{ const card=document.createElement('button'); card.className='stage-card'+(i===stage?' selected':'')+(i>0&&!best[lang+'-'+(i-1)]?' locked':''); card.disabled=i>0&&!best[lang+'-'+(i-1)]; card.innerHTML=`<strong>${i+1}. ${item.name}</strong><span>${item.words.length} ${lang==='en'?'words':'個字詞'}</span>`; card.onclick=()=>{stage=i;renderStages()};rail.append(card); }); $('stageProgress').textContent=`${stage+1} / ${packs[lang].length}`; }
@@ -192,7 +192,7 @@
   });
   rail.addEventListener('pointermove',event=>{
     if(!railPointerActive) return;
-    const scale=Number.parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--word-scale'))||1;
+    const scale=Number.parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--wp-stage-canvas-scale'))||1;
     const delta=(event.clientX-railStartX)/scale;
     if(Math.abs(delta)<=10) return;
     rail.dataset.dragging='true';
@@ -235,17 +235,6 @@
   $('loadingText').textContent='72%';
   if(document.readyState==='complete') finishLoading(); else window.addEventListener('load',finishLoading,{once:true});
   setTimeout(finishLoading,1800);
-  function updateWordFrame(){
-    if(!document.body.classList.contains('word-stage')&&!document.body.classList.contains('word-playing'))return;
-    const width=visualViewport?.width||innerWidth,height=visualViewport?.height||innerHeight;
-    const scale=Math.min(Math.max(1,width)/390,Math.max(1,height)/788);
-    document.documentElement.style.setProperty('--word-scale',String(scale));
-    document.documentElement.style.setProperty('--word-frame-width',`${390*scale}px`);
-    document.documentElement.style.setProperty('--word-frame-height',`${788*scale}px`);
-    document.documentElement.style.setProperty('--word-frame-left',`${(width-390*scale)/2}px`);
-    document.documentElement.style.setProperty('--word-frame-top',`${height-788*scale}px`);
-  }
-  addEventListener('resize',updateWordFrame);visualViewport?.addEventListener('resize',updateWordFrame,{passive:true});
   addEventListener('pagehide',pauseBattleTasks);addEventListener('pageshow',resumeBattleTasks);document.addEventListener('visibilitychange',()=>{if(document.hidden)pauseBattleTasks();else resumeBattleTasks();});
   track('game_view');
   locale.onchange=()=>{lang=locale.value;stage=0;save();translate();};

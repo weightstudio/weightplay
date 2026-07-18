@@ -327,7 +327,32 @@ select {
   font-size: 1.8rem;
 }
 
-.animal-card span {
+.request-line {
+  width: min(100%, 420px);
+  min-width: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
+  justify-self: center;
+  gap: 8px;
+}
+
+.request-line.has-picture {
+  grid-template-columns: 48px minmax(0, 1fr);
+}
+
+.request-icon {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  filter: drop-shadow(0 5px 6px rgba(34, 76, 54, 0.16));
+}
+
+.request-icon.memory-hidden {
+  visibility: hidden;
+}
+
+.request-line span {
   min-height: 2.4em;
   display: grid;
   place-items: center;
@@ -560,9 +585,18 @@ body.zoo-helper-playing .animal-card strong {
   font-size: clamp(1rem, 3.5vmin, 1.45rem);
 }
 
-body.zoo-helper-playing .animal-card span {
+body.zoo-helper-playing .request-line span {
   min-height: 1.3em;
   font-size: clamp(0.72rem, 2.5vmin, 1rem);
+}
+
+body.zoo-helper-playing .request-line.has-picture {
+  grid-template-columns: 42px minmax(0, 1fr);
+}
+
+body.zoo-helper-playing .request-icon {
+  width: 42px;
+  height: 42px;
 }
 
 body.zoo-helper-playing .item-grid {
@@ -635,7 +669,7 @@ body.zoo-helper-playing .feedback {
   }
 
   body.zoo-helper-playing .animal-card strong,
-  body.zoo-helper-playing .animal-card span {
+  body.zoo-helper-playing .request-line {
     align-self: center;
     justify-self: stretch;
     text-align: left;

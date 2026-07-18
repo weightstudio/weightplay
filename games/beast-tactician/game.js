@@ -93,6 +93,8 @@
       backToMain: "Back to main",
       stageSelector: "Stage selector",
       backToStages: "Back to stages",
+      leaveBattleConfirm: "Leave Stage {stage}? Press Back again to abandon this battle.",
+      leaveBattleConfirmLabel: "Confirm leaving Stage {stage}. Current wave, defenders, coins, and core health will be lost.",
       localeName: "Traditional Chinese",
       releaseBadge: "Internal Release Candidate",
       publicReleaseBadge: "Playable Now",
@@ -570,6 +572,8 @@
       backToMain: "返回主頁",
       stageSelector: "關卡選擇列",
       backToStages: "返回關卡選擇",
+      leaveBattleConfirm: "要離開第 {stage} 關嗎？再次按返回將放棄本次戰鬥。",
+      leaveBattleConfirmLabel: "確認離開第 {stage} 關。目前波次、守衛、金幣與核心生命都會失去。",
       localeName: "繁體中文",
       releaseBadge: "內部 Release 候選版",
       menuTitle: "英雄塔防",
@@ -754,6 +758,8 @@
     backToMain: "Volver al inicio",
     stageSelector: "Selector de niveles",
     backToStages: "Volver a niveles",
+    leaveBattleConfirm: "¿Salir del nivel {stage}? Pulsa Volver otra vez para abandonar esta batalla.",
+    leaveBattleConfirmLabel: "Confirma salir del nivel {stage}. Se perderán la oleada, defensores, monedas y vida del núcleo.",
     localeName: "Español",
     releaseBadge: "Candidato interno",
     publicReleaseBadge: "Jugar ahora",
@@ -1007,6 +1013,9 @@
   let goldenFrameConfirmTimer = 0;
   let reviveConfirmPending = false;
   let reviveConfirmTimer = 0;
+  let leaveBattleConfirmPending = false;
+  let leaveBattleConfirmTimer = 0;
+  let leaveBattleWasPaused = false;
 
   function t(key, values = {}) {
     let value = text[state.locale]?.[key] || text.en[key] || key;
@@ -2150,6 +2159,36 @@
     state.paused = true;
     track("game_speed_change", { stage: state.currentStage, speed: state.speed, paused: true, reason: "page_hidden" });
     updateHud();
+  }
+
+  function clearLeaveBattleConfirmation(restoreBattle = true) {
+    clearTimeout(leaveBattleConfirmTimer);
+    leaveBattleConfirmTimer = 0;
+    if (!leaveBattleConfirmPending) return;
+    leaveBattleConfirmPending = false;
+    nodes.menuBtn.setAttribute("aria-label", t("backToStages"));
+    if (restoreBattle && state.screen === "game" && !state.gameOver) {
+      state.paused = leaveBattleWasPaused;
+      updateHud();
+    }
+  }
+
+  function requestLeaveBattle() {
+    if (!leaveBattleConfirmPending) {
+      leaveBattleWasPaused = state.paused;
+      state.paused = true;
+      leaveBattleConfirmPending = true;
+      nodes.menuBtn.setAttribute("aria-label", t("leaveBattleConfirmLabel", { stage: state.currentStage }));
+      showToast(t("leaveBattleConfirm", { stage: state.currentStage }));
+      updateHud();
+      leaveBattleConfirmTimer = setTimeout(() => clearLeaveBattleConfirmation(true), 5000);
+      nodes.menuBtn.focus({ preventScroll: true });
+      return;
+    }
+    clearLeaveBattleConfirmation(false);
+    setScreen("stages");
+    renderStages();
+    focusCurrentStage();
   }
 
   function updateDefenders(dt) {
@@ -3313,11 +3352,10 @@
       setScreen("menu");
       window.requestAnimationFrame(() => nodes.startBtn.focus({ preventScroll: true }));
     });
-    nodes.menuBtn.addEventListener("click", () => {
-      setScreen("stages");
-      renderStages();
-      focusCurrentStage();
+    nodes.menuBtn.addEventListener("keydown", (event) => {
+      if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
     });
+    nodes.menuBtn.addEventListener("click", requestLeaveBattle);
     nodes.waveBtn.addEventListener("click", startWave);
     nodes.upgradeBtn.addEventListener("keydown", (event) => {
       if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();

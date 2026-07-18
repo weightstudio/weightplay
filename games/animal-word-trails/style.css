@@ -16,7 +16,7 @@ h1 { margin: 0; font-size: 32px; } .main-screen p { font-size: 17px; line-height
 .primary, .secondary { min-height: 48px; border: 0; border-radius: 12px; padding: 0 22px; font-weight: 800; cursor: pointer; }
 .primary { background: #e5a72b; color: #342103; box-shadow: inset 0 -3px #ad671c; }.secondary { background: #fff; color: #254c3b; border: 2px solid #699b79; }
 .guide { margin: 20px auto 0; max-width: 500px; padding: 14px; border-radius: 14px; background: #ffffffcc; text-align: left; }.guide h2 { margin: 0; font-size: 18px; }
-.stage-screen { display: grid; grid-template-rows: 52px minmax(0, 1fr) 52px; gap: 12px; background: #eef7de; }.stage-screen header { display: flex; align-items: center; justify-content: space-between; padding-left: 58px; font-size: 19px; }.stage-screen .back { position: absolute; top: 18px; left: 18px; }
+.stage-screen { display: grid; grid-template-rows: 52px minmax(0, 1fr) 52px; gap: 12px; background: #eef7de; }.stage-screen header { display: flex; align-items: center; justify-content: space-between; padding: 0 8px 0 58px; border-radius: 12px; background: #173d32e8; color: #fff; font-size: 19px; text-shadow: 0 1px 2px #0008; }.stage-screen .back { position: absolute; top: 18px; left: 18px; }
 .stage-rail { display: flex; overflow-x: auto; gap: 14px; scroll-snap-type: x mandatory; padding: 24px calc(50% - 132px); align-items: center; touch-action: pan-x; }.stage-card { flex: 0 0 264px; height: 190px; scroll-snap-align: center; border: 3px solid #8aaf79; border-radius: 18px; background: #fffdf3; padding: 18px; text-align: left; cursor: pointer; }.stage-card.selected { border-color: #e5a72b; box-shadow: 0 0 0 4px #ffe39a; }.stage-card.locked { opacity: .55; }.stage-card strong { display: block; font-size: 24px; }.stage-card span { display: block; margin-top: 18px; }.stage-screen .primary { width: min(100%, 340px); margin: 0 auto; }
 .stage-feedback { margin: 0; min-height: 52px; display: grid; place-items: center; padding: 4px 54px; text-align: center; color: #315a46; font-weight: 800; }
 .battle-shell { position: fixed; inset: 0; display: grid; place-items: end center; overflow: hidden; background: #173d32; padding: 0; color: #fff; text-size-adjust: 100%; -webkit-text-size-adjust: 100%; }
@@ -45,27 +45,10 @@ h1 { margin: 0; font-size: 32px; } .main-screen p { font-size: 17px; line-height
 .icon-action { grid-template-columns: 26px minmax(0, 1fr); }
 .icon-action span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .stage-card.locked { cursor: not-allowed; }
-@media (max-height: 520px) {
-  .battle-canvas { grid-template-rows: 42px 42px minmax(0, 1fr) 50px; }
-  .battle-top { grid-template-columns: 42px minmax(0, 1fr) 54px; padding: 0 6px; }
-  .battle-top .back { width: 34px; height: 34px; }
-  .battle-top strong { font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .objective { min-height: 42px; padding: 0 9px; font-size: 12px; overflow: hidden; }
-  .play-scene { grid-template-rows: 24px minmax(0, 1fr) 18px; padding: 4px; }
-  .target { padding: 3px 5px; font-size: 10px; }
-  .board { width: min(100%, 360px, calc(var(--wp-mobile-vh, 100vh) - 270px)); gap: 3px; padding: 4px; border-radius: 10px; }
-  .tile { border-radius: 7px; font-size: 16px; }
-  .feedback { font-size: 10px; }
-  .actions { grid-template-columns: 62px 62px 62px minmax(0, 1fr); gap: 5px; padding: 5px; }
-  .icon-action { font-size: 10px; grid-template-columns: 20px minmax(0, 1fr); }
-  .icon { width: 18px; height: 18px; }
-  .compact { min-height: 40px; padding: 0 10px; font-size: 12px; }
-}
-
-/* Kids owns one invariant 390x788 logical Canvas on Stage, Battle, and Result. */
-body.word-stage .stage-screen { position:fixed; inset:auto; left:var(--word-frame-left,4px); top:var(--word-frame-top,4px); width:390px; min-height:0; height:788px; padding:18px; overflow:hidden; transform:scale(var(--word-scale,1)); transform-origin:top left; }
-.battle-slot { position:relative; width:var(--word-frame-width,390px); height:var(--word-frame-height,788px); }
-body:is(.word-playing,.word-result) .battle-canvas { position:absolute; inset:0 auto auto 0; display:block; width:390px; max-width:none; height:788px; border-radius:16px; transform:scale(var(--word-scale,1)); transform-origin:top left; }
+/* Shared Stage/Battle owners apply the one uniform scale; game-local children fill their responsive logical envelope. */
+body.word-stage .stage-screen { padding:18px; overflow:hidden; }
+.battle-slot { position:relative; width:100%; height:100%; }
+body:is(.word-playing,.word-result) .battle-canvas { display:block; border-radius:16px; }
 .battle-live { display:grid; grid-template-rows:52px 64px minmax(0,1fr) 64px; min-width:0; min-height:0; height:100%; }
 .result-overlay { position:absolute; inset:0; z-index:5; box-sizing:border-box; width:100%; height:100%; min-width:0; min-height:0; max-width:none; max-height:none !important; overflow:hidden; display:grid; grid-template-rows:minmax(0,1fr) auto auto auto; align-content:center; justify-items:center; gap:12px; padding:20px; border-radius:16px; }
 body.word-playing #resultPanel { height:100% !important; max-height:100% !important; }
