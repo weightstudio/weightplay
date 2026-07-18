@@ -2303,7 +2303,7 @@ body.zoo-playing .sound-toggle {
   box-shadow: 0 0 0 3px #173047;
 }
 
-/* Fixed Battle composition: surrounding viewport space letterboxes instead of resizing park UI tracks. */
+/* Responsive Battle composition: one common scale expands the logical envelope. */
 html:has(body.zoo-playing),
 body.zoo-playing {
   position: fixed;
@@ -2329,17 +2329,17 @@ body.zoo-playing .zoo-app {
 body.zoo-playing #gamePanel.game-panel {
   position: fixed;
   z-index: 50;
-  left: var(--zoo-battle-left, 4px);
-  top: var(--zoo-battle-top, 4px);
-  width: 382px !important;
+  left: 0;
+  top: 0;
+  width: var(--wp-battle-logical-width, 382px) !important;
   max-width: none !important;
-  height: 780px !important;
+  height: var(--wp-battle-logical-height, 780px) !important;
   max-height: none !important;
-  min-height: 780px !important;
+  min-height: var(--wp-battle-logical-height, 780px) !important;
   margin: 0 !important;
   padding: 4px !important;
   overflow: hidden !important;
-  transform: scale(var(--zoo-battle-scale, 1));
+  transform: scale(var(--wp-battle-canvas-scale, 1));
   transform-origin: top left;
   grid-template-rows: 48px minmax(0, 1fr);
 }
@@ -2388,6 +2388,7 @@ body.zoo-playing #resultPanel.result-panel {
 
 body.zoo-playing #resultPanel .result-card {
   width: 100%;
+  max-width: 410px;
   max-height: 100%;
 }
 
@@ -2526,20 +2527,21 @@ body.zoo-playing .animal-shop {
   }
 }
 
-/* Final fixed-shell precedence over all legacy phone rules above. */
+/* Final responsive-shell precedence over all legacy phone rules above. */
 body.zoo-playing #gamePanel.game-panel {
   position: fixed !important;
-  left: var(--zoo-battle-left, 4px) !important;
-  top: var(--zoo-battle-top, 4px) !important;
-  width: 382px !important;
+  left: 0 !important;
+  top: 0 !important;
+  width: var(--wp-battle-logical-width, 382px) !important;
+  min-width: var(--wp-battle-logical-width, 382px) !important;
   max-width: none !important;
-  height: 780px !important;
+  height: var(--wp-battle-logical-height, 780px) !important;
   max-height: none !important;
-  min-height: 780px !important;
+  min-height: var(--wp-battle-logical-height, 780px) !important;
   margin: 0 !important;
   padding: 4px !important;
   overflow: hidden !important;
-  transform: scale(var(--zoo-battle-scale, 1)) !important;
+  transform: scale(var(--wp-battle-canvas-scale, 1)) !important;
   transform-origin: top left !important;
   display: grid !important;
   grid-template-rows: 48px minmax(0, 1fr) !important;
@@ -2559,17 +2561,33 @@ body.zoo-playing #habitatGrid.habitat-grid {
 }
 
 body.zoo-playing .care-panel {
+  width: min(100%, 374px) !important;
   height: 100% !important;
   max-height: 100% !important;
+  justify-self: center;
 }
 
-/* Mobile keeps the same logical Battle Canvas; the viewport only changes its uniform scale. */
+body.zoo-playing .resource-row .resource-card {
+  width: min(100%, 326px);
+  max-width: 326px;
+  justify-self: start;
+}
+
+body.zoo-playing .savanna-stage {
+  height: 330px !important;
+  min-height: 330px !important;
+  max-height: 330px !important;
+  aspect-ratio: auto !important;
+}
+
+/* Mobile keeps the same child geometry while the outer logical envelope expands. */
 @media (max-width: 820px) {
   body.zoo-playing #gamePanel.game-panel {
-    width: 382px !important;
-    height: 780px !important;
-    min-height: 780px !important;
-    transform: scale(var(--zoo-battle-scale, 1)) !important;
+    width: var(--wp-battle-logical-width, 382px) !important;
+    min-width: var(--wp-battle-logical-width, 382px) !important;
+    height: var(--wp-battle-logical-height, 780px) !important;
+    min-height: var(--wp-battle-logical-height, 780px) !important;
+    transform: scale(var(--wp-battle-canvas-scale, 1)) !important;
   }
 
   body.zoo-playing main.zoo-app #habitatGrid.habitat-grid.play-area {
@@ -2598,7 +2616,7 @@ body.zoo-playing .care-panel {
   }
 }
 
-/* 30-challenge Stage: one fixed Kids Canvas with the shared rail controller. */
+/* 30-challenge Stage: one responsive Kids Canvas with the shared rail controller. */
 body.zoo-stage {
   width: 100%;
   height: 100dvh;
@@ -2622,10 +2640,10 @@ body.zoo-stage .challenge-stage-panel {
   left: var(--zoo-stage-left, 0) !important;
   top: var(--zoo-stage-top, 0) !important;
   z-index: 60;
-  width: 390px !important;
-  height: 788px !important;
-  min-width: 390px !important;
-  min-height: 788px !important;
+  width: var(--zoo-stage-logical-width, 390px) !important;
+  height: var(--zoo-stage-logical-height, 788px) !important;
+  min-width: var(--zoo-stage-logical-width, 390px) !important;
+  min-height: var(--zoo-stage-logical-height, 788px) !important;
   display: grid !important;
   grid-template-rows: 64px minmax(0, 1fr);
   gap: 12px;

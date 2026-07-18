@@ -1002,7 +1002,8 @@ html body.wp-mobile-game-mode.rescue-playing.rescue-expanded-canvas main.rescue-
   margin: 0 !important;
   padding: 6px !important;
   overflow: hidden !important;
-  transform: none !important;
+  transform: scale(var(--rescue-battle-scale, 1)) !important;
+  transform-origin: top left !important;
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
 }
@@ -1015,6 +1016,10 @@ body.rescue-playing.rescue-expanded-canvas #playArea {
   width: 100%;
   margin: 0;
   transform: none;
+}
+
+body.rescue-playing.rescue-expanded-canvas .result-panel {
+  inset: 0 !important;
 }
 
 body.rescue-playing.rescue-expanded-canvas #hud {
@@ -1084,7 +1089,7 @@ body.rescue-playing.rescue-expanded-canvas .animal-panel span {
 }
 
 body.rescue-playing.rescue-expanded-canvas .board {
-  width: min(100%, calc(var(--rescue-battle-content-height, 780px) - 197px));
+  width: min(100%, calc(var(--rescue-battle-content-height, 780px) - 208px));
   height: auto;
   max-width: 100%;
   max-height: 100%;
@@ -1181,7 +1186,7 @@ body.rescue-playing .wp-tutorial-button {
   }
 
   body.rescue-playing.rescue-expanded-canvas .board {
-    width: min(100%, calc(var(--rescue-battle-content-height, 320px) - 166px));
+    width: min(100%, calc(var(--rescue-battle-content-height, 320px) - 176px));
   }
 
   body.rescue-playing.rescue-expanded-canvas .action-row,

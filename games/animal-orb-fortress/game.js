@@ -475,6 +475,47 @@
     toggle.setAttribute("aria-label", muted ? text.es.enableSound : text.es.disableSound);
   }
 
+  function normalizeGameLocalGuideCopy() {
+    const actualLocale = window.WonderI18n?.actualLocale?.() || document.documentElement.lang || locale;
+    const guide = document.querySelector(".game-page-info");
+    if (!guide) return;
+    const replacements = actualLocale === "zh-Hans"
+      ? [["牠", "它"], ["舊", "旧"]]
+      : actualLocale === "es"
+        ? [
+            ["Animal Orb Fortress", "Fortaleza de Orbes Animal"],
+            ["Clearing Wave 3", "Superar la tercera oleada"],
+            ["Star Stones", "Piedras Estelares"],
+            ["Bigger Orb", "Orbe gigante"],
+            ["Split Orb", "Orbe dividido"],
+            ["Piercing Shine", "Luz penetrante"],
+            ["Faster Recharge", "Carga rápida"],
+            ["Core Shield", "Escudo del núcleo"],
+            ["Scout Magnet", "Imán explorador"],
+            ["Orb Forge", "Forja de orbes"],
+            ["Companion Den", "Guarida de compañeros"],
+            ["Scout Tower", "Torre de exploración"],
+            ["Result", "Resultado"],
+          ]
+        : [];
+    if (!replacements.length) return;
+    const walker = document.createTreeWalker(guide, NodeFilter.SHOW_TEXT);
+    let node = walker.nextNode();
+    while (node) {
+      let value = node.nodeValue || "";
+      replacements.forEach(([from, to]) => { value = value.replaceAll(from, to); });
+      if (value !== node.nodeValue) node.nodeValue = value;
+      node = walker.nextNode();
+    }
+  }
+
+  function scheduleGameLocalLocalization() {
+    [0, 80, 320, 1400].forEach((delay) => window.setTimeout(() => {
+      localizeSpanishSoundToggle();
+      normalizeGameLocalGuideCopy();
+    }, delay));
+  }
+
   function updatePageMeta() {
     const meta = pageMeta[locale] || pageMeta.en;
     document.title = meta.title;
@@ -563,7 +604,7 @@
     document.body.classList.toggle("orb-fortress-playing", panel !== nodes.menuPanel);
     updateOrbBattleScale();
     fitOrbArena();
-    window.requestAnimationFrame(fitOrbArena);
+    queueOrbArenaFit();
     if (panel === nodes.stagePanel) {
       window.requestAnimationFrame(centerUnlockedStage);
       window.requestAnimationFrame(focusUnlockedStage);
@@ -597,6 +638,15 @@
     canvas.style.setProperty("height", `${arenaHeight}px`, "important");
   }
 
+  let arenaFitFrame = 0;
+  function queueOrbArenaFit() {
+    if (arenaFitFrame) return;
+    arenaFitFrame = window.requestAnimationFrame(() => {
+      arenaFitFrame = 0;
+      fitOrbArena();
+    });
+  }
+
   function configureArena() {
     W = 720;
     H = 1200;
@@ -609,8 +659,16 @@
   function refreshOrbBattleLayout() {
     updateOrbBattleScale();
     fitOrbArena();
-    window.requestAnimationFrame(fitOrbArena);
+    queueOrbArenaFit();
   }
+
+  // The shared Battle controller applies its responsive logical envelope after
+  // this game becomes visible. Refit when that envelope changes so the first
+  // wave uses the same arena size as every later wave.
+  const battlePanelResizeObserver = typeof ResizeObserver === "function"
+    ? new ResizeObserver(queueOrbArenaFit)
+    : null;
+  battlePanelResizeObserver?.observe(nodes.gamePanel);
 
   window.addEventListener?.("resize", refreshOrbBattleLayout, { passive: true });
   window.addEventListener?.("orientationchange", refreshOrbBattleLayout, { passive: true });
@@ -641,7 +699,7 @@
     renderMenu();
     renderHud();
     renderUpgradeCards();
-    localizeSpanishSoundToggle();
+    scheduleGameLocalLocalization();
   }
 
   function preload() {
@@ -2163,6 +2221,15 @@
       return canvas.getAttribute("aria-label") || "";
     },
   };
+
+  const guideLoadObserver = new MutationObserver((mutations) => {
+    const guideAdded = mutations.some((mutation) => Array.from(mutation.addedNodes || []).some((node) =>
+      node.nodeType === 1 && (node.matches?.(".game-page-info") || node.querySelector?.(".game-page-info"))
+    ));
+    if (guideAdded) scheduleGameLocalLocalization();
+  });
+  guideLoadObserver.observe(document.body, { childList: true });
+  window.setTimeout(() => guideLoadObserver.disconnect(), 5000);
 
   setLocale(locale);
   exposeBasicReady();

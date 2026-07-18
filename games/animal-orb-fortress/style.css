@@ -935,7 +935,7 @@ html:has(body.orb-fortress-playing), body.orb-fortress-playing { width:100%; hei
 body.orb-fortress-playing .orb-app { width:var(--orb-vw,100vw); height:var(--orb-vh,100dvh); min-height:0; padding:0; overflow:hidden; }
 body.orb-fortress-playing .topbar, body.orb-fortress-playing .game-page-info, body.orb-fortress-playing .tutorial-button, body.orb-fortress-playing .wp-tutorial-button, body.orb-fortress-playing .wp-tutorial-backdrop { display:none !important; }
 body.orb-fortress-playing #gamePanel.game-panel, body.orb-fortress-playing #stagePanel.stage-panel, body.orb-fortress-playing #upgradePanel.modal-panel, body.orb-fortress-playing #resultPanel.result-panel { position:fixed; z-index:50; left:50%; top:4px; width:min(calc(var(--orb-vw,100vw) - 8px),612px) !important; max-width:none !important; height:min(calc(var(--orb-vh,100dvh) - 64px),788px) !important; min-height:0; max-height:none !important; margin:0 !important; transform:translateX(-50%); overflow:hidden; -webkit-text-size-adjust:100%; text-size-adjust:100%; }
-body.orb-fortress-playing #gamePanel.game-panel { display:grid; grid-template-rows:54px minmax(0,1fr) 38px; gap:6px; padding:8px; background:radial-gradient(circle at center,rgba(38,104,88,.72),rgba(3,22,18,.96)); }
+body.orb-fortress-playing #gamePanel.game-panel { display:grid; grid-template-rows:54px minmax(0,1fr) 38px; gap:6px; border:0; padding:8px; background:radial-gradient(circle at center,rgba(38,104,88,.72),rgba(3,22,18,.96)); }
 body.orb-fortress-playing #stagePanel.stage-panel { display:grid; }
 body.orb-fortress-playing #gameCanvas { width:auto; max-width:100%; height:100%; max-height:100%; align-self:center; justify-self:center; aspect-ratio:var(--orb-arena-ratio,3/5); object-fit:contain; }
 body.orb-fortress-playing #upgradePanel.modal-panel { z-index:80; display:grid; place-items:center; padding:10px; }
@@ -946,7 +946,7 @@ body.orb-fortress-playing #gamePanel.is-hidden ~ #battleAdReserve { display:none
 /* Result is a bounded modal substate of the logical Battle canvas. */
 .battle-live{display:contents}
 body.orb-fortress-playing #gamePanel.game-panel{position:fixed}
-body.orb-fortress-playing #gamePanel.game-panel>#resultPanel.result-panel{position:absolute;z-index:80;inset:-1px;width:auto!important;height:auto!important;max-width:none!important;max-height:none!important;margin:0!important;transform:none;overflow:hidden}
+body.orb-fortress-playing #gamePanel.game-panel>#resultPanel.result-panel{position:absolute;z-index:80;inset:0;width:auto!important;height:auto!important;max-width:none!important;max-height:none!important;margin:0!important;transform:none;overflow:hidden}
 body.orb-fortress-playing #gamePanel.game-panel>#upgradePanel.modal-panel{position:absolute;z-index:80;inset:-1px;width:auto!important;height:auto!important;max-width:none!important;max-height:none!important;margin:0!important;transform:none;overflow:hidden}
 body.orb-fortress-playing #gamePanel.game-panel>#pausePanel.pause-panel{position:absolute;z-index:80;inset:-1px;display:grid;width:auto!important;height:auto!important;max-width:none!important;max-height:none!important;margin:0!important;transform:none;overflow:hidden}
 body.orb-fortress-playing #gamePanel.game-panel>#pausePanel.pause-panel.is-hidden{display:none!important}

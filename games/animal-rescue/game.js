@@ -3,6 +3,7 @@ const legacyLocaleKey = "weightplayLocale";
 const canonicalSavedLocale = localStorage.getItem(canonicalLocaleKey);
 const legacySavedLocale = localStorage.getItem(legacyLocaleKey);
 if (!canonicalSavedLocale && ["en", "zh-Hant", "zh-Hans", "es"].includes(legacySavedLocale)) {
+  localStorage.setItem(canonicalLocaleKey, legacySavedLocale);
   window.WonderI18n?.setLocale?.(legacySavedLocale);
 }
 
@@ -855,16 +856,16 @@ function updateBattleScale() {
   const viewportWidth = viewport?.width || window.innerWidth;
   const viewportHeight = viewport?.height || window.innerHeight;
   if (!document.body.classList.contains("rescue-playing") && !document.body.classList.contains("rescue-stage-select")) return;
-  document.body.classList.remove("rescue-expanded-canvas");
+  document.body.classList.add("rescue-expanded-canvas");
   const scale = Math.max(0.1, Math.min(viewportWidth / 390, viewportHeight / 788));
-  const width = 390 * scale;
-  const contentHeight = 788 * scale;
+  const width = viewportWidth / scale;
+  const contentHeight = viewportHeight / scale;
   document.documentElement.style.setProperty("--rescue-battle-scale", String(scale));
   document.documentElement.style.setProperty("--rescue-battle-width", `${width}px`);
   document.documentElement.style.setProperty("--rescue-battle-height", `${contentHeight}px`);
   document.documentElement.style.setProperty("--rescue-battle-content-height", `${contentHeight}px`);
-  document.documentElement.style.setProperty("--rescue-battle-left", `${(viewportWidth - width) / 2}px`);
-  document.documentElement.style.setProperty("--rescue-battle-top", `${viewportHeight - contentHeight}px`);
+  document.documentElement.style.setProperty("--rescue-battle-left", "0px");
+  document.documentElement.style.setProperty("--rescue-battle-top", "0px");
 }
 
 function resetRescueFrame() {
@@ -920,6 +921,7 @@ board.addEventListener("keydown", (event) => {
   moveTo(target);
 });
 undoBtn.addEventListener("click", undoMove);
+undoBtn.addEventListener("keydown", rejectRepeatedScreenActivation);
 resetBtn.addEventListener("click", resetLevel);
 nextBtn.addEventListener("click", () => startLevel(Math.min(levels.length - 1, activeIndex + 1)));
 retryBtn.addEventListener("click", () => {

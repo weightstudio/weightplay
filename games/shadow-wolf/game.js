@@ -60,6 +60,10 @@
     draftPanel: $("draftPanel"),
     lootPanel: $("lootPanel"),
     resultPanel: $("resultPanel"),
+    pauseBtn: $("pauseBtn"),
+    pausePanel: $("pausePanel"),
+    resumeBtn: $("resumeBtn"),
+    pauseStagesBtn: $("pauseStagesBtn"),
     startBtn: $("startBtn"),
     menuBtn: $("menuBtn"),
     retryBtn: $("retryBtn"),
@@ -154,6 +158,11 @@
       backToMain: "Back to main",
       stageRail: "Stage rail",
       backToStages: "Back to stages",
+      pauseBattle: "Pause battle",
+      pauseEyebrow: "EXPEDITION PAUSED",
+      pauseTitle: "Battle Paused",
+      pauseHint: "The battle is frozen. Resume when you are ready.",
+      resumeBattle: "Resume",
       moveLeft: "Move left",
       moveRight: "Move right",
       jumpAction: "Jump",
@@ -315,6 +324,11 @@
   };
 
   Object.assign(text["zh-Hant"], {
+    pauseBattle: "暫停戰鬥",
+    pauseEyebrow: "遠征已暫停",
+    pauseTitle: "戰鬥暫停",
+    pauseHint: "戰鬥已完全停止，準備好後再繼續。",
+    resumeBattle: "繼續戰鬥",
     adventureRecordTitle: "\u5192\u96aa\u7d00\u9304",
     adventureRecordText: "\u51fa\u5f81\u6b21\u6578\uff1a{runs} \u00b7 \u6700\u4f73\uff1a\u623f\u9593 {best}/8 \u00b7 \u5de8\u7378\u901a\u95dc\uff1a{wins}",
     amuletDecision: "\u6c38\u4e45\u89e3\u9396\u3002\u518d\u9ede\u4e00\u6b21\u78ba\u8a8d\uff1a{before} \u2192 {after} \u9846\u947d\u77f3\u3002",
@@ -376,6 +390,11 @@
     backToMain: "Volver al inicio",
     stageRail: "Carrusel de niveles",
     backToStages: "Volver a niveles",
+    pauseBattle: "Pausar batalla",
+    pauseEyebrow: "EXPEDICIÓN EN PAUSA",
+    pauseTitle: "Batalla en pausa",
+    pauseHint: "La batalla está detenida. Continúa cuando estés listo.",
+    resumeBattle: "Continuar",
     moveLeft: "Mover a la izquierda",
     moveRight: "Mover a la derecha",
     jumpAction: "Saltar",
@@ -609,6 +628,7 @@
     particles: [],
   };
   let backgroundBattleSuspended = false;
+  let battlePaused = false;
 
   // Level platforms geometry lists
   let platforms = [];
@@ -785,6 +805,7 @@
   }
 
   function showStage() {
+    closePause(false);
     clearAmuletConfirmation();
     clearActiveInputs();
     state.gameActive = false;
@@ -799,6 +820,7 @@
   }
 
   function showMain() {
+    closePause(false);
     clearAmuletConfirmation();
     clearActiveInputs();
     setResultModalOpen(false, false);
@@ -1193,6 +1215,7 @@
 
   // Active game start trigger
   function startRun(startStage = state.selectedStage) {
+    closePause(false);
     clearActiveInputs();
     setResultModalOpen(false, false);
     loadLocalState();
@@ -1460,6 +1483,60 @@
     const arenaSiblings = Array.from(nodes.resultPanel.parentElement?.children || []).filter((node) => node !== nodes.resultPanel);
     const sidebar = nodes.gamePanel.querySelector(".attribute-sidebar");
     return sidebar ? [...arenaSiblings, sidebar] : arenaSiblings;
+  }
+
+  function pauseCoveredRegions() {
+    const arenaSiblings = Array.from(nodes.pausePanel.parentElement?.children || []).filter((node) => node !== nodes.pausePanel);
+    const sidebar = nodes.gamePanel.querySelector(".attribute-sidebar");
+    return sidebar ? [...arenaSiblings, sidebar] : arenaSiblings;
+  }
+
+  function openPause() {
+    if (!state.gameActive || battlePaused || !nodes.draftPanel.classList.contains("hidden") || !nodes.resultPanel.classList.contains("hidden")) return;
+    battlePaused = true;
+    state.gameActive = false;
+    clearActiveInputs();
+    cancelAnimationFrame(state.gameLoopId);
+    nodes.pausePanel.classList.remove("hidden");
+    nodes.pauseBtn.setAttribute("aria-expanded", "true");
+    pauseCoveredRegions().forEach((region) => {
+      region.inert = true;
+      region.setAttribute("aria-hidden", "true");
+    });
+    nodes.resumeBtn.focus({ preventScroll: true });
+  }
+
+  function closePause(resume = true) {
+    if (!battlePaused && nodes.pausePanel?.classList.contains("hidden")) return;
+    battlePaused = false;
+    nodes.pausePanel.classList.add("hidden");
+    nodes.pauseBtn.setAttribute("aria-expanded", "false");
+    pauseCoveredRegions().forEach((region) => {
+      region.inert = false;
+      region.removeAttribute("aria-hidden");
+    });
+    if (!resume) return;
+    state.gameActive = true;
+    cancelAnimationFrame(state.gameLoopId);
+    state.gameLoopId = requestAnimationFrame(updateGameEngine);
+    nodes.gameCanvas.focus({ preventScroll: true });
+  }
+
+  function trapPauseFocus(event) {
+    if (nodes.pausePanel.classList.contains("hidden")) return;
+    if (event.key === "Escape") {
+      event.preventDefault();
+      closePause(true);
+      return;
+    }
+    if (event.key !== "Tab") return;
+    if (event.shiftKey && document.activeElement === nodes.resumeBtn) {
+      event.preventDefault();
+      nodes.pauseStagesBtn.focus({ preventScroll: true });
+    } else if (!event.shiftKey && document.activeElement === nodes.pauseStagesBtn) {
+      event.preventDefault();
+      nodes.resumeBtn.focus({ preventScroll: true });
+    }
   }
 
   function setResultModalOpen(open, focusPrimary = true) {
@@ -1957,7 +2034,7 @@
     resumeAmuletConfirmation();
     if (!backgroundBattleSuspended) return;
     backgroundBattleSuspended = false;
-    if (!state.gameActive) return;
+    if (!state.gameActive || battlePaused) return;
     cancelAnimationFrame(state.gameLoopId);
     state.gameLoopId = requestAnimationFrame(updateGameEngine);
   }
@@ -2483,6 +2560,14 @@
     });
     nodes.draftPanel.addEventListener("keydown", trapDraftFocus);
     nodes.resultPanel.addEventListener("keydown", trapResultFocus);
+    nodes.pausePanel.addEventListener("keydown", trapPauseFocus);
+    nodes.pauseBtn.addEventListener("click", openPause);
+    nodes.resumeBtn.addEventListener("click", () => closePause(true));
+    nodes.pauseStagesBtn.addEventListener("click", () => {
+      window.WonderSound?.play("click");
+      showStage();
+      requestAnimationFrame(() => document.querySelector(".stage-card.is-selected")?.focus({ preventScroll: true }));
+    });
 
     nodes.retryBtn.addEventListener("click", () => {
       window.WonderSound?.play("click");
@@ -2565,6 +2650,7 @@
         return {
           locale: getLocale(),
           active: state.gameActive,
+          paused: battlePaused,
           room: state.room,
           level: state.level,
           attributePoints: state.attributePoints,
@@ -2615,6 +2701,7 @@
             draft: !nodes.draftPanel.classList.contains("hidden"),
             loot: !nodes.lootPanel.classList.contains("hidden"),
             result: !nodes.resultPanel.classList.contains("hidden"),
+            pause: !nodes.pausePanel.classList.contains("hidden"),
           },
         };
       },

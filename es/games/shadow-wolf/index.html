@@ -145,6 +145,7 @@
         <div class="shadow-game-layout" data-wp-logical-battle-canvas="responsive">
           <div class="arena-viewport">
             <button id="menuBtn" class="play-return battle-return" data-wp-return="battle" type="button" aria-label="Back to stages" data-ui-aria="backToStages">&larr;</button>
+            <button id="pauseBtn" class="battle-pause-btn" type="button" aria-label="Pause battle" aria-controls="pausePanel" aria-expanded="false" data-ui-aria="pauseBattle">&#8545;</button>
             <div class="arena-hud">
               <div class="hud-item player-health">
                 <div class="health-meta"><span data-ui="hudHp">Wolf HP</span><strong id="hpText">30/30</strong></div>
@@ -178,6 +179,17 @@
                 <h2 id="attributeChoiceTitle" data-ui="attributeChoiceTitle">Level Up: Choose Your Growth</h2>
                 <p id="attributeChoiceDesc"></p>
                 <div id="draftCards" class="attribute-draft-grid"></div>
+              </div>
+            </section>
+            <section id="pausePanel" class="pause-panel hidden" role="dialog" aria-modal="true" aria-labelledby="pauseTitle" aria-describedby="pauseHint">
+              <div class="pause-card">
+                <span class="pause-eyebrow" data-ui="pauseEyebrow">EXPEDITION PAUSED</span>
+                <h2 id="pauseTitle" data-ui="pauseTitle">Battle Paused</h2>
+                <p id="pauseHint" data-ui="pauseHint">The battle is frozen. Resume when you are ready.</p>
+                <div class="pause-actions">
+                  <button id="resumeBtn" class="primary-btn" type="button" data-ui="resumeBattle">Resume</button>
+                  <button id="pauseStagesBtn" class="secondary-btn" type="button" data-ui="backToStages">Back to Stages</button>
+                </div>
               </div>
             </section>
             <section id="resultPanel" class="result-panel battle-result hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultText skillReportText">

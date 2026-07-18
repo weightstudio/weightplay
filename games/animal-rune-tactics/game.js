@@ -20,6 +20,10 @@
     menuPanel: $("menuPanel"),
     backBtn: $("backBtn"),
     gamePanel: $("gamePanel"),
+    pauseBtn: $("pauseBtn"),
+    pausePanel: $("pausePanel"),
+    resumeBtn: $("resumeBtn"),
+    pauseMenuBtn: $("pauseMenuBtn"),
     rewardPanel: $("rewardPanel"),
     resultPanel: $("resultPanel"),
     missionGrid: $("missionGrid"),
@@ -413,7 +417,20 @@
     resultUpgradeReady: "{hero} \u73fe\u5728\u53ef\u5728\u300c\u82f1\u96c4\u300d\u4e2d\u5347\u7d1a\u3002",
     resultUpgradeNeed: "{hero} \u518d\u9700 {need} \u679a\u7b26\u6587\u5373\u53ef\u5347\u7d1a\u3002",
   });
-
+  Object.assign(text.en, {
+    pause: "Pause",
+    pauseTitle: "Battle Paused",
+    pauseHint: "The enemy turn and every pending action stay frozen until you continue.",
+    resume: "Resume",
+    pauseMenu: "Back to Missions",
+  });
+  Object.assign(text["zh-Hant"], {
+    pause: "\u66ab\u505c",
+    pauseTitle: "\u6230\u9b25\u5df2\u66ab\u505c",
+    pauseHint: "\u6575\u65b9\u56de\u5408\u8207\u6240\u6709\u5f85\u8655\u7406\u52d5\u4f5c\u90fd\u6703\u51cd\u7d50\uff0c\u76f4\u5230\u4f60\u7e7c\u7e8c\u904a\u6232\u3002",
+    resume: "\u7e7c\u7e8c",
+    pauseMenu: "\u8fd4\u56de\u4efb\u52d9",
+  });
   text.es = {
     title: "Tácticas de Runas Animales",
     language: "Idioma",
@@ -545,6 +562,11 @@
     resultProgressTitle: "Progreso guardado"
   };
   Object.assign(text.es, {
+    pause: "Pausar",
+    pauseTitle: "Batalla en pausa",
+    pauseHint: "El turno enemigo y todas las acciones pendientes quedan congelados hasta que continúes.",
+    resume: "Continuar",
+    pauseMenu: "Volver a misiones",
     resultRewardChosen: "Premio guardado: {reward} — {effect}",
     resultRewardNone: "No se guardó ningún premio rúnico en este intento.",
     resultProgressLine: "Escuadrón Nv.{level} · {xp}/100 XP · {runes} runas · Mejor misión {best}",
@@ -893,6 +915,7 @@
   let trainingIntentUntil = 0;
   let trainingMessage = "";
   let trainingMessageTimer = 0;
+  let battlePaused = false;
 
   function clearTurnTransition() {
     clearTimeout(turnTransitionTimer);
@@ -932,6 +955,7 @@
   }
 
   function resumeTurnTransition() {
+    if (battlePaused) return;
     armTurnTransition();
   }
 
@@ -956,6 +980,11 @@
     else nodes.gamePanel.removeAttribute("aria-hidden");
   }
 
+  function setPauseActionAvailable(available) {
+    nodes.pauseBtn.disabled = !available;
+    nodes.pauseBtn.classList.toggle("is-hidden", !available);
+  }
+
   function focusBattleGrid() {
     requestAnimationFrame(() => {
       nodes.grid.querySelector(`.tile[data-x="${gridCursor.x}"][data-y="${gridCursor.y}"]`)?.focus({ preventScroll: true });
@@ -975,6 +1004,33 @@
       event.preventDefault();
       first.focus({ preventScroll: true });
     }
+  }
+
+  function closePause({ restoreFocus = true, resume = true } = {}) {
+    if (!battlePaused) return;
+    battlePaused = false;
+    nodes.pausePanel.classList.add("is-hidden");
+    nodes.pauseBtn.setAttribute("aria-expanded", "false");
+    setPauseActionAvailable(true);
+    setBattleCovered(false);
+    if (resume) resumeTurnTransition();
+    if (restoreFocus) requestAnimationFrame(() => nodes.pauseBtn.focus({ preventScroll: true }));
+  }
+
+  function openPause() {
+    if (!state || battlePaused || !nodes.rewardPanel.classList.contains("is-hidden") || !nodes.resultPanel.classList.contains("is-hidden")) return;
+    battlePaused = true;
+    suspendTurnTransition();
+    setBattleCovered(true);
+    nodes.pausePanel.classList.remove("is-hidden");
+    nodes.pauseBtn.setAttribute("aria-expanded", "true");
+    setPauseActionAvailable(false);
+    requestAnimationFrame(() => nodes.resumeBtn.focus({ preventScroll: true }));
+  }
+
+  function leavePauseForMissions() {
+    closePause({ restoreFocus: false, resume: false });
+    showMenu();
   }
 
   function loadProfile() {
@@ -1063,6 +1119,7 @@
     });
     nodes.localeSelect.value = locale;
     nodes.localeSelect.setAttribute("aria-label", t("language"));
+    nodes.pauseBtn.setAttribute("aria-label", t("pause"));
     nodes.grid.setAttribute("aria-label", t("boardLabel"));
     if (nodes.mainStartBtn) nodes.mainStartBtn.textContent = t("startGame");
     if (nodes.stagePanel) {
@@ -1381,6 +1438,10 @@
     nodes.backBtn.replaceChildren(document.createTextNode("\u2190"));
     nodes.resultPanel.classList.add("is-hidden");
     nodes.rewardPanel.classList.add("is-hidden");
+    nodes.pausePanel.classList.add("is-hidden");
+    nodes.pauseBtn.setAttribute("aria-expanded", "false");
+    battlePaused = false;
+    setPauseActionAvailable(true);
     setBattleCovered(false);
     nodes.gamePanel.classList.remove("is-hidden");
     log("chooseHero");
@@ -2058,6 +2119,7 @@
     clearTurnTransition();
     playFx("mission-clear", 2, 1);
     setBattleCovered(true);
+    setPauseActionAvailable(false);
     nodes.rewardPanel.classList.remove("is-hidden");
     renderRewards(false);
   }
@@ -2106,6 +2168,7 @@
     nodes.rewardPanel.classList.add("is-hidden");
     nodes.gamePanel.classList.add("is-hidden");
     setBattleCovered(true);
+    setPauseActionAvailable(false);
     const missionDef = missionDefs.find((item) => item.id === state.mission) || missionDefs[0];
     const xp = win ? missionDef.xp : 12;
     const runes = win ? missionDef.runes : 3;
@@ -2194,6 +2257,10 @@
     nodes.gamePanel.classList.add("is-hidden");
     nodes.rewardPanel.classList.add("is-hidden");
     nodes.resultPanel.classList.add("is-hidden");
+    nodes.pausePanel.classList.add("is-hidden");
+    nodes.pauseBtn.setAttribute("aria-expanded", "false");
+    battlePaused = false;
+    setPauseActionAvailable(false);
     setBattleCovered(false);
     nodes.menuPanel.classList.add("is-hidden");
     nodes.stagePanel.classList.remove("is-hidden");
@@ -2372,6 +2439,17 @@
     nodes.endTurnBtn.addEventListener("click", (event) => {
       endTurnKeyboardFocusRequested = event.detail === 0;
       endTurn();
+    });
+    nodes.pauseBtn.addEventListener("click", openPause);
+    nodes.resumeBtn.addEventListener("click", () => closePause());
+    nodes.pauseMenuBtn.addEventListener("click", leavePauseForMissions);
+    nodes.pausePanel.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        closePause();
+        return;
+      }
+      keepDialogFocus(nodes.pausePanel, event);
     });
     nodes.rerollBtn.addEventListener("click", () => renderRewards(true));
     nodes.rewardPanel.addEventListener("keydown", (event) => {

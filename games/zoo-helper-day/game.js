@@ -514,12 +514,17 @@
     const viewport = window.visualViewport;
     const width = Math.max(1, Math.min(viewport?.width || window.innerWidth, window.innerWidth));
     const height = Math.max(1, Math.min(viewport?.height || window.innerHeight, window.innerHeight));
-    const scale = Math.max(0.01, Math.min((width - 8) / STAGE_LOGICAL_WIDTH, (height - 8) / STAGE_LOGICAL_HEIGHT));
-    const renderedWidth = STAGE_LOGICAL_WIDTH * scale;
-    const renderedHeight = STAGE_LOGICAL_HEIGHT * scale;
+    const scale = Math.max(0.01, Math.min(width / STAGE_LOGICAL_WIDTH, height / STAGE_LOGICAL_HEIGHT));
+    const logicalWidth = width / scale;
+    const logicalHeight = height / scale;
     document.documentElement.style.setProperty("--zoo-stage-scale", String(scale));
-    document.documentElement.style.setProperty("--zoo-stage-left", `${(width - renderedWidth) / 2}px`);
-    document.documentElement.style.setProperty("--zoo-stage-top", `${height - 4 - renderedHeight}px`);
+    document.documentElement.style.setProperty("--zoo-stage-left", "0px");
+    document.documentElement.style.setProperty("--zoo-stage-top", "0px");
+    document.documentElement.style.setProperty("--zoo-stage-logical-width", `${logicalWidth}px`);
+    document.documentElement.style.setProperty("--zoo-stage-logical-height", `${logicalHeight}px`);
+    nodes.stagePanel.dataset.wpCommonScale = String(scale);
+    nodes.stagePanel.dataset.wpLogicalWidth = String(logicalWidth);
+    nodes.stagePanel.dataset.wpLogicalHeight = String(logicalHeight);
   }
 
   function centerStageCard(card) {

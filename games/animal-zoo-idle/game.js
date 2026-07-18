@@ -1860,9 +1860,16 @@
     const offsetLeft = viewport?.offsetLeft || 0;
     const offsetTop = viewport?.offsetTop || 0;
     const scale = Math.min(width / 390, height / 788);
+    const logicalWidth = width / scale;
+    const logicalHeight = height / scale;
     document.documentElement.style.setProperty("--zoo-stage-scale", String(scale));
-    document.documentElement.style.setProperty("--zoo-stage-left", `${offsetLeft + (width - 390 * scale) / 2}px`);
-    document.documentElement.style.setProperty("--zoo-stage-top", `${offsetTop + height - 788 * scale}px`);
+    document.documentElement.style.setProperty("--zoo-stage-left", `${offsetLeft}px`);
+    document.documentElement.style.setProperty("--zoo-stage-top", `${offsetTop}px`);
+    document.documentElement.style.setProperty("--zoo-stage-logical-width", `${logicalWidth}px`);
+    document.documentElement.style.setProperty("--zoo-stage-logical-height", `${logicalHeight}px`);
+    nodes.stagePanel.dataset.wpCommonScale = String(scale);
+    nodes.stagePanel.dataset.wpLogicalWidth = String(logicalWidth);
+    nodes.stagePanel.dataset.wpLogicalHeight = String(logicalHeight);
   }
 
   function showStages() {
@@ -1920,8 +1927,8 @@
   }
 
   function updateZooBattleScale() {
-    // The shared Battle Canvas controller is the single viewport-scale owner.
-    // Zoo Idle declares the same 382x780 logical shell in its local CSS.
+    // The shared controller publishes the responsive 382x780-minimum envelope.
+    // Game-local CSS consumes those metrics so it cannot restore the old fixed shell.
   }
 
   function showMenu() {

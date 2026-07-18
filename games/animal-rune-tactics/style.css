@@ -79,6 +79,10 @@ select {
   display: block;
 }
 
+.pause-toggle {
+  display: none;
+}
+
 body.is-rune-playing .topbar {
   grid-template-columns: 46px minmax(0, 1fr);
   min-height: 46px;
@@ -106,6 +110,30 @@ body.is-rune-playing .back-btn img {
 
 body.is-rune-playing .back-btn span {
   display: block;
+}
+
+body.is-rune-playing .pause-toggle {
+  position: fixed;
+  z-index: 85;
+  top: 4px;
+  right: 4px;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  min-width: 44px;
+  max-width: 44px;
+  height: 44px;
+  min-height: 44px;
+  max-height: 44px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  color: var(--text);
+  background: #173f35;
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1;
+  cursor: pointer;
+  touch-action: manipulation;
 }
 
 .brand span,
@@ -804,6 +832,33 @@ body.is-rune-playing .back-btn span {
   border-radius: 18px;
   background: #10241e;
   padding: 18px;
+}
+
+.pause-card {
+  width: min(100%, 340px);
+  text-align: center;
+}
+
+.pause-card p {
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.pause-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.pause-actions button {
+  min-height: 48px;
+}
+
+.pause-toggle:focus-visible,
+.pause-actions button:focus-visible {
+  outline: 3px solid #fff2a1;
+  outline-offset: 2px;
 }
 
 .reward-cards {

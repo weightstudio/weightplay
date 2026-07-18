@@ -89,8 +89,9 @@
       </section>
 
       <section id="gamePanel" class="panel game-panel hidden">
-        <div class="game-layout">
+        <div class="shadow-game-layout" data-wp-logical-battle-canvas="responsive">
           <div class="arena-viewport">
+            <button id="pauseBtn" class="battle-pause-btn" type="button" aria-label="Pause battle" aria-controls="pausePanel" aria-expanded="false" data-ui-aria="pauseBattle">&#8545;</button>
             <div class="arena-hud">
               <div class="hud-item player-health">
                 <div class="health-meta"><span data-ui="hudHp">Wolf HP</span><strong id="hpText">30/30</strong></div>
@@ -119,6 +120,17 @@
                 </div>
               </div>
             </div>
+            <section id="pausePanel" class="pause-panel hidden" role="dialog" aria-modal="true" aria-labelledby="pauseTitle" aria-describedby="pauseHint">
+              <div class="pause-card">
+                <span class="pause-eyebrow" data-ui="pauseEyebrow">EXPEDITION PAUSED</span>
+                <h2 id="pauseTitle" data-ui="pauseTitle">Battle Paused</h2>
+                <p id="pauseHint" data-ui="pauseHint">The battle is frozen. Resume when you are ready.</p>
+                <div class="pause-actions">
+                  <button id="resumeBtn" class="primary-btn" type="button" data-ui="resumeBattle">Resume</button>
+                  <button id="pauseStagesBtn" class="secondary-btn" type="button" data-ui="backToStages">Back to Stages</button>
+                </div>
+              </div>
+            </section>
           </div>
 
           <aside class="inventory-sidebar attribute-sidebar">
@@ -135,6 +147,7 @@
             </div>
           </aside>
         </div>
+        <div class="battle-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div>
       </section>
 
       <section id="draftPanel" class="attribute-draft hidden" aria-live="polite" aria-modal="true" aria-labelledby="attributeChoiceTitle" role="dialog">

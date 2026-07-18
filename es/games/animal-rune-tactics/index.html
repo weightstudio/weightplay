@@ -74,6 +74,7 @@
             <option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option>
           </select>
         </label>
+        <button id="pauseBtn" class="pause-toggle" type="button" aria-controls="pausePanel" aria-expanded="false" aria-label="Pause">&#8545;</button>
       </header>
 
       <section id="loadingPanel" class="loading-panel" aria-live="polite">
@@ -151,6 +152,16 @@
             <button id="guardBtn" type="button" data-ui="guard">Guard</button>
             <button id="skillBtn" type="button" data-ui="skill">Skill</button>
             <button id="endTurnBtn" type="button" data-ui="endTurn">End Turn</button>
+          </div>
+        </div>
+      </section>
+      <section id="pausePanel" class="panel overlay-panel is-hidden" role="dialog" aria-modal="true" aria-labelledby="pauseTitle">
+        <div class="overlay-card pause-card">
+          <h2 id="pauseTitle" data-ui="pauseTitle">Battle Paused</h2>
+          <p data-ui="pauseHint">The enemy turn and every pending action stay frozen until you continue.</p>
+          <div class="pause-actions">
+            <button id="resumeBtn" class="primary-btn" type="button" data-ui="resume">Resume</button>
+            <button id="pauseMenuBtn" class="secondary-btn" type="button" data-ui="pauseMenu">Back to Missions</button>
           </div>
         </div>
       </section>
