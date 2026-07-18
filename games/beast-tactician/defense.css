@@ -890,7 +890,8 @@ body.guardian-result .game-panel > .command-row {
 
 #nextStageBtn { grid-column: 1; grid-row: 1; }
 #rerollRewardBtn { grid-column: 2; grid-row: 1; }
-#rerollRewardBtn.is-confirming {
+#rerollRewardBtn.is-confirming,
+#reviveBtn.is-confirming {
   border-color: var(--gold);
   background: rgba(255, 209, 102, 0.18);
   box-shadow: 0 0 0 2px rgba(255, 209, 102, 0.16);

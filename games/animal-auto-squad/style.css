@@ -12,6 +12,8 @@
   --muted: #abc8bb;
   --accent: #77a4ff;
   --squad-stage-scale: 1;
+  --squad-stage-width: 390px;
+  --squad-stage-rendered-width: 390px;
   --squad-battle-scale: 1;
   --squad-battle-width: 382px;
 }
@@ -106,7 +108,7 @@ body.squad-stage-select .squad-app, body.squad-active .squad-app { position: fix
   transform-origin: 50% 100%;
 }
 .stage-panel {
-  width: 390px;
+  width: var(--squad-stage-width);
   transform: translateX(-50%) scale(var(--squad-stage-scale));
 }
 .game-panel {
@@ -195,8 +197,8 @@ body.squad-stage-select .stage-panel { border: 0 !important; outline: 0; isolati
 .profile-grid .currency-line { width:100%; }
 
 /* General-audience reserve is a separate physical sibling. */
-.stage-ad-reserve { display: none !important; }
 .battle-ad-reserve, .wp-stage-physical-reserve[data-wp-stage-reserve-active] { position: fixed; left: 0; right: 0; bottom: 0; width: 100%; height: 56px; min-height: 56px; border: 0; background: #071a14; pointer-events: none; }
+body.squad-stage-select .wp-stage-physical-reserve[data-wp-stage-reserve-active] { top: auto; right: auto; left: 50%; bottom: 0; width: var(--squad-stage-rendered-width); transform: translateX(-50%); }
 body:not(.squad-active) .battle-ad-reserve { display: none; }
 
 /* Battle / preparation logical Canvas. */
@@ -241,7 +243,7 @@ body:not(.squad-active) .battle-ad-reserve { display: none; }
 .shop-row .card-item.is-deployed { border-color:rgba(255,199,75,.72); background:rgba(30,52,35,.92); }
 .card-deployed-tag { position:absolute; top:4px; right:4px; z-index:4; padding:2px 5px; border-radius:6px; color:#241700; background:var(--gold); box-shadow:0 1px 4px rgba(0,0,0,.55); font-size:.5rem; font-weight:900; }
 .card-graphic { position: absolute; top: 7px; left: 50%; width: 78%; aspect-ratio: 1; transform: translateX(-50%); background: center/contain no-repeat; }
-.card-graphic.character-icon { top: 37%; width: 84%; transform: translate(-50%,-50%); filter: drop-shadow(0 5px 6px rgba(0,0,0,.48)); }
+.card-graphic.character-icon { top: 36%; width: 72px; transform: translate(-50%,-50%); filter: drop-shadow(0 5px 6px rgba(0,0,0,.48)); }
 .card-graphic.food-icon { top: 38%; width: 72%; transform: translate(-50%,-50%); }
 .card-level-tag, .card-frozen-tag { position: absolute; top: 4px; z-index: 3; padding: 1px 4px; border-radius: 5px; font-size: .55rem; font-weight: 900; }
 .card-level-tag { left: 4px; color: var(--gold); background: rgba(0,0,0,.78); }

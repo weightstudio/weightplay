@@ -206,6 +206,141 @@
       roundNum: "第 {stage} 關 - 第 {round}/5 波"
     }
   };
+  text.es = {
+    title: "Escuadrón Animal Automático",
+    backToLobby: "Volver al vestíbulo de WeightPlay",
+    back: "Volver",
+    languageSelection: "Selección de idioma",
+    stageSelection: "Selección de nivel",
+    stageTab: "Niveles",
+    trainingTab: "Entrenamiento",
+    stageSwipe: "↔ Desliza los niveles",
+    stageDeploy: "Toca un nivel desbloqueado para desplegar",
+    activeSquadSlots: "Espacios del escuadrón activo",
+    shopShelfItems: "Personajes de la mochila",
+    emptyFormationSlot: "Espacio de formación vacío",
+    emptySlot: "Espacio vacío",
+    activeSquad: "escuadrón activo",
+    expeditionBackpack: "mochila de expedición",
+    formationFrontRow: "fila delantera",
+    formationBackRow: "fila trasera",
+    formationLeftPosition: "posición izquierda",
+    formationCenterPosition: "posición central",
+    formationRightPosition: "posición derecha",
+    slotPosition: "espacio {index}",
+    deployedTo: "desplegado en",
+    selectedSkillTitle: "Animal elegido",
+    selectCharacterHint: "Toca un animal para ver su función y habilidad.",
+    battleArena: "Arena del Escuadrón Animal Automático",
+    menuTitle: "¡Entrena y coloca a tu escuadrón animal!",
+    menuHint: "Entrena animales y supera 30 niveles de cinco oleadas en seis regiones, cada una con un jefe único.",
+    bestExpedition: "Niveles desbloqueados",
+    expeditionsCleared: "Partidas completadas",
+    teamLevel: "Nivel del equipo",
+    diamonds: "Diamantes",
+    trainingTitle: "Entrenamiento del escuadrón",
+    trainingGold: "Oro de entrenamiento",
+    owned: "Obtenido",
+    deployed: "Desplegado",
+    locked: "Bloqueado",
+    premium: "Prémium",
+    unlockGold: "Desbloquear por {cost} de oro",
+    unlockDiamond: "Desbloquear por {cost} diamantes",
+    upgradeGold: "Mejorar por {cost} de oro",
+    currencyUpgrade: "Mejorar",
+    currencyUnlock: "Desbloquear",
+    trainingStatsCurrent: "ATQ {atk} · PV {hp}",
+    trainingStatsNext: "ATQ {atk} → {nextAtk} · PV {hp} → {nextHp}",
+    trainingUpgradeLabel: "Mejorar {name} al Nv.{level}: ATQ {nextAtk}, PV {nextHp} por {cost} de oro",
+    maxLevel: "Nivel máximo",
+    freeUnit: "Inicial",
+    rosterHint: "Los animales desbloqueados aparecen en la mochila. Los niveles permanentes se guardan localmente.",
+    startExpedition: "Empezar expedición",
+    chooseExpedition: "Elegir expedición",
+    stageSetup: "Desliza por seis regiones, elige un nivel desbloqueado y prepara la formación.",
+    yourSquadLabel: "Escuadrón activo (arriba: frente | abajo: retaguardia)",
+    benchLabel: "Reserva",
+    shopLabel: "Mochila de personajes",
+    startBattle: "Empezar batalla",
+    round: "Oleada",
+    stage: "Nivel",
+    chooseStage: "Elegir nivel",
+    stageReady: "Disponible",
+    stageCleared: "Completado",
+    stageLocked: "Completa el nivel anterior",
+    stageProgress: "Desbloqueados {unlocked}/{total}",
+    stageWaveCount: "{count} oleadas",
+    stageEnemyRange: "Enemigos: de {first} a {last}",
+    stageBoss: "Jefe",
+    nextStage: "Siguiente nivel",
+    stageClearText: "¡Nivel {stage} completado! Se desbloqueó el nivel {next}.",
+    allStagesClearText: "¡Completaste los 30 niveles y los seis jefes regionales! Repite cualquier nivel para perfeccionar el escuadrón.",
+    gold: "Oro",
+    supplies: "Suministros",
+    hearts: "Corazones",
+    activeRelic: "Reliquia",
+    chooseRelic: "Elige una reliquia de expedición",
+    relicDesc: "Elige una reliquia que potencie al escuadrón durante toda la expedición.",
+    defeatTitle: "¡Expedición fallida!",
+    reviveHint: "Tus corazones llegaron a 0. ¿Gastar 5 diamantes para revivir con 2 corazones y continuar?",
+    giveUp: "Rendirse",
+    retry: "Intentar de nuevo",
+    backToMenu: "Menú principal",
+    backToStages: "Volver a niveles",
+    quitRun: "Abandonar partida",
+    combatIntro: "¡Prepárate para la batalla!",
+    nextWaveCombat: "Oleada {round}/{total}: ¡llegan nuevos enemigos!",
+    bossIncoming: "JEFE: {boss}",
+    combatSummary: "PV del equipo {playerHp}/{playerMax} | PV enemigo {enemyHp}/{enemyMax}",
+    combatFront: "Frente: {player} contra {enemy}",
+    foodGuideTitle: "Efectos de alimentos",
+    guideHint: "Toca un animal obtenido y después un espacio. Desplaza la mochila verticalmente para verlos todos.",
+    level: "Nv.",
+    buy: "Comprar",
+    sell: "Vender",
+    upgradeRun: "Mejora temporal ({cost} suministros)",
+    backpackHint: "Solo animales obtenidos. Ponlos en el escuadrón y gasta suministros en mejoras temporales.",
+    reroll: "Cambiar",
+    freeze: "Congelar",
+    unfreeze: "Descongelar",
+    buySkin: "Desbloquear aspecto dorado (15 💎)",
+    equipSkin: "Equipar aspecto dorado",
+    unequipSkin: "Equipar aspecto normal",
+    relicReroll: "Cambiar reliquias (3 💎)",
+    relicRerollDecision: "Cambiar las dos reliquias. Gasta 3 diamantes. Saldo de {before} a {after}.",
+    relicRerollNeed: "Cambiar las dos reliquias requiere 3 diamantes. Saldo actual {balance}.",
+    reviveAction: "Revivir (5 💎)",
+    winText: "¡Victoria! Derrotaste a las bestias sombrías.",
+    failText: "¡Derrota! Tu escuadrón cayó.",
+    drawText: "¡Empate! Ambos equipos cayeron a la vez.",
+    expeditionClear: "¡Expedición completada!",
+    expeditionFail: "¡Expedición fallida!",
+    skillReport: "¡Mejoraron la deducción lógica, la planificación y la posición táctica!",
+    skillsLearned: "Habilidades practicadas: lógica, resolución de problemas y planificación estratégica.",
+    appleDesc: "Manzana: +1/+1 a atributos",
+    honeyDesc: "Miel: +2 PV. Compra: +1 oro",
+    melonDesc: "Melón: otorga Escudo de Melón",
+    chocolateDesc: "Chocolate: +2 EXP",
+    noDiamonds: "¡No hay suficientes diamantes!",
+    noGold: "¡No hay suficiente oro!",
+    noSupplies: "¡No hay suficientes suministros!",
+    needSquad: "¡Coloca al menos un animal antes de entrar en batalla!",
+    quitConfirm: "¿Abandonar esta expedición? Se perderá todo el progreso temporal.",
+    teamBonusTitle: "Bonificación permanente del equipo",
+    teamBonusValue: "Todos los animales obtenidos empiezan con +{atk} ATQ y +{hp} PV por el nivel del equipo.",
+    teamBonusNext: "Siguiente nivel del equipo en {remaining} XP.",
+    savedProgress: "Progreso guardado",
+    resultXpEarned: "XP del equipo +{earned} · Nv.{level} · XP {xp}/{goal}",
+    resultGoldEarned: "Oro de entrenamiento +{earned} · Total {total}",
+    resultStageSaved: "Niveles desbloqueados {unlocked}/{total}",
+    resultGrowthNext: "Bonificación permanente ATQ +{atk} / PV +{hp} · faltan {remaining} XP para subir",
+    relicMaple: "Escudo de Arce: la unidad frontal empieza con Escudo de Melón.",
+    relicOak: "Semilla de Roble: todas las unidades ganan +1 PV en batalla.",
+    relicShadow: "Garra Sombría: todas las unidades ganan +1 ATQ en batalla.",
+    relicClover: "Hoja de Trébol: el primer cambio de tienda de cada ronda es gratis.",
+    roundNum: "Nivel {stage} - Oleada {round}/5",
+    teamLevelValue: "Nv.{level}  XP {xp}/{goal}"
+  };
 
   const pageMeta = {
     en: {
@@ -220,6 +355,12 @@
       ogDescription: "訓練並配置六人動物小隊，穿越六個區域、30 個五波關卡與六場專屬 Boss 戰。",
       twitterDescription: "配置前後兩排、訓練十名動物英雄，在 30 關自走戰役中擊敗六名區域 Boss。"
     }
+  };
+  pageMeta.es = {
+    title: "Escuadrón Animal Automático - Juego gratuito",
+    description: "Entrena diez héroes animales, crea una formación de dos filas y supera 30 niveles con seis jefes únicos.",
+    ogDescription: "Coloca un escuadrón de seis animales en 30 niveles de cinco oleadas, seis regiones y seis jefes distintos.",
+    twitterDescription: "Crea una formación animal, entrena diez héroes y derrota seis jefes regionales en una campaña de 30 niveles."
   };
 
   // Sound Synth settings
@@ -455,6 +596,62 @@
     stage(29,6,"Crown Approach","\u738b\u51a0\u4e4b\u8def",[[11,12],[9,16],[10,13,15],[11,12,14,16],[9,10,11,12,14,16]]),
     stage(30,6,"End of Night","\u7d42\u591c\u4e4b\u6230",[[9,12],[10,15,16],[11,13,14,16],[9,10,11,12,15,16],[13,105,14,15,16]],105)
   ];
+  const animalCopyEs = [
+    ["Zorro Pata Chispeante", "Salto Frontal", "Ataca la fila delantera dos veces: un salto que inflige su nivel y después su ataque normal."],
+    ["Nutria Aleta de Burbujas", "Cuidados de Marea", "Antes de cada choque cura al aliado más débil por su nivel. En su turno lo cura por la mitad de su ATQ, mínimo 1."],
+    ["Panda Tambor", "Guardia Rítmica", "Al comenzar, todos ganan su nivel en PV máximos y actuales. En su turno, todos ganan un escudo igual a su nivel."],
+    ["Búho Sombrero Lunar", "Lluvia Estelar Trasera", "Ataca dos enemigos de la fila trasera. Si está vacía, cambia a la delantera."],
+    ["Tortuga Caparazón Musgoso", "Muro de Caparazón", "Empieza con un escudo de su nivel, protege a todos en su turno y al caer protege al siguiente aliado."],
+    ["Conejo Salto Arcoíris", "Médico de Campo", "En vez de atacar, cura al aliado más débil por la mitad de su ATQ, mínimo 1."],
+    ["Rinoceronte Cuerno de Engranaje", "Muro de Escudo", "En vez de atacar, obtiene un escudo igual a la mitad de su ATQ, mínimo 1."],
+    ["León Melena Explosiva", "Rugido de Fila", "Barre una fila por el 70 % de su ATQ. Al caer, los aliados restantes ganan su nivel en ATQ y PV."],
+    ["Capitán Pata Chispeante", "Mando", "Al comenzar, todos ganan su nivel en ATQ. En su turno, todos ganan su nivel en ATQ y 1 PV."],
+    ["Guardián Rinoceronte", "Última Defensa", "Ataca normalmente. Al caer, inflige cuatro veces su nivel al enemigo principal."]
+  ];
+  ANIMAL_METADATA.forEach((animal, index) => {
+    [animal.nameEs, animal.roleEs, animal.descEs] = animalCopyEs[index];
+  });
+  const itemCopyEs = [
+    ["Manzana", "+1/+1 a atributos."], ["Miel", "+2 PV. Al comprar: +1 oro."],
+    ["Melón", "Otorga Escudo de Melón."], ["Chocolate", "+2 puntos de EXP."]
+  ];
+  ITEM_METADATA.forEach((item, index) => [item.nameEs, item.descEs] = itemCopyEs[index]);
+  const relicCopyEs = [
+    ["Escudo de Arce", "La unidad frontal empieza con Escudo de Melón."],
+    ["Semilla de Roble", "Todas las unidades ganan +1 PV en batalla."],
+    ["Garra Sombría", "Todas las unidades ganan +1 ATQ en batalla."],
+    ["Hoja de Trébol", "El primer cambio de tienda de cada ronda es gratis."]
+  ];
+  RELIC_METADATA.forEach((relic, index) => [relic.nameEs, relic.descEs] = relicCopyEs[index]);
+  const enemyCopyEs = [
+    ["Ardilla Sombría", "Emboscada Trasera"], ["Lobo Sombrío", "Mordisco de Manada"],
+    ["Jabalí Sombrío", "Primera Carga"], ["Tejón Sombrío", "Guardia Excavadora"],
+    ["Gólem Sombrío", "Barrido de Piedra"], ["Explorador Zorro Espinoso", "Dagas Gemelas"],
+    ["Cuervo Prismático", "Picado de Fragmentos"], ["Jabalí Coraza de Hierro", "Carga Acorazada"],
+    ["Guardián de Raíces", "Baluarte Viviente"], ["Sombra de Cristal", "Drenaje Vital"],
+    ["Corredor de la Grieta", "Ráfaga de la Grieta"], ["Tanque de Obsidiana", "Muro de Obsidiana"],
+    ["Pantera Nocturna", "Caza Silenciosa"], ["Lobo Rúnico", "Manada Rúnica"],
+    ["Cuervo Rúnico", "Tempestad Rúnica"], ["Murciélago del Eclipse", "Drenaje Lunar"],
+    ["Jaguar Sombrío", "Ráfaga del Ocaso"]
+  ];
+  ENEMY_METADATA.forEach((enemy, index) => [enemy.nameEs, enemy.roleEs] = enemyCopyEs[index]);
+  const bossCopyEs = [
+    ["Alfa del Bosque Espinoso", "Corona de Espinas"], ["Basilisco Prismático", "Tormenta Prismática"],
+    ["Leviatán del Caparazón Abisal", "Fortaleza Sumergida"], ["Coloso Colmillo de Magma", "Choque de la Caldera"],
+    ["Archibúho del Eclipse", "Doble Caída Lunar"], ["Emperador de la Corona Vacía", "Fin de la Noche"]
+  ];
+  BOSS_METADATA.forEach((boss, index) => [boss.nameEs, boss.roleEs] = bossCopyEs[index]);
+  const regionNamesEs = ["Bosque Espinoso", "Cavernas de Cristal", "Ruinas Sumergidas", "Pico de Brasas", "Ciudadela Lunar", "Corona Vacía"];
+  REGION_METADATA.forEach((region, index) => region.nameEs = regionNamesEs[index]);
+  const stageNamesEs = [
+    "Sendero Musgoso", "Emboscada del Zorro", "Guarida del Lobo", "Puerta de Raíces", "Trono del Bosque Espinoso",
+    "Pasaje Brillante", "Nido Prismático", "Puente de Fragmentos", "Bóveda Azul", "Corazón Prismático",
+    "Escalera de Marea", "Archivo de Coral", "Plaza Ahogada", "Puerta del Leviatán", "Corona Sumergida",
+    "Camino de Ceniza", "Forja de Brasas", "Calzada de Lava", "Anillo de Obsidiana", "Rey de la Caldera",
+    "Jardín Plateado", "Salón del Eclipse", "Biblioteca Estelar", "Aguja Lunar", "Corte de Medianoche",
+    "Camino Celeste Roto", "Pozo Gravitatorio", "Galería Nula", "Camino a la Corona", "Fin de la Noche"
+  ];
+  STAGE_DEFINITIONS.forEach((definition, index) => definition.nameEs = stageNamesEs[index]);
 
   // Game UI DOM Nodes
   const nodes = {
@@ -1196,6 +1393,17 @@
     return Object.entries(data).reduce((out, [name, item]) => out.replaceAll(`{${name}}`, String(item)), value);
   }
 
+  function localizedField(record, field) {
+    if (!record) return "";
+    if (locale === "zh-Hant") return record[`${field}Zht`] || record[`${field}En`] || "";
+    if (locale === "es") return record[`${field}Es`] || record[`${field}En`] || "";
+    return record[`${field}En`] || "";
+  }
+
+  function localizedPhrase(en, zht, es) {
+    return locale === "zh-Hant" ? zht : locale === "es" ? es : en;
+  }
+
   function updatePageMeta() {
     const meta = pageMeta[locale] || pageMeta.en;
     document.title = meta.title;
@@ -1428,7 +1636,7 @@
   }
 
   function stageLabel(stage) {
-    return locale === "zh-Hant" ? `\u7b2c ${stage} \u95dc` : `Stage ${stage}`;
+    return locale === "zh-Hant" ? `\u7b2c ${stage} \u95dc` : locale === "es" ? `Nivel ${stage}` : `Stage ${stage}`;
   }
 
   function stageDefinition(stageValue) {
@@ -1474,8 +1682,8 @@
       const firstWave = enemyWaveStats(stage, 1);
       const finalWave = enemyWaveStats(stage, WAVES_PER_STAGE);
       const enemyRange = t("stageEnemyRange", { first: firstWave.count, last: finalWave.count });
-      const stageName = locale === "zh-Hant" ? definition.nameZht : definition.nameEn;
-      const regionName = locale === "zh-Hant" ? region.nameZht : region.nameEn;
+      const stageName = localizedField(definition, "name");
+      const regionName = localizedField(region, "name");
       const bossText = definition.bossId ? ` \u00b7 ${t("stageBoss")}` : "";
       card.innerHTML = `<em>${regionName}</em><strong>${stageLabel(stage)}</strong><span>${stageName}</span><small>${t("stageWaveCount", { count: WAVES_PER_STAGE })}${bossText}</small><small>${enemyRange}</small><small>${locked ? t("stageLocked") : cleared ? t("stageCleared") : t("stageReady")}</small>`;
       card.setAttribute("aria-label", `${regionName}. ${stageLabel(stage)}. ${stageName}. ${t("stageWaveCount", { count: WAVES_PER_STAGE })}${bossText}. ${enemyRange}. ${locked ? t("stageLocked") : cleared ? t("stageCleared") : t("stageReady")}`);
@@ -1591,7 +1799,7 @@
       const premium = isPremiumAnimal(animal.id);
       const card = document.createElement("article");
       card.className = `training-card${unlocked ? " is-owned" : " is-locked"}${premium ? " is-premium" : ""}`;
-      const name = locale === "zh-Hant" ? (animal.nameZht || animal.nameEn) : animal.nameEn;
+      const name = localizedField(animal, "name");
       const status = STARTER_ANIMAL_IDS.includes(animal.id)
         ? t("freeUnit")
         : premium
@@ -1862,8 +2070,8 @@
       card.className = "relic-card";
       card.innerHTML = `
         <div class="relic-icon-art relic-icon-${relic.id}" aria-hidden="true"><span></span></div>
-        <h4>${locale === "zh-Hant" ? relic.nameZht : relic.nameEn}</h4>
-        <p>${locale === "zh-Hant" ? relic.descZht : relic.descEn}</p>
+        <h4>${localizedField(relic, "name")}</h4>
+        <p>${localizedField(relic, "desc")}</p>
       `;
       card.addEventListener("click", () => {
         selectRelic(relic);
@@ -1878,7 +2086,7 @@
 
   function selectRelic(relic) {
     state.relic = relic;
-    nodes.relicText.textContent = locale === "zh-Hant" ? relic.nameZht : relic.nameEn;
+    nodes.relicText.textContent = localizedField(relic, "name");
     setBattleDecisionOwnership(nodes.relicDraftPanel, false);
     nodes.relicDraftPanel.classList.add("is-hidden");
     playSynth("buy");
@@ -2050,7 +2258,7 @@
 
   function getItemEffectText(card) {
     if (!card || card.atk !== undefined) return "";
-    return locale === "zh-Hant" ? (card.descZht || card.descEn || "") : (card.descEn || "");
+    return localizedField(card, "desc");
   }
 
   function formationActionPosition(index) {
@@ -2094,7 +2302,7 @@
     el.dataset.slot = String(index);
     el.dataset.area = sourceArea;
     el.dataset.cardId = String(card.id);
-    const cardName = locale === "zh-Hant" ? (card.nameZht || card.nameEn) : card.nameEn;
+    const cardName = localizedField(card, "name");
     const placement = sourceArea === "backpack" ? findPlacedCard(card.id) : null;
     let actionPosition = t("slotPosition", { index: index + 1 });
     let areaLabel = sourceArea;
@@ -2142,14 +2350,14 @@
     // Title / Name
     const nameEl = document.createElement("div");
     nameEl.className = "card-name";
-    nameEl.textContent = locale === "zh-Hant" ? (card.nameZht || card.nameEn) : card.nameEn;
+    nameEl.textContent = localizedField(card, "name");
     el.appendChild(nameEl);
 
     if (isAnimal) {
       const abilityEl = document.createElement("div");
       abilityEl.className = "card-ability";
-      const role = locale === "zh-Hant" ? (card.roleZht || card.roleEn || "") : (card.roleEn || "");
-      const desc = locale === "zh-Hant" ? (card.descZht || card.descEn || "") : (card.descEn || "");
+      const role = localizedField(card, "role");
+      const desc = localizedField(card, "desc");
       abilityEl.textContent = [role, desc].filter(Boolean).join(": ");
       el.appendChild(abilityEl);
     }
@@ -2159,7 +2367,7 @@
       effectEl.className = "card-effect";
       effectEl.textContent = getItemEffectText(card);
       el.appendChild(effectEl);
-      el.title = `${locale === "zh-Hant" ? (card.nameZht || card.nameEn) : card.nameEn}: ${effectEl.textContent}`;
+      el.title = `${localizedField(card, "name")}: ${effectEl.textContent}`;
     }
 
     // Level tag
@@ -2174,7 +2382,7 @@
     if (card.hasShield) {
       const shieldEl = document.createElement("div");
       shieldEl.className = "card-shield-tag";
-      shieldEl.textContent = "Shield";
+      shieldEl.textContent = localizedPhrase("Shield", "\u8b77\u76fe", "Escudo");
       el.appendChild(shieldEl);
     }
 
@@ -2186,7 +2394,7 @@
       const healthLabel = locale === "zh-Hant" ? t("healthShort") : "HP";
       statsEl.innerHTML = `<span class="card-atk">${attackLabel} ${card.currentAtk}</span><span class="card-hp">${healthLabel} ${card.currentHp}</span>`;
       el.appendChild(statsEl);
-      el.title = `${locale === "zh-Hant" ? (card.nameZht || card.nameEn) : card.nameEn}: ${attackLabel} ${card.currentAtk}, ${healthLabel} ${card.currentHp}. ${locale === "zh-Hant" ? (card.descZht || card.descEn || "") : (card.descEn || "")}`;
+      el.title = `${localizedField(card, "name")}: ${attackLabel} ${card.currentAtk}, ${healthLabel} ${card.currentHp}. ${localizedField(card, "desc")}`;
       if (sourceArea === "shop-animal") {
         const costEl = document.createElement("div");
         costEl.className = "card-cost animal-cost";
@@ -2619,9 +2827,9 @@
       nodes.selectedAbilityPanel.innerHTML = `<span>${t("selectCharacterHint")}</span>`;
       return;
     }
-    const name = locale === "zh-Hant" ? (card.nameZht || card.nameEn) : card.nameEn;
-    const role = locale === "zh-Hant" ? (card.roleZht || card.roleEn || "") : (card.roleEn || "");
-    const desc = locale === "zh-Hant" ? (card.descZht || card.descEn || "") : (card.descEn || "");
+    const name = localizedField(card, "name");
+    const role = localizedField(card, "role");
+    const desc = localizedField(card, "desc");
     nodes.selectedAbilityPanel.classList.add("has-selection");
     nodes.selectedAbilityPanel.innerHTML = `<strong>${t("selectedSkillTitle")} · ${name}</strong><small>${role}</small><span>${desc}</span>`;
   }
@@ -2685,7 +2893,7 @@
   }
 
   function combatUnitName(unit) {
-    return unit ? (locale === "zh-Hant" ? (unit.nameZht || unit.nameEn) : unit.nameEn) : "-";
+    return unit ? localizedField(unit, "name") : "-";
   }
 
   function unitFormationSlot(unit, fallbackIndex = 0) {
@@ -3032,7 +3240,7 @@
     canvasCtx.fillStyle = "rgba(255,255,255,.92)";
     canvasCtx.strokeStyle = "rgba(0,0,0,.75)";
     canvasCtx.lineWidth = 5;
-    const playerLabel = locale === "zh-Hant" ? "\u4f60\u7684\u5c0f\u968a" : "YOUR SQUAD";
+    const playerLabel = localizedPhrase("YOUR SQUAD", "\u4f60\u7684\u5c0f\u968a", "TU ESCUADRÓN");
     canvasCtx.strokeText(playerLabel, canvasWidth / 2, 1210);
     canvasCtx.fillText(playerLabel, canvasWidth / 2, 1210);
     canvasCtx.font = "900 28px Outfit, system-ui";
@@ -3242,9 +3450,9 @@
     const enemyMax = sumMax(state.combat.enemySquad);
     const playerFront = formationTarget(state.combat.playerSquad, "front");
     const enemyFront = formationTarget(state.combat.enemySquad, "front");
-    const playerName = playerFront ? (locale === "zh-Hant" ? playerFront.nameZht : playerFront.nameEn) : "-";
-    const enemyName = enemyFront ? (locale === "zh-Hant" ? enemyFront.nameZht : enemyFront.nameEn) : "-";
-    const enemyRole = enemyFront ? (locale === "zh-Hant" ? enemyFront.roleZht : enemyFront.roleEn) : "";
+    const playerName = playerFront ? localizedField(playerFront, "name") : "-";
+    const enemyName = enemyFront ? localizedField(enemyFront, "name") : "-";
+    const enemyRole = enemyFront ? localizedField(enemyFront, "role") : "";
     const summary = t("combatSummary", { playerHp, playerMax, enemyHp, enemyMax });
     const front = t("combatFront", { player: playerName, enemy: enemyRole ? `${enemyName} - ${enemyRole}` : enemyName });
     nodes.combatSummary.innerHTML = `<strong>${summary}</strong><span>${front}</span>`;
@@ -3370,7 +3578,7 @@
       state.combat.effects.push({ type: "smoke", x: 560, y: 250, life: 15, text: `-${eDmg}`, textColor: "var(--danger)" });
     }
 
-    combatLog(`${locale === "zh-Hant" ? pUnit.nameZht : pUnit.nameEn} ⚔️ ${locale === "zh-Hant" ? eUnit.nameZht : eUnit.nameEn}`);
+    combatLog(`${localizedField(pUnit, "name")} ⚔️ ${localizedField(eUnit, "name")}`);
 
     // Check faints
     scheduleCombatStepCleanup(() => {
@@ -3403,7 +3611,7 @@
     const enemyUnit = unitAtFormationSlot(enemySquad, slot);
     if (playerUnit) actions.push(resolveUnitAbility(playerUnit, "player", Math.max(0, playerSquad.indexOf(playerUnit))));
     if (enemyUnit) actions.push(resolveEnemySlotAction(enemyUnit, Math.max(0, enemySquad.indexOf(enemyUnit))));
-    combatLog(actions.filter(Boolean).join("  |  ") || `${locale === "zh-Hant" ? "\u7b2c" : "Slot"} ${slot + 1}`);
+    combatLog(actions.filter(Boolean).join("  |  ") || `${localizedPhrase("Slot", "\u7b2c", "Espacio")} ${slot + 1}`);
 
     scheduleCombatStepCleanup(() => {
       const before = playerSquad.length + enemySquad.length;
@@ -3424,7 +3632,7 @@
     const ePoint = combatPoint("enemy", 0);
     if (!guardText) damageTarget(pUnit, enemyAttackDamage(eUnit), pPoint.x, pPoint.y);
     damageTarget(eUnit, pUnit.atk, ePoint.x, ePoint.y);
-    combatLog(guardText || enemyAttackText(eUnit, `${combatUnitName(pUnit)} ${locale === "zh-Hant" ? "\u8207" : "clashes with"} ${combatUnitName(eUnit)}`));
+    combatLog(guardText || enemyAttackText(eUnit, `${combatUnitName(pUnit)} ${localizedPhrase("clashes with", "\u8207", "choca con")} ${combatUnitName(eUnit)}`));
   }
 
   function triggerEnemyGuardAction(unit, slot) {
@@ -3432,7 +3640,7 @@
     unit.abilityUsed = true;
     const protectedUnit = formationTarget(state.combat.enemySquad, "front") || unit;
     addUnitShield(protectedUnit, 1, "enemy", Math.max(0, state.combat.enemySquad.indexOf(protectedUnit)));
-    return `${combatUnitName(unit)} ${locale === "zh-Hant" ? "\u5b88\u8b77\u524d\u6392" : "guards the front"}`;
+    return `${combatUnitName(unit)} ${localizedPhrase("guards the front", "\u5b88\u8b77\u524d\u6392", "protege la fila delantera")}`;
   }
 
   function enemyAttackDamage(unit) {
@@ -3444,8 +3652,8 @@
   }
 
   function enemyAttackText(unit, fallback) {
-    if (unit.lastAttackTrait === "pack") return `${combatUnitName(unit)} ${locale === "zh-Hant" ? "\u767c\u52d5\u7fa4\u9ad4\u54ac\u64ca" : "uses Pack Bite"}`;
-    if (unit.lastAttackTrait === "charge") return `${combatUnitName(unit)} ${locale === "zh-Hant" ? "\u767c\u52d5\u9996\u64ca\u885d\u92d2" : "uses First Charge"}`;
+    if (unit.lastAttackTrait === "pack") return `${combatUnitName(unit)} ${localizedPhrase("uses Pack Bite", "\u767c\u52d5\u7fa4\u9ad4\u54ac\u64ca", "usa Mordisco de Manada")}`;
+    if (unit.lastAttackTrait === "charge") return `${combatUnitName(unit)} ${localizedPhrase("uses First Charge", "\u767c\u52d5\u9996\u64ca\u885d\u92d2", "usa Primera Carga")}`;
     return fallback;
   }
 
@@ -3466,20 +3674,20 @@
     if (unit.ability === "thornBoss") {
       damageRow("front", .8);
       addUnitShield(unit, 1 + Math.floor(unit.level / 3), "enemy", slot);
-      return `${combatUnitName(unit)} ${locale === "zh-Hant" ? "\u91cb\u653e\u834a\u68d8\u98a8\u66b4" : "unleashes Thornstorm"}`;
+      return `${combatUnitName(unit)} ${localizedPhrase("unleashes Thornstorm", "\u91cb\u653e\u834a\u68d8\u98a8\u66b4", "desata Tormenta de Espinas")}`;
     }
     if (unit.ability === "crystalBoss") {
       damageRow("back", .85);
-      return `${combatUnitName(unit)} ${locale === "zh-Hant" ? "\u964d\u4e0b\u68f1\u93e1\u98a8\u66b4" : "casts Prism Storm"}`;
+      return `${combatUnitName(unit)} ${localizedPhrase("casts Prism Storm", "\u964d\u4e0b\u68f1\u93e1\u98a8\u66b4", "lanza Tormenta Prismática")}`;
     }
     if (unit.ability === "abyssBoss") {
       enemies.forEach((ally, index) => addUnitShield(ally, 1 + Math.floor(unit.level / 4), "enemy", index));
       unit.hp = Math.min(unit.maxHp, unit.hp + 2);
-      return `${combatUnitName(unit)} ${locale === "zh-Hant" ? "\u5c55\u958b\u6c89\u57ce\u8981\u585e" : "raises the Sunken Fortress"}`;
+      return `${combatUnitName(unit)} ${localizedPhrase("raises the Sunken Fortress", "\u5c55\u958b\u6c89\u57ce\u8981\u585e", "alza la Fortaleza Sumergida")}`;
     }
     if (unit.ability === "magmaBoss") {
       damageRow("front", 1.05);
-      return `${combatUnitName(unit)} ${locale === "zh-Hant" ? "\u767c\u52d5\u706b\u5c71\u53e3\u885d\u64ca" : "uses Caldera Crash"}`;
+      return `${combatUnitName(unit)} ${localizedPhrase("uses Caldera Crash", "\u767c\u52d5\u706b\u5c71\u53e3\u885d\u64ca", "usa Choque de la Caldera")}`;
     }
     if (unit.ability === "eclipseBoss") {
       damageRow("back", .8);
@@ -3488,14 +3696,14 @@
         const point = formationTargetPoint("player", players, front);
         damageTarget(front, Math.max(1, Math.ceil(unit.atk * .5)), point.x, point.y);
       }
-      return `${combatUnitName(unit)} ${locale === "zh-Hant" ? "\u964d\u4e0b\u96d9\u6708\u661f\u843d" : "casts Twin Moonfall"}`;
+      return `${combatUnitName(unit)} ${localizedPhrase("casts Twin Moonfall", "\u964d\u4e0b\u96d9\u6708\u661f\u843d", "lanza Doble Caída Lunar")}`;
     }
     players.forEach((target) => {
       const point = formationTargetPoint("player", players, target);
       damageTarget(target, Math.max(1, Math.ceil(unit.atk * .7)), point.x, point.y);
     });
     unit.hp = Math.min(unit.maxHp, unit.hp + 2);
-    return `${combatUnitName(unit)} ${locale === "zh-Hant" ? "\u4f7f\u7d42\u591c\u964d\u81e8" : "invokes End of Night"}`;
+    return `${combatUnitName(unit)} ${localizedPhrase("invokes End of Night", "\u4f7f\u7d42\u591c\u964d\u81e8", "invoca Fin de la Noche")}`;
   }
 
   function resolveEnemySlotAction(unit, slot) {
@@ -3513,12 +3721,12 @@
         const point = formationTargetPoint("player", state.combat.playerSquad, target);
         damageTarget(target, damage, point.x, point.y);
       });
-      return `${combatUnitName(unit)} ${locale === "zh-Hant" ? "\u6a6b\u6383\u6574\u6392" : "sweeps the front row"}`;
+      return `${combatUnitName(unit)} ${localizedPhrase("sweeps the front row", "\u6a6b\u6383\u6574\u6392", "barre la fila delantera")}`;
     }
 
     if (unit.ability === "heal") {
       healWeakestAlly(state.combat.enemySquad, Math.max(1, Math.ceil(unit.atk * .7)), "enemy");
-      return `${combatUnitName(unit)} ${locale === "zh-Hant" ? "\u6cbb\u7652\u968a\u53cb" : "heals an ally"}`;
+      return `${combatUnitName(unit)} ${localizedPhrase("heals an ally", "\u6cbb\u7652\u968a\u53cb", "cura a un aliado")}`;
     }
 
     const target = formationTarget(state.combat.playerSquad, unit.targetMode || "front");
@@ -3529,12 +3737,14 @@
       const hit = Math.max(1, Math.ceil(unit.atk * .6));
       damageTarget(target, hit, point.x, point.y);
       damageTarget(target, hit, point.x, point.y);
-      return `${combatUnitName(unit)} ${locale === "zh-Hant" ? "\u767c\u52d5\u96d9\u91cd\u9023\u64ca" : "strikes twice"}`;
+      return `${combatUnitName(unit)} ${localizedPhrase("strikes twice", "\u767c\u52d5\u96d9\u91cd\u9023\u64ca", "golpea dos veces")}`;
     }
     const damage = enemyAttackDamage(unit);
     damageTarget(target, damage, point.x, point.y);
     if (unit.ability === "drain") unit.hp = Math.min(unit.maxHp, unit.hp + Math.max(1, Math.ceil(damage * .5)));
-    const targetLabel = unit.targetMode === "back" ? (locale === "zh-Hant" ? "\u653b\u64ca\u5f8c\u6392" : "strikes the back row") : (locale === "zh-Hant" ? "\u653b\u64ca\u524d\u6392" : "strikes the front row");
+    const targetLabel = unit.targetMode === "back"
+      ? localizedPhrase("strikes the back row", "\u653b\u64ca\u5f8c\u6392", "ataca la fila trasera")
+      : localizedPhrase("strikes the front row", "\u653b\u64ca\u524d\u6392", "ataca la fila delantera");
     return enemyAttackText(unit, `${combatUnitName(unit)} ${targetLabel}`);
   }
 
@@ -3550,11 +3760,11 @@
     markActing(team, slot, unit.id === 3 || unit.id === 6 || unit.id === 7 || unit.id === 8 ? "cast" : "attack");
     if (unit.id === 1 || unit.id === 5) {
       healWeakestAlly(allies, halfAttack, team);
-      return `${combatUnitName(unit)} ${locale === "zh-Hant" ? "\u6cbb\u7652\u968a\u53cb" : "heals an ally"}`;
+      return `${combatUnitName(unit)} ${localizedPhrase("heals an ally", "\u6cbb\u7652\u968a\u53cb", "cura a un aliado")}`;
     }
     if (unit.id === 6) {
       addUnitShield(unit, halfAttack, team, slot);
-      return `${combatUnitName(unit)} ${locale === "zh-Hant" ? "\u6490\u8d77\u8b77\u76fe" : "raises a shield"}`;
+      return `${combatUnitName(unit)} ${localizedPhrase("raises a shield", "\u6490\u8d77\u8b77\u76fe", "alza un escudo")}`;
     }
     if (unit.id === 3) {
       const backlineTargets = formationTargets(enemies, "back");
@@ -3566,11 +3776,11 @@
       const secondPoint = formationTargetPoint(enemyTeam, enemies, secondTarget);
       addCombatEffect("starfall", secondPoint.x, secondPoint.y, "", "#b9f7ff");
       damageTarget(secondTarget, Math.max(1, Math.ceil(unit.atk * 0.75)), secondPoint.x, secondPoint.y);
-      return `${combatUnitName(unit)} ${locale === "zh-Hant" ? "\u964d\u4e0b\u661f\u843d" : "casts Starfall"}`;
+      return `${combatUnitName(unit)} ${localizedPhrase("casts Starfall", "\u964d\u4e0b\u661f\u843d", "lanza Lluvia Estelar")}`;
     }
     if (unit.id === 2 || unit.id === 4) {
       allies.forEach((ally, idx) => addUnitShield(ally, Math.max(1, level), team, idx));
-      return `${combatUnitName(unit)} ${locale === "zh-Hant" ? "\u5b88\u8b77\u5168\u968a" : "guards the squad"}`;
+      return `${combatUnitName(unit)} ${localizedPhrase("guards the squad", "\u5b88\u8b77\u5168\u968a", "protege al escuadrón")}`;
     }
     if (unit.id === 7) {
       const targets = formationTargets(enemies, "front");
@@ -3580,7 +3790,7 @@
         addCombatEffect("hit", point.x, point.y, "", "#ffd666");
         damageTarget(target, damage, point.x, point.y);
       });
-      return `${combatUnitName(unit)} ${locale === "zh-Hant" ? "\u6a6b\u6383\u6574\u6392" : "sweeps the front row"}`;
+      return `${combatUnitName(unit)} ${localizedPhrase("sweeps the front row", "\u6a6b\u6383\u6574\u6392", "barre la fila delantera")}`;
     }
     if (unit.id === 8) {
       allies.forEach((ally) => {
@@ -3590,7 +3800,7 @@
       });
       const point = combatPoint(team, slot);
       addCombatEffect("buff", point.x, point.y, `+${level}`, "#ffd666");
-      return `${combatUnitName(unit)} ${locale === "zh-Hant" ? "\u5f37\u5316\u968a\u53cb" : "rallies allies"}`;
+      return `${combatUnitName(unit)} ${localizedPhrase("rallies allies", "\u5f37\u5316\u968a\u53cb", "anima a los aliados")}`;
     }
 
     const target = formationTarget(enemies, unit.targetMode || "front");
@@ -3598,10 +3808,12 @@
     if (unit.id === 0) {
       damageTarget(target, level, point.x, point.y);
       damageTarget(target, unit.atk, point.x, point.y);
-      return `${combatUnitName(unit)} ${locale === "zh-Hant" ? "\u9023\u7e8c\u8df3\u64ca\u524d\u6392" : "double-pounces the front row"}`;
+      return `${combatUnitName(unit)} ${localizedPhrase("double-pounces the front row", "\u9023\u7e8c\u8df3\u64ca\u524d\u6392", "salta dos veces sobre la fila delantera")}`;
     }
     damageTarget(target, unit.atk, point.x, point.y);
-    return `${combatUnitName(unit)} ${unit.targetMode === "back" ? (locale === "zh-Hant" ? "\u653b\u64ca\u5f8c\u6392" : "attacks the back row") : (locale === "zh-Hant" ? "\u653b\u64ca\u524d\u6392" : "attacks the front row")}`;
+    return `${combatUnitName(unit)} ${unit.targetMode === "back"
+      ? localizedPhrase("attacks the back row", "\u653b\u64ca\u5f8c\u6392", "ataca la fila trasera")
+      : localizedPhrase("attacks the front row", "\u653b\u64ca\u524d\u6392", "ataca la fila delantera")}`;
   }
 
   // Combat Faint triggers
@@ -3967,13 +4179,17 @@
     document.documentElement.style.setProperty("--squad-vh", `${viewportHeight}px`);
     const availableWidth = Math.max(1, viewportWidth - 8);
     const availableHeight = Math.max(1, viewportHeight - 64);
-    const stageScale = Math.min(Math.max(0.1, availableWidth / 390), Math.max(0.1, availableHeight / 780));
     const heightScale = Math.max(0.1, availableHeight / 780);
     const fullWidthLogicalSize = availableWidth / heightScale;
     const battleWidthLimit = viewportHeight >= viewportWidth ? 600 : 720;
+    const stageLogicalWidth = Math.min(battleWidthLimit, Math.max(390, fullWidthLogicalSize));
+    const stageScale = Math.min(Math.max(0.1, availableWidth / stageLogicalWidth), heightScale);
+    const stageRenderedWidth = stageLogicalWidth * stageScale;
     const battleLogicalWidth = Math.min(battleWidthLimit, Math.max(382, fullWidthLogicalSize));
     const battleScale = Math.min(Math.max(0.1, availableWidth / battleLogicalWidth), heightScale);
     document.documentElement.style.setProperty("--squad-stage-scale", String(stageScale));
+    document.documentElement.style.setProperty("--squad-stage-width", `${stageLogicalWidth}px`);
+    document.documentElement.style.setProperty("--squad-stage-rendered-width", `${stageRenderedWidth}px`);
     document.documentElement.style.setProperty("--squad-battle-width", `${battleLogicalWidth}px`);
     document.documentElement.style.setProperty("--squad-battle-scale", String(battleScale));
     pinMainSoundToggle();

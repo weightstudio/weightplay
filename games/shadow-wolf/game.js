@@ -353,6 +353,137 @@
     roomLabel: "\u95dc\u5361",
   });
 
+  text.es = {
+    title: "Lobo Sombrío",
+    menuTitle: "Aventura de plataformas en las ruinas.",
+    menuHint: "Muévete, usa el doble salto, ataca y corre por 30 niveles guardados. Aprende cada peligro y enemigo, distribuye cuatro atributos y derrota a seis jefes regionales.",
+    adventureRecordTitle: "Registro de aventura",
+    adventureRecordText: "Intentos: {runs} · Desbloqueados: {unlocked}/30 · Completados: {best}/30 · Coronas: {wins}",
+    diamondShopTitle: "Mejora permanente",
+    amuletName: "Amuleto de Niebla",
+    amuletEffect: "Empieza cada partida con +10 PV máximos (40 PV en lugar de 30).",
+    amuletOwned: "Obtenido: cada partida empieza con 40 PV máximos.",
+    amuletDecision: "Desbloqueo permanente. Toca otra vez para confirmar: {before} → {after} diamantes.",
+    amuletConfirm: "Confirmar · {before}→{after}",
+    amuletLabel: "Mejora permanente Amuleto de Niebla. Cuesta 15 diamantes. Saldo actual: {balance}.",
+    amuletConfirmLabel: "Confirma el Amuleto de Niebla. Gasta 15 diamantes. Saldo de {before} a {after}.",
+    amuletNeed: "Necesitas 15 diamantes. Saldo actual: {balance}.",
+    startRun: "Empezar juego",
+    languageSelector: "Selector de idioma",
+    backToLobby: "Volver al vestíbulo",
+    coverAlt: "Portada de Lobo Sombrío",
+    stageSelection: "Selección de nivel",
+    backToMain: "Volver al inicio",
+    stageRail: "Carrusel de niveles",
+    backToStages: "Volver a niveles",
+    moveLeft: "Mover a la izquierda",
+    moveRight: "Mover a la derecha",
+    jumpAction: "Saltar",
+    attackAction: "Atacar",
+    dashAction: "Correr",
+    desktopControlsLabel: "Controles: A/D para moverte, W o Espacio para saltar, J para atacar y K o Mayús para correr.",
+    controlLegend: "A/D Mover · W/Espacio Saltar · J Atacar · K/Mayús Correr",
+    roomLabel: "Nivel",
+    keyLabel: "Puntos",
+    arenaLabel: "Arena de Lobo Sombrío",
+    stageEyebrow: "EXPEDICIÓN",
+    stageTitle: "Elige una expedición",
+    stageHint: "Arrastra el carrusel y elige un nivel desbloqueado. Los jefes aparecen en 5, 10, 15, 20, 25 y 30.",
+    menu: "Menú",
+    hudHp: "PV del lobo",
+    chooseCard: "Elige una mejora de reliquia",
+    chooseCardDesc: "Elige una reliquia antigua para fortalecer a tu lobo.",
+    attributeChoiceTitle: "Subida de nivel: elige tu crecimiento",
+    attributeChoiceDesc: "Gasta los dos puntos antes de reanudar la batalla. Quedan {points}.",
+    attributeStrength: "Fuerza",
+    attributeAgility: "Agilidad",
+    attributeConstitution: "Constitución",
+    attributeLuck: "Suerte",
+    attributeDamagePreview: "Daño {from} → {to}",
+    attributeSpeedPreview: "Velocidad {from} → {to}",
+    attributeHpPreview: "PV máximos {from} → {to}",
+    attributeCritPreview: "Crítico {from}% → {to}%",
+    attributeChoiceAria: "Gasta 1 punto en {name}: {effect}",
+    lootFound: "¡Cofre de reliquia desbloqueado!",
+    equipLoot: "Equipar objeto",
+    tryAgain: "Intentar de nuevo",
+    backToMenu: "Volver a niveles",
+    sidebarInventory: "Equipo equipado",
+    sidebarStats: "Atributos del personaje",
+    slotWeapon: "ARMA",
+    slotArmor: "ARMADURA",
+    slotBoots: "BOTAS",
+    runComplete: "¡Expedición completada!",
+    runFailed: "El lobo cayó",
+    resultDisclaimer: "Solo para diversión y seguimiento local del progreso.",
+    skillReportTitle: "Informe de habilidades",
+    skillLogic: "Lógica",
+    skillFocus: "Concentración",
+    skillProblem: "Resolución de problemas",
+    regionsCleared: "Progreso de niveles",
+    relic_fang: "Colmillo Afilado",
+    relic_fang_desc: "Aumenta el daño base del barrido de garras en 3.",
+    relic_fur: "Pelaje Grueso",
+    relic_fur_desc: "Aumenta los PV máximos en 5 y recupera 5 PV.",
+    relic_boots: "Botas de Viento",
+    relic_boots_desc: "Aumenta la velocidad de salto en 0,8 unidades.",
+    gear_sword_rare: "Colmillo de Cristal",
+    gear_sword_rare_desc: "+4 de daño de garra",
+    gear_dagger_epic: "Garra Reliquia",
+    gear_dagger_epic_desc: "+8 de daño y +10% de crítico",
+    gear_armor_rare: "Collar de Lobo",
+    gear_armor_rare_desc: "+10 PV máximos",
+    gear_armor_epic: "Arnés de Cuero",
+    gear_armor_epic_desc: "+20 PV máximos",
+    gear_boots_rare: "Botas de Explorador",
+    gear_boots_rare_desc: "+1,0 de fuerza de salto",
+    gear_boots_epic: "Botas Veloces",
+    gear_boots_epic_desc: "+1,5 de salto y +20% de velocidad",
+    rarity_rare: "Equipo raro",
+    rarity_epic: "Equipo épico",
+    report_win: "Nivel {stage} completado. Se desbloqueó la siguiente ruta y puedes repetir este nivel.",
+    report_partial: "El nivel {stage} sigue sin completar. Lee el aviso del peligro, ajusta los atributos e inténtalo de nuevo.",
+    report_skill_win: "Interpretaste la regla del nivel, controlaste la ruta y terminaste el encuentro.",
+    report_skill_partial: "La ruta sigue abierta: observa el ciclo de avisos y reserva la carrera o el doble salto para responder.",
+  };
+
+  const stageCopyEs = [
+    ["Puerta de Sombra Lunar", "Ritmo de patrulla y una zona de pinchos"],
+    ["Cornisa Dividida", "Doble salto entre cornisas separadas"],
+    ["Faroles de Murciélago", "Esquiva disparos dirigidos en la ruta superior"],
+    ["Cruce del Colmillo", "Patrulla, fuego de murciélagos y una cornisa móvil"],
+    ["Hondonada del Basilisco", "Charcos de veneno y barrido de cola del jefe"],
+    ["Boca de Cristal", "Muévete después de cada aviso de cristal"],
+    ["Peldaños del Eco", "Cruza entre descargas de cristales"],
+    ["Calzada de Vidrio", "Plataformas móviles bajo la lluvia de cristales"],
+    ["Emboscada de Fragmentos", "Castiga al jabalí acorazado después de su carga"],
+    ["Guardián de Piedra", "Rompe su defensa frontal después del golpe al suelo"],
+    ["Límite de Raíces Salvajes", "Las zarzas frenan los movimientos imprudentes"],
+    ["Enredaderas Colgantes", "Elige entre amenazas a distancia y terrestres"],
+    ["Carrera de Madriguera", "Cargas de jabalíes cruzan ambas rutas"],
+    ["Relevo de Espinas", "Abre terreno seguro antes de que crezcan las raíces"],
+    ["Coloso de Espinas", "Expón el núcleo después de su golpe de raíces"],
+    ["Umbral de Brasas", "Las franjas de fuego se encienden por ciclos"],
+    ["Persecución de Ceniza", "Los lobos de brasa dejan rastros temporales de fuego"],
+    ["Elevador del Horno", "Plataformas rápidas pasan sobre franjas de fuego"],
+    ["Nido de Ala Ceniza", "Prioriza amenazas en picado y terrestres"],
+    ["Dracónido de Ceniza", "Sobrevive al abanico aéreo y castiga su aterrizaje"],
+    ["Acceso a la Grieta", "Ráfagas periódicas alteran el movimiento horizontal"],
+    ["Percha Evanescente", "Sigue a los murciélagos que saltan entre perchas marcadas"],
+    ["Cacería del Espejo", "Los lobos espejo se dividen en ecos frágiles"],
+    ["Puente del Eclipse", "Lee las ráfagas, disparos intermitentes y una cornisa móvil"],
+    ["Ciervo del Eclipse", "Atrae su carga protegida contra el terreno"],
+    ["Camino de la Corona", "Los enemigos de élite regresan combinados"],
+    ["Prueba Séxtuple", "Seis funciones aparecen en parejas escalonadas"],
+    ["Altar Roto", "Cuatro ciclos del terreno tienen avisos claros"],
+    ["Último Sello", "Tres enemigos de élite protegen la corona"],
+    ["Corona del Coloso", "El jefe final combina cristales, raíces y cargas"],
+  ];
+  STAGE_DEFINITIONS.forEach((definition, index) => {
+    definition.nameEs = stageCopyEs[index][0];
+    definition.hintEs = stageCopyEs[index][1];
+  });
+
   function preloadImage(src) {
     const image = new Image();
     image.src = src;
@@ -541,12 +672,13 @@
   }
 
   function getLocale() {
-    return window.WonderI18n?.locale?.() || (localStorage.getItem(localeKey) === "zh-Hant" ? "zh-Hant" : "en");
+    const requested = window.WonderI18n?.locale?.() || localStorage.getItem(localeKey) || "en";
+    return text[requested] ? requested : "en";
   }
 
   function t(key, params = {}) {
     const locale = getLocale();
-    const raw = text[locale][key] || text.en[key] || key;
+    const raw = text[locale]?.[key] || text.en[key] || key;
     return Object.entries(params).reduce((str, [k, v]) => str.replaceAll(`{${k}}`, String(v)), raw);
   }
 
@@ -574,10 +706,11 @@
     }
     nodes.localeSelect.value = getLocale();
     renderStageCards();
-    let publicMeta = locale === "zh-Hant"
-      ? { title: "影狼傳說 - WeightPlay", description: "探索影狼遺跡、收集遺物並挑戰首領的 13+ 動作冒險。" }
-      : { title: "Shadow Wolf Legend - WeightPlay", description: "Master 30 platform-action stages, counter special enemies, shape four attributes, and defeat six distinct Shadow Wolf Bosses." };
-    if (locale === "zh-Hant") publicMeta = { title: "\u5f71\u72fc\u50b3\u8aaa - WeightPlay", description: "\u638c\u63e1 30 \u500b\u5e73\u53f0\u52d5\u4f5c\u95dc\u5361\u3001\u53cd\u5236\u7279\u6b8a\u6575\u4eba\u3001\u914d\u7f6e\u56db\u7a2e\u5c6c\u6027\uff0c\u4e26\u64ca\u6557\u516d\u96bb\u4e0d\u540c\u9996\u9818\u3002" };
+    const publicMeta = locale === "zh-Hant"
+      ? { title: "\u5f71\u72fc\u50b3\u8aaa - WeightPlay", description: "\u638c\u63e1 30 \u500b\u5e73\u53f0\u52d5\u4f5c\u95dc\u5361\u3001\u53cd\u5236\u7279\u6b8a\u6575\u4eba\u3001\u914d\u7f6e\u56db\u7a2e\u5c6c\u6027\uff0c\u4e26\u64ca\u6557\u516d\u96bb\u4e0d\u540c\u9996\u9818\u3002" }
+      : locale === "es"
+        ? { title: "Lobo Sombrío - WeightPlay", description: "Supera 30 niveles de plataformas, responde a enemigos especiales, distribuye cuatro atributos y derrota a seis jefes distintos." }
+        : { title: "Shadow Wolf Legend - WeightPlay", description: "Master 30 platform-action stages, counter special enemies, shape four attributes, and defeat six distinct Shadow Wolf Bosses." };
     document.title = publicMeta.title;
     document.querySelector('meta[name="description"]')?.setAttribute("content", publicMeta.description);
     document.querySelector('meta[property="og:title"]')?.setAttribute("content", publicMeta.title);
@@ -623,10 +756,15 @@
       button.className = `zone-node stage-card${definition.boss ? " boss-zone" : ""}${definition.id === state.selectedStage ? " is-selected" : ""}${cleared ? " is-cleared" : ""}`;
       button.dataset.zone = String(definition.id);
       button.disabled = locked;
-      const title = locale === "zh-Hant" ? definition.nameZht : definition.nameEn;
-      const hint = locale === "zh-Hant" ? definition.hintZht : definition.hintEn;
-      const stateLabel = locked ? (locale === "zh-Hant" ? "\u5c1a\u672a\u89e3\u9396" : "Locked") : cleared ? (locale === "zh-Hant" ? "\u5df2\u901a\u95dc" : "Cleared") : (locale === "zh-Hant" ? "\u53ef\u6311\u6230" : "Ready");
-      button.innerHTML = `<b>${String(definition.id).padStart(2, "0")} · ${locale === "zh-Hant" ? `\u5340\u57df ${definition.region}` : `Region ${definition.region}`}</b><span>${title}</span><small>${hint}</small><small>${stateLabel}</small>`;
+      const title = locale === "zh-Hant" ? definition.nameZht : locale === "es" ? definition.nameEs : definition.nameEn;
+      const hint = locale === "zh-Hant" ? definition.hintZht : locale === "es" ? definition.hintEs : definition.hintEn;
+      const stateLabel = locked
+        ? locale === "zh-Hant" ? "\u5c1a\u672a\u89e3\u9396" : locale === "es" ? "Bloqueado" : "Locked"
+        : cleared
+          ? locale === "zh-Hant" ? "\u5df2\u901a\u95dc" : locale === "es" ? "Completado" : "Cleared"
+          : locale === "zh-Hant" ? "\u53ef\u6311\u6230" : locale === "es" ? "Disponible" : "Ready";
+      const regionLabel = locale === "zh-Hant" ? `\u5340\u57df ${definition.region}` : locale === "es" ? `Región ${definition.region}` : `Region ${definition.region}`;
+      button.innerHTML = `<b>${String(definition.id).padStart(2, "0")} · ${regionLabel}</b><span>${title}</span><small>${hint}</small><small>${stateLabel}</small>`;
       button.setAttribute("aria-label", `${definition.id}. ${title}: ${hint}. ${stateLabel}`);
       button.addEventListener("click", () => {
         if (locked) return;
@@ -1407,7 +1545,10 @@
       window.WeightPlayWallet?.addDiamonds(BOSS_STAGES.has(clearedStage) ? (clearedStage === STAGE_COUNT ? 8 : 2) : 1);
       nodes.resultText.textContent = t("report_win", { stage: clearedStage });
       nodes.skillReportText.textContent = t("report_skill_win", { stage: clearedStage });
-      nodes.retryBtn.textContent = clearedStage < STAGE_COUNT ? (getLocale() === "zh-Hant" ? "\u4e0b\u4e00\u95dc" : "Next Stage") : (getLocale() === "zh-Hant" ? "\u518d\u73a9\u4e00\u6b21" : "Replay Stage");
+      const locale = getLocale();
+      nodes.retryBtn.textContent = clearedStage < STAGE_COUNT
+        ? locale === "zh-Hant" ? "\u4e0b\u4e00\u95dc" : locale === "es" ? "Siguiente nivel" : "Next Stage"
+        : locale === "zh-Hant" ? "\u518d\u73a9\u4e00\u6b21" : locale === "es" ? "Repetir nivel" : "Replay Stage";
       nodes.retryBtn.dataset.resultAction = clearedStage < STAGE_COUNT ? "next" : "retry";
       window.WonderSound?.play("win");
     } else {

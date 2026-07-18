@@ -17,6 +17,7 @@
     total: 'Total {n}',
     shiftUnlocked: 'Shift {n} unlocked',
     allShiftsComplete: 'All shifts complete',
+    shifts: 'Shifts',
     contractDescription: 'Priority contract: finish with no errors for 20 bonus sky coins.',
     insurance: 'Insure 5 Diamonds',
     insuranceActive: 'Insurance active',
@@ -45,6 +46,7 @@
     total: '\u7d2f\u7a4d {n}',
     shiftUnlocked: '\u5df2\u89e3\u9396\u7b2c {n} \u73ed',
     allShiftsComplete: '\u4e94\u500b\u73ed\u6b21\u5168\u90e8\u5b8c\u6210',
+    shifts: '\u73ed\u6b21\u9078\u64c7',
     contractDescription: '\u512a\u5148\u5408\u7d04\uff1a\u7121\u932f\u8aa4\u5b8c\u6210\u53ef\u7372\u5f97 20 \u5929\u7a7a\u5e63\u3002',
     insurance: '\u4fdd\u96aa 5 \u947d\u77f3',
     insuranceActive: '\u5df2\u6295\u4fdd',
@@ -327,8 +329,13 @@
     $('resultRewards').innerHTML = win
       ? `<span>${resultLabels.reputation} +${state.done * 5} \u00b7 ${t('total', {n:save.reputation})}</span><span>${resultLabels.coins} +${coinReward} \u00b7 ${t('total', {n:save.coins})}</span><span>${t('blueprintStamps')} +${shiftConfig[state.shift].stamps} \u00b7 ${t('total', {n:save.stamps})}</span><span>${resultLabels.medals} ${save.medals[state.shift] || 1}/3</span><span>${unlockEvidence}</span>`
       : `<span>${resultLabels.safe} ${state.done}/${state.goal}</span><span>${resultLabels.errors} ${state.errors}/3</span><span>${insuredRun ? resultLabels.protected : resultLabels.retry}</span>`;
-    $('nextBtn').textContent = win && state.shift < 5 ? t('next') : t('retry');
-    $('nextBtn').onclick = () => { state.shift = win ? Math.min(5, state.shift + 1) : state.shift; startBattle(); };
+    const terminalWin = win && state.shift >= 5;
+    $('nextBtn').textContent = terminalWin ? t('shifts') : win ? t('next') : t('retry');
+    $('nextBtn').onclick = () => {
+      if (terminalWin) { show('stageScreen'); renderStages(); return; }
+      state.shift = win ? state.shift + 1 : state.shift;
+      startBattle();
+    };
     $('nextBtn').focus({ preventScroll: true });
     insuranceActive = false;
   }
@@ -465,6 +472,15 @@
     finish(dock.dataset.dock === state.dock);
     window.requestAnimationFrame(() => $('flight').focus({preventScroll:true}));
   }
+  function focusCurrentBattleAction() {
+    const nextAction = [
+      state.storm && !state.serviced ? $('serviceBtn') : null,
+      state.conflict ? $('clearRouteBtn') : null,
+      state.needsCrew && !state.crewAssigned ? $('assignCrewBtn') : null,
+      $('flight'),
+    ].find((node) => node && !node.classList.contains('hidden') && !node.disabled);
+    nextAction?.focus({preventScroll:true});
+  }
   $('startBtn').onclick = () => { state.shift = save.unlocked; show('stageScreen'); renderStages(); };
   $('contractToggle').onchange = (event) => { clearInsuranceConfirmation(); state.contract = event.target.checked; renderContractControls(); };
   $('insuranceBtn').addEventListener('keydown', (event) => {
@@ -497,10 +513,11 @@
       $('serviceBtn').classList.add('hidden');
       $('feedback').textContent = locale === 'zh-Hant' ? '\u98db\u8239\u5df2\u53ef\u5b89\u5168\u9032\u5834\u3002' : 'Flight cleared for safe approach.';
       renderHud();
+      focusCurrentBattleAction();
     }
   };
-  $('clearRouteBtn').onclick = () => { if (state.conflict && state.fuel > 0) { state.fuel -= 1; state.conflict = false; $('clearRouteBtn').classList.add('hidden'); $('feedback').textContent = locale === 'zh-Hant' ? '\u822a\u7dda\u5df2\u6e05\u7406\u3002' : 'Route cleared.'; renderHud(); } };
-  $('assignCrewBtn').onclick = () => { if (state.needsCrew && !state.crewAssigned && state.crew > 0) { state.crew -= 1; state.crewAssigned = true; $('assignCrewBtn').classList.add('hidden'); $('feedback').textContent = locale === 'zh-Hant' ? '\u7d44\u54e1\u5df2\u6307\u6d3e\u3002' : 'Crew assigned.'; renderHud(); } };
+  $('clearRouteBtn').onclick = () => { if (state.conflict && state.fuel > 0) { state.fuel -= 1; state.conflict = false; $('clearRouteBtn').classList.add('hidden'); $('feedback').textContent = locale === 'zh-Hant' ? '\u822a\u7dda\u5df2\u6e05\u7406\u3002' : 'Route cleared.'; renderHud(); focusCurrentBattleAction(); } };
+  $('assignCrewBtn').onclick = () => { if (state.needsCrew && !state.crewAssigned && state.crew > 0) { state.crew -= 1; state.crewAssigned = true; $('assignCrewBtn').classList.add('hidden'); $('feedback').textContent = locale === 'zh-Hant' ? '\u7d44\u54e1\u5df2\u6307\u6d3e\u3002' : 'Crew assigned.'; renderHud(); focusCurrentBattleAction(); } };
   $('flight').addEventListener('pointerdown', routePointer);
   $('flight').addEventListener('mousedown', routePointer);
   $('flight').addEventListener('click', (event) => {

@@ -6451,6 +6451,39 @@
     ]
   };
 
+  let spanishResourcePromise = null;
+  let spanishResourceFailed = false;
+
+  function installSpanishResource() {
+    const resource = window.WeightPlayGameInfoLocales?.es;
+    if (!resource) return false;
+    labels.es = resource.labels || {};
+    skillLabels.es = resource.skillLabels || {};
+    localizedGameplayProfiles.es = resource.gameplayProfiles || {};
+    localizedGames.es = resource.games || {};
+    return true;
+  }
+
+  function ensureSpanishResource() {
+    if (installSpanishResource() || spanishResourceFailed) return Promise.resolve();
+    if (spanishResourcePromise) return spanishResourcePromise;
+    spanishResourcePromise = new Promise((resolve) => {
+      const script = document.createElement("script");
+      script.src = new URL("game-page-info-es.js?v=20260718-es1", sharedAssetBase).href;
+      script.dataset.wpGamePageInfoLocale = "es";
+      script.onload = () => {
+        installSpanishResource();
+        resolve();
+      };
+      script.onerror = () => {
+        spanishResourceFailed = true;
+        resolve();
+      };
+      document.head.appendChild(script);
+    });
+    return spanishResourcePromise;
+  }
+
   function localizedGame(id) {
     const base = games[id];
     if (!base) return null;
@@ -6648,6 +6681,10 @@
   }
 
   function render() {
+    if (locale() === "es" && !installSpanishResource() && !spanishResourceFailed) {
+      ensureSpanishResource().then(render);
+      return;
+    }
     const id = currentGameId();
     const baseGame = games[id];
     const main = document.querySelector("main");

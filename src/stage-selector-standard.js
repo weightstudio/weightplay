@@ -9,7 +9,7 @@
   const railHadCards = new WeakMap();
   const pendingRecommendation = new WeakMap();
   const pendingSettles = new WeakMap();
-  const nativeStageScalers = new Set(["bubble-bakery", "color-lunchbox", "garden-tiles", "wonder-crash"]);
+  const nativeStageScalers = new Set(["animal-auto-squad", "bubble-bakery", "color-lunchbox", "garden-tiles", "wonder-crash"]);
   const stageRootByGame = {
     "animal-guard-yard": "#menuPanel",
     "animal-quiz": ".animal-game",
@@ -108,7 +108,9 @@
 
     const useSharedScaler = (activeRails.length > 0 || retainedManagementRoot) && !nativeStageScalers.has(gameId());
     const reserve = sharedReserve();
-    reserve.toggleAttribute("data-wp-stage-reserve-active", useSharedScaler);
+    const nativeReserveActive = gameId() === "animal-auto-squad"
+      && document.body.classList.contains("squad-stage-select");
+    reserve.toggleAttribute("data-wp-stage-reserve-active", useSharedScaler || nativeReserveActive);
     if (!useSharedScaler) return;
 
     const root = activeRails.length ? stageRootFor(activeRails[0]) : retainedManagementRoot;
@@ -153,7 +155,8 @@
       .some((rail) => rail.getClientRects().length && getComputedStyle(rail).visibility !== "hidden");
     const activeManagementRoot = [...document.querySelectorAll("[data-wp-logical-stage-canvas]")]
       .some(stageRootVisible);
-    const active = activeRail || activeManagementRoot;
+    const active = activeRail || activeManagementRoot
+      || (gameId() === "animal-auto-squad" && document.body.classList.contains("squad-stage-select"));
     document.body?.classList.toggle("wp-stage-select-active", active);
     document.documentElement.classList.toggle("wp-stage-select-active", active);
     updateStageCanvas();

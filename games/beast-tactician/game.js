@@ -151,6 +151,8 @@
       upgrade: "Upgrade",
       sell: "Sell",
       revive: "Revive Core (5 Diamonds)",
+      reviveConfirm: "Confirm Revive · {balance} → {result} Diamonds",
+      reviveConfirmLabel: "Confirm Core Revive. Restore the core to 35 HP. Spend 5 Diamonds. Balance {balance} to {result}.",
       rerollReward: "Reroll Reward (3 Diamonds)",
       rerollRewardConfirm: "Confirm +{points} Points",
       rerollRewardPreview: "Reroll adds +{points} upgrade points · Diamonds {balance} → {result}. Tap again to confirm.",
@@ -619,6 +621,8 @@
       upgrade: "升級",
       sell: "出售",
       revive: "復甦核心（5 鑽石）",
+      reviveConfirm: "確認復甦 · {balance} → {result} 鑽石",
+      reviveConfirmLabel: "確認核心復甦。將核心恢復至 35 生命。花費 5 鑽石。餘額從 {balance} 變為 {result}。",
       rerollReward: "重抽獎勵（3 鑽石）",
       nextStage: "下一關",
       retry: "重試",
@@ -738,6 +742,223 @@
     rerollRewardNeed: "\u5df2\u4fdd\u5b58\u7e3d\u8a08\uff1a{points} \u5347\u7d1a\u9ede \u00b7 {diamonds} \u947d\u77f3 \u00b7 \u9700\u8981 3 / \u6301\u6709 {diamonds}\u3002",
   });
 
+  text.es = {
+    title: "Guardián de Bestias",
+    language: "Idioma",
+    backToLobby: "Volver a los juegos generales de WeightPlay",
+    languageControl: "Idioma",
+    backToMain: "Volver al inicio",
+    stageSelector: "Selector de niveles",
+    backToStages: "Volver a niveles",
+    localeName: "Español",
+    releaseBadge: "Candidato interno",
+    publicReleaseBadge: "Jugar ahora",
+    menuTitle: "Defensa de héroes",
+    menuHint: "Construye en la cuadrícula del bosque, modifica las rutas enemigas y dirige héroes y soldados animales durante 30 niveles de defensa.",
+    holdNotice: "El juego seguirá como Próximamente en el vestíbulo público hasta recibir la aprobación. Esta ruta sirve para validar la versión.",
+    publicNotice: "Despliega defensores, protege el núcleo de cristal y desbloquea 30 niveles en seis regiones. El progreso se guarda en este dispositivo.",
+    bestStage: "Mejor nivel",
+    upgradePoints: "Puntos de mejora",
+    diamonds: "Diamantes",
+    start: "Empezar defensa",
+    tech: "Mejoras técnicas",
+    back: "Volver",
+    menu: "Menú",
+    chooseStage: "Elegir nivel",
+    locked: "Bloqueado",
+    cleared: "Completado",
+    stage: "Nivel",
+    core: "Núcleo",
+    coins: "Monedas",
+    wave: "Oleada",
+    build: "Construir",
+    startWave: "Iniciar oleada",
+    nextWave: "Siguiente oleada",
+    autoWave: "Siguiente oleada en {seconds} s",
+    waveIntel: "Informe de oleada",
+    waveIntelReady: "Siguiente: oleada {wave}/{total} - {enemies}",
+    waveIntelActive: "Activa: oleada {wave}/{total} - quedan {remaining} - {enemies}",
+    waveIntelDone: "El nivel termina después de esta oleada.",
+    routeOpen: "Ruta abierta",
+    routeBlocked: "Ruta bloqueada: los enemigos atacan a los defensores",
+    coreCritical: "¡Núcleo en peligro! Defiende la ruta.",
+    keyboardFocus: "Casilla {x},{y}: Enter construye o selecciona; números o Q/E cambian de unidad.",
+    buildReady: "Disponible",
+    buildNeedCoins: "Faltan {coins} monedas",
+    unitKindHero: "Héroe",
+    unitKindSoldier: "Soldado",
+    roleLabel: "Función",
+    attackSpeed: "Velocidad de ataque",
+    everySeconds: "Cada {seconds} s",
+    unitSupport: "Apoyo",
+    traitLabel: "Rasgos",
+    traitSplash: "Área de {tiles} casillas",
+    traitSlow: "Ralentiza {percent}%",
+    traitHealing: "Cura {points}",
+    traitBuff: "Potencia aliados {percent}%",
+    upgradeAction: "Mejorar ({coins})",
+    sellAction: "Vender (+{coins})",
+    selectedActionInfo: "Mejora: {upgrade} monedas | Venta: +{sell} monedas",
+    enemyWolf: "Lobos x{count}",
+    enemyBoar: "Jabalíes x{count}",
+    enemyBat: "Murciélagos x{count}",
+    enemyBoss: "{boss} x{count}",
+    upgrade: "Mejorar",
+    sell: "Vender",
+    revive: "Revivir núcleo (5 diamantes)",
+    reviveConfirm: "Confirmar · {balance} → {result} diamantes",
+    reviveConfirmLabel: "Confirma la reanimación del núcleo. Restaura 35 PV y gasta 5 diamantes. Saldo de {balance} a {result}.",
+    rerollReward: "Cambiar recompensa (3 diamantes)",
+    rerollRewardConfirm: "Confirmar +{points} puntos",
+    rerollRewardPreview: "El cambio añade +{points} puntos de mejora · Diamantes {balance} → {result}. Toca otra vez para confirmar.",
+    rerollRewardNeed: "Total guardado: {points} puntos de mejora · {diamonds} diamantes · Se necesitan 3 / Tienes {diamonds}.",
+    nextStage: "Siguiente nivel",
+    retry: "Reintentar",
+    victory: "¡Defensa completada!",
+    defeat: "El núcleo de cristal cayó",
+    techTitle: "Técnica permanente de guardianes",
+    techHint: "Gasta los puntos obtenidos en victorias. Las mejoras son opcionales y solo se guardan en este dispositivo.",
+    noCoins: "No hay suficientes monedas.",
+    noDiamonds: "No hay suficientes diamantes.",
+    lockedStage: "Completa primero el nivel anterior.",
+    blocked: "Ruta bloqueada: los enemigos atacan a tu defensor.",
+    bossIncoming: "¡{boss} entra al campo de batalla!",
+    bossPhase: "¡{boss} cambia de táctica!",
+    blockedBuild: "No se puede construir en esta casilla.",
+    occupied: "Ya hay un defensor en esta casilla.",
+    built: "Se desplegó a {name}.",
+    upgraded: "{name} subió al Nv.{level}.",
+    sold: "Defensor vendido.",
+    reviveUsed: "Núcleo revivido.",
+    rewardSummary: "Recompensa: +{points} puntos de mejora, +{diamonds} diamantes",
+    rewardRerolled: "Recompensa cambiada: +{points} puntos de mejora, +{diamonds} diamantes",
+    savedProgress: "Total guardado: {points} puntos de mejora · {diamonds} diamantes",
+    newRouteUnlocked: "Nueva ruta desbloqueada: nivel {stage} — {name}",
+    nextRouteReady: "Siguiente ruta disponible: nivel {stage} — {name}",
+    campaignComplete: "Campaña completada: superaste los 30 niveles y las seis rutas de jefes.",
+    rewardRerollUsed: "Recompensa cambiada.",
+    starRating: "{stars}/3 estrellas",
+    buildFeedback: "Desplegado",
+    upgradeFeedback: "+Nv.{level}",
+    sellFeedback: "+{coins} monedas",
+    soundOn: "Sonido activado",
+    soundOff: "Sonido desactivado",
+    soundEnabled: "Sonido activado.",
+    soundDisabled: "Sonido desactivado.",
+    paused: "Pausa",
+    goldenFrame: "Marco dorado de defensor",
+    goldenFrameDesc: "Añade un marco dorado cosmético a todos los defensores desplegados. Cuesta 15 diamantes.",
+    goldenFrameOwned: "Desbloqueado",
+    goldenFrameBuy: "Desbloquear (15 diamantes)",
+    goldenFrameConfirm: "Confirmar · {balance}→{result}D",
+    goldenFrameConfirmLabel: "Confirma el marco dorado. Gasta 15 diamantes. Saldo de {balance} a {result}.",
+    victoryText: "Nivel {stage} completado. Las rutas, bloqueos, mejoras y habilidades de héroe funcionaron en conjunto.",
+    defeatText: "Buen intento. Prueba otra forma de ruta o mejora antes a los bloqueadores principales.",
+    skillReport: "Informe de habilidades: practicaste lógica, resolución de problemas y concentración al planear rutas y mejoras.",
+    skillReportWin3: "Informe: {stars}/3 estrellas. La buena ruta dejó el núcleo al {core}%. La próxima vez concentra antes el fuego de los héroes en el jefe.",
+    skillReportWin2: "Informe: {stars}/3 estrellas. Victoria con {core}% del núcleo. Para una defensa perfecta, mejora antes a los bloqueadores y alarga la ruta.",
+    skillReportWin1: "Informe: {stars}/3 estrellas. Victoria ajustada con {core}% del núcleo. Añade antes apoyo médico o de zapador y no cierres la ruta demasiado pronto.",
+    skillReportLose: "Informe: el núcleo cayó. Rediseña la ruta, conserva un camino legible y mejora a los bloqueadores antes de la siguiente oleada difícil.",
+    boss: "Jefe",
+    bossStage: "Nivel de jefe",
+    bossPressure: "Presión del jefe",
+    bossHoldRoute: "Defiende la ruta",
+    bossNoSignal: "No hay jefe en el campo",
+    waveClearFeedback: "Oleada {wave} asegurada",
+    bossShadowName: "Bruto Sombrío",
+    bossForestName: "Coloso del Bosque",
+    guardianRoute: "Ruta de guardián",
+    routeGate: "Entrada",
+    routeCore: "Núcleo",
+    threatIntel: "Amenaza",
+    recommendedPlan: "Plan",
+    rewardIntel: "Recompensa",
+    cost: "Coste",
+    range: "Alcance",
+    hp: "PV",
+    damage: "Daño",
+    level: "Nv.",
+    techPower: "Poder de héroes",
+    techPowerDesc: "+10% de daño de héroes por nivel.",
+    techBulwark: "Baluarte guardián",
+    techBulwarkDesc: "+12 PV de defensor por nivel.",
+    techEconomy: "Economía del bosque",
+    techEconomyDesc: "+20 monedas iniciales por nivel.",
+    techBuy: "Mejorar",
+    techBuyLabel: "Mejora {name} del Nv.{current} al Nv.{next}. {effect}. Cuesta {cost} punto de mejora. Saldo de {balance} a {result}.",
+    techNeedLabel: "{name} del Nv.{current} al Nv.{next}. {effect}. Necesitas {cost} punto de mejora; saldo {balance}.",
+    techMaxLabel: "{name} está en el nivel máximo {max}. {effect}.",
+    techPowerEffect: "Bonificación de daño de héroes de {current}% a {next}%",
+    techBulwarkEffect: "Bonificación de PV de defensores de {current} a {next}",
+    techEconomyEffect: "Bonificación de monedas iniciales de {current} a {next}",
+    loadFailed: "Error de carga",
+  };
+
+  const unitCopyEs = {
+    guard: ["Guardia Bellota", "Bloqueador económico."],
+    archer: ["Arquero Explorador", "Ataque a distancia fiable."],
+    sapper: ["Zapador Rúnico", "Control de área."],
+    medic: ["Cachorro Médico", "Repara a los bloqueadores."],
+    leo: ["Leo Melena Explosiva", "Héroe de primera línea de élite."],
+    taro: ["Taro Caparazón Musgoso", "El mejor bloqueador de rutas."],
+    orla: ["Orla Sombrero Lunar", "Magia de largo alcance."],
+    fia: ["Fia Pata Chispeante", "Especialista contra jefes."],
+    rux: ["Rux Cuerno de Engranaje", "Potencia a los soldados cercanos."],
+    panko: ["Panko Barriga Tambor", "Cura a los bloqueadores."],
+    deer: ["Ciervo Natural", "Control natural y curación."],
+  };
+  unitTypes.forEach((unit) => {
+    unit.name.es = unitCopyEs[unit.id][0];
+    unit.note.es = unitCopyEs[unit.id][1];
+  });
+
+  const campaignCopyEs = [
+    {
+      names: ["Entrada del Bosque", "Raíces Divididas", "Puente Roto", "Patio Musgoso", "Vado Lunar"],
+      threats: ["Los lobos básicos ponen a prueba la primera curva.", "Dos rutas de raíces separan a la manada.", "Los exploradores rápidos castigan una defensa tardía.", "Los jabalíes presionan a un único bloqueador.", "El Bruto Sombrío rompe las primeras líneas débiles."],
+      plans: ["Dobla la ruta con guardias.", "Une ambas rutas antes de añadir alcance.", "Empieza con cobertura de arqueros.", "Mejora un ancla y añade curación.", "Usa a Taro para contener mientras Fia ataca al jefe."],
+      boss: "Bruto Sombrío",
+    },
+    {
+      names: ["Curva de Cristal", "Cruce de Murciélagos", "Paso del Ingeniero", "Arboleda del Eco", "Puerta del Coloso"],
+      threats: ["Los murciélagos voladores ignoran el laberinto terrestre.", "Dos ráfagas de murciélagos cruzan el centro.", "Manadas rápidas y pesadas se alternan.", "Las oleadas aéreas y terrestres llegan juntas.", "El Coloso del Bosque llama oleadas de escoltas."],
+      plans: ["Cubre ángulos largos con arqueros y Orla.", "Reserva daño a distancia cerca del núcleo.", "Ralentiza a los jabalíes antes de atacar a los murciélagos.", "Divide el daño entre la ruta y el cielo.", "Elimina escoltas antes de concentrarte en el jefe."],
+      boss: "Coloso del Bosque",
+    },
+    {
+      names: ["Senda de Corteza Férrea", "Barricada de Espinas", "Hondonada del Jabalí", "Forja de Raíces", "Patio del Coloso"],
+      threats: ["Los guardias de corteza férrea llegan con armadura rompible.", "Las manadas protegidas cubren a seguidores rápidos.", "Las columnas de jabalíes presionan una sola ruta.", "La armadura y los murciélagos exigen daño variado.", "El Coloso de Corteza Férrea reconstruye su defensa."],
+      plans: ["Usa fuego continuo para romper la armadura.", "Ataca en área la línea protegida antes de que pasen los corredores.", "Crea dos capas de bloqueadores.", "Combina el área del zapador con héroes a distancia.", "Rompe la defensa antes de gastar habilidades explosivas."],
+      boss: "Coloso de Corteza Férrea",
+    },
+    {
+      names: ["Senda de Agua Brumosa", "Manantial Curativo", "Círculo de Esporas", "Ruinas Druídicas", "Corazón Antiguo"],
+      threats: ["Las criaturas de la niebla se curan mientras avanzan.", "Los objetivos sin rematar vuelven a crecer.", "Las manadas separadas se curan en rutas distintas.", "Los regeneradores acorazados alargan cada combate.", "El Antiguo Verde recupera salud por fases."],
+      plans: ["Concentra el fuego en un objetivo.", "Coloca daño explosivo antes de la última curva.", "Haz que las rutas coincidan en una sola zona de ataque.", "Rompe la armadura y remata con rapidez.", "Reserva el ataque de héroes para cada fase de curación."],
+      boss: "Antiguo Verde",
+    },
+    {
+      names: ["Acceso de la Tormenta", "Bifurcación del Trueno", "Muralla del Vendaval", "Hondonada del Rayo", "Corona de la Tempestad"],
+      threats: ["Los enemigos heridos aceleran.", "Los murciélagos acelerados castigan una ruta vacía junto al núcleo.", "Los jabalíes aceleran cuando pierden la armadura.", "Cada oleada combina aceleraciones distintas.", "El Devastador de la Tempestad acelera a sus escoltas."],
+      plans: ["Coloca daño de remate cerca del núcleo.", "Mantén a Orla detrás de la última curva.", "Ralentiza antes de romper la armadura.", "Separa las zonas de daño en vez de agruparlas.", "Separa a las escoltas del jefe con ralentizaciones."],
+      boss: "Devastador de la Tempestad",
+    },
+    {
+      names: ["Puerta del Eclipse", "Laberinto de Raíces Vacías", "Puente del Anochecer", "Acceso a la Corona", "Última Defensa del Emperador"],
+      threats: ["Las manadas del eclipse combinan vuelo y armadura.", "La regeneración vuelve detrás de frentes acorazados.", "Murciélagos acelerados cubren columnas pesadas.", "Todas las amenazas anteriores aparecen en secuencia.", "El Emperador de Raíces Vacías cambia de fase dos veces."],
+      plans: ["Forma una defensa completa contra tierra y aire.", "Ataca a los regeneradores después de romper la armadura.", "Mantén una segunda zona de daño cerca del núcleo.", "Mejora distintas funciones, no solo a un atacante.", "Responde a cada fase: murciélagos, armadura y Emperador."],
+      boss: "Emperador de Raíces Vacías",
+    },
+  ];
+  stages.forEach((stage, index) => {
+    const copy = campaignCopyEs[Math.floor(index / 5)];
+    const position = index % 5;
+    stage.name.es = copy.names[position];
+    stage.intel.threat.es = copy.threats[position];
+    stage.intel.plan.es = copy.plans[position];
+    stage.bossNameEs = stage.boss ? copy.boss : "";
+  });
+
   const state = {
     locale: "en",
     screen: "loading",
@@ -778,6 +999,8 @@
   let rewardRerollConfirmTimer = 0;
   let goldenFrameConfirmPending = false;
   let goldenFrameConfirmTimer = 0;
+  let reviveConfirmPending = false;
+  let reviveConfirmTimer = 0;
 
   function t(key, values = {}) {
     let value = text[state.locale]?.[key] || text.en[key] || key;
@@ -924,6 +1147,7 @@
 
   function setScreen(screen) {
     if (screen !== "result") clearRewardRerollConfirmation();
+    if (screen !== "result") clearReviveConfirmation();
     if (screen !== "tech") clearGoldenFrameConfirmation();
     state.screen = screen;
     const resultActive = screen === "result";
@@ -964,6 +1188,7 @@
 
   function updateLocale() {
     clearGoldenFrameConfirmation();
+    clearReviveConfirmation();
     document.documentElement.lang = state.locale;
     nodes.mainBack?.setAttribute("aria-label", t("backToLobby"));
     nodes.localeSelect.setAttribute("aria-label", t("languageControl"));
@@ -995,7 +1220,7 @@
     nodes.bossHintText.textContent = t("bossNoSignal");
     nodes.upgradeBtn.textContent = t("upgrade");
     nodes.sellBtn.textContent = t("sell");
-    nodes.reviveBtn.textContent = t("revive");
+    renderReviveAction();
     nodes.retryBtn.textContent = t("retry");
     nodes.resultMenuBtn.textContent = t("menu");
     nodes.nextStageBtn.textContent = t("nextStage");
@@ -1257,6 +1482,7 @@
   }
 
   function startStage(id) {
+    clearReviveConfirmation();
     const stage = stages[id - 1];
     const tech = state.save.tech;
     state.currentStage = id;
@@ -1351,7 +1577,9 @@
 
   function localizedBossName(stage) {
     if (!stage?.boss) return "";
-    return state.locale === "zh-Hant" ? stage.bossNameZht || stage.bossName || t("boss") : stage.bossName || t("boss");
+    if (state.locale === "zh-Hant") return stage.bossNameZht || stage.bossName || t("boss");
+    if (state.locale === "es") return stage.bossNameEs || stage.bossName || t("boss");
+    return stage.bossName || t("boss");
   }
 
   function updateWaveIntel() {
@@ -2178,6 +2406,7 @@
 
   function loseStage() {
     if (state.gameOver) return;
+    clearReviveConfirmation();
     state.gameOver = true;
     state.won = false;
     nodes.resultTitle.textContent = t("defeat");
@@ -2198,7 +2427,22 @@
 
   function reviveCore() {
     if (state.coreHp > 0 || state.revived) return;
-    if (state.save.diamonds < 5) return showToast(t("noDiamonds"));
+    if (state.save.diamonds < 5) {
+      clearReviveConfirmation();
+      return showToast(t("noDiamonds"));
+    }
+    if (!reviveConfirmPending) {
+      reviveConfirmPending = true;
+      clearTimeout(reviveConfirmTimer);
+      reviveConfirmTimer = setTimeout(() => {
+        if (!reviveConfirmPending) return;
+        clearReviveConfirmation();
+      }, 5000);
+      renderReviveAction();
+      window.requestAnimationFrame(() => nodes.reviveBtn.focus({ preventScroll: true }));
+      return;
+    }
+    clearReviveConfirmation();
     state.save.diamonds -= 5;
     state.coreHp = 35;
     state.gameOver = false;
@@ -2210,6 +2454,24 @@
     window.requestAnimationFrame(() => nodes.canvas.focus({ preventScroll: true }));
     playSfx("revive");
     track("game_spend_virtual_currency", { stage: state.currentStage, item: "core_revive", currency: "diamonds", amount: 5 });
+  }
+
+  function renderReviveAction() {
+    const resultingBalance = Math.max(0, state.save.diamonds - 5);
+    nodes.reviveBtn.textContent = reviveConfirmPending
+      ? t("reviveConfirm", { balance: state.save.diamonds, result: resultingBalance })
+      : t("revive");
+    nodes.reviveBtn.classList.toggle("is-confirming", reviveConfirmPending);
+    nodes.reviveBtn.setAttribute("aria-label", reviveConfirmPending
+      ? t("reviveConfirmLabel", { balance: state.save.diamonds, result: resultingBalance })
+      : t("revive"));
+  }
+
+  function clearReviveConfirmation() {
+    clearTimeout(reviveConfirmTimer);
+    reviveConfirmTimer = 0;
+    reviveConfirmPending = false;
+    renderReviveAction();
   }
 
   function rerollRewardPoints(stageId, currentPoints) {

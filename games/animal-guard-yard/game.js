@@ -635,7 +635,7 @@
     loadingFill: $("loadingFill"),
   };
 
-  let locale = window.WonderI18n?.locale?.() || localStorage.getItem(localeKey) || "en";
+  let locale = window.WonderI18n?.actualLocale?.() || window.WonderI18n?.locale?.() || localStorage.getItem(localeKey) || "en";
   let unlocked = clamp(Number(localStorage.getItem(unlockKey)) || 1, 1, stages.length);
   let profile = loadProfile();
   let currentStage = 0;
@@ -699,14 +699,18 @@
 
   function t(key, data) {
     const parts = key.split(".");
-    let value = text[locale] || text.en;
+    const sourceLocale = locale === "zh-Hans" ? "zh-Hant" : locale;
+    let value = text[sourceLocale] || text.en;
     for (const part of parts) value = value?.[part];
     if (typeof value !== "string") value = key;
-    return Object.entries(data || {}).reduce((out, [name, item]) => out.replaceAll(`{${name}}`, item), value);
+    value = Object.entries(data || {}).reduce((out, [name, item]) => out.replaceAll(`{${name}}`, item), value);
+    return locale === "zh-Hans" ? window.WonderI18n?.simplifyChineseText?.(value) || value : value;
   }
 
   function stageCopy(stage, field) {
-    return stage?.[field]?.[locale] || stage?.[field]?.en || "";
+    const sourceLocale = locale === "zh-Hans" ? "zh-Hant" : locale;
+    const value = stage?.[field]?.[sourceLocale] || stage?.[field]?.en || "";
+    return locale === "zh-Hans" ? window.WonderI18n?.simplifyChineseText?.(value) || value : value;
   }
 
   function clamp(value, min, max) {
@@ -932,7 +936,7 @@
   }
 
   function localizeStatic() {
-    document.documentElement.lang = locale === "zh-Hant" ? "zh-Hant" : locale === "es" ? "es" : "en";
+    document.documentElement.lang = ["zh-Hant", "zh-Hans", "es"].includes(locale) ? locale : "en";
     document.title = `${t("gameTitle")} - WeightPlay`;
     document.querySelectorAll("[data-ui]").forEach((node) => {
       node.textContent = t(node.dataset.ui);
@@ -2190,7 +2194,7 @@
   nodes.localeSelect.addEventListener("change", () => {
     const requested = nodes.localeSelect.value;
     window.WonderI18n?.setLocale?.(requested);
-    locale = window.WonderI18n?.locale?.() || requested;
+    locale = window.WonderI18n?.actualLocale?.() || window.WonderI18n?.locale?.() || requested;
     localStorage.setItem(localeKey, requested);
     localizeStatic();
     renderStageGrid();

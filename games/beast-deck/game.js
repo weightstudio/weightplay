@@ -1920,6 +1920,8 @@
       state.isPlayerTurn = false;
       window.WonderSound?.play("enemyDown");
       scheduleBattleTransition(handleBattleWin, 500);
+    } else {
+      focusBattleDecision(index);
     }
   }
 
@@ -2295,6 +2297,7 @@
           ? t("cardPlayable", { cost, energy: state.energy })
           : t("cardNeedEnergy", { need: cost - state.energy, cost, energy: state.energy });
       cardEl.className = `card ${card.type}`;
+      cardEl.dataset.handIndex = index;
       if (state.highlightDraftCard === cardId) cardEl.classList.add("drafted-card");
       cardEl.type = "button";
       cardEl.innerHTML = cardMarkup(card, cost);
@@ -2309,6 +2312,13 @@
       nodes.handRow.appendChild(cardEl);
     });
     updateEndTurnDecisionLabel();
+  }
+
+  function focusBattleDecision(preferredIndex) {
+    const cards = [...nodes.handRow.querySelectorAll(".card:not(:disabled)")];
+    const nextCard = cards.find((card) => Number(card.dataset.handIndex) >= preferredIndex)
+      || cards.at(-1);
+    (nextCard || nodes.endTurnBtn)?.focus({ preventScroll: true });
   }
 
   function endGame(won) {

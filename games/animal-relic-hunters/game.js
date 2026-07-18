@@ -419,6 +419,143 @@
     bossWarning: "遺跡守護者即將出現！"
   });
 
+  text.es = {
+    title: "Cazadores Animales de Reliquias",
+    menuTitle: "Explora las Ruinas Antiguas.",
+    menuHint: "Muévete con WASD, joystick virtual o manteniendo el botón izquierdo en la arena. Derrota bestias sombrías, recoge Orbes Reliquia para subir de nivel y encuentra llaves para abrir cofres con armas, armaduras y botas.",
+    prototypeGoalsTitle: "Objetivo de la expedición",
+    prototypeGoalsText: "Supera tres salas en cada una de las 30 expediciones, aprende los peligros de cada ruina y derrota a seis Guardianes regionales mientras mejoras entrenamiento y equipo permanentes.",
+    diamondShopTitle: "Mejora permanente",
+    goldLabel: "Oro",
+    trainingTitle: "Entrenamiento permanente",
+    trainingPoints: "Puntos",
+    trainingNote: "El nivel del personaje es permanente. Gasta puntos para comenzar cada partida con más fuerza.",
+    growthReadyTitle: "Siguiente mejora permanente",
+    growthReadyTraining: "Gasta {points} punto(s) de entrenamiento antes de la próxima partida.",
+    growthReadyGear: "Mejora {gear} por {gold} de oro.",
+    growthReadyBoth: "Entrena primero y después mejora {gear} por {gold} de oro.",
+    growthReadyNone: "Combate para ganar oro y EXP; vuelve para entrenar o mejorar equipo.",
+    train_damage: "Entrenamiento de ataque",
+    train_damage_desc: "+2 de daño por nivel.",
+    train_hp: "Entrenamiento de vitalidad",
+    train_hp_desc: "+5 PV máximos por nivel.",
+    train_speed: "Entrenamiento de agilidad",
+    train_speed_desc: "+0,2 de velocidad de movimiento por nivel.",
+    train_magnet: "Sentido de reliquias",
+    train_magnet_desc: "+15 px de alcance de recogida por nivel.",
+    trainAction: "Entrenar",
+    trainMax: "Máximo",
+    upgradeGearAction: "Mejorar",
+    upgradeNeedGold: "Necesitas {gold} de oro",
+    gearLevelLabel: "Nv.{level}",
+    goldEarned: "Oro",
+    amuletName: "Amuleto de Niebla",
+    amuletEffect: "Empieza cada partida con +10 PV máximos: 40 en vez de 30.",
+    amuletOwned: "Obtenido: cada partida comienza con 40 PV máximos.",
+    startRun: "Empezar expedición",
+    menu: "Menú",
+    hudHp: "PV del jugador",
+    roomLabel: "Sala",
+    keysLabel: "Llaves",
+    chooseCard: "Elige una mejora reliquia",
+    chooseCardDesc: "Elige una reliquia antigua para potenciar a tu explorador.",
+    draftShortcutHint: "Teclado: pulsa 1, 2 o 3 para elegir. Pulsa R para cambiar opciones.",
+    rerollRelics: "Cambiar reliquias",
+    rerollRelicsUsed: "Ya cambiaste las opciones de este nivel.",
+    rerollRelicsNeedDiamonds: "No hay suficientes diamantes para cambiar opciones.",
+    lootFound: "¡Cofre de reliquias abierto!",
+    equipLoot: "Equipar objeto",
+    backpackTitle: "Mochila",
+    backpackEmpty: "Abre cofres de reliquias para conseguir equipo permanente.",
+    equipGearAction: "Equipar",
+    equippedTag: "Equipado",
+    tryAgain: "Intentar de nuevo",
+    backToMenu: "Volver al menú",
+    backToStage: "Volver a misiones",
+    sidebarInventory: "Equipo activo",
+    sidebarStats: "Atributos del personaje",
+    slotWeapon: "ARMA",
+    slotArmor: "ARMADURA",
+    slotBoots: "BOTAS",
+    noneLabel: "Ninguno",
+    statDamage: "Daño:",
+    statMaxHp: "PV máximos",
+    statAttackRate: "Cadencia:",
+    statSpeed: "Velocidad:",
+    statMagnetRange: "Alcance de recogida:",
+    hudStage: "Salas superadas",
+    runComplete: "¡Expedición completada!",
+    runFailed: "Explorador derrotado",
+    resultSummaryLevel: "Nivel guardado",
+    resultSummaryRooms: "Salas",
+    resultSummaryKeys: "Llaves de la partida",
+    resultSummaryGold: "Oro obtenido",
+    resultSummaryGear: "Equipo activo",
+    resultSummaryNoGear: "Aún no hay equipo activo",
+    resultSummaryNext: "Siguiente mejora",
+    resultDisclaimer: "Solo para divertirse y registrar el progreso local.",
+    skillReportTitle: "Informe de habilidades",
+    skillLogic: "Lógica",
+    skillFocus: "Concentración",
+    skillProblem: "Resolución de problemas",
+    relic_magnet: "Imán de Reliquias",
+    relic_magnet_desc: "Aumenta 40 px el alcance de recogida.",
+    relic_speed: "Estallido de Linterna",
+    relic_speed_desc: "Reduce un 20 % el intervalo entre disparos.",
+    relic_shield: "Corazón Escudo",
+    relic_shield_desc: "Aumenta 5 los PV máximos y cura 5 PV.",
+    relic_damage: "Colmillo de Cristal",
+    relic_damage_desc: "Aumenta un 20 % el daño de proyectil.",
+    relic_heal: "Aliento del Pozo Lunar",
+    relic_heal_desc: "Restaura 12 PV de inmediato.",
+    gear_sword_rare: "Espada de Cristal",
+    gear_sword_rare_desc: "+30 % de daño de proyectil",
+    gear_dagger_epic: "Daga Reliquia",
+    gear_dagger_epic_desc: "-30 % de intervalo de disparo",
+    gear_armor_rare: "Coraza de las Ruinas",
+    gear_armor_rare_desc: "+10 PV máximos",
+    gear_armor_epic: "Malla Reliquia Dorada",
+    gear_armor_epic_desc: "+20 PV máximos",
+    gear_boots_rare: "Botas de Explorador",
+    gear_boots_rare_desc: "+20 % de velocidad de movimiento",
+    gear_boots_epic: "Sandalias de Hermes",
+    gear_boots_epic_desc: "+40 % de velocidad de movimiento",
+    rarity_rare: "Equipo raro",
+    rarity_epic: "Equipo épico",
+    report_win: "¡Expedición completada! Interpretaste el patrón de amenazas, protegiste la ruta del equipo y derrotaste al guardián final.",
+    report_partial: "Llegaste a la sala {room}. Ajusta tus reliquias y equipo antes de volver a desafiar a este guardián.",
+    report_no_wins: "¡Sigue explorando! Concéntrate en recoger llaves y conservar la salud.",
+    bossWarning: "¡Se acerca el Guardián de las Ruinas!",
+    startGame: "Empezar",
+    chooseExpedition: "Elegir expedición",
+    expeditionGoal: "3 salas · Nivel recomendado {level}",
+    expeditionLocked: "Completa primero la expedición {region}",
+    lootNewGear: "Nuevo equipo añadido a la mochila.",
+    lootDuplicateGear: "Equipo repetido convertido en +{gold} de oro.",
+    gearCurrentEffect: "Ahora: {effect}",
+    gearNextEffect: "Siguiente: {effect}",
+    gearMaxLevel: "Nivel máximo",
+    gearCompareActive: "Activo en este espacio.",
+    gearCompareEmpty: "Espacio vacío: equipa para activar este efecto.",
+    gearCompareReplace: "Sustituye a {gear}: {effect}",
+    equipLootChoice: "Equipar {gear}",
+    keepLootChoice: "Conservar equipo actual",
+    continueLootChoice: "Continuar",
+    lootAlreadyEquipped: "Ya está equipado",
+    lootDecisionLabel: "Elige si equipar {gear} o conservar el equipo actual.",
+    amuletConfirmTitle: "Confirmar Amuleto de Niebla",
+    amuletConfirmEffect: "Permanente: cada partida empieza con 40 PV en vez de 30. Confirma {before} → {after} diamantes.",
+    amuletConfirmStatus: "+10 PV máximos permanentes en cada partida. Saldo {before} → {after} diamantes.",
+    amuletNeedDiamonds: "Necesitas 15 diamantes. Saldo actual {balance}/15.",
+    amuletBuyLabel: "Compra permanentemente el Amuleto de Niebla. Cada partida empieza con 40 PV en vez de 30. Cuesta 15 diamantes. Saldo {balance}.",
+    amuletConfirmLabel: "Confirmar Amuleto de Niebla permanente. Gasta 15 diamantes. Saldo de {before} a {after}. Cada partida empieza con 40 PV.",
+    resultSummaryProgress: "Progreso de misión",
+    resultUnlocked: "Nueva expedición desbloqueada: {region}",
+    resultReady: "Expedición disponible: {region}",
+    resultAllCleared: "Completadas las 30 expediciones y los seis Guardianes de las Ruinas",
+    nextExpedition: "Siguiente misión"
+  };
+
   Object.assign(text.en, {
     startGame: "Start Game",
     chooseExpedition: "Choose Expedition",
@@ -595,6 +732,14 @@
     ["Six-Seal Court", "\u516d\u5370\u5ead\u9662", "all-specials"],
     ["Relic Crown Monarch", "\u8056\u7269\u51a0\u5195\u738b", "boss-crown"],
   ];
+  const expeditionNamesEs = [
+    "Puerta del Musgo", "Emboscada del Camino de Raíces", "Círculo de Espinas", "Relicario Verde", "Guardián del Musgo",
+    "Galería del Eco", "Escaleras Susurrantes", "Salón Resonante", "Cámara de la Campana", "Guardián del Eco",
+    "Bóveda de Cristal", "Cruce Prismático", "Mina Fragmentada", "Laberinto de Facetas", "Coloso Prismático",
+    "Santuario Sumergido", "Nave Inundada", "Procesión del Pantano", "Archivo Ahogado", "Hidra Espiral del Pantano",
+    "Archivo Lunar", "Observatorio de Tinta", "Estanterías Lunares", "Índice Astral", "Custodio del Archivo",
+    "Camino a la Corona", "Calzada de Obsidiana", "Horno de Reliquias", "Corte de los Seis Sellos", "Monarca de la Corona Reliquia"
+  ];
 
   const expeditionDefs = expeditionBlueprints.map(([en, zh, rule], index) => ({
     id: index + 1,
@@ -603,6 +748,7 @@
     checkpoint: (index + 1) % EXPEDITIONS_PER_REGION === 0,
     en,
     zh,
+    es: expeditionNamesEs[index],
     rule,
   }));
 
@@ -849,7 +995,8 @@
   }
 
   function getLocale() {
-    return window.WonderI18n?.locale?.() || (localStorage.getItem(localeKey) === "zh-Hant" ? "zh-Hant" : "en");
+    const stored = localStorage.getItem(localeKey);
+    return window.WonderI18n?.locale?.() || (["zh-Hant", "es"].includes(stored) ? stored : "en");
   }
 
   function t(key, params = {}) {
@@ -874,6 +1021,14 @@
       regions: "\u907a\u8de1\u5340\u57df",
       battleBack: "\u8fd4\u56de\u884c\u524d\u6e96\u5099",
       arena: "\u6230\u9b25\u5340\u57df\u3002\u4f7f\u7528 WASD \u6216\u65b9\u5411\u9375\u79fb\u52d5\u3002"
+    },
+    es: {
+      lobby: "Volver al vestíbulo",
+      language: "Selector de idioma",
+      stageBack: "Volver a la pantalla principal",
+      regions: "Regiones de las ruinas",
+      battleBack: "Volver a la preparación",
+      arena: "Arena de batalla. Muévete con WASD o las flechas."
     }
   };
 
@@ -1003,6 +1158,10 @@
       ogDescription: "探索六個遺跡區域與 30 個任務，建立遺物配裝、破解特殊威脅並擊敗六位不同守護者。"
     }
   };
+  metaText.es = {
+    description: "Supera 30 expediciones de tres salas, domina diez comportamientos especiales, reúne equipo y derrota a seis Guardianes que cambian de fase.",
+    ogDescription: "Explora seis regiones y 30 misiones, crea equipo reliquia, responde a amenazas especiales y derrota a seis Guardianes distintos."
+  };
 
   function focusGamePanel() {
     requestAnimationFrame(() => {
@@ -1068,10 +1227,12 @@
     selectedExpedition = Math.max(1, Math.min(profile.unlockedExpedition || 1, selectedExpedition));
     nodes.expeditionRail.innerHTML = expeditionDefs.map((expedition) => {
       const locked = expedition.id > profile.unlockedExpedition;
-      const name = currentLocale === "zh-Hant" ? expedition.zh : expedition.en;
-      const checkpoint = expedition.checkpoint ? (currentLocale === "zh-Hant" ? "\u5b88\u8b77\u8005" : "Guardian") : (currentLocale === "zh-Hant" ? `\u5340\u57df ${expedition.region}` : `Region ${expedition.region}`);
+      const name = currentLocale === "zh-Hant" ? expedition.zh : currentLocale === "es" ? expedition.es : expedition.en;
+      const checkpoint = expedition.checkpoint
+        ? (currentLocale === "zh-Hant" ? "\u5b88\u8b77\u8005" : currentLocale === "es" ? "Guardián" : "Guardian")
+        : (currentLocale === "zh-Hant" ? `\u5340\u57df ${expedition.region}` : currentLocale === "es" ? `Región ${expedition.region}` : `Region ${expedition.region}`);
       return `<button class="expedition-card stage-card ${expedition.id === selectedExpedition ? "is-selected" : ""} ${locked ? "is-locked" : ""} ${expedition.checkpoint ? "is-checkpoint" : ""}" data-expedition="${expedition.id}" type="button" ${locked ? "disabled" : ""}>
-        <span>${currentLocale === "zh-Hant" ? `\u9060\u5f81 ${expedition.id}` : `Expedition ${expedition.id}`} \u00b7 ${checkpoint}</span>
+        <span>${currentLocale === "zh-Hant" ? `\u9060\u5f81 ${expedition.id}` : currentLocale === "es" ? `Expedición ${expedition.id}` : `Expedition ${expedition.id}`} \u00b7 ${checkpoint}</span>
         <strong>${name}</strong>
         <small>${locked ? t("expeditionLocked", { region: expedition.id - 1 }) : t("expeditionGoal", { level: expedition.level })}</small>
       </button>`;
@@ -1120,7 +1281,7 @@
     document.title = `${t("title")} - WeightPlay`;
     document.querySelector("meta[name='description']")?.setAttribute("content", metaText[locale]?.description || metaText.en.description);
     document.querySelector("meta[property='og:description']")?.setAttribute("content", metaText[locale]?.ogDescription || metaText.en.ogDescription);
-    nodes.menuCover?.setAttribute("alt", locale === "zh-Hant" ? "\u52d5\u7269\u907a\u8de1\u7375\u4eba\u5c01\u9762" : "Animal Relic Hunters cover");
+    nodes.menuCover?.setAttribute("alt", locale === "zh-Hant" ? "\u52d5\u7269\u907a\u8de1\u7375\u4eba\u5c01\u9762" : locale === "es" ? "Portada de Cazadores Animales de Reliquias" : "Animal Relic Hunters cover");
     for (const el of document.querySelectorAll("[data-ui]")) {
       const key = el.dataset.ui;
       el.textContent = t(key);
@@ -1546,6 +1707,12 @@
     moon: { en: "Archive Keeper", zh: "書庫守密者" },
     crown: { en: "Relic Crown Monarch", zh: "遺物冠冕王" },
   };
+  guardianNames.moss.es = "Guardián del Musgo";
+  guardianNames.echo.es = "Guardián del Eco";
+  guardianNames.crystal.es = "Coloso Prismático";
+  guardianNames.mire.es = "Hidra Espiral del Pantano";
+  guardianNames.moon.es = "Custodio del Archivo";
+  guardianNames.crown.es = "Monarca de la Corona Reliquia";
 
   function guardianSpriteForBehavior(behavior) {
     return {
@@ -1608,7 +1775,9 @@
       hpMultiplier,
       speedMultiplier: checkpoint ? 0.82 : 1,
       size: checkpoint ? 92 : 38,
-      label: checkpoint ? guardianNames[behavior][getLocale() === "zh-Hant" ? "zh" : "en"] : (getLocale() === "zh-Hant" ? "菁英" : "ELITE"),
+      label: checkpoint
+        ? guardianNames[behavior][getLocale() === "zh-Hant" ? "zh" : getLocale() === "es" ? "es" : "en"]
+        : (getLocale() === "zh-Hant" ? "菁英" : getLocale() === "es" ? "ÉLITE" : "ELITE"),
     });
     guardian.type = checkpoint ? "boss" : (region >= 3 ? "boar" : "jaguar");
     guardian.shieldHits = behavior === "crystal" || behavior === "crown" ? (checkpoint ? 6 : 3) : guardian.shieldHits;
@@ -1898,7 +2067,7 @@
 
   function expeditionName(id) {
     const expedition = expeditionDefs[Math.max(1, Math.min(EXPEDITION_COUNT, Number(id) || 1)) - 1];
-    return getLocale() === "zh-Hant" ? expedition.zh : expedition.en;
+    return getLocale() === "zh-Hant" ? expedition.zh : getLocale() === "es" ? expedition.es : expedition.en;
   }
 
   function renderResultSummary({ cleared, newlyUnlocked = 0, won = false }) {

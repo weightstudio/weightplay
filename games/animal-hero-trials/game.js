@@ -109,6 +109,52 @@
     orlaSkillEffect: "對最近敵人造成 {damage} 點傷害，並使下一次自動攻擊追加 18 點傷害。",
     taroSkillEffect: "防護 3.5 秒、最多恢復 {heal} 點生命，並對大範圍敵人造成 {damage} 點傷害。",
   });
+  copy.es = {
+    title: "Pruebas de Héroes Animales",
+    pitch: "Elige uno de cuatro héroes y supera una campaña de 30 pruebas sombrías.",
+    marks: "Marcas de prueba",
+    mastery: "Maestría de vida",
+    start: "Empezar prueba",
+    choose: "Elegir prueba",
+    blessing: "Elige una bendición",
+    menu: "Menú principal",
+    locked: "Completa la prueba anterior",
+    win: "¡Prueba completada!",
+    fail: "Prueba fallida",
+    next: "Siguiente prueba",
+    retry: "Intentar de nuevo",
+    scoutObjective: "Derrota a {count} exploradores sombríos",
+    bossObjective: "Derrota al Soberano Sombrío",
+    reroll: "Cambiar 3",
+    rerollConfirm: "¿Gastar 3 diamantes para cambiar estas bendiciones?",
+    rerollConfirmStatus: "Cambia las tres bendiciones una vez · {balance} → {result} diamantes. Toca otra vez para confirmar.",
+    rerollUsed: "Ya cambiaste las bendiciones en esta prueba.",
+    rerollNeed: "Necesitas 3 diamantes · Tienes {balance}. Aún puedes elegir una bendición gratis.",
+    rerollDone: "Se revelaron nuevas bendiciones.",
+    room: "Sala {room}/3",
+    bossRoom: "Sala {room}/3 · JEFE",
+    failCopy: "{hero} necesita probar otra ruta.",
+    arenaLabel: "Arena de las Pruebas de Héroes. Muévete con las flechas o WASD. Pulsa Espacio para usar la habilidad.",
+    earnedMarks: "+{gain} marcas de prueba · Total {total}.",
+    trialUnlocked: "Se desbloqueó la prueba {next}.",
+    trialAvailable: "La prueba {next} sigue disponible.",
+    allTrialsUnlocked: "Las 30 pruebas están desbloqueadas.",
+    enemyObjective: "Derrota a {count} {enemy}",
+    eliteObjective: "Derrota al capitán de {enemy}",
+    bossObjectiveNamed: "Derrota a {boss}",
+    recommended: "Recomendado: {hero}",
+    roomsAndMarks: "3 salas · +{marks} marcas",
+    masteryReady: "La Maestría de vida está lista en la pantalla principal.",
+    masteryNeed: "Faltan {remaining} marcas de prueba para mejorar la Maestría de vida.",
+    masteryUpgradeReady: "PV máximos de todos los héroes +{current} → +{next} · Gasta {cost} / Tienes {marks} marcas",
+    masteryUpgradeNeed: "PV máximos de todos los héroes +{current} → +{next} · Necesitas {cost} / Tienes {marks} marcas",
+    skillReadyLabel: "{skill} está lista. {effect} Pulsa para usarla.",
+    skillCooldownLabel: "{skill} no estará disponible durante {seconds} segundos. {effect}",
+    leoSkillEffect: "Inflige {damage} de daño a enemigos cercanos.",
+    fiaSkillEffect: "Corre hacia el enemigo más cercano, se vuelve invulnerable durante 0,55 segundos e inflige {damage} de daño cercano.",
+    orlaSkillEffect: "Inflige {damage} de daño al enemigo más cercano y marca su siguiente golpe automático para añadir 18 de daño.",
+    taroSkillEffect: "Protege durante 3,5 segundos, recupera hasta {heal} PV e inflige {damage} de daño en un área amplia.",
+  };
 
   const TRIAL_COUNT = 30;
   const trialTitles = [
@@ -149,7 +195,28 @@
     Taro: ["Moss Shell Taro", "苔甲塔羅"],
     "Any hero": ["Any hero", "任一英雄"],
   };
-  const trials = Array.from({length:TRIAL_COUNT},(_,index)=>{ const stage=index+1; const region=Math.floor(index/5); return { stage, region, titleEn:trialTitles[index][0], titleZh:trialTitles[index][1], checkpoint:stage%5===0, enemies:[...regions[region].enemies], recommended:regions[region].hero, reward:Math.min(9,3+stage), boss:stage%5===0?bosses[region]:null }; });
+  const trialTitlesEs = [
+    "Primeras Huellas", "Círculo de Exploradores", "Persecución entre Zarzas", "Emboscada de Raíces", "Puerta del Acechador",
+    "Alas Prismáticas", "Viento Cruzado del Cuervo", "Guardia de Cristal", "Manada de Refracción", "Espejo del Basilisco",
+    "Pezuñas de Brasa", "Aviso del Jabalí", "Carga del Horno", "Estampida de Ceniza", "Forja del Coloso",
+    "Arco Lunar", "Distancia del Cazador", "Doble Descarga", "Alas del Eclipse", "Corte del Archibúho",
+    "Armadura Abisal", "Patrulla de Caparazones", "Manada Sumergida", "Llamada del Leviatán", "Trono Abisal",
+    "Mezcla de la Corona", "Cacería Séxtuple", "Guardia del Soberano", "Última Línea Sombría", "Prueba de la Corona Vacía",
+  ];
+  trialTitles.forEach((title, index) => title[2] = trialTitlesEs[index]);
+  const regionCopyEs = [
+    ["Bosque de Raíces", "Manadas perseguidoras"], ["Barranco Prismático", "Enemigos voladores y protegidos"],
+    ["Forja de Brasas", "Cargas anunciadas"], ["Campo Lunar", "Descargas a distancia"],
+    ["Caparazón Abisal", "Armadura y refuerzos"], ["Corona Vacía", "Reglas enemigas combinadas"],
+  ];
+  regions.forEach((region, index) => { region.name[2] = regionCopyEs[index][0]; region.rule[2] = regionCopyEs[index][1]; });
+  const bossNamesEs = ["Acechador Sombrío", "Basilisco Prismático", "Coloso Colmillo de Magma", "Archibúho del Eclipse", "Leviatán del Caparazón Abisal", "Emperador de la Corona Vacía"];
+  bosses.forEach((boss, index) => boss.name[2] = bossNamesEs[index]);
+  const enemyNamesEs = ["Exploradores Sombríos", "Cuervos Prismáticos", "Jabalíes de Brasa", "Cazadores Lunares", "Guardias Abisales"];
+  Object.values(enemyProfiles).forEach((profile, index) => profile.name[2] = enemyNamesEs[index]);
+  const heroNamesEs = ["Leo Melena Explosiva", "Fia Pata Chispeante", "Orla Sombrero Lunar", "Taro Caparazón Musgoso", "Cualquier héroe"];
+  Object.values(heroNames).forEach((name, index) => name[2] = heroNamesEs[index]);
+  const trials = Array.from({length:TRIAL_COUNT},(_,index)=>{ const stage=index+1; const region=Math.floor(index/5); return { stage, region, titleEn:trialTitles[index][0], titleZh:trialTitles[index][1], titleEs:trialTitles[index][2], checkpoint:stage%5===0, enemies:[...regions[region].enemies], recommended:regions[region].hero, reward:Math.min(9,3+stage), boss:stage%5===0?bosses[region]:null }; });
 
   let locale = window.WonderI18n?.locale?.() || localStorage.getItem("weightPlayLocale") || "en";
   let selectedHero = localStorage.getItem("aht-selected-hero") || "leo";
@@ -215,10 +282,10 @@
   Object.entries(enemyProfiles).forEach(([id,profile])=>{ images[`enemy-${id}`]=load(profile.asset); });
   bosses.forEach((boss)=>{ images[`boss-${boss.id}`]=load(boss.asset); });
   const heroes = {
-    leo: { image: "leo", asset: "animal-hero-trials-leo.png", hp: 100, speed: 125, attack: 10, range: 76, skill: { en: "ROAR", zh: "怒吼" } },
-    fia: { image: "fia", asset: "animal-hero-trials-fia.webp", hp: 86, speed: 145, attack: 11, range: 72, skill: { en: "DASH", zh: "彗星衝刺" } },
-    orla: { image: "orla", asset: "animal-hero-trials-orla.webp", hp: 82, speed: 112, attack: 8, range: 165, skill: { en: "MARK", zh: "月之印記" } },
-    taro: { image: "taro", asset: "animal-hero-trials-taro.webp", hp: 126, speed: 92, attack: 8, range: 76, skill: { en: "GUARD", zh: "庭園守護" } },
+    leo: { image: "leo", asset: "animal-hero-trials-leo.png", hp: 100, speed: 125, attack: 10, range: 76, skill: { en: "ROAR", zh: "怒吼", es: "RUGIDO" } },
+    fia: { image: "fia", asset: "animal-hero-trials-fia.webp", hp: 86, speed: 145, attack: 11, range: 72, skill: { en: "DASH", zh: "彗星衝刺", es: "CARRERA COMETA" } },
+    orla: { image: "orla", asset: "animal-hero-trials-orla.webp", hp: 82, speed: 112, attack: 8, range: 165, skill: { en: "MARK", zh: "月之印記", es: "MARCA LUNAR" } },
+    taro: { image: "taro", asset: "animal-hero-trials-taro.webp", hp: 126, speed: 92, attack: 8, range: 76, skill: { en: "GUARD", zh: "庭園守護", es: "GUARDIA DEL JARDÍN" } },
   };
 
   function load(filename) {
@@ -245,10 +312,12 @@
   }
 
   function heroName(heroId) {
-    return heroId.charAt(0).toUpperCase() + heroId.slice(1);
+    const key = { leo: "Leo", fia: "Fia", orla: "Orla", taro: "Taro" }[heroId];
+    return key && heroNames[key] ? localizedPair(heroNames[key]) : heroId.charAt(0).toUpperCase() + heroId.slice(1);
   }
 
-  function localizedPair(pair) { return pair[locale === "zh-Hant" ? 1 : 0]; }
+  function localizedPair(pair) { return pair[locale === "zh-Hant" ? 1 : locale === "es" ? 2 : 0] || pair[0]; }
+  function localizedValue(en, zh, es) { return locale === "zh-Hant" ? zh : locale === "es" ? es : en; }
   function trialDefinition(stage) { return trials[Math.max(0,Math.min(TRIAL_COUNT-1,Number(stage)-1))] || trials[0]; }
 
   function show(name) {
@@ -299,7 +368,7 @@
 
   function localize() {
     document.documentElement.lang = locale;
-    document.title = locale === "zh-Hant" ? "動物英雄試煉 - WeightPlay" : "Animal Hero Trials - WeightPlay";
+    document.title = localizedValue("Animal Hero Trials - WeightPlay", "動物英雄試煉 - WeightPlay", "Pruebas de Héroes Animales - WeightPlay");
     $("#game").setAttribute("aria-label", t("arenaLabel"));
     $$('[data-t]').forEach((node) => {
       node.textContent = t(node.dataset.t);
@@ -328,10 +397,10 @@
     if (!picker) return;
     const focusedHero = document.activeElement?.closest?.(".hero-option")?.dataset.hero || "";
     const labels = {
-      leo: [localizedPair(heroNames.Leo), locale === "zh-Hant" ? "均衡 · 100 生命" : "Balanced · 100 HP", locale === "zh-Hant" ? "近距離暈眩" : "Close-range stun"],
-      fia: [localizedPair(heroNames.Fia), locale === "zh-Hant" ? "高速 · 86 生命" : "Fast · 86 HP", locale === "zh-Hant" ? "無敵衝刺" : "Invulnerable dash"],
-      orla: [localizedPair(heroNames.Orla), locale === "zh-Hant" ? "遠程 · 82 生命" : "Ranged · 82 HP", locale === "zh-Hant" ? "標記增傷" : "Mark bonus damage"],
-      taro: [localizedPair(heroNames.Taro), locale === "zh-Hant" ? "耐久 · 126 生命" : "Tank · 126 HP", locale === "zh-Hant" ? "守護減傷" : "Damage guard"],
+      leo: [localizedPair(heroNames.Leo), localizedValue("Balanced · 100 HP", "均衡 · 100 生命", "Equilibrado · 100 PV"), localizedValue("Close-range stun", "近距離暈眩", "Aturdimiento cercano")],
+      fia: [localizedPair(heroNames.Fia), localizedValue("Fast · 86 HP", "高速 · 86 生命", "Veloz · 86 PV"), localizedValue("Invulnerable dash", "無敵衝刺", "Carrera invulnerable")],
+      orla: [localizedPair(heroNames.Orla), localizedValue("Ranged · 82 HP", "遠程 · 82 生命", "Distancia · 82 PV"), localizedValue("Mark bonus damage", "標記增傷", "Marca de daño adicional")],
+      taro: [localizedPair(heroNames.Taro), localizedValue("Tank · 126 HP", "耐久 · 126 生命", "Defensor · 126 PV"), localizedValue("Damage guard", "守護減傷", "Guardia reductora")],
     };
     picker.innerHTML = "";
     Object.entries(heroes).forEach(([id, hero]) => {
@@ -364,10 +433,10 @@
       button.className = `stage-card${stage > unlocked ? " locked" : ""}${definition.checkpoint ? " checkpoint" : ""}`;
       button.dataset.stage = String(stage);
       const detail = stage > unlocked ? t("locked") : interpolate("roomsAndMarks",{marks:definition.reward});
-      const title=locale==="zh-Hant"?definition.titleZh:definition.titleEn;
+      const title=locale==="zh-Hant"?definition.titleZh:locale==="es"?definition.titleEs:definition.titleEn;
       const rule=localizedPair(region.rule);
       const boss=definition.boss?` · ${localizedPair(definition.boss.name)}`:"";
-      button.innerHTML = `<img src="${ASSET_ROOT}${definition.boss?.asset || "animal-hero-trials-arena.png"}" alt=""><strong>${locale==="zh-Hant"?"試煉":"Trial"} ${stage} · ${title}</strong><span>${detail}<br>${rule}${boss}<br>${interpolate("recommended",{hero:localizedPair(heroNames[definition.recommended])})}</span>`;
+      button.innerHTML = `<img src="${ASSET_ROOT}${definition.boss?.asset || "animal-hero-trials-arena.png"}" alt=""><strong>${localizedValue("Trial", "試煉", "Prueba")} ${stage} · ${title}</strong><span>${detail}<br>${rule}${boss}<br>${interpolate("recommended",{hero:localizedPair(heroNames[definition.recommended])})}</span>`;
       button.onclick = () => stage <= unlocked && startTrial(stage);
       rail.append(button);
     }
@@ -455,7 +524,7 @@
 
   function updateHud() {
     $("#hpFill").style.width = `${Math.max(0, (run.hp / run.maxHp) * 100)}%`;
-    const skillName = locale === "zh-Hant" ? heroes[run.heroId].skill.zh : heroes[run.heroId].skill.en;
+    const skillName = heroes[run.heroId].skill[locale === "zh-Hant" ? "zh" : locale] || heroes[run.heroId].skill.en;
     $("#cooldownText").textContent = run.cool > 0 ? run.cool.toFixed(1) : skillName;
     $("#skillBtn").setAttribute("aria-label", interpolate(run.cool > 0 ? "skillCooldownLabel" : "skillReadyLabel", {
       skill: skillName,
@@ -586,15 +655,15 @@
   function blessingPool(rerolled) {
     if (rerolled) {
       return [
-        { id: "power", amount: 2, img: "animal-hero-trials-icon-roaring-mane.webp", name: locale === "zh-Hant" ? "王者勇氣" : "Sovereign Courage", copy: locale === "zh-Hant" ? "攻擊威力 +2" : "Attack power +2" },
-        { id: "speed", amount: 2, img: "animal-hero-trials-icon-comet-dash.webp", name: locale === "zh-Hant" ? "彗星節奏" : "Comet Tempo", copy: locale === "zh-Hant" ? "冷卻時間 -1.0 秒" : "Cooldown -1.0s" },
-        { id: "heal", amount: 2, img: "animal-hero-trials-icon-moon-mark.webp", name: locale === "zh-Hant" ? "滿月復甦" : "Full Moon Recovery", copy: locale === "zh-Hant" ? "恢復 48 生命" : "Recover 48 HP" },
+        { id: "power", amount: 2, img: "animal-hero-trials-icon-roaring-mane.webp", name: localizedValue("Sovereign Courage", "王者勇氣", "Valor Soberano"), copy: localizedValue("Attack power +2", "攻擊威力 +2", "Poder de ataque +2") },
+        { id: "speed", amount: 2, img: "animal-hero-trials-icon-comet-dash.webp", name: localizedValue("Comet Tempo", "彗星節奏", "Tempo de Cometa"), copy: localizedValue("Cooldown -1.0s", "冷卻時間 -1.0 秒", "Recarga -1,0 s") },
+        { id: "heal", amount: 2, img: "animal-hero-trials-icon-moon-mark.webp", name: localizedValue("Full Moon Recovery", "滿月復甦", "Recuperación de Luna Llena"), copy: localizedValue("Recover 48 HP", "恢復 48 生命", "Recupera 48 PV") },
       ];
     }
     return [
-      { id: "power", amount: 1, img: "animal-hero-trials-icon-roaring-mane.webp", name: locale === "zh-Hant" ? "怒吼之力" : "Roaring Power", copy: locale === "zh-Hant" ? "攻擊威力 +1" : "Attack power +1" },
-      { id: "speed", amount: 1, img: "animal-hero-trials-icon-comet-dash.webp", name: locale === "zh-Hant" ? "彗星律動" : "Comet Rhythm", copy: locale === "zh-Hant" ? "冷卻時間 -0.5 秒" : "Cooldown -0.5s" },
-      { id: "heal", amount: 1, img: "animal-hero-trials-icon-moon-mark.webp", name: locale === "zh-Hant" ? "月光恢復" : "Moon Recovery", copy: locale === "zh-Hant" ? "恢復 24 生命" : "Recover 24 HP" },
+      { id: "power", amount: 1, img: "animal-hero-trials-icon-roaring-mane.webp", name: localizedValue("Roaring Power", "怒吼之力", "Poder del Rugido"), copy: localizedValue("Attack power +1", "攻擊威力 +1", "Poder de ataque +1") },
+      { id: "speed", amount: 1, img: "animal-hero-trials-icon-comet-dash.webp", name: localizedValue("Comet Rhythm", "彗星律動", "Ritmo de Cometa"), copy: localizedValue("Cooldown -0.5s", "冷卻時間 -0.5 秒", "Recarga -0,5 s") },
+      { id: "heal", amount: 1, img: "animal-hero-trials-icon-moon-mark.webp", name: localizedValue("Moon Recovery", "月光恢復", "Recuperación Lunar"), copy: localizedValue("Recover 24 HP", "恢復 24 生命", "Recupera 24 PV") },
     ];
   }
 
