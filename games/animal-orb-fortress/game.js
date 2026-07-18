@@ -503,7 +503,14 @@
     let node = walker.nextNode();
     while (node) {
       let value = node.nodeValue || "";
-      replacements.forEach(([from, to]) => { value = value.replaceAll(from, to); });
+      replacements.forEach(([from, to]) => {
+        if (actualLocale === "es") {
+          const escaped = from.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+          value = value.replace(new RegExp(`\\b${escaped}\\b`, "g"), to);
+        } else {
+          value = value.replaceAll(from, to);
+        }
+      });
       if (value !== node.nodeValue) node.nodeValue = value;
       node = walker.nextNode();
     }
@@ -603,7 +610,9 @@
     $("battleLive").setAttribute("aria-hidden", battleCovered ? "true" : "false");
     document.body.classList.toggle("orb-fortress-playing", panel !== nodes.menuPanel);
     updateOrbBattleScale();
-    fitOrbArena();
+    if (panel === nodes.gamePanel || battleCovered) {
+      window.dispatchEvent(new Event("weightplay:battle-open"));
+    }
     queueOrbArenaFit();
     if (panel === nodes.stagePanel) {
       window.requestAnimationFrame(centerUnlockedStage);
@@ -642,8 +651,13 @@
   function queueOrbArenaFit() {
     if (arenaFitFrame) return;
     arenaFitFrame = window.requestAnimationFrame(() => {
-      arenaFitFrame = 0;
-      fitOrbArena();
+      // The shared logical-canvas controller also applies on an animation
+      // frame. Fit one frame later so Wave 1 measures that final envelope
+      // instead of preserving the smaller pre-Battle panel geometry.
+      arenaFitFrame = window.requestAnimationFrame(() => {
+        arenaFitFrame = 0;
+        fitOrbArena();
+      });
     });
   }
 
@@ -652,13 +666,15 @@
     H = 1200;
     canvas.width = W;
     canvas.height = H;
+    canvas.style.removeProperty("width");
+    canvas.style.removeProperty("height");
     canvas.dataset.orientation = "portrait";
     document.documentElement.style.setProperty("--orb-arena-ratio", `${W} / ${H}`);
   }
 
   function refreshOrbBattleLayout() {
     updateOrbBattleScale();
-    fitOrbArena();
+    window.dispatchEvent(new Event("weightplay:battle-open"));
     queueOrbArenaFit();
   }
 

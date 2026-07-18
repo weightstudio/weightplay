@@ -191,6 +191,8 @@
       soundEnabled: "Sound enabled.",
       soundDisabled: "Sound disabled.",
       paused: "Paused",
+      speedDecision: "Battle speed {current}. Activate to change to {next}.",
+      speedPausedDecision: "Battle paused. Activate to resume at 1x.",
       goldenFrame: "Golden Defender Frame",
       goldenFrameDesc: "Cosmetic gold frame for every deployed defender. Costs 15 Diamonds.",
       goldenFrameOwned: "Unlocked",
@@ -651,6 +653,8 @@
       soundEnabled: "音效已開啟。",
       soundDisabled: "音效已關閉。",
       paused: "暫停",
+      speedDecision: "\u6230\u9b25\u901f\u5ea6 {current}\u3002\u555f\u7528\u5f8c\u5207\u63db\u70ba {next}\u3002",
+      speedPausedDecision: "\u6230\u9b25\u5df2\u66ab\u505c\u3002\u555f\u7528\u5f8c\u4ee5 1x \u7e7c\u7e8c\u3002",
       goldenFrame: "黃金守衛框",
       goldenFrameDesc: "為所有已部署守衛加上黃金外框。花費 15 鑽石。",
       goldenFrameOwned: "已解鎖",
@@ -846,6 +850,8 @@
     soundEnabled: "Sonido activado.",
     soundDisabled: "Sonido desactivado.",
     paused: "Pausa",
+    speedDecision: "Velocidad de batalla {current}. Activa para cambiar a {next}.",
+    speedPausedDecision: "Batalla en pausa. Activa para reanudar a 1x.",
     goldenFrame: "Marco dorado de defensor",
     goldenFrameDesc: "Añade un marco dorado cosmético a todos los defensores desplegados. Cuesta 15 diamantes.",
     goldenFrameOwned: "Desbloqueado",
@@ -1533,6 +1539,10 @@
     nodes.waveBtn.disabled = state.runningWave || state.gameOver || autoWavePending;
     nodes.speedBtn.textContent = state.paused ? t("paused") : `${state.speed}x`;
     nodes.speedBtn.setAttribute("aria-pressed", String(state.paused));
+    const nextSpeed = state.speed === 1 ? "2x" : state.speed === 2 ? "3x" : t("paused");
+    nodes.speedBtn.setAttribute("aria-label", state.paused
+      ? t("speedPausedDecision")
+      : t("speedDecision", { current: `${state.speed}x`, next: nextSpeed }));
     nodes.reviveBtn.disabled = state.revived || state.save.diamonds < 5 || state.coreHp > 0;
     updateCommandButtons();
     updateBuildAffordability();
@@ -3315,6 +3325,9 @@
     nodes.upgradeBtn.addEventListener("click", upgradeSelected);
     nodes.sellBtn.addEventListener("click", sellSelected);
     nodes.reviveBtn.addEventListener("click", reviveCore);
+    nodes.speedBtn.addEventListener("keydown", (event) => {
+      if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
+    });
     nodes.speedBtn.addEventListener("click", cycleSpeedControl);
     document.addEventListener("visibilitychange", pauseHiddenBattle);
     nodes.retryBtn.addEventListener("click", () => {

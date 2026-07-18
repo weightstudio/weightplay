@@ -203,6 +203,15 @@
           </div>
         </section>
 
+        <section id="quitRunPanel" class="panel modal-panel is-hidden" role="dialog" aria-modal="true" aria-labelledby="quitRunTitle" aria-describedby="quitRunText">
+          <h2 id="quitRunTitle" data-ui="quitRunTitle">Leave Expedition?</h2>
+          <p id="quitRunText" data-ui="quitConfirm" class="status-line">All temporary squad progress from this expedition will be lost.</p>
+          <div class="revive-actions">
+            <button id="keepPlayingBtn" class="primary-btn" type="button" data-ui="keepPlaying">Keep Playing</button>
+            <button id="confirmQuitBtn" class="secondary-btn" type="button" data-ui="confirmQuit">Leave Expedition</button>
+          </div>
+        </section>
+
         <!-- Final Run Result Screen: bounded Battle substate -->
         <section id="resultPanel" class="panel result-panel is-hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-live="polite">
           <img class="result-lion" src="../../assets/animal-auto-squad-cover.webp" alt="Result Lion Mascot" />

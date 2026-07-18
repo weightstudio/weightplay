@@ -125,6 +125,9 @@
       noSupplies: "Not enough supplies!",
       needSquad: "Position at least one animal in your squad before entering battle!",
       quitConfirm: "Quit this expedition? All temporary squad progress will be lost.",
+      quitRunTitle: "Leave Expedition?",
+      keepPlaying: "Keep Playing",
+      confirmQuit: "Leave Expedition",
       teamBonusTitle: "Permanent team bonus",
       teamBonusValue: "All owned animals enter expeditions with +{atk} ATK and +{hp} HP from Team Level.",
       teamBonusNext: "Next team level in {remaining} XP.",
@@ -199,6 +202,9 @@
       noGold: "金幣不足！",
       needSquad: "請先把至少一名動物放進作戰小隊，再開始戰鬥！",
       quitConfirm: "確定要放棄這次遠征嗎？所有臨時小隊進度都會消失。",
+      quitRunTitle: "要離開遠征嗎？",
+      keepPlaying: "繼續遠征",
+      confirmQuit: "離開遠征",
       relicMaple: "楓葉護盾：前線單位戰鬥開始時獲得甜瓜護盾。",
       relicOak: "橡樹種子：全體單位在戰鬥中獲得 +1 生命。",
       relicShadow: "暗影爪痕：全體單位在戰鬥中獲得 +1 攻擊力。",
@@ -326,6 +332,9 @@
     noSupplies: "¡No hay suficientes suministros!",
     needSquad: "¡Coloca al menos un animal antes de entrar en batalla!",
     quitConfirm: "¿Abandonar esta expedición? Se perderá todo el progreso temporal.",
+    quitRunTitle: "¿Salir de la expedición?",
+    keepPlaying: "Seguir jugando",
+    confirmQuit: "Salir de la expedición",
     teamBonusTitle: "Bonificación permanente del equipo",
     teamBonusValue: "Todos los animales obtenidos empiezan con +{atk} ATQ y +{hp} PV por el nivel del equipo.",
     teamBonusNext: "Siguiente nivel del equipo en {remaining} XP.",
@@ -653,6 +662,29 @@
   ];
   STAGE_DEFINITIONS.forEach((definition, index) => definition.nameEs = stageNamesEs[index]);
 
+  function ensureQuitRunPanel() {
+    if ($("quitRunPanel")) return;
+    const panel = document.createElement("section");
+    panel.id = "quitRunPanel";
+    panel.className = "panel modal-panel is-hidden";
+    panel.setAttribute("role", "dialog");
+    panel.setAttribute("aria-modal", "true");
+    panel.setAttribute("aria-labelledby", "quitRunTitle");
+    panel.setAttribute("aria-describedby", "quitRunText");
+    panel.innerHTML = `
+      <h2 id="quitRunTitle" data-ui="quitRunTitle">Leave Expedition?</h2>
+      <p id="quitRunText" data-ui="quitConfirm" class="status-line">All temporary squad progress from this expedition will be lost.</p>
+      <div class="revive-actions">
+        <button id="keepPlayingBtn" class="primary-btn" type="button" data-ui="keepPlaying">Keep Playing</button>
+        <button id="confirmQuitBtn" class="secondary-btn" type="button" data-ui="confirmQuit">Leave Expedition</button>
+      </div>`;
+    const gamePanel = $("gamePanel");
+    const resultPanel = $("resultPanel");
+    if (gamePanel) gamePanel.insertBefore(panel, resultPanel || null);
+  }
+
+  ensureQuitRunPanel();
+
   // Game UI DOM Nodes
   const nodes = {
     backToLobbyBtn: $("backToLobbyBtn"),
@@ -709,6 +741,9 @@
     defeatRevivePanel: $("defeatRevivePanel"),
     reviveBtn: $("reviveBtn"),
     giveUpBtn: $("giveUpBtn"),
+    quitRunPanel: $("quitRunPanel"),
+    keepPlayingBtn: $("keepPlayingBtn"),
+    confirmQuitBtn: $("confirmQuitBtn"),
     resultPanel: $("resultPanel"),
     resultTitle: $("resultTitle"),
     resultText: $("resultText"),
@@ -755,6 +790,7 @@
   let combatEndTimer = null;
   const combatStepTimers = new Set();
   let combatSuspendedForBackground = false;
+  let quitDecisionOpen = false;
   let stageRenderVersion = 0;
   let stageBrowseFrame = 0;
 
@@ -1582,6 +1618,7 @@
   }
 
   function renderMenu() {
+    closeQuitDecision(false);
     stopCombatSession();
     setResultOwnership(false);
     selectedSlot = null;
@@ -1613,6 +1650,7 @@
   }
 
   function showStageSelection() {
+    closeQuitDecision(false);
     stopCombatSession();
     setResultOwnership(false);
     window.WeightPlayGame?.exitMobileGameMode?.();
@@ -1962,6 +2000,10 @@
     nodes.gameCanvas.setAttribute("aria-label", t("battleArena"));
     nodes.quitRunBtn.textContent = "\u2190";
     nodes.quitRunBtn.setAttribute("aria-label", t("quitRun"));
+    $("quitRunTitle").textContent = t("quitRunTitle");
+    $("quitRunText").textContent = t("quitConfirm");
+    nodes.keepPlayingBtn.textContent = t("keepPlaying");
+    nodes.confirmQuitBtn.textContent = t("confirmQuit");
     
     // Menu elements
     $("menuHeadingText").textContent = t("menuTitle");
@@ -3160,6 +3202,7 @@
     clearScheduledCombatTimers();
     cancelAnimationFrame(animationId);
     combatSuspendedForBackground = false;
+    quitDecisionOpen = false;
     combatRunSequence++;
     if (!state?.combat) return;
     state.combat.runId = combatRunSequence;
@@ -3173,7 +3216,7 @@
     const timerId = setTimeout(() => {
       combatStepTimers.delete(timerId);
       if (runId !== state.combat.runId || state.combat.resolved) return;
-      if (document.hidden) {
+      if (document.hidden || quitDecisionOpen) {
         scheduleCombatStepCleanup(callback, 80);
         return;
       }
@@ -3189,7 +3232,7 @@
     const finish = () => {
       combatEndTimer = null;
       if (runId !== state.combat.runId || state.combat.resolved) return;
-      if (document.hidden) {
+      if (document.hidden || quitDecisionOpen) {
         combatEndTimer = setTimeout(finish, 80);
         return;
       }
@@ -3201,6 +3244,7 @@
   // Rendering Loop for Auto-Battle Canvas
   function runCombatAnimation() {
     if (!state.combat.animating) return;
+    if (quitDecisionOpen) return;
     if (document.hidden) {
       combatSuspendedForBackground = true;
       return;
@@ -4068,13 +4112,33 @@
     window.WonderAnalytics?.track("expedition_end", { game_id: GAME_ID, stage: state.stage, wave: state.round, cleared: isWin });
   }
 
-  function quitRun() {
-    if (confirm(t("quitConfirm"))) {
-      initAudio();
-      playSynth("sell");
-      state.activeRun = false;
-      showStageSelection();
+  function openQuitDecision() {
+    if (quitDecisionOpen || nodes.gamePanel.classList.contains("is-result")) return;
+    quitDecisionOpen = true;
+    cancelAnimationFrame(animationId);
+    nodes.quitRunPanel.classList.remove("is-hidden");
+    setBattleDecisionOwnership(nodes.quitRunPanel, true);
+    nodes.keepPlayingBtn.focus({ preventScroll: true });
+  }
+
+  function closeQuitDecision(resume = true) {
+    if (!quitDecisionOpen) return;
+    quitDecisionOpen = false;
+    setBattleDecisionOwnership(nodes.quitRunPanel, false);
+    nodes.quitRunPanel.classList.add("is-hidden");
+    if (resume && state.combat.animating && !document.hidden) {
+      cancelAnimationFrame(animationId);
+      animationId = requestAnimationFrame(runCombatAnimation);
     }
+    if (resume) nodes.quitRunBtn.focus({ preventScroll: true });
+  }
+
+  function confirmQuitRun() {
+    closeQuitDecision(false);
+    initAudio();
+    playSynth("sell");
+    state.activeRun = false;
+    showStageSelection();
   }
 
   // Event Listeners Registration
@@ -4094,8 +4158,18 @@
     nodes.rerollRelicsBtn.addEventListener("focus", updateRelicRerollDecision);
     nodes.relicDraftPanel.addEventListener("keydown", (event) => trapBattleDecisionFocus(nodes.relicDraftPanel, event));
     nodes.defeatRevivePanel.addEventListener("keydown", (event) => trapBattleDecisionFocus(nodes.defeatRevivePanel, event));
+    nodes.quitRunPanel.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        closeQuitDecision(true);
+        return;
+      }
+      trapBattleDecisionFocus(nodes.quitRunPanel, event);
+    });
     nodes.startBattleBtn.addEventListener("click", startBattle);
-    nodes.quitRunBtn.addEventListener("click", quitRun);
+    nodes.quitRunBtn.addEventListener("click", openQuitDecision);
+    nodes.keepPlayingBtn.addEventListener("click", () => closeQuitDecision(true));
+    nodes.confirmQuitBtn.addEventListener("click", confirmQuitRun);
     
     nodes.buySkinBtn.addEventListener("click", handleBuySkin);
     nodes.equipSkinBtn.addEventListener("click", handleEquipSkin);
@@ -4144,7 +4218,7 @@
       cancelAnimationFrame(animationId);
     };
     const resumeBackgroundCombat = () => {
-      if (!combatSuspendedForBackground || !state.combat.animating || document.hidden) return;
+      if (!combatSuspendedForBackground || !state.combat.animating || document.hidden || quitDecisionOpen) return;
       combatSuspendedForBackground = false;
       animationId = requestAnimationFrame(runCombatAnimation);
     };

@@ -148,12 +148,12 @@ body.is-cafe-playing #playPanel.play-panel {
   inset: auto;
   left: var(--cafe-canvas-left, 4px);
   top: var(--cafe-canvas-top, 4px);
-  width: 390px;
-  min-width: 390px;
-  max-width: 390px;
-  height: 788px;
-  min-height: 788px;
-  max-height: 788px;
+  width: var(--cafe-logical-width, 390px);
+  min-width: var(--cafe-logical-width, 390px);
+  max-width: var(--cafe-logical-width, 390px);
+  height: var(--cafe-logical-height, 788px);
+  min-height: var(--cafe-logical-height, 788px);
+  max-height: var(--cafe-logical-height, 788px);
   margin: 0;
   transform: scale(var(--cafe-canvas-scale, 1));
   transform-origin: top left;
@@ -204,8 +204,8 @@ body.is-cafe-playing #resultPanel.result-panel {
   position: absolute;
   inset: -2px auto auto -2px;
   z-index: 90;
-  width: 390px;
-  height: 788px;
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
   padding: 12px;
   overflow: hidden;
 }
@@ -487,12 +487,12 @@ body.is-cafe-playing #playPanel.play-panel {
   inset: auto;
   left: var(--cafe-canvas-left, 4px);
   top: var(--cafe-canvas-top, 4px);
-  width: 390px;
-  min-width: 390px;
-  max-width: 390px;
-  height: 788px;
-  min-height: 788px;
-  max-height: 788px;
+  width: var(--cafe-logical-width, 390px);
+  min-width: var(--cafe-logical-width, 390px);
+  max-width: var(--cafe-logical-width, 390px);
+  height: var(--cafe-logical-height, 788px);
+  min-height: var(--cafe-logical-height, 788px);
+  max-height: var(--cafe-logical-height, 788px);
   margin: 0;
   transform: scale(var(--cafe-canvas-scale, 1));
   transform-origin: top left;
@@ -568,8 +568,8 @@ body.is-cafe-playing #resultPanel.result-panel {
   position: absolute;
   inset: -2px auto auto -2px;
   z-index: 90;
-  width: 390px;
-  height: 788px;
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
   padding: 12px;
   overflow: hidden;
 }

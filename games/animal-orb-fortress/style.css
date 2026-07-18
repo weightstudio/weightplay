@@ -947,8 +947,8 @@ body.orb-fortress-playing #gamePanel.is-hidden ~ #battleAdReserve { display:none
 .battle-live{display:contents}
 body.orb-fortress-playing #gamePanel.game-panel{position:fixed}
 body.orb-fortress-playing #gamePanel.game-panel>#resultPanel.result-panel{position:absolute;z-index:80;inset:0;width:auto!important;height:auto!important;max-width:none!important;max-height:none!important;margin:0!important;transform:none;overflow:hidden}
-body.orb-fortress-playing #gamePanel.game-panel>#upgradePanel.modal-panel{position:absolute;z-index:80;inset:-1px;width:auto!important;height:auto!important;max-width:none!important;max-height:none!important;margin:0!important;transform:none;overflow:hidden}
-body.orb-fortress-playing #gamePanel.game-panel>#pausePanel.pause-panel{position:absolute;z-index:80;inset:-1px;display:grid;width:auto!important;height:auto!important;max-width:none!important;max-height:none!important;margin:0!important;transform:none;overflow:hidden}
+body.orb-fortress-playing #gamePanel.game-panel>#upgradePanel.modal-panel{position:absolute;z-index:80;inset:0;width:auto!important;height:auto!important;max-width:none!important;max-height:none!important;margin:0!important;transform:none;overflow:hidden}
+body.orb-fortress-playing #gamePanel.game-panel>#pausePanel.pause-panel{position:absolute;z-index:80;inset:0;display:grid;width:auto!important;height:auto!important;max-width:none!important;max-height:none!important;margin:0!important;transform:none;overflow:hidden}
 body.orb-fortress-playing #gamePanel.game-panel>#pausePanel.pause-panel.is-hidden{display:none!important}
 
 @media (max-width:560px), (max-height:560px) {

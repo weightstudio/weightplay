@@ -595,12 +595,12 @@ body.is-vine-playing .game-page-info {
 .result-panel {
   position: absolute !important;
   inset: 0 !important;
-  width: 382px;
-  height: 780px;
+  width: 100%;
+  height: 100%;
 }
 
 body.is-vine-playing #gamePanel .result-panel:not(.hidden):not(.is-hidden) {
-  max-height: 780px !important;
+  max-height: 100% !important;
   overflow: hidden !important;
 }
 
@@ -703,21 +703,21 @@ body.is-vine-stage-select .vine-app {
 body.is-vine-stage-select .stage-panel {
   position: fixed;
   top: var(--vine-stage-top, 4px);
-  left: 50%;
+  left: 0;
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 48px minmax(0, 1fr);
-  width: 390px;
-  min-width: 390px;
-  max-width: 390px;
-  height: 788px;
-  min-height: 788px;
-  max-height: 788px;
+  width: var(--vine-stage-logical-width, 390px);
+  min-width: var(--vine-stage-logical-width, 390px);
+  max-width: var(--vine-stage-logical-width, 390px);
+  height: var(--vine-stage-logical-height, 788px);
+  min-height: var(--vine-stage-logical-height, 788px);
+  max-height: var(--vine-stage-logical-height, 788px);
   gap: 8px;
   padding: 8px;
   overflow: hidden;
-  transform: translateX(-50%) scale(var(--vine-stage-scale, 1));
-  transform-origin: top center;
+  transform: scale(var(--vine-stage-scale, 1));
+  transform-origin: top left;
 }
 
 body.is-vine-stage-select .stage-rail {
@@ -872,9 +872,9 @@ body.is-vine-playing main.vine-app #gamePanel.game-panel {
   display: grid;
   grid-template-rows: 58px minmax(0, 1fr) 48px 42px;
   gap: 6px;
-  width: 382px !important;
+  width: var(--wp-battle-logical-width, 382px) !important;
   max-width: none !important;
-  height: 780px !important;
+  height: var(--wp-battle-logical-height, 780px) !important;
   max-height: none !important;
   min-height: 0;
   margin: 0 !important;
@@ -883,8 +883,8 @@ body.is-vine-playing main.vine-app #gamePanel.game-panel {
 }
 
 body.is-vine-playing main.vine-app #playfield.playfield.play-area {
-  width: auto !important;
-  height: 100%;
+  width: min(100%, calc((var(--wp-battle-logical-height, 780px) - 178px) * 0.6)) !important;
+  height: auto;
   max-width: 100% !important;
   max-height: 100%;
   aspect-ratio: 3 / 5;

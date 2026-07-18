@@ -418,6 +418,7 @@
     resultUpgradeNeed: "{hero} \u518d\u9700 {need} \u679a\u7b26\u6587\u5373\u53ef\u5347\u7d1a\u3002",
   });
   Object.assign(text.en, {
+    chooseHero: "Choose a hero. Move once, then take one action.",
     pause: "Pause",
     pauseTitle: "Battle Paused",
     pauseHint: "The enemy turn and every pending action stay frozen until you continue.",
@@ -425,6 +426,7 @@
     pauseMenu: "Back to Missions",
   });
   Object.assign(text["zh-Hant"], {
+    chooseHero: "選擇英雄：可先移動一次，再執行一個行動。",
     pause: "\u66ab\u505c",
     pauseTitle: "\u6230\u9b25\u5df2\u66ab\u505c",
     pauseHint: "\u6575\u65b9\u56de\u5408\u8207\u6240\u6709\u5f85\u8655\u7406\u52d5\u4f5c\u90fd\u6703\u51cd\u7d50\uff0c\u76f4\u5230\u4f60\u7e7c\u7e8c\u904a\u6232\u3002",
@@ -562,6 +564,7 @@
     resultProgressTitle: "Progreso guardado"
   };
   Object.assign(text.es, {
+    chooseHero: "Elige un héroe: muévete una vez y luego realiza una acción.",
     pause: "Pausar",
     pauseTitle: "Batalla en pausa",
     pauseHint: "El turno enemigo y todas las acciones pendientes quedan congelados hasta que continúes.",
@@ -778,6 +781,37 @@
       "盡快清掉 1 生命鏡影分身，避免需要的移動路線被堵住。",
       "把冷卻、封印與環月格當成資源；永久數值不能取代站位。",
     ],
+  });
+
+  Object.assign(text.en, {
+    positioned: "Positioned",
+    moveReady: "{hero} moved and can still act.",
+    moveThenActHint: "Move once, then attack, guard, or use a Skill.",
+    runeChain: "Rune Chain x{count}: +{bonus} damage!",
+    runeChainHint: "Focus {enemy}: the next squad hit gains +{bonus} damage.",
+    runeChainReady: "Start a Rune Chain by focusing one enemy.",
+    battlePreview: "Mission Briefing",
+    squadRule: "Squad rule",
+  });
+  Object.assign(text["zh-Hant"], {
+    positioned: "已站位",
+    moveReady: "{hero} 已移動，仍可行動。",
+    moveThenActHint: "每回合可先移動一次，再攻擊、防守或使用技能。",
+    runeChain: "符文連擊 x{count}：傷害 +{bonus}！",
+    runeChainHint: "集火 {enemy}：小隊下一次命中傷害 +{bonus}。",
+    runeChainReady: "集火同一名敵人可累積符文連擊。",
+    battlePreview: "任務情報",
+    squadRule: "小隊規則",
+  });
+  Object.assign(text.es, {
+    positioned: "En posición",
+    moveReady: "{hero} se movió y aún puede actuar.",
+    moveThenActHint: "Muévete una vez y luego ataca, defiende o usa una habilidad.",
+    runeChain: "Cadena rúnica x{count}: +{bonus} de daño.",
+    runeChainHint: "Concentra el ataque en {enemy}: el siguiente golpe gana +{bonus} de daño.",
+    runeChainReady: "Concentra ataques en un enemigo para crear una cadena rúnica.",
+    battlePreview: "Informe de misión",
+    squadRule: "Regla del escuadrón",
   });
 
   const heroDefs = [
@@ -1237,6 +1271,7 @@
       });
       nodes.missionGrid.appendChild(btn);
     });
+    renderMissionBriefing();
     scrollSelectedMissionIntoView();
     if (focusHeroId !== null) {
       const preferred = nodes.heroUpgradeGrid.querySelector(`[data-hero-upgrade="${focusHeroId}"]:not(:disabled)`);
@@ -1252,6 +1287,24 @@
     requestAnimationFrame(() => {
       active.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
     });
+  }
+
+  function renderMissionBriefing() {
+    if (!nodes.missionBriefing) return;
+    const mission = missionDefs.find((item) => item.id === selectedMission) || missionDefs[0];
+    const missionNameSource = locale === "zh-Hant" || locale === "zh-Hans" ? mission.nameZht : locale === "es" ? mission.nameEs : mission.nameEn;
+    const missionTacticSource = locale === "zh-Hant" || locale === "zh-Hans" ? mission.tacticZht : locale === "es" ? mission.tacticEs : mission.tacticEn;
+    const missionName = locale === "zh-Hans" ? window.WonderI18n?.simplifyChineseText?.(missionNameSource) || missionNameSource : missionNameSource;
+    const missionTactic = locale === "zh-Hans" ? window.WonderI18n?.simplifyChineseText?.(missionTacticSource) || missionTacticSource : missionTacticSource;
+    const enemies = mission.enemies.map((id) => {
+      const enemy = enemyDefs.find((item) => item.id === id) || enemyDefs[0];
+      return `<span class="mission-briefing__enemy"><img src="${asset(enemy.img)}" alt="" /><b>${t(enemy.name)}</b><small>${t(`${enemy.trait}Short`)}</small></span>`;
+    }).join("");
+    nodes.missionBriefing.innerHTML = `
+      <div class="mission-briefing__head"><strong>${t("battlePreview")}</strong><em>${t("missionCard", { n: mission.id })} · ${missionName}</em></div>
+      <div class="mission-briefing__enemies">${enemies}</div>
+      <p><b>${t("squadRule")}</b>${t("moveThenActHint")} ${t("runeChainReady")}</p>
+      <p>${missionTactic}</p>`;
   }
 
   function focusSelectedMission() {
@@ -1354,6 +1407,10 @@
         <button type="button" data-rune-stage-tab="training" data-ui="stageTabTraining">Training</button>
       </nav>`;
     stagePanel.querySelector('[data-rune-stage-view="missions"]').append(missionList);
+    const missionBriefing = document.createElement("section");
+    missionBriefing.className = "mission-briefing";
+    missionBriefing.setAttribute("aria-live", "polite");
+    missionList.append(missionBriefing);
     stagePanel.querySelector('[data-rune-stage-view="heroes"]').append(nodes.growthSummary, heroList);
     stagePanel.querySelector('[data-rune-stage-view="training"]').append(diamondCard);
     nodes.menuPanel.after(stagePanel);
@@ -1361,7 +1418,7 @@
     reserve.className = "wp-standard-stage-reserve is-hidden";
     reserve.setAttribute("aria-hidden", "true");
     stagePanel.after(reserve);
-    Object.assign(nodes, { stagePanel, stageReserve: reserve, mainStartBtn: mainStart, stageBackBtn: stagePanel.querySelector("#stageBackBtn") });
+    Object.assign(nodes, { stagePanel, stageReserve: reserve, mainStartBtn: mainStart, stageBackBtn: stagePanel.querySelector("#stageBackBtn"), missionBriefing });
     stagePanel.querySelectorAll("[data-rune-stage-tab]").forEach((button) => button.addEventListener("click", () => {
       const tab = button.dataset.runeStageTab;
       if (tab !== "training") resetTrainingIntent();
@@ -1404,6 +1461,9 @@
       turn: 1,
       selected: "lion",
       acted: new Set(),
+      moved: new Set(),
+      chainTarget: null,
+      chainCount: 0,
       phase: "player",
       rerolled: false,
       terrain: missionDef.terrain.map((item) => ({ ...item })),
@@ -1559,10 +1619,11 @@
         const unit = unitAt(x, y);
         if (unit) {
           if (unit.team === "hero" && state.acted.has(unit.id)) tile.classList.add("is-acted");
+          if (unit.team === "hero" && state.moved.has(unit.id) && !state.acted.has(unit.id)) tile.classList.add("is-positioned");
           if (unit.team === "hero" && state.selected === unit.id) tile.classList.add("is-selected");
           tile.appendChild(renderUnit(unit));
           if (unit.team === "hero") {
-            const status = state.acted.has(unit.id) ? t("acted") : t("ready");
+            const status = state.acted.has(unit.id) ? t("acted") : state.moved.has(unit.id) ? t("positioned") : t("ready");
             tile.setAttribute("aria-label", t("heroTileLabel", { hero: t(unit.name), hp: unit.hp, maxHp: unit.maxHp, status, row: y + 1, column: x + 1 }));
             tile.setAttribute("aria-pressed", String(state.selected === unit.id));
           } else {
@@ -1613,7 +1674,7 @@
 
   function renderUnit(unit) {
     const wrap = document.createElement("div");
-    wrap.className = unit.team === "enemy" ? "enemy" : `hero ${state?.acted?.has(unit.id) ? "has-acted" : "is-ready"}`;
+    wrap.className = unit.team === "enemy" ? "enemy" : `hero ${state?.acted?.has(unit.id) ? "has-acted" : state?.moved?.has(unit.id) ? "is-positioned" : "is-ready"}`;
     if (unit.bossKit) wrap.classList.add("is-boss");
     const img = document.createElement("img");
     img.className = "unit";
@@ -1633,7 +1694,7 @@
     if (unit.team === "hero") {
       const badge = document.createElement("em");
       badge.className = "turn-badge";
-      badge.textContent = state?.acted?.has(unit.id) ? t("acted") : t("ready");
+      badge.textContent = state?.acted?.has(unit.id) ? t("acted") : state?.moved?.has(unit.id) ? t("positioned") : t("ready");
       wrap.appendChild(badge);
     }
     return wrap;
@@ -1646,15 +1707,20 @@
       nodes.skillBtn.title = t("skill");
       return;
     }
-    const status = state.acted.has(hero.id) ? t("acted") : t("ready");
+    const status = state.acted.has(hero.id) ? t("acted") : state.moved.has(hero.id) ? t("positioned") : t("ready");
+    const chainTarget = livingEnemies().find((enemy) => (enemy.uid || enemy.id) === state.chainTarget);
+    const chainBonus = chainTarget ? Math.min(2, state.chainCount) : 0;
+    const chainHint = chainTarget
+      ? t("runeChainHint", { enemy: t(chainTarget.name), bonus: chainBonus })
+      : t("runeChainReady");
     nodes.selectedCard.innerHTML = `
       <strong>${t(hero.name)} ${t("heroLevel", { level: hero.level })} · ${status}</strong>
       <span>${t("chooseTarget", { hero: t(hero.name), hp: hero.hp, maxHp: hero.maxHp, energy: hero.energy })}</span>
-      <small>${t("skillInfo", { skill: t(hero.skillName), desc: t(hero.skillDesc) })}</small>`;
+      <small>${t("moveThenActHint")}</small>`;
     nodes.selectedCard.querySelector("strong").textContent = `${t(hero.name)} ${t("heroLevel", { level: hero.level })} / ${status}`;
     const skillHelp = nodes.selectedCard.querySelector("small");
     skillHelp.className = "skill-help";
-    skillHelp.innerHTML = `<b>${t("skillInfoLabel")}</b>${t("skillInfo", { skill: t(hero.skillName), desc: t(hero.skillDesc) })}`;
+    skillHelp.innerHTML = `<b>${t(hero.skillName)}</b><span>${t(hero.skillDesc)}</span><i>${chainHint}</i>`;
     nodes.skillBtn.title = t("skillInfo", { skill: t(hero.skillName), desc: t(hero.skillDesc) });
   }
 
@@ -1664,8 +1730,9 @@
       const isSelected = state.selected === hero.id;
       const isFallen = hero.hp <= 0;
       const isDone = !isFallen && state.acted.has(hero.id);
-      const status = isFallen ? t("fallen") : isDone ? t("acted") : t("ready");
-      const className = ["turn-roster-item", isSelected ? "is-selected" : "", isDone ? "is-done" : "", isFallen ? "is-fallen" : ""].filter(Boolean).join(" ");
+      const isPositioned = !isFallen && !isDone && state.moved.has(hero.id);
+      const status = isFallen ? t("fallen") : isDone ? t("acted") : isPositioned ? t("positioned") : t("ready");
+      const className = ["turn-roster-item", isSelected ? "is-selected" : "", isDone ? "is-done" : "", isPositioned ? "is-positioned" : "", isFallen ? "is-fallen" : ""].filter(Boolean).join(" ");
       return `
         <button class="${className}" type="button" data-roster-hero="${hero.id}" aria-pressed="${isSelected}" ${isFallen ? "disabled" : ""}>
           <img src="${asset(hero.img)}" alt="" aria-hidden="true" />
@@ -1690,16 +1757,18 @@
     const targets = hero ? validTargets() : [];
     const attackTarget = targets[0];
     const skillTarget = hero && hero.id !== "turtle" ? attackTarget || livingEnemies().sort((a, b) => distance(hero, a) - distance(hero, b))[0] : null;
-    nodes.attackBtn.textContent = hero ? t("attackValue", { value: hero.atk }) : t("attack");
+    const attackBonus = attackTarget ? chainBonusFor(attackTarget) : 0;
+    const skillBonus = skillTarget ? chainBonusFor(skillTarget) : 0;
+    nodes.attackBtn.textContent = hero ? t("attackValue", { value: hero.atk + attackBonus }) : t("attack");
     nodes.guardBtn.textContent = hero ? t("guardValue") : t("guard");
-    nodes.skillBtn.textContent = hero ? t("skillValue", { value: hero.id === "turtle" ? "+1" : hero.atk + 2 }) : t("skill");
-    nodes.attackBtn.setAttribute("aria-label", attackTarget ? t("actionTarget", { action: t("attack"), value: hero.atk, target: t(attackTarget.name) }) : t("attack"));
+    nodes.skillBtn.textContent = hero ? t("skillValue", { value: hero.id === "turtle" ? "+1" : hero.atk + 2 + skillBonus }) : t("skill");
+    nodes.attackBtn.setAttribute("aria-label", attackTarget ? t("actionTarget", { action: t("attack"), value: hero.atk + attackBonus, target: t(attackTarget.name) }) : t("attack"));
     nodes.guardBtn.setAttribute("aria-label", hero ? `${t("guardValue")}. ${t("guardHelp")}` : t("guard"));
     if (hero) {
       const skillResult = hero.id === "turtle"
         ? t("skillSquadResult", { skill: t(hero.skillName) })
         : skillTarget
-          ? t("actionTarget", { action: t(hero.skillName), value: hero.atk + 2, target: t(skillTarget.name) })
+          ? t("actionTarget", { action: t(hero.skillName), value: hero.atk + 2 + skillBonus, target: t(skillTarget.name) })
           : t("skillInfo", { skill: t(hero.skillName), desc: t(hero.skillDesc) });
       const energyResult = hero.energy > 0
         ? t("skillEnergyChange", { energy: hero.energy, remaining: hero.energy - 1 })
@@ -1751,7 +1820,7 @@
 
   function validMoves() {
     const hero = selectedHero();
-    if (!hero || state.acted.has(hero.id) || hero.snared) return [];
+    if (!hero || state.acted.has(hero.id) || state.moved.has(hero.id) || hero.snared) return [];
     const dirs = [[1, 0], [-1, 0], [0, 1], [0, -1]];
     return dirs
       .map(([dx, dy]) => ({ x: hero.x + dx, y: hero.y + dy }))
@@ -1781,17 +1850,24 @@
     if (validMoves().some((p) => p.x === x && p.y === y)) {
       hero.x = x;
       hero.y = y;
-      markActed(hero);
+      state.moved.add(hero.id);
+      state.selected = hero.id;
       applyHeroTerrain(hero);
       playFx("dust-burst", x, y);
-      log("moved", { hero: t(hero.name) });
+      log("moveReady", { hero: t(hero.name) });
       render();
       checkEnd();
     }
   }
 
+  function chainBonusFor(enemy) {
+    if (!enemy || (enemy.uid || enemy.id) !== state.chainTarget) return 0;
+    return Math.min(2, state.chainCount);
+  }
+
   function attack(hero, enemy, isSkill) {
-    let damage = hero.atk + (isSkill ? 2 : 0);
+    const chainBonus = chainBonusFor(enemy);
+    let damage = hero.atk + (isSkill ? 2 : 0) + chainBonus;
     const blockedByStoneHide = (enemy.id === "stag" || enemy.id === "rhinoBoss") && enemy.armorReady;
     const blockedByAllyGuard = enemy.allyGuard;
     const blockedByFlight = enemy.id === "griffinBoss" && enemy.flying && (hero.range || 1) > 1;
@@ -1807,9 +1883,21 @@
     if (sealWardActive()) damage = Math.max(1, damage - 1);
     enemy.hp -= damage;
     enemy.hitsThisTurn = (enemy.hitsThisTurn || 0) + 1;
+    const enemyKey = enemy.uid || enemy.id;
+    if (damage > 0) {
+      state.chainCount = state.chainTarget === enemyKey ? state.chainCount + 1 : 1;
+      state.chainTarget = enemyKey;
+    } else {
+      state.chainCount = 0;
+      state.chainTarget = null;
+    }
     markActed(hero);
     playFx(isSkill ? "rune-burst" : "attack-hit", enemy.x, enemy.y);
     log(blockedByStoneHide ? "stagArmorHit" : isSkill ? "skillUsed" : "attacked", { hero: t(hero.name), enemy: t(enemy.name) });
+    if (chainBonus > 0 && damage > 0) {
+      playFx("rune-burst", enemy.x, enemy.y);
+      log("runeChain", { count: state.chainCount, bonus: chainBonus });
+    }
     if (enemy.hp <= 0) enemy.hp = 0;
     if (enemy.id === "boar" && enemy.hp > 0 && distance(hero, enemy) <= 1) {
       hero.hp = Math.max(0, hero.hp - 1);
@@ -2088,6 +2176,9 @@
     state.terrain = state.terrain.filter((terrain) => !terrain.expires || terrain.expires > state.turn);
     state.turn += 1;
     state.acted = new Set();
+    state.moved = new Set();
+    state.chainTarget = null;
+    state.chainCount = 0;
     state.phase = "player";
     state.selected = livingHeroes()[0]?.id || null;
     render();
@@ -2317,6 +2408,10 @@
         return {
           turn: state.turn,
           phase: state.phase,
+          moved: [...state.moved],
+          acted: [...state.acted],
+          chainTarget: state.chainTarget,
+          chainCount: state.chainCount,
           heroes: state.heroes.map(({ id, hp, maxHp, x, y, energy, guard, snared, silenced, marked }) => ({ id, hp, maxHp, x, y, energy, guard, snared, silenced, marked })),
           enemies: state.enemies.map(({ id, uid, hp, maxHp, x, y, armorReady, allyGuard, cloneMade, flying, phasesTriggered, hitsThisTurn }) => ({ id, uid, hp, maxHp, x, y, armorReady, allyGuard, cloneMade, flying, phasesTriggered, hitsThisTurn })),
           terrain: state.terrain.map((item) => ({ ...item })),
@@ -2351,6 +2446,9 @@
         if (!state) return false;
         state.phase = "player";
         state.acted = new Set();
+        state.moved = new Set();
+        state.chainTarget = null;
+        state.chainCount = 0;
         state.selected = selected || null;
         render();
         return true;

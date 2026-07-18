@@ -458,11 +458,13 @@
     const width = useVisual ? visualWidth : innerWidth;
     const height = useVisual ? visualHeight : innerHeight;
     const scale = Math.max(0.1, Math.min(width / 390, height / 788));
-    const renderedWidth = 390 * scale;
-    const renderedHeight = 788 * scale;
+    const logicalWidth = width / scale;
+    const logicalHeight = height / scale;
     document.documentElement.style.setProperty("--weather-frame-scale", String(scale));
-    document.documentElement.style.setProperty("--weather-frame-left", `${Math.max(0, (width - renderedWidth) / 2)}px`);
-    document.documentElement.style.setProperty("--weather-frame-top", `${Math.max(0, height - renderedHeight)}px`);
+    document.documentElement.style.setProperty("--weather-logical-width", `${logicalWidth}px`);
+    document.documentElement.style.setProperty("--weather-logical-height", `${logicalHeight}px`);
+    document.documentElement.style.setProperty("--weather-frame-left", "0px");
+    document.documentElement.style.setProperty("--weather-frame-top", "0px");
     const shell = document.querySelector(".weather-game");
     ["position", "inset", "left", "top", "width", "height", "min-height", "transform", "transform-origin"].forEach((property) => shell?.style.removeProperty(property));
   }

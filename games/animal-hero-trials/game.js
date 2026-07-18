@@ -30,6 +30,10 @@
       room: "Room {room}/3",
       bossRoom: "Room {room}/3 · BOSS",
       failCopy: "{hero} needs another route.",
+      quitTitle: "Leave this trial?",
+      quitCopy: "This run's room and blessing progress will be lost.",
+      keepPlaying: "Keep Playing",
+      leaveTrial: "Leave Trial",
     },
     "zh-Hant": {
       title: "動物英雄試煉",
@@ -90,6 +94,10 @@
     masteryUpgradeReady: "\u5168\u82f1\u96c4\u6700\u5927\u751f\u547d +{current} \u2192 +{next} \u00b7 \u6d88\u8017 {cost} / \u6301\u6709 {marks} \u679a",
     masteryUpgradeNeed: "\u5168\u82f1\u96c4\u6700\u5927\u751f\u547d +{current} \u2192 +{next} \u00b7 \u9700\u8981 {cost} / \u6301\u6709 {marks} \u679a",
     scoutObjective: "\u64ca\u6557 {count} \u96bb\u6697\u5f71\u65a5\u5019",
+    quitTitle: "\u8981\u96e2\u958b\u9019\u6b21\u8a66\u7149\u55ce\uff1f",
+    quitCopy: "\u9019\u6b21\u6311\u6230\u7684\u623f\u9593\u8207\u795d\u798f\u9032\u5ea6\u5c07\u6703\u6d88\u5931\u3002",
+    keepPlaying: "\u7e7c\u7e8c\u904a\u73a9",
+    leaveTrial: "\u96e2\u958b\u8a66\u7149",
     rerollConfirmStatus: "\u4e09\u500b\u795d\u798f\u5168\u90e8\u91cd\u62bd\u4e00\u6b21 \u00b7 \u947d\u77f3 {balance} \u2192 {result}\u3002\u518d\u6b21\u9ede\u64ca\u78ba\u8a8d\u3002",
     rerollNeed: "\u9700\u8981 3 \u9846\u947d\u77f3 \u00b7 \u6301\u6709 {balance}\u3002\u4ecd\u53ef\u514d\u8cbb\u9078\u64c7\u795d\u798f\u3002",
   });
@@ -134,6 +142,10 @@
     room: "Sala {room}/3",
     bossRoom: "Sala {room}/3 · JEFE",
     failCopy: "{hero} necesita probar otra ruta.",
+    quitTitle: "聶Salir de esta prueba?",
+    quitCopy: "Se perder獺 el progreso de salas y bendiciones de esta partida.",
+    keepPlaying: "Seguir jugando",
+    leaveTrial: "Salir de la prueba",
     arenaLabel: "Arena de las Pruebas de Héroes. Muévete con las flechas o WASD. Pulsa Espacio para usar la habilidad.",
     earnedMarks: "+{gain} marcas de prueba · Total {total}.",
     trialUnlocked: "Se desbloqueó la prueba {next}.",
@@ -230,6 +242,7 @@
   let rerollConfirmTimer = 0;
   let pointer = null;
   let backgroundSuspended = false;
+  let quitSuspended = false;
   const keys = {};
   const battleControlCodes = new Set(["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "KeyA", "KeyD", "KeyW", "KeyS", "Space"]);
   let stick = { x: 0, y: 0 };
@@ -263,7 +276,7 @@
 
   function resumeBackgroundBattle() {
     if (!backgroundSuspended || !run || document.hidden || document.body.dataset.gameView !== "battle") return;
-    if (!$("#choiceModal").classList.contains("hidden") || !$("#resultModal").classList.contains("hidden")) return;
+    if (!$("#choiceModal").classList.contains("hidden") || !$("#quitModal").classList.contains("hidden") || !$("#resultModal").classList.contains("hidden")) return;
     backgroundSuspended = false;
     run.active = true;
     run.last = performance.now();
@@ -330,6 +343,7 @@
       view.classList.toggle("hidden", key !== name);
     });
     setChoiceModal(false, false);
+    closeQuitDecision(false, false);
     setResultModal(false, false);
     if (name !== "battle") {
       backgroundSuspended = false;
@@ -344,6 +358,40 @@
 
   function choiceCoveredLayers() {
     return [...$("#battleView").children].filter((node) => !["choiceModal", "resultModal", "battleAd"].includes(node.id));
+  }
+
+  function quitCoveredLayers() {
+    return [...$("#battleView").children].filter((node) => !["quitModal", "battleAd"].includes(node.id));
+  }
+
+  function openQuitDecision() {
+    if (!run || document.body.dataset.gameView !== "battle" || !$("#choiceModal").classList.contains("hidden") || !$("#resultModal").classList.contains("hidden")) return;
+    clearMovementInput();
+    quitSuspended = Boolean(run.active);
+    run.active = false;
+    cancelAnimationFrame(frame);
+    $("#quitModal").classList.remove("hidden");
+    quitCoveredLayers().forEach((layer) => {
+      layer.inert = true;
+      layer.setAttribute("aria-hidden", "true");
+    });
+    requestAnimationFrame(() => $("#quitKeep").focus({ preventScroll: true }));
+  }
+
+  function closeQuitDecision(resume = false, focusArena = true) {
+    const wasOpen = !$("#quitModal").classList.contains("hidden");
+    $("#quitModal").classList.add("hidden");
+    quitCoveredLayers().forEach((layer) => {
+      layer.inert = false;
+      layer.removeAttribute("aria-hidden");
+    });
+    const shouldResume = resume && wasOpen && quitSuspended && run && document.body.dataset.gameView === "battle" && !document.hidden;
+    quitSuspended = false;
+    if (!shouldResume) return;
+    run.active = true;
+    run.last = performance.now();
+    loop(run.last);
+    if (focusArena) requestAnimationFrame(() => $("#game").focus({ preventScroll: true }));
   }
 
   function setChoiceModal(open, focusPrimary = true) {
@@ -959,11 +1007,34 @@
   $("#stageRail").addEventListener("keydown", (event) => { if (event.repeat && (event.key === "Enter" || event.key === " ") && event.target.closest(".stage-card")) event.preventDefault(); });
   $("#startBtn").onclick = () => { playSound("click"); show("stage"); focusStage(); };
   $("#stageBack").onclick = () => { playSound("click"); show("main"); focusMain(); };
-  $("#battleBack").onclick = () => { const stage = run?.stage || Math.min(TRIAL_COUNT, unlocked); playSound("click"); show("stage"); focusStage(stage); };
+  $("#battleBack").onclick = openQuitDecision;
   $("#skillBtn").onclick = skill;
   $("#rerollBtn").addEventListener("keydown",(event)=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault()});
   $("#rerollBtn").onclick = rerollBlessings;
   $("#resultHome").onclick = () => { playSound("click"); show("main"); localize(); focusMain(); };
+  $("#quitKeep").onclick = () => closeQuitDecision(true);
+  $("#quitLeave").onclick = () => {
+    const stage = run?.stage || Math.min(TRIAL_COUNT, unlocked);
+    closeQuitDecision(false, false);
+    playSound("click");
+    show("stage");
+    focusStage(stage);
+  };
+  $("#quitModal").addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      closeQuitDecision(true);
+      return;
+    }
+    if (event.repeat && (event.key === "Enter" || event.key === " ")) {
+      event.preventDefault();
+      return;
+    }
+    if (event.key !== "Tab" || $("#quitModal").classList.contains("hidden")) return;
+    const actions = [$("#quitKeep"), $("#quitLeave")];
+    if (event.shiftKey && document.activeElement === actions[0]) { event.preventDefault(); actions[1].focus(); }
+    else if (!event.shiftKey && document.activeElement === actions[1]) { event.preventDefault(); actions[0].focus(); }
+  });
   $("#resultModal").addEventListener("keydown", (event) => {
     if (event.repeat && (event.key === "Enter" || event.key === " ")) {
       event.preventDefault();

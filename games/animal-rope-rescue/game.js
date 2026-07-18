@@ -812,9 +812,13 @@
     const viewport = window.visualViewport;
     const viewportWidth = viewport?.width || window.innerWidth;
     const viewportHeight = viewport?.height || window.innerHeight;
-    const scale = Math.max(0.01, Math.min((viewportWidth - 8) / 390, (viewportHeight - 8) / 788));
+    const scale = Math.max(0.01, Math.min(viewportWidth / 390, viewportHeight / 788));
+    const logicalWidth = viewportWidth / scale;
+    const logicalHeight = viewportHeight / scale;
     document.documentElement.style.setProperty("--vine-stage-scale", String(scale));
-    document.documentElement.style.setProperty("--vine-stage-top", `${viewportHeight - 4 - 788 * scale}px`);
+    document.documentElement.style.setProperty("--vine-stage-logical-width", `${logicalWidth}px`);
+    document.documentElement.style.setProperty("--vine-stage-logical-height", `${logicalHeight}px`);
+    document.documentElement.style.setProperty("--vine-stage-top", "0px");
   }
 
   window.addEventListener("resize", updateStageScale);
