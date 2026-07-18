@@ -88,12 +88,12 @@
   const saved = JSON.parse(localStorage.getItem(saveKey) || '{}');
   let locale = localStorage.getItem('weightPlayLocale') || 'en';
   let save = {best:1, unlocked:1, reputation:0, coins:0, stamps:0, medals:{}, ...saved};
-  let state = {};
+  let state = {contract:Boolean(save.insuranceReady)};
   let dragging = false;
   let inputMode = '';
   let routePointerId = null;
   let suppressClick = false;
-  let insuranceActive = false;
+  let insuranceActive = Boolean(save.insuranceReady);
   let insurancePending = false;
   let insuranceConfirmTimer = 0;
   let insuranceConfirmDueAt = 0;
@@ -328,7 +328,7 @@
     const unlockEvidence = state.shift < 5 ? t('shiftUnlocked', {n:state.shift + 1}) : t('allShiftsComplete');
     $('resultRewards').innerHTML = win
       ? `<span>${resultLabels.reputation} +${state.done * 5} \u00b7 ${t('total', {n:save.reputation})}</span><span>${resultLabels.coins} +${coinReward} \u00b7 ${t('total', {n:save.coins})}</span><span>${t('blueprintStamps')} +${shiftConfig[state.shift].stamps} \u00b7 ${t('total', {n:save.stamps})}</span><span>${resultLabels.medals} ${save.medals[state.shift] || 1}/3</span><span>${unlockEvidence}</span>`
-      : `<span>${resultLabels.safe} ${state.done}/${state.goal}</span><span>${resultLabels.errors} ${state.errors}/3</span><span>${insuredRun ? resultLabels.protected : resultLabels.retry}</span>`;
+      : `<span>${resultLabels.safe} ${state.done}/${state.goal}</span><span>${resultLabels.errors} ${state.errors}/3</span><span>${insuredRun ? `${resultLabels.protected} +20 · ${t('total', {n:save.coins})}` : resultLabels.retry}</span>`;
     const terminalWin = win && state.shift >= 5;
     $('nextBtn').textContent = terminalWin ? t('shifts') : win ? t('next') : t('retry');
     $('nextBtn').onclick = () => {
@@ -338,6 +338,7 @@
     };
     $('nextBtn').focus({ preventScroll: true });
     insuranceActive = false;
+    if (save.insuranceReady) { delete save.insuranceReady; persist(); }
   }
   function trapResultFocus(event) {
     if (event.repeat && (event.key === 'Enter' || event.key === ' ')) {
@@ -503,6 +504,8 @@
     if (!window.WeightPlayWallet?.spendDiamonds?.(5)) { renderContractControls(t('insuranceNeed', {balance:window.WeightPlayWallet?.read?.().diamonds || 0})); return; }
     insuranceActive = true;
     state.contract = true;
+    save.insuranceReady = true;
+    persist();
     renderContractControls();
     requestAnimationFrame(() => {
       (document.querySelector('.stage-card.selected:not(:disabled)') || document.querySelector('.stage-card:not(:disabled)'))?.focus({preventScroll:true});

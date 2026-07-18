@@ -92,9 +92,7 @@
     const availableWidth = Math.max(1, width - GUTTER * 2);
     const availableHeight = Math.max(1, height - RESERVE_HEIGHT - GUTTER * 2);
     const heightScale = Math.max(0.01, availableHeight / config[2]);
-    const logicalWidth = gameId === "animal-auto-squad"
-      ? Math.min(height >= width ? 600 : 720, Math.max(config[1], availableWidth / heightScale))
-      : config[1];
+    const logicalWidth = config[1];
     root.setAttribute("data-wp-logical-battle-canvas", `${logicalWidth}x${config[2]}`);
     const scale = Math.max(0.01, Math.min(availableWidth / logicalWidth, heightScale));
     const renderedWidth = logicalWidth * scale;

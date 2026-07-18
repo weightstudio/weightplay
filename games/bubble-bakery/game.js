@@ -695,7 +695,7 @@
     else nodes.playPanel.removeAttribute("aria-hidden");
   }
 
-  function showMain() {
+  function showMain(restoreStartFocus = false) {
     document.body.classList.remove("is-bakery-playing", "is-bakery-stage-select", "is-bakery-result");
     document.body.classList.remove("wp-stage-select-active");
     window.WEIGHTPLAY_BUBBLE_BAKERY_ACTIVE = false;
@@ -707,6 +707,7 @@
     setBattleCovered(false);
     busy = false;
     updateBakeryFrame();
+    if (restoreStartFocus) requestAnimationFrame(() => nodes.startGameBtn.focus({ preventScroll: true }));
   }
 
   function updateBakeryFrame() {
@@ -744,7 +745,7 @@
     playSound("error");
   }
 
-  function showStageSelect() {
+  function showStageSelect(focusStageIndex = null) {
     document.body.classList.remove("is-bakery-playing", "is-bakery-result");
     document.body.classList.add("is-bakery-stage-select");
     window.WEIGHTPLAY_BUBBLE_BAKERY_ACTIVE = false;
@@ -761,6 +762,11 @@
     renderBakeryProgress();
     renderStageGrid();
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    requestAnimationFrame(() => {
+      const cards = [...nodes.stageGrid.querySelectorAll(".stage-card:not(.locked)")];
+      const exact = Number.isInteger(focusStageIndex) ? cards.find((card) => [...nodes.stageGrid.children].indexOf(card) === focusStageIndex) : null;
+      (exact || nodes.stageGrid.querySelector(".stage-card.is-selected:not(.locked)") || cards.at(-1))?.focus({ preventScroll: true });
+    });
   }
 
   function startStage(index) {
@@ -1351,14 +1357,24 @@
       renderAll();
     }
   });
+  function rejectRepeatedScreenActivation(event) {
+    if (!event.repeat || (event.key !== "Enter" && event.key !== " ")) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+  }
+
+  nodes.startGameBtn.addEventListener("keydown", rejectRepeatedScreenActivation, true);
+  nodes.stageGrid.addEventListener("keydown", (event) => {
+    if (event.target.closest(".stage-card")) rejectRepeatedScreenActivation(event);
+  }, true);
   nodes.startGameBtn.addEventListener("click", showStageSelect);
   window.addEventListener("weightplay:tutorial-start", (event) => {
     if (event.detail?.gameId !== GAME_ID || nodes.mainPanel.classList.contains("hidden")) return;
     showStageSelect();
   });
-  nodes.stageBackBtn.addEventListener("click", showMain);
-  nodes.backToStagesBtn.addEventListener("click", showStageSelect);
-  nodes.resultStagesBtn.addEventListener("click", showStageSelect);
+  nodes.stageBackBtn.addEventListener("click", () => showMain(true));
+  nodes.backToStagesBtn.addEventListener("click", () => showStageSelect(currentStage));
+  nodes.resultStagesBtn.addEventListener("click", () => showStageSelect(currentStage));
   nodes.retryBtn.addEventListener("click", () => startStage(currentStage));
   nodes.nextStageBtn.addEventListener("click", () => startStage(Math.min(currentStage + 1, stages.length - 1)));
   nodes.resultPanel.addEventListener("keydown", (event) => {

@@ -116,6 +116,7 @@
           <div><span data-ui="wave">Wave</span><strong id="waveText">1/3</strong></div>
           <div><span data-ui="core">Core</span><strong id="coreText">20/20</strong></div>
           <div><span data-ui="shots">Shots</span><strong id="shotText">0</strong></div>
+          <button id="pauseBtn" class="secondary-btn pause-btn" type="button" aria-label="Pause">&#10074;&#10074;</button>
         </div>
         <canvas id="gameCanvas" width="960" height="540" tabindex="0" aria-label="Animal Orb Fortress arena" aria-describedby="hintText"></canvas>
         <div id="hintText" class="hint" data-ui="aimHint" aria-live="polite">Drag from the launcher, preview the bounce path, then release.</div>
@@ -125,6 +126,16 @@
           <p id="upgradeStatus" class="status-line"></p>
           <div id="upgradeCards" class="upgrade-cards"></div>
           <button id="rerollBtn" class="secondary-btn" type="button"></button>
+        </section>
+        <section id="pausePanel" class="panel pause-panel is-hidden" role="dialog" aria-modal="true" aria-labelledby="pauseTitle" aria-describedby="pauseText">
+          <div class="pause-card">
+            <h2 id="pauseTitle" data-ui="pausedTitle">Raid paused</h2>
+            <p id="pauseText" data-ui="pausedText">The fortress is frozen. Resume when you are ready to aim.</p>
+            <div class="pause-actions">
+              <button id="resumeBtn" class="primary-btn" type="button" data-ui="resume">Resume</button>
+              <button id="pauseMapBtn" class="secondary-btn" type="button" data-ui="raidMap">Raid Map</button>
+            </div>
+          </div>
         </section>
         <section id="resultPanel" class="panel result-panel is-hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultText skillReportText">
           <img class="result-lion" src="../../assets/weightplay-boom-mane-lion.png" alt="" />

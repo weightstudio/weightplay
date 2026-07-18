@@ -3,6 +3,7 @@ body.wp-logical-battle-active {
   width: 100%;
   height: var(--wp-battle-viewport-height, 100dvh);
   min-height: 0 !important;
+  background-color: var(--wp-battle-letterbox-color, #061712) !important;
   overflow: hidden !important;
   overscroll-behavior: none;
 }

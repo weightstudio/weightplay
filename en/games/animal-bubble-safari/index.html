@@ -76,7 +76,7 @@
 
         <section id="mainScreen" class="screen main-screen" aria-labelledby="gameTitle">
           <header class="topbar">
-            <a class="home-link" href="/kids/" aria-label="Back to the WeightPlay Kids lobby" data-i18n-aria="backToLobby">
+            <a class="home-link" href="/kids/" data-wp-return="main" aria-label="Back to the WeightPlay Kids lobby" data-i18n-aria="backToLobby">
               <span aria-hidden="true">←</span>
               <img src="../../assets/weightplay-logo.png" alt="" draggable="false">
             </a>
@@ -92,10 +92,10 @@
             </div>
           </div>
           <div class="main-actions">
-            <button id="startGame" class="primary-button" type="button" data-i18n="startGame">Start Game</button>
+            <button id="startGame" class="primary-button" type="button" data-wp-main-start data-i18n="startGame">Start Game</button>
             <div class="secondary-row">
               <button id="openGuide" type="button" data-i18n="guide">Guide</button>
-              <div id="localeSelect" class="language-switch" role="group" aria-label="Language" data-i18n-aria="language">
+              <div id="localeSelect" class="language-switch" role="group" data-wp-language-switcher aria-label="Language" data-i18n-aria="language">
                 <button type="button" data-locale="zh-Hant">繁中</button>
                 <button type="button" data-locale="zh-Hans">&#31616;&#20013;</button>
                 <button type="button" data-locale="es">ES</button>

@@ -19,12 +19,16 @@
     stagePanel: $("stagePanel"),
     gamePanel: $("gamePanel"),
     upgradePanel: $("upgradePanel"),
+    pausePanel: $("pausePanel"),
     resultPanel: $("resultPanel"),
     startBtn: $("startBtn"),
     stageBackBtn: $("stageBackBtn"),
     stageRail: $("stageRail"),
     stageProgressText: $("stageProgressText"),
     mapBtn: $("battleBackBtn"),
+    pauseBtn: $("pauseBtn"),
+    resumeBtn: $("resumeBtn"),
+    pauseMapBtn: $("pauseMapBtn"),
     retryBtn: $("retryBtn"),
     nextStageBtn: $("nextStageBtn"),
     resultMenuBtn: $("resultMenuBtn"),
@@ -60,6 +64,10 @@
       diamonds: "Diamonds",
       openRaidMap: "Choose Raid",
       raidMap: "Raid Map",
+      pause: "Pause",
+      pausedTitle: "Raid paused",
+      pausedText: "The fortress is frozen. Resume when you are ready to aim.",
+      resume: "Resume",
       raidTiers: "Raid tiers",
       returnMain: "Return to main",
       fortressWorkshop: "Fortress Workshop",
@@ -189,6 +197,10 @@
       diamonds: "鑽石",
       openRaidMap: "選擇關卡",
       raidMap: "突襲地圖",
+      pause: "暫停",
+      pausedTitle: "突襲已暫停",
+      pausedText: "要塞戰況已凍結。準備好瞄準後再繼續。",
+      resume: "繼續",
       raidTiers: "突襲關卡",
       returnMain: "返回主畫面",
       fortressWorkshop: "要塞工坊",
@@ -308,7 +320,7 @@
   };
 
   text.es = {
-    title:"Fortaleza de Orbes Animal",language:"Idioma",backToLobby:"Volver al vestíbulo",fortressRooms:"Salas de la fortaleza",arenaLabel:"Arena de Fortaleza de Orbes Animal",menuTitle:"Apunta el orbe espiritual por la fortaleza de cristal.",menuHint:"Planifica rebotes, protege el núcleo y mejora cuatro salas con Piedras Estelares.",bestRaid:"Mejor ruta",starStones:"Piedras Estelares",diamonds:"Diamantes",openRaidMap:"Abrir mapa",raidMap:"Mapa de rutas",raidTiers:"Rutas de incursión",returnMain:"Volver al inicio",fortressWorkshop:"Taller de la fortaleza",stageProgress:"{unlocked}/30 rutas desbloqueadas · 3 oleadas cada una",tierLocked:"Bloqueado",enterRaid:"Entrar",nextStage:"Siguiente nivel",
+    title:"Fortaleza de Orbes Animal",language:"Idioma",backToLobby:"Volver al vestíbulo",fortressRooms:"Salas de la fortaleza",arenaLabel:"Arena de Fortaleza de Orbes Animal",soundTitle:"Sonido",enableSound:"Activar sonido",disableSound:"Desactivar sonido",menuTitle:"Apunta el orbe espiritual por la fortaleza de cristal.",menuHint:"Planifica rebotes, protege el núcleo y mejora cuatro salas con Piedras Estelares.",bestRaid:"Mejor ruta",starStones:"Piedras Estelares",diamonds:"Diamantes",openRaidMap:"Abrir mapa",raidMap:"Mapa de rutas",pause:"Pausar",pausedTitle:"Incursión en pausa",pausedText:"La fortaleza está detenida. Continúa cuando estés listo para apuntar.",resume:"Continuar",raidTiers:"Rutas de incursión",returnMain:"Volver al inicio",fortressWorkshop:"Taller de la fortaleza",stageProgress:"{unlocked}/30 rutas desbloqueadas · 3 oleadas cada una",tierLocked:"Bloqueado",enterRaid:"Entrar",nextStage:"Siguiente nivel",
     tier1Name:"Puerta de Cristal",tier1Desc:"Aprende los rebotes contra exploradores lentos.",tier2Name:"Galería de Musgo",tier2Desc:"Más enemigos, armadura y presión.",tier3Name:"Patio del Eco",tier3Desc:"Supera el ataque más fuerte y derrota al gólem.",tier4Name:"Corona del Bosque",tier5Name:"Puente de Espinas",tier6Name:"Jardín Venenoso",tier7Name:"Laberinto de Raíces",tier8Name:"Guardián del Pantano",tier9Name:"Escalera Lunar",tier10Name:"Galería de Luces",tier11Name:"Ruinas de Espejos",tier12Name:"Guardián Lunar",tier13Name:"Puerta del Eclipse",tier14Name:"Salón de Cristal Negro",tier15Name:"Fundición de Sombras",tier16Name:"Trono del Eclipse",tier17Name:"Frente del Gólem",tier18Name:"Fundición del Núcleo",tier19Name:"Último Bastión",tier20Name:"Corazón de la Fortaleza",
     zone1Desc:"Patrullas del bosque de cristal que prueban rebotes estables.",zone2Desc:"Bestias de espinas con armadura y ataques densos.",zone3Desc:"Espíritus lunares atraviesan rápido las ruinas.",zone4Desc:"Fuerzas del eclipse atacan con escudos de cristal.",zone5Desc:"La guardia del gólem combina todas las amenazas.",ruleFormation:"Formación",ruleSwarm:"Enjambre",ruleArmored:"Armadura",ruleGuardian:"Guardián",tierShort:"Ruta {tier}",wave:"Oleada",core:"Núcleo",shots:"Disparos",
     aimHint:"Arrastra desde el lanzador, revisa la ruta de rebote y suelta.",keyboardAim:"Ángulo {angle}°. Ajusta con flechas y dispara con Espacio o Enter.",arenaControlLabel:"Arena de Fortaleza de Orbes Animal. Ángulo {angle} grados. Ajusta con flechas y dispara con Espacio o Enter.",arenaControlReadyLabel:"Arena de Fortaleza de Orbes Animal. Ángulo {angle} grados. El orbe está listo; Espacio o Enter dispara.",arenaControlCooldownLabel:"Arena de Fortaleza de Orbes Animal. Ángulo {angle} grados. Recarga aproximada {seconds} s; aún no puedes disparar.",arenaControlLimitLabel:"Arena de Fortaleza de Orbes Animal. Ángulo {angle} grados. Hay {active}/{limit} orbes volando, el límite activo; aún no puedes disparar.",orbReady:"Orbe listo. Rebota contra los muros antes de que las bestias alcancen el núcleo.",orbFlying:"El orbe está volando. Observa la ruta y prepara el siguiente ángulo.",fortressHit:"Una bestia golpeó el núcleo. Apunta antes o usa un rebote más amplio.",waveClear:"Oleada completada. Elige una bendición para continuar.",chooseUpgrade:"Elige una bendición",reroll:"Repetir por 3 diamantes",rerolled:"Opciones renovadas.",rerollNeed:"Necesitas 3 diamantes. Saldo {balance}/3.",rerollConfirm:"Confirmar 3 · {before}→{after}",rerollDecision:"Renueva las tres bendiciones una vez. Toca otra vez: {before} → {after} diamantes.",rerollLabel:"Renueva las tres bendiciones una vez. Cuesta 3 diamantes. Saldo {balance}.",rerollConfirmLabel:"Confirma una renovación. Gasta 3 diamantes. Saldo de {before} a {after}.",retry:"Reintentar",
@@ -453,6 +465,16 @@
     document.querySelector(selector)?.setAttribute("content", value);
   }
 
+  function localizeSpanishSoundToggle() {
+    const actualLocale = window.WonderI18n?.actualLocale?.() || document.documentElement.lang || locale;
+    if (actualLocale !== "es") return;
+    const toggle = document.querySelector("button[data-sound-toggle]");
+    if (!toggle) return;
+    const muted = Boolean(window.WonderSound?.isMuted?.());
+    toggle.title = text.es.soundTitle;
+    toggle.setAttribute("aria-label", muted ? text.es.enableSound : text.es.disableSound);
+  }
+
   function updatePageMeta() {
     const meta = pageMeta[locale] || pageMeta.en;
     document.title = meta.title;
@@ -530,7 +552,7 @@
 
   function show(panel) {
     if (panel !== nodes.gamePanel) cancelPointerAim();
-    [nodes.menuPanel, nodes.stagePanel, nodes.gamePanel, nodes.upgradePanel, nodes.resultPanel].forEach((node) => node.classList.add("is-hidden"));
+    [nodes.menuPanel, nodes.stagePanel, nodes.gamePanel, nodes.upgradePanel, nodes.pausePanel, nodes.resultPanel].forEach((node) => node.classList.add("is-hidden"));
     const resultOpen = panel === nodes.resultPanel;
     const upgradeOpen = panel === nodes.upgradePanel;
     const battleCovered = resultOpen || upgradeOpen;
@@ -614,12 +636,14 @@
     nodes.stageBackBtn.setAttribute("aria-label", t("returnMain"));
     updateArenaControlLabel(true);
     nodes.mapBtn.setAttribute("aria-label", t("raidMap"));
+    nodes.pauseBtn.setAttribute("aria-label", t("pause"));
     nodes.resultMenuBtn.setAttribute("aria-label", t("raidMap"));
     updatePageMeta();
     nodes.localeSelect.value = requested;
     renderMenu();
     renderHud();
     renderUpgradeCards();
+    localizeSpanishSoundToggle();
   }
 
   function preload() {
@@ -723,9 +747,19 @@
   function centerUnlockedStage() {
     const unlocked = Math.max(1, Math.min(MAX_RAID_TIER, save.bestRaid || 1));
     const card = nodes.stageRail.querySelector(`[data-tier="${unlocked}"]`);
-    if (!card) return;
-    const left = card.offsetLeft - (nodes.stageRail.clientWidth - card.offsetWidth) / 2;
-    nodes.stageRail.scrollTo({ left: Math.max(0, left), behavior: "auto" });
+    if (!card || !nodes.stageRail.getClientRects().length) return;
+    const railRect = nodes.stageRail.getBoundingClientRect();
+    const cardRect = card.getBoundingClientRect();
+    const coordinateScale = railRect.width > 0 ? nodes.stageRail.clientWidth / railRect.width : 1;
+    const target = nodes.stageRail.scrollLeft
+      + ((cardRect.left + cardRect.width / 2) - (railRect.left + railRect.width / 2)) * coordinateScale;
+    const bounded = Math.max(0, Math.min(target, nodes.stageRail.scrollWidth - nodes.stageRail.clientWidth));
+    const previousBehavior = nodes.stageRail.style.getPropertyValue("scroll-behavior");
+    const previousPriority = nodes.stageRail.style.getPropertyPriority("scroll-behavior");
+    nodes.stageRail.style.setProperty("scroll-behavior", "auto", "important");
+    nodes.stageRail.scrollLeft = bounded;
+    if (previousBehavior) nodes.stageRail.style.setProperty("scroll-behavior", previousBehavior, previousPriority);
+    else nodes.stageRail.style.removeProperty("scroll-behavior");
   }
 
   function focusUnlockedStage() {
@@ -1100,6 +1134,28 @@
       draw();
       raf = requestAnimationFrame(loop);
     }
+  }
+
+  function setPaused(paused) {
+    if (paused) {
+      if (state.mode !== "running") return;
+      cancelPointerAim();
+      cancelAnimationFrame(raf);
+      state.mode = "paused";
+      nodes.pausePanel.classList.remove("is-hidden");
+      $("battleLive").inert = true;
+      $("battleLive").setAttribute("aria-hidden", "true");
+      nodes.resumeBtn.focus({ preventScroll: true });
+      return;
+    }
+    if (state.mode !== "paused") return;
+    nodes.pausePanel.classList.add("is-hidden");
+    $("battleLive").inert = false;
+    $("battleLive").setAttribute("aria-hidden", "false");
+    state.mode = "running";
+    lastFrame = performance.now();
+    raf = requestAnimationFrame(loop);
+    window.requestAnimationFrame(() => canvas.focus({ preventScroll: true }));
   }
 
   function update(dt) {
@@ -1795,6 +1851,25 @@
     show(nodes.stagePanel);
     renderMenu();
   });
+  nodes.pauseBtn.addEventListener("keydown", (event) => {
+    if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
+  });
+  nodes.pauseBtn.addEventListener("click", () => setPaused(true));
+  nodes.resumeBtn.addEventListener("click", () => setPaused(false));
+  nodes.pauseMapBtn.addEventListener("click", () => {
+    state.mode = "stage";
+    nodes.pausePanel.classList.add("is-hidden");
+    show(nodes.stagePanel);
+    renderMenu();
+  });
+  nodes.pausePanel.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      setPaused(false);
+      return;
+    }
+    if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
+  });
   nodes.resultMenuBtn.addEventListener("click", () => {
     show(nodes.stagePanel);
     renderMenu();
@@ -1820,6 +1895,7 @@
     if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
   });
   nodes.rerollBtn.addEventListener("click", rerollChoices);
+  document.querySelector("button[data-sound-toggle]")?.addEventListener("click", localizeSpanishSoundToggle);
   canvas.addEventListener("pointerdown", onPointerStart);
   canvas.addEventListener("pointermove", onPointerMove);
   canvas.addEventListener("pointerup", onPointerEnd);

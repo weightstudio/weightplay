@@ -4180,12 +4180,10 @@
     const availableWidth = Math.max(1, viewportWidth - 8);
     const availableHeight = Math.max(1, viewportHeight - 64);
     const heightScale = Math.max(0.1, availableHeight / 780);
-    const fullWidthLogicalSize = availableWidth / heightScale;
-    const battleWidthLimit = viewportHeight >= viewportWidth ? 600 : 720;
-    const stageLogicalWidth = Math.min(battleWidthLimit, Math.max(390, fullWidthLogicalSize));
+    const stageLogicalWidth = 390;
     const stageScale = Math.min(Math.max(0.1, availableWidth / stageLogicalWidth), heightScale);
     const stageRenderedWidth = stageLogicalWidth * stageScale;
-    const battleLogicalWidth = Math.min(battleWidthLimit, Math.max(382, fullWidthLogicalSize));
+    const battleLogicalWidth = 382;
     const battleScale = Math.min(Math.max(0.1, availableWidth / battleLogicalWidth), heightScale);
     document.documentElement.style.setProperty("--squad-stage-scale", String(stageScale));
     document.documentElement.style.setProperty("--squad-stage-width", `${stageLogicalWidth}px`);

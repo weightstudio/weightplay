@@ -768,6 +768,20 @@
   });
 
   resultPanel.addEventListener("keydown", (event) => {
+    if (event.key === "Tab") {
+      const actions = [...resultPanel.querySelectorAll("button:not(:disabled), a[href]")].filter((action) => {
+        const rect = action.getBoundingClientRect();
+        return !action.classList.contains("hidden") && rect.width > 0 && rect.height > 0;
+      });
+      if (!actions.length) return;
+      event.preventDefault();
+      const currentIndex = actions.indexOf(document.activeElement);
+      const nextIndex = event.shiftKey
+        ? (currentIndex <= 0 ? actions.length - 1 : currentIndex - 1)
+        : (currentIndex < 0 || currentIndex === actions.length - 1 ? 0 : currentIndex + 1);
+      actions[nextIndex].focus({ preventScroll: true });
+      return;
+    }
     if (!event.repeat || !["Enter", " "].includes(event.key)) return;
     event.preventDefault();
   });

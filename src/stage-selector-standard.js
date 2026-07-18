@@ -142,7 +142,8 @@
     if (!button) return;
     button.dataset.wpMainStart = "true";
     const label = document.documentElement.lang.toLowerCase().startsWith("zh") ? "開始遊戲" : "Start Game";
-    if (button.textContent.trim() !== label) button.textContent = label;
+    const localizedLabel = window.WonderI18n?.t?.("game.start") || label;
+    if (button.textContent.trim() !== localizedLabel) button.textContent = localizedLabel;
   }
 
   function updateStageState() {
