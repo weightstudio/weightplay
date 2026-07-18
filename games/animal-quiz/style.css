@@ -1049,7 +1049,7 @@ body.quiz-stage-select .wp-tutorial-backdrop {
   display: none !important;
 }
 
-/* Canonical Kids owner: one bottom-aligned 390x788 Canvas and no ad geometry. */
+/* Canonical Kids owner: one responsive Canvas envelope and no ad geometry. */
 html:has(body.quiz-playing),
 html:has(body.quiz-stage-select),
 body.quiz-playing,
@@ -1066,14 +1066,14 @@ body.quiz-playing .animal-game,
 body.quiz-stage-select .animal-game {
   position: fixed !important;
   inset: auto !important;
-  left: var(--quiz-frame-left, 4px) !important;
-  top: var(--quiz-frame-top, 4px) !important;
-  width: 390px !important;
-  min-width: 390px !important;
-  max-width: 390px !important;
-  height: 788px !important;
-  min-height: 788px !important;
-  max-height: 788px !important;
+  left: 0 !important;
+  top: 0 !important;
+  width: var(--quiz-logical-width, 390px) !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  height: var(--quiz-logical-height, 788px) !important;
+  min-height: 0 !important;
+  max-height: none !important;
   margin: 0 !important;
   transform: scale(var(--quiz-frame-scale, 1)) !important;
   transform-origin: top left !important;
@@ -1084,7 +1084,7 @@ body.quiz-stage-select .animal-game {
   display: grid !important;
   grid-template-columns: minmax(0, 1fr) !important;
   grid-template-rows: minmax(0, 1fr) !important;
-  padding: 8px !important;
+  padding: 0 !important;
   gap: 0 !important;
 }
 
@@ -1094,6 +1094,21 @@ body.quiz-stage-select .stage-select {
   height: 100% !important;
   min-height: 0 !important;
   margin: 0 !important;
+  padding: 8px !important;
+}
+
+/* Shared Stage code owns drag/snap only; the game owns the outer envelope. */
+body.wp-stage-select-active.quiz-stage-select #stageSelectPanel.stage-select[data-wp-logical-stage-canvas] {
+  position: static !important;
+  z-index: auto !important;
+  inset: auto !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  transform: none !important;
 }
 
 body.quiz-playing .animal-game {

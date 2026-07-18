@@ -15,7 +15,7 @@
   let appliedStageRoot = null;
   let appliedStageWidth = 0;
   let appliedStageHeight = 0;
-  const nativeStageScalers = new Set(["animal-auto-squad", "bubble-bakery", "color-lunchbox", "garden-tiles", "wonder-crash"]);
+  const nativeStageScalers = new Set(["bubble-bakery", "color-lunchbox", "garden-tiles", "wonder-crash"]);
   const stageRootByGame = {
     "animal-guard-yard": "#menuPanel",
     "animal-quiz": ".animal-game",
@@ -106,7 +106,7 @@
   }
 
   function updateStageCanvas() {
-    if (isKidsAudience()) return;
+    const reserveHeight = isKidsAudience() ? 0 : STAGE_RESERVE_HEIGHT;
     const activeRails = [...document.querySelectorAll("[data-wp-stage-rail]")]
       .filter((rail) => rail.getClientRects().length && getComputedStyle(rail).visibility !== "hidden");
     const retainedManagementRoot = [...document.querySelectorAll("[data-wp-logical-stage-canvas]")]
@@ -117,9 +117,7 @@
 
     const useSharedScaler = (activeRails.length > 0 || retainedManagementRoot) && !nativeStageScalers.has(gameId());
     const reserve = sharedReserve();
-    const nativeReserveActive = gameId() === "animal-auto-squad"
-      && document.body.classList.contains("squad-stage-select");
-    reserve.toggleAttribute("data-wp-stage-reserve-active", useSharedScaler || nativeReserveActive);
+    reserve?.toggleAttribute("data-wp-stage-reserve-active", useSharedScaler);
     if (!useSharedScaler) {
       appliedStageRoot = null;
       return;
@@ -127,28 +125,34 @@
 
     const root = activeRails.length ? stageRootFor(activeRails[0]) : retainedManagementRoot;
     if (!root) return;
-    root.setAttribute("data-wp-logical-stage-canvas", "390x788");
     const viewport = window.visualViewport;
     const width = Math.max(1, viewport?.width || window.innerWidth);
     const height = Math.max(1, viewport?.height || window.innerHeight);
     if (root === appliedStageRoot
       && Math.abs(width - appliedStageWidth) < 0.5
       && Math.abs(height - appliedStageHeight) < 0.5) return;
+    const availableWidth = width;
+    const availableHeight = Math.max(1, height - reserveHeight);
     const scale = Math.max(0.01, Math.min(
-      Math.max(1, width) / STAGE_LOGICAL_WIDTH,
-      Math.max(1, height - STAGE_RESERVE_HEIGHT) / STAGE_LOGICAL_HEIGHT
+      availableWidth / STAGE_LOGICAL_WIDTH,
+      availableHeight / STAGE_LOGICAL_HEIGHT
     ));
-    const renderedWidth = STAGE_LOGICAL_WIDTH * scale;
-    const renderedHeight = STAGE_LOGICAL_HEIGHT * scale;
-    const left = (width - renderedWidth) / 2;
-    const top = Math.max(0, height - STAGE_RESERVE_HEIGHT - renderedHeight);
+    const logicalWidth = availableWidth / scale;
+    const logicalHeight = availableHeight / scale;
+    const renderedWidth = availableWidth;
+    const renderedHeight = availableHeight;
+    const left = 0;
+    const top = 0;
+    root.setAttribute("data-wp-logical-stage-canvas", `${logicalWidth.toFixed(3)}x${logicalHeight.toFixed(3)}`);
     const style = document.documentElement.style;
+    style.setProperty("--wp-stage-logical-width", `${logicalWidth}px`);
+    style.setProperty("--wp-stage-logical-height", `${logicalHeight}px`);
     style.setProperty("--wp-stage-canvas-scale", String(scale));
     style.setProperty("--wp-stage-canvas-left", `${left}px`);
     style.setProperty("--wp-stage-canvas-top", `${top}px`);
     style.setProperty("--wp-stage-canvas-rendered-width", `${renderedWidth}px`);
     style.setProperty("--wp-stage-canvas-rendered-height", `${renderedHeight}px`);
-    style.setProperty("--wp-stage-reserve-top", `${top + renderedHeight}px`);
+    style.setProperty("--wp-stage-reserve-top", `${availableHeight}px`);
     appliedStageRoot = root;
     appliedStageWidth = width;
     appliedStageHeight = height;
@@ -166,11 +170,6 @@
   }
 
   function updateStageState() {
-    if (isKidsAudience()) {
-      document.body?.classList.remove("wp-stage-select-active");
-      document.documentElement.classList.remove("wp-stage-select-active");
-      return;
-    }
     const activeRail = [...document.querySelectorAll("[data-wp-stage-rail][data-wp-stage-initially-hidden='true']")]
       .some((rail) => rail.getClientRects().length && getComputedStyle(rail).visibility !== "hidden");
     const activeManagementRoot = [...document.querySelectorAll("[data-wp-logical-stage-canvas]")]

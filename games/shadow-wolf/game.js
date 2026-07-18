@@ -2416,19 +2416,31 @@
       button.addEventListener("blur", release);
     };
     const bindActionButton = (button, action) => {
+      let keyboardHeld = false;
+      let lastKeyboardActivation = -Infinity;
       button.addEventListener("keydown", (event) => {
-        if (event.repeat && (event.key === "Enter" || event.key === " ")) {
-          event.preventDefault();
-          event.stopPropagation();
-        }
+        if (event.key !== "Enter" && event.key !== " ") return;
+        event.preventDefault();
+        event.stopPropagation();
+        if (event.repeat || keyboardHeld) return;
+        keyboardHeld = true;
+        lastKeyboardActivation = performance.now();
+        action();
       });
+      button.addEventListener("keyup", (event) => {
+        if (event.key !== "Enter" && event.key !== " ") return;
+        event.preventDefault();
+        event.stopPropagation();
+        keyboardHeld = false;
+      });
+      button.addEventListener("blur", () => { keyboardHeld = false; });
       button.addEventListener("pointerdown", (event) => {
         if (event.isPrimary === false || (event.button !== undefined && event.button !== 0)) return;
         event.preventDefault();
         action();
       });
       button.addEventListener("click", (event) => {
-        if (event.detail === 0) action();
+        if (event.detail === 0 && performance.now() - lastKeyboardActivation > 500) action();
       });
     };
     bindHoldButton(nodes.btnLeft, "left");

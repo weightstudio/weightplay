@@ -51,6 +51,7 @@
   };
   const findRoot = () => [...document.querySelectorAll(config[0])].find(visible) || null;
   const findBack = (root) => root?.querySelector('[data-wp-return="battle"]') || null;
+  const findBattleOverlay = (root) => root && [...root.querySelectorAll('[role="dialog"],.result-panel,.result-overlay,.result-canvas,#resultPanel,#resultScreen,#resultModal,#result')].find(visible);
   const findReserve = () => [...document.querySelectorAll(reserveSelector)]
     .find((node) => visible(node) && !node.closest("[data-wp-logical-battle-canvas]")) || null;
 
@@ -59,6 +60,7 @@
   let activeReserve = null;
   let appliedViewportWidth = 0;
   let appliedViewportHeight = 0;
+  let appliedStateSignature = "";
   const rememberAndSet = (node, declarations) => {
     if (!node) return;
     if (!savedStyles.has(node)) {
@@ -83,7 +85,7 @@
   function update() {
     const root = findRoot();
     const back = findBack(root);
-    const active = Boolean(root && back);
+    const active = Boolean(root && (visible(back) || findBattleOverlay(root)));
     document.body.classList.toggle("wp-logical-battle-active", active);
     if (!active) {
       restore(activeRoot);
@@ -97,25 +99,36 @@
     const width = Math.max(1, viewport?.width || innerWidth);
     const height = Math.max(1, viewport?.height || innerHeight);
     const reserve = findReserve();
+    const stateSignature = [
+      document.body.className,
+      root.className,
+      root.hidden ? "hidden" : "shown",
+      reserve?.className || "",
+      reserve?.hidden ? "hidden" : "shown",
+    ].join("|");
     if (root === activeRoot
       && reserve === activeReserve
       && Math.abs(width - appliedViewportWidth) < 0.5
-      && Math.abs(height - appliedViewportHeight) < 0.5) return;
+      && Math.abs(height - appliedViewportHeight) < 0.5
+      && stateSignature === appliedStateSignature) return;
     const availableWidth = Math.max(1, width - GUTTER * 2);
     const availableHeight = Math.max(1, height - RESERVE_HEIGHT - GUTTER * 2);
-    const heightScale = Math.max(0.01, availableHeight / config[2]);
-    const logicalWidth = config[1];
-    root.setAttribute("data-wp-logical-battle-canvas", `${logicalWidth}x${config[2]}`);
-    const scale = Math.max(0.01, Math.min(availableWidth / logicalWidth, heightScale));
-    const renderedWidth = logicalWidth * scale;
-    const renderedHeight = config[2] * scale;
-    const top = config[3] === "top"
-      ? GUTTER
-      : Math.max(GUTTER, height - RESERVE_HEIGHT - GUTTER - renderedHeight);
+    const minimumLogicalWidth = config[1];
+    const minimumLogicalHeight = config[2];
+    const scale = Math.max(0.01, Math.min(
+      availableWidth / minimumLogicalWidth,
+      availableHeight / minimumLogicalHeight
+    ));
+    const logicalWidth = availableWidth / scale;
+    const logicalHeight = availableHeight / scale;
+    root.setAttribute("data-wp-logical-battle-canvas", `${logicalWidth.toFixed(3)}x${logicalHeight.toFixed(3)}`);
+    const renderedWidth = availableWidth;
+    const renderedHeight = availableHeight;
+    const top = GUTTER;
     const style = document.documentElement.style;
     style.setProperty("--wp-battle-viewport-height", `${height}px`);
     style.setProperty("--wp-battle-logical-width", `${logicalWidth}px`);
-    style.setProperty("--wp-battle-logical-height", `${config[2]}px`);
+    style.setProperty("--wp-battle-logical-height", `${logicalHeight}px`);
     style.setProperty("--wp-battle-canvas-scale", String(scale));
     style.setProperty("--wp-battle-canvas-rendered-width", `${renderedWidth}px`);
     style.setProperty("--wp-battle-canvas-rendered-height", `${renderedHeight}px`);
@@ -124,31 +137,32 @@
     activeRoot = root;
     appliedViewportWidth = width;
     appliedViewportHeight = height;
+    appliedStateSignature = stateSignature;
     metrics.battleApplied += 1;
     rememberAndSet(root, {
       position: "fixed",
       inset: "auto",
       top: `${top}px`,
-      left: "50%",
+      left: `${GUTTER}px`,
       width: `${logicalWidth}px`,
       "min-width": `${logicalWidth}px`,
       "max-width": `${logicalWidth}px`,
-      height: `${config[2]}px`,
-      "min-height": `${config[2]}px`,
-      "max-height": `${config[2]}px`,
+      height: `${logicalHeight}px`,
+      "min-height": `${logicalHeight}px`,
+      "max-height": `${logicalHeight}px`,
       margin: "0",
-      transform: `translateX(-50%) scale(${scale})`,
-      "transform-origin": "top center",
+      transform: `scale(${scale})`,
+      "transform-origin": "top left",
       overflow: "hidden",
     });
     if (activeReserve && activeReserve !== reserve) restore(activeReserve);
     activeReserve = reserve;
     if (reserve) {
       reserve.setAttribute("data-wp-battle-physical-reserve", "");
-      const reserveTop = root.getBoundingClientRect().bottom;
+      const reserveTop = availableHeight;
       rememberAndSet(reserve, {
         position: "fixed",
-        inset: `${reserveTop}px auto auto 50%`,
+        inset: `${reserveTop}px auto auto ${GUTTER}px`,
         display: "block",
         width: `${renderedWidth}px`,
         "min-width": "0",
@@ -157,7 +171,7 @@
         "min-height": "56px",
         "max-height": "56px",
         margin: "0",
-        transform: "translateX(-50%)",
+        transform: "none",
         "pointer-events": "none",
       });
     }

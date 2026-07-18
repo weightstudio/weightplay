@@ -727,12 +727,22 @@ function updateQuizFrame() {
   const root = document.documentElement.style;
   const width = useVisual ? visualWidth : innerWidth;
   const height = useVisual ? visualHeight : innerHeight;
-  const scale = Math.min(Math.max(1, width - 8) / 390, Math.max(1, height - 8) / 788);
+  const scale = Math.min(Math.max(1, width) / 390, Math.max(1, height) / 788);
+  const logicalWidth = width / scale;
+  const logicalHeight = height / scale;
+  const frame = document.querySelector(".animal-game");
   root.setProperty("--quiz-vw", `${width}px`);
   root.setProperty("--quiz-vh", `${height}px`);
   root.setProperty("--quiz-frame-scale", String(scale));
-  root.setProperty("--quiz-frame-left", `${(width - 390 * scale) / 2}px`);
-  root.setProperty("--quiz-frame-top", `${height - 788 * scale - 4}px`);
+  root.setProperty("--quiz-frame-left", "0px");
+  root.setProperty("--quiz-frame-top", "0px");
+  root.setProperty("--quiz-logical-width", `${logicalWidth}px`);
+  root.setProperty("--quiz-logical-height", `${logicalHeight}px`);
+  if (frame) {
+    frame.dataset.logicalWidth = logicalWidth.toFixed(4);
+    frame.dataset.logicalHeight = logicalHeight.toFixed(4);
+    frame.dataset.commonScale = scale.toFixed(6);
+  }
 }
 
 window.addEventListener?.("resize", updateQuizFrame, { passive: true });

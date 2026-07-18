@@ -319,8 +319,8 @@ body.wp-stage-select-active {
   overflow: hidden !important;
 }
 
-body.wp-standard-stage-page :is(.topbar, .game-page-info, .wp-tutorial-button, .sound-toggle, .weightplay-version-badge),
-body.wp-stage-select-active :is(.topbar, .game-page-info, .wp-tutorial-button, .sound-toggle, .weightplay-version-badge) {
+body.wp-standard-stage-page :is(.topbar, .game-page-info, .wp-tutorial-button, .sound-toggle, .weightplay-version-badge):not([data-wp-logical-stage-canvas] *),
+body.wp-stage-select-active :is(.topbar, .game-page-info, .wp-tutorial-button, .sound-toggle, .weightplay-version-badge):not([data-wp-logical-stage-canvas] *) {
   display: none !important;
 }
 
@@ -332,12 +332,12 @@ body.wp-stage-select-active [data-wp-logical-stage-canvas] {
   bottom: auto !important;
   left: var(--wp-stage-canvas-left, 0px) !important;
   box-sizing: border-box !important;
-  width: 390px !important;
-  min-width: 390px !important;
-  max-width: 390px !important;
-  height: 788px !important;
-  min-height: 788px !important;
-  max-height: 788px !important;
+  width: var(--wp-stage-logical-width, 390px) !important;
+  min-width: var(--wp-stage-logical-width, 390px) !important;
+  max-width: var(--wp-stage-logical-width, 390px) !important;
+  height: var(--wp-stage-logical-height, 788px) !important;
+  min-height: var(--wp-stage-logical-height, 788px) !important;
+  max-height: var(--wp-stage-logical-height, 788px) !important;
   margin: 0 !important;
   overflow: hidden !important;
   transform: scale(var(--wp-stage-canvas-scale, 1)) !important;

@@ -195,21 +195,33 @@
   }
 
   function fitCanvas() {
-    const vv = window.visualViewport;
-    const width = vv ? vv.width : window.innerWidth;
-    const height = vv ? vv.height : window.innerHeight;
-    const scale = Math.min(width / LOGICAL_WIDTH, height / LOGICAL_HEIGHT);
-    const responsivePlay = currentScreen === "stage" || currentScreen === "battle" || currentScreen === "result";
-    const logicalWidth = responsivePlay ? width / scale : LOGICAL_WIDTH;
-    const logicalHeight = responsivePlay ? height / scale : LOGICAL_HEIGHT;
+    const width = Math.max(1, window.innerWidth || document.documentElement.clientWidth);
+    const height = Math.max(1, window.innerHeight || document.documentElement.clientHeight);
+    const referenceScale = Math.min(width / LOGICAL_WIDTH, height / LOGICAL_HEIGHT);
+    const sharedStage = currentScreen === "stage";
+    const responsivePlay = currentScreen === "battle" || currentScreen === "result";
+    const scale = sharedStage ? 1 : referenceScale;
+    const logicalWidth = sharedStage ? width : responsivePlay ? width / scale : LOGICAL_WIDTH;
+    const logicalHeight = sharedStage ? height : responsivePlay ? height / scale : LOGICAL_HEIGHT;
     dom.gameCanvas.style.setProperty("--scale", String(scale));
     dom.gameCanvas.style.width = `${logicalWidth}px`;
     dom.gameCanvas.style.height = `${logicalHeight}px`;
     dom.gameCanvas.dataset.logicalWidth = logicalWidth.toFixed(3);
     dom.gameCanvas.dataset.logicalHeight = logicalHeight.toFixed(3);
     dom.gameCanvas.dataset.commonScale = scale.toFixed(6);
-    dom.gameCanvas.style.top = "auto";
-    dom.gameCanvas.style.bottom = "0";
+    if (sharedStage || responsivePlay) {
+      dom.gameCanvas.style.left = "0";
+      dom.gameCanvas.style.top = "0";
+      dom.gameCanvas.style.bottom = "auto";
+      dom.gameCanvas.style.transform = `scale(${scale})`;
+      dom.gameCanvas.style.transformOrigin = "top left";
+    } else {
+      dom.gameCanvas.style.left = "50%";
+      dom.gameCanvas.style.top = "auto";
+      dom.gameCanvas.style.bottom = "0";
+      dom.gameCanvas.style.transform = `translateX(-50%) scale(${scale})`;
+      dom.gameCanvas.style.transformOrigin = "50% 100%";
+    }
   }
 
   function showScreen(name) {

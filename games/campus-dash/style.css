@@ -534,14 +534,14 @@ body.dash-playing .dash-game,
 body.dash-playing.weightplay-active-viewport .dash-game {
   position: fixed !important;
   inset: auto !important;
-  left: var(--dash-frame-left, 4px) !important;
-  top: var(--dash-frame-top, 4px) !important;
-  width: 382px !important;
-  min-width: 382px !important;
-  max-width: 382px !important;
-  height: 780px !important;
-  min-height: 780px !important;
-  max-height: 780px !important;
+  left: 0 !important;
+  top: 0 !important;
+  width: var(--dash-logical-width, 382px) !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  height: var(--dash-logical-height, 780px) !important;
+  min-height: 0 !important;
+  max-height: none !important;
   margin: 0 !important;
   padding: 8px 10px !important;
   grid-template-rows: 56px 58px minmax(0, 1fr) !important;
@@ -878,7 +878,7 @@ select,
   }
 }
 
-/* Thirty-route Stage Select uses one fixed logical 382x780 Kids canvas. */
+/* Thirty-route Stage Select shares the responsive Kids Canvas envelope. */
 body.dash-stage-select,
 body.has-game-page-info.dash-stage-select {
   position: fixed !important;
@@ -903,15 +903,15 @@ body.dash-stage-select .dash-game,
 body.dash-stage-select.weightplay-active-viewport .dash-game {
   position: fixed !important;
   inset: auto !important;
-  left: var(--dash-frame-left, 4px) !important;
-  top: var(--dash-frame-top, 4px) !important;
+  left: 0 !important;
+  top: 0 !important;
   display: block !important;
-  width: 382px !important;
-  min-width: 382px !important;
-  max-width: 382px !important;
-  height: 780px !important;
-  min-height: 780px !important;
-  max-height: 780px !important;
+  width: var(--dash-logical-width, 382px) !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  height: var(--dash-logical-height, 780px) !important;
+  min-height: 0 !important;
+  max-height: none !important;
   padding: 0 !important;
   margin: 0 !important;
   overflow: hidden !important;
@@ -933,6 +933,20 @@ body.dash-stage-select.weightplay-active-viewport .dash-game {
   gap: 12px;
   padding: 12px 0 16px;
   overflow: hidden;
+}
+
+/* The game owns the outer Canvas; the shared rail helper only owns drag/snap. */
+body.wp-stage-select-active.dash-stage-select #stagePanel.stage-panel[data-wp-logical-stage-canvas] {
+  position: static !important;
+  z-index: auto !important;
+  inset: auto !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  transform: none !important;
 }
 
 .stage-header {

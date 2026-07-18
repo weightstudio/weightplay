@@ -505,13 +505,23 @@
     const logicalWidth = 390;
     const logicalHeight = isStage ? 788 : logicalWidth * 16 / 9;
     const scale = Math.min(viewportWidth / logicalWidth, viewportHeight / logicalHeight);
-    const frameWidth = logicalWidth * scale;
-    const frameHeight = logicalHeight * scale;
-    root.setProperty("--safari-frame-left", `${(viewportWidth - frameWidth) / 2}px`);
-    root.setProperty("--safari-frame-top", `${viewportHeight - frameHeight}px`);
+    const envelopeWidth = viewportWidth / scale;
+    const envelopeHeight = viewportHeight / scale;
+    const frameWidth = envelopeWidth * scale;
+    const frameHeight = envelopeHeight * scale;
+    const frame = document.querySelector(".safari-game");
+    root.setProperty("--safari-frame-left", "0px");
+    root.setProperty("--safari-frame-top", "0px");
+    root.setProperty("--safari-logical-width", `${envelopeWidth}px`);
+    root.setProperty("--safari-logical-height", `${envelopeHeight}px`);
     root.setProperty("--safari-frame-width", `${frameWidth}px`);
     root.setProperty("--safari-frame-height", `${frameHeight}px`);
     root.setProperty("--safari-frame-scale", String(scale));
+    if (frame) {
+      frame.dataset.logicalWidth = envelopeWidth.toFixed(4);
+      frame.dataset.logicalHeight = envelopeHeight.toFixed(4);
+      frame.dataset.commonScale = scale.toFixed(6);
+    }
   }
 
   window.addEventListener("resize", updateSafariFrame);

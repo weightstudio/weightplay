@@ -427,14 +427,39 @@
     const viewportWidth = viewport?.width || innerWidth;
     const viewportHeight = viewport?.height || innerHeight;
     document.body.classList.remove("dash-expanded-canvas");
-    const scale = Math.min(Math.max(1, viewportWidth - 8) / 382, Math.max(1, viewportHeight - 8) / 780);
-    const width = 382 * scale;
-    const height = 780 * scale;
+    const scale = Math.min(Math.max(1, viewportWidth) / 382, Math.max(1, viewportHeight) / 780);
+    const logicalWidth = viewportWidth / scale;
+    const logicalHeight = viewportHeight / scale;
+    const frame = document.querySelector(".dash-game");
     document.documentElement.style.setProperty("--dash-frame-scale", String(scale));
-    document.documentElement.style.setProperty("--dash-frame-left", `${(viewportWidth - width) / 2}px`);
-    document.documentElement.style.setProperty("--dash-frame-top", `${Math.max(4, viewportHeight - 4 - height)}px`);
-    document.documentElement.style.setProperty("--dash-frame-width", `${width}px`);
-    document.documentElement.style.setProperty("--dash-frame-height", `${height}px`);
+    document.documentElement.style.setProperty("--dash-logical-width", `${logicalWidth}px`);
+    document.documentElement.style.setProperty("--dash-logical-height", `${logicalHeight}px`);
+    if (frame) {
+      frame.dataset.logicalWidth = logicalWidth.toFixed(4);
+      frame.dataset.logicalHeight = logicalHeight.toFixed(4);
+      frame.dataset.commonScale = scale.toFixed(6);
+    }
+  }
+
+  const legacyBattleCanvasProperties = [
+    "position", "inset", "top", "left", "width", "min-width", "max-width",
+    "height", "min-height", "max-height", "margin", "transform", "transform-origin", "overflow",
+  ];
+
+  function clearLegacyBattleCanvasOverride() {
+    const frame = document.querySelector(".dash-game");
+    if (!frame?.hasAttribute("data-wp-logical-battle-canvas")) return;
+    frame.removeAttribute("data-wp-logical-battle-canvas");
+    legacyBattleCanvasProperties.forEach((property) => frame.style.removeProperty(property));
+  }
+
+  const dashFrame = document.querySelector(".dash-game");
+  if (dashFrame) {
+    new MutationObserver(() => {
+      if (!dashFrame.hasAttribute("data-wp-logical-battle-canvas")) return;
+      clearLegacyBattleCanvasOverride();
+      updateDashFrame();
+    }).observe(dashFrame, { attributes: true, attributeFilter: ["data-wp-logical-battle-canvas"] });
   }
 
   function exitSharedPlayViewport() {

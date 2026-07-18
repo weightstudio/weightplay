@@ -425,6 +425,8 @@
 
   function updateGardenFrame() {
     if (!document.body.classList.contains("garden-playing") && !document.body.classList.contains("garden-stage")) return;
+    if (document.body.classList.contains("garden-playing")
+      && document.querySelector('script[src*="battle-canvas-standard.js"]')) return;
     const viewport = window.visualViewport;
     const viewportWidth = viewport?.width || innerWidth;
     const viewportHeight = viewport?.height || innerHeight;
