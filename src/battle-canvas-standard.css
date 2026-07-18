@@ -340,11 +340,10 @@ body.wp-logical-battle-active.is-bakery-playing #playPanel.play-panel[data-wp-lo
   padding: 4px !important;
 }
 
-/* Result content remains reachable above the external 56px reserve on short landscape screens. */
+/* Short-landscape Result content may scroll inside the screen's responsive Canvas. */
 @media (orientation: landscape) and (max-height: 460px) {
   body .result-panel:not(.hidden):not(.is-hidden),
   body .result-screen:not(.hidden):not(.is-hidden) {
-    max-height: calc(var(--wp-mobile-vh, 100dvh) - 56px) !important;
     align-content: start !important;
     align-items: start !important;
     justify-content: center !important;

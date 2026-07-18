@@ -1192,10 +1192,10 @@ body.fruit-playing #resultPanel.result-panel {
   z-index: 50;
   left: var(--fruit-battle-left, 4px);
   top: var(--fruit-battle-top, 4px);
-  width: 382px;
+  width: var(--fruit-logical-width, 382px);
   max-width: none;
-  height: 780px;
-  min-height: 780px;
+  height: var(--fruit-logical-height, 780px);
+  min-height: 0;
   max-height: none;
   margin: 0;
   transform: scale(var(--fruit-battle-scale, 1));
@@ -1479,9 +1479,11 @@ body.fruit-stage .fruit-game {
   position: fixed;
   left: var(--fruit-battle-left, 4px);
   top: var(--fruit-battle-top, 4px);
-  width: 382px;
-  height: 780px;
-  min-height: 780px;
+  width: var(--fruit-logical-width, 390px);
+  max-width: none;
+  height: var(--fruit-logical-height, 788px);
+  min-height: 0;
+  max-height: none;
   transform: scale(var(--fruit-battle-scale, 1));
   transform-origin: top left;
   overflow: hidden;

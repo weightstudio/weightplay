@@ -700,20 +700,25 @@
   function updateFruitBattleScale() {
     if (!document.body.classList.contains("fruit-playing") && !document.body.classList.contains("fruit-stage")) return;
     const isStage = document.body.classList.contains("fruit-stage");
-    const logicalWidth = isStage ? 390 : 382;
-    const logicalHeight = isStage ? 788 : 780;
+    const minimumLogicalWidth = isStage ? 390 : 382;
+    const minimumLogicalHeight = isStage ? 788 : 780;
     const viewportWidth = visualViewport?.width || innerWidth;
     const viewportHeight = visualViewport?.height || innerHeight;
-    const scale = Math.max(0.1, Math.min(viewportWidth / logicalWidth, viewportHeight / logicalHeight));
-    const width = logicalWidth * scale;
-    const contentHeight = logicalHeight * scale;
+    const scale = Math.max(0.1, Math.min(viewportWidth / minimumLogicalWidth, viewportHeight / minimumLogicalHeight));
+    const logicalWidth = viewportWidth / scale;
+    const logicalHeight = viewportHeight / scale;
     const root = document.documentElement.style;
     document.body.classList.remove("fruit-expanded-canvas");
     root.setProperty("--fruit-battle-scale", String(scale));
-    root.setProperty("--fruit-battle-width", `${width}px`);
-    root.setProperty("--fruit-battle-height", `${contentHeight}px`);
-    root.setProperty("--fruit-battle-left", `${Math.max(0, (viewportWidth - width) / 2)}px`);
-    root.setProperty("--fruit-battle-top", `${Math.max(0, viewportHeight - contentHeight)}px`);
+    root.setProperty("--fruit-logical-width", `${logicalWidth}px`);
+    root.setProperty("--fruit-logical-height", `${logicalHeight}px`);
+    root.setProperty("--fruit-battle-left", "0px");
+    root.setProperty("--fruit-battle-top", "0px");
+    document.querySelectorAll(".fruit-game, .fixed-game-shell, #stagePanel, #resultPanel").forEach((element) => {
+      element.dataset.wpCommonScale = String(scale);
+      element.dataset.wpLogicalWidth = String(logicalWidth);
+      element.dataset.wpLogicalHeight = String(logicalHeight);
+    });
   }
 
   addEventListener("resize", updateFruitBattleScale, { passive: true });

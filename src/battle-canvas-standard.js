@@ -8,7 +8,7 @@
     "animal-coloring-studio": [".battle-canvas", 390, 788],
     "animal-crystal-survivor": ["#gamePanel", 382, 780],
     "animal-gearpack-expedition": [".battle-canvas", 390, 788],
-    "animal-guard-yard": [".fixed-game-shell", 390, 450],
+    "animal-guard-yard": ["#playPanel", 390, 450],
     "animal-hero-trials": ["#battleView", 390, 788],
     "animal-hidden-safari": ["#playPanel", 382, 780],
     "animal-moonlight-heist": [".battle-canvas", 390, 788],
@@ -33,7 +33,7 @@
     "shape-train": ["#playPanel", 362, 710],
     "snack-blocks": [".snack-game", 382, 780],
     "star-memory": [".memory-game", 382, 780],
-    "tiny-weather-rescue": ["#playPanel", 366, 764],
+    "tiny-weather-rescue": [".weather-game", 366, 764],
     "wonder-crash": [".game-shell", 390, 788],
     "zoo-helper-day": ["#playPanel", 374, 776],
   };
