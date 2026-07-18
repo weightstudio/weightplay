@@ -119,6 +119,14 @@
           <button id="undoBtn" type="button">Undo</button>
           <button id="resetBtn" type="button">Reset</button>
         </div>
+        <section id="leavePanel" class="result-panel hidden" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" aria-describedby="leaveText">
+          <div class="result-card leave-card">
+            <strong id="leaveTitle">Leave this trail?</strong>
+            <span id="leaveText">Your current route will be reset.</span>
+            <button id="keepPlayingBtn" type="button">Keep playing</button>
+            <button id="leaveTrailBtn" type="button">Leave trail</button>
+          </div>
+        </section>
         <section id="resultPanel" class="result-panel hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultText">
           <div class="result-card">
             <strong id="resultTitle">Trail Clear!</strong>

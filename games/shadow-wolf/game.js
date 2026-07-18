@@ -65,7 +65,7 @@
     resumeBtn: $("resumeBtn"),
     pauseStagesBtn: $("pauseStagesBtn"),
     startBtn: $("startBtn"),
-    menuBtn: $("menuBtn"),
+    menuBtn: document.querySelector("#gamePanel #menuBtn, #battleMenuBtn"),
     retryBtn: $("retryBtn"),
     resultMenuBtn: $("resultMenuBtn"),
     hpText: $("hpText"),
@@ -2576,7 +2576,7 @@
 
     nodes.menuBtn.addEventListener("click", () => {
       window.WonderSound?.play("click");
-      showStage();
+      openPause();
     });
 
     nodes.resultMenuBtn.addEventListener("click", () => {

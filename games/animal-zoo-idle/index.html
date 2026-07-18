@@ -10,11 +10,11 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="robots" content="index,follow" />
-    <meta name="description" content="Build a friendly animal park across 30 saved challenges. Collect tickets, choose care activities, arrange habitats, improve facilities, and prepare six park reviews." />
+    <meta name="description" content="Build one continuous animal park and complete 30 persistent milestones. Collect tickets, choose care activities, arrange habitats, improve facilities, and grow at your own pace." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Animal Zoo Idle - WeightPlay" />
-    <meta property="og:description" content="Build a friendly animal park across 30 saved challenges with ticket income, animal care, habitat arranging, facilities, and six park reviews." />
+    <meta property="og:description" content="Build one continuous animal park with ticket income, animal care, habitat arranging, facilities, and 30 persistent milestones." />
     <meta property="og:url" content="https://weightplay.com/games/animal-zoo-idle/" />
     <meta property="og:image" content="https://weightplay.com/assets/animal-zoo-idle-cover.png" />
     <meta name="twitter:card" content="summary_large_image" />
@@ -39,7 +39,7 @@
               "alternateName": "\u52d5\u7269\u5c0f\u5c0f\u6a02\u5712",
               "url": "https://weightplay.com/games/animal-zoo-idle/",
               "image": "https://weightplay.com/assets/animal-zoo-idle-cover.png",
-              "description": "Build a friendly animal park across 30 saved challenges. Collect visitor tickets, choose animal care activities, arrange habitats, improve facilities, and prepare six park reviews.",
+              "description": "Build one continuous animal park and complete 30 persistent milestones through ticket income, animal care, habitat arranging, facilities, and animal collection.",
               "applicationCategory": "Game",
               "operatingSystem": "Web browser",
               "publisher": {
@@ -99,17 +99,9 @@
         </div>
       </section>
 
-      <section id="stagePanel" class="challenge-stage-panel hidden" data-wp-logical-stage-canvas>
-        <div class="challenge-stage-head">
-          <button id="stageBackBtn" type="button" aria-label="Back to park menu" data-ui-aria-label="backToMenu">&larr;</button>
-          <strong data-ui="chooseChallenge">Choose Park Challenge</strong>
-        </div>
-        <div id="challengeRail" class="challenge-rail stage-rail" data-wp-stage-rail aria-label="Park challenges"></div>
-      </section>
-
       <section id="gamePanel" class="game-panel hidden">
         <div class="resource-row">
-          <button id="backToMenuBtn" class="play-return" data-wp-return="battle" type="button" aria-label="Back to challenges" data-ui-aria-label="backToChallenges">&larr;</button>
+          <button id="backToMenuBtn" class="play-return" data-wp-return="battle" type="button" aria-label="Back to park menu" data-ui-aria-label="backToMenu">&larr;</button>
           <div class="resource-card">
             <img src="../../assets/coin.png" alt="" class="coin-icon" draggable="false" />
             <b id="coinText">0</b>
@@ -130,8 +122,6 @@
           <section id="tourReport" class="tour-report" aria-live="polite"></section>
           <section id="animalAlbum" class="animal-album" aria-live="polite"></section>
           <button id="closeReportBtn" type="button" data-ui="continue">Continue</button>
-          <button id="nextChallengeBtn" class="hidden" type="button" data-ui="nextChallenge">Next Challenge</button>
-          <button id="resultStagesBtn" class="hidden" type="button" data-ui="backToChallenges">Challenges</button>
         </section>
       </div>
       </section>
@@ -150,18 +140,18 @@
         <div class="game-info-title">
           <span class="game-info-kicker">WeightPlay Original Game Guide</span>
           <h2>Animal Zoo Idle - How to Play</h2>
-          <p>Animal Zoo Idle is a gentle park-management game built around 30 saved challenges. Visitors enter the meadow, buy tickets, and gradually fill a ticket box while the player cares for animals, improves three facilities, expands the gate, and arranges habitats. Lions, giraffes, elephants, pandas, penguins, rabbits, foxes, koalas, tigers, rhinos, crocodiles, and bears can eventually join the park. Every fifth challenge is a friendly park review, so growth has a clear purpose instead of becoming an endless waiting loop.</p>
+          <p>Animal Zoo Idle is a gentle continuous park-management game with 30 persistent milestones. Visitors enter the meadow, buy tickets, and gradually fill a ticket box while the player cares for animals, improves three facilities, expands the gate, and arranges habitats. Lions, giraffes, elephants, pandas, penguins, rabbits, foxes, koalas, tigers, rhinos, crocodiles, and bears can eventually join the same saved park. Milestones track all progress at once, so children can choose what to improve without entering or unlocking numbered levels.</p>
         </div>
       </div>
       <div class="game-info-sections">
         <div class="game-info-section">
           <h3>Story and Park Mission</h3>
           <p>The meadow begins as a small animal park with a simple gate, a few residents, and room to grow. The player is its young park keeper. Visitors are curious, but a lasting park needs more than a busy entrance: animals need regular care, habitat spaces must be thoughtfully arranged, and guest facilities must keep pace with the growing crowd.</p>
-          <p>The 30 challenges follow the park from its first ticket box to the Grand Safari Festival. Mimi, Panko, an otter inspector, a rhino keeper, and the penguin parade team visit at five-stage checkpoints. Passing a review means the park has demonstrated a new kind of readiness: basic care, picnic service, viewing space, keeper support, parade capacity, and finally a balanced festival park.</p>
+          <p>The 30 milestones follow the park from its first ticket box to the Grand Safari Festival. They cover basic care, picnic service, viewing space, keeper support, parade capacity, and a balanced festival park. All milestone goals remain active together and preserve their progress between visits.</p>
         </div>
         <div class="game-info-section">
           <h3>How a Challenge Works</h3>
-          <ol><li>Choose any unlocked challenge from the horizontal Stage rail.</li><li>Read its picture, title, and goals before entering the park.</li><li>Collect the ticket box when it fills, or deliberately leave it ready when a goal asks for a full box.</li><li>Choose Tidy Habitat to raise happiness, or Enrichment Time to earn tickets; each care action has a short cooldown.</li><li>Spend tickets on the gate, one of three facilities, or a new animal when the current goal requires it.</li><li>Drag animals to new habitat positions for arrangement goals.</li><li>When every goal is complete, claim the reward and continue to the next challenge.</li></ol>
+          <ol><li>Select Start Game to enter the same continuing park directly.</li><li>Collect the ticket box when it fills, or leave tickets ready when a milestone asks for a full box.</li><li>Choose Tidy Habitat to raise happiness, or Enrichment Time to earn tickets; each care action has a short cooldown.</li><li>Spend tickets on the gate, one of three facilities, or a new animal.</li><li>Drag animals to new habitat positions for arrangement milestones.</li><li>Review the three nearest goals in Battle or open the Growth Report to see all 30.</li><li>Claim any completed milestone; claiming never resets the park or other milestone progress.</li></ol>
         </div>
         <div class="game-info-section">
           <h3>Park Systems</h3>
@@ -178,7 +168,7 @@
         </div>
         <div class="game-info-section">
           <h3>Design Notes</h3>
-          <p>The game uses a calm, continuing economy so children can see cause and effect without a harsh timer or combat. Waiting alone is not the whole activity: each challenge asks for a specific combination of collecting, choosing care, arranging animals, recruiting, and upgrading. The Stage rail gives the park a visible 30-step journey, while local saving prevents the same review from needing to be rebuilt each visit. Large buttons and direct dragging support touch screens; the same controls also work with a mouse. Friendly checkpoint reviews replace boss fights because the central fantasy is improving a shared animal space.</p>
+          <p>The game uses a calm, continuing economy so children can see cause and effect without a harsh timer or combat. Waiting alone is not the whole activity: milestones reward combinations of collecting, choosing care, arranging animals, recruiting, and upgrading. All goals advance inside one saved park, so children can follow their own priorities without a level-select interruption or progress reset. Large buttons and direct dragging support touch screens; the same controls also work with a mouse.</p>
         </div>
         <div class="game-info-section game-info-parent">
           <h3>Parent Note</h3>

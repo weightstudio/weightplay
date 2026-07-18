@@ -12,6 +12,25 @@
   const PROGRESS_KEY = "weightplay_fruit_merge_progress";
   const LEADERBOARD_KEY = "weightplay_fruit_merge_leaderboard";
   const CHALLENGE_KEY = "weightplay_fruit_merge_challenges_v1";
+  if (!document.querySelector("#leaveConfirmPanel")) {
+    const panel = document.createElement("section");
+    panel.id = "leaveConfirmPanel";
+    panel.className = "leave-confirm-panel hidden";
+    panel.setAttribute("role", "dialog");
+    panel.setAttribute("aria-modal", "true");
+    panel.setAttribute("aria-labelledby", "leaveConfirmTitle");
+    panel.setAttribute("aria-describedby", "leaveConfirmText");
+    panel.innerHTML = `
+      <div class="leave-confirm-card">
+        <h2 id="leaveConfirmTitle"></h2>
+        <p id="leaveConfirmText"></p>
+        <div class="leave-confirm-actions">
+          <button id="keepPlayingBtn" type="button"></button>
+          <button id="leaveGameBtn" class="secondary-action" type="button"></button>
+        </div>
+      </div>`;
+    document.querySelector("#playPanel .fixed-game-shell")?.append(panel);
+  }
   const canvas = document.querySelector("#gameCanvas");
   const ctx = canvas.getContext("2d");
   const localeSelect = document.querySelector("#localeSelect");
@@ -44,6 +63,11 @@
   const menuPanel = document.querySelector("#menuPanel");
   const playPanel = document.querySelector("#playPanel");
   const battleShell = playPanel.querySelector(".fixed-game-shell");
+  const leaveConfirmPanel = document.querySelector("#leaveConfirmPanel");
+  const leaveConfirmTitle = document.querySelector("#leaveConfirmTitle");
+  const leaveConfirmText = document.querySelector("#leaveConfirmText");
+  const keepPlayingBtn = document.querySelector("#keepPlayingBtn");
+  const leaveGameBtn = document.querySelector("#leaveGameBtn");
   const menuTitle = document.querySelector("#menuTitle");
   const menuDesc = document.querySelector("#menuDesc");
   const chainPreview = document.querySelector("#chainPreview");
@@ -51,7 +75,7 @@
   battleShell.append(resultPanel);
   const setBattleContentInert = (inert) => {
     [...battleShell.children].forEach((child) => {
-      if (child === resultPanel) return;
+      if (child === resultPanel || child === leaveConfirmPanel) return;
       child.inert = inert;
       child.toggleAttribute("aria-hidden", inert);
     });
@@ -173,6 +197,10 @@
       leaderboardRow: "#{rank}  Score {score}  {animal}",
       playAgain: "Play Again",
       menu: "Game Menu",
+      leaveTitle: "Leave this run?",
+      leaveText: "Your current score, merges, and remaining drops will be lost.",
+      keepPlaying: "Keep Playing",
+      leaveGame: "Leave Run",
       newBest: "New Best!",
       fruit0: "Mouse Ball",
       fruit1: "Rabbit Ball",
@@ -275,6 +303,10 @@
       leaderboardRow: "第 {rank} 名  分數 {score}  {animal}",
       playAgain: "再玩一次",
       menu: "遊戲選單",
+      leaveTitle: "要離開這一局嗎？",
+      leaveText: "目前的分數、合成進度和剩餘投放次數都會消失。",
+      keepPlaying: "繼續遊玩",
+      leaveGame: "離開這局",
       newBest: "新紀錄！",
       fruit0: "老鼠球",
       fruit1: "兔兔球",
@@ -302,7 +334,7 @@
       progressNewBest: "¡Progreso increíble! Mejoraste tu récord.", progressImproved: "¡Gran progreso! Superaste tu mejor marca anterior.", progressSteady: "¡Buen esfuerzo! Inténtalo otra vez para planificar mejor los lanzamientos.", progressNote: "Las puntuaciones solo sirven para divertirse y seguir el progreso local.",
       milestoneTitle: "Hito de fusión", milestoneUnlocked: "Mejor desbloqueado: {name}", milestoneNext: "Siguiente objetivo: {name}", milestoneComplete: "¡Todos los animales desbloqueados! Busca un nuevo récord.", milestoneNew: "¡Nuevo animal desbloqueado: {name}!",
       aimStart: "Toca o arrastra el tablero para apuntar. Fusiona animales iguales bajo la línea roja.", aimMatch: "Apunta cerca de otro {name} para fusionarlos.", aimSafe: "Mantén la torre bajo la línea roja de aviso.", aimDanger: "¡Demasiado alto! Fusiona rápido o aléjate de la línea roja.", dangerLine: "Línea de aviso",
-      leaderboardTitle: "Tus mejores partidas", noLeaderboard: "Completa una partida para añadirla a esta lista local.", leaderboardRow: "#{rank}  Puntuación {score}  {animal}", playAgain: "Jugar de nuevo", menu: "Menú del juego", newBest: "¡Nuevo récord!",
+      leaderboardTitle: "Tus mejores partidas", noLeaderboard: "Completa una partida para añadirla a esta lista local.", leaderboardRow: "#{rank}  Puntuación {score}  {animal}", playAgain: "Jugar de nuevo", menu: "Menú del juego", leaveTitle: "¿Salir de esta partida?", leaveText: "Perderás la puntuación, las fusiones y los lanzamientos restantes de esta partida.", keepPlaying: "Seguir jugando", leaveGame: "Salir de la partida", newBest: "¡Nuevo récord!",
       fruit0: "Bola ratón", fruit1: "Bola conejo", fruit2: "Bola zorro", fruit3: "Bola pingüino", fruit4: "Bola koala", fruit5: "Bola búho", fruit6: "Bola panda", fruit7: "Bola cachorro de león", fruit8: "Bola jirafa", fruit9: "Bola elefante", fruit10: "Bola Rey León",
     },
   };
@@ -431,6 +463,7 @@
   let challengeLastDropAt = 0;
   let lastChallengeCleared = false;
   let windApplications = 0;
+  let leaveConfirmOpen = false;
   const fixedQueue = [0, 1, 0, 2, 1, 0, 1, 2, 0, 1, 3, 0];
 
   function activeNow() {
@@ -589,6 +622,10 @@
     stageBackBtn.setAttribute("aria-label", t("stageBack"));
     playAgainBtn.textContent = t("playAgain");
     menuBtn.textContent = t("menu");
+    leaveConfirmTitle.textContent = t("leaveTitle");
+    leaveConfirmText.textContent = t("leaveText");
+    keepPlayingBtn.textContent = t("keepPlaying");
+    leaveGameBtn.textContent = t("leaveGame");
     renderChallengeRail(false);
     updateHud();
     updateAimCoach();
@@ -636,6 +673,8 @@
     gameOver = true;
     stopAnimationLoop();
     resultPanel.classList.add("hidden");
+    leaveConfirmPanel.classList.add("hidden");
+    leaveConfirmOpen = false;
     menuPanel.classList.add("hidden");
     stagePanel.classList.remove("hidden");
     playPanel.inert = false;
@@ -667,6 +706,8 @@
     document.body.classList.remove("fruit-stage");
     stagePanel.classList.add("hidden");
     resultPanel.classList.add("hidden");
+    leaveConfirmPanel.classList.add("hidden");
+    leaveConfirmOpen = false;
     playPanel.inert = false;
     playPanel.removeAttribute("aria-hidden");
     setBattleContentInert(false);
@@ -1564,6 +1605,31 @@
     animationFrameId = null;
   }
 
+  function openLeaveConfirm() {
+    if (leaveConfirmOpen || !running || gameOver) return;
+    leaveConfirmOpen = true;
+    suspendRunLifecycle();
+    leaveConfirmPanel.classList.remove("hidden");
+    setBattleContentInert(true);
+    requestAnimationFrame(() => keepPlayingBtn.focus({ preventScroll: true }));
+  }
+
+  function closeLeaveConfirm(restoreFocus = true) {
+    if (!leaveConfirmOpen) return;
+    leaveConfirmOpen = false;
+    leaveConfirmPanel.classList.add("hidden");
+    setBattleContentInert(false);
+    resumeRunLifecycle();
+    if (restoreFocus) requestAnimationFrame(() => canvas.focus({ preventScroll: true }));
+  }
+
+  function leaveActiveRun() {
+    if (!leaveConfirmOpen) return;
+    closeLeaveConfirm(false);
+    if (activeChallenge()) showStage();
+    else resetGame(true, "battle-return");
+  }
+
   canvas.addEventListener("pointermove", (event) => {
     aimX = canvasX(event);
     updateAimAccessibility();
@@ -1603,7 +1669,31 @@
     window.WonderAnalytics?.track?.("game_restart", { game_id: GAME_ID, score, source: "button" });
     resetGame(false, "restart");
   });
-  backToMenuBtn.addEventListener("click", () => activeChallenge() ? showStage() : resetGame(true, "battle-return"));
+  backToMenuBtn.addEventListener("click", openLeaveConfirm);
+  keepPlayingBtn.addEventListener("click", () => closeLeaveConfirm(true));
+  leaveGameBtn.addEventListener("click", leaveActiveRun);
+  leaveConfirmPanel.addEventListener("keydown", (event) => {
+    if (event.repeat && (event.key === "Enter" || event.key === " ")) {
+      event.preventDefault();
+      return;
+    }
+    if (event.key === "Escape") {
+      event.preventDefault();
+      closeLeaveConfirm(true);
+      return;
+    }
+    if (event.key !== "Tab" || !leaveConfirmOpen) return;
+    const actions = [keepPlayingBtn, leaveGameBtn];
+    const first = actions[0];
+    const last = actions.at(-1);
+    if (event.shiftKey && (document.activeElement === first || !actions.includes(document.activeElement))) {
+      event.preventDefault();
+      last.focus({ preventScroll: true });
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus({ preventScroll: true });
+    }
+  });
   startBtn.addEventListener("click", () => {
     if (startBtn.disabled) return;
     showStage();

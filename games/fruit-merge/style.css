@@ -520,6 +520,7 @@ body.fruit-main #startBtn {
 
 .menu-panel.hidden,
 .result-panel.hidden,
+.leave-confirm-panel.hidden,
 .loading-panel.hidden,
 .toast.hidden {
   display: none !important;
@@ -881,6 +882,77 @@ body.fruit-playing #menuPanel {
 .result-actions button {
   display: grid;
   place-items: center;
+}
+
+.leave-confirm-panel {
+  position: absolute;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: rgba(9, 15, 25, 0.72);
+  backdrop-filter: blur(7px);
+}
+
+.leave-confirm-card {
+  width: min(100%, 340px);
+  display: grid;
+  gap: 14px;
+  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  background: #fffdf1;
+  color: #172033;
+  box-shadow: 0 26px 70px rgba(0, 0, 0, 0.38);
+  animation: fruit-pop 0.22s ease both;
+}
+
+.leave-confirm-card h2,
+.leave-confirm-card p {
+  margin: 0;
+}
+
+.leave-confirm-card h2 {
+  font-size: 28px;
+  line-height: 1.1;
+}
+
+.leave-confirm-card p {
+  color: rgba(23, 32, 51, 0.76);
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1.45;
+}
+
+.leave-confirm-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.leave-confirm-actions button {
+  min-height: 48px;
+  padding: 8px 10px;
+  border: 0;
+  border-radius: 8px;
+  background: #ffd35d;
+  color: #182133;
+  box-shadow: inset 0 -4px rgba(0, 0, 0, 0.12), 0 8px 18px rgba(0, 0, 0, 0.18);
+  font: inherit;
+  font-weight: 1000;
+  line-height: 1.15;
+  touch-action: manipulation;
+}
+
+.leave-confirm-actions .secondary-action {
+  background: #ffffff;
+  box-shadow: inset 0 0 0 2px #667085, 0 8px 18px rgba(0, 0, 0, 0.12);
+}
+
+.leave-confirm-actions button:focus {
+  outline: 5px solid #172033;
+  outline-offset: 2px;
 }
 
 .loading-card div {

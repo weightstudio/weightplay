@@ -7,6 +7,18 @@ if (!canonicalSavedLocale && ["en", "zh-Hant", "zh-Hans", "es"].includes(legacyS
   window.WonderI18n?.setLocale?.(legacySavedLocale);
 }
 
+if (!document.querySelector("#leavePanel")) {
+  const panel = document.createElement("section");
+  panel.id = "leavePanel";
+  panel.className = "result-panel hidden";
+  panel.setAttribute("role", "dialog");
+  panel.setAttribute("aria-modal", "true");
+  panel.setAttribute("aria-labelledby", "leaveTitle");
+  panel.setAttribute("aria-describedby", "leaveText");
+  panel.innerHTML = '<div class="result-card leave-card"><strong id="leaveTitle">Leave this trail?</strong><span id="leaveText">Your current route will be reset.</span><button id="keepPlayingBtn" type="button">Keep playing</button><button id="leaveTrailBtn" type="button">Leave trail</button></div>';
+  document.querySelector("#playArea")?.append(panel);
+}
+
 const localeSelect = document.querySelector("#localeSelect");
 const homeLink = document.querySelector("#homeLink");
 const languageLabel = document.querySelector("#languageLabel");
@@ -35,6 +47,11 @@ const hintText = document.querySelector("#hintText");
 const board = document.querySelector("#board");
 const undoBtn = document.querySelector("#undoBtn");
 const resetBtn = document.querySelector("#resetBtn");
+const leavePanel = document.querySelector("#leavePanel");
+const leaveTitle = document.querySelector("#leaveTitle");
+const leaveText = document.querySelector("#leaveText");
+const keepPlayingBtn = document.querySelector("#keepPlayingBtn");
+const leaveTrailBtn = document.querySelector("#leaveTrailBtn");
 const resultPanel = document.querySelector("#resultPanel");
 const resultTitle = document.querySelector("#resultTitle");
 const resultText = document.querySelector("#resultText");
@@ -107,6 +124,10 @@ const dictionary = {
     stageSetup: "Choose an unlocked trail and help the next animal home.",
     board: "Animal rescue board",
     resultPanel: "Trail result",
+    leaveTitle: "Leave this trail?",
+    leaveMessage: "Trail {stage}: your {moves} moves and {fruit} fruit will be reset.",
+    keepPlaying: "Keep playing",
+    leaveTrail: "Leave trail",
     tile: "Path tile",
     home: "Home",
     fruitItem: "Fruit",
@@ -176,6 +197,10 @@ const dictionary = {
     stageSetup: "\u9078\u64c7\u5df2\u89e3\u9396\u7684\u8def\u7dda\uff0c\u5e6b\u4e0b\u4e00\u96bb\u52d5\u7269\u56de\u5bb6\u3002",
     board: "\u52d5\u7269\u56de\u5bb6\u8def\u724c\u9762",
     resultPanel: "\u8def\u7dda\u7d50\u679c",
+    leaveTitle: "\u8981\u96e2\u958b\u9019\u689d\u8def\u7dda\u55ce\uff1f",
+    leaveMessage: "\u8def\u7dda {stage}\uff1a\u76ee\u524d\u7684 {moves} \u6b65\u8207 {fruit} \u500b\u6c34\u679c\u9032\u5ea6\u5c07\u6703\u91cd\u7f6e\u3002",
+    keepPlaying: "\u7e7c\u7e8c\u904a\u6232",
+    leaveTrail: "\u96e2\u958b\u8def\u7dda",
     tile: "\u9053\u8def\u683c",
     home: "\u5bb6",
     fruitItem: "\u6c34\u679c",
@@ -245,6 +270,10 @@ const dictionary = {
     stageSetup: "Elige una ruta desbloqueada y ayuda al siguiente animal a volver a casa.",
     board: "Tablero de rescate animal",
     resultPanel: "Resultado de la ruta",
+    leaveTitle: "\u00bfSalir de esta ruta?",
+    leaveMessage: "Ruta {stage}: se reiniciar\u00e1n tus {moves} movimientos y {fruit} frutas.",
+    keepPlaying: "Seguir jugando",
+    leaveTrail: "Salir de la ruta",
     tile: "Casilla del camino",
     home: "Casa",
     fruitItem: "Fruta",
@@ -421,6 +450,10 @@ function renderStaticText() {
   hintText.textContent = t("hint");
   undoBtn.textContent = t("undo");
   resetBtn.textContent = t("reset");
+  leaveTitle.textContent = t("leaveTitle");
+  leaveText.textContent = t("leaveMessage", { stage:state.level.id, moves:state.moves, fruit:state.collected });
+  keepPlayingBtn.textContent = t("keepPlaying");
+  leaveTrailBtn.textContent = t("leaveTrail");
   nextBtn.textContent = t("next");
   retryBtn.textContent = t("retry");
   trailsBtn.textContent = t("trails");
@@ -525,6 +558,7 @@ function startLevel(index) {
   stageSelect.classList.add("hidden");
   mainPanel.classList.add("hidden");
   resultPanel.classList.add("hidden");
+  leavePanel.classList.add("hidden");
   setResultOwnership(false);
   playArea.classList.remove("hidden");
   hud.classList.remove("hidden");
@@ -549,6 +583,7 @@ function showStageSelect({ focusTrail = false } = {}) {
   playArea.classList.add("hidden");
   hud.classList.add("hidden");
   resultPanel.classList.add("hidden");
+  leavePanel.classList.add("hidden");
   setResultOwnership(false);
   stageSelect.classList.remove("hidden");
   document.body.classList.remove("rescue-playing");
@@ -570,6 +605,7 @@ function showMain({ focusStart = false } = {}) {
   playArea.classList.add("hidden");
   hud.classList.add("hidden");
   resultPanel.classList.add("hidden");
+  leavePanel.classList.add("hidden");
   setResultOwnership(false);
   stageSelect.classList.add("hidden");
   mainPanel.classList.remove("hidden");
@@ -827,6 +863,50 @@ function setResultOwnership(owned) {
   });
 }
 
+function openLeaveDecision() {
+  if (!state || state.complete || !resultPanel.classList.contains("hidden")) return;
+  leaveTitle.textContent = t("leaveTitle");
+  leaveText.textContent = t("leaveMessage", { stage:state.level.id, moves:state.moves, fruit:state.collected });
+  leavePanel.classList.remove("hidden");
+  setResultOwnership(true);
+  requestAnimationFrame(() => keepPlayingBtn.focus({ preventScroll:true }));
+  window.WonderSound?.play("click");
+  window.WonderAnalytics?.track("game_quit_prompt", { game_id:GAME_ID, stage:state.level.id, moves:state.moves, fruit:state.collected, locale:locale() });
+}
+
+function closeLeaveDecision({ focusBack = true } = {}) {
+  leavePanel.classList.add("hidden");
+  setResultOwnership(false);
+  if (focusBack) requestAnimationFrame(() => battleBackBtn.focus({ preventScroll:true }));
+}
+
+function leaveCurrentTrail() {
+  const details = { game_id:GAME_ID, stage:state.level.id, moves:state.moves, fruit:state.collected, locale:locale() };
+  closeLeaveDecision({ focusBack:false });
+  window.WonderAnalytics?.track("game_quit", details);
+  showStageSelect({ focusTrail:true });
+}
+
+function containDecisionFocus(panel, actions, event, onEscape) {
+  if (event.repeat && (event.key === "Enter" || event.key === " ")) {
+    event.preventDefault();
+    return;
+  }
+  if (event.key === "Escape") {
+    event.preventDefault();
+    onEscape();
+    return;
+  }
+  if (event.key !== "Tab" || panel.classList.contains("hidden")) return;
+  const visible = actions.filter((action) => !action.classList.contains("hidden") && !action.disabled);
+  const currentIndex = visible.indexOf(document.activeElement);
+  const nextIndex = event.shiftKey
+    ? (currentIndex <= 0 ? visible.length - 1 : currentIndex - 1)
+    : (currentIndex < 0 || currentIndex >= visible.length - 1 ? 0 : currentIndex + 1);
+  event.preventDefault();
+  visible[nextIndex]?.focus({ preventScroll:true });
+}
+
 function calculateStars() {
   const fruitCount = state.level.fruits.length;
   if (state.moves <= state.level.par && state.collected >= fruitCount) return 3;
@@ -887,12 +967,13 @@ const rejectRepeatedScreenActivation = (event) => {
   if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
 };
 showStageBtn.addEventListener("keydown", rejectRepeatedScreenActivation);
+battleBackBtn.addEventListener("keydown", rejectRepeatedScreenActivation);
 stageGrid.addEventListener("keydown", (event) => {
   if (event.target.closest("[data-stage]")) rejectRepeatedScreenActivation(event);
 });
 showStageBtn.addEventListener("click", () => showStageSelect({ focusTrail: true }));
 stageBackBtn.addEventListener("click", () => showMain({ focusStart: true }));
-battleBackBtn.addEventListener("click", () => showStageSelect({ focusTrail: true }));
+battleBackBtn.addEventListener("click", openLeaveDecision);
 stageGrid.addEventListener("click", (event) => {
   const card = event.target.closest("[data-stage]");
   if (!card) return;
@@ -935,6 +1016,9 @@ retryBtn.addEventListener("click", () => {
   startLevel(activeIndex);
 });
 trailsBtn.addEventListener("click", () => showStageSelect({ focusTrail: true }));
+keepPlayingBtn.addEventListener("click", () => closeLeaveDecision());
+leaveTrailBtn.addEventListener("click", leaveCurrentTrail);
+leavePanel.addEventListener("keydown", (event) => containDecisionFocus(leavePanel, [keepPlayingBtn, leaveTrailBtn], event, () => closeLeaveDecision()));
 resultPanel.addEventListener("keydown", (event) => {
   if (event.repeat && (event.key === "Enter" || event.key === " ")) {
     event.preventDefault();

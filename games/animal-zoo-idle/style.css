@@ -609,6 +609,69 @@ body.zoo-playing .game-page-info {
   opacity: .82;
 }
 
+.park-milestone-stack {
+  display: grid;
+  gap: 7px;
+}
+
+.park-milestone-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 13px;
+  padding: 7px 8px 9px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 62px;
+  gap: 4px 8px;
+  background: rgba(255,255,255,.74);
+}
+
+.park-milestone-card > div,
+.park-milestone-card > span {
+  min-width: 0;
+}
+
+.park-milestone-card > div {
+  display: grid;
+  gap: 2px;
+}
+
+.park-milestone-card b,
+.park-milestone-card small,
+.park-milestone-card > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.park-milestone-card small,
+.park-milestone-card > span {
+  color: rgba(61, 41, 20, .72);
+  font-size: .66rem;
+}
+
+.park-milestone-card > span {
+  grid-column: 1 / -1;
+}
+
+.park-milestone-card > button {
+  grid-column: 2;
+  grid-row: 1;
+  min-height: 34px;
+}
+
+.park-milestone-card > i {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: var(--tour-progress, 0%);
+  height: 5px;
+  background: linear-gradient(90deg, #55d66a, #5ccfff, #ffe066);
+}
+
+.park-milestone-card.ready {
+  background: rgba(226,255,202,.9);
+}
+
 .habitat-bonus-card {
   min-height: 72px;
   background: linear-gradient(180deg, rgba(240,255,226,.94), rgba(255,244,199,.9));
@@ -1018,6 +1081,38 @@ body.zoo-playing .game-page-info {
 
 .tour-report button:disabled {
   opacity: .62;
+}
+
+.park-milestone-report-list {
+  max-height: 260px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-right: 3px;
+}
+
+.park-milestone-report-list > div {
+  border-radius: 10px;
+  padding: 6px;
+  background: rgba(255,255,255,.7);
+}
+
+.park-milestone-report-list > div.ready {
+  background: #e7ffd5;
+}
+
+.park-milestone-report-list > div.claimed {
+  opacity: .68;
+}
+
+.park-milestone-report-list span {
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+}
+
+.park-milestone-report-list button {
+  min-width: 66px;
+  min-height: 34px;
 }
 
 .animal-album {

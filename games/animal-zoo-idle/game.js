@@ -181,7 +181,7 @@
       backToChallenges: "Challenges",
       challengeCompleteTitle: "Park challenge complete!",
       challengeCompleteText: "Challenge {n} is complete. The next park plan is ready.",
-      challengeFinalText: "All 30 park challenges are complete. The Grand Safari Festival is open!",
+      challengeFinalText: "All 30 park milestones are complete. The Grand Safari Festival is open!",
       goalCollected: "Collect {n} tickets",
       goalCare: "Complete {n} care choices",
       goalHabitat: "Tidy Habitat {n} time",
@@ -356,7 +356,7 @@
     backToChallenges: "\u95dc\u5361",
     challengeCompleteTitle: "\u5712\u5340\u6311\u6230\u5b8c\u6210\uff01",
     challengeCompleteText: "\u7b2c {n} \u95dc\u5df2\u5b8c\u6210\uff0c\u4e0b\u4e00\u4efd\u5712\u5340\u8a08\u756b\u5df2\u6e96\u5099\u3002",
-    challengeFinalText: "30 \u500b\u5712\u5340\u6311\u6230\u5168\u90e8\u5b8c\u6210\uff0c\u91ce\u751f\u6a02\u5712\u5927\u6176\u5178\u958b\u5e55\uff01",
+    challengeFinalText: "30 \u500b\u5712\u5340\u91cc\u7a0b\u7891\u5168\u90e8\u5b8c\u6210\uff0c\u91ce\u751f\u6a02\u5712\u5927\u6176\u5178\u958b\u5e55\uff01",
     goalCollected: "\u6536\u96c6 {n} \u9580\u7968",
     goalCare: "\u5b8c\u6210 {n} \u6b21\u7167\u9867\u9078\u64c7",
     goalHabitat: "\u6574\u7406\u68f2\u5730 {n} \u6b21",
@@ -512,7 +512,7 @@
   text.es = {
     title:"Parque Animal",language:"Idioma",backToLobby:"Volver al vestíbulo de WeightPlay.",backToMenu:"Volver al menú del parque.",safariPark:"Parque safari",animalShop:"Tienda de animales",
     menuTitle:"Construye un parque animal en crecimiento.",menuHint:"Recibe visitantes, recoge entradas, mejora la puerta y recluta más animales para ampliar el parque.",start:"Empezar",chooseChallenge:"Elegir desafío del parque",challenge:"Desafío {n}",challengeLocked:"Bloqueado",challengeCleared:"Completado",challengeCheckpoint:"Revisión del parque",challengeReward:"+{coins} monedas",nextChallenge:"Siguiente desafío",backToChallenges:"Desafíos",
-    challengeCompleteTitle:"¡Desafío del parque completado!",challengeCompleteText:"El desafío {n} está completo. El siguiente plan del parque está listo.",challengeFinalText:"Has completado los 30 desafíos. ¡El Gran Festival Safari está abierto!",
+    challengeCompleteTitle:"¡Hito del parque completado!",challengeCompleteText:"El hito {n} está completo.",challengeFinalText:"Has completado los 30 hitos. ¡El Gran Festival Safari está abierto!",
     goalCollected:"Recoge {n} entradas",goalCare:"Completa {n} cuidados",goalHabitat:"Ordena el hábitat {n} vez",goalEnrichment:"Haz enriquecimiento {n} vez",goalBuilt:"Construye o recluta {n} vez",goalArranged:"Mueve animales {n} vez",goalHappiness:"Alcanza {n}% de felicidad",goalAnimals:"Recibe {n} animales",goalGate:"Alcanza Puerta Nv.{n}",goalTicketBox:"Guarda {n} entradas en la caja",goalFacilityTotal:"Construye {n} niveles de instalaciones",goalFacilitySnackStand:"Puesto de aperitivos Nv.{n}",goalFacilityViewDeck:"Mirador Nv.{n}",goalFacilityKeeperPost:"Puesto del cuidador Nv.{n}",
     coins:"Monedas",tickets:"Caja de entradas",visitors:"Visitantes",report:"Informe",reportTitle:"Informe de crecimiento del parque",animalAlbum:"Álbum de animales",animalAlbumProgress:"{count}/{total} animales recibidos",animalAlbumLocked:"Sigue ampliando el parque",animalAlbumIncome:"+{n} entradas/10 s",skillFocus:"Atención",skillLogic:"Lógica",skillAnimalKnowledge:"Conocimiento animal",continue:"Continuar",loading:"Cargando",
     collect:"Recoger",careAll:"Cuidar",upgradeGate:"Mejorar puerta",recruit:"Reclutar",gate:"Puerta Nv.{n}",income:"{n}/10 s",happiness:"Felicidad",animals:"Animales",offline:"¡Bienvenido de nuevo! Los visitantes dejaron {coins} monedas en la caja.",notEnough:"Faltan {coins} monedas.",noTickets:"La caja de entradas aún está vacía.",collected:"Has recogido {coins} monedas.",cared:"Los animales están más felices. Llegan más visitantes.",careWait:"El cuidado descansa durante {n} s.",
@@ -531,15 +531,15 @@
   const pageMeta = {
     en: {
       title: "Animal Zoo Idle - WeightPlay",
-      description: "Build a friendly animal park across 30 saved challenges. Collect tickets, choose care activities, arrange habitats, improve facilities, and prepare six park reviews.",
+      description: "Build one continuous animal park and complete 30 persistent milestones through tickets, care, habitats, facilities, and animal collection.",
       ogTitle: "Animal Zoo Idle - WeightPlay",
-      ogDescription: "Build a friendly animal park across 30 saved challenges with ticket income, animal care, habitat arranging, facilities, and six park reviews.",
+      ogDescription: "Build one continuous animal park with ticket income, animal care, habitat arranging, facilities, and 30 persistent milestones.",
     },
     "zh-Hant": {
       title: "\u52d5\u7269\u5c0f\u5c0f\u6a02\u5712 - WeightPlay",
-      description: "\u5b8c\u6210 30 \u500b\u6709\u5b58\u6a94\u7684\u6a02\u5712\u6311\u6230\uff0c\u6536\u53d6\u9580\u7968\u3001\u9078\u64c7\u7167\u9867\u65b9\u5f0f\u3001\u5b89\u6392\u68f2\u5730\u3001\u5347\u7d1a\u8a2d\u65bd\uff0c\u4e26\u901a\u904e\u516d\u6b21\u53cb\u5584\u6a02\u5712\u5be9\u67e5\u3002",
+      description: "\u7d93\u71df\u4e00\u5ea7\u6301\u7e8c\u6210\u9577\u7684\u52d5\u7269\u6a02\u5712\uff0c\u900f\u904e\u9580\u7968\u3001\u7167\u9867\u3001\u68f2\u5730\u3001\u8a2d\u65bd\u8207\u52d5\u7269\u6536\u96c6\u5b8c\u6210 30 \u500b\u6c38\u4e45\u91cc\u7a0b\u7891\u3002",
       ogTitle: "\u52d5\u7269\u5c0f\u5c0f\u6a02\u5712 - WeightPlay",
-      ogDescription: "30 \u500b\u52d5\u7269\u6a02\u5712\u6311\u6230\uff0c\u5305\u542b\u9580\u7968\u6536\u5165\u3001\u7167\u9867\u9078\u64c7\u3001\u68f2\u5730\u5b89\u6392\u3001\u8a2d\u65bd\u5347\u7d1a\u8207\u516d\u6b21\u53cb\u5584\u5be9\u67e5\u3002",
+      ogDescription: "\u7d93\u71df\u540c\u4e00\u5ea7\u6301\u7e8c\u6210\u9577\u7684\u52d5\u7269\u6a02\u5712\uff0c\u5b8c\u6210\u9580\u7968\u3001\u7167\u9867\u3001\u68f2\u5730\u3001\u8a2d\u65bd\u8207\u52d5\u7269\u6536\u96c6\u7684 30 \u500b\u6c38\u4e45\u91cc\u7a0b\u7891\u3002",
     },
     es: {
       title: "Parque Animal - WeightPlay",
@@ -551,9 +551,6 @@
   const nodes = {
     localeSelect: $("localeSelect"),
     menuPanel: $("menuPanel"),
-    stagePanel: $("stagePanel"),
-    stageBackBtn: $("stageBackBtn"),
-    challengeRail: $("challengeRail"),
     gamePanel: $("gamePanel"),
     startBtn: $("startBtn"),
     backToMenuBtn: $("backToMenuBtn"),
@@ -572,8 +569,6 @@
     logicStars: $("logicStars"),
     animalStars: $("animalStars"),
     closeReportBtn: $("closeReportBtn"),
-    nextChallengeBtn: $("nextChallengeBtn"),
-    resultStagesBtn: $("resultStagesBtn"),
     loadingPanel: $("loadingPanel"),
     loadingText: $("loadingText"),
     loadingFill: $("loadingFill"),
@@ -586,7 +581,6 @@
   let newlyRecruitedAnimalId = "";
   let facilityScrollLeft = 0;
   let careRouteChoiceOpen = false;
-  let activeChallengeIndex = clamp(Number(save.tourRound || 1) - 1, 0, zooChallenges.length - 1);
 
   function t(key, data = {}) {
     const sourceLocale = locale === "zh-Hans" ? "zh-Hant" : locale;
@@ -839,7 +833,26 @@
   }
 
   function activeChallenge() {
-    return zooChallenges[activeChallengeIndex] || zooChallenges[0];
+    const open = zooChallenges.filter((challenge) => !save.challengeCleared[String(challenge.id)]);
+    return open.find((challenge) => challenge.goals.every((goal) => goalValue(goal) >= goal.target))
+      || open.sort((left, right) => milestoneCompletion(right) - milestoneCompletion(left))[0]
+      || zooChallenges[zooChallenges.length - 1];
+  }
+
+  function milestoneCompletion(challenge) {
+    if (!challenge?.goals?.length) return 0;
+    return challenge.goals.reduce((sum, goal) => sum + taskProgress(goalValue(goal), goal.target), 0) / challenge.goals.length;
+  }
+
+  function milestoneCandidates(limit = 3) {
+    return zooChallenges
+      .filter((challenge) => !save.challengeCleared[String(challenge.id)])
+      .sort((left, right) => {
+        const leftReady = left.goals.every((goal) => goalValue(goal) >= goal.target);
+        const rightReady = right.goals.every((goal) => goalValue(goal) >= goal.target);
+        return Number(rightReady) - Number(leftReady) || milestoneCompletion(right) - milestoneCompletion(left) || left.id - right.id;
+      })
+      .slice(0, limit);
   }
 
   function challengeCopy(challenge, field) {
@@ -1421,55 +1434,57 @@
 
   function renderTourBoard(container) {
     if (!container) return;
-    const targets = tourTargets();
-    const progress = tourProgress();
-    const ready = isTourComplete();
-    const challenge = activeChallenge();
-    container.classList.toggle("ready", ready);
+    const visible = milestoneCandidates(1);
+    const claimedCount = completedTours();
+    container.classList.toggle("ready", visible.some((challenge) => challenge.goals.every((goal) => goalValue(goal) >= goal.target)));
     container.innerHTML = `
       <div class="tour-head">
-        <strong>${challengeCopy(challenge, "title")}</strong>
-        <span>${t("challenge", { n: challenge.id })}</span>
+        <strong>${t("milestones")}</strong>
+        <span>${claimedCount} / ${zooChallenges.length}</span>
       </div>
-      <div class="tour-list">
-        ${targets.goals.map((goal, index) => `<span>
-          <b>${goalLabel(goal)}</b>
-          <small>${formatNumber(Math.min(goalValue(goal), goal.target))} / ${formatNumber(goal.target)}</small>
-          <i style="--tour-progress:${Math.round(progress[index] * 100)}%"></i>
-        </span>`).join("")}
+      <div class="park-milestone-stack">
+        ${visible.map((challenge) => {
+          const ready = challenge.goals.every((goal) => goalValue(goal) >= goal.target);
+          return `<article class="park-milestone-card ${ready ? "ready" : ""}">
+            <div><b>${challengeCopy(challenge, "title")}</b><small>${t("milestoneReward", { coins: formatCost(challenge.reward) })}</small></div>
+            <span>${challenge.goals.map((goal) => `${goalLabel(goal)} ${formatNumber(Math.min(goalValue(goal), goal.target))}/${formatNumber(goal.target)}`).join(" · ")}</span>
+            <i style="--tour-progress:${Math.round(milestoneCompletion(challenge) * 100)}%"></i>
+            <button type="button" data-park-milestone="${challenge.id}" ${ready ? "" : "disabled"}>${ready ? t("claim") : `${Math.round(milestoneCompletion(challenge) * 100)}%`}</button>
+          </article>`;
+        }).join("") || `<p>${t("challengeFinalText")}</p>`}
       </div>
-      <button type="button" data-action="tour-claim" ${ready ? "" : "disabled"}>${ready ? t("tourClaim") : t("tourReward", { coins: formatCost(targets.reward) })}</button>
     `;
-    container.querySelector('[data-action="tour-claim"]')?.addEventListener("click", claimTourReward);
+    container.querySelectorAll("[data-park-milestone]").forEach((button) => {
+      button.addEventListener("click", () => claimParkMilestone(Number(button.dataset.parkMilestone), false));
+    });
   }
 
   function renderTourReport(container) {
     if (!container) return;
-    const targets = tourTargets();
-    const ready = isTourComplete();
-    const challenge = activeChallenge();
-    const rows = targets.goals.map((goal) => ({ label: goalLabel(goal), value: goalValue(goal), target: goal.target }));
     container.innerHTML = `
       <div class="tour-report-head">
-        <strong>${challengeCopy(challenge, "title")}</strong>
-        <span>${t("challenge", { n: challenge.id })}</span>
+        <strong>${t("milestones")}</strong>
+        <span>${completedTours()} / ${zooChallenges.length}</span>
       </div>
       <div class="tour-reputation">
         <b>${t("tourReputation")} ${completedTours()}</b>
         <span>${t("tourReputationBonus", { n: Math.round(tourReputationRate() * 100) })}</span>
       </div>
-      <div class="tour-report-list">
-        ${rows.map((row) => `
-          <div>
-            <span>${row.label}</span>
-            <small>${formatNumber(Math.min(row.value, row.target))} / ${formatNumber(row.target)}</small>
-            <i style="--tour-progress:${Math.round(taskProgress(row.value, row.target) * 100)}%"></i>
-          </div>
-        `).join("")}
+      <div class="tour-report-list park-milestone-report-list">
+        ${zooChallenges.map((challenge) => {
+          const claimed = Boolean(save.challengeCleared[String(challenge.id)]);
+          const ready = challenge.goals.every((goal) => goalValue(goal) >= goal.target);
+          return `<div class="${claimed ? "claimed" : ready ? "ready" : ""}">
+            <span><b>${challengeCopy(challenge, "title")}</b><small>${challenge.goals.map((goal) => `${formatNumber(Math.min(goalValue(goal), goal.target))}/${formatNumber(goal.target)}`).join(" · ")}</small></span>
+            <button type="button" data-report-milestone="${challenge.id}" ${ready && !claimed ? "" : "disabled"}>${claimed ? t("claimed") : ready ? t("claim") : `${Math.round(milestoneCompletion(challenge) * 100)}%`}</button>
+            <i style="--tour-progress:${Math.round(milestoneCompletion(challenge) * 100)}%"></i>
+          </div>`;
+        }).join("")}
       </div>
-      <button type="button" data-action="tour-report-claim" ${ready ? "" : "disabled"}>${ready ? t("tourClaim") : t("tourReward", { coins: formatCost(targets.reward) })}</button>
     `;
-    container.querySelector('[data-action="tour-report-claim"]')?.addEventListener("click", claimTourReward);
+    container.querySelectorAll("[data-report-milestone]").forEach((button) => {
+      button.addEventListener("click", () => claimParkMilestone(Number(button.dataset.reportMilestone), true));
+    });
   }
 
   function renderHabitatBonus(container) {
@@ -1692,21 +1707,20 @@
     render();
   }
 
-  function claimTourReward() {
-    if (!isTourComplete()) return;
-    const targets = tourTargets();
-    const challenge = activeChallenge();
-    const firstClear = !save.challengeCleared[String(challenge.id)];
-    save.coins += targets.reward;
-    save.challengeCleared[String(challenge.id)] = true;
-    save.challengeUnlocked = Math.max(save.challengeUnlocked, Math.min(zooChallenges.length, challenge.id + 1));
-    save.tour = { collected: 0, cared: 0, built: 0, habitat: 0, enrichment: 0, arranged: 0 };
+  function claimParkMilestone(id, fromReport = false) {
+    const challenge = zooChallenges.find((item) => item.id === id);
+    if (!challenge || save.challengeCleared[String(id)] || !challenge.goals.every((goal) => goalValue(goal) >= goal.target)) return;
+    save.coins += challenge.reward;
+    save.challengeCleared[String(id)] = true;
     popToast(t("tourComplete"));
     playSound("success");
-    window.WonderAnalytics?.track("zoo_tour_complete", { game_id: GAME_ID, round: challenge.id, first_clear: firstClear });
+    window.WonderAnalytics?.track("zoo_milestone_claim", { game_id: GAME_ID, milestone_id: challenge.id });
     saveGame();
     render();
-    showChallengeResult();
+    if (fromReport && !nodes.resultPanel.classList.contains("hidden")) {
+      renderTourReport(nodes.tourReport);
+      requestAnimationFrame(() => nodes.tourReport.querySelector("[data-report-milestone]:not(:disabled)")?.focus({ preventScroll: true }) || nodes.closeReportBtn.focus({ preventScroll: true }));
+    }
   }
 
   function notEnough(cost = 0) {
@@ -1750,8 +1764,6 @@
     nodes.reportTitle.textContent = t("reportTitle");
     nodes.reportScore.textContent = score;
     nodes.reportText.textContent = score >= previous ? t("reportGood") : t("reportTry");
-    nodes.resultStagesBtn.classList.add("hidden");
-    nodes.nextChallengeBtn.classList.add("hidden");
     nodes.closeReportBtn.classList.remove("hidden");
     nodes.focusStars.textContent = starText(save.careCount * 32 + save.happiness);
     nodes.logicStars.textContent = starText(save.gateLevel * 90 + unlockedAnimals().length * 34);
@@ -1766,51 +1778,12 @@
     window.WonderAnalytics?.track("game_complete", { game_id: GAME_ID, score, animals: unlockedAnimals().length });
   }
 
-  function showChallengeResult() {
-    showReport();
-    const challenge = activeChallenge();
-    nodes.reportTitle.textContent = t("challengeCompleteTitle");
-    nodes.reportText.textContent = challenge.id >= zooChallenges.length
-      ? t("challengeFinalText")
-      : t("challengeCompleteText", { n: challenge.id });
-    nodes.closeReportBtn.classList.add("hidden");
-    nodes.resultStagesBtn.classList.remove("hidden");
-    nodes.nextChallengeBtn.classList.toggle("hidden", challenge.id >= zooChallenges.length);
-    requestAnimationFrame(() => (challenge.id < zooChallenges.length ? nodes.nextChallengeBtn : nodes.resultStagesBtn).focus({ preventScroll: true }));
-  }
-
   function closeReport(restoreFocus = true) {
     nodes.resultPanel.classList.add("hidden");
     nodes.gamePanel.classList.remove("report-open");
     nodes.habitatGrid.inert = false;
     nodes.gamePanel.querySelector(".resource-row").inert = false;
     if (restoreFocus) nodes.gamePanel.querySelector('[data-action="report"]')?.focus({ preventScroll: true });
-  }
-
-  function renderChallengeRail() {
-    if (!nodes.challengeRail) return;
-    nodes.challengeRail.innerHTML = zooChallenges.map((challenge, index) => {
-      const locked = challenge.id > save.challengeUnlocked;
-      const cleared = Boolean(save.challengeCleared[String(challenge.id)]);
-      const selected = index === activeChallengeIndex;
-      const art = challenge.checkpointAsset || animals[index % animals.length].asset;
-      return `<button type="button" class="challenge-card ${locked ? "locked" : ""} ${cleared ? "cleared" : ""} ${selected ? "selected" : ""}" data-challenge-index="${index}" data-stage-index="${index}" data-challenge-id="${challenge.id}" data-checkpoint="${Boolean(challenge.checkpointAsset)}" data-goal-types="${challenge.goals.map((goal) => goal.type).join(",")}" aria-disabled="${locked}">
-        <img src="${art}" alt="" draggable="false" />
-        <strong>${t("challenge", { n: challenge.id })}</strong>
-        <b>${challengeCopy(challenge, "title")}</b>
-        <span>${challengeCopy(challenge, "plan")}</span>
-        <small>${challenge.checkpointAsset ? `${t("challengeCheckpoint")} · ` : ""}${t("challengeReward", { coins: formatCost(challenge.reward) })}</small>
-        ${cleared ? `<em>${t("challengeCleared")}</em>` : locked ? `<em>${t("challengeLocked")}</em>` : ""}
-      </button>`;
-    }).join("");
-    nodes.challengeRail.querySelectorAll("[data-challenge-index]").forEach((button) => {
-      button.addEventListener("click", () => {
-        const index = Number(button.dataset.challengeIndex);
-        if (index + 1 > save.challengeUnlocked) return popToast(t("challengeLocked"));
-        startChallenge(index);
-      });
-    });
-    requestAnimationFrame(() => nodes.challengeRail.querySelector(".challenge-card.selected")?.scrollIntoView({ block: "nearest", inline: "center" }));
   }
 
   function renderAnimalAlbum(container) {
@@ -1853,63 +1826,12 @@
     window.WonderSound?.play?.(name);
   }
 
-  function updateZooStageScale() {
-    const viewport = window.visualViewport;
-    const width = viewport?.width || window.innerWidth;
-    const height = viewport?.height || window.innerHeight;
-    const offsetLeft = viewport?.offsetLeft || 0;
-    const offsetTop = viewport?.offsetTop || 0;
-    const scale = Math.min(width / 390, height / 788);
-    const logicalWidth = width / scale;
-    const logicalHeight = height / scale;
-    document.documentElement.style.setProperty("--zoo-stage-scale", String(scale));
-    document.documentElement.style.setProperty("--zoo-stage-left", `${offsetLeft}px`);
-    document.documentElement.style.setProperty("--zoo-stage-top", `${offsetTop}px`);
-    document.documentElement.style.setProperty("--zoo-stage-logical-width", `${logicalWidth}px`);
-    document.documentElement.style.setProperty("--zoo-stage-logical-height", `${logicalHeight}px`);
-    nodes.stagePanel.dataset.wpCommonScale = String(scale);
-    nodes.stagePanel.dataset.wpLogicalWidth = String(logicalWidth);
-    nodes.stagePanel.dataset.wpLogicalHeight = String(logicalHeight);
-  }
-
-  function showStages() {
-    cancelAnimalDrag();
-    closeReport(false);
-    document.body.classList.remove("zoo-playing");
-    document.body.classList.add("zoo-stage");
-    document.querySelector(".zoo-app")?.classList.remove("is-playing");
-    nodes.localeSelect.closest(".language-picker")?.setAttribute("aria-hidden", "true");
-    nodes.menuPanel.classList.add("hidden");
-    nodes.gamePanel.classList.add("hidden");
-    nodes.stagePanel.classList.remove("hidden");
-    activeChallengeIndex = clamp(save.challengeUnlocked - 1, 0, zooChallenges.length - 1);
-    save.tourRound = activeChallengeIndex + 1;
-    saveGame();
-    renderChallengeRail();
-    updateZooStageScale();
-    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-    requestAnimationFrame(() => nodes.challengeRail.querySelector(".challenge-card.selected")?.focus({ preventScroll: true }));
-    window.dispatchEvent(new CustomEvent("weightplay:stage-open", { detail: { gameId: GAME_ID } }));
-  }
-
-  function startChallenge(index) {
-    const nextIndex = clamp(Number(index) || 0, 0, zooChallenges.length - 1);
-    if (nextIndex + 1 > save.challengeUnlocked) {
-      popToast(t("challengeLocked"));
-      return;
-    }
-    if (nextIndex !== activeChallengeIndex) {
-      save.tour = { collected: 0, cared: 0, built: 0, habitat: 0, enrichment: 0, arranged: 0 };
-    }
-    activeChallengeIndex = nextIndex;
-    save.tourRound = nextIndex + 1;
-    saveGame();
+  function startPark() {
     document.body.classList.remove("zoo-stage");
     document.body.classList.add("zoo-playing");
     document.querySelector(".zoo-app")?.classList.add("is-playing");
     nodes.localeSelect.closest(".language-picker")?.setAttribute("aria-hidden", "true");
     nodes.menuPanel.classList.add("hidden");
-    nodes.stagePanel.classList.add("hidden");
     nodes.gamePanel.classList.remove("hidden");
     updateZooBattleScale();
     applyOffline();
@@ -1919,11 +1841,11 @@
       nodes.habitatGrid.querySelector('[data-action="collect"]')?.focus({ preventScroll: true });
     });
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-    window.WonderAnalytics?.track("game_start", { game_id: GAME_ID, challenge: nextIndex + 1 });
+    window.WonderAnalytics?.track("game_start", { game_id: GAME_ID, mode: "continuous_park" });
   }
 
   function startGame() {
-    showStages();
+    startPark();
   }
 
   function updateZooBattleScale() {
@@ -1938,7 +1860,6 @@
     document.querySelector(".zoo-app")?.classList.remove("is-playing");
     nodes.localeSelect.closest(".language-picker")?.removeAttribute("aria-hidden");
     nodes.gamePanel.classList.add("hidden");
-    nodes.stagePanel.classList.add("hidden");
     nodes.menuPanel.classList.remove("hidden");
     closeReport(false);
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
@@ -1947,7 +1868,6 @@
 
   function updateZooViewportScales() {
     updateZooBattleScale();
-    if (document.body.classList.contains("zoo-stage")) updateZooStageScale();
   }
 
   window.addEventListener("resize", updateZooViewportScales, { passive: true });
@@ -2011,7 +1931,6 @@
     localStorage.setItem(localeKey, requested);
     localizeStatic();
     render();
-    if (!nodes.stagePanel.classList.contains("hidden")) renderChallengeRail();
   });
   window.addEventListener("wonder:locale-change", (event) => {
     if (event.detail?.locale && event.detail.locale !== locale) {
@@ -2020,7 +1939,6 @@
       localStorage.setItem(localeKey, event.detail.locale);
       localizeStatic();
       render();
-      if (!nodes.stagePanel.classList.contains("hidden")) renderChallengeRail();
     }
   });
   nodes.startBtn.addEventListener("click", (event) => {
@@ -2034,7 +1952,6 @@
     event.stopImmediatePropagation();
   };
   nodes.startBtn.addEventListener("keydown", suppressRepeatedActivation, true);
-  nodes.challengeRail.addEventListener("keydown", suppressRepeatedActivation, true);
   nodes.gamePanel.addEventListener("keydown", suppressRepeatedActivation, true);
   nodes.resultPanel.addEventListener("keydown", (event) => {
     if (event.key !== "Tab" || nodes.resultPanel.classList.contains("hidden")) return;
@@ -2048,28 +1965,12 @@
     event.preventDefault();
     actions[nextIndex].focus({ preventScroll: true });
   }, true);
-  nodes.stageBackBtn.addEventListener("click", showMenu);
-  nodes.challengeRail.addEventListener("wonder:stage-snap", (event) => {
-    const index = Number(event.detail?.index);
-    if (!Number.isInteger(index) || index < 0) return;
-    nodes.challengeRail.querySelectorAll(".challenge-card.selected").forEach((card) => card.classList.remove("selected"));
-    nodes.challengeRail.querySelector(`[data-challenge-index="${index}"]`)?.classList.add("selected");
-  });
-  nodes.backToMenuBtn.addEventListener("click", showStages);
+  nodes.backToMenuBtn.addEventListener("click", showMenu);
   window.addEventListener("weightplay:tutorial-start", (event) => {
     if (event.detail?.gameId === GAME_ID) startGame();
   });
   nodes.reportBtn?.addEventListener("click", showReport);
   nodes.closeReportBtn.addEventListener("click", closeReport);
-  nodes.resultStagesBtn.addEventListener("click", () => {
-    closeReport(false);
-    showStages();
-  });
-  nodes.nextChallengeBtn.addEventListener("click", () => {
-    const nextIndex = Math.min(zooChallenges.length - 1, activeChallengeIndex + 1);
-    closeReport(false);
-    startChallenge(nextIndex);
-  });
   window.addEventListener("beforeunload", saveGame);
 
   localizeStatic();

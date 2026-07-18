@@ -590,6 +590,19 @@ body.rescue-stage-select .stage-select {
   line-height: 1.3;
 }
 
+#leaveTrailBtn {
+  background: #ffd2bf;
+  box-shadow: 0 5px 0 #ba765a;
+}
+
+.leave-panel {
+  background: rgba(223, 247, 202, 0.97);
+}
+
+.leave-card {
+  background: #fffde8;
+}
+
 .star-line {
   color: #f5a623;
   font-size: 34px;
