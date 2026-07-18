@@ -141,6 +141,10 @@
       chooseCardDesc: "Select one of these ancient relics to empower your explorer.",
       draftShortcutHint: "Keyboard: press 1, 2, or 3 to choose. Press R to reroll.",
       rerollRelics: "Reroll relic choices",
+      rerollRelicsConfirm: "Confirm reroll",
+      rerollRelicsLabel: "Replace all three relic choices. Costs 3 Diamonds. Current balance {balance}.",
+      rerollRelicsConfirmLabel: "Confirm relic reroll. Spend 3 Diamonds. Balance {before} to {after}. Replaces all three relic choices.",
+      rerollRelicsDecision: "Replace all three relic choices. Press again to confirm: {before} → {after} Diamonds.",
       rerollRelicsUsed: "Reroll used for this level.",
       rerollRelicsNeedDiamonds: "Not enough Diamonds for a reroll.",
       lootFound: "Relic Chest Unlocked!",
@@ -252,6 +256,10 @@
       chooseCardDesc: "選擇古代遺跡之力以強化你的探險家能力。",
       draftShortcutHint: "鍵盤：按 1、2、3 選擇，按 R 重抽。",
       rerollRelics: "重抽遺跡能力",
+      rerollRelicsConfirm: "確認重抽",
+      rerollRelicsLabel: "更換全部三個遺跡能力選項。花費 3 顆鑽石。目前餘額 {balance}。",
+      rerollRelicsConfirmLabel: "確認重抽遺跡能力。花費 3 顆鑽石。餘額由 {before} 變為 {after}。更換全部三個選項。",
+      rerollRelicsDecision: "更換全部三個遺跡能力選項。再按一次確認：{before} → {after} 顆鑽石。",
       rerollRelicsUsed: "本次升級已使用重抽。",
       rerollRelicsNeedDiamonds: "鑽石不足，無法重抽。",
       lootFound: "解鎖遺跡寶箱！",
@@ -467,6 +475,10 @@
     chooseCardDesc: "Elige una reliquia antigua para potenciar a tu explorador.",
     draftShortcutHint: "Teclado: pulsa 1, 2 o 3 para elegir. Pulsa R para cambiar opciones.",
     rerollRelics: "Cambiar reliquias",
+    rerollRelicsConfirm: "Confirmar cambio",
+    rerollRelicsLabel: "Cambia las tres opciones de reliquia. Cuesta 3 diamantes. Saldo actual: {balance}.",
+    rerollRelicsConfirmLabel: "Confirma el cambio de reliquias. Gasta 3 diamantes. Saldo de {before} a {after}. Cambia las tres opciones.",
+    rerollRelicsDecision: "Cambia las tres opciones de reliquia. Pulsa otra vez para confirmar: {before} → {after} diamantes.",
     rerollRelicsUsed: "Ya cambiaste las opciones de este nivel.",
     rerollRelicsNeedDiamonds: "No hay suficientes diamantes para cambiar opciones.",
     lootFound: "¡Cofre de reliquias abierto!",
@@ -844,6 +856,7 @@
   function suspendBackgroundBattle() {
     clearMovementInput();
     suspendAmuletConfirmation();
+    suspendDraftRerollConfirmation();
     if (backgroundSuspendedAt || (!state.gameActive && !eliteSpawnTimer)) return;
     backgroundSuspendedAt = performance.now();
     backgroundBattleSuspended = state.gameActive;
@@ -857,6 +870,7 @@
 
   function resumeBackgroundBattle() {
     resumeAmuletConfirmation();
+    resumeDraftRerollConfirmation();
     if (!backgroundSuspendedAt || document.hidden) return;
     const elapsed = Math.max(0, performance.now() - backgroundSuspendedAt);
     backgroundSuspendedAt = 0;
@@ -1208,6 +1222,7 @@
   }
 
   function setDraftModalActive(active, restoreBattleFocus = true) {
+    if (!active) clearDraftRerollConfirmation(false);
     document.querySelectorAll(".game-layout > .arena-viewport, .game-layout > .inventory-sidebar, .game-layout > #pauseBtn").forEach((layer) => {
       layer.inert = active;
       if (active) layer.setAttribute("aria-hidden", "true");
@@ -1938,6 +1953,10 @@
   // Exp/Level up draft Relic selection
   let currentDraftChoices = [];
   let draftRerollUsed = false;
+  let draftRerollPending = false;
+  let draftRerollConfirmTimer = 0;
+  let draftRerollConfirmRemaining = 0;
+  let draftRerollConfirmDueAt = 0;
 
   function gainExp(amount) {
     state.exp += amount;
@@ -1973,6 +1992,7 @@
     state.gameActive = false;
     clearMovementInput();
 
+    clearDraftRerollConfirmation(false);
     draftRerollUsed = false;
     nodes.rerollDraftStatus.textContent = "";
     renderTrainingPanel();
@@ -1983,6 +2003,7 @@
   }
 
   function chooseDraftRelic(relicId) {
+    clearDraftRerollConfirmation(false);
     applyRelic(relicId);
     nodes.draftPanel.classList.add("hidden");
     state.gameActive = true;
@@ -2029,15 +2050,63 @@
 
   function updateDraftRerollUI() {
     const wallet = window.WeightPlayWallet?.read() || { diamonds: 0 };
+    const after = Math.max(0, wallet.diamonds - draftRerollCost);
+    const label = nodes.rerollDraftBtn.querySelector('[data-ui="rerollRelics"]');
+    if ((draftRerollUsed || wallet.diamonds < draftRerollCost) && draftRerollPending) {
+      clearDraftRerollConfirmation(false);
+    }
     nodes.rerollDraftCost.textContent = draftRerollCost;
     nodes.rerollDraftBtn.disabled = draftRerollUsed || wallet.diamonds < draftRerollCost;
+    nodes.rerollDraftBtn.classList.toggle("is-confirming", draftRerollPending);
+    nodes.rerollDraftBtn.setAttribute("aria-pressed", String(draftRerollPending));
+    nodes.rerollDraftBtn.setAttribute("aria-label", draftRerollPending
+      ? t("rerollRelicsConfirmLabel", { before: wallet.diamonds, after })
+      : t("rerollRelicsLabel", { balance: wallet.diamonds }));
+    if (label) label.textContent = draftRerollPending ? t("rerollRelicsConfirm") : t("rerollRelics");
     if (draftRerollUsed) {
       nodes.rerollDraftStatus.textContent = t("rerollRelicsUsed");
     } else if (wallet.diamonds < draftRerollCost) {
       nodes.rerollDraftStatus.textContent = t("rerollRelicsNeedDiamonds");
+    } else if (draftRerollPending) {
+      nodes.rerollDraftStatus.textContent = t("rerollRelicsDecision", { before: wallet.diamonds, after });
     } else {
       nodes.rerollDraftStatus.textContent = "";
     }
+  }
+
+  function clearDraftRerollConfirmation(render = true) {
+    window.clearTimeout(draftRerollConfirmTimer);
+    draftRerollConfirmTimer = 0;
+    draftRerollConfirmRemaining = 0;
+    draftRerollConfirmDueAt = 0;
+    draftRerollPending = false;
+    if (render) updateDraftRerollUI();
+  }
+
+  function armDraftRerollConfirmation(delay = draftRerollConfirmRemaining) {
+    window.clearTimeout(draftRerollConfirmTimer);
+    draftRerollConfirmRemaining = Math.max(0, Number(delay) || 0);
+    draftRerollConfirmDueAt = performance.now() + draftRerollConfirmRemaining;
+    draftRerollConfirmTimer = window.setTimeout(() => {
+      draftRerollConfirmTimer = 0;
+      draftRerollConfirmRemaining = 0;
+      draftRerollConfirmDueAt = 0;
+      draftRerollPending = false;
+      updateDraftRerollUI();
+    }, draftRerollConfirmRemaining);
+  }
+
+  function suspendDraftRerollConfirmation() {
+    if (!draftRerollPending || !draftRerollConfirmTimer) return;
+    draftRerollConfirmRemaining = Math.max(0, draftRerollConfirmDueAt - performance.now());
+    window.clearTimeout(draftRerollConfirmTimer);
+    draftRerollConfirmTimer = 0;
+    draftRerollConfirmDueAt = 0;
+  }
+
+  function resumeDraftRerollConfirmation() {
+    if (!draftRerollPending || draftRerollConfirmTimer || document.hidden) return;
+    armDraftRerollConfirmation();
   }
 
   function rerollDraftChoices() {
@@ -2046,6 +2115,21 @@
       return;
     }
 
+    const wallet = window.WeightPlayWallet?.read() || { diamonds: 0 };
+    if (wallet.diamonds < draftRerollCost) {
+      clearDraftRerollConfirmation(false);
+      updateDraftRerollUI();
+      return;
+    }
+    if (!draftRerollPending) {
+      draftRerollPending = true;
+      updateDraftRerollUI();
+      nodes.rerollDraftBtn.focus({ preventScroll: true });
+      armDraftRerollConfirmation(5000);
+      return;
+    }
+
+    clearDraftRerollConfirmation(false);
     const spent = window.WeightPlayWallet?.spendDiamonds(draftRerollCost);
     if (!spent) {
       nodes.rerollDraftStatus.textContent = t("rerollRelicsNeedDiamonds");
@@ -2954,6 +3038,7 @@
           nodes.draftCards.querySelectorAll(".draft-item-btn")[choiceIndex]?.click();
         } else if (e.key.toLowerCase() === "r" && !nodes.rerollDraftBtn.disabled) {
           e.preventDefault();
+          if (e.repeat) return;
           nodes.rerollDraftBtn.click();
         }
         return;

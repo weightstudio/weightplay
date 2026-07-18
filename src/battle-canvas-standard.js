@@ -34,7 +34,6 @@
     "snack-blocks": [".snack-game", 382, 780],
     "star-memory": [".memory-game", 382, 780],
     "tiny-weather-rescue": [".weather-game", 366, 764],
-    "wonder-crash": [".game-shell", 390, 788],
     "zoo-helper-day": [".zoo-game", 374, 776],
   };
   const gameId = location.pathname.match(/\/games\/([^/]+)/)?.[1] || "";

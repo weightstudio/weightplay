@@ -5249,6 +5249,37 @@
       ]
     ]
   };
+  const helperQuestHansTerms = new Map([
+    ["装著", "装有"],
+    ["猫熊", "熊猫"],
+    ["无尾熊", "考拉"],
+    ["照护", "照料"],
+    ["回馈", "反馈"],
+    ["帐号", "账号"],
+    ["目前浏览器", "当前浏览器"],
+    ["萤幕", "屏幕"],
+    ["资讯", "信息"],
+    ["栖地", "栖息地"],
+    ["评量", "评估"],
+  ]);
+  const normalizeHelperQuestHans = (value) => {
+    if (typeof value === "string") {
+      let normalized = value;
+      helperQuestHansTerms.forEach((replacement, regionalTerm) => {
+        normalized = normalized.replaceAll(regionalTerm, replacement);
+      });
+      return normalized;
+    }
+    if (Array.isArray(value)) return value.map(normalizeHelperQuestHans);
+    if (value && typeof value === "object") {
+      Object.keys(value).forEach((key) => {
+        value[key] = normalizeHelperQuestHans(value[key]);
+      });
+    }
+    return value;
+  };
+  normalizeHelperQuestHans(localizedGames["zh-Hans"]["tiny-weather-rescue"]);
+
   localizedGames["zh-Hans"]["beast-deck"] = {
     "title": "兽王牌组：迷雾森林",
     "difficulty": "中等",

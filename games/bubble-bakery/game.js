@@ -20,8 +20,8 @@
       bubbleBoard: "Bubble board",
       bubbleSingle: "{animal}, row {row}, column {column}; connected group of 1, needs {minimum} to clear",
       bubbleOrderSingle: "{animal} order target, row {row}, column {column}; connected group of 1, needs {minimum} to clear",
-      bubbleGroup: "{animal}, row {row}, column {column}; connected group of {count}, minimum {minimum}",
-      bubbleOrderGroup: "{animal} order target, row {row}, column {column}; connected group of {count}, minimum {minimum}",
+      bubbleGroup: "{animal}, row {row}, column {column}; connected group of {count}; two clears, order minimum {minimum}",
+      bubbleOrderGroup: "{animal} order target, row {row}, column {column}; connected group of {count}; two clears, order minimum {minimum}",
       bunny: "Bunny",
       whale: "Whale",
       chick: "Chick",
@@ -122,8 +122,8 @@
       bubbleBoard: "泡泡棋盤",
       bubbleSingle: "{animal}，第 {row} 列，第 {column} 欄；相連 1 個，需要 {minimum} 個才能消除",
       bubbleOrderSingle: "訂單目標 {animal}，第 {row} 列，第 {column} 欄；相連 1 個，需要 {minimum} 個才能消除",
-      bubbleGroup: "{animal}，第 {row} 列，第 {column} 欄；相連 {count} 個，最低 {minimum} 個",
-      bubbleOrderGroup: "訂單目標 {animal}，第 {row} 列，第 {column} 欄；相連 {count} 個，最低 {minimum} 個",
+      bubbleGroup: "{animal}，第 {row} 列，第 {column} 欄；相連 {count} 個；兩個即可消除，訂單門檻 {minimum} 個",
+      bubbleOrderGroup: "訂單目標 {animal}，第 {row} 列，第 {column} 欄；相連 {count} 個；兩個即可消除，訂單門檻 {minimum} 個",
       bunny: "兔兔",
       whale: "鯨魚",
       chick: "小雞",
@@ -218,8 +218,8 @@
       coachCard: "Entrenador de pastelería", stageList: "Lista de niveles", orderList: "Pedidos de pastelería", bubbleBoard: "Tablero de burbujas",
       bubbleSingle: "{animal}, fila {row}, columna {column}; grupo conectado de 1, necesita {minimum} para eliminarse",
       bubbleOrderSingle: "Objetivo del pedido: {animal}, fila {row}, columna {column}; grupo conectado de 1, necesita {minimum} para eliminarse",
-      bubbleGroup: "{animal}, fila {row}, columna {column}; grupo conectado de {count}, mínimo {minimum}",
-      bubbleOrderGroup: "Objetivo del pedido: {animal}, fila {row}, columna {column}; grupo conectado de {count}, mínimo {minimum}",
+      bubbleGroup: "{animal}, fila {row}, columna {column}; grupo conectado de {count}; dos eliminan, mínimo del pedido {minimum}",
+      bubbleOrderGroup: "Objetivo del pedido: {animal}, fila {row}, columna {column}; grupo conectado de {count}; dos eliminan, mínimo del pedido {minimum}",
       bunny: "Conejo", whale: "Ballena", chick: "Pollito", frog: "Rana", fox: "Zorro",
       chooseStage: "Elegir nivel", menuHint: "Toca 2 o más burbujas iguales conectadas para completar los pedidos.", startGame: "Empezar", back: "Volver", stages: "Niveles", loading: "Cargando",
       nextStage: "Siguiente nivel", retry: "Intentar de nuevo", lobby: "Sala de juegos", locked: "Nivel bloqueado", unlockRequirement: "Completa {stage} para desbloquear esta bandeja.",
@@ -715,17 +715,15 @@
     const viewport = window.visualViewport;
     const viewportWidth = viewport?.width || innerWidth;
     const viewportHeight = viewport?.height || innerHeight;
-    const logicalWidth = 390;
-    const logicalHeight = 788;
-    const scale = Math.max(0.1, Math.min((viewportWidth - 8) / logicalWidth, (viewportHeight - 8) / logicalHeight));
-    const width = logicalWidth * scale;
-    const contentHeight = logicalHeight * scale;
+    const scale = Math.max(0.1, Math.min(viewportWidth / 390, viewportHeight / 788));
+    const logicalWidth = viewportWidth / scale;
+    const logicalHeight = viewportHeight / scale;
     const root = document.documentElement.style;
     root.setProperty("--bakery-frame-scale", String(scale));
-    root.setProperty("--bakery-frame-width", `${width}px`);
-    root.setProperty("--bakery-frame-height", `${contentHeight}px`);
-    root.setProperty("--bakery-frame-left", `${Math.max(0, (viewportWidth - width) / 2)}px`);
-    root.setProperty("--bakery-frame-top", `${Math.max(0, viewportHeight - contentHeight - 4)}px`);
+    root.setProperty("--bakery-logical-width", `${logicalWidth}px`);
+    root.setProperty("--bakery-logical-height", `${logicalHeight}px`);
+    root.setProperty("--bakery-frame-left", "0px");
+    root.setProperty("--bakery-frame-top", "0px");
   }
 
   addEventListener("resize", updateBakeryFrame, { passive: true });
@@ -992,15 +990,11 @@
       return;
     }
     const minimum = stage.minOrderGroup || 2;
-    if (group.length < minimum) {
-      nodes.hintText.textContent = t("groupTooSmall", { count: minimum });
-      playSound("error");
-      return;
-    }
     busy = true;
     nodes.board.setAttribute("aria-busy", "true");
     const wasNeeded = (orders[id] || 0) > 0;
-    const countsForOrder = wasNeeded && (!stage.sequence || id === activeSequenceTarget());
+    const meetsOrderMinimum = group.length >= minimum;
+    const countsForOrder = wasNeeded && meetsOrderMinimum && (!stage.sequence || id === activeSequenceTarget());
     moves -= 1;
     validMovesUsed += 1;
     largestGroup = Math.max(largestGroup, group.length);
@@ -1023,10 +1017,12 @@
       nodes.hintText.textContent = t("orderStreak", { streak: Math.min(orderStreak, 5), bonus });
       showFloat(t("orderStreak", { streak: Math.min(orderStreak, 5), bonus }), window.innerWidth / 2, window.innerHeight * 0.5);
     } else {
-      nodes.hintText.textContent = wasNeeded && stage.sequence
+      nodes.hintText.textContent = wasNeeded && !meetsOrderMinimum
+        ? t("groupTooSmall", { count: minimum })
+        : wasNeeded && stage.sequence
         ? t("sequenceNext", { animal: t(colorData(activeSequenceTarget()).labelKey) })
         : wasNeeded ? stageRule(stage) : t("notOrderTarget");
-      showFloat(`+${baseScore}`, window.innerWidth / 2, window.innerHeight * 0.5);
+      showFloat(wasNeeded && !meetsOrderMinimum ? t("groupTooSmall", { count: minimum }) : `+${baseScore}`, window.innerWidth / 2, window.innerHeight * 0.5);
     }
     playSound("pop");
 

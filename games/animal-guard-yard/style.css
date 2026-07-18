@@ -2503,12 +2503,12 @@ body.guard-yard-playing .fixed-shell-host {
   inset: auto;
   left: var(--guard-yard-frame-left, 4px);
   top: var(--guard-yard-frame-top, 4px);
-  width: 390px;
-  min-width: 390px;
-  max-width: 390px;
-  height: 450px;
-  min-height: 450px;
-  max-height: 450px;
+  width: var(--guard-yard-logical-width, 390px);
+  min-width: var(--guard-yard-logical-width, 390px);
+  max-width: none;
+  height: var(--guard-yard-logical-height, 450px);
+  min-height: var(--guard-yard-logical-height, 450px);
+  max-height: none;
   margin: 0;
   padding: 0;
   display: grid;
@@ -2520,11 +2520,11 @@ body.guard-yard-playing .fixed-shell-host {
   overflow: hidden;
 }
 body.guard-yard-playing .fixed-game-shell {
-  width: 390px;
-  height: 450px;
+  width: 100%;
+  height: 100%;
   max-height: none;
-  aspect-ratio: 13 / 15;
-  grid-template-rows: 48px 26px 78px 240px 20px;
+  aspect-ratio: auto;
+  grid-template-rows: 48px 26px 78px minmax(240px, 1fr) 20px;
   gap: 4px;
   padding: 6px;
   border-width: 3px;
@@ -2568,8 +2568,10 @@ body.guard-yard-playing .unit-info strong { font-size: 11px; line-height: 1.15; 
 body.guard-yard-playing .role-badge { display: none; }
 body.guard-yard-playing .unit-stats { flex-wrap: nowrap; justify-content: flex-start; gap: 3px; overflow: hidden; font-size: 8px; line-height: 1.1; }
 body.guard-yard-playing .yard-board {
-  width: 100%;
+  width: min(100%, 372px);
   height: 240px;
+  align-self: center;
+  justify-self: center;
   aspect-ratio: 1.55 / 1;
   border-width: 3px;
   border-radius: 12px;
@@ -2577,8 +2579,8 @@ body.guard-yard-playing .yard-board {
 body.guard-yard-playing .result-panel {
   position: absolute;
   inset: 0;
-  width: 390px;
-  height: 450px;
+  width: 100%;
+  height: 100%;
   padding: 6px;
   grid-template-rows: minmax(0, 1fr);
   place-items: center;
@@ -2589,8 +2591,8 @@ body.guard-yard-playing .result-panel {
 body.guard-yard-playing .pause-panel {
   position: absolute;
   inset: 0;
-  width: 390px;
-  height: 450px;
+  width: 100%;
+  height: 100%;
   padding: 12px;
   place-items: center;
   overflow: hidden;
@@ -2605,9 +2607,9 @@ body.guard-yard-playing .pause-panel .pause-card {
 
 body.guard-yard-playing .result-panel .result-card {
   grid-row: 1;
-  width: 100%;
-  height: 100%;
-  max-height: none;
+  width: min(100%, 390px);
+  height: min(100%, 450px);
+  max-height: 450px;
   padding: 12px;
   gap: 7px;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -2656,12 +2658,12 @@ body.guard-yard-stage .menu-panel {
   inset: auto;
   left: var(--guard-yard-frame-left, 4px);
   top: var(--guard-yard-frame-top, 4px);
-  width: 390px;
-  min-width: 390px;
-  max-width: 390px;
-  height: 788px;
-  min-height: 788px;
-  max-height: 788px;
+  width: var(--guard-yard-logical-width, 390px);
+  min-width: var(--guard-yard-logical-width, 390px);
+  max-width: none;
+  height: var(--guard-yard-logical-height, 788px);
+  min-height: var(--guard-yard-logical-height, 788px);
+  max-height: none;
   margin: 0;
   padding: 0;
   grid-template-rows: minmax(0, 1fr) 64px;
@@ -2797,10 +2799,10 @@ body.guard-yard-stage .menu-tabs span { font-size: 0.72rem; }
   }
 
   body.guard-yard-playing .fixed-game-shell {
-    width: 390px;
-    height: 450px;
+    width: 100%;
+    height: 100%;
     max-width: none;
-    aspect-ratio: 13 / 15;
-    grid-template-rows: 48px 26px 78px 240px 20px;
+    aspect-ratio: auto;
+    grid-template-rows: 48px 26px 78px minmax(240px, 1fr) 20px;
   }
 }

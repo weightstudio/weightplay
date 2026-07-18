@@ -51,37 +51,52 @@ body:not(.wonder-playing):not(.wonder-stage-select) .wonder-main-cover {
 
 body.wonder-stage-select:not(.wonder-playing) .game-shell {
   position: fixed !important;
-  top: auto !important;
-  bottom: 0 !important;
-  transform: translateX(-50%) scale(var(--wonder-shell-scale, 1)) !important;
-  transform-origin: bottom center !important;
+  top: 0 !important;
+  right: auto !important;
+  bottom: auto !important;
+  left: 0 !important;
+  width: var(--wonder-stage-logical-width, 390px) !important;
+  min-width: var(--wonder-stage-logical-width, 390px) !important;
+  max-width: var(--wonder-stage-logical-width, 390px) !important;
+  height: var(--wonder-stage-logical-height, calc(390px * 16 / 9)) !important;
+  min-height: var(--wonder-stage-logical-height, calc(390px * 16 / 9)) !important;
+  max-height: var(--wonder-stage-logical-height, calc(390px * 16 / 9)) !important;
+  transform: scale(var(--wonder-shell-scale, 1)) !important;
+  transform-origin: top left !important;
+  border-radius: 0;
+  background: #111a2d url("../../assets/wonder-crash-cover.webp") center / cover no-repeat;
 }
 
 body.wonder-playing .game-shell[data-battle-shell] {
   position: fixed !important;
-  top: auto !important;
+  top: 0 !important;
   right: auto !important;
-  bottom: 0 !important;
-  left: 50% !important;
-  width: 390px !important;
-  min-width: 390px !important;
-  max-width: 390px !important;
-  height: 788px !important;
-  min-height: 788px !important;
-  max-height: 788px !important;
+  bottom: auto !important;
+  left: 0 !important;
+  width: var(--wonder-battle-logical-width, 390px) !important;
+  min-width: var(--wonder-battle-logical-width, 390px) !important;
+  max-width: var(--wonder-battle-logical-width, 390px) !important;
+  height: var(--wonder-battle-logical-height, 788px) !important;
+  min-height: var(--wonder-battle-logical-height, 788px) !important;
+  max-height: var(--wonder-battle-logical-height, 788px) !important;
   margin: 0 !important;
   overflow: hidden !important;
-  transform: translateX(-50%) scale(var(--wonder-battle-scale, 1)) !important;
-  transform-origin: bottom center !important;
-  background: #12151d;
+  transform: scale(var(--wonder-battle-scale, 1)) !important;
+  transform-origin: top left !important;
+  background: #4c5141 url("../../assets/battle-bg.webp") center / cover no-repeat;
 }
 
 body.wonder-playing #game {
   position: absolute;
-  inset: 0;
+  top: auto;
+  right: auto;
+  bottom: 0;
+  left: 50%;
   width: 390px;
   height: 788px;
   aspect-ratio: 390 / 788;
+  transform: translateX(-50%);
+  box-shadow: 0 0 28px rgba(9, 12, 13, .3);
 }
 
 body.wonder-playing #game:focus-visible {

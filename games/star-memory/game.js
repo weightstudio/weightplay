@@ -655,6 +655,30 @@
     memoryGame.dataset.wpLogicalWidth = String(logicalWidth);
     memoryGame.dataset.wpLogicalHeight = String(logicalHeight);
     memoryGame.dataset.wpLogicalBattleCanvas = `${logicalWidth}x${logicalHeight}`;
+    requestAnimationFrame(() => fitMemoryBoard());
+  }
+
+  const MEMORY_CARD_LOGICAL_SIZE = 112;
+  const MEMORY_BOARD_MAX_SCALE = 1.35;
+
+  function fitMemoryBoard(stage = stages[state.stageIndex]) {
+    if (!stage || !document.body.classList.contains("memory-playing") || document.body.classList.contains("memory-result")) return;
+    const panelStyle = getComputedStyle(gameBoardPanel);
+    const gridStyle = getComputedStyle(cardGrid);
+    const gap = Number.parseFloat(gridStyle.gap) || 8;
+    const horizontalPadding = (Number.parseFloat(panelStyle.paddingLeft) || 0) + (Number.parseFloat(panelStyle.paddingRight) || 0);
+    const verticalPadding = (Number.parseFloat(panelStyle.paddingTop) || 0) + (Number.parseFloat(panelStyle.paddingBottom) || 0);
+    const availableWidth = Math.max(1, gameBoardPanel.clientWidth - horizontalPadding - 8);
+    const availableHeight = Math.max(1, gameBoardPanel.clientHeight - verticalPadding - 8);
+    const boardWidth = stage.grid.c * MEMORY_CARD_LOGICAL_SIZE + (stage.grid.c - 1) * gap;
+    const boardHeight = stage.grid.r * MEMORY_CARD_LOGICAL_SIZE + (stage.grid.r - 1) * gap;
+    const boardScale = Math.min(MEMORY_BOARD_MAX_SCALE, availableWidth / boardWidth, availableHeight / boardHeight);
+
+    cardGrid.style.setProperty("--memory-grid-rows", stage.grid.r);
+    cardGrid.style.setProperty("--memory-board-width", `${boardWidth}px`);
+    cardGrid.style.setProperty("--memory-board-height", `${boardHeight}px`);
+    cardGrid.style.setProperty("--memory-board-scale", String(boardScale));
+    cardGrid.dataset.wpBoardScale = String(boardScale);
   }
 
   function exitSharedPlayViewport() {
@@ -835,7 +859,9 @@
     
     // Setup grid columns CSS variables
     cardGrid.style.setProperty("--grid-cols", stage.grid.c);
+    cardGrid.style.setProperty("--memory-grid-rows", stage.grid.r);
     cardGrid.style.gridTemplateColumns = `repeat(${stage.grid.c}, 1fr)`;
+    cardGrid.style.gridTemplateRows = `repeat(${stage.grid.r}, 1fr)`;
     
     cardGrid.replaceChildren(
       ...shuffledPairs.map((symbolId, cardIdx) => {
@@ -862,6 +888,7 @@
         return card;
       })
     );
+    requestAnimationFrame(() => fitMemoryBoard(stage));
     requestAnimationFrame(() => cardGrid.querySelector(".card:not(:disabled)")?.focus({ preventScroll: true }));
   }
 

@@ -265,6 +265,18 @@
     beaconConfirmStatus:u("\u672c\u6b21\u6f5b\u822a\u9650\u7528\u4e00\u6b21\uff0c\u5c07\u6c27\u6c23\u56de\u5fa9\u81f3\u81f3\u5c11 30% \u00b7 \u947d\u77f3 {before} \u2192 {after}\u3002\u518d\u6b21\u9ede\u64ca\u78ba\u8a8d\u3002"),
     beaconConfirmLabel:u("\u78ba\u8a8d\u4f7f\u7528\u7dca\u6025\u4fe1\u6a19\u3002\u82b1\u8cbb 3 \u9846\u947d\u77f3\uff0c\u9918\u984d\u7531 {before} \u8b8a\u70ba {after}\u3002")
   });
+  Object.assign(en,{
+    quitTitle:"Leave this dive?",
+    quitCopy:"Zone {zone}/{total}, salvage {salvage}/{target}, and oxygen {oxygen}/{max} will be discarded.",
+    quitKeep:"Keep diving",
+    quitLeave:"Leave dive"
+  });
+  Object.assign(zh,{
+    quitTitle:u("\u8981\u96e2\u958b\u672c\u6b21\u6f5b\u822a\u55ce\uff1f"),
+    quitCopy:u("\u6d77\u57df {zone}/{total}\u3001\u6253\u6488 {salvage}/{target}\u3001\u6c27\u6c23 {oxygen}/{max} \u7684\u672c\u8f2a\u9032\u5ea6\u5c07\u4e1f\u5931\u3002"),
+    quitKeep:u("\u7e7c\u7e8c\u6f5b\u822a"),
+    quitLeave:u("\u96e2\u958b\u672c\u8f2a")
+  });
   let locale = localStorage.getItem("weightPlayLocale") || "en";
   const storedSave = JSON.parse(localStorage.getItem(saveKey)||"{}");
   let save = { rank:1, coins:0, unlocked:1, level:1, xp:0, statPoints:0, ...storedSave };
@@ -312,7 +324,7 @@
     });
   }
   function resumeDiveAsync(){
-    if(!diveSuspended||document.hidden||$("battleShell").classList.contains("hidden")||!$("result").classList.contains("hidden"))return;
+    if(!diveSuspended||document.hidden||$("battleShell").classList.contains("hidden")||!$("result").classList.contains("hidden")||!$("quitPanel").classList.contains("hidden"))return;
     diveSuspended=false;
     diveTimers.forEach(task=>{if(task.session===diveSession&&!task.timer)armDiveTask(task);});
   }
@@ -338,6 +350,8 @@
   const estimateMarkup = outcome => `<span class="metric">${icon("salvage")}<em>${t("shortLoot")}</em>${pips(outcome.intel.loot)}</span><span class="metric">${icon("danger")}<em>${t("shortDanger")}</em>${pips(outcome.intel.danger)}</span><span class="metric metric-oxygen">${icon("oxygen")}<em>${t("shortOxygen")}</em><b>${outcome.intel.cost}</b></span>`;
   const combatDiver=document.createElement("div");combatDiver.className="combat-diver";combatDiver.innerHTML='<img src="../../assets/animal-abyss-diver-nori.png" alt="Nori">';$("fishEncounter").prepend(combatDiver);
   const upgradePanel=document.createElement("section");upgradePanel.id="upgradePanel";upgradePanel.className="upgrade-panel hidden";upgradePanel.setAttribute("role","dialog");upgradePanel.setAttribute("aria-modal","true");upgradePanel.setAttribute("aria-labelledby","upgradeTitle");upgradePanel.setAttribute("aria-describedby","upgradeSummary");upgradePanel.innerHTML='<h2 id="upgradeTitle"></h2><strong id="upgradePoints"></strong><output id="upgradeSummary" aria-live="polite" aria-atomic="true"></output><div><button id="upgradeHp" type="button"></button><button id="upgradeAttack" type="button"></button><button id="upgradeOxygen" type="button"></button></div><button id="upgradeDone" class="primary" type="button"></button>';$("diveField").append(upgradePanel);
+  const quitPanel=document.createElement("section");quitPanel.id="quitPanel";quitPanel.className="quit-panel hidden";quitPanel.setAttribute("role","dialog");quitPanel.setAttribute("aria-modal","true");quitPanel.setAttribute("aria-labelledby","quitTitle");quitPanel.setAttribute("aria-describedby","quitCopy");quitPanel.innerHTML='<div class="quit-card"><h2 id="quitTitle"></h2><p id="quitCopy"></p><div><button id="quitKeep" class="primary" type="button"></button><button id="quitLeave" class="secondary" type="button"></button></div></div>';document.querySelector(".battle-canvas").append(quitPanel);
+  const quitStylesheet=document.createElement("link");quitStylesheet.rel="stylesheet";quitStylesheet.href="quit-confirmation.css";document.head.append(quitStylesheet);
   function setFeedback(markup,label){$("feedback").innerHTML=markup;$("feedback").setAttribute("aria-label",label);}
   function renderCoach(){
     $("coachStep1").innerHTML=`<div>${estimateMarkup(outcomes.relic)}</div><small>${t("coachVisual1")}</small>`;$("coachStep1").setAttribute("aria-label",t("coachStep1"));
@@ -358,6 +372,35 @@
     const cards=[...document.querySelectorAll("#routeRail .route-card:not(:disabled)")];
     (cards[Math.max(0,Math.min(cards.length-1,route-1))]||cards[0])?.focus({preventScroll:true});
   });}
+  function quitBackgroundNodes(){return [...document.querySelectorAll(".battle-canvas > :not(#quitPanel):not(#result)")];}
+  function renderQuit(){
+    const route=routes[Math.max(0,(state.route||1)-1)]||routes[0];
+    $("quitTitle").textContent=t("quitTitle");
+    $("quitCopy").textContent=t("quitCopy",{zone:state.zone||1,total:route.zones,salvage:state.salvage||0,target:route.target,oxygen:Math.max(0,Math.ceil(state.oxygen||0)),max:maxOxygen()});
+    $("quitKeep").textContent=t("quitKeep");
+    $("quitLeave").textContent=t("quitLeave");
+  }
+  function setQuit(open,{resume=false,focusBack=false}={}){
+    if(open){
+      clearBeaconConfirmation();
+      renderBattle();
+      renderQuit();
+      suspendDiveAsync();
+    }
+    $("quitPanel").classList.toggle("hidden",!open);
+    quitBackgroundNodes().forEach(node=>{node.inert=open;if(open)node.setAttribute("aria-hidden","true");else node.removeAttribute("aria-hidden");});
+    if(open){requestAnimationFrame(() => $("quitKeep").focus({preventScroll:true}));return;}
+    if(resume)resumeDiveAsync();
+    if(focusBack)$("battleBack").focus({preventScroll:true});
+    else if(resume)focusCurrentDiveDecision();
+  }
+  function leaveDive(){
+    setQuit(false);
+    cancelDiveAsync();
+    show("stageScreen");
+    renderRoutes();
+    focusRoute();
+  }
   function renderRoutes(){ $("routeRail").innerHTML=""; routes.forEach((route,index)=>{const n=index+1, card=document.createElement("button"),locked=n>save.unlocked;card.className=`route-card${n===state.route?" is-selected":""}`;card.disabled=locked;card.innerHTML=`<strong>${t("route",{n})}</strong><span>${t("relic")}: ${(locale === "zh-Hant" ? zh : en).relicNames[index]}</span><small>${t("zones",{n:route.zones})} · ${t("stageTarget",{n:route.target})} · ${t("risk",{n:route.risk})}</small><em>${t(locked?"locked":"routeAction")}</em>`;card.onclick=()=>start(n);$("routeRail").append(card);});}
   function routeConfig(){return routes[state.route-1];}
   function encounter(direction){const pair=routeConfig().encounters[state.zone-1];return outcomes[pair[direction==="left"?0:1]];}
@@ -555,7 +598,9 @@
   $("startBtn").onclick=()=>{show("stageScreen");renderRoutes();};$("stageBack").onclick=()=>show("mainScreen");$("battleBack").onclick=()=>{cancelDiveAsync();show("stageScreen");renderRoutes();};$("menuBtn").onclick=()=>show("mainScreen");$("leftBtn").onclick=()=>move("left");$("rightBtn").onclick=()=>move("right");$("dodgeLeftBtn").onclick=attackFish;$("pulseBtn").onclick=escapeFish;$("helpBtn").onclick=()=>setCoach(true);$("coachStart").addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault();});$("coachStart").onclick=()=>{save.tutorialDone=true;persist();setCoach(false);setFeedback(`${icon("sonar")}<b>?</b>`,t("objectiveScan"));};$("sonarBtn").onclick=()=>{if(state.sonar){setFeedback(`${icon("sonar")}<b>✓</b>`,sonarMessage());return;}if(state.battery<2){setFeedback(`${icon("power")}<b>0</b>`,t("sonarNeed"));return;}state.battery-=2;state.sonar=true;setFeedback(`${icon("sonar")}<b>✓</b>`,sonarMessage());renderBattle();};$("shieldBtn").onclick=()=>{if(state.shieldArmed)return;if(state.battery<1){setFeedback(`${icon("power")}<b>0</b>`,t("shieldNeed"));return;}state.battery-=1;state.shieldArmed=true;setFeedback(`${icon("shield")}<b>✓</b>`,t("shieldArmed"));renderBattle();focusCurrentDiveDecision();};$("surfaceBtn").onclick=()=>finish("surface");$("beaconBtn").addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault();});$("beaconBtn").onclick=useBeacon;["upgradeHp","upgradeAttack","upgradeOxygen"].forEach(id=>$(id).addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault();}));$("upgradeHp").onclick=()=>allocateStat("hp");$("upgradeAttack").onclick=()=>allocateStat("attack");$("upgradeOxygen").onclick=()=>allocateStat("oxygen");$("upgradeDone").onclick=()=>{setUpgradeModal(false);renderBattle();};$("localeSelect").onchange=(event)=>{locale=event.target.value;localStorage.setItem("weightPlayLocale",locale);localize();};
   $("startBtn").onclick=()=>{show("stageScreen");renderRoutes();focusRoute(save.unlocked);};
   $("stageBack").onclick=()=>{show("mainScreen");focusMain();};
-  $("battleBack").onclick=()=>{cancelDiveAsync();show("stageScreen");renderRoutes();focusRoute();};
+  $("battleBack").onclick=()=>setQuit(true);
+  $("quitKeep").onclick=()=>setQuit(false,{resume:true});
+  $("quitLeave").onclick=leaveDive;
   $("menuBtn").onclick=()=>{localize();show("mainScreen");focusMain();};
   document.addEventListener("visibilitychange",()=>{if(document.hidden)suspendDiveAsync();else resumeDiveAsync();});
   window.addEventListener("pagehide",suspendDiveAsync);
@@ -563,6 +608,7 @@
   $("upgradePanel").addEventListener("keydown",event=>{if(event.key!=="Tab"||$("upgradePanel").classList.contains("hidden"))return;const choices=[...$("upgradePanel").querySelectorAll("button:not(:disabled)")];if(!choices.length)return;const first=choices[0],last=choices.at(-1);if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}});
   $("fishEncounter").addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault();});
   $("result").addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" ")){event.preventDefault();return;}if(event.key!=="Tab"||$("result").classList.contains("hidden"))return;const first=$("nextBtn"),last=$("menuBtn");if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}});
+  $("quitPanel").addEventListener("keydown",event=>{if($("quitPanel").classList.contains("hidden"))return;if(event.repeat&&(event.key==="Enter"||event.key===" ")){event.preventDefault();return;}if(event.key==="Escape"){event.preventDefault();setQuit(false,{resume:true,focusBack:true});return;}if(event.key!=="Tab")return;const first=$("quitKeep"),last=$("quitLeave");if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}});
   for(const direction of ["left","right"]){$(`${direction}Gate`).addEventListener("keydown",event=>{if(event.key!=="Enter"&&event.key!==" ")return;event.preventDefault();if(event.repeat)return;if($(`${direction}Gate`).getAttribute("aria-disabled")!=="true")move(direction);});}
   let drag;
   let suppressRouteClickUntil = 0;

@@ -1566,7 +1566,7 @@
     if (terrain.type === "snare") hero.snared = true;
     if (terrain.type === "burn") {
       hero.hp = Math.max(0, hero.hp - 1);
-      playFx("attack-hit", hero.x, hero.y);
+      playFx("attack-hit", hero.x, hero.y, { value: -1 });
       log("terrainBurnHit", { hero: t(hero.name) });
       tryAutoRevive(hero);
     }
@@ -1854,6 +1854,7 @@
       state.selected = hero.id;
       applyHeroTerrain(hero);
       playFx("dust-burst", x, y);
+      playCue("click");
       log("moveReady", { hero: t(hero.name) });
       render();
       checkEnd();
@@ -1892,16 +1893,22 @@
       state.chainTarget = null;
     }
     markActed(hero);
-    playFx(isSkill ? "rune-burst" : "attack-hit", enemy.x, enemy.y);
+    playFx(isSkill ? "rune-burst" : "attack-hit", enemy.x, enemy.y, { value: -damage });
+    playCue(isSkill ? "shoot" : "hit");
     log(blockedByStoneHide ? "stagArmorHit" : isSkill ? "skillUsed" : "attacked", { hero: t(hero.name), enemy: t(enemy.name) });
     if (chainBonus > 0 && damage > 0) {
-      playFx("rune-burst", enemy.x, enemy.y);
+      playFx("rune-burst", enemy.x, enemy.y, { value: chainBonus, chain: true });
+      playCue("success");
       log("runeChain", { count: state.chainCount, bonus: chainBonus });
     }
-    if (enemy.hp <= 0) enemy.hp = 0;
+    if (enemy.hp <= 0) {
+      enemy.hp = 0;
+      playCue("enemyDown");
+    }
     if (enemy.id === "boar" && enemy.hp > 0 && distance(hero, enemy) <= 1) {
       hero.hp = Math.max(0, hero.hp - 1);
-      playFx("attack-hit", hero.x, hero.y);
+      playFx("attack-hit", hero.x, hero.y, { value: -1 });
+      playCue("wrong");
       log("boarCounterHit", { hero: t(hero.name) });
       tryAutoRevive(hero);
     }
@@ -1923,6 +1930,7 @@
     hero.guard = true;
     markActed(hero);
     playFx("guard-shield", hero.x, hero.y);
+    playCue("upgrade");
     log("guarded", { hero: t(hero.name) });
     render();
     checkEnd();
@@ -1940,11 +1948,13 @@
     hero.energy -= 1;
     if (hero.id === "turtle") {
       livingHeroes().forEach((h) => {
+        const before = h.hp;
         h.guard = true;
         h.hp = Math.min(h.maxHp, h.hp + 1);
+        playFx("healing-swirl", h.x, h.y, { value: h.hp > before ? 1 : null });
       });
       markActed(hero);
-      playFx("healing-swirl", hero.x, hero.y);
+      playCue("success");
       log("skillUsed", { hero: t(hero.name) });
       render();
       checkEnd();
@@ -1996,7 +2006,8 @@
     if (markedBonus) target.marked = false;
     const damage = Math.max(1, amount + markedBonus - (target.guard ? 1 : 0));
     target.hp = Math.max(0, target.hp - damage);
-    playFx("attack-hit", target.x, target.y);
+    playFx("attack-hit", target.x, target.y, { value: -damage });
+    playCue("wrong");
     tryAutoRevive(target);
     if (key) log(key, { enemy: t(enemy.name), hero: t(target.name) });
     return damage;
@@ -2039,6 +2050,8 @@
       enemy.phasesTriggered += 1;
       const phase = enemy.phasesTriggered;
       state.phaseEvents.push({ boss: enemy.id, phase, turn: state.turn });
+      playFx("rune-burst", enemy.x, enemy.y);
+      playCue("boss");
       if (enemy.bossKit === "stag") {
         enemy.armorReady = true;
         livingHeroes().filter((hero) => hero.y === enemy.y).forEach((hero) => damageHero(hero, 1 + phase, enemy));
@@ -2208,11 +2221,17 @@
   function showReward() {
     if (!state || livingEnemies().length) return;
     clearTurnTransition();
+    state.phase = "reward";
     playFx("mission-clear", 2, 1);
-    setBattleCovered(true);
-    setPauseActionAvailable(false);
-    nodes.rewardPanel.classList.remove("is-hidden");
-    renderRewards(false);
+    playCue("win");
+    render();
+    window.setTimeout(() => {
+      if (!state || state.phase !== "reward" || livingEnemies().length) return;
+      setBattleCovered(true);
+      setPauseActionAvailable(false);
+      nodes.rewardPanel.classList.remove("is-hidden");
+      renderRewards(false);
+    }, 320);
   }
 
   function renderRewards(isReroll) {
@@ -2313,15 +2332,30 @@
     requestAnimationFrame(() => (nodes.nextBtn.disabled ? nodes.retryBtn : nodes.nextBtn).focus({ preventScroll: true }));
   }
 
-  function playFx(name, x, y) {
+  function playCue(name) {
+    window.WonderSound?.play?.(name);
+  }
+
+  function playFx(name, x, y, options = {}) {
     const fx = document.createElement("img");
-    fx.className = "fx";
+    fx.className = `fx fx-${name}`;
     fx.src = asset(`animal-rune-tactics-fx-${name}.webp`);
     fx.alt = "";
-    fx.style.left = `${((x + 0.5) / cols) * 84 + 8}%`;
-    fx.style.top = `${((y + 0.5) / rows) * 84 + 8}%`;
+    const left = `${((x + 0.5) / cols) * 84 + 8}%`;
+    const top = `${((y + 0.5) / rows) * 84 + 8}%`;
+    fx.style.left = left;
+    fx.style.top = top;
     nodes.fxLayer.appendChild(fx);
     setTimeout(() => fx.remove(), 620);
+    if (Number.isFinite(options.value) && options.value !== 0) {
+      const value = document.createElement("span");
+      value.className = `fx-value ${options.value > 0 ? "is-positive" : "is-damage"}${options.chain ? " is-chain" : ""}`;
+      value.textContent = `${options.value > 0 ? "+" : ""}${options.value}`;
+      value.style.left = left;
+      value.style.top = top;
+      nodes.fxLayer.appendChild(value);
+      setTimeout(() => value.remove(), 780);
+    }
   }
 
   function log(key, vars) {

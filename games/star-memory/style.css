@@ -505,12 +505,16 @@ body:not(.memory-stage):not(.memory-playing) .language-picker select {
 
 .card-grid {
   display: grid;
-  width: 100%;
-  max-width: 380px;
-  max-height: calc(100vh - 240px);
+  flex: 0 0 auto;
+  width: var(--memory-board-width, 232px);
+  height: var(--memory-board-height, 232px);
+  max-width: none;
+  max-height: none;
   gap: 10px;
   justify-content: center;
   align-content: center;
+  transform: scale(var(--memory-board-scale, 1));
+  transform-origin: center;
 }
 
 /* Card Styling */
@@ -524,10 +528,11 @@ body:not(.memory-stage):not(.memory-playing) .language-picker select {
   font: inherit;
   perspective: 600px;
   cursor: pointer;
+  width: 112px;
+  height: 112px;
   aspect-ratio: 1 / 1;
   position: relative;
   user-select: none;
-  width: 100%;
 }
 
 .card:focus-visible {
@@ -1047,7 +1052,7 @@ body.memory-playing .game-board-panel {
 }
 
 body.memory-playing .card-grid {
-  max-height: 590px;
+  max-height: none;
 }
 
 body.memory-playing .feedback {
@@ -1135,9 +1140,10 @@ body.memory-playing.memory-expanded-canvas .game-board-panel {
 }
 
 body.memory-playing.memory-expanded-canvas .card-grid {
-  width: min(100%, calc((var(--memory-frame-height, 780px) - 128px) * 0.82));
-  max-width: 520px;
-  max-height: 100%;
+  width: var(--memory-board-width, 232px);
+  height: var(--memory-board-height, 232px);
+  max-width: none;
+  max-height: none;
   gap: 8px;
 }
 
@@ -1193,7 +1199,8 @@ body.memory-playing.memory-expanded-canvas .wp-tutorial-button {
   }
 
   body.memory-playing.memory-expanded-canvas .card-grid {
-    width: min(100%, calc(var(--memory-frame-height, 320px) - 132px));
+    width: var(--memory-board-width, 232px);
+    height: var(--memory-board-height, 232px);
     gap: 6px;
   }
 

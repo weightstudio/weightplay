@@ -731,15 +731,18 @@ function restart() {
 
 const BATTLE_LOGICAL_WIDTH = 390;
 const BATTLE_LOGICAL_HEIGHT = 788;
-const BATTLE_AD_HEIGHT = 56;
 
 function updateBattleShell() {
   if (!document.body.classList.contains("wonder-playing")) return;
+  const width = Math.max(1, window.innerWidth);
+  const height = Math.max(1, window.innerHeight);
   const scale = Math.min(
-    Math.max(0, window.innerWidth - 8) / BATTLE_LOGICAL_WIDTH,
-    Math.max(0, window.innerHeight - BATTLE_AD_HEIGHT - 8) / BATTLE_LOGICAL_HEIGHT
+    Math.max(1, width) / BATTLE_LOGICAL_WIDTH,
+    Math.max(1, height) / BATTLE_LOGICAL_HEIGHT
   );
   document.documentElement.style.setProperty("--wonder-battle-scale", String(scale));
+  document.documentElement.style.setProperty("--wonder-battle-logical-width", `${width / scale}px`);
+  document.documentElement.style.setProperty("--wonder-battle-logical-height", `${height / scale}px`);
 }
 
 function setBattleShellActive(active) {

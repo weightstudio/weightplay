@@ -2105,6 +2105,7 @@
     displayIntent(state.enemy.intents[state.enemyIntentIndex]);
     renderStats();
     renderHand();
+    focusBattleDecision(0);
   }
 
   function handleBattleWin() {
@@ -2819,6 +2820,11 @@
       window.WonderSound?.play("click");
       endPlayerTurn();
     });
+    const rejectRepeatedBattleActivation = (event) => {
+      if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
+    };
+    nodes.endTurnBtn.addEventListener("keydown", rejectRepeatedBattleActivation);
+    nodes.handRow.addEventListener("keydown", rejectRepeatedBattleActivation);
     nodes.draftPanel.addEventListener("keydown", (event) => {
       if (event.repeat && (event.key === "Enter" || event.key === " ")) {
         event.preventDefault();

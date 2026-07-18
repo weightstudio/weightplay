@@ -1590,7 +1590,7 @@ body.is-bakery-playing .order-progress span {
   }
 }
 
-/* Fixed logical Stage/Battle frame; keep after legacy viewport rules. */
+/* Responsive Kids Stage/Battle envelope; keep after legacy viewport rules. */
 html:has(body.is-bakery-playing),
 html:has(body.is-bakery-stage-select),
 body.is-bakery-playing,
@@ -1610,10 +1610,10 @@ body.is-bakery-stage-select .bakery-game {
   z-index: 50;
   left: var(--bakery-frame-left, 4px);
   top: var(--bakery-frame-top, 4px);
-  width: 390px;
+  width: var(--bakery-logical-width, 390px);
   max-width: none;
-  height: 788px;
-  min-height: 788px;
+  height: var(--bakery-logical-height, 788px);
+  min-height: var(--bakery-logical-height, 788px);
   max-height: none;
   margin: 0;
   transform: scale(var(--bakery-frame-scale, 1));
@@ -1663,7 +1663,8 @@ body.is-bakery-playing #playPanel.play-panel {
 }
 
 body.is-bakery-playing .bubble-board {
-  width: min(100%, 455px) !important;
+  box-sizing: border-box !important;
+  width: min(100%, calc((var(--wp-battle-logical-height, var(--bakery-logical-height, 788px)) - 138px) * 0.7)) !important;
   height: auto !important;
   max-width: 100% !important;
   max-height: 100% !important;
@@ -1672,6 +1673,26 @@ body.is-bakery-playing .bubble-board {
   aspect-ratio: 7 / 10 !important;
   align-self: center;
   justify-self: center;
+}
+
+body.is-bakery-playing #playPanel.play-panel #board.bubble-board {
+  box-sizing: border-box !important;
+  width: auto !important;
+  height: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  aspect-ratio: 7 / 10 !important;
+  align-self: center !important;
+  justify-self: center !important;
+}
+
+@media (max-aspect-ratio: 11 / 20) {
+  body.is-bakery-playing #playPanel.play-panel #board.bubble-board {
+    width: 100% !important;
+    height: auto !important;
+  }
 }
 
 body.is-bakery-playing .hint-text {

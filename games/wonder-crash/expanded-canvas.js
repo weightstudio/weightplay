@@ -33,9 +33,8 @@
   }
 
   function updateViewport() {
-    const viewport = window.visualViewport;
-    const width = viewport?.width >= window.innerWidth * 0.75 ? viewport.width : window.innerWidth;
-    const height = viewport?.height >= window.innerHeight * 0.75 ? viewport.height : window.innerHeight;
+    const width = Math.max(1, window.innerWidth);
+    const height = Math.max(1, window.innerHeight);
     document.documentElement.style.setProperty("--wonder-vw", `${width}px`);
     document.documentElement.style.setProperty("--wonder-vh", `${height}px`);
     const playing = document.body.classList.contains("wonder-playing");
@@ -44,15 +43,38 @@
       width / BATTLE_LOGICAL_WIDTH,
       height / BATTLE_LOGICAL_HEIGHT
     );
+    const menuLogicalWidth = width / menuScale;
+    const menuLogicalHeight = height / menuScale;
+    const battleLogicalWidth = width / battleScale;
+    const battleLogicalHeight = height / battleScale;
+    const shell = document.querySelector(".game-shell");
+    const selectingStage = document.body.classList.contains("wonder-stage-select") && !playing;
     document.documentElement.style.setProperty("--wonder-shell-scale", String(menuScale));
     document.documentElement.style.setProperty("--wonder-menu-rendered-width", `${MENU_LOGICAL_WIDTH * menuScale}px`);
     document.documentElement.style.setProperty("--wonder-menu-rendered-height", `${MENU_LOGICAL_HEIGHT * menuScale}px`);
-    if (playing) document.documentElement.style.setProperty("--wonder-battle-scale", String(battleScale));
+    document.documentElement.style.setProperty("--wonder-stage-logical-width", `${menuLogicalWidth}px`);
+    document.documentElement.style.setProperty("--wonder-stage-logical-height", `${menuLogicalHeight}px`);
+    if (selectingStage) shell?.setAttribute("data-wp-logical-stage-canvas", `${menuLogicalWidth.toFixed(3)}x${menuLogicalHeight.toFixed(3)}`);
+    else shell?.removeAttribute("data-wp-logical-stage-canvas");
+    if (playing) {
+      document.documentElement.style.setProperty("--wonder-battle-scale", String(battleScale));
+      document.documentElement.style.setProperty("--wonder-battle-logical-width", `${battleLogicalWidth}px`);
+      document.documentElement.style.setProperty("--wonder-battle-logical-height", `${battleLogicalHeight}px`);
+      shell?.setAttribute("data-wp-logical-battle-canvas", `${battleLogicalWidth.toFixed(3)}x${battleLogicalHeight.toFixed(3)}`);
+    } else {
+      shell?.removeAttribute("data-wp-logical-battle-canvas");
+    }
   }
 
   function settleViewportAfterSceneChange() {
     updateViewport();
-    requestAnimationFrame(() => requestAnimationFrame(updateViewport));
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      updateViewport();
+      if (document.body.classList.contains("wonder-playing")
+        && document.querySelector("#overlay")?.classList.contains("hidden")) {
+        document.querySelector("#game")?.focus({ preventScroll: true });
+      }
+    }));
   }
 
   updateViewport();

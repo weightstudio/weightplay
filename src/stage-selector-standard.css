@@ -663,8 +663,8 @@ body.wonder-stage-select #game {
 
 body.wonder-stage-select #overlay {
   inset: 0 !important;
-  width: 390px !important;
-  height: calc(390px * 16 / 9) !important;
+  width: 100% !important;
+  height: 100% !important;
   gap: 12px;
   padding: 12px 24px 96px;
 }
@@ -675,8 +675,12 @@ body.wonder-stage-select #menuContent {
 }
 
 body.wonder-stage-select #menuTabs {
+  right: auto;
+  left: 50%;
+  width: 342px;
   grid-template-columns: repeat(5, 66px);
   justify-content: center;
+  transform: translateX(-50%);
 }
 
 body.wonder-stage-select #menuTabs button {

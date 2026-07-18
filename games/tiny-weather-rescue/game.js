@@ -633,6 +633,8 @@
         pointerId: event.pointerId,
         startX: event.clientX,
         startY: event.clientY,
+        lastX: event.clientX,
+        lastY: event.clientY,
         moved: false,
         ghost: null,
         button,
@@ -643,23 +645,14 @@
       if (!dragState || dragState.tool !== button.dataset.tool) return;
       const dx = event.clientX - dragState.startX;
       const dy = event.clientY - dragState.startY;
+      dragState.lastX = event.clientX;
+      dragState.lastY = event.clientY;
       if (Math.hypot(dx, dy) > 8) dragState.moved = true;
       if (dragState.moved && !dragState.ghost) dragState.ghost = makeGhost(dragState.button, event.clientX, event.clientY);
       moveGhost(event.clientX, event.clientY);
       nodes.board.querySelector(".animal-zone")?.classList.toggle("drag-over", isOverAnimal(event.clientX, event.clientY));
     });
-    button.addEventListener("pointerup", (event) => {
-      if (!dragState || dragState.tool !== button.dataset.tool) return;
-      if (dragState.moved) {
-        button.dataset.skipClick = "1";
-        window.setTimeout(() => {
-          delete button.dataset.skipClick;
-        }, 0);
-      }
-      const shouldDrop = dragState.moved && isOverAnimal(event.clientX, event.clientY);
-      cleanupDrag();
-      if (shouldDrop) chooseTool(button.dataset.tool, button);
-    });
+    button.addEventListener("pointerup", finishToolDrag);
     button.addEventListener("pointercancel", cleanupDrag);
     button.addEventListener("lostpointercapture", () => {
       requestAnimationFrame(() => {
@@ -667,6 +660,24 @@
       });
     });
   }
+
+  function finishToolDrag(event) {
+    const activeDrag = dragState;
+    if (!activeDrag || activeDrag.pointerId !== event.pointerId) return;
+    const releaseX = Number.isFinite(event.clientX) ? event.clientX : activeDrag.lastX;
+    const releaseY = Number.isFinite(event.clientY) ? event.clientY : activeDrag.lastY;
+    if (activeDrag.moved) {
+      activeDrag.button.dataset.skipClick = "1";
+      window.setTimeout(() => {
+        delete activeDrag.button.dataset.skipClick;
+      }, 0);
+    }
+    const shouldDrop = activeDrag.moved && isOverAnimal(releaseX, releaseY);
+    cleanupDrag();
+    if (shouldDrop) chooseTool(activeDrag.tool, activeDrag.button);
+  }
+
+  window.addEventListener("pointerup", finishToolDrag, true);
 
   function makeGhost(button, x, y) {
     const ghost = document.createElement("div");

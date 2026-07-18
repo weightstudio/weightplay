@@ -177,14 +177,20 @@
   function spendDiamonds(cost){return Boolean(window.WeightPlayWallet?.spendDiamonds?.(cost))}
   function createOffers(){return Object.keys(gadgets).map(id=>({id,level:1+Math.floor(Math.random()*3)}))}
   function selectedOffer(){return gadgetOffers.find(offer=>offer.id===gadget)||gadgetOffers[0]}
-  let economyFeedbackTimer=0,pendingEconomy="",pendingEconomyTimer=0;
+  let economyFeedbackTimer=0,pendingEconomy="",pendingEconomyTimer=0,pendingEconomyDeadline=0,pendingEconomyRemaining=0;
   function gadgetEffect(id,level){
     if(id==="dash")return t("dashEffect",{ms:Math.max(180,320-level*45)});
     if(id==="decoy")return t("decoyEffect",{seconds:(2.5+level*.65).toFixed(2).replace(/0$/,"")});
     return t("smokeEffect",{seconds:(.8+level*.5).toFixed(1)});
   }
   function gadgetSummary(id=gadget,level=selectedOffer().level){return `${t(id)} Lv.${level} · ${gadgetEffect(id,level)}`}
-  function clearPendingEconomy({render=true}={}){clearTimeout(pendingEconomyTimer);pendingEconomy="";if(render)renderEconomy()}
+  function clearPendingEconomy({render=true}={}){clearTimeout(pendingEconomyTimer);pendingEconomyTimer=0;pendingEconomyDeadline=0;pendingEconomyRemaining=0;pendingEconomy="";if(render)renderEconomy()}
+  function schedulePendingEconomyExpiry(delay){
+    clearTimeout(pendingEconomyTimer);pendingEconomyRemaining=Math.max(0,delay);pendingEconomyDeadline=performance.now()+pendingEconomyRemaining;
+    pendingEconomyTimer=setTimeout(()=>{pendingEconomyTimer=0;pendingEconomyDeadline=0;pendingEconomyRemaining=0;pendingEconomy="";renderEconomy();renderGadgetSummary()},pendingEconomyRemaining);
+  }
+  function suspendPendingEconomy(){if(!pendingEconomy||!pendingEconomyTimer)return;pendingEconomyRemaining=Math.max(0,pendingEconomyDeadline-performance.now());clearTimeout(pendingEconomyTimer);pendingEconomyTimer=0;pendingEconomyDeadline=0}
+  function resumePendingEconomy(){if(pendingEconomy&&!pendingEconomyTimer)schedulePendingEconomyExpiry(pendingEconomyRemaining)}
   function renderGadgetSummary(){clearTimeout(economyFeedbackTimer);$("#economyFeedback").textContent=gadgetSummary()}
   function economyMessage(message=""){clearTimeout(economyFeedbackTimer);$("#economyFeedback").textContent=message||gadgetSummary();if(message)economyFeedbackTimer=setTimeout(renderGadgetSummary,1600)}
   function renderEconomy(){
@@ -203,7 +209,7 @@
     if(balance<cost){clearPendingEconomy();economyMessage(`${t("notEnough")} ${t("diamonds")}: ${balance}/${cost}.`);return false}
     clearTimeout(economyFeedbackTimer);clearTimeout(pendingEconomyTimer);pendingEconomy=action;renderEconomy();
     $("#economyFeedback").textContent=t(messageKey,{before:balance,after:balance-cost});
-    pendingEconomyTimer=setTimeout(()=>{clearPendingEconomy();renderGadgetSummary()},5000);
+    schedulePendingEconomyExpiry(5000);
     return true;
   }
   function rerollOffers(){
@@ -371,7 +377,7 @@
     $("#battleBackBtn").addEventListener("click",()=>{show("stage");renderStage();focusMission(selectedMission)});
     $("#pauseBtn").addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault()});
     $("#pauseBtn").addEventListener("click",()=>setPaused(!paused));
-    document.addEventListener("visibilitychange",()=>{if(document.hidden&&playing&&!paused)setPaused(true)});
+    document.addEventListener("visibilitychange",()=>{if(document.hidden){suspendPendingEconomy();if(playing&&!paused)setPaused(true)}else resumePendingEconomy()});
     nodes.field.addEventListener("pointerdown",e=>{if(!playing||paused||e.isPrimary===false||(e.button!==undefined&&e.button!==0)||(routePointerId!==null&&routePointerId!==e.pointerId))return;routePointerId=e.pointerId;nodes.field.setPointerCapture(e.pointerId);routeTo(e.clientX,e.clientY)});
     nodes.field.addEventListener("pointermove",e=>{if(!paused&&e.pointerId===routePointerId&&nodes.field.hasPointerCapture(e.pointerId))routeTo(e.clientX,e.clientY)});
     nodes.field.addEventListener("pointerup",e=>{if(e.pointerId!==routePointerId||(e.pointerType==="mouse"&&e.button!==0))return;if(!paused&&preview)routeTo(e.clientX,e.clientY,true);cancelRoutePreview()});
