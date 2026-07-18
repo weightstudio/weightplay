@@ -39,6 +39,7 @@
   const loadingPanel = document.querySelector("#loadingPanel");
   const loadingText = document.querySelector("#loadingText");
   const loadingFill = document.querySelector("#loadingFill");
+  const lunchGame = document.querySelector(".lunch-game");
   const GAME_ID = "color-lunchbox";
   const UNLOCK_KEY = "colorLunchboxUnlockedStage";
   const PROGRESS_KEY = "weightplay_color_lunchbox_progress";
@@ -580,13 +581,19 @@
     const viewportWidth = visualViewport?.width || innerWidth;
     const viewportHeight = visualViewport?.height || innerHeight;
     const scale = Math.min(Math.max(1, viewportWidth) / 390, Math.max(1, viewportHeight) / 788);
-    const width = 390 * scale;
-    const height = 788 * scale;
+    const logicalWidth = viewportWidth / scale;
+    const logicalHeight = viewportHeight / scale;
     document.documentElement.style.setProperty("--lunch-frame-scale", String(scale));
-    document.documentElement.style.setProperty("--lunch-frame-left", `${(viewportWidth - width) / 2}px`);
-    document.documentElement.style.setProperty("--lunch-frame-top", `${viewportHeight - height}px`);
-    document.documentElement.style.setProperty("--lunch-frame-width", `${width}px`);
-    document.documentElement.style.setProperty("--lunch-frame-height", `${height}px`);
+    document.documentElement.style.setProperty("--lunch-frame-left", "0px");
+    document.documentElement.style.setProperty("--lunch-frame-top", "0px");
+    document.documentElement.style.setProperty("--lunch-logical-width", `${logicalWidth}px`);
+    document.documentElement.style.setProperty("--lunch-logical-height", `${logicalHeight}px`);
+    document.documentElement.style.setProperty("--lunch-frame-width", `${viewportWidth}px`);
+    document.documentElement.style.setProperty("--lunch-frame-height", `${viewportHeight}px`);
+    lunchGame.dataset.wpCommonScale = String(scale);
+    lunchGame.dataset.wpLogicalWidth = String(logicalWidth);
+    lunchGame.dataset.wpLogicalHeight = String(logicalHeight);
+    lunchGame.dataset.wpLogicalBattleCanvas = `${logicalWidth.toFixed(3)}x${logicalHeight.toFixed(3)}`;
   }
 
   function exitSharedPlayViewport() {

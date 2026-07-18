@@ -441,27 +441,6 @@
     }
   }
 
-  const legacyBattleCanvasProperties = [
-    "position", "inset", "top", "left", "width", "min-width", "max-width",
-    "height", "min-height", "max-height", "margin", "transform", "transform-origin", "overflow",
-  ];
-
-  function clearLegacyBattleCanvasOverride() {
-    const frame = document.querySelector(".dash-game");
-    if (!frame?.hasAttribute("data-wp-logical-battle-canvas")) return;
-    frame.removeAttribute("data-wp-logical-battle-canvas");
-    legacyBattleCanvasProperties.forEach((property) => frame.style.removeProperty(property));
-  }
-
-  const dashFrame = document.querySelector(".dash-game");
-  if (dashFrame) {
-    new MutationObserver(() => {
-      if (!dashFrame.hasAttribute("data-wp-logical-battle-canvas")) return;
-      clearLegacyBattleCanvasOverride();
-      updateDashFrame();
-    }).observe(dashFrame, { attributes: true, attributeFilter: ["data-wp-logical-battle-canvas"] });
-  }
-
   function exitSharedPlayViewport() {
     window.WeightPlayGame?.exitMobileGameMode?.();
     document.body.classList.remove("weightplay-active-viewport", "wp-mobile-game-mode");

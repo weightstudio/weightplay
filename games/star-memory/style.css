@@ -962,12 +962,12 @@ body.memory-playing.weightplay-active-viewport .memory-game {
   inset: auto !important;
   left: var(--memory-frame-left, 4px) !important;
   top: var(--memory-frame-top, 4px) !important;
-  width: 390px !important;
-  min-width: 390px !important;
-  max-width: 390px !important;
-  height: 788px !important;
-  min-height: 788px !important;
-  max-height: 788px !important;
+  width: var(--memory-logical-width, 390px) !important;
+  min-width: var(--memory-logical-width, 390px) !important;
+  max-width: var(--memory-logical-width, 390px) !important;
+  height: var(--memory-logical-height, 788px) !important;
+  min-height: var(--memory-logical-height, 788px) !important;
+  max-height: var(--memory-logical-height, 788px) !important;
   padding: 0 !important;
   margin: 0 !important;
   transform: scale(var(--memory-frame-scale, 1)) !important;

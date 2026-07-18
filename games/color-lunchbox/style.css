@@ -894,7 +894,7 @@ body.lunch-main .lunch-game {
   margin: 0 auto;
 }
 
-/* Fixed-ratio Kids Stage/Battle shell using the complete live viewport. */
+/* Responsive Kids Stage/Battle Canvas using the complete live viewport. */
 body.lunch-stage,
 body.lunch-playing {
   position: fixed !important;
@@ -914,12 +914,12 @@ body.lunch-playing.weightplay-active-viewport .lunch-game {
   inset: auto !important;
   left: var(--lunch-frame-left, 4px) !important;
   top: var(--lunch-frame-top, 4px) !important;
-  width: 390px !important;
-  min-width: 390px !important;
-  max-width: 390px !important;
-  height: 788px !important;
-  min-height: 788px !important;
-  max-height: 788px !important;
+  width: var(--lunch-logical-width, 390px) !important;
+  min-width: var(--lunch-logical-width, 390px) !important;
+  max-width: var(--lunch-logical-width, 390px) !important;
+  height: var(--lunch-logical-height, 788px) !important;
+  min-height: var(--lunch-logical-height, 788px) !important;
+  max-height: var(--lunch-logical-height, 788px) !important;
   margin: 0 !important;
   padding: 8px 10px !important;
   gap: 8px !important;

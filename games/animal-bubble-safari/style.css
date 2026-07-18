@@ -175,9 +175,9 @@ body:not(.safari-main) .screen.is-active.weightplay-active-viewport {
 .pause-actions .primary-button { background: linear-gradient(#ffe676,#ffc63b); }
 .pause-actions button:focus { outline: 4px solid #ffe676; outline-offset: 3px; box-shadow: 0 0 0 3px #173047; }
 
-.result-screen { position:absolute; inset:0; z-index:4; display:none; overflow:hidden; color: #fff; background: linear-gradient(rgba(9,29,43,.84), rgba(9,29,43,.92)), url("../../assets/animal-bubble-safari-bg.webp") center/cover; }
+.result-screen { position:absolute; inset:0; z-index:4; display:none; overflow-y:auto; overflow-x:hidden; color: #fff; background: linear-gradient(rgba(9,29,43,.84), rgba(9,29,43,.92)), url("../../assets/animal-bubble-safari-bg.webp") center/cover; }
 .result-screen.is-active { display:block; }
-.result-panel { width: 352px; height: 724px; margin: 32px auto; border-radius: 8px; border: 2px solid rgba(255,255,255,.32); background: rgba(21,52,76,.92); padding: 20px; text-align: center; display: grid; grid-template-rows: 148px 42px 42px 78px 64px 68px 1fr; gap: 8px; }
+.result-panel { box-sizing:border-box; width:min(352px,calc(100% - 16px)); height:min(704px,calc(100% - 16px)); min-height:374px; margin:8px auto; border-radius:8px; border:2px solid rgba(255,255,255,.32); background:rgba(21,52,76,.92); padding:20px; overflow-y:auto; text-align:center; display:grid; grid-template-rows:148px 42px 42px 78px 64px 68px minmax(0,1fr); gap:8px; }
 .result-mascot { width: 170px; height: 148px; object-fit: contain; margin: 0 auto; }
 .result-panel h2 { margin: 0; font-size: 27px; }
 .result-stars { font-size: 34px; color: #ffd34e; letter-spacing: 5px; }

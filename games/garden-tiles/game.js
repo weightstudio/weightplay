@@ -425,34 +425,50 @@
 
   function updateGardenFrame() {
     if (!document.body.classList.contains("garden-playing") && !document.body.classList.contains("garden-stage")) return;
-    if (document.body.classList.contains("garden-playing")
-      && document.querySelector('script[src*="battle-canvas-standard.js"]')) return;
     const viewport = window.visualViewport;
     const viewportWidth = viewport?.width || innerWidth;
     const viewportHeight = viewport?.height || innerHeight;
     const shell = document.querySelector(".garden-game");
+    const publishRenderedMetrics = () => {
+      if (!shell?.getClientRects().length) return;
+      const rect = shell.getBoundingClientRect();
+      const style = getComputedStyle(shell);
+      const logicalWidth = parseFloat(style.width) || shell.offsetWidth;
+      const logicalHeight = parseFloat(style.height) || shell.offsetHeight;
+      const scale = Math.min(rect.width / logicalWidth, rect.height / logicalHeight);
+      shell.dataset.wpCommonScale = String(scale);
+      shell.dataset.wpLogicalWidth = String(logicalWidth);
+      shell.dataset.wpLogicalHeight = String(logicalHeight);
+      shell.dataset.wpLogicalBattleCanvas = `${logicalWidth.toFixed(3)}x${logicalHeight.toFixed(3)}`;
+    };
+    if (document.body.classList.contains("garden-playing")
+      && document.querySelector('script[src*="battle-canvas-standard.js"]')) {
+      requestAnimationFrame(() => requestAnimationFrame(publishRenderedMetrics));
+      return;
+    }
     shell?.classList.remove("weightplay-active-viewport");
-    const logicalWidth = 390;
-    const logicalHeight = 788;
-    const scale = Math.max(0.1, Math.min((viewportWidth - 8) / logicalWidth, (viewportHeight - 8) / logicalHeight));
-    const width = logicalWidth * scale;
-    const contentHeight = logicalHeight * scale;
+    const scale = Math.max(0.1, Math.min(viewportWidth / 390, viewportHeight / 788));
+    const logicalWidth = viewportWidth / scale;
+    const logicalHeight = viewportHeight / scale;
     const root = document.documentElement.style;
     root.setProperty("--garden-frame-scale", String(scale));
-    root.setProperty("--garden-frame-width", `${width}px`);
-    root.setProperty("--garden-frame-height", `${contentHeight}px`);
-    root.setProperty("--garden-frame-left", `${Math.max(0, (viewportWidth - width) / 2)}px`);
-    root.setProperty("--garden-frame-top", `${Math.max(0, viewportHeight - contentHeight - 4)}px`);
+    root.setProperty("--garden-frame-width", `${viewportWidth}px`);
+    root.setProperty("--garden-frame-height", `${viewportHeight}px`);
+    root.setProperty("--garden-logical-width", `${logicalWidth}px`);
+    root.setProperty("--garden-logical-height", `${logicalHeight}px`);
+    root.setProperty("--garden-frame-left", `${viewport?.offsetLeft || 0}px`);
+    root.setProperty("--garden-frame-top", `${viewport?.offsetTop || 0}px`);
     shell?.style.setProperty("position", "fixed", "important");
     shell?.style.setProperty("inset", "auto", "important");
     shell?.style.setProperty("left", "var(--garden-frame-left)", "important");
     shell?.style.setProperty("top", "var(--garden-frame-top)", "important");
-    shell?.style.setProperty("width", "390px", "important");
-    shell?.style.setProperty("height", "788px", "important");
-    shell?.style.setProperty("min-height", "788px", "important");
+    shell?.style.setProperty("width", "var(--garden-logical-width)", "important");
+    shell?.style.setProperty("height", "var(--garden-logical-height)", "important");
+    shell?.style.setProperty("min-height", "var(--garden-logical-height)", "important");
     shell?.style.setProperty("max-height", "none", "important");
     shell?.style.setProperty("transform", "scale(var(--garden-frame-scale))", "important");
     shell?.style.setProperty("transform-origin", "top left", "important");
+    publishRenderedMetrics();
   }
 
   addEventListener("resize", updateGardenFrame, { passive: true });

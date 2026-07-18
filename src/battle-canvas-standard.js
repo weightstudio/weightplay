@@ -15,7 +15,7 @@
     "animal-orb-fortress": ["#gamePanel", 382, 780],
     "animal-quiz": [".animal-game", 390, 788],
     "animal-reef-fisher": [".battle-shell", 382, 780],
-    "animal-relic-hunters": [".game-layout", 382, 780],
+    "animal-relic-hunters": ["#gamePanel", 382, 780],
     "animal-rescue": [".rescue-game", 382, 780],
     "animal-rope-rescue": ["#gamePanel", 382, 780],
     "animal-rune-tactics": [".rune-app", 382, 780],
@@ -24,7 +24,7 @@
     "animal-zoo-idle": ["#gamePanel", 382, 780],
     "beast-deck": ["#gamePanel", 382, 780],
     "beast-tactician": ["#gamePanel", 382, 780],
-    "bubble-bakery": ["#playPanel", 382, 780],
+    "bubble-bakery": [".bakery-game", 382, 780],
     "campus-dash": [".dash-game", 382, 780],
     "color-lunchbox": [".lunch-game", 382, 780],
     "fruit-merge": [".fixed-game-shell", 382, 780],
@@ -35,7 +35,7 @@
     "star-memory": [".memory-game", 382, 780],
     "tiny-weather-rescue": [".weather-game", 366, 764],
     "wonder-crash": [".game-shell", 390, 788],
-    "zoo-helper-day": ["#playPanel", 374, 776],
+    "zoo-helper-day": [".zoo-game", 374, 776],
   };
   const gameId = location.pathname.match(/\/games\/([^/]+)/)?.[1] || "";
   const config = games[gameId];
@@ -189,7 +189,8 @@
       update();
     });
   };
-  const geometrySelector = `${config[0]},[data-wp-return="battle"],${reserveSelector}`;
+  const overlaySelector = '[role="dialog"],.result-panel,.result-overlay,.result-canvas,#resultPanel,#resultScreen,#resultModal,#result';
+  const geometrySelector = `${config[0]},[data-wp-return="battle"],${reserveSelector},${overlaySelector}`;
   const containsGeometryNode = (node) => node instanceof Element
     && (node.matches(geometrySelector) || Boolean(node.querySelector(geometrySelector)));
   const mutationAffectsGeometry = (record) => {

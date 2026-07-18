@@ -460,6 +460,10 @@
 
   function updateBattleViewport() {
     if (!document.body.classList.contains("zoo-helper-playing")) return;
+    // The shared Battle controller owns the single responsive envelope. Keeping
+    // this legacy viewport fitter active makes both controllers rewrite the
+    // shell on resize and can snap a landscape Result back to a centred frame.
+    if (document.querySelector('script[src*="battle-canvas-standard.js"]')) return;
     const viewport = window.visualViewport;
     const width = Math.round(Math.min(viewport?.width || window.innerWidth, window.innerWidth));
     const height = Math.max(0, Math.round(Math.min(viewport?.height || window.innerHeight, window.innerHeight)));

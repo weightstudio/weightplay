@@ -20,6 +20,7 @@
   const stageBackBtn = document.querySelector("#stageBackBtn");
   const battleBackBtn = document.querySelector("#battleBackBtn");
   const stageGrid = document.querySelector("#stageGrid");
+  const memoryGame = document.querySelector(".memory-game");
   
   const gameHud = document.querySelector("#gameHud");
   const levelIndicator = document.querySelector("#levelIndicator");
@@ -639,15 +640,21 @@
     const availableWidth = Math.max(1, viewportWidth);
     const availableHeight = Math.max(1, viewportHeight);
     const scale = Math.min(availableWidth / 390, availableHeight / 788);
-    const frameWidth = 390 * scale;
-    const frameHeight = 788 * scale;
-    const frameLeft = (viewportWidth - frameWidth) / 2;
-    const frameTop = viewportHeight - frameHeight;
+    const logicalWidth = availableWidth / scale;
+    const logicalHeight = availableHeight / scale;
+    const frameLeft = viewport?.offsetLeft || 0;
+    const frameTop = viewport?.offsetTop || 0;
     document.documentElement.style.setProperty("--memory-frame-scale", String(scale));
     document.documentElement.style.setProperty("--memory-frame-left", `${frameLeft}px`);
     document.documentElement.style.setProperty("--memory-frame-top", `${frameTop}px`);
-    document.documentElement.style.setProperty("--memory-frame-width", `${frameWidth}px`);
-    document.documentElement.style.setProperty("--memory-frame-height", `${frameHeight}px`);
+    document.documentElement.style.setProperty("--memory-frame-width", `${availableWidth}px`);
+    document.documentElement.style.setProperty("--memory-frame-height", `${availableHeight}px`);
+    document.documentElement.style.setProperty("--memory-logical-width", `${logicalWidth}px`);
+    document.documentElement.style.setProperty("--memory-logical-height", `${logicalHeight}px`);
+    memoryGame.dataset.wpCommonScale = String(scale);
+    memoryGame.dataset.wpLogicalWidth = String(logicalWidth);
+    memoryGame.dataset.wpLogicalHeight = String(logicalHeight);
+    memoryGame.dataset.wpLogicalBattleCanvas = `${logicalWidth}x${logicalHeight}`;
   }
 
   function exitSharedPlayViewport() {

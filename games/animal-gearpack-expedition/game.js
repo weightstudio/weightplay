@@ -1,6 +1,9 @@
 (() => {
   "use strict";
 
+  const battleModal = document.querySelector("#modal");
+  if (battleModal) document.querySelector("#battleScreen .battle-canvas")?.append(battleModal);
+
   const ASSET = "../../assets/animal-gearpack-expedition-items/";
   const SAVE_KEY = "weightplayGearpackProgressV1";
   const RUN_KEY = "weightplayGearpackRunV1";

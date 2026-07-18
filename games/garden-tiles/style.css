@@ -689,7 +689,7 @@ body.garden-stage .home-link { grid-template-columns: 1fr; }
   }
 }
 
-/* Fixed logical Stage/Battle frame; keep after legacy viewport rules. */
+/* Responsive logical Stage/Battle frame; keep after legacy viewport rules. */
 html:has(body.garden-stage),
 html:has(body.garden-playing),
 body.garden-stage,
@@ -709,10 +709,10 @@ body.garden-playing .garden-game {
   z-index: 50;
   left: var(--garden-frame-left, 4px);
   top: var(--garden-frame-top, 4px);
-  width: 390px;
+  width: var(--garden-logical-width, 390px);
   max-width: none;
-  height: 788px;
-  min-height: 788px;
+  height: var(--garden-logical-height, 788px);
+  min-height: var(--garden-logical-height, 788px);
   max-height: none;
   margin: 0;
   transform: scale(var(--garden-frame-scale, 1));
@@ -724,10 +724,10 @@ body.wp-mobile-game-mode.garden-playing .garden-game.weightplay-active-viewport 
   inset: auto !important;
   left: var(--garden-frame-left, 4px) !important;
   top: var(--garden-frame-top, 4px) !important;
-  width: 390px !important;
+  width: var(--garden-logical-width, 390px) !important;
   max-width: none !important;
-  height: 788px !important;
-  min-height: 788px !important;
+  height: var(--garden-logical-height, 788px) !important;
+  min-height: var(--garden-logical-height, 788px) !important;
   max-height: none !important;
   margin: 0 !important;
   border-radius: 0 !important;

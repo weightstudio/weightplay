@@ -43,10 +43,19 @@
   const stageDots = document.querySelector("#stageDots");
   const menuPanel = document.querySelector("#menuPanel");
   const playPanel = document.querySelector("#playPanel");
+  const battleShell = playPanel.querySelector(".fixed-game-shell");
   const menuTitle = document.querySelector("#menuTitle");
   const menuDesc = document.querySelector("#menuDesc");
   const chainPreview = document.querySelector("#chainPreview");
   const resultPanel = document.querySelector("#resultPanel");
+  battleShell.append(resultPanel);
+  const setBattleContentInert = (inert) => {
+    [...battleShell.children].forEach((child) => {
+      if (child === resultPanel) return;
+      child.inert = inert;
+      child.toggleAttribute("aria-hidden", inert);
+    });
+  };
   const resultTitle = document.querySelector("#resultTitle");
   const resultText = document.querySelector("#resultText");
   const menuMilestone = document.querySelector("#menuMilestone");
@@ -628,6 +637,7 @@
     stagePanel.classList.remove("hidden");
     playPanel.inert = false;
     playPanel.removeAttribute("aria-hidden");
+    setBattleContentInert(false);
     document.body.classList.remove("fruit-main", "fruit-playing");
     document.body.classList.add("fruit-stage");
     renderChallengeRail(true);
@@ -656,6 +666,7 @@
     resultPanel.classList.add("hidden");
     playPanel.inert = false;
     playPanel.removeAttribute("aria-hidden");
+    setBattleContentInert(false);
     menuPanel.classList.toggle("hidden", !showMenu);
     startBtn.disabled = !showMenu;
     updateFruitBattleScale();
@@ -1141,8 +1152,7 @@
     renderMilestone(resultMilestone, progress, true);
     renderLeaderboard(resultLeaderboard, leaderboard);
     resultPanel.classList.remove("hidden");
-    playPanel.inert = true;
-    playPanel.setAttribute("aria-hidden", "true");
+    setBattleContentInert(true);
     requestAnimationFrame(() => playAgainBtn.focus({ preventScroll: true }));
     playAgainBtn.textContent = challenge ? t(cleared && challenge.id < challenges.length ? "nextChallenge" : "retryChallenge") : t("playAgain");
     menuBtn.textContent = challenge ? t("challengeMenu") : t("menu");

@@ -2113,46 +2113,47 @@ body.relic-playing .game-guide-wrapper {
 }
 
 /* The shared Battle Canvas owns the only scale and the physical 56px reserve.
-   Keep this game's panel as a transparent wrapper so it cannot scale a second time. */
+   #gamePanel is the Canvas root; its game layout fills that logical envelope. */
 body.wp-logical-battle-active.relic-playing #gamePanel.game-panel,
 body.wp-logical-battle-active.relic-playing #gamePanel.game-panel.weightplay-active-viewport {
-  position: static !important;
-  display: contents !important;
-  width: auto !important;
+  display: block !important;
   min-width: 0 !important;
-  max-width: none !important;
-  height: auto !important;
   min-height: 0 !important;
-  max-height: none !important;
   margin: 0 !important;
   padding: 0 !important;
-  transform: none !important;
-  overflow: visible !important;
+  overflow: hidden !important;
 }
 
-body.wp-logical-battle-active.relic-playing .game-layout[data-wp-logical-battle-canvas] {
+body.wp-logical-battle-active.relic-playing #gamePanel[data-wp-logical-battle-canvas] > .game-layout {
   box-sizing: border-box;
+  width: 100%;
+  height: 100%;
 }
 
 /* Keep the 4:5 arena above the 92% portrait occupancy floor without changing
    the shared logical Canvas scale or consuming the independent reserve. */
-body.wp-logical-battle-active.relic-playing .game-layout[data-wp-logical-battle-canvas] .canvas-container {
+body.wp-logical-battle-active.relic-playing #gamePanel[data-wp-logical-battle-canvas] .canvas-container {
   width: 354px !important;
 }
 
-body.wp-logical-battle-active.relic-playing .battle-ad-reserve[data-wp-battle-physical-reserve] {
+body.wp-logical-battle-active.relic-playing > .battle-ad-reserve[data-wp-battle-physical-reserve] {
   position: fixed !important;
-  inset: auto auto 4px 50% !important;
+  inset: var(--wp-battle-canvas-rendered-height, calc(100dvh - 56px)) auto auto 0 !important;
   grid-row: auto !important;
+  width: var(--wp-battle-canvas-rendered-width, 100vw) !important;
+  height: 56px !important;
+  min-height: 56px !important;
+  max-height: 56px !important;
+  transform: none !important;
 }
 
 /* Give the reserve a measurable frame before the shared controller adopts it. */
-body.wp-logical-battle-active.relic-playing .battle-ad-reserve:not([data-wp-battle-physical-reserve]) {
+body.wp-logical-battle-active.relic-playing > .battle-ad-reserve:not([data-wp-battle-physical-reserve]) {
   position: fixed !important;
-  inset: auto auto 4px 50% !important;
-  width: min(calc(100vw - 8px), 612px) !important;
+  inset: auto auto 0 0 !important;
+  width: 100vw !important;
   min-width: 0 !important;
-  transform: translateX(-50%) !important;
+  transform: none !important;
 }
 
 /* Result is its own fixed screen. The public guide remains a Main-only document section. */

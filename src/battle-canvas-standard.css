@@ -48,6 +48,26 @@ body.wp-logical-battle-active :is(
   pointer-events: none !important;
 }
 
+body.wp-logical-battle-active [data-wp-logical-battle-canvas] :is(
+  .result-panel:not(.hidden):not(.is-hidden),
+  .result-overlay:not(.hidden):not(.is-hidden),
+  .result-screen.is-active,
+  .result-canvas:not(.hidden),
+  [data-wp-result-audit]
+) {
+  position: absolute !important;
+  inset: 0 !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  margin: 0 !important;
+  transform: none !important;
+}
+
 /* Keep Garden Tiles on its portrait logical tracks in a short physical viewport. */
 body.wp-logical-battle-active.garden-playing.garden-expanded-canvas .garden-game[data-wp-logical-battle-canvas] {
   padding: 6px !important;
