@@ -2,8 +2,8 @@
   const config = window.WONDER_SITE?.localization || {};
   const localeKey = "weightPlayLocale";
   const fallbackLocale = config.fallbackLocale || "en";
-  const supportedLocales = config.phaseOneLocales || ["en", "zh-Hant", "zh-Hans", "es"];
-  const localeSegments = Object.freeze({ en: "en", "zh-Hant": "zh-tw", "zh-Hans": "zh-cn", es: "es" });
+  const supportedLocales = config.phaseOneLocales || ["en", "zh-Hant", "zh-Hans", "es", "ja"];
+  const localeSegments = Object.freeze({ en: "en", "zh-Hant": "zh-tw", "zh-Hans": "zh-cn", es: "es", ja: "ja" });
   const segmentLocales = Object.freeze(Object.fromEntries(Object.entries(localeSegments).map(([locale, segment]) => [segment, locale])));
 
   function localeFromPath(pathname = window.location?.pathname || "/") {
@@ -195,6 +195,7 @@
     "language.label": "Idioma",
     "game.start": "Comenzar juego",
   };
+  dictionaries.ja = window.WeightPlayI18nLocales?.ja || {};
 
   dictionaries["zh-Hant"] = {
     "site.kicker": "兒童與親子遊戲",

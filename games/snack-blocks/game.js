@@ -114,6 +114,10 @@
       stageSelectAria: "Stage selection",
       stageBackAria: "Back to main",
       battleBackAria: "Back to stages",
+      leaveTitle: "Leave this stage?",
+      leaveText: "Your board, moves, score, and combo will be lost.",
+      keepPlaying: "Keep Playing",
+      leaveStage: "Leave Stage",
       snackST: "Strawberry",
       snackCK: "Cookie",
       snackJM: "Candy",
@@ -216,6 +220,10 @@
     stageSelectAria: "關卡選擇",
     stageBackAria: "返回主畫面",
     battleBackAria: "返回關卡",
+    leaveTitle: "要離開這一關嗎？",
+    leaveText: "目前的棋盤、步數、分數與連鎖會消失。",
+    keepPlaying: "繼續遊玩",
+    leaveStage: "離開這關",
     snackST: "草莓",
     snackCK: "餅乾",
     snackJM: "糖果",
@@ -245,7 +253,7 @@
     clearText: "Puntuación {score}. Objetivo {goal}. Mejor {best}.", finalClearText: "Puntuación {score}. Objetivo {goal}. ¡Todos los niveles completados!", failedText: "Puntuación {score}. Objetivo {goal}. Prueba un combo mayor.",
     next: "Siguiente nivel", again: "Intentar de nuevo", menu: "Niveles", lobby: "Sala de juegos", skillReport: "Informe de habilidades", todayScore: "Puntuación de hoy", previousBest: "Mejor anterior", improvement: "Mejora",
     logicSkill: "Lógica", problemSolvingSkill: "Resolución de problemas", focusSkill: "Concentración", progressNewBest: "¡Gran progreso! Mejoraste tu récord.", progressImproved: "¡Buena mejora! Esta vez planificaste mejor.", progressSteady: "¡Buen esfuerzo! Inténtalo otra vez para mejorar la atención y los combos.", progressNote: "Las puntuaciones solo sirven para divertirse y seguir el progreso local.",
-    boardAria: "Tablero de Bloques de Merienda", tileAria: "{snack}, fila {row}, columna {column}", homeAria: "Volver a la sala Kids", languageAria: "Idioma", gameStatsAria: "Estadísticas del juego", stageSelectAria: "Selección de nivel", stageBackAria: "Volver al inicio", battleBackAria: "Volver a los niveles",
+    boardAria: "Tablero de Bloques de Merienda", tileAria: "{snack}, fila {row}, columna {column}", homeAria: "Volver a la sala Kids", languageAria: "Idioma", gameStatsAria: "Estadísticas del juego", stageSelectAria: "Selección de nivel", stageBackAria: "Volver al inicio", battleBackAria: "Volver a los niveles", leaveTitle: "¿Salir de esta etapa?", leaveText: "Perderás el tablero, los movimientos, la puntuación y el combo.", keepPlaying: "Seguir jugando", leaveStage: "Salir de la etapa",
     snackST: "Fresa", snackCK: "Galleta", snackJM: "Caramelo", snackGR: "Uva", snackCH: "Queso", snackPR: "Pretzel",
   };
 
@@ -298,6 +306,18 @@
     ogDescription: "配對動物零食、完成關卡目標，並挑戰自己的最佳分數。",
   });
 
+  if (!document.getElementById("leaveConfirmPanel")) {
+    const panel = document.createElement("section");
+    panel.id = "leaveConfirmPanel";
+    panel.className = "leave-confirm-panel hidden";
+    panel.setAttribute("role", "dialog");
+    panel.setAttribute("aria-modal", "true");
+    panel.setAttribute("aria-labelledby", "leaveConfirmTitle");
+    panel.setAttribute("aria-describedby", "leaveConfirmText");
+    panel.innerHTML = `<div class="leave-confirm-card"><strong id="leaveConfirmTitle"></strong><p id="leaveConfirmText"></p><div><button id="keepPlayingBtn" type="button"></button><button id="leaveStageBtn" type="button"></button></div></div>`;
+    document.querySelector(".snack-game")?.append(panel);
+  }
+
   const nodes = {
     homeLink: document.getElementById("homeLink"),
     titleText: document.getElementById("titleText"),
@@ -339,6 +359,11 @@
     loadingTitle: document.getElementById("loadingTitle"),
     loadingText: document.getElementById("loadingText"),
     loadingFill: document.getElementById("loadingFill"),
+    leaveConfirmPanel: document.getElementById("leaveConfirmPanel"),
+    leaveConfirmTitle: document.getElementById("leaveConfirmTitle"),
+    leaveConfirmText: document.getElementById("leaveConfirmText"),
+    keepPlayingBtn: document.getElementById("keepPlayingBtn"),
+    leaveStageBtn: document.getElementById("leaveStageBtn"),
   };
 
   const state = {
@@ -359,6 +384,7 @@
     dragStart: null,
     suppressClick: false,
     focusIndex: null,
+    leaveConfirmOpen: false,
   };
   let boardGeneration = 0;
   let boardLifecycleSuspended = document.hidden;
@@ -395,6 +421,14 @@
 
   function resumeBoardTasks() {
     boardLifecycleSuspended = document.hidden;
+  }
+
+  function setBattleCovered(covered) {
+    for (const node of [nodes.hud, nodes.playPanel]) {
+      node.inert = covered;
+      if (covered) node.setAttribute("aria-hidden", "true");
+      else node.removeAttribute("aria-hidden");
+    }
   }
 
   function t(key, data = {}) {
@@ -593,6 +627,10 @@
     nodes.stageBackBtn.setAttribute("aria-label", t("stageBackAria"));
     nodes.battleBackBtn.setAttribute("aria-label", t("battleBackAria"));
     nodes.board.setAttribute("aria-label", t("boardAria"));
+    nodes.leaveConfirmTitle.textContent = t("leaveTitle");
+    nodes.leaveConfirmText.textContent = t("leaveText");
+    nodes.keepPlayingBtn.textContent = t("keepPlaying");
+    nodes.leaveStageBtn.textContent = t("leaveStage");
     renderStageGrid();
     updateHud();
     if (state.running && !state.busy) renderBoard();
@@ -756,6 +794,9 @@
     nodes.menuPanel.classList.add("hidden");
     nodes.stagePanel.classList.remove("hidden");
     nodes.resultPanel.classList.add("hidden");
+    nodes.leaveConfirmPanel.classList.add("hidden");
+    state.leaveConfirmOpen = false;
+    setBattleCovered(false);
     nodes.hud.classList.add("hidden");
     nodes.playPanel.classList.add("hidden");
     document.body.classList.remove("snack-playing");
@@ -1113,6 +1154,9 @@
     nodes.menuPanel.classList.add("hidden");
     nodes.stagePanel.classList.add("hidden");
     nodes.resultPanel.classList.add("hidden");
+    nodes.leaveConfirmPanel.classList.add("hidden");
+    state.leaveConfirmOpen = false;
+    setBattleCovered(false);
     nodes.hud.classList.remove("hidden");
     nodes.playPanel.classList.remove("hidden");
     document.body.classList.remove("snack-stage");
@@ -1198,6 +1242,35 @@
     window.WonderAnalytics?.track("game_menu", { game_id: GAME_ID });
   }
 
+  function focusBoardTile() {
+    const index = Number.isInteger(state.focusIndex) ? state.focusIndex : 0;
+    (nodes.board.querySelector(`[data-index="${index}"]`) || nodes.board.querySelector(".tile:not(:disabled)"))?.focus({ preventScroll: true });
+  }
+
+  function openLeaveConfirm() {
+    if (state.leaveConfirmOpen || !state.running || !nodes.resultPanel.classList.contains("hidden")) return;
+    state.leaveConfirmOpen = true;
+    suspendBoardTasks();
+    nodes.leaveConfirmPanel.classList.remove("hidden");
+    setBattleCovered(true);
+    requestAnimationFrame(() => nodes.keepPlayingBtn.focus({ preventScroll: true }));
+  }
+
+  function closeLeaveConfirm(restoreFocus = true) {
+    if (!state.leaveConfirmOpen) return;
+    state.leaveConfirmOpen = false;
+    nodes.leaveConfirmPanel.classList.add("hidden");
+    setBattleCovered(false);
+    resumeBoardTasks();
+    if (restoreFocus) requestAnimationFrame(focusBoardTile);
+  }
+
+  function leaveCurrentStage() {
+    if (!state.leaveConfirmOpen) return;
+    closeLeaveConfirm(false);
+    showStage(state.currentStageIndex);
+  }
+
   function installLoading() {
     let progress = 0;
     const id = window.setInterval(() => {
@@ -1223,6 +1296,10 @@
         stage: activeStage().id,
         score: state.score,
         moves: state.moves,
+        combo: state.combo,
+        selected: state.selected,
+        busy: state.busy,
+        board: state.board.map((tile) => tile.type),
         goalCount: state.goalCount,
         bestCascade: state.bestCascade,
         bestBurst: state.bestBurst,
@@ -1244,7 +1321,28 @@
   nodes.stageGrid.addEventListener("keydown", rejectRepeatedScreenActivation, true);
   nodes.startBtn.addEventListener("click", () => showStage());
   nodes.stageBackBtn.addEventListener("click", showMain);
-  nodes.battleBackBtn.addEventListener("click", () => showStage(state.currentStageIndex));
+  nodes.battleBackBtn.addEventListener("click", openLeaveConfirm);
+  nodes.keepPlayingBtn.addEventListener("click", () => closeLeaveConfirm(true));
+  nodes.leaveStageBtn.addEventListener("click", leaveCurrentStage);
+  nodes.leaveConfirmPanel.addEventListener("keydown", (event) => {
+    if (event.repeat && ["Enter", " "].includes(event.key)) {
+      event.preventDefault();
+      return;
+    }
+    if (event.key === "Escape") {
+      event.preventDefault();
+      closeLeaveConfirm(true);
+      return;
+    }
+    if (event.key !== "Tab" || !state.leaveConfirmOpen) return;
+    if (event.shiftKey && document.activeElement === nodes.keepPlayingBtn) {
+      event.preventDefault();
+      nodes.leaveStageBtn.focus({ preventScroll: true });
+    } else if (!event.shiftKey && document.activeElement === nodes.leaveStageBtn) {
+      event.preventDefault();
+      nodes.keepPlayingBtn.focus({ preventScroll: true });
+    }
+  });
   nodes.localeSelect.addEventListener("change", (event) => setLocale(event.target.value));
   nodes.homeLink.addEventListener("click", (event) => {
     if (state.running || !nodes.resultPanel.classList.contains("hidden")) {

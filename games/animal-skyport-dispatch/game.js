@@ -7,7 +7,7 @@
   };
   Object.assign(strings.en, {
     leaveTitle: 'Leave this shift?',
-    leaveCopy: 'Current shift progress will be lost. Your saved medals and rewards are safe.',
+    leaveCopy: 'Shift {shift}: {done}/{goal} flights completed and {errors}/3 errors. This shift progress will be lost; saved medals and rewards stay safe.',
     keepPlaying: 'Keep Playing',
     leaveShift: 'Leave Shift',
     guideTitle: 'How to dispatch',
@@ -40,7 +40,7 @@
   });
   Object.assign(strings['zh-Hant'], {
     leaveTitle: '\u96e2\u958b\u9019\u500b\u73ed\u6b21？',
-    leaveCopy: '\u672c\u5c40\u9032\u5ea6\u6703\u6d88\u5931，\u5df2\u5132\u5b58\u7684\u52f3\u7ae0\u8207\u734e\u52f5\u4e0d\u53d7\u5f71\u97ff\u3002',
+    leaveCopy: '\u73ed\u6b21 {shift}\uff1a\u5df2\u5b8c\u6210 {done}/{goal} \u67b6\u98db\u8239\uff0c\u932f\u8aa4 {errors}/3\u3002\u672c\u5c40\u9032\u5ea6\u6703\u6d88\u5931\uff1b\u5df2\u5132\u5b58\u7684\u52f3\u7ae0\u8207\u734e\u52f5\u4e0d\u53d7\u5f71\u97ff\u3002',
     keepPlaying: '\u7e7c\u7e8c\u8abf\u5ea6',
     leaveShift: '\u96e2\u958b\u73ed\u6b21',
     guideTitle: '\u5982\u4f55\u8abf\u5ea6',
@@ -375,7 +375,7 @@
     state.selected = false;
     setDockKeyboardMode(false);
     $('leaveTitle').textContent = t('leaveTitle');
-    $('leaveCopy').textContent = t('leaveCopy');
+    $('leaveCopy').textContent = t('leaveCopy', {shift:state.shift, done:state.done, goal:state.goal, errors:state.errors});
     $('leaveCancel').textContent = t('keepPlaying');
     $('leaveConfirmBtn').textContent = t('leaveShift');
     $('battleLive').inert = true;

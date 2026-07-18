@@ -19,6 +19,10 @@
       previewAction: "Tap or drag the shape friend",
       back: "Back",
       battleBack: "Back to stages",
+      leaveTitle: "Leave this route?",
+      leaveMessage: "Boarded passengers, retries, and progress in this run will reset.",
+      keepPlaying: "Keep Playing",
+      leaveStage: "Leave Route",
       trainCars: "Train cars",
       passenger: "Shape passenger: {shape}",
       stageList: "Stage list",
@@ -76,6 +80,10 @@
       previewAction: "點擊或拖曳形狀朋友",
       back: "返回",
       battleBack: "返回關卡",
+      leaveTitle: "要離開這條路線嗎？",
+      leaveMessage: "這一局已上車的乘客、重試次數和路線進度都會重設。",
+      keepPlaying: "繼續玩",
+      leaveStage: "離開路線",
       trainCars: "小火車車廂",
       passenger: "形狀乘客：{shape}",
       stageList: "關卡列表",
@@ -134,6 +142,10 @@
       previewAction: "Toca o arrastra al amigo con forma",
       back: "Volver",
       battleBack: "Volver a los niveles",
+      leaveTitle: "¿Salir de esta ruta?",
+      leaveMessage: "Se reiniciarán los pasajeros a bordo, los reintentos y el progreso de esta partida.",
+      keepPlaying: "Seguir jugando",
+      leaveStage: "Salir de la ruta",
       trainCars: "Vagones del tren",
       passenger: "Pasajero con forma: {shape}",
       stageList: "Lista de niveles",
@@ -263,6 +275,30 @@
     loadingFill: $("loadingFill"),
   };
 
+  const leaveConfirmPanel = document.createElement("div");
+  leaveConfirmPanel.id = "leaveConfirmPanel";
+  leaveConfirmPanel.className = "shape-leave-confirm hidden";
+  leaveConfirmPanel.setAttribute("role", "dialog");
+  leaveConfirmPanel.setAttribute("aria-modal", "true");
+  leaveConfirmPanel.setAttribute("aria-labelledby", "leaveConfirmTitle");
+  leaveConfirmPanel.setAttribute("aria-describedby", "leaveConfirmMessage");
+  leaveConfirmPanel.innerHTML = `
+    <div class="leave-confirm-card">
+      <strong id="leaveConfirmTitle"></strong>
+      <p id="leaveConfirmMessage"></p>
+      <div class="leave-confirm-actions">
+        <button id="keepPlayingBtn" type="button"></button>
+        <button id="leaveStageBtn" type="button"></button>
+      </div>
+    </div>
+  `;
+  nodes.playPanel.appendChild(leaveConfirmPanel);
+  nodes.leaveConfirmPanel = leaveConfirmPanel;
+  nodes.leaveConfirmTitle = $("leaveConfirmTitle");
+  nodes.leaveConfirmMessage = $("leaveConfirmMessage");
+  nodes.keepPlayingBtn = $("keepPlayingBtn");
+  nodes.leaveStageBtn = $("leaveStageBtn");
+
   const legacySavedLocale = localStorage.getItem(localeKey);
   const canonicalSavedLocale = localStorage.getItem(canonicalLocaleKey);
   if (!canonicalSavedLocale && ["en", "zh-Hant", "zh-Hans"].includes(legacySavedLocale)) {
@@ -289,6 +325,8 @@
   let floatingToastTimer = 0;
   let memoryFrame = 0;
   let memoryToken = 0;
+  let leaveConfirmOpen = false;
+  let leaveConfirmTrigger = null;
 
   function cancelMemoryPassenger() {
     memoryToken += 1;
@@ -305,7 +343,12 @@
     let previous = null;
     const step = (now) => {
       if (token !== memoryToken || !document.body.classList.contains("shape-playing")) return;
-      if (previous !== null && !document.hidden) elapsed += Math.min(48, now - previous);
+      if (taskLifecycleSuspended || document.hidden) {
+        previous = null;
+        memoryFrame = requestAnimationFrame(step);
+        return;
+      }
+      if (previous !== null) elapsed += Math.min(48, now - previous);
       previous = now;
       if (elapsed < 1500) {
         memoryFrame = requestAnimationFrame(step);
@@ -349,7 +392,7 @@
   }
 
   function resumeTaskTransitions() {
-    taskLifecycleSuspended = document.hidden;
+    taskLifecycleSuspended = document.hidden || leaveConfirmOpen;
   }
 
   function clamp(value, min, max) {
@@ -397,6 +440,10 @@
     nodes.backToStagesBtn.setAttribute("aria-label", t("battleBack"));
     nodes.trainTrack?.setAttribute("aria-label", t("trainCars"));
     nodes.passengerBtn.setAttribute("aria-label", t("passenger", { shape: t(`shapes.${currentShape}`) }));
+    nodes.leaveConfirmTitle.textContent = t("leaveTitle");
+    nodes.leaveConfirmMessage.textContent = t("leaveMessage");
+    nodes.keepPlayingBtn.textContent = t("keepPlaying");
+    nodes.leaveStageBtn.textContent = t("leaveStage");
     const strategy = document.querySelector(".game-info-strategy");
     if (strategy) {
       const heading = strategy.querySelector("h3");
@@ -530,6 +577,42 @@
     if (document.webkitFullscreenElement) document.webkitExitFullscreen?.();
   }
 
+  function setLeaveConfirmOwnership(active) {
+    [".play-head", ".train-track", ".passenger-area", ".feedback"].forEach((selector) => {
+      const node = nodes.playPanel.querySelector(selector);
+      if (!node) return;
+      node.inert = active;
+      if (active) node.setAttribute("aria-hidden", "true");
+      else node.removeAttribute("aria-hidden");
+    });
+  }
+
+  function closeLeaveConfirm(restoreFocus = true) {
+    if (!leaveConfirmOpen) return;
+    leaveConfirmOpen = false;
+    nodes.leaveConfirmPanel.classList.add("hidden");
+    setLeaveConfirmOwnership(false);
+    resumeTaskTransitions();
+    const trigger = leaveConfirmTrigger;
+    leaveConfirmTrigger = null;
+    if (restoreFocus && trigger?.isConnected) trigger.focus({ preventScroll: true });
+  }
+
+  function openLeaveConfirm() {
+    if (leaveConfirmOpen || !document.body.classList.contains("shape-playing") || nodes.playPanel.classList.contains("is-result")) return;
+    leaveConfirmOpen = true;
+    leaveConfirmTrigger = document.activeElement instanceof HTMLElement ? document.activeElement : nodes.backToStagesBtn;
+    suspendTaskTransitions();
+    setLeaveConfirmOwnership(true);
+    nodes.leaveConfirmPanel.classList.remove("hidden");
+    requestAnimationFrame(() => nodes.keepPlayingBtn.focus({ preventScroll: true }));
+  }
+
+  function leaveCurrentRoute() {
+    closeLeaveConfirm(false);
+    showMenu(true);
+  }
+
   window.addEventListener("resize", updateShapeFrame);
   window.addEventListener("resize", updateStageFrame);
   window.addEventListener("orientationchange", updateShapeFrame);
@@ -538,6 +621,7 @@
   window.visualViewport?.addEventListener("resize", updateStageFrame, { passive: true });
 
   function showMenu(focusStage = true) {
+    closeLeaveConfirm(false);
     clearFloatingText();
     invalidateTaskTransition();
     nodes.menuPanel.classList.add("hidden");
@@ -576,6 +660,7 @@
   }
 
   function startStage(index) {
+    closeLeaveConfirm(false);
     clearFloatingText();
     invalidateTaskTransition();
     currentStage = index;
@@ -907,7 +992,27 @@
         refreshActiveTaskLocale();
       }
     });
-    nodes.backToStagesBtn.addEventListener("click", () => showMenu(true));
+    nodes.backToStagesBtn.addEventListener("click", openLeaveConfirm);
+    nodes.keepPlayingBtn.addEventListener("click", () => closeLeaveConfirm(true));
+    nodes.leaveStageBtn.addEventListener("click", leaveCurrentRoute);
+    nodes.leaveConfirmPanel.addEventListener("keydown", (event) => {
+      if (event.repeat && (event.key === "Enter" || event.key === " ")) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        return;
+      }
+      if (event.key === "Escape") {
+        event.preventDefault();
+        closeLeaveConfirm(true);
+        return;
+      }
+      if (event.key !== "Tab") return;
+      const actions = [nodes.keepPlayingBtn, nodes.leaveStageBtn];
+      const index = actions.indexOf(document.activeElement);
+      const nextIndex = event.shiftKey ? (index <= 0 ? actions.length - 1 : index - 1) : (index >= actions.length - 1 ? 0 : index + 1);
+      event.preventDefault();
+      actions[nextIndex].focus({ preventScroll: true });
+    }, true);
     nodes.resultStagesBtn.addEventListener("click", () => showMenu(true));
     nodes.retryBtn.addEventListener("click", () => {
       track("game_restart", { level: currentStage + 1, mistakes });

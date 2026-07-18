@@ -6484,6 +6484,8 @@
 
   let spanishResourcePromise = null;
   let spanishResourceFailed = false;
+  let japaneseResourcePromise = null;
+  let japaneseResourceFailed = false;
 
   function installSpanishResource() {
     const resource = window.WeightPlayGameInfoLocales?.es;
@@ -6513,6 +6515,30 @@
       document.head.appendChild(script);
     });
     return spanishResourcePromise;
+  }
+
+  function installJapaneseResource() {
+    const resource = window.WeightPlayGameInfoLocales?.ja;
+    if (!resource) return false;
+    labels.ja = resource.labels || {};
+    skillLabels.ja = resource.skillLabels || {};
+    localizedGameplayProfiles.ja = resource.gameplayProfiles || {};
+    localizedGames.ja = resource.games || {};
+    return true;
+  }
+
+  function ensureJapaneseResource() {
+    if (installJapaneseResource() || japaneseResourceFailed) return Promise.resolve();
+    if (japaneseResourcePromise) return japaneseResourcePromise;
+    japaneseResourcePromise = new Promise((resolve) => {
+      const script = document.createElement("script");
+      script.src = new URL("game-page-info-ja.js?v=20260719-ja1", sharedAssetBase).href;
+      script.dataset.wpGamePageInfoLocale = "ja";
+      script.onload = () => { installJapaneseResource(); resolve(); };
+      script.onerror = () => { japaneseResourceFailed = true; resolve(); };
+      document.head.appendChild(script);
+    });
+    return japaneseResourcePromise;
   }
 
   function localizedGame(id) {
@@ -6791,6 +6817,10 @@
   function render() {
     if (locale() === "es" && !installSpanishResource() && !spanishResourceFailed) {
       ensureSpanishResource().then(render);
+      return;
+    }
+    if (locale() === "ja" && !installJapaneseResource() && !japaneseResourceFailed) {
+      ensureJapaneseResource().then(render);
       return;
     }
     const id = currentGameId();

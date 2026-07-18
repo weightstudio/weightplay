@@ -58,6 +58,18 @@
   const loadingPanel = document.querySelector("#loadingPanel");
   const loadingText = document.querySelector("#loadingText");
   const loadingFill = document.querySelector("#loadingFill");
+  const leaveConfirmPanel = document.createElement("section");
+  leaveConfirmPanel.id = "leaveConfirmPanel";
+  leaveConfirmPanel.className = "leave-confirm-panel hidden";
+  leaveConfirmPanel.setAttribute("role", "dialog");
+  leaveConfirmPanel.setAttribute("aria-modal", "true");
+  leaveConfirmPanel.setAttribute("aria-labelledby", "leaveConfirmTitle");
+  leaveConfirmPanel.innerHTML = `<div class="leave-confirm-card"><h2 id="leaveConfirmTitle"></h2><p id="leaveConfirmText"></p><div><button id="keepPlayingBtn" type="button"></button><button id="leaveLevelBtn" type="button"></button></div></div>`;
+  memoryGame.append(leaveConfirmPanel);
+  const leaveConfirmTitle = leaveConfirmPanel.querySelector("#leaveConfirmTitle");
+  const leaveConfirmText = leaveConfirmPanel.querySelector("#leaveConfirmText");
+  const keepPlayingBtn = leaveConfirmPanel.querySelector("#keepPlayingBtn");
+  const leaveLevelBtn = leaveConfirmPanel.querySelector("#leaveLevelBtn");
 
   // Game Constants
   const GAME_ID = "star-memory";
@@ -102,6 +114,10 @@
       languageAria: "Choose language",
       stageBackAria: "Back to main page",
       battleBackAria: "Back to levels",
+      leaveTitle: "Leave this level?",
+      leaveText: "Your pairs, moves, score, and streak will be lost.",
+      keepPlaying: "Keep Playing",
+      leaveLevel: "Leave Level",
       gameStatsAria: "Game stats",
       mainIntro: "Follow 30 starlight trails where previews, shuffles, ordered pairs, and rotating constellations change how each board is remembered.",
       start: "Start Game",
@@ -177,6 +193,10 @@
       languageAria: "\u9078\u64c7\u8a9e\u8a00",
       stageBackAria: "\u8fd4\u56de\u9996\u9801",
       battleBackAria: "\u8fd4\u56de\u95dc\u5361",
+      leaveTitle: "\u8981\u96e2\u958b\u9019\u4e00\u95dc\u55ce\uff1f",
+      leaveText: "\u76ee\u524d\u7684\u914d\u5c0d\u3001\u6b65\u6578\u3001\u5206\u6578\u8207\u9023\u7e8c\u914d\u5c0d\u6703\u6d88\u5931\u3002",
+      keepPlaying: "\u7e7c\u7e8c\u914d\u5c0d",
+      leaveLevel: "\u96e2\u958b\u9019\u95dc",
       gameStatsAria: "\u904a\u6232\u72c0\u614b",
       start: "\u958b\u59cb\u904a\u6232",
       mainIntro: "\u8ddf\u8457 30 \u689d\u661f\u5149\u8def\u7dda\u524d\u9032\uff0c\u9810\u89bd\u3001\u6d17\u724c\u3001\u9806\u5e8f\u8207\u661f\u5ea7\u79fb\u52d5\u6703\u6539\u8b8a\u6bcf\u4e00\u76e4\u7684\u8a18\u61b6\u65b9\u5f0f\u3002",
@@ -252,6 +272,10 @@
       languageAria: "Elegir idioma",
       stageBackAria: "Volver a la página principal",
       battleBackAria: "Volver a los niveles",
+      leaveTitle: "¿Salir de este nivel?",
+      leaveText: "Perderás las parejas, los movimientos, la puntuación y la racha.",
+      keepPlaying: "Seguir jugando",
+      leaveLevel: "Salir del nivel",
       gameStatsAria: "Estadísticas del juego",
       mainIntro: "Sigue 30 rutas de luz estelar donde las vistas previas, los barajados, el orden y las constelaciones móviles cambian la forma de recordar cada tablero.",
       start: "Empezar",
@@ -417,6 +441,7 @@
     isLocked: false,
     ready: false
   };
+  let leaveConfirmOpen = false;
   let roundGeneration = 0;
   let roundLifecycleSuspended = document.hidden;
   const roundTasks = new Set();
@@ -464,6 +489,14 @@
     roundGeneration += 1;
     state.selectedCards = [];
     state.isLocked = false;
+  }
+
+  function setBattleCovered(covered) {
+    for (const node of [gameHud, gameBoardPanel, gameFeedback]) {
+      node.inert = covered;
+      if (covered) node.setAttribute("aria-hidden", "true");
+      else node.removeAttribute("aria-hidden");
+    }
   }
 
   window.addEventListener("pagehide", suspendRoundTasks);
@@ -586,6 +619,10 @@
     document.querySelector("#homeLink").setAttribute("aria-label", t("lobby"));
     stageBackBtn.setAttribute("aria-label", t("stageBackAria"));
     battleBackBtn.setAttribute("aria-label", t("battleBackAria"));
+    leaveConfirmTitle.textContent = t("leaveTitle");
+    leaveConfirmText.textContent = t("leaveText");
+    keepPlayingBtn.textContent = t("keepPlaying");
+    leaveLevelBtn.textContent = t("leaveLevel");
     gameHud.setAttribute("aria-label", t("gameStatsAria"));
     
     // HUD Level text
@@ -1166,6 +1203,29 @@
       event.stopImmediatePropagation();
     }
   };
+  function focusMemoryCard() {
+    (state.selectedCards[0]?.isConnected ? state.selectedCards[0] : cardGrid.querySelector(".card:not(:disabled)"))?.focus({ preventScroll: true });
+  }
+  function openLeaveConfirm() {
+    if (leaveConfirmOpen || !document.body.classList.contains("memory-playing") || !resultPanel.classList.contains("hidden")) return;
+    leaveConfirmOpen = true;
+    suspendRoundTasks();
+    leaveConfirmPanel.classList.remove("hidden");
+    setBattleCovered(true);
+    requestAnimationFrame(() => keepPlayingBtn.focus({ preventScroll: true }));
+  }
+  function closeLeaveConfirm(restoreFocus = true) {
+    if (!leaveConfirmOpen) return;
+    leaveConfirmOpen = false;
+    leaveConfirmPanel.classList.add("hidden");
+    setBattleCovered(false);
+    resumeRoundTasks();
+    if (restoreFocus) requestAnimationFrame(focusMemoryCard);
+  }
+  function leaveCurrentLevel() {
+    closeLeaveConfirm(false);
+    showStageSelect(state.stageIndex);
+  }
   startBtn.addEventListener("keydown", rejectRepeatedActivation);
   stageGrid.addEventListener("keydown", (event) => {
     if (event.target.closest(".stage-card")) rejectRepeatedActivation(event);
@@ -1176,7 +1236,16 @@
     showStageSelect();
   });
   stageBackBtn.addEventListener("click", showMain);
-  battleBackBtn.addEventListener("click", () => showStageSelect(state.stageIndex));
+  battleBackBtn.addEventListener("click", openLeaveConfirm);
+  keepPlayingBtn.addEventListener("click", () => closeLeaveConfirm(true));
+  leaveLevelBtn.addEventListener("click", leaveCurrentLevel);
+  leaveConfirmPanel.addEventListener("keydown", (event) => {
+    rejectRepeatedActivation(event);
+    if (event.key === "Escape") { event.preventDefault(); closeLeaveConfirm(true); return; }
+    if (event.key !== "Tab") return;
+    if (event.shiftKey && document.activeElement === keepPlayingBtn) { event.preventDefault(); leaveLevelBtn.focus({ preventScroll: true }); }
+    else if (!event.shiftKey && document.activeElement === leaveLevelBtn) { event.preventDefault(); keepPlayingBtn.focus({ preventScroll: true }); }
+  });
 
   localeSelect.addEventListener("change", () => {
     window.WonderSound?.play("click");

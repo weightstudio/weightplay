@@ -124,7 +124,7 @@
       noGold: "Not enough gold!",
       noSupplies: "Not enough supplies!",
       needSquad: "Position at least one animal in your squad before entering battle!",
-      quitConfirm: "Quit this expedition? All temporary squad progress will be lost.",
+      quitConfirm: "Stage {stage}, Wave {round}/5, Hearts {hearts}/4, Supplies {supplies}. Leaving loses this run's temporary squad, relic, and unsettled progress; permanent training and unlocked stages stay safe.",
       quitRunTitle: "Leave Expedition?",
       keepPlaying: "Keep Playing",
       confirmQuit: "Leave Expedition",
@@ -201,7 +201,7 @@
       noDiamonds: "鑽石不足！",
       noGold: "金幣不足！",
       needSquad: "請先把至少一名動物放進作戰小隊，再開始戰鬥！",
-      quitConfirm: "確定要放棄這次遠征嗎？所有臨時小隊進度都會消失。",
+      quitConfirm: "第 {stage} 關，第 {round}/5 波，生命 {hearts}/4，補給 {supplies}。離開會失去本輪臨時小隊、聖物與未結算進度；永久訓練與已解鎖關卡不受影響。",
       quitRunTitle: "要離開遠征嗎？",
       keepPlaying: "繼續遠征",
       confirmQuit: "離開遠征",
@@ -331,7 +331,7 @@
     noGold: "¡No hay suficiente oro!",
     noSupplies: "¡No hay suficientes suministros!",
     needSquad: "¡Coloca al menos un animal antes de entrar en batalla!",
-    quitConfirm: "¿Abandonar esta expedición? Se perderá todo el progreso temporal.",
+    quitConfirm: "Nivel {stage}, oleada {round}/5, corazones {hearts}/4, suministros {supplies}. Al salir se pierde el escuadrón temporal, la reliquia y el progreso sin resolver; el entrenamiento permanente y los niveles desbloqueados quedan a salvo.",
     quitRunTitle: "¿Salir de la expedición?",
     keepPlaying: "Seguir jugando",
     confirmQuit: "Salir de la expedición",
@@ -2001,7 +2001,7 @@
     nodes.quitRunBtn.textContent = "\u2190";
     nodes.quitRunBtn.setAttribute("aria-label", t("quitRun"));
     $("quitRunTitle").textContent = t("quitRunTitle");
-    $("quitRunText").textContent = t("quitConfirm");
+    $("quitRunText").textContent = t("quitConfirm", { stage: state.stage, round: state.round, hearts: state.hearts, supplies: state.gold });
     nodes.keepPlayingBtn.textContent = t("keepPlaying");
     nodes.confirmQuitBtn.textContent = t("confirmQuit");
     
@@ -4116,6 +4116,7 @@
     if (quitDecisionOpen || nodes.gamePanel.classList.contains("is-result")) return;
     quitDecisionOpen = true;
     cancelAnimationFrame(animationId);
+    $("quitRunText").textContent = t("quitConfirm", { stage: state.stage, round: state.round, hearts: state.hearts, supplies: state.gold });
     nodes.quitRunPanel.classList.remove("is-hidden");
     setBattleDecisionOwnership(nodes.quitRunPanel, true);
     nodes.keepPlayingBtn.focus({ preventScroll: true });
