@@ -312,7 +312,12 @@
     loadingFill: $("loadingFill"),
   };
 
-  let locale = window.WonderI18n?.locale?.() || (text[localStorage.getItem(localeKey)] ? localStorage.getItem(localeKey) : "en");
+  const legacySavedLocale = localStorage.getItem(localeKey);
+  const canonicalSavedLocale = localStorage.getItem(sharedLocaleKey);
+  if (!canonicalSavedLocale && text[legacySavedLocale]) {
+    window.WonderI18n?.setLocale?.(legacySavedLocale);
+  }
+  let locale = window.WonderI18n?.locale?.() || canonicalSavedLocale || (text[legacySavedLocale] ? legacySavedLocale : "en");
   let unlocked = clamp(Number(localStorage.getItem(unlockKey)) || 1, 1, stages.length);
   let stars = readStars();
   let currentStage = 0;
@@ -658,7 +663,6 @@
   visualViewport?.addEventListener("resize", updateBakeryFrame, { passive: true });
   visualViewport?.addEventListener("scroll", updateBakeryFrame, { passive: true });
 
-  let stageDrag = null;
   let lockedAnnouncementAt = 0;
 
   function announceLockedStage(stageNo) {
@@ -670,58 +674,6 @@
     showFloat(unlockRequirement);
     playSound("error");
   }
-
-  function settleStageRail() {
-    const cards = [...nodes.stageGrid.querySelectorAll(".stage-card")];
-    if (!cards.length) return;
-    const railCenter = nodes.stageGrid.scrollLeft + nodes.stageGrid.clientWidth / 2;
-    const nearest = cards.reduce((best, card) => {
-      const center = card.offsetLeft + card.offsetWidth / 2;
-      return !best || Math.abs(center - railCenter) < best.distance ? { card, distance: Math.abs(center - railCenter) } : best;
-    }, null)?.card;
-    if (!nearest) return;
-    nodes.stageGrid.scrollTo({ left: nearest.offsetLeft - (nodes.stageGrid.clientWidth - nearest.offsetWidth) / 2, behavior: "smooth" });
-  }
-
-  nodes.stageGrid.addEventListener("pointerdown", (event) => {
-    if (event.button !== 0 || !document.body.classList.contains("is-bakery-stage-select")) return;
-    stageDrag = {
-      id: event.pointerId,
-      x: event.clientX,
-      scrollLeft: nodes.stageGrid.scrollLeft,
-      moved: false,
-      lockedStageNo: Number(event.target.closest?.(".stage-card.locked")?.dataset.unlockAfter || 0) + 1,
-    };
-    nodes.stageGrid.dataset.wpDragDown = String(event.clientX);
-    nodes.stageGrid.dataset.wpDragApplied = "0";
-  });
-
-  nodes.stageGrid.addEventListener("pointermove", (event) => {
-    if (!stageDrag || event.pointerId !== stageDrag.id) return;
-    const delta = event.clientX - stageDrag.x;
-    if (Math.abs(delta) >= 6 && !stageDrag.moved) {
-      stageDrag.moved = true;
-      nodes.stageGrid.setPointerCapture?.(event.pointerId);
-    }
-    if (!stageDrag.moved) return;
-    event.preventDefault();
-    nodes.stageGrid.scrollLeft = stageDrag.scrollLeft - delta;
-    nodes.stageGrid.dataset.wpDragApplied = String(delta);
-  });
-
-  function endStageDrag(event) {
-    if (!stageDrag || event.pointerId !== stageDrag.id) return;
-    if (stageDrag.moved) {
-      settleStageRail();
-    } else if (stageDrag.lockedStageNo > 1) {
-      announceLockedStage(stageDrag.lockedStageNo);
-    }
-    if (nodes.stageGrid.hasPointerCapture?.(event.pointerId)) nodes.stageGrid.releasePointerCapture?.(event.pointerId);
-    stageDrag = null;
-  }
-
-  nodes.stageGrid.addEventListener("pointerup", endStageDrag);
-  nodes.stageGrid.addEventListener("pointercancel", endStageDrag);
 
   function showStageSelect() {
     document.body.classList.remove("is-bakery-playing", "is-bakery-result");

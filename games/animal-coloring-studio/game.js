@@ -1,5 +1,8 @@
 (() => {
   const LOGICAL_W = 390, LOGICAL_H = 788;
+  const supportedLocales=['en','zh-Hant'];
+  const gameLocalePreference=localStorage.getItem('animalColoringStudioLocale');
+  const platformLocale=localStorage.getItem('weightPlayLocale')||localStorage.getItem('weightplayLocale');
   const pages = [
     ...['lion','elephant','giraffe','zebra','hippo','rhino'].map(id => ({ id, pack:'safari' })),
     ...['puppy','kitten','rabbit','hamster','bird','turtle'].map(id => ({ id, pack:'pet' }))
@@ -18,7 +21,7 @@
   const $ = id => document.getElementById(id), app = $('app'), canvas = $('coloringCanvas'), ctx = canvas.getContext('2d',{willReadFrequently:true});
   const fillLayer = document.createElement('canvas'), fillCtx = fillLayer.getContext('2d'); fillLayer.width=768;fillLayer.height=1152;
   const maskCanvas = document.createElement('canvas'), maskCtx = maskCanvas.getContext('2d',{willReadFrequently:true}); maskCanvas.width=768;maskCanvas.height=1152;
-  let lang=localStorage.animalColoringStudioLocale||'en', selectedPage=0, packFilter='all', mode='fill', selectedColor=palette[0].color, artImage=null, maskImage=null, maskPixels=null, keyboardRegions=[], keyboardRegionIndex=0, fills=new Map(), strokes=[], currentStroke=null, actions=[], feedbackTimer=0, clearConfirmTimer=0, clearArmed=false;
+  let lang=supportedLocales.includes(gameLocalePreference)?gameLocalePreference:(supportedLocales.includes(platformLocale)?platformLocale:'en'), selectedPage=0, packFilter='all', mode='fill', selectedColor=palette[0].color, artImage=null, maskImage=null, maskPixels=null, keyboardRegions=[], keyboardRegionIndex=0, fills=new Map(), strokes=[], currentStroke=null, actions=[], feedbackTimer=0, clearConfirmTimer=0, clearArmed=false;
   const readSave=()=>{try{return JSON.parse(localStorage.animalColoringStudioSave||'{"completed":{}}')}catch{return{completed:{}}}};
   const writeSave=value=>localStorage.animalColoringStudioSave=JSON.stringify(value);
   const t=key=>copy[lang][key]||key;
@@ -74,7 +77,7 @@
   document.querySelectorAll('.tool[data-icon]').forEach(button=>button.querySelector('i').style.backgroundPosition=`${Number(button.dataset.icon)*14.2857}% center`);
   document.querySelectorAll('.tab').forEach(button=>button.onclick=()=>{packFilter=button.dataset.pack;document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===button));renderStages()});
   const rejectRepeatedScreenActivation=event=>{if(event.repeat&&(event.key==='Enter'||event.key===' ')){event.preventDefault();event.stopImmediatePropagation()}};
-  $('locale').value=lang;$('locale').onchange=()=>{lang=$('locale').value;localStorage.animalColoringStudioLocale=lang;translate();renderStages()};$('start').addEventListener('keydown',rejectRepeatedScreenActivation);$('pageRail').addEventListener('keydown',event=>{if(event.target.closest('.page-card'))rejectRepeatedScreenActivation(event)});$('resultPanel').addEventListener('keydown',rejectRepeatedScreenActivation,true);$('start').onclick=()=>{showStage(true);track('game_start')};$('stageBack').onclick=()=>showMain(true);$('battleBack').onclick=()=>showStage(true);$('undo').addEventListener('keydown',event=>{if(event.repeat&&(event.key==='Enter'||event.key===' '))event.preventDefault()});$('undo').onclick=undo;$('clear').addEventListener('keydown',rejectRepeatedScreenActivation);$('clear').onclick=clearPage;$('finish').onclick=complete;$('resultAlbum').onclick=()=>{setResultOpen(false);showStage(true)};$('nextPage').onclick=()=>{selectedPage=(selectedPage+1)%pages.length;openPage(true)};
+  $('locale').value=lang;$('locale').onchange=()=>{lang=$('locale').value;localStorage.setItem('animalColoringStudioLocale',lang);localStorage.setItem('weightPlayLocale',lang);translate();renderStages()};$('start').addEventListener('keydown',rejectRepeatedScreenActivation);$('pageRail').addEventListener('keydown',event=>{if(event.target.closest('.page-card'))rejectRepeatedScreenActivation(event)});$('resultPanel').addEventListener('keydown',rejectRepeatedScreenActivation,true);$('start').onclick=()=>{showStage(true);track('game_start')};$('stageBack').onclick=()=>showMain(true);$('battleBack').onclick=()=>showStage(true);$('undo').addEventListener('keydown',event=>{if(event.repeat&&(event.key==='Enter'||event.key===' '))event.preventDefault()});$('undo').onclick=undo;$('clear').addEventListener('keydown',rejectRepeatedScreenActivation);$('clear').onclick=clearPage;$('finish').onclick=complete;$('resultAlbum').onclick=()=>{setResultOpen(false);showStage(true)};$('nextPage').onclick=()=>{selectedPage=(selectedPage+1)%pages.length;openPage(true)};
   setupRail();translate();renderPalette();fitCanvases();window.addEventListener('resize',fitCanvases,{passive:true});window.visualViewport?.addEventListener('resize',fitCanvases,{passive:true});track('game_view');
   window.__animalColoringStudioTest={
     pages,

@@ -92,7 +92,10 @@
   const currentCtx = dom.currentPreview.getContext("2d");
   const nextCtx = dom.nextPreview.getContext("2d");
   const images = {};
-  const savedLocale = localStorage.getItem("weightPlayLocale") || localStorage.getItem("weightplay:locale");
+  const canonicalLocaleKey = "weightPlayLocale";
+  const legacySavedLocale = localStorage.getItem("weightplayLocale");
+  if (!localStorage.getItem(canonicalLocaleKey) && ["en", "zh-Hant", "zh-Hans"].includes(legacySavedLocale)) window.WonderI18n?.setLocale?.(legacySavedLocale);
+  const savedLocale = localStorage.getItem(canonicalLocaleKey) || legacySavedLocale || localStorage.getItem("weightplay:locale");
   let locale = window.WonderI18n?.locale?.() || (savedLocale === "zh-Hant" ? "zh-Hant" : "en");
   let save = loadSave();
   let selectedStage = Math.min(save.unlocked, stageDefs.length);

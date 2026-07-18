@@ -2636,11 +2636,21 @@
       : { width: 160, height: 198 };
   }
 
+  function syncCombatCanvasSize() {
+    const rect = nodes.gameCanvas.getBoundingClientRect();
+    const ratio = rect.width > 0 && rect.height > 0 ? rect.width / rect.height : 720 / 1280;
+    const width = Math.max(720, Math.min(1600, Math.round(1280 * ratio)));
+    if (nodes.gameCanvas.width !== width) nodes.gameCanvas.width = width;
+    if (nodes.gameCanvas.height !== 1280) nodes.gameCanvas.height = 1280;
+    return width;
+  }
+
   function formationPosition(team, formationSlot = 0) {
     const safeSlot = Math.max(0, Math.min(5, Number(formationSlot) || 0));
     const column = safeSlot % 3;
     const row = Math.floor(safeSlot / 3);
-    const x = [145, 360, 575][column];
+    const canvasCenter = (nodes.gameCanvas?.width || 720) / 2;
+    const x = [145, 360, 575][column] + canvasCenter - 360;
     const y = team === "player"
       ? [800, 1040][row]
       : [440, 200][row];
@@ -2983,14 +2993,16 @@
     combatSuspendedForBackground = false;
     animationId = requestAnimationFrame(runCombatAnimation);
 
+    const canvasWidth = syncCombatCanvasSize();
+
     // Clear Canvas
-    canvasCtx.clearRect(0, 0, 720, 1280);
+    canvasCtx.clearRect(0, 0, canvasWidth, 1280);
 
     // Draw battlefield background
     if (imageCache.bg) {
       const image = imageCache.bg;
       const sourceRatio = image.naturalWidth / image.naturalHeight;
-      const targetRatio = 720 / 1280;
+      const targetRatio = canvasWidth / 1280;
       let sx = 0;
       let sy = 0;
       let sw = image.naturalWidth;
@@ -3002,16 +3014,16 @@
         sh = image.naturalWidth / targetRatio;
         sy = (image.naturalHeight - sh) / 2;
       }
-      canvasCtx.drawImage(image, sx, sy, sw, sh, 0, 0, 720, 1280);
+      canvasCtx.drawImage(image, sx, sy, sw, sh, 0, 0, canvasWidth, 1280);
       const shade = canvasCtx.createLinearGradient(0, 0, 0, 1280);
       shade.addColorStop(0, "rgba(9,20,16,.3)");
       shade.addColorStop(.48, "rgba(9,20,16,.08)");
       shade.addColorStop(1, "rgba(3,10,8,.46)");
       canvasCtx.fillStyle = shade;
-      canvasCtx.fillRect(0, 0, 720, 1280);
+      canvasCtx.fillRect(0, 0, canvasWidth, 1280);
     } else {
       canvasCtx.fillStyle = "#0c1f17";
-      canvasCtx.fillRect(0, 0, 720, 1280);
+      canvasCtx.fillRect(0, 0, canvasWidth, 1280);
     }
 
     canvasCtx.save();
@@ -3021,12 +3033,12 @@
     canvasCtx.strokeStyle = "rgba(0,0,0,.75)";
     canvasCtx.lineWidth = 5;
     const playerLabel = locale === "zh-Hant" ? "\u4f60\u7684\u5c0f\u968a" : "YOUR SQUAD";
-    canvasCtx.strokeText(playerLabel, 360, 1210);
-    canvasCtx.fillText(playerLabel, 360, 1210);
+    canvasCtx.strokeText(playerLabel, canvasWidth / 2, 1210);
+    canvasCtx.fillText(playerLabel, canvasWidth / 2, 1210);
     canvasCtx.font = "900 28px Outfit, system-ui";
     canvasCtx.fillStyle = "#ffd666";
-    canvasCtx.strokeText("VS", 360, 640);
-    canvasCtx.fillText("VS", 360, 640);
+    canvasCtx.strokeText("VS", canvasWidth / 2, 640);
+    canvasCtx.fillText("VS", canvasWidth / 2, 640);
     canvasCtx.restore();
 
     // Step logic every 90 frames
@@ -3953,8 +3965,17 @@
     const viewportHeight = viewport?.height >= window.innerHeight * 0.75 ? viewport.height : window.innerHeight;
     document.documentElement.style.setProperty("--squad-vw", `${viewportWidth}px`);
     document.documentElement.style.setProperty("--squad-vh", `${viewportHeight}px`);
-    const scale = Math.min(Math.max(0.1, (viewportWidth - 8) / 390), Math.max(0.1, (viewportHeight - 64) / 780));
-    document.documentElement.style.setProperty("--squad-scale", String(scale));
+    const availableWidth = Math.max(1, viewportWidth - 8);
+    const availableHeight = Math.max(1, viewportHeight - 64);
+    const stageScale = Math.min(Math.max(0.1, availableWidth / 390), Math.max(0.1, availableHeight / 780));
+    const heightScale = Math.max(0.1, availableHeight / 780);
+    const fullWidthLogicalSize = availableWidth / heightScale;
+    const battleWidthLimit = viewportHeight >= viewportWidth ? 600 : 720;
+    const battleLogicalWidth = Math.min(battleWidthLimit, Math.max(382, fullWidthLogicalSize));
+    const battleScale = Math.min(Math.max(0.1, availableWidth / battleLogicalWidth), heightScale);
+    document.documentElement.style.setProperty("--squad-stage-scale", String(stageScale));
+    document.documentElement.style.setProperty("--squad-battle-width", `${battleLogicalWidth}px`);
+    document.documentElement.style.setProperty("--squad-battle-scale", String(battleScale));
     pinMainSoundToggle();
   }
 

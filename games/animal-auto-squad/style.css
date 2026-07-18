@@ -11,7 +11,9 @@
   --text: #f4fff9;
   --muted: #abc8bb;
   --accent: #77a4ff;
-  --squad-scale: 1;
+  --squad-stage-scale: 1;
+  --squad-battle-scale: 1;
+  --squad-battle-width: 382px;
 }
 
 * { box-sizing: border-box; }
@@ -98,12 +100,27 @@ body.squad-stage-select .squad-app, body.squad-active .squad-app { position: fix
   position: fixed;
   left: 50%;
   bottom: 56px;
-  width: 390px;
   height: 780px;
   margin: 0;
   border-radius: 18px 18px 0 0;
-  transform: translateX(-50%) scale(var(--squad-scale));
   transform-origin: 50% 100%;
+}
+.stage-panel {
+  width: 390px;
+  transform: translateX(-50%) scale(var(--squad-stage-scale));
+}
+.game-panel {
+  width: var(--squad-battle-width);
+  transform: translateX(-50%) scale(var(--squad-battle-scale));
+}
+body.squad-active::before {
+  content: "";
+  position: fixed;
+  z-index: -1;
+  inset: 0 0 56px;
+  background:
+    linear-gradient(rgba(3, 16, 12, .72), rgba(3, 16, 12, .9)),
+    url("../../assets/animal-auto-squad-bg.webp") center / cover;
 }
 .stage-panel::before {
   content: "";

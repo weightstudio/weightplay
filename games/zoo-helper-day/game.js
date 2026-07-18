@@ -2,6 +2,7 @@
   const GAME_ID = "zoo-helper-day";
   const assetVersion = "20260708-zoo-helper-day-clear-icons1";
   const localeKey = "weightPlayLocale";
+  const legacyLocaleKey = "weightplayLocale";
   const unlockKey = "weightplay_zoo_helper_unlocked";
   const starKey = "weightplay_zoo_helper_stars";
   const STAGE_LOGICAL_WIDTH = 390;
@@ -73,9 +74,12 @@
       guideHow3: "Choose or drag the helper item that matches the current zoo task.",
       guideHow4: "Finish the shift to earn tickets, stars, and the next zoo moment.",
       guideStrategyTitle: "Strategy Tips",
-      guideStrategy1: "Name the animal zone before choosing an item.",
-      guideStrategy2: "Talk about how tickets and visitor happiness grow when animals are cared for.",
-      guideStrategy3: "If the first choice is wrong, look at the station name and picture clue again.",
+      guideStrategy1: "Say the requested item or category aloud before touching a tool.",
+      guideStrategy2: "In Picture Tools shifts, compare the object's shape and color instead of looking for a label.",
+      guideStrategy3: "For a remembered request, tap the animal and look again instead of guessing.",
+      guideStrategy4: "In a category shift, ask whether the picture is food, drink, cleaning, or play; there may be two good answers.",
+      guideStrategy5: "Read the 1/2 or 2/2 marker in a routine so a correct tool is not used at the wrong time.",
+      guideStrategy6: "Use a retry as a calm chance to compare the four pictures again.",
       guideParentTitle: "Parent Note",
       guideParentNote: "This game may help children practice animal recognition, simple care concepts, focus, and hand-eye coordination through picture-first play. It works best as a short guided moment where parents can describe the animal and the care action out loud. Progress and stars are only for encouragement and local play tracking, not for diagnosis, ranking, or formal learning assessment.",
       guideFaqTitle: "Frequently Asked Questions",
@@ -181,9 +185,12 @@
       guideHow3: "點選或拖曳符合目前照顧任務的道具。",
       guideHow4: "完成班次，獲得票券、星星並解鎖下一段動物園時光。",
       guideStrategyTitle: "小技巧",
-      guideStrategy1: "選道具前，先說出目前的動物區名稱。",
-      guideStrategy2: "一起觀察照顧動物後，票券與遊客開心度如何增加。",
-      guideStrategy3: "第一次選錯時，再看看站區名稱和圖片線索。",
+      guideStrategy1: "碰道具前，先說出任務要求的物品或類別。",
+      guideStrategy2: "在圖片道具班次，觀察物品的形狀和顏色，不必尋找文字標籤。",
+      guideStrategy3: "忘記要求時，點一下動物再看一次，不用猜答案。",
+      guideStrategy4: "遇到分類任務時，想想圖片屬於食物、飲料、清潔或玩耍；有時會有兩個好答案。",
+      guideStrategy5: "依照例行任務的 1/2 或 2/2 標記，按正確順序使用照顧道具。",
+      guideStrategy6: "重試時放慢速度，再比較一次四張圖片。",
       guideParentTitle: "給家長的話",
       guideParentNote: "本遊戲可透過圖像優先的玩法，陪孩子練習辨認動物、簡單照顧概念、專注與手眼協調。家長可以在短時間陪玩時說出動物和照顧動作。進度與星星只用於鼓勵和本機遊玩紀錄，不是診斷、排名或正式學習評量。",
       guideFaqTitle: "常見問題",
@@ -341,7 +348,12 @@
     gameShell: document.querySelector(".zoo-game"),
   };
 
-  let locale = window.WonderI18n?.locale?.() || localStorage.getItem(localeKey) || "en";
+  const legacySavedLocale = localStorage.getItem(legacyLocaleKey);
+  const canonicalSavedLocale = localStorage.getItem(localeKey);
+  if (!canonicalSavedLocale && ["en", "zh-Hant", "zh-Hans"].includes(legacySavedLocale)) {
+    window.WonderI18n?.setLocale?.(legacySavedLocale);
+  }
+  let locale = window.WonderI18n?.locale?.() || canonicalSavedLocale || legacySavedLocale || "en";
   let unlocked = clamp(Number(localStorage.getItem(unlockKey)) || 1, 1, stages.length);
   let stars = readStars();
   let currentStage = 0;
@@ -354,9 +366,6 @@
   let careTransitionFrame = 0;
   let careTransitionToken = 0;
   let wrongFeedbackTimer = 0;
-  let stageDrag = null;
-  let stageSettleFrame = 0;
-  let suppressStageClick = false;
   let itemPointerDrag = null;
   let suppressItemClick = null;
   let memoryFrame = 0;
@@ -501,42 +510,6 @@
       centerStageCard(recommended);
       requestAnimationFrame(() => centerStageCard(recommended));
     });
-  }
-
-  function settleStageRail() {
-    cancelAnimationFrame(stageSettleFrame);
-    const cards = [...nodes.stageGrid.querySelectorAll(".stage-card")];
-    if (!cards.length) return;
-    const center = nodes.stageGrid.scrollLeft + nodes.stageGrid.clientWidth / 2;
-    const nearest = cards.reduce((best, card) => {
-      const distance = Math.abs(card.offsetLeft + card.offsetWidth / 2 - center);
-      return !best || distance < best.distance ? { card, distance } : best;
-    }, null)?.card;
-    if (!nearest) return;
-    const start = nodes.stageGrid.scrollLeft;
-    const target = Math.max(0, Math.min(
-      nearest.offsetLeft - (nodes.stageGrid.clientWidth - nearest.offsetWidth) / 2,
-      nodes.stageGrid.scrollWidth - nodes.stageGrid.clientWidth
-    ));
-    const distance = target - start;
-    if (Math.abs(distance) < 1) {
-      nodes.stageGrid.scrollLeft = target;
-      nodes.stageGrid.style.removeProperty("scroll-snap-type");
-      return;
-    }
-    const startedAt = performance.now();
-    const duration = Math.min(360, Math.max(240, Math.abs(distance) * 1.35));
-    const step = (now) => {
-      const progress = Math.min(1, (now - startedAt) / duration);
-      nodes.stageGrid.scrollLeft = start + distance * (1 - Math.pow(1 - progress, 2));
-      if (progress < 1) {
-        stageSettleFrame = requestAnimationFrame(step);
-        return;
-      }
-      nodes.stageGrid.scrollLeft = target;
-      nodes.stageGrid.style.removeProperty("scroll-snap-type");
-    };
-    stageSettleFrame = requestAnimationFrame(step);
   }
 
   window.addEventListener("resize", updateBattleViewport);
@@ -1072,57 +1045,6 @@
       if (document.hidden) interruptCareTransition();
     });
 
-    nodes.stageGrid.addEventListener("pointerdown", (event) => {
-      if (!document.body.classList.contains("wp-standard-stage-page") || event.isPrimary === false || event.button !== 0) return;
-      cancelAnimationFrame(stageSettleFrame);
-      suppressStageClick = false;
-      nodes.stageGrid.style.setProperty("scroll-snap-type", "none", "important");
-      stageDrag = {
-        id: event.pointerId,
-        x: event.clientX,
-        scrollLeft: nodes.stageGrid.scrollLeft,
-        moved: false,
-        card: event.target.closest(".stage-card"),
-      };
-      nodes.stageGrid.setPointerCapture?.(event.pointerId);
-    });
-    nodes.stageGrid.addEventListener("pointermove", (event) => {
-      if (!stageDrag || event.pointerId !== stageDrag.id) return;
-      const delta = event.clientX - stageDrag.x;
-      if (!stageDrag.moved && Math.abs(delta) > 4) stageDrag.moved = true;
-      if (!stageDrag.moved) return;
-      event.preventDefault();
-      const rect = nodes.stageGrid.getBoundingClientRect();
-      const coordinateScale = rect.width > 0 ? nodes.stageGrid.clientWidth / rect.width : 1;
-      nodes.stageGrid.scrollLeft = stageDrag.scrollLeft - delta * coordinateScale;
-    });
-    const finishStageDrag = (event) => {
-      if (!stageDrag || event.pointerId !== stageDrag.id) return;
-      const moved = stageDrag.moved;
-      const tappedCard = stageDrag.card;
-      try { nodes.stageGrid.releasePointerCapture?.(stageDrag.id); } catch { /* Pointer capture may already be released. */ }
-      stageDrag = null;
-      if (!moved) {
-        nodes.stageGrid.style.removeProperty("scroll-snap-type");
-        if (tappedCard && !tappedCard.classList.contains("locked")) {
-          suppressStageClick = true;
-          setTimeout(() => { suppressStageClick = false; }, 0);
-          startStage(Number(tappedCard.dataset.stageIndex));
-        }
-        return;
-      }
-      suppressStageClick = true;
-      setTimeout(() => { suppressStageClick = false; }, 0);
-      settleStageRail();
-    };
-    nodes.stageGrid.addEventListener("pointerup", finishStageDrag);
-    nodes.stageGrid.addEventListener("pointercancel", finishStageDrag);
-    nodes.stageGrid.addEventListener("click", (event) => {
-      if (!suppressStageClick) return;
-      suppressStageClick = false;
-      event.preventDefault();
-      event.stopImmediatePropagation();
-    }, true);
   }
 
   const style = document.createElement("style");

@@ -1,6 +1,7 @@
 ﻿(() => {
   const GAME_ID = "shape-train";
   const localeKey = "weightplayLocale";
+  const canonicalLocaleKey = "weightPlayLocale";
   const unlockKey = "weightplay_shape_train_unlocked";
   const starKey = "weightplay_shape_train_stars";
 
@@ -204,7 +205,12 @@
     loadingFill: $("loadingFill"),
   };
 
-  let locale = window.WonderI18n?.locale?.() || localStorage.getItem(localeKey) || "en";
+  const legacySavedLocale = localStorage.getItem(localeKey);
+  const canonicalSavedLocale = localStorage.getItem(canonicalLocaleKey);
+  if (!canonicalSavedLocale && ["en", "zh-Hant", "zh-Hans"].includes(legacySavedLocale)) {
+    window.WonderI18n?.setLocale?.(legacySavedLocale);
+  }
+  let locale = window.WonderI18n?.locale?.() || canonicalSavedLocale || legacySavedLocale || "en";
   let unlocked = clamp(Number(localStorage.getItem(unlockKey)) || 1, 1, stages.length);
   let stars = readStars();
   let currentStage = 0;

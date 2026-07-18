@@ -1,6 +1,7 @@
 (() => {
   const GAME_ID = "animal-hidden-safari";
   const localeKey = "weightplayLocale";
+  const canonicalLocaleKey = "weightPlayLocale";
   const unlockKey = "weightplay_hidden_safari_unlocked";
   const starKey = "weightplay_hidden_safari_stars";
   const progressKey = "weightplay_progress_animal-hidden-safari";
@@ -270,7 +271,12 @@
     loadingFill: $("loadingFill"),
   };
 
-  let locale = window.WonderI18n?.locale?.() || localStorage.getItem(localeKey) || "en";
+  const legacySavedLocale = localStorage.getItem(localeKey);
+  const canonicalSavedLocale = localStorage.getItem(canonicalLocaleKey);
+  if (!canonicalSavedLocale && ["en", "zh-Hant", "zh-Hans"].includes(legacySavedLocale)) {
+    window.WonderI18n?.setLocale?.(legacySavedLocale);
+  }
+  let locale = window.WonderI18n?.locale?.() || canonicalSavedLocale || legacySavedLocale || "en";
   let unlocked = clamp(Number(localStorage.getItem(unlockKey)) || 1, 1, stages.length);
   let stars = readJson(starKey, {});
   let currentStage = 0;
@@ -390,51 +396,6 @@
       });
       nodes.stageGrid.appendChild(button);
     });
-    bindStageDrag();
-  }
-
-  function bindStageDrag() {
-    if (nodes.stageGrid.dataset.dragBound === "1") return;
-    nodes.stageGrid.dataset.dragBound = "1";
-    let drag = null;
-    nodes.stageGrid.addEventListener("pointerdown", (event) => {
-      if (nodes.stageGrid.dataset.wpStageRail === "true") return;
-      if (event.pointerType === "mouse" && event.button !== 0) return;
-      nodes.stageGrid.setPointerCapture?.(event.pointerId);
-      drag = { id: event.pointerId, x: event.clientX, scrollLeft: nodes.stageGrid.scrollLeft, moved: false };
-    });
-    nodes.stageGrid.addEventListener("pointermove", (event) => {
-      if (!drag || drag.id !== event.pointerId) return;
-      const delta = event.clientX - drag.x;
-      if (Math.abs(delta) > 6) drag.moved = true;
-      if (drag.moved) {
-        event.preventDefault();
-        nodes.stageGrid.dataset.draggingClick = "1";
-        const scale = Number.parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--safari-frame-scale")) || 1;
-        nodes.stageGrid.scrollLeft = drag.scrollLeft - delta / scale;
-      }
-    });
-    const end = (event) => {
-      if (!drag || drag.id !== event.pointerId) return;
-      const moved = drag.moved;
-      drag = null;
-      if (nodes.stageGrid.hasPointerCapture?.(event.pointerId)) nodes.stageGrid.releasePointerCapture(event.pointerId);
-      if (!moved) return;
-      const frame = nodes.stageGrid.getBoundingClientRect();
-      const center = frame.left + frame.width / 2;
-      const nearest = [...nodes.stageGrid.querySelectorAll(".stage-card")].reduce((best, card) => {
-        const rect = card.getBoundingClientRect();
-        const distance = Math.abs(rect.left + rect.width / 2 - center);
-        return !best || distance < best.distance ? { card, distance } : best;
-      }, null);
-      nearest?.card.scrollIntoView({ block: "nearest", inline: "center", behavior: "smooth" });
-      nodes.stageGrid.querySelectorAll(".stage-card").forEach((card) => {
-        card.toggleAttribute("aria-current", card === nearest?.card);
-      });
-      window.setTimeout(() => delete nodes.stageGrid.dataset.draggingClick, 0);
-    };
-    nodes.stageGrid.addEventListener("pointerup", end);
-    nodes.stageGrid.addEventListener("pointercancel", end);
   }
 
   function rejectRepeatedScreenActivation(event) {

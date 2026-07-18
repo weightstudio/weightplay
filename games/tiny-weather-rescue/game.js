@@ -1,6 +1,7 @@
 (() => {
   const GAME_ID = "tiny-weather-rescue";
   const localeKey = "weightplayLocale";
+  const canonicalLocaleKey = "weightPlayLocale";
   const unlockKey = "weightplay_weather_unlocked";
   const starKey = "weightplay_weather_stars";
   const progressKey = "weightplay_weather_progress";
@@ -260,7 +261,12 @@
     homeLink: document.querySelector(".home-link"),
   };
 
-  let locale = window.WonderI18n?.locale?.() || localStorage.getItem(localeKey) || "en";
+  const legacySavedLocale = localStorage.getItem(localeKey);
+  const canonicalSavedLocale = localStorage.getItem(canonicalLocaleKey);
+  if (!canonicalSavedLocale && ["en", "zh-Hant", "zh-Hans"].includes(legacySavedLocale)) {
+    window.WonderI18n?.setLocale?.(legacySavedLocale);
+  }
+  let locale = window.WonderI18n?.locale?.() || canonicalSavedLocale || legacySavedLocale || "en";
   let unlocked = clamp(Number(localStorage.getItem(unlockKey)) || 1, 1, stages.length);
   let records = readRecords();
   let currentStage = 0;
@@ -448,42 +454,6 @@
   window.addEventListener("resize", updateWeatherFrame);
   window.addEventListener("orientationchange", updateWeatherFrame);
   window.visualViewport?.addEventListener("resize", updateWeatherFrame, { passive: true });
-
-  let stageDrag = null;
-  const settleStageRail = () => {
-    const cards = [...nodes.stageGrid.querySelectorAll(".stage-card")];
-    const center = nodes.stageGrid.scrollLeft + nodes.stageGrid.clientWidth / 2;
-    const nearest = cards.reduce((best, card) => {
-      const distance = Math.abs(card.offsetLeft + card.offsetWidth / 2 - center);
-      return !best || distance < best.distance ? { card, distance } : best;
-    }, null)?.card;
-    if (nearest) nodes.stageGrid.scrollTo({ left: nearest.offsetLeft - (nodes.stageGrid.clientWidth - nearest.offsetWidth) / 2, behavior: "smooth" });
-  };
-  nodes.stageGrid.addEventListener("pointerdown", (event) => {
-    if (event.button !== 0) return;
-    stageDrag = { id: event.pointerId, x: event.clientX, scrollLeft: nodes.stageGrid.scrollLeft, moved: false };
-    nodes.stageGrid.dataset.dragApplied = "0";
-  });
-  nodes.stageGrid.addEventListener("pointermove", (event) => {
-    if (!stageDrag || event.pointerId !== stageDrag.id) return;
-    const delta = event.clientX - stageDrag.x;
-    if (Math.abs(delta) >= 6 && !stageDrag.moved) {
-      stageDrag.moved = true;
-      nodes.stageGrid.setPointerCapture?.(event.pointerId);
-    }
-    if (!stageDrag.moved) return;
-    event.preventDefault();
-    nodes.stageGrid.scrollLeft = stageDrag.scrollLeft - delta;
-    nodes.stageGrid.dataset.dragApplied = String(delta);
-  });
-  const endStageDrag = (event) => {
-    if (!stageDrag || event.pointerId !== stageDrag.id) return;
-    if (stageDrag.moved) settleStageRail();
-    if (nodes.stageGrid.hasPointerCapture?.(event.pointerId)) nodes.stageGrid.releasePointerCapture?.(event.pointerId);
-    stageDrag = null;
-  };
-  nodes.stageGrid.addEventListener("pointerup", endStageDrag);
-  nodes.stageGrid.addEventListener("pointercancel", endStageDrag);
 
   function startStage(index) {
     invalidateCareTransition();

@@ -1,4 +1,12 @@
 (function () {
+  const canonicalLocaleKey = "weightPlayLocale";
+  const legacyLocaleKey = "weightplayLocale";
+  const canonicalSavedLocale = localStorage.getItem(canonicalLocaleKey);
+  const legacySavedLocale = localStorage.getItem(legacyLocaleKey);
+  if (!canonicalSavedLocale && ["en", "zh-Hant", "zh-Hans"].includes(legacySavedLocale)) {
+    window.WonderI18n?.setLocale?.(legacySavedLocale);
+  }
+
   // DOM Elements
   const localeSelect = document.querySelector("#localeSelect");
   const languageLabel = document.querySelector("#languageLabel");

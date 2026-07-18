@@ -86,21 +86,25 @@
       return;
     }
 
-    root.setAttribute("data-wp-logical-battle-canvas", `${config[1]}x${config[2]}`);
     const viewport = window.visualViewport;
     const width = Math.max(1, viewport?.width || innerWidth);
     const height = Math.max(1, viewport?.height || innerHeight);
     const availableWidth = Math.max(1, width - GUTTER * 2);
     const availableHeight = Math.max(1, height - RESERVE_HEIGHT - GUTTER * 2);
-    const scale = Math.max(0.01, Math.min(availableWidth / config[1], availableHeight / config[2]));
-    const renderedWidth = config[1] * scale;
+    const heightScale = Math.max(0.01, availableHeight / config[2]);
+    const logicalWidth = gameId === "animal-auto-squad"
+      ? Math.min(height >= width ? 600 : 720, Math.max(config[1], availableWidth / heightScale))
+      : config[1];
+    root.setAttribute("data-wp-logical-battle-canvas", `${logicalWidth}x${config[2]}`);
+    const scale = Math.max(0.01, Math.min(availableWidth / logicalWidth, heightScale));
+    const renderedWidth = logicalWidth * scale;
     const renderedHeight = config[2] * scale;
     const top = config[3] === "top"
       ? GUTTER
       : Math.max(GUTTER, height - RESERVE_HEIGHT - GUTTER - renderedHeight);
     const style = document.documentElement.style;
     style.setProperty("--wp-battle-viewport-height", `${height}px`);
-    style.setProperty("--wp-battle-logical-width", `${config[1]}px`);
+    style.setProperty("--wp-battle-logical-width", `${logicalWidth}px`);
     style.setProperty("--wp-battle-logical-height", `${config[2]}px`);
     style.setProperty("--wp-battle-canvas-scale", String(scale));
     style.setProperty("--wp-battle-canvas-rendered-width", `${renderedWidth}px`);
@@ -113,9 +117,9 @@
       inset: "auto",
       top: `${top}px`,
       left: "50%",
-      width: `${config[1]}px`,
-      "min-width": `${config[1]}px`,
-      "max-width": `${config[1]}px`,
+      width: `${logicalWidth}px`,
+      "min-width": `${logicalWidth}px`,
+      "max-width": `${logicalWidth}px`,
       height: `${config[2]}px`,
       "min-height": `${config[2]}px`,
       "max-height": `${config[2]}px`,

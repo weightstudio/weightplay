@@ -1,3 +1,11 @@
+const canonicalLocaleKey = "weightPlayLocale";
+const legacyLocaleKey = "weightplayLocale";
+const canonicalSavedLocale = localStorage.getItem(canonicalLocaleKey);
+const legacySavedLocale = localStorage.getItem(legacyLocaleKey);
+if (!canonicalSavedLocale && ["en", "zh-Hant", "zh-Hans"].includes(legacySavedLocale)) {
+  window.WonderI18n?.setLocale?.(legacySavedLocale);
+}
+
 const localeSelect = document.querySelector("#localeSelect");
 const homeLink = document.querySelector("#homeLink");
 const languageLabel = document.querySelector("#languageLabel");
@@ -857,6 +865,10 @@ retryBtn.addEventListener("click", () => {
 });
 trailsBtn.addEventListener("click", () => showStageSelect({ focusTrail: true }));
 resultPanel.addEventListener("keydown", (event) => {
+  if (event.repeat && (event.key === "Enter" || event.key === " ")) {
+    event.preventDefault();
+    return;
+  }
   if (event.key !== "Tab" || resultPanel.classList.contains("hidden")) return;
   const actions = [nextBtn, retryBtn, trailsBtn, lobbyLink].filter((action) => !action.classList.contains("hidden") && !action.disabled);
   if (!actions.length) return;

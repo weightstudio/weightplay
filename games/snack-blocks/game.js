@@ -16,7 +16,8 @@
   const effectArt = {
     matchBurst: "assets/effect-match-burst.png",
   };
-  const localeKey = "weightplayLocale";
+  const canonicalLocaleKey = "weightPlayLocale";
+  const legacyLocaleKey = "weightplayLocale";
   const unlockKey = "snackBlocksUnlocked";
   const recordKey = "snackBlocksRecords";
 
@@ -531,7 +532,8 @@
     const displayLocale = window.WonderI18n?.legacyLocale?.(requested) || requested;
     state.locale = text[displayLocale] ? displayLocale : "en";
     try {
-      localStorage.setItem(localeKey, requested);
+      localStorage.setItem(canonicalLocaleKey, requested);
+      localStorage.setItem(legacyLocaleKey, requested);
     } catch {
       // Locale persistence is optional.
     }
@@ -1225,7 +1227,7 @@
   });
 
   try {
-    setLocale(localStorage.getItem(localeKey) || window.WonderI18n?.locale?.() || "en");
+    setLocale(localStorage.getItem(canonicalLocaleKey) || localStorage.getItem(legacyLocaleKey) || window.WonderI18n?.locale?.() || "en");
   } catch {
     setLocale("en");
   }

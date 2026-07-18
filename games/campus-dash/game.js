@@ -1,4 +1,12 @@
 (function () {
+  const canonicalLocaleKey = "weightPlayLocale";
+  const legacyLocaleKey = "weightplayLocale";
+  const canonicalSavedLocale = localStorage.getItem(canonicalLocaleKey);
+  const legacySavedLocale = localStorage.getItem(legacyLocaleKey);
+  if (!canonicalSavedLocale && ["en", "zh-Hant", "zh-Hans"].includes(legacySavedLocale)) {
+    window.WonderI18n?.setLocale?.(legacySavedLocale);
+  }
+
   const canvas = document.querySelector("#gameCanvas");
   const ctx = canvas.getContext("2d");
   const localeSelect = document.querySelector("#localeSelect");

@@ -710,6 +710,11 @@
     event.preventDefault();
   });
 
+  resultPanel.addEventListener("keydown", (event) => {
+    if (!event.repeat || !["Enter", " "].includes(event.key)) return;
+    event.preventDefault();
+  });
+
   board.addEventListener("click", (event) => {
     const button = event.target.closest("[data-index]");
     if (!button) return;

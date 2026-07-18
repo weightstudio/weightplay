@@ -1,6 +1,10 @@
 (() => {
   const GAME_ID = "animal-zoo-idle";
   const localeKey = "weightPlayLocale";
+  const legacyLocaleKey = "weightplayLocale";
+  const canonicalSavedLocale = localStorage.getItem(localeKey);
+  const legacySavedLocale = localStorage.getItem(legacyLocaleKey);
+  if (!canonicalSavedLocale && ["en", "zh-Hant", "zh-Hans"].includes(legacySavedLocale)) window.WonderI18n?.setLocale?.(legacySavedLocale);
   const saveKey = "weightplay_animal_zoo_idle_save_v3";
   const oldSaveKeys = ["weightplay_animal_zoo_idle_save_v2", "weightplay_animal_zoo_idle_save_v1"];
 

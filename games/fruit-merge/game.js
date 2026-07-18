@@ -1,5 +1,13 @@
 ﻿(() => {
   const GAME_ID = "fruit-merge";
+  const canonicalLocaleKey = "weightPlayLocale";
+  const legacyLocaleKey = "weightplayLocale";
+  const canonicalSavedLocale = localStorage.getItem(canonicalLocaleKey);
+  const legacySavedLocale = localStorage.getItem(legacyLocaleKey);
+  if (!canonicalSavedLocale && ["en", "zh-Hant", "zh-Hans"].includes(legacySavedLocale)) {
+    window.WonderI18n?.setLocale?.(legacySavedLocale);
+  }
+
   const BEST_KEY = "fruitMergeBestScore";
   const PROGRESS_KEY = "weightplay_fruit_merge_progress";
   const LEADERBOARD_KEY = "weightplay_fruit_merge_leaderboard";
@@ -1553,6 +1561,10 @@
   });
   menuBtn.addEventListener("click", () => activeChallenge() ? showStage() : resetGame(true, "result-menu"));
   resultPanel.addEventListener("keydown", (event) => {
+    if (event.repeat && (event.key === "Enter" || event.key === " ")) {
+      event.preventDefault();
+      return;
+    }
     if (event.key !== "Tab" || resultPanel.classList.contains("hidden")) return;
     const actions = [playAgainBtn, menuBtn].filter((button) => !button.hidden && !button.disabled);
     if (!actions.length) return;

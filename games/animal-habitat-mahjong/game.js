@@ -1,5 +1,8 @@
 (() => {
   const LOGICAL_W = 390, LOGICAL_H = 788, saveKey = "weightplay_habitat_mahjong_v1";
+  const canonicalLocaleKey = "weightPlayLocale", legacyLocaleKey = "weightplayLocale";
+  const canonicalSavedLocale = localStorage.getItem(canonicalLocaleKey), legacySavedLocale = localStorage.getItem(legacyLocaleKey);
+  if (!canonicalSavedLocale && ["en", "zh-Hant", "zh-Hans"].includes(legacySavedLocale)) window.WonderI18n?.setLocale?.(legacySavedLocale);
   const $ = (id) => document.getElementById(id);
   const nodes = Object.fromEntries(["mainScreen","stageScreen","battleScreen","battleLive","resultScreen","loadingScreen","localeSelect","startBtn","stageRail","stageStatus","stagePreview","stageName","stageDescription","stageProgress","board","movesValue","pairsValue","battleStageName","objectiveText","feedback","hintBtn","undoBtn","shuffleBtn","retryBtn","nextBtn","stagesBtn","resultTitle","resultStats","resultBest","resultReport","progressSummary","stageSlot","battleSlot"].map((id) => [id, $(id)]));
   const copy = {

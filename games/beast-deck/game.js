@@ -256,6 +256,10 @@
       description: "在 WeightPlay 遊玩《獸王牌組：迷霧森林》：30 個任務、十種區域機制、六隻換階段首領，以及本機卡冊與裝備成長。",
       ogDescription: "組合動物能力牌、判讀敵人意圖，破解十種區域機制並挑戰 30 任務與六隻不同首領。",
     },
+    "zh-Hans": {
+      description: "在 WeightPlay 游玩《兽王牌组：迷雾森林》：30 个任务、十种区域机制、六只会切换阶段的首领，以及保存在本机的卡册与装备成长。",
+      ogDescription: "组合动物能力牌、判断敌人意图，破解十种区域机制并挑战 30 个任务与六只不同首领。",
+    },
   };
 
   const text = {
@@ -829,14 +833,22 @@
   }
 
   function getLocale() {
-    return window.WonderI18n?.locale?.() || (localStorage.getItem(localeKey) === "zh-Hant" ? "zh-Hant" : "en");
+    const stored = localStorage.getItem(localeKey);
+    return window.WonderI18n?.locale?.() || (["zh-Hant", "zh-Hans"].includes(stored) ? stored : "en");
+  }
+
+  function localizeChinese(value, locale = getLocale()) {
+    if (locale !== "zh-Hans") return value;
+    return window.WonderI18n?.simplifyChineseText?.(value) || value;
   }
 
   function t(key, params = {}) {
     const locale = getLocale();
     const zhRuntimeFallback = {};
-    const raw = (locale === "zh-Hant" ? zhRuntimeFallback[key] : "") || text[locale]?.[key] || text.en[key] || key;
-    return Object.entries(params).reduce((str, [k, v]) => str.replaceAll(`{${k}}`, String(v)), raw);
+    const sourceLocale = locale === "zh-Hans" ? "zh-Hant" : locale;
+    const raw = (sourceLocale === "zh-Hant" ? zhRuntimeFallback[key] : "") || text[sourceLocale]?.[key] || text.en[key] || key;
+    const interpolated = Object.entries(params).reduce((str, [k, v]) => str.replaceAll(`{${k}}`, String(v)), raw);
+    return localizeChinese(interpolated, locale);
   }
 
   function getMission(id = profile.selectedMission) {
@@ -849,17 +861,20 @@
   }
 
   function nextMissionLabel(missionId) {
-    return getLocale() === "zh-Hant" ? `下一關：任務 ${missionId}` : `Next Mission: ${missionId}`;
+    const locale = getLocale();
+    return locale === "en" ? `Next Mission: ${missionId}` : localizeChinese(`下一關：任務 ${missionId}`, locale);
   }
 
   function missionTitle(id) {
     const mission = getMission(id);
-    return getLocale() === "zh-Hant" ? mission.titleZh : mission.title;
+    const locale = getLocale();
+    return locale === "en" ? mission.title : localizeChinese(mission.titleZh, locale);
   }
 
   function missionSubtitle(id) {
     const mission = getMission(id);
-    return getLocale() === "zh-Hant" ? mission.subtitleZh : mission.subtitle;
+    const locale = getLocale();
+    return locale === "en" ? mission.subtitle : localizeChinese(mission.subtitleZh, locale);
   }
 
   function scaledEnemy(enemyKey, missionId) {
@@ -892,7 +907,8 @@
   }
 
   function enemyName(enemy) {
-    return getLocale() === "zh-Hant" ? enemy.nameZh : enemy.name;
+    const locale = getLocale();
+    return locale === "en" ? enemy.name : localizeChinese(enemy.nameZh, locale);
   }
 
   function missionScout(id = profile.selectedMission) {
@@ -923,6 +939,7 @@
     document.querySelectorAll("[data-aria]").forEach((el) => el.setAttribute("aria-label", t(el.dataset.aria)));
     nodes.localeSelect.querySelector('option[value="en"]').textContent = "English";
     nodes.localeSelect.querySelector('option[value="zh-Hant"]').textContent = "\u7e41\u9ad4\u4e2d\u6587";
+    nodes.localeSelect.querySelector('option[value="zh-Hans"]').textContent = "\u7b80\u4f53\u4e2d\u6587";
     nodes.localeSelect.value = getLocale();
     updateDiamondShopUI();
     renderProgressUI();
@@ -1344,10 +1361,11 @@
   }
 
   function cardTypeLabel(type) {
-    const labels = getLocale() === "zh-Hant"
-      ? { attack: "攻擊", defense: "防禦", utility: "功能", curse: "詛咒" }
-      : { attack: "Attack", defense: "Defense", utility: "Utility", curse: "Curse" };
-    return labels[type] || String(type || "");
+    const locale = getLocale();
+    const labels = locale === "en"
+      ? { attack: "Attack", defense: "Defense", utility: "Utility", curse: "Curse" }
+      : { attack: "攻擊", defense: "防禦", utility: "功能", curse: "詛咒" };
+    return localizeChinese(labels[type] || String(type || ""), locale);
   }
 
   function displayIntent(intent) {
