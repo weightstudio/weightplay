@@ -6680,6 +6680,47 @@
     queueSync();
   }
 
+  function compactMetaDescription(value, limit = 160) {
+    const text = String(value || "").replace(/\s+/g, " ").trim();
+    if (text.length <= limit) return text;
+    const clipped = text.slice(0, limit - 1);
+    const boundary = clipped.lastIndexOf(" ");
+    return `${clipped.slice(0, boundary > 110 ? boundary : clipped.length).replace(/[,:;.!?\s]+$/u, "")}…`;
+  }
+
+  function syncLocalizedMetadata(game) {
+    const activeLocale = locale();
+    const title = `${game.title} - ${game.guideTitleSuffix || uiLabel("titleSuffix")} | WeightPlay`;
+    const description = compactMetaDescription(game.intro);
+    document.documentElement.lang = activeLocale;
+    document.title = title;
+    document.querySelectorAll('meta[name="description"], meta[property="og:description"], meta[name="twitter:description"]').forEach((meta) => {
+      meta.setAttribute("content", description);
+    });
+    document.querySelectorAll('meta[property="og:title"], meta[name="twitter:title"]').forEach((meta) => {
+      meta.setAttribute("content", title);
+    });
+    document.querySelectorAll('script[type="application/ld+json"]:not([data-game-page-info-jsonld])').forEach((script) => {
+      try {
+        const jsonLd = JSON.parse(script.textContent || "null");
+        const entries = Array.isArray(jsonLd) ? jsonLd : [jsonLd];
+        let changed = false;
+        entries.forEach((entry) => {
+          const types = Array.isArray(entry?.["@type"]) ? entry["@type"] : [entry?.["@type"]];
+          if (!types.some((type) => ["VideoGame", "Game", "SoftwareApplication"].includes(type))) return;
+          entry.name = game.title;
+          entry.description = description;
+          entry.inLanguage = activeLocale;
+          if (game.genre?.length) entry.genre = game.genre;
+          changed = true;
+        });
+        if (changed) script.textContent = JSON.stringify(Array.isArray(jsonLd) ? entries : entries[0]);
+      } catch {
+        // Invalid third-party JSON-LD is left untouched.
+      }
+    });
+  }
+
   function render() {
     if (locale() === "es" && !installSpanishResource() && !spanishResourceFailed) {
       ensureSpanishResource().then(render);
@@ -6691,6 +6732,7 @@
     if (!baseGame || !main) return;
     const game = localizedGame(id);
     if (!game) return;
+    syncLocalizedMetadata(game);
     const gameSkills = game.skills || [];
     const showRecommendedAge = Boolean(baseGame.age) && !/^(12|13)\+$/.test(baseGame.age);
 

@@ -360,11 +360,12 @@ function gameInfoText(gameId, key) {
 
 function stateCopy(key) {
   const zh = i18n.locale() === "zh-Hant";
+  const es = i18n.locale() === "es";
   const copy = {
-    playableLabel: zh ? "\u53ef\u904a\u73a9" : "Playable",
-    playableNote: zh ? "\u9ede\u64ca\u5f8c\u7acb\u5373\u9032\u5165" : "Opens immediately",
-    previewLabel: zh ? "\u65b0\u904a\u6232\u9810\u544a" : "Preview",
-    previewNote: zh ? "\u656c\u8acb\u671f\u5f85\uff0c\u5c1a\u672a\u516c\u958b\u904a\u73a9" : "Coming Soon, not public yet",
+    playableLabel: zh ? "\u53ef\u904a\u73a9" : es ? "Disponible" : "Playable",
+    playableNote: zh ? "\u9ede\u64ca\u5f8c\u7acb\u5373\u9032\u5165" : es ? "Se abre de inmediato" : "Opens immediately",
+    previewLabel: zh ? "\u65b0\u904a\u6232\u9810\u544a" : es ? "Avance" : "Preview",
+    previewNote: zh ? "\u656c\u8acb\u671f\u5f85\uff0c\u5c1a\u672a\u516c\u958b\u904a\u73a9" : es ? "Próximamente; aún no está disponible" : "Coming Soon, not public yet",
   };
   return copy[key] || key;
 }
@@ -383,11 +384,15 @@ function gameStateCard(game, isPlayable) {
 }
 
 function localizedFactLabel(key) {
+  if (i18n.locale() === "es") return key === "time" ? "Tiempo" : "Dificultad";
   if (i18n.locale() !== "zh-Hant") return key === "time" ? "Time" : "Difficulty";
   return key === "time" ? "\u6642\u9593" : "\u96e3\u5ea6";
 }
 
 function localizeDifficulty(value) {
+  if (i18n.locale() === "es") {
+    return { Easy: "Fácil", Medium: "Media", Hard: "Difícil", Relaxed: "Relajada" }[value] || value;
+  }
   if (i18n.locale() !== "zh-Hant") return value;
   const map = {
     Easy: "\u7c21\u55ae",
@@ -399,6 +404,7 @@ function localizeDifficulty(value) {
 }
 
 function localizePlayTime(value) {
+  if (i18n.locale() === "es") return String(value).replace("minutes", "minutos").replace("minute", "minuto");
   if (i18n.locale() !== "zh-Hant") return value;
   return String(value)
     .replace("1-3 minutes", "1-3 \u5206\u9418")
@@ -1455,6 +1461,16 @@ function applyFilter({ historyMode = "replace" } = {}) {
 
 function applyStaticTranslations() {
   document.title = i18n.t(isKidsLobby ? "kids.site.title" : "general.site.title");
+  const descriptionKey = isKidsLobby ? "kids.site.description" : "general.site.description";
+  const localizedDescription = i18n.t(descriptionKey);
+  if (localizedDescription && localizedDescription !== descriptionKey) {
+    document.querySelectorAll('meta[name="description"], meta[property="og:description"], meta[name="twitter:description"]').forEach((meta) => {
+      meta.setAttribute("content", localizedDescription);
+    });
+    document.querySelectorAll('meta[property="og:title"], meta[name="twitter:title"]').forEach((meta) => {
+      meta.setAttribute("content", document.title);
+    });
+  }
   if (lobbyKicker) lobbyKicker.textContent = i18n.t(isKidsLobby ? "kids.site.kicker" : "general.site.kicker");
   featuredLabel.textContent = i18n.t("site.featured");
   languageLabel.textContent = i18n.t("language.label");

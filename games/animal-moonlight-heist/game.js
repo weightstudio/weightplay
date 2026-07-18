@@ -17,6 +17,11 @@
     pauseAction: "Pause mission",
     resumeAction: "Resume mission",
     playFieldLabel: "Stealth route field. Use WASD or arrow keys to move and Space to use the gadget.",
+    playFieldPassiveLabel: "Stealth route field. Use WASD or arrow keys to move. {name} is passive: {effect}.",
+    playFieldActiveLabel: "Stealth route field. Use WASD or arrow keys to move and Space to use {name}: {effect}.",
+    passiveGadgetLabel: "{name} is passive: {effect}.",
+    activeGadgetLabel: "Use {name}: {effect}.",
+    passive: "Passive",
     languageLabel: "Language",
     posterAlt: "Animal Moonlight Heist poster",
     orlaAlt: "Moon Cap Orla",
@@ -42,6 +47,11 @@
     pauseAction: "\u66ab\u505c\u4efb\u52d9",
     resumeAction: "\u7e7c\u7e8c\u4efb\u52d9",
     playFieldLabel: "\u6f5b\u884c\u8def\u7dda\u5340\u3002\u4f7f\u7528 WASD \u6216\u65b9\u5411\u9375\u79fb\u52d5\uff0c\u6309\u7a7a\u767d\u9375\u4f7f\u7528\u88dd\u7f6e\u3002",
+    playFieldPassiveLabel: "\u6f5b\u884c\u8def\u7dda\u5340\u3002\u4f7f\u7528 WASD \u6216\u65b9\u5411\u9375\u79fb\u52d5\u3002{name}\u662f\u88ab\u52d5\u6548\u679c\uff1a{effect}\u3002",
+    playFieldActiveLabel: "\u6f5b\u884c\u8def\u7dda\u5340\u3002\u4f7f\u7528 WASD \u6216\u65b9\u5411\u9375\u79fb\u52d5\uff0c\u6309\u7a7a\u767d\u9375\u4f7f\u7528{name}\uff1a{effect}\u3002",
+    passiveGadgetLabel: "{name}\u662f\u88ab\u52d5\u6548\u679c\uff1a{effect}\u3002",
+    activeGadgetLabel: "\u4f7f\u7528{name}\uff1a{effect}\u3002",
+    passive: "\u88ab\u52d5",
     languageLabel: "\u8a9e\u8a00",
     posterAlt: "\u52d5\u7269\u6708\u5f71\u6f5b\u884c\u968a\u904a\u6232\u6d77\u5831",
     orlaAlt: "\u6708\u5e3d\u6b50\u62c9",
@@ -58,7 +68,7 @@
     guardianCleared: "已通過守衛路線",
   });
   Object.assign(copy.es, {
-    notCleared:"Sin completar", bestMedals:"Mejor: {medals}/3 medallas", perfectMedals:"Mejor: 3/3 medallas · Completada", bonusMedal:"El tesoro adicional concede la última medalla.", medalCount:"{medals} de 3 medallas obtenidas", resultMedals:"{medals}/3 medallas", pauseAction:"Pausar misión", resumeAction:"Continuar misión", playFieldLabel:"Ruta de sigilo. Usa WASD o las flechas para moverte y Espacio para usar el dispositivo.", languageLabel:"Idioma", posterAlt:"Cartel de Golpe Animal a la Luz de la Luna", orlaAlt:"Orla Sombrero Lunar", missionRailLabel:"Misiones", fiaAlt:"Fia Garra Chispeante", stageBackLabel:"Volver al menú principal", battleBackLabel:"Volver a las misiones", checkpoint:"Puesto del guardián", firstSeal:"Recupera primero el sello del tesoro.", mirrorWarning:"¡Se acerca un cambio de espejos!", bellWarning:"¡Se acerca el pulso de la campana! ¡Busca una sombra!", clockSlow:"Fase azul: las patrullas van despacio.", clockSurge:"¡Fase ámbar: las patrullas aceleran!", guardianCleared:"Ruta del guardián completada"
+    notCleared:"Sin completar", bestMedals:"Mejor: {medals}/3 medallas", perfectMedals:"Mejor: 3/3 medallas · Completada", bonusMedal:"El tesoro adicional concede la última medalla.", medalCount:"{medals} de 3 medallas obtenidas", resultMedals:"{medals}/3 medallas", pauseAction:"Pausar misión", resumeAction:"Continuar misión", playFieldLabel:"Ruta de sigilo. Usa WASD o las flechas para moverte y Espacio para usar el dispositivo.", playFieldPassiveLabel:"Ruta de sigilo. Usa WASD o las flechas para moverte. {name} es pasivo: {effect}.", playFieldActiveLabel:"Ruta de sigilo. Usa WASD o las flechas para moverte y Espacio para usar {name}: {effect}.", passiveGadgetLabel:"{name} es pasivo: {effect}.", activeGadgetLabel:"Usa {name}: {effect}.", passive:"Pasivo", languageLabel:"Idioma", posterAlt:"Cartel de Golpe Animal a la Luz de la Luna", orlaAlt:"Orla Sombrero Lunar", missionRailLabel:"Misiones", fiaAlt:"Fia Garra Chispeante", stageBackLabel:"Volver al menú principal", battleBackLabel:"Volver a las misiones", checkpoint:"Puesto del guardián", firstSeal:"Recupera primero el sello del tesoro.", mirrorWarning:"¡Se acerca un cambio de espejos!", bellWarning:"¡Se acerca el pulso de la campana! ¡Busca una sombra!", clockSlow:"Fase azul: las patrullas van despacio.", clockSurge:"¡Fase ámbar: las patrullas aceleran!", guardianCleared:"Ruta del guardián completada"
   });
   const missionObjects=["moon-seal","courier-token","star-map","clockwork-lens","district-relic"];
   const patrolArt=["wolf","rabbit","badger"];
@@ -245,7 +255,7 @@
   }
   function focusMain(){requestAnimationFrame(()=>$("#startBtn")?.focus({preventScroll:true}))}
   function renderGadgets(focusId=null){const wrap=$("#gadgetChoices");wrap.innerHTML="";gadgetOffers.forEach(({id,level})=>{const g=gadgets[id],b=document.createElement("button");b.className=`gadget-choice${id===gadget?" selected":""}`;b.dataset.gadgetId=id;b.innerHTML=`<img src="../../assets/animal-moonlight-heist-gadget-${g.art}.webp" alt=""><span class="gadget-level">Lv.${level}</span>`;b.type="button";b.title=`${t(id)} Lv.${level}`;b.setAttribute("aria-label",gadgetSummary(id,level));b.setAttribute("aria-pressed",id===gadget?"true":"false");b.addEventListener("click",()=>{gadget=id;renderGadgets(id);updateGadget();renderGadgetSummary()});wrap.append(b)});if(focusId)wrap.querySelector(`[data-gadget-id="${focusId}"]`)?.focus({preventScroll:true})}
-  function updateGadget(){if(!$("#gadgetIcon"))return;$("#gadgetIcon").src=`../../assets/animal-moonlight-heist-gadget-${gadgets[gadget].art}.webp`;$("#gadgetLabel").textContent=t(gadget)}
+  function updateGadget(){if(!$("#gadgetIcon"))return;const passive=gadget==="dash",name=t(gadget),effect=gadgetEffect(gadget,selectedOffer().level),button=$("#gadgetBtn");$("#gadgetIcon").src=`../../assets/animal-moonlight-heist-gadget-${gadgets[gadget].art}.webp`;$("#gadgetLabel").textContent=passive?`${name} · ${t("passive")}`:name;button.disabled=passive;button.setAttribute("aria-label",t(passive?"passiveGadgetLabel":"activeGadgetLabel",{name,effect}));button.title=button.getAttribute("aria-label");nodes.field.setAttribute("aria-label",t(passive?"playFieldPassiveLabel":"playFieldActiveLabel",{name,effect}))}
   function startMission(index){
     selectedMission=Math.max(0,Math.min(campaign.length-1,index));
     objectFound=false;treasureFound=preservedTreasure;preservedTreasure=false;caught=false;alert=0;paused=false;freezeUntil=0;smokeUntil=0;lastPulseCycle=-1;lastMirrorCycle=-1;guardianPhase=1;
@@ -268,7 +278,7 @@
   }
   function place(el,pos){el.style.left=`${pos[0]}%`;el.style.top=`${pos[1]}%`}
   function point(el){return[parseFloat(el.style.left)||0,parseFloat(el.style.top)||0]}
-  function updatePauseControl(){const button=$("#pauseBtn");if(!button)return;button.textContent=paused?"\u25b6":"\u275a\u275a";button.setAttribute("aria-pressed",paused?"true":"false");button.setAttribute("aria-label",t(paused?"resumeAction":"pauseAction"));button.title=t(paused?"resumeAction":"pauseAction");nodes.field.tabIndex=0;nodes.field.setAttribute("aria-label",t("playFieldLabel"))}
+  function updatePauseControl(){const button=$("#pauseBtn");if(!button)return;button.textContent=paused?"\u25b6":"\u275a\u275a";button.setAttribute("aria-pressed",paused?"true":"false");button.setAttribute("aria-label",t(paused?"resumeAction":"pauseAction"));button.title=t(paused?"resumeAction":"pauseAction");nodes.field.tabIndex=0;updateGadget()}
   function freezeFia(){if(!nodes.field||nodes.field.hidden)return;const field=nodes.field.getBoundingClientRect(),fia=nodes.fia.getBoundingClientRect();if(!field.width||!field.height)return;const position=[(fia.left+fia.width/2-field.left)/field.width*100,(fia.top+fia.height/2-field.top)/field.height*100];nodes.fia.style.transitionDuration="0ms";place(nodes.fia,position)}
   function freezePatrols(){const field=nodes.field.getBoundingClientRect();if(!field.width||!field.height)return;patrols.forEach(p=>{const box=p.img.getBoundingClientRect(),position=[(box.left+box.width/2-field.left)/field.width*100,(box.top+box.height/2-field.top)/field.height*100];p.img.style.transitionDuration="0ms";place(p.img,position);place(p.sight,position)})}
   function cancelRoutePreview(){nodes.route.hidden=true;preview=null;if(routePointerId!==null&&nodes.field.hasPointerCapture?.(routePointerId))nodes.field.releasePointerCapture(routePointerId);routePointerId=null}
@@ -326,7 +336,7 @@
     if(objectFound&&distance(p,point(nodes.exit))<13)win();
   }
   function showFx(type){nodes.fx.src=`../../assets/animal-moonlight-heist-fx-${type}.webp`;place(nodes.fx,point(nodes.fia));nodes.fx.hidden=false;nodes.fx.classList.remove("fx-show");void nodes.fx.offsetWidth;nodes.fx.classList.add("fx-show");setTimeout(()=>nodes.fx.hidden=true,650)}
-  function useGadget(){if(!playing||paused)return;const level=selectedOffer().level;if(gadget==="decoy"){freezeUntil=performance.now()+(2500+level*650);showFx("pickup")}else if(gadget==="smoke"){alert=0;smokeUntil=performance.now()+(800+level*500);showFx("shadow")}else{nodes.feedback.textContent=t("dash");showFx("pickup")}}
+  function useGadget(){if(!playing||paused||gadget==="dash")return;const level=selectedOffer().level;if(gadget==="decoy"){freezeUntil=performance.now()+(2500+level*650);showFx("pickup")}else{alert=0;smokeUntil=performance.now()+(800+level*500);showFx("shadow")}}
   function fail(){if(caught||performance.now()<smokeUntil)return;caught=true;playing=false;if(insuranceActive&&treasureFound)preservedTreasure=true;insuranceActive=false;showFx("warning");nodes.fia.classList.add("caught");openResult(false)}
   function win(){playing=false;insuranceActive=false;const m=activeMission(),medals=1+(!caught?1:0)+(treasureFound?1:0);const reward=20+selectedMission*4+(treasureFound?12:0)+(m.guardian?30:0);state.coins+=reward;state.cleared[selectedMission]=Math.max(state.cleared[selectedMission]||0,medals);state.unlocked=Math.max(state.unlocked,Math.min(campaign.length,selectedMission+2));state.safehouse=1+Math.floor(Object.keys(state.cleared).length/5);save();openResult(true,medals,reward)}
   function openResult(ok,medals=0,reward=0){

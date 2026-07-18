@@ -171,6 +171,11 @@
     "zh-Hant": {},
   };
 
+  dictionaries.es = window.WeightPlayI18nLocales?.es || {
+    "language.label": "Idioma",
+    "game.start": "Comenzar juego",
+  };
+
   dictionaries["zh-Hant"] = {
     "site.kicker": "兒童與親子遊戲",
     "site.featured": "精選",
@@ -1748,6 +1753,17 @@
     if (document.documentElement.lang !== currentLocale) document.documentElement.lang = currentLocale;
     document.documentElement.dataset.weightPlayLocale = currentLocale;
     document.querySelectorAll("select").forEach((select) => {
+      if (
+        supportedLocales.includes("es") &&
+        !select.querySelector('option[value="es"]') &&
+        select.querySelector('option[value="en"]') &&
+        (select.id.toLowerCase().includes("locale") || select.closest(".language-picker") || select.getAttribute("aria-label")?.toLowerCase() === "language")
+      ) {
+        const option = document.createElement("option");
+        option.value = "es";
+        option.textContent = "Español";
+        select.appendChild(option);
+      }
       if (select.querySelector(`option[value="${currentLocale}"]`)) select.value = currentLocale;
     });
     if (currentLocale === "zh-Hans") translateTree(document.documentElement);

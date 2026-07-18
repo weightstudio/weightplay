@@ -1730,6 +1730,7 @@
     nodes.hintText.textContent = sonarScanMessage(run.hookFish);
     updateTensionGuide();
     updateSonarButton();
+    canvas.focus({ preventScroll: true });
     playSound("coin");
     track("sonar_use", {
       zone: run.zone.id,
