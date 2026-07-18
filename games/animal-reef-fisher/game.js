@@ -10,6 +10,20 @@
   const isTestMode = new URLSearchParams(window.location.search).get("test") === "1";
 
   const $ = (id) => document.getElementById(id);
+  if (!$(("leavePanel"))) {
+    document.querySelector(".battle-shell")?.insertAdjacentHTML("beforeend", `
+      <section id="leavePanel" class="leave-panel is-hidden" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" aria-describedby="leaveCopy">
+        <div class="leave-card">
+          <h2 id="leaveTitle">Leave this expedition?</h2>
+          <p id="leaveCopy"></p>
+          <div class="leave-actions">
+            <button id="leaveKeepBtn" class="primary-btn" type="button">Keep Fishing</button>
+            <button id="leaveConfirmBtn" class="secondary-btn" type="button">Leave Expedition</button>
+          </div>
+        </div>
+      </section>
+    `);
+  }
   const canvas = $("gameCanvas");
   const ctx = canvas.getContext("2d");
   const nodes = {
@@ -21,6 +35,7 @@
     stagePanel: $("stagePanel"),
     gamePanel: $("gamePanel"),
     resultPanel: $("resultPanel"),
+    leavePanel: $("leavePanel"),
     zoneRow: $("zoneRow"),
     gearGrid: $("gearGrid"),
     startBtn: $("startBtn"),
@@ -29,6 +44,10 @@
     mapBtn: $("mapBtn"),
     retryBtn: $("retryBtn"),
     resultMenuBtn: $("resultMenuBtn"),
+    leaveKeepBtn: $("leaveKeepBtn"),
+    leaveConfirmBtn: $("leaveConfirmBtn"),
+    leaveTitle: $("leaveTitle"),
+    leaveCopy: $("leaveCopy"),
     lureBtn: $("lureBtn"),
     sonarPrepBtn: $("sonarPrepBtn"),
     sonarBtn: $("sonarBtn"),
@@ -82,6 +101,10 @@
       prepareGear: "Prepare Gear",
       startExpedition: "Start Expedition",
       reefMap: "Reef Map",
+      leaveTitle: "Leave this expedition?",
+      leaveCopy: "Mission {stage}: {catches}/{goal} catches and {time}s left. This expedition, its catches, and any prepared Lure or Sonar will be lost. Saved Album, Reef Notes, and gear stay safe.",
+      keepFishing: "Keep Fishing",
+      leaveExpedition: "Leave Expedition",
       zone: "Zone",
       time: "Time",
       goal: "Goal",
@@ -182,6 +205,10 @@
       prepareGear: "遠征準備",
       startExpedition: "開始遠征",
       reefMap: "礁區地圖",
+      leaveTitle: "要離開這次遠征嗎？",
+      leaveCopy: "第 {stage} 關：已釣到 {catches}/{goal} 條，剩餘 {time} 秒。本次遠征、漁獲與已準備的魚餌或聲納會消失；已儲存的圖鑑、礁石筆記與裝備不受影響。",
+      keepFishing: "繼續釣魚",
+      leaveExpedition: "離開遠征",
       zone: "礁區",
       time: "時間",
       goal: "目標",
@@ -262,7 +289,7 @@
   };
 
   text.es = {
-    title:"Pescador del Arrecife Animal",pageTitle:"Pescador del Arrecife Animal - Juego de pesca | WeightPlay",pageDescription:"Completa 30 misiones de pesca, controla zonas de tensión cambiantes, documenta 12 criaturas marinas, mejora seis herramientas y captura seis peces Guardianes.",language:"Idioma",backToLobby:"Volver al vestíbulo",back:"Volver",reefZones:"Zonas del arrecife",gearUpgrades:"Mejoras de equipo",menuTitle:"Traza 30 misiones y captura seis peces Guardianes.",menuHint:"Controla reglas de tensión cambiantes, documenta 12 especies, gana Notas del Arrecife y mejora seis herramientas.",reefNotes:"Notas del Arrecife",album:"Álbum",diamonds:"Diamantes",startGame:"Empezar",soundOn:"Sonido: Sí",soundOff:"Sonido: No",enableSound:"Activar sonido",disableSound:"Desactivar sonido",chooseZone:"Elegir misión del arrecife",prepareGear:"Preparar equipo",startExpedition:"Empezar expedición",reefMap:"Mapa del arrecife",zone:"Zona",time:"Tiempo",goal:"Objetivo",retry:"Reintentar",
+    title:"Pescador del Arrecife Animal",pageTitle:"Pescador del Arrecife Animal - Juego de pesca | WeightPlay",pageDescription:"Completa 30 misiones de pesca, controla zonas de tensión cambiantes, documenta 12 criaturas marinas, mejora seis herramientas y captura seis peces Guardianes.",language:"Idioma",backToLobby:"Volver al vestíbulo",back:"Volver",reefZones:"Zonas del arrecife",gearUpgrades:"Mejoras de equipo",menuTitle:"Traza 30 misiones y captura seis peces Guardianes.",menuHint:"Controla reglas de tensión cambiantes, documenta 12 especies, gana Notas del Arrecife y mejora seis herramientas.",reefNotes:"Notas del Arrecife",album:"Álbum",diamonds:"Diamantes",startGame:"Empezar",soundOn:"Sonido: Sí",soundOff:"Sonido: No",enableSound:"Activar sonido",disableSound:"Desactivar sonido",chooseZone:"Elegir misión del arrecife",prepareGear:"Preparar equipo",startExpedition:"Empezar expedición",reefMap:"Mapa del arrecife",leaveTitle:"¿Salir de esta expedición?",leaveCopy:"Misión {stage}: {catches}/{goal} capturas y {time}s restantes. Se perderán esta expedición, sus capturas y cualquier Cebo o Sonar preparado. El Álbum, las Notas y el equipo guardados quedan seguros.",keepFishing:"Seguir pescando",leaveExpedition:"Salir de la expedición",zone:"Zona",time:"Tiempo",goal:"Objetivo",retry:"Reintentar",
     castHint:"Mantén pulsado el mar para cargar y suelta para lanzar.",charging:"Suelta al alcanzar la profundidad deseada.",hooked:"El pez ha picado. Arrastra el control rojo, desliza en el mar o usa Izquierda y Derecha para mantener el indicador en la zona verde.",hookedBehavior:"{behavior}: {hint} Mantén el indicador en la zona segura.",behaviorSteady:"Pez estable",behaviorSteadyHint:"La fuerza es suave; sigue con movimientos pequeños.",behaviorDart:"Pez veloz",behaviorDartHint:"Cambia de dirección rápido; corrige suavemente tras cada impulso.",behaviorHeavy:"Pez pesado",behaviorHeavyHint:"Tira durante más tiempo; ten paciencia cerca del centro.",tensionTitle:"Tensión de línea",tensionLow:"Muy floja",tensionSafe:"SEGURA",tensionHigh:"Muy tensa",tensionMarker:"Arrastrar",playAreaAria:"Zona de pesca. Mantén Espacio para cargar, suelta para lanzar y usa las flechas para controlar la tensión.",tensionLaneAria:"Carril de tensión. Ajusta con las flechas izquierda y derecha.",sonarAria:"Usar sonar",sonarDecision:"Usa el Sonar preparado para revelar y fijar el próximo pez, su rareza y su comportamiento de arrastre.",
     tensionCoachAim:"Mantén el mar o Espacio para lanzar. Cuando pique, arrastra el control rojo, desliza o usa las flechas.",tensionCoachReel:"Arrastra el control rojo, desliza en el mar o usa las flechas para permanecer en la zona verde.",tensionCoachSafe:"Bien. Desliza suavemente y permanece en SEGURA hasta capturarlo.",tensionCoachDanger:"Vuelve ahora a la zona segura.",tensionStatusAim:"Paso 1: mantén pulsado para cargar y suelta para lanzar.",tensionStatusCharging:"Suelta para lanzar. El paso 2 empieza cuando pique un pez.",tensionStatusHooked:"Paso 2: arrastra el control rojo o desliza para entrar en la zona verde.",tensionStatusSafe:"En zona segura. Mantén el control.",tensionStatusDanger:"Devuelve el control rojo a la zona segura o se romperá la línea.",landed:"¡Captura lograda! Sigue antes de que termine el tiempo.",broke:"La línea se rompió. El indicador estuvo demasiado tiempo fuera de la zona segura.",escaped:"El pez escapó. Lanza otra vez y mantén el indicador centrado.",
     sonarReady:"El sonar está preparado para esta expedición.",sonarScan:"Sonar: {fish} · {rarity} · {behavior}. Próximo lanzamiento fijado.",sonarStatus:"Siguiente: {fish}",needDiamonds:"Necesitas {cost} diamantes.",lureReady:"El cebo raro está preparado para la próxima expedición.",buyLure:"Cebo raro {cost}💎",buySonar:"Pulso sonar {cost}💎",confirmLure:"Confirmar cebo · {before}→{after}💎",confirmSonar:"Confirmar sonar · {before}→{after}💎",lureBuyLabel:"El Cebo raro aumenta la posibilidad de una marca rara en la próxima expedición. Cuesta 3 diamantes. Saldo {balance}.",sonarBuyLabel:"El Pulso sonar revela y fija el próximo pez antes de lanzar. Cuesta 2 diamantes. Saldo {balance}.",lureConfirmLabel:"Confirma el Cebo raro. Gasta 3 diamantes. Saldo de {before} a {after}.",sonarConfirmLabel:"Confirma el Pulso sonar. Gasta 2 diamantes. Saldo de {before} a {after}.",sonar:"Sonar",upgrade:"Mejorar",max:"Máx.",gearUpgradeLabel:"Mejora {gear} del nivel {beforeLevel} al {afterLevel}. Gasta {cost} Notas. Saldo de {before} a {after}.",gearUpgradeNeedLabel:"{gear} nivel {beforeLevel}. El nivel {afterLevel} cuesta {cost} Notas. Saldo {balance}; faltan {need}.",gearMaxLabel:"{gear} nivel {level}. Nivel máximo.",locked:"Bloqueado",complete:"Completado",
@@ -507,6 +534,7 @@
   let lastTime = performance.now();
   let raf = 0;
   let backgroundSuspended = false;
+  let leaveDecisionOpen = false;
   const images = {};
   const fishThumbCache = {};
   const fishCropCache = {};
@@ -580,6 +608,9 @@
       node.textContent = t(node.dataset.ui);
     });
     nodes.mapBtn.setAttribute("aria-label", t("reefMap"));
+    nodes.leaveTitle.textContent = t("leaveTitle");
+    nodes.leaveKeepBtn.textContent = t("keepFishing");
+    nodes.leaveConfirmBtn.textContent = t("leaveExpedition");
     canvas.setAttribute("aria-label", t("playAreaAria"));
     nodes.tensionLane.setAttribute("aria-label", t("tensionLaneAria"));
     updateSonarButton();
@@ -710,6 +741,48 @@
     document.body.classList.toggle("has-game-page-info", which === "main" && guideIsReady);
     document.body.dataset.reefState = which;
     document.documentElement.dataset.reefState = which;
+  }
+
+  function battleDecisionLayers() {
+    return [...nodes.gamePanel.querySelectorAll(":scope > .battle-shell > .hud-row, :scope > .battle-shell > .play-frame, :scope > .battle-shell > .catch-hud, :scope > .battle-shell > .tension-panel")];
+  }
+
+  function restartFishingLoop() {
+    if (backgroundSuspended || leaveDecisionOpen) return;
+    cancelAnimationFrame(raf);
+    lastTime = performance.now();
+    raf = requestAnimationFrame(tick);
+  }
+
+  function setLeaveDecision(open, { restoreFocus = true } = {}) {
+    if (open) {
+      if (state !== "game" || !run || run.finished) return;
+      cancelFishingInput();
+      leaveDecisionOpen = true;
+      cancelAnimationFrame(raf);
+      nodes.leaveCopy.textContent = t("leaveCopy", {
+        stage: run.zone.stage,
+        catches: run.catches,
+        goal: run.zone.goal,
+        time: Math.max(0, Math.ceil(run.time)),
+      });
+      nodes.leavePanel.classList.remove("is-hidden");
+      battleDecisionLayers().forEach((node) => {
+        node.inert = true;
+        node.setAttribute("aria-hidden", "true");
+      });
+      requestAnimationFrame(() => nodes.leaveKeepBtn.focus({ preventScroll: true }));
+      return;
+    }
+    const wasOpen = leaveDecisionOpen;
+    leaveDecisionOpen = false;
+    nodes.leavePanel.classList.add("is-hidden");
+    battleDecisionLayers().forEach((node) => {
+      node.inert = false;
+      node.setAttribute("aria-hidden", "false");
+    });
+    restartFishingLoop();
+    if (wasOpen && restoreFocus) requestAnimationFrame(() => nodes.mapBtn.focus({ preventScroll: true }));
   }
 
   function focusPanel(node) {
@@ -1448,7 +1521,7 @@
   }
 
   function tick(now) {
-    if (backgroundSuspended) return;
+    if (backgroundSuspended || leaveDecisionOpen) return;
     const dt = Math.min(0.05, (now - lastTime) / 1000);
     lastTime = now;
     update(dt);
@@ -1682,11 +1755,38 @@
     focusMainAction();
   });
   nodes.mapBtn.addEventListener("click", () => {
+    setLeaveDecision(true);
+  });
+  nodes.leaveKeepBtn.addEventListener("click", () => setLeaveDecision(false));
+  nodes.leaveConfirmBtn.addEventListener("click", () => {
     playSound("click");
+    setLeaveDecision(false, { restoreFocus: false });
+    run = null;
     state = "stage";
     showPanel("stage");
     renderMenu();
     focusSelectedZone();
+  });
+  nodes.leavePanel.addEventListener("keydown", (event) => {
+    if (event.repeat && (event.key === "Enter" || event.key === " ")) {
+      event.preventDefault();
+      return;
+    }
+    if (event.key === "Escape") {
+      event.preventDefault();
+      setLeaveDecision(false);
+      return;
+    }
+    if (event.key !== "Tab" || nodes.leavePanel.classList.contains("is-hidden")) return;
+    const first = nodes.leaveKeepBtn;
+    const last = nodes.leaveConfirmBtn;
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
   });
   nodes.retryBtn.addEventListener("click", async () => {
     await startRun();
@@ -1773,8 +1873,7 @@
   function resumeBackgroundFishing() {
     if (!backgroundSuspended) return;
     backgroundSuspended = false;
-    lastTime = performance.now();
-    raf = requestAnimationFrame(tick);
+    restartFishingLoop();
   }
   window.addEventListener("pagehide", suspendBackgroundFishing);
   window.addEventListener("pageshow", resumeBackgroundFishing);

@@ -38,7 +38,7 @@
   const supportedLocales=['en','zh-Hant'];
   const gameLocalePreference=localStorage.getItem('wordTrailsLocale');
   const platformLocale=localStorage.getItem('weightPlayLocale')||localStorage.getItem('weightplayLocale');
-  let lang = supportedLocales.includes(gameLocalePreference)?gameLocalePreference:(supportedLocales.includes(platformLocale)?platformLocale:'en'), stage = 0, path = [], found = new Set(), hints = 0, dragStartLength = 0;
+  let lang = supportedLocales.includes(gameLocalePreference)?gameLocalePreference:(supportedLocales.includes(platformLocale)?platformLocale:'en'), stage = 0, path = [], found = new Set(), hints = 0, dragStartLength = 0, leaveConfirmOpen = false, leaveConfirmTrigger = null;
   const $ = id => document.getElementById(id); const t = key => copy[lang][key];
   const track = (event, details = {}) => window.WonderAnalytics?.track(event, { game_id: 'animal-word-trails', locale: lang, stage: stage + 1, ...details });
   const battleTasks = new Map();
@@ -59,7 +59,7 @@
     if(!battleTasksPaused&&!document.hidden)task.frame=requestAnimationFrame(task.step);
   }
   function pauseBattleTasks(){ if(battleTasksPaused)return; battleTasksPaused=true; const now=performance.now(); battleTasks.forEach(task=>{if(task.last!==null)task.remaining-=Math.max(0,now-task.last);task.last=null;if(task.frame)cancelAnimationFrame(task.frame);task.frame=0;}); }
-  function resumeBattleTasks(){ if(!battleTasksPaused)return; battleTasksPaused=false; battleTasks.forEach(task=>{if(!task.frame)task.frame=requestAnimationFrame(task.step);}); }
+  function resumeBattleTasks(){ if(!battleTasksPaused||leaveConfirmOpen)return; battleTasksPaused=false; battleTasks.forEach(task=>{if(!task.frame)task.frame=requestAnimationFrame(task.step);}); }
   function screen(name) { const result=name==='result'; if(name!=='battle'){cancelBattleTasks();$('clueReveal')?.classList.add('hidden');} document.querySelector('[data-screen="main"]').classList.toggle('hidden',name!=='main'); document.querySelector('[data-screen="stage"]').classList.toggle('hidden',name!=='stage'); document.querySelector('[data-screen="battle"]').classList.toggle('hidden',name!=='battle'&&!result); $('resultPanel').classList.toggle('hidden',!result); $('battleLive').classList.toggle('hidden',result); $('battleLive').inert=result;if(result)$('battleLive').setAttribute('aria-hidden','true');else $('battleLive').removeAttribute('aria-hidden'); document.body.classList.toggle('word-stage',name==='stage'); document.body.classList.toggle('word-playing',name==='battle'||result); document.body.classList.toggle('word-result',result); }
   function translate(){ document.documentElement.lang=lang; document.querySelectorAll('[data-copy]').forEach(el=>el.textContent=t(el.dataset.copy)); }
   function save(){ localStorage.setItem('wordTrailsLocale',lang); localStorage.setItem('weightPlayLocale',lang); localStorage.wordTrailsBest = JSON.stringify(JSON.parse(localStorage.wordTrailsBest || '{}')); }
@@ -133,14 +133,14 @@
   Object.assign(copy.en, {
     language:'Language', album:'Album', albumTitle:'Animal clues', undo:'Undo', loading:'Loading trail',
     backLobby:'Back to WeightPlay', backMain:'Back to main', backStage:'Back to trails', closeAlbum:'Close album', stages:'Trails', board:'Word board',
-    lockedStage:'Finish the previous trail to unlock this one.',
+    lockedStage:'Finish the previous trail to unlock this one.', leaveTitle:'Leave this trail?', leaveMessage:'Found words, the current path, and star progress in this run will reset.', keepReading:'Keep reading', leaveTrail:'Leave trail',
     seoTitle:'Animal Word Trails - WeightPlay', seoDescription:'Connect animal and habitat words in a calm reading puzzle.'
   });
   Object.assign(copy['zh-Hant'], {
     language:'\u8a9e\u8a00', album:'\u7dda\u7d22\u5361', albumTitle:'\u52d5\u7269\u7dda\u7d22\u5361', undo:'\u5fa9\u539f', loading:'\u6e96\u5099\u5c0f\u5f91',
     backLobby:'\u8fd4\u56de WeightPlay \u5927\u5ef3', backMain:'\u8fd4\u56de\u9996\u9801', backStage:'\u8fd4\u56de\u5c0f\u5f91\u9078\u55ae', closeAlbum:'\u95dc\u9589\u7dda\u7d22\u5361',
     stages:'\u5c0f\u5f91\u9078\u55ae', board:'\u5b57\u8a5e\u68cb\u76e4', seoTitle:'\u52d5\u7269\u5b57\u8a5e\u5c0f\u5f91 - WeightPlay',
-    lockedStage:'\u5b8c\u6210\u524d\u4e00\u689d\u5c0f\u5f91\uff0c\u5c31\u80fd\u89e3\u9396\u9019\u4e00\u95dc\u3002',
+    lockedStage:'\u5b8c\u6210\u524d\u4e00\u689d\u5c0f\u5f91\uff0c\u5c31\u80fd\u89e3\u9396\u9019\u4e00\u95dc\u3002', leaveTitle:'\u8981\u96e2\u958b\u9019\u689d\u5c0f\u5f91\u55ce\uff1f', leaveMessage:'\u9019\u4e00\u5c40\u627e\u5230\u7684\u5b57\u8a5e\u3001\u76ee\u524d\u8def\u5f91\u548c\u661f\u661f\u9032\u5ea6\u90fd\u6703\u91cd\u8a2d\u3002', keepReading:'\u7e7c\u7e8c\u627e\u5b57', leaveTrail:'\u96e2\u958b\u5c0f\u5f91',
     seoDescription:'\u9023\u7dda\u627e\u51fa\u52d5\u7269\u8207\u68f2\u5730\u5b57\u8a5e\u7684\u8f15\u9b06\u95b1\u8b80\u904a\u6232\u3002'
   });
   translate = function(){
@@ -157,7 +157,30 @@
     if(event.repeat&&(event.key==='Enter'||event.key===' ')){event.preventDefault();event.stopImmediatePropagation();}
   };
   const focusSelectedStage=()=>requestAnimationFrame(()=>document.querySelector('.stage-card.selected')?.focus({preventScroll:true}));
+  function setLeaveConfirmOpen(open,restoreFocus=true){
+    if(open===leaveConfirmOpen)return;
+    const panel=$('leaveConfirmPanel'),live=$('battleLive');
+    leaveConfirmOpen=open;
+    panel.classList.toggle('hidden',!open);
+    live.inert=open;
+    if(open){
+      leaveConfirmTrigger=document.activeElement instanceof HTMLElement?document.activeElement:$('battleBack');
+      pauseBattleTasks();
+      live.setAttribute('aria-hidden','true');
+      requestAnimationFrame(()=>$('keepReading').focus({preventScroll:true}));
+    }else{
+      live.removeAttribute('aria-hidden');
+      resumeBattleTasks();
+      const trigger=leaveConfirmTrigger;
+      leaveConfirmTrigger=null;
+      if(restoreFocus&&trigger?.isConnected)trigger.focus({preventScroll:true});
+    }
+  }
+  function returnToTrails(){renderStages();screen('stage');focusSelectedStage();}
+  function requestBattleReturn(){if(path.length===0&&found.size===0&&hints===0&&battleTasks.size===0){returnToTrails();return}setLeaveConfirmOpen(true)}
+  function leaveCurrentTrail(){setLeaveConfirmOpen(false,false);returnToTrails()}
   $('start').addEventListener('keydown',rejectRepeatedActivation);
+  $('battleBack').addEventListener('keydown',rejectRepeatedActivation);
   rail.addEventListener('keydown',event=>{
     if(event.target.closest('.stage-card'))rejectRepeatedActivation(event);
   });
@@ -172,6 +195,15 @@
       event.preventDefault();
       (event.shiftKey?last:first).focus({preventScroll:true});
     }
+  },true);
+  $('leaveConfirmPanel').addEventListener('keydown',event=>{
+    rejectRepeatedActivation(event);
+    if(event.defaultPrevented)return;
+    if(event.key==='Escape'){event.preventDefault();setLeaveConfirmOpen(false,true);return;}
+    if(event.key!=='Tab')return;
+    const actions=[$('keepReading'),$('leaveTrail')],index=actions.indexOf(document.activeElement);
+    const next=event.shiftKey?(index<=0?actions.length-1:index-1):(index>=actions.length-1?0:index+1);
+    event.preventDefault();actions[next].focus({preventScroll:true});
   },true);
   let railStartX=0;
   let railStartScroll=0;
@@ -241,7 +273,9 @@
   $('start').onclick=()=>{track('game_start');renderStages();screen('stage');focusSelectedStage();};
   $('stageBack').onclick=()=>{screen('main');requestAnimationFrame(()=>$('start').focus({preventScroll:true}));};
   $('playStage').onclick=renderBattle;
-  $('battleBack').onclick=()=>{renderStages();screen('stage');focusSelectedStage();};
+  $('battleBack').onclick=requestBattleReturn;
+  $('keepReading').onclick=()=>setLeaveConfirmOpen(false,true);
+  $('leaveTrail').onclick=leaveCurrentTrail;
   $('clear').onclick=clear;
   $('undo').onclick=undo;
   $('hint').onclick=hint;
@@ -250,4 +284,5 @@
   $('resultsBack').onclick=()=>{renderStages();screen('stage');focusSelectedStage();};
   $('album').onclick=()=>{const album=JSON.parse(localStorage.wordTrailsAlbum||'{}');const words=[...new Set(packs[lang].flatMap(x=>x.words))];$('albumList').innerHTML=words.map((word,index)=>{const x=(index%4)*33.333,y=Math.floor(index/4)*50;return `<span class="${album[lang+'-'+word]?'card':'locked'}" style="background-position:${x}% ${y}%">${album[lang+'-'+word]?word:'?'}</span>`}).join('');$('albumDialog').showModal();};
   $('closeAlbum').onclick=()=>$('albumDialog').close();
+  window.__animalWordTrailsTest={snapshot:()=>({stage,path:[...path],found:[...found],hints,tasks:[...battleTasks.keys()],tasksPaused:battleTasksPaused,leaveConfirmOpen})};
 })();

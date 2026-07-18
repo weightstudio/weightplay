@@ -64,9 +64,10 @@
       diamonds: "Diamonds",
       openRaidMap: "Choose Raid",
       raidMap: "Raid Map",
+      battleReturnDecision: "Pause raid and review exit options",
       pause: "Pause",
       pausedTitle: "Raid paused",
-      pausedText: "The fortress is frozen. Resume when you are ready to aim.",
+      pausedText: "The fortress is frozen. Resume to keep this raid, or choose Raid Map to abandon its current wave and temporary blessings.",
       resume: "Resume",
       raidTiers: "Raid tiers",
       returnMain: "Return to main",
@@ -197,9 +198,10 @@
       diamonds: "鑽石",
       openRaidMap: "選擇關卡",
       raidMap: "突襲地圖",
+      battleReturnDecision: "暫停突襲並查看離開選項",
       pause: "暫停",
       pausedTitle: "突襲已暫停",
-      pausedText: "要塞戰況已凍結。準備好瞄準後再繼續。",
+      pausedText: "要塞戰況已凍結。繼續可保留本次突襲；選擇突襲地圖會放棄目前波次與暫時祝福。",
       resume: "繼續",
       raidTiers: "突襲關卡",
       returnMain: "返回主畫面",
@@ -320,7 +322,7 @@
   };
 
   text.es = {
-    title:"Fortaleza de Orbes Animal",language:"Idioma",backToLobby:"Volver al vestíbulo",fortressRooms:"Salas de la fortaleza",arenaLabel:"Arena de Fortaleza de Orbes Animal",soundTitle:"Sonido",enableSound:"Activar sonido",disableSound:"Desactivar sonido",menuTitle:"Apunta el orbe espiritual por la fortaleza de cristal.",menuHint:"Planifica rebotes, protege el núcleo y mejora cuatro salas con Piedras Estelares.",bestRaid:"Mejor ruta",starStones:"Piedras Estelares",diamonds:"Diamantes",openRaidMap:"Abrir mapa",raidMap:"Mapa de rutas",pause:"Pausar",pausedTitle:"Incursión en pausa",pausedText:"La fortaleza está detenida. Continúa cuando estés listo para apuntar.",resume:"Continuar",raidTiers:"Rutas de incursión",returnMain:"Volver al inicio",fortressWorkshop:"Taller de la fortaleza",stageProgress:"{unlocked}/30 rutas desbloqueadas · 3 oleadas cada una",tierLocked:"Bloqueado",enterRaid:"Entrar",nextStage:"Siguiente nivel",
+    title:"Fortaleza de Orbes Animal",language:"Idioma",backToLobby:"Volver al vestíbulo",fortressRooms:"Salas de la fortaleza",arenaLabel:"Arena de Fortaleza de Orbes Animal",soundTitle:"Sonido",enableSound:"Activar sonido",disableSound:"Desactivar sonido",menuTitle:"Apunta el orbe espiritual por la fortaleza de cristal.",menuHint:"Planifica rebotes, protege el núcleo y mejora cuatro salas con Piedras Estelares.",bestRaid:"Mejor ruta",starStones:"Piedras Estelares",diamonds:"Diamantes",openRaidMap:"Abrir mapa",raidMap:"Mapa de rutas",battleReturnDecision:"Pausar la incursión y revisar las opciones de salida",pause:"Pausar",pausedTitle:"Incursión en pausa",pausedText:"La fortaleza está detenida. Continúa para conservar esta incursión o elige Mapa de rutas para abandonar la oleada y las bendiciones temporales.",resume:"Continuar",raidTiers:"Rutas de incursión",returnMain:"Volver al inicio",fortressWorkshop:"Taller de la fortaleza",stageProgress:"{unlocked}/30 rutas desbloqueadas · 3 oleadas cada una",tierLocked:"Bloqueado",enterRaid:"Entrar",nextStage:"Siguiente nivel",
     tier1Name:"Puerta de Cristal",tier1Desc:"Aprende los rebotes contra exploradores lentos.",tier2Name:"Galería de Musgo",tier2Desc:"Más enemigos, armadura y presión.",tier3Name:"Patio del Eco",tier3Desc:"Supera el ataque más fuerte y derrota al gólem.",tier4Name:"Corona del Bosque",tier5Name:"Puente de Espinas",tier6Name:"Jardín Venenoso",tier7Name:"Laberinto de Raíces",tier8Name:"Guardián del Pantano",tier9Name:"Escalera Lunar",tier10Name:"Galería de Luces",tier11Name:"Ruinas de Espejos",tier12Name:"Guardián Lunar",tier13Name:"Puerta del Eclipse",tier14Name:"Salón de Cristal Negro",tier15Name:"Fundición de Sombras",tier16Name:"Trono del Eclipse",tier17Name:"Frente del Gólem",tier18Name:"Fundición del Núcleo",tier19Name:"Último Bastión",tier20Name:"Corazón de la Fortaleza",
     zone1Desc:"Patrullas del bosque de cristal que prueban rebotes estables.",zone2Desc:"Bestias de espinas con armadura y ataques densos.",zone3Desc:"Espíritus lunares atraviesan rápido las ruinas.",zone4Desc:"Fuerzas del eclipse atacan con escudos de cristal.",zone5Desc:"La guardia del gólem combina todas las amenazas.",ruleFormation:"Formación",ruleSwarm:"Enjambre",ruleArmored:"Armadura",ruleGuardian:"Guardián",tierShort:"Ruta {tier}",wave:"Oleada",core:"Núcleo",shots:"Disparos",
     aimHint:"Arrastra desde el lanzador, revisa la ruta de rebote y suelta.",keyboardAim:"Ángulo {angle}°. Ajusta con flechas y dispara con Espacio o Enter.",arenaControlLabel:"Arena de Fortaleza de Orbes Animal. Ángulo {angle} grados. Ajusta con flechas y dispara con Espacio o Enter.",arenaControlReadyLabel:"Arena de Fortaleza de Orbes Animal. Ángulo {angle} grados. El orbe está listo; Espacio o Enter dispara.",arenaControlCooldownLabel:"Arena de Fortaleza de Orbes Animal. Ángulo {angle} grados. Recarga aproximada {seconds} s; aún no puedes disparar.",arenaControlLimitLabel:"Arena de Fortaleza de Orbes Animal. Ángulo {angle} grados. Hay {active}/{limit} orbes volando, el límite activo; aún no puedes disparar.",orbReady:"Orbe listo. Rebota contra los muros antes de que las bestias alcancen el núcleo.",orbFlying:"El orbe está volando. Observa la ruta y prepara el siguiente ángulo.",fortressHit:"Una bestia golpeó el núcleo. Apunta antes o usa un rebote más amplio.",waveClear:"Oleada completada. Elige una bendición para continuar.",chooseUpgrade:"Elige una bendición",reroll:"Repetir por 3 diamantes",rerolled:"Opciones renovadas.",rerollNeed:"Necesitas 3 diamantes. Saldo {balance}/3.",rerollConfirm:"Confirmar 3 · {before}→{after}",rerollDecision:"Renueva las tres bendiciones una vez. Toca otra vez: {before} → {after} diamantes.",rerollLabel:"Renueva las tres bendiciones una vez. Cuesta 3 diamantes. Saldo {balance}.",rerollConfirmLabel:"Confirma una renovación. Gasta 3 diamantes. Saldo de {before} a {after}.",retry:"Reintentar",
@@ -707,7 +709,7 @@
     nodes.stageRail.setAttribute("aria-label", t("raidTiers"));
     nodes.stageBackBtn.setAttribute("aria-label", t("returnMain"));
     updateArenaControlLabel(true);
-    nodes.mapBtn.setAttribute("aria-label", t("raidMap"));
+    nodes.mapBtn.setAttribute("aria-label", t("battleReturnDecision"));
     nodes.pauseBtn.setAttribute("aria-label", t("pause"));
     nodes.resultMenuBtn.setAttribute("aria-label", t("raidMap"));
     updatePageMeta();
@@ -1917,12 +1919,10 @@
   nodes.nextStageBtn.addEventListener("click", () => {
     if (!nodes.nextStageBtn.disabled && state.raidTier < MAX_RAID_TIER) startRaid(state.raidTier + 1);
   });
-  nodes.mapBtn.addEventListener("click", () => {
-    state.mode = "stage";
-    cancelAnimationFrame(raf);
-    show(nodes.stagePanel);
-    renderMenu();
+  nodes.mapBtn.addEventListener("keydown", (event) => {
+    if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
   });
+  nodes.mapBtn.addEventListener("click", () => setPaused(true));
   nodes.pauseBtn.addEventListener("keydown", (event) => {
     if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
   });
@@ -1941,6 +1941,17 @@
       return;
     }
     if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
+    if (event.key !== "Tab") return;
+    const actions = [nodes.resumeBtn, nodes.pauseMapBtn].filter((button) => !button.disabled && button.getClientRects().length);
+    const first = actions[0];
+    const last = actions.at(-1);
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
   });
   nodes.resultMenuBtn.addEventListener("click", () => {
     show(nodes.stagePanel);

@@ -103,6 +103,8 @@
       freeze: "Freeze",
       unfreeze: "Unfreeze",
       buySkin: "Unlock Golden Skin (15 💎)",
+      skinPurchaseDecision: "Permanently unlock and equip Golden Skin. Tap again to confirm: {before} → {after} Diamonds.",
+      skinPurchaseNeed: "Permanently unlock and equip Golden Skin. Requires 15 Diamonds. Current balance {balance}.",
       equipSkin: "Equip Golden Skin",
       unequipSkin: "Equip Normal Skin",
       relicReroll: "Reroll Relics (3 💎)",
@@ -183,6 +185,8 @@
       freeze: "鎖定",
       unfreeze: "解鎖",
       buySkin: "解鎖黃金外觀 (15 💎)",
+      skinPurchaseDecision: "永久解鎖並裝備黃金外觀。再次點選確認：{before} → {after} 鑽石。",
+      skinPurchaseNeed: "永久解鎖並裝備黃金外觀需要 15 鑽石。目前餘額 {balance}。",
       equipSkin: "使用黃金外觀",
       unequipSkin: "使用普通外觀",
       relicReroll: "重置聖物 (3 💎)",
@@ -310,6 +314,8 @@
     freeze: "Congelar",
     unfreeze: "Descongelar",
     buySkin: "Desbloquear aspecto dorado (15 💎)",
+    skinPurchaseDecision: "Desbloquea y equipa permanentemente el aspecto dorado. Toca otra vez para confirmar: {before} → {after} diamantes.",
+    skinPurchaseNeed: "Desbloquear y equipar permanentemente el aspecto dorado requiere 15 diamantes. Saldo actual {balance}.",
     equipSkin: "Equipar aspecto dorado",
     unequipSkin: "Equipar aspecto normal",
     relicReroll: "Cambiar reliquias (3 💎)",
@@ -791,6 +797,8 @@
   const combatStepTimers = new Set();
   let combatSuspendedForBackground = false;
   let quitDecisionOpen = false;
+  let skinPurchasePending = false;
+  let skinPurchaseTimer = 0;
   let stageRenderVersion = 0;
   let stageBrowseFrame = 0;
 
@@ -867,6 +875,8 @@
     resultGrowthNext: "\u6c38\u4e45\u52a0\u6210 \u653b +{atk} / \u751f +{hp} \u00b7 \u8ddd\u4e0b\u4e00\u5718\u968a\u7b49\u7d1a {remaining} XP",
       relicRerollDecision: "\u91cd\u62bd\u5169\u500b\u8056\u7269\u9078\u64c7\u3002\u82b1\u8cbb 3 \u947d\u77f3\u3002\u9918\u984d {before} \u5230 {after}\u3002",
       relicRerollNeed: "\u91cd\u62bd\u5169\u500b\u8056\u7269\u9078\u64c7\u9700\u8981 3 \u947d\u77f3\u3002\u76ee\u524d\u9918\u984d {balance}\u3002",
+      skinPurchaseDecision: "\u6c38\u4e45\u89e3\u9396\u4e26\u88dd\u5099\u9ec3\u91d1\u5916\u89c0\u3002\u518d\u6b21\u9ede\u9078\u78ba\u8a8d\uff1a{before} \u2192 {after} \u947d\u77f3\u3002",
+      skinPurchaseNeed: "\u6c38\u4e45\u89e3\u9396\u4e26\u88dd\u5099\u9ec3\u91d1\u5916\u89c0\u9700\u8981 15 \u947d\u77f3\u3002\u76ee\u524d\u9918\u984d {balance}\u3002",
       stage: "\u95dc\u5361",
       round: "\u6ce2\u6b21",
       chooseStage: "\u9078\u64c7\u95dc\u5361",
@@ -1666,8 +1676,80 @@
     renderStageSelector();
   }
 
+  const TRAINING_STAGE_STYLE_PROPERTIES = [
+    "position", "inset", "top", "right", "bottom", "left", "box-sizing",
+    "width", "min-width", "max-width", "height", "min-height", "max-height",
+    "margin", "overflow", "transform", "transform-origin",
+  ];
+  const TRAINING_RESERVE_STYLE_PROPERTIES = [
+    "position", "inset", "top", "right", "bottom", "left", "width",
+    "min-width", "max-width", "height", "min-height", "transform",
+  ];
+
+  function trainingStageReserve() {
+    let reserve = document.querySelector(".wp-stage-physical-reserve");
+    if (!reserve) {
+      reserve = document.createElement("div");
+      reserve.className = "wp-stage-physical-reserve";
+      reserve.setAttribute("aria-hidden", "true");
+      document.body.appendChild(reserve);
+    }
+    return reserve;
+  }
+
+  function clearTrainingStageCanvas() {
+    if (nodes.stagePanel?.getAttribute("data-auto-squad-training-canvas") === "true") {
+      TRAINING_STAGE_STYLE_PROPERTIES.forEach((property) => nodes.stagePanel.style.removeProperty(property));
+      nodes.stagePanel.removeAttribute("data-auto-squad-training-canvas");
+      nodes.stagePanel.removeAttribute("data-wp-logical-stage-canvas");
+    }
+    const reserve = document.querySelector(".wp-stage-physical-reserve[data-auto-squad-training-reserve]");
+    if (reserve) {
+      TRAINING_RESERVE_STYLE_PROPERTIES.forEach((property) => reserve.style.removeProperty(property));
+      reserve.removeAttribute("data-auto-squad-training-reserve");
+    }
+  }
+
+  function updateTrainingStageCanvas() {
+    const active = document.body.classList.contains("squad-stage-select")
+      && nodes.trainingPane?.classList.contains("is-active")
+      && !nodes.stagePanel?.classList.contains("is-hidden");
+    if (!active) return;
+
+    const viewport = window.visualViewport;
+    const width = Math.max(1, viewport?.width || window.innerWidth);
+    const height = Math.max(1, viewport?.height || window.innerHeight);
+    const availableHeight = Math.max(1, height - 56);
+    const scale = Math.max(0.01, Math.min(width / 390, availableHeight / 788));
+    const logicalWidth = width / scale;
+    const logicalHeight = availableHeight / scale;
+    const panelDeclarations = {
+      position: "fixed", inset: "auto", top: "0px", right: "auto", bottom: "auto", left: "0px",
+      "box-sizing": "border-box", width: `${logicalWidth}px`, "min-width": `${logicalWidth}px`, "max-width": `${logicalWidth}px`,
+      height: `${logicalHeight}px`, "min-height": `${logicalHeight}px`, "max-height": `${logicalHeight}px`, margin: "0", overflow: "hidden",
+      transform: `scale(${scale})`, "transform-origin": "top left",
+    };
+    Object.entries(panelDeclarations).forEach(([property, value]) => nodes.stagePanel.style.setProperty(property, value, "important"));
+    nodes.stagePanel.setAttribute("data-auto-squad-training-canvas", "true");
+    nodes.stagePanel.setAttribute("data-wp-logical-stage-canvas", `${logicalWidth.toFixed(3)}x${logicalHeight.toFixed(3)}`);
+
+    const reserve = trainingStageReserve();
+    const reserveDeclarations = {
+      position: "fixed", inset: "auto", top: `${availableHeight}px`, right: "auto", bottom: "auto", left: "0px",
+      width: `${width}px`, "min-width": "0", "max-width": "none", height: "56px", "min-height": "56px", transform: "none",
+    };
+    Object.entries(reserveDeclarations).forEach(([property, value]) => reserve.style.setProperty(property, value, "important"));
+    reserve.setAttribute("data-auto-squad-training-reserve", "true");
+  }
+
   function setStageTab(tab) {
     const training = tab === "training";
+    if (!training) {
+      skinPurchasePending = false;
+      clearTimeout(skinPurchaseTimer);
+      skinPurchaseTimer = 0;
+      clearTrainingStageCanvas();
+    }
     nodes.stageTabBtn?.classList.toggle("is-active", !training);
     nodes.trainingTabBtn?.classList.toggle("is-active", training);
     nodes.stageTabBtn?.setAttribute("aria-selected", String(!training));
@@ -1676,8 +1758,12 @@
     nodes.trainingPane?.classList.toggle("is-active", training);
     if (nodes.stageSelectPane) nodes.stageSelectPane.hidden = training;
     if (nodes.trainingPane) nodes.trainingPane.hidden = !training;
-    if (training) renderTrainingRoster();
-    else requestAnimationFrame(() => renderStageSelector(true));
+    if (training) {
+      renderTrainingRoster();
+      requestAnimationFrame(() => requestAnimationFrame(updateTrainingStageCanvas));
+    } else {
+      requestAnimationFrame(() => renderStageSelector(true));
+    }
   }
 
   function stageLabel(stage) {
@@ -1795,17 +1881,48 @@
       }
     } else {
       nodes.buySkinBtn.classList.remove("is-hidden");
-      nodes.buySkinBtn.innerHTML = currencyMarkup("diamond", 15, t("currencyUnlock"));
-      nodes.buySkinBtn.setAttribute("aria-label", t("buySkin"));
+      const balance = getWalletDiamonds();
+      if (skinPurchasePending) {
+        const decision = t("skinPurchaseDecision", { before: balance, after: Math.max(0, balance - 15) });
+        nodes.buySkinBtn.textContent = decision;
+        nodes.buySkinBtn.setAttribute("aria-label", decision);
+      } else {
+        nodes.buySkinBtn.innerHTML = currencyMarkup("diamond", 15, t("currencyUnlock"));
+        nodes.buySkinBtn.setAttribute("aria-label", t("buySkin"));
+      }
       nodes.equipSkinBtn.classList.add("is-hidden");
     }
   }
 
   function handleBuySkin() {
     initAudio();
-    if (getWalletDiamonds() < 15) {
-      alert(t("noDiamonds"));
+    const balance = getWalletDiamonds();
+    if (!skinPurchasePending) {
+      if (balance < 15) {
+        const message = t("skinPurchaseNeed", { balance });
+        nodes.buySkinBtn.textContent = message;
+        nodes.buySkinBtn.setAttribute("aria-label", message);
+        clearTimeout(skinPurchaseTimer);
+        skinPurchaseTimer = window.setTimeout(renderCosmeticSection, 5000);
+        playSynth("click");
+        return;
+      }
+      skinPurchasePending = true;
+      clearTimeout(skinPurchaseTimer);
+      skinPurchaseTimer = window.setTimeout(() => {
+        skinPurchasePending = false;
+        renderCosmeticSection();
+      }, 5000);
+      renderCosmeticSection();
+      nodes.buySkinBtn.focus({ preventScroll: true });
       playSynth("click");
+      return;
+    }
+    skinPurchasePending = false;
+    clearTimeout(skinPurchaseTimer);
+    skinPurchaseTimer = 0;
+    if (balance < 15) {
+      renderCosmeticSection();
       return;
     }
     if (spendWalletDiamonds(15)) {
@@ -4172,6 +4289,12 @@
     nodes.keepPlayingBtn.addEventListener("click", () => closeQuitDecision(true));
     nodes.confirmQuitBtn.addEventListener("click", confirmQuitRun);
     
+    nodes.buySkinBtn.addEventListener("keydown", (event) => {
+      if (event.repeat && (event.key === "Enter" || event.key === " ")) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+      }
+    }, true);
     nodes.buySkinBtn.addEventListener("click", handleBuySkin);
     nodes.equipSkinBtn.addEventListener("click", handleEquipSkin);
     
@@ -4272,6 +4395,7 @@
     document.documentElement.style.setProperty("--squad-stage-rendered-width", `${stageRenderedWidth}px`);
     document.documentElement.style.setProperty("--squad-battle-width", `${battleLogicalWidth}px`);
     document.documentElement.style.setProperty("--squad-battle-scale", String(battleScale));
+    updateTrainingStageCanvas();
     pinMainSoundToggle();
   }
 

@@ -259,11 +259,13 @@
   });
   Object.assign(en,{
     beaconConfirmStatus:"Restore oxygen to at least 30% once this dive · {before} → {after} Diamonds. Tap again to confirm.",
-    beaconConfirmLabel:"Confirm Emergency Beacon. Spend 3 Diamonds. Balance {before} to {after}."
+    beaconConfirmLabel:"Confirm Emergency Beacon. Spend 3 Diamonds. Balance {before} to {after}.",
+    beaconUnavailable:"Available when oxygen is below 30%."
   });
   Object.assign(zh,{
     beaconConfirmStatus:u("\u672c\u6b21\u6f5b\u822a\u9650\u7528\u4e00\u6b21\uff0c\u5c07\u6c27\u6c23\u56de\u5fa9\u81f3\u81f3\u5c11 30% \u00b7 \u947d\u77f3 {before} \u2192 {after}\u3002\u518d\u6b21\u9ede\u64ca\u78ba\u8a8d\u3002"),
-    beaconConfirmLabel:u("\u78ba\u8a8d\u4f7f\u7528\u7dca\u6025\u4fe1\u6a19\u3002\u82b1\u8cbb 3 \u9846\u947d\u77f3\uff0c\u9918\u984d\u7531 {before} \u8b8a\u70ba {after}\u3002")
+    beaconConfirmLabel:u("\u78ba\u8a8d\u4f7f\u7528\u7dca\u6025\u4fe1\u6a19\u3002\u82b1\u8cbb 3 \u9846\u947d\u77f3\uff0c\u9918\u984d\u7531 {before} \u8b8a\u70ba {after}\u3002"),
+    beaconUnavailable:u("\u6c27\u6c23\u4f4e\u65bc 30% \u6642\u624d\u53ef\u4f7f\u7528\u3002")
   });
   Object.assign(en,{
     quitTitle:"Leave this dive?",
@@ -290,6 +292,8 @@
     beaconConfirmTimer=0;
     if(state)state.beaconPending=false;
   }
+  function beaconRestoreTarget(){return Math.ceil(maxOxygen()*.3);}
+  function beaconCanRestore(){return !!state.route&&!state.beaconUsed&&state.oxygen<beaconRestoreTarget();}
   function cancelDiveAsync(){
     clearBeaconConfirmation();
     diveSession+=1;
@@ -420,9 +424,10 @@
     $("depthProgress").style.width=`${((state.zone-1)/Math.max(1,config.zones-1))*100}%`;
     $("fxArt").classList.toggle("hidden",!state.sonar);
     $("diamondText").querySelector("b").textContent=wallet();
-    const beaconBalance=wallet(),beaconAfter=Math.max(0,beaconBalance-3);
+    const beaconBalance=wallet(),beaconAfter=Math.max(0,beaconBalance-3),beaconUseful=beaconCanRestore();
+    if(!beaconUseful&&state.beaconPending)clearBeaconConfirmation();
     $("beaconBtn").innerHTML=`${icon("beacon")}<span>${t("shortBeacon")}</span><b>${state.beaconUsed?"✓":state.beaconPending?`${beaconBalance}→${beaconAfter}`:"3"}</b>`;
-    $("beaconBtn").ariaLabel=state.beaconPending?t("beaconConfirmLabel",{before:beaconBalance,after:beaconAfter}):state.beaconUsed?t("beaconUsed"):t("beacon");
+    $("beaconBtn").ariaLabel=state.beaconPending?t("beaconConfirmLabel",{before:beaconBalance,after:beaconAfter}):state.beaconUsed?t("beaconUsed"):beaconUseful?t("beacon"):t("beaconUnavailable");
     $("sonarBtn").innerHTML=`${icon("sonar")}<span>${t("shortScan")}</span><b>2</b>`;$("sonarBtn").ariaLabel=t("sonarPowered");
     $("shieldBtn").innerHTML=`${icon("shield")}<span>${t("shortShield")}</span><b>${state.shieldArmed?"✓":"1"}</b>`;$("shieldBtn").ariaLabel=state.shieldArmed?t("shieldArmed"):t("shield");
     $("surfaceBtn").innerHTML=`${icon("surface")}<span>${t("shortSurface")}</span>`;$("surfaceBtn").ariaLabel=t("surface");
@@ -447,7 +452,7 @@
     $("sonarBtn").disabled=state.battery<2||!!state.busy||!!state.fishActive;
     $("shieldBtn").disabled=state.battery<1||state.shieldArmed||!!state.busy||!!state.fishActive;
     $("surfaceBtn").disabled=!!state.busy||!!state.fishActive;
-    $("beaconBtn").disabled=state.beaconUsed||!!state.busy;
+    $("beaconBtn").disabled=!beaconUseful||!!state.busy;
   }
   let coachReturnFocus=null;
   function coachBackgroundNodes(){return [...document.querySelectorAll("#battleShell .battle-hud, #battleShell .objective, #battleShell .controls, #diveField > :not(#diveCoach)")];}
@@ -567,6 +572,8 @@
   }
   function useBeacon(){
     if(state.beaconUsed)return;
+    const restored=beaconRestoreTarget();
+    if(state.oxygen>=restored){clearBeaconConfirmation();setFeedback(`${icon("beacon")}<b>${restored}</b>`,t("beaconUnavailable"));renderBattle();focusCurrentDiveDecision();return;}
     const balance=wallet();
     if(!state.beaconPending){
       if(balance<3){setFeedback(`${icon("beacon")}<b>3</b>`,t("beaconNeed"));return;}
@@ -587,7 +594,6 @@
     state.beaconPending=false;
     if(!window.WeightPlayWallet?.spendDiamonds?.(3)){setFeedback(`${icon("beacon")}<b>3</b>`,t("beaconNeed"));renderBattle();return;}
     state.beaconUsed=true;
-    const restored=Math.ceil(maxOxygen()*.3);
     state.oxygen=Math.max(state.oxygen,restored);
     setFeedback(`${icon("beacon")}<b>✓</b>${icon("oxygen")}<b>${restored}</b>`,`${t("beaconUsed")}: ${t("beaconHelp")}`);
     window.WonderAnalytics?.track?.("diamond_spend",{sink:"abyss_emergency_beacon",amount:3});
@@ -643,6 +649,7 @@
   }, true);
   for(const id of ["sonarBtn","shieldBtn","helpBtn"]){$(id).addEventListener("click",clearBeaconConfirmation,{capture:true});}
   localize();
+  if(new URLSearchParams(location.search).has("smoke"))window.__AbyssDiverSmoke={setOxygen(value){if(!state.route)return;clearBeaconConfirmation();state.oxygen=Math.max(0,Math.min(maxOxygen(),Math.round(value)));renderBattle();if(state.fishActive)renderFish();}};
   const lobbyLabels = { en: "Back to lobby", "zh-Hant": u("\\u8fd4\\u56de\\u5927\\u5ef3") };
   function syncMetadata() {
     document.title = `${t("title")} - WeightPlay`;

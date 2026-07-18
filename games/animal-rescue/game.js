@@ -292,6 +292,34 @@ const dictionary = {
   },
 };
 
+const localizedPageSupport = {
+  es: {
+    sound: "Sonido",
+    enableSound: "Activar sonido",
+    disableSound: "Desactivar sonido",
+    tutorial: "Cómo jugar",
+    guideReplacements: {
+      "Homecoming Valley": "Valle del Regreso",
+      "Clearing Trail 30": "Completar la ruta 30",
+      Penguin: "Pingüino",
+      "Sticky Mud": "Barro pegajoso",
+      "All Fruit": "Toda la fruta",
+      "Forest Steps": "Primeros pasos del bosque",
+      "Meadow Detours": "Desvíos de la pradera",
+      "River Keys": "Llaves del río",
+      "Fragile Ridge": "Cresta frágil",
+      "Harvest Routes": "Rutas de cosecha",
+      "Homecoming Festival": "Festival del regreso",
+      "Animal Rescue Trail": "Sendero de Rescate Animal",
+      "Animal Relic Hunters es": "Es",
+      "Animal Auto Squad es": "Es",
+      "Animal Relic Hunters": "Cazadores de Reliquias Animales",
+      "Animal Auto Squad": "Escuadrón Animal Automático",
+      "6+ / Family": "6+ / Familia",
+    },
+  },
+};
+
 const assetBase = "../../assets/";
 
 const animalAssets = {
@@ -464,6 +492,36 @@ function renderStaticText() {
   updateHud();
 }
 
+function localizeGamePageSupport() {
+  const support = localizedPageSupport[locale()];
+  if (!support) return;
+  homeLink.setAttribute("aria-label", t("backToLobby"));
+  const soundToggle = document.querySelector("button[data-sound-toggle]");
+  if (soundToggle) {
+    soundToggle.title = support.sound;
+    soundToggle.setAttribute("aria-label", soundToggle.classList.contains("muted") ? support.enableSound : support.disableSound);
+  }
+  document.querySelector(".wp-tutorial-button")?.setAttribute("aria-label", support.tutorial);
+  const guide = document.querySelector(".game-page-info");
+  if (!guide) return;
+  const walker = document.createTreeWalker(guide, NodeFilter.SHOW_TEXT);
+  while (walker.nextNode()) {
+    let value = walker.currentNode.nodeValue || "";
+    for (const [source, replacement] of Object.entries(support.guideReplacements)) value = value.replaceAll(source, replacement);
+    walker.currentNode.nodeValue = value;
+  }
+}
+
+let pageSupportSyncQueued = false;
+function queueGamePageSupportSync() {
+  if (pageSupportSyncQueued) return;
+  pageSupportSyncQueued = true;
+  requestAnimationFrame(() => {
+    pageSupportSyncQueued = false;
+    localizeGamePageSupport();
+  });
+}
+
 function preload() {
   let percent = 0;
   let ready = false;
@@ -497,18 +555,18 @@ function renderStageSelect() {
       const stars = bestStars[level.id] || 0;
       const animal = animalAssets[level.animal];
       return `
-        <button class="stage-card ${locked ? "locked" : ""}" type="button" data-stage="${level.id}">
+        <button class="stage-card ${locked ? "locked" : ""}" type="button" data-stage="${level.id}" aria-disabled="${locked}">
           <span class="mini-animal">${assetMarkup(animal, t(level.animal))}</span>
           <span>
             <em class="stage-chapter">${chapterName(level.chapter)}</em>
             <strong>${level.id}. ${t(level.animal)}</strong>
             <span>${t(level.biome)} - ${locked ? t("locked") : stars ? t("complete") : t("start")}</span>
           </span>
-          <span class="stage-meta" aria-label="${escapeHtml(stageMetaText(level))}">
+          <span class="stage-meta" aria-label="${escapeHtml(stageMetaText(level, locked))}">
             <i>${t("fruitGoal", { count: level.fruits.length })}</i>
             <i>${t("obstacleGoal", { count: level.blocks.length + (level.water || []).length })}</i>
             <i>${t("parGoal", { count: level.par })}</i>
-            <i>${levelRuleLabels(level).join(" + ")}</i>
+            <i>${locked ? t("locked") : levelRuleLabels(level).join(" + ")}</i>
           </span>
           ${level.checkpoint ? `<b class="stage-checkpoint">${t("checkpoint")}</b>` : ""}
           <span class="stage-stars">${"\u2605".repeat(stars)}${"\u2606".repeat(3 - stars)}</span>
@@ -525,8 +583,9 @@ function centerHighestUnlockedTrail(behavior = "auto") {
   stageGrid.scrollTo({ left: Math.max(0, Math.min(left, stageGrid.scrollWidth - stageGrid.clientWidth)), behavior });
 }
 
-function stageMetaText(level) {
-  return `${t("fruitGoal", { count: level.fruits.length })}, ${t("obstacleGoal", { count: level.blocks.length + (level.water || []).length })}, ${t("parGoal", { count: level.par })}, ${levelRuleLabels(level).join(", ")}`;
+function stageMetaText(level, locked = false) {
+  const stateLabel = locked ? t("locked") : levelRuleLabels(level).join(", ");
+  return `${t("fruitGoal", { count: level.fruits.length })}, ${t("obstacleGoal", { count: level.blocks.length + (level.water || []).length })}, ${t("parGoal", { count: level.par })}, ${stateLabel}`;
 }
 
 function ruleLabel(key) {
@@ -930,11 +989,19 @@ localeSelect.addEventListener("input", () => {
   renderStaticText();
 });
 window.addEventListener("wonder:locale-change", renderStaticText);
+window.addEventListener("wonder:locale-change", queueGamePageSupportSync);
 
 function updateBattleScale() {
   const viewport = window.visualViewport;
-  const viewportWidth = viewport?.width || window.innerWidth;
-  const viewportHeight = viewport?.height || window.innerHeight;
+  const innerWidth = Math.max(1, window.innerWidth);
+  const innerHeight = Math.max(1, window.innerHeight);
+  const visualWidth = viewport?.width || 0;
+  const visualHeight = viewport?.height || 0;
+  const visualViewportIsCurrent = visualWidth > 0 && visualHeight > 0
+    && Math.abs(visualWidth - innerWidth) <= 2
+    && Math.abs(visualHeight - innerHeight) <= 2;
+  const viewportWidth = visualViewportIsCurrent ? visualWidth : innerWidth;
+  const viewportHeight = visualViewportIsCurrent ? visualHeight : innerHeight;
   if (!document.body.classList.contains("rescue-playing") && !document.body.classList.contains("rescue-stage-select")) return;
   document.body.classList.add("rescue-expanded-canvas");
   const scale = Math.max(0.1, Math.min(viewportWidth / 390, viewportHeight / 788));
@@ -1035,7 +1102,20 @@ resultPanel.addEventListener("keydown", (event) => {
   actions[nextIndex].focus({ preventScroll: true });
 });
 
+const pageSupportSelector = ".game-page-info, button[data-sound-toggle], .wp-tutorial-button";
+const pageSupportObserver = new MutationObserver((records) => {
+  const relevant = records.some((record) => {
+    if (record.target instanceof Element && record.target.closest(pageSupportSelector)) return true;
+    return [...record.addedNodes].some((node) => node instanceof Element && (node.matches(pageSupportSelector) || node.querySelector(pageSupportSelector)));
+  });
+  if (relevant) queueGamePageSupportSync();
+});
+pageSupportObserver.observe(document.body, { childList:true, subtree:true });
+document.addEventListener("DOMContentLoaded", queueGamePageSupportSync, { once:true });
+window.addEventListener("load", queueGamePageSupportSync, { once:true });
+
 renderStaticText();
+queueGamePageSupportSync();
 showMain();
 preload();
 

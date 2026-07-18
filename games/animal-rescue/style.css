@@ -310,14 +310,14 @@ body.rescue-stage-select .wp-tutorial-button {
 
 body.rescue-stage-select .rescue-game {
   position: fixed;
-  left: var(--rescue-battle-left, 4px);
-  top: var(--rescue-battle-top, 4px);
+  left: var(--rescue-battle-left, 0px);
+  top: var(--rescue-battle-top, 0px);
   grid-template-rows: minmax(0, 1fr);
-  width: 390px;
-  height: 788px;
+  width: var(--rescue-battle-width, 390px);
+  height: var(--rescue-battle-content-height, 788px);
   min-height: 0;
-  padding: 6px 8px;
-  gap: 6px;
+  padding: 0;
+  gap: 0;
   overflow: hidden;
   transform: scale(var(--rescue-battle-scale, 1));
   transform-origin: top left;
@@ -328,6 +328,7 @@ body.rescue-stage-select .stage-select {
   width: 100%;
   height: 100%;
   min-height: 0;
+  padding: 6px 8px;
   grid-template-rows: 44px auto minmax(0, 1fr);
   overflow: hidden;
 }
