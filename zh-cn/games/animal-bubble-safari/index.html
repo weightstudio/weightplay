@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+    <base href="/games/animal-bubble-safari/" />
+  <meta charset="utf-8">
+  <meta name="weightplay-audience" content="kids">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="robots" content="index,follow">
+  <meta name="description" content="《动物泡泡探险》是一款免费双语 Kids 瞄准益智游戏，共有 30 个可保存关卡与六次草原检查。玩家发射动物泡泡、连接三颗同色泡泡、利用墙面反弹，并救出五种草原朋友。后段加入石头、叶球、需要两次碰撞的蜂蜜、整排清除的云、东西风、移动列，以及彩虹、横扫、爆破、交换四种力量泡泡。第 30..." />
+  <meta property="og:site_name" content="WeightPlay">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="动物泡泡探险 | WeightPlay" />
+  <meta property="og:description" content="《动物泡泡探险》是一款免费双语 Kids 瞄准益智游戏，共有 30 个可保存关卡与六次草原检查。玩家发射动物泡泡、连接三颗同色泡泡、利用墙面反弹，并救出五种草原朋友。后段加入石头、叶球、需要两次碰撞的蜂蜜、整排清除的云、东西风、移动列，以及彩虹、横扫、爆破、交换四种力量泡泡。第 30..." />
+  <meta property="og:url" content="https://weightplay.com/zh-cn/games/animal-bubble-safari/" />
+  <meta property="og:image" content="https://weightplay.com/assets/animal-bubble-safari-cover.webp">
+  <meta name="twitter:card" content="summary_large_image">
+  <title>动物泡泡探险 | WeightPlay</title>
+  <link rel="canonical" href="https://weightplay.com/zh-cn/games/animal-bubble-safari/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-bubble-safari/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-bubble-safari/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-bubble-safari/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/animal-bubble-safari/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-bubble-safari/" />
+    <link rel="stylesheet" href="../../src/game-page-info.css">
+  <link rel="stylesheet" href="../../src/loading-screen.css">
+  <link rel="stylesheet" href="../../src/tutorial.css?v=20260715-kids-release1">
+  <link rel="stylesheet" href="../../src/play-viewport.css?v=20260715-kids-fullscreen1">
+  <link rel="stylesheet" href="style.css?v=20260715-precision2">
+  <script data-wp-stage-standard>/* Animal Bubble Safari owns its native Kids Stage rail. */</script>
+  <script data-wp-battle-standard>/* Animal Bubble Safari owns its native Kids Battle Canvas. */</script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "动物泡泡探险",
+  "alternateName": "動物泡泡探險",
+  "url": "https://weightplay.com/zh-cn/games/animal-bubble-safari/",
+  "image": "https://weightplay.com/assets/animal-bubble-safari-cover.webp",
+  "description": "《动物泡泡探险》是一款免费双语 Kids 瞄准益智游戏，共有 30 个可保存关卡与六次草原检查。玩家发射动物泡泡、连接三颗同色泡泡、利用墙面反弹，并救出五种草原朋友。后段加入石头、叶球、需要两次碰撞的蜂蜜、整排清除的云、东西风、移动列，以及彩虹、横扫、爆破、交换四种力量泡泡。第 30...",
+  "applicationCategory": "Game",
+  "operatingSystem": "Web browser",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio"
+  },
+  "inLanguage": "zh-Hans",
+  "isAccessibleForFree": true,
+  "genre": [
+    "益智",
+    "泡泡射击",
+    "动物"
+  ],
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "Kids and families",
+    "suggestedMinAge": 6
+  }
+}
+    </script>
+  <meta name="twitter:title" content="动物泡泡探险 | WeightPlay" />
+    <meta name="twitter:description" content="《动物泡泡探险》是一款免费双语 Kids 瞄准益智游戏，共有 30 个可保存关卡与六次草原检查。玩家发射动物泡泡、连接三颗同色泡泡、利用墙面反弹，并救出五种草原朋友。后段加入石头、叶球、需要两次碰撞的蜂蜜、整排清除的云、东西风、移动列，以及彩虹、横扫、爆破、交换四种力量泡泡。第 30..." />
+  </head>
+<body data-tutorial-auto-show="false">
+  <main id="viewport" class="viewport" data-no-mobile-immersive="true" aria-live="polite">
+    <div id="canvasSlot" class="canvas-slot">
+      <div id="gameCanvas" class="game-canvas">
+        <section id="loadingScreen" class="screen loading-screen is-active" aria-labelledby="loadingTitle">
+          <img id="loadingCover" class="loading-cover" src="../../assets/animal-bubble-safari-cover.webp" alt="" draggable="false">
+          <div id="loadingPanel" class="safari-loading" role="status" aria-live="polite">
+            <img src="../../assets/animal-bubble-safari-lion-guide.webp" alt="" draggable="false">
+            <strong id="loadingTitle" data-i18n="loading">Preparing Safari</strong>
+            <div class="loading-track" aria-hidden="true"><i id="loadingFill"></i></div>
+            <span id="loadingProgress">0%</span>
+          </div>
+        </section>
+
+        <section id="mainScreen" class="screen main-screen" aria-labelledby="gameTitle">
+          <header class="topbar">
+            <a class="home-link" href="/kids/" aria-label="Back to the WeightPlay Kids lobby" data-i18n-aria="backToLobby">
+              <span aria-hidden="true">←</span>
+              <img src="../../assets/weightplay-logo.png" alt="" draggable="false">
+            </a>
+            <h1 id="gameTitle" data-i18n="title">动物泡泡探险</h1>
+            <button id="soundMain" class="icon-button" type="button" aria-label="Toggle sound" data-i18n-aria="soundToggle">♪</button>
+          </header>
+          <div class="poster-wrap">
+            <img src="../../assets/animal-bubble-safari-cover.webp" alt="" draggable="false">
+            <div class="poster-copy">
+              <strong data-i18n="tagline">Aim, bank shots, and rescue bubble animals!</strong>
+              <span data-i18n="progressLabel">Safari progress</span>
+              <b id="mainProgress">1 / 30</b>
+            </div>
+          </div>
+          <div class="main-actions">
+            <button id="startGame" class="primary-button" type="button" data-i18n="startGame">Start Game</button>
+            <div class="secondary-row">
+              <button id="openGuide" type="button" data-i18n="guide">Guide</button>
+              <div id="localeSelect" class="language-switch" role="group" aria-label="Language" data-i18n-aria="language">
+                <button type="button" data-locale="zh-Hant">繁中</button>
+                <button type="button" data-locale="zh-Hans">&#31616;&#20013;</button>
+                <button type="button" data-locale="es">ES</button>
+                <button type="button" data-locale="en" class="is-selected">EN</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="stageScreen" class="screen stage-screen" aria-labelledby="stageTitle">
+          <div class="stage-art" aria-hidden="true"></div>
+          <header class="topbar compact-topbar">
+            <button id="stageBack" class="back-button" type="button" aria-label="Back" data-i18n-aria="back">←</button>
+            <h2 id="stageTitle" data-i18n="chooseStage">Choose Stage</h2>
+            <button id="soundStage" class="icon-button" type="button" aria-label="Toggle sound" data-i18n-aria="soundToggle">♪</button>
+          </header>
+          <div class="stage-summary">
+            <img src="../../assets/animal-bubble-safari-lion-guide.webp" alt="" draggable="false">
+            <div><span data-i18n="album">Rescue Album</span><strong id="albumCount">0 / 5</strong></div>
+            <div><span data-i18n="bestStars">Best Stars</span><strong id="starCount">0 / 36</strong></div>
+          </div>
+          <div id="stageRail" class="stage-rail" tabindex="0" aria-label="Stage list" data-i18n-aria="stageList" data-wp-stage-settle-duration="360" data-wp-stage-settle-easing="smoothstep"></div>
+          <p id="stageStatus" class="stage-status" role="status" aria-live="polite"></p>
+          <div class="stage-detail">
+            <span id="stageSkill">Focus</span>
+            <strong id="stageGoal">Make 1 matching group</strong>
+          </div>
+        </section>
+
+        <section id="battleScreen" class="screen battle-screen" aria-labelledby="battleStageName">
+          <div id="battleLive" class="battle-live">
+          <header class="battle-header">
+            <button id="battleBack" class="back-button" type="button" aria-label="Back to stages" data-i18n-aria="backToStage">←</button>
+            <div><span data-i18n="level">Level</span><strong id="battleStageName">1</strong></div>
+            <div><span data-i18n="shots">Shots</span><strong id="shotsLeft">6</strong></div>
+            <div><span data-i18n="rescued">Goal</span><strong id="rescueProgress">0 / 1</strong></div>
+            <div><span data-i18n="score">Score</span><strong id="scoreValue">0</strong></div>
+          </header>
+          <div id="battleMessage" class="battle-message">Drag to aim, release to shoot</div>
+          <div class="play-frame">
+            <canvas id="playCanvas" width="360" height="548" tabindex="0" aria-label="Bubble shooter play area" data-i18n-aria="playArea" aria-keyshortcuts="ArrowLeft ArrowRight ArrowUp ArrowDown Enter Space"></canvas>
+          </div>
+          <div class="queue-bar">
+            <div><span data-i18n="currentBubble">Current</span><canvas id="currentPreview" width="48" height="48"></canvas></div>
+            <div><span data-i18n="nextBubble">Next</span><canvas id="nextPreview" width="48" height="48"></canvas></div>
+            <strong id="battleGoal">Make 1 matching group</strong>
+          </div>
+          </div>
+
+          <section id="resultScreen" class="result-screen" role="dialog" aria-modal="true" aria-labelledby="resultTitle">
+          <div class="result-panel">
+            <img class="result-mascot" src="../../assets/animal-bubble-safari-lion-guide.webp" alt="" draggable="false">
+            <h2 id="resultTitle">Rescue Complete!</h2>
+            <div id="resultStars" class="result-stars" aria-label="Stars earned" data-i18n-aria="earnedStars">★★★</div>
+            <div class="result-stats">
+              <div><span data-i18n="score">Score</span><strong id="resultScore">0</strong></div>
+              <div><span data-i18n="shotsLeft">Shots Left</span><strong id="resultShots">0</strong></div>
+              <div><span data-i18n="rescuedAnimals">Animals Rescued</span><strong id="resultRescued">0</strong></div>
+            </div>
+            <div class="reward-row">
+              <div class="reward-icon reward-star"></div><b id="rewardStars">+1</b>
+              <div class="reward-icon reward-coin"></div><b id="rewardCoins">+20</b>
+              <div class="reward-icon reward-album"></div><b id="rewardAlbum">+1</b>
+            </div>
+            <div class="skill-report">
+              <span data-i18n="skillReport">Skill Report</span>
+              <strong id="skillText">Focus · Hand-Eye Coordination</strong>
+            </div>
+            <div class="result-actions">
+              <button id="retryStage" type="button" data-i18n="retry">Retry</button>
+              <button id="nextStage" class="primary-button" type="button" data-i18n="nextLevel">Next Level</button>
+              <button id="backToMap" type="button" data-i18n="backToMap">Back to Map</button>
+            </div>
+          </div>
+          </section>
+        </section>
+
+        <div id="guideModal" class="modal" hidden>
+          <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="guideTitle">
+            <button id="closeGuide" class="modal-close" type="button" aria-label="Close" data-i18n-aria="close">×</button>
+            <img src="../../assets/animal-bubble-safari-lion-guide.webp" alt="" draggable="false">
+            <h2 id="guideTitle" data-i18n="howToPlay">How to Play</h2>
+            <ol>
+              <li data-i18n="guideAim">Drag to aim at matching bubbles, then release to shoot.</li>
+              <li data-i18n="guideBank">Bounce shots off a wall to get around rocks.</li>
+              <li data-i18n="guideRescue">Connect three or more. Rescue the target before shots run out.</li>
+            </ol>
+            <button id="guideDone" class="primary-button" type="button" data-i18n="gotIt">Got It</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <!-- adsense-static-guide:start -->
+  <section class="game-page-info game-page-info-static" aria-label="动物泡泡探险 游戏资讯">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 儿童游戏指南</span><h2>动物泡泡探险</h2><p>《动物泡泡探险》是一款免费双语 Kids 瞄准益智游戏，共有 30 个可保存关卡与六次草原检查。玩家发射动物泡泡、连接三颗同色泡泡、利用墙面反弹，并救出五种草原朋友。后段加入石头、叶球、需要两次碰撞的蜂蜜、整排清除的云、东西风、移动列，以及彩虹、横扫、爆破、交换四种力量泡泡。第 30 关结合四种障碍、三只救援动物、风、移动列与所有力量，没有倒数、帐号、购买或广告请求。</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>泡泡射击解谜</strong></div><div class="game-info-fact"><span>类型</span><strong>益智 · 泡泡射击 · 动物</strong></div><div class="game-info-fact"><span>难度</span><strong>简单到中等</strong></div><div class="game-info-fact"><span>预估游玩时间</span><strong>每关 3–6 分钟</strong></div><div class="game-info-fact"><span>练习能力</span><strong>专注 · 手眼协调 · 问题解决</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>世界与任务</h3><p>六个草原地区由水源路线相连，小动物被漂浮泡泡群包围。玩家跟著狮子向导，用泡泡发射器打开安全道路；在预备泡泡用完前完成配对或救援目标，即代表该区恢复通行。</p>
+<p>障碍是路线的一部分，不是敌军。每五关会用草原检查重组该区技巧；完成第 30 关大草原重聚会救出最后三只动物，结束设计好的旅程。</p></div>
+      <div class="game-info-section"><h3>游戏系统</h3><p>目前与下一颗泡泡可用来提前规划。拖曳瞄准；方向键调整同一逻辑瞄准点，Enter 或空白键发射。</p>
+<p>泡泡以连续飞行的小步骤检查可见碰撞，并附著在实际碰到泡泡附近的空位，不会瞬移到远方隐藏格。</p>
+<p>三颗以上同色相连会消除；反弹目标要求先碰墙；救援目标要清除一到三颗标记动物泡泡。</p>
+<p>叶球由相邻配对带走，蜂蜜需两次直击，云被碰会清除整排；风会改变飞行，移动关会在发射后平移交错列。</p>
+<p>彩虹变成碰到的颜色，横扫清一排，爆破清附近区域与障碍，交换则互换颜色。</p>
+<p>星星依剩余泡泡计算；解锁、最佳星星、分数、救援图鉴与音效选择只保存在目前浏览器。Kids 画面没有广告。</p></div>
+      <div class="game-info-section"><h3>玩法说明</h3><ol><li>在水平关卡轨道滑到已解锁关卡，阅读目标与提示。</li><li>瞄准前先看目前与下一颗泡泡。</li><li>拖向同色泡泡；直线被挡时利用墙面。</li><li>放开发射，观察精确碰撞与附著后再规划。</li><li>在泡泡用完前完成指定配对或救援。</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>先用下一颗泡泡规划狭窄通道。</li><li>反弹要提早碰墙，让回弹路线从侧面接近。</li><li>用相邻配对清叶球，并记得蜂蜜要碰两次。</li><li>打云前先查看整排内容。</li><li>逆著风偏移瞄准，移动列每次发射后都重新判读。</li><li>把爆破留给密集障碍，横扫留给重要列。</li></ul></div>
+      <div class="game-info-section"><h3>关卡与难度成长</h3><p>第 1–5 关教直射、反弹、救援、混色与石头。</p>
+<p>第 6–10 关扩大救援链并加入彩虹与横扫。</p>
+<p>第 11–15 关加入爆破、交换、叶球、蜂蜜与云。</p>
+<p>第 16–20 关加入东西风与交错移动列。</p>
+<p>第 21–25 关把四种力量分别搭配适合障碍，最后同时救三只动物。</p>
+<p>第 26–30 关混合叶石通道、蜂蜜逆风、移动云列与三兽救援；第 30 关使用所有主要规则。</p></div>
+      <div class="game-info-section"><h3>开发设计理念</h3><p>本作的核心承诺是可见碰撞要产生可信附著。连续移动与局部空位选择维持瞄准公平；难度来自角度、障碍反应、救援位置、风、列移动、下一颗规划与力量时机，而不是加速或缩小目标。单一逻辑 Canvas 会在手机、平板、桌面与短横向萤幕等比缩放；触控、滑鼠与键盘共享瞄准状态，切换 App 也不会让旧放手事件偷偷发射。它不同于《动物泡泡烘焙坊》的点击群组，本作核心是轨迹与反弹。Kids 游玩没有广告、帐号、购买、排名或诊断。</p></div>
+      <div class="game-info-section game-info-parent"><h3>家长说明</h3><p>《动物泡泡探险》可用来谈视觉预测、规划、颜色分类、专注与手眼协调。大人可以一起讨论反射路线、风向偏移，或目前泡泡是否应替下一颗开路。星星与技能报告只是本机游玩回馈，不是成绩、智力分数、诊断或儿童比较。进度只留在目前浏览器；不需要儿童帐号，Kids 路线也不会请求广告。</p></div>
+      <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>共有多少关？</dt><dd>共有 30 个可保存关卡，草原检查位于第 5、10、15、20、25、30 关。</dd></div><div><dt>泡泡为什么附著在目标旁边？</dt><dd>它会使用实际碰到泡泡附近最近的空位。</dd></div><div><dt>反弹目标怎么算？</dt><dd>完成配对的发射泡泡必须先碰过侧墙。</dd></div><div><dt>叶、蜂蜜与云怎么处理？</dt><dd>叶球由相邻配对带走，蜂蜜需两次碰撞，云会清除整排。</dd></div><div><dt>四种力量泡泡是什么？</dt><dd>彩虹变色、横扫清列、爆破清区域、交换互换颜色。</dd></div><div><dt>有倒数吗？</dt><dd>没有，限制是画面显示的预备泡泡数。</dd></div><div><dt>进度会保存吗？</dt><dd>解锁、星星、分数、图鉴与音效选择只留在目前浏览器。</dd></div><div><dt>触控与键盘都能玩吗？</dt><dd>可以，触控、滑鼠、方向键、Enter 与空白键使用相同瞄准规则。</dd></div><div><dt>Kids 页面有广告吗？</dt><dd>没有，本作不会建立广告请求或保留区。</dd></div></dl></div>
+    </div>
+  </section>
+  <!-- adsense-static-guide:end -->
+<script src="../../src/edge-guard.js?v=20260715-kids-fullscreen1"></script>
+<script src="/src/i18n.js?v=20260718-locale-routes1"></script>
+<script src="../../src/tutorial.js?v=20260715-kids-release1"></script>
+<script src="game.js?v=20260717-zh-hans1"></script>
+<script src="../../src/game-page-info.js?v=20260717-zh-hans1" defer></script>
+</body>
+</html>

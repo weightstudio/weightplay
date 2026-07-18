@@ -2,7 +2,27 @@
   const config = window.WONDER_SITE?.localization || {};
   const localeKey = "weightPlayLocale";
   const fallbackLocale = config.fallbackLocale || "en";
-  const supportedLocales = config.phaseOneLocales || ["en", "zh-Hant", "zh-Hans"];
+  const supportedLocales = config.phaseOneLocales || ["en", "zh-Hant", "zh-Hans", "es"];
+  const localeSegments = Object.freeze({ en: "en", "zh-Hant": "zh-tw", "zh-Hans": "zh-cn", es: "es" });
+  const segmentLocales = Object.freeze(Object.fromEntries(Object.entries(localeSegments).map(([locale, segment]) => [segment, locale])));
+
+  function localeFromPath(pathname = window.location?.pathname || "/") {
+    const parts = String(pathname).split("/").filter(Boolean);
+    const offset = parts[0] === "weightplay" ? 1 : 0;
+    return segmentLocales[String(parts[offset] || "").toLowerCase()] || "";
+  }
+
+  function localizedPath(targetLocale, input = window.location?.pathname || "/") {
+    const segment = localeSegments[targetLocale] || localeSegments[fallbackLocale] || "en";
+    const sourceOrigin = /^https?:\/\//i.test(window.location?.origin || "") ? window.location.origin : "https://weightplay.com";
+    const sourceUrl = new URL(String(input || "/"), sourceOrigin);
+    const parts = sourceUrl.pathname.split("/").filter(Boolean);
+    const projectPrefix = parts[0] === "weightplay" ? parts.shift() : "";
+    if (segmentLocales[String(parts[0] || "").toLowerCase()]) parts.shift();
+    const suffix = parts.length ? `/${parts.join("/")}${sourceUrl.pathname.endsWith("/") ? "/" : ""}` : "/";
+    const prefix = `${projectPrefix ? `/${projectPrefix}` : ""}/${segment}`;
+    return `${prefix}${suffix}${sourceUrl.search}${sourceUrl.hash}`.replace(/\/{2,}/g, "/");
+  }
 
   const dictionaries = {
     en: {
@@ -621,6 +641,8 @@
   });
 
   function getSavedLocale() {
+    const routedLocale = localeFromPath();
+    if (routedLocale && supportedLocales.includes(routedLocale)) return routedLocale;
     try {
       const saved = localStorage.getItem(localeKey);
       if (saved && supportedLocales.includes(saved)) return saved;
@@ -1665,15 +1687,22 @@
   function setLocale(locale) {
     if (!supportedLocales.includes(locale)) return;
     if (locale === currentLocale) return;
-    currentLocale = locale;
-    document.documentElement.lang = locale;
     try {
       localStorage.setItem(localeKey, locale);
     } catch {
       // Locale storage is optional.
     }
+    const nextPath = localizedPath(locale, `${window.location.pathname}${window.location.search}${window.location.hash}`);
+    const currentPath = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+    window.WonderAnalytics?.track("locale_change", { locale, route: nextPath });
+    const canUseLocaleRoute = /^https?:$/i.test(window.location.protocol);
+    if (config.useLocaleRoutes !== false && canUseLocaleRoute && nextPath !== currentPath && typeof window.location.assign === "function") {
+      window.location.assign(nextPath);
+      return;
+    }
+    currentLocale = locale;
+    document.documentElement.lang = locale;
     window.dispatchEvent(new CustomEvent("wonder:locale-change", { detail: { locale, legacyLocale: legacyLocale(locale) } }));
-    window.WonderAnalytics?.track("locale_change", { locale });
   }
 
   function locale() {
@@ -1770,6 +1799,21 @@
     else restoreTranslatedDom();
   }
 
+  function localizeInternalLinks(root = document) {
+    if (!/^https?:$/i.test(window.location.protocol)) return;
+    root.querySelectorAll?.("a[href]").forEach((anchor) => {
+      const raw = anchor.getAttribute("href") || "";
+      if (!raw || raw.startsWith("#") || /^(?:mailto:|tel:|javascript:)/i.test(raw)) return;
+      let url;
+      try { url = new URL(raw, document.baseURI); } catch { return; }
+      if (url.origin !== window.location.origin) return;
+      const path = url.pathname;
+      const isLocalizedSurface = path === "/" || path === "/kids/" || /^\/(?:en|zh-tw|zh-cn|es)\/(?:kids\/)?$/i.test(path) || /^\/(?:en|zh-tw|zh-cn|es)\/games\/[a-z0-9-]+\/$/i.test(path) || /^\/games\/[a-z0-9-]+\/$/i.test(path);
+      if (!isLocalizedSurface) return;
+      anchor.href = new URL(localizedPath(currentLocale, `${path}${url.search}${url.hash}`), window.location.origin).href;
+    });
+  }
+
   function installCanvasLocaleBridge() {
     const prototype = window.CanvasRenderingContext2D?.prototype;
     if (!prototype || prototype.__weightPlayZhHansBridge) return;
@@ -1809,15 +1853,20 @@
     localizeLegacyText,
     supportedLocales,
     fallbackLocale,
+    localeFromPath,
+    localizedPath,
+    localeSegment(locale = currentLocale) { return localeSegments[locale] || localeSegments.en; },
   };
 
   document.addEventListener("DOMContentLoaded", () => {
     installCanvasLocaleBridge();
     syncLocaleCompatibility();
+    localizeInternalLinks();
     window.setTimeout(syncStandardMainStartLabels, 0);
     const observer = new MutationObserver(() => window.setTimeout(syncStandardMainStartLabels, 0));
     observer.observe(document.body, { childList: true, characterData: true, subtree: true });
     const localeBridgeObserver = new MutationObserver((records) => {
+      window.setTimeout(() => localizeInternalLinks(), 0);
       if (currentLocale !== "zh-Hans") return;
       records.forEach((record) => {
         if (record.type === "characterData") translateTextNode(record.target);
@@ -1826,6 +1875,7 @@
       });
       if (document.documentElement.lang !== currentLocale) document.documentElement.lang = currentLocale;
       window.setTimeout(syncLocaleCompatibility, 0);
+      window.setTimeout(() => localizeInternalLinks(), 0);
     });
     localeBridgeObserver.observe(document.documentElement, {
       attributes: true,
@@ -1838,5 +1888,6 @@
   window.addEventListener("wonder:locale-change", () => {
     window.setTimeout(syncStandardMainStartLabels, 0);
     window.setTimeout(syncLocaleCompatibility, 0);
+    window.setTimeout(() => localizeInternalLinks(), 0);
   });
 })();

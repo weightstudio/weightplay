@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <base href="/games/tiny-weather-rescue/" />
+    <meta charset="UTF-8" />
+    <meta name="weightplay-audience" content="kids" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#57b9e8" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="robots" content="index,follow" />
+    <meta name="description" content="Animal Helper Quest is a free bilingual Kids picture puzzle with 30 saved missions and six Helper Checks. A rabbit, fox, panda, penguin, lion, or koala..." />
+    <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Animal Helper Quest | WeightPlay" />
+    <meta property="og:description" content="Animal Helper Quest is a free bilingual Kids picture puzzle with 30 saved missions and six Helper Checks. A rabbit, fox, panda, penguin, lion, or koala..." />
+    <meta property="og:url" content="https://weightplay.com/en/games/tiny-weather-rescue/" />
+    <meta property="og:image" content="https://weightplay.com/assets/tiny-weather-rescue-cover.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>Animal Helper Quest | WeightPlay</title>
+    <link rel="canonical" href="https://weightplay.com/en/games/tiny-weather-rescue/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/tiny-weather-rescue/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/tiny-weather-rescue/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/tiny-weather-rescue/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/tiny-weather-rescue/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/tiny-weather-rescue/" />
+    <link rel="stylesheet" data-wp-stage-standard data-wp-battle-standard href="style.css?v=20260716-keyboard-care1" />
+    <script data-wp-stage-standard>/* Animal Helper Quest owns its native Stage rail. */</script>
+    <script data-wp-battle-standard>/* Animal Helper Quest owns its native Battle Canvas. */</script>
+    <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Animal Helper Quest",
+  "alternateName": "動物幫幫隊",
+  "url": "https://weightplay.com/en/games/tiny-weather-rescue/",
+  "image": "https://weightplay.com/assets/tiny-weather-rescue-cover.png",
+  "description": "Animal Helper Quest is a free bilingual Kids picture puzzle with 30 saved missions and six Helper Checks. A rabbit, fox, panda, penguin, lion, or koala...",
+  "applicationCategory": "Game",
+  "operatingSystem": "Web browser",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio"
+  },
+  "inLanguage": "en",
+  "isAccessibleForFree": true,
+  "genre": [
+    "Puzzle",
+    "Care",
+    "Animal"
+  ],
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "Kids and families",
+    "suggestedMinAge": 6
+  },
+  "learningResourceType": "Skill practice through play",
+  "educationalUse": "Practice Problem Solving, Animal Knowledge, Focus through family-friendly browser gameplay."
+}
+    </script>
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
+    <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
+    <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
+    <meta name="twitter:title" content="Animal Helper Quest | WeightPlay" />
+    <meta name="twitter:description" content="Animal Helper Quest is a free bilingual Kids picture puzzle with 30 saved missions and six Helper Checks. A rabbit, fox, panda, penguin, lion, or koala..." />
+  </head>
+  <body data-tutorial-auto-show="false">
+    <main class="weather-game" data-play-viewport data-no-mobile-immersive="true">
+      <header class="topbar">
+        <a class="home-link" data-wp-return="main" href="/kids/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
+        <div class="title-block">
+          <p>WeightPlay</p>
+          <h1 data-ui="gameTitle">Animal Helper Quest</h1>
+        </div>
+        <label class="language-picker">
+          <span data-ui="language">Language</span>
+          <select id="localeSelect" aria-label="Language">
+            <option value="en">English</option>
+            <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
+            <option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option>
+          </select>
+        </label>
+      </header>
+
+      <section id="menuPanel" class="menu-panel">
+        <img class="cover" src="../../assets/tiny-weather-rescue-cover.png" alt="" />
+        <div class="menu-copy">
+          <strong data-ui="chooseStage">Choose Rescue</strong>
+          <span data-ui="menuHint">Tap or drag the right tool to help the little animal.</span>
+        </div>
+        <button id="startGameBtn" class="standard-main-start" data-wp-main-start type="button">Start Game</button>
+      </section>
+
+      <section id="stagePanel" class="wp-standard-stage-panel hidden" data-wp-standard-stage-screen>
+        <header class="wp-standard-stage-heading"><button id="stageBackBtn" data-wp-return="stage" type="button" aria-label="Back">&larr;</button><strong data-ui="chooseStage">Choose Rescue</strong></header>
+        <div id="stageGrid" class="stage-grid" data-wp-stage-settle-duration="360" data-wp-stage-settle-easing="smoothstep" aria-label="Stage list"></div>
+      </section>
+
+      <section id="playPanel" class="play-panel hidden">
+        <div class="play-head">
+          <button id="backToStagesBtn" class="soft-btn" data-wp-return="battle" type="button" aria-label="Back to stages">&larr;</button>
+          <div class="stats">
+            <span id="stageText">Stage 1</span>
+            <span id="movesText" class="round-progress"><b>1/4</b><i></i></span>
+            <span id="starsText">Help 0</span>
+          </div>
+        </div>
+        <div id="board" class="board" aria-label="Animal helper board"></div>
+        <div id="hintText" class="hint" aria-live="polite"></div>
+        <div id="resultPanel" class="result-panel hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle">
+          <div class="result-card">
+            <strong id="resultTitle">Rescue Complete!</strong>
+            <div id="starText" class="stars">&#9734;&#9734;&#9734;</div>
+            <span id="resultText"></span>
+            <div id="skillReport" class="skill-report" aria-live="polite"></div>
+            <button id="nextStageBtn" type="button" data-ui="nextStage">Next Stage</button>
+            <button id="retryBtn" type="button" data-ui="retry">Try Again</button>
+            <button id="resultStagesBtn" type="button" data-ui="stages">Stages</button>
+            <a href="/kids/" data-ui="lobby">Lobby</a>
+          </div>
+        </div>
+      </section>
+
+      <div id="loadingPanel" class="loading-panel">
+        <div class="loading-card">
+          <strong data-ui="loading">Loading</strong>
+          <span id="loadingText">0%</span>
+          <div><i id="loadingFill"></i></div>
+        </div>
+      </div>
+    </main>
+    <!-- adsense-static-guide:start -->
+    <section class="game-page-info game-page-info-static" aria-label="Animal Helper Quest game information">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay Kids Game Guide</span><h2>Animal Helper Quest</h2><p>Animal Helper Quest is a free bilingual Kids picture puzzle with 30 saved missions and six Helper Checks. A rabbit, fox, panda, penguin, lion, or koala appears in one of six neighborhoods. Players connect nine weather or everyday situations to an umbrella, towel, fan, lamp, shelter, apple, boots, or blanket. Later missions remove visible tool words, combine two clues, briefly hide the need, or move the tray after an error. Mission 30 combines every advanced rule without a countdown, purchase, account, life limit, or advertising request.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>Helper Choice</strong></div><div class="game-info-fact"><span>Genre</span><strong>Puzzle · Care · Animal</strong></div><div class="game-info-fact"><span>Difficulty</span><strong>Easy</strong></div><div class="game-info-fact"><span>Estimated Play Time</span><strong>3-6 minutes per mission</strong></div><div class="game-info-fact"><span>Skills Trained</span><strong>Problem Solving · Animal Knowledge · Focus</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>World and Mission</h3><p>Six animal neighborhoods share a small helper cart. Sudden rain, puddles, heat, darkness, thunder, hunger, mud, cold, and wind interrupt its route. The player reads the scene and sends the useful item so the cart can continue.</p>
+<p>These are simplified play situations, not professional wildlife-care instructions. Paired clues introduce an immediate priority: rain plus strong wind calls for shelter, while an animal already wet after rain needs the towel. Mission 30 closes the final mixed Helper Check.</p></div>
+      <div class="game-info-section"><h3>How the Systems Work</h3><p>Every mission contains four to six situations and a visible target. Tap a tool or drag it onto the animal; touch, mouse and keyboard use the same decision.</p>
+<p>Correct care adds one help. A wrong choice gives a gentle retry; three wrong choices move on without scoring that situation so play cannot soft-lock.</p>
+<p>Picture Tools hide visible words but retain accessible names. Paired Clues show two icons and one priority answer. Remember the Need allows a no-penalty reveal. Changing Tray reorders tools after an error.</p>
+<p>A clear saves stars, best score, play count, mistakes and exactly the next unlock in local browser storage. The Skill Report uses this run’s real outcomes.</p>
+<p>There is no account, purchase, timer, leaderboard, ad request, ad reserve or formal assessment.</p></div>
+      <div class="game-info-section"><h3>How to Play</h3><ol><li>Press Start Game and swipe the horizontal mission rail to an unlocked card.</li><li>Study the animal, large situation icons, and short need line.</li><li>Compare the pictures, then tap one tool or drag it onto the animal.</li><li>Tap the animal to review a hidden memory need without a penalty.</li><li>Reach the mission target to save stars and unlock exactly the next mission.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Strategy Tips</h3><ul><li>Name the situation before checking the tools.</li><li>Use object shape and color when Picture Tools removes visible words.</li><li>With two clues, decide which need has immediate priority.</li><li>Review a hidden need instead of guessing.</li><li>Rescan the whole tray after a wrong choice in Changing Tray missions.</li><li>Use gentle feedback to remove unlikely choices.</li></ul></div>
+      <div class="game-info-section"><h3>Campaign and Difficulty Growth</h3><p>Missions 1–5 teach one clear need and end with the first Helper Check.</p>
+<p>Missions 6–10 remove visible tool words while preserving accessible names.</p>
+<p>Missions 11–15 combine two situation clues into one priority choice.</p>
+<p>Missions 16–20 briefly hide the need, which can always be restored by tapping the animal.</p>
+<p>Missions 21–25 reorder the tool tray after an incorrect choice.</p>
+<p>Missions 26–30 combine picture, paired-clue, memory and changing-tray rules; Mission 30 contains six situations.</p></div>
+      <div class="game-info-section"><h3>Developer Design Note</h3><p>Difficulty grows by changing useful evidence instead of shrinking targets or adding a clock. Direct needs establish meanings; picture recognition, priority, recall and changing positions each add one understandable demand. The fixed logical Canvas scales uniformly across phone, tablet, desktop and short landscape. Situation effects never display the answer item, and visible-time feedback cannot finish while the page is backgrounded. Unlike Zoo Helper Day’s care categories and ordered routines, this game connects environmental situations to immediate item decisions. Kids play has no advertising, account, purchase, ranking or diagnosis.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Parent Note</h3><p>Animal Helper Quest may support picture recognition, cause-and-effect discussion, simple prioritization, short recall, focus and hand-eye coordination. Real animals need suitable habitats, diets, trained carers and veterinary support beyond these simplified scenes. Stars and Skill Report are play feedback only, not a grade, IQ score, health claim or developmental assessment. Progress stays in this browser. No child profile is required, and the Kids route requests no advertising.</p></div>
+      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>How many missions are included?</dt><dd>There are 30 saved missions with Helper Checks at 5, 10, 15, 20, 25 and 30.</dd></div><div><dt>Which situations and tools appear?</dt><dd>Nine situations use eight pictured helper items.</dd></div><div><dt>Why are tool words missing?</dt><dd>Picture Tool and mixed missions rely on artwork while accessible names remain.</dd></div><div><dt>What do two icons mean?</dt><dd>Choose the item that handles the immediate priority described by both clues.</dd></div><div><dt>What if the need disappears?</dt><dd>Tap the animal to show it again without a penalty.</dd></div><div><dt>Why did the tools move?</dt><dd>Changing Tray missions reorder them after a wrong choice.</dd></div><div><dt>Can a mission get stuck?</dt><dd>No. Three wrong choices move gently to the next situation.</dd></div><div><dt>Is progress saved?</dt><dd>Stars, scores and unlocks stay only in this browser.</dd></div><div><dt>Does the Kids page show ads?</dt><dd>No. The game creates no advertising request or reserve.</dd></div></dl></div>
+    </div>
+  </section>
+    <!-- adsense-static-guide:end -->
+
+    <script src="/src/site-config.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/version.js?v=20260701-version2"></script>
+    <script src="../../src/analytics.js?v=20260701-analytics2"></script>
+    <script>
+      window.WonderAnalytics?.track("game_view", { game_id: "tiny-weather-rescue" });
+    </script>
+    <script src="../../src/sound.js?v=20260701-labels1"></script>
+    <script src="../../src/edge-guard.js?v=20260710-mobile-play-shell2"></script>
+    <script src="/src/i18n.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/tutorial.js?v=20260704-helper-tutorial-locale1"></script>
+    <script src="game.js?v=20260717-zh-hans1"></script>
+    <script src="../../src/game-page-info.js?v=20260717-zh-hans1"></script>
+  </body>
+</html>

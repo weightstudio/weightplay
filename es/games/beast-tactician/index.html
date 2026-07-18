@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <base href="/games/beast-tactician/" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="robots" content="index,follow" />
+    <meta name="description" content="Beast Guardian es una campaña de defensa de torres de héroes de 30 niveles construida alrededor de la construcción de rutas en lugar de plataformas de..." />
+    <link rel="canonical" href="https://weightplay.com/es/games/beast-tactician/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/beast-tactician/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/beast-tactician/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/beast-tactician/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/beast-tactician/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/beast-tactician/" />
+    <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Guardián de Bestias | WeightPlay" />
+    <meta property="og:description" content="Beast Guardian es una campaña de defensa de torres de héroes de 30 niveles construida alrededor de la construcción de rutas en lugar de plataformas de..." />
+    <meta property="og:url" content="https://weightplay.com/es/games/beast-tactician/" />
+    <meta property="og:image" content="https://weightplay.com/assets/beast-tactician-cover.webp" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>Guardián de Bestias | WeightPlay</title>
+    <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
+    <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
+    <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guardian-public1" />
+    <link rel="stylesheet" href="defense.css?v=20260716-guardian-nav-a11y1" />
+    <style>body.guardian-stage .guardian-topbar,body.guardian-stage .locale-box{display:none!important}</style>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Guardián de Bestias",
+  "url": "https://weightplay.com/es/games/beast-tactician/",
+  "image": "https://weightplay.com/assets/beast-tactician-cover.webp",
+  "description": "Beast Guardian es una campaña de defensa de torres de héroes de 30 niveles construida alrededor de la construcción de rutas en lugar de plataformas de...",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio",
+    "url": "https://weightplay.com/"
+  },
+  "applicationCategory": "Game",
+  "genre": [
+    "Defensa de la torre",
+    "Estrategia",
+    "animales"
+  ],
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "General players"
+  },
+  "inLanguage": "es",
+  "isAccessibleForFree": true,
+  "operatingSystem": "Web"
+}
+    </script>
+    <meta name="twitter:title" content="Guardián de Bestias | WeightPlay" />
+    <meta name="twitter:description" content="Beast Guardian es una campaña de defensa de torres de héroes de 30 niveles construida alrededor de la construcción de rutas en lugar de plataformas de..." />
+  </head>
+  <body>
+    <main class="guardian-app">
+      <header class="guardian-topbar">
+        <a class="back-btn" data-wp-return="main" href="/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
+        <div class="brand-lockup">
+          <span>WeightPlay</span>
+          <h1 id="gameTitle">Guardián de Bestias</h1>
+        </div>
+        <label class="locale-box">
+          <span id="languageLabel">Language</span>
+          <select id="localeSelect" aria-label="Language">
+            <option value="en">English</option>
+            <option value="zh-Hant">繁體中文</option>
+            <option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option>
+          </select>
+        </label>
+        <button id="soundBtn" class="secondary-btn sound-btn" type="button" aria-pressed="false">SFX Off</button>
+      </header>
+
+      <section id="loadingPanel" class="loading-panel" aria-live="polite">
+        <div class="loading-content">
+          <h2>Beast Guardian</h2>
+          <div class="loading-bar"><div id="loadingFill" class="loading-fill"></div></div>
+          <span id="loadingText" class="loading-percentage">0%</span>
+        </div>
+      </section>
+
+      <section id="menuPanel" class="menu-panel">
+        <div class="poster-frame">
+          <img class="cover" src="../../assets/beast-tactician-cover.webp" alt="Imagen del juego Guardián de Bestias" />
+        </div>
+        <div class="menu-copy">
+          <p id="releaseBadge" class="release-badge">Playable Now</p>
+          <h2 id="menuTitle">Hero Tower Defense</h2>
+          <p id="menuHint" class="menu-hint"></p>
+          <div class="profile-grid">
+            <div><span id="bestStageLabel">Best Stage</span><strong id="bestStageText">1</strong></div>
+            <div><span id="upgradePointLabel">Upgrade Points</span><strong id="upgradePointText">0</strong></div>
+            <div><span id="diamondLabel">Diamonds</span><strong id="diamondText">0</strong></div>
+          </div>
+          <div class="menu-actions">
+            <button id="startBtn" class="primary-btn" type="button">Start Defense</button>
+            <button id="techBtn" class="secondary-btn" type="button">Tech Upgrades</button>
+          </div>
+          <p id="holdNotice" class="hold-notice"></p>
+        </div>
+      </section>
+
+      <section id="techPanel" class="modal-panel is-hidden" aria-live="polite">
+        <div class="modal-card">
+          <h2 id="techTitle">Permanent Tech</h2>
+          <p id="techHint"></p>
+          <div id="techGrid" class="tech-grid"></div>
+          <button id="techBackBtn" class="secondary-btn" type="button">Back</button>
+        </div>
+      </section>
+
+      <section id="stagePanel" class="stage-panel is-hidden">
+        <div class="stage-header">
+          <h2 id="stageTitle">Choose Stage</h2>
+          <button id="stageBackBtn" class="secondary-btn" data-wp-return="stage" type="button" aria-label="Back">&larr;</button>
+        </div>
+        <div id="stageRail" class="stage-rail" aria-label="Stage selector"></div>
+      </section>
+
+      <section id="gamePanel" class="game-panel play-area is-hidden" data-play-viewport>
+        <div class="hud-row">
+          <button id="menuBtn" class="secondary-btn" data-wp-return="battle" type="button" aria-label="Back to stages">&larr;</button>
+          <div><span id="stageHudLabel">Stage</span><strong id="stageHudText">1</strong></div>
+          <div><span id="coreHudLabel">Core</span><strong id="coreText">100</strong></div>
+          <div><span id="coinHudLabel">Coins</span><strong id="coinText">0</strong></div>
+          <div><span id="waveHudLabel">Wave</span><strong id="waveText">0/0</strong></div>
+          <div id="waveIntelPanel" class="wave-intel-panel" aria-live="polite">
+            <span id="waveIntelLabel">Next Wave</span>
+            <strong id="waveIntelText">Scout the route before starting.</strong>
+          </div>
+          <button id="speedBtn" class="secondary-btn" type="button">1x</button>
+        </div>
+        <div id="bossPanel" class="boss-panel is-hidden" aria-live="polite">
+          <div>
+            <span id="bossLabel">Boss Pressure</span>
+            <strong id="bossNameText">Forest Behemoth</strong>
+          </div>
+          <div class="boss-meter" aria-hidden="true"><div id="bossMeterFill"></div></div>
+          <span id="bossHpText">100%</span>
+          <span id="bossHintText">Hold the route</span>
+        </div>
+        <div class="battle-layout">
+          <aside class="build-panel">
+            <h3 id="buildTitle">Build</h3>
+            <div id="buildCards" class="build-cards"></div>
+            <div id="selectedInfo" class="selected-info" role="status" aria-live="polite" aria-atomic="true"></div>
+          </aside>
+          <div class="canvas-shell">
+            <canvas id="gameCanvas" width="960" height="640" tabindex="0" aria-label="Beast Guardian tower defense board"></canvas>
+            <div id="toast" class="toast is-hidden"></div>
+          </div>
+        </div>
+        <div class="command-row">
+          <button id="waveBtn" class="primary-btn" type="button">Start Wave</button>
+          <button id="upgradeBtn" class="secondary-btn" type="button">Upgrade</button>
+          <button id="sellBtn" class="secondary-btn" type="button">Sell</button>
+        </div>
+        <section id="resultPanel" class="modal-panel is-hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultText" aria-live="polite">
+          <div class="modal-card result-card">
+            <img src="../../assets/weightplay-character-boom-mane-lion-cutout.webp" alt="Boom Mane Leo" />
+            <div>
+              <h2 id="resultTitle">Victory</h2>
+              <p id="resultText"></p>
+              <p id="resultStars" class="result-stars"></p>
+              <p id="resultRewardText" class="result-reward"></p>
+              <p id="resultProgressText" class="result-progress"></p>
+              <p id="resultUnlockText" class="result-unlock"></p>
+              <p id="skillReportText" class="skill-report"></p>
+              <div class="result-actions">
+                <button id="nextStageBtn" class="primary-btn" type="button">Next Stage</button>
+                <button id="rerollRewardBtn" class="secondary-btn" type="button">Reroll Reward</button>
+                <button id="reviveBtn" class="primary-btn is-hidden" type="button">Revive Core</button>
+                <button id="retryBtn" class="secondary-btn" type="button">Retry</button>
+                <button id="resultMenuBtn" class="secondary-btn" type="button">Menu</button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <div class="battle-ad-reserve" aria-hidden="true"></div>
+    </main>
+    <!-- adsense-static-guide:start -->
+    <section class="game-page-info game-page-info-static" aria-label="Información del juego Guardián de Bestias">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">Guía de juegos de WeightPlay</span><h2>Guardián de Bestias</h2><p>Beast Guardian es una campaña de defensa de torres de héroes de 30 niveles construida alrededor de la construcción de rutas en lugar de plataformas de torres fijas. Coloca cuatro roles de soldados animales ordinarios y siete héroes de WeightPlay en una cuadrícula forestal, mantén al menos una ruta abierta y protege el núcleo de cristal a través de seis regiones de cinco niveles. Los lobos, los jabalíes acorazados, los murciélagos voladores, las manadas en regeneración, los velocistas heridos y las formaciones de eclipses exigen defensas diferentes. Las niveles 5, 10, 15, 20, 25 y 30 terminan con jefes que cambian las reglas en lugar de enemigos comunes con barras de salud más grandes.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Jugabilidad</span><strong>Defensa de la torre del héroe</strong></div><div class="game-info-fact"><span>Género</span><strong>Defensa de la torre · Estrategia · animales</strong></div><div class="game-info-fact"><span>Dificultad</span><strong>Difícil</strong></div><div class="game-info-fact"><span>Tiempo estimado</span><strong>8-15 minutos por nivel</strong></div><div class="game-info-fact"><span>Habilidades practicadas</span><strong>Lógica · Resolución de problemas · Concentración</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>Mundo y misión</h3><p>Las rutas de cristal conectan seis partes del Bosque Guardián: los primeros senderos de raíces, las vías de aire de cristal, las obras de Corteza de Hierro, el bosque de niebla que vuelve a crecer, las murallas de tormentas y el camino del eclipse hacia el trono de Voidroot. Las manadas enemigas intentan llegar al núcleo al otro lado de cada campo de batalla. Un tramo despejado significa que la ruta es segura el tiempo suficiente para que los guardianes avancen al siguiente sector.</p>
+<p>Tú diriges la defensa antes y durante cada ola. Los Acorn Guards y Moss Shell Taro mantienen las curvas, los Scout Archers y Moon Cap Orla cubren ángulos largos, los Rune Sappers ralentizan a los atacantes agrupados, los Medic Cubs reparan a los bloqueadores heridos y los héroes como Spark Paw Fia brindan daño concentrado. El tablero no es una decoración: cada defensor colocado cambia la ruta a menos que la unidad esté sirviendo como apoyo a distancia lejos del camino.</p></div>
+      <div class="game-info-section"><h3>Cómo funcionan los sistemas</h3><p>Construcción de rutas: los defensores ocupan celdas terrestres normales. Los enemigos recalculan un camino a su alrededor, pero una ruta completamente sellada hace que los enemigos terrestres ataquen al bloqueador más cercano hasta que se abre nuevamente una ruta. Los murciélagos voladores ignoran el laberinto terrestre, por lo que una ruta larga por sí sola no puede resolver todas las olas.</p>
+<p>Roles de combate: los bloqueadores ganan tiempo, los arqueros y Orla cubren la distancia, los zapadores aplican daño por dispersión y ralentización, los médicos curan a los defensores dañados, Fia concentra la presión del jefe y Gear Horn Rux fortalece a los aliados cercanos. Al seleccionar una unidad colocada se muestra su costo de actualización y su reembolso por venta.</p>
+<p>Información de oleada: antes de cada oleada, el HUD nombra a los lobos, jabalíes, murciélagos, escoltas o jefes entrantes. Las oleadas no finales continúan después de una cuenta regresiva de cinco segundos, por lo que el jugador puede leer la siguiente composición y usar las monedas ganadas antes de que se reanude la presión.</p>
+<p>Enemigos especiales: las niveles de Corteza de Hierro dan a los enemigos una armadura protectora rompible; los enemigos de Mistwood recuperan salud mientras se mueven; los enemigos de la tormenta se aceleran después de caer por debajo de la mitad de su salud; Las niveles del eclipse combinan armadura, recuperación, comportamiento repentino, rutas de vuelo y efectividad lenta reducida.</p>
+<p>Progreso permanente: las victorias otorgan estrellas, puntos de mejora y diamantes. Los puntos de mejora mejoran el poder del héroe, la salud de los defensores o la economía inicial. Los diamantes son opcionales y pueden confirmar la reactivación de un núcleo, volver a obtener una recompensa de resultado o desbloquear un marco cosmético de defensor dorado; Los desbloqueos de niveles normales no los requieren.</p></div>
+      <div class="game-info-section"><h3>Cómo jugar</h3><ol><li>Elija una nivel del riel de nivel de deslizamiento y lea las notas de amenaza, plan y recompensa.</li><li>Gasta monedas de nivel para colocar soldados o héroes de WeightPlay en casillas de suelo normales. Utilice la vista previa del rango visible antes de confirmar una posición.</li><li>Mantén al menos un camino abierto, o los enemigos bloqueados atacarán al defensor más cercano hasta que la ruta se vuelva a abrir.</li><li>Lea Wave Intel, inicie la ola y luego actualice o venda las unidades colocadas a medida que cambie la combinación de enemigos. Las olas no despejadas definitivamente se reanudan automáticamente después de cinco segundos.</li><li>Protege el cristal a través de cada ola. El resultado otorga de una a tres estrellas según la salud central restante y ofrece Siguiente nivel, Reintentar o Volver a las niveles.</li><li>Gaste los puntos de mejora guardados del nivel cuando sea necesario mejorar la energía permanente, la salud del baluarte o la economía inicial. Las acciones Diamante opcionales siempre muestran su costo y requieren confirmación.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Consejos de estrategia</h3><ul><li>Utilice Acorn Guards para hacer dos o tres curvas de tiro antes de invertir en héroes caros. Una ruta más larga aumenta el tiempo de ataque útil de cada unidad a distancia.</li><li>No cierres todas las celdas. Una ruta sellada convierte el laberinto en una lucha directa contra el bloqueador más cercano y puede eliminar la ventaja de tiempo que intentabas crear.</li><li>Mantenga la cobertura a distancia cerca del cristal durante el cruce de murciélagos y las niveles posteriores de vuelo porque los murciélagos evitan los bloqueadores terrestres. Ralentiza a los jabalíes antes de que su armadura se rompa en las niveles de tormenta para que su aumento de velocidad herido sea menos peligroso.</li><li>Contra enemigos en regeneración, concentra el fuego dentro de una zona de muerte en lugar de distribuir el daño. Contra armadura, daño sostenido o por salpicadura se debe quitar la guardia antes de que se cometa la explosión del héroe.</li><li>Guarde la cobertura de roles para las niveles de Jefe. El Emperador Voidroot final cambia de fase en dos umbrales de salud, invocando murciélagos primero y luego apoyo terrestre blindado mientras reconstruye la guardia.</li></ul></div>
+      <div class="game-info-section"><h3>Campaña y aumento de dificultad</h3><p>Las niveles 1 a 5 enseñan curvas de ruta, carriles divididos, cobertura temprana a distancia, presión de los jabalíes y las consecuencias de sellar el camino. Shadow Brute ataca a los bloqueadores más rápido que los jefes normales, por lo que el primer final prueba si la ruta tiene un ancla duradera en lugar de solo dañar unidades.</p>
+<p>Las niveles 6 a 10 presentan murciélagos que vuelan a través de la cuadrícula y oleadas mixtas de aire y tierra. Forest Behemoth convoca el apoyo de lobos y murciélagos después de perder parte de su salud. Las niveles 11 a 15 agregan una armadura Ironbark rompible y terminan con Ironbark Colossus, que reconstruye una gran capa de guardia a mitad de la pelea.</p>
+<p>Las niveles 16 a 20 hacen que los enemigos inacabados se regeneren mientras se mueven; Verdant Ancient restaura una parte de su propia salud y pide apoyo. Las niveles 21-25 agregan aumentos de velocidad heridos, terminando con Tempest Ravager acelerando a sus escoltas. Las niveles 26 a 30 combinan todas las reglas anteriores con una efectividad lenta reducida. Voidroot Emperor tiene dos cambios de fase, por lo que la nivel 30 requiere ruta terrestre, cobertura aérea, ruptura de armadura, daño final, curación y concentración del jefe salvado en una sola defensa.</p></div>
+      <div class="game-info-section"><h3>Nota de diseño</h3><p>Beast Guardian utiliza la colocación gratuita porque la decisión central no es simplemente qué torre comprar; así es como cada cuerpo cambia el tiempo de viaje, los ángulos de disparo y el riesgo de bloqueo. La transición de cinco segundos entre oleadas preserva la sensación de una defensa continua y deja un breve margen de planificación. Treinta niveles están organizadas como seis arcos mecánicos, por lo que la dificultad aumenta a través de nuevos contadores y combinaciones antes de las estadísticas en bruto. Los jugadores táctiles usan las mismas tarjetas de construcción grandes y celdas de cuadrícula que los jugadores con mouse, mientras que los controles del teclado pueden mover el cursor de un mosaico, construir, seleccionar, actualizar, vender, ciclo de unidades e iniciar oleadas. Esto distingue al juego de Animal Auto Squad: ambos recompensan la preparación, pero Beast Guardian permite al jugador remodelar el campo de batalla y reaccionar durante las oleadas en vivo.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Nota para familias</h3><p>El navegador almacena la nivel desbloqueada más alta, los niveles superados, las mejores calificaciones de estrellas, los niveles de tecnología permanentes, los puntos de actualización, el saldo de Diamantes y la propiedad cosmética en este dispositivo. No es necesario iniciar sesión para jugar de forma básica y borrar el almacenamiento del navegador de este sitio puede eliminar ese progreso. Las acciones de diamantes son opcionales y no son necesarias para desbloquear las 30 niveles de la campaña.</p></div>
+      <div class="game-info-section"><h3>Preguntas frecuentes</h3><dl><div><dt>¿Es Beast Guardian un juego gratuito?</dt><dd>Sí. La campaña completa de 30 niveles se ejecuta en el navegador sin necesidad de realizar ninguna compra ni iniciar sesión.</dd></div><div><dt>¿Cómo comienzo una nivel?</dt><dd>Elija una nivel desbloqueada del riel deslizante y luego comience la defensa. Las oleadas no finales eliminadas comienzan automáticamente después de una cuenta regresiva de cinco segundos.</dd></div><div><dt>¿Por qué a veces los enemigos atacan a un defensor?</dt><dd>Los enemigos terrestres atacan a un bloqueador cercano cuando todas las rutas legales hacia el núcleo están selladas. Vender o reposicionar una unidad en el próximo intento, o diseñar una ruta con un carril abierto.</dd></div><div><dt>¿En qué se diferencian los seis jefes?</dt><dd>Shadow Brute ataca a los bloqueadores rápidamente, Forest Behemoth convoca escoltas, Ironbark Colossus reconstruye la armadura, Verdant Ancient cura, Tempest Ravager acelera a los aliados y Voidroot Emperor cambia de fase dos veces.</dd></div><div><dt>¿Qué miden las estrellas?</dt><dd>Las estrellas reflejan la salud del núcleo de cristal que queda después de la victoria. Una limpieza cerrada aún desbloquea la siguiente nivel, mientras que volver a jugar con una ruta más fuerte puede mejorar la calificación guardada.</dd></div><div><dt>¿Beast Guardian guarda el progreso?</dt><dd>Sí. Los desbloqueos, borrados, estrellas, puntos de mejora, tecnología permanente, diamantes y propiedad cosmética se guardan localmente en este navegador.</dd></div><div><dt>¿Qué pueden hacer los diamantes?</dt><dd>Opcionalmente, los diamantes confirman una reactivación del núcleo, vuelven a lanzar una recompensa de resultado o desbloquean el marco dorado. No son necesarios para el progreso normal de la campaña.</dd></div></dl></div>
+    </div>
+  </section>
+    <!-- adsense-static-guide:end -->
+    <script src="/src/site-config.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/analytics.js?v=20260701-analytics2"></script>
+    <script src="../../src/wallet.js?v=20260706-crystal-diamond-charm1"></script>
+    <script src="/src/i18n.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/edge-guard.js?v=20260710-mobile-play-shell2"></script>
+    <script src="../../src/tutorial.js?v=20260701-style1"></script>
+    <script src="game.js?v=20260717-zh-hans1"></script>
+    <script src="../../src/game-page-info.js?v=20260717-zh-hans1"></script>
+  </body>
+</html>

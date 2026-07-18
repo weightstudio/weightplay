@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <base href="/games/fruit-merge/" />
+    <meta charset="UTF-8" />
+    <meta name="weightplay-audience" content="kids" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#162132" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="robots" content="index,follow" />
+    <meta name="description" content="動物合成塔保留原本的自由模式，並新增 30 個可存檔物理挑戰。六個章節會改變瞄準範圍、側風、重力、生成順序與成功條件，但所有模式都使用同一套動物球物理合成。" />
+    <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="動物合成塔 | WeightPlay" />
+    <meta property="og:description" content="動物合成塔保留原本的自由模式，並新增 30 個可存檔物理挑戰。六個章節會改變瞄準範圍、側風、重力、生成順序與成功條件，但所有模式都使用同一套動物球物理合成。" />
+    <meta property="og:url" content="https://weightplay.com/zh-tw/games/fruit-merge/" />
+    <meta property="og:image" content="https://weightplay.com/assets/fruit-merge-cover.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>動物合成塔 | WeightPlay</title>
+    <link rel="canonical" href="https://weightplay.com/zh-tw/games/fruit-merge/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/fruit-merge/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/fruit-merge/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/fruit-merge/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/fruit-merge/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/fruit-merge/" />
+    <link rel="stylesheet" href="style.css?v=20260717-depth30-1" data-wp-stage-standard data-wp-battle-standard />
+    <script data-wp-stage-standard>/* Animal Merge Tower owns its native Kids Stage rail. */</script>
+    <script data-wp-battle-standard>/* Animal Merge Tower owns its native Kids Battle Canvas. */</script>
+    <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "動物合成塔",
+  "alternateName": "動物合成塔",
+  "url": "https://weightplay.com/zh-tw/games/fruit-merge/",
+  "image": "https://weightplay.com/assets/fruit-merge-cover.png",
+  "description": "動物合成塔保留原本的自由模式，並新增 30 個可存檔物理挑戰。六個章節會改變瞄準範圍、側風、重力、生成順序與成功條件，但所有模式都使用同一套動物球物理合成。",
+  "applicationCategory": "Game",
+  "operatingSystem": "Web browser",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio"
+  },
+  "inLanguage": "zh-Hant",
+  "isAccessibleForFree": true,
+  "genre": [
+    "益智",
+    "物理",
+    "動物"
+  ],
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "Kids and families",
+    "suggestedMinAge": 6
+  },
+  "learningResourceType": "Skill practice through play",
+  "educationalUse": "Practice Logic, Problem Solving, Hand-Eye Coordination through family-friendly browser gameplay."
+}
+    </script>
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
+    <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
+    <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
+    <meta name="twitter:title" content="動物合成塔 | WeightPlay" />
+    <meta name="twitter:description" content="動物合成塔保留原本的自由模式，並新增 30 個可存檔物理挑戰。六個章節會改變瞄準範圍、側風、重力、生成順序與成功條件，但所有模式都使用同一套動物球物理合成。" />
+  </head>
+  <body>
+    <main class="fruit-game">
+      <header class="topbar">
+        <a class="home-link" data-wp-return="main" href="/kids/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
+        <div class="title-block">
+          <p>WeightPlay</p>
+          <h1 id="titleText">動物合成塔</h1>
+        </div>
+        <label class="language-picker">
+          <span id="languageLabel">Language</span>
+          <select id="localeSelect" aria-label="Language">
+            <option value="en">English</option>
+            <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
+            <option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option>
+          </select>
+        </label>
+      </header>
+
+      <section id="playPanel" class="fixed-shell-host" data-no-mobile-immersive="true">
+        <div class="fixed-game-shell play-area" aria-label="Animal Merge Tower fixed game screen">
+          <button id="backToMenuBtn" class="play-return" data-wp-return="battle" type="button" aria-label="Back to menu">&larr;</button>
+          <section class="scorebar" aria-label="Score">
+            <div>
+              <span id="scoreLabel">Score</span>
+              <strong id="scoreText">0</strong>
+            </div>
+            <div class="next-box">
+              <span id="bestLabel">Best</span>
+              <strong id="bestText">0</strong>
+            </div>
+            <div id="comboBox" class="combo-box">
+              <span id="comboLabel">Combo</span>
+              <strong id="comboText">Ready</strong>
+            </div>
+            <div>
+              <span id="nextLabel">Next</span>
+              <strong id="nextFruitText" class="next-fruit-preview" aria-label="Mouse Ball"></strong>
+            </div>
+          </section>
+
+          <section class="merge-goal" aria-label="Merge progress">
+            <div class="goal-token" id="largestFruitToken"></div>
+            <div class="goal-copy">
+              <span id="largestLabel">Largest</span>
+              <strong id="largestFruitText">Mouse Ball</strong>
+              <span id="goalText" class="goal-text">Goal: Lion King Ball</span>
+              <div class="goal-track"><i id="goalFill"></i></div>
+            </div>
+          </section>
+
+          <section class="board-shell">
+            <canvas id="gameCanvas" width="720" height="1040" role="slider" tabindex="0" aria-label="Animal merge game board" aria-description="Use Left and Right arrows to aim, then Space or Enter to drop." aria-keyshortcuts="ArrowLeft ArrowRight Space Enter" aria-orientation="horizontal" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"></canvas>
+            <div id="aimCoach" class="aim-coach" aria-live="polite"></div>
+            <div id="toast" class="toast hidden" aria-live="polite"></div>
+          </section>
+
+          <section class="controls">
+            <button id="restartBtn" type="button">Restart</button>
+          </section>
+        </div>
+      </section>
+
+      <section id="menuPanel" class="menu-panel">
+        <div>
+          <img class="menu-poster" src="../../assets/fruit-merge-cover.webp" alt="" />
+          <h2 id="menuTitle">Merge to the Lion King</h2>
+          <p id="menuDesc">Drop animal balls carefully. Matching animals merge into the next bigger animal.</p>
+          <button id="startBtn" type="button">Start Game</button>
+          <button id="freePlayBtn" class="secondary-action" type="button">Free Play</button>
+          <div id="chainPreview" class="chain-preview" aria-live="polite"></div>
+          <div id="menuMilestone" class="milestone-panel" aria-live="polite"></div>
+          <div id="menuLeaderboard" class="leaderboard-panel" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <section id="stagePanel" class="merge-stage-panel hidden" aria-label="Challenge selection">
+        <div class="merge-stage-heading">
+          <button id="stageBackBtn" type="button" aria-label="Back">&larr;</button>
+          <div>
+            <strong id="stageTitle">Festival Challenges</strong>
+            <span id="stageHelp">Drag sideways and choose an unlocked challenge.</span>
+          </div>
+        </div>
+        <div id="stageRail" class="merge-stage-rail"></div>
+        <div id="stageDots" class="merge-stage-dots" aria-hidden="true"></div>
+        <div class="merge-stage-art" aria-hidden="true"></div>
+      </section>
+
+      <section id="resultPanel" class="result-panel hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle">
+        <div class="result-card">
+          <h2 id="resultTitle">Game Over</h2>
+          <div id="resultText" class="result-report">Score 0</div>
+          <div id="resultMilestone" class="milestone-panel" aria-live="polite"></div>
+          <div id="resultLeaderboard" class="leaderboard-panel" aria-live="polite"></div>
+          <div class="result-actions">
+            <button id="playAgainBtn" type="button">Play Again</button>
+            <button id="menuBtn" type="button">Game Menu</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="loadingPanel" class="loading-panel">
+        <div class="loading-card">
+          <strong id="loadingTitle">Loading</strong>
+          <span id="loadingText">100%</span>
+          <div><i id="loadingFill"></i></div>
+        </div>
+      </section>
+    </main>
+    <!-- adsense-static-guide:start -->
+    <section class="game-page-info game-page-info-static" aria-label="動物合成塔 遊戲資訊">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 兒童遊戲指南</span><h2>動物合成塔</h2><p>動物合成塔保留原本的自由模式，並新增 30 個可存檔物理挑戰。六個章節會改變瞄準範圍、側風、重力、生成順序與成功條件，但所有模式都使用同一套動物球物理合成。</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>物理合成挑戰</strong></div><div class="game-info-fact"><span>類型</span><strong>益智 · 物理 · 動物</strong></div><div class="game-info-fact"><span>難度</span><strong>漸進挑戰</strong></div><div class="game-info-fact"><span>預估遊玩時間</span><strong>3-8 分鐘</strong></div><div class="game-info-fact"><span>練習能力</span><strong>邏輯 · 問題解決 · 手眼協調</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>世界與任務</h3><p>動物祭典的遊行讓燈球散落在六個地區。兩顆相同動物球接觸後會合成下一階，玩家要重新堆起從老鼠球到獅王球的皇冠塔。</p>
+<p>草原起步、森林窄窗、河流氣流、山岳重力、月光隊列與皇冠祭典各自教一種物理規則。通過第 30 關代表獅王餐桌已經能安全加入最後遊行。</p></div>
+      <div class="game-info-section"><h3>遊戲系統</h3><p>十一種動物構成完整合成鏈；短時間內連續合成會把倍率提高到 x5。</p>
+<p>森林窄窗縮小可用瞄準範圍；河流氣流對移動中的球施加來回側向力；山岳重力提高 Matter.js 重力；月光隊列採用固定生成節奏。</p>
+<p>每五關是祭典檢查關，必須同時達成指定動物階級與分數。第 30 關會混合全部四種進階規則。</p>
+<p>挑戰解鎖、完成狀態、目前選擇與最佳分數儲存在瀏覽器；自由模式的圖鑑與最佳紀錄分開保存。</p></div>
+      <div class="game-info-section"><h3>玩法說明</h3><ol><li>選擇開始遊戲進入水平挑戰軌道，或選擇自由模式進行無落球上限的最高分挑戰。</li><li>用觸控、滑鼠或左右方向鍵瞄準，再用觸控放開、空白鍵或 Enter 落球。</li><li>讓兩顆相同動物球接觸，合成下一階動物並取得分數。</li><li>保持動物塔低於紅線，並在落球額度結束前完成分數、動物階級、合成次數、連擊或雙重目標。</li></ol></div>
+      
+      <div class="game-info-section"><h3>關卡與難度成長</h3><p>第 1-5 關使用開放箱，教學基本合成、動物階級、連擊與分數。</p>
+<p>第 6-10 關縮小森林窄窗的落點範圍。</p>
+<p>第 11-15 關加入方向會變化的河流氣流。</p>
+<p>第 16-20 關使用更快落地的山岳重力。</p>
+<p>第 21-25 關用固定隊列練習提前數步安排落點。</p>
+<p>第 26-30 關逐步混合規則，最後在獅王餐桌同時啟用窄窗、風、重力與固定隊列。</p></div>
+      <div class="game-info-section"><h3>開發設計理念</h3><p>遊戲使用固定 720×1040 Matter.js 棋盤，放在等比縮放的 Kids Canvas 內，因此手機與電腦的物理條件相同。30 關透過可執行的瞄準、力、重力、隊列變化與五種成功條件建立深度，不是只提高分數。Kids 版本不發出廣告請求，進度只留在目前瀏覽器。</p></div>
+      <div class="game-info-section game-info-parent"><h3>家長說明</h3><p>本遊戲建議 6+ 與家庭玩家。後期會要求預測移動、記住固定隊列並適應物理條件變化。技能報告只是本局遊戲的友善整理，不是智力測驗、診斷、發展評量或學校成績。</p></div>
+      <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>一共有幾個挑戰？</dt><dd>共有 30 關，並在第 5、10、15、20、25、30 關設置祭典檢查關。</dd></div><div><dt>挑戰模式和自由模式有什麼不同？</dt><dd>挑戰模式有目標、落球額度、存檔解鎖與指定物理規則；自由模式沒有落球上限。</dd></div><div><dt>河流氣流怎麼運作？</dt><dd>它會對箱內移動中的球施加方向週期變化的側向力。</dd></div><div><dt>山岳重力改變什麼？</dt><dd>Matter.js 重力提高，球會更快落地，也更難依靠緩慢滾動修正。</dd></div><div><dt>固定隊列是什麼？</dt><dd>動物會依照已知的老鼠、兔兔與狐狸節奏出現，方便提前規劃。</dd></div><div><dt>挑戰進度會保存嗎？</dt><dd>會，解鎖、完成、選擇與最佳分數會留在目前瀏覽器。</dd></div><div><dt>手機和電腦都能玩嗎？</dt><dd>可以，支援觸控、滑鼠與鍵盤操作。</dd></div><div><dt>需要登入或付費嗎？</dt><dd>不需要；Kids 版本免費、免登入且不發出廣告請求。</dd></div><div><dt>技能報告是正式測驗嗎？</dt><dd>不是，它只整理本局遊戲結果。</dd></div></dl></div>
+    </div>
+  </section>
+    <!-- adsense-static-guide:end -->
+
+    <script src="/src/site-config.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/version.js?v=20260701-version2"></script>
+    <script src="../../src/analytics.js?v=20260701-analytics2"></script>
+    <script>
+      window.WonderAnalytics?.track("game_view", { game_id: "fruit-merge" });
+    </script>
+    <script src="../../src/sound.js?v=20260701-labels1"></script>
+    <script src="../../src/edge-guard.js?v=20260712-merge-return1"></script>
+    <script src="/src/i18n.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
+    <script src="../../src/vendor/matter.min.js?v=20260630-matter1"></script>
+    <script src="../../src/vendor/matter-global.js?v=20260630-matter1"></script>
+    <script src="game.js?v=20260717-zh-hans1"></script>
+    <script>
+      (() => {
+        const loadGameInfo = () => {
+          if (document.querySelector("script[data-merge-game-info]")) return;
+          const script = document.createElement("script");
+          script.src = "../../src/game-page-info.js?v=20260717-zh-hans1";
+          script.dataset.mergeGameInfo = "idle";
+          document.body.appendChild(script);
+        };
+        const schedule = () => {
+          if ("requestIdleCallback" in window) {
+            window.requestIdleCallback(loadGameInfo, { timeout: 1600 });
+          } else {
+            window.setTimeout(loadGameInfo, 350);
+          }
+        };
+        if (document.readyState === "complete") schedule();
+        else window.addEventListener("load", schedule, { once: true });
+      })();
+    </script>
+  </body>
+</html>

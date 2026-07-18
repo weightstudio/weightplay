@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <base href="/" />
+    <meta charset="UTF-8" />
+    <meta name="weightplay-audience" content="kids" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#12151d" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="robots" content="index,follow" />
+    <meta name="description" content="《奇幻獅子防衛》是由爆鬃獅雷歐擔任主角的 30 關動物守城遊戲。玩家沿著奇幻城牆左右移動，裝備的橡皮擦、鉛筆與尺會依各自冷卻時間自動攻擊。八種野獸依直線、左右交替、外側與中央四種編隊進攻，每五關還有一種不同攻擊規則的王。波次之間可選本場強化，結算後再用保存的金幣提升雷歐、裝備或城牆。Kids..." />
+    <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="奇幻獅子防衛 | WeightPlay" />
+    <meta property="og:description" content="《奇幻獅子防衛》是由爆鬃獅雷歐擔任主角的 30 關動物守城遊戲。玩家沿著奇幻城牆左右移動，裝備的橡皮擦、鉛筆與尺會依各自冷卻時間自動攻擊。八種野獸依直線、左右交替、外側與中央四種編隊進攻，每五關還有一種不同攻擊規則的王。波次之間可選本場強化，結算後再用保存的金幣提升雷歐、裝備或城牆。Kids..." />
+    <meta property="og:url" content="https://weightplay.com/zh-tw/games/wonder-crash/" />
+    <meta property="og:image" content="https://weightplay.com/assets/wonder-crash-cover.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>奇幻獅子防衛 | WeightPlay</title>
+    <link rel="canonical" href="https://weightplay.com/zh-tw/games/wonder-crash/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/wonder-crash/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/wonder-crash/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/wonder-crash/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/wonder-crash/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/wonder-crash/" />
+    <link rel="manifest" href="manifest.webmanifest?v=20260630-upgrade1" />
+    <link rel="stylesheet" href="src/styles.css?v=20260715-wonder-skill-values1" />
+    <link rel="stylesheet" href="src/stage-selector-standard.css?v=20260715-stage-swipe2" />
+    <link rel="stylesheet" href="src/tutorial.css?v=20260701-style1" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "奇幻獅子防衛",
+  "alternateName": "奇幻獅子守城",
+  "url": "https://weightplay.com/zh-tw/games/wonder-crash/",
+  "image": "https://weightplay.com/assets/wonder-crash-cover.png",
+  "description": "《奇幻獅子防衛》是由爆鬃獅雷歐擔任主角的 30 關動物守城遊戲。玩家沿著奇幻城牆左右移動，裝備的橡皮擦、鉛筆與尺會依各自冷卻時間自動攻擊。八種野獸依直線、左右交替、外側與中央四種編隊進攻，每五關還有一種不同攻擊規則的王。波次之間可選本場強化，結算後再用保存的金幣提升雷歐、裝備或城牆。Kids...",
+  "applicationCategory": "Game",
+  "operatingSystem": "Web browser",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio"
+  },
+  "inLanguage": "zh-Hant",
+  "isAccessibleForFree": true,
+  "genre": [
+    "動作",
+    "守城",
+    "動物"
+  ],
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "Kids and families",
+    "suggestedMinAge": 5
+  },
+  "learningResourceType": "Skill practice through play",
+  "educationalUse": "Practice Reaction, Focus, Hand-Eye Coordination through family-friendly browser gameplay."
+}
+    </script>
+    <link rel="stylesheet" href="src/game-page-info.css?v=20260710-guide-play-shell1" />
+    <link rel="stylesheet" href="src/loading-screen.css?v=20260702-unified1" />
+    <link rel="stylesheet" href="src/play-viewport.css?v=20260710-mobile-play-shell2" />
+    <link rel="stylesheet" href="games/wonder-crash/expanded-canvas.css?v=20260716-wonder-keyboard1" />
+    <meta name="twitter:title" content="奇幻獅子防衛 | WeightPlay" />
+    <meta name="twitter:description" content="《奇幻獅子防衛》是由爆鬃獅雷歐擔任主角的 30 關動物守城遊戲。玩家沿著奇幻城牆左右移動，裝備的橡皮擦、鉛筆與尺會依各自冷卻時間自動攻擊。八種野獸依直線、左右交替、外側與中央四種編隊進攻，每五關還有一種不同攻擊規則的王。波次之間可選本場強化，結算後再用保存的金幣提升雷歐、裝備或城牆。Kids..." />
+  </head>
+  <body>
+    <main class="wonder-main-flow-slot">
+      <div class="game-shell">
+      <canvas id="game" class="play-area" width="950" height="1688" tabindex="0" aria-label="Fantasy Lion Defense game board" aria-description="Move the lion with Left and Right Arrow keys, or drag across the game board."></canvas>
+
+      <section id="wonderMain" class="wonder-main">
+        <header>
+          <a class="home-link" data-wp-return="main" href="/kids/" aria-label="Back to Kids lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
+          <strong data-i18n="game_title">Fantasy Lion Defense</strong>
+          <label><span data-i18n="language">Language</span><select id="wonderMainLocaleSelect" aria-label="Language" data-i18n-aria="language"><option value="en">English</option><option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option><option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option></select></label>
+        </header>
+        <img class="wonder-main-cover" src="../../assets/wonder-crash-cover.png" alt="" />
+        <button id="wonderMainStart" class="standard-main-start" data-wp-main-start type="button">Start Game</button>
+      </section>
+
+      <!-- Active battle chrome: return, one primary value, one status row, settings. -->
+      <button id="backToMenuBtn" type="button" class="play-return hidden" data-wp-return="battle" aria-label="Back to game menu" data-i18n-aria="menu_title">
+        <span aria-hidden="true">&larr;</span>
+      </button>
+
+      <div id="battleHud" class="hud battle-hud hidden">
+        <div class="battle-primary"><img src="../../assets/coin.png" alt="" /> <span id="coinText">0</span></div>
+        <div class="battle-status"><span data-i18n="hud_stage">Stage</span> <span id="levelText">1</span><span aria-hidden="true"> · </span><span data-i18n="hud_wave">Wave</span> <span id="waveText">1/1</span></div>
+      </div>
+
+      <!-- Settings In-game Toggle Button -->
+      <button id="settingsBtn" type="button" class="settings-btn hidden" aria-label="Settings" data-i18n-aria="menu_settings"><img src="assets/menu-settings.png" alt="" draggable="false" /></button>
+
+      <!-- Main Game Overlays / Menus -->
+      <div id="overlay" class="overlay">
+        <button id="wonderStageBack" class="wonder-stage-back" data-wp-return="stage" type="button" aria-label="Back">&larr;</button>
+        <h1 class="hidden" data-i18n="game_title">奇幻獅子防衛</h1>
+        <div id="menuCoinLine" class="menu-coin-line">
+          <span class="menu-wallet-item"><img src="../../assets/coin.png" alt="" /> <span id="menuCoinText">0</span></span>
+          <span class="menu-wallet-item diamond-wallet"><img src="assets/weightplay-diamond.svg" alt="" /> <span id="menuDiamondText">0</span></span>
+        </div>
+        <label class="language-picker wonder-language-picker">
+          <span data-i18n="language">Language</span>
+          <select id="globalLocaleSelect" aria-label="Language" data-i18n-aria="language">
+            <option value="en">English</option>
+            <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
+            <option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option>
+          </select>
+        </label>
+        <p id="overlayText" data-i18n="menu_title">Main Menu</p>
+        
+        <div id="menuContent" class="menu-content">
+          <div id="profilePanel" class="profile-panel"></div>
+          <div id="levelGrid" class="level-grid" data-wp-stage-settle-duration="360" data-wp-stage-settle-easing="smoothstep"></div>
+          <p id="wonderStageStatus" class="wonder-stage-status" role="status" aria-live="polite"></p>
+        </div>
+        
+        <div id="upgradeGrid" class="upgrade-grid hidden"></div>
+        
+        <!-- Pause / Settings Panel -->
+        <div id="pausePanel" class="pause-panel hidden">
+          <label class="pause-language-picker">
+            <span data-i18n="language">Language</span>
+            <select id="pauseLocaleSelect" class="settings-select" aria-label="Language" data-i18n-aria="language">
+              <option value="en">English</option>
+              <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
+              <option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option>
+            </select>
+          </label>
+          <button id="resumeBtn" type="button" data-i18n="btn_resume">Resume</button>
+          <button id="leaveBtn" type="button" data-i18n="btn_leave">Leave Battle</button>
+        </div>
+        
+        <button id="startBtn" type="button" class="hidden" data-i18n="btn_start">Start</button>
+        
+        <!-- Navigation Menu Tabs -->
+        <nav id="menuTabs" class="menu-tabs">
+          <button type="button" data-menu-tab="character"><img src="../../assets/menu-character.png" alt="" /><span data-i18n="tab_character">Hero</span></button>
+          <button type="button" data-menu-tab="equipment"><img src="../../assets/menu-equipment.png" alt="" /><span data-i18n="tab_equipment">Weapons</span></button>
+          <button type="button" data-menu-tab="battle"><img src="../../assets/menu-battle.png" alt="" /><span data-i18n="tab_battle">Stages</span></button>
+          <button type="button" data-menu-tab="wall"><img src="../../assets/menu-wall.png" alt="" /><span data-i18n="tab_wall">Wall</span></button>
+          <button type="button" data-menu-tab="settings"><img src="../../assets/menu-settings.png" alt="" /><span data-i18n="tab_settings">Settings</span></button>
+        </nav>
+      </div>
+
+      <!-- Weapon Details Modal Dialog -->
+      <div id="weaponModal" class="weapon-modal hidden" role="dialog" aria-modal="true">
+        <div class="weapon-modal-card">
+          <button id="weaponModalClose" class="weapon-modal-close" type="button" aria-label="Close">&times;</button>
+          <div id="weaponModalContent"></div>
+        </div>
+      </div>
+
+      <div id="loadingPanel" class="loading-panel">
+        <div class="loading-card">
+          <strong id="loadingTitle">Loading</strong>
+          <span id="loadingText">0%</span>
+          <div><i id="loadingFill"></i></div>
+        </div>
+      </div>
+      </div>
+    </main>
+    <!-- adsense-static-guide:start -->
+    <section class="game-page-info game-page-info-static" aria-label="奇幻獅子防衛 遊戲資訊">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 兒童遊戲指南</span><h2>奇幻獅子防衛</h2><p>《奇幻獅子防衛》是由爆鬃獅雷歐擔任主角的 30 關動物守城遊戲。玩家沿著奇幻城牆左右移動，裝備的橡皮擦、鉛筆與尺會依各自冷卻時間自動攻擊。八種野獸依直線、左右交替、外側與中央四種編隊進攻，每五關還有一種不同攻擊規則的王。波次之間可選本場強化，結算後再用保存的金幣提升雷歐、裝備或城牆。Kids 版本沒有計時壓力，也永久無廣告。</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>橫向移動自動射擊防衛</strong></div><div class="game-info-fact"><span>類型</span><strong>動作 · 守城 · 動物</strong></div><div class="game-info-fact"><span>難度</span><strong>中等</strong></div><div class="game-info-fact"><span>預估遊玩時間</span><strong>5～8 分鐘</strong></div><div class="game-info-fact"><span>練習能力</span><strong>反應 · 專注 · 手眼協調</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>世界與任務</h3><p>爆鬃獅雷歐守護 WeightPlay 魔法文具庫外的城牆。野豬、鬣狗、犀牛、水牛、猛鷹、黑熊、老虎與鱷魚受到鉛筆、尺和橡皮擦中的魔力吸引而來。雷歐不能離開城牆，因此玩家要在牆前巡守，讓自動武器對準危險路線，並在一場防衛結束後修補長期傷害。</p>
+<p>戰役分成六條、每條五關的防衛路線。第 5、10、15、20、25、30 關各有一位野獸指揮者；首次通關會開啟下一關，王關首次通過還會取得已記錄的鑽石獎勵。擊退第 30 關黑熊星落王與完整獸群，代表文具庫可以重新安全開放。</p></div>
+      <div class="game-info-section"><h3>遊戲系統</h3><p>玩家可在戰場點擊或拖曳，讓雷歐水平移動；桌面鍵盤聚焦後也能用左右方向鍵。每個裝備欄有獨立冷卻，即使裝備重複武器也會分別射擊。鉛筆、尺與橡皮擦在速度、傷害、大小與節奏上各有差異。</p>
+<p>每關有三到七波。擊敗野獸可取得金幣，城牆必須在最後一隻敵人倒下前保留至少一點生命。波次之間可從三個選項挑一項，強化傷害、冷卻、數量、側射、連射、大小、穿透、濺射、擊敗回復、金幣、減速或立即修牆。</p>
+<p>八種敵人不是只換圖片：野豬與老虎高速前進，鬣狗與黑熊左右走曲線，犀牛用護甲降低第一次傷害，水牛與鱷魚擅長破牆，猛鷹會突然俯衝。每關指定敵人編成與進場位置，後段不再只是所有野獸隨機出現。</p>
+<p>六位王各有獨立規則：野豬王快速追擊；鬣狗王發射成對交叉彈；犀牛王先用六層護盾吸收攻擊並投出重彈；水牛王向城牆中央發射大型攻城彈；猛鷹王俯衝並連射兩發高速彈；黑熊王施放三連星落。</p>
+<p>最高關卡、永久強化、裝備、金幣與已領取的王關鑽石都存在目前瀏覽器。結算會顯示剩餘牆血、擊敗數、強化選擇與獎勵，再提供下一關、重玩或回選單。</p></div>
+      <div class="game-info-section"><h3>玩法說明</h3><ol><li>開啟戰鬥頁，左右滑動關卡軌道並選擇已解鎖關卡。</li><li>開戰前查看關卡名稱、敵人圖片、編隊提示、波數與王關標記。</li><li>把雷歐移到最需要火力的路線下方；武器會自動射擊。</li><li>每波結束選一個強化，依下一波敵人編成調整打法。</li><li>在所有普通野獸與王被擊敗前，讓城牆生命保持在零以上。</li><li>用結算獎勵永久提升角色、裝備或城牆，再繼續或重玩。</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>穿透與濺射適合固定直線或中央重兵；側射適合左右交替與外側進攻。</li><li>不用追逐每一隻快獸；守住有效射線，看到猛鷹或老虎加速時提早移動。</li><li>對抗犀牛護盾王時，先用快速多發攻擊拆掉六層護盾，再讓高傷害武器發揮。</li><li>水牛攻城與鱷魚攻城等破牆關卡，修牆與擊敗回復的價值更高。</li><li>最終黑熊星落王會分散三發較弱投射物；廣域傷害可控制混合護衛，移動則用來維持危險路線的火力。</li></ul></div>
+      <div class="game-info-section"><h3>關卡與難度成長</h3><p>第 1～5 關教直線、左右入口與鬣狗曲線；野豬追擊王在混合護衛後方快速瞄準射擊。</p>
+<p>第 6～10 關加入中央重甲、破牆獸、曲線施法獸與天空急襲；鬣狗交叉火網王會在雙側獸群間發射成對投射物。</p>
+<p>第 11～15 關刻意分離敵人角色，讓玩家比較穿透、速度覆蓋與修牆。犀牛護盾王必須先承受六次破盾攻擊。</p>
+<p>第 16～20 關把俯衝猛鷹與重甲、曲線路線混合；水牛攻城王用大型慢速重彈直接威脅城牆中央。</p>
+<p>第 21～25 關組合護甲快攻、曲線衝刺、重獸城門與側翼破牆；猛鷹王會反覆加速並射出兩發高速彈。</p>
+<p>第 26～30 關用四種編隊複習八種角色；黑熊星落王以三發投射物和完整獸群收尾，不是前一位王的數值放大版本。</p></div>
+      <div class="game-info-section"><h3>開發設計理念</h3><p>我們採用自動射擊，讓玩家持續思考雷歐該站在哪裡，而不是在手機上反覆確認小型射擊按鈕是否按到。每個裝備欄的獨立冷卻保留配裝價值，波次強化則提供短暫的策略停頓。本次 30 關改造以指定敵人編成與四種清楚的進場陣形取代舊後段的全種類隨機，再用六種王的投射物規則建立里程碑。手機點擊、拖曳與桌面方向鍵都控制同一個有邊界的邏輯戰場。本作比《動物顏色便當盒》更要求反應與配裝，但仍遵守 Kids 規則：無廣告、無倒數壓力、可支持性重試，能力報告也不是正式評量。</p></div>
+      <div class="game-info-section game-info-parent"><h3>家長說明</h3><p>本作包含卡通動物攻城、自動文具武器、城牆生命與強化選擇，可陪伴孩子練習反應、專注、規劃與手眼協調。能力報告與星等只是依本場牆血、擊敗數與選擇整理的遊戲回饋，不是發展、醫療或學校測驗。Kids 頁面沒有廣告，也不需要登入；進度保存在目前瀏覽器，清除網站資料可能會移除紀錄。</p></div>
+      <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>一共有多少關？</dt><dd>共有 30 個具名關卡，分成六條五關路線，王關位於第 5、10、15、20、25、30 關。</dd></div><div><dt>武器會自動攻擊嗎？</dt><dd>會。每個裝備欄依自己的冷卻時間射擊，玩家負責移動雷歐與選擇波次強化。</dd></div><div><dt>後段關卡為什麼不同？</dt><dd>各關指定敵人編成與直線、交替、外側或中央陣形，六位王也有不同投射物規則。</dd></div><div><dt>城牆生命歸零會怎樣？</dt><dd>本次防衛結束，可選擇重試或回關卡；已保存的永久進度不會因此消失。</dd></div><div><dt>王關鑽石怎麼取得？</dt><dd>每個王關只有首次通關會取得記錄中的鑽石獎勵，重玩仍會有一般關卡收益。</dd></div><div><dt>不用滑鼠也能玩嗎？</dt><dd>可以。觸控支援點擊與拖曳，桌面戰鬥聚焦後可用左右方向鍵。</dd></div><div><dt>Kids 版本有廣告或需要帳號嗎？</dt><dd>沒有廣告請求，也不需要登入；進度只存在目前瀏覽器。</dd></div><div><dt>能力報告是正式測驗嗎？</dt><dd>不是。牆血、擊敗數、選擇、星等與分數只代表這一場遊戲。</dd></div></dl></div>
+    </div>
+  </section>
+    <!-- adsense-static-guide:end -->
+    <!-- Platform Modules and Script Loaders -->
+    <script src="src/site-config.js?v=20260709-wonder-settlement-mobile1"></script>
+    <script src="src/version.js?v=20260701-version2"></script>
+    <script src="src/analytics.js?v=20260701-analytics2"></script>
+    <script>
+      window.WonderAnalytics?.track("game_view", { game_id: "wonder-crash" });
+    </script>
+    <script src="src/sound.js?v=20260701-labels1"></script>
+    <script src="src/edge-guard.js?v=20260710-mobile-play-shell2"></script>
+    <script src="src/i18n.js?v=20260717-zh-hans5"></script>
+    <script src="src/wallet.js?v=20260630-upgrade1"></script>
+    <script src="src/tutorial.js?v=20260702-tutorial-locale1"></script>
+    <script src="src/stage-selector-standard.js?v=20260715-stage-swipe2"></script>
+    <script src="src/game-data.js?v=20260717-wonder-depth30-1"></script>
+    <script src="src/game.js?v=20260717-zh-hans1"></script>
+    <script src="games/wonder-crash/expanded-canvas.js?v=20260717-zh-hans1"></script>
+    <script src="src/game-page-info.js?v=20260717-zh-hans1"></script>
+  </body>
+</html>

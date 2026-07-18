@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <base href="/games/animal-rune-tactics/" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="robots" content="index,follow" />
+    <meta name="theme-color" content="#11251f" />
+    <meta name="description" content="Animal Rune Tactics is a 30-mission turn-based campaign played on a three-by-four rune board. The Lion Guardian, Owl Mage and Turtle Shield each take one..." />
+    <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:type" content="game" />
+    <meta property="og:title" content="Animal Rune Tactics | WeightPlay" />
+    <meta property="og:description" content="Animal Rune Tactics is a 30-mission turn-based campaign played on a three-by-four rune board. The Lion Guardian, Owl Mage and Turtle Shield each take one..." />
+    <meta property="og:url" content="https://weightplay.com/en/games/animal-rune-tactics/" />
+    <meta property="og:image" content="https://weightplay.com/assets/animal-rune-tactics-cover.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Animal Rune Tactics | WeightPlay" />
+    <meta name="twitter:description" content="Animal Rune Tactics is a 30-mission turn-based campaign played on a three-by-four rune board. The Lion Guardian, Owl Mage and Turtle Shield each take one..." />
+    <meta name="twitter:image" content="https://weightplay.com/assets/animal-rune-tactics-cover.png" />
+    <title>Animal Rune Tactics | WeightPlay</title>
+    <link rel="canonical" href="https://weightplay.com/en/games/animal-rune-tactics/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-rune-tactics/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-rune-tactics/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-rune-tactics/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/animal-rune-tactics/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-rune-tactics/" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Animal Rune Tactics",
+  "alternateName": "動物符文戰棋",
+  "url": "https://weightplay.com/en/games/animal-rune-tactics/",
+  "image": "https://weightplay.com/assets/animal-rune-tactics-cover.png",
+  "description": "Animal Rune Tactics is a 30-mission turn-based campaign played on a three-by-four rune board. The Lion Guardian, Owl Mage and Turtle Shield each take one...",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio",
+    "url": "https://weightplay.com/"
+  },
+  "inLanguage": "en",
+  "isAccessibleForFree": true,
+  "operatingSystem": "Web Browser",
+  "genre": [
+    "Strategy",
+    "Tactics",
+    "Animal"
+  ],
+  "audience": {
+    "@type": "PeopleAudience",
+    "suggestedMinAge": 13
+  }
+}
+    </script>
+    <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
+    <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
+    <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
+    <link rel="stylesheet" href="style.css?v=20260717-rune-campaign1" />
+  </head>
+  <body data-tutorial-auto-show="false">
+    <main class="rune-app" data-no-mobile-immersive="true" data-wp-logical-battle-canvas>
+      <header class="topbar">
+        <a id="backBtn" class="back-btn" data-wp-return="main" href="/" aria-label="Back to lobby"><span>&larr;</span><img src="../../assets/weightplay-logo.png" alt="" /></a>
+        <div class="brand">
+          <span>WeightPlay</span>
+          <h1 data-ui="title">Animal Rune Tactics</h1>
+        </div>
+        <label class="locale">
+          <span data-ui="language">Language</span>
+          <select id="localeSelect" aria-label="Language">
+            <option value="en">English</option>
+            <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
+            <option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option>
+          </select>
+        </label>
+      </header>
+
+      <section id="loadingPanel" class="loading-panel" aria-live="polite">
+        <div class="loading-content">
+          <h2 data-ui="title">Animal Rune Tactics</h2>
+          <div class="loading-bar"><div id="loadingFill" class="loading-fill"></div></div>
+          <span id="loadingText" class="loading-percentage">0%</span>
+        </div>
+      </section>
+
+      <section id="menuPanel" class="panel menu-panel">
+        <img class="cover" src="../../assets/animal-rune-tactics-cover.webp" alt="" />
+        <div class="menu-copy">
+          <strong data-ui="menuTitle">Command the Rune Squad.</strong>
+          <span data-ui="menuHint">Choose a mission, move animal heroes on the rune grid, and clear enemies with smart positioning.</span>
+          <div class="profile-grid" aria-live="polite">
+            <div><span data-ui="profileLevel">Level</span><b id="profileLevel">1</b></div>
+            <div><span data-ui="profileXp">XP</span><b id="profileXp">0/100</b></div>
+            <div><span data-ui="profileBest">Best Mission</span><b id="profileBest">1</b></div>
+            <div><span data-ui="profileRunes">Runes</span><b id="profileRunes">0</b></div>
+          </div>
+          <div id="growthSummary" class="growth-summary" aria-live="polite"></div>
+          <div class="hero-upgrade-list">
+            <div class="section-head">
+              <strong data-ui="heroTrainingTitle">Hero Training</strong>
+              <small data-ui="heroTrainingHint">Spend runes to permanently upgrade each animal hero.</small>
+            </div>
+            <div id="heroUpgradeGrid" class="hero-upgrade-grid"></div>
+          </div>
+          <div class="mission-list">
+            <div class="section-head">
+              <strong data-ui="missionSelect">Choose Mission</strong>
+              <small data-ui="missionHint">Unlocked missions are saved on this device.</small>
+            </div>
+            <div id="missionGrid" class="mission-grid"></div>
+          </div>
+          <div class="diamond-card">
+            <div>
+              <strong data-ui="trainingTitle">Training Slot</strong>
+              <small data-ui="trainingText">Permanent: heroes start each mission with +1 rune energy.</small>
+            </div>
+            <button id="trainingBtn" type="button">
+              <img src="../../assets/weightplay-diamond.svg" alt="" />
+              <span id="trainingCost">18</span>
+            </button>
+            <small id="trainingStatus" class="status-line"></small>
+          </div>
+        </div>
+      </section>
+
+      <section id="gamePanel" class="panel game-panel is-hidden">
+        <div class="hud">
+          <div><span data-ui="enemiesLeft">Enemies</span><b id="enemyCountText">0/0</b></div>
+        </div>
+
+        <div class="battle-status-row">
+          <p id="battleLog" class="battle-log" aria-live="polite"></p>
+          <div class="battle-secondary" aria-label="Battle details">
+            <span><span data-ui="mission">Mission</span> <b id="missionText">1</b></span>
+            <span><span data-ui="turn">Turn</span> <b id="turnText">1</b></span>
+          </div>
+        </div>
+
+        <div class="battle-shell">
+          <img class="arena-bg" src="../../assets/animal-rune-tactics-arena-bg.webp" alt="" />
+          <div id="grid" class="tactic-grid" role="grid" aria-rowcount="4" aria-colcount="3" aria-label="Rune tactics board"></div>
+          <div id="fxLayer" class="fx-layer" aria-hidden="true"></div>
+        </div>
+
+        <div class="battle-info">
+          <div id="turnRoster" class="turn-roster" aria-live="polite"></div>
+          <div id="selectedCard" class="selected-card" aria-live="polite"></div>
+          <div class="actions">
+            <button id="attackBtn" type="button" data-ui="attack">Attack</button>
+            <button id="guardBtn" type="button" data-ui="guard">Guard</button>
+            <button id="skillBtn" type="button" data-ui="skill">Skill</button>
+            <button id="endTurnBtn" type="button" data-ui="endTurn">End Turn</button>
+          </div>
+        </div>
+      </section>
+      <section id="rewardPanel" class="panel overlay-panel is-hidden" role="dialog" aria-modal="true" aria-labelledby="rewardTitle" aria-live="polite">
+        <div class="overlay-card">
+          <h2 id="rewardTitle" data-ui="chooseReward">Choose a Rune Reward</h2>
+          <div id="rewardCards" class="reward-cards"></div>
+          <button id="rerollBtn" class="secondary-btn" type="button">
+            <img src="../../assets/weightplay-diamond.svg" alt="" />
+            <span data-ui="reroll">Reroll 3</span>
+          </button>
+        </div>
+      </section>
+
+      <section id="resultPanel" class="panel overlay-panel is-hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultText" aria-live="polite">
+        <div class="overlay-card">
+          <h2 id="resultTitle">Mission Clear</h2>
+          <p id="resultText"></p>
+          <div class="result-progress" aria-live="polite">
+            <strong data-ui="resultProgressTitle">Saved Progress</strong>
+            <span id="resultRewardText"></span>
+            <span id="resultProgressText"></span>
+            <em id="resultNextText"></em>
+          </div>
+          <div class="skill-report">
+            <strong data-ui="skillReport">Skill Report</strong>
+            <span id="skillReportText"></span>
+          </div>
+          <div class="result-actions">
+            <button id="nextBtn" class="primary-btn" type="button" data-ui="nextMission">Next Mission</button>
+            <button id="retryBtn" class="secondary-btn" type="button" data-ui="retry">Retry</button>
+            <button id="menuBtn" class="secondary-btn" type="button" data-ui="menu">Back to Missions</button>
+          </div>
+        </div>
+      </section>
+    </main>
+    <!-- adsense-static-guide:start -->
+    <section class="game-page-info game-page-info-static" aria-label="Animal Rune Tactics game information">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay Kids Game Guide</span><h2>Animal Rune Tactics</h2><p>Animal Rune Tactics is a 30-mission turn-based campaign played on a three-by-four rune board. The Lion Guardian, Owl Mage and Turtle Shield each take one action before the enemy turn: move, attack, guard or spend Energy on a distinct Skill. Six five-mission chapters introduce blocked routes, snares, currents, fire, rotating runes and seals, together with enemies that counter, push, silence, mark, drain Energy or create clones. Missions 5, 10, 15, 20, 25 and 30 end with six different phased Bosses. Mission unlocks, hero training and Rune Rewards are saved in this browser.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>Turn-Based Squad Tactics</strong></div><div class="game-info-fact"><span>Genre</span><strong>Strategy · Tactics · Animal</strong></div><div class="game-info-fact"><span>Difficulty</span><strong>Hard</strong></div><div class="game-info-fact"><span>Estimated Play Time</span><strong>8-15 minutes per mission</strong></div><div class="game-info-fact"><span>Skills Trained</span><strong>Logic · Problem Solving · Focus · Planning</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>World and Mission</h3><p>The Rune Roads connect six animal territories to the Crown Archive. Each road carries a different kind of stabilizing script: woodland paths hold living roots in place, forge marks bind ironwood, tide glyphs regulate flooded chambers, ember circles vent heat, moon runes preserve memory, and the Crown seals keep all five systems synchronized. When the central crown fractured, those scripts began acting without their keepers. Bridges hardened into rubble, roots closed around travelers, currents moved occupied stones, and archive seals protected the very creatures that had damaged them.</p>
+<p>The player commands three keepers sent to restore the roads. Lion Guardian is the close-range front fighter, Owl Mage attacks from two cells away, and Turtle Shield guards and heals the group. Clearing a mission means its script is stable enough for the squad to advance. The Stone Stag, Ironroot Rhino, Mirecoil Serpent, Embermane Lion and Eclipse Griffin each control one damaged chapter. Rune Crown Chimera has absorbed parts of every system; defeating it in Mission 30 reconnects the archive without pretending there is an endless Mission 31.</p></div>
+      <div class="game-info-section"><h3>How the Systems Work</h3><p>Turn flow: select a living hero, then choose one action. Moving uses an adjacent legal cell. Attack requires the hero&#39;s range. Guard reduces the next enemy hit by one. A Skill spends one Energy: Lion strikes harder, Owl reaches a distant target, and Turtle guards every living hero while healing one HP. A hero is marked Done after acting. When every living hero has acted, or End Turn is pressed, all living enemies resolve their behavior and Energy returns by one up to three.</p>
+<p>Enemy rules are positional, not just statistical. Wolves gain Pack Fang while adjacent to another Wolf. Ravens target the hero with the lowest health ratio. Stone Stag restores first-hit armor. Thorn Boar returns one damage after a surviving adjacent melee hit. Rune Fox teleports behind the weakest hero. Tide Turtle gives the nearest ally a one-hit guard, while Relic Heron pushes the hero it strikes. Cinder Ram charges a visible straight line instead of walking normally.</p>
+<p>Later enemies change action planning. Ember Salamander leaves a temporary burn tile when it moves. Moon Moth silences one hero&#39;s Skill for the next player turn without removing Move, Attack or Guard. Archive Owl marks a hero so the next ranged hit gains damage. Mirror Wolf creates one adjacent one-HP clone when space permits. Seal Raven drains one Energy but never below zero. These traits remain active when Mission 29 combines one threat from five earlier chapters.</p>
+<p>Board states are part of each authored mission. Rubble cannot be occupied. Root Snare prevents the affected hero&#39;s next movement choice. Tide moves a unit one legal cell after the enemy turn. Burn damages a hero standing on it, while a one-use Cooling Rune restores Energy and clears active burn tiles. Orbit Runes rotate units around the outer ring. In Six-Rune Locks, three heroes must occupy linked Seal cells to remove the enemy ward; attacking through the ward loses one damage.</p>
+<p>Boss phases trigger cumulatively at 70 and 35 percent health, so one large hit cannot skip a phase. Stone Stag refreshes armor and charges its lane. Ironroot Rhino braces, strikes a row and leaves rubble. Mirecoil Serpent adds currents, pulls heroes and regenerates unless two heroes hit it during that player turn. Embermane Lion places fire and gains a wounded extra action. Eclipse Griffin alternates flying ranged immunity with a grounded sweep. Rune Crown Chimera combines tide, burn, rubble, flight and a Mirror Wolf summon.</p>
+<p>Permanent growth has three layers. Mission victory grants XP and Runes; XP raises Squad Level in 100-point steps. Runes upgrade Lion, Owl or Turtle up to Level 6, raising their starting health and attack. The post-mission Rune Reward is also saved: Power adds attack, Guardian Medal adds max health, Rune Shard adds 35 XP, Focus adds starting Energy, and Revive Token can automatically return one fallen hero at half health. An optional three-Diamond reward reroll and optional 18-Diamond Training Slot add choice or starting Energy, but neither unlocks a mission or Boss.</p></div>
+      <div class="game-info-section"><h3>How to Play</h3><ol><li>Swipe the complete 30-card mission rail and select an unlocked mission. Every fifth card is a named Boss checkpoint.</li><li>Read the mission name, enemy list, trait list, terrain and tactical plan before entering Battle.</li><li>Select Lion, Owl or Turtle on the board or in the Squad Action roster. Choose an adjacent highlighted cell to move, a highlighted enemy to attack, Guard, or Skill.</li><li>Watch Done markers and the selected hero panel. End Turn early only when preserving position is safer than using every action.</li><li>During the enemy turn, read trait badges and the battle log for counters, guards, pushes, charges, silence, marks, drains, clones and Boss phases.</li><li>Defeat every enemy, choose one permanent Rune Reward, and review the exact saved XP, Runes, best mission and next upgrade gap.</li><li>Use Next Mission when another mission exists, Retry to replay the current board, or return to Missions to train heroes and revisit any unlocked card.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Strategy Tips</h3><ul><li>Break Wolf adjacency before trading damage. Moving one hero can remove Pack Fang from two attacks at once.</li><li>Do not spend Owl&#39;s range on Thorn Boar from an adjacent cell. A two-cell hit avoids the melee counter and keeps the back line useful.</li><li>A silenced hero still has three useful actions. Move out of a charge lane, make a normal attack or Guard instead of waiting for Skill to return.</li><li>Against Mirecoil Serpent, two separate heroes must connect during the same player turn. One hero&#39;s high-damage Skill alone does not stop regeneration.</li><li>Flying Griffin blocks Owl&#39;s ranged damage. Use Lion while it flies, then spread heroes before the grounded row sweep.</li><li>Leave one legal adjacent cell when Mirror Wolf is present, then remove the one-HP clone before it changes movement and targeting lanes.</li><li>Permanent bonuses improve tolerance but do not solve board rules. A lower-level squad using Cooling, Seal and Orbit cells correctly can outperform a stronger squad standing in the wrong lane.</li></ul></div>
+      <div class="game-info-section"><h3>Campaign and Difficulty Growth</h3><p>Missions 1-5 teach movement, focus fire, Wolf adjacency, Raven targeting and blocked bridge lanes. Stonehorn Trial refreshes first-hit armor at both thresholds and punishes heroes left in its row.</p>
+<p>Missions 6-10 add melee counters, back-line teleporting, Root Snare and pincer formations. Ironroot Rhino turns safe cells into rubble, so the available route changes during the fight.</p>
+<p>Missions 11-15 make position move after decisions through Tide and Heron push. Mirecoil Serpent adds column pull and a two-attacker regeneration check.</p>
+<p>Missions 16-20 combine temporary burn, straight-line charges and one-use Cooling Runes. Embermane Lion alternates board fire, group pressure and a wounded extra action.</p>
+<p>Missions 21-25 restrict Skill timing with silence and ranged marks, then rotate the outer ring. Eclipse Griffin changes which hero can damage it and when a row becomes unsafe.</p>
+<p>Missions 26-30 add clones, Energy drain and linked seals before the Crown Gauntlet remixes five earlier rules. Rune Crown Chimera changes terrain at both visible thresholds and summons a clone for the final target-order test.</p></div>
+      <div class="game-info-section"><h3>Developer Design Note</h3><p>The board stays three cells wide and four cells tall so every phone decision remains visible without panning. Depth comes from one-action turns: moving to solve a current hazard means giving up that hero&#39;s attack, while guarding can be stronger than chasing damage. Six five-mission chapters introduce one vocabulary at a time and then ask the chapter Boss to recombine it. HP rises only once every eight missions and Attack only once every twelve; later pressure therefore comes mainly from terrain, target order, action denial and phase changes. Pointer, touch and a roving arrow-key grid all operate the same logical cells. Unlike Animal Auto Squad&#39;s pre-battle formation or Animal Relic Hunters&#39; live movement, Rune Tactics pauses after every decision so the board state itself is the puzzle.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Parent Note</h3><p>Squad Level, XP, Runes, best mission, unlocked mission, hero levels, Training Slot, saved attack, health and Energy bonuses, and Revive Tokens are stored locally in this browser. No login is required for basic play. Clearing site storage or using another browser may create a separate save. Diamonds are optional platform currency used only for a reward reroll or the confirmed Training Slot; all 30 missions, seven terrain systems, special enemies and six Bosses remain playable without them. Skill Reports describe the completed play session and are not a formal ability test.</p></div>
+      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>Is Animal Rune Tactics free?</dt><dd>Yes. All 30 missions, special enemies, terrain rules, permanent Rune growth and six Bosses are playable in the browser without payment.</dd></div><div><dt>How many missions and Bosses are there?</dt><dd>There are 30 authored missions. Missions 5, 10, 15, 20, 25 and 30 use six different Bosses with separate artwork, behavior and two health phases.</dd></div><div><dt>Does it require fast reactions?</dt><dd>No. It is turn-based. Nothing moves while the player is choosing a hero, cell, attack, Guard or Skill.</dd></div><div><dt>Why can I not use a Skill?</dt><dd>The hero may have no Energy, may already be Done, or may be silenced by Moon Moth. Silence lasts for one player turn and does not block movement, normal attacks or Guard.</dd></div><div><dt>What resets after a mission?</dt><dd>The Battle board resets. Mission unlocks, Squad Level, XP, Runes, hero levels, chosen Rune Rewards, Training and Revive Tokens remain in local progress.</dd></div><div><dt>What can Diamonds do?</dt><dd>Three Diamonds reroll one reward set, and 18 Diamonds confirm the permanent Training Slot. Diamonds do not unlock campaign missions, heroes or Bosses.</dd></div><div><dt>Can I replay earlier missions?</dt><dd>Yes. Every unlocked mission remains selectable, including all 30 after the final victory. Mission 30 does not create a false Mission 31.</dd></div><div><dt>Does progress require an account?</dt><dd>No. Progress is stored in this browser. Clearing its site data or changing devices may begin a separate local profile.</dd></div></dl></div>
+    </div>
+  </section>
+    <!-- adsense-static-guide:end -->
+    <div class="battle-ad-reserve" aria-hidden="true"></div>
+
+    <script src="/src/site-config.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/version.js?v=20260701-version2"></script>
+    <script src="../../src/analytics.js?v=20260701-analytics2"></script>
+    <script>window.WonderAnalytics?.track("game_view", { game_id: "animal-rune-tactics", release_state: "release_candidate" });</script>
+    <script src="../../src/sound.js?v=20260701-labels1"></script>
+    <script src="../../src/edge-guard.js?v=20260710-mobile-play-shell2"></script>
+    <script src="/src/i18n.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
+    <script src="../../src/wallet.js?v=20260701-wallet1"></script>
+    <script src="game.js?v=20260717-zh-hans1"></script>
+    <script>
+      (() => {
+        const loadGameInfo = () => {
+          if (document.querySelector("script[data-rune-game-info]")) return;
+          const script = document.createElement("script");
+          script.src = "../../src/game-page-info.js?v=20260717-zh-hans1";
+          script.dataset.runeGameInfo = "idle";
+          script.async = true;
+          document.body.appendChild(script);
+        };
+        const schedule = () => {
+          if ("requestIdleCallback" in window) {
+            window.requestIdleCallback(loadGameInfo, { timeout: 1200 });
+          } else {
+            window.setTimeout(loadGameInfo, 300);
+          }
+        };
+        if (document.readyState === "complete") schedule();
+        else window.addEventListener("load", schedule, { once: true });
+      })();
+    </script>
+  </body>
+</html>

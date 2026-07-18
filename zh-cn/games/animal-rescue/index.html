@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="zh-Hans">
+  <head>
+    <base href="/games/animal-rescue/" />
+    <meta charset="UTF-8" />
+    <meta name="weightplay-audience" content="kids" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#6fbf64" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="robots" content="index,follow" />
+    <meta name="description" content="引导十二位动物朋友完成 30 条无倒数、可存档的回家路线。六个区域会加入必收水果、加重步数的黏泥、路线钥匙、上锁大门、一次性脆弱小路与救援检查点。" />
+    <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="动物回家路 | WeightPlay" />
+    <meta property="og:description" content="引导十二位动物朋友完成 30 条无倒数、可存档的回家路线。六个区域会加入必收水果、加重步数的黏泥、路线钥匙、上锁大门、一次性脆弱小路与救援检查点。" />
+    <meta property="og:url" content="https://weightplay.com/zh-cn/games/animal-rescue/" />
+    <meta property="og:image" content="https://weightplay.com/assets/animal-rescue-cover.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>动物回家路 | WeightPlay</title>
+    <link rel="canonical" href="https://weightplay.com/zh-cn/games/animal-rescue/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-rescue/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-rescue/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-rescue/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/animal-rescue/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-rescue/" />
+    <link rel="stylesheet" href="style.css?v=20260717-depth30" data-wp-stage-standard data-wp-battle-standard />
+    <script data-wp-stage-standard>/* Shared Kids Stage selector owns pointer drag and settle; Animal Rescue owns stage activation. */</script>
+    <script data-wp-battle-standard>/* Animal Rescue owns its native Kids Battle Canvas. */</script>
+    <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "动物回家路",
+  "alternateName": "動物回家路",
+  "url": "https://weightplay.com/zh-cn/games/animal-rescue/",
+  "image": "https://weightplay.com/assets/animal-rescue-cover.png",
+  "description": "引导十二位动物朋友完成 30 条无倒数、可存档的回家路线。六个区域会加入必收水果、加重步数的黏泥、路线钥匙、上锁大门、一次性脆弱小路与救援检查点。",
+  "applicationCategory": "Game",
+  "operatingSystem": "Web browser",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio"
+  },
+  "inLanguage": "zh-Hans",
+  "isAccessibleForFree": true,
+  "genre": [
+    "路线规划",
+    "益智",
+    "动物"
+  ],
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "Kids and families",
+    "suggestedMinAge": 6
+  },
+  "learningResourceType": "Skill practice through play",
+  "educationalUse": "Practice Logic, Problem Solving, Animal Knowledge through family-friendly browser gameplay."
+}
+    </script>
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
+    <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
+    <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
+    <meta name="twitter:title" content="动物回家路 | WeightPlay" />
+    <meta name="twitter:description" content="引导十二位动物朋友完成 30 条无倒数、可存档的回家路线。六个区域会加入必收水果、加重步数的黏泥、路线钥匙、上锁大门、一次性脆弱小路与救援检查点。" />
+  </head>
+  <body data-tutorial-auto-show="false">
+    <main class="rescue-game" data-play-viewport data-no-mobile-immersive="true">
+      <header class="topbar">
+        <a id="homeLink" class="home-link" data-wp-return="main" href="/kids/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
+        <div>
+          <p>WeightPlay</p>
+          <h1 id="titleText">动物回家路</h1>
+        </div>
+        <label class="language-picker">
+          <span id="languageLabel">Language</span>
+          <select id="localeSelect" aria-label="Language">
+            <option value="en">English</option>
+            <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
+            <option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option>
+          </select>
+        </label>
+      </header>
+
+      <section id="hud" class="hud hidden">
+        <div><span id="stageLabel">Stage</span><strong id="stageText">1 / 30</strong></div>
+        <div><span id="moveLabel">Moves</span><strong id="moveText">0</strong></div>
+        <div><span id="fruitLabel">Fruit</span><strong id="fruitText">0 / 2</strong></div>
+      </section>
+
+      <section id="mainPanel" class="main-panel">
+        <img class="main-cover" src="../../assets/animal-rescue-cover.webp" alt="" />
+        <div class="main-copy"><strong id="mainTitle">Animal Rescue Trail</strong><span id="mainIntro">Guide animal friends safely home across each trail.</span></div>
+        <button id="showStageBtn" class="main-start" type="button">Choose Trail</button>
+      </section>
+
+      <section id="stageSelect" class="stage-select hidden">
+        <div class="stage-shell-head"><button id="stageBackBtn" class="stage-return" data-wp-return="stage" type="button" aria-label="Back">&larr;</button><strong id="stageSelectTitle" role="status" aria-live="polite" aria-atomic="true">Choose Trail</strong></div>
+        <span id="stageSetupText" class="stage-setup-text">Choose an unlocked trail and help the next animal home.</span>
+        <div id="stageGrid" class="stage-grid" data-wp-stage-settle-duration="360" data-wp-stage-settle-easing="smoothstep"></div>
+      </section>
+      <section id="playArea" class="play-area hidden">
+        <button id="battleBackBtn" class="battle-return" data-wp-return="battle" type="button" aria-label="Back to trails">&larr;</button>
+        <div class="animal-panel">
+          <div id="animalAvatar" class="animal-avatar"></div>
+          <div>
+            <strong id="animalName">Lion Cub</strong>
+            <span id="hintText">Tap the next tile to help the animal go home.</span>
+          </div>
+        </div>
+        <div id="board" class="board" aria-label="Animal rescue board"></div>
+        <div class="action-row">
+          <button id="undoBtn" type="button">Undo</button>
+          <button id="resetBtn" type="button">Reset</button>
+        </div>
+        <section id="resultPanel" class="result-panel hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultText">
+          <div class="result-card">
+            <strong id="resultTitle">Trail Clear!</strong>
+            <span id="resultText"></span>
+            <div id="starLine" class="star-line"></div>
+            <button id="nextBtn" type="button">Next Trail</button>
+            <button id="retryBtn" type="button">Play Again</button>
+            <button id="trailsBtn" type="button">Trails</button>
+            <a id="lobbyLink" href="/kids/">Lobby</a>
+          </div>
+        </section>
+      </section>
+
+      <div id="loadingPanel" class="loading-panel">
+        <div class="loading-card">
+          <strong id="loadingTitle">Loading</strong>
+          <span id="loadingText">0%</span>
+          <div><i id="loadingFill"></i></div>
+        </div>
+      </div>
+    </main>
+    <!-- adsense-static-guide:start -->
+    <section class="game-page-info game-page-info-static" aria-label="动物回家路 游戏资讯">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 儿童游戏指南</span><h2>动物回家路</h2><p>引导十二位动物朋友完成 30 条无倒数、可存档的回家路线。六个区域会加入必收水果、加重步数的黏泥、路线钥匙、上锁大门、一次性脆弱小路与救援检查点。</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>30 关路线规划</strong></div><div class="game-info-fact"><span>类型</span><strong>路线规划 · 益智 · 动物</strong></div><div class="game-info-fact"><span>难度</span><strong>简单至具挑战性</strong></div><div class="game-info-fact"><span>预估游玩时间</span><strong>每关约 3 至 8 分钟</strong></div><div class="game-info-fact"><span>练习能力</span><strong>逻辑 · 问题解决 · 动物认识</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>世界与任务</h3><p>回家谷原本用彩绘水果标志，引导动物穿过森林、草地、河畔、山脊、农场与庆典场地。风雨吹散标志、让捷径复上黏泥、冲走踏脚石，也锁住几扇花园大门。玩家担任年轻路线管理员，重新找出每一条安全旅程。</p>
+<p>每五关是一个救援检查点。完成第 30 关代表企鹅走过最后的混合路线，十二位动物朋友都能参加回家庆典。</p></div>
+      <div class="game-info-section"><h3>游戏系统</h3><p>步数与星星：一般地面算一步，黏泥算两步；关卡步数目标和水果数量决定一至三星。</p>
+<p>全部水果：标示此规则的路线会在水果收齐前关闭家门。</p>
+<p>路线钥匙与大门：先取得金色钥匙，该大门才会接受移动。</p>
+<p>脆弱小路：每格只能进入一次；除非使用上一步或重置移除该次造访，否则不能回头。</p>
+<p>上一步与重置：上一步会依保留路径重新计算水果、钥匙、大门、脆弱格与加权步数；重置会重建整条路线。</p></div>
+      <div class="game-info-section"><h3>玩法说明</h3><ol><li>在水平关卡列选择已解锁路线。</li><li>用触控、滑鼠或单次方向键移动到相邻格。</li><li>收集水果与钥匙，避开岩石、水域、关闭大门与已塌下的脆弱小路。</li><li>完成目前目标后进入家门，再选下一关、重玩或回到路线。</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>移动前先规划完整的水果到家路线。</li><li>比较路线时把黏泥算两步。</li><li>进入大门走廊前先找到钥匙。</li><li>踏上脆弱格前先决定要从哪一侧离开。</li><li>近期走错用上一步，整体计划错误则用重置。</li></ul></div>
+      <div class="game-info-section"><h3>关卡与难度成长</h3><p>第 1-5 关森林起步教授相邻移动、障碍、水果绕路与第一个全水果检查点。</p>
+<p>第 6-10 关草地绕路加入黏泥与加权路线比较。</p>
+<p>第 11-15 关河畔钥匙在水域走廊加入钥匙和大门。</p>
+<p>第 16-20 关脆弱山脊加入一次性格子与钥匙门检查点。</p>
+<p>第 21-25 关丰收路线要求水果，并混合黏泥、大门与脆弱选择。</p>
+<p>第 26-30 关回家庆典整合规则；第 30 关同时使用全部水果、黏泥、钥匙门和脆弱小路。</p></div>
+      <div class="game-info-section"><h3>开发设计理念</h3><p>固定 5×5 棋盘能让手机上的每一格维持大型尺寸，同时看见完整路线。离散移动让触控、滑鼠与键盘做出相同决策。难度来自成本、顺序、可否回头与完成条件，而不是速度。固定 390×788 Kids 画布没有倒数、战斗、排行榜、帐号、购买、广告请求或广告保留区。</p></div>
+      <div class="game-info-section game-info-parent"><h3>家长说明</h3><p>本作适合 6+ 与亲子游玩。星星只整理本机游戏表现，不是智力测验、学校成绩、诊断、发展评估，也不会与其他孩子比较。进度保存在目前浏览器；Kids 版本没有广告、登入、聊天或购买要求。</p></div>
+      <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>共有多少路线？</dt><dd>共有六区 30 关，检查点位于第 5、10、15、20、25、30 关。</dd></div><div><dt>每关都要收齐水果吗？</dt><dd>只有标示全部水果的路线会在收齐前关闭家门；其他关的水果仍会影响星星。</dd></div><div><dt>为什么黏泥算两步？</dt><dd>黏泥使用加权成本，让最直接的路线不一定最有效率。</dd></div><div><dt>钥匙和大门怎么运作？</dt><dd>先取得金色钥匙再进入大门；被拒绝的移动不会增加步数。</dd></div><div><dt>脆弱小路可以走两次吗？</dt><dd>不行，但上一步或重置可透过移除该次造访来恢复它。</dd></div><div><dt>进度会保存吗？</dt><dd>会，解锁与最佳星星保存在目前浏览器。</dd></div><div><dt>手机和键盘都能玩吗？</dt><dd>可以，触控、滑鼠和方向键使用相同规则。</dd></div><div><dt>需要付费或会显示广告吗？</dt><dd>不需要帐号或购买；Kids 版本也不会发出广告请求。</dd></div></dl></div>
+    </div>
+  </section>
+    <!-- adsense-static-guide:end -->
+    <script src="/src/site-config.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/version.js?v=20260701-version2"></script>
+    <script src="../../src/analytics.js?v=20260701-analytics2"></script>
+    <script>
+      window.WonderAnalytics?.track("game_view", { game_id: "animal-rescue" });
+    </script>
+    <script src="../../src/sound.js?v=20260701-labels1"></script>
+    <script src="../../src/edge-guard.js?v=20260710-mobile-play-shell2"></script>
+    <script src="/src/i18n.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
+    <script src="game.js?v=20260717-zh-hans1"></script>
+    <script>
+      (() => {
+        const loadGameInfo = () => {
+          if (document.querySelector("script[data-rescue-game-info]")) return;
+          const script = document.createElement("script");
+          script.src = "../../src/game-page-info.js?v=20260717-zh-hans1";
+          script.dataset.rescueGameInfo = "idle";
+          script.async = true;
+          document.body.appendChild(script);
+        };
+        const schedule = () => {
+          if ("requestIdleCallback" in window) {
+            window.requestIdleCallback(loadGameInfo, { timeout: 1600 });
+          } else {
+            window.setTimeout(loadGameInfo, 350);
+          }
+        };
+        if (document.readyState === "complete") schedule();
+        else window.addEventListener("load", schedule, { once: true });
+      })();
+    </script>
+  </body>
+</html>

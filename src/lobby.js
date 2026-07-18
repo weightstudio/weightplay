@@ -691,7 +691,8 @@ function openGame(game, title, ageLabel) {
     locale: i18n.locale(),
     from_library: activeLibrary,
   });
-  window.location.href = new URL(game.href, document.baseURI).href;
+  const gameUrl = new URL(game.href, document.baseURI);
+  window.location.href = new URL(i18n.localizedPath(i18n.actualLocale(), `${gameUrl.pathname}${gameUrl.search}${gameUrl.hash}`), gameUrl.origin).href;
 }
 
 function quickPickCandidates() {

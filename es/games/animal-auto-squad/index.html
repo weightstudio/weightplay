@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <base href="/games/animal-auto-squad/" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="robots" content="index,follow" />
+    <meta name="theme-color" content="#0d1b15" />
+    <meta name="description" content="Animal Auto Squad es un juego de estrategia de formación basado en decisiones tomadas antes del combate. Desbloqueas y entrenas a diez héroes animales,..." />
+    <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:type" content="game" />
+    <meta property="og:title" content="Escuadrón Animal Automático | WeightPlay" />
+    <meta property="og:description" content="Animal Auto Squad es un juego de estrategia de formación basado en decisiones tomadas antes del combate. Desbloqueas y entrenas a diez héroes animales,..." />
+    <meta property="og:url" content="https://weightplay.com/es/games/animal-auto-squad/" />
+    <meta property="og:image" content="https://weightplay.com/assets/animal-auto-squad-cover.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Escuadrón Animal Automático | WeightPlay" />
+    <meta name="twitter:description" content="Animal Auto Squad es un juego de estrategia de formación basado en decisiones tomadas antes del combate. Desbloqueas y entrenas a diez héroes animales,..." />
+    <meta name="twitter:image" content="https://weightplay.com/assets/animal-auto-squad-cover.png" />
+    <title>Escuadrón Animal Automático | WeightPlay</title>
+    <link rel="canonical" href="https://weightplay.com/es/games/animal-auto-squad/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-auto-squad/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-auto-squad/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-auto-squad/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/animal-auto-squad/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-auto-squad/" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Escuadrón Animal Automático",
+  "alternateName": "動物自走小隊",
+  "url": "https://weightplay.com/es/games/animal-auto-squad/",
+  "image": "https://weightplay.com/assets/animal-auto-squad-cover.png",
+  "description": "Animal Auto Squad es un juego de estrategia de formación basado en decisiones tomadas antes del combate. Desbloqueas y entrenas a diez héroes animales,...",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio",
+    "url": "https://weightplay.com/"
+  },
+  "inLanguage": "es",
+  "isAccessibleForFree": true,
+  "operatingSystem": "Web Browser",
+  "genre": [
+    "Estrategia",
+    "formación",
+    "animales"
+  ],
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "General players"
+  }
+}
+    </script>
+    <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
+    <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
+    <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
+    <link rel="stylesheet" href="../../src/stage-selector-standard.css?v=20260716-kids-stage-swipe3" />
+  <link rel="stylesheet" href="style.css?v=20260718-stage-fullwidth1" />
+  </head>
+  <body data-tutorial-auto-show="false">
+    <main class="squad-app">
+      <header class="topbar">
+        <a id="backToLobbyBtn" class="back-btn" data-wp-return="main" href="/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
+        <div class="brand">
+          <span>WeightPlay</span>
+          <h1 id="mainGameTitle" data-ui="title">Escuadrón Animal Automático</h1>
+        </div>
+        <label class="locale">
+          <span data-ui="language">Language</span>
+          <select id="localeSelect" aria-label="Language selection">
+            <option value="en">English</option>
+            <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
+            <option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option>
+          </select>
+        </label>
+      </header>
+
+      <!-- Loading Section -->
+      <section id="loadingPanel" class="loading-panel" aria-live="polite">
+        <div class="loading-content">
+          <h2 data-ui="title">Animal Auto Squad</h2>
+          <div class="loading-bar"><div id="loadingFill" class="loading-fill"></div></div>
+          <span id="loadingText" class="loading-percentage">0%</span>
+        </div>
+      </section>
+
+      <!-- Menu / Start Section -->
+      <section id="menuPanel" class="panel menu-panel">
+        <img class="cover" src="../../assets/animal-auto-squad-cover.webp" alt="Imagen del juego Escuadrón Animal Automático" />
+        <div class="menu-copy">
+          <strong id="menuHeadingText" data-ui="menuTitle">Train and position your animal squad!</strong>
+          <span id="menuSubText" data-ui="menuHint">Build your permanent squad and conquer 30 five-wave stages across six regions.</span>
+          <button id="showStageBtn" class="primary-btn" type="button">Choose Expedition</button>
+          <div class="profile-grid">
+            <div><span data-ui="bestExpedition">Stages Unlocked</span><strong id="bestRoundsText">1/30</strong></div>
+            <div><span data-ui="expeditionsCleared">Cleared Runs</span><strong id="clearedRunsText">0</strong></div>
+            <div><span data-ui="teamLevel">Team Level</span><strong id="teamLevelText">Lv.1</strong></div>
+            <div><span data-ui="diamonds">Diamonds</span><strong id="diamondText">0</strong></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="stagePanel" class="panel stage-panel is-hidden" aria-labelledby="stageSelectTitle">
+        <div class="stage-panel-head">
+          <button id="stageBackBtn" class="stage-back-btn" data-wp-return="stage" type="button" aria-label="Back">&larr;</button>
+          <div>
+            <strong id="stageSelectTitle">Choose Stage</strong>
+            <span id="stageProgressText">1 / 6</span>
+          </div>
+        </div>
+        <div class="stage-tabs" role="tablist" aria-label="Expedition management">
+          <button id="stageTabBtn" class="stage-tab is-active" type="button" role="tab" aria-selected="true" aria-controls="stageSelectPane">⚔ <span>Stages</span></button>
+          <button id="trainingTabBtn" class="stage-tab" type="button" role="tab" aria-selected="false" aria-controls="trainingPane">⬆ <span>Training</span></button>
+        </div>
+        <div class="stage-workspace">
+          <section id="stageSelectPane" class="stage-pane is-active" role="tabpanel" aria-labelledby="stageTabBtn">
+            <p id="stageSetupText" class="stage-setup-text">Swipe through six regions, choose an unlocked stage, then prepare your formation.</p>
+            <div id="stageRail" class="stage-rail" aria-label="Stage selection"></div>
+            <div class="stage-legend"><span id="stageSwipeText">↔ Swipe</span><span id="stageDeployText">Tap an unlocked stage to deploy</span></div>
+          </section>
+          <section id="trainingPane" class="stage-pane training-pane" role="tabpanel" aria-labelledby="trainingTabBtn" hidden>
+            <div id="teamBonusText" class="team-bonus-note" aria-live="polite"></div>
+            <div class="cosmetic-store">
+              <span data-ui="cosmeticStoreTitle" class="store-label">Mascot Cosmetic Skin (15 Diamonds)</span>
+              <div class="skin-actions">
+                <button id="buySkinBtn" class="store-btn" type="button"></button>
+                <button id="equipSkinBtn" class="secondary-btn is-hidden" type="button"></button>
+              </div>
+            </div>
+            <div class="training-store" aria-live="polite">
+              <div class="training-header">
+                <span id="trainingTitleText" class="store-label">Squad Training</span>
+                <strong id="trainingGoldText">0 Gold</strong>
+              </div>
+              <div id="trainingRoster" class="training-roster"></div>
+            </div>
+          </section>
+        </div>
+      </section>
+      <!-- Active Play Viewport Container -->
+      <section id="gamePanel" class="panel game-panel play-area is-hidden" data-play-viewport>
+        
+        <!-- HUD Line -->
+        <div class="hud-row">
+          <button id="quitRunBtn" class="secondary-btn play-return" data-wp-return="battle" type="button" aria-label="Quit expedition" data-ui="quitRun">&larr;</button>
+          <div><span id="stageHudLabel">Stage</span><strong id="stageText">1/6</strong></div>
+          <div><span data-ui="round">Wave</span><strong id="roundText">1/5</strong></div>
+          <div><span data-ui="gold">Gold</span><strong id="goldText">10</strong></div>
+          <div><span data-ui="hearts">Hearts</span><strong id="heartText">4/4</strong></div>
+          <div class="relic-hud"><span data-ui="activeRelic">Relic</span><strong id="relicText" class="relic-badge">None</strong></div>
+        </div>
+        <div id="combatSummary" class="combat-summary is-hidden" aria-live="polite"></div>
+
+        <!-- Preparation (Shop & Grid) Phase UI -->
+        <div id="prepPhaseArea" class="prep-phase-area">
+          <div id="foodGuide" class="food-guide" aria-live="polite"></div>
+          
+          <!-- Squad Positions (Linear Row, Slots 1-5) -->
+          <div class="squad-section">
+            <h3 data-ui="yourSquadLabel">Active Squad (Top: Front Row | Bottom: Back Row)</h3>
+            <div id="squadGrid" class="cards-row squad-row" aria-label="Active squad slots"></div>
+          </div>
+
+          <!-- Shop Shelf Row (3 Animals, 2 Items, Freeze Actions) -->
+          <div class="shop-section">
+            <h3 data-ui="shopLabel">Expedition Shop</h3>
+            <div class="shop-controls">
+              <button id="rerollShopBtn" class="shop-action-btn" type="button"></button>
+              <button id="sellCardBtn" class="shop-action-btn sell-action-btn is-hidden" type="button"></button>
+              <button id="startBattleBtn" class="primary-btn battle-action-btn" type="button" data-ui="startBattle">Start Battle</button>
+            </div>
+            <div id="shopRow" class="cards-row shop-row" aria-label="Shop shelf items"></div>
+            <div id="selectedAbilityPanel" class="selected-ability-panel" aria-live="polite"></div>
+          </div>
+
+        </div>
+
+        <!-- Combat Canvas Area (Animate Battle step by step) -->
+        <div id="combatArea" class="combat-area is-hidden">
+          <canvas id="gameCanvas" width="720" height="1280" aria-label="Animal Auto Squad Arena"></canvas>
+          <div id="combatStatusText" class="combat-status" data-ui="combatIntro">Prepare for Battle!</div>
+        </div>
+
+        <div id="hintText" class="hint" data-ui="guideHint">Tap a character, then tap a destination slot to move it.</div>
+
+        <!-- Run decisions are Battle-owned modal substates inside the logical Canvas. -->
+        <section id="relicDraftPanel" class="panel modal-panel is-hidden" role="dialog" aria-modal="true" aria-labelledby="relicDraftTitle" aria-live="polite">
+          <h2 id="relicDraftTitle" data-ui="chooseRelic">Choose an Expedition Relic</h2>
+          <p data-ui="relicDesc" class="status-line">Select one relic to buff your squad for the entire expedition run.</p>
+          <div id="relicChoices" class="relic-choices"></div>
+          <button id="rerollRelicsBtn" class="secondary-btn reroll-relic-btn" type="button"></button>
+        </section>
+
+        <section id="defeatRevivePanel" class="panel modal-panel is-hidden" role="dialog" aria-modal="true" aria-labelledby="defeatReviveTitle" aria-live="polite">
+          <h2 id="defeatReviveTitle" data-ui="defeatTitle">Expedition Failed!</h2>
+          <p data-ui="reviveHint" class="status-line">Your Hearts reached 0. Spend 5 Diamonds to revive with 2 Hearts and continue your expedition?</p>
+          <div class="revive-actions">
+            <button id="reviveBtn" class="primary-btn" type="button"></button>
+            <button id="giveUpBtn" class="secondary-btn" type="button" data-ui="giveUp">Give Up</button>
+          </div>
+        </section>
+
+        <!-- Final Run Result Screen: bounded Battle substate -->
+        <section id="resultPanel" class="panel result-panel is-hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-live="polite">
+          <img class="result-lion" src="../../assets/animal-auto-squad-cover.webp" alt="Result Lion Mascot" />
+          <div class="result-copy">
+            <h2 id="resultTitle" class="result-heading">Expedition Complete!</h2>
+            <p id="resultText" class="result-desc"></p>
+            <div class="result-progress" aria-live="polite">
+              <strong data-ui="savedProgress">Saved Progress</strong>
+              <span id="resultXpText"></span>
+              <span id="resultGoldText"></span>
+              <span id="resultStageText"></span>
+              <em id="resultGrowthText"></em>
+            </div>
+            <p id="skillReportText" class="skill-report"></p>
+            <div class="result-actions" data-wp-return="battle">
+              <button id="nextStageBtn" class="primary-btn is-hidden" type="button">Next Stage</button>
+              <button id="retryBtn" class="primary-btn" type="button" data-ui="retry">Try Again</button>
+              <button id="resultMenuBtn" class="secondary-btn" type="button" data-ui="backToStages">Back to Stages</button>
+            </div>
+          </div>
+        </section>
+      </section>
+      <div class="battle-ad-reserve" aria-hidden="true"></div>
+
+    </main>
+    <!-- adsense-static-guide:start -->
+    <section class="game-page-info game-page-info-static" aria-label="Información del juego Escuadrón Animal Automático">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">Guía de juegos de WeightPlay</span><h2>Escuadrón Animal Automático</h2><p>Animal Auto Squad es un juego de estrategia de formación basado en decisiones tomadas antes del combate. Desbloqueas y entrenas a diez héroes animales, colocas hasta seis de ellos en un escuadrón de dos filas, eliges una reliquia de expedición y luego observas cómo la alineación resuelve cada enfrentamiento automáticamente. La campaña contiene 30 niveles en Thornwood, Crystal Caverns, Sunken Ruins, Ember Peak, Moonlit Citadel y Void Crown. Cada nivel tiene cinco oleadas de autor, mientras que las niveles 5, 10, 15, 20, 25 y 30 terminan con un jefe regional diferente.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Jugabilidad</span><strong>Auto-batalla táctica</strong></div><div class="game-info-fact"><span>Género</span><strong>Estrategia · formación · animales</strong></div><div class="game-info-fact"><span>Dificultad</span><strong>Media</strong></div><div class="game-info-fact"><span>Tiempo estimado</span><strong>5-10 minutos</strong></div><div class="game-info-fact"><span>Habilidades practicadas</span><strong>Lógica · Resolución de problemas · Planificación Estratégica</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>Mundo y misión</h3><p>La expedición sigue una cadena de rutas ocupadas por animales de las sombras, criaturas de cristal, guardianes con armadura, bestias rúnicas y cazadores de eclipses. El escuadrón comienza en Mossy Trail de Thornwood, luego avanza a través de Prism Heart, Sunken Crown, Caldera King, Midnight Court y los accesos rotos a Void Crown. Cada región presenta una combinación de enemigos y un encuentro final diferente; Limpiar los seis significa romper toda la cadena de bloqueos regionales.</p>
+<p>Actúas como comandante de escuadrón en lugar de como luchador en el campo. Spark Paw Fox, Bubble Fin Otter, Drum Belly Panda, Moon Cap Owl, Moss Shell Turtle y los otros héroes desbloqueables tienen cada uno una regla de apoyo o objetivo específica. Tu trabajo es decidir cuáles seis viajan juntos y si pertenecen a la fila delantera o trasera antes de que comience el choque automatizado.</p></div>
+      <div class="game-info-section"><h3>Cómo funcionan los sistemas</h3><p>Formación: las tres ranuras superiores son la primera fila y las tres inferiores son la última fila. Apuntar es importante porque algunas unidades atacan al enemigo líder, Moon Cap Owl caza la última fila y Boom Mane Lion barre una fila completa.</p>
+<p>Roles de animales: atacantes, sanadores, escudos, amortiguadores de equipo y efectos débiles se resuelven automáticamente. Bubble Fin Otter y Rainbow Hop Rabbit protegen a los aliados debilitados, mientras que Drum Belly Panda y Moss Shell Turtle fortalecen la durabilidad del equipo.</p>
+<p>Reliquias de expedición: elige Escudo de arce, Semilla de roble, Garra de sombra o Hoja de trébol para una regla general. La elección de una reliquia es gratuita; gastar 3 diamantes opcionales solo vuelve a lanzar las opciones ofrecidas.</p>
+<p>Suministros Temporales: cada expedición comienza con 12 Suministros. Selecciona un animal con tu propiedad durante la preparación para comprar un nivel temporal que agrega ataque y salud para esa expedición. Los suministros obtenidos durante la batalla siguen siendo parte del recorrido actual.</p>
+<p>Crecimiento permanente: las oleadas despejadas otorgan XP de equipo y oro de entrenamiento. Los niveles de equipo agregan bonificaciones de ataque y salud compartidas, mientras que Training Gold desbloquea y mejora a los héroes normales hasta el nivel 20. Dos héroes premium usan diamantes opcionales en lugar de Training Gold.</p></div>
+      <div class="game-info-section"><h3>Cómo jugar</h3><ol><li>Elige un nivel desbloqueado del carril de campaña horizontal; cada quinta nivel está marcada como nivel de jefe.</li><li>Abre Entrenamiento cuando quieras gastar el oro de entrenamiento guardado, desbloquear otro héroe normal o inspeccionar la bonificación permanente de nivel de equipo.</li><li>En el despliegue, toca un animal con tu propiedad en la mochila vertical y luego toca una de las seis ranuras de formación. Toca un animal colocado para moverlo o reemplazarlo.</li><li>Elige una reliquia de expedición y luego gasta los suministros de la carrera en mejoras temporales para los animales que deseas alinear.</li><li>Pulsa Iniciar batalla. Los ataques, la curación, los escudos, la orientación por fila y las habilidades débiles se resuelven automáticamente según la formación elegida.</li><li>Un equipo ganador se enfrenta inmediatamente a la siguiente ola. Una pérdida cuesta un Corazón y reabre la preparación; llegar a cero Corazones finaliza la carrera a menos que se acepte la reactivación opcional.</li><li>Supera la quinta ola para salvar el nivel, Team XP, Training Gold y el siguiente nivel desbloqueado. Utilice Siguiente nivel, Reintentar o Volver a niveles en el panel Resultados.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Consejos de estrategia</h3><ul><li>Planifica las cinco oleadas antes de presionar Iniciar batalla: las victorias continúan directamente hasta la siguiente formación enemiga, por lo que una alineación inicial equilibrada es más segura que un contraataque de una oleada.</li><li>Usa la primera fila para héroes que puedan absorber la presión o proteger al equipo. Moss Shell Turtle, Drum Belly Panda y Gear Horn Rhino pueden ganar tiempo para los atacantes y sanadores de la última fila.</li><li>Lea las reglas de objetivos en lugar de comparar solo el ataque. Moon Cap Owl puede alcanzar a los frágiles enemigos de la última fila, mientras que Boom Mane Lion es más fuerte cuando varios enemigos comparten una fila.</li><li>Las habilidades del jefe son diferentes. Thornwood Alpha ataca una fila y se protege, Abyss Shell Leviathan protege y cura su costado, y Void Crown Emperor daña a todo el escuadrón mientras restaura su propia salud.</li></ul></div>
+      <div class="game-info-section"><h3>Campaña y aumento de dificultad</h3><p>Las niveles 1 a 5 enseñan cómo apuntar en cabeza, las amenazas de las últimas filas, los guardias y la formación de dos filas con pequeños grupos de Thornwood. Thornwood Throne es el primer punto de control del jefe. Las niveles 6 a 15 agregan enemigos de Crystal Cavern y Sunken Ruin que atacan la última fila, drenan la salud, barren las filas o se esconden detrás de guardias duraderos.</p>
+<p>Las niveles 16 a 25 aumentan el tamaño de la formación y la superposición de habilidades. Ember Peak combina jabalíes cargados, tanques de obsidiana, corredores de grietas y lobos rúnicos; Moonlit Citadel agrega Night Panthers, Eclipse Bats, Rune Ravens y Shadow Jaguars. Las oleadas de jefes van acompañadas de otros enemigos, por lo que derrotar a la pieza central no es el único requisito.</p>
+<p>Las niveles 26 a 30 utilizan la lista completa de Void Crown. La nivel 29 puede presentar seis enemigos a la vez, igualando el tamaño máximo de escuadrón del jugador. La ola final de la Nivel 30 coloca al Emperador de la Corona del Vacío junto a escoltas de runas, eclipses y sombras, probando la cobertura de filas, la recuperación, el daño y el entrenamiento permanente obtenido a lo largo de la campaña.</p></div>
+      <div class="game-info-section"><h3>Nota de diseño</h3><p>La batalla automatizada es intencional: la ejecución es breve, por lo que el trabajo importante se realiza en formación, cobertura de roles, orden de objetivos, selección de reliquias y entrenamiento a largo plazo. Una ola exitosa fluye directamente hacia la siguiente para que la nivel de cinco olas se sienta como una expedición en lugar de cinco visitas de menú desconectadas. Las pérdidas reabren la preparación para que el jugador pueda responder en lugar de ver la misma configuración fallida repetidamente. Tocar, seleccionar y tocar en lugar admite la reproducción por teléfono, mientras que las mismas tarjetas siguen siendo utilizables con la entrada del mouse en el escritorio. En comparación con Animal Rune Tactics por turnos de WeightPlay o Animal Crystal Survivor en tiempo real, Animal Auto Squad le pide al jugador que elabore un plan y luego evalúe cómo funciona ese plan sin lanzar ataques durante el combate.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Nota para familias</h3><p>Las niveles posteriores combinan formaciones de seis unidades, objetivos especializados, mejoras permanentes, presión de fracaso en el combate, habilidades de jefe y decisiones Diamante opcionales. El progreso de la campaña, la última formación desplegada y las posiciones de los espacios, el oro de entrenamiento, el nivel del equipo, los animales desbloqueados, los niveles permanentes de los animales, las niveles completadas y las opciones cosméticas se almacenan localmente en este navegador; no es necesario iniciar sesión para el juego básico. Borrar el almacenamiento del navegador de este sitio puede eliminar ese progreso local.</p></div>
+      <div class="game-info-section"><h3>Preguntas frecuentes</h3><dl><div><dt>¿Animal Auto Squad es un juego gratuito?</dt><dd>Sí. La campaña de 30 niveles se ejecuta en el navegador de WeightPlay sin necesidad de realizar ninguna compra ni iniciar sesión.</dd></div><div><dt>¿Cuál es el objetivo de cada nivel?</dt><dd>Forma un escuadrón que sobreviva a cinco oleadas continuas. Completar la quinta oleada guarda el nivel y desbloquea el siguiente; Cada quinta nivel termina con un jefe regional.</dd></div><div><dt>¿Controlo los ataques durante la batalla?</dt><dd>No. Tú controlas la plantilla, las posiciones de dos filas, la reliquia y las mejoras temporales antes del combate. Luego, los animales atacan, curan, protegen y activan habilidades automáticamente.</dd></div><div><dt>¿Puedo reorganizar el escuadrón entre cada oleada?</dt><dd>Ganar pasa directamente a la siguiente ola. La preparación se reabre después de una derrota o un empate mientras la carrera todavía tiene Corazones, por lo que la formación inicial debería poder manejar más de un patrón enemigo.</dd></div><div><dt>¿Qué pasa cuando pierdo una ola?</dt><dd>La carrera pierde un Corazón. Con Hearts restantes, puedes ajustar el equipo e intentar esa ola nuevamente. Con cero corazones, puedes finalizar la carrera o usar la reactivación opcional de cinco diamantes.</dd></div><div><dt>¿Qué hacen los diamantes?</dt><dd>Los diamantes son opcionales. Pueden volver a seleccionar opciones de reliquias, revivir una expedición fallida, desbloquear dos héroes premium o desbloquear el aspecto cosmético dorado; la progresión normal de la nivel no los requiere.</dd></div><div><dt>¿Qué avances se guardan?</dt><dd>El navegador almacena niveles desbloqueadas y completadas, la última formación desplegada y posiciones de espacios, nivel de equipo y XP, oro de entrenamiento, animales desbloqueados, niveles permanentes de animales, registros de carrera y selección de cosméticos en este dispositivo.</dd></div></dl></div>
+    </div>
+  </section>
+    <!-- adsense-static-guide:end -->
+
+    <script src="/src/site-config.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/version.js?v=20260701-version2"></script>
+    <script src="../../src/analytics.js?v=20260701-analytics2"></script>
+    <script>window.WonderAnalytics?.track("game_view", { game_id: "animal-auto-squad", release_state: "playable_release_candidate" });</script>
+    <script src="../../src/sound.js?v=20260701-labels1"></script>
+    <script src="../../src/edge-guard.js?v=20260710-mobile-play-shell2"></script>
+    <script src="/src/i18n.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/tutorial.js?v=20260711-auto-squad-guide1"></script>
+    <script src="../../src/wallet.js?v=20260706-crystal-diamond-charm1"></script>
+    <script src="../../src/stage-selector-standard.js?v=20260718-auto-squad-expanded1"></script>
+    <script src="../../src/battle-canvas-standard.js?v=20260718-auto-squad-wide1" data-wp-battle-standard></script>
+  <script src="game.js?v=20260718-backpack-roster2-stage-fullwidth1"></script>
+    <script>
+      (() => {
+        const loadGameInfo = () => {
+          if (document.querySelector("script[data-squad-game-info]")) return;
+          const script = document.createElement("script");
+          script.src = "../../src/game-page-info.js?v=20260717-zh-hans1";
+          script.dataset.squadGameInfo = "internal";
+          script.async = true;
+          document.body.appendChild(script);
+        };
+        if ("requestIdleCallback" in window) window.requestIdleCallback(loadGameInfo, { timeout: 1400 });
+        else window.setTimeout(loadGameInfo, 300);
+      })();
+    </script>
+  </body>
+</html>

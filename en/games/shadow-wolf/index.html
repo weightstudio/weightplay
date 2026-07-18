@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <base href="/games/shadow-wolf/" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="robots" content="index,follow" />
+    <meta name="description" content="Shadow Wolf Legend is a 30-stage side-scrolling action-platform campaign. Guide the explorer wolf across ruined ledges, read visible hazard warnings,..." />
+    <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Shadow Wolf Legend | WeightPlay" />
+    <meta property="og:description" content="Shadow Wolf Legend is a 30-stage side-scrolling action-platform campaign. Guide the explorer wolf across ruined ledges, read visible hazard warnings,..." />
+    <meta property="og:url" content="https://weightplay.com/en/games/shadow-wolf/" />
+    <meta property="og:image" content="https://weightplay.com/assets/shadow-wolf-cover.webp" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="canonical" href="https://weightplay.com/en/games/shadow-wolf/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/shadow-wolf/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/shadow-wolf/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/shadow-wolf/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/shadow-wolf/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/shadow-wolf/" />
+    <title>Shadow Wolf Legend | WeightPlay</title>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Shadow Wolf Legend",
+  "alternateName": "影狼傳說",
+  "url": "https://weightplay.com/en/games/shadow-wolf/",
+  "image": "https://weightplay.com/assets/shadow-wolf-cover.webp",
+  "description": "Shadow Wolf Legend is a 30-stage side-scrolling action-platform campaign. Guide the explorer wolf across ruined ledges, read visible hazard warnings,...",
+  "applicationCategory": "Game",
+  "operatingSystem": "Web browser",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio"
+  },
+  "inLanguage": "en",
+  "isAccessibleForFree": true,
+  "genre": [
+    "Action",
+    "Platformer",
+    "Animal"
+  ],
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "General action and platform-game players",
+    "suggestedMinAge": 13
+  },
+  "learningResourceType": "Skill practice through play",
+  "educationalUse": "Practice Logic, Problem Solving, and Focus through family-friendly browser gameplay."
+}
+    </script>
+    <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260712-shadow-wolf-public1" />
+    <link rel="stylesheet" href="style.css?v=20260717-shadow-wolf-campaign1" />
+    <meta name="twitter:title" content="Shadow Wolf Legend | WeightPlay" />
+    <meta name="twitter:description" content="Shadow Wolf Legend is a 30-stage side-scrolling action-platform campaign. Guide the explorer wolf across ruined ledges, read visible hazard warnings,..." />
+  </head>
+  <body>
+    <header class="top-nav">
+      <div class="top-nav-left">
+        <a class="home-link icon-btn" data-wp-return="main" href="/" aria-label="Back to lobby" data-ui-aria="backToLobby">
+          <span aria-hidden="true">&larr;</span>
+          <img src="../../assets/weightplay-logo.png" alt="" draggable="false" />
+        </a>
+        <h1 class="game-brand" data-ui="title">Shadow Wolf Legend</h1>
+      </div>
+      <div class="top-nav-right">
+        <label class="locale-picker" data-main-only>
+          <span aria-hidden="true">A/&#25991;</span>
+          <select id="localeSelect" aria-label="Language selector" data-ui-aria="languageSelector">
+            <option value="en">English</option>
+            <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
+            <option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option>
+          </select>
+        </label>
+      </div>
+    </header>
+
+    <main class="relic-app" data-internal-shadow-wolf-test="true">
+      <section id="loadingPanel" class="loading-panel" aria-live="polite">
+        <div class="loading-content">
+          <h2 data-ui="title">Shadow Wolf</h2>
+          <div class="loading-bar"><div id="loadingFill" class="loading-fill" style="width: 0%"></div></div>
+          <span id="loadingText" class="loading-percentage">0%</span>
+        </div>
+      </section>
+
+      <section id="menuPanel" class="panel menu-panel">
+        <div class="menu-layout">
+          <div class="menu-main">
+            <div class="menu-cover-box">
+              <img class="cover" src="../../assets/shadow-wolf-cover.webp" alt="Shadow Wolf Legend cover" data-ui-alt="Shadow Wolf Legend game artwork" />
+            </div>
+            <h2 class="menu-title" data-ui="menuTitle">Dungeon Platform Adventure.</h2>
+            <p class="menu-hint" data-ui="menuHint"></p>
+            <button id="startBtn" class="primary-btn start-btn" type="button" data-ui="startRun">Start Game</button>
+            <div class="desktop-controls" aria-label="Desktop controls" data-ui="controlLegend" data-ui-aria="desktopControlsLabel">A/D Move · W/Space Jump · J Attack · K/Shift Dash</div>
+            <div class="goals-card">
+              <h3 data-ui="adventureRecordTitle">Adventure Record</h3>
+              <p id="adventureRecordText"></p>
+            </div>
+          </div>
+
+          <aside class="menu-shop">
+            <h2 data-ui="diamondShopTitle">Permanent Upgrade</h2>
+            <div class="shop-badge">
+              <img class="ui-icon ui-icon--small" src="../../assets/weightplay-diamond.svg" alt="" aria-hidden="true" />
+              <strong id="diamondBalance">0</strong>
+            </div>
+            <div class="shop-list">
+              <button id="amuletBtn" class="shop-item-btn" type="button">
+                <div class="shop-item-meta">
+                  <strong data-ui="amuletName">Mist Amulet</strong>
+                  <small data-ui="amuletEffect"></small>
+                </div>
+                <b class="shop-cost-tag">
+                  <img class="ui-icon ui-icon--tiny" src="../../assets/weightplay-diamond.svg" alt="" aria-hidden="true" />
+                  <span id="amuletCost">15</span>
+                </b>
+              </button>
+              <div id="amuletStatus" class="shop-status-text"></div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section id="mapPanel" class="panel world-map-panel wp-stage-art-shell hidden" data-wp-stage-art="../../assets/shadow-wolf-cover.webp" style="--wp-stage-art: url('../../assets/shadow-wolf-cover.webp')" aria-label="Stage selection" data-ui-aria="stageSelection">
+        <div class="stage-header"><button id="mapBackBtn" type="button" class="play-return" data-wp-return="stage" aria-label="Back to main" data-ui-aria="backToMain">&larr;</button><div><span data-ui="stageEyebrow">EXPEDITION</span><h2 data-ui="stageTitle">Choose an expedition</h2></div></div>
+        <p class="stage-subtitle" data-ui="stageHint">Pick an unlocked region to begin.</p>
+        <div class="world-map-grid stage-rail" aria-label="Stage rail" data-ui-aria="stageRail">
+          <button type="button" class="zone-node stage-card" data-zone="1"><b>01</b><span></span><small></small></button><button type="button" class="zone-node stage-card" data-zone="2"><b>02</b><span></span><small></small></button><button type="button" class="zone-node stage-card" data-zone="3"><b>03</b><span></span><small></small></button><button type="button" class="zone-node stage-card" data-zone="4"><b>04</b><span></span><small></small></button><button type="button" class="zone-node stage-card" data-zone="5"><b>05</b><span></span><small></small></button><button type="button" class="zone-node stage-card" data-zone="6"><b>06</b><span></span><small></small></button><button type="button" class="zone-node stage-card" data-zone="7"><b>07</b><span></span><small></small></button><button type="button" class="zone-node stage-card boss-zone" data-zone="8"><b>08</b><span></span><small></small></button>
+        </div>
+        <div class="stage-ad-reserve" aria-hidden="true"></div>
+      </section>
+
+      <section class="desktop-only-notice" aria-live="polite">
+        <strong>Desktop only</strong><span>This internal platform game requires a keyboard and is not available on mobile.</span>
+      </section>
+
+      <section id="gamePanel" class="panel game-panel hidden">
+        <div class="game-layout">
+          <div class="arena-viewport">
+            <button id="menuBtn" class="play-return battle-return" data-wp-return="battle" type="button" aria-label="Back to stages" data-ui-aria="backToStages">&larr;</button>
+            <div class="arena-hud">
+              <div class="hud-item player-health">
+                <div class="health-meta"><span data-ui="hudHp">Wolf HP</span><strong id="hpText">30/30</strong></div>
+                <div class="bar-bg"><div id="hpFill" class="bar-fill health" style="width: 100%"></div></div>
+              </div>
+              <div class="hud-item player-exp">
+                <div class="exp-meta"><span>Lv.<strong id="levelVal">1</strong></span><span id="expText">0/100</span></div>
+                <div class="bar-bg"><div id="expFill" class="bar-fill exp" style="width: 0%"></div></div>
+              </div>
+              <div class="hud-meta-row">
+                <div class="meta-badge"><span data-ui="roomLabel">Stage</span><strong id="roomText">1/30</strong></div>
+                <div class="meta-badge"><span data-ui="keyLabel">Key</span><strong id="keyText">0</strong></div>
+              </div>
+            </div>
+            <div class="canvas-container">
+              <canvas id="gameCanvas" width="500" height="500" tabindex="-1" aria-label="Shadow Wolf arena" data-ui-aria="arenaLabel"></canvas>
+              <div class="mobile-controls-row">
+                <div class="mobile-dpad">
+                  <button id="btnLeft" class="ctrl-btn" type="button" aria-label="Move left" data-ui-aria="moveLeft">&larr;</button>
+                  <button id="btnRight" class="ctrl-btn" type="button" aria-label="Move right" data-ui-aria="moveRight">&rarr;</button>
+                </div>
+                <div class="mobile-actions">
+                  <button id="btnJump" class="ctrl-btn" type="button" aria-label="Jump" data-ui-aria="jumpAction">J</button>
+                  <button id="btnAttack" class="ctrl-btn" type="button" aria-label="Attack" data-ui-aria="attackAction">A</button>
+                  <button id="btnDash" class="ctrl-btn" type="button" aria-label="Dash" data-ui-aria="dashAction">D</button>
+                </div>
+              </div>
+            </div>
+            <section id="draftPanel" class="attribute-draft hidden" aria-live="polite" aria-modal="true" aria-labelledby="attributeChoiceTitle" role="dialog">
+              <div class="attribute-draft-card">
+                <h2 id="attributeChoiceTitle" data-ui="attributeChoiceTitle">Level Up: Choose Your Growth</h2>
+                <p id="attributeChoiceDesc"></p>
+                <div id="draftCards" class="attribute-draft-grid"></div>
+              </div>
+            </section>
+            <section id="resultPanel" class="result-panel battle-result hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultText skillReportText">
+              <h2 id="resultTitle">Expedition Success!</h2>
+              <p><span data-ui="regionsCleared">Stage progress</span>: <strong id="resultScore">0/30</strong></p>
+              <p id="resultText"></p>
+              <h3 data-ui="skillReportTitle">Ability Analysis Report</h3>
+              <div class="report-grid">
+                <div><span data-ui="skillLogic">Logic</span><strong id="logicStars">---</strong></div>
+                <div><span data-ui="skillFocus">Focus</span><strong id="focusStars">---</strong></div>
+                <div><span data-ui="skillProblem">Problem Solving</span><strong id="problemStars">---</strong></div>
+              </div>
+              <p id="skillReportText" class="skill-report"></p>
+              <p data-ui="resultDisclaimer"></p>
+              <div class="result-actions">
+                <button id="retryBtn" class="primary-btn" type="button" data-ui="tryAgain">Try Again</button>
+                <button id="resultMenuBtn" class="secondary-btn" type="button" data-ui="backToMenu">Back to Menu</button>
+              </div>
+            </section>
+          </div>
+
+          <aside class="inventory-sidebar attribute-sidebar">
+            <div class="sidebar-section-heading"><h2>角色養成</h2><span>可用點數 <strong id="attrPoints">0</strong></span></div>
+            <div class="attribute-list">
+              <div class="attribute-row"><div><b>力</b><span>力量</span><small>傷害</small></div><strong id="attrStrength">0</strong><button type="button" data-attribute="strength">+</button></div>
+              <div class="attribute-row"><div><b>敏</b><span>敏捷</span><small>攻速、閃避</small></div><strong id="attrAgility">0</strong><button type="button" data-attribute="agility">+</button></div>
+              <div class="attribute-row"><div><b>體</b><span>體質</span><small>生命、防禦</small></div><strong id="attrConstitution">0</strong><button type="button" data-attribute="constitution">+</button></div>
+              <div class="attribute-row"><div><b>幸</b><span>幸運</span><small>爆擊、經驗</small></div><strong id="attrLuck">0</strong><button type="button" data-attribute="luck">+</button></div>
+            </div>
+            <div class="sidebar-section-heading"><h2>戰鬥數值</h2><span>即時</span></div>
+            <div class="stats-grid">
+              <div class="stat-card"><span>傷害</span><strong id="statDmg">0</strong><small>DMG</small></div><div class="stat-card"><span>速度</span><strong id="statSpeed">0</strong><small>SPD</small></div><div class="stat-card"><span>生命</span><strong id="statJump">0</strong><small>HP</small></div><div class="stat-card"><span>暴擊</span><strong id="statCrit">0%</strong><small>CRIT</small></div>
+            </div>
+          </aside>
+        </div>
+        <div class="battle-ad-reserve" aria-hidden="true"></div>
+      </section>
+
+      <section id="lootPanel" class="modal-panel hidden" aria-live="polite">
+        <h2 data-ui="lootFound">Relic Chest Unlocked!</h2>
+        <div id="lootIcon" class="loot-icon"></div>
+        <strong id="lootName">Gear</strong>
+        <span id="lootType">Rare Gear</span>
+        <p id="lootEffect"></p>
+        <button id="equipLootBtn" class="primary-btn" type="button" data-ui="equipLoot">Equip Gear</button>
+      </section>
+
+    </main>
+    <!-- adsense-static-guide:start -->
+    <section class="game-page-info game-page-info-static" aria-label="Shadow Wolf Legend game information">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay Kids Game Guide</span><h2>Shadow Wolf Legend</h2><p>Shadow Wolf Legend is a 30-stage side-scrolling action-platform campaign. Guide the explorer wolf across ruined ledges, read visible hazard warnings, fight shadow creatures, collect EXP, and spend two exact attribute points whenever a level is gained. Every fifth stage ends with a regional Boss whose defense or attack pattern requires a different response.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>2D Action Platformer RPG</strong></div><div class="game-info-fact"><span>Genre</span><strong>Action · Platformer · Animal</strong></div><div class="game-info-fact"><span>Difficulty</span><strong>Hard</strong></div><div class="game-info-fact"><span>Estimated Play Time</span><strong>3-8 minutes per stage</strong></div><div class="game-info-fact"><span>Skills Trained</span><strong>Logic · Problem Solving · Focus</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>World and Mission</h3><p>Six seals once kept the Moonshade route open between the forest frontier and the Behemoth Crown. Their fracture changed each region: crystals fall in the caverns, roots close paths in the Rootwild, furnace vents ignite the Ember Vault, rift winds distort the Eclipse Bridge, and the Crown Road combines threats carried forward from every region.</p>
+<p>You play the rune-marked Shadow Wolf explorer. A stage is restored only after every assigned creature is defeated. A clear saves that route section and unlocks the next card; Stage 30 represents breaking the final Behemoth seal, while every completed stage remains available for replay.</p></div>
+      <div class="game-info-section"><h3>How the Systems Work</h3><p>Movement and combat: run, double-jump, slash in the facing direction, and dash through danger for a brief protected moment. Enemy contact, projectiles, spikes, and active terrain reduce Wolf HP. Falling returns the wolf to stable ground with a five-HP penalty.</p>
+<p>EXP and attributes: ordinary and special enemies release EXP orbs. Level-up pauses Battle and grants two mandatory points. Strength raises Damage, Agility raises Speed, Constitution raises Max HP, and Luck raises Critical chance; every choice shows exact current-to-next values.</p>
+<p>Special enemies: Crystal Bats fire spreads, Armored Boars open after a missed patrol turn, Charger Boars burst across lanes, Ember Wolves leave fire, Dive Bats pursue vertically, Rift Bats blink between perches, and Mirror Wolves split once into two fragile echoes.</p>
+<p>Terrain: crystal fall, venom, roots, fire, shockwaves, and rift gusts use a warning period before becoming active. Moving ledges change the jump route, while permanent spikes remain dangerous whenever touched.</p>
+<p>Optional permanent support: the Mist Amulet costs 15 Diamonds and changes starting Max HP from 30 to 40. Its two-step confirmation shows the exact balance. Normal stage unlocks do not require Diamonds.</p></div>
+      <div class="game-info-section"><h3>How to Play</h3><ol><li>Choose an unlocked card from the horizontal 30-stage rail; every fifth card is a Boss checkpoint.</li><li>Use A/D or Left/Right Arrow to move. Press W, Up Arrow, or Space to jump, then press once more before landing for the second jump.</li><li>Press J to slash and K or Shift to dash. Touch players use the visible direction, Jump, and Attack controls.</li><li>Read dashed terrain warnings before they become active, and treat a visible armor or shield ring as a counter prompt rather than a request to trade damage.</li><li>Collect EXP and spend both exact-value attribute points whenever growth pauses the same Battle screen.</li><li>Defeat the complete encounter. Victory saves the stage and unlocks the next one; defeat offers retry without deleting prior clears.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Strategy Tips</h3><ul><li>Keep the second jump until a moving ledge, spread shot, or hazard cycle confirms the safe landing.</li><li>Use dash through the last part of a projectile fan or charge, then turn and slash during recovery instead of using dash only for travel.</li><li>Remove ranged threats before committing to a slow Armored Boar punish window.</li><li>Strength shortens fights, Constitution forgives mistakes, Agility improves positioning, and Luck creates variable burst; choose for the current stage rule.</li><li>Leave space before defeating a Mirror Wolf because two echoes appear around the split point.</li></ul></div>
+      <div class="game-info-section"><h3>Campaign and Difficulty Growth</h3><p>Stages 1-5 teach patrols, ledges, aimed shots, moving platforms, and spikes. Basilisk Hollow adds venom zones and a widening projectile fan.</p>
+<p>Stages 6-10 add falling-crystal warnings, Crystal Bat spreads, and Armored Boars. Stone Guardian blocks frontal claws and exposes itself after a ground slam with two jumpable shockwaves.</p>
+<p>Stages 11-15 combine bramble lanes, charges, armor, and ranged priority. Thorn Colossus protects its core until a missed root smash opens a short damage window.</p>
+<p>Stages 16-20 cycle fire lanes, add Ember Wolf trails and Dive Bats, then end with Cinder Wyvern: survive its protected aerial fan and punish the vulnerable landing.</p>
+<p>Stages 21-25 add gusts, blinking Rift Bats, and splitting Mirror Wolves. Eclipse Stag reflects most damage until its dash hits an arena edge and breaks the shield.</p>
+<p>Stages 26-30 mix earlier counter rules with visible warnings. Behemoth Crown changes at two health thresholds, adding crystal fall and then root pressure plus a denser fan without creating a hidden Stage 31.</p></div>
+      <div class="game-info-section"><h3>Developer Design Note</h3><p>The campaign uses six five-stage teaching arcs because platform-action difficulty should grow through recognition and counterplay, not only larger health bars. Four stages introduce or combine a regional rule; the fifth asks for that rule against a Boss with a visible defense state and punishable opening. A warning-to-active terrain rhythm supports deliberate touch play while retaining pressure. One fixed logical Battle canvas keeps ledges, HUD, controls, growth Draft, and Result in the same geometry across phone and desktop. Unlike WeightPlay auto-battlers, every dodge, jump, target priority choice, and attack time remains under direct player control.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Parent Note</h3><p>This browser stores the highest unlocked stage, selected stage, completed-stage list, attempts, best clear, final Crown clears, and Mist Amulet ownership locally. A legacy eight-room save migrates forward without relocking earned progress. No login is required for basic play; clearing site storage or changing browsers may remove this record. Diamonds are optional support currency.</p></div>
+      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>Is Shadow Wolf Legend free to play?</dt><dd>Yes. The full 30-stage campaign runs in the browser without a required purchase or login.</dd></div><div><dt>How do stages unlock?</dt><dd>A new save begins with Stage 1. Clearing the complete encounter saves that stage and unlocks the next card; cleared stages remain replayable.</dd></div><div><dt>What happens if the wolf falls?</dt><dd>The wolf returns to stable ground and loses five HP. The attempt ends only if that penalty reduces HP to zero.</dd></div><div><dt>Why does an armored enemy take very little damage?</dt><dd>Its defense state is active. Trigger the visible counter window after a missed charge, slam, root smash, landing, or wall impact.</dd></div><div><dt>Do I have to spend both attribute points?</dt><dd>Yes. Battle resumes only after both points have been assigned to Strength, Agility, Constitution, or Luck.</dd></div><div><dt>Are Diamonds required?</dt><dd>No. They only provide the optional Mist Amulet; normal progress through all 30 stages does not require it.</dd></div><div><dt>What progress is saved?</dt><dd>Stage unlocks and clears, selected stage, attempts, best clear, Crown clears, and Mist Amulet ownership are saved locally in this browser.</dd></div><div><dt>How are the six Bosses different?</dt><dd>Basilisk controls ground with venom, Guardian drops its guard after slams, Colossus exposes a core, Wyvern alternates flight and landing, Stag breaks its shield on a failed dash, and Behemoth combines phase-based crystal and root pressure.</dd></div></dl></div>
+    </div>
+  </section>
+    <!-- adsense-static-guide:end -->
+
+    <script src="/src/site-config.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/version.js?v=20260701-version2"></script>
+    <script src="../../src/analytics.js?v=20260701-analytics2"></script>
+    <script>window.WonderAnalytics?.track("game_view", { game_id: "shadow-wolf", release_state: "playable" });</script>
+    <script src="../../src/sound.js?v=20260701-labels1"></script>
+    <script src="../../src/edge-guard.js?v=20260710-mobile-play-shell2"></script>
+    <script src="/src/i18n.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
+    <script src="../../src/wallet.js?v=20260706-crystal-diamond-charm1"></script>
+    <script src="game.js?v=20260717-zh-hans1"></script>
+    <script src="../../src/game-page-info.js?v=20260717-zh-hans1"></script>
+  </body>
+</html>

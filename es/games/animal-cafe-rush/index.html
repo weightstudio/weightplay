@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <base href="/games/animal-cafe-rush/" />
+    <meta charset="UTF-8" />
+    <meta name="weightplay-audience" content="kids" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#123b39" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="robots" content="index,follow" />
+    <meta name="description" content="Animal Cafe Rush es una campaña de planificación de cafeterías y pedidos de fotografías de 30 días. Los huéspedes leones, jirafas, pandas y conejos..." />
+    <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Fiebre del Café Animal | WeightPlay" />
+    <meta property="og:description" content="Animal Cafe Rush es una campaña de planificación de cafeterías y pedidos de fotografías de 30 días. Los huéspedes leones, jirafas, pandas y conejos..." />
+    <meta property="og:url" content="https://weightplay.com/es/games/animal-cafe-rush/" />
+    <meta property="og:image" content="https://weightplay.com/assets/animal-cafe-rush-cover.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>Fiebre del Café Animal | WeightPlay</title>
+    <link rel="canonical" href="https://weightplay.com/es/games/animal-cafe-rush/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-cafe-rush/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-cafe-rush/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-cafe-rush/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/animal-cafe-rush/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-cafe-rush/" />
+    <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260711-cafe-release1" />
+    <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
+    <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
+    <link rel="stylesheet" href="style.css?v=20260716-kids-canvas1" data-wp-stage-standard data-wp-battle-standard />
+    <script data-wp-stage-standard>/* Shared Kids Stage selector owns pointer drag and settle; Animal Cafe Rush owns selected-day state and activation. */</script>
+    <script data-wp-battle-standard>/* Animal Cafe Rush owns its native Kids Battle Canvas. */</script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Fiebre del Café Animal",
+  "url": "https://weightplay.com/es/games/animal-cafe-rush/",
+  "image": "https://weightplay.com/assets/animal-cafe-rush-cover.png",
+  "description": "Animal Cafe Rush es una campaña de planificación de cafeterías y pedidos de fotografías de 30 días. Los huéspedes leones, jirafas, pandas y conejos...",
+  "applicationCategory": "Game",
+  "operatingSystem": "Web browser",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio"
+  },
+  "inLanguage": "es",
+  "isAccessibleForFree": true,
+  "genre": [
+    "Gestión del tiempo",
+    "Coincidencia",
+    "animales",
+    "niños"
+  ],
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "Kids and families",
+    "suggestedMinAge": 6
+  }
+}
+    </script>
+    <meta name="twitter:title" content="Fiebre del Café Animal | WeightPlay" />
+    <meta name="twitter:description" content="Animal Cafe Rush es una campaña de planificación de cafeterías y pedidos de fotografías de 30 días. Los huéspedes leones, jirafas, pandas y conejos..." />
+  </head>
+  <body data-tutorial-auto-show="false">
+    <main class="cafe-app" data-no-mobile-immersive="true">
+      <section id="loadingPanel" class="loading-panel" aria-live="polite">
+        <div class="loading-card"><strong>Animal Cafe Rush</strong><span id="loadingText">Loading</span><div><i id="loadingFill"></i></div></div>
+      </section>
+      <header class="topbar">
+        <a id="lobbyLink" class="home-link" data-wp-return="main" href="/kids/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
+        <div class="brand"><span>WeightPlay</span><h1 data-ui="title">Fiebre del Café Animal</h1></div>
+        <label class="locale"><span data-ui="language">Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option><option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option></select></label>
+      </header>
+      <section id="menuPanel" class="menu-panel">
+        <img class="cover" src="../../assets/animal-cafe-rush-cover.webp" alt="Imagen del juego Fiebre del Café Animal" />
+        <div class="menu-copy">
+          <span class="eyebrow" data-ui="internal">Cafe open</span>
+          <h2 data-ui="menuTitle">Serve the animal cafe.</h2>
+          <p data-ui="menuHint">Pick the food shown in a customer's bubble, then tap that customer to serve.</p>
+          <div class="profile-grid"><div><span data-ui="day">Day</span><b id="dayText">1</b></div><div><span data-ui="coins">Coins</span><b id="coinText">0</b></div><div><span data-ui="best">Best</span><b id="bestText">0</b></div></div>
+          <button id="mainStartBtn" class="primary-btn standard-main-start" type="button" data-ui="startGame">Start Game</button>
+        </div>
+      </section>
+      <section id="stagePanel" class="stage-panel is-hidden" data-wp-logical-stage-canvas>
+        <header class="stage-head"><button id="stageBackBtn" data-wp-return="stage" type="button" aria-label="Back">&larr;</button><strong data-ui="chooseDay">Choose a Day</strong></header>
+        <div class="stage-workspace">
+          <div class="stage-profile"><div><span data-ui="day">Day</span><b id="stageDayText">1</b></div><div><span data-ui="coins">Coins</span><b id="stageCoinText">0</b></div><div><span data-ui="best">Best</span><b id="stageBestText">0</b></div></div>
+          <div id="dayRail" class="day-rail stage-rail" data-wp-stage-settle-duration="360" data-wp-stage-settle-easing="smoothstep" aria-label="Cafe days"></div>
+          <section class="upgrade-panel"><div><strong data-ui="upgrades">Cafe upgrades</strong><small data-ui="upgradeHint">Coins make future days friendlier.</small></div><div id="upgradeCards" class="upgrade-cards"></div></section>
+          <button id="startBtn" class="primary-btn" type="button" data-ui="startSelected" hidden>Start Selected Day</button>
+        </div>
+      </section>
+      <section id="playPanel" class="play-panel is-hidden" data-no-mobile-immersive="true" data-wp-logical-battle-canvas>
+        <button id="backToMenuBtn" class="play-return" data-wp-return="battle" type="button" aria-label="Back to menu">&larr;</button>
+        <div class="play-hud"><div><span data-ui="day">Day</span><b id="playDay">1</b></div><div><span data-ui="served">Served</span><b id="servedText">0/3</b></div><div><span data-ui="coins">Coins</span><b id="playCoins">0</b></div></div>
+        <div id="objectiveRow" class="objective-row"></div>
+        <div class="cafe-scene"><img class="cafe-bg" src="../../assets/animal-cafe-rush-cafe-bg.webp" alt="" /><div id="customerRow" class="customer-row"></div></div>
+        <div class="prep-row"><div id="stationRow" class="station-row"></div><div id="tray" class="tray" aria-live="polite"></div></div>
+        <div id="playMessage" class="play-message" aria-live="polite"></div>
+        <section id="resultPanel" class="result-panel is-hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle"><div class="result-card"><img src="../../assets/animal-cafe-rush-lion-guide.webp" alt="" /><h2 id="resultTitle"></h2><p id="resultText"></p><p id="skillText"></p><div><button id="retryBtn" class="secondary-btn is-hidden" type="button" data-ui="retry">Try again</button><button id="nextBtn" class="primary-btn" type="button" data-ui="next">Next day</button><button id="menuBtn" class="secondary-btn" type="button" data-ui="backStage">Back to Days</button></div></div></section>
+      </section>
+    </main>
+    <!-- adsense-static-guide:start -->
+    <section class="game-page-info game-page-info-static" aria-label="Información del juego Fiebre del Café Animal">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">Guía de juegos de WeightPlay</span><h2>Fiebre del Café Animal</h2><p>Animal Cafe Rush es una campaña de planificación de cafeterías y pedidos de fotografías de 30 días. Los huéspedes leones, jirafas, pandas y conejos solicitan batidos, sándwiches, fruteros y delicias de panadería. La combinación directa se convierte en recetas numeradas, prioridad VIP, mesas alternas y reglas de variedad de animales. Cada cinco días hay una revisión del café, y el Grand Café Festival combina todas las reglas avanzadas sin agregar un día 31 oculto.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Jugabilidad</span><strong>Campaña de café para ordenar imágenes</strong></div><div class="game-info-fact"><span>Género</span><strong>Gestión del tiempo · Coincidencia · animales · niños</strong></div><div class="game-info-fact"><span>Dificultad</span><strong>Fácil a media</strong></div><div class="game-info-fact"><span>Tiempo estimado</span><strong>3-8 minutos por día</strong></div><div class="game-info-fact"><span>Habilidades practicadas</span><strong>Concentración · Secuenciación · Resolución de problemas</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>Mundo y misión</h3><p>La cafetería se encuentra junto a un concurrido mercado de animales, donde cuatro tipos de clientes se detienen entre recados. Un joven león anfitrión está aprendiendo a manejar el mostrador sin perder el ritmo amigable que hizo popular a la tienda. Cada día despejado significa que la cafetería atendió la cantidad prometida de invitados y al mismo tiempo mantuvo suficiente calificación comercial para permanecer abierta. El servicio correcto genera monedas que regresan al mismo café como mejoras prácticas.</p>
+<p>La campaña se organiza en seis semanas laborales en lugar de 30 copias de una ronda. Los primeros invitados se comunican con imágenes de comida. Más tarde, las recetas se convierten en pasos ordenados, los invitados VIP necesitan prioridad, la Mesa A y la Mesa B comparten la misma cocina y los amigos animales habituales esperan una cola variada. Completar el Grand Café Festival significa que el anfitrión puede coordinar cada regla aprendida durante el servicio más concurrido.</p></div>
+      <div class="game-info-section"><h3>Cómo funcionan los sistemas</h3><p>Tablero y bandeja de comida: Hay ocho fichas de comida grandes disponibles. Toque los alimentos que se muestran en la imagen para crear una bandeja y luego toque al cliente correspondiente. Limpie la bandeja antes de la entrega si la selección es incorrecta.</p>
+<p>Órdenes y paciencia: Cada día comienzan tres invitados y pueden sumarse más. Las burbujas de pedidos muestran los alimentos requeridos; Las tarjetas muestran paciencia. Un huésped que espera demasiado se va y reduce la calificación del negocio. El día se detiene sólo cuando la calificación llega a cero.</p>
+<p>Recetas numeradas: los días 6 a 10 requieren el orden visible exacto 1-2-3. Se rechazan los ingredientes correctos en un orden diferente, por lo que los números de las recetas son una verdadera regla más que una decoración.</p>
+<p>Decisiones de cola: los días 11 a 15 requieren primero un VIP en espera. Los días 16 a 20 alternan la Tabla A y la Tabla B. Los días 21 a 25 requieren un animal diferente a continuación cada vez que otra especie elegible esté esperando.</p>
+<p>Combinaciones de festivales: Los días 26 a 29 combinan reglas anteriores de diferentes maneras. El día 30 activa el orden de recetas, la prioridad VIP, la alternancia de mesas y la variedad de animales juntos.</p>
+<p>Progreso y actualizaciones: los pedidos correctos otorgan monedas, con bonificaciones VIP y de capítulos posteriores. Quick Stations, Extra Tray y Cozy Cafe tienen cada uno tres niveles guardados. Los desbloqueos, las monedas, el recuento del mejor servicio y las actualizaciones permanecen en este navegador.</p></div>
+      <div class="game-info-section"><h3>Cómo jugar</h3><ol><li>Elija un día desbloqueado en el carril horizontal del nivel y lea su título, objetivo y regla.</li><li>Comprueba las burbujas de comida, las marcas VIP, las marcas en la mesa y ten paciencia antes de preparar una bandeja.</li><li>Toca las fichas de comida para crear un pedido. En los días numerados, selecciónelos en el orden mostrado.</li><li>Toque el cliente elegible. Un mensaje específico explica una receta incorrecta o una decisión en la cola.</li><li>Sirva al número objetivo antes de que la calificación empresarial caiga a cero.</li><li>Gasta monedas en una de las tres mejoras permanentes, vuelve a jugar un día desbloqueado o continúa al día siguiente.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Consejos de estrategia</h3><ul><li>Lea los tres órdenes iniciales antes de seleccionar la comida; Quizás sea más fácil con el tablero visible.</li><li>Di la receta numerada en voz alta antes de tocarla.</li><li>Busque un VIP antes de preparar la bandeja de un invitado normal.</li><li>En los días de mesa, busque primero la mesa requerida y compare solo los invitados elegibles.</li><li>Para variar, recuerde el último animal servido y busque otra especie.</li><li>Limpie una bandeja mixta en lugar de forzarla a realizar un pedido no relacionado.</li></ul></div>
+      <div class="game-info-section"><h3>Campaña y aumento de dificultad</h3><p>Los días 1 a 5 enseñan pedidos de imágenes directas, ingredientes únicos y repetidos y la cola creciente. El día 5 es la primera revisión del café.</p>
+<p>Los días 6 a 10 agregan los pasos de la receta. Las órdenes de dos pasos conducen a la práctica de tres pasos y a la revisión de recetas.</p>
+<p>Los días 11-15 agregan Servicio VIP. Una etiqueta dorada cambia el pedido correcto que se puede entregar primero.</p>
+<p>Los días 16 a 20 agregan mesas gemelas. El servicio requerido alterna entre la Tabla A y la Tabla B.</p>
+<p>Los días 21-25 añaden Variedad Animal. El servicio debe cambiar de especie cuando otro amigo elegible esté esperando.</p>
+<p>Días 26-30 de la Semana Festiva. Cuatro días combinan dos reglas; El día 30 utiliza los cuatro y finaliza la campaña.</p></div>
+      <div class="game-info-section"><h3>Nota de diseño</h3><p>El juego comienza emparejando imágenes para que el contador sea comprensible antes de que importe la presión. Cada capítulo cambia por qué una entrega es correcta: orden de los ingredientes, prioridad social, ritmo de la mesa o variedad de la cola. Por lo tanto, la dificultad aumenta a través de decisiones visibles en lugar de objetivos más pequeños o un cronómetro injusto. Tres invitados iniciales mantienen la escena legible, mientras que los objetivos aumentan de tres a ocho para que las reglas posteriores tengan tiempo de interactuar. Un lienzo lógico fijo se escala uniformemente en teléfonos, tabletas, computadoras de escritorio y paisajes cortos. El tacto, el mouse y el teclado comparten los mismos botones de comida y cliente. A diferencia de un juego de cocina con recetas ocultas, cada ingrediente requerido y estado especial es visible antes de que el jugador actúe.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Nota para familias</h3><p>Este juego para niños no tiene solicitud de publicidad, requisitos de cuenta, compra, clasificación, combate ni evaluación formal. Puede respaldar la correspondencia visual, la secuenciación, el cambio de atención y la planificación simple. Los adultos pueden pedirle a un niño que nombre la receta numerada, busque la mesa de al lado o explique por qué un invitado tiene prioridad. El progreso y las actualizaciones se almacenan únicamente en el navegador actual; borrar los datos del sitio o cambiar de dispositivo puede iniciar un guardado por separado.</p></div>
+      <div class="game-info-section"><h3>Preguntas frecuentes</h3><dl><div><dt>¿Cuántos días están incluidos?</dt><dd>Hay 30 días de autor y reseñas de cafés en los días 5, 10, 15, 20, 25 y 30.</dd></div><div><dt>¿Cómo atiendo a un cliente?</dt><dd>Elija cada alimento que aparece en la imagen, en orden numerado cuando sea necesario, luego toque un cliente elegible.</dd></div><div><dt>¿Por qué se rechazó un pedido coincidente?</dt><dd>El día actual puede requerir orden de recetas, prioridad VIP, la mesa resaltada o un animal diferente al lado. El mensaje identifica la regla.</dd></div><div><dt>¿Qué pasa cuando la paciencia llega a cero?</dt><dd>El huésped se va y la calificación comercial cae. El intento se detiene si la calificación llega a cero y se puede volver a intentar.</dd></div><div><dt>¿Qué cambian las mejoras de cafetería?</dt><dd>Quick Stations, Extra Tray y Cozy Cafe brindan soporte guardado permanente y cada uno tiene tres niveles.</dd></div><div><dt>¿Puedo reproducir un día anterior?</dt><dd>Sí. Cada día desbloqueado permanece disponible en el carril Stage.</dd></div><div><dt>¿El juego requiere una cuenta o muestra anuncios?</dt><dd>No. Este juego para niños no requiere iniciar sesión y no genera ninguna solicitud de publicidad.</dd></div><div><dt>¿Dónde se almacena el progreso?</dt><dd>Los días, las monedas, el mejor resultado y las actualizaciones se almacenan localmente en este navegador.</dd></div><div><dt>¿Es el resultado una prueba de habilidad formal?</dt><dd>No. Es sólo una retroalimentación divertida de la sesión actual del café.</dd></div></dl></div>
+    </div>
+  </section>
+    <!-- adsense-static-guide:end -->
+    <script src="/src/site-config.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/version.js?v=20260701-version2"></script>
+    <script src="../../src/analytics.js?v=20260701-analytics2"></script>
+    <script>window.WonderAnalytics?.track("game_view", { game_id: "animal-cafe-rush" });</script>
+    <script src="../../src/edge-guard.js?v=20260710-mobile-play-shell2"></script>
+    <script src="../../src/sound.js?v=20260701-labels1"></script>
+    <script src="/src/i18n.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
+    <script src="game.js?v=20260717-zh-hans1"></script>
+    <script src="../../src/game-page-info.js?v=20260717-zh-hans1"></script>
+    <script>window.addEventListener("load", () => document.querySelector("#loadingPanel")?.classList.add("hidden"), { once: true });</script>
+  </body>
+</html>

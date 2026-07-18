@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <base href="/games/garden-tiles/" />
+    <meta charset="UTF-8" />
+    <meta name="weightplay-audience" content="kids" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#203522" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="robots" content="index,follow" />
+    <meta name="description" content="《寵物花園方塊》是一款有 30 個存檔挑戰、沒有關卡倒數的記憶配對遊戲。六個花園篇章會依序加入晨光預覽、短暫翻牌、失誤後移動，以及成功配對後的遊行輪轉；每五關都有一個花園檢查點。" />
+    <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="寵物花園方塊 | WeightPlay" />
+    <meta property="og:description" content="《寵物花園方塊》是一款有 30 個存檔挑戰、沒有關卡倒數的記憶配對遊戲。六個花園篇章會依序加入晨光預覽、短暫翻牌、失誤後移動，以及成功配對後的遊行輪轉；每五關都有一個花園檢查點。" />
+    <meta property="og:url" content="https://weightplay.com/zh-tw/games/garden-tiles/" />
+    <meta property="og:image" content="https://weightplay.com/assets/garden-tiles-cover.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>寵物花園方塊 | WeightPlay</title>
+    <link rel="canonical" href="https://weightplay.com/zh-tw/games/garden-tiles/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/garden-tiles/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/garden-tiles/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/garden-tiles/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/garden-tiles/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/garden-tiles/" />
+    <link rel="stylesheet" href="style.css?v=20260717-depth30" />
+    <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "寵物花園方塊",
+  "alternateName": "寵物花園方塊",
+  "url": "https://weightplay.com/zh-tw/games/garden-tiles/",
+  "image": "https://weightplay.com/assets/garden-tiles-cover.png",
+  "description": "《寵物花園方塊》是一款有 30 個存檔挑戰、沒有關卡倒數的記憶配對遊戲。六個花園篇章會依序加入晨光預覽、短暫翻牌、失誤後移動，以及成功配對後的遊行輪轉；每五關都有一個花園檢查點。",
+  "applicationCategory": "Game",
+  "operatingSystem": "Web browser",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio"
+  },
+  "inLanguage": "zh-Hant",
+  "isAccessibleForFree": true,
+  "genre": [
+    "記憶",
+    "益智",
+    "動物"
+  ],
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "Kids and families",
+    "suggestedMinAge": 6
+  },
+  "learningResourceType": "Skill practice through play",
+  "educationalUse": "Practice Memory, Focus, Problem Solving through family-friendly browser gameplay."
+}
+    </script>
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
+    <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
+    <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
+    <meta name="twitter:title" content="寵物花園方塊 | WeightPlay" />
+    <meta name="twitter:description" content="《寵物花園方塊》是一款有 30 個存檔挑戰、沒有關卡倒數的記憶配對遊戲。六個花園篇章會依序加入晨光預覽、短暫翻牌、失誤後移動，以及成功配對後的遊行輪轉；每五關都有一個花園檢查點。" />
+  </head>
+  <body>
+    <main class="garden-game" data-wp-logical-battle-canvas>
+      <header class="topbar">
+        <a id="homeLink" class="home-link" data-wp-return="main" href="/kids/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
+        <div class="title-block">
+          <p>WeightPlay</p>
+          <h1 id="titleText">寵物花園方塊</h1>
+        </div>
+        <label class="language-picker">
+          <span id="languageLabel">Language</span>
+          <select id="localeSelect" aria-label="Language">
+            <option value="en">English</option>
+            <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
+            <option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option>
+          </select>
+        </label>
+      </header>
+
+      <section id="mainPanel" class="main-panel">
+        <img class="main-poster" src="../../assets/garden-tiles-cover.webp" alt="" />
+        <h2 id="mainTitle">Pet Garden Tiles</h2>
+        <p id="mainIntro">Remember the garden pictures and clear 30 calm challenges across six garden chapters.</p>
+        <button id="startBtn" type="button">Choose Level</button>
+      </section>
+
+      <section id="statusbar" class="statusbar hidden" aria-label="Game status">
+        <div>
+          <span id="levelLabel">Level</span>
+          <strong id="levelText">1 / 30</strong>
+        </div>
+        <div>
+          <span id="movesLabel">Moves</span>
+          <strong id="movesText">0</strong>
+        </div>
+        <div>
+          <span id="pairsLabel">Pairs</span>
+          <strong id="pairsText">0 / 0</strong>
+        </div>
+      </section>
+
+      <section id="levelSelect" class="level-select hidden">
+        <header class="wp-standard-stage-heading"><button id="levelBackBtn" data-wp-return="stage" type="button" aria-label="Back">&larr;</button><h2 id="levelSelectTitle">Choose Level</h2></header>
+        <div id="levelGrid" class="level-grid" data-wp-stage-settle-duration="360" data-wp-stage-settle-easing="smoothstep"></div>
+        <div id="levelMessage" class="message" aria-live="polite"></div>
+      </section>
+
+      <section id="boardPanel" class="board-panel hidden" data-no-mobile-immersive="true">
+        <button id="battleBackBtn" class="play-return" data-wp-return="battle" type="button" aria-label="Back to levels">&larr;</button>
+        <div id="board" class="tile-board" aria-label="Garden tile board"></div>
+        <div id="message" class="message" aria-live="polite"></div>
+      </section>
+
+      <section id="resultPanel" class="result-panel hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle">
+        <div class="result-card">
+          <h2 id="resultTitle">Level Clear</h2>
+          <div id="stars" class="stars">&#9734;&#9734;&#9734;</div>
+          <p id="resultText">Great matching.</p>
+          <section class="garden-skill-report" aria-live="polite">
+            <h3 id="skillReportTitle">Skill Report</h3>
+            <div class="garden-skill-grid">
+              <div><span id="memoryLabel">Memory</span><b id="memoryValue">0 pairs found</b></div>
+              <div><span id="focusLabel">Focus</span><b id="focusValue">0 moves · Retries: 0</b></div>
+              <div><span id="problemLabel">Problem Solving</span><b id="problemValue">0 stars earned</b></div>
+            </div>
+            <p id="progressComparison"></p>
+          </section>
+          <div class="result-actions">
+            <button id="nextBtn" type="button">Next Level</button>
+            <button id="againBtn" type="button">Play Again</button>
+            <button id="levelsBtn" type="button">Levels</button>
+            <a id="lobbyLink" href="/kids/">Lobby</a>
+          </div>
+        </div>
+      </section>
+
+      <section id="loadingPanel" class="loading-panel">
+        <div class="loading-card">
+          <strong id="loadingTitle">Loading</strong>
+          <span>100%</span>
+          <div><i></i></div>
+        </div>
+      </section>
+    </main>
+    <!-- adsense-static-guide:start -->
+    <section class="game-page-info game-page-info-static" aria-label="寵物花園方塊 遊戲資訊">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 兒童遊戲指南</span><h2>寵物花園方塊</h2><p>《寵物花園方塊》是一款有 30 個存檔挑戰、沒有關卡倒數的記憶配對遊戲。六個花園篇章會依序加入晨光預覽、短暫翻牌、失誤後移動，以及成功配對後的遊行輪轉；每五關都有一個花園檢查點。</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>30 關花園記憶配對</strong></div><div class="game-info-fact"><span>類型</span><strong>記憶 · 益智 · 動物</strong></div><div class="game-info-fact"><span>難度</span><strong>簡單至具挑戰性</strong></div><div class="game-info-fact"><span>預估遊玩時間</span><strong>每關約 3 至 8 分鐘</strong></div><div class="game-info-fact"><span>練習能力</span><strong>記憶 · 專注 · 問題解決</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>世界與任務</h3><p>寵物花園溫室收藏每位動物朋友、管理員、水果與花園物件的圖卡。一陣夜風在燈籠散步活動前把圖卡吹散並翻到背面。玩家擔任年輕圖卡管理員，重新整理配對，讓六座花園房間恢復開放。</p>
+<p>每完成一組配對，就把一筆圖像紀錄送回花園名冊。完成每段五關會點亮一盞篇章燈籠；第 5、10、15、20、25、30 關會整合該段學到的記憶方法。</p></div>
+      <div class="game-info-section"><h3>遊戲系統</h3><p>步數與星星：步數計算完整的兩張牌嘗試。較少嘗試可取得更多星星，但任何完成的牌面都能前進，也不會降低舊有最佳成績。</p>
+<p>晨光預覽：開始時短暫顯示全部圖片，適合練習依照角落或列數掃描。</p>
+<p>花園薄霧：若沒有選第二張牌，第一張會在溫和的時間窗後蓋回；整關仍然沒有倒數。</p>
+<p>調皮微風：失誤的可見提示結束後，只會洗動尚未完成的牌。</p>
+<p>花園遊行：成功配對後，其餘牌會沿空位輪轉，需要跟著移動更新記憶位置。</p></div>
+      <div class="game-info-section"><h3>玩法說明</h3><ol><li>在水平關卡列選擇已解鎖的挑戰。</li><li>翻開兩張牌，找出相同的動物或花園圖案。</li><li>開始前閱讀規則標籤，準備應對預覽、薄霧、微風或遊行移動。</li><li>清除所有配對可取得星星、保存進度並解鎖下一關。</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>預覽時依角落或橫列分組記憶。</li><li>經典關卡的失誤仍是有用的位置資訊。</li><li>微風或遊行移動後，先重建一小區記憶地圖。</li><li>重玩舊關可改善星星，不會失去已解鎖進度。</li></ul></div>
+      <div class="game-info-section"><h3>關卡與難度成長</h3><p>1-5 嫩芽小徑：四至八組配對教真正的蓋牌記憶，最後以預覽檢查點收尾。</p>
+<p>6-10 晨光溫室：開場預覽搭配較大牌面，鼓勵規律掃描。</p>
+<p>11-15 薄霧池塘：第一張牌只短暫保持翻開，練習保存最新圖像。</p>
+<p>16-20 微風果園：失誤會移動未配對牌，舊位置不能一直沿用。</p>
+<p>21-25 動物遊行：成功後牌面輪轉，需要追蹤移動。</p>
+<p>26-30 月光花房：多種規則組合，最後是 14 組配對、四規則同時出現的檢查點。</p></div>
+      <div class="game-info-section"><h3>開發設計理念</h3><p>本作用不同記憶要求增加難度，而不是加入緊張倒數。固定 390×788 畫布讓手機與電腦的牌面位置穩定；原生按鈕支援觸控和鍵盤，失誤圖案保留足夠時間，切到背景時也會暫停提示時間。預覽、薄霧、微風與遊行分別練習不同的觀察方式，同時維持 Kids 遊戲的平靜節奏。</p></div>
+      <div class="game-info-section game-info-parent"><h3>家長說明</h3><p>本作適合 6+ 與親子遊玩。星星與技能報告只整理本次本機遊戲的配對、步數、重試和星星，不是智力測驗、診斷、發展評估，也不會和其他孩子比較。Kids 版本沒有廣告、登入、聊天或購買要求。</p></div>
+      <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>共有多少挑戰？</dt><dd>共有六篇 30 關，檢查點位於第 5、10、15、20、25、30 關。</dd></div><div><dt>遊戲有倒數嗎？</dt><dd>沒有。花園薄霧只會讓單次第一張牌在短暫時間後蓋回。</dd></div><div><dt>為什麼後期卡牌會移動？</dt><dd>調皮微風會在失誤後移動未完成牌；花園遊行則在成功後輪轉。</dd></div><div><dt>星星怎麼計算？</dt><dd>依完整兩張牌嘗試次數計算；只要清完牌面就能繼續。</dd></div><div><dt>進度會保存嗎？</dt><dd>已解鎖關卡與最佳星星會保存在目前瀏覽器。</dd></div><div><dt>手機和鍵盤都能玩嗎？</dt><dd>可以，牌卡使用支援觸控、滑鼠與鍵盤的原生按鈕。</dd></div><div><dt>需要付費或會顯示廣告嗎？</dt><dd>不需要帳號或購買；Kids 版本也不會發出廣告請求。</dd></div><div><dt>技能報告是正式測驗嗎？</dt><dd>不是，只是本次完成關卡的遊戲摘要。</dd></div></dl></div>
+    </div>
+  </section>
+    <!-- adsense-static-guide:end -->
+    <script src="/src/site-config.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/version.js?v=20260701-version2"></script>
+    <script src="../../src/analytics.js?v=20260701-analytics2"></script>
+    <script>
+      window.WonderAnalytics?.track("game_view", { game_id: "garden-tiles" });
+    </script>
+    <script src="../../src/sound.js?v=20260701-labels1"></script>
+    <script src="../../src/edge-guard.js?v=20260710-mobile-play-shell2"></script>
+    <script src="/src/i18n.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
+    <script src="game.js?v=20260717-zh-hans1"></script>
+    <script>
+      (() => {
+        const loadGameInfo = () => {
+          if (document.querySelector("script[data-garden-game-info]")) return;
+          const script = document.createElement("script");
+          script.src = "../../src/game-page-info.js?v=20260717-zh-hans1";
+          script.dataset.gardenGameInfo = "idle";
+          script.async = true;
+          document.body.appendChild(script);
+        };
+        const schedule = () => {
+          if ("requestIdleCallback" in window) {
+            window.requestIdleCallback(loadGameInfo, { timeout: 1600 });
+          } else {
+            window.setTimeout(loadGameInfo, 350);
+          }
+        };
+        if (document.readyState === "complete") schedule();
+        else window.addEventListener("load", schedule, { once: true });
+      })();
+    </script>
+  </body>
+</html>

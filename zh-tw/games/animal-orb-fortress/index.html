@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <base href="/games/animal-orb-fortress/" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="robots" content="index,follow" />
+    <meta name="theme-color" content="#10251f" />
+    <meta name="description" content="《動物星珠要塞》是一套以閱讀戰場與規劃反彈路線為核心的 30 關防守戰役。每關包含三個連續波次，玩家從獅子守衛旁拖曳瞄準，預覽牆面反彈後放開星珠，在影獸接近水晶核心前擊退牠們。六個五關區域依序加入護甲、荊棘錨點、相位敵人、水晶分裂獸、移動鏡面柱、衝鋒路線，以及六場規則不同的區域 Boss..." />
+    <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:type" content="game" />
+    <meta property="og:title" content="動物星珠要塞 | WeightPlay" />
+    <meta property="og:description" content="《動物星珠要塞》是一套以閱讀戰場與規劃反彈路線為核心的 30 關防守戰役。每關包含三個連續波次，玩家從獅子守衛旁拖曳瞄準，預覽牆面反彈後放開星珠，在影獸接近水晶核心前擊退牠們。六個五關區域依序加入護甲、荊棘錨點、相位敵人、水晶分裂獸、移動鏡面柱、衝鋒路線，以及六場規則不同的區域 Boss..." />
+    <meta property="og:url" content="https://weightplay.com/zh-tw/games/animal-orb-fortress/" />
+    <meta property="og:image" content="https://weightplay.com/assets/animal-orb-fortress-cover.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="動物星珠要塞 | WeightPlay" />
+    <meta name="twitter:description" content="《動物星珠要塞》是一套以閱讀戰場與規劃反彈路線為核心的 30 關防守戰役。每關包含三個連續波次，玩家從獅子守衛旁拖曳瞄準，預覽牆面反彈後放開星珠，在影獸接近水晶核心前擊退牠們。六個五關區域依序加入護甲、荊棘錨點、相位敵人、水晶分裂獸、移動鏡面柱、衝鋒路線，以及六場規則不同的區域 Boss..." />
+    <meta name="twitter:image" content="https://weightplay.com/assets/animal-orb-fortress-cover.png" />
+    <title>動物星珠要塞 | WeightPlay</title>
+    <link rel="canonical" href="https://weightplay.com/zh-tw/games/animal-orb-fortress/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-orb-fortress/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-orb-fortress/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-orb-fortress/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/animal-orb-fortress/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-orb-fortress/" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "動物星珠要塞",
+  "alternateName": "動物星珠要塞",
+  "url": "https://weightplay.com/zh-tw/games/animal-orb-fortress/",
+  "image": "https://weightplay.com/assets/animal-orb-fortress-cover.png",
+  "description": "《動物星珠要塞》是一套以閱讀戰場與規劃反彈路線為核心的 30 關防守戰役。每關包含三個連續波次，玩家從獅子守衛旁拖曳瞄準，預覽牆面反彈後放開星珠，在影獸接近水晶核心前擊退牠們。六個五關區域依序加入護甲、荊棘錨點、相位敵人、水晶分裂獸、移動鏡面柱、衝鋒路線，以及六場規則不同的區域 Boss...",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio",
+    "url": "https://weightplay.com/"
+  },
+  "inLanguage": "zh-Hant",
+  "isAccessibleForFree": true,
+  "operatingSystem": "Web Browser",
+  "genre": [
+    "反彈射擊",
+    "動作策略",
+    "Roguelite",
+    "動物"
+  ],
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "General players"
+  }
+}
+    </script>
+    <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
+    <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
+    <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
+    <link rel="stylesheet" href="style.css?v=20260709-orb-guide-block1" />
+  </head>
+  <body data-tutorial-auto-show="false">
+    <main class="orb-app" data-no-mobile-immersive="true">
+      <header class="topbar">
+        <a class="back-btn" data-wp-return="main" href="/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
+        <div class="brand">
+          <span>WeightPlay</span>
+          <h1 data-ui="title">動物星珠要塞</h1>
+        </div>
+        <label class="locale">
+          <span data-ui="language">Language</span>
+          <select id="localeSelect" aria-label="Language">
+            <option value="en">English</option>
+            <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
+            <option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option>
+          </select>
+        </label>
+      </header>
+
+      <section id="loadingPanel" class="loading-panel" aria-live="polite">
+        <div class="loading-content">
+          <h2 data-ui="title">Animal Orb Fortress</h2>
+          <div class="loading-bar"><div id="loadingFill" class="loading-fill"></div></div>
+          <span id="loadingText" class="loading-percentage">0%</span>
+        </div>
+      </section>
+
+      <section id="menuPanel" class="panel menu-panel">
+        <img class="cover" src="../../assets/animal-orb-fortress-cover.webp" alt="" />
+        <div class="menu-copy">
+          <strong data-ui="menuTitle">Aim the spirit orb through the crystal fortress.</strong>
+          <span data-ui="menuHint">Choose a raid route, plan ricochet shots, and protect the fortress core.</span>
+          <button id="startBtn" class="primary-btn" type="button" data-ui="openRaidMap">Start Game</button>
+        </div>
+      </section>
+
+      <section id="stagePanel" class="panel stage-panel is-hidden" aria-label="Raid map">
+        <header class="stage-header">
+          <button id="stageBackBtn" class="secondary-btn play-return" type="button" aria-label="Return to main">&larr;</button>
+          <div>
+            <strong data-ui="raidMap">Raid Map</strong>
+            <span id="stageProgressText"></span>
+          </div>
+        </header>
+        <div class="stage-content">
+          <div class="profile-grid">
+            <div><span data-ui="bestRaid">Best Raid</span><strong id="bestRaidText">1</strong></div>
+            <div><span data-ui="starStones">Star Stones</span><strong id="starStoneText">0</strong></div>
+            <div><span data-ui="diamonds">Diamonds</span><strong id="diamondText">0</strong></div>
+          </div>
+          <div id="stageRail" class="stage-rail" aria-label="Raid tiers"></div>
+          <strong class="workshop-title" data-ui="fortressWorkshop">Fortress Workshop</strong>
+          <div id="roomGrid" class="room-grid" aria-label="Fortress rooms"></div>
+        </div>
+      </section>
+
+      <section id="gamePanel" class="panel game-panel is-hidden" data-play-viewport>
+        <div id="battleLive" class="battle-live">
+        <div class="hud-row">
+          <button id="battleBackBtn" class="secondary-btn play-return" type="button" aria-label="Return to raid map">&larr;</button>
+          <div><span data-ui="wave">Wave</span><strong id="waveText">1/3</strong></div>
+          <div><span data-ui="core">Core</span><strong id="coreText">20/20</strong></div>
+          <div><span data-ui="shots">Shots</span><strong id="shotText">0</strong></div>
+        </div>
+        <canvas id="gameCanvas" width="960" height="540" tabindex="0" aria-label="Animal Orb Fortress arena" aria-describedby="hintText"></canvas>
+        <div id="hintText" class="hint" data-ui="aimHint" aria-live="polite">Drag from the launcher, preview the bounce path, then release.</div>
+        </div>
+        <section id="upgradePanel" class="panel modal-panel is-hidden" role="dialog" aria-modal="true" aria-labelledby="upgradeTitle" aria-describedby="upgradeStatus">
+          <h2 id="upgradeTitle" data-ui="chooseUpgrade">Choose a fortress blessing</h2>
+          <p id="upgradeStatus" class="status-line"></p>
+          <div id="upgradeCards" class="upgrade-cards"></div>
+          <button id="rerollBtn" class="secondary-btn" type="button"></button>
+        </section>
+        <section id="resultPanel" class="panel result-panel is-hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultText skillReportText">
+          <img class="result-lion" src="../../assets/weightplay-boom-mane-lion.png" alt="" />
+          <div>
+            <h2 id="resultTitle">Raid Clear</h2>
+            <p id="resultText"></p>
+            <p id="skillReportText" class="skill-report"></p>
+            <div class="result-actions">
+              <button id="retryBtn" class="primary-btn" type="button" data-ui="retry">Retry</button>
+              <button id="nextStageBtn" class="primary-btn is-unavailable" type="button" data-ui="nextStage">Next Stage</button>
+              <button id="resultMenuBtn" class="secondary-btn play-return" type="button" aria-label="Return to raid map">&larr;</button>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <div id="battleAdReserve" class="battle-ad-reserve result-ad-reserve" aria-hidden="true"></div>
+    </main>
+    <!-- adsense-static-guide:start -->
+    <section class="game-page-info game-page-info-static" aria-label="動物星珠要塞 遊戲資訊">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 兒童遊戲指南</span><h2>動物星珠要塞</h2><p>《動物星珠要塞》是一套以閱讀戰場與規劃反彈路線為核心的 30 關防守戰役。每關包含三個連續波次，玩家從獅子守衛旁拖曳瞄準，預覽牆面反彈後放開星珠，在影獸接近水晶核心前擊退牠們。六個五關區域依序加入護甲、荊棘錨點、相位敵人、水晶分裂獸、移動鏡面柱、衝鋒路線，以及六場規則不同的區域 Boss 戰。波次之間選擇本局祝福，關卡之間則用星石升級四個永久要塞房間。</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>反彈射擊要塞 Roguelite</strong></div><div class="game-info-fact"><span>類型</span><strong>反彈射擊 · 動作策略 · Roguelite · 動物</strong></div><div class="game-info-fact"><span>難度</span><strong>困難</strong></div><div class="game-info-fact"><span>預估遊玩時間</span><strong>每關 5-8 分鐘</strong></div><div class="game-info-fact"><span>練習能力</span><strong>邏輯 · 問題解決 · 專注</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>世界與任務</h3><p>水晶要塞位在六條守護道路交會的位置：水晶森林、荊棘工坊、月光遺跡、鏡面寶庫、風暴壁壘與蝕影核心。核心開始發出不穩定脈衝後，暗影動物沿著道路靠近。獅子星珠守衛不能離開核心，因此每次防守都必須從發射室把星珠導向牆面、鏡門與敵方路線。</p>
+<p>通過一關代表該段道路已穩定到足以讓修復隊重新開放。盤根魔像守在森林入口，荊背巨獸佔領工坊，月靈女王能穿過月光道路，稜晶甲攝政王控制鏡庫，暴風角守衛標記衝鋒路線，虛空核心皇則以三階段封鎖最後房間。完成第 30 關代表六條道路重新連結，核心也不再吸引新的影獸。</p></div>
+      <div class="game-info-section"><h3>遊戲系統</h3><p>瞄準與反彈：從發射器拖曳可預覽第一段路線，放開後會射出主星珠與一顆角度相關的弱化回音珠。牆面反彈可以跨越多條路線，或打到被前排遮住的優先目標。分裂星珠能增加第三顆彈體，穿透星芒則縮短同一顆星珠再次命中相同敵人的間隔。</p>
+<p>三波關卡：前兩波先讓玩家理解本關規則。第三波通常是特製菁英陣形；第 5、10、15、20、25、30 關則改為具名區域 Boss。通過一波後仍保留核心損傷與本局升級，只暫停讓玩家選一個祝福，再繼續同一關。</p>
+<p>特殊敵人：裝甲獸要先消耗固定次數的護甲；不移動的荊棘錨點會定期替鄰近隊友加盾；月光幽靈會用虛線提示進入相位，顯形前無法受傷；水晶分裂獸倒下後會產生兩枚更快碎片；衝鋒獸先標記路線，突進後才留下可攻擊空檔。</p>
+<p>鏡面柱：中後期會在競技場內放置一到兩座六角鏡面柱，星珠會真的從柱面反射，形成早期關卡不存在的新路線。有些鏡面柱會左右移動，同一波中原本有效的角度也可能失效。</p>
+<p>Boss 規則：盤根魔像會重建防護；荊背巨獸在生命門檻召喚錨點與裝甲護衛；月靈女王交替顯形與相位；稜晶甲攝政王只在金色盾片打開時受傷；暴風角守衛完成標記衝刺後才會外露；虛空核心皇會兩次換階段、補盾、召喚四名護衛並啟動兩座鏡面柱。</p>
+<p>本局與永久成長：每波可從巨大星珠、分裂星珠、穿透星芒、快速充能、核心護盾、偵查磁力中選擇祝福。結算取得的星石可提升星珠鍛造室傷害、核心護盾室起始生命、夥伴巢穴支援攻擊與偵查高塔獎勵。花三顆鑽石重抽祝福完全可選，需二次確認，也不是解鎖關卡的必要條件。</p></div>
+      <div class="game-info-section"><h3>玩法說明</h3><ol><li>從水平滑動的要塞地圖選擇已解鎖關卡，先閱讀關卡名稱、規則標籤與專屬警告。</li><li>從獅子守衛旁拖向想要的角度，利用預覽判斷直接射擊、單牆反彈、跨場反彈或鏡柱反射能否命中優先目標。</li><li>放開後射出星珠，觀察護甲圈、相位虛線、衝鋒標記、錨點保護與 Boss 提示，再決定下一次射擊。</li><li>通過前兩波後各選一個祝福。重抽花三顆鑽石並需要再按一次確認；選好祝福就立刻繼續下一波。</li><li>第三波結束前保持核心生命大於零。勝利會保存下一關與星石；失敗仍保存已取得星石，且不會失去最佳已解鎖關卡。</li><li>回到地圖使用星石升級房間、重玩舊關，或從結算畫面直接進入下一關。</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>不要永遠攻擊最近的敵人。錨點、分裂獸與後排幽靈可能比慢速前排更危險，應用反彈路線處理真正優先目標。</li><li>看到相位虛線代表傷害會被擋住。先保留角度，等敵人重新顯形再放開，不要浪費整組星珠。</li><li>移動鏡面柱也是工具，不只是障礙。稍微預判柱子移動位置，讓星珠撞上後穿越牆面無法到達的路線。</li><li>面對衝鋒獸與暴風角守衛，要先看標記路線並等待恢復空檔；快速充能只有在射擊時機正確時才有價值。</li><li>核心護盾與快速充能適合穩住壓力，巨大星珠與穿透星芒能縮短危險 Boss 階段；偵查磁力偏向長期成長，無法立即阻止核心被撞。</li><li>只有三個祝福都不符合本關規則時才考慮可選鑽石重抽。正常解鎖 30 關與六名 Boss 都不要求花鑽石。</li></ul></div>
+      <div class="game-info-section"><h3>關卡與難度成長</h3><p>第 1-5 關教直接射擊、單牆反彈、分離路線與目標順序。盤根王冠是第一個檢查點；魔像會在外露一段時間後重建防護，所以玩家要先破防，再利用空檔攻擊。</p>
+<p>第 6-10 關加入固定次數護甲與不移動的荊棘錨點。第 11-15 關把持續射擊改成相位時機，再加入第一座移動反射門。荊背巨獸會在戰鬥中召援，月靈女王則在無敵相位與恢復空檔間切換。</p>
+<p>第 16-20 關加入可實際反射星珠的鏡面柱，以及倒下後產生快速碎片的分裂獸。第 21-25 關加入路線標記、衝鋒與風暴時機。稜晶甲攝政王有旋轉傷害窗口，暴風角守衛必須完成衝刺後才能受傷。</p>
+<p>第 26-30 關把護甲、錨點、相位、分裂、衝鋒與移動鏡柱組成特製陣形。第 29 關使用完整普通敵人語彙；第 30 關加入兩次虛空核心換階段、四名支援、補盾與兩座鏡面柱，同時測試瞄準、目標順序、時機、本局祝福與永久房間成長。</p></div>
+      <div class="game-info-section"><h3>開發設計理念</h3><p>本作採三個短波次，是為了讓每關像一個集中的反彈問題，而不是過長的耐久戰。波次間保留核心損傷與本局配置，只加入一次簡短祝福決策。前期只使用牆面，讓玩家先理解可預測幾何；後期鏡面柱增加新反射面，也會使背熟的角度失效。特殊敵人用護甲圈、相位虛線、路線標記與獨立 Boss 圖直接傳達反制方式，不要求玩家在戰鬥中閱讀長篇規則。手機以拖曳為主；鍵盤左右鍵調整同一套角度，空白鍵或 Enter 發射。相較《獸王守衛》的配置守衛與《動物自走小隊》的戰前編成，《動物星珠要塞》把射擊路徑本身當作主要策略資源。</p></div>
+      <div class="game-info-section game-info-parent"><h3>家長說明</h3><p>瀏覽器會在本機保存最佳已解鎖關卡、星石、遊玩次數，以及星珠鍛造室、核心護盾室、夥伴巢穴、偵查高塔的等級；基本遊玩不需要登入。清除本站瀏覽器儲存資料可能移除進度。鑽石祝福重抽完全可選，會顯示目前與扣除後餘額，不是完成 30 關的必要條件。分數與能力回饋只描述遊玩表現，不是正式能力測量。</p></div>
+      <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>每關的目標是什麼？</dt><dd>守住水晶核心並通過三個波次。完成第三波會保存關卡、取得星石並解鎖下一關。</dd></div><div><dt>每關都會出現同一隻 Boss 嗎？</dt><dd>不會。只有每五關是區域 Boss 檢查點；其他關以特製菁英陣形收尾，六名 Boss 的圖像、提示與反制規則都不同。</dd></div><div><dt>為什麼星珠穿過月光敵人？</dt><dd>相位虛線代表敵人暫時沒有實體。等牠重新顯形，再放開已準備好的射擊。</dd></div><div><dt>鏡面柱有什麼作用？</dt><dd>它是競技場內真正的反射面；後期鏡柱會移動，讓同一波中的可用反彈路線改變。</dd></div><div><dt>需要鑽石才能完成戰役嗎？</dt><dd>不需要。鑽石只在二次確認後重抽一次當波的三個祝福。</dd></div><div><dt>關卡失敗會怎樣？</dt><dd>本局會結束，但已取得星石仍會保存，最佳已解鎖關卡不會倒退。可以升級房間、換一條射擊計畫或直接重試。</dd></div><div><dt>哪些進度會保存？</dt><dd>最佳已解鎖關卡、星石、遊玩次數與四個要塞房間等級會保存在目前瀏覽器本機。</dd></div></dl></div>
+    </div>
+  </section>
+    <!-- adsense-static-guide:end -->
+    <script src="/src/site-config.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/version.js?v=20260701-version2"></script>
+    <script src="../../src/analytics.js?v=20260701-analytics2"></script>
+    <script>window.WonderAnalytics?.track("game_view", { game_id: "animal-orb-fortress", release_state: "playable_release_candidate" });</script>
+    <script src="../../src/sound.js?v=20260701-labels1"></script>
+    <script src="../../src/edge-guard.js?v=20260710-mobile-play-shell2"></script>
+    <script src="/src/i18n.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
+    <script src="../../src/wallet.js?v=20260706-crystal-diamond-charm1"></script>
+    <script src="game.js?v=20260717-zh-hans1"></script>
+    <script>
+      (() => {
+        const loadGameInfo = () => {
+          if (document.querySelector("script[data-orb-game-info]")) return;
+          const gamePanel = document.querySelector("#gamePanel");
+          if (document.body.classList.contains("orb-fortress-playing") || (gamePanel && !gamePanel.classList.contains("is-hidden"))) {
+            window.setTimeout(loadGameInfo, 3000);
+            return;
+          }
+          const script = document.createElement("script");
+          script.src = "../../src/game-page-info.js?v=20260717-zh-hans1";
+          script.dataset.orbGameInfo = "internal";
+          script.async = true;
+          document.body.appendChild(script);
+        };
+        if ("requestIdleCallback" in window) window.requestIdleCallback(loadGameInfo, { timeout: 1400 });
+        else window.setTimeout(loadGameInfo, 300);
+      })();
+    </script>
+  </body>
+</html>

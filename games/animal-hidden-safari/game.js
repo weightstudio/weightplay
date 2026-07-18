@@ -288,7 +288,7 @@
   if (!canonicalSavedLocale && ["en", "zh-Hant", "zh-Hans", "es"].includes(legacySavedLocale)) {
     window.WonderI18n?.setLocale?.(legacySavedLocale);
   }
-  let locale = window.WonderI18n?.locale?.() || canonicalSavedLocale || legacySavedLocale || "en";
+  let locale = window.WonderI18n?.actualLocale?.() || window.WonderI18n?.locale?.() || canonicalSavedLocale || legacySavedLocale || "en";
   let unlocked = clamp(Number(localStorage.getItem(unlockKey)) || 1, 1, stages.length);
   let stars = readJson(starKey, {});
   let currentStage = 0;
@@ -320,10 +320,12 @@
 
   function t(key, data = {}) {
     const parts = key.split(".");
-    let value = text[locale] || text.en;
+    const sourceLocale = locale === "zh-Hans" ? "zh-Hant" : locale;
+    let value = text[sourceLocale] || text.en;
     for (const part of parts) value = value?.[part];
     if (typeof value !== "string") value = key;
-    return Object.entries(data).reduce((out, [name, item]) => out.replaceAll(`{${name}}`, String(item)), value);
+    const localized = Object.entries(data).reduce((out, [name, item]) => out.replaceAll(`{${name}}`, String(item)), value);
+    return locale === "zh-Hans" ? window.WonderI18n?.simplifyChineseText?.(localized) || localized : localized;
   }
 
   function animalImg(id, className = "") {
@@ -350,7 +352,7 @@
   }
 
   function localizeStatic() {
-    document.documentElement.lang = locale === "zh-Hant" ? "zh-Hant" : locale === "es" ? "es" : "en";
+    document.documentElement.lang = ["zh-Hant", "zh-Hans", "es"].includes(locale) ? locale : "en";
     document.title = `${t("gameTitle")} - WeightPlay`;
     document.querySelectorAll("[data-ui]").forEach((node) => {
       node.textContent = t(node.dataset.ui);
@@ -865,7 +867,7 @@
     nodes.localeSelect.addEventListener("change", () => {
       const requested = nodes.localeSelect.value;
       window.WonderI18n?.setLocale?.(requested);
-      locale = window.WonderI18n?.locale?.() || requested;
+      locale = window.WonderI18n?.actualLocale?.() || window.WonderI18n?.locale?.() || requested;
       localStorage.setItem(localeKey, requested);
       localizeStatic();
       renderStageGrid();
@@ -875,7 +877,6 @@
         renderTargetList();
         updateHud();
       }
-      window.dispatchEvent(new CustomEvent("wonder:locale-change", { detail: { locale } }));
     });
     nodes.startGameBtn.addEventListener("keydown", rejectRepeatedScreenActivation, true);
     nodes.stageGrid.addEventListener("keydown", rejectRepeatedScreenActivation, true);

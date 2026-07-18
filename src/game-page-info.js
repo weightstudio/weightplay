@@ -6546,7 +6546,8 @@
 
   function gameHref(gameId) {
     const base = location.pathname.includes("/weightplay/") ? "/weightplay/games/" : "/games/";
-    return `${base}${gameId}/`;
+    const path = `${base}${gameId}/`;
+    return window.WonderI18n?.localizedPath?.(locale(), path) || path;
   }
 
   function assetHref(fileName) {

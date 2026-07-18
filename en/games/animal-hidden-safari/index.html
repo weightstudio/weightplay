@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <base href="/games/animal-hidden-safari/" />
+    <meta charset="UTF-8" />
+    <meta name="weightplay-audience" content="kids" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#4fae5e" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="robots" content="index,follow" />
+    <meta name="description" content="Animal Hidden Safari is a calm 30-habitat seek-and-find campaign. Six five-stage regions move from open searches to printed search order, animal pairs,..." />
+    <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Animal Hidden Safari | WeightPlay" />
+    <meta property="og:description" content="Animal Hidden Safari is a calm 30-habitat seek-and-find campaign. Six five-stage regions move from open searches to printed search order, animal pairs,..." />
+    <meta property="og:url" content="https://weightplay.com/en/games/animal-hidden-safari/" />
+    <meta property="og:image" content="https://weightplay.com/assets/animal-hidden-safari-cover.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Animal Hidden Safari | WeightPlay" />
+    <meta name="twitter:description" content="Animal Hidden Safari is a calm 30-habitat seek-and-find campaign. Six five-stage regions move from open searches to printed search order, animal pairs,..." />
+    <meta name="twitter:image" content="https://weightplay.com/assets/animal-hidden-safari-cover.png" />
+    <title>Animal Hidden Safari | WeightPlay</title>
+    <link rel="canonical" href="https://weightplay.com/en/games/animal-hidden-safari/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-hidden-safari/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-hidden-safari/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-hidden-safari/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/animal-hidden-safari/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-hidden-safari/" />
+    <link rel="stylesheet" href="style.css?v=20260715-kids-canvas1" data-wp-stage-standard data-wp-battle-standard />
+    <script data-wp-stage-standard>/* Hidden Safari owns its native Kids Stage rail. */</script>
+    <script data-wp-battle-standard>/* Hidden Safari owns its native Kids Battle Canvas. */</script>
+    <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
+    <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
+    <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Animal Hidden Safari",
+  "alternateName": "動物探險找找看",
+  "url": "https://weightplay.com/en/games/animal-hidden-safari/",
+  "image": "https://weightplay.com/assets/animal-hidden-safari-cover.png",
+  "description": "Animal Hidden Safari is a calm 30-habitat seek-and-find campaign. Six five-stage regions move from open searches to printed search order, animal pairs,...",
+  "applicationCategory": "Game",
+  "operatingSystem": "Web browser",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio"
+  },
+  "inLanguage": "en",
+  "isAccessibleForFree": true,
+  "genre": [
+    "Puzzle",
+    "Safari",
+    "Animal",
+    "Family"
+  ],
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "Kids and families",
+    "suggestedMinAge": 3
+  },
+  "learningResourceType": "Skill practice through play",
+  "educationalUse": "Practice Focus, Animal Knowledge, Problem Solving through family-friendly browser gameplay."
+}
+    </script>
+  </head>
+  <body data-tutorial-auto-show="false">
+    <main class="safari-game" data-play-viewport data-no-mobile-immersive="true">
+      <header class="topbar">
+        <a class="home-link" data-wp-return="main" href="/kids/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
+        <div class="title-block">
+          <p>WeightPlay</p>
+          <h1 data-ui="gameTitle">Animal Hidden Safari</h1>
+        </div>
+        <label class="language-picker">
+          <span data-ui="language">Language</span>
+          <select id="localeSelect" data-aria="language" aria-label="Language">
+            <option value="en">English</option>
+            <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
+            <option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option>
+          </select>
+        </label>
+      </header>
+
+      <section id="mainPanel" class="menu-panel main-panel">
+        <img class="cover" src="../../assets/animal-hidden-safari-cover.webp" data-fallback-src="../../assets/animal-hidden-safari-cover.png" alt="" />
+        <div class="menu-copy">
+          <strong data-ui="gameTitle">Animal Hidden Safari</strong>
+          <span data-ui="menuHint">Find animals blended into each natural habitat.</span>
+        </div>
+        <button id="startGameBtn" class="stage-entry-btn" type="button" data-ui="chooseStage">Choose Habitat</button>
+      </section>
+
+      <section id="menuPanel" class="menu-panel stage-panel wp-stage-art-shell hidden" data-wp-stage-art="../../assets/animal-hidden-safari-cover.webp" style="--wp-stage-art: url('../../assets/animal-hidden-safari-cover.webp')">
+        <div class="stage-head"><button id="stageBackMainBtn" data-wp-return="stage" type="button" data-aria="back" aria-label="Back">&larr;</button><strong data-ui="chooseStage">Choose Habitat</strong></div>
+        <div id="stageGrid" class="stage-grid" data-wp-stage-snap-locked="true" data-wp-stage-settle-duration="360" data-wp-stage-settle-easing="smoothstep" data-aria="stageList" aria-label="Stage list"></div>
+      </section>
+
+      <section id="playPanel" class="play-panel hidden">
+        <div class="play-head">
+          <button id="backToStagesBtn" class="play-return" data-wp-return="battle" type="button" data-aria="backToHabitats" aria-label="Back to habitats">&larr;</button>
+          <div class="progress-card">
+            <span id="stageText">Stage 1</span>
+            <div><i id="progressFill"></i></div>
+          </div>
+          <button id="hintBtn" class="hint-btn" type="button"><span data-ui="hint">Hint</span> <b id="hintCount">2</b></button>
+          <p id="hintStatus" class="visually-hidden" aria-live="polite"></p>
+        </div>
+
+        <div id="scene" class="scene" data-aria="hiddenAnimalScene" aria-label="Hidden animal scene">
+          <div id="targetsLayer" class="targets-layer"></div>
+          <div id="floatLayer" class="float-layer"></div>
+        </div>
+
+          <div class="target-panel">
+          <div>
+            <strong data-ui="findList">Find These</strong>
+            <span class="target-status"><b id="remainingText"></b><span id="timerText">0:00</span></span>
+          </div>
+          <div id="targetList" class="target-list"></div>
+          </div>
+        </section>
+
+      <div id="resultPanel" class="result-panel hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultText">
+        <div class="result-card">
+        <img class="result-celebration" src="../../assets/animal-hidden-safari-result-celebration.webp" alt="" draggable="false" />
+          <strong id="resultTitle">Great find!</strong>
+          <div id="starText" class="stars">&#9734;&#9734;&#9734;</div>
+          <span id="resultText"></span>
+          <section class="skill-report" aria-labelledby="skillReportTitle">
+            <b id="skillReportTitle">Skill Report</b>
+            <dl>
+              <div><dt id="focusLabel">Focus</dt><dd id="focusValue"></dd></div>
+              <div><dt id="animalLabel">Animal Knowledge</dt><dd id="animalValue"></dd></div>
+              <div><dt id="solveLabel">Problem Solving</dt><dd id="solveValue"></dd></div>
+            </dl>
+            <p id="progressComparison"></p>
+          </section>
+          <button id="nextStageBtn" type="button" data-ui="nextStage">Next Habitat</button>
+          <button id="retryBtn" type="button" data-ui="retry">Try Again</button>
+          <button id="resultStagesBtn" type="button" data-ui="stages">Habitats</button>
+          <a href="/kids/" data-ui="lobby">Lobby</a>
+        </div>
+      </div>
+
+      <div id="loadingPanel" class="loading-panel">
+        <div class="loading-card">
+          <strong data-ui="loading">Loading</strong>
+          <span id="loadingText">0%</span>
+          <div><i id="loadingFill"></i></div>
+        </div>
+      </div>
+    </main>
+    <!-- adsense-static-guide:start -->
+    <section class="game-page-info game-page-info-static" aria-label="Animal Hidden Safari game information">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay Kids Game Guide</span><h2>Animal Hidden Safari</h2><p>Animal Hidden Safari is a calm 30-habitat seek-and-find campaign. Six five-stage regions move from open searches to printed search order, animal pairs, deeper camouflage, off-list habitat visitors, and gently moving patrols. Every habitat contains six real picture targets, two limited hints, saved stars, and a local best search time without a countdown failure.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>30-Habitat Seek and Find</strong></div><div class="game-info-fact"><span>Genre</span><strong>Puzzle · Safari · Animal · Family</strong></div><div class="game-info-fact"><span>Difficulty</span><strong>Easy to Challenging</strong></div><div class="game-info-fact"><span>Estimated Play Time</span><strong>2-6 minutes per habitat</strong></div><div class="game-info-fact"><span>Skills Trained</span><strong>Focus · Animal Knowledge · Problem Solving</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>World and Mission</h3><p>The Junior Ranger Lodge keeps a picture census of animals using Sunny Grassland, River Crossing, Sunset Trees, Pond Watch, Jungle Edge, and Lookout Hill. Seasonal paths have opened at once, so familiar lions, elephants, giraffes, pandas, penguins, koalas, rabbits, foxes, frogs, and owls are sharing places where they are not usually counted. The player becomes the lodge&#39;s junior observer and checks each printed list against the visible habitat.</p>
+<p>Finishing a habitat confirms all six requested sightings. Every fifth challenge is a Habitat Checkpoint that reviews the search habit learned in that region. Completing Checkpoint 30 returns a verified picture census to the lodge: paired animals have been counted separately, harmless visitors have not been confused with the list, and the moving lookout patrol has been observed in the required order.</p></div>
+      <div class="game-info-section"><h3>How the Systems Work</h3><p>Visible search time has no failure limit. It records only time when the habitat is active; switching apps or hiding the page pauses the measurement. A completed result compares the run with the same habitat&#39;s local best.</p>
+<p>Stars reward careful independent observation. A run with no empty taps and no hints earns three stars; a small number of empty taps with at least one hint remaining earns two; every completed scene earns at least one and unlocks progress.</p>
+<p>Open Search lets the player find the six pictures in any order. Ranger Order highlights one requested animal at a time; choosing another pictured target gives a friendly correction and does not remove it.</p>
+<p>Animal Pairs places two separate copies of several species in one scene. Each picture must be found at its own location, so recognizing one fox, owl, lion, panda, penguin, or koala does not finish its partner.</p>
+<p>Deep Camouflage reduces the animal&#39;s contrast and enlarges its foreground grass, leaf, water, or dust cover. Keyboard focus and compass hints restore a strong readable cue, keeping the rule discoverable without making the target disappear.</p>
+<p>Habitat Visitors are real animal pictures that are not printed on the six-item list. Tapping one counts as an empty choice and dismisses it, teaching list comparison without blocking completion. Moving Patrol gives targets a slow, small drift; reduced-motion settings stop that movement.</p>
+<p>Hints, empty taps, found targets, unaided finds, stars, unlocks, and best times feed the supportive Result and Skill Report. They stay in this browser and are not uploaded as a test score or public leaderboard.</p></div>
+      <div class="game-info-section"><h3>How to Play</h3><ol><li>Choose any unlocked card on the horizontal 30-habitat Stage rail and read its rule label.</li><li>Compare the six picture chips below the scene with the partly covered animals in the habitat.</li><li>Tap, click, or focus and press Enter on a requested animal. In Ranger Order, follow the highlighted list from first to last.</li><li>Use either of the two compass hints when needed; each points to a different unfound target when possible.</li><li>Find all six animals to save stars and best visible search time, unlock the next habitat, or replay the current one.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Strategy Tips</h3><ul><li>Scan one strip of the scene at a time instead of jumping between distant bright shapes.</li><li>In Ranger Order, follow the glowing target and matching highlighted chip before touching another animal.</li><li>When a species appears twice, remember which side still has its unfinished partner.</li><li>Compare every tempting jungle animal with the six picture chips; a visible animal can be a harmless visitor.</li><li>Use a hint after completing a careful scan so the compass teaches which area was overlooked.</li></ul></div>
+      <div class="game-info-section"><h3>Campaign and Difficulty Growth</h3><p>Habitats 1-5, Sunny Grassland: six freely selectable animals teach scene scanning and finish with the first Habitat Checkpoint.</p>
+<p>Habitats 6-10, River Crossing: Ranger Order changes priority from any visible animal to the next highlighted picture.</p>
+<p>Habitats 11-15, Sunset Trees: Animal Pairs repeat three species at separate positions; Checkpoint 15 also asks for a fixed order.</p>
+<p>Habitats 16-20, Pond Watch: deeper foreground camouflage rewards slower edge-to-center scanning; later stages combine order and pairs.</p>
+<p>Habitats 21-25, Jungle Edge: harmless off-list visitors require comparison with the six printed chips. The checkpoint adds order and camouflage.</p>
+<p>Habitats 26-30, Lookout Hill: gentle target movement changes where the eye must return. The final checkpoint combines moving paired targets, Ranger Order, Deep Camouflage, and three habitat visitors.</p></div>
+      <div class="game-info-section"><h3>Developer Design Note</h3><p>The game keeps one square search scene and six large picture chips inside a uniformly scaled 390-by-693 Kids Battle Canvas, so phone, desktop, touch, pointer, and keyboard players solve the same layout. Difficulty grows by changing what counts as reliable information rather than shrinking hit areas or imposing a harsh countdown. Order changes priority, pairs change counting, camouflage changes visual separation, visitors change list comparison, and movement changes tracking. Checkpoints combine learned rules without combat. Targets retain forgiving hit perimeters, hints name and ring one target, held keys cannot spend both hints or skip Result, and reduced-motion preferences stop patrol movement. The Kids build remains ad-free, account-free, and purchase-free.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Parent Note</h3><p>Animal Hidden Safari is intended for ages 3+ with family help available for later mixed checkpoints. It may support picture matching, visual scanning, list comparison, flexible attention, and animal naming. Adults can ask which parts of the list are complete or why a visible animal is a visitor. Stars, time, and the Skill Report describe only this local play session; they are not an intelligence test, diagnosis, developmental assessment, school grade, or comparison with other children. The Kids page makes no advertising request and has no login, chat, or purchase prompt.</p></div>
+      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>How many habitats are included?</dt><dd>There are 30 challenges in six regions, with Habitat Checkpoints at 5, 10, 15, 20, 25, and 30.</dd></div><div><dt>Is there a time limit?</dt><dd>No. Time records a local best but never causes failure, and hidden app time is excluded.</dd></div><div><dt>What does Ranger Order change?</dt><dd>Only the highlighted next animal advances the list; another requested animal remains available for later.</dd></div><div><dt>Why are two animals identical?</dt><dd>Animal Pairs deliberately asks the player to find two separate members of the same species.</dd></div><div><dt>What is a habitat visitor?</dt><dd>It is a visible animal not printed on the current list. It can be dismissed but does not count as a find.</dd></div><div><dt>How does a hint work?</dt><dd>A compass ring and short name point to an unfound animal; two hints are available per habitat.</dd></div><div><dt>Is progress saved?</dt><dd>Yes. Unlocks, stars, and best times stay in this browser without an account.</dd></div><div><dt>Can it be played with touch and keyboard?</dt><dd>Yes. Targets are native buttons with forgiving touch areas and continuous keyboard focus.</dd></div><div><dt>Is the Kids game ad-free?</dt><dd>Yes. It makes no advertising request and contains no ad reserve.</dd></div><div><dt>Is the Skill Report a formal assessment?</dt><dd>No. It only summarizes finds, empty taps, hints, and time from the local game.</dd></div></dl></div>
+    </div>
+  </section>
+    <!-- adsense-static-guide:end -->
+    <script src="/src/site-config.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/version.js?v=20260701-version2"></script>
+    <script src="../../src/analytics.js?v=20260701-analytics2"></script>
+    <script>
+      window.WonderAnalytics?.track("game_view", { game_id: "animal-hidden-safari" });
+    </script>
+    <script src="../../src/sound.js?v=20260701-labels1"></script>
+    <script src="../../src/edge-guard.js?v=20260710-mobile-play-shell2"></script>
+    <script src="/src/i18n.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
+    <script src="game.js?v=20260717-zh-hans1"></script>
+    <script>
+      (() => {
+        const loadGameInfo = () => {
+          if (document.querySelector("script[data-safari-game-info]")) return;
+          const script = document.createElement("script");
+          script.src = "../../src/game-page-info.js?v=20260717-zh-hans1";
+          script.dataset.safariGameInfo = "idle";
+          script.async = true;
+          document.body.appendChild(script);
+        };
+        const schedule = () => {
+          if ("requestIdleCallback" in window) {
+            window.requestIdleCallback(loadGameInfo, { timeout: 1600 });
+          } else {
+            window.setTimeout(loadGameInfo, 350);
+          }
+        };
+        if (document.readyState === "complete") schedule();
+        else window.addEventListener("load", schedule, { once: true });
+      })();
+    </script>
+  </body>
+</html>

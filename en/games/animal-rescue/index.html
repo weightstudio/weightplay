@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <base href="/games/animal-rescue/" />
+    <meta charset="UTF-8" />
+    <meta name="weightplay-audience" content="kids" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#6fbf64" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="robots" content="index,follow" />
+    <meta name="description" content="Guide twelve animal friends through 30 saved, no-timer route puzzles. Six regions add required fruit, weighted mud, trail keys, locked gates, fragile..." />
+    <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Animal Rescue Trail | WeightPlay" />
+    <meta property="og:description" content="Guide twelve animal friends through 30 saved, no-timer route puzzles. Six regions add required fruit, weighted mud, trail keys, locked gates, fragile..." />
+    <meta property="og:url" content="https://weightplay.com/en/games/animal-rescue/" />
+    <meta property="og:image" content="https://weightplay.com/assets/animal-rescue-cover.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>Animal Rescue Trail | WeightPlay</title>
+    <link rel="canonical" href="https://weightplay.com/en/games/animal-rescue/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-rescue/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-rescue/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-rescue/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/animal-rescue/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-rescue/" />
+    <link rel="stylesheet" href="style.css?v=20260717-depth30" data-wp-stage-standard data-wp-battle-standard />
+    <script data-wp-stage-standard>/* Shared Kids Stage selector owns pointer drag and settle; Animal Rescue owns stage activation. */</script>
+    <script data-wp-battle-standard>/* Animal Rescue owns its native Kids Battle Canvas. */</script>
+    <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Animal Rescue Trail",
+  "alternateName": "動物回家路",
+  "url": "https://weightplay.com/en/games/animal-rescue/",
+  "image": "https://weightplay.com/assets/animal-rescue-cover.png",
+  "description": "Guide twelve animal friends through 30 saved, no-timer route puzzles. Six regions add required fruit, weighted mud, trail keys, locked gates, fragile...",
+  "applicationCategory": "Game",
+  "operatingSystem": "Web browser",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio"
+  },
+  "inLanguage": "en",
+  "isAccessibleForFree": true,
+  "genre": [
+    "Route Planning",
+    "Puzzle",
+    "Animal"
+  ],
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "Kids and families",
+    "suggestedMinAge": 6
+  },
+  "learningResourceType": "Skill practice through play",
+  "educationalUse": "Practice Logic, Problem Solving, Animal Knowledge through family-friendly browser gameplay."
+}
+    </script>
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
+    <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
+    <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
+    <meta name="twitter:title" content="Animal Rescue Trail | WeightPlay" />
+    <meta name="twitter:description" content="Guide twelve animal friends through 30 saved, no-timer route puzzles. Six regions add required fruit, weighted mud, trail keys, locked gates, fragile..." />
+  </head>
+  <body data-tutorial-auto-show="false">
+    <main class="rescue-game" data-play-viewport data-no-mobile-immersive="true">
+      <header class="topbar">
+        <a id="homeLink" class="home-link" data-wp-return="main" href="/kids/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
+        <div>
+          <p>WeightPlay</p>
+          <h1 id="titleText">Animal Rescue Trail</h1>
+        </div>
+        <label class="language-picker">
+          <span id="languageLabel">Language</span>
+          <select id="localeSelect" aria-label="Language">
+            <option value="en">English</option>
+            <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
+            <option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option>
+          </select>
+        </label>
+      </header>
+
+      <section id="hud" class="hud hidden">
+        <div><span id="stageLabel">Stage</span><strong id="stageText">1 / 30</strong></div>
+        <div><span id="moveLabel">Moves</span><strong id="moveText">0</strong></div>
+        <div><span id="fruitLabel">Fruit</span><strong id="fruitText">0 / 2</strong></div>
+      </section>
+
+      <section id="mainPanel" class="main-panel">
+        <img class="main-cover" src="../../assets/animal-rescue-cover.webp" alt="" />
+        <div class="main-copy"><strong id="mainTitle">Animal Rescue Trail</strong><span id="mainIntro">Guide animal friends safely home across each trail.</span></div>
+        <button id="showStageBtn" class="main-start" type="button">Choose Trail</button>
+      </section>
+
+      <section id="stageSelect" class="stage-select hidden">
+        <div class="stage-shell-head"><button id="stageBackBtn" class="stage-return" data-wp-return="stage" type="button" aria-label="Back">&larr;</button><strong id="stageSelectTitle" role="status" aria-live="polite" aria-atomic="true">Choose Trail</strong></div>
+        <span id="stageSetupText" class="stage-setup-text">Choose an unlocked trail and help the next animal home.</span>
+        <div id="stageGrid" class="stage-grid" data-wp-stage-settle-duration="360" data-wp-stage-settle-easing="smoothstep"></div>
+      </section>
+      <section id="playArea" class="play-area hidden">
+        <button id="battleBackBtn" class="battle-return" data-wp-return="battle" type="button" aria-label="Back to trails">&larr;</button>
+        <div class="animal-panel">
+          <div id="animalAvatar" class="animal-avatar"></div>
+          <div>
+            <strong id="animalName">Lion Cub</strong>
+            <span id="hintText">Tap the next tile to help the animal go home.</span>
+          </div>
+        </div>
+        <div id="board" class="board" aria-label="Animal rescue board"></div>
+        <div class="action-row">
+          <button id="undoBtn" type="button">Undo</button>
+          <button id="resetBtn" type="button">Reset</button>
+        </div>
+        <section id="resultPanel" class="result-panel hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultText">
+          <div class="result-card">
+            <strong id="resultTitle">Trail Clear!</strong>
+            <span id="resultText"></span>
+            <div id="starLine" class="star-line"></div>
+            <button id="nextBtn" type="button">Next Trail</button>
+            <button id="retryBtn" type="button">Play Again</button>
+            <button id="trailsBtn" type="button">Trails</button>
+            <a id="lobbyLink" href="/kids/">Lobby</a>
+          </div>
+        </section>
+      </section>
+
+      <div id="loadingPanel" class="loading-panel">
+        <div class="loading-card">
+          <strong id="loadingTitle">Loading</strong>
+          <span id="loadingText">0%</span>
+          <div><i id="loadingFill"></i></div>
+        </div>
+      </div>
+    </main>
+    <!-- adsense-static-guide:start -->
+    <section class="game-page-info game-page-info-static" aria-label="Animal Rescue Trail game information">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay Kids Game Guide</span><h2>Animal Rescue Trail</h2><p>Guide twelve animal friends through 30 saved, no-timer route puzzles. Six regions add required fruit, weighted mud, trail keys, locked gates, fragile one-use paths, and Rescue Checkpoints.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>30-Trail Route Puzzle</strong></div><div class="game-info-fact"><span>Genre</span><strong>Route Planning · Puzzle · Animal</strong></div><div class="game-info-fact"><span>Difficulty</span><strong>Easy to Challenging</strong></div><div class="game-info-fact"><span>Estimated Play Time</span><strong>3-8 minutes</strong></div><div class="game-info-fact"><span>Skills Trained</span><strong>Logic · Problem Solving · Animal Knowledge</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>World and Mission</h3><p>Homecoming Valley once used painted fruit signs to guide animals from the forest, meadow, river, ridge, farms, and festival grounds. Wind and rain scattered the signs, covered shortcuts with mud, washed away stepping stones, and locked garden gates. As junior route keeper, the player rebuilds each safe trip.</p>
+<p>Every fifth trail is a Rescue Checkpoint. Clearing Trail 30 brings Penguin through the final mixed route and restores the Homecoming Festival path for all twelve animal friends.</p></div>
+      <div class="game-info-section"><h3>How the Systems Work</h3><p>Moves and stars: Normal ground costs one move; Sticky Mud costs two. Authored move goals and fruit collection determine one to three stars.</p>
+<p>All Fruit: Marked trails keep home closed until every fruit is collected.</p>
+<p>Trail Key and Gate: A golden key must be collected before its gate accepts a move.</p>
+<p>Fragile Path: A fragile square can be entered once and cannot be revisited unless Undo or Reset removes that visit.</p>
+<p>Undo and Reset: Undo recomputes fruit, keys, gates, fragile visits, and weighted moves from the retained path; Reset rebuilds the whole trail.</p></div>
+      <div class="game-info-section"><h3>How to Play</h3><ol><li>Choose an unlocked trail on the horizontal Stage rail.</li><li>Move one neighboring square with touch, pointer, or one arrow-key press.</li><li>Collect fruit and keys while avoiding rocks, water, closed gates, and crumbled fragile paths.</li><li>Reach home after satisfying the trail objective, then use Next Trail, Play Again, or Trails.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Strategy Tips</h3><ul><li>Trace a complete fruit-to-home route before moving.</li><li>Count mud as two when comparing routes.</li><li>Locate a key before committing to the gate corridor.</li><li>Decide how to leave a fragile square before entering it.</li><li>Use Undo for one wrong turn and Reset for a new plan.</li></ul></div>
+      <div class="game-info-section"><h3>Campaign and Difficulty Growth</h3><p>1-5 Forest Steps teaches neighboring movement, barriers, fruit detours, and the first all-fruit checkpoint.</p>
+<p>6-10 Meadow Detours adds Sticky Mud and weighted route comparison.</p>
+<p>11-15 River Keys introduces route keys and locked gates around water corridors.</p>
+<p>16-20 Fragile Ridge adds one-use squares and a key-gate checkpoint.</p>
+<p>21-25 Harvest Routes makes fruit mandatory while mixing mud, gates, and fragile choices.</p>
+<p>26-30 Homecoming Festival combines the learned rules; Trail 30 uses all fruit, mud, a key gate, and fragile squares.</p></div>
+      <div class="game-info-section"><h3>Developer Design Note</h3><p>A fixed 5 by 5 board keeps every square large on phones while the full route remains visible. Discrete movement gives touch, pointer, and keyboard the same decision. Difficulty grows through cost, order, reversibility, and completion rules rather than speed. The 390 by 788 Kids canvas has no timer, combat, leaderboard, account, purchase, ad request, or reserve.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Parent Note</h3><p>Animal Rescue Trail is intended for ages 6+ and family play. Stars summarize only local game performance; they are not an intelligence test, school grade, diagnosis, developmental assessment, or comparison with other children. Progress stays in this browser, and the Kids build has no ads, login, chat, or purchase request.</p></div>
+      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>How many trails are included?</dt><dd>There are 30 in six regions, with checkpoints at 5, 10, 15, 20, 25, and 30.</dd></div><div><dt>Do I always need every fruit?</dt><dd>Only marked All Fruit trails require every fruit before home opens; fruit still improves stars elsewhere.</dd></div><div><dt>Why does mud add two moves?</dt><dd>Sticky Mud has weighted cost, making a direct route potentially less efficient.</dd></div><div><dt>How do keys and gates work?</dt><dd>Collect the golden key before entering its gate; a rejected gate tap costs no move.</dd></div><div><dt>Can I cross a fragile tile twice?</dt><dd>No, but Undo or Reset can restore it by removing the visit.</dd></div><div><dt>Is progress saved?</dt><dd>Yes. Unlocks and best stars stay in this browser.</dd></div><div><dt>Does it support phones and keyboards?</dt><dd>Yes. Touch, pointer, and arrow keys use the same rules.</dd></div><div><dt>Is it free and ad-free?</dt><dd>Yes. No account or purchase is required and the Kids build makes no advertising request.</dd></div></dl></div>
+    </div>
+  </section>
+    <!-- adsense-static-guide:end -->
+    <script src="/src/site-config.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/version.js?v=20260701-version2"></script>
+    <script src="../../src/analytics.js?v=20260701-analytics2"></script>
+    <script>
+      window.WonderAnalytics?.track("game_view", { game_id: "animal-rescue" });
+    </script>
+    <script src="../../src/sound.js?v=20260701-labels1"></script>
+    <script src="../../src/edge-guard.js?v=20260710-mobile-play-shell2"></script>
+    <script src="/src/i18n.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
+    <script src="game.js?v=20260717-zh-hans1"></script>
+    <script>
+      (() => {
+        const loadGameInfo = () => {
+          if (document.querySelector("script[data-rescue-game-info]")) return;
+          const script = document.createElement("script");
+          script.src = "../../src/game-page-info.js?v=20260717-zh-hans1";
+          script.dataset.rescueGameInfo = "idle";
+          script.async = true;
+          document.body.appendChild(script);
+        };
+        const schedule = () => {
+          if ("requestIdleCallback" in window) {
+            window.requestIdleCallback(loadGameInfo, { timeout: 1600 });
+          } else {
+            window.setTimeout(loadGameInfo, 350);
+          }
+        };
+        if (document.readyState === "complete") schedule();
+        else window.addEventListener("load", schedule, { once: true });
+      })();
+    </script>
+  </body>
+</html>

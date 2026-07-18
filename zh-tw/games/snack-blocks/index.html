@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <base href="/games/snack-blocks/" />
+    <meta charset="UTF-8" />
+    <meta name="weightplay-audience" content="kids" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#f7b84b" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="robots" content="index,follow" />
+    <meta name="description" content="動物零食方塊共有 30 個可存檔關卡。六個章節會改變棋盤可出現的零食組合與過關目標，玩家要在 7×10 棋盤上規劃每一次交換，而不是只追求越來越高的數字。" />
+    <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="動物零食方塊 | WeightPlay" />
+    <meta property="og:description" content="動物零食方塊共有 30 個可存檔關卡。六個章節會改變棋盤可出現的零食組合與過關目標，玩家要在 7×10 棋盤上規劃每一次交換，而不是只追求越來越高的數字。" />
+    <meta property="og:url" content="https://weightplay.com/zh-tw/games/snack-blocks/" />
+    <meta property="og:image" content="https://weightplay.com/assets/snack-blocks-cover.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>動物零食方塊 | WeightPlay</title>
+    <link rel="canonical" href="https://weightplay.com/zh-tw/games/snack-blocks/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/snack-blocks/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/snack-blocks/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/snack-blocks/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/snack-blocks/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/snack-blocks/" />
+    <link rel="stylesheet" href="style.css?v=20260717-depth30-1" data-wp-stage-standard data-wp-battle-standard />
+    <script data-wp-stage-standard>/* Snack Blocks owns its native Kids Stage rail. */</script>
+    <script data-wp-battle-standard>/* Snack Blocks owns its native Kids Battle Canvas. */</script>
+    <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "動物零食方塊",
+  "alternateName": "動物零食方塊",
+  "url": "https://weightplay.com/zh-tw/games/snack-blocks/",
+  "image": "https://weightplay.com/assets/snack-blocks-cover.png",
+  "description": "動物零食方塊共有 30 個可存檔關卡。六個章節會改變棋盤可出現的零食組合與過關目標，玩家要在 7×10 棋盤上規劃每一次交換，而不是只追求越來越高的數字。",
+  "applicationCategory": "Game",
+  "operatingSystem": "Web browser",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio"
+  },
+  "inLanguage": "zh-Hant",
+  "isAccessibleForFree": true,
+  "genre": [
+    "益智",
+    "邏輯",
+    "動物"
+  ],
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "Kids and families",
+    "suggestedMinAge": 9
+  },
+  "learningResourceType": "Skill practice through play",
+  "educationalUse": "Practice Logic, Problem Solving, Focus through family-friendly browser gameplay."
+}
+    </script>
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
+    <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
+    <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
+    <meta name="twitter:title" content="動物零食方塊 | WeightPlay" />
+    <meta name="twitter:description" content="動物零食方塊共有 30 個可存檔關卡。六個章節會改變棋盤可出現的零食組合與過關目標，玩家要在 7×10 棋盤上規劃每一次交換，而不是只追求越來越高的數字。" />
+  </head>
+  <body data-tutorial-auto-show="false">
+    <main class="snack-game" data-play-viewport data-no-mobile-immersive="true" data-wp-logical-battle-canvas>
+      <header class="topbar">
+        <a id="homeLink" class="home-link" data-wp-return="main" href="/kids/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
+        <div>
+          <p id="brandText">WeightPlay</p>
+          <h1 id="titleText">動物零食方塊</h1>
+        </div>
+        <label class="language-picker">
+          <span id="languageLabel">Language</span>
+          <select id="localeSelect" aria-label="Language">
+            <option value="en">English</option>
+            <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
+            <option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option>
+          </select>
+        </label>
+      </header>
+
+      <section id="hud" class="hud hidden" aria-label="Game stats">
+        <button id="battleBackBtn" data-wp-return="battle" type="button" aria-label="Back to stages">&larr;</button>
+        <div><span id="stageLabel">Stage</span><strong id="stageText">1</strong></div>
+        <div><span id="movesLabel">Moves</span><strong id="movesText">20</strong></div>
+        <div><span id="targetLabel">Target</span><strong id="targetText">800</strong></div>
+      </section>
+
+      <section id="menuPanel" class="menu-panel">
+        <img class="cover" src="../../assets/snack-blocks-cover.png" alt="" />
+        <strong id="menuTitle">Snack Blocks</strong>
+        <span id="menuText">Match 3 or more snacks, hit the target, and unlock the next stage.</span>
+        <button id="startBtn" class="primary-action" type="button">Start Game</button>
+      </section>
+
+      <section id="stagePanel" class="stage-panel wp-stage-art-shell hidden" data-wp-stage-art="../../assets/snack-blocks-cover.png" style="--wp-stage-art: url('../../assets/snack-blocks-cover.png')" aria-label="Stage selection">
+        <div class="stage-heading">
+          <button id="stageBackBtn" class="stage-back" data-wp-return="stage" type="button" aria-label="Back">&larr;</button>
+          <div>
+            <strong id="stageTitle">Choose a snack stage.</strong>
+            <span id="stageHelp">Drag sideways and choose an unlocked stage.</span>
+          </div>
+        </div>
+        <div id="stageGrid" class="stage-grid"></div>
+      </section>
+      <section id="playPanel" class="play-panel hidden">
+        <div id="scoreLine" class="score-line">
+          <span id="scoreLabel">Score</span>
+          <strong id="scoreText">0</strong>
+        </div>
+        <div id="board" class="board" aria-label="Snack Blocks board"></div>
+        <p id="hintText" class="hint">Tap or drag a snack to swap with its neighbor.</p>
+      </section>
+
+      <section id="resultPanel" class="result-panel hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" tabindex="-1">
+        <div class="result-card">
+          <strong id="resultTitle">Stage Clear!</strong>
+          <span id="resultText"></span>
+          <div id="resultStars" class="result-stars"></div>
+          <div id="skillReport" class="skill-report" aria-live="polite"></div>
+          <button id="nextBtn" type="button">Next Stage</button>
+          <button id="againBtn" type="button">Try Again</button>
+          <button id="menuBtn" type="button">Stages</button>
+          <a id="lobbyLink" href="/kids/">Lobby</a>
+        </div>
+      </section>
+
+      <div id="loadingPanel" class="loading-panel">
+        <div class="loading-card">
+          <strong id="loadingTitle">Loading</strong>
+          <span id="loadingText">0%</span>
+          <div><i id="loadingFill"></i></div>
+        </div>
+      </div>
+    </main>
+    <!-- adsense-static-guide:start -->
+    <section class="game-page-info game-page-info-static" aria-label="動物零食方塊 遊戲資訊">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 兒童遊戲指南</span><h2>動物零食方塊</h2><p>動物零食方塊共有 30 個可存檔關卡。六個章節會改變棋盤可出現的零食組合與過關目標，玩家要在 7×10 棋盤上規劃每一次交換，而不是只追求越來越高的數字。</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>三消關卡益智</strong></div><div class="game-info-fact"><span>類型</span><strong>益智 · 邏輯 · 動物</strong></div><div class="game-info-fact"><span>難度</span><strong>漸進挑戰</strong></div><div class="game-info-fact"><span>預估遊玩時間</span><strong>3-8 分鐘</strong></div><div class="game-info-fact"><span>練習能力</span><strong>邏輯 · 問題解決 · 專注</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>世界與任務</h3><p>零食世界的動物要把同一張野餐桌從莓果田運到皇冠盛宴。每次三消代表整理好一批食物，六個地區則分別準備宴會所需的不同零食。</p>
+<p>第 5、10、15、20、25、30 關是野餐鈴、烘焙坊大門、花園鼓、工坊鐘、橋上宴會與皇冠餐桌檢查。通過第 30 關代表完整宴席送達終點。</p></div>
+      <div class="game-info-section"><h3>遊戲系統</h3><p>基本消除每格 12 分，再乘上目前連鎖層數。無效交換會復原且不消耗步數。</p>
+<p>目標包含分數、單一零食、雙零食、連鎖、單次大消除，以及同時要求收集與分數的檢查關。</p>
+<p>每關指定四、五或六種零食池，部分關卡會移除兩種零食，讓連鎖規劃方式產生變化。</p>
+<p>已解鎖關卡與個人最佳成績只儲存在目前瀏覽器，不需要登入。</p></div>
+      <div class="game-info-section"><h3>玩法說明</h3><ol><li>在水平 Stage 軌道選擇已解鎖關卡，先閱讀目標與移動步數。</li><li>點選一個零食再點相鄰零食，或向相鄰方向拖曳；有效交換必須立刻形成三個以上相同零食。</li><li>消除後零食會下落並從上方補入；補位自動形成的消除會建立連鎖倍率。</li><li>用完整步數完成目標，成功後才會存檔並解鎖下一關。</li></ol></div>
+      
+      <div class="game-info-section"><h3>關卡與難度成長</h3><p>第 1-5 關在野餐小徑教學分數、收集與四格消除。</p>
+<p>第 6-10 關在餅乾渡口加入二段連鎖、五格消除與雙零食收集。</p>
+<p>第 11-15 關在葡萄花園交替使用縮減與擴大的零食池。</p>
+<p>第 16-20 關在起司工坊要求三段連鎖與更精準的大消除。</p>
+<p>第 21-25 關在蝴蝶餅橋提高雙收集壓力，並更常使用全部六種零食。</p>
+<p>第 26-30 關的皇冠盛宴混合所有規則，最後一關同時要求糖果收集與分數。</p></div>
+      <div class="game-info-section"><h3>開發設計理念</h3><p>直向棋盤讓手機上的動物零食圖案維持清楚，也保留足夠的垂直連鎖空間。30 關的深度來自零食池與目標類型改變，不是只有數值提高。觸控、拖曳與鍵盤都使用同一組原生方塊按鈕；Kids 版本沒有計時壓力，也不會發出廣告請求。</p></div>
+      <div class="game-info-section game-info-parent"><h3>家長說明</h3><p>本遊戲建議 9+ 與家庭玩家，因為後期會同時處理雙目標、零食池變化與連鎖規劃。技能報告只是本局遊戲結果的友善整理，不是智力測驗、診斷、學校評量或兒童間比較。</p></div>
+      <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>一共有幾關？</dt><dd>共有 30 關，並在第 5、10、15、20、25、30 關設置六個檢查關。</dd></div><div><dt>為什麼交換後會移回去？</dt><dd>有效交換必須立刻形成三消；無效交換會復原且不扣步數。</dd></div><div><dt>什麼是連鎖？</dt><dd>消除下落或補位後自動形成的新消除就是連鎖，連續層數會提高分數倍率。</dd></div><div><dt>雙零食目標怎麼算？</dt><dd>畫面指定的兩種零食都會計入同一個收集目標。</dd></div><div><dt>檢查關有什麼不同？</dt><dd>必須同時完成指定零食數量與分數目標。</dd></div><div><dt>進度會保存嗎？</dt><dd>已解鎖關卡與最佳成績會保存在目前瀏覽器。</dd></div><div><dt>手機和電腦都能玩嗎？</dt><dd>可以，支援觸控、指標拖曳與鍵盤方塊按鈕。</dd></div><div><dt>需要登入或付費嗎？</dt><dd>不需要；Kids 版本免費、免登入且不會發出廣告請求。</dd></div><div><dt>技能報告是正式測驗嗎？</dt><dd>不是，它只整理本局分數與目標結果。</dd></div></dl></div>
+    </div>
+  </section>
+    <!-- adsense-static-guide:end -->
+    <script src="/src/site-config.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/version.js?v=20260701-version2"></script>
+    <script src="../../src/analytics.js?v=20260701-analytics2"></script>
+    <script>
+      window.WonderAnalytics?.track("game_view", { game_id: "snack-blocks" });
+    </script>
+    <script src="../../src/sound.js?v=20260701-labels1"></script>
+    <script src="../../src/edge-guard.js?v=20260710-mobile-play-shell2"></script>
+    <script src="/src/i18n.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
+    <script src="game.js?v=20260717-zh-hans1"></script>
+    <script src="../../src/game-page-info.js?v=20260717-zh-hans1"></script>
+  </body>
+</html>

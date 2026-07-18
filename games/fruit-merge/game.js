@@ -462,17 +462,19 @@
   }
 
   function locale() {
-    return window.WonderI18n?.locale?.() || "en";
+    return window.WonderI18n?.actualLocale?.() || window.WonderI18n?.locale?.() || "en";
   }
 
   function t(key, params = {}) {
-    const table = dictionary[locale()] || dictionary.en;
+    const currentLocale = locale();
+    const sourceLocale = currentLocale === "zh-Hans" ? "zh-Hant" : currentLocale;
+    const table = dictionary[sourceLocale] || dictionary.en;
     const fallback = dictionary.en;
     let value = table[key] || fallback[key] || key;
     for (const [name, param] of Object.entries(params)) {
       value = value.replaceAll(`{${name}}`, String(param));
     }
-    return value;
+    return currentLocale === "zh-Hans" ? window.WonderI18n?.simplifyChineseText?.(value) || value : value;
   }
 
   function activeChallenge() {
@@ -480,9 +482,14 @@
   }
 
   function localeSlot() {
-    if (locale() === "zh-Hant") return 1;
+    if (["zh-Hant", "zh-Hans"].includes(locale())) return 1;
     if (locale() === "es") return 2;
     return 0;
+  }
+
+  function localizedChallengeName(challenge) {
+    const value = challenge.name[localeSlot()];
+    return locale() === "zh-Hans" ? window.WonderI18n?.simplifyChineseText?.(value) || value : value;
   }
 
   function challengeGoalLabel(challenge = activeChallenge()) {
@@ -778,7 +785,10 @@
       "zh-Hant": { classic: "開放箱", narrow: "窄窗", wind: "河風", heavy: "重力加強", fixed: "固定隊列" },
       es: { classic: "Caja abierta", narrow: "Ventana estrecha", wind: "Viento del río", heavy: "Gravedad fuerte", fixed: "Cola fija" },
     };
-    return labels[locale()]?.[rule] || rule;
+    const currentLocale = locale();
+    const sourceLocale = currentLocale === "zh-Hans" ? "zh-Hant" : currentLocale;
+    const value = labels[sourceLocale]?.[rule] || rule;
+    return currentLocale === "zh-Hans" ? window.WonderI18n?.simplifyChineseText?.(value) || value : value;
   }
 
   function renderChallengeRail(centerLatest = true) {
@@ -796,7 +806,7 @@
       card.setAttribute("aria-disabled", String(!unlocked));
       card.innerHTML = `
         <b>${t("stageLabel", { stage: challenge.id })}</b>
-        <strong>${challenge.name[localeSlot()]}</strong>
+        <strong>${localizedChallengeName(challenge)}</strong>
         <span>${challengeGoalLabel(challenge)}</span>
         <small>${challenge.rules.map(ruleLabel).join(" · ")} · ${t("dropsRule", { count: challenge.drops })}</small>
         <em>${unlocked ? t("stageBest", { score: Number(progress.best[challenge.id]) || 0 }) : t("stageLocked")}</em>
@@ -1311,7 +1321,7 @@
     summary.className = "result-summary";
     const challenge = activeChallenge();
     summary.textContent = challenge
-      ? `${t("stageLabel", { stage: challenge.id })} · ${challenge.name[localeSlot()]} · ${challengeGoalLabel(challenge)} · ${t("resultScore", { score: progress.lastScore })}`
+      ? `${t("stageLabel", { stage: challenge.id })} · ${localizedChallengeName(challenge)} · ${challengeGoalLabel(challenge)} · ${t("resultScore", { score: progress.lastScore })}`
       : t("result", { score: progress.lastScore, best: progress.bestScore });
     resultText.appendChild(summary);
 

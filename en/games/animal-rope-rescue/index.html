@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <base href="/games/animal-rope-rescue/" />
+    <meta charset="UTF-8" />
+    <meta name="weightplay-audience" content="kids" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#3f9f51" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="robots" content="index,follow" />
+    <meta name="description" content="Animal Vine Rescue is a 30-stage animal physics puzzle about cutting a hanging fruit free, steering a leaf trampoline, and landing the fruit in a waiting..." />
+    <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Animal Vine Rescue | WeightPlay" />
+    <meta property="og:description" content="Animal Vine Rescue is a 30-stage animal physics puzzle about cutting a hanging fruit free, steering a leaf trampoline, and landing the fruit in a waiting..." />
+    <meta property="og:url" content="https://weightplay.com/en/games/animal-rope-rescue/" />
+    <meta property="og:image" content="https://weightplay.com/assets/animal-vine-rescue-cover.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>Animal Vine Rescue | WeightPlay</title>
+    <link rel="canonical" href="https://weightplay.com/en/games/animal-rope-rescue/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-rope-rescue/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-rope-rescue/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-rope-rescue/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/animal-rope-rescue/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-rope-rescue/" />
+    <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
+    <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
+    <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
+    <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20260714-play-area-fill1" data-wp-battle-standard />
+    <link rel="stylesheet" href="style.css?v=20260717-vine-depth30-1" />
+    <link rel="stylesheet" href="../../src/stage-selector-standard.css?v=20260715-stage-swipe2" data-wp-stage-standard />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Animal Vine Rescue",
+  "url": "https://weightplay.com/en/games/animal-rope-rescue/",
+  "image": "https://weightplay.com/assets/animal-vine-rescue-cover.png",
+  "description": "Animal Vine Rescue is a 30-stage animal physics puzzle about cutting a hanging fruit free, steering a leaf trampoline, and landing the fruit in a waiting...",
+  "applicationCategory": "Game",
+  "operatingSystem": "Web browser",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio"
+  },
+  "inLanguage": "en",
+  "isAccessibleForFree": true,
+  "genre": [
+    "Physics",
+    "Puzzle",
+    "Animal"
+  ],
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "Kids and families",
+    "suggestedMinAge": 6
+  },
+  "learningResourceType": "Skill practice through play",
+  "educationalUse": "Practice timing, focus, hand-eye coordination, and problem solving through family-friendly gameplay."
+}
+    </script>
+    <meta name="twitter:title" content="Animal Vine Rescue | WeightPlay" />
+    <meta name="twitter:description" content="Animal Vine Rescue is a 30-stage animal physics puzzle about cutting a hanging fruit free, steering a leaf trampoline, and landing the fruit in a waiting..." />
+  </head>
+  <body>
+    <main class="vine-app" data-no-mobile-immersive="true">
+      <header class="topbar">
+        <a class="icon-btn home-link" data-wp-return="main" href="/kids/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
+        <div>
+          <p>WeightPlay</p>
+          <h1 data-ui="title">Animal Vine Rescue</h1>
+        </div>
+        <label class="language-picker">
+          <span data-ui="language">Language</span>
+          <select id="localeSelect" aria-label="Language">
+            <option value="en">English</option>
+            <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
+            <option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option>
+          </select>
+        </label>
+      </header>
+
+      <section id="menuPanel" class="menu-panel">
+        <img class="cover" src="../../assets/animal-vine-rescue-cover.png" alt="" />
+        <div class="menu-copy">
+          <strong data-ui="menuTitle">Rescue fruit for hungry animals.</strong>
+          <span data-ui="menuHint">Cut the vine, drag the leaf, and bounce fruit into the animal basket.</span>
+          <button id="startBtn" type="button" data-ui="start">Choose Stage</button>
+        </div>
+      </section>
+
+      <section id="stagePanel" class="stage-panel hidden" aria-label="Stages"></section>
+
+      <section id="gamePanel" class="game-panel hidden">
+        <div class="hud-row">
+          <button id="stageBackBtn" type="button" class="soft-btn" data-wp-return="battle" aria-label="Back to stages">&larr;</button>
+          <div class="hud-pill"><span data-ui="stage">Stage</span><b id="stageText">1</b></div>
+          <div class="hud-pill"><span data-ui="score">Delivery</span><b id="scoreText">1/1</b></div>
+        </div>
+        <div id="playfield" class="playfield play-area" aria-label="Animal vine rescue playfield">
+          <div id="targetGuide" class="target-guide" aria-hidden="true"></div>
+          <div id="fallGuide" class="fall-guide" aria-hidden="true"></div>
+          <div id="aimGuide" class="aim-guide" aria-hidden="true"></div>
+          <div id="targetZone" class="target-zone">
+            <img id="targetAnimal" alt="" />
+            <img class="basket" src="../../assets/animal-vine-basket.png" alt="" draggable="false" />
+          </div>
+          <button id="vineButton" class="vine-button" type="button" aria-label="Cut vine">
+            <img class="vine-img" src="../../assets/animal-vine-rope.png" alt="" draggable="false" />
+            <span data-ui="cut">Cut</span>
+          </button>
+          <img id="fruit" class="fruit" alt="" draggable="false" />
+          <img id="leafPaddle" class="leaf-paddle" src="../../assets/animal-vine-leaf-paddle.png" alt="" draggable="false" tabindex="0" role="slider" aria-valuemin="16" aria-valuemax="84" aria-valuenow="50" />
+          <div id="floatText" class="float-text hidden"></div>
+        </div>
+        <button id="cutNowBtn" class="cut-now-btn" type="button" data-ui="cut">Cut</button>
+        <p id="hintText" class="hint-text" data-ui="hint">Drag the leaf. Cut the vine when you are ready.</p>
+        <div id="resultPanel" class="result-panel hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle">
+          <div class="result-card">
+            <strong id="resultTitle">Fruit rescued!</strong>
+            <div id="starText" class="stars">&#9733;&#9733;&#9733;</div>
+            <span id="resultText"></span>
+            <button id="nextStageBtn" type="button" data-ui="nextStage">Next Stage</button>
+            <button id="retryBtn" type="button" data-ui="retry">Try Again</button>
+            <button id="resultStagesBtn" type="button" data-ui="stages">Stages</button>
+            <a href="/kids/" data-ui="lobby">Lobby</a>
+          </div>
+        </div>
+      </section>
+
+      <div id="loadingPanel" class="loading-panel">
+        <div class="loading-card">
+          <strong data-ui="loading">Loading</strong>
+          <span id="loadingText">0%</span>
+          <div><i id="loadingFill"></i></div>
+        </div>
+      </div>
+      <div id="toastText" class="toast hidden" aria-live="polite"></div>
+    </main>
+    <!-- adsense-static-guide:start -->
+    <section class="game-page-info game-page-info-static" aria-label="Animal Vine Rescue game information">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay Kids Game Guide</span><h2>Animal Vine Rescue</h2><p>Animal Vine Rescue is a 30-stage animal physics puzzle about cutting a hanging fruit free, steering a leaf trampoline, and landing the fruit in a waiting animal&#39;s basket. The campaign is divided into six five-stage rescue lessons. Later routes add moving baskets, upper and lower wind layers, wind that reverses after a bounce, two-bounce deliveries, narrower catch zones, and two- or three-fruit picnic orders. Every fifth stage is a friendly Panko Check that combines the current lesson without adding combat or time pressure.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>Vine Physics Puzzle</strong></div><div class="game-info-fact"><span>Genre</span><strong>Physics · Puzzle · Animal</strong></div><div class="game-info-fact"><span>Difficulty</span><strong>Easy to Medium</strong></div><div class="game-info-fact"><span>Estimated Play Time</span><strong>2-6 minutes</strong></div><div class="game-info-fact"><span>Skills Trained</span><strong>Hand-Eye Coordination · Problem Solving · Focus</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>World and Mission</h3><p>The orchard delivery vines have grown across a forest clearing, leaving apples, bananas, and berries hanging far from the animals who requested them. Panko organizes the rescue map while rabbits, lions, pandas, foxes, and koalas wait beside their baskets. The player is the leaf guide: they choose where the trampoline waits, decide when to cut, and keep steering while the fruit is airborne.</p>
+<p>Clearing all 30 routes restores six delivery paths through the orchard. The final Panko Grand Rescue serves three animals in one Battle and combines layered wind, a moving basket, and a two-bounce route. Victory represents a complete picnic delivery rather than defeating an enemy.</p></div>
+      <div class="game-info-section"><h3>How the Systems Work</h3><p>Every route begins with a fruit attached to a visible vine, a movable leaf trampoline, and a basket target. The leaf can move before and after Cut. A falling fruit must contact the leaf at least once before the basket accepts it, so simply releasing a fruit directly above the animal is not enough.</p>
+<p>Fruit acceleration uses the route&#39;s gravity and active wind. The leaf adds upward velocity and horizontal direction based on where the fruit hits its surface. A centered contact creates a straighter bounce; an edge contact sends the fruit farther sideways. Missing the basket or leaving the playfield opens a supportive Retry Result without removing saved progress.</p>
+<p>Moving-basket routes update the catch position continuously after Cut. Layered-wind routes apply different force above and below the displayed height split. Reverse-wind routes switch direction after the first leaf contact. Two-bounce routes keep the basket locked until the required second bounce, and soft-leaf routes reduce bounce height so the player must stay closer to the falling fruit.</p>
+<p>Multi-delivery routes keep the player inside the same Battle. The next fruit, animal, and route appear after a successful catch, while the delivery counter advances from 1/2 or 1/3. Result appears only after every listed fruit reaches its basket.</p>
+<p>The highest unlocked stage, best stars per stage, best score, and play count are saved locally in the current browser. No sign-in is required; clearing browser site data may remove that local progress.</p></div>
+      <div class="game-info-section"><h3>How to Play</h3><ol><li>Choose an unlocked rescue card from the horizontal Stage rail.</li><li>Read the stage name, fruit-to-animal route, and visible rule clue.</li><li>Move the leaf with touch, pointer, or Left/Right keys, then press Cut.</li><li>Keep steering while the fruit falls and use the leaf contact point to change its direction.</li><li>Complete the required bounce count and follow a moving basket or changing wind when shown.</li><li>Deliver every fruit in the route to unlock the next Stage.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Strategy Tips</h3><ul><li>Place the leaf under the first falling path before pressing Cut, then make smaller corrections while the fruit is moving.</li><li>Hit near the middle of the leaf for height. Use the left or right edge only when the basket is far across the clearing.</li><li>For a moving basket, aim for where it will be after the bounce rather than where it was at Cut.</li><li>On layered-wind routes, compare the fruit&#39;s direction before and after it crosses the middle of the clearing.</li><li>A two-bounce route needs control after the first contact; do not send the fruit so far sideways that the second leaf catch becomes impossible.</li><li>During picnic orders, read the next delivery instead of assuming the second fruit uses the same wind or bounce rule.</li></ul></div>
+      <div class="game-info-section"><h3>Campaign and Difficulty Growth</h3><p>Stages 1-5 teach calm, rightward, leftward, and long-crossing bounces. Panko&#39;s Balance Check adds the first gently moving basket.</p>
+<p>Stages 6-10 focus on moving targets. Basket speed, direction, and opening size change, and Panko&#39;s Moving-Basket Check requires two leaf contacts before the catch.</p>
+<p>Stages 11-15 introduce wind that changes by height or reverses after a bounce. Panko&#39;s Wind Check combines layered force with a moving basket.</p>
+<p>Stages 16-20 require two bounces and introduce a softer leaf that produces a lower arc. Panko&#39;s Twin-Bounce Check also reverses the wind and moves the basket.</p>
+<p>Stages 21-25 introduce two-fruit picnic deliveries without leaving Battle. The two routes may use opposite winds, different bounce counts, or one shared moving basket.</p>
+<p>Stages 26-30 combine narrow catches, moving targets, layered and reversing winds, two-bounce control, and two- or three-fruit service. Panko&#39;s Grand Rescue uses three different deliveries rather than a numeric-only finale.</p></div>
+      <div class="game-info-section"><h3>Developer Design Note</h3><p>The game uses one cut action plus continuous leaf steering so the player remains responsible after the fruit is released. The 30-stage structure changes the information a player must read—target motion, altitude-based wind, bounce count, leaf power, catch width, and delivery sequence—rather than relying only on faster gravity. The portrait playfield gives a falling fruit enough travel time for visible correction on phones, while the same logical Canvas scales uniformly on tablets and landscape screens. Panko checkpoints create memorable Kids-friendly milestones without turning a fruit-delivery puzzle into combat.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Parent Note</h3><p>Animal Vine Rescue may support timing, visual prediction, hand-eye coordination, focus, and simple problem solving. Adults can ask where the basket will move or why the second bounce needs a different leaf position. There is no timer, advertising, account requirement, ranking pressure, or hostile combat. Stars and saved progress are playful local feedback, not a formal ability test, diagnosis, or school assessment.</p></div>
+      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>How many stages are in Animal Vine Rescue?</dt><dd>There are 30 named stages in six five-stage lessons, with friendly Panko Checks every fifth stage.</dd></div><div><dt>Can I move the leaf after cutting the vine?</dt><dd>Yes. Continuous steering during the fall and after each bounce is the main player action.</dd></div><div><dt>Why did the fruit pass the basket?</dt><dd>Every delivery requires at least one leaf bounce, and marked routes may require two bounces or use a narrower opening.</dd></div><div><dt>How do moving baskets and wind layers work?</dt><dd>Moving baskets change horizontal position after Cut. Wind-layer routes apply different force in the upper and lower parts of the clearing.</dd></div><div><dt>What happens in a picnic delivery?</dt><dd>Two or three fruit routes continue inside the same Battle. Result waits until every delivery is complete.</dd></div><div><dt>What happens when a fruit misses?</dt><dd>A supportive Result offers Try Again, Stages, or Lobby without deleting unlocked progress.</dd></div><div><dt>Does the game require login or show ads?</dt><dd>No. This Kids game is ad-free and stores basic progress locally without requiring an account.</dd></div><div><dt>Are stars a formal ability score?</dt><dd>No. Stars are only game progress feedback and are not a diagnosis or assessment.</dd></div></dl></div>
+    </div>
+  </section>
+    <!-- adsense-static-guide:end -->
+
+    <script src="/src/site-config.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/version.js?v=20260701-version2"></script>
+    <script src="../../src/analytics.js?v=20260701-analytics2"></script>
+    <script>window.WonderAnalytics?.track("game_view", { game_id: "animal-rope-rescue" });</script>
+    <script src="../../src/sound.js?v=20260701-labels1"></script>
+    <script src="../../src/edge-guard.js?v=20260710-mobile-play-shell2"></script>
+    <script src="/src/i18n.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
+    <script data-wp-stage-standard data-wp-native-stage>/* This Kids route owns its zero-reserve Stage Canvas; the shared selector owns Stage pointer drag and settle. */</script>
+    <script src="../../src/battle-canvas-standard.js?v=20260714-play-area-fill1" data-wp-battle-standard></script>
+    <script src="game.js?v=20260717-zh-hans2"></script>
+    <script>
+      window.addEventListener(
+        "load",
+        () => {
+          const loadGuide = () => {
+            if (window.WEIGHTPLAY_VINE_RESCUE_ACTIVE) {
+              window.addEventListener("animal-vine-rescue:play-state", (event) => {
+                if (!event.detail?.playing) loadGuide();
+              }, { once: true });
+              return;
+            }
+            if (document.querySelector('script[data-vine-game-info]')) return;
+            const script = document.createElement("script");
+            script.src = "../../src/game-page-info.js?v=20260717-zh-hans1";
+            script.async = true;
+            script.dataset.vineGameInfo = "idle";
+            document.body.appendChild(script);
+          };
+          if ("requestIdleCallback" in window) {
+            window.requestIdleCallback(loadGuide, { timeout: 1200 });
+          } else {
+            window.setTimeout(loadGuide, 650);
+          }
+        },
+        { once: true },
+      );
+    </script>
+  </body>
+</html>

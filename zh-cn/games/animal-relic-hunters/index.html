@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+  <head>
+    <base href="/games/animal-relic-hunters/" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title data-ui="title">Animal Relic Hunters: Ruin Exploration</title>
+    <!-- Standard meta tags -->
+    <meta name="robots" content="index,follow" />
+    <meta name="description" content="《动物遗迹猎人》是一款拥有 30 个远征的房间动作游戏。玩家带领狮子探险家穿越三个连续房间，装备中的遗物武器会自动射击，玩家则要依照不同遗迹区域的敌人行为调整走位。遗迹能量球会在本轮带来升级选择；金币、训练、装备与任务进度则保存在本机。六个五关区域各有一位真正不同的守护者，不是把同一只敌人放大重复使用。" />
+    <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="动物遗迹猎人 | WeightPlay" />
+    <meta property="og:description" content="《动物遗迹猎人》是一款拥有 30 个远征的房间动作游戏。玩家带领狮子探险家穿越三个连续房间，装备中的遗物武器会自动射击，玩家则要依照不同遗迹区域的敌人行为调整走位。遗迹能量球会在本轮带来升级选择；金币、训练、装备与任务进度则保存在本机。六个五关区域各有一位真正不同的守护者，不是把同一只敌人放大重复使用。" />
+    <meta property="og:url" content="https://weightplay.com/zh-cn/games/animal-relic-hunters/" />
+    <meta property="og:image" content="https://weightplay.com/assets/animal-relic-hunters-cover.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="canonical" href="https://weightplay.com/zh-cn/games/animal-relic-hunters/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-relic-hunters/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-relic-hunters/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-relic-hunters/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/animal-relic-hunters/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-relic-hunters/" />
+    <link rel="stylesheet" href="../../src/loading-screen.css" />
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
+    <link rel="stylesheet" href="style.css?v=20260716-relic-loot-choice1" />
+    <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet" />
+
+    <!-- Google Tag JSON-LD Schema -->
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "动物遗迹猎人",
+  "alternateName": "動物遺跡獵人",
+  "url": "https://weightplay.com/zh-cn/games/animal-relic-hunters/",
+  "image": "https://weightplay.com/assets/animal-relic-hunters-cover.png",
+  "description": "《动物遗迹猎人》是一款拥有 30 个远征的房间动作游戏。玩家带领狮子探险家穿越三个连续房间，装备中的遗物武器会自动射击，玩家则要依照不同遗迹区域的敌人行为调整走位。遗迹能量球会在本轮带来升级选择；金币、训练、装备与任务进度则保存在本机。六个五关区域各有一位真正不同的守护者，不是把同一只敌人放大重复使用。",
+  "genre": [
+    "动作",
+    "Roguelite",
+    "动物冒险"
+  ],
+  "gamePlatform": "Web browser",
+  "operatingSystem": "Any",
+  "playMode": "SinglePlayer",
+  "keywords": "animal relic hunters, relic hunters, room roguelite, action survivor, equip gear, animal browser game",
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "General players",
+    "suggestedMinAge": 13
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio",
+    "url": "https://weightplay.com/"
+  },
+  "inLanguage": "zh-Hans",
+  "isAccessibleForFree": true
+}
+    </script>
+    <meta name="twitter:title" content="动物遗迹猎人 | WeightPlay" />
+    <meta name="twitter:description" content="《动物遗迹猎人》是一款拥有 30 个远征的房间动作游戏。玩家带领狮子探险家穿越三个连续房间，装备中的遗物武器会自动射击，玩家则要依照不同遗迹区域的敌人行为调整走位。遗迹能量球会在本轮带来升级选择；金币、训练、装备与任务进度则保存在本机。六个五关区域各有一位真正不同的守护者，不是把同一只敌人放大重复使用。" />
+  </head>
+  <body data-tutorial-auto-show="false">
+    <!-- Top Nav bar -->
+    <header class="top-nav">
+      <div class="top-nav-left">
+        <a id="menuBtn" class="back-btn" data-wp-return="main" href="/" aria-label="Go back to lobby">
+          <span class="icon" aria-hidden="true">&larr;</span>
+          <img src="../../assets/weightplay-logo.png" alt="" draggable="false">
+        </a>
+        <h2 class="game-brand" data-ui="title">Animal Relic Hunters</h2>
+      </div>
+      <div class="top-nav-right">
+        <div class="locale-picker">
+          <span class="picker-icon" aria-hidden="true">A/&#25991;</span>
+          <select id="localeSelect" aria-label="Language selector">
+            <option value="en">English</option>
+            <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
+            <option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option>
+          </select>
+        </div>
+      </div>
+    </header>
+
+    <main class="relic-app" data-no-mobile-immersive="true">
+      <!-- Loading screen -->
+      <section id="loadingPanel" class="loading-panel" aria-live="polite">
+        <div class="loading-content">
+          <h1 data-ui="title">动物遗迹猎人</h1>
+          <div class="loading-bar">
+            <div id="loadingFill" class="loading-fill" style="width: 0%"></div>
+          </div>
+          <span id="loadingText" class="loading-percentage">0%</span>
+        </div>
+      </section>
+
+      <!-- Start Menu panel -->
+      <section id="menuPanel" class="panel menu-panel">
+        <div class="menu-layout">
+          <div class="menu-main">
+            <div class="menu-cover-box">
+              <img id="menuCover" class="cover" src="../../assets/animal-relic-hunters-cover.png" alt="《动物遗迹猎人》游戏图片" />
+            </div>
+            <h1 class="menu-title" data-ui="menuTitle">Explore the Ancient Ruins.</h1>
+            <p class="menu-hint" data-ui="menuHint">
+              Move with WASD / virtual joystick. On desktop, hold the left mouse button in the arena to move toward the cursor. Defeat shadow beasts, collect Relic Orbs to level up, and find keys to unlock chests for Weapons, Armor, and Boots.
+            </p>
+            <div class="goals-card">
+              <h3 data-ui="prototypeGoalsTitle">Expedition Goal</h3>
+              <p data-ui="prototypeGoalsText">Clear Room 3, defeat the Behemoth Boss, collect Relic Orbs, and grow stronger with permanent training and gear upgrades.</p>
+            </div>
+            <button id="showStageBtn" class="primary-btn start-btn" type="button" data-ui="startGame">Start Game</button>
+          </div>
+
+          <!-- Diamond Shop Upgrade -->
+          <div class="menu-shop">
+            <h2 data-ui="diamondShopTitle">Permanent Upgrade</h2>
+            <div class="shop-badge">
+              <img class="ui-icon ui-icon--small" src="../../assets/weightplay-diamond.svg" alt="" aria-hidden="true">
+              <strong id="diamondBalance">0</strong>
+            </div>
+            <div class="shop-badge gold-badge">
+              <span class="coin-icon" aria-hidden="true">$</span>
+              <strong id="goldBalance">0</strong>
+            </div>
+            <div id="growthPrompt" class="growth-prompt" aria-live="polite"></div>
+            <div class="shop-list">
+              <button id="amuletBtn" class="shop-item-btn" type="button">
+                <div class="shop-item-meta">
+                  <strong data-ui="amuletName">Mist Amulet</strong>
+                  <small data-ui="amuletEffect">Start every run with +10 Max HP (40 HP instead of 30 HP).</small>
+                </div>
+                <b class="shop-cost-tag"><img class="ui-icon ui-icon--tiny" src="../../assets/weightplay-diamond.svg" alt="" aria-hidden="true"> <span id="amuletCost">15</span></b>
+              </button>
+              <div id="amuletStatus" class="shop-status-text"></div>
+            </div>
+            <div class="training-panel">
+              <div class="training-head">
+                <h3 data-ui="trainingTitle">Permanent Training</h3>
+                <span><span data-ui="trainingPoints">Points</span>: <strong id="trainingPoints">0</strong></span>
+              </div>
+              <div id="trainingList" class="training-list"></div>
+              <p class="training-note" data-ui="trainingNote">Character level is permanent. Spend level points here so every run starts stronger.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="stagePanel" class="panel stage-panel hidden" aria-labelledby="stageTitle">
+        <div class="stage-panel-head">
+          <button id="stageBackBtn" class="play-return stage-return" data-wp-return="stage" type="button" aria-label="Back">&larr;</button>
+          <div><strong id="stageTitle">Prepare Expedition</strong><span id="stageSetupText">Review permanent gear and training before entering Room 1.</span></div>
+        </div>
+        <div id="expeditionRail" class="expedition-rail stage-rail" aria-label="Ruin regions"></div>
+        <div id="stageConfigMount" class="stage-config-mount"></div>
+        <div class="stage-ad-reserve" aria-hidden="true"></div>
+      </section>
+
+      <!-- Active Game / Canvas Viewport -->
+      <section id="gamePanel" class="panel game-panel hidden" data-play-viewport data-no-mobile-immersive="true">
+        <div class="game-layout">
+          <button id="backToStageBtn" class="play-return battle-return" data-wp-return="battle" type="button" aria-label="Back to preparation">&larr;</button>
+          <!-- Main Arena Canvas -->
+          <div class="arena-viewport">
+            <div class="arena-hud">
+              <div class="hud-item player-health">
+                <div class="health-meta">
+                  <span data-ui="hudHp">Player HP</span>
+                  <strong id="hpText">30/30</strong>
+                </div>
+                <div class="bar-bg"><div id="hpFill" class="bar-fill health" style="width: 100%"></div></div>
+              </div>
+              <div class="hud-item player-exp">
+                <div class="exp-meta">
+                  <span>Lv.<strong id="levelVal">1</strong></span>
+                  <span id="expText">0/100</span>
+                </div>
+                <div class="bar-bg"><div id="expFill" class="bar-fill exp" style="width: 0%"></div></div>
+              </div>
+              <div class="hud-meta-row">
+                <div class="meta-badge font-bold"><img class="ui-icon ui-icon--small" src="../../assets/animal-relic-hunters-skill-room-map.webp" alt="" aria-hidden="true"> <span data-ui="roomLabel">Room</span> <strong id="roomText">1/3</strong></div>
+                <div class="meta-badge text-yellow-300"><img class="ui-icon ui-icon--small" src="../../assets/animal-relic-hunters-golden-relic-key.webp" alt="" aria-hidden="true"> <span data-ui="keysLabel">Keys</span>: <strong id="keyText">0</strong></div>
+                <div class="meta-badge text-yellow-300"><span class="coin-icon" aria-hidden="true">$</span> <span data-ui="goldLabel">Gold</span>: <strong id="goldText">0</strong></div>
+              </div>
+            </div>
+
+            <!-- Canvas viewport -->
+            <div class="canvas-container">
+              <canvas id="gameCanvas" width="800" height="1000" tabindex="0"></canvas>
+              <!-- Mobile Virtual Joystick -->
+              <div id="joystickContainer" class="joystick-container">
+                <div id="joystickKnob" class="joystick-knob"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Inventory Sidebar slots -->
+          <aside id="inventoryPanel" class="inventory-sidebar">
+            <h2 data-ui="sidebarInventory">Equipped Gear</h2>
+            <div class="gear-slots">
+              <!-- Weapon Slot -->
+              <div class="gear-slot-card" data-slot="weapon">
+                <div class="slot-header"><span class="slot-label" data-ui="slotWeapon">WEAPON</span></div>
+                <div class="slot-body">
+                  <div class="slot-icon"><img src="../../assets/animal-relic-hunters-skill-attack-crystal.webp" alt="" aria-hidden="true"></div>
+                  <strong class="item-name" id="eqWeaponName" data-ui="noneLabel">None</strong>
+                  <span class="item-effect" id="eqWeaponEffect">+0% Damage</span>
+                </div>
+              </div>
+              <!-- Armor Slot -->
+              <div class="gear-slot-card" data-slot="armor">
+                <div class="slot-header"><span class="slot-label" data-ui="slotArmor">ARMOR</span></div>
+                <div class="slot-body">
+                  <div class="slot-icon"><img src="../../assets/animal-relic-hunters-skill-shield-heart.webp" alt="" aria-hidden="true"></div>
+                  <strong class="item-name" id="eqArmorName" data-ui="noneLabel">None</strong>
+                  <span class="item-effect" id="eqArmorEffect">+0 Max HP</span>
+                </div>
+              </div>
+              <!-- Boots Slot -->
+              <div class="gear-slot-card" data-slot="boots">
+                <div class="slot-header"><span class="slot-label" data-ui="slotBoots">BOOTS</span></div>
+                <div class="slot-body">
+                  <div class="slot-icon"><img src="../../assets/animal-relic-hunters-skill-movement-boots.webp" alt="" aria-hidden="true"></div>
+                  <strong class="item-name" id="eqBootsName" data-ui="noneLabel">None</strong>
+                  <span class="item-effect" id="eqBootsEffect">+0% Speed</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="backpack-panel">
+              <h3 data-ui="backpackTitle">Backpack</h3>
+              <div id="backpackList" class="backpack-list" aria-live="polite"></div>
+            </div>
+
+            <!-- Stat values list -->
+            <div class="stats-list">
+              <h3 data-ui="sidebarStats">Character Stats</h3>
+              <div class="stat-row"><span><img class="ui-icon ui-icon--tiny" src="../../assets/animal-relic-hunters-skill-attack-crystal.webp" alt="" aria-hidden="true"> <span data-ui="statDamage">Damage:</span></span><strong id="statDmg">10</strong></div>
+              <div class="stat-row"><span><img class="ui-icon ui-icon--tiny" src="../../assets/animal-relic-hunters-skill-lantern-burst.webp" alt="" aria-hidden="true"> <span data-ui="statAttackRate">Attack Rate:</span></span><strong id="statRate">1.2s</strong></div>
+              <div class="stat-row"><span><img class="ui-icon ui-icon--tiny" src="../../assets/animal-relic-hunters-skill-movement-boots.webp" alt="" aria-hidden="true"> <span data-ui="statSpeed">Speed:</span></span><strong id="statSpeed">3.0</strong></div>
+              <div class="stat-row"><span><img class="ui-icon ui-icon--tiny" src="../../assets/animal-relic-hunters-skill-relic-magnet.webp" alt="" aria-hidden="true"> <span data-ui="statMagnetRange">Magnet Range:</span></span><strong id="statMagnet">80px</strong></div>
+            </div>
+          </aside>
+        </div>
+        <div class="battle-ad-reserve" aria-hidden="true"></div>
+      </section>
+
+      <!-- Relic Draft Panel (Pause Overlay) -->
+      <section id="draftPanel" class="draft-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="draftTitle" aria-describedby="draftDescription draftShortcutHint">
+        <div class="draft-card-box">
+          <h2 id="draftTitle" data-ui="chooseCard">Choose a Relic Upgrade</h2>
+          <p id="draftDescription" class="draft-desc" data-ui="chooseCardDesc">Select one of these ancient relics to empower your explorer.</p>
+          <p id="draftShortcutHint" class="draft-shortcut-hint" data-ui="draftShortcutHint">Keyboard: press 1, 2, or 3 to choose. Press R to reroll.</p>
+          <div id="draftCards" class="draft-cards-row">
+            <!-- Rendered by JS -->
+          </div>
+          <button id="rerollDraftBtn" class="draft-reroll-btn" type="button" aria-keyshortcuts="R">
+            <img class="ui-icon ui-icon--tiny" src="../../assets/weightplay-diamond.svg" alt="" aria-hidden="true">
+            <span data-ui="rerollRelics">Reroll relic choices</span>
+            <b id="rerollDraftCost">3</b>
+          </button>
+          <p id="rerollDraftStatus" class="draft-reroll-status" aria-live="polite"></p>
+        </div>
+      </section>
+
+      <!-- Loot Equipment Chest Modal Overlay -->
+      <section id="lootPanel" class="loot-overlay hidden">
+        <div class="loot-box">
+          <h2 data-ui="lootFound">Relic Chest Unlocked!</h2>
+          <div class="loot-card">
+            <div id="lootIcon" class="loot-card-icon"><img src="../../assets/animal-relic-hunters-skill-attack-crystal.webp" alt="" aria-hidden="true"></div>
+            <h3 id="lootName">Crystal Sword</h3>
+            <p id="lootType">Rare Weapon</p>
+            <strong id="lootEffect">+20% Bullet Damage</strong>
+            <small id="lootComparison" class="loot-comparison"></small>
+          </div>
+          <div class="loot-actions">
+            <button id="equipLootBtn" class="primary-btn equip-loot-btn" type="button" data-ui="equipLoot">Equip Gear</button>
+            <button id="keepLootBtn" class="keep-loot-btn" type="button">Keep Current Gear</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Result Screen -->
+      <section id="resultPanel" class="panel result-panel hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultText">
+        <div class="result-card">
+          <h1 id="resultTitle" data-ui="runComplete">Expedition Success!</h1>
+          <div class="result-score-box">
+            <span data-ui="hudStage">Rooms Cleared</span>
+            <strong id="resultScore">3</strong>
+          </div>
+          <p id="resultText" class="result-flavor">Excellent run! You explored the ruins and defeated the Behemoth.</p>
+          <div id="resultSummary" class="result-summary" aria-live="polite"></div>
+          
+          <div class="skills-card">
+            <h3 data-ui="skillReportTitle">Ability Analysis Report</h3>
+            <div class="skills-row">
+              <div class="skill-meter">
+                <span data-ui="skillLogic">Logic</span>
+                <span class="stars" id="logicStars">0/5</span>
+              </div>
+              <div class="skill-meter">
+                <span data-ui="skillFocus">Focus</span>
+                <span class="stars" id="focusStars">0/5</span>
+              </div>
+              <div class="skill-meter">
+                <span data-ui="skillProblem">Problem Solving</span>
+                <span class="stars" id="problemStars">0/5</span>
+              </div>
+            </div>
+            <p id="skillReportText" class="skills-report-desc">Your reaction, item placement, and equipment builds were optimized.</p>
+          </div>
+
+        </div>
+        <div class="result-action-shell">
+          <div class="result-btn-row">
+            <button id="retryBtn" class="primary-btn retry-btn" type="button" data-ui="tryAgain">Try Again</button>
+            <button id="resultMenuBtn" class="menu-btn" type="button" data-ui="backToStage">Back to Missions</button>
+          </div>
+          <small class="disclaimer" data-ui="resultDisclaimer">For fun and local progress tracking only.</small>
+        </div>
+      </section>
+    </main>
+    <!-- adsense-static-guide:start -->
+    <section class="game-page-info game-page-info-static" aria-label="动物遗迹猎人 游戏资讯">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 儿童游戏指南</span><h2>动物遗迹猎人</h2><p>《动物遗迹猎人》是一款拥有 30 个远征的房间动作游戏。玩家带领狮子探险家穿越三个连续房间，装备中的遗物武器会自动射击，玩家则要依照不同遗迹区域的敌人行为调整走位。遗迹能量球会在本轮带来升级选择；金币、训练、装备与任务进度则保存在本机。六个五关区域各有一位真正不同的守护者，不是把同一只敌人放大重复使用。</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>房间动作 Roguelite</strong></div><div class="game-info-fact"><span>类型</span><strong>动作 · Roguelite · 动物冒险</strong></div><div class="game-info-fact"><span>难度</span><strong>困难</strong></div><div class="game-info-fact"><span>预估游玩时间</span><strong>每次远征 6-12 分钟</strong></div><div class="game-info-fact"><span>练习能力</span><strong>逻辑 · 问题解决 · 专注 · 反应</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>世界与任务</h3><p>遗物之路曾连接六座档案遗迹：苔痕之门、回声长廊、水晶地库、沉没神殿、月影书库与王冠宫廷。每座遗迹都负责稳定一种古代动物遗物。王冠封印破裂后，能量没有只是让野兽的数字变大；苔原生物开始分裂与冲刺，长廊守卫会在武器射程外攻击，水晶看守形成挡住固定次数攻击的护罩，神殿野兽会再生，书库猎手则用沉默弹暂停遗物射击。</p>
+<p>玩家操作的爆鬃狮是一名携带自动遗物核心的野外探险家。每完成一次远征，就能重新打通一段道路。前两房的菁英守著金钥匙，钥匙可开启宝箱，把武器、护甲或靴子收入永久背包。第三房决定这条道路是否安全；远征 5、10、15、20、25、30 分别由苔原守护者、回声监守、水晶巨像、泽环多头兽、书库守密者与遗物冠冕王镇守。击败最后的冠冕王，代表六座遗迹终于能再次交换遗物，不再被腐化房间隔离。</p></div>
+      <div class="game-info-section"><h3>游戏系统</h3><p>远征流程：在横向 30 关滑轨选择已解锁任务。每次从满血与目前永久装备开始。清除基本敌群与稍后出现的持钥菁英，捡起钥匙、开宝箱并进入传送门。第二房加入更复杂的混合敌人，第三房则由任务守卫或每五关一次的区域守护者收尾。</p>
+<p>移动与攻击：电脑可用 WASD、方向键或在场地按住滑鼠；手机使用虚拟摇杆。武器自动瞄准最近敌人。水晶长剑增加直接伤害，遗迹短刃缩短射击间隔，护甲增加生命上限，靴子提升移动速度。玩家真正控制的是距离与最近目标：绕开追击者、从射手背后穿越、切入环绕敌人的圆周，需要不同路线。</p>
+<p>特殊敌人：冲刺者会在慢速跟随后突然加速；射手保持距离并发射遗物弹；脉冲敌人向四周放射；分裂者死亡后产生两只冲刺兽；护盾会抵销固定次数射击；再生者未受伤一段时间就恢复生命；减速敌人接触后降低移速；环绕者绕著玩家移动；沉默者暂停自动攻击。第六区会组合这些规则。</p>
+<p>守护者阶段：每只区域 Boss 在生命 70% 与 35% 时改变战局。苔原召唤冲刺者，回声释放更密集的环形弹幕，水晶重建计次护盾，泽环恢复生命并召唤减速兽，月影一边环绕一边发射沉默弹，冠冕则同时使用护盾、弹幕、召唤与恢复。最后一关考的是读懂多种效果，不只是磨掉更长血条。</p>
+<p>本轮成长：击败敌人会掉落绿色遗迹能量球。经验条填满时房间暂停，玩家从三个遗物能力选一个，例如伤害、攻速、生命、移速或吸取范围。每次选择可自愿花 3 颗钻石重抽一次。本轮遗物在新远征开始时重置，因此同一关也能用不同配置解题。</p>
+<p>永久成长：金币掉落与重复装备转换可升级背包装备。角色保存等级提供训练点，可投入伤害、生命、速度或吸取范围。背包记录已取得装备与三个栏位目前穿戴的物品。可选的迷雾护符会先确认再一次性花费钻石，把起始生命从 30 改为 40；任何任务、宝箱或守护者都不要求购买。</p></div>
+      <div class="game-info-section"><h3>玩法说明</h3><ol><li>滑动关卡轨道并选择已解锁远征；第 5、10、15、20、25、30 关会明确标示守护者。</li><li>用 WASD、方向键、按住滑鼠或手机摇杆移动。瞄准会自动完成，走位决定距离与最近攻击目标。</li><li>清除普通威胁，同时辨识冲刺、远射、护盾、再生、减速与沉默效果。</li><li>收集遗迹能量球；升级时选择三个本轮能力之一，或使用一次可选重抽。</li><li>击败第一、二房稍后出现的菁英，捡起金钥匙开宝箱，再决定立即穿戴或保留目前配装。</li><li>带著前两房剩余生命与本轮能力进入第三房，击败任务守卫或区域守护者。</li><li>胜利后前往下一任务，或返回关卡进行永久训练、装备升级与路线选择。</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>不要每个房间都固定同方向绕圈。外圈被远射填满时要反向，环绕敌人确定弧线后则可切过内侧。</li><li>蓝色光圈代表护盾仍在抵销攻击。若路线不安全，不必站著硬拆；先保持距离再找射击窗口。</li><li>持续命中再生者可以打断恢复空窗。面对它时，稳定高伤害通常比四处分散的低伤害更有效。</li><li>沉默弹只会暂停自动射击，不会夺走移动控制。利用这段时间换位，不要贴著敌人等待武器恢复。</li><li>生命会带进下一房，传送门只提供少量恢复。第三房前选一个防御遗物，有时比再加伤害更重要。</li><li>新装备在选择穿戴前就会加入背包。保留目前装备不会丢掉新物品，之后仍可比较与更换。</li><li>永久训练能降低重试压力，但守护者阶段仍需要走位。第一次挑战应先学攻击规律，不必自动花钻石。</li></ul></div>
+      <div class="game-info-section"><h3>关卡与难度成长</h3><p>远征 1-5 教会最近目标、自动攻击、普通追击、计时冲刺与分裂。苔原守护者会在两个阶段召唤更多冲刺兽。</p>
+<p>远征 6-10 加入射手与环形脉冲，空间变成弹道问题。回声监守的弹幕会让房间外圈不再永远安全。</p>
+<p>远征 11-15 加入计次护盾与混合护卫。水晶巨像会两次重建保护，要求玩家安排爆发时机。</p>
+<p>远征 16-20 组合再生、接触减速与远射压力。泽环多头兽会恢复生命并呼叫减速敌人。</p>
+<p>远征 21-25 加入环绕路线与暂时沉默。书库守密者会一边绕行一边射出多角度沉默弹。</p>
+<p>远征 26-30 重组之前所有威胁。六印庭院是普通敌人的总验收，遗物冠冕王则结合护盾、弹幕、召唤与恢复。</p></div>
+      <div class="game-info-section"><h3>开发设计理念</h3><p>每次远征设计成三个房间，是因为前两房的遗物选择与宝箱装备必须有机会影响最后考验，同时不把单一任务拖成过长的生存战。自动射击让手机操作集中在清楚的走位，键盘与按住滑鼠则保留桌面精准控制。第 30 关第三房的基础倍率刻意维持在 2.3 以下，难度主要来自射程控制、敌人混合与 Boss 阶段。这和《动物水晶生存者》的开放式三分钟竞分不同，也不同于《动物自走小队》的战前摆阵；本作由房间顺序、保留生命、装备决定与即时导航串成完整远征。</p></div>
+      <div class="game-info-section game-info-parent"><h3>家长说明</h3><p>任务进度、角色等级、经验、金币、训练、已拥有装备、装备等级、穿戴栏位与迷雾护符状态都保存在此浏览器。基本游玩不需要登入；清除网站资料可能移除本机进度。战斗不会产生平台钻石。钻石只用于可选的迷雾护符确认购买或一次遗物重抽；30 个远征与六位守护者都不要求钻石。</p></div>
+      <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>《动物遗迹猎人》可以免费玩吗？</dt><dd>可以。30 个远征、三房路线、装备掉落与六位守护者都能直接在浏览器游玩。</dd></div><div><dt>共有多少关与多少 Boss？</dt><dd>共有 30 个远征；第 5、10、15、20、25、30 关各有一位机制不同的区域守护者。</dd></div><div><dt>哪些成长永久保存？</dt><dd>任务解锁、等级、经验、金币、训练与装备会保存在本机；本轮选到的遗物会在新远征开始时重置。</dd></div><div><dt>护盾、减速与沉默怎么运作？</dt><dd>护盾抵销固定次数射击，减速短暂降低移动速度，沉默则暂停自动攻击；三者都不会拿走走位控制。</dd></div><div><dt>保留目前装备会失去新物品吗？</dt><dd>不会。新宝箱物品会先加入背包，选择只决定是否立刻穿戴。</dd></div><div><dt>钻石可以做什么？</dt><dd>钻石可确认购买永久迷雾护符，或花 3 颗钻石重抽一次本轮遗物。任务、装备与守护者不需要钻石。</dd></div><div><dt>需要帐号才能保存吗？</dt><dd>不需要。进度保存在目前浏览器；清除网站资料或换装置可能会开始另一份存档。</dd></div><div><dt>手机与电脑都能玩吗？</dt><dd>可以。手机使用虚拟摇杆与大型选项，电脑支援键盘、方向键与按住滑鼠移动。</dd></div></dl></div>
+    </div>
+  </section>
+    <!-- adsense-static-guide:end -->
+    <!-- Shared Game Guide standard structure -->
+    <section class="game-guide-wrapper">
+      <div id="game-page-info">
+        <!-- Rendered dynamically by game-page-info.js -->
+      </div>
+    </section>
+
+    <!-- Core Engine Scripts -->
+    <script src="/src/site-config.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/version.js?v=20260706-relic-v1"></script>
+    <script src="../../src/analytics.js?v=20260706-relic-v1"></script>
+    <script src="../../src/sound.js?v=20260706-relic-v1"></script>
+    <script src="../../src/edge-guard.js?v=20260710-mobile-play-shell2"></script>
+    <script src="/src/i18n.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/game-page-info.js?v=20260717-zh-hans1"></script>
+    <script src="../../src/wallet.js?v=20260706-relic-v1"></script>
+    <script src="../../src/tutorial.js?v=20260706-relic-v1"></script>
+    <script src="game.js?v=20260717-zh-hans1"></script>
+  </body>
+</html>

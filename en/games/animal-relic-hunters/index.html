@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <base href="/games/animal-relic-hunters/" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title data-ui="title">Animal Relic Hunters: Ruin Exploration</title>
+    <!-- Standard meta tags -->
+    <meta name="robots" content="index,follow" />
+    <meta name="description" content="Animal Relic Hunters is a 30-expedition room-action campaign. Guide the lion explorer through three connected chambers, let the equipped relic weapon fire..." />
+    <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Animal Relic Hunters | WeightPlay" />
+    <meta property="og:description" content="Animal Relic Hunters is a 30-expedition room-action campaign. Guide the lion explorer through three connected chambers, let the equipped relic weapon fire..." />
+    <meta property="og:url" content="https://weightplay.com/en/games/animal-relic-hunters/" />
+    <meta property="og:image" content="https://weightplay.com/assets/animal-relic-hunters-cover.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="canonical" href="https://weightplay.com/en/games/animal-relic-hunters/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-relic-hunters/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-relic-hunters/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-relic-hunters/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/animal-relic-hunters/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-relic-hunters/" />
+    <link rel="stylesheet" href="../../src/loading-screen.css" />
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
+    <link rel="stylesheet" href="style.css?v=20260716-relic-loot-choice1" />
+    <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet" />
+
+    <!-- Google Tag JSON-LD Schema -->
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Animal Relic Hunters",
+  "alternateName": "動物遺跡獵人",
+  "url": "https://weightplay.com/en/games/animal-relic-hunters/",
+  "image": "https://weightplay.com/assets/animal-relic-hunters-cover.png",
+  "description": "Animal Relic Hunters is a 30-expedition room-action campaign. Guide the lion explorer through three connected chambers, let the equipped relic weapon fire...",
+  "genre": [
+    "Action",
+    "Roguelite",
+    "Animal"
+  ],
+  "gamePlatform": "Web browser",
+  "operatingSystem": "Any",
+  "playMode": "SinglePlayer",
+  "keywords": "animal relic hunters, relic hunters, room roguelite, action survivor, equip gear, animal browser game",
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "General players",
+    "suggestedMinAge": 13
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio",
+    "url": "https://weightplay.com/"
+  },
+  "inLanguage": "en",
+  "isAccessibleForFree": true
+}
+    </script>
+    <meta name="twitter:title" content="Animal Relic Hunters | WeightPlay" />
+    <meta name="twitter:description" content="Animal Relic Hunters is a 30-expedition room-action campaign. Guide the lion explorer through three connected chambers, let the equipped relic weapon fire..." />
+  </head>
+  <body data-tutorial-auto-show="false">
+    <!-- Top Nav bar -->
+    <header class="top-nav">
+      <div class="top-nav-left">
+        <a id="menuBtn" class="back-btn" data-wp-return="main" href="/" aria-label="Go back to lobby">
+          <span class="icon" aria-hidden="true">&larr;</span>
+          <img src="../../assets/weightplay-logo.png" alt="" draggable="false">
+        </a>
+        <h2 class="game-brand" data-ui="title">Animal Relic Hunters</h2>
+      </div>
+      <div class="top-nav-right">
+        <div class="locale-picker">
+          <span class="picker-icon" aria-hidden="true">A/&#25991;</span>
+          <select id="localeSelect" aria-label="Language selector">
+            <option value="en">English</option>
+            <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
+            <option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option>
+          </select>
+        </div>
+      </div>
+    </header>
+
+    <main class="relic-app" data-no-mobile-immersive="true">
+      <!-- Loading screen -->
+      <section id="loadingPanel" class="loading-panel" aria-live="polite">
+        <div class="loading-content">
+          <h1 data-ui="title">Animal Relic Hunters</h1>
+          <div class="loading-bar">
+            <div id="loadingFill" class="loading-fill" style="width: 0%"></div>
+          </div>
+          <span id="loadingText" class="loading-percentage">0%</span>
+        </div>
+      </section>
+
+      <!-- Start Menu panel -->
+      <section id="menuPanel" class="panel menu-panel">
+        <div class="menu-layout">
+          <div class="menu-main">
+            <div class="menu-cover-box">
+              <img id="menuCover" class="cover" src="../../assets/animal-relic-hunters-cover.png" alt="Animal Relic Hunters game artwork" />
+            </div>
+            <h1 class="menu-title" data-ui="menuTitle">Explore the Ancient Ruins.</h1>
+            <p class="menu-hint" data-ui="menuHint">
+              Move with WASD / virtual joystick. On desktop, hold the left mouse button in the arena to move toward the cursor. Defeat shadow beasts, collect Relic Orbs to level up, and find keys to unlock chests for Weapons, Armor, and Boots.
+            </p>
+            <div class="goals-card">
+              <h3 data-ui="prototypeGoalsTitle">Expedition Goal</h3>
+              <p data-ui="prototypeGoalsText">Clear Room 3, defeat the Behemoth Boss, collect Relic Orbs, and grow stronger with permanent training and gear upgrades.</p>
+            </div>
+            <button id="showStageBtn" class="primary-btn start-btn" type="button" data-ui="startGame">Start Game</button>
+          </div>
+
+          <!-- Diamond Shop Upgrade -->
+          <div class="menu-shop">
+            <h2 data-ui="diamondShopTitle">Permanent Upgrade</h2>
+            <div class="shop-badge">
+              <img class="ui-icon ui-icon--small" src="../../assets/weightplay-diamond.svg" alt="" aria-hidden="true">
+              <strong id="diamondBalance">0</strong>
+            </div>
+            <div class="shop-badge gold-badge">
+              <span class="coin-icon" aria-hidden="true">$</span>
+              <strong id="goldBalance">0</strong>
+            </div>
+            <div id="growthPrompt" class="growth-prompt" aria-live="polite"></div>
+            <div class="shop-list">
+              <button id="amuletBtn" class="shop-item-btn" type="button">
+                <div class="shop-item-meta">
+                  <strong data-ui="amuletName">Mist Amulet</strong>
+                  <small data-ui="amuletEffect">Start every run with +10 Max HP (40 HP instead of 30 HP).</small>
+                </div>
+                <b class="shop-cost-tag"><img class="ui-icon ui-icon--tiny" src="../../assets/weightplay-diamond.svg" alt="" aria-hidden="true"> <span id="amuletCost">15</span></b>
+              </button>
+              <div id="amuletStatus" class="shop-status-text"></div>
+            </div>
+            <div class="training-panel">
+              <div class="training-head">
+                <h3 data-ui="trainingTitle">Permanent Training</h3>
+                <span><span data-ui="trainingPoints">Points</span>: <strong id="trainingPoints">0</strong></span>
+              </div>
+              <div id="trainingList" class="training-list"></div>
+              <p class="training-note" data-ui="trainingNote">Character level is permanent. Spend level points here so every run starts stronger.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="stagePanel" class="panel stage-panel hidden" aria-labelledby="stageTitle">
+        <div class="stage-panel-head">
+          <button id="stageBackBtn" class="play-return stage-return" data-wp-return="stage" type="button" aria-label="Back">&larr;</button>
+          <div><strong id="stageTitle">Prepare Expedition</strong><span id="stageSetupText">Review permanent gear and training before entering Room 1.</span></div>
+        </div>
+        <div id="expeditionRail" class="expedition-rail stage-rail" aria-label="Ruin regions"></div>
+        <div id="stageConfigMount" class="stage-config-mount"></div>
+        <div class="stage-ad-reserve" aria-hidden="true"></div>
+      </section>
+
+      <!-- Active Game / Canvas Viewport -->
+      <section id="gamePanel" class="panel game-panel hidden" data-play-viewport data-no-mobile-immersive="true">
+        <div class="game-layout">
+          <button id="backToStageBtn" class="play-return battle-return" data-wp-return="battle" type="button" aria-label="Back to preparation">&larr;</button>
+          <!-- Main Arena Canvas -->
+          <div class="arena-viewport">
+            <div class="arena-hud">
+              <div class="hud-item player-health">
+                <div class="health-meta">
+                  <span data-ui="hudHp">Player HP</span>
+                  <strong id="hpText">30/30</strong>
+                </div>
+                <div class="bar-bg"><div id="hpFill" class="bar-fill health" style="width: 100%"></div></div>
+              </div>
+              <div class="hud-item player-exp">
+                <div class="exp-meta">
+                  <span>Lv.<strong id="levelVal">1</strong></span>
+                  <span id="expText">0/100</span>
+                </div>
+                <div class="bar-bg"><div id="expFill" class="bar-fill exp" style="width: 0%"></div></div>
+              </div>
+              <div class="hud-meta-row">
+                <div class="meta-badge font-bold"><img class="ui-icon ui-icon--small" src="../../assets/animal-relic-hunters-skill-room-map.webp" alt="" aria-hidden="true"> <span data-ui="roomLabel">Room</span> <strong id="roomText">1/3</strong></div>
+                <div class="meta-badge text-yellow-300"><img class="ui-icon ui-icon--small" src="../../assets/animal-relic-hunters-golden-relic-key.webp" alt="" aria-hidden="true"> <span data-ui="keysLabel">Keys</span>: <strong id="keyText">0</strong></div>
+                <div class="meta-badge text-yellow-300"><span class="coin-icon" aria-hidden="true">$</span> <span data-ui="goldLabel">Gold</span>: <strong id="goldText">0</strong></div>
+              </div>
+            </div>
+
+            <!-- Canvas viewport -->
+            <div class="canvas-container">
+              <canvas id="gameCanvas" width="800" height="1000" tabindex="0"></canvas>
+              <!-- Mobile Virtual Joystick -->
+              <div id="joystickContainer" class="joystick-container">
+                <div id="joystickKnob" class="joystick-knob"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Inventory Sidebar slots -->
+          <aside id="inventoryPanel" class="inventory-sidebar">
+            <h2 data-ui="sidebarInventory">Equipped Gear</h2>
+            <div class="gear-slots">
+              <!-- Weapon Slot -->
+              <div class="gear-slot-card" data-slot="weapon">
+                <div class="slot-header"><span class="slot-label" data-ui="slotWeapon">WEAPON</span></div>
+                <div class="slot-body">
+                  <div class="slot-icon"><img src="../../assets/animal-relic-hunters-skill-attack-crystal.webp" alt="" aria-hidden="true"></div>
+                  <strong class="item-name" id="eqWeaponName" data-ui="noneLabel">None</strong>
+                  <span class="item-effect" id="eqWeaponEffect">+0% Damage</span>
+                </div>
+              </div>
+              <!-- Armor Slot -->
+              <div class="gear-slot-card" data-slot="armor">
+                <div class="slot-header"><span class="slot-label" data-ui="slotArmor">ARMOR</span></div>
+                <div class="slot-body">
+                  <div class="slot-icon"><img src="../../assets/animal-relic-hunters-skill-shield-heart.webp" alt="" aria-hidden="true"></div>
+                  <strong class="item-name" id="eqArmorName" data-ui="noneLabel">None</strong>
+                  <span class="item-effect" id="eqArmorEffect">+0 Max HP</span>
+                </div>
+              </div>
+              <!-- Boots Slot -->
+              <div class="gear-slot-card" data-slot="boots">
+                <div class="slot-header"><span class="slot-label" data-ui="slotBoots">BOOTS</span></div>
+                <div class="slot-body">
+                  <div class="slot-icon"><img src="../../assets/animal-relic-hunters-skill-movement-boots.webp" alt="" aria-hidden="true"></div>
+                  <strong class="item-name" id="eqBootsName" data-ui="noneLabel">None</strong>
+                  <span class="item-effect" id="eqBootsEffect">+0% Speed</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="backpack-panel">
+              <h3 data-ui="backpackTitle">Backpack</h3>
+              <div id="backpackList" class="backpack-list" aria-live="polite"></div>
+            </div>
+
+            <!-- Stat values list -->
+            <div class="stats-list">
+              <h3 data-ui="sidebarStats">Character Stats</h3>
+              <div class="stat-row"><span><img class="ui-icon ui-icon--tiny" src="../../assets/animal-relic-hunters-skill-attack-crystal.webp" alt="" aria-hidden="true"> <span data-ui="statDamage">Damage:</span></span><strong id="statDmg">10</strong></div>
+              <div class="stat-row"><span><img class="ui-icon ui-icon--tiny" src="../../assets/animal-relic-hunters-skill-lantern-burst.webp" alt="" aria-hidden="true"> <span data-ui="statAttackRate">Attack Rate:</span></span><strong id="statRate">1.2s</strong></div>
+              <div class="stat-row"><span><img class="ui-icon ui-icon--tiny" src="../../assets/animal-relic-hunters-skill-movement-boots.webp" alt="" aria-hidden="true"> <span data-ui="statSpeed">Speed:</span></span><strong id="statSpeed">3.0</strong></div>
+              <div class="stat-row"><span><img class="ui-icon ui-icon--tiny" src="../../assets/animal-relic-hunters-skill-relic-magnet.webp" alt="" aria-hidden="true"> <span data-ui="statMagnetRange">Magnet Range:</span></span><strong id="statMagnet">80px</strong></div>
+            </div>
+          </aside>
+        </div>
+        <div class="battle-ad-reserve" aria-hidden="true"></div>
+      </section>
+
+      <!-- Relic Draft Panel (Pause Overlay) -->
+      <section id="draftPanel" class="draft-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="draftTitle" aria-describedby="draftDescription draftShortcutHint">
+        <div class="draft-card-box">
+          <h2 id="draftTitle" data-ui="chooseCard">Choose a Relic Upgrade</h2>
+          <p id="draftDescription" class="draft-desc" data-ui="chooseCardDesc">Select one of these ancient relics to empower your explorer.</p>
+          <p id="draftShortcutHint" class="draft-shortcut-hint" data-ui="draftShortcutHint">Keyboard: press 1, 2, or 3 to choose. Press R to reroll.</p>
+          <div id="draftCards" class="draft-cards-row">
+            <!-- Rendered by JS -->
+          </div>
+          <button id="rerollDraftBtn" class="draft-reroll-btn" type="button" aria-keyshortcuts="R">
+            <img class="ui-icon ui-icon--tiny" src="../../assets/weightplay-diamond.svg" alt="" aria-hidden="true">
+            <span data-ui="rerollRelics">Reroll relic choices</span>
+            <b id="rerollDraftCost">3</b>
+          </button>
+          <p id="rerollDraftStatus" class="draft-reroll-status" aria-live="polite"></p>
+        </div>
+      </section>
+
+      <!-- Loot Equipment Chest Modal Overlay -->
+      <section id="lootPanel" class="loot-overlay hidden">
+        <div class="loot-box">
+          <h2 data-ui="lootFound">Relic Chest Unlocked!</h2>
+          <div class="loot-card">
+            <div id="lootIcon" class="loot-card-icon"><img src="../../assets/animal-relic-hunters-skill-attack-crystal.webp" alt="" aria-hidden="true"></div>
+            <h3 id="lootName">Crystal Sword</h3>
+            <p id="lootType">Rare Weapon</p>
+            <strong id="lootEffect">+20% Bullet Damage</strong>
+            <small id="lootComparison" class="loot-comparison"></small>
+          </div>
+          <div class="loot-actions">
+            <button id="equipLootBtn" class="primary-btn equip-loot-btn" type="button" data-ui="equipLoot">Equip Gear</button>
+            <button id="keepLootBtn" class="keep-loot-btn" type="button">Keep Current Gear</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Result Screen -->
+      <section id="resultPanel" class="panel result-panel hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultText">
+        <div class="result-card">
+          <h1 id="resultTitle" data-ui="runComplete">Expedition Success!</h1>
+          <div class="result-score-box">
+            <span data-ui="hudStage">Rooms Cleared</span>
+            <strong id="resultScore">3</strong>
+          </div>
+          <p id="resultText" class="result-flavor">Excellent run! You explored the ruins and defeated the Behemoth.</p>
+          <div id="resultSummary" class="result-summary" aria-live="polite"></div>
+          
+          <div class="skills-card">
+            <h3 data-ui="skillReportTitle">Ability Analysis Report</h3>
+            <div class="skills-row">
+              <div class="skill-meter">
+                <span data-ui="skillLogic">Logic</span>
+                <span class="stars" id="logicStars">0/5</span>
+              </div>
+              <div class="skill-meter">
+                <span data-ui="skillFocus">Focus</span>
+                <span class="stars" id="focusStars">0/5</span>
+              </div>
+              <div class="skill-meter">
+                <span data-ui="skillProblem">Problem Solving</span>
+                <span class="stars" id="problemStars">0/5</span>
+              </div>
+            </div>
+            <p id="skillReportText" class="skills-report-desc">Your reaction, item placement, and equipment builds were optimized.</p>
+          </div>
+
+        </div>
+        <div class="result-action-shell">
+          <div class="result-btn-row">
+            <button id="retryBtn" class="primary-btn retry-btn" type="button" data-ui="tryAgain">Try Again</button>
+            <button id="resultMenuBtn" class="menu-btn" type="button" data-ui="backToStage">Back to Missions</button>
+          </div>
+          <small class="disclaimer" data-ui="resultDisclaimer">For fun and local progress tracking only.</small>
+        </div>
+      </section>
+    </main>
+    <!-- adsense-static-guide:start -->
+    <section class="game-page-info game-page-info-static" aria-label="Animal Relic Hunters game information">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay Kids Game Guide</span><h2>Animal Relic Hunters</h2><p>Animal Relic Hunters is a 30-expedition room-action campaign. Guide the lion explorer through three connected chambers, let the equipped relic weapon fire automatically, and steer around enemies whose behavior changes by ruin region. Relic Orbs create temporary level-up choices during a run, while Gold, training, equipment and mission progress remain on this browser. Six five-mission regions end with six different Guardians rather than one repeated enlarged enemy.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>Room Action Roguelite</strong></div><div class="game-info-fact"><span>Genre</span><strong>Action · Roguelite · Animal</strong></div><div class="game-info-fact"><span>Difficulty</span><strong>Hard</strong></div><div class="game-info-fact"><span>Estimated Play Time</span><strong>6-12 minutes per expedition</strong></div><div class="game-info-fact"><span>Skills Trained</span><strong>Logic · Problem Solving · Focus · Reaction</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>World and Mission</h3><p>The Relic Road once connected Moss Gate, Echo Gallery, Crystal Vault, Sunken Shrine, Moon Archive and Crown Court. When the Crown seal failed, its energy did not simply make local beasts stronger. Moss creatures began dividing and charging, gallery sentries attacked from beyond weapon range, crystal keepers formed impact wards, shrine beasts repaired themselves, and archive hunters interrupted relic fire with silence bolts.</p>
+<p>The player guides Boom Mane Lion, a field explorer carrying an automatic relic focus. Every expedition recovers one stretch of the road. Elites in the first two rooms guard Golden Keys; the key opens a chest whose Weapon, Armor or Boots can be kept in the permanent backpack. The third room decides whether the route is safe. Expeditions 5, 10, 15, 20, 25 and 30 lead to the Moss Guardian, Echo Warden, Prism Colossus, Mirecoil Hydra, Archive Keeper and Relic Crown Monarch. Defeating the Monarch means all six archives can exchange relics again instead of remaining isolated behind corrupted chambers.</p></div>
+      <div class="game-info-section"><h3>How the Systems Work</h3><p>Expedition flow: choose one unlocked card from the 30-mission rail. Begin Room 1 with full run HP and current equipment. Clear the group and delayed key-carrying Elite, collect its key, open the chest and enter the portal. Room 2 uses a harder mix. Room 3 ends with an Elite guardian or, every fifth mission, a named regional Guardian.</p>
+<p>Movement and attacks: use WASD, arrow keys, a held primary mouse button in the arena, or the phone joystick. The weapon automatically aims at the nearest enemy. A Crystal Sword adds direct damage, a Relic Dagger shortens the firing interval, Armor adds Max HP and Boots add movement speed. Position remains the player&#39;s main action: circling a chaser, crossing behind a shooter and leaving an orbiter&#39;s preferred ring require different routes.</p>
+<p>Threat rules: rushers alternate a slow stalk with a fast charge; shooters hold range and fire relic bolts; pulsers launch radial rings; splitters release two rushers when defeated; wards cancel a fixed number of projectile hits; regenerators heal after avoiding damage; slowing beasts reduce movement on contact; orbiters travel around the explorer; silencers temporarily stop automatic fire. Region 6 combines these rules instead of introducing a larger copy of a basic animal.</p>
+<p>Guardian phases: each regional Boss changes at 70 and 35 percent HP. Moss calls more rushers. Echo releases larger radial barrages. Crystal restores a hit-count ward. Mire heals and summons slowing beasts. Moon combines orbit movement with silence volleys. Crown adds wards, barrages, summons and recovery. The final mission therefore tests reading several effects, not only surviving a longer health bar.</p>
+<p>Run growth: defeated enemies drop green Relic Orbs. Filling the EXP bar pauses the room and offers three relic upgrades, such as damage, attack rate, Max HP, movement or pickup range. One optional three-Diamond reroll is available per draft. Run relic counts reset when a new expedition starts, so the next build may solve the same threat mix differently.</p>
+<p>Permanent growth: Gold pickups and duplicate gear conversion feed equipment upgrades. Saved character levels grant training points for damage, HP, speed or magnet range. The backpack records collected gear and which item is equipped in each of three slots. The optional Mist Amulet is a confirmed one-time Diamond purchase that changes starting HP from 30 to 40; it is not required for any mission, chest or Guardian.</p></div>
+      <div class="game-info-section"><h3>How to Play</h3><ol><li>Swipe the Stage rail and choose an unlocked expedition; Guardian cards appear at missions 5, 10, 15, 20, 25 and 30.</li><li>Move with WASD, arrow keys, held mouse input or the virtual joystick. Aim is automatic, so steer to control distance and the nearest target.</li><li>Defeat ordinary threats while watching for charges, ranged bolts, shields, regeneration, slow and silence effects.</li><li>Collect Relic Orbs. At level-up, choose one of three temporary upgrades or use the single optional reroll.</li><li>Defeat the delayed Elite in Rooms 1 and 2, collect its Golden Key, open the chest and decide whether to equip the named drop or keep the current loadout.</li><li>Enter Room 3 with the HP and run upgrades that survived the earlier rooms, then defeat its Elite or regional Guardian.</li><li>Use Next Mission after a victory or return to Missions to train, upgrade gear and choose another unlocked route.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Strategy Tips</h3><ul><li>Do not circle every room in the same direction. Reverse when ranged bolts fill the outside lane, and cut across an orbiter after it commits to its arc.</li><li>A blue ring means a ward is still canceling hits. Keep firing only if the lane is safe; movement and survival do not require breaking it immediately.</li><li>Touch a regenerator often enough to interrupt its recovery window. A slower, high-damage weapon may be better than scattered low damage there.</li><li>Silence bolts stop automatic fire briefly. Use that pause to reposition instead of standing beside a target waiting for the weapon to resume.</li><li>Run HP carries into the next room, with only a small heal at the portal. A defensive relic before Room 3 can be more valuable than another damage choice.</li><li>Chest gear is claimed before the equip decision. Keeping the current loadout does not discard a new item; it remains in the backpack for later comparison.</li><li>Permanent training reduces repetition, but Guardian phases still demand movement. Use the first attempt to learn its pattern rather than spending Diamonds automatically.</li></ul></div>
+      <div class="game-info-section"><h3>Campaign and Difficulty Growth</h3><p>Expeditions 1-5 establish nearest-target aiming, ordinary chasers, timed charges and splitting enemies. The Moss Guardian summons rushers at both phase thresholds.</p>
+<p>Expeditions 6-10 turn space into a crossfire problem with shooters and radial pulsers. The Echo Warden&#39;s expanding volleys make the room edge dangerous.</p>
+<p>Expeditions 11-15 introduce hit-count wards and shielded mixed groups. The Prism Colossus rebuilds its protection twice, so burst timing matters.</p>
+<p>Expeditions 16-20 combine regeneration, slowing contact and ranged pressure. The Mirecoil Hydra heals and calls slow-field beasts during its phases.</p>
+<p>Expeditions 21-25 add orbit routes and temporary attack silence. The Archive Keeper fires multi-angle silence volleys while circling the explorer.</p>
+<p>Expeditions 26-30 remix all prior threats. Six-Seal Court is the full regular-enemy exam; the Relic Crown Monarch then combines ward, barrage, summons and recovery.</p></div>
+      <div class="game-info-section"><h3>Developer Design Note</h3><p>Three rooms let relic drafts and chest gear affect a final test without turning one mission into a long survival session. Auto-fire keeps phone input focused on movement, while mouse hold and keyboard preserve precise desktop control. Expedition 30 Room 3 stays below a 2.3 base scale; difficulty comes from range control, phases and mixed behaviors. Unlike Animal Crystal Survivor&#39;s open timed arena or Animal Auto Squad&#39;s pre-battle formation, room order, carried HP, gear decisions and live navigation form one connected expedition.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Parent Note</h3><p>Mission progress, character level, EXP, Gold, training, owned gear, gear levels, equipped slots and Mist Amulet ownership are stored locally in this browser. No login is required for basic play, and clearing site storage may remove that progress. The game does not award platform Diamonds from battle. Diamonds are optional spending choices for the confirmed Mist Amulet or one relic-draft reroll; all 30 expeditions and six Guardians can be played without them.</p></div>
+      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>Is Animal Relic Hunters free?</dt><dd>Yes. All 30 expeditions, three-room routes, gear drops and six Guardians are playable in the browser without payment.</dd></div><div><dt>How many missions and Bosses are there?</dt><dd>There are 30 expeditions. Missions 5, 10, 15, 20, 25 and 30 end with six mechanically different regional Guardians.</dd></div><div><dt>What is permanent and what resets?</dt><dd>Mission unlocks, level, EXP, Gold, training and gear are permanent local progress. Relic choices made during a run reset when a new expedition starts.</dd></div><div><dt>How do wards, slow and silence work?</dt><dd>Wards cancel a fixed number of projectile hits, slow reduces movement briefly, and silence pauses automatic attacks. None removes steering control.</dd></div><div><dt>Do I lose a new item if I keep my current gear?</dt><dd>No. A new chest item is added to the backpack first. The decision only chooses whether to equip it now.</dd></div><div><dt>What are Diamonds used for?</dt><dd>They can confirm the permanent Mist Amulet or reroll one relic draft for three Diamonds. They do not unlock missions, gear or Guardians.</dd></div><div><dt>Does progress require an account?</dt><dd>No. Progress is stored in this browser. Clearing its site data or switching devices may start a separate save.</dd></div><div><dt>Does it support phones and desktop?</dt><dd>Yes. Phones use a virtual joystick and large decisions; desktop supports keyboard, arrows and held mouse movement in the arena.</dd></div></dl></div>
+    </div>
+  </section>
+    <!-- adsense-static-guide:end -->
+    <!-- Shared Game Guide standard structure -->
+    <section class="game-guide-wrapper">
+      <div id="game-page-info">
+        <!-- Rendered dynamically by game-page-info.js -->
+      </div>
+    </section>
+
+    <!-- Core Engine Scripts -->
+    <script src="/src/site-config.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/version.js?v=20260706-relic-v1"></script>
+    <script src="../../src/analytics.js?v=20260706-relic-v1"></script>
+    <script src="../../src/sound.js?v=20260706-relic-v1"></script>
+    <script src="../../src/edge-guard.js?v=20260710-mobile-play-shell2"></script>
+    <script src="/src/i18n.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/game-page-info.js?v=20260717-zh-hans1"></script>
+    <script src="../../src/wallet.js?v=20260706-relic-v1"></script>
+    <script src="../../src/tutorial.js?v=20260706-relic-v1"></script>
+    <script src="game.js?v=20260717-zh-hans1"></script>
+  </body>
+</html>

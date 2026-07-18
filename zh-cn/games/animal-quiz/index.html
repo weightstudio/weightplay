@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="zh-Hans">
+  <head>
+    <base href="/games/animal-quiz/" />
+    <meta charset="UTF-8" />
+    <meta name="weightplay-audience" content="kids" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#67b66f" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="robots" content="index,follow" />
+    <meta name="description" content="《动物小博士》是一款免费双语 Kids 知识游戏，共有 30 个可存档关卡，每关包含十种不重复的动物。20..." />
+    <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="动物小博士 | WeightPlay" />
+    <meta property="og:description" content="《动物小博士》是一款免费双语 Kids 知识游戏，共有 30 个可存档关卡，每关包含十种不重复的动物。20..." />
+    <meta property="og:url" content="https://weightplay.com/zh-cn/games/animal-quiz/" />
+    <meta property="og:image" content="https://weightplay.com/assets/quiz-cover.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>动物小博士 | WeightPlay</title>
+    <link rel="canonical" href="https://weightplay.com/zh-cn/games/animal-quiz/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-quiz/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-quiz/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-quiz/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/animal-quiz/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-quiz/" />
+    <link rel="stylesheet" href="style.css?v=20260716-keyboard-quiz1" />
+    <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "动物小博士",
+  "alternateName": "動物小博士",
+  "url": "https://weightplay.com/zh-cn/games/animal-quiz/",
+  "image": "https://weightplay.com/assets/quiz-cover.png",
+  "description": "《动物小博士》是一款免费双语 Kids 知识游戏，共有 30 个可存档关卡，每关包含十种不重复的动物。20...",
+  "applicationCategory": "Game",
+  "operatingSystem": "Web browser",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio"
+  },
+  "inLanguage": "zh-Hans",
+  "isAccessibleForFree": true,
+  "genre": [
+    "问答",
+    "教育",
+    "动物"
+  ],
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "Kids and families",
+    "suggestedMinAge": 3
+  },
+  "learningResourceType": "Skill practice through play",
+  "educationalUse": "Practice animal recognition, habitats, body features, behavior, diet, memory, and reading through 30 browser stages."
+}
+    </script>
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
+    <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
+    <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
+    <script data-wp-stage-standard>/* Animal Quiz owns its native Kids Stage rail. */</script>
+    <meta name="twitter:title" content="动物小博士 | WeightPlay" />
+    <meta name="twitter:description" content="《动物小博士》是一款免费双语 Kids 知识游戏，共有 30 个可存档关卡，每关包含十种不重复的动物。20..." />
+  </head>
+  <body data-tutorial-auto-show="false">
+    <main class="animal-game" data-no-mobile-immersive="true">
+      <header class="topbar">
+        <a id="homeLink" class="home-link" data-wp-return="main" href="/kids/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
+        <div>
+          <p id="brandText">WeightPlay</p>
+          <h1 id="titleText">动物小博士</h1>
+        </div>
+        <label class="language-picker">
+          <span id="languageLabel">Language</span>
+          <select id="localeSelect" aria-label="Language">
+            <option value="en">English</option>
+            <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
+            <option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option>
+          </select>
+        </label>
+      </header>
+
+      <section id="mainPanel" class="main-panel">
+        <img class="main-cover" src="../../assets/quiz-cover.webp" alt="" />
+        <div class="main-copy">
+          <strong id="mainTitle">Animal Quiz</strong>
+          <span id="mainIntro">Solve 30 picture, habitat, feature, action, and food investigations.</span>
+        </div>
+        <button id="startGameBtn" class="main-start" type="button">Start Game</button>
+      </section>
+
+      <section class="level-line" aria-label="Level progress">
+        <span id="levelText">Stage 1 · 1/10</span>
+        <div><i id="levelFill"></i></div>
+      </section>
+
+      <section id="stageSelectPanel" class="stage-select hidden">
+        <div class="stage-shell-head">
+          <button id="stageBackBtn" class="stage-return" data-wp-return="stage" type="button" aria-label="Back">&larr;</button>
+          <strong id="stageSelectTitle">Choose Stage</strong>
+        </div>
+        <div class="stage-setup">
+          <strong id="stageSetupTitle">Pick an animal topic</strong>
+          <span id="stageSetupText">Choose one of 30 animal investigations. Every fifth stage is a Junior Expert Check.</span>
+        </div>
+        <div id="stageGrid" class="stage-grid"></div>
+      </section>
+
+      <section class="quiz-stage play-area hidden">
+        <button id="backToStagesBtn" class="play-return" data-wp-return="battle" type="button" aria-label="Back to stages">&larr;</button>
+        <div class="animal-card">
+          <img id="animalImage" src="" alt="" />
+          <strong id="promptText">Who is this animal?</strong>
+          <span id="clueText"></span>
+        </div>
+      </section>
+
+      <section id="choiceGrid" class="choice-grid hidden" aria-label="Answer choices"></section>
+
+      <section class="feedback hidden" aria-live="polite">
+        <strong id="feedbackText">Choose one</strong>
+      </section>
+
+      <div id="resultPanel" class="result-panel hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle">
+        <div class="result-card">
+          <strong id="resultTitle">Great job!</strong>
+          <span id="resultText"></span>
+          <div id="skillReport" class="skill-report" aria-live="polite"></div>
+          <button id="againBtn" type="button">Play Again</button>
+          <button id="nextStageBtn" type="button">Next Stage</button>
+          <button id="stageSelectBtn" type="button">Stages</button>
+          <a id="homeText" href="/kids/">Lobby</a>
+        </div>
+      </div>
+
+      <div id="loadingPanel" class="loading-panel">
+        <div class="loading-card">
+          <strong id="loadingTitle">Loading</strong>
+          <span id="loadingText">0%</span>
+          <div><i id="loadingFill"></i></div>
+        </div>
+      </div>
+    </main>
+    <!-- adsense-static-guide:start -->
+    <section class="game-page-info game-page-info-static" aria-label="动物小博士 游戏资讯">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 儿童游戏指南</span><h2>动物小博士</h2><p>《动物小博士》是一款免费双语 Kids 知识游戏，共有 30 个可存档关卡，每关包含十种不重复的动物。20 种动物题库从狮子、大象、长颈鹿、斑马，到企鹅、鲸鱼、熊猫、无尾熊、猫头鹰、青蛙、宠物与农场动物。前期以清楚肖像搭配一则外观线索；后期会模糊图片、改成剪影、增加第四个选项，并组合栖地、行为、食物与外观事实。每五关是一次小博士检核，重新运用前面学过的线索。游戏没有倒数，答错也不会结束关卡。</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>动物问答</strong></div><div class="game-info-fact"><span>类型</span><strong>问答 · 教育 · 动物</strong></div><div class="game-info-fact"><span>难度</span><strong>简单</strong></div><div class="game-info-fact"><span>预估游玩时间</span><strong>5-8 分钟</strong></div><div class="game-info-fact"><span>练习能力</span><strong>动物知识 · 记忆 · 阅读</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>世界与任务</h3><p>这段旅程是一系列动物观察任务，不是救援或战斗。玩家扮演观察员，每答对一题，就替野外笔记完成一笔辨识纪录。画面中的动物、名称与文字线索永远指向同一个答案。完成十次辨识会结束目前章节、储存通关并解锁下一个观察任务。</p>
+<p>每个选择都有真实事实可推理。狮子可以从鬃毛、非洲草原与群体生活判断；企鹅可由寒冷海岸、鱼类食物与群聚取暖判断；大象则可由长鼻、植物性食物与喷水行为辨认。完成第 30 关，代表玩家走完六组学习内容并通过最后的混合线索检核。</p></div>
+      <div class="game-info-section"><h3>游戏系统</h3><p>每关有十种不重复的目标动物。入门关提供三个名称；后期的食物、混合与小博士关提供四个选项，但不会缩小按钮。</p>
+<p>一般肖像练习直接辨识；神秘图片会刻意柔化细节；剪影会移除颜色，让轮廓与文字线索变得更重要。图片仍保留可理解的无障碍名称。</p>
+<p>外观线索描述看得见的特征，栖地线索说明生活地点，行为线索描述动作或群体习性，食物线索则说明饮食。后期会同时提供两到三类线索。</p>
+<p>答错时会收到友善提示，题目仍可继续作答。答对后，选项会在短暂且只计算前景时间的学习停顿中锁定，显示动物知识再进到下一题。</p>
+<p>完成十题后，通关、最佳结果与下一关解锁都会储存在目前浏览器。结果画面可以重玩，也可以回到刚完成的关卡卡片。</p>
+<p>游戏没有帐号、排行榜、购买、倒数、生命或正式成绩。完成 30 关就是完整目标；重玩可以复习并再次挑战十题全对。</p></div>
+      <div class="game-info-section"><h3>玩法说明</h3><ol><li>按下开始游戏，在横向关卡列滑到已解锁的观察任务。</li><li>观察清楚肖像、神秘图片或剪影，并读完图片下方的每一则线索。</li><li>把证据与三个或四个动物名称比较，再选出一个答案。</li><li>答错可参考提示再试一次；答对后先阅读短暂显示的动物知识。</li><li>辨识全部十种动物即可储存通关，并且只解锁下一关。</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>清楚图片关可以先说出一项外观特征，再阅读答案。</li><li>神秘图片关不要只猜柔化后的颜色，要优先相信栖地文字。</li><li>遇到剪影时，比较长鼻、长颈、甲壳、耳朵与身体轮廓。</li><li>小博士检核要读完所有线索；单一线索可能符合多种动物，组合后才会指向一个答案。</li><li>四选一时，先排除不可能住在该栖地或不吃该食物的动物。</li><li>答对后停一下阅读动物知识，不要急著略过。</li></ul></div>
+      <div class="game-info-section"><h3>关卡与难度成长</h3><p>第 1-5 关「图片入门」以清楚肖像与外观特征建立动物题库；第 5 关增加第二则线索与第四个选项。</p>
+<p>第 6-10 关「栖地家园」使用柔化的神秘图片，要求重视生活地点；第 10 关组合栖地与外观。</p>
+<p>第 11-15 关「特征侦探」改用剪影练习轮廓辨识；第 15 关用混合线索与四个选项收尾。</p>
+<p>第 16-20 关「动物行动」聚焦移动与群体行为；第 20 关把行为与栖地放在同一题。</p>
+<p>第 21-25 关「食物与家族」固定使用四个选项和饮食线索；第 25 关再加入外观证据。</p>
+<p>第 26-30 关「小博士综合」以神秘图片或剪影搭配两则线索。第 30 关使用四个选项、剪影，以及外观、栖地、行为三则相关线索。</p></div>
+      <div class="game-info-section"><h3>开发设计理念</h3><p>每关十题能让同一学习主题重复出现，又不会让 Kids 游玩变成漫长考试。难度是借由改变哪些证据仍然有用来成长，不会缩小目标或增加时间压力。模糊与剪影是学习模式，不是隐藏点击区；大型原生答案按钮同时支援触控、滑鼠与键盘。固定逻辑版面会在手机、平板、短横向与电脑等比例缩放。学习停顿只计算看得到的游玩时间，所以切换应用程式不会偷偷跳过知识。和 WeightPlay 的配对或动作游戏不同，本作的核心决策完全来自事实证据。Kids 路线没有广告请求、广告保留区、帐号、购买、竞争排名或诊断宣称。</p></div>
+      <div class="game-info-section game-info-parent"><h3>家长说明</h3><p>《动物小博士》可以协助亲子讨论动物名称、栖地、食物、外观与行为。仍在学习阅读的孩子可以由大人朗读线索，再问孩子是根据哪一项证据作答。星星与能力报告只描述这次游玩，不是学校成绩、智力测验、发展诊断，也不会和其他孩子比较。进度只留在目前浏览器，清除本机储存资料后可能消失。游戏不需要儿童个人资料，Kids 路线也不会请求广告。</p></div>
+      <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>游戏共有几关、每关几题？</dt><dd>共有 30 个可存档关卡，每关有十种不重复的动物题目。</dd></div><div><dt>为什么动物图片有时模糊或变黑？</dt><dd>栖地章节使用神秘图片；特征侦探与后期检核使用剪影，让事实与轮廓更重要。</dd></div><div><dt>答错会发生什么事？</dt><dd>题目会保留，玩家可以再选另一个答案，不会失去进度或直接结束关卡。</dd></div><div><dt>为什么有些关卡有四个选项？</dt><dd>食物、混合与小博士关会在玩家熟悉动物题库后加入第四个名称。</dd></div><div><dt>游戏会储存进度吗？</dt><dd>已解锁关卡、完成卡片与最佳结果只会储存在目前浏览器。</dd></div><div><dt>手机和键盘都能玩吗？</dt><dd>可以，同一套固定版面支援触控、滑鼠与键盘操作。</dd></div><div><dt>需要帐号或登入吗？</dt><dd>不需要；但清除浏览器储存资料可能移除本机进度。</dd></div><div><dt>Kids 页面会显示广告吗？</dt><dd>不会，《动物小博士》不会建立广告请求或广告保留区。</dd></div><div><dt>能力报告是正式测验吗？</dt><dd>不是，它只是支持性的游玩回馈，不是学校、智力、健康或发展评量。</dd></div></dl></div>
+    </div>
+  </section>
+    <!-- adsense-static-guide:end -->
+    <script src="/src/site-config.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/version.js?v=20260701-version2"></script>
+    <script src="../../src/analytics.js?v=20260701-analytics2"></script>
+    <script>
+      window.WonderAnalytics?.track("game_view", { game_id: "animal-quiz" });
+    </script>
+    <script src="../../src/sound.js?v=20260701-labels1"></script>
+    <script src="../../src/edge-guard.js?v=20260710-mobile-play-shell2"></script>
+    <script src="/src/i18n.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
+    <script src="game.js?v=20260717-zh-hans1"></script>
+    <script>
+      (() => {
+        const loadGameInfo = () => {
+          if (document.querySelector("script[data-quiz-game-info]")) return;
+          const script = document.createElement("script");
+          script.src = "../../src/game-page-info.js?v=20260717-zh-hans1";
+          script.dataset.quizGameInfo = "idle";
+          script.async = true;
+          document.body.appendChild(script);
+        };
+        const schedule = () => {
+          if ("requestIdleCallback" in window) {
+            window.requestIdleCallback(loadGameInfo, { timeout: 1600 });
+          } else {
+            window.setTimeout(loadGameInfo, 350);
+          }
+        };
+        if (document.readyState === "complete") schedule();
+        else window.addEventListener("load", schedule, { once: true });
+      })();
+    </script>
+  </body>
+</html>

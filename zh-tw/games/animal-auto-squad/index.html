@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <base href="/games/animal-auto-squad/" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="robots" content="index,follow" />
+    <meta name="theme-color" content="#0d1b15" />
+    <meta name="description" content="《動物自走小隊》是一款以戰前決策為核心的編成策略遊戲。玩家可以解鎖並訓練十名動物英雄，把最多六名角色配置在前後兩排，選擇一件遠征聖物，再觀看小隊依照站位與能力自動交戰。戰役共有 30 關，依序穿越荊棘林、水晶洞窟、沉沒遺跡、燼火峰、月光城塞與虛空王冠。每關包含五波固定設計的敵人，第..." />
+    <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:type" content="game" />
+    <meta property="og:title" content="動物自走小隊 | WeightPlay" />
+    <meta property="og:description" content="《動物自走小隊》是一款以戰前決策為核心的編成策略遊戲。玩家可以解鎖並訓練十名動物英雄，把最多六名角色配置在前後兩排，選擇一件遠征聖物，再觀看小隊依照站位與能力自動交戰。戰役共有 30 關，依序穿越荊棘林、水晶洞窟、沉沒遺跡、燼火峰、月光城塞與虛空王冠。每關包含五波固定設計的敵人，第..." />
+    <meta property="og:url" content="https://weightplay.com/zh-tw/games/animal-auto-squad/" />
+    <meta property="og:image" content="https://weightplay.com/assets/animal-auto-squad-cover.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="動物自走小隊 | WeightPlay" />
+    <meta name="twitter:description" content="《動物自走小隊》是一款以戰前決策為核心的編成策略遊戲。玩家可以解鎖並訓練十名動物英雄，把最多六名角色配置在前後兩排，選擇一件遠征聖物，再觀看小隊依照站位與能力自動交戰。戰役共有 30 關，依序穿越荊棘林、水晶洞窟、沉沒遺跡、燼火峰、月光城塞與虛空王冠。每關包含五波固定設計的敵人，第..." />
+    <meta name="twitter:image" content="https://weightplay.com/assets/animal-auto-squad-cover.png" />
+    <title>動物自走小隊 | WeightPlay</title>
+    <link rel="canonical" href="https://weightplay.com/zh-tw/games/animal-auto-squad/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-auto-squad/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-auto-squad/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-auto-squad/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/animal-auto-squad/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-auto-squad/" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "動物自走小隊",
+  "alternateName": "動物自走小隊",
+  "url": "https://weightplay.com/zh-tw/games/animal-auto-squad/",
+  "image": "https://weightplay.com/assets/animal-auto-squad-cover.png",
+  "description": "《動物自走小隊》是一款以戰前決策為核心的編成策略遊戲。玩家可以解鎖並訓練十名動物英雄，把最多六名角色配置在前後兩排，選擇一件遠征聖物，再觀看小隊依照站位與能力自動交戰。戰役共有 30 關，依序穿越荊棘林、水晶洞窟、沉沒遺跡、燼火峰、月光城塞與虛空王冠。每關包含五波固定設計的敵人，第...",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio",
+    "url": "https://weightplay.com/"
+  },
+  "inLanguage": "zh-Hant",
+  "isAccessibleForFree": true,
+  "operatingSystem": "Web Browser",
+  "genre": [
+    "自走戰鬥",
+    "編成策略",
+    "角色成長",
+    "動物"
+  ],
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "General players"
+  }
+}
+    </script>
+    <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
+    <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
+    <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
+    <link rel="stylesheet" href="../../src/stage-selector-standard.css?v=20260716-kids-stage-swipe3" />
+  <link rel="stylesheet" href="style.css?v=20260718-stage-fullwidth1" />
+  </head>
+  <body data-tutorial-auto-show="false">
+    <main class="squad-app">
+      <header class="topbar">
+        <a id="backToLobbyBtn" class="back-btn" data-wp-return="main" href="/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
+        <div class="brand">
+          <span>WeightPlay</span>
+          <h1 id="mainGameTitle" data-ui="title">動物自走小隊</h1>
+        </div>
+        <label class="locale">
+          <span data-ui="language">Language</span>
+          <select id="localeSelect" aria-label="Language selection">
+            <option value="en">English</option>
+            <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
+            <option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option>
+          </select>
+        </label>
+      </header>
+
+      <!-- Loading Section -->
+      <section id="loadingPanel" class="loading-panel" aria-live="polite">
+        <div class="loading-content">
+          <h2 data-ui="title">Animal Auto Squad</h2>
+          <div class="loading-bar"><div id="loadingFill" class="loading-fill"></div></div>
+          <span id="loadingText" class="loading-percentage">0%</span>
+        </div>
+      </section>
+
+      <!-- Menu / Start Section -->
+      <section id="menuPanel" class="panel menu-panel">
+        <img class="cover" src="../../assets/animal-auto-squad-cover.webp" alt="《動物自走小隊》遊戲圖片" />
+        <div class="menu-copy">
+          <strong id="menuHeadingText" data-ui="menuTitle">Train and position your animal squad!</strong>
+          <span id="menuSubText" data-ui="menuHint">Build your permanent squad and conquer 30 five-wave stages across six regions.</span>
+          <button id="showStageBtn" class="primary-btn" type="button">Choose Expedition</button>
+          <div class="profile-grid">
+            <div><span data-ui="bestExpedition">Stages Unlocked</span><strong id="bestRoundsText">1/30</strong></div>
+            <div><span data-ui="expeditionsCleared">Cleared Runs</span><strong id="clearedRunsText">0</strong></div>
+            <div><span data-ui="teamLevel">Team Level</span><strong id="teamLevelText">Lv.1</strong></div>
+            <div><span data-ui="diamonds">Diamonds</span><strong id="diamondText">0</strong></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="stagePanel" class="panel stage-panel is-hidden" aria-labelledby="stageSelectTitle">
+        <div class="stage-panel-head">
+          <button id="stageBackBtn" class="stage-back-btn" data-wp-return="stage" type="button" aria-label="Back">&larr;</button>
+          <div>
+            <strong id="stageSelectTitle">Choose Stage</strong>
+            <span id="stageProgressText">1 / 6</span>
+          </div>
+        </div>
+        <div class="stage-tabs" role="tablist" aria-label="Expedition management">
+          <button id="stageTabBtn" class="stage-tab is-active" type="button" role="tab" aria-selected="true" aria-controls="stageSelectPane">⚔ <span>Stages</span></button>
+          <button id="trainingTabBtn" class="stage-tab" type="button" role="tab" aria-selected="false" aria-controls="trainingPane">⬆ <span>Training</span></button>
+        </div>
+        <div class="stage-workspace">
+          <section id="stageSelectPane" class="stage-pane is-active" role="tabpanel" aria-labelledby="stageTabBtn">
+            <p id="stageSetupText" class="stage-setup-text">Swipe through six regions, choose an unlocked stage, then prepare your formation.</p>
+            <div id="stageRail" class="stage-rail" aria-label="Stage selection"></div>
+            <div class="stage-legend"><span id="stageSwipeText">↔ Swipe</span><span id="stageDeployText">Tap an unlocked stage to deploy</span></div>
+          </section>
+          <section id="trainingPane" class="stage-pane training-pane" role="tabpanel" aria-labelledby="trainingTabBtn" hidden>
+            <div id="teamBonusText" class="team-bonus-note" aria-live="polite"></div>
+            <div class="cosmetic-store">
+              <span data-ui="cosmeticStoreTitle" class="store-label">Mascot Cosmetic Skin (15 Diamonds)</span>
+              <div class="skin-actions">
+                <button id="buySkinBtn" class="store-btn" type="button"></button>
+                <button id="equipSkinBtn" class="secondary-btn is-hidden" type="button"></button>
+              </div>
+            </div>
+            <div class="training-store" aria-live="polite">
+              <div class="training-header">
+                <span id="trainingTitleText" class="store-label">Squad Training</span>
+                <strong id="trainingGoldText">0 Gold</strong>
+              </div>
+              <div id="trainingRoster" class="training-roster"></div>
+            </div>
+          </section>
+        </div>
+      </section>
+      <!-- Active Play Viewport Container -->
+      <section id="gamePanel" class="panel game-panel play-area is-hidden" data-play-viewport>
+        
+        <!-- HUD Line -->
+        <div class="hud-row">
+          <button id="quitRunBtn" class="secondary-btn play-return" data-wp-return="battle" type="button" aria-label="Quit expedition" data-ui="quitRun">&larr;</button>
+          <div><span id="stageHudLabel">Stage</span><strong id="stageText">1/6</strong></div>
+          <div><span data-ui="round">Wave</span><strong id="roundText">1/5</strong></div>
+          <div><span data-ui="gold">Gold</span><strong id="goldText">10</strong></div>
+          <div><span data-ui="hearts">Hearts</span><strong id="heartText">4/4</strong></div>
+          <div class="relic-hud"><span data-ui="activeRelic">Relic</span><strong id="relicText" class="relic-badge">None</strong></div>
+        </div>
+        <div id="combatSummary" class="combat-summary is-hidden" aria-live="polite"></div>
+
+        <!-- Preparation (Shop & Grid) Phase UI -->
+        <div id="prepPhaseArea" class="prep-phase-area">
+          <div id="foodGuide" class="food-guide" aria-live="polite"></div>
+          
+          <!-- Squad Positions (Linear Row, Slots 1-5) -->
+          <div class="squad-section">
+            <h3 data-ui="yourSquadLabel">Active Squad (Top: Front Row | Bottom: Back Row)</h3>
+            <div id="squadGrid" class="cards-row squad-row" aria-label="Active squad slots"></div>
+          </div>
+
+          <!-- Shop Shelf Row (3 Animals, 2 Items, Freeze Actions) -->
+          <div class="shop-section">
+            <h3 data-ui="shopLabel">Expedition Shop</h3>
+            <div class="shop-controls">
+              <button id="rerollShopBtn" class="shop-action-btn" type="button"></button>
+              <button id="sellCardBtn" class="shop-action-btn sell-action-btn is-hidden" type="button"></button>
+              <button id="startBattleBtn" class="primary-btn battle-action-btn" type="button" data-ui="startBattle">Start Battle</button>
+            </div>
+            <div id="shopRow" class="cards-row shop-row" aria-label="Shop shelf items"></div>
+            <div id="selectedAbilityPanel" class="selected-ability-panel" aria-live="polite"></div>
+          </div>
+
+        </div>
+
+        <!-- Combat Canvas Area (Animate Battle step by step) -->
+        <div id="combatArea" class="combat-area is-hidden">
+          <canvas id="gameCanvas" width="720" height="1280" aria-label="Animal Auto Squad Arena"></canvas>
+          <div id="combatStatusText" class="combat-status" data-ui="combatIntro">Prepare for Battle!</div>
+        </div>
+
+        <div id="hintText" class="hint" data-ui="guideHint">Tap a character, then tap a destination slot to move it.</div>
+
+        <!-- Run decisions are Battle-owned modal substates inside the logical Canvas. -->
+        <section id="relicDraftPanel" class="panel modal-panel is-hidden" role="dialog" aria-modal="true" aria-labelledby="relicDraftTitle" aria-live="polite">
+          <h2 id="relicDraftTitle" data-ui="chooseRelic">Choose an Expedition Relic</h2>
+          <p data-ui="relicDesc" class="status-line">Select one relic to buff your squad for the entire expedition run.</p>
+          <div id="relicChoices" class="relic-choices"></div>
+          <button id="rerollRelicsBtn" class="secondary-btn reroll-relic-btn" type="button"></button>
+        </section>
+
+        <section id="defeatRevivePanel" class="panel modal-panel is-hidden" role="dialog" aria-modal="true" aria-labelledby="defeatReviveTitle" aria-live="polite">
+          <h2 id="defeatReviveTitle" data-ui="defeatTitle">Expedition Failed!</h2>
+          <p data-ui="reviveHint" class="status-line">Your Hearts reached 0. Spend 5 Diamonds to revive with 2 Hearts and continue your expedition?</p>
+          <div class="revive-actions">
+            <button id="reviveBtn" class="primary-btn" type="button"></button>
+            <button id="giveUpBtn" class="secondary-btn" type="button" data-ui="giveUp">Give Up</button>
+          </div>
+        </section>
+
+        <!-- Final Run Result Screen: bounded Battle substate -->
+        <section id="resultPanel" class="panel result-panel is-hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-live="polite">
+          <img class="result-lion" src="../../assets/animal-auto-squad-cover.webp" alt="Result Lion Mascot" />
+          <div class="result-copy">
+            <h2 id="resultTitle" class="result-heading">Expedition Complete!</h2>
+            <p id="resultText" class="result-desc"></p>
+            <div class="result-progress" aria-live="polite">
+              <strong data-ui="savedProgress">Saved Progress</strong>
+              <span id="resultXpText"></span>
+              <span id="resultGoldText"></span>
+              <span id="resultStageText"></span>
+              <em id="resultGrowthText"></em>
+            </div>
+            <p id="skillReportText" class="skill-report"></p>
+            <div class="result-actions" data-wp-return="battle">
+              <button id="nextStageBtn" class="primary-btn is-hidden" type="button">Next Stage</button>
+              <button id="retryBtn" class="primary-btn" type="button" data-ui="retry">Try Again</button>
+              <button id="resultMenuBtn" class="secondary-btn" type="button" data-ui="backToStages">Back to Stages</button>
+            </div>
+          </div>
+        </section>
+      </section>
+      <div class="battle-ad-reserve" aria-hidden="true"></div>
+
+    </main>
+    <!-- adsense-static-guide:start -->
+    <section class="game-page-info game-page-info-static" aria-label="動物自走小隊 遊戲資訊">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 兒童遊戲指南</span><h2>動物自走小隊</h2><p>《動物自走小隊》是一款以戰前決策為核心的編成策略遊戲。玩家可以解鎖並訓練十名動物英雄，把最多六名角色配置在前後兩排，選擇一件遠征聖物，再觀看小隊依照站位與能力自動交戰。戰役共有 30 關，依序穿越荊棘林、水晶洞窟、沉沒遺跡、燼火峰、月光城塞與虛空王冠。每關包含五波固定設計的敵人，第 5、10、15、20、25、30 關則各有一名專屬區域 Boss。</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>自走小隊編成策略</strong></div><div class="game-info-fact"><span>類型</span><strong>自走戰鬥 · 編成策略 · 角色成長 · 動物</strong></div><div class="game-info-fact"><span>難度</span><strong>中等</strong></div><div class="game-info-fact"><span>預估遊玩時間</span><strong>5-10 分鐘</strong></div><div class="game-info-fact"><span>練習能力</span><strong>邏輯 · 問題解決 · 策略規劃</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>世界與任務</h3><p>遠征路線被影之獸、水晶生物、重甲守衛、符文獸與月蝕獵手分段占據。小隊從荊棘林的苔蘚小徑出發，接著深入棱晶之心、沉沒王冠、火山口之王、子夜王庭，最後沿著破碎天路抵達虛空王冠。每區都有不同的敵人組合與最終首領；完成六區代表解除整條遠征路線的封鎖。</p>
+<p>玩家扮演的是小隊指揮者，不是在戰鬥中直接操作某一名角色。星爪狐、泡泡鰭水獺、鼓肚熊貓、月帽貓頭鷹、苔殼烏龜與其他可解鎖英雄，都有明確的攻擊、治療、護盾或倒下效果。真正的任務是在交戰前決定由哪六名角色同行，以及誰應站在前排或後排。</p></div>
+      <div class="game-info-section"><h3>遊戲系統</h3><p>陣形：上方三格是前排，下方三格是後排。攻擊目標會受到站位影響；部分角色攻擊最前方敵人，月帽貓頭鷹會追擊後排，爆鬃獅則能橫掃整排。</p>
+<p>角色定位：攻擊、治療、護盾、全隊增益與倒下效果都會自動觸發。泡泡鰭水獺和彩虹跳兔會照顧受傷隊友，鼓肚熊貓與苔殼烏龜則能提高全隊承受傷害的能力。</p>
+<p>遠征聖物：楓葉盾、橡樹種子、影爪與幸運草會改變整場遠征的規則。正常選擇免費；花費 3 顆鑽石只會重新抽選目前提供的聖物。</p>
+<p>臨時物資：每場遠征以 12 點物資開始。在準備階段選取已擁有角色，可以購買只在本場有效的等級，增加攻擊與生命；戰鬥中取得的物資會保留在這場遠征內。</p>
+<p>永久成長：通過波次可獲得團隊經驗與訓練金幣。團隊等級會提供全員攻擊與生命加成；一般英雄使用訓練金幣解鎖與升級，最高 20 級，另有兩名進階英雄使用可選鑽石解鎖。</p></div>
+      <div class="game-info-section"><h3>玩法說明</h3><ol><li>在橫向滑動的關卡列選擇已解鎖關卡；每五關會標示一場 Boss 戰。</li><li>需要永久強化時，進入訓練分頁使用訓練金幣、解鎖一般英雄，並查看團隊等級提供的全隊加成。</li><li>出征後，先點角色背包中的動物，再點六個上場格之一完成配置；也可以點已上場角色重新移動或替換。</li><li>選擇一件遠征聖物，並把本場物資用在準備上場的角色，購買臨時攻擊與生命提升。</li><li>按下開始戰鬥後，攻擊、治療、護盾、整排攻擊與倒下能力會依照陣形自動結算。</li><li>勝利後會直接出現下一波；失敗會扣一點生命並重新開放準備。生命歸零且不復活時，本場遠征結束。</li><li>通過第五波後，系統會保存關卡、團隊經驗、訓練金幣與下一個解鎖關卡；結果畫面可選下一關、再試一次或回到關卡。</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>按下開始戰鬥前要替完整五波做準備。每波勝利會直接接續下一組敵人，因此能處理多種目標的平衡陣容，比只克制第一波更安全。</li><li>前排適合放能承受壓力或提供護盾的英雄。苔殼烏龜、鼓肚熊貓與齒輪角犀牛，可以替後排攻擊手和治療角色爭取時間。</li><li>不要只比較攻擊數字，也要看目標規則。月帽貓頭鷹能碰到脆弱後排；敵人集中同一排時，爆鬃獅的整排攻擊更有價值。</li><li>六名 Boss 的規則不同：荊棘狼王攻擊整排並替自己加盾，深淵殼海皇會保護與治療敵軍，虛空王冠獅皇則會傷害全隊並恢復自身生命。</li></ul></div>
+      <div class="game-info-section"><h3>關卡與難度成長</h3><p>第 1-5 關以較小的荊棘林敵群教導最前目標、後排威脅、守衛與兩排陣形，第 5 關荊棘王座是第一個 Boss 檢查點。第 6-15 關加入水晶洞窟與沉沒遺跡敵人，開始出現後排攻擊、吸血、整排橫掃與高耐久守衛。</p>
+<p>第 16-25 關增加同時上場的敵人數與能力組合。燼火峰會混合衝鋒野豬、黑曜重獸、裂隙迅獸與符文狼；月光城塞則加入夜影黑豹、月蝕蝙蝠、符文烏鴉與暗影美洲豹。Boss 波還帶有護衛，因此不能只處理中央首領。</p>
+<p>第 26-30 關會使用完整的虛空王冠敵人陣容。第 29 關最多同時出現六名敵人，與玩家的最大編隊相同；第 30 關最後一波讓虛空王冠獅皇與符文、月蝕及暗影護衛同場，檢驗整排輸出、恢復、傷害與整段戰役累積的永久訓練。</p></div>
+      <div class="game-info-section"><h3>開發設計理念</h3><p>自動戰鬥是刻意的設計選擇：戰鬥執行保持精簡，讓主要思考集中在陣形、定位互補、攻擊目標、聖物選擇與永久訓練。勝利後直接銜接下一波，是為了讓五波像一場完整遠征，而不是五次反覆進出選單；失敗後重新開放準備，則讓玩家能回應問題，不必一直觀看同一套失敗配置。手機採點選角色再點格子的方式，桌面也能使用相同卡片操作。相較於回合制的《動物符文戰棋》或需要即時移動的《動物水晶生存者》，本作要求玩家先完成計畫，再從自動戰鬥結果判斷計畫是否有效。</p></div>
+      <div class="game-info-section game-info-parent"><h3>家長說明</h3><p>後期關卡會同時組合六人陣形、特殊攻擊目標、永久升級、戰鬥失敗壓力、Boss 能力與可選鑽石決策。關卡進度、上次出場陣容與位置、訓練金幣、團隊等級、已解鎖角色、角色永久等級、已完成關卡與外觀選擇，都會儲存在目前瀏覽器本機；基本遊玩不需要登入。清除本站的瀏覽器儲存資料可能會移除這些本機進度。</p></div>
+      <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>動物自走小隊可以免費玩嗎？</dt><dd>可以。30 關戰役能直接在 WeightPlay 瀏覽器頁面遊玩，不要求購買或登入。</dd></div><div><dt>每一關的目標是什麼？</dt><dd>配置能撐過五波連續敵人的小隊。通過第五波便會保存關卡並解鎖下一關；每五關的最後一波都有區域 Boss。</dd></div><div><dt>戰鬥時需要手動攻擊嗎？</dt><dd>不用。玩家在戰前決定角色、前後排、聖物與臨時升級，之後動物會依照能力自動攻擊、治療、加盾與觸發效果。</dd></div><div><dt>每波之間都能重新排隊嗎？</dt><dd>勝利會直接進入下一波。只有失敗或平手且仍有生命時，才會回到準備畫面，因此初始陣容要能面對不只一種敵人排列。</dd></div><div><dt>輸掉一波會怎樣？</dt><dd>本場會失去一點生命。生命尚未歸零時，可以調整陣容後再挑戰同一波；生命歸零時可結束遠征，或使用可選的 5 顆鑽石復活。</dd></div><div><dt>鑽石可以做什麼？</dt><dd>鑽石只提供可選功能，包括重抽聖物、遠征復活、解鎖兩名進階英雄與黃金外觀；一般關卡進度不需要鑽石。</dd></div><div><dt>哪些進度會保存？</dt><dd>瀏覽器會在本機保存已解鎖與完成關卡、上次出場陣容與位置、團隊等級與經驗、訓練金幣、已解鎖角色、角色永久等級、遠征紀錄與外觀選擇。</dd></div></dl></div>
+    </div>
+  </section>
+    <!-- adsense-static-guide:end -->
+
+    <script src="/src/site-config.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/version.js?v=20260701-version2"></script>
+    <script src="../../src/analytics.js?v=20260701-analytics2"></script>
+    <script>window.WonderAnalytics?.track("game_view", { game_id: "animal-auto-squad", release_state: "playable_release_candidate" });</script>
+    <script src="../../src/sound.js?v=20260701-labels1"></script>
+    <script src="../../src/edge-guard.js?v=20260710-mobile-play-shell2"></script>
+    <script src="/src/i18n.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/tutorial.js?v=20260711-auto-squad-guide1"></script>
+    <script src="../../src/wallet.js?v=20260706-crystal-diamond-charm1"></script>
+    <script src="../../src/stage-selector-standard.js?v=20260718-auto-squad-expanded1"></script>
+    <script src="../../src/battle-canvas-standard.js?v=20260718-auto-squad-wide1" data-wp-battle-standard></script>
+  <script src="game.js?v=20260718-backpack-roster2-stage-fullwidth1"></script>
+    <script>
+      (() => {
+        const loadGameInfo = () => {
+          if (document.querySelector("script[data-squad-game-info]")) return;
+          const script = document.createElement("script");
+          script.src = "../../src/game-page-info.js?v=20260717-zh-hans1";
+          script.dataset.squadGameInfo = "internal";
+          script.async = true;
+          document.body.appendChild(script);
+        };
+        if ("requestIdleCallback" in window) window.requestIdleCallback(loadGameInfo, { timeout: 1400 });
+        else window.setTimeout(loadGameInfo, 300);
+      })();
+    </script>
+  </body>
+</html>

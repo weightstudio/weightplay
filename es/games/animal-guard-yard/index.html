@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <base href="/games/animal-guard-yard/" />
+    <meta charset="UTF-8" />
+    <meta name="weightplay-audience" content="kids" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#4aa866" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="robots" content="index,follow" />
+    <meta name="description" content="Clover Yard conecta seis regiones de jardín que comparten luz solar, semillas y agua. Cuando las bestias salvajes llenan los caminos, el jugador se..." />
+    <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Guardianes del Jardín Animal | WeightPlay" />
+    <meta property="og:description" content="Clover Yard conecta seis regiones de jardín que comparten luz solar, semillas y agua. Cuando las bestias salvajes llenan los caminos, el jugador se..." />
+    <meta property="og:url" content="https://weightplay.com/es/games/animal-guard-yard/" />
+    <meta property="og:image" content="https://weightplay.com/assets/animal-guard-yard-poster.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>Guardianes del Jardín Animal | WeightPlay</title>
+    <link rel="canonical" href="https://weightplay.com/es/games/animal-guard-yard/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-guard-yard/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-guard-yard/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-guard-yard/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/animal-guard-yard/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-guard-yard/" />
+    <link rel="stylesheet" href="style.css?v=20260717-guard-campaign1" data-wp-stage-standard data-wp-battle-standard />
+    <script data-wp-stage-standard>/* Shared Kids Stage selector owns pointer drag and settle; Animal Guard Yard owns selection state and activation. */</script>
+    <script data-wp-battle-standard>/* Animal Guard Yard owns its native Kids Battle Canvas. */</script>
+    <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Guardianes del Jardín Animal",
+  "alternateName": "動物守衛庭院",
+  "url": "https://weightplay.com/es/games/animal-guard-yard/",
+  "image": "https://weightplay.com/assets/animal-guard-yard-poster.png",
+  "description": "Clover Yard conecta seis regiones de jardín que comparten luz solar, semillas y agua. Cuando las bestias salvajes llenan los caminos, el jugador se...",
+  "genre": [
+    "Estrategia",
+    "Defensa de la torre",
+    "animales"
+  ],
+  "gamePlatform": "Web browser",
+  "playMode": "SinglePlayer",
+  "keywords": "animal games, lane defense game, strategy game for kids, family browser game, animal tower defense, free kids game",
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "Kids and families",
+    "suggestedMinAge": 6
+  },
+  "learningResourceType": "Skill practice through play",
+  "educationalUse": "Practice focus, logic, and problem solving through family-friendly lane defense gameplay.",
+  "applicationCategory": "Game",
+  "operatingSystem": "Web browser",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio"
+  },
+  "inLanguage": "es",
+  "isAccessibleForFree": true
+}
+    </script>
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
+    <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
+    <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
+    <meta name="twitter:title" content="Guardianes del Jardín Animal | WeightPlay" />
+    <meta name="twitter:description" content="Clover Yard conecta seis regiones de jardín que comparten luz solar, semillas y agua. Cuando las bestias salvajes llenan los caminos, el jugador se..." />
+  </head>
+  <body data-tutorial-auto-show="false">
+    <main class="yard-game" data-no-mobile-immersive="true">
+      <header class="topbar">
+        <a class="home-link" data-wp-return="main" href="/kids/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
+        <div class="title-block">
+          <p>WeightPlay</p>
+          <h1 data-ui="gameTitle">Guardianes del Jardín Animal</h1>
+        </div>
+        <label class="language-picker">
+          <span data-ui="language">Language</span>
+          <select id="localeSelect" aria-label="Language">
+            <option value="en">English</option>
+            <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
+            <option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option>
+          </select>
+        </label>
+      </header>
+
+      <section id="mainPanel" class="main-entry-panel">
+        <img class="main-cover" src="../../assets/animal-guard-yard-poster.webp" data-fallback-src="../../assets/animal-guard-yard-poster.png" alt="" />
+        <div class="main-entry-copy"><strong data-ui="gameTitle">Animal Guard Yard</strong><span data-ui="menuHint">Place animal guards and stop the wild beasts.</span></div>
+        <button id="startGameBtn" class="main-start-btn" type="button" data-ui="chooseStage">Choose Stage</button>
+      </section>
+
+      <section id="menuPanel" class="menu-panel wp-stage-art-shell hidden" data-wp-logical-stage-canvas data-wp-stage-art="../../assets/animal-guard-yard-poster.webp" style="--wp-stage-art: url('../../assets/animal-guard-yard-poster.webp')">
+        <div class="menu-shell">
+          <div class="stage-screen-head"><button id="stageBackMainBtn" data-wp-return="stage" type="button" aria-label="Back">&larr;</button><strong data-ui="chooseStage">Choose Stage</strong></div>
+          <div class="wallet-row" aria-label="Animal Guard Yard wallet">
+            <span class="coin-chip"><img src="../../assets/coin.png" alt="" /><b id="coinText">0</b></span>
+            <span class="diamond-chip"><img src="../../assets/weightplay-diamond.svg?v=20260704-blue-diamond1" alt="" /><b id="diamondText">0</b></span>
+          </div>
+          <section id="stageTabPanel" class="menu-tab-panel" data-tab-panel="stages">
+            <div class="menu-copy">
+              <strong data-ui="chooseStage">Choose Stage</strong>
+              <span data-ui="menuHint">Place animal guards and stop the wild beasts.</span>
+            </div>
+            <div id="masterySummary" class="mastery-summary" aria-live="polite"></div>
+            <div id="beastGuide" class="beast-guide" aria-label="Beast guide"></div>
+            <div id="stageGrid" class="stage-grid" data-wp-stage-settle-duration="360" data-wp-stage-settle-easing="smoothstep" aria-label="Stage list"></div>
+          </section>
+          <section id="animalTabPanel" class="menu-tab-panel hidden" data-tab-panel="animals">
+            <div class="kennel-panel">
+              <div class="kennel-head">
+                <strong data-ui="kennelTitle">Animal Training</strong>
+                <span data-ui="kennelHint">Upgrade guards with coins. Unlock rare animals with diamonds.</span>
+              </div>
+              <div id="kennelGrid" class="kennel-grid" aria-label="Animal upgrades"></div>
+            </div>
+          </section>
+          <section id="shopTabPanel" class="menu-tab-panel hidden" data-tab-panel="shop">
+            <div class="shop-panel">
+              <div class="kennel-head">
+                <strong data-ui="shopTitle">Rare Animal Shop</strong>
+                <span data-ui="shopHint">Spend shared WeightPlay diamonds on special animal guards.</span>
+              </div>
+              <div id="shopGrid" class="shop-grid" aria-label="Animal shop"></div>
+            </div>
+          </section>
+        </div>
+        <nav id="menuTabs" class="menu-tabs" aria-label="Animal Guard Yard menu">
+          <button type="button" data-menu-tab="stages" class="active"><img src="../../assets/menu-battle.png" alt="" /><span data-ui="tabStages">Stages</span></button>
+          <button type="button" data-menu-tab="animals"><img src="../../assets/menu-character.png" alt="" /><span data-ui="tabAnimals">Animals</span></button>
+          <button type="button" data-menu-tab="shop"><img src="../../assets/upgrade-coin.png" alt="" /><span data-ui="tabShop">Shop</span></button>
+        </nav>
+      </section>
+
+      <section id="playPanel" class="fixed-shell-host hidden" data-wp-logical-battle-canvas>
+        <div class="fixed-game-shell play-area" aria-label="Animal Guard Yard fixed game screen">
+          <div class="play-head">
+            <button id="backToStagesBtn" class="play-return" data-wp-return="battle" type="button" aria-label="Back to stages" data-ui-aria-label="stages">
+              <span aria-hidden="true">&larr;</span>
+              <span class="sr-only" data-ui="stages">Stages</span>
+            </button>
+            <div class="resource-pill" aria-label="Sun energy"><span class="hud-icon sun-icon" aria-hidden="true"></span><b id="energyText">0</b></div>
+            <button id="pauseBtn" class="play-settings" type="button" aria-label="Pause battle" data-ui-aria-label="openPause"><img src="../../assets/menu-settings.png" alt="" draggable="false" /></button>
+          </div>
+          <div class="wave-status">
+            <span id="waveText" class="wave-text">Stage 1</span>
+            <span class="base-pill" aria-label="Home hearts"><img class="hud-icon heart-img" src="../../assets/weightplay-heart.svg" alt="" draggable="false" /><b id="baseText">3</b></span>
+          </div>
+          <div id="waveTimer" class="wave-timer" aria-hidden="true"><i></i></div>
+          <div id="unitBar" class="unit-bar" aria-label="Animal guards"></div>
+          <div id="yardBoard" class="yard-board" aria-label="Animal defense lanes">
+            <div id="dangerAlert" class="danger-alert hidden" aria-live="polite">Danger!</div>
+          </div>
+          <div id="hintText" class="hint-text" aria-live="polite"></div>
+        </div>
+        <div id="resultPanel" class="result-panel hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle">
+          <div class="result-card">
+            <strong id="resultTitle">Victory!</strong>
+            <div id="resultText" class="result-report"></div>
+            <button id="nextStageBtn" type="button" data-ui="nextStage">Next Stage</button>
+            <button id="retryBtn" type="button" data-ui="retry">Try Again</button>
+            <button id="resultStagesBtn" type="button" data-ui="stages">Stages</button>
+            <a href="/kids/" data-ui="lobby">Lobby</a>
+          </div>
+        </div>
+        <div id="pausePanel" class="pause-panel hidden" role="dialog" aria-modal="true" aria-labelledby="pauseTitle" aria-describedby="pauseHint">
+          <div class="pause-card">
+            <strong id="pauseTitle" data-ui="pauseTitle">Battle paused</strong>
+            <span id="pauseHint" data-ui="pauseHint">Continue when you are ready, or leave this battle.</span>
+            <button id="resumeBtn" type="button" data-ui="resume">Continue</button>
+            <button id="leaveBattleBtn" type="button" data-ui="leaveBattle">Leave Battle</button>
+          </div>
+        </div>
+      </section>
+
+      <div id="loadingPanel" class="loading-panel">
+        <div class="loading-card">
+          <strong data-ui="loading">Loading</strong>
+          <span id="loadingText">0%</span>
+          <div><i id="loadingFill"></i></div>
+        </div>
+      </div>
+    </main>
+    <!-- adsense-static-guide:start -->
+    <section class="game-page-info game-page-info-static" aria-label="Información del juego Guardianes del Jardín Animal">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">Guía de juegos de WeightPlay</span><h2>Guardianes del Jardín Animal</h2><p>Clover Yard conecta seis regiones de jardín que comparten luz solar, semillas y agua. Cuando las bestias salvajes llenan los caminos, el jugador se convierte en el guardián del jardín y coloca al gato, al perro, al búho y al zorro opcional en cinco carriles. La campaña de 30 niveles introduce una regla legible en cada región: los curanderos restauran a una bestia adelante, los excavadores advierten antes de cambiar de carril y los ladrones de sol eliminan 12 soles no gastados. Cada quinta nivel tiene un guardián y un contrajuego separados, desde el rugido de Moss Horn Rhino y la fase protegida de Prism Shell Tortoise hasta los cambios de carril del Burrow Badger Chief, la acometida anunciada de Ember Mane Boar, el retraso del ataque de Gale Wing Eagle y el pulso restaurador de Moon Crown Elk. Los borrados, puntuaciones, medallas de jardín, monedas y entrenamiento permanecen en este navegador.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Jugabilidad</span><strong>Defensa de carril</strong></div><div class="game-info-fact"><span>Género</span><strong>Estrategia · Defensa de la torre · animales</strong></div><div class="game-info-fact"><span>Dificultad</span><strong>Media</strong></div><div class="game-info-fact"><span>Tiempo estimado</span><strong>5-8 minutos</strong></div><div class="game-info-fact"><span>Habilidades practicadas</span><strong>Lógica · Concentración · Resolución de problemas</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>Mundo y misión</h3><p>Clover Yard enlaza seis jardines que comparten sol, semillas y agua. Cuando las bestias salvajes llenan los senderos, el cuidador organiza a Gato, Perro, Búho y el Zorro opcional para proteger las cinco rutas sin abandonar la casa del jardín.</p>
+<p>Cada cinco niveles aparece un guardián regional con una regla distinta. Completar los 30 niveles significa que las seis zonas vuelven a intercambiar recursos y que el jardín puede funcionar sin perder sus corazones ante las incursiones.</p></div>
+      <div class="game-info-section"><h3>Cómo funcionan los sistemas</h3><p>Cada batalla usa cinco carriles. El sol permite colocar guardianes; los bloqueadores detienen el avance y los atacantes a distancia cubren uno o varios carriles según su posición.</p>
+<p>Los enemigos especiales cambian la prioridad: los sanadores restauran a una bestia cercana, los excavadores avisan antes de cambiar de carril y los ladrones retiran una vez 12 puntos de sol que todavía no se hayan gastado.</p>
+<p>Los seis jefes requieren respuestas visibles: un rugido, una barrera que se abre, cambios de carril, una carga anunciada, retrasos de ataque o un pulso que recupera vida. Atacar sin leer la señal no siempre es eficaz.</p>
+<p>La victoria exige detener a todas las bestias antes de que los corazones de la casa lleguen a cero. Las monedas obtenidas se guardan y mejoran permanentemente a los guardianes.</p>
+<p>Los niveles desbloqueados, mejores puntuaciones, medallas, monedas y entrenamiento se guardan en este navegador. El Zorro es una opción con diamantes compartidos, pero ninguna nivel lo exige.</p></div>
+      <div class="game-info-section"><h3>Cómo jugar</h3><ol><li>Elige un nivel desbloqueado y lee sus iconos y planes enemigos.</li><li>Coloque un bloqueador y apoyo a distancia en los carriles entrantes resaltados.</li><li>Recoge el sol, reacciona a señales especiales del enemigo y detén a todas las bestias antes de que los corazones de las cabañas lleguen a cero.</li><li>Gana monedas guardadas para entrenar y repetir niveles de Garden Medals con 5, 15 y 30 medallas.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Consejos de estrategia</h3><ul><li>Enfoca a un sanador antes de atacar repetidamente el escudo que restaura.</li><li>Cubre los carriles vecinos cuando aparezca un excavador.</li><li>Pasa mucho sol antes de que se active la bolsa del ladrón.</li><li>Espera a que se abra la barrera de Prism Shell Tortoise antes de infligir daño explosivo.</li><li>Usa Perro para absorber la avalancha anunciada de Ember Mane Boar mientras los guardias a distancia disparan.</li></ul></div>
+      <div class="game-info-section"><h3>Campaña y aumento de dificultad</h3><p>Los niveles 1-5 enseñan producción de sol, bloqueo y cobertura básica; Moss Horn Rhino cierra la primera región con un rugido de presión.</p>
+<p>Los niveles 6-10 introducen protección y curación; Prism Shell Tortoise reduce el daño mientras su barrera brillante está cerrada.</p>
+<p>Los niveles 11-15 añaden excavadores que cambian de carril después de avisar; Burrow Badger Chief convierte la cobertura lateral en la decisión principal.</p>
+<p>Los niveles 16-20 usan ladrones de sol y cargas. Ember Mane Boar anuncia su embestida, por lo que conviene preparar un bloqueador antes de concentrar el daño.</p>
+<p>Los niveles 21-25 combinan presión aérea y retrasos de ataque. Gale Wing Eagle obliga a distribuir guardianes en vez de depender de una sola línea.</p>
+<p>Los niveles 26-30 reúnen sanación, robo, cambios de carril y cargas; Moon Crown Elk termina la campaña con un pulso de recuperación que exige priorizar objetivos.</p></div>
+      <div class="game-info-section"><h3>Nota de diseño</h3><p>La cuadrícula de cinco carriles mantiene todas las amenazas visibles en un teléfono y permite que cada toque represente una decisión clara de posición. La dificultad crece mediante señales y funciones enemigas, no reduciendo los controles. Los puntos de control de cada quinta nivel recombinan una idea ya presentada, mientras el entrenamiento permanente ofrece tolerancia sin sustituir la planificación. La versión Kids conserva reintentos tranquilos, progreso local y ausencia total de solicitudes publicitarias.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Nota para familias</h3><p>Este amigable juego de defensa de fantasía puede apoyar la planificación, la atención y la resolución flexible de problemas. Las acciones enemigas utilizan imágenes o pistas breves y no hay violencia realista. El progreso se almacena localmente y puede desaparecer si se borra el almacenamiento del navegador. El Informe de habilidades es una retroalimentación sobre el juego, no una evaluación de aprendizaje o salud. La página para niños no solicita publicidad ni perfil infantil.</p></div>
+      <div class="game-info-section"><h3>Preguntas frecuentes</h3><dl><div><dt>¿Cuántas niveles están incluidas?</dt><dd>Hay 30 niveles con nombre en seis regiones, con un jefe mecánicamente distinto cada quinta nivel.</dd></div><div><dt>¿Por qué la tortuga Prism Shell sufrió poco daño?</dt><dd>Su barrera brillante reduce el daño mientras está cerrado. Atacar fuertemente después de que se abra.</dd></div><div><dt>¿Pueden los excavadores cambiar de carril?</dt><dd>Sí. Advierten visiblemente antes de pasar a un carril vecino.</dd></div><div><dt>¿Qué hace un ladrón de sol?</dt><dd>Elimina 12 soles no gastados una vez, pero nunca elimina una guardia ya colocada.</dd></div><div><dt>¿Pueden los jugadores mejorar los animales?</dt><dd>Sí. Las monedas locales entrenan a los guardias; Fox es un desbloqueo de diamantes compartido opcional y no es obligatorio.</dd></div><div><dt>¿Se guarda el progreso?</dt><dd>Los desbloqueos de niveles, borrados, puntuaciones, medallas, monedas y entrenamiento se guardan en este navegador.</dd></div><div><dt>¿Funciona en teléfonos?</dt><dd>Sí. La selección de nivel utiliza el deslizamiento horizontal y la batalla utiliza objetivos de toque grandes.</dd></div><div><dt>¿La página para niños muestra anuncios?</dt><dd>No. Este juego para niños no solicita publicidad.</dd></div></dl></div>
+    </div>
+  </section>
+    <!-- adsense-static-guide:end -->
+
+    <script src="/src/site-config.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/version.js?v=20260701-version2"></script>
+    <script src="../../src/analytics.js?v=20260701-analytics2"></script>
+    <script>
+      window.WonderAnalytics?.track("game_view", { game_id: "animal-guard-yard" });
+    </script>
+    <script src="../../src/wallet.js?v=20260630-senior1"></script>
+    <script src="../../src/sound.js?v=20260701-labels1"></script>
+    <script src="../../src/edge-guard.js?v=20260710-mobile-play-shell2"></script>
+    <script src="/src/i18n.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
+    <script src="game.js?v=20260717-zh-hans1"></script>
+    <script>
+      (() => {
+        const loadGameInfo = () => {
+          if (document.querySelector("script[data-guard-game-info]")) return;
+          const script = document.createElement("script");
+          script.src = "../../src/game-page-info.js?v=20260717-zh-hans1";
+          script.dataset.guardGameInfo = "idle";
+          document.body.appendChild(script);
+        };
+        const schedule = () => {
+          if ("requestIdleCallback" in window) {
+            window.requestIdleCallback(loadGameInfo, { timeout: 1600 });
+          } else {
+            window.setTimeout(loadGameInfo, 350);
+          }
+        };
+        if (document.readyState === "complete") schedule();
+        else window.addEventListener("load", schedule, { once: true });
+      })();
+    </script>
+  </body>
+</html>

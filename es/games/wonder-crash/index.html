@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <base href="/" />
+    <meta charset="UTF-8" />
+    <meta name="weightplay-audience" content="kids" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#12151d" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="robots" content="index,follow" />
+    <meta name="description" content="Fantasy Lion Defense es un juego de defensa de animales de 30 niveles protagonizado por Boom Mane Leo. El león se mueve a lo largo de una pared de..." />
+    <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Fantasía: Defensa del León | WeightPlay" />
+    <meta property="og:description" content="Fantasy Lion Defense es un juego de defensa de animales de 30 niveles protagonizado por Boom Mane Leo. El león se mueve a lo largo de una pared de..." />
+    <meta property="og:url" content="https://weightplay.com/es/games/wonder-crash/" />
+    <meta property="og:image" content="https://weightplay.com/assets/wonder-crash-cover.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>Fantasía: Defensa del León | WeightPlay</title>
+    <link rel="canonical" href="https://weightplay.com/es/games/wonder-crash/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/wonder-crash/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/wonder-crash/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/wonder-crash/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/wonder-crash/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/wonder-crash/" />
+    <link rel="manifest" href="manifest.webmanifest?v=20260630-upgrade1" />
+    <link rel="stylesheet" href="src/styles.css?v=20260715-wonder-skill-values1" />
+    <link rel="stylesheet" href="src/stage-selector-standard.css?v=20260715-stage-swipe2" />
+    <link rel="stylesheet" href="src/tutorial.css?v=20260701-style1" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Fantasía: Defensa del León",
+  "alternateName": "奇幻獅子守城",
+  "url": "https://weightplay.com/es/games/wonder-crash/",
+  "image": "https://weightplay.com/assets/wonder-crash-cover.png",
+  "description": "Fantasy Lion Defense es un juego de defensa de animales de 30 niveles protagonizado por Boom Mane Leo. El león se mueve a lo largo de una pared de...",
+  "applicationCategory": "Game",
+  "operatingSystem": "Web browser",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio"
+  },
+  "inLanguage": "es",
+  "isAccessibleForFree": true,
+  "genre": [
+    "acción",
+    "Defensa",
+    "animales"
+  ],
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "Kids and families",
+    "suggestedMinAge": 5
+  },
+  "learningResourceType": "Skill practice through play",
+  "educationalUse": "Practice Reaction, Focus, Hand-Eye Coordination through family-friendly browser gameplay."
+}
+    </script>
+    <link rel="stylesheet" href="src/game-page-info.css?v=20260710-guide-play-shell1" />
+    <link rel="stylesheet" href="src/loading-screen.css?v=20260702-unified1" />
+    <link rel="stylesheet" href="src/play-viewport.css?v=20260710-mobile-play-shell2" />
+    <link rel="stylesheet" href="games/wonder-crash/expanded-canvas.css?v=20260716-wonder-keyboard1" />
+    <meta name="twitter:title" content="Fantasía: Defensa del León | WeightPlay" />
+    <meta name="twitter:description" content="Fantasy Lion Defense es un juego de defensa de animales de 30 niveles protagonizado por Boom Mane Leo. El león se mueve a lo largo de una pared de..." />
+  </head>
+  <body>
+    <main class="wonder-main-flow-slot">
+      <div class="game-shell">
+      <canvas id="game" class="play-area" width="950" height="1688" tabindex="0" aria-label="Fantasy Lion Defense game board" aria-description="Move the lion with Left and Right Arrow keys, or drag across the game board."></canvas>
+
+      <section id="wonderMain" class="wonder-main">
+        <header>
+          <a class="home-link" data-wp-return="main" href="/kids/" aria-label="Back to Kids lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
+          <strong data-i18n="game_title">Fantasy Lion Defense</strong>
+          <label><span data-i18n="language">Language</span><select id="wonderMainLocaleSelect" aria-label="Language" data-i18n-aria="language"><option value="en">English</option><option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option><option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option></select></label>
+        </header>
+        <img class="wonder-main-cover" src="../../assets/wonder-crash-cover.png" alt="" />
+        <button id="wonderMainStart" class="standard-main-start" data-wp-main-start type="button">Start Game</button>
+      </section>
+
+      <!-- Active battle chrome: return, one primary value, one status row, settings. -->
+      <button id="backToMenuBtn" type="button" class="play-return hidden" data-wp-return="battle" aria-label="Back to game menu" data-i18n-aria="menu_title">
+        <span aria-hidden="true">&larr;</span>
+      </button>
+
+      <div id="battleHud" class="hud battle-hud hidden">
+        <div class="battle-primary"><img src="../../assets/coin.png" alt="" /> <span id="coinText">0</span></div>
+        <div class="battle-status"><span data-i18n="hud_stage">Stage</span> <span id="levelText">1</span><span aria-hidden="true"> · </span><span data-i18n="hud_wave">Wave</span> <span id="waveText">1/1</span></div>
+      </div>
+
+      <!-- Settings In-game Toggle Button -->
+      <button id="settingsBtn" type="button" class="settings-btn hidden" aria-label="Settings" data-i18n-aria="menu_settings"><img src="assets/menu-settings.png" alt="" draggable="false" /></button>
+
+      <!-- Main Game Overlays / Menus -->
+      <div id="overlay" class="overlay">
+        <button id="wonderStageBack" class="wonder-stage-back" data-wp-return="stage" type="button" aria-label="Back">&larr;</button>
+        <h1 class="hidden" data-i18n="game_title">Fantasía: Defensa del León</h1>
+        <div id="menuCoinLine" class="menu-coin-line">
+          <span class="menu-wallet-item"><img src="../../assets/coin.png" alt="" /> <span id="menuCoinText">0</span></span>
+          <span class="menu-wallet-item diamond-wallet"><img src="assets/weightplay-diamond.svg" alt="" /> <span id="menuDiamondText">0</span></span>
+        </div>
+        <label class="language-picker wonder-language-picker">
+          <span data-i18n="language">Language</span>
+          <select id="globalLocaleSelect" aria-label="Language" data-i18n-aria="language">
+            <option value="en">English</option>
+            <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
+            <option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option>
+          </select>
+        </label>
+        <p id="overlayText" data-i18n="menu_title">Main Menu</p>
+        
+        <div id="menuContent" class="menu-content">
+          <div id="profilePanel" class="profile-panel"></div>
+          <div id="levelGrid" class="level-grid" data-wp-stage-settle-duration="360" data-wp-stage-settle-easing="smoothstep"></div>
+          <p id="wonderStageStatus" class="wonder-stage-status" role="status" aria-live="polite"></p>
+        </div>
+        
+        <div id="upgradeGrid" class="upgrade-grid hidden"></div>
+        
+        <!-- Pause / Settings Panel -->
+        <div id="pausePanel" class="pause-panel hidden">
+          <label class="pause-language-picker">
+            <span data-i18n="language">Language</span>
+            <select id="pauseLocaleSelect" class="settings-select" aria-label="Language" data-i18n-aria="language">
+              <option value="en">English</option>
+              <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
+              <option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option>
+            </select>
+          </label>
+          <button id="resumeBtn" type="button" data-i18n="btn_resume">Resume</button>
+          <button id="leaveBtn" type="button" data-i18n="btn_leave">Leave Battle</button>
+        </div>
+        
+        <button id="startBtn" type="button" class="hidden" data-i18n="btn_start">Start</button>
+        
+        <!-- Navigation Menu Tabs -->
+        <nav id="menuTabs" class="menu-tabs">
+          <button type="button" data-menu-tab="character"><img src="../../assets/menu-character.png" alt="" /><span data-i18n="tab_character">Hero</span></button>
+          <button type="button" data-menu-tab="equipment"><img src="../../assets/menu-equipment.png" alt="" /><span data-i18n="tab_equipment">Weapons</span></button>
+          <button type="button" data-menu-tab="battle"><img src="../../assets/menu-battle.png" alt="" /><span data-i18n="tab_battle">Stages</span></button>
+          <button type="button" data-menu-tab="wall"><img src="../../assets/menu-wall.png" alt="" /><span data-i18n="tab_wall">Wall</span></button>
+          <button type="button" data-menu-tab="settings"><img src="../../assets/menu-settings.png" alt="" /><span data-i18n="tab_settings">Settings</span></button>
+        </nav>
+      </div>
+
+      <!-- Weapon Details Modal Dialog -->
+      <div id="weaponModal" class="weapon-modal hidden" role="dialog" aria-modal="true">
+        <div class="weapon-modal-card">
+          <button id="weaponModalClose" class="weapon-modal-close" type="button" aria-label="Close">&times;</button>
+          <div id="weaponModalContent"></div>
+        </div>
+      </div>
+
+      <div id="loadingPanel" class="loading-panel">
+        <div class="loading-card">
+          <strong id="loadingTitle">Loading</strong>
+          <span id="loadingText">0%</span>
+          <div><i id="loadingFill"></i></div>
+        </div>
+      </div>
+      </div>
+    </main>
+    <!-- adsense-static-guide:start -->
+    <section class="game-page-info game-page-info-static" aria-label="Información del juego Fantasía: Defensa del León">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">Guía de juegos de WeightPlay</span><h2>Fantasía: Defensa del León</h2><p>Fantasy Lion Defense es un juego de defensa de animales de 30 niveles protagonizado por Boom Mane Leo. El león se mueve a lo largo de una pared de fantasía mientras los borradores, lápices y reglas equipados se disparan en tiempos de reutilización separados. Ocho roles de bestia atacan en carriles creados, formaciones alternas, de borde y centrales, y cada quinta nivel termina con un patrón de jefe diferente. Entre oleadas, el jugador elige mejoras de batalla temporales; Después de la resultado, las monedas guardadas mejoran a Leo, el equipo o el muro. Los niños pueden volver a intentarlo sin cronómetro y el juego permanece permanentemente libre de publicidad.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Jugabilidad</span><strong>Defensa del cielo bala</strong></div><div class="game-info-fact"><span>Género</span><strong>acción · Defensa · animales</strong></div><div class="game-info-fact"><span>Dificultad</span><strong>Media</strong></div><div class="game-info-fact"><span>Tiempo estimado</span><strong>5-8 minutos</strong></div><div class="game-info-fact"><span>Habilidades practicadas</span><strong>Reacción · Concentración · Coordinación mano-ojo</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>Mundo y misión</h3><p>Boom Mane Leo protege la pared fuera de la bóveda encantada de útiles escolares de WeightPlay. Jabalíes, hienas embaucadoras, rinocerontes acorazados, búfalos, halcones, osos, tigres y cocodrilos se sienten atraídos por la magia almacenada dentro de sus lápices, reglas y borradores. Leo no puede dejar la pared desprotegida, por lo que el jugador patrulla su ancho, mantiene las armas automáticas alineadas con los carriles entrantes y repara los daños entre expediciones.</p>
+<p>La campaña atraviesa seis rutas de defensa de cinco niveles. Cada ruta termina cuando un comandante de bestias nombrado es derrotado en las Niveles 5, 10, 15, 20, 25 o 30. Una primera limpieza abre la siguiente nivel; una primera limpieza del jefe también otorga la bonificación de diamantes registrada. Limpiar Bear Starfall en la nivel 30 significa que toda la lista de bestias ha sido expulsada y la bóveda puede reabrirse de forma segura.</p></div>
+      <div class="game-info-section"><h3>Cómo funcionan los sistemas</h3><p>Leo se mueve horizontalmente arrastrando o tocando el campo de batalla; un teclado enfocado también puede usar las flechas izquierda y derecha. Las armas equipadas disparan automáticamente, pero cada ranura tiene su recarga, por lo que las armas duplicadas aún producen disparos separados. Las construcciones de lápiz, regla y borrador difieren en velocidad, daño, tamaño y ritmo de disparo.</p>
+<p>Cada nivel contiene de tres a siete oleadas. Las bestias derrotadas otorgan monedas y el muro debe conservar al menos un PV hasta que desaparezca el último enemigo. Entre oleadas, tres opciones temporales pueden mejorar el daño, el recarga, el recuento de proyectiles, los disparos laterales, las ráfagas, el tamaño, la perforación, la salpicadura, la curación de derrotas, la ganancia de monedas, la desaceleración o la reparación inmediata de la pared.</p>
+<p>Los ocho enemigos son roles mecánicos en lugar de intercambios cosméticos: los jabalíes y los tigres corren, las hienas y los osos se curvan hacia los lados, los rinocerontes reducen un golpe inicial con armadura, los búfalos y los cocodrilos castigan la pared y los halcones corren. Los grupos de tipos creados y las posiciones de formación hacen que las niveles posteriores enfaticen diferentes prioridades de objetivos en lugar de dibujar cada bestia al azar.</p>
+<p>Los jefes mantienen su identidad de bestia y añaden una regla de proyectil única. El Capitán Jabalí dispara rápidos tiros de persecución; la hiena crea fuego cruzado en parejas; el Rhino comienza detrás de seis golpes de escudo y lanza un orbe pesado; el Búfalo apunta con un gran orbe de asedio al centro del muro; el Halcón combina carreras repetidas con disparos gemelos rápidos; y el Oso lanza una lluvia de estrellas de tres orbes.</p>
+<p>Los desbloqueos de niveles, las actualizaciones permanentes, las armas equipadas, las monedas y los bonos de diamantes de Jefe reclamados se almacenan en este navegador. El resultado muestra los PV restantes del muro, las bestias derrotadas, las opciones de mejora, las recompensas y la siguiente nivel o una ruta de repetición/menú.</p></div>
+      <div class="game-info-section"><h3>Cómo jugar</h3><ol><li>Abre Batalla y desliza el riel horizontal hasta un nivel desbloqueado.</li><li>Lee el nombre artístico, los retratos de los enemigos, la pista de formación, el recuento de oleadas y la insignia del jefe antes de comenzar.</li><li>Mueva a Leo debajo del carril que más necesita cobertura de armas; El disparo es automático.</li><li>Elige una mejora después de cada oleada completada y adáptala a la siguiente combinación de enemigos.</li><li>Mantén el muro por encima de cero PV hasta que todas las bestias y jefes normales sean derrotados.</li><li>Utilice las recompensas del asentamiento para mejoras permanentes de héroes, equipos o muros, luego continúe o vuelva a jugar.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Consejos de estrategia</h3><ul><li>La penetración y el chapoteo son más fuertes contra carriles fijos o formaciones con mucho centro; Los tiros laterales cubren ataques alternos y de borde.</li><li>No persigas a todas las bestias rápidas. Mantenga una línea de tiro útil y muévase temprano cuando un halcón o un tigre comience a correr.</li><li>Contra Rhino Bulwark, los rápidos ataques de múltiples disparos eliminan seis golpes de escudo de manera eficiente antes de que importe un daño mayor.</li><li>Guarde las opciones de reparación de muros y curación de derrotas para niveles con muchos rompedores, como Buffalo Siege y Crocodile Siege.</li><li>El Bear Starfall final extiende tres orbes más débiles. El daño amplio puede controlar su escolta mixta mientras que el movimiento mantiene a Leo alineado con carriles peligrosos.</li></ul></div>
+      <div class="game-info-section"><h3>Campaña y aumento de dificultad</h3><p>Las niveles 1 a 5 enseñan carriles rectos, entradas alternas y hienas en zigzag. Boar Pursuit cierra la ruta con disparos rápidos detrás de una escolta mixta.</p>
+<p>Las niveles 6 a 10 presentan pantallas centrales blindadas, rompemuros, ruedas curvas y juncos del cielo. Hyena Crossfire agrega proyectiles emparejados mientras enemigos mixtos ingresan por ambos lados.</p>
+<p>Las niveles 11 a 15 aíslan los roles enemigos para que el jugador pueda comparar la perforación con una columna de rinoceronte, la cobertura de velocidad contra velocistas gemelos y la reparación contra una línea de ruptura. Rhino Bulwark requiere seis golpes de escudo antes de dañar por completo al jefe.</p>
+<p>Las niveles 16 a 20 combinan halcones buceadores con armaduras y rutas curvas. Buffalo Siege enfoca a los enemigos pesados ​​en el centro y agrega un orbe de asedio grande, lento y de alto daño dirigido a la pared.</p>
+<p>Las niveles 21 a 25 combinan corredores vigilados, velocistas en zigzag, puertas pesadas y ataques por los flancos. Hawk Dive Squadron acelera repetidamente y dispara dos proyectiles rápidos, lo que recompensa el reposicionamiento temprano.</p>
+<p>Las niveles 26 a 30 revisan los ocho roles a través de formaciones de carril, alternancia, centro y borde. Bear Starfall termina la campaña con la lista completa y un patrón de lanzamiento de tres proyectiles en lugar de otra copia numérica de un Jefe anterior.</p></div>
+      <div class="game-info-section"><h3>Nota de diseño</h3><p>Usamos disparos de armas automáticas para que la decisión continua del jugador sea dónde debe pararse Leo, no si se registró un pequeño botón de disparo en un teléfono. Los tiempos de reutilización de espacios separados preservan el valor de construcción de equipos, mientras que las actualizaciones entre oleadas crean breves pausas tácticas. La revisión de 30 niveles reemplaza la antigua aleatoriedad de las bestias del final del juego con composiciones de autor y cuatro formaciones de generación legibles. Los patrones de proyectiles de Six Jefe proporcionan puntos de control sin agregar imágenes hostiles más allá del tono de defensa animal de fantasía existente. Arrastrar el teléfono, tocar el movimiento y las teclas de flecha del escritorio controlan el mismo campo de batalla lógico limitado. A diferencia de Animal Color Lunchbox, este juego pide reacciones y opciones de construcción, pero mantiene el contrato de Kids: sin publicidad, sin presión de cuenta regresiva, reintento de apoyo y sin afirmar que el Informe de habilidades sea una evaluación formal.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Nota para familias</h3><p>Fantasy Lion Defense utiliza combates con animales de dibujos animados, armas automáticas de útiles escolares, PV de pared y decisiones de actualización. Puede apoyar la reacción, la concentración, la planificación y la coordinación mano-ojo durante sesiones cortas, pero el Informe de habilidades y las estrellas son resúmenes divertidos en lugar de una evaluación del desarrollo, médica o escolar. La página para niños no tiene publicidad, no es necesario iniciar sesión y el progreso permanece en el navegador actual a menos que se borre su almacenamiento.</p></div>
+      <div class="game-info-section"><h3>Preguntas frecuentes</h3><dl><div><dt>¿Cuántas niveles hay en Fantasy Lion Defense?</dt><dd>Hay 30 niveles creadas en seis rutas de cinco niveles, con batallas contra jefes en las niveles 5, 10, 15, 20, 25 y 30.</dd></div><div><dt>¿Las armas se disparan solas?</dt><dd>Sí. Cada ranura equipada se activa en su propio recarga mientras el jugador mueve a Leo y elige mejoras entre oleadas.</dd></div><div><dt>¿Por qué las niveles posteriores se sienten diferentes?</dt><dd>Utilizan composiciones de bestias específicas y formaciones de carriles, alternas, de borde o centrales. Los jefes posteriores también usan diferentes patrones de proyectiles.</dd></div><div><dt>¿Qué pasa si la pared llega a cero PV?</dt><dd>La carrera finaliza con un reintento y una elección de selección de nivel. El progreso permanente ya guardado en el navegador permanece disponible.</dd></div><div><dt>¿Cómo se obtienen los diamantes Jefe?</dt><dd>Cada nivel de Jefe otorga su bonificación de diamantes registrada solo en la primera eliminación; La repetición aún proporciona recompensas de nivel normales.</dd></div><div><dt>¿Se puede jugar el juego sin ratón?</dt><dd>Sí. Touch admite tocar y arrastrar, y una batalla de escritorio enfocada admite las teclas de flecha izquierda y derecha.</dd></div><div><dt>¿Este juego para niños muestra anuncios o requiere una cuenta?</dt><dd>No. No solicita publicidad y no requiere inicio de sesión; El progreso se almacena localmente en el navegador.</dd></div><div><dt>¿El Informe de Habilidades mide la habilidad?</dt><dd>No. Wall PV, las bestias derrotadas, las elecciones, las estrellas y las puntuaciones son solo comentarios del juego, no una prueba o diagnóstico.</dd></div></dl></div>
+    </div>
+  </section>
+    <!-- adsense-static-guide:end -->
+    <!-- Platform Modules and Script Loaders -->
+    <script src="src/site-config.js?v=20260709-wonder-settlement-mobile1"></script>
+    <script src="src/version.js?v=20260701-version2"></script>
+    <script src="src/analytics.js?v=20260701-analytics2"></script>
+    <script>
+      window.WonderAnalytics?.track("game_view", { game_id: "wonder-crash" });
+    </script>
+    <script src="src/sound.js?v=20260701-labels1"></script>
+    <script src="src/edge-guard.js?v=20260710-mobile-play-shell2"></script>
+    <script src="src/i18n.js?v=20260717-zh-hans5"></script>
+    <script src="src/wallet.js?v=20260630-upgrade1"></script>
+    <script src="src/tutorial.js?v=20260702-tutorial-locale1"></script>
+    <script src="src/stage-selector-standard.js?v=20260715-stage-swipe2"></script>
+    <script src="src/game-data.js?v=20260717-wonder-depth30-1"></script>
+    <script src="src/game.js?v=20260717-zh-hans1"></script>
+    <script src="games/wonder-crash/expanded-canvas.js?v=20260717-zh-hans1"></script>
+    <script src="src/game-page-info.js?v=20260717-zh-hans1"></script>
+  </body>
+</html>

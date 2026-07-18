@@ -2364,7 +2364,7 @@ function renderProfilePanel(tab = activeMenuTab) {
   if (backToLobbyBtn) {
     backToLobbyBtn.addEventListener("click", () => {
       window.WonderSound?.play("click");
-      window.location.href = "/";
+      window.location.href = window.WonderI18n?.localizedPath?.(window.WonderI18n.actualLocale(), "/") || "/";
     });
   }
 }

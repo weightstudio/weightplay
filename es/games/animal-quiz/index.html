@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <base href="/games/animal-quiz/" />
+    <meta charset="UTF-8" />
+    <meta name="weightplay-audience" content="kids" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#67b66f" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="robots" content="index,follow" />
+    <meta name="description" content="Animal Quiz es un juego gratuito de conocimiento para niños bilingüe con 30 niveles guardadas y diez animales diferentes en cada nivel. Su biblioteca de..." />
+    <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Cuestionario de Animales | WeightPlay" />
+    <meta property="og:description" content="Animal Quiz es un juego gratuito de conocimiento para niños bilingüe con 30 niveles guardadas y diez animales diferentes en cada nivel. Su biblioteca de..." />
+    <meta property="og:url" content="https://weightplay.com/es/games/animal-quiz/" />
+    <meta property="og:image" content="https://weightplay.com/assets/quiz-cover.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>Cuestionario de Animales | WeightPlay</title>
+    <link rel="canonical" href="https://weightplay.com/es/games/animal-quiz/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-quiz/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-quiz/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-quiz/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/animal-quiz/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-quiz/" />
+    <link rel="stylesheet" href="style.css?v=20260716-keyboard-quiz1" />
+    <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Cuestionario de Animales",
+  "alternateName": "動物小博士",
+  "url": "https://weightplay.com/es/games/animal-quiz/",
+  "image": "https://weightplay.com/assets/quiz-cover.png",
+  "description": "Animal Quiz es un juego gratuito de conocimiento para niños bilingüe con 30 niveles guardadas y diez animales diferentes en cada nivel. Su biblioteca de...",
+  "applicationCategory": "Game",
+  "operatingSystem": "Web browser",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio"
+  },
+  "inLanguage": "es",
+  "isAccessibleForFree": true,
+  "genre": [
+    "cuestionario",
+    "Educación",
+    "animales"
+  ],
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "Kids and families",
+    "suggestedMinAge": 3
+  },
+  "learningResourceType": "Skill practice through play",
+  "educationalUse": "Practice animal recognition, habitats, body features, behavior, diet, memory, and reading through 30 browser stages."
+}
+    </script>
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
+    <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
+    <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
+    <script data-wp-stage-standard>/* Animal Quiz owns its native Kids Stage rail. */</script>
+    <meta name="twitter:title" content="Cuestionario de Animales | WeightPlay" />
+    <meta name="twitter:description" content="Animal Quiz es un juego gratuito de conocimiento para niños bilingüe con 30 niveles guardadas y diez animales diferentes en cada nivel. Su biblioteca de..." />
+  </head>
+  <body data-tutorial-auto-show="false">
+    <main class="animal-game" data-no-mobile-immersive="true">
+      <header class="topbar">
+        <a id="homeLink" class="home-link" data-wp-return="main" href="/kids/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
+        <div>
+          <p id="brandText">WeightPlay</p>
+          <h1 id="titleText">Cuestionario de Animales</h1>
+        </div>
+        <label class="language-picker">
+          <span id="languageLabel">Language</span>
+          <select id="localeSelect" aria-label="Language">
+            <option value="en">English</option>
+            <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
+            <option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option>
+          </select>
+        </label>
+      </header>
+
+      <section id="mainPanel" class="main-panel">
+        <img class="main-cover" src="../../assets/quiz-cover.webp" alt="" />
+        <div class="main-copy">
+          <strong id="mainTitle">Animal Quiz</strong>
+          <span id="mainIntro">Solve 30 picture, habitat, feature, action, and food investigations.</span>
+        </div>
+        <button id="startGameBtn" class="main-start" type="button">Start Game</button>
+      </section>
+
+      <section class="level-line" aria-label="Level progress">
+        <span id="levelText">Stage 1 · 1/10</span>
+        <div><i id="levelFill"></i></div>
+      </section>
+
+      <section id="stageSelectPanel" class="stage-select hidden">
+        <div class="stage-shell-head">
+          <button id="stageBackBtn" class="stage-return" data-wp-return="stage" type="button" aria-label="Back">&larr;</button>
+          <strong id="stageSelectTitle">Choose Stage</strong>
+        </div>
+        <div class="stage-setup">
+          <strong id="stageSetupTitle">Pick an animal topic</strong>
+          <span id="stageSetupText">Choose one of 30 animal investigations. Every fifth stage is a Junior Expert Check.</span>
+        </div>
+        <div id="stageGrid" class="stage-grid"></div>
+      </section>
+
+      <section class="quiz-stage play-area hidden">
+        <button id="backToStagesBtn" class="play-return" data-wp-return="battle" type="button" aria-label="Back to stages">&larr;</button>
+        <div class="animal-card">
+          <img id="animalImage" src="" alt="" />
+          <strong id="promptText">Who is this animal?</strong>
+          <span id="clueText"></span>
+        </div>
+      </section>
+
+      <section id="choiceGrid" class="choice-grid hidden" aria-label="Answer choices"></section>
+
+      <section class="feedback hidden" aria-live="polite">
+        <strong id="feedbackText">Choose one</strong>
+      </section>
+
+      <div id="resultPanel" class="result-panel hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle">
+        <div class="result-card">
+          <strong id="resultTitle">Great job!</strong>
+          <span id="resultText"></span>
+          <div id="skillReport" class="skill-report" aria-live="polite"></div>
+          <button id="againBtn" type="button">Play Again</button>
+          <button id="nextStageBtn" type="button">Next Stage</button>
+          <button id="stageSelectBtn" type="button">Stages</button>
+          <a id="homeText" href="/kids/">Lobby</a>
+        </div>
+      </div>
+
+      <div id="loadingPanel" class="loading-panel">
+        <div class="loading-card">
+          <strong id="loadingTitle">Loading</strong>
+          <span id="loadingText">0%</span>
+          <div><i id="loadingFill"></i></div>
+        </div>
+      </div>
+    </main>
+    <!-- adsense-static-guide:start -->
+    <section class="game-page-info game-page-info-static" aria-label="Información del juego Cuestionario de Animales">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">Guía de juegos de WeightPlay</span><h2>Cuestionario de Animales</h2><p>Animal Quiz es un juego gratuito de conocimiento para niños bilingüe con 30 niveles guardadas y diez animales diferentes en cada nivel. Su biblioteca de 20 animales abarca desde leones, elefantes, jirafas y cebras hasta pingüinos, ballenas, pandas, koalas, búhos, ranas, mascotas y animales de granja. Las primeras preguntas combinan un retrato claro con una pista sobre una característica corporal. Investigaciones posteriores desdibujan el retrato, lo convierten en una silueta, añaden una cuarta opción o combinan datos sobre el hábitat, el comportamiento, la dieta y la apariencia. Cada quinta nivel es una Prueba de Experto Junior que recombina ideas ya introducidas. No hay cuenta atrás y una elección equivocada nunca pone fin a la nivel.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Jugabilidad</span><strong>Prueba de animales</strong></div><div class="game-info-fact"><span>Género</span><strong>cuestionario · Educación · animales</strong></div><div class="game-info-fact"><span>Dificultad</span><strong>Fácil</strong></div><div class="game-info-fact"><span>Tiempo estimado</span><strong>5-8 minutos</strong></div><div class="game-info-fact"><span>Habilidades practicadas</span><strong>Conocimiento animal · Memoria · leyendo</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>Mundo y misión</h3><p>La campaña es una investigación sobre animales más que un rescate o una batalla. El jugador es un observador que construye un cuaderno de campo, una identificación correcta a la vez. Cada retrato, nombre y pista escrita describe el mismo animal objetivo. Completar diez identificaciones cierra el capítulo actual del cuaderno, guarda el claro y desbloquea la siguiente investigación.</p>
+<p>Los hechos proporcionan la razón de cada elección. Un león puede estar conectado a través de su melena, su hogar en los pastizales africanos y su comportamiento de orgullo; un pingüino por costas frías, pescando y acurrucándose; un elefante a través de su trompa, su dieta vegetal y su comportamiento de rociado de agua. Superar la nivel 30 significa que el jugador ha completado seis grupos de lecciones y la verificación final de evidencia mixta.</p></div>
+      <div class="game-info-section"><h3>Cómo funcionan los sistemas</h3><p>Cada nivel contiene diez animales objetivo únicos. Las niveles introductorias muestran tres nombres de respuestas; posteriormente los controles mixtos, alimentarios y de expertos arrojan cuatro sin reducir los controles.</p>
+<p>Los retratos estándar admiten el reconocimiento. Los niveles de misterio suavizan deliberadamente los detalles, mientras que los niveles de silueta eliminan el color para que el contorno y las pistas escritas importen más. La imagen mantiene un nombre de animal accesible.</p>
+<p>Las pistas de características describen rasgos visibles, las pistas de hábitat explican dónde vive un animal, las pistas de acción describen el comportamiento y las pistas de dieta identifican los alimentos. Las niveles de expertos combinan dos o tres familias de pistas.</p>
+<p>Una respuesta incorrecta genera una retroalimentación amable y deja la pregunta abierta. Una respuesta correcta bloquea las opciones durante una breve pausa de aprendizaje de tiempo visible, muestra una nota animal y avanza.</p>
+<p>Borrar las diez preguntas guarda la nivel, el mejor resultado y el siguiente desbloqueo en el almacenamiento del navegador local. El resultado puede reproducir la investigación o volver a la tarjeta exactamente completada.</p>
+<p>No hay cuenta, tabla de clasificación, compra, cronómetro, medidor de vida ni calificación formal. Superar las 30 niveles es la condición de éxito de la campaña; la repetición admite revisión y un nuevo intento diez de diez.</p></div>
+      <div class="game-info-section"><h3>Cómo jugar</h3><ol><li>Presiona Iniciar juego y desliza el riel horizontal del nivel hasta una investigación desbloqueada.</li><li>Estudia el retrato, la imagen misteriosa o la silueta y lee cada pista debajo.</li><li>Compara la evidencia con los tres o cuatro nombres de animales y luego elige uno.</li><li>Después de una respuesta incorrecta, utilice los comentarios y vuelva a intentarlo; Después de una respuesta correcta, lea la nota del animal.</li><li>Identifica los diez animales para salvar el claro y desbloquear exactamente la siguiente nivel.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Consejos de estrategia</h3><ul><li>Nombra una característica visible antes de leer las opciones en niveles de imagen clara.</li><li>En los niveles misteriosos, confíe más en la pista del hábitat que en los colores suavizados.</li><li>Para siluetas, compare el contorno de troncos, cuellos, caparazones, orejas y cuerpos.</li><li>Lea cada pista en una verificación de expertos; la combinación debe identificar a un animal.</li><li>Con cuatro opciones, elimine los animales que no puedan vivir en el hábitat indicado ni comer el alimento indicado.</li><li>Haga una pausa en la nota del animal con la respuesta correcta en lugar de pasarla rápidamente.</li></ul></div>
+      <div class="game-info-section"><h3>Campaña y aumento de dificultad</h3><p>Niveles 1 a 5, Presentaciones de imágenes, establecen la biblioteca de animales con retratos claros y pistas de características. La nivel 5 agrega una segunda pista y cuatro opciones.</p>
+<p>Las niveles 6 a 10, Viviendas Hábitat, utilizan imágenes misteriosas suavizadas y hacen que la evidencia de ubicación sea importante. La nivel 10 combina datos sobre hábitat y características.</p>
+<p>Niveles 11 a 15, Detectives destacados, utilizan siluetas para probar el reconocimiento de contornos. La nivel 15 termina el capítulo con pistas mixtas y cuatro opciones.</p>
+<p>Las niveles 16 a 20, Acciones animales, se centran en el movimiento y el comportamiento social. La nivel 20 combina comportamiento con hábitat.</p>
+<p>Las niveles 21 a 25, Alimentos y familias, utilizan cuatro opciones y pistas dietéticas. La nivel 25 añade evidencia de apariencia a la cuestión alimentaria.</p>
+<p>Las niveles 26 a 30, Junior Expert Mix, combinan dos pistas con imágenes o siluetas misteriosas. La nivel 30 utiliza cuatro opciones, una silueta y tres características conectadas, hábitat y pistas de comportamiento.</p></div>
+      <div class="game-info-section"><h3>Nota de diseño</h3><p>Diez preguntas revisan una lección sin que la sesión para niños parezca una prueba larga. La dificultad aumenta al cambiar qué evidencia sigue siendo útil, no al reducir los objetivos o agregar presión de tiempo. El desenfoque y la silueta son modos de enseñanza en lugar de hitboxes ocultos; Los grandes botones de respuesta nativos siguen estando disponibles para el tacto, el mouse y el teclado. El diseño lógico fijo se escala uniformemente en teléfonos, tabletas, formato horizontal corto y escritorio. La pausa de aprendizaje solo cuenta el tiempo de reproducción visible, por lo que un cambio de aplicación no puede omitir el hecho silenciosamente. A diferencia de los juegos de acción o de combinación de WeightPlay, la evidencia objetiva es la decisión completa. La ruta Kids no genera solicitud de publicidad, reserva, cuenta, compra, ranking o reclamo de diagnóstico.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Nota para familias</h3><p>Animal Quiz puede apoyar conversaciones sobre nombres de animales, hábitats, dietas, características corporales y comportamiento. Los niños que todavía están aprendiendo a leer pueden jugar con un adulto que lea cada pista en voz alta. Las estrellas guardadas y el Informe de habilidades describen únicamente esta sesión de juego; no son una calificación escolar, un resultado de coeficiente intelectual, un diagnóstico de desarrollo o una comparación con otros niños. El progreso permanece en el navegador actual y puede desaparecer si se borra el almacenamiento local. No se requiere perfil infantil y la ruta Kids no solicita publicidad.</p></div>
+      <div class="game-info-section"><h3>Preguntas frecuentes</h3><dl><div><dt>¿Cuántas niveles y preguntas están incluidas?</dt><dd>Hay 30 niveles guardadas con diez preguntas sobre animales diferentes en cada nivel.</dd></div><div><dt>¿Por qué la imagen del animal a veces aparece borrosa u oscura?</dt><dd>Los niveles de hábitat usan una imagen misteriosa, mientras que los niveles de Feature Detective y expertos usan siluetas para que los hechos y los contornos importen.</dd></div><div><dt>¿Qué pasa después de una respuesta incorrecta?</dt><dd>La pregunta permanece abierta y el jugador puede probar otra opción sin perder el progreso.</dd></div><div><dt>¿Por qué algunas niveles tienen cuatro opciones?</dt><dd>Las niveles posteriores de alimentación, mixta y experta añaden un cuarto nombre después de la introducción de la biblioteca de animales.</dd></div><div><dt>¿Se guarda el progreso?</dt><dd>Las niveles desbloqueadas, las tarjetas completadas y los mejores resultados se almacenan únicamente en este navegador.</dd></div><div><dt>¿Se puede jugar en un teléfono o con un teclado?</dt><dd>Sí. El mismo diseño fijo admite controles táctiles, de mouse y de teclado.</dd></div><div><dt>¿Requiere una cuenta?</dt><dd>No se requiere inicio de sesión ni perfil infantil. Borrar el almacenamiento del navegador puede eliminar el progreso local.</dd></div><div><dt>¿La página para niños muestra anuncios?</dt><dd>No. Animal Quiz no crea ninguna solicitud de publicidad ni reserva de publicidad.</dd></div><div><dt>¿Es el Informe de Habilidades una evaluación formal?</dt><dd>No. Es una retroalimentación de juego de apoyo, no una prueba escolar, de coeficiente intelectual, de salud o de desarrollo.</dd></div></dl></div>
+    </div>
+  </section>
+    <!-- adsense-static-guide:end -->
+    <script src="/src/site-config.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/version.js?v=20260701-version2"></script>
+    <script src="../../src/analytics.js?v=20260701-analytics2"></script>
+    <script>
+      window.WonderAnalytics?.track("game_view", { game_id: "animal-quiz" });
+    </script>
+    <script src="../../src/sound.js?v=20260701-labels1"></script>
+    <script src="../../src/edge-guard.js?v=20260710-mobile-play-shell2"></script>
+    <script src="/src/i18n.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
+    <script src="game.js?v=20260717-zh-hans1"></script>
+    <script>
+      (() => {
+        const loadGameInfo = () => {
+          if (document.querySelector("script[data-quiz-game-info]")) return;
+          const script = document.createElement("script");
+          script.src = "../../src/game-page-info.js?v=20260717-zh-hans1";
+          script.dataset.quizGameInfo = "idle";
+          script.async = true;
+          document.body.appendChild(script);
+        };
+        const schedule = () => {
+          if ("requestIdleCallback" in window) {
+            window.requestIdleCallback(loadGameInfo, { timeout: 1600 });
+          } else {
+            window.setTimeout(loadGameInfo, 350);
+          }
+        };
+        if (document.readyState === "complete") schedule();
+        else window.addEventListener("load", schedule, { once: true });
+      })();
+    </script>
+  </body>
+</html>

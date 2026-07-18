@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+    <base href="/games/animal-hero-trials/" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#071712" />
+  <meta name="robots" content="index,follow" />
+  <meta name="description" content="《动物英雄试炼》是共有 30 关的动作闯关。四位 WeightPlay 英雄拥有不同生命、速度、射程与主动技能。每个试炼包含三个相连房间、两次免费祝福选择，以及一名菁英队长或区域 Boss。五种敌人逐步加入飞行、冲锋、远程与护甲，六个检查点 Boss 各有不同反制方式；胜利取得的试炼印记可升级永久生命精通。" />
+  <meta property="og:site_name" content="WeightPlay" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="动物英雄试炼 | WeightPlay" />
+  <meta property="og:description" content="《动物英雄试炼》是共有 30 关的动作闯关。四位 WeightPlay 英雄拥有不同生命、速度、射程与主动技能。每个试炼包含三个相连房间、两次免费祝福选择，以及一名菁英队长或区域 Boss。五种敌人逐步加入飞行、冲锋、远程与护甲，六个检查点 Boss 各有不同反制方式；胜利取得的试炼印记可升级永久生命精通。" />
+  <meta property="og:url" content="https://weightplay.com/zh-cn/games/animal-hero-trials/" />
+  <meta property="og:image" content="https://weightplay.com/assets/animal-hero-trials-cover.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <title>动物英雄试炼 | WeightPlay</title>
+  <link rel="canonical" href="https://weightplay.com/zh-cn/games/animal-hero-trials/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-hero-trials/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-hero-trials/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-hero-trials/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/animal-hero-trials/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-hero-trials/" />
+    <link rel="stylesheet" href="../../src/loading-screen.css" />
+  <link rel="stylesheet" href="../../src/play-viewport.css" />
+  <link rel="stylesheet" href="../../src/game-page-info.css" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="progress-cards.css" />
+  <style>.canvas-wrap canvas:focus-visible{outline:5px solid #ffd45f;outline-offset:-5px}</style>
+  <style>
+    .canvas-wrap canvas{position:absolute;left:50%;top:50%;width:auto;height:auto;object-fit:initial;transform:translate(-50%,-50%)}
+    #battleView #resultModal{position:absolute;inset:0}
+    #resultHome{min-height:50px;margin-left:6px;border:1px solid #8edbb3;border-radius:10px;background:#0c281f;color:#fff;padding:0 14px;font-weight:900}
+    .reroll-row{margin-top:10px;display:grid;gap:5px}.reroll-row button{height:46px;min-height:46px;border:1px solid #8edbb3;border-radius:9px;background:#0c281f;color:#fff;display:flex;align-items:center;justify-content:center;gap:7px;font-weight:900}.reroll-row button.is-confirming{border-color:#ffd45f;background:#3b3315;box-shadow:0 0 0 2px #ffd45f33}.reroll-row button:disabled{opacity:.48}.reroll-row img{width:24px;height:24px;object-fit:contain}.reroll-row small{display:grid;place-items:center;min-height:36px;color:#ffd45f}
+    .hero-picker{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(86px,1fr);gap:7px;overflow-x:auto;scrollbar-width:none}.hero-option{height:112px;border:1px solid #4f8b70;border-radius:9px;background:#102d24;color:#fff;padding:5px;display:grid;grid-template-rows:48px auto auto;justify-items:center;align-content:center;gap:2px}.hero-option.selected{border:2px solid #ffd45f;background:#194635}.hero-option img{width:48px;height:48px;object-fit:contain}.hero-option b{font-size:11px;line-height:1.1;text-align:center}.hero-option small{display:grid;gap:1px;font-size:8px;line-height:1.15;color:#bfe6d2;text-align:center}
+    #stageView{height:100dvh;min-height:0;overflow:hidden}.stage-rail{min-height:0}
+    .stage-card{padding:8px;gap:4px}.stage-card img{min-height:0}.stage-card span{color:#d9eee4}.stage-card.checkpoint{border:3px solid #ffd45f;box-shadow:0 0 0 2px #8b6424}.stage-card.checkpoint img{object-fit:contain;background:#0b221b}
+    body:not([data-game-view="battle"]) .battle-ad{display:none}
+    body[data-game-view="stage"] .game-page-info,body[data-game-view="battle"] .game-page-info{display:none!important}
+  </style>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "动物英雄试炼",
+  "url": "https://weightplay.com/zh-cn/games/animal-hero-trials/",
+  "image": "https://weightplay.com/assets/animal-hero-trials-cover.png",
+  "description": "《动物英雄试炼》是共有 30 关的动作闯关。四位 WeightPlay 英雄拥有不同生命、速度、射程与主动技能。每个试炼包含三个相连房间、两次免费祝福选择，以及一名菁英队长或区域 Boss。五种敌人逐步加入飞行、冲锋、远程与护甲，六个检查点 Boss 各有不同反制方式；胜利取得的试炼印记可升级永久生命精通。",
+  "applicationCategory": "Game",
+  "operatingSystem": "Web browser",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio"
+  },
+  "inLanguage": "zh-Hans",
+  "isAccessibleForFree": true,
+  "genre": [
+    "动作",
+    "Roguelite",
+    "动物"
+  ],
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "General action and roguelite players"
+  }
+}
+    </script>
+  <meta name="twitter:title" content="动物英雄试炼 | WeightPlay" />
+    <meta name="twitter:description" content="《动物英雄试炼》是共有 30 关的动作闯关。四位 WeightPlay 英雄拥有不同生命、速度、射程与主动技能。每个试炼包含三个相连房间、两次免费祝福选择，以及一名菁英队长或区域 Boss。五种敌人逐步加入飞行、冲锋、远程与护甲，六个检查点 Boss 各有不同反制方式；胜利取得的试炼印记可升级永久生命精通。" />
+  </head>
+<body data-game-view="main" data-tutorial-auto-show="false" data-sound-toggle="off">
+  <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong>Animal Hero Trials</strong><span>Loading</span><div class="loading-track"><i></i></div></div></section>
+  <main id="app" class="app">
+    <section id="mainView" class="view main-view">
+      <a class="lobby-return" data-wp-return="main" href="/" aria-label="Back to WeightPlay"><span>&larr;</span><img src="../../assets/weightplay-logo.png" alt="" /></a>
+      <label class="locale"><span>Language</span><select id="localeSelect"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option></select></label>
+      <img class="cover" src="../../assets/animal-hero-trials-cover.webp" alt="《动物英雄试炼》游戏图片" />
+      <div class="main-copy"><h1 data-t="title">动物英雄试炼</h1><p data-t="pitch">Choose one of four heroes and clear a 30-trial shadow campaign.</p></div>
+      <div class="progress-card"><span><img src="../../assets/animal-hero-trials-icon-trial-gate.png" alt="" aria-hidden="true" /><span class="progress-copy"><b data-t="marks">Trial Marks</b><strong id="markCount">0</strong></span></span><button id="masteryBtn" type="button"><img src="../../assets/animal-hero-trials-icon-heart-mastery.png" alt="" aria-hidden="true" /><span data-t="mastery">Heart Mastery</span><b id="masteryLevel">Lv.0</b><small id="masteryCost">All heroes Max HP +0 → +12 · Need 5 / Have 0 marks</small></button></div>
+      <button id="startBtn" class="primary" type="button" data-t="start">Start Trial</button>
+    </section>
+    <section id="stageView" class="view hidden">
+      <header class="compact-head"><button id="stageBack" class="icon-btn" data-wp-return="stage" type="button" aria-label="Back">&larr;</button><h2 data-t="choose">Choose Trial</h2></header>
+      <div id="heroPicker" class="hero-picker" aria-label="Choose hero"></div><div id="stageRail" class="stage-rail"></div><div class="stage-ad" aria-hidden="true"></div>
+    </section>
+    <section id="battleView" class="view battle-view hidden" data-play-viewport data-wp-logical-battle-canvas>
+      <header class="battle-head"><button id="battleBack" class="icon-btn" data-wp-return="battle" type="button" aria-label="Back">&larr;</button><div class="health"><span id="roomText">Room 1/3</span><div><i id="hpFill"></i></div></div><button id="skillBtn" class="skill-btn" type="button"><img src="../../assets/animal-hero-trials-icon-roaring-mane.webp" alt="" /><span id="cooldownText">ROAR</span></button></header>
+      <div class="canvas-wrap"><canvas id="game" width="390" height="560" tabindex="0" aria-describedby="objective"></canvas><div id="joystick" class="joystick"><i></i></div><p id="objective"></p></div>
+      <div id="choiceModal" class="modal hidden" style="position:absolute" role="dialog" aria-modal="true" aria-labelledby="blessingTitle" aria-describedby="rerollStatus"><section><h2 id="blessingTitle" data-t="blessing">Choose a Blessing</h2><div id="choices" class="choices"></div><div class="reroll-row"><button id="rerollBtn" type="button"><img src="../../assets/weightplay-diamond.svg" alt="" /><span id="rerollLabel">Reroll 3</span></button><small id="rerollStatus"></small></div></section></div>
+      <div id="resultModal" class="modal hidden" style="position:absolute" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultCopy"><section><img id="resultFx" src="../../assets/animal-hero-trials-fx-victory.webp" alt="" /><h2 id="resultTitle"></h2><p id="resultCopy"></p><button id="resultNext" class="primary" type="button"></button><button id="resultHome" type="button" data-t="menu">Main Menu</button></section></div>
+    </section>
+    <div id="battleAd" class="battle-ad" aria-hidden="true"></div>
+  </main>
+    <!-- adsense-static-guide:start -->
+    <section class="game-page-info game-page-info-static" aria-label="动物英雄试炼 游戏资讯">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 儿童游戏指南</span><h2>动物英雄试炼</h2><p>《动物英雄试炼》是共有 30 关的动作闯关。四位 WeightPlay 英雄拥有不同生命、速度、射程与主动技能。每个试炼包含三个相连房间、两次免费祝福选择，以及一名菁英队长或区域 Boss。五种敌人逐步加入飞行、冲锋、远程与护甲，六个检查点 Boss 各有不同反制方式；胜利取得的试炼印记可升级永久生命精通。</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>三房间英雄动作试炼</strong></div><div class="game-info-fact"><span>类型</span><strong>动作 · Roguelite · 动物</strong></div><div class="game-info-fact"><span>难度</span><strong>中等至困难</strong></div><div class="game-info-fact"><span>预估游玩时间</span><strong>每个试炼约 4～9 分钟</strong></div><div class="game-info-fact"><span>练习能力</span><strong>反应 · 专注 · 问题解决</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>世界与任务</h3><p>六道暗影门从根木林一路开到虚空王冠。根木林放出追逐兽群，棱晶峡谷赋予飞行与护盾，余烬熔炉驱动有预警的冲锋，月影长廊武装远程敌人，深渊甲壳强化护卫，最后的王冠则混合所有规则。每次胜利会稳定一段道路并解锁下一个试炼。</p>
+<p>爆鬃狮 Leo、星爪狐 Fia、月帽猫头鹰 Orla 与苔壳龟 Taro 组成轮替英雄队。每五关是一个区域检查点；在第 30 关击败虚空王冠帝就会关闭最后一道门，游戏不会产生隐藏的第 31 关。</p></div>
+      <div class="game-info-section"><h3>游戏系统</h3><p>四位英雄：Leo 均衡并使用范围怒吼；Fia 高速且能无敌冲刺造成伤害；Orla 从远处攻击并标记目标，让下一次自动攻击增伤；Taro 生命最高，可开启限时减伤守护。</p>
+<p>移动与自动攻击：使用摇杆、方向键或 WASD 移动。英雄会自动攻击个人射程内最近的目标；技能冷却完成后，按技能键或空白键施放。</p>
+<p>三房间流程：前两房使用设计好的敌人组合，每次清除后必须免费选择攻击、冷却或恢复祝福。一般关第三房是菁英队长，检查点则是命名 Boss。</p>
+<p>敌人身分：暗影斥候直接追逐，棱晶渡鸦以曲线接近，余烬野猪先警告再冲锋，月影猎手保持距离射击，深渊护卫则降低普通攻击伤害，直到技能破除护甲。</p>
+<p>永久进度：胜利取得四至九枚印记并只解锁下一关。生命精通第一级需要五枚，之后每级多四枚，每级让所有英雄增加 12 最大生命。</p>
+<p>选择性重抽：每次都有三个免费祝福。花三颗钻石可在该次挑战中把三项全部换成强化版一次；画面会先显示精确余额变化，第二次确认才扣除。</p></div>
+      <div class="game-info-section"><h3>玩法说明</h3><ol><li>从 30 关水平关卡列选择已解锁试炼，阅读区域规则、检查点 Boss 与建议英雄。</li><li>选择 Leo、Fia、Orla 或 Taro；选择会保存在本机。</li><li>移动控制距离，让自动攻击锁定射程内最近的敌人。</li><li>在适当时机用技能清群、穿过警告、标记优先目标或承受重击。</li><li>清除前两房后各选一项免费祝福；钻石重抽不是必要流程。</li><li>清除第三房取得印记并解锁下一关；失败可重试，不会删除永久进度。</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>把斥候聚在 Leo 的怒吼范围内。</li><li>看到黄色冲锋警告后再用 Fia 冲刺，以无敌移动穿过危险。</li><li>Orla 可保持距离并标记护甲或高生命目标。</li><li>Archowl 齐射与 Emperor 后期压力适合用 Taro 守护。</li><li>技能破除护甲的速度比普通攻击快。</li><li>攻击祝福缩短战斗，冷却提高技能频率，恢复则保护已受伤的挑战。</li></ul></div>
+      <div class="game-info-section"><h3>关卡与难度成长</h3><p>第 1～5 关教直接追逐，暗影潜行者以有预警的近距离震波收尾。</p>
+<p>第 6～10 关加入曲线渡鸦与护甲；棱晶蛇王在保护与开放阶段间切换。</p>
+<p>第 11～15 关加入野猪冲锋；熔岩巨牙兽在冲锋前抗性较高，冲锋后短暂开放。</p>
+<p>第 16～20 关加入保持距离的猎手与混合角度；蚀月大枭会定时齐射。</p>
+<p>第 21～25 关重叠护甲、冲锋与远程；深渊甲壳巨兽低于约半血时召唤两名增援。</p>
+<p>第 26～30 关混合五种敌人；虚空王冠帝中段获得护盾，最后阶段召唤渡鸦与装甲支援。</p></div>
+      <div class="game-info-section"><h3>开发设计理念</h3><p>固定三房间节奏让玩家能用两次祝福建立方向，又不把单关拉成耐力赛。第三房会检查目前英雄与祝福是否能回答画面可读的规则。难度来自移动轨迹、射程、预警、护甲、增援与 Boss 阶段，而不是只提高生命。固定逻辑 Battle 画布会在手机、平板、桌机与短横向画面等比缩放；触控与键盘共用移动和技能状态，页面隐藏时会暂停模拟，Result 留在 Battle 与独立实体保留区上方。和《自走小队》不同，本作的走位与技能时机由玩家直接控制。</p></div>
+      <div class="game-info-section game-info-parent"><h3>家长说明</h3><p>本浏览器会在本机保存最高解锁试炼、试炼印记、生命精通与选定英雄。清除网站资料或更换浏览器可能得到另一份存档。钻石只是选择性平台货币，每次挑战最多用于一次经确认的祝福重抽；不使用重抽仍可游玩全部 30 关、五种敌人、六个 Boss、免费祝福与永久精通。技能回馈只供娱乐，不是排名或正式能力测验。</p></div>
+      <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>共有几关与几个 Boss？</dt><dd>共有 30 个三房间试炼，第 5、10、15、20、25、30 关各有一个不同 Boss。</dd></div><div><dt>四位英雄玩法一样吗？</dt><dd>不一样；生命、速度、攻击射程、基础攻击与主动技能都不同。</dd></div><div><dt>为何敌人只受到很少伤害？</dt><dd>深渊护卫、棱晶蛇王或王冠帝可能正在守护状态，技能比自动攻击更快破除护甲。</dd></div><div><dt>每个房间结束后会怎样？</dt><dd>前两房可选攻击、冷却或恢复；第三房结束整个试炼。</dd></div><div><dt>哪些进度会保留？</dt><dd>关卡解锁、印记、生命精通与选定英雄保存在本机，临时祝福会重置。</dd></div><div><dt>一定要使用钻石吗？</dt><dd>不用；三颗钻石只会重抽一次祝福，画面永远有免费选项。</dd></div><div><dt>可以重玩旧关卡吗？</dt><dd>可以，所有已解锁卡片都会保留在关卡列。</dd></div><div><dt>失败会失去什么？</dt><dd>重试只会重开同一关，不会删除永久进度。</dd></div><div><dt>支援触控与键盘吗？</dt><dd>支援；可使用摇杆与技能键，或 WASD／方向键与空白键。</dd></div></dl></div>
+    </div>
+  </section>
+    <!-- adsense-static-guide:end -->
+  <script src="../../src/site-config.js"></script><script src="../../src/analytics.js"></script><script>window.WonderAnalytics?.track("game_view",{game_id:"animal-hero-trials"});</script>
+  <script src="../../src/edge-guard.js"></script><script src="/src/i18n.js?v=20260718-locale-routes1"></script><script src="../../src/tutorial.js"></script>
+  <script src="../../src/sound.js" data-no-floating-toggle="true"></script><script src="../../src/wallet.js"></script><script src="fit.js"></script><script src="game.js?v=20260717-zh-hans1"></script><script src="../../src/game-page-info.js?v=20260717-zh-hans1"></script>
+  <script>window.addEventListener("load",()=>document.querySelector("#loadingPanel")?.classList.add("hidden"),{once:true});</script>
+</body>
+</html>

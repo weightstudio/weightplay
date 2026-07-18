@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="zh-Hans">
+  <head>
+    <base href="/games/beast-tactician/" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="robots" content="index,follow" />
+    <meta name="description" content="《兽王守卫》是一套以自由改造路线为核心的 30 关英雄塔防战役。玩家在森林格子上配置四种动物士兵与七名 WeightPlay 英雄，保留至少一条可通行路线，穿越六个五关区域并守住水晶核心。暗狼、重甲野猪、飞行影蝠、再生敌群、受伤加速者与月蚀混合编队，都需要不同的防线。第 5、10、15、20、25、30..." />
+    <link rel="canonical" href="https://weightplay.com/zh-cn/games/beast-tactician/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/beast-tactician/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/beast-tactician/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/beast-tactician/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/beast-tactician/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/beast-tactician/" />
+    <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="兽王守卫 | WeightPlay" />
+    <meta property="og:description" content="《兽王守卫》是一套以自由改造路线为核心的 30 关英雄塔防战役。玩家在森林格子上配置四种动物士兵与七名 WeightPlay 英雄，保留至少一条可通行路线，穿越六个五关区域并守住水晶核心。暗狼、重甲野猪、飞行影蝠、再生敌群、受伤加速者与月蚀混合编队，都需要不同的防线。第 5、10、15、20、25、30..." />
+    <meta property="og:url" content="https://weightplay.com/zh-cn/games/beast-tactician/" />
+    <meta property="og:image" content="https://weightplay.com/assets/beast-tactician-cover.webp" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>兽王守卫 | WeightPlay</title>
+    <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
+    <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
+    <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guardian-public1" />
+    <link rel="stylesheet" href="defense.css?v=20260716-guardian-nav-a11y1" />
+    <style>body.guardian-stage .guardian-topbar,body.guardian-stage .locale-box{display:none!important}</style>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "兽王守卫",
+  "url": "https://weightplay.com/zh-cn/games/beast-tactician/",
+  "image": "https://weightplay.com/assets/beast-tactician-cover.webp",
+  "description": "《兽王守卫》是一套以自由改造路线为核心的 30 关英雄塔防战役。玩家在森林格子上配置四种动物士兵与七名 WeightPlay 英雄，保留至少一条可通行路线，穿越六个五关区域并守住水晶核心。暗狼、重甲野猪、飞行影蝠、再生敌群、受伤加速者与月蚀混合编队，都需要不同的防线。第 5、10、15、20、25、30...",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio",
+    "url": "https://weightplay.com/"
+  },
+  "applicationCategory": "Game",
+  "genre": [
+    "塔防",
+    "策略",
+    "动物"
+  ],
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "General players"
+  },
+  "inLanguage": "zh-Hans",
+  "isAccessibleForFree": true,
+  "operatingSystem": "Web"
+}
+    </script>
+    <meta name="twitter:title" content="兽王守卫 | WeightPlay" />
+    <meta name="twitter:description" content="《兽王守卫》是一套以自由改造路线为核心的 30 关英雄塔防战役。玩家在森林格子上配置四种动物士兵与七名 WeightPlay 英雄，保留至少一条可通行路线，穿越六个五关区域并守住水晶核心。暗狼、重甲野猪、飞行影蝠、再生敌群、受伤加速者与月蚀混合编队，都需要不同的防线。第 5、10、15、20、25、30..." />
+  </head>
+  <body>
+    <main class="guardian-app">
+      <header class="guardian-topbar">
+        <a class="back-btn" data-wp-return="main" href="/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
+        <div class="brand-lockup">
+          <span>WeightPlay</span>
+          <h1 id="gameTitle">兽王守卫</h1>
+        </div>
+        <label class="locale-box">
+          <span id="languageLabel">Language</span>
+          <select id="localeSelect" aria-label="Language">
+            <option value="en">English</option>
+            <option value="zh-Hant">繁體中文</option>
+            <option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option>
+          </select>
+        </label>
+        <button id="soundBtn" class="secondary-btn sound-btn" type="button" aria-pressed="false">SFX Off</button>
+      </header>
+
+      <section id="loadingPanel" class="loading-panel" aria-live="polite">
+        <div class="loading-content">
+          <h2>Beast Guardian</h2>
+          <div class="loading-bar"><div id="loadingFill" class="loading-fill"></div></div>
+          <span id="loadingText" class="loading-percentage">0%</span>
+        </div>
+      </section>
+
+      <section id="menuPanel" class="menu-panel">
+        <div class="poster-frame">
+          <img class="cover" src="../../assets/beast-tactician-cover.webp" alt="《兽王守卫》游戏图片" />
+        </div>
+        <div class="menu-copy">
+          <p id="releaseBadge" class="release-badge">Playable Now</p>
+          <h2 id="menuTitle">Hero Tower Defense</h2>
+          <p id="menuHint" class="menu-hint"></p>
+          <div class="profile-grid">
+            <div><span id="bestStageLabel">Best Stage</span><strong id="bestStageText">1</strong></div>
+            <div><span id="upgradePointLabel">Upgrade Points</span><strong id="upgradePointText">0</strong></div>
+            <div><span id="diamondLabel">Diamonds</span><strong id="diamondText">0</strong></div>
+          </div>
+          <div class="menu-actions">
+            <button id="startBtn" class="primary-btn" type="button">Start Defense</button>
+            <button id="techBtn" class="secondary-btn" type="button">Tech Upgrades</button>
+          </div>
+          <p id="holdNotice" class="hold-notice"></p>
+        </div>
+      </section>
+
+      <section id="techPanel" class="modal-panel is-hidden" aria-live="polite">
+        <div class="modal-card">
+          <h2 id="techTitle">Permanent Tech</h2>
+          <p id="techHint"></p>
+          <div id="techGrid" class="tech-grid"></div>
+          <button id="techBackBtn" class="secondary-btn" type="button">Back</button>
+        </div>
+      </section>
+
+      <section id="stagePanel" class="stage-panel is-hidden">
+        <div class="stage-header">
+          <h2 id="stageTitle">Choose Stage</h2>
+          <button id="stageBackBtn" class="secondary-btn" data-wp-return="stage" type="button" aria-label="Back">&larr;</button>
+        </div>
+        <div id="stageRail" class="stage-rail" aria-label="Stage selector"></div>
+      </section>
+
+      <section id="gamePanel" class="game-panel play-area is-hidden" data-play-viewport>
+        <div class="hud-row">
+          <button id="menuBtn" class="secondary-btn" data-wp-return="battle" type="button" aria-label="Back to stages">&larr;</button>
+          <div><span id="stageHudLabel">Stage</span><strong id="stageHudText">1</strong></div>
+          <div><span id="coreHudLabel">Core</span><strong id="coreText">100</strong></div>
+          <div><span id="coinHudLabel">Coins</span><strong id="coinText">0</strong></div>
+          <div><span id="waveHudLabel">Wave</span><strong id="waveText">0/0</strong></div>
+          <div id="waveIntelPanel" class="wave-intel-panel" aria-live="polite">
+            <span id="waveIntelLabel">Next Wave</span>
+            <strong id="waveIntelText">Scout the route before starting.</strong>
+          </div>
+          <button id="speedBtn" class="secondary-btn" type="button">1x</button>
+        </div>
+        <div id="bossPanel" class="boss-panel is-hidden" aria-live="polite">
+          <div>
+            <span id="bossLabel">Boss Pressure</span>
+            <strong id="bossNameText">Forest Behemoth</strong>
+          </div>
+          <div class="boss-meter" aria-hidden="true"><div id="bossMeterFill"></div></div>
+          <span id="bossHpText">100%</span>
+          <span id="bossHintText">Hold the route</span>
+        </div>
+        <div class="battle-layout">
+          <aside class="build-panel">
+            <h3 id="buildTitle">Build</h3>
+            <div id="buildCards" class="build-cards"></div>
+            <div id="selectedInfo" class="selected-info" role="status" aria-live="polite" aria-atomic="true"></div>
+          </aside>
+          <div class="canvas-shell">
+            <canvas id="gameCanvas" width="960" height="640" tabindex="0" aria-label="Beast Guardian tower defense board"></canvas>
+            <div id="toast" class="toast is-hidden"></div>
+          </div>
+        </div>
+        <div class="command-row">
+          <button id="waveBtn" class="primary-btn" type="button">Start Wave</button>
+          <button id="upgradeBtn" class="secondary-btn" type="button">Upgrade</button>
+          <button id="sellBtn" class="secondary-btn" type="button">Sell</button>
+        </div>
+        <section id="resultPanel" class="modal-panel is-hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultText" aria-live="polite">
+          <div class="modal-card result-card">
+            <img src="../../assets/weightplay-character-boom-mane-lion-cutout.webp" alt="Boom Mane Leo" />
+            <div>
+              <h2 id="resultTitle">Victory</h2>
+              <p id="resultText"></p>
+              <p id="resultStars" class="result-stars"></p>
+              <p id="resultRewardText" class="result-reward"></p>
+              <p id="resultProgressText" class="result-progress"></p>
+              <p id="resultUnlockText" class="result-unlock"></p>
+              <p id="skillReportText" class="skill-report"></p>
+              <div class="result-actions">
+                <button id="nextStageBtn" class="primary-btn" type="button">Next Stage</button>
+                <button id="rerollRewardBtn" class="secondary-btn" type="button">Reroll Reward</button>
+                <button id="reviveBtn" class="primary-btn is-hidden" type="button">Revive Core</button>
+                <button id="retryBtn" class="secondary-btn" type="button">Retry</button>
+                <button id="resultMenuBtn" class="secondary-btn" type="button">Menu</button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <div class="battle-ad-reserve" aria-hidden="true"></div>
+    </main>
+    <!-- adsense-static-guide:start -->
+    <section class="game-page-info game-page-info-static" aria-label="兽王守卫 游戏资讯">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 儿童游戏指南</span><h2>兽王守卫</h2><p>《兽王守卫》是一套以自由改造路线为核心的 30 关英雄塔防战役。玩家在森林格子上配置四种动物士兵与七名 WeightPlay 英雄，保留至少一条可通行路线，穿越六个五关区域并守住水晶核心。暗狼、重甲野猪、飞行影蝠、再生敌群、受伤加速者与月蚀混合编队，都需要不同的防线。第 5、10、15、20、25、30 关各有改变规则的 Boss，不是只把普通敌人的生命放大。</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>英雄塔防</strong></div><div class="game-info-fact"><span>类型</span><strong>塔防 · 策略 · 动物</strong></div><div class="game-info-fact"><span>难度</span><strong>困难</strong></div><div class="game-info-fact"><span>预估游玩时间</span><strong>每关 8-15 分钟</strong></div><div class="game-info-fact"><span>练习能力</span><strong>逻辑 · 问题解决 · 专注</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>世界与任务</h3><p>水晶路线连接守护森林的六个区域：最初的树根小径、水晶空中通道、铁皮木工坊、会再生的雾林、暴风壁垒，以及通往虚根王座的月蚀道路。敌群会从入口穿越玩家安排的防线前往另一端核心；通关代表该段路线已安全到足以让守卫队前进。</p>
+<p>玩家是整条防线的指挥者。栗果守卫与苔甲太郎负责撑住转角，侦查弓手与月帽欧菈覆盖长距离，符文工兵缓速群体，医护幼兽修复受伤阻挡者，火花菲雅则负责集中攻击 Boss。每个角色站的位置都会改变敌人行走距离、射击角度或阻挡风险。</p></div>
+      <div class="game-info-section"><h3>游戏系统</h3><p>路线建置：守卫可以放在一般地格，地面敌人会重新寻找路径。若完全封死所有道路，敌人不会消失，而是攻击最近的阻挡者直到路线恢复。飞行影蝠不受地面迷宫影响。</p>
+<p>角色定位：阻挡者争取时间，弓手与欧菈负责远程，工兵提供溅射与缓速，医护修复前线，菲雅专门处理 Boss 压力，齿角鲁克斯则强化附近队友。点选已部署角色可查看升级费用与出售返还。</p>
+<p>波次情报：每波开始前会列出暗狼、野猪、影蝠、护卫与 Boss 组成。非最终波通过后有五秒倒数，玩家可以读取下一波、花费刚取得的金币并调整升级。</p>
+<p>特殊敌人：铁皮木区的敌人有可击破护甲；雾林敌人移动时恢复生命；暴风敌人在生命低于一半后加速；月蚀区会同时混合护甲、再生、加速、飞行与较高缓速抗性。</p>
+<p>永久进度：胜利会取得星等、升级点与钻石。升级点可提高英雄力量、守卫生命或开场经济；钻石只用于可选的核心复活、结果奖励重抽与黄金守卫框，正常解锁 30 关不需要钻石。</p></div>
+      <div class="game-info-section"><h3>玩法说明</h3><ol><li>从可滑动关卡列选择已解锁关卡，先阅读敌情、建议与奖励。</li><li>花费本关金币，在一般地格配置动物士兵或 WeightPlay 英雄；确认前可查看攻击范围。</li><li>保留至少一条通路。完全封路时，地面敌人会直接攻击最近守卫。</li><li>阅读波次情报后开始战斗，依照敌人组成升级或出售角色；非最终波会在五秒后自动接续。</li><li>守住全部波次后，系统依剩余核心生命给予一至三星，结果画面可以前往下一关、重试或回到关卡。</li><li>需要永久成长时，在关卡页使用升级点强化英雄力量、守卫生命或开场经济；钻石操作会显示成本并要求确认。</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>先用栗果守卫做出两到三个射击转角，再投资昂贵英雄；路线越长，远程角色就有越多攻击时间。</li><li>不要封死所有格子。完全封路会让敌人直接打阻挡者，反而失去拉长路线的优势。</li><li>影蝠渡口与后续飞行关要在核心附近保留远程火力；暴风关则应先缓速野猪，再击破护甲，降低受伤加速的威胁。</li><li>面对再生敌人，要把输出集中在同一火力区快速收掉；面对护甲敌人，先用持续或溅射火力破防，再投入英雄爆发。</li><li>最终的虚根皇帝会在两个生命门槛转换阶段：先召唤影蝠，再带著重甲地面护卫并重建防护。</li></ul></div>
+      <div class="game-info-section"><h3>关卡与难度成长</h3><p>第 1-5 关教路线转角、分线、早期远程、野猪压力与封路后果。暗影巨汉的攻城节奏比普通 Boss 更快，第一区最后要测试防线是否有真正能撑住的主坦。</p>
+<p>第 6-10 关加入无视地面路线的影蝠与空地混合波；森林巨兽损失部分生命后会召唤暗狼与影蝠。第 11-15 关加入可击破的铁皮护甲，铁皮巨像则会在战斗中重新建立一层大型防护。</p>
+<p>第 16-20 关让未被击倒的敌人在移动时再生，翠绿古木会回血并呼叫支援。第 21-25 关加入受伤加速，暴风掠夺者还会提高护卫速度。第 26-30 关把先前规则全部组合并降低缓速效果；虚根皇帝进行两次阶段转换，要求地面路线、空中覆盖、破甲、收尾火力、治疗与 Boss 集火同时成立。</p></div>
+      <div class="game-info-section"><h3>开发设计理念</h3><p>本作采自由配置，是因为核心决策不只是买哪座塔，而是每个角色如何改变移动时间、射击角度与阻挡风险。波次之间保留五秒倒数，让五波仍像同一场连续防卫，同时给玩家短暂调整时间。30 关分成六个机制区域，难度会先透过新反制与规则组合成长，再增加数值。手机与桌面共用大型建置卡与格子操作，键盘也能移动游标、建置、选取、升级、出售、切换角色与开始波次。相较于以战前编队为主的《动物自走小队》，《兽王守卫》允许玩家即时重塑战场并在波次中回应。</p></div>
+      <div class="game-info-section game-info-parent"><h3>家长说明</h3><p>浏览器会在本机保存最高解锁关卡、已通关关卡、最佳星等、永久科技、升级点、钻石余额与外观所有权；基本游玩不需要登入。清除本站浏览器储存资料可能会移除这些进度。钻石操作完全可选，不是解锁 30 关的必要条件。</p></div>
+      <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>兽王守卫可以免费玩吗？</dt><dd>可以。完整 30 关战役能直接在浏览器游玩，不要求购买或登入。</dd></div><div><dt>要怎么开始关卡？</dt><dd>在滑动关卡列选择已解锁关卡后开始防卫；非最终波通过后会在五秒倒数结束时自动接续。</dd></div><div><dt>为什么敌人有时会直接打守卫？</dt><dd>当所有通往核心的合法路线都被封死时，地面敌人会攻击附近阻挡者。下一次可出售或换位置，保留一条开放道路。</dd></div><div><dt>六个 Boss 有什么不同？</dt><dd>暗影巨汉快速攻城、森林巨兽召援、铁皮巨像重建护甲、翠绿古木回血、暴风掠夺者加速护卫、虚根皇帝则有两次阶段转换。</dd></div><div><dt>星等代表什么？</dt><dd>星等依胜利时剩余核心生命计算。惊险通关仍可解锁下一关，之后能重玩改进路线与最佳星等。</dd></div><div><dt>哪些进度会保存？</dt><dd>解锁、通关、星等、升级点、永久科技、钻石与外观所有权都会保存在目前浏览器本机。</dd></div><div><dt>钻石可以做什么？</dt><dd>钻石可选择性用于核心复活、结果奖励重抽或黄金守卫框，不影响正常战役解锁。</dd></div></dl></div>
+    </div>
+  </section>
+    <!-- adsense-static-guide:end -->
+    <script src="/src/site-config.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/analytics.js?v=20260701-analytics2"></script>
+    <script src="../../src/wallet.js?v=20260706-crystal-diamond-charm1"></script>
+    <script src="/src/i18n.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/edge-guard.js?v=20260710-mobile-play-shell2"></script>
+    <script src="../../src/tutorial.js?v=20260701-style1"></script>
+    <script src="game.js?v=20260717-zh-hans1"></script>
+    <script src="../../src/game-page-info.js?v=20260717-zh-hans1"></script>
+  </body>
+</html>

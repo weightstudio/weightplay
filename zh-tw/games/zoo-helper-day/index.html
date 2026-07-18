@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <base href="/games/zoo-helper-day/" />
+    <meta charset="UTF-8" />
+    <meta name="weightplay-audience" content="kids" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#55a96d" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="robots" content="index,follow" />
+    <meta name="description" content="《動物園幫忙日》是一款免費雙語 Kids 照顧遊戲，共有 30..." />
+    <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="動物園幫忙日 | WeightPlay" />
+    <meta property="og:description" content="《動物園幫忙日》是一款免費雙語 Kids 照顧遊戲，共有 30..." />
+    <meta property="og:url" content="https://weightplay.com/zh-tw/games/zoo-helper-day/" />
+    <meta property="og:image" content="https://weightplay.com/assets/zoo-helper-day-cover.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="動物園幫忙日 | WeightPlay" />
+    <meta name="twitter:description" content="《動物園幫忙日》是一款免費雙語 Kids 照顧遊戲，共有 30..." />
+    <meta name="twitter:image" content="https://weightplay.com/assets/zoo-helper-day-cover.png" />
+    <title>動物園幫忙日 | WeightPlay</title>
+    <link rel="canonical" href="https://weightplay.com/zh-tw/games/zoo-helper-day/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/zoo-helper-day/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/zoo-helper-day/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/zoo-helper-day/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/zoo-helper-day/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/zoo-helper-day/" />
+    <link rel="stylesheet" href="style.css?v=20260716-zoo-helper-stage-return1" />
+    <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "動物園幫忙日",
+  "alternateName": "動物園幫忙日",
+  "url": "https://weightplay.com/zh-tw/games/zoo-helper-day/",
+  "image": "https://weightplay.com/assets/zoo-helper-day-cover.png",
+  "description": "《動物園幫忙日》是一款免費雙語 Kids 照顧遊戲，共有 30...",
+  "applicationCategory": "Game",
+  "operatingSystem": "Web browser",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio"
+  },
+  "inLanguage": "zh-Hant",
+  "isAccessibleForFree": true,
+  "genre": [
+    "幼兒",
+    "經營",
+    "動物"
+  ],
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "Kids and families",
+    "suggestedMinAge": 3
+  },
+  "learningResourceType": "Skill practice through play",
+  "educationalUse": "Practice Animal Knowledge, Focus, Hand-Eye Coordination through family-friendly browser gameplay."
+}
+    </script>
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
+    <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
+    <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
+    <script data-wp-stage-standard>/* Zoo Helper Day owns its native Kids Stage Canvas and pointer rail. */</script>
+  </head>
+  <body>
+    <main class="zoo-game" data-play-viewport>
+      <header class="topbar">
+        <a class="home-link" data-wp-return="main" href="/kids/" aria-label="Back to Kids lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
+        <div class="title-block">
+          <p>WeightPlay</p>
+          <h1 data-ui="gameTitle">動物園幫忙日</h1>
+        </div>
+        <label class="language-picker">
+          <span data-ui="language">Language</span>
+          <select id="localeSelect" aria-label="Language">
+            <option value="en">English</option>
+            <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
+            <option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option>
+          </select>
+        </label>
+      </header>
+
+      <section id="menuPanel" class="menu-panel">
+        <img class="cover" src="../../assets/zoo-helper-day-cover.png" alt="" />
+        <div class="menu-copy">
+          <strong data-ui="chooseStage">Choose Stage</strong>
+          <span data-ui="menuHint">Help animals finish gentle care tasks.</span>
+        </div>
+        <button id="startGameBtn" class="standard-main-start" data-wp-main-start type="button">Start Game</button>
+      </section>
+
+      <section id="stagePanel" class="wp-standard-stage-panel hidden" data-wp-standard-stage-screen>
+        <header class="wp-standard-stage-heading"><button id="stageBackBtn" data-wp-return="stage" type="button" aria-label="Back">&larr;</button><strong data-ui="chooseStage">Choose Stage</strong></header>
+        <div id="stageGrid" class="stage-grid" data-wp-stage-settle-duration="360" data-wp-stage-settle-easing="smoothstep" aria-label="Stage list"></div>
+      </section>
+
+      <section id="playPanel" class="play-panel hidden">
+        <div class="play-head">
+          <button id="backToStagesBtn" class="soft-btn battle-return" data-wp-return="battle" type="button" aria-label="Back to stages"><span aria-hidden="true">&larr;</span></button>
+          <div class="progress-line">
+            <span id="stageText">Stage 1</span>
+            <div><i id="progressFill"></i></div>
+          </div>
+        </div>
+        <div class="shift-board" aria-label="Zoo shift status">
+          <span><b id="stationText">Gate</b></span>
+          <span><b id="ticketText">0</b></span>
+          <span><b id="moodText">100%</b></span>
+        </div>
+        <div id="animalCard" class="animal-card" role="group" tabindex="0">
+          <div id="animalEmoji" class="animal-emoji" aria-hidden="true"></div>
+          <strong id="animalName">Lion</strong>
+          <span id="requestText">Needs food</span>
+        </div>
+        <div id="itemGrid" class="item-grid" aria-label="Care items"></div>
+        <div id="feedbackText" class="feedback" aria-live="polite"></div>
+      </section>
+
+      <div id="resultPanel" class="result-panel hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" tabindex="-1">
+        <div class="result-card">
+          <strong id="resultTitle">Great job!</strong>
+          <div id="starText" class="stars">&#9734;&#9734;&#9734;</div>
+          <span id="resultText"></span>
+          <section class="skill-report" aria-labelledby="skillReportTitle">
+            <h2 id="skillReportTitle">Skill Report</h2>
+            <dl>
+              <div><dt id="animalKnowledgeLabel">Animal Knowledge</dt><dd id="animalKnowledgeValue"></dd></div>
+              <div><dt id="focusLabel">Focus</dt><dd id="focusValue"></dd></div>
+              <div><dt id="coordinationLabel">Hand-Eye Coordination</dt><dd id="coordinationValue"></dd></div>
+            </dl>
+            <p id="progressComparison"></p>
+          </section>
+          <button id="nextStageBtn" type="button" data-ui="nextStage">Next Stage</button>
+          <button id="retryBtn" type="button" data-ui="retry">Try Again</button>
+          <button id="resultStagesBtn" type="button" data-ui="stages">Stages</button>
+          <a href="/kids/" data-ui="lobby">Lobby</a>
+        </div>
+      </div>
+
+      <div id="loadingPanel" class="loading-panel">
+        <div class="loading-card">
+          <strong data-ui="loading">Loading</strong>
+          <span id="loadingText">0%</span>
+          <div><i id="loadingFill"></i></div>
+        </div>
+      </div>
+    </main>
+    <!-- adsense-static-guide:start -->
+    <section class="game-page-info game-page-info-static" aria-label="動物園幫忙日 遊戲資訊">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 兒童遊戲指南</span><h2>動物園幫忙日</h2><p>《動物園幫忙日》是一款免費雙語 Kids 照顧遊戲，共有 30 個可存檔班次與六個動物區。孩子會用水果、葉子、魚、水、刷子、蓮蓬頭、玩具與球，幫助獅子、貓熊、大象、企鵝、長頸鹿和無尾熊。前期會直接說出需要的道具；後期會移除可見文字、要求照顧分類、暫時收起可以重看的需求，或要求依正確順序完成兩個步驟。每五關是保育員檢核。遊戲沒有倒數，選錯也能繼續嘗試。</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>動物園工作日</strong></div><div class="game-info-fact"><span>類型</span><strong>幼兒 · 經營 · 動物</strong></div><div class="game-info-fact"><span>難度</span><strong>簡單</strong></div><div class="game-info-fact"><span>預估遊玩時間</span><strong>3-5 分鐘</strong></div><div class="game-info-fact"><span>練習能力</span><strong>動物知識 · 專注 · 手眼協調</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>世界與任務</h3><p>小動物園的工作日會巡迴草原餵食區、竹林休息區、大象沖澡區、企鵝水池、長頸鹿觀景台與無尾熊育幼區。玩家是準備下一件照顧道具的小幫手。票券代表完成班次，開心度則反映重試次數；選錯圖片不會傷害動物或結束遊戲。</p>
+<p>這套簡化道具是遊戲決策，不是專業照養教學。完成第 30 關代表玩家練習六種規則並完成無尾熊育幼區的最後綜合檢核。</p></div>
+      <div class="game-info-section"><h3>遊戲系統</h3><p>照顧配對會從四張大型圖片中接受一個指定道具。</p>
+<p>圖片道具會隱藏可見名稱，但保留大型圖像與無障礙名稱。</p>
+<p>照顧分類會要求食物、飲水、清潔或玩耍；同一題可能有一個以上合理答案。</p>
+<p>記住需求會先顯示完整句子，再改成回想提示；點動物就能無懲罰重看。</p>
+<p>兩步驟照顧標示 1/2 與 2/2；太早選第二個道具會算一次重試。</p>
+<p>保育員綜合只組合已教過的圖片、分類、記憶與順序規則。</p>
+<p>通關會把一到三星與下一關解鎖存在目前瀏覽器；沒有帳號、購買、排行榜、廣告請求或廣告保留區。</p></div>
+      <div class="game-info-section"><h3>玩法說明</h3><ol><li>在橫向關卡列滑到已解鎖班次。</li><li>閱讀動物區規則與目前需求。</li><li>點道具圖片或拖到動物卡；鍵盤使用相同按鈕。</li><li>需要時點動物重看記憶需求。</li><li>完成全部選擇即可儲存星星並解鎖下一關。</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>選擇前先說出道具或照顧分類。</li><li>圖片道具關要比較物件形狀與顏色。</li><li>忘記需求時點動物重看，不必猜。</li><li>分類關先判斷圖片屬於食物、飲水、清潔或玩耍。</li><li>兩步驟關要先看 1/2 或 2/2。</li><li>選錯時平靜地重新比較四張圖片。</li></ul></div>
+      <div class="game-info-section"><h3>關卡與難度成長</h3><p>第 1-5 關練習指定道具的照顧配對。</p>
+<p>第 6-10 關隱藏道具可見名稱。</p>
+<p>第 11-15 關加入可能有多個合理答案的照顧分類。</p>
+<p>第 16-20 關暫時收起需求，但隨時可點動物重看。</p>
+<p>第 21-25 關要求依序完成兩步驟照顧。</p>
+<p>第 26-30 關重新組合前述規則；第 30 關含圖片分類、記憶與六次選擇。檢核固定在 5/10/15/20/25/30。</p></div>
+      <div class="game-info-section"><h3>開發設計理念</h3><p>短班次和大型圖片讓幼兒不必面對倒數也能完成明確目標。難度改變的是觀察方式，包括辨識、分類、記憶與順序，不會縮小點擊區。觸控、拖曳、滑鼠和鍵盤共用同一套照顧規則，固定邏輯版面也會在手機、平板、電腦與短橫向等比例縮放。Kids 遊玩沒有廣告、帳號、購買、排名或失敗畫面。</p></div>
+      <div class="game-info-section game-info-parent"><h3>家長說明</h3><p>本作可陪孩子練習圖片辨識、基本照顧分類、短期記憶、簡單順序、專注與手眼協調。大人也可以說明真實動物需要專業保育員、適合的飲食、棲地、豐富化活動與獸醫照護，遠比遊戲完整。星星與技能報告只是遊玩回饋，不是成績、診斷或兒童比較。進度只在目前瀏覽器；不需要兒童個人資料，也不會請求廣告。</p></div>
+      <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>3 歲孩子可以玩嗎？</dt><dd>可以。前期使用大型圖片，後期文字可由大人朗讀。</dd></div><div><dt>共有幾個班次？</dt><dd>共有 30 關與六次保育員檢核。</dd></div><div><dt>道具文字為什麼消失？</dt><dd>圖片道具關刻意使用八張道具圖，但仍保留無障礙名稱。</dd></div><div><dt>需求消失怎麼辦？</dt><dd>點動物即可重看相同需求，不會受罰。</dd></div><div><dt>同一題會有兩個正確圖片嗎？</dt><dd>照顧分類關可能接受兩個都符合分類的道具。</dd></div><div><dt>星星如何計算？</dt><dd>零次重試三星，一到兩次兩星，更多重試一星。</dd></div><div><dt>進度會保存嗎？</dt><dd>星星與最高解鎖關只存在目前瀏覽器。</dd></div><div><dt>支援觸控、拖曳、滑鼠和鍵盤嗎？</dt><dd>支援，而且全部使用相同照顧規則。</dd></div><div><dt>會有廣告或兒童帳號嗎？</dt><dd>不會；Kids 遊戲不請求廣告，也不需要兒童帳號。</dd></div></dl></div>
+    </div>
+  </section>
+    <!-- adsense-static-guide:end -->
+    <script src="/src/site-config.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/version.js?v=20260701-version2"></script>
+    <script src="../../src/analytics.js?v=20260701-analytics2"></script>
+    <script>
+      window.WonderAnalytics?.track("game_view", { game_id: "zoo-helper-day" });
+    </script>
+    <script src="../../src/sound.js?v=20260701-labels1"></script>
+    <script src="../../src/edge-guard.js?v=20260710-mobile-play-shell2"></script>
+    <script src="/src/i18n.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
+    <script src="game.js?v=20260717-zh-hans1"></script>
+    <script src="../../src/game-page-info.js?v=20260717-zh-hans1"></script>
+  </body>
+</html>

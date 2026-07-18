@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <base href="/games/tiny-weather-rescue/" />
+    <meta charset="UTF-8" />
+    <meta name="weightplay-audience" content="kids" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#57b9e8" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="robots" content="index,follow" />
+    <meta name="description" content="《動物幫幫隊》是一款免費雙語 Kids 看圖益智遊戲，共有 30..." />
+    <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="動物幫幫隊 | WeightPlay" />
+    <meta property="og:description" content="《動物幫幫隊》是一款免費雙語 Kids 看圖益智遊戲，共有 30..." />
+    <meta property="og:url" content="https://weightplay.com/zh-tw/games/tiny-weather-rescue/" />
+    <meta property="og:image" content="https://weightplay.com/assets/tiny-weather-rescue-cover.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>動物幫幫隊 | WeightPlay</title>
+    <link rel="canonical" href="https://weightplay.com/zh-tw/games/tiny-weather-rescue/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/tiny-weather-rescue/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/tiny-weather-rescue/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/tiny-weather-rescue/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/tiny-weather-rescue/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/tiny-weather-rescue/" />
+    <link rel="stylesheet" data-wp-stage-standard data-wp-battle-standard href="style.css?v=20260716-keyboard-care1" />
+    <script data-wp-stage-standard>/* Animal Helper Quest owns its native Stage rail. */</script>
+    <script data-wp-battle-standard>/* Animal Helper Quest owns its native Battle Canvas. */</script>
+    <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "動物幫幫隊",
+  "alternateName": "動物幫幫隊",
+  "url": "https://weightplay.com/zh-tw/games/tiny-weather-rescue/",
+  "image": "https://weightplay.com/assets/tiny-weather-rescue-cover.png",
+  "description": "《動物幫幫隊》是一款免費雙語 Kids 看圖益智遊戲，共有 30...",
+  "applicationCategory": "Game",
+  "operatingSystem": "Web browser",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio"
+  },
+  "inLanguage": "zh-Hant",
+  "isAccessibleForFree": true,
+  "genre": [
+    "益智",
+    "照顧",
+    "動物"
+  ],
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "Kids and families",
+    "suggestedMinAge": 6
+  },
+  "learningResourceType": "Skill practice through play",
+  "educationalUse": "Practice Problem Solving, Animal Knowledge, Focus through family-friendly browser gameplay."
+}
+    </script>
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
+    <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
+    <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
+    <meta name="twitter:title" content="動物幫幫隊 | WeightPlay" />
+    <meta name="twitter:description" content="《動物幫幫隊》是一款免費雙語 Kids 看圖益智遊戲，共有 30..." />
+  </head>
+  <body data-tutorial-auto-show="false">
+    <main class="weather-game" data-play-viewport data-no-mobile-immersive="true">
+      <header class="topbar">
+        <a class="home-link" data-wp-return="main" href="/kids/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
+        <div class="title-block">
+          <p>WeightPlay</p>
+          <h1 data-ui="gameTitle">動物幫幫隊</h1>
+        </div>
+        <label class="language-picker">
+          <span data-ui="language">Language</span>
+          <select id="localeSelect" aria-label="Language">
+            <option value="en">English</option>
+            <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
+            <option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option>
+          </select>
+        </label>
+      </header>
+
+      <section id="menuPanel" class="menu-panel">
+        <img class="cover" src="../../assets/tiny-weather-rescue-cover.png" alt="" />
+        <div class="menu-copy">
+          <strong data-ui="chooseStage">Choose Rescue</strong>
+          <span data-ui="menuHint">Tap or drag the right tool to help the little animal.</span>
+        </div>
+        <button id="startGameBtn" class="standard-main-start" data-wp-main-start type="button">Start Game</button>
+      </section>
+
+      <section id="stagePanel" class="wp-standard-stage-panel hidden" data-wp-standard-stage-screen>
+        <header class="wp-standard-stage-heading"><button id="stageBackBtn" data-wp-return="stage" type="button" aria-label="Back">&larr;</button><strong data-ui="chooseStage">Choose Rescue</strong></header>
+        <div id="stageGrid" class="stage-grid" data-wp-stage-settle-duration="360" data-wp-stage-settle-easing="smoothstep" aria-label="Stage list"></div>
+      </section>
+
+      <section id="playPanel" class="play-panel hidden">
+        <div class="play-head">
+          <button id="backToStagesBtn" class="soft-btn" data-wp-return="battle" type="button" aria-label="Back to stages">&larr;</button>
+          <div class="stats">
+            <span id="stageText">Stage 1</span>
+            <span id="movesText" class="round-progress"><b>1/4</b><i></i></span>
+            <span id="starsText">Help 0</span>
+          </div>
+        </div>
+        <div id="board" class="board" aria-label="Animal helper board"></div>
+        <div id="hintText" class="hint" aria-live="polite"></div>
+        <div id="resultPanel" class="result-panel hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle">
+          <div class="result-card">
+            <strong id="resultTitle">Rescue Complete!</strong>
+            <div id="starText" class="stars">&#9734;&#9734;&#9734;</div>
+            <span id="resultText"></span>
+            <div id="skillReport" class="skill-report" aria-live="polite"></div>
+            <button id="nextStageBtn" type="button" data-ui="nextStage">Next Stage</button>
+            <button id="retryBtn" type="button" data-ui="retry">Try Again</button>
+            <button id="resultStagesBtn" type="button" data-ui="stages">Stages</button>
+            <a href="/kids/" data-ui="lobby">Lobby</a>
+          </div>
+        </div>
+      </section>
+
+      <div id="loadingPanel" class="loading-panel">
+        <div class="loading-card">
+          <strong data-ui="loading">Loading</strong>
+          <span id="loadingText">0%</span>
+          <div><i id="loadingFill"></i></div>
+        </div>
+      </div>
+    </main>
+    <!-- adsense-static-guide:start -->
+    <section class="game-page-info game-page-info-static" aria-label="動物幫幫隊 遊戲資訊">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 兒童遊戲指南</span><h2>動物幫幫隊</h2><p>《動物幫幫隊》是一款免費雙語 Kids 看圖益智遊戲，共有 30 個可保存任務與六次幫手檢查。兔子、狐狸、貓熊、企鵝、獅子或無尾熊會在六個地點遇到下雨、淋濕、炎熱、黑暗、雷聲、飢餓、泥濘、寒冷或強風。玩家要從雨傘、毛巾、風扇、小燈、小屋、蘋果、雨靴與毯子中選擇。後段會移除可見道具文字、合併兩個線索、暫時藏起需求，或在答錯後改變道具位置。第 30 任務結合所有規則，沒有倒數、購買、帳號、生命限制或廣告請求。</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>道具選擇</strong></div><div class="game-info-fact"><span>類型</span><strong>益智 · 照顧 · 動物</strong></div><div class="game-info-fact"><span>難度</span><strong>簡單</strong></div><div class="game-info-fact"><span>預估遊玩時間</span><strong>每個任務 3–6 分鐘</strong></div><div class="game-info-fact"><span>練習能力</span><strong>問題解決 · 情境判斷 · 專注力</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>世界與任務</h3><p>六個動物社區共用一台裝著八種工具的小幫手車。天氣與日常需求會打斷路線，玩家要看懂情境並送出有用道具，讓小幫手車繼續前往下一站。</p>
+<p>這些是簡化的遊玩情境，不是專業野生動物照護教學。雙線索會要求判斷眼前優先需求：下雨又強風要先進小屋，已經淋濕則需要毛巾。完成第 30 任務代表通過最後一次綜合幫手檢查。</p></div>
+      <div class="game-info-section"><h3>遊戲系統</h3><p>每個任務有四到六個情境與清楚目標；點道具或拖到動物身上都使用同一判定。</p>
+<p>答對增加一次幫忙；答錯會溫和提示，同一題三次答錯後自動前往下一個情境，避免卡住。</p>
+<p>圖片工具隱藏可見文字但保留無障礙名稱；雙線索需要一個優先答案；記憶需求可免費再看；換位工具會在答錯後重排。</p>
+<p>過關會在目前瀏覽器保存星星、最佳分數、遊玩次數、錯誤與下一個解鎖。技能報告只使用本次真實結果。</p>
+<p>沒有帳號、購買、倒數、排行榜、廣告請求、廣告保留區或正式能力評量。</p></div>
+      <div class="game-info-section"><h3>玩法說明</h3><ol><li>按開始遊戲，在水平任務軌道滑到已解鎖卡片。</li><li>觀察動物、大型情境圖示與簡短需求。</li><li>比較道具圖片，再點選或拖到動物身上。</li><li>記憶需求消失時，可點動物無懲罰再看。</li><li>達成目標即可保存星星，並只解鎖下一個任務。</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>先說出情境，再看道具。</li><li>圖片工具要比較物件形狀與顏色。</li><li>出現兩個線索時，先判斷哪個需求最急。</li><li>忘記需求就再看，不必猜。</li><li>換位任務答錯後要重新掃視整個道具盤。</li><li>把溫和提示當成排除不適合道具的資訊。</li></ul></div>
+      <div class="game-info-section"><h3>關卡與難度成長</h3><p>第 1–5 任務教一個清楚需求，第 5 任務是首次幫手檢查。</p>
+<p>第 6–10 任務移除可見道具文字，但保留無障礙名稱。</p>
+<p>第 11–15 任務把兩個情境線索合成一個優先選擇。</p>
+<p>第 16–20 任務短暫藏起需求，點動物即可恢復。</p>
+<p>第 21–25 任務會在錯誤後重新排列道具。</p>
+<p>第 26–30 任務結合圖片、雙線索、記憶與換位；第 30 任務有六個情境。</p></div>
+      <div class="game-info-section"><h3>開發設計理念</h3><p>難度來自改變有用線索，而不是縮小按鈕或加入壓力倒數。直接需求先建立道具意義，再分別加入看圖、優先判斷、短期記憶與位置變化。固定邏輯畫面會在手機、平板、桌面與短橫向螢幕等比縮放；情境特效不會直接顯示答案，切到背景也不會讓回饋偷偷結束。它不同於《動物園小幫手日》的照護分類與順序流程，本作把環境情境連接到立即道具選擇。Kids 遊玩沒有廣告、帳號、購買、排名或診斷宣稱。</p></div>
+      <div class="game-info-section game-info-parent"><h3>家長說明</h3><p>《動物幫幫隊》可用來談看圖辨識、因果、簡單優先順序、短期記憶、專注與手眼協調。真實動物需要合適棲地、飲食、專業照護與獸醫支援，遠比遊戲情境完整。星星與技能報告只是遊玩回饋，不是成績、智力分數、健康宣稱或發展評量。進度只在目前瀏覽器保存；不需要兒童帳號，Kids 路線也不會請求廣告。</p></div>
+      <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>共有多少任務？</dt><dd>共有 30 個可保存任務，幫手檢查位於第 5、10、15、20、25、30 任務。</dd></div><div><dt>有哪些情境與道具？</dt><dd>九種情境使用八種圖片道具。</dd></div><div><dt>道具文字為什麼不見？</dt><dd>圖片工具與綜合任務刻意依靠圖片，但無障礙名稱仍保留。</dd></div><div><dt>兩個圖示代表什麼？</dt><dd>要選出能處理兩個線索所描述之眼前優先需求的道具。</dd></div><div><dt>需求消失怎麼辦？</dt><dd>點動物即可無懲罰再次顯示。</dd></div><div><dt>道具為什麼移動？</dt><dd>換位任務會在答錯後重排。</dd></div><div><dt>任務會卡住嗎？</dt><dd>不會，同一情境三次答錯後會溫和前往下一題。</dd></div><div><dt>進度會保存嗎？</dt><dd>星星、分數與解鎖只保存在目前瀏覽器。</dd></div><div><dt>Kids 頁面有廣告嗎？</dt><dd>沒有，本作不會建立廣告請求或保留區。</dd></div></dl></div>
+    </div>
+  </section>
+    <!-- adsense-static-guide:end -->
+
+    <script src="/src/site-config.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/version.js?v=20260701-version2"></script>
+    <script src="../../src/analytics.js?v=20260701-analytics2"></script>
+    <script>
+      window.WonderAnalytics?.track("game_view", { game_id: "tiny-weather-rescue" });
+    </script>
+    <script src="../../src/sound.js?v=20260701-labels1"></script>
+    <script src="../../src/edge-guard.js?v=20260710-mobile-play-shell2"></script>
+    <script src="/src/i18n.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/tutorial.js?v=20260704-helper-tutorial-locale1"></script>
+    <script src="game.js?v=20260717-zh-hans1"></script>
+    <script src="../../src/game-page-info.js?v=20260717-zh-hans1"></script>
+  </body>
+</html>

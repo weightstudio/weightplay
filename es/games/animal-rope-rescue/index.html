@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <base href="/games/animal-rope-rescue/" />
+    <meta charset="UTF-8" />
+    <meta name="weightplay-audience" content="kids" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#3f9f51" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="robots" content="index,follow" />
+    <meta name="description" content="Animal Vine Rescue es un rompecabezas de física animal de 30 niveles sobre cómo cortar una fruta colgante, conducir un trampolín de hojas y colocar la..." />
+    <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Rescate Animal con Lianas | WeightPlay" />
+    <meta property="og:description" content="Animal Vine Rescue es un rompecabezas de física animal de 30 niveles sobre cómo cortar una fruta colgante, conducir un trampolín de hojas y colocar la..." />
+    <meta property="og:url" content="https://weightplay.com/es/games/animal-rope-rescue/" />
+    <meta property="og:image" content="https://weightplay.com/assets/animal-vine-rescue-cover.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>Rescate Animal con Lianas | WeightPlay</title>
+    <link rel="canonical" href="https://weightplay.com/es/games/animal-rope-rescue/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-rope-rescue/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-rope-rescue/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-rope-rescue/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/animal-rope-rescue/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-rope-rescue/" />
+    <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
+    <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
+    <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
+    <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20260714-play-area-fill1" data-wp-battle-standard />
+    <link rel="stylesheet" href="style.css?v=20260717-vine-depth30-1" />
+    <link rel="stylesheet" href="../../src/stage-selector-standard.css?v=20260715-stage-swipe2" data-wp-stage-standard />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Rescate Animal con Lianas",
+  "url": "https://weightplay.com/es/games/animal-rope-rescue/",
+  "image": "https://weightplay.com/assets/animal-vine-rescue-cover.png",
+  "description": "Animal Vine Rescue es un rompecabezas de física animal de 30 niveles sobre cómo cortar una fruta colgante, conducir un trampolín de hojas y colocar la...",
+  "applicationCategory": "Game",
+  "operatingSystem": "Web browser",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio"
+  },
+  "inLanguage": "es",
+  "isAccessibleForFree": true,
+  "genre": [
+    "Física",
+    "rompecabezas",
+    "animales"
+  ],
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "Kids and families",
+    "suggestedMinAge": 6
+  },
+  "learningResourceType": "Skill practice through play",
+  "educationalUse": "Practice timing, focus, hand-eye coordination, and problem solving through family-friendly gameplay."
+}
+    </script>
+    <meta name="twitter:title" content="Rescate Animal con Lianas | WeightPlay" />
+    <meta name="twitter:description" content="Animal Vine Rescue es un rompecabezas de física animal de 30 niveles sobre cómo cortar una fruta colgante, conducir un trampolín de hojas y colocar la..." />
+  </head>
+  <body>
+    <main class="vine-app" data-no-mobile-immersive="true">
+      <header class="topbar">
+        <a class="icon-btn home-link" data-wp-return="main" href="/kids/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
+        <div>
+          <p>WeightPlay</p>
+          <h1 data-ui="title">Rescate Animal con Lianas</h1>
+        </div>
+        <label class="language-picker">
+          <span data-ui="language">Language</span>
+          <select id="localeSelect" aria-label="Language">
+            <option value="en">English</option>
+            <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
+            <option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option>
+          </select>
+        </label>
+      </header>
+
+      <section id="menuPanel" class="menu-panel">
+        <img class="cover" src="../../assets/animal-vine-rescue-cover.png" alt="" />
+        <div class="menu-copy">
+          <strong data-ui="menuTitle">Rescue fruit for hungry animals.</strong>
+          <span data-ui="menuHint">Cut the vine, drag the leaf, and bounce fruit into the animal basket.</span>
+          <button id="startBtn" type="button" data-ui="start">Choose Stage</button>
+        </div>
+      </section>
+
+      <section id="stagePanel" class="stage-panel hidden" aria-label="Stages"></section>
+
+      <section id="gamePanel" class="game-panel hidden">
+        <div class="hud-row">
+          <button id="stageBackBtn" type="button" class="soft-btn" data-wp-return="battle" aria-label="Back to stages">&larr;</button>
+          <div class="hud-pill"><span data-ui="stage">Stage</span><b id="stageText">1</b></div>
+          <div class="hud-pill"><span data-ui="score">Delivery</span><b id="scoreText">1/1</b></div>
+        </div>
+        <div id="playfield" class="playfield play-area" aria-label="Animal vine rescue playfield">
+          <div id="targetGuide" class="target-guide" aria-hidden="true"></div>
+          <div id="fallGuide" class="fall-guide" aria-hidden="true"></div>
+          <div id="aimGuide" class="aim-guide" aria-hidden="true"></div>
+          <div id="targetZone" class="target-zone">
+            <img id="targetAnimal" alt="" />
+            <img class="basket" src="../../assets/animal-vine-basket.png" alt="" draggable="false" />
+          </div>
+          <button id="vineButton" class="vine-button" type="button" aria-label="Cut vine">
+            <img class="vine-img" src="../../assets/animal-vine-rope.png" alt="" draggable="false" />
+            <span data-ui="cut">Cut</span>
+          </button>
+          <img id="fruit" class="fruit" alt="" draggable="false" />
+          <img id="leafPaddle" class="leaf-paddle" src="../../assets/animal-vine-leaf-paddle.png" alt="" draggable="false" tabindex="0" role="slider" aria-valuemin="16" aria-valuemax="84" aria-valuenow="50" />
+          <div id="floatText" class="float-text hidden"></div>
+        </div>
+        <button id="cutNowBtn" class="cut-now-btn" type="button" data-ui="cut">Cut</button>
+        <p id="hintText" class="hint-text" data-ui="hint">Drag the leaf. Cut the vine when you are ready.</p>
+        <div id="resultPanel" class="result-panel hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle">
+          <div class="result-card">
+            <strong id="resultTitle">Fruit rescued!</strong>
+            <div id="starText" class="stars">&#9733;&#9733;&#9733;</div>
+            <span id="resultText"></span>
+            <button id="nextStageBtn" type="button" data-ui="nextStage">Next Stage</button>
+            <button id="retryBtn" type="button" data-ui="retry">Try Again</button>
+            <button id="resultStagesBtn" type="button" data-ui="stages">Stages</button>
+            <a href="/kids/" data-ui="lobby">Lobby</a>
+          </div>
+        </div>
+      </section>
+
+      <div id="loadingPanel" class="loading-panel">
+        <div class="loading-card">
+          <strong data-ui="loading">Loading</strong>
+          <span id="loadingText">0%</span>
+          <div><i id="loadingFill"></i></div>
+        </div>
+      </div>
+      <div id="toastText" class="toast hidden" aria-live="polite"></div>
+    </main>
+    <!-- adsense-static-guide:start -->
+    <section class="game-page-info game-page-info-static" aria-label="Información del juego Rescate Animal con Lianas">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">Guía de juegos de WeightPlay</span><h2>Rescate Animal con Lianas</h2><p>Animal Vine Rescue es un rompecabezas de física animal de 30 niveles sobre cómo cortar una fruta colgante, conducir un trampolín de hojas y colocar la fruta en la canasta de un animal que espera. La campaña se divide en seis lecciones de rescate de cinco niveles. Las rutas posteriores añaden cestas móviles, capas de viento superior e inferior, viento que se invierte después de un rebote, entregas de dos rebotes, zonas de captura más estrechas y pedidos de picnic de dos o tres frutas. Cada quinta nivel es un Panko Check amistoso que combina la lección actual sin agregar combate ni presión de tiempo.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Jugabilidad</span><strong>Rompecabezas de física de la vid</strong></div><div class="game-info-fact"><span>Género</span><strong>Física · rompecabezas · animales</strong></div><div class="game-info-fact"><span>Dificultad</span><strong>Fácil a media</strong></div><div class="game-info-fact"><span>Tiempo estimado</span><strong>2-6 minutos</strong></div><div class="game-info-fact"><span>Habilidades practicadas</span><strong>Coordinación mano-ojo · Resolución de problemas · Concentración</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>Mundo y misión</h3><p>Las enredaderas de entrega del huerto han crecido en un claro del bosque, dejando manzanas, plátanos y bayas colgando lejos de los animales que los solicitaron. Panko organiza el mapa de rescate mientras conejos, leones, pandas, zorros y koalas esperan junto a sus cestas. El jugador es el guía de las hojas: elige dónde espera el trampolín, decide cuándo cortar y sigue guiando mientras la fruta está en el aire.</p>
+<p>Limpiar las 30 rutas restablece seis rutas de entrega a través del huerto. El Panko Grand Rescue final sirve a tres animales en una batalla y combina viento en capas, una canasta en movimiento y una ruta de dos rebotes. La victoria representa una entrega de picnic completa en lugar de derrotar a un enemigo.</p></div>
+      <div class="game-info-section"><h3>Cómo funcionan los sistemas</h3><p>Cada ruta comienza con una fruta sujeta a una enredadera visible, un trampolín de hojas móviles y una canasta. La hoja puede moverse antes y después del corte. Una fruta que cae debe entrar en contacto con la hoja al menos una vez antes de que la canasta la acepte, por lo que simplemente soltar una fruta directamente encima del animal no es suficiente.</p>
+<p>La aceleración de la fruta utiliza la gravedad de la ruta y el viento activo. La hoja agrega velocidad ascendente y dirección horizontal según el lugar donde la fruta golpea su superficie. Un contacto centrado crea un rebote más recto; un contacto en el borde envía la fruta más hacia los lados. Fallar la canasta o abandonar el campo de juego abre un resultado de reintento de apoyo sin eliminar el progreso guardado.</p>
+<p>Las rutas de cesta en movimiento actualizan la posición de captura continuamente después del corte. Las rutas de viento en capas aplican diferentes fuerzas por encima y por debajo de la división de altura mostrada. Las rutas de viento inverso cambian de dirección después del primer contacto de la hoja. Las rutas de dos rebotes mantienen la canasta bloqueada hasta el segundo rebote requerido, y las rutas de hojas blandas reducen la altura del rebote para que el jugador deba permanecer más cerca de la fruta que cae.</p>
+<p>Las rutas de entrega múltiple mantienen al jugador dentro de la misma Batalla. La siguiente fruta, animal y ruta aparecen después de una captura exitosa, mientras que el contador de entrega avanza desde 1/2 o 1/3. El resultado aparece sólo después de que cada fruta enumerada llegue a su cesta.</p>
+<p>El nivel más alto desbloqueado, las mejores estrellas por nivel, la mejor puntuación y el recuento de jugadas se guardan localmente en el navegador actual. No es necesario iniciar sesión; borrar los datos del sitio del navegador puede eliminar ese progreso local.</p></div>
+      <div class="game-info-section"><h3>Cómo jugar</h3><ol><li>Elija una tarjeta de rescate desbloqueada del riel horizontal del nivel.</li><li>Lea el nombre artístico, la ruta de la fruta al animal y la pista de la regla visible.</li><li>Mueva la hoja con las teclas táctiles, de puntero o izquierda/derecha y luego presione Cortar.</li><li>Continúe conduciendo mientras la fruta cae y use el punto de contacto de la hoja para cambiar su dirección.</li><li>Complete el recuento de rebotes requerido y siga una canasta en movimiento o un viento cambiante cuando se muestre.</li><li>Entrega todas las frutas en la ruta para desbloquear la siguiente nivel.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Consejos de estrategia</h3><ul><li>Coloque la hoja debajo del primer camino que cae antes de presionar Cortar, luego haga correcciones más pequeñas mientras la fruta se mueve.</li><li>Golpee cerca del centro de la hoja para aumentar la altura. Utilice el borde izquierdo o derecho sólo cuando la cesta esté muy atravesada en el claro.</li><li>Para una canasta en movimiento, apunte a donde estará después del rebote en lugar de donde estaba en el corte.</li><li>En rutas de viento en capas, compare la dirección de la fruta antes y después de cruzar el centro del claro.</li><li>Una ruta de dos rebotes necesita control después del primer contacto; no envíe la fruta tan hacia los lados que sea imposible atrapar la segunda hoja.</li><li>Durante los pedidos de picnic, lea la siguiente entrega en lugar de asumir que la segunda fruta utiliza la misma regla de viento o rebote.</li></ul></div>
+      <div class="game-info-section"><h3>Campaña y aumento de dificultad</h3><p>Las niveles 1 a 5 enseñan rebotes tranquilos, hacia la derecha, hacia la izquierda y cruzados largos. Balance Check de Panko agrega la primera canasta que se mueve suavemente.</p>
+<p>Las niveles 6 a 10 se centran en objetivos en movimiento. La velocidad, la dirección y el tamaño de apertura de la canasta cambian, y el control de la canasta móvil de Panko requiere dos contactos de hoja antes de la captura.</p>
+<p>Las niveles 11 a 15 introducen viento que cambia según la altura o se invierte después de un rebote. Wind Check de Panko combina fuerza en capas con una canasta en movimiento.</p>
+<p>Las niveles 16 a 20 requieren dos rebotes e introducen una hoja más suave que produce un arco inferior. El Twin-Bounce Check de Panko también invierte el viento y mueve la canasta.</p>
+<p>Las niveles 21 a 25 introducen entregas de picnic de dos frutas sin salir de Battle. Las dos rutas pueden utilizar vientos opuestos, diferentes recuentos de rebotes o una canasta móvil compartida.</p>
+<p>Las niveles 26 a 30 combinan capturas estrechas, objetivos en movimiento, vientos en capas y en reversa, control de dos rebotes y servicio de dos o tres frutas. Panko&#39;s Grand Rescue utiliza tres entregas diferentes en lugar de un final únicamente numérico.</p></div>
+      <div class="game-info-section"><h3>Nota de diseño</h3><p>El juego utiliza una acción de corte más una dirección continua de la hoja para que el jugador siga siendo responsable después de soltar la fruta. La estructura de 30 niveles cambia la información que un jugador debe leer (movimiento del objetivo, viento basado en la altitud, recuento de rebotes, potencia de la hoja, ancho de captura y secuencia de entrega) en lugar de depender únicamente de una gravedad más rápida. El campo de juego vertical le da a la fruta que cae suficiente tiempo de viaje para una corrección visible en los teléfonos, mientras que el mismo lienzo lógico se escala uniformemente en tabletas y pantallas horizontales. Los puntos de control de Panko crean hitos memorables para niños sin convertir un rompecabezas de entrega de frutas en combate.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Nota para familias</h3><p>Animal Vine Rescue puede favorecer la sincronización, la predicción visual, la coordinación mano-ojo, la concentración y la resolución de problemas simples. Los adultos pueden preguntar dónde se moverá la canasta o por qué el segundo rebote necesita una posición diferente de la hoja. No hay cronómetro, publicidad, requisitos de cuenta, presión de clasificación ni combate hostil. Las estrellas y el progreso guardado son comentarios locales divertidos, no una prueba de capacidad formal, un diagnóstico o una evaluación escolar.</p></div>
+      <div class="game-info-section"><h3>Preguntas frecuentes</h3><dl><div><dt>¿Cuántas niveles hay en Animal Vine Rescue?</dt><dd>Hay 30 niveles con nombre en seis lecciones de cinco niveles, con Panko Checks amistosos cada quinta nivel.</dd></div><div><dt>¿Puedo mover la hoja después de cortar la vid?</dt><dd>Sí. La dirección continua durante la caída y después de cada rebote es la acción principal del jugador.</dd></div><div><dt>¿Por qué la fruta pasó la canasta?</dt><dd>Cada entrega requiere al menos un rebote de hoja, y las rutas marcadas pueden requerir dos rebotes o utilizar una abertura más estrecha.</dd></div><div><dt>¿Cómo funcionan las cestas móviles y las capas de viento?</dt><dd>Las cestas en movimiento cambian de posición horizontal después del corte. Las rutas de capa de viento aplican diferentes fuerzas en las partes superior e inferior del claro.</dd></div><div><dt>¿Qué pasa en una entrega de picnic?</dt><dd>Dos o tres rutas de frutas continúan dentro de una misma Batalla. El resultado espera hasta que se complete cada entrega.</dd></div><div><dt>¿Qué pasa cuando falta una fruta?</dt><dd>Un resultado de apoyo ofrece Intentar de nuevo, Niveles o Lobby sin eliminar el progreso desbloqueado.</dd></div><div><dt>¿El juego requiere iniciar sesión o mostrar anuncios?</dt><dd>No. Este juego para niños no tiene publicidad y almacena el progreso básico localmente sin necesidad de una cuenta.</dd></div><div><dt>¿Son las estrellas una puntuación de habilidad formal?</dt><dd>No. Las estrellas son solo comentarios sobre el progreso del juego y no son un diagnóstico ni una evaluación.</dd></div></dl></div>
+    </div>
+  </section>
+    <!-- adsense-static-guide:end -->
+
+    <script src="/src/site-config.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/version.js?v=20260701-version2"></script>
+    <script src="../../src/analytics.js?v=20260701-analytics2"></script>
+    <script>window.WonderAnalytics?.track("game_view", { game_id: "animal-rope-rescue" });</script>
+    <script src="../../src/sound.js?v=20260701-labels1"></script>
+    <script src="../../src/edge-guard.js?v=20260710-mobile-play-shell2"></script>
+    <script src="/src/i18n.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
+    <script data-wp-stage-standard data-wp-native-stage>/* This Kids route owns its zero-reserve Stage Canvas; the shared selector owns Stage pointer drag and settle. */</script>
+    <script src="../../src/battle-canvas-standard.js?v=20260714-play-area-fill1" data-wp-battle-standard></script>
+    <script src="game.js?v=20260717-zh-hans2"></script>
+    <script>
+      window.addEventListener(
+        "load",
+        () => {
+          const loadGuide = () => {
+            if (window.WEIGHTPLAY_VINE_RESCUE_ACTIVE) {
+              window.addEventListener("animal-vine-rescue:play-state", (event) => {
+                if (!event.detail?.playing) loadGuide();
+              }, { once: true });
+              return;
+            }
+            if (document.querySelector('script[data-vine-game-info]')) return;
+            const script = document.createElement("script");
+            script.src = "../../src/game-page-info.js?v=20260717-zh-hans1";
+            script.async = true;
+            script.dataset.vineGameInfo = "idle";
+            document.body.appendChild(script);
+          };
+          if ("requestIdleCallback" in window) {
+            window.requestIdleCallback(loadGuide, { timeout: 1200 });
+          } else {
+            window.setTimeout(loadGuide, 650);
+          }
+        },
+        { once: true },
+      );
+    </script>
+  </body>
+</html>

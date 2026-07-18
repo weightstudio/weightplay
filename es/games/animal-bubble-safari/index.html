@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <base href="/games/animal-bubble-safari/" />
+  <meta charset="utf-8">
+  <meta name="weightplay-audience" content="kids">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="robots" content="index,follow">
+  <meta name="description" content="Animal Bubble Safari es un rompecabezas de puntería bilingüe gratuito para niños con 30 niveles guardados y seis Safari Checks. Los jugadores lanzan..." />
+  <meta property="og:site_name" content="WeightPlay">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Safari de Burbujas Animales | WeightPlay" />
+  <meta property="og:description" content="Animal Bubble Safari es un rompecabezas de puntería bilingüe gratuito para niños con 30 niveles guardados y seis Safari Checks. Los jugadores lanzan..." />
+  <meta property="og:url" content="https://weightplay.com/es/games/animal-bubble-safari/" />
+  <meta property="og:image" content="https://weightplay.com/assets/animal-bubble-safari-cover.webp">
+  <meta name="twitter:card" content="summary_large_image">
+  <title>Safari de Burbujas Animales | WeightPlay</title>
+  <link rel="canonical" href="https://weightplay.com/es/games/animal-bubble-safari/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-bubble-safari/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-bubble-safari/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-bubble-safari/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/animal-bubble-safari/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-bubble-safari/" />
+    <link rel="stylesheet" href="../../src/game-page-info.css">
+  <link rel="stylesheet" href="../../src/loading-screen.css">
+  <link rel="stylesheet" href="../../src/tutorial.css?v=20260715-kids-release1">
+  <link rel="stylesheet" href="../../src/play-viewport.css?v=20260715-kids-fullscreen1">
+  <link rel="stylesheet" href="style.css?v=20260715-precision2">
+  <script data-wp-stage-standard>/* Animal Bubble Safari owns its native Kids Stage rail. */</script>
+  <script data-wp-battle-standard>/* Animal Bubble Safari owns its native Kids Battle Canvas. */</script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Safari de Burbujas Animales",
+  "alternateName": "動物泡泡探險",
+  "url": "https://weightplay.com/es/games/animal-bubble-safari/",
+  "image": "https://weightplay.com/assets/animal-bubble-safari-cover.webp",
+  "description": "Animal Bubble Safari es un rompecabezas de puntería bilingüe gratuito para niños con 30 niveles guardados y seis Safari Checks. Los jugadores lanzan...",
+  "applicationCategory": "Game",
+  "operatingSystem": "Web browser",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio"
+  },
+  "inLanguage": "es",
+  "isAccessibleForFree": true,
+  "genre": [
+    "rompecabezas",
+    "tirador de burbujas",
+    "animales"
+  ],
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "Kids and families",
+    "suggestedMinAge": 6
+  }
+}
+    </script>
+  <meta name="twitter:title" content="Safari de Burbujas Animales | WeightPlay" />
+    <meta name="twitter:description" content="Animal Bubble Safari es un rompecabezas de puntería bilingüe gratuito para niños con 30 niveles guardados y seis Safari Checks. Los jugadores lanzan..." />
+  </head>
+<body data-tutorial-auto-show="false">
+  <main id="viewport" class="viewport" data-no-mobile-immersive="true" aria-live="polite">
+    <div id="canvasSlot" class="canvas-slot">
+      <div id="gameCanvas" class="game-canvas">
+        <section id="loadingScreen" class="screen loading-screen is-active" aria-labelledby="loadingTitle">
+          <img id="loadingCover" class="loading-cover" src="../../assets/animal-bubble-safari-cover.webp" alt="" draggable="false">
+          <div id="loadingPanel" class="safari-loading" role="status" aria-live="polite">
+            <img src="../../assets/animal-bubble-safari-lion-guide.webp" alt="" draggable="false">
+            <strong id="loadingTitle" data-i18n="loading">Preparing Safari</strong>
+            <div class="loading-track" aria-hidden="true"><i id="loadingFill"></i></div>
+            <span id="loadingProgress">0%</span>
+          </div>
+        </section>
+
+        <section id="mainScreen" class="screen main-screen" aria-labelledby="gameTitle">
+          <header class="topbar">
+            <a class="home-link" href="/kids/" aria-label="Back to the WeightPlay Kids lobby" data-i18n-aria="backToLobby">
+              <span aria-hidden="true">←</span>
+              <img src="../../assets/weightplay-logo.png" alt="" draggable="false">
+            </a>
+            <h1 id="gameTitle" data-i18n="title">Safari de Burbujas Animales</h1>
+            <button id="soundMain" class="icon-button" type="button" aria-label="Toggle sound" data-i18n-aria="soundToggle">♪</button>
+          </header>
+          <div class="poster-wrap">
+            <img src="../../assets/animal-bubble-safari-cover.webp" alt="" draggable="false">
+            <div class="poster-copy">
+              <strong data-i18n="tagline">Aim, bank shots, and rescue bubble animals!</strong>
+              <span data-i18n="progressLabel">Safari progress</span>
+              <b id="mainProgress">1 / 30</b>
+            </div>
+          </div>
+          <div class="main-actions">
+            <button id="startGame" class="primary-button" type="button" data-i18n="startGame">Start Game</button>
+            <div class="secondary-row">
+              <button id="openGuide" type="button" data-i18n="guide">Guide</button>
+              <div id="localeSelect" class="language-switch" role="group" aria-label="Language" data-i18n-aria="language">
+                <button type="button" data-locale="zh-Hant">繁中</button>
+                <button type="button" data-locale="zh-Hans">&#31616;&#20013;</button>
+                <button type="button" data-locale="es">ES</button>
+                <button type="button" data-locale="en" class="is-selected">EN</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="stageScreen" class="screen stage-screen" aria-labelledby="stageTitle">
+          <div class="stage-art" aria-hidden="true"></div>
+          <header class="topbar compact-topbar">
+            <button id="stageBack" class="back-button" type="button" aria-label="Back" data-i18n-aria="back">←</button>
+            <h2 id="stageTitle" data-i18n="chooseStage">Choose Stage</h2>
+            <button id="soundStage" class="icon-button" type="button" aria-label="Toggle sound" data-i18n-aria="soundToggle">♪</button>
+          </header>
+          <div class="stage-summary">
+            <img src="../../assets/animal-bubble-safari-lion-guide.webp" alt="" draggable="false">
+            <div><span data-i18n="album">Rescue Album</span><strong id="albumCount">0 / 5</strong></div>
+            <div><span data-i18n="bestStars">Best Stars</span><strong id="starCount">0 / 36</strong></div>
+          </div>
+          <div id="stageRail" class="stage-rail" tabindex="0" aria-label="Stage list" data-i18n-aria="stageList" data-wp-stage-settle-duration="360" data-wp-stage-settle-easing="smoothstep"></div>
+          <p id="stageStatus" class="stage-status" role="status" aria-live="polite"></p>
+          <div class="stage-detail">
+            <span id="stageSkill">Focus</span>
+            <strong id="stageGoal">Make 1 matching group</strong>
+          </div>
+        </section>
+
+        <section id="battleScreen" class="screen battle-screen" aria-labelledby="battleStageName">
+          <div id="battleLive" class="battle-live">
+          <header class="battle-header">
+            <button id="battleBack" class="back-button" type="button" aria-label="Back to stages" data-i18n-aria="backToStage">←</button>
+            <div><span data-i18n="level">Level</span><strong id="battleStageName">1</strong></div>
+            <div><span data-i18n="shots">Shots</span><strong id="shotsLeft">6</strong></div>
+            <div><span data-i18n="rescued">Goal</span><strong id="rescueProgress">0 / 1</strong></div>
+            <div><span data-i18n="score">Score</span><strong id="scoreValue">0</strong></div>
+          </header>
+          <div id="battleMessage" class="battle-message">Drag to aim, release to shoot</div>
+          <div class="play-frame">
+            <canvas id="playCanvas" width="360" height="548" tabindex="0" aria-label="Bubble shooter play area" data-i18n-aria="playArea" aria-keyshortcuts="ArrowLeft ArrowRight ArrowUp ArrowDown Enter Space"></canvas>
+          </div>
+          <div class="queue-bar">
+            <div><span data-i18n="currentBubble">Current</span><canvas id="currentPreview" width="48" height="48"></canvas></div>
+            <div><span data-i18n="nextBubble">Next</span><canvas id="nextPreview" width="48" height="48"></canvas></div>
+            <strong id="battleGoal">Make 1 matching group</strong>
+          </div>
+          </div>
+
+          <section id="resultScreen" class="result-screen" role="dialog" aria-modal="true" aria-labelledby="resultTitle">
+          <div class="result-panel">
+            <img class="result-mascot" src="../../assets/animal-bubble-safari-lion-guide.webp" alt="" draggable="false">
+            <h2 id="resultTitle">Rescue Complete!</h2>
+            <div id="resultStars" class="result-stars" aria-label="Stars earned" data-i18n-aria="earnedStars">★★★</div>
+            <div class="result-stats">
+              <div><span data-i18n="score">Score</span><strong id="resultScore">0</strong></div>
+              <div><span data-i18n="shotsLeft">Shots Left</span><strong id="resultShots">0</strong></div>
+              <div><span data-i18n="rescuedAnimals">Animals Rescued</span><strong id="resultRescued">0</strong></div>
+            </div>
+            <div class="reward-row">
+              <div class="reward-icon reward-star"></div><b id="rewardStars">+1</b>
+              <div class="reward-icon reward-coin"></div><b id="rewardCoins">+20</b>
+              <div class="reward-icon reward-album"></div><b id="rewardAlbum">+1</b>
+            </div>
+            <div class="skill-report">
+              <span data-i18n="skillReport">Skill Report</span>
+              <strong id="skillText">Focus · Hand-Eye Coordination</strong>
+            </div>
+            <div class="result-actions">
+              <button id="retryStage" type="button" data-i18n="retry">Retry</button>
+              <button id="nextStage" class="primary-button" type="button" data-i18n="nextLevel">Next Level</button>
+              <button id="backToMap" type="button" data-i18n="backToMap">Back to Map</button>
+            </div>
+          </div>
+          </section>
+        </section>
+
+        <div id="guideModal" class="modal" hidden>
+          <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="guideTitle">
+            <button id="closeGuide" class="modal-close" type="button" aria-label="Close" data-i18n-aria="close">×</button>
+            <img src="../../assets/animal-bubble-safari-lion-guide.webp" alt="" draggable="false">
+            <h2 id="guideTitle" data-i18n="howToPlay">How to Play</h2>
+            <ol>
+              <li data-i18n="guideAim">Drag to aim at matching bubbles, then release to shoot.</li>
+              <li data-i18n="guideBank">Bounce shots off a wall to get around rocks.</li>
+              <li data-i18n="guideRescue">Connect three or more. Rescue the target before shots run out.</li>
+            </ol>
+            <button id="guideDone" class="primary-button" type="button" data-i18n="gotIt">Got It</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <!-- adsense-static-guide:start -->
+  <section class="game-page-info game-page-info-static" aria-label="Información del juego Safari de Burbujas Animales">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">Guía de juegos de WeightPlay</span><h2>Safari de Burbujas Animales</h2><p>Animal Bubble Safari es un rompecabezas de puntería bilingüe gratuito para niños con 30 niveles guardados y seis Safari Checks. Los jugadores lanzan burbujas de animales, conectan grupos de tres, disparan desde las paredes y rescatan a cinco tipos de amigos del safari. Las regiones posteriores agregan piedras, hojas, miel de dos golpes y barreras de nubes que limpian filas, viento del este u oeste, filas móviles y poderes de arcoíris, limpieza de líneas, ráfagas e intercambio. El nivel 30 combina los cuatro bloqueadores, tres rescates, viento, filas cambiantes y todos los poderes sin cuenta regresiva, cuenta, compra o solicitud de publicidad.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Jugabilidad</span><strong>Rompecabezas de disparar burbujas</strong></div><div class="game-info-fact"><span>Género</span><strong>rompecabezas · tirador de burbujas · animales</strong></div><div class="game-info-fact"><span>Dificultad</span><strong>Fácil a media</strong></div><div class="game-info-fact"><span>Tiempo estimado</span><strong>3-6 minutos por nivel</strong></div><div class="game-info-fact"><span>Habilidades practicadas</span><strong>Concentración · Coordinación mano-ojo · Resolución de problemas</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>Mundo y misión</h3><p>Una cadena de abrevaderos une seis regiones de safari. Los animales jóvenes quedaron rodeados de grupos flotantes, por lo que el jugador viaja con el león guía y abre rutas seguras con el lanzador de burbujas. Un claro significa que el objetivo de emparejar o rescatar se completa antes de que se acaben las burbujas preparadas.</p>
+<p>Las barreras pertenecen a la ruta más que a un ejército enemigo. Cada quinto nivel es un Safari Check que recombina las habilidades de la región. Grand Safari Reunion libera a los últimos tres animales y finaliza la campaña del autor.</p></div>
+      <div class="game-info-section"><h3>Cómo funcionan los sistemas</h3><p>Las vistas previas actuales y siguientes permiten una planificación de dos colores. Arrastra o mantén presionado para apuntar; Las teclas de flecha ajustan el mismo punto lógico y se activa Enter o Space.</p>
+<p>El vuelo continuo comprueba la colisión visible en pequeños pasos. Un disparo se coloca junto a la burbuja que realmente tocó en lugar de saltar a una celda distante y oculta.</p>
+<p>Tres o más colores conectados son claros. Los goles de banco cuentan sólo un grupo realizado después de tocar una pared; Los objetivos de rescate requieren de una a tres burbujas de animales marcadas.</p>
+<p>Las hojas caen al lado de una cerilla, la miel necesita dos golpes directos, las nubes despejan una fila, el viento dobla el vuelo y los niveles cambiantes se mueven alternando filas después de un disparo.</p>
+<p>Rainbow adopta un color de impacto, Line Clear elimina una fila, Burst limpia un área y bloqueadores y Swap intercambia colores.</p>
+<p>Las estrellas dependen de los tiros que queden. Los desbloqueos, las mejores estrellas, las partituras, los rescates de álbumes y la elección de sonido permanecen solo en este navegador. Las pantallas infantiles no tienen anuncios ni reserva.</p></div>
+      <div class="game-info-section"><h3>Cómo jugar</h3><ol><li>Desliza el riel del nivel hasta un nivel desbloqueado y lee su objetivo y su sugerencia de regla.</li><li>Verifique las burbujas actuales y siguientes antes de elegir un ángulo.</li><li>Arrastre hacia un grupo coincidente y use una pared cuando el camino directo esté bloqueado.</li><li>Suelte, observe la colisión y la fijación exactas y luego planifique el cambio de tabla.</li><li>Completa los partidos o rescates necesarios antes de que se acaben las burbujas preparadas.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Consejos de estrategia</h3><ul><li>Planifique con la siguiente burbuja antes de abrir un carril estrecho.</li><li>Gire con suficiente anticipación para que el camino reflejado se acerque desde un costado.</li><li>Limpia las hojas con una cerilla adyacente y cuenta ambos golpes de miel.</li><li>Comprueba toda la fila de una nube antes de chocar contra ella.</li><li>Apunta contra la deriva del viento y vuelve a leer las filas en movimiento después de cada disparo.</li><li>Guarde Burst para barreras densas y Line Clear para filas valiosas.</li></ul></div>
+      <div class="game-info-section"><h3>Campaña y aumento de dificultad</h3><p>Los niveles 1 a 5 enseñan tiros directos, tiros de banco, objetivos de rescate, colores mixtos y piedras.</p>
+<p>Los niveles 6 a 10 amplían las cadenas de rescate e introducen Rainbow y Line Clear.</p>
+<p>Los niveles 11 a 15 introducen las reglas de explosión, intercambio, hoja, miel y nube.</p>
+<p>Los niveles 16 a 20 añaden viento del este/oeste y filas en movimiento alternadas.</p>
+<p>Los niveles 21 a 25 combinan cada poder con barreras y terminan con tres rescates más los cuatro poderes.</p>
+<p>Los niveles 26 a 30 combinan carriles de hojas y piedras, viento en contra, hileras de nubes en movimiento y rescate de tres animales. El nivel 30 utiliza todas las reglas principales.</p></div>
+      <div class="game-info-section"><h3>Nota de diseño</h3><p>La promesa del diseño es que la colisión visible produce un apego creíble. El movimiento continuo y la selección local de posiciones abiertas preservan la confianza en el objetivo. La dificultad aumenta a través de ángulos, reacciones de barrera, ubicación de rescate, viento, movimiento de filas, planificación de la siguiente burbuja y sincronización de potencia en lugar de animaciones más rápidas u objetivos más pequeños. Un lienzo lógico se escala uniformemente en teléfonos, tabletas, computadoras de escritorio y paisajes cortos; El tacto, el mouse y el teclado comparten un estado de objetivo y la cancelación del ciclo de vida evita versiones obsoletas. A diferencia de los grupos de tap de Bubble Bakery, este juego se basa en la trayectoria y la reflexión. Kids play no tiene publicidad, cuenta, compra, ranking ni diagnóstico.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Nota para familias</h3><p>Animal Bubble Safari puede apoyar la predicción visual, la planificación, la agrupación de colores, el enfoque y la coordinación mano-ojo. Los adultos pueden discutir la reflexión, la deriva del viento y si la burbuja actual debe preparar el siguiente disparo. Las estrellas y el informe de habilidades son comentarios sobre el juego local, no una calificación, puntuación de inteligencia, diagnóstico o comparación de niños. El progreso permanece en este navegador. No se requiere perfil infantil y la ruta Kids no solicita publicidad.</p></div>
+      <div class="game-info-section"><h3>Preguntas frecuentes</h3><dl><div><dt>¿Cuántos niveles están incluidos?</dt><dd>Hay 30 niveles guardados con Safari Checks en 5, 10, 15, 20, 25 y 30.</dd></div><div><dt>¿Por qué mi burbuja se adhirió al lado del objetivo?</dt><dd>Utiliza la posición abierta más cercana alrededor de la burbuja tocada físicamente.</dd></div><div><dt>¿Cómo funcionan las metas bancarias?</dt><dd>El tiro correspondiente debe tocar una pared lateral antes de despejar.</dd></div><div><dt>¿Qué hacen las barreras de hojas, miel y nubes?</dt><dd>Las hojas caen al lado de las cerillas, la miel necesita dos caladas y las nubes aclaran una fila.</dd></div><div><dt>¿Cuales son los cuatro poderes?</dt><dd>Rainbow cambia de color, Line Clear elimina una fila, Burst limpia un área y Swap intercambia colores.</dd></div><div><dt>¿Hay un temporizador?</dt><dd>No. El límite es la oferta de burbujas visible.</dd></div><div><dt>¿Se guarda el progreso?</dt><dd>Los desbloqueos, las estrellas, las partituras, los rescates de álbumes y la elección de sonido permanecen solo en este navegador.</dd></div><div><dt>¿Puede usar tacto o teclado?</dt><dd>Sí. Toque, mouse, teclas de flecha, Enter y Space comparten las mismas reglas de puntería.</dd></div><div><dt>¿La página para niños muestra anuncios?</dt><dd>No. No genera ninguna solicitud ni reserva de publicidad.</dd></div></dl></div>
+    </div>
+  </section>
+  <!-- adsense-static-guide:end -->
+<script src="../../src/edge-guard.js?v=20260715-kids-fullscreen1"></script>
+<script src="/src/i18n.js?v=20260718-locale-routes1"></script>
+<script src="../../src/tutorial.js?v=20260715-kids-release1"></script>
+<script src="game.js?v=20260717-zh-hans1"></script>
+<script src="../../src/game-page-info.js?v=20260717-zh-hans1" defer></script>
+</body>
+</html>

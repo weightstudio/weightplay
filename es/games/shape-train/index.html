@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <base href="/games/shape-train/" />
+    <meta charset="UTF-8" />
+    <meta name="weightplay-audience" content="kids" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#6cb6ff" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="robots" content="index,follow" />
+    <meta name="description" content="Animal Shape Train es un juego de combinación bilingüe gratuito para niños con 30 rutas guardadas y seis controles de conductor. Los amigos de las formas..." />
+    <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Tren de Formas Animales | WeightPlay" />
+    <meta property="og:description" content="Animal Shape Train es un juego de combinación bilingüe gratuito para niños con 30 rutas guardadas y seis controles de conductor. Los amigos de las formas..." />
+    <meta property="og:url" content="https://weightplay.com/es/games/shape-train/" />
+    <meta property="og:image" content="https://weightplay.com/assets/shape-train-cover.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Tren de Formas Animales | WeightPlay" />
+    <meta name="twitter:description" content="Animal Shape Train es un juego de combinación bilingüe gratuito para niños con 30 rutas guardadas y seis controles de conductor. Los amigos de las formas..." />
+    <title>Tren de Formas Animales | WeightPlay</title>
+    <link rel="canonical" href="https://weightplay.com/es/games/shape-train/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/shape-train/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/shape-train/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/shape-train/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/shape-train/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/shape-train/" />
+    <link rel="stylesheet" href="style.css?v=20260716-stage-lifecycle2" />
+    <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Tren de Formas Animales",
+  "alternateName": "動物形狀小火車",
+  "url": "https://weightplay.com/es/games/shape-train/",
+  "image": "https://weightplay.com/assets/shape-train-cover.png",
+  "description": "Animal Shape Train es un juego de combinación bilingüe gratuito para niños con 30 rutas guardadas y seis controles de conductor. Los amigos de las formas...",
+  "applicationCategory": "Game",
+  "operatingSystem": "Web browser",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio"
+  },
+  "inLanguage": "es",
+  "isAccessibleForFree": true,
+  "genre": [
+    "preescolar",
+    "Educación",
+    "animales"
+  ],
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "Kids and families",
+    "suggestedMinAge": 3
+  },
+  "learningResourceType": "Skill practice through play",
+  "educationalUse": "Practice Color Recognition, Logic, Hand-Eye Coordination through family-friendly browser gameplay."
+}
+    </script>
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
+    <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
+    <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
+    <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20260714-play-area-fill1" data-wp-battle-standard />
+    <script data-wp-stage-standard>/* Shared Kids Stage selector owns pointer drag and settle; Shape Train retains lifecycle centering only. */</script>
+  </head>
+  <body data-tutorial-auto-show="false">
+    <main class="shape-game" data-play-viewport data-no-mobile-immersive="true">
+      <header class="topbar">
+        <a class="home-link" data-wp-return="main" href="/kids/" aria-label="Back to Kids lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
+        <div class="title-block">
+          <p>WeightPlay</p>
+          <h1 data-ui="gameTitle">Tren de Formas Animales</h1>
+        </div>
+        <label class="language-picker">
+          <span data-ui="language">Language</span>
+          <select id="localeSelect" aria-label="Language">
+            <option value="en">English</option>
+            <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
+            <option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option>
+          </select>
+        </label>
+      </header>
+
+      <section id="menuPanel" class="menu-panel">
+        <img class="cover" src="../../assets/shape-train-cover.png" alt="" />
+        <div class="menu-copy">
+          <strong data-ui="chooseStage">Choose Stage</strong>
+          <span data-ui="menuHint">Match shape friends to the right train cars.</span>
+        </div>
+        <div class="menu-preview" aria-hidden="true">
+          <img src="../../assets/shape-token-star.svg" alt="" />
+          <span data-ui="previewAction">Tap or drag the shape friend</span>
+          <b></b>
+          <img src="../../assets/shape-train-car.svg" alt="" />
+        </div>
+        <button id="startGameBtn" class="standard-main-start" data-wp-main-start type="button">Start Game</button>
+      </section>
+
+      <section id="stagePanel" class="wp-standard-stage-panel hidden" data-wp-standard-stage-screen>
+        <header class="wp-standard-stage-heading"><button id="stageBackBtn" data-wp-return="stage" type="button" aria-label="Back">&larr;</button><strong data-ui="chooseStage">Choose Stage</strong></header>
+        <div id="stageGrid" class="stage-grid" data-wp-stage-settle-duration="360" data-wp-stage-settle-easing="smoothstep" aria-label="Stage list"></div>
+      </section>
+
+      <section id="playPanel" class="play-panel hidden">
+        <div class="play-head">
+          <button id="backToStagesBtn" class="soft-btn" data-wp-return="battle" type="button" aria-label="Back to stages">&larr;</button>
+          <div class="progress-line">
+            <span id="stageText">Stage 1</span>
+            <div><i id="progressFill"></i></div>
+          </div>
+        </div>
+
+        <div class="train-track" aria-label="Train cars">
+          <div id="carGrid" class="car-grid"></div>
+        </div>
+
+        <div class="passenger-area">
+          <p id="promptText">Who rides next?</p>
+          <button id="passengerBtn" class="passenger" type="button" draggable="true" aria-label="Shape passenger">
+            <span id="passengerShape"></span>
+          </button>
+        </div>
+        <div id="feedbackText" class="feedback" aria-live="polite"></div>
+        <div id="resultPanel" class="shape-result-panel hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle">
+          <div class="result-card">
+            <strong id="resultTitle">Great job!</strong>
+            <div id="starText" class="stars">&#9734;&#9734;&#9734;</div>
+            <span id="resultText"></span>
+            <section class="shape-skill-report" aria-live="polite">
+              <h3 id="skillReportTitle">Skill Report</h3>
+              <div class="shape-skill-grid">
+                <div><span id="logicLabel">Logic</span><b id="logicValue">0 shape matches</b></div>
+                <div><span id="focusLabel">Focus</span><b id="focusValue">0 first try</b></div>
+                <div><span id="coordinationLabel">Hand-Eye Coordination</span><b id="coordinationValue">0 friends boarded</b></div>
+              </div>
+              <p id="progressComparison"></p>
+            </section>
+            <button id="nextStageBtn" type="button" data-ui="nextStage">Next Stage</button>
+            <button id="retryBtn" type="button" data-ui="retry">Try Again</button>
+            <button id="resultStagesBtn" type="button" data-ui="stages">Stages</button>
+            <a href="/kids/" data-ui="lobby">Lobby</a>
+          </div>
+        </div>
+      </section>
+
+      <div id="loadingPanel" class="loading-panel">
+        <div class="loading-card">
+          <strong data-ui="loading">Loading</strong>
+          <span id="loadingText">0%</span>
+          <div><i id="loadingFill"></i></div>
+        </div>
+      </div>
+    </main>
+    <!-- adsense-static-guide:start -->
+    <section class="game-page-info game-page-info-static" aria-label="Información del juego Tren de Formas Animales">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">Guía de juegos de WeightPlay</span><h2>Tren de Formas Animales</h2><p>Animal Shape Train es un juego de combinación bilingüe gratuito para niños con 30 rutas guardadas y seis controles de conductor. Los amigos de las formas esperan en una alegre estación mientras el jugador encuentra el vagón del tren con el mismo símbolo de círculo, cuadrado, triángulo, estrella, diamante o corazón. Las rutas de apertura son coincidencias de imágenes directas. Los capítulos posteriores reducen el color, cambian el orden de los automóviles después de cada embarque, ocultan brevemente al pasajero o requieren que se seleccione al pasajero antes de que un automóvil pueda aceptar el boleto. La Ruta 30 combina todas esas reglas con los seis autos. No existe cuenta atrás, límite de vida, compra, cuenta, solicitud de publicidad ni penalización que finalice una ruta.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Jugabilidad</span><strong>Clasificación de formas</strong></div><div class="game-info-fact"><span>Género</span><strong>preescolar · Educación · animales</strong></div><div class="game-info-fact"><span>Dificultad</span><strong>Fácil</strong></div><div class="game-info-fact"><span>Tiempo estimado</span><strong>2-5 minutos por ruta</strong></div><div class="game-info-fact"><span>Habilidades practicadas</span><strong>Reconocimiento de colores · Lógica · Coordinación mano-ojo</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>Mundo y misión</h3><p>Shape Line une seis pequeñas estaciones donde los amigos animales entregan paquetes de formas brillantes. Cada paquete lleva un símbolo claro y cada vagón de tren naranja tiene una ventana correspondiente. El jugador es el conductor junior responsable de comprobar el símbolo y enviar a cada pasajero al vagón correcto. Una ruta completa significa que todos los amigos que esperan están a salvo a bordo y el tren puede salir del andén.</p>
+<p>Las reglas de ruta representan partes más transitadas del ferrocarril. Contorno Los autos viajan a través de una niebla que elimina la mayor parte del color. Los coches que cambian llegan en plataformas móviles. Recuerde Las rutas de pasajeros reducen brevemente la tarjeta de la estación, mientras que las rutas de tarjeta de embarque requieren una verificación de pasajero antes de elegir un automóvil. Al superar la Ruta 30 se completa la verificación final del conductor mixto.</p></div>
+      <div class="game-info-section"><h3>Cómo funcionan los sistemas</h3><p>Cada ruta contiene de cuatro a ocho pasajeros seleccionados entre seis formas reales. Sólo un coche visible coincide con el pasajero actual.</p>
+<p>Una elección correcta muestra una breve celebración en tiempo visible, avanza el progreso y presenta al siguiente pasajero. Un coche equivocado da una respuesta amable y deja al mismo pasajero disponible.</p>
+<p>Los coches de contorno reducen el color para que la geometría importe. Cambiar de coche se reordena después de cada coincidencia correcta. Recuerde que Pasajero oculta el símbolo pero permite revelarlo sin penalización. La tarjeta de embarque requiere que el pasajero sea seleccionado primero.</p>
+<p>Los intentos cero otorgan tres estrellas, un número pequeño otorga dos y los reintentos adicionales otorgan una. El Informe de habilidades de resultados utiliza coincidencias reales, primeros intentos, reintentos y pasajeros abordados.</p>
+<p>Las estrellas y el desbloqueo más alto permanecen solo en este navegador. No hay cuenta, tabla de clasificación, compra, solicitud de publicidad, medidor de vida ni cuenta regresiva.</p>
+<p>Cada quinta ruta es una verificación del conductor. La ruta 30 guarda el resultado final y no expone la ruta 31.</p></div>
+      <div class="game-info-section"><h3>Cómo jugar</h3><ol><li>Presiona Iniciar juego y desliza el riel de ruta horizontal hacia una tarjeta desbloqueada.</li><li>Lea la regla de ruta y observe la forma del pasajero en la tarjeta de la estación inferior.</li><li>Toque al pasajero, luego elija el vagón de tren con el mismo símbolo; También se admiten arrastrar, mouse y teclado.</li><li>En rutas de memoria, recupera el símbolo oculto o toca al pasajero para revelarlo nuevamente.</li><li>Sube a bordo de todos los pasajeros de la lista para ahorrar estrellas y desbloquear exactamente la siguiente ruta.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Consejos de estrategia</h3><ul><li>Di el nombre de la forma antes de elegir un coche.</li><li>Compare puntos y bordes curvos cuando los contornos de los automóviles eliminen el color.</li><li>Escanea toda la pista nuevamente después de cada partido en una ruta en movimiento.</li><li>Para jugar a la memoria, nombra el símbolo en voz alta o traza su contorno en el aire.</li><li>En rutas con tarjeta de embarque, seleccione al pasajero antes de tocar un automóvil.</li><li>Una elección incorrecta mantiene la ruta abierta, así que haga una pausa y compare en lugar de adivinar rápidamente.</li></ul></div>
+      <div class="game-info-section"><h3>Campaña y aumento de dificultad</h3><p>Las rutas 1 a 5 enseñan Direct Match con dos a cuatro autos brillantes y terminan en el primer Conductor Check.</p>
+<p>Las rutas 6 a 10 utilizan Outline Cars, lo que hace que las curvas, esquinas y puntos sean más importantes que el color.</p>
+<p>Las rutas 11 a 15 utilizan vagones de cambio que se reordenan después de un abordaje exitoso.</p>
+<p>Las rutas 16 a 20 ocultan brevemente al pasajero; al tocarlo se restaura la misma forma sin penalización.</p>
+<p>Las rutas 21 a 25 agregan la acción ordenada de la tarjeta de embarque antes de que coincida la forma.</p>
+<p>Las rutas 26 a 30 combinan reglas anteriores. La Ruta 30 utiliza seis automóviles y ocho pasajeros con reglas de contorno, movimiento, memoria y tarjeta de embarque.</p></div>
+      <div class="game-info-section"><h3>Nota de diseño</h3><p>La dificultad aumenta al cambiar lo que el jugador observa en lugar de reducir los controles, agregar un temporizador u ocultar el área de impacto correcta. La coincidencia directa establece el vocabulario; El contorno, el movimiento, la memoria y la selección ordenada añaden cada uno una decisión comprensible. El diseño lógico fijo se escala uniformemente en teléfonos, tabletas, computadoras de escritorio y paisajes cortos. Los autos y fichas respaldados por imágenes mantienen el juego visual, mientras que el texto localizado explica solo la regla actual. Los retrasos en los partidos y en la memoria cuentan el tiempo de juego visible, por lo que un cambio de aplicación no puede avanzar silenciosamente en la ruta. A diferencia de Animal Quiz, no se requiere lectura objetiva; a diferencia del Día del Ayudante del Zoológico, la decisión es una equivalencia visual más que un propósito de cuidado. Kids Play no tiene publicidad, compra, cuenta, clasificación o reclamo de diagnóstico.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Nota para familias</h3><p>Animal Shape Train puede respaldar conversaciones sobre círculos, esquinas, puntos, correspondencia visual, recuerdos breves, orden de acción, concentración y coordinación mano-ojo. Un adulto puede nombrar cada forma en voz alta o preguntar en qué se diferencian dos contornos. Las estrellas y el Informe de habilidades describen únicamente esta sesión de juego; no son una calificación escolar, un puntaje de coeficiente intelectual, un diagnóstico de desarrollo o una comparación con otro niño. El progreso permanece en el navegador actual y puede desaparecer si se borra el almacenamiento local. No se requiere perfil infantil y la ruta Kids no solicita publicidad.</p></div>
+      <div class="game-info-section"><h3>Preguntas frecuentes</h3><dl><div><dt>¿Cuántas rutas están incluidas?</dt><dd>Hay 30 rutas guardadas en seis capítulos, con controles del conductor en 5, 10, 15, 20, 25 y 30.</dd></div><div><dt>¿Qué formas aparecen?</dt><dd>El juego utiliza círculos, cuadrados, triángulos, estrellas, diamantes y corazones.</dd></div><div><dt>¿Por qué desapareció el pasajero?</dt><dd>Recuerde que las rutas de pasajeros lo ocultan brevemente. Toca al pasajero para revelar la misma forma nuevamente sin penalización.</dd></div><div><dt>¿Por qué se movieron los vagones del tren?</dt><dd>Las rutas de Switching Cars se reordenan después de una coincidencia correcta para que el jugador escanee nuevamente.</dd></div><div><dt>¿Por qué un coche no acepta mi elección?</dt><dd>Las rutas con tarjeta de embarque requieren que el pasajero sea seleccionado antes de elegir un automóvil.</dd></div><div><dt>¿Qué pasa después de un partido equivocado?</dt><dd>El mismo pasajero permanece disponible con una suave respuesta.</dd></div><div><dt>¿Se guarda el progreso?</dt><dd>Las estrellas y la ruta más alta desbloqueada se almacenan únicamente en este navegador; no es necesario iniciar sesión.</dd></div><div><dt>¿Es compatible con teléfonos y teclados?</dt><dd>Sí. Tocar, arrastrar, usar el mouse y el teclado usan las mismas reglas de coincidencia.</dd></div><div><dt>¿La página para niños contiene anuncios?</dt><dd>No. Animal Shape Train no crea ninguna solicitud de publicidad ni reserva de publicidad.</dd></div></dl></div>
+    </div>
+  </section>
+    <!-- adsense-static-guide:end -->
+    <script src="/src/site-config.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/version.js?v=20260701-version2"></script>
+    <script src="../../src/analytics.js?v=20260701-analytics2"></script>
+    <script>
+      window.WonderAnalytics?.track("game_view", { game_id: "shape-train" });
+    </script>
+    <script src="../../src/sound.js?v=20260701-labels1"></script>
+    <script src="../../src/edge-guard.js?v=20260710-mobile-play-shell2"></script>
+    <script src="/src/i18n.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
+    <script src="../../src/battle-canvas-standard.js?v=20260714-play-area-fill1" data-wp-battle-standard></script>
+    <script src="game.js?v=20260717-zh-hans1"></script>
+    <script src="../../src/game-page-info.js?v=20260717-zh-hans1"></script>
+  </body>
+</html>

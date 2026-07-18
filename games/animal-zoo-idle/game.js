@@ -579,8 +579,8 @@
     loadingFill: $("loadingFill"),
   };
 
-  let locale = window.WonderI18n?.locale?.() || localStorage.getItem(localeKey) || "en";
-  if (!text[locale]) locale = "en";
+  let locale = window.WonderI18n?.actualLocale?.() || window.WonderI18n?.locale?.() || localStorage.getItem(localeKey) || "en";
+  if (!text[locale] && locale !== "zh-Hans") locale = "en";
   let save = loadSave();
   let tickCount = 0;
   let newlyRecruitedAnimalId = "";
@@ -589,8 +589,10 @@
   let activeChallengeIndex = clamp(Number(save.tourRound || 1) - 1, 0, zooChallenges.length - 1);
 
   function t(key, data = {}) {
-    const value = text[locale]?.[key] || text.en[key] || key;
-    return Object.entries(data).reduce((out, [name, item]) => out.replaceAll(`{${name}}`, String(item)), value);
+    const sourceLocale = locale === "zh-Hans" ? "zh-Hant" : locale;
+    const value = text[sourceLocale]?.[key] || text.en[key] || key;
+    const localized = Object.entries(data).reduce((out, [name, item]) => out.replaceAll(`{${name}}`, String(item)), value);
+    return locale === "zh-Hans" ? window.WonderI18n?.simplifyChineseText?.(localized) || localized : localized;
   }
 
   function loadSave() {
@@ -841,7 +843,9 @@
   }
 
   function challengeCopy(challenge, field) {
-    return challenge?.[field]?.[locale] || challenge?.[field]?.en || "";
+    const sourceLocale = locale === "zh-Hans" ? "zh-Hant" : locale;
+    const value = challenge?.[field]?.[sourceLocale] || challenge?.[field]?.en || "";
+    return locale === "zh-Hans" ? window.WonderI18n?.simplifyChineseText?.(value) || value : value;
   }
 
   function goalValue(goal) {
@@ -923,7 +927,7 @@
   }
 
   function formatCost(value) {
-    return Math.floor(Number(value || 0)).toLocaleString(locale === "zh-Hant" ? "zh-TW" : locale === "es" ? "es-ES" : "en-US");
+    return Math.floor(Number(value || 0)).toLocaleString(locale === "zh-Hant" ? "zh-TW" : locale === "zh-Hans" ? "zh-CN" : locale === "es" ? "es-ES" : "en-US");
   }
 
   function careWaitSeconds() {
@@ -952,7 +956,7 @@
   }
 
   function localizeStatic() {
-    document.documentElement.lang = locale === "zh-Hant" ? "zh-Hant" : locale === "es" ? "es" : "en";
+    document.documentElement.lang = ["zh-Hant", "zh-Hans", "es"].includes(locale) ? locale : "en";
     document.querySelectorAll("[data-ui]").forEach((node) => {
       node.textContent = t(node.dataset.ui);
     });
@@ -969,7 +973,9 @@
   }
 
   function updatePageMetadata() {
-    const meta = pageMeta[locale] || pageMeta.en;
+    const sourceLocale = locale === "zh-Hans" ? "zh-Hant" : locale;
+    const sourceMeta = pageMeta[sourceLocale] || pageMeta.en;
+    const meta = locale === "zh-Hans" ? window.WonderI18n?.simplifyChineseValue?.(sourceMeta) || sourceMeta : sourceMeta;
     document.title = meta.title;
     updateMeta('meta[name="description"]', meta.description);
     updateMeta('meta[property="og:title"]', meta.ogTitle);
@@ -1994,16 +2000,15 @@
   nodes.localeSelect.addEventListener("change", () => {
     const requested = nodes.localeSelect.value;
     window.WonderI18n?.setLocale?.(requested);
-    locale = window.WonderI18n?.locale?.() || requested;
+    locale = window.WonderI18n?.actualLocale?.() || window.WonderI18n?.locale?.() || requested;
     localStorage.setItem(localeKey, requested);
-    window.dispatchEvent(new CustomEvent("wonder:locale-change", { detail: { locale } }));
     localizeStatic();
     render();
     if (!nodes.stagePanel.classList.contains("hidden")) renderChallengeRail();
   });
   window.addEventListener("wonder:locale-change", (event) => {
     if (event.detail?.locale && event.detail.locale !== locale) {
-      locale = window.WonderI18n?.legacyLocale?.(event.detail.locale) || event.detail.locale;
+      locale = event.detail.locale;
       nodes.localeSelect.value = event.detail.locale;
       localStorage.setItem(localeKey, event.detail.locale);
       localizeStatic();

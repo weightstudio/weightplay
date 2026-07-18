@@ -483,6 +483,9 @@
   }
   $('startBtn').onclick = () => { state.shift = save.unlocked; show('stageScreen'); renderStages(); };
   $('contractToggle').onchange = (event) => { clearInsuranceConfirmation(); state.contract = event.target.checked; renderContractControls(); };
+  $('stageRail').addEventListener('keydown', (event) => {
+    if (event.repeat && (event.key === 'Enter' || event.key === ' ')) event.preventDefault();
+  });
   $('insuranceBtn').addEventListener('keydown', (event) => {
     if (event.repeat && (event.key === 'Enter' || event.key === ' ')) event.preventDefault();
   });
@@ -501,6 +504,9 @@
     insuranceActive = true;
     state.contract = true;
     renderContractControls();
+    requestAnimationFrame(() => {
+      (document.querySelector('.stage-card.selected:not(:disabled)') || document.querySelector('.stage-card:not(:disabled)'))?.focus({preventScroll:true});
+    });
   };
   $('stageBack').onclick = () => { clearInsuranceConfirmation(); renderContractControls(); show('mainScreen'); };
   $('battleBack').onclick = () => { cancelRouteGesture({restoreGuidance:false}); show('stageScreen'); renderStages(); };

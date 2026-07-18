@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <base href="/games/garden-tiles/" />
+    <meta charset="UTF-8" />
+    <meta name="weightplay-audience" content="kids" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#203522" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="robots" content="index,follow" />
+    <meta name="description" content="Restaure el catálogo de imágenes emparejadas del Pet Garden Conservatory en 30 desafíos de memoria guardados sin temporizador. Seis capítulos presentan..." />
+    <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Fichas del Jardín Animal | WeightPlay" />
+    <meta property="og:description" content="Restaure el catálogo de imágenes emparejadas del Pet Garden Conservatory en 30 desafíos de memoria guardados sin temporizador. Seis capítulos presentan..." />
+    <meta property="og:url" content="https://weightplay.com/es/games/garden-tiles/" />
+    <meta property="og:image" content="https://weightplay.com/assets/garden-tiles-cover.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>Fichas del Jardín Animal | WeightPlay</title>
+    <link rel="canonical" href="https://weightplay.com/es/games/garden-tiles/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/garden-tiles/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/garden-tiles/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/garden-tiles/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/garden-tiles/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/garden-tiles/" />
+    <link rel="stylesheet" href="style.css?v=20260717-depth30" />
+    <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Fichas del Jardín Animal",
+  "alternateName": "寵物花園方塊",
+  "url": "https://weightplay.com/es/games/garden-tiles/",
+  "image": "https://weightplay.com/assets/garden-tiles-cover.png",
+  "description": "Restaure el catálogo de imágenes emparejadas del Pet Garden Conservatory en 30 desafíos de memoria guardados sin temporizador. Seis capítulos presentan...",
+  "applicationCategory": "Game",
+  "operatingSystem": "Web browser",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio"
+  },
+  "inLanguage": "es",
+  "isAccessibleForFree": true,
+  "genre": [
+    "Memoria",
+    "rompecabezas",
+    "animales"
+  ],
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "Kids and families",
+    "suggestedMinAge": 6
+  },
+  "learningResourceType": "Skill practice through play",
+  "educationalUse": "Practice Memory, Focus, Problem Solving through family-friendly browser gameplay."
+}
+    </script>
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
+    <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
+    <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
+    <meta name="twitter:title" content="Fichas del Jardín Animal | WeightPlay" />
+    <meta name="twitter:description" content="Restaure el catálogo de imágenes emparejadas del Pet Garden Conservatory en 30 desafíos de memoria guardados sin temporizador. Seis capítulos presentan..." />
+  </head>
+  <body>
+    <main class="garden-game" data-wp-logical-battle-canvas>
+      <header class="topbar">
+        <a id="homeLink" class="home-link" data-wp-return="main" href="/kids/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
+        <div class="title-block">
+          <p>WeightPlay</p>
+          <h1 id="titleText">Fichas del Jardín Animal</h1>
+        </div>
+        <label class="language-picker">
+          <span id="languageLabel">Language</span>
+          <select id="localeSelect" aria-label="Language">
+            <option value="en">English</option>
+            <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
+            <option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option>
+          </select>
+        </label>
+      </header>
+
+      <section id="mainPanel" class="main-panel">
+        <img class="main-poster" src="../../assets/garden-tiles-cover.webp" alt="" />
+        <h2 id="mainTitle">Pet Garden Tiles</h2>
+        <p id="mainIntro">Remember the garden pictures and clear 30 calm challenges across six garden chapters.</p>
+        <button id="startBtn" type="button">Choose Level</button>
+      </section>
+
+      <section id="statusbar" class="statusbar hidden" aria-label="Game status">
+        <div>
+          <span id="levelLabel">Level</span>
+          <strong id="levelText">1 / 30</strong>
+        </div>
+        <div>
+          <span id="movesLabel">Moves</span>
+          <strong id="movesText">0</strong>
+        </div>
+        <div>
+          <span id="pairsLabel">Pairs</span>
+          <strong id="pairsText">0 / 0</strong>
+        </div>
+      </section>
+
+      <section id="levelSelect" class="level-select hidden">
+        <header class="wp-standard-stage-heading"><button id="levelBackBtn" data-wp-return="stage" type="button" aria-label="Back">&larr;</button><h2 id="levelSelectTitle">Choose Level</h2></header>
+        <div id="levelGrid" class="level-grid" data-wp-stage-settle-duration="360" data-wp-stage-settle-easing="smoothstep"></div>
+        <div id="levelMessage" class="message" aria-live="polite"></div>
+      </section>
+
+      <section id="boardPanel" class="board-panel hidden" data-no-mobile-immersive="true">
+        <button id="battleBackBtn" class="play-return" data-wp-return="battle" type="button" aria-label="Back to levels">&larr;</button>
+        <div id="board" class="tile-board" aria-label="Garden tile board"></div>
+        <div id="message" class="message" aria-live="polite"></div>
+      </section>
+
+      <section id="resultPanel" class="result-panel hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle">
+        <div class="result-card">
+          <h2 id="resultTitle">Level Clear</h2>
+          <div id="stars" class="stars">&#9734;&#9734;&#9734;</div>
+          <p id="resultText">Great matching.</p>
+          <section class="garden-skill-report" aria-live="polite">
+            <h3 id="skillReportTitle">Skill Report</h3>
+            <div class="garden-skill-grid">
+              <div><span id="memoryLabel">Memory</span><b id="memoryValue">0 pairs found</b></div>
+              <div><span id="focusLabel">Focus</span><b id="focusValue">0 moves · Retries: 0</b></div>
+              <div><span id="problemLabel">Problem Solving</span><b id="problemValue">0 stars earned</b></div>
+            </div>
+            <p id="progressComparison"></p>
+          </section>
+          <div class="result-actions">
+            <button id="nextBtn" type="button">Next Level</button>
+            <button id="againBtn" type="button">Play Again</button>
+            <button id="levelsBtn" type="button">Levels</button>
+            <a id="lobbyLink" href="/kids/">Lobby</a>
+          </div>
+        </div>
+      </section>
+
+      <section id="loadingPanel" class="loading-panel">
+        <div class="loading-card">
+          <strong id="loadingTitle">Loading</strong>
+          <span>100%</span>
+          <div><i></i></div>
+        </div>
+      </section>
+    </main>
+    <!-- adsense-static-guide:start -->
+    <section class="game-page-info game-page-info-static" aria-label="Información del juego Fichas del Jardín Animal">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">Guía de juegos de WeightPlay</span><h2>Fichas del Jardín Animal</h2><p>Restaure el catálogo de imágenes emparejadas del Pet Garden Conservatory en 30 desafíos de memoria guardados sin temporizador. Seis capítulos presentan avances de apertura, primeras selecciones de corta duración, cartas en movimiento inigualables y puntos de control de jardín combinados.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Jugabilidad</span><strong>Partido de memoria de 30 desafíos</strong></div><div class="game-info-fact"><span>Género</span><strong>Memoria · rompecabezas · animales</strong></div><div class="game-info-fact"><span>Dificultad</span><strong>Fácil a desafiante</strong></div><div class="game-info-fact"><span>Tiempo estimado</span><strong>3-8 minutos</strong></div><div class="game-info-fact"><span>Habilidades practicadas</span><strong>Memoria · Concentración · Resolución de problemas</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>Mundo y misión</h3><p>El invernadero guarda tarjetas con imágenes de cada animal, cuidador, fruta y objeto del jardín que pasa por sus puertas. Una brisa nocturna esparció las cartas boca abajo justo antes del paseo de los faroles. Como guardián de cartas junior, reconstruirás el catálogo emparejado para que las seis salas del jardín puedan reabrirse y el desfile de animales pueda encontrar su ruta.</p>
+<p>Cada par completado devuelve una imagen al registro. Superar cinco desafíos enciende una linterna de capítulo; Las niveles 5, 10, 15, 20, 25 y 30 son puntos de control que combinan los hábitos de memoria aprendidos en esa sala.</p></div>
+      <div class="game-info-section"><h3>Cómo funcionan los sistemas</h3><p>Movimientos y estrellas: los movimientos cuentan intentos completos de dos cartas. La retirada eficiente gana más estrellas, pero cualquier tablero superado progresa y nunca elimina un mejor anterior.</p>
+<p>Vista previa de la mañana: todas las imágenes aparecen brevemente antes de que se cierre el tablero, lo que recompensa un escaneo de apertura deliberado.</p>
+<p>Garden Mist: una carta elegida en primer lugar se cierra después de una ventana suave si no se elige una segunda carta; el nivel en sí no tiene cuenta regresiva.</p>
+<p>Ráfaga juguetona: una falta de coincidencia baraja solo las cartas restantes no coincidentes después de la pausa de retroalimentación visible.</p>
+<p>Garden Parade: una partida exitosa rota las cartas restantes a través de sus espacios abiertos, por lo que el mapa mental debe seguir el movimiento.</p></div>
+      <div class="game-info-section"><h3>Cómo jugar</h3><ol><li>Elige un desafío desbloqueado en el riel horizontal.</li><li>Voltee dos tarjetas y haga coincidir imágenes de jardines idénticas.</li><li>Utilice la etiqueta de regla del capítulo para prepararse para avances, niebla, ráfagas o movimiento de desfile.</li><li>Elimina cada par para ganar estrellas, guardar el progreso y desbloquear el siguiente desafío.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Consejos de estrategia</h3><ul><li>Escanee vistas previas por esquinas o filas.</li><li>Trate una discrepancia como información de ubicación útil en tableros clásicos.</li><li>Después del movimiento Gust o Parade, reconstruya un pequeño mapa mental en lugar de confiar en todas las posiciones anteriores.</li><li>Vuelve a jugar los desafíos terminados para las estrellas sin arriesgarte a que se desbloqueen los guardados.</li></ul></div>
+      <div class="game-info-section"><h3>Campaña y aumento de dificultad</h3><p>1-5 Paseo de plántulas: de cuatro a ocho parejas enseñan un verdadero emparejamiento boca abajo y terminan con un punto de control de vista previa.</p>
+<p>6-10 Morning Greenhouse: Las vistas previas de apertura admiten tableros más grandes y escaneo fila por fila.</p>
+<p>11-15 Misty Pond: Las primeras selecciones se cierran después de una breve ventana, entrenando un nuevo recuerdo visual sin un cronómetro de nivel.</p>
+<p>16-20 Breezy Orchard: Las discordancias mueven cartas no coincidentes, por lo que las ubicaciones obsoletas deben descartarse.</p>
+<p>21-25 Desfile de animales: las parejas exitosas rotan a los supervivientes y recompensan la atención al movimiento.</p>
+<p>26-30 Conservatorio iluminado por la luna: las reglas se combinan y terminan con un Garden Checkpoint de 14 pares y cuatro reglas.</p></div>
+      <div class="game-info-section"><h3>Nota de diseño</h3><p>El juego crece a través de demandas cambiantes de memoria en lugar de una cuenta regresiva estresante. Un lienzo fijo de 390 por 788 mantiene el tablero estable en todos los dispositivos, los botones nativos admiten la reproducción táctil y con el teclado, las discrepancias permanecen visibles el tiempo suficiente para aprender de ellas y el tiempo de página oculta detiene la retroalimentación. Preview, Mist, Gust y Parade solicitan cada uno un tipo diferente de recuperación al mismo tiempo que preservan la calma para que los niños jueguen.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Nota para familias</h3><p>Pet Garden Tiles está diseñado para mayores de 6 años y para juegos familiares. Las estrellas y el Informe de habilidades resumen solo la carrera local actual; no son una prueba de inteligencia, un diagnóstico, una evaluación del desarrollo ni una comparación con otros niños. La versión para niños no tiene anuncios, inicio de sesión, chat ni solicitud de compra.</p></div>
+      <div class="game-info-section"><h3>Preguntas frecuentes</h3><dl><div><dt>¿Cuántos desafíos hay?</dt><dd>Hay 30 en seis capítulos, con puntos de control en 5, 10, 15, 20, 25 y 30.</dd></div><div><dt>¿Las baldosas para jardín de mascotas están cronometradas?</dt><dd>No. Garden Mist cierra una carta elegida primero después de una breve ventana, pero ningún nivel tiene una cuenta regresiva.</dd></div><div><dt>¿Por qué se mueven las cartas?</dt><dd>Playful Gust mueve cartas inigualables después de fallar; Garden Parade los rota después de un partido.</dd></div><div><dt>¿Cómo se calculan las estrellas?</dt><dd>Las estrellas utilizan intentos completos de dos cartas. Cada tablero despejado progresa.</dd></div><div><dt>¿Se guarda el progreso?</dt><dd>Sí. Los desbloqueos y las mejores estrellas permanecen en este navegador.</dd></div><div><dt>¿Es compatible con teléfonos y teclados?</dt><dd>Sí. Los botones de la tarjeta nativa funcionan con controles táctiles, de puntero y de teclado.</dd></div><div><dt>¿Es gratis y sin publicidad?</dt><dd>Sí. No necesita cuenta ni compra y la versión Kids no realiza ninguna solicitud de publicidad.</dd></div><div><dt>¿Es el Informe de Habilidades una prueba formal?</dt><dd>No. Solo informa pares, movimientos, reintentos y estrellas del desafío completado.</dd></div></dl></div>
+    </div>
+  </section>
+    <!-- adsense-static-guide:end -->
+    <script src="/src/site-config.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/version.js?v=20260701-version2"></script>
+    <script src="../../src/analytics.js?v=20260701-analytics2"></script>
+    <script>
+      window.WonderAnalytics?.track("game_view", { game_id: "garden-tiles" });
+    </script>
+    <script src="../../src/sound.js?v=20260701-labels1"></script>
+    <script src="../../src/edge-guard.js?v=20260710-mobile-play-shell2"></script>
+    <script src="/src/i18n.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
+    <script src="game.js?v=20260717-zh-hans1"></script>
+    <script>
+      (() => {
+        const loadGameInfo = () => {
+          if (document.querySelector("script[data-garden-game-info]")) return;
+          const script = document.createElement("script");
+          script.src = "../../src/game-page-info.js?v=20260717-zh-hans1";
+          script.dataset.gardenGameInfo = "idle";
+          script.async = true;
+          document.body.appendChild(script);
+        };
+        const schedule = () => {
+          if ("requestIdleCallback" in window) {
+            window.requestIdleCallback(loadGameInfo, { timeout: 1600 });
+          } else {
+            window.setTimeout(loadGameInfo, 350);
+          }
+        };
+        if (document.readyState === "complete") schedule();
+        else window.addEventListener("load", schedule, { once: true });
+      })();
+    </script>
+  </body>
+</html>

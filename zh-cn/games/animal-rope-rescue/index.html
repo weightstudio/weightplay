@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="zh-Hans">
+  <head>
+    <base href="/games/animal-rope-rescue/" />
+    <meta charset="UTF-8" />
+    <meta name="weightplay-audience" content="kids" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#3f9f51" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="robots" content="index,follow" />
+    <meta name="description" content="《动物藤蔓救援》是一款 30 关动物物理解谜游戏。玩家要切断挂著水果的藤蔓、持续移动叶子弹垫，最后把水果送进等待动物的篮子。六组五关课程会逐步加入移动篮子、上下分层风向、弹跳后反转的风、双重弹跳、较窄入口，以及两份或三份连续野餐配送。每五关有一次友善 Panko 检核，不加入战斗或计时压力。" />
+    <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="动物藤蔓救援 | WeightPlay" />
+    <meta property="og:description" content="《动物藤蔓救援》是一款 30 关动物物理解谜游戏。玩家要切断挂著水果的藤蔓、持续移动叶子弹垫，最后把水果送进等待动物的篮子。六组五关课程会逐步加入移动篮子、上下分层风向、弹跳后反转的风、双重弹跳、较窄入口，以及两份或三份连续野餐配送。每五关有一次友善 Panko 检核，不加入战斗或计时压力。" />
+    <meta property="og:url" content="https://weightplay.com/zh-cn/games/animal-rope-rescue/" />
+    <meta property="og:image" content="https://weightplay.com/assets/animal-vine-rescue-cover.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>动物藤蔓救援 | WeightPlay</title>
+    <link rel="canonical" href="https://weightplay.com/zh-cn/games/animal-rope-rescue/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-rope-rescue/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-rope-rescue/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-rope-rescue/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/animal-rope-rescue/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-rope-rescue/" />
+    <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
+    <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
+    <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
+    <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20260714-play-area-fill1" data-wp-battle-standard />
+    <link rel="stylesheet" href="style.css?v=20260717-vine-depth30-1" />
+    <link rel="stylesheet" href="../../src/stage-selector-standard.css?v=20260715-stage-swipe2" data-wp-stage-standard />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "动物藤蔓救援",
+  "url": "https://weightplay.com/zh-cn/games/animal-rope-rescue/",
+  "image": "https://weightplay.com/assets/animal-vine-rescue-cover.png",
+  "description": "《动物藤蔓救援》是一款 30 关动物物理解谜游戏。玩家要切断挂著水果的藤蔓、持续移动叶子弹垫，最后把水果送进等待动物的篮子。六组五关课程会逐步加入移动篮子、上下分层风向、弹跳后反转的风、双重弹跳、较窄入口，以及两份或三份连续野餐配送。每五关有一次友善 Panko 检核，不加入战斗或计时压力。",
+  "applicationCategory": "Game",
+  "operatingSystem": "Web browser",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio"
+  },
+  "inLanguage": "zh-Hans",
+  "isAccessibleForFree": true,
+  "genre": [
+    "物理",
+    "益智",
+    "动物"
+  ],
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "Kids and families",
+    "suggestedMinAge": 6
+  },
+  "learningResourceType": "Skill practice through play",
+  "educationalUse": "Practice timing, focus, hand-eye coordination, and problem solving through family-friendly gameplay."
+}
+    </script>
+    <meta name="twitter:title" content="动物藤蔓救援 | WeightPlay" />
+    <meta name="twitter:description" content="《动物藤蔓救援》是一款 30 关动物物理解谜游戏。玩家要切断挂著水果的藤蔓、持续移动叶子弹垫，最后把水果送进等待动物的篮子。六组五关课程会逐步加入移动篮子、上下分层风向、弹跳后反转的风、双重弹跳、较窄入口，以及两份或三份连续野餐配送。每五关有一次友善 Panko 检核，不加入战斗或计时压力。" />
+  </head>
+  <body>
+    <main class="vine-app" data-no-mobile-immersive="true">
+      <header class="topbar">
+        <a class="icon-btn home-link" data-wp-return="main" href="/kids/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
+        <div>
+          <p>WeightPlay</p>
+          <h1 data-ui="title">动物藤蔓救援</h1>
+        </div>
+        <label class="language-picker">
+          <span data-ui="language">Language</span>
+          <select id="localeSelect" aria-label="Language">
+            <option value="en">English</option>
+            <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
+            <option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option>
+          </select>
+        </label>
+      </header>
+
+      <section id="menuPanel" class="menu-panel">
+        <img class="cover" src="../../assets/animal-vine-rescue-cover.png" alt="" />
+        <div class="menu-copy">
+          <strong data-ui="menuTitle">Rescue fruit for hungry animals.</strong>
+          <span data-ui="menuHint">Cut the vine, drag the leaf, and bounce fruit into the animal basket.</span>
+          <button id="startBtn" type="button" data-ui="start">Choose Stage</button>
+        </div>
+      </section>
+
+      <section id="stagePanel" class="stage-panel hidden" aria-label="Stages"></section>
+
+      <section id="gamePanel" class="game-panel hidden">
+        <div class="hud-row">
+          <button id="stageBackBtn" type="button" class="soft-btn" data-wp-return="battle" aria-label="Back to stages">&larr;</button>
+          <div class="hud-pill"><span data-ui="stage">Stage</span><b id="stageText">1</b></div>
+          <div class="hud-pill"><span data-ui="score">Delivery</span><b id="scoreText">1/1</b></div>
+        </div>
+        <div id="playfield" class="playfield play-area" aria-label="Animal vine rescue playfield">
+          <div id="targetGuide" class="target-guide" aria-hidden="true"></div>
+          <div id="fallGuide" class="fall-guide" aria-hidden="true"></div>
+          <div id="aimGuide" class="aim-guide" aria-hidden="true"></div>
+          <div id="targetZone" class="target-zone">
+            <img id="targetAnimal" alt="" />
+            <img class="basket" src="../../assets/animal-vine-basket.png" alt="" draggable="false" />
+          </div>
+          <button id="vineButton" class="vine-button" type="button" aria-label="Cut vine">
+            <img class="vine-img" src="../../assets/animal-vine-rope.png" alt="" draggable="false" />
+            <span data-ui="cut">Cut</span>
+          </button>
+          <img id="fruit" class="fruit" alt="" draggable="false" />
+          <img id="leafPaddle" class="leaf-paddle" src="../../assets/animal-vine-leaf-paddle.png" alt="" draggable="false" tabindex="0" role="slider" aria-valuemin="16" aria-valuemax="84" aria-valuenow="50" />
+          <div id="floatText" class="float-text hidden"></div>
+        </div>
+        <button id="cutNowBtn" class="cut-now-btn" type="button" data-ui="cut">Cut</button>
+        <p id="hintText" class="hint-text" data-ui="hint">Drag the leaf. Cut the vine when you are ready.</p>
+        <div id="resultPanel" class="result-panel hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle">
+          <div class="result-card">
+            <strong id="resultTitle">Fruit rescued!</strong>
+            <div id="starText" class="stars">&#9733;&#9733;&#9733;</div>
+            <span id="resultText"></span>
+            <button id="nextStageBtn" type="button" data-ui="nextStage">Next Stage</button>
+            <button id="retryBtn" type="button" data-ui="retry">Try Again</button>
+            <button id="resultStagesBtn" type="button" data-ui="stages">Stages</button>
+            <a href="/kids/" data-ui="lobby">Lobby</a>
+          </div>
+        </div>
+      </section>
+
+      <div id="loadingPanel" class="loading-panel">
+        <div class="loading-card">
+          <strong data-ui="loading">Loading</strong>
+          <span id="loadingText">0%</span>
+          <div><i id="loadingFill"></i></div>
+        </div>
+      </div>
+      <div id="toastText" class="toast hidden" aria-live="polite"></div>
+    </main>
+    <!-- adsense-static-guide:start -->
+    <section class="game-page-info game-page-info-static" aria-label="动物藤蔓救援 游戏资讯">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 儿童游戏指南</span><h2>动物藤蔓救援</h2><p>《动物藤蔓救援》是一款 30 关动物物理解谜游戏。玩家要切断挂著水果的藤蔓、持续移动叶子弹垫，最后把水果送进等待动物的篮子。六组五关课程会逐步加入移动篮子、上下分层风向、弹跳后反转的风、双重弹跳、较窄入口，以及两份或三份连续野餐配送。每五关有一次友善 Panko 检核，不加入战斗或计时压力。</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>藤蔓物理解谜</strong></div><div class="game-info-fact"><span>类型</span><strong>物理 · 益智 · 动物</strong></div><div class="game-info-fact"><span>难度</span><strong>简单到中等</strong></div><div class="game-info-fact"><span>预估游玩时间</span><strong>2～6 分钟</strong></div><div class="game-info-fact"><span>练习能力</span><strong>手眼协调 · 问题解决 · 专注</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>世界与任务</h3><p>果园里的配送藤蔓长过了森林空地，让苹果、香蕉和莓果挂在离订购动物很远的地方。Panko 负责整理救援地图，兔子、狮子、熊猫、狐狸和无尾熊则在篮子旁等待。玩家扮演叶子引导员，决定弹垫放在哪里、何时切断藤蔓，并在水果飞行时持续修正位置。</p>
+<p>完成全部 30 关代表重新打通六条果园配送路线。最终 Panko 终极救援会在同一个游玩画面服务三只动物，并结合分层风、移动篮与双重弹跳。胜利代表完成整场野餐配送，而不是打败敌人。</p></div>
+      <div class="game-info-section"><h3>游戏系统</h3><p>每条路线开始时都有挂在藤蔓上的水果、可移动的叶子弹垫与篮子目标。切断前后都能移动叶子。水果至少要碰到叶子一次，篮子才会接受它，因此只把水果直接落在动物上方并不能过关。</p>
+<p>水果会受到该关重力与目前风力影响。叶子依照接触位置提供向上速度与水平推力：碰在中央会弹得较直，碰到左右边缘则会飞得更远。飞出场外或错过篮子会进入友善重试结算，不会删除已保存的进度。</p>
+<p>移动篮关卡会在切断后持续改变接取位置。分层风关卡在空地上半部与下半部使用不同推力；反转风会在第一次碰叶后改变方向。双弹关卡会锁住篮子直到完成第二次弹跳，柔叶关卡则降低弹跳高度，要求玩家更贴近水果。</p>
+<p>连续配送会把玩家留在同一个游玩画面。每次成功后会换成下一份水果、动物与路线，配送数从 1/2 或 1/3 前进；只有全部水果都进篮，才会显示结算。</p>
+<p>最高解锁关卡、各关最佳星等、最佳分数与游玩次数保存在目前浏览器。不需登入；清除网站资料可能移除这些本机纪录。</p></div>
+      <div class="game-info-section"><h3>玩法说明</h3><ol><li>从横向关卡轨道选择已解锁的救援卡。</li><li>先阅读关卡名称、水果到动物的路线，以及规则提示。</li><li>用触控、滑鼠或左右方向键移动叶子，再按切断。</li><li>水果落下时持续移动叶子，利用接触位置改变飞行方向。</li><li>依提示完成弹跳次数，并追踪移动篮或变化风向。</li><li>完成路线中的每份水果配送，解锁下一关。</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>切断前先把叶子放到第一次掉落路线下方，水果移动后再做小幅修正。</li><li>碰叶子中央可以取得高度；只有篮子在远方时，才使用叶子左右边缘增加水平距离。</li><li>面对移动篮时，要瞄准水果弹回来时篮子将到达的位置。</li><li>分层风关卡可比较水果越过空地中段前后的方向变化。</li><li>双弹关卡第一次接触后仍需保持控制，不要把水果送得太远而接不到第二次。</li><li>野餐配送要阅读下一份规则，不要假设第二颗水果使用相同风向或弹跳次数。</li></ul></div>
+      <div class="game-info-section"><h3>关卡与难度成长</h3><p>第 1～5 关教导平静、右风、左风与长距离弹跳；Panko 平衡检核首次加入缓慢移动篮。</p>
+<p>第 6～10 关专注移动目标，改变篮子速度、方向与入口大小；Panko 移动篮检核还要求两次叶子接触。</p>
+<p>第 11～15 关加入依高度变化或弹跳后反转的风；Panko 风向检核把分层风与移动篮结合。</p>
+<p>第 16～20 关要求双重弹跳，并加入会产生较低弧线的柔叶；Panko 双弹检核同时使用反向风与移动篮。</p>
+<p>第 21～25 关加入不离开游玩画面的双水果野餐配送。两条路线可能使用相反风、不同弹跳次数，或共用一个移动篮。</p>
+<p>第 26～30 关结合窄入口、移动目标、分层与反转风、双弹控制，以及两份或三份配送；Panko 终极救援使用三种不同路线，不是只增加数字。</p></div>
+      <div class="game-info-section"><h3>开发设计理念</h3><p>游戏采用一次切断加上持续叶子控制，让玩家在水果释放后仍然负责。30 关会改变玩家必须判读的资讯，包括目标移动、不同高度风向、弹跳次数、叶子弹力、入口宽度与配送顺序，而不只是让重力越来越快。直向游玩区让手机上的水果有足够飞行时间可修正，同一逻辑画布也会在平板与横向画面等比例缩放。Panko 检核提供适合 Kids 的难度里程碑，不会把水果配送益智变成战斗。</p></div>
+      <div class="game-info-section game-info-parent"><h3>家长说明</h3><p>《动物藤蔓救援》可陪伴孩子练习时机、视觉预测、手眼协调、专注与简单问题解决。成人可以询问篮子接下来会移到哪里，或第二次弹跳为何需要不同叶子位置。游戏没有计时、广告、帐号要求、排名压力或敌对战斗；星等与进度只是本机游戏回馈，不是正式能力测验、诊断或学校评量。</p></div>
+      <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>一共有多少关？</dt><dd>共有 30 个具名关卡，分成六组五关课程，每五关有一次友善 Panko 检核。</dd></div><div><dt>切断藤蔓后还能移动叶子吗？</dt><dd>可以。水果下落与每次弹跳后持续控制叶子，是游戏的主要操作。</dd></div><div><dt>为什么水果穿过篮子？</dt><dd>每份配送至少需要一次叶子弹跳；标记关卡可能要求两次弹跳或使用较窄入口。</dd></div><div><dt>移动篮与分层风怎么运作？</dt><dd>移动篮会在切断后改变水平位置；分层风会在空地上半部与下半部施加不同推力。</dd></div><div><dt>野餐配送会发生什么？</dt><dd>两颗或三颗水果会留在同一个游玩画面连续配送，全部完成后才显示结算。</dd></div><div><dt>水果没接到会怎样？</dt><dd>友善结算会提供再玩一次、选关或大厅，不会删除已解锁进度。</dd></div><div><dt>需要登入或会显示广告吗？</dt><dd>不需要登入；这款 Kids 游戏没有广告，基本进度只存在目前浏览器。</dd></div><div><dt>星等是正式能力分数吗？</dt><dd>不是。星等只是游戏进度回馈，不是诊断或评量。</dd></div></dl></div>
+    </div>
+  </section>
+    <!-- adsense-static-guide:end -->
+
+    <script src="/src/site-config.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/version.js?v=20260701-version2"></script>
+    <script src="../../src/analytics.js?v=20260701-analytics2"></script>
+    <script>window.WonderAnalytics?.track("game_view", { game_id: "animal-rope-rescue" });</script>
+    <script src="../../src/sound.js?v=20260701-labels1"></script>
+    <script src="../../src/edge-guard.js?v=20260710-mobile-play-shell2"></script>
+    <script src="/src/i18n.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
+    <script data-wp-stage-standard data-wp-native-stage>/* This Kids route owns its zero-reserve Stage Canvas; the shared selector owns Stage pointer drag and settle. */</script>
+    <script src="../../src/battle-canvas-standard.js?v=20260714-play-area-fill1" data-wp-battle-standard></script>
+    <script src="game.js?v=20260717-zh-hans2"></script>
+    <script>
+      window.addEventListener(
+        "load",
+        () => {
+          const loadGuide = () => {
+            if (window.WEIGHTPLAY_VINE_RESCUE_ACTIVE) {
+              window.addEventListener("animal-vine-rescue:play-state", (event) => {
+                if (!event.detail?.playing) loadGuide();
+              }, { once: true });
+              return;
+            }
+            if (document.querySelector('script[data-vine-game-info]')) return;
+            const script = document.createElement("script");
+            script.src = "../../src/game-page-info.js?v=20260717-zh-hans1";
+            script.async = true;
+            script.dataset.vineGameInfo = "idle";
+            document.body.appendChild(script);
+          };
+          if ("requestIdleCallback" in window) {
+            window.requestIdleCallback(loadGuide, { timeout: 1200 });
+          } else {
+            window.setTimeout(loadGuide, 650);
+          }
+        },
+        { once: true },
+      );
+    </script>
+  </body>
+</html>

@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="zh-Hans">
+  <head>
+    <base href="/games/color-lunchbox/" />
+    <meta charset="UTF-8" />
+    <meta name="weightplay-audience" content="kids" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#f4d66d" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="robots" content="index,follow" />
+    <meta name="description" content="《动物颜色便当盒》是一款以图片为主的温和分类游戏，共有 30..." />
+    <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="动物颜色便当盒 | WeightPlay" />
+    <meta property="og:description" content="《动物颜色便当盒》是一款以图片为主的温和分类游戏，共有 30..." />
+    <meta property="og:url" content="https://weightplay.com/zh-cn/games/color-lunchbox/" />
+    <meta property="og:image" content="https://weightplay.com/assets/lunchbox-cover.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="动物颜色便当盒 | WeightPlay" />
+    <meta name="twitter:description" content="《动物颜色便当盒》是一款以图片为主的温和分类游戏，共有 30..." />
+    <title>动物颜色便当盒 | WeightPlay</title>
+    <link rel="canonical" href="https://weightplay.com/zh-cn/games/color-lunchbox/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/color-lunchbox/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/color-lunchbox/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/color-lunchbox/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/color-lunchbox/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/color-lunchbox/" />
+    <link rel="stylesheet" href="style.css?v=20260717-depth30-1" />
+    <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "动物颜色便当盒",
+  "alternateName": "動物顏色便當盒",
+  "url": "https://weightplay.com/zh-cn/games/color-lunchbox/",
+  "image": "https://weightplay.com/assets/lunchbox-cover.png",
+  "description": "《动物颜色便当盒》是一款以图片为主的温和分类游戏，共有 30...",
+  "applicationCategory": "Game",
+  "operatingSystem": "Web browser",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio"
+  },
+  "inLanguage": "zh-Hans",
+  "isAccessibleForFree": true,
+  "genre": [
+    "幼儿",
+    "教育",
+    "动物"
+  ],
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "Kids and families",
+    "suggestedMinAge": 3
+  },
+  "learningResourceType": "Skill practice through play",
+  "educationalUse": "Practice Color Recognition, Focus, Hand-Eye Coordination through family-friendly browser gameplay."
+}
+    </script>
+    <script data-wp-stage-standard>/* Shared Kids Stage selector owns pointer drag and settle; the game owns locked-card feedback and activation. */</script>
+    <script data-wp-battle-standard>/* Animal Color Lunchbox owns its native Kids Battle Canvas. */</script>
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
+    <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
+    <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
+  </head>
+  <body>
+    <main class="lunch-game">
+      <header class="topbar">
+        <a class="home-link" data-wp-return="main" href="/kids/" id="homeLink" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
+        <div>
+          <p id="brandText">WeightPlay</p>
+          <h1 id="titleText">动物颜色便当盒</h1>
+        </div>
+        <div class="header-right">
+          <label class="language-picker">
+            <span id="languageLabel">Language</span>
+            <select id="localeSelect" aria-label="Language">
+              <option value="en">English</option>
+              <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
+              <option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option>
+            </select>
+          </label>
+        </div>
+      </header>
+
+      <section id="mainPanel" class="main-panel">
+        <img class="main-poster" src="../../assets/lunchbox-cover.webp" alt="" />
+        <div class="main-copy">
+          <h2 id="mainTitle">Animal Color Lunchbox</h2>
+          <p id="mainIntro">Sort colorful foods through 30 short levels and six friendly Guardian checks.</p>
+          <button id="startBtn" type="button">Choose Level</button>
+        </div>
+      </section>
+
+      <section id="gameHud" class="game-hud hidden" aria-label="Game stats">
+        <button id="battleBackBtn" class="battle-return" data-wp-return="battle" type="button" aria-label="Back to levels">&larr;</button>
+        <div class="hud-item">
+          <span id="levelIndicator">Level 1 / 30</span>
+          <div><i id="progressFill"></i></div>
+        </div>
+        <div class="hud-item-score">
+          <span id="scoreLabel">Score</span>
+          <strong id="scoreText">0</strong>
+        </div>
+        <div class="hud-item-round">
+          <span id="roundLabel">Round</span>
+          <strong id="roundText">1 / 5</strong>
+        </div>
+      </section>
+
+      <section id="stageSelectPanel" class="stage-select hidden">
+        <header class="wp-standard-stage-heading"><button id="stageBackBtn" data-wp-return="stage" type="button" aria-label="Back">&larr;</button><h2 id="stageSelectTitle">Choose Level</h2></header>
+        <p id="stageStatus" class="stage-status" role="status" aria-live="polite" aria-atomic="true"></p>
+        <div id="stageGrid" class="stage-grid" data-wp-stage-settle-duration="360" data-wp-stage-settle-easing="smoothstep"></div>
+      </section>
+
+      <div id="gamePlayContent" class="game-play-content play-area hidden">
+        <section id="dropZone" class="lunchboxes" aria-label="Lunchbox drop zones"></section>
+
+        <section class="food-stage" aria-label="Food card drag area">
+          <aside id="guardianBanner" class="guardian-banner hidden" aria-live="polite">
+            <img id="guardianImage" src="" alt="" />
+            <span><strong id="guardianName"></strong><small id="guardianRule"></small></span>
+          </aside>
+          <div id="foodCard" class="food-card" role="img" tabindex="0" aria-label="Food to sort" aria-describedby="feedbackText">
+            <img id="foodImage" src="" alt="" />
+            <strong id="foodName"></strong>
+          </div>
+        </section>
+
+        <section class="feedback" aria-live="polite">
+          <strong id="feedbackText">Ready to play?</strong>
+        </section>
+      </div>
+
+      <div id="resultPanel" class="result-panel hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle">
+        <div class="result-card">
+          <h2 id="resultTitle">Complete!</h2>
+          <div id="rewardParade" class="reward-parade" aria-hidden="true"></div>
+          <div id="resultText" class="result-report"></div>
+
+          <div class="result-actions">
+            <button id="nextStageBtn" type="button">Next Level</button>
+            <button id="againBtn" type="button">Play Again</button>
+            <button id="stageSelectBtn" type="button">Levels</button>
+            <a id="lobbyLink" href="/kids/" class="lobby-btn">Lobby</a>
+          </div>
+        </div>
+      </div>
+
+      <div id="loadingPanel" class="loading-panel">
+        <div class="loading-card">
+          <strong id="loadingTitle">Loading</strong>
+          <span id="loadingText">0%</span>
+          <div><i id="loadingFill"></i></div>
+        </div>
+      </div>
+    </main>
+    <!-- adsense-static-guide:start -->
+    <section class="game-page-info game-page-info-static" aria-label="动物颜色便当盒 游戏资讯">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 儿童游戏指南</span><h2>动物颜色便当盒</h2><p>《动物颜色便当盒》是一款以图片为主的温和分类游戏，共有 30 个、每关固定五份食物的短关卡。孩子要协助六位动物守护员准备野餐、早餐、花园与庆典便当，把食物放进符合实际颜色的盒子。后段会加入相近颜色、无害的空盒、只看图片的提示，以及答对后才安全换位的便当盒。游戏没有计时、广告或失败画面，选错只会得到友善提示并再次尝试。</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>图片颜色分类</strong></div><div class="game-info-fact"><span>类型</span><strong>幼儿 · 教育 · 动物</strong></div><div class="game-info-fact"><span>难度</span><strong>简单</strong></div><div class="game-info-fact"><span>预估游玩时间</span><strong>1～3 分钟</strong></div><div class="game-info-fact"><span>练习能力</span><strong>颜色辨识 · 专注力 · 手眼协调</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>世界与任务</h3><p>彩虹食材库负责替六条社区路线的动物朋友准备餐点。食材标签被风吹散后，草莓、米饭、鱼、蔬菜、饮料和点心都需要依颜色放回正确便当盒。玩家扮演食材库小帮手；完成五次配对，就能装好一份配送便当并开启下一站。</p>
+<p>咪咪、欧拉、诺里、波哥、塔罗与菲亚分别在第 5、10、15、20、25、30 关等候。他们不会战斗，也不会因错误处罚玩家，而是带来一次换位、每题安全换位、图片优先、额外空盒、中途镜像与综合规则。完成菲亚的彩虹庆典检查，代表六条路线都收到分类正确的便当。</p></div>
+      <div class="game-info-section"><h3>游戏系统</h3><p>每关固定出现五份食物。画面中央显示大型食物图片，便当盒以清楚色块呈现；玩家可以点盒子，也可以把食物拖到盒子上，两种操作使用完全相同的判定。</p>
+<p>答对会推进五分之一进度，并把食物贴纸加入结算游行。答错不扣生命、不重置关卡，盒子仍可继续选择。</p>
+<p>图片模式只在视觉上隐藏食物与颜色名称，萤幕阅读器仍保留完整标签。干扰盒只是本关没有食物使用的颜色，正确答案一定存在。会移动的盒子只在答对后换位，拖曳进行中绝不移动。</p>
+<p>最高解锁关卡只储存在目前浏览器。玩家可重玩任何已解锁关卡；完成第 30 关后不会产生不存在的第 31 关，彩虹庆典仍可再次挑战。</p></div>
+      <div class="game-info-section"><h3>玩法说明</h3><ol><li>在横向关卡路径选择已解锁的关卡。</li><li>观察大型食物图片，对照各便当盒的颜色色块。</li><li>点选正确盒子，或把食物拖到盒子上。</li><li>若盒子在答对后换位，先等动画停稳再选下一题。</li><li>完成五份食物即可观看贴纸游行并解锁下一关。</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>先说出食物名称，再观察它的实际颜色；遇到相近暖色或冷色时会更容易比较。</li><li>图片关卡不必寻找文字，直接看食物外形与大型色块。</li><li>看到额外空盒时先逐一排除，不需要快速猜测。</li><li>盒子换位后重新扫视整排；位置改变，但颜色不会改变。</li></ul></div>
+      <div class="game-info-section"><h3>关卡与难度成长</h3><p>第 1～5 关以固定盒位与熟悉食物建立基本配对；咪咪会在第三次答对后进行一次换位。</p>
+<p>第 6～10 关比较暖色、冷色、明色与暗色，并加入图片野餐；欧拉会在每次答对后重新排列盒子。</p>
+<p>第 11～15 关加入红与粉红、蓝与青等相近颜色，以及一个无害空盒；诺里把图片提示与干扰盒结合。</p>
+<p>第 16～20 关依蔬菜、水果、早餐与点心分组；波哥的自助餐用七个盒子搭配五份食物，增加观察而不延长局数。</p>
+<p>第 21～25 关进一步组合换位与图片配对；塔罗会在花园检查中途把盒位镜像交换一次。</p>
+<p>第 26～30 关加入六盒彩虹、暖冷交替、两个空盒与连续安全换位；菲亚的最终庆典同时使用图片提示、一个空盒和每题换位。</p></div>
+      <div class="game-info-section"><h3>开发设计理念</h3><p>我们把每关固定为五份食物，让幼儿能在短时间内完成一个有开始与结束的任务。点击与拖曳并存，是为了兼顾手机、平板、滑鼠与不同操作习惯。难度来自观察而不是速度：相近颜色、额外空盒与位置变化会逐项加入，盒子移动时也会锁定输入并显示清楚动画。六位守护员替 30 关提供容易记住的里程碑，但不把幼儿分类游戏变成战斗。与 WeightPlay 的动作游戏不同，本作没有计时、生命、广告或失败状态，重点是安静重复练习与清楚的完成感。</p></div>
+      <div class="game-info-section game-info-parent"><h3>家长说明</h3><p>本游戏可陪伴孩子练习颜色辨识、视觉比较、专注与手眼协调。成人可以请孩子说出食物名称，或比较两种相近颜色，但游玩不需要阅读。进度与分数只保存在目前浏览器，仅供游戏回馈，不是发展测验、诊断或学校评量。</p></div>
+      <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>不识字也可以玩吗？</dt><dd>可以。食物图片与颜色色块就是主要指示，图片模式还会刻意隐藏可见答案文字。</dd></div><div><dt>一共有多少关？</dt><dd>共有 30 关，每关固定五份食物，并在每五关安排一次动物守护员检查。</dd></div><div><dt>为什么有些便当盒会移动？</dt><dd>部分后段关卡会在答对后换位。动画期间会暂停输入，拖曳途中也绝不移动。</dd></div><div><dt>额外盒子会让关卡无解吗？</dt><dd>不会。干扰盒只是没有食物使用的颜色，每一题的正确盒子一定存在。</dd></div><div><dt>游戏有计时或失败吗？</dt><dd>没有计时、生命限制或失败画面；答错会得到友善提示并再次尝试。</dd></div><div><dt>关卡进度会保留吗？</dt><dd>最高解锁关卡会存在目前浏览器；清除网站储存资料可能会移除进度。</dd></div><div><dt>这款 Kids 游戏有广告吗？</dt><dd>没有。本作不发出广告请求，也不保留广告空间。</dd></div><div><dt>分数是能力评量吗？</dt><dd>不是。分数与进度只是游戏回馈，不代表孩子的发展或能力。</dd></div></dl></div>
+    </div>
+  </section>
+    <!-- adsense-static-guide:end -->
+    <script src="/src/site-config.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/version.js?v=20260701-version2"></script>
+    <script src="../../src/analytics.js?v=20260701-analytics2"></script>
+    <script>
+      window.WonderAnalytics?.track("game_view", { game_id: "color-lunchbox" });
+    </script>
+    <script src="../../src/sound.js?v=20260701-labels1"></script>
+    <script src="../../src/edge-guard.js?v=20260710-mobile-play-shell2"></script>
+    <script src="/src/i18n.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
+    <script src="game.js?v=20260717-zh-hans1"></script>
+    <script src="../../src/game-page-info.js?v=20260717-zh-hans1"></script>
+  </body>
+</html>

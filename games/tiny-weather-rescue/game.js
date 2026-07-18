@@ -94,6 +94,8 @@
       languageAria: "Language",
       back: "Back",
       backToStages: "Back to stages",
+      stageListAria: "Help mission list",
+      boardAria: "Animal care play area",
       chooseStage: "Choose Help Mission",
       menuHint: "Help the little animal. Tap or drag the right care item to it.",
       stages: "Stages",
@@ -167,6 +169,8 @@
       languageAria: "\u8a9e\u8a00",
       back: "\u8fd4\u56de",
       backToStages: "\u8fd4\u56de\u9078\u95dc",
+      stageListAria: "\u5e6b\u5fd9\u4efb\u52d9\u5217\u8868",
+      boardAria: "\u52d5\u7269\u7167\u9867\u904a\u6232\u5340",
       chooseStage: "\u9078\u64c7\u5e6b\u5fd9\u4efb\u52d9",
       menuHint: "\u5e6b\u5c0f\u52d5\u7269\uff0c\u9ede\u6216\u62d6\u66f3\u6b63\u78ba\u7167\u9867\u9053\u5177\u7d66\u5b83\u3002",
       stages: "\u9078\u95dc",
@@ -233,7 +237,7 @@
     es: {
       gameTitle: "Misión de Ayuda Animal", seoTitle: "Misión de Ayuda Animal - WeightPlay", seoDescription: "Ayuda a animales adorables con lluvia, hambre, barro, oscuridad y otras misiones tranquilas de cuidado.",
       ogTitle: "Misión de Ayuda Animal - Juego de cuidados", ogDescription: "Toca o arrastra el objeto adecuado para ayudar a los animales en misiones tranquilas.",
-      language: "Idioma", languageAria: "Idioma", back: "Volver", backToStages: "Volver a los niveles", chooseStage: "Elegir misión de ayuda", menuHint: "Ayuda al animal. Toca o arrastra hasta él el objeto de cuidado adecuado.",
+      language: "Idioma", languageAria: "Idioma", back: "Volver", backToStages: "Volver a los niveles", stageListAria: "Lista de misiones de ayuda", boardAria: "Zona de cuidado animal", chooseStage: "Elegir misión de ayuda", menuHint: "Ayuda al animal. Toca o arrastra hasta él el objeto de cuidado adecuado.",
       stages: "Niveles", loading: "Cargando", nextStage: "Siguiente nivel", retry: "Intentar de nuevo", lobby: "Sala de juegos", locked: "Nivel bloqueado", stage: "Nivel {n}", progress: "{done}/{total}", calm: "Ayudas {score}",
       clear: "¡Ayuda completada!", failed: "¡Necesita más cuidados!", result: "{score} ayudas completadas. Mejor: {best} estrellas.", resultFailed: "Inténtalo otra vez y ayuda a más animales.",
       reportTitle: "Informe de habilidades", previousBest: "Mejor anterior", todayScore: "Puntuación de hoy", improvement: "Mejora", problemSolving: "Resolución de problemas", focus: "Concentración", animalCare: "Cuidado animal",
@@ -281,7 +285,7 @@
   if (!canonicalSavedLocale && ["en", "zh-Hant", "zh-Hans", "es"].includes(legacySavedLocale)) {
     window.WonderI18n?.setLocale?.(legacySavedLocale);
   }
-  let locale = window.WonderI18n?.locale?.() || canonicalSavedLocale || legacySavedLocale || "en";
+  let locale = window.WonderI18n?.actualLocale?.() || window.WonderI18n?.locale?.() || canonicalSavedLocale || legacySavedLocale || "en";
   let unlocked = clamp(Number(localStorage.getItem(unlockKey)) || 1, 1, stages.length);
   let records = readRecords();
   let currentStage = 0;
@@ -361,9 +365,11 @@
   }
 
   function t(label, data = {}) {
-    const table = text[locale] || text.en;
+    const sourceLocale = locale === "zh-Hans" ? "zh-Hant" : locale;
+    const table = text[sourceLocale] || text.en;
     const value = table[label] || text.en[label] || label;
-    return Object.entries(data).reduce((out, [name, item]) => out.replaceAll(`{${name}}`, String(item)), value);
+    const localized = Object.entries(data).reduce((out, [name, item]) => out.replaceAll(`{${name}}`, String(item)), value);
+    return locale === "zh-Hans" ? window.WonderI18n?.simplifyChineseText?.(localized) || localized : localized;
   }
 
   function playSound(name) {
@@ -375,7 +381,7 @@
   }
 
   function localizeStatic() {
-    document.documentElement.lang = locale === "zh-Hant" ? "zh-Hant" : locale === "es" ? "es" : "en";
+    document.documentElement.lang = ["zh-Hant", "zh-Hans", "es"].includes(locale) ? locale : "en";
     document.title = t("seoTitle");
     setMeta('meta[name="description"]', "content", t("seoDescription"));
     setMeta('meta[property="og:title"]', "content", t("ogTitle"));
@@ -384,6 +390,8 @@
     nodes.localeSelect.setAttribute("aria-label", t("languageAria"));
     nodes.stageBackBtn.setAttribute("aria-label", t("back"));
     nodes.backToStagesBtn.setAttribute("aria-label", t("backToStages"));
+    nodes.stageGrid.setAttribute("aria-label", t("stageListAria"));
+    nodes.board.setAttribute("aria-label", t("boardAria"));
     document.querySelectorAll("[data-ui]").forEach((node) => {
       node.textContent = t(node.dataset.ui);
     });
@@ -902,7 +910,7 @@
   nodes.localeSelect.addEventListener("change", (event) => {
     const requested = event.target.value;
     window.WonderI18n?.setLocale?.(requested);
-    locale = window.WonderI18n?.locale?.() || requested;
+    locale = window.WonderI18n?.actualLocale?.() || window.WonderI18n?.locale?.() || requested;
     localStorage.setItem(localeKey, requested);
     localizeStatic();
     renderStageGrid();

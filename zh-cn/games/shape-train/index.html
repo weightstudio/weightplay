@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="zh-Hans">
+  <head>
+    <base href="/games/shape-train/" />
+    <meta charset="UTF-8" />
+    <meta name="weightplay-audience" content="kids" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#6cb6ff" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="robots" content="index,follow" />
+    <meta name="description" content="《动物形状小火车》是一款免费的双语 Kids 配对游戏，共有 30 条可保存路线与六次车长检查。形状朋友在明亮车站等候，玩家要从圆形、正方形、三角形、星形、菱形与爱心车厢中找出相同符号。前段是直接看图配对；后续会淡化颜色、在每次上车后改变车厢顺序、暂时藏起乘客，或要求先验票再选车厢。第 30..." />
+    <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="动物形状小火车 | WeightPlay" />
+    <meta property="og:description" content="《动物形状小火车》是一款免费的双语 Kids 配对游戏，共有 30 条可保存路线与六次车长检查。形状朋友在明亮车站等候，玩家要从圆形、正方形、三角形、星形、菱形与爱心车厢中找出相同符号。前段是直接看图配对；后续会淡化颜色、在每次上车后改变车厢顺序、暂时藏起乘客，或要求先验票再选车厢。第 30..." />
+    <meta property="og:url" content="https://weightplay.com/zh-cn/games/shape-train/" />
+    <meta property="og:image" content="https://weightplay.com/assets/shape-train-cover.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="动物形状小火车 | WeightPlay" />
+    <meta name="twitter:description" content="《动物形状小火车》是一款免费的双语 Kids 配对游戏，共有 30 条可保存路线与六次车长检查。形状朋友在明亮车站等候，玩家要从圆形、正方形、三角形、星形、菱形与爱心车厢中找出相同符号。前段是直接看图配对；后续会淡化颜色、在每次上车后改变车厢顺序、暂时藏起乘客，或要求先验票再选车厢。第 30..." />
+    <title>动物形状小火车 | WeightPlay</title>
+    <link rel="canonical" href="https://weightplay.com/zh-cn/games/shape-train/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/shape-train/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/shape-train/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/shape-train/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/shape-train/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/shape-train/" />
+    <link rel="stylesheet" href="style.css?v=20260716-stage-lifecycle2" />
+    <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "动物形状小火车",
+  "alternateName": "動物形狀小火車",
+  "url": "https://weightplay.com/zh-cn/games/shape-train/",
+  "image": "https://weightplay.com/assets/shape-train-cover.png",
+  "description": "《动物形状小火车》是一款免费的双语 Kids 配对游戏，共有 30 条可保存路线与六次车长检查。形状朋友在明亮车站等候，玩家要从圆形、正方形、三角形、星形、菱形与爱心车厢中找出相同符号。前段是直接看图配对；后续会淡化颜色、在每次上车后改变车厢顺序、暂时藏起乘客，或要求先验票再选车厢。第 30...",
+  "applicationCategory": "Game",
+  "operatingSystem": "Web browser",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio"
+  },
+  "inLanguage": "zh-Hans",
+  "isAccessibleForFree": true,
+  "genre": [
+    "幼儿",
+    "教育",
+    "动物"
+  ],
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "Kids and families",
+    "suggestedMinAge": 3
+  },
+  "learningResourceType": "Skill practice through play",
+  "educationalUse": "Practice Color Recognition, Logic, Hand-Eye Coordination through family-friendly browser gameplay."
+}
+    </script>
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
+    <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
+    <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
+    <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20260714-play-area-fill1" data-wp-battle-standard />
+    <script data-wp-stage-standard>/* Shared Kids Stage selector owns pointer drag and settle; Shape Train retains lifecycle centering only. */</script>
+  </head>
+  <body data-tutorial-auto-show="false">
+    <main class="shape-game" data-play-viewport data-no-mobile-immersive="true">
+      <header class="topbar">
+        <a class="home-link" data-wp-return="main" href="/kids/" aria-label="Back to Kids lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
+        <div class="title-block">
+          <p>WeightPlay</p>
+          <h1 data-ui="gameTitle">动物形状小火车</h1>
+        </div>
+        <label class="language-picker">
+          <span data-ui="language">Language</span>
+          <select id="localeSelect" aria-label="Language">
+            <option value="en">English</option>
+            <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
+            <option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option>
+          </select>
+        </label>
+      </header>
+
+      <section id="menuPanel" class="menu-panel">
+        <img class="cover" src="../../assets/shape-train-cover.png" alt="" />
+        <div class="menu-copy">
+          <strong data-ui="chooseStage">Choose Stage</strong>
+          <span data-ui="menuHint">Match shape friends to the right train cars.</span>
+        </div>
+        <div class="menu-preview" aria-hidden="true">
+          <img src="../../assets/shape-token-star.svg" alt="" />
+          <span data-ui="previewAction">Tap or drag the shape friend</span>
+          <b></b>
+          <img src="../../assets/shape-train-car.svg" alt="" />
+        </div>
+        <button id="startGameBtn" class="standard-main-start" data-wp-main-start type="button">Start Game</button>
+      </section>
+
+      <section id="stagePanel" class="wp-standard-stage-panel hidden" data-wp-standard-stage-screen>
+        <header class="wp-standard-stage-heading"><button id="stageBackBtn" data-wp-return="stage" type="button" aria-label="Back">&larr;</button><strong data-ui="chooseStage">Choose Stage</strong></header>
+        <div id="stageGrid" class="stage-grid" data-wp-stage-settle-duration="360" data-wp-stage-settle-easing="smoothstep" aria-label="Stage list"></div>
+      </section>
+
+      <section id="playPanel" class="play-panel hidden">
+        <div class="play-head">
+          <button id="backToStagesBtn" class="soft-btn" data-wp-return="battle" type="button" aria-label="Back to stages">&larr;</button>
+          <div class="progress-line">
+            <span id="stageText">Stage 1</span>
+            <div><i id="progressFill"></i></div>
+          </div>
+        </div>
+
+        <div class="train-track" aria-label="Train cars">
+          <div id="carGrid" class="car-grid"></div>
+        </div>
+
+        <div class="passenger-area">
+          <p id="promptText">Who rides next?</p>
+          <button id="passengerBtn" class="passenger" type="button" draggable="true" aria-label="Shape passenger">
+            <span id="passengerShape"></span>
+          </button>
+        </div>
+        <div id="feedbackText" class="feedback" aria-live="polite"></div>
+        <div id="resultPanel" class="shape-result-panel hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle">
+          <div class="result-card">
+            <strong id="resultTitle">Great job!</strong>
+            <div id="starText" class="stars">&#9734;&#9734;&#9734;</div>
+            <span id="resultText"></span>
+            <section class="shape-skill-report" aria-live="polite">
+              <h3 id="skillReportTitle">Skill Report</h3>
+              <div class="shape-skill-grid">
+                <div><span id="logicLabel">Logic</span><b id="logicValue">0 shape matches</b></div>
+                <div><span id="focusLabel">Focus</span><b id="focusValue">0 first try</b></div>
+                <div><span id="coordinationLabel">Hand-Eye Coordination</span><b id="coordinationValue">0 friends boarded</b></div>
+              </div>
+              <p id="progressComparison"></p>
+            </section>
+            <button id="nextStageBtn" type="button" data-ui="nextStage">Next Stage</button>
+            <button id="retryBtn" type="button" data-ui="retry">Try Again</button>
+            <button id="resultStagesBtn" type="button" data-ui="stages">Stages</button>
+            <a href="/kids/" data-ui="lobby">Lobby</a>
+          </div>
+        </div>
+      </section>
+
+      <div id="loadingPanel" class="loading-panel">
+        <div class="loading-card">
+          <strong data-ui="loading">Loading</strong>
+          <span id="loadingText">0%</span>
+          <div><i id="loadingFill"></i></div>
+        </div>
+      </div>
+    </main>
+    <!-- adsense-static-guide:start -->
+    <section class="game-page-info game-page-info-static" aria-label="动物形状小火车 游戏资讯">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 儿童游戏指南</span><h2>动物形状小火车</h2><p>《动物形状小火车》是一款免费的双语 Kids 配对游戏，共有 30 条可保存路线与六次车长检查。形状朋友在明亮车站等候，玩家要从圆形、正方形、三角形、星形、菱形与爱心车厢中找出相同符号。前段是直接看图配对；后续会淡化颜色、在每次上车后改变车厢顺序、暂时藏起乘客，或要求先验票再选车厢。第 30 路线会把所有规则与六种车厢合在一起。游戏没有倒数、生命限制、购买、帐号、广告请求，也不会因一次选错就结束路线。</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>形状分类</strong></div><div class="game-info-fact"><span>类型</span><strong>幼儿 · 教育 · 动物</strong></div><div class="game-info-fact"><span>难度</span><strong>简单</strong></div><div class="game-info-fact"><span>预估游玩时间</span><strong>每条路线 2–5 分钟</strong></div><div class="game-info-fact"><span>练习能力</span><strong>形状辨识 · 逻辑 · 手眼协调</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>世界与任务</h3><p>形状线连接六座小车站，动物朋友会带著有清楚符号的彩色包裹来搭车，每节橘色车厢的窗户都有对应形状。玩家扮演小车长，负责检查符号并把乘客送到正确车厢。完成一条路线，代表所有等候朋友都安全上车，列车可以出发。</p>
+<p>不同规则代表铁路较忙碌的区段。轮廓车厢行经薄雾，移动车厢停在会切换位置的月台；记忆乘客会暂时收起车站卡；验票路线则要求先确认乘客。通过第 30 路线，代表完成最后一次混合车长检查。</p></div>
+      <div class="game-info-section"><h3>游戏系统</h3><p>每条路线有四到八名乘客，取自六种真实形状；画面上只会有一节车厢符合目前乘客。</p>
+<p>答对会显示短暂的上车动画、增加进度并换下一名乘客；选错只会温和提醒，同一名乘客仍可继续尝试。</p>
+<p>轮廓车厢降低颜色提示；移动车厢在答对后重新排序；记忆乘客会藏起符号但可免费再看；验票规则要求先点乘客。</p>
+<p>零次重试可得三星，少量重试得二星，更多重试得一星。技能报告只使用本次真实配对、首次答对、重试与上车人数。</p>
+<p>星星与最高解锁路线只保存在目前浏览器。没有帐号、排行榜、购买、广告、生命值或倒数。</p>
+<p>每五条路线是一个车长检查；第 30 路线会保存最终结果，不会出现不存在的第 31 路线。</p></div>
+      <div class="game-info-section"><h3>玩法说明</h3><ol><li>按下开始游戏，在水平路线轨道上滑到已解锁卡片。</li><li>阅读路线规则，观察下方车站卡中的乘客形状。</li><li>先点乘客，再点相同符号的车厢；拖曳、滑鼠与键盘也能操作。</li><li>记忆路线可回想藏起的符号，或再点乘客把它显示出来。</li><li>让所有乘客上车即可保存星星，并只解锁下一条路线。</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>选车厢前先说出形状名称。</li><li>轮廓车厢没有明显颜色时，比较尖角、边与曲线。</li><li>移动路线每次答对后都重新扫视整条轨道。</li><li>记忆游玩可把符号说出来，或用手在空中描出轮廓。</li><li>验票路线要先选乘客，再碰车厢。</li><li>选错不会关闭路线，停一下重新比较即可。</li></ul></div>
+      <div class="game-info-section"><h3>关卡与难度成长</h3><p>第 1–5 路线是直接配对，以二到四节明亮车厢介绍六种形状，第 5 路线是首次车长检查。</p>
+<p>第 6–10 路线使用轮廓车厢，曲线、角与尖端会比颜色更重要。</p>
+<p>第 11–15 路线加入移动车厢，每次成功上车后都会重新排序。</p>
+<p>第 16–20 路线会暂时藏起乘客；再点乘客即可无惩罚显示同一形状。</p>
+<p>第 21–25 路线加入先验票、再配对的动作顺序。</p>
+<p>第 26–30 路线混合旧规则；第 30 路线有六节车厢、八名乘客，并结合轮廓、移动、记忆与验票。</p></div>
+      <div class="game-info-section"><h3>开发设计理念</h3><p>难度成长来自改变玩家要观察的线索，而不是缩小按钮、增加压力倒数或藏起正确点击区。直接配对先建立形状词汇，轮廓、移动、记忆与顺序再各加入一个能理解的判断。固定逻辑画面会在手机、平板、桌面与短横向萤幕等比缩放；图片车厢与形状图块保留图像为主的操作，文字只说明目前规则。配对与记忆等待只计算实际可见时间，切到其他 App 不会让路线偷偷前进。它不像《动物知识小测》需要阅读动物事实，也不像《动物园小帮手日》要依用途选照护工具；本作的核心始终是视觉等同。Kids 游玩没有广告、购买、帐号、排名或诊断宣称。</p></div>
+      <div class="game-info-section game-info-parent"><h3>家长说明</h3><p>《动物形状小火车》可用来谈圆形、角、尖端、视觉配对、短期记忆、动作顺序、专注与手眼协调。大人可以一起说出形状名称，或问孩子两个轮廓哪里不同。星星与技能报告只描述这次游玩，不是学校成绩、智力分数、发展诊断，也不会与其他孩子比较。进度只留在目前浏览器，清除网站资料可能使它消失；不需要儿童帐号，Kids 路线也不会请求广告。</p></div>
+      <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>共有多少条路线？</dt><dd>共有 30 条可保存路线与六个章节，车长检查位于第 5、10、15、20、25、30 路线。</dd></div><div><dt>有哪些形状？</dt><dd>游戏实际使用圆形、正方形、三角形、星形、菱形与爱心。</dd></div><div><dt>乘客为什么消失？</dt><dd>记忆乘客路线会暂时藏起它；再点乘客即可无惩罚显示同一形状。</dd></div><div><dt>车厢为什么移动？</dt><dd>移动车厢会在答对后重新排序，让玩家再次观察。</dd></div><div><dt>车厢为什么不接受选择？</dt><dd>验票路线要求先点乘客，再选车厢。</dd></div><div><dt>选错会怎样？</dt><dd>同一名乘客会留在画面，玩家可在温和提示后再试。</dd></div><div><dt>进度会保存吗？</dt><dd>星星与最高解锁路线只保存在目前浏览器，不需要登入。</dd></div><div><dt>手机与键盘都能玩吗？</dt><dd>可以，触控、拖曳、滑鼠与键盘使用相同配对规则。</dd></div><div><dt>Kids 页面有广告吗？</dt><dd>没有，《动物形状小火车》不会建立广告请求或广告保留区。</dd></div></dl></div>
+    </div>
+  </section>
+    <!-- adsense-static-guide:end -->
+    <script src="/src/site-config.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/version.js?v=20260701-version2"></script>
+    <script src="../../src/analytics.js?v=20260701-analytics2"></script>
+    <script>
+      window.WonderAnalytics?.track("game_view", { game_id: "shape-train" });
+    </script>
+    <script src="../../src/sound.js?v=20260701-labels1"></script>
+    <script src="../../src/edge-guard.js?v=20260710-mobile-play-shell2"></script>
+    <script src="/src/i18n.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
+    <script src="../../src/battle-canvas-standard.js?v=20260714-play-area-fill1" data-wp-battle-standard></script>
+    <script src="game.js?v=20260717-zh-hans1"></script>
+    <script src="../../src/game-page-info.js?v=20260717-zh-hans1"></script>
+  </body>
+</html>

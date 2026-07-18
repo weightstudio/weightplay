@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <base href="/games/star-memory/" />
+    <meta charset="UTF-8" />
+    <meta name="weightplay-audience" content="kids" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0f172a" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="robots" content="index,follow" />
+    <meta name="description" content="Animal Star Memory es un viaje de 30 niveles de combinación de imágenes a través del cielo nocturno. Los jugadores ayudan a seis amigables Star Keepers a..." />
+    <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Memoria Estelar Animal | WeightPlay" />
+    <meta property="og:description" content="Animal Star Memory es un viaje de 30 niveles de combinación de imágenes a través del cielo nocturno. Los jugadores ayudan a seis amigables Star Keepers a..." />
+    <meta property="og:url" content="https://weightplay.com/es/games/star-memory/" />
+    <meta property="og:image" content="https://weightplay.com/assets/memory-cover.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>Memoria Estelar Animal | WeightPlay</title>
+    <link rel="canonical" href="https://weightplay.com/es/games/star-memory/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/star-memory/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/star-memory/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/star-memory/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/star-memory/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/star-memory/" />
+    <link rel="stylesheet" href="style.css?v=20260717-depth30-1" />
+    <script data-wp-stage-standard>/* Shared Kids Stage selector owns pointer drag and settle; the game owns selected-card highlighting and activation. */</script>
+    <script data-wp-battle-standard>/* Animal Star Memory owns its native Kids Battle Canvas. */</script>
+    <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Memoria Estelar Animal",
+  "alternateName": "動物星星翻牌",
+  "url": "https://weightplay.com/es/games/star-memory/",
+  "image": "https://weightplay.com/assets/memory-cover.png",
+  "description": "Animal Star Memory es un viaje de 30 niveles de combinación de imágenes a través del cielo nocturno. Los jugadores ayudan a seis amigables Star Keepers a...",
+  "applicationCategory": "Game",
+  "operatingSystem": "Web browser",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio"
+  },
+  "inLanguage": "es",
+  "isAccessibleForFree": true,
+  "genre": [
+    "Memoria",
+    "rompecabezas",
+    "animales"
+  ],
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "Kids and families",
+    "suggestedMinAge": 6
+  },
+  "learningResourceType": "Skill practice through play",
+  "educationalUse": "Practice Memory, Focus, Problem Solving through family-friendly browser gameplay."
+}
+    </script>
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
+    <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
+    <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
+    <meta name="twitter:title" content="Memoria Estelar Animal | WeightPlay" />
+    <meta name="twitter:description" content="Animal Star Memory es un viaje de 30 niveles de combinación de imágenes a través del cielo nocturno. Los jugadores ayudan a seis amigables Star Keepers a..." />
+  </head>
+  <body>
+    <main class="memory-game" data-wp-logical-battle-canvas>
+      <!-- Top Navigation and Settings -->
+      <header class="topbar">
+        <a class="home-link" data-wp-return="main" href="/kids/" id="homeLink" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
+        <div>
+          <p id="brandText">WeightPlay</p>
+          <h1 id="titleText">Memoria Estelar Animal</h1>
+        </div>
+        <div class="header-right">
+          <label class="language-picker">
+            <span id="languageLabel">Language</span>
+            <select id="localeSelect" aria-label="Language">
+              <option value="en">English</option>
+              <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
+              <option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option>
+            </select>
+          </label>
+        </div>
+      </header>
+
+      <section id="mainPanel" class="main-panel">
+        <img class="main-poster" src="../../assets/memory-cover.webp" alt="" />
+        <div class="main-copy">
+          <h2 id="mainTitle">Animal Star Memory</h2>
+          <p id="mainIntro">Follow 30 starlight trails where previews, shuffles, ordered pairs, and rotating constellations change how each board is remembered.</p>
+          <button id="startBtn" type="button">Start Game</button>
+        </div>
+      </section>
+
+      <!-- Gameplay HUD -->
+      <section id="gameHud" class="game-hud hidden" aria-label="Game stats">
+        <button id="battleBackBtn" data-wp-return="battle" type="button" aria-label="Back to levels">&larr;</button>
+        <div class="hud-item">
+        <span id="levelIndicator">Level 1 / 30</span>
+          <div><i id="levelFill"></i></div>
+        </div>
+        <div class="hud-item-score">
+          <span id="scoreLabel">Score</span>
+          <strong id="scoreText">0</strong>
+        </div>
+        <div class="hud-item-moves">
+          <span id="movesLabel">Moves</span>
+          <strong id="movesText">0 / 0</strong>
+        </div>
+      </section>
+
+      <!-- Stage Selection Screen -->
+      <section id="stageSelectPanel" class="stage-select hidden">
+        <header class="wp-standard-stage-heading"><button id="stageBackBtn" data-wp-return="stage" type="button" aria-label="Back">&larr;</button><h2 id="stageSelectTitle">Choose Level</h2></header>
+        <div id="stageGrid" class="stage-grid" data-wp-stage-settle-duration="360" data-wp-stage-settle-easing="smoothstep"></div>
+      </section>
+
+      <!-- Main Game Board -->
+      <section id="gameBoardPanel" class="game-board-panel hidden">
+        <div id="cardGrid" class="card-grid"></div>
+      </section>
+
+      <!-- Gameplay Footer / Tips -->
+      <section id="gameFeedback" class="feedback hidden" aria-live="polite">
+        <strong id="feedbackText">Tap cards to find matching pairs!</strong>
+        <div id="comboContainer" class="combo-badge hidden">
+          Combo <span id="comboText">x2</span>
+        </div>
+      </section>
+
+      <!-- Overlay Panel (Victory / Failure / All Clear) -->
+      <div id="resultPanel" class="result-panel hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle">
+        <div class="result-card">
+          <h2 id="resultTitle">Level Clear!</h2>
+          
+          <div id="starContainer" class="star-rating">
+            <span class="star" data-index="1">&#9733;</span>
+            <span class="star" data-index="2">&#9733;</span>
+            <span class="star" data-index="3">&#9733;</span>
+          </div>
+
+          <p id="resultText">You cleared the level in 12 moves!</p>
+
+          <h3 id="skillReportTitle" class="skill-report-title">Skill Report</h3>
+          <p id="skillReportIntro" class="skill-report-intro">This round practiced memory, focus, and problem solving.</p>
+          <section id="memoryReport" class="memory-report hidden" aria-live="polite">
+            <div class="memory-report-item">
+              <span id="reportPairsLabel">Pairs</span>
+              <strong id="reportPairsValue">0 / 0</strong>
+            </div>
+            <div class="memory-report-item">
+              <span id="reportMovesLabel">Moves</span>
+              <strong id="reportMovesValue">0</strong>
+            </div>
+            <div class="memory-report-item">
+              <span id="reportStreakLabel">Best streak</span>
+              <strong id="reportStreakValue">x0</strong>
+            </div>
+          </section>
+          <p id="progressComparison" class="progress-comparison"></p>
+          
+          <div class="result-actions">
+            <button id="nextLevelBtn" type="button">Next Level</button>
+            <button id="againBtn" type="button">Play Again</button>
+            <button id="stageSelectBtn" type="button">Levels</button>
+            <a id="lobbyLink" href="/kids/" class="lobby-btn">Lobby</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Loading Panel -->
+      <div id="loadingPanel" class="loading-panel">
+        <div class="loading-card">
+          <strong id="loadingTitle">Loading</strong>
+          <span id="loadingText">0%</span>
+          <div><i id="loadingFill"></i></div>
+        </div>
+      </div>
+    </main>
+    <!-- adsense-static-guide:start -->
+    <section class="game-page-info game-page-info-static" aria-label="Información del juego Memoria Estelar Animal">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">Guía de juegos de WeightPlay</span><h2>Memoria Estelar Animal</h2><p>Animal Star Memory es un viaje de 30 niveles de combinación de imágenes a través del cielo nocturno. Los jugadores ayudan a seis amigables Star Keepers a reconectar constelaciones de animales encontrando cartas iguales. La campaña comienza con parejas clásicas, luego cambia el funcionamiento de la memoria mediante vistas previas de apertura, cambios de luna después de errores, orden requerido de animales y cambios de constelaciones después de coincidencias exitosas. Cada quinta nivel es un Keeper Check, y la nivel 30 combina las cuatro reglas avanzadas en un tablero completo de doce pares.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Jugabilidad</span><strong>Coincidencia de memoria</strong></div><div class="game-info-fact"><span>Género</span><strong>Memoria · rompecabezas · animales</strong></div><div class="game-info-fact"><span>Dificultad</span><strong>Fácil a desafiante</strong></div><div class="game-info-fact"><span>Tiempo estimado</span><strong>2-8 minutos por nivel</strong></div><div class="game-info-fact"><span>Habilidades practicadas</span><strong>Memoria · Concentración · Resolución de problemas</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>Mundo y misión</h3><p>El Animal Star Map alguna vez ayudó a los animales de bosques, ríos, praderas y polares a encontrar el camino a casa después del atardecer. Una suave lluvia de meteoritos no destruyó el mapa, sino que separó cada luz animal en dos cartas ocultas. El jugador se convierte en el joven lector de mapas de los Guardianes y reconecta cada par para que su constelación pueda brillar nuevamente.</p>
+<p>El gato, el oso, el búho, el león, el pingüino y el koala imparten cada uno una lección de cinco niveles. Pasar un Keeper Check repara esa parte del cielo. Completar el último Koala Grand Star Check significa que las doce constelaciones de animales han regresado a sus rutas adecuadas.</p></div>
+      <div class="game-info-section"><h3>Cómo funcionan los sistemas</h3><p>Las niveles clásicas mantienen todos los símbolos ocultos en su lugar, haciendo que la posición recuerde la única regla.</p>
+<p>Las niveles de vista previa revelan brevemente el tablero completo y luego ocultan cada tarjeta antes de que comience la entrada.</p>
+<p>Las niveles de Moon Shuffle mueven los mismos símbolos inigualables después de una suposición incorrecta, por lo que las ubicaciones antiguas deben actualizarse en lugar de repetirse a ciegas.</p>
+<p>Las niveles ordenadas nombran la pareja de animales que debe eliminarse a continuación. Un par correcto que se encuentra desordenado se muestra y luego se oculta sin avanzar.</p>
+<p>Las niveles de Constellation Shift rotan todos los símbolos ocultos restantes después de un par exitoso, cambiando el mapa y preservando cada par requerido.</p>
+<p>Movimientos, parejas, mejor racha, puntuación, estrellas, desbloqueos de niveles y mejores puntuaciones proporcionan información sobre el progreso local. No se utiliza ninguna tabla de clasificación.</p></div>
+      <div class="game-info-section"><h3>Cómo jugar</h3><ol><li>Elija un nivel desbloqueado del riel horizontal.</li><li>Voltee dos cartas y recuerde ambas posiciones.</li><li>Un par coincidente permanece despejado; una discrepancia se oculta nuevamente después de una breve pausa visible.</li><li>Lea la insignia de la regla porque las niveles posteriores pueden obtener una vista previa, mezclar, requerir un par con nombre a continuación o mover símbolos ocultos después de una coincidencia.</li><li>Elimina todos los pares dentro del límite de movimientos para desbloquear la siguiente nivel.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Consejos de estrategia</h3><ul><li>Durante una vista previa, escanee en filas o grupos pequeños en lugar de intentar nombrar todo el tablero a la vez.</li><li>Después de una mezcla lunar, descarta posiciones antiguas y reconstruye el mapa a partir de nuevas revelaciones.</li><li>En niveles ordenadas, localice el animal solicitado antes de gastar movimientos en otras parejas conocidas.</li><li>Después de un cambio de constelación, recuerde qué símbolos aún estaban ocultos, pero no confíe en sus posiciones anteriores.</li><li>Utilice la pausa de discrepancia visible para comparar ambas cartas antes de que se den la vuelta.</li></ul></div>
+      <div class="game-info-section"><h3>Campaña y aumento de dificultad</h3><p>Las niveles 1 a 5 enseñan la combinación de posiciones clásica y finalizan con la verificación previa de apertura de Cat. Las niveles 6 a 10 acortan la vista previa y terminan con la apertura aleatoria única de Bear.</p>
+<p>Las niveles 11 a 15 introducen cambios de luna después de errores. Las niveles 16 a 20 requieren el orden de los animales mostrado, y eventualmente combinan el orden con la mezcla en el cheque del León.</p>
+<p>Las niveles 21 a 25 rotan la constelación restante después de cada éxito. Las niveles 26 a 30 mezclan vista previa, orden, barajado y rotación, culminando en un final de doce pares con todas las reglas activas.</p></div>
+      <div class="game-info-section"><h3>Nota de diseño</h3><p>El juego comienza con una regla de coincidencia familiar para que los controles sean legibles de inmediato, pero su profundidad proviene de cambiar la información que sigue siendo confiable. La vista previa prueba las primeras impresiones, la mezcla prueba la actualización de la memoria, el orden cambia la prioridad del objetivo y la rotación hace que un movimiento exitoso altere la siguiente decisión. Estas mecánicas utilizan las mismas tarjetas con imágenes grandes en las pantallas táctiles y los teclados, evitando una complejidad de control adicional. Los Friendly Keeper Checks reemplazan el combate porque la historia trata sobre la reparación de un mapa estelar compartido. Los límites de movimiento crean un final claro mientras que los reintentos siguen siendo inmediatos y de apoyo.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Nota para familias</h3><p>Animal Star Memory puede respaldar el recuerdo visual, la atención, la actualización flexible y el seguimiento de una secuencia corta. Los adultos pueden preguntar qué ubicaciones siguen siendo confiables después de una mezcla o por qué se debe encontrar primero un par ordenado. El juego no tiene combates, requisitos de cuenta, clasificación pública ni solicitud de publicidad en esta página para niños. Las estrellas y el Informe de habilidades fomentan la retroalimentación local sobre el juego, no una evaluación de inteligencia, escuela, salud o desarrollo.</p></div>
+      <div class="game-info-section"><h3>Preguntas frecuentes</h3><dl><div><dt>¿Cuántas niveles hay?</dt><dd>Hay 30 niveles con nombre en seis lecciones, con Keeper Checks en 5, 10, 15, 20, 25 y 30.</dd></div><div><dt>¿Qué sucede en una nivel Moon Shuffle?</dt><dd>Después de una discrepancia, los mismos símbolos no coincidentes se mueven a diferentes posiciones ocultas.</dd></div><div><dt>¿Por qué se escondió de nuevo una pareja coincidente?</dt><dd>En una nivel ordenada, la retroalimentación nombra qué pareja de animales debe eliminarse a continuación.</dd></div><div><dt>¿Qué hace Constellation Shift?</dt><dd>Después de un par exitoso, todos los símbolos ocultos restantes giran una posición.</dd></div><div><dt>¿Una vista previa consume movimientos?</dt><dd>No. La entrada está bloqueada mientras el tablero de apertura está visible y el juego comienza después de que se oculta.</dd></div><div><dt>¿Se pueden repetir las niveles?</dt><dd>Sí. Cualquier nivel desbloqueada se puede volver a jugar para mejorar su puntuación local o resultado de estrellas.</dd></div><div><dt>¿Se guarda el progreso?</dt><dd>Las niveles desbloqueadas, las estrellas y las mejores puntuaciones se almacenan en este navegador sin necesidad de iniciar sesión.</dd></div><div><dt>¿La página para niños muestra anuncios?</dt><dd>No. Este juego no realiza ninguna solicitud de publicidad ni tiene reserva de publicidad.</dd></div><div><dt>¿Es el Informe de Habilidades una prueba de memoria formal?</dt><dd>No. Sólo resume pares, movimientos y rachas del juego actual.</dd></div></dl></div>
+    </div>
+  </section>
+    <!-- adsense-static-guide:end -->
+    <!-- Site Configuration & Framework Scripts -->
+    <script src="/src/site-config.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/version.js?v=20260701-version2"></script>
+    <script src="../../src/analytics.js?v=20260701-analytics2"></script>
+    <script>
+      window.WonderAnalytics?.track("game_view", { game_id: "star-memory" });
+    </script>
+    <script src="../../src/sound.js?v=20260701-labels1"></script>
+    <script src="../../src/edge-guard.js?v=20260710-mobile-play-shell2"></script>
+    <script src="/src/i18n.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
+    <script src="game.js?v=20260717-zh-hans1"></script>
+    <script src="../../src/game-page-info.js?v=20260717-zh-hans1"></script>
+  </body>
+</html>

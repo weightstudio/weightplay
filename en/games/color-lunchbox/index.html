@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <base href="/games/color-lunchbox/" />
+    <meta charset="UTF-8" />
+    <meta name="weightplay-audience" content="kids" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#f4d66d" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="robots" content="index,follow" />
+    <meta name="description" content="Animal Color Lunchbox is a gentle picture-led sorting game with 30 five-food levels. Children help six animal Guardians prepare picnic, breakfast, garden,..." />
+    <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Animal Color Lunchbox | WeightPlay" />
+    <meta property="og:description" content="Animal Color Lunchbox is a gentle picture-led sorting game with 30 five-food levels. Children help six animal Guardians prepare picnic, breakfast, garden,..." />
+    <meta property="og:url" content="https://weightplay.com/en/games/color-lunchbox/" />
+    <meta property="og:image" content="https://weightplay.com/assets/lunchbox-cover.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Animal Color Lunchbox | WeightPlay" />
+    <meta name="twitter:description" content="Animal Color Lunchbox is a gentle picture-led sorting game with 30 five-food levels. Children help six animal Guardians prepare picnic, breakfast, garden,..." />
+    <title>Animal Color Lunchbox | WeightPlay</title>
+    <link rel="canonical" href="https://weightplay.com/en/games/color-lunchbox/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/color-lunchbox/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/color-lunchbox/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/color-lunchbox/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/color-lunchbox/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/color-lunchbox/" />
+    <link rel="stylesheet" href="style.css?v=20260717-depth30-1" />
+    <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Animal Color Lunchbox",
+  "alternateName": "動物顏色便當盒",
+  "url": "https://weightplay.com/en/games/color-lunchbox/",
+  "image": "https://weightplay.com/assets/lunchbox-cover.png",
+  "description": "Animal Color Lunchbox is a gentle picture-led sorting game with 30 five-food levels. Children help six animal Guardians prepare picnic, breakfast, garden,...",
+  "applicationCategory": "Game",
+  "operatingSystem": "Web browser",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio"
+  },
+  "inLanguage": "en",
+  "isAccessibleForFree": true,
+  "genre": [
+    "Preschool",
+    "Education",
+    "Animal"
+  ],
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "Kids and families",
+    "suggestedMinAge": 3
+  },
+  "learningResourceType": "Skill practice through play",
+  "educationalUse": "Practice Color Recognition, Focus, Hand-Eye Coordination through family-friendly browser gameplay."
+}
+    </script>
+    <script data-wp-stage-standard>/* Shared Kids Stage selector owns pointer drag and settle; the game owns locked-card feedback and activation. */</script>
+    <script data-wp-battle-standard>/* Animal Color Lunchbox owns its native Kids Battle Canvas. */</script>
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
+    <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
+    <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
+  </head>
+  <body>
+    <main class="lunch-game">
+      <header class="topbar">
+        <a class="home-link" data-wp-return="main" href="/kids/" id="homeLink" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
+        <div>
+          <p id="brandText">WeightPlay</p>
+          <h1 id="titleText">Animal Color Lunchbox</h1>
+        </div>
+        <div class="header-right">
+          <label class="language-picker">
+            <span id="languageLabel">Language</span>
+            <select id="localeSelect" aria-label="Language">
+              <option value="en">English</option>
+              <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
+              <option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option>
+            </select>
+          </label>
+        </div>
+      </header>
+
+      <section id="mainPanel" class="main-panel">
+        <img class="main-poster" src="../../assets/lunchbox-cover.webp" alt="" />
+        <div class="main-copy">
+          <h2 id="mainTitle">Animal Color Lunchbox</h2>
+          <p id="mainIntro">Sort colorful foods through 30 short levels and six friendly Guardian checks.</p>
+          <button id="startBtn" type="button">Choose Level</button>
+        </div>
+      </section>
+
+      <section id="gameHud" class="game-hud hidden" aria-label="Game stats">
+        <button id="battleBackBtn" class="battle-return" data-wp-return="battle" type="button" aria-label="Back to levels">&larr;</button>
+        <div class="hud-item">
+          <span id="levelIndicator">Level 1 / 30</span>
+          <div><i id="progressFill"></i></div>
+        </div>
+        <div class="hud-item-score">
+          <span id="scoreLabel">Score</span>
+          <strong id="scoreText">0</strong>
+        </div>
+        <div class="hud-item-round">
+          <span id="roundLabel">Round</span>
+          <strong id="roundText">1 / 5</strong>
+        </div>
+      </section>
+
+      <section id="stageSelectPanel" class="stage-select hidden">
+        <header class="wp-standard-stage-heading"><button id="stageBackBtn" data-wp-return="stage" type="button" aria-label="Back">&larr;</button><h2 id="stageSelectTitle">Choose Level</h2></header>
+        <p id="stageStatus" class="stage-status" role="status" aria-live="polite" aria-atomic="true"></p>
+        <div id="stageGrid" class="stage-grid" data-wp-stage-settle-duration="360" data-wp-stage-settle-easing="smoothstep"></div>
+      </section>
+
+      <div id="gamePlayContent" class="game-play-content play-area hidden">
+        <section id="dropZone" class="lunchboxes" aria-label="Lunchbox drop zones"></section>
+
+        <section class="food-stage" aria-label="Food card drag area">
+          <aside id="guardianBanner" class="guardian-banner hidden" aria-live="polite">
+            <img id="guardianImage" src="" alt="" />
+            <span><strong id="guardianName"></strong><small id="guardianRule"></small></span>
+          </aside>
+          <div id="foodCard" class="food-card" role="img" tabindex="0" aria-label="Food to sort" aria-describedby="feedbackText">
+            <img id="foodImage" src="" alt="" />
+            <strong id="foodName"></strong>
+          </div>
+        </section>
+
+        <section class="feedback" aria-live="polite">
+          <strong id="feedbackText">Ready to play?</strong>
+        </section>
+      </div>
+
+      <div id="resultPanel" class="result-panel hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle">
+        <div class="result-card">
+          <h2 id="resultTitle">Complete!</h2>
+          <div id="rewardParade" class="reward-parade" aria-hidden="true"></div>
+          <div id="resultText" class="result-report"></div>
+
+          <div class="result-actions">
+            <button id="nextStageBtn" type="button">Next Level</button>
+            <button id="againBtn" type="button">Play Again</button>
+            <button id="stageSelectBtn" type="button">Levels</button>
+            <a id="lobbyLink" href="/kids/" class="lobby-btn">Lobby</a>
+          </div>
+        </div>
+      </div>
+
+      <div id="loadingPanel" class="loading-panel">
+        <div class="loading-card">
+          <strong id="loadingTitle">Loading</strong>
+          <span id="loadingText">0%</span>
+          <div><i id="loadingFill"></i></div>
+        </div>
+      </div>
+    </main>
+    <!-- adsense-static-guide:start -->
+    <section class="game-page-info game-page-info-static" aria-label="Animal Color Lunchbox game information">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay Kids Game Guide</span><h2>Animal Color Lunchbox</h2><p>Animal Color Lunchbox is a gentle picture-led sorting game with 30 five-food levels. Children help six animal Guardians prepare picnic, breakfast, garden, and festival lunchboxes by matching each food to its real color. Later levels add close color choices, harmless empty boxes, picture-only clues, and boxes that settle into new positions only after a correct match. There is no timer, advertising, or losing screen: an incorrect choice simply invites another try.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>Color Sorting</strong></div><div class="game-info-fact"><span>Genre</span><strong>Preschool · Education · Animal</strong></div><div class="game-info-fact"><span>Difficulty</span><strong>Easy</strong></div><div class="game-info-fact"><span>Estimated Play Time</span><strong>1-3 minutes</strong></div><div class="game-info-fact"><span>Skills Trained</span><strong>Color Recognition · Focus · Hand-Eye Coordination</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>World and Mission</h3><p>The Rainbow Pantry supplies meals for animal friends across six neighborhood routes. Its labels have blown loose, so strawberries, rice, fish, vegetables, drinks, and treats must be placed in the right colored lunchboxes before each delivery leaves. The player is the pantry helper. Completing five matches packs one delivery and opens the next stop.</p>
+<p>Mimi, Orla, Nori, Pogo, Taro, and Fia wait at Levels 5, 10, 15, 20, 25, and 30. These Guardians do not fight or punish mistakes. Each introduces a friendly check: a one-time box move, repeated safe shuffles, picture-first matching, extra unused boxes, a halfway mirror, or a final combination. Finishing Fia&#39;s festival check means every route has received a correctly sorted lunchbox.</p></div>
+      <div class="game-info-section"><h3>How the Systems Work</h3><p>Every level contains exactly five food prompts. The current food appears as a large picture, and the available lunchboxes show color swatches. Players may tap a box or drag the food onto it; both inputs use the same answer rule.</p>
+<p>Correct matches fill one fifth of the progress bar and award a food sticker for the result parade. A wrong box stays available and gives supportive feedback, so the child can look again without losing a life or restarting the level.</p>
+<p>Picture-only levels visually remove printed food and color names while keeping accessible labels for screen readers. Decoy levels add one or two unused boxes, but the correct color is always present. Moving-box levels rearrange choices only after a correct answer and never while a drag is active.</p>
+<p>The highest unlocked level is stored locally in the browser. A returning player can replay any unlocked card; clearing a level unlocks the next one, and Level 30 remains replayable after the festival is complete.</p></div>
+      <div class="game-info-section"><h3>How to Play</h3><ol><li>Choose an unlocked level from the horizontal level path.</li><li>Look at the large food picture and compare it with the lunchbox colors.</li><li>Tap the matching lunchbox, or drag the food onto it.</li><li>If a box moves after a match, wait for it to settle before choosing again.</li><li>Pack all five foods to see the sticker parade and unlock the next level.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Strategy Tips</h3><ul><li>Name the food first, then check its visible color; this helps when two warm or cool colors appear together.</li><li>In picture-only levels, use the food itself and the large color swatches rather than searching for text.</li><li>When an extra box has no matching food, treat it as a looking clue rather than guessing quickly.</li><li>After boxes settle into new places, pause and scan the full row again. Their colors do not change.</li></ul></div>
+      <div class="game-info-section"><h3>Campaign and Difficulty Growth</h3><p>Levels 1-5 establish fixed-box matching with familiar fruit, vegetables, and pantry foods. Mimi closes the first route by moving the boxes once after the third correct food.</p>
+<p>Levels 6-10 compare warm, cool, light, and dark colors. A picture-only picnic removes visible words, and Orla&#39;s check rearranges boxes after every successful match.</p>
+<p>Levels 11-15 introduce close pairs such as red and pink or blue and cyan, plus one harmless unused box. Nori combines picture-first clues with a decoy choice.</p>
+<p>Levels 16-20 group foods by vegetable, fruit, breakfast, and snack themes. Pogo&#39;s buffet presents seven boxes for five foods, requiring careful elimination without extending the session.</p>
+<p>Levels 21-25 revisit moving boxes and picture matching in stronger combinations. Taro mirrors the box order once halfway through the garden check.</p>
+<p>Levels 26-30 use six-box rainbows, warm-and-cool alternation, two decoys, and repeated safe movement. Fia&#39;s festival combines picture-only clues, one unused box, and a shuffle after each correct answer.</p></div>
+      <div class="game-info-section"><h3>Developer Design Note</h3><p>We kept every level to five foods so a young player can finish a complete task in a short sitting. The game supports both tapping and dragging because either movement may be more comfortable on a particular phone, tablet, mouse, or accessibility setup. Difficulty comes from observation rather than speed: close colors, unused boxes, and position changes are introduced one idea at a time, with visible settling animations and locked input during motion. The Guardian checkpoints give the 30-level path memorable landmarks without turning a preschool sorting game into combat. Unlike WeightPlay&#39;s action games, Animal Color Lunchbox has no timer, lives, ads, or failure state; its purpose is calm repeated practice and a clear sense of completion.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Parent Note</h3><p>This game may help children practice color recognition, visual comparison, focus, and hand-eye coordination. Adults can ask the child to name the food or explain why two colors look different, but reading is not required. Progress and scores stay in the local browser and are for play only; they are not a developmental test, diagnosis, or school assessment.</p></div>
+      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>Can young children play without reading?</dt><dd>Yes. Food pictures and color swatches carry the core instructions, and picture-only levels deliberately avoid visible answer words.</dd></div><div><dt>How many levels are included?</dt><dd>There are 30 levels, each containing exactly five food matches, with Guardian checkpoints every five levels.</dd></div><div><dt>Why do some lunchboxes move?</dt><dd>Selected later levels rearrange boxes after a correct match. Input is paused during the short settling animation, and boxes never move during a drag.</dd></div><div><dt>Can an extra box make a level impossible?</dt><dd>No. Decoy boxes are unused colors; the correct lunchbox for every food is always present.</dd></div><div><dt>Is the game timed or can a child lose?</dt><dd>There is no timer, life limit, or losing screen. A wrong choice gives supportive feedback and another try.</dd></div><div><dt>Does progress carry over?</dt><dd>The highest unlocked level is saved in this browser. Clearing browser storage may remove that local progress.</dd></div><div><dt>Does Animal Color Lunchbox show ads?</dt><dd>No. This Kids game does not request ads or reserve advertising space.</dd></div><div><dt>Are scores formal assessments?</dt><dd>No. Scores and progress are playful feedback, not a measure of development or ability.</dd></div></dl></div>
+    </div>
+  </section>
+    <!-- adsense-static-guide:end -->
+    <script src="/src/site-config.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/version.js?v=20260701-version2"></script>
+    <script src="../../src/analytics.js?v=20260701-analytics2"></script>
+    <script>
+      window.WonderAnalytics?.track("game_view", { game_id: "color-lunchbox" });
+    </script>
+    <script src="../../src/sound.js?v=20260701-labels1"></script>
+    <script src="../../src/edge-guard.js?v=20260710-mobile-play-shell2"></script>
+    <script src="/src/i18n.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
+    <script src="game.js?v=20260717-zh-hans1"></script>
+    <script src="../../src/game-page-info.js?v=20260717-zh-hans1"></script>
+  </body>
+</html>
