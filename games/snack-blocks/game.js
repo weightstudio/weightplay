@@ -1041,29 +1041,42 @@
     const shell = document.querySelector(".snack-game");
     shell?.classList.remove("weightplay-active-viewport");
     const scale = Math.min(Math.max(1, viewportWidth) / 390, Math.max(1, viewportHeight) / 788);
-    const width = 390 * scale;
-    const height = 788 * scale;
-    const left = (viewportWidth - width) / 2;
-    const top = viewportHeight - height;
+    const logicalWidth = viewportWidth / scale;
+    const logicalHeight = viewportHeight / scale;
     document.documentElement.style.setProperty("--snack-frame-scale", String(scale));
-    document.documentElement.style.setProperty("--snack-frame-left", `${left}px`);
-    document.documentElement.style.setProperty("--snack-frame-top", `${top}px`);
-    document.documentElement.style.setProperty("--snack-frame-width", `${width}px`);
-    document.documentElement.style.setProperty("--snack-frame-height", `${height}px`);
+    document.documentElement.style.setProperty("--snack-frame-left", "0px");
+    document.documentElement.style.setProperty("--snack-frame-top", "0px");
+    document.documentElement.style.setProperty("--snack-logical-width", `${logicalWidth}px`);
+    document.documentElement.style.setProperty("--snack-logical-height", `${logicalHeight}px`);
+    document.documentElement.style.setProperty("--snack-frame-width", `${viewportWidth}px`);
+    document.documentElement.style.setProperty("--snack-frame-height", `${viewportHeight}px`);
     shell?.style.setProperty("position", "fixed", "important");
     shell?.style.setProperty("inset", "auto", "important");
-    shell?.style.setProperty("left", `${left}px`, "important");
-    shell?.style.setProperty("top", `${top}px`, "important");
-    shell?.style.setProperty("width", "390px", "important");
-    shell?.style.setProperty("height", "788px", "important");
-    shell?.style.setProperty("min-height", "788px", "important");
+    shell?.style.setProperty("left", "0px", "important");
+    shell?.style.setProperty("top", "0px", "important");
+    shell?.style.setProperty("width", `${logicalWidth}px`, "important");
+    shell?.style.setProperty("min-width", "0px", "important");
+    shell?.style.setProperty("max-width", "none", "important");
+    shell?.style.setProperty("height", `${logicalHeight}px`, "important");
+    shell?.style.setProperty("min-height", "0px", "important");
+    shell?.style.setProperty("max-height", "none", "important");
     shell?.style.setProperty("transform", `scale(${scale})`, "important");
     shell?.style.setProperty("transform-origin", "top left", "important");
+    if (shell) {
+      shell.dataset.logicalWidth = logicalWidth.toFixed(4);
+      shell.dataset.logicalHeight = logicalHeight.toFixed(4);
+      shell.dataset.commonScale = scale.toFixed(6);
+    }
   }
 
   function resetSnackFrame() {
     const shell = document.querySelector(".snack-game");
-    for (const property of ["position", "inset", "left", "top", "width", "height", "min-height", "transform", "transform-origin"]) shell?.style.removeProperty(property);
+    for (const property of ["position", "inset", "left", "top", "width", "min-width", "max-width", "height", "min-height", "max-height", "transform", "transform-origin"]) shell?.style.removeProperty(property);
+    if (shell) {
+      delete shell.dataset.logicalWidth;
+      delete shell.dataset.logicalHeight;
+      delete shell.dataset.commonScale;
+    }
   }
 
   function exitSharedPlayViewport() {

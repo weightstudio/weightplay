@@ -60,6 +60,41 @@ const pageMeta = {
   },
 };
 
+const accessibleNames = {
+  en: {
+    language: "Language",
+    home: "Back to Kids lobby",
+    stageBack: "Back to main",
+    levelProgress: "Level progress",
+    battleBack: "Back to stages",
+    answerChoices: "Answer choices",
+  },
+  "zh-Hant": {
+    language: "\u8a9e\u8a00",
+    home: "\u8fd4\u56de Kids \u5927\u5ef3",
+    stageBack: "\u8fd4\u56de\u4e3b\u756b\u9762",
+    levelProgress: "\u95dc\u5361\u9032\u5ea6",
+    battleBack: "\u8fd4\u56de\u95dc\u5361\u9078\u64c7",
+    answerChoices: "\u7b54\u6848\u9078\u9805",
+  },
+  "zh-Hans": {
+    language: "\u8bed\u8a00",
+    home: "\u8fd4\u56de Kids \u5927\u5385",
+    stageBack: "\u8fd4\u56de\u4e3b\u753b\u9762",
+    levelProgress: "\u5173\u5361\u8fdb\u5ea6",
+    battleBack: "\u8fd4\u56de\u5173\u5361\u9009\u62e9",
+    answerChoices: "\u7b54\u6848\u9009\u9879",
+  },
+  es: {
+    language: "Idioma",
+    home: "Volver a la sala infantil",
+    stageBack: "Volver al inicio",
+    levelProgress: "Progreso del nivel",
+    battleBack: "Volver a los niveles",
+    answerChoices: "Opciones de respuesta",
+  },
+};
+
 const GAME_ID = "animal-quiz";
 const UNLOCK_KEY = "animalQuizUnlockedStage";
 const PROGRESS_KEY = "animalQuizProgress";
@@ -562,12 +597,20 @@ function locale() {
   return window.WonderI18n?.locale() || "en";
 }
 
+function actualLocale() {
+  return window.WonderI18n?.actualLocale?.() || locale();
+}
+
 function t(key, params = {}) {
   const table = dictionary[locale()] || dictionary.en;
   const fallback = dictionary.en;
   return Object.entries(params).reduce((text, [name, value]) => {
     return text.replaceAll(`{${name}}`, String(value));
   }, table[key] || fallback[key] || key);
+}
+
+function accessibleName(key) {
+  return accessibleNames[actualLocale()]?.[key] || accessibleNames.en[key] || key;
 }
 
 function shuffle(items) {
@@ -662,9 +705,15 @@ function scheduleReadinessFallback() {
 }
 
 function renderStaticText() {
-  document.documentElement.lang = locale();
-  localeSelect.value = locale();
+  document.documentElement.lang = actualLocale();
+  localeSelect.value = actualLocale();
   languageLabel.textContent = t("language");
+  localeSelect.setAttribute("aria-label", accessibleName("language"));
+  homeLink.setAttribute("aria-label", accessibleName("home"));
+  stageBackBtn.setAttribute("aria-label", accessibleName("stageBack"));
+  levelLine.setAttribute("aria-label", accessibleName("levelProgress"));
+  backToStagesBtn.setAttribute("aria-label", accessibleName("battleBack"));
+  choiceGrid.setAttribute("aria-label", accessibleName("answerChoices"));
   titleText.textContent = t("title");
   mainTitle.textContent = t("title");
   mainIntro.textContent = t("mainIntro");

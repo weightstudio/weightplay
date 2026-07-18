@@ -5,6 +5,7 @@
     "animal-abyss-diver": [".battle-canvas", 390, 788],
     "animal-auto-squad": ["#gamePanel", 382, 780],
     "animal-cafe-rush": ["#playPanel", 382, 780],
+    "animal-coloring-studio": [".battle-canvas", 390, 788],
     "animal-crystal-survivor": ["#gamePanel", 382, 780],
     "animal-gearpack-expedition": [".battle-canvas", 390, 788],
     "animal-guard-yard": [".fixed-game-shell", 390, 450],
@@ -33,6 +34,7 @@
     "snack-blocks": [".snack-game", 382, 780],
     "star-memory": [".memory-game", 382, 780],
     "tiny-weather-rescue": ["#playPanel", 366, 764],
+    "wonder-crash": [".game-shell", 390, 788],
     "zoo-helper-day": ["#playPanel", 374, 776],
   };
   const gameId = location.pathname.match(/\/games\/([^/]+)/)?.[1] || "";

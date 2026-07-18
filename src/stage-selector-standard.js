@@ -15,7 +15,8 @@
   let appliedStageRoot = null;
   let appliedStageWidth = 0;
   let appliedStageHeight = 0;
-  const nativeStageScalers = new Set(["bubble-bakery", "color-lunchbox", "garden-tiles", "wonder-crash"]);
+  const savedStageStyles = new WeakMap();
+  const nativeStageScalers = new Set();
   const stageRootByGame = {
     "animal-guard-yard": "#menuPanel",
     "animal-quiz": ".animal-game",
@@ -66,11 +67,12 @@
 
   function stageRootFor(rail) {
     const mapped = stageRootByGame[gameId()];
+    let root = null;
     if (mapped) {
-      const root = document.querySelector(mapped);
-      if (root?.contains(rail)) return root;
+      const mappedRoot = document.querySelector(mapped);
+      if (mappedRoot?.contains(rail)) root = mappedRoot;
     }
-    return rail.closest([
+    root ||= rail.closest([
       "[data-wp-standard-stage-screen]",
       "[data-screen='stage']",
       "#stageScreen",
@@ -87,6 +89,30 @@
       ".level-select",
       ".world-map-panel",
     ].join(","));
+    root ||= rail.closest("main") || rail.parentElement;
+    if (!root) return null;
+    for (let ancestor = root.parentElement; ancestor && ancestor !== document.body; ancestor = ancestor.parentElement) {
+      const style = getComputedStyle(ancestor);
+      if (style.transform !== "none" || style.perspective !== "none" || style.filter !== "none") root = ancestor;
+    }
+    return root;
+  }
+
+  function rememberStageStyles(root) {
+    if (!root || savedStageStyles.has(root)) return;
+    const properties = ["position", "inset", "top", "right", "bottom", "left", "box-sizing", "width", "min-width", "max-width", "height", "min-height", "max-height", "margin", "overflow", "transform", "transform-origin"];
+    savedStageStyles.set(root, Object.fromEntries(properties.map((property) => [property, [root.style.getPropertyValue(property), root.style.getPropertyPriority(property)]])));
+  }
+
+  function restoreStageStyles(root) {
+    const saved = root && savedStageStyles.get(root);
+    if (!saved) return;
+    Object.entries(saved).forEach(([property, [value, priority]]) => {
+      if (value) root.style.setProperty(property, value, priority);
+      else root.style.removeProperty(property);
+    });
+    savedStageStyles.delete(root);
+    root.removeAttribute("data-wp-logical-stage-canvas");
   }
 
   function sharedReserve() {
@@ -109,22 +135,25 @@
     const reserveHeight = isKidsAudience() ? 0 : STAGE_RESERVE_HEIGHT;
     const activeRails = [...document.querySelectorAll("[data-wp-stage-rail]")]
       .filter((rail) => rail.getClientRects().length && getComputedStyle(rail).visibility !== "hidden");
-    const retainedManagementRoot = [...document.querySelectorAll("[data-wp-logical-stage-canvas]")]
-      .find(stageRootVisible) || null;
     document.querySelectorAll("[data-wp-logical-stage-canvas]").forEach((root) => {
-      if (!activeRails.some((rail) => root.contains(rail)) && root !== retainedManagementRoot) root.removeAttribute("data-wp-logical-stage-canvas");
+      if (!activeRails.some((rail) => root.contains(rail))) root.removeAttribute("data-wp-logical-stage-canvas");
     });
 
-    const useSharedScaler = (activeRails.length > 0 || retainedManagementRoot) && !nativeStageScalers.has(gameId());
+    const useSharedScaler = activeRails.length > 0 && !nativeStageScalers.has(gameId());
+    metrics.stageLastGameId = gameId();
+    metrics.stageLastActiveRails = activeRails.length;
+    metrics.stageLastUseSharedScaler = useSharedScaler;
     const reserve = sharedReserve();
     reserve?.toggleAttribute("data-wp-stage-reserve-active", useSharedScaler);
     if (!useSharedScaler) {
+      restoreStageStyles(appliedStageRoot);
       appliedStageRoot = null;
       return;
     }
 
-    const root = activeRails.length ? stageRootFor(activeRails[0]) : retainedManagementRoot;
+    const root = stageRootFor(activeRails[0]);
     if (!root) return;
+    if (appliedStageRoot && appliedStageRoot !== root) restoreStageStyles(appliedStageRoot);
     const viewport = window.visualViewport;
     const width = Math.max(1, viewport?.width || window.innerWidth);
     const height = Math.max(1, viewport?.height || window.innerHeight);
@@ -153,6 +182,14 @@
     style.setProperty("--wp-stage-canvas-rendered-width", `${renderedWidth}px`);
     style.setProperty("--wp-stage-canvas-rendered-height", `${renderedHeight}px`);
     style.setProperty("--wp-stage-reserve-top", `${availableHeight}px`);
+    rememberStageStyles(root);
+    const declarations = {
+      position: "fixed", inset: "auto", top: `${top}px`, right: "auto", bottom: "auto", left: `${left}px`,
+      "box-sizing": "border-box", width: `${logicalWidth}px`, "min-width": `${logicalWidth}px`, "max-width": `${logicalWidth}px`,
+      height: `${logicalHeight}px`, "min-height": `${logicalHeight}px`, "max-height": `${logicalHeight}px`, margin: "0", overflow: "hidden",
+      transform: `scale(${scale})`, "transform-origin": "top left",
+    };
+    Object.entries(declarations).forEach(([property, value]) => root.style.setProperty(property, value, "important"));
     appliedStageRoot = root;
     appliedStageWidth = width;
     appliedStageHeight = height;
@@ -170,11 +207,9 @@
   }
 
   function updateStageState() {
-    const activeRail = [...document.querySelectorAll("[data-wp-stage-rail][data-wp-stage-initially-hidden='true']")]
+    const activeRail = [...document.querySelectorAll("[data-wp-stage-rail]")]
       .some((rail) => rail.getClientRects().length && getComputedStyle(rail).visibility !== "hidden");
-    const activeManagementRoot = [...document.querySelectorAll("[data-wp-logical-stage-canvas]")]
-      .some(stageRootVisible);
-    const active = activeRail || activeManagementRoot
+    const active = activeRail
       || (gameId() === "animal-auto-squad" && document.body.classList.contains("squad-stage-select"));
     document.body?.classList.toggle("wp-stage-select-active", active);
     document.documentElement.classList.toggle("wp-stage-select-active", active);
@@ -509,6 +544,28 @@
     });
     if (observerNeedsState || observerNeedsLocale || observerRails.size) queueObserverFlush();
   }).observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ["class", "hidden", "lang"] });
+  document.addEventListener("click", (event) => {
+    const target = event.target?.closest?.("button,a,[role='button']");
+    if (!target) return;
+    const mainEntry = mainStartByGame[gameId()] || "[data-wp-main-start]";
+    if (!target.matches(mainEntry) && !target.closest(railSelector) && !target.matches('[data-wp-return="stage"]')) return;
+    if (target.matches(mainEntry)) {
+      let remainingFrames = 120;
+      const probeStageEntry = () => {
+        const visibleRail = [...document.querySelectorAll("[data-wp-stage-rail]")]
+          .some((rail) => rail.getClientRects().length && getComputedStyle(rail).visibility !== "hidden");
+        if (visibleRail || remainingFrames-- <= 0) {
+          updateStageState();
+          return;
+        }
+        requestAnimationFrame(probeStageEntry);
+      };
+      requestAnimationFrame(probeStageEntry);
+    }
+    requestAnimationFrame(() => requestAnimationFrame(updateStageState));
+    window.setTimeout(updateStageState, 250);
+    window.setTimeout(updateStageState, 700);
+  }, true);
   window.addEventListener("wonder:locale-change", standardizeMainStart);
   window.addEventListener("resize", updateStageCanvas, { passive: true });
   window.visualViewport?.addEventListener("resize", updateStageCanvas, { passive: true });

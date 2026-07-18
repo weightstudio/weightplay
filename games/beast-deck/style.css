@@ -1921,6 +1921,27 @@ body.beast-deck-playing #gamePanel.result-open > .action-area { pointer-events:n
   background-repeat: no-repeat;
 }
 
+/* The shared logical root already excludes the physical 56px reserve. */
+body.wp-stage-select-active[data-wp-game-id="beast-deck"] [data-wp-logical-stage-canvas] > #stagePanel.wp-standard-stage-panel {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  min-width: 100% !important;
+  max-width: 100% !important;
+  height: 100% !important;
+  min-height: 100% !important;
+  max-height: 100% !important;
+}
+
+body.wp-stage-select-active[data-wp-game-id="beast-deck"] .beast-deck-app > .topbar {
+  display: none !important;
+}
+
+body.wp-stage-select-active[data-wp-game-id="beast-deck"] .beast-deck-app {
+  border-inline: 0 !important;
+  box-shadow: none !important;
+}
+
 .beast-stage-workspace {
   min-width: 0;
   min-height: 0;

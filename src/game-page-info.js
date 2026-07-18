@@ -13,14 +13,14 @@
     script.dataset.wpStageStandard = "true";
     document.head.appendChild(script);
   }
-  if (!document.querySelector('link[data-wp-battle-standard], link[href*="battle-canvas-standard.css"]')) {
+  if (!document.querySelector('link[href*="battle-canvas-standard.css"]')) {
     const link = document.createElement("link");
     link.rel = "stylesheet";
     link.href = new URL("battle-canvas-standard.css", sharedAssetBase).href;
     link.dataset.wpBattleStandard = "true";
     document.head.appendChild(link);
   }
-  if (!document.querySelector('script[data-wp-battle-standard], script[src*="battle-canvas-standard.js"]')) {
+  if (!document.querySelector('script[src*="battle-canvas-standard.js"]')) {
     const script = document.createElement("script");
     script.src = new URL("battle-canvas-standard.js", sharedAssetBase).href;
     script.dataset.wpBattleStandard = "true";
