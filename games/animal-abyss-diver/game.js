@@ -454,7 +454,7 @@
   function focusRoute(route=state.route){requestAnimationFrame(()=>{
     const cards=[...document.querySelectorAll("#routeRail .route-card:not(:disabled)")];
     const target=cards[Math.max(0,Math.min(cards.length-1,(route||1)-1))]||cards[0];
-    document.querySelectorAll("#routeRail .route-card").forEach(card=>card.classList.toggle("is-selected",card===target));
+    document.querySelectorAll("#routeRail .route-card").forEach(card=>{const selected=card===target;card.classList.toggle("is-selected",selected);if(selected)card.setAttribute("aria-current","step");else card.removeAttribute("aria-current");});
     target?.focus({preventScroll:true});
   });}
   function quitBackgroundNodes(){return [...document.querySelectorAll(".battle-canvas > :not(#quitPanel):not(#result)")];}
@@ -709,6 +709,14 @@
   let drag;
   let suppressRouteClickUntil = 0;
   const routeRail = $("routeRail");
+  function syncCenteredRouteSelection(){
+    const cards=[...routeRail.querySelectorAll(".route-card")];
+    if(!cards.length||!routeRail.getClientRects().length)return;
+    const railRect=routeRail.getBoundingClientRect(),center=railRect.left+railRect.width/2;
+    const nearest=cards.reduce((best,card)=>{const rect=card.getBoundingClientRect(),distance=Math.abs(rect.left+rect.width/2-center);return!best||distance<best.distance?{card,distance}:best;},null)?.card;
+    cards.forEach(card=>{const selected=card===nearest;card.classList.toggle("is-selected",selected);if(selected)card.setAttribute("aria-current","step");else card.removeAttribute("aria-current");});
+  }
+  routeRail.addEventListener("wonder:stage-snap",()=>requestAnimationFrame(syncCenteredRouteSelection));
   routeRail.addEventListener("pointerdown", (event) => {
     if (routeRail.dataset.wpStageRail === "true") return;
     drag = { id: event.pointerId, x: event.clientX, left: routeRail.scrollLeft, active: false };

@@ -269,8 +269,8 @@
 .fish-guard span { display: inline-flex; align-items: center; justify-content: center; gap: 3px; }
 .fish-guard .ui-icon { width: 22px; height: 22px; }
 .fish-guard i,.fish-timer i { height: 6px; overflow: hidden; border-radius: 999px; background: #173d50; }
-.fish-guard b,.fish-timer b { display: block; width: 0; height: 100%; background: #70e2b4; transition: width 0.25s ease; }
-.fish-timer b { width: 100%; background: #ffd166; transform-origin: left; }
+.fish-guard i > b,.fish-timer i > b { display: block; width: 0; height: 100%; background: #70e2b4; transition: width 0.25s ease; }
+.fish-timer i > b { width: 100%; background: #ffd166; transform-origin: left; }
 .fish-actions { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
 .fish-actions button { min-height: 42px; display: inline-flex; align-items: center; justify-content: center; gap: 2px; border: 0; border-radius: 10px; background: #f2ca5b; color: #15243a; font-weight: 900; }
 .fish-actions button .ui-icon { width: 32px; height: 32px; }
@@ -448,8 +448,8 @@
 .fish-timer span,.fish-guard span{display:inline-flex;justify-content:space-between}
 #fishTimerText,#fishGuardText{display:flex!important;justify-content:space-between;gap:4px;white-space:nowrap}
 .fish-timer i,.fish-guard i{height:9px}
-.fish-timer b,.fish-guard b{background:#63dfad}
-.fish-guard b{background:#ff7770}
+.fish-timer i>b,.fish-guard i>b{background:#63dfad}
+.fish-guard i>b{background:#ff7770}
 .fish-actions{grid-column:1/-1;grid-row:5;grid-template-columns:1fr 1fr}
 .fish-actions button{min-height:48px;font-size:.86rem}
 .fish-encounter.is-countering .combat-diver{animation:fish-hit .24s ease 2 alternate}

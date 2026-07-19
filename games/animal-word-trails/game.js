@@ -111,6 +111,7 @@
       };
       rail.append(card);
     });
+    scheduleCenteredStageCard();
     $('stageProgress').textContent=(stage+1)+'/'+packs[lang].length+' · '+(lang==='en'?'Cards ':'\u7dda\u7d22\u5361 ')+cards;
   };
   function reveal(word){
@@ -153,6 +154,20 @@
     $('loadingTitle').textContent=t('loading');
   };
   const rail=$('stageRail');
+  let centerCueFrame=0;
+  function updateCenteredStageCard(){
+    centerCueFrame=0;
+    const cards=[...rail.querySelectorAll('.stage-card')];
+    if(!cards.length)return;
+    const rect=rail.getBoundingClientRect(),center=rect.left+rect.width/2;
+    const centered=cards.reduce((best,card)=>Math.abs(card.getBoundingClientRect().left+card.getBoundingClientRect().width/2-center)<Math.abs(best.getBoundingClientRect().left+best.getBoundingClientRect().width/2-center)?card:best,cards[0]);
+    cards.forEach(card=>{const current=card===centered;card.classList.toggle('is-centered',current);if(current)card.setAttribute('aria-current','true');else card.removeAttribute('aria-current')});
+  }
+  function scheduleCenteredStageCard(){if(centerCueFrame)return;centerCueFrame=requestAnimationFrame(updateCenteredStageCard)}
+  rail.addEventListener('scroll',scheduleCenteredStageCard,{passive:true});
+  window.addEventListener('wonder:stage-snap',scheduleCenteredStageCard);
+  window.addEventListener('resize',scheduleCenteredStageCard,{passive:true});
+  window.visualViewport?.addEventListener('resize',scheduleCenteredStageCard,{passive:true});
   const rejectRepeatedActivation=event=>{
     if(event.repeat&&(event.key==='Enter'||event.key===' ')){event.preventDefault();event.stopImmediatePropagation();}
   };

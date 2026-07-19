@@ -456,6 +456,7 @@
   let arenaControlSignature = "";
   let soundAt = {};
   let preloadFinished = false;
+  let pauseFocusOwner = null;
 
   function t(key, data = {}) {
     const actualLocale = window.WonderI18n?.actualLocale?.() || document.documentElement.lang || locale;
@@ -1223,9 +1224,10 @@
     }
   }
 
-  function setPaused(paused) {
+  function setPaused(paused, focusOwner = document.activeElement) {
     if (paused) {
       if (state.mode !== "running") return;
+      pauseFocusOwner = focusOwner instanceof HTMLElement && focusOwner.isConnected ? focusOwner : canvas;
       cancelPointerAim();
       cancelAnimationFrame(raf);
       state.mode = "paused";
@@ -1242,7 +1244,9 @@
     state.mode = "running";
     lastFrame = performance.now();
     raf = requestAnimationFrame(loop);
-    window.requestAnimationFrame(() => canvas.focus({ preventScroll: true }));
+    const focusTarget = pauseFocusOwner instanceof HTMLElement && pauseFocusOwner.isConnected ? pauseFocusOwner : canvas;
+    pauseFocusOwner = null;
+    window.requestAnimationFrame(() => focusTarget.focus({ preventScroll: true }));
   }
 
   function update(dt) {
@@ -1935,13 +1939,14 @@
   nodes.mapBtn.addEventListener("keydown", (event) => {
     if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
   });
-  nodes.mapBtn.addEventListener("click", () => setPaused(true));
+  nodes.mapBtn.addEventListener("click", () => setPaused(true, nodes.mapBtn));
   nodes.pauseBtn.addEventListener("keydown", (event) => {
     if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
   });
-  nodes.pauseBtn.addEventListener("click", () => setPaused(true));
+  nodes.pauseBtn.addEventListener("click", () => setPaused(true, nodes.pauseBtn));
   nodes.resumeBtn.addEventListener("click", () => setPaused(false));
   nodes.pauseMapBtn.addEventListener("click", () => {
+    pauseFocusOwner = null;
     state.mode = "stage";
     nodes.pausePanel.classList.add("is-hidden");
     show(nodes.stagePanel);
