@@ -13,9 +13,12 @@
   --accent: #77a4ff;
   --squad-stage-scale: 1;
   --squad-stage-width: 390px;
+  --squad-stage-height: 788px;
+  --squad-canvas-left: 0px;
   --squad-stage-rendered-width: 390px;
   --squad-battle-scale: 1;
   --squad-battle-width: 382px;
+  --squad-battle-height: 780px;
 }
 
 * { box-sizing: border-box; }
@@ -100,20 +103,21 @@ body.squad-stage-select .squad-app, body.squad-active .squad-app { position: fix
 
 .stage-panel, .game-panel {
   position: fixed;
-  left: 50%;
-  bottom: 56px;
-  height: 780px;
+  top: 0;
+  left: var(--squad-canvas-left);
   margin: 0;
   border-radius: 18px 18px 0 0;
-  transform-origin: 50% 100%;
+  transform-origin: top left;
 }
 .stage-panel {
   width: var(--squad-stage-width);
-  transform: translateX(-50%) scale(var(--squad-stage-scale));
+  height: var(--squad-stage-height);
+  transform: scale(var(--squad-stage-scale));
 }
 .game-panel {
   width: var(--squad-battle-width);
-  transform: translateX(-50%) scale(var(--squad-battle-scale));
+  height: var(--squad-battle-height);
+  transform: scale(var(--squad-battle-scale));
 }
 body.squad-active::before {
   content: "";

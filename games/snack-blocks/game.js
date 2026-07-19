@@ -114,6 +114,10 @@
       stageSelectAria: "Stage selection",
       stageBackAria: "Back to main",
       battleBackAria: "Back to stages",
+      pauseAria: "Pause game",
+      pauseTitle: "Game paused",
+      pauseText: "Your board is waiting. Resume when you are ready.",
+      resume: "Resume",
       leaveTitle: "Leave this stage?",
       leaveText: "Your board, moves, score, and combo will be lost.",
       keepPlaying: "Keep Playing",
@@ -257,6 +261,19 @@
     snackST: "Fresa", snackCK: "Galleta", snackJM: "Caramelo", snackGR: "Uva", snackCH: "Queso", snackPR: "Pretzel",
   };
 
+  Object.assign(text["zh-Hant"], {
+    pauseAria: "\u66ab\u505c\u904a\u6232",
+    pauseTitle: "\u904a\u6232\u5df2\u66ab\u505c",
+    pauseText: "\u68cb\u76e4\u6b63\u5728\u7b49\u4f60\uff0c\u6e96\u5099\u597d\u518d\u7e7c\u7e8c\u3002",
+    resume: "\u7e7c\u7e8c\u904a\u73a9",
+  });
+  Object.assign(text.es, {
+    pauseAria: "Pausar el juego",
+    pauseTitle: "Juego en pausa",
+    pauseText: "Tu tablero te espera. Continúa cuando quieras.",
+    resume: "Continuar",
+  });
+
   const stageNameTranslations = {
     "zh-Hant": {
       "Picnic Path": "野餐小徑",
@@ -338,6 +355,7 @@
     startBtn: document.getElementById("startBtn"),
     stageBackBtn: document.getElementById("stageBackBtn"),
     battleBackBtn: document.getElementById("battleBackBtn"),
+    pauseBtn: document.getElementById("pauseBtn"),
     stageTitle: document.getElementById("stageTitle"),
     stageHelp: document.getElementById("stageHelp"),
     menuTitle: document.getElementById("menuTitle"),
@@ -385,6 +403,7 @@
     suppressClick: false,
     focusIndex: null,
     leaveConfirmOpen: false,
+    decisionMode: null,
   };
   let boardGeneration = 0;
   let boardLifecycleSuspended = document.hidden;
@@ -437,6 +456,13 @@
       value = value.replaceAll(`{${name}}`, data[name]);
     });
     return value;
+  }
+
+  function applyDecisionText() {
+    nodes.leaveConfirmTitle.textContent = t(state.decisionMode === "pause" ? "pauseTitle" : "leaveTitle");
+    nodes.leaveConfirmText.textContent = t(state.decisionMode === "pause" ? "pauseText" : "leaveText");
+    nodes.keepPlayingBtn.textContent = t(state.decisionMode === "pause" ? "resume" : "keepPlaying");
+    nodes.leaveStageBtn.textContent = t("leaveStage");
   }
 
   function activeStage() {
@@ -626,11 +652,9 @@
     nodes.stagePanel.setAttribute("aria-label", t("stageSelectAria"));
     nodes.stageBackBtn.setAttribute("aria-label", t("stageBackAria"));
     nodes.battleBackBtn.setAttribute("aria-label", t("battleBackAria"));
+    nodes.pauseBtn.setAttribute("aria-label", t("pauseAria"));
     nodes.board.setAttribute("aria-label", t("boardAria"));
-    nodes.leaveConfirmTitle.textContent = t("leaveTitle");
-    nodes.leaveConfirmText.textContent = t("leaveText");
-    nodes.keepPlayingBtn.textContent = t("keepPlaying");
-    nodes.leaveStageBtn.textContent = t("leaveStage");
+    applyDecisionText();
     renderStageGrid();
     updateHud();
     if (state.running && !state.busy) renderBoard();
@@ -796,6 +820,7 @@
     nodes.resultPanel.classList.add("hidden");
     nodes.leaveConfirmPanel.classList.add("hidden");
     state.leaveConfirmOpen = false;
+    state.decisionMode = null;
     setBattleCovered(false);
     nodes.hud.classList.add("hidden");
     nodes.playPanel.classList.add("hidden");
@@ -1156,6 +1181,7 @@
     nodes.resultPanel.classList.add("hidden");
     nodes.leaveConfirmPanel.classList.add("hidden");
     state.leaveConfirmOpen = false;
+    state.decisionMode = null;
     setBattleCovered(false);
     nodes.hud.classList.remove("hidden");
     nodes.playPanel.classList.remove("hidden");
@@ -1247,10 +1273,12 @@
     (nodes.board.querySelector(`[data-index="${index}"]`) || nodes.board.querySelector(".tile:not(:disabled)"))?.focus({ preventScroll: true });
   }
 
-  function openLeaveConfirm() {
+  function openBattleDecision(mode) {
     if (state.leaveConfirmOpen || !state.running || !nodes.resultPanel.classList.contains("hidden")) return;
     state.leaveConfirmOpen = true;
+    state.decisionMode = mode;
     suspendBoardTasks();
+    applyDecisionText();
     nodes.leaveConfirmPanel.classList.remove("hidden");
     setBattleCovered(true);
     requestAnimationFrame(() => nodes.keepPlayingBtn.focus({ preventScroll: true }));
@@ -1258,11 +1286,13 @@
 
   function closeLeaveConfirm(restoreFocus = true) {
     if (!state.leaveConfirmOpen) return;
+    const mode = state.decisionMode;
     state.leaveConfirmOpen = false;
+    state.decisionMode = null;
     nodes.leaveConfirmPanel.classList.add("hidden");
     setBattleCovered(false);
     resumeBoardTasks();
-    if (restoreFocus) requestAnimationFrame(focusBoardTile);
+    if (restoreFocus) requestAnimationFrame(() => mode === "pause" ? nodes.pauseBtn.focus({ preventScroll: true }) : focusBoardTile());
   }
 
   function leaveCurrentStage() {
@@ -1321,7 +1351,8 @@
   nodes.stageGrid.addEventListener("keydown", rejectRepeatedScreenActivation, true);
   nodes.startBtn.addEventListener("click", () => showStage());
   nodes.stageBackBtn.addEventListener("click", showMain);
-  nodes.battleBackBtn.addEventListener("click", openLeaveConfirm);
+  nodes.battleBackBtn.addEventListener("click", () => openBattleDecision("leave"));
+  nodes.pauseBtn.addEventListener("click", () => openBattleDecision("pause"));
   nodes.keepPlayingBtn.addEventListener("click", () => closeLeaveConfirm(true));
   nodes.leaveStageBtn.addEventListener("click", leaveCurrentStage);
   nodes.leaveConfirmPanel.addEventListener("keydown", (event) => {

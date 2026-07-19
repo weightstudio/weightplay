@@ -180,7 +180,11 @@
     if (root === appliedStageRoot
       && Math.abs(width - appliedStageWidth) < 0.5
       && Math.abs(height - appliedStageHeight) < 0.5) return;
-    const availableWidth = width;
+    const requestedMaximumWidth = Number.parseFloat(root.dataset.wpCanvasMaxWidth || "");
+    const maximumWidth = Number.isFinite(requestedMaximumWidth) && requestedMaximumWidth > 0
+      ? requestedMaximumWidth
+      : width;
+    const availableWidth = Math.max(1, Math.min(width, maximumWidth));
     const availableHeight = Math.max(1, height - reserveHeight);
     const scale = Math.max(0.01, Math.min(
       availableWidth / STAGE_LOGICAL_WIDTH,
@@ -190,7 +194,7 @@
     const logicalHeight = availableHeight / scale;
     const renderedWidth = availableWidth;
     const renderedHeight = availableHeight;
-    const left = 0;
+    const left = Math.max(0, (width - availableWidth) / 2);
     const top = 0;
     root.setAttribute("data-wp-logical-stage-canvas", `${logicalWidth.toFixed(3)}x${logicalHeight.toFixed(3)}`);
     const style = document.documentElement.style;
@@ -213,8 +217,8 @@
     if (reserve) {
       rememberReserveStyles(reserve);
       const reserveDeclarations = {
-        position: "fixed", inset: "auto", top: `${availableHeight}px`, right: "auto", bottom: "auto", left: `${left}px`,
-        width: `${renderedWidth}px`, "min-width": "0", "max-width": "none", height: `${reserveHeight}px`, "min-height": `${reserveHeight}px`, transform: "none",
+        position: "fixed", inset: "auto", top: `${availableHeight}px`, right: "auto", bottom: "auto", left: "0px",
+        width: `${width}px`, "min-width": "0", "max-width": "none", height: `${reserveHeight}px`, "min-height": `${reserveHeight}px`, transform: "none",
       };
       Object.entries(reserveDeclarations).forEach(([property, value]) => reserve.style.setProperty(property, value, "important"));
       appliedStageReserve = reserve;

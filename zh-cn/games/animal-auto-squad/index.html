@@ -59,7 +59,7 @@
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
     <link rel="stylesheet" href="../../src/stage-selector-standard.css?v=20260716-kids-stage-swipe3" />
-  <link rel="stylesheet" href="style.css?v=20260718-stage-fullwidth1" />
+  <link rel="stylesheet" href="style.css?v=20260719-desktop-cap1" />
   </head>
   <body data-tutorial-auto-show="false">
     <main class="squad-app">
@@ -94,7 +94,7 @@
         <div class="menu-copy">
           <strong id="menuHeadingText" data-ui="menuTitle">Train and position your animal squad!</strong>
           <span id="menuSubText" data-ui="menuHint">Build your permanent squad and conquer 30 five-wave stages across six regions.</span>
-          <button id="showStageBtn" class="primary-btn" type="button">Choose Expedition</button>
+          <button id="showStageBtn" class="primary-btn" type="button">Start Game</button>
           <div class="profile-grid">
             <div><span data-ui="bestExpedition">Stages Unlocked</span><strong id="bestRoundsText">1/30</strong></div>
             <div><span data-ui="expeditionsCleared">Cleared Runs</span><strong id="clearedRunsText">0</strong></div>
@@ -104,7 +104,7 @@
         </div>
       </section>
 
-      <section id="stagePanel" class="panel stage-panel is-hidden" aria-labelledby="stageSelectTitle">
+      <section id="stagePanel" class="panel stage-panel is-hidden" data-wp-canvas-max-width="920" aria-labelledby="stageSelectTitle">
         <div class="stage-panel-head">
           <button id="stageBackBtn" class="stage-back-btn" data-wp-return="stage" type="button" aria-label="Back">&larr;</button>
           <div>
@@ -119,7 +119,7 @@
         <div class="stage-workspace">
           <section id="stageSelectPane" class="stage-pane is-active" role="tabpanel" aria-labelledby="stageTabBtn">
             <p id="stageSetupText" class="stage-setup-text">Swipe through six regions, choose an unlocked stage, then prepare your formation.</p>
-            <div id="stageRail" class="stage-rail" aria-label="Stage selection"></div>
+            <div id="stageRail" class="stage-rail" data-wp-stage-rail aria-label="Stage selection"></div>
             <div class="stage-legend"><span id="stageSwipeText">↔ Swipe</span><span id="stageDeployText">Tap an unlocked stage to deploy</span></div>
           </section>
           <section id="trainingPane" class="stage-pane training-pane" role="tabpanel" aria-labelledby="trainingTabBtn" hidden>
@@ -142,7 +142,7 @@
         </div>
       </section>
       <!-- Active Play Viewport Container -->
-      <section id="gamePanel" class="panel game-panel play-area is-hidden" data-play-viewport>
+      <section id="gamePanel" class="panel game-panel play-area is-hidden" data-play-viewport data-wp-canvas-max-width="920">
         
         <!-- HUD Line -->
         <div class="hud-row">
@@ -273,9 +273,9 @@
     <script src="/src/i18n.js?v=20260718-locale-routes1"></script>
     <script src="../../src/tutorial.js?v=20260711-auto-squad-guide1"></script>
     <script src="../../src/wallet.js?v=20260706-crystal-diamond-charm1"></script>
-    <script src="../../src/stage-selector-standard.js?v=20260718-auto-squad-expanded1"></script>
-    <script src="../../src/battle-canvas-standard.js?v=20260718-auto-squad-wide1" data-wp-battle-standard></script>
-  <script src="game.js?v=20260718-backpack-roster2-stage-fullwidth1"></script>
+    <script src="../../src/stage-selector-standard.js?v=20260719-auto-squad-desktop-cap1"></script>
+    <script src="../../src/battle-canvas-standard.js?v=20260719-auto-squad-desktop-cap1" data-wp-battle-standard></script>
+  <script src="game.js?v=20260719-desktop-cap1"></script>
     <script>
       (() => {
         const loadGameInfo = () => {

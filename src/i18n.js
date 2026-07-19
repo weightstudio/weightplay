@@ -1794,6 +1794,17 @@
         option.textContent = "Español";
         select.appendChild(option);
       }
+      if (
+        supportedLocales.includes("ja") &&
+        !select.querySelector('option[value="ja"]') &&
+        select.querySelector('option[value="en"]') &&
+        (select.id.toLowerCase().includes("locale") || select.closest(".language-picker") || select.getAttribute("aria-label")?.toLowerCase() === "language")
+      ) {
+        const option = document.createElement("option");
+        option.value = "ja";
+        option.textContent = "日本語";
+        select.appendChild(option);
+      }
       if (select.querySelector(`option[value="${currentLocale}"]`)) select.value = currentLocale;
     });
     if (currentLocale === "zh-Hans") translateTree(document.documentElement);
@@ -1809,7 +1820,7 @@
       try { url = new URL(raw, document.baseURI); } catch { return; }
       if (url.origin !== window.location.origin) return;
       const path = url.pathname;
-      const isLocalizedSurface = path === "/" || path === "/kids/" || /^\/(?:en|zh-tw|zh-cn|es)\/(?:kids\/)?$/i.test(path) || /^\/(?:en|zh-tw|zh-cn|es)\/games\/[a-z0-9-]+\/$/i.test(path) || /^\/games\/[a-z0-9-]+\/$/i.test(path);
+      const isLocalizedSurface = path === "/" || path === "/kids/" || /^\/(?:en|zh-tw|zh-cn|es|ja)\/(?:kids\/)?$/i.test(path) || /^\/(?:en|zh-tw|zh-cn|es|ja)\/games\/[a-z0-9-]+\/$/i.test(path) || /^\/games\/[a-z0-9-]+\/$/i.test(path);
       if (!isLocalizedSurface) return;
       anchor.href = new URL(localizedPath(currentLocale, `${path}${url.search}${url.hash}`), window.location.origin).href;
     });

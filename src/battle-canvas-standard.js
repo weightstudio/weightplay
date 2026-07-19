@@ -112,7 +112,11 @@
       && Math.abs(width - appliedViewportWidth) < 0.5
       && Math.abs(height - appliedViewportHeight) < 0.5
       && stateSignature === appliedStateSignature) return;
-    const availableWidth = Math.max(1, width - GUTTER * 2);
+    const requestedMaximumWidth = Number.parseFloat(root.dataset.wpCanvasMaxWidth || "");
+    const maximumWidth = Number.isFinite(requestedMaximumWidth) && requestedMaximumWidth > 0
+      ? requestedMaximumWidth
+      : width - GUTTER * 2;
+    const availableWidth = Math.max(1, Math.min(width - GUTTER * 2, maximumWidth));
     const availableHeight = Math.max(1, height - RESERVE_HEIGHT - GUTTER * 2);
     const minimumLogicalWidth = config[1];
     const minimumLogicalHeight = config[2];
@@ -126,7 +130,7 @@
     const renderedWidth = availableWidth;
     const renderedHeight = availableHeight;
     const top = GUTTER;
-    const left = GUTTER;
+    const left = GUTTER + Math.max(0, (width - GUTTER * 2 - availableWidth) / 2);
     const style = document.documentElement.style;
     style.setProperty("--wp-battle-viewport-height", `${height}px`);
     style.setProperty("--wp-battle-logical-width", `${logicalWidth}px`);
@@ -164,9 +168,9 @@
       const reserveTop = availableHeight;
       rememberAndSet(reserve, {
         position: "fixed",
-        inset: `${reserveTop}px auto auto ${left}px`,
+        inset: `${reserveTop}px auto auto 0px`,
         display: "block",
-        width: `${renderedWidth}px`,
+        width: `${width}px`,
         "min-width": "0",
         "max-width": "none",
         height: "56px",

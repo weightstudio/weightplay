@@ -55,7 +55,7 @@
       freeUnit: "Starter",
       rosterHint: "Unlocked animals appear in your expedition backpack. Permanent levels are saved locally.",
       startExpedition: "Start Expedition",
-      chooseExpedition: "Choose Expedition",
+      chooseExpedition: "Start Game",
       stageSetup: "Swipe through six regions, choose an unlocked stage, then prepare your formation.",
       yourSquadLabel: "Active Squad (Top: Front Row | Bottom: Back Row)",
       benchLabel: "Storage Bench",
@@ -266,7 +266,7 @@
     freeUnit: "Inicial",
     rosterHint: "Los animales desbloqueados aparecen en la mochila. Los niveles permanentes se guardan localmente.",
     startExpedition: "Empezar expedición",
-    chooseExpedition: "Elegir expedición",
+    chooseExpedition: "Iniciar juego",
     stageSetup: "Desliza por seis regiones, elige un nivel desbloqueado y prepara la formación.",
     yourSquadLabel: "Escuadrón activo (arriba: frente | abajo: retaguardia)",
     benchLabel: "Reserva",
@@ -833,7 +833,7 @@
     backToStages: "\u8fd4\u56de\u95dc\u5361",
     stageBoss: "\u9996\u9818",
     bossIncoming: "\u9996\u9818\uff1a{boss}",
-    chooseExpedition: "\u9078\u64c7\u9060\u5f81",
+    chooseExpedition: "\u958b\u59cb\u904a\u6232",
     bestExpedition: "\u5df2\u89e3\u9396\u95dc\u5361",
     expeditionsCleared: "\u5df2\u901a\u904e\u95dc\u5361",
     teamLevel: "\u5718\u968a\u7b49\u7d1a",
@@ -1719,12 +1719,14 @@
     const viewport = window.visualViewport;
     const width = Math.max(1, viewport?.width || window.innerWidth);
     const height = Math.max(1, viewport?.height || window.innerHeight);
+    const physicalWidth = Math.max(1, Math.min(width, 920));
     const availableHeight = Math.max(1, height - 56);
-    const scale = Math.max(0.01, Math.min(width / 390, availableHeight / 788));
-    const logicalWidth = width / scale;
+    const scale = Math.max(0.01, Math.min(physicalWidth / 390, availableHeight / 788));
+    const logicalWidth = physicalWidth / scale;
     const logicalHeight = availableHeight / scale;
+    const canvasLeft = Math.max(0, (width - physicalWidth) / 2);
     const panelDeclarations = {
-      position: "fixed", inset: "auto", top: "0px", right: "auto", bottom: "auto", left: "0px",
+      position: "fixed", inset: "auto", top: "0px", right: "auto", bottom: "auto", left: `${canvasLeft}px`,
       "box-sizing": "border-box", width: `${logicalWidth}px`, "min-width": `${logicalWidth}px`, "max-width": `${logicalWidth}px`,
       height: `${logicalHeight}px`, "min-height": `${logicalHeight}px`, "max-height": `${logicalHeight}px`, margin: "0", overflow: "hidden",
       transform: `scale(${scale})`, "transform-origin": "top left",
@@ -4382,18 +4384,22 @@
     const viewportHeight = viewport?.height >= window.innerHeight * 0.75 ? viewport.height : window.innerHeight;
     document.documentElement.style.setProperty("--squad-vw", `${viewportWidth}px`);
     document.documentElement.style.setProperty("--squad-vh", `${viewportHeight}px`);
-    const availableWidth = Math.max(1, viewportWidth);
-    const stageHeightScale = Math.max(0.1, (viewportHeight - 56) / 788);
-    const battleHeightScale = Math.max(0.1, (viewportHeight - 56) / 780);
-    const stageScale = Math.min(Math.max(0.1, availableWidth / 390), stageHeightScale);
+    const availableWidth = Math.max(1, Math.min(viewportWidth, 920));
+    const availableHeight = Math.max(1, viewportHeight - 56);
+    const canvasLeft = Math.max(0, (viewportWidth - availableWidth) / 2);
+    const stageScale = Math.max(0.01, Math.min(availableWidth / 390, availableHeight / 788));
     const stageLogicalWidth = availableWidth / stageScale;
-    const stageRenderedWidth = stageLogicalWidth * stageScale;
-    const battleScale = Math.min(Math.max(0.1, availableWidth / 382), battleHeightScale);
+    const stageLogicalHeight = availableHeight / stageScale;
+    const battleScale = Math.max(0.01, Math.min(availableWidth / 382, availableHeight / 780));
     const battleLogicalWidth = availableWidth / battleScale;
+    const battleLogicalHeight = availableHeight / battleScale;
     document.documentElement.style.setProperty("--squad-stage-scale", String(stageScale));
     document.documentElement.style.setProperty("--squad-stage-width", `${stageLogicalWidth}px`);
-    document.documentElement.style.setProperty("--squad-stage-rendered-width", `${stageRenderedWidth}px`);
+    document.documentElement.style.setProperty("--squad-stage-height", `${stageLogicalHeight}px`);
+    document.documentElement.style.setProperty("--squad-stage-rendered-width", `${availableWidth}px`);
+    document.documentElement.style.setProperty("--squad-canvas-left", `${canvasLeft}px`);
     document.documentElement.style.setProperty("--squad-battle-width", `${battleLogicalWidth}px`);
+    document.documentElement.style.setProperty("--squad-battle-height", `${battleLogicalHeight}px`);
     document.documentElement.style.setProperty("--squad-battle-scale", String(battleScale));
     updateTrainingStageCanvas();
     pinMainSoundToggle();
@@ -4402,7 +4408,6 @@
   updateBattleViewport();
   window.addEventListener("resize", updateBattleViewport, { passive: true });
   window.visualViewport?.addEventListener("resize", updateBattleViewport, { passive: true });
-  window.visualViewport?.addEventListener("scroll", updateBattleViewport, { passive: true });
 
   // Initialization
   startApp();

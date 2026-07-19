@@ -31,6 +31,14 @@
       </div>`;
     document.querySelector("#playPanel .fixed-game-shell")?.append(panel);
   }
+  if (!document.querySelector("#pauseBtn")) {
+    const button = document.createElement("button");
+    button.id = "pauseBtn";
+    button.className = "play-pause";
+    button.type = "button";
+    button.textContent = "\u23f8";
+    document.querySelector("#playPanel .fixed-game-shell")?.append(button);
+  }
   const canvas = document.querySelector("#gameCanvas");
   const ctx = canvas.getContext("2d");
   const localeSelect = document.querySelector("#localeSelect");
@@ -51,6 +59,7 @@
   const goalText = document.querySelector("#goalText");
   const goalFill = document.querySelector("#goalFill");
   const backToMenuBtn = document.querySelector("#backToMenuBtn");
+  const pauseBtn = document.querySelector("#pauseBtn");
   const restartBtn = document.querySelector("#restartBtn");
   const startBtn = document.querySelector("#startBtn");
   const freePlayBtn = document.querySelector("#freePlayBtn");
@@ -115,6 +124,7 @@
       ariaLobby: "Back to WeightPlay lobby",
       ariaBattle: "Animal Merge Tower play screen",
       ariaBattleBack: "Back to challenges",
+      ariaPause: "Pause game",
       ariaScore: "Score information",
       ariaProgress: "Merge progress",
       ariaBoard: "Animal merge game board",
@@ -197,6 +207,9 @@
       leaderboardRow: "#{rank}  Score {score}  {animal}",
       playAgain: "Play Again",
       menu: "Game Menu",
+      pauseTitle: "Game paused",
+      pauseText: "Your tower is waiting. Resume when you are ready.",
+      resume: "Resume",
       leaveTitle: "Leave this run?",
       leaveText: "Your current score, merges, and remaining drops will be lost.",
       keepPlaying: "Keep Playing",
@@ -221,6 +234,7 @@
       ariaLobby: "返回 WeightPlay 大廳",
       ariaBattle: "動物合成塔遊玩畫面",
       ariaBattleBack: "返回挑戰關卡",
+      ariaPause: "暫停遊戲",
       ariaScore: "分數資訊",
       ariaProgress: "合成進度",
       ariaBoard: "動物合成遊戲盤",
@@ -303,6 +317,9 @@
       leaderboardRow: "第 {rank} 名  分數 {score}  {animal}",
       playAgain: "再玩一次",
       menu: "遊戲選單",
+      pauseTitle: "遊戲已暫停",
+      pauseText: "動物塔正在等你，準備好再繼續。",
+      resume: "繼續遊玩",
       leaveTitle: "要離開這一局嗎？",
       leaveText: "目前的分數、合成進度和剩餘投放次數都會消失。",
       keepPlaying: "繼續遊玩",
@@ -338,6 +355,13 @@
       fruit0: "Bola ratón", fruit1: "Bola conejo", fruit2: "Bola zorro", fruit3: "Bola pingüino", fruit4: "Bola koala", fruit5: "Bola búho", fruit6: "Bola panda", fruit7: "Bola cachorro de león", fruit8: "Bola jirafa", fruit9: "Bola elefante", fruit10: "Bola Rey León",
     },
   };
+
+  Object.assign(dictionary.es, {
+    ariaPause: "Pausar el juego",
+    pauseTitle: "Juego en pausa",
+    pauseText: "Tu torre te espera. Continúa cuando quieras.",
+    resume: "Continuar",
+  });
 
   const challenges = [
     { id: 1, chapter: ["Meadow Steps", "草原起步"], name: ["First Pair", "第一對夥伴"], goal: "merges", target: 3, drops: 12, rules: ["classic"] },
@@ -464,6 +488,7 @@
   let lastChallengeCleared = false;
   let windApplications = 0;
   let leaveConfirmOpen = false;
+  let decisionMode = null;
   const fixedQueue = [0, 1, 0, 2, 1, 0, 1, 2, 0, 1, 3, 0];
 
   function activeNow() {
@@ -602,6 +627,7 @@
     document.querySelector(".home-link")?.setAttribute("aria-label", t("ariaLobby"));
     document.querySelector(".fixed-game-shell")?.setAttribute("aria-label", t("ariaBattle"));
     backToMenuBtn.setAttribute("aria-label", t("ariaBattleBack"));
+    pauseBtn.setAttribute("aria-label", t("ariaPause"));
     document.querySelector(".scorebar")?.setAttribute("aria-label", t("ariaScore"));
     document.querySelector(".merge-goal")?.setAttribute("aria-label", t("ariaProgress"));
     canvas.setAttribute("aria-label", t("ariaBoard"));
@@ -622,9 +648,9 @@
     stageBackBtn.setAttribute("aria-label", t("stageBack"));
     playAgainBtn.textContent = t("playAgain");
     menuBtn.textContent = t("menu");
-    leaveConfirmTitle.textContent = t("leaveTitle");
-    leaveConfirmText.textContent = t("leaveText");
-    keepPlayingBtn.textContent = t("keepPlaying");
+    leaveConfirmTitle.textContent = t(decisionMode === "pause" ? "pauseTitle" : "leaveTitle");
+    leaveConfirmText.textContent = t(decisionMode === "pause" ? "pauseText" : "leaveText");
+    keepPlayingBtn.textContent = t(decisionMode === "pause" ? "resume" : "keepPlaying");
     leaveGameBtn.textContent = t("leaveGame");
     renderChallengeRail(false);
     updateHud();
@@ -675,6 +701,7 @@
     resultPanel.classList.add("hidden");
     leaveConfirmPanel.classList.add("hidden");
     leaveConfirmOpen = false;
+    decisionMode = null;
     menuPanel.classList.add("hidden");
     stagePanel.classList.remove("hidden");
     playPanel.inert = false;
@@ -708,6 +735,7 @@
     resultPanel.classList.add("hidden");
     leaveConfirmPanel.classList.add("hidden");
     leaveConfirmOpen = false;
+    decisionMode = null;
     playPanel.inert = false;
     playPanel.removeAttribute("aria-hidden");
     setBattleContentInert(false);
@@ -1605,10 +1633,19 @@
     animationFrameId = null;
   }
 
-  function openLeaveConfirm() {
+  function applyDecisionText() {
+    leaveConfirmTitle.textContent = t(decisionMode === "pause" ? "pauseTitle" : "leaveTitle");
+    leaveConfirmText.textContent = t(decisionMode === "pause" ? "pauseText" : "leaveText");
+    keepPlayingBtn.textContent = t(decisionMode === "pause" ? "resume" : "keepPlaying");
+    leaveGameBtn.textContent = t("leaveGame");
+  }
+
+  function openBattleDecision(mode) {
     if (leaveConfirmOpen || !running || gameOver) return;
     leaveConfirmOpen = true;
+    decisionMode = mode;
     suspendRunLifecycle();
+    applyDecisionText();
     leaveConfirmPanel.classList.remove("hidden");
     setBattleContentInert(true);
     requestAnimationFrame(() => keepPlayingBtn.focus({ preventScroll: true }));
@@ -1616,11 +1653,13 @@
 
   function closeLeaveConfirm(restoreFocus = true) {
     if (!leaveConfirmOpen) return;
+    const mode = decisionMode;
     leaveConfirmOpen = false;
+    decisionMode = null;
     leaveConfirmPanel.classList.add("hidden");
     setBattleContentInert(false);
     resumeRunLifecycle();
-    if (restoreFocus) requestAnimationFrame(() => canvas.focus({ preventScroll: true }));
+    if (restoreFocus) requestAnimationFrame(() => (mode === "pause" ? pauseBtn : canvas).focus({ preventScroll: true }));
   }
 
   function leaveActiveRun() {
@@ -1669,7 +1708,8 @@
     window.WonderAnalytics?.track?.("game_restart", { game_id: GAME_ID, score, source: "button" });
     resetGame(false, "restart");
   });
-  backToMenuBtn.addEventListener("click", openLeaveConfirm);
+  backToMenuBtn.addEventListener("click", () => openBattleDecision("leave"));
+  pauseBtn.addEventListener("click", () => openBattleDecision("pause"));
   keepPlayingBtn.addEventListener("click", () => closeLeaveConfirm(true));
   leaveGameBtn.addEventListener("click", leaveActiveRun);
   leaveConfirmPanel.addEventListener("keydown", (event) => {
