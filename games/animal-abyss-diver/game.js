@@ -140,7 +140,7 @@
     coinsSaved:"Saved total: {n} salvage coins",
     routeUnlocked:"New route unlocked: Route {n} · {name}",
     routeReady:"Next route ready: Route {n} · {name}",
-    routeComplete:"All 3 dive routes cleared.",
+    routeComplete:"All 30 dive routes cleared.",
     routeRetry:"Next target: {target} salvage across {zones} zones",
     retry:"Retry route"
   });
@@ -245,7 +245,7 @@
     coinsSaved:u("\\u5df2\\u4fdd\\u5b58\\u7e3d\\u984d\\uff1a{n} \\u6253\\u6488\\u5e63"),
     routeUnlocked:u("\\u65b0\\u8def\\u7dda\\u89e3\\u9396\\uff1a\\u8def\\u7dda {n} \\u00b7 {name}"),
     routeReady:u("\\u4e0b\\u4e00\\u8def\\u7dda\\u53ef\\u9032\\u5165\\uff1a\\u8def\\u7dda {n} \\u00b7 {name}"),
-    routeComplete:u("\\u5168\\u90e8 3 \\u689d\\u6f5b\\u822a\\u8def\\u7dda\\u5df2\\u901a\\u95dc\\u3002"),
+    routeComplete:u("\\u5168\\u90e8 30 \\u689d\\u6f5b\\u822a\\u8def\\u7dda\\u5df2\\u901a\\u95dc\\u3002"),
     routeRetry:u("\\u4e0b\\u6b21\\u76ee\\u6a19\\uff1a\\u7a7f\\u8d8a {zones} \\u500b\\u6d77\\u57df\\u4e26\\u6253\\u6488 {target} \\u4ef6"),
     retry:u("\\u518d\\u8a66\\u4e00\\u6b21")
   });
@@ -279,10 +279,25 @@
     quitKeep:u("\u7e7c\u7e8c\u6f5b\u822a"),
     quitLeave:u("\u96e2\u958b\u672c\u8f2a")
   });
+  const ROUTE_COUNT=30;
   let locale = localStorage.getItem("weightPlayLocale") || "en";
-  const storedSave = JSON.parse(localStorage.getItem(saveKey)||"{}");
-  let save = { rank:1, coins:0, unlocked:1, level:1, xp:0, statPoints:0, ...storedSave };
-  save.stats={hp:0,attack:0,oxygen:0,...storedSave.stats};
+  const defaultSave=()=>({rank:1,coins:0,unlocked:1,level:1,xp:0,statPoints:0,stats:{hp:0,attack:0,oxygen:0},tutorialDone:false});
+  const whole=(value,fallback,min=0,max=Number.MAX_SAFE_INTEGER)=>Number.isFinite(value)?Math.max(min,Math.min(max,Math.trunc(value))):fallback;
+  function normalizeSave(raw){
+    const clean=defaultSave();
+    if(!raw||typeof raw!=="object"||Array.isArray(raw))return clean;
+    clean.rank=whole(raw.rank,1,1);
+    clean.coins=whole(raw.coins,0);
+    clean.unlocked=whole(raw.unlocked,1,1,ROUTE_COUNT);
+    clean.level=whole(raw.level,1,1);
+    clean.xp=whole(raw.xp,0,0,1000000);
+    clean.statPoints=whole(raw.statPoints,0);
+    if(raw.stats&&typeof raw.stats==="object"&&!Array.isArray(raw.stats))for(const stat of ["hp","attack","oxygen"])clean.stats[stat]=whole(raw.stats[stat],0);
+    clean.tutorialDone=raw.tutorialDone===true;
+    return clean;
+  }
+  function loadSave(){let raw=null;try{raw=JSON.parse(localStorage.getItem(saveKey)||"null");}catch{}const clean=normalizeSave(raw);localStorage.setItem(saveKey,JSON.stringify(clean));return clean;}
+  let save=loadSave();
   let state = {},lastUpgrade=null,beaconConfirmTimer=0,beaconConfirmDueAt=0,beaconConfirmRemaining=0;
   let diveSession=0;
   let diveSuspended=false;
@@ -361,10 +376,43 @@
     diveSuspended=false;
     diveTimers.forEach(task=>{if(task.session===diveSession&&!task.timer)armDiveTask(task);});
   }
+  const mission=(name,zhName,relic,zhRelic,rule,zhRule,config)=>({name,zhName,relic,zhRelic,rule,zhRule,...config});
   const routes = [
-    {risk:1,zones:5,target:4,fishZones:[3],reaction:3200,encounters:[["relic","hazard"],["current","cache"],["oxygen","relic"],["cache","hazard"],["relic","current"]]},
-    {risk:2,zones:6,target:6,fishZones:[3,5],reaction:2600,encounters:[["cache","hazard"],["current","relic"],["oxygen","cache"],["hazard","relic"],["cache","current"],["relic","hazard"]]},
-    {risk:3,zones:7,target:8,fishZones:[2,4,6],reaction:2100,encounters:[["hazard","cache"],["relic","current"],["cache","hazard"],["oxygen","relic"],["hazard","cache"],["current","relic"],["cache","hazard"]]}
+    mission("Lantern Shelf","燈礁淺台","Tide Compass","潮汐羅盤","Read clear clues; one tutorial fish.","辨認清楚線索，學會第一次魚戰。",{risk:1,zones:5,target:4,fishZones:[3],fishTier:1,escapeCost:8,encounters:[["relic","hazard"],["current","cache"],["oxygen","relic"],["cache","hazard"],["relic","current"]]}),
+    mission("Bubble Garden","氣泡花園","Pearl Seed","珍珠種子","Air pockets restore two power.","氧氣泡會回復 2 點電力。",{risk:1,zones:5,target:4,fishZones:[4],fishTier:1,oxygenPower:2,escapeCost:8,encounters:[["oxygen","relic"],["cache","current"],["relic","hazard"],["oxygen","cache"],["current","relic"]]}),
+    mission("Split Current","雙流岔道","Current Fin","流向尾鰭","Riding a current restores one power.","穿越亂流會回復 1 點電力。",{risk:1,zones:5,target:4,fishZones:[3],fishTier:1,currentPower:1,escapeCost:8,encounters:[["current","relic"],["cache","oxygen"],["hazard","current"],["relic","cache"],["oxygen","hazard"]]}),
+    mission("Crystal Wreck","水晶沉船","Glass Sextant","水晶六分儀","The first zone begins fully scanned.","第一個海域會自動完成聲納掃描。",{risk:1,zones:5,target:5,fishZones:[4],fishTier:2,openingScan:true,escapeCost:8,encounters:[["cache","hazard"],["relic","current"],["oxygen","cache"],["hazard","relic"],["cache","current"]]}),
+    mission("Reef Patrol","礁環巡航","Coral Badge","珊瑚徽章","Two safe lanes in a row grant bonus salvage.","連續選中 2 條安全航線可獲額外打撈。",{risk:1,zones:5,target:5,fishZones:[2,5],fishTier:2,streakEvery:2,escapeCost:9,encounters:[["relic","current"],["oxygen","cache"],["cache","hazard"],["relic","current"],["oxygen","cache"]]}),
+
+    mission("Silt Maze","泥沙迷宮","Silt Map","泥沙航圖","Sonar is jammed in zones 2 and 4.","第 2、4 海域無法使用聲納。",{risk:2,zones:6,target:5,fishZones:[3],fishTier:2,jammedZones:[2,4],escapeCost:9,encounters:[["cache","current"],["relic","hazard"],["oxygen","cache"],["current","relic"],["hazard","oxygen"],["cache","relic"]]}),
+    mission("Fragile Gallery","易碎遺廊","Porcelain Ray","瓷光魟牌","Hazards break one carried salvage.","碰到危險會損失 1 件本輪打撈品。",{risk:2,zones:6,target:5,fishZones:[4],fishTier:2,fragileCargo:1,escapeCost:9,encounters:[["relic","hazard"],["cache","current"],["oxygen","relic"],["hazard","cache"],["relic","current"],["cache","oxygen"]]}),
+    mission("Shield Trench","護盾海溝","Ward Shell","守護貝殼","Begin with one armed Shock Shield.","開場自動裝備一次震波護盾。",{risk:2,zones:6,target:6,fishZones:[3,6],fishTier:3,openingShield:true,escapeCost:10,encounters:[["hazard","cache"],["current","relic"],["oxygen","hazard"],["cache","relic"],["current","oxygen"],["relic","cache"]]}),
+    mission("Power Chimneys","能量煙囪","Volt Coral","電光珊瑚","Relics and air pockets recharge power.","遺物與氧氣泡都能回充電力。",{risk:2,zones:6,target:6,fishZones:[4],fishTier:3,relicPower:1,oxygenPower:2,escapeCost:10,encounters:[["relic","current"],["oxygen","cache"],["hazard","relic"],["cache","oxygen"],["current","relic"],["cache","hazard"]]}),
+    mission("Barracuda Crossing","梭魚渡口","Silver Tooth","銀牙護符","Fish victories grant extra salvage.","擊退魚群會獲得額外打撈品。",{risk:2,zones:6,target:7,fishZones:[2,4,6],fishTier:3,fishBonus:1,escapeCost:10,encounters:[["cache","hazard"],["relic","current"],["oxygen","cache"],["hazard","relic"],["cache","current"],["relic","oxygen"]]}),
+
+    mission("Moonless Fork","無月岔路","Darkwater Lens","暗潮透鏡","Three zones must be read without Sonar.","三個干擾海域必須只靠環境線索判斷。",{risk:2,zones:6,target:6,fishZones:[3,6],fishTier:3,jammedZones:[2,3,5],escapeCost:10,encounters:[["relic","current"],["hazard","cache"],["oxygen","relic"],["cache","current"],["hazard","oxygen"],["relic","cache"]]}),
+    mission("Checkpoint Cavern","上浮洞窟","Bell Anchor","鐘形船錨","Surface only at zones 2, 4, or 6.","只能在第 2、4、6 海域安全上浮。",{risk:2,zones:6,target:6,fishZones:[3,5],fishTier:3,surfaceZones:[2,4,6],escapeCost:10,encounters:[["cache","current"],["oxygen","relic"],["hazard","cache"],["relic","current"],["oxygen","hazard"],["cache","relic"]]}),
+    mission("Salvage Chain","連鎖打撈場","Chain Idol","鎖鏈偶像","Build safe streaks; hazards break cargo.","連續安全航線會加成，但危險會打碎貨物。",{risk:2,zones:7,target:7,fishZones:[4],fishTier:4,streakEvery:2,fragileCargo:1,escapeCost:11,encounters:[["relic","hazard"],["cache","current"],["oxygen","relic"],["hazard","cache"],["relic","current"],["cache","oxygen"],["current","relic"]]}),
+    mission("Magnetic Ribs","磁骨峽谷","Magnet Spine","磁脊骨片","Sonar costs one; Shield costs two power.","聲納只耗 1 點，但護盾需要 2 點電力。",{risk:2,zones:7,target:7,fishZones:[3,6],fishTier:4,sonarCost:1,shieldCost:2,escapeCost:11,encounters:[["cache","hazard"],["current","relic"],["oxygen","cache"],["relic","hazard"],["current","oxygen"],["cache","relic"],["hazard","cache"]]}),
+    mission("Shark Archive","鯊影檔案庫","Shark Seal","鯊印石板","Two guardian sharks carry bonus relics.","兩隻守庫鯊魚各帶有額外遺物。",{risk:3,zones:7,target:8,fishZones:[3,6],fishTier:5,fishBonus:2,escapeCost:12,encounters:[["relic","current"],["cache","hazard"],["oxygen","relic"],["hazard","cache"],["current","oxygen"],["relic","hazard"],["cache","current"]]}),
+
+    mission("Pressure Bells","壓力鐘群","Depth Chime","深海鳴鐘","Every move also costs two oxygen.","每次移動都會額外消耗 2 點氧氣。",{risk:3,zones:7,target:7,fishZones:[4,7],fishTier:5,oxygenTax:2,escapeCost:12,encounters:[["oxygen","hazard"],["relic","current"],["cache","oxygen"],["hazard","relic"],["current","cache"],["oxygen","hazard"],["relic","cache"]]}),
+    mission("Broken Compass","失向海床","Broken Needle","斷裂指針","Jammed zones reward risky current riding.","干擾區的亂流可換回電力。",{risk:3,zones:7,target:7,fishZones:[3,6],fishTier:5,jammedZones:[2,4,6],currentPower:1,escapeCost:12,encounters:[["current","relic"],["hazard","cache"],["oxygen","current"],["relic","hazard"],["cache","current"],["oxygen","relic"],["hazard","cache"]]}),
+    mission("Guardian Nursery","守護獸育場","Guardian Scale","守護獸鱗片","Start shielded; the guardian carries salvage.","帶著開場護盾，守護獸會掉落額外打撈。",{risk:3,zones:7,target:7,fishZones:[3,5],fishTier:5,openingShield:true,fishBonus:1,escapeCost:12,encounters:[["hazard","relic"],["cache","current"],["oxygen","hazard"],["relic","cache"],["current","oxygen"],["cache","hazard"],["relic","current"]]}),
+    mission("Blue Furnace","藍焰熱泉","Thermal Crown","熱泉冠飾","Pressure drains oxygen; vents recharge power.","水壓持續耗氧，熱泉氧氣泡能大量充電。",{risk:3,zones:7,target:8,fishZones:[4,7],fishTier:6,oxygenTax:2,oxygenPower:2,escapeCost:13,encounters:[["oxygen","cache"],["current","relic"],["hazard","oxygen"],["cache","relic"],["current","hazard"],["oxygen","cache"],["relic","current"]]}),
+    mission("Twin Predators","雙獵食者海域","Twin Fang","雙牙化石","Three predators carry two bonus salvage each.","三場獵食者戰各提供 2 件額外打撈。",{risk:3,zones:7,target:9,fishZones:[2,5,7],fishTier:6,fishBonus:2,escapeCost:13,encounters:[["cache","hazard"],["relic","current"],["oxygen","cache"],["hazard","relic"],["current","oxygen"],["cache","hazard"],["relic","cache"]]}),
+
+    mission("Silent Cathedral","寂靜聖堂","Choir Pearl","聖歌珍珠","Sonar works only in even-numbered zones.","聲納只能在偶數海域使用。",{risk:3,zones:8,target:8,fishZones:[4,8],fishTier:6,jammedZones:[1,3,5,7],escapeCost:14,encounters:[["relic","current"],["hazard","cache"],["oxygen","relic"],["cache","hazard"],["current","oxygen"],["relic","cache"],["hazard","current"],["cache","relic"]]}),
+    mission("Cargo Vow","護貨誓約","Vow Casket","誓約匣","Cargo breaks on hazards; surface at checkpoints.","危險會破壞貨物，且只能在檢查點上浮。",{risk:3,zones:8,target:8,fishZones:[3,6],fishTier:6,fragileCargo:2,surfaceZones:[3,6,8],escapeCost:14,encounters:[["cache","hazard"],["relic","current"],["oxygen","cache"],["hazard","relic"],["current","oxygen"],["cache","hazard"],["relic","current"],["oxygen","cache"]]}),
+    mission("Echo Treasury","回聲寶庫","Echo Chalice","回聲聖杯","Sonar costs three; safe streaks earn salvage.","聲納耗 3 點電力，安全連線可賺取額外打撈。",{risk:3,zones:8,target:9,fishZones:[4,7],fishTier:7,sonarCost:3,streakEvery:2,relicPower:1,escapeCost:14,encounters:[["relic","hazard"],["cache","current"],["oxygen","relic"],["hazard","cache"],["relic","current"],["cache","oxygen"],["current","relic"],["cache","hazard"]]}),
+    mission("Storm Spiral","風暴螺旋","Storm Gyro","風暴陀螺","Pressure drains oxygen; currents recharge power.","水壓耗氧，但亂流能回充電力。",{risk:3,zones:8,target:8,fishZones:[3,6,8],fishTier:7,oxygenTax:3,currentPower:1,escapeCost:15,encounters:[["current","cache"],["hazard","relic"],["oxygen","current"],["cache","hazard"],["relic","oxygen"],["current","cache"],["hazard","relic"],["oxygen","current"]]}),
+    mission("Shark Crown","鯊皇領海","Crown Tooth","王冠巨牙","Four shark guards hold the route's treasure.","四隻鯊魚守衛掌握主要打撈品。",{risk:3,zones:8,target:10,fishZones:[2,4,6,8],fishTier:7,fishBonus:2,escapeCost:15,encounters:[["cache","hazard"],["relic","current"],["oxygen","cache"],["hazard","relic"],["current","oxygen"],["cache","hazard"],["relic","current"],["oxygen","cache"]]}),
+
+    mission("Last Air Locks","終末氣閘","Airlock Key","氣閘鑰匙","Surface at airlocks; vents restore two power.","只能在氣閘上浮，氧氣泡可回復 2 點電力。",{risk:3,zones:8,target:9,fishZones:[3,7],fishTier:7,surfaceZones:[2,5,8],oxygenPower:2,escapeCost:15,encounters:[["oxygen","hazard"],["relic","cache"],["current","oxygen"],["hazard","relic"],["cache","current"],["oxygen","hazard"],["relic","cache"],["current","oxygen"]]}),
+    mission("Glass Reliquary","玻璃聖物庫","Glass Heart","玻璃之心","Begin scanned; hazards shatter two salvage.","開場自動掃描，但危險會打碎 2 件打撈品。",{risk:3,zones:8,target:10,fishZones:[4,8],fishTier:8,openingScan:true,fragileCargo:2,escapeCost:16,encounters:[["cache","hazard"],["relic","current"],["oxygen","cache"],["hazard","relic"],["cache","current"],["relic","oxygen"],["current","hazard"],["cache","relic"]]}),
+    mission("Black Current","黑潮核心","Black Gyre","黑潮渦核","Four jammed zones; currents power safe streaks.","四個干擾區中，亂流充電與安全連線並存。",{risk:3,zones:8,target:9,fishZones:[3,6],fishTier:8,jammedZones:[2,4,6,8],currentPower:1,streakEvery:2,escapeCost:16,encounters:[["current","relic"],["hazard","cache"],["oxygen","current"],["relic","hazard"],["cache","oxygen"],["current","relic"],["hazard","cache"],["oxygen","current"]]}),
+    mission("Nori's Oath","諾里的誓航","Nori Medal","諾里勳章","Start shielded; pressure and predators test recovery.","開場護盾後，水壓與獵食者會連續考驗資源分配。",{risk:3,zones:8,target:10,fishZones:[2,5,8],fishTier:8,openingShield:true,oxygenTax:2,fishBonus:2,escapeCost:16,encounters:[["hazard","cache"],["relic","current"],["oxygen","hazard"],["cache","relic"],["current","oxygen"],["hazard","cache"],["relic","current"],["oxygen","cache"]]}),
+    mission("Heart of the Abyss","深淵之心","Abyss Heart","深淵心核","Master jammed Sonar, fragile cargo, streaks, and sharks.","最終任務結合聲納干擾、易碎貨物、安全連線與鯊魚戰。",{risk:3,zones:8,target:11,fishZones:[2,4,6,8],fishTier:9,sonarCost:3,jammedZones:[3,6],fragileCargo:1,streakEvery:2,fishBonus:2,oxygenPower:2,escapeCost:17,encounters:[["cache","hazard"],["relic","current"],["oxygen","cache"],["hazard","relic"],["cache","current"],["oxygen","hazard"],["relic","cache"],["current","oxygen"]]})
   ];
   const outcomes = {
     relic:{oxygen:-10,salvage:1,safe:true,intel:{loot:2,danger:1,cost:"8–14"},signal:"signalSteady",clues:["clueGlint","clueCalm"],label:"outcomeRelic",feedback:"foundRelic"},
@@ -373,6 +421,8 @@
     current:{oxygen:-18,salvage:0,safe:false,intel:{loot:1,danger:2,cost:"14–22"},signal:"signalRough",clues:["clueSand","clueFast"],label:"outcomeCurrent",feedback:"hitCurrent"},
     hazard:{oxygen:-28,salvage:0,safe:false,intel:{loot:2,danger:3,cost:"22–32"},signal:"signalStrong",clues:["clueRope","clueSilent"],label:"outcomeHazard",feedback:"hitHazard"}
   };
+  if(routes.length!==ROUTE_COUNT||routes.some(route=>route.encounters.length!==route.zones))throw new Error("Animal Abyss Diver authored route data is incomplete.");
+  const routeText=(route,key)=>locale==="zh-Hant"?route[`zh${key[0].toUpperCase()}${key.slice(1)}`]:route[key];
   const t = (key, values={}) => Object.entries(values).reduce((value,[name,replacement]) => value.replace(`{${name}}`,replacement),(locale === "zh-Hant" ? zh : en)[key]);
   const icon = name => `<i class="ui-icon icon-${name}" aria-hidden="true"></i>`;
   const maxHealth = () => 30 + save.stats.hp * 8;
@@ -434,21 +484,23 @@
     renderRoutes();
     focusRoute();
   }
-  function renderRoutes(){ $("routeRail").innerHTML=""; routes.forEach((route,index)=>{const n=index+1, card=document.createElement("button"),locked=n>save.unlocked;card.className=`route-card${n===state.route?" is-selected":""}`;card.disabled=locked;card.innerHTML=`<strong>${t("route",{n})}</strong><span>${t("relic")}: ${(locale === "zh-Hant" ? zh : en).relicNames[index]}</span><small>${t("zones",{n:route.zones})} · ${t("stageTarget",{n:route.target})} · ${t("risk",{n:route.risk})}</small><em>${t(locked?"locked":"routeAction")}</em>`;card.onclick=()=>start(n);$("routeRail").append(card);});}
+  function renderRoutes(){ $("routeRail").innerHTML=""; routes.forEach((route,index)=>{const n=index+1, card=document.createElement("button"),locked=n>save.unlocked;card.className=`route-card${n===state.route?" is-selected":""}`;card.disabled=locked;card.innerHTML=`<strong>${routeText(route,"name")}</strong><span>${t("route",{n})} · ${t("relic")}: ${routeText(route,"relic")}</span><small>${t("zones",{n:route.zones})} · ${t("stageTarget",{n:route.target})} · ${t("risk",{n:route.risk})}<br><b>${routeText(route,"rule")}</b></small><em>${t(locked?"locked":"routeAction")}</em>`;card.setAttribute("aria-label",`${t("route",{n})} · ${routeText(route,"name")} · ${routeText(route,"rule")} · ${locked?t("locked"):t("routeAction")}`);card.onclick=()=>start(n);$("routeRail").append(card);});}
   function routeConfig(){return routes[state.route-1];}
   function encounter(direction){const pair=routeConfig().encounters[state.zone-1];return outcomes[pair[direction==="left"?0:1]];}
   function sonarMessage(){return t("sonarRead",{left:t(encounter("left").label),right:t(encounter("right").label)});}
   const artFor = outcome => outcome.safe ? "../../assets/animal-abyss-diver-relics.png" : "../../assets/animal-abyss-diver-hazards.png";
   function renderBattle(){
     const config=routeConfig();
-    $("battleTitle").textContent=t("route",{n:state.route});
+    const sonarCost=config.sonarCost??2,shieldCost=config.shieldCost??1,sonarJammed=config.jammedZones?.includes(state.zone),surfaceReady=!config.surfaceZones||config.surfaceZones.includes(state.zone);
+    $("battleTitle").textContent=`${t("route",{n:state.route})} · ${routeText(config,"name")}`;
+    $("battleTitle").title=routeText(config,"rule");
     $("zoneText").textContent=t("zoneProgress",{n:state.zone,total:config.zones});
     $("oxygenText").textContent=`${t("oxygenShort")} ${state.oxygen}/${maxOxygen()}`;
     $("oxygenBar").style.width=`${state.oxygen/maxOxygen()*100}%`;
     $("oxygenBar").classList.toggle("is-low",state.oxygen<=maxOxygen()*.3);
     $("diveField").classList.toggle("is-fish-combat",!!state.fishActive);
     const objectiveLabel=state.fishActive?t("fishObjective"):state.oxygen<=30?t("objectiveLow"):state.sonar?t("objectiveChoose"):state.zone===1?t("objectiveScan"):t("objectiveContinue");
-    $("objectiveText").innerHTML=state.fishActive?`${icon("danger")}<strong>${t("shortReadAttack")}</strong>`:state.oxygen<=30?`${icon("oxygen")}<strong>${t("shortLow")}</strong>`:state.sonar?`${icon("sonar")}<strong>${t("shortConfirmed")}</strong>`:`<strong>${t("shortChoose")}</strong>`;$("objectiveText").setAttribute("aria-label",objectiveLabel);
+    $("objectiveText").innerHTML=state.fishActive?`${icon("danger")}<strong>${t("shortReadAttack")}</strong>`:state.oxygen<=30?`${icon("oxygen")}<strong>${t("shortLow")}</strong>`:state.sonar?`${icon("sonar")}<strong>${t("shortConfirmed")}</strong>`:`<strong>${t("shortChoose")}</strong>`;$("objectiveText").setAttribute("aria-label",`${routeText(config,"rule")} ${objectiveLabel}`);
     $("salvageText").innerHTML=`<span>${icon("salvage")}<em>${t("shortTarget")}</em><b>${state.salvage}/${config.target}</b></span><span>${icon("power")}<em>${t("shortPower")}</em><b>${state.battery}/4</b></span>`;$("salvageText").setAttribute("aria-label",`${t("target",{n:state.salvage,target:config.target})} · ${t("power",{n:state.battery})}`);
     $("depthProgress").style.width=`${((state.zone-1)/Math.max(1,config.zones-1))*100}%`;
     $("fxArt").classList.toggle("hidden",!state.sonar);
@@ -457,9 +509,9 @@
     if(!beaconUseful&&state.beaconPending)clearBeaconConfirmation();
     $("beaconBtn").innerHTML=`${icon("beacon")}<span>${t("shortBeacon")}</span><b>${state.beaconUsed?"✓":state.beaconPending?`${beaconBalance}→${beaconAfter}`:"3"}</b>`;
     $("beaconBtn").ariaLabel=state.beaconPending?t("beaconConfirmLabel",{before:beaconBalance,after:beaconAfter}):state.beaconUsed?t("beaconUsed"):beaconUseful?t("beacon"):t("beaconUnavailable");
-    $("sonarBtn").innerHTML=`${icon("sonar")}<span>${t("shortScan")}</span><b>2</b>`;$("sonarBtn").ariaLabel=t("sonarPowered");
-    $("shieldBtn").innerHTML=`${icon("shield")}<span>${t("shortShield")}</span><b>${state.shieldArmed?"✓":"1"}</b>`;$("shieldBtn").ariaLabel=state.shieldArmed?t("shieldArmed"):t("shield");
-    $("surfaceBtn").innerHTML=`${icon("surface")}<span>${t("shortSurface")}</span>`;$("surfaceBtn").ariaLabel=t("surface");
+    $("sonarBtn").innerHTML=`${icon("sonar")}<span>${t("shortScan")}</span><b>${sonarJammed?"×":sonarCost}</b>`;$("sonarBtn").ariaLabel=sonarJammed?routeText(config,"rule"):t("sonarPowered").replace("2",String(sonarCost));
+    $("shieldBtn").innerHTML=`${icon("shield")}<span>${t("shortShield")}</span><b>${state.shieldArmed?"✓":shieldCost}</b>`;$("shieldBtn").ariaLabel=state.shieldArmed?t("shieldArmed"):t("shield").replace("1",String(shieldCost));
+    $("surfaceBtn").innerHTML=`${icon("surface")}<span>${t("shortSurface")}</span><b>${surfaceReady?"":"×"}</b>`;$("surfaceBtn").ariaLabel=surfaceReady?t("surface"):routeText(config,"rule");
     for(const direction of ["left","right"]){
       const button=$(`${direction}Btn`),outcome=encounter(direction),blocked=state.busy||state.fishActive;
       const estimate=t("intel",outcome.intel),detail=state.sonar?t(outcome.label):`${t(outcome.signal)} · ${estimate}`;
@@ -478,9 +530,9 @@
       gate.classList.toggle("is-risk",revealed&&!outcome.safe);
       gate.setAttribute("aria-label",`${t(direction==="left"?"laneLeft":"laneRight")} · ${t(outcome.clues[0])} · ${t(outcome.clues[1])} · ${detail}`);
     }
-    $("sonarBtn").disabled=state.battery<2||!!state.busy||!!state.fishActive;
-    $("shieldBtn").disabled=state.battery<1||state.shieldArmed||!!state.busy||!!state.fishActive;
-    $("surfaceBtn").disabled=!!state.busy||!!state.fishActive;
+    $("sonarBtn").disabled=sonarJammed||state.battery<sonarCost||!!state.busy||!!state.fishActive;
+    $("shieldBtn").disabled=state.battery<shieldCost||state.shieldArmed||!!state.busy||!!state.fishActive;
+    $("surfaceBtn").disabled=!surfaceReady||!!state.busy||!!state.fishActive;
     $("beaconBtn").disabled=!beaconUseful||!!state.busy;
   }
   let coachReturnFocus=null;
@@ -497,36 +549,41 @@
       target?.focus({preventScroll:true});
     });
   }
-  function start(route){cancelDiveAsync();state={route,zone:1,oxygen:maxOxygen(),playerHp:maxHealth(),salvage:0,sonar:false,battery:4,shieldArmed:false,beaconUsed:false,beaconPending:false,busy:false,fishActive:false,fishResolvedZones:[]};show("battleShell");resetDiveField();$("fishEncounter").classList.add("hidden");$("fishEncounter").classList.remove("is-hit","is-countering","is-escaping");setUpgradeModal(false,false);renderBattle();setFeedback(`${icon("sonar")}<b>?</b>`,t("objectiveScan"));setCoach(!save.tutorialDone);}
+  function start(route){cancelDiveAsync();const config=routes[route-1];state={route,zone:1,oxygen:maxOxygen(),playerHp:maxHealth(),salvage:0,sonar:!!config.openingScan,battery:config.startBattery??4,shieldArmed:!!config.openingShield,beaconUsed:false,beaconPending:false,busy:false,fishActive:false,fishResolvedZones:[],safeStreak:0};show("battleShell");resetDiveField();$("fishEncounter").classList.add("hidden");$("fishEncounter").classList.remove("is-hit","is-countering","is-escaping");setUpgradeModal(false,false);renderBattle();setFeedback(`${icon(config.openingScan?"sonar":config.openingShield?"shield":"sonar")}<b>${config.openingScan||config.openingShield?"✓":"?"}</b>`,routeText(config,"rule"));setCoach(!save.tutorialDone);}
   function finish(mode){
     cancelDiveAsync();
     const config=routeConfig(),clear=mode==="clear",finalClear=clear&&state.route>=routes.length;
     const earned=mode==="fail"||mode==="combat"?Math.floor(state.salvage/2):state.salvage+(clear?2:0);
     const unlockedBefore=save.unlocked;
     save.coins+=earned;
-    if(clear){save.rank+=1;save.unlocked=Math.max(save.unlocked,Math.min(3,state.route+1));}
+    if(clear){save.rank+=1;save.unlocked=Math.max(save.unlocked,Math.min(routes.length,state.route+1));}
     persist();show("result");
     $("resultTitle").textContent=clear?t("clear"):mode==="combat"?t("combatDefeat"):mode==="fail"?t("oxygenLost"):mode==="miss"?t("missed"):t("partial");
     const copyKey=clear?"resultClear":mode==="combat"?"resultCombat":mode==="fail"?"resultFail":mode==="miss"?"resultMiss":"resultSurface";
     $("resultCopy").textContent=t(copyKey,{n:state.salvage,target:config.target,zones:config.zones});
     let routeEvidence=t("routeRetry",{target:config.target,zones:config.zones});
     if(finalClear)routeEvidence=t("routeComplete");
-    else if(clear){const nextRoute=Math.min(routes.length,state.route+1),key=save.unlocked>unlockedBefore?"routeUnlocked":"routeReady";routeEvidence=t(key,{n:nextRoute,name:(locale==="zh-Hant"?zh:en).relicNames[nextRoute-1]});}
+    else if(clear){const nextRoute=Math.min(routes.length,state.route+1),key=save.unlocked>unlockedBefore?"routeUnlocked":"routeReady";routeEvidence=t(key,{n:nextRoute,name:routeText(routes[nextRoute-1],"name")});}
     $("resultRewards").innerHTML=`<span>${t("coinsEarned",{n:earned})}</span><span>${t("coinsSaved",{n:save.coins})}</span><span>${t("rank",{n:save.rank})}</span><span>${routeEvidence}</span>`;
-    $("nextBtn").textContent=finalClear?t("routeSelect"):clear?t("next"):t("retry");$("menuBtn").textContent=t("menu");
+    $("nextBtn").textContent=finalClear?t("routeSelect"):clear?t("next"):t("retry");$("menuBtn").textContent=t("routeSelect");
     $("nextBtn").onclick=()=>{if(!clear)return start(state.route);show("stageScreen");renderRoutes();focusRoute(finalClear?state.route:Math.min(routes.length,state.route+1));};
   }
   function resetDiveField(){const field=$("diveField");field.classList.remove("is-swimming","is-resolving","is-advancing");delete field.dataset.lane;delete state.resolvingDirection;$("impactText").classList.add("hidden");}
   function applyMove(direction){
     const config=routeConfig(),outcome=encounter(direction);
-    let oxygenDelta=outcome.oxygen,shielded=false;
+    let oxygenDelta=outcome.oxygen-(config.oxygenTax??0),shielded=false,salvageDelta=outcome.salvage;
     if(!outcome.safe&&state.shieldArmed){oxygenDelta=Math.ceil(oxygenDelta/2);state.shieldArmed=false;shielded=true;}
     state.oxygen=Math.max(0,Math.min(maxOxygen(),state.oxygen+oxygenDelta));
-    if(outcome===outcomes.oxygen)state.battery=Math.min(4,state.battery+1);
-    state.salvage+=outcome.salvage;
+    if(outcome.safe){state.safeStreak+=1;if(config.streakEvery&&state.safeStreak%config.streakEvery===0)salvageDelta+=1;}
+    else{state.safeStreak=0;if(config.fragileCargo)salvageDelta-=Math.min(state.salvage,config.fragileCargo);}
+    state.salvage=Math.max(0,state.salvage+salvageDelta);
+    let powerGain=outcome===outcomes.oxygen?(config.oxygenPower??1):0;
+    if(outcome===outcomes.relic)powerGain+=config.relicPower??0;
+    if(outcome===outcomes.current)powerGain+=config.currentPower??0;
+    state.battery=Math.min(4,state.battery+powerGain);
     state.resolvingDirection=direction;
-    setFeedback(`${outcome.salvage?`${icon("salvage")}<b>+${outcome.salvage}</b>`:""}${icon("oxygen")}<b>${oxygenDelta>0?"+":""}${oxygenDelta}</b>${shielded?`${icon("shield")}<b>½</b>`:""}`,`${t(outcome.feedback)}${shielded?` ${t("shieldBlock")}`:""}`);
-    const impact=$("impactText");impact.textContent=`${outcome.salvage?`+${outcome.salvage} ${t("salvage",{n:""}).trim()}`:""}${outcome.salvage&&oxygenDelta?" · ":""}${oxygenDelta>0?"+":""}${oxygenDelta} ${t("oxygenShort")}`;impact.classList.remove("hidden");
+    setFeedback(`${salvageDelta?`${icon("salvage")}<b>${salvageDelta>0?"+":""}${salvageDelta}</b>`:""}${icon("oxygen")}<b>${oxygenDelta>0?"+":""}${oxygenDelta}</b>${powerGain?`${icon("power")}<b>+${powerGain}</b>`:""}${shielded?`${icon("shield")}<b>½</b>`:""}`,`${t(outcome.feedback)} ${routeText(config,"rule")}${shielded?` ${t("shieldBlock")}`:""}`);
+    const impact=$("impactText");impact.textContent=`${salvageDelta?`${salvageDelta>0?"+":""}${salvageDelta} ${t("salvage",{n:""}).trim()}`:""}${salvageDelta&&oxygenDelta?" · ":""}${oxygenDelta>0?"+":""}${oxygenDelta} ${t("oxygenShort")}`;impact.classList.remove("hidden");
     $("diveField").classList.add("is-resolving");
     state.sonar=false;
     renderBattle();
@@ -549,11 +606,11 @@
   }
   function shouldStartFish(){return routeConfig().fishZones.includes(state.zone)&&!state.fishResolvedZones.includes(state.zone);}
   function fishProfile(){
-    const shark=state.route===3&&state.zone>=4;
+    const config=routeConfig(),tier=config.fishTier??1,shark=tier>=5;
     // Route 1's only fish is the combat tutorial. A fresh Nori should learn the
     // attack/counter rhythm with a healthy margin before later routes escalate.
     if(state.route===1&&state.zone===3)return{name:t("territorialFish"),maxHp:20,attack:4,xp:30};
-    return{name:t(shark?"shark":"territorialFish"),maxHp:(shark?34:16)+state.route*6+state.zone*2,attack:(shark?8:3)+state.route*2+Math.floor(state.zone/2),xp:(shark?36:24)+state.route*6};
+    return{name:t(shark?"shark":"territorialFish"),maxHp:(shark?30:16)+tier*5+state.zone,attack:(shark?6:3)+tier+Math.floor(state.zone/3),xp:(shark?32:24)+tier*5};
   }
   function renderFish(){
     const fish=fishProfile(),blocked=!!state.fishBusy;
@@ -597,13 +654,13 @@
   }
   function openUpgrade(){lastUpgrade=null;renderUpgrade();setUpgradeModal(true);}
   function allocateStat(stat){if(save.statPoints<1)return;const oldMaxHp=maxHealth(),oldMaxOxygen=maxOxygen(),before=statValue(stat);save.statPoints-=1;save.stats[stat]+=1;if(stat==="hp")state.playerHp+=maxHealth()-oldMaxHp;if(stat==="oxygen")state.oxygen=Math.min(maxOxygen(),state.oxygen+maxOxygen()-oldMaxOxygen);lastUpgrade={stat,before,after:statValue(stat)};persist();renderUpgrade();renderBattle();if(save.statPoints===0)$("upgradeDone").focus({preventScroll:true});}
-  function winFish(){const fish=fishProfile(),levels=awardFishXp(fish.xp);state.fishActive=false;state.fishBusy=false;state.fishResolvedZones.push(state.zone);state.salvage+=1;state.battery=Math.min(4,state.battery+1);$("fishEncounter").classList.add("hidden");setFeedback(`${icon("salvage")}<b>+1</b><b>XP +${fish.xp}</b>`,`${t("fishWon")} ${t("xpGain",{n:fish.xp})}${levels?` ${t("levelUp",{n:levels})}`:""}`);renderBattle();if(levels)openUpgrade();else requestAnimationFrame(() => $("leftGate").focus({preventScroll:true}));}
+  function winFish(){const fish=fishProfile(),config=routeConfig(),levels=awardFishXp(fish.xp),salvageGain=1+(config.fishBonus??0);state.fishActive=false;state.fishBusy=false;state.fishResolvedZones.push(state.zone);state.salvage+=salvageGain;state.battery=Math.min(4,state.battery+1);$("fishEncounter").classList.add("hidden");setFeedback(`${icon("salvage")}<b>+${salvageGain}</b><b>XP +${fish.xp}</b>`,`${t("fishWon")} ${routeText(config,"rule")} ${t("xpGain",{n:fish.xp})}${levels?` ${t("levelUp",{n:levels})}`:""}`);renderBattle();if(levels)openUpgrade();else requestAnimationFrame(() => $("leftGate").focus({preventScroll:true}));}
   function attackFish(){
     if(!state.fishActive||state.fishBusy)return;clearBeaconConfirmation();renderBattle();state.fishBusy=true;state.fishHp-=diverAttack();$("fishEncounter").classList.add("is-hit");setFeedback(`${icon("danger")}<b>-${diverAttack()}</b>`,t("attackAction"));renderFish();
     scheduleDive(()=>{$("fishEncounter").classList.remove("is-hit");if(state.fishHp<=0){winFish();return;}const fish=fishProfile();state.playerHp=Math.max(0,state.playerHp-fish.attack);$("fishEncounter").classList.add("is-countering");setFeedback(`<b>-${fish.attack}</b>`,t("fishStrikes"));renderFish();scheduleDive(()=>{$("fishEncounter").classList.remove("is-countering");if(state.playerHp<=0){finish("combat");return;}state.fishBusy=false;renderFish();},700);},650);
   }
   function escapeFish(){
-    if(!state.fishActive||state.fishBusy)return;clearBeaconConfirmation();const cost=6+state.route*2;state.oxygen=Math.max(0,state.oxygen-cost);state.fishActive=false;state.fishResolvedZones.push(state.zone);$("fishEncounter").classList.add("is-escaping");setFeedback(`${icon("oxygen")}<b>-${cost}</b>`,t("fishEscaped",{n:cost}));scheduleDive(()=>{$("fishEncounter").classList.add("hidden");$("fishEncounter").classList.remove("is-escaping");renderBattle();if(state.oxygen<=0)finish("fail");else requestAnimationFrame(() => $("leftGate").focus({preventScroll:true}));},700);
+    if(!state.fishActive||state.fishBusy)return;clearBeaconConfirmation();const cost=routeConfig().escapeCost??8;state.oxygen=Math.max(0,state.oxygen-cost);state.fishActive=false;state.fishResolvedZones.push(state.zone);$("fishEncounter").classList.add("is-escaping");setFeedback(`${icon("oxygen")}<b>-${cost}</b>`,t("fishEscaped",{n:cost}));scheduleDive(()=>{$("fishEncounter").classList.add("hidden");$("fishEncounter").classList.remove("is-escaping");renderBattle();if(state.oxygen<=0)finish("fail");else requestAnimationFrame(() => $("leftGate").focus({preventScroll:true}));},700);
   }
   function useBeacon(){
     if(state.beaconUsed)return;
@@ -630,13 +687,13 @@
     focusCurrentDiveDecision();
   }
   function localize(){document.documentElement.lang=locale;document.title=`${t("title")} - Internal Trial`;$("title").textContent=t("title");$("languageLabel").textContent=t("language");$("localeSelect").value=locale;$("headline").textContent=t("headline");$("intro").textContent=t("intro");$("guideTitle").textContent=t("guideTitle");$("guideCopy").textContent=t("guideCopy");$("startBtn").textContent=t("start");$("stageTitle").textContent=t("stage");$("stageHint").textContent=t("stageHint");$("leftBtn").textContent=t("left");$("rightBtn").textContent=t("right");$("sonarBtn").textContent=t("sonarPowered");$("shieldBtn").textContent=t("shield");$("surfaceBtn").textContent=t("surface");$("coachTitle").textContent=t("coachTitle");$("coachStart").textContent=t("coachStart");renderCoach();$("helpBtn").ariaLabel=t("help");$("stageBack").ariaLabel=t("back");$("battleBack").ariaLabel=t("back");$("progress").textContent=`Lv.${save.level} · ${t("rank",{n:save.rank})} - ${t("coins",{n:save.coins})}`;renderRoutes();if(state.route){renderBattle();if(state.fishActive)renderFish();if(!$("upgradePanel").classList.contains("hidden"))renderUpgrade();}}
-  $("startBtn").onclick=()=>{show("stageScreen");renderRoutes();};$("stageBack").onclick=()=>show("mainScreen");$("battleBack").onclick=()=>{cancelDiveAsync();show("stageScreen");renderRoutes();};$("menuBtn").onclick=()=>show("mainScreen");$("leftBtn").onclick=()=>move("left");$("rightBtn").onclick=()=>move("right");$("dodgeLeftBtn").onclick=attackFish;$("pulseBtn").onclick=escapeFish;$("helpBtn").onclick=()=>setCoach(true);$("coachStart").addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault();});$("coachStart").onclick=()=>{save.tutorialDone=true;persist();setCoach(false);setFeedback(`${icon("sonar")}<b>?</b>`,t("objectiveScan"));};$("sonarBtn").onclick=()=>{if(state.sonar){setFeedback(`${icon("sonar")}<b>✓</b>`,sonarMessage());return;}if(state.battery<2){setFeedback(`${icon("power")}<b>0</b>`,t("sonarNeed"));return;}state.battery-=2;state.sonar=true;setFeedback(`${icon("sonar")}<b>✓</b>`,sonarMessage());renderBattle();};$("shieldBtn").onclick=()=>{if(state.shieldArmed)return;if(state.battery<1){setFeedback(`${icon("power")}<b>0</b>`,t("shieldNeed"));return;}state.battery-=1;state.shieldArmed=true;setFeedback(`${icon("shield")}<b>✓</b>`,t("shieldArmed"));renderBattle();focusCurrentDiveDecision();};$("surfaceBtn").onclick=()=>finish("surface");$("beaconBtn").addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault();});$("beaconBtn").onclick=useBeacon;["upgradeHp","upgradeAttack","upgradeOxygen"].forEach(id=>$(id).addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault();}));$("upgradeHp").onclick=()=>allocateStat("hp");$("upgradeAttack").onclick=()=>allocateStat("attack");$("upgradeOxygen").onclick=()=>allocateStat("oxygen");$("upgradeDone").onclick=()=>{setUpgradeModal(false);renderBattle();};$("localeSelect").onchange=(event)=>{locale=event.target.value;localStorage.setItem("weightPlayLocale",locale);localize();};
+  $("startBtn").onclick=()=>{show("stageScreen");renderRoutes();};$("stageBack").onclick=()=>show("mainScreen");$("battleBack").onclick=()=>{cancelDiveAsync();show("stageScreen");renderRoutes();};$("menuBtn").onclick=leaveDive;$("leftBtn").onclick=()=>move("left");$("rightBtn").onclick=()=>move("right");$("dodgeLeftBtn").onclick=attackFish;$("pulseBtn").onclick=escapeFish;$("helpBtn").onclick=()=>setCoach(true);$("coachStart").addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault();});$("coachStart").onclick=()=>{save.tutorialDone=true;persist();setCoach(false);setFeedback(`${icon("sonar")}<b>?</b>`,t("objectiveScan"));};$("sonarBtn").onclick=()=>{if(state.sonar){setFeedback(`${icon("sonar")}<b>✓</b>`,sonarMessage());return;}if(state.battery<2){setFeedback(`${icon("power")}<b>0</b>`,t("sonarNeed"));return;}state.battery-=2;state.sonar=true;setFeedback(`${icon("sonar")}<b>✓</b>`,sonarMessage());renderBattle();};$("shieldBtn").onclick=()=>{if(state.shieldArmed)return;if(state.battery<1){setFeedback(`${icon("power")}<b>0</b>`,t("shieldNeed"));return;}state.battery-=1;state.shieldArmed=true;setFeedback(`${icon("shield")}<b>✓</b>`,t("shieldArmed"));renderBattle();focusCurrentDiveDecision();};$("surfaceBtn").onclick=()=>finish("surface");$("beaconBtn").addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault();});$("beaconBtn").onclick=useBeacon;["upgradeHp","upgradeAttack","upgradeOxygen"].forEach(id=>$(id).addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault();}));$("upgradeHp").onclick=()=>allocateStat("hp");$("upgradeAttack").onclick=()=>allocateStat("attack");$("upgradeOxygen").onclick=()=>allocateStat("oxygen");$("upgradeDone").onclick=()=>{setUpgradeModal(false);renderBattle();};$("localeSelect").onchange=(event)=>{locale=event.target.value;localStorage.setItem("weightPlayLocale",locale);localize();};
   $("startBtn").onclick=()=>{show("stageScreen");renderRoutes();focusRoute(save.unlocked);};
   $("stageBack").onclick=()=>{show("mainScreen");focusMain();};
   $("battleBack").onclick=()=>setQuit(true);
   $("quitKeep").onclick=()=>setQuit(false,{resume:true});
   $("quitLeave").onclick=leaveDive;
-  $("menuBtn").onclick=()=>{localize();show("mainScreen");focusMain();};
+  $("menuBtn").onclick=leaveDive;
   document.addEventListener("visibilitychange",()=>{if(document.hidden)suspendDiveAsync();else resumeDiveAsync();});
   window.addEventListener("pagehide",suspendDiveAsync);
   window.addEventListener("pageshow",resumeDiveAsync);

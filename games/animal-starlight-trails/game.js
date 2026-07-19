@@ -112,7 +112,16 @@
 
   const stages = Array.from({length:30},(_,index)=>makeStage(index+1));
   const defaultSave = () => ({unlocked:1,stars:Array(30).fill(0),bestTimes:Array(30).fill(null),cleared:Array(30).fill(false)});
-  function loadSave(){try{const raw=JSON.parse(localStorage.getItem(SAVE_KEY)||"null");return raw?{...defaultSave(),...raw}:defaultSave();}catch{return defaultSave();}}
+  function normalizeSave(raw){
+    const clean=defaultSave();
+    if(!raw||typeof raw!=="object"||Array.isArray(raw))return clean;
+    if(Number.isFinite(raw.unlocked))clean.unlocked=Math.max(1,Math.min(30,Math.trunc(raw.unlocked)));
+    if(Array.isArray(raw.stars))clean.stars=clean.stars.map((_,index)=>Number.isFinite(raw.stars[index])?Math.max(0,Math.min(3,Math.trunc(raw.stars[index]))):0);
+    if(Array.isArray(raw.bestTimes))clean.bestTimes=clean.bestTimes.map((_,index)=>Number.isFinite(raw.bestTimes[index])&&raw.bestTimes[index]>=0?Math.round(raw.bestTimes[index]):null);
+    if(Array.isArray(raw.cleared))clean.cleared=clean.cleared.map((_,index)=>raw.cleared[index]===true);
+    return clean;
+  }
+  function loadSave(){let raw=null;try{raw=JSON.parse(localStorage.getItem(SAVE_KEY)||"null");}catch{}const clean=normalizeSave(raw);localStorage.setItem(SAVE_KEY,JSON.stringify(clean));return clean;}
   let save = loadSave();
   const persist = () => localStorage.setItem(SAVE_KEY,JSON.stringify(save));
 

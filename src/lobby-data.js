@@ -22,6 +22,7 @@ window.WONDER_LOBBY = {
       "animal-gearpack-expedition", "animal-moonlight-heist",
       "animal-starlight-trails",
       "animal-one-line",
+      "animal-2048",
     ],
   },
   games: [
@@ -190,10 +191,9 @@ window.WONDER_LOBBY = {
     {
       id: "animal-2048",
       title: { en: "Animal 2048: Forest Evolution", "zh-Hant": "動物 2048：森林進化" },
-      status: "planned",
-      statusText: { en: "Coming Soon", "zh-Hant": "敬請期待" },
+      status: "playable",
+      statusText: { en: "Playable", "zh-Hant": "立即遊玩" },
       href: "games/animal-2048/",
-      internalTrial: "index.html?trial=1",
       type: { en: "Grid Merge Strategy", "zh-Hant": "格子合併策略" },
       categories: ["Animal Games", "Puzzle", "Strategy"],
       skills: ["Logic", "Problem Solving", "Focus"],

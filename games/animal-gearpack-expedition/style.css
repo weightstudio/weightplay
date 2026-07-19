@@ -41,9 +41,9 @@ body.wp-logical-battle-active.is-game-playing #battleScreen .battle-canvas[data-
 .stage-badges{min-height:22px;display:flex;justify-content:center;gap:5px;overflow:hidden}
 .stage-badges b,.stage-badges em{padding:3px 6px;border-radius:999px;font-size:10px;font-style:normal;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .stage-badges b{color:#271500;background:var(--gold)}.stage-badges em{color:#04251d;background:var(--teal)}
-.region-card.is-selected{border-color:#8fffe0;box-shadow:0 0 0 3px #42d8c055,0 10px 24px #000b}.region-card.is-selected img{filter:brightness(.92)}
+.region-card.is-selected{border-color:#8fffe0;box-shadow:0 0 0 3px #42d8c077,0 0 24px #42d8c0aa,0 10px 24px #000b}.region-card.is-selected img{filter:brightness(.92)}
 .region-card.is-checkpoint{border-color:#c69a45}.region-card.is-checkpoint.is-selected{border-color:#fff0a8}
-.region-card:disabled{opacity:.48;filter:saturate(.3)}
+.region-card:disabled{opacity:.48;filter:saturate(.3)}.region-card:disabled.is-selected{opacity:1}
 .region-card:focus-visible{outline:3px solid #fff2a1;outline-offset:3px}
 @media(max-height:460px) and (orientation:landscape){.region-card{grid-template-columns:46% minmax(0,1fr);grid-template-rows:auto auto minmax(0,1fr);text-align:left}.region-card img{grid-column:1;grid-row:1/-1}.region-card>strong,.region-card .stage-rule,.region-card .stage-badges{grid-column:2}.region-card .stage-badges{justify-content:flex-start}.region-card .stage-number{top:9px;left:9px}}
 @keyframes enemy-attack{50%{transform:translateX(-10px) scale(1.08)}}

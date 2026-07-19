@@ -7148,4 +7148,70 @@
       window.WonderI18n?.setLocale?.(event.target.value);
     }
   });
+
+  games["animal-2048"] = {
+    title: "Animal 2048: Forest Evolution",
+    difficulty: "Easy to Challenging",
+    time: "2-6 minutes per mission",
+    gameplay: "Whole-Grid Merge Strategy",
+    genre: ["Puzzle", "Strategy", "Logic", "Animal"],
+    skills: ["Logic", "Spatial Reasoning", "Sequencing"],
+    guideKicker: "WeightPlay Original Game Guide",
+    guideTitleSuffix: "Game Guide",
+    hideScoreBands: true,
+    intro: "Animal 2048 is a turn-based forest strategy puzzle hosted by Moon Cap Orla. Every direction moves the complete 4 by 4 board, so a single swipe can open space, build several evolution chains, or trap the animals needed for the mission goal.",
+    story: [
+      "Moon Cap Orla maintains a moonlit sanctuary where matching animal spirits combine into stronger forms. The thirty campaign missions are her field lessons: the player restores each sanctuary board by reaching a named animal tier, completing a required number of merges, or earning a target score before the move supply runs out.",
+      "Moss stones appear in the middle chapters and divide rows or columns into separate movement segments. They cannot move or merge, so the route around them matters. Completing Stage 30 creates the Lion Guardian at value 2048 and finishes the Grand Evolution chapter. Infinite Forest is a separate challenge rather than a hidden Stage 31."
+    ],
+    systems: [
+      "A valid swipe pushes every movable tile as far as it can travel. Two equal animals that meet become the next tier, but a tile created by a merge cannot merge again during that same move. A move that changes nothing is rejected and does not spend the move counter or create a new animal.",
+      "After each valid move, one low-tier animal appears in an available cell. This makes empty space the central resource: keeping a stable high-value corner is useful, but preserving routes into that corner is just as important. The numeric value remains visible on every animal tile so the evolution chain can be read without recognizing artwork alone.",
+      "Campaign goals alternate among reaching a tile, completing a number of merges, and reaching a score. Each mission has an authored opening board, stone pattern, move limit, and deterministic spawn sequence, so restarting the same mission presents the same planning problem. Undo restores the exact previous board, score, move count, and spawn state.",
+      "Infinite Forest begins with two random low-tier animals, has no move limit, and ends only when no legal slide or merge remains. Values continue beyond 2048, and its best score, highest tile, move count, and run count are saved separately from campaign stars and unlocks."
+    ],
+    how: [
+      "Choose Campaign for one of thirty missions or Challenge for Infinite Forest.",
+      "Swipe the board, use the four direction buttons, or press an arrow key or WASD.",
+      "Merge equal animals while protecting open cells and routes around moss stones.",
+      "Use Undo for one exact step, Restart for the authored opening, or Hint for a directional suggestion.",
+      "Complete the displayed goal before the move limit, or continue an Infinite Forest run until no move remains."
+    ],
+    strategyTips: [
+      "Keep the largest animal near a corner, but avoid filling both neighboring edges with unmatched low tiers.",
+      "Read the whole row or column before swiping; a move affects every tile, not only the pair you want to merge.",
+      "Near moss stones, plan each separated segment independently and check where the new animal can appear.",
+      "In score and merge missions, several small controlled chains may be safer than rushing toward one rare animal.",
+      "Undo is most useful immediately after a move closes an important lane; it restores the exact spawn as well as the board."
+    ],
+    progression: [
+      "Missions 1-5 teach full-board sliding and single merges. Missions 6-10 introduce longer chain planning. Missions 11-15 add moss stones that split movement lines.",
+      "Missions 16-20 focus on score efficiency, Missions 21-25 begin from denser rare-animal nests, and Missions 26-30 combine stones, tight move limits, scoring, and high tiers up to 2048. Infinite Forest removes the move budget and turns the same rules into a personal endurance challenge."
+    ],
+    designNote: "The game uses short deterministic missions so a failed attempt can become a specific planning lesson instead of a different random puzzle. Whole-grid swipes were chosen because each input has broad consequences while remaining comfortable on phones. Mouse, touch, direction buttons, arrows, and WASD all operate the same state. Stable tile elements slide between cells and only real merges receive a pop effect, keeping motion readable without flashing the board. Progress and Infinite Forest records are stored only in this browser; no account is required.",
+    faq: [
+      ["Does every swipe create a new animal?", "No. Only a swipe that changes the board spends a move and adds one low-tier animal."],
+      ["Can a newly merged tile merge again immediately?", "No. Each resulting tile can merge only once during a single move."],
+      ["What do moss stones do?", "They stay fixed and split a row or column into separate movement segments."],
+      ["What does Undo restore?", "It restores the previous board, score, move count, objective progress, and deterministic spawn state."],
+      ["Is Infinite Forest part of the thirty missions?", "No. It is a separate unlimited challenge and does not change campaign stars or unlocks."],
+      ["Does progress save?", "Yes. Campaign progress and Infinite Forest records are stored locally in the current browser."]
+    ]
+  };
+  gameplayProfiles["animal-2048"] = { gameplay: "Whole-Grid Merge Strategy", genre: ["Puzzle", "Strategy", "Logic", "Animal"] };
+
+  localizedGames["zh-Hant"]["animal-2048"] = {
+    ...games["animal-2048"], title: "動物 2048：森林進化", difficulty: "簡單至具挑戰性", time: "每關約 2 至 6 分鐘", gameplay: "全盤滑動合成策略", genre: ["益智", "策略", "邏輯", "動物"], skills: ["邏輯", "空間推理", "順序規劃"],
+    intro: "《動物 2048：森林進化》是由月帽貓頭鷹 Orla 引導的回合制森林策略遊戲。每個方向都會推動完整的 4×4 棋盤，因此一次滑動可能打開空間、串起多段進化，也可能封住任務需要的動物。",
+    story: ["Orla 維護著月光森林裡的動物靈光保護區，相同動物相遇後會進化成更高階形態。三十個闖關任務要求玩家在步數用完前，合出指定動物、完成合成次數或取得目標分數。", "中期開始出現不會移動的苔石，將橫列與直行切成不同區段。第 30 關要合出數值 2048 的獅王守護者，完成最終進化；無限森林則是獨立挑戰，不是隱藏的第 31 關。"],
+    systems: ["有效滑動會把所有可移動方塊推到最遠。兩隻相同動物相遇後進化一階，但新合成的方塊不能在同一步再次合成。沒有改變棋盤的方向不會扣步數，也不會生成新動物。", "每次有效移動後，空格會出現一隻低階動物，所以空間就是最重要的資源。把高階動物留在穩定角落很有用，但也要保留通往角落的路線。每個圖案都保留數值，玩家不必只靠圖片辨認階級。", "闖關目標分為指定方塊、合成次數與分數。每關擁有固定開局、苔石配置、步數限制與可重現的生成順序；復原會還原棋盤、分數、步數及生成狀態。", "無限森林由兩個隨機低階動物開始，沒有步數上限，直到棋盤完全無法滑動或合成才結束。2048 之後仍能繼續進化，最佳分數與最高方塊也和闖關進度分開保存。"],
+    how: ["在關卡頁選擇三十關闖關，或切到挑戰進入無限森林。", "滑動棋盤、點擊方向按鈕，或使用方向鍵與 WASD。", "合併相同動物，同時保留空格與繞過苔石的路線。", "使用復原精確回到上一步、重新開始回到固定開局，或查看方向提示。", "在步數限制內完成畫面目標；無限森林則持續到無路可走。"],
+    strategyTips: ["把最大的動物留在角落，但不要讓旁邊兩條邊都塞滿無法配對的低階動物。", "滑動前先看完整橫列或直行，因為方向會影響所有方塊，而不只是眼前的一對。", "苔石附近要分別規劃被切開的區段，並預留新動物可能出現的位置。", "分數與合成任務不一定要急著追最高階，穩定的小型連鎖通常更安全。", "若一步封死重要路線，立即使用復原最有效；生成位置也會一起精確還原。"],
+    progression: ["第 1 至 5 關教全盤滑動與單次合成，第 6 至 10 關加入連鎖規劃，第 11 至 15 關用苔石切開移動路線。", "第 16 至 20 關重視分數效率，第 21 至 25 關從較密集的稀有動物巢開始，第 26 至 30 關綜合苔石、有限步數、分數與最高 2048 的進化目標。無限森林則移除步數限制，考驗長期空間管理。"],
+    designNote: "遊戲採用短而固定的任務，讓失敗能指向明確的路線判斷，而不是每次重試都變成另一盤隨機題目。全盤滑動讓每個輸入都有廣泛後果，同時適合手機操作；觸控、滑鼠、方向按鈕、方向鍵與 WASD 共用同一套狀態。方塊會平順移動，只有真正合成時才播放特效，避免整盤閃爍。闖關與無限模式紀錄只保存在目前瀏覽器，不需要登入。",
+    faq: [["每次滑動都會出現新動物嗎？", "不會，只有真正改變棋盤的方向才會扣一步並產生低階動物。"], ["新合成的方塊可以立刻再合成嗎？", "不行，同一個結果方塊每一步只能合成一次。"], ["苔石有什麼作用？", "苔石固定不動，會把一列或一行切成彼此獨立的移動區段。"], ["復原會還原哪些內容？", "會還原棋盤、分數、步數、任務進度及固定生成狀態。"], ["無限森林算在三十關裡嗎？", "不算，它是獨立的無限挑戰，不會改變闖關星數或解鎖。"], ["遊戲會保存進度嗎？", "會，闖關與無限森林紀錄只保存在目前瀏覽器。"]]
+  };
+  localizedGameplayProfiles["zh-Hant"]["animal-2048"] = { gameplay: "全盤滑動合成策略", genre: ["益智", "策略", "邏輯", "動物"] };
+  localizedGames["zh-Hans"]["animal-2048"] = { ...localizedGames["zh-Hant"]["animal-2048"], title: "动物 2048：森林进化", gameplay: "全盘滑动合成策略" };
+  localizedGameplayProfiles["zh-Hans"]["animal-2048"] = { gameplay: "全盘滑动合成策略", genre: ["益智", "策略", "逻辑", "动物"] };
 })();

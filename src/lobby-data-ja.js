@@ -6,6 +6,14 @@
   };
   window.WONDER_LOBBY.platform.tagline.ja = "あらゆる年齢のためのオリジナルどうぶつゲーム。";
   window.WONDER_LOBBY.platform.subtitle.ja = "子ども、家族、カジュアルプレイヤーのために育つ、どうぶつブラウザゲームの世界。";
+  const animal2048 = window.WONDER_LOBBY.games.find((game) => game.id === "animal-2048");
+  if (animal2048) {
+    animal2048.title.ja = "アニマル2048：森の進化";
+    animal2048.statusText.ja = "今すぐ遊ぶ";
+    animal2048.type.ja = "全盤スライド合成戦略";
+    animal2048.description.ja = "盤面全体を動かして同じ動物を合成し、30ミッションと無限の森に挑戦します。";
+    animal2048.meta.ja = ["30ミッション", "グリッド戦略", "無限の森"];
+  }
   window.WONDER_LOBBY.games.forEach((game) => {
     const title = titles[game.id];
     if (!title) return;

@@ -894,18 +894,23 @@
       menuHint: "\u8a13\u7df4\u5df2\u64c1\u6709\u89d2\u8272\uff0c\u7d44\u6210\u5c0f\u968a\uff0c\u6311\u6230\u6575\u4eba\u6578\u91cf\u5e73\u7a69\u6210\u9577\u7684 5 \u6ce2\u95dc\u5361\u3002\u901a\u95dc\u5f8c\u6703\u6c38\u4e45\u89e3\u9396\u4e0b\u4e00\u95dc\u3002"
   });
 
+  function wholeNumber(value, fallback, min = 0, max = Number.MAX_SAFE_INTEGER) {
+    const numeric = Number(value);
+    return Number.isFinite(numeric) ? Math.max(min, Math.min(max, Math.floor(numeric))) : fallback;
+  }
+
   function normalizeSave(data) {
     const source = data && typeof data === "object" ? data : {};
     const animalLevels = {};
     const incomingLevels = source.animalLevels && typeof source.animalLevels === "object" ? source.animalLevels : {};
     ANIMAL_METADATA.forEach((animal) => {
-      animalLevels[animal.id] = Math.max(1, Math.min(20, Math.floor(Number(incomingLevels[animal.id]) || 1)));
+      animalLevels[animal.id] = wholeNumber(incomingLevels[animal.id], 1, 1, 20);
     });
     const unlockedAnimals = new Set(STARTER_ANIMAL_IDS);
     if (Array.isArray(source.unlockedAnimals)) {
       source.unlockedAnimals.forEach((id) => {
         const normalizedId = Number(id);
-        if (ANIMAL_METADATA.some((animal) => animal.id === normalizedId)) unlockedAnimals.add(normalizedId);
+        if (Number.isInteger(normalizedId) && ANIMAL_METADATA.some((animal) => animal.id === normalizedId)) unlockedAnimals.add(normalizedId);
       });
     }
     // Older run saves could retain a deployed character after the backpack list
@@ -914,37 +919,37 @@
     if (Array.isArray(source.savedSquad)) {
       source.savedSquad.forEach((id) => {
         const normalizedId = Number(id);
-        if (id !== null && id !== undefined && id !== "" && ANIMAL_METADATA.some((animal) => animal.id === normalizedId)) {
+        if (id !== null && id !== undefined && id !== "" && Number.isInteger(normalizedId) && ANIMAL_METADATA.some((animal) => animal.id === normalizedId)) {
           unlockedAnimals.add(normalizedId);
         }
       });
     }
-    const unlockedStage = Math.max(1, Math.min(STAGE_COUNT, Math.floor(Number(source.unlockedStage) || 1)));
-    const selectedStage = Math.max(1, Math.min(unlockedStage, Math.floor(Number(source.selectedStage) || unlockedStage)));
+    const unlockedStage = wholeNumber(source.unlockedStage, 1, 1, STAGE_COUNT);
+    const selectedStage = wholeNumber(source.selectedStage, unlockedStage, 1, unlockedStage);
     const savedSquad = Array(6).fill(null);
     const savedAnimalIds = new Set();
     if (Array.isArray(source.savedSquad)) {
       source.savedSquad.slice(0, 6).forEach((id, slot) => {
         if (id === null || id === undefined || id === "") return;
         const normalizedId = Number(id);
-        if (!unlockedAnimals.has(normalizedId) || savedAnimalIds.has(normalizedId)) return;
+        if (!Number.isInteger(normalizedId) || !unlockedAnimals.has(normalizedId) || savedAnimalIds.has(normalizedId)) return;
         savedSquad[slot] = normalizedId;
         savedAnimalIds.add(normalizedId);
       });
     }
     const unlockedSkin = source.unlockedSkin === true;
     return {
-      bestRound: Math.max(0, Number(source.bestRound) || 0),
-      clearedRuns: Math.max(0, Number(source.clearedRuns) || 0),
+      bestRound: wholeNumber(source.bestRound, 0),
+      clearedRuns: wholeNumber(source.clearedRuns, 0),
       unlockedSkin,
       selectedSkin: unlockedSkin && source.selectedSkin === "golden" ? "golden" : "normal",
-      teamLevel: Math.max(1, Number(source.teamLevel) || 1),
-      teamXp: Math.max(0, Number(source.teamXp) || 0),
-      coins: Math.max(0, Math.floor(source.coins === undefined ? 18 : Number(source.coins) || 0)),
+      teamLevel: wholeNumber(source.teamLevel, 1, 1),
+      teamXp: wholeNumber(source.teamXp, 0),
+      coins: wholeNumber(source.coins, source.coins === undefined ? 18 : 0),
       unlockedStage,
       selectedStage,
       completedStages: Array.isArray(source.completedStages)
-        ? [...new Set(source.completedStages.map(Number).filter((stage) => stage >= 1 && stage <= STAGE_COUNT))].sort((a, b) => a - b)
+        ? [...new Set(source.completedStages.map(Number).filter((stage) => Number.isInteger(stage) && stage >= 1 && stage <= STAGE_COUNT))].sort((a, b) => a - b)
         : [],
       unlockedAnimals: [...unlockedAnimals].sort((a, b) => a - b),
       animalLevels,
@@ -1387,12 +1392,15 @@
   }
 
   function loadSave() {
+    let normalized;
     try {
       const data = localStorage.getItem(saveKey);
-      return normalizeSave(data ? JSON.parse(data) : null);
+      normalized = normalizeSave(data ? JSON.parse(data) : null);
     } catch (e) {
-      return normalizeSave(null);
+      normalized = normalizeSave(null);
     }
+    try { localStorage.setItem(saveKey, JSON.stringify(normalized)); } catch (e) {}
+    return normalized;
   }
 
   function saveSave() {

@@ -1,5 +1,6 @@
 (() => {
   const LOGICAL_W = 390, LOGICAL_H = 788, BOARD_W = 360, BOARD_H = 540;
+  document.querySelectorAll('.play-shell,.logical-canvas').forEach(node=>node.setAttribute('data-wp-canvas-max-width','viewport'));
   const supportedLocales=['en','zh-Hant'];
   const gameLocalePreference=localStorage.getItem('animalColoringStudioLocale');
   const platformLocale=localStorage.getItem('weightPlayLocale')||localStorage.getItem('weightplayLocale');
@@ -38,15 +39,25 @@
   function translate(){document.documentElement.lang=lang;app.dataset.locale=lang;document.querySelectorAll('[data-copy]').forEach(el=>el.textContent=t(el.dataset.copy));document.querySelectorAll('[data-aria]').forEach(el=>el.setAttribute('aria-label',t(el.dataset.aria)));$('loadingTitle').textContent=t('loading');document.title=`${t('title')} - WeightPlay`;updateKeyboardCursor();window.dispatchEvent(new CustomEvent('wonder:locale-change',{detail:{locale:lang}}))}
   function asset(page,kind){const base=`../../assets/animal-coloring-studio-${page.pack}-pages/${page.id}`;return kind==='mask'?`${base}-mask.png`:`${base}.webp`}
   function renderPalette(focusColor=null){const root=$('palette');root.innerHTML='';palette.forEach(item=>{const b=document.createElement('button');b.className='swatch'+(item.color===selectedColor?' active':'');b.style.backgroundPosition=`${item.pos*16.6667}% center`;b.setAttribute('aria-label',item.color);b.dataset.color=item.color;b.onclick=()=>{selectedColor=item.color;renderPalette(item.color);track('color_selected',{color:item.color})};root.append(b)});if(focusColor)requestAnimationFrame(()=>root.querySelector(`[data-color="${focusColor}"]`)?.focus({preventScroll:true}))}
-  let railSettleFrame=0;
+  let railSettleFrame=0,centerCueFrame=0;
+  function updateCenteredPageCard(){
+    centerCueFrame=0;
+    const rail=$('pageRail'),cards=[...rail.querySelectorAll('.page-card')];
+    if(!cards.length)return;
+    const center=rail.getBoundingClientRect().left+rail.getBoundingClientRect().width/2;
+    const centered=cards.reduce((best,card)=>Math.abs(card.getBoundingClientRect().left+card.getBoundingClientRect().width/2-center)<Math.abs(best.getBoundingClientRect().left+best.getBoundingClientRect().width/2-center)?card:best,cards[0]);
+    cards.forEach(card=>{const current=card===centered;card.classList.toggle('is-centered',current);if(current)card.setAttribute('aria-current','true');else card.removeAttribute('aria-current')});
+  }
+  function scheduleCenteredPageCard(){if(centerCueFrame)return;centerCueFrame=requestAnimationFrame(updateCenteredPageCard)}
+  function setupCenteredPageCue(){const rail=$('pageRail');rail.addEventListener('scroll',scheduleCenteredPageCard,{passive:true});window.addEventListener('wonder:stage-snap',scheduleCenteredPageCard)}
   function centerRailCard(rail,card,animate=false){
     if(!card)return;
     cancelAnimationFrame(railSettleFrame);
     const max=Math.max(0,rail.scrollWidth-rail.clientWidth);
     const target=Math.max(0,Math.min(max,card.offsetLeft+card.offsetWidth/2-rail.clientWidth/2));
-    if(!animate){rail.scrollLeft=target;return}
+    if(!animate){rail.scrollLeft=target;scheduleCenteredPageCard();return}
     const start=rail.scrollLeft,distance=target-start,started=performance.now(),duration=240;
-    const settle=now=>{const progress=Math.min(1,(now-started)/duration),ease=1-Math.pow(1-progress,3);rail.scrollLeft=start+distance*ease;if(progress<1)railSettleFrame=requestAnimationFrame(settle);else railSettleFrame=0};
+    const settle=now=>{const progress=Math.min(1,(now-started)/duration),ease=1-Math.pow(1-progress,3);rail.scrollLeft=start+distance*ease;scheduleCenteredPageCard();if(progress<1)railSettleFrame=requestAnimationFrame(settle);else railSettleFrame=0};
     railSettleFrame=requestAnimationFrame(settle);
   }
   function renderStages(){const save=readSave(),rail=$('pageRail');cancelAnimationFrame(railSettleFrame);railSettleFrame=0;rail.innerHTML='';pages.forEach((page,index)=>{if(packFilter!=='all'&&page.pack!==packFilter)return;const card=document.createElement('button');card.className='page-card'+(index===selectedPage?' selected':'');card.dataset.page=String(index);card.innerHTML=`<img src="${asset(page,'art')}" alt=""><span class="label">${names[lang][page.id]}${save.completed[page.id]?'<b class="done">\u2605</b>':''}</span>`;card.onclick=()=>{if(rail.dataset.dragging==='true')return;selectedPage=index;openPage()};rail.append(card)});const done=Object.keys(save.completed).length;$('albumProgress').textContent=`${done}/12`;requestAnimationFrame(()=>centerRailCard(rail,rail.querySelector(`[data-page="${selectedPage}"]`)))}
@@ -85,7 +96,7 @@
   $('leaveConfirmPanel').addEventListener('keydown',event=>{rejectRepeatedScreenActivation(event);if(event.defaultPrevented)return;if(event.key==='Escape'){event.preventDefault();setLeaveConfirmOpen(false,true);return}if(event.key!=='Tab')return;const actions=[$('keepColoring'),$('leavePicture')],index=actions.indexOf(document.activeElement),next=event.shiftKey?(index<=0?actions.length-1:index-1):(index>=actions.length-1?0:index+1);event.preventDefault();actions[next].focus({preventScroll:true})},true);
   $('battleBack').addEventListener('keydown',rejectRepeatedScreenActivation);
   $('locale').value=lang;$('locale').onchange=()=>{lang=$('locale').value;localStorage.setItem('animalColoringStudioLocale',lang);localStorage.setItem('weightPlayLocale',lang);translate();renderStages()};$('start').addEventListener('keydown',rejectRepeatedScreenActivation);$('pageRail').addEventListener('keydown',event=>{if(event.target.closest('.page-card'))rejectRepeatedScreenActivation(event)});$('resultPanel').addEventListener('keydown',event=>{rejectRepeatedScreenActivation(event);if(event.defaultPrevented||event.key!=='Tab'||$('resultPanel').classList.contains('hidden'))return;const actions=[...$('resultPanel').querySelectorAll('button:not(.hidden):not(:disabled)')].filter(action=>action.getClientRects().length);if(!actions.length)return;const first=actions[0],last=actions[actions.length-1];if((event.shiftKey&&document.activeElement===first)||(!event.shiftKey&&document.activeElement===last)){event.preventDefault();(event.shiftKey?last:first).focus({preventScroll:true})}},true);$('start').onclick=()=>{showStage(true);track('game_start')};$('stageBack').onclick=()=>showMain(true);$('battleBack').onclick=requestBattleReturn;$('keepColoring').onclick=()=>setLeaveConfirmOpen(false,true);$('leavePicture').onclick=leavePicture;$('undo').addEventListener('keydown',event=>{if(event.repeat&&(event.key==='Enter'||event.key===' '))event.preventDefault()});$('undo').onclick=undo;$('clear').addEventListener('keydown',rejectRepeatedScreenActivation);$('clear').onclick=clearPage;$('finish').onclick=complete;$('resultAlbum').onclick=()=>{setResultOpen(false);showStage(true)};$('nextPage').onclick=()=>{selectedPage=(selectedPage+1)%pages.length;openPage(true)};
-  translate();renderPalette();fitCanvases();window.addEventListener('resize',fitCanvases,{passive:true});window.visualViewport?.addEventListener('resize',fitCanvases,{passive:true});track('game_view');
+  translate();renderPalette();fitCanvases();setupCenteredPageCue();window.addEventListener('resize',()=>{fitCanvases();scheduleCenteredPageCard()},{passive:true});window.visualViewport?.addEventListener('resize',()=>{fitCanvases();scheduleCenteredPageCard()},{passive:true});track('game_view');
   window.__animalColoringStudioTest={
     pages,
     getState:()=>({screen:[...document.querySelectorAll('[data-screen]')].find(x=>!x.classList.contains('hidden'))?.dataset.screen,selectedPage,pageId:pages[selectedPage]?.id,mode,selectedColor,fills:fills.size,strokes:strokes.length,actions:actions.length,clearArmed,keyboardRegions:keyboardRegions.length,keyboardRegionIndex}),

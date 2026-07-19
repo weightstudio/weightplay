@@ -74,7 +74,7 @@
   }
 
   function resumeBackgroundBattle() {
-    if (!backgroundSuspended || document.hidden) return;
+    if (!backgroundSuspended || document.hidden || leaveDecisionOpen) return;
     backgroundSuspended = false;
     armAmuletConfirmation();
     battleTransitions.forEach(armBattleTransition);

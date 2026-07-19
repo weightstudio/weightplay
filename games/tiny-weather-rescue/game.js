@@ -1,5 +1,6 @@
 (() => {
   const GAME_ID = "tiny-weather-rescue";
+  document.querySelector(".weather-game")?.setAttribute("data-wp-canvas-max-width", "viewport");
   const localeKey = "weightplayLocale";
   const canonicalLocaleKey = "weightPlayLocale";
   const unlockKey = "weightplay_weather_unlocked";

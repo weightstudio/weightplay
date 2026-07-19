@@ -492,6 +492,27 @@
     startStage(stageNo - 1);
   }
 
+  let centeredStageFrame = 0;
+  function updateCenteredStageCard() {
+    const cards = [...nodes.stageGrid.querySelectorAll(".stage-card")];
+    if (!cards.length || !document.body.classList.contains("wp-standard-stage-page")) return;
+    const railRect = nodes.stageGrid.getBoundingClientRect(), railCenter = railRect.left + railRect.width / 2;
+    const centered = cards.reduce((nearest, card) => {
+      const rect = card.getBoundingClientRect(), distance = Math.abs(rect.left + rect.width / 2 - railCenter);
+      return !nearest || distance < nearest.distance ? { card, distance } : nearest;
+    }, null)?.card;
+    cards.forEach((card) => {
+      const isCentered = card === centered;
+      card.classList.toggle("is-centered", isCentered);
+      if (isCentered) card.setAttribute("aria-current", "true"); else card.removeAttribute("aria-current");
+    });
+  }
+
+  function scheduleCenteredStageCard() {
+    cancelAnimationFrame(centeredStageFrame);
+    centeredStageFrame = requestAnimationFrame(updateCenteredStageCard);
+  }
+
   function centerCurrentStage(token = stageEntryToken) {
     if (token !== stageEntryToken || !document.body.classList.contains("wp-standard-stage-page")) return;
     const available = [...nodes.stageGrid.querySelectorAll(".stage-card:not(.locked)")].at(-1);
@@ -500,7 +521,7 @@
     nodes.stageGrid.style.setProperty("scroll-behavior", "auto", "important");
     nodes.stageGrid.style.setProperty("scroll-snap-type", "none", "important");
     nodes.stageGrid.scrollLeft = target;
-    available.classList.add("is-current");
+    scheduleCenteredStageCard();
     requestAnimationFrame(() => {
       if (token !== stageEntryToken) return;
       nodes.stageGrid.style.removeProperty("scroll-behavior");
@@ -538,6 +559,7 @@
       `;
       nodes.stageGrid.appendChild(button);
     });
+    scheduleCenteredStageCard();
   }
 
   function updateStageFrame() {
@@ -623,10 +645,12 @@
 
   window.addEventListener("resize", updateShapeFrame);
   window.addEventListener("resize", updateStageFrame);
+  window.addEventListener("resize", scheduleCenteredStageCard, { passive: true });
   window.addEventListener("orientationchange", updateShapeFrame);
   window.addEventListener("orientationchange", updateStageFrame);
   window.visualViewport?.addEventListener("resize", updateShapeFrame, { passive: true });
   window.visualViewport?.addEventListener("resize", updateStageFrame, { passive: true });
+  window.visualViewport?.addEventListener("resize", scheduleCenteredStageCard, { passive: true });
 
   function showMenu(focusStage = true) {
     closeLeaveConfirm(false);
@@ -945,11 +969,13 @@
   }
 
   function initStageRail() {
+    nodes.stageGrid.addEventListener("scroll", scheduleCenteredStageCard, { passive: true });
+    nodes.stageGrid.addEventListener("wonder:stage-snap", scheduleCenteredStageCard);
     nodes.stageGrid.addEventListener("pointerdown", (event) => {
       if (!document.body.classList.contains("wp-standard-stage-page") || event.isPrimary === false || event.button !== 0) return;
       stageEntryToken += 1;
     }, true);
-    nodes.stageGrid.addEventListener("click", (event) => {
+  nodes.stageGrid.addEventListener("click", (event) => {
       const directHit = event.target.closest?.(".stage-card");
       const coordinateHit = [...nodes.stageGrid.querySelectorAll(".stage-card")].find((card) => {
         const rect = card.getBoundingClientRect();

@@ -549,10 +549,32 @@
     nodes.stagePanel.dataset.wpLogicalHeight = String(logicalHeight);
   }
 
+  let centeredStageFrame = 0;
+  function updateCenteredStageCard() {
+    const cards = [...nodes.stageGrid.querySelectorAll(".stage-card")];
+    if (!cards.length || !document.body.classList.contains("wp-standard-stage-page")) return;
+    const railRect = nodes.stageGrid.getBoundingClientRect(), railCenter = railRect.left + railRect.width / 2;
+    const centered = cards.reduce((nearest, card) => {
+      const rect = card.getBoundingClientRect(), distance = Math.abs(rect.left + rect.width / 2 - railCenter);
+      return !nearest || distance < nearest.distance ? { card, distance } : nearest;
+    }, null)?.card;
+    cards.forEach((card) => {
+      const isCentered = card === centered;
+      card.classList.toggle("is-centered", isCentered);
+      if (isCentered) card.setAttribute("aria-current", "true"); else card.removeAttribute("aria-current");
+    });
+  }
+
+  function scheduleCenteredStageCard() {
+    cancelAnimationFrame(centeredStageFrame);
+    centeredStageFrame = requestAnimationFrame(updateCenteredStageCard);
+  }
+
   function centerStageCard(card) {
     if (!card || !nodes.stageGrid.clientWidth) return;
     const target = card.offsetLeft - (nodes.stageGrid.clientWidth - card.offsetWidth) / 2;
     nodes.stageGrid.scrollLeft = Math.max(0, Math.min(target, nodes.stageGrid.scrollWidth - nodes.stageGrid.clientWidth));
+    scheduleCenteredStageCard();
   }
 
   function centerRecommendedStage() {
@@ -570,6 +592,10 @@
   window.visualViewport?.addEventListener("resize", updateBattleViewport);
   window.addEventListener("resize", updateStageViewport);
   window.visualViewport?.addEventListener("resize", updateStageViewport);
+  window.addEventListener("resize", scheduleCenteredStageCard, { passive:true });
+  window.visualViewport?.addEventListener("resize", scheduleCenteredStageCard, { passive:true });
+  nodes.stageGrid.addEventListener("scroll", scheduleCenteredStageCard, { passive:true });
+  nodes.stageGrid.addEventListener("wonder:stage-snap", scheduleCenteredStageCard);
 
   function t(key, data) {
     const parts = key.split(".");
@@ -694,6 +720,7 @@
       nodes.stageGrid.appendChild(button);
     });
     centerRecommendedStage();
+    scheduleCenteredStageCard();
   }
 
   function setResultOwnership(active) {

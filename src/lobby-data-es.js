@@ -363,6 +363,11 @@
     description: "Mantén una sola línea por 30 rutas originales, evita paredes y sombras móviles y guía a Mimi hasta el portal.",
     meta: ["30 rutas", "Una pulsación continua", "Sombras móviles"]
   };
+  data["animal-2048"] = {
+    title: "Animal 2048: Evolución del bosque", statusText: "Jugar ahora", type: "Estrategia de fusión de tablero",
+    description: "Desliza todo el tablero, combina animales iguales y supera 30 misiones o continúa sin límite en el Bosque infinito.",
+    meta: ["30 misiones", "Estrategia de cuadrícula", "Bosque infinito"]
+  };
   if (!window.WONDER_LOBBY) return;
   window.WONDER_LOBBY.platform.tagline.es = "Juega aventuras originales con animales para todas las edades.";
   window.WONDER_LOBBY.platform.subtitle.es = "Un mundo de juegos de animales en constante crecimiento para niños, familias y jugadores ocasionales.";

@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+    <base href="/games/animal-2048/" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="robots" content="index,follow" />
+  <meta name="weightplay-audience" content="general" />
+  <meta name="theme-color" content="#062e2d" />
+  <title>动物 2048：森林进化 | WeightPlay</title>
+  <meta name="description" content="《动物 2048：森林进化》是由月帽猫头鹰 Orla 引导的回合制森林策略游戏。每个方向都会推动完整的 4×4 棋盘，因此一次滑动可能打开空间、串起多段进化，也可能封住任务需要的动物。" />
+  <meta property="og:site_name" content="WeightPlay" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="动物 2048：森林进化 | WeightPlay" />
+  <meta property="og:description" content="《动物 2048：森林进化》是由月帽猫头鹰 Orla 引导的回合制森林策略游戏。每个方向都会推动完整的 4×4 棋盘，因此一次滑动可能打开空间、串起多段进化，也可能封住任务需要的动物。" />
+  <meta property="og:url" content="https://weightplay.com/zh-cn/games/animal-2048/" />
+  <meta property="og:image" content="https://weightplay.com/assets/animal-2048-cover.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="动物 2048：森林进化 | WeightPlay" />
+  <meta name="twitter:description" content="《动物 2048：森林进化》是由月帽猫头鹰 Orla 引导的回合制森林策略游戏。每个方向都会推动完整的 4×4 棋盘，因此一次滑动可能打开空间、串起多段进化，也可能封住任务需要的动物。" />
+  <link rel="canonical" href="https://weightplay.com/zh-cn/games/animal-2048/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-2048/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-2048/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-2048/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/animal-2048/" />
+    <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/animal-2048/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-2048/" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "动物 2048：森林进化",
+  "url": "https://weightplay.com/zh-cn/games/animal-2048/",
+  "image": "https://weightplay.com/assets/animal-2048-cover.png",
+  "description": "《动物 2048：森林进化》是由月帽猫头鹰 Orla 引导的回合制森林策略游戏。每个方向都会推动完整的 4×4 棋盘，因此一次滑动可能打开空间、串起多段进化，也可能封住任务需要的动物。",
+  "applicationCategory": "Game",
+  "operatingSystem": "Web browser",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio"
+  },
+  "inLanguage": "zh-Hans",
+  "isAccessibleForFree": true,
+  "genre": [
+    "益智",
+    "策略",
+    "逻辑",
+    "动物"
+  ],
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "General players"
+  }
+}
+    </script>
+  <link rel="stylesheet" href="../../src/loading-screen.css" />
+  <link rel="stylesheet" href="../../src/game-page-info.css" />
+  <link rel="stylesheet" href="../../src/play-viewport.css" />
+  <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard />
+  <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
+  <link rel="stylesheet" href="style.css?v=20260719-animal2048-rc7" />
+</head>
+<body data-screen="main" data-game-id="animal-2048">
+  <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong data-i18n="title">Animal 2048</strong><span id="loadingText" data-i18n="loading">Opening the forest sanctuary…</span><div class="loading-track"><i id="loadingFill"></i></div></div></section>
+
+  <div id="mainGroup" class="main-group">
+    <main id="mainScreen" class="main-screen">
+      <header class="main-header">
+        <a class="main-return" href="/" data-wp-return="main" aria-label="Back to WeightPlay" data-i18n-aria="backWeightPlay"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" /></a>
+        <strong data-i18n="title">Animal 2048</strong>
+        <label class="locale-control"><span class="sr-only" data-i18n="language">Language</span><select id="localeSelect" aria-label="Language" data-i18n-aria="language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="pt-BR">Português (Brasil)</option><option value="de">Deutsch</option></select></label>
+      </header>
+      <section class="main-hero">
+        <img class="main-poster" src="../../assets/animal-2048-cover.webp" alt="《动物 2048：森林进化》游戏图片" />
+        <div class="main-copy"><small data-i18n="eyebrow">Moonlit Forest Puzzle Sanctuary</small><h1 data-i18n="fullTitle">动物 2048：森林进化</h1><p data-i18n="pitch">Swipe the whole grid, merge matching animals, and protect enough open space to complete each mission.</p><div id="mainProgress" class="main-progress"></div><button id="startBtn" class="primary-action" type="button" data-i18n="start">Start Game</button></div>
+      </section>
+    </main>
+
+    <section class="game-page-info game-page-info-static" aria-label="动物 2048：森林进化 游戏资讯">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 儿童游戏指南</span><h2>动物 2048：森林进化</h2><p>《动物 2048：森林进化》是由月帽猫头鹰 Orla 引导的回合制森林策略游戏。每个方向都会推动完整的 4×4 棋盘，因此一次滑动可能打开空间、串起多段进化，也可能封住任务需要的动物。</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>全盘滑动合成策略</strong></div><div class="game-info-fact"><span>类型</span><strong>益智 · 策略 · 逻辑 · 动物</strong></div><div class="game-info-fact"><span>难度</span><strong>简单至具挑战性</strong></div><div class="game-info-fact"><span>预估游玩时间</span><strong>每关约 2 至 6 分钟</strong></div><div class="game-info-fact"><span>练习能力</span><strong>逻辑 · 空间推理 · 顺序规划</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>世界与任务</h3><p>Orla 维护著月光森林里的动物灵光保护区，相同动物相遇后会进化成更高阶形态。三十个闯关任务要求玩家在步数用完前，合出指定动物、完成合成次数或获得目标分数。</p>
+<p>中期开始出现不会移动的苔石，将横列与直行切成不同区段。第 30 关要合出数值 2048 的狮王守护者，完成最终进化；无限森林则是独立挑战，不是隐藏的第 31 关。</p></div>
+      <div class="game-info-section"><h3>游戏系统</h3><p>有效滑动会把所有可移动方块推到最远。两只相同动物相遇后进化一阶，但新合成的方块不能在同一步再次合成。没有改变棋盘的方向不会扣步数，也不会生成新动物。</p>
+<p>每次有效移动后，空格会出现一只低阶动物，所以空间就是最重要的资源。把高阶动物留在稳定角落很有用，但也要保留通往角落的路线。每个图案都保留数值，玩家不必只靠图片辨认阶级。</p>
+<p>闯关目标分为指定方块、合成次数与分数。每关拥有固定开局、苔石配置、步数限制与可重现的生成顺序；复原会还原棋盘、分数、步数及生成状态。</p>
+<p>无限森林由两个随机低阶动物开始，没有步数上限，直到棋盘完全无法滑动或合成才结束。2048 之后仍能继续进化，最佳分数与最高方块也和闯关进度分开保存。</p></div>
+      <div class="game-info-section"><h3>玩法说明</h3><ol><li>在关卡页选择三十关闯关，或切到挑战进入无限森林。</li><li>滑动棋盘、点击方向按钮，或使用方向键与 WASD。</li><li>合并相同动物，同时保留空格与绕过苔石的路线。</li><li>使用复原精确回到上一步、重新开始回到固定开局，或查看方向提示。</li><li>在步数限制内完成画面目标；无限森林则持续到无路可走。</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>把最大的动物留在角落，但不要让旁边两条边都塞满无法配对的低阶动物。</li><li>滑动前先看完整横列或直行，因为方向会影响所有方块，而不只是眼前的一对。</li><li>苔石附近要分别规划被切开的区段，并预留新动物可能出现的位置。</li><li>分数与合成任务不一定要急著追最高阶，稳定的小型连锁通常更安全。</li><li>若一步封死重要路线，立即使用复原最有效；生成位置也会一起精确还原。</li></ul></div>
+      <div class="game-info-section"><h3>关卡与难度成长</h3><p>第 1 至 5 关教全盘滑动与单次合成，第 6 至 10 关加入连锁规划，第 11 至 15 关用苔石切开移动路线。</p>
+<p>第 16 至 20 关重视分数效率，第 21 至 25 关从较密集的稀有动物巢开始，第 26 至 30 关综合苔石、有限步数、分数与最高 2048 的进化目标。无限森林则移除步数限制，考验长期空间管理。</p></div>
+      <div class="game-info-section"><h3>开发设计理念</h3><p>游戏采用短而固定的任务，让失败能指向明确的路线判断，而不是每次重试都变成另一盘随机题目。全盘滑动让每个输入都有广泛后果，同时适合手机操作；触控、鼠标、方向按钮、方向键与 WASD 共用同一套状态。方块会平顺移动，只有真正合成时才播放特效，避免整盘闪烁。闯关与无限模式记录只保存在目前浏览器，不需要登录。</p></div>
+      
+      <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>每次滑动都会出现新动物吗？</dt><dd>不会，只有真正改变棋盘的方向才会扣一步并产生低阶动物。</dd></div><div><dt>新合成的方块可以立刻再合成吗？</dt><dd>不行，同一个结果方块每一步只能合成一次。</dd></div><div><dt>苔石有什么作用？</dt><dd>苔石固定不动，会把一列或一行切成彼此独立的移动区段。</dd></div><div><dt>复原会还原哪些内容？</dt><dd>会还原棋盘、分数、步数、任务进度及固定生成状态。</dd></div><div><dt>无限森林算在三十关里吗？</dt><dd>不算，它是独立的无限挑战，不会改变闯关星数或解锁。</dd></div><div><dt>游戏会保存进度吗？</dt><dd>会，闯关与无限森林记录只保存在目前浏览器。</dd></div></dl></div>
+    </div>
+  </section>
+  </div>
+
+  <section id="stageScreen" class="stage-screen" hidden>
+    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen style="--wp-stage-art:url('../../assets/animal-2048-cover.webp')">
+      <header class="stage-header"><button id="stageBackBtn" type="button" data-wp-return="stage" aria-label="Back" data-i18n-aria="back">&larr;</button><div><strong data-i18n="chooseStage">Choose Mission</strong><span id="stageSummary"></span></div><img src="../../assets/weightplay-character-moon-cap-owl-cutout.webp" alt="" /></header>
+      <nav class="stage-mode-tabs" aria-label="Stage modes" data-i18n-aria="stageModeLabel"><button id="campaignTab" type="button" data-stage-mode="campaign" data-i18n="campaignMode">Campaign</button><button id="challengeTab" type="button" data-stage-mode="challenge" data-i18n="challengeMode">Challenge</button></nav>
+      <section class="chapter-panel"><small id="chapterKicker"></small><strong id="chapterTitle"></strong><p id="chapterRule"></p></section>
+      <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-settle-duration="360" data-wp-stage-settle-easing="smoothstep" aria-label="Mission selection" data-i18n-aria="stageRailLabel"></div>
+    </div>
+  </section>
+
+  <section id="battleScreen" class="battle-screen" hidden>
+    <div class="battle-canvas" data-wp-logical-battle-canvas>
+      <header class="battle-header"><button id="battleBackBtn" type="button" aria-label="Back" data-i18n-aria="back">&larr;</button><div class="battle-progress"><span id="stageLabel"></span><strong id="goalValue"></strong></div><div class="battle-stat"><small data-i18n="moves">Moves</small><strong id="movesValue">0</strong></div><div class="battle-stat"><small data-i18n="score">Score</small><strong id="scoreValue">0</strong></div></header>
+      <section id="objectiveRow" class="objective-row"></section>
+      <section class="board-zone"><div id="gameBoard" class="game-board" role="application" aria-label="Animal 2048 grid" tabindex="0"></div><div id="moveFeedback" class="move-feedback" aria-live="polite"></div></section>
+      <div class="battle-actions"><button id="undoBtn" type="button" data-i18n="undo">Undo</button><button id="restartBtn" type="button" data-i18n="restart">Restart</button><button id="hintBtn" type="button" data-i18n="hint">Hint</button></div>
+      <div class="direction-pad" aria-label="Direction controls" data-i18n-aria="directionControls"><button type="button" data-direction="up" aria-label="Up" data-i18n-aria="up">↑</button><button type="button" data-direction="left" aria-label="Left" data-i18n-aria="left">←</button><button type="button" data-direction="down" aria-label="Down" data-i18n-aria="down">↓</button><button type="button" data-direction="right" aria-label="Right" data-i18n-aria="right">→</button></div>
+
+      <section id="resultPanel" class="result-overlay" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card"><img src="../../assets/weightplay-character-moon-cap-owl-cutout.webp" alt="" /><small data-i18n="skillReport">Planning Report</small><h2 id="resultTitle"></h2><div id="resultStars" class="result-stars"></div><p id="resultText"></p><div id="skillGrid" class="skill-grid"></div><p id="bestText" class="best-text"></p><div class="result-actions"><button id="retryBtn" type="button" data-i18n="retry">Retry</button><button id="resultStagesBtn" type="button" data-i18n="stages">Stages</button><button id="nextBtn" class="primary-action" type="button" data-i18n="next">Next Stage</button></div></div></section>
+      <section id="leavePanel" class="leave-overlay" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="leave-card"><h2 id="leaveTitle" data-i18n="leaveTitle">Leave this mission?</h2><p id="leaveText"></p><div><button id="leaveContinueBtn" class="primary-action" type="button" data-i18n="continue">Continue</button><button id="leaveStagesBtn" type="button" data-i18n="returnStages">Return to Stages</button></div></div></section>
+    </div>
+    <div class="battle-ad-reserve" aria-hidden="true"></div>
+  </section>
+
+  <section id="tutorialPanel" class="tutorial-overlay" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="tutorial-card"><button id="tutorialCloseBtn" type="button" aria-label="Close" data-i18n-aria="close">×</button><img src="../../assets/weightplay-character-moon-cap-owl-cutout.webp" alt="" /><h2 id="tutorialTitle" data-i18n="tutorialTitle">Slide the whole forest grid.</h2><ol><li data-i18n="tutorial1">Swipe up, down, left, or right.</li><li data-i18n="tutorial2">Matching animals merge once per move.</li><li data-i18n="tutorial3">Keep a corner stable and protect empty spaces.</li></ol><button id="tutorialStartBtn" class="primary-action" type="button" data-i18n="tutorialStart">Start Mission 1</button></div></section>
+
+  <script src="../../src/site-config.js"></script><script src="/src/i18n.js?v=20260718-locale-routes1"></script><script src="../../src/analytics.js"></script><script src="../../src/sound.js"></script><script src="../../src/edge-guard.js"></script>
+  <script src="locales.js?v=20260719-animal2048-rc4"></script><script src="game.js?v=20260719-animal2048-public1"></script><script src="../../src/stage-selector-standard.js" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script><script src="../../src/game-page-info.js?v=20260719-animal2048-public1"></script>
+</body>
+</html>
