@@ -21,6 +21,7 @@ window.WONDER_LOBBY = {
       "animal-skyport-dispatch", "animal-abyss-diver", "animal-reef-fisher", "animal-hero-trials",
       "animal-gearpack-expedition", "animal-moonlight-heist",
       "animal-starlight-trails",
+      "animal-one-line",
     ],
   },
   games: [
@@ -484,22 +485,41 @@ window.WONDER_LOBBY = {
     },
     {
       id: "animal-starlight-trails",
-      title: { en: "Animal Starlight Trails", "zh-Hant": "動物星光一筆畫" },
-      status: "planned",
-      statusText: { en: "Coming Soon", "zh-Hant": "敬請期待" },
+      title: { en: "Starlink", "zh-Hant": "Starlink 星鏈", "zh-Hans": "Starlink 星链" },
+      status: "playable",
+      statusText: { en: "Playable", "zh-Hant": "可遊玩", "zh-Hans": "可游玩" },
       type: { en: "Single-Stroke Logic Puzzle", "zh-Hant": "一筆畫邏輯益智" },
       categories: ["Animal Games", "Puzzle", "Strategy"],
       skills: ["Logic", "Focus", "Problem Solving"],
       ages: ["9", "family"],
       ageLabel: { en: "9+", "zh-Hant": "9+" },
       href: "games/animal-starlight-trails/",
-      internalTrial: "index.html?trial=1",
       description: {
         en: "Trace every constellation trail exactly once across 30 original puzzles with start seals, comet arrows, numbered stars, keys, and gates.",
         "zh-Hant": "在 30 個原創星座謎題中，運用起點星印、彗星箭路、編號星星、鑰匙與星門，一筆走完每條星路。"
       },
       meta: { en: ["30 Stages", "One-Stroke Routes", "Six Rule Families"], "zh-Hant": ["30 關", "一筆星路", "六種規則"] },
       art: { kind: "image", background: "assets/animal-starlight-trails-cover.webp", hero: "assets/weightplay-character-moon-cap-owl-cutout.webp" },
+    },
+    {
+      id: "animal-one-line",
+      title: { en: "One Line", "zh-Hant": "One Line 一筆到底", "zh-Hans": "One Line 一笔到底" },
+      status: "planned",
+      statusText: { en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待" },
+      type: { en: "Continuous Trail Tracing", "zh-Hant": "連續路線描繪", "zh-Hans": "连续路线描绘" },
+      categories: ["Animal Games", "Puzzle", "Skill"],
+      skills: ["Hand-Eye Coordination", "Focus", "Reaction"],
+      ages: ["9", "family"],
+      ageLabel: { en: "9+", "zh-Hant": "9+", "zh-Hans": "9+" },
+      href: "games/animal-one-line/",
+      internalTrial: "index.html?trial=1",
+      description: {
+        en: "Hold one continuous line through 30 original trails, avoid walls and moving shadows, and guide Mimi to the paw portal.",
+        "zh-Hant": "按住一筆通過 30 條原創路線，避開牆壁與移動影子，帶領米米抵達腳印門。",
+        "zh-Hans": "按住一笔通过 30 条原创路线，避开墙壁与移动影子，带领米米抵达脚印门。"
+      },
+      meta: { en: ["30 Trails", "One Continuous Hold", "Moving Shadows"], "zh-Hant": ["30 條路線", "全程按住", "移動影子"], "zh-Hans": ["30 条路线", "全程按住", "移动影子"] },
+      art: { kind: "image", background: "assets/animal-one-line-cover.webp", hero: "assets/weightplay-character-rainbow-hop-mimi-clean-cutout.webp" },
     },
     {
       id: "animal-abyss-diver",

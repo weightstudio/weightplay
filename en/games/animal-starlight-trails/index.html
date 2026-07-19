@@ -1,18 +1,18 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <script data-wp-locale-route>if (/^https?:$/.test(location.protocol)) location.replace("/en/games/animal-starlight-trails/" + location.search + location.hash);</script>
+    <base href="/games/animal-starlight-trails/" />
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general" />
   <meta name="theme-color" content="#07172f" />
   <title>Starlink | WeightPlay</title>
-  <meta name="description" content="Restore thirty original animal constellations by tracing every starlight trail exactly once." />
+  <meta name="description" content="Starlink is an original 30-stage route puzzle starring Moon Cap Orla. Trace every constellation trail exactly once while start seals, comet arrows,..." />
   <meta property="og:site_name" content="WeightPlay" />
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="Starlink" />
-  <meta property="og:description" content="Plan a continuous route through thirty magical animal constellation puzzles." />
+  <meta property="og:title" content="Starlink | WeightPlay" />
+  <meta property="og:description" content="Starlink is an original 30-stage route puzzle starring Moon Cap Orla. Trace every constellation trail exactly once while start seals, comet arrows,..." />
   <meta property="og:url" content="https://weightplay.com/en/games/animal-starlight-trails/" />
   <meta property="og:image" content="https://weightplay.com/assets/animal-starlight-trails-cover.png" />
   <meta name="twitter:card" content="summary_large_image" />
@@ -24,29 +24,43 @@
     <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/animal-starlight-trails/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-starlight-trails/" />
     <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "VideoGame",
-    "name": "Starlink",
-    "url": "https://weightplay.com/en/games/animal-starlight-trails/",
-    "image": "https://weightplay.com/assets/animal-starlight-trails-cover.png",
-    "description": "Restore thirty original animal constellations by tracing every starlight trail exactly once.",
-    "applicationCategory": "Game",
-    "operatingSystem": "Web browser",
-    "publisher": { "@type": "Organization", "name": "WeightStudio" },
-    "inLanguage": "en",
-    "isAccessibleForFree": true,
-    "genre": ["Puzzle", "Strategy", "Logic", "Animal"],
-    "audience": { "@type": "Audience", "audienceType": "General players", "suggestedMinAge": 9 }
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Starlink",
+  "url": "https://weightplay.com/en/games/animal-starlight-trails/",
+  "image": "https://weightplay.com/assets/animal-starlight-trails-cover.png",
+  "description": "Starlink is an original 30-stage route puzzle starring Moon Cap Orla. Trace every constellation trail exactly once while start seals, comet arrows,...",
+  "applicationCategory": "Game",
+  "operatingSystem": "Web browser",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio"
+  },
+  "inLanguage": "en",
+  "isAccessibleForFree": true,
+  "genre": [
+    "Puzzle",
+    "Strategy",
+    "Logic",
+    "Animal"
+  ],
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "General players",
+    "suggestedMinAge": 9
   }
-  </script>
+}
+    </script>
   <link rel="stylesheet" href="../../src/tutorial.css" />
   <link rel="stylesheet" href="../../src/loading-screen.css" />
   <link rel="stylesheet" href="../../src/game-page-info.css" />
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" />
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
   <link rel="stylesheet" href="style.css" />
-</head>
+  <meta name="twitter:title" content="Starlink | WeightPlay" />
+    <meta name="twitter:description" content="Starlink is an original 30-stage route puzzle starring Moon Cap Orla. Trace every constellation trail exactly once while start seals, comet arrows,..." />
+  </head>
 <body data-screen="main" data-game-id="animal-starlight-trails">
   <section id="loadingPanel" class="loading-panel" aria-live="polite">
     <div class="loading-card"><strong>Starlink</strong><span id="loadingText">Loading star map…</span><div class="loading-track"><i id="loadingFill"></i></div></div>
@@ -64,15 +78,25 @@
     </section>
   </main>
 
-  <section class="game-page-info game-page-info-static" aria-label="Starlink game guide">
-    <div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker">WeightPlay Original Game Guide</span><h2>Starlink</h2><p>Starlink is an original thirty-stage route puzzle starring Moon Cap Orla. Select a star node, then trace connected trails until every edge has been used exactly once. A route may revisit a star, but it may never reuse the same trail. Later observatories introduce marked starting stars, one-way comet paths, numbered star seals, key-and-gate routes, and mastery constellations that combine those rules.</p></div></div>
+  <section class="game-page-info game-page-info-static" aria-label="Starlink game information">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay Kids Game Guide</span><h2>Starlink</h2><p>Starlink is an original 30-stage route puzzle starring Moon Cap Orla. Trace every constellation trail exactly once while start seals, comet arrows, numbered stars, keys, and gates gradually change which complete routes are valid.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>Single-Stroke Logic Puzzle</strong></div><div class="game-info-fact"><span>Genre</span><strong>Puzzle · Strategy · Logic · Animal</strong></div><div class="game-info-fact"><span>Difficulty</span><strong>Easy to Challenging</strong></div><div class="game-info-fact"><span>Estimated Play Time</span><strong>2-6 minutes per stage</strong></div><div class="game-info-fact"><span>Skills Trained</span><strong>Logic · Focus · Problem Solving</strong></div></div>
+    </div>
     <div class="game-info-sections">
-      <div class="game-info-section"><h3>How to Play</h3><ol><li>Choose an unlocked constellation from the horizontal Stage rail.</li><li>Start on any valid star, or on the glowing start seal when one is shown.</li><li>Drag through nearby stars or tap adjacent stars. Each connecting trail can be used only once.</li><li>Use Undo to step back, Restart to clear the attempt, or Hint to reveal one route-safe next star.</li><li>Light every trail to restore the constellation and unlock the next stage.</li></ol></div>
-      <div class="game-info-section"><h3>Six Observatory Lessons</h3><p>Stages 1–5 teach classic open trails. Stages 6–10 add a required starting seal. Stages 11–15 introduce comet arrows that can be crossed in only one direction. Stages 16–20 add numbered stars that must be reached in order. Stages 21–25 introduce a key star that opens a marked gate trail. Stages 26–30 combine the complete rule set in larger mastery constellations.</p></div>
-      <div class="game-info-section"><h3>Planning Advice</h3><ul><li>Stars with an odd number of unused trails often reveal where an open route should begin or end.</li><li>Before entering a narrow branch, check whether you will still have a way back to the rest of the constellation.</li><li>Comet arrows, numbered seals, and gates are route constraints, not decorations.</li><li>A hint spends no currency and never completes the move for you; it highlights one next step that still permits a full solution.</li></ul></div>
-      <div class="game-info-section game-info-parent"><h3>Player and Save Information</h3><p>Recommended for ages 9+ and family puzzle play. A round usually takes two to six minutes and practices logic, focus, and problem solving through play. Stage unlocks, best star ratings, best times, and constellation progress are stored only in this browser. No account is required, and the Skill Report is supportive game feedback rather than a formal assessment.</p></div>
-      <div class="game-info-section"><h3>Development Note</h3><p>The puzzles are original graph layouts built for touch, mouse, and keyboard. The game uses one responsive logical Canvas for Stage and Battle, preserves the same puzzle information on narrow phones and wide desktop screens, and keeps the General future-banner reserve physically separate from all controls and result actions.</p></div>
-      <div class="game-info-section"><h3>Frequently Asked Questions</h3><dl><div><dt>Can I pass through the same star twice?</dt><dd>Yes. Stars may be revisited, but each connecting trail may be used only once.</dd></div><div><dt>What happens if I reach a dead end?</dt><dd>The game keeps the attempt visible and offers Undo or Restart. It never removes progress or spends currency.</dd></div><div><dt>Are hints required?</dt><dd>No. Every stage can be solved without hints, and earlier stages remain replayable.</dd></div><div><dt>Does the game save progress?</dt><dd>Yes. Unlocks and best results are stored locally in this browser.</dd></div></dl></div>
+      <div class="game-info-section"><h3>World and Mission</h3><p>The Animal Star Map has gone dark, leaving thirty constellations disconnected across six observatories. Orla restores each picture by drawing one continuous path through every visible trail. Completing five constellations relights an observatory and introduces the next navigation lesson.</p>
+<p>Each board is an original graph designed for the rules shown on screen. The campaign ends at Stage 30 with a mastery constellation that combines the learned constraints; it never displays a nonexistent Stage 31.</p></div>
+      <div class="game-info-section"><h3>How the Systems Work</h3><p>Choose a star and continue through connected stars. A star may be visited more than once, but every connecting trail may be crossed only once. The constellation is complete only after all trails are lit in one continuous route.</p>
+<p>Stages 6-10 require the glowing start seal. Stages 11-15 add visible comet arrows that allow a trail in one direction only. Stages 16-20 require numbered stars in order. Stages 21-25 add a key that opens a marked gate trail. Stages 26-30 combine these rules.</p>
+<p>Undo removes the most recent step, Restart clears the current attempt, and Hint highlights one legal next star that still permits a complete solution. None of these actions spends currency. Keyboard, mouse, and touch share the same puzzle state.</p>
+<p>Clearing a stage saves its best star rating and time in this browser and unlocks the next constellation. Earlier stages remain replayable, including Stage 30 after the campaign is complete.</p></div>
+      <div class="game-info-section"><h3>How to Play</h3><ol><li>Choose an unlocked constellation from the horizontal Stage rail.</li><li>Read the rule panel and start at any valid star, or at the glowing start seal when one is shown.</li><li>Drag through adjacent stars or tap them one by one. Never reuse a trail.</li><li>Follow comet arrows, numbered seals, and key-before-gate restrictions when present.</li><li>Light every trail to finish the constellation and unlock the next stage.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Strategy Tips</h3><ul><li>Stars with an odd number of unused trails often reveal where an open route should begin or end.</li><li>Before entering a narrow branch, check whether another unused trail can bring the route back to the main constellation.</li><li>Treat arrows, numbers, keys, and gates as route constraints rather than decoration.</li><li>Use Undo for a short correction and Restart when the opening choice has trapped several later branches.</li></ul></div>
+      <div class="game-info-section"><h3>Campaign and Difficulty Growth</h3><p>Stages 1-5 teach classic open trails. Stages 6-10 introduce required starts. Stages 11-15 teach one-way comet paths.</p>
+<p>Stages 16-20 add ordered stars, Stages 21-25 introduce key-and-gate routes, and Stages 26-30 combine the complete vocabulary in larger mastery constellations.</p></div>
+      <div class="game-info-section"><h3>Developer Design Note</h3><p>Starlink uses a responsive logical Canvas that fills the safe Stage and Battle area without stretching individual puzzle elements. Extra space is distributed through stable tracks and anchors, so phones and wide desktop browsers show the same route information and controls. The separate General ad reserve never overlays gameplay or Result actions.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Parent Note</h3><p>Starlink runs free in the browser and requires no account. Unlocks, best ratings, and times are stored only in this browser; clearing site data or changing browsers may create a separate save. Skill feedback is supportive entertainment and not a formal ability assessment.</p></div>
+      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>Can I pass through the same star twice?</dt><dd>Yes. Stars may be revisited, but each connecting trail may be used only once.</dd></div><div><dt>Why can I not use a pink comet trail?</dt><dd>The arrow on that trail shows its allowed direction. Entering from the opposite end is not legal.</dd></div><div><dt>What happens at a dead end?</dt><dd>The attempt remains visible so you can Undo one or more steps or Restart for free.</dd></div><div><dt>Are hints required?</dt><dd>No. Every stage can be solved without hints; Hint only marks one route-safe next star.</dd></div><div><dt>Does progress save?</dt><dd>Yes. Unlocks, best star ratings, and best times are stored locally in this browser.</dd></div><div><dt>How many stages are included?</dt><dd>There are 30 authored stages across six rule chapters. Stage 30 remains replayable after completion.</dd></div></dl></div>
     </div>
   </section>
 
@@ -100,7 +124,7 @@
 
   <script src="../../src/site-config.js"></script>
   <script>try{const segment=location.pathname.split("/").filter(Boolean)[0];const locale=({en:"en","zh-tw":"zh-Hant","zh-cn":"zh-Hans",es:"es",ja:"ja"})[segment];if(locale)localStorage.setItem("weightPlayLocale",locale);}catch{}</script>
-  <script src="../../src/i18n.js?v=20260718-locale-routes1"></script>
+  <script src="/src/i18n.js?v=20260718-locale-routes1"></script>
   <script src="../../src/analytics.js"></script>
   <script src="../../src/sound.js"></script>
   <script src="../../src/tutorial.js"></script>

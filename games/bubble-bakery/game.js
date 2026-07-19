@@ -243,6 +243,10 @@
     },
   };
 
+  Object.assign(text.en, { leaveTitle:"Leave this order?", leaveText:"Your tray, moves, and order progress will reset.", keepBaking:"Keep baking", leaveOrder:"Leave order" });
+  Object.assign(text["zh-Hant"], { leaveTitle:"\u8981\u96e2\u958b\u9019\u5f35\u8a02\u55ae\u55ce\uff1f", leaveText:"\u9019\u76e4\u6ce1\u6ce1\u3001\u6b65\u6578\u8207\u8a02\u55ae\u9032\u5ea6\u6703\u91cd\u65b0\u958b\u59cb\u3002", keepBaking:"\u7e7c\u7e8c\u70d8\u7119", leaveOrder:"\u96e2\u958b\u8a02\u55ae" });
+  Object.assign(text.es, { leaveTitle:"¿Salir de este pedido?", leaveText:"Se reiniciarán la bandeja, los movimientos y el progreso del pedido.", keepBaking:"Seguir horneando", leaveOrder:"Salir del pedido" });
+
   const colors = [
     { id: "berry", labelKey: "bunny", asset: "../../assets/bubble-bakery-bunny.png" },
     { id: "sky", labelKey: "whale", asset: "../../assets/bubble-bakery-whale.png" },
@@ -376,6 +380,17 @@
     loadingText: $("loadingText"),
     loadingFill: $("loadingFill"),
   };
+  const leavePanel = document.createElement("section");
+  leavePanel.className = "bakery-leave-panel hidden";
+  leavePanel.setAttribute("role", "dialog");
+  leavePanel.setAttribute("aria-modal", "true");
+  leavePanel.setAttribute("aria-labelledby", "bakeryLeaveTitle");
+  leavePanel.innerHTML = `<div class="bakery-leave-card"><h2 id="bakeryLeaveTitle"></h2><p id="bakeryLeaveText"></p><div><button id="keepBakingBtn" type="button"></button><button id="leaveOrderBtn" type="button"></button></div></div>`;
+  nodes.playPanel.insertAdjacentElement("afterend", leavePanel);
+  nodes.leaveTitle = leavePanel.querySelector("#bakeryLeaveTitle");
+  nodes.leaveText = leavePanel.querySelector("#bakeryLeaveText");
+  nodes.keepBakingBtn = leavePanel.querySelector("#keepBakingBtn");
+  nodes.leaveOrderBtn = leavePanel.querySelector("#leaveOrderBtn");
 
   const legacySavedLocale = localStorage.getItem(localeKey);
   const canonicalSavedLocale = localStorage.getItem(sharedLocaleKey);
@@ -398,28 +413,23 @@
   let largestGroup = 0;
   let bestOrderStreak = 0;
   let busy = false;
+  let leaveConfirmOpen = false;
   let lastResult = null;
   const popMs = 620;
   const dropMs = 920;
 
   function wait(ms) {
-    if (smokeMode && typeof MessageChannel === "function") {
-      return new Promise((resolve) => {
-        const startedAt = performance.now();
-        const channel = new MessageChannel();
-        channel.port1.onmessage = () => {
-          if (performance.now() - startedAt >= ms) {
-            channel.port1.close();
-            channel.port2.close();
-            resolve();
-            return;
-          }
-          channel.port2.postMessage(0);
-        };
-        channel.port2.postMessage(0);
-      });
-    }
-    return new Promise((resolve) => window.setTimeout(resolve, ms));
+    return new Promise((resolve) => {
+      let elapsed = 0;
+      let previous = performance.now();
+      const tick = (now) => {
+        if (!leaveConfirmOpen) elapsed += now - previous;
+        previous = now;
+        if (elapsed >= ms) resolve();
+        else requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    });
   }
 
   function playNodeAnimation(node, keyframes, options) {
@@ -554,6 +564,10 @@
     nodes.stageGrid.setAttribute("aria-label", t("stageList"));
     nodes.orderBar.setAttribute("aria-label", t("orderList"));
     nodes.board.setAttribute("aria-label", t("bubbleBoard"));
+    nodes.leaveTitle.textContent = t("leaveTitle");
+    nodes.leaveText.textContent = t("leaveText");
+    nodes.keepBakingBtn.textContent = t("keepBaking");
+    nodes.leaveOrderBtn.textContent = t("leaveOrder");
   }
 
   function renderStageGrid() {
@@ -695,7 +709,17 @@
     else nodes.playPanel.removeAttribute("aria-hidden");
   }
 
+  function setLeaveConfirmOpen(open, restoreFocus = true) {
+    if (open === leaveConfirmOpen) return;
+    leaveConfirmOpen = open;
+    leavePanel.classList.toggle("hidden", !open);
+    setBattleCovered(open);
+    if (open) nodes.keepBakingBtn.focus({ preventScroll: true });
+    else if (restoreFocus) nodes.backToStagesBtn.focus({ preventScroll: true });
+  }
+
   function showMain(restoreStartFocus = false) {
+    setLeaveConfirmOpen(false, false);
     document.body.classList.remove("is-bakery-playing", "is-bakery-stage-select", "is-bakery-result");
     document.body.classList.remove("wp-stage-select-active");
     window.WEIGHTPLAY_BUBBLE_BAKERY_ACTIVE = false;
@@ -744,6 +768,7 @@
   }
 
   function showStageSelect(focusStageIndex = null) {
+    setLeaveConfirmOpen(false, false);
     document.body.classList.remove("is-bakery-playing", "is-bakery-result");
     document.body.classList.add("is-bakery-stage-select");
     window.WEIGHTPLAY_BUBBLE_BAKERY_ACTIVE = false;
@@ -768,6 +793,7 @@
   }
 
   function startStage(index) {
+    setLeaveConfirmOpen(false, false);
     currentStage = index;
     const stage = stages[index];
     recipeIndex = 0;
@@ -1369,7 +1395,16 @@
     showStageSelect();
   });
   nodes.stageBackBtn.addEventListener("click", () => showMain(true));
-  nodes.backToStagesBtn.addEventListener("click", () => showStageSelect(currentStage));
+  nodes.backToStagesBtn.addEventListener("click", () => setLeaveConfirmOpen(true));
+  nodes.keepBakingBtn.addEventListener("click", () => setLeaveConfirmOpen(false));
+  nodes.leaveOrderBtn.addEventListener("click", () => showStageSelect(currentStage));
+  leavePanel.addEventListener("keydown", (event) => {
+    rejectRepeatedScreenActivation(event);
+    if (event.key === "Escape") { event.preventDefault(); setLeaveConfirmOpen(false); return; }
+    if (event.key !== "Tab") return;
+    if (event.shiftKey && document.activeElement === nodes.keepBakingBtn) { event.preventDefault(); nodes.leaveOrderBtn.focus({ preventScroll:true }); }
+    else if (!event.shiftKey && document.activeElement === nodes.leaveOrderBtn) { event.preventDefault(); nodes.keepBakingBtn.focus({ preventScroll:true }); }
+  }, true);
   nodes.resultStagesBtn.addEventListener("click", () => showStageSelect(currentStage));
   nodes.retryBtn.addEventListener("click", () => startStage(currentStage));
   nodes.nextStageBtn.addEventListener("click", () => startStage(Math.min(currentStage + 1, stages.length - 1)));

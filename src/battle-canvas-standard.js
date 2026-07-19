@@ -15,6 +15,7 @@
     "animal-hero-trials": ["#battleView", 390, 788],
     "animal-hidden-safari": ["#playPanel", 382, 780],
     "animal-moonlight-heist": [".battle-canvas", 390, 788],
+    "animal-one-line": [".battle-canvas", 390, 788],
     "animal-orb-fortress": ["#gamePanel", 382, 780],
     "animal-quiz": [".animal-game", 390, 788],
     "animal-reef-fisher": [".battle-shell", 382, 780],
@@ -124,10 +125,13 @@
       && stateSignature === appliedStateSignature
       && rootStyleSignature(root) === appliedRootStyleSignature) return;
     const requestedMaximumWidth = Number.parseFloat(root.dataset.wpCanvasMaxWidth || "");
-    const maximumWidth = Number.isFinite(requestedMaximumWidth) && requestedMaximumWidth > 0
+    const viewportWidthRequested = root.dataset.wpCanvasMaxWidth === "viewport";
+    const maximumWidth = viewportWidthRequested
+      ? width
+      : Number.isFinite(requestedMaximumWidth) && requestedMaximumWidth > 0
       ? Math.min(DESKTOP_CANVAS_MAX_WIDTH, requestedMaximumWidth)
       : DESKTOP_CANVAS_MAX_WIDTH;
-    const availableWidth = Math.max(1, Math.min(width - GUTTER * 2, maximumWidth));
+    const availableWidth = Math.max(1, Math.min(width - (viewportWidthRequested ? 0 : GUTTER * 2), maximumWidth));
     const availableHeight = Math.max(1, height - RESERVE_HEIGHT - GUTTER * 2);
     const minimumLogicalWidth = config[1];
     const minimumLogicalHeight = config[2];

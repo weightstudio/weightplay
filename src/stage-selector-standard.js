@@ -36,6 +36,7 @@
     "animal-hero-trials": "#startBtn",
     "animal-hidden-safari": "#startGameBtn",
     "animal-moonlight-heist": "#startBtn",
+    "animal-one-line": "#startBtn",
     "animal-orb-fortress": "#startBtn",
     "animal-quiz": "#startGameBtn",
     "animal-reef-fisher": "#startBtn",
@@ -182,7 +183,9 @@
       && Math.abs(width - appliedStageWidth) < 0.5
       && Math.abs(height - appliedStageHeight) < 0.5) return;
     const requestedMaximumWidth = Number.parseFloat(root.dataset.wpCanvasMaxWidth || "");
-    const maximumWidth = Number.isFinite(requestedMaximumWidth) && requestedMaximumWidth > 0
+    const maximumWidth = root.dataset.wpCanvasMaxWidth === "viewport"
+      ? width
+      : Number.isFinite(requestedMaximumWidth) && requestedMaximumWidth > 0
       ? Math.min(DESKTOP_CANVAS_MAX_WIDTH, requestedMaximumWidth)
       : DESKTOP_CANVAS_MAX_WIDTH;
     const availableWidth = Math.max(1, Math.min(width, maximumWidth));

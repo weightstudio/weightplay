@@ -6985,6 +6985,74 @@
     });
   }
 
+  games["animal-starlight-trails"] = {
+    title: "Starlink",
+    difficulty: "Easy to Challenging",
+    time: "2-6 minutes per stage",
+    gameplay: "Single-Stroke Logic Puzzle",
+    genre: ["Puzzle", "Strategy", "Logic", "Animal"],
+    skills: ["Logic", "Focus", "Problem Solving"],
+    guideKicker: "WeightPlay Original Game Guide",
+    guideTitleSuffix: "Game Guide",
+    noteTitle: "Player and Save Information",
+    hideScoreBands: true,
+    intro: "Starlink is an original 30-stage route puzzle starring Moon Cap Orla. Trace every constellation trail exactly once while start seals, comet arrows, numbered stars, keys, and gates gradually change which complete routes are valid.",
+    story: [
+      "The Animal Star Map has gone dark, leaving thirty constellations disconnected across six observatories. Orla restores each picture by drawing one continuous path through every visible trail. Completing five constellations relights an observatory and introduces the next navigation lesson.",
+      "Each board is an original graph designed for the rules shown on screen. The campaign ends at Stage 30 with a mastery constellation that combines the learned constraints; it never displays a nonexistent Stage 31."
+    ],
+    systems: [
+      "Choose a star and continue through connected stars. A star may be visited more than once, but every connecting trail may be crossed only once. The constellation is complete only after all trails are lit in one continuous route.",
+      "Stages 6-10 require the glowing start seal. Stages 11-15 add visible comet arrows that allow a trail in one direction only. Stages 16-20 require numbered stars in order. Stages 21-25 add a key that opens a marked gate trail. Stages 26-30 combine these rules.",
+      "Undo removes the most recent step, Restart clears the current attempt, and Hint highlights one legal next star that still permits a complete solution. None of these actions spends currency. Keyboard, mouse, and touch share the same puzzle state.",
+      "Clearing a stage saves its best star rating and time in this browser and unlocks the next constellation. Earlier stages remain replayable, including Stage 30 after the campaign is complete."
+    ],
+    how: [
+      "Choose an unlocked constellation from the horizontal Stage rail.",
+      "Read the rule panel and start at any valid star, or at the glowing start seal when one is shown.",
+      "Drag through adjacent stars or tap them one by one. Never reuse a trail.",
+      "Follow comet arrows, numbered seals, and key-before-gate restrictions when present.",
+      "Light every trail to finish the constellation and unlock the next stage."
+    ],
+    strategyTips: [
+      "Stars with an odd number of unused trails often reveal where an open route should begin or end.",
+      "Before entering a narrow branch, check whether another unused trail can bring the route back to the main constellation.",
+      "Treat arrows, numbers, keys, and gates as route constraints rather than decoration.",
+      "Use Undo for a short correction and Restart when the opening choice has trapped several later branches."
+    ],
+    progression: [
+      "Stages 1-5 teach classic open trails. Stages 6-10 introduce required starts. Stages 11-15 teach one-way comet paths.",
+      "Stages 16-20 add ordered stars, Stages 21-25 introduce key-and-gate routes, and Stages 26-30 combine the complete vocabulary in larger mastery constellations."
+    ],
+    designNote: "Starlink uses a responsive logical Canvas that fills the safe Stage and Battle area without stretching individual puzzle elements. Extra space is distributed through stable tracks and anchors, so phones and wide desktop browsers show the same route information and controls. The separate General ad reserve never overlays gameplay or Result actions.",
+    parent: "Starlink runs free in the browser and requires no account. Unlocks, best ratings, and times are stored only in this browser; clearing site data or changing browsers may create a separate save. Skill feedback is supportive entertainment and not a formal ability assessment.",
+    faq: [
+      ["Can I pass through the same star twice?", "Yes. Stars may be revisited, but each connecting trail may be used only once."],
+      ["Why can I not use a pink comet trail?", "The arrow on that trail shows its allowed direction. Entering from the opposite end is not legal."],
+      ["What happens at a dead end?", "The attempt remains visible so you can Undo one or more steps or Restart for free."],
+      ["Are hints required?", "No. Every stage can be solved without hints; Hint only marks one route-safe next star."],
+      ["Does progress save?", "Yes. Unlocks, best star ratings, and best times are stored locally in this browser."],
+      ["How many stages are included?", "There are 30 authored stages across six rule chapters. Stage 30 remains replayable after completion."]
+    ]
+  };
+  gameplayProfiles["animal-starlight-trails"] = { gameplay: "Single-Stroke Logic Puzzle", genre: ["Puzzle", "Strategy", "Logic", "Animal"] };
+
+  Object.assign(localizedGames["zh-Hant"], { "animal-starlight-trails": {
+    ...games["animal-starlight-trails"], title: "Starlink 星鏈", guideTitleSuffix: "遊戲指南", difficulty: "簡單至具挑戰性", time: "每關約 2 至 6 分鐘", gameplay: "一筆畫邏輯益智", genre: ["益智", "策略", "邏輯", "動物"],
+    intro: "Starlink 星鏈是月帽奧拉主演的原創 30 關路線益智遊戲。玩家要用一條連續路線走完每條星路一次，並逐步掌握起點星印、彗星箭路、編號星星、鑰匙與星門。",
+    story: ["動物星圖的三十個星座分散在六座觀測站。奧拉必須為每個星座畫出不間斷的完整路線，每完成五關就會點亮一座觀測站並學到新的導航規則。", "每個盤面都是依照畫面規則設計的原創圖形。第 30 關是綜合所學限制的最終星座，完成後仍可重玩，不會出現不存在的第 31 關。"],
+    systems: ["選擇一顆星並沿相連星點前進。星點可以重複經過，但同一條星路只能走一次；所有星路都亮起才算完成。", "第 6 至 10 關指定發光起點；第 11 至 15 關加入清楚可見的單向彗星箭；第 16 至 20 關要依序經過編號星星；第 21 至 25 關必須先拿鑰匙再通過星門；最後五關會混合規則。", "復原會退回上一步，重新開始會清除本次路線，提示只會標出仍能完成全圖的一個合法下一步，全部都不消耗貨幣。", "過關後會在此瀏覽器儲存最佳星等與時間並解鎖下一關，已解鎖關卡都能重玩。"],
+    how: ["從橫向關卡軌道選擇已解鎖星座。", "先閱讀規則；若有發光起點星印，就必須從該處開始。", "拖曳經過相鄰星點，或逐一點擊相鄰星點，同一條路不可重複。", "遵守箭頭方向、編號順序及先鑰匙後星門的限制。", "點亮全部星路即可過關並解鎖下一關。"],
+    strategyTips: ["未使用路線數量為奇數的星點，常能提示開放路線的起點或終點。", "進入狹窄分支前，先確認還有路能回到星座主體。", "箭頭、數字、鑰匙與星門都是路線限制，不是裝飾。", "短距離走錯可用復原；若開局已困住多個分支，重新開始會更快。"],
+    progression: ["第 1 至 5 關教基本一筆路線，第 6 至 10 關加入指定起點，第 11 至 15 關加入單向箭路。", "第 16 至 20 關加入順序星點，第 21 至 25 關加入鑰匙與星門，第 26 至 30 關綜合全部規則。"],
+    designNote: "Starlink 使用響應式邏輯 Canvas 填滿 Stage 與 Battle 的安全區域，不會分別拉伸子元素。手機與寬螢幕會保留相同路線資訊與操作，底部 56px 預留區也不會蓋住遊戲或結算按鈕。",
+    parent: "Starlink 可免費在瀏覽器遊玩，不需帳號。解鎖進度、最佳星等與時間只儲存在目前瀏覽器；清除網站資料或更換瀏覽器可能建立另一份紀錄。技能回饋僅供遊戲鼓勵，不是正式能力評量。",
+    faq: [["星點可以重複經過嗎？", "可以，但同一條連接星路只能使用一次。"], ["為什麼粉紅色彗星路不能走？", "路線上的箭頭代表允許方向，從另一端進入不合法。"], ["走到死路怎麼辦？", "目前路線會保留，可免費復原或重新開始。"], ["一定要使用提示嗎？", "不用，每一關都能不靠提示完成。"], ["進度會保存嗎？", "會，解鎖、最佳星等與時間會儲存在此瀏覽器。"], ["共有幾關？", "共有六個規則章節、30 個原創關卡。"]]
+  } });
+  localizedGameplayProfiles["zh-Hant"]["animal-starlight-trails"] = { gameplay: "一筆畫邏輯益智", genre: ["益智", "策略", "邏輯", "動物"] };
+  localizedGames["zh-Hans"]["animal-starlight-trails"] = { ...localizedGames["zh-Hant"]["animal-starlight-trails"], title: "Starlink 星链", guideTitleSuffix: "游戏指南", gameplay: "一笔画逻辑益智" };
+  localizedGameplayProfiles["zh-Hans"]["animal-starlight-trails"] = { gameplay: "一笔画逻辑益智", genre: ["益智", "策略", "逻辑", "动物"] };
+
   window.WeightPlayGameInfo = {
     get(gameId) {
       const game = games[gameId];

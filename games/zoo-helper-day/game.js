@@ -255,6 +255,10 @@
     },
   };
 
+  Object.assign(text.en, { leaveTitle:"Leave this shift?", leaveText:"Your care progress in this shift will reset.", keepHelping:"Keep helping", leaveShift:"Leave shift" });
+  Object.assign(text["zh-Hant"], { leaveTitle:"\u8981\u96e2\u958b\u9019\u6b21\u73ed\u6b21\u55ce\uff1f", leaveText:"\u9019\u6b21\u73ed\u6b21\u7684\u7167\u8b77\u9032\u5ea6\u6703\u91cd\u65b0\u958b\u59cb\u3002", keepHelping:"\u7e7c\u7e8c\u5e6b\u5fd9", leaveShift:"\u96e2\u958b\u73ed\u6b21" });
+  Object.assign(text.es, { leaveTitle:"¿Salir de este turno?", leaveText:"Se reiniciará el progreso de cuidado de este turno.", keepHelping:"Seguir ayudando", leaveShift:"Salir del turno" });
+
   const itemIcons = {
     fruit: "../../assets/zoo-helper-day-fruit-apple.svg",
     water: "../../assets/zoo-helper-day-water-drop.svg",
@@ -371,6 +375,17 @@
     loadingFill: $("loadingFill"),
     gameShell: document.querySelector(".zoo-game"),
   };
+  const leavePanel = document.createElement("section");
+  leavePanel.className = "zoo-leave-panel hidden";
+  leavePanel.setAttribute("role", "dialog");
+  leavePanel.setAttribute("aria-modal", "true");
+  leavePanel.setAttribute("aria-labelledby", "zooLeaveTitle");
+  leavePanel.innerHTML = `<div class="zoo-leave-card"><h2 id="zooLeaveTitle"></h2><p id="zooLeaveText"></p><div><button id="keepHelpingBtn" type="button"></button><button id="leaveShiftBtn" type="button"></button></div></div>`;
+  nodes.playPanel.insertAdjacentElement("afterend", leavePanel);
+  nodes.leaveTitle = leavePanel.querySelector("#zooLeaveTitle");
+  nodes.leaveText = leavePanel.querySelector("#zooLeaveText");
+  nodes.keepHelpingBtn = leavePanel.querySelector("#keepHelpingBtn");
+  nodes.leaveShiftBtn = leavePanel.querySelector("#leaveShiftBtn");
 
   const legacySavedLocale = localStorage.getItem(legacyLocaleKey);
   const canonicalSavedLocale = localStorage.getItem(localeKey);
@@ -395,6 +410,7 @@
   let suppressItemClick = null;
   let memoryFrame = 0;
   let memoryToken = 0;
+  let leaveConfirmOpen = false;
 
   function cancelMemoryCue() {
     memoryToken += 1;
@@ -413,7 +429,7 @@
     let previous = null;
     const step = (now) => {
       if (token !== memoryToken || nodes.playPanel.classList.contains("hidden")) return;
-      if (previous !== null && !document.hidden) elapsed += Math.min(48, now - previous);
+      if (previous !== null && !document.hidden && !leaveConfirmOpen) elapsed += Math.min(48, now - previous);
       previous = now;
       if (elapsed < 1500) {
         memoryFrame = requestAnimationFrame(step);
@@ -448,11 +464,13 @@
 
   function scheduleCareTransition(callback) {
     const token = ++careTransitionToken;
-    let startedAt = null;
+    let elapsed = 0;
+    let previous = null;
     const advance = (now) => {
       if (token !== careTransitionToken) return;
-      if (startedAt === null) startedAt = now;
-      if (now - startedAt < 520) {
+      if (previous !== null && !document.hidden && !leaveConfirmOpen) elapsed += Math.min(48, now - previous);
+      previous = now;
+      if (elapsed < 520) {
         careTransitionFrame = requestAnimationFrame(advance);
         return;
       }
@@ -639,6 +657,10 @@
     localizeGuide();
     nodes.itemGrid.setAttribute("aria-label", t("careItemsAria"));
     nodes.localeSelect.value = locale;
+    nodes.leaveTitle.textContent = t("leaveTitle");
+    nodes.leaveText.textContent = t("leaveText");
+    nodes.keepHelpingBtn.textContent = t("keepHelping");
+    nodes.leaveShiftBtn.textContent = t("leaveShift");
   }
 
   function renderStageGrid() {
@@ -680,6 +702,15 @@
     else nodes.playPanel.removeAttribute("aria-hidden");
   }
 
+  function setLeaveConfirmOpen(open, restoreFocus = true) {
+    if (open === leaveConfirmOpen) return;
+    leaveConfirmOpen = open;
+    leavePanel.classList.toggle("hidden", !open);
+    setResultOwnership(open);
+    if (open) nodes.keepHelpingBtn.focus({ preventScroll:true });
+    else if (restoreFocus) nodes.backToStagesBtn.focus({ preventScroll:true });
+  }
+
   function visibleResultActions() {
     return [...nodes.resultPanel.querySelectorAll("button, a[href]")].filter((action) => {
       if (action.disabled || action.classList.contains("hidden")) return false;
@@ -694,6 +725,7 @@
   }
 
   function showMenu() {
+    setLeaveConfirmOpen(false, false);
     cancelCareTransition();
     acceptingInput = false;
     setResultOwnership(false);
@@ -714,6 +746,7 @@
   }
 
   function showMain() {
+    setLeaveConfirmOpen(false, false);
     cancelCareTransition();
     acceptingInput = false;
     setResultOwnership(false);
@@ -724,6 +757,7 @@
   }
 
   function startStage(index) {
+    setLeaveConfirmOpen(false, false);
     cancelCareTransition();
     setResultOwnership(false);
     currentStage = index;
@@ -1047,7 +1081,16 @@
       else if (!nodes.playPanel.classList.contains("hidden")) renderTask();
       requestAnimationFrame(localizeStatic);
     });
-    nodes.backToStagesBtn.addEventListener("click", showMenu);
+    nodes.backToStagesBtn.addEventListener("click", () => setLeaveConfirmOpen(true));
+    nodes.keepHelpingBtn.addEventListener("click", () => setLeaveConfirmOpen(false));
+    nodes.leaveShiftBtn.addEventListener("click", showMenu);
+    leavePanel.addEventListener("keydown", (event) => {
+      if (event.repeat && (event.key === "Enter" || event.key === " ")) { event.preventDefault(); event.stopImmediatePropagation(); return; }
+      if (event.key === "Escape") { event.preventDefault(); setLeaveConfirmOpen(false); return; }
+      if (event.key !== "Tab") return;
+      if (event.shiftKey && document.activeElement === nodes.keepHelpingBtn) { event.preventDefault(); nodes.leaveShiftBtn.focus({ preventScroll:true }); }
+      else if (!event.shiftKey && document.activeElement === nodes.leaveShiftBtn) { event.preventDefault(); nodes.keepHelpingBtn.focus({ preventScroll:true }); }
+    }, true);
     nodes.resultStagesBtn.addEventListener("click", showMenu);
     nodes.retryBtn.addEventListener("click", () => {
       track("game_restart", { level: currentStage + 1, mistakes });

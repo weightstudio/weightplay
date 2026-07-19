@@ -353,6 +353,16 @@
     ]
   }
 };
+  data["animal-starlight-trails"] = {
+    title: "Starlink", statusText: "Jugar ahora", type: "Puzle lógico de un solo trazo",
+    description: "Traza cada sendero exactamente una vez en 30 constelaciones originales con inicios, flechas, números, llaves y puertas.",
+    meta: ["30 niveles", "Rutas de un solo trazo", "Seis familias de reglas"]
+  };
+  data["animal-one-line"] = {
+    title: "One Line", statusText: "Próximamente", type: "Trazado continuo de rutas",
+    description: "Mantén una sola línea por 30 rutas originales, evita paredes y sombras móviles y guía a Mimi hasta el portal.",
+    meta: ["30 rutas", "Una pulsación continua", "Sombras móviles"]
+  };
   if (!window.WONDER_LOBBY) return;
   window.WONDER_LOBBY.platform.tagline.es = "Juega aventuras originales con animales para todas las edades.";
   window.WONDER_LOBBY.platform.subtitle.es = "Un mundo de juegos de animales en constante crecimiento para niños, familias y jugadores ocasionales.";

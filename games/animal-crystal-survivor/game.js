@@ -1856,8 +1856,6 @@
     ctx.save();
     ctx.lineCap = "round";
     ctx.lineJoin = "round";
-    ctx.shadowColor = `rgba(${color}, 0.72)`;
-    ctx.shadowBlur = isBlade ? 18 : 14;
     ctx.strokeStyle = `rgba(${color}, 0.52)`;
     ctx.lineWidth = isBlade ? 16 : 12;
     ctx.beginPath();
@@ -1918,8 +1916,6 @@
     ctx.globalAlpha = 0.18 + danger * 0.32;
     ctx.strokeStyle = "#ff7b5f";
     ctx.lineWidth = 5 + danger * 5;
-    ctx.shadowColor = "rgba(255, 123, 95, 0.58)";
-    ctx.shadowBlur = 18;
     ctx.beginPath();
     ctx.arc(enemy.x, enemy.y, radius, 0, Math.PI * 2);
     ctx.stroke();

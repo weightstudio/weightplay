@@ -940,7 +940,7 @@
   });
   startGameButton.addEventListener("click", () => { renderStageRail(); showScreen("stage"); focusSelectedStage(); });
   document.getElementById("stageBack").addEventListener("click", () => { showScreen("main"); updateMainProgress(); requestAnimationFrame(() => startGameButton.focus({ preventScroll:true })); });
-  document.getElementById("battleBack").addEventListener("click", returnToStage);
+  document.getElementById("battleBack").addEventListener("click", pauseGame);
   dom.pauseButton.addEventListener("click", pauseGame);
   dom.pauseResume.addEventListener("click", resumeGame);
   document.getElementById("pauseBack").addEventListener("click", returnToStage);

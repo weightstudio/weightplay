@@ -32,6 +32,7 @@
       pauseTitle: "Search paused",
       pauseText: "Your habitat is waiting. Resume when you are ready.",
       resume: "Resume",
+      leaveHabitat: "Return to habitats",
       hiddenAnimalScene: "Hidden animal scene",
       chooseStage: "Choose Habitat",
       menuHint: "Find animals blended into each natural habitat.",
@@ -109,6 +110,7 @@
       pauseTitle: "\u641c\u5c0b\u5df2\u66ab\u505c",
       pauseText: "\u68f2\u5730\u6b63\u5728\u7b49\u4f60\uff0c\u6e96\u5099\u597d\u518d\u7e7c\u7e8c\u3002",
       resume: "\u7e7c\u7e8c\u641c\u5c0b",
+      leaveHabitat: "\u8fd4\u56de\u68f2\u5730",
       hiddenAnimalScene: "\u85cf\u8d77\u4f86\u7684\u52d5\u7269\u5834\u666f",
       chooseStage: "\u9078\u64c7\u68f2\u5730",
       menuHint: "\u5728\u5927\u81ea\u7136\u5834\u666f\u88e1\u627e\u51fa\u85cf\u8d77\u4f86\u7684\u52d5\u7269\uff0c\u7df4\u7fd2\u89c0\u5bdf\u529b\u8207\u5c08\u6ce8\u3002",
@@ -195,6 +197,7 @@
     pauseTitle: "Búsqueda en pausa",
     pauseText: "Tu hábitat te espera. Continúa cuando quieras.",
     resume: "Continuar",
+    leaveHabitat: "Volver a los h\u00e1bitats",
   });
 
   const targetAssets = {
@@ -268,7 +271,7 @@
     panel.setAttribute("role", "dialog");
     panel.setAttribute("aria-modal", "true");
     panel.setAttribute("aria-labelledby", "pauseTitle");
-    panel.innerHTML = '<div class="safari-pause-card"><strong id="pauseTitle"></strong><p id="pauseText"></p><button id="resumeBtn" type="button"></button></div>';
+    panel.innerHTML = '<div class="safari-pause-card"><strong id="pauseTitle"></strong><p id="pauseText"></p><div class="safari-pause-actions"><button id="resumeBtn" type="button"></button><button id="leaveHabitatBtn" type="button"></button></div></div>';
     document.querySelector(".safari-game")?.append(panel);
   }
   if (!$("pauseBtn")) {
@@ -292,6 +295,7 @@
     pauseTitle: $("pauseTitle"),
     pauseText: $("pauseText"),
     resumeBtn: $("resumeBtn"),
+    leaveHabitatBtn: $("leaveHabitatBtn"),
     stageText: $("stageText"),
     progressFill: $("progressFill"),
     hintBtn: $("hintBtn"),
@@ -342,6 +346,7 @@
   let hiddenStartedAt = 0;
   let acceptingInput = false;
   let pauseOpen = false;
+  let pauseReturnFocus = null;
 
   function clamp(value, min, max) {
     return Math.max(min, Math.min(max, value));
@@ -406,6 +411,7 @@
     nodes.pauseTitle.textContent = t("pauseTitle");
     nodes.pauseText.textContent = t("pauseText");
     nodes.resumeBtn.textContent = t("resume");
+    nodes.leaveHabitatBtn.textContent = t("leaveHabitat");
     nodes.localeSelect.value = locale;
   }
 
@@ -750,9 +756,10 @@
     hiddenStartedAt = 0;
   }
 
-  function openPause() {
+  function openPause(returnFocus = nodes.pauseBtn) {
     if (pauseOpen || !acceptingInput || !document.body.classList.contains("safari-playing")) return;
     pauseOpen = true;
+    pauseReturnFocus = returnFocus;
     pauseSearchTimer();
     nodes.playPanel.inert = true;
     nodes.playPanel.setAttribute("aria-hidden", "true");
@@ -762,12 +769,14 @@
 
   function closePause(restoreFocus = true) {
     if (!pauseOpen) return;
+    const returnFocus = pauseReturnFocus;
     pauseOpen = false;
+    pauseReturnFocus = null;
     nodes.pausePanel.classList.add("hidden");
     nodes.playPanel.inert = false;
     nodes.playPanel.removeAttribute("aria-hidden");
     resumeSearchTimer();
-    if (restoreFocus) requestAnimationFrame(() => nodes.pauseBtn.focus({ preventScroll: true }));
+    if (restoreFocus) requestAnimationFrame(() => returnFocus?.focus({ preventScroll: true }));
   }
 
   function elapsedSeconds() {
@@ -960,15 +969,33 @@
     });
     nodes.startGameBtn.addEventListener("keydown", rejectRepeatedScreenActivation, true);
     nodes.stageGrid.addEventListener("keydown", rejectRepeatedScreenActivation, true);
-    nodes.backToStagesBtn.addEventListener("click", () => showMenu(currentStage));
-    nodes.pauseBtn.addEventListener("click", openPause);
+    nodes.backToStagesBtn.addEventListener("click", () => openPause(nodes.backToStagesBtn));
+    nodes.pauseBtn.addEventListener("click", () => openPause(nodes.pauseBtn));
     nodes.resumeBtn.addEventListener("click", () => closePause(true));
+    nodes.leaveHabitatBtn.addEventListener("click", () => showMenu(currentStage));
     nodes.pausePanel.addEventListener("keydown", (event) => {
+      if (event.repeat && (event.key === "Enter" || event.key === " ")) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        return;
+      }
       if (event.key === "Escape") {
         event.preventDefault();
         closePause(true);
+        return;
       }
-    });
+      if (event.key === "Tab") {
+        const first = nodes.resumeBtn;
+        const last = nodes.leaveHabitatBtn;
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last.focus({ preventScroll: true });
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first.focus({ preventScroll: true });
+        }
+      }
+    }, true);
     nodes.startGameBtn.addEventListener("click", () => showMenu());
     nodes.stageBackMainBtn.addEventListener("click", showMain);
     nodes.resultStagesBtn.addEventListener("click", () => showMenu(currentStage));

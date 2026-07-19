@@ -3119,6 +3119,21 @@ window.WeightPlayGameInfoLocales.es = {
   }
 };
 
+window.WeightPlayGameInfoLocales.es.games["animal-starlight-trails"] = {
+  title: "Starlink", difficulty: "De fácil a desafiante", time: "2-6 minutos por nivel",
+  gameplay: "Puzle lógico de un solo trazo", genre: ["Puzle", "Estrategia", "Lógica", "Animales"], skills: ["Logic", "Focus", "Problem Solving"],
+  intro: "Starlink es un puzle original de 30 niveles protagonizado por Orla. Traza cada sendero de la constelación exactamente una vez mientras aprendes sellos de inicio, flechas de cometa, estrellas numeradas, llaves y puertas.",
+  story: ["El Mapa Estelar Animal ha perdido treinta constelaciones repartidas en seis observatorios. Orla debe restaurarlas con una ruta continua.", "Cada tablero es un grafo original. El nivel 30 combina todas las reglas y sigue disponible después de completar la campaña."],
+  systems: ["Puedes volver a visitar una estrella, pero no reutilizar el mismo sendero. La constelación termina cuando todas las conexiones se iluminan.", "Los niveles posteriores añaden inicios obligatorios, flechas de una dirección, estrellas en orden y llaves que abren puertas marcadas.", "Deshacer retrocede un paso, Reiniciar limpia el intento y Pista marca un siguiente movimiento legal sin gastar moneda.", "El navegador guarda niveles desbloqueados, mejores estrellas y tiempos."],
+  how: ["Elige una constelación desbloqueada en el carril horizontal.", "Comienza en cualquier estrella válida o en el sello brillante indicado.", "Arrastra o toca estrellas adyacentes sin repetir senderos.", "Respeta las flechas, el orden de números y la regla de llave antes de puerta.", "Ilumina todos los senderos para desbloquear el siguiente nivel."],
+  strategyTips: ["Las estrellas con un número impar de senderos suelen indicar un buen inicio o final.", "Antes de entrar en una rama estrecha, comprueba cómo volverás al resto del dibujo.", "Las flechas, números, llaves y puertas son restricciones reales.", "Usa Deshacer para correcciones breves y Reiniciar cuando el primer tramo bloquee varias ramas."],
+  progression: ["Los niveles 1-5 enseñan rutas abiertas; 6-10 fijan el inicio; 11-15 añaden flechas.", "Los niveles 16-20 añaden orden, 21-25 llaves y puertas, y 26-30 combinan todo."],
+  designNote: "El Canvas lógico adaptable llena la zona segura de Nivel y Batalla sin deformar sus elementos. Móvil y escritorio conservan la misma información y la reserva inferior nunca cubre controles.",
+  parent: "Starlink es gratuito, no requiere cuenta y guarda el progreso solo en este navegador. Los comentarios de habilidades son entretenimiento, no una evaluación formal.",
+  faq: [["¿Puedo pasar dos veces por una estrella?", "Sí, pero cada sendero solo puede usarse una vez."], ["¿Qué indica la flecha rosa?", "Muestra la única dirección permitida para ese sendero."], ["¿Qué hago en un callejón sin salida?", "Usa Deshacer o Reiniciar gratis."], ["¿Las pistas son obligatorias?", "No, todos los niveles pueden resolverse sin pistas."], ["¿Se guarda el progreso?", "Sí, en el almacenamiento local de este navegador."], ["¿Cuántos niveles hay?", "Hay 30 niveles originales en seis capítulos."]]
+};
+window.WeightPlayGameInfoLocales.es.gameplayProfiles["animal-starlight-trails"] = { gameplay: "Puzle lógico de un solo trazo", genre: ["Puzle", "Estrategia", "Lógica", "Animales"] };
+
 (function (resource) {
   const replacements = [
     [/\bEtapas\b/g, "Niveles"], [/\betapas\b/g, "niveles"], [/\bEtapa\b/g, "Nivel"], [/\betapa\b/g, "nivel"],

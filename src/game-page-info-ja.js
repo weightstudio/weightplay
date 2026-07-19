@@ -33,6 +33,7 @@
     "animal-gearpack-expedition": ["どうぶつ行嚢遠征", "限られた行嚢に装備を組み、敵に合わせて戦い方を変える遠征戦略"],
     "shadow-wolf": ["シャドウウルフ伝説", "オオカミを直接動かし、ボスの予兆を読んで反撃するアクション冒険"],
     "animal-moonlight-heist": ["どうぶつ月夜の潜入", "影と巡回を読み、月の書庫から宝を持ち出すステルス脱出"],
+    "animal-starlight-trails": ["Starlink", "すべての星の道を一度ずつ通り、30の動物星座を完成させる一筆書きパズル"],
   };
   const labels = {
     kicker: "WeightPlay ゲームガイド", gameplay: "ゲーム内容", genre: "ジャンル", recommendedAge: "おすすめ年齢", difficulty: "難易度", estimatedTime: "目安時間", skills: "育てる力",

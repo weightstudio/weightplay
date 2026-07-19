@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+    <base href="/games/animal-starlight-trails/" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="robots" content="index,follow" />
+  <meta name="weightplay-audience" content="general" />
+  <meta name="theme-color" content="#07172f" />
+  <title>Starlink 星链 | WeightPlay</title>
+  <meta name="description" content="Starlink 星鏈是月帽奧拉主演的原創 30 關路線益智遊戲。玩家要用一條連續路線走完每條星路一次，並逐步掌握起點星印、彗星箭路、編號星星、鑰匙與星門。" />
+  <meta property="og:site_name" content="WeightPlay" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Starlink 星链 | WeightPlay" />
+  <meta property="og:description" content="Starlink 星鏈是月帽奧拉主演的原創 30 關路線益智遊戲。玩家要用一條連續路線走完每條星路一次，並逐步掌握起點星印、彗星箭路、編號星星、鑰匙與星門。" />
+  <meta property="og:url" content="https://weightplay.com/zh-cn/games/animal-starlight-trails/" />
+  <meta property="og:image" content="https://weightplay.com/assets/animal-starlight-trails-cover.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="canonical" href="https://weightplay.com/zh-cn/games/animal-starlight-trails/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-starlight-trails/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-starlight-trails/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-starlight-trails/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/animal-starlight-trails/" />
+    <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/animal-starlight-trails/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-starlight-trails/" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Starlink 星链",
+  "url": "https://weightplay.com/zh-cn/games/animal-starlight-trails/",
+  "image": "https://weightplay.com/assets/animal-starlight-trails-cover.png",
+  "description": "Starlink 星鏈是月帽奧拉主演的原創 30 關路線益智遊戲。玩家要用一條連續路線走完每條星路一次，並逐步掌握起點星印、彗星箭路、編號星星、鑰匙與星門。",
+  "applicationCategory": "Game",
+  "operatingSystem": "Web browser",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio"
+  },
+  "inLanguage": "zh-Hans",
+  "isAccessibleForFree": true,
+  "genre": [
+    "益智",
+    "策略",
+    "邏輯",
+    "動物"
+  ],
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "General players",
+    "suggestedMinAge": 9
+  }
+}
+    </script>
+  <link rel="stylesheet" href="../../src/tutorial.css" />
+  <link rel="stylesheet" href="../../src/loading-screen.css" />
+  <link rel="stylesheet" href="../../src/game-page-info.css" />
+  <link rel="stylesheet" href="../../src/stage-selector-standard.css" />
+  <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
+  <link rel="stylesheet" href="style.css" />
+  <meta name="twitter:title" content="Starlink 星链 | WeightPlay" />
+    <meta name="twitter:description" content="Starlink 星鏈是月帽奧拉主演的原創 30 關路線益智遊戲。玩家要用一條連續路線走完每條星路一次，並逐步掌握起點星印、彗星箭路、編號星星、鑰匙與星門。" />
+  </head>
+<body data-screen="main" data-game-id="animal-starlight-trails">
+  <section id="loadingPanel" class="loading-panel" aria-live="polite">
+    <div class="loading-card"><strong>Starlink</strong><span id="loadingText">Loading star map…</span><div class="loading-track"><i id="loadingFill"></i></div></div>
+  </section>
+
+  <main id="mainScreen" class="main-screen">
+    <header class="main-header">
+      <a class="main-return" href="/" data-wp-return="main" aria-label="Back to WeightPlay"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" /></a>
+      <strong data-i18n="title">Starlink</strong>
+      <label class="locale-control"><span class="sr-only" data-i18n="language">Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option></select></label>
+    </header>
+    <section class="main-hero">
+      <img class="main-poster" src="../../assets/animal-starlight-trails-cover.webp" alt="" />
+      <div class="main-copy"><small data-i18n="eyebrow">Moon Cap Orla's constellation workshop</small><h1 data-i18n="title">Starlink 星链</h1><p data-i18n="pitch">Trace every trail exactly once and relight the Animal Star Map.</p><div id="mainProgress" class="main-progress"></div><button id="startBtn" class="primary-action" type="button" data-i18n="start">Start Game</button></div>
+    </section>
+  </main>
+
+  <section class="game-page-info game-page-info-static" aria-label="Starlink 星链 游戏资讯">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 儿童游戏指南</span><h2>Starlink 星链</h2><p>Starlink 星鏈是月帽奧拉主演的原創 30 關路線益智遊戲。玩家要用一條連續路線走完每條星路一次，並逐步掌握起點星印、彗星箭路、編號星星、鑰匙與星門。</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>一笔画逻辑益智</strong></div><div class="game-info-fact"><span>类型</span><strong>益智 · 策略 · 邏輯 · 動物</strong></div><div class="game-info-fact"><span>难度</span><strong>簡單至具挑戰性</strong></div><div class="game-info-fact"><span>预估游玩时间</span><strong>每關約 2 至 6 分鐘</strong></div><div class="game-info-fact"><span>练习能力</span><strong>逻辑 · 专注 · 问题解决</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>世界与任务</h3><p>動物星圖的三十個星座分散在六座觀測站。奧拉必須為每個星座畫出不間斷的完整路線，每完成五關就會點亮一座觀測站並學到新的導航規則。</p>
+<p>每個盤面都是依照畫面規則設計的原創圖形。第 30 關是綜合所學限制的最終星座，完成後仍可重玩，不會出現不存在的第 31 關。</p></div>
+      <div class="game-info-section"><h3>游戏系统</h3><p>選擇一顆星並沿相連星點前進。星點可以重複經過，但同一條星路只能走一次；所有星路都亮起才算完成。</p>
+<p>第 6 至 10 關指定發光起點；第 11 至 15 關加入清楚可見的單向彗星箭；第 16 至 20 關要依序經過編號星星；第 21 至 25 關必須先拿鑰匙再通過星門；最後五關會混合規則。</p>
+<p>復原會退回上一步，重新開始會清除本次路線，提示只會標出仍能完成全圖的一個合法下一步，全部都不消耗貨幣。</p>
+<p>過關後會在此瀏覽器儲存最佳星等與時間並解鎖下一關，已解鎖關卡都能重玩。</p></div>
+      <div class="game-info-section"><h3>玩法说明</h3><ol><li>從橫向關卡軌道選擇已解鎖星座。</li><li>先閱讀規則；若有發光起點星印，就必須從該處開始。</li><li>拖曳經過相鄰星點，或逐一點擊相鄰星點，同一條路不可重複。</li><li>遵守箭頭方向、編號順序及先鑰匙後星門的限制。</li><li>點亮全部星路即可過關並解鎖下一關。</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>未使用路線數量為奇數的星點，常能提示開放路線的起點或終點。</li><li>進入狹窄分支前，先確認還有路能回到星座主體。</li><li>箭頭、數字、鑰匙與星門都是路線限制，不是裝飾。</li><li>短距離走錯可用復原；若開局已困住多個分支，重新開始會更快。</li></ul></div>
+      <div class="game-info-section"><h3>关卡与难度成长</h3><p>第 1 至 5 關教基本一筆路線，第 6 至 10 關加入指定起點，第 11 至 15 關加入單向箭路。</p>
+<p>第 16 至 20 關加入順序星點，第 21 至 25 關加入鑰匙與星門，第 26 至 30 關綜合全部規則。</p></div>
+      <div class="game-info-section"><h3>开发设计理念</h3><p>Starlink 使用響應式邏輯 Canvas 填滿 Stage 與 Battle 的安全區域，不會分別拉伸子元素。手機與寬螢幕會保留相同路線資訊與操作，底部 56px 預留區也不會蓋住遊戲或結算按鈕。</p></div>
+      <div class="game-info-section game-info-parent"><h3>家长说明</h3><p>Starlink 可免費在瀏覽器遊玩，不需帳號。解鎖進度、最佳星等與時間只儲存在目前瀏覽器；清除網站資料或更換瀏覽器可能建立另一份紀錄。技能回饋僅供遊戲鼓勵，不是正式能力評量。</p></div>
+      <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>星點可以重複經過嗎？</dt><dd>可以，但同一條連接星路只能使用一次。</dd></div><div><dt>為什麼粉紅色彗星路不能走？</dt><dd>路線上的箭頭代表允許方向，從另一端進入不合法。</dd></div><div><dt>走到死路怎麼辦？</dt><dd>目前路線會保留，可免費復原或重新開始。</dd></div><div><dt>一定要使用提示嗎？</dt><dd>不用，每一關都能不靠提示完成。</dd></div><div><dt>進度會保存嗎？</dt><dd>會，解鎖、最佳星等與時間會儲存在此瀏覽器。</dd></div><div><dt>共有幾關？</dt><dd>共有六個規則章節、30 個原創關卡。</dd></div></dl></div>
+    </div>
+  </section>
+
+  <section id="stageScreen" class="stage-shell" data-wp-canvas-max-width="viewport" hidden>
+    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-canvas-max-width="viewport" style="--wp-stage-art:url('../../assets/animal-starlight-trails-bg.webp')">
+      <header class="stage-header"><button id="stageBackBtn" type="button" data-wp-return="stage" aria-label="Back">&larr;</button><div><strong data-i18n="chooseStage">Choose Constellation</strong><span id="stageSummary"></span></div><img src="../../assets/weightplay-character-moon-cap-owl-cutout.webp" alt="" /></header>
+      <section class="chapter-panel"><small id="chapterKicker"></small><strong id="chapterTitle"></strong><p id="chapterRule"></p></section>
+      <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-settle-duration="360" data-wp-stage-settle-easing="smoothstep" aria-label="Constellations"></div>
+    </div>
+  </section>
+
+  <section id="battleScreen" class="battle-screen" hidden>
+    <div class="trail-battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="viewport">
+      <header class="battle-header"><button id="battleBackBtn" type="button" data-wp-return="battle" aria-label="Back">&larr;</button><div class="battle-progress"><span id="stageLabel"></span><div><i id="edgeProgress"></i></div></div><div class="battle-stat"><small data-i18n="trails">Trails</small><strong id="trailCount">0 / 0</strong></div><div class="battle-stat"><small data-i18n="stars">Stars</small><strong id="starTotal">0</strong></div></header>
+      <div id="objectiveRow" class="objective-row"></div>
+      <section id="puzzleScene" class="puzzle-scene" aria-label="Constellation puzzle"><svg id="graphSvg" viewBox="0 0 100 100" role="group" aria-label="One-stroke constellation"></svg><div id="hintPulse" class="hint-pulse" hidden></div></section>
+      <div class="battle-feedback"><strong id="feedbackText" aria-live="polite"></strong><span id="assistText"></span></div>
+      <div class="battle-actions"><button id="undoBtn" type="button" data-i18n="undo">Undo</button><button id="restartBtn" type="button" data-i18n="restart">Restart</button><button id="hintBtn" type="button" data-i18n="hint">Hint</button></div>
+      <section id="resultPanel" class="result-overlay" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden>
+        <div class="result-card"><img src="../../assets/weightplay-character-moon-cap-owl-cutout.webp" alt="" /><small data-i18n="skillReport">Skill Report</small><h2 id="resultTitle"></h2><div id="resultStars" class="result-stars"></div><p id="resultText"></p><div id="skillGrid" class="skill-grid"></div><p id="comparisonText" class="comparison"></p><div class="result-actions"><button id="retryBtn" type="button" data-i18n="retry">Retry</button><button id="resultStagesBtn" type="button" data-i18n="stages">Stages</button><button id="nextBtn" class="primary-action" type="button" data-i18n="next">Next Stage</button></div></div>
+      </section>
+    </div>
+    <div class="battle-ad-reserve" aria-hidden="true"></div>
+  </section>
+
+  <script src="../../src/site-config.js"></script>
+  <script>try{const segment=location.pathname.split("/").filter(Boolean)[0];const locale=({en:"en","zh-tw":"zh-Hant","zh-cn":"zh-Hans",es:"es",ja:"ja"})[segment];if(locale)localStorage.setItem("weightPlayLocale",locale);}catch{}</script>
+  <script src="/src/i18n.js?v=20260718-locale-routes1"></script>
+  <script src="../../src/analytics.js"></script>
+  <script src="../../src/sound.js"></script>
+  <script src="../../src/tutorial.js"></script>
+  <script src="game.js?v=20260719-public1"></script>
+  <script src="../../src/stage-selector-standard.js"></script>
+  <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
+  <script src="../../src/game-page-info.js?v=20260719-public2"></script>
+</body>
+</html>

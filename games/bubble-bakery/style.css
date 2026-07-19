@@ -33,6 +33,37 @@ select {
   display: none !important;
 }
 
+.bakery-leave-panel {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(45, 24, 48, 0.68);
+  backdrop-filter: blur(8px);
+}
+
+.bakery-leave-card {
+  display: grid;
+  gap: 14px;
+  width: min(100%, 360px);
+  padding: 24px;
+  border: 3px solid #ffd86b;
+  border-radius: 18px;
+  background: #fff7e5;
+  color: #4b263d;
+  text-align: center;
+  box-shadow: 0 16px 42px rgba(45, 24, 48, 0.42);
+}
+
+.bakery-leave-card h2,
+.bakery-leave-card p { margin: 0; }
+
+.bakery-leave-card > div { display: grid; gap: 10px; }
+
+.bakery-leave-card button { min-height: 48px; }
+
 .bakery-game {
   width: min(100%, 840px);
   min-height: 100vh;

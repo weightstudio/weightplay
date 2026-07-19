@@ -712,7 +712,9 @@ body.wp-stage-select-active.safari-stage #menuPanel.stage-panel[data-wp-logical-
 
 .safari-pause-card strong { font-size: 1.45rem; }
 .safari-pause-card p { margin: 0; font-weight: 800; line-height: 1.4; }
+.safari-pause-actions { display: grid; gap: 10px; }
 .safari-pause-card button { min-height: 50px; border: 0; border-radius: 12px; background: #ffd56d; color: #234033; font: inherit; font-weight: 1000; }
+.safari-pause-card #leaveHabitatBtn { background: #e8efe7; }
 
 .result-card,
 .loading-card {

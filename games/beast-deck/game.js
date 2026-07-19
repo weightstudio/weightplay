@@ -723,7 +723,7 @@
     language: "Idioma",
     menuTitle: "Entra en el Bosque de Niebla.",
     menuHint: "Crea un mazo de poderes animales, interpreta la intención enemiga y completa misiones. Tu nivel, monedas, cartas, equipo y misiones se guardan en este dispositivo.",
-    startGame: "Empezar",
+    startGame: "Iniciar juego",
     progressTitle: "Progreso local",
     missionSelection: "Selección de misiones",
     progressText: "Completa misiones para ganar XP y Monedas Bestia. Compra sobres, equipa cartas y objetos, y avanza por el bosque.",

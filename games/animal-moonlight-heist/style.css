@@ -32,9 +32,9 @@ body.wp-stage-select-active[data-screen="stage"] #stageScreen.stage-shell > .sta
   position: fixed;
   z-index: 39;
   top: var(--wp-stage-reserve-top);
-  left: var(--wp-stage-canvas-left);
+  left: 0;
   display: block !important;
-  width: var(--wp-stage-canvas-rendered-width);
+  width: 100vw;
   height: 56px;
   min-height: 56px;
   background: #17243a;

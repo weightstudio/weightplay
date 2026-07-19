@@ -7,6 +7,7 @@
   <meta name="theme-color" content="#101b36" />
   <title>Animal Moonlight Heist - Internal Trial</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard />
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" />
 </head>
 <body data-screen="main">
@@ -17,7 +18,7 @@
   </main>
 
   <section id="stageScreen" class="screen stage-shell" hidden>
-    <div class="stage-canvas">
+    <div class="stage-canvas" data-wp-standard-stage-screen>
       <header class="stage-header"><button id="stageBackBtn" class="icon-btn" type="button">&larr;</button><strong data-i18n="missions">Moon Archive</strong><span id="coinLabel"></span></header>
       <section class="planner"><img src="../../assets/animal-moonlight-heist-orla.webp" alt="" /><div class="planner-body"><div class="planner-heading"><strong data-i18n="chooseGadget">Choose Gadget</strong><span id="diamondLabel"></span></div><div class="gadget-row"><div id="gadgetChoices" class="gadget-choices"></div><button id="rerollBtn" class="economy-btn" type="button"></button><button id="insuranceBtn" class="economy-btn" type="button"></button></div><span id="economyFeedback" class="economy-feedback" aria-live="polite"></span></div></section>
       <div id="missionRail" class="mission-rail" aria-label="Missions"></div>
@@ -46,6 +47,7 @@
 
   <script src="../../src/wallet.js"></script>
 <script src="game.js?v=20260719-start-game1"></script>
+  <script src="../../src/stage-selector-standard.js" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js"></script>
 </body>
 </html>
