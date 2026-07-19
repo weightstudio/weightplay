@@ -122,11 +122,14 @@
     resultScreen.insertAdjacentHTML("beforebegin", '<section id="pauseOverlay" class="pause-overlay" role="dialog" aria-modal="true" aria-labelledby="pauseTitle" hidden><div class="pause-panel"><span class="pause-symbol" aria-hidden="true">Ⅱ</span><h2 id="pauseTitle" data-i18n="paused">Paused</h2><p data-i18n="pauseMessage">Take a breath. Your safari is waiting.</p><div class="pause-actions"><button id="pauseResume" class="primary-button" type="button" data-i18n="resume">Resume</button><button id="pauseBack" type="button" data-i18n="backToMap">Back to Map</button></div></div></section>');
   }
 
+  if (battleScreen) battleScreen.id = "safariBattleScreen";
+
   const dom = Object.fromEntries([
-    "viewport","gameCanvas","loadingScreen","loadingCover","loadingPanel","loadingFill","loadingProgress","mainScreen","stageScreen","battleScreen","battleLive","pauseButton","pauseOverlay","pauseResume","resultScreen","guideModal","stageRail","stageStatus","playCanvas",
+    "viewport","gameCanvas","loadingScreen","loadingCover","loadingPanel","loadingFill","loadingProgress","mainScreen","stageScreen","battleLive","pauseButton","pauseOverlay","pauseResume","resultScreen","guideModal","stageRail","stageStatus","playCanvas",
     "mainProgress","albumCount","starCount","stageSkill","stageGoal","battleStageName","shotsLeft","rescueProgress","scoreValue","battleMessage","battleGoal",
     "currentPreview","nextPreview","resultTitle","resultStars","resultScore","resultShots","resultRescued","rewardStars","rewardCoins","rewardAlbum","skillText","nextStage"
   ].map(id => [id, document.getElementById(id)]));
+  dom.battleScreen = battleScreen;
 
   const ctx = dom.playCanvas.getContext("2d");
   const currentCtx = dom.currentPreview.getContext("2d");
@@ -200,18 +203,17 @@
     const width = Math.max(1, window.innerWidth || document.documentElement.clientWidth);
     const height = Math.max(1, window.innerHeight || document.documentElement.clientHeight);
     const referenceScale = Math.min(width / LOGICAL_WIDTH, height / LOGICAL_HEIGHT);
-    const sharedStage = currentScreen === "stage";
-    const responsivePlay = currentScreen === "battle" || currentScreen === "result";
-    const scale = sharedStage ? 1 : referenceScale;
-    const logicalWidth = sharedStage ? width : responsivePlay ? width / scale : LOGICAL_WIDTH;
-    const logicalHeight = sharedStage ? height : responsivePlay ? height / scale : LOGICAL_HEIGHT;
+    const responsiveCanvas = currentScreen === "stage" || currentScreen === "battle" || currentScreen === "result";
+    const scale = referenceScale;
+    const logicalWidth = responsiveCanvas ? width / scale : LOGICAL_WIDTH;
+    const logicalHeight = responsiveCanvas ? height / scale : LOGICAL_HEIGHT;
     dom.gameCanvas.style.setProperty("--scale", String(scale));
     dom.gameCanvas.style.width = `${logicalWidth}px`;
     dom.gameCanvas.style.height = `${logicalHeight}px`;
     dom.gameCanvas.dataset.logicalWidth = logicalWidth.toFixed(3);
     dom.gameCanvas.dataset.logicalHeight = logicalHeight.toFixed(3);
     dom.gameCanvas.dataset.commonScale = scale.toFixed(6);
-    if (sharedStage || responsivePlay) {
+    if (responsiveCanvas) {
       dom.gameCanvas.style.left = "0";
       dom.gameCanvas.style.top = "0";
       dom.gameCanvas.style.bottom = "auto";

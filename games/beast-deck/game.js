@@ -1,4 +1,7 @@
 ﻿(() => {
+  document.querySelector(".beast-deck-app")?.setAttribute("data-wp-canvas-max-width", "viewport");
+  document.getElementById("gamePanel")?.setAttribute("data-wp-canvas-max-width", "viewport");
+
   const GAME_ID = "beast-deck";
   const saveKey = "weightplay_beast_deck_v1";
   const localeKey = "weightPlayLocale";

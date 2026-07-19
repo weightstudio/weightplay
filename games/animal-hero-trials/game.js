@@ -1035,6 +1035,8 @@
       };
     };
     canvas.addEventListener("pointerdown", (event) => {
+      if (event.isPrimary === false) return;
+      if (pointer !== null && pointer !== event.pointerId) return;
       if (event.button !== undefined && event.button !== 0) return;
       event.preventDefault();
       pointer = event.pointerId;
@@ -1050,8 +1052,12 @@
       if (canvas.hasPointerCapture?.(event.pointerId)) canvas.releasePointerCapture(event.pointerId);
     };
     canvas.addEventListener("pointerup", release);
-    canvas.addEventListener("pointercancel", release);
-    canvas.addEventListener("lostpointercapture", () => { pointer = null; });
+    canvas.addEventListener("pointercancel", (event) => {
+      if (pointer === event.pointerId) clearMovementInput();
+    });
+    canvas.addEventListener("lostpointercapture", (event) => {
+      if (pointer === event.pointerId) clearMovementInput();
+    });
   }
 
   const localeSelect = $("#locale") || $("#localeSelect");
@@ -1165,7 +1171,7 @@
     prepare:(stage,room=1)=>{ unlocked=TRIAL_COUNT; startTrial(stage); run.room=Math.max(1,Math.min(3,room)); spawn(); return window.__heroTrialSmoke.snapshot(); },
     damageFirst:(amount=20,source="auto")=>{ const enemy=run?.enemies[0]; return enemy?{applied:damageEnemy(enemy,amount,source),enemy:{...enemy}}:null; },
     forceRoomClear:()=>{ if(!run) return null; run.enemies=[]; if(run.room>=3) finish(true); else chooseBlessing(); return window.__heroTrialSmoke.snapshot(); },
-    snapshot: () => ({ pointer, stick: { ...stick }, active: Boolean(run?.active), hp: run?.hp ?? null, player: run ? { ...run.leo } : null, run:run?{stage:run.stage,room:run.room,checkpoint:run.definition.checkpoint,boss:run.definition.boss?.id||null}:null, unlocked,marks, enemies: run?.enemies.map((enemy) => ({ x: enemy.x, y: enemy.y, hp: enemy.hp,max:enemy.max,type:enemy.type,bossId:enemy.bossId||null,bossRule:enemy.bossRule||null,guard:enemy.guard||0,warning:enemy.warning||0,phase:enemy.phase||0 })) || [] })
+    snapshot: () => ({ pointer, moveTarget: moveTarget ? { ...moveTarget } : null, stick: { ...stick }, active: Boolean(run?.active), hp: run?.hp ?? null, player: run ? { ...run.leo } : null, run:run?{stage:run.stage,room:run.room,checkpoint:run.definition.checkpoint,boss:run.definition.boss?.id||null}:null, unlocked,marks, enemies: run?.enemies.map((enemy) => ({ x: enemy.x, y: enemy.y, hp: enemy.hp,max:enemy.max,type:enemy.type,bossId:enemy.bossId||null,bossRule:enemy.bossRule||null,guard:enemy.guard||0,warning:enemy.warning||0,phase:enemy.phase||0 })) || [] })
   };
   localize();
 })();

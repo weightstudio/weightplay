@@ -1,5 +1,10 @@
 ﻿(() => {
   const GAME_ID = "bubble-bakery";
+  const canvasRoot = document.querySelector(".bakery-game");
+  if (canvasRoot) {
+    canvasRoot.dataset.wpCanvasMaxWidth = "viewport";
+    window.dispatchEvent(new Event("resize"));
+  }
   const localeKey = "weightplayLocale";
   const sharedLocaleKey = "weightPlayLocale";
   const unlockKey = "weightplay_bubble_bakery_unlocked";

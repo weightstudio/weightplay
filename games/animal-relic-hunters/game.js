@@ -1,4 +1,8 @@
 (() => {
+  ["stagePanel", "gamePanel"].forEach((id) => {
+    document.getElementById(id)?.setAttribute("data-wp-canvas-max-width", "viewport");
+  });
+
   const ARENA_WIDTH = 800;
   const ARENA_HEIGHT = 1000;
   const ROOM_ENTRY_GRACE_MS = 1500;

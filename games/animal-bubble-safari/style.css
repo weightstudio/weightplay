@@ -218,7 +218,7 @@ body:not(.safari-main) .wp-tutorial-button { display: none !important; }
 .modal-close { position: absolute; right: 12px; top: 12px; width: 42px; height: 42px; border-radius: 50%; background: #173047; color: #fff; font-size: 28px; }
 
 @media (orientation: landscape) and (max-height: 460px) {
-  html body #gameCanvas #resultScreen.result-screen.is-active {
+  html body #gameCanvas .battle-screen #resultScreen.result-screen.is-active {
     inset: 0 !important;
     width: auto !important;
     height: auto !important;
@@ -228,7 +228,7 @@ body:not(.safari-main) .wp-tutorial-button { display: none !important; }
     overflow: hidden !important;
     touch-action: none !important;
   }
-  html body #gameCanvas #resultScreen.result-screen.is-active > .result-panel {
+  html body #gameCanvas .battle-screen #resultScreen.result-screen.is-active > .result-panel {
     max-height: none !important;
     align-content: normal !important;
     align-items: normal !important;

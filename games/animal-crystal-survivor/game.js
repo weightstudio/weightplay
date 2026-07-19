@@ -1,4 +1,12 @@
 ﻿(() => {
+  const stageReserve = document.getElementById("stageAdReserve");
+  document.querySelectorAll(".wp-stage-physical-reserve").forEach((reserve) => {
+    if (reserve !== stageReserve) reserve.remove();
+  });
+  stageReserve?.classList.add("wp-stage-physical-reserve");
+  document.getElementById("stagePanel")?.setAttribute("data-wp-canvas-max-width", "viewport");
+  document.getElementById("gamePanel")?.setAttribute("data-wp-canvas-max-width", "viewport");
+
   const GAME_ID = "animal-crystal-survivor";
   const saveKey = "weightplay_animal_crystal_survivor_v1";
   const localeKey = "weightPlayLocale";
