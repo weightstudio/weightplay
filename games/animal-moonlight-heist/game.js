@@ -162,6 +162,10 @@
   let state=load(),locale=window.WonderI18n?.locale?.()||localStorage.getItem(localeKey)||localStorage.getItem(legacyLocaleKey)||"en",selectedMission=0,gadget="dash",gadgetOffers=createOffers(),insuranceActive=state.insuranceReady===true,preservedTreasure=false,playing=false,paused=false,alert=0,objectFound=false,treasureFound=false,caught=false,patrols=[],lastTime=0,missionStartedAt=0,freezeUntil=0,smokeUntil=0,preview=null,arrivalTimer=0,routePointerId=null,lastPulseCycle=-1,lastMirrorCycle=-1,guardianPhase=1;
   const localeArrayIndex = () => locale === "zh-Hant" ? 1 : locale === "es" ? 2 : 0;
   const nodes={main:$("#mainScreen"),stage:$("#stageScreen"),battle:$("#battleScreen"),rail:$("#missionRail"),field:$("#playField"),fia:$("#fiaActor"),objective:$("#objectiveActor"),treasure:$("#treasureActor"),exit:$("#exitActor"),patrolLayer:$("#patrolLayer"),route:$("#routeLine"),feedback:$("#feedbackText"),fx:$("#feedbackFx"),alert:$("#alertFill"),modal:$("#resultModal")};
+  const leaveCopy={en:{title:"Leave this mission?",text:"Your current route is paused. Continue to keep playing, or return to Missions and leave this run.",continue:"Continue mission",leave:"Return to Missions"},"zh-Hant":{title:"離開這個任務？",text:"目前路線已暫停。繼續任務可保留本局，返回任務列表才會離開。",continue:"繼續任務",leave:"返回任務列表"},es:{title:"¿Salir de esta misión?",text:"La ruta actual está en pausa. Continúa para conservar la partida o vuelve a Misiones para salir.",continue:"Continuar misión",leave:"Volver a Misiones"}};
+  let leaveWasPaused=false;
+  function createLeaveModal(){const modal=document.createElement("div");modal.id="battleLeaveModal";modal.className="modal";modal.hidden=true;modal.setAttribute("role","dialog");modal.setAttribute("aria-modal","true");modal.setAttribute("aria-labelledby","battleLeaveTitle");modal.setAttribute("aria-describedby","battleLeaveText");modal.innerHTML='<section class="modal-card"><h2 id="battleLeaveTitle"></h2><p id="battleLeaveText"></p><div class="modal-actions leave-actions"><button id="battleContinueBtn" class="primary" type="button"></button><button id="battleLeaveBtn" type="button"></button></div></section>';nodes.modal.after(modal);nodes.leaveModal=modal}
+  createLeaveModal();
   function load(){
     try{
       const loaded={unlocked:1,coins:0,safehouse:1,cleared:{},insuranceReady:false,...JSON.parse(localStorage.getItem(KEY)||"{}")};
@@ -368,13 +372,17 @@
     if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus()}
     else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus()}
   }
+  function setBattleModalInert(modal,open){[...modal.parentElement.children].filter(node=>node!==modal).forEach(node=>{node.inert=open;open?node.setAttribute("aria-hidden","true"):node.removeAttribute("aria-hidden")})}
+  function openBattleLeave(){if(!playing||!nodes.modal.hidden||!nodes.leaveModal.hidden)return;leaveWasPaused=paused;if(!paused)setPaused(true);const words=leaveCopy[locale]||leaveCopy.en;$("#battleLeaveTitle").textContent=words.title;$("#battleLeaveText").textContent=words.text;$("#battleContinueBtn").textContent=words.continue;$("#battleLeaveBtn").textContent=words.leave;setBattleModalInert(nodes.leaveModal,true);nodes.leaveModal.hidden=false;$("#battleContinueBtn").focus({preventScroll:true})}
+  function closeBattleLeave(resume=true){if(nodes.leaveModal.hidden)return;nodes.leaveModal.hidden=true;setBattleModalInert(nodes.leaveModal,false);if(resume&&!leaveWasPaused)setPaused(false);if(resume)$("#battleBackBtn").focus({preventScroll:true})}
+  function trapBattleLeaveFocus(event){if(event.key==="Escape"){event.preventDefault();closeBattleLeave();return}if(event.key!=="Tab"||nodes.leaveModal.hidden)return;const actions=[...nodes.leaveModal.querySelectorAll("button:not(:disabled)")],first=actions[0],last=actions.at(-1);if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus()}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus()}}
   $(".home-link").setAttribute("data-wp-return","main");$("#stageBackBtn").setAttribute("data-wp-return","stage");$("#battleBackBtn").setAttribute("data-wp-return","battle");
   function bind(){
     $("#localeSelect").value=locale;
     $("#localeSelect").addEventListener("change",e=>{const requested=e.target.value;window.WonderI18n?.setLocale?.(requested);locale=window.WonderI18n?.locale?.()||requested;localStorage.setItem(localeKey,requested);localize()});
     $("#startBtn").addEventListener("click",()=>{show("stage");renderStage();focusMission()});
     $("#stageBackBtn").addEventListener("click",()=>{show("main");focusMain()});
-    $("#battleBackBtn").addEventListener("click",()=>{show("stage");renderStage();focusMission(selectedMission)});
+    $("#battleBackBtn").addEventListener("click",openBattleLeave);
     $("#pauseBtn").addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault()});
     $("#pauseBtn").addEventListener("click",()=>setPaused(!paused));
     document.addEventListener("visibilitychange",()=>{if(document.hidden){suspendPendingEconomy();if(playing&&!paused)setPaused(true)}else resumePendingEconomy()});
@@ -383,7 +391,9 @@
     nodes.field.addEventListener("pointerup",e=>{if(e.pointerId!==routePointerId||(e.pointerType==="mouse"&&e.button!==0))return;if(!paused&&preview)routeTo(e.clientX,e.clientY,true);cancelRoutePreview()});
     nodes.field.addEventListener("pointercancel",e=>{if(e.pointerId===routePointerId)cancelRoutePreview()});
     nodes.field.addEventListener("lostpointercapture",e=>{if(e.pointerId===routePointerId)cancelRoutePreview()});
-    nodes.modal.addEventListener("keydown",trapResultFocus);$("#gadgetBtn").addEventListener("click",useGadget);
+    nodes.modal.addEventListener("keydown",trapResultFocus);nodes.leaveModal.addEventListener("keydown",trapBattleLeaveFocus);$("#gadgetBtn").addEventListener("click",useGadget);
+    $("#battleContinueBtn").addEventListener("click",()=>closeBattleLeave());
+    $("#battleLeaveBtn").addEventListener("click",()=>{closeBattleLeave(false);show("stage");renderStage();focusMission(selectedMission)});
     $("#retryBtn").addEventListener("click",()=>{closeResult();startMission(selectedMission)});
     $("#stagesBtn").addEventListener("click",()=>{closeResult();show("stage");renderStage();focusMission(selectedMission)});
     $("#nextBtn").addEventListener("click",()=>{closeResult();startMission(Math.min(campaign.length-1,selectedMission+1))});

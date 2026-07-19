@@ -241,6 +241,7 @@
   let frame = 0;
   let rerollConfirmTimer = 0;
   let pointer = null;
+  let moveTarget = null;
   let backgroundSuspended = false;
   let quitSuspended = false;
   const keys = {};
@@ -250,12 +251,24 @@
   function clearMovementInput() {
     Object.keys(keys).forEach((key) => { keys[key] = false; });
     stick = { x: 0, y: 0 };
-    const joystick = $("#joystick");
-    const nub = joystick?.querySelector("i");
     const ownedPointer = pointer;
     pointer = null;
-    if (ownedPointer !== null && joystick?.hasPointerCapture?.(ownedPointer)) joystick.releasePointerCapture(ownedPointer);
-    if (nub) nub.style.transform = "";
+    moveTarget = null;
+    if (ownedPointer !== null && canvas?.hasPointerCapture?.(ownedPointer)) canvas.releasePointerCapture(ownedPointer);
+  }
+
+  function movementIntent() {
+    let dx = (keys.ArrowRight || keys.KeyD ? 1 : 0) - (keys.ArrowLeft || keys.KeyA ? 1 : 0);
+    let dy = (keys.ArrowDown || keys.KeyS ? 1 : 0) - (keys.ArrowUp || keys.KeyW ? 1 : 0);
+    if (!dx && !dy && moveTarget && run) {
+      dx = moveTarget.x - run.leo.x;
+      dy = moveTarget.y - run.leo.y;
+      if (Math.hypot(dx, dy) < 7) {
+        moveTarget = null;
+        return { x: 0, y: 0 };
+      }
+    }
+    return { x: dx, y: dy };
   }
 
   const views = {
@@ -613,8 +626,7 @@
     if (run.heroId === "fia") {
       run.cool = Math.max(2.2, 4.2 - run.bless.speed * 0.45);
       const skillTarget = [...run.enemies].sort((a, b) => Math.hypot(a.x - run.leo.x, a.y - run.leo.y) - Math.hypot(b.x - run.leo.x, b.y - run.leo.y))[0];
-      let dx = (keys.ArrowRight || keys.KeyD ? 1 : 0) - (keys.ArrowLeft || keys.KeyA ? 1 : 0) + stick.x;
-      let dy = (keys.ArrowDown || keys.KeyS ? 1 : 0) - (keys.ArrowUp || keys.KeyW ? 1 : 0) + stick.y;
+      let { x: dx, y: dy } = movementIntent();
       if (skillTarget) {
         dx = skillTarget.x - run.leo.x;
         dy = skillTarget.y - run.leo.y;
@@ -650,7 +662,7 @@
       const target = [...run.enemies].sort((a, b) => Math.hypot(a.x - run.leo.x, a.y - run.leo.y) - Math.hypot(b.x - run.leo.x, b.y - run.leo.y))[0];
       if (target) {
         damageEnemy(target,24 + run.bless.power * 5,"skill");
-        target.marked = true;
+        target.marked = 3;
         run.fx.push({ type: "roar", x: target.x, y: target.y, t: 0.4 });
       }
       return;
@@ -669,7 +681,8 @@
 
   function hurt(amount) {
     if (run.invulnerable > 0) return;
-    run.hp -= run.guard > 0 ? Math.ceil(amount * 0.3) : amount;
+    const roleReduction = run.heroId === "taro" ? 0.76 : 1;
+    run.hp -= run.guard > 0 ? Math.ceil(amount * 0.3) : Math.ceil(amount * roleReduction);
   }
 
   function autoAttack() {
@@ -678,7 +691,7 @@
     let distance = Infinity;
     for (const enemy of run.enemies) {
       const current = Math.hypot(enemy.x - run.leo.x, enemy.y - run.leo.y);
-      if (current < distance) {
+      if (!target || (enemy.marked && !target.marked) || (Boolean(enemy.marked) === Boolean(target.marked) && current < distance)) {
         distance = current;
         target = enemy;
       }
@@ -688,10 +701,18 @@
     let damage = hero.attack + run.bless.power * 2;
     if (target.marked) {
       damage += 18;
-      target.marked = false;
+      target.marked -= 1;
     }
     damageEnemy(target,damage,"auto");
-    run.attackCool = 0.58;
+    if (run.heroId === "leo") {
+      for (const enemy of run.enemies) {
+        if (enemy !== target && Math.hypot(enemy.x - target.x, enemy.y - target.y) < 82) {
+          damageEnemy(enemy, Math.ceil(damage * 0.55), "auto");
+        }
+      }
+    }
+    if (run.heroId === "taro") target.slow = 1.1;
+    run.attackCool = run.heroId === "fia" ? 0.34 : run.heroId === "orla" ? 0.78 : run.heroId === "taro" ? 0.9 : 0.6;
     run.fx.push({ type: "hit", x: target.x, y: target.y, t: 0.22 });
   }
 
@@ -840,8 +861,7 @@
     if (!run?.active) return;
     const dt = Math.min(0.033, (now - run.last) / 1000);
     run.last = now;
-    const dx = (keys.ArrowRight || keys.KeyD ? 1 : 0) - (keys.ArrowLeft || keys.KeyA ? 1 : 0) + stick.x;
-    const dy = (keys.ArrowDown || keys.KeyS ? 1 : 0) - (keys.ArrowUp || keys.KeyW ? 1 : 0) + stick.y;
+    const { x: dx, y: dy } = movementIntent();
     const length = Math.hypot(dx, dy) || 1;
     const heroSpeed = heroes[run.heroId].speed;
     run.leo.x = Math.max(35, Math.min(355, run.leo.x + (dx / length) * heroSpeed * dt));
@@ -859,6 +879,7 @@
       enemy.cd -= dt;
       enemy.special=(enemy.special||0)-dt;
       enemy.open=Math.max(0,(enemy.open||0)-dt);
+      enemy.slow=Math.max(0,(enemy.slow||0)-dt);
       const profile=enemy.boss?null:enemyProfiles[enemy.type]||enemyProfiles.scout;
       let moveX=ex/distance; let moveY=ey/distance; let moveSpeed=enemy.boss?22:profile.speed;
 
@@ -903,8 +924,9 @@
         }
       }
 
-      enemy.x=Math.max(32,Math.min(358,enemy.x+moveX*moveSpeed*dt));
-      enemy.y=Math.max(70,Math.min(525,enemy.y+moveY*moveSpeed*dt));
+      const slowedMoveSpeed = moveSpeed * (enemy.slow > 0 ? 0.55 : 1);
+      enemy.x=Math.max(32,Math.min(358,enemy.x+moveX*slowedMoveSpeed*dt));
+      enemy.y=Math.max(70,Math.min(525,enemy.y+moveY*slowedMoveSpeed*dt));
       const contactRange=enemy.boss?54:profile.range;
       if(enemy.type!=="hunter"&&distance<contactRange&&enemy.cd<=0){ hurt(enemy.boss?7:profile.damage); enemy.cd=1; run.fx.push({type:"shadow",x:run.leo.x,y:run.leo.y,t:.3}); }
     }
@@ -965,33 +987,32 @@
     }
   }
 
-  function bindStick() {
-    const joystick = $("#joystick");
-    const nub = joystick.querySelector("i");
-    const move = (event) => {
-      if (pointer !== event.pointerId) return;
-      const rect = joystick.getBoundingClientRect();
-      const x = event.clientX - (rect.left + rect.width / 2);
-      const y = event.clientY - (rect.top + rect.height / 2);
-      const magnitude = Math.min(30, Math.hypot(x, y));
-      const angle = Math.atan2(y, x);
-      stick = { x: (Math.cos(angle) * magnitude) / 30, y: (Math.sin(angle) * magnitude) / 30 };
-      nub.style.transform = `translate(${stick.x * 25}px, ${stick.y * 25}px)`;
+  function bindTapMove() {
+    const setTarget = (event) => {
+      const rect = canvas.getBoundingClientRect();
+      moveTarget = {
+        x: Math.max(35, Math.min(355, ((event.clientX - rect.left) / rect.width) * canvas.width)),
+        y: Math.max(80, Math.min(520, ((event.clientY - rect.top) / rect.height) * canvas.height)),
+      };
     };
-    joystick.onpointerdown = (event) => {
-      if (event.isPrimary === false) return;
-      if (pointer !== null && pointer !== event.pointerId) return;
+    canvas.addEventListener("pointerdown", (event) => {
       if (event.button !== undefined && event.button !== 0) return;
-      clearMovementInput();
+      event.preventDefault();
       pointer = event.pointerId;
-      joystick.setPointerCapture(pointer);
-      move(event);
+      canvas.setPointerCapture?.(pointer);
+      setTarget(event);
+    });
+    canvas.addEventListener("pointermove", (event) => {
+      if (pointer === event.pointerId) setTarget(event);
+    });
+    const release = (event) => {
+      if (pointer !== event.pointerId) return;
+      pointer = null;
+      if (canvas.hasPointerCapture?.(event.pointerId)) canvas.releasePointerCapture(event.pointerId);
     };
-    joystick.onpointermove = move;
-    const end = (event) => { if (pointer === event.pointerId) clearMovementInput(); };
-    joystick.onpointerup = end;
-    joystick.onpointercancel = end;
-    joystick.onlostpointercapture = end;
+    canvas.addEventListener("pointerup", release);
+    canvas.addEventListener("pointercancel", release);
+    canvas.addEventListener("lostpointercapture", () => { pointer = null; });
   }
 
   const localeSelect = $("#locale") || $("#localeSelect");
@@ -1085,7 +1106,7 @@
   document.addEventListener("visibilitychange", () => { if (document.hidden) suspendBackgroundBattle(); else resumeBackgroundBattle(); });
   addEventListener("pagehide", suspendBackgroundBattle);
   addEventListener("pageshow", resumeBackgroundBattle);
-  bindStick();
+  bindTapMove();
   if (new URLSearchParams(location.search).has("smoke")) window.__heroTrialSmoke = {
     definitions:()=>trials.map((trial)=>({stage:trial.stage,region:trial.region,titleEn:trial.titleEn,titleZh:trial.titleZh,checkpoint:trial.checkpoint,enemies:[...trial.enemies],recommended:trial.recommended,reward:trial.reward,boss:trial.boss?{id:trial.boss.id,nameEn:trial.boss.name[0],nameZh:trial.boss.name[1],asset:trial.boss.asset,rule:trial.boss.rule}:null})),
     prepare:(stage,room=1)=>{ unlocked=TRIAL_COUNT; startTrial(stage); run.room=Math.max(1,Math.min(3,room)); spawn(); return window.__heroTrialSmoke.snapshot(); },

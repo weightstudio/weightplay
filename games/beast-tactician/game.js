@@ -7,6 +7,14 @@
   const grid = { cols: 12, rows: 8 };
   const startTile = { x: 0, y: 3 };
   const coreTile = { x: 11, y: 4 };
+  const routeLayouts = [
+    [[0, 3], [11, 4]], [[0, 1], [11, 6]], [[0, 6], [11, 1]], [[2, 0], [9, 7]], [[9, 0], [2, 7]],
+    [[0, 4], [11, 2]], [[4, 0], [7, 7]], [[11, 1], [0, 6]], [[0, 7], [11, 0]], [[7, 0], [4, 7]],
+    [[0, 2], [11, 5]], [[3, 7], [8, 0]], [[11, 5], [0, 2]], [[0, 5], [11, 3]], [[8, 7], [3, 0]],
+    [[1, 0], [10, 7]], [[11, 3], [0, 4]], [[0, 0], [11, 7]], [[5, 7], [6, 0]], [[10, 0], [1, 7]],
+    [[0, 1], [11, 5]], [[6, 0], [5, 7]], [[11, 6], [0, 3]], [[2, 7], [9, 0]], [[0, 6], [11, 2]],
+    [[4, 7], [7, 0]], [[11, 0], [0, 7]], [[0, 3], [11, 6]], [[7, 7], [4, 0]], [[11, 4], [0, 1]],
+  ].map(([start, core]) => ({ start: { x: start[0], y: start[1] }, core: { x: core[0], y: core[1] } }));
 
   const $ = (id) => document.getElementById(id);
   const nodes = {
@@ -143,6 +151,8 @@
       traitSlow: "Slow {percent}%",
       traitHealing: "Heal {points}",
       traitBuff: "Buff allies {percent}%",
+      traitBounce: "Chains {count} targets",
+      traitBoss: "Boss damage +{percent}%",
       upgradeAction: "Upgrade ({coins})",
       sellAction: "Sell (+{coins})",
       selectedActionInfo: "Upgrade: {upgrade} coins | Sell: +{sell} coins",
@@ -290,8 +300,8 @@
       img: "acornGuard",
       name: { en: "Acorn Guard", "zh-Hant": "橡果守衛" },
       cost: 50,
-      hp: 180,
-      damage: 12,
+      hp: 245,
+      damage: 14,
       range: 1.25,
       cooldown: 0.8,
       note: { en: "Cheap blocker.", "zh-Hant": "便宜阻擋。" },
@@ -303,9 +313,9 @@
       name: { en: "Scout Archer", "zh-Hant": "斥候弓手" },
       cost: 75,
       hp: 85,
-      damage: 12,
-      range: 3,
-      cooldown: 1.15,
+      damage: 15,
+      range: 4.2,
+      cooldown: 1.05,
       note: { en: "Reliable range.", "zh-Hant": "穩定遠程。" },
     },
     {
@@ -313,13 +323,13 @@
       kind: "soldier",
       img: "runeSapper",
       name: { en: "Rune Sapper", "zh-Hant": "符文工兵" },
-      cost: 100,
+      cost: 95,
       hp: 120,
-      damage: 22,
-      range: 2.65,
-      cooldown: 1.18,
-      slow: 0.18,
-      splash: 1.15,
+      damage: 30,
+      range: 2.8,
+      cooldown: 1,
+      slow: 0.34,
+      splash: 1.45,
       note: { en: "Area control.", "zh-Hant": "範圍控場。" },
     },
     {
@@ -327,12 +337,13 @@
       kind: "soldier",
       img: "medicCub",
       name: { en: "Medic Cub", "zh-Hant": "醫護幼獸" },
-      cost: 80,
+      cost: 65,
       hp: 135,
       damage: 0,
       range: 3,
       cooldown: 0.82,
-      heal: 20,
+      heal: 30,
+      available: false,
       note: { en: "Repairs blockers.", "zh-Hant": "修復阻擋者。" },
     },
     {
@@ -342,10 +353,11 @@
       name: { en: "Boom Mane Leo", "zh-Hant": "爆鬃雷歐" },
       cost: 180,
       hp: 265,
-      damage: 24,
-      range: 1.55,
+      damage: 28,
+      range: 1.7,
       cooldown: 0.95,
       aura: "taunt",
+      splash: 1.25,
       note: { en: "Elite frontline hero.", "zh-Hant": "頂級前線英雄。" },
     },
     {
@@ -355,10 +367,10 @@
       name: { en: "Moss Shell Taro", "zh-Hant": "苔殼太郎" },
       cost: 170,
       hp: 310,
-      damage: 12,
+      damage: 18,
       range: 1.4,
       cooldown: 1.1,
-      slow: 0.22,
+      slow: 0.42,
       note: { en: "Best route blocker.", "zh-Hant": "最強路線阻擋。" },
     },
     {
@@ -366,11 +378,13 @@
       kind: "hero",
       img: "orla",
       name: { en: "Moon Cap Orla", "zh-Hant": "月帽歐拉" },
-      cost: 155,
+      cost: 145,
       hp: 115,
-      damage: 28,
-      range: 4.1,
-      cooldown: 1.28,
+      damage: 26,
+      range: 4.6,
+      cooldown: 1.08,
+      bounce: 2,
+      bounceRatio: 0.62,
       note: { en: "Long-range magic.", "zh-Hant": "遠程魔法。" },
     },
     {
@@ -378,11 +392,12 @@
       kind: "hero",
       img: "fia",
       name: { en: "Spark Paw Fia", "zh-Hant": "電爪菲亞" },
-      cost: 160,
+      cost: 140,
       hp: 135,
-      damage: 34,
+      damage: 42,
       range: 2.2,
-      cooldown: 0.68,
+      cooldown: 0.62,
+      bossDamage: 0.55,
       note: { en: "Boss striker.", "zh-Hant": "王關輸出。" },
     },
     {
@@ -392,10 +407,10 @@
       name: { en: "Gear Horn Rux", "zh-Hant": "齒角魯克斯" },
       cost: 145,
       hp: 155,
-      damage: 16,
+      damage: 20,
       range: 2.6,
       cooldown: 0.95,
-      buff: 0.12,
+      buff: 0.24,
       note: { en: "Buffs nearby soldiers.", "zh-Hant": "強化附近士兵。" },
     },
     {
@@ -405,10 +420,11 @@
       name: { en: "Drum Belly Panko", "zh-Hant": "鼓腹潘可" },
       cost: 140,
       hp: 150,
-      damage: 7,
+      damage: 10,
       range: 2.8,
       cooldown: 1.35,
-      heal: 16,
+      heal: 28,
+      available: false,
       note: { en: "Heals blockers.", "zh-Hant": "治療阻擋者。" },
     },
     {
@@ -421,8 +437,9 @@
       damage: 18,
       range: 3.3,
       cooldown: 1.08,
-      slow: 0.18,
-      heal: 9,
+      slow: 0.38,
+      heal: 15,
+      available: false,
       note: { en: "Nature control and healing.", "zh-Hant": "自然控場與治療。" },
     },
   ];
@@ -539,6 +556,7 @@
       id: stage,
       arc: arcIndex + 1,
       mechanic: arc.mechanic,
+      route: routeLayouts[stage - 1],
       name: { en: name, "zh-Hant": arc.names["zh-Hant"][stageIndex] },
       waves: boss ? 5 : stageIndex <= 1 ? 3 : 4,
       threat: stage,
@@ -617,6 +635,8 @@
       traitSlow: "緩速 {percent}%",
       traitHealing: "治療 {points}",
       traitBuff: "強化友軍 {percent}%",
+      traitBounce: "彈跳 {count} 個目標",
+      traitBoss: "Boss 傷害 +{percent}%",
       upgradeAction: "升級（{coins}）",
       sellAction: "出售（+{coins}）",
       selectedActionInfo: "升級：{upgrade} 金幣 | 出售：+{sell} 金幣",
@@ -806,6 +826,8 @@
     traitSlow: "Ralentiza {percent}%",
     traitHealing: "Cura {points}",
     traitBuff: "Potencia aliados {percent}%",
+    traitBounce: "Salta a {count} objetivos",
+    traitBoss: "Daño a jefe +{percent}%",
     upgradeAction: "Mejorar ({coins})",
     sellAction: "Vender (+{coins})",
     selectedActionInfo: "Mejora: {upgrade} monedas | Venta: +{sell} monedas",
@@ -1016,6 +1038,18 @@
   let leaveBattleConfirmPending = false;
   let leaveBattleConfirmTimer = 0;
   let leaveBattleWasPaused = false;
+
+  function currentStartTile() {
+    return state.stage?.route?.start || startTile;
+  }
+
+  function currentCoreTile() {
+    return state.stage?.route?.core || coreTile;
+  }
+
+  function selectableUnitTypes() {
+    return unitTypes.filter((unit) => unit.available !== false);
+  }
 
   function t(key, values = {}) {
     let value = text[state.locale]?.[key] || text.en[key] || key;
@@ -1256,8 +1290,9 @@
   }
 
   function renderBuildCards() {
+    const preservedScrollLeft = nodes.buildCards.scrollLeft;
     nodes.buildCards.innerHTML = "";
-    unitTypes.forEach((unit) => {
+    selectableUnitTypes().forEach((unit) => {
       const button = document.createElement("button");
       button.type = "button";
       button.className = `build-card ${state.selectedBuild === unit.id ? "is-selected" : ""}`;
@@ -1266,6 +1301,7 @@
       nodes.buildCards.appendChild(button);
     });
     updateBuildAffordability();
+    nodes.buildCards.scrollLeft = preservedScrollLeft;
   }
 
   function updateBuildAffordability() {
@@ -1311,6 +1347,8 @@
     if (unit.slow) traits.push(t("traitSlow", { percent: Math.round(unit.slow * 100) }));
     if (unit.heal) traits.push(t("traitHealing", { points: unit.heal }));
     if (unit.buff) traits.push(t("traitBuff", { percent: Math.round(unit.buff * 100) }));
+    if (unit.bounce) traits.push(t("traitBounce", { count: unit.bounce }));
+    if (unit.bossDamage) traits.push(t("traitBoss", { percent: Math.round(unit.bossDamage * 100) }));
     return traits.join(" | ");
   }
 
@@ -1637,11 +1675,8 @@
     nodes.bossHintText.textContent = boss ? t("bossHoldRoute") : t("bossIncoming", { boss: bossName });
   }
 
-  function showToast(message) {
-    nodes.toast.textContent = message;
-    nodes.toast.classList.remove("is-hidden");
-    clearTimeout(showToast.timer);
-    showToast.timer = setTimeout(() => nodes.toast.classList.add("is-hidden"), 1800);
+  function showToast() {
+    nodes.toast.classList.add("is-hidden");
   }
 
   function tileToPoint(tile) {
@@ -1682,7 +1717,7 @@
   }
 
   function canBuild(tile) {
-    return isInside(tile) && !sameTile(tile, startTile) && !sameTile(tile, coreTile) && !defenderAt(tile);
+    return isInside(tile) && !sameTile(tile, currentStartTile()) && !sameTile(tile, currentCoreTile()) && !defenderAt(tile);
   }
 
   function buildUnit(tile) {
@@ -1719,6 +1754,9 @@
       cost: unit.cost,
       slow: unit.slow || 0,
       splash: unit.splash || 0,
+      bounce: unit.bounce || 0,
+      bounceRatio: unit.bounceRatio || 0,
+      bossDamage: unit.bossDamage || 0,
       heal: unit.heal || 0,
       buff: unit.buff || 0,
       animTime: Math.random() * 0.4,
@@ -1867,8 +1905,8 @@
       type,
       img: isBoss ? "boss" : type,
       sheet: "",
-      tile: { ...startTile },
-      pos: tileToPoint(startTile),
+      tile: { ...currentStartTile() },
+      pos: tileToPoint(currentStartTile()),
       hp: maxHp,
       maxHp,
       speed: state.stage.enemySpeed * speedScale,
@@ -1913,8 +1951,8 @@
       type,
       img: type,
       sheet: "",
-      tile: { ...startTile },
-      pos: tileToPoint(startTile),
+      tile: { ...currentStartTile() },
+      pos: tileToPoint(currentStartTile()),
       hp: maxHp,
       maxHp,
       speed: state.stage.enemySpeed * speedScale,
@@ -1997,7 +2035,7 @@
   }
 
   function findPath(ignoreBlockers = false) {
-    return findPathFrom(startTile, ignoreBlockers);
+    return findPathFrom(currentStartTile(), ignoreBlockers);
   }
 
   function findPathFrom(originTile, ignoreBlockers = false) {
@@ -2013,7 +2051,7 @@
     const came = new Map([[key(start), null]]);
     while (queue.length) {
       const current = queue.shift();
-      if (sameTile(current, coreTile)) {
+      if (sameTile(current, currentCoreTile())) {
         const path = [];
         let cursor = current;
         while (cursor) {
@@ -2031,7 +2069,7 @@
         const next = { x: current.x + delta.x, y: current.y + delta.y };
         const nextKey = key(next);
         if (!isInside(next) || came.has(nextKey)) return;
-        if (!sameTile(next, coreTile) && !sameTile(next, startTile) && blocked.has(nextKey)) return;
+        if (!sameTile(next, currentCoreTile()) && !sameTile(next, currentStartTile()) && blocked.has(nextKey)) return;
         came.set(nextKey, current);
         queue.push(next);
       });
@@ -2068,7 +2106,9 @@
 
   function setEnemyPath(enemy) {
     if (enemy.flying) {
-      enemy.path = [startTile, { x: 4, y: 2 }, { x: 7, y: 5 }, coreTile];
+      const start = currentStartTile();
+      const core = currentCoreTile();
+      enemy.path = [start, { x: Math.round((start.x + core.x) / 2), y: 2 }, { x: Math.round((start.x + core.x) / 2), y: 5 }, core];
       enemy.pathIndex = 1;
       enemy.targetDefender = null;
       return;
@@ -2210,6 +2250,7 @@
       if (!target || d.cd > 0) return;
       if (d.damage <= 0) return;
       let damage = d.damage * (1 + (nearbyRuxBuff(d) || 0));
+      if (target.boss && d.bossDamage) damage *= 1 + d.bossDamage;
       const healthDamage = damageEnemy(target, damage);
       target.hitPulse = Math.max(target.hitPulse || 0, target.boss ? 0.28 : 0.22);
       if (healthDamage > 0) addFloatingText(target.pos, `-${Math.ceil(healthDamage)}`, target.boss ? "#ffd166" : "#fff3bd");
@@ -2226,6 +2267,25 @@
           });
       }
       if (d.slow) target.slow = Math.max(target.slow, d.slow);
+      if (d.bounce) {
+        const struck = new Set([target]);
+        let previous = target;
+        let bounceDamage = damage * (d.bounceRatio || 0.6);
+        for (let hop = 0; hop < d.bounce; hop += 1) {
+          const next = state.enemies
+            .filter((enemy) => enemy.hp > 0 && !struck.has(enemy) && tileDistance(enemy.tile, previous.tile) <= 2.35)
+            .sort((a, b) => tileDistance(a.tile, previous.tile) - tileDistance(b.tile, previous.tile))[0];
+          if (!next) break;
+          struck.add(next);
+          const bouncedHealthDamage = damageEnemy(next, bounceDamage);
+          next.hitPulse = Math.max(next.hitPulse || 0, 0.2);
+          state.shots.push({ from: { ...previous.pos }, to: { ...next.pos }, life: 0.16, max: 0.16, color: "#bca7ff", width: 4 });
+          addSkillEffect(next.pos, skillFxFrames.gear, 0.9, 0.38);
+          if (bouncedHealthDamage > 0) addFloatingText(next.pos, `-${Math.ceil(bouncedHealthDamage)}`, "#d8c8ff");
+          previous = next;
+          bounceDamage *= 0.68;
+        }
+      }
       const from = tileToPoint(d.tile);
       const isArrow = d.type === "archer" || d.type === "fia";
       const isSlow = Boolean(d.slow);
@@ -2307,10 +2367,10 @@
         enemy.pos = targetPoint;
         enemy.tile = { ...targetTile };
         enemy.pathIndex += 1;
-        if (sameTile(enemy.tile, coreTile)) {
+        if (sameTile(enemy.tile, currentCoreTile())) {
           state.coreHp -= enemy.boss ? 35 : 6 + Math.ceil(Math.min(state.currentStage, 18) * 0.32);
           enemy.hp = 0;
-          addSkillEffect(tileToPoint(coreTile), enemy.boss ? skillFxFrames.bossPortal : skillFxFrames.heroStrike, enemy.boss ? 1.45 : 1, 0.55);
+          addSkillEffect(tileToPoint(currentCoreTile()), enemy.boss ? skillFxFrames.bossPortal : skillFxFrames.heroStrike, enemy.boss ? 1.45 : 1, 0.55);
           triggerImpactFeedback(enemy.boss ? 14 : 8, enemy.boss ? 0.42 : 0.28, enemy.boss ? "255, 70, 70" : "255, 209, 102");
           if (state.coreHp <= 0) loseStage();
         }
@@ -2384,10 +2444,7 @@
   }
 
   function showWaveClearFeedback() {
-    const message = t("waveClearFeedback", { wave: state.wave });
-    const core = tileToPoint(coreTile);
-    showToast(message);
-    addFloatingText(core, message, "#d9f99d");
+    const core = tileToPoint(currentCoreTile());
     addSkillEffect(core, skillFxFrames.heal, 1.18, 0.52);
     playSfx("reward");
     track("game_wave_clear", { stage: state.currentStage, wave: state.wave, core_hp: Math.max(0, Math.ceil(state.coreHp)) });
@@ -2664,19 +2721,21 @@
   }
 
   function drawGrid(board) {
+    const start = currentStartTile();
+    const core = currentCoreTile();
     for (let y = 0; y < grid.rows; y += 1) {
       for (let x = 0; x < grid.cols; x += 1) {
         const px = board.x + x * board.cell;
         const py = board.y + y * board.cell;
-        const special = (x === startTile.x && y === startTile.y) || (x === coreTile.x && y === coreTile.y);
+        const special = (x === start.x && y === start.y) || (x === core.x && y === core.y);
         ctx.fillStyle = special ? "rgba(255, 209, 102, 0.26)" : "rgba(116, 215, 255, 0.08)";
         ctx.fillRect(px + 2, py + 2, board.cell - 4, board.cell - 4);
         ctx.strokeStyle = "rgba(255, 255, 255, 0.12)";
         ctx.strokeRect(px + 2, py + 2, board.cell - 4, board.cell - 4);
       }
     }
-    drawRouteEndpointIcon(tileToPoint(startTile), "gate", board);
-    drawRouteEndpointIcon(tileToPoint(coreTile), "core", board);
+    drawRouteEndpointIcon(tileToPoint(start), "gate", board);
+    drawRouteEndpointIcon(tileToPoint(core), "core", board);
   }
 
   function drawRouteEndpointIcon(p, type, board) {
@@ -2882,8 +2941,8 @@
       upcoming,
       bossActive: Boolean(boss),
       bossName: localizedBossName(state.stage) || t("boss"),
-      start: tileToPoint(startTile),
-      core: tileToPoint(coreTile),
+      start: tileToPoint(currentStartTile()),
+      core: tileToPoint(currentCoreTile()),
       bossPoint: boss?.pos || null,
     };
   }
@@ -2929,7 +2988,7 @@
 
   function drawCoreDangerPulse(board) {
     if (!isCoreCritical()) return;
-    const core = tileToPoint(coreTile);
+    const core = tileToPoint(currentCoreTile());
     const reducedMotion = prefersReducedMotion();
     const pulse = reducedMotion ? 0.76 : 0.62 + Math.sin(performance.now() / 120) * 0.2;
     const outer = board.cell * (reducedMotion ? 0.62 : 0.66 + Math.sin(performance.now() / 180) * 0.08);
@@ -3245,7 +3304,7 @@
   }
 
   function selectBuildByIndex(index) {
-    const unit = unitTypes[index];
+    const unit = selectableUnitTypes()[index];
     if (!unit) return;
     state.selectedBuild = unit.id;
     state.selectedDefender = null;
@@ -3256,8 +3315,9 @@
   }
 
   function cycleBuildSelection(delta) {
-    const current = Math.max(0, unitTypes.findIndex((unit) => unit.id === state.selectedBuild));
-    const next = (current + delta + unitTypes.length) % unitTypes.length;
+    const selectable = selectableUnitTypes();
+    const current = Math.max(0, selectable.findIndex((unit) => unit.id === state.selectedBuild));
+    const next = (current + delta + selectable.length) % selectable.length;
     selectBuildByIndex(next);
   }
 
@@ -3409,18 +3469,26 @@
     }, { passive: false });
 
     let buildDrag = null;
+    let ignoreBuildClick = false;
     nodes.buildCards.addEventListener("wheel", (event) => {
       if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
       event.preventDefault();
       nodes.buildCards.scrollLeft += event.deltaY;
     }, { passive: false });
-    nodes.buildCards.addEventListener("click", (event) => {
-      const card = event.target.closest(".build-card");
-      if (!card || !nodes.buildCards.contains(card)) return;
+    const chooseBuildCard = (card) => {
       state.selectedBuild = card.dataset.id;
       state.selectedDefender = null;
       renderBuildCards();
       renderSelectedInfo();
+    };
+    nodes.buildCards.addEventListener("click", (event) => {
+      if (ignoreBuildClick) {
+        ignoreBuildClick = false;
+        return;
+      }
+      const card = event.target.closest(".build-card");
+      if (!card || !nodes.buildCards.contains(card)) return;
+      chooseBuildCard(card);
     });
     nodes.buildCards.addEventListener("pointerdown", (event) => {
       if (event.pointerType === "touch" || event.button !== 0) return;
@@ -3431,14 +3499,22 @@
       if (!buildDrag || event.pointerId !== buildDrag.pointerId) return;
       const delta = event.clientX - buildDrag.startX;
       if (Math.abs(delta) > 5) {
+        event.preventDefault();
         buildDrag.moved = true;
+        nodes.buildCards.classList.add("is-dragging");
         nodes.buildCards.scrollLeft = buildDrag.startLeft - delta;
       }
     });
     const finishBuildDrag = (event) => {
       if (!buildDrag || event.pointerId !== buildDrag.pointerId) return;
-      nodes.buildCards.releasePointerCapture?.(event.pointerId);
+      const dragged = buildDrag.moved;
+      const selectedCard = !dragged ? document.elementFromPoint(event.clientX, event.clientY)?.closest(".build-card") : null;
+      if (nodes.buildCards.hasPointerCapture?.(event.pointerId)) nodes.buildCards.releasePointerCapture(event.pointerId);
+      nodes.buildCards.classList.remove("is-dragging");
       buildDrag = null;
+      if (selectedCard && nodes.buildCards.contains(selectedCard)) chooseBuildCard(selectedCard);
+      ignoreBuildClick = dragged || Boolean(selectedCard);
+      if (ignoreBuildClick) setTimeout(() => { ignoreBuildClick = false; }, 0);
     };
     nodes.buildCards.addEventListener("pointerup", finishBuildDrag);
     nodes.buildCards.addEventListener("pointercancel", finishBuildDrag);

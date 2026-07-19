@@ -1201,17 +1201,6 @@
     track("line_break", { zone: run.zone.id });
   }
 
-  function fishEscape() {
-    run.phase = "aim";
-    run.hookFish = null;
-    run.splashTimer = 0.65;
-    nodes.hintText.textContent = t("escaped");
-    updateTensionGuide();
-    updateSonarButton();
-    playSound("wrong");
-    track("fish_escape", { zone: run.zone.id });
-  }
-
   function missionTensionWindow(zone, elapsed = 0, gearValues = save.gear) {
     const baseMin = 38 - (Number(gearValues?.rod) || 1);
     const baseMax = 62 + (Number(gearValues?.line) || 1);
@@ -1403,7 +1392,6 @@
       const bossProgress = run.hookFish?.boss ? (normalProgress && run.bossShieldOpen ? baseProgress : 0) : normalProgress;
       run.fishPower -= dt * bossProgress;
       if (run.struggle > 2.2) lineBreak();
-      else if (run.reelControlAge > 2.2) fishEscape();
       if (run.fishPower <= 0 && run.phase === "reel") landFish();
     }
 
@@ -1487,15 +1475,17 @@
     drawSpriteSheet(images.otter, 3, 2, run && run.phase === "reel" ? 2 : 0, 42, 236, 132, 132);
 
     if (run) {
-      const powerY = 430 - (run.castPower / 100) * 270;
-      ctx.strokeStyle = "rgba(255,255,255,0.75)";
-      ctx.lineWidth = 5;
-      ctx.setLineDash([10, 10]);
-      ctx.beginPath();
-      ctx.moveTo(172, 320);
-      ctx.quadraticCurveTo(390, powerY, 600, powerY + 40);
-      ctx.stroke();
-      ctx.setLineDash([]);
+      if (run.phase === "aim" || run.phase === "charging") {
+        const powerY = 430 - (run.castPower / 100) * 270;
+        ctx.strokeStyle = "rgba(255,255,255,0.75)";
+        ctx.lineWidth = 5;
+        ctx.setLineDash([10, 10]);
+        ctx.beginPath();
+        ctx.moveTo(172, 320);
+        ctx.quadraticCurveTo(390, powerY, 600, powerY + 40);
+        ctx.stroke();
+        ctx.setLineDash([]);
+      }
 
       const visual = fishingVisual();
       if (visual) {
@@ -2063,7 +2053,6 @@
                 hazardFlash: run.hazardFlash,
                 safeRange: tensionRange(),
                 visibleFish: run.phase === "reel" && run.hookFish ? run.hookFish.id : "",
-                lineVisual: fishingVisual(),
                 sonarReady: run.sonarReady,
                 sonarPulse: run.sonarPulse,
               }
@@ -2074,6 +2063,9 @@
       },
       readWallet() {
         return wallet();
+      },
+      readLineVisual() {
+        return fishingVisual();
       },
       readFishSheetGrid() {
         const img = images.fishA || { width: 0, height: 0 };

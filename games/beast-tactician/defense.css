@@ -183,7 +183,7 @@ body.guardian-playing .build-cards {
   overflow-y: hidden;
   scrollbar-width: none;
   touch-action: pan-x;
-  scroll-snap-type: x proximity;
+  scroll-snap-type: none;
 }
 
 body.guardian-playing .build-cards::-webkit-scrollbar {
@@ -1219,7 +1219,15 @@ body.guardian-playing .command-row {
 }
 
 body.guardian-playing .hud-row {
-  grid-template-columns: 48px repeat(4, 62px) 48px;
+  grid-template-columns: 48px repeat(4, minmax(0, 1fr)) 40px;
+}
+
+body.guardian-playing #speedBtn {
+  width: 40px;
+  min-width: 40px;
+  padding: 0;
+  font-size: 0.68rem;
+  line-height: 1;
 }
 
 body.guardian-playing .command-row {
