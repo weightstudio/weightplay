@@ -1,6 +1,9 @@
 (() => {
   "use strict";
 
+  document.querySelector("#stageScreen")?.setAttribute("data-wp-canvas-max-width", "viewport");
+  document.querySelector(".battle-canvas")?.setAttribute("data-wp-canvas-max-width", "viewport");
+
   const battleModal = document.querySelector("#modal");
   if (battleModal) document.querySelector("#battleScreen .battle-canvas")?.append(battleModal);
 

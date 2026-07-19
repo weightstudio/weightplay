@@ -133,6 +133,7 @@
   let amuletConfirmTimer = 0;
   let amuletConfirmRemaining = 0;
   let amuletConfirmDueAt = 0;
+  let mainEntryKeyboardKey = "";
 
   const text = {
     en: {
@@ -795,6 +796,9 @@
       const regionLabel = locale === "zh-Hant" ? `\u5340\u57df ${definition.region}` : locale === "es" ? `Región ${definition.region}` : `Region ${definition.region}`;
       button.innerHTML = `<b>${String(definition.id).padStart(2, "0")} · ${regionLabel}</b><span>${title}</span><small>${hint}</small><small>${stateLabel}</small>`;
       button.setAttribute("aria-label", `${definition.id}. ${title}: ${hint}. ${stateLabel}`);
+      button.addEventListener("keydown", (event) => {
+        if (mainEntryKeyboardKey && event.repeat && event.key === mainEntryKeyboardKey) event.preventDefault();
+      });
       button.addEventListener("click", () => {
         if (locked) return;
         window.WonderSound?.play("click");
@@ -2595,9 +2599,19 @@
     translateUI();
     setupInputs();
 
+    nodes.startBtn.addEventListener("keydown", (event) => {
+      if (!event.repeat && (event.key === "Enter" || event.key === " ")) mainEntryKeyboardKey = event.key;
+    });
     nodes.startBtn.addEventListener("click", () => {
       window.WonderSound?.play("click");
       showStage();
+      requestAnimationFrame(() => document.querySelector(".stage-card.is-selected")?.focus({ preventScroll: true }));
+    });
+    document.addEventListener("keyup", (event) => {
+      if (event.key === mainEntryKeyboardKey) mainEntryKeyboardKey = "";
+    });
+    window.addEventListener("blur", () => {
+      mainEntryKeyboardKey = "";
     });
 
     nodes.mapBackBtn.addEventListener("click", () => {

@@ -116,13 +116,11 @@
   if (battleHeader && !document.getElementById("pauseButton")) {
     battleHeader.insertAdjacentHTML("beforeend", '<button id="pauseButton" class="battle-utility-button" type="button" aria-label="Pause game" data-i18n-aria="pause">Ⅱ</button>');
   }
-  const battleScreen = document.getElementById("battleScreen");
+  const battleScreen = document.getElementById("safariBattleScreen");
   const resultScreen = document.getElementById("resultScreen");
   if (battleScreen && resultScreen && !document.getElementById("pauseOverlay")) {
     resultScreen.insertAdjacentHTML("beforebegin", '<section id="pauseOverlay" class="pause-overlay" role="dialog" aria-modal="true" aria-labelledby="pauseTitle" hidden><div class="pause-panel"><span class="pause-symbol" aria-hidden="true">Ⅱ</span><h2 id="pauseTitle" data-i18n="paused">Paused</h2><p data-i18n="pauseMessage">Take a breath. Your safari is waiting.</p><div class="pause-actions"><button id="pauseResume" class="primary-button" type="button" data-i18n="resume">Resume</button><button id="pauseBack" type="button" data-i18n="backToMap">Back to Map</button></div></div></section>');
   }
-
-  if (battleScreen) battleScreen.id = "safariBattleScreen";
 
   const dom = Object.fromEntries([
     "viewport","gameCanvas","loadingScreen","loadingCover","loadingPanel","loadingFill","loadingProgress","mainScreen","stageScreen","battleLive","pauseButton","pauseOverlay","pauseResume","resultScreen","guideModal","stageRail","stageStatus","playCanvas",
@@ -200,20 +198,30 @@
   }
 
   function fitCanvas() {
-    const width = Math.max(1, window.innerWidth || document.documentElement.clientWidth);
-    const height = Math.max(1, window.innerHeight || document.documentElement.clientHeight);
-    const referenceScale = Math.min(width / LOGICAL_WIDTH, height / LOGICAL_HEIGHT);
     const responsiveCanvas = currentScreen === "stage" || currentScreen === "battle" || currentScreen === "result";
+    const mainCanvas = currentScreen === "main";
+    const scrollportWidth = document.documentElement.clientWidth || window.innerWidth;
+    const width = responsiveCanvas
+      ? Math.max(1, scrollportWidth, window.innerWidth || 0, window.visualViewport?.width || 0)
+      : Math.max(1, scrollportWidth);
+    const height = responsiveCanvas || mainCanvas
+      ? Math.max(1, document.documentElement.clientHeight || 0, window.innerHeight || 0, window.visualViewport?.height || 0)
+      : Math.max(1, window.innerHeight || document.documentElement.clientHeight);
+    const landscape = responsiveCanvas && width > height;
+    const widePortrait = responsiveCanvas && !landscape && width >= 560;
+    const minimumWidth = landscape ? 844 : widePortrait ? 520 : LOGICAL_WIDTH;
+    const minimumHeight = landscape ? 390 : widePortrait ? 720 : LOGICAL_HEIGHT;
+    const referenceScale = Math.min(width / minimumWidth, height / minimumHeight);
     const scale = referenceScale;
-    const logicalWidth = responsiveCanvas ? width / scale : LOGICAL_WIDTH;
-    const logicalHeight = responsiveCanvas ? height / scale : LOGICAL_HEIGHT;
+    const logicalWidth = responsiveCanvas || mainCanvas ? width / scale : LOGICAL_WIDTH;
+    const logicalHeight = responsiveCanvas || mainCanvas ? height / scale : LOGICAL_HEIGHT;
     dom.gameCanvas.style.setProperty("--scale", String(scale));
     dom.gameCanvas.style.width = `${logicalWidth}px`;
     dom.gameCanvas.style.height = `${logicalHeight}px`;
     dom.gameCanvas.dataset.logicalWidth = logicalWidth.toFixed(3);
     dom.gameCanvas.dataset.logicalHeight = logicalHeight.toFixed(3);
     dom.gameCanvas.dataset.commonScale = scale.toFixed(6);
-    if (responsiveCanvas) {
+    if (responsiveCanvas || mainCanvas) {
       dom.gameCanvas.style.left = "0";
       dom.gameCanvas.style.top = "0";
       dom.gameCanvas.style.bottom = "auto";
@@ -269,7 +277,10 @@
       dom.stageRail.appendChild(card);
     });
     updateStageSummary();
-    requestAnimationFrame(() => centerSelectedStage("auto"));
+    requestAnimationFrame(() => {
+      centerSelectedStage("auto");
+      if (dom.stageScreen.classList.contains("is-active")) dom.stageRail.querySelector(".is-selected")?.focus({ preventScroll:true });
+    });
   }
 
   function updateCenteredStageCard() {
@@ -345,6 +356,79 @@
   dom.stageRail.addEventListener("wonder:stage-snap", scheduleCenteredStageCard);
   window.addEventListener("resize", scheduleCenteredStageCard, { passive:true });
   window.visualViewport?.addEventListener("resize", scheduleCenteredStageCard, { passive:true });
+
+  let stageRailPointer = null;
+  let stageRailAnimation = 0;
+  let lastStageRailDragEnd = -Infinity;
+  const stopStageRailAnimation = () => {
+    if (stageRailAnimation) cancelAnimationFrame(stageRailAnimation);
+    stageRailAnimation = 0;
+  };
+  const snapStageRail = () => {
+    const cards = [...dom.stageRail.querySelectorAll(".stage-card")];
+    if (!cards.length) return;
+    const railRect = dom.stageRail.getBoundingClientRect();
+    const railCenter = railRect.left + railRect.width / 2;
+    const card = cards.reduce((nearest, candidate) => {
+      const rect = candidate.getBoundingClientRect();
+      const distance = Math.abs(rect.left + rect.width / 2 - railCenter);
+      return !nearest || distance < nearest.distance ? { card:candidate, distance } : nearest;
+    }, null)?.card;
+    if (!card) return;
+    const cardRect = card.getBoundingClientRect();
+    const maximum = Math.max(0, dom.stageRail.scrollWidth - dom.stageRail.clientWidth);
+    const commonScale = Number(dom.gameCanvas.dataset.commonScale) || 1;
+    const target = Math.max(0, Math.min(maximum, dom.stageRail.scrollLeft + (cardRect.left + cardRect.width / 2 - railCenter) / commonScale));
+    const start = dom.stageRail.scrollLeft;
+    const distance = target - start;
+    const started = performance.now();
+    const duration = 360;
+    stopStageRailAnimation();
+    const settle = now => {
+      const progress = Math.min(1, (now - started) / duration);
+      const eased = progress * progress * (3 - 2 * progress);
+      dom.stageRail.scrollLeft = start + distance * eased;
+      scheduleCenteredStageCard();
+      if (progress < 1) stageRailAnimation = requestAnimationFrame(settle);
+      else {
+        stageRailAnimation = 0;
+        dom.stageRail.dispatchEvent(new CustomEvent("wonder:stage-snap"));
+      }
+    };
+    stageRailAnimation = requestAnimationFrame(settle);
+  };
+  dom.stageRail.addEventListener("pointerdown", event => {
+    if (stageRailPointer || event.isPrimary === false || (event.pointerType === "mouse" && event.button !== 0)) return;
+    stopStageRailAnimation();
+    stageRailPointer = { id:event.pointerId, x:event.clientX, scrollLeft:dom.stageRail.scrollLeft, moved:false };
+  });
+  window.addEventListener("pointermove", event => {
+    if (!stageRailPointer || event.pointerId !== stageRailPointer.id) return;
+    const delta = event.clientX - stageRailPointer.x;
+    if (Math.abs(delta) > 5) stageRailPointer.moved = true;
+    if (!stageRailPointer.moved) return;
+    event.preventDefault();
+    const commonScale = Number(dom.gameCanvas.dataset.commonScale) || 1;
+    dom.stageRail.scrollLeft = stageRailPointer.scrollLeft - delta / commonScale;
+  });
+  const finishStageRail = event => {
+    if (!stageRailPointer || event.pointerId !== stageRailPointer.id) return;
+    const moved = stageRailPointer.moved;
+    stageRailPointer = null;
+    if (event.type !== "pointercancel") snapStageRail();
+    if (moved) {
+      lastStageRailDragEnd = performance.now();
+    }
+  };
+  window.addEventListener("pointerup", finishStageRail);
+  window.addEventListener("pointercancel", finishStageRail);
+  window.addEventListener("blur", () => { stageRailPointer = null; });
+  dom.stageRail.addEventListener("click", event => {
+    const sinceDrag = performance.now() - lastStageRailDragEnd;
+    if (sinceDrag > 240) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+  }, true);
 
   function updateStageSummary() {
     const stage = stageDefs[selectedStage - 1];
@@ -966,13 +1050,28 @@
   const rejectRepeatedActivation = event => {
     if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
   };
-  const focusSelectedStage = () => requestAnimationFrame(() => dom.stageRail.querySelector(".is-selected")?.focus({ preventScroll:true }));
+  const focusSelectedStage = () => {
+    dom.stageRail.querySelector(".is-selected")?.focus({ preventScroll:true });
+    requestAnimationFrame(() => dom.stageRail.querySelector(".is-selected")?.focus({ preventScroll:true }));
+  };
   startGameButton.addEventListener("keydown", rejectRepeatedActivation);
   dom.stageRail.addEventListener("keydown", event => {
     if (event.target.closest(".stage-card")) rejectRepeatedActivation(event);
   });
   startGameButton.addEventListener("click", () => { renderStageRail(); showScreen("stage"); focusSelectedStage(); });
-  document.getElementById("stageBack").addEventListener("click", () => { showScreen("main"); updateMainProgress(); requestAnimationFrame(() => startGameButton.focus({ preventScroll:true })); });
+  const stageBackButton = document.getElementById("stageBack");
+  const restoreMainFocus = () => {
+    if (dom.mainScreen.classList.contains("is-active")) document.getElementById("startGame")?.focus({ preventScroll:true });
+  };
+  stageBackButton.addEventListener("click", () => {
+    showScreen("main");
+    updateMainProgress();
+    restoreMainFocus();
+  });
+  stageBackButton.addEventListener("blur", restoreMainFocus);
+  document.addEventListener("keyup", event => {
+    if (event.key === "Enter" || event.key === " ") restoreMainFocus();
+  });
   document.getElementById("battleBack").addEventListener("click", pauseGame);
   dom.pauseButton.addEventListener("click", pauseGame);
   dom.pauseResume.addEventListener("click", resumeGame);

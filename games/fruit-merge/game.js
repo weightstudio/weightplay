@@ -7,6 +7,9 @@
   if (!canonicalSavedLocale && ["en", "zh-Hant", "zh-Hans", "es"].includes(legacySavedLocale)) {
     window.WonderI18n?.setLocale?.(legacySavedLocale);
   }
+  document.querySelectorAll(".fruit-game, .fixed-game-shell, #stagePanel, #resultPanel").forEach((element) => {
+    element.setAttribute("data-wp-canvas-max-width", "viewport");
+  });
 
   const BEST_KEY = "fruitMergeBestScore";
   const PROGRESS_KEY = "weightplay_fruit_merge_progress";
@@ -465,6 +468,7 @@
   let maxReachedLevel = 0;
   let mergeBursts = [];
   let aimX = W / 2;
+  let aimPointerId = null;
   let score = 0;
   let mergeCount = 0;
   let comboCount = 0;
@@ -504,7 +508,20 @@
     }
   }
 
+  function clearAimPointer(pointerId = null) {
+    if (aimPointerId === null || (pointerId !== null && pointerId !== aimPointerId)) return false;
+    const ownedPointerId = aimPointerId;
+    aimPointerId = null;
+    try {
+      if (canvas.hasPointerCapture?.(ownedPointerId)) canvas.releasePointerCapture(ownedPointerId);
+    } catch {
+      // Capture may already be gone after a browser or lifecycle interruption.
+    }
+    return true;
+  }
+
   function suspendRunLifecycle() {
+    clearAimPointer();
     if (lifecycleSuspended) return;
     lifecycleSuspended = true;
     lifecycleSuspendedAt = performance.now();
@@ -727,6 +744,7 @@
   }
 
   function resetGame(showMenu = false, source = "menu") {
+    clearAimPointer();
     if (showMenu) activeChallengeIndex = null;
     document.body.classList.toggle("fruit-playing", !showMenu);
     document.body.classList.toggle("fruit-main", showMenu);
@@ -1670,23 +1688,42 @@
   }
 
   canvas.addEventListener("pointermove", (event) => {
+    if (aimPointerId !== null && event.pointerId !== aimPointerId) return;
+    if (aimPointerId === null && event.pointerType !== "mouse") return;
     aimX = canvasX(event);
     updateAimAccessibility();
   });
 
   canvas.addEventListener("pointerdown", (event) => {
+    if (aimPointerId !== null || event.isPrimary === false || (event.pointerType === "mouse" && event.button !== 0)) return;
+    aimPointerId = event.pointerId;
     aimX = canvasX(event);
     updateAimAccessibility();
     canvas.focus({ preventScroll: true });
-    canvas.setPointerCapture?.(event.pointerId);
+    try {
+      canvas.setPointerCapture?.(event.pointerId);
+    } catch {
+      // Synthetic and interrupted pointers may not be capturable.
+    }
   });
 
   canvas.addEventListener("pointerup", (event) => {
+    if (event.pointerId !== aimPointerId) return;
     aimX = canvasX(event);
     updateAimAccessibility();
+    const ownedPointerId = aimPointerId;
+    aimPointerId = null;
+    try {
+      if (canvas.hasPointerCapture?.(ownedPointerId)) canvas.releasePointerCapture(ownedPointerId);
+    } catch {
+      // The browser may have released capture before delivering pointerup.
+    }
     dropFruit();
-    canvas.releasePointerCapture?.(event.pointerId);
   });
+
+  canvas.addEventListener("pointercancel", (event) => clearAimPointer(event.pointerId));
+  canvas.addEventListener("lostpointercapture", (event) => clearAimPointer(event.pointerId));
+  window.addEventListener("blur", () => clearAimPointer());
 
   canvas.addEventListener("keydown", (event) => {
     if (!running || gameOver) return;

@@ -130,8 +130,8 @@ body:not(.safari-main) .screen.is-active.weightplay-active-viewport {
 .stage-summary div { display: grid; gap: 7px; text-align: center; }
 .stage-summary span { color: #b9d8e2; font-size: 13px; }
 .stage-summary strong { font-size: 20px; }
-.stage-rail { position: relative; z-index: 2; height: 330px; display: flex; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding: 10px 63px 18px; touch-action: none; overscroll-behavior-x: contain; }
-.stage-rail::-webkit-scrollbar { display: none; }
+.safari-stage-rail { position: relative; z-index: 2; height: 330px; display: flex; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding: 10px max(63px, calc((100% - 264px) / 2)) 18px; touch-action: none; overscroll-behavior-x: contain; }
+.safari-stage-rail::-webkit-scrollbar { display: none; }
 .stage-card { box-sizing: border-box; flex: 0 0 264px; width: 264px; height: 190px; display: grid; grid-template-columns: 108px minmax(0,1fr); border-radius: 8px; border: 3px solid rgba(255,255,255,.35); overflow: hidden; background: #fff; color: var(--ink); box-shadow: 0 8px 0 rgba(0,0,0,.24); text-align: left; padding: 0; }
 .stage-card.is-selected { transform: none; }
 .stage-card.is-centered {
@@ -217,6 +217,140 @@ body:not(.safari-main) .wp-tutorial-button { display: none !important; }
 .modal-panel .primary-button { width: 100%; height: 54px; }
 .modal-close { position: absolute; right: 12px; top: 12px; width: 42px; height: 42px; border-radius: 50%; background: #173047; color: #fff; font-size: 28px; }
 
+@media (min-width: 560px) and (orientation: portrait) {
+  .battle-live {
+    display: grid;
+    grid-template-columns: 380px minmax(0, 1fr);
+    grid-template-rows: 70px 35px minmax(0, 1fr);
+  }
+  .battle-header,
+  .battle-message { grid-column: 1 / -1; }
+  .play-frame { grid-column: 1; grid-row: 3; margin: 5px 0 0 8px; }
+  .queue-bar {
+    grid-column: 2;
+    grid-row: 3;
+    height: 558px;
+    margin: 5px 8px 0 0;
+    grid-template-columns: 1fr;
+    grid-template-rows: 82px 82px minmax(0, 1fr);
+    align-items: center;
+    padding: 12px;
+  }
+  .queue-bar strong { text-align: center; }
+  .pause-panel { width: min(420px, calc(100% - 32px)); }
+  .result-panel { width: min(500px, calc(100% - 24px)); }
+}
+
+@media (orientation: landscape) {
+  #stageScreen.is-active {
+    display: grid;
+    grid-template-columns: 300px minmax(0, 1fr);
+    grid-template-rows: 68px minmax(0, 1fr) 67px;
+  }
+  .stage-art { grid-column: 1 / -1; grid-row: 1 / -1; }
+  .stage-screen .topbar { grid-column: 1 / -1; grid-row: 1; }
+  .stage-summary {
+    grid-column: 1;
+    grid-row: 2 / 4;
+    height: auto;
+    margin: 6px 8px 10px;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: minmax(0, 1fr) 70px;
+  }
+  .stage-summary img { grid-column: 1 / -1; width: 140px; height: 150px; justify-self: center; }
+  .safari-stage-rail {
+    grid-column: 2;
+    grid-row: 2;
+    height: auto;
+    align-items: center;
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+  .stage-detail {
+    position: relative;
+    grid-column: 2;
+    grid-row: 3;
+    inset: auto;
+    height: 57px;
+    margin: 0 12px 10px;
+  }
+
+  .battle-live {
+    display: grid;
+    grid-template-columns: 220px 300px minmax(0, 1fr);
+    grid-template-rows: 30px minmax(0, 1fr);
+    gap: 4px;
+    padding: 4px;
+  }
+  .battle-header {
+    grid-column: 1;
+    grid-row: 1 / 3;
+    width: auto;
+    height: auto;
+    grid-template-columns: 1fr 1fr;
+    grid-auto-rows: minmax(0, 1fr);
+    gap: 6px;
+    padding: 8px;
+    border-radius: 8px;
+  }
+  .battle-header .back-button,
+  .battle-header .battle-utility-button { justify-self: center; }
+  .battle-message { grid-column: 2 / 4; grid-row: 1; height: 30px; border-radius: 8px; }
+  .play-frame {
+    grid-column: 2;
+    grid-row: 2;
+    align-self: stretch;
+    justify-self: center;
+    width: auto;
+    height: 100%;
+    max-width: 100%;
+    aspect-ratio: 360 / 548;
+    margin: 0;
+    padding: 0;
+  }
+  #playCanvas { width: 100%; height: 100%; }
+  .queue-bar {
+    grid-column: 3;
+    grid-row: 2;
+    width: auto;
+    height: auto;
+    margin: 0;
+  }
+  .pause-overlay { padding: 16px; }
+  .pause-panel {
+    width: min(720px, calc(100% - 32px));
+    min-height: 330px;
+    grid-template-columns: 160px minmax(0, 1fr);
+    grid-template-rows: auto auto minmax(0, 1fr);
+    padding: 22px 28px;
+  }
+  .pause-symbol { grid-column: 1; grid-row: 1 / 4; }
+  .pause-panel h2,
+  .pause-panel p,
+  .pause-actions { grid-column: 2; }
+  .pause-actions { align-self: end; }
+  .result-screen { padding: 8px; }
+  .result-panel {
+    width: min(760px, calc(100% - 16px));
+    height: calc(100% - 16px);
+    min-height: 330px;
+    grid-template-columns: 180px minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-rows: 54px 42px 60px 56px minmax(58px, 1fr);
+    align-items: center;
+    margin: 8px auto;
+    padding: 16px 20px;
+  }
+  .result-mascot { grid-column: 1; grid-row: 1 / 6; }
+  .result-panel h2 { grid-column: 2 / 4; grid-row: 1; }
+  .result-stars { grid-column: 2 / 4; grid-row: 2; }
+  .result-stats { grid-column: 2 / 4; grid-row: 3; }
+  .reward-row { grid-column: 2; grid-row: 4; }
+  .skill-report { grid-column: 3; grid-row: 4; height: 100%; }
+  .result-actions { grid-column: 2 / 4; grid-row: 5; width: 100%; }
+  .result-actions { grid-template-columns: repeat(3, 1fr); grid-template-rows: 54px; gap: 8px; }
+  #backToMap { grid-column: auto; }
+}
+
 @media (orientation: landscape) and (max-height: 460px) {
   html body #gameCanvas .battle-screen #resultScreen.result-screen.is-active {
     inset: 0 !important;
@@ -234,8 +368,7 @@ body:not(.safari-main) .wp-tutorial-button { display: none !important; }
     align-items: normal !important;
     justify-content: normal !important;
     justify-items: normal !important;
-    grid-template-columns: none !important;
-    padding: 20px !important;
+    padding: 16px 20px !important;
     overflow: hidden !important;
     touch-action: none !important;
   }
