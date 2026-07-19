@@ -1065,7 +1065,7 @@
   }
 
   function openPause(focusOwner = nodes.pauseBtn) {
-    if (!state || battlePaused || !nodes.rewardPanel.classList.contains("is-hidden") || !nodes.resultPanel.classList.contains("is-hidden")) return;
+    if (!state || state.phase === "reward" || battlePaused || !nodes.rewardPanel.classList.contains("is-hidden") || !nodes.resultPanel.classList.contains("is-hidden")) return;
     pauseFocusOwner = focusOwner?.isConnected ? focusOwner : nodes.pauseBtn;
     battlePaused = true;
     suspendTurnTransition();
@@ -2257,13 +2257,13 @@
     if (!state || livingEnemies().length) return;
     clearTurnTransition();
     state.phase = "reward";
+    setPauseActionAvailable(false);
     playFx("mission-clear", 2, 1);
     playCue("win");
     render();
-    window.setTimeout(() => {
+    scheduleTurnTransition(() => {
       if (!state || state.phase !== "reward" || livingEnemies().length) return;
       setBattleCovered(true);
-      setPauseActionAvailable(false);
       nodes.rewardPanel.classList.remove("is-hidden");
       renderRewards(false);
     }, 320);

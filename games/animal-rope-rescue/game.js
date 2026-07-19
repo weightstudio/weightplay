@@ -321,6 +321,11 @@
     loadingFill: $("loadingFill"),
   };
 
+  // Keep canonical and localized shells on the Kids full-viewport Canvas contract.
+  nodes.stagePanel.dataset.wpCanvasMaxWidth = "viewport";
+  nodes.gamePanel.dataset.wpCanvasMaxWidth = "viewport";
+  window.dispatchEvent(new Event("resize"));
+
   function migrateLegacyLocale() {
     const parts = location.pathname.split("/").filter(Boolean);
     const routeOffset = parts[0] === "weightplay" ? 1 : 0;

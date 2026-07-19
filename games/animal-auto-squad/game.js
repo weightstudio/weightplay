@@ -715,6 +715,30 @@
 
   ensureActionNotices();
 
+  function normalizeMainAndTrainingLayout() {
+    const profile = document.querySelector(".profile-grid");
+    const trainingPane = $("trainingPane");
+    if (!profile || !trainingPane) return;
+
+    const clearedCell = $("clearedRunsText")?.closest("div");
+    clearedCell?.remove();
+
+    let trainingMeta = trainingPane.querySelector(".training-meta");
+    if (!trainingMeta) {
+      trainingMeta = document.createElement("div");
+      trainingMeta.className = "training-meta";
+      trainingPane.insertBefore(trainingMeta, trainingPane.querySelector(".cosmetic-store"));
+    }
+    [$("teamLevelText")?.closest("div"), $("diamondText")?.closest("div")].forEach((cell) => {
+      if (cell) trainingMeta.appendChild(cell);
+    });
+    profile.classList.add("main-progress");
+  }
+
+  // Locale route shells share this runtime. Keep Main limited to campaign
+  // progress while permanent growth and currency live in Stage / Training.
+  normalizeMainAndTrainingLayout();
+
   // Game UI DOM Nodes
   const nodes = {
     backToLobbyBtn: $("backToLobbyBtn"),
@@ -1697,7 +1721,7 @@
     nodes.combatSummary?.classList.add("is-hidden");
     setStageTab("stages");
     nodes.bestRoundsText.textContent = `${save.unlockedStage}/${STAGE_COUNT}`;
-    nodes.clearedRunsText.textContent = String(save.completedStages.length);
+    if (nodes.clearedRunsText) nodes.clearedRunsText.textContent = String(save.completedStages.length);
     if (nodes.teamLevelText) {
       nodes.teamLevelText.textContent = formatTeamLevel();
     }
@@ -2201,6 +2225,7 @@
     nodes.stageBackBtn.setAttribute("aria-label", t("back"));
     if (nodes.stageTabBtn) nodes.stageTabBtn.querySelector("span").textContent = t("stageTab");
     if (nodes.trainingTabBtn) nodes.trainingTabBtn.querySelector("span").textContent = t("trainingTab");
+    document.querySelector(".stage-tabs")?.setAttribute("aria-label", `${t("stageTab")} / ${t("trainingTab")}`);
     if ($("stageSwipeText")) $("stageSwipeText").textContent = t("stageSwipe");
     if ($("stageDeployText")) $("stageDeployText").textContent = t("stageDeploy");
     nodes.stageRail.setAttribute("aria-label", t("stageSelection"));
@@ -2219,7 +2244,7 @@
     $("menuSubText").textContent = t("menuHint");
     nodes.showStageBtn.textContent = t("chooseExpedition");
     $("bestRoundsText").previousElementSibling.textContent = t("bestExpedition");
-    $("clearedRunsText").previousElementSibling.textContent = t("expeditionsCleared");
+    if ($("clearedRunsText")?.previousElementSibling) $("clearedRunsText").previousElementSibling.textContent = t("expeditionsCleared");
     nodes.bestRoundsText.textContent = `${save.unlockedStage}/${STAGE_COUNT}`;
     if (nodes.teamLevelText?.previousElementSibling) {
       nodes.teamLevelText.previousElementSibling.textContent = locale === "zh-Hant" ? "\u5718\u968a\u7b49\u7d1a" : t("teamLevel");
