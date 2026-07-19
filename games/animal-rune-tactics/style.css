@@ -29,7 +29,7 @@ select {
 }
 
 .rune-app {
-  width: min(100%, 980px);
+  width: min(100%, 920px);
   min-height: 100svh;
   margin: 0 auto;
   padding: max(12px, env(safe-area-inset-top)) 14px max(18px, env(safe-area-inset-bottom));
@@ -2311,4 +2311,94 @@ html body.wp-logical-battle-active.is-rune-playing .battle-ad-reserve {
   body.wp-standard-stage-page #stagePanel .mission-grid { flex-basis: 184px; }
   body.wp-standard-stage-page #stagePanel .mission-card { flex-basis: 272px; width: 272px; min-width: 272px; max-width: 272px; }
   body.wp-standard-stage-page #stagePanel .mission-briefing { grid-template-rows: auto minmax(78px, 1fr) auto auto; padding: 10px; }
+}
+
+@media (min-width: 561px) and (max-width: 699px) and (min-height: 561px) {
+  html body.wp-logical-battle-active.is-rune-playing .battle-shell {
+    width: min(100%, calc((100cqh - 288px) * 4 / 3)) !important;
+    aspect-ratio: 4 / 3 !important;
+  }
+}
+
+@media (min-width: 700px) and (min-height: 600px) {
+  html body.wp-logical-battle-active.is-rune-playing .battle-shell {
+    width: min(100%, calc((100cqh - 112px) * 4 / 3)) !important;
+    aspect-ratio: 4 / 3 !important;
+  }
+}
+
+@media (max-height: 560px) {
+  html body.wp-logical-battle-active.is-rune-playing .topbar {
+    inset: 0 0 auto !important;
+    grid-template-columns: 96px minmax(0, 1fr) 96px !important;
+    width: 100% !important;
+    height: 112px !important;
+    padding: 8px !important;
+  }
+  html body.wp-logical-battle-active.is-rune-playing .topbar :is(.back-btn, .pause-toggle) {
+    position: static !important;
+    width: 96px !important;
+    min-width: 96px !important;
+    height: 96px !important;
+    min-height: 96px !important;
+    font-size: 40px !important;
+  }
+  html body.wp-logical-battle-active.is-rune-playing .pause-toggle { grid-column: 3 !important; }
+  html body.wp-logical-battle-active.is-rune-playing #gamePanel.game-panel {
+    inset: 112px 0 0 !important;
+    grid-template-columns: 360px minmax(740px, 1fr) 520px !important;
+    grid-template-rows: minmax(0, 1fr) !important;
+    gap: 12px !important;
+    padding: 12px !important;
+  }
+  html body.wp-logical-battle-active.is-rune-playing .game-panel > .hud {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    height: 100% !important;
+    padding: 12px !important;
+  }
+  html body.wp-logical-battle-active.is-rune-playing .game-panel > .hud :is(span, b) {
+    font-size: 24px !important;
+    line-height: 30px !important;
+  }
+  html body.wp-logical-battle-active.is-rune-playing .battle-status-row { display: none !important; }
+  html body.wp-logical-battle-active.is-rune-playing .battle-shell {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    width: min(100%, calc(100cqh * 4 / 3)) !important;
+    height: auto !important;
+    aspect-ratio: 4 / 3 !important;
+  }
+  html body.wp-logical-battle-active.is-rune-playing .battle-info {
+    grid-column: 3 !important;
+    grid-row: 1 !important;
+    grid-template-rows: 140px minmax(0, 1fr) 96px !important;
+    gap: 10px !important;
+    width: 100% !important;
+    height: 100% !important;
+    padding: 12px !important;
+  }
+  html body.wp-logical-battle-active.is-rune-playing .turn-roster,
+  html body.wp-logical-battle-active.is-rune-playing .turn-roster > div {
+    height: 140px !important;
+    max-height: 140px !important;
+  }
+  html body.wp-logical-battle-active.is-rune-playing :is(.turn-roster-item strong, .selected-card, .skill-help, .battle-log) {
+    font-size: 22px !important;
+    line-height: 28px !important;
+  }
+  html body.wp-logical-battle-active.is-rune-playing .actions {
+    height: 96px !important;
+    min-height: 96px !important;
+    max-height: 96px !important;
+    gap: 8px !important;
+  }
+  html body.wp-logical-battle-active.is-rune-playing .actions button {
+    height: 96px !important;
+    min-height: 96px !important;
+    max-height: 96px !important;
+    padding: 8px !important;
+    font-size: 26px !important;
+    line-height: 30px !important;
+  }
 }
