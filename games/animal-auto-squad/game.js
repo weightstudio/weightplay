@@ -691,6 +691,26 @@
 
   ensureQuitRunPanel();
 
+  function ensureActionNotices() {
+    const definitions = [
+      { id: "stageNotice", parent: $("trainingPane"), before: $("trainingPane")?.querySelector(".cosmetic-store") },
+      { id: "prepNotice", parent: $("prepPhaseArea")?.querySelector(".shop-section"), before: $("shopRow") },
+      { id: "relicDraftNotice", parent: $("relicDraftPanel"), before: null },
+      { id: "reviveNotice", parent: $("defeatRevivePanel"), before: $("defeatRevivePanel")?.querySelector(".revive-actions") },
+    ];
+    definitions.forEach(({ id, parent, before }) => {
+      if (!parent || $(id)) return;
+      const notice = document.createElement("p");
+      notice.id = id;
+      notice.className = "action-notice";
+      notice.setAttribute("role", "status");
+      notice.setAttribute("aria-live", "polite");
+      parent.insertBefore(notice, before);
+    });
+  }
+
+  ensureActionNotices();
+
   // Game UI DOM Nodes
   const nodes = {
     backToLobbyBtn: $("backToLobbyBtn"),
@@ -712,6 +732,7 @@
     clearedRunsText: $("clearedRunsText"),
     teamLevelText: $("teamLevelText"),
     teamBonusText: $("teamBonusText"),
+    stageNotice: $("stageNotice"),
     diamondText: $("diamondText"),
     trainingTitleText: $("trainingTitleText"),
     trainingGoldText: $("trainingGoldText"),
@@ -741,11 +762,14 @@
     combatStatusText: $("combatStatusText"),
     combatSummary: $("combatSummary"),
     foodGuide: $("foodGuide"),
+    prepNotice: $("prepNotice"),
     relicDraftPanel: $("relicDraftPanel"),
     relicChoices: $("relicChoices"),
     rerollRelicsBtn: $("rerollRelicsBtn"),
+    relicDraftNotice: $("relicDraftNotice"),
     defeatRevivePanel: $("defeatRevivePanel"),
     reviveBtn: $("reviveBtn"),
+    reviveNotice: $("reviveNotice"),
     giveUpBtn: $("giveUpBtn"),
     quitRunPanel: $("quitRunPanel"),
     keepPlayingBtn: $("keepPlayingBtn"),
@@ -1049,6 +1073,20 @@
     const value = t("teamBonusValue", { atk: bonus.atk, hp: bonus.hp });
     const next = t("teamBonusNext", { remaining });
     return `<strong>${title}</strong><span>${value} ${next}</span>`;
+  }
+
+  function showActionNotice(node, message, trigger = null) {
+    if (!node) return;
+    node.textContent = message;
+    if (trigger?.isConnected) trigger.focus({ preventScroll: true });
+  }
+
+  function clearActionNotice(node) {
+    if (node) node.textContent = "";
+  }
+
+  function clearAllActionNotices() {
+    [nodes.stageNotice, nodes.prepNotice, nodes.relicDraftNotice, nodes.reviveNotice].forEach(clearActionNotice);
   }
 
   function installTestApi() {
@@ -2087,19 +2125,20 @@
 
   function handleUnlockAnimal(id) {
     initAudio();
+    clearActionNotice(nodes.stageNotice);
     save = normalizeSave(save);
     if (isAnimalUnlocked(id)) return;
     if (isPremiumAnimal(id)) {
       const cost = premiumUnlockCost(id);
       if (!spendWalletDiamonds(cost)) {
-        alert(t("noDiamonds"));
+        showActionNotice(nodes.stageNotice, t("noDiamonds"), document.activeElement);
         playSynth("click");
         return;
       }
     } else {
       const cost = animalUnlockCost(id);
       if (save.coins < cost) {
-        alert(t("noGold"));
+        showActionNotice(nodes.stageNotice, t("noGold"), document.activeElement);
         playSynth("click");
         return;
       }
@@ -2113,13 +2152,14 @@
 
   function handleUpgradeAnimal(id) {
     initAudio();
+    clearActionNotice(nodes.stageNotice);
     save = normalizeSave(save);
     if (!isAnimalUnlocked(id)) return;
     const currentLevel = animalPermanentLevel(id);
     if (currentLevel >= 20) return;
     const cost = animalUpgradeCost(id);
     if (save.coins < cost) {
-      alert(t("noGold"));
+      showActionNotice(nodes.stageNotice, t("noGold"), document.activeElement);
       playSynth("click");
       return;
     }
@@ -2143,6 +2183,7 @@
   }
 
   function translateUI() {
+    clearAllActionNotices();
     // Top headings
     nodes.mainGameTitle.textContent = t("title");
     const actualLocale = window.WonderI18n?.actualLocale?.() || locale;
@@ -2213,6 +2254,7 @@
     // Relic Modal labels
     document.querySelector("#relicDraftPanel h2").textContent = t("chooseRelic");
     document.querySelector("#relicDraftPanel .status-line").textContent = t("relicDesc");
+    updateRelicRerollDecision();
 
     // Defeat Modal labels
     document.querySelector("#defeatRevivePanel h2").textContent = t("defeatTitle");
@@ -2271,6 +2313,7 @@
   }
 
   function renderRelicChoices() {
+    clearActionNotice(nodes.relicDraftNotice);
     nodes.relicChoices.innerHTML = "";
     // Pick 2 random relics
     const pool = [...RELIC_METADATA];
@@ -2310,8 +2353,9 @@
   }
 
   function rerollRelics() {
+    clearActionNotice(nodes.relicDraftNotice);
     if (getWalletDiamonds() < 3) {
-      alert(t("noDiamonds"));
+      showActionNotice(nodes.relicDraftNotice, t("noDiamonds"), nodes.rerollRelicsBtn);
       playSynth("click");
       return;
     }
@@ -2324,6 +2368,7 @@
 
   // Round Setup and Shop Drafting
   function startRoundPrep() {
+    clearActionNotice(nodes.prepNotice);
     nodes.startBattleBtn.disabled = false;
     nodes.prepPhaseArea.classList.remove("is-hidden");
     nodes.combatArea.classList.add("is-hidden");
@@ -2725,6 +2770,7 @@
 
   // Central game economy and positioning handler
   function executeAction(srcArea, srcIndex, destArea, destIndex) {
+    clearActionNotice(nodes.prepNotice);
     const card = getCardAt(srcArea, srcIndex);
     if (!card) return;
     const activeAreas = ["squad", "bench"];
@@ -2772,7 +2818,7 @@
     // 1. Legacy buy animal from shop
     if (srcArea === "shop-animal" && (destArea === "squad" || destArea === "bench")) {
       if (state.gold < 3) {
-        alert(t("noSupplies"));
+        showActionNotice(nodes.prepNotice, t("noSupplies"), document.activeElement);
         return;
       }
       const targetCard = getCardAt(destArea, destIndex);
@@ -2797,7 +2843,7 @@
       const targetCard = getCardAt(destArea, destIndex);
       if (!targetCard) return; // food must be fed to animal
       if (state.gold < 3) {
-        alert(t("noSupplies"));
+        showActionNotice(nodes.prepNotice, t("noSupplies"), document.activeElement);
         return;
       }
       state.gold -= 3;
@@ -2938,12 +2984,13 @@
   }
 
   function handleRunUpgradeSelected() {
+    clearActionNotice(nodes.prepNotice);
     if (!selectedSlot) return;
     const card = getCardAt(selectedSlot.area, selectedSlot.index);
     if (!card || card.atk === undefined) return;
     const cost = runUpgradeCost(card);
     if (state.gold < cost) {
-      alert(t("noSupplies"));
+      showActionNotice(nodes.prepNotice, t("noSupplies"), document.activeElement);
       return;
     }
     state.gold -= cost;
@@ -2961,9 +3008,10 @@
   // Reroll Shop items
   function rerollShop() {
     initAudio();
+    clearActionNotice(nodes.prepNotice);
     const rerollCost = state.freeRerollThisRound ? 0 : 1;
     if (state.gold < rerollCost) {
-      alert(t("noSupplies"));
+      showActionNotice(nodes.prepNotice, t("noSupplies"), nodes.rerollShopBtn);
       return;
     }
 
@@ -3216,13 +3264,14 @@
   function startBattle() {
     initAudio();
     playSynth("click");
+    clearActionNotice(nodes.prepNotice);
 
     // Gather active players (non-null in squad)
     const activeSquad = state.squad
       .map((card, formationSlot) => card ? { card, formationSlot } : null)
       .filter(Boolean);
     if (!activeSquad.length) {
-      alert(t("needSquad"));
+      showActionNotice(nodes.prepNotice, t("needSquad"), nodes.startBattleBtn);
       return;
     }
 
@@ -4157,6 +4206,7 @@
 
   // Revival Popup (spend 5 diamonds)
   function openRevivePopup() {
+    clearActionNotice(nodes.reviveNotice);
     nodes.defeatRevivePanel.classList.remove("is-hidden");
     nodes.reviveBtn.textContent = t("reviveAction");
     setBattleDecisionOwnership(nodes.defeatRevivePanel, true);
@@ -4165,8 +4215,9 @@
 
   function handleRevive() {
     initAudio();
+    clearActionNotice(nodes.reviveNotice);
     if (getWalletDiamonds() < 5) {
-      alert(t("noDiamonds"));
+      showActionNotice(nodes.reviveNotice, t("noDiamonds"), nodes.reviveBtn);
       playSynth("click");
       return;
     }

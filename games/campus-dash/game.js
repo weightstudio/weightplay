@@ -56,6 +56,13 @@
   const loadingText = document.querySelector("#loadingText");
   const loadingFill = document.querySelector("#loadingFill");
   const dashGame = document.querySelector(".dash-game");
+  const laneStatus = document.createElement("p");
+  laneStatus.id = "laneStatus";
+  laneStatus.className = "dash-lane-status";
+  laneStatus.setAttribute("role", "status");
+  laneStatus.setAttribute("aria-live", "polite");
+  laneStatus.setAttribute("aria-atomic", "true");
+  canvasWrap.append(laneStatus);
   dashGame?.setAttribute("data-wp-canvas-max-width", "viewport");
   const leavePanel = document.createElement("section");
   leavePanel.className = "leave-panel hidden";
@@ -136,6 +143,10 @@
       loading: "Loading",
       leaderboard: "Local Top 5",
       emptyRank: "No runs yet",
+      laneLeft: "left lane",
+      laneCenter: "center lane",
+      laneRight: "right lane",
+      laneMoved: "Moved to the {lane}",
     },
     "zh-Hant": {
       title: "\u8349\u539f\u9583\u96fb\u8dd1",
@@ -196,6 +207,10 @@
       loading: "\u8f09\u5165\u4e2d",
       leaderboard: "\u672c\u6a5f\u524d 5 \u540d",
       emptyRank: "\u9084\u6c92\u6709\u7d00\u9304",
+      laneLeft: "\u5de6\u5074\u8dd1\u9053",
+      laneCenter: "\u4e2d\u9593\u8dd1\u9053",
+      laneRight: "\u53f3\u5074\u8dd1\u9053",
+      laneMoved: "\u5df2\u79fb\u5230{lane}",
     },
     es: {
       title: "Carrera Relámpago de Safari", language: "Idioma", backToLobby: "Volver a la sala de WeightPlay", controls: "Controles", backToMenu: "Volver al menú", gameLabel: "Juego Carrera Relámpago de Safari",
@@ -207,6 +222,7 @@
       ruleClassic: "Sendero abierto", ruleTrail: "Rastro de estrellas", ruleGate: "Puertas de dos carriles", ruleMud: "Barro pegajoso", rulePulse: "Patrón del guardián",
       resultTitle: "¡Carrera completada!", resultText: "Puntuación {score}  Mejor {best}", skillReport: "Informe de habilidades", skillIntro: "Esta carrera practicó decisiones rápidas, atención constante y control de carriles.", reaction: "Reacción", reactionValue: "{count} cambios de carril", focus: "Concentración", focusValue: "{coins} recogidas · {bumps} choques", coordination: "Coordinación visual", coordinationValue: "Mejor combo x{combo}",
       firstRun: "Puntuación de hoy: {score}", progress: "Puntuación de hoy: {score} · Mejor anterior: {previous}", newBest: "¡Nuevo récord: {score}! Mejor anterior: {previous}", again: "Correr de nuevo", lobby: "Sala de juegos", loading: "Cargando", leaderboard: "5 mejores locales", emptyRank: "Aún no hay carreras",
+      laneLeft: "carril izquierdo", laneCenter: "carril central", laneRight: "carril derecho", laneMoved: "Te moviste al {lane}",
     },
   };
 
@@ -806,6 +822,7 @@
     state.lanePulse = 0.36;
     state.lanePulseLane = nextLane;
     state.lanePulseDir = Math.sign(delta);
+    laneStatus.textContent = t("laneMoved", { lane: t(["laneLeft", "laneCenter", "laneRight"][nextLane]) });
     window.WonderSound?.play("click");
   }
 

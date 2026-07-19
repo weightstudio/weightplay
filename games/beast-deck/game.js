@@ -1071,6 +1071,13 @@
     return Math.max(min, Math.min(max, num));
   }
 
+  function boundedWhole(value, fallback, minimum, maximum = Number.MAX_SAFE_INTEGER) {
+    const number = typeof value === "string" && value.trim() === "" ? Number.NaN : Number(value);
+    return Number.isFinite(number) && Number.isInteger(number)
+      ? clamp(number, minimum, maximum)
+      : fallback;
+  }
+
   function xpToNext(level) {
     return 90 + (level - 1) * 35;
   }
@@ -1079,33 +1086,44 @@
     return Math.max(0, (profile.level - 1) * 2);
   }
 
-  function normalizeCountMap(source, allowed, defaults = {}) {
+  function normalizeCountMap(source, allowed, defaults = {}, maximum = Number.MAX_SAFE_INTEGER) {
     const result = { ...defaults };
-    Object.keys(source || {}).forEach((key) => {
-      if (allowed.includes(key)) result[key] = Math.max(result[key] || 0, Math.floor(Number(source[key]) || 0));
+    const values = source && typeof source === "object" && !Array.isArray(source) ? source : {};
+    Object.keys(values).forEach((key) => {
+      if (!allowed.includes(key)) return;
+      const fallback = result[key] || 0;
+      const count = boundedWhole(values[key], fallback, 0, maximum);
+      if (count > 0) result[key] = Math.max(fallback, count);
     });
     return result;
   }
 
   function normalizeProfile(data = {}) {
-    const collection = normalizeCountMap(data.collection, permanentCardIds, starterCollection);
-    const gear = normalizeCountMap(data.gear, Object.keys(gearDb));
-    const equippedCards = Array.isArray(data.equippedCards)
-      ? data.equippedCards.filter((id) => permanentCardIds.includes(id)).slice(0, maxEquippedCards)
+    const source = data && typeof data === "object" && !Array.isArray(data) ? data : {};
+    const level = boundedWhole(source.level, 1, 1, 99);
+    const collection = normalizeCountMap(source.collection, permanentCardIds, starterCollection);
+    const gear = normalizeCountMap(source.gear, Object.keys(gearDb), {}, maxGearRank);
+    const equippedCounts = {};
+    const equippedCards = Array.isArray(source.equippedCards)
+      ? source.equippedCards.filter((id) => {
+          if (typeof id !== "string" || !permanentCardIds.includes(id)) return false;
+          equippedCounts[id] = (equippedCounts[id] || 0) + 1;
+          return equippedCounts[id] <= (collection[id] || 0);
+        }).slice(0, maxEquippedCards)
       : ["sky-hawk", "cheetah-sprint"].filter((id) => collection[id] > 0);
-    const equippedGear = gearDb[data.equippedGear] && gear[data.equippedGear] > 0 ? data.equippedGear : "";
+    const equippedGear = gearDb[source.equippedGear] && gear[source.equippedGear] > 0 ? source.equippedGear : "";
     return {
-      amuletUnlocked: !!data.amuletUnlocked,
-      level: clamp(Number(data.level) || 1, 1, 99),
-      xp: Math.max(0, Number(data.xp) || 0),
-      coins: Math.max(0, Math.floor(Number(data.coins) || 0)),
+      amuletUnlocked: source.amuletUnlocked === true,
+      level,
+      xp: boundedWhole(source.xp, 0, 0, xpToNext(level) - 1),
+      coins: boundedWhole(source.coins, 0, 0),
       collection,
       equippedCards,
       gear,
       equippedGear,
-      unlockedMission: clamp(Number(data.unlockedMission) || 1, 1, maxMission),
-      bestMission: clamp(Number(data.bestMission) || 1, 1, maxMission),
-      selectedMission: clamp(Number(data.selectedMission) || 1, 1, maxMission),
+      unlockedMission: boundedWhole(source.unlockedMission, 1, 1, maxMission),
+      bestMission: boundedWhole(source.bestMission, 1, 1, maxMission),
+      selectedMission: boundedWhole(source.selectedMission, 1, 1, maxMission),
     };
   }
 
@@ -1116,6 +1134,7 @@
       profile = normalizeProfile();
     }
     if (profile.selectedMission > profile.unlockedMission) profile.selectedMission = profile.unlockedMission;
+    saveLocalState();
   }
 
   function saveLocalState() {

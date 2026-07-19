@@ -1179,7 +1179,7 @@ function openLeaveDecision() {
   suspendQuizTasks();
   setBattleCovered(true);
   leavePanel.classList.remove("hidden");
-  requestAnimationFrame(() => keepPlayingBtn.focus({ preventScroll: true }));
+  keepPlayingBtn.focus({ preventScroll: true });
 }
 function closeLeaveDecision() {
   if (!leaveOpen) return;

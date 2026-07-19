@@ -123,6 +123,7 @@
           </section>
           <section id="trainingPane" class="stage-pane training-pane" role="tabpanel" aria-labelledby="trainingTabBtn" hidden>
             <div id="teamBonusText" class="team-bonus-note" aria-live="polite"></div>
+            <p id="stageNotice" class="action-notice" role="status" aria-live="polite"></p>
             <div class="cosmetic-store">
               <span data-ui="cosmeticStoreTitle" class="store-label">Mascot Cosmetic Skin (15 Diamonds)</span>
               <div class="skin-actions">
@@ -172,6 +173,7 @@
               <button id="sellCardBtn" class="shop-action-btn sell-action-btn is-hidden" type="button"></button>
               <button id="startBattleBtn" class="primary-btn battle-action-btn" type="button" data-ui="startBattle">Start Battle</button>
             </div>
+            <p id="prepNotice" class="action-notice" role="status" aria-live="polite"></p>
             <div id="shopRow" class="cards-row shop-row" aria-label="Shop shelf items"></div>
             <div id="selectedAbilityPanel" class="selected-ability-panel" aria-live="polite"></div>
           </div>
@@ -192,11 +194,13 @@
           <p data-ui="relicDesc" class="status-line">Select one relic to buff your squad for the entire expedition run.</p>
           <div id="relicChoices" class="relic-choices"></div>
           <button id="rerollRelicsBtn" class="secondary-btn reroll-relic-btn" type="button"></button>
+          <p id="relicDraftNotice" class="action-notice" role="status" aria-live="polite"></p>
         </section>
 
         <section id="defeatRevivePanel" class="panel modal-panel is-hidden" role="dialog" aria-modal="true" aria-labelledby="defeatReviveTitle" aria-live="polite">
           <h2 id="defeatReviveTitle" data-ui="defeatTitle">Expedition Failed!</h2>
           <p data-ui="reviveHint" class="status-line">Your Hearts reached 0. Spend 5 Diamonds to revive with 2 Hearts and continue your expedition?</p>
+          <p id="reviveNotice" class="action-notice" role="status" aria-live="polite"></p>
           <div class="revive-actions">
             <button id="reviveBtn" class="primary-btn" type="button"></button>
             <button id="giveUpBtn" class="secondary-btn" type="button" data-ui="giveUp">Give Up</button>

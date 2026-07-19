@@ -11,6 +11,7 @@
   const testMode = new URLSearchParams(window.location.search).get("test") === "1";
 
   const $ = (id) => document.getElementById(id);
+  document.querySelector(".rune-app")?.setAttribute("data-wp-canvas-max-width", "viewport");
   const asset = (name) => `../../assets/${name}`;
   const nodes = {
     localeSelect: $("localeSelect"),
@@ -1427,6 +1428,7 @@
     stagePanel.id = "stagePanel";
     stagePanel.className = "wp-standard-stage-panel is-hidden";
     stagePanel.dataset.wpStandardStageScreen = "true";
+    stagePanel.dataset.wpCanvasMaxWidth = "viewport";
     stagePanel.innerHTML = `
       <header class="wp-standard-stage-heading"><button id="stageBackBtn" data-wp-return="stage" type="button" aria-label="${t("backToMain")}">&larr;</button><strong>${t("missionSelect")}</strong></header>
       <div class="rune-stage-workspace">

@@ -64,13 +64,19 @@ select {
 }
 
 .zoo-game {
-  width: min(100%, 760px);
+  width: 100%;
   min-height: 100vh;
-  margin: 0 auto;
+  margin: 0;
   padding: calc(14px + env(safe-area-inset-top)) 14px calc(24px + env(safe-area-inset-bottom));
   display: flex;
   flex-direction: column;
   gap: 14px;
+}
+
+.zoo-game > .topbar,
+.zoo-game > .menu-panel {
+  width: min(100%, 760px);
+  margin-inline: auto;
 }
 
 .topbar {
@@ -565,10 +571,10 @@ body.zoo-helper-playing .sound-toggle {
 }
 
 body.zoo-helper-playing .play-panel {
-  width: min(100%, 760px);
+  width: 100%;
   height: 100%;
   min-height: 0;
-  margin: 0 auto;
+  margin: 0;
   display: grid;
   grid-template-rows: 44px 40px minmax(280px, 1fr) 176px 24px;
   gap: 6px;
@@ -668,13 +674,25 @@ body.zoo-helper-playing .feedback {
   overflow: hidden;
 }
 
-@media (max-height: 500px) {
+@media (orientation: landscape) {
   body.zoo-helper-playing .play-panel {
-    grid-template-rows: 44px 40px minmax(0, 1fr) 92px 20px;
+    grid-template-columns: minmax(0, 1.55fr) minmax(280px, 1fr);
+    grid-template-rows: 44px 40px minmax(0, 1fr) 20px;
+    grid-template-areas:
+      "head head"
+      "shift shift"
+      "animal items"
+      "feedback feedback";
   }
 
+  body.zoo-helper-playing .play-head { grid-area: head; }
+  body.zoo-helper-playing .shift-board { grid-area: shift; }
+  body.zoo-helper-playing .animal-card { grid-area: animal; }
+  body.zoo-helper-playing .item-grid { grid-area: items; }
+  body.zoo-helper-playing .feedback { grid-area: feedback; }
+
   body.zoo-helper-playing .item-grid {
-    height: 92px;
+    height: 100%;
     gap: 4px;
   }
 
