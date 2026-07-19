@@ -910,30 +910,37 @@
 
   function normalizeProfile(data) {
     const next = createDefaultProfile();
-    if (!data || typeof data !== "object") return next;
+    if (!data || typeof data !== "object" || Array.isArray(data)) return next;
 
-    next.level = Math.max(1, Math.floor(Number(data.level) || 1));
-    next.exp = Math.max(0, Math.floor(Number(data.exp) || 0));
-    next.expNeed = Math.max(100, Math.floor(Number(data.expNeed) || 100));
-    next.gold = Math.max(0, Math.floor(Number(data.gold) || 0));
-    next.unlockedExpedition = Math.max(1, Math.min(EXPEDITION_COUNT, Math.floor(Number(data.unlockedExpedition) || 1)));
-    next.bestExpedition = Math.max(0, Math.min(EXPEDITION_COUNT, Math.floor(Number(data.bestExpedition) || 0)));
+    const boundedWhole = (value, fallback, minimum, maximum = Number.MAX_SAFE_INTEGER) => {
+      const number = typeof value === "string" && value.trim() === "" ? Number.NaN : Number(value);
+      return Number.isFinite(number) && Number.isInteger(number)
+        ? Math.max(minimum, Math.min(maximum, number))
+        : fallback;
+    };
 
-    const training = data.training && typeof data.training === "object" ? data.training : {};
+    next.level = boundedWhole(data.level, 1, 1);
+    next.exp = boundedWhole(data.exp, 0, 0);
+    next.expNeed = boundedWhole(data.expNeed, 100, 100);
+    next.gold = boundedWhole(data.gold, 0, 0);
+    next.unlockedExpedition = boundedWhole(data.unlockedExpedition, 1, 1, EXPEDITION_COUNT);
+    next.bestExpedition = boundedWhole(data.bestExpedition, 0, 0, EXPEDITION_COUNT);
+
+    const training = data.training && typeof data.training === "object" && !Array.isArray(data.training) ? data.training : {};
     for (const key of ["damage", "hp", "speed", "magnet"]) {
-      next.training[key] = Math.max(0, Math.min(10, Math.floor(Number(training[key]) || 0)));
+      next.training[key] = boundedWhole(training[key], 0, 0, 10);
     }
 
     if (Array.isArray(data.inventory)) {
-      next.inventory = [...new Set(data.inventory.filter((key) => gearDb[key]))];
+      next.inventory = [...new Set(data.inventory.filter((key) => typeof key === "string" && gearDb[key]))];
     }
 
-    const gearLevels = data.gearLevels && typeof data.gearLevels === "object" ? data.gearLevels : {};
+    const gearLevels = data.gearLevels && typeof data.gearLevels === "object" && !Array.isArray(data.gearLevels) ? data.gearLevels : {};
     for (const key of next.inventory) {
-      next.gearLevels[key] = Math.max(1, Math.min(10, Math.floor(Number(gearLevels[key]) || 1)));
+      next.gearLevels[key] = boundedWhole(gearLevels[key], 1, 1, 10);
     }
 
-    const equipped = data.equipped && typeof data.equipped === "object" ? data.equipped : {};
+    const equipped = data.equipped && typeof data.equipped === "object" && !Array.isArray(data.equipped) ? data.equipped : {};
     for (const slot of ["weapon", "armor", "boots"]) {
       const key = equipped[slot];
       next.equipped[slot] = gearDb[key]?.slot === slot ? key : null;
@@ -943,7 +950,7 @@
     }
 
     for (const key of next.inventory) {
-      next.gearLevels[key] = Math.max(1, Math.min(10, Math.floor(Number(gearLevels[key]) || next.gearLevels[key] || 1)));
+      next.gearLevels[key] = boundedWhole(gearLevels[key], next.gearLevels[key] || 1, 1, 10);
     }
 
     while (next.exp >= next.expNeed) {
@@ -954,7 +961,7 @@
 
     const spentPoints = Object.values(next.training).reduce((sum, value) => sum + value, 0);
     const earnedPoints = Math.max(0, next.level - 1);
-    const storedPoints = Math.max(0, Math.floor(Number(data.statPoints) || 0));
+    const storedPoints = boundedWhole(data.statPoints, 0, 0);
     next.statPoints = Math.max(storedPoints, earnedPoints - spentPoints);
 
     return next;
@@ -966,6 +973,7 @@
     } catch {
       profile = createDefaultProfile();
     }
+    saveProfile();
     syncStateFromProfile();
   }
 
@@ -996,10 +1004,11 @@
   function loadLocalState() {
     try {
       const data = JSON.parse(localStorage.getItem(saveKey) || "{}");
-      state.amuletUnlocked = !!data.amuletUnlocked;
+      state.amuletUnlocked = Boolean(data && typeof data === "object" && !Array.isArray(data) && data.amuletUnlocked === true);
     } catch {
       state.amuletUnlocked = false;
     }
+    saveLocalState();
     loadProfile();
   }
 

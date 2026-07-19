@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <base href="/" />
+    <meta charset="UTF-8" />
+    <meta name="weightplay-audience" content="kids" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#12151d" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="robots" content="index,follow" />
+    <meta name="description" content="ファンタジー・ライオン防衛は、ライオンと文房具の自動武器で、壁へ迫る獣の隊列を守る防衛戦を楽しめるWeightPlayオリジナル作品です。画面に出る手がかりを読み、自分で次の一手を決めながら進めます。" />
+    <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="ファンタジー・ライオン防衛 | WeightPlay" />
+    <meta property="og:description" content="ファンタジー・ライオン防衛は、ライオンと文房具の自動武器で、壁へ迫る獣の隊列を守る防衛戦を楽しめるWeightPlayオリジナル作品です。画面に出る手がかりを読み、自分で次の一手を決めながら進めます。" />
+    <meta property="og:url" content="https://weightplay.com/ja/games/wonder-crash/" />
+    <meta property="og:image" content="https://weightplay.com/assets/wonder-crash-cover.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>ファンタジー・ライオン防衛 | WeightPlay</title>
+    <link rel="canonical" href="https://weightplay.com/ja/games/wonder-crash/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/wonder-crash/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/wonder-crash/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/wonder-crash/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/wonder-crash/" />
+    <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/wonder-crash/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/wonder-crash/" />
+    <link rel="manifest" href="manifest.webmanifest?v=20260630-upgrade1" />
+    <link rel="stylesheet" href="src/styles.css?v=20260715-wonder-skill-values1" />
+    <link rel="stylesheet" href="src/stage-selector-standard.css?v=20260718-wonder-fullviewport1" />
+    <link rel="stylesheet" href="src/tutorial.css?v=20260701-style1" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "ファンタジー・ライオン防衛",
+  "alternateName": "奇幻獅子守城",
+  "url": "https://weightplay.com/ja/games/wonder-crash/",
+  "image": "https://weightplay.com/assets/wonder-crash-cover.png",
+  "description": "ファンタジー・ライオン防衛は、ライオンと文房具の自動武器で、壁へ迫る獣の隊列を守る防衛戦を楽しめるWeightPlayオリジナル作品です。画面に出る手がかりを読み、自分で次の一手を決めながら進めます。",
+  "applicationCategory": "Game",
+  "operatingSystem": "Web browser",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio"
+  },
+  "inLanguage": "ja",
+  "isAccessibleForFree": true,
+  "genre": [
+    "Action",
+    "Defense",
+    "Animal"
+  ],
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "Kids and families",
+    "suggestedMinAge": 5
+  },
+  "learningResourceType": "Skill practice through play",
+  "educationalUse": "Practice Reaction, Focus, Hand-Eye Coordination through family-friendly browser gameplay."
+}
+    </script>
+    <link rel="stylesheet" href="src/game-page-info.css?v=20260710-guide-play-shell1" />
+    <link rel="stylesheet" href="src/loading-screen.css?v=20260702-unified1" />
+    <link rel="stylesheet" href="src/play-viewport.css?v=20260710-mobile-play-shell2" />
+    <link rel="stylesheet" href="games/wonder-crash/expanded-canvas.css?v=20260718-wonder-fullviewport1" />
+    <meta name="twitter:title" content="ファンタジー・ライオン防衛 | WeightPlay" />
+    <meta name="twitter:description" content="ファンタジー・ライオン防衛は、ライオンと文房具の自動武器で、壁へ迫る獣の隊列を守る防衛戦を楽しめるWeightPlayオリジナル作品です。画面に出る手がかりを読み、自分で次の一手を決めながら進めます。" />
+  </head>
+  <body>
+    <main class="wonder-main-flow-slot">
+      <div class="game-shell">
+      <canvas id="game" class="play-area" width="950" height="1688" tabindex="0" aria-label="Fantasy Lion Defense game board" aria-description="Move the lion with Left and Right Arrow keys, or drag across the game board."></canvas>
+
+      <section id="wonderMain" class="wonder-main">
+        <header>
+          <a class="home-link" data-wp-return="main" href="/kids/" aria-label="Back to Kids lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
+          <strong data-i18n="game_title">Fantasy Lion Defense</strong>
+          <label><span data-i18n="language">Language</span><select id="wonderMainLocaleSelect" aria-label="Language" data-i18n-aria="language"><option value="en">English</option><option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option><option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option></select></label>
+        </header>
+        <img class="wonder-main-cover" src="../../assets/wonder-crash-cover.png" alt="" />
+        <button id="wonderMainStart" class="standard-main-start" data-wp-main-start type="button">Start Game</button>
+      </section>
+
+      <!-- Active battle chrome: return, one primary value, one status row, settings. -->
+      <button id="backToMenuBtn" type="button" class="play-return hidden" data-wp-return="battle" aria-label="Back to game menu" data-i18n-aria="menu_title">
+        <span aria-hidden="true">&larr;</span>
+      </button>
+
+      <div id="battleHud" class="hud battle-hud hidden">
+        <div class="battle-primary"><img src="../../assets/coin.png" alt="" /> <span id="coinText">0</span></div>
+        <div class="battle-status"><span data-i18n="hud_stage">Stage</span> <span id="levelText">1</span><span aria-hidden="true"> · </span><span data-i18n="hud_wave">Wave</span> <span id="waveText">1/1</span></div>
+      </div>
+
+      <!-- Settings In-game Toggle Button -->
+      <button id="settingsBtn" type="button" class="settings-btn hidden" aria-label="Settings" data-i18n-aria="menu_settings"><img src="assets/menu-settings.png" alt="" draggable="false" /></button>
+
+      <!-- Main Game Overlays / Menus -->
+      <div id="overlay" class="overlay">
+        <button id="wonderStageBack" class="wonder-stage-back" data-wp-return="stage" type="button" aria-label="Back">&larr;</button>
+        <h1 class="hidden" data-i18n="game_title">ファンタジー・ライオン防衛</h1>
+        <div id="menuCoinLine" class="menu-coin-line">
+          <span class="menu-wallet-item"><img src="../../assets/coin.png" alt="" /> <span id="menuCoinText">0</span></span>
+          <span class="menu-wallet-item diamond-wallet"><img src="assets/weightplay-diamond.svg" alt="" /> <span id="menuDiamondText">0</span></span>
+        </div>
+        <label class="language-picker wonder-language-picker">
+          <span data-i18n="language">Language</span>
+          <select id="globalLocaleSelect" aria-label="Language" data-i18n-aria="language">
+            <option value="en">English</option>
+            <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
+            <option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option>
+          </select>
+        </label>
+        <p id="overlayText" data-i18n="menu_title">Main Menu</p>
+        
+        <div id="menuContent" class="menu-content">
+          <div id="profilePanel" class="profile-panel"></div>
+          <div id="levelGrid" class="level-grid" data-wp-stage-settle-duration="360" data-wp-stage-settle-easing="smoothstep"></div>
+          <p id="wonderStageStatus" class="wonder-stage-status" role="status" aria-live="polite"></p>
+        </div>
+        
+        <div id="upgradeGrid" class="upgrade-grid hidden"></div>
+        
+        <!-- Pause / Settings Panel -->
+        <div id="pausePanel" class="pause-panel hidden">
+          <label class="pause-language-picker">
+            <span data-i18n="language">Language</span>
+            <select id="pauseLocaleSelect" class="settings-select" aria-label="Language" data-i18n-aria="language">
+              <option value="en">English</option>
+              <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
+              <option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option>
+            </select>
+          </label>
+          <button id="resumeBtn" type="button" data-i18n="btn_resume">Resume</button>
+          <button id="leaveBtn" type="button" data-i18n="btn_leave">Leave Battle</button>
+        </div>
+        
+        <button id="startBtn" type="button" class="hidden" data-i18n="btn_start">Start</button>
+        
+        <!-- Navigation Menu Tabs -->
+        <nav id="menuTabs" class="menu-tabs">
+          <button type="button" data-menu-tab="character"><img src="../../assets/menu-character.png" alt="" /><span data-i18n="tab_character">Hero</span></button>
+          <button type="button" data-menu-tab="equipment"><img src="../../assets/menu-equipment.png" alt="" /><span data-i18n="tab_equipment">Weapons</span></button>
+          <button type="button" data-menu-tab="battle"><img src="../../assets/menu-battle.png" alt="" /><span data-i18n="tab_battle">Stages</span></button>
+          <button type="button" data-menu-tab="wall"><img src="../../assets/menu-wall.png" alt="" /><span data-i18n="tab_wall">Wall</span></button>
+          <button type="button" data-menu-tab="settings"><img src="../../assets/menu-settings.png" alt="" /><span data-i18n="tab_settings">Settings</span></button>
+        </nav>
+      </div>
+
+      <!-- Weapon Details Modal Dialog -->
+      <div id="weaponModal" class="weapon-modal hidden" role="dialog" aria-modal="true">
+        <div class="weapon-modal-card">
+          <button id="weaponModalClose" class="weapon-modal-close" type="button" aria-label="Close">&times;</button>
+          <div id="weaponModalContent"></div>
+        </div>
+      </div>
+
+      <div id="loadingPanel" class="loading-panel">
+        <div class="loading-card">
+          <strong id="loadingTitle">Loading</strong>
+          <span id="loadingText">0%</span>
+          <div><i id="loadingFill"></i></div>
+        </div>
+      </div>
+      </div>
+    </main>
+    <!-- adsense-static-guide:start -->
+    <section class="game-page-info game-page-info-static" aria-label="ファンタジー・ライオン防衛 のゲーム情報">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay ゲームガイド</span><h2>ファンタジー・ライオン防衛</h2><p>ファンタジー・ライオン防衛は、ライオンと文房具の自動武器で、壁へ迫る獣の隊列を守る防衛戦を楽しめるWeightPlayオリジナル作品です。画面に出る手がかりを読み、自分で次の一手を決めながら進めます。</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>ゲーム内容</span><strong>Bullet Heaven Defense</strong></div><div class="game-info-fact"><span>ジャンル</span><strong>Action · Defense · Animal</strong></div><div class="game-info-fact"><span>難易度</span><strong>ふつう</strong></div><div class="game-info-fact"><span>目安時間</span><strong>5-8 分</strong></div><div class="game-info-fact"><span>育てる力</span><strong>反応 · 集中 · 手と目の協調</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>世界とミッション</h3><p>この冒険では、プレイヤーが動物の仲間を助ける案内役になります。目的を達成するには、目の前の状況を観察し、急がずに選択の結果を確かめることが大切です。</p>
+<p>各ステージや場面には新しい条件が加わります。成功はただ先へ進むことではなく、仲間の世界を安全に整え、次の挑戦へつながる記録を残すことを意味します。</p></div>
+      <div class="game-info-section"><h3>ゲームのしくみ</h3><p>1回のプレイでは、ライオンと文房具の自動武器で、壁へ迫る獣の隊列を守る防衛戦。表示される目標、残りの機会、相手や障害物の動きを確認してから操作してください。</p>
+<p>進行すると新しい組み合わせ、道具、敵、またはルールが現れます。結果画面では達成内容を確認して、次へ進むか同じ課題をもう一度試せます。</p>
+<p>保存される進行はこのブラウザ内だけに残ります。ログインは必要ありません。</p></div>
+      <div class="game-info-section"><h3>遊び方</h3><ol><li>メイン画面でスタートを選びます。</li><li>ステージがある作品では、開放済みのカードから挑戦を選びます。</li><li>画面のヒントと目標を読んで、タップ、ドラッグ、またはキーボードで操作します。</li><li>結果を確認し、次の挑戦またはリトライを選びます。</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>攻略のヒント</h3><ul><li>最初に目標と失敗条件を確認してから動きましょう。</li><li>一度に多くを急がず、手がかりが変わった場面で次の選択を考えましょう。</li><li>うまくいかなかった時は、直前の選択を見直して別の順番や位置を試しましょう。</li></ul></div>
+      <div class="game-info-section"><h3>進行と難易度</h3><p>序盤は基本操作と読みやすい目標を紹介します。中盤からは複数の条件を組み合わせ、後半ではこれまで覚えた選択を続けて使う場面が増えます。</p>
+<p>数字だけを大きくするのではなく、観察、位置、順番、タイミングを使い分けるほど安定して進める構成です。</p></div>
+      <div class="game-info-section"><h3>デザインノート</h3><p>短いセッションでも、プレイヤー自身の判断が結果につながるよう設計しました。タッチ、マウス、キーボードで同じ目的に取り組め、画面の読みやすさと再挑戦のしやすさを大切にしています。</p></div>
+      <div class="game-info-section game-info-parent"><h3>保護者の方へ</h3><p>このゲームはブラウザで遊べ、基本プレイにログインは必要ありません。進行やスコアはこの端末のブラウザに保存されます。表示される記録はゲーム内の振り返りであり、能力、医療、学習の正式な評価ではありません。</p></div>
+      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>無料で遊べますか？</dt><dd>はい。ブラウザで基本プレイを始められ、ログインは必要ありません。</dd></div><div><dt>進行は保存されますか？</dt><dd>対応する進行はこのブラウザにローカル保存されます。ブラウザのデータを消すと失われる場合があります。</dd></div><div><dt>スマートフォンでも遊べますか？</dt><dd>はい。タップとドラッグを使える画面に対応しています。</dd></div><div><dt>うまく進めない時は？</dt><dd>目標とヒントを確認し、位置、順番、またはタイミングを変えて再挑戦してください。</dd></div><div><dt>ゲームの記録は正式な能力テストですか？</dt><dd>いいえ。楽しむためのゲーム内記録であり、正式な評価ではありません。</dd></div><div><dt>アカウントは必要ですか？</dt><dd>いいえ。通常のプレイにアカウントは必要ありません。</dd></div></dl></div>
+    </div>
+  </section>
+    <!-- adsense-static-guide:end -->
+    <!-- Platform Modules and Script Loaders -->
+    <script src="src/site-config.js?v=20260709-wonder-settlement-mobile1"></script>
+    <script src="src/version.js?v=20260701-version2"></script>
+    <script src="src/analytics.js?v=20260701-analytics2"></script>
+    <script>
+      window.WonderAnalytics?.track("game_view", { game_id: "wonder-crash" });
+    </script>
+    <script src="src/sound.js?v=20260701-labels1"></script>
+    <script src="src/edge-guard.js?v=20260710-mobile-play-shell2"></script>
+    <script src="/src/i18n-ja.js?v=20260719-ja1"></script>
+  <script src="src/i18n.js?v=20260717-zh-hans5"></script>
+    <script src="src/wallet.js?v=20260630-upgrade1"></script>
+    <script src="src/tutorial.js?v=20260702-tutorial-locale1"></script>
+    <script src="src/stage-selector-standard.js?v=20260718-wonder-fullviewport1"></script>
+    <script src="src/game-data.js?v=20260717-wonder-depth30-1"></script>
+    <script src="src/game.js?v=20260718-wonder-fullviewport1"></script>
+    <script src="games/wonder-crash/expanded-canvas.js?v=20260718-wonder-fullviewport3"></script>
+    <script src="src/game-page-info.js?v=20260717-zh-hans1"></script>
+    <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="ファンタジー・ライオン防衛";document.title="ファンタジー・ライオン防衛 | WeightPlay";},{once:true});</script>
+</body>
+</html>

@@ -564,8 +564,6 @@ const state = {
   unlockedStage: 0,
 };
 let leaveOpen = false;
-let stageDrag = null;
-let suppressStageClick = false;
 let centeredStageFrame = 0;
 let quizGeneration = 0;
 let quizLifecycleSuspended = document.hidden;
@@ -885,7 +883,12 @@ function updateCenteredStageCard() {
     const distance = Math.abs(card.offsetLeft + card.offsetWidth / 2 - center);
     return !best || distance < best.distance ? { card, distance } : best;
   }, null)?.card;
-  cards.forEach((card) => card.classList.toggle("is-centered", card === nearest));
+  cards.forEach((card) => {
+    const centered = card === nearest;
+    card.classList.toggle("is-centered", centered);
+    if (centered) card.setAttribute("aria-current", "true");
+    else card.removeAttribute("aria-current");
+  });
 }
 
 function scheduleCenteredStageCard() {
@@ -906,56 +909,9 @@ function centerLatestUnlockedStage(stageIndex = state.unlockedStage, shouldFocus
   if (shouldFocus) target.focus({ preventScroll: true });
 }
 
-function settleStageRail() {
-  const cards = [...stageGrid.querySelectorAll(".stage-card")];
-  if (!cards.length) return;
-  const center = stageGrid.scrollLeft + stageGrid.clientWidth / 2;
-  const nearest = cards.reduce((best, card) => {
-    const distance = Math.abs(card.offsetLeft + card.offsetWidth / 2 - center);
-    return !best || distance < best.distance ? { card, distance } : best;
-  }, null)?.card;
-  nearest?.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
-}
-
-function initStageRail() {
+function initStageRailPresentation() {
   stageGrid.addEventListener("scroll", scheduleCenteredStageCard, { passive: true });
-  stageGrid.addEventListener("pointerdown", (event) => {
-    if (!document.body.classList.contains("quiz-stage-select") || event.button !== 0 || event.isPrimary === false) return;
-    stageDrag = { id: event.pointerId, x: event.clientX, scroll: stageGrid.scrollLeft, moved: false };
-  });
-  stageGrid.addEventListener("pointermove", (event) => {
-    if (!stageDrag || stageDrag.id !== event.pointerId) return;
-    const delta = event.clientX - stageDrag.x;
-    if (!stageDrag.moved && Math.abs(delta) < 8) return;
-    if (!stageDrag.moved) {
-      stageDrag.moved = true;
-      stageGrid.setPointerCapture?.(event.pointerId);
-      stageGrid.style.setProperty("scroll-snap-type", "none", "important");
-    }
-    const rect = stageGrid.getBoundingClientRect();
-    const coordinateScale = rect.width > 0 ? stageGrid.clientWidth / rect.width : 1;
-    stageGrid.scrollLeft = stageDrag.scroll - delta * coordinateScale;
-    event.preventDefault();
-  });
-  const finish = (event) => {
-    if (!stageDrag || stageDrag.id !== event.pointerId) return;
-    const moved = stageDrag.moved;
-    if (moved) stageGrid.releasePointerCapture?.(event.pointerId);
-    stageDrag = null;
-    stageGrid.style.removeProperty("scroll-snap-type");
-    if (!moved) return;
-    suppressStageClick = true;
-    settleStageRail();
-    setTimeout(() => { suppressStageClick = false; }, 0);
-  };
-  stageGrid.addEventListener("pointerup", finish);
-  stageGrid.addEventListener("pointercancel", finish);
-  stageGrid.addEventListener("click", (event) => {
-    if (!suppressStageClick) return;
-    suppressStageClick = false;
-    event.preventDefault();
-    event.stopImmediatePropagation();
-  }, true);
+  stageGrid.addEventListener("wonder:stage-snap", scheduleCenteredStageCard);
   stageGrid.addEventListener("dragstart", (event) => event.preventDefault());
 }
 
@@ -1340,7 +1296,7 @@ if (new URLSearchParams(window.location.search).get("smoke") === "1") {
 }
 
 renderStaticText();
-initStageRail();
+initStageRailPresentation();
 scheduleReadinessFallback();
 preloadGame().catch((error) => {
   console.error(error);

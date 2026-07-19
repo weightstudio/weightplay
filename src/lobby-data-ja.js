@@ -23,4 +23,12 @@
     game.description.ja = `${title}を遊ぼう。画面の手がかりを読み、自分の選択で次の挑戦へ進むWeightPlayオリジナルゲームです。`;
     game.meta.ja = ["オリジナル作品", "タッチ対応", "ブラウザで遊べる"];
   });
+  const abyssDiver = window.WONDER_LOBBY.games.find((game) => game.id === "animal-abyss-diver");
+  if (abyssDiver) {
+    abyssDiver.title.ja = "どうぶつ深淵ダイバー";
+    abyssDiver.statusText.ja = "今すぐ遊ぶ";
+    abyssDiver.type.ja = "深海ルート戦略アドベンチャー";
+    abyssDiver.description.ja = "Noriを導いて30の深海ルートを進み、酸素と電力を管理しながら遺物を回収して安全に浮上します。";
+    abyssDiver.meta.ja = ["30ルート", "酸素と危険管理", "永続アップグレード"];
+  }
 })();

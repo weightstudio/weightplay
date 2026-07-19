@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="robots" content="noindex,nofollow,noarchive" />
+  <meta name="weightplay-audience" content="kids" />
+  <meta name="theme-color" content="#073b35" />
+  <title>動物方塊森林｜WeightPlay 內部測試</title>
+  <meta name="description" content="放入動物森林方塊、完成整排或整列，修復三十座棲地。" />
+  <link rel="stylesheet" href="../../src/loading-screen.css" />
+  <link rel="stylesheet" href="../../src/game-page-info.css" />
+  <link rel="stylesheet" href="../../src/play-viewport.css" />
+  <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard />
+  <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body data-screen="main" data-game-id="animal-block-grove">
+  <section id="loadingPanel" class="loading-panel" aria-live="polite">
+    <div class="loading-card"><strong data-i18n="title">動物方塊森林</strong><span data-i18n="loading">正在整理森林工坊…</span><div class="loading-track"><i id="loadingFill"></i></div></div>
+  </section>
+
+  <div id="mainGroup" class="main-group">
+    <main id="mainScreen" class="main-screen">
+      <header class="main-header">
+        <a class="main-return" href="/" aria-label="返回 WeightPlay" data-i18n-aria="backWeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a>
+        <strong data-i18n="title">動物方塊森林</strong>
+        <label class="locale-control"><span class="sr-only" data-i18n="language">語言</span><select id="localeSelect" aria-label="語言" data-i18n-aria="language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="pt-BR">Português</option><option value="de">Deutsch</option></select></label>
+      </header>
+      <section class="main-hero">
+        <img class="main-poster" src="../../assets/animal-block-grove-cover.webp" alt="苔殼太郎和彩躍咪咪在森林工坊拼動物方塊" data-i18n-alt="posterAlt" />
+        <div class="main-copy"><small data-i18n="eyebrow">森林棲地修復隊</small><h1 data-i18n="fullTitle">動物方塊森林</h1><p data-i18n="pitch">把三組方塊放進森林棋盤。填滿整排或整列，就能修復棲地並騰出新空間。</p><div id="mainProgress" class="main-progress"></div><button id="startBtn" class="primary-action" type="button" data-i18n="start">開始遊戲</button></div>
+      </section>
+    </main>
+    <section class="game-page-info game-page-info-static" aria-label="遊戲說明" data-i18n-aria="guideLabel">
+      <div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker" data-i18n="guideKicker">WeightPlay 原創遊戲</span><h2 data-i18n="fullTitle">動物方塊森林</h2><p data-i18n="guideIntro">苔殼太郎和彩躍咪咪正在修復被風暴打亂的森林棲地。每塊葉片、花朵與水波方塊都代表一小片環境；完成一整排或整列，便能讓那片棲地重新連成一體。</p></div></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span data-i18n="factGameplay">玩法</span><strong data-i18n="factGameplayValue">8×8 方塊消除</strong></div><div class="game-info-fact"><span data-i18n="factModes">內容</span><strong data-i18n="factModesValue">30 關＋無限模式</strong></div><div class="game-info-fact"><span data-i18n="factSkills">練習</span><strong data-i18n="factSkillsValue">空間規劃與順序判斷</strong></div></div>
+      <div class="game-info-sections"><div class="game-info-section"><h3 data-i18n="howTitle">玩法</h3><ol><li data-i18n="how1">從下方三組方塊選一組。</li><li data-i18n="how2">拖到棋盤，或先點方塊再點格子。</li><li data-i18n="how3">填滿整排或整列即可消除。</li><li data-i18n="how4">完成關卡顯示的爪印、橡實、苔石或分數目標。</li></ol></div><div class="game-info-section"><h3 data-i18n="saveTitle">存檔</h3><p data-i18n="saveText">過關、星星與最佳分數只保存在目前瀏覽器，不需要登入，也不會上傳遊戲資料。</p></div><div class="game-info-section"><h3 data-i18n="faqTitle">常見問題</h3><dl><div><dt data-i18n="faq1q">三組方塊一定要依序使用嗎？</dt><dd data-i18n="faq1a">不用，可以先放最適合的一組；三組用完才會補上新的一批。</dd></div><div><dt data-i18n="faq2q">提示會直接替我放置嗎？</dt><dd data-i18n="faq2a">不會，只會標出目前較安全的位置。</dd></div><div><dt data-i18n="faq3q">復原會回到哪一步？</dt><dd data-i18n="faq3a">會完整回到上一次放置前，包含棋盤、目標與方塊列。</dd></div></dl></div></div>
+    </section>
+  </div>
+
+  <section id="stageScreen" class="stage-screen" hidden>
+    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen style="--wp-stage-art:url('../../assets/animal-block-grove-cover.webp')">
+      <header class="stage-header"><button id="stageBackBtn" type="button" aria-label="返回" data-i18n-aria="back">←</button><div><strong data-i18n="chooseStage">選擇任務</strong><span id="stageSummary"></span></div><img src="../../assets/weightplay-character-moss-shell-turtle-cutout.webp" alt="" /></header>
+      <nav class="stage-mode-tabs" aria-label="遊戲模式" data-i18n-aria="stageModeLabel"><button id="campaignTab" type="button" data-stage-mode="campaign" data-i18n="campaignMode">棲地任務</button><button id="challengeTab" type="button" data-stage-mode="challenge" data-i18n="challengeMode">無限森林</button></nav>
+      <section class="chapter-panel"><small id="chapterKicker"></small><strong id="chapterTitle"></strong><p id="chapterRule"></p></section>
+      <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-settle-duration="330" data-wp-stage-settle-easing="smoothstep" aria-label="任務選擇" data-i18n-aria="stageRailLabel"></div>
+    </div>
+  </section>
+
+  <section id="battleScreen" class="battle-screen" hidden>
+    <div class="battle-canvas" data-wp-logical-battle-canvas>
+      <header class="battle-header"><button id="battleBackBtn" type="button" aria-label="返回" data-i18n-aria="back">←</button><div class="battle-progress"><span id="stageLabel"></span><strong id="goalValue"></strong></div><div class="battle-stat"><small data-i18n="moves">步數</small><strong id="movesValue">0</strong></div><div class="battle-stat"><small data-i18n="score">分數</small><strong id="scoreValue">0</strong></div></header>
+      <section id="objectiveRow" class="objective-row" aria-live="polite"></section>
+      <section class="board-zone"><div id="gameBoard" class="game-board" role="application" tabindex="0" aria-label="8 乘 8 動物方塊棋盤" data-i18n-aria="boardLabel"></div><div id="comboToast" class="combo-toast" aria-live="polite"></div></section>
+      <section id="pieceTray" class="piece-tray" aria-label="可放置方塊" data-i18n-aria="trayLabel"></section>
+      <div class="battle-actions"><button id="undoBtn" type="button"><img src="../../assets/animal-block-grove-icon-undo.webp" alt="" /><span data-i18n="undo">復原</span></button><button id="hintBtn" type="button"><img src="../../assets/animal-block-grove-icon-hint.webp" alt="" /><span data-i18n="hint">提示</span></button></div>
+
+      <section id="resultPanel" class="result-overlay" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card"><img src="../../assets/weightplay-character-rainbow-hop-mimi-clean-cutout.webp" alt="" /><small data-i18n="resultKicker">棲地修復報告</small><h2 id="resultTitle"></h2><div id="resultStars" class="result-stars"></div><p id="resultText"></p><p id="bestText" class="best-text"></p><div class="result-actions"><button id="retryBtn" type="button" data-i18n="retry">再試一次</button><button id="resultStagesBtn" type="button" data-i18n="stages">回到任務</button><button id="nextBtn" class="primary-action" type="button" data-i18n="next">下一關</button></div></div></section>
+      <section id="leavePanel" class="leave-overlay" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="leave-card"><h2 id="leaveTitle" data-i18n="leaveTitle">要離開這次挑戰嗎？</h2><p data-i18n="leaveText">目前進度會保留在這個畫面，繼續即可回到原本的棋盤。</p><div><button id="leaveContinueBtn" class="primary-action" type="button" data-i18n="continue">繼續遊戲</button><button id="leaveStagesBtn" type="button" data-i18n="returnStages">回到任務</button></div></div></section>
+    </div>
+  </section>
+
+  <section id="tutorialPanel" class="tutorial-overlay" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="tutorial-card"><button id="tutorialCloseBtn" type="button" aria-label="關閉" data-i18n-aria="close">×</button><img src="../../assets/weightplay-character-moss-shell-turtle-cutout.webp" alt="" /><h2 id="tutorialTitle" data-i18n="tutorialTitle">放好方塊，完成整排。</h2><ol><li data-i18n="tutorial1">選一組方塊，拖到棋盤空位。</li><li data-i18n="tutorial2">也可以先點方塊，再點想放的格子。</li><li data-i18n="tutorial3">整排或整列填滿時會自動消除。</li></ol><button id="tutorialStartBtn" class="primary-action" type="button" data-i18n="tutorialStart">開始第一關</button></div></section>
+
+  <div id="dragGhost" class="drag-ghost" hidden></div>
+  <script src="../../src/site-config.js"></script><script src="../../src/i18n.js"></script><script src="../../src/analytics.js"></script><script src="../../src/sound.js"></script><script src="../../src/edge-guard.js"></script>
+  <script src="locales.js"></script><script src="game.js"></script><script src="../../src/stage-selector-standard.js" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
+</body>
+</html>

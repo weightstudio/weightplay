@@ -368,6 +368,11 @@
     description: "Desliza todo el tablero, combina animales iguales y supera 30 misiones o continúa sin límite en el Bosque infinito.",
     meta: ["30 misiones", "Estrategia de cuadrícula", "Bosque infinito"]
   };
+  data["animal-abyss-diver"] = {
+    title: "Buzo del Abismo Animal", statusText: "Jugar ahora", type: "Aventura estratégica submarina",
+    description: "Guía a Nori por 30 rutas submarinas, administra oxígeno y energía, recupera reliquias y emerge a salvo.",
+    meta: ["30 rutas", "Riesgo y oxígeno", "Mejoras permanentes"]
+  };
   if (!window.WONDER_LOBBY) return;
   window.WONDER_LOBBY.platform.tagline.es = "Juega aventuras originales con animales para todas las edades.";
   window.WONDER_LOBBY.platform.subtitle.es = "Un mundo de juegos de animales en constante crecimiento para niños, familias y jugadores ocasionales.";

@@ -740,6 +740,7 @@
         focusCard?.focus({ preventScroll: true });
         scrollStageCardToCenter(focusCard, "auto");
       }
+      scheduleCenteredStageCard();
     });
   }
 
@@ -768,6 +769,38 @@
       return !best || distance < best.distance ? { card, distance } : best;
     }, null)?.card;
     scrollStageCardToCenter(nearest);
+  }
+
+  let centeredStageFrame = 0;
+  function updateCenteredStageCard() {
+    centeredStageFrame = 0;
+    const cards = [...nodes.stageGrid.querySelectorAll(".stage-card")];
+    if (!cards.length || !document.body.classList.contains("snack-stage")) return;
+    const railRect = nodes.stageGrid.getBoundingClientRect();
+    const railCenter = railRect.left + railRect.width / 2;
+    const nearest = cards.reduce((best, card) => {
+      const cardRect = card.getBoundingClientRect();
+      const distance = Math.abs(cardRect.left + cardRect.width / 2 - railCenter);
+      return !best || distance < best.distance ? { card, distance } : best;
+    }, null)?.card;
+    cards.forEach((card) => {
+      const centered = card === nearest;
+      card.classList.toggle("is-centered", centered);
+      if (centered) card.setAttribute("aria-current", "true");
+      else card.removeAttribute("aria-current");
+    });
+  }
+
+  function scheduleCenteredStageCard() {
+    if (centeredStageFrame) return;
+    centeredStageFrame = requestAnimationFrame(updateCenteredStageCard);
+  }
+
+  function installStageCenterCue() {
+    nodes.stageGrid.addEventListener("scroll", scheduleCenteredStageCard, { passive: true });
+    nodes.stageGrid.addEventListener("wonder:stage-snap", scheduleCenteredStageCard);
+    window.addEventListener("resize", scheduleCenteredStageCard, { passive: true });
+    window.visualViewport?.addEventListener("resize", scheduleCenteredStageCard, { passive: true });
   }
 
   function installStageDrag() {
@@ -1400,5 +1433,6 @@
     setLocale("en");
   }
   installStageDrag();
+  installStageCenterCue();
   installLoading();
 })();

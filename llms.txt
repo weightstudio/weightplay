@@ -92,6 +92,8 @@ WeightPlay covers these game and content clusters:
 - Starlink: https://weightplay.com/games/animal-starlight-trails/
 - One Line: https://weightplay.com/games/animal-one-line/
 - Animal Bubble Safari: https://weightplay.com/games/animal-bubble-safari/
+- Animal Abyss Diver: https://weightplay.com/games/animal-abyss-diver/
+- Animal 2048: Forest Evolution: https://weightplay.com/games/animal-2048/
 - Animal Habitat Mahjong: https://weightplay.com/games/animal-habitat-mahjong/
 
 ## Age And Skill Positioning

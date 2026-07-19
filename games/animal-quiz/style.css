@@ -321,11 +321,11 @@ a {
   gap: 12px;
   min-width: 0;
   min-height: 0;
-  padding: 4px max(44px, calc((100% - 280px) / 2));
+  padding: 4px max(44px, calc((100% - 264px) / 2));
   overflow-x: auto;
   overflow-y: hidden;
   scroll-snap-type: x mandatory;
-  scroll-padding-inline: max(44px, calc((100% - 280px) / 2));
+  scroll-padding-inline: max(44px, calc((100% - 264px) / 2));
   overscroll-behavior-x: contain;
   scrollbar-width: none;
   touch-action: pan-x;
@@ -337,10 +337,13 @@ a {
 
 .stage-card {
   display: grid;
-  gap: 7px;
-  flex: 0 0 min(280px, 100%);
-  min-height: 188px;
-  padding: 14px;
+  gap: 4px;
+  flex: 0 0 264px;
+  width: 264px;
+  height: 190px;
+  min-height: 190px;
+  max-height: 190px;
+  padding: 10px;
   border: 4px solid #386b2d;
   border-radius: 8px;
   background: #fffbea;
@@ -349,6 +352,7 @@ a {
   box-shadow: 0 7px 0 #6aa45c;
   scroll-snap-align: center;
   scroll-snap-stop: always;
+  overflow: hidden;
 }
 
 .stage-card.is-centered {
@@ -866,9 +870,6 @@ a {
   }
 
   body.quiz-stage-select .stage-card {
-    flex-basis: min(264px, 100%);
-    min-height: 202px;
-    max-height: 244px;
     align-content: center;
   }
 

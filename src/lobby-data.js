@@ -539,14 +539,13 @@ window.WONDER_LOBBY = {
     },
     {
       id: "animal-abyss-diver",
-      title: { en: "Animal Abyss Diver", "zh-Hant": "動物深淵潛行隊" },
-      status: "planned",
-      statusText: { en: "Coming Soon", "zh-Hant": "敬請期待" },
+      title: { en: "Animal Abyss Diver", "zh-Hant": "動物深淵潛航員" },
+      status: "playable",
+      statusText: { en: "Playable", "zh-Hant": "立即遊玩" },
       type: { en: "Route Risk Adventure", "zh-Hant": "深海路線冒險" },
       categories: ["Animal Games", "Strategy", "Adventure"],
       skills: ["Logic", "Focus", "Problem Solving"],
       href: "games/animal-abyss-diver/",
-      internalTrial: "index.html?trial=1",
       description: {
         en: "Choose a dive route, manage oxygen, recover deep-sea relics, and surface before the risk becomes too great.",
         "zh-Hant": "選擇潛水路線、管理氧氣、帶回深海遺物，並在風險過高前安全上浮。",

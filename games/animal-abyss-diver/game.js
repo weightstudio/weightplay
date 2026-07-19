@@ -280,7 +280,9 @@
     quitLeave:u("\u96e2\u958b\u672c\u8f2a")
   });
   const ROUTE_COUNT=30;
-  let locale = localStorage.getItem("weightPlayLocale") || "en";
+  const routeSegment=location.pathname.split("/").filter(Boolean)[0];
+  const routeLocale=({en:"en","zh-tw":"zh-Hant","zh-cn":"zh-Hans"})[routeSegment];
+  let locale = routeLocale || localStorage.getItem("weightPlayLocale") || "en";
   const defaultSave=()=>({rank:1,coins:0,unlocked:1,level:1,xp:0,statPoints:0,stats:{hp:0,attack:0,oxygen:0},tutorialDone:false});
   const whole=(value,fallback,min=0,max=Number.MAX_SAFE_INTEGER)=>Number.isFinite(value)?Math.max(min,Math.min(max,Math.trunc(value))):fallback;
   function normalizeSave(raw){
@@ -422,8 +424,10 @@
     hazard:{oxygen:-28,salvage:0,safe:false,intel:{loot:2,danger:3,cost:"22–32"},signal:"signalStrong",clues:["clueRope","clueSilent"],label:"outcomeHazard",feedback:"hitHazard"}
   };
   if(routes.length!==ROUTE_COUNT||routes.some(route=>route.encounters.length!==route.zones))throw new Error("Animal Abyss Diver authored route data is incomplete.");
-  const routeText=(route,key)=>locale==="zh-Hant"?route[`zh${key[0].toUpperCase()}${key.slice(1)}`]:route[key];
-  const t = (key, values={}) => Object.entries(values).reduce((value,[name,replacement]) => value.replace(`{${name}}`,replacement),(locale === "zh-Hant" ? zh : en)[key]);
+  const isChinese=()=>locale==="zh-Hant"||locale==="zh-Hans";
+  const simplify=(value)=>locale==="zh-Hans"&&window.WeightPlayI18n?.simplifyChineseText?window.WeightPlayI18n.simplifyChineseText(value):value;
+  const routeText=(route,key)=>simplify(isChinese()?route[`zh${key[0].toUpperCase()}${key.slice(1)}`]:route[key]);
+  const t = (key, values={}) => simplify(Object.entries(values).reduce((value,[name,replacement]) => value.replace(`{${name}}`,replacement),(isChinese() ? zh : en)[key]));
   const icon = name => `<i class="ui-icon icon-${name}" aria-hidden="true"></i>`;
   const maxHealth = () => 30 + save.stats.hp * 8;
   const diverAttack = () => 6 + save.stats.attack * 2;
@@ -444,7 +448,7 @@
   const wallet = () => window.WeightPlayWallet?.read?.().diamonds ?? 0, persist = () => localStorage.setItem(saveKey,JSON.stringify(save));
   function resultBackgroundNodes(){return [...document.querySelectorAll(".battle-canvas > :not(#result)")];}
   function setResultOwnership(active){resultBackgroundNodes().forEach(node=>{node.inert=active;if(active)node.setAttribute("aria-hidden","true");else node.removeAttribute("aria-hidden");});if(active)requestAnimationFrame(()=>$('nextBtn').focus({preventScroll:true}));}
-  function show(id){const resultActive=id==="result";$("mainScreen").classList.toggle("hidden",id!=="mainScreen");$("stageScreen").classList.toggle("hidden",id!=="stageScreen");$("battleShell").classList.toggle("hidden",id!=="battleShell"&&!resultActive);$("result").classList.toggle("hidden",!resultActive);$("mainHeader").classList.toggle("hidden",id!=="mainScreen");setResultOwnership(resultActive);}
+  function show(id){const resultActive=id==="result",activeViewport=id!=="mainScreen";document.body.classList.toggle("wp-mobile-game-mode",activeViewport);document.documentElement.classList.toggle("wp-mobile-game-mode",activeViewport);$("mainScreen").classList.toggle("hidden",id!=="mainScreen");$("stageScreen").classList.toggle("hidden",id!=="stageScreen");$("battleShell").classList.toggle("hidden",id!=="battleShell"&&!resultActive);$("result").classList.toggle("hidden",!resultActive);$("mainHeader").classList.toggle("hidden",id!=="mainScreen");setResultOwnership(resultActive);}
   function focusMain(){requestAnimationFrame(()=>$('startBtn').focus({preventScroll:true}));}
   function focusCurrentDiveDecision(){
     const candidates=state.fishActive?[$("dodgeLeftBtn"),$("pulseBtn")]:[$("leftGate"),$("rightGate"),$("surfaceBtn")];
@@ -688,7 +692,7 @@
     renderBattle();
     focusCurrentDiveDecision();
   }
-  function localize(){document.documentElement.lang=locale;document.title=`${t("title")} - Internal Trial`;$("title").textContent=t("title");$("languageLabel").textContent=t("language");$("localeSelect").value=locale;$("headline").textContent=t("headline");$("intro").textContent=t("intro");$("guideTitle").textContent=t("guideTitle");$("guideCopy").textContent=t("guideCopy");$("startBtn").textContent=t("start");$("stageTitle").textContent=t("stage");$("stageHint").textContent=t("stageHint");$("leftBtn").textContent=t("left");$("rightBtn").textContent=t("right");$("sonarBtn").textContent=t("sonarPowered");$("shieldBtn").textContent=t("shield");$("surfaceBtn").textContent=t("surface");$("coachTitle").textContent=t("coachTitle");$("coachStart").textContent=t("coachStart");renderCoach();$("helpBtn").ariaLabel=t("help");$("stageBack").ariaLabel=t("back");$("battleBack").ariaLabel=t("back");$("progress").textContent=`Lv.${save.level} · ${t("rank",{n:save.rank})} - ${t("coins",{n:save.coins})}`;renderRoutes();if(state.route){renderBattle();if(state.fishActive)renderFish();if(!$("upgradePanel").classList.contains("hidden"))renderUpgrade();}}
+  function localize(){document.documentElement.lang=locale;document.title=`${t("title")} - WeightPlay`;$("title").textContent=t("title");$("languageLabel").textContent=t("language");$("localeSelect").value=locale;$("headline").textContent=t("headline");$("intro").textContent=t("intro");$("guideTitle").textContent=t("guideTitle");$("guideCopy").textContent=t("guideCopy");$("startBtn").textContent=t("start");$("stageTitle").textContent=t("stage");$("stageHint").textContent=t("stageHint");$("leftBtn").textContent=t("left");$("rightBtn").textContent=t("right");$("sonarBtn").textContent=t("sonarPowered");$("shieldBtn").textContent=t("shield");$("surfaceBtn").textContent=t("surface");$("coachTitle").textContent=t("coachTitle");$("coachStart").textContent=t("coachStart");renderCoach();$("helpBtn").ariaLabel=t("help");$("stageBack").ariaLabel=t("back");$("battleBack").ariaLabel=t("back");$("progress").textContent=`Lv.${save.level} · ${t("rank",{n:save.rank})} - ${t("coins",{n:save.coins})}`;renderRoutes();if(state.route){renderBattle();if(state.fishActive)renderFish();if(!$("upgradePanel").classList.contains("hidden"))renderUpgrade();}}
   $("startBtn").onclick=()=>{show("stageScreen");renderRoutes();};$("stageBack").onclick=()=>show("mainScreen");$("battleBack").onclick=()=>{cancelDiveAsync();show("stageScreen");renderRoutes();};$("menuBtn").onclick=leaveDive;$("leftBtn").onclick=()=>move("left");$("rightBtn").onclick=()=>move("right");$("dodgeLeftBtn").onclick=attackFish;$("pulseBtn").onclick=escapeFish;$("helpBtn").onclick=()=>setCoach(true);$("coachStart").addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault();});$("coachStart").onclick=()=>{save.tutorialDone=true;persist();setCoach(false);setFeedback(`${icon("sonar")}<b>?</b>`,t("objectiveScan"));};$("sonarBtn").onclick=()=>{if(state.sonar){setFeedback(`${icon("sonar")}<b>✓</b>`,sonarMessage());return;}if(state.battery<2){setFeedback(`${icon("power")}<b>0</b>`,t("sonarNeed"));return;}state.battery-=2;state.sonar=true;setFeedback(`${icon("sonar")}<b>✓</b>`,sonarMessage());renderBattle();};$("shieldBtn").onclick=()=>{if(state.shieldArmed)return;if(state.battery<1){setFeedback(`${icon("power")}<b>0</b>`,t("shieldNeed"));return;}state.battery-=1;state.shieldArmed=true;setFeedback(`${icon("shield")}<b>✓</b>`,t("shieldArmed"));renderBattle();focusCurrentDiveDecision();};$("surfaceBtn").onclick=()=>finish("surface");$("beaconBtn").addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault();});$("beaconBtn").onclick=useBeacon;["upgradeHp","upgradeAttack","upgradeOxygen"].forEach(id=>$(id).addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault();}));$("upgradeHp").onclick=()=>allocateStat("hp");$("upgradeAttack").onclick=()=>allocateStat("attack");$("upgradeOxygen").onclick=()=>allocateStat("oxygen");$("upgradeDone").onclick=()=>{setUpgradeModal(false);renderBattle();};$("localeSelect").onchange=(event)=>{locale=event.target.value;localStorage.setItem("weightPlayLocale",locale);localize();};
   $("sonarBtn").onclick=()=>{const config=routeConfig(),cost=config.sonarCost??2;if(config.jammedZones?.includes(state.zone)){setFeedback(`${icon("sonar")}<b>×</b>`,routeText(config,"rule"));return;}if(state.sonar){setFeedback(`${icon("sonar")}<b>✓</b>`,sonarMessage());return;}if(state.battery<cost){setFeedback(`${icon("power")}<b>${state.battery}</b>`,t("sonarNeed").replace("2",String(cost)));return;}state.battery-=cost;state.sonar=true;setFeedback(`${icon("sonar")}<b>✓</b>`,sonarMessage());renderBattle();};
   $("shieldBtn").onclick=()=>{const config=routeConfig(),cost=config.shieldCost??1;if(state.shieldArmed)return;if(state.battery<cost){setFeedback(`${icon("power")}<b>${state.battery}</b>`,t("shieldNeed").replace("1",String(cost)));return;}state.battery-=cost;state.shieldArmed=true;setFeedback(`${icon("shield")}<b>✓</b>`,t("shieldArmed"));renderBattle();focusCurrentDiveDecision();};
@@ -755,7 +759,7 @@
     setSalvage(number){if(!state.route)return;state.salvage=Math.max(0,Math.trunc(number));renderBattle();},
     snapshot(){return{route:state.route,zone:state.zone,salvage:state.salvage,oxygen:state.oxygen,battery:state.battery,sonar:state.sonar,shieldArmed:state.shieldArmed,safeStreak:state.safeStreak};}
   });
-  const lobbyLabels = { en: "Back to lobby", "zh-Hant": u("\\u8fd4\\u56de\\u5927\\u5ef3") };
+  const lobbyLabels = { en: "Back to lobby", "zh-Hant": u("\\u8fd4\\u56de\\u5927\\u5ef3"), "zh-Hans": u("\\u8fd4\\u56de\\u5927\\u5385") };
   function syncMetadata() {
     document.title = `${t("title")} - WeightPlay`;
     $("homeLink").ariaLabel = lobbyLabels[locale] || lobbyLabels.en;

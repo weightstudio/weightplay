@@ -7214,4 +7214,81 @@
   localizedGameplayProfiles["zh-Hant"]["animal-2048"] = { gameplay: "全盤滑動合成策略", genre: ["益智", "策略", "邏輯", "動物"] };
   localizedGames["zh-Hans"]["animal-2048"] = { ...localizedGames["zh-Hant"]["animal-2048"], title: "动物 2048：森林进化", gameplay: "全盘滑动合成策略" };
   localizedGameplayProfiles["zh-Hans"]["animal-2048"] = { gameplay: "全盘滑动合成策略", genre: ["益智", "策略", "逻辑", "动物"] };
+
+  Object.assign(games, { "animal-abyss-diver": {
+    title: "Animal Abyss Diver",
+    difficulty: "Medium to Challenging",
+    time: "5-12 minutes per route",
+    gameplay: "Deep-Sea Route Risk Adventure",
+    genre: ["Strategy", "Adventure", "Risk Management", "Animal"],
+    skills: ["Logic", "Focus", "Problem Solving"],
+    guideKicker: "WeightPlay Original Game Guide",
+    guideTitleSuffix: "Game Guide",
+    noteTitle: "Player and Save Information",
+    hideScoreBands: true,
+    intro: "Animal Abyss Diver is a thirty-route underwater strategy adventure starring Bubble Fin Nori. Every zone offers a left and right target with different salvage, danger, and oxygen consequences. Read the visible signal estimates, decide when exact Sonar information is worth its shared battery cost, and surface before a profitable dive becomes an oxygen emergency.",
+    story: [
+      "Nori explores six layers of a bright coral abyss where old navigation relics were scattered among currents, air pockets, wrecks, and territorial sea life. The campaign begins on readable lantern shelves, then crosses resource reefs, clue-denial ruins, pressure waters, mastery trenches, and the final Heart of the Abyss. Each named route has its own relic, encounter order, fish positions, salvage target, and operating rule.",
+      "The goal is not to descend as far as possible at any cost. A successful diver knows when to collect one more cache, when to protect a fragile haul, when to preserve battery power for a fish encounter, and when to surface with partial salvage. Clearing Route 30 means Nori has recovered the Abyss Heart after mastering jammed Sonar, fragile cargo, safe-route streaks, pressure loss, and guardian sharks."
+    ],
+    systems: [
+      "Each zone places one target on the left and one on the right. Before choosing, both cards show estimated loot, danger, oxygen cost, an echo strength, and environmental clues. A target may contain a relic, a larger treasure cache, an oxygen pocket, a strong current, or a damaging trap. Nori remains centered until a deliberate lane choice is made.",
+      "An exact Sonar scan reveals the real outcome on both sides, but Sonar, the one-hit Shock Shield, and fish-combat pulse tools draw from the same four-point battery. Some routes alter those costs, jam Sonar in specified zones, or restore power through air pockets, relics, currents, or defeated guardians. Information and protection therefore compete with later combat readiness.",
+      "Territorial fish and deeper abyss sharks interrupt selected zones. Nori and the enemy each have one clearly labeled health bar. Attack uses the saved Attack stat and then allows a readable retaliation; Escape always succeeds but spends route-scaled oxygen and grants no experience or loot. Victories award experience and may add route-specific salvage.",
+      "Level-ups grant permanent stat points for Health, Attack, or Maximum Oxygen. Every allocation previews the old and new total, and all earned points must be assigned before the dive continues. These upgrades support different approaches without replacing route reading: more health helps combat, more attack shortens retaliation cycles, and more oxygen expands the margin for risky lanes.",
+      "Clearing a route requires reaching its authored salvage target across five to eight zones. Surfacing early safely banks a partial haul but does not unlock the next route. Missing the target or losing all oxygen keeps the current route available for another plan; an oxygen or combat defeat secures only part of the carried salvage.",
+      "The optional Emergency Beacon costs three shared WeightPlay Diamonds, can be confirmed only once per dive, and is disabled until oxygen is below its useful thirty-percent restore threshold. It is never required to clear the campaign. Route unlocks, Diver Rank, Salvage Coins, experience, permanent stats, and tutorial completion are stored locally in the current browser."
+    ],
+    how: [
+      "Start the game and drag the horizontal route rail until the mission you want is centered and glowing.",
+      "Read the mission rule, zone count, salvage target, risk, and unique relic before entering Battle.",
+      "Compare the left and right target estimates and environmental clues; use Sonar only when exact information is worth the battery cost.",
+      "Choose a lane, resolve its oxygen and salvage result, and keep enough power for Shield or later fish encounters.",
+      "During a fish encounter, Attack to win experience or Escape by paying the displayed oxygen cost.",
+      "Reach the salvage target and finish the route, or Surface at a legal checkpoint to bank a partial haul safely.",
+      "Spend earned stat points after level-ups, then continue to the next zone or return to Dive Routes from settlement."
+    ],
+    strategyTips: [
+      "Treat oxygen as a route budget. A high-loot cache is useful only if the remaining zones and possible escape still fit that budget.",
+      "Do not scan every zone automatically. Strong clues can preserve battery for a Shield or fish pulse, while jammed routes require direct inference.",
+      "If a mission rewards safe streaks, plan two consecutive low-risk choices instead of alternating a strong gain with a preventable hazard.",
+      "Fragile-cargo routes punish traps after a successful haul. Once the target is close, protection or an early legal Surface can be more valuable than another cache.",
+      "Before entering a guardian zone, compare current health, attack, oxygen, battery, and the guaranteed Escape cost rather than judging only the enemy picture.",
+      "Permanent upgrades help recover from mistakes, but authored rules remain decisive. Replaying with a different tool budget is often stronger than only increasing a stat."
+    ],
+    progression: [
+      "Routes 1-5 teach readable signals, air pockets, current power, the first automatic scan, safe streaks, and a fair tutorial fish. Routes 6-10 introduce Sonar jams, fragile cargo, opening Shields, stronger power recovery, and multi-fish salvage rewards.",
+      "Routes 11-15 combine clue denial, checkpoint-only Surfacing, streak-and-cargo tradeoffs, altered tool costs, and the first guardian sharks. Routes 16-20 add pressure oxygen tax, jammed-current recovery, opening protection, stronger vents, and repeated predators.",
+      "Routes 21-25 demand even-zone Sonar planning, cargo vows, expensive scans, pressure spirals, and four-guardian treasure waters. Routes 26-30 combine airlocks, automatic scans with fragile cargo, jammed-current streaks, opening Shields, and the final multi-system Abyss Heart route."
+    ],
+    designNote: "The campaign uses thirty authored encounter signatures rather than copying one oxygen curve. Difficulty changes what information is reliable, where Surfacing is legal, how tools share power, whether cargo can break, and what guardian fights contribute. Stage, Battle, and Result use one responsive logical Canvas with a centered 920-pixel desktop maximum and a separate 56-pixel General reserve. Touch, mouse, and keyboard decisions share the same route state. Combat is turn based so health changes remain readable, and the settlement always offers a direct return to Dive Routes. The game requires no account and does not upload local progression.",
+    parent: "No account is required. Route unlocks, Diver Rank, Salvage Coins, level, experience, permanent stats, and tutorial completion are stored only in this browser. Clearing site data or changing browsers may create a separate save. The optional Emergency Beacon uses three shared Diamonds only after a clear confirmation and is never required to complete all 30 routes.",
+    faq: [
+      ["How many routes are included?", "There are 30 named routes in six five-route chapters, each with an authored encounter order and mission rule."],
+      ["What does Sonar reveal?", "It reveals the exact left and right outcomes for the current zone; ordinary cards otherwise show estimates and environmental clues."],
+      ["Why do Sonar, Shield, and fish tools share power?", "The shared four-point battery makes information, protection, and combat counterplay part of one route plan."],
+      ["Can I surface at any time?", "Most routes allow it between encounters, but checkpoint missions permit Surface only at the zones named by their rule."],
+      ["Does early Surface clear a route?", "No. It safely banks partial salvage, while only reaching the route target unlocks the next mission."],
+      ["Is the Emergency Beacon required?", "No. It is an optional one-use Diamond recovery and is disabled when it would provide no oxygen benefit."],
+      ["What is saved?", "Route unlocks, Rank, Salvage Coins, level, experience, permanent stats, and tutorial completion are stored in this browser."],
+      ["What happens after Route 30?", "Route 30 remains replayable and settlement returns to Dive Routes; the game never offers a nonexistent Route 31."]
+    ]
+  } });
+  gameplayProfiles["animal-abyss-diver"] = { gameplay: "Deep-Sea Route Risk Adventure", genre: ["Strategy", "Adventure", "Risk Management", "Animal"] };
+
+  localizedGames["zh-Hant"]["animal-abyss-diver"] = {
+    ...games["animal-abyss-diver"], title: "動物深淵潛航員", difficulty: "中等至具挑戰性", time: "每條路線約 5 至 12 分鐘", gameplay: "深海路線風險冒險", genre: ["策略", "冒險", "風險管理", "動物"], skills: ["邏輯", "專注", "問題解決"], guideTitleSuffix: "遊戲指南", noteTitle: "玩家與存檔說明",
+    intro: "《動物深淵潛航員》是一款由泡泡鰭諾里擔任主角的 30 路線深海策略冒險。每個海域各有左右目標，收益、危險與氧耗都不同。玩家要閱讀可見估計，判斷何時值得花共用電力取得精準聲納資訊，並在高收益潛航變成缺氧危機前安全上浮。",
+    story: ["諾里前往明亮的珊瑚深淵，尋找散落在亂流、氧氣泡、沉船與領域魚之間的古老導航遺物。六個章節依序穿越可判讀淺台、資源礁區、線索干擾遺跡、水壓海域、精通海溝與最終深淵；每條路線都有自己的名稱、遺物、遭遇順序、魚類位置、打撈目標與特殊規則。", "真正的目標不是不計代價一直下潛。成功的潛航員要知道何時多拿一個寶藏、何時保護易碎貨物、何時替魚戰保留電力，以及何時帶著部分成果上浮。完成第 30 路線代表諾里已掌握聲納干擾、易碎貨物、安全連線、水壓與鯊魚守衛，成功取回深淵心核。"],
+    systems: ["每個海域會在左右各放一個目標。選擇前，卡片會顯示收益、危險、氧耗估計、回聲強度與環境線索；目標可能是遺物、大型寶藏、氧氣泡、強勁亂流或陷阱。諾里會留在中央等待玩家明確選擇。", "精準聲納會揭露左右兩側的實際結果，但聲納、一次性衝擊盾與魚戰工具共用四點電力。有些路線會改變工具成本、干擾指定海域，或讓氧氣泡、遺物、亂流和守衛戰回復電力，因此情報、防護與戰鬥準備會互相競爭。", "領域魚與深淵鯊魚會在指定海域阻擋路線。諾里和敵人各自只有一條清楚標示的生命條；攻擊使用已保存的攻擊能力，接著敵人會在可讀停頓後反擊。逃跑一定成功，但會消耗該路線標示的氧氣，也不會取得經驗或戰利品。", "升級會提供永久能力點，可分配到生命、攻擊或氧氣上限。每次選擇都會先顯示目前值與提升後數值，而且必須分配完本次取得的點數才能繼續。能力會支援不同玩法，但無法取代路線判讀。", "過關必須在五至八個海域中達成該路線指定的打撈目標。提早上浮可以安全保存部分成果，但不會解鎖下一條路線；未達目標或氧氣歸零時仍可重新規劃，缺氧或魚戰失敗只會保住部分攜帶品。", "緊急信標是可選的一次性三鑽石回復，只有氧氣低於有實際收益的 30% 門檻時才能確認，並不是通過戰役的必要條件。路線、等級、打撈幣、經驗、永久能力與教學狀態只保存在目前瀏覽器。"],
+    how: ["按開始遊戲，在水平路線軌道拖曳到想玩的發光任務。", "進入戰鬥前閱讀規則、海域數、打撈目標、風險與獨特遺物。", "比較左右目標的估計與環境線索；只有在精準資訊值得消耗電力時使用聲納。", "選擇航線並結算氧氣與打撈，同時替護盾或後續魚戰保留電力。", "遭遇魚類時選擇攻擊取得經驗，或支付畫面標示的氧氣安全逃跑。", "達成打撈目標完成路線，或在合法檢查點上浮保存部分成果。", "升級時分配所有能力點，之後繼續潛航或從結算直接返回潛航路線。"],
+    strategyTips: ["把氧氣視為整條路線的預算；寶藏只有在剩餘海域與可能逃跑仍負擔得起時才有價值。", "不要每個海域都自動掃描。清楚線索能替護盾或魚戰保留電力，而干擾路線本來就要求直接推理。", "安全連線任務應規劃連續兩次低風險選擇，不要用一次可避免的危險打斷獎勵。", "易碎貨物路線會在成功打撈後懲罰陷阱；接近目標時，防護或提早在合法位置上浮可能更划算。", "進入守衛海域前，同時比較生命、攻擊、氧氣、電力和固定逃跑成本，不要只看敵人圖片。", "永久能力能增加容錯，但每條任務規則才是關鍵；重新安排工具預算通常比只提升數值更有效。"],
+    progression: ["第 1 至 5 路線教清楚訊號、氧氣泡、亂流充電、開場掃描、安全連線與公平的新手魚戰；第 6 至 10 路線加入聲納干擾、易碎貨物、開場護盾、較強回電與多魚打撈。", "第 11 至 15 路線結合線索封鎖、限定檢查點上浮、連線與貨物取捨、工具成本改變和首批鯊魚；第 16 至 20 路線加入水壓耗氧、干擾區亂流回電、開場防護、強力熱泉與連續獵食者。", "第 21 至 25 路線要求偶數海域聲納、護貨誓約、昂貴掃描、水壓螺旋和四守衛寶藏區；第 26 至 30 路線綜合氣閘、開場掃描與易碎貨物、干擾亂流連線、開場護盾及最終深淵心核。"],
+    designNote: "30 條路線使用不同的遭遇簽章，不是把同一條氧氣曲線複製後加數值。難度會改變可靠資訊、上浮位置、工具電力、貨物風險與守衛獎勵。Stage、Battle 與 Result 共用響應式邏輯 Canvas，桌面最高寬度為 920px，General 的 56px 預留區獨立在下方。觸控、滑鼠和鍵盤共用同一套狀態；魚戰採回合制，讓生命變化清楚可讀；所有結算都能直接返回潛航路線。遊戲不需要帳號，也不會上傳本機進度。",
+    parent: "不需要帳號。路線解鎖、潛航員等級、打撈幣、等級、經驗、永久能力與教學完成狀態只保存在目前瀏覽器；清除網站資料或更換瀏覽器可能建立另一份存檔。緊急信標只會在明確確認後使用三顆共用鑽石，而且完成全部 30 條路線不需要使用它。",
+    faq: [["共有多少條路線？", "共有六章 30 條具名路線，每條都有固定遭遇順序與任務規則。"], ["聲納會揭露什麼？", "它會顯示目前海域左右兩側的確切結果；未掃描時則顯示估計與環境線索。"], ["為什麼聲納、護盾與魚戰工具共用電力？", "共用四點電力讓情報、防護與戰鬥反制成為同一個路線規劃。"], ["隨時都能上浮嗎？", "大部分路線可以在遭遇之間上浮，但檢查點任務只能在規則指定的海域上浮。"], ["提早上浮會過關嗎？", "不會；它只會安全保存部分成果，必須達成打撈目標才會解鎖下一路線。"], ["緊急信標是必要的嗎？", "不是，它是可選的一次性鑽石回復，而且沒有氧氣收益時會停用。"], ["哪些內容會保存？", "路線、等級、打撈幣、經驗、永久能力與教學完成狀態會保存在目前瀏覽器。"], ["第 30 路線之後呢？", "第 30 路線仍可重玩，結算會返回潛航路線，不會出現不存在的第 31 路線。"]]
+  };
+  localizedGameplayProfiles["zh-Hant"]["animal-abyss-diver"] = { gameplay: "深海路線風險冒險", genre: ["策略", "冒險", "風險管理", "動物"] };
+  localizedGames["zh-Hans"]["animal-abyss-diver"] = { ...localizedGames["zh-Hant"]["animal-abyss-diver"], title: "动物深渊潜航员", gameplay: "深海路线风险冒险" };
+  localizedGameplayProfiles["zh-Hans"]["animal-abyss-diver"] = { gameplay: "深海路线风险冒险", genre: ["策略", "冒险", "风险管理", "动物"] };
 })();

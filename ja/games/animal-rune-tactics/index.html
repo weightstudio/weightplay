@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <base href="/games/animal-rune-tactics/" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="robots" content="index,follow" />
+    <meta name="theme-color" content="#11251f" />
+    <meta name="description" content="どうぶつルーン戦術は、仲間の位置と行動順を決め、ルーン連鎖で敵を倒すターン制戦術を楽しめるWeightPlayオリジナル作品です。画面に出る手がかりを読み、自分で次の一手を決めながら進めます。" />
+    <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:type" content="game" />
+    <meta property="og:title" content="どうぶつルーン戦術 | WeightPlay" />
+    <meta property="og:description" content="どうぶつルーン戦術は、仲間の位置と行動順を決め、ルーン連鎖で敵を倒すターン制戦術を楽しめるWeightPlayオリジナル作品です。画面に出る手がかりを読み、自分で次の一手を決めながら進めます。" />
+    <meta property="og:url" content="https://weightplay.com/ja/games/animal-rune-tactics/" />
+    <meta property="og:image" content="https://weightplay.com/assets/animal-rune-tactics-cover.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="どうぶつルーン戦術 | WeightPlay" />
+    <meta name="twitter:description" content="どうぶつルーン戦術は、仲間の位置と行動順を決め、ルーン連鎖で敵を倒すターン制戦術を楽しめるWeightPlayオリジナル作品です。画面に出る手がかりを読み、自分で次の一手を決めながら進めます。" />
+    <meta name="twitter:image" content="https://weightplay.com/assets/animal-rune-tactics-cover.png" />
+    <title>どうぶつルーン戦術 | WeightPlay</title>
+    <link rel="canonical" href="https://weightplay.com/ja/games/animal-rune-tactics/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-rune-tactics/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-rune-tactics/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-rune-tactics/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/animal-rune-tactics/" />
+    <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/animal-rune-tactics/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-rune-tactics/" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "どうぶつルーン戦術",
+  "alternateName": "動物符文戰棋",
+  "url": "https://weightplay.com/ja/games/animal-rune-tactics/",
+  "image": "https://weightplay.com/assets/animal-rune-tactics-cover.png",
+  "description": "どうぶつルーン戦術は、仲間の位置と行動順を決め、ルーン連鎖で敵を倒すターン制戦術を楽しめるWeightPlayオリジナル作品です。画面に出る手がかりを読み、自分で次の一手を決めながら進めます。",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio",
+    "url": "https://weightplay.com/"
+  },
+  "inLanguage": "ja",
+  "isAccessibleForFree": true,
+  "operatingSystem": "Web Browser",
+  "genre": [
+    "Strategy",
+    "Tactics",
+    "Animal"
+  ],
+  "audience": {
+    "@type": "PeopleAudience",
+    "suggestedMinAge": 13
+  }
+}
+    </script>
+    <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
+    <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
+    <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
+    <link rel="stylesheet" href="style.css?v=20260719-rune-stage-highlight1" />
+  </head>
+  <body data-tutorial-auto-show="false">
+    <main class="rune-app" data-no-mobile-immersive="true" data-wp-logical-battle-canvas>
+      <header class="topbar">
+        <a id="backBtn" class="back-btn" data-wp-return="main" href="/" aria-label="Back to lobby"><span>&larr;</span><img src="../../assets/weightplay-logo.png" alt="" /></a>
+        <div class="brand">
+          <span>WeightPlay</span>
+          <h1 data-ui="title">どうぶつルーン戦術</h1>
+        </div>
+        <label class="locale">
+          <span data-ui="language">Language</span>
+          <select id="localeSelect" aria-label="Language">
+            <option value="en">English</option>
+            <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
+            <option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option>
+          </select>
+        </label>
+        <button id="pauseBtn" class="pause-toggle" type="button" aria-controls="pausePanel" aria-expanded="false" aria-label="Pause">&#8545;</button>
+      </header>
+
+      <section id="loadingPanel" class="loading-panel" aria-live="polite">
+        <div class="loading-content">
+          <h2 data-ui="title">Animal Rune Tactics</h2>
+          <div class="loading-bar"><div id="loadingFill" class="loading-fill"></div></div>
+          <span id="loadingText" class="loading-percentage">0%</span>
+        </div>
+      </section>
+
+      <section id="menuPanel" class="panel menu-panel">
+        <img class="cover" src="../../assets/animal-rune-tactics-cover.webp" alt="" />
+        <div class="menu-copy">
+          <strong data-ui="menuTitle">Command the Rune Squad.</strong>
+          <span data-ui="menuHint">Choose a mission, move animal heroes on the rune grid, and clear enemies with smart positioning.</span>
+          <div class="profile-grid" aria-live="polite">
+            <div><span data-ui="profileLevel">Level</span><b id="profileLevel">1</b></div>
+            <div><span data-ui="profileXp">XP</span><b id="profileXp">0/100</b></div>
+            <div><span data-ui="profileBest">Best Mission</span><b id="profileBest">1</b></div>
+            <div><span data-ui="profileRunes">Runes</span><b id="profileRunes">0</b></div>
+          </div>
+          <div id="growthSummary" class="growth-summary" aria-live="polite"></div>
+          <div class="hero-upgrade-list">
+            <div class="section-head">
+              <strong data-ui="heroTrainingTitle">Hero Training</strong>
+              <small data-ui="heroTrainingHint">Spend runes to permanently upgrade each animal hero.</small>
+            </div>
+            <div id="heroUpgradeGrid" class="hero-upgrade-grid"></div>
+          </div>
+          <div class="mission-list">
+            <div class="section-head">
+              <strong data-ui="missionSelect">Choose Mission</strong>
+              <small data-ui="missionHint">Unlocked missions are saved on this device.</small>
+            </div>
+            <div id="missionGrid" class="mission-grid"></div>
+          </div>
+          <div class="diamond-card">
+            <div>
+              <strong data-ui="trainingTitle">Training Slot</strong>
+              <small data-ui="trainingText">Permanent: heroes start each mission with +1 rune energy.</small>
+            </div>
+            <button id="trainingBtn" type="button">
+              <img src="../../assets/weightplay-diamond.svg" alt="" />
+              <span id="trainingCost">18</span>
+            </button>
+            <small id="trainingStatus" class="status-line"></small>
+          </div>
+        </div>
+      </section>
+
+      <section id="gamePanel" class="panel game-panel is-hidden">
+        <div class="hud">
+          <div><span data-ui="enemiesLeft">Enemies</span><b id="enemyCountText">0/0</b></div>
+        </div>
+
+        <div class="battle-status-row">
+          <p id="battleLog" class="battle-log" aria-live="polite"></p>
+          <div class="battle-secondary" aria-label="Battle details">
+            <span><span data-ui="mission">Mission</span> <b id="missionText">1</b></span>
+            <span><span data-ui="turn">Turn</span> <b id="turnText">1</b></span>
+          </div>
+        </div>
+
+        <div class="battle-shell">
+          <img class="arena-bg" src="../../assets/animal-rune-tactics-arena-bg.webp" alt="" />
+          <div id="grid" class="tactic-grid" role="grid" aria-rowcount="4" aria-colcount="3" aria-label="Rune tactics board"></div>
+          <div id="fxLayer" class="fx-layer" aria-hidden="true"></div>
+        </div>
+
+        <div class="battle-info">
+          <div id="turnRoster" class="turn-roster" aria-live="polite"></div>
+          <div id="selectedCard" class="selected-card" aria-live="polite"></div>
+          <div class="actions">
+            <button id="attackBtn" type="button" data-ui="attack">Attack</button>
+            <button id="guardBtn" type="button" data-ui="guard">Guard</button>
+            <button id="skillBtn" type="button" data-ui="skill">Skill</button>
+            <button id="endTurnBtn" type="button" data-ui="endTurn">End Turn</button>
+          </div>
+        </div>
+      </section>
+      <section id="pausePanel" class="panel overlay-panel is-hidden" role="dialog" aria-modal="true" aria-labelledby="pauseTitle">
+        <div class="overlay-card pause-card">
+          <h2 id="pauseTitle" data-ui="pauseTitle">Battle Paused</h2>
+          <p data-ui="pauseHint">The enemy turn and every pending action stay frozen until you continue.</p>
+          <div class="pause-actions">
+            <button id="resumeBtn" class="primary-btn" type="button" data-ui="resume">Resume</button>
+            <button id="pauseMenuBtn" class="secondary-btn" type="button" data-ui="pauseMenu">Back to Missions</button>
+          </div>
+        </div>
+      </section>
+      <section id="rewardPanel" class="panel overlay-panel is-hidden" role="dialog" aria-modal="true" aria-labelledby="rewardTitle" aria-live="polite">
+        <div class="overlay-card">
+          <h2 id="rewardTitle" data-ui="chooseReward">Choose a Rune Reward</h2>
+          <div id="rewardCards" class="reward-cards"></div>
+          <button id="rerollBtn" class="secondary-btn" type="button">
+            <img src="../../assets/weightplay-diamond.svg" alt="" />
+            <span data-ui="reroll">Reroll 3</span>
+          </button>
+        </div>
+      </section>
+
+      <section id="resultPanel" class="panel overlay-panel is-hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultText" aria-live="polite">
+        <div class="overlay-card">
+          <h2 id="resultTitle">Mission Clear</h2>
+          <p id="resultText"></p>
+          <div class="result-progress" aria-live="polite">
+            <strong data-ui="resultProgressTitle">Saved Progress</strong>
+            <span id="resultRewardText"></span>
+            <span id="resultProgressText"></span>
+            <em id="resultNextText"></em>
+          </div>
+          <div class="skill-report">
+            <strong data-ui="skillReport">Skill Report</strong>
+            <span id="skillReportText"></span>
+          </div>
+          <div class="result-actions">
+            <button id="nextBtn" class="primary-btn" type="button" data-ui="nextMission">Next Mission</button>
+            <button id="retryBtn" class="secondary-btn" type="button" data-ui="retry">Retry</button>
+            <button id="menuBtn" class="secondary-btn" type="button" data-ui="menu">Back to Missions</button>
+          </div>
+        </div>
+      </section>
+    </main>
+    <!-- adsense-static-guide:start -->
+    <section class="game-page-info game-page-info-static" aria-label="どうぶつルーン戦術 のゲーム情報">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay ゲームガイド</span><h2>どうぶつルーン戦術</h2><p>どうぶつルーン戦術は、仲間の位置と行動順を決め、ルーン連鎖で敵を倒すターン制戦術を楽しめるWeightPlayオリジナル作品です。画面に出る手がかりを読み、自分で次の一手を決めながら進めます。</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>ゲーム内容</span><strong>Turn-Based Squad Tactics</strong></div><div class="game-info-fact"><span>ジャンル</span><strong>Strategy · Tactics · Animal</strong></div><div class="game-info-fact"><span>難易度</span><strong>むずかしい</strong></div><div class="game-info-fact"><span>目安時間</span><strong>8-15 分 per mission</strong></div><div class="game-info-fact"><span>育てる力</span><strong>論理力 · 問題解決 · 集中 · 計画力</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>世界とミッション</h3><p>この冒険では、プレイヤーが動物の仲間を助ける案内役になります。目的を達成するには、目の前の状況を観察し、急がずに選択の結果を確かめることが大切です。</p>
+<p>各ステージや場面には新しい条件が加わります。成功はただ先へ進むことではなく、仲間の世界を安全に整え、次の挑戦へつながる記録を残すことを意味します。</p></div>
+      <div class="game-info-section"><h3>ゲームのしくみ</h3><p>1回のプレイでは、仲間の位置と行動順を決め、ルーン連鎖で敵を倒すターン制戦術。表示される目標、残りの機会、相手や障害物の動きを確認してから操作してください。</p>
+<p>進行すると新しい組み合わせ、道具、敵、またはルールが現れます。結果画面では達成内容を確認して、次へ進むか同じ課題をもう一度試せます。</p>
+<p>保存される進行はこのブラウザ内だけに残ります。ログインは必要ありません。</p></div>
+      <div class="game-info-section"><h3>遊び方</h3><ol><li>メイン画面でスタートを選びます。</li><li>ステージがある作品では、開放済みのカードから挑戦を選びます。</li><li>画面のヒントと目標を読んで、タップ、ドラッグ、またはキーボードで操作します。</li><li>結果を確認し、次の挑戦またはリトライを選びます。</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>攻略のヒント</h3><ul><li>最初に目標と失敗条件を確認してから動きましょう。</li><li>一度に多くを急がず、手がかりが変わった場面で次の選択を考えましょう。</li><li>うまくいかなかった時は、直前の選択を見直して別の順番や位置を試しましょう。</li></ul></div>
+      <div class="game-info-section"><h3>進行と難易度</h3><p>序盤は基本操作と読みやすい目標を紹介します。中盤からは複数の条件を組み合わせ、後半ではこれまで覚えた選択を続けて使う場面が増えます。</p>
+<p>数字だけを大きくするのではなく、観察、位置、順番、タイミングを使い分けるほど安定して進める構成です。</p></div>
+      <div class="game-info-section"><h3>デザインノート</h3><p>短いセッションでも、プレイヤー自身の判断が結果につながるよう設計しました。タッチ、マウス、キーボードで同じ目的に取り組め、画面の読みやすさと再挑戦のしやすさを大切にしています。</p></div>
+      <div class="game-info-section game-info-parent"><h3>保護者の方へ</h3><p>このゲームはブラウザで遊べ、基本プレイにログインは必要ありません。進行やスコアはこの端末のブラウザに保存されます。表示される記録はゲーム内の振り返りであり、能力、医療、学習の正式な評価ではありません。</p></div>
+      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>無料で遊べますか？</dt><dd>はい。ブラウザで基本プレイを始められ、ログインは必要ありません。</dd></div><div><dt>進行は保存されますか？</dt><dd>対応する進行はこのブラウザにローカル保存されます。ブラウザのデータを消すと失われる場合があります。</dd></div><div><dt>スマートフォンでも遊べますか？</dt><dd>はい。タップとドラッグを使える画面に対応しています。</dd></div><div><dt>うまく進めない時は？</dt><dd>目標とヒントを確認し、位置、順番、またはタイミングを変えて再挑戦してください。</dd></div><div><dt>ゲームの記録は正式な能力テストですか？</dt><dd>いいえ。楽しむためのゲーム内記録であり、正式な評価ではありません。</dd></div><div><dt>アカウントは必要ですか？</dt><dd>いいえ。通常のプレイにアカウントは必要ありません。</dd></div></dl></div>
+    </div>
+  </section>
+    <!-- adsense-static-guide:end -->
+    <div class="battle-ad-reserve" aria-hidden="true"></div>
+
+    <script src="/src/site-config.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/version.js?v=20260701-version2"></script>
+    <script src="../../src/analytics.js?v=20260701-analytics2"></script>
+    <script>window.WonderAnalytics?.track("game_view", { game_id: "animal-rune-tactics", release_state: "release_candidate" });</script>
+    <script src="../../src/sound.js?v=20260701-labels1"></script>
+    <script src="../../src/edge-guard.js?v=20260710-mobile-play-shell2"></script>
+    <script src="/src/i18n-ja.js?v=20260719-ja1"></script>
+  <script src="/src/i18n.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
+    <script src="../../src/wallet.js?v=20260701-wallet1"></script>
+    <script src="game.js?v=20260719-rune-stage-highlight1"></script>
+    <script src="../../src/battle-canvas-standard.js?v=20260719-responsive-canvas1"></script>
+    <script>
+      (() => {
+        const loadGameInfo = () => {
+          if (document.querySelector("script[data-rune-game-info]")) return;
+          const script = document.createElement("script");
+          script.src = "../../src/game-page-info.js?v=20260717-zh-hans1";
+          script.dataset.runeGameInfo = "idle";
+          script.async = true;
+          document.body.appendChild(script);
+        };
+        const schedule = () => {
+          if ("requestIdleCallback" in window) {
+            window.requestIdleCallback(loadGameInfo, { timeout: 1200 });
+          } else {
+            window.setTimeout(loadGameInfo, 300);
+          }
+        };
+        if (document.readyState === "complete") schedule();
+        else window.addEventListener("load", schedule, { once: true });
+      })();
+    </script>
+    <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="どうぶつルーン戦術";document.title="どうぶつルーン戦術 | WeightPlay";},{once:true});</script>
+</body>
+</html>
