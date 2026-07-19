@@ -1104,8 +1104,8 @@
     const viewport = window.visualViewport;
     const layoutWidth = Math.max(1, document.documentElement.clientWidth || 0, innerWidth || 0, viewport?.width || 0);
     const viewportHeight = Math.max(1, document.documentElement.clientHeight || 0, innerHeight || 0, viewport?.height || 0);
-    const viewportWidth = Math.min(layoutWidth, 920);
-    const frameLeft = Math.max(0, (layoutWidth - viewportWidth) / 2);
+    const viewportWidth = layoutWidth;
+    const frameLeft = 0;
     const shell = document.querySelector(".snack-game");
     shell?.classList.remove("weightplay-active-viewport");
     const scale = Math.min(Math.max(1, viewportWidth) / 390, Math.max(1, viewportHeight) / 788);

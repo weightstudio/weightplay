@@ -799,6 +799,8 @@
   let quitDecisionOpen = false;
   let skinPurchasePending = false;
   let skinPurchaseTimer = 0;
+  let skinPurchaseDueAt = 0;
+  let skinPurchaseRemaining = 0;
   let stageRenderVersion = 0;
   let stageBrowseFrame = 0;
 
@@ -1747,9 +1749,7 @@
   function setStageTab(tab) {
     const training = tab === "training";
     if (!training) {
-      skinPurchasePending = false;
-      clearTimeout(skinPurchaseTimer);
-      skinPurchaseTimer = 0;
+      clearSkinPurchaseDecision();
       clearTrainingStageCanvas();
     }
     nodes.stageTabBtn?.classList.toggle("is-active", !training);
@@ -1896,6 +1896,43 @@
     }
   }
 
+  function clearSkinPurchaseDecision() {
+    skinPurchasePending = false;
+    clearTimeout(skinPurchaseTimer);
+    skinPurchaseTimer = 0;
+    skinPurchaseDueAt = 0;
+    skinPurchaseRemaining = 0;
+  }
+
+  function expireSkinPurchaseDecision() {
+    clearSkinPurchaseDecision();
+    renderCosmeticSection();
+  }
+
+  function armSkinPurchaseDecision(delay = 5000) {
+    clearTimeout(skinPurchaseTimer);
+    skinPurchaseRemaining = Math.max(0, delay);
+    skinPurchaseDueAt = Date.now() + skinPurchaseRemaining;
+    skinPurchaseTimer = window.setTimeout(expireSkinPurchaseDecision, skinPurchaseRemaining);
+  }
+
+  function suspendSkinPurchaseDecision() {
+    if (!skinPurchasePending || !skinPurchaseTimer) return;
+    skinPurchaseRemaining = Math.max(0, skinPurchaseDueAt - Date.now());
+    clearTimeout(skinPurchaseTimer);
+    skinPurchaseTimer = 0;
+    skinPurchaseDueAt = 0;
+  }
+
+  function resumeSkinPurchaseDecision() {
+    if (!skinPurchasePending || skinPurchaseTimer || document.hidden) return;
+    if (skinPurchaseRemaining <= 0) {
+      expireSkinPurchaseDecision();
+      return;
+    }
+    armSkinPurchaseDecision(skinPurchaseRemaining);
+  }
+
   function handleBuySkin() {
     initAudio();
     const balance = getWalletDiamonds();
@@ -1905,24 +1942,23 @@
         nodes.buySkinBtn.textContent = message;
         nodes.buySkinBtn.setAttribute("aria-label", message);
         clearTimeout(skinPurchaseTimer);
-        skinPurchaseTimer = window.setTimeout(renderCosmeticSection, 5000);
+        skinPurchaseDueAt = 0;
+        skinPurchaseRemaining = 0;
+        skinPurchaseTimer = window.setTimeout(() => {
+          skinPurchaseTimer = 0;
+          renderCosmeticSection();
+        }, 5000);
         playSynth("click");
         return;
       }
       skinPurchasePending = true;
-      clearTimeout(skinPurchaseTimer);
-      skinPurchaseTimer = window.setTimeout(() => {
-        skinPurchasePending = false;
-        renderCosmeticSection();
-      }, 5000);
+      armSkinPurchaseDecision();
       renderCosmeticSection();
       nodes.buySkinBtn.focus({ preventScroll: true });
       playSynth("click");
       return;
     }
-    skinPurchasePending = false;
-    clearTimeout(skinPurchaseTimer);
-    skinPurchaseTimer = 0;
+    clearSkinPurchaseDecision();
     if (balance < 15) {
       renderCosmeticSection();
       return;
@@ -4339,11 +4375,13 @@
     });
 
     const suspendBackgroundCombat = () => {
+      suspendSkinPurchaseDecision();
       if (!state.combat.animating) return;
       combatSuspendedForBackground = true;
       cancelAnimationFrame(animationId);
     };
     const resumeBackgroundCombat = () => {
+      resumeSkinPurchaseDecision();
       if (!combatSuspendedForBackground || !state.combat.animating || document.hidden || quitDecisionOpen) return;
       combatSuspendedForBackground = false;
       animationId = requestAnimationFrame(runCombatAnimation);

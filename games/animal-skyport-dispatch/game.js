@@ -95,6 +95,7 @@
   const shiftConfig = [null, {goal:4, parts:2, stormEvery:0, coin:24, stamps:1}, {goal:6, parts:2, stormEvery:0, coin:36, stamps:1}, {goal:7, parts:2, stormEvery:3, coin:48, stamps:2}, {goal:8, parts:4, stormEvery:2, coin:62, stamps:2}, {goal:10, parts:5, stormEvery:2, coin:80, stamps:3}];
   const saved = JSON.parse(localStorage.getItem(saveKey) || '{}');
   let locale = localStorage.getItem('weightPlayLocale') || 'en';
+  if (!strings[locale]) locale = 'en';
   let save = {best:1, unlocked:1, reputation:0, coins:0, stamps:0, medals:{}, ...saved};
   let state = {contract:Boolean(save.insuranceReady)};
   let dragging = false;
@@ -272,15 +273,32 @@
     requestAnimationFrame(renderGuidanceLine);
   }
 
+  function routeFieldSpace() {
+    const element = $('routeField');
+    const rect = element.getBoundingClientRect();
+    return {
+      rect,
+      scaleX: rect.width / (element.clientWidth || rect.width || 1),
+      scaleY: rect.height / (element.clientHeight || rect.height || 1),
+    };
+  }
+  function routeFieldCenter(node, space) {
+    const rect = node?.getBoundingClientRect();
+    if (!rect) return null;
+    return {
+      x: (rect.left + rect.width / 2 - space.rect.left) / space.scaleX,
+      y: (rect.top + rect.height / 2 - space.rect.top) / space.scaleY,
+    };
+  }
   function renderGuidanceLine() {
-    const field = $('routeField').getBoundingClientRect();
-    const flight = $('flight').getBoundingClientRect();
-    const dock = document.querySelector(`.dock[data-dock="${state.dock}"]`)?.getBoundingClientRect();
-    if (!field.width || !flight.width || !dock) return;
-    const fromX = flight.left - field.left + flight.width / 2;
-    const fromY = flight.top - field.top + flight.height / 2;
-    const toX = dock.left - field.left + dock.width / 2;
-    const toY = dock.top - field.top + dock.height / 2;
+    const space = routeFieldSpace();
+    const flight = routeFieldCenter($('flight'), space);
+    const dock = routeFieldCenter(document.querySelector(`.dock[data-dock="${state.dock}"]`), space);
+    if (!space.rect.width || !flight || !dock) return;
+    const fromX = flight.x;
+    const fromY = flight.y;
+    const toX = dock.x;
+    const toY = dock.y;
     Object.assign($('routeLine').style, {
       left: `${fromX}px`, top: `${fromY}px`, width: `${Math.hypot(toX - fromX, toY - fromY)}px`,
       transform: `rotate(${Math.atan2(toY - fromY, toX - fromX)}rad)`, opacity: '0.9'
@@ -452,7 +470,7 @@
     const isStart = event.type === 'pointerdown' || event.type === 'mousedown';
     const isEnd = event.type === 'pointerup' || event.type === 'mouseup';
     const flight = $('flight');
-    const field = $('routeField').getBoundingClientRect();
+    const field = routeFieldSpace();
     if (isStart) {
       if ((mode === 'pointer' && event.isPrimary === false) || (event.button !== undefined && event.button !== 0)) return;
       if (inputMode && inputMode !== mode) return;
@@ -464,10 +482,11 @@
     }
     if (!dragging || inputMode !== mode) return;
     if (mode === 'pointer' && event.pointerId !== routePointerId) return;
-    const fromX = flight.offsetLeft + 36;
-    const fromY = flight.offsetTop + 36;
-    const dx = event.clientX - field.left - fromX;
-    const dy = event.clientY - field.top - fromY;
+    const start = routeFieldCenter(flight, field);
+    const fromX = start.x;
+    const fromY = start.y;
+    const dx = (event.clientX - field.rect.left) / field.scaleX - fromX;
+    const dy = (event.clientY - field.rect.top) / field.scaleY - fromY;
     const length = Math.hypot(dx, dy);
     $('routeLine').classList.remove('is-guidance');
     Object.assign($('routeLine').style, {left:`${fromX}px`, top:`${fromY}px`, width:`${length}px`, transform:`rotate(${Math.atan2(dy, dx)}rad)`, opacity:'1'});

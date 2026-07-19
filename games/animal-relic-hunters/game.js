@@ -45,8 +45,6 @@
     keyText: $("keyText"),
     goldText: $("goldText"),
     gameCanvas: $("gameCanvas"),
-    joystickContainer: $("joystickContainer"),
-    joystickKnob: $("joystickKnob"),
     eqWeaponName: $("eqWeaponName"),
     eqWeaponEffect: $("eqWeaponEffect"),
     eqArmorName: $("eqArmorName"),
@@ -102,7 +100,7 @@
     en: {
       title: "Animal Relic Hunters",
       menuTitle: "Explore the Ancient Ruins.",
-      menuHint: "Move with WASD / virtual joystick. On desktop, hold the left mouse button in the arena to move toward the cursor. Defeat shadow beasts, collect Relic Orbs to level up, and find keys to unlock chests for Weapons, Armor, and Boots.",
+      menuHint: "Tap anywhere in the arena to move there, or keep dragging to guide the explorer continuously. WASD and arrow keys also work. Defeat shadow beasts, collect Relic Orbs to level up, and find keys to unlock chests for Weapons, Armor, and Boots.",
       prototypeGoalsTitle: "Expedition Goal",
       prototypeGoalsText: "Clear three rooms in each of 30 expeditions, learn each ruin's hazard, and defeat six regional Guardians while growing through permanent training and gear.",
       diamondShopTitle: "Permanent Upgrade",
@@ -222,7 +220,7 @@
     "zh-Hant": {
       title: "動物遺跡獵人",
       menuTitle: "探索古代遺跡。",
-      menuHint: "使用 WASD 或虛擬搖桿移動。電腦版請在戰鬥場景按住滑鼠左鍵，朝游標方向移動。擊敗怪物，收集能量球升級，並獲得鑰匙以解鎖寶箱獲得武器、防具與鞋子。",
+      menuHint: "點擊戰鬥場景即可移動到該處，按住拖曳則會持續跟隨指向；也可使用 WASD 或方向鍵。擊敗怪物、收集能量球升級，並取得鑰匙開啟裝備寶箱。",
       prototypeGoalsTitle: "遠征目標",
       prototypeGoalsText: "完成 30 個遠征的三房戰鬥，辨識不同遺跡威脅，並擊敗六位區域守護者；永久訓練與裝備會陪你繼續前進。",
       diamondShopTitle: "永久升級",
@@ -329,7 +327,7 @@
   Object.assign(text["zh-Hant"], {
     title: "動物遺跡獵人",
     menuTitle: "探索古代動物遺跡",
-    menuHint: "使用 WASD 或虛擬搖桿移動。電腦版請在戰鬥場景按住滑鼠左鍵，朝游標方向移動。擊敗影獸、收集遺跡能量球升級，並找到金鑰開啟寶箱取得武器、防具與靴子。",
+    menuHint: "點擊戰鬥場景即可移動到該處，按住拖曳則會持續跟隨指向；也可使用 WASD 或方向鍵。擊敗影獸、收集遺跡能量球升級，並找到金鑰開啟裝備寶箱。",
     prototypeGoalsTitle: "遠征目標",
     prototypeGoalsText: "完成 30 個遠征的三房戰鬥，辨識不同遺跡威脅，並擊敗六位區域守護者；永久訓練與裝備會陪你繼續前進。",
     diamondShopTitle: "永久升級",
@@ -436,7 +434,7 @@
   text.es = {
     title: "Cazadores Animales de Reliquias",
     menuTitle: "Explora las Ruinas Antiguas.",
-    menuHint: "Muévete con WASD, joystick virtual o manteniendo el botón izquierdo en la arena. Derrota bestias sombrías, recoge Orbes Reliquia para subir de nivel y encuentra llaves para abrir cofres con armas, armaduras y botas.",
+    menuHint: "Toca cualquier punto de la arena para moverte allí o mantén y arrastra para guiar al explorador. También puedes usar WASD o las flechas. Derrota bestias sombrías, recoge Orbes Reliquia y encuentra llaves para abrir cofres de equipo.",
     prototypeGoalsTitle: "Objetivo de la expedición",
     prototypeGoalsText: "Supera tres salas en cada una de las 30 expediciones, aprende los peligros de cada ruina y derrota a seis Guardianes regionales mientras mejoras entrenamiento y equipo permanentes.",
     diamondShopTitle: "Mejora permanente",
@@ -993,10 +991,9 @@
 
   // Keyboard Movement Vector
   let keysPressed = {};
-  let touchStartPos = null;
-  let joystickPointerId = null;
   let moveVector = { x: 0, y: 0 };
-  let mouseMoveActive = false;
+  let movePointerId = null;
+  let moveTarget = null;
   let shootTimer = 0;
 
   // Safe read/write LocalStorage
@@ -1035,7 +1032,7 @@
       stageBack: "Back to main",
       regions: "Ruin regions",
       battleBack: "Back to preparation",
-      arena: "Battle arena. Move with WASD or arrow keys."
+      arena: "Battle arena. Tap or drag to move; WASD and arrow keys also work."
     },
     "zh-Hant": {
       lobby: "\u8fd4\u56de\u5927\u5ef3",
@@ -1043,7 +1040,7 @@
       stageBack: "\u8fd4\u56de\u9996\u9801",
       regions: "\u907a\u8de1\u5340\u57df",
       battleBack: "\u8fd4\u56de\u884c\u524d\u6e96\u5099",
-      arena: "\u6230\u9b25\u5340\u57df\u3002\u4f7f\u7528 WASD \u6216\u65b9\u5411\u9375\u79fb\u52d5\u3002"
+      arena: "\u6230\u9b25\u5340\u57df\u3002\u9ede\u64ca\u6216\u62d6\u66f3\u79fb\u52d5\uff0c\u4e5f\u53ef\u4f7f\u7528 WASD \u6216\u65b9\u5411\u9375\u3002"
     },
     es: {
       lobby: "Volver al vestíbulo",
@@ -1051,7 +1048,7 @@
       stageBack: "Volver a la pantalla principal",
       regions: "Regiones de las ruinas",
       battleBack: "Volver a la preparación",
-      arena: "Arena de batalla. Muévete con WASD o las flechas."
+      arena: "Arena de batalla. Toca o arrastra para moverte; también puedes usar WASD o las flechas."
     }
   };
 
@@ -2532,8 +2529,22 @@
     if (keysPressed["a"] || keysPressed["ArrowLeft"]) moveX = -1;
     if (keysPressed["d"] || keysPressed["ArrowRight"]) moveX = 1;
 
-    // Apply joystick vector if present
-    if (moveVector.x !== 0 || moveVector.y !== 0) {
+    const keyboardMoving = moveX !== 0 || moveY !== 0;
+    if (keyboardMoving) {
+      moveTarget = null;
+    } else if (moveTarget) {
+      const targetDx = moveTarget.x - state.playerX;
+      const targetDy = moveTarget.y - state.playerY;
+      const targetDistance = Math.hypot(targetDx, targetDy);
+      if (targetDistance <= 8) {
+        moveTarget = null;
+        moveVector = { x: 0, y: 0 };
+      } else {
+        moveVector = { x: targetDx / targetDistance, y: targetDy / targetDistance };
+      }
+    }
+
+    if (!keyboardMoving && (moveVector.x !== 0 || moveVector.y !== 0)) {
       moveX = moveVector.x;
       moveY = moveVector.y;
     }
@@ -3068,13 +3079,11 @@
   function clearMovementInput() {
     keysPressed = {};
     moveVector = { x: 0, y: 0 };
-    mouseMoveActive = false;
-    touchStartPos = null;
-    if (joystickPointerId !== null && nodes.joystickContainer.hasPointerCapture?.(joystickPointerId)) {
-      nodes.joystickContainer.releasePointerCapture(joystickPointerId);
+    moveTarget = null;
+    if (movePointerId !== null && nodes.gameCanvas.hasPointerCapture?.(movePointerId)) {
+      nodes.gameCanvas.releasePointerCapture(movePointerId);
     }
-    joystickPointerId = null;
-    nodes.joystickKnob.style.transform = "translate(0px, 0px)";
+    movePointerId = null;
   }
 
   function setupInputs() {
@@ -3110,91 +3119,39 @@
       if (!manualPauseActive) resumeBackgroundBattle();
     });
 
-    function updateMouseMoveVector(event) {
+    function updateMoveTarget(event) {
       const rect = nodes.gameCanvas.getBoundingClientRect();
       if (!rect.width || !rect.height) return;
-      const targetX = ((event.clientX - rect.left) / rect.width) * nodes.gameCanvas.width;
-      const targetY = ((event.clientY - rect.top) / rect.height) * nodes.gameCanvas.height;
-      const dx = targetX - state.playerX;
-      const dy = targetY - state.playerY;
-      const distance = Math.hypot(dx, dy);
-      if (distance < 8) {
-        moveVector = { x: 0, y: 0 };
-        return;
-      }
-      moveVector = { x: dx / distance, y: dy / distance };
+      moveTarget = {
+        x: Math.max(20, Math.min(780, ((event.clientX - rect.left) / rect.width) * nodes.gameCanvas.width)),
+        y: Math.max(20, Math.min(ARENA_HEIGHT - 20, ((event.clientY - rect.top) / rect.height) * nodes.gameCanvas.height)),
+      };
     }
 
-    // Desktop movement: hold the primary mouse button and steer toward its position.
+    // Crystal Survivor-style movement: tap a destination or keep dragging to
+    // continuously update it. Keyboard input remains an equivalent override.
     nodes.gameCanvas.addEventListener("pointerdown", (event) => {
-      if (event.pointerType !== "mouse" || event.button !== 0 || !state.gameActive) return;
-      mouseMoveActive = true;
+      if (!state.gameActive || event.isPrimary === false || movePointerId !== null || (event.button !== undefined && event.button !== 0)) return;
+      movePointerId = event.pointerId;
       nodes.gameCanvas.setPointerCapture?.(event.pointerId);
-      updateMouseMoveVector(event);
+      updateMoveTarget(event);
       event.preventDefault();
     });
     nodes.gameCanvas.addEventListener("pointermove", (event) => {
-      if (!mouseMoveActive || event.pointerType !== "mouse") return;
-      updateMouseMoveVector(event);
+      if (movePointerId !== event.pointerId) return;
+      updateMoveTarget(event);
       event.preventDefault();
     });
-    const stopMouseMove = (event) => {
-      if (event.pointerType !== "mouse") return;
-      mouseMoveActive = false;
-      moveVector = { x: 0, y: 0 };
+    const releaseMovePointer = (event) => {
+      if (event.pointerId !== movePointerId) return;
+      movePointerId = null;
       if (nodes.gameCanvas.hasPointerCapture?.(event.pointerId)) nodes.gameCanvas.releasePointerCapture(event.pointerId);
     };
-    nodes.gameCanvas.addEventListener("pointerup", stopMouseMove);
-    nodes.gameCanvas.addEventListener("pointercancel", stopMouseMove);
-    nodes.gameCanvas.addEventListener("lostpointercapture", () => {
-      mouseMoveActive = false;
-      moveVector = { x: 0, y: 0 };
+    nodes.gameCanvas.addEventListener("pointerup", releaseMovePointer);
+    nodes.gameCanvas.addEventListener("pointercancel", releaseMovePointer);
+    nodes.gameCanvas.addEventListener("lostpointercapture", (event) => {
+      if (event.pointerId === movePointerId) movePointerId = null;
     });
-
-    // Pointer-based joystick keeps cancellation and pointer capture in one lifecycle.
-    nodes.joystickContainer.addEventListener("pointerdown", (event) => {
-      if (!state.gameActive || joystickPointerId !== null || event.isPrimary === false || (event.button !== undefined && event.button !== 0)) return;
-      event.preventDefault();
-      joystickPointerId = event.pointerId;
-      const rect = nodes.joystickContainer.getBoundingClientRect();
-      touchStartPos = {
-        x: rect.left + rect.width / 2,
-        y: rect.top + rect.height / 2,
-      };
-      nodes.joystickContainer.setPointerCapture?.(event.pointerId);
-    });
-
-    nodes.joystickContainer.addEventListener("pointermove", (event) => {
-      if (!touchStartPos || event.pointerId !== joystickPointerId) return;
-      event.preventDefault();
-      const dx = event.clientX - touchStartPos.x;
-      const dy = event.clientY - touchStartPos.y;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-
-      const maxRadius = 40;
-      let ratio = 1;
-      if (dist > maxRadius) {
-        ratio = maxRadius / dist;
-      }
-
-      // Move knob UI
-      nodes.joystickKnob.style.transform = `translate(${dx * ratio}px, ${dy * ratio}px)`;
-
-      // Set movement speed multipliers
-      moveVector.x = (dx / maxRadius) * ratio;
-      moveVector.y = (dy / maxRadius) * ratio;
-    });
-
-    const finishJoystickPointer = (event) => {
-      if (event?.pointerId !== undefined && event.pointerId !== joystickPointerId) return;
-      touchStartPos = null;
-      joystickPointerId = null;
-      nodes.joystickKnob.style.transform = "translate(0px, 0px)";
-      moveVector = { x: 0, y: 0 };
-    };
-    nodes.joystickContainer.addEventListener("pointerup", finishJoystickPointer);
-    nodes.joystickContainer.addEventListener("pointercancel", finishJoystickPointer);
-    nodes.joystickContainer.addEventListener("lostpointercapture", finishJoystickPointer);
   }
 
   // Init handler
@@ -3582,6 +3539,7 @@
             eliteCount: state.enemies.filter((enemy) => enemy.isElite).length,
             eliteSpawnPending: Boolean(eliteSpawnTimer || eliteSpawnCallback),
             player: { x: state.playerX, y: state.playerY, hp: state.playerHp, maxHp: state.playerMaxHp, active: state.gameActive },
+            moveTarget: moveTarget ? { ...moveTarget } : null,
             roomGraceRemaining: Math.max(0, state.roomGraceUntil - (backgroundSuspendedAt || performance.now())),
             paused: manualPauseActive,
           };

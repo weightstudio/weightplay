@@ -1013,7 +1013,7 @@
       ],
       systems: [
         "Expedition flow: choose one unlocked card from the 30-mission rail. Begin Room 1 with full run HP and current equipment. Clear the group and delayed key-carrying Elite, collect its key, open the chest and enter the portal. Room 2 uses a harder mix. Room 3 ends with an Elite guardian or, every fifth mission, a named regional Guardian.",
-        "Movement and attacks: use WASD, arrow keys, a held primary mouse button in the arena, or the phone joystick. The weapon automatically aims at the nearest enemy. A Crystal Sword adds direct damage, a Relic Dagger shortens the firing interval, Armor adds Max HP and Boots add movement speed. Position remains the player's main action: circling a chaser, crossing behind a shooter and leaving an orbiter's preferred ring require different routes.",
+        "Movement and attacks: tap a destination in the arena or keep dragging to guide the explorer continuously; WASD and arrow keys remain available. The weapon automatically aims at the nearest enemy. A Crystal Sword adds direct damage, a Relic Dagger shortens the firing interval, Armor adds Max HP and Boots add movement speed. Position remains the player's main action: circling a chaser, crossing behind a shooter and leaving an orbiter's preferred ring require different routes.",
         "Threat rules: rushers alternate a slow stalk with a fast charge; shooters hold range and fire relic bolts; pulsers launch radial rings; splitters release two rushers when defeated; wards cancel a fixed number of projectile hits; regenerators heal after avoiding damage; slowing beasts reduce movement on contact; orbiters travel around the explorer; silencers temporarily stop automatic fire. Region 6 combines these rules instead of introducing a larger copy of a basic animal.",
         "Guardian phases: each regional Boss changes at 70 and 35 percent HP. Moss calls more rushers. Echo releases larger radial barrages. Crystal restores a hit-count ward. Mire heals and summons slowing beasts. Moon combines orbit movement with silence volleys. Crown adds wards, barrages, summons and recovery. The final mission therefore tests reading several effects, not only surviving a longer health bar.",
         "Run growth: defeated enemies drop green Relic Orbs. Filling the EXP bar pauses the room and offers three relic upgrades, such as damage, attack rate, Max HP, movement or pickup range. One optional three-Diamond reroll is available per draft. Run relic counts reset when a new expedition starts, so the next build may solve the same threat mix differently.",
@@ -1021,7 +1021,7 @@
       ],
       how: [
         "Swipe the Stage rail and choose an unlocked expedition; Guardian cards appear at missions 5, 10, 15, 20, 25 and 30.",
-        "Move with WASD, arrow keys, held mouse input or the virtual joystick. Aim is automatic, so steer to control distance and the nearest target.",
+        "Tap where you want to move, or keep dragging to update the destination continuously. WASD and arrow keys remain available; aim is automatic, so movement controls distance and the nearest target.",
         "Defeat ordinary threats while watching for charges, ranged bolts, shields, regeneration, slow and silence effects.",
         "Collect Relic Orbs. At level-up, choose one of three temporary upgrades or use the single optional reroll.",
         "Defeat the delayed Elite in Rooms 1 and 2, collect its Golden Key, open the chest and decide whether to equip the named drop or keep the current loadout.",
@@ -1045,7 +1045,7 @@
         "Expeditions 21-25 add orbit routes and temporary attack silence. The Archive Keeper fires multi-angle silence volleys while circling the explorer.",
         "Expeditions 26-30 remix all prior threats. Six-Seal Court is the full regular-enemy exam; the Relic Crown Monarch then combines ward, barrage, summons and recovery."
       ],
-      designNote: "Three rooms let relic drafts and chest gear affect a final test without turning one mission into a long survival session. Auto-fire keeps phone input focused on movement, while mouse hold and keyboard preserve precise desktop control. Expedition 30 Room 3 stays below a 2.3 base scale; difficulty comes from range control, phases and mixed behaviors. Unlike Animal Crystal Survivor's open timed arena or Animal Auto Squad's pre-battle formation, room order, carried HP, gear decisions and live navigation form one connected expedition.",
+      designNote: "Three rooms let relic drafts and chest gear affect a final test without turning one mission into a long survival session. Auto-fire keeps phone input focused on choosing a route with taps or continuous dragging, while keyboard input preserves precise desktop control. Expedition 30 Room 3 stays below a 2.3 base scale; difficulty comes from range control, phases and mixed behaviors. Unlike Animal Crystal Survivor's open timed arena or Animal Auto Squad's pre-battle formation, room order, carried HP, gear decisions and live navigation form one connected expedition.",
       parent: "Mission progress, character level, EXP, Gold, training, owned gear, gear levels, equipped slots and Mist Amulet ownership are stored locally in this browser. No login is required for basic play, and clearing site storage may remove that progress. The game does not award platform Diamonds from battle. Diamonds are optional spending choices for the confirmed Mist Amulet or one relic-draft reroll; all 30 expeditions and six Guardians can be played without them.",
       faq: [
         ["Is Animal Relic Hunters free?", "Yes. All 30 expeditions, three-room routes, gear drops and six Guardians are playable in the browser without payment."],
@@ -1055,7 +1055,7 @@
         ["Do I lose a new item if I keep my current gear?", "No. A new chest item is added to the backpack first. The decision only chooses whether to equip it now."],
         ["What are Diamonds used for?", "They can confirm the permanent Mist Amulet or reroll one relic draft for three Diamonds. They do not unlock missions, gear or Guardians."],
         ["Does progress require an account?", "No. Progress is stored in this browser. Clearing its site data or switching devices may start a separate save."],
-        ["Does it support phones and desktop?", "Yes. Phones use a virtual joystick and large decisions; desktop supports keyboard, arrows and held mouse movement in the arena."]
+        ["Does it support phones and desktop?", "Yes. Phones support tap-to-move and continuous drag guidance; desktop also supports pointer movement, WASD and arrow keys."]
       ],
     },
     "animal-rune-tactics": {
@@ -1911,7 +1911,7 @@
         ],
         systems: [
           "遠征流程：在橫向 30 關滑軌選擇已解鎖任務。每次從滿血與目前永久裝備開始。清除基本敵群與稍後出現的持鑰菁英，撿起鑰匙、開寶箱並進入傳送門。第二房加入更複雜的混合敵人，第三房則由任務守衛或每五關一次的區域守護者收尾。",
-          "移動與攻擊：電腦可用 WASD、方向鍵或在場地按住滑鼠；手機使用虛擬搖桿。武器自動瞄準最近敵人。水晶長劍增加直接傷害，遺跡短刃縮短射擊間隔，護甲增加生命上限，靴子提升移動速度。玩家真正控制的是距離與最近目標：繞開追擊者、從射手背後穿越、切入環繞敵人的圓周，需要不同路線。",
+          "移動與攻擊：點擊場地即可前往該處，按住拖曳可持續更新目的地；電腦也能使用 WASD 或方向鍵。武器會自動瞄準最近敵人。水晶長劍增加直接傷害，遺跡短刃縮短射擊間隔，護甲增加生命上限，靴子提升移動速度。玩家真正控制的是距離與最近目標：繞開追擊者、從射手背後穿越、切入環繞敵人的圓周，需要不同路線。",
           "特殊敵人：衝刺者會在慢速跟隨後突然加速；射手保持距離並發射遺物彈；脈衝敵人向四周放射；分裂者死亡後產生兩隻衝刺獸；護盾會抵銷固定次數射擊；再生者未受傷一段時間就恢復生命；減速敵人接觸後降低移速；環繞者繞著玩家移動；沉默者暫停自動攻擊。第六區會組合這些規則。",
           "守護者階段：每隻區域 Boss 在生命 70% 與 35% 時改變戰局。苔原召喚衝刺者，回聲釋放更密集的環形彈幕，水晶重建計次護盾，澤環恢復生命並召喚減速獸，月影一邊環繞一邊發射沉默彈，冠冕則同時使用護盾、彈幕、召喚與恢復。最後一關考的是讀懂多種效果，不只是磨掉更長血條。",
           "本輪成長：擊敗敵人會掉落綠色遺跡能量球。經驗條填滿時房間暫停，玩家從三個遺物能力選一個，例如傷害、攻速、生命、移速或吸取範圍。每次選擇可自願花 3 顆鑽石重抽一次。本輪遺物在新遠征開始時重置，因此同一關也能用不同配置解題。",
@@ -1919,7 +1919,7 @@
         ],
         how: [
           "滑動關卡軌道並選擇已解鎖遠征；第 5、10、15、20、25、30 關會明確標示守護者。",
-          "用 WASD、方向鍵、按住滑鼠或手機搖桿移動。瞄準會自動完成，走位決定距離與最近攻擊目標。",
+          "點擊想前往的位置，或按住拖曳持續引導；電腦也可使用 WASD 或方向鍵。瞄準會自動完成，走位決定距離與最近攻擊目標。",
           "清除普通威脅，同時辨識衝刺、遠射、護盾、再生、減速與沉默效果。",
           "收集遺跡能量球；升級時選擇三個本輪能力之一，或使用一次可選重抽。",
           "擊敗第一、二房稍後出現的菁英，撿起金鑰匙開寶箱，再決定立即穿戴或保留目前配裝。",
@@ -1943,7 +1943,7 @@
           "遠征 21-25 加入環繞路線與暫時沉默。書庫守密者會一邊繞行一邊射出多角度沉默彈。",
           "遠征 26-30 重組之前所有威脅。六印庭院是普通敵人的總驗收，遺物冠冕王則結合護盾、彈幕、召喚與恢復。"
         ],
-        designNote: "每次遠征設計成三個房間，是因為前兩房的遺物選擇與寶箱裝備必須有機會影響最後考驗，同時不把單一任務拖成過長的生存戰。自動射擊讓手機操作集中在清楚的走位，鍵盤與按住滑鼠則保留桌面精準控制。第 30 關第三房的基礎倍率刻意維持在 2.3 以下，難度主要來自射程控制、敵人混合與 Boss 階段。這和《動物水晶生存者》的開放式三分鐘競分不同，也不同於《動物自走小隊》的戰前擺陣；本作由房間順序、保留生命、裝備決定與即時導航串成完整遠征。",
+        designNote: "每次遠征設計成三個房間，是因為前兩房的遺物選擇與寶箱裝備必須有機會影響最後考驗，同時不把單一任務拖成過長的生存戰。自動射擊讓手機操作集中在點擊目的地與拖曳修正路線，鍵盤則保留桌面精準控制。第 30 關第三房的基礎倍率刻意維持在 2.3 以下，難度主要來自射程控制、敵人混合與 Boss 階段。這和《動物水晶生存者》的開放式三分鐘競分不同，也不同於《動物自走小隊》的戰前擺陣；本作由房間順序、保留生命、裝備決定與即時導航串成完整遠征。",
         parent: "任務進度、角色等級、經驗、金幣、訓練、已擁有裝備、裝備等級、穿戴欄位與迷霧護符狀態都保存在此瀏覽器。基本遊玩不需要登入；清除網站資料可能移除本機進度。戰鬥不會產生平台鑽石。鑽石只用於可選的迷霧護符確認購買或一次遺物重抽；30 個遠征與六位守護者都不要求鑽石。",
         faq: [
           ["《動物遺跡獵人》可以免費玩嗎？", "可以。30 個遠征、三房路線、裝備掉落與六位守護者都能直接在瀏覽器遊玩。"],
@@ -1953,7 +1953,7 @@
           ["保留目前裝備會失去新物品嗎？", "不會。新寶箱物品會先加入背包，選擇只決定是否立刻穿戴。"],
           ["鑽石可以做什麼？", "鑽石可確認購買永久迷霧護符，或花 3 顆鑽石重抽一次本輪遺物。任務、裝備與守護者不需要鑽石。"],
           ["需要帳號才能保存嗎？", "不需要。進度保存在目前瀏覽器；清除網站資料或換裝置可能會開始另一份存檔。"],
-          ["手機與電腦都能玩嗎？", "可以。手機使用虛擬搖桿與大型選項，電腦支援鍵盤、方向鍵與按住滑鼠移動。"]
+          ["手機與電腦都能玩嗎？", "可以。手機可直接點場地前往目的地，按住拖曳則會持續改變路線；電腦也支援相同的滑鼠操作，以及 WASD 和方向鍵。"]
         ],
       },
       "animal-rune-tactics": {
@@ -5660,7 +5660,7 @@
     ],
     "systems": [
       "远征流程：在横向 30 关滑轨选择已解锁任务。每次从满血与目前永久装备开始。清除基本敌群与稍后出现的持钥菁英，捡起钥匙、开宝箱并进入传送门。第二房加入更复杂的混合敌人，第三房则由任务守卫或每五关一次的区域守护者收尾。",
-      "移动与攻击：电脑可用 WASD、方向键或在场地按住滑鼠；手机使用虚拟摇杆。武器自动瞄准最近敌人。水晶长剑增加直接伤害，遗迹短刃缩短射击间隔，护甲增加生命上限，靴子提升移动速度。玩家真正控制的是距离与最近目标：绕开追击者、从射手背后穿越、切入环绕敌人的圆周，需要不同路线。",
+      "移动与攻击：点击场地即可前往该处，按住拖曳可持续更新目的地；电脑也能使用 WASD 或方向键。武器自动瞄准最近敌人。水晶长剑增加直接伤害，遗迹短刃缩短射击间隔，护甲增加生命上限，靴子提升移动速度。玩家真正控制的是距离与最近目标：绕开追击者、从射手背后穿越、切入环绕敌人的圆周，需要不同路线。",
       "特殊敌人：冲刺者会在慢速跟随后突然加速；射手保持距离并发射遗物弹；脉冲敌人向四周放射；分裂者死亡后产生两只冲刺兽；护盾会抵销固定次数射击；再生者未受伤一段时间就恢复生命；减速敌人接触后降低移速；环绕者绕著玩家移动；沉默者暂停自动攻击。第六区会组合这些规则。",
       "守护者阶段：每只区域 Boss 在生命 70% 与 35% 时改变战局。苔原召唤冲刺者，回声释放更密集的环形弹幕，水晶重建计次护盾，泽环恢复生命并召唤减速兽，月影一边环绕一边发射沉默弹，冠冕则同时使用护盾、弹幕、召唤与恢复。最后一关考的是读懂多种效果，不只是磨掉更长血条。",
       "本轮成长：击败敌人会掉落绿色遗迹能量球。经验条填满时房间暂停，玩家从三个遗物能力选一个，例如伤害、攻速、生命、移速或吸取范围。每次选择可自愿花 3 颗钻石重抽一次。本轮遗物在新远征开始时重置，因此同一关也能用不同配置解题。",
@@ -5668,7 +5668,7 @@
     ],
     "how": [
       "滑动关卡轨道并选择已解锁远征；第 5、10、15、20、25、30 关会明确标示守护者。",
-      "用 WASD、方向键、按住滑鼠或手机摇杆移动。瞄准会自动完成，走位决定距离与最近攻击目标。",
+      "点击想前往的位置，或按住拖曳持续引导；电脑也可使用 WASD 或方向键。瞄准会自动完成，走位决定距离与最近攻击目标。",
       "清除普通威胁，同时辨识冲刺、远射、护盾、再生、减速与沉默效果。",
       "收集遗迹能量球；升级时选择三个本轮能力之一，或使用一次可选重抽。",
       "击败第一、二房稍后出现的菁英，捡起金钥匙开宝箱，再决定立即穿戴或保留目前配装。",
@@ -5692,7 +5692,7 @@
       "远征 21-25 加入环绕路线与暂时沉默。书库守密者会一边绕行一边射出多角度沉默弹。",
       "远征 26-30 重组之前所有威胁。六印庭院是普通敌人的总验收，遗物冠冕王则结合护盾、弹幕、召唤与恢复。"
     ],
-    "designNote": "每次远征设计成三个房间，是因为前两房的遗物选择与宝箱装备必须有机会影响最后考验，同时不把单一任务拖成过长的生存战。自动射击让手机操作集中在清楚的走位，键盘与按住滑鼠则保留桌面精准控制。第 30 关第三房的基础倍率刻意维持在 2.3 以下，难度主要来自射程控制、敌人混合与 Boss 阶段。这和《动物水晶生存者》的开放式三分钟竞分不同，也不同于《动物自走小队》的战前摆阵；本作由房间顺序、保留生命、装备决定与即时导航串成完整远征。",
+    "designNote": "每次远征设计成三个房间，是因为前两房的遗物选择与宝箱装备必须有机会影响最后考验，同时不把单一任务拖成过长的生存战。自动射击让手机操作集中在点击目的地与拖曳修正路线，键盘则保留桌面精准控制。第 30 关第三房的基础倍率刻意维持在 2.3 以下，难度主要来自射程控制、敌人混合与 Boss 阶段。这和《动物水晶生存者》的开放式三分钟竞分不同，也不同于《动物自走小队》的战前摆阵；本作由房间顺序、保留生命、装备决定与即时导航串成完整远征。",
     "parent": "任务进度、角色等级、经验、金币、训练、已拥有装备、装备等级、穿戴栏位与迷雾护符状态都保存在此浏览器。基本游玩不需要登入；清除网站资料可能移除本机进度。战斗不会产生平台钻石。钻石只用于可选的迷雾护符确认购买或一次遗物重抽；30 个远征与六位守护者都不要求钻石。",
     "faq": [
       [
@@ -5725,7 +5725,7 @@
       ],
       [
         "手机与电脑都能玩吗？",
-        "可以。手机使用虚拟摇杆与大型选项，电脑支援键盘、方向键与按住滑鼠移动。"
+        "可以。手机可直接点击场地前往目的地，按住拖曳则会持续改变路线；电脑也支援相同的滑鼠操作，以及 WASD 和方向键。"
       ]
     ]
   };
@@ -7054,19 +7054,19 @@
   localizedGameplayProfiles["zh-Hans"]["animal-starlight-trails"] = { gameplay: "一笔画逻辑益智", genre: ["益智", "策略", "逻辑", "动物"] };
 
   games["animal-one-line"] = {
-    title: "One Line", difficulty: "Easy to Challenging", time: "1-4 minutes per stage", gameplay: "Continuous Corridor Tracing", genre: ["Skill", "Timing", "Puzzle", "Animal"], skills: ["Hand-Eye Coordination", "Focus", "Reaction"],
+    title: "One Line", difficulty: "Easy to Challenging", time: "1-4 minutes per stage", gameplay: "One-Line Grid Filling", genre: ["Logic", "Route Planning", "Puzzle", "Animal"], skills: ["Spatial Reasoning", "Planning", "Sequencing"],
     guideKicker: "WeightPlay Original Game Guide", guideTitleSuffix: "Game Guide", noteTitle: "Player and Save Information", hideScoreBands: true,
-    intro: "One Line is an original 30-stage tracing game starring Rainbow Hop Mimi. Press the round start seal, keep one uninterrupted hold, and guide the line through the turquoise corridor to the golden paw portal without touching an edge or a moving shadow.",
-    story: ["Mimi is restoring living trails through a magical forest workshop. Each group of five routes adds a new control lesson, from broad turns to narrow passes, ordered seals, and crossing shadows.", "The final five mastery trails combine precision, timing, and ordered checkpoints. Stage 30 completes the campaign and remains replayable."],
-    systems: ["A valid attempt begins on the round start seal and ends only at the golden paw portal. Lifting early, touching the corridor edge, or skipping ahead resets that attempt without spending currency.", "The route does not demand speed. Players may stop while continuing to hold, wait in a safe section for a shadow to cross, and then continue.", "Later stages add numbered seals that must be crossed in order and moving shadows that temporarily block points along the route. Show Guide adds a dotted center line, while Restart begins a free new attempt.", "Clears, unlocked stages, best star ratings, and best times are stored locally in this browser. Completed stages remain available from the horizontal Stage rail."],
-    how: ["Choose an unlocked route from the horizontal Stage rail.", "Press and hold the round start seal.", "Keep the same hold while tracing inside the turquoise corridor.", "Pause in a safe place when a shadow crosses, and pass numbered seals in order when shown.", "Reach the golden paw portal before lifting to clear the stage."],
-    strategyTips: ["Follow the corridor center around sharp corners instead of cutting across the inside edge.", "On shadow stages, wait far enough before the crossing point that the moving shadow cannot touch the held position.", "Use Show Guide to reveal the safest center line; it lowers the best possible rating for that attempt but never costs currency.", "A slower controlled trace is usually safer than one fast motion."],
-    progression: ["Stages 1-5 teach broad turns; 6-10 narrow the stone passes; 11-15 add ordered seals.", "Stages 16-20 introduce crossing shadows, 21-25 combine narrower corridors with two shadows, and 26-30 combine tight turns, seals, and three shadows."],
-    designNote: "One Line is deliberately different from Starlink. Starlink is a graph puzzle about using every connection once; One Line is a continuous motor-control challenge where the pointer must stay inside one visible corridor. A responsive logical Canvas fills the safe Stage and Battle rectangle while preserving one uniform scale, stable anchors, and the separate 56px General reserve.",
+    intro: "One Line is an original 30-stage grid puzzle starring Rainbow Hop Mimi. Begin on the glowing paw, move through edge-sharing open cells, and color the entire board with one continuous route without visiting any cell twice.",
+    story: ["Mimi is restoring color to dormant puzzle boards in a magical forest workshop. Stone cells block parts of each board, so the route must pass through every open cell exactly once.", "The final five mastery grids combine longer routes, narrow exits, and deceptive early choices. Stage 30 completes the campaign and remains replayable."],
+    systems: ["A valid attempt begins on the glowing paw cell. Each move enters one open cell directly above, below, left, or right; diagonal jumps and repeated cells are not allowed.", "The board is complete only when every open cell is colored. Releasing early, revisiting a cell, or reaching a dead end resets the attempt without spending currency.", "Show Hint highlights the next cell in one possible solution, while Restart clears the current route. Using a hint reduces the best star result for that attempt.", "Clears, unlocked stages, best star ratings, and best times are stored locally in this browser. Completed stages remain available from the horizontal Stage rail."],
+    how: ["Choose an unlocked puzzle from the horizontal Stage rail.", "Press the glowing paw cell and begin dragging.", "Move through open cells that share an edge with the current cell.", "Avoid every cell already colored by the route.", "Fill every open cell before releasing to clear the stage."],
+    strategyTips: ["Inspect corners and narrow exits before starting; entering them from the wrong direction can isolate the final cell.", "Clear pockets with only one entrance at the correct moment instead of sealing their entrance too early.", "Use Show Hint to reveal one next step when stuck; it never costs currency but limits that attempt to two stars.", "Speed is not required. Pause on the current cell and plan the remaining route before moving."],
+    progression: ["Stages 1-5 teach orthogonal movement and the no-repeat rule; 6-10 introduce corner planning; 11-15 use stone blocks to divide the board.", "Stages 16-20 extend the routes, 21-25 introduce tighter choices, and 26-30 combine large grids, blocked cells, and narrow exits."],
+    designNote: "One Line is a route-planning puzzle rather than a freehand accuracy test. Large cells and interpolated pointer sampling make the same rules practical with a mouse or a finger, while the no-repeat and fill-every-cell conditions keep success focused on reasoning. A responsive logical Canvas fills the safe Stage and Battle rectangle while preserving one uniform scale, stable anchors, and the separate 56px General reserve.",
     parent: "One Line is recommended for ages 9+ and family play. It requires no account and stores progress only in the current browser. Stars and the Result skill summary are playful feedback, not a formal ability, medical, or school assessment.",
-    faq: [["Can I lift my finger halfway?", "No. The route must be completed with one continuous hold from the start seal to the paw portal."], ["Do I have to move quickly?", "No. You may pause while holding in a safe part of the corridor."], ["What happens when I touch an edge or shadow?", "Only the current attempt resets, and retrying is free."], ["What does Show Guide do?", "It displays a dotted center route to make the safe corridor easier to read."], ["Does progress save?", "Yes. Unlocks, stars, clears, and best times are stored locally in this browser."], ["How many stages are included?", "There are 30 original routes across six five-stage chapters."]]
+    faq: [["Can I visit a cell twice?", "No. Re-entering a colored cell ends the current attempt."], ["Can I move diagonally?", "No. Moves connect only open cells that share an edge."], ["Do I have to move quickly?", "No. You may pause on the current cell while planning."], ["What does Show Hint do?", "It highlights the next cell in one possible complete route."], ["Does progress save?", "Yes. Unlocks, stars, clears, and best times are stored locally in this browser."], ["How many stages are included?", "There are 30 original grid puzzles across six five-stage chapters."]]
   };
-  gameplayProfiles["animal-one-line"] = { gameplay: "Continuous Corridor Tracing", genre: ["Skill", "Timing", "Puzzle", "Animal"] };
+  gameplayProfiles["animal-one-line"] = { gameplay: "One-Line Grid Filling", genre: ["Logic", "Route Planning", "Puzzle", "Animal"] };
   localizedGames["zh-Hant"]["animal-one-line"] = {
     ...games["animal-one-line"], title: "One Line 一筆到底", guideKicker: "WeightPlay 原創遊戲指南", guideTitleSuffix: "遊戲指南", noteTitle: "玩家與存檔資訊", difficulty: "簡單至具挑戰性", time: "每關約 1 至 4 分鐘", gameplay: "連續通道描線", genre: ["技巧", "時機", "益智", "動物"], skills: ["Hand-Eye Coordination", "Focus", "Reaction"],
     intro: "One Line 一筆到底是彩虹跳跳米米主演的原創 30 關描線遊戲。從圓形起點按住不放，沿藍綠色通道走到金色腳印門；途中不能碰到邊緣或移動影子。",

@@ -548,7 +548,13 @@
     scheduleDive(()=>applyMove(direction),520);
   }
   function shouldStartFish(){return routeConfig().fishZones.includes(state.zone)&&!state.fishResolvedZones.includes(state.zone);}
-  function fishProfile(){const shark=state.route===3&&state.zone>=4;return {name:t(shark?"shark":"territorialFish"),maxHp:(shark?34:16)+state.route*6+state.zone*2,attack:(shark?8:3)+state.route*2+Math.floor(state.zone/2),xp:(shark?36:24)+state.route*6};}
+  function fishProfile(){
+    const shark=state.route===3&&state.zone>=4;
+    // Route 1's only fish is the combat tutorial. A fresh Nori should learn the
+    // attack/counter rhythm with a healthy margin before later routes escalate.
+    if(state.route===1&&state.zone===3)return{name:t("territorialFish"),maxHp:20,attack:4,xp:30};
+    return{name:t(shark?"shark":"territorialFish"),maxHp:(shark?34:16)+state.route*6+state.zone*2,attack:(shark?8:3)+state.route*2+Math.floor(state.zone/2),xp:(shark?36:24)+state.route*6};
+  }
   function renderFish(){
     const fish=fishProfile(),blocked=!!state.fishBusy;
     $("fishEncounter").dataset.enemy=fish.name;

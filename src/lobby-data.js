@@ -504,15 +504,14 @@ window.WONDER_LOBBY = {
     {
       id: "animal-one-line",
       title: { en: "One Line", "zh-Hant": "One Line 一筆到底", "zh-Hans": "One Line 一笔到底" },
-      status: "planned",
-      statusText: { en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待" },
+      status: "playable",
+      statusText: { en: "Playable", "zh-Hant": "可遊玩", "zh-Hans": "可游玩" },
       type: { en: "Continuous Trail Tracing", "zh-Hant": "連續路線描繪", "zh-Hans": "连续路线描绘" },
       categories: ["Animal Games", "Puzzle", "Skill"],
       skills: ["Hand-Eye Coordination", "Focus", "Reaction"],
       ages: ["9", "family"],
       ageLabel: { en: "9+", "zh-Hant": "9+", "zh-Hans": "9+" },
       href: "games/animal-one-line/",
-      internalTrial: "index.html?trial=1",
       description: {
         en: "Hold one continuous line through 30 original trails, avoid walls and moving shadows, and guide Mimi to the paw portal.",
         "zh-Hant": "按住一筆通過 30 條原創路線，避開牆壁與移動影子，帶領米米抵達腳印門。",

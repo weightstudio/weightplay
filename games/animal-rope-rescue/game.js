@@ -353,6 +353,7 @@
   let leaveOpen = false;
   let leaveWasRunning = false;
   let leaveOpenedAt = 0;
+  let physicsFrame = 0;
   let lastFrame = 0;
   let paddleX = 50;
   let fruit = { x: 50, y: 20, vx: 0, vy: 0, rot: 0, cut: false };
@@ -473,6 +474,8 @@
   function show(panel) {
     if (panel !== nodes.gamePanel) {
       running = false;
+      cancelAnimationFrame(physicsFrame);
+      physicsFrame = 0;
       clearDeliverySchedule();
     }
     setPlayingState(panel === nodes.gamePanel);
@@ -530,6 +533,8 @@
   function setupStage(stageNo) {
     currentStage = Math.max(1, Math.min(stages.length, stageNo));
     const stage = stages[currentStage - 1];
+    cancelAnimationFrame(physicsFrame);
+    physicsFrame = 0;
     clearDeliverySchedule();
     currentDelivery = 0;
     bounceCount = 0;
@@ -615,7 +620,7 @@
     requestAnimationFrame(() => nodes.leafPaddle.focus({ preventScroll: true }));
     lastFrame = performance.now();
     window.WonderSound?.play?.("click");
-    requestAnimationFrame(tick);
+    physicsFrame = requestAnimationFrame(tick);
   }
 
   function applyLeafBounce(route, playfieldHeight, offset = 0) {
@@ -626,6 +631,7 @@
   }
 
   function tick(now) {
+    physicsFrame = 0;
     if (!running || settled) return;
     const dt = Math.min(0.028, (now - lastFrame) / 1000 || 0.016);
     lastFrame = now;
@@ -670,7 +676,7 @@
       finish(false);
       return;
     }
-    requestAnimationFrame(tick);
+    physicsFrame = requestAnimationFrame(tick);
   }
 
   function completeDelivery() {
@@ -722,6 +728,8 @@
     leaveWasRunning = running;
     leaveOpenedAt = performance.now();
     running = false;
+    cancelAnimationFrame(physicsFrame);
+    physicsFrame = 0;
     leaveDeliveryRemaining = deliveryTimer ? Math.max(0, deliveryDueAt - leaveOpenedAt) : 0;
     window.clearTimeout(deliveryTimer);
     deliveryTimer = 0;
@@ -741,7 +749,7 @@
       stageStartedAt += pausedFor;
       running = true;
       lastFrame = performance.now();
-      requestAnimationFrame(tick);
+      physicsFrame = requestAnimationFrame(tick);
     } else if (leaveDeliveryRemaining > 0 && !settled) {
       scheduleDelivery(stages[currentStage - 1], leaveDeliveryRemaining);
     }
@@ -757,6 +765,8 @@
     leaveDeliveryRemaining = 0;
     leaveOpenedAt = 0;
     running = false;
+    cancelAnimationFrame(physicsFrame);
+    physicsFrame = 0;
     clearDeliverySchedule();
     nodes.leavePanel.classList.add("hidden");
     setLiveBattleCovered(false);

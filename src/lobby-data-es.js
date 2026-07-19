@@ -359,7 +359,7 @@
     meta: ["30 niveles", "Rutas de un solo trazo", "Seis familias de reglas"]
   };
   data["animal-one-line"] = {
-    title: "One Line", statusText: "Próximamente", type: "Trazado continuo de rutas",
+    title: "One Line", statusText: "Jugar ahora", type: "Trazado continuo de rutas",
     description: "Mantén una sola línea por 30 rutas originales, evita paredes y sombras móviles y guía a Mimi hasta el portal.",
     meta: ["30 rutas", "Una pulsación continua", "Sombras móviles"]
   };

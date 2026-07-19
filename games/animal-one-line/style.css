@@ -5,3 +5,19 @@
 @media(max-height:480px) and (orientation:landscape){.stage-header{height:64px;grid-template-columns:48px 1fr 54px}.stage-header button{width:44px;height:44px}.stage-header img{width:52px;height:52px}.lesson-panel{top:78px;left:8px;right:auto;width:36%;min-height:80px;padding:9px}.stage-rail{left:38%;top:76px;bottom:4px;height:auto;padding-block:8px}.stage-card{height:180px}.battle-canvas{grid-template-columns:minmax(0,1fr) 230px;grid-template-rows:58px 42px minmax(0,1fr) 44px;grid-template-areas:"head head" "objective side" "board side" "feedback side";gap:4px;padding:4px}.battle-header{grid-area:head}.objective-row{grid-area:objective}.trace-board{grid-area:board}.battle-feedback{grid-area:feedback}.battle-actions{grid-area:side;grid-template-columns:1fr;align-content:center}.result-card{width:min(760px,96%);grid-template-columns:110px 1fr;grid-template-areas:"img title" "img stars" "text skills" "best actions";gap:6px;padding:10px}.result-card>img{grid-area:img}.result-card h2{grid-area:title}.result-stars{grid-area:stars}.result-card>p:not(.best-text){grid-area:text}.skill-grid{grid-area:skills;grid-template-columns:repeat(3,1fr)}.best-text{grid-area:best}.result-actions{grid-area:actions}}
 .stage-header button{width:48px;height:48px}.battle-header>button{width:46px;height:46px}.trail-guide{fill:none;stroke:#fff3ae;stroke-width:8;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:3 4;opacity:0;transition:opacity .2s;filter:url(#softGlow)}.trail-guide.visible{opacity:.72}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+
+/* Grid-fill gameplay replaces the retired freehand corridor tracer. */
+.trace-board{display:grid;place-items:center;padding:clamp(10px,2.4vmin,24px);background:linear-gradient(145deg,rgba(237,238,204,.98),rgba(203,224,185,.98));}
+.trace-board::before{opacity:.08}
+.line-grid{position:relative;z-index:1;display:grid;grid-template-columns:repeat(var(--cols),minmax(0,1fr));grid-template-rows:repeat(var(--rows),minmax(0,1fr));gap:clamp(5px,1.2vmin,12px);width:min(100%,calc((100svh - 330px) * var(--cols) / var(--rows)));max-width:680px;max-height:100%;aspect-ratio:var(--cols)/var(--rows);touch-action:none}
+.line-cell{position:relative;min-width:0;min-height:0;border-radius:clamp(10px,2vmin,20px);display:grid;place-items:center;font-size:clamp(18px,4vmin,34px);transition:background .12s,transform .12s,box-shadow .12s}
+.line-cell.is-open{background:#f7f1d6;border:2px solid #c8c5a9;box-shadow:inset 0 -5px 0 rgba(87,92,68,.16),0 5px 12px rgba(30,55,42,.18)}
+.line-cell.is-blocked{background:linear-gradient(135deg,#6f8791 0 50%,#566c79 50%);border:2px solid #81949c;box-shadow:inset 0 -6px 0 rgba(23,38,47,.28)}
+.line-cell.is-visited{background:linear-gradient(145deg,#a6e25a,#67bb31);border-color:#e8ffc2;box-shadow:inset 0 -5px 0 rgba(43,111,18,.25),0 0 0 3px rgba(174,240,95,.3)}
+.line-cell.is-current{transform:scale(.94);box-shadow:inset 0 0 0 4px #fff8b0,0 0 18px #cfff78}
+.line-cell.is-start:not(.is-visited){background:#ffe17a;border-color:#fff4b2;animation:startPulse 1.15s ease-in-out infinite}
+.line-cell.is-hint{animation:hintPulse .55s ease-in-out 2}
+@keyframes startPulse{50%{box-shadow:0 0 0 7px rgba(255,222,94,.3),0 5px 12px rgba(30,55,42,.18)}}
+@keyframes hintPulse{50%{transform:scale(.88);background:#fff08d;box-shadow:0 0 0 8px rgba(255,225,73,.35)}}
+@media(max-width:700px){.line-grid{width:min(100%,calc((100svh - 310px) * var(--cols) / var(--rows)));gap:6px}.trace-board{padding:8px}}
+@media(max-height:480px) and (orientation:landscape){.line-grid{height:100%;width:auto;max-width:100%;aspect-ratio:var(--cols)/var(--rows)}.trace-board{padding:5px}.line-cell{border-radius:8px}}

@@ -348,13 +348,26 @@ body.is-rune-playing .pause-toggle {
 }
 
 .mission-card.is-active {
-  border-color: var(--gold);
-  box-shadow: inset 0 0 0 2px rgba(248, 214, 106, 0.25);
+  border-color: rgba(248, 214, 106, 0.5);
 }
 
 .mission-card.is-active .mission-card__top b {
   background: rgba(248, 214, 106, 0.18);
   color: var(--gold);
+}
+
+.mission-card.is-centered {
+  border-color: #8affd4;
+  outline: 3px solid rgba(103, 242, 190, 0.92);
+  outline-offset: -4px;
+  box-shadow:
+    0 0 0 3px rgba(248, 214, 106, 0.72),
+    0 0 24px 7px rgba(103, 242, 190, 0.58),
+    inset 0 0 22px rgba(103, 242, 190, 0.16);
+}
+
+.mission-card.is-centered:disabled {
+  opacity: 0.78;
 }
 
 .mission-card:disabled {

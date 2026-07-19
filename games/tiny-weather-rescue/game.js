@@ -17,16 +17,17 @@
     blanket: { icon: "../../assets/tiny-weather-tool-blanket.svg", className: "blanket" },
   };
 
+  const cueAsset = (name) => `../../assets/tiny-weather-cue-${name}.svg`;
   const problems = {
-    rain: { icon: "\u{1F327}\u{FE0F}", tool: "umbrella", scene: "rain" },
-    puddle: { icon: "\u{1F4A7}", tool: "towel", scene: "puddle" },
-    heat: { icon: "\u{2600}\u{FE0F}", tool: "fan", scene: "heat" },
-    dark: { icon: "\u{1F311}", tool: "lantern", scene: "dark" },
-    thunder: { icon: "\u{26A1}", tool: "house", scene: "thunder" },
-    hungry: { icon: "\u{1F924}", tool: "apple", scene: "hungry" },
-    muddy: { icon: "\u{1F43E}", tool: "boots", scene: "muddy" },
-    cold: { icon: "\u{2744}\u{FE0F}", tool: "blanket", scene: "cold" },
-    windy: { icon: "\u{1F32C}\u{FE0F}", tool: "house", scene: "windy" },
+    rain: { icon: cueAsset("rain"), tool: "umbrella", scene: "rain" },
+    puddle: { icon: cueAsset("puddle"), tool: "towel", scene: "puddle" },
+    heat: { icon: cueAsset("heat"), tool: "fan", scene: "heat" },
+    dark: { icon: cueAsset("dark"), tool: "lantern", scene: "dark" },
+    thunder: { icon: cueAsset("thunder"), tool: "house", scene: "thunder" },
+    hungry: { icon: cueAsset("hungry"), tool: "apple", scene: "hungry" },
+    muddy: { icon: cueAsset("muddy"), tool: "boots", scene: "muddy" },
+    cold: { icon: cueAsset("cold"), tool: "blanket", scene: "cold" },
+    windy: { icon: cueAsset("windy"), tool: "house", scene: "windy" },
   };
 
   const animalAssets = {
@@ -444,7 +445,7 @@
       button.innerHTML = `
         <b class="stage-animal">
           <img src="${animalAssets[stage.animalId]}" alt="" />
-          <span>${firstProblem.icon}</span>
+          <img class="stage-cue-icon" src="${firstProblem.icon}" alt="" />
         </b>
         <strong>${t("stage", { n: stageNo })}${stage.checkpoint ? ` \u00b7 ${t("checkpoint")}` : ""}</strong>
         <span>${t(stage.animalId)} \u00b7 ${ruleLabel(stage)} \u00b7 ${"\u2605".repeat(best)}${"\u2606".repeat(3 - best)}</span>
@@ -567,7 +568,7 @@
       <div class="weather-scene ${stage.theme} ${problem.scene}">
         <div class="rescue-scene">
           <div class="weather-effects" aria-hidden="true">${task.clues.map((key) => weatherEffects(key)).join("")}</div>
-          <div class="problem-cue${task.clues.length > 1 ? " multi-clue" : ""}" aria-label="${t("whatHelps")}">${task.clues.map((key) => `<span>${problems[key].icon}</span>`).join("")}<b aria-hidden="true">→</b><strong aria-hidden="true">?</strong><small>${t("whatHelps")} · ${ruleLabel(stage)}</small></div>
+          <div class="problem-cue${task.clues.length > 1 ? " multi-clue" : ""}" aria-label="${t("whatHelps")}">${task.clues.map((key) => `<span><img class="problem-cue-icon" src="${problems[key].icon}" alt="" /></span>`).join("")}<b aria-hidden="true">→</b><strong aria-hidden="true">?</strong><small>${t("whatHelps")} · ${ruleLabel(stage)}</small></div>
           <div class="animal-zone" data-drop-zone="true">
             <div class="animal-shadow"></div>
             <img class="animal-sprite" src="${animalAssets[stage.animalId]}" alt="${t(stage.animalId)}" />

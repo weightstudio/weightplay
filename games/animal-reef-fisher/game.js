@@ -7,6 +7,8 @@
   const expeditionSeconds = 90;
   const lureCost = 3;
   const sonarCost = 2;
+  const hookedFishFacing = "left";
+  const hookedFishMouthInset = 0.08;
   const isTestMode = new URLSearchParams(window.location.search).get("test") === "1";
 
   const $ = (id) => document.getElementById(id);
@@ -1414,7 +1416,7 @@
     ctx.drawImage(img, sx, sy, img.width / cols, img.height / rows, x, y, w, h);
   }
 
-  function drawFishSprite(fishData, x, y, w, h) {
+  function drawFishSprite(fishData, x, y, w, h, facing = "right") {
     const swimFrame = Math.floor(performance.now() / 180) % 3;
     const frameCanvas = fishFrameCanvas(fishData, swimFrame);
     if (!frameCanvas) return;
@@ -1426,7 +1428,17 @@
       drawH = h;
       drawW = h * ratio;
     }
-    ctx.drawImage(frameCanvas, x + (w - drawW) / 2, y + bob + (h - drawH) / 2, drawW, drawH);
+    const drawX = x + (w - drawW) / 2;
+    const drawY = y + bob + (h - drawH) / 2;
+    if (facing === "left") {
+      ctx.save();
+      ctx.translate(drawX + drawW, drawY);
+      ctx.scale(-1, 1);
+      ctx.drawImage(frameCanvas, 0, 0, drawW, drawH);
+      ctx.restore();
+      return;
+    }
+    ctx.drawImage(frameCanvas, drawX, drawY, drawW, drawH);
   }
 
   function configureArena() {
@@ -1459,7 +1471,17 @@
       const bobberY = 240 + Math.cos(t * 1.1) * 45;
       const fishWidth = run.hookFish.boss ? 224 : run.hookFish.rare ? 174 : 156;
       const fishHeight = run.hookFish.boss ? 116 : run.hookFish.rare ? 90 : 76;
-      return { bobberX, bobberY, fishX: bobberX + fishWidth * 0.26, fishY: bobberY + 6, fishWidth, fishHeight };
+      const fishX = bobberX + fishWidth * (0.5 - hookedFishMouthInset);
+      return {
+        bobberX,
+        bobberY,
+        fishX,
+        fishY: bobberY + 6,
+        fishWidth,
+        fishHeight,
+        fishFacing: hookedFishFacing,
+        mouthX: fishX - fishWidth * (0.5 - hookedFishMouthInset),
+      };
     }
     return null;
   }
@@ -1514,7 +1536,7 @@
       if (run.phase === "reel") {
         const f = run.hookFish;
         if (f && visual) {
-          drawFishSprite(f, visual.fishX - visual.fishWidth / 2, visual.fishY - visual.fishHeight / 2, visual.fishWidth, visual.fishHeight);
+          drawFishSprite(f, visual.fishX - visual.fishWidth / 2, visual.fishY - visual.fishHeight / 2, visual.fishWidth, visual.fishHeight, visual.fishFacing);
           if (f.rare || run.sonarPulse > 0) drawSpriteSheet(images.shimmer, 1, 1, 0, visual.fishX - 18, visual.fishY - 18, 150, 110);
           if (f.boss) {
             ctx.save();

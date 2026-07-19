@@ -945,6 +945,7 @@
   window.addEventListener("orientationchange", updateBattleScale);
   window.visualViewport?.addEventListener("resize", updateBattleScale, { passive: true });
   let selectedMission = 1;
+  let centeredMission = 1;
   let profile = loadProfile();
   let state = null;
   let claimedRewardId = null;
@@ -1254,9 +1255,13 @@
       btn.dataset.missionId = String(mission.id);
       const isLocked = mission.id > profile.unlockedMission;
       const isActive = selectedMission === mission.id;
-      btn.className = `mission-card ${isActive ? "is-active" : ""}`;
+      const isCentered = centeredMission === mission.id;
+      btn.className = `mission-card ${isActive ? "is-active" : ""} ${isCentered ? "is-centered" : ""}`;
+      btn.dataset.stageIndex = String(mission.id - 1);
+      btn.dataset.wpStageCentered = String(isCentered);
       btn.disabled = isLocked;
       btn.setAttribute("aria-pressed", String(isActive));
+      if (isCentered) btn.setAttribute("aria-current", "true");
       const enemyNames = mission.enemies.map((id) => t(enemyDefs.find((enemy) => enemy.id === id)?.name || id)).join(" / ");
       const traitNames = [...new Set(mission.enemies.map((id) => enemyDefs.find((enemy) => enemy.id === id)?.trait).filter(Boolean))]
         .map((key) => t(key))
@@ -1297,9 +1302,22 @@
     });
   }
 
+  function setCenteredMission(missionId) {
+    const nextMission = Math.max(1, Math.min(MISSION_COUNT, Number(missionId) || selectedMission));
+    centeredMission = nextMission;
+    nodes.missionGrid.querySelectorAll(".mission-card").forEach((card) => {
+      const isCentered = Number(card.dataset.missionId) === centeredMission;
+      card.classList.toggle("is-centered", isCentered);
+      card.dataset.wpStageCentered = String(isCentered);
+      if (isCentered) card.setAttribute("aria-current", "true");
+      else card.removeAttribute("aria-current");
+    });
+    renderMissionBriefing();
+  }
+
   function renderMissionBriefing() {
     if (!nodes.missionBriefing) return;
-    const mission = missionDefs.find((item) => item.id === selectedMission) || missionDefs[0];
+    const mission = missionDefs.find((item) => item.id === centeredMission) || missionDefs[0];
     const missionNameSource = locale === "zh-Hant" || locale === "zh-Hans" ? mission.nameZht : locale === "es" ? mission.nameEs : mission.nameEn;
     const missionTacticSource = locale === "zh-Hant" || locale === "zh-Hans" ? mission.tacticZht : locale === "es" ? mission.tacticEs : mission.tacticEn;
     const missionName = locale === "zh-Hans" ? window.WonderI18n?.simplifyChineseText?.(missionNameSource) || missionNameSource : missionNameSource;
@@ -1425,6 +1443,9 @@
     stagePanel.querySelector('[data-rune-stage-view="training"]').append(diamondCard);
     nodes.menuPanel.after(stagePanel);
     Object.assign(nodes, { stagePanel, mainStartBtn: mainStart, stageBackBtn: stagePanel.querySelector("#stageBackBtn"), missionBriefing });
+    nodes.missionGrid.addEventListener("wonder:stage-snap", (event) => {
+      setCenteredMission(Number(event.detail?.index) + 1);
+    });
     stagePanel.querySelectorAll("[data-rune-stage-tab]").forEach((button) => button.addEventListener("click", () => {
       const tab = button.dataset.runeStageTab;
       if (tab !== "training") resetTrainingIntent();
@@ -1436,6 +1457,7 @@
   function showStage() {
     resetTrainingIntent();
     selectedMission = Math.min(profile.unlockedMission, MISSION_COUNT);
+    centeredMission = selectedMission;
     nodes.menuPanel.classList.add("is-hidden");
     nodes.stagePanel.classList.remove("is-hidden");
     document.body.classList.add("wp-standard-stage-page");
@@ -2393,6 +2415,7 @@
     nodes.menuPanel.classList.add("is-hidden");
     nodes.stagePanel.classList.remove("is-hidden");
     document.body.classList.add("wp-standard-stage-page");
+    centeredMission = selectedMission;
     renderMenu();
     focusSelectedMission();
   }

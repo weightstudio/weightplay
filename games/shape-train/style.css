@@ -414,20 +414,41 @@ select {
 }
 
 .passenger span {
-  display: block;
-  width: 76%;
-  aspect-ratio: 1;
+  display: grid;
+  width: 88%;
+  height: 88%;
+  place-items: end center;
+  grid-template: 1fr / 1fr;
 }
 
 .shape-token img {
+  grid-area: 1 / 1;
   width: 100%;
   height: 100%;
   object-fit: contain;
   pointer-events: none;
 }
 
+.shape-token .passenger-animal {
+  width: 82%;
+  height: 82%;
+  align-self: start;
+  filter: drop-shadow(0 7px 7px rgba(38, 79, 113, 0.18));
+}
+
+.shape-token .passenger-shape-badge {
+  width: 44%;
+  height: 44%;
+  align-self: end;
+  justify-self: end;
+  padding: 4px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 3px 8px rgba(23, 49, 79, 0.22);
+}
+
 .play-panel.is-outline .car-shape,
-.play-panel.is-outline .shape-token img {
+.play-panel.is-outline .passenger-shape-badge {
   filter: grayscale(1) contrast(1.55) drop-shadow(0 3px 4px rgba(0, 0, 0, 0.18));
 }
 

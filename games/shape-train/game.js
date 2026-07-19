@@ -202,6 +202,14 @@
     diamond: { token: "../../assets/shape-token-diamond.svg" },
     heart: { token: "../../assets/shape-token-heart.svg" },
   };
+  const passengerAnimals = {
+    circle: "../../assets/tiny-weather-animal-rabbit.png",
+    square: "../../assets/tiny-weather-animal-panda.png",
+    triangle: "../../assets/tiny-weather-animal-fox.png",
+    star: "../../assets/weightplay-boom-mane-lion.png",
+    diamond: "../../assets/tiny-weather-animal-penguin.png",
+    heart: "../../assets/tiny-weather-animal-koala.png",
+  };
 
   const makeStage = (cars, tasks, options = {}) => ({ cars, tasks, rule: "direct", ...options });
   const stages = [
@@ -734,7 +742,10 @@
     feedbackKey = "";
     nodes.passengerShape.className = "shape-token";
     nodes.passengerShape.dataset.shape = currentShape;
-    nodes.passengerShape.innerHTML = `<img src="${shape.token}" alt="${t(`shapes.${currentShape}`)}" />`;
+    nodes.passengerShape.innerHTML = `
+      <img class="passenger-animal" src="${passengerAnimals[currentShape]}" alt="" />
+      <img class="passenger-shape-badge" src="${shape.token}" alt="${t(`shapes.${currentShape}`)}" />
+    `;
     nodes.passengerBtn.setAttribute("aria-label", t("passenger", { shape: t(`shapes.${currentShape}`) }));
     nodes.passengerBtn.classList.remove("wrong");
     selectedPassenger = false;
@@ -853,7 +864,7 @@
   function refreshActiveTaskLocale() {
     nodes.stageText.textContent = t("stage", { n: currentStage + 1 });
     nodes.promptText.textContent = t("prompt", { shape: t(`shapes.${currentShape}`) });
-    nodes.passengerShape.querySelector("img")?.setAttribute("alt", t(`shapes.${currentShape}`));
+    nodes.passengerShape.querySelector(".passenger-shape-badge")?.setAttribute("alt", t(`shapes.${currentShape}`));
     nodes.passengerBtn.setAttribute("aria-label", t("passenger", { shape: t(`shapes.${currentShape}`) }));
     nodes.carGrid.querySelectorAll(".train-car").forEach((car) => {
       car.querySelector(".car-shape")?.setAttribute("alt", t(`shapes.${car.dataset.shape}`));

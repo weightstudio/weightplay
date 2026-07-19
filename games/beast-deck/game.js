@@ -1413,6 +1413,12 @@
     });
   }
 
+  function restoreGearFocus(gearId) {
+    window.requestAnimationFrame(() => {
+      nodes.gearGrid.querySelector(`[data-gear-id="${gearId}"]`)?.focus();
+    });
+  }
+
   function renderCollectionUI() {
     if (!nodes.collectionGrid) return;
     nodes.profileCoinText.textContent = String(profile.coins);
@@ -1512,6 +1518,7 @@
       const button = document.createElement("button");
       button.type = "button";
       button.className = `gear-card${isEquipped ? " equipped" : ""}`;
+      button.dataset.gearId = gearId;
       button.setAttribute("aria-pressed", String(isEquipped));
       button.setAttribute("aria-label", `${gearName(gearId)} · ${t("gearRank", { rank: gearRank(gearId), maxRank: maxGearRank })} · ${gearBonusText(gearId)} · ${isEquipped ? t("gearEquipped") : t("gearEquip")}`);
       button.innerHTML = `
@@ -1520,10 +1527,12 @@
         <small>${t("gearRank", { rank: gearRank(gearId), maxRank: maxGearRank })} · ${gearBonusText(gearId)}</small>
         <span>${isEquipped ? t("gearEquipped") : t("gearEquip")}</span>
       `;
-      button.addEventListener("click", () => {
+      button.addEventListener("click", (event) => {
+        const keyboardActivation = event.detail === 0;
         profile.equippedGear = gearId;
         saveLocalState();
         renderCollectionUI();
+        if (keyboardActivation) restoreGearFocus(gearId);
         window.WonderSound?.play("upgrade");
       });
       nodes.gearGrid.appendChild(button);
@@ -3077,6 +3086,7 @@
     };
     nodes.deckSlots?.addEventListener("keydown", rejectRepeatedLoadoutActivation);
     nodes.collectionGrid?.addEventListener("keydown", rejectRepeatedLoadoutActivation);
+    nodes.gearGrid?.addEventListener("keydown", rejectRepeatedLoadoutActivation);
     nodes.packBtn?.addEventListener("keydown", (event) => {
       if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
     });
