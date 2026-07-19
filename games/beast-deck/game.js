@@ -81,6 +81,19 @@
   }
 
   const $ = (id) => document.getElementById(id);
+  if (!$("leavePanel")) {
+    $("gamePanel")?.insertAdjacentHTML("beforeend", `
+      <section id="leavePanel" class="leave-panel hidden" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" aria-describedby="leaveMessage">
+        <div class="leave-card">
+          <h2 id="leaveTitle">Leave this mission?</h2>
+          <p id="leaveMessage"></p>
+          <div class="leave-actions">
+            <button id="leaveKeepBtn" class="action-btn" type="button">Keep Playing</button>
+            <button id="leaveConfirmBtn" class="soft-btn" type="button">Leave Mission</button>
+          </div>
+        </div>
+      </section>`);
+  }
   const nodes = {
     localeSelect: $("localeSelect"),
     menuPanel: $("menuPanel"),
@@ -93,6 +106,11 @@
     startBtn: $("startBtn"),
     nextMissionBtn: $("nextMissionBtn"),
     menuBtn: $("menuBtn"),
+    leavePanel: $("leavePanel"),
+    leaveTitle: $("leaveTitle"),
+    leaveMessage: $("leaveMessage"),
+    leaveKeepBtn: $("leaveKeepBtn"),
+    leaveConfirmBtn: $("leaveConfirmBtn"),
     retryBtn: $("retryBtn"),
     resultMenuBtn: $("resultMenuBtn"),
     stageText: $("stageText"),
@@ -221,6 +239,7 @@
   }
 
   function showStage() {
+    if (leaveDecisionOpen) setLeaveDecision(false, { restoreFocus: false, resume: false });
     cancelBattleTransitions();
     clearAmuletConfirmation();
     document.body.classList.remove("beast-deck-playing");
@@ -1046,6 +1065,7 @@
   let profile = normalizeProfile();
   let state = {};
   let isAutoPositioningStage = false;
+  let leaveDecisionOpen = false;
 
   function clamp(num, min, max) {
     return Math.max(min, Math.min(max, num));
@@ -1121,6 +1141,81 @@
     const raw = (sourceLocale === "zh-Hant" ? zhRuntimeFallback[key] : "") || text[sourceLocale]?.[key] || text.en[key] || key;
     const interpolated = Object.entries(params).reduce((str, [k, v]) => str.replaceAll(`{${k}}`, String(v)), raw);
     return localizeChinese(interpolated, locale);
+  }
+
+  const leaveText = {
+    en: {
+      title: "Leave this mission?",
+      message: ({ mission, battle, hp, maxHp, hand }) => `Mission ${mission}, Battle ${battle}/3: ${hp}/${maxHp} HP and ${hand} cards in hand. Leaving ends this mission and discards its current Battle progress and mission-only Draft cards. Saved level, XP, Beast Coins, collection, equipment, and unlocked missions stay safe.`,
+      keep: "Keep Playing",
+      leave: "Leave Mission",
+    },
+    "zh-Hant": {
+      title: "要離開這次任務嗎？",
+      message: ({ mission, battle, hp, maxHp, hand }) => `任務 ${mission}、戰鬥 ${battle}/3：生命 ${hp}/${maxHp}，手牌 ${hand} 張。離開會結束本次任務，並失去目前戰鬥進度與本次任務的選牌卡；已儲存的等級、XP、野獸金幣、卡冊、裝備與已解鎖任務都會保留。`,
+      keep: "繼續戰鬥",
+      leave: "離開任務",
+    },
+    "zh-Hans": {
+      title: "要离开这次任务吗？",
+      message: ({ mission, battle, hp, maxHp, hand }) => `任务 ${mission}、战斗 ${battle}/3：生命 ${hp}/${maxHp}，手牌 ${hand} 张。离开会结束本次任务，并失去当前战斗进度与本次任务的选牌卡；已保存的等级、XP、野兽金币、卡册、装备与已解锁任务都会保留。`,
+      keep: "继续战斗",
+      leave: "离开任务",
+    },
+    es: {
+      title: "¿Salir de esta misión?",
+      message: ({ mission, battle, hp, maxHp, hand }) => `Misión ${mission}, batalla ${battle}/3: ${hp}/${maxHp} PV y ${hand} cartas en la mano. Salir termina esta misión y descarta el progreso de la batalla y las cartas elegidas solo para esta misión. El nivel, XP, Monedas Bestia, colección, equipo y misiones desbloqueadas permanecen.`,
+      keep: "Seguir jugando",
+      leave: "Salir de la misión",
+    },
+  };
+
+  function leaveCoveredLayers() {
+    return [
+      nodes.gamePanel.querySelector(".hud-row"),
+      nodes.gamePanel.querySelector(".battlefield"),
+      nodes.gamePanel.querySelector(".action-area"),
+    ].filter(Boolean);
+  }
+
+  function updateLeaveDecisionCopy() {
+    const copy = leaveText[getLocale()] || leaveText.en;
+    nodes.leaveTitle.textContent = copy.title;
+    nodes.leaveMessage.textContent = copy.message({
+      mission: state.mission,
+      battle: state.battle,
+      hp: Math.max(0, Math.ceil(state.playerHp || 0)),
+      maxHp: Math.max(1, Math.ceil(state.playerMaxHp || 1)),
+      hand: state.hand?.length || 0,
+    });
+    nodes.leaveKeepBtn.textContent = copy.keep;
+    nodes.leaveConfirmBtn.textContent = copy.leave;
+  }
+
+  function setLeaveDecision(active, { restoreFocus = true, resume = true } = {}) {
+    if (active) {
+      if (leaveDecisionOpen || nodes.gamePanel.classList.contains("hidden") || !state.enemy || !nodes.draftPanel.classList.contains("hidden") || !nodes.resultPanel.classList.contains("hidden")) return;
+      leaveDecisionOpen = true;
+      suspendBackgroundBattle();
+      updateLeaveDecisionCopy();
+      nodes.leavePanel.classList.remove("hidden");
+    } else {
+      const wasOpen = leaveDecisionOpen;
+      leaveDecisionOpen = false;
+      nodes.leavePanel.classList.add("hidden");
+      if (wasOpen && resume) resumeBackgroundBattle();
+      if (wasOpen && !resume) {
+        cancelBattleTransitions();
+        backgroundSuspended = document.hidden;
+      }
+    }
+    leaveCoveredLayers().forEach((layer) => {
+      layer.inert = active;
+      if (active) layer.setAttribute("aria-hidden", "true");
+      else layer.removeAttribute("aria-hidden");
+    });
+    if (active) requestAnimationFrame(() => nodes.leaveKeepBtn.focus({ preventScroll: true }));
+    else if (restoreFocus && state.enemy) nodes.menuBtn.focus({ preventScroll: true });
   }
 
   function getMission(id = profile.selectedMission) {
@@ -1235,6 +1330,7 @@
       nodes.enemyName.textContent = enemyName(state.enemy);
       displayIntent(state.enemy.intents[state.enemyIntentIndex]);
     }
+    if (leaveDecisionOpen) updateLeaveDecisionCopy();
   }
 
   function updateDiamondShopUI() {
@@ -2457,6 +2553,7 @@
   }
 
   function startRun() {
+    if (leaveDecisionOpen) setLeaveDecision(false, { restoreFocus: false, resume: false });
     cancelBattleTransitions();
     clearAmuletConfirmation();
     loadLocalState();
@@ -2845,11 +2942,42 @@
     });
     nodes.menuBtn.addEventListener("click", () => {
       window.WonderSound?.play("click");
+      setLeaveDecision(true);
+    });
+    nodes.menuBtn.addEventListener("keydown", rejectRepeatedBattleActivation);
+    nodes.leaveKeepBtn.addEventListener("click", () => {
+      window.WonderSound?.play("click");
+      setLeaveDecision(false);
+    });
+    nodes.leaveConfirmBtn.addEventListener("click", () => {
+      window.WonderSound?.play("click");
+      setLeaveDecision(false, { restoreFocus: false, resume: false });
       nodes.gamePanel.classList.add("hidden");
       showStage();
       renderProgressUI();
       updateDiamondShopUI();
       renderCollectionUI();
+    });
+    nodes.leavePanel.addEventListener("keydown", (event) => {
+      if (event.repeat && (event.key === "Enter" || event.key === " ")) {
+        event.preventDefault();
+        return;
+      }
+      if (event.key === "Escape") {
+        event.preventDefault();
+        event.stopPropagation();
+        setLeaveDecision(false);
+        return;
+      }
+      if (event.key !== "Tab" || !leaveDecisionOpen) return;
+      const actions = [nodes.leaveKeepBtn, nodes.leaveConfirmBtn];
+      if (event.shiftKey && document.activeElement === actions[0]) {
+        event.preventDefault();
+        actions[1].focus();
+      } else if (!event.shiftKey && document.activeElement === actions[1]) {
+        event.preventDefault();
+        actions[0].focus();
+      }
     });
     nodes.retryBtn.addEventListener("click", () => {
       window.WonderSound?.play("click");

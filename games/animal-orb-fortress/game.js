@@ -252,7 +252,7 @@
       arenaControlReadyLabel: "動物星珠要塞競技場。瞄準偏移 {angle} 度。使用左右方向鍵調整。星珠已準備好；空白鍵或 Enter 現在可以發射。",
       arenaControlCooldownLabel: "動物星珠要塞競技場。瞄準偏移 {angle} 度。星珠冷卻約剩 {seconds} 秒；空白鍵或 Enter 尚無法發射。",
       arenaControlLimitLabel: "動物星珠要塞競技場。瞄準偏移 {angle} 度。目前有 {active}/{limit} 顆星珠飛行中，已達飛行上限；空白鍵或 Enter 尚無法發射。",
-      orbReady: "星珠已準備好。用牆面反彈擊中影獸，別讓它們靠近核心。",
+      orbReady: "星珠已準備好。用牆面反彈擊中影獸，別讓牠們靠近核心。",
       orbFlying: "星珠正在飛行。觀察反彈路線，準備下一次瞄準。",
       fortressHit: "影獸撞到核心了。更早瞄準，或改用更寬的反彈角度。",
       waveClear: "波次完成。選擇一個祝福後進入下一波。",
@@ -329,6 +329,10 @@
     raidClear:"Incursión completada",raidFailed:"Incursión fallida",resultWin:"Completaste la ruta {tier}, oleada {wave}/3, ganaste {stones} piedras y conservaste {core} de núcleo.",resultLose:"Llegaste a la ruta {tier}, oleada {wave}/3 y ganaste {stones} piedras. Mejora salas e intenta un rebote más seguro.",progressUnlocked:"Progreso guardado: {total} piedras; ruta {best} desbloqueada.",progressComplete:"Progreso guardado: {total} piedras; las 30 rutas están completas.",ruleBank:"Ruta de rebote",rulePriority:"Prioridad de objetivos",ruleAnchor:"Ancla de espinas",ruleArmor:"Romper armadura",rulePhase:"Momento de fase",rulePylon:"Pilar espejo",ruleSplitter:"División de cristal",ruleCharge:"Carril de carga",ruleMastery:"Dominio combinado",ruleBoss:"Contraataque de jefe",
     bossCueRootbound:"Defensa de raíces elevada: rómpela y golpea el cristal del pecho.",bossCueBramble:"Placas de zarzas y anclas protegen al Coloso.",bossCueLunar:"La Matriarca cambia de fase: espera a que se abran los anillos lunares.",bossCuePrism:"Escudo prisma girando: ataca cuando el segmento dorado mire al frente.",bossCueTempest:"Carril de carga marcado: el Guardián queda expuesto tras correr.",bossCueVoid:"Cambió la fase del núcleo vacío: elimina la escolta y sigue el núcleo iluminado.",progressSaved:"Progreso guardado: {total} piedras; mejor ruta desbloqueada {best}.",reportWin:"Informe: lógica y reacción sólidas. Protegiste la fortaleza con rebotes y mejoras.",reportLose:"Informe: buena práctica. Apunta antes y usa el muro para golpear varias bestias.",
     upgradeDamage:"Orbe gigante",upgradeDamageDesc:"+1 de daño de orbe.",upgradeSplit:"Orbe dividido",upgradeSplitDesc:"Añade un tercer orbe eco a cada disparo.",upgradePierce:"Luz penetrante",upgradePierceDesc:"El orbe puede volver a golpear antes a la misma bestia.",upgradeRecharge:"Carga rápida",upgradeRechargeDesc:"Prepara antes el siguiente disparo.",upgradeShield:"Escudo del núcleo",upgradeShieldDesc:"Restaura 4 de vida del núcleo.",upgradeMagnet:"Imán explorador",upgradeMagnetDesc:"+2 Piedras Estelares al terminar.",roomForge:"Forja de orbes",roomForgeDesc:"+1 de daño base por nivel.",roomShield:"Sala del escudo",roomShieldDesc:"+4 de vida inicial del núcleo por nivel.",roomDen:"Guarida de compañeros",roomDenDesc:"Daño de apoyo desde nivel 2.",companionLocked:"Alcanza Nv.2 para desbloquear ataques de apoyo.",companionCurrent:"Apoyo: {damage} de daño cada 4 segundos.",companionNext:"Siguiente nivel: {damage} de daño.",roomTower:"Torre de exploración",roomTowerDesc:"+1 Piedra Estelar por ruta y nivel.",level:"Nv.{n}",upgradeRoom:"Mejorar {cost}",upgradeRoomLabel:"{name}: subir a Nv.{level} por {cost} piedras. Después: {effect}",maxRoomLabel:"{name}: nivel máximo {level}. {effect}",maxed:"Máximo"
+  };
+
+  text["zh-Hans"] = {
+    orbReady: "星珠已准备好。用墙面反弹击中影兽，别让它们靠近核心。",
   };
 
   const assets = {
@@ -454,7 +458,8 @@
   let preloadFinished = false;
 
   function t(key, data = {}) {
-    const value = text[locale]?.[key] || text.en[key] || key;
+    const actualLocale = window.WonderI18n?.actualLocale?.() || document.documentElement.lang || locale;
+    const value = text[actualLocale]?.[key] || text[locale]?.[key] || text.en[key] || key;
     return Object.entries(data).reduce((out, [name, item]) => out.replaceAll(`{${name}}`, String(item)), value);
   }
 

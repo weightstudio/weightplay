@@ -296,7 +296,24 @@
     loadingFill: $("loadingFill"),
   };
 
-  let locale = window.WonderI18n?.locale?.() || localStorage.getItem(localeKey) || "en";
+  function migrateLegacyLocale() {
+    const parts = location.pathname.split("/").filter(Boolean);
+    const routeOffset = parts[0] === "weightplay" ? 1 : 0;
+    if (["en", "zh-tw", "zh-cn", "es", "ja"].includes(String(parts[routeOffset] || "").toLowerCase())) return "";
+    try {
+      if (localStorage.getItem(localeKey)) return "";
+      const legacy = localStorage.getItem("weightplayLocale");
+      const supported = window.WonderI18n?.supportedLocales || ["en", "zh-Hant", "zh-Hans", "es", "ja"];
+      if (!legacy || !supported.includes(legacy)) return "";
+      localStorage.setItem(localeKey, legacy);
+      return window.WonderI18n?.legacyLocale?.(legacy) || legacy;
+    } catch {
+      return "";
+    }
+  }
+
+  const migratedLocale = migrateLegacyLocale();
+  let locale = migratedLocale || window.WonderI18n?.locale?.() || localStorage.getItem(localeKey) || "en";
   let save = loadSave();
   let currentStage = 1;
   let currentDelivery = 0;

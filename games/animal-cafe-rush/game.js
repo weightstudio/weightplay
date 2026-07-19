@@ -5,7 +5,10 @@
   const legacyLocaleKey = "weightplayLocale";
   const canonicalSavedLocale = localStorage.getItem(localeKey);
   const legacySavedLocale = localStorage.getItem(legacyLocaleKey);
-  if (!canonicalSavedLocale && ["en", "zh-Hant", "zh-Hans"].includes(legacySavedLocale)) window.WonderI18n?.setLocale?.(legacySavedLocale);
+  if (!canonicalSavedLocale && ["en", "zh-Hant", "zh-Hans", "es", "ja"].includes(legacySavedLocale)) {
+    localStorage.setItem(localeKey, legacySavedLocale);
+    window.WonderI18n?.setLocale?.(legacySavedLocale);
+  }
   const food = ["smoothie", "sandwich", "fruit", "cookie"];
   const customers = ["lion", "giraffe", "panda", "rabbit"];
   const stations = { smoothie: "station-smoothie", sandwich: "station-sandwich", fruit: "station-fruit", cookie: "station-bakery" };

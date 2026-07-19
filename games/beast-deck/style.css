@@ -1388,6 +1388,58 @@ body {
   flex-wrap: wrap;
 }
 
+/* Battle-owned irreversible mission exit decision. */
+.leave-panel {
+  position: absolute;
+  z-index: 90;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  background: rgba(5, 10, 18, 0.9);
+  backdrop-filter: blur(8px);
+}
+
+.leave-card {
+  width: min(100%, 358px);
+  padding: 20px;
+  border: 1px solid rgba(16, 185, 129, 0.55);
+  border-radius: 16px;
+  background: #0f172a;
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.5);
+  text-align: center;
+}
+
+.leave-card h2 {
+  color: #f8fafc;
+  font-size: 22px;
+  line-height: 1.2;
+}
+
+.leave-card p {
+  margin-top: 12px;
+  color: #cbd5e1;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.leave-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.leave-actions button {
+  width: 100%;
+  min-width: 0;
+  min-height: 48px;
+  padding: 8px 10px;
+  white-space: normal;
+  line-height: 1.2;
+}
+
 /* Result Panel */
 .result-panel {
   position: absolute;

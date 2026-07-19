@@ -829,6 +829,7 @@
   let backgroundSuspendedAt = 0;
   let backgroundBattleSuspended = false;
   let manualPauseActive = false;
+  let pauseDialogMode = "pause";
 
   function clearEliteSpawnTimer() {
     window.clearTimeout(eliteSpawnTimer);
@@ -1074,6 +1075,51 @@
     },
   };
 
+  const leaveText = {
+    en: {
+      title: "Leave this expedition?",
+      message: ({ expedition, room, hp, maxHp, keys, gold }) => `Expedition ${expedition}, Room ${room}: ${hp}/${maxHp} HP, ${keys} keys, ${gold} run Gold. Leaving loses this run, its room progress, keys, and relic upgrades. Permanent level, training, backpack, equipped gear, and saved Gold stay safe.`,
+      resume: "Keep Exploring",
+      leave: "Leave Expedition",
+    },
+    "zh-Hant": {
+      title: "要離開這次遠征嗎？",
+      message: ({ expedition, room, hp, maxHp, keys, gold }) => `遠征 ${expedition}、房間 ${room}：生命 ${hp}/${maxHp}、${keys} 把鑰匙、本局金幣 ${gold}。離開會失去本局、房間進度、鑰匙與遺物升級；永久等級、訓練、背包、已裝備道具與已儲存金幣都會保留。`,
+      resume: "繼續探索",
+      leave: "離開遠征",
+    },
+    es: {
+      title: "¿Salir de esta expedición?",
+      message: ({ expedition, room, hp, maxHp, keys, gold }) => `Expedición ${expedition}, sala ${room}: ${hp}/${maxHp} PV, ${keys} llaves y ${gold} de oro de la partida. Salir pierde esta partida, su progreso de sala, llaves y mejoras de reliquia. El nivel permanente, entrenamiento, mochila, equipo y oro guardado permanecen.`,
+      resume: "Seguir explorando",
+      leave: "Salir de la expedición",
+    },
+  };
+
+  function updatePauseDialogCopy() {
+    const locale = getLocale();
+    if (pauseDialogMode === "leave") {
+      const copy = leaveText[locale] || leaveText.en;
+      nodes.pauseTitle.textContent = copy.title;
+      nodes.pauseMessage.textContent = copy.message({
+        expedition: state.expedition,
+        room: state.room,
+        hp: Math.max(0, Math.ceil(state.playerHp)),
+        maxHp: Math.max(1, Math.ceil(state.playerMaxHp)),
+        keys: state.runKeys,
+        gold: state.runGold,
+      });
+      nodes.resumeBtn.textContent = copy.resume;
+      nodes.pauseStageBtn.textContent = copy.leave;
+      return;
+    }
+    const copy = pauseText[locale] || pauseText.en;
+    nodes.pauseTitle.textContent = copy.title;
+    nodes.pauseMessage.textContent = copy.message;
+    nodes.resumeBtn.textContent = copy.resume;
+    nodes.pauseStageBtn.textContent = t("backToStage");
+  }
+
   function translateAriaLabels(locale) {
     const labels = ariaText[locale] || ariaText.en;
     nodes.menuBtn.setAttribute("aria-label", labels.lobby);
@@ -1248,12 +1294,15 @@
     }
   }
 
-  function setPauseModalActive(active, restoreBattleFocus = true) {
+  function setPauseModalActive(active, restoreBattleFocus = true, mode = "pause") {
+    const closingMode = pauseDialogMode;
     if (active) {
       if (manualPauseActive || !state.gameActive || !nodes.draftPanel.classList.contains("hidden") || !nodes.lootPanel.classList.contains("hidden") || document.body.classList.contains("relic-result")) return;
+      pauseDialogMode = mode;
       manualPauseActive = true;
       clearMovementInput();
       suspendBackgroundBattle();
+      updatePauseDialogCopy();
       nodes.pausePanel.classList.remove("hidden");
       document.body.classList.add("relic-paused");
     } else {
@@ -1262,6 +1311,7 @@
       nodes.pausePanel.classList.add("hidden");
       document.body.classList.remove("relic-paused");
       if (wasPaused) resumeBackgroundBattle();
+      pauseDialogMode = "pause";
     }
     document.querySelectorAll(".game-layout > .arena-viewport, .game-layout > .inventory-sidebar, .game-layout > #pauseBtn").forEach((layer) => {
       layer.inert = active;
@@ -1269,7 +1319,9 @@
       else layer.removeAttribute("aria-hidden");
     });
     if (active) requestAnimationFrame(() => nodes.resumeBtn.focus({ preventScroll: true }));
-    else if (restoreBattleFocus && state.gameActive) nodes.gameCanvas.focus({ preventScroll: true });
+    else if (restoreBattleFocus && state.gameActive) {
+      (closingMode === "leave" ? nodes.backToStageBtn : nodes.gameCanvas).focus({ preventScroll: true });
+    }
   }
 
   function updateResultPrimaryAction() {
@@ -1371,10 +1423,7 @@
     const pauseCopy = pauseText[locale] || pauseText.en;
     nodes.pauseBtn.setAttribute("aria-label", pauseCopy.action);
     nodes.pauseBtn.setAttribute("title", pauseCopy.action);
-    nodes.pauseTitle.textContent = pauseCopy.title;
-    nodes.pauseMessage.textContent = pauseCopy.message;
-    nodes.resumeBtn.textContent = pauseCopy.resume;
-    nodes.pauseStageBtn.textContent = t("backToStage");
+    updatePauseDialogCopy();
     updateDiamondShopUI();
     renderTrainingPanel();
     renderEquippedGear();
@@ -3180,7 +3229,7 @@
 
     nodes.backToStageBtn.addEventListener("click", () => {
       window.WonderSound?.play("click");
-      showStage();
+      setPauseModalActive(true, true, "leave");
     });
 
     nodes.pauseBtn.addEventListener("click", () => {

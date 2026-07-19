@@ -8,7 +8,9 @@
     <link rel="stylesheet" href="../../src/game-page-info.css" />
     <link rel="stylesheet" href="../../src/loading-screen.css" />
     <link rel="stylesheet" href="../../src/play-viewport.css" />
-    <link rel="stylesheet" href="style.css?v=20260715-stage-medals1" />
+    <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard />
+    <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
+    <link rel="stylesheet" href="style.css?v=20260719-stage-art1" />
     <link rel="stylesheet" href="main-flow.css" />
   </head>
   <body data-no-mobile-immersive="true">
@@ -31,7 +33,6 @@
         <div class="stage-copy"><strong data-i18n="chooseShift">Choose a shift</strong><span id="bestText"></span></div>
         <div class="contract-row"><label class="contract-choice"><input id="contractToggle" type="checkbox" /><span id="contractText">Priority contract: finish with no errors for bonus sky coins.</span></label><button id="insuranceBtn" class="secondary insurance-btn" type="button">Insure 5 diamonds</button></div>
         <div id="stageRail" class="stage-rail" aria-label="Shift selection"></div>
-        <div class="ad-reserve" aria-hidden="true"></div>
       </section>
       <section id="battleShell" class="battle-shell hidden">
         <section class="battle-canvas">
@@ -59,6 +60,8 @@
     <script src="../../src/edge-guard.js"></script>
     <script src="../../src/wallet.js"></script>
     <script src="game.js?v=20260716-bounded-result1"></script>
+    <script src="../../src/stage-selector-standard.js" data-wp-stage-standard></script>
+    <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
     <script src="../../src/game-page-info.js"></script>
     <script>window.addEventListener('load',()=>document.querySelector('#loadingPanel')?.classList.add('hidden'),{once:true});</script>
   </body>
