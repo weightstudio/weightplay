@@ -321,6 +321,22 @@ a {
   border-color: #64748b;
 }
 
+body.lunch-stage .stage-card.is-centered {
+  border-color: #ffd23f;
+  box-shadow:
+    0 0 0 3px rgba(255, 248, 177, 0.96),
+    0 0 26px 8px rgba(255, 190, 48, 0.82),
+    0 6px 0 #c99b44;
+}
+
+body.lunch-stage .stage-card.locked.is-centered {
+  opacity: 1;
+  box-shadow:
+    0 0 0 3px rgba(255, 248, 177, 0.96),
+    0 0 26px 8px rgba(255, 190, 48, 0.82),
+    0 6px 0 #94a3b8;
+}
+
 .stage-card span {
   font-size: 11px;
   font-weight: 1000;

@@ -40,6 +40,7 @@
   const loadingText = document.querySelector("#loadingText");
   const loadingFill = document.querySelector("#loadingFill");
   const lunchGame = document.querySelector(".lunch-game");
+  lunchGame?.setAttribute("data-wp-canvas-max-width", "viewport");
   const leaveConfirmPanel = document.createElement("section");
   leaveConfirmPanel.className = "leave-confirm-panel hidden";
   leaveConfirmPanel.setAttribute("role", "dialog");
@@ -734,6 +735,40 @@
     requestAnimationFrame(updateLunchFrame);
   }
 
+  let centeredStageFrame = 0;
+  function updateCenteredStageCard() {
+    centeredStageFrame = 0;
+    const cards = [...stageGrid.querySelectorAll(".stage-card")];
+    if (!cards.length || !document.body.classList.contains("lunch-stage")) return;
+    const railRect = stageGrid.getBoundingClientRect();
+    const railCenter = railRect.left + railRect.width / 2;
+    let centeredCard = cards[0];
+    let centeredDistance = Infinity;
+    cards.forEach((card) => {
+      const rect = card.getBoundingClientRect();
+      const distance = Math.abs(rect.left + rect.width / 2 - railCenter);
+      if (distance < centeredDistance) {
+        centeredCard = card;
+        centeredDistance = distance;
+      }
+    });
+    cards.forEach((card) => {
+      const isCentered = card === centeredCard;
+      card.classList.toggle("is-centered", isCentered);
+      if (isCentered) card.setAttribute("aria-current", "true");
+      else card.removeAttribute("aria-current");
+    });
+  }
+
+  function scheduleCenteredStageCard() {
+    if (centeredStageFrame) return;
+    centeredStageFrame = requestAnimationFrame(updateCenteredStageCard);
+  }
+
+  stageGrid.addEventListener("scroll", scheduleCenteredStageCard, { passive: true });
+  window.addEventListener("resize", scheduleCenteredStageCard, { passive: true });
+  visualViewport?.addEventListener("resize", scheduleCenteredStageCard, { passive: true });
+
   function renderStageCards() {
     stageStatus.textContent = "";
     stageGrid.replaceChildren(
@@ -764,6 +799,7 @@
     requestAnimationFrame(() => {
       const unlocked = [...stageGrid.querySelectorAll(".stage-card.unlocked")].at(-1);
       unlocked?.scrollIntoView({ block: "nearest", inline: "center", behavior: "auto" });
+      requestAnimationFrame(updateCenteredStageCard);
     });
   }
 

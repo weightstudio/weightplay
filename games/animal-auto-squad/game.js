@@ -932,11 +932,12 @@
         savedAnimalIds.add(normalizedId);
       });
     }
+    const unlockedSkin = source.unlockedSkin === true;
     return {
       bestRound: Math.max(0, Number(source.bestRound) || 0),
       clearedRuns: Math.max(0, Number(source.clearedRuns) || 0),
-      unlockedSkin: Boolean(source.unlockedSkin),
-      selectedSkin: source.selectedSkin || "normal",
+      unlockedSkin,
+      selectedSkin: unlockedSkin && source.selectedSkin === "golden" ? "golden" : "normal",
       teamLevel: Math.max(1, Number(source.teamLevel) || 1),
       teamXp: Math.max(0, Number(source.teamXp) || 0),
       coins: Math.max(0, Math.floor(source.coins === undefined ? 18 : Number(source.coins) || 0)),

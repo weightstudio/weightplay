@@ -56,6 +56,7 @@
   const loadingText = document.querySelector("#loadingText");
   const loadingFill = document.querySelector("#loadingFill");
   const dashGame = document.querySelector(".dash-game");
+  dashGame?.setAttribute("data-wp-canvas-max-width", "viewport");
   const leavePanel = document.createElement("section");
   leavePanel.className = "leave-panel hidden";
   leavePanel.setAttribute("role", "dialog");
@@ -535,6 +536,40 @@
     return config.nameEn;
   }
 
+  let centeredRouteFrame = 0;
+  function updateCenteredRouteCard() {
+    centeredRouteFrame = 0;
+    const cards = [...stageRail.querySelectorAll(".stage-card")];
+    if (!cards.length || !document.body.classList.contains("dash-stage-select")) return;
+    const railRect = stageRail.getBoundingClientRect();
+    const railCenter = railRect.left + railRect.width / 2;
+    let centeredCard = cards[0];
+    let centeredDistance = Infinity;
+    cards.forEach((card) => {
+      const rect = card.getBoundingClientRect();
+      const distance = Math.abs(rect.left + rect.width / 2 - railCenter);
+      if (distance < centeredDistance) {
+        centeredCard = card;
+        centeredDistance = distance;
+      }
+    });
+    cards.forEach((card) => {
+      const isCentered = card === centeredCard;
+      card.classList.toggle("is-centered", isCentered);
+      if (isCentered) card.setAttribute("aria-current", "true");
+      else card.removeAttribute("aria-current");
+    });
+  }
+
+  function scheduleCenteredRouteCard() {
+    if (centeredRouteFrame) return;
+    centeredRouteFrame = requestAnimationFrame(updateCenteredRouteCard);
+  }
+
+  stageRail.addEventListener("scroll", scheduleCenteredRouteCard, { passive: true });
+  window.addEventListener("resize", scheduleCenteredRouteCard, { passive: true });
+  window.visualViewport?.addEventListener("resize", scheduleCenteredRouteCard, { passive: true });
+
   function renderStageSelector(centerSelected = true) {
     stageProgress.textContent = t("stageProgress", { unlocked: progress.unlocked });
     stageRail.innerHTML = "";
@@ -575,8 +610,9 @@
         if (selectedCard && !stageRail.hasAttribute("data-wp-stage-rail")) {
           stageRail.scrollLeft = selectedCard.offsetLeft - (stageRail.clientWidth - selectedCard.offsetWidth) / 2;
         }
+        requestAnimationFrame(updateCenteredRouteCard);
       });
-    }
+    } else scheduleCenteredRouteCard();
   }
 
   function showStageSelection() {

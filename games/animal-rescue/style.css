@@ -181,7 +181,7 @@ body:not(.rescue-playing):not(.rescue-stage-select) .rescue-game { height: auto;
   min-width: 0;
   overflow-x: auto;
   overflow-y: hidden;
-  padding: 2px max(44px, calc((100% - 264px) / 2)) 10px;
+  padding: 12px max(44px, calc((100% - 264px) / 2));
   scroll-snap-type: x mandatory !important;
   scrollbar-width: none;
   touch-action: pan-x;
@@ -212,6 +212,19 @@ body:not(.rescue-playing):not(.rescue-stage-select) .rescue-game { height: auto;
 .stage-card.locked {
   filter: grayscale(1);
   opacity: 0.62;
+}
+
+body.rescue-stage-select .stage-card.is-centered {
+  border-color: #ffe36b;
+  box-shadow:
+    0 0 0 3px rgba(255, 227, 107, 0.92),
+    0 0 18px 7px rgba(105, 255, 139, 0.72),
+    0 10px 26px rgba(39, 91, 49, 0.38);
+}
+
+body.rescue-stage-select .stage-card.locked.is-centered {
+  filter: none;
+  opacity: 0.76;
 }
 
 .stage-card .mini-animal {

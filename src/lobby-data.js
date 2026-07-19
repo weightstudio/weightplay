@@ -188,6 +188,23 @@ window.WONDER_LOBBY = {
       art: { kind: "image", background: "assets/fruit-merge-cover.webp", hero: "assets/weightplay-character-moss-shell-turtle-cutout.webp" },
     },
     {
+      id: "animal-2048",
+      title: { en: "Animal 2048: Forest Evolution", "zh-Hant": "動物 2048：森林進化" },
+      status: "planned",
+      statusText: { en: "Coming Soon", "zh-Hant": "敬請期待" },
+      href: "games/animal-2048/",
+      internalTrial: "index.html?trial=1",
+      type: { en: "Grid Merge Strategy", "zh-Hant": "格子合併策略" },
+      categories: ["Animal Games", "Puzzle", "Strategy"],
+      skills: ["Logic", "Problem Solving", "Focus"],
+      description: {
+        en: "Slide a 4×4 forest grid, merge matching animals, and clear 30 saved evolution missions with stones, score goals, and move limits.",
+        "zh-Hant": "滑動 4×4 森林棋盤、合併相同動物，挑戰石塊、分數與步數限制組成的 30 個進化任務。",
+      },
+      meta: { en: ["30 Missions", "Grid Strategy", "Forest Evolution"], "zh-Hant": ["30 個任務", "格子策略", "森林進化"] },
+      art: { kind: "image", background: "assets/animal-2048-cover.webp", hero: "assets/weightplay-character-moon-cap-owl-cutout.webp" },
+    },
+    {
       id: "garden-tiles",
       title: { en: "Pet Garden Tiles", "zh-Hant": "寵物花園方塊" },
       status: "playable",

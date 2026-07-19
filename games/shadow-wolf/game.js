@@ -629,6 +629,15 @@
   };
   let backgroundBattleSuspended = false;
   let battlePaused = false;
+  const SIMULATION_STEP_MS = 1000 / 60;
+  const MAX_SIMULATION_STEPS = 6;
+  let simulationAccumulator = 0;
+  let simulationFrameAt = 0;
+
+  function resetSimulationClock() {
+    simulationAccumulator = 0;
+    simulationFrameAt = 0;
+  }
 
   // Level platforms geometry lists
   let platforms = [];
@@ -1268,6 +1277,7 @@
     window.WonderSound?.play("start");
 
     cancelAnimationFrame(state.gameLoopId);
+    resetSimulationClock();
     state.gameLoopId = requestAnimationFrame(updateGameEngine);
   }
 
@@ -1411,6 +1421,7 @@
     }
     setDraftModalOpen(false);
     state.gameActive = true;
+    resetSimulationClock();
     state.gameLoopId = requestAnimationFrame(updateGameEngine);
   }
 
@@ -1460,6 +1471,7 @@
     renderStatsPanel();
     renderEquippedGear();
     updateHUDText();
+    resetSimulationClock();
     state.gameLoopId = requestAnimationFrame(updateGameEngine);
   }
 
@@ -1518,6 +1530,7 @@
     if (!resume) return;
     state.gameActive = true;
     cancelAnimationFrame(state.gameLoopId);
+    resetSimulationClock();
     state.gameLoopId = requestAnimationFrame(updateGameEngine);
     nodes.gameCanvas.focus({ preventScroll: true });
   }
@@ -1750,12 +1763,8 @@
   }
 
   // Physics Loop frame updates
-  function updateGameEngine() {
+  function stepGameEngine() {
     if (!state.gameActive) return;
-    if (document.hidden) {
-      suspendBackgroundBattle();
-      return;
-    }
     if (state.entryGraceFrames > 0) state.entryGraceFrames--;
 
     // Redundant input values checking
@@ -2016,9 +2025,31 @@
       }
     });
 
-    // Render Canvas Frame
-    drawCanvasFrame();
+  }
 
+  function advanceSimulation(deltaMs) {
+    simulationAccumulator += Math.max(0, Math.min(100, Number(deltaMs) || 0));
+    let steps = 0;
+    while (simulationAccumulator + 0.0001 >= SIMULATION_STEP_MS && state.gameActive && steps < MAX_SIMULATION_STEPS) {
+      stepGameEngine();
+      simulationAccumulator -= SIMULATION_STEP_MS;
+      steps++;
+    }
+    if (steps === MAX_SIMULATION_STEPS && simulationAccumulator >= SIMULATION_STEP_MS) simulationAccumulator %= SIMULATION_STEP_MS;
+    return steps;
+  }
+
+  function updateGameEngine(timestamp = performance.now()) {
+    if (!state.gameActive) return;
+    if (document.hidden) {
+      suspendBackgroundBattle();
+      return;
+    }
+    if (!simulationFrameAt) simulationFrameAt = timestamp - SIMULATION_STEP_MS;
+    const delta = timestamp - simulationFrameAt;
+    simulationFrameAt = timestamp;
+    advanceSimulation(delta);
+    drawCanvasFrame();
     if (state.gameActive) state.gameLoopId = requestAnimationFrame(updateGameEngine);
   }
 
@@ -2028,6 +2059,7 @@
     if (!state.gameActive) return;
     backgroundBattleSuspended = true;
     cancelAnimationFrame(state.gameLoopId);
+    resetSimulationClock();
   }
 
   function resumeBackgroundBattle() {
@@ -2036,6 +2068,7 @@
     backgroundBattleSuspended = false;
     if (!state.gameActive || battlePaused) return;
     cancelAnimationFrame(state.gameLoopId);
+    resetSimulationClock();
     state.gameLoopId = requestAnimationFrame(updateGameEngine);
   }
 
@@ -2737,6 +2770,42 @@
             },
           ])
         );
+      },
+      framePacingProbe(fps = 60, durationMs = 1000) {
+        cancelAnimationFrame(state.gameLoopId);
+        const frameRate = Math.max(1, Number(fps) || 60);
+        const duration = Math.max(SIMULATION_STEP_MS, Number(durationMs) || 1000);
+        const frameCount = Math.max(1, Math.round(duration / 1000 * frameRate));
+        state.gameActive = true;
+        state.x = 100;
+        state.y = mainFloorY - state.height;
+        state.vx = 0;
+        state.vy = 0;
+        state.grounded = true;
+        state.entryGraceFrames = 9999;
+        state.dashTimer = 0;
+        state.dashCooldown = 0;
+        state.attackTimer = 0;
+        state.invincibilityTimer = 0;
+        state.hazardClock = 0;
+        state.enemies = [];
+        state.bullets = [];
+        state.orbs = [];
+        state.pickups = [];
+        state.playerHp = Math.max(1, state.playerHp || getStats().maxHp);
+        platforms = stageTerrain.map((platform) => ({ ...platform }));
+        spikesList = [];
+        hazardZones = [];
+        clearActiveInputs();
+        keysPressed.d = true;
+        resetSimulationClock();
+        for (let frame = 0; frame < frameCount; frame++) advanceSimulation(duration / frameCount);
+        const result = { fps: frameRate, x: Math.round(state.x * 100) / 100, hazardClock: state.hazardClock, steps: Math.round(duration / SIMULATION_STEP_MS) };
+        state.gameActive = false;
+        clearActiveInputs();
+        resetSimulationClock();
+        showMain();
+        return result;
       },
       startRun() {
         startRun();

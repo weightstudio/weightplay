@@ -1068,9 +1068,16 @@ body.wp-stage-select-active.dash-stage-select #stagePanel.stage-panel[data-wp-lo
   text-align: left;
 }
 
-.stage-card.is-selected {
+.stage-card.is-selected:not(.is-centered) {
+  border-color: rgba(114,246,196,.58);
+  box-shadow: 0 12px 28px rgba(0,0,0,.48);
+}
+.stage-card.is-centered {
   border-color: #72f6c4;
-  box-shadow: 0 0 0 3px rgba(114,246,196,.42), 0 12px 28px rgba(0,0,0,.5);
+  box-shadow: 0 0 0 3px rgba(174,255,226,.88), 0 0 28px 8px rgba(48,239,170,.72), 0 12px 28px rgba(0,0,0,.5);
+}
+.stage-card.is-centered:disabled {
+  filter: none;
 }
 .stage-card.is-checkpoint { background-image: linear-gradient(0deg, rgba(16, 7, 2, .97), rgba(104, 54, 5, .18)), url("../../assets/campus-dash-cover.webp"); }
 .stage-card:disabled { filter: grayscale(.78) brightness(.62); }

@@ -93,10 +93,32 @@
     repair: '\u7dad\u4fee\u78bc\u982d C'
   });
   const shiftConfig = [null, {goal:4, parts:2, stormEvery:0, coin:24, stamps:1}, {goal:6, parts:2, stormEvery:0, coin:36, stamps:1}, {goal:7, parts:2, stormEvery:3, coin:48, stamps:2}, {goal:8, parts:4, stormEvery:2, coin:62, stamps:2}, {goal:10, parts:5, stormEvery:2, coin:80, stamps:3}];
-  const saved = JSON.parse(localStorage.getItem(saveKey) || '{}');
+  const boundedInteger = (value, fallback, minimum, maximum = Number.MAX_SAFE_INTEGER) => {
+    const number = Number(value);
+    return Number.isFinite(number) ? Math.max(minimum, Math.min(maximum, Math.floor(number))) : fallback;
+  };
+  const normalizeSave = (data) => {
+    const source = data && typeof data === 'object' && !Array.isArray(data) ? data : {};
+    const unlocked = boundedInteger(source.unlocked, 1, 1, 5);
+    const medalsSource = source.medals && typeof source.medals === 'object' && !Array.isArray(source.medals) ? source.medals : {};
+    const medals = {};
+    for (let shift = 1; shift <= 5; shift += 1) medals[shift] = boundedInteger(medalsSource[shift], 0, 0, 3);
+    return {
+      best: Math.min(unlocked, boundedInteger(source.best, 1, 1, 5)),
+      unlocked,
+      reputation: boundedInteger(source.reputation, 0, 0),
+      coins: boundedInteger(source.coins, 0, 0),
+      stamps: boundedInteger(source.stamps, 0, 0),
+      medals,
+      ...(source.insuranceReady === true ? {insuranceReady:true} : {})
+    };
+  };
+  let saved;
+  try { saved = JSON.parse(localStorage.getItem(saveKey) || '{}'); } catch { saved = {}; }
   let locale = localStorage.getItem('weightPlayLocale') || 'en';
   if (!strings[locale]) locale = 'en';
-  let save = {best:1, unlocked:1, reputation:0, coins:0, stamps:0, medals:{}, ...saved};
+  let save = normalizeSave(saved);
+  localStorage.setItem(saveKey, JSON.stringify(save));
   let state = {contract:Boolean(save.insuranceReady)};
   let dragging = false;
   let inputMode = '';

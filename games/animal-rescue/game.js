@@ -402,6 +402,7 @@ let bestStars = loadBestStars();
 let activeIndex = 0;
 let state = makeState(levels[0]);
 let hintResetTimer = 0;
+let centeredTrailFrame = 0;
 
 function locale() {
   return window.WonderI18n?.locale() || "en";
@@ -574,6 +575,31 @@ function renderStageSelect() {
       `;
     })
     .join("");
+  scheduleCenteredTrailCard();
+}
+
+function updateCenteredTrailCard() {
+  centeredTrailFrame = 0;
+  const cards = [...stageGrid.querySelectorAll("[data-stage]")];
+  if (!cards.length || !document.body.classList.contains("rescue-stage-select")) return;
+  const railRect = stageGrid.getBoundingClientRect();
+  const railCenter = railRect.left + railRect.width / 2;
+  const centered = cards.reduce((nearest, card) => {
+    const rect = card.getBoundingClientRect();
+    const distance = Math.abs(rect.left + rect.width / 2 - railCenter);
+    return !nearest || distance < nearest.distance ? { card, distance } : nearest;
+  }, null)?.card;
+  for (const card of cards) {
+    const isCentered = card === centered;
+    card.classList.toggle("is-centered", isCentered);
+    if (isCentered) card.setAttribute("aria-current", "true");
+    else card.removeAttribute("aria-current");
+  }
+}
+
+function scheduleCenteredTrailCard() {
+  if (centeredTrailFrame) cancelAnimationFrame(centeredTrailFrame);
+  centeredTrailFrame = requestAnimationFrame(updateCenteredTrailCard);
 }
 
 function centerHighestUnlockedTrail(behavior = "auto") {
@@ -581,6 +607,7 @@ function centerHighestUnlockedTrail(behavior = "auto") {
   if (!target) return;
   const left = target.offsetLeft - (stageGrid.clientWidth - target.offsetWidth) / 2;
   stageGrid.scrollTo({ left: Math.max(0, Math.min(left, stageGrid.scrollWidth - stageGrid.clientWidth)), behavior });
+  scheduleCenteredTrailCard();
 }
 
 function stageMetaText(level, locked = false) {
@@ -1030,6 +1057,10 @@ window.addEventListener("resize", updateBattleScale);
 window.addEventListener("orientationchange", updateBattleScale);
 window.visualViewport?.addEventListener("resize", updateBattleScale);
 window.visualViewport?.addEventListener("scroll", updateBattleScale);
+stageGrid.addEventListener("scroll", scheduleCenteredTrailCard, { passive: true });
+stageGrid.addEventListener("wonder:stage-snap", scheduleCenteredTrailCard);
+window.addEventListener("resize", scheduleCenteredTrailCard, { passive: true });
+window.visualViewport?.addEventListener("resize", scheduleCenteredTrailCard, { passive: true });
 const rejectRepeatedScreenActivation = (event) => {
   if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
 };

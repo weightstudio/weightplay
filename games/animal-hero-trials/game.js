@@ -234,9 +234,19 @@
   const savedHero = localStorage.getItem("aht-selected-hero");
   let selectedHero = ["leo", "fia", "orla", "taro"].includes(savedHero) ? savedHero : "leo";
   if (savedHero && savedHero !== selectedHero) localStorage.setItem("aht-selected-hero", selectedHero);
-  let unlocked = Math.max(1, Math.min(TRIAL_COUNT, +(localStorage.getItem("aht-unlocked") || 1)));
-  let marks = +(localStorage.getItem("aht-marks") || 0);
-  let mastery = +(localStorage.getItem("aht-mastery") || 0);
+  function readStoredInteger(key, fallback, minimum, maximum) {
+    const raw = localStorage.getItem(key);
+    if (raw === null) return fallback;
+    const parsed = Number(raw);
+    const normalized = Number.isFinite(parsed)
+      ? Math.max(minimum, Math.min(maximum, Math.trunc(parsed)))
+      : fallback;
+    if (raw !== String(normalized)) localStorage.setItem(key, String(normalized));
+    return normalized;
+  }
+  let unlocked = readStoredInteger("aht-unlocked", 1, 1, TRIAL_COUNT);
+  let marks = readStoredInteger("aht-marks", 0, 0, Number.MAX_SAFE_INTEGER - 9);
+  let mastery = readStoredInteger("aht-mastery", 0, 0, Math.floor((Number.MAX_SAFE_INTEGER - 9) / 4));
   let run = null;
   let frame = 0;
   let rerollConfirmTimer = 0;

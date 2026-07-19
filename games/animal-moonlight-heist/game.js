@@ -166,15 +166,34 @@
   let leaveWasPaused=false;
   function createLeaveModal(){const modal=document.createElement("div");modal.id="battleLeaveModal";modal.className="modal";modal.hidden=true;modal.setAttribute("role","dialog");modal.setAttribute("aria-modal","true");modal.setAttribute("aria-labelledby","battleLeaveTitle");modal.setAttribute("aria-describedby","battleLeaveText");modal.innerHTML='<section class="modal-card"><h2 id="battleLeaveTitle"></h2><p id="battleLeaveText"></p><div class="modal-actions leave-actions"><button id="battleContinueBtn" class="primary" type="button"></button><button id="battleLeaveBtn" type="button"></button></div></section>';nodes.modal.after(modal);nodes.leaveModal=modal}
   createLeaveModal();
+  function progressInteger(value,fallback,minimum,maximum){
+    const parsed=Number(value);
+    return Number.isFinite(parsed)?Math.max(minimum,Math.min(maximum,Math.floor(parsed))):fallback;
+  }
+  function normalizeCleared(value){
+    if(!value||typeof value!=="object"||Array.isArray(value))return{};
+    return Object.fromEntries(Object.entries(value).flatMap(([key,best])=>{
+      const mission=Number(key),medals=progressInteger(best,0,0,3);
+      return Number.isSafeInteger(mission)&&mission>=0&&mission<campaign.length&&medals>0?[[mission,medals]]:[];
+    }));
+  }
   function load(){
     try{
-      const loaded={unlocked:1,coins:0,safehouse:1,cleared:{},insuranceReady:false,...JSON.parse(localStorage.getItem(KEY)||"{}")};
-      loaded.unlocked=Math.max(1,Math.min(campaign.length,Math.floor(Number(loaded.unlocked)||1)));
-      loaded.cleared=loaded.cleared&&typeof loaded.cleared==="object"?loaded.cleared:{};
-      loaded.safehouse=Math.max(1,Math.floor(Number(loaded.safehouse)||1));
-      loaded.insuranceReady=loaded.insuranceReady===true;
+      const parsed=JSON.parse(localStorage.getItem(KEY)||"{}"),source=parsed&&typeof parsed==="object"&&!Array.isArray(parsed)?parsed:{};
+      const loaded={
+        unlocked:progressInteger(source.unlocked,1,1,campaign.length),
+        coins:progressInteger(source.coins,0,0,Number.MAX_SAFE_INTEGER-178),
+        safehouse:progressInteger(source.safehouse,1,1,1+Math.floor(campaign.length/5)),
+        cleared:normalizeCleared(source.cleared),
+        insuranceReady:source.insuranceReady===true
+      };
+      localStorage.setItem(KEY,JSON.stringify(loaded));
       return loaded;
-    }catch{return{unlocked:1,coins:0,safehouse:1,cleared:{},insuranceReady:false}}
+    }catch{
+      const fallback={unlocked:1,coins:0,safehouse:1,cleared:{},insuranceReady:false};
+      localStorage.setItem(KEY,JSON.stringify(fallback));
+      return fallback;
+    }
   }
   function save(){localStorage.setItem(KEY,JSON.stringify(state))}
   function wallet(){return window.WeightPlayWallet?.read?.()||{diamonds:0}}

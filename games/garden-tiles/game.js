@@ -2,6 +2,7 @@
   const GAME_ID = "garden-tiles";
   const UNLOCK_KEY = "gardenTilesUnlocked";
   const STARS_KEY = "gardenTilesStars";
+  document.querySelector(".garden-game")?.setAttribute("data-wp-canvas-max-width", "viewport");
   if (!document.querySelector("#leaveConfirmPanel")) {
     const panel = document.createElement("section");
     panel.id = "leaveConfirmPanel";

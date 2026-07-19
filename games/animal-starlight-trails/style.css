@@ -1,7 +1,9 @@
 :root{--ink:#f8fbff;--muted:#a9bad8;--panel:rgba(8,20,45,.88);--panel-strong:#0b1d40;--gold:#ffd76a;--gold-deep:#f0a629;--cyan:#66e8ff;--violet:#aa8cff;--danger:#ff7692;--success:#6bf0ba;--line:#536a9b;--border:rgba(182,211,255,.2);font-family:Inter,ui-rounded,"Segoe UI",system-ui,sans-serif;color:var(--ink);background:#051126}
 *{box-sizing:border-box}
 html,body{margin:0;min-width:320px;background:#051126;color:var(--ink)}
+html{overflow-y:auto!important;overscroll-behavior-y:auto!important}
 body{min-height:100vh}
+body[data-screen="main"]{height:auto!important;overflow-y:visible!important;overscroll-behavior-y:auto!important}
 button,select{font:inherit}
 button{cursor:pointer}
 button:focus-visible,select:focus-visible,[role="button"]:focus-visible{outline:3px solid #fff48b;outline-offset:3px}
