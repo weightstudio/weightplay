@@ -230,18 +230,20 @@
   Object.values(heroNames).forEach((name, index) => name[2] = heroNamesEs[index]);
   const trials = Array.from({length:TRIAL_COUNT},(_,index)=>{ const stage=index+1; const region=Math.floor(index/5); return { stage, region, titleEn:trialTitles[index][0], titleZh:trialTitles[index][1], titleEs:trialTitles[index][2], checkpoint:stage%5===0, enemies:[...regions[region].enemies], recommended:regions[region].hero, reward:Math.min(9,3+stage), boss:stage%5===0?bosses[region]:null }; });
 
-  let locale = window.WonderI18n?.locale?.() || localStorage.getItem("weightPlayLocale") || "en";
-  const savedHero = localStorage.getItem("aht-selected-hero");
+  function readStorage(key) { try { return localStorage.getItem(key); } catch { return null; } }
+  function writeStorage(key, value) { try { localStorage.setItem(key, value); return true; } catch { return false; } }
+  let locale = window.WonderI18n?.locale?.() || readStorage("weightPlayLocale") || "en";
+  const savedHero = readStorage("aht-selected-hero");
   let selectedHero = ["leo", "fia", "orla", "taro"].includes(savedHero) ? savedHero : "leo";
-  if (savedHero && savedHero !== selectedHero) localStorage.setItem("aht-selected-hero", selectedHero);
+  if (savedHero && savedHero !== selectedHero) writeStorage("aht-selected-hero", selectedHero);
   function readStoredInteger(key, fallback, minimum, maximum) {
-    const raw = localStorage.getItem(key);
+    const raw = readStorage(key);
     if (raw === null) return fallback;
     const parsed = Number(raw);
     const normalized = Number.isFinite(parsed)
       ? Math.max(minimum, Math.min(maximum, Math.trunc(parsed)))
       : fallback;
-    if (raw !== String(normalized)) localStorage.setItem(key, String(normalized));
+    if (raw !== String(normalized)) writeStorage(key, String(normalized));
     return normalized;
   }
   let unlocked = readStoredInteger("aht-unlocked", 1, 1, TRIAL_COUNT);
@@ -488,7 +490,7 @@
       button.innerHTML = `<img src="${ASSET_ROOT + hero.asset}" alt=""><b>${labels[id][0]}</b><small><span>${labels[id][1]}</span><span>${labels[id][2]}</span></small>`;
       button.onclick = () => {
         selectedHero = id;
-        localStorage.setItem("aht-selected-hero", id);
+        writeStorage("aht-selected-hero", id);
         renderHeroPicker();
       };
       picker.append(button);
@@ -526,9 +528,9 @@
   }
 
   function save() {
-    localStorage.setItem("aht-unlocked", unlocked);
-    localStorage.setItem("aht-marks", marks);
-    localStorage.setItem("aht-mastery", mastery);
+    writeStorage("aht-unlocked", unlocked);
+    writeStorage("aht-marks", marks);
+    writeStorage("aht-mastery", mastery);
   }
 
   function startTrial(stage) {
@@ -1066,7 +1068,7 @@
     const requested = event.target.value;
     window.WonderI18n?.setLocale?.(requested);
     locale = window.WonderI18n?.locale?.() || requested;
-    localStorage.setItem("weightPlayLocale", requested);
+    writeStorage("weightPlayLocale", requested);
     localize();
   };
   $("#startBtn").addEventListener("keydown", (event) => { if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault(); });

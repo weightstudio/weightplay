@@ -1037,3 +1037,168 @@ body.wp-logical-battle-active.orb-fortress-playing #gamePanel.game-panel .hud-ro
   body.orb-fortress-playing #resultPanel .result-actions{margin-top:6px;gap:6px}
   body.orb-fortress-playing #resultPanel .result-actions button{min-height:38px;padding:6px 8px}
 }
+
+/* Short landscape uses the responsive logical envelope as a wide control
+   deck. The arena remains uniformly scaled while HUD and instructions occupy
+   stable side tracks instead of shrinking a portrait playfield at center. */
+@media (max-height: 560px) and (orientation: landscape) {
+  body.orb-fortress-playing #stagePanel.stage-panel {
+    grid-template-rows: 86px minmax(0, 1fr);
+    gap: 14px;
+    padding: 16px;
+  }
+
+  body.orb-fortress-playing #stagePanel .stage-content {
+    grid-template-columns: minmax(0, 1.35fr) minmax(430px, 0.65fr) !important;
+    grid-template-rows: 112px minmax(0, 1fr) !important;
+    gap: 14px 20px;
+  }
+
+  body.orb-fortress-playing #stagePanel .profile-grid {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  body.orb-fortress-playing #stagePanel .stage-rail {
+    grid-column: 1;
+    grid-row: 2;
+    gap: 24px;
+    padding: 8px calc((100% - 620px) / 2) 24px !important;
+    scroll-padding-inline: calc((100% - 620px) / 2) !important;
+  }
+
+  body.orb-fortress-playing #stagePanel .raid-card {
+    flex-basis: 620px !important;
+    width: 620px !important;
+    height: 420px !important;
+    min-width: 620px !important;
+    max-width: 620px !important;
+    min-height: 420px !important;
+    max-height: 420px !important;
+    gap: 14px;
+    border-width: 5px;
+    border-radius: 30px;
+    padding: 34px;
+  }
+
+  body.orb-fortress-playing #stagePanel .raid-card strong { font-size: 2.45rem; }
+  body.orb-fortress-playing #stagePanel .raid-card > span:not(.raid-number) { font-size: 1.7rem; }
+  body.orb-fortress-playing #stagePanel .raid-card em { font-size: 1.55rem; }
+  body.orb-fortress-playing #stagePanel .raid-number { font-size: 8rem; }
+  body.orb-fortress-playing #stagePanel .raid-card.is-centered {
+    box-shadow: 0 0 0 8px rgba(125, 233, 255, 0.5), 0 0 52px rgba(125, 233, 255, 1);
+  }
+
+  body.orb-fortress-playing #stagePanel .workshop-title {
+    grid-column: 2;
+    grid-row: 1;
+    align-self: end;
+    font-size: 1.8rem;
+  }
+
+  body.orb-fortress-playing #stagePanel .room-grid {
+    grid-column: 2;
+    grid-row: 2;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  body.orb-fortress-playing #stagePanel .room-card {
+    grid-template-columns: 72px minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr) 72px;
+    padding: 12px;
+  }
+
+  body.orb-fortress-playing #stagePanel .room-card img { width: 72px; }
+  body.orb-fortress-playing #stagePanel .room-card span { font-size: 1.05rem; }
+  body.orb-fortress-playing #stagePanel .room-card button {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    min-height: 72px;
+    font-size: 1.15rem;
+  }
+
+  body.orb-fortress-playing #gamePanel.game-panel {
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: 96px minmax(0, 1fr) 72px !important;
+    gap: 10px !important;
+    padding: 14px !important;
+  }
+
+  html body.wp-logical-battle-active.orb-fortress-playing #gamePanel.game-panel {
+    grid-template-rows: 96px minmax(0, 1fr) 72px !important;
+    gap: 10px !important;
+    padding: 14px !important;
+  }
+
+  body.orb-fortress-playing #gamePanel.game-panel #battleLive .hud-row {
+    grid-column: 1;
+    grid-row: 1;
+    grid-template-columns: 96px repeat(3, minmax(0, 1fr)) 96px !important;
+    grid-template-rows: 96px !important;
+    gap: 10px;
+  }
+
+  html body.wp-logical-battle-active.orb-fortress-playing #gamePanel.game-panel #battleLive .hud-row {
+    grid-template-columns: 96px repeat(3, minmax(0, 1fr)) 96px !important;
+    grid-template-rows: 96px !important;
+    gap: 10px !important;
+  }
+
+  body.orb-fortress-playing #gamePanel.game-panel #battleLive .hud-row > div,
+  body.orb-fortress-playing #gamePanel.game-panel #battleLive .hud-row > button {
+    min-height: 0;
+    padding: 10px 16px;
+  }
+
+  body.orb-fortress-playing #gamePanel.game-panel #battleLive .hud-row span { font-size: 1.7rem; }
+  body.orb-fortress-playing #gamePanel.game-panel #battleLive .hud-row strong { font-size: 2rem; }
+  body.orb-fortress-playing #gamePanel.game-panel #battleLive .hud-row .play-return,
+  body.orb-fortress-playing #gamePanel.game-panel #battleLive .hud-row .pause-btn {
+    width: 96px !important;
+    min-width: 96px !important;
+    height: 96px !important;
+    min-height: 96px !important;
+    font-size: 2rem;
+  }
+
+  body.orb-fortress-playing #gamePanel.game-panel #battleLive #gameCanvas {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  html body.wp-logical-battle-active.orb-fortress-playing #gamePanel.game-panel #battleLive #gameCanvas {
+    grid-row: 2 !important;
+  }
+
+  body.orb-fortress-playing #gamePanel.game-panel #battleLive .hint {
+    grid-column: 1;
+    grid-row: 3;
+    align-self: stretch;
+    min-height: 72px;
+    padding: 12px 20px;
+    font-size: 1.7rem;
+    line-height: 1.35;
+    white-space: nowrap;
+  }
+
+  html body.wp-logical-battle-active.orb-fortress-playing #gamePanel.game-panel #battleLive .hint {
+    grid-row: 3 !important;
+    height: 72px !important;
+    min-height: 72px !important;
+  }
+
+  body.orb-fortress-playing #pausePanel .pause-card {
+    width: 720px;
+    padding: 34px;
+    border-radius: 28px;
+  }
+
+  body.orb-fortress-playing #pausePanel h2 { font-size: 2.25rem; }
+  body.orb-fortress-playing #pausePanel p { font-size: 1.35rem; line-height: 1.4; }
+  body.orb-fortress-playing #pausePanel .pause-actions button { min-height: 96px; font-size: 1.4rem; }
+
+  body.orb-fortress-playing #resultPanel h2 { font-size: 2rem; }
+  body.orb-fortress-playing #resultPanel p { font-size: 1.15rem; }
+  body.orb-fortress-playing #resultPanel .result-actions button { min-height: 88px; font-size: 1.2rem; }
+}

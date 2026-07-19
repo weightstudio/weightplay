@@ -361,7 +361,35 @@
   let physicsFrame = 0;
   let lastFrame = 0;
   let paddleX = 50;
+  let playPointerId = null;
   let fruit = { x: 50, y: 20, vx: 0, vy: 0, rot: 0, cut: false };
+
+  function resetPlayPointer() {
+    if (playPointerId !== null && nodes.playfield.hasPointerCapture?.(playPointerId)) {
+      try { nodes.playfield.releasePointerCapture(playPointerId); } catch {}
+    }
+    playPointerId = null;
+  }
+
+  function claimPlayPointer(event) {
+    const wrongMouseButton = event.pointerType === "mouse" && event.button !== 0;
+    if (!event.isPrimary || wrongMouseButton || playPointerId !== null || settled || leaveOpen) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      return false;
+    }
+    playPointerId = event.pointerId;
+    return true;
+  }
+
+  function finishPlayPointer(event) {
+    if (event.pointerId !== playPointerId) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      return;
+    }
+    resetPlayPointer();
+  }
 
   function clearDeliverySchedule() {
     window.clearTimeout(deliveryTimer);
@@ -530,12 +558,14 @@
   }
 
   function showStages(stageNo = save.unlocked) {
+    resetPlayPointer();
     renderStages();
     show(nodes.stagePanel);
     focusStage(stageNo);
   }
 
   function setupStage(stageNo) {
+    resetPlayPointer();
     currentStage = Math.max(1, Math.min(stages.length, stageNo));
     const stage = stages[currentStage - 1];
     cancelAnimationFrame(physicsFrame);
@@ -729,6 +759,7 @@
 
   function openLeaveDecision() {
     if (leaveOpen || !document.body.classList.contains("is-vine-playing") || !nodes.resultPanel.classList.contains("hidden")) return;
+    resetPlayPointer();
     leaveOpen = true;
     leaveWasRunning = running;
     leaveOpenedAt = performance.now();
@@ -893,6 +924,7 @@
     requestAnimationFrame(() => nodes.leafPaddle.focus({ preventScroll: true }));
   });
   nodes.vineButton.addEventListener("pointerdown", (event) => {
+    if (!claimPlayPointer(event)) return;
     event.preventDefault();
     event.stopPropagation();
     cutVine();
@@ -907,6 +939,7 @@
     cutVine();
   });
   nodes.playfield.addEventListener("pointerdown", (event) => {
+    if (!claimPlayPointer(event)) return;
     if (isVineCutPointer(event)) {
       cutVine();
       return;
@@ -915,7 +948,12 @@
     movePaddle(event.clientX);
   });
   nodes.playfield.addEventListener("pointermove", (event) => {
-    if (event.pressure > 0 || event.buttons) movePaddle(event.clientX);
+    if (event.pointerId === playPointerId && (event.pressure > 0 || event.buttons)) movePaddle(event.clientX);
+  });
+  nodes.playfield.addEventListener("pointerup", finishPlayPointer);
+  nodes.playfield.addEventListener("pointercancel", finishPlayPointer);
+  nodes.playfield.addEventListener("lostpointercapture", (event) => {
+    if (event.pointerId === playPointerId) playPointerId = null;
   });
   nodes.leafPaddle.addEventListener("keydown", (event) => {
     if (settled || !nodes.resultPanel.classList.contains("hidden")) return;
@@ -954,6 +992,9 @@
     showStages(save.unlocked);
   });
   window.addEventListener("resize", positionElements);
+  window.addEventListener("blur", resetPlayPointer);
+  window.addEventListener("pagehide", resetPlayPointer);
+  document.addEventListener("visibilitychange", () => { if (document.hidden) resetPlayPointer(); });
 
   nodes.localeSelect.value = window.WonderI18n?.actualLocale?.() || locale;
   setLocale(locale);
@@ -998,6 +1039,7 @@
         targetTolerance: Number(route.targetTolerance || 15),
         fruitState: { ...fruit },
         paddleX,
+        playPointerId,
         basketX,
         running,
         settled,

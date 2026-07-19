@@ -508,27 +508,77 @@
     return Math.max(650, stage.moves * 75);
   }
 
+  function boundedWholeNumber(value, minimum, maximum, fallback) {
+    const numeric = Number(value);
+    if (!Number.isFinite(numeric)) return fallback;
+    return Math.max(minimum, Math.min(maximum, Math.floor(numeric)));
+  }
+
+  function writeStorage(key, value) {
+    try {
+      localStorage.setItem(key, value);
+    } catch {
+      // Progress persistence is optional; keep the current session playable.
+    }
+  }
+
   function loadUnlocked() {
     try {
-      const value = Number(localStorage.getItem(unlockKey));
-      return Number.isFinite(value) && value > 0 ? Math.min(value, stages.length) : 1;
+      const stored = localStorage.getItem(unlockKey);
+      const unlocked = boundedWholeNumber(stored, 1, stages.length, 1);
+      if (stored !== String(unlocked)) writeStorage(unlockKey, String(unlocked));
+      return unlocked;
     } catch {
       return 1;
     }
   }
 
   function saveUnlocked(value) {
-    try {
-      localStorage.setItem(unlockKey, String(Math.min(value, stages.length)));
-    } catch {
-      // Progress persistence is optional.
+    writeStorage(unlockKey, String(boundedWholeNumber(value, 1, stages.length, 1)));
+  }
+
+  function normalizeRecord(record) {
+    if (typeof record === "number") {
+      return Number.isFinite(record) && record >= 0 ? Math.floor(record) : null;
     }
+    if (!record || typeof record !== "object" || Array.isArray(record)) return null;
+    const bestScore = boundedWholeNumber(record.bestScore, 0, Number.MAX_SAFE_INTEGER, 0);
+    const lastScore = boundedWholeNumber(record.lastScore, 0, Number.MAX_SAFE_INTEGER, bestScore);
+    const previousBest = boundedWholeNumber(record.previousBest, 0, Number.MAX_SAFE_INTEGER, 0);
+    const skill = record.skillScores && typeof record.skillScores === "object" && !Array.isArray(record.skillScores)
+      ? record.skillScores
+      : {};
+    return {
+      lastScore,
+      bestScore: Math.max(bestScore, lastScore),
+      playCount: boundedWholeNumber(record.playCount, 0, Number.MAX_SAFE_INTEGER, 0),
+      lastPlayedAt: typeof record.lastPlayedAt === "string" ? record.lastPlayedAt : "",
+      improvementPercent: boundedWholeNumber(record.improvementPercent, -100, 100000, 0),
+      previousBest,
+      skillScores: {
+        logic: boundedWholeNumber(skill.logic, 1, 5, 1),
+        problemSolving: boundedWholeNumber(skill.problemSolving, 1, 5, 1),
+        focus: boundedWholeNumber(skill.focus, 1, 5, 1),
+      },
+    };
   }
 
   function loadRecords() {
     try {
-      return JSON.parse(localStorage.getItem(recordKey)) || {};
+      const stored = localStorage.getItem(recordKey);
+      const source = JSON.parse(stored || "{}");
+      const records = {};
+      if (source && typeof source === "object" && !Array.isArray(source)) {
+        for (let stageId = 1; stageId <= stages.length; stageId += 1) {
+          const record = normalizeRecord(source[stageId]);
+          if (record !== null) records[stageId] = record;
+        }
+      }
+      const canonical = JSON.stringify(records);
+      if (stored !== canonical) writeStorage(recordKey, canonical);
+      return records;
     } catch {
+      writeStorage(recordKey, "{}");
       return {};
     }
   }
@@ -555,11 +605,7 @@
         focus: Math.min(5, Math.max(1, Math.ceil((goalMet() ? 3 : 2) + moveBonus * 2))),
       },
     };
-    try {
-      localStorage.setItem(recordKey, JSON.stringify(records));
-    } catch {
-      // Record persistence is optional.
-    }
+    writeStorage(recordKey, JSON.stringify(records));
     return records;
   }
 

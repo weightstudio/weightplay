@@ -706,11 +706,17 @@
     const panelWidth = nodes.gamePanel.clientWidth - Number.parseFloat(panelStyle.paddingLeft) - Number.parseFloat(panelStyle.paddingRight);
     const panelHeight = nodes.gamePanel.clientHeight - Number.parseFloat(panelStyle.paddingTop) - Number.parseFloat(panelStyle.paddingBottom);
     const trackWidth = panelWidth;
-    const trackHeight = rows[1] || panelHeight;
+    const trackHeight = rows.length === 1 ? rows[0] : rows[1] || panelHeight;
     const arenaHeight = Math.max(1, Math.min(trackHeight, trackWidth / (W / H)));
     const arenaWidth = arenaHeight * (W / H);
-    canvas.style.setProperty("width", `${arenaWidth}px`, "important");
-    canvas.style.setProperty("height", `${arenaHeight}px`, "important");
+    const currentRect = canvas.getBoundingClientRect();
+    const coordinateScale = nodes.gamePanel.offsetWidth > 0 ? nodes.gamePanel.getBoundingClientRect().width / nodes.gamePanel.offsetWidth : 1;
+    if (Math.abs(currentRect.width - arenaWidth * coordinateScale) > 0.5) {
+      canvas.style.setProperty("width", `${arenaWidth}px`, "important");
+    }
+    if (Math.abs(currentRect.height - arenaHeight * coordinateScale) > 0.5) {
+      canvas.style.setProperty("height", `${arenaHeight}px`, "important");
+    }
   }
 
   let arenaFitFrame = 0;
@@ -728,13 +734,14 @@
   }
 
   function configureArena() {
-    W = 720;
-    H = 1200;
+    const landscapeArena = innerWidth > innerHeight;
+    W = landscapeArena ? 1200 : 720;
+    H = landscapeArena ? 720 : 1200;
     canvas.width = W;
     canvas.height = H;
     canvas.style.removeProperty("width");
     canvas.style.removeProperty("height");
-    canvas.dataset.orientation = "portrait";
+    canvas.dataset.orientation = landscapeArena ? "landscape" : "portrait";
     document.documentElement.style.setProperty("--orb-arena-ratio", `${W} / ${H}`);
   }
 

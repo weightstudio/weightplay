@@ -1480,6 +1480,11 @@
         renderAll();
         return this.snapshot();
       },
+      setMoves(nextMoves) {
+        moves = clamp(Math.floor(Number(nextMoves) || 0), 0, 999);
+        updateHud();
+        return this.snapshot();
+      },
       async popAt(row, column) {
         await popGroup(row, column);
         return this.snapshot();

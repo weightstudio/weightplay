@@ -244,6 +244,7 @@
   function showStage() {
     if (leaveDecisionOpen) setLeaveDecision(false, { restoreFocus: false, resume: false });
     cancelBattleTransitions();
+    clearCombatFeedback();
     clearAmuletConfirmation();
     document.body.classList.remove("beast-deck-playing");
     nodes.menuBtn.dataset.wpReturn = "battle";
@@ -1069,6 +1070,7 @@
   let state = {};
   let isAutoPositioningStage = false;
   let leaveDecisionOpen = false;
+  const combatFeedbackTimers = new Map();
 
   function clamp(num, min, max) {
     return Math.max(min, Math.min(max, num));
@@ -1756,7 +1758,20 @@
     feedback.textContent = message;
     feedback.setAttribute("aria-hidden", "true");
     nodes.battlefield.appendChild(feedback);
-    window.setTimeout(() => feedback.remove(), 720);
+    const timer = window.setTimeout(() => {
+      combatFeedbackTimers.delete(feedback);
+      feedback.remove();
+    }, 720);
+    combatFeedbackTimers.set(feedback, timer);
+  }
+
+  function clearCombatFeedback() {
+    combatFeedbackTimers.forEach((timer, feedback) => {
+      window.clearTimeout(timer);
+      feedback.remove();
+    });
+    combatFeedbackTimers.clear();
+    nodes.battlefield?.querySelectorAll(".combat-feedback").forEach((feedback) => feedback.remove());
   }
 
   function log(message, type = "system") {
@@ -2458,6 +2473,7 @@
   }
 
   function endGame(won) {
+    clearCombatFeedback();
     nodes.gamePanel.classList.add("result-open");
     nodes.resultPanel.classList.remove("hidden");
     [nodes.gamePanel.querySelector(".hud-row"), nodes.gamePanel.querySelector(".battlefield"), nodes.gamePanel.querySelector(".action-area")].forEach((node) => {
@@ -2586,6 +2602,7 @@
   function startRun() {
     if (leaveDecisionOpen) setLeaveDecision(false, { restoreFocus: false, resume: false });
     cancelBattleTransitions();
+    clearCombatFeedback();
     clearAmuletConfirmation();
     loadLocalState();
     resetRunState();
@@ -2887,6 +2904,10 @@
         state.enemyShield = amount;
         renderStats();
         return window.__beastDeckSmoke.getState();
+      },
+      forceCombatFeedback: (message = "STALE FEEDBACK") => {
+        showCombatFeedback(message, "damage");
+        return nodes.battlefield.querySelectorAll(".combat-feedback").length;
       },
       playFirstAffordableCard: () => {
         const index = state.hand.findIndex((cardId) => effectiveCardCost(cardId) <= state.energy && state.enemySeal !== cardDb[cardId]?.type);

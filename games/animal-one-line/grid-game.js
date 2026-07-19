@@ -3,6 +3,8 @@
 
   const SAVE_KEY = "weightplay_animal_one_line_v1";
   const TUTORIAL_KEY = "weightplay_tutorial_seen_animal_one_line_v1";
+  function readStorage(key){try{return localStorage.getItem(key);}catch{return null;}}
+  function writeStorage(key,value){try{localStorage.setItem(key,value);return true;}catch{return false;}}
   const $ = (selector) => document.querySelector(selector);
   const localeSegment = location.pathname.split("/").filter(Boolean)[0] || "en";
   const routeLocale = ({ en: "en", "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", es: "es", ja: "ja" })[localeSegment] || "en";
@@ -99,12 +101,12 @@
     const unlocked=Number.isFinite(requested)?Math.floor(requested):1;
     return{unlocked:Math.max(1,Math.min(30,Math.max(unlocked,highestCleared+2))),cleared,stars,best};
   }
-  let save;try{save=normalizeSave(JSON.parse(localStorage.getItem(SAVE_KEY)||"{}"));}catch{save=normalizeSave(null);}try{localStorage.setItem(SAVE_KEY,JSON.stringify(save));}catch{}
+  let save;try{save=normalizeSave(JSON.parse(readStorage(SAVE_KEY)||"{}"));}catch{save=normalizeSave(null);}writeStorage(SAVE_KEY,JSON.stringify(save));
   const leavePanel=document.createElement("section");leavePanel.id="battleLeavePanel";leavePanel.className="battle-leave-overlay";leavePanel.hidden=true;leavePanel.setAttribute("role","dialog");leavePanel.setAttribute("aria-modal","true");leavePanel.setAttribute("aria-labelledby","battleLeaveTitle");leavePanel.setAttribute("aria-describedby","battleLeaveText");leavePanel.innerHTML='<div class="battle-leave-card"><h2 id="battleLeaveTitle"></h2><p id="battleLeaveText"></p><div><button id="continuePuzzleBtn" type="button"></button><button id="returnStagesBtn" type="button"></button></div></div>';$(".battle-canvas").append(leavePanel);
   let stageIndex=0,attempts=1,visited=[],visitedSet=new Set(),drawing=false,activePointer=null,failed=false,startTime=0,lastPoint=null,hintUsed=false,leaveStartedAt=0;
   const dom={loading:$("#loadingPanel"),main:$("#mainScreen"),guide:$(".game-page-info"),stage:$("#stageScreen"),battle:$("#battleScreen"),locale:$("#localeSelect"),mainProgress:$("#mainProgress"),start:$("#startBtn"),stageBack:$("#stageBackBtn"),rail:$("#stageRail"),stageSummary:$("#stageSummary"),lessonKicker:$("#lessonKicker"),lessonTitle:$("#lessonTitle"),lessonRule:$("#lessonRule"),battleBack:$("#battleBackBtn"),stageLabel:$("#stageLabel"),progressFill:$("#progressFill"),attemptCount:$("#attemptCount"),sealCount:$("#sealCount"),objective:$("#objectiveRow"),board:$("#traceBoard"),feedback:$("#feedbackText"),assist:$("#assistText"),restart:$("#restartBtn"),hint:$("#hintBtn"),result:$("#resultPanel"),resultTitle:$("#resultTitle"),resultStars:$("#resultStars"),resultText:$("#resultText"),skillGrid:$("#skillGrid"),bestText:$("#bestText"),retry:$("#retryBtn"),resultStages:$("#resultStagesBtn"),next:$("#nextBtn"),tutorial:$("#tutorial"),tutorialClose:$("#tutorialClose"),tutorialStart:$("#tutorialStart"),leave:leavePanel,leaveTitle:$("#battleLeaveTitle"),leaveText:$("#battleLeaveText"),continuePuzzle:$("#continuePuzzleBtn"),returnStages:$("#returnStagesBtn")};
 
-  function persist(){save=normalizeSave(save);try{localStorage.setItem(SAVE_KEY,JSON.stringify(save));}catch{}}
+  function persist(){save=normalizeSave(save);writeStorage(SAVE_KEY,JSON.stringify(save));}
   function chapter(i){return Math.min(5,Math.floor(i/5));}
   function applyLocale(){ document.documentElement.lang=routeLocale; document.querySelectorAll("[data-one-line-i18n]").forEach(el=>el.textContent=text(el.dataset.oneLineI18n)); if(dom.locale){dom.locale.value=routeLocale;dom.locale.setAttribute("aria-label",text("languageLabel"));}document.querySelector(".main-return")?.setAttribute("aria-label",text("mainReturn"));dom.stageBack.setAttribute("aria-label",text("back"));dom.rail.setAttribute("aria-label",text("stageRail"));dom.battleBack.setAttribute("aria-label",text("back"));dom.tutorialClose.setAttribute("aria-label",text("close")); }
   function setScreen(name){document.body.dataset.screen=name;dom.main.hidden=name!=="main";dom.guide.hidden=name!=="main";dom.stage.hidden=name!=="stage";dom.battle.hidden=name!=="battle";}
@@ -133,7 +135,7 @@
   dom.board.addEventListener("pointermove",e=>{if(!drawing||failed||activePointer!==e.pointerId)return;e.preventDefault();sampleTo(e.clientX,e.clientY);});
   const finish=e=>{if(!drawing||activePointer!==e.pointerId)return;sampleTo(e.clientX,e.clientY);cancelDrawing(e.pointerId);if(visited.length<levels[stageIndex].solution.length)dom.feedback.textContent=text("incomplete");};
   dom.board.addEventListener("pointerup",finish);dom.board.addEventListener("pointercancel",e=>cancelDrawing(e.pointerId));dom.board.addEventListener("lostpointercapture",e=>cancelDrawing(e.pointerId));window.addEventListener("blur",()=>cancelDrawing());window.addEventListener("pagehide",()=>cancelDrawing());document.addEventListener("visibilitychange",()=>{if(document.hidden)cancelDrawing();});
-  dom.start.addEventListener("click",()=>{showStage();if(!localStorage.getItem(TUTORIAL_KEY))dom.tutorial.hidden=false;});
+  dom.start.addEventListener("click",()=>{showStage();if(!readStorage(TUTORIAL_KEY))dom.tutorial.hidden=false;});
   dom.stageBack.addEventListener("click",showMain);dom.battleBack.addEventListener("click",openBattleLeave);dom.continuePuzzle.addEventListener("click",continuePuzzle);dom.returnStages.addEventListener("click",returnToStages);dom.leave.addEventListener("keydown",trapBattleLeave);
   dom.rail.addEventListener("click",e=>{const card=e.target.closest(".stage-card.unlocked");if(card)startStage(Number(card.dataset.index));});
   dom.rail.addEventListener("wonder:stage-snap",e=>{const index=Number(e.detail?.index ?? e.detail?.card?.dataset.index);if(Number.isInteger(index)&&index>=0&&index<levels.length)updateLesson(index);});
@@ -141,7 +143,7 @@
   dom.hint.addEventListener("click",()=>{hintUsed=true;const next=levels[stageIndex].solution.find(([r,c])=>!visitedSet.has(`${r},${c}`));if(next){const cell=dom.board.querySelector(`[data-row="${next[0]}"][data-col="${next[1]}"]`);cell?.classList.add("is-hint");setTimeout(()=>cell?.classList.remove("is-hint"),1300);}dom.feedback.textContent=text("hintText");});
   dom.retry.addEventListener("click",()=>startStage(stageIndex));dom.resultStages.addEventListener("click",()=>showStage(stageIndex));dom.next.addEventListener("click",()=>startStage(Math.min(29,stageIndex+1)));
   dom.locale?.addEventListener("change",()=>{const segment=({en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",es:"es",ja:"ja"})[dom.locale.value];if(segment&&segment!==localeSegment)location.href=`/${segment}/games/animal-one-line/${location.search}${location.hash}`;});
-  function closeTutorial(){localStorage.setItem(TUTORIAL_KEY,"1");dom.tutorial.hidden=true;}dom.tutorialClose.addEventListener("click",closeTutorial);dom.tutorialStart.addEventListener("click",()=>{closeTutorial();startStage(0);});
+  function closeTutorial(){writeStorage(TUTORIAL_KEY,"1");dom.tutorial.hidden=true;}dom.tutorialClose.addEventListener("click",closeTutorial);dom.tutorialStart.addEventListener("click",()=>{closeTutorial();startStage(0);});
   window.__animalOneLineSmoke={levels:levels.map(l=>({rows:l.rows,cols:l.cols,solution:l.solution})),startStage,snapshot:()=>({stage:stageIndex+1,visited:visited.length,total:levels[stageIndex].solution.length,screen:document.body.dataset.screen,result:!dom.result.hidden,feedback:dom.feedback.textContent,drawing,activePointer,save:JSON.parse(JSON.stringify(save))})};
   applyLocale();setTimeout(()=>{dom.loading.hidden=true;showMain();},180);
 })();
