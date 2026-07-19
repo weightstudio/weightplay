@@ -838,7 +838,7 @@ body.guardian-playing #pauseDecisionPanel.modal-panel {
 
 .pause-decision-card p {
   margin-top: 12px;
-  color: var(--text-soft);
+  color: var(--muted);
   line-height: 1.55;
 }
 

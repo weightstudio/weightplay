@@ -511,6 +511,40 @@
   visualViewport?.addEventListener("resize", updateGardenFrame, { passive: true });
   visualViewport?.addEventListener("scroll", updateGardenFrame, { passive: true });
 
+  let levelCenterFrame = 0;
+  function updateCenteredLevelCard() {
+    levelCenterFrame = 0;
+    const cards = [...levelGrid.querySelectorAll("[data-level]")];
+    if (!cards.length || !document.body.classList.contains("garden-stage")) return;
+    const railRect = levelGrid.getBoundingClientRect();
+    const railCenter = railRect.left + railRect.width / 2;
+    let centeredCard = cards[0];
+    let centeredDistance = Infinity;
+    cards.forEach((card) => {
+      const rect = card.getBoundingClientRect();
+      const distance = Math.abs(rect.left + rect.width / 2 - railCenter);
+      if (distance < centeredDistance) {
+        centeredCard = card;
+        centeredDistance = distance;
+      }
+    });
+    cards.forEach((card) => {
+      const isCentered = card === centeredCard;
+      card.classList.toggle("is-centered", isCentered);
+      if (isCentered) card.setAttribute("aria-current", "true");
+      else card.removeAttribute("aria-current");
+    });
+  }
+
+  function scheduleCenteredLevelCard() {
+    if (levelCenterFrame) return;
+    levelCenterFrame = requestAnimationFrame(updateCenteredLevelCard);
+  }
+
+  levelGrid.addEventListener("scroll", scheduleCenteredLevelCard, { passive: true });
+  addEventListener("resize", scheduleCenteredLevelCard, { passive: true });
+  visualViewport?.addEventListener("resize", scheduleCenteredLevelCard, { passive: true });
+
   function renderLevelGrid() {
     levelGrid.innerHTML = "";
     levels.forEach((level, index) => {
@@ -534,6 +568,7 @@
       button.setAttribute("aria-label", `${t("level")} ${index + 1}${isLocked ? `, ${t("locked")}` : ""}`);
       levelGrid.append(button);
     });
+    scheduleCenteredLevelCard();
   }
 
   function showLevelSelect() {
@@ -553,10 +588,13 @@
     renderLevelGrid();
     updateHud();
     updateGardenFrame();
-    if (window.matchMedia("(max-width: 520px)").matches) {
-      requestAnimationFrame(() => levelGrid.querySelector("button.challenge")?.scrollIntoView({ block: "nearest", inline: "center", behavior: "auto" }));
-    }
-    requestAnimationFrame(() => (levelGrid.querySelector("button.challenge") || levelGrid.querySelector("button:not(.locked)"))?.focus({ preventScroll: true }));
+    requestAnimationFrame(() => {
+      if (window.matchMedia("(max-width: 520px)").matches) {
+        levelGrid.querySelector("button.challenge")?.scrollIntoView({ block: "nearest", inline: "center", behavior: "auto" });
+      }
+      (levelGrid.querySelector("button.challenge") || levelGrid.querySelector("button:not(.locked)"))?.focus({ preventScroll: true });
+      requestAnimationFrame(updateCenteredLevelCard);
+    });
   }
 
   function startLevel(index) {

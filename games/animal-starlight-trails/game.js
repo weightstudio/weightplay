@@ -36,6 +36,17 @@
   Object.assign(STRINGS.de, {logicValue:"{edges} Pfade geplant",focusValue:"{mistakes} Korrekturen",problemValue:"{hints} Hinweise genutzt",locked:"Gesperrt",cleared:"Geschafft",available:"Verfügbar",chapter:"Observatorium {number}",stageSummary:"{cleared} geschafft · {stars} Sterne",ruleClassic:"Klassisch",ruleStart:"Startsiegel",ruleArrow:"Kometenpfeile",ruleOrder:"Sternreihenfolge",ruleGate:"Sternentor",ruleMaster:"Meisterprüfung",node:"Stern {number}",startNode:"Startstern {number}",keyNode:"Schlüsselstern {number}",checkpointNode:"Nummerierter Stern {order}",edgeLabel:"Pfad von Stern {from} zu {to}"});
   Object.assign(STRINGS.it, {logicValue:"{edges} sentieri pianificati",focusValue:"{mistakes} correzioni",problemValue:"{hints} suggerimenti usati",locked:"Bloccato",cleared:"Completato",available:"Disponibile",chapter:"Osservatorio {number}",stageSummary:"{cleared} completati · {stars} stelle",ruleClassic:"Classico",ruleStart:"Sigillo iniziale",ruleArrow:"Frecce cometa",ruleOrder:"Ordine stellare",ruleGate:"Porta stellare",ruleMaster:"Maestria",node:"Stella {number}",startNode:"Stella iniziale {number}",keyNode:"Stella-chiave {number}",checkpointNode:"Stella numerata {order}",edgeLabel:"Sentiero dalla stella {from} alla {to}"});
   Object.assign(STRINGS.ru, {logicValue:"Спланировано троп: {edges}",focusValue:"Исправлений: {mistakes}",problemValue:"Подсказок: {hints}",locked:"Закрыто",cleared:"Пройдено",available:"Доступно",chapter:"Обсерватория {number}",stageSummary:"Пройдено: {cleared} · звёзд: {stars}",ruleClassic:"Классика",ruleStart:"Стартовая печать",ruleArrow:"Стрелы комет",ruleOrder:"Порядок звёзд",ruleGate:"Звёздные ворота",ruleMaster:"Мастерство",node:"Звезда {number}",startNode:"Стартовая звезда {number}",keyNode:"Звезда-ключ {number}",checkpointNode:"Звезда с номером {order}",edgeLabel:"Тропа от звезды {from} к {to}"});
+  Object.assign(STRINGS.en, {leaveTitle:"Pause this constellation?",leaveText:"Continue this exact route, or return to Stages and lose the current attempt. Saved unlocks and best results stay safe.",continueBattle:"Continue Route",returnStages:"Return to Stages"});
+  Object.assign(STRINGS["zh-Hant"], {leaveTitle:"暫停這個星座？",leaveText:"繼續目前路徑，或返回關卡並放棄本次嘗試。已儲存的解鎖與最佳成績不受影響。",continueBattle:"繼續路徑",returnStages:"返回關卡"});
+  Object.assign(STRINGS["zh-Hans"], {leaveTitle:"暂停这个星座？",leaveText:"继续当前路径，或返回关卡并放弃本次尝试。已保存的解锁与最佳成绩不受影响。",continueBattle:"继续路径",returnStages:"返回关卡"});
+  Object.assign(STRINGS.ja, {leaveTitle:"この星座を一時停止しますか？",leaveText:"現在のルートを続けるか、ステージに戻って今回の挑戦を中止します。保存済みの解放状況とベスト記録は失われません。",continueBattle:"ルートを続ける",returnStages:"ステージに戻る"});
+  Object.assign(STRINGS.ko, {leaveTitle:"이 별자리를 일시정지할까요\u003f",leaveText:"현재 경로를 계속하거나 스테이지로 돌아가 이번 시도를 포기합니다. 저장된 잠금 해제와 최고 기록은 유지됩니다.",continueBattle:"경로 계속하기",returnStages:"스테이지로 돌아가기"});
+  Object.assign(STRINGS.es, {leaveTitle:"¿Pausar esta constelación?",leaveText:"Continúa la ruta actual o vuelve a los niveles y abandona este intento. Los desbloqueos y mejores resultados guardados se conservan.",continueBattle:"Continuar ruta",returnStages:"Volver a niveles"});
+  Object.assign(STRINGS["pt-BR"], {leaveTitle:"Pausar esta constelação?",leaveText:"Continue a rota atual ou volte às fases e abandone esta tentativa. Desbloqueios e melhores resultados salvos permanecem seguros.",continueBattle:"Continuar rota",returnStages:"Voltar às fases"});
+  Object.assign(STRINGS.fr, {leaveTitle:"Mettre cette constellation en pause ?",leaveText:"Continuez le tracé actuel ou revenez aux niveaux et abandonnez cette tentative. Les déblocages et meilleurs résultats enregistrés restent conservés.",continueBattle:"Continuer le tracé",returnStages:"Revenir aux niveaux"});
+  Object.assign(STRINGS.de, {leaveTitle:"Dieses Sternbild pausieren?",leaveText:"Setze den aktuellen Pfad fort oder kehre zu den Stufen zurück und brich diesen Versuch ab. Gespeicherte Freischaltungen und Bestwerte bleiben erhalten.",continueBattle:"Pfad fortsetzen",returnStages:"Zu den Stufen"});
+  Object.assign(STRINGS.it, {leaveTitle:"Mettere in pausa questa costellazione?",leaveText:"Continua il percorso attuale oppure torna ai livelli e abbandona questo tentativo. Sblocchi e record salvati restano al sicuro.",continueBattle:"Continua percorso",returnStages:"Torna ai livelli"});
+  Object.assign(STRINGS.ru, {leaveTitle:"Приостановить это созвездие\u003f",leaveText:"Продолжите текущий маршрут или вернитесь к уровням и отмените эту попытку. Сохранённые открытия и лучшие результаты останутся без изменений.",continueBattle:"Продолжить маршрут",returnStages:"Вернуться к уровням"});
   Object.entries(STRINGS).forEach(([key, strings]) => {
     strings.title = key === "zh-Hant" ? "Starlink 星鏈" : key === "zh-Hans" ? "Starlink 星链" : "Starlink";
   });
@@ -105,8 +116,10 @@
   let save = loadSave();
   const persist = () => localStorage.setItem(SAVE_KEY,JSON.stringify(save));
 
+  $(".trail-battle-canvas")?.insertAdjacentHTML("beforeend",`<section id="battleLeavePanel" class="battle-leave-overlay" role="dialog" aria-modal="true" aria-labelledby="battleLeaveTitle" aria-describedby="battleLeaveText" hidden><div class="battle-leave-card"><h2 id="battleLeaveTitle"></h2><p id="battleLeaveText"></p><div class="battle-leave-actions"><button id="battleContinueBtn" type="button"></button><button id="battleLeaveBtn" type="button"></button></div></div></section>`);
+
   const dom = {
-    loading:$("#loadingPanel"),loadingText:$("#loadingText"),loadingFill:$("#loadingFill"),main:$("#mainScreen"),guide:$(".game-page-info"),stage:$("#stageScreen"),battle:$("#battleScreen"),locale:$("#localeSelect"),mainProgress:$("#mainProgress"),start:$("#startBtn"),stageBack:$("#stageBackBtn"),stageRail:$("#stageRail"),stageSummary:$("#stageSummary"),chapterKicker:$("#chapterKicker"),chapterTitle:$("#chapterTitle"),chapterRule:$("#chapterRule"),battleBack:$("#battleBackBtn"),stageLabel:$("#stageLabel"),edgeProgress:$("#edgeProgress"),trailCount:$("#trailCount"),starTotal:$("#starTotal"),objective:$("#objectiveRow"),scene:$("#puzzleScene"),svg:$("#graphSvg"),feedback:$("#feedbackText"),feedbackRow:$(".battle-feedback"),assist:$("#assistText"),undo:$("#undoBtn"),restart:$("#restartBtn"),hint:$("#hintBtn"),result:$("#resultPanel"),resultTitle:$("#resultTitle"),resultStars:$("#resultStars"),resultText:$("#resultText"),skillGrid:$("#skillGrid"),comparison:$("#comparisonText"),retry:$("#retryBtn"),resultStages:$("#resultStagesBtn"),next:$("#nextBtn")
+    loading:$("#loadingPanel"),loadingText:$("#loadingText"),loadingFill:$("#loadingFill"),main:$("#mainScreen"),guide:$(".game-page-info"),stage:$("#stageScreen"),battle:$("#battleScreen"),locale:$("#localeSelect"),mainProgress:$("#mainProgress"),start:$("#startBtn"),stageBack:$("#stageBackBtn"),stageRail:$("#stageRail"),stageSummary:$("#stageSummary"),chapterKicker:$("#chapterKicker"),chapterTitle:$("#chapterTitle"),chapterRule:$("#chapterRule"),battleBack:$("#battleBackBtn"),stageLabel:$("#stageLabel"),edgeProgress:$("#edgeProgress"),trailCount:$("#trailCount"),starTotal:$("#starTotal"),objective:$("#objectiveRow"),scene:$("#puzzleScene"),svg:$("#graphSvg"),feedback:$("#feedbackText"),feedbackRow:$(".battle-feedback"),assist:$("#assistText"),undo:$("#undoBtn"),restart:$("#restartBtn"),hint:$("#hintBtn"),result:$("#resultPanel"),resultTitle:$("#resultTitle"),resultStars:$("#resultStars"),resultText:$("#resultText"),skillGrid:$("#skillGrid"),comparison:$("#comparisonText"),retry:$("#retryBtn"),resultStages:$("#resultStagesBtn"),next:$("#nextBtn"),leave:$("#battleLeavePanel"),leaveTitle:$("#battleLeaveTitle"),leaveText:$("#battleLeaveText"),continueBattle:$("#battleContinueBtn"),leaveBattle:$("#battleLeaveBtn")
   };
 
   let stageIndex = Math.max(0,Math.min(29,save.unlocked-1));
@@ -114,13 +127,17 @@
   let hints = 0;
   let mistakes = 0;
   let restarts = 0;
-  let startedAt = 0;
+  let runElapsed = 0;
+  let runClockStartedAt = 0;
   let activePointer = null;
   let hintNode = null;
   let completing = false;
 
   function sound(name){try{window.WonderSound?.play?.(name);}catch{}}
   function analytics(name,data={}){try{window.WonderAnalytics?.track?.(name,{game_id:GAME_ID,...data});}catch{}}
+  function elapsedPlayTime(){return runElapsed+(runClockStartedAt?Date.now()-runClockStartedAt:0);}
+  function pauseRunClock(){if(!runClockStartedAt)return;runElapsed+=Date.now()-runClockStartedAt;runClockStartedAt=0;}
+  function resumeRunClock(){if(runClockStartedAt||document.hidden||document.body.dataset.screen!=="battle"||!dom.result.hidden||!dom.leave.hidden||completing)return;runClockStartedAt=Date.now();}
   function totalStars(){return save.stars.reduce((sum,value)=>sum+Number(value||0),0);}
   function clearedCount(){return save.cleared.filter(Boolean).length;}
   function formatTime(ms){const seconds=Math.max(0,Math.round(ms/1000));return `${Math.floor(seconds/60)}:${String(seconds%60).padStart(2,"0")}`;}
@@ -135,6 +152,7 @@
     dom.stageRail.setAttribute("aria-label",t("stageRailLabel"));
     dom.scene.setAttribute("aria-label",t("puzzleLabel"));
     dom.svg.setAttribute("aria-label",t("graphLabel"));
+    renderBattleLeave();
     dom.loadingText.textContent=t("loading");
     localizeGuide();
     updateMainProgress();
@@ -165,8 +183,15 @@
   function updateMainProgress(){dom.mainProgress.innerHTML=`<strong>${t("progress",{cleared:clearedCount()})}</strong><span>${t("bestStars",{stars:totalStars()})}</span>`;}
   function setScreen(screen){document.body.dataset.screen=screen;dom.main.hidden=screen!=="main";dom.guide.hidden=screen!=="main";dom.stage.hidden=screen!=="stage";dom.battle.hidden=screen!=="battle";window.scrollTo({top:0,left:0,behavior:"auto"});}
 
-  function showMain(){completing=false;dom.result.hidden=true;setScreen("main");updateMainProgress();requestAnimationFrame(()=>dom.start.focus({preventScroll:true}));}
-  function showStage(focusIndex=stageIndex){completing=false;dom.result.hidden=true;setScreen("stage");stageIndex=Math.max(0,Math.min(29,focusIndex));renderStages();requestAnimationFrame(()=>{const card=dom.stageRail.querySelector(`[data-index="${Math.min(save.unlocked-1,stageIndex)}"]`);card?.scrollIntoView({inline:"center",block:"nearest",behavior:"auto"});card?.focus({preventScroll:true});});}
+  const battleLeaveCovered = () => [$(".battle-header"),dom.objective,dom.scene,dom.feedbackRow,$(".battle-actions")].filter(Boolean);
+  function renderBattleLeave(){dom.leaveTitle.textContent=t("leaveTitle");dom.leaveText.textContent=t("leaveText");dom.continueBattle.textContent=t("continueBattle");dom.leaveBattle.textContent=t("returnStages");}
+  function setBattleLeaveCoverage(covered){battleLeaveCovered().forEach(node=>{node.inert=covered;if(covered)node.setAttribute("aria-hidden","true");else node.removeAttribute("aria-hidden");});}
+  function openBattleLeave(){if(document.body.dataset.screen!=="battle"||!dom.result.hidden||completing)return;activePointer=null;pauseRunClock();renderBattleLeave();setBattleLeaveCoverage(true);dom.leave.hidden=false;requestAnimationFrame(()=>dom.continueBattle.focus({preventScroll:true}));}
+  function closeBattleLeave(resume=true){if(dom.leave.hidden)return;dom.leave.hidden=true;setBattleLeaveCoverage(false);if(resume)resumeRunClock();requestAnimationFrame(()=>dom.battleBack.focus({preventScroll:true}));}
+  function leaveBattle(){dom.leave.hidden=true;setBattleLeaveCoverage(false);pauseRunClock();sound("click");showStage(stageIndex);}
+
+  function showMain(){completing=false;dom.result.hidden=true;dom.leave.hidden=true;setBattleLeaveCoverage(false);setScreen("main");updateMainProgress();requestAnimationFrame(()=>dom.start.focus({preventScroll:true}));}
+  function showStage(focusIndex=stageIndex){completing=false;dom.result.hidden=true;dom.leave.hidden=true;setBattleLeaveCoverage(false);setScreen("stage");stageIndex=Math.max(0,Math.min(29,focusIndex));renderStages();requestAnimationFrame(()=>{const card=dom.stageRail.querySelector(`[data-index="${Math.min(save.unlocked-1,stageIndex)}"]`);card?.scrollIntoView({inline:"center",block:"nearest",behavior:"auto"});card?.focus({preventScroll:true});});}
 
   function stageStatus(stage){if(save.cleared[stage.id-1])return t("cleared");if(stage.id<=save.unlocked)return t("available");return t("locked");}
   function renderStages(){
@@ -184,7 +209,7 @@
   function updateChapterPanel(index){stageIndex=Math.max(0,Math.min(29,index));const stage=stages[stageIndex];dom.chapterKicker.textContent=t("chapter",{number:stage.chapter});dom.chapterTitle.textContent=t(`chapter${stage.chapter}`);dom.chapterRule.textContent=t(`rule${stage.chapter}`);$$('.stage-card.selected').forEach(card=>card.classList.remove("selected"));dom.stageRail.querySelector(`[data-index="${stageIndex}"]`)?.classList.add("selected");}
 
   function startStage(index){
-    stageIndex=index;path=[];hints=0;mistakes=0;restarts=0;hintNode=null;completing=false;startedAt=Date.now();dom.result.hidden=true;setScreen("battle");buildGraph();renderBattleLabels();updateGraph();setFeedback(t("ready"));analytics("game_start",{stage:index+1});window.dispatchEvent(new CustomEvent("weightplay:battle-open"));
+    stageIndex=index;path=[];hints=0;mistakes=0;restarts=0;hintNode=null;completing=false;runElapsed=0;runClockStartedAt=0;dom.result.hidden=true;dom.leave.hidden=true;setBattleLeaveCoverage(false);setScreen("battle");resumeRunClock();buildGraph();renderBattleLabels();updateGraph();setFeedback(t("ready"));analytics("game_start",{stage:index+1});window.dispatchEvent(new CustomEvent("weightplay:battle-open"));
   }
 
   function currentStage(){return stages[stageIndex];}
@@ -246,7 +271,7 @@
   function updateAssist(){dom.assist.textContent=t("assist",{hints,mistakes:mistakes+restarts});}
 
   function completeStage(){
-    if(completing)return;completing=true;const stage=currentStage();const elapsed=Date.now()-startedAt;const assists=mistakes+restarts+hints*2;const earned=assists===0?3:assists<=3?2:1;const previous=save.bestTimes[stageIndex];save.cleared[stageIndex]=true;save.stars[stageIndex]=Math.max(save.stars[stageIndex]||0,earned);save.bestTimes[stageIndex]=previous===null?elapsed:Math.min(previous,elapsed);save.unlocked=Math.max(save.unlocked,Math.min(30,stage.id+1));persist();sound("success");setFeedback(t("complete"),"success");dom.scene.classList.add("sparkle");analytics("game_complete",{stage:stage.id,stars:earned,hints,mistakes:mistakes+restarts,time_ms:elapsed});setTimeout(()=>showResult(earned,elapsed,previous),420);
+    if(completing)return;const elapsed=elapsedPlayTime();completing=true;pauseRunClock();const stage=currentStage();const assists=mistakes+restarts+hints*2;const earned=assists===0?3:assists<=3?2:1;const previous=save.bestTimes[stageIndex];save.cleared[stageIndex]=true;save.stars[stageIndex]=Math.max(save.stars[stageIndex]||0,earned);save.bestTimes[stageIndex]=previous===null?elapsed:Math.min(previous,elapsed);save.unlocked=Math.max(save.unlocked,Math.min(30,stage.id+1));persist();sound("success");setFeedback(t("complete"),"success");dom.scene.classList.add("sparkle");analytics("game_complete",{stage:stage.id,stars:earned,hints,mistakes:mistakes+restarts,time_ms:elapsed});setTimeout(()=>showResult(earned,elapsed,previous),420);
   }
 
   function showResult(earned,elapsed,previous){const stage=currentStage();dom.resultTitle.textContent=t("resultTitle");dom.resultStars.textContent="★".repeat(earned)+"☆".repeat(3-earned);dom.resultText.textContent=t("resultText",{edges:stage.edges.length,time:formatTime(elapsed)});dom.skillGrid.innerHTML=`<div><small>${t("logic")}</small><strong>${t("logicValue",{edges:stage.edges.length})}</strong></div><div><small>${t("focus")}</small><strong>${t("focusValue",{mistakes:mistakes+restarts})}</strong></div><div><small>${t("problem")}</small><strong>${t("problemValue",{hints})}</strong></div>`;dom.comparison.textContent=previous===null||elapsed<previous?t("newBest"):t("previousBest",{time:formatTime(previous)});dom.next.hidden=stage.id>=30;dom.result.hidden=false;requestAnimationFrame(()=>{(dom.next.hidden?dom.retry:dom.next).focus({preventScroll:true});window.dispatchEvent(new CustomEvent("weightplay:battle-open"));});}
@@ -255,14 +280,17 @@
   const endPointer=event=>{if(activePointer===event.pointerId)activePointer=null;};dom.svg.addEventListener("pointerup",endPointer);dom.svg.addEventListener("pointercancel",endPointer);
   dom.stageRail.addEventListener("click",event=>{const card=event.target.closest(".stage-card.unlocked");if(!card)return;startStage(Number(card.dataset.index));});
   dom.stageRail.addEventListener("wonder:stage-snap",event=>{const card=event.detail?.card||document.elementFromPoint(innerWidth/2,Math.min(innerHeight-120,innerHeight*.78))?.closest?.(".stage-card");if(card)updateChapterPanel(Number(card.dataset.index));});
-  dom.start.addEventListener("click",()=>{sound("click");showStage();});dom.stageBack.addEventListener("click",()=>{sound("click");showMain();});dom.battleBack.addEventListener("click",()=>{sound("click");showStage(stageIndex);});dom.undo.addEventListener("click",undo);dom.restart.addEventListener("click",()=>restartAttempt(true));dom.hint.addEventListener("click",showHint);dom.retry.addEventListener("click",()=>startStage(stageIndex));dom.resultStages.addEventListener("click",()=>showStage(stageIndex));dom.next.addEventListener("click",()=>startStage(Math.min(29,stageIndex+1)));dom.locale.addEventListener("change",()=>{locale=dom.locale.value;applyLocale();});
+  dom.leave.addEventListener("keydown",event=>{if(event.key==="Escape"){event.preventDefault();closeBattleLeave();return;}if(event.key!=="Tab")return;const first=dom.continueBattle,last=dom.leaveBattle;if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}});
+  document.addEventListener("visibilitychange",()=>{if(document.hidden)pauseRunClock();else resumeRunClock();});window.addEventListener("pagehide",pauseRunClock);window.addEventListener("pageshow",resumeRunClock);
+  dom.start.addEventListener("click",()=>{sound("click");showStage();});dom.stageBack.addEventListener("click",()=>{sound("click");showMain();});dom.battleBack.addEventListener("click",()=>{sound("click");openBattleLeave();});dom.continueBattle.addEventListener("click",()=>{sound("click");closeBattleLeave();});dom.leaveBattle.addEventListener("click",leaveBattle);dom.undo.addEventListener("click",undo);dom.restart.addEventListener("click",()=>restartAttempt(true));dom.hint.addEventListener("click",showHint);dom.retry.addEventListener("click",()=>startStage(stageIndex));dom.resultStages.addEventListener("click",()=>showStage(stageIndex));dom.next.addEventListener("click",()=>startStage(Math.min(29,stageIndex+1)));dom.locale.addEventListener("change",()=>{locale=dom.locale.value;applyLocale();});
 
   async function boot(){applyLocale();analytics("game_view");const assets=["../../assets/animal-starlight-trails-cover.webp","../../assets/animal-starlight-trails-bg.webp","../../assets/weightplay-character-moon-cap-owl-cutout.webp"];let loaded=0;await Promise.allSettled(assets.map(src=>new Promise(resolve=>{const image=new Image();const done=()=>{loaded+=1;dom.loadingFill.style.width=`${loaded/assets.length*100}%`;resolve();};image.onload=done;image.onerror=done;image.src=src;})));setTimeout(()=>{dom.loading.hidden=true;showMain();},180);}
   if (new URLSearchParams(location.search).get("trial") === "1") {
     window.__animalStarlightTrailsSmoke = {
       stages: stages.map(stage => ({id:stage.id,route:[...stage.route],edges:stage.edges.length,chapter:stage.chapter})),
+      leaveCopy: () => Object.fromEntries(Object.entries(STRINGS).map(([key,strings])=>[key,[strings.leaveTitle,strings.leaveText,strings.continueBattle,strings.returnStages]])),
       startStage,
-      snapshot: () => ({stage:stageIndex+1,path:[...path],hints,mistakes,restarts,screen:document.body.dataset.screen,resultVisible:!dom.result.hidden,save:JSON.parse(JSON.stringify(save))}),
+      snapshot: () => ({stage:stageIndex+1,path:[...path],hints,mistakes,restarts,elapsed:elapsedPlayTime(),screen:document.body.dataset.screen,resultVisible:!dom.result.hidden,save:JSON.parse(JSON.stringify(save))}),
     };
   }
   boot();
