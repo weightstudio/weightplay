@@ -251,6 +251,10 @@
     },
   };
 
+  Object.assign(text.en, { leaveTitle: "Leave this rescue?", leaveText: "Your care progress in this mission will reset.", keepHelping: "Keep helping", leaveMission: "Leave mission" });
+  Object.assign(text["zh-Hant"], { leaveTitle: "\u8981\u96e2\u958b\u9019\u6b21\u6551\u63f4\u55ce\uff1f", leaveText: "\u9019\u4e00\u95dc\u7684\u7167\u8b77\u9032\u5ea6\u6703\u91cd\u8a2d\u3002", keepHelping: "\u7e7c\u7e8c\u5e6b\u5fd9", leaveMission: "\u96e2\u958b\u4efb\u52d9" });
+  Object.assign(text.es, { leaveTitle: "\u00bfSalir de este rescate?", leaveText: "Tu progreso de cuidado en esta misi\u00f3n se reiniciar\u00e1.", keepHelping: "Seguir ayudando", leaveMission: "Salir de la misi\u00f3n" });
+
   const $ = (id) => document.getElementById(id);
   const nodes = {
     localeSelect: $("localeSelect"),
@@ -279,6 +283,19 @@
     loadingFill: $("loadingFill"),
     homeLink: document.querySelector(".home-link"),
   };
+  const leavePanel = document.createElement("section");
+  leavePanel.id = "leavePanel";
+  leavePanel.className = "helper-leave-panel hidden";
+  leavePanel.setAttribute("role", "dialog");
+  leavePanel.setAttribute("aria-modal", "true");
+  leavePanel.setAttribute("aria-labelledby", "leaveTitle");
+  leavePanel.innerHTML = '<div class="helper-leave-card"><strong id="leaveTitle"></strong><p id="leaveText"></p><button id="keepHelpingBtn" type="button"></button><button id="leaveMissionBtn" type="button"></button></div>';
+  nodes.playPanel.append(leavePanel);
+  nodes.leavePanel = leavePanel;
+  nodes.leaveTitle = $("leaveTitle");
+  nodes.leaveText = $("leaveText");
+  nodes.keepHelpingBtn = $("keepHelpingBtn");
+  nodes.leaveMissionBtn = $("leaveMissionBtn");
 
   const legacySavedLocale = localStorage.getItem(localeKey);
   const canonicalSavedLocale = localStorage.getItem(canonicalLocaleKey);
@@ -300,6 +317,7 @@
   let dragState = null;
   let careTransitionToken = 0;
   let careLifecycleSuspended = document.hidden;
+  let leaveOpen = false;
 
   function invalidateCareTransition() {
     careTransitionToken += 1;
@@ -392,6 +410,10 @@
     nodes.backToStagesBtn.setAttribute("aria-label", t("backToStages"));
     nodes.stageGrid.setAttribute("aria-label", t("stageListAria"));
     nodes.board.setAttribute("aria-label", t("boardAria"));
+    nodes.leaveTitle.textContent = t("leaveTitle");
+    nodes.leaveText.textContent = t("leaveText");
+    nodes.keepHelpingBtn.textContent = t("keepHelping");
+    nodes.leaveMissionBtn.textContent = t("leaveMission");
     document.querySelectorAll("[data-ui]").forEach((node) => {
       node.textContent = t(node.dataset.ui);
     });
@@ -852,6 +874,10 @@
     running = false;
     busy = false;
     cleanupDrag();
+    leaveOpen = false;
+    nodes.leavePanel.classList.add("hidden");
+    [...nodes.playPanel.children].forEach((child) => { if (child !== nodes.leavePanel) { child.inert = false; child.removeAttribute("aria-hidden"); } });
+    resumeCareTransitions();
     nodes.playPanel.classList.add("hidden");
     nodes.playPanel.classList.remove("result-active");
     nodes.resultPanel.classList.add("hidden");
@@ -920,6 +946,19 @@
   });
   nodes.startGameBtn.addEventListener("click", () => showMenu(Math.max(0, unlocked - 1)));
   nodes.stageBackBtn.addEventListener("click", () => showMain(true));
+  function setLeaveOpen(open, restoreFocus = true) {
+    if (open === leaveOpen) return;
+    leaveOpen = open;
+    cleanupDrag();
+    nodes.leavePanel.classList.toggle("hidden", !open);
+    [...nodes.playPanel.children].forEach((child) => {
+      if (child === nodes.leavePanel) return;
+      child.inert = open;
+      if (open) child.setAttribute("aria-hidden", "true"); else child.removeAttribute("aria-hidden");
+    });
+    if (open) { suspendCareTransitions(); requestAnimationFrame(() => nodes.keepHelpingBtn.focus({ preventScroll: true })); }
+    else { resumeCareTransitions(); if (restoreFocus) requestAnimationFrame(() => nodes.backToStagesBtn.focus({ preventScroll: true })); }
+  }
   nodes.localeSelect.addEventListener("change", (event) => {
     const requested = event.target.value;
     window.WonderI18n?.setLocale?.(requested);
@@ -929,7 +968,18 @@
     renderStageGrid();
     if (running) renderRound();
   });
-  nodes.backToStagesBtn.addEventListener("click", () => showMenu(currentStage));
+  nodes.backToStagesBtn.addEventListener("click", () => setLeaveOpen(true));
+  nodes.keepHelpingBtn.addEventListener("click", () => setLeaveOpen(false));
+  nodes.leaveMissionBtn.addEventListener("click", () => showMenu(currentStage));
+  nodes.leavePanel.addEventListener("keydown", (event) => {
+    if (event.repeat && (event.key === "Enter" || event.key === " ")) { event.preventDefault(); return; }
+    if (event.key === "Escape") { event.preventDefault(); setLeaveOpen(false); return; }
+    if (event.key !== "Tab") return;
+    const actions = [nodes.keepHelpingBtn, nodes.leaveMissionBtn];
+    const index = actions.indexOf(document.activeElement);
+    event.preventDefault();
+    actions[event.shiftKey ? (index <= 0 ? 1 : index - 1) : (index >= 1 ? 0 : index + 1)].focus({ preventScroll: true });
+  });
   nodes.homeLink.addEventListener("click", (event) => {
     if (!document.body.classList.contains("helper-playing")) return;
     event.preventDefault();

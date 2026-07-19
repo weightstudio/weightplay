@@ -572,6 +572,13 @@ select {
   display: none !important;
 }
 
+.helper-leave-panel { position:absolute; inset:0; z-index:90; display:grid; place-items:center; padding:18px; background:rgba(18,45,69,.58); backdrop-filter:blur(8px); }
+.helper-leave-card { width:min(100%,330px); display:grid; gap:12px; padding:20px; border-radius:22px; background:#fff9df; color:#17314f; text-align:center; box-shadow:0 22px 48px rgba(12,35,53,.3); }
+.helper-leave-card strong { font-size:1.35rem; }
+.helper-leave-card p { margin:0; font-weight:800; line-height:1.4; }
+.helper-leave-card button { min-height:48px; border:0; border-radius:12px; background:#d9f4eb; color:#17314f; font:inherit; font-weight:1000; }
+.helper-leave-card #leaveMissionBtn { background:#ffe0a7; }
+
 body.helper-playing .game-page-info {
   display: none !important;
 }

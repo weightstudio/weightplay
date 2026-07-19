@@ -67,6 +67,10 @@
   let appliedViewportWidth = 0;
   let appliedViewportHeight = 0;
   let appliedStateSignature = "";
+  let appliedRootStyleSignature = "";
+  const rootStyleSignature = (node) => node ? ["position", "top", "left", "width", "height", "transform"]
+    .map((property) => `${property}:${node.style.getPropertyValue(property)}!${node.style.getPropertyPriority(property)}`)
+    .join("|") : "";
   const rememberAndSet = (node, declarations) => {
     if (!node) return;
     if (!savedStyles.has(node)) {
@@ -98,6 +102,7 @@
       restore(activeReserve);
       activeRoot = null;
       activeReserve = null;
+      appliedRootStyleSignature = "";
       return;
     }
 
@@ -116,11 +121,10 @@
       && reserve === activeReserve
       && Math.abs(width - appliedViewportWidth) < 0.5
       && Math.abs(height - appliedViewportHeight) < 0.5
-      && stateSignature === appliedStateSignature) return;
+      && stateSignature === appliedStateSignature
+      && rootStyleSignature(root) === appliedRootStyleSignature) return;
     const requestedMaximumWidth = Number.parseFloat(root.dataset.wpCanvasMaxWidth || "");
-    const maximumWidth = root.dataset.wpCanvasMaxWidth === "viewport"
-      ? width
-      : Number.isFinite(requestedMaximumWidth) && requestedMaximumWidth > 0
+    const maximumWidth = Number.isFinite(requestedMaximumWidth) && requestedMaximumWidth > 0
       ? Math.min(DESKTOP_CANVAS_MAX_WIDTH, requestedMaximumWidth)
       : DESKTOP_CANVAS_MAX_WIDTH;
     const availableWidth = Math.max(1, Math.min(width - GUTTER * 2, maximumWidth));
@@ -168,6 +172,7 @@
       "transform-origin": "top left",
       overflow: "hidden",
     });
+    appliedRootStyleSignature = rootStyleSignature(root);
     if (activeReserve && activeReserve !== reserve) restore(activeReserve);
     activeReserve = reserve;
     if (reserve) {
@@ -218,7 +223,7 @@
   }).observe(document.body, {
     subtree: true,
     attributes: true,
-    attributeFilter: ["class", "hidden", "data-wp-return"],
+    attributeFilter: ["class", "hidden", "data-wp-return", "style"],
     childList: true,
   });
   window.addEventListener("resize", queueUpdate, { passive: true });

@@ -55,6 +55,18 @@
   const loadingTitle = document.querySelector("#loadingTitle");
   const loadingText = document.querySelector("#loadingText");
   const loadingFill = document.querySelector("#loadingFill");
+  const dashGame = document.querySelector(".dash-game");
+  const leavePanel = document.createElement("section");
+  leavePanel.className = "leave-panel hidden";
+  leavePanel.setAttribute("role", "dialog");
+  leavePanel.setAttribute("aria-modal", "true");
+  leavePanel.setAttribute("aria-labelledby", "leaveTitle");
+  leavePanel.innerHTML = `<div class="leave-card"><h2 id="leaveTitle"></h2><p id="leaveText"></p><div><button id="keepRunningBtn" type="button"></button><button id="leaveRouteBtn" type="button"></button></div></div>`;
+  dashGame.append(leavePanel);
+  const leaveTitle = leavePanel.querySelector("#leaveTitle");
+  const leaveText = leavePanel.querySelector("#leaveText");
+  const keepRunningBtn = leavePanel.querySelector("#keepRunningBtn");
+  const leaveRouteBtn = leavePanel.querySelector("#leaveRouteBtn");
 
   const GAME_ID = "campus-dash";
   const LEADERBOARD_KEY = "campusDashLeaderboard";
@@ -197,6 +209,25 @@
     },
   };
 
+  Object.assign(dictionary.en, {
+    leaveTitle: "Leave this route?",
+    leaveText: "Your time, stars, score, and combo in this run will reset.",
+    keepRunning: "Keep running",
+    leaveRoute: "Leave route",
+  });
+  Object.assign(dictionary["zh-Hant"], {
+    leaveTitle: "\u8981\u96e2\u958b\u9019\u689d\u8def\u7dda\u55ce\uff1f",
+    leaveText: "\u9019\u6b21\u5954\u8dd1\u7684\u6642\u9593\u3001\u661f\u661f\u3001\u5206\u6578\u8207\u9023\u64ca\u6703\u91cd\u65b0\u958b\u59cb\u3002",
+    keepRunning: "\u7e7c\u7e8c\u5954\u8dd1",
+    leaveRoute: "\u96e2\u958b\u8def\u7dda",
+  });
+  Object.assign(dictionary.es, {
+    leaveTitle: "¿Salir de esta ruta?",
+    leaveText: "Se reiniciarán el tiempo, las estrellas, la puntuación y el combo de esta carrera.",
+    keepRunning: "Seguir corriendo",
+    leaveRoute: "Salir de la ruta",
+  });
+
   const regionNames = [
     ["Sunrise Savanna", "\u6668\u66e6\u8349\u539f"],
     ["Acacia Crossing", "\u91d1\u5408\u6b61\u8def\u53e3"],
@@ -307,6 +338,7 @@
   let state = makeState();
   let lastTime = 0;
   let lifecycleSuspended = false;
+  let leaveOpen = false;
   let pointerStartX = null;
   let activePointerId = null;
   let routeScrollTimer = 0;
@@ -317,6 +349,25 @@
     }
     pointerStartX = null;
     activePointerId = null;
+  }
+
+  function setLeaveOpen(open, restoreFocus = true) {
+    if (open === leaveOpen) return;
+    leaveOpen = open;
+    clearPointerInput();
+    leavePanel.classList.toggle("hidden", !open);
+    canvasWrap.inert = open;
+    hud.inert = open;
+    if (open) {
+      canvasWrap.setAttribute("aria-hidden", "true");
+      hud.setAttribute("aria-hidden", "true");
+      keepRunningBtn.focus({ preventScroll: true });
+    } else {
+      canvasWrap.removeAttribute("aria-hidden");
+      hud.removeAttribute("aria-hidden");
+      lastTime = performance.now();
+      if (restoreFocus) battleBackBtn.focus({ preventScroll: true });
+    }
   }
 
   function locale() {
@@ -390,6 +441,10 @@
     resultTitle.textContent = t("resultTitle");
     againBtn.textContent = t("again");
     lobbyLink.textContent = t("routes");
+    leaveTitle.textContent = t("leaveTitle");
+    leaveText.textContent = t("leaveText");
+    keepRunningBtn.textContent = t("keepRunning");
+    leaveRouteBtn.textContent = t("leaveRoute");
     loadingTitle.textContent = t("loading");
     if (!stagePanel.classList.contains("hidden")) renderStageSelector(false);
   }
@@ -449,6 +504,7 @@
   }
 
   function showMain() {
+    setLeaveOpen(false, false);
     clearPointerInput();
     state.running = false;
     document.body.classList.remove("dash-playing", "dash-stage-select", "dash-expanded-canvas");
@@ -524,6 +580,7 @@
   }
 
   function showStageSelection() {
+    setLeaveOpen(false, false);
     clearPointerInput();
     state.running = false;
     document.body.classList.remove("dash-playing", "dash-expanded-canvas");
@@ -546,6 +603,7 @@
   window.visualViewport?.addEventListener("scroll", updateDashFrame);
 
   function startRun() {
+    setLeaveOpen(false, false);
     clearPointerInput();
     lifecycleSuspended = document.hidden;
     state = makeState();
@@ -575,7 +633,7 @@
   }
 
   function loop(now) {
-    if (lifecycleSuspended || document.hidden) {
+    if (lifecycleSuspended || document.hidden || leaveOpen) {
       lastTime = now;
       if (state.running) requestAnimationFrame(loop);
       return;
@@ -777,7 +835,19 @@
   function exposeSmokeHooks() {
     if (!new URLSearchParams(window.location.search).has("smoke")) return;
     window.__campusDashSmoke = {
-      getState: () => ({ running: state.running, lane: state.targetLane, score: state.score, time: state.timeLeft, stage: state.stage, laneChanges: state.laneChanges, coinsCollected: state.coinsCollected, obstaclesHit: state.obstaclesHit, bestCombo: state.bestCombo }),
+      getState: () => ({
+        running: state.running,
+        lane: state.targetLane,
+        score: state.score,
+        time: state.timeLeft,
+        stage: state.stage,
+        laneChanges: state.laneChanges,
+        coinsCollected: state.coinsCollected,
+        obstaclesHit: state.obstaclesHit,
+        bestCombo: state.bestCombo,
+        obstacles: state.obstacles.map(({ lane, x, y, kind }) => ({ lane, x, y, kind })),
+        coins: state.coins.map(({ lane, x, y }) => ({ lane, x, y })),
+      }),
       routeCatalog: () => ROUTES.map((config) => ({
         id: config.id,
         region: config.region,
@@ -1244,11 +1314,35 @@
   startBtn.addEventListener("keydown", suppressRepeatedActivation, true);
   stageRail.addEventListener("keydown", suppressRepeatedActivation, true);
   stageBackBtn.addEventListener("click", showMain);
-  battleBackBtn.addEventListener("click", showStageSelection);
+  battleBackBtn.addEventListener("click", () => {
+    if (state.running && resultPanel.classList.contains("hidden")) setLeaveOpen(true);
+  });
+  keepRunningBtn.addEventListener("click", () => setLeaveOpen(false));
+  leaveRouteBtn.addEventListener("click", showStageSelection);
+  leavePanel.addEventListener("keydown", (event) => {
+    if (event.repeat && ["Enter", " "].includes(event.key)) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      return;
+    }
+    if (event.key === "Escape") {
+      event.preventDefault();
+      setLeaveOpen(false);
+      return;
+    }
+    if (event.key !== "Tab") return;
+    if (event.shiftKey && document.activeElement === keepRunningBtn) {
+      event.preventDefault();
+      leaveRouteBtn.focus({ preventScroll: true });
+    } else if (!event.shiftKey && document.activeElement === leaveRouteBtn) {
+      event.preventDefault();
+      keepRunningBtn.focus({ preventScroll: true });
+    }
+  }, true);
   homeLink.addEventListener("click", (event) => {
     if (!document.body.classList.contains("dash-playing")) return;
     event.preventDefault();
-    showMain();
+    if (state.running && resultPanel.classList.contains("hidden")) setLeaveOpen(true);
   });
   againBtn.addEventListener("click", () => {
     window.WonderAnalytics?.track("game_restart", { game_id: GAME_ID, score: state.score, locale: locale() });

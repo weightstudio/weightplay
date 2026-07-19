@@ -46,7 +46,6 @@
     "animal-skyport-dispatch": "#startBtn",
     "animal-starlight-trails": "#startBtn",
     "animal-word-trails": "#start",
-    "animal-zoo-idle": "#startBtn",
     "beast-deck": "#mainStartBtn",
     "beast-tactician": "#startBtn",
     "bubble-bakery": "#startGameBtn",
@@ -183,9 +182,7 @@
       && Math.abs(width - appliedStageWidth) < 0.5
       && Math.abs(height - appliedStageHeight) < 0.5) return;
     const requestedMaximumWidth = Number.parseFloat(root.dataset.wpCanvasMaxWidth || "");
-    const maximumWidth = root.dataset.wpCanvasMaxWidth === "viewport"
-      ? width
-      : Number.isFinite(requestedMaximumWidth) && requestedMaximumWidth > 0
+    const maximumWidth = Number.isFinite(requestedMaximumWidth) && requestedMaximumWidth > 0
       ? Math.min(DESKTOP_CANVAS_MAX_WIDTH, requestedMaximumWidth)
       : DESKTOP_CANVAS_MAX_WIDTH;
     const availableWidth = Math.max(1, Math.min(width, maximumWidth));
@@ -238,7 +235,10 @@
     const button = document.querySelector(mainStartByGame[gameId()] || "[data-wp-main-start]");
     if (!button) return;
     button.dataset.wpMainStart = "true";
-    const label = document.documentElement.lang.toLowerCase().startsWith("zh") ? "開始遊戲" : "Start Game";
+    const pageLanguage = document.documentElement.lang.toLowerCase();
+    const label = pageLanguage.startsWith("zh-hans") || pageLanguage.startsWith("zh-cn")
+      ? "开始游戏"
+      : pageLanguage.startsWith("zh") ? "開始遊戲" : "Start Game";
     const localizedLabel = window.WonderI18n?.t?.("game.start") || label;
     if (button.textContent.trim() !== localizedLabel) button.textContent = localizedLabel;
   }

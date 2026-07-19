@@ -40,6 +40,17 @@
   const loadingText = document.querySelector("#loadingText");
   const loadingFill = document.querySelector("#loadingFill");
   const lunchGame = document.querySelector(".lunch-game");
+  const leaveConfirmPanel = document.createElement("section");
+  leaveConfirmPanel.className = "leave-confirm-panel hidden";
+  leaveConfirmPanel.setAttribute("role", "dialog");
+  leaveConfirmPanel.setAttribute("aria-modal", "true");
+  leaveConfirmPanel.setAttribute("aria-labelledby", "leaveConfirmTitle");
+  leaveConfirmPanel.innerHTML = `<div class="leave-confirm-card"><h2 id="leaveConfirmTitle"></h2><p id="leaveConfirmText"></p><div><button id="keepSortingBtn" type="button"></button><button id="leaveLevelBtn" type="button"></button></div></div>`;
+  lunchGame.append(leaveConfirmPanel);
+  const leaveConfirmTitle = leaveConfirmPanel.querySelector("#leaveConfirmTitle");
+  const leaveConfirmText = leaveConfirmPanel.querySelector("#leaveConfirmText");
+  const keepSortingBtn = leaveConfirmPanel.querySelector("#keepSortingBtn");
+  const leaveLevelBtn = leaveConfirmPanel.querySelector("#leaveLevelBtn");
   const GAME_ID = "color-lunchbox";
   const UNLOCK_KEY = "colorLunchboxUnlockedStage";
   const PROGRESS_KEY = "weightplay_color_lunchbox_progress";
@@ -314,6 +325,25 @@
     color_red: "roja", color_yellow: "amarilla", color_blue: "azul", color_green: "verde", color_orange: "naranja", color_purple: "morada", color_white: "blanca", color_brown: "marrón", color_gray: "gris", color_pink: "rosa", color_black: "negra", color_cyan: "cian",
   };
 
+  Object.assign(dictionary.en, {
+    leaveTitle: "Leave this lunchbox?",
+    leaveText: "Your sorting progress and score in this level will reset.",
+    keepSorting: "Keep sorting",
+    leaveLevel: "Leave level",
+  });
+  Object.assign(dictionary["zh-Hant"], {
+    leaveTitle: "\u8981\u96e2\u958b\u9019\u500b\u9910\u76d2\u55ce\uff1f",
+    leaveText: "\u9019\u4e00\u95dc\u7684\u5206\u985e\u9032\u5ea6\u8207\u5206\u6578\u6703\u91cd\u65b0\u958b\u59cb\u3002",
+    keepSorting: "\u7e7c\u7e8c\u5206\u985e",
+    leaveLevel: "\u96e2\u958b\u95dc\u5361",
+  });
+  Object.assign(dictionary.es, {
+    leaveTitle: "¿Salir de esta fiambrera?",
+    leaveText: "Se reiniciarán el progreso de clasificación y la puntuación de este nivel.",
+    keepSorting: "Seguir clasificando",
+    leaveLevel: "Salir del nivel",
+  });
+
   const pageMetadata = {
     en: {
       title: "Animal Color Lunchbox - WeightPlay",
@@ -429,6 +459,7 @@
     startY: 0,
     ready: false,
   };
+  let leaveConfirmOpen = false;
 
   function locale() {
     return window.WonderI18n?.locale() || "en";
@@ -540,6 +571,10 @@
     stageSelectBtn.textContent = t("levels");
     lobbyLink.textContent = t("lobby");
     homeLink.setAttribute("aria-label", t("lobby"));
+    leaveConfirmTitle.textContent = t("leaveTitle");
+    leaveConfirmText.textContent = t("leaveText");
+    keepSortingBtn.textContent = t("keepSorting");
+    leaveLevelBtn.textContent = t("leaveLevel");
     feedbackText.textContent = state.deck.length ? feedbackText.textContent : t("ready");
 
     if (!stageSelectPanel.classList.contains("hidden")) renderStageCards();
@@ -610,6 +645,16 @@
     });
   }
 
+  function setLeaveConfirmOpen(open, restoreFocus = true) {
+    if (open === leaveConfirmOpen) return;
+    leaveConfirmOpen = open;
+    clearFoodDrag();
+    leaveConfirmPanel.classList.toggle("hidden", !open);
+    setBattleCovered(open);
+    if (open) keepSortingBtn.focus({ preventScroll: true });
+    else if (restoreFocus) battleBackBtn.focus({ preventScroll: true });
+  }
+
   let roundTransitionToken = 0;
 
   function clearFoodDrag() {
@@ -636,10 +681,13 @@
 
   function scheduleRoundTask(task, delay) {
     const token = roundTransitionToken;
-    const startedAt = performance.now();
+    let elapsed = 0;
+    let previous = performance.now();
     const tick = (now) => {
       if (token !== roundTransitionToken || !document.body.classList.contains("lunch-playing")) return;
-      if (now - startedAt >= delay) task();
+      if (!leaveConfirmOpen) elapsed += now - previous;
+      previous = now;
+      if (elapsed >= delay) task();
       else requestAnimationFrame(tick);
     };
     requestAnimationFrame(tick);
@@ -651,6 +699,7 @@
   visualViewport?.addEventListener("scroll", updateLunchFrame, { passive: true });
 
   function showMain() {
+    setLeaveConfirmOpen(false, false);
     invalidateRoundTransition();
     document.body.classList.remove("lunch-stage", "lunch-playing");
     document.body.classList.add("lunch-main");
@@ -664,6 +713,7 @@
   }
 
   function showStageSelect(focusCurrent = false) {
+    setLeaveConfirmOpen(false, false);
     invalidateRoundTransition();
     document.body.classList.remove("lunch-main");
     document.body.classList.remove("lunch-playing");
@@ -943,6 +993,7 @@
   }
 
   function startStage(stageIndex, focusChoice = false) {
+    setLeaveConfirmOpen(false, false);
     invalidateRoundTransition();
     document.body.classList.remove("lunch-stage");
     document.body.classList.add("lunch-playing");
@@ -1190,7 +1241,28 @@
     window.WonderSound?.play("click");
     showStageSelect(true);
   });
-  battleBackBtn.addEventListener("click", showStageSelect);
+  battleBackBtn.addEventListener("click", () => {
+    if (!resultPanel.classList.contains("hidden")) return;
+    setLeaveConfirmOpen(true);
+  });
+  keepSortingBtn.addEventListener("click", () => setLeaveConfirmOpen(false));
+  leaveLevelBtn.addEventListener("click", () => showStageSelect(true));
+  leaveConfirmPanel.addEventListener("keydown", (event) => {
+    rejectRepeatedActivation(event);
+    if (event.key === "Escape") {
+      event.preventDefault();
+      setLeaveConfirmOpen(false);
+      return;
+    }
+    if (event.key !== "Tab") return;
+    if (event.shiftKey && document.activeElement === keepSortingBtn) {
+      event.preventDefault();
+      leaveLevelBtn.focus({ preventScroll: true });
+    } else if (!event.shiftKey && document.activeElement === leaveLevelBtn) {
+      event.preventDefault();
+      keepSortingBtn.focus({ preventScroll: true });
+    }
+  });
 
   homeLink.addEventListener("click", (event) => {
     if (document.body.classList.contains("lunch-main")) return;

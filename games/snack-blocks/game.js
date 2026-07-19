@@ -1102,15 +1102,17 @@
   function updateSnackFrame() {
     if (!document.body.classList.contains("snack-stage") && !document.body.classList.contains("snack-playing")) return;
     const viewport = window.visualViewport;
-    const viewportWidth = viewport?.width || innerWidth;
-    const viewportHeight = viewport?.height || innerHeight;
+    const layoutWidth = Math.max(1, document.documentElement.clientWidth || 0, innerWidth || 0, viewport?.width || 0);
+    const viewportHeight = Math.max(1, document.documentElement.clientHeight || 0, innerHeight || 0, viewport?.height || 0);
+    const viewportWidth = Math.min(layoutWidth, 920);
+    const frameLeft = Math.max(0, (layoutWidth - viewportWidth) / 2);
     const shell = document.querySelector(".snack-game");
     shell?.classList.remove("weightplay-active-viewport");
     const scale = Math.min(Math.max(1, viewportWidth) / 390, Math.max(1, viewportHeight) / 788);
     const logicalWidth = viewportWidth / scale;
     const logicalHeight = viewportHeight / scale;
     document.documentElement.style.setProperty("--snack-frame-scale", String(scale));
-    document.documentElement.style.setProperty("--snack-frame-left", "0px");
+    document.documentElement.style.setProperty("--snack-frame-left", `${frameLeft}px`);
     document.documentElement.style.setProperty("--snack-frame-top", "0px");
     document.documentElement.style.setProperty("--snack-logical-width", `${logicalWidth}px`);
     document.documentElement.style.setProperty("--snack-logical-height", `${logicalHeight}px`);
@@ -1118,7 +1120,7 @@
     document.documentElement.style.setProperty("--snack-frame-height", `${viewportHeight}px`);
     shell?.style.setProperty("position", "fixed", "important");
     shell?.style.setProperty("inset", "auto", "important");
-    shell?.style.setProperty("left", "0px", "important");
+    shell?.style.setProperty("left", `${frameLeft}px`, "important");
     shell?.style.setProperty("top", "0px", "important");
     shell?.style.setProperty("width", `${logicalWidth}px`, "important");
     shell?.style.setProperty("min-width", "0px", "important");
