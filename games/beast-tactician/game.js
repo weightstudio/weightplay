@@ -115,7 +115,7 @@
       bestStage: "Best Stage",
       upgradePoints: "Upgrade Points",
       diamonds: "Diamonds",
-      start: "Start Defense",
+      start: "Start Game",
       tech: "Tech Upgrades",
       back: "Back",
       menu: "Menu",
@@ -600,7 +600,7 @@
       bestStage: "最高關卡",
       upgradePoints: "升級點",
       diamonds: "鑽石",
-      start: "開始防衛",
+      start: "開始遊戲",
       tech: "科技升級",
       back: "返回",
       menu: "選單",
@@ -790,7 +790,7 @@
     bestStage: "Mejor nivel",
     upgradePoints: "Puntos de mejora",
     diamonds: "Diamantes",
-    start: "Empezar defensa",
+    start: "Iniciar juego",
     tech: "Mejoras técnicas",
     back: "Volver",
     menu: "Menú",
@@ -1200,9 +1200,10 @@
     if (screen !== "tech") clearGoldenFrameConfirmation();
     state.screen = screen;
     const resultActive = screen === "result";
+    const stageActive = screen === "stages" || screen === "tech";
     document.body.classList.toggle("guardian-playing", screen === "game" || screen === "result");
     document.body.classList.toggle("guardian-result", resultActive);
-    document.body.classList.toggle("guardian-stage", screen === "stages");
+    document.body.classList.toggle("guardian-stage", stageActive);
     nodes.gamePanel.querySelectorAll(":scope > .hud-row, :scope > .boss-panel, :scope > .battle-layout, :scope > .command-row").forEach((layer) => {
       layer.inert = resultActive;
       if (resultActive) layer.setAttribute("aria-hidden", "true");
@@ -3401,7 +3402,11 @@
       renderTech();
       setScreen("tech");
     });
-    nodes.techBackBtn.addEventListener("click", () => setScreen("menu"));
+    nodes.techBackBtn.addEventListener("click", () => {
+      setScreen("stages");
+      renderStages();
+      focusCurrentStage();
+    });
     nodes.stageBackBtn.addEventListener("click", () => {
       setScreen("menu");
       window.requestAnimationFrame(() => nodes.startBtn.focus({ preventScroll: true }));

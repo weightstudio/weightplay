@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="robots" content="noindex,nofollow" />
+  <meta name="weightplay-audience" content="general" />
+  <meta name="theme-color" content="#07172f" />
+  <title>Animal Starlight Trails - WeightPlay Internal Trial</title>
+  <meta name="description" content="Restore thirty original animal constellations by tracing every starlight trail exactly once." />
+  <meta property="og:site_name" content="WeightPlay" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Animal Starlight Trails" />
+  <meta property="og:description" content="Plan a continuous route through thirty magical animal constellation puzzles." />
+  <meta property="og:image" content="https://weightplay.com/assets/animal-starlight-trails-cover.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="stylesheet" href="../../src/tutorial.css" />
+  <link rel="stylesheet" href="../../src/loading-screen.css" />
+  <link rel="stylesheet" href="../../src/game-page-info.css" />
+  <link rel="stylesheet" href="../../src/stage-selector-standard.css" />
+  <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body data-screen="main" data-game-id="animal-starlight-trails">
+  <section id="loadingPanel" class="loading-panel" aria-live="polite">
+    <div class="loading-card"><strong>Animal Starlight Trails</strong><span id="loadingText">Loading star map…</span><div class="loading-track"><i id="loadingFill"></i></div></div>
+  </section>
+
+  <main id="mainScreen" class="main-screen">
+    <header class="main-header">
+      <a class="main-return" href="/" data-wp-return="main" aria-label="Back to WeightPlay"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" /></a>
+      <strong data-i18n="title">Animal Starlight Trails</strong>
+      <label class="locale-control"><span class="sr-only" data-i18n="language">Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option></select></label>
+    </header>
+    <section class="main-hero">
+      <img class="main-poster" src="../../assets/animal-starlight-trails-cover.webp" alt="" />
+      <div class="main-copy"><small data-i18n="eyebrow">Moon Cap Orla's constellation workshop</small><h1 data-i18n="title">Animal Starlight Trails</h1><p data-i18n="pitch">Trace every trail exactly once and relight the Animal Star Map.</p><div id="mainProgress" class="main-progress"></div><button id="startBtn" class="primary-action" type="button" data-i18n="start">Start Game</button></div>
+    </section>
+  </main>
+
+  <section class="game-page-info game-page-info-static" aria-label="Animal Starlight Trails game guide">
+    <div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker">WeightPlay Original Game Guide</span><h2>Animal Starlight Trails</h2><p>Animal Starlight Trails is an original thirty-stage route puzzle starring Moon Cap Orla. Select a star node, then trace connected trails until every edge has been used exactly once. A route may revisit a star, but it may never reuse the same trail. Later observatories introduce marked starting stars, one-way comet paths, numbered star seals, key-and-gate routes, and mastery constellations that combine those rules.</p></div></div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>How to Play</h3><ol><li>Choose an unlocked constellation from the horizontal Stage rail.</li><li>Start on any valid star, or on the glowing start seal when one is shown.</li><li>Drag through nearby stars or tap adjacent stars. Each connecting trail can be used only once.</li><li>Use Undo to step back, Restart to clear the attempt, or Hint to reveal one route-safe next star.</li><li>Light every trail to restore the constellation and unlock the next stage.</li></ol></div>
+      <div class="game-info-section"><h3>Six Observatory Lessons</h3><p>Stages 1–5 teach classic open trails. Stages 6–10 add a required starting seal. Stages 11–15 introduce comet arrows that can be crossed in only one direction. Stages 16–20 add numbered stars that must be reached in order. Stages 21–25 introduce a key star that opens a marked gate trail. Stages 26–30 combine the complete rule set in larger mastery constellations.</p></div>
+      <div class="game-info-section"><h3>Planning Advice</h3><ul><li>Stars with an odd number of unused trails often reveal where an open route should begin or end.</li><li>Before entering a narrow branch, check whether you will still have a way back to the rest of the constellation.</li><li>Comet arrows, numbered seals, and gates are route constraints, not decorations.</li><li>A hint spends no currency and never completes the move for you; it highlights one next step that still permits a full solution.</li></ul></div>
+      <div class="game-info-section game-info-parent"><h3>Player and Save Information</h3><p>Recommended for ages 9+ and family puzzle play. A round usually takes two to six minutes and practices logic, focus, and problem solving through play. Stage unlocks, best star ratings, best times, and constellation progress are stored only in this browser. No account is required, and the Skill Report is supportive game feedback rather than a formal assessment.</p></div>
+      <div class="game-info-section"><h3>Development Note</h3><p>The puzzles are original graph layouts built for touch, mouse, and keyboard. The game uses one responsive logical Canvas for Stage and Battle, preserves the same puzzle information on narrow phones and wide desktop screens, and keeps the General future-banner reserve physically separate from all controls and result actions.</p></div>
+      <div class="game-info-section"><h3>Frequently Asked Questions</h3><dl><div><dt>Can I pass through the same star twice?</dt><dd>Yes. Stars may be revisited, but each connecting trail may be used only once.</dd></div><div><dt>What happens if I reach a dead end?</dt><dd>The game keeps the attempt visible and offers Undo or Restart. It never removes progress or spends currency.</dd></div><div><dt>Are hints required?</dt><dd>No. Every stage can be solved without hints, and earlier stages remain replayable.</dd></div><div><dt>Does the game save progress?</dt><dd>Yes. Unlocks and best results are stored locally in this browser.</dd></div></dl></div>
+    </div>
+  </section>
+
+  <section id="stageScreen" class="stage-shell" data-wp-canvas-max-width="viewport" hidden>
+    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen style="--wp-stage-art:url('../../assets/animal-starlight-trails-bg.webp')">
+      <header class="stage-header"><button id="stageBackBtn" type="button" data-wp-return="stage" aria-label="Back">&larr;</button><div><strong data-i18n="chooseStage">Choose Constellation</strong><span id="stageSummary"></span></div><img src="../../assets/weightplay-character-moon-cap-owl-cutout.webp" alt="" /></header>
+      <section class="chapter-panel"><small id="chapterKicker"></small><strong id="chapterTitle"></strong><p id="chapterRule"></p></section>
+      <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-settle-duration="360" data-wp-stage-settle-easing="smoothstep" aria-label="Constellations"></div>
+    </div>
+  </section>
+
+  <section id="battleScreen" class="battle-screen" hidden>
+    <div class="trail-battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="viewport">
+      <header class="battle-header"><button id="battleBackBtn" type="button" data-wp-return="battle" aria-label="Back">&larr;</button><div class="battle-progress"><span id="stageLabel"></span><div><i id="edgeProgress"></i></div></div><div class="battle-stat"><small data-i18n="trails">Trails</small><strong id="trailCount">0 / 0</strong></div><div class="battle-stat"><small data-i18n="stars">Stars</small><strong id="starTotal">0</strong></div></header>
+      <div id="objectiveRow" class="objective-row"></div>
+      <section id="puzzleScene" class="puzzle-scene" aria-label="Constellation puzzle"><svg id="graphSvg" viewBox="0 0 100 100" role="group" aria-label="One-stroke constellation"></svg><div id="hintPulse" class="hint-pulse" hidden></div></section>
+      <div class="battle-feedback"><strong id="feedbackText" aria-live="polite"></strong><span id="assistText"></span></div>
+      <div class="battle-actions"><button id="undoBtn" type="button" data-i18n="undo">Undo</button><button id="restartBtn" type="button" data-i18n="restart">Restart</button><button id="hintBtn" type="button" data-i18n="hint">Hint</button></div>
+      <section id="resultPanel" class="result-overlay" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden>
+        <div class="result-card"><img src="../../assets/weightplay-character-moon-cap-owl-cutout.webp" alt="" /><small data-i18n="skillReport">Skill Report</small><h2 id="resultTitle"></h2><div id="resultStars" class="result-stars"></div><p id="resultText"></p><div id="skillGrid" class="skill-grid"></div><p id="comparisonText" class="comparison"></p><div class="result-actions"><button id="retryBtn" type="button" data-i18n="retry">Retry</button><button id="resultStagesBtn" type="button" data-i18n="stages">Stages</button><button id="nextBtn" class="primary-action" type="button" data-i18n="next">Next Stage</button></div></div>
+      </section>
+    </div>
+    <div class="battle-ad-reserve" aria-hidden="true"></div>
+  </section>
+
+  <script src="../../src/site-config.js"></script>
+  <script src="../../src/analytics.js"></script>
+  <script src="../../src/sound.js"></script>
+  <script src="../../src/tutorial.js"></script>
+  <script src="game.js"></script>
+  <script src="../../src/stage-selector-standard.js"></script>
+  <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
+  <script src="../../src/game-page-info.js"></script>
+</body>
+</html>

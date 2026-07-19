@@ -44,6 +44,7 @@
     "animal-rope-rescue": "#startBtn",
     "animal-rune-tactics": "#mainStartBtn",
     "animal-skyport-dispatch": "#startBtn",
+    "animal-starlight-trails": "#startBtn",
     "animal-word-trails": "#start",
     "animal-zoo-idle": "#startBtn",
     "beast-deck": "#mainStartBtn",
@@ -176,13 +177,15 @@
     if (!root) return;
     if (appliedStageRoot && appliedStageRoot !== root) restoreStageStyles(appliedStageRoot);
     const viewport = window.visualViewport;
-    const width = Math.max(1, viewport?.width || window.innerWidth);
-    const height = Math.max(1, viewport?.height || window.innerHeight);
+    const width = Math.max(1, document.documentElement.clientWidth || 0, window.innerWidth || 0, viewport?.width || 0);
+    const height = Math.max(1, document.documentElement.clientHeight || 0, window.innerHeight || 0, viewport?.height || 0);
     if (root === appliedStageRoot
       && Math.abs(width - appliedStageWidth) < 0.5
       && Math.abs(height - appliedStageHeight) < 0.5) return;
     const requestedMaximumWidth = Number.parseFloat(root.dataset.wpCanvasMaxWidth || "");
-    const maximumWidth = Number.isFinite(requestedMaximumWidth) && requestedMaximumWidth > 0
+    const maximumWidth = root.dataset.wpCanvasMaxWidth === "viewport"
+      ? width
+      : Number.isFinite(requestedMaximumWidth) && requestedMaximumWidth > 0
       ? Math.min(DESKTOP_CANVAS_MAX_WIDTH, requestedMaximumWidth)
       : DESKTOP_CANVAS_MAX_WIDTH;
     const availableWidth = Math.max(1, Math.min(width, maximumWidth));

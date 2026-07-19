@@ -54,7 +54,7 @@ body.wonder-stage-select:not(.wonder-playing) .game-shell {
   top: 0 !important;
   right: auto !important;
   bottom: auto !important;
-  left: 0 !important;
+  left: var(--wonder-stage-left, 0px) !important;
   width: var(--wonder-stage-logical-width, 390px) !important;
   min-width: var(--wonder-stage-logical-width, 390px) !important;
   max-width: var(--wonder-stage-logical-width, 390px) !important;
@@ -72,7 +72,7 @@ body.wonder-playing .game-shell[data-battle-shell] {
   top: 0 !important;
   right: auto !important;
   bottom: auto !important;
-  left: 0 !important;
+  left: var(--wonder-battle-left, 0px) !important;
   width: var(--wonder-battle-logical-width, 390px) !important;
   min-width: var(--wonder-battle-logical-width, 390px) !important;
   max-width: var(--wonder-battle-logical-width, 390px) !important;

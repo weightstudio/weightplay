@@ -1146,6 +1146,118 @@ body:not(.guardian-playing) .profile-grid div {
   overflow: hidden;
 }
 
+/* Main is an entry point: one title in the header, one primary action, then
+   concise progress.  The full game guide remains in normal document flow. */
+body:not(.guardian-playing):not(.guardian-stage) .menu-panel {
+  width: min(920px, calc(100% - 24px));
+  max-width: none;
+  padding: clamp(12px, 2.4vw, 22px);
+  gap: 14px;
+  align-items: start;
+}
+
+body:not(.guardian-playing):not(.guardian-stage) .guardian-app {
+  width: min(100%, 920px);
+  max-width: none;
+  margin-inline: auto;
+  min-height: 0;
+}
+
+body:not(.guardian-playing):not(.guardian-stage) .guardian-topbar {
+  width: 100%;
+  max-width: none;
+}
+
+body:not(.guardian-playing):not(.guardian-stage) .poster-frame {
+  width: min(100%, 720px);
+  max-width: none;
+  aspect-ratio: 1;
+  height: auto;
+}
+
+body:not(.guardian-playing):not(.guardian-stage) .release-badge,
+body:not(.guardian-playing):not(.guardian-stage) #menuTitle,
+body:not(.guardian-playing):not(.guardian-stage) #menuHint,
+body:not(.guardian-playing):not(.guardian-stage) #holdNotice {
+  display: none;
+}
+
+body:not(.guardian-playing):not(.guardian-stage) .menu-copy {
+  display: grid;
+  gap: 12px;
+}
+
+body:not(.guardian-playing):not(.guardian-stage) .menu-actions {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 10px;
+  margin: 0;
+}
+
+body:not(.guardian-playing):not(.guardian-stage) #startBtn {
+  min-height: 52px;
+  font-size: 1.05rem;
+}
+
+@media (max-width: 560px) {
+  body:not(.guardian-playing):not(.guardian-stage) .menu-panel {
+    width: calc(100% - 16px);
+    padding: 12px;
+  }
+
+  body:not(.guardian-playing):not(.guardian-stage) .poster-frame {
+    width: 100%;
+    max-width: none;
+    height: auto;
+    aspect-ratio: 1;
+  }
+
+}
+
+body.guardian-stage .stage-progress {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 96px;
+  align-items: stretch;
+  gap: 8px;
+  min-width: 0;
+  height: 64px;
+}
+
+body.guardian-stage .stage-progress .profile-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 0;
+  gap: 6px;
+}
+
+body.guardian-stage .stage-progress .profile-grid div {
+  min-width: 0;
+  padding: 6px 8px;
+  text-align: center;
+}
+
+body.guardian-stage .stage-progress .profile-grid span {
+  display: block;
+  overflow: hidden;
+  font-size: 0.62rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+body.guardian-stage .stage-progress .profile-grid strong {
+  margin-top: 1px;
+  font-size: 1rem;
+}
+
+body.guardian-stage .stage-progress #techBtn {
+  width: 96px;
+  min-width: 96px;
+  min-height: 64px;
+  padding: 8px;
+  font-size: 0.78rem;
+  line-height: 1.2;
+}
+
 body.guardian-stage .guardian-app {
   width: min(100%, 390px);
   min-height: min(788px, 100dvh);
@@ -1357,5 +1469,64 @@ body.guardian-playing .build-card.is-selected {
     height: 202px;
     min-height: 202px;
     max-height: 202px;
+  }
+}
+
+body.guardian-stage .stage-panel {
+  grid-template-rows: 56px 64px minmax(0, 1fr);
+}
+
+body.guardian-stage .stage-header {
+  grid-template-rows: 48px;
+  height: 56px;
+  gap: 0;
+}
+
+body.guardian-stage #techPanel.modal-panel {
+  inset: 0 0 56px;
+  width: min(100%, 920px);
+  height: auto;
+  margin: 0 auto;
+  padding: 14px;
+  border-radius: 0;
+}
+
+body.guardian-stage #techPanel .modal-card {
+  max-height: 100%;
+}
+
+body.guardian-stage .battle-ad-reserve {
+  position: fixed;
+  z-index: 49;
+  left: 50%;
+  bottom: 0;
+  display: block;
+  width: min(100%, 920px);
+  height: 56px;
+  transform: translateX(-50%);
+  pointer-events: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(4, 10, 16, 0.92);
+}
+
+@media (max-width: 560px) {
+  body.guardian-stage .stage-panel {
+    grid-template-rows: 52px 62px minmax(0, 1fr);
+  }
+
+  body.guardian-stage .stage-header {
+    height: 52px;
+    grid-template-rows: 44px;
+  }
+
+  body.guardian-stage .stage-progress {
+    height: 62px;
+    grid-template-columns: minmax(0, 1fr) 92px;
+  }
+
+  body.guardian-stage .stage-progress #techBtn {
+    width: 92px;
+    min-width: 92px;
+    min-height: 62px;
   }
 }

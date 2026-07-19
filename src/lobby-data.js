@@ -20,6 +20,7 @@ window.WONDER_LOBBY = {
       "animal-orb-fortress", "animal-auto-squad", "beast-tactician", "shadow-wolf",
       "animal-skyport-dispatch", "animal-abyss-diver", "animal-reef-fisher", "animal-hero-trials",
       "animal-gearpack-expedition", "animal-moonlight-heist",
+      "animal-starlight-trails",
     ],
   },
   games: [
@@ -480,6 +481,25 @@ window.WONDER_LOBBY = {
       },
       meta: { en: ["Route Planning", "Five Shifts", "Skyport Growth"], "zh-Hant": ["\u822a\u7dda\u898f\u5283", "\u4e94\u500b\u73ed\u6b21", "\u5929\u7a7a\u6e2f\u6210\u9577"] },
       art: { kind: "image", background: "assets/animal-skyport-dispatch-cover.webp", hero: "assets/animal-skyport-dispatch-orla.webp" },
+    },
+    {
+      id: "animal-starlight-trails",
+      title: { en: "Animal Starlight Trails", "zh-Hant": "動物星光一筆畫" },
+      status: "planned",
+      statusText: { en: "Coming Soon", "zh-Hant": "敬請期待" },
+      type: { en: "Single-Stroke Logic Puzzle", "zh-Hant": "一筆畫邏輯益智" },
+      categories: ["Animal Games", "Puzzle", "Strategy"],
+      skills: ["Logic", "Focus", "Problem Solving"],
+      ages: ["9", "family"],
+      ageLabel: { en: "9+", "zh-Hant": "9+" },
+      href: "games/animal-starlight-trails/",
+      internalTrial: "index.html?trial=1",
+      description: {
+        en: "Trace every constellation trail exactly once across 30 original puzzles with start seals, comet arrows, numbered stars, keys, and gates.",
+        "zh-Hant": "在 30 個原創星座謎題中，運用起點星印、彗星箭路、編號星星、鑰匙與星門，一筆走完每條星路。"
+      },
+      meta: { en: ["30 Stages", "One-Stroke Routes", "Six Rule Families"], "zh-Hant": ["30 關", "一筆星路", "六種規則"] },
+      art: { kind: "image", background: "assets/animal-starlight-trails-cover.webp", hero: "assets/weightplay-character-moon-cap-owl-cutout.webp" },
     },
     {
       id: "animal-abyss-diver",

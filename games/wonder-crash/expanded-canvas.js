@@ -3,6 +3,7 @@
   const MENU_LOGICAL_HEIGHT = MENU_LOGICAL_WIDTH * 16 / 9;
   const BATTLE_LOGICAL_WIDTH = 390;
   const BATTLE_LOGICAL_HEIGHT = 788;
+  const DESKTOP_CANVAS_MAX_WIDTH = 920;
 
   const lockedStageText = () => ["zh-Hant", "zh-Hans"].includes(document.documentElement.lang)
     ? "\u95dc\u5361\u5c1a\u672a\u89e3\u9396\u3002"
@@ -35,29 +36,37 @@
   function updateViewport() {
     const width = Math.max(1, window.innerWidth);
     const height = Math.max(1, window.innerHeight);
+    const availableWidth = Math.min(width, DESKTOP_CANVAS_MAX_WIDTH);
     document.documentElement.style.setProperty("--wonder-vw", `${width}px`);
     document.documentElement.style.setProperty("--wonder-vh", `${height}px`);
     const playing = document.body.classList.contains("wonder-playing");
     const menuScale = Math.min(width / MENU_LOGICAL_WIDTH, height / MENU_LOGICAL_HEIGHT);
+    const stageScale = Math.min(
+      availableWidth / MENU_LOGICAL_WIDTH,
+      height / MENU_LOGICAL_HEIGHT
+    );
     const battleScale = Math.min(
-      width / BATTLE_LOGICAL_WIDTH,
+      availableWidth / BATTLE_LOGICAL_WIDTH,
       height / BATTLE_LOGICAL_HEIGHT
     );
-    const menuLogicalWidth = width / menuScale;
-    const menuLogicalHeight = height / menuScale;
-    const battleLogicalWidth = width / battleScale;
+    const stageLogicalWidth = availableWidth / stageScale;
+    const stageLogicalHeight = height / stageScale;
+    const battleLogicalWidth = availableWidth / battleScale;
     const battleLogicalHeight = height / battleScale;
+    const centeredLeft = Math.max(0, (width - availableWidth) / 2);
     const shell = document.querySelector(".game-shell");
     const selectingStage = document.body.classList.contains("wonder-stage-select") && !playing;
-    document.documentElement.style.setProperty("--wonder-shell-scale", String(menuScale));
+    document.documentElement.style.setProperty("--wonder-shell-scale", String(selectingStage ? stageScale : menuScale));
     document.documentElement.style.setProperty("--wonder-menu-rendered-width", `${MENU_LOGICAL_WIDTH * menuScale}px`);
     document.documentElement.style.setProperty("--wonder-menu-rendered-height", `${MENU_LOGICAL_HEIGHT * menuScale}px`);
-    document.documentElement.style.setProperty("--wonder-stage-logical-width", `${menuLogicalWidth}px`);
-    document.documentElement.style.setProperty("--wonder-stage-logical-height", `${menuLogicalHeight}px`);
-    if (selectingStage) shell?.setAttribute("data-wp-logical-stage-canvas", `${menuLogicalWidth.toFixed(3)}x${menuLogicalHeight.toFixed(3)}`);
+    document.documentElement.style.setProperty("--wonder-stage-left", `${centeredLeft}px`);
+    document.documentElement.style.setProperty("--wonder-stage-logical-width", `${stageLogicalWidth}px`);
+    document.documentElement.style.setProperty("--wonder-stage-logical-height", `${stageLogicalHeight}px`);
+    if (selectingStage) shell?.setAttribute("data-wp-logical-stage-canvas", `${stageLogicalWidth.toFixed(3)}x${stageLogicalHeight.toFixed(3)}`);
     else shell?.removeAttribute("data-wp-logical-stage-canvas");
     if (playing) {
       document.documentElement.style.setProperty("--wonder-battle-scale", String(battleScale));
+      document.documentElement.style.setProperty("--wonder-battle-left", `${centeredLeft}px`);
       document.documentElement.style.setProperty("--wonder-battle-logical-width", `${battleLogicalWidth}px`);
       document.documentElement.style.setProperty("--wonder-battle-logical-height", `${battleLogicalHeight}px`);
       shell?.setAttribute("data-wp-logical-battle-canvas", `${battleLogicalWidth.toFixed(3)}x${battleLogicalHeight.toFixed(3)}`);

@@ -5,11 +5,13 @@
   const games = {
     "animal-abyss-diver": [".battle-canvas", 390, 788],
     "animal-auto-squad": ["#gamePanel", 382, 780],
+    "animal-bubble-safari": ["#battleScreen", 390, 788],
     "animal-cafe-rush": ["#playPanel", 382, 780],
     "animal-coloring-studio": [".battle-canvas", 390, 788],
     "animal-crystal-survivor": ["#gamePanel", 382, 780],
     "animal-gearpack-expedition": [".battle-canvas", 390, 788],
     "animal-guard-yard": ["#playPanel", 390, 450],
+    "animal-habitat-mahjong": [".battle-canvas", 390, 788],
     "animal-hero-trials": ["#battleView", 390, 788],
     "animal-hidden-safari": ["#playPanel", 382, 780],
     "animal-moonlight-heist": [".battle-canvas", 390, 788],
@@ -21,6 +23,7 @@
     "animal-rope-rescue": ["#gamePanel", 382, 780],
     "animal-rune-tactics": [".rune-app", 382, 780],
     "animal-skyport-dispatch": [".battle-canvas", 390, 788],
+    "animal-starlight-trails": [".trail-battle-canvas", 390, 788],
     "animal-word-trails": [".battle-canvas", 382, 780],
     "animal-zoo-idle": ["#gamePanel", 382, 780],
     "beast-deck": ["#gamePanel", 382, 780],
@@ -35,6 +38,7 @@
     "snack-blocks": [".snack-game", 382, 780],
     "star-memory": [".memory-game", 382, 780],
     "tiny-weather-rescue": [".weather-game", 366, 764],
+    "wonder-crash": [".game-shell", 390, 788],
     "zoo-helper-day": [".zoo-game", 374, 776],
   };
   const gameId = location.pathname.match(/\/games\/([^/]+)/)?.[1] || "";
@@ -52,7 +56,7 @@
     return style.display !== "none" && style.visibility !== "hidden" && Number(style.opacity) > 0.02 && rect.width > 4 && rect.height > 4;
   };
   const findRoot = () => [...document.querySelectorAll(config[0])].find(visible) || null;
-  const findBack = (root) => root?.querySelector('[data-wp-return="battle"]') || null;
+  const findBack = (root) => root?.querySelector('[data-wp-return="battle"],#battleBack,#battleBackBtn,#backToStagesBtn,#backToMenuBtn') || null;
   const findBattleOverlay = (root) => root && [...root.querySelectorAll('[role="dialog"],.result-panel,.result-overlay,.result-canvas,#resultPanel,#resultScreen,#resultModal,#result')].find(visible);
   const findReserve = () => [...document.querySelectorAll(reserveSelector)]
     .find((node) => visible(node) && !node.closest("[data-wp-logical-battle-canvas]")) || null;
@@ -98,8 +102,8 @@
     }
 
     const viewport = window.visualViewport;
-    const width = Math.max(1, viewport?.width || innerWidth);
-    const height = Math.max(1, viewport?.height || innerHeight);
+    const width = Math.max(1, document.documentElement.clientWidth || 0, innerWidth || 0, viewport?.width || 0);
+    const height = Math.max(1, document.documentElement.clientHeight || 0, innerHeight || 0, viewport?.height || 0);
     const reserve = findReserve();
     const stateSignature = [
       document.body.className,
@@ -114,7 +118,9 @@
       && Math.abs(height - appliedViewportHeight) < 0.5
       && stateSignature === appliedStateSignature) return;
     const requestedMaximumWidth = Number.parseFloat(root.dataset.wpCanvasMaxWidth || "");
-    const maximumWidth = Number.isFinite(requestedMaximumWidth) && requestedMaximumWidth > 0
+    const maximumWidth = root.dataset.wpCanvasMaxWidth === "viewport"
+      ? width
+      : Number.isFinite(requestedMaximumWidth) && requestedMaximumWidth > 0
       ? Math.min(DESKTOP_CANVAS_MAX_WIDTH, requestedMaximumWidth)
       : DESKTOP_CANVAS_MAX_WIDTH;
     const availableWidth = Math.max(1, Math.min(width - GUTTER * 2, maximumWidth));

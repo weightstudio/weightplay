@@ -15,6 +15,14 @@
   };
 
   const tutorials = {
+    "animal-starlight-trails": {
+      title: { en: "Restore every starlight trail.", "zh-Hant": "修復每一條動物星路。" },
+      steps: [
+        { icon: "1", en: ["Choose a Start", "Tap a star, then drag or tap through connected stars."], "zh-Hant": ["選擇起點", "點一顆星，再拖曳或點選相連的星星。"] },
+        { icon: "2", en: ["Use Each Trail Once", "Stars may be revisited, but a glowing used trail cannot be crossed again."], "zh-Hant": ["每條路只走一次", "星星可以再次經過，但發亮的已用星路不能重複走。"] },
+        { icon: "3", en: ["Light Everything", "Use every trail to clear the stage. Undo, Restart, and Hint are always available."], "zh-Hant": ["點亮全部", "走完所有星路即可過關，隨時可用上一步、重新開始與提示。"] },
+      ],
+    },
     "animal-moonlight-heist": {
       title: { en: "Recover the moonlit relic.", "zh-Hant": "找回月光檔案館的文物。" },
       steps: [
