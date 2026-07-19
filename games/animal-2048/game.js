@@ -39,10 +39,31 @@
   const levels=goals.map(([type,target,limit],index)=>{const blocked=new Set(masks[index]);return{index,type,target,limit,blocked,start:makeStart(index,blocked,target,type),seed:0x9e3779b9^(index+1)*2654435761};});
   const INFINITE_INDEX=30,infiniteLevel={index:INFINITE_INDEX,type:"endless",target:0,limit:Infinity,blocked:new Set(),start:Array(16).fill(0),seed:0};
 
-  const defaultSave={unlocked:1,cleared:{},stars:{},best:{},endlessBest:0,endlessTile:0,endlessMoves:0,endlessRuns:0};let save;try{save={...defaultSave,...JSON.parse(localStorage.getItem(SAVE_KEY)||"{}")};}catch{save={...defaultSave};}
+  const defaultSave={unlocked:1,cleared:{},stars:{},best:{},endlessBest:0,endlessTile:0,endlessMoves:0,endlessRuns:0};
+  const saveRecord=value=>value&&typeof value==="object"&&!Array.isArray(value)?value:{};
+  const saveInteger=(value,max=Number.MAX_SAFE_INTEGER)=>{const number=Number(value);return Number.isFinite(number)?Math.max(0,Math.min(max,Math.floor(number))):0;};
+  function normalizeSave(raw){
+    const source=saveRecord(raw),cleared={},stars={},best={};
+    for(let index=0;index<30;index++){
+      if(saveRecord(source.cleared)[index]===true)cleared[index]=true;
+      const starValue=saveInteger(saveRecord(source.stars)[index],3);if(starValue)stars[index]=starValue;
+      const bestValue=saveInteger(saveRecord(source.best)[index]);if(bestValue)best[index]=bestValue;
+    }
+    const highestCleared=Object.keys(cleared).reduce((highest,key)=>Math.max(highest,Number(key)),-1);
+    const requestedUnlocked=saveInteger(source.unlocked,30)||1;
+    return{
+      unlocked:Math.max(1,Math.min(30,Math.max(requestedUnlocked,highestCleared+2))),
+      cleared,stars,best,
+      endlessBest:saveInteger(source.endlessBest),
+      endlessTile:saveInteger(source.endlessTile),
+      endlessMoves:saveInteger(source.endlessMoves),
+      endlessRuns:saveInteger(source.endlessRuns)
+    };
+  }
+  let save;try{save=normalizeSave(JSON.parse(localStorage.getItem(SAVE_KEY)||"{}"));}catch{save=normalizeSave(null);}try{localStorage.setItem(SAVE_KEY,JSON.stringify(save));}catch{}
   let stageIndex=0,stageMode="campaign",board=Array(16).fill(0),score=0,moves=0,merges=0,rngState=1,undoState=null,resultState="",startTime=0,hintUsed=false,restarts=0,swipeStart=null,resultTimer=0,motionTimer=0,motionLock=false,pendingMerged=[];
   const dom={loading:$("#loadingPanel"),loadingFill:$("#loadingFill"),mainGroup:$("#mainGroup"),main:$("#mainScreen"),guide:$(".game-page-info"),stage:$("#stageScreen"),battle:$("#battleScreen"),locale:$("#localeSelect"),mainProgress:$("#mainProgress"),start:$("#startBtn"),stageBack:$("#stageBackBtn"),campaignTab:$("#campaignTab"),challengeTab:$("#challengeTab"),rail:$("#stageRail"),stageSummary:$("#stageSummary"),chapterKicker:$("#chapterKicker"),chapterTitle:$("#chapterTitle"),chapterRule:$("#chapterRule"),battleBack:$("#battleBackBtn"),stageLabel:$("#stageLabel"),goalValue:$("#goalValue"),movesValue:$("#movesValue"),scoreValue:$("#scoreValue"),objective:$("#objectiveRow"),board:$("#gameBoard"),feedback:$("#moveFeedback"),undo:$("#undoBtn"),restart:$("#restartBtn"),hint:$("#hintBtn"),result:$("#resultPanel"),resultTitle:$("#resultTitle"),resultStars:$("#resultStars"),resultText:$("#resultText"),skillGrid:$("#skillGrid"),bestText:$("#bestText"),retry:$("#retryBtn"),resultStages:$("#resultStagesBtn"),next:$("#nextBtn"),leave:$("#leavePanel"),leaveText:$("#leaveText"),leaveContinue:$("#leaveContinueBtn"),leaveStages:$("#leaveStagesBtn"),tutorial:$("#tutorialPanel"),tutorialClose:$("#tutorialCloseBtn"),tutorialStart:$("#tutorialStartBtn")};
-  function persist(){localStorage.setItem(SAVE_KEY,JSON.stringify(save));}
+  function persist(){save=normalizeSave(save);try{localStorage.setItem(SAVE_KEY,JSON.stringify(save));}catch{}}
   function cloneState(){return{board:[...board],score,moves,merges,rngState};}
   function restoreState(state){board=[...state.board];score=state.score;moves=state.moves;merges=state.merges;rngState=state.rngState;renderBattle();}
   function rng(){rngState^=rngState<<13;rngState^=rngState>>>17;rngState^=rngState<<5;return(rngState>>>0)/4294967296;}

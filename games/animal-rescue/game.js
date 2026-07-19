@@ -400,7 +400,7 @@ const ruleSets = [
 
 const levels = baseLevels.map((level, index) => ({ ...level, ...ruleSets[index], id: index + 1, chapter: Math.floor(index / 5) + 1, checkpoint: (index + 1) % 5 === 0 }));
 
-let unlocked = loadNumber(UNLOCK_KEY, 1);
+let unlocked = loadUnlocked();
 let bestStars = loadBestStars();
 let activeIndex = 0;
 let state = makeState(levels[0]);
@@ -435,20 +435,37 @@ function keyOf(pos) {
   return `${pos[0]},${pos[1]}`;
 }
 
-function loadNumber(key, fallback) {
+function loadUnlocked() {
   try {
-    return Math.max(fallback, Number(localStorage.getItem(key)) || fallback);
+    const parsed = Number(localStorage.getItem(UNLOCK_KEY));
+    const repaired = Math.max(1, Math.min(levels.length, Number.isFinite(parsed) ? Math.floor(parsed) : 1));
+    localStorage.setItem(UNLOCK_KEY, String(repaired));
+    return repaired;
   } catch {
-    return fallback;
+    return 1;
   }
 }
 
 function loadBestStars() {
+  let parsed;
   try {
-    return JSON.parse(localStorage.getItem(BEST_KEY) || "{}");
+    parsed = JSON.parse(localStorage.getItem(BEST_KEY) || "{}");
   } catch {
-    return {};
+    parsed = {};
   }
+  const repaired = {};
+  if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
+    Object.entries(parsed).forEach(([level, value]) => {
+      const levelId = Number(level);
+      const stars = Number(value);
+      if (!Number.isInteger(levelId) || levelId < 1 || levelId > levels.length || !Number.isFinite(stars) || stars <= 0) return;
+      repaired[levelId] = Math.max(1, Math.min(3, Math.floor(stars)));
+    });
+  }
+  try {
+    localStorage.setItem(BEST_KEY, JSON.stringify(repaired));
+  } catch {}
+  return repaired;
 }
 
 function saveProgress() {

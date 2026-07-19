@@ -303,6 +303,17 @@ body.orb-fortress-playing .game-page-info {
   cursor: not-allowed;
 }
 
+.raid-card.is-centered {
+  border-color: #7de9ff;
+  box-shadow:
+    0 0 0 3px rgba(125, 233, 255, 0.38),
+    0 0 24px rgba(125, 233, 255, 0.9);
+}
+
+.raid-card.is-locked.is-centered {
+  filter: brightness(0.72);
+}
+
 .workshop-title {
   align-self: center;
   color: var(--gold);

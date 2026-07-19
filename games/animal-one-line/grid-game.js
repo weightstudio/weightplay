@@ -87,12 +87,24 @@
   levels.forEach((level)=>{ const seen=new Set(); level.solution.forEach(([r,c],i)=>{const k=`${r},${c}`;if(seen.has(k)||r<0||c<0||r>=level.rows||c>=level.cols)throw Error(`Invalid level ${level.index+1}`);seen.add(k);if(i){const [pr,pc]=level.solution[i-1];if(Math.abs(pr-r)+Math.abs(pc-c)!==1)throw Error(`Broken level ${level.index+1}`);}}); });
 
   const defaultSave={unlocked:1,cleared:{},stars:{},best:{}};
-  let save; try { save={...defaultSave,...JSON.parse(localStorage.getItem(SAVE_KEY)||"{}")}; } catch { save={...defaultSave}; }
+  const saveRecord=value=>value&&typeof value==="object"&&!Array.isArray(value)?value:{};
+  function normalizeSave(raw){
+    const source=saveRecord(raw),cleared={},stars={},best={};
+    for(let index=0;index<30;index++){
+      if(saveRecord(source.cleared)[index]===true)cleared[index]=true;
+      const star=Number(saveRecord(source.stars)[index]);if(Number.isFinite(star)&&star>0)stars[index]=Math.min(3,Math.floor(star));
+      const time=Number(saveRecord(source.best)[index]);if(Number.isFinite(time)&&time>0)best[index]=Math.min(Number.MAX_SAFE_INTEGER,time);
+    }
+    const requested=Number(source.unlocked),highestCleared=Object.keys(cleared).reduce((highest,key)=>Math.max(highest,Number(key)),-1);
+    const unlocked=Number.isFinite(requested)?Math.floor(requested):1;
+    return{unlocked:Math.max(1,Math.min(30,Math.max(unlocked,highestCleared+2))),cleared,stars,best};
+  }
+  let save;try{save=normalizeSave(JSON.parse(localStorage.getItem(SAVE_KEY)||"{}"));}catch{save=normalizeSave(null);}try{localStorage.setItem(SAVE_KEY,JSON.stringify(save));}catch{}
   const leavePanel=document.createElement("section");leavePanel.id="battleLeavePanel";leavePanel.className="battle-leave-overlay";leavePanel.hidden=true;leavePanel.setAttribute("role","dialog");leavePanel.setAttribute("aria-modal","true");leavePanel.setAttribute("aria-labelledby","battleLeaveTitle");leavePanel.setAttribute("aria-describedby","battleLeaveText");leavePanel.innerHTML='<div class="battle-leave-card"><h2 id="battleLeaveTitle"></h2><p id="battleLeaveText"></p><div><button id="continuePuzzleBtn" type="button"></button><button id="returnStagesBtn" type="button"></button></div></div>';$(".battle-canvas").append(leavePanel);
   let stageIndex=0,attempts=1,visited=[],visitedSet=new Set(),drawing=false,activePointer=null,failed=false,startTime=0,lastPoint=null,hintUsed=false,leaveStartedAt=0;
   const dom={loading:$("#loadingPanel"),main:$("#mainScreen"),guide:$(".game-page-info"),stage:$("#stageScreen"),battle:$("#battleScreen"),locale:$("#localeSelect"),mainProgress:$("#mainProgress"),start:$("#startBtn"),stageBack:$("#stageBackBtn"),rail:$("#stageRail"),stageSummary:$("#stageSummary"),lessonKicker:$("#lessonKicker"),lessonTitle:$("#lessonTitle"),lessonRule:$("#lessonRule"),battleBack:$("#battleBackBtn"),stageLabel:$("#stageLabel"),progressFill:$("#progressFill"),attemptCount:$("#attemptCount"),sealCount:$("#sealCount"),objective:$("#objectiveRow"),board:$("#traceBoard"),feedback:$("#feedbackText"),assist:$("#assistText"),restart:$("#restartBtn"),hint:$("#hintBtn"),result:$("#resultPanel"),resultTitle:$("#resultTitle"),resultStars:$("#resultStars"),resultText:$("#resultText"),skillGrid:$("#skillGrid"),bestText:$("#bestText"),retry:$("#retryBtn"),resultStages:$("#resultStagesBtn"),next:$("#nextBtn"),tutorial:$("#tutorial"),tutorialClose:$("#tutorialClose"),tutorialStart:$("#tutorialStart"),leave:leavePanel,leaveTitle:$("#battleLeaveTitle"),leaveText:$("#battleLeaveText"),continuePuzzle:$("#continuePuzzleBtn"),returnStages:$("#returnStagesBtn")};
 
-  function persist(){localStorage.setItem(SAVE_KEY,JSON.stringify(save));}
+  function persist(){save=normalizeSave(save);try{localStorage.setItem(SAVE_KEY,JSON.stringify(save));}catch{}}
   function chapter(i){return Math.min(5,Math.floor(i/5));}
   function applyLocale(){ document.documentElement.lang=routeLocale; document.querySelectorAll("[data-one-line-i18n]").forEach(el=>el.textContent=text(el.dataset.oneLineI18n)); if(dom.locale){dom.locale.value=routeLocale;dom.locale.setAttribute("aria-label",text("languageLabel"));}document.querySelector(".main-return")?.setAttribute("aria-label",text("mainReturn"));dom.stageBack.setAttribute("aria-label",text("back"));dom.rail.setAttribute("aria-label",text("stageRail"));dom.battleBack.setAttribute("aria-label",text("back"));dom.tutorialClose.setAttribute("aria-label",text("close")); }
   function setScreen(name){document.body.dataset.screen=name;dom.main.hidden=name!=="main";dom.guide.hidden=name!=="main";dom.stage.hidden=name!=="stage";dom.battle.hidden=name!=="battle";}
@@ -130,6 +142,6 @@
   dom.retry.addEventListener("click",()=>startStage(stageIndex));dom.resultStages.addEventListener("click",()=>showStage(stageIndex));dom.next.addEventListener("click",()=>startStage(Math.min(29,stageIndex+1)));
   dom.locale?.addEventListener("change",()=>{const segment=({en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",es:"es",ja:"ja"})[dom.locale.value];if(segment&&segment!==localeSegment)location.href=`/${segment}/games/animal-one-line/${location.search}${location.hash}`;});
   function closeTutorial(){localStorage.setItem(TUTORIAL_KEY,"1");dom.tutorial.hidden=true;}dom.tutorialClose.addEventListener("click",closeTutorial);dom.tutorialStart.addEventListener("click",()=>{closeTutorial();startStage(0);});
-  window.__animalOneLineSmoke={levels:levels.map(l=>({rows:l.rows,cols:l.cols,solution:l.solution})),startStage,snapshot:()=>({stage:stageIndex+1,visited:visited.length,total:levels[stageIndex].solution.length,screen:document.body.dataset.screen,result:!dom.result.hidden,feedback:dom.feedback.textContent,drawing,activePointer})};
+  window.__animalOneLineSmoke={levels:levels.map(l=>({rows:l.rows,cols:l.cols,solution:l.solution})),startStage,snapshot:()=>({stage:stageIndex+1,visited:visited.length,total:levels[stageIndex].solution.length,screen:document.body.dataset.screen,result:!dom.result.hidden,feedback:dom.feedback.textContent,drawing,activePointer,save:JSON.parse(JSON.stringify(save))})};
   applyLocale();setTimeout(()=>{dom.loading.hidden=true;showMain();},180);
 })();

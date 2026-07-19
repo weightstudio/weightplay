@@ -336,6 +336,16 @@
     upgradeDamage:"Orbe gigante",upgradeDamageDesc:"+1 de daño de orbe.",upgradeSplit:"Orbe dividido",upgradeSplitDesc:"Añade un tercer orbe eco a cada disparo.",upgradePierce:"Luz penetrante",upgradePierceDesc:"El orbe puede volver a golpear antes a la misma bestia.",upgradeRecharge:"Carga rápida",upgradeRechargeDesc:"Prepara antes el siguiente disparo.",upgradeShield:"Escudo del núcleo",upgradeShieldDesc:"Restaura 4 de vida del núcleo.",upgradeMagnet:"Imán explorador",upgradeMagnetDesc:"+2 Piedras Estelares al terminar.",roomForge:"Forja de orbes",roomForgeDesc:"+1 de daño base por nivel.",roomShield:"Sala del escudo",roomShieldDesc:"+4 de vida inicial del núcleo por nivel.",roomDen:"Guarida de compañeros",roomDenDesc:"Daño de apoyo desde nivel 2.",companionLocked:"Alcanza Nv.2 para desbloquear ataques de apoyo.",companionCurrent:"Apoyo: {damage} de daño cada 4 segundos.",companionNext:"Siguiente nivel: {damage} de daño.",roomTower:"Torre de exploración",roomTowerDesc:"+1 Piedra Estelar por ruta y nivel.",level:"Nv.{n}",upgradeRoom:"Mejorar {cost}",upgradeRoomLabel:"{name}: subir a Nv.{level} por {cost} piedras. Después: {effect}",maxRoomLabel:"{name}: nivel máximo {level}. {effect}",maxed:"Máximo"
   };
 
+  text.ja = {
+    title:"アニマル・オーブ・フォートレス",language:"言語",backToLobby:"ロビーへ戻る",fortressRooms:"要塞の施設",arenaLabel:"アニマル・オーブ・フォートレスの戦場",soundTitle:"サウンド",enableSound:"サウンドをオン",disableSound:"サウンドをオフ",menuTitle:"精霊オーブを操り、クリスタル要塞を守ろう。",menuHint:"レイドルートを選び、反射コースを考えて要塞コアを守ります。",bestRaid:"最高到達ルート",starStones:"スターストーン",diamonds:"ダイヤモンド",openRaidMap:"レイドを選ぶ",raidMap:"レイドマップ",battleReturnDecision:"レイドを一時停止して退出先を確認",pause:"一時停止",pausedTitle:"レイド一時停止",pausedText:"要塞の時間は止まっています。再開すると現在のレイドを続行し、レイドマップへ戻ると今のウェーブと一時強化を破棄します。",resume:"再開",raidTiers:"レイドルート",returnMain:"メインへ戻る",fortressWorkshop:"要塞工房",stageProgress:"{unlocked}/30 ルート解放 ・ 各3ウェーブ",tierLocked:"ロック中",enterRaid:"挑戦",nextStage:"次のステージ",
+    tier1Name:"クリスタルゲート",tier1Desc:"偵察獣を相手に壁反射を学びます。",tier2Name:"苔の回廊",tier2Desc:"装甲を持つ敵が増えます。",tier3Name:"こだまの中庭",tier3Desc:"強襲をしのぎ、最後のゴーレムを倒します。",tier4Name:"森の王冠",tier5Name:"いばら橋",tier6Name:"毒花園",tier7Name:"根の迷宮",tier8Name:"湿地の守護者",tier9Name:"月の階段",tier10Name:"ウィスプ回廊",tier11Name:"鏡の遺跡",tier12Name:"月光の番人",tier13Name:"日蝕の門",tier14Name:"黒水晶の広間",tier15Name:"影の炉",tier16Name:"日蝕の王座",tier17Name:"ゴーレム前線",tier18Name:"コア工房",tier19Name:"最後の砦",tier20Name:"要塞の心臓",
+    zone1Desc:"クリスタルの森で基本の反射射撃を試します。",zone2Desc:"装甲と混雑した進路を使ういばら獣が現れます。",zone3Desc:"月のウィスプが遺跡を素早く移動します。",zone4Desc:"日蝕軍が水晶の盾を構えて進みます。",zone5Desc:"ゴーレム軍がこれまでの脅威を組み合わせます。",ruleFormation:"陣形",ruleSwarm:"群れ",ruleArmored:"装甲",ruleGuardian:"精鋭護衛",tierShort:"R{tier}",wave:"ウェーブ",core:"コア",shots:"発射数",
+    aimHint:"発射台からドラッグし、反射コースを確認して離します。",keyboardAim:"中央から{angle}度。左右キーで調整し、SpaceまたはEnterで発射。",arenaControlLabel:"アニマル・オーブ・フォートレスの戦場。中央から{angle}度。左右キーで調整し、SpaceまたはEnterで発射します。",arenaControlReadyLabel:"アニマル・オーブ・フォートレスの戦場。中央から{angle}度。オーブ準備完了。SpaceまたはEnterで発射できます。",arenaControlCooldownLabel:"アニマル・オーブ・フォートレスの戦場。中央から{angle}度。再充填まで約{seconds}秒。まだ発射できません。",arenaControlLimitLabel:"アニマル・オーブ・フォートレスの戦場。中央から{angle}度。精霊オーブが{active}/{limit}個飛行中で上限です。まだ発射できません。",orbReady:"オーブ準備完了。影獣がコアへ着く前に壁反射で攻撃しましょう。",orbFlying:"精霊オーブが飛行中です。反射コースを見て次の狙いを準備しましょう。",fortressHit:"影獣がコアを攻撃しました。早めに狙うか、角度を広げましょう。",waveClear:"ウェーブクリア。次へ進む前に祝福を1つ選びます。",chooseUpgrade:"要塞の祝福を選ぶ",reroll:"ダイヤ3個で再抽選",rerolled:"祝福の候補を更新しました。",rerollNeed:"ダイヤが3個必要です。現在{balance}/3個。",rerollConfirm:"3個消費を確認 ・ {before}→{after}",rerollDecision:"このウェーブで一度だけ3つの祝福を更新します。もう一度押して確認：ダイヤ{before}→{after}。",rerollLabel:"このウェーブで一度だけ3つの祝福を更新します。ダイヤ3個。現在{balance}個。",rerollConfirmLabel:"祝福の再抽選を確認。ダイヤ3個を消費し、残高は{before}から{after}になります。",retry:"再挑戦",
+    raidClear:"レイドクリア",raidFailed:"レイド失敗",resultWin:"ルート{tier}のウェーブ{wave}/3を突破し、スターストーン{stones}個を獲得。コアHPを{core}守りました。",resultLose:"ルート{tier}のウェーブ{wave}/3まで到達し、スターストーン{stones}個を獲得。施設を強化して安全な反射コースを試しましょう。",progressUnlocked:"進行を保存しました。スターストーン合計{total}個。ルート{best}を解放しました。",progressComplete:"進行を保存しました。スターストーン合計{total}個。全30ルートをクリアしました。",ruleBank:"反射コース",rulePriority:"標的の優先順",ruleAnchor:"いばらアンカー",ruleArmor:"装甲破壊",rulePhase:"位相の見極め",rulePylon:"鏡の支柱",ruleSplitter:"水晶分裂体",ruleCharge:"突進レーン",ruleMastery:"複合攻略",ruleBoss:"ボス対策",
+    bossCueRootbound:"根の防壁が上がりました。破壊して胸の水晶を狙いましょう。",bossCueBramble:"いばら装甲とアンカーが巨像を守っています。",bossCueLunar:"女王が位相移動中です。月輪が開くまで待ちましょう。",bossCuePrism:"プリズム盾が回転中。金色の面が正面を向いた時に攻撃します。",bossCueTempest:"突進レーンが表示されました。突進後が攻撃の好機です。",bossCueVoid:"ヴォイドコアの段階が変化。護衛を倒し、光るコアを追いましょう。",progressSaved:"進行を保存しました。スターストーン合計{total}個。最高解放ルートは{best}です。",reportWin:"スキルレポート：論理力と反応力を発揮し、反射計画と強化選択で要塞を守りました。",reportLose:"スキルレポート：良い練習でした。次は早めに狙い、壁で複数の敵を攻撃しましょう。",
+    upgradeDamage:"大型オーブ",upgradeDamageDesc:"オーブの攻撃力+1。",upgradeSplit:"分裂オーブ",upgradeSplitDesc:"発射ごとに3個目の反響オーブを追加。",upgradePierce:"貫通の輝き",upgradePierceDesc:"同じ敵へ再び当たるまでの時間を短縮。",upgradeRecharge:"高速充填",upgradeRechargeDesc:"次の発射準備が早くなります。",upgradeShield:"コアシールド",upgradeShieldDesc:"コアHPを4回復。",upgradeMagnet:"偵察マグネット",upgradeMagnetDesc:"レイド終了時のスターストーン+2。",roomForge:"オーブ鍛冶場",roomForgeDesc:"レベルごとに基本オーブ攻撃力+1。",roomShield:"コア防壁",roomShieldDesc:"レベルごとに開始コアHP+4。",roomDen:"仲間の巣",roomDenDesc:"レベル2から援護攻撃を追加。",companionLocked:"レベル2で援護攻撃を解放。",companionCurrent:"援護攻撃：4秒ごとに{damage}ダメージ。",companionNext:"次のレベル：{damage}ダメージ。",roomTower:"偵察塔",roomTowerDesc:"レイドレベルごとにボーナススターストーン+1。",level:"Lv.{n}",upgradeRoom:"強化 {cost}",upgradeRoomLabel:"{name}：スターストーン{cost}個でLv.{level}へ強化。効果：{effect}",maxRoomLabel:"{name}：最大レベルLv.{level}。{effect}",maxed:"最大"
+  };
+
   text["zh-Hans"] = {
     orbReady: "星珠已准备好。用墙面反弹击中影兽，别让它们靠近核心。",
   };
@@ -356,6 +366,12 @@
   };
 
   const pageMeta = {
+    ja: {
+      title: "アニマル・オーブ・フォートレス - 無料反射アクションゲーム",
+      description: "精霊オーブを狙い、特殊な敵、動く鏡の支柱、6体の個性的なボスが待つ30の要塞防衛ルートに挑戦します。",
+      ogDescription: "壁と支柱の反射コースを考え、装甲、位相移動、分裂体、突進獣を攻略して6体のボスを倒しましょう。",
+      twitterDescription: "6地域・30ルートの反射バトルでクリスタルコアを守り、要塞を成長させるアニマルアクションゲーム。",
+    },
     en: {
       title: "Animal Orb Fortress - Free Animal Ricochet Roguelite",
       description: "Aim spirit orbs through 30 ricochet-defense routes with special enemies, moving mirror pylons, six unique Bosses, and local fortress growth.",
@@ -430,6 +446,15 @@
     ["Acceso del Gólem","Prioriza enemigos acorazados y en fase en una formación."],["Fundición del Núcleo","Alcanza divisores ocultos tras anclas de espinas."],["Galería del Vacío","Apunta por pilares móviles mientras se marcan carriles."],["Corazón del Eclipse","Supera tres formaciones usando todas las reglas aprendidas."],["Corazón de la Fortaleza","Rompe tres fases finales, escoltas y pilares cambiantes."]
   ];
   raidDefs.forEach((raid,index)=>{raid.name.es=spanishRaidDefs[index][0];raid.desc.es=spanishRaidDefs[index][1];});
+  const japaneseRaidDefs = [
+    ["クリスタルゲート","遅い偵察獣のレーンへ直接射撃するタイミングを学びます。"],["苔の回廊","中央の障害を最初の壁反射で回り込みます。"],["こだまの中庭","離れた敵レーンへ左右どちらの反射を使うか選びます。"],["分岐通路","移動する敵が通る前にいばらの障害を壊します。"],["根縛りの王冠","最初のボス防壁を破り、弱点へ反射させます。"],
+    ["いばら橋","後衛のウィスプが逃げる前に一撃装甲を外します。"],["毒花園","隣接する獣を守るいばらアンカーを壊します。"],["根の迷宮","2本の装甲レーンの間から反射コースを選びます。"],["茨の壁","アンカーと装甲突進獣を同時に攻略します。"],["いばら工房の王座","アンカーを処理しながらボスの装甲板を2枚壊します。"],
+    ["月の階段","最初の位相消失と再出現の合図を読みます。"],["ウィスプ回廊","交互に位相移動する2体のウィスプを追います。"],["鏡の遺跡","反射コースを変える動く月門を通して狙います。"],["月光の交差路","位相のタイミングと動く反射門を組み合わせます。"],["月井戸の番人","女王が月光突進から回復する隙を狙います。"],
+    ["日蝕の門","最初の固定鏡支柱を新しい反射面として使います。"],["黒水晶の広間","分裂体が2つの欠片を広げる前に倒します。"],["プリズム工房","2本の支柱回廊と装甲護衛のどちらを狙うか選びます。"],["欠片回路","動く支柱で古い射角が使えなくなったら狙い直します。"],["鏡の宝物庫の王","回転するボス盾の光る面へ反射させます。"],
+    ["嵐の土手道","突進獣が走る前に最初の予告レーンを読みます。"],["雷鳴回廊","交互にレーンを示す2体の突進獣を追います。"],["疾風工房","嵐の波動でオーブ速度が変わったら狙いを調整します。"],["最後の砦","レーン移動、突進、嵐のタイミングを組み合わせます。"],["嵐角の王冠","角を持つボスが予告突進を終えた直後に攻撃します。"],
+    ["ゴーレム前線","同じ陣形にいる装甲敵と位相敵の優先順を決めます。"],["コア工房","いばらアンカーの後ろに隠れた分裂体を狙います。"],["虚空回廊","突進レーンを避けながら動く支柱越しに狙います。"],["日蝕の心臓","これまでの敵ルールを使う3つの陣形を突破します。"],["要塞の心臓","最終ボスの3段階、護衛、変化する支柱を攻略します。"]
+  ];
+  raidDefs.forEach((raid,index)=>{raid.name.ja=japaneseRaidDefs[index][0];raid.desc.ja=japaneseRaidDefs[index][1];});
   const bossDefs = [
     { tier: 5, id: "rootbound", imageKey: "bossRootbound", name: { en: "Rootbound Golem", "zh-Hant": "盤根魔像" }, cue: "bossCueRootbound" },
     { tier: 10, id: "brambleback", imageKey: "bossBrambleback", name: { en: "Brambleback Colossus", "zh-Hant": "荊背巨獸" }, cue: "bossCueBramble" },
@@ -439,6 +464,7 @@
     { tier: 30, id: "voidcore", imageKey: "bossVoidcore", name: { en: "Voidcore Emperor", "zh-Hant": "虛空核心皇" }, cue: "bossCueVoid" },
   ];
   ["Gólem Enraizado","Coloso Lomo de Zarzas","Matriarca Espíritu Lunar","Regente de Caparazón Prisma","Guardián Cuerno de Tempestad","Emperador del Núcleo Vacío"].forEach((name,index)=>{bossDefs[index].name.es=name;});
+  ["根縛りのゴーレム","ブランブルバック巨像","月光ウィスプ女王","プリズムシェル王","テンペストホーン守護者","ヴォイドコア皇帝"].forEach((name,index)=>{bossDefs[index].name.ja=name;});
   const upgradeDefs = [
     { id: "damage", iconSrc: "../../assets/animal-orb-fortress-upgrade-icon-1.webp", name: "upgradeDamage", desc: "upgradeDamageDesc" },
     { id: "split", iconSrc: "../../assets/animal-orb-fortress-upgrade-icon-2.webp", name: "upgradeSplit", desc: "upgradeSplitDesc" },
@@ -452,6 +478,7 @@
   let locale = window.WonderI18n?.locale?.() || localStorage.getItem(localeKey) || "en";
   let save = loadSave();
   let selectedTier = 1;
+  let centeredStageFrame = 0;
   let state = makeState();
   let lastFrame = 0;
   let raf = 0;
@@ -480,19 +507,36 @@
 
   function localizeSpanishSoundToggle() {
     const actualLocale = window.WonderI18n?.actualLocale?.() || document.documentElement.lang || locale;
-    if (actualLocale !== "es") return;
+    if (actualLocale !== "es" && actualLocale !== "ja") return;
     const toggle = document.querySelector("button[data-sound-toggle]");
     if (!toggle) return;
     const muted = Boolean(window.WonderSound?.isMuted?.());
-    toggle.title = text.es.soundTitle;
-    toggle.setAttribute("aria-label", muted ? text.es.enableSound : text.es.disableSound);
+    const soundCopy = text[actualLocale];
+    toggle.title = soundCopy.soundTitle;
+    toggle.setAttribute("aria-label", muted ? soundCopy.enableSound : soundCopy.disableSound);
   }
 
   function normalizeGameLocalGuideCopy() {
     const actualLocale = window.WonderI18n?.actualLocale?.() || document.documentElement.lang || locale;
     const guide = document.querySelector(".game-page-info");
     if (!guide) return;
-    const replacements = actualLocale === "zh-Hans"
+    const replacements = actualLocale === "ja"
+      ? [
+          ["WEIGHTPLAY ORIGINAL GAME GUIDE", "WEIGHTPLAY オリジナルゲームガイド"],
+          ["WeightPlay Original Game Guide", "WeightPlay オリジナルゲームガイド"],
+          ["星珠要塞 - Game Guide", "アニマル・オーブ・フォートレス - ゲームガイド"],
+          ["Ricochet Roguelite", "反射ローグライト"],
+          ["Action", "アクション"],
+          ["Roguelite", "ローグライト"],
+          ["Animal", "アニマル"],
+          ["Hard", "難しい"],
+          ["5-8 minutes per route", "1ルート5～8分"],
+          ["Player and Save Information", "プレイヤー情報とセーブについて"],
+          ["Related Games", "関連ゲーム"],
+          ["Because this game practices 論理力, try these next:", "論理力をさらに使うゲームはこちら："],
+          ["Starlink", "スターリンク"],
+        ]
+      : actualLocale === "zh-Hans"
       ? [["牠", "它"], ["舊", "旧"]]
       : actualLocale === "es"
         ? [
@@ -530,9 +574,10 @@
   }
 
   function scheduleGameLocalLocalization() {
-    [0, 80, 320, 1400].forEach((delay) => window.setTimeout(() => {
+    [0, 80, 320, 1400, 2200].forEach((delay) => window.setTimeout(() => {
       localizeSpanishSoundToggle();
       normalizeGameLocalGuideCopy();
+      updatePageMeta();
     }, delay));
   }
 
@@ -853,6 +898,38 @@
     nodes.stageRail.scrollLeft = bounded;
     if (previousBehavior) nodes.stageRail.style.setProperty("scroll-behavior", previousBehavior, previousPriority);
     else nodes.stageRail.style.removeProperty("scroll-behavior");
+    updateCenteredStage();
+  }
+
+  function updateCenteredStage() {
+    const cards = [...nodes.stageRail.querySelectorAll(".raid-card")];
+    if (!cards.length || !nodes.stageRail.getClientRects().length) return;
+    const railRect = nodes.stageRail.getBoundingClientRect();
+    const railCenter = railRect.left + railRect.width / 2;
+    let centeredCard = cards[0];
+    let centeredDistance = Number.POSITIVE_INFINITY;
+    cards.forEach((card) => {
+      const rect = card.getBoundingClientRect();
+      const distance = Math.abs(rect.left + rect.width / 2 - railCenter);
+      if (distance < centeredDistance) {
+        centeredCard = card;
+        centeredDistance = distance;
+      }
+    });
+    cards.forEach((card) => {
+      const centered = card === centeredCard;
+      card.classList.toggle("is-centered", centered);
+      if (centered) card.setAttribute("aria-current", "true");
+      else card.removeAttribute("aria-current");
+    });
+  }
+
+  function queueCenteredStageUpdate() {
+    if (centeredStageFrame) return;
+    centeredStageFrame = window.requestAnimationFrame(() => {
+      centeredStageFrame = 0;
+      updateCenteredStage();
+    });
   }
 
   function focusUnlockedStage() {
@@ -1428,8 +1505,8 @@
   function activeEncounterCue() {
     const boss = state.enemies.find((enemy) => enemy.kind === "boss" && enemy.hp > 0);
     if (boss?.cue) return `${localized(boss.name)} — ${t(boss.cue)}`;
-    if (state.enemies.some((enemy) => enemy.phased)) return locale === "zh-Hant" ? "相位關閉：等待敵人重新顯形。" : locale === "es" ? "Fase cerrada: espera a que reaparezca." : "Phase closed — wait for the enemy to reappear.";
-    if (state.enemies.some((enemy) => enemy.chargeState === "marked")) return locale === "zh-Hant" ? "衝鋒路線已標記：準備改變角度。" : locale === "es" ? "Carril de carga marcado: prepara otro ángulo." : "Charge lane marked — prepare a different angle.";
+    if (state.enemies.some((enemy) => enemy.phased)) return locale === "zh-Hant" ? "相位關閉：等待敵人重新顯形。" : locale === "es" ? "Fase cerrada: espera a que reaparezca." : locale === "ja" ? "位相が閉じています。敵が再出現するまで待ちましょう。" : "Phase closed — wait for the enemy to reappear.";
+    if (state.enemies.some((enemy) => enemy.chargeState === "marked")) return locale === "zh-Hant" ? "衝鋒路線已標記：準備改變角度。" : locale === "es" ? "Carril de carga marcado: prepara otro ángulo." : locale === "ja" ? "突進レーンが表示されました。別の角度を準備しましょう。" : "Charge lane marked — prepare a different angle.";
     return "";
   }
 
@@ -1933,6 +2010,8 @@
   nodes.stageRail.addEventListener("keydown", (event) => {
     if (event.repeat && (event.key === "Enter" || event.key === " ") && event.target.closest(".raid-card")) event.preventDefault();
   });
+  nodes.stageRail.addEventListener("scroll", queueCenteredStageUpdate, { passive: true });
+  window.addEventListener("resize", queueCenteredStageUpdate, { passive: true });
   nodes.stageRail.addEventListener("click", (event) => {
     const tier = Number(event.target?.closest?.("[data-tier]")?.dataset?.tier);
     if (tier && tier <= Math.max(1, Math.min(MAX_RAID_TIER, save.bestRaid || 1))) startRaid(tier);

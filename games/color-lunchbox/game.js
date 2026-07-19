@@ -657,6 +657,7 @@
   }
 
   let roundTransitionToken = 0;
+  let roundLifecycleSuspended = document.hidden;
 
   function clearFoodDrag() {
     const pointerId = state.activePointerId;
@@ -686,7 +687,7 @@
     let previous = performance.now();
     const tick = (now) => {
       if (token !== roundTransitionToken || !document.body.classList.contains("lunch-playing")) return;
-      if (!leaveConfirmOpen) elapsed += now - previous;
+      if (!leaveConfirmOpen && !roundLifecycleSuspended && !document.hidden) elapsed += now - previous;
       previous = now;
       if (elapsed >= delay) task();
       else requestAnimationFrame(tick);
@@ -1235,8 +1236,15 @@
     if (event.pointerId === state.activePointerId) clearFoodDrag();
   });
   window.addEventListener("blur", clearFoodDrag);
-  window.addEventListener("pagehide", clearFoodDrag);
+  window.addEventListener("pagehide", () => {
+    roundLifecycleSuspended = true;
+    clearFoodDrag();
+  });
+  window.addEventListener("pageshow", () => {
+    roundLifecycleSuspended = document.hidden;
+  });
   document.addEventListener("visibilitychange", () => {
+    roundLifecycleSuspended = document.hidden;
     if (document.hidden) clearFoodDrag();
   });
 

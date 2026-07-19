@@ -314,7 +314,7 @@
     window.WonderI18n?.setLocale?.(legacySavedLocale);
   }
   let locale = window.WonderI18n?.locale?.() || canonicalSavedLocale || legacySavedLocale || "en";
-  let unlocked = clamp(Number(localStorage.getItem(unlockKey)) || 1, 1, stages.length);
+  let unlocked = readUnlocked();
   let stars = readStars();
   let currentStage = 0;
   let currentTask = 0;
@@ -407,12 +407,31 @@
     return Math.max(min, Math.min(max, value));
   }
 
+  function readUnlocked() {
+    const parsed = Number(localStorage.getItem(unlockKey));
+    const repaired = clamp(Number.isFinite(parsed) ? Math.floor(parsed) : 1, 1, stages.length);
+    localStorage.setItem(unlockKey, String(repaired));
+    return repaired;
+  }
+
   function readStars() {
+    let parsed;
     try {
-      return JSON.parse(localStorage.getItem(starKey) || "{}");
+      parsed = JSON.parse(localStorage.getItem(starKey) || "{}");
     } catch {
-      return {};
+      parsed = {};
     }
+    const repaired = {};
+    if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
+      Object.entries(parsed).forEach(([stage, value]) => {
+        const stageNo = Number(stage);
+        const starCount = Number(value);
+        if (!Number.isInteger(stageNo) || stageNo < 1 || stageNo > stages.length || !Number.isFinite(starCount) || starCount <= 0) return;
+        repaired[stageNo] = clamp(Math.floor(starCount), 1, 3);
+      });
+    }
+    localStorage.setItem(starKey, JSON.stringify(repaired));
+    return repaired;
   }
 
   function saveStars() {
