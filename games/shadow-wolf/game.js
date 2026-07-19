@@ -382,7 +382,7 @@
     amuletLabel: "Mejora permanente Amuleto de Niebla. Cuesta 15 diamantes. Saldo actual: {balance}.",
     amuletConfirmLabel: "Confirma el Amuleto de Niebla. Gasta 15 diamantes. Saldo de {before} a {after}.",
     amuletNeed: "Necesitas 15 diamantes. Saldo actual: {balance}.",
-    startRun: "Empezar juego",
+    startRun: "Comenzar juego",
     languageSelector: "Selector de idioma",
     backToLobby: "Volver al vestíbulo",
     coverAlt: "Portada de Lobo Sombrío",

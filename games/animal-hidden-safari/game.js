@@ -27,6 +27,11 @@
       back: "Back",
       stageList: "Stage list",
       backToHabitats: "Back to habitats",
+      pause: "Pause",
+      pauseAria: "Pause search",
+      pauseTitle: "Search paused",
+      pauseText: "Your habitat is waiting. Resume when you are ready.",
+      resume: "Resume",
       hiddenAnimalScene: "Hidden animal scene",
       chooseStage: "Choose Habitat",
       menuHint: "Find animals blended into each natural habitat.",
@@ -99,6 +104,11 @@
       back: "\u8fd4\u56de",
       stageList: "\u68f2\u5730\u5217\u8868",
       backToHabitats: "\u8fd4\u56de\u68f2\u5730",
+      pause: "\u66ab\u505c",
+      pauseAria: "\u66ab\u505c\u641c\u5c0b",
+      pauseTitle: "\u641c\u5c0b\u5df2\u66ab\u505c",
+      pauseText: "\u68f2\u5730\u6b63\u5728\u7b49\u4f60\uff0c\u6e96\u5099\u597d\u518d\u7e7c\u7e8c\u3002",
+      resume: "\u7e7c\u7e8c\u641c\u5c0b",
       hiddenAnimalScene: "\u85cf\u8d77\u4f86\u7684\u52d5\u7269\u5834\u666f",
       chooseStage: "\u9078\u64c7\u68f2\u5730",
       menuHint: "\u5728\u5927\u81ea\u7136\u5834\u666f\u88e1\u627e\u51fa\u85cf\u8d77\u4f86\u7684\u52d5\u7269\uff0c\u7df4\u7fd2\u89c0\u5bdf\u529b\u8207\u5c08\u6ce8\u3002",
@@ -179,6 +189,14 @@
     },
   };
 
+  Object.assign(text.es, {
+    pause: "Pausa",
+    pauseAria: "Pausar búsqueda",
+    pauseTitle: "Búsqueda en pausa",
+    pauseText: "Tu hábitat te espera. Continúa cuando quieras.",
+    resume: "Continuar",
+  });
+
   const targetAssets = {
     lion: "../../assets/weightplay-boom-mane-lion.png",
     elephant: "../../assets/animal-zoo-elephant.png",
@@ -243,6 +261,23 @@
   ];
 
   const $ = (id) => document.getElementById(id);
+  if (!$("pausePanel")) {
+    const panel = document.createElement("section");
+    panel.id = "pausePanel";
+    panel.className = "safari-pause-panel hidden";
+    panel.setAttribute("role", "dialog");
+    panel.setAttribute("aria-modal", "true");
+    panel.setAttribute("aria-labelledby", "pauseTitle");
+    panel.innerHTML = '<div class="safari-pause-card"><strong id="pauseTitle"></strong><p id="pauseText"></p><button id="resumeBtn" type="button"></button></div>';
+    document.querySelector(".safari-game")?.append(panel);
+  }
+  if (!$("pauseBtn")) {
+    const button = document.createElement("button");
+    button.id = "pauseBtn";
+    button.className = "pause-btn";
+    button.type = "button";
+    document.querySelector(".play-head")?.insertBefore(button, $("hintBtn"));
+  }
   const nodes = {
     localeSelect: $("localeSelect"),
     mainPanel: $("mainPanel"),
@@ -252,6 +287,11 @@
     stageGrid: $("stageGrid"),
     playPanel: $("playPanel"),
     backToStagesBtn: $("backToStagesBtn"),
+    pauseBtn: $("pauseBtn"),
+    pausePanel: $("pausePanel"),
+    pauseTitle: $("pauseTitle"),
+    pauseText: $("pauseText"),
+    resumeBtn: $("resumeBtn"),
     stageText: $("stageText"),
     progressFill: $("progressFill"),
     hintBtn: $("hintBtn"),
@@ -301,6 +341,7 @@
   let timerId = 0;
   let hiddenStartedAt = 0;
   let acceptingInput = false;
+  let pauseOpen = false;
 
   function clamp(value, min, max) {
     return Math.max(min, Math.min(max, value));
@@ -360,6 +401,11 @@
     document.querySelectorAll("[data-aria]").forEach((node) => {
       node.setAttribute("aria-label", t(node.dataset.aria));
     });
+    nodes.pauseBtn.textContent = t("pause");
+    nodes.pauseBtn.setAttribute("aria-label", t("pauseAria"));
+    nodes.pauseTitle.textContent = t("pauseTitle");
+    nodes.pauseText.textContent = t("pauseText");
+    nodes.resumeBtn.textContent = t("resume");
     nodes.localeSelect.value = locale;
   }
 
@@ -427,6 +473,7 @@
   }
 
   function showMenu(focusIndex) {
+    closePause(false);
     stopTimer();
     hiddenStartedAt = 0;
     acceptingInput = false;
@@ -445,6 +492,7 @@
   }
 
   function showMain() {
+    closePause(false);
     stopTimer();
     hiddenStartedAt = 0;
     acceptingInput = false;
@@ -458,6 +506,7 @@
   }
 
   function startStage(index) {
+    closePause(false);
     currentStage = index;
     found = new Set();
     hintsLeft = 2;
@@ -701,6 +750,26 @@
     hiddenStartedAt = 0;
   }
 
+  function openPause() {
+    if (pauseOpen || !acceptingInput || !document.body.classList.contains("safari-playing")) return;
+    pauseOpen = true;
+    pauseSearchTimer();
+    nodes.playPanel.inert = true;
+    nodes.playPanel.setAttribute("aria-hidden", "true");
+    nodes.pausePanel.classList.remove("hidden");
+    requestAnimationFrame(() => nodes.resumeBtn.focus({ preventScroll: true }));
+  }
+
+  function closePause(restoreFocus = true) {
+    if (!pauseOpen) return;
+    pauseOpen = false;
+    nodes.pausePanel.classList.add("hidden");
+    nodes.playPanel.inert = false;
+    nodes.playPanel.removeAttribute("aria-hidden");
+    resumeSearchTimer();
+    if (restoreFocus) requestAnimationFrame(() => nodes.pauseBtn.focus({ preventScroll: true }));
+  }
+
   function elapsedSeconds() {
     return Math.max(0, Math.floor((Date.now() - startTime) / 1000));
   }
@@ -716,6 +785,7 @@
   }
 
   function finishStage() {
+    closePause(false);
     acceptingInput = false;
     stopTimer();
     hiddenStartedAt = 0;
@@ -891,6 +961,14 @@
     nodes.startGameBtn.addEventListener("keydown", rejectRepeatedScreenActivation, true);
     nodes.stageGrid.addEventListener("keydown", rejectRepeatedScreenActivation, true);
     nodes.backToStagesBtn.addEventListener("click", () => showMenu(currentStage));
+    nodes.pauseBtn.addEventListener("click", openPause);
+    nodes.resumeBtn.addEventListener("click", () => closePause(true));
+    nodes.pausePanel.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        closePause(true);
+      }
+    });
     nodes.startGameBtn.addEventListener("click", () => showMenu());
     nodes.stageBackMainBtn.addEventListener("click", showMain);
     nodes.resultStagesBtn.addEventListener("click", () => showMenu(currentStage));

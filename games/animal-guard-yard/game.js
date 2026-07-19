@@ -2235,7 +2235,7 @@
   nodes.stageGrid.addEventListener("keydown", rejectRepeatedScreenActivation, true);
   nodes.startGameBtn?.addEventListener("click", () => showMenu());
   nodes.stageBackMainBtn?.addEventListener("click", showMain);
-  nodes.backToStagesBtn.addEventListener("click", showMenu);
+  nodes.backToStagesBtn.addEventListener("click", showPause);
   nodes.pauseBtn.addEventListener("keydown", (event) => {
     if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
   });
