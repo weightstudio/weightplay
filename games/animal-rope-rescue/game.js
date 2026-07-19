@@ -39,6 +39,10 @@
       bounceProgress: "Bounce {current}/{total}",
       nextDelivery: "Great catch! Get ready for delivery {current}/{total}.",
       checkpoint: "Panko Check",
+      leaveTitle: "Pause this rescue?",
+      leaveText: "The fruit, leaf, and delivery will wait exactly where they are.",
+      continueRescue: "Continue rescue",
+      leaveStage: "Return to stages",
       apple: "Apple",
       banana: "Banana",
       berry: "Berry",
@@ -83,6 +87,10 @@
       bounceProgress: "彈跳 {current}/{total}",
       nextDelivery: "接得好！準備配送第 {current}/{total} 份水果。",
       checkpoint: "Panko 檢核",
+      leaveTitle: "要暫停這次救援嗎？",
+      leaveText: "水果、葉子與配送進度會完整留在原位。",
+      continueRescue: "繼續救援",
+      leaveStage: "返回選關",
       apple: "蘋果",
       banana: "香蕉",
       berry: "莓果",
@@ -127,6 +135,10 @@
       bounceProgress: "Rebote {current}/{total}",
       nextDelivery: "¡Buena recepción! Prepárate para la entrega {current}/{total}.",
       checkpoint: "Prueba de Panko",
+      leaveTitle: "¿Pausar este rescate?",
+      leaveText: "La fruta, la hoja y la entrega esperarán exactamente donde están.",
+      continueRescue: "Continuar el rescate",
+      leaveStage: "Volver a los niveles",
       apple: "Manzana",
       banana: "Plátano",
       berry: "Baya",
@@ -262,6 +274,16 @@
   validateStages();
 
   const $ = (id) => document.getElementById(id);
+  if (!$("leavePanel")) {
+    const panel = document.createElement("div");
+    panel.id = "leavePanel";
+    panel.className = "result-panel leave-panel hidden";
+    panel.setAttribute("role", "dialog");
+    panel.setAttribute("aria-modal", "true");
+    panel.setAttribute("aria-labelledby", "leaveTitle");
+    panel.innerHTML = '<div class="result-card leave-card"><strong id="leaveTitle" data-ui="leaveTitle"></strong><span data-ui="leaveText"></span><button id="continueRescueBtn" type="button" data-ui="continueRescue"></button><button id="leaveStageBtn" type="button" data-ui="leaveStage"></button></div>';
+    $("gamePanel")?.append(panel);
+  }
   const nodes = {
     localeSelect: $("localeSelect"),
     menuPanel: $("menuPanel"),
@@ -291,6 +313,9 @@
     nextStageBtn: $("nextStageBtn"),
     retryBtn: $("retryBtn"),
     resultStagesBtn: $("resultStagesBtn"),
+    leavePanel: $("leavePanel"),
+    continueRescueBtn: $("continueRescueBtn"),
+    leaveStageBtn: $("leaveStageBtn"),
     loadingPanel: $("loadingPanel"),
     loadingText: $("loadingText"),
     loadingFill: $("loadingFill"),
@@ -321,11 +346,33 @@
   let stageStartedAt = 0;
   let basketX = 50;
   let deliveryTimer = 0;
+  let deliveryDueAt = 0;
+  let leaveDeliveryRemaining = 0;
   let running = false;
   let settled = false;
+  let leaveOpen = false;
+  let leaveWasRunning = false;
+  let leaveOpenedAt = 0;
   let lastFrame = 0;
   let paddleX = 50;
   let fruit = { x: 50, y: 20, vx: 0, vy: 0, rot: 0, cut: false };
+
+  function clearDeliverySchedule() {
+    window.clearTimeout(deliveryTimer);
+    deliveryTimer = 0;
+    deliveryDueAt = 0;
+  }
+
+  function scheduleDelivery(stage, delay = 420) {
+    clearDeliverySchedule();
+    const wait = Math.max(0, Number(delay) || 0);
+    deliveryDueAt = performance.now() + wait;
+    deliveryTimer = window.setTimeout(() => {
+      deliveryTimer = 0;
+      deliveryDueAt = 0;
+      setupDelivery(stage);
+    }, wait);
+  }
 
   function setPlayingState(isPlaying) {
     document.documentElement.classList.toggle("is-vine-playing", isPlaying);
@@ -426,7 +473,7 @@
   function show(panel) {
     if (panel !== nodes.gamePanel) {
       running = false;
-      window.clearTimeout(deliveryTimer);
+      clearDeliverySchedule();
     }
     setPlayingState(panel === nodes.gamePanel);
     setStageState(panel === nodes.stagePanel);
@@ -483,7 +530,7 @@
   function setupStage(stageNo) {
     currentStage = Math.max(1, Math.min(stages.length, stageNo));
     const stage = stages[currentStage - 1];
-    window.clearTimeout(deliveryTimer);
+    clearDeliverySchedule();
     currentDelivery = 0;
     bounceCount = 0;
     paddleX = stage.paddleX;
@@ -491,6 +538,8 @@
   }
 
   function setupDelivery(stage = stages[currentStage - 1]) {
+    deliveryTimer = 0;
+    deliveryDueAt = 0;
     const route = routeFor(stage);
     running = false;
     settled = false;
@@ -635,7 +684,7 @@
     currentDelivery += 1;
     nodes.scoreText.textContent = `${currentDelivery + 1}/${total}`;
     showToast(t("nextDelivery", { current: currentDelivery + 1, total }));
-    deliveryTimer = window.setTimeout(() => setupDelivery(stage), 420);
+    scheduleDelivery(stage, 420);
   }
 
   function showFloat(message) {
@@ -654,6 +703,75 @@
     nodes.toastText.offsetHeight;
     nodes.toastText.style.animation = "";
     setTimeout(() => nodes.toastText.classList.add("hidden"), 1000);
+  }
+
+  const liveBattleRegions = () => [nodes.gamePanel.querySelector(".hud-row"), nodes.playfield, nodes.cutNowBtn, nodes.hintText].filter(Boolean);
+
+  function setLiveBattleCovered(covered) {
+    liveBattleRegions().forEach((region) => {
+      region.inert = covered;
+      if (covered) region.setAttribute("aria-hidden", "true");
+      else region.removeAttribute("aria-hidden");
+    });
+    nodes.gamePanel.classList.toggle("leave-open", covered);
+  }
+
+  function openLeaveDecision() {
+    if (leaveOpen || !document.body.classList.contains("is-vine-playing") || !nodes.resultPanel.classList.contains("hidden")) return;
+    leaveOpen = true;
+    leaveWasRunning = running;
+    leaveOpenedAt = performance.now();
+    running = false;
+    leaveDeliveryRemaining = deliveryTimer ? Math.max(0, deliveryDueAt - leaveOpenedAt) : 0;
+    window.clearTimeout(deliveryTimer);
+    deliveryTimer = 0;
+    deliveryDueAt = 0;
+    setLiveBattleCovered(true);
+    nodes.leavePanel.classList.remove("hidden");
+    requestAnimationFrame(() => nodes.continueRescueBtn.focus({ preventScroll: true }));
+  }
+
+  function closeLeaveDecision(restoreFocus = true) {
+    if (!leaveOpen) return;
+    const pausedFor = Math.max(0, performance.now() - leaveOpenedAt);
+    leaveOpen = false;
+    nodes.leavePanel.classList.add("hidden");
+    setLiveBattleCovered(false);
+    if (leaveWasRunning && !settled) {
+      stageStartedAt += pausedFor;
+      running = true;
+      lastFrame = performance.now();
+      requestAnimationFrame(tick);
+    } else if (leaveDeliveryRemaining > 0 && !settled) {
+      scheduleDelivery(stages[currentStage - 1], leaveDeliveryRemaining);
+    }
+    leaveWasRunning = false;
+    leaveDeliveryRemaining = 0;
+    leaveOpenedAt = 0;
+    if (restoreFocus) requestAnimationFrame(() => nodes.stageBackBtn.focus({ preventScroll: true }));
+  }
+
+  function leaveCurrentStage() {
+    leaveOpen = false;
+    leaveWasRunning = false;
+    leaveDeliveryRemaining = 0;
+    leaveOpenedAt = 0;
+    running = false;
+    clearDeliverySchedule();
+    nodes.leavePanel.classList.add("hidden");
+    setLiveBattleCovered(false);
+    showStages(currentStage);
+  }
+
+  function trapLeaveFocus(event) {
+    if (event.repeat && ["Enter", " "].includes(event.key)) { event.preventDefault(); return; }
+    if (event.key === "Escape") { event.preventDefault(); closeLeaveDecision(true); return; }
+    if (event.key !== "Tab") return;
+    const actions = [nodes.continueRescueBtn, nodes.leaveStageBtn];
+    const current = actions.indexOf(document.activeElement);
+    const next = event.shiftKey ? (current <= 0 ? actions.length - 1 : current - 1) : (current + 1) % actions.length;
+    event.preventDefault();
+    actions[next].focus({ preventScroll: true });
   }
 
   function finish(success) {
@@ -742,9 +860,7 @@
   nodes.startBtn.addEventListener("click", () => {
     showStages(save.unlocked);
   });
-  nodes.stageBackBtn.addEventListener("click", () => {
-    showStages(currentStage);
-  });
+  nodes.stageBackBtn.addEventListener("click", openLeaveDecision);
   nodes.stagePanel.addEventListener("click", (event) => {
     if (event.target.closest("[data-stage-main]")) {
       show(nodes.menuPanel);
@@ -810,6 +926,9 @@
     nodes.resultPanel.classList.add("hidden");
     showStages(save.unlocked);
   });
+  nodes.continueRescueBtn.addEventListener("click", () => closeLeaveDecision(true));
+  nodes.leaveStageBtn.addEventListener("click", leaveCurrentStage);
+  nodes.leavePanel.addEventListener("keydown", trapLeaveFocus, true);
   nodes.localeSelect.addEventListener("change", (event) => {
     window.WonderI18n?.setLocale?.(event.target.value);
     setLocale(event.target.value);
@@ -862,6 +981,16 @@
         windZones: Boolean(route.windZones),
         reverseWind: route.afterBounceWind !== undefined,
         targetTolerance: Number(route.targetTolerance || 15),
+        fruitState: { ...fruit },
+        paddleX,
+        basketX,
+        running,
+        settled,
+        leaveOpen,
+        leaveWasRunning,
+        deliveryPending: Boolean(deliveryTimer || leaveDeliveryRemaining),
+        cutDisabled: nodes.cutNowBtn.disabled,
+        hint: nodes.hintText.textContent,
         resultVisible: !nodes.resultPanel.classList.contains("hidden"),
       };
     };
@@ -894,7 +1023,7 @@
         return snapshot();
       },
       advanceDelivery: () => {
-        window.clearTimeout(deliveryTimer);
+        clearDeliverySchedule();
         const stage = stages[currentStage - 1];
         if (currentDelivery + 1 < stageRoutes(stage).length) {
           currentDelivery += 1;

@@ -19,13 +19,13 @@
 
   <main id="mainScreen" class="main-screen">
     <header class="main-header">
-      <a class="main-return" href="/" aria-label="Back to WeightPlay"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" /></a>
-      <strong data-i18n="title">One Line</strong>
-      <label class="locale-control"><span class="sr-only" data-i18n="language">Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="es">Español</option><option value="ja">日本語</option></select></label>
+      <a class="main-return" href="/" data-wp-return="main" aria-label="Back to WeightPlay"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" /></a>
+      <strong data-one-line-i18n="title">One Line</strong>
+      <label class="locale-control"><span class="sr-only" data-one-line-i18n="language">Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="es">Español</option><option value="ja">日本語</option></select></label>
     </header>
     <section class="main-hero">
       <img class="main-poster" src="../../assets/animal-one-line-cover.webp" alt="" />
-      <div class="main-copy"><small data-i18n="eyebrow">Mimi's living trail workshop</small><h1 data-i18n="title">One Line</h1><p data-i18n="pitch">Hold, trace, and reach the paw portal without touching the walls.</p><div id="mainProgress" class="main-progress"></div><button id="startBtn" class="primary-action" type="button" data-i18n="start">Start Game</button></div>
+      <div class="main-copy"><small data-one-line-i18n="eyebrow">Mimi's living trail workshop</small><h1 data-one-line-i18n="title">One Line</h1><p data-one-line-i18n="pitch">Hold, trace, and reach the paw portal without touching the walls.</p><div id="mainProgress" class="main-progress"></div><button id="startBtn" class="primary-action" type="button" data-one-line-i18n="start">Start Game</button></div>
     </section>
   </main>
 
@@ -36,7 +36,7 @@
 
   <section id="stageScreen" class="stage-screen" data-wp-canvas-max-width="viewport" hidden>
     <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-canvas-max-width="viewport" style="--wp-stage-art:url('../../assets/animal-one-line-bg.webp')">
-      <header class="stage-header"><button id="stageBackBtn" type="button" aria-label="Back">&larr;</button><div><strong data-i18n="chooseStage">Choose Trail</strong><span id="stageSummary"></span></div><img src="../../assets/weightplay-character-rainbow-hop-mimi-clean-cutout.webp" alt="" /></header>
+      <header class="stage-header"><button id="stageBackBtn" type="button" data-wp-return="stage" aria-label="Back">&larr;</button><div><strong data-one-line-i18n="chooseStage">Choose Trail</strong><span id="stageSummary"></span></div><img src="../../assets/weightplay-character-rainbow-hop-mimi-clean-cutout.webp" alt="" /></header>
       <section class="lesson-panel"><small id="lessonKicker"></small><strong id="lessonTitle"></strong><p id="lessonRule"></p></section>
       <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-settle-duration="360" data-wp-stage-settle-easing="smoothstep" aria-label="Trails"></div>
     </div>
@@ -44,7 +44,7 @@
 
   <section id="battleScreen" class="battle-screen" hidden>
     <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="viewport">
-      <header class="battle-header"><button id="battleBackBtn" type="button" aria-label="Back">&larr;</button><div class="battle-progress"><span id="stageLabel"></span><div><i id="progressFill"></i></div></div><div class="battle-stat"><small data-i18n="attempts">Attempts</small><strong id="attemptCount">1</strong></div><div class="battle-stat"><small data-i18n="seals">Seals</small><strong id="sealCount">0 / 0</strong></div></header>
+      <header class="battle-header"><button id="battleBackBtn" type="button" aria-label="Back">&larr;</button><div class="battle-progress"><span id="stageLabel"></span><div><i id="progressFill"></i></div></div><div class="battle-stat"><small data-one-line-i18n="attempts">Attempts</small><strong id="attemptCount">1</strong></div><div class="battle-stat"><small data-one-line-i18n="seals">Seals</small><strong id="sealCount">0 / 0</strong></div></header>
       <section id="objectiveRow" class="objective-row"></section>
       <section id="traceBoard" class="trace-board" aria-label="One-line tracing board">
         <svg id="trailSvg" viewBox="0 0 1000 700" role="application" aria-label="Continuous tracing trail">
@@ -55,15 +55,15 @@
         </svg>
       </section>
       <div class="battle-feedback"><strong id="feedbackText" aria-live="polite"></strong><span id="assistText"></span></div>
-      <div class="battle-actions"><button id="restartBtn" type="button" data-i18n="restart">Restart</button><button id="hintBtn" type="button" data-i18n="hint">Show Guide</button></div>
-      <section id="resultPanel" class="result-overlay" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card"><img src="../../assets/weightplay-character-rainbow-hop-mimi-clean-cutout.webp" alt="" /><small data-i18n="skillReport">Skill Report</small><h2 id="resultTitle"></h2><div id="resultStars" class="result-stars"></div><p id="resultText"></p><div id="skillGrid" class="skill-grid"></div><p id="bestText" class="best-text"></p><div class="result-actions"><button id="retryBtn" type="button" data-i18n="retry">Retry</button><button id="resultStagesBtn" type="button" data-i18n="stages">Stages</button><button id="nextBtn" class="primary-action" type="button" data-i18n="next">Next Stage</button></div></div></section>
+      <div class="battle-actions"><button id="restartBtn" type="button" data-one-line-i18n="restart">Restart</button><button id="hintBtn" type="button" data-one-line-i18n="hint">Show Guide</button></div>
+      <section id="resultPanel" class="result-overlay" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card"><img src="../../assets/weightplay-character-rainbow-hop-mimi-clean-cutout.webp" alt="" /><small data-one-line-i18n="skillReport">Skill Report</small><h2 id="resultTitle"></h2><div id="resultStars" class="result-stars"></div><p id="resultText"></p><div id="skillGrid" class="skill-grid"></div><p id="bestText" class="best-text"></p><div class="result-actions"><button id="retryBtn" type="button" data-one-line-i18n="retry">Retry</button><button id="resultStagesBtn" type="button" data-one-line-i18n="stages">Stages</button><button id="nextBtn" class="primary-action" type="button" data-one-line-i18n="next">Next Stage</button></div></div></section>
     </div>
     <div class="battle-ad-reserve" aria-hidden="true"></div>
   </section>
 
-  <section id="tutorial" class="tutorial-overlay" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="tutorial-card"><button id="tutorialClose" type="button" aria-label="Close">×</button><img src="../../assets/weightplay-character-rainbow-hop-mimi-clean-cutout.webp" alt=""/><h2 id="tutorialTitle" data-i18n="tutorialTitle">Keep one continuous hold.</h2><ol><li data-i18n="tutorial1">Press the start seal and keep holding.</li><li data-i18n="tutorial2">Trace inside the turquoise trail without touching its edge.</li><li data-i18n="tutorial3">Wait for shadows, then reach the golden portal.</li></ol><button id="tutorialStart" class="primary-action" type="button" data-i18n="tutorialStart">Start Playing</button></div></section>
+  <section id="tutorial" class="tutorial-overlay" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="tutorial-card"><button id="tutorialClose" type="button" aria-label="Close">×</button><img src="../../assets/weightplay-character-rainbow-hop-mimi-clean-cutout.webp" alt=""/><h2 id="tutorialTitle" data-one-line-i18n="tutorialTitle">Keep one continuous hold.</h2><ol><li data-one-line-i18n="tutorial1">Press the start seal and keep holding.</li><li data-one-line-i18n="tutorial2">Trace inside the turquoise trail without touching its edge.</li><li data-one-line-i18n="tutorial3">Wait for shadows, then reach the golden portal.</li></ol><button id="tutorialStart" class="primary-action" type="button" data-one-line-i18n="tutorialStart">Start Playing</button></div></section>
 
-  <script src="../../src/site-config.js"></script><script src="../../src/i18n.js"></script><script src="../../src/analytics.js"></script><script src="../../src/sound.js"></script>
+  <script src="../../src/site-config.js"></script><script src="../../src/i18n-es.js?v=20260719-one-line1"></script><script src="../../src/i18n-ja.js?v=20260719-one-line1"></script><script src="../../src/i18n.js"></script><script src="../../src/analytics.js"></script><script src="../../src/sound.js"></script>
   <script src="game.js?v=20260719-one-line1"></script><script src="../../src/stage-selector-standard.js"></script><script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script><script src="../../src/game-page-info.js"></script>
 </body>
 </html>

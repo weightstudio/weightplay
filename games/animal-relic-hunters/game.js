@@ -1018,7 +1018,8 @@
 
   function getLocale() {
     const stored = localStorage.getItem(localeKey);
-    return window.WonderI18n?.locale?.() || (["zh-Hant", "es"].includes(stored) ? stored : "en");
+    const requested = window.WonderI18n?.locale?.() || stored || "en";
+    return text[requested] ? requested : "en";
   }
 
   function t(key, params = {}) {

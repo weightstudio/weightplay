@@ -3134,6 +3134,20 @@ window.WeightPlayGameInfoLocales.es.games["animal-starlight-trails"] = {
 };
 window.WeightPlayGameInfoLocales.es.gameplayProfiles["animal-starlight-trails"] = { gameplay: "Puzle lógico de un solo trazo", genre: ["Puzle", "Estrategia", "Lógica", "Animales"] };
 
+window.WeightPlayGameInfoLocales.es.games["animal-one-line"] = {
+  title: "One Line", guideKicker: "Guía de juego original de WeightPlay", guideTitleSuffix: "Guía del juego", noteTitle: "Información del jugador y guardado", difficulty: "De fácil a desafiante", time: "1-4 minutos por nivel", gameplay: "Trazado continuo por corredores", genre: ["Habilidad", "Tiempo", "Puzle", "Animales"], skills: ["Hand-Eye Coordination", "Focus", "Reaction"],
+  intro: "One Line es un juego original de 30 niveles con Mimi. Mantén pulsado el sello inicial y recorre el corredor turquesa hasta el portal dorado sin tocar los bordes ni las sombras móviles.",
+  story: ["Mimi restaura senderos vivos en un taller del bosque mágico. Cada grupo de cinco rutas añade giros, pasos estrechos, sellos ordenados o sombras móviles.", "Los últimos cinco niveles combinan precisión, espera y orden. El nivel 30 completa la campaña y permanece disponible."],
+  systems: ["El intento debe comenzar en el sello redondo y terminar en el portal. Soltar antes, tocar un borde o saltar hacia delante reinicia solo ese intento y no gasta moneda.", "No hay que correr: puedes detenerte sin soltar en una zona segura y esperar a que pase una sombra.", "Los niveles posteriores añaden sellos numerados y sombras. Mostrar guía dibuja una línea central punteada y Reiniciar comienza gratis.", "El navegador guarda niveles, estrellas y mejores tiempos; los niveles superados se pueden repetir."],
+  how: ["Elige una ruta desbloqueada en el carril horizontal.", "Mantén pulsado el sello inicial redondo.", "Sigue con la misma pulsación dentro del corredor turquesa.", "Espera a las sombras en una zona segura y cruza los sellos en orden.", "Llega al portal dorado antes de soltar."],
+  strategyTips: ["Sigue el centro del corredor en las esquinas y no cortes por el borde interior.", "Espera antes del punto de cruce para que la sombra no alcance tu posición.", "Mostrar guía revela el centro seguro sin gastar moneda, aunque limita la mejor valoración de ese intento.", "Un trazo lento y controlado suele ser más seguro."],
+  progression: ["Los niveles 1-5 enseñan giros amplios, 6-10 estrechan los pasos y 11-15 añaden sellos ordenados.", "Los niveles 16-20 añaden sombras, 21-25 combinan corredores estrechos con dos sombras y 26-30 reúnen todas las reglas."],
+  designNote: "One Line no es Starlink: Starlink es un puzle de conexiones; One Line exige mantener el puntero dentro de un corredor continuo. El Canvas adaptable llena la zona segura con una sola escala y una reserva inferior independiente de 56 px.",
+  parent: "Recomendado para mayores de 9 años y familias. No requiere cuenta y guarda el progreso solo en este navegador. Las estrellas y el informe son comentarios de juego, no una evaluación formal.",
+  faq: [["¿Puedo soltar a mitad de camino?", "No. Debes mantener una sola pulsación desde el inicio hasta el portal."], ["¿Tengo que moverme rápido?", "No. Puedes esperar sin soltar en una zona segura."], ["¿Qué pasa si toco un borde o una sombra?", "Solo se reinicia el intento actual y reintentar es gratis."], ["¿Qué hace Mostrar guía?", "Muestra una ruta punteada por el centro del corredor."], ["¿Se guarda el progreso?", "Sí, localmente en este navegador."], ["¿Cuántos niveles hay?", "Hay 30 rutas originales en seis capítulos."]]
+};
+window.WeightPlayGameInfoLocales.es.gameplayProfiles["animal-one-line"] = { gameplay: "Trazado continuo por corredores", genre: ["Habilidad", "Tiempo", "Puzle", "Animales"] };
+
 (function (resource) {
   const replacements = [
     [/\bEtapas\b/g, "Niveles"], [/\betapas\b/g, "niveles"], [/\bEtapa\b/g, "Nivel"], [/\betapa\b/g, "nivel"],

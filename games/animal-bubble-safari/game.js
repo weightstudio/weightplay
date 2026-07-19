@@ -136,7 +136,8 @@
   const legacySavedLocale = localStorage.getItem("weightplayLocale");
   if (!localStorage.getItem(canonicalLocaleKey) && ["en", "zh-Hant", "zh-Hans", "es"].includes(legacySavedLocale)) window.WonderI18n?.setLocale?.(legacySavedLocale);
   const savedLocale = localStorage.getItem(canonicalLocaleKey) || legacySavedLocale || localStorage.getItem("weightplay:locale");
-  let locale = window.WonderI18n?.locale?.() || (savedLocale === "zh-Hant" ? "zh-Hant" : "en");
+  const requestedLocale = window.WonderI18n?.locale?.() || savedLocale || "en";
+  let locale = copy[requestedLocale] ? requestedLocale : "en";
   let save = loadSave();
   let selectedStage = Math.min(save.unlocked, stageDefs.length);
   let currentScreen = "loading";
@@ -970,7 +971,7 @@
   document.getElementById("guideDone").addEventListener("click", closeGuide);
   document.getElementById("soundMain").addEventListener("click", toggleSound);
   document.getElementById("soundStage").addEventListener("click", toggleSound);
-  document.querySelectorAll("[data-locale]").forEach(button => button.addEventListener("click", () => { const requested=button.dataset.locale; window.WonderI18n?.setLocale?.(requested); locale=window.WonderI18n?.locale?.()||requested; localStorage.setItem("weightPlayLocale",requested); applyLocale(); }));
+  document.querySelectorAll("[data-locale]").forEach(button => button.addEventListener("click", () => { const requested=button.dataset.locale; window.WonderI18n?.setLocale?.(requested); const resolved=window.WonderI18n?.locale?.()||requested; locale=copy[resolved]?resolved:"en"; localStorage.setItem("weightPlayLocale",requested); applyLocale(); }));
   dom.playCanvas.addEventListener("pointerdown", beginAim);
   dom.playCanvas.addEventListener("pointermove", updateAim);
   dom.playCanvas.addEventListener("keydown", handleBattleKey);

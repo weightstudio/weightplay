@@ -4,7 +4,17 @@
   const canonicalSavedLocale = localStorage.getItem(canonicalLocaleKey), legacySavedLocale = localStorage.getItem(legacyLocaleKey);
   if (!canonicalSavedLocale && ["en", "zh-Hant", "zh-Hans"].includes(legacySavedLocale)) { localStorage.setItem(canonicalLocaleKey, legacySavedLocale); window.WonderI18n?.setLocale?.(legacySavedLocale); }
   const $ = (id) => document.getElementById(id);
-  const nodes = Object.fromEntries(["mainScreen","stageScreen","battleScreen","battleLive","resultScreen","loadingScreen","localeSelect","startBtn","stageRail","stageStatus","stagePreview","stageName","stageDescription","stageProgress","board","movesValue","pairsValue","battleStageName","objectiveText","feedback","hintBtn","undoBtn","shuffleBtn","retryBtn","nextBtn","stagesBtn","resultTitle","resultStats","resultBest","resultReport","progressSummary","stageSlot","battleSlot"].map((id) => [id, $(id)]));
+  if (!$("leavePanel")) {
+    const panel = document.createElement("section");
+    panel.id = "leavePanel";
+    panel.className = "result-overlay leave-overlay hidden";
+    panel.setAttribute("role", "dialog");
+    panel.setAttribute("aria-modal", "true");
+    panel.setAttribute("aria-labelledby", "leaveTitle");
+    panel.innerHTML = '<section class="result-card leave-card"><h2 id="leaveTitle" data-ui="leaveTitle"></h2><p id="leaveText" data-ui="leaveText"></p><div class="result-actions"><button id="continueBoardBtn" class="primary" type="button" data-ui="continueBoard"></button><button id="leaveBoardBtn" type="button" data-ui="leaveBoard"></button></div></section>';
+    document.querySelector("#battleSlot .battle-canvas")?.append(panel);
+  }
+  const nodes = Object.fromEntries(["mainScreen","stageScreen","battleScreen","battleLive","resultScreen","leavePanel","leaveTitle","leaveText","continueBoardBtn","leaveBoardBtn","loadingScreen","localeSelect","startBtn","stageRail","stageStatus","stagePreview","stageName","stageDescription","stageProgress","board","movesValue","pairsValue","battleStageName","objectiveText","feedback","hintBtn","undoBtn","shuffleBtn","retryBtn","nextBtn","stagesBtn","resultTitle","resultStats","resultBest","resultReport","progressSummary","stageSlot","battleSlot"].map((id) => [id, $(id)]));
   const copy = {
     en: { language:"Language", internalPreview:"Internal preview", title:"Animal Habitat Mahjong", mainHint:"Match two free tiles to open every animal habitat.", startGame:"Start Game", howTitle:"How to play", guide:"A tile is free when nothing covers it and at least one side is open. Match two identical free tiles to clear the board.", parentNote:"A calm local puzzle for focus, logic, and problem solving. Progress stays on this device.", progress:"Unlocked {count}/3 habitats · Best {best} pairs", stageTitle:"Choose a habitat", railHint:"Drag to browse habitats. Tap an unlocked card to begin.", locked:"Locked", moves:"Moves", pairs:"Pairs", objective:"Clear every free pair", hint:"Hint", undo:"Undo", shuffle:"Shuffle", choosePair:"Choose two matching free tiles.", blocked:"That tile is covered or blocked on both sides.", noMatch:"Find a matching free tile.", matched:"Great match!", noUndo:"Nothing to undo yet.", hintText:"A free matching pair is glowing.", noMoves:"No free pair. Use Shuffle to refresh the board.", habitatCleared:"Habitat cleared", skillReport:"Skill Report", result:"You cleared {pairs} pairs in {moves} moves. Great planning and focus.", retry:"Retry", nextStage:"Next Stage", stages:"Stages", tile:"Tile {number}", back:"Back", backToLobby:"Back to lobby", stageScreen:"Stage selection", stageRail:"Habitat stages", battleScreen:"Mahjong play", resultScreen:"Result", forest:"Forest Canopy", safari:"Safari Trail", ocean:"Coral Shelf", forestDesc:"Open leafy paths and learn the free-tile rule.", safariDesc:"Plan around a raised center and wide open sides.", oceanDesc:"Use every match to uncover the calm coral shelf." },
     "zh-Hant": { language:"\u8a9e\u8a00", internalPreview:"\u5167\u90e8\u9810\u89bd", title:"\u52d5\u7269\u68f2\u5730\u9ebb\u5c07", mainHint:"\u914d\u5c0d\u5169\u5f35\u53ef\u7528\u724c\uff0c\u958b\u555f\u6bcf\u500b\u52d5\u7269\u68f2\u5730\u3002", startGame:"\u958b\u59cb\u904a\u6232", howTitle:"\u73a9\u6cd5", guide:"\u724c\u9762\u4e0a\u6c92\u6709\u88ab\u8986\u84cb\uff0c\u4e14\u5de6\u53f3\u81f3\u5c11\u4e00\u908a\u958b\u653e\u6642\uff0c\u5c31\u662f\u53ef\u7528\u724c\u3002\u914d\u5c0d\u5169\u5f35\u76f8\u540c\u53ef\u7528\u724c\u4f86\u6e05\u7a7a\u724c\u5c40\u3002", parentNote:"\u9019\u662f\u7df4\u7fd2\u5c08\u6ce8\u3001\u908f\u8f2f\u8207\u89e3\u6c7a\u554f\u984c\u7684\u5be7\u975c\u672c\u6a5f\u904a\u6232\u3002\u9032\u5ea6\u53ea\u5132\u5b58\u65bc\u6b64\u88dd\u7f6e\u3002", progress:"\u5df2\u89e3\u9396 {count}/3 \u500b\u68f2\u5730 \u00b7 \u6700\u4f73 {best} \u5c0d", stageTitle:"\u9078\u64c7\u68f2\u5730", railHint:"\u5de6\u53f3\u62d6\u66f3\u700f\u89bd\u68f2\u5730\uff0c\u9ede\u64ca\u5df2\u89e3\u9396\u5361\u724c\u958b\u59cb\u3002", locked:"\u672a\u89e3\u9396", moves:"\u6b65\u6578", pairs:"\u914d\u5c0d", objective:"\u6e05\u9664\u6240\u6709\u53ef\u7528\u724c", hint:"\u63d0\u793a", undo:"\u5fa9\u539f", shuffle:"\u6d17\u724c", choosePair:"\u9078\u64c7\u5169\u5f35\u76f8\u540c\u7684\u53ef\u7528\u724c\u3002", blocked:"\u9019\u5f35\u724c\u88ab\u8986\u84cb\u6216\u88ab\u5169\u5074\u5361\u4f4f\u3002", noMatch:"\u8acb\u627e\u4e00\u5f35\u76f8\u540c\u7684\u53ef\u7528\u724c\u3002", matched:"\u914d\u5c0d\u6210\u529f\uff01", noUndo:"\u9084\u6c92\u6709\u53ef\u5fa9\u539f\u7684\u914d\u5c0d\u3002", hintText:"\u4e00\u5c0d\u53ef\u7528\u724c\u6b63\u5728\u767c\u4eae\u3002", noMoves:"\u6c92\u6709\u53ef\u914d\u5c0d\u724c\uff0c\u4f7f\u7528\u6d17\u724c\u91cd\u65b0\u6574\u7406\u3002", habitatCleared:"\u68f2\u5730\u5df2\u6e05\u7a7a", skillReport:"\u80fd\u529b\u5831\u544a", result:"\u4f60\u7528 {moves} \u6b65\u6e05\u9664 {pairs} \u5c0d\u724c\uff0c\u5f88\u597d\u5730\u7df4\u7fd2\u4e86\u898f\u5283\u8207\u5c08\u6ce8\u3002", retry:"\u518d\u8a66\u4e00\u6b21", nextStage:"\u4e0b\u4e00\u95dc", stages:"\u95dc\u5361", tile:"\u724c {number}", back:"\u8fd4\u56de", backToLobby:"\u8fd4\u56de\u5927\u5ef3", stageScreen:"\u95dc\u5361\u9078\u64c7", stageRail:"\u68f2\u5730\u95dc\u5361", battleScreen:"\u9ebb\u5c07\u904a\u73a9", resultScreen:"\u7d50\u679c", forest:"\u68ee\u6797\u6a39\u51a0", safari:"\u8349\u539f\u8db3\u8de1", ocean:"\u73ca\u745a\u68da", forestDesc:"\u958b\u555f\u6a39\u8449\u8def\u5f91\uff0c\u5b78\u7fd2\u53ef\u7528\u724c\u898f\u5247\u3002", safariDesc:"\u570d\u7e5e\u62ac\u9ad8\u7684\u4e2d\u5fc3\u724c\u89c0\u5bdf\u5bec\u655e\u958b\u53e3\u3002", oceanDesc:"\u7528\u6bcf\u4e00\u6b21\u914d\u5c0d\u6253\u958b\u5be7\u975c\u73ca\u745a\u68da\u3002" },
@@ -22,6 +32,9 @@
   Object.assign(copy.en, { loading:"Preparing habitats...", progress:"Unlocked {count}/{total} boards \u00b7 Cleared {cleared}/{total}", resultStats:"{score} pts \u00b7 {moves} moves \u00b7 {time}", personalBest:"Best: {score} pts \u00b7 {moves} moves \u00b7 {time}", newBest:"New best: {score} pts \u00b7 {moves} moves \u00b7 {time}" });
   Object.assign(copy["zh-Hant"], { loading:"\u6b63\u5728\u6e96\u5099\u68f2\u5730...", progress:"\u5df2\u89e3\u9396 {count}/{total} \u95dc \u00b7 \u5df2\u5b8c\u6210 {cleared}/{total}", resultStats:"{score} \u5206 \u00b7 {moves} \u6b65 \u00b7 {time}", personalBest:"\u6700\u4f73\uff1a{score} \u5206 \u00b7 {moves} \u6b65 \u00b7 {time}", newBest:"\u65b0\u7d00\u9304\uff1a{score} \u5206 \u00b7 {moves} \u6b65 \u00b7 {time}" });
   Object.assign(copy.es, { loading:"Preparando hábitats...", progress:"Desbloqueados {count}/{total} · Completados {cleared}/{total}", resultStats:"{score} pts · {moves} movimientos · {time}", personalBest:"Mejor: {score} pts · {moves} movimientos · {time}", newBest:"Nuevo récord: {score} pts · {moves} movimientos · {time}" });
+  Object.assign(copy.en, { leaveTitle:"Pause this board?", leaveText:"Your tiles and moves will wait while you decide.", continueBoard:"Continue puzzle", leaveBoard:"Return to stages" });
+  Object.assign(copy["zh-Hant"], { leaveTitle:"要暫停這個牌局嗎？", leaveText:"牌面與步數會留在原處，想好再繼續。", continueBoard:"繼續拼圖", leaveBoard:"返回關卡" });
+  Object.assign(copy.es, { leaveTitle:"¿Pausar este tablero?", leaveText:"Las fichas y los movimientos esperarán mientras decides.", continueBoard:"Continuar el puzle", leaveBoard:"Volver a los niveles" });
   Object.assign(copy.en, {
     habitatFinale:"Habitat Finale", classicRule:"Open Path: use the standard free-tile rule.", sealRule:"Trail Seal: clear the diamond key pair to open sealed tiles.", rescueRule:"Family Rescue: uncover and match the two starred animal families.", narrowRule:"Patrol Trail: available pairs alternate between trail A and trail B.", dualRule:"Ranger Trial: open the seal and rescue both starred families.", grandRule:"Grand Reserve: seals, rescues, and alternating patrol trails work together.", objectiveClassic:"Clear every free pair", objectiveSeal:"Clear the diamond key to open sealed tiles", objectiveRescue:"Rescue starred families {rescued}/{total}", objectiveNarrow:"Follow patrol trail {trail}", objectiveDual:"Open the seal and rescue {rescued}/{total} families", objectiveGrand:"Master seals, rescues, and patrol trail {trail}", sealBlocked:"This tile is sealed. Clear the diamond key pair first."
   });
@@ -52,7 +65,7 @@
     habitatData("forest","bridge","dual",{ sealedPairs:[4,7], rescuePairs:[6,8] }), habitatData("safari","wings","dual",{ sealedPairs:[5,8], rescuePairs:[6,9] }), habitatData("ocean","crown","dual",{ sealedPairs:[6,9], rescuePairs:[8,10] }), habitatData("arctic","pyramid","dual",{ sealedPairs:[7,10], rescuePairs:[9,11] }), habitatData("forest","sanctuary","dual",{ sealedPairs:[7,10], rescuePairs:[9,11], checkpoint:true }),
     habitatData("safari","towers","grand",{ sealedPairs:[4,7], rescuePairs:[6,9] }), habitatData("ocean","pyramid","grand",{ sealedPairs:[7,10], rescuePairs:[9,11] }), habitatData("arctic","sanctuary","grand",{ sealedPairs:[7,10], rescuePairs:[9,11] }), habitatData("forest","pyramid","grand",{ sealedPairs:[6,9], rescuePairs:[10,11] }), habitatData("ocean","sanctuary","grand",{ sealedPairs:[7,10], rescuePairs:[9,11], checkpoint:true })
   ];
-  let locale = window.WonderI18n?.locale?.() || localStorage.getItem("weightPlayLocale") || "en", save = loadSave(), stageIndex = 0, selected = null, state = null;
+  let locale = window.WonderI18n?.locale?.() || localStorage.getItem("weightPlayLocale") || "en", save = loadSave(), stageIndex = 0, selected = null, state = null, leaveOpen = false;
   const t = (key, values = {}) => Object.entries(values).reduce((out, [name, value]) => out.replaceAll(`{${name}}`, value), (copy[locale] || copy.en)[key] || copy.en[key] || key);
   function loadSave() { try { return { unlocked:1, bestPairs:0, playCount:0, bestByStage:{}, ...JSON.parse(localStorage.getItem(saveKey) || "{}") }; } catch { return { unlocked:1, bestPairs:0, playCount:0, bestByStage:{} }; } }
   const persist = () => localStorage.setItem(saveKey, JSON.stringify(save));
@@ -84,7 +97,41 @@
   }
   function startStage(index = stageIndex) { stageIndex = index; const habitat = habitats[index], tiles = makeTiles(habitat, index); state = { tiles, totalPairs:tiles.length / 2, moves:0, removedPairs:0, history:[], hinted:[], selected:null, keyUnlocked:!usesSeal(habitat), rescuedPairs:0, rescueTotal:(habitat.rescuePairs || []).length, trailPhase:0, initialTrailPhase:0, startedAt:Date.now(), pausedAt:document.hidden ? Date.now() : null }; syncTrailPhase(); state.initialTrailPhase=state.trailPhase; save.playCount += 1; persist(); setScreen("battle"); const firstFree=state.tiles.find(isFree)?.id; renderBattle(availablePairs().length ? "" : t("noMoves"), firstFree); }
   function suspendBattleClock() { if (!state || nodes.battleScreen.classList.contains("hidden") || !nodes.resultScreen.classList.contains("hidden") || state.pausedAt !== null) return; state.pausedAt = Date.now(); }
-  function resumeBattleClock() { if (!state || state.pausedAt === null) return; state.startedAt += Math.max(0, Date.now() - state.pausedAt); state.pausedAt = null; }
+  function resumeBattleClock() { if (!state || state.pausedAt === null || leaveOpen) return; state.startedAt += Math.max(0, Date.now() - state.pausedAt); state.pausedAt = null; }
+  function setBattleLiveCovered(covered) { nodes.battleLive.inert = covered; if (covered) nodes.battleLive.setAttribute("aria-hidden", "true"); else nodes.battleLive.removeAttribute("aria-hidden"); }
+  function openLeaveDecision() {
+    if (leaveOpen || !state || !nodes.resultScreen.classList.contains("hidden")) return;
+    leaveOpen = true;
+    suspendBattleClock();
+    setBattleLiveCovered(true);
+    nodes.leavePanel.classList.remove("hidden");
+    requestAnimationFrame(() => nodes.continueBoardBtn.focus({ preventScroll:true }));
+  }
+  function closeLeaveDecision(restoreFocus = true) {
+    if (!leaveOpen) return;
+    leaveOpen = false;
+    nodes.leavePanel.classList.add("hidden");
+    setBattleLiveCovered(false);
+    if (!document.hidden) resumeBattleClock();
+    if (restoreFocus) requestAnimationFrame(() => document.querySelector('[data-wp-return="battle"]')?.focus({ preventScroll:true }));
+  }
+  function leaveBoard() {
+    leaveOpen = false;
+    nodes.leavePanel.classList.add("hidden");
+    renderStage();
+    setScreen("stage");
+    focusCurrentStage();
+  }
+  function keepLeaveFocus(event) {
+    rejectRepeatedActivation(event);
+    if (event.key === "Escape") { event.preventDefault(); closeLeaveDecision(true); return; }
+    if (event.key !== "Tab") return;
+    const controls = [nodes.continueBoardBtn, nodes.leaveBoardBtn];
+    const current = controls.indexOf(document.activeElement);
+    const next = event.shiftKey ? (current <= 0 ? controls.length - 1 : current - 1) : (current + 1) % controls.length;
+    event.preventDefault();
+    controls[next].focus({ preventScroll:true });
+  }
   function isPhysicallyFree(tile) { if (tile.removed || (tile.sealed && !state.keyUnlocked)) return false; const active = state.tiles.filter((item) => !item.removed); const covered = active.some((item) => item.layer > tile.layer && item.x === tile.x && item.y === tile.y); const left = active.some((item) => item.layer === tile.layer && item.y === tile.y && item.x === tile.x - 1); const right = active.some((item) => item.layer === tile.layer && item.y === tile.y && item.x === tile.x + 1); return !covered && (!left || !right); }
   function physicalPairs(phase = null) { const free=state.tiles.filter((tile) => isPhysicallyFree(tile) && (phase === null || tile.pairIndex % 2 === phase)); const groups=new Map(); free.forEach((tile)=>groups.set(tile.value,[...(groups.get(tile.value)||[]),tile])); return [...groups.values()].filter((items)=>items.length>1); }
   function syncTrailPhase(preferAlternate = false) { if (!state || !usesNarrow(habitats[stageIndex])) return; const desired=preferAlternate ? 1-state.trailPhase : state.trailPhase; if (physicalPairs(desired).length) state.trailPhase=desired; else if (physicalPairs(1-desired).length) state.trailPhase=1-desired; }
@@ -186,6 +233,7 @@
   nodes.startBtn.addEventListener("click", openStageFromMain);
   document.querySelectorAll("[data-back]").forEach((button) => button.addEventListener("click", () => {
     const target = button.dataset.back;
+    if (button.dataset.wpReturn === "battle" && target === "stage" && state && nodes.resultScreen.classList.contains("hidden")) { openLeaveDecision(); return; }
     if (target === "stage") renderStage();
     setScreen(target);
     if (target === "stage") focusCurrentStage();
@@ -195,7 +243,7 @@
   let undoKeyHeld = false;
   nodes.stageRail.addEventListener("wonder:stage-snap", (event) => syncStageSelection(Number(event.detail?.index)));
   nodes.stageRail.addEventListener("click", (event) => { const card = event.target.closest?.(".stage-card") || stageCardAtPoint(event.clientX, event.clientY); if (!card) return; const index = Number(card.dataset.index); if (index < save.unlocked) startStage(index); else rejectLockedStage(index); });
-  nodes.board.addEventListener("click", (event) => { const tile = event.target.closest(".tile"); if (tile) chooseTile(Number(tile.dataset.tile)); }); nodes.hintBtn.addEventListener("click", hint); nodes.undoBtn.addEventListener("keydown", (event) => { if (event.key !== "Enter" && event.key !== " ") return; event.preventDefault(); if (!undoKeyHeld) undo(); undoKeyHeld = true; }); nodes.undoBtn.addEventListener("keyup", (event) => { if (event.key === "Enter" || event.key === " ") undoKeyHeld = false; }); nodes.undoBtn.addEventListener("blur", () => { undoKeyHeld = false; }); nodes.undoBtn.addEventListener("click", undo); nodes.shuffleBtn.addEventListener("click", shuffle); nodes.retryBtn.addEventListener("click", () => startStage(stageIndex)); nodes.nextBtn.addEventListener("click", () => startStage(Math.min(habitats.length - 1, stageIndex + 1))); nodes.stagesBtn.addEventListener("click", () => { stageIndex = Math.max(0, Math.min(habitats.length, save.unlocked) - 1); setScreen("stage"); renderStage(); focusCurrentStage(); });
+  nodes.board.addEventListener("click", (event) => { const tile = event.target.closest(".tile"); if (tile) chooseTile(Number(tile.dataset.tile)); }); nodes.hintBtn.addEventListener("click", hint); nodes.undoBtn.addEventListener("keydown", (event) => { if (event.key !== "Enter" && event.key !== " ") return; event.preventDefault(); if (!undoKeyHeld) undo(); undoKeyHeld = true; }); nodes.undoBtn.addEventListener("keyup", (event) => { if (event.key === "Enter" || event.key === " ") undoKeyHeld = false; }); nodes.undoBtn.addEventListener("blur", () => { undoKeyHeld = false; }); nodes.undoBtn.addEventListener("click", undo); nodes.shuffleBtn.addEventListener("click", shuffle); nodes.continueBoardBtn.addEventListener("click", () => closeLeaveDecision(true)); nodes.leaveBoardBtn.addEventListener("click", leaveBoard); nodes.leavePanel.addEventListener("keydown", keepLeaveFocus, true); nodes.retryBtn.addEventListener("click", () => startStage(stageIndex)); nodes.nextBtn.addEventListener("click", () => startStage(Math.min(habitats.length - 1, stageIndex + 1))); nodes.stagesBtn.addEventListener("click", () => { stageIndex = Math.max(0, Math.min(habitats.length, save.unlocked) - 1); setScreen("stage"); renderStage(); focusCurrentStage(); });
   window.addEventListener("pagehide", suspendBattleClock);
   window.addEventListener("pageshow", resumeBattleClock);
   document.addEventListener("visibilitychange", () => { if (document.hidden) suspendBattleClock(); else resumeBattleClock(); });
@@ -205,7 +253,7 @@
       restoreSave: (snapshot = {}) => { save = { unlocked:1, bestPairs:0, playCount:0, bestByStage:{}, ...snapshot }; persist(); renderMain(); renderStage(); return structuredClone(save); },
       readSave: () => structuredClone(save),
       startStage: (number) => { startStage(Math.max(0, Math.min(habitats.length - 1, Number(number) - 1))); return window.__ANIMAL_HABITAT_MAHJONG_TEST__.state(); },
-      state: () => state ? { stage:stageIndex + 1, rule:habitats[stageIndex].rule, tileCount:state.tiles.filter((tile) => !tile.removed).length, totalPairs:state.totalPairs, removedPairs:state.removedPairs, moves:state.moves, keyUnlocked:state.keyUnlocked, rescuedPairs:state.rescuedPairs, rescueTotal:state.rescueTotal, trailPhase:state.trailPhase, physicalPairCount:physicalPairs().length, freeIds:state.tiles.filter(isFree).map((tile) => tile.id), availablePairs:availablePairs().map((pair) => pair.slice(0,2).map((tile) => tile.id)), resultVisible:!nodes.resultScreen.classList.contains("hidden") } : null,
+      state: () => state ? { stage:stageIndex + 1, rule:habitats[stageIndex].rule, tileCount:state.tiles.filter((tile) => !tile.removed).length, totalPairs:state.totalPairs, removedPairs:state.removedPairs, moves:state.moves, keyUnlocked:state.keyUnlocked, rescuedPairs:state.rescuedPairs, rescueTotal:state.rescueTotal, trailPhase:state.trailPhase, physicalPairCount:physicalPairs().length, freeIds:state.tiles.filter(isFree).map((tile) => tile.id), availablePairs:availablePairs().map((pair) => pair.slice(0,2).map((tile) => tile.id)), selectedId:state.selected?.id ?? null, hintedIds:[...state.hinted], historyDepth:state.history.length, clockPaused:state.pausedAt !== null, leaveOpen, resultVisible:!nodes.resultScreen.classList.contains("hidden") } : null,
       choosePair: (ids) => { (ids || []).slice(0,2).forEach((id) => chooseTile(Number(id))); return window.__ANIMAL_HABITAT_MAHJONG_TEST__.state(); },
       shuffle: () => { shuffle(); return window.__ANIMAL_HABITAT_MAHJONG_TEST__.state(); }
     };

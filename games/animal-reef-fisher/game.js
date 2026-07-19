@@ -530,6 +530,8 @@
   let run = null;
   let diamondPurchasePending = "";
   let diamondConfirmTimer = 0;
+  let diamondConfirmDueAt = 0;
+  let diamondConfirmRemaining = 0;
   let pointer = { down: false, id: null, x: 0, y: 0, tensionPct: 50, source: "canvas", keyboardHeld: false };
   let lastTime = performance.now();
   let raf = 0;
@@ -1693,8 +1695,40 @@
   function clearDiamondPurchaseConfirmation(render = false) {
     window.clearTimeout(diamondConfirmTimer);
     diamondConfirmTimer = 0;
+    diamondConfirmDueAt = 0;
+    diamondConfirmRemaining = 0;
     diamondPurchasePending = "";
     if (render) renderMenu();
+  }
+
+  function expireDiamondPurchaseConfirmation() {
+    diamondConfirmTimer = 0;
+    diamondConfirmDueAt = 0;
+    diamondConfirmRemaining = 0;
+    if (!diamondPurchasePending) return;
+    diamondPurchasePending = "";
+    renderMenu();
+  }
+
+  function armDiamondPurchaseConfirmation(delay = 5000) {
+    window.clearTimeout(diamondConfirmTimer);
+    diamondConfirmRemaining = Math.max(0, Number(delay) || 0);
+    if (!diamondConfirmRemaining) return expireDiamondPurchaseConfirmation();
+    diamondConfirmDueAt = performance.now() + diamondConfirmRemaining;
+    diamondConfirmTimer = window.setTimeout(expireDiamondPurchaseConfirmation, diamondConfirmRemaining);
+  }
+
+  function suspendDiamondPurchaseConfirmation() {
+    if (!diamondPurchasePending || !diamondConfirmTimer) return;
+    diamondConfirmRemaining = Math.max(0, diamondConfirmDueAt - performance.now());
+    window.clearTimeout(diamondConfirmTimer);
+    diamondConfirmTimer = 0;
+    diamondConfirmDueAt = 0;
+  }
+
+  function resumeDiamondPurchaseConfirmation() {
+    if (!diamondPurchasePending || diamondConfirmTimer || document.hidden) return;
+    armDiamondPurchaseConfirmation(diamondConfirmRemaining);
   }
 
   function buyDiamondItem(type) {
@@ -1711,7 +1745,7 @@
     if (diamondPurchasePending !== type) {
       clearDiamondPurchaseConfirmation();
       diamondPurchasePending = type;
-      diamondConfirmTimer = window.setTimeout(() => clearDiamondPurchaseConfirmation(true), 5000);
+      armDiamondPurchaseConfirmation(5000);
       renderMenu();
       return;
     }
@@ -1897,11 +1931,13 @@
   window.addEventListener("blur", cancelFishingInput);
   function suspendBackgroundFishing() {
     cancelFishingInput();
+    suspendDiamondPurchaseConfirmation();
     if (backgroundSuspended) return;
     backgroundSuspended = true;
     cancelAnimationFrame(raf);
   }
   function resumeBackgroundFishing() {
+    resumeDiamondPurchaseConfirmation();
     if (!backgroundSuspended) return;
     backgroundSuspended = false;
     restartFishingLoop();

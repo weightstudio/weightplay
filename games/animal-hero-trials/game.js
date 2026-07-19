@@ -240,6 +240,8 @@
   let run = null;
   let frame = 0;
   let rerollConfirmTimer = 0;
+  let rerollConfirmDueAt = 0;
+  let rerollConfirmRemaining = 0;
   let pointer = null;
   let moveTarget = null;
   let backgroundSuspended = false;
@@ -786,7 +788,39 @@
   function clearRerollConfirmation() {
     clearTimeout(rerollConfirmTimer);
     rerollConfirmTimer = 0;
+    rerollConfirmDueAt = 0;
+    rerollConfirmRemaining = 0;
     if (run) run.rerollPending = false;
+  }
+
+  function expireRerollConfirmation() {
+    rerollConfirmTimer = 0;
+    rerollConfirmDueAt = 0;
+    rerollConfirmRemaining = 0;
+    if (!run?.rerollPending) return;
+    run.rerollPending = false;
+    updateRerollUi();
+  }
+
+  function armRerollConfirmation(delay = 5000) {
+    clearTimeout(rerollConfirmTimer);
+    rerollConfirmRemaining = Math.max(0, Number(delay) || 0);
+    if (!rerollConfirmRemaining) return expireRerollConfirmation();
+    rerollConfirmDueAt = performance.now() + rerollConfirmRemaining;
+    rerollConfirmTimer = setTimeout(expireRerollConfirmation, rerollConfirmRemaining);
+  }
+
+  function suspendRerollConfirmation() {
+    if (!run?.rerollPending || !rerollConfirmTimer) return;
+    rerollConfirmRemaining = Math.max(0, rerollConfirmDueAt - performance.now());
+    clearTimeout(rerollConfirmTimer);
+    rerollConfirmTimer = 0;
+    rerollConfirmDueAt = 0;
+  }
+
+  function resumeRerollConfirmation() {
+    if (!run?.rerollPending || rerollConfirmTimer || document.hidden) return;
+    armRerollConfirmation(rerollConfirmRemaining);
   }
 
   function rerollBlessings() {
@@ -795,12 +829,7 @@
     if (balance < 3) return updateRerollUi(interpolate("rerollNeed", { balance }));
     if (!run.rerollPending) {
       run.rerollPending = true;
-      clearTimeout(rerollConfirmTimer);
-      rerollConfirmTimer = setTimeout(() => {
-        if (!run?.rerollPending) return;
-        run.rerollPending = false;
-        updateRerollUi();
-      }, 5000);
+      armRerollConfirmation(5000);
       updateRerollUi();
       return;
     }
@@ -1103,9 +1132,23 @@
   });
   addEventListener("keyup", (event) => { keys[event.code] = false; });
   addEventListener("blur", clearMovementInput);
-  document.addEventListener("visibilitychange", () => { if (document.hidden) suspendBackgroundBattle(); else resumeBackgroundBattle(); });
-  addEventListener("pagehide", suspendBackgroundBattle);
-  addEventListener("pageshow", resumeBackgroundBattle);
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      suspendRerollConfirmation();
+      suspendBackgroundBattle();
+    } else {
+      resumeRerollConfirmation();
+      resumeBackgroundBattle();
+    }
+  });
+  addEventListener("pagehide", () => {
+    suspendRerollConfirmation();
+    suspendBackgroundBattle();
+  });
+  addEventListener("pageshow", () => {
+    resumeRerollConfirmation();
+    resumeBackgroundBattle();
+  });
   bindTapMove();
   if (new URLSearchParams(location.search).has("smoke")) window.__heroTrialSmoke = {
     definitions:()=>trials.map((trial)=>({stage:trial.stage,region:trial.region,titleEn:trial.titleEn,titleZh:trial.titleZh,checkpoint:trial.checkpoint,enemies:[...trial.enemies],recommended:trial.recommended,reward:trial.reward,boss:trial.boss?{id:trial.boss.id,nameEn:trial.boss.name[0],nameZh:trial.boss.name[1],asset:trial.boss.asset,rule:trial.boss.rule}:null})),

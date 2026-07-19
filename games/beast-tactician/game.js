@@ -1038,6 +1038,7 @@
   let leaveBattleConfirmPending = false;
   let leaveBattleConfirmTimer = 0;
   let leaveBattleWasPaused = false;
+  let toastTimer = 0;
 
   function currentStartTile() {
     return state.stage?.route?.start || startTile;
@@ -1676,8 +1677,18 @@
     nodes.bossHintText.textContent = boss ? t("bossHoldRoute") : t("bossIncoming", { boss: bossName });
   }
 
-  function showToast() {
+  function hideToast() {
+    clearTimeout(toastTimer);
+    toastTimer = 0;
     nodes.toast.classList.add("is-hidden");
+    nodes.toast.textContent = "";
+  }
+
+  function showToast(message, duration = 1600) {
+    clearTimeout(toastTimer);
+    nodes.toast.textContent = message;
+    nodes.toast.classList.remove("is-hidden");
+    toastTimer = setTimeout(hideToast, duration);
   }
 
   function tileToPoint(tile) {
@@ -2201,6 +2212,7 @@
     leaveBattleConfirmTimer = 0;
     if (!leaveBattleConfirmPending) return;
     leaveBattleConfirmPending = false;
+    hideToast();
     nodes.menuBtn.setAttribute("aria-label", t("backToStages"));
     if (restoreBattle && state.screen === "game" && !state.gameOver) {
       state.paused = leaveBattleWasPaused;
@@ -2214,7 +2226,7 @@
       state.paused = true;
       leaveBattleConfirmPending = true;
       nodes.menuBtn.setAttribute("aria-label", t("leaveBattleConfirmLabel", { stage: state.currentStage }));
-      showToast(t("leaveBattleConfirm", { stage: state.currentStage }));
+      showToast(t("leaveBattleConfirm", { stage: state.currentStage }), 5000);
       updateHud();
       leaveBattleConfirmTimer = setTimeout(() => clearLeaveBattleConfirmation(true), 5000);
       nodes.menuBtn.focus({ preventScroll: true });

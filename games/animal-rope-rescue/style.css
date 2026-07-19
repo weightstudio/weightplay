@@ -614,6 +614,32 @@ body.is-vine-playing #gamePanel .result-panel:not(.hidden):not(.is-hidden) {
   text-align: center;
 }
 
+#gamePanel.leave-open > :not(#leavePanel) {
+  pointer-events: none;
+}
+
+#gamePanel.leave-open .playfield * {
+  animation-play-state: paused !important;
+}
+
+.leave-card strong {
+  font-size: 1.35rem;
+}
+
+.leave-card span {
+  line-height: 1.45;
+}
+
+#continueRescueBtn {
+  outline: 3px solid rgba(255, 255, 255, .9);
+  outline-offset: 2px;
+}
+
+#leaveStageBtn {
+  background: #fff8df;
+  box-shadow: inset 0 0 0 2px #d4a74d, 0 5px 0 #815024, 0 10px 18px rgba(55, 34, 12, .16);
+}
+
 .stars {
   color: #f4a51f;
   font-size: 2rem;

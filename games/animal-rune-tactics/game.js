@@ -446,7 +446,7 @@
     backToLobby: "Volver al vestíbulo",
     backToMenu: "Volver a misiones",
     backToMain: "Volver al menú principal",
-    startGame: "Empezar",
+    startGame: "Comenzar juego",
     menuTitle: "Dirige al Escuadrón Rúnico.",
     menuHint: "Elige una misión, mueve héroes animales por la cuadrícula rúnica y derrota enemigos con una buena posición.",
     profileLevel: "Nivel",

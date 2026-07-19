@@ -7053,6 +7053,47 @@
   localizedGames["zh-Hans"]["animal-starlight-trails"] = { ...localizedGames["zh-Hant"]["animal-starlight-trails"], title: "Starlink 星链", guideTitleSuffix: "游戏指南", gameplay: "一笔画逻辑益智" };
   localizedGameplayProfiles["zh-Hans"]["animal-starlight-trails"] = { gameplay: "一笔画逻辑益智", genre: ["益智", "策略", "逻辑", "动物"] };
 
+  games["animal-one-line"] = {
+    title: "One Line", difficulty: "Easy to Challenging", time: "1-4 minutes per stage", gameplay: "Continuous Corridor Tracing", genre: ["Skill", "Timing", "Puzzle", "Animal"], skills: ["Hand-Eye Coordination", "Focus", "Reaction"],
+    guideKicker: "WeightPlay Original Game Guide", guideTitleSuffix: "Game Guide", noteTitle: "Player and Save Information", hideScoreBands: true,
+    intro: "One Line is an original 30-stage tracing game starring Rainbow Hop Mimi. Press the round start seal, keep one uninterrupted hold, and guide the line through the turquoise corridor to the golden paw portal without touching an edge or a moving shadow.",
+    story: ["Mimi is restoring living trails through a magical forest workshop. Each group of five routes adds a new control lesson, from broad turns to narrow passes, ordered seals, and crossing shadows.", "The final five mastery trails combine precision, timing, and ordered checkpoints. Stage 30 completes the campaign and remains replayable."],
+    systems: ["A valid attempt begins on the round start seal and ends only at the golden paw portal. Lifting early, touching the corridor edge, or skipping ahead resets that attempt without spending currency.", "The route does not demand speed. Players may stop while continuing to hold, wait in a safe section for a shadow to cross, and then continue.", "Later stages add numbered seals that must be crossed in order and moving shadows that temporarily block points along the route. Show Guide adds a dotted center line, while Restart begins a free new attempt.", "Clears, unlocked stages, best star ratings, and best times are stored locally in this browser. Completed stages remain available from the horizontal Stage rail."],
+    how: ["Choose an unlocked route from the horizontal Stage rail.", "Press and hold the round start seal.", "Keep the same hold while tracing inside the turquoise corridor.", "Pause in a safe place when a shadow crosses, and pass numbered seals in order when shown.", "Reach the golden paw portal before lifting to clear the stage."],
+    strategyTips: ["Follow the corridor center around sharp corners instead of cutting across the inside edge.", "On shadow stages, wait far enough before the crossing point that the moving shadow cannot touch the held position.", "Use Show Guide to reveal the safest center line; it lowers the best possible rating for that attempt but never costs currency.", "A slower controlled trace is usually safer than one fast motion."],
+    progression: ["Stages 1-5 teach broad turns; 6-10 narrow the stone passes; 11-15 add ordered seals.", "Stages 16-20 introduce crossing shadows, 21-25 combine narrower corridors with two shadows, and 26-30 combine tight turns, seals, and three shadows."],
+    designNote: "One Line is deliberately different from Starlink. Starlink is a graph puzzle about using every connection once; One Line is a continuous motor-control challenge where the pointer must stay inside one visible corridor. A responsive logical Canvas fills the safe Stage and Battle rectangle while preserving one uniform scale, stable anchors, and the separate 56px General reserve.",
+    parent: "One Line is recommended for ages 9+ and family play. It requires no account and stores progress only in the current browser. Stars and the Result skill summary are playful feedback, not a formal ability, medical, or school assessment.",
+    faq: [["Can I lift my finger halfway?", "No. The route must be completed with one continuous hold from the start seal to the paw portal."], ["Do I have to move quickly?", "No. You may pause while holding in a safe part of the corridor."], ["What happens when I touch an edge or shadow?", "Only the current attempt resets, and retrying is free."], ["What does Show Guide do?", "It displays a dotted center route to make the safe corridor easier to read."], ["Does progress save?", "Yes. Unlocks, stars, clears, and best times are stored locally in this browser."], ["How many stages are included?", "There are 30 original routes across six five-stage chapters."]]
+  };
+  gameplayProfiles["animal-one-line"] = { gameplay: "Continuous Corridor Tracing", genre: ["Skill", "Timing", "Puzzle", "Animal"] };
+  localizedGames["zh-Hant"]["animal-one-line"] = {
+    ...games["animal-one-line"], title: "One Line 一筆到底", guideKicker: "WeightPlay 原創遊戲指南", guideTitleSuffix: "遊戲指南", noteTitle: "玩家與存檔資訊", difficulty: "簡單至具挑戰性", time: "每關約 1 至 4 分鐘", gameplay: "連續通道描線", genre: ["技巧", "時機", "益智", "動物"], skills: ["Hand-Eye Coordination", "Focus", "Reaction"],
+    intro: "One Line 一筆到底是彩虹跳跳米米主演的原創 30 關描線遊戲。從圓形起點按住不放，沿藍綠色通道走到金色腳印門；途中不能碰到邊緣或移動影子。",
+    story: ["米米正在修復魔法森林工坊裡的活路。每五關會加入新的控制課題，從寬路轉彎、狹窄石道，到依序星印與穿越影子。", "最後五條大師路線會綜合精準控制、等待時機與順序檢查點。完成第 30 關即完成戰役，之後仍可重玩。"],
+    systems: ["有效嘗試必須從圓形起點開始，並在金色腳印門結束。提早放開、碰到通道邊緣或直接跳到前方都會重置本次嘗試，不消耗任何貨幣。", "遊戲不要求速度。持續按住時可以停在安全路段，等影子通過後再繼續。", "後期關卡會加入必須依序通過的編號星印，以及暫時擋住路線的移動影子。顯示引導會畫出虛線中央路徑，重新開始則免費重開本次嘗試。", "過關、解鎖、最佳星等與最佳時間會儲存在此瀏覽器；已完成關卡仍可從橫向關卡軌道重玩。"],
+    how: ["從橫向關卡軌道選擇已解鎖路線。", "按住圓形起點。", "保持同一次按住，沿藍綠色通道內前進。", "影子穿越時停在安全處；出現編號星印時依序通過。", "抵達金色腳印門後再放開即可過關。"],
+    strategyTips: ["急彎時沿通道中央轉向，不要切過內側邊緣。", "影子關卡要提早停在交叉點前，避免等待位置也被影子碰到。", "顯示引導可顯示最安全的中央虛線；不消耗貨幣，但本次最高星等會降低。", "慢而穩定通常比快速滑過更安全。"],
+    progression: ["第 1 至 5 關教寬路轉彎，第 6 至 10 關縮窄石道，第 11 至 15 關加入依序星印。", "第 16 至 20 關加入穿越影子，第 21 至 25 關結合窄路與兩個影子，第 26 至 30 關綜合急彎、星印與三個影子。"],
+    designNote: "One Line 與 Starlink 的核心不同：Starlink 是每條連線只能使用一次的圖形邏輯題；One Line 是游標必須持續留在可見通道內的動作控制挑戰。響應式邏輯 Canvas 會填滿 Stage 與 Battle 安全區域，並保留單一縮放比例、穩定錨點與獨立 56px 預留區。",
+    parent: "One Line 建議 9 歲以上與家庭玩家遊玩，不需帳號，進度只儲存在目前瀏覽器。星等與結算技能摘要是遊戲鼓勵，不是正式能力、醫療或學校評量。",
+    faq: [["中途可以放開手指嗎？", "不行，必須從起點到腳印門保持同一次按住。"], ["一定要很快嗎？", "不用，可以持續按住並停在安全路段。"], ["碰到邊緣或影子會怎樣？", "只會重置本次嘗試，重新挑戰完全免費。"], ["顯示引導有什麼作用？", "它會顯示通道中央的虛線安全路徑。"], ["進度會保存嗎？", "會，解鎖、星等、過關與最佳時間會儲存在此瀏覽器。"], ["共有幾關？", "共有六個章節、30 條原創路線。"]]
+  };
+  localizedGameplayProfiles["zh-Hant"]["animal-one-line"] = { gameplay: "連續通道描線", genre: ["技巧", "時機", "益智", "動物"] };
+  localizedGames["zh-Hans"]["animal-one-line"] = {
+    ...localizedGames["zh-Hant"]["animal-one-line"], title: "One Line 一笔到底", guideKicker: "WeightPlay 原创游戏指南", guideTitleSuffix: "游戏指南", noteTitle: "玩家与存档信息", difficulty: "简单至具挑战性", time: "每关约 1 至 4 分钟", gameplay: "连续通道描线", genre: ["技巧", "时机", "益智", "动物"],
+    intro: "One Line 一笔到底是彩虹跳跳米米主演的原创 30 关描线游戏。从圆形起点按住不放，沿蓝绿色通道走到金色脚印门；途中不能碰到边缘或移动影子。",
+    story: ["米米正在修复魔法森林工坊里的活路。每五关会加入新的控制课题，从宽路转弯、狭窄石道，到依序星印与穿越影子。", "最后五条大师路线会综合精准控制、等待时机与顺序检查点。完成第 30 关即完成战役，之后仍可重玩。"],
+    systems: ["有效尝试必须从圆形起点开始，并在金色脚印门结束。提早放开、碰到通道边缘或直接跳到前方都会重置本次尝试，不消耗任何货币。", "游戏不要求速度。持续按住时可以停在安全路段，等影子通过后再继续。", "后期关卡会加入必须依序通过的编号星印，以及暂时挡住路线的移动影子。显示引导会画出虚线中央路径，重新开始则免费重开本次尝试。", "过关、解锁、最佳星等与最佳时间会储存在此浏览器；已完成关卡仍可从横向关卡轨道重玩。"],
+    how: ["从横向关卡轨道选择已解锁路线。", "按住圆形起点。", "保持同一次按住，沿蓝绿色通道内前进。", "影子穿越时停在安全处；出现编号星印时依序通过。", "抵达金色脚印门后再放开即可过关。"],
+    strategyTips: ["急弯时沿通道中央转向，不要切过内侧边缘。", "影子关卡要提早停在交叉点前，避免等待位置也被影子碰到。", "显示引导可显示最安全的中央虚线；不消耗货币，但本次最高星等会降低。", "慢而稳定通常比快速滑过更安全。"],
+    progression: ["第 1 至 5 关教宽路转弯，第 6 至 10 关缩窄石道，第 11 至 15 关加入依序星印。", "第 16 至 20 关加入穿越影子，第 21 至 25 关结合窄路与两个影子，第 26 至 30 关综合急弯、星印与三个影子。"],
+    designNote: "One Line 与 Starlink 的核心不同：Starlink 是每条连线只能使用一次的图形逻辑题；One Line 是游标必须持续留在可见通道内的动作控制挑战。响应式逻辑 Canvas 会填满 Stage 与 Battle 安全区域，并保留单一缩放比例、稳定锚点与独立 56px 预留区。",
+    parent: "One Line 建议 9 岁以上与家庭玩家游玩，不需账号，进度只储存在目前浏览器。星等与结算技能摘要是游戏鼓励，不是正式能力、医疗或学校评量。",
+    faq: [["中途可以放开手指吗？", "不行，必须从起点到脚印门保持同一次按住。"], ["一定要很快吗？", "不用，可以持续按住并停在安全路段。"], ["碰到边缘或影子会怎样？", "只会重置本次尝试，重新挑战完全免费。"], ["显示引导有什么作用？", "它会显示通道中央的虚线安全路径。"], ["进度会保存吗？", "会，解锁、星等、过关与最佳时间会储存在此浏览器。"], ["共有几关？", "共有六个章节、30 条原创路线。"]]
+  };
+  localizedGameplayProfiles["zh-Hans"]["animal-one-line"] = { gameplay: "连续通道描线", genre: ["技巧", "时机", "益智", "动物"] };
+
   window.WeightPlayGameInfo = {
     get(gameId) {
       const game = games[gameId];

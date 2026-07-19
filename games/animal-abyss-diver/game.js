@@ -283,14 +283,42 @@
   const storedSave = JSON.parse(localStorage.getItem(saveKey)||"{}");
   let save = { rank:1, coins:0, unlocked:1, level:1, xp:0, statPoints:0, ...storedSave };
   save.stats={hp:0,attack:0,oxygen:0,...storedSave.stats};
-  let state = {},lastUpgrade=null,beaconConfirmTimer=0;
+  let state = {},lastUpgrade=null,beaconConfirmTimer=0,beaconConfirmDueAt=0,beaconConfirmRemaining=0;
   let diveSession=0;
   let diveSuspended=false;
   const diveTimers=new Set();
   function clearBeaconConfirmation(){
     window.clearTimeout(beaconConfirmTimer);
     beaconConfirmTimer=0;
+    beaconConfirmDueAt=0;
+    beaconConfirmRemaining=0;
     if(state)state.beaconPending=false;
+  }
+  function expireBeaconConfirmation(){
+    beaconConfirmTimer=0;
+    beaconConfirmDueAt=0;
+    beaconConfirmRemaining=0;
+    if(!state?.beaconPending)return;
+    state.beaconPending=false;
+    renderBattle();
+  }
+  function armBeaconConfirmation(delay=5000){
+    window.clearTimeout(beaconConfirmTimer);
+    beaconConfirmRemaining=Math.max(0,Number(delay)||0);
+    if(!beaconConfirmRemaining){expireBeaconConfirmation();return;}
+    beaconConfirmDueAt=performance.now()+beaconConfirmRemaining;
+    beaconConfirmTimer=window.setTimeout(expireBeaconConfirmation,beaconConfirmRemaining);
+  }
+  function suspendBeaconConfirmation(){
+    if(!state?.beaconPending||!beaconConfirmTimer)return;
+    beaconConfirmRemaining=Math.max(0,beaconConfirmDueAt-performance.now());
+    window.clearTimeout(beaconConfirmTimer);
+    beaconConfirmTimer=0;
+    beaconConfirmDueAt=0;
+  }
+  function resumeBeaconConfirmation(){
+    if(!state?.beaconPending||beaconConfirmTimer||document.hidden)return;
+    armBeaconConfirmation(beaconConfirmRemaining);
   }
   function beaconRestoreTarget(){return Math.ceil(maxOxygen()*.3);}
   function beaconCanRestore(){return !!state.route&&!state.beaconUsed&&state.oxygen<beaconRestoreTarget();}
@@ -316,7 +344,7 @@
     return task;
   }
   function suspendDiveAsync(){
-    clearBeaconConfirmation();
+    suspendBeaconConfirmation();
     if(diveSuspended||!diveTimers.size||$("battleShell").classList.contains("hidden")||!$("result").classList.contains("hidden"))return;
     diveSuspended=true;
     const now=performance.now();
@@ -328,6 +356,7 @@
     });
   }
   function resumeDiveAsync(){
+    resumeBeaconConfirmation();
     if(!diveSuspended||document.hidden||$("battleShell").classList.contains("hidden")||!$("result").classList.contains("hidden")||!$("quitPanel").classList.contains("hidden"))return;
     diveSuspended=false;
     diveTimers.forEach(task=>{if(task.session===diveSession&&!task.timer)armDiveTask(task);});
@@ -578,13 +607,7 @@
     if(!state.beaconPending){
       if(balance<3){setFeedback(`${icon("beacon")}<b>3</b>`,t("beaconNeed"));return;}
       state.beaconPending=true;
-      window.clearTimeout(beaconConfirmTimer);
-      beaconConfirmTimer=window.setTimeout(()=>{
-        if(!state?.beaconPending)return;
-        state.beaconPending=false;
-        beaconConfirmTimer=0;
-        renderBattle();
-      },5000);
+      armBeaconConfirmation(5000);
       setFeedback(`${icon("beacon")}<b>${balance}→${balance-3}</b>`,t("beaconConfirmStatus",{before:balance,after:balance-3}));
       renderBattle();
       return;
@@ -649,7 +672,7 @@
   }, true);
   for(const id of ["sonarBtn","shieldBtn","helpBtn"]){$(id).addEventListener("click",clearBeaconConfirmation,{capture:true});}
   localize();
-  if(new URLSearchParams(location.search).has("smoke"))window.__AbyssDiverSmoke={setOxygen(value){if(!state.route)return;clearBeaconConfirmation();state.oxygen=Math.max(0,Math.min(maxOxygen(),Math.round(value)));renderBattle();if(state.fishActive)renderFish();}};
+  if(new URLSearchParams(location.search).has("smoke"))window.__AbyssDiverSmoke={setOxygen(value){if(!state.route)return;clearBeaconConfirmation();state.oxygen=Math.max(0,Math.min(maxOxygen(),Math.round(value)));renderBattle();if(state.fishActive)renderFish();},beaconState(){return{pending:!!state?.beaconPending,remaining:beaconConfirmRemaining,wallet:wallet()};}};
   const lobbyLabels = { en: "Back to lobby", "zh-Hant": u("\\u8fd4\\u56de\\u5927\\u5ef3") };
   function syncMetadata() {
     document.title = `${t("title")} - WeightPlay`;

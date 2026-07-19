@@ -8,7 +8,7 @@
   const $$ = (selector) => [...document.querySelectorAll(selector)];
 
   const EN = {
-    title:"Animal Starlight Trails",language:"Language",eyebrow:"Moon Cap Orla's constellation workshop",pitch:"Trace every trail exactly once and relight the Animal Star Map.",start:"Start Game",chooseStage:"Choose Constellation",stage:"Stage",trails:"Trails",stars:"Stars",undo:"Undo",restart:"Restart",hint:"Hint",retry:"Retry",stages:"Stages",next:"Next Stage",skillReport:"Skill Report",loading:"Loading star map…",progress:"{cleared} / 30 constellations restored",bestStars:"{stars} stars collected",ready:"Choose a star to begin.",continue:"Continue from the glowing star.",deadEnd:"That route cannot reach every remaining trail. Undo or restart.",wrongStart:"Begin on the glowing start seal.",usedTrail:"That trail has already been used.",notConnected:"Choose a star connected to the glowing star.",wrongWay:"That comet trail only flows in the arrow direction.",checkpoint:"Reach numbered star {number} next.",gateLocked:"Find the golden key star before crossing this gate.",keyFound:"The golden star gate is open!",complete:"Constellation restored!",hintStart:"Try beginning on the highlighted star.",hintNext:"A route-safe next star is highlighted.",assist:"{hints} hints · {mistakes} corrections",resultTitle:"Trail Restored",resultText:"You lit all {edges} trails in {time}.",newBest:"New best time for this constellation!",previousBest:"Best time: {time}",logic:"Logic",focus:"Focus",problem:"Problem Solving",logicValue:"{edges} trails planned",focusValue:"{mistakes} corrections",problemValue:"{hints} hints used",chapter1:"Open Star Paths",chapter2:"Starting Seals",chapter3:"Comet Arrows",chapter4:"Numbered Stars",chapter5:"Keys and Gates",chapter6:"Grand Constellations",rule1:"Use every trail exactly once. Stars may be revisited.",rule2:"Begin at the marked star, then use every trail once.",rule3:"Follow every violet comet trail in its arrow direction.",rule4:"Reach the numbered star seals in order.",rule5:"Touch the golden key star before crossing the rose gate.",rule6:"Combine start seals, arrows, star order, keys, and gates.",locked:"Locked",cleared:"Cleared",available:"Available",chapter:"Observatory {number}",stageSummary:"{cleared} cleared · {stars} stars",ruleClassic:"Classic",ruleStart:"Start seal",ruleArrow:"Comet arrows",ruleOrder:"Star order",ruleGate:"Star gate",ruleMaster:"Mastery",node:"Star {number}",startNode:"Start star {number}",keyNode:"Key star {number}",checkpointNode:"Numbered star {order}",edgeLabel:"Trail from star {from} to star {to}" 
+    title:"Animal Starlight Trails",language:"Language",eyebrow:"Moon Cap Orla's constellation workshop",pitch:"Trace every trail exactly once and relight the Animal Star Map.",start:"Start Game",chooseStage:"Choose Constellation",stage:"Stage",trails:"Trails",stars:"Stars",undo:"Undo",restart:"Restart",hint:"Hint",retry:"Retry",stages:"Stages",next:"Next Stage",skillReport:"Skill Report",loading:"Loading star map…",progress:"{cleared} / 30 constellations restored",bestStars:"{stars} stars collected",ready:"Choose a star to begin.",continue:"Continue from the glowing star.",deadEnd:"That route cannot reach every remaining trail. Undo or restart.",wrongStart:"Begin on the glowing start seal.",usedTrail:"That trail has already been used.",notConnected:"Choose a star connected to the glowing star.",wrongWay:"That comet trail only flows in the arrow direction.",checkpoint:"Reach numbered star {number} next.",gateLocked:"Find the golden key star before crossing this gate.",keyFound:"The golden star gate is open!",complete:"Constellation restored!",hintStart:"Try beginning on the highlighted star.",hintNext:"A route-safe next star is highlighted.",assist:"{hints} hints · {mistakes} corrections",resultTitle:"Trail Restored",resultText:"You lit all {edges} trails in {time}.",newBest:"New best time for this constellation!",previousBest:"Best time: {time}",logic:"Logic",focus:"Focus",problem:"Problem Solving",logicValue:"{edges} trails planned",focusValue:"{mistakes} corrections",problemValue:"{hints} hints used",chapter1:"Open Star Paths",chapter2:"Starting Seals",chapter3:"Comet Arrows",chapter4:"Numbered Stars",chapter5:"Keys and Gates",chapter6:"Grand Constellations",rule1:"Use every trail exactly once. Stars may be revisited.",rule2:"Begin at the marked star, then use every trail once.",rule3:"Follow every violet comet trail in its arrow direction.",rule4:"Reach the numbered star seals in order.",rule5:"Touch the golden key star before crossing the rose gate.",rule6:"Combine start seals, arrows, star order, keys, and gates.",locked:"Locked",cleared:"Cleared",available:"Available",chapter:"Observatory {number}",stageSummary:"{cleared} cleared · {stars} stars",ruleClassic:"Classic",ruleStart:"Start seal",ruleArrow:"Comet arrows",ruleOrder:"Star order",ruleGate:"Star gate",ruleMaster:"Mastery",node:"Star {number}",startNode:"Start star {number}",keyNode:"Key star {number}",checkpointNode:"Numbered star {order}",edgeLabel:"Trail from star {from} to star {to}",backToMain:"Back to main",backToStage:"Back to stages",stageRailLabel:"Constellations",puzzleLabel:"Constellation puzzle",graphLabel:"One-stroke constellation"
   };
 
   const STRINGS = {
@@ -27,7 +27,7 @@
 
   // Keep every always-visible Stage, Battle, and Result label native in all supported locales.
   // Longer situational coaching may intentionally fall back to English when a locale has no override.
-  Object.assign(STRINGS["zh-Hans"], {logicValue:"规划 {edges} 条星路",focusValue:"{mistakes} 次修正",problemValue:"使用 {hints} 次提示",locked:"未解锁",cleared:"已完成",available:"可挑战",chapter:"第 {number} 观测台",stageSummary:"完成 {cleared} 关 · {stars} 颗星",ruleClassic:"经典星路",ruleStart:"起点星印",ruleArrow:"彗星箭路",ruleOrder:"星印顺序",ruleGate:"钥匙星门",ruleMaster:"综合考验",node:"第 {number} 颗星",startNode:"起点星 {number}",keyNode:"钥匙星 {number}",checkpointNode:"编号 {order} 星印",edgeLabel:"第 {from} 颗星到第 {to} 颗星的星路"});
+  Object.assign(STRINGS["zh-Hans"], {logicValue:"规划 {edges} 条星路",focusValue:"{mistakes} 次修正",problemValue:"使用 {hints} 次提示",locked:"未解锁",cleared:"已完成",available:"可挑战",chapter:"第 {number} 观测台",stageSummary:"完成 {cleared} 关 · {stars} 颗星",ruleClassic:"经典星路",ruleStart:"起点星印",ruleArrow:"彗星箭路",ruleOrder:"星印顺序",ruleGate:"钥匙星门",ruleMaster:"综合考验",node:"第 {number} 颗星",startNode:"起点星 {number}",keyNode:"钥匙星 {number}",checkpointNode:"编号 {order} 星印",edgeLabel:"第 {from} 颗星到第 {to} 颗星的星路",backToMain:"返回主菜单",backToStage:"返回关卡",stageRailLabel:"星座关卡",puzzleLabel:"星座谜题",graphLabel:"一笔画星座"});
   Object.assign(STRINGS.ja, {logicValue:"{edges} 本の道を計画",focusValue:"修正 {mistakes} 回",problemValue:"ヒント {hints} 回",locked:"未解放",cleared:"クリア",available:"挑戦可能",chapter:"観測所 {number}",stageSummary:"{cleared} クリア・星 {stars}",ruleClassic:"クラシック",ruleStart:"開始の印",ruleArrow:"彗星の矢印",ruleOrder:"星の順番",ruleGate:"星の門",ruleMaster:"総合試練",node:"星 {number}",startNode:"開始星 {number}",keyNode:"鍵の星 {number}",checkpointNode:"番号 {order} の星",edgeLabel:"星 {from} から星 {to} への道"});
   Object.assign(STRINGS.ko, {logicValue:"별길 {edges}개 계획",focusValue:"수정 {mistakes}회",problemValue:"힌트 {hints}회 사용",locked:"잠김",cleared:"완료",available:"도전 가능",chapter:"관측소 {number}",stageSummary:"{cleared}개 완료 · 별 {stars}개",ruleClassic:"기본 별길",ruleStart:"시작 봉인",ruleArrow:"혜성 화살표",ruleOrder:"별 순서",ruleGate:"별의 문",ruleMaster:"종합 도전",node:"별 {number}",startNode:"시작 별 {number}",keyNode:"열쇠 별 {number}",checkpointNode:"번호 {order} 별",edgeLabel:"별 {from}에서 별 {to}로 가는 길"});
   Object.assign(STRINGS.es, {logicValue:"{edges} senderos planeados",focusValue:"{mistakes} correcciones",problemValue:"{hints} pistas usadas",locked:"Bloqueado",cleared:"Completado",available:"Disponible",chapter:"Observatorio {number}",stageSummary:"{cleared} completados · {stars} estrellas",ruleClassic:"Clásico",ruleStart:"Sello inicial",ruleArrow:"Flechas cometa",ruleOrder:"Orden estelar",ruleGate:"Puerta estelar",ruleMaster:"Maestría",node:"Estrella {number}",startNode:"Estrella inicial {number}",keyNode:"Estrella llave {number}",checkpointNode:"Estrella numerada {order}",edgeLabel:"Sendero de la estrella {from} a la {to}"});
@@ -130,11 +130,37 @@
     dom.locale.value = locale;
     localStorage.setItem(LOCALE_KEY,locale);
     $$('[data-i18n]').forEach(node => {node.textContent=t(node.dataset.i18n);});
+    dom.stageBack.setAttribute("aria-label",t("backToMain"));
+    dom.battleBack.setAttribute("aria-label",t("backToStage"));
+    dom.stageRail.setAttribute("aria-label",t("stageRailLabel"));
+    dom.scene.setAttribute("aria-label",t("puzzleLabel"));
+    dom.svg.setAttribute("aria-label",t("graphLabel"));
     dom.loadingText.textContent=t("loading");
+    localizeGuide();
     updateMainProgress();
     if (!dom.stage.hidden) renderStages();
     if (!dom.battle.hidden) {renderBattleLabels();updateGraph();}
   }
+
+  let localizingGuide = false;
+  function localizeGuide() {
+    const liveGuide = $(".game-page-info");
+    if (liveGuide && liveGuide !== dom.guide) {
+      dom.guide = liveGuide;
+      dom.guide.hidden = document.body.dataset.screen !== "main";
+    }
+    if (locale !== "zh-Hans" || localizingGuide || !dom.guide) return;
+    localizingGuide = true;
+    const simplify = window.WonderI18n?.simplifyChineseText;
+    dom.guide.querySelectorAll(".game-info-kicker, h2, h3, p, li, dt, dd, span, strong").forEach(node => {
+      let value = typeof simplify === "function" ? simplify(node.textContent) : node.textContent;
+      if (node.classList.contains("game-info-kicker")) value = "WeightPlay 一般游戏指南";
+      if (value === "Player and Save Information") value = "玩家与存档说明";
+      if (node.textContent !== value) node.textContent = value;
+    });
+    localizingGuide = false;
+  }
+  new MutationObserver(localizeGuide).observe(document.body,{childList:true,subtree:true});
 
   function updateMainProgress(){dom.mainProgress.innerHTML=`<strong>${t("progress",{cleared:clearedCount()})}</strong><span>${t("bestStars",{stars:totalStars()})}</span>`;}
   function setScreen(screen){document.body.dataset.screen=screen;dom.main.hidden=screen!=="main";dom.guide.hidden=screen!=="main";dom.stage.hidden=screen!=="stage";dom.battle.hidden=screen!=="battle";window.scrollTo({top:0,left:0,behavior:"auto"});}
