@@ -2,6 +2,7 @@
   const STAGE_LOGICAL_WIDTH = 390;
   const STAGE_LOGICAL_HEIGHT = 788;
   const STAGE_RESERVE_HEIGHT = 56;
+  const DESKTOP_CANVAS_MAX_WIDTH = 920;
   const railSelector = "[data-wp-stage-rail],.stage-grid,.stage-rail,.page-rail,.mission-grid,.mission-rail,.region-rail,.level-grid,.route-rail,.day-rail,.zone-row,.expedition-rail,.world-map-grid";
   const cardSelector = ".stage-card,.page-card,.mission-card,.region-card,.route-card,.day-card,.zone-card,.expedition-card,.zone-node,button";
   const installed = new WeakSet();
@@ -182,8 +183,8 @@
       && Math.abs(height - appliedStageHeight) < 0.5) return;
     const requestedMaximumWidth = Number.parseFloat(root.dataset.wpCanvasMaxWidth || "");
     const maximumWidth = Number.isFinite(requestedMaximumWidth) && requestedMaximumWidth > 0
-      ? requestedMaximumWidth
-      : width;
+      ? Math.min(DESKTOP_CANVAS_MAX_WIDTH, requestedMaximumWidth)
+      : DESKTOP_CANVAS_MAX_WIDTH;
     const availableWidth = Math.max(1, Math.min(width, maximumWidth));
     const availableHeight = Math.max(1, height - reserveHeight);
     const scale = Math.max(0.01, Math.min(

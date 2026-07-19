@@ -168,6 +168,14 @@ a {
   font-weight: 1000;
 }
 
+.quiz-leave-panel { position: fixed; inset: 0; z-index: 90; display: grid; place-items: center; padding: 18px; background: rgba(27, 52, 27, .56); backdrop-filter: blur(8px); }
+.quiz-leave-panel.hidden { display: none !important; }
+.quiz-leave-card { width: min(100%, 330px); display: grid; gap: 12px; padding: 20px; border-radius: 24px; background: #fffbea; color: #233516; box-shadow: 0 22px 48px rgba(21, 42, 21, .3); text-align: center; }
+.quiz-leave-card strong { font-size: 1.35rem; }
+.quiz-leave-card p { margin: 0; font-weight: 800; line-height: 1.4; }
+.quiz-leave-card button { min-height: 48px; border: 0; border-radius: 12px; background: #e1f0b6; color: #233516; font: inherit; font-weight: 1000; }
+.quiz-leave-card #leaveStageBtn { background: #ffe0a7; }
+
 .topbar p {
   margin: 0 0 3px;
   color: #496b2e;

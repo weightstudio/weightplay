@@ -45,6 +45,22 @@ const loadingTitle = document.querySelector("#loadingTitle");
 const loadingText = document.querySelector("#loadingText");
 const loadingFill = document.querySelector("#loadingFill");
 
+if (!document.querySelector("#leavePanel")) {
+  const panel = document.createElement("section");
+  panel.id = "leavePanel";
+  panel.className = "quiz-leave-panel hidden";
+  panel.setAttribute("role", "dialog");
+  panel.setAttribute("aria-modal", "true");
+  panel.setAttribute("aria-labelledby", "leaveTitle");
+  panel.innerHTML = '<div class="quiz-leave-card"><strong id="leaveTitle"></strong><p id="leaveText"></p><button id="keepPlayingBtn" type="button"></button><button id="leaveStageBtn" type="button"></button></div>';
+  document.querySelector(".animal-game")?.append(panel);
+}
+const leavePanel = document.querySelector("#leavePanel");
+const leaveTitle = document.querySelector("#leaveTitle");
+const leaveText = document.querySelector("#leaveText");
+const keepPlayingBtn = document.querySelector("#keepPlayingBtn");
+const leaveStageBtn = document.querySelector("#leaveStageBtn");
+
 const pageMeta = {
   en: {
     title: "Animal Quiz - WeightPlay",
@@ -460,6 +476,10 @@ dictionary.es = {
   dietFrog: "Atrapo insectos y otros animales pequeños con una lengua rápida.", dietWhale: "Algunas ballenas filtran presas diminutas y otras cazan peces y calamares.", dietOwl: "Cazo animales pequeños y trago muchos bocados enteros.", dietCow: "Como plantas y rumio para digerir la hierba dura.",
 };
 
+Object.assign(dictionary.en, { leaveTitle: "Leave this quiz?", leaveText: "Your answers in this stage will be reset.", keepPlaying: "Keep playing", leaveStage: "Leave stage" });
+Object.assign(dictionary["zh-Hant"], { leaveTitle: "\u8981\u96e2\u958b\u9019\u500b\u5c0f\u6e2c\u9a57\u55ce\uff1f", leaveText: "\u9019\u4e00\u95dc\u7684\u7b54\u984c\u9032\u5ea6\u6703\u91cd\u7f6e\u3002", keepPlaying: "\u7e7c\u7e8c\u7b54\u984c", leaveStage: "\u96e2\u958b\u95dc\u5361" });
+Object.assign(dictionary.es, { leaveTitle: "\u00bfSalir de este cuestionario?", leaveText: "Tus respuestas de este nivel se reiniciar\u00e1n.", keepPlaying: "Seguir jugando", leaveStage: "Salir del nivel" });
+
 const animals = [
   { id: "lion", image: "assets/premium/lion.webp", clue: "clueLion", action: "actionLion", habitat: "habitatLion", diet: "dietLion" },
   { id: "hippo", image: "assets/premium/hippo.webp", clue: "clueHippo", action: "actionHippo", habitat: "habitatHippo", diet: "dietHippo" },
@@ -543,6 +563,7 @@ const state = {
   completed: false,
   unlockedStage: 0,
 };
+let leaveOpen = false;
 let stageDrag = null;
 let suppressStageClick = false;
 let quizGeneration = 0;
@@ -566,7 +587,7 @@ function scheduleQuizTask(task, delay) {
       quizTasks.delete(scheduled);
       return;
     }
-    if (quizLifecycleSuspended || document.hidden) {
+    if (quizLifecycleSuspended || document.hidden || leaveOpen) {
       scheduled.lastFrameAt = null;
       requestAnimationFrame(tick);
       return;
@@ -728,6 +749,10 @@ function renderStaticText() {
   nextStageBtn.textContent = t("nextStage");
   stageSelectBtn.textContent = t("stages");
   homeText.textContent = t("lobby");
+  leaveTitle.textContent = t("leaveTitle");
+  leaveText.textContent = t("leaveText");
+  keepPlayingBtn.textContent = t("keepPlaying");
+  leaveStageBtn.textContent = t("leaveStage");
   const meta = pageMeta[locale()] || pageMeta.en;
   document.title = meta.title;
   document.querySelector('meta[name="description"]')?.setAttribute("content", meta.description);
@@ -744,7 +769,7 @@ function setQuizVisible(isVisible) {
 }
 
 function setBattleCovered(covered) {
-  [quizStage, choiceGrid, feedback].forEach((region) => {
+  [levelLine, backToStagesBtn, quizStage, choiceGrid, feedback].forEach((region) => {
     region.inert = covered;
     region.setAttribute("aria-hidden", String(covered));
   });
@@ -757,6 +782,8 @@ function showMain() {
   document.body.classList.remove("quiz-playing", "quiz-stage-select");
   document.body.classList.add("quiz-main");
   resultPanel.classList.add("hidden");
+  leaveOpen = false;
+  leavePanel.classList.add("hidden");
   setBattleCovered(false);
   mainPanel.classList.remove("hidden");
   setQuizVisible(false);
@@ -800,9 +827,12 @@ window.visualViewport?.addEventListener("resize", updateQuizFrame, { passive: tr
 
 function showStageSelect(focusStageIndex = state.unlockedStage) {
   invalidateQuizSession();
+  resumeQuizTasks();
   renderStaticText();
   state.completed = false;
   resultPanel.classList.add("hidden");
+  leaveOpen = false;
+  leavePanel.classList.add("hidden");
   setBattleCovered(false);
   document.body.classList.remove("quiz-playing", "quiz-main");
   document.body.classList.add("quiz-stage-select");
@@ -914,6 +944,8 @@ function startStage(stageIndex) {
   state.score = 0;
   state.completed = false;
   resultPanel.classList.add("hidden");
+  leaveOpen = false;
+  leavePanel.classList.add("hidden");
   setBattleCovered(false);
   mainPanel.classList.add("hidden");
   setQuizVisible(true);
@@ -1162,6 +1194,22 @@ document.addEventListener("visibilitychange", () => {
   if (document.hidden) suspendQuizTasks();
   else resumeQuizTasks();
 });
+function openLeaveDecision() {
+  if (!document.body.classList.contains("quiz-playing") || leaveOpen) return;
+  leaveOpen = true;
+  suspendQuizTasks();
+  setBattleCovered(true);
+  leavePanel.classList.remove("hidden");
+  requestAnimationFrame(() => keepPlayingBtn.focus({ preventScroll: true }));
+}
+function closeLeaveDecision() {
+  if (!leaveOpen) return;
+  leaveOpen = false;
+  leavePanel.classList.add("hidden");
+  setBattleCovered(false);
+  resumeQuizTasks();
+  requestAnimationFrame(() => backToStagesBtn.focus({ preventScroll: true }));
+}
 const rejectRepeatedScreenActivation = (event) => {
   if (!event.repeat || !["Enter", " "].includes(event.key)) return;
   event.preventDefault();
@@ -1172,7 +1220,18 @@ stageGrid.addEventListener("keydown", (event) => {
 });
 startGameBtn.addEventListener("click", showStageSelect);
 stageBackBtn.addEventListener("click", showMain);
-backToStagesBtn.addEventListener("click", () => showStageSelect(state.stageIndex));
+backToStagesBtn.addEventListener("click", openLeaveDecision);
+keepPlayingBtn.addEventListener("click", closeLeaveDecision);
+leaveStageBtn.addEventListener("click", () => showStageSelect(state.stageIndex));
+leavePanel.addEventListener("keydown", (event) => {
+  if (event.repeat && ["Enter", " "].includes(event.key)) { event.preventDefault(); return; }
+  if (event.key === "Escape") { event.preventDefault(); closeLeaveDecision(); return; }
+  if (event.key !== "Tab") return;
+  const actions = [keepPlayingBtn, leaveStageBtn];
+  const index = actions.indexOf(document.activeElement);
+  event.preventDefault();
+  actions[event.shiftKey ? (index <= 0 ? 1 : index - 1) : (index >= 1 ? 0 : index + 1)].focus({ preventScroll: true });
+});
 choiceGrid.addEventListener("keydown", (event) => {
   if (!event.repeat || !["Enter", " "].includes(event.key) || !event.target.closest("button")) return;
   event.preventDefault();

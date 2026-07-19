@@ -1263,12 +1263,6 @@
       button.className = `build-card ${state.selectedBuild === unit.id ? "is-selected" : ""}`;
       button.dataset.id = unit.id;
       button.innerHTML = `<img src="${assetSources[unit.img]}" alt="" /><div><strong>${unitName(unit)}</strong><span>${unitKindLabel(unit)} | ${t("cost")}: ${unit.cost}</span><span>${unit.note[state.locale] || unit.note.en}</span><span class="build-affordability"></span></div>`;
-      button.addEventListener("click", () => {
-        state.selectedBuild = unit.id;
-        state.selectedDefender = null;
-        renderBuildCards();
-        renderSelectedInfo();
-      });
       nodes.buildCards.appendChild(button);
     });
     updateBuildAffordability();
@@ -3413,6 +3407,41 @@
       event.preventDefault();
       nodes.stageRail.scrollLeft += event.deltaY;
     }, { passive: false });
+
+    let buildDrag = null;
+    nodes.buildCards.addEventListener("wheel", (event) => {
+      if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
+      event.preventDefault();
+      nodes.buildCards.scrollLeft += event.deltaY;
+    }, { passive: false });
+    nodes.buildCards.addEventListener("click", (event) => {
+      const card = event.target.closest(".build-card");
+      if (!card || !nodes.buildCards.contains(card)) return;
+      state.selectedBuild = card.dataset.id;
+      state.selectedDefender = null;
+      renderBuildCards();
+      renderSelectedInfo();
+    });
+    nodes.buildCards.addEventListener("pointerdown", (event) => {
+      if (event.pointerType === "touch" || event.button !== 0) return;
+      buildDrag = { pointerId: event.pointerId, startX: event.clientX, startLeft: nodes.buildCards.scrollLeft, moved: false };
+      nodes.buildCards.setPointerCapture?.(event.pointerId);
+    });
+    nodes.buildCards.addEventListener("pointermove", (event) => {
+      if (!buildDrag || event.pointerId !== buildDrag.pointerId) return;
+      const delta = event.clientX - buildDrag.startX;
+      if (Math.abs(delta) > 5) {
+        buildDrag.moved = true;
+        nodes.buildCards.scrollLeft = buildDrag.startLeft - delta;
+      }
+    });
+    const finishBuildDrag = (event) => {
+      if (!buildDrag || event.pointerId !== buildDrag.pointerId) return;
+      nodes.buildCards.releasePointerCapture?.(event.pointerId);
+      buildDrag = null;
+    };
+    nodes.buildCards.addEventListener("pointerup", finishBuildDrag);
+    nodes.buildCards.addEventListener("pointercancel", finishBuildDrag);
   }
 
   function runWaveToCompletion(maxSeconds = 120) {

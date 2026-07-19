@@ -530,7 +530,7 @@
   let run = null;
   let diamondPurchasePending = "";
   let diamondConfirmTimer = 0;
-  let pointer = { down: false, id: null, x: 0, y: 0, tensionPct: 50, source: "canvas" };
+  let pointer = { down: false, id: null, x: 0, y: 0, tensionPct: 50, source: "canvas", keyboardHeld: false };
   let lastTime = performance.now();
   let raf = 0;
   let backgroundSuspended = false;
@@ -828,6 +828,7 @@
       catchToastTimer: 0,
       tensionSafe: true,
       reelElapsed: 0,
+      reelControlAge: Infinity,
       lastGustCycle: 0,
       bossShieldOpen: true,
       hazardFlash: 0,
@@ -933,6 +934,7 @@
     run.struggle = 0;
     run.fishPower = (45 + Math.random() * 40) * behavior.endurance;
     run.reelElapsed = 0;
+    run.reelControlAge = Infinity;
     run.lastGustCycle = 0;
     run.bossShieldOpen = true;
     run.hazardFlash = 0;
@@ -1199,6 +1201,17 @@
     track("line_break", { zone: run.zone.id });
   }
 
+  function fishEscape() {
+    run.phase = "aim";
+    run.hookFish = null;
+    run.splashTimer = 0.65;
+    nodes.hintText.textContent = t("escaped");
+    updateTensionGuide();
+    updateSonarButton();
+    playSound("wrong");
+    track("fish_escape", { zone: run.zone.id });
+  }
+
   function missionTensionWindow(zone, elapsed = 0, gearValues = save.gear) {
     const baseMin = 38 - (Number(gearValues?.rod) || 1);
     const baseMax = 62 + (Number(gearValues?.line) || 1);
@@ -1358,6 +1371,10 @@
 
     if (run.phase === "reel") {
       run.reelElapsed += dt;
+      const pointerReeling = pointer.down && pointer.source !== "keyboard";
+      const keyboardReeling = pointer.source === "keyboard" && pointer.keyboardHeld;
+      if (pointerReeling || keyboardReeling) run.reelControlAge = 0;
+      else run.reelControlAge += dt;
       const gearControl = save.gear.reel * 0.4 + save.gear.line * 0.28;
       const target = pointer.down ? Math.max(0, Math.min(100, pointer.tensionPct)) : 50;
       const behavior = fishBehavior(run.hookFish);
@@ -1381,9 +1398,12 @@
       const shieldProfile = ["coral", "abyss"].includes(run.hookFish?.bossProfile);
       run.bossShieldOpen = !shieldProfile || Math.floor(run.reelElapsed / 2) % 2 === 0;
       const baseProgress = 9 + save.gear.rod * 1.7 + save.gear.bait * 0.9;
-      const bossProgress = run.hookFish?.boss ? (safe && run.bossShieldOpen ? baseProgress : 0) : baseProgress;
+      const activeReel = run.reelControlAge < 0.35;
+      const normalProgress = safe && activeReel ? baseProgress : 0;
+      const bossProgress = run.hookFish?.boss ? (normalProgress && run.bossShieldOpen ? baseProgress : 0) : normalProgress;
       run.fishPower -= dt * bossProgress;
       if (run.struggle > 2.2) lineBreak();
+      else if (run.reelControlAge > 2.2) fishEscape();
       if (run.fishPower <= 0 && run.phase === "reel") landFish();
     }
 
@@ -1439,6 +1459,21 @@
     ctx.drawImage(img, sourceX, sourceY, sourceWidth, sourceHeight, x, y, width, height);
   }
 
+  function fishingVisual() {
+    const t = performance.now() / 1000;
+    if (run?.phase === "cast") {
+      return { bobberX: 570 + Math.sin(t * 1.4) * 42, bobberY: 288 + Math.cos(t * 1.1) * 18 };
+    }
+    if (run?.phase === "reel" && run.hookFish) {
+      const bobberX = 476 + Math.sin(t * 1.4) * 80;
+      const bobberY = 240 + Math.cos(t * 1.1) * 45;
+      const fishWidth = run.hookFish.boss ? 224 : run.hookFish.rare ? 174 : 156;
+      const fishHeight = run.hookFish.boss ? 116 : run.hookFish.rare ? 90 : 76;
+      return { bobberX, bobberY, fishX: bobberX + fishWidth * 0.26, fishY: bobberY + 6, fishWidth, fishHeight };
+    }
+    return null;
+  }
+
   function draw() {
     ctx.clearRect(0, 0, W, H);
     drawImageCover(images.bg, 0, 0, W, H);
@@ -1462,30 +1497,33 @@
       ctx.stroke();
       ctx.setLineDash([]);
 
-      if (run.phase === "cast") {
-        const t = performance.now() / 1000;
-        const bobberX = 570 + Math.sin(t * 1.4) * 42;
-        const bobberY = 288 + Math.cos(t * 1.1) * 18;
-        ctx.fillStyle = "rgba(255, 255, 255, 0.92)";
+      const visual = fishingVisual();
+      if (visual) {
+        ctx.strokeStyle = "rgba(255,255,255,0.9)";
+        ctx.lineWidth = 4;
         ctx.beginPath();
-        ctx.arc(bobberX, bobberY, 12, 0, Math.PI * 2);
+        ctx.moveTo(172, 320);
+        ctx.quadraticCurveTo((172 + visual.bobberX) / 2, Math.min(218, visual.bobberY - 54), visual.bobberX, visual.bobberY);
+        ctx.stroke();
+        ctx.fillStyle = "rgba(255, 255, 255, 0.96)";
+        ctx.beginPath();
+        ctx.arc(visual.bobberX, visual.bobberY, 12, 0, Math.PI * 2);
         ctx.fill();
         ctx.fillStyle = "#ff8a3d";
         ctx.beginPath();
-        ctx.arc(bobberX, bobberY + 2, 9, 0, Math.PI);
+        ctx.arc(visual.bobberX, visual.bobberY + 2, 9, 0, Math.PI);
         ctx.fill();
       }
 
+      if (run.phase === "cast") {
+        // The cast visual is drawn by fishingVisual so the line always ends at its float.
+      }
+
       if (run.phase === "reel") {
-        const t = performance.now() / 1000;
-        const x = 500 + Math.sin(t * 1.4) * 80;
-        const y = 240 + Math.cos(t * 1.1) * 45;
         const f = run.hookFish;
-        if (f) {
-          const fishWidth = f.boss ? 224 : f.rare ? 174 : 156;
-          const fishHeight = f.boss ? 116 : f.rare ? 90 : 76;
-          drawFishSprite(f, x - fishWidth / 2, y - fishHeight / 2, fishWidth, fishHeight);
-          if (f.rare || run.sonarPulse > 0) drawSpriteSheet(images.shimmer, 1, 1, 0, x - 18, y - 18, 150, 110);
+        if (f && visual) {
+          drawFishSprite(f, visual.fishX - visual.fishWidth / 2, visual.fishY - visual.fishHeight / 2, visual.fishWidth, visual.fishHeight);
+          if (f.rare || run.sonarPulse > 0) drawSpriteSheet(images.shimmer, 1, 1, 0, visual.fishX - 18, visual.fishY - 18, 150, 110);
           if (f.boss) {
             ctx.save();
             ctx.fillStyle = run.bossShieldOpen ? "rgba(7, 76, 67, .9)" : "rgba(92, 34, 18, .92)";
@@ -1577,6 +1615,7 @@
     pointer.id = null;
     pointer.source = "canvas";
     pointer.tensionPct = 50;
+    pointer.keyboardHeld = false;
     if (state !== "game" || !run || run.phase !== "charging") return;
     run.phase = "aim";
     run.castPower = 0;
@@ -1605,6 +1644,7 @@
     pointer.down = true;
     pointer.id = null;
     pointer.source = "keyboard";
+    pointer.keyboardHeld = true;
     pointer.tensionPct = Math.max(0, Math.min(100, pointer.tensionPct + delta));
     updateTensionGuide();
   }
@@ -1634,6 +1674,7 @@
   }
 
   function handleFishingKeyUp(evt) {
+    if (evt.key === "ArrowLeft" || evt.key === "ArrowRight") pointer.keyboardHeld = false;
     if (evt.code !== "Space" || state !== "game" || !run || run.phase !== "charging") return;
     evt.preventDefault();
     releaseCast();
@@ -2022,11 +2063,12 @@
                 hazardFlash: run.hazardFlash,
                 safeRange: tensionRange(),
                 visibleFish: run.phase === "reel" && run.hookFish ? run.hookFish.id : "",
+                lineVisual: fishingVisual(),
                 sonarReady: run.sonarReady,
                 sonarPulse: run.sonarPulse,
               }
             : null,
-          pointer: { down: pointer.down, id: pointer.id, tensionPct: pointer.tensionPct, source: pointer.source },
+          pointer: { down: pointer.down, id: pointer.id, tensionPct: pointer.tensionPct, source: pointer.source, keyboardHeld: pointer.keyboardHeld },
           wallet: wallet(),
         };
       },

@@ -2480,7 +2480,7 @@
         mobileInput[direction] = false;
       };
       button.addEventListener("pointerdown", (event) => {
-        if (event.isPrimary === false || (event.button !== undefined && event.button !== 0)) return;
+        if (event.button !== undefined && event.button !== 0) return;
         if (mobilePointerOwners[direction] !== null && mobilePointerOwners[direction] !== event.pointerId) return;
         event.preventDefault();
         mobilePointerOwners[direction] = event.pointerId;
@@ -2512,7 +2512,7 @@
       });
       button.addEventListener("blur", () => { keyboardHeld = false; });
       button.addEventListener("pointerdown", (event) => {
-        if (event.isPrimary === false || (event.button !== undefined && event.button !== 0)) return;
+        if (event.button !== undefined && event.button !== 0) return;
         event.preventDefault();
         action();
       });

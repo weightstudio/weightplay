@@ -1,6 +1,7 @@
 (function () {
   const RESERVE_HEIGHT = window.WeightPlayAudience?.reserveHeight ?? 56;
   const GUTTER = 0;
+  const DESKTOP_CANVAS_MAX_WIDTH = 920;
   const games = {
     "animal-abyss-diver": [".battle-canvas", 390, 788],
     "animal-auto-squad": ["#gamePanel", 382, 780],
@@ -114,8 +115,8 @@
       && stateSignature === appliedStateSignature) return;
     const requestedMaximumWidth = Number.parseFloat(root.dataset.wpCanvasMaxWidth || "");
     const maximumWidth = Number.isFinite(requestedMaximumWidth) && requestedMaximumWidth > 0
-      ? requestedMaximumWidth
-      : width - GUTTER * 2;
+      ? Math.min(DESKTOP_CANVAS_MAX_WIDTH, requestedMaximumWidth)
+      : DESKTOP_CANVAS_MAX_WIDTH;
     const availableWidth = Math.max(1, Math.min(width - GUTTER * 2, maximumWidth));
     const availableHeight = Math.max(1, height - RESERVE_HEIGHT - GUTTER * 2);
     const minimumLogicalWidth = config[1];
