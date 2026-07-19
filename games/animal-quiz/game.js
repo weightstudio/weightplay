@@ -662,28 +662,74 @@ function preloadImageWithTimeout(src, timeoutMs = 900) {
   });
 }
 
+function boundedInteger(value, minimum, maximum, fallback = minimum) {
+  const number = Number(value);
+  if (!Number.isFinite(number)) return fallback;
+  return Math.max(minimum, Math.min(maximum, Math.floor(number)));
+}
+
+function safeProfileRead(key) {
+  try { return localStorage.getItem(key); } catch { return null; }
+}
+
+function safeProfileWrite(key, value) {
+  try { localStorage.setItem(key, value); } catch {}
+}
+
+function normalizeProgressRecord(value, stageIndex) {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return null;
+  const total = stages[stageIndex].questions.length;
+  const playCount = boundedInteger(value.playCount, 0, 1_000_000, 0);
+  const record = {
+    cleared: value.cleared === true || playCount > 0,
+    lastScore: boundedInteger(value.lastScore, 0, total, 0),
+    bestScore: boundedInteger(value.bestScore, 0, total, 0),
+    previousBest: boundedInteger(value.previousBest, 0, total, 0),
+    playCount,
+    improvementPercent: boundedInteger(value.improvementPercent, -100, 100, 0),
+    total,
+  };
+  if (typeof value.lastPlayedAt === "string" && Number.isFinite(Date.parse(value.lastPlayedAt))) record.lastPlayedAt = value.lastPlayedAt;
+  return record.cleared || record.bestScore > 0 || record.lastScore > 0 ? record : null;
+}
+
 function loadUnlockedStage() {
-  const saved = Number(localStorage.getItem(UNLOCK_KEY));
-  state.unlockedStage = Number.isFinite(saved) ? Math.min(saved, stages.length - 1) : 0;
+  state.unlockedStage = boundedInteger(safeProfileRead(UNLOCK_KEY), 0, stages.length - 1, 0);
 }
 
 function saveUnlockedStage(value) {
-  state.unlockedStage = Math.max(state.unlockedStage, Math.min(value, stages.length - 1));
-  localStorage.setItem(UNLOCK_KEY, String(state.unlockedStage));
+  const repaired = boundedInteger(value, 0, stages.length - 1, 0);
+  state.unlockedStage = Math.max(state.unlockedStage, repaired);
+  safeProfileWrite(UNLOCK_KEY, String(state.unlockedStage));
 }
 
 function loadProgress() {
-  try {
-    return JSON.parse(localStorage.getItem(PROGRESS_KEY)) || {};
-  } catch {
-    return {};
+  let parsed = {};
+  try { parsed = JSON.parse(safeProfileRead(PROGRESS_KEY) || "{}"); } catch { parsed = {}; }
+  if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) return {};
+  const normalized = {};
+  for (const [key, value] of Object.entries(parsed)) {
+    const stageIndex = Number(key);
+    if (!Number.isInteger(stageIndex) || stageIndex < 0 || stageIndex >= stages.length) continue;
+    const record = normalizeProgressRecord(value, stageIndex);
+    if (record) normalized[stageIndex] = record;
   }
+  return normalized;
+}
+
+function persistCanonicalProfile() {
+  safeProfileWrite(UNLOCK_KEY, String(state.unlockedStage));
+  safeProfileWrite(PROGRESS_KEY, JSON.stringify(loadProgress()));
 }
 
 function saveProgress(stageKey, entry) {
   const progress = loadProgress();
-  progress[stageKey] = entry;
-  localStorage.setItem(PROGRESS_KEY, JSON.stringify(progress));
+  const stageIndex = Number(stageKey);
+  const record = Number.isInteger(stageIndex) && stageIndex >= 0 && stageIndex < stages.length
+    ? normalizeProgressRecord(entry, stageIndex)
+    : null;
+  if (record) progress[stageIndex] = record;
+  safeProfileWrite(PROGRESS_KEY, JSON.stringify(progress));
 }
 
 function stars(value) {
@@ -709,6 +755,7 @@ async function preloadGame() {
   );
   state.ready = true;
   loadUnlockedStage();
+  persistCanonicalProfile();
   loadingPanel.classList.add("hidden");
   window.WonderAnalytics?.track("game_ready", { game_id: GAME_ID });
   showMain();

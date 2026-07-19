@@ -568,6 +568,16 @@
     nodes.menuSoundBtn.setAttribute("aria-pressed", String(!muted));
   }
 
+  function persistSave(value) {
+    try {
+      localStorage.setItem(saveKey, JSON.stringify(value));
+      return true;
+    } catch {
+      // Keep the current session playable when storage is unavailable.
+      return false;
+    }
+  }
+
   function loadSave() {
     const defaultSave = () => ({ notes: 0, unlockedZone: 1, bestCatches: 0, album: [], gear: { rod: 1, reel: 1, line: 1, bait: 1, boat: 1, scan: 1 }, selectedZone: "mission-1", lureReady: false, sonarReady: false });
     const wholeNumber = (value, fallback, minimum, maximum) => {
@@ -593,21 +603,17 @@
         sonarReady: raw.sonarReady === true,
       };
       const canonical = JSON.stringify(normalized);
-      if (stored !== canonical) localStorage.setItem(saveKey, canonical);
+      if (stored !== canonical) persistSave(normalized);
       return normalized;
     } catch {
       const fallback = defaultSave();
-      try {
-        localStorage.setItem(saveKey, JSON.stringify(fallback));
-      } catch {
-        // Storage can be unavailable in privacy modes; keep the session playable.
-      }
+      persistSave(fallback);
       return fallback;
     }
   }
 
   function saveProgress() {
-    localStorage.setItem(saveKey, JSON.stringify(save));
+    return persistSave(save);
   }
 
   function track(name, data = {}) {

@@ -292,8 +292,37 @@
     starMoves: [pairs + Math.ceil(pairs * 0.35), pairs + Math.ceil(pairs * 0.8)],
   }));
 
-  let unlocked = readNumber(UNLOCK_KEY, 1);
-  let starMap = readJson(STARS_KEY, {});
+  const boundedInteger = (value, minimum, maximum, fallback) => {
+    const number = Number(value);
+    if (!Number.isFinite(number)) return fallback;
+    return Math.max(minimum, Math.min(maximum, Math.floor(number)));
+  };
+  const normalizeStarMap = (value) => {
+    if (!value || typeof value !== "object" || Array.isArray(value)) return {};
+    const normalized = {};
+    for (const [key, stars] of Object.entries(value)) {
+      const level = Number(key);
+      if (!Number.isInteger(level) || level < 1 || level > levels.length) continue;
+      const repairedStars = boundedInteger(stars, 0, 3, 0);
+      if (repairedStars > 0) normalized[level] = repairedStars;
+    }
+    return normalized;
+  };
+  const loadProgress = () => {
+    let parsedStars = {};
+    try {
+      parsedStars = JSON.parse(localStorage.getItem(STARS_KEY) || "{}");
+    } catch {
+      parsedStars = {};
+    }
+    return {
+      unlocked: boundedInteger(localStorage.getItem(UNLOCK_KEY), 1, levels.length, 1),
+      starMap: normalizeStarMap(parsedStars),
+    };
+  };
+  const loadedProgress = loadProgress();
+  let unlocked = loadedProgress.unlocked;
+  let starMap = loadedProgress.starMap;
   let currentLevelIndex = 0;
   let selectedTile = null;
   let tiles = [];
@@ -389,23 +418,12 @@
     return dictionary[locale()]?.rules?.[rule] || dictionary.en.rules[rule] || rule;
   }
 
-  function readNumber(key, fallback) {
-    const value = Number(localStorage.getItem(key));
-    return Number.isFinite(value) && value > 0 ? value : fallback;
-  }
-
-  function readJson(key, fallback) {
-    try {
-      return JSON.parse(localStorage.getItem(key) || JSON.stringify(fallback));
-    } catch {
-      return fallback;
-    }
-  }
-
   function saveProgress() {
-    localStorage.setItem(UNLOCK_KEY, String(unlocked));
-    localStorage.setItem(STARS_KEY, JSON.stringify(starMap));
+    try { localStorage.setItem(UNLOCK_KEY, String(unlocked)); } catch {}
+    try { localStorage.setItem(STARS_KEY, JSON.stringify(starMap)); } catch {}
   }
+
+  saveProgress();
 
   function applyText() {
     document.documentElement.lang = locale();

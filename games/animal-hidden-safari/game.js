@@ -350,6 +350,8 @@
   let acceptingInput = false;
   let pauseOpen = false;
   let pauseReturnFocus = null;
+  let scenePointerOwner = null;
+  let completedScenePointer = null;
 
   function clamp(value, min, max) {
     return Math.max(min, Math.min(max, value));
@@ -376,6 +378,42 @@
       return;
     }
     nodes.hintStatus.textContent = message;
+  }
+
+  function resetScenePointerOwnership() {
+    scenePointerOwner = null;
+    completedScenePointer = null;
+  }
+
+  function ownScenePointer(event) {
+    const isWrongMouseButton = event.pointerType === "mouse" && event.button !== 0;
+    if (!acceptingInput || !event.isPrimary || isWrongMouseButton || scenePointerOwner !== null) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      return;
+    }
+    scenePointerOwner = event.pointerId;
+    completedScenePointer = null;
+  }
+
+  function finishScenePointer(event) {
+    if (event.pointerId !== scenePointerOwner) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      return;
+    }
+    completedScenePointer = event.type === "pointerup" ? event.pointerId : null;
+    scenePointerOwner = null;
+  }
+
+  function guardSceneClick(event) {
+    if (!(event instanceof PointerEvent) || !event.pointerType) return;
+    if (event.pointerId !== completedScenePointer) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      return;
+    }
+    completedScenePointer = null;
   }
 
   function t(key, data = {}) {
@@ -493,6 +531,7 @@
   }
 
   function showMenu(focusIndex) {
+    resetScenePointerOwnership();
     closePause(false);
     stopTimer();
     hiddenStartedAt = 0;
@@ -512,6 +551,7 @@
   }
 
   function showMain() {
+    resetScenePointerOwnership();
     closePause(false);
     stopTimer();
     hiddenStartedAt = 0;
@@ -526,6 +566,7 @@
   }
 
   function startStage(index) {
+    resetScenePointerOwnership();
     closePause(false);
     currentStage = index;
     found = new Set();
@@ -1046,7 +1087,13 @@
       }
     });
     nodes.hintBtn.addEventListener("click", useHint);
+    nodes.scene.addEventListener("pointerdown", ownScenePointer, true);
+    nodes.scene.addEventListener("pointerup", finishScenePointer, true);
+    nodes.scene.addEventListener("pointercancel", finishScenePointer, true);
+    nodes.scene.addEventListener("click", guardSceneClick, true);
+    window.addEventListener("blur", resetScenePointerOwnership);
     window.addEventListener("pagehide", pauseSearchTimer);
+    window.addEventListener("pagehide", resetScenePointerOwnership);
     window.addEventListener("pageshow", resumeSearchTimer);
     document.addEventListener("visibilitychange", () => {
       if (document.hidden) pauseSearchTimer();
@@ -1087,6 +1134,8 @@
         mistakes,
         acceptingInput,
         unlocked,
+        scenePointerOwner,
+        completedScenePointer,
       }),
     };
   }

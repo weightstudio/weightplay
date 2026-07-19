@@ -181,6 +181,12 @@
       return Number.isSafeInteger(mission)&&mission>=0&&mission<campaign.length&&medals>0?[[mission,medals]]:[];
     }));
   }
+  function persistState(value){
+    try{
+      localStorage.setItem(KEY,JSON.stringify(value));
+      return true;
+    }catch{return false}
+  }
   function load(){
     try{
       const parsed=JSON.parse(localStorage.getItem(KEY)||"{}"),source=parsed&&typeof parsed==="object"&&!Array.isArray(parsed)?parsed:{};
@@ -191,15 +197,15 @@
         cleared:normalizeCleared(source.cleared),
         insuranceReady:source.insuranceReady===true
       };
-      localStorage.setItem(KEY,JSON.stringify(loaded));
+      persistState(loaded);
       return loaded;
     }catch{
       const fallback={unlocked:1,coins:0,safehouse:1,cleared:{},insuranceReady:false};
-      localStorage.setItem(KEY,JSON.stringify(fallback));
+      persistState(fallback);
       return fallback;
     }
   }
-  function save(){localStorage.setItem(KEY,JSON.stringify(state))}
+  function save(){return persistState(state)}
   function wallet(){return window.WeightPlayWallet?.read?.()||{diamonds:0}}
   function spendDiamonds(cost){return Boolean(window.WeightPlayWallet?.spendDiamonds?.(cost))}
   function createOffers(){return Object.keys(gadgets).map(id=>({id,level:1+Math.floor(Math.random()*3)}))}
@@ -255,7 +261,7 @@
   function t(key,vars={}){let value=copy[locale]?.[key]||copy.en[key]||key;Object.entries(vars).forEach(([k,v])=>value=value.replace(`{${k}}`,v));return value}
   function localize(){if(window.WonderI18n?.locale?.()!==locale)window.WonderI18n?.setLocale?.(locale);document.documentElement.lang=locale;const internal=document.querySelector('meta[name="robots"]')?.content.includes("noindex");document.title=`${t("title")} - ${internal?"Internal Trial":"WeightPlay"}`;document.querySelectorAll("[data-i18n]").forEach(n=>n.textContent=t(n.dataset.i18n));$("#localeSelect").setAttribute("aria-label",t("languageLabel"));$(".main-poster").alt=t("posterAlt");$(".planner > img").alt=t("orlaAlt");nodes.rail.setAttribute("aria-label",t("missionRailLabel"));nodes.fia.alt=t("fiaAlt");$("#stageBackBtn").setAttribute("aria-label",t("stageBackLabel"));$("#battleBackBtn").setAttribute("aria-label",t("battleBackLabel"));renderSummary();renderStage();renderGadgets();renderEconomy();updateGadget();renderGadgetSummary();updatePauseControl()}
   function show(name){document.body.dataset.screen=name;nodes.main.hidden=name!=="main";nodes.stage.hidden=name!=="stage";nodes.battle.hidden=name!=="battle";if(name!=="battle"){playing=false;paused=false;cancelPendingMovement();updatePauseControl()}}
-  function renderSummary(){$("#safehouseSummary").textContent=`${t("safehouse",{n:state.safehouse})} · ${t("coins")}: ${state.coins} · ${Object.keys(state.cleared).length}/${campaign.length}`}
+  function renderSummary(){$("#safehouseSummary").textContent=`${Object.keys(state.cleared).length}/${campaign.length}`}
   function medalProgress(index){
     const medals=Math.max(0,Math.min(3,Number(state.cleared[index])||0));
     if(!medals)return{visible:`☆☆☆ · ${t("notCleared")}`,accessible:t("notCleared")};

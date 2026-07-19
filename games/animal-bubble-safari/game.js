@@ -287,11 +287,11 @@
     centeredStageFrame = 0;
     const cards = [...dom.stageRail.querySelectorAll(".stage-card")];
     if (!cards.length || !dom.stageScreen.classList.contains("is-active")) return;
-    const railRect = dom.stageRail.getBoundingClientRect();
-    const railCenter = railRect.left + railRect.width / 2;
+    const canvasRect = dom.gameCanvas.getBoundingClientRect();
+    const stageCenter = canvasRect.left + canvasRect.width / 2;
     const centered = cards.reduce((nearest, card) => {
       const rect = card.getBoundingClientRect();
-      const distance = Math.abs(rect.left + rect.width / 2 - railCenter);
+      const distance = Math.abs(rect.left + rect.width / 2 - stageCenter);
       return !nearest || distance < nearest.distance ? { card, distance } : nearest;
     }, null)?.card;
     for (const card of cards) {
@@ -317,7 +317,18 @@
 
   function centerSelectedStage(behavior) {
     const card = dom.stageRail.children[selectedStage - 1];
-    if (card) card.scrollIntoView({ behavior, inline: "center", block: "nearest" });
+    centerStageCard(card, behavior);
+  }
+
+  function centerStageCard(card, behavior = "auto") {
+    if (!card) return;
+    const canvasRect = dom.gameCanvas.getBoundingClientRect();
+    const cardRect = card.getBoundingClientRect();
+    const commonScale = Number(dom.gameCanvas.dataset.commonScale) || 1;
+    const stageCenter = canvasRect.left + canvasRect.width / 2;
+    const maximum = Math.max(0, dom.stageRail.scrollWidth - dom.stageRail.clientWidth);
+    const target = Math.max(0, Math.min(maximum, dom.stageRail.scrollLeft + (cardRect.left + cardRect.width / 2 - stageCenter) / commonScale));
+    dom.stageRail.scrollTo({ left:target, behavior });
     scheduleCenteredStageCard();
   }
 
@@ -354,8 +365,6 @@
   document.addEventListener("pointercancel", finishLockedStageActivation, true);
   dom.stageRail.addEventListener("scroll", scheduleCenteredStageCard, { passive:true });
   dom.stageRail.addEventListener("wonder:stage-snap", scheduleCenteredStageCard);
-  window.addEventListener("resize", scheduleCenteredStageCard, { passive:true });
-  window.visualViewport?.addEventListener("resize", scheduleCenteredStageCard, { passive:true });
 
   let stageRailPointer = null;
   let stageRailAnimation = 0;
@@ -367,18 +376,18 @@
   const snapStageRail = () => {
     const cards = [...dom.stageRail.querySelectorAll(".stage-card")];
     if (!cards.length) return;
-    const railRect = dom.stageRail.getBoundingClientRect();
-    const railCenter = railRect.left + railRect.width / 2;
+    const canvasRect = dom.gameCanvas.getBoundingClientRect();
+    const stageCenter = canvasRect.left + canvasRect.width / 2;
     const card = cards.reduce((nearest, candidate) => {
       const rect = candidate.getBoundingClientRect();
-      const distance = Math.abs(rect.left + rect.width / 2 - railCenter);
+      const distance = Math.abs(rect.left + rect.width / 2 - stageCenter);
       return !nearest || distance < nearest.distance ? { card:candidate, distance } : nearest;
     }, null)?.card;
     if (!card) return;
     const cardRect = card.getBoundingClientRect();
     const maximum = Math.max(0, dom.stageRail.scrollWidth - dom.stageRail.clientWidth);
     const commonScale = Number(dom.gameCanvas.dataset.commonScale) || 1;
-    const target = Math.max(0, Math.min(maximum, dom.stageRail.scrollLeft + (cardRect.left + cardRect.width / 2 - railCenter) / commonScale));
+    const target = Math.max(0, Math.min(maximum, dom.stageRail.scrollLeft + (cardRect.left + cardRect.width / 2 - stageCenter) / commonScale));
     const start = dom.stageRail.scrollLeft;
     const distance = target - start;
     const started = performance.now();
@@ -1112,8 +1121,25 @@
   window.addEventListener("blur", cancelAim);
   window.addEventListener("pagehide", cancelAim);
   document.addEventListener("visibilitychange", () => { if (document.hidden) cancelAim(); });
-  window.addEventListener("resize", fitCanvas);
-  window.visualViewport?.addEventListener("resize", fitCanvas);
+  let viewportStageSettleFrame = 0;
+  const handleViewportResize = () => {
+    const cards = [...dom.stageRail.querySelectorAll(".stage-card")];
+    const preservedCard = dom.stageScreen.classList.contains("is-active")
+      ? dom.stageRail.querySelector(".stage-card.is-centered")
+      : null;
+    const preservedIndex = preservedCard ? cards.indexOf(preservedCard) : selectedStage - 1;
+    fitCanvas();
+    if (viewportStageSettleFrame) cancelAnimationFrame(viewportStageSettleFrame);
+    viewportStageSettleFrame = requestAnimationFrame(() => {
+      viewportStageSettleFrame = requestAnimationFrame(() => {
+        viewportStageSettleFrame = 0;
+        if (!dom.stageScreen.classList.contains("is-active") || stageRailPointer) return;
+        centerStageCard(dom.stageRail.children[preservedIndex] || dom.stageRail.children[selectedStage - 1], "auto");
+      });
+    });
+  };
+  window.addEventListener("resize", handleViewportResize, { passive:true });
+  window.visualViewport?.addEventListener("resize", handleViewportResize, { passive:true });
 
   applyLocale();
   fitCanvas();

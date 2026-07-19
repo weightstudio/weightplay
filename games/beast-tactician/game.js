@@ -1202,6 +1202,15 @@
     return unit?.kind === "hero" ? t("unitKindHero") : t("unitKindSoldier");
   }
 
+  function persistSave(value) {
+    try {
+      localStorage.setItem(saveKey, JSON.stringify(value));
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
   function loadSave() {
     const defaultSave = () => ({
       bestStage: 1,
@@ -1241,21 +1250,17 @@
         stars: normalizeStageRecord(parsed.stars, (entry) => wholeNumber(entry, 0, 0, 3)),
       };
       const canonical = JSON.stringify(normalized);
-      if (raw !== canonical) localStorage.setItem(saveKey, canonical);
+      if (raw !== canonical) persistSave(normalized);
       return normalized;
     } catch {
       const fallback = defaultSave();
-      try {
-        localStorage.setItem(saveKey, JSON.stringify(fallback));
-      } catch {
-        // Storage can be unavailable in privacy modes; keep the session playable.
-      }
+      persistSave(fallback);
       return fallback;
     }
   }
 
   function save() {
-    localStorage.setItem(saveKey, JSON.stringify(state.save));
+    persistSave(state.save);
     updateProfile();
   }
 
@@ -2535,7 +2540,10 @@
 
   function showWaveClearFeedback() {
     const core = tileToPoint(currentCoreTile());
+    const message = t("waveClearFeedback", { wave: state.wave });
     addSkillEffect(core, skillFxFrames.heal, 1.18, 0.52);
+    addFloatingText(core, message, "#9fffd0");
+    showToast(message);
     playSfx("reward");
     track("game_wave_clear", { stage: state.currentStage, wave: state.wave, core_hp: Math.max(0, Math.ceil(state.coreHp)) });
     if (!state.manualSimulation && state.wave < state.stage.waves) state.nextWaveTimer = 5;
@@ -4255,11 +4263,13 @@
     resetImpactFeedback();
     startStage(10);
     state.coreHp = 100;
+    const activeCore = currentCoreTile();
+    const coreApproach = { x: Math.max(0, activeCore.x - 1), y: activeCore.y };
     const coreBoss = {
       type: "boss",
-      tile: { x: 10, y: 4 },
-      pos: tileToPoint({ x: 10, y: 4 }),
-      path: [{ x: 10, y: 4 }, coreTile],
+      tile: coreApproach,
+      pos: tileToPoint(coreApproach),
+      path: [coreApproach, activeCore],
       pathIndex: 1,
       hp: 400,
       maxHp: 400,
