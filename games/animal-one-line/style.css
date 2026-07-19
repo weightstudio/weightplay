@@ -7,9 +7,9 @@
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 
 /* Grid-fill gameplay replaces the retired freehand corridor tracer. */
-.trace-board{display:grid;place-items:center;padding:clamp(10px,2.4vmin,24px);background:linear-gradient(145deg,rgba(237,238,204,.98),rgba(203,224,185,.98));}
+.trace-board{display:grid;place-items:center;padding:clamp(8px,1.8vmin,18px);background:linear-gradient(145deg,rgba(237,238,204,.98),rgba(203,224,185,.98));container-type:size}
 .trace-board::before{opacity:.08}
-.line-grid{position:relative;z-index:1;display:grid;grid-template-columns:repeat(var(--cols),minmax(0,1fr));grid-template-rows:repeat(var(--rows),minmax(0,1fr));gap:clamp(5px,1.2vmin,12px);width:min(100%,calc((100svh - 330px) * var(--cols) / var(--rows)));max-width:680px;max-height:100%;aspect-ratio:var(--cols)/var(--rows);touch-action:none}
+.line-grid{position:relative;z-index:1;display:grid;grid-template-columns:repeat(var(--cols),minmax(0,1fr));grid-template-rows:repeat(var(--rows),minmax(0,1fr));gap:clamp(5px,1.2vmin,12px);width:min(100cqw,calc(100cqh * var(--cols) / var(--rows)));height:min(100cqh,calc(100cqw * var(--rows) / var(--cols)));max-width:680px;max-height:680px;aspect-ratio:var(--cols)/var(--rows);touch-action:none}
 .line-cell{position:relative;min-width:0;min-height:0;border-radius:clamp(10px,2vmin,20px);display:grid;place-items:center;font-size:clamp(18px,4vmin,34px);transition:background .12s,transform .12s,box-shadow .12s}
 .line-cell.is-open{background:#f7f1d6;border:2px solid #c8c5a9;box-shadow:inset 0 -5px 0 rgba(87,92,68,.16),0 5px 12px rgba(30,55,42,.18)}
 .line-cell.is-blocked{background:linear-gradient(135deg,#6f8791 0 50%,#566c79 50%);border:2px solid #81949c;box-shadow:inset 0 -6px 0 rgba(23,38,47,.28)}
@@ -19,5 +19,5 @@
 .line-cell.is-hint{animation:hintPulse .55s ease-in-out 2}
 @keyframes startPulse{50%{box-shadow:0 0 0 7px rgba(255,222,94,.3),0 5px 12px rgba(30,55,42,.18)}}
 @keyframes hintPulse{50%{transform:scale(.88);background:#fff08d;box-shadow:0 0 0 8px rgba(255,225,73,.35)}}
-@media(max-width:700px){.line-grid{width:min(100%,calc((100svh - 310px) * var(--cols) / var(--rows)));gap:6px}.trace-board{padding:8px}}
+@media(max-width:700px){.line-grid{gap:6px}.trace-board{padding:6px}}
 @media(max-height:480px) and (orientation:landscape){.line-grid{height:100%;width:auto;max-width:100%;aspect-ratio:var(--cols)/var(--rows)}.trace-board{padding:5px}.line-cell{border-radius:8px}}

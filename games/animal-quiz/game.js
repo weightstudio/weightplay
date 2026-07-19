@@ -566,6 +566,7 @@ const state = {
 let leaveOpen = false;
 let stageDrag = null;
 let suppressStageClick = false;
+let centeredStageFrame = 0;
 let quizGeneration = 0;
 let quizLifecycleSuspended = document.hidden;
 const quizTasks = new Set();
@@ -873,6 +874,26 @@ function renderStageCards() {
       return button;
     }),
   );
+  updateCenteredStageCard();
+}
+
+function updateCenteredStageCard() {
+  const cards = [...stageGrid.querySelectorAll(".stage-card")];
+  if (!cards.length) return;
+  const center = stageGrid.scrollLeft + stageGrid.clientWidth / 2;
+  const nearest = cards.reduce((best, card) => {
+    const distance = Math.abs(card.offsetLeft + card.offsetWidth / 2 - center);
+    return !best || distance < best.distance ? { card, distance } : best;
+  }, null)?.card;
+  cards.forEach((card) => card.classList.toggle("is-centered", card === nearest));
+}
+
+function scheduleCenteredStageCard() {
+  if (centeredStageFrame) return;
+  centeredStageFrame = requestAnimationFrame(() => {
+    centeredStageFrame = 0;
+    updateCenteredStageCard();
+  });
 }
 
 function centerLatestUnlockedStage(stageIndex = state.unlockedStage, shouldFocus = false) {
@@ -881,6 +902,7 @@ function centerLatestUnlockedStage(stageIndex = state.unlockedStage, shouldFocus
   if (!target) return;
   const desired = target.offsetLeft + target.offsetWidth / 2 - stageGrid.clientWidth / 2;
   stageGrid.scrollLeft = Math.max(0, Math.min(desired, stageGrid.scrollWidth - stageGrid.clientWidth));
+  updateCenteredStageCard();
   if (shouldFocus) target.focus({ preventScroll: true });
 }
 
@@ -896,6 +918,7 @@ function settleStageRail() {
 }
 
 function initStageRail() {
+  stageGrid.addEventListener("scroll", scheduleCenteredStageCard, { passive: true });
   stageGrid.addEventListener("pointerdown", (event) => {
     if (!document.body.classList.contains("quiz-stage-select") || event.button !== 0 || event.isPrimary === false) return;
     stageDrag = { id: event.pointerId, x: event.clientX, scroll: stageGrid.scrollLeft, moved: false };

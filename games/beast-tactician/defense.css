@@ -815,6 +815,44 @@ body.guardian-playing #resultPanel .modal-card {
   max-height: 100%;
 }
 
+body.guardian-playing #pauseDecisionPanel.modal-panel {
+  position: absolute;
+  inset: 0;
+  z-index: 110;
+  width: 100%;
+  height: 100%;
+  padding: 18px;
+  overflow: auto;
+}
+
+.pause-decision-card {
+  width: min(460px, 100%);
+  max-height: 100%;
+  text-align: center;
+}
+
+.pause-decision-card h2,
+.pause-decision-card p {
+  margin: 0;
+}
+
+.pause-decision-card p {
+  margin-top: 12px;
+  color: var(--text-soft);
+  line-height: 1.55;
+}
+
+.pause-decision-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.pause-decision-actions button {
+  min-height: 48px;
+}
+
 body.guardian-result .game-panel > .hud-row,
 body.guardian-result .game-panel > .boss-panel,
 body.guardian-result .game-panel > .battle-layout,

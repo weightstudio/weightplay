@@ -17,6 +17,20 @@
   ].map(([start, core]) => ({ start: { x: start[0], y: start[1] }, core: { x: core[0], y: core[1] } }));
 
   const $ = (id) => document.getElementById(id);
+  const gamePanelNode = $("gamePanel");
+  if (gamePanelNode && !$("pauseDecisionPanel")) {
+    gamePanelNode.insertAdjacentHTML("beforeend", `
+      <section id="pauseDecisionPanel" class="modal-panel pause-decision-panel is-hidden" role="dialog" aria-modal="true" aria-labelledby="pauseDecisionTitle" aria-describedby="pauseDecisionText">
+        <div class="modal-card pause-decision-card">
+          <h2 id="pauseDecisionTitle"></h2>
+          <p id="pauseDecisionText"></p>
+          <div class="pause-decision-actions">
+            <button id="pauseContinueBtn" class="primary-btn" type="button"></button>
+            <button id="pauseLeaveBtn" class="secondary-btn" type="button"></button>
+          </div>
+        </div>
+      </section>`);
+  }
   const nodes = {
     mainBack: document.querySelector(".guardian-topbar .back-btn"),
     localeSelect: $("localeSelect"),
@@ -28,6 +42,11 @@
     techPanel: $("techPanel"),
     gamePanel: $("gamePanel"),
     resultPanel: $("resultPanel"),
+    pauseDecisionPanel: $("pauseDecisionPanel"),
+    pauseDecisionTitle: $("pauseDecisionTitle"),
+    pauseDecisionText: $("pauseDecisionText"),
+    pauseContinueBtn: $("pauseContinueBtn"),
+    pauseLeaveBtn: $("pauseLeaveBtn"),
     canvas: $("gameCanvas"),
     gameTitle: $("gameTitle"),
     languageLabel: $("languageLabel"),
@@ -101,6 +120,10 @@
       backToMain: "Back to main",
       stageSelector: "Stage selector",
       backToStages: "Back to stages",
+      pauseDecisionTitle: "Pause Stage {stage}?",
+      pauseDecisionText: "Continue this exact Stage {stage} battle, or return to Stages and lose the current wave, defenders, coins, and core health.",
+      continueBattle: "Continue Battle",
+      returnToStages: "Return to Stages",
       leaveBattleConfirm: "Leave Stage {stage}? Press Back again to abandon this battle.",
       leaveBattleConfirmLabel: "Confirm leaving Stage {stage}. Current wave, defenders, coins, and core health will be lost.",
       localeName: "Traditional Chinese",
@@ -746,6 +769,10 @@
 
   applyCleanTraditionalChineseContent();
   Object.assign(text["zh-Hant"], {
+    pauseDecisionTitle: "\u66ab\u505c\u7b2c {stage} \u95dc\uff1f",
+    pauseDecisionText: "\u7e7c\u7e8c\u76ee\u524d\u7684\u7b2c {stage} \u95dc\u6230\u9b25\uff0c\u6216\u8fd4\u56de\u95dc\u5361\u4e26\u5931\u53bb\u672c\u6ce2\u9032\u5ea6\u3001\u5b88\u885b\u3001\u91d1\u5e63\u8207\u6838\u5fc3\u751f\u547d\u3002",
+    continueBattle: "\u7e7c\u7e8c\u6230\u9b25",
+    returnToStages: "\u8fd4\u56de\u95dc\u5361",
     skillReportWin3:
       "\u80fd\u529b\u5831\u544a\uff1a{stars}/3 \u661f\u3002\u8def\u7dda\u898f\u5283\u7a69\u5b9a\uff0c\u6838\u5fc3\u4fdd\u7559 {core}%\uff1b\u4e0b\u4e00\u6b65\u53ef\u4ee5\u66f4\u65e9\u96c6\u4e2d\u706b\u529b\u6253\u738b\u3002",
     skillReportWin2:
@@ -778,6 +805,10 @@
     backToMain: "Volver al inicio",
     stageSelector: "Selector de niveles",
     backToStages: "Volver a niveles",
+    pauseDecisionTitle: "\u00bfPausar el nivel {stage}?",
+    pauseDecisionText: "Contin\u00faa esta batalla exacta del nivel {stage} o vuelve a los niveles y pierde la oleada, los defensores, las monedas y la vida del n\u00facleo actuales.",
+    continueBattle: "Continuar batalla",
+    returnToStages: "Volver a niveles",
     leaveBattleConfirm: "¿Salir del nivel {stage}? Pulsa Volver otra vez para abandonar esta batalla.",
     leaveBattleConfirmLabel: "Confirma salir del nivel {stage}. Se perderán la oleada, defensores, monedas y vida del núcleo.",
     localeName: "Español",
@@ -1036,7 +1067,6 @@
   let reviveConfirmPending = false;
   let reviveConfirmTimer = 0;
   let leaveBattleConfirmPending = false;
-  let leaveBattleConfirmTimer = 0;
   let leaveBattleWasPaused = false;
   let toastTimer = 0;
 
@@ -1205,12 +1235,8 @@
     document.body.classList.toggle("guardian-playing", screen === "game" || screen === "result");
     document.body.classList.toggle("guardian-result", resultActive);
     document.body.classList.toggle("guardian-stage", stageActive);
-    nodes.gamePanel.querySelectorAll(":scope > .hud-row, :scope > .boss-panel, :scope > .battle-layout, :scope > .command-row").forEach((layer) => {
-      layer.inert = resultActive;
-      if (resultActive) layer.setAttribute("aria-hidden", "true");
-      else layer.removeAttribute("aria-hidden");
-    });
-    [nodes.menuPanel, nodes.stagePanel, nodes.techPanel, nodes.gamePanel, nodes.resultPanel].forEach((panel) => panel?.classList.add("is-hidden"));
+    setBattleDecisionCoverage(resultActive);
+    [nodes.menuPanel, nodes.stagePanel, nodes.techPanel, nodes.gamePanel, nodes.resultPanel, nodes.pauseDecisionPanel].forEach((panel) => panel?.classList.add("is-hidden"));
     if (screen === "menu") nodes.menuPanel.classList.remove("is-hidden");
     if (screen === "stages") nodes.stagePanel.classList.remove("is-hidden");
     if (screen === "tech") nodes.techPanel.classList.remove("is-hidden");
@@ -1246,6 +1272,7 @@
     nodes.stageBackBtn.setAttribute("aria-label", t("backToMain"));
     nodes.stageRail.setAttribute("aria-label", t("stageSelector"));
     nodes.menuBtn.setAttribute("aria-label", t("backToStages"));
+    renderPauseDecision();
     nodes.gameTitle.textContent = t("title");
     nodes.languageLabel.textContent = t("language");
     nodes.releaseBadge.textContent = t(isPublicRelease ? "publicReleaseBadge" : "releaseBadge");
@@ -2207,31 +2234,47 @@
     updateHud();
   }
 
+  function setBattleDecisionCoverage(covered) {
+    nodes.gamePanel.querySelectorAll(":scope > .hud-row, :scope > .boss-panel, :scope > .battle-layout, :scope > .command-row").forEach((layer) => {
+      layer.inert = covered;
+      if (covered) layer.setAttribute("aria-hidden", "true");
+      else layer.removeAttribute("aria-hidden");
+    });
+  }
+
+  function renderPauseDecision() {
+    if (!nodes.pauseDecisionPanel) return;
+    nodes.pauseDecisionTitle.textContent = t("pauseDecisionTitle", { stage: state.currentStage });
+    nodes.pauseDecisionText.textContent = t("pauseDecisionText", { stage: state.currentStage });
+    nodes.pauseContinueBtn.textContent = t("continueBattle");
+    nodes.pauseLeaveBtn.textContent = t("returnToStages");
+  }
+
   function clearLeaveBattleConfirmation(restoreBattle = true) {
-    clearTimeout(leaveBattleConfirmTimer);
-    leaveBattleConfirmTimer = 0;
     if (!leaveBattleConfirmPending) return;
     leaveBattleConfirmPending = false;
-    hideToast();
-    nodes.menuBtn.setAttribute("aria-label", t("backToStages"));
+    nodes.pauseDecisionPanel.classList.add("is-hidden");
+    setBattleDecisionCoverage(false);
     if (restoreBattle && state.screen === "game" && !state.gameOver) {
       state.paused = leaveBattleWasPaused;
       updateHud();
+      window.requestAnimationFrame(() => nodes.menuBtn.focus({ preventScroll: true }));
     }
   }
 
   function requestLeaveBattle() {
-    if (!leaveBattleConfirmPending) {
-      leaveBattleWasPaused = state.paused;
-      state.paused = true;
-      leaveBattleConfirmPending = true;
-      nodes.menuBtn.setAttribute("aria-label", t("leaveBattleConfirmLabel", { stage: state.currentStage }));
-      showToast(t("leaveBattleConfirm", { stage: state.currentStage }), 5000);
-      updateHud();
-      leaveBattleConfirmTimer = setTimeout(() => clearLeaveBattleConfirmation(true), 5000);
-      nodes.menuBtn.focus({ preventScroll: true });
-      return;
-    }
+    if (leaveBattleConfirmPending || state.screen !== "game" || state.gameOver) return;
+    leaveBattleWasPaused = state.paused;
+    state.paused = true;
+    leaveBattleConfirmPending = true;
+    renderPauseDecision();
+    setBattleDecisionCoverage(true);
+    nodes.pauseDecisionPanel.classList.remove("is-hidden");
+    updateHud();
+    window.requestAnimationFrame(() => nodes.pauseContinueBtn.focus({ preventScroll: true }));
+  }
+
+  function leaveBattleForStages() {
     clearLeaveBattleConfirmation(false);
     setScreen("stages");
     renderStages();
@@ -3427,6 +3470,23 @@
       if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
     });
     nodes.menuBtn.addEventListener("click", requestLeaveBattle);
+    nodes.pauseContinueBtn.addEventListener("click", () => clearLeaveBattleConfirmation(true));
+    nodes.pauseLeaveBtn.addEventListener("click", leaveBattleForStages);
+    nodes.pauseDecisionPanel.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        clearLeaveBattleConfirmation(true);
+        return;
+      }
+      if (event.key !== "Tab") return;
+      if (event.shiftKey && document.activeElement === nodes.pauseContinueBtn) {
+        event.preventDefault();
+        nodes.pauseLeaveBtn.focus({ preventScroll: true });
+      } else if (!event.shiftKey && document.activeElement === nodes.pauseLeaveBtn) {
+        event.preventDefault();
+        nodes.pauseContinueBtn.focus({ preventScroll: true });
+      }
+    });
     nodes.waveBtn.addEventListener("click", startWave);
     nodes.upgradeBtn.addEventListener("keydown", (event) => {
       if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();

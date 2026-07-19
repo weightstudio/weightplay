@@ -559,8 +559,25 @@ body.is-bakery-playing .play-panel {
 }
 
 .stage-card.is-selected {
-  outline: 3px solid rgba(19, 185, 107, 0.62);
   background: linear-gradient(145deg, #fffbe7, #ffd57f);
+}
+
+.stage-card.is-centered {
+  outline: 4px solid #ffd33d;
+  outline-offset: 0;
+  box-shadow:
+    0 0 0 4px rgba(255, 249, 190, 0.96),
+    0 0 25px 9px rgba(255, 196, 48, 0.76),
+    0 8px 0 #a95f2b;
+}
+
+.stage-card.locked.is-centered {
+  filter: grayscale(0.3);
+  opacity: 0.78;
+  box-shadow:
+    0 0 0 4px rgba(255, 249, 190, 0.96),
+    0 0 25px 9px rgba(255, 196, 48, 0.76),
+    0 8px 0 #7d6a22;
 }
 
 .stage-icons {

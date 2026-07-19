@@ -1002,6 +1002,21 @@ body.orb-fortress-playing #stagePanel.stage-panel,
 body.orb-fortress-playing #upgradePanel.modal-panel{top:auto;bottom:60px}
 body.orb-fortress-playing .sound-toggle{display:none!important}
 
+/* Five stable HUD columns: return, three values, and Pause. The shared
+   responsive Canvas may widen the middle tracks, but no control may wrap into
+   the arena track at any viewport. */
+body.wp-logical-battle-active.orb-fortress-playing #gamePanel.game-panel .hud-row {
+  grid-template-columns: 48px repeat(3, minmax(0, 1fr)) 48px !important;
+  grid-template-rows: 54px !important;
+}
+
+body.wp-logical-battle-active.orb-fortress-playing #gamePanel.game-panel .hud-row .pause-btn {
+  width: 48px !important;
+  min-width: 48px !important;
+  height: 48px !important;
+  min-height: 48px !important;
+}
+
 @media (max-height:560px) {
   body.orb-fortress-playing #gamePanel.game-panel>#resultPanel.result-panel{grid-template-columns:92px minmax(0,1fr);grid-template-rows:minmax(0,1fr);align-items:center;gap:10px;padding:10px}
   body.orb-fortress-playing #resultPanel .result-lion{width:88px;height:88px;justify-self:center}

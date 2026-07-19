@@ -415,6 +415,7 @@
   let busy = false;
   let leaveConfirmOpen = false;
   let lastResult = null;
+  let centeredStageFrame = 0;
   const popMs = 620;
   const dropMs = 920;
 
@@ -610,6 +611,7 @@
       });
       nodes.stageGrid.appendChild(button);
     });
+    updateCenteredStageCard();
     const centerSelectedStage = () => {
       const selected = [...nodes.stageGrid.querySelectorAll(".stage-card:not(.locked)")].at(-1);
       if (!selected) return;
@@ -617,9 +619,29 @@
         left: selected.offsetLeft - (nodes.stageGrid.clientWidth - selected.offsetWidth) / 2,
         behavior: "auto",
       });
+      updateCenteredStageCard();
     };
     centerSelectedStage();
     window.requestAnimationFrame(() => window.requestAnimationFrame(centerSelectedStage));
+  }
+
+  function updateCenteredStageCard() {
+    const cards = [...nodes.stageGrid.querySelectorAll(".stage-card")];
+    if (!cards.length) return;
+    const center = nodes.stageGrid.scrollLeft + nodes.stageGrid.clientWidth / 2;
+    const nearest = cards.reduce((best, card) => {
+      const distance = Math.abs(card.offsetLeft + card.offsetWidth / 2 - center);
+      return !best || distance < best.distance ? { card, distance } : best;
+    }, null)?.card;
+    cards.forEach((card) => card.classList.toggle("is-centered", card === nearest));
+  }
+
+  function scheduleCenteredStageCard() {
+    if (centeredStageFrame) return;
+    centeredStageFrame = requestAnimationFrame(() => {
+      centeredStageFrame = 0;
+      updateCenteredStageCard();
+    });
   }
 
   function recommendedStageIndex() {
@@ -1386,6 +1408,7 @@
   }
 
   nodes.startGameBtn.addEventListener("keydown", rejectRepeatedScreenActivation, true);
+  nodes.stageGrid.addEventListener("scroll", scheduleCenteredStageCard, { passive: true });
   nodes.stageGrid.addEventListener("keydown", (event) => {
     if (event.target.closest(".stage-card")) rejectRepeatedScreenActivation(event);
   }, true);

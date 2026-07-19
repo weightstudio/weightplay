@@ -351,6 +351,22 @@ a {
   scroll-snap-stop: always;
 }
 
+.stage-card.is-centered {
+  border-color: #f4b400;
+  box-shadow:
+    0 0 0 4px rgba(255, 244, 164, 0.96),
+    0 0 24px 8px rgba(255, 207, 72, 0.72),
+    0 7px 0 #b67500;
+}
+
+.stage-card.locked.is-centered {
+  border-color: #f4b400;
+  box-shadow:
+    0 0 0 4px rgba(255, 244, 164, 0.96),
+    0 0 24px 8px rgba(255, 207, 72, 0.72),
+    0 7px 0 #8f760f;
+}
+
 .stage-card span {
   justify-self: start;
   padding: 4px 9px;
