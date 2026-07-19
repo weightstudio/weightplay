@@ -69,10 +69,6 @@
     resultScore: $("resultScore"),
     resultText: $("resultText"),
     resultSummary: $("resultSummary"),
-    skillReportText: $("skillReportText"),
-    logicStars: $("logicStars"),
-    focusStars: $("focusStars"),
-    problemStars: $("problemStars"),
     loadingPanel: $("loadingPanel"),
     loadingText: $("loadingText"),
     loadingFill: $("loadingFill"),
@@ -1834,6 +1830,52 @@
     6: ["ward", "rusher", "shooter", "regenerator", "orbiter", "silencer"],
   };
 
+  const encounter = (formations, rooms, tuning = {}) => ({
+    formations,
+    rooms: rooms.map((room) => room.trim().split(/\s+/)),
+    grace: tuning.grace || [2200, 1900, 1700],
+    eliteDelay: tuning.eliteDelay || [8000, 7400, 6800],
+    hpMultiplier: tuning.hpMultiplier || 1,
+    speedMultiplier: tuning.speedMultiplier || 1,
+    eliteHp: tuning.eliteHp || [3.2, 3.6, 4.2],
+    eliteSpeed: tuning.eliteSpeed || 1,
+  });
+
+  // Each named expedition owns three authored rooms. The visible mission rule
+  // now changes threat order and entry geometry instead of only changing count.
+  const encounterProfiles = {
+    chase: encounter(["north", "sides", "corners"], ["chaser chaser chaser", "chaser chaser chaser rusher", "chaser chaser rusher chaser splitter"], { grace:[3500,2800,2400], eliteDelay:[12000,11500,11000], hpMultiplier:.62, speedMultiplier:.72, eliteHp:[1.8,2.1,2.4], eliteSpeed:.78 }),
+    rush: encounter(["sides", "pincer", "columns"], ["chaser rusher chaser rusher", "rusher chaser rusher chaser rusher", "rusher rusher chaser splitter rusher chaser"], { grace:[2800,2400,2100], eliteDelay:[10500,10000,9500], hpMultiplier:.76, speedMultiplier:.84, eliteHp:[2.2,2.5,2.8], eliteSpeed:.86 }),
+    swarm: encounter(["corners", "surround", "north"], ["chaser chaser splitter chaser", "chaser splitter chaser splitter chaser", "splitter chaser chaser splitter rusher chaser"], { hpMultiplier:.84, speedMultiplier:.9, eliteDelay:[9500,9000,8500] }),
+    split: encounter(["columns", "corners", "surround"], ["splitter chaser splitter chaser chaser", "splitter splitter chaser rusher splitter chaser", "splitter rusher splitter chaser splitter rusher chaser"], { hpMultiplier:.9, eliteDelay:[9000,8500,8000] }),
+    "boss-moss": encounter(["north", "pincer", "ring"], ["chaser rusher splitter chaser rusher", "rusher splitter rusher chaser splitter chaser", "splitter rusher chaser splitter rusher chaser splitter"], { eliteDelay:[8500,8000,7600] }),
+    ranged: encounter(["north", "south", "sides"], ["shooter chaser shooter chaser chaser", "shooter shooter chaser rusher chaser shooter", "shooter chaser shooter chaser rusher shooter chaser"]),
+    crossfire: encounter(["sides", "columns", "cross"], ["shooter chaser shooter chaser rusher", "shooter shooter chaser shooter chaser rusher", "shooter rusher shooter chaser shooter rusher chaser"]),
+    pulse: encounter(["ring", "corners", "surround"], ["pulser chaser chaser pulser chaser", "pulser shooter chaser pulser rusher chaser", "pulser shooter pulser chaser rusher shooter chaser"]),
+    "ranged-rush": encounter(["south", "pincer", "cross"], ["shooter rusher chaser shooter rusher", "rusher shooter rusher chaser shooter rusher", "shooter rusher pulser chaser shooter rusher chaser"]),
+    "boss-echo": encounter(["columns", "cross", "ring"], ["shooter pulser chaser shooter rusher", "pulser shooter rusher shooter chaser pulser", "shooter pulser rusher shooter pulser chaser rusher"]),
+    shield: encounter(["north", "sides", "corners"], ["ward chaser tank chaser ward", "ward tank chaser rusher ward chaser", "ward chaser tank ward rusher tank chaser"]),
+    "shield-rush": encounter(["pincer", "columns", "surround"], ["ward rusher chaser ward rusher chaser", "rusher ward rusher tank chaser ward", "ward rusher tank rusher ward chaser rusher"]),
+    "split-shield": encounter(["corners", "ring", "sides"], ["splitter ward chaser splitter tank chaser", "ward splitter ward chaser splitter rusher tank", "splitter ward rusher splitter tank ward chaser rusher"]),
+    warded: encounter(["cross", "north", "ring"], ["ward tank ward chaser rusher tank", "ward ward tank rusher chaser ward tank", "tank ward rusher ward chaser tank ward rusher"]),
+    "boss-crystal": encounter(["columns", "surround", "ring"], ["ward tank rusher ward chaser tank", "ward rusher tank ward splitter chaser ward", "ward tank rusher ward splitter tank chaser rusher"]),
+    regen: encounter(["south", "sides", "north"], ["regenerator chaser tank regenerator chaser tank", "regenerator shooter chaser tank regenerator rusher", "regenerator tank shooter regenerator chaser rusher tank"]),
+    slow: encounter(["sides", "pincer", "corners"], ["slower chaser slower tank chaser rusher", "slower tank chaser slower shooter rusher tank", "slower rusher tank slower shooter chaser rusher"]),
+    "regen-swarm": encounter(["corners", "surround", "ring"], ["regenerator chaser splitter regenerator chaser tank", "splitter regenerator chaser slower splitter tank rusher", "regenerator splitter slower chaser splitter tank rusher regenerator"]),
+    "slow-ranged": encounter(["columns", "cross", "sides"], ["slower shooter chaser slower shooter tank", "shooter slower shooter chaser tank rusher slower", "slower shooter rusher slower shooter tank chaser regenerator"]),
+    "boss-mire": encounter(["north", "ring", "surround"], ["regenerator slower tank chaser shooter regenerator", "slower regenerator shooter tank rusher slower regenerator", "regenerator slower shooter tank rusher regenerator slower chaser"]),
+    orbit: encounter(["ring", "corners", "surround"], ["orbiter chaser orbiter shooter chaser rusher", "orbiter shooter chaser orbiter pulser rusher shooter", "orbiter shooter pulser chaser orbiter rusher shooter"]),
+    "ranged-orbit": encounter(["sides", "ring", "cross"], ["shooter orbiter chaser shooter orbiter rusher", "orbiter shooter orbiter chaser pulser shooter rusher", "shooter orbiter pulser shooter chaser orbiter rusher"]),
+    silence: encounter(["north", "columns", "pincer"], ["silencer chaser shooter silencer chaser orbiter", "silencer shooter rusher orbiter silencer chaser shooter", "silencer orbiter shooter rusher silencer pulser chaser"]),
+    "pulse-orbit": encounter(["corners", "ring", "surround"], ["pulser orbiter chaser pulser shooter orbiter", "orbiter pulser shooter rusher orbiter silencer chaser", "pulser orbiter silencer shooter rusher orbiter pulser chaser"]),
+    "boss-moon": encounter(["columns", "cross", "ring"], ["orbiter silencer shooter chaser pulser orbiter", "silencer orbiter pulser shooter rusher silencer orbiter", "orbiter silencer pulser shooter orbiter rusher silencer chaser"]),
+    gauntlet: encounter(["north", "south", "surround"], ["ward rusher shooter chaser regenerator orbiter silencer", "rusher shooter ward regenerator orbiter silencer chaser rusher", "ward shooter rusher regenerator orbiter silencer pulser chaser"]),
+    "warded-ranged": encounter(["sides", "cross", "columns"], ["ward shooter ward chaser silencer shooter rusher", "shooter ward silencer tank shooter ward rusher chaser", "ward shooter silencer rusher tank ward shooter orbiter"]),
+    "rush-regen": encounter(["pincer", "corners", "surround"], ["rusher regenerator rusher chaser slower rusher tank", "regenerator rusher slower rusher shooter chaser regenerator rusher", "rusher regenerator silencer slower rusher tank shooter chaser"]),
+    "all-specials": encounter(["ring", "cross", "surround"], ["ward regenerator orbiter silencer shooter rusher pulser", "slower ward shooter orbiter regenerator silencer rusher chaser", "ward rusher shooter regenerator orbiter silencer pulser slower tank"]),
+    "boss-crown": encounter(["columns", "surround", "ring"], ["ward shooter rusher regenerator orbiter silencer pulser", "rusher ward silencer shooter regenerator orbiter slower chaser", "ward rusher shooter regenerator orbiter silencer pulser slower tank chaser"]),
+  };
+
   const guardianBehaviors = ["moss", "echo", "crystal", "mire", "moon", "crown"];
   const guardianNames = {
     moss: { en: "Moss Guardian", zh: "苔原守護者" },
@@ -1873,6 +1915,36 @@
     return { x: -40, y: Math.random() * ARENA_HEIGHT };
   }
 
+  function formationSpawnPoint(formation, index, count) {
+    const ratio = (index + 1) / (count + 1);
+    const horizontal = 80 + ratio * (ARENA_WIDTH - 160);
+    const vertical = 100 + ratio * (ARENA_HEIGHT - 200);
+    if (formation === "north") return { x: horizontal, y: 55 };
+    if (formation === "south") return { x: horizontal, y: ARENA_HEIGHT - 55 };
+    if (formation === "sides" || formation === "pincer") return { x: index % 2 ? ARENA_WIDTH - 55 : 55, y: vertical };
+    if (formation === "columns") return { x: horizontal, y: index % 2 ? ARENA_HEIGHT - 55 : 55 };
+    if (formation === "corners") {
+      return [
+        { x: 55, y: 90 }, { x: ARENA_WIDTH - 55, y: 90 },
+        { x: ARENA_WIDTH - 55, y: ARENA_HEIGHT - 90 }, { x: 55, y: ARENA_HEIGHT - 90 },
+      ][index % 4];
+    }
+    if (formation === "cross") {
+      return [
+        { x: ARENA_WIDTH / 2, y: 55 }, { x: ARENA_WIDTH - 55, y: ARENA_HEIGHT / 2 },
+        { x: ARENA_WIDTH / 2, y: ARENA_HEIGHT - 55 }, { x: 55, y: ARENA_HEIGHT / 2 },
+      ][index % 4];
+    }
+    if (formation === "ring" || formation === "surround") {
+      const angle = -Math.PI / 2 + (Math.PI * 2 * index) / Math.max(1, count);
+      return {
+        x: ARENA_WIDTH / 2 + Math.cos(angle) * (ARENA_WIDTH / 2 - 55),
+        y: ARENA_HEIGHT / 2 + Math.sin(angle) * (ARENA_HEIGHT / 2 - 55),
+      };
+    }
+    return edgeSpawnPoint();
+  }
+
   function createThreat(behavior, x, y, options = {}) {
     const mission = missionDefinition();
     const room = state.room || 1;
@@ -1902,14 +1974,14 @@
     };
   }
 
-  function createGuardian(region, checkpoint) {
+  function createGuardian(region, checkpoint, options = {}) {
     const behavior = checkpoint ? guardianBehaviors[region - 1] : guardianBehaviors[Math.max(0, region - 1)];
-    const hpMultiplier = checkpoint ? 8.6 : 4.2;
+    const hpMultiplier = checkpoint ? 8.6 : (options.hpMultiplier || 4.2);
     const guardian = createThreat(behavior, ARENA_WIDTH / 2, -70, {
       isElite: true,
       isBoss: checkpoint,
       hpMultiplier,
-      speedMultiplier: checkpoint ? 0.82 : 1,
+      speedMultiplier: checkpoint ? 0.82 : (options.speedMultiplier || 1),
       size: checkpoint ? 92 : 38,
       label: checkpoint
         ? guardianNames[behavior][getLocale() === "zh-Hant" ? "zh" : getLocale() === "es" ? "es" : "en"]
@@ -1932,12 +2004,17 @@
     const room = state.room;
     const expedition = state.expedition;
     const mission = missionDefinition(expedition);
-    const threatPool = regionThreatPools[mission.region];
-    const enemyCount = 6 + room * 2 + Math.min(8, Math.floor((mission.id - 1) / 4));
-    for (let i = 0; i < enemyCount; i += 1) {
-      const point = edgeSpawnPoint();
-      const behavior = threatPool[(i + room + mission.id) % threatPool.length];
-      state.enemies.push(createThreat(behavior, point.x, point.y));
+    const encounterProfile = encounterProfiles[mission.rule];
+    const roomIndex = Math.max(0, Math.min(ROOMS_PER_EXPEDITION - 1, room - 1));
+    const roomThreats = encounterProfile?.rooms[roomIndex] || regionThreatPools[mission.region];
+    const formation = encounterProfile?.formations[roomIndex] || "surround";
+    state.roomGraceUntil = performance.now() + (encounterProfile?.grace[roomIndex] || ROOM_ENTRY_GRACE_MS);
+    for (let i = 0; i < roomThreats.length; i += 1) {
+      const point = formationSpawnPoint(formation, i, roomThreats.length);
+      state.enemies.push(createThreat(roomThreats[i], point.x, point.y, {
+        hpMultiplier: encounterProfile?.hpMultiplier || 1,
+        speedMultiplier: encounterProfile?.speedMultiplier || 1,
+      }));
     }
 
     // Every room has one key carrier. Room 3 becomes a named regional Guardian
@@ -1949,8 +2026,11 @@
         state.bossWarningUntil = performance.now() + 2400;
         window.WonderSound?.play("boss");
       }
-      state.enemies.push(createGuardian(mission.region, checkpoint));
-    }, 4000);
+      state.enemies.push(createGuardian(mission.region, checkpoint, {
+        hpMultiplier: encounterProfile?.eliteHp[roomIndex],
+        speedMultiplier: encounterProfile?.eliteSpeed,
+      }));
+    }, encounterProfile?.eliteDelay[roomIndex] || 6800);
   }
 
   function updateHUDText() {
@@ -2325,20 +2405,6 @@
     nodes.resultScore.textContent = won ? String(ROOMS_PER_EXPEDITION) : String(state.room - 1);
 
     const cleared = won ? ROOMS_PER_EXPEDITION : (state.room - 1);
-    let starsStr = "";
-    if (cleared === 3) starsStr = "⭐⭐⭐⭐⭐";
-    else if (cleared === 2) starsStr = "⭐⭐⭐";
-    else if (cleared === 1) starsStr = "⭐";
-    else starsStr = "☆";
-
-    nodes.logicStars.textContent = starsStr;
-    nodes.focusStars.textContent = starsStr;
-    nodes.problemStars.textContent = starsStr;
-
-    const skillScore = `${Math.min(5, cleared + 2)}/5`;
-    nodes.logicStars.textContent = skillScore;
-    nodes.focusStars.textContent = skillScore;
-    nodes.problemStars.textContent = skillScore;
     const previousUnlocked = Math.max(1, Math.min(EXPEDITION_COUNT, Number(profile.unlockedExpedition) || 1));
     let newlyUnlocked = 0;
     if (won) {
@@ -2347,11 +2413,9 @@
       if (profile.unlockedExpedition > previousUnlocked) newlyUnlocked = profile.unlockedExpedition;
       saveProfile();
       nodes.resultText.textContent = t("report_win");
-      nodes.skillReportText.textContent = t("report_win");
       window.WonderSound?.play("win");
     } else {
       nodes.resultText.textContent = t("report_partial", { room: state.room });
-      nodes.skillReportText.textContent = t("report_partial", { room: state.room });
       window.WonderSound?.play("wrong");
     }
     resultNextExpedition = won && (state.expedition || 1) < EXPEDITION_COUNT && profile.unlockedExpedition >= (state.expedition || 1) + 1
@@ -3409,6 +3473,16 @@
           spawnRoomEntities();
           return this.snapshot();
         },
+        forceCurrentEliteForTest() {
+          const task = eliteSpawnCallback;
+          window.clearTimeout(eliteSpawnTimer);
+          eliteSpawnTimer = 0;
+          eliteSpawnDueAt = 0;
+          eliteSpawnRemaining = 0;
+          eliteSpawnCallback = null;
+          task?.();
+          return this.snapshot();
+        },
         forceOpeningContactForTest() {
           state.enemies.forEach((enemy) => {
             enemy.x = state.playerX;
@@ -3424,6 +3498,19 @@
             checkpoints: expeditionDefs.filter((mission) => mission.checkpoint).map((mission) => mission.id),
             rules: [...new Set(expeditionDefs.map((mission) => mission.rule))],
             threatTypes: [...new Set(Object.values(regionThreatPools).flat())],
+            encounters: expeditionDefs.map((mission) => {
+              const profile = encounterProfiles[mission.rule];
+              return {
+                id: mission.id,
+                rule: mission.rule,
+                formations: profile.formations.slice(),
+                rooms: profile.rooms.map((room) => room.slice()),
+                grace: profile.grace.slice(),
+                eliteDelay: profile.eliteDelay.slice(),
+                hpMultiplier: profile.hpMultiplier,
+                speedMultiplier: profile.speedMultiplier,
+              };
+            }),
             guardianBehaviors: guardianBehaviors.slice(),
             guardianAssets: guardianBehaviors.map((behavior) => {
               const asset = guardianSpriteForBehavior(behavior);
@@ -3528,7 +3615,6 @@
             resultScore: nodes.resultScore.textContent,
             resultText: nodes.resultText.textContent,
             resultSummary: nodes.resultSummary?.textContent || "",
-            skillReportText: nodes.skillReportText.textContent,
             runGold: state.runGold,
             goldText: nodes.goldText?.textContent || "",
             profile: JSON.parse(localStorage.getItem(profileKey) || "{}"),
@@ -3536,6 +3622,7 @@
             expedition: state.expedition,
             room: state.room,
             enemyCount: state.enemies.length,
+            enemyBehaviors: state.enemies.map((enemy) => enemy.behavior),
             eliteCount: state.enemies.filter((enemy) => enemy.isElite).length,
             eliteSpawnPending: Boolean(eliteSpawnTimer || eliteSpawnCallback),
             player: { x: state.playerX, y: state.playerY, hp: state.playerHp, maxHp: state.playerMaxHp, active: state.gameActive },

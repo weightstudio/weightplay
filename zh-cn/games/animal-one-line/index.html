@@ -99,7 +99,7 @@
   </section>
 
   <section id="stageScreen" class="stage-screen" hidden>
-    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen style="--wp-stage-art:url('../../assets/animal-one-line-bg.webp')">
+    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-canvas-max-width="viewport" style="--wp-stage-art:url('../../assets/animal-one-line-bg.webp')">
       <header class="stage-header"><button id="stageBackBtn" type="button" data-wp-return="stage" aria-label="Back">&larr;</button><div><strong data-one-line-i18n="chooseStage">Choose Trail</strong><span id="stageSummary"></span></div><img src="../../assets/weightplay-character-rainbow-hop-mimi-clean-cutout.webp" alt="" /></header>
       <section class="lesson-panel"><small id="lessonKicker"></small><strong id="lessonTitle"></strong><p id="lessonRule"></p></section>
       <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-settle-duration="360" data-wp-stage-settle-easing="smoothstep" aria-label="Trails"></div>
@@ -107,7 +107,7 @@
   </section>
 
   <section id="battleScreen" class="battle-screen" hidden>
-    <div class="battle-canvas" data-wp-logical-battle-canvas>
+    <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="viewport">
       <header class="battle-header"><button id="battleBackBtn" type="button" aria-label="Back">&larr;</button><div class="battle-progress"><span id="stageLabel"></span><div><i id="progressFill"></i></div></div><div class="battle-stat"><small data-one-line-i18n="attempts">Attempts</small><strong id="attemptCount">1</strong></div><div class="battle-stat"><small data-one-line-i18n="seals">Seals</small><strong id="sealCount">0 / 0</strong></div></header>
       <section id="objectiveRow" class="objective-row"></section>
       <section id="traceBoard" class="trace-board" aria-label="One-line tracing board">

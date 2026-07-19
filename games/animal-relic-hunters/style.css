@@ -1333,49 +1333,6 @@ body > .battle-ad-reserve { display: none; height: 56px; min-height: 56px; borde
   line-height: 1.25;
 }
 
-.skills-card {
-  width: 100%;
-  background: rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(255,255,255,0.05);
-  border-radius: 12px;
-  padding: 16px;
-  margin-bottom: 24px;
-  text-align: left;
-}
-
-.skills-card h3 {
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: #fff;
-  border-bottom: 1px solid rgba(255,255,255,0.08);
-  padding-bottom: 6px;
-  margin-bottom: 12px;
-}
-
-.skill-meter {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 4px 0;
-}
-
-.skill-meter span {
-  font-size: 0.85rem;
-  color: #cbd5e1;
-}
-
-.skill-meter .stars {
-  font-size: 1rem;
-}
-
-.skills-report-desc {
-  font-size: 0.8rem;
-  color: #94a3b8;
-  margin-top: 10px;
-  line-height: 1.4;
-  border-top: 1px dashed rgba(255,255,255,0.06);
-  padding-top: 8px;
-}
 
 .result-btn-row {
   display: flex;
@@ -1862,9 +1819,6 @@ body.relic-result .result-score-box strong {
   line-height: 44px;
 }
 
-body.relic-result .skills-card {
-  margin-bottom: 0;
-}
 
 .result-action-shell {
   display: grid;
@@ -2179,7 +2133,13 @@ body.wp-logical-battle-active.relic-playing #gamePanel[data-wp-logical-battle-ca
 /* Keep the 4:5 arena large while leaving a clean boundary below the two-row
    HUD; the shared logical Canvas scale and independent reserve stay intact. */
 body.wp-logical-battle-active.relic-playing #gamePanel[data-wp-logical-battle-canvas] .canvas-container {
-  width: 354px !important;
+  width: 358px !important;
+}
+
+@media (orientation: portrait) {
+  body.wp-logical-battle-active.relic-playing #gamePanel[data-wp-logical-battle-canvas] .canvas-container {
+    top: 3px;
+  }
 }
 
 @media (orientation: landscape) {
@@ -2297,7 +2257,7 @@ body.relic-playing.relic-result .result-ad-reserve {
 
   body.relic-playing.relic-result #resultPanel .result-card {
     display: grid;
-    grid-template-columns: minmax(0, 1.3fr) minmax(280px, .7fr);
+    grid-template-columns: minmax(0, 1fr);
     grid-template-rows: repeat(4, auto);
     align-content: center;
     align-items: start;
@@ -2324,20 +2284,16 @@ body.relic-playing.relic-result .result-ad-reserve {
 
   body.relic-playing.relic-result .result-summary {
     grid-column: 1;
-    grid-row: 3 / 5;
+    grid-row: 4;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     margin-bottom: 0;
   }
 
   body.relic-playing.relic-result .result-score-box {
-    grid-column: 2;
+    grid-column: 1;
     grid-row: 3;
-    width: 100%;
-    margin-bottom: 0;
-  }
-
-  body.relic-playing.relic-result .skills-card {
-    grid-column: 2;
-    grid-row: 4;
+    justify-self: center;
+    width: min(240px, 100%);
     margin-bottom: 0;
   }
 }

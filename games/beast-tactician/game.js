@@ -1198,19 +1198,54 @@
   }
 
   function loadSave() {
+    const defaultSave = () => ({
+      bestStage: 1,
+      diamonds: 12,
+      upgradePoints: 0,
+      tech: { power: 0, bulwark: 0, economy: 0 },
+      cosmetics: { goldenFrame: false },
+      clears: {},
+      stars: {},
+    });
+    const wholeNumber = (value, fallback, min, max) => {
+      const number = Number(value);
+      if (!Number.isFinite(number)) return fallback;
+      return Math.max(min, Math.min(max, Math.floor(number)));
+    };
+    const normalizeStageRecord = (value, normalizeValue) => {
+      if (!value || typeof value !== "object" || Array.isArray(value)) return {};
+      return Object.fromEntries(Object.entries(value).flatMap(([key, entry]) => {
+        const stageId = Number(key);
+        if (!Number.isInteger(stageId) || stageId < 1 || stageId > STAGE_COUNT) return [];
+        const normalized = normalizeValue(entry);
+        return normalized === undefined ? [] : [[stageId, normalized]];
+      }));
+    };
+    let raw = null;
     try {
-      const parsed = JSON.parse(localStorage.getItem(saveKey) || "{}");
-      return {
-        bestStage: Math.max(1, Math.min(STAGE_COUNT, Number(parsed.bestStage) || 1)),
-        diamonds: Math.max(0, Number(parsed.diamonds) || 12),
-        upgradePoints: Math.max(0, Number(parsed.upgradePoints) || 0),
-        tech: { power: 0, bulwark: 0, economy: 0, ...(parsed.tech || {}) },
-        cosmetics: { goldenFrame: false, ...(parsed.cosmetics || {}) },
-        clears: parsed.clears || {},
-        stars: parsed.stars || {},
+      raw = localStorage.getItem(saveKey);
+      const parsedValue = JSON.parse(raw || "{}");
+      const parsed = parsedValue && typeof parsedValue === "object" && !Array.isArray(parsedValue) ? parsedValue : {};
+      const normalized = {
+        bestStage: wholeNumber(parsed.bestStage, 1, 1, STAGE_COUNT),
+        diamonds: wholeNumber(parsed.diamonds, 12, 0, Number.MAX_SAFE_INTEGER),
+        upgradePoints: wholeNumber(parsed.upgradePoints, 0, 0, Number.MAX_SAFE_INTEGER),
+        tech: Object.fromEntries(techs.map((tech) => [tech.id, wholeNumber(parsed.tech?.[tech.id], 0, 0, tech.max)])),
+        cosmetics: { goldenFrame: parsed.cosmetics?.goldenFrame === true },
+        clears: normalizeStageRecord(parsed.clears, (entry) => entry === true ? true : undefined),
+        stars: normalizeStageRecord(parsed.stars, (entry) => wholeNumber(entry, 0, 0, 3)),
       };
+      const canonical = JSON.stringify(normalized);
+      if (raw !== canonical) localStorage.setItem(saveKey, canonical);
+      return normalized;
     } catch {
-      return { bestStage: 1, diamonds: 12, upgradePoints: 0, tech: { power: 0, bulwark: 0, economy: 0 }, cosmetics: { goldenFrame: false }, clears: {}, stars: {} };
+      const fallback = defaultSave();
+      try {
+        localStorage.setItem(saveKey, JSON.stringify(fallback));
+      } catch {
+        // Storage can be unavailable in privacy modes; keep the session playable.
+      }
+      return fallback;
     }
   }
 

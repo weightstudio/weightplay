@@ -1047,7 +1047,33 @@
     bindStageGridSelection();
     window.requestAnimationFrame(() => {
       centerStageCard(nodes.stageGrid.querySelector(".stage-card.selected"));
+      scheduleCenteredStageCard();
     });
+  }
+
+  let centeredStageFrame = 0;
+  function updateCenteredStageCard() {
+    centeredStageFrame = 0;
+    const cards = [...nodes.stageGrid.querySelectorAll(".stage-card")];
+    if (!cards.length || !document.body.classList.contains("guard-yard-stage")) return;
+    const gridRect = nodes.stageGrid.getBoundingClientRect();
+    const center = gridRect.left + gridRect.width / 2;
+    const nearest = cards.reduce((best, card) => {
+      const rect = card.getBoundingClientRect();
+      const distance = Math.abs(rect.left + rect.width / 2 - center);
+      return !best || distance < best.distance ? { card, distance } : best;
+    }, null)?.card;
+    cards.forEach((card) => {
+      const centered = card === nearest;
+      card.classList.toggle("is-centered", centered);
+      if (centered) card.setAttribute("aria-current", "true");
+      else card.removeAttribute("aria-current");
+    });
+  }
+
+  function scheduleCenteredStageCard() {
+    if (centeredStageFrame) window.cancelAnimationFrame(centeredStageFrame);
+    centeredStageFrame = window.requestAnimationFrame(updateCenteredStageCard);
   }
 
   function centerStageCard(card, behavior = "auto") {
@@ -1057,6 +1083,7 @@
     const renderedScale = gridRect.width > 0 ? gridRect.width / nodes.stageGrid.clientWidth : 1;
     const horizontalDelta = ((cardRect.left + cardRect.width / 2) - (gridRect.left + gridRect.width / 2)) / renderedScale;
     nodes.stageGrid.scrollTo({ left: nodes.stageGrid.scrollLeft + horizontalDelta, behavior });
+    scheduleCenteredStageCard();
   }
 
   function rejectRepeatedScreenActivation(event) {
@@ -1077,7 +1104,9 @@
     if (nodes.stageGrid.dataset.selectionBound === "1") return;
     nodes.stageGrid.dataset.selectionBound = "1";
     nodes.stageGrid.addEventListener("dragstart", (event) => event.preventDefault());
+    nodes.stageGrid.addEventListener("scroll", scheduleCenteredStageCard, { passive: true });
     nodes.stageGrid.addEventListener("wonder:stage-snap", (event) => {
+      scheduleCenteredStageCard();
       const index = Number(event.detail?.index);
       const card = Number.isInteger(index)
         ? nodes.stageGrid.querySelector(`.stage-card[data-stage-index="${index}"]`)
@@ -1086,6 +1115,8 @@
       nodes.stageGrid.querySelectorAll(".stage-card").forEach((item) => item.classList.toggle("selected", item === card));
       currentStage = index;
     });
+    window.addEventListener("resize", scheduleCenteredStageCard, { passive: true });
+    window.visualViewport?.addEventListener("resize", scheduleCenteredStageCard, { passive: true });
     nodes.stageGrid.addEventListener("click", (event) => {
       const button = event.target.closest(".stage-card");
       if (!button || !nodes.stageGrid.contains(button)) return;

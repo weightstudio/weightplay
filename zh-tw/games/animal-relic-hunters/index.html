@@ -152,7 +152,7 @@
         </div>
       </section>
 
-      <section id="stagePanel" class="panel stage-panel hidden" aria-labelledby="stageTitle">
+      <section id="stagePanel" class="panel stage-panel hidden" data-wp-canvas-max-width="viewport" aria-labelledby="stageTitle">
         <div class="stage-panel-head">
           <button id="stageBackBtn" class="play-return stage-return" data-wp-return="stage" type="button" aria-label="Back">&larr;</button>
           <div><strong id="stageTitle">Prepare Expedition</strong><span id="stageSetupText">Review permanent gear and training before entering Room 1.</span></div>
@@ -162,7 +162,7 @@
       </section>
 
       <!-- Active Game / Canvas Viewport -->
-      <section id="gamePanel" class="panel game-panel hidden" data-play-viewport data-no-mobile-immersive="true">
+      <section id="gamePanel" class="panel game-panel hidden" data-play-viewport data-no-mobile-immersive="true" data-wp-canvas-max-width="viewport">
         <div class="game-layout">
           <button id="backToStageBtn" class="play-return battle-return" data-wp-return="battle" type="button" aria-label="Back to preparation">&larr;</button>
           <button id="pauseBtn" class="battle-pause" type="button" aria-label="Pause" title="Pause">&#8545;</button>
@@ -301,26 +301,6 @@
           </div>
           <p id="resultText" class="result-flavor">Excellent run! You explored the ruins and defeated the Behemoth.</p>
           <div id="resultSummary" class="result-summary" aria-live="polite"></div>
-          
-          <div class="skills-card">
-            <h3 data-ui="skillReportTitle">Ability Analysis Report</h3>
-            <div class="skills-row">
-              <div class="skill-meter">
-                <span data-ui="skillLogic">Logic</span>
-                <span class="stars" id="logicStars">0/5</span>
-              </div>
-              <div class="skill-meter">
-                <span data-ui="skillFocus">Focus</span>
-                <span class="stars" id="focusStars">0/5</span>
-              </div>
-              <div class="skill-meter">
-                <span data-ui="skillProblem">Problem Solving</span>
-                <span class="stars" id="problemStars">0/5</span>
-              </div>
-            </div>
-            <p id="skillReportText" class="skills-report-desc">Your reaction, item placement, and equipment builds were optimized.</p>
-          </div>
-
         </div>
         <div class="result-action-shell">
           <div class="result-btn-row">

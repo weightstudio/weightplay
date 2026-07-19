@@ -524,8 +524,8 @@
 
   let locale = window.WonderI18n?.locale?.() || localStorage.getItem(localeKey) || "en";
   if (!text[locale]) locale = "en";
-  let save = loadSave();
   const legacyZoneMission = { sunny:"mission-1", kelp:"mission-6", coral:"mission-11", moon:"mission-16", deep:"mission-26" };
+  let save = loadSave();
   let selectedZone = legacyZoneMission[save.selectedZone] || save.selectedZone || "mission-1";
   if (!zones.some((zone) => zone.id === selectedZone)) selectedZone = "mission-1";
   let state = "loading";
@@ -566,20 +566,40 @@
   }
 
   function loadSave() {
+    const defaultSave = () => ({ notes: 0, unlockedZone: 1, bestCatches: 0, album: [], gear: { rod: 1, reel: 1, line: 1, bait: 1, boat: 1, scan: 1 }, selectedZone: "mission-1", lureReady: false, sonarReady: false });
+    const wholeNumber = (value, fallback, minimum, maximum) => {
+      const number = Number(value);
+      if (!Number.isFinite(number)) return fallback;
+      return Math.max(minimum, Math.min(maximum, Math.floor(number)));
+    };
+    let stored = null;
     try {
-      const raw = JSON.parse(localStorage.getItem(saveKey) || "{}");
-      return {
-        notes: Math.max(0, Number(raw.notes) || 0),
-        unlockedZone: Math.max(1, Math.min(30, Number(raw.unlockedZone) || 1)),
-        bestCatches: Math.max(0, Number(raw.bestCatches) || 0),
-        album: Array.isArray(raw.album) ? raw.album : [],
-        gear: { rod: 1, reel: 1, line: 1, bait: 1, boat: 1, scan: 1, ...(raw.gear || {}) },
-        selectedZone: raw.selectedZone || "mission-1",
+      stored = localStorage.getItem(saveKey);
+      const parsed = JSON.parse(stored || "{}");
+      const raw = parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : {};
+      const unlockedZone = wholeNumber(raw.unlockedZone, 1, 1, zones.length);
+      const selectedZone = legacyZoneMission[raw.selectedZone] || raw.selectedZone;
+      const normalized = {
+        notes: wholeNumber(raw.notes, 0, 0, Number.MAX_SAFE_INTEGER),
+        unlockedZone,
+        bestCatches: wholeNumber(raw.bestCatches, 0, 0, Number.MAX_SAFE_INTEGER),
+        album: [...new Set(Array.isArray(raw.album) ? raw.album.filter((id) => fish.some((item) => item.id === id)) : [])],
+        gear: Object.fromEntries(gear.map((item) => [item.id, wholeNumber(raw.gear?.[item.id], 1, 1, 5)])),
+        selectedZone: zones.some((zone) => zone.id === selectedZone && zone.stage <= unlockedZone) ? selectedZone : "mission-1",
         lureReady: raw.lureReady === true,
         sonarReady: raw.sonarReady === true,
       };
+      const canonical = JSON.stringify(normalized);
+      if (stored !== canonical) localStorage.setItem(saveKey, canonical);
+      return normalized;
     } catch {
-      return { notes: 0, unlockedZone: 1, bestCatches: 0, album: [], gear: { rod: 1, reel: 1, line: 1, bait: 1, boat: 1, scan: 1 }, selectedZone: "mission-1", lureReady: false, sonarReady: false };
+      const fallback = defaultSave();
+      try {
+        localStorage.setItem(saveKey, JSON.stringify(fallback));
+      } catch {
+        // Storage can be unavailable in privacy modes; keep the session playable.
+      }
+      return fallback;
     }
   }
 

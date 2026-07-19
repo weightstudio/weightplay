@@ -467,18 +467,27 @@ body.guard-yard-stage .stage-grid { padding-inline: calc((100% - 264px) / 2); to
 }
 
 .stage-card.selected {
-  outline: 3px solid rgba(255, 185, 53, 0.78);
-  outline-offset: 2px;
-  box-shadow: 0 9px 0 #b8762f, 0 0 0 6px rgba(255, 255, 255, 0.52), 0 16px 30px rgba(85, 56, 25, 0.24);
+  transform: none;
 }
 
-.stage-card.cleared.selected {
-  box-shadow: 0 9px 0 #79a843, 0 0 0 6px rgba(255, 255, 255, 0.52), 0 16px 30px rgba(70, 112, 48, 0.24);
+.stage-card.is-centered {
+  outline: 3px solid rgba(255, 216, 91, 0.96);
+  outline-offset: 2px;
+  box-shadow: 0 9px 0 #b8762f, 0 0 0 6px rgba(255, 255, 255, 0.58), 0 0 22px 10px rgba(92, 239, 151, 0.72), 0 16px 30px rgba(85, 56, 25, 0.24);
+}
+
+.stage-card.cleared.is-centered {
+  box-shadow: 0 9px 0 #79a843, 0 0 0 6px rgba(255, 255, 255, 0.58), 0 0 22px 10px rgba(92, 239, 151, 0.72), 0 16px 30px rgba(70, 112, 48, 0.24);
 }
 
 .stage-card.locked {
   filter: grayscale(1);
   opacity: 0.58;
+}
+
+.stage-card.locked.is-centered {
+  filter: none;
+  opacity: 0.76;
 }
 
 .stage-progress .stage-lock {

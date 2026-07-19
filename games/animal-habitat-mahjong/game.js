@@ -65,7 +65,7 @@
     habitatData("forest","bridge","dual",{ sealedPairs:[4,7], rescuePairs:[6,8] }), habitatData("safari","wings","dual",{ sealedPairs:[5,8], rescuePairs:[6,9] }), habitatData("ocean","crown","dual",{ sealedPairs:[6,9], rescuePairs:[8,10] }), habitatData("arctic","pyramid","dual",{ sealedPairs:[7,10], rescuePairs:[9,11] }), habitatData("forest","sanctuary","dual",{ sealedPairs:[7,10], rescuePairs:[9,11], checkpoint:true }),
     habitatData("safari","towers","grand",{ sealedPairs:[4,7], rescuePairs:[6,9] }), habitatData("ocean","pyramid","grand",{ sealedPairs:[7,10], rescuePairs:[9,11] }), habitatData("arctic","sanctuary","grand",{ sealedPairs:[7,10], rescuePairs:[9,11] }), habitatData("forest","pyramid","grand",{ sealedPairs:[6,9], rescuePairs:[10,11] }), habitatData("ocean","sanctuary","grand",{ sealedPairs:[7,10], rescuePairs:[9,11], checkpoint:true })
   ];
-  let locale = window.WonderI18n?.locale?.() || localStorage.getItem("weightPlayLocale") || "en", save = loadSave(), stageIndex = 0, selected = null, state = null, leaveOpen = false;
+  let locale = window.WonderI18n?.locale?.() || localStorage.getItem("weightPlayLocale") || "en", save = loadSave(), stageIndex = 0, selected = null, state = null, leaveOpen = false, centeredStageFrame = 0;
   const t = (key, values = {}) => Object.entries(values).reduce((out, [name, value]) => out.replaceAll(`{${name}}`, value), (copy[locale] || copy.en)[key] || copy.en[key] || key);
   function loadSave() { try { return { unlocked:1, bestPairs:0, playCount:0, bestByStage:{}, ...JSON.parse(localStorage.getItem(saveKey) || "{}") }; } catch { return { unlocked:1, bestPairs:0, playCount:0, bestByStage:{} }; } }
   const persist = () => localStorage.setItem(saveKey, JSON.stringify(save));
@@ -78,9 +78,24 @@
   const ruleKey = (habitat) => `${habitat.rule || "classic"}Rule`;
   const stageDescriptionText = (habitat) => `${t(habitat.desc)} ${t(ruleKey(habitat))}`;
   function renderMain() { nodes.progressSummary.textContent = t("progress", { count:Math.min(habitats.length, save.unlocked), cleared:Object.keys(save.bestByStage || {}).length, total:habitats.length }); }
+  function updateCenteredStageCard() {
+    const cards = [...nodes.stageRail.querySelectorAll(".stage-card")];
+    if (!cards.length || nodes.stageScreen.classList.contains("hidden")) return;
+    const railRect = nodes.stageRail.getBoundingClientRect(), railCenter = railRect.left + railRect.width / 2;
+    const centered = cards.reduce((nearest, card) => {
+      const rect = card.getBoundingClientRect(), distance = Math.abs(rect.left + rect.width / 2 - railCenter);
+      return !nearest || distance < nearest.distance ? { card, distance } : nearest;
+    }, null)?.card;
+    cards.forEach((card) => {
+      const isCentered = card === centered;
+      card.classList.toggle("is-centered", isCentered);
+      if (isCentered) card.setAttribute("aria-current", "true"); else card.removeAttribute("aria-current");
+    });
+  }
+  function scheduleCenteredStageCard() { cancelAnimationFrame(centeredStageFrame); centeredStageFrame = requestAnimationFrame(updateCenteredStageCard); }
   function syncStageSelection(index) { if (!Number.isInteger(index) || index < 0 || index >= habitats.length) return; stageIndex = index; nodes.stageRail.dataset.wpSnapTarget = String(index * 276); const habitat = habitats[index]; nodes.stagePreview.src = `../../assets/animal-habitat-mahjong-album-${habitat.id}.webp`; nodes.stageName.textContent = stageLabel(habitat); nodes.stageDescription.textContent = stageDescriptionText(habitat); nodes.stageRail.querySelectorAll(".stage-card").forEach((card) => card.classList.toggle("selected", Number(card.dataset.index) === index)); }
   function rejectLockedStage(index) { const card = nodes.stageRail.querySelector(`.stage-card[data-index="${index}"]`); syncStageSelection(index); nodes.stageStatus.textContent = t("lockedFeedback", { stage:stageLabel(habitats[index], index) }); requestAnimationFrame(() => card?.focus({ preventScroll:true })); }
-  function renderStage() { nodes.stageProgress.textContent = `${Math.min(save.unlocked, habitats.length)}/${habitats.length}`; nodes.stageStatus.textContent = ""; nodes.stageRail.replaceChildren(...habitats.map((item, index) => { const button = document.createElement("button"); const unlocked = index < save.unlocked; button.className = `stage-card${index === stageIndex ? " selected" : ""}${unlocked ? "" : " locked"}${item.checkpoint ? " checkpoint" : ""}`; button.dataset.index = index; button.dataset.stage = index + 1; button.setAttribute("aria-disabled", String(!unlocked)); button.setAttribute("aria-label", unlocked ? stageLabel(item, index) : `${stageLabel(item, index)}. ${t("locked")}`); button.innerHTML = `<b>${stageLabel(item, index)}</b><span>${stageDescriptionText(item)}</span><small>${item.checkpoint ? t("habitatFinale") : unlocked ? t("startGame") : t("locked")}</small>`; return button; })); syncStageSelection(stageIndex); requestAnimationFrame(() => { nodes.stageRail.scrollLeft = stageIndex * 276; }); }
+  function renderStage() { nodes.stageProgress.textContent = `${Math.min(save.unlocked, habitats.length)}/${habitats.length}`; nodes.stageStatus.textContent = ""; nodes.stageRail.replaceChildren(...habitats.map((item, index) => { const button = document.createElement("button"); const unlocked = index < save.unlocked; button.className = `stage-card${index === stageIndex ? " selected" : ""}${unlocked ? "" : " locked"}${item.checkpoint ? " checkpoint" : ""}`; button.dataset.index = index; button.dataset.stage = index + 1; button.setAttribute("aria-disabled", String(!unlocked)); button.setAttribute("aria-label", unlocked ? stageLabel(item, index) : `${stageLabel(item, index)}. ${t("locked")}`); button.innerHTML = `<b>${stageLabel(item, index)}</b><span>${stageDescriptionText(item)}</span><small>${item.checkpoint ? t("habitatFinale") : unlocked ? t("startGame") : t("locked")}</small>`; return button; })); syncStageSelection(stageIndex); requestAnimationFrame(() => { nodes.stageRail.scrollLeft = stageIndex * 276; scheduleCenteredStageCard(); }); }
   const usesSeal = (habitat) => ["seal","dual","grand"].includes(habitat.rule);
   const usesRescue = (habitat) => ["rescue","dual","grand"].includes(habitat.rule);
   const usesNarrow = (habitat) => ["narrow","grand"].includes(habitat.rule);
@@ -241,7 +256,8 @@
   }));
   const stageCardAtPoint = (x, y) => [...nodes.stageRail.querySelectorAll(".stage-card")].find((card) => { const rect = card.getBoundingClientRect(); return x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom; });
   let undoKeyHeld = false;
-  nodes.stageRail.addEventListener("wonder:stage-snap", (event) => syncStageSelection(Number(event.detail?.index)));
+  nodes.stageRail.addEventListener("scroll", scheduleCenteredStageCard, { passive:true });
+  nodes.stageRail.addEventListener("wonder:stage-snap", (event) => { syncStageSelection(Number(event.detail?.index)); scheduleCenteredStageCard(); });
   nodes.stageRail.addEventListener("click", (event) => { const card = event.target.closest?.(".stage-card") || stageCardAtPoint(event.clientX, event.clientY); if (!card) return; const index = Number(card.dataset.index); if (index < save.unlocked) startStage(index); else rejectLockedStage(index); });
   nodes.board.addEventListener("click", (event) => { const tile = event.target.closest(".tile"); if (tile) chooseTile(Number(tile.dataset.tile)); }); nodes.hintBtn.addEventListener("click", hint); nodes.undoBtn.addEventListener("keydown", (event) => { if (event.key !== "Enter" && event.key !== " ") return; event.preventDefault(); if (!undoKeyHeld) undo(); undoKeyHeld = true; }); nodes.undoBtn.addEventListener("keyup", (event) => { if (event.key === "Enter" || event.key === " ") undoKeyHeld = false; }); nodes.undoBtn.addEventListener("blur", () => { undoKeyHeld = false; }); nodes.undoBtn.addEventListener("click", undo); nodes.shuffleBtn.addEventListener("click", shuffle); nodes.continueBoardBtn.addEventListener("click", () => closeLeaveDecision(true)); nodes.leaveBoardBtn.addEventListener("click", leaveBoard); nodes.leavePanel.addEventListener("keydown", keepLeaveFocus, true); nodes.retryBtn.addEventListener("click", () => startStage(stageIndex)); nodes.nextBtn.addEventListener("click", () => startStage(Math.min(habitats.length - 1, stageIndex + 1))); nodes.stagesBtn.addEventListener("click", () => { stageIndex = Math.max(0, Math.min(habitats.length, save.unlocked) - 1); setScreen("stage"); renderStage(); focusCurrentStage(); });
   window.addEventListener("pagehide", suspendBattleClock);
@@ -258,5 +274,5 @@
       shuffle: () => { shuffle(); return window.__ANIMAL_HABITAT_MAHJONG_TEST__.state(); }
     };
   }
-  window.addEventListener("resize", scheduleFitCanvases, { passive:true }); window.visualViewport?.addEventListener("resize", scheduleFitCanvases, { passive:true }); applyLocale(); renderMain(); scheduleFitCanvases();
+  window.addEventListener("resize", scheduleFitCanvases, { passive:true }); window.addEventListener("resize", scheduleCenteredStageCard, { passive:true }); window.visualViewport?.addEventListener("resize", scheduleFitCanvases, { passive:true }); window.visualViewport?.addEventListener("resize", scheduleCenteredStageCard, { passive:true }); applyLocale(); renderMain(); scheduleFitCanvases();
 })();

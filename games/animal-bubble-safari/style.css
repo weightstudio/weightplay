@@ -133,8 +133,16 @@ body:not(.safari-main) .screen.is-active.weightplay-active-viewport {
 .stage-rail { position: relative; z-index: 2; height: 330px; display: flex; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding: 10px 63px 18px; touch-action: none; overscroll-behavior-x: contain; }
 .stage-rail::-webkit-scrollbar { display: none; }
 .stage-card { box-sizing: border-box; flex: 0 0 264px; width: 264px; height: 190px; display: grid; grid-template-columns: 108px minmax(0,1fr); border-radius: 8px; border: 3px solid rgba(255,255,255,.35); overflow: hidden; background: #fff; color: var(--ink); box-shadow: 0 8px 0 rgba(0,0,0,.24); text-align: left; padding: 0; }
-.stage-card.is-selected { border-color: #ffd44f; transform: translateY(-5px); }
+.stage-card.is-selected { transform: none; }
+.stage-card.is-centered {
+  border-color: #ffe36b;
+  box-shadow:
+    0 0 0 3px rgba(255,227,107,.92),
+    0 0 18px 7px rgba(65,226,198,.74),
+    0 8px 0 rgba(0,0,0,.24);
+}
 .stage-card.is-locked { filter: grayscale(.8); opacity: .58; }
+.stage-card.is-locked.is-centered { filter: none; opacity: .74; }
 .stage-card img { width: 108px; height: 100%; object-fit: cover; }
 .stage-card div { min-width: 0; padding: 12px 10px; display: grid; align-content: center; gap: 6px; }
 .stage-card b { font-size: 16px; line-height: 1.15; }

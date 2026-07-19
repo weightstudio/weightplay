@@ -958,6 +958,7 @@
   let trainingMessage = "";
   let trainingMessageTimer = 0;
   let battlePaused = false;
+  let pauseFocusOwner = nodes.pauseBtn;
 
   function clearTurnTransition() {
     clearTimeout(turnTransitionTimer);
@@ -1050,22 +1051,27 @@
 
   function closePause({ restoreFocus = true, resume = true } = {}) {
     if (!battlePaused) return;
+    const focusOwner = pauseFocusOwner?.isConnected ? pauseFocusOwner : nodes.pauseBtn;
     battlePaused = false;
     nodes.pausePanel.classList.add("is-hidden");
     nodes.pauseBtn.setAttribute("aria-expanded", "false");
+    nodes.backBtn.setAttribute("aria-expanded", "false");
     setPauseActionAvailable(true);
     setBattleCovered(false);
     if (resume) resumeTurnTransition();
-    if (restoreFocus) requestAnimationFrame(() => nodes.pauseBtn.focus({ preventScroll: true }));
+    pauseFocusOwner = nodes.pauseBtn;
+    if (restoreFocus) requestAnimationFrame(() => focusOwner.focus({ preventScroll: true }));
   }
 
-  function openPause() {
+  function openPause(focusOwner = nodes.pauseBtn) {
     if (!state || battlePaused || !nodes.rewardPanel.classList.contains("is-hidden") || !nodes.resultPanel.classList.contains("is-hidden")) return;
+    pauseFocusOwner = focusOwner?.isConnected ? focusOwner : nodes.pauseBtn;
     battlePaused = true;
     suspendTurnTransition();
     setBattleCovered(true);
     nodes.pausePanel.classList.remove("is-hidden");
     nodes.pauseBtn.setAttribute("aria-expanded", "true");
+    nodes.backBtn.setAttribute("aria-expanded", "true");
     setPauseActionAvailable(false);
     requestAnimationFrame(() => nodes.resumeBtn.focus({ preventScroll: true }));
   }
@@ -1520,6 +1526,8 @@
     nodes.backBtn.setAttribute("href", "#stage");
     nodes.backBtn.setAttribute("aria-label", t("backToMenu"));
     nodes.backBtn.setAttribute("data-wp-return", "battle");
+    nodes.backBtn.setAttribute("aria-controls", "pausePanel");
+    nodes.backBtn.setAttribute("aria-expanded", "false");
     nodes.backBtn.replaceChildren(document.createTextNode("\u2190"));
     nodes.resultPanel.classList.add("is-hidden");
     nodes.rewardPanel.classList.add("is-hidden");
@@ -2400,6 +2408,8 @@
     nodes.backBtn.setAttribute("href", "/");
     nodes.backBtn.setAttribute("aria-label", t("backToLobby"));
     nodes.backBtn.setAttribute("data-wp-return", "main");
+    nodes.backBtn.removeAttribute("aria-controls");
+    nodes.backBtn.removeAttribute("aria-expanded");
     const logo = document.createElement("img");
     logo.src = "../../assets/weightplay-logo.png";
     logo.alt = "";
@@ -2557,7 +2567,7 @@
     nodes.backBtn.addEventListener("click", (event) => {
       if (!state) return;
       event.preventDefault();
-      showMenu();
+      openPause(nodes.backBtn);
     });
     nodes.localeSelect.addEventListener("change", () => {
       resetTrainingIntent();
@@ -2597,7 +2607,7 @@
       endTurnKeyboardFocusRequested = event.detail === 0;
       endTurn();
     });
-    nodes.pauseBtn.addEventListener("click", openPause);
+    nodes.pauseBtn.addEventListener("click", () => openPause(nodes.pauseBtn));
     nodes.resumeBtn.addEventListener("click", () => closePause());
     nodes.pauseMenuBtn.addEventListener("click", leavePauseForMissions);
     nodes.pausePanel.addEventListener("keydown", (event) => {

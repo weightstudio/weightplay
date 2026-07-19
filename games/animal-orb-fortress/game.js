@@ -548,18 +548,26 @@
   }
 
   function loadSave() {
+    const boundedInteger = (value, fallback, minimum, maximum = Number.MAX_SAFE_INTEGER) => {
+      const number = Number(value);
+      return Number.isFinite(number) ? Math.max(minimum, Math.min(maximum, Math.floor(number))) : fallback;
+    };
+    const defaults = { bestRaid: 1, starStones: 0, playCount: 0, rooms: { forge: 0, shield: 0, den: 0, tower: 0 } };
     try {
       const parsed = JSON.parse(localStorage.getItem(saveKey) || "{}");
-      return {
-        bestRaid: 1,
-        starStones: 0,
-        playCount: 0,
-        rooms: { forge: 0, shield: 0, den: 0, tower: 0 },
-        ...parsed,
-        rooms: { forge: 0, shield: 0, den: 0, tower: 0, ...(parsed.rooms || {}) },
+      const source = parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : {};
+      const roomsSource = source.rooms && typeof source.rooms === "object" && !Array.isArray(source.rooms) ? source.rooms : {};
+      const normalized = {
+        bestRaid: boundedInteger(source.bestRaid, 1, 1, MAX_RAID_TIER),
+        starStones: boundedInteger(source.starStones, 0, 0),
+        playCount: boundedInteger(source.playCount, 0, 0),
+        rooms: Object.fromEntries(Object.keys(defaults.rooms).map((id) => [id, boundedInteger(roomsSource[id], 0, 0, 5)])),
       };
+      localStorage.setItem(saveKey, JSON.stringify(normalized));
+      return normalized;
     } catch {
-      return { bestRaid: 1, starStones: 0, playCount: 0, rooms: { forge: 0, shield: 0, den: 0, tower: 0 } };
+      localStorage.setItem(saveKey, JSON.stringify(defaults));
+      return defaults;
     }
   }
 

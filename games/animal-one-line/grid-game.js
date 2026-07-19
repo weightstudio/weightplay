@@ -8,7 +8,7 @@
   const routeLocale = ({ en: "en", "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", es: "es", ja: "ja" })[localeSegment] || "en";
 
   const EN = {
-    title: "One Line", language: "Language", eyebrow: "Mimi's color-grid workshop",
+    title: "One Line", language: "Language", languageLabel: "Language", mainReturn: "Back to WeightPlay", back: "Back", stageRail: "Stages", boardLabel: "One-line grid board", startCell: "Glowing paw start", close: "Close", eyebrow: "Mimi's color-grid workshop",
     pitch: "Plan one continuous route and fill every open cell without visiting any cell twice.",
     start: "Start Game", chooseStage: "Choose Puzzle", attempts: "Attempts", seals: "Cells",
     restart: "Restart", hint: "Show Hint", retry: "Retry", stages: "Stages", next: "Next Stage",
@@ -42,8 +42,17 @@
     ready: "从发光脚印开始，可以逐格点击或拖动。",
     drawing: "可以松手思考；滑回上一格可撤销。",
     incomplete: "还有格子没填满，继续规划路线。",
-    revisit: "这一格已经在路线中。"
+    revisit: "这一格已经在路线中。",
+    progress: "已完成 {cleared} / 30 个谜题", bestStars: "已收集 {stars} 颗星", stage: "关卡",
+    mainReturn: "返回 WeightPlay", back: "返回", stageRail: "关卡", languageLabel: "语言",
+    boardLabel: "一笔填格棋盘", startCell: "发光脚印起点", close: "关闭",
+    chapter1: "初次上手", chapter2: "转角规划", chapter3: "石块障碍", chapter4: "长线规划", chapter5: "紧密选择", chapter6: "大师棋盘",
+    rule1: "学习上下左右移动，并填满所有空格。", rule2: "行动前先规划转角，避免封死路线。",
+    rule3: "绕开石块，判断被分隔区域的先后顺序。", rule4: "路线更长，过早转向会留下无法到达的空格。",
+    rule5: "多个起步方向看似可行，只有完整路线能获胜。", rule6: "综合石块、狭窄出口与长路线完成最终挑战。"
   });
+  Object.assign(STRINGS["zh-Hant"], { languageLabel: "語言", mainReturn: "返回 WeightPlay", back: "返回", stageRail: "關卡", boardLabel: "一筆填格棋盤", startCell: "發光腳印起點", close: "關閉" });
+  Object.assign(STRINGS.es, { languageLabel: "Idioma", mainReturn: "Volver a WeightPlay", back: "Volver", stageRail: "Niveles", boardLabel: "Tablero de una sola línea", startCell: "Huella inicial brillante", close: "Cerrar" });
   Object.assign(STRINGS.ja, {
     tutorial1: "光る足あとから始め、1マスずつタップまたは連続ドラッグできます。",
     tutorial2: "いつでも指を離せます。進めたルートは盤面に残ります。",
@@ -51,7 +60,8 @@
     ready: "光る足あとから、タップまたはドラッグで始めよう。",
     drawing: "指を離して考えられます。1つ前へ戻ると取り消せます。",
     incomplete: "まだ空きマスがあります。ルートを続けて考えよう。",
-    revisit: "そのマスはすでにルートに含まれています。"
+    revisit: "そのマスはすでにルートに含まれています。",
+    languageLabel: "言語", mainReturn: "WeightPlay に戻る", back: "戻る", stageRail: "ステージ", boardLabel: "一筆グリッド盤", startCell: "光る足あと開始地点", close: "閉じる"
   });
   const S = STRINGS[routeLocale] || EN;
   const text = (key, vars = {}) => String(S[key] ?? EN[key] ?? key).replace(/\{(\w+)\}/g, (_, name) => vars[name] ?? "");
@@ -78,13 +88,13 @@
 
   function persist(){localStorage.setItem(SAVE_KEY,JSON.stringify(save));}
   function chapter(i){return Math.min(5,Math.floor(i/5));}
-  function applyLocale(){ document.documentElement.lang=routeLocale; document.querySelectorAll("[data-one-line-i18n]").forEach(el=>el.textContent=text(el.dataset.oneLineI18n)); if(dom.locale)dom.locale.value=routeLocale; }
+  function applyLocale(){ document.documentElement.lang=routeLocale; document.querySelectorAll("[data-one-line-i18n]").forEach(el=>el.textContent=text(el.dataset.oneLineI18n)); if(dom.locale){dom.locale.value=routeLocale;dom.locale.setAttribute("aria-label",text("languageLabel"));}document.querySelector(".main-return")?.setAttribute("aria-label",text("mainReturn"));dom.stageBack.setAttribute("aria-label",text("back"));dom.rail.setAttribute("aria-label",text("stageRail"));dom.battleBack.setAttribute("aria-label",text("back"));dom.tutorialClose.setAttribute("aria-label",text("close")); }
   function setScreen(name){document.body.dataset.screen=name;dom.main.hidden=name!=="main";dom.guide.hidden=name!=="main";dom.stage.hidden=name!=="stage";dom.battle.hidden=name!=="battle";}
   function showMain(){setScreen("main");const cleared=Object.keys(save.cleared||{}).length,stars=Object.values(save.stars||{}).reduce((a,b)=>a+Number(b||0),0);dom.mainProgress.textContent=`${text("progress",{cleared})} · ${text("bestStars",{stars})}`;}
   function renderStages(){dom.rail.innerHTML=levels.map((level,i)=>{const unlocked=i<(save.unlocked||1),cleared=save.cleared?.[i];return `<button class="stage-card ${unlocked?"unlocked":"locked"} ${i===stageIndex?"selected":""}" type="button" data-index="${i}" ${unlocked?"":"disabled"}><small>${text("stage")} ${i+1}</small><strong>${level.rows} × ${level.cols}</strong><span>${cleared?text("cleared"):unlocked?text("available"):text("locked")}</span></button>`;}).join("");}
   function updateLesson(i){stageIndex=i;const ch=chapter(i);dom.lessonKicker.textContent=`${text("stage")} ${i+1} / 30`;dom.lessonTitle.textContent=text(`chapter${ch+1}`);dom.lessonRule.textContent=text(`rule${ch+1}`);dom.rail.querySelectorAll(".stage-card").forEach((c,n)=>c.classList.toggle("selected",n===i));}
   function showStage(focus=stageIndex){setScreen("stage");renderStages();updateLesson(Math.min(focus,(save.unlocked||1)-1));dom.stageSummary.textContent=text("summary",{cleared:Object.keys(save.cleared||{}).length,stars:Object.values(save.stars||{}).reduce((a,b)=>a+Number(b||0),0)});requestAnimationFrame(()=>dom.rail.querySelector(`[data-index="${stageIndex}"]`)?.scrollIntoView({behavior:"instant",inline:"center",block:"nearest"}));}
-  function renderBoard(){const level=levels[stageIndex];dom.board.innerHTML=`<div id="lineGrid" class="line-grid" role="grid" style="--rows:${level.rows};--cols:${level.cols}">${[...Array(level.rows)].flatMap((_,r)=>[...Array(level.cols)].map((__,c)=>{const open=level.open.has(`${r},${c}`),start=open&&level.solution[0][0]===r&&level.solution[0][1]===c;return `<div class="line-cell ${open?"is-open":"is-blocked"} ${start?"is-start":""}" role="gridcell" data-row="${r}" data-col="${c}">${start?'<span aria-hidden="true">🐾</span>':""}</div>`;})).join("")}</div>`;}
+  function renderBoard(){const level=levels[stageIndex];dom.board.innerHTML=`<div id="lineGrid" class="line-grid" role="grid" aria-label="${text("boardLabel")}" style="--rows:${level.rows};--cols:${level.cols}">${[...Array(level.rows)].flatMap((_,r)=>[...Array(level.cols)].map((__,c)=>{const open=level.open.has(`${r},${c}`),start=open&&level.solution[0][0]===r&&level.solution[0][1]===c;return `<div class="line-cell ${open?"is-open":"is-blocked"} ${start?"is-start":""}" role="gridcell" data-row="${r}" data-col="${c}"${start?` aria-label="${text("startCell")}"`:""}>${start?'<span aria-hidden="true">🐾</span>':""}</div>`;})).join("")}</div>`;}
   function resetAttempt(resetCount=false){if(resetCount)attempts=1;visited=[];visitedSet.clear();drawing=false;failed=false;lastPoint=null;hintUsed=false;renderBoard();updateHud();dom.feedback.textContent=text("ready");dom.assist.textContent="";dom.result.hidden=true;}
   function updateHud(){const total=levels[stageIndex].solution.length;dom.attemptCount.textContent=attempts;dom.sealCount.textContent=`${visited.length} / ${total}`;dom.progressFill.style.width=`${visited.length/total*100}%`;}
   function startStage(index){stageIndex=Math.max(0,Math.min(29,index));attempts=1;setScreen("battle");dom.stageLabel.textContent=`${text("stage")} ${stageIndex+1}`;dom.objective.textContent=text("ready");resetAttempt(false);startTime=performance.now();}
@@ -102,7 +112,7 @@
   dom.start.addEventListener("click",()=>{showStage();if(!localStorage.getItem(TUTORIAL_KEY))dom.tutorial.hidden=false;});
   dom.stageBack.addEventListener("click",showMain);dom.battleBack.addEventListener("click",()=>showStage(stageIndex));
   dom.rail.addEventListener("click",e=>{const card=e.target.closest(".stage-card.unlocked");if(card)startStage(Number(card.dataset.index));});
-  dom.rail.addEventListener("wonder:stage-snap",e=>{const card=e.detail?.card;if(card)updateLesson(Number(card.dataset.index));});
+  dom.rail.addEventListener("wonder:stage-snap",e=>{const index=Number(e.detail?.index ?? e.detail?.card?.dataset.index);if(Number.isInteger(index)&&index>=0&&index<levels.length)updateLesson(index);});
   dom.restart.addEventListener("click",()=>resetAttempt(true));
   dom.hint.addEventListener("click",()=>{hintUsed=true;const next=levels[stageIndex].solution.find(([r,c])=>!visitedSet.has(`${r},${c}`));if(next){const cell=dom.board.querySelector(`[data-row="${next[0]}"][data-col="${next[1]}"]`);cell?.classList.add("is-hint");setTimeout(()=>cell?.classList.remove("is-hint"),1300);}dom.feedback.textContent=text("hintText");});
   dom.retry.addEventListener("click",()=>startStage(stageIndex));dom.resultStages.addEventListener("click",()=>showStage(stageIndex));dom.next.addEventListener("click",()=>startStage(Math.min(29,stageIndex+1)));

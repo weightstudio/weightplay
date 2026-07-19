@@ -140,6 +140,7 @@
   let locale = copy[requestedLocale] ? requestedLocale : "en";
   let save = loadSave();
   let selectedStage = Math.min(save.unlocked, stageDefs.length);
+  let centeredStageFrame = 0;
   let currentScreen = "loading";
   let audioEnabled = save.audio !== false;
   let audioContext = null;
@@ -269,6 +270,30 @@
     requestAnimationFrame(() => centerSelectedStage("auto"));
   }
 
+  function updateCenteredStageCard() {
+    centeredStageFrame = 0;
+    const cards = [...dom.stageRail.querySelectorAll(".stage-card")];
+    if (!cards.length || !dom.stageScreen.classList.contains("is-active")) return;
+    const railRect = dom.stageRail.getBoundingClientRect();
+    const railCenter = railRect.left + railRect.width / 2;
+    const centered = cards.reduce((nearest, card) => {
+      const rect = card.getBoundingClientRect();
+      const distance = Math.abs(rect.left + rect.width / 2 - railCenter);
+      return !nearest || distance < nearest.distance ? { card, distance } : nearest;
+    }, null)?.card;
+    for (const card of cards) {
+      const isCentered = card === centered;
+      card.classList.toggle("is-centered", isCentered);
+      if (isCentered) card.setAttribute("aria-current", "true");
+      else card.removeAttribute("aria-current");
+    }
+  }
+
+  function scheduleCenteredStageCard() {
+    if (centeredStageFrame) cancelAnimationFrame(centeredStageFrame);
+    centeredStageFrame = requestAnimationFrame(updateCenteredStageCard);
+  }
+
   function selectStage(id, center) {
     if (id > save.unlocked) return;
     selectedStage = id;
@@ -280,6 +305,7 @@
   function centerSelectedStage(behavior) {
     const card = dom.stageRail.children[selectedStage - 1];
     if (card) card.scrollIntoView({ behavior, inline: "center", block: "nearest" });
+    scheduleCenteredStageCard();
   }
 
   let lockedStageActivation = null;
@@ -313,6 +339,10 @@
   };
   document.addEventListener("pointerup", finishLockedStageActivation, true);
   document.addEventListener("pointercancel", finishLockedStageActivation, true);
+  dom.stageRail.addEventListener("scroll", scheduleCenteredStageCard, { passive:true });
+  dom.stageRail.addEventListener("wonder:stage-snap", scheduleCenteredStageCard);
+  window.addEventListener("resize", scheduleCenteredStageCard, { passive:true });
+  window.visualViewport?.addEventListener("resize", scheduleCenteredStageCard, { passive:true });
 
   function updateStageSummary() {
     const stage = stageDefs[selectedStage - 1];

@@ -390,7 +390,15 @@ body.is-cafe-stage .cafe-app {
 .day-card strong { display:grid; place-items:center; overflow:hidden; color:#9c5a22; font-size:22px; line-height:24px; }
 .day-card span,.day-card small,.day-card em { overflow: hidden; font-weight: 900; text-overflow: ellipsis; }
 .day-card em { align-self:center; padding:4px 8px; border-radius:6px; background:#d8f2dc; color:#285b45; font-size:12px; font-style:normal; white-space:nowrap; }
-.day-card.is-selected { border-color: #f7cd63; box-shadow: inset 0 0 0 3px rgb(247 205 99 / 35%); }
+.day-card.is-selected { transform: none; }
+.day-card.is-centered {
+  border-color: #ffe070;
+  box-shadow:
+    0 0 0 3px rgb(255 224 112 / 92%),
+    0 0 18px 7px rgb(76 231 195 / 70%),
+    0 8px 20px rgb(16 67 58 / 38%);
+}
+.day-card.is-locked.is-centered { filter: none; opacity: .76; }
 .day-card.is-checkpoint { border-color:#f7cd63; background:linear-gradient(180deg,#fff4c9,#eefcf7); box-shadow:inset 0 0 0 2px rgb(247 205 99 / 32%); }
 .day-card.is-locked { opacity: .58; }
 
