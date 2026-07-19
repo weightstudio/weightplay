@@ -326,6 +326,9 @@
     loadingText: $("loadingText"),
     loadingFill: $("loadingFill"),
   };
+  nodes.hintStatus.setAttribute("role", "status");
+  nodes.hintStatus.setAttribute("aria-live", "polite");
+  nodes.hintStatus.setAttribute("aria-atomic", "true");
 
   const legacySavedLocale = localStorage.getItem(localeKey);
   const canonicalSavedLocale = localStorage.getItem(canonicalLocaleKey);
@@ -362,6 +365,17 @@
 
   function writeJson(key, value) {
     localStorage.setItem(key, JSON.stringify(value));
+  }
+
+  function announceStatus(message) {
+    if (nodes.hintStatus.textContent === message) {
+      nodes.hintStatus.textContent = "";
+      queueMicrotask(() => {
+        nodes.hintStatus.textContent = message;
+      });
+      return;
+    }
+    nodes.hintStatus.textContent = message;
   }
 
   function t(key, data = {}) {
@@ -625,7 +639,9 @@
         button.disabled = true;
         button.tabIndex = -1;
         button.classList.add("found");
-        showFloatingText(t("decoyTap"), x, y);
+        const message = t("decoyTap");
+        showFloatingText(message, x, y);
+        announceStatus(message);
         playSound("error");
       });
       nodes.targetsLayer.appendChild(button);
@@ -635,7 +651,9 @@
       if (!acceptingInput || event.target.closest?.(".target")) return;
       mistakes += 1;
       const rect = nodes.scene.getBoundingClientRect();
-      showFloatingText(t("tryAgain"), ((event.clientX - rect.left) / rect.width) * 100, ((event.clientY - rect.top) / rect.height) * 100);
+      const message = t("tryAgain");
+      showFloatingText(message, ((event.clientX - rect.left) / rect.width) * 100, ((event.clientY - rect.top) / rect.height) * 100);
+      announceStatus(message);
       playSound("error");
     };
   }
@@ -669,7 +687,9 @@
     if (stage.ordered && index !== nextRequiredTargetIndex()) {
       mistakes += 1;
       const requiredId = stage.targets[nextRequiredTargetIndex()]?.[0];
-      showFloatingText(t("findFirst", { target: t(`targets.${requiredId}`) }), Number.parseFloat(button.style.left), Number.parseFloat(button.style.top));
+      const message = t("findFirst", { target: t(`targets.${requiredId}`) });
+      showFloatingText(message, Number.parseFloat(button.style.left), Number.parseFloat(button.style.top));
+      announceStatus(message);
       button.classList.add("wrong-order");
       window.setTimeout(() => button.classList.remove("wrong-order"), 360);
       playSound("error");
@@ -713,7 +733,7 @@
     document.querySelector(`.target[data-index="${next}"]`)?.classList.add("hint");
     const [targetId, x, y] = targets[next];
     const hintMessage = t("hintTarget", { target: t(`targets.${targetId}`) });
-    nodes.hintStatus.textContent = hintMessage;
+    announceStatus(hintMessage);
     showFloatingText(hintMessage, x, y, true);
     track("hint_used", { level: currentStage + 1 });
     playSound("select");

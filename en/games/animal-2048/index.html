@@ -58,7 +58,7 @@
   <link rel="stylesheet" href="../../src/play-viewport.css" />
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard />
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
-  <link rel="stylesheet" href="style.css?v=20260719-animal2048-rc7" />
+  <link rel="stylesheet" href="style.css?v=20260720-result-board1" />
 </head>
 <body data-screen="main" data-game-id="animal-2048">
   <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong data-i18n="title">Animal 2048</strong><span id="loadingText" data-i18n="loading">Opening the forest sanctuary…</span><div class="loading-track"><i id="loadingFill"></i></div></div></section>
@@ -93,7 +93,7 @@
       <div class="game-info-section"><h3>Campaign and Difficulty Growth</h3><p>Missions 1-5 teach full-board sliding and single merges. Missions 6-10 introduce longer chain planning. Missions 11-15 add moss stones that split movement lines.</p>
 <p>Missions 16-20 focus on score efficiency, Missions 21-25 begin from denser rare-animal nests, and Missions 26-30 combine stones, tight move limits, scoring, and high tiers up to 2048. Infinite Forest removes the move budget and turns the same rules into a personal endurance challenge.</p></div>
       <div class="game-info-section"><h3>Developer Design Note</h3><p>The game uses short deterministic missions so a failed attempt can become a specific planning lesson instead of a different random puzzle. Whole-grid swipes were chosen because each input has broad consequences while remaining comfortable on phones. Mouse, touch, direction buttons, arrows, and WASD all operate the same state. Stable tile elements slide between cells and only real merges receive a pop effect, keeping motion readable without flashing the board. Progress and Infinite Forest records are stored only in this browser; no account is required.</p></div>
-      
+      <div class="game-info-section game-info-parent"><h3>Parent Note</h3><p>No account is required. Campaign unlocks, stars, best scores, and Infinite Forest records are stored only in this browser. Clearing site data or changing browsers may start a separate save. The planning report summarizes the current puzzle result for entertainment and is not a formal ability, medical, or school assessment.</p></div>
       <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>Does every swipe create a new animal?</dt><dd>No. Only a swipe that changes the board spends a move and adds one low-tier animal.</dd></div><div><dt>Can a newly merged tile merge again immediately?</dt><dd>No. Each resulting tile can merge only once during a single move.</dd></div><div><dt>What do moss stones do?</dt><dd>They stay fixed and split a row or column into separate movement segments.</dd></div><div><dt>What does Undo restore?</dt><dd>It restores the previous board, score, move count, objective progress, and deterministic spawn state.</dd></div><div><dt>Is Infinite Forest part of the thirty missions?</dt><dd>No. It is a separate unlimited challenge and does not change campaign stars or unlocks.</dd></div><div><dt>Does progress save?</dt><dd>Yes. Campaign progress and Infinite Forest records are stored locally in the current browser.</dd></div></dl></div>
     </div>
   </section>
@@ -125,6 +125,6 @@
   <section id="tutorialPanel" class="tutorial-overlay" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="tutorial-card"><button id="tutorialCloseBtn" type="button" aria-label="Close" data-i18n-aria="close">×</button><img src="../../assets/weightplay-character-moon-cap-owl-cutout.webp" alt="" /><h2 id="tutorialTitle" data-i18n="tutorialTitle">Slide the whole forest grid.</h2><ol><li data-i18n="tutorial1">Swipe up, down, left, or right.</li><li data-i18n="tutorial2">Matching animals merge once per move.</li><li data-i18n="tutorial3">Keep a corner stable and protect empty spaces.</li></ol><button id="tutorialStartBtn" class="primary-action" type="button" data-i18n="tutorialStart">Start Mission 1</button></div></section>
 
   <script src="../../src/site-config.js"></script><script src="/src/i18n.js?v=20260718-locale-routes1"></script><script src="../../src/analytics.js"></script><script src="../../src/sound.js"></script><script src="../../src/edge-guard.js"></script>
-  <script src="locales.js?v=20260719-animal2048-rc4"></script><script src="game.js?v=20260719-animal2048-public2"></script><script src="../../src/stage-selector-standard.js" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script><script src="../../src/game-page-info.js?v=20260719-animal2048-public1"></script>
+  <script src="locales.js?v=20260719-animal2048-rc4"></script><script src="game.js?v=20260719-animal2048-public2"></script><script src="../../src/stage-selector-standard.js" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script><script src="../../src/game-page-info.js?v=20260720-animal2048-layout1"></script>
 </body>
 </html>

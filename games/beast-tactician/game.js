@@ -109,6 +109,11 @@
     retryBtn: $("retryBtn"),
     resultMenuBtn: $("resultMenuBtn"),
   };
+  // Stage and Battle own the complete General safe physical width. The shared
+  // controllers keep one common child scale and expand the logical envelope;
+  // Result and Pause inherit Battle because they remain its modal substates.
+  nodes.stagePanel.dataset.wpCanvasMaxWidth = "viewport";
+  nodes.gamePanel.dataset.wpCanvasMaxWidth = "viewport";
   const ctx = nodes.canvas.getContext("2d");
 
   const text = {

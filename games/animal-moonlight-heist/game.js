@@ -1,5 +1,9 @@
 (() => {
   const $ = (s) => document.querySelector(s);
+  // General Stage and Battle/Result fill the complete safe physical width.
+  // Apply the game-local request before the directly loaded shared owners run.
+  $(".stage-canvas")?.setAttribute("data-wp-canvas-max-width", "viewport");
+  $(".battle-canvas")?.setAttribute("data-wp-canvas-max-width", "viewport");
   const KEY = "weightplay_moonlight_heist_v1";
   const localeKey = "weightPlayLocale", legacyLocaleKey = "weightplayLocale";
   const copy = {

@@ -634,6 +634,8 @@
     loadingText: $("loadingText"),
     loadingFill: $("loadingFill"),
   };
+  nodes.menuPanel.dataset.wpCanvasMaxWidth = "viewport";
+  nodes.playPanel.dataset.wpCanvasMaxWidth = "viewport";
 
   let locale = window.WonderI18n?.actualLocale?.() || window.WonderI18n?.locale?.() || localStorage.getItem(localeKey) || "en";
   let unlocked = clamp(Number(localStorage.getItem(unlockKey)) || 1, 1, stages.length);

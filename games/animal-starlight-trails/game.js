@@ -130,6 +130,12 @@
   const dom = {
     loading:$("#loadingPanel"),loadingText:$("#loadingText"),loadingFill:$("#loadingFill"),main:$("#mainScreen"),guide:$(".game-page-info"),stage:$("#stageScreen"),battle:$("#battleScreen"),locale:$("#localeSelect"),mainProgress:$("#mainProgress"),start:$("#startBtn"),stageBack:$("#stageBackBtn"),stageRail:$("#stageRail"),stageSummary:$("#stageSummary"),chapterKicker:$("#chapterKicker"),chapterTitle:$("#chapterTitle"),chapterRule:$("#chapterRule"),battleBack:$("#battleBackBtn"),stageLabel:$("#stageLabel"),edgeProgress:$("#edgeProgress"),trailCount:$("#trailCount"),starTotal:$("#starTotal"),objective:$("#objectiveRow"),scene:$("#puzzleScene"),svg:$("#graphSvg"),feedback:$("#feedbackText"),feedbackRow:$(".battle-feedback"),assist:$("#assistText"),undo:$("#undoBtn"),restart:$("#restartBtn"),hint:$("#hintBtn"),result:$("#resultPanel"),resultTitle:$("#resultTitle"),resultStars:$("#resultStars"),resultText:$("#resultText"),skillGrid:$("#skillGrid"),comparison:$("#comparisonText"),retry:$("#retryBtn"),resultStages:$("#resultStagesBtn"),next:$("#nextBtn"),leave:$("#battleLeavePanel"),leaveTitle:$("#battleLeaveTitle"),leaveText:$("#battleLeaveText"),continueBattle:$("#battleContinueBtn"),leaveBattle:$("#battleLeaveBtn")
   };
+  // Stage and Battle fill the complete General safe physical width. Keep the
+  // shared controllers' one-scale logical envelope, but supersede every
+  // route shell's historical numeric 920px desktop cap at runtime.
+  dom.stage.dataset.wpCanvasMaxWidth = "viewport";
+  dom.stage.querySelector(".stage-canvas")?.setAttribute("data-wp-canvas-max-width", "viewport");
+  dom.battle.querySelector(".trail-battle-canvas")?.setAttribute("data-wp-canvas-max-width", "viewport");
 
   let stageIndex = Math.max(0,Math.min(29,save.unlocked-1));
   let path = [];

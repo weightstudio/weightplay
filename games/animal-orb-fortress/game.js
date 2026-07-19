@@ -47,6 +47,11 @@
     resultText: $("resultText"),
     skillReportText: $("skillReportText"),
   };
+  // Stage and Battle own the complete safe physical width. The shared
+  // responsive Canvas controllers keep one uniform scale while widening the
+  // logical envelope; this opt-in removes the superseded 920px desktop cap.
+  nodes.stagePanel.dataset.wpCanvasMaxWidth = "viewport";
+  nodes.gamePanel.dataset.wpCanvasMaxWidth = "viewport";
   const canvas = $("gameCanvas");
   const ctx = canvas.getContext("2d");
 

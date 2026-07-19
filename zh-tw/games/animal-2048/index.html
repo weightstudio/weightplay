@@ -58,7 +58,7 @@
   <link rel="stylesheet" href="../../src/play-viewport.css" />
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard />
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
-  <link rel="stylesheet" href="style.css?v=20260719-animal2048-rc7" />
+  <link rel="stylesheet" href="style.css?v=20260720-result-board1" />
 </head>
 <body data-screen="main" data-game-id="animal-2048">
   <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong data-i18n="title">Animal 2048</strong><span id="loadingText" data-i18n="loading">Opening the forest sanctuary…</span><div class="loading-track"><i id="loadingFill"></i></div></div></section>
@@ -93,7 +93,7 @@
       <div class="game-info-section"><h3>關卡與難度成長</h3><p>第 1 至 5 關教全盤滑動與單次合成，第 6 至 10 關加入連鎖規劃，第 11 至 15 關用苔石切開移動路線。</p>
 <p>第 16 至 20 關重視分數效率，第 21 至 25 關從較密集的稀有動物巢開始，第 26 至 30 關綜合苔石、有限步數、分數與最高 2048 的進化目標。無限森林則移除步數限制，考驗長期空間管理。</p></div>
       <div class="game-info-section"><h3>開發設計理念</h3><p>遊戲採用短而固定的任務，讓失敗能指向明確的路線判斷，而不是每次重試都變成另一盤隨機題目。全盤滑動讓每個輸入都有廣泛後果，同時適合手機操作；觸控、滑鼠、方向按鈕、方向鍵與 WASD 共用同一套狀態。方塊會平順移動，只有真正合成時才播放特效，避免整盤閃爍。闖關與無限模式紀錄只保存在目前瀏覽器，不需要登入。</p></div>
-      
+      <div class="game-info-section game-info-parent"><h3>家長說明</h3><p>不需要帳號。闖關解鎖、星等、最佳分數與無限森林紀錄只保存在目前瀏覽器；清除網站資料或更換瀏覽器可能建立另一份存檔。規劃報告只整理本次解謎結果並供遊戲娛樂使用，不是正式能力、醫療或學校評量。</p></div>
       <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>每次滑動都會出現新動物嗎？</dt><dd>不會，只有真正改變棋盤的方向才會扣一步並產生低階動物。</dd></div><div><dt>新合成的方塊可以立刻再合成嗎？</dt><dd>不行，同一個結果方塊每一步只能合成一次。</dd></div><div><dt>苔石有什麼作用？</dt><dd>苔石固定不動，會把一列或一行切成彼此獨立的移動區段。</dd></div><div><dt>復原會還原哪些內容？</dt><dd>會還原棋盤、分數、步數、任務進度及固定生成狀態。</dd></div><div><dt>無限森林算在三十關裡嗎？</dt><dd>不算，它是獨立的無限挑戰，不會改變闖關星數或解鎖。</dd></div><div><dt>遊戲會保存進度嗎？</dt><dd>會，闖關與無限森林紀錄只保存在目前瀏覽器。</dd></div></dl></div>
     </div>
   </section>
@@ -125,6 +125,6 @@
   <section id="tutorialPanel" class="tutorial-overlay" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="tutorial-card"><button id="tutorialCloseBtn" type="button" aria-label="Close" data-i18n-aria="close">×</button><img src="../../assets/weightplay-character-moon-cap-owl-cutout.webp" alt="" /><h2 id="tutorialTitle" data-i18n="tutorialTitle">Slide the whole forest grid.</h2><ol><li data-i18n="tutorial1">Swipe up, down, left, or right.</li><li data-i18n="tutorial2">Matching animals merge once per move.</li><li data-i18n="tutorial3">Keep a corner stable and protect empty spaces.</li></ol><button id="tutorialStartBtn" class="primary-action" type="button" data-i18n="tutorialStart">Start Mission 1</button></div></section>
 
   <script src="../../src/site-config.js"></script><script src="/src/i18n.js?v=20260718-locale-routes1"></script><script src="../../src/analytics.js"></script><script src="../../src/sound.js"></script><script src="../../src/edge-guard.js"></script>
-  <script src="locales.js?v=20260719-animal2048-rc4"></script><script src="game.js?v=20260719-animal2048-public2"></script><script src="../../src/stage-selector-standard.js" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script><script src="../../src/game-page-info.js?v=20260719-animal2048-public1"></script>
+  <script src="locales.js?v=20260719-animal2048-rc4"></script><script src="game.js?v=20260719-animal2048-public2"></script><script src="../../src/stage-selector-standard.js" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script><script src="../../src/game-page-info.js?v=20260720-animal2048-layout1"></script>
 </body>
 </html>

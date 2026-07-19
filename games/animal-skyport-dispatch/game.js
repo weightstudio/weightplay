@@ -1,5 +1,10 @@
 (() => {
   const $ = (id) => document.getElementById(id);
+  // General Stage and Battle own the complete safe physical width. These
+  // declarations run before the shared controllers load, so their responsive
+  // envelopes supersede the historical numeric desktop maximum.
+  $('stageScreen')?.setAttribute('data-wp-canvas-max-width', 'viewport');
+  document.querySelector('.battle-canvas')?.setAttribute('data-wp-canvas-max-width', 'viewport');
   const saveKey = 'animal_skyport_dispatch_save';
   const strings = {
     en: { title:'Animal Skyport Dispatch', language:'Language', headline:'Keep Cloudline Skyport moving.', intro:'Draw safe routes, match airships to docks, and protect the shift from congestion.', start:'Start Game', chooseShift:'Choose a shift', best:'Best shift: {n}', shift:'Shift {n}/5', objective:'Serve {done}/{goal} flights', errors:'Errors {done}/3', stageReady:'Ready', stageLocked:'Locked', stageReplay:'Replay', service:'Use repair service', dragHint:'Drag the airship, or press Enter and use arrow keys, to choose its dock.', menu:'Main Menu', next:'Next Shift', retry:'Retry Shift', win:'Shift complete!', lose:'Skyport congested!', winCopy:'Clear routing earns a new skyport record.', loseCopy:'Three unsafe arrivals closed the shift. Retry is free.', repair:'Repair parts {n}' },
