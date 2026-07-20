@@ -1563,6 +1563,7 @@ body {
   margin-top: 4px;
 }
 
+#retryBtn,
 #resultMenuBtn {
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid var(--border-color);
@@ -1580,9 +1581,20 @@ body {
   max-width: none;
 }
 
+#retryBtn:hover,
 #resultMenuBtn:hover {
   background: rgba(255, 255, 255, 0.1);
   transform: translateY(-1px);
+}
+
+#resultMenuBtn.result-primary-action,
+#retryBtn.result-primary-action {
+  width: 100%;
+  max-width: none;
+  background: linear-gradient(135deg, var(--primary-color) 0%, #059669 100%);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.24);
 }
 
 /* Loading Panel */

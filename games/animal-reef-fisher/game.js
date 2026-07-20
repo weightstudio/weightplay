@@ -76,6 +76,7 @@
     menuSoundBtn: $("menuSoundBtn"),
     stageBackBtn: $("stageBackBtn"),
     mapBtn: $("mapBtn"),
+    nextZoneBtn: $("nextZoneBtn"),
     retryBtn: $("retryBtn"),
     resultMenuBtn: $("resultMenuBtn"),
     leaveKeepBtn: $("leaveKeepBtn"),
@@ -135,6 +136,7 @@
       prepareGear: "Prepare Gear",
       startExpedition: "Start Expedition",
       reefMap: "Reef Map",
+      nextMission: "Next Mission",
       leaveTitle: "Leave this expedition?",
       leaveCopy: "Mission {stage}: {catches}/{goal} catches and {time}s left. This expedition, its catches, and any prepared Lure or Sonar will be lost. Saved Album, Reef Notes, and gear stay safe.",
       keepFishing: "Keep Fishing",
@@ -239,6 +241,7 @@
       prepareGear: "遠征準備",
       startExpedition: "開始遠征",
       reefMap: "礁區地圖",
+      nextMission: "下一個任務",
       leaveTitle: "要離開這次遠征嗎？",
       leaveCopy: "第 {stage} 關：已釣到 {catches}/{goal} 條，剩餘 {time} 秒。本次遠征、漁獲與已準備的魚餌或聲納會消失；已儲存的圖鑑、礁石筆記與裝備不受影響。",
       keepFishing: "繼續釣魚",
@@ -323,7 +326,7 @@
   };
 
   text.es = {
-    title:"Pescador del Arrecife Animal",pageTitle:"Pescador del Arrecife Animal - Juego de pesca | WeightPlay",pageDescription:"Completa 30 misiones de pesca, controla zonas de tensión cambiantes, documenta 12 criaturas marinas, mejora seis herramientas y captura seis peces Guardianes.",language:"Idioma",backToLobby:"Volver al vestíbulo",back:"Volver",reefZones:"Zonas del arrecife",gearUpgrades:"Mejoras de equipo",menuTitle:"Traza 30 misiones y captura seis peces Guardianes.",menuHint:"Controla reglas de tensión cambiantes, documenta 12 especies, gana Notas del Arrecife y mejora seis herramientas.",reefNotes:"Notas del Arrecife",album:"Álbum",diamonds:"Diamantes",startGame:"Empezar",soundOn:"Sonido: Sí",soundOff:"Sonido: No",enableSound:"Activar sonido",disableSound:"Desactivar sonido",chooseZone:"Elegir misión del arrecife",prepareGear:"Preparar equipo",startExpedition:"Empezar expedición",reefMap:"Mapa del arrecife",leaveTitle:"¿Salir de esta expedición?",leaveCopy:"Misión {stage}: {catches}/{goal} capturas y {time}s restantes. Se perderán esta expedición, sus capturas y cualquier Cebo o Sonar preparado. El Álbum, las Notas y el equipo guardados quedan seguros.",keepFishing:"Seguir pescando",leaveExpedition:"Salir de la expedición",zone:"Zona",time:"Tiempo",goal:"Objetivo",retry:"Reintentar",
+    title:"Pescador del Arrecife Animal",pageTitle:"Pescador del Arrecife Animal - Juego de pesca | WeightPlay",pageDescription:"Completa 30 misiones de pesca, controla zonas de tensión cambiantes, documenta 12 criaturas marinas, mejora seis herramientas y captura seis peces Guardianes.",language:"Idioma",backToLobby:"Volver al vestíbulo",back:"Volver",reefZones:"Zonas del arrecife",gearUpgrades:"Mejoras de equipo",menuTitle:"Traza 30 misiones y captura seis peces Guardianes.",menuHint:"Controla reglas de tensión cambiantes, documenta 12 especies, gana Notas del Arrecife y mejora seis herramientas.",reefNotes:"Notas del Arrecife",album:"Álbum",diamonds:"Diamantes",startGame:"Empezar",soundOn:"Sonido: Sí",soundOff:"Sonido: No",enableSound:"Activar sonido",disableSound:"Desactivar sonido",chooseZone:"Elegir misión del arrecife",prepareGear:"Preparar equipo",startExpedition:"Empezar expedición",reefMap:"Mapa del arrecife",nextMission:"Próxima misión",leaveTitle:"¿Salir de esta expedición?",leaveCopy:"Misión {stage}: {catches}/{goal} capturas y {time}s restantes. Se perderán esta expedición, sus capturas y cualquier Cebo o Sonar preparado. El Álbum, las Notas y el equipo guardados quedan seguros.",keepFishing:"Seguir pescando",leaveExpedition:"Salir de la expedición",zone:"Zona",time:"Tiempo",goal:"Objetivo",retry:"Reintentar",
     castHint:"Mantén pulsado el mar para cargar y suelta para lanzar.",charging:"Suelta al alcanzar la profundidad deseada.",hooked:"El pez ha picado. Arrastra el control rojo, desliza en el mar o usa Izquierda y Derecha para mantener el indicador en la zona verde.",hookedBehavior:"{behavior}: {hint} Mantén el indicador en la zona segura.",behaviorSteady:"Pez estable",behaviorSteadyHint:"La fuerza es suave; sigue con movimientos pequeños.",behaviorDart:"Pez veloz",behaviorDartHint:"Cambia de dirección rápido; corrige suavemente tras cada impulso.",behaviorHeavy:"Pez pesado",behaviorHeavyHint:"Tira durante más tiempo; ten paciencia cerca del centro.",tensionTitle:"Tensión de línea",tensionLow:"Muy floja",tensionSafe:"SEGURA",tensionHigh:"Muy tensa",tensionMarker:"Arrastrar",playAreaAria:"Zona de pesca. Mantén Espacio para cargar, suelta para lanzar y usa las flechas para controlar la tensión.",tensionLaneAria:"Carril de tensión. Ajusta con las flechas izquierda y derecha.",sonarAria:"Usar sonar",sonarDecision:"Usa el Sonar preparado para revelar y fijar el próximo pez, su rareza y su comportamiento de arrastre.",
     tensionCoachAim:"Mantén el mar o Espacio para lanzar. Cuando pique, arrastra el control rojo, desliza o usa las flechas.",tensionCoachReel:"Arrastra el control rojo, desliza en el mar o usa las flechas para permanecer en la zona verde.",tensionCoachSafe:"Bien. Desliza suavemente y permanece en SEGURA hasta capturarlo.",tensionCoachDanger:"Vuelve ahora a la zona segura.",tensionStatusAim:"Paso 1: mantén pulsado para cargar y suelta para lanzar.",tensionStatusCharging:"Suelta para lanzar. El paso 2 empieza cuando pique un pez.",tensionStatusHooked:"Paso 2: arrastra el control rojo o desliza para entrar en la zona verde.",tensionStatusSafe:"En zona segura. Mantén el control.",tensionStatusDanger:"Devuelve el control rojo a la zona segura o se romperá la línea.",landed:"¡Captura lograda! Sigue antes de que termine el tiempo.",broke:"La línea se rompió. El indicador estuvo demasiado tiempo fuera de la zona segura.",escaped:"El pez escapó. Lanza otra vez y mantén el indicador centrado.",
     sonarReady:"El sonar está preparado para esta expedición.",sonarScan:"Sonar: {fish} · {rarity} · {behavior}. Próximo lanzamiento fijado.",sonarStatus:"Siguiente: {fish}",needDiamonds:"Necesitas {cost} diamantes.",lureReady:"El cebo raro está preparado para la próxima expedición.",buyLure:"Cebo raro {cost}💎",buySonar:"Pulso sonar {cost}💎",confirmLure:"Confirmar cebo · {before}→{after}💎",confirmSonar:"Confirmar sonar · {before}→{after}💎",lureBuyLabel:"El Cebo raro aumenta la posibilidad de una marca rara en la próxima expedición. Cuesta 3 diamantes. Saldo {balance}.",sonarBuyLabel:"El Pulso sonar revela y fija el próximo pez antes de lanzar. Cuesta 2 diamantes. Saldo {balance}.",lureConfirmLabel:"Confirma el Cebo raro. Gasta 3 diamantes. Saldo de {before} a {after}.",sonarConfirmLabel:"Confirma el Pulso sonar. Gasta 2 diamantes. Saldo de {before} a {after}.",sonar:"Sonar",upgrade:"Mejorar",max:"Máx.",gearUpgradeLabel:"Mejora {gear} del nivel {beforeLevel} al {afterLevel}. Gasta {cost} Notas. Saldo de {before} a {after}.",gearUpgradeNeedLabel:"{gear} nivel {beforeLevel}. El nivel {afterLevel} cuesta {cost} Notas. Saldo {balance}; faltan {need}.",gearMaxLabel:"{gear} nivel {level}. Nivel máximo.",locked:"Bloqueado",complete:"Completado",
@@ -929,6 +932,19 @@
     restartFishingLoop();
   }
 
+  function syncResultActions(won) {
+    const zoneIndex = run ? zones.indexOf(run.zone) : -1;
+    const hasNextMission = Boolean(won && zoneIndex >= 0 && zoneIndex < zones.length - 1);
+    nodes.nextZoneBtn.classList.toggle("is-hidden", !hasNextMission);
+    nodes.nextZoneBtn.disabled = !hasNextMission;
+    const primary = hasNextMission ? nodes.nextZoneBtn : (won ? nodes.resultMenuBtn : nodes.retryBtn);
+    for (const button of [nodes.nextZoneBtn, nodes.retryBtn, nodes.resultMenuBtn]) {
+      button.classList.toggle("primary-btn", button === primary);
+      button.classList.toggle("secondary-btn", button !== primary);
+    }
+    return primary;
+  }
+
   function finishRun(won) {
     if (!run || run.finished) return;
     cancelFishingInput();
@@ -946,9 +962,11 @@
     nodes.resultText.textContent = t("result", { catches: run.catches, newFish: run.newFish, notes: run.notes });
     renderResultSummary();
     nodes.skillReportText.textContent = won ? t("reportWin") : t("reportFail");
+    const primaryResultAction = syncResultActions(won);
     showPanel("result");
     focusPanel(nodes.resultPanel);
-    window.requestAnimationFrame(() => nodes.retryBtn.focus({ preventScroll: true }));
+    nodes.resultPanel.scrollTop = 0;
+    window.requestAnimationFrame(() => primaryResultAction.focus({ preventScroll: true }));
     renderMenu();
     playSound(won ? "win" : "wrong");
     track("game_complete", { zone: run.zone.id, won, catches: run.catches, newFish: run.newFish, notes: run.notes, score: run.finalScore });
@@ -1939,6 +1957,16 @@
   nodes.retryBtn.addEventListener("click", async () => {
     await startRun();
   });
+  nodes.nextZoneBtn.addEventListener("click", async () => {
+    const zoneIndex = run ? zones.indexOf(run.zone) : -1;
+    const nextZone = zones[zoneIndex + 1];
+    if (!nextZone || nextZone.stage > save.unlockedZone) return;
+    selectedZone = nextZone.id;
+    save.selectedZone = selectedZone;
+    saveProgress();
+    renderMenu();
+    await startRun();
+  });
   nodes.resultMenuBtn.addEventListener("click", () => {
     playSound("click");
     state = "stage";
@@ -1953,12 +1981,16 @@
       return;
     }
     if (event.key !== "Tab" || nodes.resultPanel.classList.contains("is-hidden")) return;
-    if (event.shiftKey && document.activeElement === nodes.retryBtn) {
+    const actions = [nodes.nextZoneBtn, nodes.retryBtn, nodes.resultMenuBtn].filter((button) => !button.disabled && !button.classList.contains("is-hidden"));
+    if (!actions.length) return;
+    const first = actions[0];
+    const last = actions[actions.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
       event.preventDefault();
-      nodes.resultMenuBtn.focus({ preventScroll: true });
-    } else if (!event.shiftKey && document.activeElement === nodes.resultMenuBtn) {
+      last.focus({ preventScroll: true });
+    } else if (!event.shiftKey && document.activeElement === last) {
       event.preventDefault();
-      nodes.retryBtn.focus({ preventScroll: true });
+      first.focus({ preventScroll: true });
     }
   });
   nodes.startBtn.addEventListener("keydown", (event) => {

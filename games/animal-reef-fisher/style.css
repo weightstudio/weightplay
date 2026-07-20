@@ -2116,6 +2116,10 @@ body.reef-fisher-result .tutorial-card {
   max-height: 48px;
 }
 
+#nextZoneBtn:not(.is-hidden) {
+  grid-column: 1 / -1;
+}
+
 /* Result remains a Battle-owned substate inside the invariant logical Canvas. */
 body.reef-fisher-playing .battle-shell > #resultPanel.result-panel {
   position: absolute;

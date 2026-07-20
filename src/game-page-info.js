@@ -6670,7 +6670,7 @@
 
   function syncStageArtwork() {
     const rails = document.querySelectorAll(
-      ".stage-grid, .stage-rail, .mission-grid, .mission-rail, .region-rail, .route-rail, .level-grid"
+      ".stage-grid, .stage-rail, .safari-stage-rail, .mission-grid, .mission-rail, .region-rail, .route-rail, .level-grid"
     );
     const artUrl = stageArtworkUrl();
     if (!artUrl) return;
@@ -6722,7 +6722,7 @@
     const metrics = window.__weightPlayLayoutMetrics ||= {};
     metrics.stageArtworkSyncs ||= 0;
     const artworkWatchSelector = [
-      ".stage-grid", ".stage-rail", ".mission-grid", ".mission-rail",
+      ".stage-grid", ".stage-rail", ".safari-stage-rail", ".mission-grid", ".mission-rail",
       ".region-rail", ".route-rail", ".level-grid",
       "[data-screen='stage']", "[data-wp-logical-stage-canvas]",
       "[data-wp-standard-stage-screen]", "#stagePanel", "#stageScreen",

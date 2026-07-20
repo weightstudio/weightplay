@@ -2497,10 +2497,24 @@
     (nextCard || nodes.endTurnBtn)?.focus({ preventScroll: true });
   }
 
+  function syncResultPrimaryAction(won, canContinue) {
+    const terminalVictory = won && state.mission >= maxMission;
+    const primaryAction = canContinue
+      ? nodes.nextMissionBtn
+      : terminalVictory
+        ? nodes.resultMenuBtn
+        : nodes.retryBtn;
+    [nodes.nextMissionBtn, nodes.retryBtn, nodes.resultMenuBtn].forEach((button) => {
+      button?.classList.toggle("result-primary-action", button === primaryAction);
+    });
+    return primaryAction;
+  }
+
   function endGame(won) {
     clearCombatFeedback();
     nodes.gamePanel.classList.add("result-open");
     nodes.resultPanel.classList.remove("hidden");
+    nodes.resultPanel.scrollTop = 0;
     [nodes.gamePanel.querySelector(".hud-row"), nodes.gamePanel.querySelector(".battlefield"), nodes.gamePanel.querySelector(".action-area")].forEach((node) => {
       node?.setAttribute("inert", "");
       node?.setAttribute("aria-hidden", "true");
@@ -2543,7 +2557,7 @@
     }
     renderProgressUI();
     updateDiamondShopUI();
-    (canContinue ? nodes.nextMissionBtn : nodes.retryBtn).focus({ preventScroll: true });
+    syncResultPrimaryAction(won, canContinue)?.focus({ preventScroll: true });
   }
 
   function resetRunState() {
