@@ -570,6 +570,11 @@ body.zoo-helper-playing .sound-toggle {
   display: none !important;
 }
 
+body.wp-standard-stage-page .weightplay-version-badge,
+body.zoo-helper-playing .weightplay-version-badge {
+  display: none !important;
+}
+
 body.zoo-helper-playing .play-panel {
   width: 100%;
   height: 100%;

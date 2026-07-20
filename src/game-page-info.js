@@ -6834,6 +6834,7 @@
     const showRecommendedAge = Boolean(baseGame.age) && !/^(12|13)\+$/.test(baseGame.age);
 
     document.querySelector(".game-page-info")?.remove();
+    if (id === "animal-color-springs") document.querySelector(".game-guide")?.remove();
     document.querySelectorAll("script[data-game-page-info-jsonld]").forEach((node) => node.remove());
 
     document.documentElement.classList.add("has-game-page-info");
@@ -7344,11 +7345,37 @@
     }
   };
   Object.assign(games, publicKidsBatch);
+  games["animal-color-springs"] = {
+    title: "Animal Color Springs", age: "9+", difficulty: "Easy to Challenging", time: "2-6 minutes per stage", gameplay: "Color Sorting Puzzle", genre: ["Puzzle", "Logic", "Animal"], skills: ["Logic", "Problem Solving", "Focus"],
+    intro: "Animal Color Springs is a thirty-stage sorting puzzle. Move the complete top group of matching spring orbs into an empty vessel or onto the same color, then finish with every non-empty vessel holding one color.",
+    story: ["Moon Cap Orla and Rainbow Hop Mimi have found thirty forest fountains whose colors were mixed by a storm. Every solved vessel restores one fountain. Seals, vessels of different sizes, and tighter routes represent damaged parts of the spring network that must be repaired in the correct order."],
+    systems: ["Choose a source vessel and then a legal destination. The destination needs enough space and must be empty or show the same top color. A legal transfer visibly carries the orb group between vessels before the board state changes.", "Undo restores the previous board and move count. Restart rebuilds the same deterministic puzzle. Hint identifies one useful source and destination without moving the orbs. Stars compare the completed route with the stage target, and progress is stored locally."],
+    how: ["Choose a vessel containing at least one orb.", "Choose an empty vessel or one with the same color on top.", "Continue until each non-empty vessel contains only one color.", "Use Undo, Restart, or Hint if the route becomes blocked."],
+    strategyTips: ["Keep at least one empty vessel available as working space.", "Move complete color groups instead of splitting them when possible.", "Plan safe moves before a sealed vessel opens.", "Check the capacity marks before committing a large group."],
+    progression: ["Stages 1-5 teach three- and four-color sorting. Stages 6-10 add more colors. Stages 11-15 introduce sealed vessels, 16-20 vary vessel capacity, 21-25 reduce spare space, and 26-30 combine every rule."],
+    designNote: "The two-tap source-and-destination control works with touch, mouse, and keyboard. The transfer arc makes every move readable without changing the puzzle result. Deterministic stages, local best moves, and replayable stars support improvement without random punishment.",
+    parent: "This Kids game is ad-free and requires no account. Stage progress and best moves remain in the current browser and are not uploaded. It is a recreational logic puzzle, not a formal ability assessment.",
+    faq: [["How many stages are included?", "Thirty deterministic stages."], ["Why can a vessel not receive the orbs?", "It is full, sealed, or its top color does not match."], ["Does Hint play the move?", "No. It only identifies a useful transfer."], ["What does Undo restore?", "The exact board and move count before the last transfer."], ["Is progress saved?", "Yes, only in this browser."], ["Does the game contain ads?", "No. This Kids game is ad-free."]]
+  };
+  games["animal-word-trails"] = {
+    title: "Animal Word Trails", age: "9+", difficulty: "Easy to Challenging", time: "2-5 minutes per trail", gameplay: "Reading Word-Path Puzzle", genre: ["Education", "Puzzle", "Animal"], skills: ["Reading", "Focus", "Logic"],
+    intro: "Animal Word Trails is a ten-trail reading puzzle. Connect adjacent letter or character tiles to find four animal or habitat words, reveal clue cards, and complete the local-language album.",
+    story: ["Boom Mane Leo has opened a forest reading trail where animal clues have been scattered across tile boards. Each correct path restores a clue card to the habitat album. Completing all ten trails rebuilds the forest, safari, ocean, Arctic, and mountain sections of the guidebook."],
+    systems: ["A path may move horizontally, vertically, or diagonally without using the same tile twice. Tap tiles one at a time or drag through a continuous route, then check the completed word. Some later boards include blocked tiles or a one-way leaf entry.", "Hint starts the next unfound word, Clear removes the current path, and Undo removes its last tile. Correct words remain marked, stars reflect hint use, and the best result for each language and trail stays in local browser storage."],
+    how: ["Choose an unlocked trail.", "Connect adjacent letters or characters to spell one listed word.", "Select Check Word, or finish a continuous drag, to submit the path.", "Find all four words to complete the trail and unlock the next one."],
+    strategyTips: ["Look for uncommon first characters before tracing common ones.", "Use diagonal links when a straight route stops.", "Read the complete target list before using Hint.", "On one-way boards, approach the marked tile from the leaf direction."],
+    progression: ["Early trails introduce animal and forest words. The middle trails move through safari and ocean vocabulary, then add blocked tiles. Later Arctic and mountain trails add longer words and one-way entry before the final habitat review."],
+    designNote: "The board accepts both deliberate taps and continuous dragging so the player's hand does not need to cover the whole path. Every locale builds a real matching character board rather than showing translated targets over an English puzzle. Short trails and a local clue album encourage replay without a timer.",
+    parent: "This Kids reading game is ad-free and requires no account. Progress and clue cards remain in the current browser and are not uploaded. Vocabulary play is for practice and entertainment, not a formal reading assessment.",
+    faq: [["Can I tap instead of drag?", "Yes. Both input styles build the same path."], ["May a tile be used twice in one word?", "No."], ["What do blocked tiles do?", "They cannot be part of a word path."], ["What does Hint reveal?", "It starts the next word with its first tile."], ["Does each language have matching boards?", "Yes. Targets and board characters use the selected language."], ["Is progress saved?", "Yes, only in this browser."], ["Does the game contain ads?", "No. This Kids game is ad-free."]]
+  };
   Object.assign(gameplayProfiles, {
     "animal-block-grove": { gameplay: "8×8 Block Placement Puzzle", genre: ["Puzzle", "Logic", "Animal"] },
     "animal-coloring-studio": { gameplay: "Fill and Brush Coloring", genre: ["Creative", "Art", "Animal"] },
     "animal-parking-patrol": { gameplay: "Traffic Order Puzzle", genre: ["Puzzle", "Logic", "Animal"] }
     ,"animal-screw-workshop": { gameplay: "Screw Relocation Logic Puzzle", genre: ["Puzzle", "Logic", "Animal"] }
+    ,"animal-color-springs": { gameplay: "Color Sorting Puzzle", genre: ["Puzzle", "Logic", "Animal"] }
+    ,"animal-word-trails": { gameplay: "Reading Word-Path Puzzle", genre: ["Education", "Puzzle", "Animal"] }
   });
   localizedGames["zh-Hant"]["animal-block-grove"] = { ...publicKidsBatch["animal-block-grove"], title: "動物方塊森林", gameplay: "8×8 方塊配置解謎", intro: "《動物方塊森林》是由苔殼太郎與彩躍咪咪帶領的三十關配置益智遊戲。從三組方塊中選擇，把每一格完整放進 8×8 森林棋盤，填滿橫列或直行即可消除並騰出棲地空間。" };
   localizedGames["zh-Hant"]["animal-coloring-studio"] = { ...publicKidsBatch["animal-coloring-studio"], title: "動物塗色工作室", gameplay: "填色與畫筆創作", intro: "《動物塗色工作室》提供十二張原創動物圖畫。選擇喜歡的頁面與顏色，使用區域填色或自由畫筆慢慢完成作品，沒有倒數計時，也不需要追求分數。" };
@@ -7411,4 +7438,64 @@
   localizedGameplayProfiles["zh-Hant"]["animal-skyport-dispatch"] = { gameplay: "飛船航線調度", genre: ["策略", "管理", "模擬", "動物"] };
   localizedGames["zh-Hans"]["animal-skyport-dispatch"] = { ...localizedGames["zh-Hant"]["animal-skyport-dispatch"], title: "动物天空港调度队", gameplay: "飞船航线调度" };
   localizedGameplayProfiles["zh-Hans"]["animal-skyport-dispatch"] = { gameplay: "飞船航线调度", genre: ["策略", "管理", "模拟", "动物"] };
+
+  games["animal-color-springs"] = {
+    title: "Animal Color Springs", difficulty: "Easy to Challenging", time: "2-6 minutes per stage", gameplay: "Color Sorting Puzzle", genre: ["Puzzle", "Logic", "Animal"], skills: ["Logic", "Problem Solving", "Focus"],
+    guideKicker: "WeightPlay Original Game Guide", guideTitleSuffix: "Game Guide", hideScoreBands: true,
+    intro: "Animal Color Springs is a 30-stage sorting puzzle about moving colored spring orbs between ornate vessels until every vessel contains one color.",
+    story: ["Forest fountains have lost their color, and Moon Cap Orla asks the player to restore each spring by sorting its glowing orbs."],
+    systems: ["Select a vessel with a movable top orb, then select a compatible destination with space. The destination must be empty or show the same top color.", "Undo restores one exact transfer, Restart restores the authored opening, and Hint identifies a useful legal move. Clears, stars, unlocks, and best move counts are stored locally."],
+    how: ["Choose an unlocked spring from the horizontal Stage rail.", "Select the vessel whose top orb you want to move.", "Select an empty vessel or one whose top orb matches.", "Finish every color group within the target moves."],
+    strategyTips: ["Keep one flexible empty vessel until the middle of the solution.", "Complete a color only when it will not trap another color below it.", "Read vessel capacity before moving a long stack."],
+    progression: ["Stages 1-5 teach legal transfers and empty-space planning. Later chapters add more colors, uneven stacks, changing capacities, seals, and tighter routes across all 30 stages."],
+    designNote: "Authored openings make difficulty come from route planning rather than random deals. Touch, mouse, and keyboard share one transfer state, and Stage and Battle follow the shared 920px maximum.",
+    parent: "No account is required. Progress stays in this browser and may reset if site storage is cleared. Stars and move summaries are game feedback, not a formal assessment.",
+    faq: [["How many stages are included?", "There are 30 authored sorting stages."], ["When is a move legal?", "The destination must have space and be empty or show the same top color."], ["Does progress save?", "Yes. Unlocks, stars, and best moves are stored locally."]]
+  };
+  gameplayProfiles["animal-color-springs"] = { gameplay: "Color Sorting Puzzle", genre: ["Puzzle", "Logic", "Animal"] };
+  localizedGames["zh-Hant"]["animal-color-springs"] = {
+    ...games["animal-color-springs"], title: "動物彩泉", difficulty: "簡單至具挑戰性", time: "每關約 2 至 6 分鐘", gameplay: "顏色分類益智", genre: ["益智", "邏輯", "動物"], skills: ["邏輯", "問題解決", "專注"],
+    intro: "《動物彩泉》是 30 關顏色分類益智遊戲。玩家要在華麗容器之間移動彩泉珠，直到每個容器只保留同一種顏色。",
+    story: ["森林泉水失去了色彩，月帽奧拉請玩家整理發光泉珠，逐一修復泉眼。"],
+    systems: ["先選擇頂端有可移動泉珠的容器，再選擇仍有空位的相容目的地。目的地必須為空，或頂端泉珠顏色相同。", "復原會精確退回一步，重新開始會還原關卡，提示會指出有幫助的合法移動。通關、星數、解鎖與最佳步數會儲存在本機。"],
+    how: ["從水平關卡列選擇已解鎖的泉眼。", "選擇要移動頂端泉珠的容器。", "再選擇空容器或頂端同色的容器。", "在目標步數內完成所有顏色組合。"],
+    strategyTips: ["解題中段前保留一個可彈性使用的空容器。", "完成一種顏色前，先確認不會把其他顏色困在下層。", "移動長堆疊前先確認容器容量。"],
+    progression: ["第 1 至 5 關教導合法移動與空間規劃，後續章節加入更多顏色、不均勻堆疊、容量變化、封印與更緊密路線，合計 30 關。"],
+    designNote: "關卡採用固定編排，難度來自路線規劃而非隨機發牌。觸控、滑鼠與鍵盤共用同一移動狀態，Stage 與 Battle 維持 920px 最大寬度。",
+    parent: "遊玩不需帳號。進度保存在目前瀏覽器，清除網站資料後可能重設。星數與步數摘要不是正式能力評量。",
+    faq: [["共有多少關？", "共有 30 關固定設計的分類關卡。"], ["什麼移動才合法？", "目的地必須有空位，並且為空或頂端顏色相同。"], ["進度會儲存嗎？", "會，解鎖、星數與最佳步數會保存在本機。"]]
+  };
+  localizedGameplayProfiles["zh-Hant"]["animal-color-springs"] = { gameplay: "顏色分類益智", genre: ["益智", "邏輯", "動物"] };
+  localizedGames["zh-Hans"]["animal-color-springs"] = { ...localizedGames["zh-Hant"]["animal-color-springs"], title: "动物彩泉", gameplay: "颜色分类益智" };
+  localizedGameplayProfiles["zh-Hans"]["animal-color-springs"] = { gameplay: "颜色分类益智", genre: ["益智", "逻辑", "动物"] };
+
+  games["animal-word-trails"] = {
+    title: "Animal Word Trails", difficulty: "Easy to Moderate", time: "2-5 minutes per trail", gameplay: "Reading Word-Path Puzzle", genre: ["Word", "Puzzle", "Animal"], skills: ["Reading", "Focus", "Logic"],
+    guideKicker: "WeightPlay Kids Game Guide", guideTitleSuffix: "Game Guide", hideScoreBands: true,
+    intro: "Animal Word Trails is a calm 30-stage reading puzzle about following animal clues and connecting adjacent letters or characters into a complete word path.",
+    story: ["Each trail reveals an animal or habitat clue. The player helps the lion guide reconnect the missing words and restore the illustrated field album."],
+    systems: ["Begin from a valid tile and continue through neighboring tiles without jumping. Hint reveals a useful next step, Undo removes the latest tile, and Clear resets the current path.", "Completed trails, stars, and album discoveries are saved locally in this browser."],
+    how: ["Choose an unlocked trail.", "Read the animal or habitat clue.", "Connect adjacent letters or characters in order.", "Submit the completed word path and continue."],
+    strategyTips: ["Check rare letters and board edges before choosing the first tile.", "Keep the clue meaning in mind instead of testing every visible sequence.", "Use Undo for one mistaken branch rather than clearing a nearly complete path."],
+    progression: ["Early trails use short animal names and direct paths. Later chapters add habitat terms, longer words, branching layouts, and mixed clue sets across all 30 stages."],
+    designNote: "One readable tile scale and large adjacent targets keep reading and route logic comfortable on touch and desktop controls.",
+    parent: "No account is required and progress stays in this browser. Stars and reading summaries are playful feedback rather than a school, medical, or ability assessment.",
+    faq: [["How many trails are included?", "There are 30 authored word trails."], ["Can tiles be skipped?", "No. Every step must use an adjacent tile."], ["Does progress save?", "Yes. Clears, stars, and album discoveries are stored locally."]]
+  };
+  gameplayProfiles["animal-word-trails"] = { gameplay: "Reading Word-Path Puzzle", genre: ["Word", "Puzzle", "Animal"] };
+  localizedGames["zh-Hant"]["animal-word-trails"] = {
+    ...games["animal-word-trails"], title: "動物文字小徑", difficulty: "簡單至中等", time: "每條小徑約 2 至 5 分鐘", gameplay: "閱讀文字路徑益智", genre: ["文字", "益智", "動物"], skills: ["閱讀", "專注", "邏輯"],
+    intro: "《動物文字小徑》是節奏平穩的 30 關閱讀益智遊戲。玩家要依照動物線索，連接相鄰字母或文字，完成整條詞語路徑。",
+    story: ["每條小徑會揭示一個動物或棲地線索。玩家協助獅子嚮導找回遺失詞語，修復圖鑑。"],
+    systems: ["從有效文字格開始，沿相鄰格連線，不能跳格。提示會揭示有用的下一步，復原會移除最後一格，清除會重設目前路徑。", "通關、星數與圖鑑發現會保存在目前瀏覽器。"],
+    how: ["選擇已解鎖的小徑。", "閱讀動物或棲地線索。", "依順序連接相鄰字母或文字。", "送出完整詞語路徑並繼續。"],
+    strategyTips: ["決定起點前先查看少見字母與棋盤邊緣。", "依線索意思推理，不要只測試所有可見排列。", "只有一個分支錯誤時使用復原，不必清除接近完成的路徑。"],
+    progression: ["前段使用較短的動物名稱與直接路徑。後段章節加入棲地詞語、較長詞彙、分支版面與混合線索，合計 30 關。"],
+    designNote: "一致且清楚的文字格尺寸與大型相鄰目標，讓閱讀與路徑推理在手機及桌面都保持舒適。",
+    parent: "遊玩不需帳號，進度保存在目前瀏覽器。星數與閱讀摘要不是學校、醫療或能力評量。",
+    faq: [["共有多少條小徑？", "共有 30 關固定設計的文字小徑。"], ["可以跳過文字格嗎？", "不可以，每一步都必須移動到相鄰文字格。"], ["進度會儲存嗎？", "會，通關、星數與圖鑑發現會儲存在本機。"]]
+  };
+  localizedGameplayProfiles["zh-Hant"]["animal-word-trails"] = { gameplay: "閱讀文字路徑益智", genre: ["文字", "益智", "動物"] };
+  localizedGames["zh-Hans"]["animal-word-trails"] = { ...localizedGames["zh-Hant"]["animal-word-trails"], title: "动物文字小径", gameplay: "阅读文字路径益智" };
+  localizedGameplayProfiles["zh-Hans"]["animal-word-trails"] = { gameplay: "阅读文字路径益智", genre: ["文字", "益智", "动物"] };
 })();

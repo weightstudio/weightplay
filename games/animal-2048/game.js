@@ -5,15 +5,14 @@
   document.querySelector(".battle-canvas")?.setAttribute("data-wp-canvas-max-width", "920");
   const SAVE_KEY = "weightplay_animal_2048_v1";
   const TUTORIAL_KEY = "weightplay_tutorial_seen_animal_2048_v1";
-  const LOCALE_SEGMENTS = {en:"en","zh-tw":"zh-Hant","zh-cn":"zh-Hans",es:"es",ja:"ja",ko:"ko","pt-br":"pt-BR",de:"de"};
-  const SEGMENTS = {en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",es:"es",ja:"ja"};
+  const LOCALE_SEGMENTS = {en:"en","zh-tw":"zh-Hant","zh-cn":"zh-Hans",es:"es",ja:"ja",ko:"ko","pt-br":"pt-BR",fr:"fr",de:"de",it:"it",ru:"ru"};
+  const SEGMENTS = {en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",es:"es",ja:"ja",ko:"ko","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru"};
   const firstSegment = location.pathname.split("/").filter(Boolean)[0] || "en";
   const readStorage=(key)=>{try{return localStorage.getItem(key);}catch{return null;}};
   const writeStorage=(key,value)=>{try{localStorage.setItem(key,value);return true;}catch{return false;}};
   let locale = LOCALE_SEGMENTS[firstSegment] || readStorage("weightPlayLocale") || "en";
 
   const LOCALIZED_STRINGS=window.Animal2048Locales||{};
-  if(!LOCALIZED_STRINGS[locale])locale="en";
   const t=(key,vars={})=>String(LOCALIZED_STRINGS[locale]?.[key]??LOCALIZED_STRINGS.en?.[key]??key).replace(/\{(\w+)\}/g,(_,name)=>vars[name]??"");
   const tileNames=["", "mouse","rabbit","fox","penguin","koala","owl","panda","lion","giraffe","elephant","lionKing"];
   const tileAssets=Array.from({length:11},(_,i)=>`../../assets/animal-merge-token-${i>=7&&i<=10&&[7,10].includes(i)?`${i}-boom-lion`:i}.png`);

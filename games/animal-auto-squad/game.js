@@ -4470,6 +4470,7 @@
   }
 
   function openResultScreen(isWin) {
+    const isFinalVictory = isWin && state.stage >= STAGE_COUNT;
     nodes.gamePanel.classList.remove("is-hidden");
     nodes.gamePanel.classList.add("is-result");
     nodes.resultPanel.classList.remove("is-hidden");
@@ -4489,9 +4490,13 @@
     nodes.resultStageText.textContent = t("resultStageSaved", { unlocked: save.unlockedStage, total: STAGE_COUNT });
     nodes.resultGrowthText.textContent = t("resultGrowthNext", { atk: bonus.atk, hp: bonus.hp, remaining });
     nodes.nextStageBtn.classList.toggle("is-hidden", !isWin || state.stage >= STAGE_COUNT);
+    nodes.retryBtn.classList.toggle("primary-btn", !isFinalVictory);
+    nodes.retryBtn.classList.toggle("secondary-btn", isFinalVictory);
+    nodes.resultMenuBtn.classList.toggle("primary-btn", isFinalVictory);
+    nodes.resultMenuBtn.classList.toggle("secondary-btn", !isFinalVictory);
     nodes.skillReportText.innerHTML = `<strong>${t("skillReport")}</strong><br/>${t("skillsLearned")}`;
     setResultOwnership(true);
-    requestAnimationFrame(() => (isWin && state.stage < STAGE_COUNT ? nodes.nextStageBtn : nodes.retryBtn).focus({ preventScroll: true }));
+    requestAnimationFrame(() => (isWin && state.stage < STAGE_COUNT ? nodes.nextStageBtn : isFinalVictory ? nodes.resultMenuBtn : nodes.retryBtn).focus({ preventScroll: true }));
     
     playSynth(isWin ? "win" : "fail");
     window.WonderAnalytics?.track("expedition_end", { game_id: GAME_ID, stage: state.stage, wave: state.round, cleared: isWin });

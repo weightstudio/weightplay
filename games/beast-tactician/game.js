@@ -1307,9 +1307,7 @@
       nodes.gamePanel.classList.remove("is-hidden");
       nodes.resultPanel.classList.remove("is-hidden");
       window.requestAnimationFrame(() => {
-        const nextVisible = !nodes.nextStageBtn.classList.contains("is-hidden") && !nodes.nextStageBtn.disabled;
-        const reviveAvailable = !nodes.reviveBtn.classList.contains("is-hidden") && !nodes.reviveBtn.disabled;
-        (nextVisible ? nodes.nextStageBtn : reviveAvailable ? nodes.reviveBtn : nodes.retryBtn)?.focus({ preventScroll: true });
+        syncResultActionHierarchy()?.focus({ preventScroll: true });
       });
     }
     updateBattleShell();
@@ -2590,6 +2588,25 @@
     const corePercent = Math.max(0, Math.min(100, Math.round((Math.max(0, coreHp) / Math.max(1, stage?.coreHp || 1)) * 100)));
     const key = stars >= 3 ? "skillReportWin3" : stars >= 2 ? "skillReportWin2" : "skillReportWin1";
     return t(key, { stars, core: corePercent });
+  }
+
+  function syncResultActionHierarchy() {
+    const nextAvailable = !nodes.nextStageBtn.classList.contains("is-hidden") && !nodes.nextStageBtn.disabled;
+    const reviveAvailable = !nodes.reviveBtn.classList.contains("is-hidden") && !nodes.reviveBtn.disabled;
+    const terminalVictory = state.won && state.stage?.id >= STAGE_COUNT;
+    const primaryAction = nextAvailable
+      ? nodes.nextStageBtn
+      : reviveAvailable
+        ? nodes.reviveBtn
+        : terminalVictory
+          ? nodes.resultMenuBtn
+          : nodes.retryBtn;
+    [nodes.nextStageBtn, nodes.reviveBtn, nodes.retryBtn, nodes.resultMenuBtn].forEach((button) => {
+      const isPrimary = button === primaryAction;
+      button.classList.toggle("primary-btn", isPrimary);
+      button.classList.toggle("secondary-btn", !isPrimary);
+    });
+    return primaryAction;
   }
 
   function tileDistance(a, b) {
@@ -4653,11 +4670,11 @@
     };
   }
 
-  function showResultScreenScenario(stageId = STAGE_COUNT, won = true) {
+  function showResultScreenScenario(stageId = STAGE_COUNT, won = true, diamonds = 20) {
     state.manualSimulation = true;
     state.save = {
       bestStage: STAGE_COUNT,
-      diamonds: 20,
+      diamonds,
       upgradePoints: 8,
       tech: { power: 2, bulwark: 2, economy: 2 },
       cosmetics: { goldenFrame: true },

@@ -150,6 +150,7 @@
       title: "Animal Color Lunchbox",
       language: "Language",
       chooseLevel: "Choose Level",
+      startGame: "Start Game",
       scoreLabel: "Score",
       roundLabel: "Progress",
       levelLabel: "Level",
@@ -256,6 +257,7 @@
     title: "動物顏色便當盒",
     language: "語言",
     chooseLevel: "選擇關卡",
+    startGame: "開始遊戲",
     scoreLabel: "分數",
     roundLabel: "進度",
     levelLabel: "關卡",
@@ -357,7 +359,7 @@
   dictionary["zh-Hant"].lunchboxChoice = "{color}\u4fbf\u7576\u76d2";
 
   dictionary.es = {
-    title: "Fiambrera de Colores Animales", language: "Idioma", chooseLevel: "Elegir nivel",
+    title: "Fiambrera de Colores Animales", language: "Idioma", chooseLevel: "Elegir nivel", startGame: "Iniciar juego",
     scoreLabel: "Puntuación", roundLabel: "Progreso", levelLabel: "Nivel",
     ready: "Arrastra la comida hasta la fiambrera del mismo color.", voicePrompt: "Pon {food} en la fiambrera {color}.", picturePrompt: "¡Relaciona la imagen!", lunchboxChoice: "Fiambrera {color}",
     correct: "¡Bien! ¡Correcto!", wrong: "¡Prueba con otra caja!", boxesMoving: "Las fiambreras están cambiando de lugar.", guardianCheckpoint: "Prueba amistosa del guardián",
@@ -374,7 +376,7 @@
   };
 
   dictionary["pt-BR"] = {
-    title: "Marmita Colorida dos Animais", language: "Idioma", chooseLevel: "Escolher nível",
+    title: "Marmita Colorida dos Animais", language: "Idioma", chooseLevel: "Escolher nível", startGame: "Iniciar jogo",
     scoreLabel: "Pontos", roundLabel: "Progresso", levelLabel: "Nível",
     ready: "Arraste o alimento até a marmita da mesma cor.", voicePrompt: "Coloque {food} na marmita {color}.", picturePrompt: "Combine a imagem!", lunchboxChoice: "Marmita {color}",
     correct: "Muito bem!", wrong: "Tente outra marmita!", boxesMoving: "As marmitas estão mudando de lugar.", guardianCheckpoint: "Desafio amigável do Guardião",
@@ -614,6 +616,73 @@
     return Object.entries(params).reduce((text, [name, value]) => text.replaceAll(`{${name}}`, String(value)), raw);
   }
 
+  function installOwnedPortugueseLocalizer() {
+    if (locale() !== "pt-BR" || window.WeightPlayGameRuntimeLocalizer) return;
+
+    const exactTranslations = new Map([
+      ["Start Game", "Iniciar jogo"],
+      ["Sort food by color.", "Separe os alimentos por cor."],
+      ["Look", "Observe"],
+      ["Check each food color.", "Observe a cor de cada alimento."],
+      ["Drag", "Arraste"],
+      ["Drag food into the matching lunchbox.", "Arraste o alimento até a marmita da mesma cor."],
+      ["Clear", "Conclua"],
+      ["Sort everything correctly to finish.", "Separe todos os alimentos corretamente para concluir."],
+      ["Start Playing", "Começar a jogar"],
+      ["Close tutorial", "Fechar tutorial"],
+      ["How to play", "Como jogar"],
+      ["Back to lobby", "Voltar ao início"],
+    ]);
+
+    const translate = (value) => exactTranslations.get(String(value).trim()) || String(value);
+    const translateElement = (element) => {
+      if (!(element instanceof Element)) return;
+      for (const attribute of ["aria-label", "title", "placeholder"]) {
+        const current = element.getAttribute(attribute);
+        if (current && exactTranslations.has(current.trim())) element.setAttribute(attribute, translate(current));
+      }
+    };
+    const translateTree = (root) => {
+      if (!root) return;
+      if (root.nodeType === Node.TEXT_NODE) {
+        const original = root.nodeValue || "";
+        const trimmed = original.trim();
+        if (exactTranslations.has(trimmed)) root.nodeValue = original.replace(trimmed, translate(trimmed));
+        return;
+      }
+      if (root.nodeType !== Node.ELEMENT_NODE && root.nodeType !== Node.DOCUMENT_NODE) return;
+      if (root.nodeType === Node.ELEMENT_NODE) translateElement(root);
+      const walker = document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT);
+      while (walker.nextNode()) {
+        if (walker.currentNode.nodeType === Node.TEXT_NODE) translateTree(walker.currentNode);
+        else translateElement(walker.currentNode);
+      }
+    };
+
+    window.WeightPlayGameRuntimeLocalizer = Object.freeze({
+      locale: "pt-BR",
+      source: "color-lunchbox-owned",
+      translate,
+      translateTree,
+    });
+    translateTree(document.documentElement);
+    new MutationObserver((records) => {
+      for (const record of records) {
+        if (record.type === "characterData") translateTree(record.target);
+        for (const node of record.addedNodes) translateTree(node);
+      }
+    }).observe(document.documentElement, { childList: true, characterData: true, subtree: true });
+  }
+
+  installOwnedPortugueseLocalizer();
+
+  const startLabelObserver = new MutationObserver(() => {
+    if (locale() !== "pt-BR") return;
+    const label = t("startGame");
+    if (startBtn.textContent !== label) startBtn.textContent = label;
+  });
+  startLabelObserver.observe(startBtn, { childList: true, characterData: true, subtree: true });
+
   function setMeta(selector, attr, value) {
     const element = document.head.querySelector(selector);
     if (element) element.setAttribute(attr, value);
@@ -707,7 +776,7 @@
         : locale() === "pt-BR"
           ? "Organize alimentos coloridos em 30 níveis curtos e seis desafios amigáveis dos Guardiões."
           : "Sort colorful foods through 30 short levels and six friendly Guardian checks.";
-    startBtn.textContent = t("chooseLevel");
+    startBtn.textContent = t("startGame");
     stageSelectTitle.textContent = t("chooseLevel");
     document.querySelector("#scoreLabel").textContent = t("scoreLabel");
     document.querySelector("#roundLabel").textContent = t("roundLabel");
@@ -1530,5 +1599,9 @@
   });
 
   translateStaticUI();
+  window.addEventListener("load", () => {
+    requestAnimationFrame(() => requestAnimationFrame(translateStaticUI));
+    setTimeout(translateStaticUI, 500);
+  }, { once: true });
   simulateLoading();
 })();

@@ -435,11 +435,18 @@
     return window.WonderI18n?.locale() || "en";
   }
 
+  function translateRuntime(source) {
+    if (!source || ["en", "zh-Hant", "es"].includes(locale())) return source;
+    return window.WeightPlayGameRuntimeLocalizer?.translate(source) || source;
+  }
+
   function t(key, params = {}) {
     const table = dictionary[locale()] || dictionary.en;
+    const source = table[key] || dictionary.en[key] || key;
+    const localized = table[key] ? source : translateRuntime(source);
     return Object.entries(params).reduce((text, [name, value]) => {
       return text.replaceAll(`{${name}}`, String(value));
-    }, table[key] || dictionary.en[key] || key);
+    }, localized);
   }
 
   function makeState() {
@@ -597,7 +604,19 @@
   function routeName(config) {
     if (locale() === "zh-Hant") return config.nameZht;
     if (locale() === "es") return config.nameEs;
-    return config.nameEn;
+    return translateRuntime(config.nameEn);
+  }
+
+  function regionName(config) {
+    if (locale() === "zh-Hant") return regionNames[config.region - 1][1];
+    if (locale() === "es") return regionNames[config.region - 1][2];
+    return translateRuntime(regionNames[config.region - 1][0]);
+  }
+
+  function guardianName(config) {
+    if (locale() === "zh-Hant") return config.bossZht;
+    if (locale() === "es") return config.bossEs;
+    return translateRuntime(config.bossEn);
   }
 
   let centeredRouteFrame = 0;
@@ -650,9 +669,9 @@
       card.disabled = locked;
       card.setAttribute("role", "listitem");
       card.innerHTML = `
-        <span class="stage-region">${regionNames[config.region - 1][locale() === "zh-Hant" ? 1 : locale() === "es" ? 2 : 0]}</span>
+        <span class="stage-region">${regionName(config)}</span>
         <strong>${config.id}. ${routeName(config)}</strong>
-        ${config.checkpoint ? `<em>${t("guardianCheck")} · ${locale() === "zh-Hant" ? config.bossZht : locale() === "es" ? config.bossEs : config.bossEn}</em>` : ""}
+        ${config.checkpoint ? `<em>${t("guardianCheck")} · ${guardianName(config)}</em>` : ""}
         <small>${objectiveText(config)}</small>
         <span class="stage-rule">${config.mechanics.map(ruleText).join(" · ")}</span>
         <b>${locked ? t("stageLocked") : cleared ? t("stageCleared") : t("stageReady")}</b>`;

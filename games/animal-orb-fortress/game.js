@@ -1771,10 +1771,15 @@
     })}`;
     nodes.skillReportText.textContent = t(win ? "reportWin" : "reportLose");
     const hasNextStage = win && state.raidTier < MAX_RAID_TIER;
+    const isFinalVictory = win && state.raidTier >= MAX_RAID_TIER;
     nodes.nextStageBtn.classList.toggle("is-unavailable", !hasNextStage);
     nodes.nextStageBtn.disabled = !hasNextStage;
+    nodes.retryBtn.classList.toggle("primary-btn", !isFinalVictory);
+    nodes.retryBtn.classList.toggle("secondary-btn", isFinalVictory);
+    nodes.resultMenuBtn.classList.toggle("primary-btn", isFinalVictory);
+    nodes.resultMenuBtn.classList.toggle("secondary-btn", !isFinalVictory);
     show(nodes.resultPanel);
-    (hasNextStage ? nodes.nextStageBtn : nodes.retryBtn).focus({ preventScroll: true });
+    (hasNextStage ? nodes.nextStageBtn : isFinalVictory ? nodes.resultMenuBtn : nodes.retryBtn).focus({ preventScroll: true });
     renderMenu();
     playSound(win ? "success" : "wrong", 0.2);
     window.WonderAnalytics?.track("raid_result", { game_id: GAME_ID, win, wave: Math.min(3, state.wave), stones });

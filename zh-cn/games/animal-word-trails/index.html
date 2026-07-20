@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+    <base href="/games/animal-word-trails/" />
+    <link rel="canonical" href="https://weightplay.com/zh-cn/games/animal-word-trails/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-word-trails/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-word-trails/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-word-trails/" />
+    <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/animal-word-trails/" />
+    <link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/animal-word-trails/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/animal-word-trails/" />
+    <link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/animal-word-trails/" />
+    <link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/animal-word-trails/" />
+    <link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/animal-word-trails/" />
+    <link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/animal-word-trails/" />
+    <link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/animal-word-trails/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-word-trails/" />
+    <meta charset="utf-8">
+  <meta name="weightplay-audience" content="kids">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="index,follow" />
+  <meta id="pageDescription" name="description" content="Connect animal and habitat words in a calm reading puzzle.">
+  <title>动物文字小径 | WeightPlay</title>
+  <link rel="stylesheet" href="../../src/game-page-info.css">
+  <link rel="stylesheet" href="../../src/loading-screen.css">
+  <link rel="stylesheet" href="../../src/play-viewport.css">
+  <link rel="stylesheet" href="style.css?v=20260720-tile-interaction1">
+  <script data-wp-stage-standard>/* Animal Word Trails owns its native Kids Stage rail. */</script>
+  <script data-wp-battle-standard>/* Animal Word Trails owns its native Kids Battle Canvas. */</script>
+  <meta name="description" content="《动物文字小径》是节奏平稳的 30 关阅读益智游戏。玩家要依照动物线索，连接相邻字母或文字，完成整条词语路径。" />
+    <meta property="og:title" content="动物文字小径 | WeightPlay" />
+    <meta property="og:description" content="《动物文字小径》是节奏平稳的 30 关阅读益智游戏。玩家要依照动物线索，连接相邻字母或文字，完成整条词语路径。" />
+    <meta property="og:url" content="https://weightplay.com/zh-cn/games/animal-word-trails/" />
+    <meta name="twitter:title" content="动物文字小径 | WeightPlay" />
+    <meta name="twitter:description" content="《动物文字小径》是节奏平稳的 30 关阅读益智游戏。玩家要依照动物线索，连接相邻字母或文字，完成整条词语路径。" />
+  </head>
+<body>
+  <main class="word-trails" id="app">
+    <section class="screen main-screen" data-screen="main">
+      <a class="lobby-return" data-wp-return="main" href="/kids/" data-aria="backLobby" aria-label="Back to WeightPlay"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false"></a>
+      <div class="locale-row"><label for="locale" data-copy="language">Language</label><select id="locale" data-aria="language" aria-label="Language"><option value="en">English</option><option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option><option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option><option value="ja">&#26085;&#26412;&#35486;</option><option value="ko">&#54620;&#44397;&#50612;</option><option value="es">Espa&#241;ol</option><option value="pt-BR">Portugu&#234;s</option><option value="fr">Fran&#231;ais</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">&#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081;</option></select></div>
+      <img class="cover" src="../../assets/animal-word-trails-cover.webp" alt="">
+      <h1 data-copy="title">动物文字小径</h1>
+      <p data-copy="intro">Follow animal clues and connect a word path.</p>
+      <button class="primary" id="start" data-copy="start">Start Game</button>
+      <section class="guide"><h2 data-copy="guideTitle">A calm reading puzzle</h2><p data-copy="guideBody">Find animal and habitat words. Your progress stays on this device.</p></section>
+    </section>
+
+    <section class="screen stage-screen wp-stage-art-shell hidden" data-screen="stage" data-wp-canvas-max-width="920" data-wp-stage-art="../../assets/animal-word-trails-cover.webp" style="--wp-stage-art: url('../../assets/animal-word-trails-cover.webp')">
+      <button class="back" id="stageBack" data-wp-return="stage" data-aria="backMain" aria-label="Back">&larr;</button>
+      <header><strong data-copy="chooseStage">Choose a trail</strong><span id="stageProgress"></span><button id="album" class="mini" data-copy="album">Album</button></header>
+      <div class="stage-rail" id="stageRail" data-aria="stages" aria-label="Stages"></div>
+      <p id="stageFeedback" class="stage-feedback" aria-live="polite"></p>
+      <button id="playStage" hidden type="button" tabindex="-1" aria-hidden="true"></button>
+      <dialog id="albumDialog"><button id="closeAlbum" class="back" data-aria="closeAlbum" aria-label="Close">&larr;</button><h2 data-copy="albumTitle">Animal clues</h2><div id="albumList"></div></dialog>
+    </section>
+
+    <section class="screen battle-shell hidden" data-screen="battle" data-no-mobile-immersive="true">
+      <div class="battle-slot"><div class="battle-canvas" data-wp-logical-battle-canvas="390x788" data-wp-canvas-max-width="920">
+        <div id="battleLive" class="battle-live">
+        <header class="battle-top"><button class="back" id="battleBack" data-wp-return="battle" data-aria="backStage" aria-label="Back">&larr;</button><strong id="battleTitle"></strong><span id="starCount">&#9733; 0</span></header>
+        <section class="objective"><span id="objective"></span><span id="foundCount"></span></section>
+        <div class="target-row" id="targets"></div>
+        <section class="play-scene" id="playScene">
+          <div class="board" id="board" data-aria="board" aria-label="Word board"></div>
+          <div class="clue-reveal hidden" id="clueReveal"><i id="clearFx"></i><strong id="clueTitle"></strong></div>
+          <p class="feedback" id="feedback" aria-live="polite"></p>
+        </section>
+        <footer class="actions"><button id="hint" class="icon-action"><i class="icon hint"></i><span data-copy="hint">Hint</span></button><button id="undo" class="icon-action"><i class="icon undo"></i><span data-copy="undo">Undo</span></button><button id="clear" class="icon-action"><i class="icon clear"></i><span data-copy="clear">Clear</span></button><button id="submit" class="primary compact" data-copy="check">Check word</button></footer>
+        </div>
+        <section id="resultPanel" class="result-overlay result-screen hidden" data-screen="result" role="dialog" aria-modal="true" aria-labelledby="wordResultTitle">
+        <img class="leo" src="../../assets/animal-word-trails-lion-guide.webp" alt="">
+        <h2 id="wordResultTitle" data-copy="complete">Trail complete</h2><p id="resultSummary"></p><p class="skill" data-copy="skill">Reading &middot; Focus &middot; Logic &middot; Animal knowledge</p>
+        <div class="result-actions"><button class="primary" id="next" data-copy="next">Next trail</button><button class="secondary" id="resultsBack" data-wp-return="battle" data-copy="trails">Trail menu</button></div>
+        </section>
+        <section id="leaveConfirmPanel" class="leave-confirm-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="leaveConfirmTitle" aria-describedby="leaveConfirmMessage">
+          <div class="leave-confirm-card"><h2 id="leaveConfirmTitle" data-copy="leaveTitle">Leave this trail?</h2><p id="leaveConfirmMessage" data-copy="leaveMessage">Found words, the current path, and star progress in this run will reset.</p><div class="leave-confirm-actions"><button id="keepReading" class="primary" data-copy="keepReading">Keep reading</button><button id="leaveTrail" class="secondary" data-copy="leaveTrail">Leave trail</button></div></div>
+        </section>
+      </div></div>
+    </section>
+  </main>
+  <div id="loadingPanel" class="loading-panel" role="status" aria-live="polite">
+    <div class="loading-card"><strong id="loadingTitle">Loading</strong><span id="loadingText">0%</span><div><i id="loadingFill"></i></div></div>
+  </div>
+  <script src="../../src/site-config.js"></script><script src="/src/i18n.js?v=20260718-locale-routes1"></script><script src="../../src/game-runtime-localizer-loader.js?v=20260720-locale11-15"></script>
+  <script src="../../src/analytics.js"></script>
+  <script src="../../src/sound.js?v=20260720-locale11"></script>
+  <script src="../../src/edge-guard.js"></script>
+  <script src="game.js?v=20260720-tile-interaction1"></script>
+  <section class="game-page-info game-page-info-static" aria-label="动物文字小径 游戏资讯">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 儿童游戏指南</span><h2>动物文字小径</h2><p>《动物文字小径》是节奏平稳的 30 关阅读益智游戏。玩家要依照动物线索，连接相邻字母或文字，完成整条词语路径。</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>阅读文字路径益智</strong></div><div class="game-info-fact"><span>类型</span><strong>文字 · 益智 · 动物</strong></div><div class="game-info-fact"><span>难度</span><strong>简单至中等</strong></div><div class="game-info-fact"><span>预估游玩时间</span><strong>每条小径约 2 至 5 分钟</strong></div><div class="game-info-fact"><span>练习能力</span><strong>阅读 · 专注 · 逻辑</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>世界与任务</h3><p>每条小径会揭示一个动物或栖地线索。玩家协助狮子向导找回遗失词语，修复图鉴。</p></div>
+      <div class="game-info-section"><h3>游戏系统</h3><p>从有效文字格开始，沿相邻格连线，不能跳格。提示会揭示有用的下一步，复原会移除最后一格，清除会重设目前路径。</p>
+<p>通关、星数与图鉴发现会保存在目前浏览器。</p></div>
+      <div class="game-info-section"><h3>玩法说明</h3><ol><li>选择已解锁的小径。</li><li>阅读动物或栖地线索。</li><li>依顺序连接相邻字母或文字。</li><li>送出完整词语路径并继续。</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>决定起点前先查看少见字母与棋盘边缘。</li><li>依线索意思推理，不要只测试所有可见排列。</li><li>只有一个分支错误时使用复原，不必清除接近完成的路径。</li></ul></div>
+      <div class="game-info-section"><h3>关卡与难度成长</h3><p>前段使用较短的动物名称与直接路径。后段章节加入栖地词语、较长词汇、分支版面与混合线索，合计 30 关。</p></div>
+      <div class="game-info-section"><h3>开发设计理念</h3><p>一致且清楚的文字格尺寸与大型相邻目标，让阅读与路径推理在手机及桌面都保持舒适。</p></div>
+      <div class="game-info-section game-info-parent"><h3>家长说明</h3><p>游玩不需账号，进度保存在目前浏览器。星数与阅读摘要不是学校、医疗或能力评量。</p></div>
+      <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>共有多少条小径？</dt><dd>共有 30 关固定设计的文字小径。</dd></div><div><dt>可以跳过文字格吗？</dt><dd>不可以，每一步都必须移动到相邻文字格。</dd></div><div><dt>进度会保存吗？</dt><dd>会，通关、星数与图鉴发现会保存在本设备。</dd></div></dl></div>
+    </div>
+  </section>
+<script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
+</body>
+</html>

@@ -1034,13 +1034,12 @@
 
   function getLocale() {
     const stored = readStorage(localeKey);
-    const requested = window.WonderI18n?.locale?.() || stored || "en";
-    return text[requested] ? requested : "en";
+    return window.WonderI18n?.actualLocale?.() || window.WonderI18n?.locale?.() || stored || "en";
   }
 
   function t(key, params = {}) {
     const locale = getLocale();
-    const raw = text[locale][key] || text.en[key] || key;
+    const raw = text[locale]?.[key] || text.en[key] || key;
     return Object.entries(params).reduce((str, [k, v]) => str.replaceAll(`{${k}}`, String(v)), raw);
   }
 

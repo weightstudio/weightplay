@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="weightplay-audience" content="general">
+  <meta name="theme-color" content="#071d20">
+  <title>Animal Frontier Dominion | WeightPlay Internal Trial</title>
+  <meta name="description" content="Scout, expand, and command animal squads across a compact frontier strategy campaign.">
+  <link rel="stylesheet" href="../../src/loading-screen.css">
+  <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
+  <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
+  <link rel="stylesheet" href="../../src/tutorial.css">
+  <link rel="stylesheet" href="style.css?v=20260720-frontier1">
+</head>
+<body data-screen="loading" data-game-id="animal-frontier-dominion">
+  <section id="loading" class="loading-panel" aria-live="polite"><div class="loading-card"><strong data-i18n="title">Animal Frontier Dominion</strong><span data-i18n="loading">Surveying the frontier…</span><div class="loading-track"><i id="loadingFill"></i></div></div></section>
+
+  <div id="mainGroup" class="main-group" hidden>
+    <main id="main" class="main-screen">
+      <header class="main-header">
+        <a class="lobby-return" href="/" aria-label="Back to WeightPlay" data-i18n-aria="backLobby"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
+        <strong data-i18n="title">Animal Frontier Dominion</strong>
+        <label class="locale-control"><span class="sr-only" data-i18n="language">Language</span><select id="locale" aria-label="Language" data-i18n-aria="language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option></select></label>
+      </header>
+      <section class="main-hero">
+        <img class="poster" src="../../assets/animal-frontier-dominion/cover.webp" alt="Rux and Orla survey the crystal frontier" data-i18n-alt="posterAlt">
+        <div class="main-copy"><small data-i18n="kicker">4X-LITE TERRITORY STRATEGY</small><h1 data-i18n="title">Animal Frontier Dominion</h1><p data-i18n="pitch">Scout adjacent regions, counter their defenders, and build a route to the crystal citadel.</p><span id="mainProgress"></span><button id="start" class="primary" type="button" data-i18n="start">Start Game</button></div>
+      </section>
+    </main>
+    <section class="public-guide" aria-label="Game guide" data-i18n-aria="guideLabel"><small data-i18n="guideKicker">AN ORIGINAL WEIGHTPLAY STRATEGY GAME</small><h2 data-i18n="guideTitle">Explore. Expand. Secure the frontier.</h2><p data-i18n="guideIntro">Choose each neighbouring territory carefully. Scouting reveals danger, formations counter enemy roles, and captured sites provide the supplies needed for the next march.</p><div class="guide-grid"><article><h3 data-i18n="howTitle">How to play</h3><ol><li data-i18n="how1">Choose an adjacent territory.</li><li data-i18n="how2">Scout its hidden modifier or save command points.</li><li data-i18n="how3">Choose the formation that counters its defender, then march.</li></ol></article><article><h3 data-i18n="progressTitle">A thirty-region campaign</h3><p data-i18n="progressText">Six frontier chapters add watchtowers, frozen supply routes, patrols, split paths, and crystal citadels. Permanent research remains in this browser.</p><h3 data-i18n="saveTitle">Save and privacy</h3><p data-i18n="saveText">No account is required. Campaign and research progress stay on this device.</p></article></div></section>
+  </div>
+
+  <section id="stage" class="stage-screen" hidden>
+    <div class="stage-canvas" data-wp-standard-stage-screen data-wp-canvas-max-width="920">
+      <header class="stage-header"><button id="stageBack" type="button" aria-label="Back" data-i18n-aria="back">←</button><div><strong data-i18n="chooseRegion">Choose a frontier region</strong><span id="stageProgress"></span></div><img src="../../assets/weightplay-character-moon-cap-owl-cutout.webp" alt=""></header>
+      <nav class="stage-tabs" aria-label="Frontier management" data-i18n-aria="management"><button class="active" data-tab="map" data-i18n="map">Map</button><button data-tab="research" data-i18n="research">Research</button></nav>
+      <section id="mapTab" class="tab-panel map-tab"><div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-settle-duration="330" data-wp-stage-settle-easing="smoothstep" aria-label="Region selector" data-i18n-aria="regionRail"></div><p id="stageHint" data-i18n="stageHint">Drag the frontier, then choose an unlocked region.</p></section>
+      <section id="researchTab" class="tab-panel research-tab" hidden><div class="resource-row"><span><b data-i18n="supply">Supply</b><strong id="metaSupply">0</strong></span><span><b data-i18n="crystal">Crystal</b><strong id="metaCrystal">0</strong></span><span><b data-i18n="diamonds">Diamonds</b><strong id="diamondBalance">0</strong></span></div><div class="research-grid"><button data-upgrade="command"><strong data-i18n="commandTent">Command Tent</strong><span data-i18n="commandBenefit">+1 starting command</span><small id="commandCost"></small></button><button data-upgrade="morale"><strong data-i18n="moraleCamp">Morale Camp</strong><span data-i18n="moraleBenefit">+2 starting morale</span><small id="moraleCost"></small></button><button id="lensUpgrade"><strong data-i18n="scoutLens">Orla's Scout Lens</strong><span data-i18n="lensBenefit">Permanent: first scout each battle is free.</span><small data-i18n="lensCost">25 diamonds · permanent</small></button></div><p id="researchFeedback" aria-live="polite"></p></section>
+    </div>
+    <div class="ad-reserve" aria-hidden="true"></div>
+  </section>
+
+  <section id="battle" class="battle-screen" hidden>
+    <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
+      <div id="battleLive" class="battle-live">
+        <header class="battle-header"><button id="battleBack" type="button" aria-label="Back" data-i18n-aria="back">←</button><div><small id="battleRegion"></small><strong id="battleObjective"></strong></div><div class="hud"><span><b data-i18n="turn">Turn</b><strong id="turnValue">1/8</strong></span><span><b data-i18n="morale">Morale</b><strong id="moraleValue">10</strong></span><span><b data-i18n="supply">Supply</b><strong id="supplyValue">4</strong></span></div></header>
+        <section class="map-scene" id="mapScene" aria-label="Frontier territory map" data-i18n-aria="battleMap"><div id="territoryLayer"></div><div id="marchLine"></div></section>
+        <section class="decision-panel"><div class="target-readout"><small data-i18n="selectedTerritory">Selected territory</small><strong id="targetName" data-i18n="chooseTarget">Choose an adjacent territory</strong><span id="targetInfo"></span></div><div class="formation-row" role="group" aria-label="Formation" data-i18n-aria="formation"><button data-formation="vanguard"><img src="../../assets/weightplay-character-spark-paw-captain-cutout.webp" alt=""><span data-i18n="vanguard">Vanguard</span></button><button data-formation="ranger"><img src="../../assets/weightplay-character-moon-cap-owl-cutout.webp" alt=""><span data-i18n="ranger">Rangers</span></button><button data-formation="guard"><img src="../../assets/weightplay-character-boom-mane-lion-cutout.webp" alt=""><span data-i18n="guard">Guard</span></button></div><div class="battle-actions"><button id="scout" type="button" data-i18n="scout">Scout · 1 command</button><button id="march" class="primary" type="button" data-i18n="march">March</button></div><p id="feedback" aria-live="polite"></p></section>
+      </div>
+      <section id="result" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card"><img src="../../assets/weightplay-character-gear-horn-rhino-cutout.webp" alt=""><small id="resultKicker"></small><h2 id="resultTitle"></h2><p id="resultText"></p><div id="resultRewards"></div><div class="modal-actions"><button id="retry" type="button" data-i18n="retry">Retry</button><button id="resultMap" type="button" data-i18n="returnMap">Return to Map</button><button id="nextRegion" class="primary" type="button" data-i18n="nextRegion">Next Region</button></div></div></section>
+      <section id="leave" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card"><h2 id="leaveTitle" data-i18n="leaveTitle">Leave this expedition?</h2><p data-i18n="leaveText">The current territory route, morale, supply, and turn progress will be lost. Permanent research stays saved.</p><div class="modal-actions"><button id="continueBattle" class="primary" type="button" data-i18n="continue">Continue playing</button><button id="leaveMap" type="button" data-i18n="returnMap">Return to Map</button></div></div></section>
+    </div>
+    <div class="ad-reserve" aria-hidden="true"></div>
+  </section>
+
+  <script src="../../src/site-config.js"></script><script src="../../src/i18n.js?v=20260720-locale11-4"></script><script src="../../src/game-runtime-localizer-loader.js?v=20260720-locale11-14"></script><script src="../../src/wallet.js"></script><script src="../../src/analytics.js"></script><script src="../../src/sound.js?v=20260720-locale11"></script><script src="../../src/edge-guard.js"></script>
+  <script src="../../src/tutorial.js"></script><script src="locales.js"></script><script src="game.js?v=20260720-frontier1"></script><script src="../../src/stage-selector-standard.js?v=20260720-canvas-max920-1" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
+</body>
+</html>

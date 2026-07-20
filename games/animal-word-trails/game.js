@@ -35,15 +35,36 @@
   copy.en.start = 'Start Game';
   copy['zh-Hant'].start = '\u958b\u59cb\u904a\u6232';
   const app = document.getElementById('app'), locale = document.getElementById('locale');
-  const supportedLocales=['en','zh-Hant'];
+  const supportedLocales=['en','zh-Hant','zh-Hans','ja','ko','es','pt-BR','fr','de','it','ru'];
+  const runtimeTranslate=value=>window.WeightPlayGameRuntimeLocalizer?.translate?.(String(value))||String(value);
+  const cleanWord=value=>Array.from(String(value).normalize('NFC').toLocaleUpperCase()).filter(char=>/[\p{Letter}\p{Mark}]/u.test(char)).join('');
+  function buildLocalizedStage(source,index){
+    const words=source.words.map(word=>cleanWord(runtimeTranslate(word))).filter(Boolean);
+    const needed=words.reduce((sum,word)=>sum+Array.from(word).length,0)+words.length-1;
+    const size=Math.max(6,Math.ceil(Math.sqrt(needed)));
+    const snake=[];
+    for(let row=0;row<size;row++)for(let step=0;step<size;step++)snake.push(row*size+(row%2?size-1-step:step));
+    const board=Array(size*size).fill(''),paths=[];
+    let cursor=0;
+    words.forEach(word=>{const path=[];Array.from(word).forEach(char=>{const cell=snake[cursor++];board[cell]=char;path.push(cell)});paths.push(path);cursor++});
+    const fillers=Array.from(words.join(''));
+    board.forEach((char,cell)=>{if(!char)board[cell]=fillers[(cell*7+index)%fillers.length]||'A'});
+    const localized={name:runtimeTranslate(source.name),words,board,size};
+    if(source.rule)localized.rule=runtimeTranslate(source.rule);
+    if(source.blocked){const used=new Set(paths.flat()),blocked=[...board.keys()].reverse().find(cell=>!used.has(cell));if(blocked!==undefined)localized.blocked=[blocked]}
+    if(source.oneWay&&paths[0]?.length>1)localized.oneWay={index:paths[0][1],from:paths[0][0]};
+    return localized;
+  }
   const storageFallback=new Map();
   function readStorage(key){try{const value=localStorage.getItem(key);if(value!==null)storageFallback.set(key,value);return value??storageFallback.get(key)??null;}catch{return storageFallback.get(key)??null;}}
   function writeStorage(key,value){const normalized=String(value);storageFallback.set(key,normalized);try{localStorage.setItem(key,normalized);}catch{}}
   function readRecord(key){try{return JSON.parse(readStorage(key)||'{}');}catch{return{};}}
   const gameLocalePreference=readStorage('wordTrailsLocale');
   const platformLocale=readStorage('weightPlayLocale')||readStorage('weightplayLocale');
-  let lang = supportedLocales.includes(gameLocalePreference)?gameLocalePreference:(supportedLocales.includes(platformLocale)?platformLocale:'en'), stage = 0, path = [], found = new Set(), hints = 0, dragStartLength = 0, leaveConfirmOpen = false, leaveConfirmTrigger = null;
-  const $ = id => document.getElementById(id); const t = key => copy[lang][key];
+  const routedLocale=window.WonderI18n?.localeFromPath?.()||'';
+  let lang = supportedLocales.includes(routedLocale)?routedLocale:(supportedLocales.includes(gameLocalePreference)?gameLocalePreference:(supportedLocales.includes(platformLocale)?platformLocale:'en')), stage = 0, path = [], found = new Set(), hints = 0, dragStartLength = 0, leaveConfirmOpen = false, leaveConfirmTrigger = null;
+  if(!packs[lang])packs[lang]=packs.en.map(buildLocalizedStage);
+  const $ = id => document.getElementById(id); const t = key => copy[lang]?.[key]??runtimeTranslate(copy.en[key]??key);
   const track = (event, details = {}) => window.WonderAnalytics?.track(event, { game_id: 'animal-word-trails', locale: lang, stage: stage + 1, ...details });
   const battleTasks = new Map();
   let battleTasksPaused = document.hidden;
@@ -68,15 +89,15 @@
   function translate(){ document.documentElement.lang=lang; document.querySelectorAll('[data-copy]').forEach(el=>el.textContent=t(el.dataset.copy)); }
   function save(){ writeStorage('wordTrailsLocale',lang); writeStorage('weightPlayLocale',lang); writeStorage('wordTrailsBest',JSON.stringify(readRecord('wordTrailsBest'))); }
   function renderStages(){ const rail=$('stageRail'); rail.innerHTML=''; const best=readRecord('wordTrailsBest'); packs[lang].forEach((item,i)=>{ const card=document.createElement('button'); card.className='stage-card'+(i===stage?' selected':'')+(i>0&&!best[lang+'-'+(i-1)]?' locked':''); card.disabled=i>0&&!best[lang+'-'+(i-1)]; card.innerHTML=`<strong>${i+1}. ${item.name}</strong><span>${item.words.length} ${lang==='en'?'words':'個字詞'}</span>`; card.onclick=()=>{stage=i;renderStages()};rail.append(card); }); $('stageProgress').textContent=`${stage+1} / ${packs[lang].length}`; }
-  function neighbors(a,b){ return Math.abs(Math.floor(a/4)-Math.floor(b/4))<=1 && Math.abs(a%4-b%4)<=1; }
+  function neighbors(a,b){ const size=packs[lang][stage].size||4;return Math.abs(Math.floor(a/size)-Math.floor(b/size))<=1 && Math.abs(a%size-b%size)<=1; }
   function renderBattle(){ const data=packs[lang][stage]; path=[]; found=new Set(); hints=0; $('battleTitle').textContent=data.name; $('objective').textContent=lang==='en'?'Find the animal words':'找出動物字詞'; $('foundCount').textContent=`0/${data.words.length}`; $('starCount').textContent='★ 0'; $('targets').innerHTML=data.words.map(w=>`<span class="target" data-word="${w}">${w}</span>`).join(''); const board=$('board'); board.innerHTML=''; data.board.forEach((letter,i)=>{const b=document.createElement('button');b.className='tile';b.dataset.index=i;b.textContent=letter;b.addEventListener('click',()=>select(i));b.addEventListener('pointerenter',e=>{if(e.buttons)select(i)});board.append(b)}); board.onpointerdown=e=>{if(e.target.matches('.tile')){dragStartLength=path.length;board.setPointerCapture(e.pointerId);select(+e.target.dataset.index)}}; board.onpointerup=()=>{if(path.length-dragStartLength>1)submit()}; $('feedback').textContent=lang==='en'?'Connect adjacent tiles.':'連接相鄰的字詞格。'; screen('battle'); }
-  function select(i){ const data=packs[lang][stage]; if(data.blocked?.includes(i)||path.includes(i)) return; if(path.length && !neighbors(path.at(-1),i)) return; if(data.oneWay?.index===i && path.length && path.at(-1)!==data.oneWay.from){ $('feedback').textContent=lang==='en'?'Follow the leaf direction.':'\u8acb\u9806\u8457\u8449\u7247\u65b9\u5411\u524d\u9032\u3002'; return; } path.push(i); document.querySelectorAll('.tile').forEach(x=>x.classList.toggle('selected',path.includes(+x.dataset.index))); }
+  function select(i){ const data=packs[lang][stage]; if(data.blocked?.includes(i)||path.includes(i)) return; if(path.length && !neighbors(path.at(-1),i)){ path=[i]; $('feedback').textContent=t('newPath'); document.querySelectorAll('.tile').forEach(x=>x.classList.toggle('selected',path.includes(+x.dataset.index))); return; } if(data.oneWay?.index===i && path.length && path.at(-1)!==data.oneWay.from){ $('feedback').textContent=t('oneWay'); return; } path.push(i); document.querySelectorAll('.tile').forEach(x=>x.classList.toggle('selected',path.includes(+x.dataset.index))); }
   function clear(){ path=[];document.querySelectorAll('.tile').forEach(x=>x.classList.remove('selected'));$('feedback').textContent=''; }
   function submit(){ const data=packs[lang][stage], word=path.map(i=>data.board[i]).join(''); if(!data.words.includes(word)||found.has(word)){ $('feedback').textContent=t('try'); clear(); return; } found.add(word); document.querySelector(`[data-word="${word}"]`).classList.add('done'); path.forEach(i=>document.querySelector(`.tile[data-index="${i}"]`).classList.add('correct')); $('feedback').textContent=t('great'); $('foundCount').textContent=`${found.size}/${data.words.length}`; $('starCount').textContent=`★ ${Math.max(1,3-hints)}`; if(found.size===data.words.length) setTimeout(result,450); else setTimeout(clear,420); }
   function hint(){ const data=packs[lang][stage], word=data.words.find(w=>!found.has(w)); if(!word)return; hints++; track('word_trails_hint_used', { hints_used: hints }); window.WonderSound?.play('click'); const ix=data.board.findIndex(l=>l===word[0]); clear(); select(ix); $('feedback').textContent=`${t('hint')}: ${word[0]}`; }
   function result(){ const key=lang+'-'+stage, best=readRecord('wordTrailsBest'), stars=Math.max(1,3-hints); best[key]=Math.max(best[key]||0,stars);writeStorage('wordTrailsBest',JSON.stringify(best)); $('resultSummary').textContent=`${found.size} ${t('found')} · ★ ${stars}`; screen('result'); }
   function renderStages(){ const rail=$('stageRail'); rail.innerHTML=''; const best=readRecord('wordTrailsBest'); const album=readRecord('wordTrailsAlbum'); const cards=Object.keys(album).filter(key=>key.startsWith(lang+'-')).length; packs[lang].forEach((item,i)=>{ const card=document.createElement('button'); const locked=i>0&&!best[lang+'-'+(i-1)]; card.className='stage-card'+(i===stage?' selected':'')+(locked?' locked':''); card.disabled=locked; card.innerHTML=`<strong>${i+1}. ${item.name}</strong><span>${item.words.length} ${lang==='en'?'words':'\u500b\u5b57\u8a5e'}</span>`; card.onclick=()=>{stage=i;renderStages()};rail.append(card); }); $('stageProgress').textContent=lang==='en'?`${stage+1}/${packs[lang].length} · Cards ${cards}`:`${stage+1}/${packs[lang].length} · \u7dda\u7d22\u5361 ${cards}`; }
-  function renderBattle(){ cancelBattleTasks(); $('clueReveal')?.classList.add('hidden'); const data=packs[lang][stage]; path=[]; found=new Set(); hints=0; $('battleTitle').textContent=data.name; $('objective').textContent=lang==='en'?'Find the animal words':'\u627e\u51fa\u52d5\u7269\u5b57\u8a5e'; $('foundCount').textContent=`0/${data.words.length}`; $('starCount').textContent='\u2605 0'; $('targets').innerHTML=data.words.map(w=>`<span class="target" data-word="${w}">${w}</span>`).join(''); const board=$('board'); board.innerHTML=''; data.board.forEach((letter,i)=>{const b=document.createElement('button');b.className='tile'+(data.blocked?.includes(i)?' blocked':'');b.disabled=Boolean(data.blocked?.includes(i));b.dataset.index=i;b.textContent=letter;b.addEventListener('click',()=>select(i));board.append(b)}); board.onpointerdown=e=>{if(e.target.matches('.tile')){dragStartLength=path.length;board.setPointerCapture(e.pointerId);select(+e.target.dataset.index)}}; board.onpointermove=e=>{if(!board.hasPointerCapture?.(e.pointerId))return;const tile=document.elementFromPoint(e.clientX,e.clientY)?.closest('.tile');if(tile&&board.contains(tile))select(+tile.dataset.index)}; board.onpointerup=e=>{if(board.hasPointerCapture?.(e.pointerId))board.releasePointerCapture(e.pointerId);if(path.length-dragStartLength>1)submit()}; board.onpointercancel=e=>{if(board.hasPointerCapture?.(e.pointerId))board.releasePointerCapture(e.pointerId);clear()}; $('feedback').textContent=lang==='en'?'Connect adjacent tiles.':'\u9023\u63a5\u76f8\u9130\u7684\u5b57\u8a5e\u683c\u3002'; screen('battle'); requestAnimationFrame(()=>board.querySelector('.tile:not(:disabled)')?.focus({preventScroll:true})); }
+  function renderBattle(){ cancelBattleTasks(); $('clueReveal')?.classList.add('hidden'); const data=packs[lang][stage]; path=[]; found=new Set(); hints=0; $('battleTitle').textContent=data.name; $('objective').textContent=t('objective'); $('foundCount').textContent=`0/${data.words.length}`; $('starCount').textContent='\u2605 0'; $('targets').innerHTML=data.words.map(w=>`<span class="target" data-word="${w}">${w}</span>`).join(''); const board=$('board'); board.style.setProperty('--grid-size',String(data.size||4));board.innerHTML=''; data.board.forEach((letter,i)=>{const b=document.createElement('button');b.className='tile'+(data.blocked?.includes(i)?' blocked':'');b.disabled=Boolean(data.blocked?.includes(i));b.dataset.index=i;b.textContent=letter;b.addEventListener('click',()=>select(i));board.append(b)}); board.onpointerdown=e=>{if(e.target.matches('.tile')){dragStartLength=path.length;board.setPointerCapture(e.pointerId);select(+e.target.dataset.index)}}; board.onpointermove=e=>{if(!board.hasPointerCapture?.(e.pointerId))return;const tile=document.elementFromPoint(e.clientX,e.clientY)?.closest('.tile');if(tile&&board.contains(tile))select(+tile.dataset.index)}; board.onpointerup=e=>{if(board.hasPointerCapture?.(e.pointerId))board.releasePointerCapture(e.pointerId);if(path.length-dragStartLength>1)submit()}; board.onpointercancel=e=>{if(board.hasPointerCapture?.(e.pointerId))board.releasePointerCapture(e.pointerId);clear()}; $('feedback').textContent=t('connect'); screen('battle'); requestAnimationFrame(()=>board.querySelector('.tile:not(:disabled)')?.focus({preventScroll:true})); }
   function submit(){ const data=packs[lang][stage], word=path.map(i=>data.board[i]).join(''); if(!data.words.includes(word)||found.has(word)){ $('feedback').textContent=t('try'); clear(); return; } found.add(word); document.querySelector(`[data-word="${word}"]`).classList.add('done'); path.forEach(i=>document.querySelector(`.tile[data-index="${i}"]`).classList.add('correct')); $('feedback').textContent=t('great'); $('foundCount').textContent=`${found.size}/${data.words.length}`; $('starCount').textContent=`\u2605 ${Math.max(1,3-hints)}`; scheduleBattleTask('transition',found.size===data.words.length?450:420,found.size===data.words.length?result:clear); }
   function result(){ const key=lang+'-'+stage, best=readRecord('wordTrailsBest'), stars=Math.max(1,3-hints); best[key]=Math.max(best[key]||0,stars);writeStorage('wordTrailsBest',JSON.stringify(best)); track('word_trails_stage_complete', { words_found: found.size, hints_used: hints, stars }); window.WonderSound?.play('win'); $('resultSummary').textContent=`${found.size} ${t('found')} \u00b7 \u2605 ${stars}`; $('next').classList.toggle('hidden',stage>=packs[lang].length-1); screen('result'); requestAnimationFrame(()=>($('next').classList.contains('hidden')?$('resultsBack'):$('next')).focus({preventScroll:true})); }
   const baseRenderBattle = renderBattle;
@@ -103,7 +124,7 @@
       card.setAttribute('aria-disabled',String(locked));
       if(locked) card.setAttribute('aria-describedby','stageFeedback');
       card.dataset.stage=String(i);
-      card.innerHTML='<strong>'+String(i+1)+'. '+item.name+'</strong><span>'+String(item.words.length)+' '+(lang==='en'?'words':'\u500b\u5b57\u8a5e')+'</span>';
+      card.innerHTML='<strong>'+String(i+1)+'. '+item.name+'</strong><span>'+String(item.words.length)+' '+t('words')+'</span>';
       card.onclick=()=>{
         if(rail.dataset.dragging==='true') return;
         if(locked){
@@ -116,12 +137,12 @@
       rail.append(card);
     });
     scheduleCenteredStageCard();
-    $('stageProgress').textContent=(stage+1)+'/'+packs[lang].length+' · '+(lang==='en'?'Cards ':'\u7dda\u7d22\u5361 ')+cards;
+    $('stageProgress').textContent=(stage+1)+'/'+packs[lang].length+' · '+t('cards')+' '+cards;
   };
   function reveal(word){
     const panel=$('clueReveal');
     const effectPositions=['0%','33.333%','66.667%','100%'];
-    $('clueTitle').textContent=lang==='en'?`Clue found: ${word}`:`\u627e\u5230\u52d5\u7269\u7dda\u7d22\uff1a${word}`;
+    $('clueTitle').textContent=`${t('clueFound')} ${word}`;
     $('clearFx').style.backgroundPosition=`${effectPositions[(found.size-1)%effectPositions.length]} center`;
     panel.classList.remove('hidden');
     scheduleBattleTask('reveal',850,()=>panel.classList.add('hidden'));
@@ -139,12 +160,12 @@
     language:'Language', album:'Album', albumTitle:'Animal clues', undo:'Undo', loading:'Loading trail',
     backLobby:'Back to WeightPlay', backMain:'Back to main', backStage:'Back to trails', closeAlbum:'Close album', stages:'Trails', board:'Word board',
     lockedStage:'Finish the previous trail to unlock this one.', leaveTitle:'Leave this trail?', leaveMessage:'Found words, the current path, and star progress in this run will reset.', keepReading:'Keep reading', leaveTrail:'Leave trail',
-    seoTitle:'Animal Word Trails - WeightPlay', seoDescription:'Connect animal and habitat words in a calm reading puzzle.'
+    seoTitle:'Animal Word Trails - WeightPlay', seoDescription:'Connect animal and habitat words in a calm reading puzzle.', words:'words', cards:'Cards', objective:'Find the animal words', connect:'Connect adjacent tiles.', newPath:'New path started here.', oneWay:'Follow the leaf direction.', clueFound:'Clue found:'
   });
   Object.assign(copy['zh-Hant'], {
     language:'\u8a9e\u8a00', album:'\u7dda\u7d22\u5361', albumTitle:'\u52d5\u7269\u7dda\u7d22\u5361', undo:'\u5fa9\u539f', loading:'\u6e96\u5099\u5c0f\u5f91',
     backLobby:'\u8fd4\u56de WeightPlay \u5927\u5ef3', backMain:'\u8fd4\u56de\u9996\u9801', backStage:'\u8fd4\u56de\u5c0f\u5f91\u9078\u55ae', closeAlbum:'\u95dc\u9589\u7dda\u7d22\u5361',
-    stages:'\u5c0f\u5f91\u9078\u55ae', board:'\u5b57\u8a5e\u68cb\u76e4', seoTitle:'\u52d5\u7269\u5b57\u8a5e\u5c0f\u5f91 - WeightPlay',
+    stages:'\u5c0f\u5f91\u9078\u55ae', board:'\u5b57\u8a5e\u68cb\u76e4', seoTitle:'\u52d5\u7269\u5b57\u8a5e\u5c0f\u5f91 - WeightPlay', words:'\u500b\u5b57\u8a5e', cards:'\u7dda\u7d22\u5361', objective:'\u627e\u51fa\u52d5\u7269\u5b57\u8a5e', connect:'\u9023\u63a5\u76f8\u9130\u7684\u5b57\u8a5e\u683c\u3002', newPath:'\u5df2\u5f9e\u9019\u4e00\u683c\u91cd\u65b0\u958b\u59cb\u3002', oneWay:'\u8acb\u9806\u8457\u8449\u7247\u65b9\u5411\u524d\u9032\u3002', clueFound:'\u627e\u5230\u52d5\u7269\u7dda\u7d22\uff1a',
     lockedStage:'\u5b8c\u6210\u524d\u4e00\u689d\u5c0f\u5f91\uff0c\u5c31\u80fd\u89e3\u9396\u9019\u4e00\u95dc\u3002', leaveTitle:'\u8981\u96e2\u958b\u9019\u689d\u5c0f\u5f91\u55ce\uff1f', leaveMessage:'\u9019\u4e00\u5c40\u627e\u5230\u7684\u5b57\u8a5e\u3001\u76ee\u524d\u8def\u5f91\u548c\u661f\u661f\u9032\u5ea6\u90fd\u6703\u91cd\u8a2d\u3002', keepReading:'\u7e7c\u7e8c\u627e\u5b57', leaveTrail:'\u96e2\u958b\u5c0f\u5f91',
     seoDescription:'\u9023\u7dda\u627e\u51fa\u52d5\u7269\u8207\u68f2\u5730\u5b57\u8a5e\u7684\u8f15\u9b06\u95b1\u8b80\u904a\u6232\u3002'
   });
@@ -288,7 +309,7 @@
   setTimeout(finishLoading,1800);
   addEventListener('pagehide',pauseBattleTasks);addEventListener('pageshow',resumeBattleTasks);document.addEventListener('visibilitychange',()=>{if(document.hidden)pauseBattleTasks();else resumeBattleTasks();});
   track('game_view');
-  locale.onchange=()=>{lang=locale.value;stage=0;save();translate();};
+  locale.onchange=()=>{const next=locale.value;writeStorage('wordTrailsLocale',next);writeStorage('weightPlayLocale',next);if(window.WonderI18n?.setLocale){window.WonderI18n.setLocale(next);return;}lang=next;if(!packs[lang])packs[lang]=packs.en.map(buildLocalizedStage);stage=0;save();translate();};
   $('start').onclick=()=>{track('game_start');renderStages();screen('stage');focusSelectedStage();};
   $('stageBack').onclick=()=>{screen('main');requestAnimationFrame(()=>$('start').focus({preventScroll:true}));};
   $('playStage').onclick=renderBattle;

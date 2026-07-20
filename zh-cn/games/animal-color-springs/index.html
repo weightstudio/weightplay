@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+    <base href="/games/animal-color-springs/" />
+    <link rel="canonical" href="https://weightplay.com/zh-cn/games/animal-color-springs/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-color-springs/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-color-springs/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-color-springs/" />
+    <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/animal-color-springs/" />
+    <link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/animal-color-springs/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/animal-color-springs/" />
+    <link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/animal-color-springs/" />
+    <link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/animal-color-springs/" />
+    <link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/animal-color-springs/" />
+    <link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/animal-color-springs/" />
+    <link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/animal-color-springs/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-color-springs/" />
+    <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="robots" content="index,follow" />
+  <meta name="weightplay-audience" content="kids" />
+  <meta name="theme-color" content="#062f2d" />
+  <title>动物彩泉 | WeightPlay</title>
+  <meta name="description" content="《动物彩泉》是 30 关颜色分类益智游戏。玩家要在華麗容器之间移动彩泉珠，直到每个容器只保留同一种颜色。" />
+  <link rel="stylesheet" href="../../src/loading-screen.css" />
+  <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard />
+  <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
+  <link rel="stylesheet" href="style.css?v=20260720-ball-flight3" />
+  <meta property="og:title" content="动物彩泉 | WeightPlay" />
+    <meta property="og:description" content="《动物彩泉》是 30 关颜色分类益智游戏。玩家要在華麗容器之间移动彩泉珠，直到每个容器只保留同一种颜色。" />
+    <meta property="og:url" content="https://weightplay.com/zh-cn/games/animal-color-springs/" />
+    <meta name="twitter:title" content="动物彩泉 | WeightPlay" />
+    <meta name="twitter:description" content="《动物彩泉》是 30 关颜色分类益智游戏。玩家要在華麗容器之间移动彩泉珠，直到每个容器只保留同一种颜色。" />
+  </head>
+<body data-screen="loading" data-game-id="animal-color-springs">
+  <section id="loadingPanel" class="loading-panel" aria-live="polite">
+    <div class="loading-card"><strong data-i18n="title">動物彩泉分類</strong><span data-i18n="loading">正在喚醒森林彩泉…</span><div class="loading-track"><i id="loadingFill"></i></div></div>
+  </section>
+
+  <div id="mainGroup" class="main-group" hidden>
+    <main id="mainScreen" class="main-screen">
+      <header class="main-header">
+        <a class="home-link" href="/kids/" aria-label="回到 WeightPlay" data-i18n-aria="backWeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a>
+        <strong data-i18n="title">動物彩泉分類</strong>
+        <label class="locale-control"><span class="sr-only" data-i18n="language">語言</span><select id="localeSelect" data-i18n-aria="language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option></select></label>
+      </header>
+      <section class="main-hero">
+        <img class="main-poster" src="assets/animal-color-springs-cover.webp" alt="森林裡的貓頭鷹與白兔正在整理發光彩泉" data-i18n-alt="《动物彩泉》游戏图片" />
+        <div class="main-copy"><small data-i18n="eyebrow">森林彩泉謎題</small><h1 data-i18n="title">动物彩泉</h1><p data-i18n="pitch">把相同顏色的彩珠聚在同一座泉器，讓混亂的森林泉水恢復光彩。</p><div id="mainProgress" class="main-progress"></div><button id="startBtn" class="primary-action" type="button" data-i18n="start">開始遊戲</button></div>
+      </section>
+    </main>
+    <section class="game-guide" aria-label="遊戲說明" data-i18n-aria="guideLabel">
+      <small data-i18n="guideKicker">WeightPlay 原創益智遊戲</small><h2 data-i18n="guideTitle">整理每一座森林彩泉</h2><p data-i18n="guideIntro">點一座泉器取出頂層同色彩珠，再點另一座可接收的泉器。當每座非空泉器只剩一種顏色，彩泉便完成修復。</p>
+      <div class="guide-grid"><article><h3 data-i18n="howTitle">遊玩方式</h3><ol><li data-i18n="how1">先選來源泉器，再選目的泉器。</li><li data-i18n="how2">目的泉器必須有空位，而且頂層顏色相同或完全為空。</li><li data-i18n="how3">用復原修正一步，或請月帽歐拉提示下一步。</li></ol></article><article><h3 data-i18n="progressTitle">關卡成長</h3><p data-i18n="progressText">30 關會逐步加入更多顏色、封印泉器、不同容量與更緊湊的步數目標。</p><h3 data-i18n="saveTitle">存檔與隱私</h3><p data-i18n="saveText">關卡、星星與最佳步數只儲存在目前瀏覽器，不需登入，也不收集個人資料。</p></article></div>
+    </section>
+  </div>
+
+  <section id="stageScreen" class="stage-screen" hidden>
+    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-canvas-max-width="920" style="--wp-stage-art:url('assets/animal-color-springs-cover.webp')">
+      <header class="stage-header"><button id="stageBackBtn" type="button" data-i18n-aria="back">←</button><div><strong data-i18n="chooseStage">選擇彩泉</strong><span id="stageSummary"></span></div><img src="../../assets/weightplay-character-moon-cap-owl-cutout.webp" alt="" /></header>
+      <section class="chapter-panel"><small id="chapterKicker"></small><strong id="chapterTitle"></strong><p id="chapterRule"></p></section>
+      <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-settle-duration="330" data-wp-stage-settle-easing="smoothstep" data-i18n-aria="stageRailLabel"></div>
+    </div>
+  </section>
+
+  <section id="battleScreen" class="battle-screen" hidden>
+    <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
+      <header class="battle-header"><button id="battleBackBtn" type="button" data-i18n-aria="back">←</button><div class="battle-title"><small id="stageLabel"></small><strong id="stageGoal"></strong></div><div class="battle-stat"><small data-i18n="moves">步數</small><strong id="movesValue">0</strong></div><button id="helpBtn" class="help-btn" type="button" data-i18n-aria="help">?</button></header>
+      <section id="lockNotice" class="lock-notice" aria-live="polite" hidden></section>
+      <section id="vesselBoard" class="vessel-board" aria-label="彩泉分類盤" data-i18n-aria="boardLabel"></section>
+      <div class="battle-actions"><button id="undoBtn" type="button"><span aria-hidden="true">↶</span><b data-i18n="undo">復原</b></button><button id="restartBtn" type="button"><span aria-hidden="true">↻</span><b data-i18n="restart">重來</b></button><button id="hintBtn" type="button"><span aria-hidden="true">✦</span><b data-i18n="hint">提示</b></button></div>
+
+      <section id="resultPanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card"><img src="../../assets/weightplay-character-rainbow-hop-mimi-clean-cutout.webp" alt="" /><small data-i18n="resultKicker">彩泉修復完成</small><h2 id="resultTitle"></h2><div id="resultStars" class="result-stars"></div><p id="resultText"></p><p id="bestText" class="best-text"></p><div class="modal-actions"><button id="retryBtn" type="button" data-i18n="retry">再玩一次</button><button id="resultStagesBtn" type="button" data-i18n="stages">回到關卡</button><button id="nextBtn" class="primary-action" type="button" data-i18n="next">下一關</button></div></div></section>
+      <section id="leavePanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card"><h2 id="leaveTitle" data-i18n="leaveTitle">要保留這次整理嗎？</h2><p data-i18n="leaveText">繼續會回到目前局面；回到關卡會結束這一局。</p><div class="modal-actions"><button id="leaveContinueBtn" class="primary-action" type="button" data-i18n="continue">繼續遊戲</button><button id="leaveStagesBtn" type="button" data-i18n="returnStages">回到關卡</button></div></div></section>
+    </div>
+  </section>
+
+  <section id="tutorialPanel" class="modal-layer tutorial-layer" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="tutorial-card"><button id="tutorialCloseBtn" class="modal-close" type="button" data-i18n-aria="close">×</button><img src="../../assets/weightplay-character-moon-cap-owl-cutout.webp" alt="" /><h2 id="tutorialTitle" data-i18n="tutorialTitle">讓相同顏色回到同一座彩泉</h2><ol><li data-i18n="tutorial1">點一座泉器，選取最上層的同色彩珠。</li><li data-i18n="tutorial2">再點空泉器，或頂層顏色相同的泉器。</li><li data-i18n="tutorial3">每座非空泉器只剩一種顏色就過關。</li></ol><button id="tutorialStartBtn" class="primary-action" type="button" data-i18n="tutorialStart">開始第一關</button></div></section>
+
+  <div id="toast" class="toast" aria-live="polite"></div>
+  <script src="../../src/site-config.js"></script><script src="/src/i18n.js?v=20260718-locale-routes1"></script><script src="../../src/game-runtime-localizer-loader.js?v=20260720-locale11-15"></script><script src="../../src/analytics.js"></script><script src="../../src/sound.js?v=20260720-locale11"></script><script src="../../src/edge-guard.js"></script>
+  <script src="locales.js"></script><script src="game.js?v=20260720-ball-flight3"></script><script src="../../src/stage-selector-standard.js?v=20260720-canvas-max920-1" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script><section class="game-page-info game-page-info-static" aria-label="动物彩泉 游戏资讯">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 儿童游戏指南</span><h2>动物彩泉</h2><p>《动物彩泉》是 30 关颜色分类益智游戏。玩家要在華麗容器之间移动彩泉珠，直到每个容器只保留同一种颜色。</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>颜色分类益智</strong></div><div class="game-info-fact"><span>类型</span><strong>益智 · 逻辑 · 动物</strong></div><div class="game-info-fact"><span>难度</span><strong>简单至具挑战性</strong></div><div class="game-info-fact"><span>预估游玩时间</span><strong>每关约 2 至 6 分钟</strong></div><div class="game-info-fact"><span>练习能力</span><strong>逻辑 · 问题解决 · 专注</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>世界与任务</h3><p>森林泉水失去了色彩，月帽奥拉请玩家整理发光泉珠，逐一修复泉眼。</p></div>
+      <div class="game-info-section"><h3>游戏系统</h3><p>先选择顶端有可移动泉珠的容器，再选择仍有空位的相容目的地。目的地必须为空，或顶端泉珠颜色相同。</p>
+<p>复原会精确退回一步，重新开始会还原关卡，提示会指出有帮助的合法移动。通关、星数、解锁与最佳步数会保存在本设备。</p></div>
+      <div class="game-info-section"><h3>玩法说明</h3><ol><li>从水平关卡列选择已解锁的泉眼。</li><li>选择要移动顶端泉珠的容器。</li><li>再选择空容器或顶端同色的容器。</li><li>在目标步数内完成所有颜色组合。</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>解题中段前保留一个可弹性使用的空容器。</li><li>完成一种颜色前，先确认不会把其他颜色困在下层。</li><li>移动长堆叠前先确认容器容量。</li></ul></div>
+      <div class="game-info-section"><h3>关卡与难度成长</h3><p>第 1 至 5 关教导合法移动与空间规划，后续章节加入更多颜色、不均勻堆叠、容量变化、封印与更紧密路线，合计 30 关。</p></div>
+      <div class="game-info-section"><h3>开发设计理念</h3><p>关卡采用固定编排，难度来自路线规划而非随机发牌。触控、鼠标与键盘共用同一移动状态，Stage 与 Battle 维持 920px 最大宽度。</p></div>
+      <div class="game-info-section game-info-parent"><h3>家长说明</h3><p>游玩不需账号。进度保存在目前浏览器，清除网站数据后可能重设。星数与步数摘要不是正式能力评量。</p></div>
+      <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>共有多少关？</dt><dd>共有 30 关固定设计的分类关卡。</dd></div><div><dt>什么移动才合法？</dt><dd>目的地必须有空位，并且为空或顶端颜色相同。</dd></div><div><dt>进度会保存吗？</dt><dd>会，解锁、星数与最佳步数会保存在本设备。</dd></div></dl></div>
+    </div>
+  </section>
+<script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
+</body>
+</html>

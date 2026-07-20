@@ -8,6 +8,10 @@
   touch-action: manipulation;
 }
 
+body.zoo-playing .weightplay-version-badge {
+  display: none !important;
+}
+
 @media (max-width: 560px) and (pointer: coarse) {
   body.zoo-playing .habitat-grid {
     display: block;

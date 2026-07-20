@@ -865,6 +865,8 @@
     backgroundSuspended = false;
     run.active = false;
     cancelAnimationFrame(frame);
+    const terminalVictory = won && run.stage >= TRIAL_COUNT;
+    $("#resultHome").hidden = terminalVictory;
     if (won) {
       const gain = run.definition.reward;
       const previousUnlocked = unlocked;
@@ -1112,7 +1114,7 @@
       return;
     }
     if (event.key !== "Tab" || $("#resultModal").classList.contains("hidden")) return;
-    const actions = [$("#resultNext"), $("#resultHome")].filter((button) => !button.disabled);
+    const actions = [$("#resultNext"), $("#resultHome")].filter((button) => !button.disabled && !button.hidden);
     if (event.shiftKey && document.activeElement === actions[0]) { event.preventDefault(); actions.at(-1).focus(); }
     else if (!event.shiftKey && document.activeElement === actions.at(-1)) { event.preventDefault(); actions[0].focus(); }
   });
