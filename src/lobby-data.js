@@ -24,6 +24,7 @@ window.WONDER_LOBBY = {
       "animal-one-line",
       "animal-2048",
       "animal-frontier-dominion",
+      "animal-sanctuary-loop",
     ],
   },
   games: [
@@ -651,7 +652,7 @@ window.WONDER_LOBBY = {
         de: ["30 Missionen", "Schließe die Schleife", "Schattenjäger"], it: ["30 missioni", "Chiudi l'anello", "Cacciatori d'ombra"],
         ru: ["30 миссий", "Замкните петлю", "Теневые охотники"],
       },
-      art: { kind: "image", background: "assets/animal-sanctuary-loop/cover.webp", hideHero: true },
+      art: { kind: "image", background: "Assets/animal-sanctuary-loop/cover.webp", hideHero: true },
     },
     {
       id: "animal-skyport-dispatch",

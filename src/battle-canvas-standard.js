@@ -8,6 +8,7 @@
     "animal-auto-squad": ["#gamePanel", 382, 780],
     "animal-bubble-safari": ["#battleScreen", 390, 788],
     "animal-frontier-dominion": [".battle-canvas", 390, 788, 760, 334],
+    "animal-sanctuary-loop": [".battle-canvas", 390, 788, 760, 334],
     "animal-cafe-rush": ["#playPanel", 382, 780],
     "animal-crystal-survivor": ["#gamePanel", 382, 780],
     "animal-gearpack-expedition": [".battle-canvas", 390, 788],

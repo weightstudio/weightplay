@@ -591,6 +591,11 @@ a {
   background: rgba(216, 242, 200, 0.94);
 }
 
+.result-panel {
+  isolation: isolate;
+  background: #d8f2c8;
+}
+
 .result-card,
 .loading-card {
   display: grid;
@@ -700,7 +705,6 @@ a {
   transition: width 0.2s ease;
 }
 
-.result-panel,
 .loading-panel {
   animation: quiz-fade-in 0.22s ease;
 }

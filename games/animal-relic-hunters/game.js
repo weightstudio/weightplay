@@ -1106,8 +1106,8 @@
     },
     es: {
       title: "¿Salir de esta expedición?",
-      message: ({ expedition, room, hp, maxHp, keys, gold }) => `Expedición ${expedition}, sala ${room}: ${hp}/${maxHp} PV, ${keys} llaves y ${gold} de oro de la partida. Salir pierde esta partida, su progreso de sala, llaves y mejoras de reliquia. El nivel permanente, entrenamiento, mochila, equipo y oro guardado permanecen.`,
-      resume: "Seguir explorando",
+      message: ({ expedition, room, hp, maxHp, keys, gold }) => `Expedición ${expedition}, sala ${room}: ${hp}/${maxHp} puntos de vida, ${keys} llaves y ${gold} de oro de la partida. Salir pierde esta partida, su progreso de sala, llaves y mejoras de reliquia. El nivel permanente, entrenamiento, mochila, equipo y oro guardado permanecen.`,
+      resume: "Continuar la exploración",
       leave: "Salir de la expedición",
     },
   };

@@ -48,9 +48,9 @@
   Object.assign(copy.en, { boardName:"{habitat} Board {number}", arctic:"Arctic Glow", arcticDesc:"Use the top layers to reveal a clear snowy route." });
   Object.assign(copy["zh-Hant"], { boardName:"{habitat} \u7b2c {number} \u95dc", arctic:"\u6975\u5730\u6975\u5149", arcticDesc:"\u5148\u6253\u958b\u4e0a\u5c64\u724c\uff0c\u627e\u51fa\u6e05\u6670\u7684\u96ea\u5730\u8def\u7dda\u3002" });
   Object.assign(copy.es, { boardName:"{habitat}: tablero {number}", arctic:"Brillo ártico", arcticDesc:"Abre primero las capas superiores para revelar una ruta clara por la nieve." });
-  Object.assign(copy.en, { gameType:"Mahjong solitaire puzzle" });
-  Object.assign(copy["zh-Hant"], { gameType:"\u9ebb\u5c07\u724c\u914d\u5c0d\u89e3\u8b0e" });
-  Object.assign(copy.es, { gameType:"Rompecabezas de mahjong solitario" });
+  Object.assign(copy.en, { gameType:"Mahjong solitaire puzzle", trailLabel:"trail {trail}", keyTile:"key", rescueTile:"rescue" });
+  Object.assign(copy["zh-Hant"], { gameType:"\u9ebb\u5c07\u724c\u914d\u5c0d\u89e3\u8b0e", trailLabel:"{trail} \u8def\u5f91", keyTile:"\u9470\u5319", rescueTile:"\u6551\u63f4" });
+  Object.assign(copy.es, { gameType:"Rompecabezas de mahjong solitario", trailLabel:"ruta {trail}", keyTile:"llave", rescueTile:"rescate" });
   Object.assign(copy.en, { lockedFeedback:"{stage} is still locked. Clear the previous board first." });
   Object.assign(copy["zh-Hant"], { lockedFeedback:"{stage} \u5c1a\u672a\u89e3\u9396\uff0c\u8acb\u5148\u5b8c\u6210\u524d\u4e00\u95dc\u3002" });
   Object.assign(copy.es, { lockedFeedback:"{stage} sigue bloqueado. Completa primero el tablero anterior." });
@@ -90,11 +90,22 @@
     habitatData("forest","bridge","dual",{ sealedPairs:[4,7], rescuePairs:[6,8] }), habitatData("safari","wings","dual",{ sealedPairs:[5,8], rescuePairs:[6,9] }), habitatData("ocean","crown","dual",{ sealedPairs:[6,9], rescuePairs:[8,10] }), habitatData("arctic","pyramid","dual",{ sealedPairs:[7,10], rescuePairs:[9,11] }), habitatData("forest","sanctuary","dual",{ sealedPairs:[7,10], rescuePairs:[9,11], checkpoint:true }),
     habitatData("safari","towers","grand",{ sealedPairs:[4,7], rescuePairs:[6,9] }), habitatData("ocean","pyramid","grand",{ sealedPairs:[7,10], rescuePairs:[9,11] }), habitatData("arctic","sanctuary","grand",{ sealedPairs:[7,10], rescuePairs:[9,11] }), habitatData("forest","pyramid","grand",{ sealedPairs:[6,9], rescuePairs:[10,11] }), habitatData("ocean","sanctuary","grand",{ sealedPairs:[7,10], rescuePairs:[9,11], checkpoint:true })
   ];
-  let locale = window.WonderI18n?.locale?.() || readStorage(canonicalLocaleKey) || "en", save = loadSave(), stageIndex = 0, selected = null, state = null, leaveOpen = false, centeredStageFrame = 0;
-  const t = (key, values = {}) => Object.entries(values).reduce((out, [name, value]) => out.replaceAll(`{${name}}`, value), (copy[locale] || copy.en)[key] || copy.en[key] || key);
+  const actualLocale = () => window.WonderI18n?.actualLocale?.() || locale || "en";
+  function translateRuntime(source) {
+    const localizer = window.WeightPlayGameRuntimeLocalizer;
+    if (!source || copy[actualLocale()] || localizer?.locale !== actualLocale()) return source;
+    return localizer.translate(source) || source;
+  }
+  let locale = window.WonderI18n?.actualLocale?.() || readStorage(canonicalLocaleKey) || "en", save = loadSave(), stageIndex = 0, selected = null, state = null, leaveOpen = false, centeredStageFrame = 0;
+  const t = (key, values = {}) => {
+    const authored = copy[actualLocale()];
+    const source = authored?.[key] || copy.en[key] || key;
+    const localized = authored?.[key] ? source : translateRuntime(source);
+    return Object.entries(values).reduce((out, [name, value]) => out.replaceAll(`{${name}}`, String(value)), localized);
+  };
   function loadSave() { try { return { unlocked:1, bestPairs:0, playCount:0, bestByStage:{}, ...JSON.parse(readStorage(saveKey) || "{}") }; } catch { return { unlocked:1, bestPairs:0, playCount:0, bestByStage:{} }; } }
   const persist = () => writeStorage(saveKey, JSON.stringify(save));
-  function applyLocale() { document.documentElement.lang = locale; document.title = `${t("title")} - WeightPlay`; document.querySelectorAll("[data-ui]").forEach((el) => { el.textContent = t(el.dataset.ui); }); document.querySelectorAll("[data-aria]").forEach((el) => { el.setAttribute("aria-label", t(el.dataset.aria)); }); nodes.localeSelect.value = locale; renderMain(); renderStage(); if (state) renderBattle(); window.dispatchEvent(new CustomEvent("wonder:locale-change", { detail:{ locale } })); }
+  function applyLocale() { locale = actualLocale(); document.documentElement.lang = locale; document.title = `${t("title")} - WeightPlay`; document.querySelectorAll("[data-ui]").forEach((el) => { el.textContent = t(el.dataset.ui); }); document.querySelectorAll("[data-aria]").forEach((el) => { el.setAttribute("aria-label", t(el.dataset.aria)); }); nodes.localeSelect.value = locale; renderMain(); renderStage(); if (state) renderBattle(); window.dispatchEvent(new CustomEvent("wonder:locale-change", { detail:{ locale } })); }
   function setScreen(name) { const result = name === "result"; nodes.mainScreen.classList.toggle("hidden", name !== "main"); nodes.stageScreen.classList.toggle("hidden", name !== "stage"); nodes.battleScreen.classList.toggle("hidden", name !== "battle" && !result); nodes.resultScreen.classList.toggle("hidden", !result); nodes.battleLive.classList.toggle("hidden", result); nodes.battleLive.inert = result; if (result) nodes.battleLive.setAttribute("aria-hidden", "true"); else nodes.battleLive.removeAttribute("aria-hidden"); document.body.classList.toggle("playing", name !== "main"); document.body.classList.toggle("habitat-result", result); if (name !== "main") scheduleFitCanvases(); }
   function fitCanvases() { const viewportWidth = Math.max(1, document.documentElement.clientWidth || innerWidth); const viewportHeight = Math.max(1, document.documentElement.clientHeight || innerHeight); const scale = Math.min(viewportWidth / LOGICAL_W, viewportHeight / LOGICAL_H); const logicalWidth = viewportWidth / scale; const logicalHeight = viewportHeight / scale; document.documentElement.style.setProperty("--scale", scale); document.documentElement.style.setProperty("--slot-w", `${viewportWidth}px`); document.documentElement.style.setProperty("--slot-h", `${viewportHeight}px`); document.documentElement.style.setProperty("--logical-w", `${logicalWidth}px`); document.documentElement.style.setProperty("--logical-h", `${logicalHeight}px`); }
   let fitFrame = 0, fitTimer = 0;
@@ -200,7 +211,12 @@
       button.dataset.tile = tile.id;
       button.dataset.trail = patrolActive ? (trail ? "B" : "A") : "";
       button.tabIndex = free ? 0 : -1;
-      button.setAttribute("aria-label", `${t("tile", { number: tile.value + 1 })}${patrolActive ? `, trail ${trail ? "B" : "A"}` : ""}${tile.key ? ", key" : ""}${tile.rescue ? ", rescue" : ""}`);
+      button.setAttribute("aria-label", [
+        t("tile", { number: tile.value + 1 }),
+        patrolActive ? t("trailLabel", { trail:trail ? "B" : "A" }) : "",
+        tile.key ? t("keyTile") : "",
+        tile.rescue ? t("rescueTile") : "",
+      ].filter(Boolean).join(", "));
       const img = document.createElement("img");
       img.src = `../../assets/animal-habitat-mahjong-tile-${String(tile.value).padStart(2,"0")}.webp`;
       img.alt = "";
@@ -268,7 +284,7 @@
     if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
   };
   const focusCurrentStage = () => requestAnimationFrame(() => nodes.stageRail.querySelector(`.stage-card[data-index="${stageIndex}"]`)?.focus({ preventScroll:true }));
-  nodes.localeSelect.addEventListener("change", (event) => { const requested = event.target.value; try { window.WonderI18n?.setLocale?.(requested); } catch {} locale = window.WonderI18n?.locale?.() || requested; writeStorage(canonicalLocaleKey, requested); applyLocale(); });
+  nodes.localeSelect.addEventListener("change", (event) => { const requested = event.target.value; try { window.WonderI18n?.setLocale?.(requested); } catch {} locale = window.WonderI18n?.actualLocale?.() || requested; writeStorage(canonicalLocaleKey, requested); applyLocale(); });
   nodes.startBtn.addEventListener("keydown", rejectRepeatedActivation);
   nodes.stageRail.addEventListener("keydown", (event) => { if (event.target.closest(".stage-card")) rejectRepeatedActivation(event); });
   nodes.resultScreen.addEventListener("keydown", rejectRepeatedActivation, true);

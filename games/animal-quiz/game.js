@@ -97,6 +97,10 @@ const pageMeta = {
     title: "Cuestionario de Animales - WeightPlay",
     description: "Juega al Cuestionario de Animales de WeightPlay con preguntas ilustradas sobre hábitats, rasgos, comportamientos y alimentación.",
   },
+  de: {
+    title: "Tierquiz - WeightPlay",
+    description: "Spiele das Tierquiz auf WeightPlay und entdecke mit Bildern und kindgerechten Hinweisen Tierarten, Lebensräume, Merkmale und Verhalten.",
+  },
 };
 
 const accessibleNames = {
@@ -143,6 +147,17 @@ const accessibleNames = {
     sound: "Sonido",
     soundEnable: "Activar sonido",
     soundDisable: "Desactivar sonido",
+  },
+  de: {
+    language: "Sprache",
+    home: "Zurück zur Kids-Spielewelt",
+    stageBack: "Zurück zur Startseite",
+    levelProgress: "Levelfortschritt",
+    battleBack: "Zurück zur Levelauswahl",
+    answerChoices: "Antwortmöglichkeiten",
+    sound: "Ton",
+    soundEnable: "Ton einschalten",
+    soundDisable: "Ton ausschalten",
   },
 };
 
@@ -514,6 +529,22 @@ dictionary.es = {
 Object.assign(dictionary.en, { leaveTitle: "Leave this quiz?", leaveText: "Your answers in this stage will be reset.", keepPlaying: "Keep playing", leaveStage: "Leave stage" });
 Object.assign(dictionary["zh-Hant"], { leaveTitle: "\u8981\u96e2\u958b\u9019\u500b\u5c0f\u6e2c\u9a57\u55ce\uff1f", leaveText: "\u9019\u4e00\u95dc\u7684\u7b54\u984c\u9032\u5ea6\u6703\u91cd\u7f6e\u3002", keepPlaying: "\u7e7c\u7e8c\u7b54\u984c", leaveStage: "\u96e2\u958b\u95dc\u5361" });
 Object.assign(dictionary.es, { leaveTitle: "\u00bfSalir de este cuestionario?", leaveText: "Tus respuestas de este nivel se reiniciar\u00e1n.", keepPlaying: "Seguir jugando", leaveStage: "Salir del nivel" });
+dictionary.de = {
+  title: "Tierquiz", language: "Sprache", mainIntro: "Sieh dir Bilder und Hinweise an und entdecke spannende Tierfakten.", startGame: "Spiel starten",
+  chooseStage: "Level auswählen", stageSetupTitle: "Tierthema auswählen", stageSetupText: "Wähle eine von 30 Tierforschungen. Jedes fünfte Level ist ein Junior-Expertencheck.",
+  start: "Starten", locked: "Gesperrt", complete: "Abgeschlossen", stageBest: "Bestwert {score} / {total}", stageLabel: "Level {n}: {chapter}", checkpoint: "Junior-Expertencheck",
+  chapterPicture: "Tierbilder kennenlernen", chapterHabitat: "Lebensräume", chapterFeatures: "Merkmale entdecken", chapterActions: "Tierverhalten", chapterFood: "Nahrung & Tierfamilien", chapterExpert: "Junior-Expertenmix",
+  chapterPictureDesc: "Ordne klare Tierbilder einem bekannten Merkmal zu.", chapterHabitatDesc: "Nutze Hinweise zu Lebensraum und Klima, um das Tier zu erkennen.", chapterFeaturesDesc: "Erkenne Silhouetten, Körperformen und sichtbare Merkmale.",
+  chapterActionsDesc: "Nutze Hinweise zu Bewegung und Verhalten statt nur das Aussehen.", chapterFoodDesc: "Vergleiche Nahrung, Tierfamilie und Körpermerkmale.", chapterExpertDesc: "Verbinde zwei Hinweisarten, Silhouetten und vier Antwortmöglichkeiten.",
+  rulePicture: "Bild + Merkmal", ruleHabitat: "Lebensraum-Hinweis", ruleSilhouette: "Silhouetten-Hinweis", ruleAction: "Verhaltens-Hinweis", ruleFood: "Nahrungs-Hinweis", ruleMixed: "Zwei Hinweise",
+  prompt: "Welches Tier ist das?", choose: "Wähle eine Antwort", correct: "Richtig!", wrong: "Versuch es noch einmal", animalNote: "Tierwissen: {animal} – {clue}",
+  loading: "Wird geladen", loadingFailed: "Das Laden ist fehlgeschlagen. Aktualisiere die Seite und versuche es erneut.", question: "{stage}  {current} / {total}", battleQuestion: "Level {n} · {current}/{total}",
+  winTitle: "Level geschafft!", winText: "Du hast {score} / {total} richtig beantwortet.", allClearTitle: "Alles geschafft!", allClearText: "Du hast alle {count} Tierlevel abgeschlossen.",
+  again: "Noch einmal spielen", nextStage: "Nächstes Level", stages: "Levelauswahl", lobby: "Spielewelt", reportTitle: "Lernbericht", previousBest: "Bisheriger Bestwert", todayScore: "Heutiges Ergebnis", improvement: "Verbesserung",
+  animalKnowledge: "Tierwissen", memory: "Gedächtnis", reading: "Lesen", reportGreat: "Klasse! Du hast die Tiere sicher erkannt und die Hinweise gut genutzt.", reportGood: "Gut gemacht! Spiele noch einmal, um dir die Tiermerkmale besser zu merken.", reportTry: "Gute Übung! Sieh dir Bild und Hinweis in Ruhe an und versuche es noch einmal.",
+  clueFrog: "Ich springe und quake.", actionFrog: "Ich springe weit und fange Insekten mit meiner langen Zunge.",
+  leaveTitle: "Möchtest du das Quiz verlassen?", leaveText: "Deine Antworten in diesem Level werden zurückgesetzt.", keepPlaying: "Weiterspielen", leaveStage: "Level verlassen",
+};
 
 const animals = [
   { id: "lion", image: "assets/premium/lion.webp", clue: "clueLion", action: "actionLion", habitat: "habitatLion", diet: "dietLion" },
@@ -657,8 +688,10 @@ function actualLocale() {
 }
 
 function translateRuntime(source) {
-  if (!source || dictionary[actualLocale()]) return source;
-  return window.WeightPlayGameRuntimeLocalizer?.translate(source) || source;
+  if (!source) return source;
+  const localizer = window.WeightPlayGameRuntimeLocalizer;
+  if (localizer?.locale !== actualLocale()) return source;
+  return localizer.translate(source) || source;
 }
 
 function t(key, params = {}) {
