@@ -1899,6 +1899,9 @@
     focusPanel(nodes.mainPanel);
     focusMainAction();
   });
+  nodes.mapBtn.addEventListener("keydown", (event) => {
+    if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
+  });
   nodes.mapBtn.addEventListener("click", () => {
     setLeaveDecision(true);
   });

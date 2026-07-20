@@ -7,9 +7,10 @@
   <meta name="weightplay-audience" content="kids" />
   <title>Animal Parking Patrol | WeightPlay</title>
   <link rel="stylesheet" href="../../src/loading-screen.css" />
+  <link rel="stylesheet" href="../../src/game-page-info.css" />
   <link rel="stylesheet" href="style.css?v=20260720-release-1" />
 </head>
-<body class="wp-kids-audience">
+<body class="wp-kids-audience" data-sound-toggle="off">
   <div id="loadingPanel" class="loading-panel" role="status" aria-live="polite">
     <div class="loading-card"><img src="../../assets/weightplay-logo.png" alt="" /><strong data-i18n="loading">Opening the forest plaza…</strong><div class="loading-track"><i id="loadingBar"></i></div></div>
   </div>
@@ -34,7 +35,7 @@
 
   <section id="stageScreen" class="stage-screen" hidden>
     <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-canvas-max-width="920" data-wp-stage-art="../../assets/animal-parking-patrol-cover.webp" style="--wp-stage-art:url('../../assets/animal-parking-patrol-cover.webp')">
-      <header class="stage-header"><button id="stageBackBtn" type="button" data-i18n-aria="backMain">←</button><div><strong data-i18n="chooseStage">Choose a patrol route</strong><span id="stageSummary"></span></div><img src="../../assets/weightplay-character-moon-cap-owl-cutout.webp" alt="" /></header>
+      <header class="stage-header"><button id="stageBackBtn" type="button" data-i18n-aria="backMain">←</button><div><strong data-i18n="chooseStage">Choose a patrol route</strong><span id="stageSummary"></span></div><button id="stageHelpBtn" class="utility-button" type="button" data-i18n-aria="tutorialHelp" aria-label="How to play">?</button></header>
       <section class="chapter-panel"><small id="chapterKicker"></small><strong id="chapterTitle"></strong><p id="chapterRule"></p></section>
       <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-recommendation="explicit" data-wp-stage-settle-duration="330" data-wp-stage-settle-easing="smoothstep" data-i18n-aria="stageRailLabel" aria-label="Patrol route selection"></div>
     </div>
@@ -42,20 +43,21 @@
 
   <section id="battleScreen" class="battle-screen" hidden>
     <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
-      <header class="battle-header"><button id="battleBackBtn" type="button" data-i18n-aria="backStage">←</button><div class="battle-title"><small id="stageLabel"></small><strong id="stageGoal"></strong></div><div class="battle-stat"><small data-i18n="left">Left</small><strong id="leftValue">0</strong></div><div class="battle-stat"><small data-i18n="safety">Safety</small><strong id="safetyValue">3</strong></div></header>
+      <header class="battle-header"><button id="battleBackBtn" type="button" data-i18n-aria="backStage">←</button><div class="battle-title"><small id="stageLabel"></small><strong id="stageGoal"></strong></div><div class="battle-stat"><small data-i18n="left">Left</small><strong id="leftValue">0</strong></div><div class="battle-stat"><small data-i18n="safety">Safety</small><strong id="safetyValue">3</strong></div><button id="pauseBtn" class="utility-button" type="button" data-i18n-aria="settings" aria-label="Pause and settings">⚙</button></header>
       <section id="objectiveBar" class="objective-bar" aria-live="polite"></section>
       <section id="trafficBoard" class="traffic-board" data-i18n-aria="boardLabel" aria-label="Forest traffic puzzle board"></section>
       <div class="battle-actions"><button id="undoBtn" type="button"><span aria-hidden="true">↶</span><b data-i18n="undo">Undo</b></button><button id="restartBtn" type="button"><span aria-hidden="true">↻</span><b data-i18n="restart">Restart</b></button><button id="hintBtn" type="button"><span aria-hidden="true">✦</span><b data-i18n="hint">Hint</b></button></div>
 
       <section id="resultPanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card"><img src="../../assets/weightplay-character-moon-cap-owl-cutout.webp" alt="" /><small data-i18n="resultKicker">Patrol report</small><h2 id="resultTitle"></h2><div id="resultStars" class="result-stars"></div><p id="resultText"></p><p id="bestText" class="best-text"></p><div class="modal-actions"><button id="retryBtn" type="button" data-i18n="retry">Try again</button><button id="resultStagesBtn" type="button" data-i18n="stages">Routes</button><button id="nextBtn" class="primary-action" type="button" data-i18n="next">Next</button></div></div></section>
       <section id="leavePanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card"><h2 id="leaveTitle" data-i18n="leaveTitle">Leave this patrol?</h2><p data-i18n="leaveText">Continue keeps the exact traffic state. Returning to routes ends this attempt.</p><div class="modal-actions"><button id="leaveContinueBtn" class="primary-action" type="button" data-i18n="continue">Continue</button><button id="leaveStagesBtn" type="button" data-i18n="returnStages">Return to routes</button></div></div></section>
+      <section id="pausePanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="pauseTitle" hidden><div class="dialog-card settings-card"><h2 id="pauseTitle" data-i18n="pauseTitle">Patrol paused</h2><p data-i18n="pauseText">The traffic state is safe while you take a break.</p><div class="settings-actions"><button id="pauseResumeBtn" class="primary-action" type="button" data-i18n="resume">Resume</button><button id="soundBtn" type="button">Sound on</button><button id="pauseHelpBtn" type="button" data-i18n="tutorialHelp">How to play</button></div></div></section>
     </div>
   </section>
 
   <section id="tutorialPanel" class="tutorial-layer" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="tutorial-card"><button id="tutorialCloseBtn" class="modal-close" type="button" data-i18n-aria="close">×</button><img src="../../assets/weightplay-character-moon-cap-owl-cutout.webp" alt="" /><h2 id="tutorialTitle" data-i18n="tutorialTitle">Read the road before you tap</h2><ol><li data-i18n="tutorial1">Each cart leaves in the direction it faces.</li><li data-i18n="tutorial2">Another cart in that path means it is blocked.</li><li data-i18n="tutorial3">Three blocked taps end the patrol, so look first.</li></ol><button id="tutorialStartBtn" class="primary-action" type="button" data-i18n="tutorialStart">Start route 1</button></div></section>
   <div id="toast" class="toast" aria-live="polite"></div>
 
-  <script src="../../src/site-config.js"></script><script src="../../src/analytics.js"></script><script src="../../src/sound.js"></script><script src="../../src/edge-guard.js"></script>
+  <script src="../../src/site-config.js"></script><script src="../../src/i18n.js?v=20260720-locale11"></script><script src="../../src/game-runtime-localizer-loader.js?v=20260720-locale11"></script><script src="../../src/analytics.js"></script><script src="../../src/sound.js"></script><script src="../../src/edge-guard.js"></script>
   <script src="locales.js?v=20260720-release-1"></script><script src="game.js?v=20260720-release-1"></script><script src="../../src/stage-selector-standard.js?v=20260720-canvas-max920-1" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
 </body>
 </html>

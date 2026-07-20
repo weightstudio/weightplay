@@ -9,6 +9,7 @@
   const stageSelectPanel = document.querySelector("#stageSelectPanel");
   const stageSelectTitle = document.querySelector("#stageSelectTitle");
   const stageBackBtn = document.querySelector("#stageBackBtn");
+  const stageHelpBtn = document.querySelector("#stageHelpBtn");
   const stageGrid = document.querySelector("#stageGrid");
   const stageStatus = document.querySelector("#stageStatus");
   const gameHud = document.querySelector("#gameHud");
@@ -36,6 +37,7 @@
   const lobbyLink = document.querySelector("#lobbyLink");
   const homeLink = document.querySelector("#homeLink");
   const battleBackBtn = document.querySelector("#battleBackBtn");
+  const battleHelpBtn = document.querySelector("#battleHelpBtn");
   const loadingPanel = document.querySelector("#loadingPanel");
   const loadingText = document.querySelector("#loadingText");
   const loadingFill = document.querySelector("#loadingFill");
@@ -52,6 +54,19 @@
   const leaveConfirmText = leaveConfirmPanel.querySelector("#leaveConfirmText");
   const keepSortingBtn = leaveConfirmPanel.querySelector("#keepSortingBtn");
   const leaveLevelBtn = leaveConfirmPanel.querySelector("#leaveLevelBtn");
+  const helpPanel = document.createElement("section");
+  helpPanel.className = "game-help-panel hidden";
+  helpPanel.setAttribute("role", "dialog");
+  helpPanel.setAttribute("aria-modal", "true");
+  helpPanel.setAttribute("aria-labelledby", "gameHelpTitle");
+  helpPanel.inert = true;
+  helpPanel.innerHTML = `<div class="game-help-card"><h2 id="gameHelpTitle"></h2><ol><li><span>1</span><p id="gameHelpLook"></p></li><li><span>2</span><p id="gameHelpChoose"></p></li><li><span>3</span><p id="gameHelpFinish"></p></li></ol><button id="gameHelpCloseBtn" type="button"></button></div>`;
+  lunchGame.append(helpPanel);
+  const gameHelpTitle = helpPanel.querySelector("#gameHelpTitle");
+  const gameHelpLook = helpPanel.querySelector("#gameHelpLook");
+  const gameHelpChoose = helpPanel.querySelector("#gameHelpChoose");
+  const gameHelpFinish = helpPanel.querySelector("#gameHelpFinish");
+  const gameHelpCloseBtn = helpPanel.querySelector("#gameHelpCloseBtn");
   const GAME_ID = "color-lunchbox";
   const UNLOCK_KEY = "colorLunchboxUnlockedStage";
   const PROGRESS_KEY = "weightplay_color_lunchbox_progress";
@@ -353,18 +368,36 @@
     leaveText: "Your sorting progress and score in this level will reset.",
     keepSorting: "Keep sorting",
     leaveLevel: "Leave level",
+    helpAria: "How to play",
+    helpTitle: "How to pack the lunchbox",
+    helpLook: "Look at the food and its color.",
+    helpChoose: "Tap or drag it to the lunchbox with the same color.",
+    helpFinish: "Pack all five foods to finish the level.",
+    helpClose: "Keep sorting",
   });
   Object.assign(dictionary["zh-Hant"], {
     leaveTitle: "\u8981\u96e2\u958b\u9019\u500b\u9910\u76d2\u55ce\uff1f",
     leaveText: "\u9019\u4e00\u95dc\u7684\u5206\u985e\u9032\u5ea6\u8207\u5206\u6578\u6703\u91cd\u65b0\u958b\u59cb\u3002",
     keepSorting: "\u7e7c\u7e8c\u5206\u985e",
     leaveLevel: "\u96e2\u958b\u95dc\u5361",
+    helpAria: "\u73a9\u6cd5\u8aaa\u660e",
+    helpTitle: "\u600e\u9ebc\u88dd\u597d\u4fbf\u7576\u76d2",
+    helpLook: "\u770b\u770b\u98df\u7269\u548c\u5b83\u7684\u984f\u8272\u3002",
+    helpChoose: "\u9ede\u4e00\u4e0b\u6216\u62d6\u66f3\u5230\u76f8\u540c\u984f\u8272\u7684\u4fbf\u7576\u76d2\u3002",
+    helpFinish: "\u653e\u597d\u4e94\u500b\u98df\u7269\u5c31\u80fd\u904e\u95dc\u3002",
+    helpClose: "\u7e7c\u7e8c\u5206\u985e",
   });
   Object.assign(dictionary.es, {
     leaveTitle: "¿Salir de esta fiambrera?",
     leaveText: "Se reiniciarán el progreso de clasificación y la puntuación de este nivel.",
     keepSorting: "Seguir clasificando",
     leaveLevel: "Salir del nivel",
+    helpAria: "C\u00f3mo jugar",
+    helpTitle: "C\u00f3mo preparar la fiambrera",
+    helpLook: "Mira la comida y su color.",
+    helpChoose: "T\u00f3cala o arr\u00e1strala a la fiambrera del mismo color.",
+    helpFinish: "Guarda los cinco alimentos para completar el nivel.",
+    helpClose: "Seguir clasificando",
   });
 
   const pageMetadata = {
@@ -483,6 +516,8 @@
     ready: false,
   };
   let leaveConfirmOpen = false;
+  let helpOpen = false;
+  let helpReturnTarget = null;
 
   function locale() {
     return window.WonderI18n?.locale() || "en";
@@ -598,6 +633,13 @@
     leaveConfirmText.textContent = t("leaveText");
     keepSortingBtn.textContent = t("keepSorting");
     leaveLevelBtn.textContent = t("leaveLevel");
+    stageHelpBtn.setAttribute("aria-label", t("helpAria"));
+    battleHelpBtn.setAttribute("aria-label", t("helpAria"));
+    gameHelpTitle.textContent = t("helpTitle");
+    gameHelpLook.textContent = t("helpLook");
+    gameHelpChoose.textContent = t("helpChoose");
+    gameHelpFinish.textContent = t("helpFinish");
+    gameHelpCloseBtn.textContent = t("helpClose");
     feedbackText.textContent = state.deck.length ? feedbackText.textContent : t("ready");
 
     if (!stageSelectPanel.classList.contains("hidden")) renderStageCards();
@@ -678,6 +720,31 @@
     else if (restoreFocus) battleBackBtn.focus({ preventScroll: true });
   }
 
+  function setHelpOpen(open, returnTarget = null, restoreFocus = true) {
+    if (open === helpOpen) return;
+    if (open && (leaveConfirmOpen || !resultPanel.classList.contains("hidden"))) return;
+    helpOpen = open;
+    clearFoodDrag();
+    if (open) helpReturnTarget = returnTarget;
+    helpPanel.classList.toggle("hidden", !open);
+    helpPanel.inert = !open;
+
+    if (document.body.classList.contains("lunch-playing")) {
+      setBattleCovered(open);
+    } else if (document.body.classList.contains("lunch-stage")) {
+      stageSelectPanel.inert = open;
+      stageSelectPanel.setAttribute("aria-hidden", open ? "true" : "false");
+    }
+
+    if (open) {
+      gameHelpCloseBtn.focus({ preventScroll: true });
+    } else {
+      const focusTarget = helpReturnTarget;
+      helpReturnTarget = null;
+      if (restoreFocus && focusTarget?.isConnected) focusTarget.focus({ preventScroll: true });
+    }
+  }
+
   let roundTransitionToken = 0;
   let roundLifecycleSuspended = document.hidden;
 
@@ -709,7 +776,7 @@
     let previous = performance.now();
     const tick = (now) => {
       if (token !== roundTransitionToken || !document.body.classList.contains("lunch-playing")) return;
-      if (!leaveConfirmOpen && !roundLifecycleSuspended && !document.hidden) elapsed += now - previous;
+      if (!leaveConfirmOpen && !helpOpen && !roundLifecycleSuspended && !document.hidden) elapsed += now - previous;
       previous = now;
       if (elapsed >= delay) task();
       else requestAnimationFrame(tick);
@@ -723,6 +790,7 @@
   visualViewport?.addEventListener("scroll", updateLunchFrame, { passive: true });
 
   function showMain() {
+    setHelpOpen(false, null, false);
     setLeaveConfirmOpen(false, false);
     invalidateRoundTransition();
     document.body.classList.remove("lunch-stage", "lunch-playing");
@@ -737,6 +805,7 @@
   }
 
   function showStageSelect(focusCurrent = false) {
+    setHelpOpen(false, null, false);
     setLeaveConfirmOpen(false, false);
     invalidateRoundTransition();
     document.body.classList.remove("lunch-main");
@@ -1052,6 +1121,7 @@
   }
 
   function startStage(stageIndex, focusChoice = false) {
+    setHelpOpen(false, null, false);
     setLeaveConfirmOpen(false, false);
     invalidateRoundTransition();
     document.body.classList.remove("lunch-stage");
@@ -1114,7 +1184,7 @@
   }
 
   function submitColor(color, target) {
-    if (!state.ready || state.boxTransitioning || foodCard.style.pointerEvents === "none") return;
+    if (!state.ready || helpOpen || state.boxTransitioning || foodCard.style.pointerEvents === "none") return;
     const food = state.deck[state.index];
 
     if (color !== food.color) {
@@ -1175,6 +1245,7 @@
   }
 
   function finishStage() {
+    setHelpOpen(false, null, false);
     invalidateRoundTransition();
     progressFill.style.width = "100%";
     const stage = stages[state.stageIndex];
@@ -1215,7 +1286,7 @@
   }
 
   function startDrag(event) {
-    if (!state.ready || state.boxTransitioning || foodCard.style.pointerEvents === "none"
+    if (!state.ready || helpOpen || state.boxTransitioning || foodCard.style.pointerEvents === "none"
       || state.activePointerId !== null || event.isPrimary === false || event.button !== 0) return;
     const point = getPoint(event);
     state.dragging = true;
@@ -1285,6 +1356,8 @@
   };
 
   startBtn.addEventListener("keydown", rejectRepeatedActivation);
+  stageHelpBtn.addEventListener("keydown", rejectRepeatedActivation);
+  battleHelpBtn.addEventListener("keydown", rejectRepeatedActivation);
   stageGrid.addEventListener("keydown", (event) => {
     if (event.target.closest(".stage-card")) rejectRepeatedActivation(event);
   });
@@ -1293,6 +1366,19 @@
     showStageSelect(true);
   });
   stageBackBtn.addEventListener("click", showMain);
+  stageHelpBtn.addEventListener("click", () => setHelpOpen(true, stageHelpBtn));
+  battleHelpBtn.addEventListener("click", () => setHelpOpen(true, battleHelpBtn));
+  gameHelpCloseBtn.addEventListener("click", () => setHelpOpen(false));
+  helpPanel.addEventListener("keydown", (event) => {
+    rejectRepeatedActivation(event);
+    if (event.key === "Escape") {
+      event.preventDefault();
+      setHelpOpen(false);
+    } else if (event.key === "Tab") {
+      event.preventDefault();
+      gameHelpCloseBtn.focus({ preventScroll: true });
+    }
+  });
 
   againBtn.addEventListener("click", () => {
     window.WonderAnalytics?.track("game_restart", {

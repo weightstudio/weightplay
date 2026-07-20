@@ -1489,7 +1489,12 @@
         state.combat.enemySquad.forEach((unit) => { unit.hp = 20; });
         resolveUnitAbility(state.combat.playerSquad[1], "player", 1);
         const lionHp = state.combat.enemySquad.map((unit) => unit.hp);
-        return { owlHp, lionHp };
+        state.combat.playerSquad = [combatCard(3, 3)];
+        state.combat.enemySquad = [enemy(3)];
+        state.combat.effects = [];
+        resolveUnitAbility(state.combat.playerSquad[0], "player", 0);
+        const loneOwlTargetHp = state.combat.enemySquad[0].hp;
+        return { owlHp, lionHp, loneOwlTargetHp };
       },
       forceQuickOutcome: (result = "win", delay = 40) => {
         if (!state.combat.animating || state.combat.ending) return false;
@@ -4196,13 +4201,15 @@
     if (unit.id === 3) {
       const backlineTargets = formationTargets(enemies, "back");
       const primaryTarget = backlineTargets[0];
-      const secondTarget = backlineTargets[1] || primaryTarget;
+      const secondTarget = backlineTargets[1] || null;
       const primaryPoint = formationTargetPoint(enemyTeam, enemies, primaryTarget);
       addCombatEffect("starfall", primaryPoint.x, primaryPoint.y, "", "#b9f7ff");
       damageTarget(primaryTarget, Math.max(1, unit.atk + level - 1), primaryPoint.x, primaryPoint.y);
-      const secondPoint = formationTargetPoint(enemyTeam, enemies, secondTarget);
-      addCombatEffect("starfall", secondPoint.x, secondPoint.y, "", "#b9f7ff");
-      damageTarget(secondTarget, Math.max(1, Math.ceil(unit.atk * 0.75)), secondPoint.x, secondPoint.y);
+      if (secondTarget) {
+        const secondPoint = formationTargetPoint(enemyTeam, enemies, secondTarget);
+        addCombatEffect("starfall", secondPoint.x, secondPoint.y, "", "#b9f7ff");
+        damageTarget(secondTarget, Math.max(1, Math.ceil(unit.atk * 0.75)), secondPoint.x, secondPoint.y);
+      }
       return `${combatUnitName(unit)} ${localizedPhrase("casts Starfall", "\u964d\u4e0b\u661f\u843d", "lanza Lluvia Estelar")}`;
     }
     if (unit.id === 2 || unit.id === 4) {

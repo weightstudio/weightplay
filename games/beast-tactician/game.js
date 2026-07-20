@@ -3528,6 +3528,7 @@
 
   function bindEvents() {
     let mainEntryKeyboardKey = "";
+    let battleExitKeyboardKey = "";
     nodes.resultPanel.addEventListener("keydown", (event) => {
       if (event.repeat && (event.key === "Enter" || event.key === " ")) {
         event.preventDefault();
@@ -3586,6 +3587,13 @@
     nodes.pauseContinueBtn.addEventListener("click", () => clearLeaveBattleConfirmation(true));
     nodes.pauseLeaveBtn.addEventListener("click", leaveBattleForStages);
     nodes.pauseDecisionPanel.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        if (event.repeat) {
+          event.preventDefault();
+          return;
+        }
+        battleExitKeyboardKey = event.key;
+      }
       if (event.key === "Escape") {
         event.preventDefault();
         clearLeaveBattleConfirmation(true);
@@ -3643,13 +3651,15 @@
       updateCanvasAccessibility();
     });
     nodes.stageRail.addEventListener("keydown", (event) => {
-      if (event.repeat && event.key === mainEntryKeyboardKey) event.preventDefault();
+      if (event.repeat && (event.key === mainEntryKeyboardKey || event.key === battleExitKeyboardKey)) event.preventDefault();
     });
     document.addEventListener("keyup", (event) => {
       if (event.key === mainEntryKeyboardKey) mainEntryKeyboardKey = "";
+      if (event.key === battleExitKeyboardKey) battleExitKeyboardKey = "";
     });
     window.addEventListener("blur", () => {
       mainEntryKeyboardKey = "";
+      battleExitKeyboardKey = "";
     });
     // The shared Stage controller owns pointer tracking, click suppression,
     // and nearest-card settling. A second scroll timer or mouse drag handler
