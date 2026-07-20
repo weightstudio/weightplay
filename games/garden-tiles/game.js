@@ -308,15 +308,35 @@
     }
     return normalized;
   };
+  const sessionStorageFallback = new Map();
+  const readStorage = (key) => {
+    try {
+      const value = localStorage.getItem(key);
+      if (value !== null) sessionStorageFallback.set(key, value);
+      return value ?? sessionStorageFallback.get(key) ?? null;
+    } catch {
+      return sessionStorageFallback.get(key) ?? null;
+    }
+  };
+  const writeStorage = (key, value) => {
+    const normalized = String(value);
+    sessionStorageFallback.set(key, normalized);
+    try {
+      localStorage.setItem(key, normalized);
+      return true;
+    } catch {
+      return false;
+    }
+  };
   const loadProgress = () => {
     let parsedStars = {};
     try {
-      parsedStars = JSON.parse(localStorage.getItem(STARS_KEY) || "{}");
+      parsedStars = JSON.parse(readStorage(STARS_KEY) || "{}");
     } catch {
       parsedStars = {};
     }
     return {
-      unlocked: boundedInteger(localStorage.getItem(UNLOCK_KEY), 1, levels.length, 1),
+      unlocked: boundedInteger(readStorage(UNLOCK_KEY), 1, levels.length, 1),
       starMap: normalizeStarMap(parsedStars),
     };
   };
@@ -419,8 +439,8 @@
   }
 
   function saveProgress() {
-    try { localStorage.setItem(UNLOCK_KEY, String(unlocked)); } catch {}
-    try { localStorage.setItem(STARS_KEY, JSON.stringify(starMap)); } catch {}
+    writeStorage(UNLOCK_KEY, String(unlocked));
+    writeStorage(STARS_KEY, JSON.stringify(starMap));
   }
 
   saveProgress();

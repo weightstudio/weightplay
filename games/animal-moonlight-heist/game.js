@@ -424,7 +424,7 @@
     nodes.field.addEventListener("pointerup",e=>{if(e.pointerId!==routePointerId||(e.pointerType==="mouse"&&e.button!==0))return;if(!paused&&preview)routeTo(e.clientX,e.clientY,true);cancelRoutePreview()});
     nodes.field.addEventListener("pointercancel",e=>{if(e.pointerId===routePointerId)cancelRoutePreview()});
     nodes.field.addEventListener("lostpointercapture",e=>{if(e.pointerId===routePointerId)cancelRoutePreview()});
-    nodes.modal.addEventListener("keydown",trapResultFocus);nodes.leaveModal.addEventListener("keydown",trapBattleLeaveFocus);$("#gadgetBtn").addEventListener("click",useGadget);
+    nodes.modal.addEventListener("keydown",trapResultFocus);nodes.leaveModal.addEventListener("keydown",trapBattleLeaveFocus);$("#gadgetBtn").addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault()});$("#gadgetBtn").addEventListener("click",useGadget);
     $("#battleContinueBtn").addEventListener("click",()=>closeBattleLeave());
     $("#battleLeaveBtn").addEventListener("click",()=>{closeBattleLeave(false);show("stage");renderStage();focusMission(selectedMission)});
     $("#retryBtn").addEventListener("click",()=>{closeResult();startMission(selectedMission)});

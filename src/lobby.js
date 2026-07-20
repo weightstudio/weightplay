@@ -1,4 +1,5 @@
 const lobby = window.WONDER_LOBBY;
+let activeGamePreview = null;
 const audienceMode = document.body?.dataset.audience === "kids" ? "kids" : "general";
 const generalGameIds = new Set(lobby.audiences?.generalGameIds || []);
 const isKidsLobby = audienceMode === "kids";
@@ -848,7 +849,7 @@ function createGameCard(game) {
   const comingSoonBadge = isPlayable ? "" : `<span class="coming-soon-art-badge">${i18n.t("action.coming_soon")}</span>`;
   const art =
     game.art.kind === "image"
-      ? `<div class="game-card-art image-art"><img class="game-card-bg-blur" src="${game.art.background}" alt="" /><img class="game-card-fg" src="${game.art.background}" alt="" />${showHero ? `<img class="game-card-hero" src="${game.art.hero}" alt="" />` : ""}${comingSoonBadge}</div>`
+      ? `<div class="game-card-art image-art"><img class="game-card-bg-blur" src="${game.art.background}" alt="" /><img class="game-card-fg" src="${game.art.background}" alt="" />${showHero ? `<img class="game-card-hero" src="${game.art.hero}" alt="" />` : ""}${isPlayable && game.previewVideo ? `<video class="game-card-preview" data-preview-src="${game.previewVideo}" muted loop playsinline preload="none" aria-hidden="true"></video>` : ""}${comingSoonBadge}</div>`
       : `<div class="game-card-art ${game.art.className}">${showAgeLabels ? `<span>${ageLabel}</span>` : ""}${comingSoonBadge}</div>`;
   const favoriteAction = i18n.t(favorite ? "action.remove_favorite" : "action.add_favorite");
   const favoriteLabel = i18n.t(favorite ? "action.remove_favorite_title" : "action.add_favorite_title", { title });
@@ -895,6 +896,41 @@ function createGameCard(game) {
     event.stopPropagation();
     toggleFavorite(game, title);
   });
+
+  const preview = card.querySelector(".game-card-preview");
+  if (preview) {
+    const canPreview = () =>
+      window.matchMedia("(hover: hover) and (pointer: fine)").matches &&
+      !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const stopPreview = () => {
+      preview.pause();
+      card.classList.remove("is-previewing");
+      if (activeGamePreview === preview) activeGamePreview = null;
+    };
+    const startPreview = () => {
+      if (!canPreview()) return;
+      if (activeGamePreview && activeGamePreview !== preview) {
+        activeGamePreview.pause();
+        activeGamePreview.closest(".game-card")?.classList.remove("is-previewing");
+      }
+      activeGamePreview = preview;
+      if (!preview.getAttribute("src")) {
+        preview.src = preview.dataset.previewSrc;
+        preview.load();
+      }
+      card.classList.add("is-previewing");
+      preview.play().catch(() => {
+        card.classList.remove("is-previewing");
+        if (activeGamePreview === preview) activeGamePreview = null;
+      });
+    };
+    card.addEventListener("pointerenter", startPreview);
+    card.addEventListener("pointerleave", stopPreview);
+    card.addEventListener("focusin", startPreview);
+    card.addEventListener("focusout", (event) => {
+      if (!card.contains(event.relatedTarget)) stopPreview();
+    });
+  }
 
   return card;
 }

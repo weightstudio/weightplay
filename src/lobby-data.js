@@ -285,6 +285,7 @@ window.WONDER_LOBBY = {
       categories: ["Featured", "Animal Games", "Arcade"],
       skills: ["Reaction", "Focus", "Hand-Eye Coordination"],
       href: "games/animal-crystal-survivor/",
+      previewVideo: "assets/previews/animal-crystal-survivor-battle.webm",
       description: {
         en: "Patrol 30 three-minute Crystal Grove routes, collect each stage's keys, choose upgrades, read changing hazards, and defeat six original animal Bosses.",
         "zh-Hant": "巡邏 30 條三分鐘水晶林地路線，完成各關金鑰目標、選擇升級、判讀變化危險，並擊敗六隻原創動物首領。",

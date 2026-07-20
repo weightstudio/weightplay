@@ -1803,12 +1803,12 @@
     const viewport = window.visualViewport;
     const width = Math.max(1, viewport?.width || window.innerWidth);
     const height = Math.max(1, viewport?.height || window.innerHeight);
-    const physicalWidth = width;
+    const physicalWidth = Math.min(width, 920);
     const availableHeight = Math.max(1, height - 56);
     const scale = Math.max(0.01, Math.min(physicalWidth / 390, availableHeight / 788));
     const logicalWidth = physicalWidth / scale;
     const logicalHeight = availableHeight / scale;
-    const canvasLeft = 0;
+    const canvasLeft = Math.max(0, (width - physicalWidth) / 2);
     const panelDeclarations = {
       position: "fixed", inset: "auto", top: "0px", right: "auto", bottom: "auto", left: `${canvasLeft}px`,
       "box-sizing": "border-box", width: `${logicalWidth}px`, "min-width": `${logicalWidth}px`, "max-width": `${logicalWidth}px`,
@@ -4545,9 +4545,9 @@
     const viewportHeight = viewport?.height >= window.innerHeight * 0.75 ? viewport.height : window.innerHeight;
     document.documentElement.style.setProperty("--squad-vw", `${viewportWidth}px`);
     document.documentElement.style.setProperty("--squad-vh", `${viewportHeight}px`);
-    const availableWidth = Math.max(1, viewportWidth);
+    const availableWidth = Math.max(1, Math.min(viewportWidth, 920));
     const availableHeight = Math.max(1, viewportHeight - 56);
-    const canvasLeft = 0;
+    const canvasLeft = Math.max(0, (viewportWidth - availableWidth) / 2);
     const stageScale = Math.max(0.01, Math.min(availableWidth / 390, availableHeight / 788));
     const stageLogicalWidth = availableWidth / stageScale;
     const stageLogicalHeight = availableHeight / stageScale;
