@@ -918,11 +918,14 @@ function createGameCard(game) {
         preview.src = preview.dataset.previewSrc;
         preview.load();
       }
-      card.classList.add("is-previewing");
-      preview.play().catch(() => {
-        card.classList.remove("is-previewing");
-        if (activeGamePreview === preview) activeGamePreview = null;
-      });
+      preview.play()
+        .then(() => {
+          if (activeGamePreview === preview) card.classList.add("is-previewing");
+        })
+        .catch(() => {
+          card.classList.remove("is-previewing");
+          if (activeGamePreview === preview) activeGamePreview = null;
+        });
     };
     card.addEventListener("pointerenter", startPreview);
     card.addEventListener("pointerleave", stopPreview);

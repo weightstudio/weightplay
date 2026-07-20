@@ -360,6 +360,57 @@
     roundNum: "Nivel {stage} - Oleada {round}/5",
     teamLevelValue: "Nv.{level}  XP {xp}/{goal}"
   };
+  text.ja = {
+    title: "アニマル・オート・スクワッド",
+    backToLobby: "WeightPlay ロビーに戻る", back: "戻る", language: "言語", languageSelection: "言語を選択",
+    stageSelection: "ステージ選択", stageTab: "ステージ", trainingTab: "トレーニング", stageSwipe: "↔ ステージをスワイプ",
+    stageDeploy: "解放済みステージを選んで出発", activeSquadSlots: "出撃スクワッド枠", shopShelfItems: "キャラクターバックパック",
+    emptyFormationSlot: "空き編成枠", emptySlot: "空き枠", activeSquad: "出撃スクワッド", expeditionBackpack: "遠征バックパック",
+    formationFrontRow: "前列", formationBackRow: "後列", formationLeftPosition: "左", formationCenterPosition: "中央",
+    formationRightPosition: "右", slotPosition: "枠 {index}", deployedTo: "配置先", selectedSkillTitle: "選択中の動物",
+    selectCharacterHint: "動物を選ぶと役割とスキルを確認できます。", battleArena: "アニマル・オート・スクワッド戦場",
+    menuTitle: "動物チームを鍛えて配置しよう！", menuHint: "動物を育てて編成し、6地域・30ステージの5連戦と固有ボスに挑みます。",
+    bestExpedition: "解放済みステージ", expeditionsCleared: "クリア回数", teamLevel: "チームレベル", diamonds: "ダイヤ",
+    trainingTitle: "スクワッドトレーニング", trainingGold: "トレーニングゴールド", owned: "所持済み", deployed: "配置中",
+    locked: "未解放", premium: "プレミアム", unlockGold: "{cost} ゴールドで解放", unlockDiamond: "{cost} ダイヤで解放",
+    upgradeGold: "{cost} ゴールドで強化", currencyUpgrade: "強化", currencyUnlock: "解放", trainingStatsCurrent: "攻撃 {atk}・HP {hp}",
+    trainingStatsNext: "攻撃 {atk} → {nextAtk}・HP {hp} → {nextHp}",
+    trainingUpgradeLabel: "{name}をLv.{level}へ強化：攻撃 {nextAtk}、HP {nextHp}、費用 {cost} ゴールド",
+    maxLevel: "最大レベル", freeUnit: "初期メンバー", rosterHint: "解放した動物は遠征バックパックに追加され、恒久レベルはこのブラウザーに保存されます。",
+    startExpedition: "遠征を開始", chooseExpedition: "ゲーム開始", stageSetup: "6地域をスワイプし、解放済みステージを選んで編成を準備します。",
+    yourSquadLabel: "出撃スクワッド（上：前列｜下：後列）", benchLabel: "控え", shopLabel: "キャラクターバックパック",
+    startBattle: "バトル開始", round: "ウェーブ", stage: "ステージ", chooseStage: "ステージ選択", stageReady: "挑戦可能",
+    stageCleared: "クリア済み", stageLocked: "前のステージをクリア", stageProgress: "解放 {unlocked}/{total}", stageWaveCount: "全{count}ウェーブ",
+    stageEnemyRange: "敵：{first}～{last}体", stageBoss: "ボス", nextStage: "次のステージ",
+    stageClearText: "ステージ{stage}クリア！ ステージ{next}を解放しました。", allStagesClearText: "全30ステージと6地域のボスを制覇！ 好きなステージを再挑戦できます。",
+    gold: "ゴールド", supplies: "物資", hearts: "ハート", activeRelic: "レリック", none: "なし",
+    chooseRelic: "遠征レリックを選択", relicDesc: "遠征中ずっとスクワッドを強化するレリックを1つ選びます。",
+    defeatTitle: "遠征失敗", reviveHint: "ハートが0になりました。ダイヤ5個でハート2つを回復し、遠征を続けますか？",
+    giveUp: "あきらめる", retry: "もう一度", backToMenu: "メインメニュー", backToStages: "ステージへ戻る", quitRun: "遠征を中断",
+    combatIntro: "バトル準備！", nextWaveCombat: "ウェーブ {round}/{total}：新たな敵が接近！", bossIncoming: "ボス：{boss}",
+    combatSummary: "味方HP {playerHp}/{playerMax}｜敵HP {enemyHp}/{enemyMax}", combatFront: "前線：{player} 対 {enemy}",
+    foodGuideTitle: "フード効果", guideHint: "所持動物を選び、スクワッド枠を選んで配置します。バックパックは横にスクロールできます。",
+    level: "Lv.", buy: "購入", sell: "売却", upgradeRun: "遠征強化（物資{cost}）",
+    backpackHint: "所持動物だけを表示します。編成後、物資で今回の遠征中だけ強化できます。", reroll: "更新", freeze: "固定", unfreeze: "固定解除",
+    buySkin: "ゴールデンスキン解放（ダイヤ15）", skinPurchaseDecision: "ゴールデンスキンを恒久解放して装備します。もう一度選んで確定：{before} → {after} ダイヤ。",
+    skinPurchaseNeed: "ゴールデンスキンの恒久解放にはダイヤ15個が必要です。現在 {balance} 個。", equipSkin: "ゴールデンスキンを装備",
+    unequipSkin: "通常スキンを装備", relicReroll: "レリック再抽選（ダイヤ3）", relicRerollDecision: "2つの候補を再抽選します。ダイヤ3個を使用：{before} → {after}。",
+    relicRerollNeed: "再抽選にはダイヤ3個が必要です。現在 {balance} 個。", reviveAction: "復活（ダイヤ5）",
+    winText: "勝利！ 影の獣を倒しました。", failText: "敗北。スクワッドが力尽きました。", drawText: "引き分け。両スクワッドが同時に力尽きました。",
+    expeditionClear: "遠征クリア！", expeditionFail: "遠征失敗", skillReport: "論理的な判断、計画、戦術配置を練習できました！",
+    skillsLearned: "練習したスキル：論理、問題解決、戦略的計画。", appleDesc: "リンゴ：攻撃/HP +1/+1", honeyDesc: "ハチミツ：HP +2。購入時ゴールド +1",
+    melonDesc: "メロン：メロンシールドを付与", chocolateDesc: "チョコレート：経験値 +2", noDiamonds: "ダイヤが足りません。",
+    noGold: "ゴールドが足りません。", noSupplies: "物資が足りません。", needSquad: "バトル前に動物を1体以上配置してください。",
+    quitConfirm: "ステージ{stage}、ウェーブ{round}/5、ハート{hearts}/4、物資{supplies}。離脱すると今回の一時編成、レリック、未確定進行は失われます。恒久トレーニングと解放済みステージは保持されます。",
+    quitRunTitle: "遠征を離れますか？", keepPlaying: "続ける", confirmQuit: "遠征を離れる", teamBonusTitle: "恒久チームボーナス",
+    teamBonusValue: "所持動物はチームレベルにより攻撃 +{atk}、HP +{hp} を得て遠征を開始します。", teamBonusNext: "次のチームレベルまで {remaining} XP。",
+    savedProgress: "保存済み進行", resultXpEarned: "チームXP +{earned}・Lv.{level}・XP {xp}/{goal}",
+    resultGoldEarned: "トレーニングゴールド +{earned}・合計 {total}", resultStageSaved: "解放済みステージ {unlocked}/{total}",
+    resultGrowthNext: "恒久ボーナス 攻撃 +{atk} / HP +{hp}・次のチームレベルまで {remaining} XP",
+    relicMaple: "メイプルシールド：前線ユニットがメロンシールドを得て開始。", relicOak: "オークの種：全ユニットのHP +1。",
+    relicShadow: "シャドークロー：全ユニットの攻撃 +1。", relicClover: "クローバー：各ウェーブ最初のショップ更新が無料。",
+    roundNum: "ステージ{stage} - ウェーブ{round}/5", teamLevelValue: "Lv.{level}  XP {xp}/{goal}", attackShort: "攻", healthShort: "HP"
+  };
 
   const pageMeta = {
     en: {
@@ -380,6 +431,12 @@
     description: "Entrena diez héroes animales, crea una formación de dos filas y supera 30 niveles con seis jefes únicos.",
     ogDescription: "Coloca un escuadrón de seis animales en 30 niveles de cinco oleadas, seis regiones y seis jefes distintos.",
     twitterDescription: "Crea una formación animal, entrena diez héroes y derrota seis jefes regionales en una campaña de 30 niveles."
+  };
+  pageMeta.ja = {
+    title: "アニマル・オート・スクワッド - 無料オートバトラー",
+    description: "10体の動物ヒーローを育成し、2列のスクワッドを編成して、6体の固有ボスが待つ30ステージを攻略する無料オートバトラーです。",
+    ogDescription: "動物スクワッドを配置し、6地域・30ステージの5連戦と固有ボスに挑もう。",
+    twitterDescription: "動物ヒーローを育成して2列に編成し、30ステージの戦略オートバトルを攻略しよう。"
   };
 
   // Sound Synth settings
@@ -671,6 +728,41 @@
     "Camino Celeste Roto", "Pozo Gravitatorio", "Galería Nula", "Camino a la Corona", "Fin de la Noche"
   ];
   STAGE_DEFINITIONS.forEach((definition, index) => definition.nameEs = stageNamesEs[index]);
+  const animalCopyJa = [
+    ["スパークポー・フォックス", "前列ジャンプ", "前列を狙い、レベル分の跳撃のあと通常攻撃を行います。"],
+    ["バブルフィン・オッター", "潮の手当て", "交戦前に最も弱い味方をレベル分回復し、行動時にも攻撃力の半分（最低1）回復します。"],
+    ["ドラムベリー・パンダ", "リズムガード", "開戦時に全員の最大HPとHPをレベル分増やし、行動時に全員へレベル分のシールドを与えます。"],
+    ["ムーンキャップ・オウル", "後列スターフォール", "後列の敵2体を攻撃し、後列が空なら前列を狙います。"],
+    ["モスシェル・タートル", "甲羅の防壁", "開戦時と行動時にシールドを与え、倒れた時は次の味方を守ります。"],
+    ["レインボーホップ・ラビット", "フィールドメディック", "攻撃せず、最も弱い味方を攻撃力の半分（最低1）回復します。"],
+    ["ギアホーン・ライノ", "シールドウォール", "攻撃せず、自分に攻撃力の半分（最低1）のシールドを付与します。"],
+    ["ブームメイン・ライオン", "列咆哮", "前列全体を攻撃し、倒れると残った味方の攻撃とHPをレベル分増やします。"],
+    ["スパークポー隊長", "指揮", "開戦時に全員の攻撃をレベル分増やし、行動時に攻撃とHPを強化します。"],
+    ["ライノ・ガーディアン", "最後の砦", "通常攻撃を行い、倒れた時は先頭の敵へレベルの4倍ダメージを与えます。"]
+  ];
+  ANIMAL_METADATA.forEach((animal, index) => [animal.nameJa, animal.roleJa, animal.descJa] = animalCopyJa[index]);
+  const itemCopyJa = [["リンゴ", "攻撃とHPを+1。"], ["ハチミツ", "HPを+2。購入時にゴールド+1。"], ["メロン", "メロンシールドを付与。"], ["チョコレート", "経験値を+2。"]];
+  ITEM_METADATA.forEach((item, index) => [item.nameJa, item.descJa] = itemCopyJa[index]);
+  const relicCopyJa = [["メイプルシールド", "前線ユニットがメロンシールドを得て開始。"], ["オークの種", "戦闘中、全ユニットのHP+1。"], ["シャドークロー", "戦闘中、全ユニットの攻撃+1。"], ["クローバー", "各ウェーブ最初のショップ更新が無料。"]];
+  RELIC_METADATA.forEach((relic, index) => [relic.nameJa, relic.descJa] = relicCopyJa[index]);
+  const enemyCopyJa = [
+    ["シャドーリス", "後列奇襲"], ["シャドーウルフ", "群れの牙"], ["シャドーボア", "初撃突進"], ["シャドーバジャー", "地中ガード"],
+    ["シャドーゴーレム", "岩石薙ぎ"], ["ソーンフォックス偵察兵", "双剣奇襲"], ["プリズムクロウ", "結晶急降下"], ["アイアンハイド・ボア", "装甲突進"],
+    ["ルートガーディアン", "生ける防壁"], ["クリスタルシェイド", "生命吸収"], ["リフトランナー", "裂け目連撃"], ["オブシディアンタンク", "黒曜の壁"],
+    ["ナイトパンサー", "静かな狩り"], ["ルーンウルフ", "ルーンの群れ"], ["ルーンレイヴン", "ルーンの嵐"], ["エクリプスバット", "月影吸収"],
+    ["シャドージャガー", "黄昏連撃"]
+  ];
+  ENEMY_METADATA.forEach((enemy, index) => [enemy.nameJa, enemy.roleJa] = enemyCopyJa[index]);
+  const bossCopyJa = [["ソーンウッド・アルファ", "茨の王冠"], ["プリズム・バジリスク", "プリズムストーム"], ["アビスシェル・リヴァイアサン", "海底要塞"], ["マグマタスク・コロッサス", "カルデラ衝撃"], ["エクリプス・アークオウル", "双月落下"], ["ヴォイドクラウン皇帝", "終夜降臨"]];
+  BOSS_METADATA.forEach((boss, index) => [boss.nameJa, boss.roleJa] = bossCopyJa[index]);
+  const regionNamesJa = ["ソーンウッド", "クリスタル洞窟", "海底遺跡", "エンバーピーク", "月光城塞", "ヴォイドクラウン"];
+  REGION_METADATA.forEach((region, index) => region.nameJa = regionNamesJa[index]);
+  const stageNamesJa = [
+    "苔むす小道", "狐の待ち伏せ", "狼の巣", "根の門", "茨森の玉座", "きらめく通路", "プリズムの巣", "欠片の橋", "蒼の宝物庫", "プリズムの心臓",
+    "潮の階段", "珊瑚の書庫", "水没広場", "海皇の門", "沈んだ王冠", "灰の小道", "残り火の鍛冶場", "溶岩の堤道", "黒曜の闘技環", "カルデラの王",
+    "銀月庭園", "月蝕の大広間", "星の書庫", "月輪の尖塔", "真夜中の宮廷", "崩れた空路", "重力の井戸", "虚無の回廊", "王冠への道", "終夜の戦い"
+  ];
+  STAGE_DEFINITIONS.forEach((definition, index) => definition.nameJa = stageNamesJa[index]);
 
   function ensureQuitRunPanel() {
     if ($("quitRunPanel")) return;
@@ -1534,11 +1626,23 @@
     if (!record) return "";
     if (locale === "zh-Hant") return record[`${field}Zht`] || record[`${field}En`] || "";
     if (locale === "es") return record[`${field}Es`] || record[`${field}En`] || "";
+    if (locale === "ja") return record[`${field}Ja`] || record[`${field}En`] || "";
     return record[`${field}En`] || "";
   }
 
+  const japanesePhrases = {
+    "Shield": "シールド", "YOUR SQUAD": "味方スクワッド", "Slot": "枠", "clashes with": "と激突",
+    "guards the front": "前列を守る", "uses Pack Bite": "群れの牙を発動", "uses First Charge": "初撃突進を発動",
+    "unleashes Thornstorm": "ソーンストームを放つ", "casts Prism Storm": "プリズムストームを放つ",
+    "raises the Sunken Fortress": "海底要塞を展開", "uses Caldera Crash": "カルデラ衝撃を発動",
+    "casts Twin Moonfall": "双月落下を放つ", "invokes End of Night": "終夜降臨を呼び起こす",
+    "sweeps the front row": "前列全体を薙ぐ", "heals an ally": "味方を回復", "strikes twice": "2回攻撃",
+    "strikes the back row": "後列を攻撃", "strikes the front row": "前列を攻撃", "raises a shield": "シールドを展開",
+    "casts Starfall": "スターフォールを放つ", "guards the squad": "スクワッドを守る", "rallies allies": "味方を鼓舞",
+    "double-pounces the front row": "前列へ連続跳撃", "attacks the back row": "後列を攻撃", "attacks the front row": "前列を攻撃"
+  };
   function localizedPhrase(en, zht, es) {
-    return locale === "zh-Hant" ? zht : locale === "es" ? es : en;
+    return locale === "zh-Hant" ? zht : locale === "es" ? es : locale === "ja" ? (japanesePhrases[en] || en) : en;
   }
 
   function updatePageMeta() {
@@ -1851,7 +1955,7 @@
   }
 
   function stageLabel(stage) {
-    return locale === "zh-Hant" ? `\u7b2c ${stage} \u95dc` : locale === "es" ? `Nivel ${stage}` : `Stage ${stage}`;
+    return locale === "zh-Hant" ? `\u7b2c ${stage} \u95dc` : locale === "es" ? `Nivel ${stage}` : locale === "ja" ? `ステージ ${stage}` : `Stage ${stage}`;
   }
 
   function stageDefinition(stageValue) {
@@ -2684,8 +2788,8 @@
     if (isAnimal) {
       const statsEl = document.createElement("div");
       statsEl.className = "card-stats";
-      const attackLabel = locale === "zh-Hant" ? t("attackShort") : "ATK";
-      const healthLabel = locale === "zh-Hant" ? t("healthShort") : "HP";
+      const attackLabel = locale === "zh-Hant" || locale === "ja" ? t("attackShort") : "ATK";
+      const healthLabel = locale === "zh-Hant" || locale === "ja" ? t("healthShort") : "HP";
       statsEl.innerHTML = `<span class="card-atk">${attackLabel} ${card.currentAtk}</span><span class="card-hp">${healthLabel} ${card.currentHp}</span>`;
       el.appendChild(statsEl);
       el.title = `${localizedField(card, "name")}: ${attackLabel} ${card.currentAtk}, ${healthLabel} ${card.currentHp}. ${localizedField(card, "desc")}`;
