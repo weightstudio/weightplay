@@ -1866,6 +1866,8 @@
   document.addEventListener("DOMContentLoaded", () => {
     installCanvasLocaleBridge();
     syncLocaleCompatibility();
+    window.setTimeout(syncLocaleCompatibility, 250);
+    window.setTimeout(syncLocaleCompatibility, 1000);
     localizeInternalLinks();
     window.setTimeout(syncStandardMainStartLabels, 0);
     const observer = new MutationObserver(() => window.setTimeout(syncStandardMainStartLabels, 0));

@@ -831,6 +831,39 @@ body.lunch-stage .stage-card.locked.is-centered {
   margin: 0;
 }
 
+.result-guardian {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  min-height: 70px;
+  padding: 4px 12px 4px 6px;
+  border: 3px solid #c27720;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #fff6b8, #ffd37a);
+  color: #57320e;
+  text-align: left;
+  box-shadow: 0 5px 0 #d89a35;
+}
+
+.result-guardian.hidden {
+  display: none;
+}
+
+.result-guardian img {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  filter: drop-shadow(0 5px 3px rgba(87, 50, 14, 0.25));
+  animation: result-guardian-arrive 0.72s cubic-bezier(0.2, 0.8, 0.25, 1.2) both;
+}
+
+.result-guardian strong {
+  font-size: 17px;
+  font-weight: 1000;
+  line-height: 1.22;
+}
+
 .reward-parade {
   display: flex;
   align-items: center;
@@ -1338,9 +1371,25 @@ body.lunch-playing .wp-tutorial-button {
   }
 }
 
+@keyframes result-guardian-arrive {
+  0% {
+    opacity: 0;
+    transform: translateX(-22px) rotate(-6deg) scale(0.72);
+  }
+  60% {
+    opacity: 1;
+    transform: translateX(3px) rotate(2deg) scale(1.06);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .result-panel,
   .result-card,
+  .result-guardian img,
   .reward-parade img,
   .food-card.pop,
   .food-card.shake {

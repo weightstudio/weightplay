@@ -590,7 +590,7 @@ body.dash-playing .dash-game,
 body.dash-playing.weightplay-active-viewport .dash-game {
   position: fixed !important;
   inset: auto !important;
-  left: 0 !important;
+  left: var(--dash-frame-left, 0px) !important;
   top: 0 !important;
   width: var(--dash-logical-width, 382px) !important;
   min-width: 0 !important;
@@ -959,7 +959,7 @@ body.dash-stage-select .dash-game,
 body.dash-stage-select.weightplay-active-viewport .dash-game {
   position: fixed !important;
   inset: auto !important;
-  left: 0 !important;
+  left: var(--dash-frame-left, 0px) !important;
   top: 0 !important;
   display: block !important;
   width: var(--dash-logical-width, 382px) !important;

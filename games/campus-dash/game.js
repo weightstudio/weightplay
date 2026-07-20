@@ -72,6 +72,14 @@
   const coordinationValue = document.querySelector("#coordinationValue");
   const progressComparison = document.querySelector("#progressComparison");
   const leaderboard = document.querySelector("#leaderboard");
+  const nextRouteBtn = document.querySelector("#nextRouteBtn") || (() => {
+    const button = document.createElement("button");
+    button.id = "nextRouteBtn";
+    button.className = "hidden";
+    button.type = "button";
+    leaderboard.after(button);
+    return button;
+  })();
   const againBtn = document.querySelector("#againBtn");
   const lobbyLink = document.querySelector("#lobbyLink");
   const loadingPanel = document.querySelector("#loadingPanel");
@@ -250,22 +258,35 @@
   };
 
   Object.assign(dictionary.en, {
+    nextRouteAction: "Next Route",
     leaveTitle: "Leave this route?",
     leaveText: "Your time, stars, score, and combo in this run will reset.",
     keepRunning: "Keep running",
     leaveRoute: "Leave route",
   });
   Object.assign(dictionary["zh-Hant"], {
+    nextRouteAction: "\u4e0b\u4e00\u689d\u8def\u7dda",
     leaveTitle: "\u8981\u96e2\u958b\u9019\u689d\u8def\u7dda\u55ce\uff1f",
     leaveText: "\u9019\u6b21\u5954\u8dd1\u7684\u6642\u9593\u3001\u661f\u661f\u3001\u5206\u6578\u8207\u9023\u64ca\u6703\u91cd\u65b0\u958b\u59cb\u3002",
     keepRunning: "\u7e7c\u7e8c\u5954\u8dd1",
     leaveRoute: "\u96e2\u958b\u8def\u7dda",
   });
   Object.assign(dictionary.es, {
+    nextRouteAction: "Siguiente ruta",
     leaveTitle: "¿Salir de esta ruta?",
     leaveText: "Se reiniciarán el tiempo, las estrellas, la puntuación y el combo de esta carrera.",
     keepRunning: "Seguir corriendo",
     leaveRoute: "Salir de la ruta",
+  });
+  Object.assign(dictionary, {
+    "zh-Hans": { nextRouteAction: "\u4e0b\u4e00\u6761\u8def\u7ebf" },
+    ja: { nextRouteAction: "\u6b21\u306e\u30eb\u30fc\u30c8" },
+    ko: { nextRouteAction: "\ub2e4\uc74c \uacbd\ub85c" },
+    "pt-BR": { nextRouteAction: "Pr\u00f3xima rota" },
+    fr: { nextRouteAction: "Itin\u00e9raire suivant" },
+    de: { nextRouteAction: "N\u00e4chste Route" },
+    it: { nextRouteAction: "Percorso successivo" },
+    ru: { nextRouteAction: "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043c\u0430\u0440\u0448\u0440\u0443\u0442" },
   });
 
   const regionNames = [
@@ -479,6 +500,7 @@
     stageHint.textContent = t("stageHint");
     stageRail.setAttribute("aria-label", t("stageSelection"));
     resultTitle.textContent = t("resultTitle");
+    nextRouteBtn.textContent = t("nextRouteAction");
     againBtn.textContent = t("again");
     lobbyLink.textContent = t("routes");
     leaveTitle.textContent = t("leaveTitle");
@@ -522,13 +544,16 @@
     const viewportWidth = viewport?.width || innerWidth;
     const viewportHeight = viewport?.height || innerHeight;
     document.body.classList.remove("dash-expanded-canvas");
-    const scale = Math.min(Math.max(1, viewportWidth) / 382, Math.max(1, viewportHeight) / 780);
-    const logicalWidth = viewportWidth / scale;
+    const safeWidth = Math.min(Math.max(1, viewportWidth), 920);
+    const frameLeft = (viewportWidth - safeWidth) / 2;
+    const scale = Math.min(safeWidth / 382, Math.max(1, viewportHeight) / 780);
+    const logicalWidth = safeWidth / scale;
     const logicalHeight = viewportHeight / scale;
     const frame = document.querySelector(".dash-game");
     document.documentElement.style.setProperty("--dash-frame-scale", String(scale));
     document.documentElement.style.setProperty("--dash-logical-width", `${logicalWidth}px`);
     document.documentElement.style.setProperty("--dash-logical-height", `${logicalHeight}px`);
+    document.documentElement.style.setProperty("--dash-frame-left", `${frameLeft}px`);
     if (frame) {
       frame.dataset.logicalWidth = logicalWidth.toFixed(4);
       frame.dataset.logicalHeight = logicalHeight.toFixed(4);
@@ -871,10 +896,11 @@
     resultText.textContent = `${t("resultText", { score: state.score, best })} · ${routeUpdate}`;
     renderSkillReport(previousBest);
     renderLeaderboard();
+    nextRouteBtn.classList.toggle("hidden", !cleared || state.stage >= 30 || progress.unlocked < state.stage + 1);
     canvasWrap.inert = true;
     canvasWrap.setAttribute("aria-hidden", "true");
     resultPanel.classList.remove("hidden");
-    requestAnimationFrame(() => againBtn.focus({ preventScroll: true }));
+    requestAnimationFrame(() => (nextRouteBtn.classList.contains("hidden") ? againBtn : nextRouteBtn).focus({ preventScroll: true }));
     window.WonderSound?.play("win");
     window.WonderAnalytics?.track("game_complete", {
       game_id: GAME_ID,
@@ -1422,6 +1448,13 @@
   });
   againBtn.addEventListener("click", () => {
     window.WonderAnalytics?.track("game_restart", { game_id: GAME_ID, score: state.score, locale: locale() });
+    startRun();
+  });
+  nextRouteBtn.addEventListener("click", () => {
+    const nextStage = state.stage + 1;
+    if (nextRouteBtn.classList.contains("hidden") || nextStage > 30 || nextStage > progress.unlocked || !progress.completed.includes(state.stage)) return;
+    progress.selected = nextStage;
+    saveProgress();
     startRun();
   });
   lobbyLink.addEventListener("click", showStageSelection);

@@ -29,6 +29,16 @@
   const feedbackText = document.querySelector("#feedbackText");
   const resultPanel = document.querySelector("#resultPanel");
   const resultTitle = document.querySelector("#resultTitle");
+  const resultGuardian = document.querySelector("#resultGuardian") || (() => {
+    const element = document.createElement("div");
+    element.id = "resultGuardian";
+    element.className = "result-guardian hidden";
+    element.innerHTML = '<img id="resultGuardianImage" src="" alt="" /><strong id="resultGuardianText"></strong>';
+    resultTitle.after(element);
+    return element;
+  })();
+  const resultGuardianImage = resultGuardian.querySelector("#resultGuardianImage");
+  const resultGuardianText = resultGuardian.querySelector("#resultGuardianText");
   const rewardParade = document.querySelector("#rewardParade");
   const resultText = document.querySelector("#resultText");
   const nextStageBtn = document.querySelector("#nextStageBtn");
@@ -374,6 +384,7 @@
     helpChoose: "Tap or drag it to the lunchbox with the same color.",
     helpFinish: "Pack all five foods to finish the level.",
     helpClose: "Keep sorting",
+    guardianCelebration: "{guardian} celebrates with you!",
   });
   Object.assign(dictionary["zh-Hant"], {
     leaveTitle: "\u8981\u96e2\u958b\u9019\u500b\u9910\u76d2\u55ce\uff1f",
@@ -386,6 +397,7 @@
     helpChoose: "\u9ede\u4e00\u4e0b\u6216\u62d6\u66f3\u5230\u76f8\u540c\u984f\u8272\u7684\u4fbf\u7576\u76d2\u3002",
     helpFinish: "\u653e\u597d\u4e94\u500b\u98df\u7269\u5c31\u80fd\u904e\u95dc\u3002",
     helpClose: "\u7e7c\u7e8c\u5206\u985e",
+    guardianCelebration: "{guardian}\u966a\u4f60\u4e00\u8d77\u6176\u795d\uff01",
   });
   Object.assign(dictionary.es, {
     leaveTitle: "¿Salir de esta fiambrera?",
@@ -398,6 +410,7 @@
     helpChoose: "T\u00f3cala o arr\u00e1strala a la fiambrera del mismo color.",
     helpFinish: "Guarda los cinco alimentos para completar el nivel.",
     helpClose: "Seguir clasificando",
+    guardianCelebration: "\u00a1{guardian} celebra contigo!",
   });
 
   const pageMetadata = {
@@ -1051,6 +1064,22 @@
     );
   }
 
+  function renderResultGuardian(stage) {
+    if (!stage.guardian) {
+      resultGuardian.classList.add("hidden");
+      resultGuardianImage.removeAttribute("src");
+      resultGuardianImage.alt = "";
+      resultGuardianText.textContent = "";
+      return;
+    }
+    const guardian = guardians[stage.guardian];
+    const name = localizedGuardianName(guardian);
+    resultGuardianImage.src = guardian.image;
+    resultGuardianImage.alt = name;
+    resultGuardianText.textContent = t("guardianCelebration", { guardian: name });
+    resultGuardian.classList.remove("hidden");
+  }
+
   function localizedGuardianName(guardian) {
     if (locale() === "zh-Hant") return guardian.nameZh;
     if (locale() === "es") return guardian.nameEs;
@@ -1255,6 +1284,7 @@
     const skillScores = buildSkillScores();
     const progress = saveProgressRecord(stage, skillScores);
     resultTitle.textContent = isFinalStage ? t("allClearTitle") : t("winTitle");
+    renderResultGuardian(stage);
     renderRewardParade();
     const message = isFinalStage
       ? t(isPerfect ? "perfectAllClearDesc" : "allClearDesc")

@@ -40,7 +40,7 @@
   });
   zh.start = u("\\u958b\\u59cb\\u904a\\u6232");
   Object.assign(en, {
-    guideCopy:"Compare each lane's loot, danger, oxygen estimate, and environmental clues. Sonar, Shield, and fish counters share 4 power, so plan what to spend before surfacing.",
+    guideCopy:"Routes span 5–8 zones. Compare each lane's loot, danger, oxygen estimate, and environmental clues; Sonar, Shield, and fish counters share 4 power, so plan what to spend before surfacing.",
     stageHint:"Drag routes to compare zones, salvage target, and oxygen risk.",
     zoneProgress:"Zone {n}/{total}",
     target:"Target {n}/{target}",
@@ -145,7 +145,7 @@
     retry:"Retry route"
   });
   Object.assign(zh, {
-    guideCopy:"比較兩側的收益、危險、氧耗估計與環境線索。聲納、衝擊盾和魚戰反制共用 4 點電力，必須規劃消耗再決定何時上浮。",
+    guideCopy:"每條路線有 5–8 個海域。比較兩側的收益、危險、氧耗估計與環境線索；聲納、衝擊盾和魚戰反制共用 4 點電力，必須規劃消耗再決定何時上浮。",
     stageHint:u("\\u5de6\\u53f3\\u62d6\\u66f3\\u8def\\u7dda\\uff0c\\u6bd4\\u8f03\\u6d77\\u57df\\u6578\\u3001\\u6253\\u6488\\u76ee\\u6a19\\u8207\\u6c27\\u6c23\\u98a8\\u96aa\\u3002"),
     zoneProgress:u("\\u6d77\\u57df {n}/{total}"),
     target:u("\\u76ee\\u6a19 {n}/{target}"),
@@ -579,7 +579,7 @@
     if(finalClear)routeEvidence=t("routeComplete");
     else if(clear){const nextRoute=Math.min(routes.length,state.route+1),key=save.unlocked>unlockedBefore?"routeUnlocked":"routeReady";routeEvidence=t(key,{n:nextRoute,name:routeText(routes[nextRoute-1],"name")});}
     $("resultRewards").innerHTML=`<span>${t("coinsEarned",{n:earned})}</span><span>${t("coinsSaved",{n:save.coins})}</span><span>${t("rank",{n:save.rank})}</span><span>${routeEvidence}</span>`;
-    $("nextBtn").textContent=finalClear?t("routeSelect"):clear?t("next"):t("retry");$("menuBtn").textContent=t("routeSelect");
+    $("nextBtn").textContent=finalClear?t("routeSelect"):clear?t("next"):t("retry");$("menuBtn").textContent=t("routeSelect");$("menuBtn").classList.toggle("hidden",finalClear);$("menuBtn").disabled=finalClear;
     $("nextBtn").onclick=()=>{if(!clear)return start(state.route);show("stageScreen");renderRoutes();focusRoute(finalClear?state.route:Math.min(routes.length,state.route+1));};
   }
   function resetDiveField(){const field=$("diveField");field.classList.remove("is-swimming","is-resolving","is-advancing");delete field.dataset.lane;delete state.resolvingDirection;$("impactText").classList.add("hidden");}
@@ -720,7 +720,7 @@
   window.addEventListener("pageshow",resumeDiveAsync);
   $("upgradePanel").addEventListener("keydown",event=>{if($("upgradePanel").classList.contains("hidden"))return;if(event.key==="Enter"||event.key===" "){if(event.repeat){event.preventDefault();return;}screenDecisionKeyboardKeys.add(event.key);}if(event.key!=="Tab")return;const choices=[...$("upgradePanel").querySelectorAll("button:not(:disabled)")];if(!choices.length)return;const first=choices[0],last=choices.at(-1);if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}});
   $("fishEncounter").addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault();});
-  $("result").addEventListener("keydown",event=>{if(event.key==="Enter"||event.key===" "){if(event.repeat){event.preventDefault();return;}screenDecisionKeyboardKeys.add(event.key);}if(event.key!=="Tab"||$("result").classList.contains("hidden"))return;const first=$("nextBtn"),last=$("menuBtn");if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}});
+  $("result").addEventListener("keydown",event=>{if(event.key==="Enter"||event.key===" "){if(event.repeat){event.preventDefault();return;}screenDecisionKeyboardKeys.add(event.key);}if(event.key!=="Tab"||$("result").classList.contains("hidden"))return;const actions=[$("nextBtn"),$("menuBtn")].filter(button=>!button.disabled&&!button.classList.contains("hidden"));if(!actions.length)return;event.preventDefault();const current=actions.indexOf(document.activeElement),index=event.shiftKey?(current<=0?actions.length-1:current-1):(current<0||current===actions.length-1?0:current+1);actions[index].focus({preventScroll:true});});
   $("quitPanel").addEventListener("keydown",event=>{if($("quitPanel").classList.contains("hidden"))return;if(event.key==="Enter"||event.key===" "){if(event.repeat){event.preventDefault();return;}screenDecisionKeyboardKeys.add(event.key);}if(event.key==="Escape"){event.preventDefault();setQuit(false,{resume:true,focusBack:true});return;}if(event.key!=="Tab")return;const first=$("quitKeep"),last=$("quitLeave");if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}});
   for(const direction of ["left","right"]){$(`${direction}Gate`).addEventListener("keydown",event=>{if(event.key!=="Enter"&&event.key!==" ")return;event.preventDefault();if(event.repeat)return;if($(`${direction}Gate`).getAttribute("aria-disabled")!=="true")move(direction);});}
   let drag;
