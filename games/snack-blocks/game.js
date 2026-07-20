@@ -514,17 +514,31 @@
     return Math.max(minimum, Math.min(maximum, Math.floor(numeric)));
   }
 
-  function writeStorage(key, value) {
+  const sessionStorageFallback = new Map();
+
+  function readStorage(key) {
     try {
-      localStorage.setItem(key, value);
+      const stored = localStorage.getItem(key);
+      if (stored !== null) sessionStorageFallback.set(key, stored);
+      return stored ?? sessionStorageFallback.get(key) ?? null;
     } catch {
-      // Progress persistence is optional; keep the current session playable.
+      return sessionStorageFallback.get(key) ?? null;
+    }
+  }
+
+  function writeStorage(key, value) {
+    const serialized = String(value);
+    sessionStorageFallback.set(key, serialized);
+    try {
+      localStorage.setItem(key, serialized);
+    } catch {
+      // The in-memory copy keeps this session playable when persistence is denied.
     }
   }
 
   function loadUnlocked() {
     try {
-      const stored = localStorage.getItem(unlockKey);
+      const stored = readStorage(unlockKey);
       const unlocked = boundedWholeNumber(stored, 1, stages.length, 1);
       if (stored !== String(unlocked)) writeStorage(unlockKey, String(unlocked));
       return unlocked;
@@ -565,7 +579,7 @@
 
   function loadRecords() {
     try {
-      const stored = localStorage.getItem(recordKey);
+      const stored = readStorage(recordKey);
       const source = JSON.parse(stored || "{}");
       const records = {};
       if (source && typeof source === "object" && !Array.isArray(source)) {
@@ -661,12 +675,8 @@
     if (current !== requested) window.WonderI18n?.setLocale?.(requested);
     const displayLocale = window.WonderI18n?.legacyLocale?.(requested) || requested;
     state.locale = text[displayLocale] ? displayLocale : "en";
-    try {
-      localStorage.setItem(canonicalLocaleKey, requested);
-      localStorage.setItem(legacyLocaleKey, requested);
-    } catch {
-      // Locale persistence is optional.
-    }
+    writeStorage(canonicalLocaleKey, requested);
+    writeStorage(legacyLocaleKey, requested);
     document.documentElement.lang = requested;
     nodes.localeSelect.value = requested;
     applyText();
@@ -1183,8 +1193,8 @@
     const viewport = window.visualViewport;
     const layoutWidth = Math.max(1, document.documentElement.clientWidth || 0, innerWidth || 0, viewport?.width || 0);
     const viewportHeight = Math.max(1, document.documentElement.clientHeight || 0, innerHeight || 0, viewport?.height || 0);
-    const viewportWidth = layoutWidth;
-    const frameLeft = 0;
+    const viewportWidth = Math.min(layoutWidth, 920);
+    const frameLeft = Math.max(0, (layoutWidth - viewportWidth) / 2);
     const shell = document.querySelector(".snack-game");
     shell?.classList.remove("weightplay-active-viewport");
     const scale = Math.min(Math.max(1, viewportWidth) / 390, Math.max(1, viewportHeight) / 788);
@@ -1203,7 +1213,7 @@
     shell?.style.setProperty("top", "0px", "important");
     shell?.style.setProperty("width", `${logicalWidth}px`, "important");
     shell?.style.setProperty("min-width", "0px", "important");
-    shell?.style.setProperty("max-width", "none", "important");
+    shell?.style.setProperty("max-width", `${logicalWidth}px`, "important");
     shell?.style.setProperty("height", `${logicalHeight}px`, "important");
     shell?.style.setProperty("min-height", "0px", "important");
     shell?.style.setProperty("max-height", "none", "important");
@@ -1473,11 +1483,7 @@
     else resumeBoardTasks();
   });
 
-  try {
-    setLocale(localStorage.getItem(canonicalLocaleKey) || localStorage.getItem(legacyLocaleKey) || window.WonderI18n?.locale?.() || "en");
-  } catch {
-    setLocale("en");
-  }
+  setLocale(readStorage(canonicalLocaleKey) || readStorage(legacyLocaleKey) || window.WonderI18n?.locale?.() || "en");
   installStageDrag();
   installStageCenterCue();
   installLoading();

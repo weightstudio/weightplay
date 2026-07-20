@@ -2,7 +2,7 @@
   const GAME_ID = "bubble-bakery";
   const canvasRoot = document.querySelector(".bakery-game");
   if (canvasRoot) {
-    canvasRoot.dataset.wpCanvasMaxWidth = "viewport";
+    canvasRoot.dataset.wpCanvasMaxWidth = "920";
     window.dispatchEvent(new Event("resize"));
   }
   const localeKey = "weightplayLocale";

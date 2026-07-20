@@ -134,9 +134,31 @@
   const nextCtx = dom.nextPreview.getContext("2d");
   const images = {};
   const canonicalLocaleKey = "weightPlayLocale";
-  const legacySavedLocale = localStorage.getItem("weightplayLocale");
-  if (!localStorage.getItem(canonicalLocaleKey) && ["en", "zh-Hant", "zh-Hans", "es"].includes(legacySavedLocale)) window.WonderI18n?.setLocale?.(legacySavedLocale);
-  const savedLocale = localStorage.getItem(canonicalLocaleKey) || legacySavedLocale || localStorage.getItem("weightplay:locale");
+  const sessionStorageFallback = new Map();
+
+  function readStorage(key) {
+    try {
+      const stored = localStorage.getItem(key);
+      if (stored !== null) sessionStorageFallback.set(key, stored);
+      return stored ?? sessionStorageFallback.get(key) ?? null;
+    } catch (_) {
+      return sessionStorageFallback.get(key) ?? null;
+    }
+  }
+
+  function writeStorage(key, value) {
+    const serialized = String(value);
+    sessionStorageFallback.set(key, serialized);
+    try {
+      localStorage.setItem(key, serialized);
+    } catch (_) {
+      // Keep the active safari session playable when persistence is denied.
+    }
+  }
+
+  const legacySavedLocale = readStorage("weightplayLocale");
+  if (!readStorage(canonicalLocaleKey) && ["en", "zh-Hant", "zh-Hans", "es"].includes(legacySavedLocale)) window.WonderI18n?.setLocale?.(legacySavedLocale);
+  const savedLocale = readStorage(canonicalLocaleKey) || legacySavedLocale || readStorage("weightplay:locale");
   const requestedLocale = window.WonderI18n?.locale?.() || savedLocale || "en";
   let locale = copy[requestedLocale] ? requestedLocale : "en";
   let save = loadSave();
@@ -153,7 +175,7 @@
 
   function loadSave() {
     try {
-      const parsed = JSON.parse(localStorage.getItem(SAVE_KEY) || "{}");
+      const parsed = JSON.parse(readStorage(SAVE_KEY) || "{}");
       return { unlocked: Math.max(1, Math.min(stageDefs.length, parsed.unlocked || 1)), bestStars: parsed.bestStars || {}, bestScore: parsed.bestScore || {}, rescued: parsed.rescued || {}, audio: parsed.audio !== false };
     } catch (_) {
       return { unlocked: 1, bestStars: {}, bestScore: {}, rescued: {}, audio: true };
@@ -162,7 +184,7 @@
 
   function persist() {
     save.audio = audioEnabled;
-    localStorage.setItem(SAVE_KEY, JSON.stringify(save));
+    writeStorage(SAVE_KEY, JSON.stringify(save));
   }
 
   function t(key) { return copy[locale][key] || key; }
@@ -201,9 +223,11 @@
     const responsiveCanvas = currentScreen === "stage" || currentScreen === "battle" || currentScreen === "result";
     const mainCanvas = currentScreen === "main";
     const scrollportWidth = document.documentElement.clientWidth || window.innerWidth;
-    const width = responsiveCanvas
+    const layoutWidth = responsiveCanvas
       ? Math.max(1, scrollportWidth, window.innerWidth || 0, window.visualViewport?.width || 0)
       : Math.max(1, scrollportWidth);
+    const width = responsiveCanvas ? Math.min(layoutWidth, 920) : layoutWidth;
+    const frameLeft = responsiveCanvas ? Math.max(0, (layoutWidth - width) / 2) : 0;
     const height = responsiveCanvas || mainCanvas
       ? Math.max(1, document.documentElement.clientHeight || 0, window.innerHeight || 0, window.visualViewport?.height || 0)
       : Math.max(1, window.innerHeight || document.documentElement.clientHeight);
@@ -222,7 +246,7 @@
     dom.gameCanvas.dataset.logicalHeight = logicalHeight.toFixed(3);
     dom.gameCanvas.dataset.commonScale = scale.toFixed(6);
     if (responsiveCanvas || mainCanvas) {
-      dom.gameCanvas.style.left = "0";
+      dom.gameCanvas.style.left = `${frameLeft}px`;
       dom.gameCanvas.style.top = "0";
       dom.gameCanvas.style.bottom = "auto";
       dom.gameCanvas.style.transform = `scale(${scale})`;
@@ -955,7 +979,7 @@
 
   function toggleSound() { audioEnabled=!audioEnabled; persist(); document.querySelectorAll("#soundMain,#soundStage").forEach(button => button.textContent=audioEnabled?"♪":"×"); tone(520,.06); }
   function track(event, details={}) { try { window.WonderAnalytics?.track?.(event,{ game:"animal-bubble-safari",...details }); } catch (_) {} }
-  function openGuide() { dom.guideModal.hidden=false; localStorage.setItem(FIRST_PLAY_KEY,"seen"); }
+  function openGuide() { dom.guideModal.hidden=false; writeStorage(FIRST_PLAY_KEY,"seen"); }
   function closeGuide() { dom.guideModal.hidden=true; }
 
   function pauseGame() {
@@ -1111,7 +1135,7 @@
   document.getElementById("guideDone").addEventListener("click", closeGuide);
   document.getElementById("soundMain").addEventListener("click", toggleSound);
   document.getElementById("soundStage").addEventListener("click", toggleSound);
-  document.querySelectorAll("[data-locale]").forEach(button => button.addEventListener("click", () => { const requested=button.dataset.locale; window.WonderI18n?.setLocale?.(requested); const resolved=window.WonderI18n?.locale?.()||requested; locale=copy[resolved]?resolved:"en"; localStorage.setItem("weightPlayLocale",requested); applyLocale(); }));
+  document.querySelectorAll("[data-locale]").forEach(button => button.addEventListener("click", () => { const requested=button.dataset.locale; window.WonderI18n?.setLocale?.(requested); const resolved=window.WonderI18n?.locale?.()||requested; locale=copy[resolved]?resolved:"en"; writeStorage(canonicalLocaleKey,requested); applyLocale(); }));
   dom.playCanvas.addEventListener("pointerdown", beginAim);
   dom.playCanvas.addEventListener("pointermove", updateAim);
   dom.playCanvas.addEventListener("keydown", handleBattleKey);
@@ -1154,7 +1178,7 @@
     }
     window.setTimeout(() => {
       showScreen("main");
-      if (!localStorage.getItem(FIRST_PLAY_KEY)) openGuide();
+      if (!readStorage(FIRST_PLAY_KEY)) openGuide();
     }, hasError ? 700 : 120);
   });
 })();

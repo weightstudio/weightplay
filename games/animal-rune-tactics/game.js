@@ -13,7 +13,7 @@
   const testMode = new URLSearchParams(window.location.search).get("test") === "1";
 
   const $ = (id) => document.getElementById(id);
-  document.querySelector(".rune-app")?.setAttribute("data-wp-canvas-max-width", "viewport");
+  document.querySelector(".rune-app")?.setAttribute("data-wp-canvas-max-width", "920");
   const asset = (name) => `../../assets/${name}`;
   const nodes = {
     localeSelect: $("localeSelect"),
@@ -957,7 +957,10 @@
   let turnTransitionTask = null;
   let turnTransitionDueAt = 0;
   let endTurnKeyboardFocusRequested = false;
-  let trainingIntentUntil = 0;
+  let trainingIntentPending = false;
+  let trainingIntentTimer = 0;
+  let trainingIntentDueAt = 0;
+  let trainingIntentRemaining = 0;
   let trainingMessage = "";
   let trainingMessageTimer = 0;
   let battlePaused = false;
@@ -1192,10 +1195,39 @@
   }
 
   function resetTrainingIntent({ clearMessage = true } = {}) {
-    trainingIntentUntil = 0;
+    trainingIntentPending = false;
+    trainingIntentRemaining = 0;
+    trainingIntentDueAt = 0;
+    window.clearTimeout(trainingIntentTimer);
+    trainingIntentTimer = 0;
     window.clearTimeout(trainingMessageTimer);
     trainingMessageTimer = 0;
     if (clearMessage) trainingMessage = "";
+  }
+
+  function armTrainingIntent(delay = trainingIntentRemaining) {
+    if (!trainingIntentPending || trainingIntentTimer || document.hidden) return;
+    trainingIntentRemaining = Math.max(0, Number(delay) || 0);
+    trainingIntentDueAt = performance.now() + trainingIntentRemaining;
+    trainingIntentTimer = window.setTimeout(() => {
+      trainingIntentTimer = 0;
+      trainingIntentDueAt = 0;
+      resetTrainingIntent();
+      renderTrainingChoice();
+    }, trainingIntentRemaining);
+  }
+
+  function suspendTrainingIntent() {
+    if (!trainingIntentPending || !trainingIntentTimer) return;
+    trainingIntentRemaining = Math.max(0, trainingIntentDueAt - performance.now());
+    window.clearTimeout(trainingIntentTimer);
+    trainingIntentTimer = 0;
+    trainingIntentDueAt = 0;
+  }
+
+  function resumeTrainingIntent() {
+    if (!trainingIntentPending || trainingIntentTimer || document.hidden) return;
+    armTrainingIntent();
   }
 
   function renderTrainingChoice() {
@@ -1206,7 +1238,7 @@
       : balance < trainingCost
         ? t("trainingNeed", { cost: trainingCost })
         : "");
-    nodes.trainingBtn.setAttribute("aria-label", trainingIntentUntil > Date.now()
+    nodes.trainingBtn.setAttribute("aria-label", trainingIntentPending
       ? t("trainingConfirmAction", { before: balance, after: balance - trainingCost })
       : profile.training
         ? t("trainingOwned")
@@ -1221,14 +1253,12 @@
       renderTrainingChoice();
       return;
     }
-    if (trainingIntentUntil <= Date.now()) {
-      trainingIntentUntil = Date.now() + 5000;
+    if (!trainingIntentPending) {
+      trainingIntentPending = true;
+      trainingIntentRemaining = 5000;
       trainingMessage = t("trainingConfirm", { before, after: before - trainingCost });
       renderTrainingChoice();
-      trainingMessageTimer = window.setTimeout(() => {
-        resetTrainingIntent();
-        renderTrainingChoice();
-      }, 5000);
+      armTrainingIntent();
       return;
     }
     resetTrainingIntent({ clearMessage: false });
@@ -1430,7 +1460,7 @@
     stagePanel.id = "stagePanel";
     stagePanel.className = "wp-standard-stage-panel is-hidden";
     stagePanel.dataset.wpStandardStageScreen = "true";
-    stagePanel.dataset.wpCanvasMaxWidth = "viewport";
+    stagePanel.dataset.wpCanvasMaxWidth = "920";
     stagePanel.innerHTML = `
       <header class="wp-standard-stage-heading"><button id="stageBackBtn" data-wp-return="stage" type="button" aria-label="${t("backToMain")}">&larr;</button><strong>${t("missionSelect")}</strong></header>
       <div class="rune-stage-workspace">
@@ -2560,11 +2590,22 @@
 
   function bind() {
     document.addEventListener("visibilitychange", () => {
-      if (document.hidden) suspendTurnTransition();
-      else resumeTurnTransition();
+      if (document.hidden) {
+        suspendTurnTransition();
+        suspendTrainingIntent();
+      } else {
+        resumeTurnTransition();
+        resumeTrainingIntent();
+      }
     });
-    window.addEventListener("pagehide", suspendTurnTransition);
-    window.addEventListener("pageshow", resumeTurnTransition);
+    window.addEventListener("pagehide", () => {
+      suspendTurnTransition();
+      suspendTrainingIntent();
+    });
+    window.addEventListener("pageshow", () => {
+      resumeTurnTransition();
+      resumeTrainingIntent();
+    });
     window.addEventListener("wonder:locale-change", () => requestAnimationFrame(localizeStrategyTips));
     nodes.mainStartBtn.addEventListener("click", showStage);
     nodes.stageBackBtn.addEventListener("click", showMainFromStage);

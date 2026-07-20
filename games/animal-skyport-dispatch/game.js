@@ -3,8 +3,8 @@
   // General Stage and Battle own the complete safe physical width. These
   // declarations run before the shared controllers load, so their responsive
   // envelopes supersede the historical numeric desktop maximum.
-  $('stageScreen')?.setAttribute('data-wp-canvas-max-width', 'viewport');
-  document.querySelector('.battle-canvas')?.setAttribute('data-wp-canvas-max-width', 'viewport');
+  $('stageScreen')?.setAttribute('data-wp-canvas-max-width', '920');
+  document.querySelector('.battle-canvas')?.setAttribute('data-wp-canvas-max-width', '920');
   const saveKey = 'animal_skyport_dispatch_save';
   const readStorage = (key) => { try { return localStorage.getItem(key); } catch { return null; } };
   const writeStorage = (key, value) => { try { localStorage.setItem(key, value); return true; } catch { return false; } };
@@ -580,6 +580,9 @@
     nextAction?.focus({preventScroll:true});
   }
   $('startBtn').onclick = () => { state.shift = save.unlocked; show('stageScreen'); renderStages(); };
+  $('startBtn').addEventListener('keydown', (event) => {
+    if (event.repeat && (event.key === 'Enter' || event.key === ' ')) event.preventDefault();
+  });
   $('contractToggle').onchange = (event) => { clearInsuranceConfirmation(); state.contract = event.target.checked; renderContractControls(); };
   $('stageRail').addEventListener('keydown', (event) => {
     if (event.repeat && (event.key === 'Enter' || event.key === ' ')) event.preventDefault();

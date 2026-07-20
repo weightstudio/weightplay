@@ -1,9 +1,32 @@
 const canonicalLocaleKey = "weightPlayLocale";
 const legacyLocaleKey = "weightplayLocale";
-const canonicalSavedLocale = localStorage.getItem(canonicalLocaleKey);
-const legacySavedLocale = localStorage.getItem(legacyLocaleKey);
+const storageFallback = new Map();
+
+function storageRead(key) {
+  try {
+    const value = localStorage.getItem(key);
+    if (value !== null) storageFallback.set(key, value);
+    return value ?? storageFallback.get(key) ?? null;
+  } catch {
+    return storageFallback.get(key) ?? null;
+  }
+}
+
+function storageWrite(key, value) {
+  const serialized = String(value);
+  storageFallback.set(key, serialized);
+  try {
+    localStorage.setItem(key, serialized);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+const canonicalSavedLocale = storageRead(canonicalLocaleKey);
+const legacySavedLocale = storageRead(legacyLocaleKey);
 if (!canonicalSavedLocale && ["en", "zh-Hant", "zh-Hans", "es"].includes(legacySavedLocale)) {
-  localStorage.setItem(canonicalLocaleKey, legacySavedLocale);
+  storageWrite(canonicalLocaleKey, legacySavedLocale);
   window.WonderI18n?.setLocale?.(legacySavedLocale);
 }
 
@@ -437,9 +460,9 @@ function keyOf(pos) {
 
 function loadUnlocked() {
   try {
-    const parsed = Number(localStorage.getItem(UNLOCK_KEY));
+    const parsed = Number(storageRead(UNLOCK_KEY));
     const repaired = Math.max(1, Math.min(levels.length, Number.isFinite(parsed) ? Math.floor(parsed) : 1));
-    localStorage.setItem(UNLOCK_KEY, String(repaired));
+    storageWrite(UNLOCK_KEY, repaired);
     return repaired;
   } catch {
     return 1;
@@ -449,7 +472,7 @@ function loadUnlocked() {
 function loadBestStars() {
   let parsed;
   try {
-    parsed = JSON.parse(localStorage.getItem(BEST_KEY) || "{}");
+    parsed = JSON.parse(storageRead(BEST_KEY) || "{}");
   } catch {
     parsed = {};
   }
@@ -463,14 +486,14 @@ function loadBestStars() {
     });
   }
   try {
-    localStorage.setItem(BEST_KEY, JSON.stringify(repaired));
+    storageWrite(BEST_KEY, JSON.stringify(repaired));
   } catch {}
   return repaired;
 }
 
 function saveProgress() {
-  localStorage.setItem(UNLOCK_KEY, String(unlocked));
-  localStorage.setItem(BEST_KEY, JSON.stringify(bestStars));
+  storageWrite(UNLOCK_KEY, unlocked);
+  storageWrite(BEST_KEY, JSON.stringify(bestStars));
 }
 
 function renderStaticText() {

@@ -183,9 +183,7 @@
       && Math.abs(width - appliedStageWidth) < 0.5
       && Math.abs(height - appliedStageHeight) < 0.5) return;
     const requestedMaximumWidth = Number.parseFloat(root.dataset.wpCanvasMaxWidth || "");
-    const maximumWidth = root.dataset.wpCanvasMaxWidth === "viewport"
-      ? width
-      : Number.isFinite(requestedMaximumWidth) && requestedMaximumWidth > 0
+    const maximumWidth = Number.isFinite(requestedMaximumWidth) && requestedMaximumWidth > 0
       ? Math.min(DESKTOP_CANVAS_MAX_WIDTH, requestedMaximumWidth)
       : DESKTOP_CANVAS_MAX_WIDTH;
     const availableWidth = Math.max(1, Math.min(width, maximumWidth));
@@ -348,6 +346,9 @@
 
   function recommendedCard(rail) {
     const unlocked = stageCards(rail).filter(isUnlockedCard);
+    if (rail.dataset.wpStageRecommendation === "first") return unlocked[0] || null;
+    const explicit = unlocked.find((card) => card.dataset.wpStageRecommended === "true");
+    if (explicit) return explicit;
     return unlocked.at(-1) || null;
   }
 

@@ -40,7 +40,7 @@
   const loadingText = document.querySelector("#loadingText");
   const loadingFill = document.querySelector("#loadingFill");
   const lunchGame = document.querySelector(".lunch-game");
-  lunchGame?.setAttribute("data-wp-canvas-max-width", "viewport");
+  lunchGame?.setAttribute("data-wp-canvas-max-width", "920");
   const leaveConfirmPanel = document.createElement("section");
   leaveConfirmPanel.className = "leave-confirm-panel hidden";
   leaveConfirmPanel.setAttribute("role", "dialog");

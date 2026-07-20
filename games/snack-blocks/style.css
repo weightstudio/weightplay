@@ -657,7 +657,7 @@ body.snack-playing .snack-game,
 body.snack-playing.weightplay-active-viewport .snack-game {
   position: fixed !important;
   inset: auto !important;
-  left: 0 !important;
+  left: var(--snack-frame-left, 0px) !important;
   top: 0 !important;
   width: var(--snack-logical-width, 390px) !important;
   min-width: 0 !important;

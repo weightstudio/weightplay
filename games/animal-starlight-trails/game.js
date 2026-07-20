@@ -135,9 +135,9 @@
   // Stage and Battle fill the complete General safe physical width. Keep the
   // shared controllers' one-scale logical envelope, but supersede every
   // route shell's historical numeric 920px desktop cap at runtime.
-  dom.stage.dataset.wpCanvasMaxWidth = "viewport";
-  dom.stage.querySelector(".stage-canvas")?.setAttribute("data-wp-canvas-max-width", "viewport");
-  dom.battle.querySelector(".trail-battle-canvas")?.setAttribute("data-wp-canvas-max-width", "viewport");
+  dom.stage.dataset.wpCanvasMaxWidth = "920";
+  dom.stage.querySelector(".stage-canvas")?.setAttribute("data-wp-canvas-max-width", "920");
+  dom.battle.querySelector(".trail-battle-canvas")?.setAttribute("data-wp-canvas-max-width", "920");
 
   let stageIndex = Math.max(0,Math.min(29,save.unlocked-1));
   let path = [];

@@ -729,7 +729,7 @@ body.is-vine-stage-select .vine-app {
 body.is-vine-stage-select .stage-panel {
   position: fixed;
   top: var(--vine-stage-top, 4px);
-  left: 0;
+  left: var(--vine-stage-left, 0px);
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 48px minmax(0, 1fr);
@@ -857,7 +857,7 @@ body.is-vine-stage-select .stage-card {
   }
 }
 
-/* Battle uses one logical Canvas and the complete Kids viewport. */
+/* Battle uses one logical Canvas capped at the platform desktop width. */
 body.is-vine-playing {
   position: fixed;
   inset: 0;

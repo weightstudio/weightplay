@@ -1,6 +1,6 @@
 ﻿(() => {
-  document.querySelector(".beast-deck-app")?.setAttribute("data-wp-canvas-max-width", "viewport");
-  document.getElementById("gamePanel")?.setAttribute("data-wp-canvas-max-width", "viewport");
+  document.querySelector(".beast-deck-app")?.setAttribute("data-wp-canvas-max-width", "920");
+  document.getElementById("gamePanel")?.setAttribute("data-wp-canvas-max-width", "920");
 
   const GAME_ID = "beast-deck";
   const saveKey = "weightplay_beast_deck_v1";
@@ -31,6 +31,13 @@
   let battleTransitionEpoch = 0;
   let backgroundSuspended = document.hidden;
   const battleTransitions = new Set();
+  let stageScrollTimer = 0;
+
+  function cancelStageSettlement() {
+    if (!stageScrollTimer) return;
+    window.clearTimeout(stageScrollTimer);
+    stageScrollTimer = 0;
+  }
 
   function armBattleTransition(transition) {
     if (backgroundSuspended || transition.epoch !== battleTransitionEpoch) return;
@@ -272,6 +279,7 @@
   }
 
   function showMainFromStage() {
+    cancelStageSettlement();
     clearAmuletConfirmation();
     nodes.stagePanel.classList.add("hidden");
     nodes.menuPanel.classList.remove("hidden");
@@ -1728,6 +1736,8 @@
   }
 
   function selectNearestVisibleStage() {
+    stageScrollTimer = 0;
+    if (nodes.stagePanel?.classList.contains("hidden")) return;
     if (!nodes.stageGrid) return;
     const unlockedCards = [...nodes.stageGrid.querySelectorAll(".stage-card:not([disabled])")];
     if (!unlockedCards.length) return;
@@ -2600,6 +2610,7 @@
   }
 
   function leaveStageCanvas() {
+    cancelStageSettlement();
     nodes.menuBtn.setAttribute("data-wp-return", "battle");
     document.documentElement.classList.remove("wp-stage-select-active");
     document.body.classList.remove("wp-stage-select-active", "wp-standard-stage-page");
@@ -3096,7 +3107,6 @@
       window.WonderSound?.play("click");
       window.WonderI18n?.setLocale?.(event.target.value);
     });
-    let stageScrollTimer = 0;
     nodes.stageGrid?.addEventListener("scroll", () => {
       if (isAutoPositioningStage) return;
       window.clearTimeout(stageScrollTimer);

@@ -634,8 +634,8 @@
     loadingText: $("loadingText"),
     loadingFill: $("loadingFill"),
   };
-  nodes.menuPanel.dataset.wpCanvasMaxWidth = "viewport";
-  nodes.playPanel.dataset.wpCanvasMaxWidth = "viewport";
+  nodes.menuPanel.dataset.wpCanvasMaxWidth = "920";
+  nodes.playPanel.dataset.wpCanvasMaxWidth = "920";
 
   const sessionStorageFallback = new Map();
 

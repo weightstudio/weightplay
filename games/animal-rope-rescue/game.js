@@ -2,6 +2,28 @@
   const GAME_ID = "animal-rope-rescue";
   const localeKey = "weightPlayLocale";
   const saveKey = "weightplay_animal_vine_rescue_save_v1";
+  const storageFallback = new Map();
+
+  function storageRead(key) {
+    try {
+      const value = localStorage.getItem(key);
+      if (value !== null) storageFallback.set(key, value);
+      return value ?? storageFallback.get(key) ?? null;
+    } catch {
+      return storageFallback.get(key) ?? null;
+    }
+  }
+
+  function storageWrite(key, value) {
+    const serialized = String(value);
+    storageFallback.set(key, serialized);
+    try {
+      localStorage.setItem(key, serialized);
+      return true;
+    } catch {
+      return false;
+    }
+  }
 
   const text = {
     en: {
@@ -381,28 +403,24 @@
   });
 
   // Keep canonical and localized shells on the Kids full-viewport Canvas contract.
-  nodes.stagePanel.dataset.wpCanvasMaxWidth = "viewport";
-  nodes.gamePanel.dataset.wpCanvasMaxWidth = "viewport";
+  nodes.stagePanel.dataset.wpCanvasMaxWidth = "920";
+  nodes.gamePanel.dataset.wpCanvasMaxWidth = "920";
   window.dispatchEvent(new Event("resize"));
 
   function migrateLegacyLocale() {
     const parts = location.pathname.split("/").filter(Boolean);
     const routeOffset = parts[0] === "weightplay" ? 1 : 0;
     if (["en", "zh-tw", "zh-cn", "es", "ja"].includes(String(parts[routeOffset] || "").toLowerCase())) return "";
-    try {
-      if (localStorage.getItem(localeKey)) return "";
-      const legacy = localStorage.getItem("weightplayLocale");
-      const supported = window.WonderI18n?.supportedLocales || ["en", "zh-Hant", "zh-Hans", "es", "ja"];
-      if (!legacy || !supported.includes(legacy)) return "";
-      localStorage.setItem(localeKey, legacy);
-      return window.WonderI18n?.legacyLocale?.(legacy) || legacy;
-    } catch {
-      return "";
-    }
+    if (storageRead(localeKey)) return "";
+    const legacy = storageRead("weightplayLocale");
+    const supported = window.WonderI18n?.supportedLocales || ["en", "zh-Hant", "zh-Hans", "es", "ja"];
+    if (!legacy || !supported.includes(legacy)) return "";
+    storageWrite(localeKey, legacy);
+    return window.WonderI18n?.legacyLocale?.(legacy) || legacy;
   }
 
   const migratedLocale = migrateLegacyLocale();
-  let locale = migratedLocale || window.WonderI18n?.locale?.() || localStorage.getItem(localeKey) || "en";
+  let locale = migratedLocale || window.WonderI18n?.locale?.() || storageRead(localeKey) || "en";
   let save = loadSave();
   let currentStage = 1;
   let currentDelivery = 0;
@@ -528,21 +546,21 @@
 
   function loadSave() {
     try {
-      return { unlocked: 1, stars: {}, bestScore: 0, playCount: 0, ...JSON.parse(localStorage.getItem(saveKey) || "{}") };
+      return { unlocked: 1, stars: {}, bestScore: 0, playCount: 0, ...JSON.parse(storageRead(saveKey) || "{}") };
     } catch {
       return { unlocked: 1, stars: {}, bestScore: 0, playCount: 0 };
     }
   }
 
   function saveGame() {
-    localStorage.setItem(saveKey, JSON.stringify(save));
+    storageWrite(saveKey, JSON.stringify(save));
   }
 
   function setLocale(next) {
     const current = window.WonderI18n?.actualLocale?.();
     const requested = next === "zh-Hant" && current === "zh-Hans" ? current : next || "en";
     locale = window.WonderI18n?.legacyLocale?.(requested) || requested;
-    localStorage.setItem(localeKey, requested);
+    storageWrite(localeKey, requested);
     document.documentElement.lang = requested;
     document.querySelectorAll("[data-ui]").forEach((node) => {
       node.textContent = t(node.dataset.ui);
@@ -1064,8 +1082,10 @@
   function updateStageScale() {
     if (!document.body.classList.contains("is-vine-stage-select")) return;
     const viewport = window.visualViewport;
-    const viewportWidth = document.documentElement.clientWidth || window.innerWidth || viewport?.width;
+    const layoutWidth = document.documentElement.clientWidth || window.innerWidth || viewport?.width;
+    const viewportWidth = Math.min(layoutWidth, 920);
     const viewportHeight = document.documentElement.clientHeight || window.innerHeight || viewport?.height;
+    const frameLeft = Math.max(0, (layoutWidth - viewportWidth) / 2);
     const shortLandscape = viewportWidth > viewportHeight && viewportHeight <= 430;
     const minimumWidth = shortLandscape ? 760 : 390;
     const minimumHeight = shortLandscape ? 360 : 788;
@@ -1075,14 +1095,17 @@
     document.documentElement.style.setProperty("--vine-stage-scale", String(scale));
     document.documentElement.style.setProperty("--vine-stage-logical-width", `${logicalWidth}px`);
     document.documentElement.style.setProperty("--vine-stage-logical-height", `${logicalHeight}px`);
+    document.documentElement.style.setProperty("--vine-stage-left", `${frameLeft}px`);
     document.documentElement.style.setProperty("--vine-stage-top", "0px");
   }
 
   function updateBattleScale() {
     if (!document.body.classList.contains("is-vine-playing")) return;
     const viewport = window.visualViewport;
-    const viewportWidth = document.documentElement.clientWidth || window.innerWidth || viewport?.width;
+    const layoutWidth = document.documentElement.clientWidth || window.innerWidth || viewport?.width;
+    const viewportWidth = Math.min(layoutWidth, 920);
     const viewportHeight = document.documentElement.clientHeight || window.innerHeight || viewport?.height;
+    const frameLeft = Math.max(0, (layoutWidth - viewportWidth) / 2);
     const shortLandscape = viewportWidth > viewportHeight && viewportHeight <= 430;
     const minimumWidth = shortLandscape ? 760 : 382;
     const minimumHeight = shortLandscape ? 360 : 780;
@@ -1099,7 +1122,7 @@
       position: "fixed",
       inset: "auto",
       top: "0px",
-      left: "0px",
+      left: `${frameLeft}px`,
       width: `${logicalWidth}px`,
       minWidth: `${logicalWidth}px`,
       maxWidth: `${logicalWidth}px`,

@@ -4,8 +4,8 @@
     if (reserve !== stageReserve) reserve.remove();
   });
   stageReserve?.classList.add("wp-stage-physical-reserve");
-  document.getElementById("stagePanel")?.setAttribute("data-wp-canvas-max-width", "viewport");
-  document.getElementById("gamePanel")?.setAttribute("data-wp-canvas-max-width", "viewport");
+  document.getElementById("stagePanel")?.setAttribute("data-wp-canvas-max-width", "920");
+  document.getElementById("gamePanel")?.setAttribute("data-wp-canvas-max-width", "920");
 
   const GAME_ID = "animal-crystal-survivor";
   const saveKey = "weightplay_animal_crystal_survivor_v1";

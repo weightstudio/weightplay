@@ -1,8 +1,8 @@
 (() => {
   "use strict";
   const $ = (selector) => document.querySelector(selector);
-  document.querySelector(".stage-canvas")?.setAttribute("data-wp-canvas-max-width", "viewport");
-  document.querySelector(".battle-canvas")?.setAttribute("data-wp-canvas-max-width", "viewport");
+  document.querySelector(".stage-canvas")?.setAttribute("data-wp-canvas-max-width", "920");
+  document.querySelector(".battle-canvas")?.setAttribute("data-wp-canvas-max-width", "920");
   const SAVE_KEY = "weightplay_animal_2048_v1";
   const TUTORIAL_KEY = "weightplay_tutorial_seen_animal_2048_v1";
   const LOCALE_SEGMENTS = {en:"en","zh-tw":"zh-Hant","zh-cn":"zh-Hans",es:"es",ja:"ja",ko:"ko","pt-br":"pt-BR",de:"de"};

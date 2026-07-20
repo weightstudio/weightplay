@@ -4221,11 +4221,15 @@ body.general-lobby-page {
 }
 
 .general-lobby-page .library-tabs button {
-  height: 50px;
+  min-height: 56px;
+  height: auto;
+  padding: 8px 12px;
   border: 1px solid #9bb0a9;
   border-radius: 7px;
   background: #ffffff;
   color: #29453f;
+  font-size: 16px;
+  line-height: 1.15;
   box-shadow: 0 4px 0 #c2d0ca;
 }
 
@@ -5232,7 +5236,7 @@ body.general-lobby-page {
   }
 
   .general-lobby-page .desktop-filter-rail .library-tabs {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .general-lobby-page .desktop-filter-grid {
@@ -5260,8 +5264,26 @@ body.general-lobby-page {
   }
 
   .general-lobby-page .desktop-filter-rail .library-tabs button {
-    justify-content: center;
-    padding-inline: 4px;
+    min-height: 44px;
+    padding: 8px 10px;
+    justify-content: space-between;
+    font-size: 12px;
+  }
+
+  .general-lobby-page .desktop-filter-rail .library-tabs .filter-copy {
+    flex: 1 1 auto;
+  }
+
+  .general-lobby-page .desktop-filter-rail .library-tabs .filter-label {
+    overflow: visible;
+    text-overflow: clip;
+    white-space: normal;
+  }
+
+  .general-lobby-page .desktop-filter-rail .library-tabs .filter-count {
+    min-width: 28px;
+    height: 24px;
+    padding-inline: 6px;
   }
 
   .general-lobby-page .desktop-filter-rail button:hover,

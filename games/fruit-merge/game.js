@@ -31,7 +31,7 @@
     window.WonderI18n?.setLocale?.(legacySavedLocale);
   }
   document.querySelectorAll(".fruit-game, .fixed-game-shell, #stagePanel, #resultPanel").forEach((element) => {
-    element.setAttribute("data-wp-canvas-max-width", "viewport");
+    element.setAttribute("data-wp-canvas-max-width", "920");
   });
 
   const BEST_KEY = "fruitMergeBestScore";

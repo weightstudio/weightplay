@@ -1077,6 +1077,9 @@
   $("#stageBack").onclick = () => { playSound("click"); show("main"); focusMain(); };
   $("#battleBack").onclick = openQuitDecision;
   $("#skillBtn").onclick = skill;
+  $("#skillBtn").addEventListener("keydown", (event) => {
+    if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
+  });
   $("#rerollBtn").addEventListener("keydown",(event)=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault()});
   $("#rerollBtn").onclick = rerollBlessings;
   $("#resultHome").onclick = () => { playSound("click"); show("main"); localize(); focusMain(); };
@@ -1173,7 +1176,8 @@
     prepare:(stage,room=1)=>{ unlocked=TRIAL_COUNT; startTrial(stage); run.room=Math.max(1,Math.min(3,room)); spawn(); return window.__heroTrialSmoke.snapshot(); },
     damageFirst:(amount=20,source="auto")=>{ const enemy=run?.enemies[0]; return enemy?{applied:damageEnemy(enemy,amount,source),enemy:{...enemy}}:null; },
     forceRoomClear:()=>{ if(!run) return null; run.enemies=[]; if(run.room>=3) finish(true); else chooseBlessing(); return window.__heroTrialSmoke.snapshot(); },
-    snapshot: () => ({ pointer, moveTarget: moveTarget ? { ...moveTarget } : null, stick: { ...stick }, active: Boolean(run?.active), hp: run?.hp ?? null, player: run ? { ...run.leo } : null, run:run?{stage:run.stage,room:run.room,checkpoint:run.definition.checkpoint,boss:run.definition.boss?.id||null}:null, unlocked,marks, enemies: run?.enemies.map((enemy) => ({ x: enemy.x, y: enemy.y, hp: enemy.hp,max:enemy.max,type:enemy.type,bossId:enemy.bossId||null,bossRule:enemy.bossRule||null,guard:enemy.guard||0,warning:enemy.warning||0,phase:enemy.phase||0 })) || [] })
+    setCooldown:(value=0)=>{ if(!run) return null; run.cool=Math.max(0,Number(value)||0); updateHud(); return window.__heroTrialSmoke.snapshot(); },
+    snapshot: () => ({ pointer, moveTarget: moveTarget ? { ...moveTarget } : null, stick: { ...stick }, active: Boolean(run?.active), hp: run?.hp ?? null, cooldown: run?.cool ?? null, player: run ? { ...run.leo } : null, run:run?{stage:run.stage,room:run.room,checkpoint:run.definition.checkpoint,boss:run.definition.boss?.id||null}:null, unlocked,marks, enemies: run?.enemies.map((enemy) => ({ x: enemy.x, y: enemy.y, hp: enemy.hp,max:enemy.max,type:enemy.type,bossId:enemy.bossId||null,bossRule:enemy.bossRule||null,guard:enemy.guard||0,warning:enemy.warning||0,phase:enemy.phase||0 })) || [] })
   };
   localize();
 })();

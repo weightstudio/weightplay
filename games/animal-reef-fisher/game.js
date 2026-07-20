@@ -1,6 +1,6 @@
 ﻿(() => {
-  document.getElementById("stagePanel")?.setAttribute("data-wp-canvas-max-width", "viewport");
-  document.querySelector(".battle-shell")?.setAttribute("data-wp-canvas-max-width", "viewport");
+  document.getElementById("stagePanel")?.setAttribute("data-wp-canvas-max-width", "920");
+  document.querySelector(".battle-shell")?.setAttribute("data-wp-canvas-max-width", "920");
 
   const GAME_ID = "animal-reef-fisher";
   const saveKey = "weightplay_animal_reef_fisher_v1";

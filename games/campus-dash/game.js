@@ -86,7 +86,7 @@
   laneStatus.setAttribute("aria-live", "polite");
   laneStatus.setAttribute("aria-atomic", "true");
   canvasWrap.append(laneStatus);
-  dashGame?.setAttribute("data-wp-canvas-max-width", "viewport");
+  dashGame?.setAttribute("data-wp-canvas-max-width", "920");
   const leavePanel = document.createElement("section");
   leavePanel.className = "leave-panel hidden";
   leavePanel.setAttribute("role", "dialog");
