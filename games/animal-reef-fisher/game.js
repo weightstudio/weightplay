@@ -780,6 +780,10 @@
   }
 
   function showPanel(which) {
+    if (which !== "game") {
+      cancelAnimationFrame(raf);
+      raf = 0;
+    }
     nodes.mainPanel.classList.toggle("is-hidden", which !== "main");
     nodes.stagePanel.classList.toggle("is-hidden", which !== "stage");
     nodes.gamePanel.classList.toggle("is-hidden", which !== "game" && which !== "result");
@@ -804,7 +808,7 @@
   }
 
   function restartFishingLoop() {
-    if (backgroundSuspended || leaveDecisionOpen) return;
+    if (backgroundSuspended || leaveDecisionOpen || state !== "game" || !run || run.finished) return;
     cancelAnimationFrame(raf);
     lastTime = performance.now();
     raf = requestAnimationFrame(tick);
@@ -922,6 +926,7 @@
     track("game_start", { zone: zone.id });
     playSound("start");
     canvas.focus({ preventScroll: true });
+    restartFishingLoop();
   }
 
   function finishRun(won) {
@@ -1625,7 +1630,8 @@
   }
 
   function tick(now) {
-    if (backgroundSuspended || leaveDecisionOpen) return;
+    raf = 0;
+    if (backgroundSuspended || leaveDecisionOpen || state !== "game" || !run || run.finished) return;
     const dt = Math.min(0.05, (now - lastTime) / 1000);
     lastTime = now;
     update(dt);
@@ -2013,6 +2019,7 @@
     if (backgroundSuspended) return;
     backgroundSuspended = true;
     cancelAnimationFrame(raf);
+    raf = 0;
   }
   function resumeBackgroundFishing() {
     resumeDiamondPurchaseConfirmation();
@@ -2246,8 +2253,6 @@
     menuHidden: nodes.mainPanel.classList.contains("is-hidden"),
   };
   track("game_view", { internalPrototype: false });
-  lastTime = performance.now();
-  raf = requestAnimationFrame(tick);
   preloadPromise = loadImages().then(() => {
     nodes.loadingPanel.classList.add("is-hidden");
     window.__ANIMAL_REEF_FISHER_FIRST_SCREEN__.loadingHidden = true;

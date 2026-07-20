@@ -14,3 +14,10 @@ body[data-screen="stage"] .sound-toggle,body[data-screen="battle"] .sound-toggle
 .battle-screen[data-animating="true"] .game-board,.battle-screen[data-animating="true"] .piece-tray,.battle-screen[data-animating="true"] .battle-actions{pointer-events:none}
 @keyframes wpClearPop{0%{transform:scale(1);opacity:1}38%{transform:scale(1.16) rotate(2deg);filter:brightness(1.9) saturate(1.35)}100%{transform:scale(.15) rotate(-8deg);filter:brightness(2);opacity:0}}
 @keyframes wpClearRing{0%{transform:scale(.25);opacity:0}35%{opacity:1}100%{transform:scale(1.65);opacity:0}}
+
+/* Game-owned responsive Canvas: portrait and short landscape each keep usable
+   logical controls while the outer envelope fills the complete Kids viewport. */
+.block-grove-battle-canvas{position:relative;width:100%;height:100%;min-height:0;overflow:hidden;background:linear-gradient(rgba(3,37,34,.56),rgba(2,28,29,.9)),url('../../assets/animal-block-grove-background.webp') center/cover;display:grid;grid-template-rows:78px 44px minmax(0,1fr) 150px 58px;gap:7px;padding:8px}
+@media(max-width:700px){.block-grove-battle-canvas{grid-template-rows:68px 68px minmax(0,1fr) 126px 54px;padding:5px;gap:5px}}
+@media(max-height:520px) and (orientation:landscape){.block-grove-battle-canvas{grid-template-columns:minmax(0,1fr) 235px;grid-template-rows:58px 72px minmax(0,1fr);grid-template-areas:"head head" "objective side" "board side";gap:4px;padding:4px}.block-grove-battle-canvas .objective-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:4px;padding:4px}.block-grove-battle-canvas .objective-chip{min-width:0;justify-content:center;font-size:12px;padding:2px 5px}.block-grove-battle-canvas .objective-chip img{width:20px;height:20px}}
+.stage-rail{touch-action:pan-y}

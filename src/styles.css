@@ -5054,6 +5054,31 @@ body.general-lobby-page {
   box-shadow: 0 7px 20px rgba(0, 0, 0, 0.34);
 }
 
+.general-lobby-page .continue-playing-card:hover,
+.general-lobby-page .continue-playing-card:focus,
+.general-lobby-page .continue-playing-card:focus-visible {
+  border-color: #7768d8;
+  background: linear-gradient(135deg, #1c2635, #151d2a);
+  color: #f4f6fb;
+  box-shadow: 0 0 0 1px rgba(151, 133, 255, 0.16), 0 10px 26px rgba(0, 0, 0, 0.38);
+  outline: none;
+}
+
+.general-lobby-page .continue-playing-card:active {
+  border-color: #9a89ff;
+  background: linear-gradient(135deg, #242d40, #182033);
+  color: #ffffff;
+  box-shadow: 0 0 0 2px rgba(154, 137, 255, 0.18), 0 5px 14px rgba(0, 0, 0, 0.4);
+}
+
+.general-lobby-page .continue-playing-card:is(:hover, :focus, :focus-visible, :active) .continue-playing-copy strong {
+  color: #ffffff;
+}
+
+.general-lobby-page .continue-playing-card:is(:hover, :focus, :focus-visible, :active) .continue-playing-copy small {
+  color: #aeb9c8;
+}
+
 .general-lobby-page #advancedFilters summary,
 .general-lobby-page .lobby-player-summary strong,
 .general-lobby-page .lobby-account-strip {

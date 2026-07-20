@@ -1095,6 +1095,7 @@
   let leaveBattleConfirmPending = false;
   let leaveBattleWasPaused = false;
   let toastTimer = 0;
+  let battleFrame = 0;
 
   function currentStartTile() {
     return state.stage?.route?.start || startTile;
@@ -1312,6 +1313,7 @@
       });
     }
     updateBattleShell();
+    syncBattleLoop();
   }
 
   function updateBattleShell() {
@@ -2289,10 +2291,12 @@
   }
 
   function pauseHiddenBattle() {
-    if (!document.hidden || state.screen !== "game" || state.gameOver || state.paused) return;
-    state.paused = true;
-    track("game_speed_change", { stage: state.currentStage, speed: state.speed, paused: true, reason: "page_hidden" });
-    updateHud();
+    if (document.hidden && state.screen === "game" && !state.gameOver && !state.paused) {
+      state.paused = true;
+      track("game_speed_change", { stage: state.currentStage, speed: state.speed, paused: true, reason: "page_hidden" });
+      updateHud();
+    }
+    syncBattleLoop();
   }
 
   function setBattleDecisionCoverage(covered) {
@@ -2321,6 +2325,7 @@
       updateHud();
       window.requestAnimationFrame(() => nodes.menuBtn.focus({ preventScroll: true }));
     }
+    syncBattleLoop();
   }
 
   function requestLeaveBattle() {
@@ -2332,6 +2337,7 @@
     setBattleDecisionCoverage(true);
     nodes.pauseDecisionPanel.classList.remove("is-hidden");
     updateHud();
+    syncBattleLoop();
     window.requestAnimationFrame(() => nodes.pauseContinueBtn.focus({ preventScroll: true }));
   }
 
@@ -3466,12 +3472,35 @@
     }
   }
 
+  function shouldRunBattleLoop() {
+    return state.screen === "game" && !state.gameOver && !leaveBattleConfirmPending && !document.hidden;
+  }
+
+  function stopBattleLoop() {
+    if (!battleFrame) return;
+    cancelAnimationFrame(battleFrame);
+    battleFrame = 0;
+  }
+
+  function startBattleLoop() {
+    if (!shouldRunBattleLoop() || battleFrame) return;
+    state.lastTs = performance.now();
+    battleFrame = requestAnimationFrame(loop);
+  }
+
+  function syncBattleLoop() {
+    if (shouldRunBattleLoop()) startBattleLoop();
+    else stopBattleLoop();
+  }
+
   function loop(ts) {
+    battleFrame = 0;
+    if (!shouldRunBattleLoop()) return;
     const dt = Math.min(0.05, (ts - (state.lastTs || ts)) / 1000);
     state.lastTs = ts;
     if (!state.manualSimulation) update(dt);
     draw();
-    requestAnimationFrame(loop);
+    if (shouldRunBattleLoop()) battleFrame = requestAnimationFrame(loop);
   }
 
   async function preload() {
@@ -3583,6 +3612,8 @@
     });
     nodes.speedBtn.addEventListener("click", cycleSpeedControl);
     document.addEventListener("visibilitychange", pauseHiddenBattle);
+    window.addEventListener("pagehide", stopBattleLoop);
+    window.addEventListener("pageshow", syncBattleLoop);
     nodes.retryBtn.addEventListener("click", () => {
       track("game_restart", { stage: state.currentStage });
       startStage(state.currentStage);
@@ -5660,7 +5691,6 @@
     updateLocale();
     setScreen("menu");
     await preload();
-    requestAnimationFrame(loop);
     window.__BEAST_GUARDIAN_DEFENSE__ = {
       state,
       stages,

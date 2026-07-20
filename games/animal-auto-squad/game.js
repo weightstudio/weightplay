@@ -852,6 +852,9 @@
   let animationId = null;
   let combatRunSequence = 0;
   let combatEndTimer = null;
+  let combatEndPending = null;
+  let combatEndDueAt = 0;
+  let combatEndRemaining = 0;
   const combatStepTimers = new Set();
   let combatSuspendedForBackground = false;
   let quitDecisionOpen = false;
@@ -3440,6 +3443,9 @@
       clearTimeout(combatEndTimer);
       combatEndTimer = null;
     }
+    combatEndPending = null;
+    combatEndDueAt = 0;
+    combatEndRemaining = 0;
     combatStepTimers.forEach((timerId) => clearTimeout(timerId));
     combatStepTimers.clear();
   }
@@ -3471,20 +3477,40 @@
     combatStepTimers.add(timerId);
   }
 
+  function armCombatEndTimer() {
+    if (!combatEndPending || combatEndTimer !== null || document.hidden || quitDecisionOpen) return;
+    const delay = Math.max(0, combatEndRemaining);
+    combatEndDueAt = performance.now() + delay;
+    combatEndTimer = setTimeout(() => {
+      combatEndTimer = null;
+      combatEndDueAt = 0;
+      const pending = combatEndPending;
+      combatEndPending = null;
+      combatEndRemaining = 0;
+      if (!pending || pending.runId !== state.combat.runId || state.combat.resolved) return;
+      endBattleRun(pending.result, pending.runId);
+    }, delay);
+  }
+
+  function suspendCombatEndTimer() {
+    if (combatEndTimer === null) return;
+    clearTimeout(combatEndTimer);
+    combatEndTimer = null;
+    combatEndRemaining = Math.max(0, combatEndDueAt - performance.now());
+    combatEndDueAt = 0;
+  }
+
+  function resumeCombatEndTimer() {
+    if (!combatEndPending || document.hidden || quitDecisionOpen) return;
+    armCombatEndTimer();
+  }
+
   function scheduleCombatEnd(result, delay = 1500) {
     if (state.combat.ending || state.combat.resolved) return;
     state.combat.ending = true;
-    const runId = state.combat.runId;
-    const finish = () => {
-      combatEndTimer = null;
-      if (runId !== state.combat.runId || state.combat.resolved) return;
-      if (document.hidden || quitDecisionOpen) {
-        combatEndTimer = setTimeout(finish, 80);
-        return;
-      }
-      endBattleRun(result, runId);
-    };
-    combatEndTimer = setTimeout(finish, delay);
+    combatEndPending = { result, runId: state.combat.runId };
+    combatEndRemaining = Math.max(0, Number(delay) || 0);
+    armCombatEndTimer();
   }
 
   // Rendering Loop for Auto-Battle Canvas
@@ -4364,6 +4390,7 @@
     if (quitDecisionOpen || nodes.gamePanel.classList.contains("is-result")) return;
     quitDecisionOpen = true;
     cancelAnimationFrame(animationId);
+    suspendCombatEndTimer();
     $("quitRunText").textContent = t("quitConfirm", { stage: state.stage, round: state.round, hearts: state.hearts, supplies: state.gold });
     nodes.quitRunPanel.classList.remove("is-hidden");
     setBattleDecisionOwnership(nodes.quitRunPanel, true);
@@ -4375,6 +4402,7 @@
     quitDecisionOpen = false;
     setBattleDecisionOwnership(nodes.quitRunPanel, false);
     nodes.quitRunPanel.classList.add("is-hidden");
+    if (resume) resumeCombatEndTimer();
     if (resume && state.combat.animating && !document.hidden) {
       cancelAnimationFrame(animationId);
       animationId = requestAnimationFrame(runCombatAnimation);
@@ -4469,12 +4497,14 @@
 
     const suspendBackgroundCombat = () => {
       suspendSkinPurchaseDecision();
+      suspendCombatEndTimer();
       if (!state.combat.animating) return;
       combatSuspendedForBackground = true;
       cancelAnimationFrame(animationId);
     };
     const resumeBackgroundCombat = () => {
       resumeSkinPurchaseDecision();
+      resumeCombatEndTimer();
       if (!combatSuspendedForBackground || !state.combat.animating || document.hidden || quitDecisionOpen) return;
       combatSuspendedForBackground = false;
       animationId = requestAnimationFrame(runCombatAnimation);

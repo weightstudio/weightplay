@@ -397,13 +397,36 @@
   nodes.keepBakingBtn = leavePanel.querySelector("#keepBakingBtn");
   nodes.leaveOrderBtn = leavePanel.querySelector("#leaveOrderBtn");
 
-  const legacySavedLocale = localStorage.getItem(localeKey);
-  const canonicalSavedLocale = localStorage.getItem(sharedLocaleKey);
+  const storageFallback = new Map();
+
+  function storageRead(key) {
+    try {
+      const value = localStorage.getItem(key);
+      if (value !== null) storageFallback.set(key, value);
+      return value ?? storageFallback.get(key) ?? null;
+    } catch {
+      return storageFallback.get(key) ?? null;
+    }
+  }
+
+  function storageWrite(key, value) {
+    const normalized = String(value);
+    storageFallback.set(key, normalized);
+    try {
+      localStorage.setItem(key, normalized);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  const legacySavedLocale = storageRead(localeKey);
+  const canonicalSavedLocale = storageRead(sharedLocaleKey);
   if (!canonicalSavedLocale && text[legacySavedLocale]) {
     window.WonderI18n?.setLocale?.(legacySavedLocale);
   }
   let locale = window.WonderI18n?.locale?.() || canonicalSavedLocale || (text[legacySavedLocale] ? legacySavedLocale : "en");
-  let unlocked = clamp(Number(localStorage.getItem(unlockKey)) || 1, 1, stages.length);
+  let unlocked = clamp(Number(storageRead(unlockKey)) || 1, 1, stages.length);
   let stars = readStars();
   let currentStage = 0;
   let board = [];
@@ -450,31 +473,31 @@
 
   function readStars() {
     try {
-      return JSON.parse(localStorage.getItem(starKey) || "{}");
+      return JSON.parse(storageRead(starKey) || "{}");
     } catch {
       return {};
     }
   }
 
   function saveStars() {
-    localStorage.setItem(starKey, JSON.stringify(stars));
+    storageWrite(starKey, JSON.stringify(stars));
   }
 
   function readProgress() {
     try {
-      return JSON.parse(localStorage.getItem(progressKey) || "{}");
+      return JSON.parse(storageRead(progressKey) || "{}");
     } catch {
       return {};
     }
   }
 
   function saveProgress(progress) {
-    localStorage.setItem(progressKey, JSON.stringify(progress));
+    storageWrite(progressKey, JSON.stringify(progress));
   }
 
   function readStats() {
     try {
-      const parsed = JSON.parse(localStorage.getItem(statsKey) || "{}");
+      const parsed = JSON.parse(storageRead(statsKey) || "{}");
       return {
         orders: Math.max(0, Number(parsed.orders || 0)),
         plays: Math.max(0, Number(parsed.plays || 0)),
@@ -487,7 +510,7 @@
   }
 
   function saveStats(stats) {
-    localStorage.setItem(statsKey, JSON.stringify(stats));
+    storageWrite(statsKey, JSON.stringify(stats));
   }
 
   function t(key, data = {}) {
@@ -496,13 +519,9 @@
   }
 
   function syncSharedLocale() {
-    try {
-      const storedLocale = window.WonderI18n?.actualLocale?.() || locale;
-      localStorage.setItem(localeKey, storedLocale);
-      localStorage.setItem(sharedLocaleKey, storedLocale);
-    } catch {
-      // Locale storage is optional; the in-memory locale remains authoritative.
-    }
+    const storedLocale = window.WonderI18n?.actualLocale?.() || locale;
+    storageWrite(localeKey, storedLocale);
+    storageWrite(sharedLocaleKey, storedLocale);
     if (window.WonderI18n?.locale?.() !== locale) {
       window.WonderI18n?.setLocale?.(locale);
     } else {
@@ -1233,7 +1252,7 @@
       if (stageNo === unlocked && unlocked < stages.length) {
         unlocked += 1;
         unlockedStageNo = unlocked;
-        localStorage.setItem(unlockKey, String(unlocked));
+        storageWrite(unlockKey, unlocked);
       }
     }
     const stamp = recordFinishStats(won, stageNo);

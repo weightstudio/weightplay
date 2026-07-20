@@ -800,7 +800,7 @@
     const stage = stages[currentStage];
     currentShape = stage.tasks[currentTask];
     const shape = shapes[currentShape];
-    nodes.stageText.textContent = t("stage", { n: currentStage + 1 });
+    nodes.stageText.textContent = `${t("stage", { n: currentStage + 1 })} · ${t(`rules.${stage.rule}`)}`;
     nodes.progressFill.style.width = `${(currentTask / stage.tasks.length) * 100}%`;
     nodes.promptText.textContent = t("prompt", { shape: t(`shapes.${currentShape}`) });
     nodes.feedbackText.textContent = "";
@@ -927,7 +927,7 @@
   }
 
   function refreshActiveTaskLocale() {
-    nodes.stageText.textContent = t("stage", { n: currentStage + 1 });
+    nodes.stageText.textContent = `${t("stage", { n: currentStage + 1 })} · ${t(`rules.${stages[currentStage].rule}`)}`;
     nodes.promptText.textContent = t("prompt", { shape: t(`shapes.${currentShape}`) });
     nodes.passengerShape.querySelector(".passenger-shape-badge")?.setAttribute("alt", t(`shapes.${currentShape}`));
     nodes.passengerBtn.setAttribute("aria-label", t("passenger", { shape: t(`shapes.${currentShape}`) }));

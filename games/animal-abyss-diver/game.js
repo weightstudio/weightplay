@@ -375,8 +375,9 @@
     });
   }
   function resumeDiveAsync(){
+    if(document.hidden||$("battleShell").classList.contains("hidden")||!$("result").classList.contains("hidden")||!$("quitPanel").classList.contains("hidden")||!$("diveCoach").classList.contains("hidden"))return;
     resumeBeaconConfirmation();
-    if(!diveSuspended||document.hidden||$("battleShell").classList.contains("hidden")||!$("result").classList.contains("hidden")||!$("quitPanel").classList.contains("hidden"))return;
+    if(!diveSuspended)return;
     diveSuspended=false;
     diveTimers.forEach(task=>{if(task.session===diveSession&&!task.timer)armDiveTask(task);});
   }
@@ -547,9 +548,10 @@
   function coachBackgroundNodes(){return [...document.querySelectorAll("#battleShell .battle-hud, #battleShell .objective, #battleShell .controls, #diveField > :not(#diveCoach)")];}
   function setCoach(open){
     const coach=$("diveCoach");
-    if(open){const active=document.activeElement;coachReturnFocus=active instanceof HTMLElement&&$("battleShell").contains(active)?active:null;}
+    if(open){const active=document.activeElement;coachReturnFocus=active instanceof HTMLElement&&$("battleShell").contains(active)?active:null;clearBeaconConfirmation();suspendDiveAsync();}
     coachBackgroundNodes().forEach(node=>{node.inert=open;});
     coach.classList.toggle("hidden",!open);
+    if(!open)resumeDiveAsync();
     window.requestAnimationFrame(()=>{
       if(open){$("coachStart").focus({preventScroll:true});return;}
       const target=coachReturnFocus&&coachReturnFocus.isConnected&&coachReturnFocus.getClientRects().length?coachReturnFocus:$("leftGate");
