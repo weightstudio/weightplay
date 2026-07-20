@@ -652,6 +652,8 @@
   };
   let backgroundBattleSuspended = false;
   let battlePaused = false;
+  let settlementPending = false;
+  let settlementTimer = 0;
   const SIMULATION_STEP_MS = 1000 / 60;
   const MAX_SIMULATION_STEPS = 6;
   let simulationAccumulator = 0;
@@ -838,6 +840,7 @@
   }
 
   function showStage() {
+    cancelPendingSettlement();
     closePause(false);
     clearAmuletConfirmation();
     clearActiveInputs();
@@ -853,6 +856,7 @@
   }
 
   function showMain() {
+    cancelPendingSettlement();
     closePause(false);
     clearAmuletConfirmation();
     clearActiveInputs();
@@ -1248,6 +1252,7 @@
 
   // Active game start trigger
   function startRun(startStage = state.selectedStage) {
+    cancelPendingSettlement();
     closePause(false);
     clearActiveInputs();
     setResultModalOpen(false, false);
@@ -1410,7 +1415,7 @@
 
     const remaining = state.enemies.filter((candidate) => candidate !== enemy && candidate.hp > 0).length;
     if (enemy.type === "boss" || remaining === 0) {
-      window.setTimeout(() => endGame(true), 260);
+      scheduleWinSettlement();
     }
   }
 
@@ -1527,8 +1532,21 @@
     return sidebar ? [...arenaSiblings, sidebar] : arenaSiblings;
   }
 
+  function cancelPendingSettlement() {
+    clearTimeout(settlementTimer);
+    settlementTimer = 0;
+    settlementPending = false;
+  }
+
+  function scheduleWinSettlement() {
+    if (settlementPending || !state.gameActive) return;
+    settlementPending = true;
+    clearActiveInputs();
+    settlementTimer = window.setTimeout(() => endGame(true), 260);
+  }
+
   function openPause() {
-    if (!state.gameActive || battlePaused || !nodes.draftPanel.classList.contains("hidden") || !nodes.resultPanel.classList.contains("hidden")) return;
+    if (!state.gameActive || settlementPending || battlePaused || !nodes.draftPanel.classList.contains("hidden") || !nodes.resultPanel.classList.contains("hidden")) return;
     battlePaused = true;
     state.gameActive = false;
     clearActiveInputs();
@@ -1642,6 +1660,7 @@
 
   function endGame(won) {
     if (!state.gameActive) return;
+    cancelPendingSettlement();
     state.gameActive = false;
     clearActiveInputs();
     cancelAnimationFrame(state.gameLoopId);
@@ -2054,7 +2073,7 @@
   function advanceSimulation(deltaMs) {
     simulationAccumulator += Math.max(0, Math.min(100, Number(deltaMs) || 0));
     let steps = 0;
-    while (simulationAccumulator + 0.0001 >= SIMULATION_STEP_MS && state.gameActive && steps < MAX_SIMULATION_STEPS) {
+    while (simulationAccumulator + 0.0001 >= SIMULATION_STEP_MS && state.gameActive && !settlementPending && steps < MAX_SIMULATION_STEPS) {
       stepGameEngine();
       simulationAccumulator -= SIMULATION_STEP_MS;
       steps++;
@@ -2097,7 +2116,7 @@
   }
 
   function applyPlayerDamage(amt) {
-    if (!state.gameActive || state.entryGraceFrames > 0 || state.invincibilityTimer > 0) return;
+    if (!state.gameActive || settlementPending || state.entryGraceFrames > 0 || state.invincibilityTimer > 0) return;
     const stats = getStats();
     if (Math.random() < stats.dodge) return;
     state.playerHp = Math.max(0, state.playerHp - Math.max(0.5, amt - stats.defense));
@@ -2737,6 +2756,7 @@
         return {
           locale: getLocale(),
           active: state.gameActive,
+          settlementPending,
           paused: battlePaused,
           room: state.room,
           level: state.level,

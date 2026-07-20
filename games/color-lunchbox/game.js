@@ -55,6 +55,28 @@
   const GAME_ID = "color-lunchbox";
   const UNLOCK_KEY = "colorLunchboxUnlockedStage";
   const PROGRESS_KEY = "weightplay_color_lunchbox_progress";
+  const storageFallback = new Map();
+
+  function storageRead(key) {
+    try {
+      const value = localStorage.getItem(key);
+      if (value !== null) storageFallback.set(key, value);
+      return value ?? storageFallback.get(key) ?? null;
+    } catch {
+      return storageFallback.get(key) ?? null;
+    }
+  }
+
+  function storageWrite(key, value) {
+    const normalized = String(value);
+    storageFallback.set(key, normalized);
+    try {
+      localStorage.setItem(key, normalized);
+      return true;
+    } catch {
+      return false;
+    }
+  }
 
   const foodsDB = {
     strawberry: { nameKey: "food_strawberry", color: "red", image: "assets/food-strawberry.svg" },
@@ -534,7 +556,7 @@
 
   function loadUnlockedStage() {
     try {
-      const saved = Number(localStorage.getItem(UNLOCK_KEY));
+      const saved = Number(storageRead(UNLOCK_KEY));
       state.unlockedStage = Number.isFinite(saved) && saved >= 1 ? Math.min(saved, stages.length) : 1;
     } catch {
       state.unlockedStage = 1;
@@ -544,7 +566,7 @@
   function saveUnlockedStage(value) {
     state.unlockedStage = Math.max(state.unlockedStage, Math.min(value, stages.length));
     try {
-      localStorage.setItem(UNLOCK_KEY, String(state.unlockedStage));
+      storageWrite(UNLOCK_KEY, String(state.unlockedStage));
     } catch {
       // Local progress is optional.
     }
@@ -844,7 +866,7 @@
 
   function loadProgressRecord() {
     try {
-      return JSON.parse(localStorage.getItem(PROGRESS_KEY)) || {};
+      return JSON.parse(storageRead(PROGRESS_KEY)) || {};
     } catch {
       return {};
     }
@@ -866,7 +888,7 @@
     };
 
     try {
-      localStorage.setItem(PROGRESS_KEY, JSON.stringify(record));
+      storageWrite(PROGRESS_KEY, JSON.stringify(record));
     } catch {
       // Local progress is optional and should never block play.
     }

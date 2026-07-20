@@ -214,6 +214,7 @@ function restoreDiscoveryFiltersFromUrl() {
   activeFilter = selectedFilterValue(filterButtons, "ageFilter", params.get("age") || "all");
   activeTopic = selectedFilterValue(topicButtons, "topicFilter", params.get("topic") || "all");
   activeSkill = selectedFilterValue(skillButtons, "skillFilter", params.get("skill") || "all");
+  if (activeTopic !== "all" && activeSkill !== "all") activeTopic = "all";
   activeLibrary = selectedFilterValue(libraryButtons, "libraryTab", params.get("library") || "all");
   activeAvailability = selectedFilterValue(availabilityButtons, "availabilityFilter", params.get("availability") || "all");
   const query = params.get("q") || "";
@@ -420,6 +421,29 @@ function localizePlayTime(value) {
 }
 
 function countGamesBy(type, value) {
+  const renderedCards = [...document.querySelectorAll("#gameGrid [data-age]")];
+  if (renderedCards.length) {
+    const state = {
+      age: activeFilter,
+      topic: activeTopic,
+      skill: activeSkill,
+      library: activeLibrary,
+      availability: activeAvailability,
+      search: activeSearch,
+    };
+    if (type === "age") state.age = value;
+    if (type === "topic") {
+      state.topic = value;
+      state.skill = "all";
+    }
+    if (type === "skill") {
+      state.skill = value;
+      state.topic = "all";
+    }
+    if (type === "library") state.library = value;
+    if (type === "availability") state.availability = value;
+    return renderedCards.filter((card) => cardMatchesFilterState(card, state)).length;
+  }
   if (type === "age") {
     if (value === "all") return lobby.games.length;
     return lobby.games.filter((game) => matchesAgeFilter(game.ages || [], value)).length;
@@ -699,6 +723,24 @@ function openGame(game, title, ageLabel) {
   });
   const gameUrl = new URL(game.href, document.baseURI);
   window.location.href = new URL(i18n.localizedPath(i18n.actualLocale(), `${gameUrl.pathname}${gameUrl.search}${gameUrl.hash}`), gameUrl.origin).href;
+}
+
+function cardMatchesFilterState(card, state) {
+  const ages = card.dataset.age.split(" ");
+  const topics = card.dataset.topic ? card.dataset.topic.split("|") : [];
+  const skills = card.dataset.skill ? card.dataset.skill.split("|") : [];
+  return (
+    matchesAgeFilter(ages, state.age) &&
+    (state.topic === "all" || topics.includes(state.topic)) &&
+    (state.skill === "all" || skills.includes(state.skill)) &&
+    (!state.search || card.dataset.search.includes(state.search)) &&
+    (state.library === "all" ||
+      (state.library === "favorites" && card.dataset.favorite === "true") ||
+      (state.library === "recent" && card.dataset.recent === "true")) &&
+    (state.availability === "all" ||
+      (state.availability === "playable" && card.dataset.status === "playable") ||
+      (state.availability === "preview" && card.dataset.status === "planned"))
+  );
 }
 
 function quickPickCandidates() {
@@ -1462,6 +1504,7 @@ function applyFilter({ historyMode = "replace" } = {}) {
     filterStatus.textContent = i18n.t("status.all_games");
   }
 
+  renderFilterCounts();
   updateAdvancedFilterState();
   syncDiscoveryFiltersToUrl(historyMode);
 }
@@ -1615,10 +1658,12 @@ filterButtons.forEach((button) => {
 topicButtons.forEach((button) => {
   button.addEventListener("click", () => {
     activeTopic = button.dataset.topicFilter;
+    activeSkill = "all";
 
     window.WonderSound?.play("click");
     window.WonderAnalytics?.track("topic_filter", { topic_filter: activeTopic, locale: i18n.locale() });
-    topicButtons.forEach((item) => item.classList.toggle("active", item === button));
+    setActiveButtons(topicButtons, "topicFilter", activeTopic);
+    setActiveButtons(skillButtons, "skillFilter", "all");
     applyFilter({ historyMode: "push" });
     collapseAdvancedFiltersOnPhone();
   });
@@ -1627,10 +1672,12 @@ topicButtons.forEach((button) => {
 skillButtons.forEach((button) => {
   button.addEventListener("click", () => {
     activeSkill = button.dataset.skillFilter;
+    activeTopic = "all";
 
     window.WonderSound?.play("click");
     window.WonderAnalytics?.track("skill_filter", { skill_filter: activeSkill, locale: i18n.locale() });
-    skillButtons.forEach((item) => item.classList.toggle("active", item === button));
+    setActiveButtons(skillButtons, "skillFilter", activeSkill);
+    setActiveButtons(topicButtons, "topicFilter", "all");
     applyFilter({ historyMode: "push" });
     collapseAdvancedFiltersOnPhone();
   });
@@ -1642,7 +1689,7 @@ libraryButtons.forEach((button) => {
 
     window.WonderSound?.play("click");
     window.WonderAnalytics?.track("library_tab", { library_tab: activeLibrary, locale: i18n.locale() });
-    libraryButtons.forEach((item) => item.classList.toggle("active", item === button));
+    setActiveButtons(libraryButtons, "libraryTab", activeLibrary);
     applyFilter({ historyMode: "push" });
   });
 });
@@ -1653,7 +1700,7 @@ availabilityButtons.forEach((button) => {
 
     window.WonderSound?.play("click");
     window.WonderAnalytics?.track("availability_filter", { availability_filter: activeAvailability, locale: i18n.locale() });
-    availabilityButtons.forEach((item) => item.classList.toggle("active", item === button));
+    setActiveButtons(availabilityButtons, "availabilityFilter", activeAvailability);
     applyFilter({ historyMode: "push" });
     collapseAdvancedFiltersOnPhone();
   });
@@ -1665,6 +1712,10 @@ gameSearch?.addEventListener("input", () => {
 });
 
 quickPickBtn?.addEventListener("click", openQuickPick);
+
+document.querySelectorAll("[data-reset-discovery]").forEach((button) => {
+  button.addEventListener("click", resetDiscoveryFilters);
+});
 
 localeSelect.addEventListener("change", () => {
   window.WonderSound?.play("click");

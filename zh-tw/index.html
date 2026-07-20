@@ -33,7 +33,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png?v=20260702-logo1" />
     <link rel="apple-touch-icon" href="assets/apple-touch-icon.png?v=20260702-logo1" />
     <link rel="manifest" href="manifest.webmanifest?v=20260702-logo1" />
-    <link rel="stylesheet" href="src/styles.css?v=20260720-general-discovery1" />
+    <link rel="stylesheet" href="src/styles.css?v=20260720-general-card-grid1" />
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5576470284985485" crossorigin="anonymous"></script>
     <script type="application/ld+json">
       {
@@ -106,6 +106,57 @@
   </head>
   <body class="lobby-page general-lobby-page" data-audience="general">
     <main class="lobby-shell">
+      <aside class="desktop-filter-rail" aria-label="Game filters">
+        <div class="desktop-filter-rail-heading">
+          <span data-i18n="general.play.kicker">Ready when you are</span>
+          <h2 data-i18n="general.play.title">Choose your next game</h2>
+        </div>
+
+        <section class="rail-library library-tabs" aria-label="Game library tabs">
+          <button class="active" type="button" data-library-tab="all" data-i18n="library.all_games">All Games</button>
+          <button type="button" data-library-tab="recent" data-i18n="library.recent">Recent</button>
+          <button type="button" data-library-tab="favorites" data-i18n="library.favorites">Favorites</button>
+        </section>
+
+        <section class="desktop-filter-group" aria-label="Topic filters">
+          <h3 data-i18n="filter.all_topics">All Topics</h3>
+          <div class="desktop-filter-grid topic-filter">
+            <button class="active" type="button" data-topic-filter="all" data-i18n="filter.all_topics">All Topics</button>
+            <button type="button" data-topic-filter="Featured" data-i18n="topic.featured">Featured</button>
+            <button type="button" data-topic-filter="Animal Games" data-i18n="topic.animal">Animal Games</button>
+            <button type="button" data-topic-filter="Puzzle" data-i18n="topic.puzzle">Puzzle</button>
+            <button type="button" data-topic-filter="Strategy" data-i18n="topic.strategy">Strategy</button>
+            <button type="button" data-topic-filter="Arcade" data-i18n="topic.arcade">Arcade</button>
+            <button type="button" data-topic-filter="Education" data-i18n="topic.education">Education</button>
+          </div>
+        </section>
+
+        <section class="desktop-filter-group" aria-label="Skill filters">
+          <h3 data-i18n="filter.all_skills">All Skills</h3>
+          <div class="desktop-filter-grid skill-filter">
+            <button class="active" type="button" data-skill-filter="all" data-i18n="filter.all_skills">All Skills</button>
+            <button type="button" data-skill-filter="Memory" data-i18n="skill.Memory">Memory</button>
+            <button type="button" data-skill-filter="Logic" data-i18n="skill.Logic">Logic</button>
+            <button type="button" data-skill-filter="Reaction" data-i18n="skill.Reaction">Reaction</button>
+            <button type="button" data-skill-filter="Focus" data-i18n="skill.Focus">Focus</button>
+            <button type="button" data-skill-filter="Problem Solving" data-i18n="skill.Problem Solving">Problem Solving</button>
+            <button type="button" data-skill-filter="Animal Knowledge" data-i18n="skill.Animal Knowledge">Animal Knowledge</button>
+          </div>
+        </section>
+
+        <section class="desktop-filter-group" aria-label="Game availability filters">
+          <h3 data-i18n="availability.all">All Status</h3>
+          <div class="desktop-filter-grid availability-filter">
+            <button class="active" type="button" data-availability-filter="all" data-i18n="availability.all">All Status</button>
+            <button type="button" data-availability-filter="playable" data-i18n="availability.playable">Play Now</button>
+            <button type="button" data-availability-filter="preview" data-i18n="availability.preview">Coming Soon</button>
+          </div>
+        </section>
+
+        <button class="desktop-filter-reset" type="button" data-reset-discovery data-i18n="status.clear_filters">Clear filters</button>
+      </aside>
+
+
       <header class="lobby-hero">
         <img class="general-hero-scene" src="assets/animal-hero-trials-cover.webp" alt="" />
         <div class="lobby-hero-copy">
@@ -359,6 +410,6 @@
     <script src="src/lobby-data.js?v=20260717-gearpack-depth30-1"></script>
     <script src="src/lobby-data-es.js?v=20260718-es1"></script>
     <script src="src/lobby-data-ja.js?v=20260719-ja1"></script>
-    <script src="src/lobby.js?v=20260718-es1"></script>
+    <script src="src/lobby.js?v=20260720-general-rail1"></script>
   </body>
 </html>

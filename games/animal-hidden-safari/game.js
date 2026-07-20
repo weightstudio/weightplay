@@ -5,6 +5,28 @@
   const unlockKey = "weightplay_hidden_safari_unlocked";
   const starKey = "weightplay_hidden_safari_stars";
   const progressKey = "weightplay_progress_animal-hidden-safari";
+  const storageFallback = new Map();
+
+  function storageRead(key) {
+    try {
+      const value = localStorage.getItem(key);
+      if (value !== null) storageFallback.set(key, value);
+      return value ?? storageFallback.get(key) ?? null;
+    } catch {
+      return storageFallback.get(key) ?? null;
+    }
+  }
+
+  function storageWrite(key, value) {
+    const normalized = String(value);
+    storageFallback.set(key, normalized);
+    try {
+      localStorage.setItem(key, normalized);
+      return true;
+    } catch {
+      return false;
+    }
+  }
 
   document.querySelectorAll("img[data-fallback-src]").forEach((image) => {
     image.addEventListener(
@@ -330,13 +352,13 @@
   nodes.hintStatus.setAttribute("aria-live", "polite");
   nodes.hintStatus.setAttribute("aria-atomic", "true");
 
-  const legacySavedLocale = localStorage.getItem(localeKey);
-  const canonicalSavedLocale = localStorage.getItem(canonicalLocaleKey);
+  const legacySavedLocale = storageRead(localeKey);
+  const canonicalSavedLocale = storageRead(canonicalLocaleKey);
   if (!canonicalSavedLocale && ["en", "zh-Hant", "zh-Hans", "es"].includes(legacySavedLocale)) {
     window.WonderI18n?.setLocale?.(legacySavedLocale);
   }
   let locale = window.WonderI18n?.actualLocale?.() || window.WonderI18n?.locale?.() || canonicalSavedLocale || legacySavedLocale || "en";
-  let unlocked = clamp(Number(localStorage.getItem(unlockKey)) || 1, 1, stages.length);
+  let unlocked = clamp(Number(storageRead(unlockKey)) || 1, 1, stages.length);
   let stars = readJson(starKey, {});
   let currentStage = 0;
   let found = new Set();
@@ -359,14 +381,14 @@
 
   function readJson(key, fallback) {
     try {
-      return JSON.parse(localStorage.getItem(key) || JSON.stringify(fallback));
+      return JSON.parse(storageRead(key) || JSON.stringify(fallback));
     } catch {
       return fallback;
     }
   }
 
   function writeJson(key, value) {
-    localStorage.setItem(key, JSON.stringify(value));
+    storageWrite(key, JSON.stringify(value));
   }
 
   function announceStatus(message) {
@@ -872,7 +894,7 @@
     writeJson(starKey, stars);
     if (unlocked < stages.length && stageNo >= unlocked) {
       unlocked += 1;
-      localStorage.setItem(unlockKey, String(unlocked));
+      storageWrite(unlockKey, String(unlocked));
     }
     const hintsUsed = 2 - hintsLeft;
     lastResult = { starCount, seconds, total, previousBestTime, hintsUsed, unaided: total - hintedTargets.size, mistakes };
@@ -1018,7 +1040,7 @@
       const requested = nodes.localeSelect.value;
       window.WonderI18n?.setLocale?.(requested);
       locale = window.WonderI18n?.actualLocale?.() || window.WonderI18n?.locale?.() || requested;
-      localStorage.setItem(localeKey, requested);
+      storageWrite(localeKey, requested);
       localizeStatic();
       renderStageGrid();
       if (!nodes.resultPanel.classList.contains("hidden")) {
@@ -1119,7 +1141,7 @@
       })),
       unlockAll: () => {
         unlocked = stages.length;
-        localStorage.setItem(unlockKey, String(unlocked));
+        storageWrite(unlockKey, String(unlocked));
         showMenu();
       },
       startStage: (stageNo) => startStage(clamp(Number(stageNo) || 1, 1, stages.length) - 1),

@@ -2305,6 +2305,7 @@ body.relic-playing.relic-result .result-ad-reserve {
    portrait-sized children and rendering them at half-touch size. */
 @media (max-height: 560px) and (orientation: landscape) {
   body.relic-stage-select .stage-panel {
+    display: grid !important;
     grid-template-columns: minmax(0, 1fr) 650px !important;
     grid-template-rows: 116px minmax(0, 1fr) !important;
     gap: 14px;
@@ -2312,8 +2313,14 @@ body.relic-playing.relic-result .result-ad-reserve {
   }
 
   body.relic-stage-select .stage-panel-head {
-    grid-column: 1 / -1 !important;
-    grid-row: 1 !important;
+    position: absolute !important;
+    inset: auto;
+    top: 10px;
+    right: 12px;
+    left: 12px;
+    z-index: 2;
+    width: auto;
+    height: 112px;
     grid-template-columns: 112px minmax(0, 1fr);
     gap: 20px;
   }
@@ -2336,12 +2343,22 @@ body.relic-playing.relic-result .result-ad-reserve {
   body.relic-stage-select .stage-panel-head span { font-size: 27px; line-height: 34px; }
 
   body.relic-stage-select .expedition-rail {
-    grid-column: 1 !important;
-    grid-row: 2 !important;
-    align-self: center;
-    height: 486px !important;
-    min-height: 486px !important;
-    max-height: 486px !important;
+    position: absolute !important;
+    box-sizing: border-box;
+    inset: auto;
+    top: 132px !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: 12px !important;
+    align-self: start !important;
+    justify-self: start !important;
+    align-items: center;
+    width: 1305px !important;
+    min-width: 1305px !important;
+    max-width: 1305px !important;
+    height: 644px !important;
+    min-height: 644px !important;
+    max-height: 644px !important;
     gap: 24px;
     padding: 0 calc((100% - 680px) / 2);
   }
@@ -2364,13 +2381,22 @@ body.relic-playing.relic-result .result-ad-reserve {
   body.relic-stage-select .expedition-card :is(span, small) { font-size: 29px; line-height: 39px; }
 
   body.relic-stage-select .stage-config-mount {
-    grid-column: 2 !important;
-    grid-row: 2 !important;
+    position: absolute !important;
+    inset: auto;
+    top: 132px;
+    right: 12px;
+    bottom: 12px;
+    width: 650px;
+    height: auto;
     grid-template-rows: minmax(0, 1fr) 112px !important;
     gap: 14px;
   }
 
-  body.relic-stage-select .stage-config-mount .menu-shop { padding: 16px; }
+  body.relic-stage-select .stage-config-mount .menu-shop {
+    min-height: 0;
+    padding: 16px;
+    overflow-y: auto;
+  }
   body.relic-stage-select .shop-item-btn { height: 112px; min-height: 112px; }
   body.relic-stage-select .stage-config-mount :is(h2, h3) { font-size: 32px; line-height: 40px; }
   body.relic-stage-select .stage-config-mount :is(button, p, span, small, strong) { font-size: 27px; line-height: 34px; }
