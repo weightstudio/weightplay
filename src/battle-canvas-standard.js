@@ -7,6 +7,7 @@
     "animal-abyss-diver": [".battle-canvas", 390, 788],
     "animal-auto-squad": ["#gamePanel", 382, 780],
     "animal-bubble-safari": ["#battleScreen", 390, 788],
+    "animal-frontier-dominion": [".battle-canvas", 390, 788, 760, 334],
     "animal-cafe-rush": ["#playPanel", 382, 780],
     "animal-crystal-survivor": ["#gamePanel", 382, 780],
     "animal-gearpack-expedition": [".battle-canvas", 390, 788],
@@ -132,8 +133,9 @@
       : DESKTOP_CANVAS_MAX_WIDTH;
     const availableWidth = Math.max(1, Math.min(width - GUTTER * 2, maximumWidth));
     const availableHeight = Math.max(1, height - RESERVE_HEIGHT - GUTTER * 2);
-    const minimumLogicalWidth = config[1];
-    const minimumLogicalHeight = config[2];
+    const useLandscapeEnvelope = config[3] && config[4] && availableWidth / availableHeight >= 1.5;
+    const minimumLogicalWidth = useLandscapeEnvelope ? config[3] : config[1];
+    const minimumLogicalHeight = useLandscapeEnvelope ? config[4] : config[2];
     const scale = Math.max(0.01, Math.min(
       availableWidth / minimumLogicalWidth,
       availableHeight / minimumLogicalHeight

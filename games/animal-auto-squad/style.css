@@ -359,6 +359,71 @@ body:not(.squad-stage-select):not(.squad-active) .sound-toggle {
 }
 
 @media (max-height: 470px) and (orientation: landscape) {
+  #gamePanel:has(#combatArea:not(.is-hidden)):not(.is-result) {
+    grid-template-columns: 480px minmax(0,1fr);
+    grid-template-rows: 120px minmax(0,1fr);
+    gap: 12px;
+    padding: 12px;
+  }
+  #gamePanel:has(#combatArea:not(.is-hidden)):not(.is-result) .hud-row {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    grid-template-columns: 104px repeat(4,minmax(160px,1fr)) minmax(300px,1.8fr);
+    gap: 10px;
+    height: 120px;
+    padding: 8px;
+    border-radius: 22px;
+  }
+  #gamePanel:has(#combatArea:not(.is-hidden)):not(.is-result) .play-return {
+    width: 104px !important;
+    min-width: 104px !important;
+    height: 104px !important;
+    min-height: 104px !important;
+    border-radius: 20px;
+    font-size: 2.35rem;
+  }
+  #gamePanel:has(#combatArea:not(.is-hidden)):not(.is-result) .hud-row span {
+    font-size: 1.55rem;
+    line-height: 1.3;
+  }
+  #gamePanel:has(#combatArea:not(.is-hidden)):not(.is-result) .hud-row strong {
+    font-size: 1.75rem;
+    line-height: 1.3;
+  }
+  #gamePanel:has(#combatArea:not(.is-hidden)):not(.is-result) .relic-badge {
+    padding: 5px 8px;
+    border-radius: 10px;
+  }
+  #gamePanel:has(#combatArea:not(.is-hidden)):not(.is-result) .combat-summary {
+    grid-column: 1;
+    grid-row: 2;
+    height: auto;
+    min-height: 0;
+    align-content: start;
+    gap: 12px;
+    padding: 24px 18px;
+    border-radius: 18px;
+  }
+  #gamePanel:has(#combatArea:not(.is-hidden)):not(.is-result) .combat-area {
+    grid-column: 2;
+    grid-row: 2;
+  }
+  #gamePanel:has(#combatArea:not(.is-hidden)):not(.is-result) .combat-summary strong {
+    font-size: 1.65rem;
+    line-height: 1.3;
+  }
+  #gamePanel:has(#combatArea:not(.is-hidden)):not(.is-result) .combat-summary span,
+  #gamePanel:has(#combatArea:not(.is-hidden)):not(.is-result) .combat-status {
+    font-size: 1.55rem;
+    line-height: 1.3;
+  }
+  #gamePanel:has(#combatArea:not(.is-hidden)):not(.is-result) .combat-status {
+    top: 12px;
+    width: min(94%,700px);
+    max-height: 92px;
+    padding: 10px 16px;
+    border-radius: 16px;
+  }
   #gamePanel.is-result #resultPanel { grid-template-columns:130px minmax(0,1fr) !important; grid-template-rows:1fr !important; place-items:stretch !important; justify-content:stretch !important; }
   .result-lion { width:130px; height:100%; }
   .result-copy { overflow:auto; }

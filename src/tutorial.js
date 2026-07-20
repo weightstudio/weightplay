@@ -1,4 +1,12 @@
 (() => {
+  const memoryStorage = new Map();
+  function readStorage(key) {
+    try { return localStorage.getItem(key); } catch { return memoryStorage.get(key) || null; }
+  }
+  function writeStorage(key, value) {
+    memoryStorage.set(key, value);
+    try { localStorage.setItem(key, value); } catch {}
+  }
   const common = {
     en: {
       close: "Start Playing",
@@ -225,7 +233,7 @@
   }
 
   function locale() {
-    const value = window.WonderI18n?.locale?.() || localStorage.getItem("weightPlayLocale") || localStorage.getItem("weightplayLocale") || "en";
+    const value = window.WonderI18n?.locale?.() || readStorage("weightPlayLocale") || readStorage("weightplayLocale") || "en";
     return value === "zh-Hant" ? "zh-Hant" : "en";
   }
 
@@ -238,11 +246,11 @@
   }
 
   function markSeen(gameId) {
-    localStorage.setItem(seenKey(gameId), "1");
+    writeStorage(seenKey(gameId), "1");
   }
 
   function hasSeen(gameId) {
-    return localStorage.getItem(seenKey(gameId)) === "1";
+    return readStorage(seenKey(gameId)) === "1";
   }
 
   function isAutomationRun() {

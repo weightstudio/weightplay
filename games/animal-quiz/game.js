@@ -656,16 +656,24 @@ function actualLocale() {
   return window.WonderI18n?.actualLocale?.() || locale();
 }
 
+function translateRuntime(source) {
+  if (!source || dictionary[actualLocale()]) return source;
+  return window.WeightPlayGameRuntimeLocalizer?.translate(source) || source;
+}
+
 function t(key, params = {}) {
-  const table = dictionary[locale()] || dictionary.en;
-  const fallback = dictionary.en;
+  const authored = dictionary[actualLocale()];
+  const source = authored?.[key] || dictionary.en[key] || key;
+  const localized = authored?.[key] ? source : translateRuntime(source);
   return Object.entries(params).reduce((text, [name, value]) => {
     return text.replaceAll(`{${name}}`, String(value));
-  }, table[key] || fallback[key] || key);
+  }, localized);
 }
 
 function accessibleName(key) {
-  return accessibleNames[actualLocale()]?.[key] || accessibleNames.en[key] || key;
+  const authored = accessibleNames[actualLocale()];
+  const source = authored?.[key] || accessibleNames.en[key] || key;
+  return authored?.[key] ? source : translateRuntime(source);
 }
 
 function syncSoundAccessibleName() {
@@ -847,11 +855,14 @@ function renderStaticText() {
   leaveText.textContent = t("leaveText");
   keepPlayingBtn.textContent = t("keepPlaying");
   leaveStageBtn.textContent = t("leaveStage");
-  const meta = pageMeta[locale()] || pageMeta.en;
-  document.title = meta.title;
-  document.querySelector('meta[name="description"]')?.setAttribute("content", meta.description);
-  document.querySelector('meta[property="og:title"]')?.setAttribute("content", meta.title);
-  document.querySelector('meta[property="og:description"]')?.setAttribute("content", meta.description);
+  const authoredMeta = pageMeta[actualLocale()];
+  const meta = authoredMeta || pageMeta.en;
+  const metaTitle = authoredMeta ? meta.title : translateRuntime(meta.title);
+  const metaDescription = authoredMeta ? meta.description : translateRuntime(meta.description);
+  document.title = metaTitle;
+  document.querySelector('meta[name="description"]')?.setAttribute("content", metaDescription);
+  document.querySelector('meta[property="og:title"]')?.setAttribute("content", metaTitle);
+  document.querySelector('meta[property="og:description"]')?.setAttribute("content", metaDescription);
 }
 
 function setQuizVisible(isVisible) {

@@ -1465,6 +1465,19 @@
         enemyKeys: [...new Set(ENEMY_METADATA.map((enemy) => enemy.imageKey).filter(Boolean))],
         loadedEnemyKeys: [...new Set(ENEMY_METADATA.map((enemy) => enemy.imageKey).filter((key) => key && imageCache[key]))]
       }),
+      combatPhraseCoverage: () => {
+        const phraseKeys = Object.keys(japanesePhrases);
+        const inlineLocales = ["zh-Hant", "ja", "es"];
+        const catalogLocales = ["zh-Hans", "ko", "pt-BR", "fr", "de", "it", "ru"];
+        return {
+          requiredLocales: [...inlineLocales, ...catalogLocales],
+          phraseCount: phraseKeys.length,
+          missingByLocale: Object.fromEntries([
+            ...inlineLocales.map((entry) => [entry, []]),
+            ...catalogLocales.map((entry) => [entry, phraseKeys.filter((key) => !combatPhraseCatalog[entry]?.[key])])
+          ])
+        };
+      },
       formationPreview: () => {
         const combatCard = (id, formationSlot) => {
           const card = createAnimalCard(id);
@@ -1623,8 +1636,10 @@
   }
 
   function t(key, data = {}) {
-    const value = (locale === "zh-Hant" && zhRuntimeText[key]) || text[locale]?.[key] || text.en[key] || key;
-    return Object.entries(data).reduce((out, [name, item]) => out.replaceAll(`{${name}}`, String(item)), value);
+    const active = actualGameLocale();
+    const source = (active === "fr" && frenchRuntimeText[key]) || (locale === "zh-Hant" && zhRuntimeText[key]) || text[locale]?.[key] || text.en[key] || key;
+    const value = Object.entries(data).reduce((out, [name, item]) => out.replaceAll(`{${name}}`, String(item)), source);
+    return runtimeTranslate(value);
   }
 
   function localizedField(record, field) {
@@ -1632,7 +1647,7 @@
     if (locale === "zh-Hant") return record[`${field}Zht`] || record[`${field}En`] || "";
     if (locale === "es") return record[`${field}Es`] || record[`${field}En`] || "";
     if (locale === "ja") return record[`${field}Ja`] || record[`${field}En`] || "";
-    return record[`${field}En`] || "";
+    return runtimeTranslate(record[`${field}En`] || "");
   }
 
   const japanesePhrases = {
@@ -1646,8 +1661,50 @@
     "casts Starfall": "スターフォールを放つ", "guards the squad": "スクワッドを守る", "rallies allies": "味方を鼓舞",
     "double-pounces the front row": "前列へ連続跳撃", "attacks the back row": "後列を攻撃", "attacks the front row": "前列を攻撃"
   };
+
+  const combatPhraseCatalog = {
+    "zh-Hans": {
+      Shield:"护盾", "YOUR SQUAD":"你的队伍", Slot:"槽位", "clashes with":"与之交锋", "guards the front":"守卫前排", "uses Pack Bite":"发动群体撕咬", "uses First Charge":"发动首次冲锋", "unleashes Thornstorm":"释放荆棘风暴", "casts Prism Storm":"施放棱镜风暴", "raises the Sunken Fortress":"升起沉没要塞", "uses Caldera Crash":"发动火山口冲击", "casts Twin Moonfall":"施放双月坠落", "invokes End of Night":"召唤终夜", "sweeps the front row":"横扫前排", "heals an ally":"治疗一名队友", "strikes twice":"连续攻击两次", "strikes the back row":"攻击后排", "strikes the front row":"攻击前排", "raises a shield":"举起护盾", "casts Starfall":"施放星落", "guards the squad":"守护队伍", "rallies allies":"鼓舞队友", "double-pounces the front row":"连续扑击前排", "attacks the back row":"攻击后排", "attacks the front row":"攻击前排"
+    },
+    ko: {
+      Shield:"보호막", "YOUR SQUAD":"내 분대", Slot:"슬롯", "clashes with":"와 맞붙습니다", "guards the front":"전열을 지킵니다", "uses Pack Bite":"무리 물기를 사용합니다", "uses First Charge":"선제 돌진을 사용합니다", "unleashes Thornstorm":"가시 폭풍을 방출합니다", "casts Prism Storm":"프리즘 폭풍을 시전합니다", "raises the Sunken Fortress":"가라앉은 요새를 세웁니다", "uses Caldera Crash":"칼데라 충돌을 사용합니다", "casts Twin Moonfall":"쌍월 낙하를 시전합니다", "invokes End of Night":"밤의 종말을 부릅니다", "sweeps the front row":"전열 전체를 휩씁니다", "heals an ally":"아군을 치료합니다", "strikes twice":"두 번 공격합니다", "strikes the back row":"후열을 공격합니다", "strikes the front row":"전열을 공격합니다", "raises a shield":"보호막을 펼칩니다", "casts Starfall":"별빛 낙하를 시전합니다", "guards the squad":"분대를 지킵니다", "rallies allies":"아군을 고무합니다", "double-pounces the front row":"전열을 두 번 덮칩니다", "attacks the back row":"후열을 공격합니다", "attacks the front row":"전열을 공격합니다"
+    },
+    "pt-BR": {
+      Shield:"Escudo", "YOUR SQUAD":"SEU ESQUADRÃO", Slot:"Espaço", "clashes with":"entra em confronto com", "guards the front":"protege a linha de frente", "uses Pack Bite":"usa Mordida da Matilha", "uses First Charge":"usa Investida Inicial", "unleashes Thornstorm":"libera Tempestade de Espinhos", "casts Prism Storm":"lança Tempestade Prismática", "raises the Sunken Fortress":"ergue a Fortaleza Submersa", "uses Caldera Crash":"usa Impacto da Caldeira", "casts Twin Moonfall":"lança Queda das Luas Gêmeas", "invokes End of Night":"invoca o Fim da Noite", "sweeps the front row":"varre a linha de frente", "heals an ally":"cura um aliado", "strikes twice":"ataca duas vezes", "strikes the back row":"ataca a retaguarda", "strikes the front row":"ataca a linha de frente", "raises a shield":"ergue um escudo", "casts Starfall":"lança Chuva Estelar", "guards the squad":"protege o esquadrão", "rallies allies":"incentiva os aliados", "double-pounces the front row":"salta duas vezes sobre a linha de frente", "attacks the back row":"ataca a retaguarda", "attacks the front row":"ataca a linha de frente"
+    },
+    fr: {
+      Shield:"Bouclier", "YOUR SQUAD":"VOTRE ÉQUIPE", Slot:"Emplacement", "clashes with":"affronte", "guards the front":"protège la première ligne", "uses Pack Bite":"utilise Morsure de meute", "uses First Charge":"utilise Charge initiale", "unleashes Thornstorm":"déchaîne Tempête d'épines", "casts Prism Storm":"lance Tempête prismatique", "raises the Sunken Fortress":"érige la Forteresse engloutie", "uses Caldera Crash":"utilise Choc de caldeira", "casts Twin Moonfall":"lance Double chute lunaire", "invokes End of Night":"invoque la Fin de la nuit", "sweeps the front row":"balaye la première ligne", "heals an ally":"soigne un allié", "strikes twice":"frappe deux fois", "strikes the back row":"frappe la ligne arrière", "strikes the front row":"frappe la première ligne", "raises a shield":"érige un bouclier", "casts Starfall":"lance Pluie d'étoiles", "guards the squad":"protège l'équipe", "rallies allies":"encourage ses alliés", "double-pounces the front row":"bondit deux fois sur la première ligne", "attacks the back row":"attaque la ligne arrière", "attacks the front row":"attaque la première ligne"
+    },
+    de: {
+      Shield:"Schild", "YOUR SQUAD":"DEIN TRUPP", Slot:"Platz", "clashes with":"kämpft gegen", "guards the front":"schützt die Frontreihe", "uses Pack Bite":"setzt Rudelbiss ein", "uses First Charge":"setzt Erstangriff ein", "unleashes Thornstorm":"entfesselt Dornensturm", "casts Prism Storm":"wirkt Prismensturm", "raises the Sunken Fortress":"errichtet die Versunkene Festung", "uses Caldera Crash":"setzt Kratersturz ein", "casts Twin Moonfall":"wirkt Doppelmondfall", "invokes End of Night":"beschwört das Ende der Nacht", "sweeps the front row":"fegt durch die Frontreihe", "heals an ally":"heilt einen Verbündeten", "strikes twice":"greift zweimal an", "strikes the back row":"greift die hintere Reihe an", "strikes the front row":"greift die Frontreihe an", "raises a shield":"errichtet einen Schild", "casts Starfall":"wirkt Sternenfall", "guards the squad":"schützt den Trupp", "rallies allies":"ermutigt die Verbündeten", "double-pounces the front row":"springt zweimal auf die Frontreihe", "attacks the back row":"greift die hintere Reihe an", "attacks the front row":"greift die Frontreihe an"
+    },
+    it: {
+      Shield:"Scudo", "YOUR SQUAD":"LA TUA SQUADRA", Slot:"Posizione", "clashes with":"si scontra con", "guards the front":"protegge la prima linea", "uses Pack Bite":"usa Morso del branco", "uses First Charge":"usa Carica iniziale", "unleashes Thornstorm":"scatena Tempesta di spine", "casts Prism Storm":"lancia Tempesta prismatica", "raises the Sunken Fortress":"innalza la Fortezza sommersa", "uses Caldera Crash":"usa Impatto della caldera", "casts Twin Moonfall":"lancia Doppia caduta lunare", "invokes End of Night":"invoca la Fine della notte", "sweeps the front row":"spazza la prima linea", "heals an ally":"cura un alleato", "strikes twice":"colpisce due volte", "strikes the back row":"colpisce la retroguardia", "strikes the front row":"colpisce la prima linea", "raises a shield":"innalza uno scudo", "casts Starfall":"lancia Pioggia stellare", "guards the squad":"protegge la squadra", "rallies allies":"incoraggia gli alleati", "double-pounces the front row":"balza due volte sulla prima linea", "attacks the back row":"attacca la retroguardia", "attacks the front row":"attacca la prima linea"
+    },
+    ru: {
+      Shield:"Щит", "YOUR SQUAD":"ВАШ ОТРЯД", Slot:"Ячейка", "clashes with":"сражается с", "guards the front":"защищает передний ряд", "uses Pack Bite":"использует «Укус стаи»", "uses First Charge":"использует «Первый натиск»", "unleashes Thornstorm":"выпускает «Шторм шипов»", "casts Prism Storm":"создаёт «Призматический шторм»", "raises the Sunken Fortress":"воздвигает «Затонувшую крепость»", "uses Caldera Crash":"использует «Удар кальдеры»", "casts Twin Moonfall":"создаёт «Падение двух лун»", "invokes End of Night":"призывает «Конец ночи»", "sweeps the front row":"сметает передний ряд", "heals an ally":"лечит союзника", "strikes twice":"атакует дважды", "strikes the back row":"атакует задний ряд", "strikes the front row":"атакует передний ряд", "raises a shield":"поднимает щит", "casts Starfall":"создаёт «Звездопад»", "guards the squad":"защищает отряд", "rallies allies":"воодушевляет союзников", "double-pounces the front row":"дважды прыгает на передний ряд", "attacks the back row":"атакует задний ряд", "attacks the front row":"атакует передний ряд"
+    }
+  };
+
+  const frenchRuntimeText = {
+    activeSquadSlots:"Emplacements de l'équipe active", shopShelfItems:"Personnages du sac d'expédition", emptyFormationSlot:"Emplacement de formation vide", emptySlot:"Emplacement vide", activeSquad:"équipe active", expeditionBackpack:"sac d'expédition", formationFrontRow:"première ligne", formationBackRow:"ligne arrière", formationLeftPosition:"position gauche", formationCenterPosition:"position centrale", formationRightPosition:"position droite", slotPosition:"emplacement {index}", deployedTo:"déployé à", battleArena:"Arène d'Animal Auto Squad", quitRun:"Quitter l'expédition"
+  };
+
+  function actualGameLocale() {
+    return window.WonderI18n?.actualLocale?.() || locale || "en";
+  }
+
+  function runtimeTranslate(value) {
+    const localizer = window.WeightPlayGameRuntimeLocalizer;
+    return localizer?.locale === actualGameLocale() ? localizer.translate(String(value)) : value;
+  }
+
   function localizedPhrase(en, zht, es) {
-    return locale === "zh-Hant" ? zht : locale === "es" ? es : locale === "ja" ? (japanesePhrases[en] || en) : en;
+    const active = actualGameLocale();
+    if (active === "zh-Hant") return zht;
+    if (active === "es") return es;
+    if (active === "ja") return japanesePhrases[en] || en;
+    return combatPhraseCatalog[active]?.[en] || runtimeTranslate(en);
   }
 
   function updatePageMeta() {

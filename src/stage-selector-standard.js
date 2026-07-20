@@ -188,9 +188,16 @@
       : DESKTOP_CANVAS_MAX_WIDTH;
     const availableWidth = Math.max(1, Math.min(width, maximumWidth));
     const availableHeight = Math.max(1, height - reserveHeight);
+    const requestedLandscapeWidth = Number.parseFloat(root.dataset.wpStageLandscapeWidth || "");
+    const requestedLandscapeHeight = Number.parseFloat(root.dataset.wpStageLandscapeHeight || "");
+    const useLandscapeEnvelope = Number.isFinite(requestedLandscapeWidth) && requestedLandscapeWidth > 0
+      && Number.isFinite(requestedLandscapeHeight) && requestedLandscapeHeight > 0
+      && availableWidth / availableHeight >= 1.5;
+    const minimumLogicalWidth = useLandscapeEnvelope ? requestedLandscapeWidth : STAGE_LOGICAL_WIDTH;
+    const minimumLogicalHeight = useLandscapeEnvelope ? requestedLandscapeHeight : STAGE_LOGICAL_HEIGHT;
     const scale = Math.max(0.01, Math.min(
-      availableWidth / STAGE_LOGICAL_WIDTH,
-      availableHeight / STAGE_LOGICAL_HEIGHT
+      availableWidth / minimumLogicalWidth,
+      availableHeight / minimumLogicalHeight
     ));
     const logicalWidth = availableWidth / scale;
     const logicalHeight = availableHeight / scale;

@@ -193,9 +193,9 @@
   }
 
   function t(key) {
-    const table = copy[locale] || copy.en;
-    const source = table[key] || copy.en[key] || key;
-    return table[key] ? source : translateRuntime(source);
+    const authored = copy[locale];
+    const source = authored?.[key] || copy.en[key] || key;
+    return authored?.[key] ? source : translateRuntime(source);
   }
 
   function stageTitle(stage) {
