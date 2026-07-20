@@ -1,9 +1,32 @@
 const canonicalLocaleKey = "weightPlayLocale";
 const legacyLocaleKey = "weightplayLocale";
-const canonicalSavedLocale = localStorage.getItem(canonicalLocaleKey);
-const legacySavedLocale = localStorage.getItem(legacyLocaleKey);
+const storageFallback = new Map();
+
+function storageRead(key) {
+  try {
+    const value = localStorage.getItem(key);
+    if (value !== null) storageFallback.set(key, value);
+    return value ?? storageFallback.get(key) ?? null;
+  } catch {
+    return storageFallback.get(key) ?? null;
+  }
+}
+
+function storageWrite(key, value) {
+  const normalized = String(value);
+  storageFallback.set(key, normalized);
+  try {
+    localStorage.setItem(key, normalized);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+const canonicalSavedLocale = storageRead(canonicalLocaleKey);
+const legacySavedLocale = storageRead(legacyLocaleKey);
 if (!canonicalSavedLocale && ["en", "zh-Hant", "zh-Hans", "es"].includes(legacySavedLocale)) {
-  localStorage.setItem(canonicalLocaleKey, legacySavedLocale);
+  storageWrite(canonicalLocaleKey, legacySavedLocale);
   window.WonderI18n?.setLocale?.(legacySavedLocale);
 }
 
@@ -693,11 +716,11 @@ function boundedInteger(value, minimum, maximum, fallback = minimum) {
 }
 
 function safeProfileRead(key) {
-  try { return localStorage.getItem(key); } catch { return null; }
+  return storageRead(key);
 }
 
 function safeProfileWrite(key, value) {
-  try { localStorage.setItem(key, value); } catch {}
+  return storageWrite(key, value);
 }
 
 function normalizeProgressRecord(value, stageIndex) {
@@ -1359,7 +1382,7 @@ if (new URLSearchParams(window.location.search).get("smoke") === "1") {
     })),
     unlockAll: () => {
       state.unlockedStage = stages.length - 1;
-      localStorage.setItem(UNLOCK_KEY, String(state.unlockedStage));
+      safeProfileWrite(UNLOCK_KEY, String(state.unlockedStage));
       showStageSelect(state.unlockedStage);
     },
     startStage: (stageNo) => startStage(Math.max(0, Math.min(stages.length - 1, Number(stageNo) - 1))),

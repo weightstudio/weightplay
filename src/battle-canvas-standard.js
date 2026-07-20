@@ -8,7 +8,6 @@
     "animal-auto-squad": ["#gamePanel", 382, 780],
     "animal-bubble-safari": ["#battleScreen", 390, 788],
     "animal-cafe-rush": ["#playPanel", 382, 780],
-    "animal-coloring-studio": [".battle-canvas", 390, 788],
     "animal-crystal-survivor": ["#gamePanel", 382, 780],
     "animal-gearpack-expedition": [".battle-canvas", 390, 788],
     "animal-guard-yard": ["#playPanel", 390, 450],

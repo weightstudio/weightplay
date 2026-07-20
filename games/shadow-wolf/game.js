@@ -1350,7 +1350,8 @@
     }
     let ay = state.y - 22;
 
-    state.enemies.forEach((enemy, idx) => {
+    const defeatedEnemies = [];
+    state.enemies.forEach((enemy) => {
       if (enemy.hp <= 0) return;
 
       // Check intersection with slash AABB
@@ -1375,10 +1376,14 @@
 
         if (enemy.hp <= 0) {
           handleEnemyDefeated(enemy);
-          state.enemies.splice(idx, 1);
+          defeatedEnemies.push(enemy);
         }
       }
     });
+    if (defeatedEnemies.length) {
+      const defeatedSet = new Set(defeatedEnemies);
+      state.enemies = state.enemies.filter((enemy) => !defeatedSet.has(enemy));
+    }
   }
 
   function makePlayerDash() {
@@ -1978,7 +1983,8 @@
     });
 
     // Move & Check enemy bullets
-    state.bullets.forEach((bullet, index) => {
+    for (let index = state.bullets.length - 1; index >= 0; index--) {
+      const bullet = state.bullets[index];
       bullet.x += bullet.vx;
       bullet.y += bullet.vy;
 
@@ -1995,9 +2001,10 @@
 
       // Out of bounds
       if (bullet.x < -10 || bullet.x > 810 || bullet.y < -10 || bullet.y > 510) {
-        state.bullets.splice(index, 1);
+        const currentIndex = state.bullets.indexOf(bullet);
+        if (currentIndex >= 0) state.bullets.splice(currentIndex, 1);
       }
-    });
+    }
 
     // Move & Collect Relic Orbs
     state.orbs.forEach((orb, index) => {
@@ -2523,6 +2530,7 @@
       if (!handled || !state.gameActive || document.activeElement !== nodes.gameCanvas) return;
       e.preventDefault();
       keysPressed[key] = true;
+      if (e.repeat && ["w", "arrowup", " ", "j", "k", "shift"].includes(key)) return;
       if (key === " " || key === "w" || key === "arrowup") {
         makePlayerJump();
       }
@@ -2861,6 +2869,39 @@
         showMain();
         return result;
       },
+      projectileBatchProbe() {
+        cancelAnimationFrame(state.gameLoopId);
+        cancelPendingSettlement();
+        state.gameActive = true;
+        state.entryGraceFrames = 0;
+        state.invincibilityTimer = 0;
+        state.luck = 0;
+        state.eqWeapon = null;
+        state.eqArmor = null;
+        state.eqBoots = null;
+        state.x = 100;
+        state.y = mainFloorY - state.height;
+        state.vx = 0;
+        state.vy = 0;
+        state.grounded = true;
+        state.playerHp = getStats().maxHp;
+        state.enemies = [];
+        state.orbs = [];
+        state.pickups = [];
+        platforms = stageTerrain.map((platform) => ({ ...platform }));
+        spikesList = [];
+        hazardZones = [];
+        state.bullets = [
+          { x: -12, y: 100, vx: 0, vy: 0, size: 5, kind: "expired-probe" },
+          { x: state.x + state.width / 2, y: state.y + state.height / 2, vx: 0, vy: 0, size: 5, kind: "hit-probe" },
+        ];
+        const beforeHp = state.playerHp;
+        stepGameEngine();
+        const result = { beforeHp, afterHp: state.playerHp, bullets: state.bullets.map((bullet) => ({ ...bullet })) };
+        state.gameActive = false;
+        showMain();
+        return result;
+      },
       startRun() {
         startRun();
         return this.readState();
@@ -2908,6 +2949,23 @@
         if (type === "dive-bat") enemy.actionClock = 106;
         if (type === "charger-boar") enemy.actionClock = 112;
         if (type === "armored-boar") enemy.x = enemy.bounds.min;
+        return this.readState();
+      },
+      primeClusterAttack() {
+        const targets = state.enemies.slice(0, 2);
+        if (targets.length < 2) return this.readState();
+        state.x = 100;
+        state.facing = "right";
+        state.attackTimer = 0;
+        targets.forEach((enemy, index) => {
+          enemy.x = state.x + state.width + 20 + index * 28;
+          enemy.y = state.y;
+          enemy.hp = 1;
+          enemy.maxHp = Math.max(enemy.maxHp, 1);
+          enemy.armored = false;
+          enemy.shielded = false;
+          enemy.vulnerable = true;
+        });
         return this.readState();
       },
       defeatEnemyByType(type) {

@@ -3,13 +3,13 @@
   if (!document.querySelector('link[href*="stage-selector-standard.css"]')) {
     const link = document.createElement("link");
     link.rel = "stylesheet";
-    link.href = new URL("stage-selector-standard.css?v=20260720-explicit-recommendation2", sharedAssetBase).href;
+    link.href = new URL("stage-selector-standard.css?v=20260720-explicit-recommendation3", sharedAssetBase).href;
     link.dataset.wpStageStandard = "true";
     document.head.appendChild(link);
   }
   if (!document.querySelector('script[src*="stage-selector-standard.js"]')) {
     const script = document.createElement("script");
-    script.src = new URL("stage-selector-standard.js?v=20260720-explicit-recommendation2", sharedAssetBase).href;
+    script.src = new URL("stage-selector-standard.js?v=20260720-explicit-recommendation3", sharedAssetBase).href;
     script.dataset.wpStageStandard = "true";
     document.head.appendChild(script);
   }
@@ -22,7 +22,7 @@
   }
   if (!document.querySelector('script[src*="battle-canvas-standard.js"]')) {
     const script = document.createElement("script");
-    script.src = new URL("battle-canvas-standard.js", sharedAssetBase).href;
+    script.src = new URL("battle-canvas-standard.js?v=20260720-native-coloring1", sharedAssetBase).href;
     script.dataset.wpBattleStandard = "true";
     document.head.appendChild(script);
   }
