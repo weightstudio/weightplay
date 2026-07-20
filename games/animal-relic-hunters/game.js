@@ -3234,10 +3234,20 @@
       movePointerId = null;
       if (nodes.gameCanvas.hasPointerCapture?.(event.pointerId)) nodes.gameCanvas.releasePointerCapture(event.pointerId);
     };
+    const cancelMovePointer = (event) => {
+      if (event.pointerId !== movePointerId) return;
+      movePointerId = null;
+      moveTarget = null;
+      moveVector = { x: 0, y: 0 };
+      if (nodes.gameCanvas.hasPointerCapture?.(event.pointerId)) nodes.gameCanvas.releasePointerCapture(event.pointerId);
+    };
     nodes.gameCanvas.addEventListener("pointerup", releaseMovePointer);
-    nodes.gameCanvas.addEventListener("pointercancel", releaseMovePointer);
+    nodes.gameCanvas.addEventListener("pointercancel", cancelMovePointer);
     nodes.gameCanvas.addEventListener("lostpointercapture", (event) => {
-      if (event.pointerId === movePointerId) movePointerId = null;
+      if (event.pointerId !== movePointerId) return;
+      movePointerId = null;
+      moveTarget = null;
+      moveVector = { x: 0, y: 0 };
     });
   }
 

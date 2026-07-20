@@ -549,7 +549,11 @@
   function setCoach(open){
     const coach=$("diveCoach");
     if(open){const active=document.activeElement;coachReturnFocus=active instanceof HTMLElement&&$("battleShell").contains(active)?active:null;clearBeaconConfirmation();suspendDiveAsync();}
-    coachBackgroundNodes().forEach(node=>{node.inert=open;});
+    coachBackgroundNodes().forEach(node=>{
+      node.inert=open;
+      if(open)node.setAttribute("aria-hidden","true");
+      else node.removeAttribute("aria-hidden");
+    });
     coach.classList.toggle("hidden",!open);
     if(!open)resumeDiveAsync();
     window.requestAnimationFrame(()=>{

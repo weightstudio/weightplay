@@ -3709,7 +3709,14 @@
       if (ignoreBuildClick) setTimeout(() => { ignoreBuildClick = false; }, 0);
     };
     nodes.buildCards.addEventListener("pointerup", finishBuildDrag);
-    nodes.buildCards.addEventListener("pointercancel", finishBuildDrag);
+    nodes.buildCards.addEventListener("pointercancel", (event) => {
+      if (!buildDrag || event.pointerId !== buildDrag.pointerId) return;
+      if (nodes.buildCards.hasPointerCapture?.(event.pointerId)) nodes.buildCards.releasePointerCapture(event.pointerId);
+      nodes.buildCards.classList.remove("is-dragging");
+      buildDrag = null;
+      ignoreBuildClick = true;
+      setTimeout(() => { ignoreBuildClick = false; }, 0);
+    });
   }
 
   function runWaveToCompletion(maxSeconds = 120) {

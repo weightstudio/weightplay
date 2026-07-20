@@ -303,7 +303,6 @@
     updateStageSummary();
     requestAnimationFrame(() => {
       centerSelectedStage("auto");
-      if (dom.stageScreen.classList.contains("is-active")) dom.stageRail.querySelector(".is-selected")?.focus({ preventScroll:true });
     });
   }
 
@@ -389,79 +388,6 @@
   document.addEventListener("pointercancel", finishLockedStageActivation, true);
   dom.stageRail.addEventListener("scroll", scheduleCenteredStageCard, { passive:true });
   dom.stageRail.addEventListener("wonder:stage-snap", scheduleCenteredStageCard);
-
-  let stageRailPointer = null;
-  let stageRailAnimation = 0;
-  let lastStageRailDragEnd = -Infinity;
-  const stopStageRailAnimation = () => {
-    if (stageRailAnimation) cancelAnimationFrame(stageRailAnimation);
-    stageRailAnimation = 0;
-  };
-  const snapStageRail = () => {
-    const cards = [...dom.stageRail.querySelectorAll(".stage-card")];
-    if (!cards.length) return;
-    const canvasRect = dom.gameCanvas.getBoundingClientRect();
-    const stageCenter = canvasRect.left + canvasRect.width / 2;
-    const card = cards.reduce((nearest, candidate) => {
-      const rect = candidate.getBoundingClientRect();
-      const distance = Math.abs(rect.left + rect.width / 2 - stageCenter);
-      return !nearest || distance < nearest.distance ? { card:candidate, distance } : nearest;
-    }, null)?.card;
-    if (!card) return;
-    const cardRect = card.getBoundingClientRect();
-    const maximum = Math.max(0, dom.stageRail.scrollWidth - dom.stageRail.clientWidth);
-    const commonScale = Number(dom.gameCanvas.dataset.commonScale) || 1;
-    const target = Math.max(0, Math.min(maximum, dom.stageRail.scrollLeft + (cardRect.left + cardRect.width / 2 - stageCenter) / commonScale));
-    const start = dom.stageRail.scrollLeft;
-    const distance = target - start;
-    const started = performance.now();
-    const duration = 360;
-    stopStageRailAnimation();
-    const settle = now => {
-      const progress = Math.min(1, (now - started) / duration);
-      const eased = progress * progress * (3 - 2 * progress);
-      dom.stageRail.scrollLeft = start + distance * eased;
-      scheduleCenteredStageCard();
-      if (progress < 1) stageRailAnimation = requestAnimationFrame(settle);
-      else {
-        stageRailAnimation = 0;
-        dom.stageRail.dispatchEvent(new CustomEvent("wonder:stage-snap"));
-      }
-    };
-    stageRailAnimation = requestAnimationFrame(settle);
-  };
-  dom.stageRail.addEventListener("pointerdown", event => {
-    if (stageRailPointer || event.isPrimary === false || (event.pointerType === "mouse" && event.button !== 0)) return;
-    stopStageRailAnimation();
-    stageRailPointer = { id:event.pointerId, x:event.clientX, scrollLeft:dom.stageRail.scrollLeft, moved:false };
-  });
-  window.addEventListener("pointermove", event => {
-    if (!stageRailPointer || event.pointerId !== stageRailPointer.id) return;
-    const delta = event.clientX - stageRailPointer.x;
-    if (Math.abs(delta) > 5) stageRailPointer.moved = true;
-    if (!stageRailPointer.moved) return;
-    event.preventDefault();
-    const commonScale = Number(dom.gameCanvas.dataset.commonScale) || 1;
-    dom.stageRail.scrollLeft = stageRailPointer.scrollLeft - delta / commonScale;
-  });
-  const finishStageRail = event => {
-    if (!stageRailPointer || event.pointerId !== stageRailPointer.id) return;
-    const moved = stageRailPointer.moved;
-    stageRailPointer = null;
-    if (event.type !== "pointercancel") snapStageRail();
-    if (moved) {
-      lastStageRailDragEnd = performance.now();
-    }
-  };
-  window.addEventListener("pointerup", finishStageRail);
-  window.addEventListener("pointercancel", finishStageRail);
-  window.addEventListener("blur", () => { stageRailPointer = null; });
-  dom.stageRail.addEventListener("click", event => {
-    const sinceDrag = performance.now() - lastStageRailDragEnd;
-    if (sinceDrag > 240) return;
-    event.preventDefault();
-    event.stopImmediatePropagation();
-  }, true);
 
   function updateStageSummary() {
     const stage = stageDefs[selectedStage - 1];
@@ -1096,10 +1022,16 @@
   const restoreMainFocus = () => {
     if (dom.mainScreen.classList.contains("is-active")) document.getElementById("startGame")?.focus({ preventScroll:true });
   };
-  stageBackButton.addEventListener("click", () => {
+  const returnToMain = () => {
     showScreen("main");
     updateMainProgress();
     restoreMainFocus();
+  };
+  stageBackButton.addEventListener("click", returnToMain);
+  stageBackButton.addEventListener("keydown", event => {
+    if (event.key !== "Enter" && event.key !== " ") return;
+    event.preventDefault();
+    if (!event.repeat) returnToMain();
   });
   stageBackButton.addEventListener("blur", restoreMainFocus);
   document.addEventListener("keyup", event => {
@@ -1157,7 +1089,7 @@
     viewportStageSettleFrame = requestAnimationFrame(() => {
       viewportStageSettleFrame = requestAnimationFrame(() => {
         viewportStageSettleFrame = 0;
-        if (!dom.stageScreen.classList.contains("is-active") || stageRailPointer) return;
+        if (!dom.stageScreen.classList.contains("is-active")) return;
         centerStageCard(dom.stageRail.children[preservedIndex] || dom.stageRail.children[selectedStage - 1], "auto");
       });
     });
