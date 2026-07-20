@@ -6,6 +6,28 @@
   const unlockKey = "weightplay_weather_unlocked";
   const starKey = "weightplay_weather_stars";
   const progressKey = "weightplay_weather_progress";
+  const storageFallback = new Map();
+
+  function storageRead(key) {
+    try {
+      const value = localStorage.getItem(key);
+      if (value !== null) storageFallback.set(key, value);
+      return value ?? storageFallback.get(key) ?? null;
+    } catch {
+      return storageFallback.get(key) ?? null;
+    }
+  }
+
+  function storageWrite(key, value) {
+    const normalized = String(value);
+    storageFallback.set(key, normalized);
+    try {
+      localStorage.setItem(key, normalized);
+      return true;
+    } catch {
+      return false;
+    }
+  }
 
   const tools = {
     umbrella: { icon: "../../assets/tiny-weather-tool-umbrella.svg", className: "umbrella" },
@@ -299,13 +321,13 @@
   nodes.keepHelpingBtn = $("keepHelpingBtn");
   nodes.leaveMissionBtn = $("leaveMissionBtn");
 
-  const legacySavedLocale = localStorage.getItem(localeKey);
-  const canonicalSavedLocale = localStorage.getItem(canonicalLocaleKey);
+  const legacySavedLocale = storageRead(localeKey);
+  const canonicalSavedLocale = storageRead(canonicalLocaleKey);
   if (!canonicalSavedLocale && ["en", "zh-Hant", "zh-Hans", "es"].includes(legacySavedLocale)) {
     window.WonderI18n?.setLocale?.(legacySavedLocale);
   }
   let locale = window.WonderI18n?.actualLocale?.() || window.WonderI18n?.locale?.() || canonicalSavedLocale || legacySavedLocale || "en";
-  let unlocked = clamp(Number(localStorage.getItem(unlockKey)) || 1, 1, stages.length);
+  let unlocked = clamp(Number(storageRead(unlockKey)) || 1, 1, stages.length);
   let records = readRecords();
   let currentStage = 0;
   let roundIndex = 0;
@@ -359,20 +381,20 @@
 
   function readRecords() {
     try {
-      return JSON.parse(localStorage.getItem(starKey) || "{}");
+      return JSON.parse(storageRead(starKey) || "{}");
     } catch {
       return {};
     }
   }
 
   function saveRecords() {
-    localStorage.setItem(starKey, JSON.stringify(records));
-    localStorage.setItem(unlockKey, String(unlocked));
+    storageWrite(starKey, JSON.stringify(records));
+    storageWrite(unlockKey, String(unlocked));
   }
 
   function readProgress() {
     try {
-      return JSON.parse(localStorage.getItem(progressKey) || "{}");
+      return JSON.parse(storageRead(progressKey) || "{}");
     } catch {
       return {};
     }
@@ -381,7 +403,7 @@
   function saveProgress(stageId, entry) {
     const progress = readProgress();
     progress[stageId] = entry;
-    localStorage.setItem(progressKey, JSON.stringify(progress));
+    storageWrite(progressKey, JSON.stringify(progress));
   }
 
   function t(label, data = {}) {
@@ -965,7 +987,7 @@
     const requested = event.target.value;
     window.WonderI18n?.setLocale?.(requested);
     locale = window.WonderI18n?.actualLocale?.() || window.WonderI18n?.locale?.() || requested;
-    localStorage.setItem(localeKey, requested);
+    storageWrite(localeKey, requested);
     localizeStatic();
     renderStageGrid();
     if (running) renderRound();

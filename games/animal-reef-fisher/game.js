@@ -5,6 +5,7 @@
   const GAME_ID = "animal-reef-fisher";
   const saveKey = "weightplay_animal_reef_fisher_v1";
   const localeKey = "weightPlayLocale";
+  const sessionStorageFallback = new Map();
   const W = 960;
   let H = 540;
   const expeditionSeconds = 90;
@@ -13,6 +14,34 @@
   const hookedFishFacing = "left";
   const hookedFishMouthInset = 0.08;
   const isTestMode = new URLSearchParams(window.location.search).get("test") === "1";
+
+  function readStorage(key) {
+    try {
+      const value = localStorage.getItem(key);
+      return value === null ? (sessionStorageFallback.get(key) ?? null) : value;
+    } catch {
+      return sessionStorageFallback.get(key) ?? null;
+    }
+  }
+
+  function writeStorage(key, value) {
+    const serialized = String(value);
+    sessionStorageFallback.set(key, serialized);
+    try {
+      localStorage.setItem(key, serialized);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  function activeI18nLocale() {
+    try {
+      return window.WonderI18n?.locale?.() || "";
+    } catch {
+      return "";
+    }
+  }
 
   const $ = (id) => document.getElementById(id);
   if (!$(("leavePanel"))) {
@@ -525,7 +554,7 @@
     ],
   };
 
-  let locale = window.WonderI18n?.locale?.() || localStorage.getItem(localeKey) || "en";
+  let locale = activeI18nLocale() || readStorage(localeKey) || "en";
   if (!text[locale]) locale = "en";
   const legacyZoneMission = { sunny:"mission-1", kelp:"mission-6", coral:"mission-11", moon:"mission-16", deep:"mission-26" };
   let save = loadSave();
@@ -569,13 +598,7 @@
   }
 
   function persistSave(value) {
-    try {
-      localStorage.setItem(saveKey, JSON.stringify(value));
-      return true;
-    } catch {
-      // Keep the current session playable when storage is unavailable.
-      return false;
-    }
+    return writeStorage(saveKey, JSON.stringify(value));
   }
 
   function loadSave() {
@@ -587,7 +610,7 @@
     };
     let stored = null;
     try {
-      stored = localStorage.getItem(saveKey);
+      stored = readStorage(saveKey);
       const parsed = JSON.parse(stored || "{}");
       const raw = parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : {};
       const unlockedZone = wholeNumber(raw.unlockedZone, 1, 1, zones.length);
@@ -1961,9 +1984,13 @@
   });
   nodes.localeSelect.addEventListener("change", () => {
     const requested = nodes.localeSelect.value;
-    window.WonderI18n?.setLocale?.(requested);
-    locale = window.WonderI18n?.locale?.() || requested;
-    localStorage.setItem(localeKey, requested);
+    try {
+      window.WonderI18n?.setLocale?.(requested);
+    } catch {
+      // Keep localization usable when shared persistence is unavailable.
+    }
+    locale = activeI18nLocale() || requested;
+    writeStorage(localeKey, requested);
     applyLocale();
   });
   nodes.menuSoundBtn.addEventListener("click", () => {

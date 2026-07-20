@@ -435,7 +435,7 @@
   let nextHintUpdate = 0;
   let backingScale = 1;
   let arenaLayerSignature = "";
-  const renderMetrics = { arenaLayerBuilds: 0, hudWrites: 0, hintEvaluations: 0 };
+  const renderMetrics = { arenaLayerBuilds: 0, hudWrites: 0, hintEvaluations: 0, fallbackFrameClears: 0 };
   let charmPurchasePending = false;
   let charmConfirmTimer = 0;
   let lastFrame = 0;
@@ -767,28 +767,33 @@
       nodes.resultPanel.style.minHeight = `${battlePanelMetrics.height}px`;
       nodes.resultPanel.style.top = `${-battlePanelMetrics.paddingTop}px`;
     }
-    requestAnimationFrame(() => syncCanvasBackingStore());
+    syncCanvasBackingStore();
   }
 
   function syncCanvasBackingStore(force = false) {
-    if (!document.body?.classList.contains("crystal-playing")) return;
+    if (!document.body?.classList.contains("crystal-playing")) return false;
     const rect = canvas.getBoundingClientRect();
-    if (rect.width <= 0 || rect.height <= 0) return;
+    if (rect.width <= 0 || rect.height <= 0) return false;
     const deviceScale = Math.min(2, Math.max(1, Number(window.devicePixelRatio) || 1));
     const displayScale = Math.min(rect.width / W, rect.height / H) * deviceScale;
     const pixelBudgetScale = Math.sqrt(MAX_BACKING_PIXELS / (W * H));
     const nextScale = Math.max(MIN_BACKING_SCALE, Math.min(1, displayScale, pixelBudgetScale));
     const width = Math.max(1, Math.floor(W * nextScale));
     const height = Math.max(1, Math.floor(H * nextScale));
-    if (!force && renderCanvas.width === width && renderCanvas.height === height) return;
+    if (!force
+      && renderCanvas.width === width
+      && renderCanvas.height === height) return false;
     renderCanvas.width = width;
     renderCanvas.height = height;
     backingScale = Math.min(width / W, height / H);
     ctx.setTransform(backingScale, 0, 0, backingScale, 0, 0);
     ctx.imageSmoothingEnabled = true;
     ctx.imageSmoothingQuality = "high";
+    displayCtx.imageSmoothingEnabled = true;
+    displayCtx.imageSmoothingQuality = "high";
     arenaLayerSignature = "";
     ensureArenaLayer();
+    return true;
   }
 
   function measureBattlePanel() {
@@ -931,6 +936,7 @@
     renderMetrics.arenaLayerBuilds = 0;
     renderMetrics.hudWrites = 0;
     renderMetrics.hintEvaluations = 0;
+    renderMetrics.fallbackFrameClears = 0;
     syncCanvasBackingStore(true);
     renderHud(true);
     requestAnimationFrame(() => {
@@ -1753,9 +1759,13 @@
   }
 
   function draw() {
-    ctx.clearRect(0, 0, W, H);
     ensureArenaLayer();
-    if (arenaLayer.width && arenaLayer.height) ctx.drawImage(arenaLayer, 0, 0, arenaLayer.width, arenaLayer.height, 0, 0, W, H);
+    if (arenaLayer.width && arenaLayer.height) {
+      ctx.drawImage(arenaLayer, 0, 0, arenaLayer.width, arenaLayer.height, 0, 0, W, H);
+    } else {
+      ctx.clearRect(0, 0, W, H);
+      renderMetrics.fallbackFrameClears += 1;
+    }
     drawStageHazards();
     drawKey();
     state.xpDrops.forEach((drop) => drawImageCentered(images.xp, drop.x, drop.y, 34));
@@ -1777,7 +1787,6 @@
       ctx.restore();
     });
     state.floaters.forEach(drawFloater);
-    displayCtx.clearRect(0, 0, canvas.width, canvas.height);
     displayCtx.drawImage(renderCanvas, 0, 0, renderCanvas.width, renderCanvas.height, 0, 0, canvas.width, canvas.height);
   }
 

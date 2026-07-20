@@ -149,12 +149,21 @@
   let activePointer = null;
   let hintNode = null;
   let completing = false;
+  let completionTimer = 0;
+  let completionDeadline = 0;
+  let completionRemaining = 0;
+  let pendingCompletion = null;
 
   function sound(name){try{window.WonderSound?.play?.(name);}catch{}}
   function analytics(name,data={}){try{window.WonderAnalytics?.track?.(name,{game_id:GAME_ID,...data});}catch{}}
   function elapsedPlayTime(){return runElapsed+(runClockStartedAt?Date.now()-runClockStartedAt:0);}
   function pauseRunClock(){if(!runClockStartedAt)return;runElapsed+=Date.now()-runClockStartedAt;runClockStartedAt=0;}
   function resumeRunClock(){if(runClockStartedAt||document.hidden||document.body.dataset.screen!=="battle"||!dom.result.hidden||!dom.leave.hidden||completing)return;runClockStartedAt=Date.now();}
+  function clearCompletionTransition(){if(completionTimer)clearTimeout(completionTimer);completionTimer=0;completionDeadline=0;completionRemaining=0;pendingCompletion=null;}
+  function armCompletionTransition(){if(completionTimer||!pendingCompletion||document.hidden||document.body.dataset.screen!=="battle"||!completing)return;const delay=Math.max(0,completionRemaining);completionDeadline=performance.now()+delay;completionTimer=setTimeout(()=>{completionTimer=0;completionDeadline=0;completionRemaining=0;if(document.hidden)return;const completion=pendingCompletion;if(!completion||document.body.dataset.screen!=="battle"||!completing||stageIndex!==completion.stageIndex){clearCompletionTransition();return;}pendingCompletion=null;showResult(completion.earned,completion.elapsed,completion.previous);},delay);}
+  function scheduleCompletionTransition(completion,delay=420){clearCompletionTransition();pendingCompletion=completion;completionRemaining=delay;armCompletionTransition();}
+  function suspendCompletionTransition(){if(!completionTimer)return;completionRemaining=Math.max(0,completionDeadline-performance.now());clearTimeout(completionTimer);completionTimer=0;completionDeadline=0;}
+  function resumeCompletionTransition(){armCompletionTransition();}
   function totalStars(){return save.stars.reduce((sum,value)=>sum+Number(value||0),0);}
   function clearedCount(){return save.cleared.filter(Boolean).length;}
   function formatTime(ms){const seconds=Math.max(0,Math.round(ms/1000));return `${Math.floor(seconds/60)}:${String(seconds%60).padStart(2,"0")}`;}
@@ -208,8 +217,8 @@
   function closeBattleLeave(resume=true){if(dom.leave.hidden)return;dom.leave.hidden=true;setBattleLeaveCoverage(false);if(resume)resumeRunClock();requestAnimationFrame(()=>dom.battleBack.focus({preventScroll:true}));}
   function leaveBattle(){dom.leave.hidden=true;setBattleLeaveCoverage(false);pauseRunClock();sound("click");showStage(stageIndex);}
 
-  function showMain(){completing=false;dom.result.hidden=true;dom.leave.hidden=true;setBattleLeaveCoverage(false);setScreen("main");updateMainProgress();requestAnimationFrame(()=>dom.start.focus({preventScroll:true}));}
-  function showStage(focusIndex=stageIndex){completing=false;dom.result.hidden=true;dom.leave.hidden=true;setBattleLeaveCoverage(false);setScreen("stage");stageIndex=Math.max(0,Math.min(29,focusIndex));renderStages();requestAnimationFrame(()=>{const card=dom.stageRail.querySelector(`[data-index="${Math.min(save.unlocked-1,stageIndex)}"]`);card?.scrollIntoView({inline:"center",block:"nearest",behavior:"auto"});card?.focus({preventScroll:true});});}
+  function showMain(){clearCompletionTransition();completing=false;dom.result.hidden=true;dom.leave.hidden=true;setBattleLeaveCoverage(false);setScreen("main");updateMainProgress();requestAnimationFrame(()=>dom.start.focus({preventScroll:true}));}
+  function showStage(focusIndex=stageIndex){clearCompletionTransition();completing=false;dom.result.hidden=true;dom.leave.hidden=true;setBattleLeaveCoverage(false);setScreen("stage");stageIndex=Math.max(0,Math.min(29,focusIndex));renderStages();requestAnimationFrame(()=>{const card=dom.stageRail.querySelector(`[data-index="${Math.min(save.unlocked-1,stageIndex)}"]`);card?.scrollIntoView({inline:"center",block:"nearest",behavior:"auto"});card?.focus({preventScroll:true});});}
 
   function stageStatus(stage){if(save.cleared[stage.id-1])return t("cleared");if(stage.id<=save.unlocked)return t("available");return t("locked");}
   function renderStages(){
@@ -227,7 +236,7 @@
   function updateChapterPanel(index){stageIndex=Math.max(0,Math.min(29,index));const stage=stages[stageIndex];dom.chapterKicker.textContent=t("chapter",{number:stage.chapter});dom.chapterTitle.textContent=t(`chapter${stage.chapter}`);dom.chapterRule.textContent=t(`rule${stage.chapter}`);$$('.stage-card.selected').forEach(card=>card.classList.remove("selected"));dom.stageRail.querySelector(`[data-index="${stageIndex}"]`)?.classList.add("selected");}
 
   function startStage(index){
-    stageIndex=index;path=[];hints=0;mistakes=0;restarts=0;hintNode=null;completing=false;runElapsed=0;runClockStartedAt=0;dom.result.hidden=true;dom.leave.hidden=true;setBattleLeaveCoverage(false);setScreen("battle");resumeRunClock();buildGraph();renderBattleLabels();updateGraph();setFeedback(t("ready"));analytics("game_start",{stage:index+1});window.dispatchEvent(new CustomEvent("weightplay:battle-open"));
+    clearCompletionTransition();stageIndex=index;path=[];hints=0;mistakes=0;restarts=0;hintNode=null;completing=false;runElapsed=0;runClockStartedAt=0;dom.result.hidden=true;dom.leave.hidden=true;setBattleLeaveCoverage(false);setScreen("battle");resumeRunClock();buildGraph();renderBattleLabels();updateGraph();setFeedback(t("ready"));analytics("game_start",{stage:index+1});window.dispatchEvent(new CustomEvent("weightplay:battle-open"));
   }
 
   function currentStage(){return stages[stageIndex];}
@@ -289,7 +298,7 @@
   function updateAssist(){dom.assist.textContent=t("assist",{hints,mistakes:mistakes+restarts});}
 
   function completeStage(){
-    if(completing)return;const elapsed=elapsedPlayTime();completing=true;pauseRunClock();const stage=currentStage();const assists=mistakes+restarts+hints*2;const earned=assists===0?3:assists<=3?2:1;const previous=save.bestTimes[stageIndex];save.cleared[stageIndex]=true;save.stars[stageIndex]=Math.max(save.stars[stageIndex]||0,earned);save.bestTimes[stageIndex]=previous===null?elapsed:Math.min(previous,elapsed);save.unlocked=Math.max(save.unlocked,Math.min(30,stage.id+1));persist();sound("success");setFeedback(t("complete"),"success");dom.scene.classList.add("sparkle");analytics("game_complete",{stage:stage.id,stars:earned,hints,mistakes:mistakes+restarts,time_ms:elapsed});setTimeout(()=>showResult(earned,elapsed,previous),420);
+    if(completing)return;const elapsed=elapsedPlayTime();completing=true;pauseRunClock();const stage=currentStage();const assists=mistakes+restarts+hints*2;const earned=assists===0?3:assists<=3?2:1;const previous=save.bestTimes[stageIndex];save.cleared[stageIndex]=true;save.stars[stageIndex]=Math.max(save.stars[stageIndex]||0,earned);save.bestTimes[stageIndex]=previous===null?elapsed:Math.min(previous,elapsed);save.unlocked=Math.max(save.unlocked,Math.min(30,stage.id+1));persist();sound("success");setFeedback(t("complete"),"success");dom.scene.classList.add("sparkle");analytics("game_complete",{stage:stage.id,stars:earned,hints,mistakes:mistakes+restarts,time_ms:elapsed});scheduleCompletionTransition({stageIndex,earned,elapsed,previous});
   }
 
   function showResult(earned,elapsed,previous){const stage=currentStage();dom.resultTitle.textContent=t("resultTitle");dom.resultStars.textContent="★".repeat(earned)+"☆".repeat(3-earned);dom.resultText.textContent=t("resultText",{edges:stage.edges.length,time:formatTime(elapsed)});dom.skillGrid.innerHTML=`<div><small>${t("logic")}</small><strong>${t("logicValue",{edges:stage.edges.length})}</strong></div><div><small>${t("focus")}</small><strong>${t("focusValue",{mistakes:mistakes+restarts})}</strong></div><div><small>${t("problem")}</small><strong>${t("problemValue",{hints})}</strong></div>`;dom.comparison.textContent=previous===null||elapsed<previous?t("newBest"):t("previousBest",{time:formatTime(previous)});dom.next.hidden=stage.id>=30;dom.result.hidden=false;requestAnimationFrame(()=>{(dom.next.hidden?dom.retry:dom.next).focus({preventScroll:true});window.dispatchEvent(new CustomEvent("weightplay:battle-open"));});}
@@ -299,7 +308,7 @@
   dom.stageRail.addEventListener("click",event=>{const card=event.target.closest(".stage-card.unlocked");if(!card)return;startStage(Number(card.dataset.index));});
   dom.stageRail.addEventListener("wonder:stage-snap",event=>{const card=event.detail?.card||document.elementFromPoint(innerWidth/2,Math.min(innerHeight-120,innerHeight*.78))?.closest?.(".stage-card");if(card)updateChapterPanel(Number(card.dataset.index));});
   dom.leave.addEventListener("keydown",event=>{if(event.key==="Escape"){event.preventDefault();closeBattleLeave();return;}if(event.key!=="Tab")return;const first=dom.continueBattle,last=dom.leaveBattle;if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}});
-  document.addEventListener("visibilitychange",()=>{if(document.hidden){cancelActivePointer();pauseRunClock();}else resumeRunClock();});window.addEventListener("pagehide",()=>{cancelActivePointer();pauseRunClock();});window.addEventListener("pageshow",resumeRunClock);
+  document.addEventListener("visibilitychange",()=>{if(document.hidden){cancelActivePointer();pauseRunClock();suspendCompletionTransition();}else{resumeRunClock();resumeCompletionTransition();}});window.addEventListener("pagehide",()=>{cancelActivePointer();pauseRunClock();suspendCompletionTransition();});window.addEventListener("pageshow",()=>{resumeRunClock();resumeCompletionTransition();});
   dom.start.addEventListener("click",()=>{sound("click");showStage();});dom.stageBack.addEventListener("click",()=>{sound("click");showMain();});dom.battleBack.addEventListener("click",()=>{sound("click");openBattleLeave();});dom.continueBattle.addEventListener("click",()=>{sound("click");closeBattleLeave();});dom.leaveBattle.addEventListener("click",leaveBattle);dom.undo.addEventListener("click",undo);dom.restart.addEventListener("click",()=>restartAttempt(true));dom.hint.addEventListener("click",showHint);dom.retry.addEventListener("click",()=>startStage(stageIndex));dom.resultStages.addEventListener("click",()=>showStage(stageIndex));dom.next.addEventListener("click",()=>startStage(Math.min(29,stageIndex+1)));dom.locale.addEventListener("change",()=>{locale=dom.locale.value;applyLocale();});
 
   async function boot(){applyLocale();analytics("game_view");const assets=["../../assets/animal-starlight-trails-cover.webp","../../assets/animal-starlight-trails-bg.webp","../../assets/weightplay-character-moon-cap-owl-cutout.webp"];let loaded=0;await Promise.allSettled(assets.map(src=>new Promise(resolve=>{const image=new Image();const done=()=>{loaded+=1;dom.loadingFill.style.width=`${loaded/assets.length*100}%`;resolve();};image.onload=done;image.onerror=done;image.src=src;})));setTimeout(()=>{dom.loading.hidden=true;showMain();},180);}

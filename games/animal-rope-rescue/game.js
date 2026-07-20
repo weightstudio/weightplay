@@ -180,6 +180,21 @@
     },
   };
 
+  const spanishShared = {
+    sound: "Sonido",
+    enableSound: "Activar sonido",
+    disableSound: "Desactivar sonido",
+    tutorialAria: "Cómo jugar",
+    tutorialTitle: "Haz rebotar fruta para los animales.",
+    tutorialClose: "Cerrar el tutorial",
+    tutorialStart: "Empezar a jugar",
+    tutorialSteps: [
+      ["Mover la hoja", "Arrastra el trampolín de hoja debajo de la fruta que cae."],
+      ["Cortar la liana", "Pulsa Cortar cuando quieras soltar la fruta."],
+      ["Dar de comer", "Haz rebotar la fruta dentro de la cesta del animal para superar el nivel."],
+    ],
+  };
+
   const rescueStage = (titleEn, titleZh, ruleEn, ruleZh, config) => ({
     titleEn, titleZh, ruleEn, ruleZh,
     gravity: 1080,
@@ -321,6 +336,50 @@
     loadingFill: $("loadingFill"),
   };
 
+  function setNodeText(node, value) {
+    if (node && node.textContent !== value) node.textContent = value;
+  }
+
+  function setNodeAttribute(node, name, value) {
+    if (node && node.getAttribute(name) !== value) node.setAttribute(name, value);
+  }
+
+  function localizeSharedControls() {
+    if (locale !== "es") return;
+    setNodeAttribute(document.querySelector('[data-wp-return="main"]'), "aria-label", text.es.backToLobby);
+    const sound = document.querySelector("button[data-sound-toggle]");
+    if (sound) {
+      sound.title = spanishShared.sound;
+      setNodeAttribute(sound, "aria-label", sound.classList.contains("muted") ? spanishShared.enableSound : spanishShared.disableSound);
+    }
+    setNodeAttribute(document.querySelector(".wp-tutorial-button"), "aria-label", spanishShared.tutorialAria);
+    const tutorial = document.querySelector(`.wp-tutorial-backdrop[data-game-id="${GAME_ID}"]`);
+    if (!tutorial) return;
+    setNodeText(tutorial.querySelector(".wp-tutorial-head strong"), spanishShared.tutorialTitle);
+    setNodeAttribute(tutorial.querySelector(".wp-tutorial-close"), "aria-label", spanishShared.tutorialClose);
+    [...tutorial.querySelectorAll(".wp-tutorial-step")].forEach((step, index) => {
+      const copy = spanishShared.tutorialSteps[index];
+      if (!copy) return;
+      setNodeText(step.querySelector("b"), copy[0]);
+      setNodeText(step.querySelector("span"), copy[1]);
+    });
+    setNodeText(tutorial.querySelector(".wp-tutorial-action"), spanishShared.tutorialStart);
+  }
+
+  function ensureLocaleOptions() {
+    if (!nodes.localeSelect.querySelector('option[value="es"]')) {
+      nodes.localeSelect.add(new Option("Español", "es"));
+    }
+  }
+
+  ensureLocaleOptions();
+  new MutationObserver(localizeSharedControls).observe(document.body, {
+    childList: true,
+    subtree: true,
+    attributes: true,
+    attributeFilter: ["class", "aria-label"],
+  });
+
   // Keep canonical and localized shells on the Kids full-viewport Canvas contract.
   nodes.stagePanel.dataset.wpCanvasMaxWidth = "viewport";
   nodes.gamePanel.dataset.wpCanvasMaxWidth = "viewport";
@@ -414,6 +473,7 @@
     window.WEIGHTPLAY_VINE_RESCUE_ACTIVE = isPlaying;
     window.WeightPlayGame?.updateVisualViewportVars?.();
     window.dispatchEvent(new CustomEvent("animal-vine-rescue:play-state", { detail: { playing: isPlaying } }));
+    requestAnimationFrame(updateBattleScale);
   }
 
   function setStageState(isStage) {
@@ -493,12 +553,14 @@
     document.querySelector('meta[property="og:title"]')?.setAttribute("content", seoCopy.title);
     document.querySelector('meta[property="og:description"]')?.setAttribute("content", seoCopy.description);
     document.querySelector('[data-wp-return="main"]')?.setAttribute("aria-label", t("backToLobby"));
+    nodes.stagePanel.setAttribute("aria-label", t("stages"));
     nodes.localeSelect.setAttribute("aria-label", t("language"));
     nodes.stageBackBtn.setAttribute("aria-label", t("backToStages"));
     nodes.playfield.setAttribute("aria-label", t("playfield"));
     nodes.vineButton.setAttribute("aria-label", t("cutVine"));
     nodes.leafPaddle.setAttribute("aria-label", t("leafControl"));
     nodes.localeSelect.value = requested;
+    localizeSharedControls();
     updatePaddleAccessibility();
     renderStages();
     if (!nodes.gamePanel.classList.contains("hidden")) setupStage(currentStage);
@@ -1002,9 +1064,12 @@
   function updateStageScale() {
     if (!document.body.classList.contains("is-vine-stage-select")) return;
     const viewport = window.visualViewport;
-    const viewportWidth = viewport?.width || window.innerWidth;
-    const viewportHeight = viewport?.height || window.innerHeight;
-    const scale = Math.max(0.01, Math.min(viewportWidth / 390, viewportHeight / 788));
+    const viewportWidth = document.documentElement.clientWidth || window.innerWidth || viewport?.width;
+    const viewportHeight = document.documentElement.clientHeight || window.innerHeight || viewport?.height;
+    const shortLandscape = viewportWidth > viewportHeight && viewportHeight <= 430;
+    const minimumWidth = shortLandscape ? 760 : 390;
+    const minimumHeight = shortLandscape ? 360 : 788;
+    const scale = Math.max(0.01, Math.min(viewportWidth / minimumWidth, viewportHeight / minimumHeight));
     const logicalWidth = viewportWidth / scale;
     const logicalHeight = viewportHeight / scale;
     document.documentElement.style.setProperty("--vine-stage-scale", String(scale));
@@ -1013,10 +1078,48 @@
     document.documentElement.style.setProperty("--vine-stage-top", "0px");
   }
 
+  function updateBattleScale() {
+    if (!document.body.classList.contains("is-vine-playing")) return;
+    const viewport = window.visualViewport;
+    const viewportWidth = document.documentElement.clientWidth || window.innerWidth || viewport?.width;
+    const viewportHeight = document.documentElement.clientHeight || window.innerHeight || viewport?.height;
+    const shortLandscape = viewportWidth > viewportHeight && viewportHeight <= 430;
+    const minimumWidth = shortLandscape ? 760 : 382;
+    const minimumHeight = shortLandscape ? 360 : 780;
+    const scale = Math.max(0.01, Math.min(viewportWidth / minimumWidth, viewportHeight / minimumHeight));
+    const logicalWidth = viewportWidth / scale;
+    const logicalHeight = viewportHeight / scale;
+    const root = document.documentElement;
+    root.style.setProperty("--wp-battle-logical-width", `${logicalWidth}px`);
+    root.style.setProperty("--wp-battle-logical-height", `${logicalHeight}px`);
+    root.style.setProperty("--wp-battle-canvas-scale", String(scale));
+    root.style.setProperty("--vine-battle-scale", String(scale));
+    nodes.gamePanel.setAttribute("data-wp-logical-battle-canvas", `${logicalWidth.toFixed(3)}x${logicalHeight.toFixed(3)}`);
+    Object.entries({
+      position: "fixed",
+      inset: "auto",
+      top: "0px",
+      left: "0px",
+      width: `${logicalWidth}px`,
+      minWidth: `${logicalWidth}px`,
+      maxWidth: `${logicalWidth}px`,
+      height: `${logicalHeight}px`,
+      minHeight: `${logicalHeight}px`,
+      maxHeight: `${logicalHeight}px`,
+      margin: "0px",
+      transform: `scale(${scale})`,
+      transformOrigin: "top left",
+      overflow: "hidden",
+    }).forEach(([property, value]) => nodes.gamePanel.style.setProperty(property.replace(/[A-Z]/g, (match) => `-${match.toLowerCase()}`), value, "important"));
+  }
+
   window.addEventListener("resize", updateStageScale);
   window.addEventListener("orientationchange", updateStageScale);
   window.visualViewport?.addEventListener("resize", updateStageScale);
   window.visualViewport?.addEventListener("scroll", updateStageScale);
+  window.addEventListener("resize", updateBattleScale);
+  window.addEventListener("orientationchange", updateBattleScale);
+  window.visualViewport?.addEventListener("resize", updateBattleScale);
 
   const testMode = ["127.0.0.1", "localhost"].includes(location.hostname) || new URLSearchParams(location.search).has("wp_test");
   if (testMode) {

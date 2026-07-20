@@ -1,10 +1,33 @@
 (function () {
   const canonicalLocaleKey = "weightPlayLocale";
   const legacyLocaleKey = "weightplayLocale";
-  const canonicalSavedLocale = localStorage.getItem(canonicalLocaleKey);
-  const legacySavedLocale = localStorage.getItem(legacyLocaleKey);
+  const storageFallback = new Map();
+
+  function storageRead(key) {
+    try {
+      const value = localStorage.getItem(key);
+      if (value !== null) storageFallback.set(key, value);
+      return value ?? storageFallback.get(key) ?? null;
+    } catch {
+      return storageFallback.get(key) ?? null;
+    }
+  }
+
+  function storageWrite(key, value) {
+    const normalized = String(value);
+    storageFallback.set(key, normalized);
+    try {
+      localStorage.setItem(key, normalized);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  const canonicalSavedLocale = storageRead(canonicalLocaleKey);
+  const legacySavedLocale = storageRead(legacyLocaleKey);
   if (!canonicalSavedLocale && ["en", "zh-Hant", "zh-Hans", "es"].includes(legacySavedLocale)) {
-    localStorage.setItem(canonicalLocaleKey, legacySavedLocale);
+    storageWrite(canonicalLocaleKey, legacySavedLocale);
     window.WonderI18n?.setLocale?.(legacySavedLocale);
   }
 
@@ -319,7 +342,7 @@
 
   function loadProgress() {
     try {
-      const source = JSON.parse(localStorage.getItem(PROGRESS_KEY) || "{}");
+      const source = JSON.parse(storageRead(PROGRESS_KEY) || "{}");
       const unlocked = Math.max(1, Math.min(30, Number(source.unlocked) || 1));
       return {
         unlocked,
@@ -332,7 +355,7 @@
   }
 
   function saveProgress() {
-    localStorage.setItem(PROGRESS_KEY, JSON.stringify(progress));
+    storageWrite(PROGRESS_KEY, JSON.stringify(progress));
   }
 
   let progress = loadProgress();
@@ -989,7 +1012,7 @@
 
   function getScores() {
     try {
-      return JSON.parse(localStorage.getItem(LEADERBOARD_KEY) || "[]");
+      return JSON.parse(storageRead(LEADERBOARD_KEY) || "[]");
     } catch {
       return [];
     }
@@ -997,7 +1020,7 @@
 
   function saveScore(score) {
     const scores = [...getScores(), score].sort((a, b) => b - a).slice(0, 5);
-    localStorage.setItem(LEADERBOARD_KEY, JSON.stringify(scores));
+    storageWrite(LEADERBOARD_KEY, JSON.stringify(scores));
   }
 
   function renderLeaderboard() {

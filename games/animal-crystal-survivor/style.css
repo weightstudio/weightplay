@@ -1383,3 +1383,43 @@ body.crystal-playing .hud-row { grid-template-columns:40px repeat(5,minmax(0,1fr
   body.crystal-stage-select .crystal-app { height:var(--crystal-vh,100dvh); min-height:0; overflow:hidden; }
   body.crystal-playing .hud-row { grid-template-rows:repeat(6,minmax(0,1fr)); }
 }
+
+/* Keep all five Battle metrics beside the return action; older base rules only declared four metric tracks. */
+body.crystal-playing #gamePanel .hud-row {
+  grid-template-columns: 40px repeat(5, minmax(0, 1fr)) !important;
+  grid-template-rows: minmax(0, 1fr) !important;
+}
+
+@media (max-height: 560px) {
+  html body.wp-logical-battle-active.crystal-playing #gamePanel.game-panel {
+    grid-template-columns: 150px minmax(0, 1fr) 190px !important;
+    grid-template-rows: 34px minmax(0, 1fr) !important;
+    gap: 6px !important;
+    padding: 6px !important;
+  }
+
+  html body.wp-logical-battle-active.crystal-playing #gamePanel .hud-row {
+    grid-column: 1 !important;
+    grid-row: 1 / -1 !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: repeat(6, minmax(0, 1fr)) !important;
+  }
+
+  html body.wp-logical-battle-active.crystal-playing #gamePanel .canvas-wrap {
+    grid-column: 2 !important;
+    grid-row: 1 / -1 !important;
+    width: auto !important;
+    height: 100% !important;
+  }
+
+  html body.wp-logical-battle-active.crystal-playing #gamePanel .xp-row {
+    grid-column: 3 !important;
+    grid-row: 1 !important;
+  }
+
+  html body.wp-logical-battle-active.crystal-playing #gamePanel .hint-text {
+    grid-column: 3 !important;
+    grid-row: 2 !important;
+    height: 100% !important;
+  }
+}

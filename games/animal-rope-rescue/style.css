@@ -923,3 +923,112 @@ body.is-vine-playing .sound-toggle,
 body.is-vine-playing .wp-tutorial-button {
   display: none !important;
 }
+
+@media (orientation: landscape) and (max-height: 430px) {
+  body.is-vine-stage-select .stage-panel {
+    grid-template-rows: 56px minmax(0, 1fr);
+    gap: 10px;
+    padding: 10px;
+  }
+
+  body.is-vine-stage-select .stage-shell-head {
+    grid-template-columns: 52px minmax(0, 1fr);
+  }
+
+  body.is-vine-stage-select .stage-return {
+    width: 52px;
+    height: 52px;
+    font-size: 1.6rem;
+  }
+
+  body.is-vine-stage-select .stage-shell-head strong { font-size: 1.3rem; }
+  body.is-vine-stage-select .stage-shell-head span { font-size: .9rem; }
+
+  body.is-vine-stage-select .stage-rail {
+    padding-inline: 190px;
+    align-items: center;
+  }
+
+  body.is-vine-stage-select .stage-card {
+    flex-basis: 320px;
+    min-height: 180px;
+    padding: 18px;
+  }
+
+  body.is-vine-stage-select .stage-card > strong { font-size: 1.15rem; }
+  body.is-vine-stage-select .stage-card small { font-size: .86rem; }
+
+  body.is-vine-playing main.vine-app #gamePanel.game-panel {
+    grid-template-columns: minmax(0, 1fr) 430px;
+    grid-template-rows: 88px minmax(0, 1fr) 92px 70px;
+    column-gap: 18px;
+    row-gap: 10px;
+    padding: 10px;
+  }
+
+  body.is-vine-playing .hud-row {
+    grid-column: 2;
+    grid-row: 1;
+    grid-template-columns: 88px minmax(0, 1fr) minmax(0, 1fr);
+    gap: 10px;
+  }
+
+  body.is-vine-playing .hud-row .soft-btn {
+    width: 88px;
+    min-height: 88px;
+    border-radius: 22px;
+    font-size: 1.65rem;
+  }
+
+  body.is-vine-playing .hud-pill {
+    min-height: 72px;
+    padding: 12px;
+    border-radius: 20px;
+    font-size: 1.05rem;
+  }
+
+  body.is-vine-playing main.vine-app #playfield.playfield.play-area {
+    grid-column: 1;
+    grid-row: 1 / -1;
+    width: min(100%, calc((var(--wp-battle-logical-height, 360px) - 20px) * .6)) !important;
+    height: 100%;
+    max-height: 100%;
+  }
+
+  body.is-vine-playing .cut-now-btn {
+    grid-column: 2;
+    grid-row: 3;
+    width: 100%;
+    min-height: 82px;
+    border-radius: 24px;
+    font-size: 1.35rem;
+  }
+
+  body.is-vine-playing .hint-text {
+    grid-column: 2;
+    grid-row: 4;
+    min-height: 58px;
+    display: grid;
+    place-items: center;
+    font-size: 1rem;
+    line-height: 1.25;
+  }
+
+  body.is-vine-playing .result-panel { padding: 12px; }
+
+  body.is-vine-playing .result-card {
+    width: min(100%, 640px);
+    padding: 18px;
+    gap: 10px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    font-size: 1rem;
+  }
+
+  body.is-vine-playing .result-card > strong,
+  body.is-vine-playing .result-card > .stars,
+  body.is-vine-playing .result-card > span { grid-column: 1 / -1; }
+  body.is-vine-playing .result-card > strong { font-size: 1.55rem; }
+  body.is-vine-playing .result-card button,
+  body.is-vine-playing .result-card a { min-height: 52px; font-size: 1rem; }
+  body.is-vine-playing .stars { font-size: 2rem; }
+}

@@ -3871,9 +3871,9 @@ body.general-lobby-page {
   position: relative;
   order: 0;
   display: block;
-  height: clamp(310px, 38vw, 390px);
+  height: clamp(240px, 27vw, 280px);
   min-height: 0;
-  margin-bottom: 22px;
+  margin-bottom: 14px;
   padding: 0;
   overflow: hidden;
   border: 1px solid #426159;
@@ -3904,7 +3904,7 @@ body.general-lobby-page {
 
 .general-lobby-page .lobby-hero-copy {
   position: absolute;
-  top: 54px;
+  top: 38px;
   left: clamp(20px, 4vw, 48px);
   width: min(47%, 500px);
   color: #ffffff;
@@ -3933,7 +3933,7 @@ body.general-lobby-page {
 
 .general-lobby-page .lobby-hero h1 {
   max-width: 460px;
-  font-size: clamp(48px, 7vw, 76px);
+  font-size: clamp(44px, 6vw, 64px);
   line-height: 0.94;
 }
 
@@ -3976,13 +3976,13 @@ body.general-lobby-page {
 }
 
 .general-lobby-page .lobby-account-strip {
-  order: 0;
+  order: 10;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
   min-height: 66px;
-  margin: 0 0 22px;
+  margin: 28px 0 0;
   padding: 10px 14px;
   border: 1px solid #b7c8c1;
   border-radius: 7px;
@@ -4083,7 +4083,7 @@ body.general-lobby-page {
 
 .general-lobby-page .general-play-heading {
   order: 1;
-  margin: 15px 0 8px;
+  margin: 8px 0 6px;
   text-align: center;
 }
 
@@ -4097,17 +4097,99 @@ body.general-lobby-page {
 .general-lobby-page .general-play-heading h2 {
   margin: 3px 0 0;
   color: #172d2a;
-  font-size: clamp(28px, 5vw, 40px);
+  font-size: clamp(27px, 4vw, 36px);
   line-height: 1.05;
 }
 
 .general-lobby-page .lobby-search-row {
+  order: 3;
+  margin: 4px 0 8px;
+}
+
+.general-lobby-page .vibe-strip {
   order: 2;
-  margin: 8px 0 10px;
+  display: grid;
+  gap: 7px;
+  margin: 2px 0 8px;
+}
+
+.general-lobby-page .vibe-strip h3 {
+  margin: 0;
+  color: #60756f;
+  font-size: 11px;
+  font-weight: 1000;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.general-lobby-page .vibe-options {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.general-lobby-page .vibe-options button {
+  display: flex;
+  min-width: 0;
+  min-height: 46px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border: 1px solid #a8bbb5;
+  border-radius: 7px;
+  background: #fffdf5;
+  color: #29453f;
+  box-shadow: 0 4px 0 #c2d0ca;
+  font-size: 13px;
+  font-weight: 1000;
+  line-height: 1.1;
+  cursor: pointer;
+}
+
+.general-lobby-page .vibe-options button::before {
+  content: "";
+  width: 9px;
+  height: 9px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: #d8654c;
+  box-shadow: 0 0 0 4px rgba(216, 101, 76, 0.14);
+}
+
+.general-lobby-page .vibe-options button:nth-child(2)::before { background: #e6a527; box-shadow: 0 0 0 4px rgba(230, 165, 39, 0.14); }
+.general-lobby-page .vibe-options button:nth-child(3)::before { background: #3c9d87; box-shadow: 0 0 0 4px rgba(60, 157, 135, 0.14); }
+.general-lobby-page .vibe-options button:nth-child(4)::before { background: #567cc1; box-shadow: 0 0 0 4px rgba(86, 124, 193, 0.14); }
+.general-lobby-page .vibe-options button:nth-child(5)::before { background: #8d62b7; box-shadow: 0 0 0 4px rgba(141, 98, 183, 0.14); }
+
+.general-lobby-page .vibe-options button:hover,
+.general-lobby-page .vibe-options button:focus-visible {
+  border-color: #6e9b90;
+  background: #f3faf7;
+  transform: translateY(-1px);
+}
+
+.general-lobby-page .vibe-options button.active {
+  border-color: #274d45;
+  background: #315f56;
+  color: #ffffff;
+  box-shadow: 0 4px 0 #193a33;
 }
 
 .general-lobby-page .lobby-search {
+  position: relative;
   color: #35544e;
+}
+
+.general-lobby-page .lobby-search > span {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
 }
 
 .general-lobby-page .lobby-search input {
@@ -4133,7 +4215,7 @@ body.general-lobby-page {
 }
 
 .general-lobby-page .library-tabs {
-  order: 3;
+  order: 4;
   gap: 8px;
   padding-bottom: 10px;
 }
@@ -4159,7 +4241,7 @@ body.general-lobby-page {
 }
 
 .general-lobby-page #advancedFilters {
-  order: 4;
+  order: 5;
   border-color: #aebdb8;
   border-radius: 7px;
   background: #ffffff;
@@ -4170,28 +4252,28 @@ body.general-lobby-page {
 }
 
 .general-lobby-page #filterStatus {
-  order: 5;
+  order: 6;
   color: #172d2a;
 }
 
 .general-lobby-page #continuePlayingSection {
-  order: 6;
-}
-
-.general-lobby-page #heroGamesSection {
   order: 7;
 }
 
-.general-lobby-page #gameGrid {
+.general-lobby-page #heroGamesSection {
   order: 8;
 }
 
-.general-lobby-page #dailyReward {
+.general-lobby-page #gameGrid {
   order: 9;
 }
 
+.general-lobby-page #dailyReward {
+  order: 11;
+}
+
 .general-lobby-page #upcomingGamesSection {
-  order: 10;
+  order: 12;
   gap: 14px;
   padding-bottom: 2px;
 }
@@ -4284,19 +4366,19 @@ body.general-lobby-page {
 }
 
 .general-lobby-page .kids-portal {
-  order: 11;
-}
-
-.general-lobby-page #freshUpdatesSection {
-  order: 12;
-}
-
-.general-lobby-page .general-trust-strip {
   order: 13;
 }
 
-.general-lobby-page .site-footer {
+.general-lobby-page #freshUpdatesSection {
   order: 14;
+}
+
+.general-lobby-page .general-trust-strip {
+  order: 15;
+}
+
+.general-lobby-page .site-footer {
+  order: 16;
 }
 
 .general-lobby-page #lobbyStats,
@@ -4318,6 +4400,8 @@ body.general-lobby-page {
 }
 
 .general-lobby-page .hero-game-card {
+  grid-template-rows: 108px minmax(0, auto);
+  min-height: 170px;
   border-color: #b7c5c0;
   border-radius: 7px;
   background: #ffffff;
@@ -4333,6 +4417,21 @@ body.general-lobby-page {
   border-color: #a8d2ca;
   background: #e5f5f1;
   color: #24534a;
+}
+
+.general-lobby-page .hero-game-copy {
+  gap: 3px;
+  padding: 9px 10px 10px;
+}
+
+.general-lobby-page .hero-game-card strong {
+  font-size: 17px;
+}
+
+.general-lobby-page .hero-game-card em {
+  min-height: 24px;
+  padding: 4px 7px;
+  font-size: 11px;
 }
 
 .general-lobby-page .continue-playing-card {
@@ -4476,7 +4575,7 @@ body.general-lobby-page {
 }
 
 .general-lobby-page .lobby-grid {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 14px;
   padding-top: 12px;
 }
@@ -4492,6 +4591,7 @@ body.general-lobby-page {
 
 .general-lobby-page .game-card-art.image-art {
   max-height: none;
+  aspect-ratio: 4 / 3;
   border-bottom: 1px solid #d4ddd9;
 }
 
@@ -4511,13 +4611,13 @@ body.general-lobby-page {
 }
 
 .general-lobby-page .game-card-body {
-  gap: 8px;
-  padding: 11px;
+  gap: 7px;
+  padding: 9px;
 }
 
 .general-lobby-page .game-card h2 {
   color: #172d2a;
-  font-size: 20px;
+  font-size: 18px;
 }
 
 .general-lobby-page .game-card p,
@@ -4547,6 +4647,10 @@ body.general-lobby-page {
 
 .general-lobby-page .game-card-topline {
   color: #3d5b54;
+}
+
+.general-lobby-page .game-card.playable .game-card-topline {
+  display: none;
 }
 
 .general-lobby-page .game-card-actions {
@@ -4656,7 +4760,7 @@ body.general-lobby-page {
 
 @media (max-width: 720px) {
   .general-lobby-page .lobby-hero {
-    height: 330px;
+    height: 220px;
   }
 
   .general-lobby-page .general-hero-scene {
@@ -4664,22 +4768,24 @@ body.general-lobby-page {
   }
 
   .general-lobby-page .lobby-hero-copy {
-    top: 48px;
+    top: 36px;
     left: 16px;
     width: 70%;
   }
 
   .general-lobby-page .lobby-hero h1 {
-    font-size: 40px;
+    font-size: 34px;
   }
 
   .general-lobby-page .lobby-subtitle {
     display: -webkit-box;
     overflow: hidden;
-    font-size: 13px;
-    line-height: 1.3;
+    max-width: 230px;
+    margin-top: 7px;
+    font-size: 12px;
+    line-height: 1.25;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 4;
+    -webkit-line-clamp: 2;
   }
 
   .general-lobby-page .language-picker {
@@ -4687,34 +4793,73 @@ body.general-lobby-page {
   }
 
   .general-lobby-page .lobby-account-strip {
-    min-height: 62px;
-    margin-bottom: 18px;
+    min-height: 58px;
+    margin: 24px 0 0;
     padding: 8px 10px;
   }
 
   .general-lobby-page .lobby-feature {
-    right: 12px;
-    bottom: 12px;
-    width: min(250px, 72%);
-    min-height: 58px;
-    grid-template-columns: 42px minmax(0, 1fr);
+    right: 8px;
+    bottom: 8px;
+    width: min(210px, 64%);
+    min-height: 50px;
+    grid-template-columns: 36px minmax(0, 1fr);
+    gap: 8px;
+    padding: 6px 8px 6px 6px;
   }
 
   .general-lobby-page .lobby-feature img {
-    width: 42px;
-    height: 42px;
+    width: 36px;
+    height: 36px;
   }
 
   .general-lobby-page .lobby-feature strong {
-    font-size: 15px;
+    font-size: 14px;
   }
 
   .general-lobby-page .general-play-heading {
-    margin-top: 16px;
+    margin: 8px 0 4px;
+    text-align: left;
+  }
+
+  .general-lobby-page .general-play-heading span {
+    display: none;
+  }
+
+  .general-lobby-page .general-play-heading h2 {
+    font-size: 25px;
+  }
+
+  .general-lobby-page .vibe-strip {
+    margin-bottom: 7px;
+  }
+
+  .general-lobby-page .vibe-strip h3 {
+    display: none;
+  }
+
+  .general-lobby-page .vibe-options {
+    display: flex;
+    padding: 2px 0 5px;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+  }
+
+  .general-lobby-page .vibe-options::-webkit-scrollbar {
+    display: none;
+  }
+
+  .general-lobby-page .vibe-options button {
+    min-width: 108px;
+    min-height: 44px;
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+    font-size: 12px;
   }
 
   .general-lobby-page .hero-games {
-    grid-auto-columns: minmax(218px, 72vw);
+    grid-auto-columns: minmax(180px, 60vw);
   }
 
   .general-lobby-page .upcoming-games {
@@ -4767,8 +4912,8 @@ body.general-lobby-page {
   .general-lobby-page .game-card h2 {
     display: -webkit-box;
     overflow: hidden;
-    min-height: 38px;
-    font-size: 17px;
+    min-height: 36px;
+    font-size: 16px;
     line-height: 1.12;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;

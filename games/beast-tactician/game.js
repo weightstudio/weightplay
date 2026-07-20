@@ -4,6 +4,33 @@
   const saveKey = "weightplay_beast_guardian_defense_v1";
   const soundKey = "weightplay_beast_guardian_sound_v1";
   const localeKey = "weightPlayLocale";
+  const sessionStorageFallback = new Map();
+  function readStorage(key) {
+    try {
+      const value = localStorage.getItem(key);
+      if (value !== null) sessionStorageFallback.set(key, value);
+      return value ?? sessionStorageFallback.get(key) ?? null;
+    } catch {
+      return sessionStorageFallback.get(key) ?? null;
+    }
+  }
+  function writeStorage(key, value) {
+    const serialized = String(value);
+    sessionStorageFallback.set(key, serialized);
+    try {
+      localStorage.setItem(key, serialized);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+  function activeI18nLocale() {
+    try {
+      return window.WonderI18n?.locale?.() || "";
+    } catch {
+      return "";
+    }
+  }
   const grid = { cols: 12, rows: 8 };
   const startTile = { x: 0, y: 3 };
   const coreTile = { x: 11, y: 4 };
@@ -1101,7 +1128,7 @@
 
   function setSoundEnabled(enabled, announce = false) {
     state.soundEnabled = Boolean(enabled);
-    localStorage.setItem(soundKey, state.soundEnabled ? "on" : "off");
+    writeStorage(soundKey, state.soundEnabled ? "on" : "off");
     updateSoundButton();
     if (announce) showToast(t(state.soundEnabled ? "soundEnabled" : "soundDisabled"));
     track("game_audio_toggle", { enabled: state.soundEnabled });
@@ -1203,12 +1230,7 @@
   }
 
   function persistSave(value) {
-    try {
-      localStorage.setItem(saveKey, JSON.stringify(value));
-      return true;
-    } catch {
-      return false;
-    }
+    return writeStorage(saveKey, JSON.stringify(value));
   }
 
   function loadSave() {
@@ -1237,7 +1259,7 @@
     };
     let raw = null;
     try {
-      raw = localStorage.getItem(saveKey);
+      raw = readStorage(saveKey);
       const parsedValue = JSON.parse(raw || "{}");
       const parsed = parsedValue && typeof parsedValue === "object" && !Array.isArray(parsedValue) ? parsedValue : {};
       const normalized = {
@@ -3501,9 +3523,10 @@
     });
     nodes.localeSelect.addEventListener("change", () => {
       const requested = nodes.localeSelect.value;
-      window.WonderI18n?.setLocale?.(requested);
-      state.locale = window.WonderI18n?.locale?.() || requested;
-      localStorage.setItem(localeKey, requested);
+      let sharedLocaleUpdated = false;
+      try { window.WonderI18n?.setLocale?.(requested); sharedLocaleUpdated = true; } catch {}
+      state.locale = (sharedLocaleUpdated ? activeI18nLocale() : "") || requested;
+      writeStorage(localeKey, requested);
       updateLocale();
     });
     nodes.startBtn.addEventListener("keydown", (event) => {
@@ -5625,13 +5648,13 @@
   }
 
   async function init() {
-    state.locale = window.WonderI18n?.locale?.() || localStorage.getItem(localeKey) || "en";
+    state.locale = activeI18nLocale() || readStorage(localeKey) || "en";
     if (!text[state.locale]) state.locale = "en";
     const zhOption = nodes.localeSelect.querySelector('option[value="zh-Hant"]');
     if (zhOption) zhOption.textContent = text["zh-Hant"].localeName;
     nodes.localeSelect.value = state.locale;
     state.save = loadSave();
-    state.soundEnabled = localStorage.getItem(soundKey) === "on";
+    state.soundEnabled = readStorage(soundKey) === "on";
     updateProfile();
     bindEvents();
     updateLocale();
