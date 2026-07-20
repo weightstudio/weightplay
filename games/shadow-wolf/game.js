@@ -2,8 +2,30 @@
   const GAME_ID = "shadow-wolf";
   const saveKey = "weightplay_shadow_wolf_v1";
   const localeKey = "weightPlayLocale";
+  const storageSession = new Map();
   const STAGE_COUNT = 30;
   const BOSS_STAGES = new Set([5, 10, 15, 20, 25, 30]);
+
+  function readStorage(key) {
+    try {
+      const value = localStorage.getItem(key);
+      if (value !== null) storageSession.set(key, value);
+      return value ?? storageSession.get(key) ?? null;
+    } catch {
+      return storageSession.get(key) ?? null;
+    }
+  }
+
+  function writeStorage(key, value) {
+    const serialized = String(value);
+    storageSession.set(key, serialized);
+    try {
+      localStorage.setItem(key, serialized);
+      return true;
+    } catch {
+      return false;
+    }
+  }
 
   const stage = (id, nameEn, nameZht, hintEn, hintZht, hazard, enemies, boss = "") => ({
     id,
@@ -663,7 +685,7 @@
 
   function loadLocalState() {
     try {
-      const data = JSON.parse(localStorage.getItem(saveKey) || "{}");
+      const data = JSON.parse(readStorage(saveKey) || "{}");
       state.amuletUnlocked = !!data.amuletUnlocked;
       state.runs = Math.max(0, Number.parseInt(data.runs, 10) || 0);
       const legacyBestRoom = Math.max(0, Math.min(8, Number.parseInt(data.bestRoom, 10) || 0));
@@ -687,22 +709,20 @@
   }
 
   function saveLocalState() {
-    try {
-      localStorage.setItem(saveKey, JSON.stringify({
-        amuletUnlocked: state.amuletUnlocked,
-        runs: state.runs,
-        bestRoom: Math.min(8, Math.ceil(state.bestRoom * 8 / STAGE_COUNT)),
-        bestStage: state.bestRoom,
-        wins: state.wins,
-        unlockedStage: state.unlockedStage,
-        selectedStage: state.selectedStage,
-        completedStages: state.completedStages,
-      }));
-    } catch {}
+    writeStorage(saveKey, JSON.stringify({
+      amuletUnlocked: state.amuletUnlocked,
+      runs: state.runs,
+      bestRoom: Math.min(8, Math.ceil(state.bestRoom * 8 / STAGE_COUNT)),
+      bestStage: state.bestRoom,
+      wins: state.wins,
+      unlockedStage: state.unlockedStage,
+      selectedStage: state.selectedStage,
+      completedStages: state.completedStages,
+    }));
   }
 
   function getLocale() {
-    const requested = window.WonderI18n?.locale?.() || localStorage.getItem(localeKey) || "en";
+    const requested = window.WonderI18n?.locale?.() || readStorage(localeKey) || "en";
     return text[requested] ? requested : "en";
   }
 
@@ -2829,7 +2849,7 @@
         return STAGE_DEFINITIONS.map((definition) => ({ ...definition, enemies: [...definition.enemies] }));
       },
       restoreSave(snapshot = {}) {
-        localStorage.setItem(saveKey, JSON.stringify(snapshot));
+        writeStorage(saveKey, JSON.stringify(snapshot));
         loadLocalState();
         renderAdventureRecord();
         renderStageCards();

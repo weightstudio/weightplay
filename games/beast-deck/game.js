@@ -5,6 +5,20 @@
   const GAME_ID = "beast-deck";
   const saveKey = "weightplay_beast_deck_v1";
   const localeKey = "weightPlayLocale";
+  const storageSession = new Map();
+  const readStorage = (key) => {
+    try {
+      const value = localStorage.getItem(key);
+      if (value !== null) storageSession.set(key, value);
+      return value ?? storageSession.get(key) ?? null;
+    } catch {
+      return storageSession.get(key) ?? null;
+    }
+  };
+  const writeStorage = (key, value) => {
+    storageSession.set(key, value);
+    try { localStorage.setItem(key, value); return true; } catch { return false; }
+  };
   const amuletCost = 15;
   const packCost = 80;
   const maxGearRank = 3;
@@ -1134,7 +1148,7 @@
 
   function loadLocalState() {
     try {
-      profile = normalizeProfile(JSON.parse(localStorage.getItem(saveKey) || "{}"));
+      profile = normalizeProfile(JSON.parse(readStorage(saveKey) || "{}"));
     } catch {
       profile = normalizeProfile();
     }
@@ -1143,13 +1157,11 @@
   }
 
   function saveLocalState() {
-    try {
-      localStorage.setItem(saveKey, JSON.stringify(profile));
-    } catch {}
+    writeStorage(saveKey, JSON.stringify(profile));
   }
 
   function getLocale() {
-    const stored = localStorage.getItem(localeKey);
+    const stored = readStorage(localeKey);
     return window.WonderI18n?.actualLocale?.() || window.WonderI18n?.locale?.() || (["zh-Hant", "zh-Hans", "es"].includes(stored) ? stored : "en");
   }
 

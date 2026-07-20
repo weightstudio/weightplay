@@ -4,6 +4,28 @@
   const canonicalLocaleKey = "weightPlayLocale";
   const unlockKey = "weightplay_shape_train_unlocked";
   const starKey = "weightplay_shape_train_stars";
+  const sessionStorageFallback = new Map();
+
+  function readStorage(key) {
+    try {
+      const value = localStorage.getItem(key);
+      if (value !== null) sessionStorageFallback.set(key, value);
+      return value ?? sessionStorageFallback.get(key) ?? null;
+    } catch {
+      return sessionStorageFallback.get(key) ?? null;
+    }
+  }
+
+  function writeStorage(key, value) {
+    const serialized = String(value);
+    sessionStorageFallback.set(key, serialized);
+    try {
+      localStorage.setItem(key, serialized);
+      return true;
+    } catch {
+      return false;
+    }
+  }
 
   const text = {
     en: {
@@ -307,11 +329,11 @@
   nodes.keepPlayingBtn = $("keepPlayingBtn");
   nodes.leaveStageBtn = $("leaveStageBtn");
 
-  const legacySavedLocale = localStorage.getItem(localeKey);
-  const canonicalSavedLocale = localStorage.getItem(canonicalLocaleKey);
+  const legacySavedLocale = readStorage(localeKey);
+  const canonicalSavedLocale = readStorage(canonicalLocaleKey);
   if (!canonicalSavedLocale && ["en", "zh-Hant", "zh-Hans"].includes(legacySavedLocale)) {
-    localStorage.setItem(canonicalLocaleKey, legacySavedLocale);
-    window.WonderI18n?.setLocale?.(legacySavedLocale);
+    writeStorage(canonicalLocaleKey, legacySavedLocale);
+    try { window.WonderI18n?.setLocale?.(legacySavedLocale); } catch {}
   }
   let locale = window.WonderI18n?.locale?.() || canonicalSavedLocale || legacySavedLocale || "en";
   let unlocked = readUnlocked();
@@ -408,16 +430,16 @@
   }
 
   function readUnlocked() {
-    const parsed = Number(localStorage.getItem(unlockKey));
+    const parsed = Number(readStorage(unlockKey));
     const repaired = clamp(Number.isFinite(parsed) ? Math.floor(parsed) : 1, 1, stages.length);
-    localStorage.setItem(unlockKey, String(repaired));
+    writeStorage(unlockKey, repaired);
     return repaired;
   }
 
   function readStars() {
     let parsed;
     try {
-      parsed = JSON.parse(localStorage.getItem(starKey) || "{}");
+      parsed = JSON.parse(readStorage(starKey) || "{}");
     } catch {
       parsed = {};
     }
@@ -430,12 +452,12 @@
         repaired[stageNo] = clamp(Math.floor(starCount), 1, 3);
       });
     }
-    localStorage.setItem(starKey, JSON.stringify(repaired));
+    writeStorage(starKey, JSON.stringify(repaired));
     return repaired;
   }
 
   function saveStars() {
-    localStorage.setItem(starKey, JSON.stringify(stars));
+    writeStorage(starKey, JSON.stringify(stars));
   }
 
   function t(key, data) {
@@ -863,7 +885,7 @@
     saveStars();
     if (stageNo === unlocked && unlocked < stages.length) {
       unlocked += 1;
-      localStorage.setItem(unlockKey, String(unlocked));
+      writeStorage(unlockKey, unlocked);
     }
     nodes.progressFill.style.width = "100%";
     lastResult = { earned, previousBest, count: stages[currentStage].tasks.length };
@@ -1036,9 +1058,9 @@
     nodes.stageBackBtn.addEventListener("click", () => showMain(true));
     nodes.localeSelect.addEventListener("change", () => {
       const requested = nodes.localeSelect.value;
-      window.WonderI18n?.setLocale?.(requested);
+      try { window.WonderI18n?.setLocale?.(requested); } catch {}
       locale = window.WonderI18n?.locale?.() || requested;
-      localStorage.setItem(localeKey, requested);
+      writeStorage(localeKey, requested);
       localizeStatic();
       preserveGameLocaleAfterSharedGuide();
       renderStageGrid();
@@ -1115,7 +1137,7 @@
       stages: stages.map((stage, index) => ({ id: index + 1, cars: [...stage.cars], tasks: [...stage.tasks], rule: stage.rule, checkpoint: Boolean(stage.checkpoint), outline: Boolean(stage.outline), moving: Boolean(stage.moving), memory: Boolean(stage.memory), requireSelect: Boolean(stage.requireSelect) })),
       unlockAll() {
         unlocked = stages.length;
-        localStorage.setItem(unlockKey, String(unlocked));
+        writeStorage(unlockKey, unlocked);
         showMenu();
       },
       startStage(number) { startStage(clamp(Number(number) || 1, 1, stages.length) - 1); },

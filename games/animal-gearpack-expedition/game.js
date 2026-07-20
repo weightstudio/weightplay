@@ -205,7 +205,7 @@
   Object.entries(enemyCatalog).forEach(([id,enemy])=>{enemy.name.push(spanishEnemyNames[id]);});
   const $ = (selector) => document.querySelector(selector);
   const screens = {main:$("#mainScreen"),stage:$("#stageScreen"),battle:$("#battleScreen")};
-  const storedLocale = localStorage.getItem("weightPlayLocale");
+  const storedLocale = readStorage("weightPlayLocale");
   let locale = window.WonderI18n?.locale?.() || (["zh-Hant","es"].includes(storedLocale) ? storedLocale : "en");
   function normalizeProgress(source){
     const data=source&&typeof source==="object"?source:{};
@@ -242,7 +242,8 @@
   let centeredStage = selectedStage;
 
   function t(key,vars={}){return (copy[locale][key] || copy.en[key] || key).replace(/\{(\w+)\}/g,(_,name)=>vars[name] ?? `{${name}}`);}
-  function load(key,fallback){try{return {...fallback,...JSON.parse(localStorage.getItem(key)||"null")};}catch{return {...fallback};}}
+  function readStorage(key){try{return localStorage.getItem(key);}catch{return null;}}
+  function load(key,fallback){try{return {...fallback,...JSON.parse(readStorage(key)||"null")};}catch{return {...fallback};}}
   function writeStorage(key,value){try{localStorage.setItem(key,value);return true;}catch{return false;}}
   function removeStorage(key){try{localStorage.removeItem(key);return true;}catch{return false;}}
   function saveProgress(){progress=normalizeProgress(progress);return writeStorage(SAVE_KEY,JSON.stringify(progress));}

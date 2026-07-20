@@ -13,6 +13,20 @@
   const saveKey = "weightplay_relic_hunters_v1";
   const profileKey = "weightplay:animal-relic-hunters:profile:v1";
   const localeKey = "weightPlayLocale";
+  const storageSession = new Map();
+  const readStorage = (key) => {
+    try {
+      const value = localStorage.getItem(key);
+      if (value !== null) storageSession.set(key, value);
+      return value ?? storageSession.get(key) ?? null;
+    } catch {
+      return storageSession.get(key) ?? null;
+    }
+  };
+  const writeStorage = (key, value) => {
+    storageSession.set(key, value);
+    try { localStorage.setItem(key, value); return true; } catch { return false; }
+  };
 
   const $ = (id) => document.getElementById(id);
   const nodes = {
@@ -973,7 +987,7 @@
 
   function loadProfile() {
     try {
-      profile = normalizeProfile(JSON.parse(localStorage.getItem(profileKey) || "{}"));
+      profile = normalizeProfile(JSON.parse(readStorage(profileKey) || "{}"));
     } catch {
       profile = createDefaultProfile();
     }
@@ -982,9 +996,7 @@
   }
 
   function saveProfile() {
-    try {
-      localStorage.setItem(profileKey, JSON.stringify(profile));
-    } catch {}
+    writeStorage(profileKey, JSON.stringify(profile));
   }
 
   function syncStateFromProfile() {
@@ -1007,7 +1019,7 @@
   // Safe read/write LocalStorage
   function loadLocalState() {
     try {
-      const data = JSON.parse(localStorage.getItem(saveKey) || "{}");
+      const data = JSON.parse(readStorage(saveKey) || "{}");
       state.amuletUnlocked = Boolean(data && typeof data === "object" && !Array.isArray(data) && data.amuletUnlocked === true);
     } catch {
       state.amuletUnlocked = false;
@@ -1017,13 +1029,11 @@
   }
 
   function saveLocalState() {
-    try {
-      localStorage.setItem(saveKey, JSON.stringify({ amuletUnlocked: state.amuletUnlocked }));
-    } catch {}
+    writeStorage(saveKey, JSON.stringify({ amuletUnlocked: state.amuletUnlocked }));
   }
 
   function getLocale() {
-    const stored = localStorage.getItem(localeKey);
+    const stored = readStorage(localeKey);
     const requested = window.WonderI18n?.locale?.() || stored || "en";
     return text[requested] ? requested : "en";
   }
@@ -3630,7 +3640,7 @@
             resultSummary: nodes.resultSummary?.textContent || "",
             runGold: state.runGold,
             goldText: nodes.goldText?.textContent || "",
-            profile: JSON.parse(localStorage.getItem(profileKey) || "{}"),
+            profile: JSON.parse(readStorage(profileKey) || JSON.stringify(profile)),
             wallet: window.WeightPlayWallet?.read?.() || null,
             expedition: state.expedition,
             room: state.room,

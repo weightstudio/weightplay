@@ -475,7 +475,13 @@
   ];
 
   const images = {};
-  let locale = window.WonderI18n?.locale?.() || localStorage.getItem(localeKey) || "en";
+  const readStorage = (key) => {
+    try { return localStorage.getItem(key); } catch { return null; }
+  };
+  const writeStorage = (key, value) => {
+    try { localStorage.setItem(key, value); return true; } catch { return false; }
+  };
+  let locale = window.WonderI18n?.locale?.() || readStorage(localeKey) || "en";
   let save = loadSave();
   let selectedTier = 1;
   let centeredStageFrame = 0;
@@ -605,7 +611,7 @@
     };
     const defaults = { bestRaid: 1, starStones: 0, playCount: 0, rooms: { forge: 0, shield: 0, den: 0, tower: 0 } };
     try {
-      const parsed = JSON.parse(localStorage.getItem(saveKey) || "{}");
+      const parsed = JSON.parse(readStorage(saveKey) || "{}");
       const source = parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : {};
       const roomsSource = source.rooms && typeof source.rooms === "object" && !Array.isArray(source.rooms) ? source.rooms : {};
       const normalized = {
@@ -614,16 +620,16 @@
         playCount: boundedInteger(source.playCount, 0, 0),
         rooms: Object.fromEntries(Object.keys(defaults.rooms).map((id) => [id, boundedInteger(roomsSource[id], 0, 0, 5)])),
       };
-      localStorage.setItem(saveKey, JSON.stringify(normalized));
+      writeStorage(saveKey, JSON.stringify(normalized));
       return normalized;
     } catch {
-      localStorage.setItem(saveKey, JSON.stringify(defaults));
+      writeStorage(saveKey, JSON.stringify(defaults));
       return defaults;
     }
   }
 
   function persist() {
-    localStorage.setItem(saveKey, JSON.stringify(save));
+    writeStorage(saveKey, JSON.stringify(save));
   }
 
   function makeState() {
@@ -768,7 +774,7 @@
     const requested = next === "zh-Hant" && current === "zh-Hans" ? current : next || "en";
     if (current !== requested) window.WonderI18n?.setLocale?.(requested);
     locale = window.WonderI18n?.legacyLocale?.(requested) || requested;
-    localStorage.setItem(localeKey, requested);
+    writeStorage(localeKey, requested);
     document.documentElement.lang = requested;
     document.querySelectorAll("[data-ui]").forEach((node) => {
       node.textContent = t(node.dataset.ui);

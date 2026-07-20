@@ -1802,7 +1802,7 @@
       ) {
         const option = document.createElement("option");
         option.value = "ja";
-        option.textContent = "日本語";
+        option.textContent = "\u65e5\u672c\u8a9e";
         select.appendChild(option);
       }
       if (select.querySelector(`option[value="${currentLocale}"]`)) select.value = currentLocale;

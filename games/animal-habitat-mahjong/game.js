@@ -1,8 +1,31 @@
 (() => {
   const LOGICAL_W = 390, LOGICAL_H = 788, saveKey = "weightplay_habitat_mahjong_v1";
   const canonicalLocaleKey = "weightPlayLocale", legacyLocaleKey = "weightplayLocale";
-  const canonicalSavedLocale = localStorage.getItem(canonicalLocaleKey), legacySavedLocale = localStorage.getItem(legacyLocaleKey);
-  if (!canonicalSavedLocale && ["en", "zh-Hant", "zh-Hans"].includes(legacySavedLocale)) { localStorage.setItem(canonicalLocaleKey, legacySavedLocale); window.WonderI18n?.setLocale?.(legacySavedLocale); }
+  const sessionStorageFallback = new Map();
+  function readStorage(key) {
+    try {
+      const value = localStorage.getItem(key);
+      if (value !== null) sessionStorageFallback.set(key, value);
+      return value ?? sessionStorageFallback.get(key) ?? null;
+    } catch {
+      return sessionStorageFallback.get(key) ?? null;
+    }
+  }
+  function writeStorage(key, value) {
+    const serialized = String(value);
+    sessionStorageFallback.set(key, serialized);
+    try {
+      localStorage.setItem(key, serialized);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+  const canonicalSavedLocale = readStorage(canonicalLocaleKey), legacySavedLocale = readStorage(legacyLocaleKey);
+  if (!canonicalSavedLocale && ["en", "zh-Hant", "zh-Hans"].includes(legacySavedLocale)) {
+    writeStorage(canonicalLocaleKey, legacySavedLocale);
+    try { window.WonderI18n?.setLocale?.(legacySavedLocale); } catch {}
+  }
   const $ = (id) => document.getElementById(id);
   if (!$("leavePanel")) {
     const panel = document.createElement("section");
@@ -67,10 +90,10 @@
     habitatData("forest","bridge","dual",{ sealedPairs:[4,7], rescuePairs:[6,8] }), habitatData("safari","wings","dual",{ sealedPairs:[5,8], rescuePairs:[6,9] }), habitatData("ocean","crown","dual",{ sealedPairs:[6,9], rescuePairs:[8,10] }), habitatData("arctic","pyramid","dual",{ sealedPairs:[7,10], rescuePairs:[9,11] }), habitatData("forest","sanctuary","dual",{ sealedPairs:[7,10], rescuePairs:[9,11], checkpoint:true }),
     habitatData("safari","towers","grand",{ sealedPairs:[4,7], rescuePairs:[6,9] }), habitatData("ocean","pyramid","grand",{ sealedPairs:[7,10], rescuePairs:[9,11] }), habitatData("arctic","sanctuary","grand",{ sealedPairs:[7,10], rescuePairs:[9,11] }), habitatData("forest","pyramid","grand",{ sealedPairs:[6,9], rescuePairs:[10,11] }), habitatData("ocean","sanctuary","grand",{ sealedPairs:[7,10], rescuePairs:[9,11], checkpoint:true })
   ];
-  let locale = window.WonderI18n?.locale?.() || localStorage.getItem("weightPlayLocale") || "en", save = loadSave(), stageIndex = 0, selected = null, state = null, leaveOpen = false, centeredStageFrame = 0;
+  let locale = window.WonderI18n?.locale?.() || readStorage(canonicalLocaleKey) || "en", save = loadSave(), stageIndex = 0, selected = null, state = null, leaveOpen = false, centeredStageFrame = 0;
   const t = (key, values = {}) => Object.entries(values).reduce((out, [name, value]) => out.replaceAll(`{${name}}`, value), (copy[locale] || copy.en)[key] || copy.en[key] || key);
-  function loadSave() { try { return { unlocked:1, bestPairs:0, playCount:0, bestByStage:{}, ...JSON.parse(localStorage.getItem(saveKey) || "{}") }; } catch { return { unlocked:1, bestPairs:0, playCount:0, bestByStage:{} }; } }
-  const persist = () => localStorage.setItem(saveKey, JSON.stringify(save));
+  function loadSave() { try { return { unlocked:1, bestPairs:0, playCount:0, bestByStage:{}, ...JSON.parse(readStorage(saveKey) || "{}") }; } catch { return { unlocked:1, bestPairs:0, playCount:0, bestByStage:{} }; } }
+  const persist = () => writeStorage(saveKey, JSON.stringify(save));
   function applyLocale() { document.documentElement.lang = locale; document.title = `${t("title")} - WeightPlay`; document.querySelectorAll("[data-ui]").forEach((el) => { el.textContent = t(el.dataset.ui); }); document.querySelectorAll("[data-aria]").forEach((el) => { el.setAttribute("aria-label", t(el.dataset.aria)); }); nodes.localeSelect.value = locale; renderMain(); renderStage(); if (state) renderBattle(); window.dispatchEvent(new CustomEvent("wonder:locale-change", { detail:{ locale } })); }
   function setScreen(name) { const result = name === "result"; nodes.mainScreen.classList.toggle("hidden", name !== "main"); nodes.stageScreen.classList.toggle("hidden", name !== "stage"); nodes.battleScreen.classList.toggle("hidden", name !== "battle" && !result); nodes.resultScreen.classList.toggle("hidden", !result); nodes.battleLive.classList.toggle("hidden", result); nodes.battleLive.inert = result; if (result) nodes.battleLive.setAttribute("aria-hidden", "true"); else nodes.battleLive.removeAttribute("aria-hidden"); document.body.classList.toggle("playing", name !== "main"); document.body.classList.toggle("habitat-result", result); if (name !== "main") scheduleFitCanvases(); }
   function fitCanvases() { const viewportWidth = Math.max(1, document.documentElement.clientWidth || innerWidth); const viewportHeight = Math.max(1, document.documentElement.clientHeight || innerHeight); const scale = Math.min(viewportWidth / LOGICAL_W, viewportHeight / LOGICAL_H); const logicalWidth = viewportWidth / scale; const logicalHeight = viewportHeight / scale; document.documentElement.style.setProperty("--scale", scale); document.documentElement.style.setProperty("--slot-w", `${viewportWidth}px`); document.documentElement.style.setProperty("--slot-h", `${viewportHeight}px`); document.documentElement.style.setProperty("--logical-w", `${logicalWidth}px`); document.documentElement.style.setProperty("--logical-h", `${logicalHeight}px`); }
@@ -245,7 +268,7 @@
     if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
   };
   const focusCurrentStage = () => requestAnimationFrame(() => nodes.stageRail.querySelector(`.stage-card[data-index="${stageIndex}"]`)?.focus({ preventScroll:true }));
-  nodes.localeSelect.addEventListener("change", (event) => { const requested = event.target.value; window.WonderI18n?.setLocale?.(requested); locale = window.WonderI18n?.locale?.() || requested; localStorage.setItem("weightPlayLocale", requested); applyLocale(); });
+  nodes.localeSelect.addEventListener("change", (event) => { const requested = event.target.value; try { window.WonderI18n?.setLocale?.(requested); } catch {} locale = window.WonderI18n?.locale?.() || requested; writeStorage(canonicalLocaleKey, requested); applyLocale(); });
   nodes.startBtn.addEventListener("keydown", rejectRepeatedActivation);
   nodes.stageRail.addEventListener("keydown", (event) => { if (event.target.closest(".stage-card")) rejectRepeatedActivation(event); });
   nodes.startBtn.addEventListener("click", openStageFromMain);
