@@ -3655,6 +3655,9 @@
       track("game_next_stage", { stage: state.currentStage, next_stage: nextStage });
       startStage(nextStage);
     });
+    nodes.soundBtn?.addEventListener("keydown", (event) => {
+      if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
+    });
     nodes.soundBtn?.addEventListener("click", () => setSoundEnabled(!state.soundEnabled, true));
     window.addEventListener("resize", updateBattleShell, { passive: true });
     nodes.canvas.addEventListener("pointerdown", onCanvasClick);

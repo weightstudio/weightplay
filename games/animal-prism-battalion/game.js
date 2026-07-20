@@ -31,7 +31,8 @@
   const chapters=["chapter1","chapter2","chapter3","chapter4","chapter5","chapter6"];
   const stages=Array.from({length:30},(_,index)=>{
     const n=index+1,chapter=Math.floor(index/5),step=index%5;
-    return{n,chapter,time:58-chapter*2-step,fortress:165+index*22,enemyHp:8+chapter*5+step*2,waves:2+Math.floor(index/4),moving:chapter>=2,shields:chapter>=1,counter:chapter>=3,champion:chapter>=4,boss:n%5===0};
+    const boss=n%5===0;
+    return{n,chapter,time:58-chapter*2-step,fortress:Math.round((165+index*42+chapter*chapter*360)*(boss?1.18:1)),enemyHp:10+chapter*14+step*4,waves:2+chapter+(step>=2?1:0),moving:chapter>=2,shields:chapter>=1,counter:chapter>=3,champion:chapter>=4,boss};
   });
   const staticText=[...document.querySelectorAll("[data-t]")];
   const assistiveText=[...document.querySelectorAll("[data-ta]")];
@@ -45,6 +46,7 @@
     assistiveText.forEach((node)=>node.setAttribute("aria-label",t(node.dataset.ta)));
     document.title=`${t("title")} | WeightPlay Internal Trial`;
     renderMain();renderStage();renderLab();if(run)updateHud(true);
+    window.dispatchEvent(new CustomEvent("wonder:localechange",{detail:{locale}}));
   }
   function showScreen(name){
     currentScreen=name;document.body.dataset.screen=name;
@@ -77,7 +79,7 @@
   function renderLab(){
     $("shardCount").textContent=t("shards",{count:save.shards});
     $("upgrades").replaceChildren(...Object.entries(upgradeData).map(([id,data])=>{
-      const level=save.upgrades[id],button=document.createElement("button");button.type="button";button.className=`upgrade${level>=5?" maxed":""}`;button.disabled=level>=5;
+      const level=save.upgrades[id],button=document.createElement("button");button.type="button";button.className=`upgrade${level>=5?" maxed":""}`;button.dataset.upgrade=id;button.disabled=level>=5;
       button.innerHTML=`<span class="upgrade-icon">${data.icon}</span><strong>${t(data.name)}</strong><small>${t(data.desc)}</small><b>${t("level",{level})}</b><em>${level>=5?t("maxed"):t("upgradeCost",{cost:upgradeCost(level)})}</em>`;
       button.addEventListener("click",()=>buyUpgrade(id));return button;
     }));
@@ -88,7 +90,7 @@
   $("locale").addEventListener("change",(event)=>{locale=canonicalLocale(event.target.value);storage.set("wonderLocale",locale);applyLocale()});
 
   const canvas=$("arena"),ctx=canvas.getContext("2d"),images={};
-  const imageSources={arena:"../../assets/animal-prism-battalion/arena.webp",fox:"../../assets/weightplay-character-spark-paw-fox-cutout.webp",enemy:"../../assets/animal-crystal-survivor-shadow-fox-v2.webp",boss:"../../assets/animal-crystal-survivor-boss-eclipse-colossus.webp"};
+  const imageSources={arena:"../../assets/animal-prism-battalion/arena.webp",spirits:"../../assets/animal-prism-battalion/spirit-atlas.webp",fox:"../../assets/weightplay-character-spark-paw-fox-cutout.webp",enemy:"../../assets/animal-crystal-survivor-shadow-fox-v2.webp",boss:"../../assets/animal-crystal-survivor-boss-eclipse-colossus.webp"};
   function seeded(seed){let value=(seed*9301+49297)%233280;return()=>{value=(value*9301+49297)%233280;return value/233280}}
   function gateRows(stage){
     if(stage.n===1)return[[{x:.28,kind:"mul",value:2},{x:.72,kind:"sub",value:2}],[{x:.28,kind:"add",value:4},{x:.72,kind:"mul",value:2}]];
@@ -119,7 +121,7 @@
   function addText(x,y,text,color){run.texts.push({x,y,text,color,life:1})}
   function addBurst(x,y,color,count=8){for(let i=0;i<count;i+=1){const a=Math.PI*2*i/count+Math.random()*.3,s=.025+Math.random()*.045;run.particles.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,color,life:.65+Math.random()*.35})}}
   function updatePeak(){if(run)run.peak=Math.max(run.peak,Math.round(run.units.reduce((sum,unit)=>sum+unit.count,0)))}
-  function launch(){const interval=.31-save.upgrades.rate*.028;run.units.push({x:run.aimX,y:.88,count:1,power:1+save.upgrades.power*.22,vy:-.34,gates:new Set(),hue:run.overdrive>0?48:188});run.fireClock-=interval;updatePeak()}
+  function launch(){const interval=.31-save.upgrades.rate*.028;run.units.push({x:run.aimX,y:.88,count:1,power:1+save.upgrades.power*.22,vy:-.34,gates:new Set(),hue:run.overdrive>0?48:188,sprite:(run.units.length+run.wavesSpawned)%3});run.fireClock-=interval;updatePeak()}
   function applyGate(unit,gate){
     if(unit.gates.has(gate.id))return;unit.gates.add(gate.id);const before=unit.count;
     if(gate.kind==="mul")unit.count=Math.min(80,unit.count*gate.value);else if(gate.kind==="add")unit.count=Math.min(80,unit.count+gate.value);else unit.count=Math.max(1,unit.count-gate.value);
@@ -151,15 +153,17 @@
   function rounded(x,y,w,h,r){const radius=Math.min(r,w/2,h/2);ctx.beginPath();ctx.moveTo(x+radius,y);ctx.arcTo(x+w,y,x+w,y+h,radius);ctx.arcTo(x+w,y+h,x,y+h,radius);ctx.arcTo(x,y+h,x,y,radius);ctx.arcTo(x,y,x+w,y,radius);ctx.closePath()}
   function drawCover(image,x,y,w,h){if(!image?.naturalWidth)return;const scale=Math.max(w/image.naturalWidth,h/image.naturalHeight),sw=w/scale,sh=h/scale,sx=(image.naturalWidth-sw)/2,sy=(image.naturalHeight-sh)/2;ctx.drawImage(image,sx,sy,sw,sh,x,y,w,h)}
   function drawImageCentered(image,x,y,size,glow=""){if(!image?.naturalWidth)return;ctx.save();ctx.translate(x,y);if(glow){ctx.shadowColor=glow;ctx.shadowBlur=size*.45}ctx.drawImage(image,-size/2,-size/2,size,size);ctx.restore()}
+  function drawAtlasCell(image,column,row,x,y,size,glow=""){if(!image?.naturalWidth)return false;const sw=image.naturalWidth/2,sh=image.naturalHeight/2;ctx.save();ctx.translate(x,y);if(glow){ctx.shadowColor=glow;ctx.shadowBlur=size*.34}ctx.drawImage(image,column*sw,row*sh,sw,sh,-size/2,-size/2,size,size);ctx.restore();return true}
   function draw(){
     if(!run)return;const w=canvas.width,h=canvas.height,d=Math.min(w,h),px=(x)=>x*w,py=(y)=>y*h;ctx.clearRect(0,0,w,h);drawCover(images.arena,0,0,w,h);ctx.fillStyle="#03152a45";ctx.fillRect(0,0,w,h);
     const fortressRatio=Math.max(0,run.fortress/run.maxFortress);rounded(w*.19,h*.025,w*.62,h*.038,12);ctx.fillStyle="#071326dd";ctx.fill();rounded(w*.195,h*.031,w*.61*fortressRatio,h*.026,10);ctx.fillStyle=fortressRatio>.35?"#64efd5":"#ff647e";ctx.fill();
     for(const gate of run.gates){const x=px(gate.x-gate.half),y=py(gate.y-.035),gw=px(gate.half*2),gh=py(.07),positive=gate.kind!=="sub";ctx.save();ctx.shadowColor=positive?"#58f5df":"#ff5576";ctx.shadowBlur=d*.025;rounded(x,y,gw,gh,Math.min(18,gh*.24));ctx.fillStyle=positive?"#073f4dcc":"#4d1025d9";ctx.fill();ctx.lineWidth=Math.max(2,d*.004);ctx.strokeStyle=positive?"#8bffe8":"#ff8ba0";ctx.stroke();ctx.fillStyle="#fff";ctx.font=`900 ${Math.max(14,d*.035)}px sans-serif`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText(gateLabel(gate),px(gate.x),py(gate.y));ctx.restore()}
-    for(const unit of run.units){const x=px(unit.x),y=py(unit.y),radius=Math.max(3,d*.008+Math.min(7,unit.count)*d*.0015);ctx.save();ctx.shadowColor=unit.hue===48?"#ffe369":"#64ebff";ctx.shadowBlur=radius*2.8;ctx.fillStyle=unit.hue===48?"#fff3a0":"#baf8ff";const shown=Math.min(7,Math.ceil(Math.sqrt(unit.count)));for(let i=0;i<shown;i++){const angle=i*Math.PI*2/shown,ring=shown===1?0:radius*.8;ctx.beginPath();ctx.arc(x+Math.cos(angle)*ring,y+Math.sin(angle)*ring,radius*.52,0,Math.PI*2);ctx.fill()}ctx.restore();if(unit.count>7){ctx.fillStyle="#fff";ctx.font=`900 ${Math.max(10,d*.018)}px sans-serif`;ctx.textAlign="center";ctx.fillText(String(Math.round(unit.count)),x,y-radius*1.3)}}
+    const spiritCells=[[1,0],[0,1],[1,1]];
+    for(const unit of run.units){const x=px(unit.x),y=py(unit.y),size=Math.max(24,d*(.04+Math.min(10,unit.count)*.0018)),cell=spiritCells[unit.sprite%spiritCells.length],drawn=drawAtlasCell(images.spirits,cell[0],cell[1],x,y,size,unit.hue===48?"#ffe369":"#64ebff");if(!drawn){ctx.save();ctx.shadowColor="#64ebff";ctx.shadowBlur=size*.4;ctx.fillStyle="#baf8ff";ctx.beginPath();ctx.arc(x,y,size*.22,0,Math.PI*2);ctx.fill();ctx.restore()}if(unit.count>1){ctx.fillStyle="#fff";ctx.strokeStyle="#051225";ctx.lineWidth=Math.max(2,d*.004);ctx.font=`900 ${Math.max(11,d*.019)}px sans-serif`;ctx.textAlign="center";ctx.strokeText(String(Math.round(unit.count)),x,y-size*.42);ctx.fillText(String(Math.round(unit.count)),x,y-size*.42)}}
     for(const enemy of run.enemies){const x=px(enemy.x),y=py(enemy.y),size=(enemy.champion?.075:.055)*d;drawImageCentered(enemy.champion?images.boss:images.enemy,x,y,size,enemy.champion?"#ff4f83":"#a66cff");const ratio=Math.max(0,enemy.hp/enemy.maxHp);rounded(x-size*.48,y-size*.66,size*.96,Math.max(4,d*.009),5);ctx.fillStyle="#170d25dd";ctx.fill();rounded(x-size*.48,y-size*.66,size*.96*ratio,Math.max(4,d*.009),5);ctx.fillStyle="#ff6a85";ctx.fill();if(enemy.shield>0){ctx.strokeStyle="#67eaff";ctx.lineWidth=Math.max(2,d*.004);ctx.beginPath();ctx.arc(x,y,size*.55,0,Math.PI*2);ctx.stroke()}}
     for(const particle of run.particles){ctx.globalAlpha=Math.max(0,particle.life);ctx.fillStyle=particle.color;ctx.beginPath();ctx.arc(px(particle.x),py(particle.y),Math.max(2,d*.006*particle.life),0,Math.PI*2);ctx.fill()}ctx.globalAlpha=1;
     for(const text of run.texts){ctx.globalAlpha=Math.max(0,text.life);ctx.fillStyle=text.color;ctx.font=`900 ${Math.max(13,d*.026)}px sans-serif`;ctx.textAlign="center";ctx.fillText(text.text,px(text.x),py(text.y))}ctx.globalAlpha=1;
-    const lx=px(run.aimX),ly=py(.91);ctx.save();ctx.shadowColor=run.overdrive>0?"#ffe273":"#58e8ff";ctx.shadowBlur=d*.035;ctx.fillStyle=run.overdrive>0?"#ffe273":"#5fe7ef";ctx.beginPath();ctx.moveTo(lx,ly-d*.045);ctx.lineTo(lx+d*.032,ly+d*.025);ctx.lineTo(lx,ly+d*.052);ctx.lineTo(lx-d*.032,ly+d*.025);ctx.closePath();ctx.fill();ctx.restore();drawImageCentered(images.fox,lx-d*.07,ly+d*.005,d*.085,"#ffd66b");
+    const lx=px(run.aimX),ly=py(.91);drawAtlasCell(images.spirits,0,0,lx,ly,Math.max(60,d*.17),run.overdrive>0?"#ffe273":"#58e8ff");drawImageCentered(images.fox,lx-Math.max(34,d*.09),ly+d*.012,Math.max(34,d*.085),"#ffd66b");
   }
   function frame(now){raf=0;if(!run||run.finished||run.paused)return;const dt=Math.min(.04,(now-lastTime)/1000||0);lastTime=now;update(dt);draw();if(!run.finished&&!run.paused)raf=requestAnimationFrame(frame)}
   function resizeCanvas(){const rect=canvas.getBoundingClientRect(),dpr=Math.min(2,devicePixelRatio||1),width=Math.max(1,Math.round(rect.width*dpr)),height=Math.max(1,Math.round(rect.height*dpr));if(canvas.width!==width||canvas.height!==height){canvas.width=width;canvas.height=height;draw()}}
@@ -192,7 +196,7 @@
     stages,startBattle,setAim(value){if(run)run.aimX=Math.max(.08,Math.min(.92,Number(value)))},activateOverdrive,
     advance(seconds,step=1/60){const iterations=Math.ceil(seconds/step);for(let i=0;i<iterations&&run&&!run.finished;i+=1)update(step);draw()},
     setTime(seconds){if(run)run.time=Number(seconds)},clearEnemies(){if(run)run.enemies=[]},damageFortress(amount){if(run){run.fortress-=Number(amount);if(run.fortress<=0)finish(true)}},finish,
-    grantProgress(unlocked=3,shards=30){save.unlocked=Math.max(1,Math.min(30,unlocked));save.shards=Math.max(save.shards,shards);persist();renderStage();renderLab()},resetSave(){save=defaultSave();persist();applyLocale()},
+    grantProgress(unlocked=3,shards=30){save.unlocked=Math.max(1,Math.min(30,unlocked));save.shards=Math.max(save.shards,shards);persist();renderStage();renderLab()},setUpgrades(rate=0,power=0,armor=0){save.upgrades=normalizeSave({upgrades:{rate,power,armor}}).upgrades;persist();renderLab()},resetSave(){save=defaultSave();persist();applyLocale()},
     snapshot(){return{locale,screen:currentScreen,save:JSON.parse(JSON.stringify(save)),run:run&&{stageIndex:run.stageIndex,time:run.time,core:run.core,maxCore:run.maxCore,fortress:run.fortress,maxFortress:run.maxFortress,aimX:run.aimX,charge:run.charge,overdrive:run.overdrive,peak:run.peak,units:run.units.map((unit)=>({x:unit.x,y:unit.y,count:unit.count,gates:[...unit.gates]})),enemies:run.enemies.map((enemy)=>({...enemy})),gates:run.gates.map((gate)=>({...gate})),paused:run.paused,finished:run.finished}}}
   };
 })();

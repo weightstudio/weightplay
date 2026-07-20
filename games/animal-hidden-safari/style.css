@@ -797,6 +797,12 @@ body.wp-stage-select-active.safari-stage #menuPanel.stage-panel[data-wp-logical-
   place-items: center;
 }
 
+.result-card .result-primary-action {
+  background: linear-gradient(#ffe98a, #ffc43d);
+  color: #3d2b08;
+  box-shadow: 0 6px 0 #a96f18, 0 10px 22px rgba(84, 55, 8, 0.24);
+}
+
 .loading-card i {
   width: 0%;
 }

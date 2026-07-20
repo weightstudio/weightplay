@@ -1606,7 +1606,14 @@
       if (open) region.setAttribute("aria-hidden", "true");
       else region.removeAttribute("aria-hidden");
     });
-    if (open && focusPrimary) nodes.retryBtn.focus({ preventScroll: true });
+    if (open && focusPrimary) (nodes.resultPanel.querySelector(".result-actions .primary-btn") || nodes.retryBtn).focus({ preventScroll: true });
+  }
+
+  function syncResultActionHierarchy(terminalVictory) {
+    nodes.retryBtn.classList.toggle("primary-btn", !terminalVictory);
+    nodes.retryBtn.classList.toggle("secondary-btn", terminalVictory);
+    nodes.resultMenuBtn.classList.toggle("primary-btn", terminalVictory);
+    nodes.resultMenuBtn.classList.toggle("secondary-btn", !terminalVictory);
   }
 
   function trapResultFocus(event) {
@@ -1681,7 +1688,9 @@
       state.unlockedStage = Math.max(state.unlockedStage, Math.min(STAGE_COUNT, clearedStage + 1));
       if (clearedStage === STAGE_COUNT) state.wins += 1;
       window.WeightPlayWallet?.addDiamonds(BOSS_STAGES.has(clearedStage) ? (clearedStage === STAGE_COUNT ? 8 : 2) : 1);
-      nodes.resultText.textContent = t("report_win", { stage: clearedStage });
+      nodes.resultText.textContent = clearedStage === STAGE_COUNT
+        ? "All 30 stages and six region bosses cleared! Replay any stage to refine your squad."
+        : t("report_win", { stage: clearedStage });
       nodes.skillReportText.textContent = t("report_skill_win", { stage: clearedStage });
       const locale = getLocale();
       nodes.retryBtn.textContent = clearedStage < STAGE_COUNT
@@ -1703,6 +1712,7 @@
     state.selectedStage = won && clearedStage < STAGE_COUNT ? clearedStage + 1 : clearedStage;
     saveLocalState();
     renderAdventureRecord();
+    syncResultActionHierarchy(won && clearedStage === STAGE_COUNT);
     setResultModalOpen(true);
   }
 

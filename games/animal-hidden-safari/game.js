@@ -900,13 +900,16 @@
     lastResult = { starCount, seconds, total, previousBestTime, hintsUsed, unaided: total - hintedTargets.size, mistakes };
     saveProgress(starCount, seconds, hintsUsed);
     renderResult();
-    nodes.nextStageBtn.classList.toggle("hidden", currentStage >= stages.length - 1);
+    const isFinalStage = currentStage >= stages.length - 1;
+    nodes.nextStageBtn.classList.toggle("hidden", isFinalStage);
+    nodes.nextStageBtn.classList.toggle("result-primary-action", !isFinalStage);
+    nodes.resultStagesBtn.classList.toggle("result-primary-action", isFinalStage);
     nodes.resultPanel.classList.remove("hidden");
     nodes.playPanel.inert = true;
     nodes.playPanel.setAttribute("aria-hidden", "true");
     document.body.classList.add("safari-result");
     requestAnimationFrame(() => {
-      const primaryAction = nodes.nextStageBtn.classList.contains("hidden") ? nodes.retryBtn : nodes.nextStageBtn;
+      const primaryAction = isFinalStage ? nodes.resultStagesBtn : nodes.nextStageBtn;
       primaryAction.focus({ preventScroll: true });
     });
     track("game_complete", { level: stageNo, score: starCount * 100 - mistakes * 5, time_seconds: seconds });

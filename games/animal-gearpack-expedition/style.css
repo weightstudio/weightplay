@@ -25,6 +25,7 @@ body[data-screen="battle"] .modal-card>img{width:min(40vw,170px);height:min(40vw
 body[data-screen="battle"] .feedback-row.is-item-details{height:44px;display:grid;align-content:center;gap:1px;padding-block:2px;white-space:normal;line-height:1.05;text-align:center}
 body[data-screen="battle"] .feedback-row.is-item-details span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px}
 body[data-screen="battle"] #battleScreen .battle-canvas{grid-template-rows:50px 38px minmax(120px,32%) minmax(0,1fr) 44px 52px}
+.main-topbar{grid-template-columns:58px minmax(0,1fr) auto 44px}.main-sound-button{font-size:20px;line-height:1}.main-sound-button:focus-visible{outline:3px solid #fff2a1;outline-offset:2px}
 body.wp-logical-battle-active.is-game-playing #battleScreen .battle-canvas[data-wp-logical-battle-canvas]{grid-template-rows:50px 38px minmax(120px,32%) minmax(0,1fr) 44px 52px!important}
 @media(max-height:460px) and (orientation:landscape){.item-tray{padding:0}.tray-item{height:42px}}
 .rux-wrap{position:absolute;left:5%;bottom:3%;width:38%;height:92%}

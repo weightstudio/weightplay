@@ -1142,6 +1142,53 @@ body:not(.guardian-playing) .sound-btn {
   display: none;
 }
 
+body:not(.guardian-playing):not(.guardian-stage) .guardian-topbar {
+  display: grid;
+  grid-template-columns: 58px minmax(0, 1fr) 112px 112px;
+}
+
+body:not(.guardian-playing):not(.guardian-stage) .brand-lockup {
+  min-width: 0;
+}
+
+body:not(.guardian-playing):not(.guardian-stage) .brand-lockup h1 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+body:not(.guardian-playing):not(.guardian-stage) .sound-btn {
+  display: block;
+  width: 112px;
+  min-width: 112px;
+  height: 48px;
+  padding: 6px 8px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 599px) {
+  body:not(.guardian-playing):not(.guardian-stage) .guardian-topbar {
+    grid-template-columns: 58px minmax(0, 1fr) 112px;
+  }
+
+  body:not(.guardian-playing):not(.guardian-stage) .back-btn {
+    grid-row: 1 / 3;
+  }
+
+  body:not(.guardian-playing):not(.guardian-stage) .brand-lockup {
+    grid-column: 2 / 4;
+  }
+
+  body:not(.guardian-playing):not(.guardian-stage) .locale-box {
+    grid-column: 2;
+  }
+
+  body:not(.guardian-playing):not(.guardian-stage) .sound-btn {
+    grid-column: 3;
+  }
+}
+
 body:not(.guardian-playing) .menu-panel {
   grid-template-columns: 1fr;
   width: 374px;
