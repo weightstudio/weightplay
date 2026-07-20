@@ -17,6 +17,7 @@
     "animal-moonlight-heist": [".battle-canvas", 390, 788],
     "animal-one-line": [".battle-canvas", 390, 788],
     "animal-orb-fortress": ["#gamePanel", 382, 780],
+    "animal-parking-patrol": [".battle-canvas", 390, 844],
     "animal-quiz": [".animal-game", 390, 788],
     "animal-reef-fisher": [".battle-shell", 382, 780],
     "animal-relic-hunters": ["#gamePanel", 382, 780],

@@ -40,6 +40,18 @@ button { border: 0; cursor: pointer; color: inherit; }
 }
 .screen { position: absolute; inset: 0; display: none; overflow: hidden; }
 .screen.is-active { display: block; }
+body.wp-stage-select-active #stageScreen[data-wp-logical-stage-canvas] {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  min-width: 100% !important;
+  max-width: 100% !important;
+  height: 100% !important;
+  min-height: 100% !important;
+  max-height: 100% !important;
+  margin: 0 !important;
+  transform: none !important;
+}
 body:not(.safari-main) .screen.is-active.weightplay-active-viewport {
   position: absolute !important;
   inset: 0 !important;

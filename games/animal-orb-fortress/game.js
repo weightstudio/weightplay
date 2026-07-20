@@ -1528,10 +1528,9 @@
     state.companionTimer = Math.max(0, state.companionTimer - dt);
     if (state.companionTimer > 0) return;
     const target = state.enemies
-      .filter((enemy) => enemy.hp > 0)
+      .filter((enemy) => enemy.hp > 0 && canDamageEnemy(enemy))
       .sort((a, b) => Math.hypot(a.x - state.launcher.x, a.y - state.launcher.y) - Math.hypot(b.x - state.launcher.x, b.y - state.launcher.y))[0];
     if (!target) return;
-    if (!canDamageEnemy(target)) return;
     if (target.shield > 0) target.shield -= 1;
     else target.hp -= state.companionDamage;
     target.hitTimer = 0.22;
@@ -2365,6 +2364,22 @@
         after: target.hp,
         damage: before - target.hp,
         companionHits: state.companionHits,
+        effect: state.sparks.at(-1)?.kind || "",
+      };
+    },
+    forceCompanionTargetPriority: () => {
+      const phased = makeEnemy("phase", state.launcher.x, state.launcher.y - 80, 8, 0, 42);
+      const vulnerable = makeEnemy("skitter", state.launcher.x, state.launcher.y - 180, 8, 0, 42);
+      phased.phased = true;
+      state.enemies = [phased, vulnerable];
+      state.companionTimer = 0;
+      const hitsBefore = state.companionHits;
+      updateCompanion(0.016);
+      return {
+        phasedHp: phased.hp,
+        vulnerableHp: vulnerable.hp,
+        vulnerableDamage: vulnerable.maxHp - vulnerable.hp,
+        companionHits: state.companionHits - hitsBefore,
         effect: state.sparks.at(-1)?.kind || "",
       };
     },

@@ -190,6 +190,7 @@ window.WONDER_LOBBY = {
     },
     {
       id: "animal-2048",
+      previewVideo: "assets/previews/animal-2048-battle.webm",
       title: { en: "Animal 2048: Forest Evolution", "zh-Hant": "動物 2048：森林進化" },
       status: "playable",
       statusText: { en: "Playable", "zh-Hant": "立即遊玩" },
@@ -374,6 +375,7 @@ window.WONDER_LOBBY = {
     },
     {
       id: "beast-deck",
+      previewVideo: "assets/previews/beast-deck-battle.webm",
       title: { en: "Beast Deck: The Mist Forest", "zh-Hant": "獸王牌組：迷霧森林" },
       status: "playable",
       statusText: { en: "Playable", "zh-Hant": "可遊玩" },
@@ -390,6 +392,7 @@ window.WONDER_LOBBY = {
     },
     {
       id: "animal-relic-hunters",
+      previewVideo: "assets/previews/animal-relic-hunters-battle.webm",
       title: { en: "Animal Relic Hunters", "zh-Hant": "動物遺跡獵人" },
       status: "playable",
       statusText: { en: "Playable", "zh-Hant": "可遊玩" },
@@ -406,6 +409,7 @@ window.WONDER_LOBBY = {
     },
     {
       id: "animal-rune-tactics",
+      previewVideo: "assets/previews/animal-rune-tactics-battle.webm",
       title: { en: "Animal Rune Tactics", "zh-Hant": "動物符文戰棋" },
       status: "playable",
       statusText: { en: "Playable", "zh-Hant": "可遊玩" },
@@ -422,6 +426,7 @@ window.WONDER_LOBBY = {
     },
     {
       id: "animal-orb-fortress",
+      previewVideo: "assets/previews/animal-orb-fortress-battle.webm",
       title: { en: "Animal Orb Fortress", "zh-Hant": "\u52d5\u7269\u661f\u73e0\u8981\u585e" },
       status: "playable",
       statusText: { en: "Playable", "zh-Hant": "\u53ef\u904a\u73a9" },
@@ -438,6 +443,7 @@ window.WONDER_LOBBY = {
     },
     {
       id: "animal-auto-squad",
+      previewVideo: "assets/previews/animal-auto-squad-battle.webm",
       title: { en: "Animal Auto Squad", "zh-Hant": "動物自走小隊" },
       status: "playable",
       statusText: { en: "Playable", "zh-Hant": "可遊玩" },
@@ -454,6 +460,7 @@ window.WONDER_LOBBY = {
     },
     {
       id: "beast-tactician",
+      previewVideo: "assets/previews/beast-tactician-battle.webm",
       title: { en: "Beast Guardian", "zh-Hant": "獸王守衛" },
       status: "playable",
       statusText: { en: "Playable", "zh-Hant": "可遊玩" },
@@ -470,6 +477,7 @@ window.WONDER_LOBBY = {
     },
     {
       id: "shadow-wolf",
+      previewVideo: "assets/previews/shadow-wolf-battle.webm",
       title: { en: "Shadow Wolf Legend", "zh-Hant": "影狼傳說" },
       status: "playable",
       statusText: { en: "Playable", "zh-Hant": "可遊玩" },
@@ -590,6 +598,7 @@ window.WONDER_LOBBY = {
     },
     {
       id: "animal-starlight-trails",
+      previewVideo: "assets/previews/animal-starlight-trails-battle.webm",
       title: { en: "Starlink", "zh-Hant": "Starlink 星鏈", "zh-Hans": "Starlink 星链" },
       status: "playable",
       statusText: { en: "Playable", "zh-Hant": "可遊玩", "zh-Hans": "可游玩" },
@@ -608,6 +617,7 @@ window.WONDER_LOBBY = {
     },
     {
       id: "animal-one-line",
+      previewVideo: "assets/previews/animal-one-line-battle.webm",
       title: { en: "One Line", "zh-Hant": "One Line 一筆到底", "zh-Hans": "One Line 一笔到底" },
       status: "playable",
       statusText: { en: "Playable", "zh-Hant": "可遊玩", "zh-Hans": "可游玩" },
@@ -627,6 +637,7 @@ window.WONDER_LOBBY = {
     },
     {
       id: "animal-abyss-diver",
+      previewVideo: "assets/previews/animal-abyss-diver-battle.webm",
       title: { en: "Animal Abyss Diver", "zh-Hant": "動物深淵潛航員" },
       status: "playable",
       statusText: { en: "Playable", "zh-Hant": "立即遊玩" },
@@ -742,6 +753,47 @@ window.WONDER_LOBBY = {
       art: { kind: "image", background: "assets/animal-screw-workshop-cover.webp", hideHero: true },
     },
     {
+      id: "animal-parking-patrol",
+      title: {
+        en: "Animal Parking Patrol", "zh-Hant": "森林停車疏導隊", "zh-Hans": "森林停车疏导队",
+        es: "Patrulla de Estacionamiento Animal", ja: "どうぶつ駐車パトロール", ko: "동물 주차 순찰대",
+        "pt-BR": "Patrulha do Estacionamento Animal", de: "Tierische Parkplatz-Patrouille",
+      },
+      status: "planned",
+      statusText: {
+        en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", es: "Próximamente",
+        ja: "近日公開", ko: "출시 예정", "pt-BR": "Em breve", de: "Demnächst",
+      },
+      type: {
+        en: "Traffic Order Puzzle", "zh-Hant": "交通順序解謎", "zh-Hans": "交通顺序解谜",
+        es: "Lógica de tráfico", ja: "交通順序パズル", ko: "교통 순서 퍼즐",
+        "pt-BR": "Lógica de trânsito", de: "Verkehrsreihenfolge-Rätsel",
+      },
+      categories: ["Animal Games", "Puzzle", "Family"],
+      skills: ["Visual Planning", "Logic", "Focus"],
+      ages: ["9", "family"],
+      ageLabel: { en: "9+", "zh-Hant": "9+", "zh-Hans": "9+", es: "9+", ja: "9+", ko: "9+", "pt-BR": "9+", de: "9+" },
+      href: "games/animal-parking-patrol/",
+      internalTrial: "index.html?trial=1",
+      description: {
+        en: "Read four-way animal cart traffic, clear signals and convoys, and solve 30 original forest-plaza patrol routes.",
+        "zh-Hant": "觀察四向動物木車，依序解除號誌與車隊阻擋，完成 30 條原創森林廣場巡邏路線。",
+        "zh-Hans": "观察四向动物木车，依序解除信号与车队阻挡，完成 30 条原创森林广场巡逻路线。",
+        es: "Lee el tráfico de carros animales, despeja señales y convoyes, y resuelve 30 rutas originales.",
+        ja: "四方向のどうぶつ車を読み、信号と車列を解いて30の森のルートをクリアします。",
+        ko: "사방 동물 자동차를 살피고 신호와 대열을 풀어 30개 숲 광장 경로를 해결하세요.",
+        "pt-BR": "Leia o trânsito dos carrinhos, libere sinais e comboios e resolva 30 rotas originais.",
+        de: "Lies den Tierwagenverkehr, löse Signale und Konvois und meistere 30 originale Waldplatz-Routen.",
+      },
+      meta: {
+        en: ["30 Routes", "Four-Way Traffic", "Signal Convoys"], "zh-Hant": ["30 條路線", "四向車流", "號誌車隊"],
+        "zh-Hans": ["30 条路线", "四向车流", "信号车队"], es: ["30 rutas", "Tráfico en 4 vías", "Señales y convoyes"],
+        ja: ["30ルート", "四方向の交通", "信号と車列"], ko: ["30개 경로", "사방 교통", "신호와 대열"],
+        "pt-BR": ["30 rotas", "Trânsito em 4 vias", "Sinais e comboios"], de: ["30 Routen", "Vier-Wege-Verkehr", "Signale und Konvois"],
+      },
+      art: { kind: "image", background: "assets/animal-parking-patrol-cover.webp", hideHero: true },
+    },
+    {
       id: "animal-habitat-mahjong",
       title: { en: "Animal Habitat Mahjong", "zh-Hant": "動物棲地麻將消消" },
       status: "playable",
@@ -802,6 +854,7 @@ for (const game of window.WONDER_LOBBY.games) {
 
 window.WONDER_LOBBY.games.push({
   id: "animal-reef-fisher",
+  previewVideo: "assets/previews/animal-reef-fisher-battle.webm",
   title: { en: "Animal Reef Fisher", "zh-Hant": "動物珊瑚釣手" },
   status: "playable",
   statusText: { en: "Playable", "zh-Hant": "可遊玩" },
@@ -848,6 +901,7 @@ window.WONDER_LOBBY.games.push({
 
 window.WONDER_LOBBY.games.push({
   id: "animal-hero-trials",
+  previewVideo: "assets/previews/animal-hero-trials-battle.webm",
   title: { en: "Animal Hero Trials", "zh-Hant": "動物英雄試煉" },
   status: "playable",
   statusText: { en: "Play Now", "zh-Hant": "立即遊玩" },
@@ -870,6 +924,7 @@ window.WONDER_LOBBY.games.push({
 
 window.WONDER_LOBBY.games.push({
   id: "animal-gearpack-expedition",
+  previewVideo: "assets/previews/animal-gearpack-expedition-battle.webm",
   title: { en: "Animal Gearpack Expedition", "zh-Hant": "動物裝備行囊遠征" },
   status: "playable",
   statusText: { en: "Playable", "zh-Hant": "可遊玩" },
@@ -887,6 +942,7 @@ window.WONDER_LOBBY.games.push({
 
 window.WONDER_LOBBY.games.push({
   id: "animal-moonlight-heist",
+  previewVideo: "assets/previews/animal-moonlight-heist-battle.webm",
   title: { en: "Animal Moonlight Heist", "zh-Hant": "動物月影潛行隊" },
   status: "playable",
   statusText: { en: "Playable", "zh-Hant": "可遊玩" },

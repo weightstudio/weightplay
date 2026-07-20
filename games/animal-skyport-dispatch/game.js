@@ -452,7 +452,11 @@
       first.focus();
     }
   }
+  function battleDecisionOpen() {
+    return !$('leaveConfirm').classList.contains('hidden') || !$('result').classList.contains('hidden');
+  }
   function finish(ok) {
+    if (battleDecisionOpen()) return;
     if (ok && state.serviced && !state.conflict && state.crewAssigned && state.fuel > 0) {
       state.done += 1;
       state.matched += 1;
@@ -495,6 +499,10 @@
     if (restoreGuidance && wasDragging && state.kind && !$('battleShell').classList.contains('hidden')) renderGuidanceLine();
   }
   function routePointer(event) {
+    if (battleDecisionOpen()) {
+      if (dragging) cancelRouteGesture({announce:false});
+      return;
+    }
     const mode = event.type.startsWith('pointer') ? 'pointer' : 'mouse';
     const isStart = event.type === 'pointerdown' || event.type === 'mousedown';
     const isEnd = event.type === 'pointerup' || event.type === 'mouseup';
@@ -548,6 +556,7 @@
     });
   }
   function selectFlightWithKeyboard() {
+    if (battleDecisionOpen()) return;
     state.selected = true;
     setDockKeyboardMode(true);
     renderFlightTask();
@@ -564,7 +573,7 @@
     next?.focus({preventScroll:true});
   }
   function finishKeyboardDock(dock) {
-    if (!state.selected) return;
+    if (battleDecisionOpen() || !state.selected) return;
     state.selected = false;
     setDockKeyboardMode(false);
     finish(dock.dataset.dock === state.dock);
@@ -619,6 +628,7 @@
   $('menuBtn').onclick = () => show('mainScreen');
   $('result').addEventListener('keydown', trapResultFocus);
   $('serviceBtn').onclick = () => {
+    if (battleDecisionOpen()) return;
     if (state.storm && !state.serviced && state.parts) {
       state.parts -= 1;
       state.serviced = true;
@@ -628,28 +638,31 @@
       focusCurrentBattleAction();
     }
   };
-  $('clearRouteBtn').onclick = () => { if (state.conflict && state.fuel > 0) { state.fuel -= 1; state.conflict = false; $('clearRouteBtn').classList.add('hidden'); $('feedback').textContent = locale === 'zh-Hant' ? '\u822a\u7dda\u5df2\u6e05\u7406\u3002' : 'Route cleared.'; renderHud(); focusCurrentBattleAction(); } };
-  $('assignCrewBtn').onclick = () => { if (state.needsCrew && !state.crewAssigned && state.crew > 0) { state.crew -= 1; state.crewAssigned = true; $('assignCrewBtn').classList.add('hidden'); $('feedback').textContent = locale === 'zh-Hant' ? '\u7d44\u54e1\u5df2\u6307\u6d3e\u3002' : 'Crew assigned.'; renderHud(); focusCurrentBattleAction(); } };
+  $('clearRouteBtn').onclick = () => { if (!battleDecisionOpen() && state.conflict && state.fuel > 0) { state.fuel -= 1; state.conflict = false; $('clearRouteBtn').classList.add('hidden'); $('feedback').textContent = locale === 'zh-Hant' ? '\u822a\u7dda\u5df2\u6e05\u7406\u3002' : 'Route cleared.'; renderHud(); focusCurrentBattleAction(); } };
+  $('assignCrewBtn').onclick = () => { if (!battleDecisionOpen() && state.needsCrew && !state.crewAssigned && state.crew > 0) { state.crew -= 1; state.crewAssigned = true; $('assignCrewBtn').classList.add('hidden'); $('feedback').textContent = locale === 'zh-Hant' ? '\u7d44\u54e1\u5df2\u6307\u6d3e\u3002' : 'Crew assigned.'; renderHud(); focusCurrentBattleAction(); } };
   $('flight').addEventListener('pointerdown', routePointer);
   $('flight').addEventListener('mousedown', routePointer);
   $('flight').addEventListener('click', (event) => {
     if (suppressClick) { suppressClick = false; event.stopImmediatePropagation(); return; }
+    if (battleDecisionOpen()) return;
     state.selected = true;
     $('feedback').textContent = locale === 'zh-Hant' ? '\u5df2\u9078\u64c7\u98db\u8239\uff0c\u8acb\u9ede\u9078\u78bc\u982d\u3002' : 'Flight selected. Choose a dock.';
   }, true);
   $('flight').addEventListener('keydown', (event) => {
+    if (battleDecisionOpen()) return;
     if (event.key !== 'Enter' && event.key !== ' ') return;
     event.preventDefault();
     if (event.repeat) return;
     selectFlightWithKeyboard();
   });
   document.querySelectorAll('.dock').forEach((dock) => dock.addEventListener('click', () => {
-    if (!state.selected) return;
+    if (battleDecisionOpen() || !state.selected) return;
     state.selected = false;
     setDockKeyboardMode(false);
     finish(dock.dataset.dock === state.dock);
   }));
   document.querySelectorAll('.dock').forEach((dock) => dock.addEventListener('keydown', (event) => {
+    if (battleDecisionOpen()) return;
     if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
       event.preventDefault();
       focusAdjacentDock(dock, -1);

@@ -209,19 +209,22 @@
   let locale = window.WonderI18n?.locale?.() || (["zh-Hant","es"].includes(storedLocale) ? storedLocale : "en");
   function normalizeProgress(source){
     const data=source&&typeof source==="object"?source:{};
-    const migratedStage=data.unlockedStage===undefined?(Math.max(0,Number(data.unlockedRegion)||0)*5+1):Number(data.unlockedStage);
-    const unlockedStage=Math.max(1,Math.min(STAGE_COUNT,Math.floor(migratedStage)||1));
+    const whole=(value,fallback=0,max=Number.MAX_SAFE_INTEGER)=>{const numeric=Number(value);return Number.isFinite(numeric)?Math.max(0,Math.min(max,Math.floor(numeric))):fallback;};
+    const migratedStage=data.unlockedStage===undefined?(whole(data.unlockedRegion,0,5)*5+1):data.unlockedStage;
+    const unlockedStage=Math.max(1,whole(migratedStage,1,STAGE_COUNT));
     return {
-      workshopXp:Math.max(0,Number(data.workshopXp)||0),
+      workshopXp:whole(data.workshopXp),
       discoveries:Array.isArray(data.discoveries)?[...new Set(data.discoveries.filter((id)=>items.some((item)=>item.id===id)))]:[],
-      diamonds:Math.max(0,Number.isFinite(Number(data.diamonds))?Number(data.diamonds):12),
-      bestRoom:Math.max(0,Number(data.bestRoom)||0),
+      diamonds:whole(data.diamonds,12),
+      bestRoom:whole(data.bestRoom,0,ROOMS_PER_STAGE),
       unlockedStage,
-      selectedStage:Math.max(0,Math.min(unlockedStage-1,Math.floor(Number(data.selectedStage) || unlockedStage-1))),
-      completedStages:Array.isArray(data.completedStages)?[...new Set(data.completedStages.map(Number).filter((value)=>value>=1&&value<=STAGE_COUNT))].sort((a,b)=>a-b):[]
+      selectedStage:whole(data.selectedStage,unlockedStage-1,unlockedStage-1),
+      completedStages:Array.isArray(data.completedStages)?[...new Set(data.completedStages.map(Number).filter((value)=>Number.isInteger(value)&&value>=1&&value<=STAGE_COUNT))].sort((a,b)=>a-b):[]
     };
   }
-  let progress = normalizeProgress(load(SAVE_KEY,{workshopXp:0,discoveries:[],diamonds:12,bestRoom:0}));
+  const loadedProgress=load(SAVE_KEY,{workshopXp:0,discoveries:[],diamonds:12,bestRoom:0});
+  let progress = normalizeProgress(loadedProgress);
+  if(JSON.stringify(progress)!==JSON.stringify(loadedProgress))writeStorage(SAVE_KEY,JSON.stringify(progress));
   let run = null;
   let selectedItem = null;
   let selectedTrayIndex = -1;

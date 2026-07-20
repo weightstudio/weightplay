@@ -271,6 +271,7 @@
   nodes.localeSelect.addEventListener("change", (event) => { const requested = event.target.value; try { window.WonderI18n?.setLocale?.(requested); } catch {} locale = window.WonderI18n?.locale?.() || requested; writeStorage(canonicalLocaleKey, requested); applyLocale(); });
   nodes.startBtn.addEventListener("keydown", rejectRepeatedActivation);
   nodes.stageRail.addEventListener("keydown", (event) => { if (event.target.closest(".stage-card")) rejectRepeatedActivation(event); });
+  nodes.resultScreen.addEventListener("keydown", rejectRepeatedActivation, true);
   nodes.startBtn.addEventListener("click", openStageFromMain);
   document.querySelectorAll("[data-back]").forEach((button) => button.addEventListener("click", () => {
     const target = button.dataset.back;

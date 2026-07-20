@@ -1966,6 +1966,9 @@
     if (blocked > 0) {
       const impact = damage > 0 ? `-${damage} · ${t("combatBlock")} ${blocked}` : `${t("combatBlock")} ${blocked}`;
       showCombatFeedback(impact, damage > 0 ? "damage" : "block");
+    } else if (armorBlocked > 0) {
+      const impact = damage > 0 ? `-${damage} · ARM ${armorBlocked}` : `ARM ${armorBlocked}`;
+      showCombatFeedback(impact, damage > 0 ? "damage" : "block");
     } else if (damage > 0) {
       showCombatFeedback(`-${damage}`, "damage");
     }
@@ -2927,6 +2930,19 @@
         state.enemyShield = amount;
         renderStats();
         return window.__beastDeckSmoke.getState();
+      },
+      forceArmorFeedback: ({ armor = 9, damage = 6 } = {}) => {
+        clearCombatFeedback();
+        state.enemyArmor = Math.max(0, Number(armor) || 0);
+        state.enemyShield = 0;
+        const hpBefore = state.enemyHp;
+        const dealt = applyEnemyDamage(Math.max(0, Number(damage) || 0));
+        return {
+          hpBefore,
+          hpAfter: state.enemyHp,
+          dealt,
+          feedback: [...nodes.battlefield.querySelectorAll(".combat-feedback")].map((node) => node.textContent?.trim() || ""),
+        };
       },
       forceCombatFeedback: (message = "STALE FEEDBACK") => {
         showCombatFeedback(message, "damage");

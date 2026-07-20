@@ -2656,6 +2656,10 @@
     nodes.resumeBtn.addEventListener("click", () => closePause());
     nodes.pauseMenuBtn.addEventListener("click", leavePauseForMissions);
     nodes.pausePanel.addEventListener("keydown", (event) => {
+      if (event.repeat && (event.key === "Enter" || event.key === " ")) {
+        event.preventDefault();
+        return;
+      }
       if (event.key === "Escape") {
         event.preventDefault();
         closePause();
