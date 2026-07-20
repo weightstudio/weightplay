@@ -1283,3 +1283,9 @@ body.helper-playing .rescue-scene {
   min-width: 188px;
   grid-template-columns: 38px 38px 20px 34px;
 }
+
+/* Keep the compact Stage/Battle HUD clear on phones. The version remains on Main. */
+body.wp-standard-stage-page .weightplay-version-badge,
+body.helper-playing .weightplay-version-badge {
+  display: none !important;
+}

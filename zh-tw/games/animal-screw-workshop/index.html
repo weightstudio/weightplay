@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+    <base href="/games/animal-screw-workshop/" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="robots" content="index,follow" />
+  <meta name="weightplay-audience" content="kids" />
+  <meta name="theme-color" content="#173329" />
+  <title>動物螺絲工坊 | WeightPlay</title>
+  <meta name="description" content="《動物螺絲工坊》是齒輪角犀帶領的三十關空間邏輯遊戲。把黃銅螺絲移到空孔，依正確順序拆下重疊的動物木板，並在步數限制內修復森林工坊。" />
+  <link rel="canonical" href="https://weightplay.com/zh-tw/games/animal-screw-workshop/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-screw-workshop/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-screw-workshop/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-screw-workshop/" />
+    <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/animal-screw-workshop/" />
+    <link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/animal-screw-workshop/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/animal-screw-workshop/" />
+    <link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/animal-screw-workshop/" />
+    <link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/animal-screw-workshop/" />
+    <link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/animal-screw-workshop/" />
+    <link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/animal-screw-workshop/" />
+    <link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/animal-screw-workshop/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-screw-workshop/" />
+    <link rel="stylesheet" href="../../src/loading-screen.css" />
+  <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard />
+  <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
+  <link rel="stylesheet" href="../../src/game-page-info.css" />
+  <link rel="stylesheet" href="style.css?v=20260720-release-2" />
+  <meta property="og:title" content="動物螺絲工坊 | WeightPlay" />
+    <meta property="og:description" content="《動物螺絲工坊》是齒輪角犀帶領的三十關空間邏輯遊戲。把黃銅螺絲移到空孔，依正確順序拆下重疊的動物木板，並在步數限制內修復森林工坊。" />
+    <meta property="og:url" content="https://weightplay.com/zh-tw/games/animal-screw-workshop/" />
+    <meta name="twitter:title" content="動物螺絲工坊 | WeightPlay" />
+    <meta name="twitter:description" content="《動物螺絲工坊》是齒輪角犀帶領的三十關空間邏輯遊戲。把黃銅螺絲移到空孔，依正確順序拆下重疊的動物木板，並在步數限制內修復森林工坊。" />
+  </head>
+<body data-game-id="animal-screw-workshop" data-screen="loading">
+  <section id="loadingPanel" class="loading-panel" aria-live="polite">
+    <div class="loading-card"><strong data-i18n="title">Animal Screw Workshop</strong><span data-i18n="loading">Opening the forest workshop...</span><div class="loading-track"><i id="loadingFill"></i></div></div>
+  </section>
+
+  <div id="mainGroup" class="main-group" hidden>
+    <main id="mainScreen" class="main-screen">
+      <header class="main-header">
+        <a class="home-link" href="/kids/" data-i18n-aria="backWeightPlay" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a>
+        <strong data-i18n="title">Animal Screw Workshop</strong>
+        <label class="locale-control"><span class="sr-only" data-i18n="language">Language</span><select id="localeSelect" data-i18n-aria="language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="pt-BR">Português (Brasil)</option><option value="de">Deutsch</option></select></label>
+      </header>
+      <section class="main-hero">
+        <img class="main-poster" src="../../assets/animal-screw-workshop-cover.webp" data-i18n-alt="posterAlt" alt="《動物螺絲工坊》遊戲圖片" />
+        <div class="main-copy"><small data-i18n="eyebrow">Gear Horn Rux's puzzle bench</small><h1 data-i18n="title">動物螺絲工坊</h1><p data-i18n="pitch">Move each brass screw into an open hole. Release every wooden animal plate without running out of moves.</p><div id="mainProgress" class="main-progress"></div><button id="startBtn" class="primary-action" type="button" data-i18n="start">Start Game</button></div>
+      </section>
+    </main>
+    <section class="game-page-info game-page-info-static" aria-label="動物螺絲工坊 遊戲資訊">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 兒童遊戲指南</span><h2>動物螺絲工坊</h2><p>《動物螺絲工坊》是齒輪角犀帶領的三十關空間邏輯遊戲。把黃銅螺絲移到空孔，依正確順序拆下重疊的動物木板，並在步數限制內修復森林工坊。</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>螺絲移位邏輯解謎</strong></div><div class="game-info-fact"><span>類型</span><strong>益智 · 邏輯 · 動物</strong></div><div class="game-info-fact"><span>難度</span><strong>簡單到具挑戰性</strong></div><div class="game-info-fact"><span>預估遊玩時間</span><strong>每題約 2～6 分鐘</strong></div><div class="game-info-fact"><span>練習能力</span><strong>視覺規劃 · 邏輯 · 問題解決</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>世界與任務</h3><p>森林工坊的動物木牌被螺絲鎖成一層層交錯的結構。齒輪角犀需要玩家保留安全的暫存孔，逐片卸下木板。每完成一題就修好一面木牌，完成六個章節則代表整座工坊重新開放。</p></div>
+      <div class="game-info-section"><h3>遊戲系統</h3><p>先選擇一顆未上鎖的螺絲，再選擇一個空孔。當木板的所有支撐孔都沒有螺絲時，木板就會落下。共用螺絲可能同時固定多片木板，上鎖螺絲則要先卸下足夠的上層木板才會解鎖。</p>
+<p>每題都有固定配置與步數上限。復原會完整還原上一步，重新開始會重建同一題，提示只標出一組安全移動而不會代替玩家操作。較少步數完成可獲得三顆星並解鎖下一題。</p></div>
+      <div class="game-info-section"><h3>玩法說明</h3><ol><li>選擇一顆未上鎖的黃銅螺絲。</li><li>選擇一個能安全暫放螺絲的空孔。</li><li>在步數限制內卸下所有動物木板。</li><li>路線卡住時使用復原、重新開始或提示。</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>替下一層至少保留一個暫存孔。</li><li>移動前先確認哪些木板共用同一顆螺絲。</li><li>優先卸下能解鎖下層螺絲的上層木板。</li><li>若移動後沒有安全目的地，立即復原。</li></ul></div>
+      <div class="game-info-section"><h3>關卡與難度成長</h3><p>第 1～5 題教基本移位；6～10 加入重疊木板；11～15 加入共用螺絲；16～20 加入上鎖螺絲；21～25 縮小安全路線；26～30 綜合所有規則與連鎖落板。</p></div>
+      <div class="game-info-section"><h3>開發設計理念</h3><p>遊戲採用固定支撐規則而不是隨機物理效果，因此每一步都能依畫面資訊思考。選螺絲、再選空孔的兩段操作同時支援觸控、滑鼠與鍵盤；短暫落板動畫只負責呈現結果，不會改變判定。響應式棋盤也會讓手機與桌機完整看見可操作孔位。</p></div>
+      <div class="game-info-section game-info-parent"><h3>家長說明</h3><p>這款 Kids 解謎遊戲沒有廣告，也不需要帳號。關卡進度、星星、最佳步數與語言只保存在目前瀏覽器，不會上傳。遊戲以娛樂方式練習邏輯規劃，不是正式能力測驗。</p></div>
+      <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>共有多少題？</dt><dd>共有六章三十題固定謎題。</dd></div><div><dt>木板為什麼會落下？</dt><dd>固定該木板的所有孔都沒有螺絲時就會落下。</dd></div><div><dt>上鎖螺絲是什麼？</dt><dd>卸下足夠的上層木板後才會變成可移動。</dd></div><div><dt>提示會直接移動嗎？</dt><dd>不會，只會標出一組安全的螺絲與目的孔。</dd></div><div><dt>復原會恢復什麼？</dt><dd>會恢復上一步前的螺絲、木板與步數。</dd></div><div><dt>進度會保存嗎？</dt><dd>會，但只保存在目前瀏覽器。</dd></div><div><dt>需要帳號嗎？</dt><dd>不需要。</dd></div><div><dt>遊戲有廣告嗎？</dt><dd>沒有，Kids 遊戲維持無廣告。</dd></div></dl></div>
+    </div>
+  </section>
+  </div>
+
+  <section id="stageScreen" class="stage-screen" hidden>
+    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-canvas-max-width="920" data-wp-stage-art="../../assets/animal-screw-workshop-cover.webp" style="--wp-stage-art:url('../../assets/animal-screw-workshop-cover.webp')">
+      <header class="stage-header"><button id="stageBackBtn" type="button" data-i18n-aria="backMain">←</button><div><strong data-i18n="chooseStage">Choose a workshop puzzle</strong><span id="stageSummary"></span></div><img src="../../assets/weightplay-character-gear-horn-rhino-cutout.webp" alt="" /></header>
+      <section class="chapter-panel"><small id="chapterKicker"></small><strong id="chapterTitle"></strong><p id="chapterRule"></p></section>
+      <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-recommendation="first" data-wp-stage-settle-duration="330" data-wp-stage-settle-easing="smoothstep" data-i18n-aria="stageRailLabel" aria-label="Workshop puzzle selection"></div>
+    </div>
+  </section>
+
+  <section id="battleScreen" class="battle-screen" hidden>
+    <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
+      <header class="battle-header"><button id="battleBackBtn" type="button" data-i18n-aria="backStage">←</button><div class="battle-title"><small id="stageLabel"></small><strong id="stageGoal"></strong></div><div class="battle-stat"><small data-i18n="moves">Moves</small><strong id="movesValue">0</strong></div><div class="battle-stat"><small data-i18n="plates">Plates</small><strong id="platesValue">0</strong></div></header>
+      <section id="objectiveBar" class="objective-bar" aria-live="polite"></section>
+      <section id="puzzleBoard" class="puzzle-board" data-i18n-aria="boardLabel" aria-label="Screw puzzle board"></section>
+      <div class="battle-actions"><button id="undoBtn" type="button"><span aria-hidden="true">↶</span><b data-i18n="undo">Undo</b></button><button id="restartBtn" type="button"><span aria-hidden="true">↻</span><b data-i18n="restart">Restart</b></button><button id="hintBtn" type="button"><span aria-hidden="true">✦</span><b data-i18n="hint">Hint</b></button></div>
+
+      <section id="resultPanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card"><img src="../../assets/weightplay-character-gear-horn-rhino-cutout.webp" alt="" /><small data-i18n="resultKicker">Workshop report</small><h2 id="resultTitle"></h2><div id="resultStars" class="result-stars"></div><p id="resultText"></p><p id="bestText" class="best-text"></p><div class="modal-actions"><button id="retryBtn" type="button" data-i18n="retry">Try again</button><button id="resultStagesBtn" type="button" data-i18n="stages">Stages</button><button id="nextBtn" class="primary-action" type="button" data-i18n="next">Next</button></div></div></section>
+      <section id="leavePanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card"><h2 id="leaveTitle" data-i18n="leaveTitle">Leave this puzzle?</h2><p data-i18n="leaveText">Continue keeps the exact board. Returning to stages ends this attempt.</p><div class="modal-actions"><button id="leaveContinueBtn" class="primary-action" type="button" data-i18n="continue">Continue</button><button id="leaveStagesBtn" type="button" data-i18n="returnStages">Return to stages</button></div></div></section>
+    </div>
+  </section>
+
+  <section id="tutorialPanel" class="tutorial-layer" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="tutorial-card"><button id="tutorialCloseBtn" class="modal-close" type="button" data-i18n-aria="close">×</button><img src="../../assets/weightplay-character-gear-horn-rhino-cutout.webp" alt="" /><h2 id="tutorialTitle" data-i18n="tutorialTitle">Move a screw, release a plate</h2><ol><li data-i18n="tutorial1">Tap a screw. It will glow.</li><li data-i18n="tutorial2">Tap any glowing empty hole.</li><li data-i18n="tutorial3">Remove every support screw to drop all plates.</li></ol><button id="tutorialStartBtn" class="primary-action" type="button" data-i18n="tutorialStart">Start puzzle 1</button></div></section>
+  <div id="toast" class="toast" aria-live="polite"></div>
+
+  <script src="../../src/site-config.js"></script><script src="/src/i18n.js?v=20260718-locale-routes1"></script><script src="../../src/game-runtime-localizer-loader.js?v=20260720-locale11-10"></script><script src="../../src/analytics.js"></script><script src="../../src/sound.js?v=20260720-locale11"></script><script src="../../src/edge-guard.js"></script>
+  <script src="locales.js?v=20260720-release-2"></script><script src="game.js?v=20260720-release-4"></script><script src="../../src/stage-selector-standard.js?v=20260720-canvas-max920-1" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script><script src="../../src/game-page-info.js?v=20260720-screw-public1"></script>
+</body>
+</html>

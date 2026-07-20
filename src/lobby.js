@@ -1689,7 +1689,7 @@ filterButtons.forEach((button) => {
 
     window.WonderSound?.play("click");
     window.WonderAnalytics?.track("age_filter", { age_filter: activeFilter, locale: i18n.locale() });
-    filterButtons.forEach((item) => item.classList.toggle("active", item === button));
+    setActiveButtons(filterButtons, "ageFilter", activeFilter);
     applyFilter({ historyMode: "push" });
   });
 });

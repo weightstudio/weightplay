@@ -9,3 +9,53 @@
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 .stage-rail{touch-action:pan-y}
 .stage-header .utility-button,.battle-header .utility-button{background:#245c4d;color:#fff;border:1px solid var(--line);font-size:1.2rem}.battle-header{grid-template-columns:52px minmax(0,1fr) 64px 64px 52px;gap:7px}.settings-actions{display:grid;gap:10px}.settings-actions button{min-height:50px;border-radius:14px;background:#245c4d;font-weight:900}@media(max-width:600px){.battle-header{grid-template-columns:46px minmax(0,1fr) 48px 48px 46px;gap:4px}.battle-header>button{width:42px;height:42px}}@media(max-width:360px){.battle-header{grid-template-columns:44px minmax(0,1fr) 42px 42px 44px;gap:2px}.battle-stat small{font-size:.56rem}.battle-title strong{font-size:.74rem}}
+
+@media (max-height:560px) and (orientation:landscape) {
+  .battle-canvas {
+    grid-template-columns:minmax(0,1fr) 520px;
+    grid-template-rows:108px minmax(0,1fr);
+    padding:12px;
+    gap:12px 24px;
+  }
+  .battle-header {
+    grid-column:1 / -1;
+    grid-row:1;
+    grid-template-columns:104px minmax(0,1fr) 126px 126px 104px;
+    gap:12px;
+    padding:6px;
+  }
+  .battle-header>button { width:96px; height:96px; font-size:2.2rem; }
+  .battle-title small,.battle-stat small { font-size:1.4rem; }
+  .battle-title strong { font-size:1.75rem; }
+  .battle-stat strong { font-size:2rem; }
+  .objective-bar {
+    grid-column:2;
+    grid-row:2;
+    align-self:start;
+    min-height:78px;
+    font-size:1.55rem;
+    padding:10px 18px;
+  }
+  .traffic-board {
+    grid-column:1;
+    grid-row:2;
+    width:min(100%,680px);
+    border-width:10px;
+  }
+  .battle-actions {
+    grid-column:2;
+    grid-row:2;
+    align-self:end;
+    grid-template-columns:1fr;
+    gap:12px;
+  }
+  .battle-actions button { min-height:96px; }
+  .battle-actions span { font-size:2rem; }
+  .battle-actions b { font-size:1.55rem; }
+  .cart .direction { width:54px; height:54px; right:-12px; bottom:-12px; font-size:1.45rem; }
+  .cart .rule-badge { min-width:54px; height:54px; left:-12px; top:-12px; font-size:1.35rem; }
+  .dialog-card { width:min(100%,760px); padding:28px; font-size:1.55rem; }
+  .dialog-card h2 { font-size:2rem; }
+  .settings-actions { gap:14px; }
+  .settings-actions button,.modal-actions button { min-height:96px; font-size:1.45rem; }
+}

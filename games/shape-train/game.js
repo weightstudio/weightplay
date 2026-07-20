@@ -305,6 +305,22 @@
     loadingFill: $("loadingFill"),
   };
 
+  const ruleBadge = document.createElement("span");
+  ruleBadge.id = "ruleBadge";
+  ruleBadge.className = "rule-badge";
+  ruleBadge.setAttribute("aria-hidden", "true");
+  nodes.stageText.before(ruleBadge);
+  nodes.ruleBadge = ruleBadge;
+
+  const ruleBadges = Object.freeze({
+    direct: "\u25cf",
+    outline: "\u25cb",
+    moving: "\u2194",
+    memory: "\u25c9",
+    ticket: "\u25a3",
+    expert: "\u2605",
+  });
+
   const leaveConfirmPanel = document.createElement("div");
   leaveConfirmPanel.id = "leaveConfirmPanel";
   leaveConfirmPanel.className = "shape-leave-confirm hidden";
@@ -753,6 +769,8 @@
     setResultOwnership(false);
     document.body.classList.remove("wp-standard-stage-page");
     document.body.classList.add("shape-playing");
+    nodes.playPanel.dataset.rule = stages[index].rule;
+    nodes.ruleBadge.textContent = ruleBadges[stages[index].rule] || ruleBadges.direct;
     nodes.playPanel.classList.toggle("is-outline", Boolean(stages[index].outline));
     document.querySelector(".shape-game")?.removeAttribute("data-play-viewport");
     renderCars();

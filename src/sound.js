@@ -23,6 +23,14 @@
       enable: "开启音效",
       disable: "关闭音效",
     },
+    ja: { sound: "サウンド", enable: "サウンドをオン", disable: "サウンドをオフ" },
+    ko: { sound: "소리", enable: "소리 켜기", disable: "소리 끄기" },
+    es: { sound: "Sonido", enable: "Activar sonido", disable: "Desactivar sonido" },
+    "pt-BR": { sound: "Som", enable: "Ativar som", disable: "Desativar som" },
+    fr: { sound: "Son", enable: "Activer le son", disable: "Désactiver le son" },
+    de: { sound: "Ton", enable: "Ton einschalten", disable: "Ton ausschalten" },
+    it: { sound: "Audio", enable: "Attiva audio", disable: "Disattiva audio" },
+    ru: { sound: "Звук", enable: "Включить звук", disable: "Выключить звук" },
   };
 
   try {
@@ -153,6 +161,10 @@
     const config = window.WONDER_SITE?.localization || {};
     const supported = config.phaseOneLocales || Object.keys(labels);
     const fallback = config.fallbackLocale || config.defaultLocale || "en";
+    const routeLocale = window.WonderI18n?.actualLocale?.()
+      || window.WonderI18n?.locale?.()
+      || document.documentElement.lang;
+    if (routeLocale && supported.includes(routeLocale)) return routeLocale;
 
     try {
       const saved = localStorage.getItem(localeKey);
@@ -161,7 +173,7 @@
       // Locale storage is optional.
     }
 
-    return window.WonderI18n?.locale?.() || document.documentElement.lang || fallback;
+    return fallback;
   }
 
   function soundLabels() {

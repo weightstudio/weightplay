@@ -341,9 +341,10 @@ select {
   display: grid;
   align-content: end;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.48)),
+    linear-gradient(180deg, var(--route-wash, rgba(255, 255, 255, 0.72)), var(--route-overlay, rgba(255, 255, 255, 0.48))),
     url("../../assets/shape-train-cover.png") center / cover;
-  box-shadow: inset 0 0 0 1000px rgba(255, 255, 255, 0.34), 0 18px 34px rgba(38, 79, 113, 0.2);
+  box-shadow: inset 0 0 0 1000px var(--route-overlay, rgba(255, 255, 255, 0.34)), 0 18px 34px var(--route-glow, rgba(38, 79, 113, 0.2));
+  transition: background 0.24s ease, box-shadow 0.24s ease;
 }
 
 .car-grid {
@@ -583,6 +584,84 @@ body.shape-playing .passenger {
 
 .play-panel {
   position: relative;
+  --route-accent: #1689dd;
+  --route-badge-ink: #ffffff;
+  --route-wash: rgba(219, 246, 255, 0.7);
+  --route-overlay: rgba(255, 255, 255, 0.3);
+  --route-glow: rgba(38, 79, 113, 0.2);
+}
+
+.play-panel[data-rule="outline"] {
+  --route-accent: #7257c8;
+  --route-wash: rgba(232, 225, 255, 0.76);
+  --route-overlay: rgba(248, 245, 255, 0.34);
+  --route-glow: rgba(79, 56, 145, 0.28);
+}
+
+.play-panel[data-rule="moving"] {
+  --route-accent: #d75b35;
+  --route-wash: rgba(255, 224, 193, 0.76);
+  --route-overlay: rgba(255, 248, 235, 0.3);
+  --route-glow: rgba(169, 70, 37, 0.28);
+}
+
+.play-panel[data-rule="memory"] {
+  --route-accent: #36549d;
+  --route-wash: rgba(207, 225, 255, 0.78);
+  --route-overlay: rgba(240, 247, 255, 0.32);
+  --route-glow: rgba(35, 59, 130, 0.3);
+}
+
+.play-panel[data-rule="ticket"] {
+  --route-accent: #b46c08;
+  --route-badge-ink: #fff9df;
+  --route-wash: rgba(255, 235, 169, 0.8);
+  --route-overlay: rgba(255, 252, 235, 0.28);
+  --route-glow: rgba(152, 91, 12, 0.28);
+}
+
+.play-panel[data-rule="expert"] {
+  --route-accent: #8a3ea9;
+  --route-wash: rgba(242, 211, 255, 0.78);
+  --route-overlay: rgba(255, 244, 255, 0.3);
+  --route-glow: rgba(105, 38, 129, 0.3);
+}
+
+.progress-line {
+  grid-template-columns: 34px minmax(0, 1fr);
+  align-items: center;
+}
+
+.rule-badge {
+  grid-column: 1;
+  grid-row: 1;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 10px;
+  background: var(--route-accent);
+  color: var(--route-badge-ink);
+  box-shadow: 0 3px 0 color-mix(in srgb, var(--route-accent) 68%, #17314f);
+  font-size: 19px;
+  font-weight: 1000;
+  line-height: 1;
+}
+
+body.wp-standard-stage-page .weightplay-version-badge,
+body.wp-standard-battle-page .weightplay-version-badge,
+body.shape-playing .weightplay-version-badge {
+  display: none;
+}
+
+#stageText {
+  grid-column: 2;
+  grid-row: 1;
+  min-width: 0;
+}
+
+.progress-line > div {
+  grid-column: 1 / -1;
 }
 
 .shape-result-panel {

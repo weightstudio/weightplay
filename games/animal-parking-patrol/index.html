@@ -1,12 +1,30 @@
 <!doctype html>
 <html lang="en">
 <head>
+    <script data-wp-locale-route>if (/^https?:$/.test(location.protocol)) location.replace("/en/games/animal-parking-patrol/" + location.search + location.hash);</script>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <meta name="robots" content="noindex,nofollow,noarchive" />
+  <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="kids" />
   <title>Animal Parking Patrol | WeightPlay</title>
-  <link rel="stylesheet" href="../../src/loading-screen.css" />
+  <meta name="description" content="Read each animal cart's direction, clear signals and convoys, and solve 30 original forest traffic puzzles." />
+  <meta property="og:site_name" content="WeightPlay" /><meta property="og:type" content="website" /><meta property="og:title" content="Animal Parking Patrol | WeightPlay" /><meta property="og:description" content="Read every cart direction and solve 30 forest traffic routes." /><meta property="og:url" content="https://weightplay.com/en/games/animal-parking-patrol/" /><meta property="og:image" content="https://weightplay.com/assets/animal-parking-patrol-cover.png" />
+  <meta name="twitter:card" content="summary_large_image" /><meta name="twitter:title" content="Animal Parking Patrol | WeightPlay" /><meta name="twitter:description" content="Clear signals, convoys, and four-way animal traffic." />
+  <link rel="canonical" href="https://weightplay.com/en/games/animal-parking-patrol/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-parking-patrol/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-parking-patrol/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-parking-patrol/" />
+    <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/animal-parking-patrol/" />
+    <link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/animal-parking-patrol/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/animal-parking-patrol/" />
+    <link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/animal-parking-patrol/" />
+    <link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/animal-parking-patrol/" />
+    <link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/animal-parking-patrol/" />
+    <link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/animal-parking-patrol/" />
+    <link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/animal-parking-patrol/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-parking-patrol/" />
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Animal Parking Patrol","url":"https://weightplay.com/en/games/animal-parking-patrol/","image":"https://weightplay.com/assets/animal-parking-patrol-cover.png","description":"Read every cart direction and solve 30 forest traffic routes.","applicationCategory":"Game","operatingSystem":"Any modern browser","isAccessibleForFree":true,"publisher":{"@type":"Organization","name":"WeightStudio"},"genre":["Puzzle","Logic"],"audience":{"@type":"PeopleAudience","suggestedMinAge":9},"inLanguage":"en"}</script>
+    <link rel="stylesheet" href="../../src/loading-screen.css" />
   <link rel="stylesheet" href="../../src/game-page-info.css" />
   <link rel="stylesheet" href="style.css?v=20260720-release-1" />
 </head>
@@ -27,7 +45,7 @@
         <div class="main-copy"><small data-i18n="eyebrow">Moon Cap Orla's traffic desk</small><h1 data-i18n="title">Animal Parking Patrol</h1><p data-i18n="pitch">Read each cart's direction. Clear the path and guide every animal safely out of the forest plaza.</p><div id="mainProgress" class="main-progress"></div><button id="startBtn" class="primary-action" type="button" data-i18n="start">Start Game</button></div>
       </section>
     </main>
-    <section class="game-guide" data-i18n-aria="guideLabel" aria-label="Game guide">
+    <section class="game-guide game-page-info game-page-info-static" data-i18n-aria="guideLabel" aria-label="Game guide">
       <small data-i18n="guideKicker">Original WeightPlay traffic puzzle</small><h2 data-i18n="guideTitle">Unjam the forest plaza</h2><p data-i18n="guideIntro">Moon Cap Orla studies the crossing from above. Every wooden animal cart can leave only in the direction it faces, so the safest route depends on which paths are already clear.</p>
       <div class="guide-grid"><article><h3 data-i18n="howTitle">How to play</h3><ol><li data-i18n="how1">Look at the direction shown on each cart.</li><li data-i18n="how2">Tap a cart whose path to the edge is clear.</li><li data-i18n="how3">Clear signal and convoy rules before moving marked carts.</li></ol><h3 data-i18n="parentTitle">For families</h3><p data-i18n="parentText">Recommended for ages 9+. The puzzles practise visual scanning and planning; they are not an ability test.</p></article><article><h3 data-i18n="growthTitle">30 patrol routes</h3><p data-i18n="growthText">Later chapters add denser plazas, signal-locked carts, convoy order, and mixed four-direction traffic.</p><h3 data-i18n="saveTitle">Local progress</h3><p data-i18n="saveText">Stars and best patrols stay in this browser. No account or upload is required.</p></article></div>
     </section>
@@ -57,7 +75,7 @@
   <section id="tutorialPanel" class="tutorial-layer" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="tutorial-card"><button id="tutorialCloseBtn" class="modal-close" type="button" data-i18n-aria="close">×</button><img src="../../assets/weightplay-character-moon-cap-owl-cutout.webp" alt="" /><h2 id="tutorialTitle" data-i18n="tutorialTitle">Read the road before you tap</h2><ol><li data-i18n="tutorial1">Each cart leaves in the direction it faces.</li><li data-i18n="tutorial2">Another cart in that path means it is blocked.</li><li data-i18n="tutorial3">Three blocked taps end the patrol, so look first.</li></ol><button id="tutorialStartBtn" class="primary-action" type="button" data-i18n="tutorialStart">Start route 1</button></div></section>
   <div id="toast" class="toast" aria-live="polite"></div>
 
-  <script src="../../src/site-config.js"></script><script src="../../src/i18n.js?v=20260720-locale11"></script><script src="../../src/game-runtime-localizer-loader.js?v=20260720-locale11"></script><script src="../../src/analytics.js"></script><script src="../../src/sound.js"></script><script src="../../src/edge-guard.js"></script>
-  <script src="locales.js?v=20260720-release-1"></script><script src="game.js?v=20260720-release-1"></script><script src="../../src/stage-selector-standard.js?v=20260720-canvas-max920-1" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
+  <script src="../../src/site-config.js"></script><script src="../../src/i18n.js?v=20260720-locale11-2"></script><script src="../../src/game-runtime-localizer-loader.js?v=20260720-locale11-10"></script><script src="../../src/analytics.js"></script><script src="../../src/sound.js?v=20260720-locale11"></script><script src="../../src/edge-guard.js"></script>
+  <script src="locales.js?v=20260720-release-1"></script><script src="game.js?v=20260720-release-1"></script><script src="../../src/stage-selector-standard.js?v=20260720-canvas-max920-1" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script><script src="../../src/game-page-info.js?v=20260720-public-batch1"></script>
 </body>
 </html>

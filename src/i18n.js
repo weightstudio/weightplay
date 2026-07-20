@@ -1786,13 +1786,18 @@
     document.querySelectorAll("select").forEach((select) => {
       const isLanguageSelect = select.querySelector('option[value="en"]') &&
         (select.id.toLowerCase().includes("locale") || select.id.toLowerCase().includes("language") || select.closest(".language-picker") || select.getAttribute("aria-label")?.toLowerCase() === "language");
-      if (isLanguageSelect) supportedLocales.forEach((locale) => {
-        if (select.querySelector(`option[value="${locale}"]`)) return;
-        const option = document.createElement("option");
-        option.value = locale;
-        option.textContent = localeLabels[locale] || locale;
-        select.appendChild(option);
-      });
+      if (isLanguageSelect) {
+        const options = new Map(Array.from(select.options, (option) => [option.value, option]));
+        Array.from(select.options).forEach((option) => {
+          if (!supportedLocales.includes(option.value)) option.remove();
+        });
+        supportedLocales.forEach((locale) => {
+          const option = options.get(locale) || document.createElement("option");
+          option.value = locale;
+          option.textContent = localeLabels[locale] || locale;
+          select.appendChild(option);
+        });
+      }
       if (select.querySelector(`option[value="${currentLocale}"]`)) select.value = currentLocale;
     });
     if (currentLocale === "zh-Hans") translateTree(document.documentElement);

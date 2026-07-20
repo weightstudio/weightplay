@@ -7,6 +7,7 @@
   const storageSet=(key,value)=>{const text=String(value);sessionStorageFallback.set(key,text);try{localStorage.setItem(key,text)}catch{}};
   const gameLocalePreference=storageGet('animalColoringStudioLocale');
   const platformLocale=storageGet('weightPlayLocale')||storageGet('weightplayLocale');
+  const routeLocale=window.WonderI18n?.actualLocale?.();
   const pages = [
     ...['lion','elephant','giraffe','zebra','hippo','rhino'].map(id => ({ id, pack:'safari' })),
     ...['puppy','kitten','rabbit','hamster','bird','turtle'].map(id => ({ id, pack:'pet' }))
@@ -26,7 +27,7 @@
   const $ = id => document.getElementById(id), app = $('app'), canvas = $('coloringCanvas'), ctx = canvas.getContext('2d',{willReadFrequently:true});
   const fillLayer = document.createElement('canvas'), fillCtx = fillLayer.getContext('2d'); fillLayer.width=768;fillLayer.height=1152;
   const maskCanvas = document.createElement('canvas'), maskCtx = maskCanvas.getContext('2d',{willReadFrequently:true}); maskCanvas.width=768;maskCanvas.height=1152;
-  let lang=supportedLocales.includes(gameLocalePreference)?gameLocalePreference:(supportedLocales.includes(platformLocale)?platformLocale:'en'), selectedPage=0, packFilter='all', mode='fill', selectedColor=palette[0].color, artImage=null, maskImage=null, maskPixels=null, keyboardRegions=[], keyboardRegionIndex=0, fills=new Map(), strokes=[], currentStroke=null, activeCanvasPointerId=null, actions=[], feedbackTimer=0, clearConfirmTimer=0, clearConfirmDeadline=0, clearConfirmRemaining=0, clearArmed=false, leaveConfirmOpen=false, leaveConfirmTrigger=null;
+  let lang=supportedLocales.includes(routeLocale)?routeLocale:(supportedLocales.includes(gameLocalePreference)?gameLocalePreference:(supportedLocales.includes(platformLocale)?platformLocale:'en')), selectedPage=0, packFilter='all', mode='fill', selectedColor=palette[0].color, artImage=null, maskImage=null, maskPixels=null, keyboardRegions=[], keyboardRegionIndex=0, fills=new Map(), strokes=[], currentStroke=null, activeCanvasPointerId=null, actions=[], feedbackTimer=0, clearConfirmTimer=0, clearConfirmDeadline=0, clearConfirmRemaining=0, clearArmed=false, leaveConfirmOpen=false, leaveConfirmTrigger=null;
   const readSave=()=>{try{return JSON.parse(storageGet('animalColoringStudioSave')||'{"completed":{}}')}catch{return{completed:{}}}};
   const writeSave=value=>storageSet('animalColoringStudioSave',JSON.stringify(value));
   const t=key=>copy[lang][key]||key;
@@ -104,7 +105,7 @@
   const resultColorUnit=()=>({en:'colors','zh-Hant':'種顏色','zh-Hans':'种颜色',es:'colores',ja:'色',ko:'가지 색','pt-BR':'cores',de:'Farben'}[lang]||'colors');
   const completeLocalized=()=>{if(!fills.size&&!strokes.length){showFeedback(t('empty'));return}const save=readSave(),page=pages[selectedPage],colors=new Set([...fills.values(),...strokes.map(s=>s.color)]);save.completed[page.id]={colors:colors.size,regions:fills.size,strokes:strokes.length,completedAt:Date.now()};writeSave(save);$('resultPreview').src=canvas.toDataURL('image/png');$('resultPreview').alt=names[lang][page.id];$('resultSummary').textContent=`${names[lang][page.id]} · ${colors.size} ${resultColorUnit()} · ${t('saved')}`;setResultOpen(true);requestAnimationFrame(()=>$('nextPage').focus({preventScroll:true}));track('page_completed',{colors_used:colors.size,filled_regions:fills.size,brush_strokes:strokes.length});window.WonderSound?.play('win')};
   $('finish').onclick=completeLocalized;
-  $('locale').onchange=()=>{lang=$('locale').value;storageSet('animalColoringStudioLocale',lang);storageSet('weightPlayLocale',lang);translate();renderStages()};
+  $('locale').onchange=()=>{const next=$('locale').value;if(window.WonderI18n?.setLocale){window.WonderI18n.setLocale(next);return}lang=next;storageSet('animalColoringStudioLocale',lang);storageSet('weightPlayLocale',lang);translate();renderStages()};
   window.__animalColoringStudioTest={
     pages,
     getState:()=>({screen:[...document.querySelectorAll('[data-screen]')].find(x=>!x.classList.contains('hidden'))?.dataset.screen,selectedPage,pageId:pages[selectedPage]?.id,mode,selectedColor,fills:fills.size,strokes:strokes.length,actions:actions.length,clearArmed,keyboardRegions:keyboardRegions.length,keyboardRegionIndex,activeCanvasPointerId,currentStrokePoints:currentStroke?.points.length||0}),

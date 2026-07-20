@@ -674,6 +674,7 @@
     nodes.targetGuide.style.left = `${basketX}%`;
     nodes.fallGuide.classList.remove("active");
     nodes.targetGuide.classList.remove("active");
+    nodes.playfield.classList.remove("is-vine-cut");
     nodes.targetAnimal.src = assets[route.animal];
     nodes.fruit.src = assets[route.fruit];
     nodes.vineButton.classList.remove("cut");
@@ -729,6 +730,7 @@
     nodes.vineButton.classList.add("cut");
     nodes.cutNowBtn.disabled = true;
     nodes.cutNowBtn.classList.add("cut");
+    nodes.playfield.classList.add("is-vine-cut");
     nodes.fallGuide.classList.add("active");
     nodes.targetGuide.classList.add("active");
     nodes.hintText.textContent = t("fallHint");

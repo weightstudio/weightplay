@@ -504,11 +504,8 @@ window.WONDER_LOBBY = {
         "pt-BR": "Bosque de Blocos Animais",
         de: "Tierischer Blöcke-Wald",
       },
-      status: "planned",
-      statusText: {
-        en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", es: "Próximamente",
-        ja: "近日公開", ko: "출시 예정", "pt-BR": "Em breve", de: "Demnächst",
-      },
+      status: "playable",
+      statusText: { en: "Playable", "zh-Hant": "立即遊玩", "zh-Hans": "立即游玩", es: "Jugar", ja: "今すぐ遊ぶ", ko: "지금 플레이", "pt-BR": "Jogar", de: "Jetzt spielen" },
       type: {
         en: "Block Placement Puzzle", "zh-Hant": "方塊配置益智", "zh-Hans": "方块放置益智",
         es: "Puzle de colocación de bloques", ja: "ブロック配置パズル", ko: "블록 배치 퍼즐",
@@ -519,7 +516,6 @@ window.WONDER_LOBBY = {
       ages: ["9", "family"],
       ageLabel: { en: "9+", "zh-Hant": "9+", "zh-Hans": "9+", es: "9+", ja: "9+", ko: "9+", "pt-BR": "9+", de: "9+" },
       href: "games/animal-block-grove/",
-      internalTrial: "index.html?trial=1",
       description: {
         en: "Place three animal block groups, clear complete rows and columns, and restore 30 forest habitats or continue in Infinite Grove.",
         "zh-Hant": "配置三組動物方塊、消除完整橫列與直行，修復 30 座森林棲地，或挑戰無限森林。",
@@ -547,8 +543,8 @@ window.WONDER_LOBBY = {
       },
       status: "planned",
       statusText: {
-        en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", es: "Próximamente",
-        ja: "近日公開", ko: "출시 예정", "pt-BR": "Em breve", de: "Demnächst",
+        en: "Playable", "zh-Hant": "可遊玩", "zh-Hans": "可游玩", es: "Jugable",
+        ja: "プレイ可能", ko: "플레이 가능", "pt-BR": "Jogável", de: "Spielbar",
       },
       type: {
         en: "Color Sorting Puzzle", "zh-Hant": "彩珠分類益智", "zh-Hans": "彩珠分类益智",
@@ -560,7 +556,6 @@ window.WONDER_LOBBY = {
       ages: ["9", "family"],
       ageLabel: { en: "9+", "zh-Hant": "9+", "zh-Hans": "9+", es: "9+", ja: "9+", ko: "9+", "pt-BR": "9+", de: "9+" },
       href: "games/animal-color-springs/",
-      internalTrial: "index.html?trial=1",
       description: {
         en: "Move matching spring orbs between ornate vessels and restore 30 forest fountains with seals, changing capacities, and tighter routes.",
         "zh-Hant": "在泉器間移動同色彩珠，破解封印、容量變化與緊湊路線，修復 30 座森林彩泉。",
@@ -582,7 +577,7 @@ window.WONDER_LOBBY = {
     {
       id: "animal-skyport-dispatch",
       title: { en: "Animal Skyport Dispatch", "zh-Hant": "\u52d5\u7269\u5929\u7a7a\u6e2f\u8abf\u5ea6\u968a" },
-      status: "planned",
+      status: "playable",
       statusText: { en: "Coming Soon", "zh-Hant": "\u656c\u8acb\u671f\u5f85" },
       type: { en: "Route Management Strategy", "zh-Hant": "\u822a\u7dda\u8abf\u5ea6\u7b56\u7565" },
       categories: ["Animal Games", "Strategy"],
@@ -677,11 +672,8 @@ window.WONDER_LOBBY = {
         es: "Estudio de Colorear Animales", ja: "どうぶつぬりえスタジオ", ko: "동물 색칠 스튜디오",
         "pt-BR": "Ateliê de Colorir Animais", de: "Tier-Malstudio",
       },
-      status: "planned",
-      statusText: {
-        en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", es: "Próximamente",
-        ja: "近日公開", ko: "출시 예정", "pt-BR": "Em breve", de: "Demnächst",
-      },
+      status: "playable",
+      statusText: { en: "Playable", "zh-Hant": "立即遊玩", "zh-Hans": "立即游玩", es: "Jugar", ja: "今すぐ遊ぶ", ko: "지금 플레이", "pt-BR": "Jogar", de: "Jetzt spielen" },
       type: {
         en: "Creative Coloring", "zh-Hant": "創意動物塗色", "zh-Hans": "创意动物涂色",
         es: "Colorear animales", ja: "どうぶつぬりえ", ko: "동물 색칠 놀이",
@@ -692,7 +684,6 @@ window.WONDER_LOBBY = {
       ages: ["3", "family"],
       ageLabel: { en: "3+", "zh-Hant": "3+", "zh-Hans": "3+", es: "3+", ja: "3+", ko: "3+", "pt-BR": "3+", de: "3+" },
       href: "games/animal-coloring-studio/",
-      internalTrial: "index.html?trial=1",
       description: {
         en: "Choose an animal page, fill or brush bounded regions, and save finished art to a local gallery.",
         "zh-Hant": "挑選動物圖畫，用填色或畫筆完成每個區域，並把作品保存在本機畫廊。",
@@ -718,10 +709,10 @@ window.WONDER_LOBBY = {
         es: "Taller de Tornillos Animales", ja: "どうぶつネジ工房", ko: "동물 나사 공방",
         "pt-BR": "Oficina de Parafusos Animais", de: "Tierische Schraubenwerkstatt",
       },
-      status: "planned",
+      status: "playable",
       statusText: {
-        en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", es: "Próximamente",
-        ja: "近日公開", ko: "출시 예정", "pt-BR": "Em breve", de: "Demnächst",
+        en: "Playable", "zh-Hant": "可遊玩", "zh-Hans": "可游玩", es: "Jugable",
+        ja: "プレイ可能", ko: "플레이 가능", "pt-BR": "Jogável", de: "Spielbar",
       },
       type: {
         en: "Screw Logic Puzzle", "zh-Hant": "螺絲邏輯解謎", "zh-Hans": "螺丝逻辑解谜",
@@ -733,7 +724,6 @@ window.WONDER_LOBBY = {
       ages: ["9", "family"],
       ageLabel: { en: "9+", "zh-Hant": "9+", "zh-Hans": "9+", es: "9+", ja: "9+", ko: "9+", "pt-BR": "9+", de: "9+" },
       href: "games/animal-screw-workshop/",
-      internalTrial: "index.html?trial=1",
       description: {
         en: "Move brass screws into open holes, release layered wooden animal plates, and restore 30 original forest-workshop puzzles.",
         "zh-Hant": "把黃銅螺絲移到空孔，拆解重疊的動物木板，完成 30 個原創森林工坊謎題。",
@@ -759,11 +749,8 @@ window.WONDER_LOBBY = {
         es: "Patrulla de Estacionamiento Animal", ja: "どうぶつ駐車パトロール", ko: "동물 주차 순찰대",
         "pt-BR": "Patrulha do Estacionamento Animal", de: "Tierische Parkplatz-Patrouille",
       },
-      status: "planned",
-      statusText: {
-        en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", es: "Próximamente",
-        ja: "近日公開", ko: "출시 예정", "pt-BR": "Em breve", de: "Demnächst",
-      },
+      status: "playable",
+      statusText: { en: "Playable", "zh-Hant": "立即遊玩", "zh-Hans": "立即游玩", es: "Jugar", ja: "今すぐ遊ぶ", ko: "지금 플레이", "pt-BR": "Jogar", de: "Jetzt spielen" },
       type: {
         en: "Traffic Order Puzzle", "zh-Hant": "交通順序解謎", "zh-Hans": "交通顺序解谜",
         es: "Lógica de tráfico", ja: "交通順序パズル", ko: "교통 순서 퍼즐",
@@ -774,7 +761,6 @@ window.WONDER_LOBBY = {
       ages: ["9", "family"],
       ageLabel: { en: "9+", "zh-Hant": "9+", "zh-Hans": "9+", es: "9+", ja: "9+", ko: "9+", "pt-BR": "9+", de: "9+" },
       href: "games/animal-parking-patrol/",
-      internalTrial: "index.html?trial=1",
       description: {
         en: "Read four-way animal cart traffic, clear signals and convoys, and solve 30 original forest-plaza patrol routes.",
         "zh-Hant": "觀察四向動物木車，依序解除號誌與車隊阻擋，完成 30 條原創森林廣場巡邏路線。",

@@ -535,7 +535,11 @@ body.is-vine-playing .game-page-info {
   pointer-events: none;
   will-change: left;
   z-index: 3;
-  animation: paddleReady 1.6s ease-in-out infinite;
+  animation: paddleReady 1.5s ease-in-out infinite;
+}
+
+.playfield.is-vine-cut .leaf-paddle {
+  animation: none;
 }
 
 .float-text {
@@ -683,7 +687,14 @@ body.is-vine-playing #gamePanel .result-panel:not(.hidden):not(.is-hidden) {
 
 @keyframes paddleReady {
   0%, 100% { transform: translateX(-50%) scale(1); }
-  50% { transform: translateX(-50%) scale(1.03); }
+  34% { transform: translateX(-57%) scale(1.025); }
+  67% { transform: translateX(-43%) scale(1.025); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .leaf-paddle {
+    animation: none;
+  }
 }
 
 @keyframes guideGlow {

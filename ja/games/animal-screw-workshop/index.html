@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <base href="/games/animal-screw-workshop/" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="robots" content="index,follow" />
+  <meta name="weightplay-audience" content="kids" />
+  <meta name="theme-color" content="#173329" />
+  <title>どうぶつネジ工房 | WeightPlay</title>
+  <meta name="description" content="『どうぶつネジ工房』は、歯車角サイのRuxが案内する30問の空間ロジックゲームです。真鍮のネジを空き穴へ移し、手数内に重なった木の動物プレートをすべて外します。" />
+  <link rel="canonical" href="https://weightplay.com/ja/games/animal-screw-workshop/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-screw-workshop/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-screw-workshop/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-screw-workshop/" />
+    <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/animal-screw-workshop/" />
+    <link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/animal-screw-workshop/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/animal-screw-workshop/" />
+    <link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/animal-screw-workshop/" />
+    <link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/animal-screw-workshop/" />
+    <link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/animal-screw-workshop/" />
+    <link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/animal-screw-workshop/" />
+    <link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/animal-screw-workshop/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-screw-workshop/" />
+    <link rel="stylesheet" href="../../src/loading-screen.css" />
+  <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard />
+  <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
+  <link rel="stylesheet" href="../../src/game-page-info.css" />
+  <link rel="stylesheet" href="style.css?v=20260720-release-2" />
+  <meta property="og:title" content="どうぶつネジ工房 | WeightPlay" />
+    <meta property="og:description" content="『どうぶつネジ工房』は、歯車角サイのRuxが案内する30問の空間ロジックゲームです。真鍮のネジを空き穴へ移し、手数内に重なった木の動物プレートをすべて外します。" />
+    <meta property="og:url" content="https://weightplay.com/ja/games/animal-screw-workshop/" />
+    <meta name="twitter:title" content="どうぶつネジ工房 | WeightPlay" />
+    <meta name="twitter:description" content="『どうぶつネジ工房』は、歯車角サイのRuxが案内する30問の空間ロジックゲームです。真鍮のネジを空き穴へ移し、手数内に重なった木の動物プレートをすべて外します。" />
+  </head>
+<body data-game-id="animal-screw-workshop" data-screen="loading">
+  <section id="loadingPanel" class="loading-panel" aria-live="polite">
+    <div class="loading-card"><strong data-i18n="title">Animal Screw Workshop</strong><span data-i18n="loading">Opening the forest workshop...</span><div class="loading-track"><i id="loadingFill"></i></div></div>
+  </section>
+
+  <div id="mainGroup" class="main-group" hidden>
+    <main id="mainScreen" class="main-screen">
+      <header class="main-header">
+        <a class="home-link" href="/kids/" data-i18n-aria="backWeightPlay" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a>
+        <strong data-i18n="title">Animal Screw Workshop</strong>
+        <label class="locale-control"><span class="sr-only" data-i18n="language">Language</span><select id="localeSelect" data-i18n-aria="language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="pt-BR">Português (Brasil)</option><option value="de">Deutsch</option></select></label>
+      </header>
+      <section class="main-hero">
+        <img class="main-poster" src="../../assets/animal-screw-workshop-cover.webp" data-i18n-alt="posterAlt" alt="どうぶつネジ工房のゲーム画像" />
+        <div class="main-copy"><small data-i18n="eyebrow">Gear Horn Rux's puzzle bench</small><h1 data-i18n="title">どうぶつネジ工房</h1><p data-i18n="pitch">Move each brass screw into an open hole. Release every wooden animal plate without running out of moves.</p><div id="mainProgress" class="main-progress"></div><button id="startBtn" class="primary-action" type="button" data-i18n="start">Start Game</button></div>
+      </section>
+    </main>
+    <section class="game-page-info game-page-info-static" aria-label="どうぶつネジ工房 のゲーム情報">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay ゲームガイド</span><h2>どうぶつネジ工房</h2><p>『どうぶつネジ工房』は、歯車角サイのRuxが案内する30問の空間ロジックゲームです。真鍮のネジを空き穴へ移し、手数内に重なった木の動物プレートをすべて外します。</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>ゲーム内容</span><strong>ネジ移動ロジックパズル</strong></div><div class="game-info-fact"><span>ジャンル</span><strong>パズル · 論理 · 動物</strong></div><div class="game-info-fact"><span>難易度</span><strong>やさしい〜難しい</strong></div><div class="game-info-fact"><span>目安時間</span><strong>1問約2〜6分</strong></div><div class="game-info-fact"><span>育てる力</span><strong>ビジュアルプランニング · 論理力 · 問題解決</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>世界とミッション</h3><p>森の工房の動物看板が、ネジで複雑な層に固定されました。1問直すごとに看板が戻り、6章すべてを終えると工房全体が再開します。</p></div>
+      <div class="game-info-section"><h3>ゲームのしくみ</h3><p>ロックされていないネジを選び、次に空き穴を選びます。支え穴からネジがなくなるとプレートが落ちます。共有ネジは複数の板を支え、ロックネジは上層を外すと動かせます。</p>
+<p>Undoは直前の状態を完全に戻し、Restartは同じ問題を作り直します。Hintは安全な移動を示しますが自動操作しません。少ない手数なら最大3つ星です。</p></div>
+      <div class="game-info-section"><h3>遊び方</h3><ol><li>ロックされていないネジを選びます。</li><li>安全な空き穴を選びます。</li><li>手数内に全プレートを外します。</li><li>詰まったらUndo、Restart、Hintを使います。</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>攻略のヒント</h3><ul><li>次の層のために空き穴を一つ残します。</li><li>共有ネジが支える板を確認します。</li><li>下層を解放する上の板から外します。</li><li>行き先がなくなる手はすぐ戻します。</li></ul></div>
+      <div class="game-info-section"><h3>進行と難易度</h3><p>1〜5は基本移動、6〜10は重なり、11〜15は共有ネジ、16〜20はロック、21〜25は狭い経路、26〜30は全ルールを組み合わせます。</p></div>
+      <div class="game-info-section"><h3>デザインノート</h3><p>判定はランダム物理ではなく固定された支えルールです。タッチ、マウス、キーボードで同じ二段階操作が使え、画面サイズが変わっても操作可能な穴をすべて表示します。</p></div>
+      <div class="game-info-section game-info-parent"><h3>保護者の方へ</h3><p>このKidsゲームは広告なしで、アカウントも不要です。進行、星、最少手数は現在のブラウザだけに保存され、アップロードされません。</p></div>
+      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>問題はいくつありますか？</dt><dd>6章30問です。</dd></div><div><dt>板が落ちる条件は？</dt><dd>支え穴からネジがすべてなくなることです。</dd></div><div><dt>ロックネジとは？</dt><dd>上層を外すと動かせるネジです。</dd></div><div><dt>Hintは自動で動かしますか？</dt><dd>いいえ。安全な一手を示すだけです。</dd></div><div><dt>Undoは何を戻しますか？</dt><dd>ネジ、板、手数を直前へ戻します。</dd></div><div><dt>進行は保存されますか？</dt><dd>はい。現在のブラウザ内だけです。</dd></div></dl></div>
+    </div>
+  </section>
+  </div>
+
+  <section id="stageScreen" class="stage-screen" hidden>
+    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-canvas-max-width="920" data-wp-stage-art="../../assets/animal-screw-workshop-cover.webp" style="--wp-stage-art:url('../../assets/animal-screw-workshop-cover.webp')">
+      <header class="stage-header"><button id="stageBackBtn" type="button" data-i18n-aria="backMain">←</button><div><strong data-i18n="chooseStage">Choose a workshop puzzle</strong><span id="stageSummary"></span></div><img src="../../assets/weightplay-character-gear-horn-rhino-cutout.webp" alt="" /></header>
+      <section class="chapter-panel"><small id="chapterKicker"></small><strong id="chapterTitle"></strong><p id="chapterRule"></p></section>
+      <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-recommendation="first" data-wp-stage-settle-duration="330" data-wp-stage-settle-easing="smoothstep" data-i18n-aria="stageRailLabel" aria-label="Workshop puzzle selection"></div>
+    </div>
+  </section>
+
+  <section id="battleScreen" class="battle-screen" hidden>
+    <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
+      <header class="battle-header"><button id="battleBackBtn" type="button" data-i18n-aria="backStage">←</button><div class="battle-title"><small id="stageLabel"></small><strong id="stageGoal"></strong></div><div class="battle-stat"><small data-i18n="moves">Moves</small><strong id="movesValue">0</strong></div><div class="battle-stat"><small data-i18n="plates">Plates</small><strong id="platesValue">0</strong></div></header>
+      <section id="objectiveBar" class="objective-bar" aria-live="polite"></section>
+      <section id="puzzleBoard" class="puzzle-board" data-i18n-aria="boardLabel" aria-label="Screw puzzle board"></section>
+      <div class="battle-actions"><button id="undoBtn" type="button"><span aria-hidden="true">↶</span><b data-i18n="undo">Undo</b></button><button id="restartBtn" type="button"><span aria-hidden="true">↻</span><b data-i18n="restart">Restart</b></button><button id="hintBtn" type="button"><span aria-hidden="true">✦</span><b data-i18n="hint">Hint</b></button></div>
+
+      <section id="resultPanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card"><img src="../../assets/weightplay-character-gear-horn-rhino-cutout.webp" alt="" /><small data-i18n="resultKicker">Workshop report</small><h2 id="resultTitle"></h2><div id="resultStars" class="result-stars"></div><p id="resultText"></p><p id="bestText" class="best-text"></p><div class="modal-actions"><button id="retryBtn" type="button" data-i18n="retry">Try again</button><button id="resultStagesBtn" type="button" data-i18n="stages">Stages</button><button id="nextBtn" class="primary-action" type="button" data-i18n="next">Next</button></div></div></section>
+      <section id="leavePanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card"><h2 id="leaveTitle" data-i18n="leaveTitle">Leave this puzzle?</h2><p data-i18n="leaveText">Continue keeps the exact board. Returning to stages ends this attempt.</p><div class="modal-actions"><button id="leaveContinueBtn" class="primary-action" type="button" data-i18n="continue">Continue</button><button id="leaveStagesBtn" type="button" data-i18n="returnStages">Return to stages</button></div></div></section>
+    </div>
+  </section>
+
+  <section id="tutorialPanel" class="tutorial-layer" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="tutorial-card"><button id="tutorialCloseBtn" class="modal-close" type="button" data-i18n-aria="close">×</button><img src="../../assets/weightplay-character-gear-horn-rhino-cutout.webp" alt="" /><h2 id="tutorialTitle" data-i18n="tutorialTitle">Move a screw, release a plate</h2><ol><li data-i18n="tutorial1">Tap a screw. It will glow.</li><li data-i18n="tutorial2">Tap any glowing empty hole.</li><li data-i18n="tutorial3">Remove every support screw to drop all plates.</li></ol><button id="tutorialStartBtn" class="primary-action" type="button" data-i18n="tutorialStart">Start puzzle 1</button></div></section>
+  <div id="toast" class="toast" aria-live="polite"></div>
+
+  <script src="../../src/site-config.js"></script><script src="/src/i18n-ja.js?v=20260719-ja1"></script>
+  <script src="/src/i18n.js?v=20260718-locale-routes1"></script><script src="../../src/game-runtime-localizer-loader.js?v=20260720-locale11-10"></script><script src="../../src/analytics.js"></script><script src="../../src/sound.js?v=20260720-locale11"></script><script src="../../src/edge-guard.js"></script>
+  <script src="locales.js?v=20260720-release-2"></script><script src="game.js?v=20260720-release-4"></script><script src="../../src/stage-selector-standard.js?v=20260720-canvas-max920-1" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script><script src="../../src/game-page-info.js?v=20260720-screw-public1"></script>
+  <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="どうぶつネジ工房";document.title="どうぶつネジ工房 | WeightPlay";},{once:true});</script>
+</body>
+</html>

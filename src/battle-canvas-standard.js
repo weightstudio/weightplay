@@ -3,7 +3,7 @@
   const GUTTER = 0;
   const DESKTOP_CANVAS_MAX_WIDTH = 920;
   const games = {
-    "animal-block-grove": [".battle-canvas", 390, 844],
+    "animal-block-grove": [".block-grove-battle-canvas", 390, 844],
     "animal-abyss-diver": [".battle-canvas", 390, 788],
     "animal-auto-squad": ["#gamePanel", 382, 780],
     "animal-bubble-safari": ["#battleScreen", 390, 788],

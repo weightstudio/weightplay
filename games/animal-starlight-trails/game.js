@@ -32,7 +32,7 @@
   Object.assign(STRINGS["zh-Hans"], {logicValue:"规划 {edges} 条星路",focusValue:"{mistakes} 次修正",problemValue:"使用 {hints} 次提示",locked:"未解锁",cleared:"已完成",available:"可挑战",chapter:"第 {number} 观测台",stageSummary:"完成 {cleared} 关 · {stars} 颗星",ruleClassic:"经典星路",ruleStart:"起点星印",ruleArrow:"彗星箭路",ruleOrder:"星印顺序",ruleGate:"钥匙星门",ruleMaster:"综合考验",node:"第 {number} 颗星",startNode:"起点星 {number}",keyNode:"钥匙星 {number}",checkpointNode:"编号 {order} 星印",edgeLabel:"第 {from} 颗星到第 {to} 颗星的星路",backToMain:"返回主菜单",backToStage:"返回关卡",stageRailLabel:"星座关卡",puzzleLabel:"星座谜题",graphLabel:"一笔画星座"});
   Object.assign(STRINGS.ja, {logicValue:"{edges} 本の道を計画",focusValue:"修正 {mistakes} 回",problemValue:"ヒント {hints} 回",locked:"未解放",cleared:"クリア",available:"挑戦可能",chapter:"観測所 {number}",stageSummary:"{cleared} クリア・星 {stars}",ruleClassic:"クラシック",ruleStart:"開始の印",ruleArrow:"彗星の矢印",ruleOrder:"星の順番",ruleGate:"星の門",ruleMaster:"総合試練",node:"星 {number}",startNode:"開始星 {number}",keyNode:"鍵の星 {number}",checkpointNode:"番号 {order} の星",edgeLabel:"星 {from} から星 {to} への道"});
   Object.assign(STRINGS.ko, {logicValue:"별길 {edges}개 계획",focusValue:"수정 {mistakes}회",problemValue:"힌트 {hints}회 사용",locked:"잠김",cleared:"완료",available:"도전 가능",chapter:"관측소 {number}",stageSummary:"{cleared}개 완료 · 별 {stars}개",ruleClassic:"기본 별길",ruleStart:"시작 봉인",ruleArrow:"혜성 화살표",ruleOrder:"별 순서",ruleGate:"별의 문",ruleMaster:"종합 도전",node:"별 {number}",startNode:"시작 별 {number}",keyNode:"열쇠 별 {number}",checkpointNode:"번호 {order} 별",edgeLabel:"별 {from}에서 별 {to}로 가는 길"});
-  Object.assign(STRINGS.es, {logicValue:"{edges} senderos planeados",focusValue:"{mistakes} correcciones",problemValue:"{hints} pistas usadas",locked:"Bloqueado",cleared:"Completado",available:"Disponible",chapter:"Observatorio {number}",stageSummary:"{cleared} completados · {stars} estrellas",ruleClassic:"Clásico",ruleStart:"Sello inicial",ruleArrow:"Flechas cometa",ruleOrder:"Orden estelar",ruleGate:"Puerta estelar",ruleMaster:"Maestría",node:"Estrella {number}",startNode:"Estrella inicial {number}",keyNode:"Estrella llave {number}",checkpointNode:"Estrella numerada {order}",edgeLabel:"Sendero de la estrella {from} a la {to}"});
+  Object.assign(STRINGS.es, {eyebrow:"Taller de constelaciones de Orla Sombrero Lunar",loading:"Cargando el mapa estelar…",progress:"{cleared} / 30 constelaciones restauradas",bestStars:"{stars} estrellas obtenidas",continue:"Continúa desde la estrella luminosa.",usedTrail:"Ese sendero ya se ha recorrido.",notConnected:"Elige una estrella conectada con la estrella luminosa.",wrongWay:"Ese sendero de cometa solo se puede recorrer en la dirección de la flecha.",checkpoint:"Llega ahora a la estrella numerada {number}.",gateLocked:"Encuentra la estrella llave dorada antes de cruzar esta puerta.",keyFound:"¡La puerta estelar dorada está abierta!",hintStart:"Prueba a comenzar en la estrella resaltada.",hintNext:"Se ha resaltado una siguiente estrella que mantiene una ruta válida.",assist:"{hints} pistas · {mistakes} correcciones",resultTitle:"Sendero restaurado",resultText:"Has iluminado los {edges} senderos en {time}.",newBest:"¡Nuevo mejor tiempo para esta constelación!",previousBest:"Mejor tiempo: {time}",logic:"Lógica",focus:"Concentración",problem:"Resolución de problemas",logicValue:"{edges} senderos planeados",focusValue:"{mistakes} correcciones",problemValue:"{hints} pistas usadas",rule1:"Recorre cada sendero exactamente una vez. Puedes volver a pasar por las estrellas.",rule2:"Empieza en la estrella marcada y recorre cada sendero una vez.",rule3:"Sigue cada sendero de cometa violeta en la dirección de su flecha.",rule4:"Llega a las estrellas numeradas en orden.",rule5:"Toca la estrella llave dorada antes de cruzar la puerta rosa.",rule6:"Combina sellos iniciales, flechas, orden de estrellas, llaves y puertas.",locked:"Bloqueado",cleared:"Completado",available:"Disponible",chapter:"Observatorio {number}",stageSummary:"{cleared} completados · {stars} estrellas",ruleClassic:"Clásico",ruleStart:"Sello inicial",ruleArrow:"Flechas cometa",ruleOrder:"Orden estelar",ruleGate:"Puerta estelar",ruleMaster:"Maestría",node:"Estrella {number}",startNode:"Estrella inicial {number}",keyNode:"Estrella llave {number}",checkpointNode:"Estrella numerada {order}",edgeLabel:"Sendero de la estrella {from} a la {to}",backToMain:"Volver al inicio",backToStage:"Volver a los niveles",stageRailLabel:"Constelaciones",puzzleLabel:"Rompecabezas de constelación",graphLabel:"Constelación de un solo trazo"});
   Object.assign(STRINGS["pt-BR"], {logicValue:"{edges} trilhas planejadas",focusValue:"{mistakes} correções",problemValue:"{hints} dicas usadas",locked:"Bloqueada",cleared:"Concluída",available:"Disponível",chapter:"Observatório {number}",stageSummary:"{cleared} concluídas · {stars} estrelas",ruleClassic:"Clássico",ruleStart:"Selo inicial",ruleArrow:"Setas de cometa",ruleOrder:"Ordem estelar",ruleGate:"Portal estelar",ruleMaster:"Mestria",node:"Estrela {number}",startNode:"Estrela inicial {number}",keyNode:"Estrela-chave {number}",checkpointNode:"Estrela numerada {order}",edgeLabel:"Trilha da estrela {from} à {to}"});
   Object.assign(STRINGS.fr, {logicValue:"{edges} sentiers planifiés",focusValue:"{mistakes} corrections",problemValue:"{hints} indices utilisés",locked:"Verrouillé",cleared:"Terminé",available:"Disponible",chapter:"Observatoire {number}",stageSummary:"{cleared} terminés · {stars} étoiles",ruleClassic:"Classique",ruleStart:"Sceau de départ",ruleArrow:"Flèches comètes",ruleOrder:"Ordre stellaire",ruleGate:"Porte stellaire",ruleMaster:"Maîtrise",node:"Étoile {number}",startNode:"Étoile de départ {number}",keyNode:"Étoile-clé {number}",checkpointNode:"Étoile numérotée {order}",edgeLabel:"Sentier de l’étoile {from} à {to}"});
   Object.assign(STRINGS.de, {logicValue:"{edges} Pfade geplant",focusValue:"{mistakes} Korrekturen",problemValue:"{hints} Hinweise genutzt",locked:"Gesperrt",cleared:"Geschafft",available:"Verfügbar",chapter:"Observatorium {number}",stageSummary:"{cleared} geschafft · {stars} Sterne",ruleClassic:"Klassisch",ruleStart:"Startsiegel",ruleArrow:"Kometenpfeile",ruleOrder:"Sternreihenfolge",ruleGate:"Sternentor",ruleMaster:"Meisterprüfung",node:"Stern {number}",startNode:"Startstern {number}",keyNode:"Schlüsselstern {number}",checkpointNode:"Nummerierter Stern {order}",edgeLabel:"Pfad von Stern {from} zu {to}"});
@@ -187,6 +187,36 @@
   }
 
   let localizingGuide = false;
+  const spanishTutorial = {
+    title: "Restaura todos los senderos estelares.",
+    steps: [
+      ["Elige un inicio", "Toca una estrella y luego arrastra o toca las estrellas conectadas."],
+      ["Usa cada sendero una vez", "Puedes volver a pasar por las estrellas, pero no cruzar de nuevo un sendero luminoso ya usado."],
+      ["Ilumínalo todo", "Recorre todos los senderos para completar el nivel. Deshacer, Reiniciar y Pista están siempre disponibles."],
+    ],
+    close: "Empezar a jugar",
+    closeAria: "Cerrar tutorial",
+  };
+  function localizeTutorial() {
+    if (locale !== "es") return;
+    const card = document.querySelector('.wp-tutorial-backdrop[data-game-id="animal-starlight-trails"] .wp-tutorial-card');
+    if (!card || card.dataset.starlightLocale === "es") return;
+    card.dataset.starlightLocale = "es";
+    const heading = card.querySelector(".wp-tutorial-head strong");
+    if (heading) heading.textContent = spanishTutorial.title;
+    card.querySelectorAll(".wp-tutorial-step").forEach((step,index) => {
+      const copy = spanishTutorial.steps[index];
+      if (!copy) return;
+      const title = step.querySelector("b");
+      const body = step.querySelector("span");
+      if (title) title.textContent = copy[0];
+      if (body) body.textContent = copy[1];
+    });
+    const close = card.querySelector(".wp-tutorial-close");
+    const action = card.querySelector(".wp-tutorial-action");
+    if (close) close.setAttribute("aria-label",spanishTutorial.closeAria);
+    if (action) action.textContent = spanishTutorial.close;
+  }
   function localizeGuide() {
     const liveGuide = $(".game-page-info");
     if (liveGuide && liveGuide !== dom.guide) {
@@ -205,6 +235,7 @@
     localizingGuide = false;
   }
   new MutationObserver(localizeGuide).observe(document.body,{childList:true,subtree:true});
+  new MutationObserver(localizeTutorial).observe(document.body,{childList:true,subtree:true});
 
   function updateMainProgress(){dom.mainProgress.innerHTML=`<strong>${t("progress",{cleared:clearedCount()})}</strong><span>${t("bestStars",{stars:totalStars()})}</span>`;}
   function setScreen(screen){document.body.dataset.screen=screen;dom.main.hidden=screen!=="main";dom.guide.hidden=screen!=="main";dom.stage.hidden=screen!=="stage";dom.battle.hidden=screen!=="battle";window.scrollTo({top:0,left:0,behavior:"auto"});}

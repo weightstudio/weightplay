@@ -7293,4 +7293,92 @@
   localizedGameplayProfiles["zh-Hant"]["animal-abyss-diver"] = { gameplay: "深海路線風險冒險", genre: ["策略", "冒險", "風險管理", "動物"] };
   localizedGames["zh-Hans"]["animal-abyss-diver"] = { ...localizedGames["zh-Hant"]["animal-abyss-diver"], title: "动物深渊潜航员", gameplay: "深海路线风险冒险" };
   localizedGameplayProfiles["zh-Hans"]["animal-abyss-diver"] = { gameplay: "深海路线风险冒险", genre: ["策略", "冒险", "风险管理", "动物"] };
+  const publicKidsBatch = {
+    "animal-block-grove": {
+      title: "Animal Block Grove", difficulty: "Easy to Challenging", time: "2-6 minutes per mission", gameplay: "8×8 Block Placement Puzzle", genre: ["Puzzle", "Logic", "Animal"], skills: ["Logic", "Spatial Reasoning", "Sequencing"],
+      intro: "Animal Block Grove is a thirty-mission placement puzzle starring Moss Shell Taro and Rainbow Hop Mimi. Choose from three block groups, fit every cell onto the 8×8 forest board, and complete full rows or columns to clear habitat space.",
+      story: ["A storm scattered the grove into leaf, flower, ripple, paw, acorn, and moss-stone fragments. Taro and Mimi rebuild each habitat by reconnecting complete lines. Every cleared mission restores another part of the forest; Infinite Grove continues the same repair work without a move limit."],
+      systems: ["Each tray contains three pieces that may be used in any order. A piece must fit entirely inside empty cells. Full rows and columns clear together, opening space and adding score. A fresh tray arrives only after all three pieces are placed.", "Campaign missions use authored boards, placement limits, and goals such as lines, score, paws, acorns, moss stones, or crossing clears. Undo restores the exact state before the last placement, while Hint highlights a legal safer option without playing it."],
+      how: ["Choose one of the three block groups.", "Drag it onto empty cells, or tap the piece and then a board cell.", "Complete a full row or column to clear it.", "Finish the displayed mission goal before the placement limit."],
+      strategyTips: ["Keep several differently shaped open areas instead of one narrow gap.", "Check all three tray pieces before committing the first one.", "Use crossing clears to remove a row and column with one placement.", "Treat moss stones as temporary obstacles that can leave with a completed line."],
+      progression: ["Missions 1-5 teach line clears; 6-10 add paw goals; 11-15 introduce acorns; 16-20 add moss stones; 21-25 require crossing clears; 26-30 combine every rule. Infinite Grove removes the placement limit and ends when no remaining piece fits."],
+      designNote: "The three-piece tray makes every choice readable while preserving meaningful order decisions. Drag, tap-to-select, mouse, and touch all use the same placement rules. Clear animations show exactly which cells changed. Campaign stars, completed missions, and Infinite Grove records remain only in this browser.",
+      parent: "No account is required and gameplay data is not uploaded. Progress is stored only in the current browser. The game practises spatial planning for entertainment and is not a formal ability assessment.",
+      faq: [["Must the three pieces be used in order?", "No. Any available piece may be placed first."], ["Does Hint place a piece?", "No. It only highlights a legal safer placement."], ["What does Undo restore?", "It restores the board, goals, score, tray, and move state before the last placement."], ["How does Infinite Grove end?", "It ends when none of the remaining pieces can fit."], ["Is progress saved?", "Yes, only in this browser."], ["Is an account required?", "No."]]
+    },
+    "animal-coloring-studio": {
+      title: "Animal Coloring Studio", difficulty: "Relaxed", time: "Open-ended", gameplay: "Fill and Brush Coloring", genre: ["Creative", "Art", "Animal"], skills: ["Color Recognition", "Focus", "Hand-Eye Coordination"],
+      intro: "Animal Coloring Studio is a calm creative activity with twelve original animal pages. Choose a picture, select colors, and use bounded Fill or free Brush tools without racing a timer or chasing a score.",
+      story: ["The WeightPlay animals have opened a woodland art room and left twelve pages ready for color. Each finished picture becomes part of the local gallery, so the goal is personal expression rather than winning or losing."],
+      systems: ["Fill colors one enclosed region at a time. Brush draws inside the artwork with adjustable size, and the eraser removes brush strokes. Undo and redo step through recent changes; Clear starts the current page again after confirmation.", "Completed artwork can be saved to the gallery stored on this device. Opening another page keeps saved gallery pieces separate, and the player can revisit the studio without an account."],
+      how: ["Choose one of the twelve animal pages.", "Pick a color and select Fill or Brush.", "Tap a region to fill it, or draw with a finger, mouse, or stylus.", "Use Undo, Redo, Eraser, or Clear as needed, then save the finished picture."],
+      strategyTips: ["Fill large regions first and add brush details afterward.", "Use a smaller brush near narrow outlines.", "Undo a mistake instead of clearing the whole page.", "Try contrasting nearby colors to keep shapes easy to read."],
+      progression: ["There are no locked levels or difficulty gates. The twelve pages offer different silhouettes and region sizes, letting players move from broad simple areas to pictures with smaller details in any order."],
+      designNote: "The studio deliberately has no timer, score, failure screen, or competitive ranking. Large tools and bounded fill regions support touch screens, while brush input also works with mouse or stylus. Artwork and gallery data stay in the current browser.",
+      parent: "This Kids activity is ad-free and requires no account. Saved pictures remain on the current device and are not uploaded by the game. It is a creative play space, not an art assessment.",
+      faq: [["Is there a correct color?", "No. Every palette choice is allowed."], ["What is the difference between Fill and Brush?", "Fill colors one bounded region; Brush draws a free stroke."], ["Can I undo a mistake?", "Yes. Undo and redo are available."], ["Is there a time limit?", "No."], ["Where is the gallery saved?", "Only in the current browser on this device."], ["Does the game upload drawings?", "No."]]
+    },
+    "animal-parking-patrol": {
+      title: "Animal Parking Patrol", difficulty: "Easy to Challenging", time: "1-5 minutes per route", gameplay: "Traffic Order Puzzle", genre: ["Puzzle", "Logic", "Animal"], skills: ["Logic", "Visual Planning", "Sequencing"],
+      intro: "Animal Parking Patrol is a thirty-route traffic-order puzzle guided by Moon Cap Orla. Every wooden animal cart can leave only in the direction it faces, so players inspect the whole forest plaza and release carts in a safe sequence.",
+      story: ["Festival traffic has jammed the woodland crossing. Orla watches from above while foxes, otters, pandas, lions, owls, turtles, rabbits, and rhinos wait in directional carts. Clearing every route restores a safe path through the plaza."],
+      systems: ["Tap a cart only when every grid cell between it and the matching edge is clear. A blocked tap spends one of three safety checks. Undo restores the previous exit; Restart rebuilds the exact authored puzzle; Hint makes a currently safe cart glow.", "Later routes add signal carts that unlock red signals, gated carts that must wait, and linked convoys that leave in order. Each route saves completion, stars, and the best blocked-tap count locally."],
+      how: ["Read the direction shown by every cart.", "Find a cart with a clear path to its edge.", "Resolve signal and convoy conditions before marked carts.", "Guide every cart out before using all three safety checks."],
+      strategyTips: ["Scan from each edge toward the center.", "Release carts that open paths for several others.", "Find the signal cart before tapping a gated cart.", "Use Undo immediately when an exit creates a worse order."],
+      progression: ["Routes 1-5 teach directions; 6-10 use denser crossings; 11-15 add signal locks; 16-20 introduce convoy order; 21-25 send traffic toward all four edges; 26-30 combine every rule in larger plazas."],
+      designNote: "Short deterministic routes turn mistakes into useful information instead of random punishment. Large carts, visible arrows, and the same tap rule work across phone and desktop. Pause, Help, Undo, Restart, and Result actions preserve a clear flow. Progress stays only in this browser.",
+      parent: "This Kids puzzle is ad-free and needs no account. Stars and route records are stored locally and are not uploaded. It practises visual scanning and planning for entertainment, not as an ability test.",
+      faq: [["Why will a cart not move?", "Another cart, a red signal, or a convoy rule is blocking its route."], ["What does the signal cart do?", "The marked signal cart opens the red signals in that route."], ["How many blocked taps are allowed?", "Three per attempt."], ["Does Hint solve the route?", "No. It highlights one safe cart."], ["How many routes are included?", "Thirty authored routes."], ["Is progress saved?", "Yes, only in this browser."]]
+    },
+    "animal-screw-workshop": {
+      title: "Animal Screw Workshop", difficulty: "Easy to Challenging", time: "2-6 minutes per puzzle", gameplay: "Screw Relocation Logic Puzzle", genre: ["Puzzle", "Logic", "Animal"], skills: ["Visual Planning", "Logic", "Problem Solving"],
+      intro: "Animal Screw Workshop is a thirty-puzzle spatial logic game led by Gear Horn Rux. Move each brass screw into an open hole, release every layered wooden animal plate, and repair the forest workshop within the shown move limit.",
+      story: ["The forest workshop's carved animal signs have become fastened into tangled stacks. Rux needs the player to free each plate without using up the few safe buffer holes. Completing a puzzle restores one sign, and clearing all six chapters reopens the whole workshop."],
+      systems: ["Select one unlocked screw and then an empty hole. A plate falls as soon as none of its support holes still contains a screw. Shared fasteners can hold several plates, while locked screws become available only after enough upper layers have fallen.", "Every puzzle has a fixed layout and move limit. Undo restores the complete previous move, Restart rebuilds the same puzzle, and Hint highlights one safe screw-and-hole route without playing it. Efficient clears award up to three stars and unlock the next puzzle."],
+      how: ["Choose an unlocked brass screw.", "Choose an open hole that can safely hold it.", "Release all wooden animal plates before the move limit.", "Use Undo, Restart, or Hint when a route closes."],
+      strategyTips: ["Keep at least one buffer hole available for the next layer.", "Check which plates share a screw before moving it.", "Remove upper plates first when they unlock lower fasteners.", "Use Undo as soon as a move blocks every safe destination."],
+      progression: ["Puzzles 1-5 teach basic relocation; 6-10 add overlapping plates; 11-15 introduce shared fasteners; 16-20 add locked screws; 21-25 tighten the available routes; 26-30 combine every rule into multi-layer release chains."],
+      designNote: "The game uses deterministic support rules instead of random physics, so every move can be planned from visible information. The two-step screw-and-hole input works with touch, mouse, and keyboard. Short falling animations explain the result without deciding it, and the responsive board keeps every interactive hole visible on phone and desktop.",
+      parent: "This Kids puzzle is ad-free and requires no account. Puzzle progress, stars, best moves, and the chosen language stay in the current browser and are not uploaded. It is a recreational logic game, not a formal ability assessment.",
+      faq: [["How many puzzles are included?", "Thirty deterministic puzzles across six chapters."], ["Why did a plate fall?", "All screw holes supporting that plate became empty."], ["What is a locked screw?", "It becomes movable after enough upper plates have been released."], ["Does Hint make a move?", "No. It only highlights one safe screw and destination."], ["What does Undo restore?", "It restores screw positions, fallen plates, and the move count before the last move."], ["Is progress saved?", "Yes, only in this browser."], ["Is an account required?", "No."], ["Does the game contain ads?", "No. This Kids game is ad-free."]]
+    }
+  };
+  Object.assign(games, publicKidsBatch);
+  Object.assign(gameplayProfiles, {
+    "animal-block-grove": { gameplay: "8×8 Block Placement Puzzle", genre: ["Puzzle", "Logic", "Animal"] },
+    "animal-coloring-studio": { gameplay: "Fill and Brush Coloring", genre: ["Creative", "Art", "Animal"] },
+    "animal-parking-patrol": { gameplay: "Traffic Order Puzzle", genre: ["Puzzle", "Logic", "Animal"] }
+    ,"animal-screw-workshop": { gameplay: "Screw Relocation Logic Puzzle", genre: ["Puzzle", "Logic", "Animal"] }
+  });
+  localizedGames["zh-Hant"]["animal-block-grove"] = { ...publicKidsBatch["animal-block-grove"], title: "動物方塊森林", gameplay: "8×8 方塊配置解謎", intro: "《動物方塊森林》是由苔殼太郎與彩躍咪咪帶領的三十關配置益智遊戲。從三組方塊中選擇，把每一格完整放進 8×8 森林棋盤，填滿橫列或直行即可消除並騰出棲地空間。" };
+  localizedGames["zh-Hant"]["animal-coloring-studio"] = { ...publicKidsBatch["animal-coloring-studio"], title: "動物塗色工作室", gameplay: "填色與畫筆創作", intro: "《動物塗色工作室》提供十二張原創動物圖畫。選擇喜歡的頁面與顏色，使用區域填色或自由畫筆慢慢完成作品，沒有倒數計時，也不需要追求分數。" };
+  localizedGames["zh-Hant"]["animal-parking-patrol"] = {
+    ...publicKidsBatch["animal-parking-patrol"],
+    title: "森林停車疏導隊", difficulty: "簡單到具挑戰性", time: "每條路線約 1～5 分鐘", gameplay: "交通順序解謎",
+    genre: ["益智", "邏輯", "動物"], skills: ["邏輯", "視覺規劃", "定序"],
+    intro: "《森林停車疏導隊》是月帽奧拉帶領的三十關交通順序解謎。每輛動物木車只能朝面向方向離開，玩家要觀察整座森林廣場，依安全順序疏導車流。",
+    story: ["慶典車流塞住了森林路口。月帽鴞奧菈從高處觀察，狐狸、水獺、貓熊、獅子、貓頭鷹、烏龜、兔子與犀牛坐在朝向不同的木車裡等待。完成每條路線，就能讓森林廣場重新恢復安全通行。"],
+    systems: ["只有當木車到對應邊緣之間的每一格都暢通時，才適合點擊。點到受阻的車會用掉一次安全確認；「復原」會恢復上一台離場車，「重新開始」會重建原本的固定謎題，「提示」則讓目前可安全離開的車發光。", "後續路線會加入能開啟紅燈的號誌車、必須等待的閘門車，以及依序離場的連鎖車隊。每條路線的完成狀態、星星與最少受阻次數都只保存在本機。"],
+    how: ["看清每台木車顯示的方向。", "找出一路通往對應邊緣、前方沒有其他車的木車。", "遇到號誌或連鎖標記時，先完成它要求的順序。", "在三次安全確認用完前，讓所有木車離開廣場。"],
+    strategyTips: ["從四個邊緣往中央逐步掃描。", "優先放行能替多台車打開道路的木車。", "點擊等待綠燈的車之前，先找出帶有 ✦ 的號誌車。", "若一次離場讓順序更難判斷，可立刻使用「復原」。"],
+    progression: ["路線 1～5 教方向判讀；6～10 加入更密集的路口；11～15 加入號誌鎖；16～20 練習車隊順序；21～25 讓車流朝四個邊緣離場；26～30 則在更大的廣場綜合所有規則。"],
+    designNote: "每條短路線都有固定解法，讓錯誤成為可用的線索，而不是隨機懲罰。大型木車、清楚箭頭與一致的點擊規則能在手機與桌機上維持同一套思考方式；暫停、說明、復原、重新開始與結果頁也保持清楚連續的流程。進度只留在目前的瀏覽器。",
+    parent: "這款 Kids 解謎遊戲沒有廣告，也不需要帳號。星星與路線紀錄只儲存在本機，不會上傳。遊戲以娛樂方式練習視覺搜尋與順序規劃，不是能力測驗或發展評估。",
+    faq: [["為什麼木車不能移動？", "前方可能有另一台車、尚未開啟的紅燈，或尚未完成的車隊順序。"], ["號誌車有什麼作用？", "帶有 ✦ 標記的號誌車離場後，會開啟該路線中的紅燈。"], ["可以點錯幾次？", "每次挑戰有三次安全確認。"], ["提示會直接解開路線嗎？", "不會；提示只會讓一台目前可安全離開的車發光。"], ["遊戲有多少條路線？", "共有三十條人工設計的路線。"], ["進度會保存嗎？", "會，但只保存在目前的瀏覽器。"]],
+  };
+  localizedGames["zh-Hant"]["animal-screw-workshop"] = {
+    ...publicKidsBatch["animal-screw-workshop"],
+    title: "動物螺絲工坊", difficulty: "簡單到具挑戰性", time: "每題約 2～6 分鐘", gameplay: "螺絲移位邏輯解謎",
+    genre: ["益智", "邏輯", "動物"], skills: ["視覺規劃", "邏輯", "問題解決"],
+    intro: "《動物螺絲工坊》是齒輪角犀帶領的三十關空間邏輯遊戲。把黃銅螺絲移到空孔，依正確順序拆下重疊的動物木板，並在步數限制內修復森林工坊。",
+    story: ["森林工坊的動物木牌被螺絲鎖成一層層交錯的結構。齒輪角犀需要玩家保留安全的暫存孔，逐片卸下木板。每完成一題就修好一面木牌，完成六個章節則代表整座工坊重新開放。"],
+    systems: ["先選擇一顆未上鎖的螺絲，再選擇一個空孔。當木板的所有支撐孔都沒有螺絲時，木板就會落下。共用螺絲可能同時固定多片木板，上鎖螺絲則要先卸下足夠的上層木板才會解鎖。", "每題都有固定配置與步數上限。復原會完整還原上一步，重新開始會重建同一題，提示只標出一組安全移動而不會代替玩家操作。較少步數完成可獲得三顆星並解鎖下一題。"],
+    how: ["選擇一顆未上鎖的黃銅螺絲。", "選擇一個能安全暫放螺絲的空孔。", "在步數限制內卸下所有動物木板。", "路線卡住時使用復原、重新開始或提示。"],
+    strategyTips: ["替下一層至少保留一個暫存孔。", "移動前先確認哪些木板共用同一顆螺絲。", "優先卸下能解鎖下層螺絲的上層木板。", "若移動後沒有安全目的地，立即復原。"],
+    progression: ["第 1～5 題教基本移位；6～10 加入重疊木板；11～15 加入共用螺絲；16～20 加入上鎖螺絲；21～25 縮小安全路線；26～30 綜合所有規則與連鎖落板。"],
+    designNote: "遊戲採用固定支撐規則而不是隨機物理效果，因此每一步都能依畫面資訊思考。選螺絲、再選空孔的兩段操作同時支援觸控、滑鼠與鍵盤；短暫落板動畫只負責呈現結果，不會改變判定。響應式棋盤也會讓手機與桌機完整看見可操作孔位。",
+    parent: "這款 Kids 解謎遊戲沒有廣告，也不需要帳號。關卡進度、星星、最佳步數與語言只保存在目前瀏覽器，不會上傳。遊戲以娛樂方式練習邏輯規劃，不是正式能力測驗。",
+    faq: [["共有多少題？", "共有六章三十題固定謎題。"], ["木板為什麼會落下？", "固定該木板的所有孔都沒有螺絲時就會落下。"], ["上鎖螺絲是什麼？", "卸下足夠的上層木板後才會變成可移動。"], ["提示會直接移動嗎？", "不會，只會標出一組安全的螺絲與目的孔。"], ["復原會恢復什麼？", "會恢復上一步前的螺絲、木板與步數。"], ["進度會保存嗎？", "會，但只保存在目前瀏覽器。"], ["需要帳號嗎？", "不需要。"], ["遊戲有廣告嗎？", "沒有，Kids 遊戲維持無廣告。"]]
+  };
+  for (const id of Object.keys(publicKidsBatch)) localizedGames["zh-Hans"][id] = { ...localizedGames["zh-Hant"][id] };
 })();

@@ -705,7 +705,10 @@
   $("sonarBtn").onclick=()=>{const config=routeConfig(),cost=config.sonarCost??2;if(config.jammedZones?.includes(state.zone)){setFeedback(`${icon("sonar")}<b>×</b>`,routeText(config,"rule"));return;}if(state.sonar){setFeedback(`${icon("sonar")}<b>✓</b>`,sonarMessage());return;}if(state.battery<cost){setFeedback(`${icon("power")}<b>${state.battery}</b>`,t("sonarNeed").replace("2",String(cost)));return;}state.battery-=cost;state.sonar=true;setFeedback(`${icon("sonar")}<b>✓</b>`,sonarMessage());renderBattle();};
   $("shieldBtn").onclick=()=>{const config=routeConfig(),cost=config.shieldCost??1;if(state.shieldArmed)return;if(state.battery<cost){setFeedback(`${icon("power")}<b>${state.battery}</b>`,t("shieldNeed").replace("1",String(cost)));return;}state.battery-=cost;state.shieldArmed=true;setFeedback(`${icon("shield")}<b>✓</b>`,t("shieldArmed"));renderBattle();focusCurrentDiveDecision();};
   let mainEntryKeyboardKey="";
+  const screenDecisionKeyboardKeys=new Set();
+  document.addEventListener("keydown",event=>{if(event.repeat&&screenDecisionKeyboardKeys.has(event.key)){event.preventDefault();event.stopImmediatePropagation();}},true);
   $("startBtn").addEventListener("keydown",event=>{if(!event.repeat&&(event.key==="Enter"||event.key===" "))mainEntryKeyboardKey=event.key;});
+  $("stageBack").addEventListener("keydown",event=>{if(!event.repeat&&(event.key==="Enter"||event.key===" "))screenDecisionKeyboardKeys.add(event.key);});
   $("startBtn").onclick=()=>{show("stageScreen");renderRoutes();focusRoute(save.unlocked);};
   $("stageBack").onclick=()=>{show("mainScreen");focusMain();};
   $("battleBack").onclick=()=>setQuit(true);
@@ -715,17 +718,17 @@
   document.addEventListener("visibilitychange",()=>{if(document.hidden)suspendDiveAsync();else resumeDiveAsync();});
   window.addEventListener("pagehide",suspendDiveAsync);
   window.addEventListener("pageshow",resumeDiveAsync);
-  $("upgradePanel").addEventListener("keydown",event=>{if(event.key!=="Tab"||$("upgradePanel").classList.contains("hidden"))return;const choices=[...$("upgradePanel").querySelectorAll("button:not(:disabled)")];if(!choices.length)return;const first=choices[0],last=choices.at(-1);if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}});
+  $("upgradePanel").addEventListener("keydown",event=>{if($("upgradePanel").classList.contains("hidden"))return;if(event.key==="Enter"||event.key===" "){if(event.repeat){event.preventDefault();return;}screenDecisionKeyboardKeys.add(event.key);}if(event.key!=="Tab")return;const choices=[...$("upgradePanel").querySelectorAll("button:not(:disabled)")];if(!choices.length)return;const first=choices[0],last=choices.at(-1);if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}});
   $("fishEncounter").addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault();});
-  $("result").addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" ")){event.preventDefault();return;}if(event.key!=="Tab"||$("result").classList.contains("hidden"))return;const first=$("nextBtn"),last=$("menuBtn");if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}});
-  $("quitPanel").addEventListener("keydown",event=>{if($("quitPanel").classList.contains("hidden"))return;if(event.repeat&&(event.key==="Enter"||event.key===" ")){event.preventDefault();return;}if(event.key==="Escape"){event.preventDefault();setQuit(false,{resume:true,focusBack:true});return;}if(event.key!=="Tab")return;const first=$("quitKeep"),last=$("quitLeave");if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}});
+  $("result").addEventListener("keydown",event=>{if(event.key==="Enter"||event.key===" "){if(event.repeat){event.preventDefault();return;}screenDecisionKeyboardKeys.add(event.key);}if(event.key!=="Tab"||$("result").classList.contains("hidden"))return;const first=$("nextBtn"),last=$("menuBtn");if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}});
+  $("quitPanel").addEventListener("keydown",event=>{if($("quitPanel").classList.contains("hidden"))return;if(event.key==="Enter"||event.key===" "){if(event.repeat){event.preventDefault();return;}screenDecisionKeyboardKeys.add(event.key);}if(event.key==="Escape"){event.preventDefault();setQuit(false,{resume:true,focusBack:true});return;}if(event.key!=="Tab")return;const first=$("quitKeep"),last=$("quitLeave");if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}});
   for(const direction of ["left","right"]){$(`${direction}Gate`).addEventListener("keydown",event=>{if(event.key!=="Enter"&&event.key!==" ")return;event.preventDefault();if(event.repeat)return;if($(`${direction}Gate`).getAttribute("aria-disabled")!=="true")move(direction);});}
   let drag;
   let suppressRouteClickUntil = 0;
   const routeRail = $("routeRail");
   routeRail.addEventListener("keydown",event=>{if(mainEntryKeyboardKey&&event.repeat&&event.key===mainEntryKeyboardKey)event.preventDefault();});
-  document.addEventListener("keyup",event=>{if(event.key===mainEntryKeyboardKey)mainEntryKeyboardKey="";});
-  window.addEventListener("blur",()=>{mainEntryKeyboardKey="";});
+  document.addEventListener("keyup",event=>{screenDecisionKeyboardKeys.delete(event.key);if(event.key===mainEntryKeyboardKey)mainEntryKeyboardKey="";});
+  window.addEventListener("blur",()=>{screenDecisionKeyboardKeys.clear();mainEntryKeyboardKey="";});
   function syncCenteredRouteSelection(){
     const cards=[...routeRail.querySelectorAll(".route-card")];
     if(!cards.length||!routeRail.getClientRects().length)return;
