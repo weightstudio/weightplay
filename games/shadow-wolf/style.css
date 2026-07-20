@@ -902,10 +902,10 @@ body[data-shadow-wolf-screen="battle"].wp-logical-battle-active #resultPanel.bat
   border-radius: 8px;
 }
 #gameCanvas {
-  width: min(100%, calc(100dvh - 178px));
-  height: auto;
+  width: 100%;
+  height: 100%;
   max-height: 100%;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: auto;
 }
 
 @media (max-width: 1024px) {
@@ -920,7 +920,7 @@ body[data-shadow-wolf-screen="battle"].wp-logical-battle-active #resultPanel.bat
   .arena-viewport { padding-top: 52px; }
   .play-return { width: 38px; height: 38px; font-size: 1.2rem; }
   .hud-meta-row { display: none; }
-  #gameCanvas { width: min(100%, calc(100dvh - 128px)); }
+  #gameCanvas { width: 100%; height: 100%; }
   .battle-result {
     align-content: start;
     gap: 4px;
@@ -937,6 +937,30 @@ body[data-shadow-wolf-screen="battle"].wp-logical-battle-active #resultPanel.bat
     width: auto;
     margin: 0;
   }
+}
+
+@media (min-aspect-ratio: 5 / 4) {
+  .arena-viewport {
+    padding: 8px 70px 8px 60px;
+    grid-template-rows: minmax(0, 1fr);
+    gap: 0;
+  }
+  .arena-hud {
+    position: absolute;
+    top: 8px;
+    right: 70px;
+    left: 60px;
+    z-index: 3;
+    padding: 7px 9px;
+    border-radius: 8px;
+    background: rgba(6, 20, 34, .86);
+    backdrop-filter: blur(3px);
+  }
+  .canvas-container {
+    width: 100%;
+    height: 100%;
+  }
+  .pause-panel { padding: 8px 70px 8px 60px; }
 }
 
 .sidebar-section-heading {

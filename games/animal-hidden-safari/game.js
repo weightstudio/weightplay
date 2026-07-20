@@ -631,8 +631,9 @@
     const isStage = document.body.classList.contains("safari-stage");
     if (!isStage && !document.body.classList.contains("safari-playing")) return;
     const viewport = window.visualViewport;
-    const viewportWidth = viewport?.width || window.innerWidth;
+    const safeWidth = viewport?.width || window.innerWidth;
     const viewportHeight = viewport?.height || window.innerHeight;
+    const viewportWidth = Math.min(Math.max(1, safeWidth), 920);
     const root = document.documentElement.style;
     const logicalWidth = 390;
     const logicalHeight = isStage ? 788 : logicalWidth * 16 / 9;
@@ -642,7 +643,7 @@
     const frameWidth = envelopeWidth * scale;
     const frameHeight = envelopeHeight * scale;
     const frame = document.querySelector(".safari-game");
-    root.setProperty("--safari-frame-left", "0px");
+    root.setProperty("--safari-frame-left", `${Math.max(0, (safeWidth - viewportWidth) / 2)}px`);
     root.setProperty("--safari-frame-top", "0px");
     root.setProperty("--safari-logical-width", `${envelopeWidth}px`);
     root.setProperty("--safari-logical-height", `${envelopeHeight}px`);

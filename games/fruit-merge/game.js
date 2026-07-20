@@ -826,8 +826,9 @@
     const isStage = document.body.classList.contains("fruit-stage");
     const minimumLogicalWidth = isStage ? 390 : 382;
     const minimumLogicalHeight = isStage ? 788 : 780;
-    const viewportWidth = visualViewport?.width || innerWidth;
+    const safeWidth = visualViewport?.width || innerWidth;
     const viewportHeight = visualViewport?.height || innerHeight;
+    const viewportWidth = Math.min(Math.max(1, safeWidth), 920);
     const scale = Math.max(0.1, Math.min(viewportWidth / minimumLogicalWidth, viewportHeight / minimumLogicalHeight));
     const logicalWidth = viewportWidth / scale;
     const logicalHeight = viewportHeight / scale;
@@ -836,7 +837,7 @@
     root.setProperty("--fruit-battle-scale", String(scale));
     root.setProperty("--fruit-logical-width", `${logicalWidth}px`);
     root.setProperty("--fruit-logical-height", `${logicalHeight}px`);
-    root.setProperty("--fruit-battle-left", "0px");
+    root.setProperty("--fruit-battle-left", `${Math.max(0, (safeWidth - viewportWidth) / 2)}px`);
     root.setProperty("--fruit-battle-top", "0px");
     document.querySelectorAll(".fruit-game, .fixed-game-shell, #stagePanel, #resultPanel").forEach((element) => {
       element.dataset.wpCommonScale = String(scale);

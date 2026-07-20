@@ -783,8 +783,9 @@
   function updateBakeryFrame() {
     if (!document.body.classList.contains("is-bakery-playing") && !document.body.classList.contains("is-bakery-stage-select")) return;
     const viewport = window.visualViewport;
-    const viewportWidth = viewport?.width || innerWidth;
+    const safeWidth = viewport?.width || innerWidth;
     const viewportHeight = viewport?.height || innerHeight;
+    const viewportWidth = Math.min(Math.max(1, safeWidth), 920);
     const scale = Math.max(0.1, Math.min(viewportWidth / 390, viewportHeight / 788));
     const logicalWidth = viewportWidth / scale;
     const logicalHeight = viewportHeight / scale;
@@ -792,7 +793,7 @@
     root.setProperty("--bakery-frame-scale", String(scale));
     root.setProperty("--bakery-logical-width", `${logicalWidth}px`);
     root.setProperty("--bakery-logical-height", `${logicalHeight}px`);
-    root.setProperty("--bakery-frame-left", "0px");
+    root.setProperty("--bakery-frame-left", `${Math.max(0, (safeWidth - viewportWidth) / 2)}px`);
     root.setProperty("--bakery-frame-top", "0px");
   }
 

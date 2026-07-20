@@ -932,7 +932,11 @@
     [definition.nameEs, definition.tacticEs] = missionCopyEs[index];
   });
 
-  let locale = window.WonderI18n?.actualLocale?.() || window.WonderI18n?.locale?.() || readStorage(localeKey) || "en";
+  const routeLocale = ({
+    en: "en", "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", es: "es", ja: "ja", ko: "ko",
+    "pt-br": "pt-BR", fr: "fr", de: "de", it: "it", ru: "ru",
+  })[location.pathname.split("/").filter(Boolean)[0]?.toLowerCase()];
+  let locale = routeLocale || readStorage(localeKey) || window.WonderI18n?.actualLocale?.() || window.WonderI18n?.locale?.() || "en";
 
   function updateBattleScale() {
     const viewport = window.visualViewport;
@@ -2611,7 +2615,18 @@
       resumeTurnTransition();
       resumeTrainingIntent();
     });
-    window.addEventListener("wonder:locale-change", () => requestAnimationFrame(localizeStrategyTips));
+    const syncRuntimeLocale = () => {
+      const requested = document.documentElement.lang;
+      if (text[requested] && requested !== locale) {
+        locale = requested;
+        applyLocale();
+        return;
+      }
+      requestAnimationFrame(localizeStrategyTips);
+    };
+    new MutationObserver(syncRuntimeLocale).observe(document.documentElement, { attributes: true, attributeFilter: ["lang"] });
+    window.addEventListener("wonder:locale-change", syncRuntimeLocale);
+    queueMicrotask(syncRuntimeLocale);
     nodes.mainStartBtn.addEventListener("click", showStage);
     nodes.stageBackBtn.addEventListener("click", showMainFromStage);
     nodes.backBtn.addEventListener("click", (event) => {
@@ -2623,7 +2638,9 @@
       resetTrainingIntent();
       const requested = nodes.localeSelect.value;
       window.WonderI18n?.setLocale?.(requested);
-      locale = window.WonderI18n?.actualLocale?.() || window.WonderI18n?.locale?.() || requested;
+      locale = text[requested]
+        ? requested
+        : window.WonderI18n?.actualLocale?.() || window.WonderI18n?.locale?.() || requested;
       writeStorage(localeKey, requested);
       applyLocale();
       window.dispatchEvent(new CustomEvent("wonder:locale-change", { detail: { locale } }));

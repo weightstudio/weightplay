@@ -1465,7 +1465,15 @@
     renderResult(reason, previousBestKeys, improved, previousRank.index, stageCleared);
     if (document.body) battlePanelMetrics = measureBattlePanel();
     show(nodes.resultPanel);
-    nodes.retryBtn.focus({ preventScroll: true });
+    const primaryAction = stageCleared && state.stage < STAGE_COUNT
+      ? nodes.nextStageBtn
+      : stageCleared
+        ? nodes.resultMenuBtn
+        : nodes.retryBtn;
+    [nodes.retryBtn, nodes.nextStageBtn, nodes.resultMenuBtn].forEach((button) => {
+      button.classList.toggle("result-primary", button === primaryAction);
+    });
+    primaryAction.focus({ preventScroll: true });
     playSound(stageCleared ? "win" : "wrong", 0.4);
     window.WonderAnalytics?.track("game_complete", { game_id: GAME_ID, reason, keys: state.keys, level: state.level, prototype: true });
   }

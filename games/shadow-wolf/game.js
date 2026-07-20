@@ -2256,9 +2256,10 @@
     const viewportWidth = nodes.gameCanvas.width;
     const viewportHeight = nodes.gameCanvas.height;
     const cameraX = Math.max(0, Math.min(800 - viewportWidth, state.x + state.width / 2 - viewportWidth / 2));
+    const cameraY = Math.max(0, Math.min(500 - viewportHeight, state.y + state.height / 2 - viewportHeight / 2));
     ctx.clearRect(0, 0, viewportWidth, viewportHeight);
     ctx.save();
-    ctx.translate(-cameraX, 0);
+    ctx.translate(-cameraX, -cameraY);
 
     // 1. Background image
     const region = Math.ceil(state.room / 5);
@@ -2640,19 +2641,70 @@
     const root = document.querySelector("#gamePanel .shadow-game-layout");
     if (!root) return;
     root.classList.add("game-layout");
-    if (!document.querySelector("link[data-shadow-wolf-battle-standard]")) {
-      const stylesheet = document.createElement("link");
-      stylesheet.rel = "stylesheet";
-      stylesheet.href = "../../src/battle-canvas-standard.css";
-      stylesheet.dataset.shadowWolfBattleStandard = "";
-      document.head.append(stylesheet);
-    }
-    if (!document.querySelector("script[data-shadow-wolf-battle-standard]")) {
-      const script = document.createElement("script");
-      script.src = "../../src/battle-canvas-standard.js";
-      script.dataset.shadowWolfBattleStandard = "";
-      document.body.append(script);
-    }
+    nodes.resultPanel.classList.add("battle-result");
+    const reserve = document.querySelector("#gamePanel .battle-ad-reserve");
+    const container = root.querySelector(".canvas-container");
+    const metrics = window.__weightPlayLayoutMetrics ||= {};
+    let scheduled = 0;
+
+    const syncCanvasViewport = () => {
+      const rect = container?.getBoundingClientRect();
+      if (!rect || rect.width < 2 || rect.height < 2) return;
+      const aspect = rect.width / rect.height;
+      const worldAspect = 800 / 500;
+      const logicalWidth = Math.max(1, Math.round(aspect >= worldAspect ? 800 : 500 * aspect));
+      const logicalHeight = Math.max(1, Math.round(aspect >= worldAspect ? 800 / aspect : 500));
+      if (nodes.gameCanvas.width !== logicalWidth) nodes.gameCanvas.width = logicalWidth;
+      if (nodes.gameCanvas.height !== logicalHeight) nodes.gameCanvas.height = logicalHeight;
+    };
+
+    const update = () => {
+      scheduled = 0;
+      const active = document.body.dataset.shadowWolfScreen === "battle" && !nodes.gamePanel.classList.contains("hidden");
+      document.body.classList.toggle("wp-logical-battle-active", active);
+      if (!active) {
+        ["position", "inset", "top", "left", "width", "min-width", "max-width", "height", "min-height", "max-height", "margin", "transform", "transform-origin", "overflow"]
+          .forEach((property) => root.style.removeProperty(property));
+        ["position", "inset", "top", "left", "width", "height", "margin", "transform"]
+          .forEach((property) => reserve?.style.removeProperty(property));
+        root.setAttribute("data-wp-logical-battle-canvas", "responsive");
+        return;
+      }
+      const viewport = window.visualViewport;
+      const width = Math.max(1, document.documentElement.clientWidth || innerWidth, viewport?.width || 0);
+      const height = Math.max(1, document.documentElement.clientHeight || innerHeight, viewport?.height || 0);
+      const availableWidth = Math.min(width, 920);
+      const availableHeight = Math.max(1, height - 56);
+      const landscape = availableWidth / availableHeight >= 1.25;
+      const minimumWidth = landscape ? 760 : 390;
+      const minimumHeight = landscape ? 334 : 788;
+      const scale = Math.max(0.01, Math.min(availableWidth / minimumWidth, availableHeight / minimumHeight));
+      const logicalWidth = availableWidth / scale;
+      const logicalHeight = availableHeight / scale;
+      const left = Math.max(0, (width - availableWidth) / 2);
+      root.setAttribute("data-wp-logical-battle-canvas", `${logicalWidth.toFixed(3)}x${logicalHeight.toFixed(3)}`);
+      Object.entries({
+        position: "fixed", inset: "auto", top: "0px", left: `${left}px`, width: `${logicalWidth}px`,
+        "min-width": `${logicalWidth}px`, "max-width": `${logicalWidth}px`, height: `${logicalHeight}px`,
+        "min-height": `${logicalHeight}px`, "max-height": `${logicalHeight}px`, margin: "0", transform: `scale(${scale})`,
+        "transform-origin": "top left", overflow: "hidden",
+      }).forEach(([property, value]) => root.style.setProperty(property, value, "important"));
+      if (reserve) Object.entries({
+        position: "fixed", inset: "auto", top: `${availableHeight}px`, left: "0px", width: `${width}px`, height: "56px",
+        margin: "0", transform: "none",
+      }).forEach(([property, value]) => reserve.style.setProperty(property, value, "important"));
+      metrics.battleApplied = (metrics.battleApplied || 0) + 1;
+      requestAnimationFrame(syncCanvasViewport);
+    };
+    const schedule = () => {
+      if (!scheduled) scheduled = requestAnimationFrame(update);
+    };
+    new MutationObserver(schedule).observe(document.body, { attributes: true, attributeFilter: ["data-shadow-wolf-screen", "class"] });
+    new MutationObserver(schedule).observe(nodes.gamePanel, { attributes: true, attributeFilter: ["class", "hidden"] });
+    new ResizeObserver(syncCanvasViewport).observe(container);
+    addEventListener("resize", schedule, { passive: true });
+    window.visualViewport?.addEventListener("resize", schedule, { passive: true });
+    schedule();
   }
 
   function init() {

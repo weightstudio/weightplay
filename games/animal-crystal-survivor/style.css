@@ -658,6 +658,11 @@ button {
   cursor: pointer;
 }
 
+.result-card button.result-primary {
+  background: linear-gradient(180deg, #fff4a8, #f5b92f);
+  box-shadow: 0 0 0 3px rgba(254, 240, 138, 0.72), 0 0 18px rgba(250, 204, 21, 0.5);
+}
+
 .game-panel {
   display: grid;
   grid-template-rows: 54px 34px minmax(0, 1fr) 34px 56px;

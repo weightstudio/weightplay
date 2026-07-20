@@ -4552,6 +4552,9 @@
     nodes.resultMenuBtn.classList.toggle("primary-btn", isFinalVictory);
     nodes.resultMenuBtn.classList.toggle("secondary-btn", !isFinalVictory);
     nodes.skillReportText.innerHTML = `<strong>${t("skillReport")}</strong><br/>${t("skillsLearned")}`;
+    nodes.resultPanel.scrollTop = 0;
+    const resultCopy = nodes.resultPanel.querySelector(".result-copy");
+    if (resultCopy) resultCopy.scrollTop = 0;
     setResultOwnership(true);
     requestAnimationFrame(() => (isWin && state.stage < STAGE_COUNT ? nodes.nextStageBtn : isFinalVictory ? nodes.resultMenuBtn : nodes.retryBtn).focus({ preventScroll: true }));
     
