@@ -835,9 +835,15 @@
   };
   const STAGE_COUNT = STAGE_DEFINITIONS.length;
   const WAVES_PER_STAGE = 5;
+  const readStorage = (key) => {
+    try { return localStorage.getItem(key); } catch { return null; }
+  };
+  const writeStorage = (key, value) => {
+    try { localStorage.setItem(key, value); return true; } catch { return false; }
+  };
 
   // State Management
-  let locale = window.WonderI18n?.locale?.() || localStorage.getItem(localeKey) || "en";
+  let locale = window.WonderI18n?.locale?.() || readStorage(localeKey) || "en";
   let save = loadSave();
   let state = makeState();
   let selectedSlot = null; // for tap-to-select mobile fallback
@@ -1460,19 +1466,17 @@
   function loadSave() {
     let normalized;
     try {
-      const data = localStorage.getItem(saveKey);
+      const data = readStorage(saveKey);
       normalized = normalizeSave(data ? JSON.parse(data) : null);
     } catch (e) {
       normalized = normalizeSave(null);
     }
-    try { localStorage.setItem(saveKey, JSON.stringify(normalized)); } catch (e) {}
+    writeStorage(saveKey, JSON.stringify(normalized));
     return normalized;
   }
 
   function saveSave() {
-    try {
-      localStorage.setItem(saveKey, JSON.stringify(save));
-    } catch (e) {}
+    writeStorage(saveKey, JSON.stringify(save));
   }
 
   function makeState() {
@@ -2204,7 +2208,7 @@
     const requested = next === "zh-Hant" && current === "zh-Hans" ? current : next || "en";
     if (current !== requested) window.WonderI18n?.setLocale?.(requested);
     locale = window.WonderI18n?.legacyLocale?.(requested) || requested;
-    localStorage.setItem(localeKey, requested);
+    writeStorage(localeKey, requested);
     document.documentElement.lang = requested;
     translateUI();
     updatePageMeta();
