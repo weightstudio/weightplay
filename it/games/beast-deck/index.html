@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <base href="/games/beast-deck/" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0b0f19" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="robots" content="index,follow" />
+    <meta name="description" content="Beast Deck: The Mist Forest è una campagna di costruzione di mazzi a turni di 30 missioni costruita attorno all&#39;intento visibile del nemico e alle..." />
+    <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Mazzo Bestia: La Foresta Nebbiosa | WeightPlay" />
+    <meta property="og:description" content="Beast Deck: The Mist Forest è una campagna di costruzione di mazzi a turni di 30 missioni costruita attorno all&#39;intento visibile del nemico e alle..." />
+    <meta property="og:url" content="https://weightplay.com/it/games/beast-deck/" />
+    <meta property="og:image" content="https://weightplay.com/assets/beast-deck-cover.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>Mazzo Bestia: La Foresta Nebbiosa | WeightPlay</title>
+    <link rel="canonical" href="https://weightplay.com/it/games/beast-deck/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/beast-deck/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/beast-deck/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/beast-deck/" />
+    <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/beast-deck/" />
+    <link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/beast-deck/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/beast-deck/" />
+    <link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/beast-deck/" />
+    <link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/beast-deck/" />
+    <link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/beast-deck/" />
+    <link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/beast-deck/" />
+    <link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/beast-deck/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/beast-deck/" />
+    <link rel="stylesheet" href="style.css?v=20260716-beast-campaign1" />
+    <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
+    <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
+    <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
+    <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
+            <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Mazzo Bestia: La Foresta Nebbiosa",
+  "alternateName": "獸王牌組：迷霧森林",
+  "url": "https://weightplay.com/it/games/beast-deck/",
+  "image": "https://weightplay.com/assets/beast-deck-cover.png",
+  "description": "Beast Deck: The Mist Forest è una campagna di costruzione di mazzi a turni di 30 missioni costruita attorno all'intento visibile del nemico e alle...",
+  "genre": [
+    "Carta",
+    "Roguelike",
+    "Animale"
+  ],
+  "gamePlatform": "Web browser",
+  "operatingSystem": "Any",
+  "playMode": "SinglePlayer",
+  "keywords": "beast deck, mist forest, 30 mission card game, animal deckbuilder, roguelike, boss card battle, browser strategy game",
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "General strategy game players",
+    "suggestedMinAge": 13
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio",
+    "url": "https://weightplay.com/"
+  },
+  "inLanguage": "it",
+  "isAccessibleForFree": true,
+  "applicationCategory": "Game"
+}
+    </script>
+    <meta name="twitter:title" content="Mazzo Bestia: La Foresta Nebbiosa | WeightPlay" />
+    <meta name="twitter:description" content="Beast Deck: The Mist Forest è una campagna di costruzione di mazzi a turni di 30 missioni costruita attorno all&#39;intento visibile del nemico e alle..." />
+  </head>
+  <body data-tutorial-auto-show="false">
+    <main class="beast-deck-app" data-no-mobile-immersive="true" data-wp-canvas-max-width="920">
+      <header class="topbar">
+        <a class="icon-btn" data-wp-return="main" href="/" data-aria="backToLobby" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
+        <div class="brand-title">
+          <p>WeightPlay</p>
+          <h1 data-ui="title">Mazzo Bestia: La Foresta Nebbiosa</h1>
+        </div>
+        <label class="language-picker">
+          <span data-ui="language">Language</span>
+                    <select id="localeSelect" data-aria="language" aria-label="Language">
+            <option value="en">English</option>
+            <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
+            <option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option>
+          </select>
+        </label>
+      </header>
+
+      <section id="menuPanel" class="menu-panel">
+        <img class="cover" src="../../assets/beast-deck-cover.webp" alt="" />
+        <div class="menu-copy">
+          <strong data-ui="menuTitle">Enter the Mist Forest.</strong>
+          <span data-ui="menuHint">Build an animal power deck, read enemy intent, and clear forest missions. Your level and unlocked missions are saved on this device.</span>
+
+          <div class="prototype-goals" data-aria="progressTitle" aria-label="Local progress">
+            <b data-ui="progressTitle">Local Progress</b>
+            <span data-ui="progressText">Clear missions to earn XP, level up, and unlock deeper forest routes. Progress is saved on this device.</span>
+          </div>
+
+          <div id="profilePanel" class="profile-panel" aria-live="polite">
+            <div>
+              <span data-ui="profileLevel">Level</span>
+              <b id="profileLevelText">1</b>
+            </div>
+            <div>
+              <span data-ui="profileXp">XP</span>
+              <b id="profileXpText">0/100</b>
+            </div>
+            <div>
+              <span data-ui="profileBest">Best</span>
+              <b id="profileBestText">1</b>
+            </div>
+            <small id="profileBonusText">+0 Max HP</small>
+          </div>
+
+          <div id="collectionPanel" class="collection-panel" aria-live="polite">
+            <div class="collection-head">
+              <div>
+                <strong data-ui="collectionTitle">Card Collection</strong>
+                <small data-ui="collectionHint">Equip up to 6 extra cards before a mission.</small>
+              </div>
+              <b><span data-ui="profileCoins">Coins</span> <span id="profileCoinText">0</span></b>
+            </div>
+            <button id="packBtn" class="pack-btn" type="button">
+              <span>
+                <strong data-ui="packTitle">Draw Beast Pack</strong>
+                <small data-ui="packHint">Gain a card or equipment for future runs.</small>
+              </span>
+              <b><span id="packCost">80</span></b>
+            </button>
+            <div id="packStatus" class="pack-status"></div>
+            <div class="collection-subhead">
+              <span data-ui="deckBuildTitle">Battle Deck</span>
+              <b id="deckBuildCount">0/6</b>
+            </div>
+            <small id="deckAnalysis" class="deck-analysis"></small>
+            <div id="deckSlots" class="deck-slots"></div>
+            <div class="collection-subhead">
+              <span data-ui="collectionOwnedTitle">Owned Cards</span>
+            </div>
+            <div id="collectionGrid" class="collection-grid"></div>
+            <div class="collection-subhead">
+              <span data-ui="equipmentTitle">Equipment</span>
+            </div>
+            <div id="gearGrid" class="gear-grid"></div>
+          </div>
+
+          <div class="stage-select">
+            <div class="stage-select-head">
+              <strong data-ui="stageSelectTitle">Choose a Mission</strong>
+              <small data-ui="stageSelectHint">Unlocked missions stay available.</small>
+            </div>
+            <div id="stageGrid" class="stage-grid" data-aria="missionSelection" aria-label="Mission selection"></div>
+            <div id="selectedMissionSummary" class="selected-mission-summary" aria-live="polite"></div>
+          </div>
+
+          <button id="startBtn" type="button" data-ui="startRun" hidden>Start Mission</button>
+
+          <div id="diamondShop" class="diamond-shop" aria-live="polite">
+            <div class="diamond-shop-head">
+              <span data-ui="diamondShopTitle">Permanent Upgrade</span>
+              <b><img src="../../assets/weightplay-diamond.svg" alt="" /> <span id="diamondBalance">0</span></b>
+            </div>
+            <button id="amuletBtn" class="diamond-btn" type="button">
+              <span>
+                <strong data-ui="amuletName">Mist Amulet</strong>
+                <small data-ui="amuletEffect">Start every run with +10 Max HP.</small>
+              </span>
+              <b><img src="../../assets/weightplay-diamond.svg" alt="" /> <span id="amuletCost">15</span></b>
+            </button>
+            <small id="amuletStatus" class="diamond-status"></small>
+          </div>
+
+          <div class="control-chips">
+            <span data-ui="controlCombat">Turn-Based Strategy</span>
+            <span data-ui="controlUpgrades">Draft Cards</span>
+            <span data-ui="controlDeck">Persistent Level</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="gamePanel" class="game-panel hidden" data-play-viewport data-wp-canvas-max-width="920">
+        <div class="hud-row">
+          <button id="menuBtn" class="soft-btn" data-wp-return="battle" type="button" data-aria="backToStage" aria-label="Back to missions">&larr;</button>
+          <div><span data-ui="hudStage">Battle</span><b id="stageText">1/3</b></div>
+          <div><span data-ui="hudMission">Mission</span><b id="missionText">1</b></div>
+          <div><span data-ui="hudHp">Player HP</span><b id="hpText">30/30</b></div>
+          <div><span data-ui="hudEnergy">Energy</span><b id="energyText">3/3</b></div>
+          <div><span data-ui="hudDeck">Deck</span><b id="deckText">10</b></div>
+          <div><span data-ui="hudDiscard">Discard</span><b id="discardText">0</b></div>
+        </div>
+
+        <div class="battlefield">
+          <div id="enemyContainer" class="enemy-container">
+            <div class="enemy-intent" id="enemyIntent" aria-live="polite">
+              <span class="intent-icon" id="intentIcon">ATK</span>
+              <span class="intent-text" id="intentText">Attacking for 6</span>
+            </div>
+            <div class="beast-avatar" id="enemyAvatar" aria-hidden="true"></div>
+            <h2 id="enemyName">Shadow Boar</h2>
+            <div class="hp-bar-container">
+              <div class="hp-bar-fill" id="enemyHpFill" style="width: 100%;"></div>
+              <span class="hp-text" id="enemyHpText">24/24</span>
+            </div>
+            <div class="status-row" id="enemyStatusRow"></div>
+          </div>
+
+          <div class="battle-log" id="battleLog" aria-live="polite">
+            <p>Battle started. Draw your cards.</p>
+          </div>
+
+          <div class="player-container">
+            <div class="status-row" id="playerStatusRow"></div>
+            <div class="hp-bar-container player-hp">
+              <div class="hp-bar-fill player" id="playerHpFill" style="width: 100%;"></div>
+              <span class="hp-text" id="playerHpText">30/30</span>
+            </div>
+            <div class="shield-display" id="shieldDisplay" style="display: none;"><span data-ui="shieldLabel">Block</span><span id="shieldText">0</span></div>
+          </div>
+        </div>
+
+        <div class="action-area">
+          <div class="hand-row" id="handRow"></div>
+          <div class="control-row">
+            <button id="endTurnBtn" type="button" class="action-btn" data-ui="endTurn">End Turn</button>
+          </div>
+        </div>
+
+        <section id="draftPanel" class="draft-panel hidden" role="dialog" aria-modal="true" aria-labelledby="draftTitle" aria-describedby="draftDescription draftPermanentHint">
+          <div class="draft-card-wrap">
+            <h2 id="draftTitle" data-ui="chooseCard">Draft a Card</h2>
+            <p id="draftDescription" data-ui="chooseCardDesc">Choose one animal power to keep in this mission deck.</p>
+            <small id="draftPermanentHint" data-ui="draftPermanentHint">Mission draft cards last for this mission only. Permanent cards come from Gold Beast Packs on the menu.</small>
+            <div id="draftCards" class="draft-cards"></div>
+          </div>
+        </section>
+
+        <section id="resultPanel" class="result-panel hidden" aria-live="polite">
+          <div class="result-card">
+            <strong id="resultTitle">Mission Complete</strong>
+            <div id="resultScore" class="result-score">0</div>
+            <small class="result-score-label" data-ui="resultScoreLabel">Mission Progress</small>
+            <p id="resultText"></p>
+
+            <div class="result-progress" aria-label="Saved mission progress">
+              <strong id="resultRewards"></strong>
+              <span id="resultSaved"></span>
+              <span id="resultUnlock"></span>
+            </div>
+
+            <div class="skill-lines">
+              <span><span data-ui="skillLogic">Logic</span> <b id="logicStars">-----</b></span>
+              <span><span data-ui="skillFocus">Focus</span> <b id="focusStars">-----</b></span>
+              <span><span data-ui="skillProblem">Problem Solving</span> <b id="problemStars">-----</b></span>
+            </div>
+
+            <div class="skill-report">
+              <strong data-ui="skillReportTitle">Skill Report</strong>
+              <p id="skillReportText"></p>
+              <small data-ui="resultDisclaimer">For fun and local progress tracking only.</small>
+            </div>
+
+            <button id="retryBtn" type="button" data-ui="tryAgain">Try Again</button>
+            <button id="nextMissionBtn" class="action-btn hidden" type="button">Next Mission</button>
+            <button id="resultMenuBtn" type="button" data-ui="backToMenu">Back to Menu</button>
+          </div>
+        </section>
+      </section>
+      <div class="battle-ad-reserve" aria-hidden="true"></div>
+
+      <div id="loadingPanel" class="loading-panel">
+        <div class="loading-card">
+          <strong data-ui="loading">Loading</strong>
+          <span id="loadingText">0%</span>
+          <div><i id="loadingFill"></i></div>
+        </div>
+      </div>
+    </main>
+    <!-- adsense-static-guide:start -->
+    <section class="game-page-info game-page-info-static" aria-label="Mazzo Bestia: La Foresta Nebbiosa informazioni sul gioco">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay Guida ai giochi per bambini</span><h2>Mazzo Bestia: La Foresta Nebbiosa</h2><p>Beast Deck: The Mist Forest è una campagna di costruzione di mazzi a turni di 30 missioni costruita attorno all&#39;intento visibile del nemico e alle combinazioni di carte potere animale. Ogni missione contiene tre battaglie e due bozze temporanee. Sei regioni da cinque missioni introducono armature, risposta, scarico, marchi, rigenerazione, purificazione, debolezza, sigilli, maledizioni e protezioni della triade. Le missioni 5, 10, 15, 20, 25 e 30 terminano con diversi boss che cambiano fase.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Gioco</span><strong>Carta Roguelike</strong></div><div class="game-info-fact"><span>Genere</span><strong>Carta · Roguelike · Animale</strong></div><div class="game-info-fact"><span>Difficoltà</span><strong>Medio</strong></div><div class="game-info-fact"><span>Tempo di riproduzione stimato</span><strong>8-15 minuti per missione</strong></div><div class="game-info-fact"><span>Competenze addestrate</span><strong>Logica · Risoluzione dei problemi · Concentrarsi</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>Mondo e missione</h3><p>La Foresta Nebbiosa una volta era divisa in sei percorsi utilizzati dai guardiani degli animali: Mist Trail, Ironroot Works, Amber Hunt, Mirecoil Basin, Moon Archive e Mist Crown. Quando la nebbia della corona iniziò a muoversi contro il vento, gli animali comuni si corrompono e le rotte smettono di comunicare. Cinghiali d&#39;Ombra e Vipere occupavano il primo sentiero, le creature Radici di Ferro costruivano armature di contrasto, i cacciatori d&#39;Ambra marcavano tutto ciò che attraversava il loro territorio e le bestie Mirecoil imparavano a rigenerarsi attraverso il veleno. L&#39;Archivio della Luna ha sigillato intere classi di poteri animali, mentre il campo finale ha riempito i pareggi netti con le Maledizioni della Nebbia.</p>
+<p>Il giocatore tiene il mazzo Bestia, un libro da campo che fa appello ai punti di forza degli animali amichevoli. Il Branco di Lupi attacca, l&#39;Orso da Guardia e la Tartaruga di Ferro creano il Blocco, Falco Celeste combina il danno con una pescata, Scatto del Ghepardo fornisce carte ed Energia, Veleno di Vipera costruisce Veleno e Saggezza del Gufo esplora il mazzo. Completare una missione ricollega il suo percorso; sconfiggere il Mist Crown Monarch nella missione 30 rompe il reparto di origine e riapre tutti e sei.</p></div>
+      <div class="game-info-section"><h3>Come funzionano i sistemi</h3><p>Struttura del turno: il turno di un giocatore ripristina Energia, rimuove il Blocco temporaneo e pesca tre carte. Le carte giocate o rimanenti entrano nella pila degli scarti; quando il mazzo si svuota, la pila degli scarti viene rimescolata. L&#39;intento visibile identifica la prossima azione del nemico a meno che la nebbia non sia attiva.</p>
+<p>Interazioni con le carte: Il branco di lupi infligge 6 danni o 12 dopo un altro attacco. Sky Hawk ne distribuisce 14 e ne pesca uno. Guard Bear garantisce 6 Block, Iron Tortoise 15, Cheetah Sprint ne pesca due e rimborsa un&#39;Energia, Viper Venom applica tre Veleni e Owl Wisdom ne pesca uno gratuitamente. Il veleno si attiva dopo l&#39;azione nemica; Il Blocco nemico assorbe un importo fisso.</p>
+<p>Meccanica regionale: l&#39;armatura riduce ogni colpo diretto; la risposta contrasta il prossimo Attacco; Lo scarico aumenta il costo successivo di una carta; segna la punizione che termina con una carta nominata; Debole riduce l&#39;attacco successivo. La rigenerazione guarisce, la purificazione rimuove il veleno, la rapidità salta l&#39;ordine dell&#39;intento, la nebbia nasconde un intento e i sigilli disabilitano un tipo di carta per un turno.</p>
+<p>Regole della Mist Crown: le maledizioni temporanee costano un&#39;Energia per essere rimosse; tenerne uno alla fine del turno infligge danno prima che passi attraverso lo scarto. La protezione della triade blocca i danni diretti finché le carte Attacco, Difesa e Utilità non sono state utilizzate tutte. I progressi attraversano i turni, ma il Boss finale può ricostruire il reparto.</p>
+<p>Costruzione della missione: dopo le Battaglie 1 e 2, scegli una carta temporanea tra tre; entra nella prossima mano di apertura. I pacchetti bestia permanenti costano 80 monete guadagnate e assegnano una carta o un equipaggiamento, con i duplicati che aumentano il grado. Prima di una missione è possibile preparare fino a sei carte possedute e un oggetto di equipaggiamento.</p>
+<p>Crescita persistente: gli XP aumentano il livello e gli HP massimi. Mantello della Nebbia aggiunge HP, Fascino del Cacciatore aggiunge Energia e Stendardo della Foresta aggiunge Blocco iniziale. Missioni, raccolta, equipaggiamento, equipaggiamento, livello, XP e monete vengono salvati localmente. L&#39;amuleto della nebbia opzionale da 15 diamanti aggiunge HP, richiede conferma e non blocca la campagna.</p></div>
+      <div class="game-info-section"><h3>Come giocare</h3><ol><li>Scorri la barra Preparazione missione e scegli una missione sbloccata; tutte e 30 le carte percorso rimangono visibili.</li><li>Usa il mazzo per equipaggiare sei carte permanenti e un oggetto equipaggiamento. L&#39;aggiornamento contiene pacchetti di monete guadagnate e l&#39;amuleto della nebbia opzionale.</li><li>Leggi le intenzioni del nemico, quindi tocca una carta la cui Energia può essere pagata. Le carte disabilitate spiegano le restrizioni sull&#39;energia, sul turno o sul sigillo.</li><li>Ordina attentamente le carte: attiva la combo del Branco di Lupi, pesca prima di spendere l&#39;ultima Energia e Blocca prima di un grande attacco.</li><li>Dopo le Battaglie 1 e 2, pesca una carta temporanea per la successiva mano di apertura.</li><li>Sconfiggi il terzo boss d&#39;élite o checkpoint prima che gli HP raggiungano lo zero.</li><li>In caso di vittoria, continua, riprova o torna alla preparazione. Le missioni fallite mantengono il progresso permanente.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Suggerimenti strategici</h3><ul><li>La fretta può ignorare un intento previsto; la nebbia rimuove le informazioni sull&#39;intento per un turno.</li><li>Contro l&#39;armatura, preferisci un colpo grande a molti piccoli. Il veleno ignora armature e protezioni.</li><li>Non attaccare in risposta. Blocca, attira o applica Veleno finché la posizione non cambia.</li><li>Gioca una carta segnata prima di terminare il turno; disegnare di più può rendere più difficile la localizzazione.</li><li>Completa la rigenerazione e attendi fino a dopo la pulizia prima di accumulare Veleno.</li><li>Rompi una barriera della triade con Utilità e Difesa prima dell&#39;attacco destinato a infliggere danni.</li><li>Il livello e l&#39;attrezzatura migliorano la sicurezza, ma leggere la meccanica attuale conta più della macinatura ripetuta.</li></ul></div>
+      <div class="game-info-section"><h3>Campagna e crescita della difficoltà</h3><p>Le missioni 1-5 insegnano intento, blocco, veleno e armatura. Stoneback Behemoth rinforza l&#39;armatura a due soglie del Boss.</p>
+<p>Le missioni 6-10 aggiungono risposta e scarico. Ironroot Warden aumenta il contro-danno in ogni fase.</p>
+<p>Le missioni 11-15 aggiungono rapidità, marchi e debolezza. Amber Huntmaster accelera man mano che la salute diminuisce.</p>
+<p>Le missioni 16-20 combinano rigenerazione, veleno e purificazione. Mirecoil Hydra ottiene una guarigione passiva più forte per fase.</p>
+<p>Le missioni 21-25 ruotano a rotazione tra i sigilli di Attacco, Difesa e Utilità. Moon Archive Keeper modifica il tipo proibito in base alla fase.</p>
+<p>Le missioni 26-30 aggiungono maledizioni, nebbia e protezioni della triade. Mist Crown Monarch riforma il suo reparto nella fase finale; La missione 30 termina la campagna creata anziché avviare un ciclo numerico infinito.</p></div>
+      <div class="game-info-section"><h3>Nota di progettazione dello sviluppatore</h3><p>Tre incontri danno a due scelte di draft abbastanza tempo per avere importanza senza creare una corsa di resistenza. L’intento rimane visibile a meno che la nebbia non diventi la regola, legando le perdite a decisioni leggibili. Il tetto numerico della Missione 30 rimane vicino alla precedente versione a otto missioni; la difficoltà ora deriva dalla sovrapposizione dei meccanismi. Il telefono e il desktop utilizzano lo stesso ordine delle carte e le stesse azioni di tocco/clic. A differenza della pianificazione pre-battaglia di Animal Auto Squad, Beast Deck si risolve ogni turno; a differenza di Animal Rune Tactics, sostituisce la posizione sulla griglia con l&#39;ordine di estrazione, l&#39;energia e il tempismo di scarto.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Nota del genitore</h3><p>Questo browser memorizza localmente missioni, livello, XP, monete bestia, raccolta, equipaggiamento, gradi di equipaggiamento e proprietà dell&#39;amuleto della nebbia. Non è richiesto alcun accesso; la cancellazione della memoria del sito potrebbe rimuovere i progressi. I pacchetti di monete guadagnate e tutti e sei i boss non richiedono diamanti. L&#39;amuleto della nebbia opzionale conferma il saldo risultante prima di spendere. Le etichette delle competenze non costituiscono una valutazione formale.</p></div>
+      <div class="game-info-section"><h3>Domande frequenti</h3><dl><div><dt>Il mazzo Bestia è gratuito?</dt><dd>Sì. Tutte le 30 missioni, bozze, pacchetti di monete guadagnate e sei boss sono gratuiti nel browser.</dd></div><div><dt>Quanti Boss ci sono?</dt><dd>Sei. Le missioni 5, 10, 15, 20, 25 e 30 hanno ciascuna una meccanica di fase diversa.</dd></div><div><dt>Cosa viene salvato?</dt><dd>Missioni, livello, XP, monete, raccolta, equipaggiamento, gradi dell&#39;equipaggiamento e proprietà dell&#39;Amuleto della nebbia.</dd></div><div><dt>Le bozze sono permanenti?</dt><dd>No. I progetti di battaglia durano una missione; le carte permanenti provengono da pacchetti di monete guadagnate.</dd></div><div><dt>Come funzionano le maledizioni?</dt><dd>Spendi un&#39;Energia per rimuoverne una. Tenerlo alla fine del turno infligge due danni e lo fa scorrere attraverso lo scarto.</dd></div><div><dt>Come è rotto il reparto?</dt><dd>Usa le carte Attacco, Difesa e Utilità. Il progresso attraversa i turni, ma il Boss finale può riformarlo.</dd></div><div><dt>Sono necessari i diamanti?</dt><dd>No. Sbloccano solo l&#39;Amuleto della Nebbia confermato opzionale e non cancellano mai missioni o Boss.</dd></div><div><dt>Funziona sui telefoni?</dt><dd>Sì. Scorri le missioni, tocca le carte grandi e usa l&#39;azione fissa Fine turno.</dd></div></dl></div>
+    </div>
+  </section>
+    <!-- adsense-static-guide:end -->
+    <script src="/src/site-config.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/version.js?v=20260701-version2"></script>
+    <script src="../../src/analytics.js?v=20260701-analytics2"></script>
+    <script>window.WonderAnalytics?.track("game_view", { game_id: "beast-deck", release_state: "release_candidate" });</script>
+    <script src="../../src/sound.js?v=20260720-locale11"></script>
+    <script src="../../src/edge-guard.js?v=20260710-mobile-play-shell2"></script>
+    <script src="/src/i18n.js?v=20260718-locale-routes1"></script><script src="../../src/game-runtime-localizer-loader.js?v=20260720-locale11-15"></script>
+    <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
+    <script src="../../src/wallet.js?v=20260706-beast-economy1"></script>
+    <script src="game.js?v=20260717-zh-hans1"></script>
+    <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
+    <script>
+      (() => {
+        const loadGameInfo = () => {
+          if (document.querySelector("script[data-beast-game-info]")) return;
+          const script = document.createElement("script");
+          script.src = "../../src/game-page-info.js?v=20260720-locale11-2";
+          script.dataset.beastGameInfo = "idle";
+          script.async = true;
+          document.body.appendChild(script);
+        };
+        const schedule = () => {
+          if ("requestIdleCallback" in window) {
+            window.requestIdleCallback(loadGameInfo, { timeout: 1600 });
+          } else {
+            window.setTimeout(loadGameInfo, 350);
+          }
+        };
+        if (document.readyState === "complete") schedule();
+        else window.addEventListener("load", schedule, { once: true });
+      })();
+    </script>
+  </body>
+</html>

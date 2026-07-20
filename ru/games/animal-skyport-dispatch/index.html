@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <base href="/games/animal-skyport-dispatch/" />
+    <link rel="canonical" href="https://weightplay.com/ru/games/animal-skyport-dispatch/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-skyport-dispatch/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-skyport-dispatch/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-skyport-dispatch/" />
+    <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/animal-skyport-dispatch/" />
+    <link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/animal-skyport-dispatch/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/animal-skyport-dispatch/" />
+    <link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/animal-skyport-dispatch/" />
+    <link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/animal-skyport-dispatch/" />
+    <link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/animal-skyport-dispatch/" />
+    <link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/animal-skyport-dispatch/" />
+    <link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/animal-skyport-dispatch/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-skyport-dispatch/" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="robots" content="index,follow" />
+    <title>Отправка животных в Скайпорт | WeightPlay</title>
+    <link rel="stylesheet" href="../../src/game-page-info.css" />
+    <link rel="stylesheet" href="../../src/loading-screen.css" />
+    <link rel="stylesheet" href="../../src/play-viewport.css" />
+    <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard />
+    <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
+    <link rel="stylesheet" href="style.css?v=20260719-stage-art1" />
+    <link rel="stylesheet" href="main-flow.css" />
+    <meta name="description" content="Animal Skyport Dispatch — это стратегическая игра с управлением маршрутами для пяти смен, действие которой происходит в Cloudline Skyport. Прочитайте..." />
+    <meta property="og:title" content="Отправка животных в Скайпорт | WeightPlay" />
+    <meta property="og:description" content="Animal Skyport Dispatch — это стратегическая игра с управлением маршрутами для пяти смен, действие которой происходит в Cloudline Skyport. Прочитайте..." />
+    <meta property="og:url" content="https://weightplay.com/ru/games/animal-skyport-dispatch/" />
+    <meta name="twitter:title" content="Отправка животных в Скайпорт | WeightPlay" />
+    <meta name="twitter:description" content="Animal Skyport Dispatch — это стратегическая игра с управлением маршрутами для пяти смен, действие которой происходит в Cloudline Skyport. Прочитайте..." />
+  </head>
+  <body data-no-mobile-immersive="true">
+    <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong>Animal Skyport Dispatch</strong><span>Loading</span><div class="loading-track"><i></i></div></div></section>
+    <main class="app">
+      <header id="mainHeader" class="topbar">
+        <a class="home-link icon-btn" data-wp-return="main" href="/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
+        <h1 data-i18n="title">Отправка животных в Скайпорт</h1>
+        <label class="locale"><span data-i18n="language">Language</span><select id="localeSelect"><option value="en">English</option><option value="zh-Hant">繁體中文</option></select></label>
+      </header>
+      <section id="mainScreen" class="main-screen">
+        <img class="cover" src="../../assets/animal-skyport-dispatch-cover.webp" alt="Изображение игры «Отправка животных в Скайпорт»" />
+        <h2 data-i18n="headline">Keep Cloudline Skyport moving.</h2>
+        <p data-i18n="intro">Draw safe routes, match airships to docks, and protect the shift from congestion.</p>
+        <button id="startBtn" class="primary" data-i18n="start">Start Game</button>
+        <section class="guide"><h2 data-i18n="guideTitle">How to dispatch</h2><p data-i18n="guideBody">Choose a shift, read each flight request, then guide the airship to the highlighted matching dock before congestion builds.</p></section>
+      </section>
+      <section id="stageScreen" class="stage-screen hidden">
+        <button id="stageBack" class="return" data-wp-return="stage" aria-label="Back">&larr;</button>
+        <div class="stage-copy"><strong data-i18n="chooseShift">Choose a shift</strong><span id="bestText"></span></div>
+        <div class="contract-row"><label class="contract-choice"><input id="contractToggle" type="checkbox" /><span id="contractText">Priority contract: finish with no errors for bonus sky coins.</span></label><button id="insuranceBtn" class="secondary insurance-btn" type="button">Insure 5 diamonds</button></div>
+        <div id="stageRail" class="stage-rail" aria-label="Shift selection"></div>
+      </section>
+      <section id="battleShell" class="battle-shell hidden">
+        <section class="battle-canvas">
+          <div id="battleLive" class="battle-live">
+          <header class="battle-hud"><button id="battleBack" class="return" data-wp-return="battle" aria-label="Back">&larr;</button><strong id="shiftText"></strong><span id="scoreText"></span></header>
+          <div class="objective"><span id="objectiveText"></span><span id="resourceText"></span><strong id="flightTask" aria-live="polite"><span class="task-destination"></span><span class="task-steps"></span></strong></div>
+          <div id="routeField" class="route-field">
+            <img class="skyport-bg" src="../../assets/animal-skyport-dispatch-skyport-bg.webp" alt="" />
+            <img id="weatherZone" class="weather-zone hidden" alt="" />
+            <div id="flight" class="flight" role="button" tabindex="0" aria-describedby="flightTask feedback"></div>
+            <div class="dock cargo" data-dock="cargo" role="button" tabindex="-1"><img src="../../assets/animal-skyport-dispatch-dock-cargo.webp" alt="" /><span class="dock-target-badge" aria-hidden="true"></span><span class="dock-label"></span></div>
+            <div class="dock passenger" data-dock="passenger" role="button" tabindex="-1"><img src="../../assets/animal-skyport-dispatch-dock-passenger.webp" alt="" /><span class="dock-target-badge" aria-hidden="true"></span><span class="dock-label"></span></div>
+            <div class="dock repair" data-dock="repair" role="button" tabindex="-1"><img src="../../assets/animal-skyport-dispatch-dock-repair.webp" alt="" /><span class="dock-target-badge" aria-hidden="true"></span><span class="dock-label"></span></div>
+            <div id="routeLine" class="route-line"></div>
+            <div id="feedback" class="feedback" aria-live="polite"></div>
+          </div>
+          <div class="flight-row"><button id="serviceBtn" class="secondary" data-i18n="service">Use repair service</button><button id="assignCrewBtn" class="secondary hidden" type="button">Assign crew</button><button id="clearRouteBtn" class="secondary hidden" type="button">Clear conflict</button><span id="flightHint" data-i18n="dragHint">Drag the airship to its matching dock.</span></div>
+          </div>
+          <section id="result" class="result hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" tabindex="-1"><h2 id="resultTitle"></h2><p id="resultCopy"></p><div id="resultRewards" class="result-rewards" aria-live="polite"></div><button id="nextBtn" class="primary"></button><button id="menuBtn" class="secondary" data-i18n="menu">Main Menu</button></section>
+          <section id="leaveConfirm" class="leave-confirm hidden" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" aria-describedby="leaveCopy"><h2 id="leaveTitle"></h2><p id="leaveCopy"></p><button id="leaveCancel" class="primary" type="button"></button><button id="leaveConfirmBtn" class="secondary" type="button"></button></section>
+        </section>
+        <div class="ad-reserve" aria-hidden="true"></div>
+      </section>
+    </main>
+    <script src="../../src/site-config.js"></script><script src="/src/i18n.js?v=20260718-locale-routes1"></script><script src="../../src/game-runtime-localizer-loader.js?v=20260720-locale11-15"></script><script src="../../src/edge-guard.js"></script>
+    <script src="../../src/wallet.js"></script>
+    <script src="game.js?v=20260719-route-pointer2"></script>
+    <script src="../../src/stage-selector-standard.js?v=20260720-canvas-max920-1" data-wp-stage-standard></script>
+    <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
+    <section class="game-page-info game-page-info-static" aria-label="Отправка животных в Скайпорт информация об игре">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay Руководство по игре для детей</span><h2>Отправка животных в Скайпорт</h2><p>Animal Skyport Dispatch — это стратегическая игра с управлением маршрутами для пяти смен, действие которой происходит в Cloudline Skyport. Прочитайте информацию о каждом прибывающем дирижабле с животными, нарисуйте безопасный подход к совместимому доку, назначьте ограниченные ресурсы обслуживания и завершите смену до того, как заторы или пропущенные рейсы достигнут предела отказов.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Геймплей</span><strong>Управление маршрутом дирижабля</strong></div><div class="game-info-fact"><span>Жанр</span><strong>Стратегия · Управление · Моделирование · Животное</strong></div><div class="game-info-fact"><span>Сложность</span><strong>От среднего до сложного</strong></div><div class="game-info-fact"><span>Расчетное время игры</span><strong>4-7 минут в смену</strong></div><div class="game-info-fact"><span>Обученные навыки</span><strong>Планирование · Приоритизация · Пространственное мышление · Управление ресурсами</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>Мир и миссия</h3><p>Лунная Кепка Орла управляет диспетчерской вышкой, а Гир Хорн Рукс обслуживает грузовые, пассажирские и ремонтные доки. Bubble Fin Nori занимается срочными курьерскими и спасательными рейсами. Вместе они поддерживают движение района Облачной линии через обычные прибытия, грузовые переезды, штормы, ремонтные окна и заключительную фестивальную суету.</p>
+<p>Сдвиг увенчается успехом, поскольку он достигнет требуемых показателей по полетам и репутации. Сопоставляя специализированные доки, прокладывая эффективные маршруты и выполняя дополнительные задачи мастерства, вы зарабатываете медали, не делая идеальную игру обязательной.</p></div>
+      <div class="game-info-section"><h3>Как работают системы</h3><p>Коснитесь ожидающего рейса, затем перетащите его от маркера ожидания к открытой совместимой док-станции. Видимый изогнутый маршрут и логика столкновений используют одни и те же точки выборки, поэтому линия под указателем — это маршрут, по которому следует дирижабль.</p>
+<p>Грузовой док A эффективно обслуживает грузы, пассажирский док B обслуживает пассажиров и курьерскую работу, а ремонтный док C лучше всего подходит для поврежденных рейсов. Неспециализированный док требует дополнительного времени и экипажа; несовместимые красные состояния не могут быть подтверждены.</p>
+<p>Пересечение активного движения создает желтый конфликт и увеличивает заторы. Штормовые ячейки замедляют движение маршрутов и могут повредить полеты, если сегмент не защитит метеорологический маяк. Заторы устраняются, когда движение транспорта становится безопасным.</p>
+<p>Количество экипажа, топлива и запасных частей в течение каждой смены ограничено. Обслуженные рейсы возвращают экипаж, эффективные маршруты позволяют экономить топливо, а запасные части должны быть зарезервированы для поврежденных самолетов. Три необслуженных рейса или полная перегрузка завершают попытку бесплатной повторной попыткой.</p></div>
+      <div class="game-info-section"><h3>Как играть</h3><ol><li>Выберите приближающийся дирижабль с животными и прочитайте его причал, терпение, потребность в грузе или пассажирах, а также состояние повреждений.</li><li>Перетащите от маркера ожидания к совместимому открытому доку, избегая активных маршрутов, штормов и закрытых полос обслуживания.</li><li>Отпустите кнопку на доке, чтобы подтвердить маршрут, затем выберите необходимое сервисное действие после стыковки.</li><li>Выполняйте запланированную смену, защитите бюджет промахов на три рейса и используйте функцию «Следующая смена» или «Выбор смены из результата».</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Советы по стратегии</h3><ul><li>Обеспечьте доступность одного причала и одной подходной полосы для срочного прибытия.</li><li>Предпочитайте специализированные доки, когда терпения мало, но соглашайтесь на более медленный и безопасный причал, когда конфликт может привести к увеличению заторов.</li><li>Зарезервируйте запасные части для рейсов, которые без них не смогут безопасно завершиться.</li><li>Перерисовывать перед выпуском, когда предварительный просмотр пересекает шторм или занятый маршрут; линия маршрута является авторитетной.</li></ul></div>
+      <div class="game-info-section"><h3>Кампания и рост сложности</h3><p>В 1-й смене преподают два дока, прорисовку маршрута и четыре щадящих прибытия. Смена 2 открывает третий док и грузопассажирский приоритет. Shift 3 добавляет движущийся штормовой и метеорологический маяк. В смену 4 добавляются поврежденные рейсы, запасные части и закрытие на техническое обслуживание. Смена 5 объединяет десять заездов, перекрывающиеся окна и дополнительные фестивальные контракты.</p></div>
+      <div class="game-info-section"><h3>Примечание разработчика к проекту</h3><p>Игра — это активная диспетчеризация, а не простоя автоматизация: для каждого рейса нужен маршрут и сервисное решение. «Главное», «Сцена», «Битва» и «Результат» сохраняют общие правила адаптивного холста, при этом поле «Битва» использует полную безопасную ширину до 920 пикселей, а общий резерв в 56 пикселей остается за пределами холста. Сенсорное управление и мышь используют одну и ту же выбранную геометрию маршрута, поэтому нарисованная линия остается на одной линии с пальцем или указателем.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Примечание для родителей</h3><p>Никакой учетной записи не требуется. Разблокировка смены, медали, репутация, улучшения, открытия в журнале, состояние обучения и настройки остаются в этом браузере. Дополнительные действия Diamond требуют подтверждения и никогда не требуются для завершения всех пяти смен.</p></div>
+      <div class="game-info-section"><h3>Часто задаваемые вопросы</h3><dl><div><dt>Сколько смен включено?</dt><dd>Есть пять авторских смен с разными правилами прибытия, причала, погоды, ремонта и фестиваля.</dd></div><div><dt>Как нарисовать маршрут?</dt><dd>Перетащите маркер ожидания выбранного рейса на совместимую открытую док-станцию и отпустите ее на док-станции.</dd></div><div><dt>Почему маршрут имеет желтый цвет?</dt><dd>Он пересекает активное движение и создаст заторы, пока оба рейса будут заняты конфликтом.</dd></div><div><dt>Что вызывает неудачу?</dt><dd>Смена заканчивается при полной загруженности или после того, как три рейса остаются необслуженными.</dd></div><div><dt>Повторная попытка бесплатна?</dt><dd>Да. Неудачная смена всегда предлагает сначала бесплатную повторную попытку.</dd></div><div><dt>Что сохраняется?</dt><dd>Прогресс смены, медали, репутация, улучшения, открытия, состояние обучения и настройки остаются в этом браузере.</dd></div><div><dt>Требуются ли бриллианты?</dt><dd>Нет. Дополнительные обновления контракта и страховка требуют подтверждения и не нужны для завершения.</dd></div><div><dt>Что будет после пятой смены?</dt><dd>Результат возвращается к выбору Shift, поскольку несуществующей Shift 6 нет.</dd></div></dl></div>
+    </div>
+  </section>
+<script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
+    <script>window.addEventListener('load',()=>document.querySelector('#loadingPanel')?.classList.add('hidden'),{once:true});</script>
+  </body>
+</html>

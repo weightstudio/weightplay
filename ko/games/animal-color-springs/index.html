@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <base href="/games/animal-color-springs/" />
+    <link rel="canonical" href="https://weightplay.com/ko/games/animal-color-springs/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-color-springs/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-color-springs/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-color-springs/" />
+    <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/animal-color-springs/" />
+    <link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/animal-color-springs/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/animal-color-springs/" />
+    <link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/animal-color-springs/" />
+    <link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/animal-color-springs/" />
+    <link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/animal-color-springs/" />
+    <link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/animal-color-springs/" />
+    <link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/animal-color-springs/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-color-springs/" />
+    <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="robots" content="index,follow" />
+  <meta name="weightplay-audience" content="kids" />
+  <meta name="theme-color" content="#062f2d" />
+  <title>애니멀 컬러 스프링스 | WeightPlay</title>
+  <meta name="description" content="Animal Color Springs는 모든 용기에 한 가지 색상이 포함될 때까지 화려한 용기 사이에서 유색 스프링 구체를 이동하는 30단계 정렬 퍼즐입니다." />
+  <link rel="stylesheet" href="../../src/loading-screen.css" />
+  <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard />
+  <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
+  <link rel="stylesheet" href="style.css?v=20260720-ball-flight3" />
+  <meta property="og:title" content="애니멀 컬러 스프링스 | WeightPlay" />
+    <meta property="og:description" content="Animal Color Springs는 모든 용기에 한 가지 색상이 포함될 때까지 화려한 용기 사이에서 유색 스프링 구체를 이동하는 30단계 정렬 퍼즐입니다." />
+    <meta property="og:url" content="https://weightplay.com/ko/games/animal-color-springs/" />
+    <meta name="twitter:title" content="애니멀 컬러 스프링스 | WeightPlay" />
+    <meta name="twitter:description" content="Animal Color Springs는 모든 용기에 한 가지 색상이 포함될 때까지 화려한 용기 사이에서 유색 스프링 구체를 이동하는 30단계 정렬 퍼즐입니다." />
+  </head>
+<body data-screen="loading" data-game-id="animal-color-springs">
+  <section id="loadingPanel" class="loading-panel" aria-live="polite">
+    <div class="loading-card"><strong data-i18n="title">動物彩泉分類</strong><span data-i18n="loading">正在喚醒森林彩泉…</span><div class="loading-track"><i id="loadingFill"></i></div></div>
+  </section>
+
+  <div id="mainGroup" class="main-group" hidden>
+    <main id="mainScreen" class="main-screen">
+      <header class="main-header">
+        <a class="home-link" href="/kids/" aria-label="回到 WeightPlay" data-i18n-aria="backWeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a>
+        <strong data-i18n="title">動物彩泉分類</strong>
+        <label class="locale-control"><span class="sr-only" data-i18n="language">語言</span><select id="localeSelect" data-i18n-aria="language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option></select></label>
+      </header>
+      <section class="main-hero">
+        <img class="main-poster" src="assets/animal-color-springs-cover.webp" alt="森林裡的貓頭鷹與白兔正在整理發光彩泉" data-i18n-alt="애니멀 컬러 스프링스 게임 이미지" />
+        <div class="main-copy"><small data-i18n="eyebrow">森林彩泉謎題</small><h1 data-i18n="title">애니멀 컬러 스프링스</h1><p data-i18n="pitch">把相同顏色的彩珠聚在同一座泉器，讓混亂的森林泉水恢復光彩。</p><div id="mainProgress" class="main-progress"></div><button id="startBtn" class="primary-action" type="button" data-i18n="start">開始遊戲</button></div>
+      </section>
+    </main>
+    <section class="game-guide" aria-label="遊戲說明" data-i18n-aria="guideLabel">
+      <small data-i18n="guideKicker">WeightPlay 原創益智遊戲</small><h2 data-i18n="guideTitle">整理每一座森林彩泉</h2><p data-i18n="guideIntro">點一座泉器取出頂層同色彩珠，再點另一座可接收的泉器。當每座非空泉器只剩一種顏色，彩泉便完成修復。</p>
+      <div class="guide-grid"><article><h3 data-i18n="howTitle">遊玩方式</h3><ol><li data-i18n="how1">先選來源泉器，再選目的泉器。</li><li data-i18n="how2">目的泉器必須有空位，而且頂層顏色相同或完全為空。</li><li data-i18n="how3">用復原修正一步，或請月帽歐拉提示下一步。</li></ol></article><article><h3 data-i18n="progressTitle">關卡成長</h3><p data-i18n="progressText">30 關會逐步加入更多顏色、封印泉器、不同容量與更緊湊的步數目標。</p><h3 data-i18n="saveTitle">存檔與隱私</h3><p data-i18n="saveText">關卡、星星與最佳步數只儲存在目前瀏覽器，不需登入，也不收集個人資料。</p></article></div>
+    </section>
+  </div>
+
+  <section id="stageScreen" class="stage-screen" hidden>
+    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-canvas-max-width="920" style="--wp-stage-art:url('assets/animal-color-springs-cover.webp')">
+      <header class="stage-header"><button id="stageBackBtn" type="button" data-i18n-aria="back">←</button><div><strong data-i18n="chooseStage">選擇彩泉</strong><span id="stageSummary"></span></div><img src="../../assets/weightplay-character-moon-cap-owl-cutout.webp" alt="" /></header>
+      <section class="chapter-panel"><small id="chapterKicker"></small><strong id="chapterTitle"></strong><p id="chapterRule"></p></section>
+      <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-settle-duration="330" data-wp-stage-settle-easing="smoothstep" data-i18n-aria="stageRailLabel"></div>
+    </div>
+  </section>
+
+  <section id="battleScreen" class="battle-screen" hidden>
+    <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
+      <header class="battle-header"><button id="battleBackBtn" type="button" data-i18n-aria="back">←</button><div class="battle-title"><small id="stageLabel"></small><strong id="stageGoal"></strong></div><div class="battle-stat"><small data-i18n="moves">步數</small><strong id="movesValue">0</strong></div><button id="helpBtn" class="help-btn" type="button" data-i18n-aria="help">?</button></header>
+      <section id="lockNotice" class="lock-notice" aria-live="polite" hidden></section>
+      <section id="vesselBoard" class="vessel-board" aria-label="彩泉分類盤" data-i18n-aria="boardLabel"></section>
+      <div class="battle-actions"><button id="undoBtn" type="button"><span aria-hidden="true">↶</span><b data-i18n="undo">復原</b></button><button id="restartBtn" type="button"><span aria-hidden="true">↻</span><b data-i18n="restart">重來</b></button><button id="hintBtn" type="button"><span aria-hidden="true">✦</span><b data-i18n="hint">提示</b></button></div>
+
+      <section id="resultPanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card"><img src="../../assets/weightplay-character-rainbow-hop-mimi-clean-cutout.webp" alt="" /><small data-i18n="resultKicker">彩泉修復完成</small><h2 id="resultTitle"></h2><div id="resultStars" class="result-stars"></div><p id="resultText"></p><p id="bestText" class="best-text"></p><div class="modal-actions"><button id="retryBtn" type="button" data-i18n="retry">再玩一次</button><button id="resultStagesBtn" type="button" data-i18n="stages">回到關卡</button><button id="nextBtn" class="primary-action" type="button" data-i18n="next">下一關</button></div></div></section>
+      <section id="leavePanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card"><h2 id="leaveTitle" data-i18n="leaveTitle">要保留這次整理嗎？</h2><p data-i18n="leaveText">繼續會回到目前局面；回到關卡會結束這一局。</p><div class="modal-actions"><button id="leaveContinueBtn" class="primary-action" type="button" data-i18n="continue">繼續遊戲</button><button id="leaveStagesBtn" type="button" data-i18n="returnStages">回到關卡</button></div></div></section>
+    </div>
+  </section>
+
+  <section id="tutorialPanel" class="modal-layer tutorial-layer" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="tutorial-card"><button id="tutorialCloseBtn" class="modal-close" type="button" data-i18n-aria="close">×</button><img src="../../assets/weightplay-character-moon-cap-owl-cutout.webp" alt="" /><h2 id="tutorialTitle" data-i18n="tutorialTitle">讓相同顏色回到同一座彩泉</h2><ol><li data-i18n="tutorial1">點一座泉器，選取最上層的同色彩珠。</li><li data-i18n="tutorial2">再點空泉器，或頂層顏色相同的泉器。</li><li data-i18n="tutorial3">每座非空泉器只剩一種顏色就過關。</li></ol><button id="tutorialStartBtn" class="primary-action" type="button" data-i18n="tutorialStart">開始第一關</button></div></section>
+
+  <div id="toast" class="toast" aria-live="polite"></div>
+  <script src="../../src/site-config.js"></script><script src="/src/i18n.js?v=20260718-locale-routes1"></script><script src="../../src/game-runtime-localizer-loader.js?v=20260720-locale11-15"></script><script src="../../src/analytics.js"></script><script src="../../src/sound.js?v=20260720-locale11"></script><script src="../../src/edge-guard.js"></script>
+  <script src="locales.js"></script><script src="game.js?v=20260720-ball-flight3"></script><script src="../../src/stage-selector-standard.js?v=20260720-canvas-max920-1" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script><section class="game-page-info game-page-info-static" aria-label="애니멀 컬러 스프링스 게임 정보">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 어린이 게임 가이드</span><h2>애니멀 컬러 스프링스</h2><p>Animal Color Springs는 모든 용기에 한 가지 색상이 포함될 때까지 화려한 용기 사이에서 유색 스프링 구체를 이동하는 30단계 정렬 퍼즐입니다.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>게임플레이</span><strong>색상 정렬 퍼즐</strong></div><div class="game-info-fact"><span>장르</span><strong>퍼즐 · 논리 · 동물</strong></div><div class="game-info-fact"><span>난이도</span><strong>도전하기 쉬움</strong></div><div class="game-info-fact"><span>예상 플레이 시간</span><strong>스테이지당 2~6분</strong></div><div class="game-info-fact"><span>훈련된 기술</span><strong>논리 · 문제 해결 · 초점</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>세계와 사명</h3><p>숲의 분수는 그 색을 잃었고, Moon Cap Orla는 플레이어에게 빛나는 구체를 정렬하여 매년 봄을 복원하도록 요청합니다.</p></div>
+      <div class="game-info-section"><h3>시스템 작동 방식</h3><p>이동식 상단 구체가 있는 선박을 선택한 다음 공간이 있는 호환 가능한 목적지를 선택하세요. 대상은 비어 있거나 동일한 상단 색상을 표시해야 합니다.</p>
+<p>실행 취소는 정확한 전송 하나를 복원하고, 다시 시작은 작성된 시작 부분을 복원하며, 힌트는 유용한 법적 이동을 식별합니다. 클리어, 별, 잠금 해제 및 최고 이동 횟수는 로컬에 저장됩니다.</p></div>
+      <div class="game-info-section"><h3>플레이 방법</h3><ol><li>수평 스테이지 레일에서 잠금 해제된 스프링을 선택합니다.</li><li>이동하려는 상단 오브가 있는 선박을 선택하세요.</li><li>빈 용기나 상단 오브가 일치하는 용기를 선택하세요.</li><li>대상 이동 내의 모든 색상 그룹을 완료합니다.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>전략 팁</h3><ul><li>용액 중간까지 하나의 유연한 빈 용기를 유지하십시오.</li><li>아래에 다른 색상이 트랩되지 않을 때만 색상을 완성하십시오.</li><li>긴 스택을 이동하기 전에 용기 용량을 읽으십시오.</li></ul></div>
+      <div class="game-info-section"><h3>캠페인 및 난이도 성장</h3><p>1~5단계에서는 법적 양도 및 빈 공간 계획을 가르칩니다. 이후 장에서는 30개 스테이지 전체에 걸쳐 더 많은 색상, 고르지 않은 스택, 용량 변경, 씰 및 더 좁은 경로를 추가합니다.</p></div>
+      <div class="game-info-section"><h3>개발자 디자인 노트</h3><p>Authored openings make difficulty come from route planning rather than random deals. Touch, mouse, and keyboard share one transfer state, and Stage and Battle follow the shared 920px maximum.</p></div>
+      <div class="game-info-section game-info-parent"><h3>학부모 메모</h3><p>계정이 필요하지 않습니다. 진행 상황은 이 브라우저에 유지되며 사이트 저장 공간이 삭제되면 재설정될 수 있습니다. 별표와 수 요약은 공식 평가가 아닌 게임 피드백입니다.</p></div>
+      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>몇 단계가 포함되어 있나요?</dt><dd>30개의 작성된 정렬 단계가 있습니다.</dd></div><div><dt>이사가 합법적인 경우는 언제인가요?</dt><dd>대상은 공백이 있어야 하며 비어 있거나 동일한 상단 색상을 표시해야 합니다.</dd></div><div><dt>진행 상황이 저장되나요?</dt><dd>예. 잠금 해제, 별 및 최고의 움직임은 로컬에 저장됩니다.</dd></div></dl></div>
+    </div>
+  </section>
+<script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
+</body>
+</html>

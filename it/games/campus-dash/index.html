@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <base href="/games/campus-dash/" />
+    <meta charset="UTF-8" />
+    <meta name="weightplay-audience" content="kids" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#38bdf8" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="robots" content="index,follow" />
+    <meta name="description" content="Safari Dash è un corridore di animali a tre corsie con 30 percorsi salvati in sei regioni. Spark Paw Fox ripristina le stelle guida mentre le carte..." />
+    <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Safari Dash | WeightPlay" />
+    <meta property="og:description" content="Safari Dash è un corridore di animali a tre corsie con 30 percorsi salvati in sei regioni. Spark Paw Fox ripristina le stelle guida mentre le carte..." />
+    <meta property="og:url" content="https://weightplay.com/it/games/campus-dash/" />
+    <meta property="og:image" content="https://weightplay.com/assets/campus-dash-cover.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>Safari Dash | WeightPlay</title>
+    <link rel="canonical" href="https://weightplay.com/it/games/campus-dash/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/campus-dash/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/campus-dash/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/campus-dash/" />
+    <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/campus-dash/" />
+    <link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/campus-dash/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/campus-dash/" />
+    <link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/campus-dash/" />
+    <link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/campus-dash/" />
+    <link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/campus-dash/" />
+    <link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/campus-dash/" />
+    <link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/campus-dash/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/campus-dash/" />
+    <link rel="stylesheet" href="style.css?v=20260717-depth30-1" />
+    <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Safari Dash",
+  "alternateName": "草原閃電跑",
+  "url": "https://weightplay.com/it/games/campus-dash/",
+  "image": "https://weightplay.com/assets/campus-dash-cover.png",
+  "description": "Safari Dash è un corridore di animali a tre corsie con 30 percorsi salvati in sei regioni. Spark Paw Fox ripristina le stelle guida mentre le carte...",
+  "applicationCategory": "Game",
+  "operatingSystem": "Web browser",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio"
+  },
+  "inLanguage": "it",
+  "isAccessibleForFree": true,
+  "genre": [
+    "Corridore",
+    "Reazione",
+    "Animale"
+  ],
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "Kids and families",
+    "suggestedMinAge": 9
+  },
+  "learningResourceType": "Skill practice through play",
+  "educationalUse": "Practice Reaction, Focus, Hand-Eye Coordination through family-friendly browser gameplay."
+}
+    </script>
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell2" />
+    <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
+    <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
+    <meta name="twitter:title" content="Safari Dash | WeightPlay" />
+    <meta name="twitter:description" content="Safari Dash è un corridore di animali a tre corsie con 30 percorsi salvati in sei regioni. Spark Paw Fox ripristina le stelle guida mentre le carte..." />
+  </head>
+  <body>
+    <main class="dash-game" data-play-viewport>
+      <header class="topbar">
+        <a class="home-link" data-wp-return="main" href="/kids/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
+        <div>
+          <p>WeightPlay</p>
+          <h1 id="titleText">Safari Dash</h1>
+        </div>
+        <label class="language-picker">
+          <span id="languageLabel">Language</span>
+          <select id="localeSelect" aria-label="Language">
+            <option value="en">English</option>
+            <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
+            <option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option>
+          </select>
+        </label>
+      </header>
+
+      <section id="mainPanel" class="main-panel">
+        <img class="main-poster" src="../../assets/campus-dash-cover.webp" alt="" />
+        <section id="startPanel" class="panel">
+          <strong id="startTitle">Swipe. Dodge. Score.</strong>
+          <p id="startText">Clear 30 saved routes where trail rules, objectives, and Guardian patterns change how you run.</p>
+          <div id="controlChips" class="control-chips" aria-label="Controls"></div>
+          <button id="startBtn" type="button">Start Game</button>
+        </section>
+      </section>
+
+      <section id="stagePanel" class="stage-panel hidden" aria-labelledby="stageTitle">
+        <header class="stage-header">
+          <button id="stageBackBtn" type="button" data-wp-return="stage" aria-label="Back to main">&larr;</button>
+          <div>
+            <strong id="stageTitle">Choose a Safari Route</strong>
+            <span id="stageProgress">1 / 30 unlocked</span>
+          </div>
+        </header>
+        <p id="stageHint" class="stage-hint">Swipe the route cards. Every fifth route is a Guardian Check.</p>
+        <div id="stageRail" class="stage-rail" role="list" aria-label="Safari routes"></div>
+        <div id="stageDots" class="stage-dots" aria-hidden="true"></div>
+      </section>
+
+      <section id="hud" class="hud hidden">
+        <button id="battleBackBtn" data-wp-return="battle" type="button" aria-label="Back to menu">&larr;</button>
+        <div><span id="scoreLabel">Score</span><strong id="scoreText">0</strong></div>
+        <div><span id="timeLabel">Time</span><strong id="timeText">60</strong></div>
+        <div><span id="comboLabel">Combo</span><strong id="comboText">x1</strong></div>
+      </section>
+
+      <section class="canvas-wrap hidden">
+        <canvas id="gameCanvas" width="720" height="960" tabindex="0" aria-label="Safari Dash game"></canvas>
+      </section>
+
+      <section id="resultPanel" class="panel hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle">
+        <strong id="resultTitle">Run Complete!</strong>
+        <p id="resultText"></p>
+        <section class="dash-skill-report" aria-live="polite">
+          <h3 id="skillReportTitle">Skill Report</h3>
+          <p id="skillReportIntro">This run practiced reaction, focus, and hand-eye coordination.</p>
+          <div class="dash-skill-grid">
+            <div><span id="reactionLabel">Reaction</span><b id="reactionValue">0 lane changes</b></div>
+            <div><span id="focusLabel">Focus</span><b id="focusValue">0 collected · 0 bumps</b></div>
+            <div><span id="coordinationLabel">Hand-Eye Coordination</span><b id="coordinationValue">Best combo x1</b></div>
+          </div>
+          <p id="progressComparison"></p>
+        </section>
+        <div id="leaderboard" class="leaderboard"></div>
+        <button id="nextRouteBtn" class="hidden" type="button">Next Route</button>
+        <button id="againBtn" type="button">Run Again</button>
+        <button id="lobbyLink" type="button">Routes</button>
+      </section>
+
+      <div id="loadingPanel" class="loading-panel">
+        <div class="loading-card">
+          <strong id="loadingTitle">Loading</strong>
+          <span id="loadingText">0%</span>
+          <div><i id="loadingFill"></i></div>
+        </div>
+      </div>
+    </main>
+    <!-- adsense-static-guide:start -->
+    <section class="game-page-info game-page-info-static" aria-label="Safari Dash informazioni sul gioco">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay Guida ai giochi per bambini</span><h2>Safari Dash</h2><p>Safari Dash è un corridore di animali a tre corsie con 30 percorsi salvati in sei regioni. Spark Paw Fox ripristina le stelle guida mentre le carte percorso annunciano cinque tipi di obiettivo e le regole attive. Scie stellari, cancelli a due corsie, fango appiccicoso e modelli Guardian creati fanno sì che i percorsi successivi richiedano decisioni diverse di lettura e recupero invece di aumentare solo la velocità.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Gioco</span><strong>Corridore di corsia</strong></div><div class="game-info-fact"><span>Genere</span><strong>Corridore · Reazione · Animale</strong></div><div class="game-info-fact"><span>Difficoltà</span><strong>Progressivo</strong></div><div class="game-info-fact"><span>Tempo di riproduzione stimato</span><strong>1-4 minuti</strong></div><div class="game-info-fact"><span>Competenze addestrate</span><strong>Reazione · Concentrarsi · Coordinazione occhio-mano</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>Mondo e missione</h3><p>Sunrise Savanna, Acacia Crossing, Marshlight Bend, Red Canyon Run, Moonwater Reserve e Crown Safari condividono una rete di sentieri segnalati. Gli attrezzi da trail sparsi e i segnalatori allagati hanno rotto la catena della stella guida.</p>
+<p>Spark Paw Fox trasporta stelle sostitutive lungo ogni percorso. Zebra Pathfinder, Rhino Trailkeeper, Hippo Waterwarden, Eagle Skykeeper, Lion Pridekeeper e Elephant Crownkeeper testano ciascuno una regione con cinque percorsi prima di riaprirla. Completando la Route 30 si riconnettono tutte e sei le regioni.</p></div>
+      <div class="game-info-section"><h3>Come funzionano i sistemi</h3><p>Il percorso aperto spazia dai pericoli ordinari in modo che i giocatori possano imparare i tempi in corsia. Star Trail aumenta le linee collezionabili. I cancelli a due corsie lasciano una corsia di fuga leggibile. Il fango appiccicoso rallenta brevemente le transizioni di corsia dopo una collisione con una pozzanghera. Guardian Pattern utilizza una sequenza deliberata di corsia sicura.</p>
+<p>Le stelle ottengono un punteggio pari a 50 volte il moltiplicatore attuale. Le raccolte consecutive aumentano il moltiplicatore; qualsiasi collisione pericolosa rimuove 80 punti e reimposta il moltiplicatore della stella successiva su x1.</p>
+<p>Gli obiettivi cambiano le condizioni di successo: termina il percorso, raccogli un numero target di stelle, raggiungi la combinazione migliore, rimani sotto un limite di collisione o raggiungi un punteggio target.</p>
+<p>L&#39;avanzamento della campagna e i primi 5 locali vengono archiviati separatamente in questo browser. Non è richiesto alcun account.</p></div>
+      <div class="game-info-section"><h3>Come giocare</h3><ol><li>Scegli un percorso sbloccato dalla guida orizzontale del palco e leggine l&#39;obiettivo e le regole.</li><li>Tocca sinistra o destra, scorri o usa A, D e i tasti freccia per spostarti esattamente di una corsia.</li><li>Raccogli le stelle per ottenere punti e combo evitando coni, cartelle, pile di libri e pozzanghere.</li><li>Raggiungi il tempo zero e soddisfa l&#39;obiettivo finale, stella, combo, corsa pulita o punteggio del percorso.</li><li>Un percorso riuscito salva la sua destinazione e sblocca il percorso successivo; Run Again riprova il percorso corrente.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Suggerimenti strategici</h3><ul><li>Leggi la corsia vuota tra due cancelli pericolosi; il divario è l&#39;istruzione.</li><li>Su percorsi puliti, salta le stelle opzionali quando raccogliendone una spenderai l&#39;indennità di collisione.</li><li>Muoviti prima dopo aver toccato il fango perché la transizione tra corsie è temporaneamente più lenta.</li><li>Utilizza i primi cancelli Guardian per identificare il ritmo della corsia sicura creato.</li><li>Una collisione azzera il moltiplicatore successivo ma non cancella la migliore combinazione già ottenuta.</li></ul></div>
+      <div class="game-info-section"><h3>Campagna e crescita della difficoltà</h3><p>I percorsi 1-5 insegnano i pericoli ordinari, le tracce stellari, i cancelli e i tempi delle combo prima di Zebra Pathfinder.</p>
+<p>I percorsi 6-10 alternano la raccolta e le decisioni di cancello pulito ad Acacia Crossing prima di Rhino Trailkeeper.</p>
+<p>I percorsi 11-15 introducono fango appiccicoso e combinano un recupero lento con stelle e cancelli prima di Hippo Waterwarden.</p>
+<p>I percorsi 16-20 combinano punteggio, combo, cancelli ripetuti e segnali stellari sulla corsia sicura prima di Eagle Skykeeper.</p>
+<p>I percorsi 21-25 mescolano fango, cancelli e catene di stelle notturne prima del controllo a bassa collisione del Guardiano del Leone.</p>
+<p>I percorsi 26-30 rivedono ogni regola. Elephant Crownkeeper combina fango, sentieri, cancelli e sequenze di Guardiani richiedendo 15 stelle.</p></div>
+      <div class="game-info-section"><h3>Nota di progettazione dello sviluppatore</h3><p>Tre corsie mantengono le scelte leggibili sui telefoni e ogni input si sposta esattamente di una corsia. I passaggi catturati rimangono affidabili lungo il bordo della tela, mentre l&#39;input da tastiera trattenuto non può saltare le corsie. I timer del percorso vanno da 28 a 45 secondi per tentativi rapidi. La profondità deriva dai cambiamenti delle informazioni: i cancelli alterano la lettura spaziale, le tracce stellari alterano il rischio e la ricompensa, il fango altera i tempi di recupero, gli obiettivi alterano il successo e i Guardiani utilizzano sequenze create dall&#39;autore. La build Kids è priva di pubblicità e non crea alcuna riserva di annunci.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Nota del genitore</h3><p>Safari Dash è destinato ai bambini dai 9 anni in su perché i percorsi successivi combinano lettura rapida della corsia, obiettivi e pressione del punteggio. Il rapporto abilità utilizza solo le prove attuali: cambi di corsia, stelle, dossi e migliore combo. Non è una diagnosi, una valutazione dello sviluppo o un confronto con altri bambini.</p></div>
+      <div class="game-info-section"><h3>Domande frequenti</h3><dl><div><dt>Quanti percorsi ci sono?</dt><dd>Ci sono 30 percorsi salvati in sei regioni, con Guardian Check a 5, 10, 15, 20, 25 e 30.</dd></div><div><dt>Tutti i percorsi utilizzano lo stesso obiettivo?</dt><dd>No. I percorsi utilizzano obiettivi di arrivo, raccolta stelle, combo, corsa pulita o punteggio.</dd></div><div><dt>Cosa fa il fango appiccicoso?</dt><dd>Una collisione con una pozzanghera costa punti e azzera il moltiplicatore; sui percorsi fangosi rallenta brevemente anche la transizione alla corsia successiva.</dd></div><div><dt>Come funzionano i varchi a doppia corsia?</dt><dd>Due pericoli arrivano insieme e lasciano una via di fuga. Alcuni percorsi successivi segnalano l&#39;apertura della cassaforte con una stella.</dd></div><div><dt>Quali progressi vengono salvati?</dt><dd>I percorsi sbloccati e completati, il percorso selezionato e la Top 5 locale vengono memorizzati in questo browser.</dd></div><div><dt>Funziona su telefoni e computer?</dt><dd>Sì. I telefoni supportano tocchi e scorrimenti; il gioco desktop supporta i tasti A, D e freccia.</dd></div><div><dt>Safari Dash è gratuito e non richiede account?</dt><dd>Sì. È gratuito nel browser e non richiede l&#39;accesso.</dd></div><div><dt>Perché è 9+?</dt><dd>I percorsi successivi combinano decisioni visive più rapide, obiettivi del percorso e pressione sul punteggio.</dd></div><div><dt>Lo Skill Report è un test formale?</dt><dd>No. Riepiloga solo gli eventi della corsa corrente.</dd></div></dl></div>
+    </div>
+  </section>
+    <!-- adsense-static-guide:end -->
+    <script src="/src/site-config.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/version.js?v=20260701-version2"></script>
+    <script src="../../src/analytics.js?v=20260701-analytics2"></script>
+    <script>
+      window.WonderAnalytics?.track("game_view", { game_id: "campus-dash" });
+    </script>
+    <script src="../../src/sound.js?v=20260720-locale11"></script>
+    <script src="../../src/edge-guard.js?v=20260710-mobile-play-shell2"></script>
+    <script src="/src/i18n.js?v=20260718-locale-routes1"></script><script src="../../src/game-runtime-localizer-loader.js?v=20260720-locale11-15"></script>
+    <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
+    <script src="game.js?v=20260717-zh-hans1"></script>
+    <script>
+      (() => {
+        const loadGameInfo = () => {
+          if (document.querySelector("script[data-dash-game-info]")) return;
+          const script = document.createElement("script");
+          script.src = "../../src/game-page-info.js?v=20260720-locale11-2";
+          script.dataset.dashGameInfo = "idle";
+          script.async = true;
+          document.body.appendChild(script);
+        };
+        const schedule = () => {
+          if ("requestIdleCallback" in window) {
+            window.requestIdleCallback(loadGameInfo, { timeout: 1600 });
+          } else {
+            window.setTimeout(loadGameInfo, 350);
+          }
+        };
+        if (document.readyState === "complete") schedule();
+        else window.addEventListener("load", schedule, { once: true });
+      })();
+    </script>
+  </body>
+</html>

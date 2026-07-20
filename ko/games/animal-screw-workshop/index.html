@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <base href="/games/animal-screw-workshop/" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="robots" content="index,follow" />
+  <meta name="weightplay-audience" content="kids" />
+  <meta name="theme-color" content="#173329" />
+  <title>동물 나사 워크숍 | WeightPlay</title>
+  <meta name="description" content="Animal Screw Workshop은 Gear Horn Rux가 이끄는 30개의 퍼즐로 구성된 공간 논리 게임입니다. 각 황동 나사를 열린 구멍으로 옮기고, 겹겹이 쌓인 나무 동물 접시를 모두 풀고, 표시된 이동 제한 내에서 숲 작업장을 수리하세요." />
+  <link rel="canonical" href="https://weightplay.com/ko/games/animal-screw-workshop/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-screw-workshop/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-screw-workshop/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-screw-workshop/" />
+    <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/animal-screw-workshop/" />
+    <link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/animal-screw-workshop/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/animal-screw-workshop/" />
+    <link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/animal-screw-workshop/" />
+    <link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/animal-screw-workshop/" />
+    <link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/animal-screw-workshop/" />
+    <link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/animal-screw-workshop/" />
+    <link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/animal-screw-workshop/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-screw-workshop/" />
+    <link rel="stylesheet" href="../../src/loading-screen.css" />
+  <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard />
+  <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
+  <link rel="stylesheet" href="../../src/game-page-info.css" />
+  <link rel="stylesheet" href="style.css?v=20260720-release-2" />
+  <meta property="og:title" content="동물 나사 워크숍 | WeightPlay" />
+    <meta property="og:description" content="Animal Screw Workshop은 Gear Horn Rux가 이끄는 30개의 퍼즐로 구성된 공간 논리 게임입니다. 각 황동 나사를 열린 구멍으로 옮기고, 겹겹이 쌓인 나무 동물 접시를 모두 풀고, 표시된 이동 제한 내에서 숲 작업장을 수리하세요." />
+    <meta property="og:url" content="https://weightplay.com/ko/games/animal-screw-workshop/" />
+    <meta name="twitter:title" content="동물 나사 워크숍 | WeightPlay" />
+    <meta name="twitter:description" content="Animal Screw Workshop은 Gear Horn Rux가 이끄는 30개의 퍼즐로 구성된 공간 논리 게임입니다. 각 황동 나사를 열린 구멍으로 옮기고, 겹겹이 쌓인 나무 동물 접시를 모두 풀고, 표시된 이동 제한 내에서 숲 작업장을 수리하세요." />
+  </head>
+<body data-game-id="animal-screw-workshop" data-screen="loading">
+  <section id="loadingPanel" class="loading-panel" aria-live="polite">
+    <div class="loading-card"><strong data-i18n="title">Animal Screw Workshop</strong><span data-i18n="loading">Opening the forest workshop...</span><div class="loading-track"><i id="loadingFill"></i></div></div>
+  </section>
+
+  <div id="mainGroup" class="main-group" hidden>
+    <main id="mainScreen" class="main-screen">
+      <header class="main-header">
+        <a class="home-link" href="/kids/" data-i18n-aria="backWeightPlay" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a>
+        <strong data-i18n="title">Animal Screw Workshop</strong>
+        <label class="locale-control"><span class="sr-only" data-i18n="language">Language</span><select id="localeSelect" data-i18n-aria="language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="pt-BR">Português (Brasil)</option><option value="de">Deutsch</option></select></label>
+      </header>
+      <section class="main-hero">
+        <img class="main-poster" src="../../assets/animal-screw-workshop-cover.webp" data-i18n-alt="posterAlt" alt="동물 나사 워크숍 게임 이미지" />
+        <div class="main-copy"><small data-i18n="eyebrow">Gear Horn Rux's puzzle bench</small><h1 data-i18n="title">동물 나사 워크숍</h1><p data-i18n="pitch">Move each brass screw into an open hole. Release every wooden animal plate without running out of moves.</p><div id="mainProgress" class="main-progress"></div><button id="startBtn" class="primary-action" type="button" data-i18n="start">Start Game</button></div>
+      </section>
+    </main>
+    <section class="game-page-info game-page-info-static" aria-label="동물 나사 워크숍 게임 정보">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 어린이 게임 가이드</span><h2>동물 나사 워크숍</h2><p>Animal Screw Workshop은 Gear Horn Rux가 이끄는 30개의 퍼즐로 구성된 공간 논리 게임입니다. 각 황동 나사를 열린 구멍으로 옮기고, 겹겹이 쌓인 나무 동물 접시를 모두 풀고, 표시된 이동 제한 내에서 숲 작업장을 수리하세요.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>게임플레이</span><strong>나사 재배치 논리 퍼즐</strong></div><div class="game-info-fact"><span>장르</span><strong>퍼즐 · 논리 · 동물</strong></div><div class="game-info-fact"><span>난이도</span><strong>도전하기 쉬움</strong></div><div class="game-info-fact"><span>예상 플레이 시간</span><strong>퍼즐당 2~6분</strong></div><div class="game-info-fact"><span>훈련된 기술</span><strong>시각적 계획 · 논리 · 문제 해결</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>세계와 사명</h3><p>숲 작업장의 조각된 동물 표지판이 얽힌 더미에 고정되어 있습니다. Rux는 플레이어가 몇 개의 안전한 버퍼 구멍을 사용하지 않고 각 플레이트를 비워야 합니다. 퍼즐을 완료하면 하나의 표지판이 복원되고, 6개의 챕터를 모두 클리어하면 전체 작업장이 다시 열립니다.</p></div>
+      <div class="game-info-section"><h3>시스템 작동 방식</h3><p>잠금 해제된 나사 하나를 선택한 다음 빈 구멍을 선택합니다. 지지 구멍에 나사가 전혀 포함되지 않으면 플레이트가 떨어집니다. 공유 패스너는 여러 개의 플레이트를 고정할 수 있는 반면, 잠긴 나사는 상부 레이어가 충분히 떨어진 후에만 사용할 수 있습니다.</p>
+<p>모든 퍼즐에는 고정된 레이아웃과 이동 제한이 있습니다. 실행 취소는 이전 동작 전체를 복원하고, 다시 시작은 동일한 퍼즐을 재구성하며, 힌트는 플레이하지 않고도 안전한 나사 구멍 경로 하나를 강조 표시합니다. 효율적으로 클리어하면 별 3개까지 획득하고 다음 퍼즐을 잠금 해제할 수 있습니다.</p></div>
+      <div class="game-info-section"><h3>플레이 방법</h3><ol><li>잠금 해제된 황동 나사를 선택하십시오.</li><li>안전하게 잡을 수 있는 열린 구멍을 선택하세요.</li><li>이동 제한 전에 모든 나무 동물판을 풀어주세요.</li><li>경로가 닫힐 때 실행 취소, 다시 시작 또는 힌트를 사용하세요.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>전략 팁</h3><ul><li>다음 레이어에 사용할 수 있는 버퍼 구멍을 하나 이상 유지하십시오.</li><li>이동하기 전에 어느 플레이트가 나사를 공유하는지 확인하십시오.</li><li>하단 패스너를 잠금 해제할 때 상단 플레이트를 먼저 제거하십시오.</li><li>이동으로 인해 모든 안전한 목적지가 차단되는 즉시 실행 취소를 사용하세요.</li></ul></div>
+      <div class="game-info-section"><h3>캠페인 및 난이도 성장</h3><p>퍼즐 1-5는 기본적인 재배치를 가르칩니다. 6-10 겹치는 판을 추가합니다. 11-15는 공유 패스너를 소개합니다. 16-20 잠긴 나사를 추가합니다. 21-25는 사용 가능한 경로를 강화합니다. 26-30은 모든 규칙을 다층 릴리스 체인으로 결합합니다.</p></div>
+      <div class="game-info-section"><h3>개발자 디자인 노트</h3><p>이 게임은 무작위 물리학 대신 결정론적 지원 규칙을 사용하므로 눈에 보이는 정보를 바탕으로 모든 움직임을 계획할 수 있습니다. 2단계 나사 및 구멍 입력은 터치, 마우스 및 키보드에서 작동합니다. 짧은 낙하 애니메이션은 결과를 결정하지 않고도 설명하며, 반응형 보드는 휴대폰과 데스크톱에서 모든 대화형 구멍을 계속 표시합니다.</p></div>
+      <div class="game-info-section game-info-parent"><h3>학부모 메모</h3><p>이 어린이 퍼즐에는 광고가 없으며 계정이 필요하지 않습니다. 퍼즐 진행 상황, 별표, 최고 수 및 선택한 언어는 현재 브라우저에 유지되며 업로드되지 않습니다. 공식적인 능력 평가가 아닌 레크리에이션 논리 게임입니다.</p></div>
+      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>퍼즐은 몇 개나 포함되어 있나요?</dt><dd>6개의 챕터에 걸쳐 있는 30개의 결정론적 퍼즐.</dd></div><div><dt>접시가 왜 떨어졌어요?</dt><dd>해당 플레이트를 지지하는 모든 나사 구멍이 비어 있게 되었습니다.</dd></div><div><dt>잠긴 나사란 무엇입니까?</dt><dd>상부 플레이트가 충분히 풀리면 움직일 수 있게 됩니다.</dd></div><div><dt>힌트가 움직이나요?</dt><dd>아니요. 안전한 나사 하나와 목적지만 강조 표시합니다.</dd></div><div><dt>실행 취소는 무엇을 복원합니까?</dt><dd>나사 위치, 떨어진 플레이트, 마지막 이동 전 이동 횟수를 복원합니다.</dd></div><div><dt>진행 상황이 저장되나요?</dt><dd>예, 이 브라우저에서만 가능합니다.</dd></div><div><dt>계정이 필요합니까?</dt><dd>아니요.</dd></div><div><dt>게임에 광고가 포함되어 있나요?</dt><dd>아니요. 이 어린이용 게임은 광고가 없습니다.</dd></div></dl></div>
+    </div>
+  </section>
+  </div>
+
+  <section id="stageScreen" class="stage-screen" hidden>
+    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-canvas-max-width="920" data-wp-stage-art="../../assets/animal-screw-workshop-cover.webp" style="--wp-stage-art:url('../../assets/animal-screw-workshop-cover.webp')">
+      <header class="stage-header"><button id="stageBackBtn" type="button" data-i18n-aria="backMain">←</button><div><strong data-i18n="chooseStage">Choose a workshop puzzle</strong><span id="stageSummary"></span></div><img src="../../assets/weightplay-character-gear-horn-rhino-cutout.webp" alt="" /></header>
+      <section class="chapter-panel"><small id="chapterKicker"></small><strong id="chapterTitle"></strong><p id="chapterRule"></p></section>
+      <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-recommendation="first" data-wp-stage-settle-duration="330" data-wp-stage-settle-easing="smoothstep" data-i18n-aria="stageRailLabel" aria-label="Workshop puzzle selection"></div>
+    </div>
+  </section>
+
+  <section id="battleScreen" class="battle-screen" hidden>
+    <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
+      <header class="battle-header"><button id="battleBackBtn" type="button" data-i18n-aria="backStage">←</button><div class="battle-title"><small id="stageLabel"></small><strong id="stageGoal"></strong></div><div class="battle-stat"><small data-i18n="moves">Moves</small><strong id="movesValue">0</strong></div><div class="battle-stat"><small data-i18n="plates">Plates</small><strong id="platesValue">0</strong></div></header>
+      <section id="objectiveBar" class="objective-bar" aria-live="polite"></section>
+      <section id="puzzleBoard" class="puzzle-board" data-i18n-aria="boardLabel" aria-label="Screw puzzle board"></section>
+      <div class="battle-actions"><button id="undoBtn" type="button"><span aria-hidden="true">↶</span><b data-i18n="undo">Undo</b></button><button id="restartBtn" type="button"><span aria-hidden="true">↻</span><b data-i18n="restart">Restart</b></button><button id="hintBtn" type="button"><span aria-hidden="true">✦</span><b data-i18n="hint">Hint</b></button></div>
+
+      <section id="resultPanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card"><img src="../../assets/weightplay-character-gear-horn-rhino-cutout.webp" alt="" /><small data-i18n="resultKicker">Workshop report</small><h2 id="resultTitle"></h2><div id="resultStars" class="result-stars"></div><p id="resultText"></p><p id="bestText" class="best-text"></p><div class="modal-actions"><button id="retryBtn" type="button" data-i18n="retry">Try again</button><button id="resultStagesBtn" type="button" data-i18n="stages">Stages</button><button id="nextBtn" class="primary-action" type="button" data-i18n="next">Next</button></div></div></section>
+      <section id="leavePanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card"><h2 id="leaveTitle" data-i18n="leaveTitle">Leave this puzzle?</h2><p data-i18n="leaveText">Continue keeps the exact board. Returning to stages ends this attempt.</p><div class="modal-actions"><button id="leaveContinueBtn" class="primary-action" type="button" data-i18n="continue">Continue</button><button id="leaveStagesBtn" type="button" data-i18n="returnStages">Return to stages</button></div></div></section>
+    </div>
+  </section>
+
+  <section id="tutorialPanel" class="tutorial-layer" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="tutorial-card"><button id="tutorialCloseBtn" class="modal-close" type="button" data-i18n-aria="close">×</button><img src="../../assets/weightplay-character-gear-horn-rhino-cutout.webp" alt="" /><h2 id="tutorialTitle" data-i18n="tutorialTitle">Move a screw, release a plate</h2><ol><li data-i18n="tutorial1">Tap a screw. It will glow.</li><li data-i18n="tutorial2">Tap any glowing empty hole.</li><li data-i18n="tutorial3">Remove every support screw to drop all plates.</li></ol><button id="tutorialStartBtn" class="primary-action" type="button" data-i18n="tutorialStart">Start puzzle 1</button></div></section>
+  <div id="toast" class="toast" aria-live="polite"></div>
+
+  <script src="../../src/site-config.js"></script><script src="/src/i18n.js?v=20260718-locale-routes1"></script><script src="../../src/game-runtime-localizer-loader.js?v=20260720-locale11-15"></script><script src="../../src/analytics.js"></script><script src="../../src/sound.js?v=20260720-locale11"></script><script src="../../src/edge-guard.js"></script>
+  <script src="locales.js?v=20260720-release-2"></script><script src="game.js?v=20260720-release-5"></script><script src="../../src/stage-selector-standard.js?v=20260720-canvas-max920-1" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script><script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
+</body>
+</html>

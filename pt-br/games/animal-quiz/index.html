@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <base href="/games/animal-quiz/" />
+    <meta charset="UTF-8" />
+    <meta name="weightplay-audience" content="kids" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#67b66f" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="robots" content="index,follow" />
+    <meta name="description" content="Animal Quiz é um jogo de conhecimento infantil bilíngue gratuito com 30 fases salvas e dez animais diferentes em cada fase. Sua biblioteca de 20 animais..." />
+    <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Questionário sobre animais | WeightPlay" />
+    <meta property="og:description" content="Animal Quiz é um jogo de conhecimento infantil bilíngue gratuito com 30 fases salvas e dez animais diferentes em cada fase. Sua biblioteca de 20 animais..." />
+    <meta property="og:url" content="https://weightplay.com/pt-br/games/animal-quiz/" />
+    <meta property="og:image" content="https://weightplay.com/assets/quiz-cover.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>Questionário sobre animais | WeightPlay</title>
+    <link rel="canonical" href="https://weightplay.com/pt-br/games/animal-quiz/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-quiz/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-quiz/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-quiz/" />
+    <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/animal-quiz/" />
+    <link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/animal-quiz/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/animal-quiz/" />
+    <link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/animal-quiz/" />
+    <link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/animal-quiz/" />
+    <link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/animal-quiz/" />
+    <link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/animal-quiz/" />
+    <link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/animal-quiz/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-quiz/" />
+    <link rel="stylesheet" href="style.css?v=20260716-keyboard-quiz1" />
+    <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Questionário sobre animais",
+  "alternateName": "動物小博士",
+  "url": "https://weightplay.com/pt-br/games/animal-quiz/",
+  "image": "https://weightplay.com/assets/quiz-cover.png",
+  "description": "Animal Quiz é um jogo de conhecimento infantil bilíngue gratuito com 30 fases salvas e dez animais diferentes em cada fase. Sua biblioteca de 20 animais...",
+  "applicationCategory": "Game",
+  "operatingSystem": "Web browser",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio"
+  },
+  "inLanguage": "pt-BR",
+  "isAccessibleForFree": true,
+  "genre": [
+    "Questionário",
+    "Educação",
+    "Animal"
+  ],
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "Kids and families",
+    "suggestedMinAge": 3
+  },
+  "learningResourceType": "Skill practice through play",
+  "educationalUse": "Practice animal recognition, habitats, body features, behavior, diet, memory, and reading through 30 browser stages."
+}
+    </script>
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
+    <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
+    <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
+    <script data-wp-stage-standard>/* Animal Quiz owns its native Kids Stage rail. */</script>
+    <meta name="twitter:title" content="Questionário sobre animais | WeightPlay" />
+    <meta name="twitter:description" content="Animal Quiz é um jogo de conhecimento infantil bilíngue gratuito com 30 fases salvas e dez animais diferentes em cada fase. Sua biblioteca de 20 animais..." />
+  </head>
+  <body data-tutorial-auto-show="false">
+    <main class="animal-game" data-no-mobile-immersive="true" data-wp-canvas-max-width="920">
+      <header class="topbar">
+        <a id="homeLink" class="home-link" data-wp-return="main" href="/kids/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
+        <div>
+          <p id="brandText">WeightPlay</p>
+          <h1 id="titleText">Questionário sobre animais</h1>
+        </div>
+        <label class="language-picker">
+          <span id="languageLabel">Language</span>
+          <select id="localeSelect" aria-label="Language">
+            <option value="en">English</option>
+            <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
+            <option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option>
+          </select>
+        </label>
+      </header>
+
+      <section id="mainPanel" class="main-panel">
+        <img class="main-cover" src="../../assets/quiz-cover.webp" alt="" />
+        <div class="main-copy">
+          <strong id="mainTitle">Animal Quiz</strong>
+          <span id="mainIntro">Solve 30 picture, habitat, feature, action, and food investigations.</span>
+        </div>
+        <button id="startGameBtn" class="main-start" type="button">Start Game</button>
+      </section>
+
+      <section class="level-line" aria-label="Level progress">
+        <span id="levelText">Stage 1 · 1/10</span>
+        <div><i id="levelFill"></i></div>
+      </section>
+
+      <section id="stageSelectPanel" class="stage-select hidden" data-wp-canvas-max-width="920">
+        <div class="stage-shell-head">
+          <button id="stageBackBtn" class="stage-return" data-wp-return="stage" type="button" aria-label="Back">&larr;</button>
+          <strong id="stageSelectTitle">Choose Stage</strong>
+        </div>
+        <div class="stage-setup">
+          <strong id="stageSetupTitle">Pick an animal topic</strong>
+          <span id="stageSetupText">Choose one of 30 animal investigations. Every fifth stage is a Junior Expert Check.</span>
+        </div>
+        <div id="stageGrid" class="stage-grid"></div>
+      </section>
+
+      <section class="quiz-stage play-area hidden">
+        <button id="backToStagesBtn" class="play-return" data-wp-return="battle" type="button" aria-label="Back to stages">&larr;</button>
+        <div class="animal-card">
+          <img id="animalImage" src="" alt="" />
+          <strong id="promptText">Who is this animal?</strong>
+          <span id="clueText"></span>
+        </div>
+      </section>
+
+      <section id="choiceGrid" class="choice-grid hidden" aria-label="Answer choices"></section>
+
+      <section class="feedback hidden" aria-live="polite">
+        <strong id="feedbackText">Choose one</strong>
+      </section>
+
+      <div id="resultPanel" class="result-panel hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle">
+        <div class="result-card">
+          <strong id="resultTitle">Great job!</strong>
+          <span id="resultText"></span>
+          <div id="skillReport" class="skill-report" aria-live="polite"></div>
+          <button id="againBtn" type="button">Play Again</button>
+          <button id="nextStageBtn" type="button">Next Stage</button>
+          <button id="stageSelectBtn" type="button">Stages</button>
+          <a id="homeText" href="/kids/">Lobby</a>
+        </div>
+      </div>
+
+      <div id="loadingPanel" class="loading-panel">
+        <div class="loading-card">
+          <strong id="loadingTitle">Loading</strong>
+          <span id="loadingText">0%</span>
+          <div><i id="loadingFill"></i></div>
+        </div>
+      </div>
+    </main>
+    <!-- adsense-static-guide:start -->
+    <section class="game-page-info game-page-info-static" aria-label="Questionário sobre animais informações do jogo">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay Guia do jogo infantil</span><h2>Questionário sobre animais</h2><p>Animal Quiz é um jogo de conhecimento infantil bilíngue gratuito com 30 fases salvas e dez animais diferentes em cada fase. Sua biblioteca de 20 animais varia de leões, elefantes, girafas e zebras a pinguins, baleias, pandas, coalas, corujas, sapos, animais de estimação e animais de fazenda. As primeiras perguntas combinam um retrato claro com uma pista sobre as características do corpo. Investigações posteriores desfocam o retrato, transformam-no numa silhueta, acrescentam uma quarta escolha ou combinam factos sobre habitat, comportamento, dieta e aparência. Cada quinta etapa é um Junior Expert Check que recombina ideias já apresentadas. Não há contagem regressiva e uma escolha errada nunca encerra a fase.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Jogabilidade</span><strong>Questionário sobre animais</strong></div><div class="game-info-fact"><span>Gênero</span><strong>Questionário · Educação · Animal</strong></div><div class="game-info-fact"><span>Dificuldade</span><strong>Fácil</strong></div><div class="game-info-fact"><span>Tempo estimado de jogo</span><strong>5-8 minutos</strong></div><div class="game-info-fact"><span>Habilidades treinadas</span><strong>Conhecimento Animal · Memória · Lendo</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>Mundo e Missão</h3><p>A campanha é mais uma trilha de investigação animal do que um resgate ou batalha. O jogador é um observador construindo um caderno de campo, uma identificação correta de cada vez. Cada retrato, nome e pista escrita descreve o mesmo animal alvo. Completar dez identificações fecha o capítulo atual do caderno, salva a limpeza e desbloqueia a próxima investigação.</p>
+<p>Os fatos fornecem a razão de cada escolha. Um leão pode ser conectado por meio de sua juba, lar nas pastagens africanas e comportamento de orgulho; um pinguim pelas costas frias, pescando e amontoando-se; um elefante através de sua tromba, dieta vegetal e comportamento de borrifar água. Concluir o Estágio 30 significa que o jogador completou seis grupos de aulas e a verificação final de evidências mistas.</p></div>
+      <div class="game-info-section"><h3>Como funcionam os sistemas</h3><p>Cada estágio contém dez animais-alvo exclusivos. Os estágios introdutórios mostram três nomes de respostas; posteriormente misturados, as verificações de alimentos e especialistas mostram quatro sem diminuir os controles.</p>
+<p>Retratos padrão suportam reconhecimento. Os estágios de mistério suavizam deliberadamente os detalhes, enquanto os estágios de silhueta removem a cor, de modo que os contornos e as pistas escritas são mais importantes. A imagem mantém um nome de animal acessível.</p>
+<p>As pistas de recursos descrevem características visíveis, as pistas de habitat explicam onde um animal vive, as pistas de ação descrevem o comportamento e as pistas de dieta identificam os alimentos. Os estágios de especialistas combinam duas ou três famílias de pistas.</p>
+<p>Uma resposta errada fornece um feedback gentil e deixa a questão em aberto. Uma resposta correta bloqueia as escolhas para uma curta pausa de aprendizagem em tempo visível, mostra uma nota de animal e avança.</p>
+<p>Limpar todas as dez questões salva o estágio, melhor resultado e próximo desbloqueio no armazenamento local do navegador. O resultado pode repetir a investigação ou retornar ao cartão exato preenchido.</p>
+<p>Não há conta, tabela de classificação, compra, cronômetro, medidor de vida ou nota formal. Concluir todas as 30 etapas é a condição de sucesso da campanha; a repetição suporta revisão e uma nova tentativa de dez em dez.</p></div>
+      <div class="game-info-section"><h3>Como jogar</h3><ol><li>Pressione Iniciar jogo e deslize a barra horizontal do palco para uma investigação desbloqueada.</li><li>Estude o retrato, a imagem misteriosa ou a silhueta e leia todas as pistas abaixo dele.</li><li>Compare as evidências com os três ou quatro nomes de animais e escolha um.</li><li>Após uma resposta errada, use o feedback e tente novamente; após uma resposta correta, leia a nota do animal.</li><li>Identifique todos os dez animais para salvar a passagem e desbloquear exatamente o próximo estágio.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Dicas de estratégia</h3><ul><li>Cite um recurso visível antes de ler as opções em estágios de imagem nítida.</li><li>Em fases misteriosas, confie mais na pista do habitat do que nas cores suavizadas.</li><li>Para silhuetas, compare o contorno dos troncos, pescoços, conchas, orelhas e corpos.</li><li>Leia todas as pistas em uma verificação especializada; a combinação deve identificar um animal.</li><li>Com quatro opções, remova os animais que não podem viver no habitat indicado ou comer o alimento mencionado.</li><li>Faça uma pausa na nota do animal com resposta correta, em vez de passar por ela correndo.</li></ul></div>
+      <div class="game-info-section"><h3>Campanha e crescimento de dificuldade</h3><p>As etapas 1 a 5, Apresentações de imagens, estabelecem a biblioteca de animais com retratos claros e apresentam pistas. O estágio 5 adiciona uma segunda pista e quatro opções.</p>
+<p>Os estágios 6 a 10, Habitat Homes, usam imagens misteriosas suavizadas e tornam importantes as evidências de localização. O estágio 10 combina fatos sobre habitat e características.</p>
+<p>Os estágios 11 a 15, Detetives de Recursos, usam silhuetas para testar o reconhecimento de contornos. A fase 15 termina o capítulo com pistas mistas e quatro escolhas.</p>
+<p>As etapas 16 a 20, Ações Animais, concentram-se no movimento e no comportamento social. O estágio 20 combina comportamento com habitat.</p>
+<p>Os estágios 21 a 25, Alimentação e Famílias, usam quatro opções e dicas de dieta. O estágio 25 acrescenta evidências de aparência à questão alimentar.</p>
+<p>Os estágios 26 a 30, Junior Expert Mix, combinam duas pistas com imagens ou silhuetas misteriosas. O estágio 30 usa quatro opções, uma silhueta e três características conectadas, habitat e pistas de comportamento.</p></div>
+      <div class="game-info-section"><h3>Nota de design do desenvolvedor</h3><p>Dez perguntas revisitam uma lição sem fazer com que a sessão para crianças pareça um longo teste. A dificuldade aumenta ao mudar quais evidências permanecem úteis, e não ao reduzir as metas ou aumentar a pressão do tempo. Desfoque e silhueta são modos de ensino, em vez de hitboxes ocultos; grandes botões de resposta nativos permanecem disponíveis para toque, mouse e teclado. O layout lógico fixo é dimensionado uniformemente em telefones, tablets, paisagem curta e desktop. A pausa de aprendizagem conta apenas o tempo de reprodução visível, portanto, uma troca de aplicativo não pode ignorar o fato silenciosamente. Ao contrário dos jogos de combinação ou ação WeightPlay, a evidência factual é toda a decisão. A rota Kids não cria nenhuma solicitação de publicidade, reserva, conta, compra, classificação ou reivindicação de diagnóstico.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Nota dos pais</h3><p>Animal Quiz pode apoiar conversas sobre nomes de animais, habitats, dietas, características corporais e comportamento. As crianças que ainda estão aprendendo a ler podem brincar com um adulto que lê cada pista em voz alta. As estrelas salvas e o Relatório de Habilidade descrevem apenas esta sessão de jogo; não são notas escolares, resultados de QI, diagnósticos de desenvolvimento ou comparação com outras crianças. O progresso permanece no navegador atual e pode desaparecer se o armazenamento local for limpo. Nenhum perfil infantil é necessário e a rota Kids não solicita publicidade.</p></div>
+      <div class="game-info-section"><h3>Perguntas frequentes</h3><dl><div><dt>Quantas etapas e perguntas estão incluídas?</dt><dd>São 30 fases salvas com dez questões diferentes sobre animais em cada fase.</dd></div><div><dt>Por que a imagem do animal às vezes fica embaçada ou escura?</dt><dd>Os estágios Habitat usam uma imagem misteriosa, enquanto os estágios Feature Detective e Expert usam silhuetas para que os fatos e contornos sejam importantes.</dd></div><div><dt>O que acontece depois de uma resposta errada?</dt><dd>A questão permanece em aberto e o jogador pode tentar outra escolha sem perder o progresso.</dd></div><div><dt>Por que alguns estágios têm quatro opções?</dt><dd>Posteriormente, os estágios alimentar, misto e especializado adicionam um quarto nome após a introdução da biblioteca animal.</dd></div><div><dt>O progresso é salvo?</dt><dd>Etapas desbloqueadas, cartões concluídos e melhores resultados são armazenados apenas neste navegador.</dd></div><div><dt>Pode ser reproduzido em um telefone ou com teclado?</dt><dd>Sim. O mesmo layout fixo oferece suporte a controles de toque, mouse e teclado.</dd></div><div><dt>Requer uma conta?</dt><dd>Nenhum login ou perfil infantil é necessário. Limpar o armazenamento do navegador pode remover o progresso local.</dd></div><div><dt>A página Kids mostra anúncios?</dt><dd>Não. Animal Quiz não cria nenhuma solicitação de publicidade ou reserva de anúncios.</dd></div><div><dt>O Relatório de Habilidades é uma avaliação formal?</dt><dd>Não. É um feedback de jogo de apoio, não um teste escolar, de QI, de saúde ou de desenvolvimento.</dd></div></dl></div>
+    </div>
+  </section>
+    <!-- adsense-static-guide:end -->
+    <script src="/src/site-config.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/version.js?v=20260701-version2"></script>
+    <script src="../../src/analytics.js?v=20260701-analytics2"></script>
+    <script>
+      window.WonderAnalytics?.track("game_view", { game_id: "animal-quiz" });
+    </script>
+    <script src="../../src/sound.js?v=20260720-locale11"></script>
+    <script src="../../src/edge-guard.js?v=20260710-mobile-play-shell2"></script>
+    <script src="/src/i18n.js?v=20260718-locale-routes1"></script><script src="../../src/game-runtime-localizer-loader.js?v=20260720-locale11-15"></script>
+    <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
+    <script src="game.js?v=20260717-zh-hans1"></script>
+    <script>
+      (() => {
+        const loadGameInfo = () => {
+          if (document.querySelector("script[data-quiz-game-info]")) return;
+          const script = document.createElement("script");
+          script.src = "../../src/game-page-info.js?v=20260720-locale11-2";
+          script.dataset.quizGameInfo = "idle";
+          script.async = true;
+          document.body.appendChild(script);
+        };
+        const schedule = () => {
+          if ("requestIdleCallback" in window) {
+            window.requestIdleCallback(loadGameInfo, { timeout: 1600 });
+          } else {
+            window.setTimeout(loadGameInfo, 350);
+          }
+        };
+        if (document.readyState === "complete") schedule();
+        else window.addEventListener("load", schedule, { once: true });
+      })();
+    </script>
+  </body>
+</html>

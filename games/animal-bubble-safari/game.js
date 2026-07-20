@@ -160,7 +160,7 @@
   if (!readStorage(canonicalLocaleKey) && ["en", "zh-Hant", "zh-Hans", "es"].includes(legacySavedLocale)) window.WonderI18n?.setLocale?.(legacySavedLocale);
   const savedLocale = readStorage(canonicalLocaleKey) || legacySavedLocale || readStorage("weightplay:locale");
   const requestedLocale = window.WonderI18n?.locale?.() || savedLocale || "en";
-  let locale = copy[requestedLocale] ? requestedLocale : "en";
+  let locale = requestedLocale;
   let save = loadSave();
   let selectedStage = Math.min(save.unlocked, stageDefs.length);
   let centeredStageFrame = 0;
@@ -187,7 +187,21 @@
     writeStorage(SAVE_KEY, JSON.stringify(save));
   }
 
-  function t(key) { return copy[locale][key] || key; }
+  function translateRuntime(source) {
+    if (!source || copy[locale]) return source;
+    return window.WeightPlayGameRuntimeLocalizer?.translate(source) || source;
+  }
+
+  function t(key) {
+    const table = copy[locale] || copy.en;
+    const source = table[key] || copy.en[key] || key;
+    return table[key] ? source : translateRuntime(source);
+  }
+
+  function stageTitle(stage) {
+    const source = stage.title[locale] || stage.title.en || "";
+    return stage.title[locale] ? source : translateRuntime(source);
+  }
 
   function clearStageStatus() {
     clearTimeout(stageStatusTimer);
@@ -198,7 +212,7 @@
 
   function showLockedStage(stage, card) {
     clearStageStatus();
-    const stageName = `${stage.id}. ${stage.title[locale]}`;
+    const stageName = `${stage.id}. ${stageTitle(stage)}`;
     dom.stageStatus.textContent = t("lockedFeedback").replace("{stage}", stageName);
     dom.stageStatus.classList.add("is-visible");
     card.focus({ preventScroll: true });
@@ -295,7 +309,7 @@
       card.className = "stage-card" + (stage.id === selectedStage ? " is-selected" : "") + (locked ? " is-locked" : "");
       card.setAttribute("aria-disabled", String(locked));
       const stars = save.bestStars[stage.id] || 0;
-      card.innerHTML = `<img src="${ASSET_ROOT}animal-bubble-safari-bg.webp" alt=""><div><b>${stage.id}. ${stage.title[locale]}</b><span>${t(stage.goalKey)}</span><em>${"★".repeat(stars)}${"☆".repeat(3-stars)}</em><span>${locked ? t("locked") : stars ? t("completed") : t(stage.skillKey)}</span></div>`;
+      card.innerHTML = `<img src="${ASSET_ROOT}animal-bubble-safari-bg.webp" alt=""><div><b>${stage.id}. ${stageTitle(stage)}</b><span>${t(stage.goalKey)}</span><em>${"★".repeat(stars)}${"☆".repeat(3-stars)}</em><span>${locked ? t("locked") : stars ? t("completed") : t(stage.skillKey)}</span></div>`;
       card.addEventListener("click", () => {
         if (locked) showLockedStage(stage, card);
         else startStage(stage.id);
@@ -1068,7 +1082,7 @@
   document.getElementById("guideDone").addEventListener("click", closeGuide);
   document.getElementById("soundMain").addEventListener("click", toggleSound);
   document.getElementById("soundStage").addEventListener("click", toggleSound);
-  dom.localeSelect?.addEventListener("change", () => { const requested=dom.localeSelect.value; window.WonderI18n?.setLocale?.(requested); const resolved=window.WonderI18n?.locale?.()||requested; locale=copy[resolved]?resolved:"en"; writeStorage(canonicalLocaleKey,requested); applyLocale(); });
+  dom.localeSelect?.addEventListener("change", () => { const requested=dom.localeSelect.value; window.WonderI18n?.setLocale?.(requested); locale=window.WonderI18n?.actualLocale?.()||window.WonderI18n?.locale?.()||requested; writeStorage(canonicalLocaleKey,requested); applyLocale(); });
   dom.playCanvas.addEventListener("pointerdown", beginAim);
   dom.playCanvas.addEventListener("pointermove", updateAim);
   dom.playCanvas.addEventListener("keydown", handleBattleKey);

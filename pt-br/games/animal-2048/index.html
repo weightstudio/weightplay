@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <base href="/games/animal-2048/" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="robots" content="index,follow" />
+  <meta name="weightplay-audience" content="general" />
+  <meta name="theme-color" content="#062e2d" />
+  <title>Animal 2048: Evolução da Floresta | WeightPlay</title>
+  <meta name="description" content="Animal 2048 é um quebra-cabeça de estratégia florestal baseado em turnos, apresentado por Moon Cap Orla. Cada direção move o tabuleiro 4 por 4 completo,..." />
+  <meta property="og:site_name" content="WeightPlay" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Animal 2048: Evolução da Floresta | WeightPlay" />
+  <meta property="og:description" content="Animal 2048 é um quebra-cabeça de estratégia florestal baseado em turnos, apresentado por Moon Cap Orla. Cada direção move o tabuleiro 4 por 4 completo,..." />
+  <meta property="og:url" content="https://weightplay.com/pt-br/games/animal-2048/" />
+  <meta property="og:image" content="https://weightplay.com/assets/animal-2048-cover.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Animal 2048: Evolução da Floresta | WeightPlay" />
+  <meta name="twitter:description" content="Animal 2048 é um quebra-cabeça de estratégia florestal baseado em turnos, apresentado por Moon Cap Orla. Cada direção move o tabuleiro 4 por 4 completo,..." />
+  <link rel="canonical" href="https://weightplay.com/pt-br/games/animal-2048/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-2048/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-2048/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-2048/" />
+    <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/animal-2048/" />
+    <link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/animal-2048/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/animal-2048/" />
+    <link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/animal-2048/" />
+    <link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/animal-2048/" />
+    <link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/animal-2048/" />
+    <link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/animal-2048/" />
+    <link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/animal-2048/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-2048/" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Animal 2048: Evolução da Floresta",
+  "url": "https://weightplay.com/pt-br/games/animal-2048/",
+  "image": "https://weightplay.com/assets/animal-2048-cover.png",
+  "description": "Animal 2048 é um quebra-cabeça de estratégia florestal baseado em turnos, apresentado por Moon Cap Orla. Cada direção move o tabuleiro 4 por 4 completo,...",
+  "applicationCategory": "Game",
+  "operatingSystem": "Web browser",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio"
+  },
+  "inLanguage": "pt-BR",
+  "isAccessibleForFree": true,
+  "genre": [
+    "Quebra-cabeça",
+    "Estratégia",
+    "Lógica",
+    "Animal"
+  ],
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "General players"
+  }
+}
+    </script>
+  <link rel="stylesheet" href="../../src/loading-screen.css" />
+  <link rel="stylesheet" href="../../src/game-page-info.css" />
+  <link rel="stylesheet" href="../../src/play-viewport.css" />
+  <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard />
+  <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
+  <link rel="stylesheet" href="style.css?v=20260720-result-board1" />
+</head>
+<body data-screen="main" data-game-id="animal-2048">
+  <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong data-i18n="title">Animal 2048</strong><span id="loadingText" data-i18n="loading">Opening the forest sanctuary…</span><div class="loading-track"><i id="loadingFill"></i></div></div></section>
+
+  <div id="mainGroup" class="main-group">
+    <main id="mainScreen" class="main-screen">
+      <header class="main-header">
+        <a class="main-return" href="/" data-wp-return="main" aria-label="Back to WeightPlay" data-i18n-aria="backWeightPlay"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" /></a>
+        <strong data-i18n="title">Animal 2048</strong>
+        <label class="locale-control"><span class="sr-only" data-i18n="language">Language</span><select id="localeSelect" aria-label="Language" data-i18n-aria="language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="pt-BR">Português (Brasil)</option><option value="de">Deutsch</option></select></label>
+      </header>
+      <section class="main-hero">
+        <img class="main-poster" src="../../assets/animal-2048-cover.webp" alt="Imagem do jogo Animal 2048: Evolução da Floresta" />
+        <div class="main-copy"><small data-i18n="eyebrow">Moonlit Forest Puzzle Sanctuary</small><h1 data-i18n="fullTitle">Animal 2048: Evolução da Floresta</h1><p data-i18n="pitch">Swipe the whole grid, merge matching animals, and protect enough open space to complete each mission.</p><div id="mainProgress" class="main-progress"></div><button id="startBtn" class="primary-action" type="button" data-i18n="start">Start Game</button></div>
+      </section>
+    </main>
+
+    <section class="game-page-info game-page-info-static" aria-label="Animal 2048: Evolução da Floresta informações do jogo">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay Guia do jogo infantil</span><h2>Animal 2048: Evolução da Floresta</h2><p>Animal 2048 é um quebra-cabeça de estratégia florestal baseado em turnos, apresentado por Moon Cap Orla. Cada direção move o tabuleiro 4 por 4 completo, então um único golpe pode abrir espaço, construir várias cadeias de evolução ou prender os animais necessários para o objetivo da missão.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Jogabilidade</span><strong>Estratégia de mesclagem de toda a rede</strong></div><div class="game-info-fact"><span>Gênero</span><strong>Quebra-cabeça · Estratégia · Lógica · Animal</strong></div><div class="game-info-fact"><span>Dificuldade</span><strong>Fácil de desafiar</strong></div><div class="game-info-fact"><span>Tempo estimado de jogo</span><strong>2-6 minutos por missão</strong></div><div class="game-info-fact"><span>Habilidades treinadas</span><strong>Lógica · Raciocínio Espacial · Sequenciamento</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>Mundo e Missão</h3><p>Moon Cap Orla mantém um santuário iluminado pela lua onde os espíritos dos animais se combinam em formas mais fortes. As trinta missões de campanha são suas lições de campo: o jogador restaura cada tabuleiro do santuário alcançando um nível de animal nomeado, completando um número necessário de fusões ou ganhando uma pontuação alvo antes que o estoque de movimento acabe.</p>
+<p>Pedras de musgo aparecem nos capítulos intermediários e dividem linhas ou colunas em segmentos de movimento separados. Eles não podem se mover ou se fundir, então a rota ao seu redor é importante. Completar o Estágio 30 cria o Leão Guardião no valor 2048 e termina o capítulo Grande Evolução. A Floresta Infinita é um desafio separado, em vez de um Estágio 31 oculto.</p></div>
+      <div class="game-info-section"><h3>Como funcionam os sistemas</h3><p>Um golpe válido empurra cada peça móvel o máximo que puder. Dois animais iguais que se encontram tornam-se o próximo nível, mas uma peça criada por uma fusão não pode se fundir novamente durante o mesmo movimento. Um movimento que não muda nada é rejeitado e não gasta o contador de movimentos nem cria um novo animal.</p>
+<p>Após cada movimento válido, um animal de nível inferior aparece em uma célula disponível. Isto torna o espaço vazio o recurso central: manter um canto estável de alto valor é útil, mas preservar as rotas para esse canto é igualmente importante. O valor numérico permanece visível em cada peça de animal para que a cadeia de evolução possa ser lida sem reconhecer apenas a obra de arte.</p>
+<p>Os objetivos da campanha se alternam entre alcançar um bloco, completar uma série de fusões e alcançar uma pontuação. Cada missão tem um tabuleiro de abertura de autoria, padrão de pedra, limite de movimento e sequência de spawn determinística, portanto, reiniciar a mesma missão apresenta o mesmo problema de planejamento. Desfazer restaura o tabuleiro, a pontuação, a contagem de movimentos e o estado de spawn anteriores exatos.</p>
+<p>A Floresta Infinita começa com dois animais aleatórios de nível inferior, não tem limite de movimento e termina apenas quando não resta nenhum deslizamento ou fusão legal. Os valores continuam além de 2048, e sua melhor pontuação, bloco mais alto, contagem de movimentos e contagem de corridas são salvos separadamente das estrelas da campanha e dos desbloqueios.</p></div>
+      <div class="game-info-section"><h3>Como jogar</h3><ol><li>Escolha Campanha para uma das trinta missões ou Desafio para Floresta Infinita.</li><li>Passe o dedo no quadro, use os quatro botões de direção ou pressione uma tecla de seta ou WASD.</li><li>Mesclar animais iguais enquanto protege células abertas e rotas em torno de pedras de musgo.</li><li>Use Desfazer para uma etapa exata, Reiniciar para a abertura criada ou Dica para uma sugestão direcional.</li><li>Complete a meta exibida antes do limite de movimento ou continue uma corrida na Floresta Infinita até que não haja mais movimento.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Dicas de estratégia</h3><ul><li>Mantenha o animal maior próximo a um canto, mas evite preencher ambas as bordas vizinhas com camadas baixas incomparáveis.</li><li>Leia toda a linha ou coluna antes de deslizar; um movimento afeta todas as peças, não apenas o par que você deseja mesclar.</li><li>Perto de pedras de musgo, planeje cada segmento separado de forma independente e verifique onde o novo animal pode aparecer.</li><li>Em missões de pontuação e fusão, várias pequenas cadeias controladas podem ser mais seguras do que correr em direção a um animal raro.</li><li>Desfazer é mais útil imediatamente após um movimento fechar uma pista importante; ele restaura o spawn exato e também o tabuleiro.</li></ul></div>
+      <div class="game-info-section"><h3>Campanha e crescimento de dificuldade</h3><p>As missões 1 a 5 ensinam deslizamento de tabuleiro completo e fusões simples. As missões 6 a 10 introduzem um planejamento de cadeia mais longa. As missões 11-15 adicionam pedras de musgo que dividem as linhas de movimento.</p>
+<p>As missões 16 a 20 se concentram na eficiência de pontuação, as missões 21 a 25 começam em ninhos mais densos de animais raros e as missões 26 a 30 combinam pedras, limites rígidos de movimento, pontuação e níveis altos até 2048. Floresta Infinita remove o orçamento de movimento e transforma as mesmas regras em um desafio de resistência pessoal.</p></div>
+      <div class="game-info-section"><h3>Nota de design do desenvolvedor</h3><p>O jogo usa missões determinísticas curtas para que uma tentativa fracassada possa se tornar uma lição de planejamento específica em vez de um quebra-cabeça aleatório diferente. Os deslizamentos de grade inteira foram escolhidos porque cada entrada tem consequências amplas, ao mesmo tempo que permanece confortável nos telefones. Mouse, toque, botões de direção, setas e WASD operam no mesmo estado. Elementos de ladrilhos estáveis ​​deslizam entre as células e apenas mesclagens reais recebem um efeito pop, mantendo o movimento legível sem piscar o quadro. Os registros de Progresso e Floresta Infinita são armazenados apenas neste navegador; nenhuma conta é necessária.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Nota dos pais</h3><p>Nenhuma conta é necessária. Desbloqueios de campanha, estrelas, melhores pontuações e registros da Floresta Infinita são armazenados apenas neste navegador. Limpar os dados do site ou alterar os navegadores pode iniciar um salvamento separado. O relatório de planejamento resume o resultado atual do quebra-cabeça para entretenimento e não é uma avaliação formal de habilidade, médica ou escolar.</p></div>
+      <div class="game-info-section"><h3>Perguntas frequentes</h3><dl><div><dt>Cada golpe cria um novo animal?</dt><dd>Não. Apenas um golpe que muda o tabuleiro gasta um movimento e adiciona um animal de nível inferior.</dd></div><div><dt>Um bloco recém-mesclado pode ser mesclado novamente imediatamente?</dt><dd>Não. Cada peça resultante pode ser mesclada apenas uma vez durante um único movimento.</dd></div><div><dt>O que as pedras de musgo fazem?</dt><dd>Eles permanecem fixos e dividem uma linha ou coluna em segmentos de movimento separados.</dd></div><div><dt>O que Desfazer restaura?</dt><dd>Ele restaura o tabuleiro anterior, pontuação, contagem de movimentos, progresso do objetivo e estado de spawn determinístico.</dd></div><div><dt>A Floresta Infinita faz parte das trinta missões?</dt><dd>Não. É um desafio separado e ilimitado e não altera as estrelas da campanha nem os desbloqueios.</dd></div><div><dt>O progresso salva?</dt><dd>Sim. O progresso da campanha e os registros da Floresta Infinita são armazenados localmente no navegador atual.</dd></div></dl></div>
+    </div>
+  </section>
+  </div>
+
+  <section id="stageScreen" class="stage-screen" hidden>
+    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen style="--wp-stage-art:url('../../assets/animal-2048-cover.webp')">
+      <header class="stage-header"><button id="stageBackBtn" type="button" data-wp-return="stage" aria-label="Back" data-i18n-aria="back">&larr;</button><div><strong data-i18n="chooseStage">Choose Mission</strong><span id="stageSummary"></span></div><img src="../../assets/weightplay-character-moon-cap-owl-cutout.webp" alt="" /></header>
+      <nav class="stage-mode-tabs" aria-label="Stage modes" data-i18n-aria="stageModeLabel"><button id="campaignTab" type="button" data-stage-mode="campaign" data-i18n="campaignMode">Campaign</button><button id="challengeTab" type="button" data-stage-mode="challenge" data-i18n="challengeMode">Challenge</button></nav>
+      <section class="chapter-panel"><small id="chapterKicker"></small><strong id="chapterTitle"></strong><p id="chapterRule"></p></section>
+      <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-settle-duration="360" data-wp-stage-settle-easing="smoothstep" aria-label="Mission selection" data-i18n-aria="stageRailLabel"></div>
+    </div>
+  </section>
+
+  <section id="battleScreen" class="battle-screen" hidden>
+    <div class="battle-canvas" data-wp-logical-battle-canvas>
+      <header class="battle-header"><button id="battleBackBtn" type="button" aria-label="Back" data-i18n-aria="back">&larr;</button><div class="battle-progress"><span id="stageLabel"></span><strong id="goalValue"></strong></div><div class="battle-stat"><small data-i18n="moves">Moves</small><strong id="movesValue">0</strong></div><div class="battle-stat"><small data-i18n="score">Score</small><strong id="scoreValue">0</strong></div></header>
+      <section id="objectiveRow" class="objective-row"></section>
+      <section class="board-zone"><div id="gameBoard" class="game-board" role="application" aria-label="Animal 2048 grid" tabindex="0"></div><div id="moveFeedback" class="move-feedback" aria-live="polite"></div></section>
+      <div class="battle-actions"><button id="undoBtn" type="button" data-i18n="undo">Undo</button><button id="restartBtn" type="button" data-i18n="restart">Restart</button><button id="hintBtn" type="button" data-i18n="hint">Hint</button></div>
+      <div class="direction-pad" aria-label="Direction controls" data-i18n-aria="directionControls"><button type="button" data-direction="up" aria-label="Up" data-i18n-aria="up">↑</button><button type="button" data-direction="left" aria-label="Left" data-i18n-aria="left">←</button><button type="button" data-direction="down" aria-label="Down" data-i18n-aria="down">↓</button><button type="button" data-direction="right" aria-label="Right" data-i18n-aria="right">→</button></div>
+
+      <section id="resultPanel" class="result-overlay" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card"><img src="../../assets/weightplay-character-moon-cap-owl-cutout.webp" alt="" /><small data-i18n="skillReport">Planning Report</small><h2 id="resultTitle"></h2><div id="resultStars" class="result-stars"></div><p id="resultText"></p><div id="skillGrid" class="skill-grid"></div><p id="bestText" class="best-text"></p><div class="result-actions"><button id="retryBtn" type="button" data-i18n="retry">Retry</button><button id="resultStagesBtn" type="button" data-i18n="stages">Stages</button><button id="nextBtn" class="primary-action" type="button" data-i18n="next">Next Stage</button></div></div></section>
+      <section id="leavePanel" class="leave-overlay" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="leave-card"><h2 id="leaveTitle" data-i18n="leaveTitle">Leave this mission?</h2><p id="leaveText"></p><div><button id="leaveContinueBtn" class="primary-action" type="button" data-i18n="continue">Continue</button><button id="leaveStagesBtn" type="button" data-i18n="returnStages">Return to Stages</button></div></div></section>
+    </div>
+    <div class="battle-ad-reserve" aria-hidden="true"></div>
+  </section>
+
+  <section id="tutorialPanel" class="tutorial-overlay" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="tutorial-card"><button id="tutorialCloseBtn" type="button" aria-label="Close" data-i18n-aria="close">×</button><img src="../../assets/weightplay-character-moon-cap-owl-cutout.webp" alt="" /><h2 id="tutorialTitle" data-i18n="tutorialTitle">Slide the whole forest grid.</h2><ol><li data-i18n="tutorial1">Swipe up, down, left, or right.</li><li data-i18n="tutorial2">Matching animals merge once per move.</li><li data-i18n="tutorial3">Keep a corner stable and protect empty spaces.</li></ol><button id="tutorialStartBtn" class="primary-action" type="button" data-i18n="tutorialStart">Start Mission 1</button></div></section>
+
+  <script src="../../src/site-config.js"></script><script src="/src/i18n.js?v=20260718-locale-routes1"></script><script src="../../src/game-runtime-localizer-loader.js?v=20260720-locale11-15"></script><script src="../../src/analytics.js"></script><script src="../../src/sound.js?v=20260720-locale11"></script><script src="../../src/edge-guard.js"></script>
+  <script src="locales.js?v=20260719-animal2048-rc4"></script><script src="game.js?v=20260719-animal2048-public2"></script><script src="../../src/stage-selector-standard.js?v=20260720-canvas-max920-1" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script><script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
+</body>
+</html>

@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <base href="/games/animal-hero-trials/" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#071712" />
+  <meta name="robots" content="index,follow" />
+  <meta name="description" content="Animal Hero Trials는 체력, 속도, 공격 범위, 활성 스킬이 서로 다른 4명의 WeightPlay 영웅이 등장하는 30회 시험 액션 캠페인입니다. 각 시험에는 3개의 연결된 방, 2개의 무료 축복 선택, 엘리트 선장 또는 지역 보스 피날레가 있습니다. 다섯 명의..." />
+  <meta property="og:site_name" content="WeightPlay" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="동물 영웅 재판 | WeightPlay" />
+  <meta property="og:description" content="Animal Hero Trials는 체력, 속도, 공격 범위, 활성 스킬이 서로 다른 4명의 WeightPlay 영웅이 등장하는 30회 시험 액션 캠페인입니다. 각 시험에는 3개의 연결된 방, 2개의 무료 축복 선택, 엘리트 선장 또는 지역 보스 피날레가 있습니다. 다섯 명의..." />
+  <meta property="og:url" content="https://weightplay.com/ko/games/animal-hero-trials/" />
+  <meta property="og:image" content="https://weightplay.com/assets/animal-hero-trials-cover.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <title>동물 영웅 재판 | WeightPlay</title>
+  <link rel="canonical" href="https://weightplay.com/ko/games/animal-hero-trials/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-hero-trials/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-hero-trials/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-hero-trials/" />
+    <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/animal-hero-trials/" />
+    <link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/animal-hero-trials/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/animal-hero-trials/" />
+    <link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/animal-hero-trials/" />
+    <link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/animal-hero-trials/" />
+    <link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/animal-hero-trials/" />
+    <link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/animal-hero-trials/" />
+    <link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/animal-hero-trials/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-hero-trials/" />
+    <link rel="stylesheet" href="../../src/loading-screen.css" />
+  <link rel="stylesheet" href="../../src/play-viewport.css" />
+  <link rel="stylesheet" href="../../src/game-page-info.css" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="progress-cards.css" />
+  <style>.canvas-wrap canvas:focus-visible{outline:5px solid #ffd45f;outline-offset:-5px}</style>
+  <style>
+    .canvas-wrap canvas{position:absolute;left:50%;top:50%;width:auto;height:auto;object-fit:initial;transform:translate(-50%,-50%)}
+    #battleView #resultModal{position:absolute;inset:0}
+    #resultHome{min-height:50px;margin-left:6px;border:1px solid #8edbb3;border-radius:10px;background:#0c281f;color:#fff;padding:0 14px;font-weight:900}
+    .reroll-row{margin-top:10px;display:grid;gap:5px}.reroll-row button{height:46px;min-height:46px;border:1px solid #8edbb3;border-radius:9px;background:#0c281f;color:#fff;display:flex;align-items:center;justify-content:center;gap:7px;font-weight:900}.reroll-row button.is-confirming{border-color:#ffd45f;background:#3b3315;box-shadow:0 0 0 2px #ffd45f33}.reroll-row button:disabled{opacity:.48}.reroll-row img{width:24px;height:24px;object-fit:contain}.reroll-row small{display:grid;place-items:center;min-height:36px;color:#ffd45f}
+    .modal-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}.modal-actions button{min-height:50px;border-radius:10px;font-weight:900}.modal-actions .secondary{border:1px solid #8edbb3;background:#0c281f;color:#fff}
+    .hero-picker{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(86px,1fr);gap:7px;overflow-x:auto;scrollbar-width:none}.hero-option{height:112px;border:1px solid #4f8b70;border-radius:9px;background:#102d24;color:#fff;padding:5px;display:grid;grid-template-rows:48px auto auto;justify-items:center;align-content:center;gap:2px}.hero-option.selected{border:2px solid #ffd45f;background:#194635}.hero-option img{width:48px;height:48px;object-fit:contain}.hero-option b{font-size:11px;line-height:1.1;text-align:center}.hero-option small{display:grid;gap:1px;font-size:8px;line-height:1.15;color:#bfe6d2;text-align:center}
+    #stageView{height:100dvh;min-height:0;overflow:hidden}.stage-rail{min-height:0}
+    .stage-card{padding:8px;gap:4px}.stage-card img{min-height:0}.stage-card span{color:#d9eee4}.stage-card.checkpoint{border:3px solid #ffd45f;box-shadow:0 0 0 2px #8b6424}.stage-card.checkpoint img{object-fit:contain;background:#0b221b}
+    body:not([data-game-view="battle"]) .battle-ad{display:none}
+    body[data-game-view="stage"] .game-page-info,body[data-game-view="battle"] .game-page-info{display:none!important}
+  </style>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "동물 영웅 재판",
+  "url": "https://weightplay.com/ko/games/animal-hero-trials/",
+  "image": "https://weightplay.com/assets/animal-hero-trials-cover.png",
+  "description": "Animal Hero Trials는 체력, 속도, 공격 범위, 활성 스킬이 서로 다른 4명의 WeightPlay 영웅이 등장하는 30회 시험 액션 캠페인입니다. 각 시험에는 3개의 연결된 방, 2개의 무료 축복 선택, 엘리트 선장 또는 지역 보스 피날레가 있습니다. 다섯 명의...",
+  "applicationCategory": "Game",
+  "operatingSystem": "Web browser",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio"
+  },
+  "inLanguage": "ko",
+  "isAccessibleForFree": true,
+  "genre": [
+    "액션",
+    "로그라이트",
+    "동물"
+  ],
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "General action and roguelite players"
+  }
+}
+    </script>
+  <meta name="twitter:title" content="동물 영웅 재판 | WeightPlay" />
+    <meta name="twitter:description" content="Animal Hero Trials는 체력, 속도, 공격 범위, 활성 스킬이 서로 다른 4명의 WeightPlay 영웅이 등장하는 30회 시험 액션 캠페인입니다. 각 시험에는 3개의 연결된 방, 2개의 무료 축복 선택, 엘리트 선장 또는 지역 보스 피날레가 있습니다. 다섯 명의..." />
+  </head>
+<body data-game-view="main" data-tutorial-auto-show="false" data-sound-toggle="off">
+  <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong>Animal Hero Trials</strong><span>Loading</span><div class="loading-track"><i></i></div></div></section>
+  <main id="app" class="app">
+    <section id="mainView" class="view main-view">
+      <a class="lobby-return" data-wp-return="main" href="/" aria-label="Back to WeightPlay"><span>&larr;</span><img src="../../assets/weightplay-logo.png" alt="" /></a>
+      <label class="locale"><span>Language</span><select id="localeSelect"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option></select></label>
+      <img class="cover" src="../../assets/animal-hero-trials-cover.webp" alt="동물 영웅 재판 게임 이미지" />
+      <div class="main-copy"><h1 data-t="title">동물 영웅 재판</h1><p data-t="pitch">Choose one of four heroes and clear a 30-trial shadow campaign.</p></div>
+      <div class="progress-card"><span><img src="../../assets/animal-hero-trials-icon-trial-gate.png" alt="" aria-hidden="true" /><span class="progress-copy"><b data-t="marks">Trial Marks</b><strong id="markCount">0</strong></span></span><button id="masteryBtn" type="button"><img src="../../assets/animal-hero-trials-icon-heart-mastery.png" alt="" aria-hidden="true" /><span data-t="mastery">Heart Mastery</span><b id="masteryLevel">Lv.0</b><small id="masteryCost">All heroes Max HP +0 → +12 · Need 5 / Have 0 marks</small></button></div>
+      <button id="startBtn" class="primary" type="button" data-t="start">Start Game</button>
+    </section>
+    <section id="stageView" class="view hidden">
+      <header class="compact-head"><button id="stageBack" class="icon-btn" data-wp-return="stage" type="button" aria-label="Back">&larr;</button><h2 data-t="choose">Choose Trial</h2></header>
+      <div id="heroPicker" class="hero-picker" aria-label="Choose hero"></div><div id="stageRail" class="stage-rail"></div><div class="stage-ad" aria-hidden="true"></div>
+    </section>
+    <section id="battleView" class="view battle-view hidden" data-play-viewport data-wp-logical-battle-canvas>
+      <header class="battle-head"><button id="battleBack" class="icon-btn" data-wp-return="battle" type="button" aria-label="Back">&larr;</button><div class="health"><span id="roomText">Room 1/3</span><div><i id="hpFill"></i></div></div><button id="skillBtn" class="skill-btn" type="button"><img src="../../assets/animal-hero-trials-icon-roaring-mane.webp" alt="" /><span id="cooldownText">ROAR</span></button></header>
+      <div class="canvas-wrap"><canvas id="game" width="390" height="560" tabindex="0" aria-describedby="objective"></canvas><p id="objective"></p></div>
+      <div id="choiceModal" class="modal hidden" style="position:absolute" role="dialog" aria-modal="true" aria-labelledby="blessingTitle" aria-describedby="rerollStatus"><section><h2 id="blessingTitle" data-t="blessing">Choose a Blessing</h2><div id="choices" class="choices"></div><div class="reroll-row"><button id="rerollBtn" type="button"><img src="../../assets/weightplay-diamond.svg" alt="" /><span id="rerollLabel">Reroll 3</span></button><small id="rerollStatus"></small></div></section></div>
+      <div id="quitModal" class="modal hidden" style="position:absolute" role="dialog" aria-modal="true" aria-labelledby="quitTitle" aria-describedby="quitCopy"><section><h2 id="quitTitle" data-t="quitTitle">Leave this trial?</h2><p id="quitCopy" data-t="quitCopy">This run's room and blessing progress will be lost.</p><div class="modal-actions"><button id="quitKeep" class="primary" type="button" data-t="keepPlaying">Keep Playing</button><button id="quitLeave" class="secondary" type="button" data-t="leaveTrial">Leave Trial</button></div></section></div>
+      <div id="resultModal" class="modal hidden" style="position:absolute" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultCopy"><section><img id="resultFx" src="../../assets/animal-hero-trials-fx-victory.webp" alt="" /><h2 id="resultTitle"></h2><p id="resultCopy"></p><button id="resultNext" class="primary" type="button"></button><button id="resultHome" type="button" data-t="menu">Main Menu</button></section></div>
+    </section>
+    <div id="battleAd" class="battle-ad" aria-hidden="true"></div>
+  </main>
+    <!-- adsense-static-guide:start -->
+    <section class="game-page-info game-page-info-static" aria-label="동물 영웅 재판 게임 정보">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 어린이 게임 가이드</span><h2>동물 영웅 재판</h2><p>Animal Hero Trials는 체력, 속도, 공격 범위, 활성 스킬이 서로 다른 4명의 WeightPlay 영웅이 등장하는 30회 시험 액션 캠페인입니다. 각 시험에는 3개의 연결된 방, 2개의 무료 축복 선택, 엘리트 선장 또는 지역 보스 피날레가 있습니다. 다섯 명의 적군이 비행, 돌격, 원거리 사격, 갑옷을 소개합니다. 6개의 체크포인트 보스는 서로 다른 카운터를 요구하며, 저장된 시험 마크는 영구적인 하트 마스터리를 구매합니다.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>게임플레이</span><strong>방 3개짜리 영웅 액션 체험</strong></div><div class="game-info-fact"><span>장르</span><strong>액션 · 로그라이트 · 동물</strong></div><div class="game-info-fact"><span>난이도</span><strong>중간에서 어려움까지</strong></div><div class="game-info-fact"><span>예상 플레이 시간</span><strong>시험 당 4-9분</strong></div><div class="game-info-fact"><span>훈련된 기술</span><strong>반응 · 초점 · 문제 해결</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>세계와 사명</h3><p>뿌리나무와 공허 왕관 사이에 여섯 개의 그림자 관문이 열렸습니다. Rootwood는 추격 무리를 보내고, Prism Ravine은 비행과 보호막을 부여하고, Ember Forge는 경고 돌진을 일으키고, Moon Range는 원거리 공격자를 무장시키고, Abyss Shell은 경비병을 강화하고, 마지막 왕관은 살아남은 모든 규칙을 혼합합니다. 승리하면 한 도로 구간이 안정되고 다음 시험이 열립니다.</p>
+<p>Boom Mane Leo, Spark Paw Fia, Moon Cap Orla 및 Moss Shell Taro가 순환 영웅 팀으로 참가합니다. 다섯 번째 재판마다 지역 검문소가 됩니다. 시험 30에서 공허 황제를 물리치면 마지막 관문이 닫힙니다. 캠페인은 숨겨진 시험 31을 생성하지 않습니다.</p></div>
+      <div class="game-info-section"><h3>시스템 작동 방식</h3><p>4명의 영웅: 레오는 균형을 이루고 지역 포효를 사용합니다. Fia는 빠르고 무적의 데미지를 주는 대시를 수행합니다. Orla는 원거리에서 공격하고 대상 하나에게 추가 피해를 표시합니다. 타로는 체력이 가장 높으며 적시에 피해를 줄이는 가드를 만듭니다.</p>
+<p>이동 및 자동 공격: 조이스틱, 화살표 키, WASD로 이동합니다. 영웅은 개인 범위 내에서 가장 가까운 대상을 자동으로 공격합니다. 스킬 버튼이나 스페이스는 쿨타임이 준비되면 액티브 스킬을 사용합니다.</p>
+<p>3개 방 실행: 방 1과 2에는 작성된 적 조합이 포함되어 있습니다. 각각을 지우면 전원, 재사용 대기시간 또는 복구를 필수로 무료로 선택할 수 있습니다. 3번 방은 일반 시험에서는 정예 선장이고, 체크포인트 시험에서는 지명된 보스입니다.</p>
+<p>적의 정체성: 스카우트가 추격하고, 까마귀가 경기장을 돌아다니고, 멧돼지가 돌진하기 전에 경고하고, 헌터가 거리를 유지하고 사격하며, 어비스 가드가 스킬이 가드를 깨뜨릴 때까지 일반 피해를 줄입니다.</p>
+<p>Progression: Victories award four to nine Trial Marks and unlock one next trial. Heart Mastery begins at five Marks, costs four more per later level, and gives every hero 12 additional maximum health per level.</p>
+<p>선택적으로 재설정: 항상 세 가지 무료 축복을 사용할 수 있습니다. 세 개의 다이아몬드는 실행당 한 번씩 모든 선택을 더 강력한 버전으로 대체합니다. 정확한 잔액 변경은 두 번째 확인 전에 나타납니다. 정상적인 진행에는 결코 필요하지 않습니다.</p></div>
+      <div class="game-info-section"><h3>플레이 방법</h3><ol><li>30회 체험 스테이지 레일에서 잠금 해제된 카드를 선택하고 지역 규칙, 체크포인트 보스, 추천 영웅을 읽어보세요.</li><li>Leo, Fia, Orla 또는 Taro를 선택하십시오. 선택 사항은 나중에 방문할 수 있도록 저장되어 있습니다.</li><li>거리를 조절하면서 이동하며 자동 공격은 범위 내에서 가장 가까운 적을 대상으로 합니다.</li><li>그룹 제거, 경고 통과, 우선 목표 표시 또는 무거운 패턴 흡수 등의 활성 스킬 시간을 정하세요.</li><li>1호실과 2호실 이후 무료 축복을 1회 받으세요. 다이아몬드 재등록은 선택 사항입니다.</li><li>평가판 마크와 다음 잠금 해제를 위해 방 3을 클리어하세요. 영구 진행 상황을 삭제하지 않고 재시도 제안을 물리치세요.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>전략 팁</h3><ul><li>레오의 포효 속에 그룹 스카우트가 있습니다.</li><li>노란색 돌격 경고 후 Fia와 함께 돌진하여 무적의 움직임이 위험을 넘도록 하세요.</li><li>Orla의 범위를 사용하고 장갑 대상이나 체력이 높은 대상에 표시하십시오.</li><li>Archowl의 일제 사격과 황제의 늦은 압력에 맞서 Taro의 경비를 사용하십시오.</li><li>스킬은 자동 공격보다 가드를 더 빠르게 제거합니다.</li><li>전투를 단축하려면 파워를 선택하고, 스킬 액세스를 위한 쿨다운을 선택하고, 체력이 낮을 때 회복을 선택하세요.</li></ul></div>
+      <div class="game-info-section"><h3>캠페인 및 난이도 성장</h3><p>시험 1-5에서는 스카웃의 직접적인 추격을 가르치고 Shadow Prowler의 경고 충격파로 끝납니다.</p>
+<p>시험판 6-10에는 곡선형 까마귀와 갑옷이 추가됩니다. Prism Basilisk는 보호된 창과 열린 창을 번갈아 표시합니다.</p>
+<p>시험 11-15에는 경고된 멧돼지 혐의가 추가되었습니다. 마그마 엄니 거상은 충전으로 구멍이 생길 때까지 피해를 저항합니다.</p>
+<p>평가판 16-20에는 거리를 유지하는 헌터와 혼합 접근 각도가 추가됩니다. Eclipse Archowl은 시간 제한이 있는 발리슛을 발사합니다.</p>
+<p>시험 21-25는 방어구, 충전량, 범위가 겹칩니다. Abyss Shell Leviathan은 체력이 거의 절반 이하인 두 명의 지원군을 소환합니다.</p>
+<p>시험 26-30은 다섯 가지 제품군을 모두 결합합니다. Void Crown Emperor는 보호된 중간 단계를 얻고 마지막 단계에서 Raven과 기갑 지원을 요청합니다.</p></div>
+      <div class="game-info-section"><h3>개발자 디자인 노트</h3><p>일관된 3룸 리듬을 통해 한 영웅은 시련을 인내의 실행으로 바꾸지 않고도 두 가지 축복을 쌓을 수 있습니다. 세 번째 방에서는 선택한 영웅과 빌드가 가시적인 규칙에 맞는지 테스트합니다. 체력 총합이 커지는 대신 이동 모양, 범위, 경고, 방어구, 지원군 및 보스 단계를 통해 난이도가 높아집니다. 하나의 고정된 논리적 배틀 캔버스는 휴대폰, 태블릿, 데스크톱 및 짧은 가로 환경에서 균일하게 확장됩니다. 터치와 키보드는 움직임과 스킬 상태를 공유하고, 숨겨진 페이지는 시뮬레이션을 중단하며, 결과는 Battle 내부의 별도 물리적 예비 구역 위에 남아 있습니다. Animal Auto Squad와 달리 실시간 움직임과 스킬 타이밍은 플레이어가 직접 제어할 수 있습니다.</p></div>
+      <div class="game-info-section game-info-parent"><h3>학부모 메모</h3><p>브라우저는 가장 높은 잠금 해제 시험, 시험 마크, Heart Mastery 및 선택한 영웅을 로컬에 저장합니다. 사이트 데이터를 삭제하거나 브라우저를 변경하면 별도의 저장이 시작될 수 있습니다. 다이아몬드는 실행당 한 번의 확인된 축복 재굴림에만 사용되는 선택적 플랫폼 통화입니다. 30개의 시련, 5개의 적 가족, 6개의 보스, 무료 축복 및 영구 숙달은 모두 그것 없이도 플레이 가능합니다. 스킬 피드백은 순위나 공식적인 능력 평가가 아닌 오락입니다.</p></div>
+      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>얼마나 많은 시험과 보스가 포함되어 있나요?</dt><dd>시험 5, 10, 15, 20, 25, 30에는 30개의 방으로 구성된 시험과 6개의 서로 다른 체크포인트 보스가 있습니다.</dd></div><div><dt>모든 영웅이 같은 방식으로 플레이하나요?</dt><dd>아니요. 체력, 속도, 공격 범위, 기본 공격, 액티브 스킬이 다릅니다.</dd></div><div><dt>적이 피해를 거의 입지 않는 이유는 무엇입니까?</dt><dd>어비스 가드, 프리즘 바실리스크, 엠퍼러 가드가 활성화될 수 있습니다. 스킬은 자동 공격보다 가드를 더 빠르게 제거합니다.</dd></div><div><dt>각 방 후에는 어떻게 되나요?</dt><dd>룸 1과 2 이후에 전원, 쿨다운 또는 복구를 선택하세요. 방 3 재판이 종료됩니다.</dd></div><div><dt>실행 사이에 무엇이 전달됩니까?</dt><dd>평가판 잠금 해제, 마크, 하트 마스터리 및 선택한 영웅은 로컬에 저장됩니다. 일시적인 축복이 재설정됩니다.</dd></div><div><dt>다이아몬드는 필수인가요?</dt><dd>아니요. 세 개의 다이아몬드는 축복 선택을 한 번만 대체합니다. 무료 축복은 항상 가능합니다.</dd></div><div><dt>이전 평가판을 다시 재생할 수 있나요?</dt><dd>예. 잠금 해제된 모든 카드는 스테이지 레일에서 계속 사용할 수 있습니다.</dd></div><div><dt>패배 후에는 어떻게 되나요?</dt><dd>재시도는 영구 ​​진행 상황을 삭제하지 않고 동일한 시도를 다시 시작합니다.</dd></div><div><dt>터치와 키보드를 지원하나요?</dt><dd>예. 조이스틱과 스킬 버튼을 사용하거나 WASD/화살표 키와 스페이스바를 사용하세요.</dd></div></dl></div>
+    </div>
+  </section>
+    <!-- adsense-static-guide:end -->
+  <script src="../../src/site-config.js"></script><script src="../../src/analytics.js"></script><script>window.WonderAnalytics?.track("game_view",{game_id:"animal-hero-trials"});</script>
+  <script src="../../src/edge-guard.js"></script><script src="/src/i18n.js?v=20260718-locale-routes1"></script><script src="../../src/game-runtime-localizer-loader.js?v=20260720-locale11-15"></script><script src="../../src/tutorial.js"></script>
+  <script src="../../src/sound.js?v=20260720-locale11" data-no-floating-toggle="true"></script><script src="../../src/wallet.js"></script><script src="fit.js"></script><script src="game.js?v=20260719-hero-roles1"></script><script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
+  <script>window.addEventListener("load",()=>document.querySelector("#loadingPanel")?.classList.add("hidden"),{once:true});</script>
+</body>
+</html>

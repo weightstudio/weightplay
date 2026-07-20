@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <base href="/games/animal-habitat-mahjong/" />
+    <meta charset="utf-8" />
+    <meta name="weightplay-audience" content="kids" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="robots" content="index,follow" />
+    <meta name="description" content="Animal Habitat Mahjong est un jeu de mahjong-solitaire bilingue gratuit pour enfants avec 30 planches sauvegardées, dix structures en couches, six..." />
+    <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Mahjong Habitat Animal | WeightPlay" />
+    <meta property="og:description" content="Animal Habitat Mahjong est un jeu de mahjong-solitaire bilingue gratuit pour enfants avec 30 planches sauvegardées, dix structures en couches, six..." />
+    <meta property="og:url" content="https://weightplay.com/fr/games/animal-habitat-mahjong/" />
+    <meta property="og:image" content="https://weightplay.com/assets/animal-habitat-mahjong-cover.webp" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>Mahjong Habitat Animal | WeightPlay</title>
+    <link rel="canonical" href="https://weightplay.com/fr/games/animal-habitat-mahjong/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-habitat-mahjong/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-habitat-mahjong/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-habitat-mahjong/" />
+    <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/animal-habitat-mahjong/" />
+    <link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/animal-habitat-mahjong/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/animal-habitat-mahjong/" />
+    <link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/animal-habitat-mahjong/" />
+    <link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/animal-habitat-mahjong/" />
+    <link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/animal-habitat-mahjong/" />
+    <link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/animal-habitat-mahjong/" />
+    <link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/animal-habitat-mahjong/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-habitat-mahjong/" />
+    <link rel="stylesheet" href="../../src/game-page-info.css" />
+    <link rel="stylesheet" href="../../src/loading-screen.css?v=20260715-kids-release1" />
+    <link rel="stylesheet" href="../../src/tutorial.css?v=20260715-kids-release1" />
+    <link rel="stylesheet" href="../../src/play-viewport.css?v=20260715-kids-fullscreen1" />
+    <link rel="stylesheet" href="style.css?v=20260715-kids-canvas1" />
+    <script data-wp-stage-standard>/* Shared Kids Stage selector owns pointer drag and settle; the game owns preview and card activation. */</script>
+    <script data-wp-battle-standard>/* Animal Habitat Mahjong owns its native Kids Battle Canvas. */</script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Mahjong Habitat Animal",
+  "alternateName": "動物棲地麻將消消",
+  "url": "https://weightplay.com/fr/games/animal-habitat-mahjong/",
+  "image": "https://weightplay.com/assets/animal-habitat-mahjong-cover.webp",
+  "description": "Animal Habitat Mahjong est un jeu de mahjong-solitaire bilingue gratuit pour enfants avec 30 planches sauvegardées, dix structures en couches, six...",
+  "applicationCategory": "Game",
+  "operatingSystem": "Web browser",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio"
+  },
+  "inLanguage": "fr",
+  "isAccessibleForFree": true,
+  "genre": [
+    "Casse-tête",
+    "Logique",
+    "Animal"
+  ],
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "Kids and families",
+    "suggestedMinAge": 9
+  }
+}
+    </script>
+    <meta name="twitter:title" content="Mahjong Habitat Animal | WeightPlay" />
+    <meta name="twitter:description" content="Animal Habitat Mahjong est un jeu de mahjong-solitaire bilingue gratuit pour enfants avec 30 planches sauvegardées, dix structures en couches, six..." />
+  </head>
+  <body>
+    <main id="app">
+      <section id="mainScreen" class="main-screen">
+        <header class="main-top"><a class="home-link" href="/kids/" data-wp-return="main" data-aria="backToLobby" aria-label="Back to lobby">&larr;<img src="../../assets/weightplay-logo.png" alt="" /></a><label><span data-ui="language">Language</span><select id="localeSelect"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option></select></label></header>
+        <article class="main-card"><img class="cover" src="../../assets/animal-habitat-mahjong-cover.webp" alt="" /><div class="main-copy"><p class="eyebrow" data-ui="gameType">Mahjong solitaire puzzle</p><h1 data-ui="title">Mahjong Habitat Animal</h1><p data-ui="mainHint">Match two free tiles to open every animal habitat.</p><div id="progressSummary" class="progress-summary"></div><button id="startBtn" class="primary" type="button" data-ui="startGame">Start Game</button></div></article>
+      </section>
+
+      <div id="loadingScreen" class="loading-screen hidden" role="status" aria-live="polite"><div id="loadingPanel"><span class="loading-mark" aria-hidden="true"></span><p data-ui="loading">Preparing habitats...</p></div></div>
+
+      <section id="stageScreen" class="fixed-screen wp-stage-art-shell hidden" data-wp-canvas-max-width="920" data-wp-stage-art="../../assets/animal-habitat-mahjong-cover.webp" style="--wp-stage-art:url('../../assets/animal-habitat-mahjong-cover.webp')" data-aria="stageScreen" aria-label="Stage selection">
+        <div id="stageSlot" class="canvas-slot"><div class="logical-canvas stage-canvas"><header class="play-header"><button class="back-btn" data-back="main" data-wp-return="stage" type="button" data-aria="back" aria-label="Back">&larr;</button><div><b data-ui="stageTitle">Choose a habitat</b><span id="stageProgress"></span></div></header><section class="stage-intro"><img id="stagePreview" alt="" /><div><b id="stageName"></b><p id="stageDescription"></p></div></section><div id="stageRail" class="stage-rail" data-wp-stage-snap-locked="true" data-aria="stageRail" aria-label="Habitat stages"></div><p id="stageStatus" class="stage-status" role="status" aria-live="polite" aria-atomic="true"></p><p class="rail-hint" data-ui="railHint">Drag to browse habitats. Tap an unlocked card to begin.</p></div></div>
+      </section>
+
+      <section id="battleScreen" class="fixed-screen hidden" data-aria="battleScreen" aria-label="Mahjong play">
+        <div id="battleSlot" class="canvas-slot"><div class="logical-canvas battle-canvas" data-wp-canvas-max-width="920"><div id="battleLive"><header class="battle-header"><button class="back-btn" data-back="stage" data-wp-return="battle" type="button" data-aria="back" aria-label="Back">&larr;</button><div class="stat"><span data-ui="moves">Moves</span><b id="movesValue">0</b></div><div class="objective"><b id="battleStageName"></b><span id="objectiveText"></span></div><div class="stat"><span data-ui="pairs">Pairs</span><b id="pairsValue">0/0</b></div></header><div id="board" class="board" aria-live="polite"></div><p id="feedback" class="feedback"></p><nav class="tool-row"><button id="hintBtn" type="button"><img src="../../assets/animal-habitat-mahjong-icon-hint.webp" alt="" /><span data-ui="hint">Hint</span></button><button id="undoBtn" type="button"><img src="../../assets/animal-habitat-mahjong-icon-undo.webp" alt="" /><span data-ui="undo">Undo</span></button><button id="shuffleBtn" type="button"><img src="../../assets/animal-habitat-mahjong-icon-shuffle.webp" alt="" /><span data-ui="shuffle">Shuffle</span></button></nav></div><section id="resultScreen" class="result-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle"><section class="result-card"><p class="eyebrow" data-ui="habitatCleared">Habitat cleared</p><h2 id="resultTitle"></h2><p id="resultStats"></p><p id="resultBest" class="result-best"></p><div class="skill-report"><b data-ui="skillReport">Skill Report</b><span id="resultReport"></span></div><div class="result-actions"><button id="retryBtn" type="button" data-ui="retry">Retry</button><button id="nextBtn" class="primary" type="button" data-ui="nextStage">Next Stage</button><button id="stagesBtn" type="button" data-ui="stages">Stages</button></div></section></section></div></div>
+      </section>
+    </main>
+    <!-- adsense-static-guide:start -->
+    <section class="game-page-info game-page-info-static" aria-label="Mahjong Habitat Animal informations sur le jeu">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay Guide de jeu pour enfants</span><h2>Mahjong Habitat Animal</h2><p>Animal Habitat Mahjong est un jeu de mahjong-solitaire bilingue gratuit pour enfants avec 30 planches sauvegardées, dix structures en couches, six chapitres de règles et des finales Habitat sur les planches 5, 10, 15, 20, 25 et 30. Les joueurs associent des tuiles identiques d&#39;animaux et d&#39;habitats gratuits, ouvrent des sceaux à clé en diamant, sauvent des familles étoilées et suivent des sentiers de patrouille A/B en alternance sans échec du compte à rebours.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>Mahjong Solitaire</strong></div><div class="game-info-fact"><span>Genre</span><strong>Casse-tête · Logique · Animal</strong></div><div class="game-info-fact"><span>Difficulté</span><strong>Doux à expert</strong></div><div class="game-info-fact"><span>Temps de jeu estimé</span><strong>4 à 10 minutes par planche</strong></div><div class="game-info-fact"><span>Compétences formées</span><strong>Logique · Concentrez-vous · Résolution de problèmes</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>Monde et mission</h3><p>Les archives des Forest Rangers conservent des albums de tuiles illustrés pour Forest Canopy, Safari Trail, Coral Shelf et Arctic Glow. Une tempête saisonnière a plié les pages en piles superposées, laissant des portraits d&#39;animaux, des coquillages, des coraux, des feuilles et des traces de neige se recouvrir. Le ranger de tuiles junior restaure chaque page en remettant chaque paire correspondante dans l&#39;album.</p>
+<p>Les animaux marqués de diamants portent les clés des phoques bleus, tandis que les images étoilées représentent des familles séparées. Les panneaux Patrol Trail alternent l&#39;itinéraire disponible entre les groupes A et B après chaque match, demandant au ranger d&#39;inspecter une partie différente du panneau en couches. Clearing Board 30 restaure la page finale du plateau corallien et termine les six finales de l&#39;habitat.</p></div>
+      <div class="game-info-section"><h3>Comment fonctionnent les systèmes</h3><p>Les planches contiennent huit à douze vraies paires réparties sur une, deux ou trois couches. Les images restent visibles, le défi réside donc dans la planification de l&#39;accès plutôt que dans la mémoire.</p>
+<p>Une tuile normale est libre lorsqu&#39;aucune tuile active ne couvre ses coordonnées et que son côté gauche ou droit est ouvert sur la même ligne et le même calque. Patrol Trail limite également la correspondance avec l&#39;itinéraire A ou B affiché dans l&#39;objectif, commutant normalement après un succès.</p>
+<p>Les planches Trail Seal maintiennent les tuiles intérieures marquées jusqu&#39;à ce que la paire de diamants brillants disparaisse. Les tableaux Family Rescue suivent deux familles correspondantes étoilées. Ranger Trial combine phoque et sauvetage ; La Grande Réserve ajoute l&#39;itinéraire de patrouille alterné.</p>
+<p>L&#39;indice met en évidence une paire légale. Annuler restaure les deux vignettes ainsi que la clé précédente exacte et l&#39;état de secours. La lecture aléatoire est désactivée tant qu&#39;un mouvement existe ; lors d&#39;une impasse, il préserve les jetons spéciaux et garantit une paire jouable.</p>
+<p>Les mouvements comptent les matchs et les mélanges. Le temps visible s&#39;arrête avec la page masquée. Chaque tableau stocke le meilleur score, le moins de mouvements, le temps visible le plus rapide et la progression dans ce navigateur.</p></div>
+      <div class="game-info-section"><h3>Comment jouer</h3><ol><li>Choisissez une carte déverrouillée sur le rail horizontal de 30 plateaux Stage et lisez sa règle.</li><li>Trouvez deux tuiles identiques sans tuile directement au-dessus et au moins un côté horizontal ouvert.</li><li>Sur les planches de sceaux, faites correspondre la clé en diamant ; sur les tableaux de sauvetage, découvrez les deux familles étoilées.</li><li>Utilisez Hint pour une paire légale, Annuler pour exactement une correspondance précédente ou Shuffle uniquement lorsqu&#39;aucune paire n&#39;est disponible.</li><li>Effacez chaque tuile pour enregistrer le résultat et débloquer exactement le tableau suivant.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Conseils stratégiques</h3><ul><li>Préférez une paire en couche supérieure laissant apparaître plusieurs carreaux recouverts.</li><li>Gardez les deux bords actifs au lieu de vider un seul côté.</li><li>Effacez la clé en diamant avant de planifier autour des carreaux scellés.</li><li>Tracez la pile de couvertures au-dessus de chaque famille de sauvetage étoilée.</li><li>Sur Patrol Trail, vérifiez si l&#39;objectif affiche A ou B avant de choisir ; un succès change normalement la route.</li><li>Annuler immédiatement lorsqu&#39;une correspondance ferme plusieurs chemins utiles ; l&#39;état de la route est également restauré.</li></ul></div>
+      <div class="game-info-section"><h3>Campagne et croissance de la difficulté</h3><p>Les tableaux 1 à 5 enseignent l&#39;accès standard via des dispositions en grille, en losange, en terrasse, en pont et empilées.</p>
+<p>Les planches 6 à 10 présentent des clés en diamant et des paires intérieures scellées.</p>
+<p>Les planches 11 à 15 ajoutent deux sauvetages familiaux étoilés ; Le plateau 15 commence par une leçon de Shuffle délibérée sans mouvement.</p>
+<p>Les tableaux 16 à 20 alternent les itinéraires de patrouille A/B disponibles à travers les pyramides arctiques et les sanctuaires.</p>
+<p>Les planches 21 à 25 combinent des phoques de sentier et des sauvetages familiaux.</p>
+<p>Les planches 26 à 30 combinent des phoques, des sauvetages et des itinéraires de patrouille alternés ; La carte 30 utilise douze paires réparties sur trois couches.</p></div>
+      <div class="game-info-section"><h3>Note de conception du développeur</h3><p>La difficulté augmente en modifiant les décisions d&#39;accès plutôt qu&#39;en ajoutant simplement des tuiles, en réduisant les images ou en imposant une horloge rapide. Les sceaux ajoutent une dépendance, les sauvetages ajoutent des sous-objectifs visibles et les modifications de Patrol Trail dont l&#39;ensemble est actuellement disponible après chaque match. Une disposition logique fixe s&#39;adapte uniformément aux téléphones, aux tablettes, aux ordinateurs de bureau et aux paysages courts. Le toucher, la souris et le clavier partagent un validateur ; Le résultat reste dans la bataille ; le parcours Kids ne crée aucune demande de publicité ni réserve. Contrairement à un jeu de mémoire, chaque image reste visible et contrairement à un plateau de correspondance plat, l&#39;ordre de suppression modifie les tuiles pouvant être atteintes.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Remarque aux parents</h3><p>Animal Habitat Mahjong peut prendre en charge l&#39;analyse visuelle, la planification spatiale, la concentration, les causes et les effets et la révision d&#39;une décision. Les résultats et le rapport de compétences décrivent uniquement le jeu local, et non un test d&#39;intelligence, une note, un diagnostic ou une comparaison d&#39;enfants. La progression reste dans ce navigateur et peut être réinitialisée si le stockage est effacé. Aucun profil enfant n&#39;est requis et l&#39;itinéraire Kids ne nécessite aucune publicité.</p></div>
+      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>Combien de planches sont incluses ?</dt><dd>Il y a 30 planches sauvegardées et six finales Habitat.</dd></div><div><dt>Qu&#39;est-ce qui rend une tuile gratuite ?</dt><dd>Rien ne doit le recouvrir et au moins un côté horizontal doit être ouvert ; Patrol Trail vérifie également l&#39;itinéraire A ou B indiqué dans l&#39;objectif.</dd></div><div><dt>Que signifient les marques de diamant, d&#39;étoile et de bleu ?</dt><dd>Les diamants ouvrent les sceaux, les étoiles marquent les familles sauvées et les tuiles bleues scellées attendent leur clé.</dd></div><div><dt>Pourquoi la lecture aléatoire est-elle désactivée ?</dt><dd>Il ne devient disponible que lorsqu&#39;il ne reste aucune paire correspondante légale.</dd></div><div><dt>L&#39;annulation restaure-t-elle les règles spéciales ?</dt><dd>Oui. Il restaure la paire, la clé exacte et l&#39;état de secours.</dd></div><div><dt>Y a-t-il un délai ?</dt><dd>Non. Le temps visible est enregistré uniquement pour un enregistrement personnel.</dd></div><div><dt>La progression est-elle enregistrée ?</dt><dd>Les déverrouillages et les enregistrements du tableau restent uniquement dans ce navigateur ; aucun compte n&#39;est requis.</dd></div><div><dt>Puis-je utiliser le toucher ou le clavier ?</dt><dd>Oui. Le toucher, la souris, la tabulation, la saisie et l&#39;espace partagent les mêmes règles de correspondance.</dd></div><div><dt>La page Enfants diffuse-t-elle des annonces ?</dt><dd>Non, cela ne crée aucune demande de publicité ni réserve.</dd></div></dl></div>
+    </div>
+  </section>
+    <!-- adsense-static-guide:end -->
+    <script src="../../src/edge-guard.js?v=20260715-kids-fullscreen1"></script>
+    <script src="/src/i18n.js?v=20260718-locale-routes1"></script><script src="../../src/game-runtime-localizer-loader.js?v=20260720-locale11-15"></script>
+    <script src="../../src/tutorial.js?v=20260715-kids-release1"></script>
+    <script src="game.js?v=20260717-zh-hans1"></script>
+    <script src="../../src/game-page-info.js?v=20260720-locale11-2" defer></script>
+  </body>
+</html>

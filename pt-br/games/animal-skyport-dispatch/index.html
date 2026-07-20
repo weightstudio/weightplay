@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <base href="/games/animal-skyport-dispatch/" />
+    <link rel="canonical" href="https://weightplay.com/pt-br/games/animal-skyport-dispatch/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-skyport-dispatch/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-skyport-dispatch/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-skyport-dispatch/" />
+    <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/animal-skyport-dispatch/" />
+    <link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/animal-skyport-dispatch/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/animal-skyport-dispatch/" />
+    <link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/animal-skyport-dispatch/" />
+    <link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/animal-skyport-dispatch/" />
+    <link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/animal-skyport-dispatch/" />
+    <link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/animal-skyport-dispatch/" />
+    <link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/animal-skyport-dispatch/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-skyport-dispatch/" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="robots" content="index,follow" />
+    <title>Despacho Animal Skyport | WeightPlay</title>
+    <link rel="stylesheet" href="../../src/game-page-info.css" />
+    <link rel="stylesheet" href="../../src/loading-screen.css" />
+    <link rel="stylesheet" href="../../src/play-viewport.css" />
+    <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard />
+    <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
+    <link rel="stylesheet" href="style.css?v=20260719-stage-art1" />
+    <link rel="stylesheet" href="main-flow.css" />
+    <meta name="description" content="Animal Skyport Dispatch é um jogo de estratégia de gerenciamento de rotas em cinco turnos ambientado no Cloudline Skyport. Leia cada dirigível animal que..." />
+    <meta property="og:title" content="Despacho Animal Skyport | WeightPlay" />
+    <meta property="og:description" content="Animal Skyport Dispatch é um jogo de estratégia de gerenciamento de rotas em cinco turnos ambientado no Cloudline Skyport. Leia cada dirigível animal que..." />
+    <meta property="og:url" content="https://weightplay.com/pt-br/games/animal-skyport-dispatch/" />
+    <meta name="twitter:title" content="Despacho Animal Skyport | WeightPlay" />
+    <meta name="twitter:description" content="Animal Skyport Dispatch é um jogo de estratégia de gerenciamento de rotas em cinco turnos ambientado no Cloudline Skyport. Leia cada dirigível animal que..." />
+  </head>
+  <body data-no-mobile-immersive="true">
+    <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong>Animal Skyport Dispatch</strong><span>Loading</span><div class="loading-track"><i></i></div></div></section>
+    <main class="app">
+      <header id="mainHeader" class="topbar">
+        <a class="home-link icon-btn" data-wp-return="main" href="/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
+        <h1 data-i18n="title">Despacho Animal Skyport</h1>
+        <label class="locale"><span data-i18n="language">Language</span><select id="localeSelect"><option value="en">English</option><option value="zh-Hant">繁體中文</option></select></label>
+      </header>
+      <section id="mainScreen" class="main-screen">
+        <img class="cover" src="../../assets/animal-skyport-dispatch-cover.webp" alt="Imagem do jogo Despacho Animal Skyport" />
+        <h2 data-i18n="headline">Keep Cloudline Skyport moving.</h2>
+        <p data-i18n="intro">Draw safe routes, match airships to docks, and protect the shift from congestion.</p>
+        <button id="startBtn" class="primary" data-i18n="start">Start Game</button>
+        <section class="guide"><h2 data-i18n="guideTitle">How to dispatch</h2><p data-i18n="guideBody">Choose a shift, read each flight request, then guide the airship to the highlighted matching dock before congestion builds.</p></section>
+      </section>
+      <section id="stageScreen" class="stage-screen hidden">
+        <button id="stageBack" class="return" data-wp-return="stage" aria-label="Back">&larr;</button>
+        <div class="stage-copy"><strong data-i18n="chooseShift">Choose a shift</strong><span id="bestText"></span></div>
+        <div class="contract-row"><label class="contract-choice"><input id="contractToggle" type="checkbox" /><span id="contractText">Priority contract: finish with no errors for bonus sky coins.</span></label><button id="insuranceBtn" class="secondary insurance-btn" type="button">Insure 5 diamonds</button></div>
+        <div id="stageRail" class="stage-rail" aria-label="Shift selection"></div>
+      </section>
+      <section id="battleShell" class="battle-shell hidden">
+        <section class="battle-canvas">
+          <div id="battleLive" class="battle-live">
+          <header class="battle-hud"><button id="battleBack" class="return" data-wp-return="battle" aria-label="Back">&larr;</button><strong id="shiftText"></strong><span id="scoreText"></span></header>
+          <div class="objective"><span id="objectiveText"></span><span id="resourceText"></span><strong id="flightTask" aria-live="polite"><span class="task-destination"></span><span class="task-steps"></span></strong></div>
+          <div id="routeField" class="route-field">
+            <img class="skyport-bg" src="../../assets/animal-skyport-dispatch-skyport-bg.webp" alt="" />
+            <img id="weatherZone" class="weather-zone hidden" alt="" />
+            <div id="flight" class="flight" role="button" tabindex="0" aria-describedby="flightTask feedback"></div>
+            <div class="dock cargo" data-dock="cargo" role="button" tabindex="-1"><img src="../../assets/animal-skyport-dispatch-dock-cargo.webp" alt="" /><span class="dock-target-badge" aria-hidden="true"></span><span class="dock-label"></span></div>
+            <div class="dock passenger" data-dock="passenger" role="button" tabindex="-1"><img src="../../assets/animal-skyport-dispatch-dock-passenger.webp" alt="" /><span class="dock-target-badge" aria-hidden="true"></span><span class="dock-label"></span></div>
+            <div class="dock repair" data-dock="repair" role="button" tabindex="-1"><img src="../../assets/animal-skyport-dispatch-dock-repair.webp" alt="" /><span class="dock-target-badge" aria-hidden="true"></span><span class="dock-label"></span></div>
+            <div id="routeLine" class="route-line"></div>
+            <div id="feedback" class="feedback" aria-live="polite"></div>
+          </div>
+          <div class="flight-row"><button id="serviceBtn" class="secondary" data-i18n="service">Use repair service</button><button id="assignCrewBtn" class="secondary hidden" type="button">Assign crew</button><button id="clearRouteBtn" class="secondary hidden" type="button">Clear conflict</button><span id="flightHint" data-i18n="dragHint">Drag the airship to its matching dock.</span></div>
+          </div>
+          <section id="result" class="result hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" tabindex="-1"><h2 id="resultTitle"></h2><p id="resultCopy"></p><div id="resultRewards" class="result-rewards" aria-live="polite"></div><button id="nextBtn" class="primary"></button><button id="menuBtn" class="secondary" data-i18n="menu">Main Menu</button></section>
+          <section id="leaveConfirm" class="leave-confirm hidden" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" aria-describedby="leaveCopy"><h2 id="leaveTitle"></h2><p id="leaveCopy"></p><button id="leaveCancel" class="primary" type="button"></button><button id="leaveConfirmBtn" class="secondary" type="button"></button></section>
+        </section>
+        <div class="ad-reserve" aria-hidden="true"></div>
+      </section>
+    </main>
+    <script src="../../src/site-config.js"></script><script src="/src/i18n.js?v=20260718-locale-routes1"></script><script src="../../src/game-runtime-localizer-loader.js?v=20260720-locale11-15"></script><script src="../../src/edge-guard.js"></script>
+    <script src="../../src/wallet.js"></script>
+    <script src="game.js?v=20260719-route-pointer2"></script>
+    <script src="../../src/stage-selector-standard.js?v=20260720-canvas-max920-1" data-wp-stage-standard></script>
+    <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
+    <section class="game-page-info game-page-info-static" aria-label="Despacho Animal Skyport informações do jogo">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay Guia do jogo infantil</span><h2>Despacho Animal Skyport</h2><p>Animal Skyport Dispatch é um jogo de estratégia de gerenciamento de rotas em cinco turnos ambientado no Cloudline Skyport. Leia cada dirigível animal que chega, estabeleça uma abordagem segura para uma doca compatível, atribua recursos de serviço limitados e termine o turno antes que o congestionamento ou os voos perdidos atinjam o limite de falha.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Jogabilidade</span><strong>Gerenciamento de rotas de dirigíveis</strong></div><div class="game-info-fact"><span>Gênero</span><strong>Estratégia · Gerenciamento · Simulação · Animal</strong></div><div class="game-info-fact"><span>Dificuldade</span><strong>Médio a desafiador</strong></div><div class="game-info-fact"><span>Tempo estimado de jogo</span><strong>4-7 minutos por turno</strong></div><div class="game-info-fact"><span>Habilidades treinadas</span><strong>Planejamento · Priorização · Raciocínio Espacial · Gerenciamento de recursos</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>Mundo e Missão</h3><p>Moon Cap Orla administra a torre de despacho enquanto Gear Horn Rux mantém docas de carga, passageiros e reparos. Bubble Fin Nori cuida de voos urgentes e de resgate. Juntos, eles mantêm o distrito Cloudline em movimento através de chegadas normais, travessias de carga, tempestades, reparos de janelas e uma correria final do festival.</p>
+<p>Uma mudança é bem-sucedida ao atender aos voos exigidos e à meta de reputação. Combinar docas especializadas, traçar rotas eficientes e completar metas de domínio opcionais ganham medalhas sem tornar obrigatório o jogo perfeito.</p></div>
+      <div class="game-info-section"><h3>Como funcionam os sistemas</h3><p>Toque em um voo em espera e arraste-o do marcador de espera para um dock compatível aberto. A rota curva visível e a lógica de colisão usam os mesmos pontos amostrados, portanto a linha sob o ponteiro é a rota que o dirigível segue.</p>
+<p>A Doca de Carga A atende cargas com eficiência, a Doca de Passageiros B cuida do trabalho de passageiros e correio, e a Doca de Reparo C é melhor para voos danificados. Uma doca não especializada custa tempo extra ou tripulação; estados vermelhos incompatíveis não podem ser confirmados.</p>
+<p>Cruzar o tráfego ativo cria um conflito âmbar e aumenta o congestionamento. As células de tempestade retardam as rotas e podem danificar os voos, a menos que um farol meteorológico proteja o segmento. O congestionamento se recupera quando o tráfego flui com segurança.</p>
+<p>Tripulação, combustível e peças de reparo são limitados durante cada turno. Os voos atendidos retornam a tripulação, as rotas eficientes economizam combustível e as peças de reparo devem ser reservadas para aeronaves danificadas. Três voos não atendidos ou congestionamento total encerram a tentativa com uma nova tentativa gratuita.</p></div>
+      <div class="game-info-section"><h3>Como jogar</h3><ol><li>Selecione um dirigível animal que está chegando e leia sua doca, paciência, necessidade de carga ou passageiro e estado dos danos.</li><li>Arraste do marcador de espera para uma doca aberta compatível, evitando rotas ativas, tempestades e pistas de manutenção fechadas.</li><li>Solte na doca para confirmar a rota e escolha a ação de serviço necessária após a atracação.</li><li>Atenda à meta de turno, proteja o orçamento perdido de três voos e use Próximo turno ou Seleção de turno no resultado.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Dicas de estratégia</h3><ul><li>Mantenha uma doca e uma via de acesso disponíveis para chegadas urgentes.</li><li>Prefira docas especializadas quando a paciência estiver baixa, mas aceite uma doca mais lenta e segura quando um conflito custaria mais congestionamento.</li><li>Reserve peças de reparo para voos que não possam terminar com segurança sem elas.</li><li>Redesenhe antes do lançamento quando a visualização cruzar uma tempestade ou rota ocupada; a linha da rota é oficial.</li></ul></div>
+      <div class="game-info-section"><h3>Campanha e crescimento de dificuldade</h3><p>O turno 1 ensina duas docas, desenho de rota e quatro chegadas indulgentes. O turno 2 abre o terceiro cais e as prioridades carga-passageiros. O turno 3 adiciona uma tempestade em movimento e um farol meteorológico. O turno 4 adiciona voos danificados, peças de reparo e um fechamento de manutenção. O turno 5 combina dez chegadas, janelas sobrepostas e contratos opcionais de festivais.</p></div>
+      <div class="game-info-section"><h3>Nota de design do desenvolvedor</h3><p>O jogo é o despacho ativo em vez da automação ociosa: todo voo precisa de uma rota e de uma decisão de serviço. Principal, Estágio, Batalha e Resultado preservam as regras responsivas compartilhadas do Canvas, com o campo de Batalha usando toda a largura segura de até 920 pixels e a reserva geral de 56 pixels mantida fora do Canvas. O toque e o mouse usam a mesma geometria de rota amostrada para que a linha desenhada permaneça alinhada com o dedo ou ponteiro.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Nota dos pais</h3><p>Nenhuma conta é necessária. Desbloqueios de turno, medalhas, reputação, atualizações, descobertas de diário de bordo, estado do tutorial e configurações permanecem neste navegador. As ações opcionais do Diamante exigem confirmação e nunca são necessárias para terminar todos os cinco turnos.</p></div>
+      <div class="game-info-section"><h3>Perguntas frequentes</h3><dl><div><dt>Quantos turnos estão incluídos?</dt><dd>Existem cinco turnos de autoria com diferentes regras de chegada, atracação, clima, reparo e festival.</dd></div><div><dt>Como faço para traçar uma rota?</dt><dd>Arraste do marcador de espera do voo selecionado para um dock aberto compatível e solte no dock.</dd></div><div><dt>Por que uma rota é âmbar?</dt><dd>Atravessa o tráfego ativo e aumentará o congestionamento enquanto ambos os voos ocuparem o conflito.</dd></div><div><dt>O que causa o fracasso?</dt><dd>O turno termina com congestionamento total ou após três voos saírem sem atendimento.</dd></div><div><dt>A nova tentativa é gratuita?</dt><dd>Sim. Um turno com falha sempre oferece uma nova tentativa gratuita primeiro.</dd></div><div><dt>O que é salvo?</dt><dd>O progresso do turno, medalhas, reputação, atualizações, descobertas, estado do tutorial e configurações permanecem neste navegador.</dd></div><div><dt>Os diamantes são necessários?</dt><dd>Não. Rerrolamentos opcionais de contrato e seguro exigem confirmação e não são necessários para conclusão.</dd></div><div><dt>O que acontece depois do turno 5?</dt><dd>O resultado retorna para Shift Select porque não há Shift 6 inexistente.</dd></div></dl></div>
+    </div>
+  </section>
+<script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
+    <script>window.addEventListener('load',()=>document.querySelector('#loadingPanel')?.classList.add('hidden'),{once:true});</script>
+  </body>
+</html>

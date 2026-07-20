@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <base href="/games/animal-one-line/" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="robots" content="index,follow" />
+  <meta name="weightplay-audience" content="general" />
+  <meta name="theme-color" content="#073f43" />
+  <title>Uma linha | WeightPlay</title>
+  <meta name="description" content="One Line é um quebra-cabeça original de grade de 30 estágios estrelado por Rainbow Hop Mimi. Comece na pata brilhante, mova-se pelas células abertas que..." />
+  <meta property="og:site_name" content="WeightPlay" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Uma linha | WeightPlay" />
+  <meta property="og:description" content="One Line é um quebra-cabeça original de grade de 30 estágios estrelado por Rainbow Hop Mimi. Comece na pata brilhante, mova-se pelas células abertas que..." />
+  <meta property="og:url" content="https://weightplay.com/pt-br/games/animal-one-line/" />
+  <meta property="og:image" content="https://weightplay.com/assets/animal-one-line-cover.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Uma linha | WeightPlay" />
+  <meta name="twitter:description" content="One Line é um quebra-cabeça original de grade de 30 estágios estrelado por Rainbow Hop Mimi. Comece na pata brilhante, mova-se pelas células abertas que..." />
+  <meta name="twitter:image" content="https://weightplay.com/assets/animal-one-line-cover.png" />
+  <link rel="canonical" href="https://weightplay.com/pt-br/games/animal-one-line/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-one-line/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-one-line/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-one-line/" />
+    <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/animal-one-line/" />
+    <link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/animal-one-line/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/animal-one-line/" />
+    <link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/animal-one-line/" />
+    <link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/animal-one-line/" />
+    <link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/animal-one-line/" />
+    <link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/animal-one-line/" />
+    <link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/animal-one-line/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-one-line/" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Uma linha",
+  "url": "https://weightplay.com/pt-br/games/animal-one-line/",
+  "image": "https://weightplay.com/assets/animal-one-line-cover.png",
+  "description": "One Line é um quebra-cabeça original de grade de 30 estágios estrelado por Rainbow Hop Mimi. Comece na pata brilhante, mova-se pelas células abertas que...",
+  "applicationCategory": "Game",
+  "operatingSystem": "Web browser",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio"
+  },
+  "inLanguage": "pt-BR",
+  "isAccessibleForFree": true,
+  "genre": [
+    "Lógica",
+    "Planejamento de rota",
+    "Quebra-cabeça",
+    "Animal"
+  ],
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "General players",
+    "suggestedMinAge": 9
+  }
+}
+    </script>
+  <link rel="stylesheet" href="../../src/loading-screen.css" />
+  <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard />
+  <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
+  <link rel="stylesheet" href="../../src/game-page-info.css" />
+  <link rel="stylesheet" href="style.css?v=20260719-one-line-release2" />
+</head>
+<body data-screen="main" data-game-id="animal-one-line">
+  <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong>One Line</strong><span id="loadingText">Preparing trail map…</span><div class="loading-track"><i id="loadingFill"></i></div></div></section>
+
+  <main id="mainScreen" class="main-screen">
+    <header class="main-header">
+      <a class="main-return" href="/" data-wp-return="main" aria-label="Back to WeightPlay"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" /></a>
+      <strong data-one-line-i18n="title">One Line</strong>
+      <label class="locale-control"><span class="sr-only" data-one-line-i18n="language">Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="es">Español</option><option value="ja">日本語</option></select></label>
+    </header>
+    <section class="main-hero">
+      <img class="main-poster" src="../../assets/animal-one-line-cover.webp" alt="" />
+      <div class="main-copy"><small data-one-line-i18n="eyebrow">Mimi's color-grid workshop</small><h1 data-one-line-i18n="title">Uma linha</h1><p data-one-line-i18n="pitch">Plan one continuous route and fill every open cell without visiting any cell twice.</p><div id="mainProgress" class="main-progress"></div><button id="startBtn" class="primary-action" type="button" data-one-line-i18n="start">Start Game</button></div>
+    </section>
+  </main>
+
+  <section class="game-page-info game-page-info-static" aria-label="Uma linha informações do jogo">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay Guia do jogo infantil</span><h2>Uma linha</h2><p>One Line é um quebra-cabeça original de grade de 30 estágios estrelado por Rainbow Hop Mimi. Comece na pata brilhante, mova-se pelas células abertas que compartilham as bordas e pinte todo o tabuleiro com uma rota contínua sem visitar nenhuma célula duas vezes.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Jogabilidade</span><strong>Preenchimento de grade de uma linha</strong></div><div class="game-info-fact"><span>Gênero</span><strong>Lógica · Planejamento de rota · Quebra-cabeça · Animal</strong></div><div class="game-info-fact"><span>Dificuldade</span><strong>Fácil de desafiar</strong></div><div class="game-info-fact"><span>Tempo estimado de jogo</span><strong>1-4 minutos por etapa</strong></div><div class="game-info-fact"><span>Habilidades treinadas</span><strong>Raciocínio Espacial · Planejamento · Sequenciamento</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>Mundo e Missão</h3><p>Mimi está restaurando a cor de tabuleiros de quebra-cabeças adormecidos em uma oficina mágica na floresta. As células de pedra bloqueiam partes de cada tabuleiro, portanto a rota deve passar por cada célula aberta exatamente uma vez.</p>
+<p>As cinco grades de domínio finais combinam rotas mais longas, saídas estreitas e escolhas iniciais enganosas. O estágio 30 completa a campanha e permanece reproduzível.</p></div>
+      <div class="game-info-section"><h3>Como funcionam os sistemas</h3><p>Uma tentativa válida começa na célula brilhante da pata. Cada movimento entra em uma célula aberta diretamente acima, abaixo, à esquerda ou à direita; saltos diagonais e células repetidas não são permitidos.</p>
+<p>O tabuleiro estará completo somente quando todas as células abertas estiverem coloridas. Liberar antecipadamente, revisitar uma célula ou chegar a um beco sem saída redefine a tentativa sem gastar dinheiro.</p>
+<p>Show Hint destaca a próxima célula em uma solução possível, enquanto Restart limpa a rota atual. Usar uma dica reduz o melhor resultado de estrela para essa tentativa.</p>
+<p>Limpa, estágios desbloqueados, melhores classificações de estrelas e melhores tempos são armazenados localmente neste navegador. Os estágios concluídos permanecem disponíveis no trilho horizontal do palco.</p></div>
+      <div class="game-info-section"><h3>Como jogar</h3><ol><li>Escolha um quebra-cabeça desbloqueado na grade horizontal do palco.</li><li>Pressione a célula brilhante da pata e comece a arrastar.</li><li>Percorrer células abertas que compartilham uma borda com a célula atual.</li><li>Evite todas as células já coloridas pela rota.</li><li>Preencha todas as células abertas antes de liberar para limpar o palco.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Dicas de estratégia</h3><ul><li>Inspecione curvas e saídas estreitas antes de começar; inseri-los na direção errada pode isolar a célula final.</li><li>Limpe os bolsos com apenas uma entrada no momento correto, em vez de selar a entrada muito cedo.</li><li>Use Mostrar dica para revelar a próxima etapa quando estiver travado; nunca custa dinheiro, mas limita essa tentativa a duas estrelas.</li><li>A velocidade não é necessária. Faça uma pausa na célula atual e planeje a rota restante antes de prosseguir.</li></ul></div>
+      <div class="game-info-section"><h3>Campanha e crescimento de dificuldade</h3><p>Os estágios 1 a 5 ensinam o movimento ortogonal e a regra de não repetição; 6-10 introduzem o planejamento de cantos; 11-15 use blocos de pedra para dividir o tabuleiro.</p>
+<p>Os estágios 16 a 20 ampliam as rotas, os estágios 21 a 25 introduzem escolhas mais restritas e os estágios 26 a 30 combinam grades grandes, células bloqueadas e saídas estreitas.</p></div>
+      <div class="game-info-section"><h3>Nota de design do desenvolvedor</h3><p>One Line is a route-planning puzzle rather than a freehand accuracy test. Large cells and interpolated pointer sampling make the same rules practical with a mouse or a finger, while the no-repeat and fill-every-cell conditions keep success focused on reasoning. A responsive logical Canvas fills the safe Stage and Battle rectangle while preserving one uniform scale, stable anchors, and the separate 56px General reserve.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Nota dos pais</h3><p>One Line é recomendado para maiores de 9 anos e jogos em família. Não requer conta e armazena o progresso apenas no navegador atual. As estrelas e o resumo de habilidades do Resultado são comentários lúdicos e não uma avaliação formal de habilidade, médica ou escolar.</p></div>
+      <div class="game-info-section"><h3>Perguntas frequentes</h3><dl><div><dt>Posso visitar uma cela duas vezes?</dt><dd>Não. Inserir novamente uma célula colorida encerra a tentativa atual.</dd></div><div><dt>Posso me mover na diagonal?</dt><dd>Não. Os movimentos conectam apenas células abertas que compartilham uma borda.</dd></div><div><dt>Tenho que me mover rapidamente?</dt><dd>Não. Você pode pausar na célula atual enquanto planeja.</dd></div><div><dt>O que Mostrar dica faz?</dt><dd>Ele destaca a próxima célula em uma possível rota completa.</dd></div><div><dt>O progresso salva?</dt><dd>Sim. Desbloqueios, estrelas, liberações e melhores horários são armazenados localmente neste navegador.</dd></div><div><dt>Quantas etapas estão incluídas?</dt><dd>Existem 30 quebra-cabeças de grade originais em seis capítulos de cinco estágios.</dd></div></dl></div>
+    </div>
+  </section>
+
+  <section id="stageScreen" class="stage-screen" hidden>
+    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-canvas-max-width="920" style="--wp-stage-art:url('../../assets/animal-one-line-bg.webp')">
+      <header class="stage-header"><button id="stageBackBtn" type="button" data-wp-return="stage" aria-label="Back">&larr;</button><div><strong data-one-line-i18n="chooseStage">Choose Trail</strong><span id="stageSummary"></span></div><img src="../../assets/weightplay-character-rainbow-hop-mimi-clean-cutout.webp" alt="" /></header>
+      <section class="lesson-panel"><small id="lessonKicker"></small><strong id="lessonTitle"></strong><p id="lessonRule"></p></section>
+      <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-settle-duration="360" data-wp-stage-settle-easing="smoothstep" aria-label="Trails"></div>
+    </div>
+  </section>
+
+  <section id="battleScreen" class="battle-screen" hidden>
+    <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
+      <header class="battle-header"><button id="battleBackBtn" type="button" aria-label="Back">&larr;</button><div class="battle-progress"><span id="stageLabel"></span><div><i id="progressFill"></i></div></div><div class="battle-stat"><small data-one-line-i18n="attempts">Attempts</small><strong id="attemptCount">1</strong></div><div class="battle-stat"><small data-one-line-i18n="seals">Seals</small><strong id="sealCount">0 / 0</strong></div></header>
+      <section id="objectiveRow" class="objective-row"></section>
+      <section id="traceBoard" class="trace-board" aria-label="One-line tracing board">
+        <svg id="trailSvg" viewBox="0 0 1000 700" role="application" aria-label="Continuous tracing trail">
+          <defs><filter id="softGlow"><feGaussianBlur stdDeviation="8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+          <path id="trailBorder" class="trail-border" d=""/><path id="trailPath" class="trail-path" d=""/><path id="trailGuide" class="trail-guide" d="" pathLength="1"/><path id="trailProgress" class="trail-progress" d="" pathLength="1"/>
+          <g id="checkpointLayer"></g><g id="obstacleLayer"></g><g id="hazardLayer"></g>
+          <circle id="startSeal" class="start-seal" r="31" tabindex="0" role="button" aria-label="Start seal"/><circle id="cursorDot" class="cursor-dot" r="18" hidden/><g id="goalSeal" class="goal-seal"><circle r="38"/><text text-anchor="middle" dominant-baseline="central">★</text></g>
+        </svg>
+      </section>
+      <div class="battle-feedback"><strong id="feedbackText" aria-live="polite"></strong><span id="assistText"></span></div>
+      <div class="battle-actions"><button id="restartBtn" type="button" data-one-line-i18n="restart">Restart</button><button id="hintBtn" type="button" data-one-line-i18n="hint">Show Guide</button></div>
+      <section id="resultPanel" class="result-overlay" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card"><img src="../../assets/weightplay-character-rainbow-hop-mimi-clean-cutout.webp" alt="" /><small data-one-line-i18n="skillReport">Skill Report</small><h2 id="resultTitle"></h2><div id="resultStars" class="result-stars"></div><p id="resultText"></p><div id="skillGrid" class="skill-grid"></div><p id="bestText" class="best-text"></p><div class="result-actions"><button id="retryBtn" type="button" data-one-line-i18n="retry">Retry</button><button id="resultStagesBtn" type="button" data-one-line-i18n="stages">Stages</button><button id="nextBtn" class="primary-action" type="button" data-one-line-i18n="next">Next Stage</button></div></div></section>
+    </div>
+    <div class="battle-ad-reserve" aria-hidden="true"></div>
+  </section>
+
+  <section id="tutorial" class="tutorial-overlay" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="tutorial-card"><button id="tutorialClose" type="button" aria-label="Close">×</button><img src="../../assets/weightplay-character-rainbow-hop-mimi-clean-cutout.webp" alt=""/><h2 id="tutorialTitle" data-one-line-i18n="tutorialTitle">Keep one continuous hold.</h2><ol><li data-one-line-i18n="tutorial1">Press the start seal and keep holding.</li><li data-one-line-i18n="tutorial2">Trace inside the turquoise trail without touching its edge.</li><li data-one-line-i18n="tutorial3">Wait for shadows, then reach the golden portal.</li></ol><button id="tutorialStart" class="primary-action" type="button" data-one-line-i18n="tutorialStart">Start Playing</button></div></section>
+
+<script src="../../src/site-config.js"></script><script src="../../src/i18n-es.js?v=20260719-one-line1"></script><script src="/src/i18n-ja.js?v=20260719-ja1"></script><script src="/src/i18n.js?v=20260718-locale-routes1"></script><script src="../../src/game-runtime-localizer-loader.js?v=20260720-locale11-15"></script><script src="../../src/analytics.js"></script><script src="../../src/sound.js?v=20260720-locale11"></script>
+<script src="grid-game.js?v=20260719-one-line-grid3"></script><script src="../../src/stage-selector-standard.js?v=20260720-canvas-max920-1"></script><script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script><script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
+</body>
+</html>

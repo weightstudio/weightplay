@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <base href="/games/bubble-bakery/" />
+    <meta charset="UTF-8" />
+    <meta name="weightplay-audience" content="kids" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#ffb86b" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="robots" content="index,follow" />
+    <meta name="description" content="Animal Bubble Bakery — это 30-этапная головоломка с ограниченным количеством ходов, которую возглавляет тренер-пекарь Панко. Игроки нажимают связанные..." />
+    <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Пекарня «Животный пузырь» | WeightPlay" />
+    <meta property="og:description" content="Animal Bubble Bakery — это 30-этапная головоломка с ограниченным количеством ходов, которую возглавляет тренер-пекарь Панко. Игроки нажимают связанные..." />
+    <meta property="og:url" content="https://weightplay.com/ru/games/bubble-bakery/" />
+    <meta property="og:image" content="https://weightplay.com/assets/bubble-bakery-cover.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>Пекарня «Животный пузырь» | WeightPlay</title>
+    <link rel="canonical" href="https://weightplay.com/ru/games/bubble-bakery/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/bubble-bakery/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/bubble-bakery/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/bubble-bakery/" />
+    <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/bubble-bakery/" />
+    <link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/bubble-bakery/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/bubble-bakery/" />
+    <link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/bubble-bakery/" />
+    <link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/bubble-bakery/" />
+    <link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/bubble-bakery/" />
+    <link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/bubble-bakery/" />
+    <link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/bubble-bakery/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/bubble-bakery/" />
+    <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Пекарня «Животный пузырь»",
+  "alternateName": "動物泡泡烘焙坊",
+  "url": "https://weightplay.com/ru/games/bubble-bakery/",
+  "image": "https://weightplay.com/assets/bubble-bakery-cover.png",
+  "description": "Animal Bubble Bakery — это 30-этапная головоломка с ограниченным количеством ходов, которую возглавляет тренер-пекарь Панко. Игроки нажимают связанные...",
+  "applicationCategory": "Game",
+  "operatingSystem": "Web browser",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio"
+  },
+  "inLanguage": "ru",
+  "isAccessibleForFree": true,
+  "genre": [
+    "Головоломка",
+    "Логика",
+    "Животное"
+  ],
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "Kids and families",
+    "suggestedMinAge": 6
+  },
+  "learningResourceType": "Skill practice through play",
+  "educationalUse": "Practice Logic, Problem Solving, Focus through family-friendly browser gameplay."
+}
+    </script>
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
+    <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
+    <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
+    <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20260714-play-area-fill1" data-wp-battle-standard />
+    <link rel="stylesheet" href="../../src/stage-selector-standard.css?v=20260715-stage-swipe2" />
+    <link rel="stylesheet" href="style.css?v=20260717-bakery-depth30-1" />
+    <script data-wp-stage-standard>/* Bubble Bakery owns its native Stage scaler and pointer rail. */</script>
+    <meta name="twitter:title" content="Пекарня «Животный пузырь» | WeightPlay" />
+    <meta name="twitter:description" content="Animal Bubble Bakery — это 30-этапная головоломка с ограниченным количеством ходов, которую возглавляет тренер-пекарь Панко. Игроки нажимают связанные..." />
+  </head>
+  <body>
+    <main class="bakery-game">
+      <header class="topbar">
+        <a class="home-link" data-wp-return="main" href="/kids/" aria-label="Back to lobby">
+          <span aria-hidden="true">&larr;</span>
+          <img src="../../assets/weightplay-logo.png" alt="" draggable="false" />
+        </a>
+        <div class="title-block">
+          <p>WeightPlay</p>
+          <h1 data-ui="gameTitle">Пекарня «Животный пузырь»</h1>
+        </div>
+        <label class="language-picker">
+          <span data-ui="language">Language</span>
+          <select id="localeSelect" aria-label="Language">
+            <option value="en">English</option>
+            <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
+            <option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option>
+          </select>
+        </label>
+      </header>
+
+      <section id="mainPanel" class="main-panel">
+        <img class="cover" src="../../assets/bubble-bakery-cover.webp" data-fallback-src="../../assets/bubble-bakery-cover.png" alt="" />
+        <div class="menu-copy">
+          <strong data-ui="gameTitle">Animal Bubble Bakery</strong>
+          <span data-ui="menuHint">Tap matching bubbles to fill bakery orders.</span>
+        </div>
+        <section class="coach-card" aria-label="Bakery coach">
+          <img src="../../assets/weightplay-character-drum-belly-panda-safe-face-cutout.webp" alt="" />
+          <div>
+            <strong data-ui="coachName">Panko the Bakery Coach</strong>
+            <span data-ui="coachTip">Plan the biggest matching group first, then save moves for the glowing order bubbles.</span>
+          </div>
+        </section>
+        <button id="startGameBtn" class="main-start" type="button" data-ui="startGame">Start Game</button>
+      </section>
+
+      <section id="stagePanel" class="stage-panel hidden">
+        <div class="stage-panel-head">
+          <button id="stageBackBtn" class="stage-back" data-wp-return="stage" type="button" aria-label="Back" data-ui-aria-label="back">&larr;</button>
+          <strong data-ui="chooseStage">Choose Stage</strong>
+        </div>
+        <section id="recommendedOrder" class="recommend-card" aria-live="polite"></section>
+        <div id="bakeryProgress" class="bakery-progress" aria-live="polite"></div>
+        <div id="stageGrid" class="stage-grid" data-wp-stage-settle-duration="360" data-wp-stage-settle-easing="smoothstep" aria-label="Stage list"></div>
+        <span id="stageFeedback" class="visually-hidden" role="status" aria-live="polite" aria-atomic="true"></span>
+      </section>
+
+      <section id="playPanel" class="play-panel hidden" data-no-mobile-immersive="true">
+        <div class="play-head">
+          <button id="backToStagesBtn" class="play-return" data-wp-return="battle" type="button" aria-label="Back to stages" data-ui-aria-label="stages">
+            <span aria-hidden="true">&larr;</span>
+          </button>
+          <div class="hud-pill"><span data-ui="moves">Moves</span><b id="movesText">0</b></div>
+        </div>
+        <div id="orderBar" class="order-bar" aria-label="Bakery orders"></div>
+        <div id="board" class="bubble-board" aria-label="Bubble board"></div>
+        <div id="hintText" class="hint-text" aria-live="polite"></div>
+      </section>
+
+      <div id="resultPanel" class="result-panel hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle">
+        <div class="result-card">
+          <strong id="resultTitle">Order complete!</strong>
+          <div id="starText" class="stars">&#9734;&#9734;&#9734;</div>
+          <span id="resultText"></span>
+          <div id="resultNextOrder" class="result-next-order" aria-live="polite"></div>
+          <div id="skillReport" class="skill-report" aria-live="polite"></div>
+          <button id="nextStageBtn" type="button" data-ui="nextStage">Next Stage</button>
+          <button id="retryBtn" type="button" data-ui="retry">Try Again</button>
+          <button id="resultStagesBtn" type="button" data-ui="stages">Stages</button>
+          <a href="/kids/" data-ui="lobby">Lobby</a>
+        </div>
+      </div>
+
+      <div id="loadingPanel" class="loading-panel">
+        <div class="loading-card">
+          <strong data-ui="loading">Loading</strong>
+          <span id="loadingText">0%</span>
+          <div><i id="loadingFill"></i></div>
+        </div>
+      </div>
+    </main>
+    <!-- adsense-static-guide:start -->
+    <section class="game-page-info game-page-info-static" aria-label="Пекарня «Животный пузырь» информация об игре">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay Руководство по игре для детей</span><h2>Пекарня «Животный пузырь»</h2><p>Animal Bubble Bakery — это 30-этапная головоломка с ограниченным количеством ходов, которую возглавляет тренер-пекарь Панко. Игроки нажимают связанные группы пузырей с кроликами, китами, цыплятами, лягушками или лисами, чтобы заполнить лотки с рецептами. Доска 7х10 рушится после каждой очистки и сверху падают новые пузыри. На более поздних этапах добавляются минимальные размеры партий, упорядоченные очереди, обслуживание с двумя и тремя лотками, цели для больших групп и бонусные партии. Каждый пятый этап — это дружелюбная проверка Panko, а детская версия всегда остается без рекламы.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Геймплей</span><strong>Головоломка с пузырьками</strong></div><div class="game-info-fact"><span>Жанр</span><strong>Головоломка · Логика · Животное</strong></div><div class="game-info-fact"><span>Сложность</span><strong>Легко</strong></div><div class="game-info-fact"><span>Расчетное время игры</span><strong>3-5 минут</strong></div><div class="game-info-fact"><span>Обученные навыки</span><strong>Логика · Решение проблем · Фокус</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>Мир и миссия</h3><p>Панко управляет небольшой пекарней, где каждый покупатель животного использует штамп с изображением вместо письменного списка ингредиентов. Пузыри-кролики отмечают ягодные угощения, киты отмечают океанские кексы, цыплята отмечают солнечную выпечку, лягушки отмечают садовые булочки, а лисы отмечают ягодные торты. Тележка доставки прибывает после ограниченного количества ходов, поэтому игрок помогает Панко объединить связанные марки и закончить каждый видимый лоток до того, как тележка уедет.</p>
+<p>30 заказов составляют шесть уроков хлебопечения. Панко проверяет счетчик на этапах 5, 10, 15, 20, 25 и 30, но эти контрольные точки представляют собой скорее дружеские испытания рецептов, чем сражения. Завершение Master Bakery Панко подает три лотка в очереди, доказывает, что можно приготовить партию из шести пузырьков, и открывает каждый лоток для повтора и звездного мастерства.</p></div>
+      <div class="game-info-section"><h3>Как работают системы</h3><p>Доска всегда содержит 70 встроенных кнопок-пузырьков в семи столбцах и десяти строках. Группа очищается только тогда, когда соответствующие пузырьки соприкасаются по вертикали или по горизонтали; диагональный контакт их не соединяет. Очищенные пузырьки сжимаются в своих первоначальных ячейках, пузырьки выше опускаются, а новые пузырьки выходят из замаскированного верхнего края.</p>
+<p>Каждая действительная очистка тратит один ход. Только активные животные порядка уменьшают счетчики лотков, в то время как группы, не относящиеся к отряду, все еще могут менять форму доски. Последовательные выполнения заказов создают серию заказов и бонус к очкам. Звезды результата зависят от оставшихся ходов, а в отчете о навыках фиксируются ходы по порядку, наибольшая очищенная группа и лучшая серия.</p>
+<p>Для этапов минимальной партии требуется группа из трех или четырех человек, прежде чем кран сможет очиститься. Этапы последовательности выделяют одно животное отряда за раз; уничтожение более позднего животного изменяет форму доски, но не продвигает его фишку. Бонусные этапы позволяют группе из четырех, пяти или шести человек дополнительно учитываться в активном заказе.</p>
+<p>На этапах с несколькими лотками сохраняется та же доска и оставшиеся ходы, когда появляется следующий рецепт. Этапы групповой цели требуют одного ясного места, достаточно большого, чтобы достичь отображаемой цели, а также завершить счетчики заказов. Этап 30 сочетает в себе три рецепта, минимум в четыре пузырька, порядок последовательности, порог бонуса в шесть пузырьков и цель для наибольшей группы - шесть.</p>
+<p>Разблокированные этапы, лучшие звезды, данные о результатах этапов, штампы клиентов, количество наклеек, количество игр и этапы, на которых было достигнуто наилучшее достижение, хранятся локально в этом браузере. Авторизация не требуется; очистка данных сайта браузера может привести к удалению этих записей.</p></div>
+      <div class="game-info-section"><h3>Как играть</h3><ol><li>Выберите разблокированный лоток на горизонтальной направляющей сцены.</li><li>Прежде чем нажимать, прочитайте фишки порядка животных и символы компактных правил.</li><li>Нажмите два или более вертикально или горизонтально соединенных одинаковых пузырька; более поздние лотки могут потребовать три или четыре.</li><li>Используйте очистки без порядка только тогда, когда они создают лучший маршрут к выделенной цели.</li><li>Завершите каждую фазу рецепта и любую отображаемую цель наибольшей группы, прежде чем ходы достигнут нуля.</li><li>Используйте «Результат», чтобы продолжить, повторить попытку, вернуться к этапам или воспроизвести предыдущие лотки, чтобы получить больше звезд.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Советы по стратегии</h3><ul><li>Сканируйте снизу вверх. Очистка низкой группы перемещает больше пузырьков и создает больше возможных связей.</li><li>В последовательном порядке защищайте группы для последующих животных, пока их чип не станет ярким активным контуром.</li><li>На этапах минимальной партии не тратьте ходы на пары; объединяйте их через близлежащую поляну, пока не появится необходимый размер.</li><li>Бонусы большими партиями могут завершить заказ с меньшим количеством ходов, но на этапе группового гола по-прежнему требуется хотя бы один раз отображаемый наибольший результат.</li><li>Сервис «Мультилоток» не сбрасывает доску, поэтому оставьте полезные кластеры для животных, которые появятся в следующем рецепте.</li></ul></div>
+      <div class="game-info-section"><h3>Кампания и рост сложности</h3><p>Этапы 1–5 устанавливают обычные связанные зачистки, выбор двух целей, первую цель размером в группу и бонус в четыре пузыря. Первая проверка Панко принимает только группы из трех и более человек, а также запрашивает одну группу из четырех человек.</p>
+<p>Этапы 6–10 ориентированы на большие партии. Минимальное количество увеличивается с трех до четырех, пороговые значения бонусов поощряют целенаправленную кластеризацию, а проверка больших партий Панко требует, чтобы при каждом очистке заказа использовалась группа из четырех человек плюс одна группа из пяти человек.</p>
+<p>Этапы 11–15 представляют упорядоченные очереди. Продвигается только выделенное животное, и проверка очереди Панко применяет это правило к двум рецептам без перезагрузки доски.</p>
+<p>Этапы 16–20 представляют собой двух- и трехразовое обслуживание. Доска и подсчет ходов продолжаются между лотками, поэтому подготовка к следующему рецепту имеет значение до того, как будет закончен первый.</p>
+<p>Этапы 21–25 сочетают в себе очереди, минимальные группы, бонусы, несколько рецептов и групповые цели. Фестивальный чек Панко требует заказа двух подносов, используя группы не менее трех человек.</p>
+<p>Этапы 26–30 — это приказы мастерства. Им требуются более крупные кластеры и планирование с тремя лотками, а не просто более высокие прилавки; Последняя контрольная точка явно сочетает в себе минимум четыре пузырька, упорядоченные цели, бонусные пакеты, три рецепта и цель мастерства из шести пузырьков.</p></div>
+      <div class="game-info-section"><h3>Примечание разработчика к проекту</h3><p>Мы сохранили доску размером 7 на 10, потому что она заполняет портретный телефон, сохраняя при этом пропорции круглого пузыря и достаточно места для реального группового планирования. Касание — единственное действие в бою, но каждое зачистка меняет гравитацию, будущие соединения, серии приказов и оставшиеся ходы. В 30-этапную версию добавлены правила, которые меняют, какая группа полезна, а не просто увеличивают цели. Контрольно-пропускные пункты Панко обеспечивают запоминающиеся ориентиры сложности, не добавляя боевых действий в головоломку с пекарней. Игроки, использующие клавиатуру и средства чтения с экрана, получают встроенные кнопки с изображением животного, строки, столбца, размера подключенной группы, статуса активного заказа и текущего минимума. В отличие от прямой сортировки по одному предмету в Animal Color Lunchbox, Bubble Bakery просит игроков изменить форму постоянной доски и спланировать несколько ходов вперед.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Примечание для родителей</h3><p>Animal Bubble Bakery может поддерживать визуальную группировку, подсчет, планирование, фокусировку и простое решение проблем. Взрослые могут спросить, почему низкая ясность меняет доску или какой кластер следует сохранить для следующего лотка. Здесь нет таймера, рекламы, требований к учетной записи или давления на рейтинг. Звездочки, оценки, штампы, наклейки и отчет о навыках — это шутливая местная обратная связь, а не тест интеллекта, диагноз или формальная школьная оценка.</p></div>
+      <div class="game-info-section"><h3>Часто задаваемые вопросы</h3><dl><div><dt>Сколько этапов в Animal Bubble Bakery?</dt><dd>В шести пятиэтапных уроках 30 названных этапов, на каждом пятом этапе проводятся дружеские проверки Панко.</dd></div><div><dt>Какие пузыри образуют связную группу?</dt><dd>Соответствующие пузыри соединяются вертикально и горизонтально. Диагональные пузыри не входят в одну группу.</dd></div><div><dt>Почему подходящая группа не выполнила заказ?</dt><dd>Для этапа может потребоваться большая минимальная группа или конкретное выделенное животное в упорядоченной очереди.</dd></div><div><dt>Что происходит между лотками для рецептов?</dt><dd>Следующий рецепт заменяет жетоны приказов, но доска и оставшиеся ходы продолжаются, поэтому сохраненные кластеры по-прежнему имеют значение.</dd></div><div><dt>Как работают бонусные пакеты?</dt><dd>На отмеченных этапах достижение указанного порога группы приводит к зачислению дополнительных пузырьков в активный заказ.</dd></div><div><dt>Что происходит, когда ходы достигают нуля?</dt><dd>Незавершенный заказ открывает подтверждающий результат повторной попытки. Сохраненные разблокировки и более ранние звезды остаются доступными.</dd></div><div><dt>Игра требует входа в систему или показа рекламы?</dt><dd>Нет. В этой детской игре нет рекламы, она использует локальное хранилище браузера и не требует учетной записи.</dd></div><div><dt>Является ли отчет о навыках проверкой способностей?</dt><dd>Нет. В нем суммируются попадания в порядок этого забега, наибольшая группа, серия, счет и оставшиеся ходы только для обратной связи по игре.</dd></div></dl></div>
+    </div>
+  </section>
+    <!-- adsense-static-guide:end -->
+    <script src="/src/site-config.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/version.js?v=20260701-version2"></script>
+    <script src="../../src/analytics.js?v=20260701-analytics2"></script>
+    <script>window.WonderAnalytics?.track("game_view", { game_id: "bubble-bakery" });</script>
+    <script src="../../src/sound.js?v=20260720-locale11"></script>
+    <script src="../../src/edge-guard.js?v=20260710-mobile-play-shell2"></script>
+    <script src="/src/i18n.js?v=20260718-locale-routes1"></script><script src="../../src/game-runtime-localizer-loader.js?v=20260720-locale11-15"></script>
+    <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
+    <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
+    <script src="game.js?v=20260718-two-plus-pop1"></script>
+    <script>
+      (() => {
+        const loadGameInfo = () => {
+          if (window.WEIGHTPLAY_BUBBLE_BAKERY_ACTIVE) {
+            window.addEventListener("bubble-bakery:play-state", (event) => {
+              if (!event.detail?.playing) loadGameInfo();
+            }, { once: true });
+            return;
+          }
+          if (document.querySelector('script[data-bakery-game-info]')) return;
+          const script = document.createElement("script");
+          script.src = "../../src/game-page-info.js?v=20260720-locale11-2";
+          script.dataset.bakeryGameInfo = "idle";
+          document.body.appendChild(script);
+        };
+        const schedule = () => {
+          if ("requestIdleCallback" in window) {
+            window.requestIdleCallback(loadGameInfo, { timeout: 1600 });
+          } else {
+            window.setTimeout(loadGameInfo, 350);
+          }
+        };
+        if (document.readyState === "complete") schedule();
+        else window.addEventListener("load", schedule, { once: true });
+      })();
+    </script>
+  </body>
+</html>

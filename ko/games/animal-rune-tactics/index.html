@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <base href="/games/animal-rune-tactics/" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="robots" content="index,follow" />
+    <meta name="theme-color" content="#11251f" />
+    <meta name="description" content="Animal Rune Tactics는 3x4 룬 보드에서 진행되는 30개의 미션으로 구성된 턴 기반 캠페인입니다. Lion Guardian, Owl Mage 및 Turtle Shield는 각각 적의 턴 전에 한 가지 조치를 취합니다. 즉, 이동, 공격, 보호 또는 고유한..." />
+    <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:type" content="game" />
+    <meta property="og:title" content="동물 룬 전술 | WeightPlay" />
+    <meta property="og:description" content="Animal Rune Tactics는 3x4 룬 보드에서 진행되는 30개의 미션으로 구성된 턴 기반 캠페인입니다. Lion Guardian, Owl Mage 및 Turtle Shield는 각각 적의 턴 전에 한 가지 조치를 취합니다. 즉, 이동, 공격, 보호 또는 고유한..." />
+    <meta property="og:url" content="https://weightplay.com/ko/games/animal-rune-tactics/" />
+    <meta property="og:image" content="https://weightplay.com/assets/animal-rune-tactics-cover.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="동물 룬 전술 | WeightPlay" />
+    <meta name="twitter:description" content="Animal Rune Tactics는 3x4 룬 보드에서 진행되는 30개의 미션으로 구성된 턴 기반 캠페인입니다. Lion Guardian, Owl Mage 및 Turtle Shield는 각각 적의 턴 전에 한 가지 조치를 취합니다. 즉, 이동, 공격, 보호 또는 고유한..." />
+    <meta name="twitter:image" content="https://weightplay.com/assets/animal-rune-tactics-cover.png" />
+    <title>동물 룬 전술 | WeightPlay</title>
+    <link rel="canonical" href="https://weightplay.com/ko/games/animal-rune-tactics/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-rune-tactics/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-rune-tactics/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-rune-tactics/" />
+    <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/animal-rune-tactics/" />
+    <link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/animal-rune-tactics/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/animal-rune-tactics/" />
+    <link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/animal-rune-tactics/" />
+    <link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/animal-rune-tactics/" />
+    <link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/animal-rune-tactics/" />
+    <link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/animal-rune-tactics/" />
+    <link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/animal-rune-tactics/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-rune-tactics/" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "동물 룬 전술",
+  "alternateName": "動物符文戰棋",
+  "url": "https://weightplay.com/ko/games/animal-rune-tactics/",
+  "image": "https://weightplay.com/assets/animal-rune-tactics-cover.png",
+  "description": "Animal Rune Tactics는 3x4 룬 보드에서 진행되는 30개의 미션으로 구성된 턴 기반 캠페인입니다. Lion Guardian, Owl Mage 및 Turtle Shield는 각각 적의 턴 전에 한 가지 조치를 취합니다. 즉, 이동, 공격, 보호 또는 고유한...",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio",
+    "url": "https://weightplay.com/"
+  },
+  "inLanguage": "ko",
+  "isAccessibleForFree": true,
+  "operatingSystem": "Web Browser",
+  "genre": [
+    "전략",
+    "전술",
+    "동물"
+  ],
+  "audience": {
+    "@type": "PeopleAudience",
+    "suggestedMinAge": 13
+  }
+}
+    </script>
+    <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
+    <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
+    <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
+    <link rel="stylesheet" href="style.css?v=20260719-rune-stage-highlight1" />
+  </head>
+  <body data-tutorial-auto-show="false">
+    <main class="rune-app" data-no-mobile-immersive="true" data-wp-logical-battle-canvas>
+      <header class="topbar">
+        <a id="backBtn" class="back-btn" data-wp-return="main" href="/" aria-label="Back to lobby"><span>&larr;</span><img src="../../assets/weightplay-logo.png" alt="" /></a>
+        <div class="brand">
+          <span>WeightPlay</span>
+          <h1 data-ui="title">동물 룬 전술</h1>
+        </div>
+        <label class="locale">
+          <span data-ui="language">Language</span>
+          <select id="localeSelect" aria-label="Language">
+            <option value="en">English</option>
+            <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
+            <option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option>
+          </select>
+        </label>
+        <button id="pauseBtn" class="pause-toggle" type="button" aria-controls="pausePanel" aria-expanded="false" aria-label="Pause">&#8545;</button>
+      </header>
+
+      <section id="loadingPanel" class="loading-panel" aria-live="polite">
+        <div class="loading-content">
+          <h2 data-ui="title">Animal Rune Tactics</h2>
+          <div class="loading-bar"><div id="loadingFill" class="loading-fill"></div></div>
+          <span id="loadingText" class="loading-percentage">0%</span>
+        </div>
+      </section>
+
+      <section id="menuPanel" class="panel menu-panel">
+        <img class="cover" src="../../assets/animal-rune-tactics-cover.webp" alt="" />
+        <div class="menu-copy">
+          <strong data-ui="menuTitle">Command the Rune Squad.</strong>
+          <span data-ui="menuHint">Choose a mission, move animal heroes on the rune grid, and clear enemies with smart positioning.</span>
+          <div class="profile-grid" aria-live="polite">
+            <div><span data-ui="profileLevel">Level</span><b id="profileLevel">1</b></div>
+            <div><span data-ui="profileXp">XP</span><b id="profileXp">0/100</b></div>
+            <div><span data-ui="profileBest">Best Mission</span><b id="profileBest">1</b></div>
+            <div><span data-ui="profileRunes">Runes</span><b id="profileRunes">0</b></div>
+          </div>
+          <div id="growthSummary" class="growth-summary" aria-live="polite"></div>
+          <div class="hero-upgrade-list">
+            <div class="section-head">
+              <strong data-ui="heroTrainingTitle">Hero Training</strong>
+              <small data-ui="heroTrainingHint">Spend runes to permanently upgrade each animal hero.</small>
+            </div>
+            <div id="heroUpgradeGrid" class="hero-upgrade-grid"></div>
+          </div>
+          <div class="mission-list">
+            <div class="section-head">
+              <strong data-ui="missionSelect">Choose Mission</strong>
+              <small data-ui="missionHint">Unlocked missions are saved on this device.</small>
+            </div>
+            <div id="missionGrid" class="mission-grid"></div>
+          </div>
+          <div class="diamond-card">
+            <div>
+              <strong data-ui="trainingTitle">Training Slot</strong>
+              <small data-ui="trainingText">Permanent: heroes start each mission with +1 rune energy.</small>
+            </div>
+            <button id="trainingBtn" type="button">
+              <img src="../../assets/weightplay-diamond.svg" alt="" />
+              <span id="trainingCost">18</span>
+            </button>
+            <small id="trainingStatus" class="status-line"></small>
+          </div>
+        </div>
+      </section>
+
+      <section id="gamePanel" class="panel game-panel is-hidden">
+        <div class="hud">
+          <div><span data-ui="enemiesLeft">Enemies</span><b id="enemyCountText">0/0</b></div>
+        </div>
+
+        <div class="battle-status-row">
+          <p id="battleLog" class="battle-log" aria-live="polite"></p>
+          <div class="battle-secondary" aria-label="Battle details">
+            <span><span data-ui="mission">Mission</span> <b id="missionText">1</b></span>
+            <span><span data-ui="turn">Turn</span> <b id="turnText">1</b></span>
+          </div>
+        </div>
+
+        <div class="battle-shell">
+          <img class="arena-bg" src="../../assets/animal-rune-tactics-arena-bg.webp" alt="" />
+          <div id="grid" class="tactic-grid" role="grid" aria-rowcount="4" aria-colcount="3" aria-label="Rune tactics board"></div>
+          <div id="fxLayer" class="fx-layer" aria-hidden="true"></div>
+        </div>
+
+        <div class="battle-info">
+          <div id="turnRoster" class="turn-roster" aria-live="polite"></div>
+          <div id="selectedCard" class="selected-card" aria-live="polite"></div>
+          <div class="actions">
+            <button id="attackBtn" type="button" data-ui="attack">Attack</button>
+            <button id="guardBtn" type="button" data-ui="guard">Guard</button>
+            <button id="skillBtn" type="button" data-ui="skill">Skill</button>
+            <button id="endTurnBtn" type="button" data-ui="endTurn">End Turn</button>
+          </div>
+        </div>
+      </section>
+      <section id="pausePanel" class="panel overlay-panel is-hidden" role="dialog" aria-modal="true" aria-labelledby="pauseTitle">
+        <div class="overlay-card pause-card">
+          <h2 id="pauseTitle" data-ui="pauseTitle">Battle Paused</h2>
+          <p data-ui="pauseHint">The enemy turn and every pending action stay frozen until you continue.</p>
+          <div class="pause-actions">
+            <button id="resumeBtn" class="primary-btn" type="button" data-ui="resume">Resume</button>
+            <button id="pauseMenuBtn" class="secondary-btn" type="button" data-ui="pauseMenu">Back to Missions</button>
+          </div>
+        </div>
+      </section>
+      <section id="rewardPanel" class="panel overlay-panel is-hidden" role="dialog" aria-modal="true" aria-labelledby="rewardTitle" aria-live="polite">
+        <div class="overlay-card">
+          <h2 id="rewardTitle" data-ui="chooseReward">Choose a Rune Reward</h2>
+          <div id="rewardCards" class="reward-cards"></div>
+          <button id="rerollBtn" class="secondary-btn" type="button">
+            <img src="../../assets/weightplay-diamond.svg" alt="" />
+            <span data-ui="reroll">Reroll 3</span>
+          </button>
+        </div>
+      </section>
+
+      <section id="resultPanel" class="panel overlay-panel is-hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultText" aria-live="polite">
+        <div class="overlay-card">
+          <h2 id="resultTitle">Mission Clear</h2>
+          <p id="resultText"></p>
+          <div class="result-progress" aria-live="polite">
+            <strong data-ui="resultProgressTitle">Saved Progress</strong>
+            <span id="resultRewardText"></span>
+            <span id="resultProgressText"></span>
+            <em id="resultNextText"></em>
+          </div>
+          <div class="skill-report">
+            <strong data-ui="skillReport">Skill Report</strong>
+            <span id="skillReportText"></span>
+          </div>
+          <div class="result-actions">
+            <button id="nextBtn" class="primary-btn" type="button" data-ui="nextMission">Next Mission</button>
+            <button id="retryBtn" class="secondary-btn" type="button" data-ui="retry">Retry</button>
+            <button id="menuBtn" class="secondary-btn" type="button" data-ui="menu">Back to Missions</button>
+          </div>
+        </div>
+      </section>
+    </main>
+    <!-- adsense-static-guide:start -->
+    <section class="game-page-info game-page-info-static" aria-label="동물 룬 전술 게임 정보">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 어린이 게임 가이드</span><h2>동물 룬 전술</h2><p>Animal Rune Tactics는 3x4 룬 보드에서 진행되는 30개의 미션으로 구성된 턴 기반 캠페인입니다. Lion Guardian, Owl Mage 및 Turtle Shield는 각각 적의 턴 전에 한 가지 조치를 취합니다. 즉, 이동, 공격, 보호 또는 고유한 스킬에 에너지를 소비합니다. 5개의 미션으로 구성된 6개의 챕터에는 차단된 경로, 올가미, 해류, 불, 회전하는 룬 및 봉인과 함께 반격, 밀기, 침묵, 표식, 에너지 소모 또는 복제물을 생성하는 적들이 등장합니다. 미션 5, 10, 15, 20, 25, 30은 6개의 서로 다른 단계 보스로 끝납니다. 미션 잠금 해제, 영웅 훈련, 룬 보상이 이 브라우저에 저장됩니다.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>게임플레이</span><strong>턴제 분대 전술</strong></div><div class="game-info-fact"><span>장르</span><strong>전략 · 전술 · 동물</strong></div><div class="game-info-fact"><span>난이도</span><strong>하드</strong></div><div class="game-info-fact"><span>예상 플레이 시간</span><strong>임무당 8~15분</strong></div><div class="game-info-fact"><span>훈련된 기술</span><strong>논리 · 문제 해결 · 초점 · 기획</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>세계와 사명</h3><p>룬 로드(Rune Road)는 6개의 동물 영역을 크라운 아카이브(Crown Archive)와 연결합니다. 각 도로에는 서로 다른 종류의 안정화 스크립트가 있습니다. 삼림 길은 살아있는 뿌리를 제자리에 고정하고, 대장간 표시는 철나무를 묶고, 조수 문양은 침수된 방을 조절하고, 불씨 원은 열을 배출하고, 달 룬은 기억을 보존하고, 왕관 인장은 다섯 가지 시스템을 모두 동기화된 상태로 유지합니다. 중앙 크라운이 부서졌을 때, 그 대본은 키퍼 없이 작동하기 시작했습니다. 다리는 잔해로 굳어졌고, 여행자 주위의 뿌리는 막혔으며, 물살은 점령된 돌을 이동시켰고, 기록 보관 봉인은 손상을 입힌 바로 그 생물을 보호했습니다.</p>
+<p>플레이어는 도로를 복구하기 위해 세 명의 골키퍼를 파견하도록 명령합니다. 라이온 가디언은 근거리 최전방의 전사이고, 부엉이 마법사는 두 칸 떨어진 곳에서 공격하며, 거북이 방패는 일행을 보호하고 치료합니다. 미션을 클리어한다는 것은 분대가 전진할 수 있을 만큼 스크립트가 안정적이라는 것을 의미합니다. Stone Stag, Ironroot Rhino, Mirecoil Serpent, Embermane Lion 및 Eclipse Griffin은 각각 하나의 손상된 챕터를 관리합니다. Rune Crown Chimera는 모든 시스템의 일부를 흡수했습니다. 미션 30에서 이를 물리치면 미션 31이 끝이 없는 척하지 않고 아카이브를 다시 연결합니다.</p></div>
+      <div class="game-info-section"><h3>시스템 작동 방식</h3><p>흐름 전환: 살아있는 영웅을 선택한 다음 하나의 행동을 선택합니다. 이동은 인접한 법적 셀을 사용합니다. 공격에는 영웅의 범위가 필요합니다. 가드는 다음 적중을 1만큼 감소시킵니다. 스킬은 하나의 에너지를 소비합니다. 사자는 더 세게 공격하고, 올빼미는 먼 목표에 도달하며, 거북이는 HP를 1 회복하면서 모든 살아있는 영웅을 보호합니다. 영웅은 행동 후에 완료로 표시됩니다. 모든 살아있는 영웅이 행동했거나 턴 종료를 누르면 모든 살아있는 적의 행동이 해결되고 에너지가 1에서 3까지 반환됩니다.</p>
+<p>적의 규칙은 통계적인 것이 아니라 위치에 따른 것입니다. 늑대는 다른 늑대와 인접해 있는 동안 무리의 송곳니(Pack Fang)를 얻습니다. 까마귀는 체력 비율이 가장 낮은 영웅을 표적으로 삼습니다. Stone Stag는 첫 번째 적중 방어구를 복원합니다. 가시 멧돼지는 살아남은 인접한 근접 공격 후에 1의 피해를 반환합니다. 룬 폭스는 가장 약한 영웅 뒤로 순간이동합니다. Tide Turtle은 가장 가까운 아군에게 1회 적중 가드를 제공하고, Relic Heron은 공격하는 영웅을 밀어냅니다. 신더 램은 정상적으로 걷는 대신 눈에 보이는 직선을 충전합니다.</p>
+<p>나중에 적들은 행동 계획을 변경합니다. Ember Salamander가 이동할 때 임시 화상 타일을 남깁니다. Moon Moth는 이동, 공격 또는 가드를 제거하지 않고 다음 플레이어 턴에 한 영웅의 스킬을 침묵시킵니다. 보관 올빼미는 영웅에게 표시를 하여 다음 원거리 공격이 피해를 입게 합니다. Mirror Wolf는 공간이 허락하는 한 인접한 1HP 클론 하나를 생성합니다. Seal Raven은 에너지 1을 소모하지만 결코 0 이하가 되지 않습니다. 이러한 특성은 미션 29가 이전 5개 챕터의 위협 하나를 결합하는 경우에도 활성 상태로 유지됩니다.</p>
+<p>보드 상태는 각 작성된 임무의 일부입니다. 잔해는 점유할 수 없습니다. 루트 스네어는 영향을 받은 영웅의 다음 이동 선택을 방해합니다. 조수는 적의 턴 이후에 유닛을 하나의 합법적인 셀로 이동시킵니다. 화상은 그 위에 서 있는 영웅에게 피해를 입히고, 일회용 냉각 룬은 에너지를 회복하고 활성화된 화상 타일을 제거합니다. 궤도 룬은 외부 고리를 중심으로 단위를 회전합니다. Six-Rune Locks에서는 적의 와드를 제거하려면 세 명의 영웅이 연결된 봉인 셀을 점유해야 합니다. 와드를 통해 공격하면 1개의 피해를 잃습니다.</p>
+<p>보스 단계는 체력이 70%와 35%일 때 누적적으로 발생하므로 한 번의 큰 타격으로 단계를 건너뛸 수 없습니다. Stone Stag는 방어구를 새로 고치고 공격로를 충전합니다. Ironroot Rhino가 버팀대를 잡고 줄을 치고 잔해를 남깁니다. Mirecoil Serpent는 전류를 추가하고, 영웅을 끌어당기고, 해당 플레이어 턴에 두 명의 영웅이 공격하지 않는 한 재생성됩니다. 엠버메인 라이온이 사격을 가하고 부상당한 추가 행동을 얻습니다. Eclipse Griffin은 지상 공격과 원거리 비행 면역을 번갈아 사용합니다. Rune Crown Chimera는 조수, 화상, 잔해, 비행 및 거울 늑대 소환을 결합합니다.</p>
+<p>영구 성장에는 세 가지 층이 있습니다. 임무 승리 시 XP와 룬이 부여됩니다. XP는 100포인트 단위로 스쿼드 레벨을 높입니다. 룬은 사자, 부엉이, 거북이를 레벨 6까지 업그레이드하여 시작 체력과 공격력을 높입니다. 미션 후 룬 보상도 저장됩니다. 파워는 공격을 추가하고, 가디언 메달은 최대 체력을 추가하고, 룬 조각은 35 XP를 추가하고, 집중은 시작 에너지를 추가하며, 부활 토큰은 쓰러진 영웅 한 명을 체력이 절반으로 자동으로 되돌릴 수 있습니다. 선택 사항인 3개 다이아몬드 보상 재굴림과 선택 사항인 18개 다이아몬드 훈련 슬롯은 선택 사항이나 시작 에너지를 추가하지만 어느 쪽도 미션이나 보스를 잠금 해제하지 않습니다.</p></div>
+      <div class="game-info-section"><h3>플레이 방법</h3><ol><li>전체 30개 카드 미션 레일을 스와이프하고 잠금 해제된 미션을 선택하세요. 다섯 번째 카드마다 명명된 보스 체크포인트가 있습니다.</li><li>전투에 참여하기 전에 임무 이름, 적 목록, 특성 목록, 지형 및 전술 계획을 읽으십시오.</li><li>보드나 스쿼드 액션 명단에서 사자, 부엉이, 거북이를 선택하세요. 이동할 강조 표시된 인접한 셀, 공격할 강조 표시된 적, 가드 또는 스킬을 선택합니다.</li><li>완료 마커와 선택한 영웅 패널을 시청하세요. 모든 행동을 사용하는 것보다 위치를 유지하는 것이 더 안전할 때만 일찍 회전을 종료하십시오.</li><li>적의 턴 동안 카운터, 가드, 푸시, 차지, 침묵, 마크, 드레인, 클론 및 보스 단계에 대한 특성 배지와 전투 로그를 읽으십시오.</li><li>모든 적을 물리치고 하나의 영구 룬 보상을 선택하고 정확히 저장된 XP, 룬, 최고의 임무 및 다음 업그레이드 간격을 검토하세요.</li><li>다른 미션이 있는 경우 다음 미션을 사용하고, 현재 보드를 다시 재생하거나 미션으로 돌아가 영웅을 훈련하고 잠금 해제된 카드를 다시 방문하세요.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>전략 팁</h3><ul><li>데미지를 거래하기 전에 Wolf 인접성을 깨뜨립니다. 영웅 한 명을 움직이면 Pack Fang의 두 공격을 동시에 제거할 수 있습니다.</li><li>인접한 셀의 가시 멧돼지에게 올빼미의 범위를 소비하지 마십시오. 2셀 공격은 근접 카운터를 피하고 후방 라인을 유용하게 유지합니다.</li><li>침묵한 영웅에게는 여전히 세 가지 유용한 행동이 있습니다. 스킬이 돌아올 때까지 기다리지 말고 차지 레인에서 벗어나 일반 공격이나 가드를 하세요.</li><li>Mirecoil Serpent를 상대로 두 명의 별도 영웅이 동일한 플레이어 턴 동안 연결되어야 합니다. 한 영웅의 높은 데미지 스킬만으로는 재생을 멈추지 않습니다.</li><li>플라잉 그리핀은 올빼미의 원거리 피해를 막아줍니다. 날아다니는 동안 Lion을 사용하고, 땅에 떨어진 줄을 쓸어버리기 전에 영웅들을 펼치세요.</li><li>Mirror Wolf가 존재할 때 하나의 합법적인 인접 셀을 남겨두고 이동 및 타겟팅 차선을 변경하기 전에 HP가 1개인 클론을 제거하십시오.</li><li>영구 보너스는 관용성을 향상시키지만 보드 규칙을 해결하지는 않습니다. 냉각, 밀봉 및 궤도 셀을 올바르게 사용하는 낮은 레벨의 분대는 잘못된 차선에 있는 더 강한 분대보다 더 나은 성능을 발휘할 수 있습니다.</li></ul></div>
+      <div class="game-info-section"><h3>캠페인 및 난이도 성장</h3><p>미션 1-5에서는 이동, 집중 사격, Wolf 인접성, Raven 타겟팅 및 차단된 다리 차선을 가르칩니다. Stonehorn Trial은 두 임계값 모두에서 첫 번째 적중 방어구를 새로 고치고 같은 줄에 남아 있는 영웅을 처벌합니다.</p>
+<p>미션 6-10에는 근접 카운터, 후방 순간 이동, 루트 스네어 및 집게 형성이 추가됩니다. Ironroot Rhino는 안전한 세포를 잔해로 바꾸므로 전투 중에 사용 가능한 경로가 변경됩니다.</p>
+<p>미션 11~15는 Tide와 Heron push를 통해 결정 후 위치 이동을 합니다. Mirecoil Serpent는 기둥 당기기와 2인 공격자 재생 확인을 추가합니다.</p>
+<p>미션 16-20은 임시 연소, 직선 충전 및 일회용 냉각 룬을 결합합니다. Embermane Lion은 보드 사격, 그룹 압박 및 부상당한 추가 행동을 번갈아 가며 수행합니다.</p>
+<p>미션 21-25에서는 침묵과 원거리 표식으로 스킬 타이밍을 제한한 다음 바깥쪽 링을 회전시킵니다. Eclipse Griffin은 피해를 입힐 수 있는 영웅과 행이 안전하지 않게 되는 시기를 변경합니다.</p>
+<p>미션 26-30에서는 Crown Gauntlet이 5가지 이전 규칙을 혼합하기 전에 클론, 에너지 소모 및 연결된 봉인을 추가합니다. Rune Crown Chimera는 눈에 보이는 두 지점 모두에서 지형을 변경하고 최종 목표 순서 테스트를 위해 클론을 소환합니다.</p></div>
+      <div class="game-info-section"><h3>개발자 디자인 노트</h3><p>보드는 너비 3개 셀, 높이 4개 셀로 유지되므로 모든 전화 결정은 패닝 없이도 계속 표시됩니다. 깊이는 원액션 턴에서 나옵니다. 현재의 위험을 해결하기 위해 이동한다는 것은 해당 영웅의 공격을 포기하는 것을 의미하며, 방어는 피해를 쫓는 것보다 더 강할 수 있습니다. 5개의 미션으로 구성된 6개의 챕터는 한 번에 하나의 어휘를 소개한 다음 챕터 보스에게 이를 재결합하도록 요청합니다. HP는 8번의 미션마다 한 번씩만 상승하고 공격은 12번의 미션마다 한 번씩만 증가합니다. 따라서 이후의 압력은 주로 지형, 목표 순서, 행동 거부 및 단계 변화에서 발생합니다. 포인터, 터치 및 이동 화살표 키 그리드는 모두 동일한 논리 셀을 작동합니다. Animal Auto Squad의 전투 전 구성이나 Animal Relic Hunters의 실시간 이동과 달리 Rune Tactics는 모든 결정 후에 일시 중지되므로 보드 상태 자체가 퍼즐입니다.</p></div>
+      <div class="game-info-section game-info-parent"><h3>학부모 메모</h3><p>분대 레벨, XP, 룬, 최고의 미션, 잠금 해제된 미션, 영웅 레벨, 훈련 슬롯, 저장된 공격, 체력 및 에너지 보너스, 부활 토큰이 이 브라우저에 로컬로 저장됩니다. 기본 플레이에는 로그인이 필요하지 않습니다. 사이트 저장 공간을 비우거나 다른 브라우저를 사용하면 별도의 저장 공간이 생성될 수 있습니다. 다이아몬드는 보상 재등록이나 확정된 훈련 슬롯에만 사용되는 선택적 플랫폼 통화입니다. 30개의 미션, 7개의 지형 시스템, 특별한 적, 6개의 보스가 없어도 계속 플레이할 수 있습니다. 기술 보고서는 완료된 플레이 세션을 설명하며 공식적인 능력 테스트가 아닙니다.</p></div>
+      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>Animal Rune Tactics는 무료인가요?</dt><dd>그렇습니다. 30개의 미션, 특별한 적, 지형 규칙, 영구적인 룬 성장 및 6개의 보스를 모두 결제 없이 브라우저에서 플레이할 수 있습니다.</dd></div><div><dt>미션과 보스는 몇 개나 있나요?</dt><dd>30개의 제작된 미션이 있습니다. 미션 5, 10, 15, 20, 25, 30에서는 별도의 삽화, 행동, 2가지 체력 단계를 갖춘 6명의 서로 다른 보스를 사용합니다.</dd></div><div><dt>빠른 반응이 필요한가요?</dt><dd>아니요. 턴제입니다. 플레이어가 영웅, 셀, 공격, 가드 또는 스킬을 선택하는 동안에는 아무것도 움직이지 않습니다.</dd></div><div><dt>왜 스킬을 사용할 수 없나요?</dt><dd>영웅은 에너지가 없을 수도 있고, 이미 완료되었을 수도 있고, Moon Moth에 의해 침묵될 수도 있습니다. 침묵은 한 플레이어 턴 동안 지속되며 이동, 일반 공격 또는 가드를 차단하지 않습니다.</dd></div><div><dt>미션 후에 무엇이 재설정되나요?</dt><dd>전투 보드가 재설정됩니다. 미션 잠금 해제, 분대 레벨, XP, 룬, 영웅 레벨, 선택한 룬 보상, 훈련 및 소생 토큰은 로컬 진행 상태로 유지됩니다.</dd></div><div><dt>다이아몬드는 무엇을 할 수 있나요?</dt><dd>3개의 다이아몬드는 하나의 보상 세트를 다시 굴리고, 18개의 다이아몬드는 영구 훈련 슬롯을 확인합니다. 다이아몬드는 캠페인 임무, 영웅 또는 보스를 잠금 해제하지 않습니다.</dd></div><div><dt>이전 임무를 다시 플레이할 수 있나요?</dt><dd>그렇습니다. 최종 승리 후 30개 임무를 모두 포함하여 잠금 해제된 모든 임무는 계속 선택 가능합니다. 미션 30은 거짓 미션 31을 만들지 않습니다.</dd></div><div><dt>진행하려면 계정이 필요합니까?</dt><dd>아니요. 진행 상황은 이 브라우저에 저장됩니다. 사이트 데이터를 지우거나 장치를 변경하면 별도의 로컬 프로필이 시작될 수 있습니다.</dd></div></dl></div>
+    </div>
+  </section>
+    <!-- adsense-static-guide:end -->
+    <div class="battle-ad-reserve" aria-hidden="true"></div>
+
+    <script src="/src/site-config.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/version.js?v=20260701-version2"></script>
+    <script src="../../src/analytics.js?v=20260701-analytics2"></script>
+    <script>window.WonderAnalytics?.track("game_view", { game_id: "animal-rune-tactics", release_state: "release_candidate" });</script>
+    <script src="../../src/sound.js?v=20260720-locale11"></script>
+    <script src="../../src/edge-guard.js?v=20260710-mobile-play-shell2"></script>
+    <script src="/src/i18n.js?v=20260718-locale-routes1"></script><script src="../../src/game-runtime-localizer-loader.js?v=20260720-locale11-15"></script>
+    <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
+    <script src="../../src/wallet.js?v=20260701-wallet1"></script>
+    <script src="game.js?v=20260719-rune-stage-highlight1"></script>
+    <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1"></script>
+    <script>
+      (() => {
+        const loadGameInfo = () => {
+          if (document.querySelector("script[data-rune-game-info]")) return;
+          const script = document.createElement("script");
+          script.src = "../../src/game-page-info.js?v=20260720-locale11-2";
+          script.dataset.runeGameInfo = "idle";
+          script.async = true;
+          document.body.appendChild(script);
+        };
+        const schedule = () => {
+          if ("requestIdleCallback" in window) {
+            window.requestIdleCallback(loadGameInfo, { timeout: 1200 });
+          } else {
+            window.setTimeout(loadGameInfo, 300);
+          }
+        };
+        if (document.readyState === "complete") schedule();
+        else window.addEventListener("load", schedule, { once: true });
+      })();
+    </script>
+  </body>
+</html>

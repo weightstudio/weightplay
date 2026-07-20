@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <base href="/games/animal-reef-fisher/" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="robots" content="index,follow" />
+    <meta name="theme-color" content="#0a2a35" />
+    <meta name="description" content="Animal Reef Fisher est une campagne de pêche et de collecte de 30 missions. Bubble Fin, la loutre, lance des charges, suit une voie de tension de ligne en..." />
+    <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:type" content="game" />
+    <meta property="og:title" content="Pêcheur de récifs animaux | WeightPlay" />
+    <meta property="og:description" content="Animal Reef Fisher est une campagne de pêche et de collecte de 30 missions. Bubble Fin, la loutre, lance des charges, suit une voie de tension de ligne en..." />
+    <meta property="og:url" content="https://weightplay.com/fr/games/animal-reef-fisher/" />
+    <meta property="og:image" content="https://weightplay.com/assets/animal-reef-fisher-cover.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Pêcheur de récifs animaux | WeightPlay" />
+    <meta name="twitter:description" content="Animal Reef Fisher est une campagne de pêche et de collecte de 30 missions. Bubble Fin, la loutre, lance des charges, suit une voie de tension de ligne en..." />
+    <meta name="twitter:image" content="https://weightplay.com/assets/animal-reef-fisher-cover.png" />
+    <title>Pêcheur de récifs animaux | WeightPlay</title>
+    <link rel="canonical" href="https://weightplay.com/fr/games/animal-reef-fisher/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-reef-fisher/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-reef-fisher/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-reef-fisher/" />
+    <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/animal-reef-fisher/" />
+    <link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/animal-reef-fisher/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/animal-reef-fisher/" />
+    <link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/animal-reef-fisher/" />
+    <link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/animal-reef-fisher/" />
+    <link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/animal-reef-fisher/" />
+    <link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/animal-reef-fisher/" />
+    <link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/animal-reef-fisher/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-reef-fisher/" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Pêcheur de récifs animaux",
+  "alternateName": "動物珊瑚釣手",
+  "url": "https://weightplay.com/fr/games/animal-reef-fisher/",
+  "image": "https://weightplay.com/assets/animal-reef-fisher-cover.png",
+  "description": "Animal Reef Fisher est une campagne de pêche et de collecte de 30 missions. Bubble Fin, la loutre, lance des charges, suit une voie de tension de ligne en...",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio",
+    "url": "https://weightplay.com/"
+  },
+  "inLanguage": "fr",
+  "isAccessibleForFree": true,
+  "operatingSystem": "Web Browser",
+  "genre": [
+    "Pêche",
+    "Collecte",
+    "Timing",
+    "Animal"
+  ],
+  "audience": {
+    "@type": "PeopleAudience",
+    "audienceType": "General fishing and collection players"
+  }
+}
+    </script>
+    <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
+    <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
+    <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
+    <link rel="stylesheet" href="style.css?v=20260716-reef-keyboard1" />
+  </head>
+  <body data-tutorial-auto-show="false" data-sound-toggle="off">
+    <main class="reef-app" data-no-mobile-immersive="true">
+      <header class="topbar">
+        <a class="back-btn" data-wp-return="main" href="/" aria-label="Back to lobby"><span>&larr;</span><img src="../../assets/weightplay-logo.png" alt="" /></a>
+        <div class="brand">
+          <span>WeightPlay</span>
+          <h1 data-ui="title">Pêcheur de récifs animaux</h1>
+        </div>
+        <label class="locale">
+          <span data-ui="language">Language</span>
+          <select id="localeSelect" aria-label="Language">
+            <option value="en">English</option>
+            <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
+            <option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option>
+          </select>
+        </label>
+      </header>
+
+      <section id="loadingPanel" class="loading-panel" aria-live="polite">
+        <div class="loading-content">
+          <h2 data-ui="title">Animal Reef Fisher</h2>
+          <div class="loading-bar"><div id="loadingFill" class="loading-fill"></div></div>
+          <span id="loadingText" class="loading-percentage">0%</span>
+        </div>
+      </section>
+
+      <section id="mainPanel" class="panel menu-panel">
+        <img class="cover" src="../../assets/animal-reef-fisher-cover.webp" alt="" />
+        <div class="menu-copy">
+          <strong data-ui="menuTitle">Cast into the coral reef and build your sea-creature album.</strong>
+          <span data-ui="menuHint">Choose a reef zone, control line tension, earn Reef Notes, and upgrade your gear locally.</span>
+          <button id="menuSoundBtn" class="secondary-btn menu-sound-btn" type="button">Sound: On</button>
+          <button id="startBtn" class="primary-btn" type="button" data-ui="startGame">Start Game</button>
+        </div>
+      </section>
+
+      <section id="stagePanel" class="panel stage-panel is-hidden" data-wp-canvas-max-width="920">
+        <header class="stage-head">
+          <button id="stageBackBtn" class="stage-return" data-wp-return="stage" type="button" aria-label="Back">&larr;</button>
+          <strong data-ui="chooseZone">Choose Reef Zone</strong>
+        </header>
+        <div class="stage-workspace">
+          <div class="profile-grid">
+            <div><span data-ui="reefNotes">Reef Notes</span><strong id="notesText">0</strong></div>
+            <div><span data-ui="album">Album</span><strong id="albumText">0/12</strong></div>
+            <div><span data-ui="diamonds">Diamonds</span><strong id="diamondText">0</strong></div>
+          </div>
+          <div id="zoneRow" class="zone-row stage-rail" aria-label="Reef zones"></div>
+          <section class="stage-upgrades">
+            <strong data-ui="prepareGear">Prepare Gear</strong>
+          <div class="shop-row">
+            <button id="lureBtn" class="secondary-btn" type="button"></button>
+            <button id="sonarPrepBtn" class="secondary-btn" type="button"></button>
+          </div>
+          <div id="gearGrid" class="gear-grid" aria-label="Gear upgrades"></div>
+          </section>
+        </div>
+        <div class="stage-ad-reserve" aria-hidden="true"></div>
+      </section>
+
+      <section id="gamePanel" class="panel game-panel is-hidden" data-play-viewport data-no-mobile-immersive="true">
+        <div class="battle-shell" data-wp-canvas-max-width="920">
+        <div class="hud-row">
+          <button id="mapBtn" class="secondary-btn play-return" data-wp-return="battle" type="button" aria-label="Return to reef map">&larr;</button>
+          <div><span data-ui="zone">Zone</span><strong id="zoneText">Sunny Shore</strong></div>
+          <div><span data-ui="time">Time</span><strong id="timeText">90</strong></div>
+          <div><span data-ui="goal">Goal</span><strong id="goalText">0/2</strong></div>
+        </div>
+        <div class="play-frame">
+          <canvas id="gameCanvas" width="960" height="540" tabindex="0" aria-label="Animal Reef Fisher play area. Hold Space to charge and release to cast; use Left and Right arrows to control tension."></canvas>
+          <div id="catchToast" class="catch-toast is-hidden" aria-live="polite"></div>
+          <div class="cast-meter" aria-hidden="true"><div id="castFill" class="cast-fill"></div></div>
+        </div>
+        <div class="catch-hud" aria-live="polite">
+          <div>
+            <span data-ui="runScore">Run Score</span>
+            <strong id="runScoreText">0</strong>
+          </div>
+          <div>
+            <span data-ui="runCatchValue">Reef Notes</span>
+            <strong id="runValueText">0</strong>
+          </div>
+          <div class="catch-hud-last">
+            <span data-ui="lastCatch">Last Catch</span>
+            <strong id="lastCatchText" data-ui="noCatchYet">No catch yet</strong>
+          </div>
+        </div>
+        <div class="tension-panel">
+          <button id="sonarBtn" class="icon-btn" type="button" aria-label="Use sonar">
+            <img src="../../assets/animal-reef-fisher-diamond-sonar-ping.webp" alt="" />
+          </button>
+          <div class="tension-control">
+            <div class="tension-head">
+              <strong data-ui="tensionTitle">Line Tension</strong>
+              <span id="tensionStatus" data-ui="tensionStatusAim">Cast first, then keep the marker centered.</span>
+            </div>
+            <div class="tension-lane" id="tensionLane" role="slider" tabindex="0" aria-label="Line tension lane" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" aria-valuetext="50% - Safe">
+              <span class="lane-label lane-label-left" data-ui="tensionLow">Loose</span>
+              <div id="safeBand" class="safe-band"><span data-ui="tensionSafe">Safe</span></div>
+              <span class="lane-label lane-label-right" data-ui="tensionHigh">Tight</span>
+              <div id="tensionMarker" class="tension-marker"><span data-ui="tensionMarker">Drag</span></div>
+            </div>
+            <div id="tensionCoach" class="tension-coach" data-ui="tensionCoachAim">
+              Hold the water to cast. When a fish bites, use the red knob below.
+            </div>
+          </div>
+          <div id="hintText" class="hint" data-ui="castHint">Hold in the reef to charge, release to cast.</div>
+        </div>
+        <section id="resultPanel" class="panel result-panel is-hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultText">
+          <img class="result-otter" src="../../assets/animal-reef-fisher-cover.webp" alt="" />
+          <div class="result-content">
+            <h2 id="resultTitle">Expedition Complete</h2>
+            <p id="resultText"></p>
+            <div class="score-strip">
+              <div><span data-ui="score">Score</span><strong id="scoreText">0</strong></div>
+              <div><span data-ui="catchValue">Catch Value</span><strong id="catchValueText">0</strong></div>
+              <div><span data-ui="newAlbum">New Album</span><strong id="newAlbumText">0</strong></div>
+            </div>
+            <div class="catch-summary">
+              <h3 data-ui="catchSummary">This Expedition's Catch</h3>
+              <div id="catchList" class="catch-list"></div>
+            </div>
+            <p id="skillReportText" class="skill-report"></p>
+            <div class="result-actions">
+              <button id="nextZoneBtn" class="primary-btn is-hidden" type="button" data-ui="nextMission">Next Mission</button>
+              <button id="retryBtn" class="primary-btn" type="button" data-ui="retry">Try Again</button>
+              <button id="resultMenuBtn" class="secondary-btn" type="button" data-ui="reefMap">Reef Map</button>
+            </div>
+          </div>
+        </section>
+        </div>
+        <div class="battle-ad-reserve" aria-hidden="true"></div>
+      </section>
+    </main>
+    <!-- adsense-static-guide:start -->
+    <section class="game-page-info game-page-info-static" aria-label="Pêcheur de récifs animaux informations sur le jeu">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay Guide de jeu pour enfants</span><h2>Pêcheur de récifs animaux</h2><p>Animal Reef Fisher est une campagne de pêche et de collecte de 30 missions. Bubble Fin, la loutre, lance des charges, suit une voie de tension de ligne en direct, enregistre 12 créatures marines et dépense des notes de récif pour six améliorations d&#39;équipement enregistrées. Six régions de cinq missions modifient la règle de la zone de sécurité, tandis que les missions 5, 10, 15, 20, 25 et 30 garantissent des poissons nommés Gardien avec une traction, une armure ou un comportement actuel distinct.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>Campagne de tension de pêche</strong></div><div class="game-info-fact"><span>Genre</span><strong>Pêche · Collecte · Timing · Animal</strong></div><div class="game-info-fact"><span>Difficulté</span><strong>Progressif</strong></div><div class="game-info-fact"><span>Temps de jeu estimé</span><strong>2 à 4 minutes par mission</strong></div><div class="game-info-fact"><span>Compétences formées</span><strong>Concentrez-vous · Réaction · Résolution de problèmes</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>Monde et mission</h3><p>Les Reef Archive conservent les cartes actuelles de Sunny Shore, Kelp Garden, Coral Gate, Moon Tide, Storm Shelf et Abyssal Blue. Des marées saisonnières inhabituelles ont éloigné les poissons de leurs couloirs enregistrés. Bubble Fin emmène le bateau d&#39;enquête sur chaque itinéraire, en utilisant les captures pour confirmer quelles espèces s&#39;y déplacent encore et comment l&#39;eau tire désormais sur une ligne de pêche.</p>
+<p>Les Reef Notes sont des crédits de terrain utilisés pour améliorer l’équipement d’enquête. Chaque cinquième mission atteint un marqueur d&#39;habitat gardé par Sun Crown Guardian, Kelp Leviathan, Coral Ram Ray, Eclipse Manta, Storm Lantern Warden ou Crystal Crown Sovereign. Landing the Guardian valide la carte de cette région. Mission 30 classe le sixième tableau et termine la campagne sans créer la Mission 31.</p></div>
+      <div class="game-info-section"><h3>Comment fonctionnent les systèmes</h3><p>Déroulement de la mission : sélectionnez n&#39;importe quelle carte déverrouillée sur le rail horizontal. La plupart des buts nécessitent deux ou trois attrapés. Une victoire enregistre la progression et débloque exactement la mission suivante ; les missions antérieures restent rejouables.</p>
+<p>Lancer et chronométrer : une expédition commence avec 90 secondes, plus cinq secondes pour chaque niveau de portée de bateau au-dessus du niveau 1. Maintenez l&#39;eau ou l&#39;espace pour charger et relâchez pour lancer. Plus de puissance raccourcit le délai de morsure ; il ne sélectionne pas un poisson plus rare.</p>
+<p>Contrôle de ligne : après une bouchée, faites glisser le bouton rouge, glissez sur la mer ou utilisez Gauche et Droite. Le contrôle SÉCURISÉ supprime la puissance du poisson. Rester trop longtemps en dehors du groupe brise la ligne, revient au casting et laisse le chronomètre de mission fonctionner.</p>
+<p>Identités des poissons : les espèces normales présentent des motifs stables, dardés ou lourds. L&#39;identité actuelle apparaît dans l&#39;instruction Hook et le résultat Sonar. Les nouvelles espèces attribuent un bonus d&#39;album en plus des points et des notes de récif.</p>
+<p>Conditions de mer : les eaux libres sont stables ; Kelp Drift fait bouger le groupe ; Coral Snags change de largeur ; Moon Tide change de côté ; Storm Gust applique une poussée de ligne chronométrée ; Abyss Trial combine dérive, pression et rafales.</p>
+<p>Équipement et outils optionnels : canne, moulinet, ligne, appât, bateau et scanner ont cinq niveaux locaux. Le scanner élargit les pools d’espèces antérieurs. Un leurre rare à trois diamants garantit un lancer rare éligible, tandis qu&#39;un sonar à deux diamants révèle et verrouille un prochain poisson. Les deux nécessitent une confirmation et aucun n’est nécessaire pour la progression.</p></div>
+      <div class="game-info-section"><h3>Comment jouer</h3><ol><li>Appuyez sur Démarrer le jeu, glissez le rail de mission de 30 cartes et choisissez une carte déverrouillée après avoir lu l&#39;état de la mer et atteint l&#39;objectif.</li><li>Préparez éventuellement un leurre ou un sonar rare, puis utilisez les notes de récif sur l&#39;équipement qui résout le problème actuel.</li><li>Tenez l&#39;eau ou l&#39;espace et relâchez le plâtre. Un lancer puissant réduit le temps passé à attendre une bouchée.</li><li>Lorsque le poisson apparaît, suivez la bande verte avec le marqueur rouge au lieu de forcer chaque combat à revenir au centre.</li><li>Récupérez rapidement après une ligne brisée. Dans les missions Guardian, lisez la règle du boss nommé et tout signal d&#39;armure avant d&#39;apporter une correction importante.</li><li>Atteignez l&#39;objectif de capture, évaluez le score, les notes et les découvertes d&#39;albums dans Résultat, puis revenez à la carte des récifs pour la mission suivante.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Conseils stratégiques</h3><ul><li>Choisissez la force de la canne ou la qualité de l&#39;appât lorsque les combats en toute sécurité prennent trop de temps ; choisissez Reel Control ou Line Durability lorsque le marqueur échappe à plusieurs reprises à SAFE.</li><li>Les missions Kelp, Moon et Abyss déplacent délibérément le centre de sécurité. Suivez la zone verte, pas la barre des 50.</li><li>Coral Ram Ray et Crystal Crown Sovereign ne peuvent pas perdre de pouvoir lorsqu&#39;ils sont gardés. Utilisez cette phase pour vous stabiliser afin que la prochaine ouverture commence en toute sécurité.</li><li>Les rafales de tempête suivent un rythme de trois secondes. Maintenez près du milieu de la bande actuelle avant le flash, puis corrigez après la poussée.</li><li>Un casting complet raccourcit l&#39;attente mais n&#39;affecte pas la rareté. Enregistrez le Rare Lure en une seule fois pour une entrée d&#39;album rare manquante.</li><li>Utilisez Sonar lorsque vous savez qu&#39;un comportement stable, dardant, lourd ou gardien vaut plus que la prise rare garantie du leurre.</li></ul></div>
+      <div class="game-info-section"><h3>Campagne et croissance de la difficulté</h3><p>Les missions 1 à 5 utilisent une bande Open Water stable. Les quatre premiers enseignent les identités de lancer, de récupération de ligne et de traction normale ; Sun Crown Guardian termine le chapitre avec des impulsions de couronne douces.</p>
+<p>Les missions 6 à 10 déplacent tout le groupe à travers Kelp Drift. Kelp Leviathan combine la cible mobile avec une forte traction soutenue.</p>
+<p>Les missions 11 à 15 permettent au groupe de respirer de plus en plus largement autour de Coral Snags. Coral Ram Ray ajoute des phases gardées et ouvertes de deux secondes.</p>
+<p>Les missions 16 à 20 changent la bande de sécurité entre les côtés toutes les quatre secondes. Eclipse Manta feint avant d&#39;inverser sa traction.</p>
+<p>Les missions 21 à 25 réduisent la bande et frappent la ligne avec une rafale de tempête de trois secondes. Storm Lantern Warden maintient une forte traction active entre les rafales.</p>
+<p>Les missions 26 à 30 combinent pression de déplacement et rafales dans l&#39;Abyss Trial. Crystal Crown Sovereign ajoute des fenêtres d&#39;armure pour le test final de combinaison de règles.</p></div>
+      <div class="game-info-section"><h3>Note de conception du développeur</h3><p>La procédure originale en deux étapes reste cohérente dans les 30 missions : charger un lancer, puis gérer la tension. La difficulté se déplace vers des règles d&#39;eau lisibles plutôt que vers des poissons plus rapides. Une bande à la dérive ou en rétrécissement change l&#39;endroit où viser, une rafale change le moment où maintenir la position et l&#39;armure du Gardien change lorsqu&#39;un contrôle sûr crée une progression. Les chapitres de cinq missions permettent à une condition de devenir familière avant qu&#39;un Gardien nommé ne la combine avec un profil d&#39;extraction distinct. Le téléphone, l&#39;ordinateur de bureau, la tablette et le paysage court utilisent la même composition logique de bataille. Le pointeur et le clavier partagent un état, le temps de page cachée est suspendu et le résultat reste dans Battle au-dessus de la même réserve physique. La progression de l&#39;album provient donc de décisions de contrôle réelles et répétées, tandis que les choix de mission et d&#39;équipement enregistrés donnent un objectif clair à une nouvelle visite.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Remarque aux parents</h3><p>Aucun compte n&#39;est requis. Ce navigateur stocke les missions déverrouillées et sélectionnées, les notes de récif, les meilleures captures, 12 entrées d&#39;album, six niveaux d&#39;équipement et l&#39;état préparé du leurre ou du sonar. Effacer le stockage du site ou changer de navigateur peut lancer une sauvegarde distincte. La balance Diamant partagée est facultative et est utilisée uniquement pour les préparations confirmées du Leurre et du Sonar. Les 30 missions, les six Gardiens, les niveaux d&#39;équipement et la progression ordinaire de l&#39;album restent disponibles sans ces outils. Les rapports de compétences résument la course en cours à des fins de divertissement et ne constituent pas un diagnostic, un classement ou une évaluation formelle des capacités.</p></div>
+      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>Combien de missions et de Gardiens sont inclus ?</dt><dd>Il y a 30 missions. Les missions 5, 10, 15, 20, 25 et 30 garantissent six rencontres différentes avec des Gardiens.</dd></div><div><dt>Pourquoi la bande de sécurité verte bouge-t-elle ou change-t-elle de taille ?</dt><dd>C&#39;est l&#39;état de la mer de la mission. Le varech dérive, le corail change de largeur, la lune change de côté, la tempête ajoute des rafales et Abyss combine plusieurs règles.</dd></div><div><dt>Que se passe-t-il lorsque la ligne se casse ?</dt><dd>Le poisson actuel s&#39;échappe et le lancer reprend. L&#39;expédition continue, mais son horloge ne se remet pas à zéro.</dd></div><div><dt>Le pouvoir d&#39;incantation choisit-il un meilleur poisson ?</dt><dd>Non. La puissance raccourcit le délai de morsure. Les espèces proviennent du pool de mission, du niveau Scanner, d&#39;un leurre préparé ou d&#39;un résultat Sonar verrouillé.</dd></div><div><dt>Les Gardiens gardés peuvent-ils perdre le pouvoir ?</dt><dd>Coral Ram Ray et Crystal Crown Sovereign perdent du pouvoir uniquement lorsque leur garde est ouverte et que le marqueur est SÉCURISÉ.</dd></div><div><dt>Les diamants sont-ils obligatoires ?</dt><dd>Non. Les diamants ne préparent qu&#39;une seule prise rare facultative ou un verrou Sonar pour le prochain poisson. Ils ne débloquent pas de missions, de Gardiens ou d&#39;équipement.</dd></div><div><dt>Quelle progression est sauvegardée ?</dt><dd>Le navigateur stocke les déverrouillages de mission, les notes, les découvertes d&#39;albums, les niveaux d&#39;équipement, les meilleures captures, la mission sélectionnée et les outils optionnels préparés.</dd></div><div><dt>Puis-je jouer avec un clavier ?</dt><dd>Oui. Maintenez et relâchez l&#39;Espace pour lancer, puis utilisez Gauche et Droite sur la zone de pêche ou le curseur de tension.</dd></div></dl></div>
+    </div>
+  </section>
+    <!-- adsense-static-guide:end -->
+
+    <script src="/src/site-config.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/version.js?v=20260701-version2"></script>
+    <script src="../../src/analytics.js?v=20260630-analytics1"></script>
+    <script src="../../src/edge-guard.js?v=20260710-mobile-play-shell2"></script>
+    <script src="/src/i18n.js?v=20260718-locale-routes1"></script><script src="../../src/game-runtime-localizer-loader.js?v=20260720-locale11-15"></script>
+    <script src="../../src/sound.js?v=20260720-locale11"></script>
+    <script src="../../src/tutorial.js?v=20260708-reef-tension-clarity1"></script>
+    <script src="../../src/wallet.js?v=20260706-diamond1"></script>
+  <script src="game.js?v=20260719-reef-mouth-facing1"></script>
+    <script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
+  </body>
+</html>

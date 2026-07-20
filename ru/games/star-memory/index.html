@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <base href="/games/star-memory/" />
+    <meta charset="UTF-8" />
+    <meta name="weightplay-audience" content="kids" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0f172a" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="robots" content="index,follow" />
+    <meta name="description" content="Animal Star Memory — это 30-этапное путешествие по ночному небу с подбором картинок. Игроки помогают шести дружелюбным Хранителям Звезд воссоединить..." />
+    <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Звездная память животных | WeightPlay" />
+    <meta property="og:description" content="Animal Star Memory — это 30-этапное путешествие по ночному небу с подбором картинок. Игроки помогают шести дружелюбным Хранителям Звезд воссоединить..." />
+    <meta property="og:url" content="https://weightplay.com/ru/games/star-memory/" />
+    <meta property="og:image" content="https://weightplay.com/assets/memory-cover.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>Звездная память животных | WeightPlay</title>
+    <link rel="canonical" href="https://weightplay.com/ru/games/star-memory/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/star-memory/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/star-memory/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/star-memory/" />
+    <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/star-memory/" />
+    <link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/star-memory/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/star-memory/" />
+    <link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/star-memory/" />
+    <link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/star-memory/" />
+    <link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/star-memory/" />
+    <link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/star-memory/" />
+    <link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/star-memory/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/star-memory/" />
+    <link rel="stylesheet" href="style.css?v=20260718-all-cards-fit1" />
+    <script data-wp-stage-standard>/* Shared Kids Stage selector owns pointer drag and settle; the game owns selected-card highlighting and activation. */</script>
+    <script data-wp-battle-standard>/* Animal Star Memory owns its native Kids Battle Canvas. */</script>
+    <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Звездная память животных",
+  "alternateName": "動物星星翻牌",
+  "url": "https://weightplay.com/ru/games/star-memory/",
+  "image": "https://weightplay.com/assets/memory-cover.png",
+  "description": "Animal Star Memory — это 30-этапное путешествие по ночному небу с подбором картинок. Игроки помогают шести дружелюбным Хранителям Звезд воссоединить...",
+  "applicationCategory": "Game",
+  "operatingSystem": "Web browser",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio"
+  },
+  "inLanguage": "ru",
+  "isAccessibleForFree": true,
+  "genre": [
+    "Память",
+    "Головоломка",
+    "Животное"
+  ],
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "Kids and families",
+    "suggestedMinAge": 6
+  },
+  "learningResourceType": "Skill practice through play",
+  "educationalUse": "Practice Memory, Focus, Problem Solving through family-friendly browser gameplay."
+}
+    </script>
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
+    <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
+    <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
+    <meta name="twitter:title" content="Звездная память животных | WeightPlay" />
+    <meta name="twitter:description" content="Animal Star Memory — это 30-этапное путешествие по ночному небу с подбором картинок. Игроки помогают шести дружелюбным Хранителям Звезд воссоединить..." />
+  </head>
+  <body>
+    <main class="memory-game" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
+      <!-- Top Navigation and Settings -->
+      <header class="topbar">
+        <a class="home-link" data-wp-return="main" href="/kids/" id="homeLink" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
+        <div>
+          <p id="brandText">WeightPlay</p>
+          <h1 id="titleText">Звездная память животных</h1>
+        </div>
+        <div class="header-right">
+          <label class="language-picker">
+            <span id="languageLabel">Language</span>
+            <select id="localeSelect" aria-label="Language">
+              <option value="en">English</option>
+              <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
+              <option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option>
+            </select>
+          </label>
+        </div>
+      </header>
+
+      <section id="mainPanel" class="main-panel">
+        <img class="main-poster" src="../../assets/memory-cover.webp" alt="" />
+        <div class="main-copy">
+          <h2 id="mainTitle">Animal Star Memory</h2>
+          <p id="mainIntro">Follow 30 starlight trails where previews, shuffles, ordered pairs, and rotating constellations change how each board is remembered.</p>
+          <button id="startBtn" type="button">Start Game</button>
+        </div>
+      </section>
+
+      <!-- Gameplay HUD -->
+      <section id="gameHud" class="game-hud hidden" aria-label="Game stats">
+        <button id="battleBackBtn" data-wp-return="battle" type="button" aria-label="Back to levels">&larr;</button>
+        <div class="hud-item">
+        <span id="levelIndicator">Level 1 / 30</span>
+          <div><i id="levelFill"></i></div>
+        </div>
+        <div class="hud-item-score">
+          <span id="scoreLabel">Score</span>
+          <strong id="scoreText">0</strong>
+        </div>
+        <div class="hud-item-moves">
+          <span id="movesLabel">Moves</span>
+          <strong id="movesText">0 / 0</strong>
+        </div>
+      </section>
+
+      <!-- Stage Selection Screen -->
+      <section id="stageSelectPanel" class="stage-select hidden">
+        <header class="wp-standard-stage-heading"><button id="stageBackBtn" data-wp-return="stage" type="button" aria-label="Back">&larr;</button><h2 id="stageSelectTitle">Choose Level</h2></header>
+        <div id="stageGrid" class="stage-grid" data-wp-stage-settle-duration="360" data-wp-stage-settle-easing="smoothstep"></div>
+      </section>
+
+      <!-- Main Game Board -->
+      <section id="gameBoardPanel" class="game-board-panel hidden">
+        <div id="cardGrid" class="card-grid"></div>
+      </section>
+
+      <!-- Gameplay Footer / Tips -->
+      <section id="gameFeedback" class="feedback hidden" aria-live="polite">
+        <strong id="feedbackText">Tap cards to find matching pairs!</strong>
+        <div id="comboContainer" class="combo-badge hidden">
+          Combo <span id="comboText">x2</span>
+        </div>
+      </section>
+
+      <!-- Overlay Panel (Victory / Failure / All Clear) -->
+      <div id="resultPanel" class="result-panel hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle">
+        <div class="result-card">
+          <h2 id="resultTitle">Level Clear!</h2>
+          
+          <div id="starContainer" class="star-rating">
+            <span class="star" data-index="1">&#9733;</span>
+            <span class="star" data-index="2">&#9733;</span>
+            <span class="star" data-index="3">&#9733;</span>
+          </div>
+
+          <p id="resultText">You cleared the level in 12 moves!</p>
+
+          <h3 id="skillReportTitle" class="skill-report-title">Skill Report</h3>
+          <p id="skillReportIntro" class="skill-report-intro">This round practiced memory, focus, and problem solving.</p>
+          <section id="memoryReport" class="memory-report hidden" aria-live="polite">
+            <div class="memory-report-item">
+              <span id="reportPairsLabel">Pairs</span>
+              <strong id="reportPairsValue">0 / 0</strong>
+            </div>
+            <div class="memory-report-item">
+              <span id="reportMovesLabel">Moves</span>
+              <strong id="reportMovesValue">0</strong>
+            </div>
+            <div class="memory-report-item">
+              <span id="reportStreakLabel">Best streak</span>
+              <strong id="reportStreakValue">x0</strong>
+            </div>
+          </section>
+          <p id="progressComparison" class="progress-comparison"></p>
+          
+          <div class="result-actions">
+            <button id="nextLevelBtn" type="button">Next Level</button>
+            <button id="againBtn" type="button">Play Again</button>
+            <button id="stageSelectBtn" type="button">Levels</button>
+            <a id="lobbyLink" href="/kids/" class="lobby-btn">Lobby</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Loading Panel -->
+      <div id="loadingPanel" class="loading-panel">
+        <div class="loading-card">
+          <strong id="loadingTitle">Loading</strong>
+          <span id="loadingText">0%</span>
+          <div><i id="loadingFill"></i></div>
+        </div>
+      </div>
+    </main>
+    <!-- adsense-static-guide:start -->
+    <section class="game-page-info game-page-info-static" aria-label="Звездная память животных информация об игре">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay Руководство по игре для детей</span><h2>Звездная память животных</h2><p>Animal Star Memory — это 30-этапное путешествие по ночному небу с подбором картинок. Игроки помогают шести дружелюбным Хранителям Звезд воссоединить созвездия животных, находя совпадающие карты. Кампания начинается с классических пар, затем меняется принцип работы памяти посредством открытия предварительного просмотра, перемешивания лун после ошибок, требуемого порядка животных и смены созвездий после успешных совпадений. Каждый пятый этап представляет собой проверку кипера, а этап 30 объединяет все четыре расширенных правила на полной доске из двенадцати пар.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Геймплей</span><strong>Матч памяти</strong></div><div class="game-info-fact"><span>Жанр</span><strong>Память · Головоломка · Животное</strong></div><div class="game-info-fact"><span>Сложность</span><strong>Легко и сложно</strong></div><div class="game-info-fact"><span>Расчетное время игры</span><strong>2-8 минут на этап</strong></div><div class="game-info-fact"><span>Обученные навыки</span><strong>Память · Фокус · Решение проблем</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>Мир и миссия</h3><p>Звездная карта животных однажды помогла лесным, речным, луговым и полярным животным найти дорогу домой после захода солнца. Нежный метеоритный дождь не уничтожил карту, но разделил свет каждого животного на две скрытые карты. Игрок становится юным читателем карт Хранителей, заново соединяя каждую пару, чтобы ее созвездие снова могло сиять.</p>
+<p>Кот, Медведь, Сова, Лев, Пингвин и Коала охраняют по одному пятиэтапному уроку. Прохождение проверки хранителя восстанавливает эту часть неба. Завершение последней проверки «Большой звезды Коалы» означает, что все двенадцать созвездий животных вернулись на свои правильные маршруты.</p></div>
+      <div class="game-info-section"><h3>Как работают системы</h3><p>Классические этапы сохраняют каждый скрытый символ на месте, поэтому единственным правилом является сохранение позиции.</p>
+<p>На этапах предварительного просмотра на короткое время открывается вся доска, а затем скрываются все карты перед началом ввода.</p>
+<p>На этапах Moon Shuffle после неправильного предположения перемещаются одни и те же несовпадающие символы, поэтому старые локации необходимо обновлять, а не повторять вслепую.</p>
+<p>На упорядоченных этапах указывается пара животных, которую необходимо очистить следующей. Правильная пара, найденная не по порядку, отображается, а затем скрывается, не продвигаясь вперед.</p>
+<p>Этапы Constellation Shift вращают все оставшиеся скрытые символы после успешной пары, меняя карту, сохраняя при этом каждую необходимую пару.</p>
+<p>Ходы, пары, лучшая серия, счет, звезды, разблокировка этапов и лучшие результаты обеспечивают локальную обратную связь о прогрессе. Таблица лидеров не используется.</p></div>
+      <div class="game-info-section"><h3>Как играть</h3><ol><li>Выберите разблокированную сцену на горизонтальной направляющей.</li><li>Переверните две карты и запомните обе позиции.</li><li>Соответствующая пара остается очищенной; несоответствие снова скрывается после короткой видимой паузы.</li><li>Прочтите значок правила, потому что на более поздних этапах можно предварительно просмотреть, перетасовать, потребовать следующую именованную пару или переместить скрытые символы после совпадения.</li><li>Очистите каждую пару в пределах лимита ходов, чтобы разблокировать следующий этап.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Советы по стратегии</h3><ul><li>Во время предварительного просмотра сканируйте рядами или небольшими группами, а не пытайтесь назвать всю доску сразу.</li><li>После перемешивания лун отбросьте старые позиции и восстановите карту из новых открытий.</li><li>На упорядоченных этапах найдите запрошенное животное, прежде чем тратить ходы на другие известные пары.</li><li>После смены созвездия вспомните, какие символы еще были скрыты, но не доверяйте их прежним положениям.</li><li>Используйте паузу видимого несоответствия, чтобы сравнить обе карты, прежде чем они перевернутся.</li></ul></div>
+      <div class="game-info-section"><h3>Кампания и рост сложности</h3><p>Этапы 1–5 обучают классическому сопоставлению позиций и заканчиваются проверкой предварительного просмотра открытия Кэт. Этапы 6–10 сокращают предварительный просмотр и заканчиваются одноразовым вступительным тасованием Медведя.</p>
+<p>Этапы 11–15 представляют перетасовку лун после ошибок. Этапы 16–20 требуют указанного порядка животных, в конечном итоге объединяя порядок с перетасовкой в ​​львиной проверке.</p>
+<p>Этапы 21–25 чередуют оставшееся созвездие после каждого успеха. На этапах 26–30 сочетаются предварительный просмотр, порядок, перетасовка и ротация, кульминацией которых является финал с двенадцатью парами, где каждое правило активно.</p></div>
+      <div class="game-info-section"><h3>Примечание разработчика к проекту</h3><p>Игра начинается со знакомого правила сопоставления, поэтому элементы управления сразу читаются, но ее глубина зависит от изменения того, какая информация остается достоверной. Предварительный просмотр проверяет первые впечатления, перетасовка проверяет обновление памяти, порядок изменения целевого приоритета, а вращение делает успешный ход изменяет следующее решение. В этой механике используются одни и те же большие карты с изображениями на сенсорных экранах и клавиатурах, что позволяет избежать дополнительной сложности управления. Дружественные проверки хранителей заменяют бой, потому что история рассказывает о восстановлении общей звездной карты. Ограничения на перемещение создают четкий финиш, а повторные попытки остаются немедленными и поддерживающими.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Примечание для родителей</h3><p>Animal Star Memory может поддерживать визуальное запоминание, внимание, гибкое обновление и следование короткой последовательности. Взрослые могут спросить, какие локации остаются надежными после перетасовки или почему нужно сначала найти упорядоченную пару. На этой странице для детей в игре нет боевых действий, требований к учетной записи, публичного рейтинга или запросов на рекламу. Stars и Skill Report поощряют обратную связь с местными игроками, а не оценку интеллекта, школы, здоровья или развития.</p></div>
+      <div class="game-info-section"><h3>Часто задаваемые вопросы</h3><dl><div><dt>Сколько этапов?</dt><dd>В шести уроках 30 именованных этапов с проверками хранителя на 5, 10, 15, 20, 25 и 30.</dd></div><div><dt>Что происходит на этапе Moon Shuffle?</dt><dd>После несовпадения одни и те же несовпадающие символы перемещаются в разные скрытые позиции.</dd></div><div><dt>Почему совпадающая пара снова спряталась?</dt><dd>На упорядоченном этапе обратная связь определяет, какая пара животных должна быть очищена следующей.</dd></div><div><dt>Что делает сдвиг созвездий?</dt><dd>После удачной пары все оставшиеся скрытые символы поворачиваются на одну позицию.</dd></div><div><dt>Использует ли предварительный просмотр ходы?</dt><dd>Нет. Ввод заблокирован, пока открытая доска видна, и игра начинается после того, как она скроется.</dd></div><div><dt>Можно ли переигрывать этапы?</dt><dd>Да. Любой разблокированный этап можно переиграть, чтобы улучшить его местный балл или звездный результат.</dd></div><div><dt>Прогресс сохраняется?</dt><dd>Разблокированные этапы, звезды и лучшие результаты сохраняются в этом браузере без необходимости входа в систему.</dd></div><div><dt>Показывает ли страница «Дети» рекламу?</dt><dd>Нет. Эта игра не требует рекламы и не имеет резерва рекламы.</dd></div><div><dt>Является ли отчет о навыках формальным тестом на память?</dt><dd>Нет. Здесь суммируются только пары, ходы и серии из текущей игры.</dd></div></dl></div>
+    </div>
+  </section>
+    <!-- adsense-static-guide:end -->
+    <!-- Site Configuration & Framework Scripts -->
+    <script src="/src/site-config.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/version.js?v=20260701-version2"></script>
+    <script src="../../src/analytics.js?v=20260701-analytics2"></script>
+    <script>
+      window.WonderAnalytics?.track("game_view", { game_id: "star-memory" });
+    </script>
+    <script src="../../src/sound.js?v=20260720-locale11"></script>
+    <script src="../../src/edge-guard.js?v=20260710-mobile-play-shell2"></script>
+    <script src="/src/i18n.js?v=20260718-locale-routes1"></script><script src="../../src/game-runtime-localizer-loader.js?v=20260720-locale11-15"></script>
+    <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
+    <script src="game.js?v=20260718-all-cards-fit1"></script>
+    <script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
+  </body>
+</html>

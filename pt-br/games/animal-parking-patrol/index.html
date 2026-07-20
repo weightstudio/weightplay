@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <base href="/games/animal-parking-patrol/" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="robots" content="index,follow" />
+  <meta name="weightplay-audience" content="kids" />
+  <title>Patrulha de estacionamento de animais | WeightPlay</title>
+  <meta name="description" content="Animal Parking Patrol é um quebra-cabeça de ordem de trânsito de trinta rotas guiado por Moon Cap Orla. Cada carroça de madeira para animais só pode sair..." />
+  <meta property="og:site_name" content="WeightPlay" /><meta property="og:type" content="website" /><meta property="og:title" content="Patrulha de estacionamento de animais | WeightPlay" /><meta property="og:description" content="Animal Parking Patrol é um quebra-cabeça de ordem de trânsito de trinta rotas guiado por Moon Cap Orla. Cada carroça de madeira para animais só pode sair..." /><meta property="og:url" content="https://weightplay.com/pt-br/games/animal-parking-patrol/" /><meta property="og:image" content="https://weightplay.com/assets/animal-parking-patrol-cover.png" />
+  <meta name="twitter:card" content="summary_large_image" /><meta name="twitter:title" content="Patrulha de estacionamento de animais | WeightPlay" /><meta name="twitter:description" content="Animal Parking Patrol é um quebra-cabeça de ordem de trânsito de trinta rotas guiado por Moon Cap Orla. Cada carroça de madeira para animais só pode sair..." />
+  <link rel="canonical" href="https://weightplay.com/pt-br/games/animal-parking-patrol/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-parking-patrol/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-parking-patrol/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-parking-patrol/" />
+    <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/animal-parking-patrol/" />
+    <link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/animal-parking-patrol/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/animal-parking-patrol/" />
+    <link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/animal-parking-patrol/" />
+    <link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/animal-parking-patrol/" />
+    <link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/animal-parking-patrol/" />
+    <link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/animal-parking-patrol/" />
+    <link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/animal-parking-patrol/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-parking-patrol/" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Patrulha de estacionamento de animais",
+  "url": "https://weightplay.com/pt-br/games/animal-parking-patrol/",
+  "image": "https://weightplay.com/assets/animal-parking-patrol-cover.png",
+  "description": "Animal Parking Patrol é um quebra-cabeça de ordem de trânsito de trinta rotas guiado por Moon Cap Orla. Cada carroça de madeira para animais só pode sair...",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any modern browser",
+  "isAccessibleForFree": true,
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio"
+  },
+  "genre": [
+    "Quebra-cabeça",
+    "Lógica",
+    "Animal"
+  ],
+  "audience": {
+    "@type": "PeopleAudience",
+    "suggestedMinAge": 9
+  },
+  "inLanguage": "pt-BR"
+}
+    </script>
+    <link rel="stylesheet" href="../../src/loading-screen.css" />
+  <link rel="stylesheet" href="../../src/game-page-info.css" />
+  <link rel="stylesheet" href="style.css?v=20260720-release-1" />
+</head>
+<body class="wp-kids-audience" data-sound-toggle="off">
+  <div id="loadingPanel" class="loading-panel" role="status" aria-live="polite">
+    <div class="loading-card"><img src="../../assets/weightplay-logo.png" alt="" /><strong data-i18n="loading">Opening the forest plaza…</strong><div class="loading-track"><i id="loadingBar"></i></div></div>
+  </div>
+
+  <div id="mainGroup" class="main-group" hidden>
+    <main id="mainScreen" class="main-screen">
+      <header class="main-header">
+        <a class="home-link" href="/kids/" data-i18n-aria="backWeightPlay" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a>
+        <strong data-i18n="title">Animal Parking Patrol</strong>
+        <label class="locale-control"><span class="sr-only" data-i18n="language">Language</span><select id="localeSelect" data-i18n-aria="language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="pt-BR">Português (Brasil)</option><option value="de">Deutsch</option></select></label>
+      </header>
+      <section class="main-hero">
+        <img class="main-poster" src="../../assets/animal-parking-patrol-cover.webp" data-i18n-alt="posterAlt" alt="Imagem do jogo Patrulha de estacionamento de animais" />
+        <div class="main-copy"><small data-i18n="eyebrow">Moon Cap Orla's traffic desk</small><h1 data-i18n="title">Patrulha de estacionamento de animais</h1><p data-i18n="pitch">Read each cart's direction. Clear the path and guide every animal safely out of the forest plaza.</p><div id="mainProgress" class="main-progress"></div><button id="startBtn" class="primary-action" type="button" data-i18n="start">Start Game</button></div>
+      </section>
+    </main>
+    <section class="game-page-info game-page-info-static" aria-label="Patrulha de estacionamento de animais informações do jogo">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay Guia do jogo infantil</span><h2>Patrulha de estacionamento de animais</h2><p>Animal Parking Patrol é um quebra-cabeça de ordem de trânsito de trinta rotas guiado por Moon Cap Orla. Cada carroça de madeira para animais só pode sair na direção para a qual está voltado, então os jogadores inspecionam toda a praça florestal e liberam os carrinhos em uma sequência segura.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Jogabilidade</span><strong>Quebra-cabeça de ordem de tráfego</strong></div><div class="game-info-fact"><span>Gênero</span><strong>Quebra-cabeça · Lógica · Animal</strong></div><div class="game-info-fact"><span>Dificuldade</span><strong>Fácil de desafiar</strong></div><div class="game-info-fact"><span>Tempo estimado de jogo</span><strong>1-5 minutos por rota</strong></div><div class="game-info-fact"><span>Habilidades treinadas</span><strong>Lógica · Planejamento Visual · Sequenciamento</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>Mundo e Missão</h3><p>O tráfego do festival congestionou a travessia da floresta. Orla observa de cima enquanto raposas, lontras, pandas, leões, corujas, tartarugas, coelhos e rinocerontes esperam em carroças direcionais. Limpar todas as rotas restaura um caminho seguro pela praça.</p></div>
+      <div class="game-info-section"><h3>Como funcionam os sistemas</h3><p>Toque em um carrinho somente quando todas as células da grade entre ele e a borda correspondente estiverem limpas. Uma torneira bloqueada passa por uma das três verificações de segurança. Desfazer restaura a saída anterior; Reiniciar reconstrói o quebra-cabeça de autoria exata; A dica faz brilhar um carrinho atualmente seguro.</p>
+<p>Rotas posteriores adicionam carrinhos de sinalização que desbloqueiam sinais vermelhos, carrinhos fechados que devem esperar e comboios interligados que partem em ordem. Cada rota salva conclusão, estrelas e a melhor contagem de toques bloqueados localmente.</p></div>
+      <div class="game-info-section"><h3>Como jogar</h3><ol><li>Leia a direção mostrada em cada carrinho.</li><li>Encontre um carrinho com um caminho livre até a borda.</li><li>Resolva as condições de sinalização e comboio antes dos carrinhos marcados.</li><li>Guie cada carrinho antes de usar todas as três verificações de segurança.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Dicas de estratégia</h3><ul><li>Digitalize de cada borda em direção ao centro.</li><li>Libera carrinhos que abrem caminhos para vários outros.</li><li>Encontre o carrinho de sinalização antes de tocar em um carrinho fechado.</li><li>Use Desfazer imediatamente quando uma saída criar uma ordem pior.</li></ul></div>
+      <div class="game-info-section"><h3>Campanha e crescimento de dificuldade</h3><p>As rotas 1 a 5 ensinam direções; 6-10 utilizam travessias mais densas; 11-15 adicionar bloqueios de sinal; 16-20 introduzem a ordem do comboio; 21-25 enviam tráfego para todas as quatro bordas; 26-30 combinam todas as regras em praças maiores.</p></div>
+      <div class="game-info-section"><h3>Nota de design do desenvolvedor</h3><p>Rotas determinísticas curtas transformam erros em informações úteis em vez de punições aleatórias. Carrinhos grandes, setas visíveis e a mesma regra de toque funcionam no telefone e no desktop. As ações Pausar, Ajuda, Desfazer, Reiniciar e Resultado preservam um fluxo claro. O progresso permanece apenas neste navegador.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Nota dos pais</h3><p>Este quebra-cabeça infantil não contém anúncios e não precisa de conta. As estrelas e os registros de rota são armazenados localmente e não são carregados. Pratica a exploração visual e o planejamento para entretenimento, não como um teste de habilidade.</p></div>
+      <div class="game-info-section"><h3>Perguntas frequentes</h3><dl><div><dt>Por que um carrinho não se move?</dt><dd>Outro carrinho, um sinal vermelho ou uma regra de comboio está bloqueando sua rota.</dd></div><div><dt>O que o carrinho de sinalização faz?</dt><dd>O carrinho de sinalização marcado abre os sinais vermelhos nessa rota.</dd></div><div><dt>Quantos toques bloqueados são permitidos?</dt><dd>Três por tentativa.</dd></div><div><dt>A dica resolve a rota?</dt><dd>Não. Ele destaca um carrinho seguro.</dd></div><div><dt>Quantas rotas estão incluídas?</dt><dd>Trinta rotas de autoria.</dd></div><div><dt>O progresso é salvo?</dt><dd>Sim, apenas neste navegador.</dd></div></dl></div>
+    </div>
+  </section>
+  </div>
+
+  <section id="stageScreen" class="stage-screen" hidden>
+    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-canvas-max-width="920" data-wp-stage-art="../../assets/animal-parking-patrol-cover.webp" style="--wp-stage-art:url('../../assets/animal-parking-patrol-cover.webp')">
+      <header class="stage-header"><button id="stageBackBtn" type="button" data-i18n-aria="backMain">←</button><div><strong data-i18n="chooseStage">Choose a patrol route</strong><span id="stageSummary"></span></div><button id="stageHelpBtn" class="utility-button" type="button" data-i18n-aria="tutorialHelp" aria-label="How to play">?</button></header>
+      <section class="chapter-panel"><small id="chapterKicker"></small><strong id="chapterTitle"></strong><p id="chapterRule"></p></section>
+      <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-recommendation="explicit" data-wp-stage-settle-duration="330" data-wp-stage-settle-easing="smoothstep" data-i18n-aria="stageRailLabel" aria-label="Patrol route selection"></div>
+    </div>
+  </section>
+
+  <section id="battleScreen" class="battle-screen" hidden>
+    <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
+      <header class="battle-header"><button id="battleBackBtn" type="button" data-i18n-aria="backStage">←</button><div class="battle-title"><small id="stageLabel"></small><strong id="stageGoal"></strong></div><div class="battle-stat"><small data-i18n="left">Left</small><strong id="leftValue">0</strong></div><div class="battle-stat"><small data-i18n="safety">Safety</small><strong id="safetyValue">3</strong></div><button id="pauseBtn" class="utility-button" type="button" data-i18n-aria="settings" aria-label="Pause and settings">⚙</button></header>
+      <section id="objectiveBar" class="objective-bar" aria-live="polite"></section>
+      <section id="trafficBoard" class="traffic-board" data-i18n-aria="boardLabel" aria-label="Forest traffic puzzle board"></section>
+      <div class="battle-actions"><button id="undoBtn" type="button"><span aria-hidden="true">↶</span><b data-i18n="undo">Undo</b></button><button id="restartBtn" type="button"><span aria-hidden="true">↻</span><b data-i18n="restart">Restart</b></button><button id="hintBtn" type="button"><span aria-hidden="true">✦</span><b data-i18n="hint">Hint</b></button></div>
+
+      <section id="resultPanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card"><img src="../../assets/weightplay-character-moon-cap-owl-cutout.webp" alt="" /><small data-i18n="resultKicker">Patrol report</small><h2 id="resultTitle"></h2><div id="resultStars" class="result-stars"></div><p id="resultText"></p><p id="bestText" class="best-text"></p><div class="modal-actions"><button id="retryBtn" type="button" data-i18n="retry">Try again</button><button id="resultStagesBtn" type="button" data-i18n="stages">Routes</button><button id="nextBtn" class="primary-action" type="button" data-i18n="next">Next</button></div></div></section>
+      <section id="leavePanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card"><h2 id="leaveTitle" data-i18n="leaveTitle">Leave this patrol?</h2><p data-i18n="leaveText">Continue keeps the exact traffic state. Returning to routes ends this attempt.</p><div class="modal-actions"><button id="leaveContinueBtn" class="primary-action" type="button" data-i18n="continue">Continue</button><button id="leaveStagesBtn" type="button" data-i18n="returnStages">Return to routes</button></div></div></section>
+      <section id="pausePanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="pauseTitle" hidden><div class="dialog-card settings-card"><h2 id="pauseTitle" data-i18n="pauseTitle">Patrol paused</h2><p data-i18n="pauseText">The traffic state is safe while you take a break.</p><div class="settings-actions"><button id="pauseResumeBtn" class="primary-action" type="button" data-i18n="resume">Resume</button><button id="soundBtn" type="button">Sound on</button><button id="pauseHelpBtn" type="button" data-i18n="tutorialHelp">How to play</button></div></div></section>
+    </div>
+  </section>
+
+  <section id="tutorialPanel" class="tutorial-layer" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="tutorial-card"><button id="tutorialCloseBtn" class="modal-close" type="button" data-i18n-aria="close">×</button><img src="../../assets/weightplay-character-moon-cap-owl-cutout.webp" alt="" /><h2 id="tutorialTitle" data-i18n="tutorialTitle">Read the road before you tap</h2><ol><li data-i18n="tutorial1">Each cart leaves in the direction it faces.</li><li data-i18n="tutorial2">Another cart in that path means it is blocked.</li><li data-i18n="tutorial3">Three blocked taps end the patrol, so look first.</li></ol><button id="tutorialStartBtn" class="primary-action" type="button" data-i18n="tutorialStart">Start route 1</button></div></section>
+  <div id="toast" class="toast" aria-live="polite"></div>
+
+  <script src="../../src/site-config.js"></script><script src="/src/i18n.js?v=20260718-locale-routes1"></script><script src="../../src/game-runtime-localizer-loader.js?v=20260720-locale11-15"></script><script src="../../src/analytics.js"></script><script src="../../src/sound.js?v=20260720-locale11"></script><script src="../../src/edge-guard.js"></script>
+  <script src="locales.js?v=20260720-release-1"></script><script src="game.js?v=20260720-release-1"></script><script src="../../src/stage-selector-standard.js?v=20260720-canvas-max920-1" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script><script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
+</body>
+</html>

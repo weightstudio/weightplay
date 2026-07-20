@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <base href="/games/animal-hero-trials/" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#071712" />
+  <meta name="robots" content="index,follow" />
+  <meta name="description" content="Animal Hero Trials ist eine Action-Kampagne mit 30 Versuchen, in der vier WeightPlay-Helden mit unterschiedlicher Gesundheit, Geschwindigkeit,..." />
+  <meta property="og:site_name" content="WeightPlay" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Tierheldenversuche | WeightPlay" />
+  <meta property="og:description" content="Animal Hero Trials ist eine Action-Kampagne mit 30 Versuchen, in der vier WeightPlay-Helden mit unterschiedlicher Gesundheit, Geschwindigkeit,..." />
+  <meta property="og:url" content="https://weightplay.com/de/games/animal-hero-trials/" />
+  <meta property="og:image" content="https://weightplay.com/assets/animal-hero-trials-cover.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <title>Tierheldenversuche | WeightPlay</title>
+  <link rel="canonical" href="https://weightplay.com/de/games/animal-hero-trials/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-hero-trials/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-hero-trials/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-hero-trials/" />
+    <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/animal-hero-trials/" />
+    <link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/animal-hero-trials/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/animal-hero-trials/" />
+    <link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/animal-hero-trials/" />
+    <link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/animal-hero-trials/" />
+    <link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/animal-hero-trials/" />
+    <link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/animal-hero-trials/" />
+    <link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/animal-hero-trials/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-hero-trials/" />
+    <link rel="stylesheet" href="../../src/loading-screen.css" />
+  <link rel="stylesheet" href="../../src/play-viewport.css" />
+  <link rel="stylesheet" href="../../src/game-page-info.css" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="progress-cards.css" />
+  <style>.canvas-wrap canvas:focus-visible{outline:5px solid #ffd45f;outline-offset:-5px}</style>
+  <style>
+    .canvas-wrap canvas{position:absolute;left:50%;top:50%;width:auto;height:auto;object-fit:initial;transform:translate(-50%,-50%)}
+    #battleView #resultModal{position:absolute;inset:0}
+    #resultHome{min-height:50px;margin-left:6px;border:1px solid #8edbb3;border-radius:10px;background:#0c281f;color:#fff;padding:0 14px;font-weight:900}
+    .reroll-row{margin-top:10px;display:grid;gap:5px}.reroll-row button{height:46px;min-height:46px;border:1px solid #8edbb3;border-radius:9px;background:#0c281f;color:#fff;display:flex;align-items:center;justify-content:center;gap:7px;font-weight:900}.reroll-row button.is-confirming{border-color:#ffd45f;background:#3b3315;box-shadow:0 0 0 2px #ffd45f33}.reroll-row button:disabled{opacity:.48}.reroll-row img{width:24px;height:24px;object-fit:contain}.reroll-row small{display:grid;place-items:center;min-height:36px;color:#ffd45f}
+    .modal-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}.modal-actions button{min-height:50px;border-radius:10px;font-weight:900}.modal-actions .secondary{border:1px solid #8edbb3;background:#0c281f;color:#fff}
+    .hero-picker{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(86px,1fr);gap:7px;overflow-x:auto;scrollbar-width:none}.hero-option{height:112px;border:1px solid #4f8b70;border-radius:9px;background:#102d24;color:#fff;padding:5px;display:grid;grid-template-rows:48px auto auto;justify-items:center;align-content:center;gap:2px}.hero-option.selected{border:2px solid #ffd45f;background:#194635}.hero-option img{width:48px;height:48px;object-fit:contain}.hero-option b{font-size:11px;line-height:1.1;text-align:center}.hero-option small{display:grid;gap:1px;font-size:8px;line-height:1.15;color:#bfe6d2;text-align:center}
+    #stageView{height:100dvh;min-height:0;overflow:hidden}.stage-rail{min-height:0}
+    .stage-card{padding:8px;gap:4px}.stage-card img{min-height:0}.stage-card span{color:#d9eee4}.stage-card.checkpoint{border:3px solid #ffd45f;box-shadow:0 0 0 2px #8b6424}.stage-card.checkpoint img{object-fit:contain;background:#0b221b}
+    body:not([data-game-view="battle"]) .battle-ad{display:none}
+    body[data-game-view="stage"] .game-page-info,body[data-game-view="battle"] .game-page-info{display:none!important}
+  </style>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Tierheldenversuche",
+  "url": "https://weightplay.com/de/games/animal-hero-trials/",
+  "image": "https://weightplay.com/assets/animal-hero-trials-cover.png",
+  "description": "Animal Hero Trials ist eine Action-Kampagne mit 30 Versuchen, in der vier WeightPlay-Helden mit unterschiedlicher Gesundheit, Geschwindigkeit,...",
+  "applicationCategory": "Game",
+  "operatingSystem": "Web browser",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio"
+  },
+  "inLanguage": "de",
+  "isAccessibleForFree": true,
+  "genre": [
+    "Aktion",
+    "Roguelite",
+    "Tier"
+  ],
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "General action and roguelite players"
+  }
+}
+    </script>
+  <meta name="twitter:title" content="Tierheldenversuche | WeightPlay" />
+    <meta name="twitter:description" content="Animal Hero Trials ist eine Action-Kampagne mit 30 Versuchen, in der vier WeightPlay-Helden mit unterschiedlicher Gesundheit, Geschwindigkeit,..." />
+  </head>
+<body data-game-view="main" data-tutorial-auto-show="false" data-sound-toggle="off">
+  <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong>Animal Hero Trials</strong><span>Loading</span><div class="loading-track"><i></i></div></div></section>
+  <main id="app" class="app">
+    <section id="mainView" class="view main-view">
+      <a class="lobby-return" data-wp-return="main" href="/" aria-label="Back to WeightPlay"><span>&larr;</span><img src="../../assets/weightplay-logo.png" alt="" /></a>
+      <label class="locale"><span>Language</span><select id="localeSelect"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option></select></label>
+      <img class="cover" src="../../assets/animal-hero-trials-cover.webp" alt="Spielgrafik zu Tierheldenversuche" />
+      <div class="main-copy"><h1 data-t="title">Tierheldenversuche</h1><p data-t="pitch">Choose one of four heroes and clear a 30-trial shadow campaign.</p></div>
+      <div class="progress-card"><span><img src="../../assets/animal-hero-trials-icon-trial-gate.png" alt="" aria-hidden="true" /><span class="progress-copy"><b data-t="marks">Trial Marks</b><strong id="markCount">0</strong></span></span><button id="masteryBtn" type="button"><img src="../../assets/animal-hero-trials-icon-heart-mastery.png" alt="" aria-hidden="true" /><span data-t="mastery">Heart Mastery</span><b id="masteryLevel">Lv.0</b><small id="masteryCost">All heroes Max HP +0 → +12 · Need 5 / Have 0 marks</small></button></div>
+      <button id="startBtn" class="primary" type="button" data-t="start">Start Game</button>
+    </section>
+    <section id="stageView" class="view hidden">
+      <header class="compact-head"><button id="stageBack" class="icon-btn" data-wp-return="stage" type="button" aria-label="Back">&larr;</button><h2 data-t="choose">Choose Trial</h2></header>
+      <div id="heroPicker" class="hero-picker" aria-label="Choose hero"></div><div id="stageRail" class="stage-rail"></div><div class="stage-ad" aria-hidden="true"></div>
+    </section>
+    <section id="battleView" class="view battle-view hidden" data-play-viewport data-wp-logical-battle-canvas>
+      <header class="battle-head"><button id="battleBack" class="icon-btn" data-wp-return="battle" type="button" aria-label="Back">&larr;</button><div class="health"><span id="roomText">Room 1/3</span><div><i id="hpFill"></i></div></div><button id="skillBtn" class="skill-btn" type="button"><img src="../../assets/animal-hero-trials-icon-roaring-mane.webp" alt="" /><span id="cooldownText">ROAR</span></button></header>
+      <div class="canvas-wrap"><canvas id="game" width="390" height="560" tabindex="0" aria-describedby="objective"></canvas><p id="objective"></p></div>
+      <div id="choiceModal" class="modal hidden" style="position:absolute" role="dialog" aria-modal="true" aria-labelledby="blessingTitle" aria-describedby="rerollStatus"><section><h2 id="blessingTitle" data-t="blessing">Choose a Blessing</h2><div id="choices" class="choices"></div><div class="reroll-row"><button id="rerollBtn" type="button"><img src="../../assets/weightplay-diamond.svg" alt="" /><span id="rerollLabel">Reroll 3</span></button><small id="rerollStatus"></small></div></section></div>
+      <div id="quitModal" class="modal hidden" style="position:absolute" role="dialog" aria-modal="true" aria-labelledby="quitTitle" aria-describedby="quitCopy"><section><h2 id="quitTitle" data-t="quitTitle">Leave this trial?</h2><p id="quitCopy" data-t="quitCopy">This run's room and blessing progress will be lost.</p><div class="modal-actions"><button id="quitKeep" class="primary" type="button" data-t="keepPlaying">Keep Playing</button><button id="quitLeave" class="secondary" type="button" data-t="leaveTrial">Leave Trial</button></div></section></div>
+      <div id="resultModal" class="modal hidden" style="position:absolute" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultCopy"><section><img id="resultFx" src="../../assets/animal-hero-trials-fx-victory.webp" alt="" /><h2 id="resultTitle"></h2><p id="resultCopy"></p><button id="resultNext" class="primary" type="button"></button><button id="resultHome" type="button" data-t="menu">Main Menu</button></section></div>
+    </section>
+    <div id="battleAd" class="battle-ad" aria-hidden="true"></div>
+  </main>
+    <!-- adsense-static-guide:start -->
+    <section class="game-page-info game-page-info-static" aria-label="Tierheldenversuche Spielinformationen">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay Spielanleitung für Kinder</span><h2>Tierheldenversuche</h2><p>Animal Hero Trials ist eine Action-Kampagne mit 30 Versuchen, in der vier WeightPlay-Helden mit unterschiedlicher Gesundheit, Geschwindigkeit, Angriffsreichweite und aktiven Fähigkeiten die Hauptrolle spielen. Jede Prüfung verfügt über drei miteinander verbundene Räume, zwei kostenlose Segnungsoptionen und ein Finale für einen Elite-Kapitän oder einen regionalen Boss. Fünf Feindfamilien führen Flucht, Angriffe, Fernfeuer und Rüstung ein. Sechs Checkpoint-Bosse erfordern unterschiedliche Marken, während gespeicherte Prüfungsmarken dauerhafte Herzmeisterschaft erwerben.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>Helden-Actionversuche mit drei Räumen</strong></div><div class="game-info-fact"><span>Genre</span><strong>Aktion · Roguelite · Tier</strong></div><div class="game-info-fact"><span>Schwierigkeit</span><strong>Mittel bis schwer</strong></div><div class="game-info-fact"><span>Geschätzte Spielzeit</span><strong>4-9 Minuten pro Versuch</strong></div><div class="game-info-fact"><span>Fertigkeiten geschult</span><strong>Reaktion · Konzentrieren Sie sich · Problemlösung</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>Welt und Mission</h3><p>Zwischen Rootwood und der Leerenkrone öffneten sich sechs Schattentore. Rootwood schickt Verfolgergruppen, Prism Ravine gewährt Flug und Schilde, Ember Forge treibt gewarnte Angriffe an, Moon Range bewaffnet entfernte Angreifer, Abyss Shell verstärkt Wachen und die letzte Krone vermischt alle überlebenden Regeln. Ein Sieg stabilisiert einen Straßenabschnitt und schaltet die nächste Prüfung frei.</p>
+<p>Boom Mane Leo, Spark Paw Fia, Moon Cap Orla und Moss Shell Taro treten als rotierendes Heldenteam an. Jeder fünfte Prozess ist ein regionaler Kontrollpunkt. Der Sieg über den Void Crown Emperor in Prüfung 30 schließt das letzte Tor; Die Kampagne erstellt keine versteckte Testversion 31.</p></div>
+      <div class="game-info-section"><h3>Wie die Systeme funktionieren</h3><p>Vier Helden: Löwe ist ausgeglichen und nutzt ein Flächengebrüll. Fia ist schnell und führt einen unverwundbaren Schadenssprint aus. Orla greift aus der Distanz an und markiert ein Ziel für zusätzlichen Schaden. Taro hat die meiste Gesundheit und schafft einen zeitgesteuerten, schadensreduzierenden Schutz.</p>
+<p>Bewegung und automatischer Angriff: Bewegen Sie sich mit dem Joystick, den Pfeiltasten oder WASD. Der Held greift automatisch das nächstgelegene Ziel innerhalb der individuellen Reichweite an. Die Fertigkeitstaste oder das Leerzeichen verwendet die aktive Fertigkeit, wenn ihre Abklingzeit abgelaufen ist.</p>
+<p>Drei-Raum-Läufe: Die Räume 1 und 2 enthalten erstellte Feindkombinationen. Das Abschließen jedes einzelnen Elements eröffnet die obligatorische freie Wahl zwischen Kraft, Abklingzeit und Erholung. Raum 3 ist ein Elite-Captain bei gewöhnlichen Prüfungen und ein benannter Boss bei Checkpoint-Prüfungen.</p>
+<p>Feindidentitäten: Späher jagen, Raben schlängeln sich durch die Arena, Wildschweine warnen, bevor sie angreifen, Jäger halten Abstand und feuern und Abyss Guards reduzieren den normalen Schaden, bis Fertigkeiten die Deckung durchbrechen.</p>
+<p>Progression: Victories award four to nine Trial Marks and unlock one next trial. Heart Mastery begins at five Marks, costs four more per later level, and gives every hero 12 additional maximum health per level.</p>
+<p>Optionales erneutes Rollen: Drei kostenlose Segnungen sind immer verfügbar. Drei Diamanten ersetzen einmal pro Lauf alle Optionen durch stärkere Versionen. Die genaue Kontostandänderung erscheint vor einer zweiten Bestätigung; Der normale Verlauf erfordert dies nie.</p></div>
+      <div class="game-info-section"><h3>Wie man spielt</h3><ol><li>Wählen Sie eine freigeschaltete Karte aus der Bühnenleiste mit 30 Versuchen aus und lesen Sie die Regionsregel, den Checkpoint-Boss und den vorgeschlagenen Helden.</li><li>Wählen Sie Leo, Fia, Orla oder Taro; Die Auswahl bleibt für spätere Besuche gespeichert.</li><li>Bewegen Sie sich, um die Distanz zu kontrollieren, während automatische Angriffe den nächstgelegenen Feind in Reichweite anvisieren.</li><li>Planen Sie die aktive Fertigkeit, um eine Gruppe zu räumen, eine Warnung zu überqueren, ein vorrangiges Ziel zu markieren oder ein schweres Muster zu absorbieren.</li><li>Nehmen Sie nach den Räumen 1 und 2 einen kostenlosen Segen. Das erneute Würfeln des Diamanten ist optional.</li><li>Räumen Sie Raum 3 frei, um Testmarken und die nächste Freischaltung zu erhalten. „Besiegen“ bietet „Wiederholen“ an, ohne den permanenten Fortschritt zu löschen.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Strategietipps</h3><ul><li>Gruppenpfadfinder in Leos Gebrüll.</li><li>Stürze mit Fia nach einer gelben Ladungswarnung, damit eine unverwundbare Bewegung die Gefahr überwindet.</li><li>Nutzen Sie Orlas Reichweite und markieren Sie gepanzerte Ziele oder Ziele mit hoher Gesundheit.</li><li>Nutzen Sie Taros Schutz gegen Archowl-Salven und den späten Druck des Imperators.</li><li>Fertigkeiten entfernen die Abwehr schneller als automatische Angriffe.</li><li>Wählen Sie „Kraft“, um Kämpfe zu verkürzen, „Abklingzeit“ für den Zugriff auf Fertigkeiten oder „Erholung“, wenn die Gesundheit des Trägers niedrig ist.</li></ul></div>
+      <div class="game-info-section"><h3>Kampagnen- und Schwierigkeitswachstum</h3><p>Die Prüfungen 1–5 lehren die direkte Scout-Verfolgung und enden mit der gewarnten Schockwelle von Shadow Prowler.</p>
+<p>Die Prüfungen 6–10 fügen gebogene Raben und Rüstungen hinzu. Prism Basilisk wechselt zwischen geschützten und offenen Fenstern.</p>
+<p>Die Versuche 11–15 fügen vorgewarnte Eberangriffe hinzu. Magma Tusk Colossus widersteht Schaden, bis eine Ladung eine Öffnung schafft.</p>
+<p>Die Prüfungen 16–20 fügen abstandhaltende Jäger und gemischte Annäherungswinkel hinzu. Eclipse Archowl feuert zeitgesteuerte Salven ab.</p>
+<p>Die Prüfungen 21–25 überschneiden sich mit Rüstung, Ladungen und Reichweite. Abyss Shell Leviathan beschwört zwei Verstärkungen mit weniger als etwa halber Gesundheit.</p>
+<p>Die Versuche 26–30 kombinieren alle fünf Familien. Der Kronkaiser der Leere erhält eine bewachte mittlere Phase und ruft in der letzten Phase den Raben und gepanzerte Unterstützung herbei.</p></div>
+      <div class="game-info-section"><h3>Entwickler-Designhinweis</h3><p>Ein konsistenter Drei-Raum-Rhythmus ermöglicht es einem Helden, zwei Segnungen aufzubauen, ohne dass aus einer Prüfung ein Dauerlauf wird. Im dritten Raum wird getestet, ob der ausgewählte Held und Build einer sichtbaren Regel entsprechen. Der Schwierigkeitsgrad steigt durch Bewegungsformen, Reichweite, Warnungen, Rüstung, Verstärkung und Bossphasen und nicht nur durch größere Gesundheitssummen. Eine feste logische Battle-Leinwand lässt sich gleichmäßig auf Telefon, Tablet, Desktop und kurzer Landschaft skalieren. Berührung und Tastatur teilen Bewegung und Fähigkeitsstatus, ausgeblendete Seiten unterbrechen die Simulation und das Ergebnis bleibt im Kampf über der separaten physischen Reserve. Im Gegensatz zu Animal Auto Squad bleiben Live-Bewegung und Skill-Timing unter der direkten Kontrolle des Spielers.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Hinweis für Eltern</h3><p>Der Browser speichert die höchste freigeschaltete Prüfung, Prüfungsmarken, Herzbeherrschung und den ausgewählten Helden lokal. Das Löschen von Website-Daten oder das Wechseln des Browsers kann dazu führen, dass eine separate Speicherung erfolgt. Diamanten sind eine optionale Plattformwährung, die nur für eine bestätigte Segenswiederholung pro Lauf verwendet wird. Alle 30 Prüfungen, fünf feindliche Familien, sechs Bosse, kostenlose Segnungen und permanente Meisterschaft bleiben auch ohne sie spielbar. Kompetenz-Feedback ist Unterhaltung und keine Rangfolge oder formale Leistungsbeurteilung.</p></div>
+      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>Wie viele Prüfungen und Bosse sind enthalten?</dt><dd>Es gibt 30 Prüfungen mit drei Räumen und sechs verschiedene Checkpoint-Bosse bei den Prüfungen 5, 10, 15, 20, 25 und 30.</dd></div><div><dt>Spielen alle Helden gleich?</dt><dd>Nein. Sie unterscheiden sich in Gesundheit, Geschwindigkeit, Angriffsreichweite, Basisangriff und aktiver Fähigkeit.</dd></div><div><dt>Warum erleidet ein Feind wenig Schaden?</dt><dd>Eine Abyss-Wache, ein Prisma-Basilisk oder eine Kaiserwache können aktiv sein. Fertigkeiten entfernen die Abwehr schneller als automatische Angriffe.</dd></div><div><dt>Was passiert nach jedem Raum?</dt><dd>Wählen Sie nach den Räumen 1 und 2 „Power“, „Cooldown“ oder „Recovery“. Raum 3 beendet den Prozess.</dd></div><div><dt>Was trägt zwischen den Läufen?</dt><dd>Probefreischaltungen, Markierungen, Herzbeherrschung und der ausgewählte Held werden lokal gespeichert; Vorübergehende Segnungen zurückgesetzt.</dd></div><div><dt>Sind Diamanten erforderlich?</dt><dd>Nein. Drei Diamanten ersetzen die Segensauswahl nur einmal; Ein kostenloser Segen ist immer verfügbar.</dd></div><div><dt>Kann ich eine frühere Testversion noch einmal abspielen?</dt><dd>Ja. Jede freigeschaltete Karte bleibt auf der Bühnenschiene verfügbar.</dd></div><div><dt>Was passiert nach einer Niederlage?</dt><dd>Bei „Wiederholen“ wird derselbe Versuch neu gestartet, ohne dass der permanente Fortschritt gelöscht wird.</dd></div><div><dt>Unterstützt es Touch und Tastatur?</dt><dd>Ja. Verwenden Sie den Joystick und die Skill-Taste oder die WASD-/Pfeiltasten und die Leertaste.</dd></div></dl></div>
+    </div>
+  </section>
+    <!-- adsense-static-guide:end -->
+  <script src="../../src/site-config.js"></script><script src="../../src/analytics.js"></script><script>window.WonderAnalytics?.track("game_view",{game_id:"animal-hero-trials"});</script>
+  <script src="../../src/edge-guard.js"></script><script src="/src/i18n.js?v=20260718-locale-routes1"></script><script src="../../src/game-runtime-localizer-loader.js?v=20260720-locale11-15"></script><script src="../../src/tutorial.js"></script>
+  <script src="../../src/sound.js?v=20260720-locale11" data-no-floating-toggle="true"></script><script src="../../src/wallet.js"></script><script src="fit.js"></script><script src="game.js?v=20260719-hero-roles1"></script><script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
+  <script>window.addEventListener("load",()=>document.querySelector("#loadingPanel")?.classList.add("hidden"),{once:true});</script>
+</body>
+</html>

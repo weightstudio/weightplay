@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <base href="/games/animal-starlight-trails/" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="robots" content="index,follow" />
+  <meta name="weightplay-audience" content="general" />
+  <meta name="theme-color" content="#07172f" />
+  <title>Lien étoile | WeightPlay</title>
+  <meta name="description" content="Starlink est un puzzle de route original en 30 étapes mettant en vedette Moon Cap Orla. Suivez chaque trace de constellation exactement une fois tandis..." />
+  <meta property="og:site_name" content="WeightPlay" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Lien étoile | WeightPlay" />
+  <meta property="og:description" content="Starlink est un puzzle de route original en 30 étapes mettant en vedette Moon Cap Orla. Suivez chaque trace de constellation exactement une fois tandis..." />
+  <meta property="og:url" content="https://weightplay.com/fr/games/animal-starlight-trails/" />
+  <meta property="og:image" content="https://weightplay.com/assets/animal-starlight-trails-cover.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="canonical" href="https://weightplay.com/fr/games/animal-starlight-trails/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-starlight-trails/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-starlight-trails/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-starlight-trails/" />
+    <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/animal-starlight-trails/" />
+    <link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/animal-starlight-trails/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/animal-starlight-trails/" />
+    <link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/animal-starlight-trails/" />
+    <link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/animal-starlight-trails/" />
+    <link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/animal-starlight-trails/" />
+    <link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/animal-starlight-trails/" />
+    <link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/animal-starlight-trails/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-starlight-trails/" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Lien étoile",
+  "url": "https://weightplay.com/fr/games/animal-starlight-trails/",
+  "image": "https://weightplay.com/assets/animal-starlight-trails-cover.png",
+  "description": "Starlink est un puzzle de route original en 30 étapes mettant en vedette Moon Cap Orla. Suivez chaque trace de constellation exactement une fois tandis...",
+  "applicationCategory": "Game",
+  "operatingSystem": "Web browser",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio"
+  },
+  "inLanguage": "fr",
+  "isAccessibleForFree": true,
+  "genre": [
+    "Casse-tête",
+    "Stratégie",
+    "Logique",
+    "Animal"
+  ],
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "General players",
+    "suggestedMinAge": 9
+  }
+}
+    </script>
+  <link rel="stylesheet" href="../../src/tutorial.css" />
+  <link rel="stylesheet" href="../../src/loading-screen.css" />
+  <link rel="stylesheet" href="../../src/game-page-info.css" />
+  <link rel="stylesheet" href="../../src/stage-selector-standard.css" />
+  <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
+  <link rel="stylesheet" href="style.css" />
+  <meta name="twitter:title" content="Lien étoile | WeightPlay" />
+    <meta name="twitter:description" content="Starlink est un puzzle de route original en 30 étapes mettant en vedette Moon Cap Orla. Suivez chaque trace de constellation exactement une fois tandis..." />
+  </head>
+<body data-screen="main" data-game-id="animal-starlight-trails">
+  <section id="loadingPanel" class="loading-panel" aria-live="polite">
+    <div class="loading-card"><strong>Starlink</strong><span id="loadingText">Loading star map…</span><div class="loading-track"><i id="loadingFill"></i></div></div>
+  </section>
+
+  <main id="mainScreen" class="main-screen">
+    <header class="main-header">
+      <a class="main-return" href="/" data-wp-return="main" aria-label="Back to WeightPlay"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" /></a>
+      <strong data-i18n="title">Starlink</strong>
+      <label class="locale-control"><span class="sr-only" data-i18n="language">Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option></select></label>
+    </header>
+    <section class="main-hero">
+      <img class="main-poster" src="../../assets/animal-starlight-trails-cover.webp" alt="" />
+      <div class="main-copy"><small data-i18n="eyebrow">Moon Cap Orla's constellation workshop</small><h1 data-i18n="title">Lien étoile</h1><p data-i18n="pitch">Trace every trail exactly once and relight the Animal Star Map.</p><div id="mainProgress" class="main-progress"></div><button id="startBtn" class="primary-action" type="button" data-i18n="start">Start Game</button></div>
+    </section>
+  </main>
+
+  <section class="game-page-info game-page-info-static" aria-label="Lien étoile informations sur le jeu">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay Guide de jeu pour enfants</span><h2>Lien étoile</h2><p>Starlink est un puzzle de route original en 30 étapes mettant en vedette Moon Cap Orla. Suivez chaque trace de constellation exactement une fois tandis que les sceaux de départ, les flèches de comète, les étoiles numérotées, les clés et les portes modifient progressivement les itinéraires complets valides.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>Puzzle logique à un seul coup</strong></div><div class="game-info-fact"><span>Genre</span><strong>Casse-tête · Stratégie · Logique · Animal</strong></div><div class="game-info-fact"><span>Difficulté</span><strong>Facile à difficile</strong></div><div class="game-info-fact"><span>Temps de jeu estimé</span><strong>2 à 6 minutes par étape</strong></div><div class="game-info-fact"><span>Compétences formées</span><strong>Logique · Concentrez-vous · Résolution de problèmes</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>Monde et mission</h3><p>La carte des étoiles animales est devenue sombre, laissant trente constellations déconnectées sur six observatoires. Orla restaure chaque image en traçant un chemin continu à travers chaque sentier visible. L&#39;achèvement de cinq constellations rallume un observatoire et introduit la prochaine leçon de navigation.</p>
+<p>Chaque tableau est un graphique original conçu pour les règles affichées à l&#39;écran. La campagne se termine à l&#39;étape 30 avec une constellation de maîtrise qui combine les contraintes apprises ; il n&#39;affiche jamais un Stage 31 inexistant.</p></div>
+      <div class="game-info-section"><h3>Comment fonctionnent les systèmes</h3><p>Choisissez une étoile et continuez à travers les étoiles connectées. Une étoile peut être visitée plus d&#39;une fois, mais chaque sentier de liaison ne peut être traversé qu&#39;une seule fois. La constellation n’est complète qu’une fois que tous les sentiers ont été éclairés en un seul itinéraire continu.</p>
+<p>Les étapes 6 à 10 nécessitent le sceau de démarrage lumineux. Les étapes 11 à 15 ajoutent des flèches de comète visibles qui permettent une trace dans une seule direction. Les étapes 16 à 20 nécessitent des étoiles numérotées dans l&#39;ordre. Les étapes 21 à 25 ajoutent une clé qui ouvre un sentier de porte balisé. Les étapes 26 à 30 combinent ces règles.</p>
+<p>Annuler supprime l&#39;étape la plus récente, Redémarrer efface la tentative en cours et Hint met en évidence une étoile suivante légale qui permet toujours une solution complète. Aucune de ces actions ne dépense d’argent. Le clavier, la souris et le toucher partagent le même état de puzzle.</p>
+<p>Terminer une étape enregistre son meilleur nombre d&#39;étoiles et son meilleur temps dans ce navigateur et déverrouille la constellation suivante. Les étapes précédentes restent rejouables, y compris l&#39;étape 30 une fois la campagne terminée.</p></div>
+      <div class="game-info-section"><h3>Comment jouer</h3><ol><li>Choisissez une constellation déverrouillée sur le rail horizontal de la scène.</li><li>Lisez le panneau de règles et commencez à n&#39;importe quelle étoile valide, ou au sceau de départ lumineux lorsqu&#39;il y en a un.</li><li>Faites glisser les étoiles adjacentes ou appuyez-les une par une. Ne réutilisez jamais un sentier.</li><li>Suivez les flèches des comètes, les sceaux numérotés et les restrictions relatives à la clé avant la porte, le cas échéant.</li><li>Allumez chaque sentier pour terminer la constellation et débloquer l&#39;étape suivante.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Conseils stratégiques</h3><ul><li>Les étoiles avec un nombre impair de sentiers inutilisés révèlent souvent où devrait commencer ou se terminer un itinéraire ouvert.</li><li>Avant d&#39;entrer dans un embranchement étroit, vérifiez si un autre sentier inutilisé peut ramener l&#39;itinéraire vers la constellation principale.</li><li>Considérez les flèches, les chiffres, les clés et les portes comme des contraintes d&#39;itinéraire plutôt que comme une décoration.</li><li>Utilisez Annuler pour une courte correction et Redémarrer lorsque le choix d&#39;ouverture a piégé plusieurs branches ultérieures.</li></ul></div>
+      <div class="game-info-section"><h3>Campagne et croissance de la difficulté</h3><p>Les étapes 1 à 5 enseignent les sentiers ouverts classiques. Les étapes 6 à 10 introduisent les démarrages requis. Les étapes 11 à 15 enseignent les chemins à sens unique des comètes.</p>
+<p>Les étapes 16 à 20 ajoutent des étoiles ordonnées, les étapes 21 à 25 introduisent des itinéraires clés et portes et les étapes 26 à 30 combinent le vocabulaire complet dans des constellations de maîtrise plus larges.</p></div>
+      <div class="game-info-section"><h3>Note de conception du développeur</h3><p>Starlink utilise un canevas logique réactif qui remplit la zone sécurisée de scène et de combat sans étirer les éléments individuels du puzzle. L&#39;espace supplémentaire est distribué via des pistes et des ancres stables, de sorte que les téléphones et les navigateurs de bureau affichent les mêmes informations et commandes d&#39;itinéraire. La réserve publicitaire générale distincte ne superpose jamais le gameplay ou les actions de résultat.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Remarque aux parents</h3><p>Starlink fonctionne gratuitement dans le navigateur et ne nécessite aucun compte. Les déverrouillages, les meilleures notes et les temps sont stockés uniquement dans ce navigateur ; la suppression des données du site ou le changement de navigateur peuvent créer une sauvegarde distincte. Le feedback sur les compétences est un divertissement positif et non une évaluation formelle des capacités.</p></div>
+      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>Puis-je traverser deux fois la même étoile ?</dt><dd>Oui. Les étoiles peuvent être revisitées, mais chaque sentier de connexion ne peut être utilisé qu&#39;une seule fois.</dd></div><div><dt>Pourquoi ne puis-je pas utiliser une traînée de comète rose ?</dt><dd>La flèche sur ce sentier indique la direction autorisée. Entrer par l’autre côté n’est pas légal.</dd></div><div><dt>Que se passe-t-il dans une impasse ?</dt><dd>La tentative reste visible afin que vous puissiez annuler une ou plusieurs étapes ou redémarrer gratuitement.</dd></div><div><dt>Des indices sont-ils nécessaires ?</dt><dd>Non. Chaque étape peut être résolue sans indices ; L&#39;indice ne marque qu&#39;une seule étoile suivante sûre.</dd></div><div><dt>Le progrès sauve-t-il ?</dt><dd>Oui. Les déverrouillages, les meilleures notes par étoiles et les meilleurs temps sont stockés localement dans ce navigateur.</dd></div><div><dt>Combien d’étapes sont incluses ?</dt><dd>Il y a 30 étapes écrites réparties dans six chapitres de règles. L&#39;étape 30 reste rejouable une fois terminée.</dd></div></dl></div>
+    </div>
+  </section>
+
+  <section id="stageScreen" class="stage-shell" data-wp-canvas-max-width="920" hidden>
+    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-canvas-max-width="920" style="--wp-stage-art:url('../../assets/animal-starlight-trails-bg.webp')">
+      <header class="stage-header"><button id="stageBackBtn" type="button" data-wp-return="stage" aria-label="Back">&larr;</button><div><strong data-i18n="chooseStage">Choose Constellation</strong><span id="stageSummary"></span></div><img src="../../assets/weightplay-character-moon-cap-owl-cutout.webp" alt="" /></header>
+      <section class="chapter-panel"><small id="chapterKicker"></small><strong id="chapterTitle"></strong><p id="chapterRule"></p></section>
+      <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-settle-duration="360" data-wp-stage-settle-easing="smoothstep" aria-label="Constellations"></div>
+    </div>
+  </section>
+
+  <section id="battleScreen" class="battle-screen" hidden>
+    <div class="trail-battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
+      <header class="battle-header"><button id="battleBackBtn" type="button" data-wp-return="battle" aria-label="Back">&larr;</button><div class="battle-progress"><span id="stageLabel"></span><div><i id="edgeProgress"></i></div></div><div class="battle-stat"><small data-i18n="trails">Trails</small><strong id="trailCount">0 / 0</strong></div><div class="battle-stat"><small data-i18n="stars">Stars</small><strong id="starTotal">0</strong></div></header>
+      <div id="objectiveRow" class="objective-row"></div>
+      <section id="puzzleScene" class="puzzle-scene" aria-label="Constellation puzzle"><svg id="graphSvg" viewBox="0 0 100 100" role="group" aria-label="One-stroke constellation"></svg><div id="hintPulse" class="hint-pulse" hidden></div></section>
+      <div class="battle-feedback"><strong id="feedbackText" aria-live="polite"></strong><span id="assistText"></span></div>
+      <div class="battle-actions"><button id="undoBtn" type="button" data-i18n="undo">Undo</button><button id="restartBtn" type="button" data-i18n="restart">Restart</button><button id="hintBtn" type="button" data-i18n="hint">Hint</button></div>
+      <section id="resultPanel" class="result-overlay" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden>
+        <div class="result-card"><img src="../../assets/weightplay-character-moon-cap-owl-cutout.webp" alt="" /><small data-i18n="skillReport">Skill Report</small><h2 id="resultTitle"></h2><div id="resultStars" class="result-stars"></div><p id="resultText"></p><div id="skillGrid" class="skill-grid"></div><p id="comparisonText" class="comparison"></p><div class="result-actions"><button id="retryBtn" type="button" data-i18n="retry">Retry</button><button id="resultStagesBtn" type="button" data-i18n="stages">Stages</button><button id="nextBtn" class="primary-action" type="button" data-i18n="next">Next Stage</button></div></div>
+      </section>
+    </div>
+    <div class="battle-ad-reserve" aria-hidden="true"></div>
+  </section>
+
+  <script src="../../src/site-config.js"></script>
+  <script>try{const segment=location.pathname.split("/").filter(Boolean)[0];const locale=({en:"en","zh-tw":"zh-Hant","zh-cn":"zh-Hans",es:"es",ja:"ja"})[segment];if(locale)localStorage.setItem("weightPlayLocale",locale);}catch{}</script>
+  <script src="/src/i18n.js?v=20260718-locale-routes1"></script><script src="../../src/game-runtime-localizer-loader.js?v=20260720-locale11-15"></script>
+  <script src="../../src/analytics.js"></script>
+  <script src="../../src/sound.js?v=20260720-locale11"></script>
+  <script src="../../src/tutorial.js"></script>
+  <script src="game.js?v=20260719-public1"></script>
+  <script src="../../src/stage-selector-standard.js?v=20260720-canvas-max920-1"></script>
+  <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
+  <script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
+</body>
+</html>

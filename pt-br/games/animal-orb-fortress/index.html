@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <base href="/games/animal-orb-fortress/" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="robots" content="index,follow" />
+    <meta name="theme-color" content="#10251f" />
+    <meta name="description" content="Animal Orb Fortress é uma campanha de defesa de ricochete de 30 rotas sobre a leitura de uma arena antes de liberar um orbe espiritual. Cada rota tem três..." />
+    <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:type" content="game" />
+    <meta property="og:title" content="Fortaleza Orbe Animal | WeightPlay" />
+    <meta property="og:description" content="Animal Orb Fortress é uma campanha de defesa de ricochete de 30 rotas sobre a leitura de uma arena antes de liberar um orbe espiritual. Cada rota tem três..." />
+    <meta property="og:url" content="https://weightplay.com/pt-br/games/animal-orb-fortress/" />
+    <meta property="og:image" content="https://weightplay.com/assets/animal-orb-fortress-cover.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Fortaleza Orbe Animal | WeightPlay" />
+    <meta name="twitter:description" content="Animal Orb Fortress é uma campanha de defesa de ricochete de 30 rotas sobre a leitura de uma arena antes de liberar um orbe espiritual. Cada rota tem três..." />
+    <meta name="twitter:image" content="https://weightplay.com/assets/animal-orb-fortress-cover.png" />
+    <title>Fortaleza Orbe Animal | WeightPlay</title>
+    <link rel="canonical" href="https://weightplay.com/pt-br/games/animal-orb-fortress/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-orb-fortress/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-orb-fortress/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-orb-fortress/" />
+    <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/animal-orb-fortress/" />
+    <link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/animal-orb-fortress/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/animal-orb-fortress/" />
+    <link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/animal-orb-fortress/" />
+    <link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/animal-orb-fortress/" />
+    <link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/animal-orb-fortress/" />
+    <link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/animal-orb-fortress/" />
+    <link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/animal-orb-fortress/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-orb-fortress/" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Fortaleza Orbe Animal",
+  "alternateName": "動物星珠要塞",
+  "url": "https://weightplay.com/pt-br/games/animal-orb-fortress/",
+  "image": "https://weightplay.com/assets/animal-orb-fortress-cover.png",
+  "description": "Animal Orb Fortress é uma campanha de defesa de ricochete de 30 rotas sobre a leitura de uma arena antes de liberar um orbe espiritual. Cada rota tem três...",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio",
+    "url": "https://weightplay.com/"
+  },
+  "inLanguage": "pt-BR",
+  "isAccessibleForFree": true,
+  "operatingSystem": "Web Browser",
+  "genre": [
+    "Ação",
+    "Roguelite",
+    "Animal"
+  ],
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "General players"
+  }
+}
+    </script>
+    <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
+    <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
+    <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
+    <link rel="stylesheet" href="style.css?v=20260709-orb-guide-block1" />
+    <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
+  </head>
+  <body data-tutorial-auto-show="false">
+    <main class="orb-app" data-no-mobile-immersive="true">
+      <header class="topbar">
+        <a class="back-btn" data-wp-return="main" href="/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
+        <div class="brand">
+          <span>WeightPlay</span>
+          <h1 data-ui="title">Fortaleza Orbe Animal</h1>
+        </div>
+        <label class="locale">
+          <span data-ui="language">Language</span>
+          <select id="localeSelect" aria-label="Language">
+            <option value="en">English</option>
+            <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
+            <option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option>
+            <option value="es">Espa&ntilde;ol</option>
+          </select>
+        </label>
+      </header>
+
+      <section id="loadingPanel" class="loading-panel" aria-live="polite">
+        <div class="loading-content">
+          <h2 data-ui="title">Animal Orb Fortress</h2>
+          <div class="loading-bar"><div id="loadingFill" class="loading-fill"></div></div>
+          <span id="loadingText" class="loading-percentage">0%</span>
+        </div>
+      </section>
+
+      <section id="menuPanel" class="panel menu-panel">
+        <img class="cover" src="../../assets/animal-orb-fortress-cover.webp" alt="" />
+        <div class="menu-copy">
+          <strong data-ui="menuTitle">Aim the spirit orb through the crystal fortress.</strong>
+          <span data-ui="menuHint">Choose a raid route, plan ricochet shots, and protect the fortress core.</span>
+          <button id="startBtn" class="primary-btn" type="button" data-ui="openRaidMap">Start Game</button>
+        </div>
+      </section>
+
+      <section id="stagePanel" class="panel stage-panel is-hidden" aria-label="Raid map">
+        <header class="stage-header">
+          <button id="stageBackBtn" class="secondary-btn play-return" type="button" data-wp-return="stage" aria-label="Return to main">&larr;</button>
+          <div>
+            <strong data-ui="raidMap">Raid Map</strong>
+            <span id="stageProgressText"></span>
+          </div>
+        </header>
+        <div class="stage-content">
+          <div class="profile-grid">
+            <div><span data-ui="bestRaid">Best Raid</span><strong id="bestRaidText">1</strong></div>
+            <div><span data-ui="starStones">Star Stones</span><strong id="starStoneText">0</strong></div>
+            <div><span data-ui="diamonds">Diamonds</span><strong id="diamondText">0</strong></div>
+          </div>
+          <div id="stageRail" class="stage-rail" aria-label="Raid tiers"></div>
+          <strong class="workshop-title" data-ui="fortressWorkshop">Fortress Workshop</strong>
+          <div id="roomGrid" class="room-grid" aria-label="Fortress rooms"></div>
+        </div>
+      </section>
+
+      <section id="gamePanel" class="panel game-panel is-hidden" data-play-viewport>
+        <div id="battleLive" class="battle-live">
+        <div class="hud-row">
+          <button id="battleBackBtn" class="secondary-btn play-return" type="button" data-wp-return="battle" aria-label="Return to raid map">&larr;</button>
+          <div><span data-ui="wave">Wave</span><strong id="waveText">1/3</strong></div>
+          <div><span data-ui="core">Core</span><strong id="coreText">20/20</strong></div>
+          <div><span data-ui="shots">Shots</span><strong id="shotText">0</strong></div>
+          <button id="pauseBtn" class="secondary-btn pause-btn" type="button" aria-label="Pause">&#10074;&#10074;</button>
+        </div>
+        <canvas id="gameCanvas" width="960" height="540" tabindex="0" aria-label="Animal Orb Fortress arena" aria-describedby="hintText"></canvas>
+        <div id="hintText" class="hint" data-ui="aimHint" aria-live="polite">Drag from the launcher, preview the bounce path, then release.</div>
+        </div>
+        <section id="upgradePanel" class="panel modal-panel is-hidden" role="dialog" aria-modal="true" aria-labelledby="upgradeTitle" aria-describedby="upgradeStatus">
+          <h2 id="upgradeTitle" data-ui="chooseUpgrade">Choose a fortress blessing</h2>
+          <p id="upgradeStatus" class="status-line"></p>
+          <div id="upgradeCards" class="upgrade-cards"></div>
+          <button id="rerollBtn" class="secondary-btn" type="button"></button>
+        </section>
+        <section id="pausePanel" class="panel pause-panel is-hidden" role="dialog" aria-modal="true" aria-labelledby="pauseTitle" aria-describedby="pauseText">
+          <div class="pause-card">
+            <h2 id="pauseTitle" data-ui="pausedTitle">Raid paused</h2>
+            <p id="pauseText" data-ui="pausedText">The fortress is frozen. Resume when you are ready to aim.</p>
+            <div class="pause-actions">
+              <button id="resumeBtn" class="primary-btn" type="button" data-ui="resume">Resume</button>
+              <button id="pauseMapBtn" class="secondary-btn" type="button" data-ui="raidMap">Raid Map</button>
+            </div>
+          </div>
+        </section>
+        <section id="resultPanel" class="panel result-panel is-hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultText skillReportText">
+          <img class="result-lion" src="../../assets/weightplay-boom-mane-lion.png" alt="" />
+          <div>
+            <h2 id="resultTitle">Raid Clear</h2>
+            <p id="resultText"></p>
+            <p id="skillReportText" class="skill-report"></p>
+            <div class="result-actions">
+              <button id="retryBtn" class="primary-btn" type="button" data-ui="retry">Retry</button>
+              <button id="nextStageBtn" class="primary-btn is-unavailable" type="button" data-ui="nextStage">Next Stage</button>
+              <button id="resultMenuBtn" class="secondary-btn play-return" type="button" aria-label="Return to raid map">&larr;</button>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <div id="battleAdReserve" class="battle-ad-reserve result-ad-reserve" aria-hidden="true"></div>
+    </main>
+    <!-- adsense-static-guide:start -->
+    <section class="game-page-info game-page-info-static" aria-label="Fortaleza Orbe Animal informações do jogo">
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay Guia do jogo infantil</span><h2>Fortaleza Orbe Animal</h2><p>Animal Orb Fortress é uma campanha de defesa de ricochete de 30 rotas sobre a leitura de uma arena antes de liberar um orbe espiritual. Cada rota tem três ondas contínuas. O jogador se arrasta do guardião do leão para visualizar um caminho de salto na parede, lança uma saraivada e protege o núcleo de cristal enquanto as feras das sombras avançam. Seis regiões de cinco rotas adicionam armadura, âncoras de proteção, inimigos em fases, divisores, postes de espelhos móveis, carregadores telegrafados e seis chefes regionais mecanicamente diferentes. Entre as ondas, uma bênção da fortaleza altera o ataque atual; entre as rotas, as Star Stones melhoram quatro salas de fortaleza permanentes.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Jogabilidade</span><strong>Roguelite Ricochete</strong></div><div class="game-info-fact"><span>Gênero</span><strong>Ação · Roguelite · Animal</strong></div><div class="game-info-fact"><span>Dificuldade</span><strong>Difícil</strong></div><div class="game-info-fact"><span>Tempo estimado de jogo</span><strong>5-8 minutos por rota</strong></div><div class="game-info-fact"><span>Habilidades treinadas</span><strong>Lógica · Solução de problemas · Foco</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>Mundo e Missão</h3><p>A Fortaleza de Cristal foi construída onde seis estradas guardiãs se encontram: Crystal Woodland, Thornworks, Moon Ruins, Mirror Vault, Storm Bastion e Eclipse Heart. Quando o núcleo da fortaleza começou a transmitir um pulso instável, os animais das sombras seguiram essas estradas para dentro. O guardião do orbe do leão não pode deixar o núcleo desprotegido, então cada defesa é travada a partir da câmara do lançador, redirecionando os orbes espirituais através das paredes e espelhos circundantes.</p>
+<p>Liberar uma rota significa que sua estrada é estável o suficiente para que as equipes de reparos possam reabri-la. Rootbound Golem testa o portão da floresta, Brambleback Colossus ocupa a forja de espinhos, Lunar Wisp Matriarca atravessa a estrada da lua, Prism Shell Regent controla a abóbada espelhada, Tempest Horn Guardian marca rotas de tempestade e Voidcore Emperor sela a câmara final com três fases centrais. Concluir a Rota 30 reconecta todas as seis estradas e impede que o pulso corrompido atraia mais inimigos para a fortaleza.</p></div>
+      <div class="game-info-section"><h3>Como funcionam os sistemas</h3><p>Mire e ricochete: arraste do lançador para ver o caminho inicial e solte. O orbe principal e um orbe de eco mais fraco viajam em ângulos relacionados. Os bancos de parede podem cruzar múltiplas pistas ou atingir um alvo escondido atrás de outra formação. Split Orb pode adicionar um terceiro projétil, enquanto Piercing Shine encurta o atraso antes que um orbe possa atingir o mesmo alvo novamente.</p>
+<p>Rota de três ondas: as ondas 1 e 2 estabelecem o domínio inimigo da rota. A Onda 3 usa uma formação de elite de autoria, exceto as Rotas 5, 10, 15, 20, 25 e 30, que terminam com um Chefe regional nomeado. Uma onda eliminada faz uma pausa na Batalha para uma escolha de bênção e, em seguida, retoma a mesma rota com o HP central sobrevivente e as atualizações atuais.</p>
+<p>Inimigos especiais: feras blindadas absorvem um número fixo de golpes antes de perder HP. Âncoras espinhosas fixas periodicamente fornecem um escudo aos aliados próximos. Os fogos-fátuos da lua desaparecem visivelmente e não podem ser danificados até que retornem. Os divisores de cristal criam dois fragmentos mais rápidos quando derrotados. Os carregadores marcam uma linha, correm e deixam uma abertura de recuperação.</p>
+<p>Postes de espelho: rotas posteriores colocam um ou dois postes hexagonais sólidos dentro da arena. Orbes refletem fisicamente a partir deles, criando caminhos bancários que não existem nas regiões iniciais. Alguns postes se movem horizontalmente, portanto um ângulo anteriormente seguro pode parar de funcionar durante a mesma onda.</p>
+<p>Regras do chefe: Rootbound reconstrói uma guarda quebrável; Brambleback convoca âncoras e suporte blindado nos limites de saúde; Lunar Wisp alterna períodos visíveis e fases; Prism Shell só pode ser danificado enquanto seu segmento de escudo dourado estiver aberto; Tempest Horn fica vulnerável após uma carga marcada; Voidcore muda de fase duas vezes, adiciona escoltas, reconstrói proteção e ativa dois pilares espelhados.</p>
+<p>Corrida e crescimento permanente: cada onda oferece Bigger Orb, Split Orb, Piercing Shine, Faster Recharge, Core Shield ou Scout Magnet de acordo com o ciclo de escolha atual. As Star Stones obtidas no Result melhoram o dano do Orb Forge, iniciando o Core Shield HP, os ataques de suporte do Companion Den e as recompensas da Scout Tower. Uma nova rolagem de bênção de três diamantes é opcional, confirmada em duas etapas e nunca é necessária para desbloquear rotas.</p></div>
+      <div class="game-info-section"><h3>Como jogar</h3><ol><li>Escolha uma rota desbloqueada no mapa horizontal da fortaleza. Leia seu nome, etiqueta de regra e aviso específico da rota antes de entrar.</li><li>Arraste do guardião do leão em direção ao ângulo desejado. Use a visualização para decidir se um tiro direto, um banco de parede, um banco entre arenas ou um reflexo de poste atinge o alvo prioritário.</li><li>Solte para disparar a saraivada de orbe espiritual. Observe os anéis de armadura, os contornos das fases, as marcas de carga, a proteção da âncora e as dicas do Boss antes de escolher o próximo tiro.</li><li>Após as Ondas 1 e 2, selecione uma bênção. Uma nova rolagem custa três Diamantes e requer uma segunda confirmação; selecionar uma bênção continua imediatamente para a próxima onda.</li><li>Mantenha o HP central acima de zero até a Onda 3. A vitória salva a próxima rota e Star Stones; a falha ainda salva as Star Stones ganhas e deixa intacta a melhor rota desbloqueada.</li><li>Volte ao mapa para gastar Star Stones em salas de fortaleza, repita rotas limpas ou continue com a Próxima Fase a partir do Resultado.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Dicas de estratégia</h3><ul><li>Nem sempre mire no inimigo mais próximo. Âncoras, divisores e linhas traseiras podem criar mais pressão do que um alvo frontal lento, então use uma rota lateral para alcançar a prioridade correta.</li><li>Um contorno de fase significa que o dano está bloqueado. Mantenha o próximo ângulo preparado e solte quando o inimigo se tornar sólido, em vez de desperdiçar a saraivada durante seu estado fechado.</li><li>Postes móveis são superfícies úteis, não apenas obstáculos. Mire um pouco à frente de sua viagem para que o orbe encontre o poste onde estará e, em seguida, cruze uma pista que os tiros apenas na parede não podem alcançar.</li><li>Against chargers and Tempest Horn Guardian, read the marked line and wait for recovery. Faster Recharge helps only if the shots are released during a useful window.</li><li>Core Shield e Faster Recharge estabilizam uma rota sob pressão; Bigger Orb e Piercing Shine encurtam as fases perigosas do Boss. Scout Magnet ajuda o crescimento a longo prazo, mas não impede uma violação imediata.</li><li>Salve a nova rolagem opcional de Diamante para um conjunto de bênçãos que realmente foge às regras da rota. O desbloqueio normal da rota e todos os seis chefes permanecem jogáveis ​​sem gastar diamantes.</li></ul></div>
+      <div class="game-info-section"><h3>Campanha e crescimento de dificuldade</h3><p>As rotas 1 a 5 ensinam fogo direto, bancos de parede única, pistas separadas e ordem de alvos. Rootbound Crown é o primeiro ponto de verificação: o Golem reconstrói a guarda após um intervalo exposto, então o jogador deve quebrar a proteção e usar a abertura em vez de atirar sem tempo.</p>
+<p>Routes 6-10 introduce hit-count armor and stationary thorn anchors. Routes 11-15 replace constant firing with phase timing and then add the first moving reflection gate. Brambleback Colossus summons protection during the fight, while Lunar Wisp Matriarch alternates invulnerability with a recovery window.</p>
+<p>As rotas 16-20 adicionam pilares de espelhos físicos e divisores cuja derrota cria fragmentos mais rápidos. As rotas 21-25 marcam faixas de carga e adicionam tempo de tempestade. Prism Shell Regent gira uma janela de dano; Tempest Horn Guardian deve completar sua investida antes de ser ferido.</p>
+<p>As rotas 26-30 combinam blindagem, âncoras, temporização de fase, divisores, carregadores e postes móveis em formações de autoria. A Rota 29 usa todo o vocabulário do inimigo comum. A Rota 30 adiciona duas mudanças de fase do Voidcore, quatro invocações de suporte, escudo reconstruído e dois postes ativos, testando juntos o planejamento da mira, a prioridade do alvo, o tempo, as atualizações e o crescimento permanente da fortaleza.</p></div>
+      <div class="game-info-section"><h3>Nota de design do desenvolvedor</h3><p>O jogo usa três ondas curtas porque uma rota deve parecer um problema de mira focado, em vez de uma longa sessão de resistência. As quebras de onda preservam o dano do núcleo e a construção atual, mas fornecem uma decisão compacta de bênção antes da próxima formação. As primeiras regiões dependem de paredes para que os jogadores possam aprender geometria previsível; postes de espelho posteriores criam novas superfícies e invalidam ângulos memorizados. Inimigos especiais comunicam seu contra-ataque com anéis, marcas de escudo, linhas de pista ou arte distinta de Boss, em vez de exigir um longo painel de regras durante a Batalha. Arrastar o ponteiro é o controle principal do telefone, enquanto Esquerda e Direita ajustam a mesma mira em um teclado e Espaço ou Enter dispara. Comparado com a colocação de defensor do Beast Guardian ou o planejamento de formação do Animal Auto Squad, o Animal Orb Fortress torna o próprio caminho do tiro o principal recurso estratégico.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Nota dos pais</h3><p>O navegador salva a melhor rota desbloqueada, Star Stones, contagem de jogos e quatro níveis de sala de fortaleza neste dispositivo. O jogo básico não requer uma conta. Limpar o armazenamento do navegador deste site pode remover esse progresso. As novas jogadas de bênção de diamante são opcionais, mostram o saldo atual e resultante e não são obrigatórias para a campanha de 30 rotas. Pontuações e Relatórios de Habilidade descrevem apenas o jogo e não são medidas formais de habilidade.</p></div>
+      <div class="game-info-section"><h3>Perguntas frequentes</h3><dl><div><dt>Qual é o objetivo de uma rota?</dt><dd>Proteja o núcleo de cristal através de três ondas. Terminar a Onda 3 salva a rota, concede Star Stones e desbloqueia a próxima rota.</dd></div><div><dt>Todas as rotas usam o mesmo Boss?</dt><dd>Não. Apenas cada quinta rota é um posto de controle regional do Boss. As outras rotas terminam com formações de elite de autoria, e todos os seis Bosses têm arte, dicas e contra-jogos diferentes.</dd></div><div><dt>Por que meu orbe passou por um inimigo lunar?</dt><dd>Um contorno de fase tracejado significa que o inimigo está temporariamente intangível. Espere que fique sólido e solte o tiro preparado.</dd></div><div><dt>O que os postes de espelho fazem?</dt><dd>São verdadeiras superfícies de reflexão dentro da arena. Os postes posteriores se movem, alterando o caminho de ricochete disponível durante uma onda.</dd></div><div><dt>Preciso de Diamantes para terminar a campanha?</dt><dd>Não. Os diamantes só rolam novamente as três escolhas de bênção uma vez durante uma onda, após uma confirmação em duas etapas.</dd></div><div><dt>O que acontece depois de uma rota com falha?</dt><dd>A corrida termina, mas as Star Stones ganhas são salvas e a melhor rota desbloqueada é mantida. Atualize uma sala, altere o plano de mira ou tente novamente.</dd></div><div><dt>Que progresso é armazenado?</dt><dd>A melhor rota desbloqueada, Star Stones, contagem de jogos e níveis Orb Forge, Core Shield, Companion Den e Scout Tower são armazenados localmente neste navegador.</dd></div></dl></div>
+    </div>
+  </section>
+    <!-- adsense-static-guide:end -->
+    <script src="/src/site-config.js?v=20260718-locale-routes1"></script>
+    <script src="../../src/version.js?v=20260701-version2"></script>
+    <script src="../../src/analytics.js?v=20260701-analytics2"></script>
+    <script>window.WonderAnalytics?.track("game_view", { game_id: "animal-orb-fortress", release_state: "playable_release_candidate" });</script>
+    <script src="../../src/sound.js?v=20260720-locale11"></script>
+    <script src="../../src/edge-guard.js?v=20260710-mobile-play-shell2"></script>
+    <script src="/src/i18n.js?v=20260718-locale-routes1"></script><script src="../../src/game-runtime-localizer-loader.js?v=20260720-locale11-15"></script>
+    <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
+    <script src="../../src/wallet.js?v=20260706-crystal-diamond-charm1"></script>
+    <script src="game.js?v=20260717-zh-hans1"></script>
+    <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
+    <script>
+      (() => {
+        const loadGameInfo = () => {
+          if (document.querySelector("script[data-orb-game-info]")) return;
+          const gamePanel = document.querySelector("#gamePanel");
+          if (document.body.classList.contains("orb-fortress-playing") || (gamePanel && !gamePanel.classList.contains("is-hidden"))) {
+            window.setTimeout(loadGameInfo, 3000);
+            return;
+          }
+          const script = document.createElement("script");
+          script.src = "../../src/game-page-info.js?v=20260720-locale11-2";
+          script.dataset.orbGameInfo = "internal";
+          script.async = true;
+          document.body.appendChild(script);
+        };
+        if ("requestIdleCallback" in window) window.requestIdleCallback(loadGameInfo, { timeout: 1400 });
+        else window.setTimeout(loadGameInfo, 300);
+      })();
+    </script>
+  </body>
+</html>
